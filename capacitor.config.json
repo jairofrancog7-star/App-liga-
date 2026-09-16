@@ -1,0 +1,8 @@
+{
+  "appId": "mx.ligajuventino.app",
+  "appName": "Liga Juventino",
+  "webDir": "dist",
+  "server": {
+    "androidScheme": "https"
+  }
+}
