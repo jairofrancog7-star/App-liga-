@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="es-MX">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="theme-color" content="#111113" />
+  <meta name="description" content="Torneo Municipal Liga Juventino" />
+  <link rel="manifest" href="./manifest.webmanifest" />
+  <link rel="icon" href="./icon.svg" type="image/svg+xml" />
+  <link rel="stylesheet" href="./src/styles.css" />
+  <title>Liga Juventino</title>
+</head>
+<body>
+  <div id="app" class="app-shell">
+    <header class="topbar">
+      <button id="backButton" class="icon-button is-hidden" aria-label="Volver">←</button>
+      <button class="brand" data-route="home" aria-label="Ir a Inicio">
+        <span class="brand-mark">LJ</span>
+        <span class="brand-copy">LIGA <strong>JUVENTINO</strong></span>
+      </button>
+      <div class="top-actions">
+        <button id="searchButton" class="icon-button" aria-label="Buscar">⌕</button>
+        <button class="icon-button" data-route="profile" aria-label="Perfil">◎</button>
+      </div>
+    </header>
+
+    <main id="screen" class="screen" aria-live="polite"></main>
+
+    <nav class="bottom-nav" aria-label="Navegación principal">
+      <button data-route="home" class="nav-item active"><span>⌂</span><small>Inicio</small></button>
+      <button data-route="competition" class="nav-item"><span>◇</span><small>Competición</small></button>
+      <button data-route="video" class="nav-item"><span>▶</span><small>Vídeo</small></button>
+      <button data-route="fantasy" class="nav-item"><span>♙</span><small>Fantasy</small></button>
+      <button data-route="more" class="nav-item"><span>•••</span><small>Más</small></button>
+    </nav>
+  </div>
+  <script type="module" src="./src/main.js"></script>
+</body>
+</html>
