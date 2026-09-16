@@ -1,0 +1,1 @@
+Funciones V3 listas: persistencia local, quiniela, Fantasy, favoritos, búsqueda, fichajes, noticias, voto, notificaciones, privacidad, perfiles, historia, estadísticas, reproductor modal, Quiz y Más o Menos, manteniendo el diseño Skywork V2.
