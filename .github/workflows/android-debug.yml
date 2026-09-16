@@ -6,6 +6,9 @@ on:
     branches:
       - main
       - skywork-rebuild-v1
+  pull_request:
+    branches:
+      - main
 
 jobs:
   build-apk:
