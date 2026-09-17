@@ -1,0 +1,23 @@
+:root{--v13-bg:#03054d;--v13-bg2:#07106d;--v13-card:#0b0f69;--v13-card2:#11167a;--v13-cyan:#11e8f4;--v13-blue:#1749ff;--v13-line:rgba(255,255,255,.12);--v13-muted:#b9c3df}
+/* V13: no cambia layouts, tamaños, posiciones ni estructura. Solo unifica el color al azul eléctrico de las referencias. */
+body:has(.v11-ref-pack){background:var(--v13-bg)!important}
+body:has(.v11-ref-pack) #screen{background:linear-gradient(180deg,#1028c9 0,#081379 15%,#05085d 42%,#03044d 100%)!important}
+.v11-ref-pack{color:#fff!important}
+.v11-page-head{background:radial-gradient(300px 210px at 88% 0%,rgba(31,98,255,.7),transparent 70%),linear-gradient(180deg,#1947ff 0,#111db1 48%,#08096c 100%)!important}
+.v11-page-head p,.v11-menu-list h3,.v11-table-row span,.v11-player-row span small,.v11-media-strip small,.v11-scorer-hero p,.v11-game-hero p,.v11-game-note{color:var(--v13-muted)!important}
+.v11-tabs{background:#10146d!important;border-color:var(--v13-line)!important}
+.v11-tabs button.active,.v11-section-title button,.v11-stat-list a,.v11-follow-grid span,.v11-wide-button,.v11-versus>span,.v11-table-row.compact strong{color:var(--v13-cyan)!important}
+.v11-tabs button.active:after{background:var(--v13-cyan)!important}
+.v11-stat-list,.v11-table-card,.v11-profile-card,.v11-game-hero,.v11-versus>button,.v11-follow-grid button,.v11-team-grid button,.v11-moments-grid button{background:linear-gradient(180deg,var(--v13-card2),var(--v13-card))!important;border-color:rgba(255,255,255,.07)!important}
+.v11-filter-row button,.v11-season-strip button{background:#1a207d!important}
+.v11-profile-actions .outline{border-color:var(--v13-cyan)!important;color:var(--v13-cyan)!important}
+.v11-profile-actions .primary,.v11-game-hero button{background:var(--v13-cyan)!important;color:#04115c!important}
+.v11-ball-art{background:radial-gradient(circle at 110% 50%,transparent 0 38%,rgba(0,201,255,.95) 39% 40%,rgba(64,102,255,.75) 41% 42%,#0a47cd 43% 57%,transparent 58%),linear-gradient(145deg,transparent 0 46%,rgba(17,232,244,.7) 47% 48%,transparent 49% 57%,rgba(62,122,255,.7) 58% 59%,transparent 60%)!important}
+.v11-trophy-feature{background:radial-gradient(circle at 20% 35%,#2b69ff 0,#17257d 34%,#090b5e 72%)!important}
+.v11-media-art,.v11-moment-art{background:radial-gradient(circle at 35% 35%,#2d6cff,#090d68 65%)!important}
+.v11-media-art.huerta,.v11-media-art.galeana{background:radial-gradient(circle at 40% 35%,#1a8dff,#0b0d66 64%)!important}
+.v11-scorer-hero{background:linear-gradient(135deg,#1254c8,#0c146f 65%)!important}
+.v11-video-hero{background:radial-gradient(circle at 75% 30%,rgba(53,112,255,.72),transparent 35%),linear-gradient(160deg,#142cc9,#05075b 68%)!important}
+.v11-avatar{background:radial-gradient(circle at 50% 35%,#2eb8ff,#101875 72%)!important;border-color:var(--v13-cyan)!important;box-shadow:0 0 28px rgba(17,232,244,.25)!important}
+.v11-wide-button{border-color:var(--v13-cyan)!important}
+/* Mantener intacto el diseño exacto de pantallas y componentes: solo color. */
