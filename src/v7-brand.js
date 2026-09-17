@@ -1,39 +1,63 @@
-const V7_ASSETS = {
-  splash: 'https://d2ol7oe51mr4n9.cloudfront.net/user_3JNvttsAwr0QjxhuX5O1uaa9bvv/da28b6de-d381-46c3-b1e4-23d76c826123.png',
-  final: 'https://d2ol7oe51mr4n9.cloudfront.net/user_3JNvttsAwr0QjxhuX5O1uaa9bvv/edbc7dc5-fc86-470d-8080-650f74c960b2.png'
+const V10_ASSETS = {
+  splash: 'https://d2ol7oe51mr4n9.cloudfront.net/user_3JNvttsAwr0QjxhuX5O1uaa9bvv/a2eeef18-c5f1-4870-9124-6026558b2612.png'
 };
-const STARTUP_FIRST_MS = 1450;
-const STARTUP_SECOND_MS = 1850;
-const STARTUP_FADE_MS = 450;
+const STARTUP_MS = 2350;
+const STARTUP_FADE_MS = 420;
+
+const ROOT_ROUTES = new Set(['home','competition','video','fantasy','more']);
+const HEADER_TITLES = {
+  competition:'Competición',
+  profile:'Perfil'
+};
+
+function routeFromLocation(){
+  return location.hash.replace('#/','') || 'home';
+}
 
 function installBrandHeader(){
-  document.documentElement.dataset.brandVersion='v9';
+  document.documentElement.dataset.brandVersion='v10';
   const topbar=document.querySelector('.topbar');
   const wordmark=document.querySelector('.topbar .wordmark');
   const profile=document.querySelector('.topbar .profile-button');
   if(wordmark){wordmark.setAttribute('aria-label','Inicio - Liga Municipal de Fútbol Juventino Rosas');wordmark.textContent='';}
-  if(profile){profile.setAttribute('aria-label','Mi cuenta');profile.textContent='';}
+  if(profile){profile.setAttribute('aria-label','Mi cuenta');}
   topbar?.querySelectorAll('.notification-button,.bell-button,[data-route="notifications"],[aria-label*="Notific"],[aria-label*="notific"]').forEach(el=>el.remove());
 }
 
-function syncHomeStoriesLayout(){
+function syncRouteLayout(){
+  const route=routeFromLocation();
   const screen=document.querySelector('#screen');
-  if(!screen) return;
-  const eyebrow=screen.querySelector(':scope > .eyebrow:first-child');
-  const title=screen.querySelector(':scope > .screen-title');
-  const eyebrowText=(eyebrow?.textContent||'').replace(/\s+/g,' ').trim().toUpperCase();
-  const titleText=(title?.textContent||'').replace(/\s+/g,' ').trim().toLowerCase();
-  const isHome=eyebrowText.includes('TORNEO MUNICIPAL') && eyebrowText.includes('JORNADA 5') && titleText.includes('el fútbol de') && titleText.includes('nuestro municipio');
-  screen.classList.toggle('v9-home-stories-first',isHome);
+  const topbar=document.querySelector('.topbar');
+  if(!screen||!topbar) return;
+
+  document.body.dataset.appRoute=route;
+  document.body.classList.toggle('v10-home-route',route==='home');
+  document.body.classList.toggle('v10-root-route',ROOT_ROUTES.has(route));
+  document.body.classList.toggle('v10-detail-route',!ROOT_ROUTES.has(route));
+
+  topbar.dataset.title=HEADER_TITLES[route]||'';
+  topbar.classList.toggle('has-route-title',Boolean(HEADER_TITLES[route]));
+
+  // Home: stories begin directly below the branded banner. This is based on
+  // the route, not on the current rendered text, so later modules cannot make
+  // the removed title flash back into view.
+  screen.classList.toggle('v10-home-stories-first',route==='home');
+
+  const back=document.querySelector('#backButton');
+  if(back){
+    const showBack=!ROOT_ROUTES.has(route);
+    back.classList.toggle('is-hidden',!showBack);
+  }
 }
 
-function watchHomeStoriesLayout(){
+function watchRouteLayout(){
   const screen=document.querySelector('#screen');
-  if(!screen) return;
-  syncHomeStoriesLayout();
-  const observer=new MutationObserver(()=>syncHomeStoriesLayout());
-  observer.observe(screen,{childList:true});
-  window.addEventListener('hashchange',()=>window.requestAnimationFrame(syncHomeStoriesLayout));
+  syncRouteLayout();
+  window.addEventListener('hashchange',()=>window.requestAnimationFrame(syncRouteLayout));
+  if(screen){
+    const observer=new MutationObserver(()=>window.requestAnimationFrame(syncRouteLayout));
+    observer.observe(screen,{childList:true,subtree:false});
+  }
 }
 
 function createStartup(){
@@ -45,21 +69,18 @@ function createStartup(){
   splash.setAttribute('role','status');
   splash.setAttribute('aria-live','polite');
   splash.setAttribute('aria-label','Iniciando Liga Juventino');
-  splash.innerHTML=`<div class="v7-startup-stage v7-startup-stage--first is-active" data-startup-stage="first"><img src="${V7_ASSETS.splash}" alt="Liga Municipal de Fútbol Juventino Rosas" draggable="false"></div><div class="v7-startup-stage v7-startup-stage--final" data-startup-stage="final"><img src="${V7_ASSETS.final}" alt="" aria-hidden="true" draggable="false"><div class="v7-updating">Actualizando datos</div></div>`;
+  splash.innerHTML=`<div class="v7-startup-stage is-active"><img src="${V10_ASSETS.splash}" alt="Liga Municipal de Fútbol Juventino Rosas" draggable="false"></div>`;
   document.body.appendChild(splash);
-  const first=splash.querySelector('[data-startup-stage="first"]');
-  const final=splash.querySelector('[data-startup-stage="final"]');
-  window.setTimeout(()=>{
-    first?.classList.remove('is-active');
-    final?.classList.add('is-active');
-    splash.setAttribute('aria-label','Actualizando datos');
-  },STARTUP_FIRST_MS);
   window.setTimeout(()=>{
     splash.classList.add('is-leaving');
     document.body.classList.remove('v7-startup-lock');
     window.setTimeout(()=>splash.remove(),STARTUP_FADE_MS+80);
-  },STARTUP_FIRST_MS+STARTUP_SECOND_MS);
+  },STARTUP_MS);
 }
 
-function bootV7Brand(){installBrandHeader();watchHomeStoriesLayout();createStartup();}
-if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',bootV7Brand,{once:true}); else bootV7Brand();
+function bootV10Brand(){
+  installBrandHeader();
+  watchRouteLayout();
+  createStartup();
+}
+if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',bootV10Brand,{once:true}); else bootV10Brand();
