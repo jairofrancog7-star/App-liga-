@@ -1,1 +1,3 @@
-V3 feature branch ready for pull request and Android CI.
+# READY
+
+V7 visual lista para compilar y desplegar.
