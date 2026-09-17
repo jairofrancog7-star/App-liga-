@@ -1,6 +1,16 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
-  <defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#3E63DD"/><stop offset="1" stop-color="#00A2C7"/></linearGradient></defs>
-  <rect width="512" height="512" rx="120" fill="#111113"/>
-  <circle cx="256" cy="256" r="170" fill="url(#g)"/>
-  <path d="M160 185h56v142h113v46H160V185Zm134 0h58v188h-58V185Z" fill="#EDEEF0"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="Liga Municipal de Futbol Juventino Rosas">
+<defs><linearGradient id="b" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#1727C9"/><stop offset=".55" stop-color="#06158F"/><stop offset="1" stop-color="#02065F"/></linearGradient></defs>
+<rect width="512" height="512" rx="104" fill="url(#b)"/>
+<g fill="none" stroke="#fff" stroke-width="15" stroke-linecap="round" stroke-linejoin="round">
+<path d="M302 126a151 151 0 1 0 78 264 137 137 0 0 1-78-264Z" fill="#fff"/>
+<path d="M286 149 239 178l-13 54 38 37 55-9 27-45-18-47Z" stroke="#07158f"/>
+<path d="m239 178-48-3-29 43 19 49 45-35m38 37-17 50 35 41 51-11 13-49-27-40m-72 59-50 23-3 50m101-44 35 33" stroke="#07158f"/>
+<path d="M104 202 44 223l58 17m1 21-67 28 70 9"/>
+</g>
+<g fill="#fff">
+<path d="M313 218c28-11 50-7 67 6-20-2-37 2-48 10 27-1 46 7 59 21-25-6-43-5-56 3 29 4 45 15 56 31-30-10-52-8-69 0l-32 47-20-14 24-44c-14-11-19-26-15-43 8 10 19 15 34 16Z"/>
+<path d="m337 196 24-34 30 11-18 15 18 17-39-1Z"/>
+<path d="M246 342c48-15 92-35 133-61l5 10c-42 30-87 54-135 72Z"/>
+</g>
+<circle cx="352" cy="203" r="4" fill="#07158f"/>
 </svg>
