@@ -1,4 +1,60 @@
 /* Ajustes solicitados para acercar el centro de Liga a la referencia azul. */
+
+/* En escritorio nunca debe aparecer la cabecera gráfica de la app móvil. */
+html.preview-desktop #app > .topbar,
+html.preview-desktop #app > .bottom-nav,
+html.preview-desktop .v7-startup,
+body.lj-desktop #app > .topbar,
+body.lj-desktop #app > .bottom-nav,
+body.lj-desktop .v7-startup,
+.lj-desktop-app-hidden{
+  display:none!important;
+  visibility:hidden!important;
+  height:0!important;
+  min-height:0!important;
+  max-height:0!important;
+  margin:0!important;
+  padding:0!important;
+  overflow:hidden!important;
+  pointer-events:none!important;
+}
+
+body.lj-desktop .lj-home-return,
+html.preview-desktop .lj-home-return{
+  display:inline-flex!important;
+  align-items:center!important;
+  gap:6px!important;
+  flex:0 0 auto!important;
+  height:22px!important;
+  padding:0 9px!important;
+  margin-right:9px!important;
+  border:1px solid rgba(93,154,255,.34)!important;
+  border-radius:6px!important;
+  background:#0d2d58!important;
+  color:#fff!important;
+  font-size:9px!important;
+  font-weight:800!important;
+  line-height:1!important;
+  cursor:pointer!important;
+  box-shadow:none!important;
+}
+body.lj-desktop .lj-home-return:hover,
+html.preview-desktop .lj-home-return:hover{
+  background:#174579!important;
+  border-color:#4f9cff!important;
+}
+body.lj-desktop .lj-home-return span,
+html.preview-desktop .lj-home-return span{
+  color:#54d9ff!important;
+  font-size:13px!important;
+  line-height:1!important;
+}
+body.lj-desktop .lj-home-return b,
+html.preview-desktop .lj-home-return b{
+  color:inherit!important;
+  font-size:9px!important;
+}
+
 body.lj-desktop .lj-directory-trigger{
   display:inline-flex!important;
   align-items:center!important;
