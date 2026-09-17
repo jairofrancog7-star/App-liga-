@@ -3,14 +3,29 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <script>
+    (function () {
+      const mode = new URLSearchParams(location.search).get('mode') || '';
+      const html = document.documentElement;
+      if (mode === 'desktop') {
+        html.classList.add('preview-desktop');
+        const viewport = document.querySelector('meta[name="viewport"]');
+        if (viewport) viewport.setAttribute('content', 'width=1366, initial-scale=1.0');
+      } else if (mode === 'mobile' || mode === 'apk') {
+        html.classList.add('preview-mobile');
+        if (mode === 'apk') html.classList.add('preview-apk');
+      }
+      html.dataset.previewMode = mode || 'auto';
+    })();
+  </script>
   <meta name="theme-color" content="#02065F" />
   <meta name="description" content="Torneo Municipal Liga Juventino" />
   <link rel="manifest" href="./manifest.webmanifest" />
   <link rel="icon" href="https://d2ol7oe51mr4n9.cloudfront.net/user_3JNvttsAwr0QjxhuX5O1uaa9bvv/720d1f82-1d59-4a7a-af69-9e7e8da0250a.png" type="image/png" />
   <link rel="apple-touch-icon" href="https://d2ol7oe51mr4n9.cloudfront.net/user_3JNvttsAwr0QjxhuX5O1uaa9bvv/720d1f82-1d59-4a7a-af69-9e7e8da0250a.png" />
   <title>Liga Juventino</title>
-  <script type="module" crossorigin src="./assets/index-xDsBikD3.js"></script>
-  <link rel="stylesheet" crossorigin href="./assets/index-BVJztySH.css">
+  <script type="module" crossorigin src="./assets/index-MvUDdDdz.js"></script>
+  <link rel="stylesheet" crossorigin href="./assets/index-DsMqqF9u.css">
 </head>
 <body>
   <div id="app" class="app-shell">
