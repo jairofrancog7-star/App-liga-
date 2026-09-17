@@ -1,48 +1,47 @@
-# Liga Juventino — reconstrucción Skywork
+# Liga Juventino Rosas — Web + APK
 
-Aplicación móvil reconstruida a partir del prototipo visual generado en Skywork y de las referencias suministradas para Liga Juventino.
+Portal de fútbol municipal de **Liga Juventino Rosas** con versión móvil/APK y modo navegador para escritorio.
 
-## Diseño
+## 🌐 Ver la página
 
-Tokens principales:
+**Página publicada (GitHub Pages):**
 
-- Brand Primary: `#3E63DD`
-- Primary Tint: `#182449`
-- Accent: `#00A2C7`
-- Accent Tint: `#082C36`
-- Ink: `#EDEEF0`
-- Surface: `#18191B`
-- Background: `#111113`
-- Background Warm: `#1A191B`
+https://jairofrancog7-star.github.io/App-liga-/
 
-La interfaz mantiene un sistema compacto y de alta densidad para fútbol municipal, con navegación inferior de cinco secciones, tablas, cuadro eliminatorio, vídeo, Fantasy, juegos, estadísticas, historia y perfiles.
+**Enlace directo con refresh/cache-buster para ver los cambios recientes:**
 
-## Desarrollo local
+https://jairofrancog7-star.github.io/App-liga-/?refresh=desktop-v7-20260916
 
-```bash
-npm install
-npm run dev
-```
+> En PC, usa una ventana de **1024 px o más** para activar el nuevo modo escritorio.
 
-## Build web
+## ✅ Estado actual
+
+La rama principal es `main`.
+
+Cambios recientes del modo escritorio:
+
+- Barra superior y navegación horizontal para PC.
+- Carrusel de próximos partidos.
+- Accesos rápidos circulares.
+- Portada principal con panel **Lo más destacado**.
+- Secciones de **Momentos**, **Últimas noticias** y **Resúmenes en vídeo**.
+- Accesos a **Calendario**, **Datos**, **Performance Zone**, **Predictor**, **Torneo**, **Zenith**, **Fichajes** y **Notificaciones**.
+- Footer completo para navegador.
+- La versión móvil/APK conserva su navegación original.
+
+Archivos principales del modo escritorio:
+
+- `src/desktop-shell.css`
+- `src/desktop-shell.js`
+- `index.html`
+
+## 📱 Móvil / APK
+
+El proyecto usa **Capacitor** para Android.
 
 ```bash
 npm install
 npm run build
-```
-
-La salida se genera en `dist/`.
-
-## APK Android
-
-El proyecto usa Capacitor. GitHub Actions incluye el workflow **Build Android Debug APK**.
-
-También se puede generar localmente:
-
-```bash
-npm install
-npm run build
-npx cap add android
 npx cap sync android
 cd android
 ./gradlew assembleDebug
@@ -50,23 +49,54 @@ cd android
 
 APK esperado:
 
-`android/app/build/outputs/apk/debug/app-debug.apk`
+```text
+android/app/build/outputs/apk/debug/app-debug.apk
+```
 
-## Estado actual
+También existe el workflow de GitHub Actions:
 
-Incluye:
+```text
+.github/workflows/android-debug.yml
+```
 
-- Inicio con stories, hero, Momentos, próximos partidos y tabla rápida.
-- Competición con partidos/resultados, clasificación y bracket horizontal.
-- Detalle de partido.
-- Vídeo y tarjetas multimedia.
-- Fantasy, equipo y ligas.
-- Quiniela, Quiz Arena y Más o Menos.
-- Más, Siguiendo, Equipos, goleadores, Estadísticas, Rankings, Historia y Temporada.
-- Perfil y preferencias de notificación.
-- Tema oscuro y claro.
-- Persistencia local para tema y equipos seguidos.
-- PWA/offline básico.
-- Configuración para Android APK mediante Capacitor.
+## 💻 Desarrollo local
 
-Los datos actuales son de demostración y están separados de una futura integración con Firebase/API oficial.
+```bash
+npm install
+npm run dev
+```
+
+Build web:
+
+```bash
+npm run build
+```
+
+La salida web se genera en `dist/`.
+
+## 🧭 Navegación incluida
+
+El portal contiene rutas y módulos para:
+
+- Inicio
+- Partidos / Competición
+- Clasificación
+- Liga TV / Vídeo
+- Fantasy
+- Equipos
+- Noticias
+- Historia
+- Datos y estadísticas
+- Calendario
+- Fichajes
+- Predictor
+- Notificaciones
+- Perfil
+
+## 📊 Analítica
+
+El repositorio actualmente no contiene una integración de PostHog detectada en el código. Se puede añadir después para medir visitas, clics, rutas más usadas y errores del modo navegador sin modificar el diseño visual.
+
+## Repositorio
+
+https://github.com/jairofrancog7-star/App-liga-
