@@ -1,0 +1,36 @@
+:root{--v7-header-h:132px;--v7-deep:#02065f}
+html,body{background:#02065f}
+body.v7-startup-lock{overflow:hidden;overscroll-behavior:none}
+
+/* Header recreated from the supplied third reference image. The original
+   league emblem and account icon remain visible exactly as provided. */
+.topbar{
+  height:var(--v7-header-h)!important;min-height:var(--v7-header-h)!important;
+  padding:0!important;position:sticky;top:0;display:block!important;overflow:hidden;
+  isolation:isolate;background:#02065f!important;border-bottom:0!important;
+  box-shadow:0 14px 30px rgba(0,0,65,.22);backdrop-filter:none!important
+}
+.topbar::before{
+  content:"";position:absolute;inset:0;z-index:-2;
+  background-image:url('https://d2ol7oe51mr4n9.cloudfront.net/user_3JNvttsAwr0QjxhuX5O1uaa9bvv/bcbafcda-5260-4bdd-81f3-5e542551e2f6.png');
+  background-repeat:no-repeat;background-size:300% auto;background-position:50% 31%;
+  filter:saturate(1.04) contrast(1.03)
+}
+.topbar::after{content:"";position:absolute;inset:auto 0 0;height:54px;z-index:-1;background:linear-gradient(180deg,transparent,#050b61 96%);pointer-events:none}
+.topbar .wordmark{position:absolute;left:13px;bottom:16px;width:82px;height:74px;margin:0;padding:0;border:0;background:transparent!important;font-size:0!important;color:transparent!important;z-index:3;cursor:pointer}
+.topbar .profile-button{position:absolute;right:13px;bottom:27px;width:64px!important;height:58px!important;padding:0;border:0!important;border-radius:50%;background:transparent!important;z-index:3}
+.topbar .back-button{position:absolute;left:102px;bottom:35px;z-index:4;border-color:rgba(255,255,255,.28)!important;background:rgba(3,8,94,.42)!important;backdrop-filter:blur(10px)}
+.topbar .back-button.is-hidden{display:none!important}
+
+/* Startup sequence: image 1 -> image 4. No Omitir/Skip control is rendered. */
+.v7-startup{position:fixed;inset:0;z-index:2147483000;background:#02065f;overflow:hidden;opacity:1;transition:opacity .42s ease;touch-action:none}
+.v7-startup.is-leaving{opacity:0;pointer-events:none}
+.v7-startup-stage{position:absolute;inset:0;opacity:0;transition:opacity .55s ease;background:#02065f}
+.v7-startup-stage.is-active{opacity:1}
+.v7-startup-stage img{width:100%;height:100%;display:block;object-fit:cover;object-position:center center;user-select:none;-webkit-user-drag:none}
+.v7-startup-stage--final::after{content:"";position:absolute;inset:auto 0 0;height:25%;background:linear-gradient(180deg,transparent,rgba(2,6,95,.74));pointer-events:none}
+.v7-updating{position:absolute;left:50%;bottom:max(28px,calc(env(safe-area-inset-bottom) + 20px));transform:translateX(-50%);z-index:2;display:flex;align-items:center;gap:9px;color:#fff;white-space:nowrap;font:800 11px/1.1 Inter,ui-sans-serif,system-ui,sans-serif;letter-spacing:.12em;text-transform:uppercase;text-shadow:0 2px 9px rgba(0,0,50,.55)}
+.v7-updating::before{content:"";width:16px;height:16px;border:2px solid rgba(255,255,255,.35);border-top-color:#fff;border-radius:50%;animation:v7-spin .8s linear infinite}
+@keyframes v7-spin{to{transform:rotate(360deg)}}
+@media(max-width:380px){:root{--v7-header-h:118px}.topbar .wordmark{left:10px;bottom:14px;width:73px;height:66px}.topbar .profile-button{right:10px;bottom:24px;width:56px!important;height:52px!important}.topbar .back-button{left:88px;bottom:31px}}
+@media(prefers-reduced-motion:reduce){.v7-startup,.v7-startup-stage{transition:none}.v7-updating::before{animation-duration:1.4s}}
