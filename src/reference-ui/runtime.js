@@ -2,6 +2,7 @@ import {homeView,competitionView,videoView,fantasyView,moreView} from './primary
 import {followingView,teamsView,statsView,momentsView,scorersView,predictorView,quizView,moreLessView,rankingsView,historyView,profileView,notificationsView,privacyView} from './secondary-views.js';
 import {TEAM} from './data.js';
 import {crest} from './helpers.js';
+import {ICONS} from './icons.js';
 import {uiState,persistFollowing,persistFavorite,persistNotifications} from './state.js';
 
 const views={home:homeView,competition:competitionView,video:videoView,fantasy:fantasyView,more:moreView,following:followingView,teams:teamsView,stats:statsView,moments:momentsView,scorers:scorersView,predictor:predictorView,quiz:quizView,moreLess:moreLessView,rankings:rankingsView,history:historyView,profile:profileView,notifications:notificationsView,privacy:privacyView};
@@ -10,8 +11,12 @@ const route=()=>location.hash.replace(/^#\/?/,'')||'home';
 const go=r=>{location.hash='#/'+r};
 let rendering=false;
 
+function installReferenceNavIcons(){
+ const map={home:'navHome',competition:'navCompetition',video:'navVideo',fantasy:'navFantasy',more:'navMore'};
+ document.querySelectorAll('.bottom-nav .nav-item').forEach(btn=>{const slot=btn.querySelector('.nav-icon');const svg=ICONS[map[btn.dataset.route]];if(slot&&svg)slot.innerHTML=svg;});
+}
 function updateNav(r){document.querySelectorAll('.bottom-nav .nav-item').forEach(btn=>{const rr=btn.dataset.route;btn.classList.toggle('active',rr===r||(rr==='more'&&moreRoutes.has(r)))});}
-function render(){const r=route();const screen=document.querySelector('#screen');const fn=views[r];if(!screen||!fn||rendering)return;rendering=true;screen.innerHTML=fn();screen.dataset.v11Applied=r;document.body.classList.add('v11-active');updateNav(r);rendering=false;}
+function render(){const r=route();const screen=document.querySelector('#screen');const fn=views[r];if(!screen||!fn||rendering)return;rendering=true;screen.innerHTML=fn();screen.dataset.v11Applied=r;document.body.classList.add('v11-active');installReferenceNavIcons();updateNav(r);rendering=false;}
 
 function ensureOverlayRoot(){let root=document.querySelector('#v11-sheet-root');if(!root){root=document.createElement('div');root.id='v11-sheet-root';document.body.append(root)}return root;}
 function closeOverlay(){ensureOverlayRoot().replaceChildren();}
@@ -46,6 +51,6 @@ function handleAction(el){const action=el.dataset.action;const value=el.dataset.
  if(action==='share'){share();return}
 }
 
-function install(){const screen=document.querySelector('#screen');if(!screen)return;const observer=new MutationObserver(()=>{if(rendering)return;const r=route();if(views[r]&&screen.dataset.v11Applied!==r)requestAnimationFrame(render)});observer.observe(screen,{childList:true});window.addEventListener('hashchange',()=>requestAnimationFrame(render));document.addEventListener('click',e=>{const routeEl=e.target.closest('[data-route]');if(routeEl&&routeEl.closest('.v11-ref-pack')){e.preventDefault();const target=routeEl.dataset.route;if(views[target])go(target);else{toast('Sección en preparación');}return}const actionEl=e.target.closest('[data-action]');if(actionEl&&actionEl.closest('.v11-ref-pack, #v11-sheet-root')){e.preventDefault();handleAction(actionEl)}});document.addEventListener('input',e=>{if(e.target.matches('[data-action="team-search"]')){const q=e.target.value.toLowerCase();document.querySelectorAll('.v11-teams-list>[data-team-name]').forEach(row=>row.hidden=!row.dataset.teamName.includes(q))}});document.addEventListener('change',e=>{if(e.target.matches('[data-action="notify"]')){uiState.notifications[e.target.dataset.value]=e.target.checked;persistNotifications()}});requestAnimationFrame(render);}
+function install(){const screen=document.querySelector('#screen');if(!screen)return;installReferenceNavIcons();const observer=new MutationObserver(()=>{if(rendering)return;const r=route();if(views[r]&&screen.dataset.v11Applied!==r)requestAnimationFrame(render)});observer.observe(screen,{childList:true});window.addEventListener('hashchange',()=>requestAnimationFrame(render));document.addEventListener('click',e=>{const routeEl=e.target.closest('[data-route]');if(routeEl&&routeEl.closest('.v11-ref-pack')){e.preventDefault();const target=routeEl.dataset.route;if(views[target])go(target);else{toast('Sección en preparación');}return}const actionEl=e.target.closest('[data-action]');if(actionEl&&actionEl.closest('.v11-ref-pack, #v11-sheet-root')){e.preventDefault();handleAction(actionEl)}});document.addEventListener('input',e=>{if(e.target.matches('[data-action="team-search"]')){const q=e.target.value.toLowerCase();document.querySelectorAll('.v11-teams-list>[data-team-name]').forEach(row=>row.hidden=!row.dataset.teamName.includes(q))}});document.addEventListener('change',e=>{if(e.target.matches('[data-action="notify"]')){uiState.notifications[e.target.dataset.value]=e.target.checked;persistNotifications()}});requestAnimationFrame(render);}
 
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',install,{once:true});else install();
