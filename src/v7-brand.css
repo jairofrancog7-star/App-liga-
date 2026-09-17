@@ -1,13 +1,15 @@
-:root{--v8-deep:#02065f;--v8-header-h:clamp(122px,35.22vw,183px)}
-html,body{background:var(--v8-deep)}
+:root{
+  --v10-deep:#02065f;
+  --v10-home-header-h:clamp(138px,35.22vw,183px);
+  --v10-compact-header-h:78px;
+}
+html,body{background:var(--v10-deep)}
 body.v7-startup-lock{overflow:hidden;overscroll-behavior:none}
 
-/* V8 header: use the supplied reference composition at its real proportions.
-   The phone status bar was removed from the image, while the league mark at
-   left and the account/person icon at right remain exactly in the artwork. */
-.topbar{
-  height:var(--v8-header-h)!important;
-  min-height:var(--v8-header-h)!important;
+/* HOME ONLY: keep the branded wide artwork exactly where it belongs. */
+body[data-app-route="home"] .topbar{
+  height:var(--v10-home-header-h)!important;
+  min-height:var(--v10-home-header-h)!important;
   padding:0!important;
   position:sticky;
   top:0;
@@ -15,27 +17,25 @@ body.v7-startup-lock{overflow:hidden;overscroll-behavior:none}
   overflow:hidden;
   isolation:isolate;
   z-index:30;
-  background-color:var(--v8-deep)!important;
+  background-color:var(--v10-deep)!important;
   background-image:url('https://d2ol7oe51mr4n9.cloudfront.net/user_3JNvttsAwr0QjxhuX5O1uaa9bvv/f2d42133-aeeb-4665-bfd1-693941efa7ee.jpg')!important;
   background-repeat:no-repeat!important;
   background-size:100% 100%!important;
   background-position:center center!important;
-  border-bottom:0!important;
+  border:0!important;
   box-shadow:none!important;
   backdrop-filter:none!important;
 }
-.topbar::before,.topbar::after{content:none!important;display:none!important}
-
-/* Invisible hit areas placed directly over the two icons already present in
-   the supplied header artwork. No replacement artwork and no bell icon. */
-.topbar .wordmark{
-  position:absolute;
-  left:2.5%;
-  top:13%;
-  width:20%;
-  height:42%;
-  margin:0;
-  padding:0;
+body[data-app-route="home"] .topbar::before,
+body[data-app-route="home"] .topbar::after{content:none!important;display:none!important}
+body[data-app-route="home"] .topbar .wordmark{
+  position:absolute!important;
+  left:2.5%!important;
+  top:13%!important;
+  width:20%!important;
+  height:42%!important;
+  margin:0!important;
+  padding:0!important;
   border:0!important;
   background:transparent!important;
   color:transparent!important;
@@ -43,14 +43,14 @@ body.v7-startup-lock{overflow:hidden;overscroll-behavior:none}
   z-index:4;
   cursor:pointer;
 }
-.topbar .profile-button{
-  position:absolute;
-  right:2.2%;
-  top:12%;
+body[data-app-route="home"] .topbar .profile-button{
+  position:absolute!important;
+  right:2.2%!important;
+  top:12%!important;
   width:15%!important;
   height:42%!important;
-  margin:0;
-  padding:0;
+  margin:0!important;
+  padding:0!important;
   border:0!important;
   border-radius:0!important;
   background:transparent!important;
@@ -59,33 +59,166 @@ body.v7-startup-lock{overflow:hidden;overscroll-behavior:none}
   z-index:4;
   cursor:pointer;
 }
-.topbar .profile-button svg{display:none!important}
+body[data-app-route="home"] .topbar .profile-button svg{display:none!important}
+body[data-app-route="home"] .topbar .back-button{display:none!important}
+
+/* ALL OTHER ROUTES: compact native-looking app bar, never the tall home art. */
+body:not([data-app-route="home"]) .topbar{
+  height:calc(var(--v10-compact-header-h) + env(safe-area-inset-top))!important;
+  min-height:calc(var(--v10-compact-header-h) + env(safe-area-inset-top))!important;
+  padding:max(8px,env(safe-area-inset-top)) 16px 10px!important;
+  position:sticky;
+  top:0;
+  display:grid!important;
+  grid-template-columns:44px 1fr 44px!important;
+  align-items:end!important;
+  overflow:hidden;
+  isolation:isolate;
+  z-index:30;
+  background:
+    radial-gradient(125px 92px at 8% 0,rgba(27,93,255,.42),transparent 72%),
+    radial-gradient(150px 100px at 92% 0,rgba(0,215,234,.22),transparent 75%),
+    linear-gradient(180deg,#0a22a5 0,#07127d 62%,#050b61 100%)!important;
+  border:0!important;
+  border-bottom:1px solid rgba(255,255,255,.08)!important;
+  box-shadow:none!important;
+  backdrop-filter:none!important;
+}
+body:not([data-app-route="home"]) .topbar::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  pointer-events:none;
+  opacity:.3;
+  background:linear-gradient(145deg,transparent 44%,rgba(70,225,255,.26) 45% 46%,transparent 47% 56%,rgba(255,79,157,.2) 57% 58%,transparent 59%);
+}
+body:not([data-app-route="home"]) .topbar::after{
+  content:attr(data-title);
+  position:absolute;
+  left:72px;
+  right:72px;
+  bottom:16px;
+  z-index:2;
+  display:block;
+  color:#fff;
+  font:850 24px/1 Inter,ui-sans-serif,system-ui,sans-serif;
+  letter-spacing:-.02em;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  pointer-events:none;
+}
+body:not([data-app-route="home"]) .topbar:not(.has-route-title)::after{content:""}
+
+body:not([data-app-route="home"]) .topbar .wordmark{
+  position:relative!important;
+  left:auto!important;
+  top:auto!important;
+  width:42px!important;
+  height:42px!important;
+  margin:0!important;
+  padding:0!important;
+  border:0!important;
+  border-radius:12px!important;
+  background-color:transparent!important;
+  background-image:url('https://d2ol7oe51mr4n9.cloudfront.net/user_3JNvttsAwr0QjxhuX5O1uaa9bvv/720d1f82-1d59-4a7a-af69-9e7e8da0250a.png')!important;
+  background-size:contain!important;
+  background-repeat:no-repeat!important;
+  background-position:center!important;
+  color:transparent!important;
+  font-size:0!important;
+  box-shadow:none!important;
+  z-index:3;
+}
+body:not([data-app-route="home"]) .topbar .profile-button{
+  position:relative!important;
+  right:auto!important;
+  top:auto!important;
+  width:40px!important;
+  height:40px!important;
+  margin:0!important;
+  padding:0!important;
+  justify-self:end!important;
+  border:2px solid rgba(255,255,255,.9)!important;
+  border-radius:50%!important;
+  background:rgba(0,15,98,.28)!important;
+  color:#fff!important;
+  box-shadow:none!important;
+  display:grid!important;
+  place-items:center!important;
+  z-index:3;
+}
+body:not([data-app-route="home"]) .topbar .profile-button svg{
+  display:block!important;
+  width:24px!important;
+  height:24px!important;
+  fill:none!important;
+  stroke:currentColor!important;
+  stroke-width:1.8!important;
+}
+
+/* Back button replaces the left logo on detail/account screens. */
+body.v10-detail-route .topbar .wordmark{visibility:hidden!important;pointer-events:none!important}
+body.v10-detail-route .topbar .back-button{
+  position:absolute!important;
+  left:16px!important;
+  bottom:10px!important;
+  top:auto!important;
+  width:40px!important;
+  height:40px!important;
+  border:1px solid rgba(255,255,255,.22)!important;
+  border-radius:50%!important;
+  background:rgba(2,8,79,.46)!important;
+  color:#fff!important;
+  backdrop-filter:blur(8px);
+  display:grid!important;
+  place-items:center!important;
+  z-index:5;
+}
+body.v10-detail-route .topbar .back-button.is-hidden{display:grid!important;visibility:visible!important}
+body[data-app-route="profile"] .topbar .profile-button{visibility:hidden!important;pointer-events:none!important}
+
 .topbar .notification-button,
 .topbar .bell-button,
 .topbar [data-route="notifications"],
 .topbar [aria-label*="Notific"],
 .topbar [aria-label*="notific"]{display:none!important}
-.topbar .back-button{
-  position:absolute;
-  left:25%;
-  top:35%;
-  z-index:5;
-  width:34px!important;
-  height:34px!important;
-  border-color:rgba(255,255,255,.26)!important;
-  background:rgba(3,8,94,.44)!important;
-  backdrop-filter:blur(9px)
-}
-.topbar .back-button.is-hidden{display:none!important}
 
-/* Startup sequence: first league splash, then the complete updating artwork.
-   Nothing is cropped: the full image is stretched to the exact phone viewport
-   so the outer sponsor/placeholder boxes cannot be cut off. */
+/* Route titles already shown inside the compact header should not be repeated. */
+body[data-app-route="competition"] #screen > .eyebrow:first-child,
+body[data-app-route="competition"] #screen > .screen-title,
+body[data-app-route="profile"] #screen > .eyebrow:first-child,
+body[data-app-route="profile"] #screen > .screen-title{
+  display:none!important;
+}
+body[data-app-route="competition"] #screen,
+body[data-app-route="profile"] #screen{
+  padding-top:14px!important;
+}
+body[data-app-route="competition"] #screen > .tabs{
+  margin-top:0!important;
+}
+
+/* HOME: remove the text block permanently and pull stories into that space. */
+body[data-app-route="home"] #screen{
+  padding-top:8px!important;
+}
+body[data-app-route="home"] #screen > .eyebrow:first-child,
+body[data-app-route="home"] #screen > .screen-title{
+  display:none!important;
+}
+body[data-app-route="home"] #screen > .stories{
+  margin-top:0!important;
+  padding-top:3px!important;
+  padding-bottom:6px!important;
+}
+
+/* Splash V10: one correct 9:16 image, no stretching and no loading copy. */
 .v7-startup{
   position:fixed;
   inset:0;
   z-index:2147483000;
-  background:var(--v8-deep);
+  background:var(--v10-deep);
   overflow:hidden;
   opacity:1;
   transition:opacity .42s ease;
@@ -96,69 +229,28 @@ body.v7-startup-lock{overflow:hidden;overscroll-behavior:none}
   position:absolute;
   inset:0;
   opacity:0;
-  transition:opacity .55s ease;
-  background:var(--v8-deep);
+  transition:opacity .25s ease;
+  background:var(--v10-deep);
 }
 .v7-startup-stage.is-active{opacity:1}
 .v7-startup-stage img{
   width:100%;
   height:100%;
   display:block;
-  object-fit:fill;
+  object-fit:cover;
   object-position:center center;
   user-select:none;
   -webkit-user-drag:none;
 }
-.v7-startup-stage--final::after{content:none!important;display:none!important}
-.v7-updating{
-  position:absolute;
-  left:50%;
-  bottom:max(20px,calc(env(safe-area-inset-bottom) + 14px));
-  transform:translateX(-50%);
-  z-index:2;
-  display:flex;
-  align-items:center;
-  gap:12px;
-  color:#fff;
-  white-space:nowrap;
-  font:850 14px/1.1 Inter,ui-sans-serif,system-ui,sans-serif;
-  letter-spacing:.13em;
-  text-transform:uppercase;
-  text-shadow:0 2px 9px rgba(0,0,50,.55)
-}
-.v7-updating::before{
-  content:"";
-  width:24px;
-  height:24px;
-  border:3px solid rgba(255,255,255,.38);
-  border-top-color:#fff;
-  border-radius:50%;
-  animation:v7-spin .8s linear infinite
-}
-@keyframes v7-spin{to{transform:rotate(360deg)}}
-
-/* V9 home correction requested from the app screenshot:
-   remove the two text lines above the stories and let the stories occupy that
-   space immediately below the branded header. Other screens keep their titles. */
-#screen.v9-home-stories-first{
-  padding-top:10px!important;
-}
-#screen.v9-home-stories-first > .eyebrow:first-child,
-#screen.v9-home-stories-first > .screen-title{
-  display:none!important;
-}
-#screen.v9-home-stories-first > .stories{
-  margin-top:0!important;
-  padding-top:4px!important;
-}
+.v7-updating{display:none!important}
 
 @media(max-width:380px){
-  .topbar .back-button{left:24%;top:34%;width:31px!important;height:31px!important}
-  .v7-updating{font-size:12px;gap:10px;letter-spacing:.11em}
-  .v7-updating::before{width:21px;height:21px}
-  #screen.v9-home-stories-first{padding-top:8px!important}
+  :root{--v10-compact-header-h:72px}
+  body:not([data-app-route="home"]) .topbar{padding-left:12px!important;padding-right:12px!important}
+  body:not([data-app-route="home"]) .topbar::after{left:64px;right:64px;bottom:15px;font-size:22px}
+  body.v10-detail-route .topbar .back-button{left:12px!important}
+  body[data-app-route="home"] #screen{padding-top:6px!important}
 }
 @media(prefers-reduced-motion:reduce){
   .v7-startup,.v7-startup-stage{transition:none}
-  .v7-updating::before{animation-duration:1.4s}
 }
