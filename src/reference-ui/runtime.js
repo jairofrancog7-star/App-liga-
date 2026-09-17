@@ -11,12 +11,30 @@ const route=()=>location.hash.replace(/^#\/?/,'')||'home';
 const go=r=>{location.hash='#/'+r};
 let rendering=false;
 
+const NAV_ICONS={
+ home:['navHome','navHomeActive'],
+ competition:['navCompetition','navCompetitionActive'],
+ video:['navVideo','navVideoActive'],
+ fantasy:['navFantasy','navFantasyActive'],
+ more:['navMore','navMoreActive']
+};
 function installReferenceNavIcons(){
- const map={home:'navHome',competition:'navCompetition',video:'navVideo',fantasy:'navFantasy',more:'navMore'};
- document.querySelectorAll('.bottom-nav .nav-item').forEach(btn=>{const slot=btn.querySelector('.nav-icon');const svg=ICONS[map[btn.dataset.route]];if(slot&&svg)slot.innerHTML=svg;});
+ document.querySelectorAll('.bottom-nav .nav-item').forEach(btn=>{
+  const slot=btn.querySelector('.nav-icon');
+  const pair=NAV_ICONS[btn.dataset.route];
+  const key=pair?.[btn.classList.contains('active')?1:0];
+  const svg=ICONS[key];
+  if(slot&&svg)slot.innerHTML=svg;
+ });
 }
-function updateNav(r){document.querySelectorAll('.bottom-nav .nav-item').forEach(btn=>{const rr=btn.dataset.route;btn.classList.toggle('active',rr===r||(rr==='more'&&moreRoutes.has(r)))});}
-function render(){const r=route();const screen=document.querySelector('#screen');const fn=views[r];if(!screen||!fn||rendering)return;rendering=true;screen.innerHTML=fn();screen.dataset.v11Applied=r;document.body.classList.add('v11-active');installReferenceNavIcons();updateNav(r);rendering=false;}
+function updateNav(r){
+ document.querySelectorAll('.bottom-nav .nav-item').forEach(btn=>{
+  const rr=btn.dataset.route;
+  btn.classList.toggle('active',rr===r||(rr==='more'&&moreRoutes.has(r)));
+ });
+ installReferenceNavIcons();
+}
+function render(){const r=route();const screen=document.querySelector('#screen');const fn=views[r];if(!screen||!fn||rendering)return;rendering=true;screen.innerHTML=fn();screen.dataset.v11Applied=r;document.body.classList.add('v11-active');updateNav(r);rendering=false;}
 
 function ensureOverlayRoot(){let root=document.querySelector('#v11-sheet-root');if(!root){root=document.createElement('div');root.id='v11-sheet-root';document.body.append(root)}return root;}
 function closeOverlay(){ensureOverlayRoot().replaceChildren();}
