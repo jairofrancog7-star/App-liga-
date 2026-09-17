@@ -2,23 +2,72 @@
 
 Portal de fútbol municipal de **Liga Juventino Rosas** con versión móvil/APK y modo navegador para escritorio.
 
-## 🌐 Ver la página
+## 🌐 Publicación web en GitHub Pages
 
-**Página publicada (GitHub Pages):**
+El repositorio ya incluye un workflow de despliegue web:
+
+```text
+.github/workflows/pages.yml
+```
+
+Ese workflow:
+
+1. instala las dependencias;
+2. compila la app con Vite;
+3. usa la base correcta `/App-liga-/`;
+4. prepara el artefacto `dist/`;
+5. publica en GitHub Pages.
+
+### Activación única necesaria
+
+GitHub Pages todavía debe habilitarse una sola vez desde el repositorio:
+
+1. Abre **Settings** del repositorio.
+2. En el menú lateral entra a **Pages**.
+3. En **Build and deployment > Source** selecciona **GitHub Actions**.
+4. Guarda el cambio si GitHub lo solicita.
+5. Después abre **Actions > Deploy Web to GitHub Pages** y ejecuta **Run workflow**, o realiza cualquier cambio en `main` para volver a dispararlo.
+
+GitHub confirmó que el build web sí termina correctamente; el despliegue se detiene únicamente porque Pages todavía no está habilitado para este repositorio.
+
+## 🔗 Enlaces
+
+**Página GitHub Pages** — funcionará en cuanto Pages esté habilitado:
 
 https://jairofrancog7-star.github.io/App-liga-/
 
-**Enlace directo con refresh/cache-buster para ver los cambios recientes:**
+**Enlace directo con refresh/cache-buster:**
 
-https://jairofrancog7-star.github.io/App-liga-/?refresh=desktop-v7-20260916
+https://jairofrancog7-star.github.io/App-liga-/?refresh=pages-fix-20260916
 
-> En PC, usa una ventana de **1024 px o más** para activar el nuevo modo escritorio.
+**Repositorio:**
 
-## ✅ Estado actual
+https://github.com/jairofrancog7-star/App-liga-
 
-La rama principal es `main`.
+**Configuración de GitHub Pages:**
 
-Cambios recientes del modo escritorio:
+https://github.com/jairofrancog7-star/App-liga-/settings/pages
+
+**Workflow de publicación:**
+
+https://github.com/jairofrancog7-star/App-liga-/actions/workflows/pages.yml
+
+> En PC, usa una ventana de **1024 px o más** para activar el modo escritorio.
+
+## ✅ Estado del build
+
+La compilación web fue probada en GitHub Actions con:
+
+```bash
+npm install
+npm run build -- --base=/App-liga-/
+```
+
+Vite generó correctamente la carpeta `dist/` y los archivos optimizados de HTML, CSS y JavaScript.
+
+## 🖥️ Modo escritorio
+
+Cambios incluidos:
 
 - Barra superior y navegación horizontal para PC.
 - Carrusel de próximos partidos.
@@ -29,7 +78,7 @@ Cambios recientes del modo escritorio:
 - Footer completo para navegador.
 - La versión móvil/APK conserva su navegación original.
 
-Archivos principales del modo escritorio:
+Archivos principales:
 
 - `src/desktop-shell.css`
 - `src/desktop-shell.js`
@@ -53,7 +102,7 @@ APK esperado:
 android/app/build/outputs/apk/debug/app-debug.apk
 ```
 
-También existe el workflow de GitHub Actions:
+Workflow Android:
 
 ```text
 .github/workflows/android-debug.yml
@@ -66,7 +115,7 @@ npm install
 npm run dev
 ```
 
-Build web:
+Build web normal:
 
 ```bash
 npm run build
@@ -74,29 +123,6 @@ npm run build
 
 La salida web se genera en `dist/`.
 
-## 🧭 Navegación incluida
+## 📊 PostHog
 
-El portal contiene rutas y módulos para:
-
-- Inicio
-- Partidos / Competición
-- Clasificación
-- Liga TV / Vídeo
-- Fantasy
-- Equipos
-- Noticias
-- Historia
-- Datos y estadísticas
-- Calendario
-- Fichajes
-- Predictor
-- Notificaciones
-- Perfil
-
-## 📊 Analítica
-
-El repositorio actualmente no contiene una integración de PostHog detectada en el código. Se puede añadir después para medir visitas, clics, rutas más usadas y errores del modo navegador sin modificar el diseño visual.
-
-## Repositorio
-
-https://github.com/jairofrancog7-star/App-liga-
+La publicación de GitHub Pages y PostHog son independientes. Primero debe quedar activo el sitio público. Después se puede conectar PostHog para medir visitas, clics, rutas más usadas y errores sin cambiar el diseño visual.
