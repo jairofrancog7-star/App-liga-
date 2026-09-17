@@ -12,18 +12,22 @@
   <link rel="stylesheet" href="./src/v5.css" />
   <link rel="stylesheet" href="./src/v6-home.css" />
   <link rel="stylesheet" href="./src/v6-safe.css" />
+  <link rel="stylesheet" href="./src/v7-brand.css" />
   <title>Liga Juventino</title>
 </head>
 <body>
+  <div id="v7Launch" aria-label="Iniciando Liga Juventino">
+    <div class="v7-launch-scene v7-orbit active"><img src="./league-mark.svg" alt="Liga Municipal de Futbol Juventino Rosas A.C." /></div>
+    <div class="v7-launch-scene v7-trophy"><img src="./launch-trophy.svg" alt="Trofeo Liga Juventino" /></div>
+    <button class="v7-launch-skip" data-v7-skip>OMITIR</button>
+  </div>
   <div id="app" class="app-shell">
     <header class="topbar">
       <button id="backButton" class="icon-button back-button" aria-label="Volver"></button>
       <button class="wordmark" data-route="home" aria-label="Ir a Inicio">LIGA <strong>JUVENTINO</strong></button>
       <button class="icon-button profile-button" data-route="profile" aria-label="Perfil"></button>
     </header>
-
     <main id="screen" class="screen" aria-live="polite"></main>
-
     <nav class="bottom-nav" aria-label="Navegación principal">
       <button data-route="home" class="nav-item active" aria-label="Inicio"><span class="nav-icon" data-nav-icon="home"></span><small>INICIO</small></button>
       <button data-route="competition" class="nav-item" aria-label="Competición"><span class="nav-icon" data-nav-icon="trophy"></span><small>COMPETICIÓN</small></button>
@@ -32,11 +36,10 @@
       <button data-route="more" class="nav-item" aria-label="Más"><span class="nav-icon" data-nav-icon="menu"></span><small>MÁS</small></button>
     </nav>
   </div>
-
-  <!-- Base app + V4 are stable. V6.1 adds newer features without perpetual DOM observers. -->
   <script type="module" src="./src/main.js"></script>
   <script type="module" src="./src/runtime-fixes.js"></script>
   <script type="module" src="./src/v4-super.js"></script>
   <script type="module" src="./src/v6-safe.js"></script>
+  <script type="module" src="./src/v7-brand.js"></script>
 </body>
 </html>
