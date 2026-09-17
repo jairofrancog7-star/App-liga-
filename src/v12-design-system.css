@@ -1,0 +1,91 @@
+/* V12 — integration of the supplied HD design pack. Keeps the app structure while applying route-specific visual systems. */
+:root{
+  --v12-blue:#07156f;--v12-blue2:#1427d4;--v12-cyan:#16e4f4;
+  --v12-purple:#2b0037;--v12-purple2:#5b075a;--v12-magenta:#8b158e;
+  --v12-red:#ff4545;--v12-card:#10156a;--v12-line:rgba(255,255,255,.13);
+}
+body{background:#030742;color:#fff}
+.v11-ref-pack{min-height:100%;padding-bottom:112px}
+.v11-ref-pack,.v11-ref-pack *{box-sizing:border-box}
+.v11-ref-pack button{font:inherit}
+
+/* Purple statistics / season references */
+.v11-stats{background:
+ radial-gradient(900px 520px at 35% -5%,rgba(160,40,185,.5),transparent 60%),
+ linear-gradient(180deg,#36033f 0%,#18011f 52%,#250027 100%);color:#fff;border-radius:0}
+.v11-stats .v11-page-head{background:linear-gradient(110deg,#8b39ff 0%,#3687ff 50%,#16d9e9 100%);margin:0 -18px 20px;padding:28px 24px 24px;border-radius:0 0 28px 28px}
+.v11-stats .v11-page-head h1,.v11-stats .v11-page-head p{color:#fff}
+.v11-stats .v11-page-head img{width:106px;height:106px;object-fit:contain;background:rgba(255,255,255,.09);border-radius:50%;padding:6px}
+.v11-stats .v11-tabs{border-color:rgba(255,255,255,.13)}
+.v11-stats .v11-tabs button{color:#cbbfd0}
+.v11-stats .v11-tabs button.active{color:#fff;border-bottom-color:#fff}
+.v11-stats .v11-section-title button,.v11-stats .v11-stat-list>a{color:#f0a9f3}
+.v11-stats .v11-horizontal-cards{gap:16px;overflow-x:auto;scroll-snap-type:x mandatory}
+.v11-stats .v11-stat-list{min-width:min(86vw,440px);scroll-snap-align:start;background:linear-gradient(145deg,rgba(87,11,91,.94),rgba(44,4,52,.96));border:1px solid rgba(255,255,255,.09);box-shadow:0 18px 48px rgba(0,0,0,.28);border-radius:26px}
+.v11-stats .v11-rank-row{border-color:rgba(255,255,255,.1)}
+
+/* Blue competition design */
+.v11-competition{background:
+ radial-gradient(1000px 460px at 65% -80px,rgba(34,84,255,.82),transparent 58%),
+ repeating-linear-gradient(120deg,transparent 0 36px,rgba(54,240,255,.045) 37px 39px),
+ linear-gradient(180deg,#1027c9 0,#07116e 29%,#04084c 100%);color:white}
+.v11-competition .v11-page-head{padding-top:24px;position:relative}
+.v11-competition .v11-page-head:after{content:'';position:absolute;right:0;top:0;width:44%;height:100%;background:repeating-linear-gradient(145deg,transparent 0 18px,rgba(0,255,255,.13) 19px 21px);opacity:.72;pointer-events:none}
+.v11-competition .v11-page-head h1{font-size:clamp(38px,8vw,58px);color:#fff}
+.v11-competition .v11-page-head p{color:#d8ddff}
+.v11-competition .v11-tabs{position:sticky;top:0;z-index:3;background:rgba(4,8,76,.92);backdrop-filter:blur(12px);border-bottom:1px solid var(--v12-line)}
+.v11-competition .v11-tabs button{color:#bdc3e0}
+.v11-competition .v11-tabs button.active{color:var(--v12-cyan);border-bottom-color:var(--v12-cyan)}
+.v11-competition .v11-bracket-head{gap:12px;overflow:auto}
+.v11-competition .v11-bracket-head button{background:#20266f;color:#fff;border:0;border-radius:18px;padding:15px 20px;white-space:nowrap}
+.v11-competition .v11-bracket-head button.active{background:var(--v12-cyan);color:#021548}
+.v11-competition .v11-match-list,.v11-competition .v11-table-card,.v11-competition .v11-bracket-pair>div,.v11-competition .v11-bracket-pair>strong{background:rgba(18,22,107,.9);border-color:rgba(255,255,255,.08);box-shadow:0 14px 40px rgba(0,0,0,.18)}
+.v11-competition .v11-match-row{border-color:rgba(255,255,255,.09)}
+.v11-competition .v11-match-row button{color:var(--v12-cyan);background:#0d348d;border-radius:12px}
+
+/* White/red ranking reference */
+.v11-rankings,.v11-scorers{background:#f7f7f9;color:#11172c;border-radius:24px;padding:18px}
+.v11-rankings .v11-page-head h1,.v11-scorers .v11-page-head h1,.v11-rankings h2,.v11-scorers h2{color:#10142b}
+.v11-rankings .v11-page-head p,.v11-scorers .v11-page-head p{color:#666c7c}
+.v11-rankings .v11-tabs button,.v11-scorers .v11-tabs button{color:#666}
+.v11-rankings .v11-tabs button.active,.v11-scorers .v11-tabs button.active{color:#111;border-color:var(--v12-red)}
+.v11-rankings .v11-filter-row button{background:#fff;border:1px solid #e3e4e8;color:#262b3d;box-shadow:0 8px 24px rgba(0,0,0,.06)}
+.v11-rankings .v11-table-card,.v11-scorers .v11-stat-list{background:#fff;color:#11172c;border:1px solid #e8e8ec;box-shadow:0 18px 38px rgba(0,0,0,.08)}
+.v11-rankings .v11-table-row,.v11-scorers .v11-player-row{border-color:#ececf0}
+.v11-rankings .v11-table-row strong,.v11-scorers .v11-player-row strong{color:var(--v12-red)}
+
+/* History / More / video: deep electric blue */
+.v11-history,.v11-more,.v11-video,.v11-game,.v11-fantasy,.v11-following,.v11-teams,.v11-player-detail,.v11-team-detail,.v11-profile{background:linear-gradient(180deg,#142be0 0,#071374 29%,#03074b 100%);color:#fff}
+.v11-history .v11-page-head h1,.v11-more .v11-page-head h1,.v11-video .v11-page-head h1,.v11-game .v11-page-head h1,.v11-fantasy .v11-page-head h1,.v11-profile .v11-page-head h1{color:#fff}
+.v11-history .v11-tabs button,.v11-more .v11-menu-list button,.v11-profile .v11-menu-list button{color:#fff}
+.v11-history .v11-tabs button.active{color:var(--v12-cyan);border-color:var(--v12-cyan)}
+.v11-history .v11-season-strip button,.v11-history .v11-media-strip button,.v11-more .v11-more-brand,.v11-profile .v11-profile-card,.v11-following .v11-follow-grid button,.v11-teams .v11-team-grid button{background:rgba(19,24,108,.86);border:1px solid rgba(255,255,255,.08);box-shadow:0 18px 42px rgba(0,0,0,.2)}
+.v11-more .v11-ball-art{filter:saturate(1.2) drop-shadow(0 0 32px rgba(18,224,244,.26))}
+.v11-profile .v11-profile-card .primary,.v11-video button,.v11-game button,.v11-fantasy button,.v11-wide-button{background:var(--v12-cyan)!important;color:#04124d!important;border:0!important}
+
+/* Hero cards inspired by supplied splash/prediction screens */
+.v11-game-hero,.v11-video-hero{background:
+ radial-gradient(circle at 50% 28%,rgba(66,132,255,.55),transparent 27%),
+ linear-gradient(180deg,#1535e8,#07106a);border:1px solid rgba(69,231,255,.26);box-shadow:0 20px 60px rgba(0,0,0,.28);border-radius:28px}
+.v11-game-hero .v11-cup{font-size:84px;filter:drop-shadow(0 14px 20px rgba(0,0,0,.3))}
+.v11-game-hero h2,.v11-video-hero h2{font-style:italic;letter-spacing:-.02em}
+
+/* Details & cards */
+.v11-player-profile,.v11-team-profile{background:linear-gradient(145deg,rgba(26,34,126,.95),rgba(7,11,75,.96));border:1px solid rgba(255,255,255,.09);box-shadow:0 18px 52px rgba(0,0,0,.28)}
+.v11-pill-row span,.v11-status{background:rgba(22,228,244,.14);color:#76f6ff;border:1px solid rgba(22,228,244,.28)}
+
+/* Bottom navigation: compact app bar matching the supplied mobile references */
+.bottom-nav{background:rgba(8,11,87,.96)!important;border-top:1px solid rgba(255,255,255,.1)!important;backdrop-filter:blur(18px);box-shadow:0 -12px 28px rgba(0,0,0,.18)}
+.bottom-nav .nav-item{color:#aeb4d3!important}
+.bottom-nav .nav-item.active{color:var(--v12-cyan)!important}
+
+/* Polish */
+.v11-crest{object-fit:contain!important}
+.v11-page-head img,.v11-crest{filter:drop-shadow(0 6px 12px rgba(0,0,0,.18))}
+@media (max-width:560px){
+ .v11-ref-pack{padding-left:14px;padding-right:14px}
+ .v11-page-head{gap:10px}
+ .v11-page-head img{max-width:88px}
+ .v11-stats .v11-page-head{margin-left:-14px;margin-right:-14px}
+ .v11-competition .v11-page-head h1{font-size:42px}
+}
