@@ -1,16 +1,15 @@
 {
-  "name": "Torneo Municipal Liga Juventino",
+  "name": "Liga Juventino",
   "short_name": "Liga Juventino",
   "start_url": "./",
   "display": "standalone",
   "background_color": "#02065F",
   "theme_color": "#02065F",
-  "orientation": "portrait-primary",
   "icons": [
     {
-      "src": "https://d2ol7oe51mr4n9.cloudfront.net/user_3JNvttsAwr0QjxhuX5O1uaa9bvv/720d1f82-1d59-4a7a-af69-9e7e8da0250a.png",
-      "sizes": "1024x1024",
-      "type": "image/png",
+      "src": "./assets/league/liga-logo.webp",
+      "sizes": "any",
+      "type": "image/webp",
       "purpose": "any maskable"
     }
   ]
