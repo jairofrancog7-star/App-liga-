@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="es-MX">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="theme-color" content="#050B61" />
+  <meta name="description" content="Torneo Municipal Liga Juventino" />
+  <link rel="manifest" href="./manifest.webmanifest" />
+  <link rel="icon" href="./icon.svg" type="image/svg+xml" />
+  <title>Liga Juventino</title>
+  <script type="module" crossorigin src="./assets/index-B_4CUXO5.js"></script>
+  <link rel="stylesheet" crossorigin href="./assets/index-DveSHEg8.css">
+</head>
+<body>
+  <div id="app" class="app-shell">
+    <header class="topbar">
+      <button id="backButton" class="icon-button back-button" aria-label="Volver"></button>
+      <button class="wordmark" data-route="home" aria-label="Ir a Inicio">LIGA <strong>JUVENTINO</strong></button>
+      <button class="icon-button profile-button" data-route="profile" aria-label="Perfil"></button>
+    </header>
+
+    <main id="screen" class="screen" aria-live="polite"></main>
+
+    <nav class="bottom-nav" aria-label="Navegación principal">
+      <button data-route="home" class="nav-item active" aria-label="Inicio"><span class="nav-icon" data-nav-icon="home"></span><small>INICIO</small></button>
+      <button data-route="competition" class="nav-item" aria-label="Competición"><span class="nav-icon" data-nav-icon="trophy"></span><small>COMPETICIÓN</small></button>
+      <button data-route="video" class="nav-item" aria-label="Vídeo"><span class="nav-icon" data-nav-icon="play"></span><small>VÍDEO</small></button>
+      <button data-route="fantasy" class="nav-item" aria-label="Fantasy"><span class="nav-icon" data-nav-icon="shirt"></span><small>FANTASY</small></button>
+      <button data-route="more" class="nav-item" aria-label="Más"><span class="nav-icon" data-nav-icon="menu"></span><small>MÁS</small></button>
+    </nav>
+  </div>
+
+  <!-- Base app + V4 are stable. V6.1 adds newer features without perpetual DOM observers. -->
+</body>
+</html>
