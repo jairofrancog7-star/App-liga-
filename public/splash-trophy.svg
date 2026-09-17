@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 864 1536" role="img" aria-label="Liga Juventino trophy splash">
+<defs>
+ <radialGradient id="bg" cx="50%" cy="42%" r="72%"><stop stop-color="#123DFF"/><stop offset=".35" stop-color="#0719B8"/><stop offset="1" stop-color="#02035D"/></radialGradient>
+ <linearGradient id="neon" x1="0" x2="1"><stop stop-color="#00F0FF"/><stop offset=".28" stop-color="#75FFB8"/><stop offset=".55" stop-color="#FFF45A"/><stop offset=".76" stop-color="#FF4BC8"/><stop offset="1" stop-color="#7A66FF"/></linearGradient>
+ <linearGradient id="metal" x1="0" x2="1"><stop stop-color="#7D8597"/><stop offset=".18" stop-color="#F7FBFF"/><stop offset=".36" stop-color="#818899"/><stop offset=".52" stop-color="#FFFFFF"/><stop offset=".74" stop-color="#6C7485"/><stop offset="1" stop-color="#EAF1FF"/></linearGradient>
+ <filter id="glow"><feGaussianBlur stdDeviation="10" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+</defs>
+<rect width="864" height="1536" fill="url(#bg)"/>
+<g opacity=".8" filter="url(#glow)" fill="none" stroke="url(#neon)" stroke-width="8">
+ <circle cx="432" cy="676" r="330"/><path d="M131 583 270 505l87 64 126-78 121 71 122-45M127 731l128 84 91-71 122 84 122-71 145 58M220 392l49 113M357 346v223M483 346v145M604 438l-73 121"/>
+</g>
+<g transform="translate(432 230) scale(.62) translate(-256 -256)"><rect x="0" y="0" width="512" height="512" rx="256" fill="none"/><g fill="none" stroke="#fff" stroke-width="15" stroke-linecap="round" stroke-linejoin="round"><path d="M302 126a151 151 0 1 0 78 264 137 137 0 0 1-78-264Z" fill="#fff"/><path d="M286 149 239 178l-13 54 38 37 55-9 27-45-18-47Z" stroke="#07158f"/><path d="M104 202 44 223l58 17m1 21-67 28 70 9"/></g><g fill="#fff"><path d="M313 218c28-11 50-7 67 6-20-2-37 2-48 10 27-1 46 7 59 21-25-6-43-5-56 3 29 4 45 15 56 31-30-10-52-8-69 0l-32 47-20-14 24-44c-14-11-19-26-15-43 8 10 19 15 34 16Z"/><path d="m337 196 24-34 30 11-18 15 18 17-39-1Z"/></g></g>
+<g transform="translate(0 120)">
+ <ellipse cx="432" cy="1038" rx="188" ry="28" fill="#00d9ff" opacity=".5" filter="url(#glow)"/>
+ <path d="M341 618h182l-30 74h-122z" fill="url(#metal)" stroke="#e9f5ff" stroke-width="5"/>
+ <path d="M375 676c7 132 24 218 57 275 33-57 50-143 57-275Z" fill="url(#metal)" stroke="#eef8ff" stroke-width="6"/>
+ <path d="M382 693c-72-8-115 37-99 100 12 47 47 74 102 82v-34c-35-8-54-27-60-56-7-31 12-53 62-54m95-38c72-8 115 37 99 100-12 47-47 74-102 82v-34c35-8 54-27 60-56 7-31-12-53-62-54" fill="none" stroke="url(#metal)" stroke-width="18"/>
+ <path d="M393 938h78v72h-78zM333 1002h198l28 57H305z" fill="url(#metal)" stroke="#eef8ff" stroke-width="6"/>
+ <circle cx="432" cy="765" r="57" fill="#1b2449" stroke="#eef8ff" stroke-width="6"/><path d="m432 716 19 35 39 7-28 28 7 40-37-18-37 18 7-40-28-28 39-7z" fill="url(#metal)"/>
+ <path d="M364 603c7-45 43-74 68-74s61 29 68 74" fill="none" stroke="url(#metal)" stroke-width="16"/>
+ <circle cx="376" cy="572" r="11" fill="#eef8ff"/><circle cx="403" cy="546" r="11" fill="#eef8ff"/><circle cx="432" cy="535" r="11" fill="#eef8ff"/><circle cx="461" cy="546" r="11" fill="#eef8ff"/><circle cx="488" cy="572" r="11" fill="#eef8ff"/>
+ </g>
+<path d="M0 1190 Q432 1040 864 1190V1536H0Z" fill="#03106d" opacity=".9"/><g stroke="#67dfff" stroke-width="3" opacity=".55"><path d="M0 1210h864M0 1260h864M0 1310h864M120 1160 70 1536M260 1120 225 1536M604 1120l35 416M744 1160l50 376"/></g>
+</svg>
