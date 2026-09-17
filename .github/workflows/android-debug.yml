@@ -6,6 +6,7 @@ on:
     branches:
       - main
       - skywork-rebuild-v1
+      - v17-skywork-video-only
   pull_request:
     branches:
       - main
