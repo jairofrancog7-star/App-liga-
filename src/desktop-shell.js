@@ -3,7 +3,8 @@
   'use strict';
   const MIN=1024;
   const root=()=>document.querySelector('#screen');
-  const isDesktop=()=>window.innerWidth>=MIN;
+  const forcedMode=()=>new URLSearchParams(location.search).get('mode')||'';
+  const isDesktop=()=>forcedMode()==='desktop'||(!['mobile','apk'].includes(forcedMode())&&window.innerWidth>=MIN);
   const goto=(r)=>{ if(!r) return; location.hash='#/'+r; };
   const esc=(s)=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
   const route=()=>location.hash.replace('#/','')||'home';
