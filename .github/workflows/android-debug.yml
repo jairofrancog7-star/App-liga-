@@ -37,6 +37,12 @@ jobs:
       - name: Create Android project
         run: npx cap add android
 
+      - name: Apply supplied Liga Juventino app icon
+        run: |
+          mkdir -p assets
+          curl -fL 'https://d2ol7oe51mr4n9.cloudfront.net/user_3JNvttsAwr0QjxhuX5O1uaa9bvv/a36f259b-1297-4204-a66a-0636164e61ab.png' -o assets/icon.png
+          npx --yes @capacitor/assets generate --android --iconBackgroundColor '#02065F' --iconBackgroundColorDark '#02065F'
+
       - name: Sync Capacitor
         run: npx cap sync android
 
@@ -49,6 +55,6 @@ jobs:
       - name: Upload APK artifact
         uses: actions/upload-artifact@v4
         with:
-          name: Liga-Juventino-debug-apk
+          name: Liga-Juventino-V7-brand-debug-apk
           path: android/app/build/outputs/apk/debug/app-debug.apk
           if-no-files-found: error
