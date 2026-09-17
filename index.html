@@ -3,6 +3,21 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <script>
+    (function () {
+      const mode = new URLSearchParams(location.search).get('mode') || '';
+      const html = document.documentElement;
+      if (mode === 'desktop') {
+        html.classList.add('preview-desktop');
+        const viewport = document.querySelector('meta[name="viewport"]');
+        if (viewport) viewport.setAttribute('content', 'width=1366, initial-scale=1.0');
+      } else if (mode === 'mobile' || mode === 'apk') {
+        html.classList.add('preview-mobile');
+        if (mode === 'apk') html.classList.add('preview-apk');
+      }
+      html.dataset.previewMode = mode || 'auto';
+    })();
+  </script>
   <meta name="theme-color" content="#02065F" />
   <meta name="description" content="Torneo Municipal Liga Juventino" />
   <link rel="manifest" href="./manifest.webmanifest" />
@@ -15,6 +30,7 @@
   <link rel="stylesheet" href="./src/v6-safe.css" />
   <link rel="stylesheet" href="./src/desktop-shell.css" />
   <link rel="stylesheet" href="./src/v7-brand.css" />
+  <link rel="stylesheet" href="./src/preview-modes.css" />
   <title>Liga Juventino</title>
 </head>
 <body>
