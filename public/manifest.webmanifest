@@ -3,14 +3,15 @@
   "short_name": "Liga Juventino",
   "start_url": "./",
   "display": "standalone",
-  "background_color": "#111113",
-  "theme_color": "#3E63DD",
+  "background_color": "#02065F",
+  "theme_color": "#02065F",
   "orientation": "portrait-primary",
   "icons": [
     {
-      "src": "./icon.svg",
-      "sizes": "512x512",
-      "type": "image/svg+xml"
+      "src": "https://d2ol7oe51mr4n9.cloudfront.net/user_3JNvttsAwr0QjxhuX5O1uaa9bvv/a36f259b-1297-4204-a66a-0636164e61ab.png",
+      "sizes": "1536x1536",
+      "type": "image/png",
+      "purpose": "any maskable"
     }
   ]
 }
