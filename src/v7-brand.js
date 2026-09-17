@@ -7,13 +7,33 @@ const STARTUP_SECOND_MS = 1850;
 const STARTUP_FADE_MS = 450;
 
 function installBrandHeader(){
-  document.documentElement.dataset.brandVersion='v8';
+  document.documentElement.dataset.brandVersion='v9';
   const topbar=document.querySelector('.topbar');
   const wordmark=document.querySelector('.topbar .wordmark');
   const profile=document.querySelector('.topbar .profile-button');
   if(wordmark){wordmark.setAttribute('aria-label','Inicio - Liga Municipal de Fútbol Juventino Rosas');wordmark.textContent='';}
   if(profile){profile.setAttribute('aria-label','Mi cuenta');profile.textContent='';}
   topbar?.querySelectorAll('.notification-button,.bell-button,[data-route="notifications"],[aria-label*="Notific"],[aria-label*="notific"]').forEach(el=>el.remove());
+}
+
+function syncHomeStoriesLayout(){
+  const screen=document.querySelector('#screen');
+  if(!screen) return;
+  const eyebrow=screen.querySelector(':scope > .eyebrow:first-child');
+  const title=screen.querySelector(':scope > .screen-title');
+  const eyebrowText=(eyebrow?.textContent||'').replace(/\s+/g,' ').trim().toUpperCase();
+  const titleText=(title?.textContent||'').replace(/\s+/g,' ').trim().toLowerCase();
+  const isHome=eyebrowText.includes('TORNEO MUNICIPAL') && eyebrowText.includes('JORNADA 5') && titleText.includes('el fútbol de') && titleText.includes('nuestro municipio');
+  screen.classList.toggle('v9-home-stories-first',isHome);
+}
+
+function watchHomeStoriesLayout(){
+  const screen=document.querySelector('#screen');
+  if(!screen) return;
+  syncHomeStoriesLayout();
+  const observer=new MutationObserver(()=>syncHomeStoriesLayout());
+  observer.observe(screen,{childList:true});
+  window.addEventListener('hashchange',()=>window.requestAnimationFrame(syncHomeStoriesLayout));
 }
 
 function createStartup(){
@@ -41,5 +61,5 @@ function createStartup(){
   },STARTUP_FIRST_MS+STARTUP_SECOND_MS);
 }
 
-function bootV7Brand(){installBrandHeader();createStartup();}
+function bootV7Brand(){installBrandHeader();watchHomeStoriesLayout();createStartup();}
 if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',bootV7Brand,{once:true}); else bootV7Brand();
