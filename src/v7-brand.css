@@ -137,10 +137,26 @@ body.v7-startup-lock{overflow:hidden;overscroll-behavior:none}
 }
 @keyframes v7-spin{to{transform:rotate(360deg)}}
 
+/* V9 home correction requested from the app screenshot:
+   remove the two text lines above the stories and let the stories occupy that
+   space immediately below the branded header. Other screens keep their titles. */
+#screen.v9-home-stories-first{
+  padding-top:10px!important;
+}
+#screen.v9-home-stories-first > .eyebrow:first-child,
+#screen.v9-home-stories-first > .screen-title{
+  display:none!important;
+}
+#screen.v9-home-stories-first > .stories{
+  margin-top:0!important;
+  padding-top:4px!important;
+}
+
 @media(max-width:380px){
   .topbar .back-button{left:24%;top:34%;width:31px!important;height:31px!important}
   .v7-updating{font-size:12px;gap:10px;letter-spacing:.11em}
   .v7-updating::before{width:21px;height:21px}
+  #screen.v9-home-stories-first{padding-top:8px!important}
 }
 @media(prefers-reduced-motion:reduce){
   .v7-startup,.v7-startup-stage{transition:none}
