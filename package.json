@@ -1,11 +1,11 @@
 {
   "name": "liga-juventino-app",
   "private": true,
-  "version": "1.0.0",
+  "version": "1.1.0",
   "type": "module",
   "scripts": {
-    "dev": "vite --host 0.0.0.0",
-    "build": "vite build",
+    "dev": "node scripts/materialize-project.mjs && vite --host 0.0.0.0",
+    "build": "node scripts/materialize-project.mjs && vite build",
     "preview": "vite preview --host 0.0.0.0",
     "android:sync": "npm run build && npx cap sync android",
     "android:add": "npm run build && npx cap add android",
