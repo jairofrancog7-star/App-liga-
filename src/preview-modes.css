@@ -1,0 +1,12 @@
+/* Preview modes: ?mode=desktop | ?mode=mobile | ?mode=apk */
+html.preview-mobile,html.preview-mobile body{min-width:320px!important;background:#02065F!important}
+html.preview-mobile body{overflow-x:hidden!important}
+html.preview-apk body{background:#0a0a0a!important}
+html.preview-apk .app-shell{box-shadow:0 0 0 1px rgba(255,255,255,.10),0 24px 90px rgba(0,0,0,.5)!important}
+@media (min-width:1024px){
+  html.preview-mobile .app-shell{width:min(100%,520px)!important;max-width:520px!important;min-height:100dvh!important;margin:0 auto!important;padding-bottom:88px!important;overflow:hidden!important;position:relative!important;background:radial-gradient(circle at 100% 0,#0f43b8 0,transparent 23%),linear-gradient(180deg,#09128a 0,#060d72 26%,#050b61 72%)!important}
+  html.preview-mobile .topbar{display:grid!important;height:64px!important;padding:16px 16px 8px!important;grid-template-columns:42px 1fr 42px!important;align-items:center!important;position:sticky!important;top:0!important;z-index:30!important}
+  html.preview-mobile .bottom-nav{display:grid!important;position:fixed!important;z-index:40!important;left:50%!important;bottom:0!important;transform:translateX(-50%)!important;width:min(100%,520px)!important;grid-template-columns:repeat(5,1fr)!important}
+  html.preview-mobile .screen{max-width:520px!important;margin:0 auto!important;padding:4px 17px 32px!important;min-height:auto!important}
+  html.preview-mobile .desktop-liga{display:none!important}
+}
