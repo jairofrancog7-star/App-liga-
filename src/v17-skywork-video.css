@@ -1,0 +1,60 @@
+/* V17 — ONLY the Vídeo route is restyled from the approved Skywork reference. */
+body[data-app-route="video"] .topbar{display:none!important}
+body[data-app-route="video"] .app-shell{background:#03105a!important}
+body[data-app-route="video"] #screen{
+  padding:0 0 96px!important;
+  margin:0!important;
+  max-width:none!important;
+  background:#03105a!important;
+  animation:none!important;
+  overflow:visible!important;
+}
+
+.v17-tv{position:relative;min-height:100dvh;background:#03105a;color:#fff;overflow:hidden}
+.v17-tv *{box-sizing:border-box}
+.v17-tv-hero{height:774px;position:relative;overflow:hidden;background:#03105a}
+.v17-tv-hero>img{position:absolute;inset:0;width:100%;height:100%;display:block;object-fit:cover;object-position:center center}
+.v17-tv-hero::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(2,8,60,.58),transparent 70%),linear-gradient(0deg,#04115b 1%,transparent 45%);pointer-events:none}
+
+.v17-tv-brand{position:absolute;z-index:4;top:calc(58px + env(safe-area-inset-top));left:23px;display:flex;align-items:center;gap:13px}
+.v17-tv-logo{width:48px;height:48px;display:block;object-fit:contain;border-radius:50%;filter:drop-shadow(0 0 9px rgba(0,217,255,.45))}
+.v17-tv-brandline{width:2px;height:47px;background:#fff;opacity:.95}
+.v17-tv-brandtext{font-size:19px;line-height:.94;font-weight:900;letter-spacing:.01em}
+.v17-tv-brandtext em{color:#00d9ff;font-style:normal}
+
+.v17-tv-profile{position:absolute;z-index:5;right:18px;top:calc(53px + env(safe-area-inset-top));width:45px;height:45px;padding:7px;border:0;background:transparent;color:#fff;display:grid;place-items:center;border-radius:50%;cursor:pointer}
+.v17-tv-profile svg{width:31px;height:31px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+
+.v17-tv-title{position:absolute;z-index:4;left:48px;right:18px;top:240px}
+.v17-tv-title h1{margin:0 0 12px;font-size:57px;line-height:.9;letter-spacing:-.045em;font-weight:950;color:#fff}
+.v17-tv-title p{margin:0;max-width:320px;font-size:16px;line-height:1.17;color:#e1e4ee}
+
+.v17-tv-actions{position:absolute;z-index:4;left:49px;right:49px;top:645px;display:flex;gap:12px}
+.v17-tv-cta{height:59px;flex:1;border-radius:14px;border:0;background:#fff;color:#080b50;font-size:15px;font-weight:900;cursor:pointer;padding:0 12px}
+.v17-tv-cta.secondary{background:rgba(167,170,199,.27);color:#fff}
+.v17-tv-dots{position:absolute;z-index:4;left:0;right:0;top:747px;text-align:center;color:#c9c9d8;font-size:18px;letter-spacing:8px;white-space:nowrap}
+.v17-tv-dots .active{display:inline-block;width:24px;height:10px;border-radius:999px;background:#fff;vertical-align:middle;margin-left:2px}
+
+.v17-tv-content{padding:0 49px 18px;background:#03105a}
+.v17-tv-content h2{margin:18px 0 10px;font-size:23px;line-height:1.1;color:#fff}
+.v17-tv-show{position:relative;height:230px;border-radius:16px;overflow:hidden;background:#13246e;box-shadow:0 8px 22px rgba(0,0,0,.28)}
+.v17-tv-show>img{position:absolute;inset:0;width:100%;height:100%;display:block;object-fit:cover;object-position:center center}
+.v17-tv-show::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(7,25,169,.68),transparent);pointer-events:none}
+.v17-tv-showcopy{position:absolute;z-index:2;left:19px;top:28px;font-weight:950;font-style:italic;font-size:29px;line-height:.88;color:#fff}
+.v17-tv-login{position:absolute;z-index:3;left:15px;bottom:14px;border:0;border-radius:13px;padding:10px 13px;background:#00d9ff;color:#00216c;font-size:14px;font-weight:900;cursor:pointer}
+
+@media(max-width:380px){
+  .v17-tv-hero{height:740px}
+  .v17-tv-brand{left:18px;top:calc(50px + env(safe-area-inset-top))}
+  .v17-tv-profile{right:13px;top:calc(47px + env(safe-area-inset-top))}
+  .v17-tv-title{left:34px;right:14px;top:225px}
+  .v17-tv-title h1{font-size:50px}
+  .v17-tv-title p{font-size:15px}
+  .v17-tv-actions{left:34px;right:34px;top:615px}
+  .v17-tv-dots{top:715px}
+  .v17-tv-content{padding-left:34px;padding-right:34px}
+}
+
+@media(min-width:431px){
+  body[data-app-route="video"] #screen{max-width:520px!important;margin:0 auto!important}
+}
