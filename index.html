@@ -11,6 +11,7 @@
   <link rel="stylesheet" href="./src/v4.css" />
   <link rel="stylesheet" href="./src/v5.css" />
   <link rel="stylesheet" href="./src/v6-home.css" />
+  <link rel="stylesheet" href="./src/v6-safe.css" />
   <title>Liga Juventino</title>
 </head>
 <body>
@@ -31,14 +32,11 @@
       <button data-route="more" class="nav-item" aria-label="Más"><span class="nav-icon" data-nav-icon="menu"></span><small>MÁS</small></button>
     </nav>
   </div>
-  <script>
-    // V5 bell is refreshed from a MutationObserver; avoid writing identical HTML repeatedly.
-    (()=>{const d=Object.getOwnPropertyDescriptor(Element.prototype,'innerHTML');if(!d||!d.get||!d.set)return;Object.defineProperty(Element.prototype,'innerHTML',{configurable:true,enumerable:d.enumerable,get:d.get,set:function(v){if(this.id==='v5Bell'&&d.get.call(this)===v)return;d.set.call(this,v)}})})();
-  </script>
+
+  <!-- Base app + V4 are stable. V6.1 adds newer features without perpetual DOM observers. -->
   <script type="module" src="./src/main.js"></script>
   <script type="module" src="./src/runtime-fixes.js"></script>
   <script type="module" src="./src/v4-super.js"></script>
-  <script type="module" src="./src/v5-super.js"></script>
-  <script type="module" src="./src/v6-home.js"></script>
+  <script type="module" src="./src/v6-safe.js"></script>
 </body>
 </html>
