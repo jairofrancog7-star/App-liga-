@@ -1,4 +1,4 @@
-const CACHE='liga-juventino-v8-brand';
+const CACHE='liga-juventino-v10-route-layout';
 const CORE=['./','./index.html','./manifest.webmanifest','./src/v7-brand.css','./src/v7-brand.js'];
 self.addEventListener('install',event=>event.waitUntil(caches.open(CACHE).then(cache=>cache.addAll(CORE)).then(()=>self.skipWaiting())));
 self.addEventListener('activate',event=>event.waitUntil(caches.keys().then(keys=>Promise.all(keys.filter(k=>k!==CACHE).map(k=>caches.delete(k)))).then(()=>self.clients.claim())));
