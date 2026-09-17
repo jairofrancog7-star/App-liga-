@@ -1,0 +1,45 @@
+/* Quitar morado de los menús desplegables del modo escritorio. */
+body.lj-desktop .lj-dropdown{
+  background:#081a33!important;
+  border-color:#244c78!important;
+  box-shadow:0 20px 50px rgba(0,0,0,.42)!important;
+}
+body.lj-desktop .lj-dropdown:before{
+  background:#081a33!important;
+}
+body.lj-desktop .lj-dropdown button:hover,
+body.lj-desktop .lj-dropdown button:focus-visible{
+  background:#12345f!important;
+  color:#38e6d6!important;
+  outline:none!important;
+}
+body.lj-desktop .lj-more-store-item .lj-store-arrow{
+  background:#0d2a4f!important;
+  color:#36ebda!important;
+}
+body.lj-desktop .lj-more-store-item .lj-store-arrow:hover,
+body.lj-desktop .lj-more-store-item .lj-store-arrow:focus-visible{
+  background:#164575!important;
+  color:#fff!important;
+  outline:none!important;
+}
+body.lj-desktop .lj-store-flyout{
+  background:#081a33!important;
+  border-color:#285b87!important;
+}
+body.lj-desktop .lj-store-flyout button:hover,
+body.lj-desktop .lj-store-flyout button:focus-visible{
+  background:#12345f!important;
+  color:#44eadb!important;
+  outline:none!important;
+}
+body.lj-desktop .ds-menu .lj-menu-wrap>button,
+body.lj-desktop .desk-menu .lj-menu-wrap>button{
+  outline:none!important;
+  box-shadow:none!important;
+}
+body.lj-desktop .ds-menu .lj-menu-wrap.open>button,
+body.lj-desktop .desk-menu .lj-menu-wrap.open>button{
+  color:#38e6d6!important;
+  background:transparent!important;
+}
