@@ -1,5 +1,5 @@
 export const LEAGUE_LOGO='https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/assets/liga-logo.webp';
-export const LEAGUE_LOGO_WHITE='https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/assets/liga-logo-white.webp';
+export const LEAGUE_LOGO_WHITE='./assets/reference/league-logo-white.webp';
 export const TEAMS=[
 {id:'america',code:'AME',name:'Club América Vet.',short:'América',logo:'https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/assets/branding/america-veteranos-35-user.png',p:1,gd:5,pts:3,form:['n','n','w']},
 {id:'huerta',code:'HUE',name:'La Huerta',short:'La Huerta',logo:'https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/assets/teams/la-huerta-cuenda.webp',p:1,gd:5,pts:3,form:['n','n','w']},
