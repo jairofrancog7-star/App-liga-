@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 260" role="img" aria-label="Liga Juventino neon header">
+<defs>
+  <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#081492"/><stop offset=".55" stop-color="#050B61"/><stop offset="1" stop-color="#07117E"/></linearGradient>
+  <linearGradient id="rainbow" x1="0" y1="0" x2="1" y2="0"><stop stop-color="#00D7EA"/><stop offset=".2" stop-color="#68F0C7"/><stop offset=".42" stop-color="#FFF06A"/><stop offset=".62" stop-color="#FF7B5F"/><stop offset=".8" stop-color="#F153D1"/><stop offset="1" stop-color="#3E63DD"/></linearGradient>
+  <filter id="glow"><feGaussianBlur stdDeviation="5" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+</defs>
+<rect width="1200" height="260" fill="url(#bg)"/>
+<g fill="none" stroke="url(#rainbow)" stroke-width="4" opacity=".95" filter="url(#glow)">
+  <path d="M-80 10H350L500 145H760L910 10H1280"/>
+  <path d="M-80 26H340L490 158H770L920 26H1280"/>
+  <path d="M-80 42H330L480 171H780L930 42H1280"/>
+  <path d="M-80 58H320L470 184H790L940 58H1280"/>
+  <path d="M-80 74H310L460 197H800L950 74H1280"/>
+  <path d="M-80 90H300L450 210H810L960 90H1280"/>
+  <path d="M-80 106H290L440 223H820L970 106H1280"/>
+</g>
+<g fill="none" stroke="url(#rainbow)" stroke-width="3" opacity=".72">
+  <path d="M0 210L115 105V260"/><path d="M22 228L135 124V260"/><path d="M45 246L155 145V260"/>
+  <path d="M1200 190L1080 78V260"/><path d="M1176 212L1060 100V260"/><path d="M1152 234L1040 122V260"/>
+</g>
+<rect width="1200" height="260" fill="url(#bg)" opacity=".12"/>
+</svg>
