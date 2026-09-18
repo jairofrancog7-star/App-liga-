@@ -21,7 +21,7 @@
     width:100%!important;
     max-width:none!important;
     margin:0!important;
-    padding:0 0 calc(86px + env(safe-area-inset-bottom))!important;
+    padding:0 0 calc(68px + env(safe-area-inset-bottom))!important;
     overflow-x:hidden!important;
     background:#0715c4!important;
   }
@@ -35,8 +35,9 @@
   .v19-more-page{
     position:relative;
     isolation:isolate;
-    min-height:1370px;
-    padding:22px 26px 28px;
+    min-height:0;
+    height:auto;
+    padding:22px 26px 12px;
     overflow:hidden;
     color:#fff;
     font-family:Inter,Roboto,Arial,sans-serif;
@@ -225,6 +226,7 @@
 
   .v19-official{
     margin-top:12px;
+    margin-bottom:0;
     text-align:center;
     color:#afb3e0;
     font:500 14px/1.2 Inter,Roboto,Arial,sans-serif;
@@ -252,7 +254,8 @@
 
   @media(max-width:560px){
     .v19-more-page{
-      min-height:1320px;
+      min-height:0;
+      height:auto;
       padding-left:22px;
       padding-right:22px;
       background-position:center -138px;
@@ -275,8 +278,9 @@
 
   @media(max-width:390px){
     .v19-more-page{
-      min-height:1275px;
-      padding:18px 17px 22px;
+      min-height:0;
+      height:auto;
+      padding:18px 17px 10px;
       background-position:center -118px;
     }
     .v19-more-logo{
