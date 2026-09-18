@@ -1,5 +1,4 @@
-/* PARTS18 — Fantasy ajustado contra la referencia cargada por el usuario.
-   Se conserva la estructura de la app; solo se corrige esta pantalla. */
+/* PARTS19 — Fantasy corregido: título visible, tarjetas/cancha HD sin bloque rectangular. */
 
 body[data-app-route="fantasy"]{
   background:#03065b!important;
@@ -30,7 +29,7 @@ body[data-app-route="fantasy"] #screen>.section.v4-injected{
   visibility:hidden!important;
 }
 
-body[data-app-route="fantasy"] .v18-fantasy-master{
+body[data-app-route="fantasy"] .v19-fantasy-master{
   position:absolute!important;
   inset:0!important;
   overflow:hidden!important;
@@ -39,7 +38,7 @@ body[data-app-route="fantasy"] .v18-fantasy-master{
   isolation:isolate!important;
 }
 
-body[data-app-route="fantasy"] .v18-fantasy-bg{
+body[data-app-route="fantasy"] .v19-fantasy-bg{
   position:absolute!important;
   z-index:0!important;
   inset:0!important;
@@ -51,45 +50,25 @@ body[data-app-route="fantasy"] .v18-fantasy-bg{
   user-select:none!important;
 }
 
-body[data-app-route="fantasy"] .v18-card-cover{
+/* Elimina visualmente el bloque pixelado previo sin crear un cuadro duro. */
+body[data-app-route="fantasy"] .v19-lower-clean{
   position:absolute!important;
   z-index:1!important;
-  left:-3%!important;
-  right:-3%!important;
-  top:51.2%!important;
-  height:27.2%!important;
-  background:radial-gradient(70% 58% at 50% 35%,rgba(12,24,128,.96),rgba(4,10,92,.98) 58%,rgba(2,6,72,.99) 100%)!important;
-  filter:blur(8px)!important;
+  left:-10%!important;
+  right:-10%!important;
+  top:49.5%!important;
+  height:31%!important;
+  background:
+    radial-gradient(ellipse at 50% 38%,rgba(12,25,126,.98) 0%,rgba(5,13,96,.96) 48%,rgba(3,8,79,.82) 68%,rgba(3,7,73,0) 88%)!important;
+  filter:blur(10px)!important;
   pointer-events:none!important;
 }
 
-body[data-app-route="fantasy"] .v18-card-window{
-  position:absolute!important;
-  z-index:2!important;
-  left:7%!important;
-  right:7%!important;
-  top:52.2%!important;
-  height:25.5%!important;
-  overflow:hidden!important;
-  pointer-events:none!important;
-}
-
-body[data-app-route="fantasy"] .v18-card-stretch{
-  position:absolute!important;
-  width:116.28%!important;
-  height:112vh!important;
-  left:-8.14%!important;
-  top:-61.6vh!important;
-  display:block!important;
-  object-fit:fill!important;
-  pointer-events:none!important;
-  user-select:none!important;
-}
-
-body[data-app-route="fantasy"] .v18-title-art{
+/* Imagen 2: arte FANTASY + líneas neón. */
+body[data-app-route="fantasy"] .v19-title-art{
   position:absolute!important;
   z-index:4!important;
-  top:4.8%!important;
+  top:4.1%!important;
   left:50%!important;
   width:90%!important;
   height:auto!important;
@@ -101,10 +80,28 @@ body[data-app-route="fantasy"] .v18-title-art{
   user-select:none!important;
 }
 
-body[data-app-route="fantasy"] .v18-league{
+/* Respaldo visible si el navegador tarda en cargar el arte; queda debajo de la imagen 2. */
+body[data-app-route="fantasy"] .v19-title-fallback{
+  position:absolute!important;
+  z-index:3!important;
+  top:16.1%!important;
+  left:50%!important;
+  transform:translateX(-50%) skewX(-7deg) scaleX(.76)!important;
+  transform-origin:center!important;
+  color:#fff!important;
+  font-family:Impact,"Arial Narrow",Haettenschweiler,sans-serif!important;
+  font-size:clamp(69px,19vw,112px)!important;
+  line-height:.84!important;
+  font-weight:900!important;
+  letter-spacing:-.045em!important;
+  white-space:nowrap!important;
+  pointer-events:none!important;
+}
+
+body[data-app-route="fantasy"] .v19-league{
   position:absolute!important;
   z-index:5!important;
-  top:26.0%!important;
+  top:26.2%!important;
   left:0!important;
   right:0!important;
   display:flex!important;
@@ -115,18 +112,17 @@ body[data-app-route="fantasy"] .v18-league{
   color:#fff!important;
   pointer-events:none!important;
 }
-
-body[data-app-route="fantasy"] .v18-league strong{
+body[data-app-route="fantasy"] .v19-league strong{
   font-size:clamp(13px,3.7vw,19px)!important;
   line-height:1.08!important;
   font-weight:850!important;
   letter-spacing:.01em!important;
 }
-body[data-app-route="fantasy"] .v18-league strong:nth-child(2){
+body[data-app-route="fantasy"] .v19-league strong:nth-child(2){
   font-size:clamp(18px,5vw,26px)!important;
   letter-spacing:.035em!important;
 }
-body[data-app-route="fantasy"] .v18-league span{
+body[data-app-route="fantasy"] .v19-league span{
   margin-top:7px!important;
   padding-left:.43em!important;
   font-size:clamp(10px,2.6vw,14px)!important;
@@ -135,10 +131,10 @@ body[data-app-route="fantasy"] .v18-league span{
   letter-spacing:.43em!important;
 }
 
-body[data-app-route="fantasy"] .v18-sponsor{
+body[data-app-route="fantasy"] .v19-sponsor{
   position:absolute!important;
   z-index:5!important;
-  top:36.7%!important;
+  top:36.8%!important;
   left:0!important;
   right:0!important;
   display:flex!important;
@@ -147,16 +143,15 @@ body[data-app-route="fantasy"] .v18-sponsor{
   text-align:center!important;
   pointer-events:none!important;
 }
-body[data-app-route="fantasy"] .v18-sponsor>span{
-  margin-bottom:12px!important;
+body[data-app-route="fantasy"] .v19-sponsor>span{
+  margin-bottom:11px!important;
   color:#e9e9f4!important;
   font-size:clamp(13px,3.6vw,18px)!important;
   line-height:1!important;
   font-weight:400!important;
 }
-
-body[data-app-route="fantasy"] .v18-sponsor img{
-  width:clamp(90px,24vw,120px)!important;
+body[data-app-route="fantasy"] .v19-sponsor img{
+  width:clamp(91px,24vw,122px)!important;
   height:auto!important;
   display:block!important;
   object-fit:contain!important;
@@ -166,13 +161,27 @@ body[data-app-route="fantasy"] .v18-sponsor img{
   mask-image:radial-gradient(ellipse at center,#000 54%,rgba(0,0,0,.94) 66%,rgba(0,0,0,.55) 80%,transparent 100%)!important;
 }
 
-body[data-app-route="fantasy"] .v18-card-hotspot{
+/* Tarjetas, playeras y cancha vectoriales: HD a cualquier resolución. */
+body[data-app-route="fantasy"] .v19-fantasy-art{
+  position:absolute!important;
+  z-index:3!important;
+  left:50%!important;
+  top:50.6%!important;
+  width:91%!important;
+  height:auto!important;
+  transform:translateX(-50%)!important;
+  overflow:visible!important;
+  pointer-events:none!important;
+  shape-rendering:geometricPrecision!important;
+}
+
+body[data-app-route="fantasy"] .v19-card-hotspot{
   position:absolute!important;
   z-index:6!important;
-  left:15%!important;
-  right:15%!important;
-  top:51.5%!important;
-  height:27%!important;
+  left:12%!important;
+  right:12%!important;
+  top:50.5%!important;
+  height:29%!important;
   border:0!important;
   padding:0!important;
   background:transparent!important;
@@ -182,9 +191,9 @@ body[data-app-route="fantasy"] .v18-card-hotspot{
 body[data-app-route="fantasy"] .bottom-nav{z-index:50!important}
 
 @media(max-width:380px){
-  body[data-app-route="fantasy"] .v18-title-art{top:4.6%!important;width:91%!important}
-  body[data-app-route="fantasy"] .v18-league{top:25.9%!important}
-  body[data-app-route="fantasy"] .v18-sponsor{top:36.5%!important}
-  body[data-app-route="fantasy"] .v18-card-window{left:6%!important;right:6%!important;top:52.0%!important;height:25.8%!important}
-  body[data-app-route="fantasy"] .v18-card-stretch{width:113.64%!important;left:-6.82%!important;height:113vh!important;top:-62.1vh!important}
+  body[data-app-route="fantasy"] .v19-title-art{top:3.9%!important;width:91%!important}
+  body[data-app-route="fantasy"] .v19-title-fallback{top:15.9%!important;font-size:clamp(66px,19vw,90px)!important}
+  body[data-app-route="fantasy"] .v19-league{top:26.1%!important}
+  body[data-app-route="fantasy"] .v19-sponsor{top:36.6%!important}
+  body[data-app-route="fantasy"] .v19-fantasy-art{top:50.4%!important;width:94%!important}
 }
