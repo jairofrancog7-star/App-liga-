@@ -324,3 +324,83 @@ body[data-app-route="fantasy"] .bottom-nav .nav-item small{
   body[data-app-route="fantasy"] .v14-fantasy-game{width:86vw!important}
   body[data-app-route="fantasy"] .v14-player-card{border-radius:13px!important}
 }
+
+
+/* PARTS14 — corrección de fidelidad contra la captura maestra */
+body[data-app-route="fantasy"] #v4FantasyEntry,
+body[data-app-route="fantasy"] .v4-injected#v4FantasyEntry{
+  display:none!important;
+  visibility:hidden!important;
+  height:0!important;
+  min-height:0!important;
+  margin:0!important;
+  padding:0!important;
+  overflow:hidden!important;
+}
+
+/* La captura maestra usa un wordmark más condensado, no más alto. */
+body[data-app-route="fantasy"] .v14-fantasy-heading h1{
+  transform:skewX(-7deg) scaleX(.76)!important;
+}
+
+/* Escudo sin el cuadro negro del archivo fuente. */
+body[data-app-route="fantasy"] .v14-sponsored img{
+  width:clamp(108px,22vw,154px)!important;
+  height:clamp(108px,22vw,154px)!important;
+  mix-blend-mode:screen!important;
+  filter:contrast(1.08) brightness(1.16) drop-shadow(0 0 10px rgba(30,96,255,.24))!important;
+}
+
+/* Grupo de tarjetas: mismo ancho y proporción que la referencia. */
+body[data-app-route="fantasy"] .v14-fantasy-game{
+  width:min(72vw,498px)!important;
+  height:27%!important;
+  top:55.8%!important;
+}
+
+body[data-app-route="fantasy"] .v14-player-card{
+  width:29.5%!important;
+  height:55%!important;
+  border-radius:15px!important;
+}
+
+body[data-app-route="fantasy"] .v14-player-card.left{
+  left:7%!important;
+  transform:rotate(-4deg) translateY(7%)!important;
+}
+body[data-app-route="fantasy"] .v14-player-card.center{
+  left:35.25%!important;
+  width:30%!important;
+  height:62%!important;
+  top:-1%!important;
+}
+body[data-app-route="fantasy"] .v14-player-card.right{
+  right:7%!important;
+  transform:rotate(4deg) translateY(7%)!important;
+}
+
+body[data-app-route="fantasy"] .v14-player-card svg{
+  width:68%!important;
+  height:68%!important;
+}
+
+body[data-app-route="fantasy"] .v14-pitch{
+  left:0!important;
+  right:0!important;
+  height:58%!important;
+  bottom:-3%!important;
+}
+
+/* Estadio más ancho, iluminado y con la silueta baja de la referencia. */
+body[data-app-route="fantasy"] .v14-stadium{
+  height:19.5%!important;
+  bottom:-1%!important;
+}
+body[data-app-route="fantasy"] .v14-stadium-svg{
+  filter:brightness(1.22) saturate(1.18) drop-shadow(0 -8px 18px rgba(0,98,255,.20))!important;
+}
+
+/* Evita cualquier residuo textual generado por módulos anteriores. */
+body[data-app-route="fantasy"] #screen>.section.v4-injected{
+  display:none!important;
+}
