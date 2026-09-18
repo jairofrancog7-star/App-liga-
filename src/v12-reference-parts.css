@@ -1745,3 +1745,43 @@ body[data-app-route="competition"] .v12-final-match-card{
     width:36%!important;
   }
 }
+
+/* === PARTS31 — VIDEO FIX: CUADROS + TROFEO === */
+body[data-app-route="competition"] .v12-bracket-stage-tabs{
+  display:flex!important;gap:12px!important;overflow-x:auto!important;scrollbar-width:none!important;
+  padding:0 12px 10px!important;margin:0 -4px 8px!important;
+}
+body[data-app-route="competition"] .v12-bracket-stage-tabs::-webkit-scrollbar{display:none!important}
+body[data-app-route="competition"] .v12-bracket-stage-tabs > button[data-v12-bracket-stage]{
+  flex:0 0 132px!important;width:132px!important;min-width:132px!important;max-width:132px!important;
+  height:45px!important;min-height:45px!important;max-height:45px!important;
+  padding:0 8px!important;box-sizing:border-box!important;display:flex!important;align-items:center!important;
+  justify-content:center!important;border-radius:13px!important;white-space:nowrap!important;
+  font:800 12.5px/1 Inter,Roboto,Arial,sans-serif!important;
+}
+body[data-app-route="competition"] .v12-bracket-stage-tabs > button[data-v12-bracket-stage].active{
+  background:#18dce7!important;color:#06115b!important;
+}
+body[data-app-route="competition"] .v12-final-trophy-wrap{
+  position:absolute!important;right:18.5%!important;bottom:56px!important;width:30.5%!important;height:auto!important;
+  aspect-ratio:2/3!important;overflow:visible!important;display:block!important;pointer-events:none!important;z-index:5!important;
+}
+body[data-app-route="competition"] .v12-final-trophy-new{
+  position:absolute!important;inset:0!important;width:100%!important;height:100%!important;display:block!important;
+  overflow:visible!important;font-size:0!important;color:transparent!important;
+}
+body[data-app-route="competition"] .v12-final-trophy-new img{
+  position:absolute!important;inset:0!important;width:100%!important;height:100%!important;max-width:none!important;
+  display:block!important;object-fit:contain!important;object-position:center bottom!important;mix-blend-mode:screen!important;
+  opacity:1!important;visibility:visible!important;
+  filter:saturate(1.05) contrast(1.04) drop-shadow(-3px 0 7px rgba(0,230,255,.22)) drop-shadow(4px 0 8px rgba(255,30,190,.22))!important;
+}
+body[data-app-route="competition"] .v12-bracket-reference.stage-final .v12-final-match-card{
+  display:block!important;visibility:visible!important;width:44.5%!important;left:4.5%!important;bottom:94px!important;
+}
+@media(min-width:420px){
+  body[data-app-route="competition"] .v12-bracket-stage-tabs > button[data-v12-bracket-stage]{
+    flex-basis:144px!important;width:144px!important;min-width:144px!important;max-width:144px!important;
+    height:48px!important;min-height:48px!important;max-height:48px!important;font-size:14px!important;
+  }
+}
