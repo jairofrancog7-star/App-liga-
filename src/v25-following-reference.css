@@ -1,384 +1,201 @@
-/* PARTS26 — Siguiendo reconstruido sin capturas estiradas.
-   Coincide con las tres referencias: vacío, seguido+hoja y selector. */
+/* PARTS27 — las capturas originales de Drive son el diseño maestro.
+   Se muestran sin estirarlas ni redibujarlas. Solo hay hotspots transparentes. */
+
 body[data-app-route="following"]{
-  --v26-nav:78px;
-  background:#06065f!important;
+  background:#03045b!important;
   overflow:hidden!important;
 }
 body[data-app-route="following"] #app{
-  padding-bottom:var(--v26-nav)!important;
-  background:#06065f!important;
+  padding-bottom:0!important;
+  background:#03045b!important;
 }
-body[data-app-route="following"] #app>.topbar{display:none!important}
+body[data-app-route="following"] #app>.topbar,
+body[data-app-route="following"] #app>.bottom-nav{
+  display:none!important;
+}
 body[data-app-route="following"] #screen{
   position:relative!important;
   width:100%!important;
-  height:calc(100dvh - var(--v26-nav))!important;
-  min-height:calc(100dvh - var(--v26-nav))!important;
-  max-height:calc(100dvh - var(--v26-nav))!important;
+  height:100dvh!important;
+  min-height:100dvh!important;
+  max-height:100dvh!important;
   margin:0!important;
   padding:0!important;
-  overflow:hidden!important;
-  background:#06065f!important;
+  overflow-y:auto!important;
+  overflow-x:hidden!important;
+  background:#03045b!important;
   animation:none!important;
-}
-body[data-app-route="following"] .bottom-nav{
-  display:grid!important;
-  z-index:80!important;
-  height:var(--v26-nav)!important;
-  min-height:var(--v26-nav)!important;
-  background:#11116f!important;
-}
-body[data-app-route="following"] .bottom-nav .nav-item[data-route="more"]{color:#11e8ef!important}
-
-body[data-app-route="following"] .v26-follow-page{
-  position:absolute!important;
-  inset:0!important;
-  overflow:hidden!important;
-  background:
-    radial-gradient(120% 42% at 50% -8%,rgba(0,78,255,.82),rgba(14,18,145,.38) 45%,transparent 71%),
-    linear-gradient(180deg,#061dba 0%,#070866 25%,#07045d 100%)!important;
-  color:#fff!important;
-  font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif!important;
-}
-
-body[data-app-route="following"] .v26-neon-top{
-  position:absolute!important;
-  z-index:0!important;
-  top:-18px!important;
-  left:0!important;
-  right:0!important;
-  height:150px!important;
-  overflow:hidden!important;
-  opacity:.9!important;
-}
-body[data-app-route="following"] .v26-neon-top i{
-  position:absolute!important;
-  height:2px!important;
-  border-radius:20px!important;
-  background:linear-gradient(90deg,#12e8ff,#ffd45a,#ff5a8d,#1f66ff)!important;
-  box-shadow:0 0 5px rgba(20,219,255,.35)!important;
-}
-body[data-app-route="following"] .v26-neon-top i:nth-child(1){width:58%;left:-4%;top:16px;transform:rotate(17deg)}
-body[data-app-route="following"] .v26-neon-top i:nth-child(2){width:68%;right:-9%;top:29px;transform:rotate(-12deg)}
-body[data-app-route="following"] .v26-neon-top i:nth-child(3){width:42%;left:27%;top:62px;transform:rotate(9deg)}
-
-body[data-app-route="following"] .v26-follow-head{
-  position:relative!important;
-  z-index:4!important;
-  height:112px!important;
-  display:grid!important;
-  grid-template-columns:72px 1fr 72px!important;
-  align-items:end!important;
-  gap:4px!important;
-  padding:0 17px 18px!important;
-  box-sizing:border-box!important;
-}
-body[data-app-route="following"] .v26-follow-head h1{
-  margin:0!important;
-  font-size:32px!important;
-  line-height:1!important;
-  font-weight:500!important;
-  letter-spacing:-.02em!important;
-}
-body[data-app-route="following"] .v26-head-btn{
-  width:56px!important;
-  height:56px!important;
-  display:grid!important;
-  place-items:center!important;
-  border:0!important;
-  padding:0!important;
-  background:transparent!important;
-  color:#fff!important;
-  cursor:pointer!important;
-  -webkit-tap-highlight-color:transparent!important;
-}
-body[data-app-route="following"] .v26-head-btn svg{
-  width:42px!important;height:42px!important;fill:none!important;stroke:currentColor!important;stroke-width:3.6!important;stroke-linecap:round!important;stroke-linejoin:round!important;
-}
-body[data-app-route="following"] .v26-head-btn.plus{justify-self:end!important}
-body[data-app-route="following"] .v26-head-spacer{width:56px!important;height:56px!important}
-
-body[data-app-route="following"] .v26-empty-main{
-  position:relative!important;
-  z-index:2!important;
-  height:calc(100% - 112px)!important;
-  display:flex!important;
-  flex-direction:column!important;
-  align-items:center!important;
-  text-align:center!important;
-  padding:88px 22px 30px!important;
-  box-sizing:border-box!important;
-}
-body[data-app-route="following"] .v26-league-logo{
-  width:min(45vw,220px)!important;
-  height:auto!important;
-  display:block!important;
-  object-fit:contain!important;
-  margin:0 0 48px!important;
-}
-body[data-app-route="following"] .v26-empty-main h2{
-  margin:0!important;
-  font-size:clamp(26px,6.0vw,34px)!important;
-  line-height:1.1!important;
-  font-weight:500!important;
-  letter-spacing:-.02em!important;
-}
-body[data-app-route="following"] .v26-empty-main p{
-  margin:24px 0 32px!important;
-  color:rgba(232,233,255,.77)!important;
-  font-size:clamp(17px,4.15vw,23px)!important;
-  line-height:1.45!important;
-  font-weight:400!important;
-}
-body[data-app-route="following"] .v26-add-btn{
-  width:min(70%,440px)!important;
-  min-height:74px!important;
-  display:flex!important;
-  align-items:center!important;
-  justify-content:center!important;
-  gap:22px!important;
-  border:3px solid #0ae9f1!important;
-  border-radius:25px!important;
-  background:transparent!important;
-  color:#0ae9f1!important;
-  font-size:clamp(22px,5.1vw,31px)!important;
-  font-weight:600!important;
-  cursor:pointer!important;
-  -webkit-tap-highlight-color:transparent!important;
-}
-body[data-app-route="following"] .v26-add-btn span{font-size:39px!important;font-weight:300!important;line-height:1!important}
-
-/* followed */
-body[data-app-route="following"] .v26-follow-list{
-  position:relative!important;
-  z-index:3!important;
-  padding:40px 30px 310px!important;
-  overflow:auto!important;
-  height:calc(100% - 112px)!important;
-  box-sizing:border-box!important;
   scrollbar-width:none!important;
 }
-body[data-app-route="following"] .v26-follow-list::-webkit-scrollbar{display:none!important}
-body[data-app-route="following"] .v26-follow-row{
-  width:100%!important;
-  min-height:92px!important;
-  display:grid!important;
-  grid-template-columns:78px minmax(0,1fr) auto!important;
-  align-items:center!important;
-  gap:18px!important;
-  border:0!important;
-  padding:8px 0!important;
-  background:transparent!important;
-  color:#fff!important;
-  text-align:left!important;
-  cursor:pointer!important;
-}
-body[data-app-route="following"] .v26-follow-row strong{
-  min-width:0!important;
-  font-size:clamp(22px,5.0vw,31px)!important;
-  line-height:1.1!important;
-  font-weight:500!important;
-  white-space:nowrap!important;
-  overflow:hidden!important;
-  text-overflow:ellipsis!important;
-}
-body[data-app-route="following"] .v26-follow-row>span:last-child{
-  min-width:142px!important;
-  min-height:58px!important;
-  display:grid!important;
-  place-items:center!important;
-  border-radius:22px!important;
-  background:rgba(37,40,112,.86)!important;
-  font-size:clamp(17px,4.0vw,24px)!important;
-  font-weight:550!important;
-}
-body[data-app-route="following"] .v26-team-logo,
-body[data-app-route="following"] .v26-team-fallback{
-  width:64px!important;
-  height:64px!important;
-  object-fit:contain!important;
-  display:block!important;
-}
-body[data-app-route="following"] .v26-team-fallback{
-  display:grid!important;
-  place-items:center!important;
-  border:2px solid #0de1ed!important;
-  border-radius:50%!important;
-  background:#0c39bf!important;
-  color:#fff!important;
-  font-size:13px!important;
-  font-weight:800!important;
-}
-body[data-app-route="following"] .v26-team-logo.large,
-body[data-app-route="following"] .v26-team-fallback.large{width:70px!important;height:70px!important}
+body[data-app-route="following"] #screen::-webkit-scrollbar{display:none!important}
 
-body[data-app-route="following"] .v26-sheet{
+body[data-app-route="following"] .v27-following{
+  position:relative!important;
+  width:100%!important;
+  min-height:100%!important;
+  background:#03045b!important;
+  overflow:visible!important;
+}
+body[data-app-route="following"] .v27-shot{
+  position:relative!important;
+  width:100%!important;
+  margin:0 auto!important;
+  overflow:hidden!important;
+  background:#03045b!important;
+}
+body[data-app-route="following"] .v27-shot>img{
   position:absolute!important;
-  z-index:12!important;
+  z-index:0!important;
+  display:block!important;
+  max-width:none!important;
+  pointer-events:none!important;
+  user-select:none!important;
+  -webkit-user-drag:none!important;
+}
+
+/* Imagen 1: recorte exacto del status bar; resto intacto. */
+body[data-app-route="following"] .v27-empty-shot{
+  aspect-ratio:841 / 1784!important;
+}
+body[data-app-route="following"] .v27-empty-shot>img{
+  left:0!important;
+  top:-4.8206%!important;
+  width:100%!important;
+  height:104.8206%!important;
+}
+
+/* Imagen 2: recorte exacto del status bar; sin cambiar proporciones. */
+body[data-app-route="following"] .v27-sheet-shot{
+  aspect-ratio:941 / 1584!important;
+}
+body[data-app-route="following"] .v27-sheet-shot>img{
+  left:0!important;
+  top:-5.5556%!important;
+  width:100%!important;
+  height:105.5556%!important;
+}
+
+/* Imagen 3: se eliminan únicamente los márgenes blancos laterales y status bar.
+   La lista mantiene su altura original, por eso esta vista hace scroll real. */
+body[data-app-route="following"] .v27-picker-shot{
+  aspect-ratio:585 / 1702!important;
+}
+body[data-app-route="following"] .v27-picker-shot>img{
+  left:-25.8120%!important;
+  top:-4.2303%!important;
+  width:151.6239%!important;
+  height:104.2303%!important;
+}
+
+/* Todas las zonas funcionales son invisibles para no alterar ni un pixel del diseño. */
+body[data-app-route="following"] .v27-hit,
+body[data-app-route="following"] .v27-nav-hits>button{
+  position:absolute!important;
+  z-index:6!important;
+  border:0!important;
+  outline:0!important;
+  padding:0!important;
+  margin:0!important;
+  background:transparent!important;
+  color:transparent!important;
+  box-shadow:none!important;
+  cursor:pointer!important;
+  -webkit-tap-highlight-color:transparent!important;
+  touch-action:manipulation!important;
+}
+
+/* Imagen 1 */
+body[data-app-route="following"] .v27-empty-back{
+  left:4.0%!important;
+  top:1.8%!important;
+  width:10.5%!important;
+  height:5.2%!important;
+}
+body[data-app-route="following"] .v27-empty-plus{
+  right:3.3%!important;
+  top:1.7%!important;
+  width:10.5%!important;
+  height:5.3%!important;
+}
+body[data-app-route="following"] .v27-empty-add{
+  left:22.7%!important;
+  top:59.3%!important;
+  width:54.2%!important;
+  height:7.7%!important;
+}
+
+/* Imagen 2 */
+body[data-app-route="following"] .v27-sheet-back{
+  left:3.8%!important;
+  top:1.8%!important;
+  width:10.0%!important;
+  height:6.2%!important;
+}
+body[data-app-route="following"] .v27-sheet-plus{
+  right:3.5%!important;
+  top:1.8%!important;
+  width:10.0%!important;
+  height:6.2%!important;
+}
+body[data-app-route="following"] .v27-sheet-followed{
+  right:4.7%!important;
+  top:13.2%!important;
+  width:28.7%!important;
+  height:7.3%!important;
+}
+body[data-app-route="following"] .v27-sheet-favorite{
+  left:4.5%!important;
+  right:4.5%!important;
+  top:80.2%!important;
+  height:8.4%!important;
+}
+body[data-app-route="following"] .v27-sheet-unfollow{
+  left:4.5%!important;
+  right:4.5%!important;
+  top:89.0%!important;
+  height:8.2%!important;
+}
+
+/* Imagen 3 */
+body[data-app-route="following"] .v27-picker-close{
+  right:2.2%!important;
+  top:0!important;
+  width:11.5%!important;
+  height:4.2%!important;
+}
+body[data-app-route="following"] .v27-picker-search{
+  left:5.2%!important;
+  top:1.3%!important;
+  width:89.3%!important;
+  height:3.5%!important;
+}
+body[data-app-route="following"] .v27-follow-hit{
+  position:absolute!important;
+  z-index:7!important;
+}
+
+/* Navegación que ya forma parte de las capturas. */
+body[data-app-route="following"] .v27-nav-hits{
+  position:absolute!important;
+  z-index:8!important;
   left:0!important;
   right:0!important;
   bottom:0!important;
-  min-height:292px!important;
-  padding:35px 34px 25px!important;
-  box-sizing:border-box!important;
-  border-radius:44px 44px 0 0!important;
-  background:linear-gradient(120deg,#161e9e 0%,#141270 100%)!important;
-  box-shadow:0 -12px 48px rgba(4,5,77,.24)!important;
+  height:8%!important;
+  display:grid!important;
+  grid-template-columns:repeat(5,1fr)!important;
 }
-body[data-app-route="following"] .v26-sheet-team{
-  min-height:78px!important;
-  display:flex!important;
-  align-items:center!important;
-  gap:24px!important;
-}
-body[data-app-route="following"] .v26-sheet-team strong{
-  font-size:clamp(23px,5.3vw,32px)!important;
-  font-weight:500!important;
-}
-body[data-app-route="following"] .v26-sheet-line{height:1px!important;background:rgba(255,255,255,.15)!important;margin:8px 0 16px!important}
-body[data-app-route="following"] .v26-sheet-action{
+body[data-app-route="following"] .v27-nav-hits>button{
+  position:relative!important;
   width:100%!important;
-  min-height:72px!important;
-  display:grid!important;
-  grid-template-columns:72px 1fr!important;
-  align-items:center!important;
-  border:0!important;
-  padding:0 4px!important;
-  background:transparent!important;
-  color:#fff!important;
-  text-align:left!important;
-  cursor:pointer!important;
-}
-body[data-app-route="following"] .v26-sheet-action svg{
-  width:44px!important;height:44px!important;fill:none!important;stroke:currentColor!important;stroke-width:3.2!important;stroke-linejoin:round!important;justify-self:center!important;
-}
-body[data-app-route="following"] .v26-sheet-action.selected svg{fill:#0ee5ed!important;stroke:#0ee5ed!important}
-body[data-app-route="following"] .v26-sheet-action b{
-  justify-self:center!important;
-  font-size:42px!important;
-  line-height:1!important;
-  font-weight:400!important;
-}
-body[data-app-route="following"] .v26-sheet-action span{
-  font-size:clamp(21px,5.0vw,31px)!important;
-  font-weight:400!important;
-}
-
-/* picker */
-body[data-app-route="following"] .v26-picker{
-  overflow:hidden!important;
-  background:linear-gradient(180deg,#060f8d 0%,#07065d 100%)!important;
-}
-body[data-app-route="following"] .v26-picker-head{
-  height:120px!important;
-  display:grid!important;
-  grid-template-columns:minmax(0,1fr) 60px!important;
-  align-items:end!important;
-  gap:12px!important;
-  padding:0 25px 16px!important;
-  box-sizing:border-box!important;
-}
-body[data-app-route="following"] .v26-search{
-  height:58px!important;
-  display:grid!important;
-  grid-template-columns:48px 1fr!important;
-  align-items:center!important;
-  border-radius:12px!important;
-  background:#1c2ca3!important;
-  overflow:hidden!important;
-}
-body[data-app-route="following"] .v26-search svg{
-  width:31px!important;height:31px!important;margin-left:13px!important;fill:none!important;stroke:#9ca6e3!important;stroke-width:3.2!important;stroke-linecap:round!important;
-}
-body[data-app-route="following"] .v26-search input{
-  min-width:0!important;
   height:100%!important;
-  border:0!important;
-  outline:0!important;
-  padding:0 14px 0 4px!important;
-  background:transparent!important;
-  color:#fff!important;
-  font-size:clamp(18px,4vw,23px)!important;
-}
-body[data-app-route="following"] .v26-search input::placeholder{color:#9ca6e3!important}
-body[data-app-route="following"] .v26-close{
-  width:50px!important;height:50px!important;border:0!important;border-radius:50%!important;background:#22267e!important;color:#9ca6e3!important;font-size:38px!important;line-height:1!important;cursor:pointer!important;
-}
-body[data-app-route="following"] .v26-picker>h2{
-  margin:0!important;
-  padding:0 32px 10px!important;
-  color:#fff!important;
-  font-size:clamp(22px,5.0vw,30px)!important;
-  font-weight:500!important;
-}
-body[data-app-route="following"] .v26-team-list{
-  height:calc(100% - 164px)!important;
-  overflow:auto!important;
-  padding:0 28px 30px!important;
-  box-sizing:border-box!important;
-  scrollbar-width:none!important;
-}
-body[data-app-route="following"] .v26-team-list::-webkit-scrollbar{display:none!important}
-body[data-app-route="following"] .v26-pick-row{
-  min-height:62px!important;
-  display:grid!important;
-  grid-template-columns:58px minmax(0,1fr) 116px!important;
-  align-items:center!important;
-  gap:14px!important;
-  border-bottom:1px solid rgba(255,255,255,.13)!important;
-}
-body[data-app-route="following"] .v26-pick-row .v26-team-logo,
-body[data-app-route="following"] .v26-pick-row .v26-team-fallback{width:48px!important;height:48px!important}
-body[data-app-route="following"] .v26-pick-row strong{
-  min-width:0!important;
-  color:#fff!important;
-  font-size:clamp(17px,4.0vw,23px)!important;
-  font-weight:600!important;
-  white-space:nowrap!important;
-  overflow:hidden!important;
-  text-overflow:ellipsis!important;
-}
-body[data-app-route="following"] .v26-pick-row>button{
-  min-height:43px!important;
-  border:0!important;
-  border-radius:12px!important;
-  background:#0adfe9!important;
-  color:#07125f!important;
-  font-size:clamp(15px,3.7vw,20px)!important;
-  font-weight:700!important;
-  cursor:pointer!important;
-}
-body[data-app-route="following"] .v26-pick-row>button.following{
-  background:#25277a!important;
-  color:#fff!important;
 }
 
-@media(max-width:380px){
-  body[data-app-route="following"]{--v26-nav:74px}
-  body[data-app-route="following"] .v26-follow-head{height:102px!important;grid-template-columns:58px 1fr 58px!important;padding:0 11px 15px!important}
-  body[data-app-route="following"] .v26-follow-head h1{font-size:28px!important}
-  body[data-app-route="following"] .v26-empty-main{height:calc(100% - 102px)!important;padding-top:56px!important}
-  body[data-app-route="following"] .v26-league-logo{width:min(43vw,180px)!important;margin-bottom:34px!important}
-  body[data-app-route="following"] .v26-empty-main p{font-size:16px!important;line-height:1.42!important}
-  body[data-app-route="following"] .v26-add-btn{width:76%!important;min-height:64px!important}
-  body[data-app-route="following"] .v26-follow-list{padding:26px 20px 280px!important;height:calc(100% - 102px)!important}
-  body[data-app-route="following"] .v26-follow-row{grid-template-columns:64px minmax(0,1fr) 118px!important;gap:10px!important}
-  body[data-app-route="following"] .v26-follow-row>span:last-child{min-width:112px!important;min-height:49px!important}
-  body[data-app-route="following"] .v26-sheet{min-height:268px!important;padding:26px 24px 18px!important}
-  body[data-app-route="following"] .v26-picker-head{height:104px!important;padding:0 16px 12px!important}
-  body[data-app-route="following"] .v26-search{height:52px!important}
-  body[data-app-route="following"] .v26-picker>h2{padding-left:20px!important}
-  body[data-app-route="following"] .v26-team-list{height:calc(100% - 144px)!important;padding:0 16px 24px!important}
-  body[data-app-route="following"] .v26-pick-row{grid-template-columns:50px minmax(0,1fr) 96px!important;gap:10px!important}
-}
-
+/* Mantiene el mismo ancho de la app también en escritorio/preview. */
 @media(min-width:521px){
-  body[data-app-route="following"] #screen,
-  body[data-app-route="following"] .bottom-nav{
+  body[data-app-route="following"] #screen{
     width:520px!important;
     left:50%!important;
-    right:auto!important;
     transform:translateX(-50%)!important;
   }
 }
