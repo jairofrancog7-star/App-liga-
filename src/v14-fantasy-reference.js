@@ -1,4 +1,4 @@
-const V15_FANTASY_LOGO='https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/assets/liga-logo.webp';
+const V15_FANTASY_LOGO='./fantasy-logo-ref.webp?v=parts16';
 let v15FantasyBgPromise=null;
 
 function v15Route(){return location.hash.replace('#/','')||'home'}
@@ -7,8 +7,8 @@ async function v15FantasyBg(){
   if(v15FantasyBgPromise) return v15FantasyBgPromise;
   v15FantasyBgPromise=(async()=>{
     const [a,b]=await Promise.all([
-      fetch('./fantasy-master-bg.b64.0?v=parts15').then(r=>r.text()),
-      fetch('./fantasy-master-bg.b64.1?v=parts15').then(r=>r.text())
+      fetch('./fantasy-master-bg.b64.0?v=parts16').then(r=>r.text()),
+      fetch('./fantasy-master-bg.b64.1?v=parts16').then(r=>r.text())
     ]);
     const raw=atob((a+b).replace(/\s+/g,''));
     const bytes=new Uint8Array(raw.length);
