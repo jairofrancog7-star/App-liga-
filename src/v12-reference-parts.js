@@ -37,7 +37,30 @@ function patchStandings(){
   if(!screen||!tabs) return;
   const active=tabs.querySelector('.tab.active');
   if(!active||!/Clasificaci/i.test(active.textContent||'')) return;
-  if(screen.querySelector('[data-v12-standings]')) return;
+
+  const existing=screen.querySelector('[data-v12-standings]');
+  if(existing){
+    const contaminated=
+      existing.classList.contains('v13-standings-reference') ||
+      existing.hasAttribute('data-v13-standings') ||
+      !!existing.querySelector('[data-v13-mode],.v13-stand-content,.v13-compact-table,.v13-complete-table,.v13-criteria-wrap');
+
+    if(!contaminated) return;
+
+    /* Hard takeover: restore the V12 table even if an older cached V13 script is still loaded. */
+    existing.classList.remove('v13-standings-reference');
+    existing.removeAttribute('data-v13-standings');
+    existing.dataset.v13Ready='1';
+    existing.innerHTML=
+      '<div class="v12-segmented">'+
+        '<button class="active" data-v12-mode="compact">Compacta</button>'+
+        '<button data-v12-mode="complete">Completa</button>'+
+        '<button data-v12-mode="criteria">Criterios de<br>desempate</button>'+
+      '</div>'+
+      '<div class="v12-stand-content" data-v12-stand-content>'+v12Rows('compact')+'</div>';
+    return;
+  }
+
   let node=tabs.nextSibling;
   while(node){const next=node.nextSibling;node.remove();node=next}
   tabs.insertAdjacentHTML('afterend',v12StandingsBody());
