@@ -1,0 +1,123 @@
+/* PARTS21 — SOLO cabecera superior de MÁS según referencia del usuario. */
+body[data-app-route="more"] .topbar{
+  height:calc(158px + env(safe-area-inset-top))!important;
+  min-height:calc(158px + env(safe-area-inset-top))!important;
+  padding:0!important;
+  display:block!important;
+  position:sticky!important;
+  top:0!important;
+  overflow:hidden!important;
+  isolation:isolate!important;
+  background:
+    radial-gradient(260px 145px at 18% 18%,rgba(26,73,214,.30),transparent 72%),
+    radial-gradient(240px 160px at 86% 10%,rgba(18,74,205,.18),transparent 72%),
+    linear-gradient(180deg,#050a64 0%,#07117f 58%,#0a1eae 100%)!important;
+  border:0!important;
+  border-bottom:0!important;
+  box-shadow:none!important;
+  backdrop-filter:none!important;
+  z-index:30!important;
+}
+
+body[data-app-route="more"] .topbar::before{
+  content:""!important;
+  position:absolute!important;
+  inset:0!important;
+  display:block!important;
+  pointer-events:none!important;
+  opacity:.16!important;
+  background:
+    linear-gradient(136deg,transparent 0 62%,rgba(35,74,190,.25) 63%,transparent 66%)!important;
+}
+
+body[data-app-route="more"] .topbar::after{
+  content:"Más"!important;
+  position:absolute!important;
+  left:34px!important;
+  right:100px!important;
+  bottom:30px!important;
+  top:auto!important;
+  display:block!important;
+  color:#fff!important;
+  font-family:Inter,Roboto,Arial,sans-serif!important;
+  font-size:clamp(52px,15vw,66px)!important;
+  font-weight:900!important;
+  line-height:.92!important;
+  letter-spacing:-.045em!important;
+  white-space:nowrap!important;
+  overflow:visible!important;
+  text-overflow:clip!important;
+  pointer-events:none!important;
+  z-index:3!important;
+}
+
+/* La referencia NO lleva el logo de la Liga a la izquierda. */
+body[data-app-route="more"] .topbar .wordmark{
+  display:none!important;
+  visibility:hidden!important;
+  pointer-events:none!important;
+}
+
+/* Perfil: mismo icono de la referencia, sin círculo genérico adicional. */
+body[data-app-route="more"] .topbar .profile-button{
+  display:block!important;
+  visibility:visible!important;
+  opacity:1!important;
+  position:absolute!important;
+  right:28px!important;
+  left:auto!important;
+  top:auto!important;
+  bottom:29px!important;
+  width:50px!important;
+  height:50px!important;
+  max-width:50px!important;
+  max-height:50px!important;
+  margin:0!important;
+  padding:0!important;
+  border:0!important;
+  border-radius:0!important;
+  background-color:transparent!important;
+  background-image:url('../profile-reference.svg?v=parts21')!important;
+  background-position:center!important;
+  background-repeat:no-repeat!important;
+  background-size:contain!important;
+  box-shadow:none!important;
+  color:transparent!important;
+  z-index:4!important;
+}
+body[data-app-route="more"] .topbar .profile-button svg{
+  display:none!important;
+}
+
+/* Evitar duplicar "LIGA JUVENTINO" y el segundo título Más debajo. */
+body[data-app-route="more"] #screen>.eyebrow:first-child,
+body[data-app-route="more"] #screen>.screen-title{
+  display:none!important;
+}
+
+body[data-app-route="more"] #screen{
+  padding-top:20px!important;
+}
+
+/* Mantener PRINCIPAL en la misma zona visual de la captura. */
+body[data-app-route="more"] #screen>.menu-group:first-of-type{
+  margin-top:0!important;
+}
+
+@media(max-width:380px){
+  body[data-app-route="more"] .topbar{
+    height:calc(148px + env(safe-area-inset-top))!important;
+    min-height:calc(148px + env(safe-area-inset-top))!important;
+  }
+  body[data-app-route="more"] .topbar::after{
+    left:28px!important;
+    bottom:27px!important;
+    font-size:52px!important;
+  }
+  body[data-app-route="more"] .topbar .profile-button{
+    right:24px!important;
+    bottom:27px!important;
+    width:46px!important;
+    height:46px!important;
+  }
+}
