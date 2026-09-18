@@ -194,6 +194,159 @@ function patchFixturesReference(){
   tabs.insertAdjacentHTML('afterend',v12FixturesMarkup());
 }
 
+
+/* === PARTS25 — CUADRO / PLAY-OFF EXACTO DE REFERENCIA === */
+const V12_BRACKET_SHIELD='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.7 20 5.6v5.7c0 5.1-3.3 8.6-8 10-4.7-1.4-8-4.9-8-10V5.6L12 2.7Z" fill="currentColor"/></svg>';
+
+const V12_BRACKET_PATHS={
+  america:'assets/branding/america-veteranos-35-user.png',
+  huerta:'assets/teams/la-huerta-cuenda.webp',
+  promesas:'assets/teams/promesas-fc-pozos.webp',
+  franco:'assets/teams/franco-fc.webp',
+  cuenda:'assets/official-logos/toros-de-cuenda.png',
+  pozos:'assets/teams/pozos-fc.webp',
+  lobos:'assets/teams/lobos-cdg.webp',
+  santa:'assets/teams/atletico-santa-cruz.webp',
+  galeana:'assets/teams/atletico-galeana.webp',
+  sanantonio:'assets/teams/san-antonio-jr.webp',
+  sanjose:'assets/teams/san-jose.webp'
+};
+
+function v12BracketTeam(name,key,abbr,seed,score){
+  return {name,key,abbr,seed,score};
+}
+function v12BracketLogo(t){
+  const path=V12_BRACKET_PATHS[t.key];
+  if(path) return '<img src="'+V12_TEAM_ASSET_BASE+path+'" alt="'+t.name+'" loading="eager" decoding="async">';
+  if(t.key==='juventino'||t.key==='realjuventino') return '<img src="'+V12_LOGO+'" alt="'+t.name+'" loading="eager" decoding="async">';
+  return '<span class="v12-bracket-fallback">'+t.abbr+'</span>';
+}
+function v12BracketTeamCard(t,mini=false){
+  return '<div class="v12-bracket-team '+(mini?'mini':'')+'">'+
+    '<small class="v12-bracket-seed">'+(t.seed??'')+'</small>'+
+    v12BracketLogo(t)+
+    '<strong>'+t.name+'</strong>'+
+    (t.score!==undefined&&t.score!==null?'<b class="v12-bracket-score">'+t.score+'</b>':'')+
+  '</div>';
+}
+function v12BracketPair(a,b){
+  return '<div class="v12-bracket-pair">'+v12BracketTeamCard(a)+
+    '<i class="v12-bracket-vs">o</i>'+v12BracketTeamCard(b)+'</div>';
+}
+function v12BracketSeedPair(a,b){
+  return '<div class="v12-bracket-seeded">'+v12BracketTeamCard(a,true)+
+    '<i class="v12-bracket-vs">o</i>'+v12BracketTeamCard(b,true)+'</div>';
+}
+function v12BracketWinnerBlock(a,b){
+  return '<div class="v12-bracket-winner-block">'+
+    '<div class="v12-bracket-winner"><span class="shield">'+V12_BRACKET_SHIELD+'</span><strong>Ganador del play-off</strong></div>'+
+    v12BracketSeedPair(a,b)+
+  '</div>';
+}
+
+const V12_BRACKET_ROUTE_LEFT={
+  label:'RAMA IZQUIERDA',
+  pairs:[
+    [
+      v12BracketTeam('América Veteranos','america','AME','1','8'),
+      v12BracketTeam('La Huerta','huerta','HUE','8','')
+    ],
+    [
+      v12BracketTeam('Promesas FC','promesas','PRO','4','5'),
+      v12BracketTeam('Franco FC','franco','FRA','5','')
+    ],
+    [
+      v12BracketTeam('Cuenda','cuenda','CUE','3','6'),
+      v12BracketTeam('Pozos','pozos','POZ','6','')
+    ],
+    [
+      v12BracketTeam('Rincón de Centeno','rincon','RCN','7','0'),
+      v12BracketTeam('Deportivo Rosas','depRosas','ROS','2','')
+    ]
+  ],
+  winners:[
+    [
+      v12BracketTeam('Juventino','juventino','JUV','',''),
+      v12BracketTeam('Lobos CDG','lobos','LOB','','')
+    ],
+    [
+      v12BracketTeam('Santa Cruz','santa','STC','',''),
+      v12BracketTeam('Atlético Galeana','galeana','GAL','','')
+    ]
+  ]
+};
+
+const V12_BRACKET_ROUTE_RIGHT={
+  label:'RAMA DERECHA',
+  pairs:[
+    [
+      v12BracketTeam('San Isidro','sanisidro','SIS','2','6'),
+      v12BracketTeam('El Naranjeño','naranjeno','NAR','16','')
+    ],
+    [
+      v12BracketTeam('Real Juventino','realjuventino','RJU','12','5'),
+      v12BracketTeam('Valle Verde','valleverde','VAL','13','')
+    ],
+    [
+      v12BracketTeam('La Labor','labor','LAB','11','6'),
+      v12BracketTeam('San Antonio','sanantonio','SAN','14','')
+    ],
+    [
+      v12BracketTeam('El Durazno','durazno','DUR','10','5'),
+      v12BracketTeam('Los Arcos','arcos','ARC','15','')
+    ]
+  ],
+  winners:[
+    [
+      v12BracketTeam('Las Palomas','palomas','PAL','',''),
+      v12BracketTeam('Deportivo Juventino','depjuv','DJU','','')
+    ],
+    [
+      v12BracketTeam('San José','sanjose','SJO','',''),
+      v12BracketTeam('La Estancia','estancia','EST','','')
+    ]
+  ]
+};
+
+function v12BracketRoute(route){
+  return '<section class="v12-bracket-route">'+
+    '<div class="v12-bracket-side-label"><span>'+route.label+'</span></div>'+
+    '<div class="v12-bracket-pairs">'+route.pairs.map(p=>v12BracketPair(p[0],p[1])).join('')+'</div>'+
+    '<div class="v12-bracket-connectors" aria-hidden="true">'+
+      '<span class="c c1"></span><span class="c c2"></span><span class="c c3"></span><span class="c c4"></span>'+
+    '</div>'+
+    '<div class="v12-bracket-winners">'+route.winners.map(w=>v12BracketWinnerBlock(w[0],w[1])).join('')+'</div>'+
+  '</section>';
+}
+
+function v12BracketMarkup(){
+  return '<section class="v12-bracket-reference stage-playoff" data-v12-bracket>'+
+    '<div class="v12-bracket-stage-tabs" role="tablist" aria-label="Etapas del cuadro">'+
+      '<button class="active" data-v12-bracket-stage="playoff">Play-off</button>'+
+      '<button data-v12-bracket-stage="octavos">Octavos de final</button>'+
+      '<button data-v12-bracket-stage="cuartos">Cuartos de final</button>'+
+    '</div>'+
+    '<div class="v12-bracket-dates"><span>16-19 &amp; 23-26 feb</span><span>9-12 &amp; 17-18 mar</span></div>'+
+    '<div class="v12-bracket-board">'+
+      v12BracketRoute(V12_BRACKET_ROUTE_LEFT)+
+      v12BracketRoute(V12_BRACKET_ROUTE_RIGHT)+
+    '</div>'+
+  '</section>';
+}
+
+function patchBracketReference(){
+  if(v12Route()!=='competition') return;
+  const screen=document.querySelector('#screen');
+  const tabs=screen?.querySelector('.tabs');
+  if(!screen||!tabs) return;
+  const active=tabs.querySelector('.tab.active');
+  if(!active||!/Cuadro/i.test(active.textContent||'')) return;
+  if(screen.querySelector('[data-v12-bracket]')) return;
+  let node=tabs.nextSibling;
+  while(node){const next=node.nextSibling;node.remove();node=next}
+  tabs.insertAdjacentHTML('afterend',v12BracketMarkup());
+}
+
 function v12NavBrand(){
   const labels={home:'Inicio',competition:'Competición',video:'Video',fantasy:'Fantasy',more:'Más'};
   document.querySelectorAll('.bottom-nav .nav-item').forEach(item=>{
@@ -209,10 +362,21 @@ function patch(){
   v12NavBrand();
   patchStandings();
   patchFixturesReference();
+  patchBracketReference();
   patchProfile();
   patchMoreLess();
 }
 document.addEventListener('click',e=>{
+  const bracketStage=e.target.closest('[data-v12-bracket-stage]');
+  if(bracketStage){
+    const box=bracketStage.closest('[data-v12-bracket]');
+    if(box){
+      box.querySelectorAll('[data-v12-bracket-stage]').forEach(b=>b.classList.toggle('active',b===bracketStage));
+      box.classList.remove('stage-playoff','stage-octavos','stage-cuartos');
+      box.classList.add('stage-'+bracketStage.dataset.v12BracketStage);
+    }
+    return;
+  }
   const dateBtn=e.target.closest('[data-v12-date]');
   if(dateBtn){
     document.querySelectorAll('[data-v12-date]').forEach(b=>b.classList.toggle('active',b===dateBtn));
