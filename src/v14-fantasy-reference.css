@@ -1,14 +1,18 @@
-/* PARTS20 — vuelve al diseño anterior.
-   ÚNICOS cambios: quitar el bloque encima de las playeras y colocar FANTASY arriba. */
+/* PARTS21 — Fantasy móvil corregido según la referencia final.
+   Sin imagen/glitch encima: título FANTASY y líneas neón se dibujan en CSS.
+   Las playeras/cancha/estadio usan el arte original integrado al fondo. */
 
 body[data-app-route="fantasy"]{
-  background:#03065b!important;
+  --fantasy-nav-h:82px;
+  background:#02075d!important;
   overflow:hidden!important;
 }
+
 body[data-app-route="fantasy"] #app{
   padding-bottom:0!important;
-  background:#03065b!important;
+  background:#02075d!important;
 }
+
 body[data-app-route="fantasy"] #app>.topbar{display:none!important}
 
 body[data-app-route="fantasy"] #screen{
@@ -20,7 +24,9 @@ body[data-app-route="fantasy"] #screen{
   margin:0!important;
   padding:0!important;
   overflow:hidden!important;
-  background:#03065b!important;
+  background:
+    radial-gradient(90% 34% at 50% 0%,rgba(25,96,255,.32),transparent 72%),
+    linear-gradient(180deg,#093ee0 0%,#0a209d 23%,#07117c 47%,#040960 74%,#02064f 100%)!important;
   animation:none!important;
 }
 
@@ -30,15 +36,16 @@ body[data-app-route="fantasy"] #screen>.section.v4-injected{
   visibility:hidden!important;
 }
 
-body[data-app-route="fantasy"] .v20-fantasy-master{
+body[data-app-route="fantasy"] .v21-fantasy-master{
   position:absolute!important;
-  inset:0!important;
+  z-index:1!important;
+  inset:0 0 var(--fantasy-nav-h) 0!important;
   overflow:hidden!important;
   color:#fff!important;
   font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif!important;
 }
 
-body[data-app-route="fantasy"] .v20-fantasy-bg{
+body[data-app-route="fantasy"] .v21-fantasy-bg{
   position:absolute!important;
   z-index:0!important;
   inset:0!important;
@@ -46,32 +53,73 @@ body[data-app-route="fantasy"] .v20-fantasy-bg{
   height:100%!important;
   display:block!important;
   object-fit:fill!important;
+  object-position:center center!important;
+  filter:saturate(1.06) contrast(1.02)!important;
   pointer-events:none!important;
   user-select:none!important;
 }
 
-/* Imagen 3 exactamente en la zona superior.
-   screen hace desaparecer el negro sin meter otro cuadro encima. */
-body[data-app-route="fantasy"] .v20-title-art{
-  position:absolute!important;
-  z-index:3!important;
-  top:3.6%!important;
-  left:50%!important;
-  width:91%!important;
-  height:auto!important;
-  display:block!important;
-  transform:translateX(-50%)!important;
-  object-fit:contain!important;
-  mix-blend-mode:screen!important;
-  pointer-events:none!important;
-  user-select:none!important;
-}
-
-/* Conserva el texto y dimensiones que ya estaban funcionando antes. */
-body[data-app-route="fantasy"] .v20-league{
+/* ---------- FANTASY / parte superior ---------- */
+body[data-app-route="fantasy"] .v21-hero{
   position:absolute!important;
   z-index:4!important;
-  top:26.0%!important;
+  top:7.2%!important;
+  left:50%!important;
+  width:min(92vw,520px)!important;
+  height:25%!important;
+  transform:translateX(-50%)!important;
+  pointer-events:none!important;
+}
+
+body[data-app-route="fantasy"] .v21-hero h1{
+  position:absolute!important;
+  z-index:3!important;
+  left:50%!important;
+  top:43%!important;
+  margin:0!important;
+  color:#fff!important;
+  font-family:Impact,Haettenschweiler,"Arial Narrow Bold","Arial Narrow",sans-serif!important;
+  font-size:clamp(72px,20.5vw,118px)!important;
+  font-weight:900!important;
+  line-height:.82!important;
+  letter-spacing:-.045em!important;
+  transform:translate(-50%,-50%) skewX(-7deg) scaleX(.80)!important;
+  transform-origin:center!important;
+  text-shadow:0 3px 1px rgba(0,0,0,.12)!important;
+  white-space:nowrap!important;
+}
+
+/* líneas neón superiores/derecha */
+body[data-app-route="fantasy"] .v21-neon{
+  position:absolute!important;
+  inset:0!important;
+}
+body[data-app-route="fantasy"] .v21-neon i{
+  position:absolute!important;
+  display:block!important;
+  height:3px!important;
+  border-radius:999px!important;
+  background:linear-gradient(90deg,#14efff 0%,#12bfff 34%,#ff7d9f 69%,#ffb34e 100%)!important;
+  box-shadow:0 0 7px rgba(26,224,255,.28)!important;
+  transform-origin:left center!important;
+}
+
+body[data-app-route="fantasy"] .v21-neon-a i:nth-child(1){width:112px;left:49%;top:0;transform:rotate(61deg)}
+body[data-app-route="fantasy"] .v21-neon-a i:nth-child(2){width:98px;left:61%;top:11%;transform:rotate(62deg)}
+body[data-app-route="fantasy"] .v21-neon-a i:nth-child(3){width:92px;left:71%;top:29%;transform:rotate(-18deg)}
+
+body[data-app-route="fantasy"] .v21-neon-b i:nth-child(1){width:76px;left:0;top:61%;transform:rotate(24deg)}
+body[data-app-route="fantasy"] .v21-neon-b i:nth-child(2){width:66px;left:4%;top:71%;transform:rotate(24deg)}
+
+body[data-app-route="fantasy"] .v21-neon-c i:nth-child(1){width:100px;left:67%;top:76%;transform:rotate(-17deg)}
+body[data-app-route="fantasy"] .v21-neon-c i:nth-child(2){width:82px;left:72%;top:86%;transform:rotate(-16deg)}
+body[data-app-route="fantasy"] .v21-neon-c i:nth-child(3){width:48px;left:79%;top:96%;transform:rotate(-17deg)}
+
+/* ---------- textos ---------- */
+body[data-app-route="fantasy"] .v21-league{
+  position:absolute!important;
+  z-index:5!important;
+  top:25.4%!important;
   left:0!important;
   right:0!important;
   display:flex!important;
@@ -83,17 +131,17 @@ body[data-app-route="fantasy"] .v20-league{
   pointer-events:none!important;
 }
 
-body[data-app-route="fantasy"] .v20-league strong{
-  font-size:clamp(13px,3.7vw,19px)!important;
+body[data-app-route="fantasy"] .v21-league strong{
+  font-size:clamp(13px,3.7vw,20px)!important;
   line-height:1.08!important;
   font-weight:850!important;
   letter-spacing:.01em!important;
 }
-body[data-app-route="fantasy"] .v20-league strong:nth-child(2){
-  font-size:clamp(18px,5vw,26px)!important;
+body[data-app-route="fantasy"] .v21-league strong:nth-child(2){
+  font-size:clamp(18px,5vw,27px)!important;
   letter-spacing:.035em!important;
 }
-body[data-app-route="fantasy"] .v20-league span{
+body[data-app-route="fantasy"] .v21-league span{
   margin-top:7px!important;
   padding-left:.43em!important;
   font-size:clamp(10px,2.6vw,14px)!important;
@@ -102,10 +150,10 @@ body[data-app-route="fantasy"] .v20-league span{
   letter-spacing:.43em!important;
 }
 
-body[data-app-route="fantasy"] .v20-sponsor{
+body[data-app-route="fantasy"] .v21-sponsor{
   position:absolute!important;
-  z-index:4!important;
-  top:36.7%!important;
+  z-index:5!important;
+  top:36.6%!important;
   left:0!important;
   right:0!important;
   display:flex!important;
@@ -114,29 +162,31 @@ body[data-app-route="fantasy"] .v20-sponsor{
   text-align:center!important;
   pointer-events:none!important;
 }
-body[data-app-route="fantasy"] .v20-sponsor>span{
+
+body[data-app-route="fantasy"] .v21-sponsor>span{
   margin-bottom:12px!important;
-  color:#e9e9f4!important;
-  font-size:clamp(13px,3.6vw,18px)!important;
+  color:#ececf5!important;
+  font-size:clamp(14px,3.7vw,19px)!important;
   line-height:1!important;
   font-weight:400!important;
 }
-body[data-app-route="fantasy"] .v20-sponsor img{
-  width:clamp(90px,24vw,120px)!important;
+
+body[data-app-route="fantasy"] .v21-sponsor img{
+  width:clamp(94px,24vw,126px)!important;
   height:auto!important;
   display:block!important;
   object-fit:contain!important;
   mix-blend-mode:screen!important;
-  filter:brightness(1.12) contrast(1.08)!important;
+  filter:brightness(1.16) contrast(1.06)!important;
 }
 
-/* NO se añade ninguna capa, panel, cuadro o SVG encima de las playeras/cancha.
-   Se usa directamente el arte original del fondo para que quede pegado al diseño. */
-body[data-app-route="fantasy"] .v20-card-hotspot{
+/* Playeras/cancha: no se agrega ningún cuadro encima.
+   Solo dejamos la zona táctil para conservar la función. */
+body[data-app-route="fantasy"] .v21-card-hotspot{
   position:absolute!important;
-  z-index:5!important;
-  left:14%!important;
-  right:14%!important;
+  z-index:6!important;
+  left:15%!important;
+  right:15%!important;
   top:50.5%!important;
   height:29%!important;
   border:0!important;
@@ -145,10 +195,51 @@ body[data-app-route="fantasy"] .v20-card-hotspot{
   cursor:pointer!important;
 }
 
-body[data-app-route="fantasy"] .bottom-nav{z-index:50!important}
+/* ---------- navegación inferior ---------- */
+body[data-app-route="fantasy"] .bottom-nav{
+  position:fixed!important;
+  z-index:50!important;
+  left:50%!important;
+  bottom:0!important;
+  transform:translateX(-50%)!important;
+  width:min(100%,520px)!important;
+  height:var(--fantasy-nav-h)!important;
+  min-height:var(--fantasy-nav-h)!important;
+  padding:7px 8px max(5px,env(safe-area-inset-bottom))!important;
+  background:#141477!important;
+  border-top:1px solid rgba(255,255,255,.08)!important;
+  backdrop-filter:none!important;
+}
+
+body[data-app-route="fantasy"] .bottom-nav .nav-item{gap:4px!important}
+body[data-app-route="fantasy"] .bottom-nav .nav-icon{width:31px!important;height:31px!important}
+body[data-app-route="fantasy"] .bottom-nav .nav-icon svg{
+  width:100%!important;
+  height:100%!important;
+}
+body[data-app-route="fantasy"] .bottom-nav .nav-item small{
+  font-size:12px!important;
+  letter-spacing:0!important;
+}
+body[data-app-route="fantasy"] .bottom-nav .nav-item.active,
+body[data-app-route="fantasy"] .bottom-nav .nav-item[data-route="fantasy"]{
+  color:#18e9f2!important;
+}
 
 @media(max-width:380px){
-  body[data-app-route="fantasy"] .v20-title-art{top:3.4%!important;width:92%!important}
-  body[data-app-route="fantasy"] .v20-league{top:25.9%!important}
-  body[data-app-route="fantasy"] .v20-sponsor{top:36.5%!important}
+  body[data-app-route="fantasy"]{--fantasy-nav-h:78px}
+  body[data-app-route="fantasy"] .v21-hero{top:6.7%!important;width:94vw!important}
+  body[data-app-route="fantasy"] .v21-hero h1{font-size:clamp(68px,20.5vw,92px)!important}
+  body[data-app-route="fantasy"] .v21-league{top:25.2%!important}
+  body[data-app-route="fantasy"] .v21-sponsor{top:36.4%!important}
+}
+
+@media(min-width:521px){
+  body[data-app-route="fantasy"] .v21-fantasy-master,
+  body[data-app-route="fantasy"] .bottom-nav{
+    width:520px!important;
+    left:50%!important;
+    right:auto!important;
+    transform:translateX(-50%)!important;
+  }
 }
