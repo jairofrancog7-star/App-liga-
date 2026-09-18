@@ -101,6 +101,8 @@ function v12NavBrand(){
   });
   const comp=document.querySelector('.bottom-nav .nav-item[data-route="competition"] .nav-icon');
   if(comp) comp.innerHTML='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 3v18M17 3v18M3 8h8M13 16h8"/><circle cx="7" cy="8" r="2.3"/><circle cx="17" cy="16" r="2.3"/></svg>';
+  const profile=document.querySelector('.topbar .profile-button');
+  if(profile) profile.innerHTML='<svg class="v12-profile-master-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12,13C13.933,13 15.5,11.433 15.5,9.5C15.5,7.567 13.933,6 12,6C10.067,6 8.5,7.567 8.5,9.5C8.5,11.433 10.067,13 12,13ZM23,12C23,18.0751 18.0751,23 12,23C5.9249,23 1,18.0751 1,12C1,5.9249 5.9249,1 12,1C18.0751,1 23,5.9249 23,12ZM18.9089,17.7681C17.7577,15.8144 15.0622,14.5 12,14.5C8.9417,14.5 6.2438,15.8117 5.0911,17.7682C3.7857,16.2062 3,14.1949 3,12C3,7.0294 7.0294,3 12,3C16.9706,3 21,7.0294 21,12C21,14.1948 20.2144,16.2061 18.9089,17.7681Z" fill="currentColor"/></svg>';
 }
 function patch(){
   v12NavBrand();
