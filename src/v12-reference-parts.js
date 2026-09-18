@@ -1,4 +1,4 @@
-const V12_LOGO='https://d2ol7oe51mr4n9.cloudfront.net/user_3JNvttsAwr0QjxhuX5O1uaa9bvv/720d1f82-1d59-4a7a-af69-9e7e8da0250a.png';
+const V12_LOGO='https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/assets/liga-logo.webp';
 const V12_TEAM_ASSET_BASE='https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/';
 const V12_TEAMS=[
   {name:'Club América Veteranos JR',logo:'assets/branding/america-veteranos-35-user.png',p:1,gd:8,pts:3,form:['w','w','w'],last:'V'},
