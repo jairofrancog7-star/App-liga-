@@ -1593,3 +1593,53 @@ body[data-app-route="competition"] .v12-final-side-mark{right:-13px!important;to
   body[data-app-route="competition"] .v12-final-opponent b{font-size:16px!important}
   body[data-app-route="competition"] .v12-final-trophy-wrap{right:3%!important;bottom:24px!important;width:38.5%!important}
 }
+
+/* === PARTS29 — TROFEO FINAL EXACTO DRIVE === */
+/* Mantiene el diseño de Final y sustituye únicamente el trofeo por el archivo exacto del Drive. */
+body[data-app-route="competition"] .v12-final-trophy-wrap{
+  position:absolute!important;
+  right:2.5%!important;
+  bottom:18px!important;
+  width:42%!important;
+  height:430px!important;
+  aspect-ratio:auto!important;
+  overflow:visible!important;
+  display:block!important;
+  pointer-events:none!important;
+  z-index:4!important;
+}
+body[data-app-route="competition"] .v12-final-trophy-new{
+  position:absolute!important;
+  inset:0!important;
+  display:flex!important;
+  align-items:flex-end!important;
+  justify-content:center!important;
+  overflow:visible!important;
+}
+body[data-app-route="competition"] .v12-final-trophy-new img{
+  width:100%!important;
+  height:100%!important;
+  max-width:none!important;
+  object-fit:contain!important;
+  object-position:center bottom!important;
+  display:block!important;
+  mix-blend-mode:screen!important;
+  filter:
+    saturate(1.08)
+    contrast(1.05)
+    drop-shadow(-5px 0 10px rgba(0,230,255,.25))
+    drop-shadow(6px 0 12px rgba(255,30,190,.24))!important;
+}
+body[data-app-route="competition"] .v12-final-trophy-crop,
+body[data-app-route="competition"] .v12-final-trophy-source{
+  display:none!important;
+}
+
+@media(max-width:390px){
+  body[data-app-route="competition"] .v12-final-trophy-wrap{
+    right:1%!important;
+    bottom:18px!important;
+    width:44%!important;
+    height:385px!important;
+  }
+}

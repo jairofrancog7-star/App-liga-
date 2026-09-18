@@ -320,8 +320,8 @@ function v12BracketRoute(route){
 }
 
 function v12FinalTrophy(){
-  return '<div class="v12-final-trophy-crop" aria-label="Trofeo de la final">'+
-    '<img class="v12-final-trophy-source" src="./assets/reference/final-drive-reference.png?v=parts28" alt="Trofeo de la final">'+
+  return '<div class="v12-final-trophy-new" aria-label="Trofeo de la final">'+
+    '<img src="./assets/reference/final-trophy-drive.png?v=parts29" alt="Trofeo de la final">'+
   '</div>';
 }
 function v12FinalCard(){
