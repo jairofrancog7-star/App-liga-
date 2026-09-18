@@ -7,6 +7,7 @@ on:
       - main
       - skywork-rebuild-v1
       - feature/reference-ui-v19-exact-assets
+      - feature/reference-ui-v20-app-nuev-exact
   pull_request:
     branches:
       - main
@@ -48,11 +49,15 @@ jobs:
           ./gradlew assembleDebug
 
       - name: Verify APK exists
-        run: test -s android/app/build/outputs/apk/debug/app-debug.apk
+        run: |
+          test -s android/app/build/outputs/apk/debug/app-debug.apk
+          file android/app/build/outputs/apk/debug/app-debug.apk
+          sha256sum android/app/build/outputs/apk/debug/app-debug.apk
 
       - name: Upload APK artifact
         uses: actions/upload-artifact@v4
         with:
-          name: Liga-Juventino-v19-valid-debug-apk
+          name: Liga-Juventino-v20-App-Nuev-debug
           path: android/app/build/outputs/apk/debug/app-debug.apk
           if-no-files-found: error
+          compression-level: 0
