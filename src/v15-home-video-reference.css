@@ -1,0 +1,170 @@
+/* V15 PARTS14 — solo INICIO y VIDEO según las capturas del usuario.
+   No modifica Competición, Fantasy, Más ni el resto de pantallas. */
+
+/* INICIO: mantener intacta la cabecera superior que ya estaba corregida. */
+body[data-app-route="home"] #screen>.stories{
+  margin:0!important;
+  padding:4.2vw 0 5.4vw 11.4vw!important;
+  min-height:43.5vw!important;
+  display:flex!important;
+  align-items:flex-start!important;
+  gap:3.8vw!important;
+  overflow-x:auto!important;
+  overflow-y:hidden!important;
+  background:linear-gradient(180deg,#1353df 0%,#1029b8 48%,#0b1a94 100%)!important;
+  scrollbar-width:none!important;
+}
+body[data-app-route="home"] #screen>.stories::-webkit-scrollbar{display:none!important}
+body[data-app-route="home"] #screen>.stories .story{
+  flex:0 0 20.9vw!important;
+  width:20.9vw!important;
+  min-width:20.9vw!important;
+  margin:0!important;
+  padding:0!important;
+  display:flex!important;
+  flex-direction:column!important;
+  align-items:center!important;
+  gap:2.1vw!important;
+  background:transparent!important;
+  border:0!important;
+  overflow:visible!important;
+}
+body[data-app-route="home"] #screen>.stories .story-ring{
+  width:20.9vw!important;
+  height:20.9vw!important;
+  min-width:20.9vw!important;
+  min-height:20.9vw!important;
+  display:grid!important;
+  place-items:center!important;
+  border:3px solid #10e9ef!important;
+  border-radius:50%!important;
+  background:radial-gradient(circle at 50% 40%,#163bc0 0%,#0b177c 70%,#080e65 100%)!important;
+  box-shadow:0 0 0 3px rgba(8,13,96,.68) inset,0 0 18px rgba(5,230,239,.12)!important;
+  overflow:hidden!important;
+}
+body[data-app-route="home"] #screen>.stories .story-inner.v15-story-inner{
+  width:78%!important;
+  height:78%!important;
+  display:grid!important;
+  place-items:center!important;
+  background:transparent!important;
+  border:0!important;
+  border-radius:0!important;
+}
+body[data-app-route="home"] #screen>.stories .v15-story-inner img{
+  width:100%!important;
+  height:100%!important;
+  display:block!important;
+  object-fit:contain!important;
+  filter:drop-shadow(0 4px 7px rgba(0,0,0,.4))!important;
+}
+body[data-app-route="home"] #screen>.stories .story small{
+  width:24vw!important;
+  min-height:7.2vw!important;
+  margin:0!important;
+  padding:0!important;
+  color:#fff!important;
+  font-size:3.7vw!important;
+  line-height:1.03!important;
+  font-weight:760!important;
+  text-align:center!important;
+  white-space:normal!important;
+  overflow:visible!important;
+}
+.v15-moments-mark{
+  width:100%!important;height:100%!important;display:flex!important;flex-direction:column!important;
+  align-items:center!important;justify-content:center!important;color:#fff!important;gap:.4vw!important;
+}
+.v15-moments-mark i{font-style:normal!important;font-size:3.5vw!important;line-height:1!important}
+.v15-moments-mark b{font-size:3vw!important;line-height:1!important;font-weight:900!important}
+
+/* INICIO: sustituir únicamente la tarjeta principal por la referencia enviada. */
+body[data-app-route="home"] #screen>.section.hero[data-v15-home-feature="1"]{
+  position:relative!important;
+  width:77.6%!important;
+  max-width:none!important;
+  aspect-ratio:430/638!important;
+  min-height:0!important;
+  height:auto!important;
+  margin:0 auto 5vw!important;
+  padding:0!important;
+  border:0!important;
+  border-radius:6.5vw!important;
+  overflow:hidden!important;
+  background:#02030d!important;
+  box-shadow:none!important;
+}
+.v15-home-feature-image{
+  width:100%!important;height:100%!important;display:block!important;object-fit:cover!important;
+  object-position:center!important;border:0!important;border-radius:inherit!important;
+}
+.v15-home-feature-hit{
+  position:absolute!important;inset:0!important;width:100%!important;height:100%!important;
+  padding:0!important;margin:0!important;border:0!important;background:transparent!important;cursor:pointer!important;
+}
+
+/* VIDEO: la referencia ya incluye logo, LIGA JUVENTINO TV, perfil, texto y botones.
+   Por eso se oculta SOLO la cabecera genérica de Video. */
+body[data-app-route="video"] .topbar{display:none!important}
+body[data-app-route="video"] #screen{
+  padding:0 0 92px!important;
+  margin:0!important;
+  background:#020555!important;
+  min-height:100dvh!important;
+}
+body[data-app-route="video"] #screen>.hero.video-hero[data-v15-video-feature="1"]{
+  position:relative!important;
+  width:100%!important;
+  max-width:none!important;
+  min-height:0!important;
+  height:auto!important;
+  aspect-ratio:auto!important;
+  margin:0!important;
+  padding:0!important;
+  border:0!important;
+  border-radius:0!important;
+  overflow:hidden!important;
+  background:#020519!important;
+  box-shadow:none!important;
+}
+.v15-video-reference-image{
+  width:100%!important;
+  height:auto!important;
+  display:block!important;
+  object-fit:contain!important;
+  object-position:center top!important;
+  border:0!important;
+}
+.v15-video-hit{
+  position:absolute!important;
+  bottom:2.1%!important;
+  height:9.2%!important;
+  padding:0!important;margin:0!important;border:0!important;
+  background:transparent!important;
+  cursor:pointer!important;
+}
+.v15-video-hit-primary{left:9.8%!important;width:38.5%!important}
+.v15-video-hit-secondary{right:9.8%!important;width:38.5%!important}
+
+/* Dejar la Selección del editor original debajo de la nueva portada. */
+body[data-app-route="video"] #screen>.section{
+  margin-top:0!important;
+}
+
+/* Mensaje discreto para conservar respuesta táctil de los botones de la captura. */
+.v15-toast{
+  position:fixed!important;left:50%!important;bottom:105px!important;z-index:999999!important;
+  transform:translate(-50%,14px)!important;opacity:0!important;pointer-events:none!important;
+  padding:10px 16px!important;border-radius:999px!important;background:rgba(2,6,74,.94)!important;
+  border:1px solid rgba(255,255,255,.18)!important;color:#fff!important;font-size:13px!important;
+  white-space:nowrap!important;transition:.18s ease!important;
+}
+.v15-toast.show{opacity:1!important;transform:translate(-50%,0)!important}
+
+@media(min-width:700px){
+  body[data-app-route="home"] #screen>.stories{padding-left:8vw!important}
+  body[data-app-route="home"] #screen>.stories .story{flex-basis:145px!important;width:145px!important;min-width:145px!important}
+  body[data-app-route="home"] #screen>.stories .story-ring{width:145px!important;height:145px!important;min-width:145px!important;min-height:145px!important}
+  body[data-app-route="home"] #screen>.stories .story small{font-size:23px!important;width:165px!important}
+  body[data-app-route="home"] #screen>.section.hero[data-v15-home-feature="1"]{max-width:536px!important;border-radius:32px!important}
+}
