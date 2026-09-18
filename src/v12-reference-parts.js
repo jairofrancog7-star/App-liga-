@@ -101,13 +101,13 @@ function patchMoreLess(){
   if(!screen||screen.querySelector('[data-v12-moreless]')) return;
   screen.innerHTML='<section class="v12-moreless" data-v12-moreless>'+
     '<div class="v12-ml-title"><span>MÁS</span><small>O</small><span>MENOS</span></div>'+
-    '<div class="v12-ml-curves"><div class="down">'+curveArrow('#ff0048',true)+'</div><div class="up">'+curveArrow('#21f06b',false)+'</div></div>'+
-    v12Logo(V12_LOGO,'Liga Municipal de Fútbol Juventino Rosas','v12-ml-logo')+
+    '<div class="v12-ml-curves"><div class="down">'+curveArrow('#ff003c',true)+'</div><div class="up">'+curveArrow('#18ef72',false)+'</div></div>'+
     '<div class="v12-ml-choice">'+
       '<button data-v12-choice="more" aria-label="Elegir más">'+avatarSvg('#c776e8')+'</button>'+
-      '<div class="v12-ml-mid"><button data-v12-choice="more" class="up-arrow">▲</button><button data-v12-choice="less" class="down-arrow">▼</button></div>'+
+      '<div class="v12-ml-mid"><button data-v12-choice="more" class="up-arrow" aria-label="Más">▲</button><button data-v12-choice="less" class="down-arrow" aria-label="Menos">▼</button></div>'+
       '<button data-v12-choice="less" aria-label="Elegir menos">'+avatarSvg('#77f1ea')+'</button>'+
     '</div>'+
+    v12Logo(V12_LOGO,'Liga Municipal de Fútbol Juventino Rosas','v12-ml-logo')+
     '<div class="v12-stadium" aria-hidden="true"><i></i><b></b></div>'+
   '</section>';
 }
