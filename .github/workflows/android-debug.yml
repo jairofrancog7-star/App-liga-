@@ -6,6 +6,7 @@ on:
     branches:
       - main
       - skywork-rebuild-v1
+      - feature/reference-ui-v19-exact-assets
   pull_request:
     branches:
       - main
@@ -52,9 +53,12 @@ jobs:
           cd android
           ./gradlew assembleDebug
 
+      - name: Verify APK exists
+        run: test -s android/app/build/outputs/apk/debug/app-debug.apk
+
       - name: Upload APK artifact
         uses: actions/upload-artifact@v4
         with:
-          name: Liga-Juventino-V10-route-layout-debug-apk
+          name: Liga-Juventino-v19-valid-debug-apk
           path: android/app/build/outputs/apk/debug/app-debug.apk
           if-no-files-found: error
