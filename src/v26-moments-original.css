@@ -1,15 +1,22 @@
-/* V26 — Momentos: referencia original del usuario, sin rediseño ni alteración de la imagen. */
+/* V26 — Momentos: usa las dos referencias originales del usuario sin rediseñarlas. */
 body[data-app-route="moments"]{
   background:#02065f!important;
   overflow-x:hidden!important;
+  overflow-y:auto!important;
+  height:auto!important;
+  min-height:100dvh!important;
 }
+body[data-app-route="moments"] #app,
 body[data-app-route="moments"] .app-shell{
   width:min(100%,520px)!important;
   max-width:520px!important;
+  height:auto!important;
+  max-height:none!important;
   min-height:100dvh!important;
   margin:0 auto!important;
   padding:0!important;
-  overflow:hidden!important;
+  overflow:visible!important;
+  position:relative!important;
   background:#02065f!important;
 }
 body[data-app-route="moments"] .topbar,
@@ -18,14 +25,28 @@ body[data-app-route="moments"] .bottom-nav{
 }
 body[data-app-route="moments"] .screen{
   width:100%!important;
+  max-width:none!important;
+  height:auto!important;
+  max-height:none!important;
   padding:0!important;
   margin:0!important;
   min-height:0!important;
   animation:none!important;
   overflow:visible!important;
+  background:#02065f!important;
 }
 .v26-moments-original{
   position:relative!important;
+  width:100%!important;
+  margin:0!important;
+  padding:0!important;
+  line-height:0!important;
+  background:#02065f!important;
+  overflow:visible!important;
+}
+.v26-moments-panel{
+  position:relative!important;
+  display:block!important;
   width:100%!important;
   margin:0!important;
   padding:0!important;
@@ -58,6 +79,7 @@ body[data-app-route="moments"] .screen{
   box-shadow:none!important;
   outline:0;
   cursor:pointer!important;
+  touch-action:manipulation!important;
   -webkit-tap-highlight-color:transparent!important;
 }
 .v26-moments-hotspot:focus-visible{
@@ -66,7 +88,7 @@ body[data-app-route="moments"] .screen{
   border-radius:14px!important;
 }
 
-/* Coordenadas proporcionales sobre la captura original 832 × 1848. */
+/* Coordenadas proporcionales sobre cada captura original 832 × 1848. */
 .v26-back{left:3.7%!important;top:5.8%!important;width:11.5%!important;height:5.8%!important}
 
 .v26-card{width:44.2%!important;height:25.7%!important;border-radius:4.1%!important}
