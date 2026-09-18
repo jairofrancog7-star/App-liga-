@@ -1,0 +1,510 @@
+/* V31 · Hospitality exact mobile reference
+   Scoped to #/hospitality. Reconstructs the uploaded reference as functional UI. */
+html.v31-hospitality-active,
+html.v31-hospitality-active body {
+  margin: 0 !important;
+  min-height: 100% !important;
+  background: #02045f !important;
+  overflow: hidden !important;
+}
+
+html.v31-hospitality-active .app-shell {
+  width: 100% !important;
+  max-width: none !important;
+  min-height: 100svh !important;
+  margin: 0 !important;
+  background: transparent !important;
+}
+
+html.v31-hospitality-active .topbar,
+html.v31-hospitality-active .bottom-nav {
+  display: none !important;
+}
+
+html.v31-hospitality-active #screen.screen {
+  padding: 0 !important;
+  margin: 0 !important;
+  width: 100% !important;
+  max-width: none !important;
+  min-height: 100svh !important;
+  background: transparent !important;
+  overflow: hidden !important;
+}
+
+.v31-hospitality-page,
+.v31-hospitality-page * {
+  box-sizing: border-box;
+}
+
+.v31-hospitality-page {
+  position: relative;
+  width: 100%;
+  min-height: 100svh;
+  height: 100svh;
+  overflow: hidden;
+  padding:
+    calc(env(safe-area-inset-top, 0px) + 18px)
+    32px
+    calc(env(safe-area-inset-bottom, 0px) + 58px);
+  color: #fff;
+  font-family: Roboto, "Helvetica Neue", Arial, sans-serif;
+  background:
+    radial-gradient(92% 46% at 52% -3%, rgba(0, 80, 255, .72) 0%, rgba(0, 43, 198, .24) 52%, transparent 82%),
+    radial-gradient(95% 86% at 82% 48%, rgba(13, 0, 154, .26) 0%, transparent 65%),
+    linear-gradient(180deg, #001cb8 0%, #030873 19%, #020557 48%, #020457 100%);
+}
+
+.v31-hospitality-page::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    linear-gradient(112deg, transparent 0 47%, rgba(30, 29, 161, .12) 57%, transparent 72%);
+  opacity: .9;
+}
+
+.v31-status,
+.v31-back,
+.v31-hospitality-page h1,
+.v31-access-switch,
+.v31-code-wrap,
+.v31-code-note,
+.v31-continue {
+  position: relative;
+  z-index: 2;
+}
+
+.v31-status {
+  height: 55px;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  padding: 0 10px 0 12px;
+  font-size: 25px;
+  line-height: 1;
+  font-weight: 700;
+  letter-spacing: -.5px;
+}
+
+.v31-status-left,
+.v31-status-right {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+}
+
+.v31-status-photo {
+  width: 25px;
+  height: 20px;
+  border: 2px solid rgba(255,255,255,.9);
+  border-radius: 2px;
+  position: relative;
+  opacity: .95;
+}
+.v31-status-photo::before {
+  content: "";
+  position: absolute;
+  left: 4px;
+  bottom: 3px;
+  width: 13px;
+  height: 8px;
+  border-left: 2px solid #fff;
+  border-top: 2px solid #fff;
+  transform: skewY(-26deg) rotate(5deg);
+  opacity: .9;
+}
+
+.v31-status-right {
+  gap: 9px;
+  font-size: 17px;
+  font-weight: 700;
+}
+
+.v31-status-person {
+  font-size: 20px;
+  line-height: 1;
+  transform: translateY(-1px);
+}
+
+.v31-status-alarm {
+  width: 19px;
+  height: 19px;
+  border: 2px solid #fff;
+  border-radius: 50%;
+  position: relative;
+}
+.v31-status-alarm::before,
+.v31-status-alarm::after {
+  content: "";
+  position: absolute;
+  width: 7px;
+  height: 2px;
+  background: #fff;
+  top: -4px;
+}
+.v31-status-alarm::before { left: -3px; transform: rotate(-36deg); }
+.v31-status-alarm::after { right: -3px; transform: rotate(36deg); }
+
+.v31-status-hz {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0;
+  font-size: 6px;
+  line-height: 1;
+  width: 29px;
+}
+.v31-status-hz b {
+  display: grid;
+  place-items: center;
+  width: 27px;
+  height: 17px;
+  border: 2px solid #fff;
+  border-radius: 3px;
+  font-size: 11px;
+  line-height: 1;
+}
+.v31-status-hz small {
+  font-size: 5px;
+  line-height: .7;
+  margin-top: 1px;
+}
+
+.v31-status-wifi {
+  width: 22px;
+  height: 18px;
+  position: relative;
+  overflow: hidden;
+}
+.v31-status-wifi::before,
+.v31-status-wifi::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  border: 2px solid transparent;
+  border-top-color: #fff;
+  border-radius: 50%;
+}
+.v31-status-wifi::before {
+  width: 22px;
+  height: 22px;
+  top: 1px;
+}
+.v31-status-wifi::after {
+  width: 12px;
+  height: 12px;
+  top: 7px;
+}
+
+.v31-status-signal {
+  width: 23px;
+  height: 21px;
+  clip-path: polygon(0 100%, 100% 0, 100% 100%);
+  background: #fff;
+}
+
+.v31-status-battery {
+  width: 14px;
+  height: 25px;
+  border: 2px solid #fff;
+  border-radius: 1px;
+  position: relative;
+}
+.v31-status-battery::before {
+  content: "";
+  position: absolute;
+  width: 6px;
+  height: 3px;
+  background: #fff;
+  left: 2px;
+  top: -5px;
+}
+.v31-status-battery::after {
+  content: "";
+  position: absolute;
+  left: 2px;
+  right: 2px;
+  bottom: 2px;
+  height: 12px;
+  background: #fff;
+}
+
+.v31-battery-number {
+  font-size: 24px;
+  line-height: 1;
+  margin-left: 1px;
+}
+
+.v31-back {
+  width: 52px;
+  height: 52px;
+  margin-top: 12px;
+  border: 0;
+  padding: 0;
+  background: transparent;
+  color: #fff;
+  cursor: pointer;
+  display: grid;
+  place-items: center;
+}
+.v31-back svg {
+  width: 39px;
+  height: 39px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2.1;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.v31-hospitality-page h1 {
+  margin: 19px 0 0;
+  font-size: clamp(42px, 8.9vw, 64px);
+  line-height: 1.03;
+  font-weight: 400;
+  letter-spacing: -1.5px;
+  white-space: nowrap;
+}
+
+.v31-access-switch {
+  width: 100%;
+  height: 98px;
+  margin-top: 103px;
+  border: 2px solid rgba(255,255,255,.68);
+  border-radius: 52px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  overflow: hidden;
+  background: rgba(7, 4, 87, .18);
+}
+
+.v31-access-option {
+  border: 0;
+  margin: 0;
+  color: rgba(255,255,255,.82);
+  background: transparent;
+  font: inherit;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 0;
+  position: relative;
+}
+
+.v31-access-option:first-child {
+  border-right: 2px solid rgba(255,255,255,.72);
+}
+
+.v31-access-option.is-selected {
+  background: rgba(255,255,255,.035);
+  color: #fff;
+}
+
+.v31-selected-content {
+  width: 100%;
+  height: 100%;
+  display: grid;
+  grid-template-columns: 42px 78px 1fr;
+  align-items: center;
+  gap: 8px;
+  padding: 7px 10px 7px 24px;
+  text-align: left;
+}
+
+.v31-check {
+  width: 34px;
+  height: 22px;
+  border-left: 4px solid #fff;
+  border-bottom: 4px solid #fff;
+  transform: rotate(-45deg) translateY(-3px);
+  border-radius: 2px;
+}
+
+.v31-league-logo {
+  width: 76px;
+  height: 76px;
+  display: block;
+  object-fit: contain;
+  object-position: center;
+  filter: saturate(1.03) contrast(1.03);
+}
+
+.v31-league-name {
+  font-size: 16px;
+  line-height: 1.15;
+  font-weight: 700;
+  letter-spacing: -.15px;
+}
+
+.v31-vip {
+  font-size: 24px;
+  line-height: 1;
+  font-weight: 500;
+}
+
+.v31-code-wrap {
+  margin-top: 47px;
+  width: 100%;
+  height: 114px;
+  background: linear-gradient(100deg, rgba(114,120,184,.42), rgba(101,107,178,.38));
+  border-bottom: 3px solid rgba(255,255,255,.92);
+  display: flex;
+  align-items: center;
+  padding: 0 26px;
+  gap: 30px;
+}
+
+.v31-qr {
+  width: 44px;
+  height: 44px;
+  flex: 0 0 44px;
+  opacity: .52;
+}
+
+.v31-qr path {
+  fill: currentColor;
+}
+
+.v31-code-input {
+  min-width: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  color: #fff;
+  font: inherit;
+  font-size: 24px;
+  line-height: 1;
+  font-weight: 400;
+  caret-color: #fff;
+}
+
+.v31-code-input::placeholder {
+  color: rgba(255,255,255,.66);
+  opacity: 1;
+}
+
+.v31-code-note {
+  margin: 10px 16px 0;
+  color: rgba(255,255,255,.55);
+  font-size: 22px;
+  line-height: 1.25;
+  font-weight: 400;
+}
+
+.v31-side-accent {
+  position: absolute;
+  z-index: 1;
+  right: -3px;
+  top: 28.4%;
+  width: 30px;
+  height: 108px;
+  border-left: 5px solid rgba(123,125,199,.21);
+  border-radius: 54px 0 0 54px;
+  transform: skewY(-7deg);
+}
+
+.v31-continue {
+  margin-top: auto;
+  width: 100%;
+  height: 96px;
+  border: 0;
+  border-radius: 29px;
+  color: #05135f;
+  background: linear-gradient(90deg, #13afd5 0%, #14a8cf 100%);
+  font: inherit;
+  font-size: 31px;
+  line-height: 1;
+  font-weight: 500;
+  letter-spacing: -.4px;
+  cursor: pointer;
+  box-shadow: none;
+}
+
+.v31-feedback {
+  position: absolute;
+  z-index: 5;
+  left: 50%;
+  bottom: calc(env(safe-area-inset-bottom, 0px) + 170px);
+  transform: translateX(-50%);
+  padding: 10px 16px;
+  border-radius: 20px;
+  background: rgba(1,4,62,.92);
+  border: 1px solid rgba(255,255,255,.18);
+  color: #fff;
+  font-size: 14px;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .18s ease;
+}
+.v31-feedback.show { opacity: 1; }
+
+@media (max-width: 420px) {
+  .v31-hospitality-page {
+    padding-left: 20px;
+    padding-right: 20px;
+    padding-bottom: calc(env(safe-area-inset-bottom, 0px) + 34px);
+  }
+  .v31-status {
+    padding-left: 6px;
+    padding-right: 4px;
+    font-size: 20px;
+  }
+  .v31-status-left,
+  .v31-status-right { gap: 8px; }
+  .v31-battery-number { font-size: 20px; }
+  .v31-back {
+    width: 44px;
+    height: 44px;
+    margin-top: 7px;
+  }
+  .v31-back svg { width: 34px; height: 34px; }
+  .v31-hospitality-page h1 {
+    font-size: clamp(39px, 9.3vw, 50px);
+    margin-top: 15px;
+  }
+  .v31-access-switch {
+    height: 82px;
+    margin-top: 72px;
+  }
+  .v31-selected-content {
+    grid-template-columns: 31px 60px 1fr;
+    gap: 5px;
+    padding-left: 15px;
+  }
+  .v31-check { width: 28px; height: 18px; border-width: 0 0 3px 3px; }
+  .v31-league-logo { width: 58px; height: 58px; }
+  .v31-league-name { font-size: 13px; }
+  .v31-vip { font-size: 21px; }
+  .v31-code-wrap {
+    height: 94px;
+    margin-top: 40px;
+    padding: 0 20px;
+    gap: 23px;
+  }
+  .v31-code-input { font-size: 20px; }
+  .v31-qr { width: 36px; height: 36px; flex-basis: 36px; }
+  .v31-code-note { font-size: 18px; margin-left: 12px; }
+  .v31-continue {
+    height: 78px;
+    border-radius: 24px;
+    font-size: 26px;
+  }
+}
+
+@media (min-width: 760px) {
+  html.v31-hospitality-active #screen.screen {
+    display: grid !important;
+    place-items: start center !important;
+  }
+  .v31-hospitality-page {
+    max-width: 690px;
+    min-height: min(100svh, 1536px);
+    height: min(100svh, 1536px);
+  }
+}
