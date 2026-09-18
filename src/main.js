@@ -80,7 +80,70 @@ function momentsView(){return `<div class="eyebrow">CLIPS</div><h1 class="screen
 function scorersView(){return `<div class="eyebrow">ESTADÍSTICAS</div><h1 class="screen-title">Máximo goleador</h1><button class="scorer-feature" data-player="p1"><span class="badge">#1 MÁXIMO GOLEADOR</span><div><small>Juventino</small><h2>Juan Pérez</h2><b>8 <em>goles</em></b></div></button><section class="section">${sectionHead('Clasificación completa')}<div class="stat-card">${players.slice().sort((a,b)=>b.goals-a.goals).slice(0,8).map((p,i)=>`<button class="rank-row" data-player="${p.id}"><b>${i+1}</b>${crest(p.team)}<span>${p.name}</span><b>${p.goals}</b></button>`).join('')}</div></section>`}
 function rankingsView(){return `<div class="eyebrow">TEMPORADA 2026</div><h1 class="screen-title">Rankings</h1><div class="segmented"><button class="segment active">Clubes</button><button class="segment">Jugadores</button><button class="segment">Forma</button></div><div class="table-wrap"><table class="table"><thead><tr><th>#</th><th>Equipo</th><th>PJ</th><th>DG</th><th>Pts</th></tr></thead><tbody>${teams.map((t,i)=>`<tr><td>${i+1}</td><td>${teamCell(t.code)}</td><td>${t.p}</td><td>${t.gd}</td><td><b>${t.pts}</b></td></tr>`).join('')}</tbody></table></div>`}
 function followingView(){const list=teams.filter(t=>state.followed.includes(t.code));if(!list.length)return `<div class="empty-state"><div class="empty-illustration"></div><h2>Sin equipos seguidos todavía</h2><p>Añade equipos para personalizar tu inicio, resultados y alertas.</p><button class="btn outline" data-route="teams">+ Añadir equipos</button></div>`;return `<div class="eyebrow">PERSONALIZADO</div><h1 class="screen-title">Siguiendo</h1><div class="team-list">${list.map(t=>`<div class="team-row"><button class="team-main" data-team="${t.code}">${crest(t.code)}<span><b>${t.name}</b><small>${t.news}</small></span></button><button class="mini-btn active" data-follow="${t.code}">Siguiendo</button></div>`).join('')}</div>`}
-function moreView(){return `<div class="eyebrow">LIGA JUVENTINO</div><h1 class="screen-title">Más</h1>${menuGroup('Principal',[['Siguiendo','following'],['Equipos','teams'],['Jugadores','players'],['Favoritos','favorites'],['Máximo goleador','scorers'],['Momentos','moments'],['Estadísticas','stats'],['Noticias','news'],['Fichajes','transfers']])}${menuGroup('Gaming',[['Quiniela','predictor'],['Jugador de la Jornada','vote'],['Quiz Arena','quiz'],['Más o Menos','moreLess']])}${menuGroup('Explorar',[['Buscar','search'],['Rankings','rankings'],['Historia','history'],['Campos / sedes','venues']])}${menuGroup('Cuenta',[['Perfil','profile'],['Notificaciones','notifications'],['Privacidad','privacy'],['Cambiar tema','theme']])}`}
+
+const V19_MORE_LOGO='https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/assets/liga-logo.webp';
+function v19MoreIcon(name){
+  const icons={
+    star:'<path d="m12 2.7 2.9 5.9 6.5.9-4.7 4.6 1.1 6.5-5.8-3.1-5.8 3.1 1.1-6.5-4.7-4.6 6.5-.9Z"/>',
+    shield:'<path d="M12 2.8 19 5.7v5.1c0 4.7-2.9 8.8-7 10.4-4.1-1.6-7-5.7-7-10.4V5.7L12 2.8Z"/><path d="m12 7 1.2 2.3 2.6.4-1.9 1.8.5 2.6-2.4-1.2-2.4 1.2.5-2.6-1.9-1.8 2.6-.4L12 7Z"/>',
+    performance:'<path d="M4 7h4M6 5v4m10-4h4m-2-2v4M5 18l4-4 3 2 7-7"/><circle cx="5" cy="18" r="1.5"/><circle cx="9" cy="14" r="1.5"/><circle cx="12" cy="16" r="1.5"/><circle cx="19" cy="9" r="1.5"/>',
+    medal:'<circle cx="12" cy="13.5" r="6.4"/><path d="M9.5 2.5 12 7l2.5-4.5M5.8 5.2 8 8.3m10.2-3.1L16 8.3M12 10.2l1 2.1 2.3.3-1.7 1.6.4 2.3-2-1.1-2 1.1.4-2.3-1.7-1.6 2.3-.3 1-2.1Z"/>',
+    video:'<rect x="3.5" y="6" width="17" height="14" rx="1"/><path d="M7 3.5 9 6m3-2.5L14 6m3-2.5L19 6M9.5 10.2l5.5 3.1-5.5 3.1Z"/>',
+    data:'<path d="M5 20V11m7 9V5m7 15v-7"/>',
+    score:'<rect x="3.2" y="7" width="17.6" height="11" rx="1"/><path d="M8 10.2v4.6m8-4.6v4.6M10.2 12.5h3.6"/>',
+    quiz:'<rect x="5" y="4" width="14" height="15" rx="1.4"/><path d="m8.5 11 2.2 2.1 4.7-5M3 7v14h13"/>',
+    arrows:'<path d="M8 3v17m0-17L4.7 6.5M8 3l3.3 3.5M16 21V4m0 17-3.3-3.5M16 21l3.3-3.5"/>',
+    glasses:'<path d="M6 3h4l-.6 7a2.4 2.4 0 0 1-4.8 0L4 3h2Zm0 9v7m-2 2h4M16 3h4l-.6 7a2.4 2.4 0 0 1-4.8 0L14 3h2Zm0 9v7m-2 2h4"/>',
+    trophy:'<path d="M8 4h8v4.8a4 4 0 0 1-8 0V4Zm4 9v5m-4 3h8M8 6H4v1.5A4.5 4.5 0 0 0 8.5 12M16 6h4v1.5a4.5 4.5 0 0 1-4.5 4.5"/>',
+    history:'<path d="M4 7V3m0 0h4M4.4 3.6A9 9 0 1 1 3 14"/><path d="M12 7v5l3.5 2"/>',
+    bag:'<path d="M5 8h14l1 13H4L5 8Z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/>',
+    info:'<circle cx="12" cy="12" r="9"/><path d="M12 11v6m0-10h.01"/>'
+  };
+  return '<span class="v19-more-icon"><svg viewBox="0 0 24 24" aria-hidden="true">'+(icons[name]||icons.info)+'</svg></span>';
+}
+function v19MoreButton(icon,label,route,safe=false){
+  const attr=safe?'data-safe-route="'+route+'"':'data-route="'+route+'"';
+  return '<button type="button" class="v19-more-item" '+attr+'>'+v19MoreIcon(icon)+'<span>'+label+'</span></button>';
+}
+function moreView(){
+  return '<section class="v19-more-page" data-v19-more>'+
+    '<img class="v19-more-logo" src="'+V19_MORE_LOGO+'" alt="Liga Municipal de Fútbol Juventino Rosas" loading="eager" decoding="async">'+
+    '<div class="v19-more-menu">'+
+      v19MoreButton('star','Siguiendo','following')+
+      v19MoreButton('shield','Equipos','teams')+
+      v19MoreButton('performance','Performance Zone','safe-performance',true)+
+      v19MoreButton('medal','Máximo goleador','scorers')+
+      v19MoreButton('video','Momentos','moments')+
+      v19MoreButton('data','Datos','safe-data',true)+
+    '</div>'+
+    '<div class="v19-more-label">Gaming</div>'+
+    '<div class="v19-more-menu">'+
+      v19MoreButton('score','Pronostica Seis','predictor')+
+      v19MoreButton('quiz','Quiz Arena','quiz')+
+      v19MoreButton('arrows','Más O Menos','moreLess')+
+    '</div>'+
+    '<div class="v19-more-label event">En el evento</div>'+
+    '<div class="v19-more-menu">'+v19MoreButton('glasses','Hospitalidad','venues')+'</div>'+
+    '<div class="v19-more-label explore">Explorar</div>'+
+    '<div class="v19-more-menu">'+
+      v19MoreButton('trophy','Rankings de la Liga','rankings')+
+      v19MoreButton('history','Historia','history')+
+      v19MoreButton('bag','Tienda','teams')+
+      v19MoreButton('info','Sobre la Liga Municipal','history')+
+    '</div>'+
+    '<div class="v19-more-bottom">'+
+      '<p class="v19-sponsor-title">Patrocinadores oficiales de la Liga</p>'+
+      '<div class="v19-sponsors">'+
+        '<div class="v19-sponsor s1"><div><span class="town-mark">♜</span><b>JUVENTINO<br>ROSAS</b></div></div>'+
+        '<div class="v19-sponsor s2"><div>Pasión<br><b>Local</b></div></div>'+
+        '<div class="v19-sponsor s3"><div><b>NUESTRO<br>FÚTBOL</b><span class="ball-mini">⚽</span></div></div>'+
+        '<div class="v19-sponsor s4"><div><span class="people-mark">●●●</span><b>COMUNIDAD<br>EN ACCIÓN</b></div></div>'+
+        '<div class="v19-sponsor s5"><div><b>DEPORTE<br>UNE</b><i></i></div></div>'+
+      '</div>'+
+      '<div class="v19-official">App oficial de la Liga<img src="'+V19_MORE_LOGO+'" alt="Liga Municipal de Fútbol Juventino Rosas" loading="lazy" decoding="async"></div>'+
+    '</div>'+
+  '</section>';
+}
 function quizView(){return `<div class="game-hero"><span class="eyebrow">JUEGO</span><h1 class="game-title">QUIZ<br>ARENA</h1><div class="quiz-card"><p>¿Qué equipo lidera actualmente la tabla?</p>${['Juventino','Pozos','Rincón de Centeno','Cuenda'].map(x=>`<button class="quiz-option" data-quiz="${x}">${x}</button>`).join('')}</div></div>`}function moreLessView(){const a=players[0],b=players[1];return `<div class="game-hero"><span class="eyebrow">JUEGO</span><h1 class="game-title">MÁS<br>O MENOS</h1><p class="muted">¿Quién tiene más goles?</p><div class="compare-two"><button data-moreless="${a.id}"><div class="avatar-ball">${a.number}</div><b>${a.name}</b></button><span>VS</span><button data-moreless="${b.id}"><div class="avatar-ball">${b.number}</div><b>${b.name}</b></button></div></div>`}function venuesView(){return `<div class="eyebrow">SEDES</div><h1 class="screen-title">Campos</h1><div class="news-list">${[...new Set(teams.map(t=>t.field))].map((v,i)=>`<div class="news-row"><span class="venue-thumb"></span><span><small>Sede ${i+1}</small><b>${v}</b><p>Consulta los próximos partidos programados.</p></span></div>`).join('')}</div>`}
 const views={home:homeView,competition:competitionView,match:matchView,video:videoView,fantasy:fantasyView,fantasyTeam:fantasyTeamView,fantasyLeagues:()=>`<div class="eyebrow">FANTASY</div><h1 class="screen-title">Ligas</h1><div class="profile-card"><h2>Compite con amigos</h2><p>Crea una liga privada o únete con un código.</p><div class="button-row"><button class="btn primary" data-action="create-league">Crear liga</button><button class="btn outline" data-action="join-league">Unirme</button></div></div>`,more:moreView,following:followingView,teams:teamsView,teamDetail:teamDetailView,players:playersView,playerDetail:playerDetailView,scorers:scorersView,moments:momentsView,stats:statsView,rankings:rankingsView,history:historyView,news:newsView,newsDetail:newsDetailView,transfers:transfersView,favorites:favoritesView,search:searchView,vote:voteView,notifications:notificationsView,privacy:privacyView,profile:profileView,predictor:predictorView,quiz:quizView,moreLess:moreLessView,venues:venuesView,error:()=>`<div class="empty-state"><div class="empty-illustration error"></div><h2>No pudimos cargar la información</h2><p>Comprueba tu conexión e inténtalo nuevamente.</p><button class="btn outline" data-route="home">Reintentar</button></div>`};
 function render(){if(state.route==='theme'){setTheme(state.theme==='dark'?'light':'dark');state.route='more'}screen.innerHTML=views[state.route]?views[state.route]():views.home();const rootRoutes=['home','competition','video','fantasy','more'];backButton.classList.toggle('is-hidden',rootRoutes.includes(state.route));navItems.forEach(n=>n.classList.toggle('active',n.dataset.route===state.route));bind();window.scrollTo(0,0)}
