@@ -1643,3 +1643,105 @@ body[data-app-route="competition"] .v12-final-trophy-source{
     height:385px!important;
   }
 }
+
+/* === PARTS30 — TABS IGUALES + TROFEO TAMAÑO REFERENCIA === */
+/* Todos los botones de etapas usan exactamente la misma caja. */
+body[data-app-route="competition"] .v12-bracket-stage-tabs{
+  display:flex!important;
+  gap:12px!important;
+  overflow-x:auto!important;
+  padding:0 12px 10px!important;
+  margin:0 -4px 8px!important;
+  scrollbar-width:none!important;
+}
+body[data-app-route="competition"] .v12-bracket-stage-tabs::-webkit-scrollbar{display:none!important}
+body[data-app-route="competition"] .v12-bracket-stage-tabs button,
+body[data-app-route="competition"] .v12-bracket-stage-tabs button[data-v12-bracket-stage="playoff"],
+body[data-app-route="competition"] .v12-bracket-stage-tabs button[data-v12-bracket-stage="octavos"],
+body[data-app-route="competition"] .v12-bracket-stage-tabs button[data-v12-bracket-stage="cuartos"],
+body[data-app-route="competition"] .v12-bracket-stage-tabs button[data-v12-bracket-stage="semifinal"],
+body[data-app-route="competition"] .v12-bracket-stage-tabs button[data-v12-bracket-stage="final"]{
+  flex:0 0 144px!important;
+  width:144px!important;
+  min-width:144px!important;
+  max-width:144px!important;
+  height:48px!important;
+  min-height:48px!important;
+  max-height:48px!important;
+  padding:0 10px!important;
+  border-radius:13px!important;
+  box-sizing:border-box!important;
+  display:flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  white-space:nowrap!important;
+  font:800 14px/1 Inter,Roboto,Arial,sans-serif!important;
+}
+
+/* Trofeo: escala y posición tomadas de la imagen de referencia de Drive.
+   En la captura 941x1672 ocupa aprox. 338x507 px (36% del ancho). */
+body[data-app-route="competition"] .v12-final-trophy-wrap{
+  position:absolute!important;
+  right:17%!important;
+  bottom:54px!important;
+  width:36%!important;
+  height:auto!important;
+  aspect-ratio:2/3!important;
+  overflow:visible!important;
+  display:block!important;
+  pointer-events:none!important;
+  z-index:4!important;
+}
+body[data-app-route="competition"] .v12-final-trophy-new{
+  position:absolute!important;
+  inset:0!important;
+  width:100%!important;
+  height:100%!important;
+  display:block!important;
+  overflow:visible!important;
+}
+body[data-app-route="competition"] .v12-final-trophy-new img{
+  position:absolute!important;
+  inset:0!important;
+  width:100%!important;
+  height:100%!important;
+  max-width:none!important;
+  object-fit:contain!important;
+  object-position:center bottom!important;
+  display:block!important;
+  mix-blend-mode:screen!important;
+  filter:
+    saturate(1.04)
+    contrast(1.02)
+    drop-shadow(-3px 0 7px rgba(0,230,255,.18))
+    drop-shadow(4px 0 8px rgba(255,30,190,.18))!important;
+}
+
+/* Mantener el bloque de la final proporcional al diseño de referencia. */
+body[data-app-route="competition"] .v12-final-match-card{
+  width:44.5%!important;
+  left:4.7%!important;
+  bottom:71px!important;
+}
+@media(max-width:390px){
+  body[data-app-route="competition"] .v12-bracket-stage-tabs button,
+  body[data-app-route="competition"] .v12-bracket-stage-tabs button[data-v12-bracket-stage="playoff"],
+  body[data-app-route="competition"] .v12-bracket-stage-tabs button[data-v12-bracket-stage="octavos"],
+  body[data-app-route="competition"] .v12-bracket-stage-tabs button[data-v12-bracket-stage="cuartos"],
+  body[data-app-route="competition"] .v12-bracket-stage-tabs button[data-v12-bracket-stage="semifinal"],
+  body[data-app-route="competition"] .v12-bracket-stage-tabs button[data-v12-bracket-stage="final"]{
+    flex-basis:132px!important;
+    width:132px!important;
+    min-width:132px!important;
+    max-width:132px!important;
+    height:45px!important;
+    min-height:45px!important;
+    max-height:45px!important;
+    font-size:12.5px!important;
+  }
+  body[data-app-route="competition"] .v12-final-trophy-wrap{
+    right:16.5%!important;
+    bottom:48px!important;
+    width:36%!important;
+  }
+}
