@@ -761,3 +761,45 @@ body[data-app-route="competition"] .topbar .profile-button svg{
     height:33px!important;
   }
 }
+
+
+/* === V12 PARTS10 — icono de perfil exacto de la referencia, sin fondo ===
+   Solo corrige el activo superior de Competición. No toca el fondo, tabs,
+   tabla, navegación, espaciados ni la cabecera de Inicio. */
+body[data-app-route="competition"] .topbar .profile-button{
+  right:19px!important;
+  top:39px!important;
+  width:31px!important;
+  height:31px!important;
+  max-width:31px!important;
+  max-height:31px!important;
+  min-width:31px!important;
+  min-height:31px!important;
+  padding:0!important;
+  margin:0!important;
+  border:0!important;
+  border-radius:0!important;
+  background-color:transparent!important;
+  background-image:url("../profile-reference.svg")!important;
+  background-repeat:no-repeat!important;
+  background-position:center!important;
+  background-size:contain!important;
+  color:transparent!important;
+  box-shadow:none!important;
+  overflow:visible!important;
+}
+body[data-app-route="competition"] .topbar .profile-button svg{
+  display:none!important;
+}
+@media(max-width:380px){
+  body[data-app-route="competition"] .topbar .profile-button{
+    right:16px!important;
+    top:37px!important;
+    width:28px!important;
+    height:28px!important;
+    max-width:28px!important;
+    max-height:28px!important;
+    min-width:28px!important;
+    min-height:28px!important;
+  }
+}
