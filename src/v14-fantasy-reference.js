@@ -1,5 +1,5 @@
-const V23_FANTASY_LOGO='./fantasy-logo-ref.webp?v=parts23';
-const V23_ACCESS_REF='./fantasy-access-reference.png?v=parts23';
+const V24_FANTASY_LOGO='./fantasy-logo-ref.webp?v=parts24';
+const V24_ACCESS_REF='./fantasy-access-reference.png?v=parts24';
 let v23FantasyBgPromise=null;
 
 function v23Route(){return location.hash.replace('#/','')||'home'}
@@ -35,7 +35,7 @@ function v23LandingMarkup(){
     '</div>'+
     '<div class="v22-sponsor">'+
       '<span>Patrocinado por</span>'+
-      '<img src="'+V23_FANTASY_LOGO+'" alt="Liga Municipal de Fútbol Juventino Rosas">'+
+      '<img src="'+V24_FANTASY_LOGO+'" alt="Liga Municipal de Fútbol Juventino Rosas">'+
     '</div>'+
     '<button class="v22-shirt-hit v22-shirt-hit-left" type="button" aria-label="Abrir Fantasy desde playera izquierda"></button>'+
     '<button class="v22-shirt-hit v22-shirt-hit-center" type="button" aria-label="Abrir Fantasy desde playera central"></button>'+
@@ -45,9 +45,12 @@ function v23LandingMarkup(){
 
 function v23AccessMarkup(){
   return '<section class="v23-fantasy-access" data-v23-access>'+
-    '<div class="v23-ref-crop v23-access-header" aria-hidden="true"><img src="'+V23_ACCESS_REF+'" alt=""></div>'+
-    '<div class="v23-ref-crop v23-access-sponsor" aria-hidden="true"><img src="'+V23_ACCESS_REF+'" alt=""></div>'+
-    '<div class="v23-ref-crop v23-access-photo" role="img" aria-label="Jugadores celebrando"><img src="'+V23_ACCESS_REF+'" alt=""></div>'+
+    '<div class="v23-ref-crop v23-access-header" aria-hidden="true"><img src="'+V24_ACCESS_REF+'" alt=""></div>'+
+    '<div class="v23-access-sponsor" aria-label="Patrocinado por Liga Municipal de Fútbol Juventino Rosas">'+
+      '<span>Patrocinado por</span>'+
+      '<img src="'+V24_FANTASY_LOGO+'" alt="Liga Municipal de Fútbol Juventino Rosas">'+
+    '</div>'+
+    '<div class="v23-ref-crop v23-access-photo" role="img" aria-label="Jugadores celebrando"><img src="'+V24_ACCESS_REF+'" alt=""></div>'+
     '<div class="v23-access-copy">'+
       '<h1>Inicia sesión para jugar al<br>Fantasy</h1>'+
       '<p>Inicia sesión para guardar tu equipo, unirte a<br>ligas y recibir alertas importantes sobre plazos.</p>'+
