@@ -54,7 +54,7 @@ body[data-app-route="fantasy"] .v15-fantasy-bg{
 body[data-app-route="fantasy"] .v15-copy{
   position:absolute!important;
   z-index:4!important;
-  top:17.4%!important;
+  top:15.5%!important;
   left:0!important;
   right:0!important;
   text-align:center!important;
@@ -65,17 +65,17 @@ body[data-app-route="fantasy"] .v15-copy h1{
   margin:0!important;
   color:#fff!important;
   font-family:Impact,"Arial Narrow",Haettenschweiler,sans-serif!important;
-  font-size:clamp(64px,18.2vw,112px)!important;
+  font-size:clamp(68px,20vw,112px)!important;
   line-height:.83!important;
   font-weight:900!important;
   letter-spacing:-.045em!important;
-  transform:skewX(-7deg) scaleX(.80)!important;
+  transform:skewX(-7deg) scaleX(.68)!important;
   transform-origin:center!important;
   text-shadow:0 3px 1px rgba(0,0,0,.12)!important;
 }
 
 body[data-app-route="fantasy"] .v15-league{
-  margin-top:14px!important;
+  margin-top:11px!important;
   display:flex!important;
   flex-direction:column!important;
   align-items:center!important;
@@ -104,7 +104,7 @@ body[data-app-route="fantasy"] .v15-league span{
 body[data-app-route="fantasy"] .v15-sponsor{
   position:absolute!important;
   z-index:4!important;
-  top:36.2%!important;
+  top:36.8%!important;
   left:0!important;
   right:0!important;
   display:flex!important;
@@ -116,13 +116,12 @@ body[data-app-route="fantasy"] .v15-sponsor{
 body[data-app-route="fantasy"] .v15-sponsor>span{
   margin-bottom:12px!important;
   color:#e9e9f4!important;
-  font-size:clamp(15px,4vw,22px)!important;
+  font-size:clamp(12px,3.6vw,17px)!important;
   line-height:1!important;
   font-weight:400!important;
 }
 body[data-app-route="fantasy"] .v15-sponsor img{
-  width:clamp(96px,22vw,146px)!important;
-  height:clamp(96px,22vw,146px)!important;
+  width:clamp(72px,22vw,105px)!important;\n  height:auto!important;
   display:block!important;
   object-fit:contain!important;
   mix-blend-mode:screen!important;
@@ -181,13 +180,13 @@ body[data-app-route="fantasy"] .bottom-nav{
   width:min(100%,520px)!important;
   min-height:78px!important;
   height:78px!important;
-  padding:7px 8px max(5px,env(safe-area-inset-bottom))!important;
+  padding:5px 8px max(4px,env(safe-area-inset-bottom))!important;
   background:#141475!important;
   border-top:1px solid rgba(255,255,255,.09)!important;
   backdrop-filter:none!important;
 }
 body[data-app-route="fantasy"] .bottom-nav .nav-item{gap:4px!important}
-body[data-app-route="fantasy"] .bottom-nav .nav-icon{width:31px!important;height:31px!important}
+body[data-app-route="fantasy"] .bottom-nav .nav-icon{width:24px!important;height:24px!important}
 body[data-app-route="fantasy"] .bottom-nav .nav-icon svg{
   width:100%!important;height:100%!important;
   fill:none!important;stroke:currentColor!important;stroke-width:1.8!important;
@@ -195,7 +194,7 @@ body[data-app-route="fantasy"] .bottom-nav .nav-icon svg{
 }
 body[data-app-route="fantasy"] .bottom-nav .nav-item small{
   text-transform:none!important;
-  font-size:12px!important;
+  font-size:10px!important;
   letter-spacing:0!important;
 }
 
@@ -206,3 +205,4 @@ body[data-app-route="fantasy"] .bottom-nav .nav-item small{
 }
 
 /* parts15-publish */
+\n/* PARTS16 — afinado contra la captura maestra: logo exacto, título condensado y nav más baja. */\n
