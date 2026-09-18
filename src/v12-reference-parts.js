@@ -320,35 +320,45 @@ function v12BracketRoute(route){
 }
 
 function v12FinalTrophy(){
-  return '<svg class="v12-final-trophy" viewBox="0 0 220 250" aria-hidden="true">'+
+  return '<svg class="v12-final-trophy" viewBox="0 0 300 430" aria-hidden="true">'+
     '<defs>'+
-      '<linearGradient id="v12CupMetal" x1="0" x2="1"><stop offset="0" stop-color="#ffffff"/><stop offset=".22" stop-color="#9eaccb"/><stop offset=".48" stop-color="#ffffff"/><stop offset=".72" stop-color="#9db2ff"/><stop offset="1" stop-color="#f7e8ff"/></linearGradient>'+
-      '<linearGradient id="v12CupNeon" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#0cf4ff"/><stop offset=".52" stop-color="#ffffff"/><stop offset="1" stop-color="#ff31bf"/></linearGradient>'+
-      '<filter id="v12CupGlow"><feGaussianBlur stdDeviation="3" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>'+
+      '<linearGradient id="cupSilver" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ffffff"/><stop offset=".16" stop-color="#7180a8"/><stop offset=".30" stop-color="#f7f9ff"/><stop offset=".48" stop-color="#3b4156"/><stop offset=".65" stop-color="#ffffff"/><stop offset=".82" stop-color="#7f8db8"/><stop offset="1" stop-color="#eef3ff"/></linearGradient>'+
+      '<linearGradient id="cupDark" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#394052"/><stop offset=".5" stop-color="#090b14"/><stop offset="1" stop-color="#444b62"/></linearGradient>'+
+      '<linearGradient id="neonL" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#22ff65"/><stop offset=".45" stop-color="#00eaff"/><stop offset="1" stop-color="#1477ff"/></linearGradient>'+
+      '<linearGradient id="neonR" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ff27c2"/><stop offset=".55" stop-color="#ff39d1"/><stop offset="1" stop-color="#3a8cff"/></linearGradient>'+
+      '<filter id="glowC"><feGaussianBlur stdDeviation="4" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>'+
     '</defs>'+
-    '<path d="M77 48h66l-7 83c-2 26-13 45-26 51-13-6-24-25-26-51L77 48Z" fill="url(#v12CupMetal)" stroke="#fff" stroke-width="3"/>'+
-    '<path d="M77 61C46 58 36 76 40 103c5 30 22 46 49 53M143 61c31-3 41 15 37 42-5 30-22 46-49 53" fill="none" stroke="url(#v12CupNeon)" stroke-width="9" stroke-linecap="round" filter="url(#v12CupGlow)"/>'+
-    '<path d="M96 182h28v23H96zM78 207h64v18H78z" fill="url(#v12CupMetal)" stroke="#fff" stroke-width="2"/>'+
-    '<circle cx="110" cy="111" r="25" fill="#dce5ff" stroke="#fff" stroke-width="2"/>'+
-    '<path d="m110 91 8 13 15 3-10 12 2 15-15-6-15 6 2-15-10-12 15-3Z" fill="#b8c5e7"/>'+
-    '<path d="M83 48c0-13 7-23 15-28l12 10 12-10c8 5 15 15 15 28" fill="none" stroke="url(#v12CupMetal)" stroke-width="9" stroke-linecap="round"/>'+
+    '<path d="M55 98 130 187 94 278 34 163Z" fill="url(#cupDark)" stroke="url(#neonL)" stroke-width="5" filter="url(#glowC)"/>'+
+    '<path d="M245 98 170 187 206 278 266 163Z" fill="url(#cupDark)" stroke="url(#neonR)" stroke-width="5" filter="url(#glowC)"/>'+
+    '<path d="M94 78 116 41 138 74 151 30 165 75 190 43 207 82 196 101H105Z" fill="url(#cupSilver)" stroke="#fff" stroke-width="3"/>'+
+    '<circle cx="116" cy="45" r="6" fill="#dffaff" stroke="#00eaff" stroke-width="2"/><circle cx="151" cy="30" r="6" fill="#fff" stroke="#8da7ff" stroke-width="2"/><circle cx="190" cy="47" r="6" fill="#fff" stroke="#ff2ac2" stroke-width="2"/>'+
+    '<path d="M98 103h104l-8 79c-3 48-20 88-44 111-24-23-41-63-44-111Z" fill="url(#cupSilver)" stroke="#fff" stroke-width="3"/>'+
+    '<ellipse cx="150" cy="109" rx="54" ry="16" fill="url(#cupDark)" stroke="#fff" stroke-width="3"/>'+
+    '<ellipse cx="150" cy="142" rx="46" ry="14" fill="#10131c" stroke="#dfe7ff" stroke-width="2"/>'+
+    '<circle cx="150" cy="215" r="42" fill="url(#cupSilver)" stroke="#d9e3ff" stroke-width="3"/>'+
+    '<circle cx="150" cy="215" r="28" fill="#d5d9e3" stroke="#5f6575" stroke-width="2"/>'+
+    '<path d="m150 191 10 8-4 13-13 0-4-13Zm-20 17 10 4 3 13-9 8-10-7Zm40 0 6 18-10 7-9-8 3-13Zm-29 31 18 0 4 11-13 10-13-10Z" fill="#343845"/>'+
+    '<path d="M118 286h64l-8 34h-48Z" fill="url(#cupSilver)" stroke="#fff" stroke-width="3"/>'+
+    '<path d="M103 322h94l20 67H83Z" fill="url(#cupDark)" stroke="#a5b0d8" stroke-width="3"/>'+
+    '<path d="M77 390h146l-7 27H84Z" fill="#09102c" stroke="#ffffff" stroke-width="3"/>'+
+    '<path d="M77 390h146" stroke="url(#neonR)" stroke-width="5" filter="url(#glowC)"/>'+
+    '<path d="M84 417h132" stroke="url(#neonL)" stroke-width="5" filter="url(#glowC)"/>'+
+    '<path d="M58 130 117 263" stroke="#ffffff" stroke-width="9" opacity=".72"/>'+
+    '<path d="M242 130 183 263" stroke="#ffffff" stroke-width="9" opacity=".72"/>'+
+    '<path d="M53 132 117 268" stroke="url(#neonL)" stroke-width="4" filter="url(#glowC)"/>'+
+    '<path d="M247 132 183 268" stroke="url(#neonR)" stroke-width="4" filter="url(#glowC)"/>'+
   '</svg>';
 }
 function v12FinalCard(){
-  return '<section class="v12-final-card" data-v12-final>'+
-    '<div class="v12-final-noise" aria-hidden="true"></div>'+
-    '<div class="v12-final-corner c1" aria-hidden="true"></div><div class="v12-final-corner c2" aria-hidden="true"></div>'+
-    '<div class="v12-final-neon-line" aria-hidden="true"></div>'+
-    '<div class="v12-final-city left" aria-hidden="true"><i></i><b></b><span></span></div>'+
-    '<div class="v12-final-city right" aria-hidden="true"><i></i><b></b><span></span></div>'+
-    '<img class="v12-final-logo" src="'+V12_LOGO+'" alt="Liga Municipal de Fútbol Juventino Rosas">'+
-    '<div class="v12-final-cup">'+v12FinalTrophy()+'</div>'+
-    '<div class="v12-final-title"><strong>FINAL LIGA</strong><span>FINAL</span></div>'+
-    '<div class="v12-final-match">'+
-      '<div class="v12-final-team"><span class="v12-final-shield">'+V12_BRACKET_SHIELD+'</span><small>RAMA PLATEADA</small><b>Ganador</b></div>'+
-      '<em>VS</em>'+
-      '<div class="v12-final-team"><span class="v12-final-shield cyan">'+V12_BRACKET_SHIELD+'</span><small>RAMA AZUL</small><b>Ganador</b></div>'+
+  return '<section class="v12-final-reference" data-v12-final>'+
+    '<div class="v12-final-top-date"><span></span><b>5 jun</b></div>'+
+    '<div class="v12-final-side-mark" aria-hidden="true"></div>'+
+    '<div class="v12-final-match-card">'+
+      '<time>5 jun</time>'+
+      '<div class="v12-final-opponent"><span class="v12-final-shield">'+V12_BRACKET_SHIELD+'</span><b>¿?</b></div>'+
+      '<div class="v12-final-opponent"><span class="v12-final-shield">'+V12_BRACKET_SHIELD+'</span><b>¿?</b></div>'+
     '</div>'+
+    '<div class="v12-final-trophy-wrap">'+v12FinalTrophy()+'</div>'+
   '</section>';
 }
 function v12BracketMarkup(){
@@ -357,6 +367,7 @@ function v12BracketMarkup(){
       '<button class="active" data-v12-bracket-stage="playoff">Play-off</button>'+
       '<button data-v12-bracket-stage="octavos">Octavos de final</button>'+
       '<button data-v12-bracket-stage="cuartos">Cuartos de final</button>'+
+      '<button data-v12-bracket-stage="semifinal">Semifinales</button>'+
       '<button data-v12-bracket-stage="final">Final</button>'+
     '</div>'+
     '<div class="v12-bracket-dates"><span>16-19 &amp; 23-26 feb</span><span>9-12 &amp; 17-18 mar</span></div>'+
@@ -406,8 +417,8 @@ document.addEventListener('click',e=>{
     const box=bracketStage.closest('[data-v12-bracket]');
     if(box){
       box.querySelectorAll('[data-v12-bracket-stage]').forEach(b=>b.classList.toggle('active',b===bracketStage));
-      box.classList.remove('stage-playoff','stage-octavos','stage-cuartos','stage-final');
-      box.classList.add('stage-'+bracketStage.dataset.v12BracketStage);
+      box.classList.remove('stage-playoff','stage-octavos','stage-cuartos','stage-semifinal','stage-final');
+      box.classList.add('stage-'+bracketStage.dataset.v12BracketStage); if(bracketStage.dataset.v12BracketStage==='final') setTimeout(()=>bracketStage.scrollIntoView({behavior:'smooth',inline:'end',block:'nearest'}),40);
     }
     return;
   }
