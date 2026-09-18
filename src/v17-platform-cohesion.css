@@ -138,8 +138,7 @@ body[data-app-route] .bottom-nav .nav-item small{
   white-space:nowrap!important;
 }
 
-/* Todas las vistas reservan el mismo espacio para la barra fija. */
-body[data-app-route] #screen{padding-bottom:max(76px,calc(70px + env(safe-area-inset-bottom)))!important}
+/* Sólo Vídeo reserva el espacio adicional de la barra. Las demás páginas conservan su layout actual. */
 body[data-app-route="video"] #screen{padding-bottom:max(76px,calc(70px + env(safe-area-inset-bottom)))!important}
 
 /* La vista móvil estrecha mantiene exactamente la misma proporción de controles. */
