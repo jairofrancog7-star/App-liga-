@@ -523,3 +523,121 @@ body[data-app-route="competition"] #screen>.tabs .tab.active::after{
   body[data-app-route="competition"] #screen>.tabs{height:44px!important}
   body[data-app-route="competition"] #screen>.tabs .tab{font-size:15.5px!important;padding-bottom:10px!important}
 }
+
+/* === V12 PARTS5 — CABECERA COMPACTA TIPO PRIMERA PÁGINA === */
+body[data-app-route="competition"] .topbar{
+  height:122px!important;
+  min-height:122px!important;
+  max-height:122px!important;
+  background-size:cover!important;
+  background-position:center 8%!important;
+  overflow:hidden!important;
+}
+
+/* Logo pequeño, blanco y sin cuadro negro: mismo lenguaje visual de la primera imagen */
+body[data-app-route="competition"] .topbar .wordmark{
+  left:18px!important;
+  top:27px!important;
+  bottom:auto!important;
+  width:58px!important;
+  height:58px!important;
+  max-width:none!important;
+  max-height:none!important;
+  overflow:hidden!important;
+  background:transparent!important;
+}
+body[data-app-route="competition"] .topbar .wordmark::before{
+  content:none!important;
+  display:none!important;
+}
+body[data-app-route="competition"] .topbar .wordmark::after{
+  content:""!important;
+  position:absolute!important;
+  inset:0!important;
+  background-image:url("https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/assets/liga-logo.webp")!important;
+  background-repeat:no-repeat!important;
+  background-position:center!important;
+  background-size:156%!important;
+  filter:grayscale(1) brightness(4.8) contrast(1.35)!important;
+  mix-blend-mode:screen!important;
+  opacity:1!important;
+}
+
+/* Título ya no invade el icono ni el perfil */
+body[data-app-route="competition"] .topbar::after{
+  content:"Competición"!important;
+  left:94px!important;
+  right:62px!important;
+  top:44px!important;
+  bottom:auto!important;
+  font-size:30px!important;
+  line-height:1!important;
+  font-weight:900!important;
+  letter-spacing:-.04em!important;
+  overflow:visible!important;
+  white-space:nowrap!important;
+}
+
+/* Icono de perfil del ZIP: pequeño, limpio, sin círculo extra */
+body[data-app-route="competition"] .topbar .profile-button{
+  right:19px!important;
+  top:39px!important;
+  bottom:auto!important;
+  width:31px!important;
+  height:31px!important;
+  max-width:none!important;
+  max-height:none!important;
+  border:0!important;
+  border-radius:0!important;
+  background:transparent!important;
+}
+body[data-app-route="competition"] .topbar .profile-button svg.v12-profile-master-icon{
+  width:31px!important;
+  height:31px!important;
+  fill:#fff!important;
+  stroke:none!important;
+}
+
+/* Mantener pestañas y tabla intactas; solo compactar unión con la cabecera */
+body[data-app-route="competition"] #screen>.tabs{
+  height:48px!important;
+  min-height:48px!important;
+  max-height:48px!important;
+}
+body[data-app-route="competition"] #screen>.tabs .tab{
+  padding-bottom:11px!important;
+  font-size:14.5px!important;
+}
+
+@media(max-width:380px){
+  body[data-app-route="competition"] .topbar{
+    height:112px!important;
+    min-height:112px!important;
+    max-height:112px!important;
+  }
+  body[data-app-route="competition"] .topbar .wordmark{
+    left:16px!important;
+    top:25px!important;
+    width:52px!important;
+    height:52px!important;
+  }
+  body[data-app-route="competition"] .topbar::after{
+    left:82px!important;
+    right:55px!important;
+    top:41px!important;
+    font-size:27px!important;
+  }
+  body[data-app-route="competition"] .topbar .profile-button{
+    right:16px!important;
+    top:37px!important;
+    width:28px!important;
+    height:28px!important;
+  }
+  body[data-app-route="competition"] .topbar .profile-button svg.v12-profile-master-icon{
+    width:28px!important;
+    height:28px!important;
+  }
+  body[data-app-route="competition"] #screen>.tabs .tab{
+    font-size:13px!important;
+  }
+}
