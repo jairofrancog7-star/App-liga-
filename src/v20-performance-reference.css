@@ -1,0 +1,72 @@
+/* V20 — Performance usa exactamente la imagen original enviada por el usuario.
+   No se rediseña ni se recorta la referencia. */
+body[data-app-route="safe-performance"]{
+  background:#fff!important;
+}
+body[data-app-route="safe-performance"] .topbar,
+body[data-app-route="safe-performance"] .bottom-nav{
+  display:none!important;
+}
+body[data-app-route="safe-performance"] .app-shell{
+  width:100%!important;
+  max-width:none!important;
+  margin:0!important;
+  padding:0!important;
+  background:#fff!important;
+}
+body[data-app-route="safe-performance"] #screen{
+  width:100%!important;
+  max-width:none!important;
+  min-height:100dvh!important;
+  margin:0!important;
+  padding:0!important;
+  overflow-x:hidden!important;
+  background:#fff!important;
+}
+.v20-performance-reference{
+  position:relative;
+  width:100%;
+  margin:0;
+  padding:0;
+  background:#fff;
+  line-height:0;
+}
+.v20-performance-reference-image{
+  display:block;
+  width:100%;
+  height:auto;
+  margin:0;
+  padding:0;
+  object-fit:contain;
+  object-position:top center;
+  border:0;
+}
+.v20-performance-navhits{
+  position:absolute;
+  left:9.55%;
+  right:9.55%;
+  bottom:0;
+  height:11.7%;
+  display:grid;
+  grid-template-columns:repeat(5,1fr);
+  z-index:4;
+  pointer-events:none;
+}
+.v20-performance-navhits button{
+  appearance:none;
+  -webkit-appearance:none;
+  width:100%;
+  height:100%;
+  padding:0;
+  margin:0;
+  border:0;
+  background:transparent;
+  color:transparent;
+  pointer-events:auto;
+  cursor:pointer;
+  -webkit-tap-highlight-color:transparent;
+}
+.v20-performance-navhits button:focus-visible{
+  outline:2px solid #18e6ee;
+  outline-offset:-4px;
+}
