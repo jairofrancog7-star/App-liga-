@@ -7,6 +7,7 @@ const STARTUP_FADE_MS = 420;
 const ROOT_ROUTES = new Set(['home','competition','video','fantasy','more']);
 const HEADER_TITLES = {
   competition:'Competición',
+  more:'Más',
   profile:'Perfil'
 };
 
