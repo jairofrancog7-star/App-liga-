@@ -1,0 +1,305 @@
+/* V19 — pantalla MÁS reconstruida desde la referencia móvil del usuario.
+   Solo afecta a la ruta #/more en móvil/apk. */
+@media (max-width:1023px){
+  body[data-app-route="more"],
+  body[data-app-route="more"] #app,
+  body[data-app-route="more"] .app-shell{
+    background:#0715c4!important;
+  }
+
+  body[data-app-route="more"] .topbar{
+    background:
+      linear-gradient(180deg,rgba(2,5,86,.55),rgba(8,19,151,.18)),
+      url('../more-bg-v19.webp?v=20260918-v19') center -8px/100% auto no-repeat,
+      #080d85!important;
+    border:0!important;
+    box-shadow:none!important;
+  }
+
+  body[data-app-route="more"] #screen{
+    position:relative!important;
+    width:100%!important;
+    max-width:none!important;
+    margin:0!important;
+    padding:0 0 calc(86px + env(safe-area-inset-bottom))!important;
+    overflow-x:hidden!important;
+    background:#0715c4!important;
+  }
+
+  body[data-app-route="more"] #screen>.eyebrow,
+  body[data-app-route="more"] #screen>.screen-title,
+  body[data-app-route="more"] #screen>.menu-group{
+    display:none!important;
+  }
+
+  .v19-more-page{
+    position:relative;
+    isolation:isolate;
+    min-height:1370px;
+    padding:22px 26px 28px;
+    overflow:hidden;
+    color:#fff;
+    font-family:Inter,Roboto,Arial,sans-serif;
+    background:
+      linear-gradient(180deg,rgba(2,5,95,.03) 0%,rgba(0,21,225,.02) 72%,rgba(0,21,224,.14) 100%),
+      url('../more-bg-v19.webp?v=20260918-v19') center -154px/100% auto no-repeat,
+      linear-gradient(180deg,#090c83 0%,#07119e 32%,#051bd8 72%,#061de5 100%);
+  }
+  .v19-more-page::before{
+    content:"";
+    position:absolute;
+    z-index:-1;
+    inset:0;
+    pointer-events:none;
+    background:
+      radial-gradient(440px 550px at 82% 34%,rgba(0,170,255,.10),transparent 66%),
+      linear-gradient(90deg,rgba(2,5,90,.18),transparent 58%);
+  }
+
+  .v19-more-logo{
+    position:absolute;
+    z-index:2;
+    top:2px;
+    right:14.5%;
+    width:28%;
+    max-width:178px;
+    height:154px;
+    object-fit:contain;
+    object-position:center;
+    pointer-events:none;
+    user-select:none;
+  }
+
+  .v19-more-menu{
+    position:relative;
+    z-index:3;
+    width:min(68%,430px);
+    padding-top:1px;
+  }
+  .v19-more-item{
+    appearance:none;
+    -webkit-appearance:none;
+    width:100%;
+    min-height:55px;
+    display:flex;
+    align-items:center;
+    gap:18px;
+    padding:0;
+    margin:0;
+    border:0;
+    outline:0;
+    background:transparent;
+    color:#fff;
+    text-align:left;
+    font:750 19px/1.15 Inter,Roboto,Arial,sans-serif;
+    letter-spacing:-.015em;
+    cursor:pointer;
+  }
+  .v19-more-item:active{opacity:.68}
+  .v19-more-icon{
+    flex:0 0 38px;
+    width:38px;
+    height:38px;
+    display:grid;
+    place-items:center;
+    color:#fff;
+  }
+  .v19-more-icon svg{
+    width:31px;
+    height:31px;
+    display:block;
+    fill:none;
+    stroke:currentColor;
+    stroke-width:1.9;
+    stroke-linecap:round;
+    stroke-linejoin:round;
+    vector-effect:non-scaling-stroke;
+  }
+  .v19-more-item .v19-wide-icon svg{width:34px;height:34px}
+  .v19-more-item span:last-child{
+    white-space:nowrap;
+    text-shadow:0 1px 8px rgba(0,0,70,.18);
+  }
+
+  .v19-more-label{
+    position:relative;
+    z-index:3;
+    width:min(68%,430px);
+    margin:16px 0 6px;
+    color:#9ea3de;
+    font:500 17px/1.15 Inter,Roboto,Arial,sans-serif;
+    letter-spacing:.005em;
+  }
+  .v19-more-label.event{margin-top:18px}
+  .v19-more-label.explore{margin-top:18px}
+
+  .v19-more-bottom{
+    position:relative;
+    z-index:5;
+    margin-top:22px;
+    width:100%;
+  }
+  .v19-sponsor-title{
+    margin:0 0 7px;
+    color:#a6a9da;
+    text-align:center;
+    font:500 14px/1.2 Inter,Roboto,Arial,sans-serif;
+  }
+  .v19-sponsors{
+    display:grid;
+    grid-template-columns:repeat(5,minmax(0,1fr));
+    gap:5px;
+    width:100%;
+  }
+  .v19-sponsor{
+    min-width:0;
+    height:84px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:6px 5px;
+    overflow:hidden;
+    border:1px solid rgba(255,255,255,.42);
+    border-radius:5px;
+    text-align:center;
+    box-shadow:inset 0 0 16px rgba(255,255,255,.06);
+    font-family:Inter,Roboto,Arial,sans-serif;
+  }
+  .v19-sponsor b,.v19-sponsor span{display:block}
+  .v19-sponsor.s1{
+    background:#133a9b;
+    color:#fff;
+  }
+  .v19-sponsor.s1 .town-mark{
+    font-size:23px;
+    line-height:1;
+    margin-bottom:4px;
+  }
+  .v19-sponsor.s1 b{font-size:11px;line-height:1.05;font-weight:900}
+  .v19-sponsor.s2{
+    background:linear-gradient(145deg,#087357,#0b4d3f);
+    color:#fff;
+    font-family:Georgia,serif;
+    font-style:italic;
+    font-size:15px;
+    line-height:1.02;
+  }
+  .v19-sponsor.s2 b{font-size:20px;font-weight:600}
+  .v19-sponsor.s3{
+    background:#f8f7f3;
+    color:#123e91;
+  }
+  .v19-sponsor.s3 b{font-size:13px;line-height:1;font-weight:1000}
+  .v19-sponsor.s3 .ball-mini{font-size:21px;line-height:1;margin-top:3px}
+  .v19-sponsor.s4{
+    background:#158bcc;
+    color:#fff;
+  }
+  .v19-sponsor.s4 .people-mark{font-size:22px;line-height:1;margin-bottom:3px}
+  .v19-sponsor.s4 b{font-size:10px;line-height:1.05;font-weight:900}
+  .v19-sponsor.s5{
+    background:#f2b51f;
+    color:#17377d;
+    transform:none;
+  }
+  .v19-sponsor.s5 b{
+    font-size:13px;
+    line-height:.98;
+    font-style:italic;
+    font-weight:1000;
+    transform:skew(-5deg);
+  }
+  .v19-sponsor.s5 i{
+    display:block;
+    width:42px;
+    height:3px;
+    margin:5px auto 0;
+    border-radius:999px;
+    background:#17377d;
+    transform:rotate(-7deg);
+  }
+
+  .v19-official{
+    margin-top:12px;
+    text-align:center;
+    color:#afb3e0;
+    font:500 14px/1.2 Inter,Roboto,Arial,sans-serif;
+  }
+  .v19-official img{
+    display:block;
+    width:110px;
+    height:110px;
+    margin:5px auto 0;
+    object-fit:contain;
+  }
+
+  /* La barra inferior existente se conserva; solo aseguramos el mismo azul oscuro
+     y el acento cian de la referencia. */
+  body[data-app-route="more"] .bottom-nav{
+    background:rgba(10,10,102,.96)!important;
+    border-top:1px solid rgba(255,255,255,.12)!important;
+    backdrop-filter:blur(12px)!important;
+    -webkit-backdrop-filter:blur(12px)!important;
+  }
+  body[data-app-route="more"] .bottom-nav .nav-item:last-child,
+  body[data-app-route="more"] .bottom-nav .nav-item:last-child .nav-icon{
+    color:#1fe5ef!important;
+  }
+
+  @media(max-width:560px){
+    .v19-more-page{
+      min-height:1320px;
+      padding-left:22px;
+      padding-right:22px;
+      background-position:center -138px;
+    }
+    .v19-more-logo{
+      right:10%;
+      width:31%;
+      height:144px;
+    }
+    .v19-more-menu,.v19-more-label{width:72%}
+    .v19-more-item{
+      min-height:52px;
+      gap:14px;
+      font-size:18px;
+    }
+    .v19-more-icon{flex-basis:34px;width:34px;height:34px}
+    .v19-more-icon svg{width:29px;height:29px}
+    .v19-sponsor{height:76px}
+  }
+
+  @media(max-width:390px){
+    .v19-more-page{
+      min-height:1275px;
+      padding:18px 17px 22px;
+      background-position:center -118px;
+    }
+    .v19-more-logo{
+      top:0;
+      right:6%;
+      width:33%;
+      height:128px;
+    }
+    .v19-more-menu,.v19-more-label{width:75%}
+    .v19-more-item{
+      min-height:48px;
+      gap:10px;
+      font-size:16.5px;
+    }
+    .v19-more-icon{flex-basis:32px;width:32px;height:32px}
+    .v19-more-icon svg{width:27px;height:27px}
+    .v19-more-label{font-size:15px;margin-top:13px}
+    .v19-more-bottom{margin-top:17px}
+    .v19-sponsor{height:68px;padding:4px 3px}
+    .v19-sponsor.s1 b,.v19-sponsor.s4 b{font-size:8px}
+    .v19-sponsor.s2 b{font-size:15px}
+    .v19-sponsor.s3 b,.v19-sponsor.s5 b{font-size:10px}
+    .v19-official img{width:94px;height:94px}
+  }
+}
+
+/* El escritorio conserva su pantalla/directorio actual. */
+@media(min-width:1024px){
+  .v19-more-page{display:none!important}
+}
