@@ -34,21 +34,30 @@ function apply(){
     const route=item.dataset.route;
     const icon=item.querySelector('.nav-icon');
     const small=item.querySelector('small');
-    if(small && labels[route]) small.textContent=labels[route];
+    if(small && labels[route] && small.textContent!==labels[route]) small.textContent=labels[route];
     if(icon && I[route]){
-      const next=I[route][item.classList.contains('active')?'on':'off'];
-      if(icon.innerHTML!==next) icon.innerHTML=next;
+      const state=item.classList.contains('active')?'on':'off';
+      const key=route+':'+state;
+      if(icon.dataset.v16IconState!==key){
+        icon.innerHTML=I[route][state];
+        icon.dataset.v16IconState=key;
+      }
     }
   });
 }
 
-const observer=new MutationObserver(apply);
+function scheduleApply(){
+  requestAnimationFrame(()=>requestAnimationFrame(apply));
+}
+
 function start(){
   apply();
-  const nav=document.querySelector('.bottom-nav');
-  if(nav) observer.observe(nav,{subtree:true,attributes:true,attributeFilter:['class'],childList:true});
+  setTimeout(apply,150);
+  setTimeout(apply,600);
 }
 document.addEventListener('DOMContentLoaded',start,{once:true});
-window.addEventListener('hashchange',()=>requestAnimationFrame(apply));
-setInterval(apply,600);
+window.addEventListener('hashchange',scheduleApply);
+document.addEventListener('click',e=>{
+  if(e.target.closest('.nav-item')) setTimeout(apply,0);
+},true);
 })();
