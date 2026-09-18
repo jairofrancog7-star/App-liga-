@@ -29,16 +29,68 @@
     <section class="v6-section"><div class="v6-section-head"><h2>Más datos</h2></div><div class="v6-action-grid">${actionCard('chart','Estadísticas','General, equipos y jugadores','stats')}${actionCard('trophy','Rankings','Clasificación y líderes','rankings')}${actionCard('history','Historia','Temporadas y campeones','history')}${actionCard('chart','Datos avanzados','KPIs y comparativas','safe-data')}</div></section>
   </div>`}
   function performanceView(){
-    return `<div class="v20-performance-reference" aria-label="Performance - Liga Municipal de Fútbol Juventino Rosas">
-      <img class="v20-performance-reference-image" src="./performance-reference-v20.png?v=20260918-performance1" alt="Performance Liga Municipal de Fútbol Juventino Rosas" loading="eager" decoding="async">
-      <div class="v20-performance-navhits" aria-label="Navegación inferior">
-        <button type="button" data-safe-route="home" aria-label="Inicio"></button>
-        <button type="button" data-safe-route="competition" aria-label="Competición"></button>
-        <button type="button" data-safe-route="video" aria-label="Video"></button>
-        <button type="button" data-safe-route="fantasy" aria-label="Fantasy"></button>
-        <button type="button" data-safe-route="more" aria-label="Más"></button>
+    const base='https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/';
+    const leagueLogo=base+'assets/liga-logo.webp';
+    const hero='https://skyagent-artifacts.skywork.ai/image/5221463659472822263/2100485172215463936/2100485172215463937.png';
+    const show='https://skyagent-artifacts.skywork.ai/image/5221463659472822263/2100485077397905408/2100485077397905409.png';
+    const stories=[
+      {label:'Jornada 1 ⚽',logo:leagueLogo,route:'competition'},
+      {label:'Datos 2025/26 …',logo:base+'assets/branding/america-veteranos-35-user.png',route:'safe-data'},
+      {label:'Vuelta SF Unpacked…',logo:base+'assets/teams/la-huerta-cuenda.webp',route:'video'},
+      {label:'Cara a cara 📊',logo:leagueLogo,route:'rankings'},
+      {label:'Ida semifinal',logo:base+'assets/teams/lobos-cdg.webp',route:'competition'}
+    ];
+    const storyHtml=stories.map(s=>`<button class="v20-story" type="button" data-safe-route="${s.route}"><span class="v20-story-ring"><img src="${s.logo}" alt="" loading="lazy"></span><small>${s.label}</small></button>`).join('');
+    return `<section class="v20-performance" aria-label="Performance Liga Municipal de Fútbol Juventino Rosas">
+      <div class="v20-performance-hero">
+        <img class="v20-performance-heroimg" src="${hero}" alt="Partido de la Liga Municipal de Fútbol Juventino Rosas" loading="eager" decoding="async">
+        <div class="v20-performance-heroshade"></div>
+        <div class="v20-performance-brand">
+          <img src="${leagueLogo}" alt="Liga Municipal de Fútbol Juventino Rosas">
+          <h1>Liga Municipal de Fútbol<br>Juventino Rosas</h1>
+          <p>GUANAJUATO</p>
+        </div>
       </div>
-    </div>`
+
+      <div class="v20-stories" aria-label="Accesos de Performance">${storyHtml}</div>
+
+      <div class="v20-performance-feed">
+        <button class="v20-performance-card v20-card-america" type="button" data-safe-route="teams">
+          <img src="${show}" alt="" loading="lazy">
+          <span class="v20-card-shade"></span>
+          <img class="v20-card-logo" src="${leagueLogo}" alt="">
+          <strong>Veteranos América: líderes<br>en la tabla ⚽</strong>
+        </button>
+
+        <button class="v20-performance-card" type="button" data-safe-route="video">
+          <img src="${hero}" alt="" loading="lazy">
+          <span class="v20-card-shade"></span>
+          <span class="v20-card-time">00:51</span>
+          <span class="v20-card-play" aria-hidden="true">▶</span>
+          <strong>Juventino Rosas: ataque<br>con mucho gol</strong>
+        </button>
+
+        <button class="v20-performance-card" type="button" data-safe-route="teams">
+          <img src="./home-feature-reference.webp?v=20260918" alt="" loading="lazy">
+          <span class="v20-card-shade"></span>
+          <strong>La Huerta: el impacto de<br>su mediocampo</strong>
+        </button>
+
+        <button class="v20-performance-card" type="button" data-safe-route="video">
+          <img src="${show}" alt="" loading="lazy">
+          <span class="v20-card-shade"></span>
+          <span class="v20-card-time">00:50</span>
+          <span class="v20-card-play" aria-hidden="true">▶</span>
+          <strong>Deportivo Rosas: la seguridad<br>en la portería</strong>
+        </button>
+
+        <button class="v20-performance-card v20-card-more" type="button" data-safe-route="moments">
+          <img src="./video-hero-reference.webp?v=20260918" alt="" loading="lazy">
+          <span class="v20-card-shade"></span>
+          <strong>Más momentos de la Liga</strong>
+        </button>
+      </div>
+    </section>`
   }
   function dataView(){const tab=state.dataTab;return `<div class="safe-brand"><span class="eyebrow">LIGA JUVENTINO</span><h1>Datos</h1><p>Estadísticas principales de equipos y jugadores.</p></div><div class="safe-tabs">${['General','Equipos','Jugadores'].map(x=>`<button class="${tab===x?'active':''}" data-safe-data-tab="${x}">${x}</button>`).join('')}</div>${tab==='General'?`<div class="safe-kpis"><div><b>42</b><small>Goles</small></div><div><b>15</b><small>Partidos</small></div><div><b>2.8</b><small>Goles / partido</small></div><div><b>6</b><small>Equipos</small></div></div>`:''}${tab==='Equipos'?`<div class="v6-table-card">${teams.map((t,i)=>`<div class="safe-rank"><b>${i+1}</b>${crest(t[0])}<span>${t[1]}</span><strong>${t[2]} pts</strong></div>`).join('')}</div>`:''}${tab==='Jugadores'?`<div class="v6-table-card">${scorers.map((s,i)=>`<div class="safe-rank"><b>${i+1}</b>${crest(s[1])}<span>${s[0]}</span><strong>${s[2]} G · ${s[3]} A</strong></div>`).join('')}</div>`:''}<div class="safe-note">Datos de demostración hasta conectar la base oficial.</div>`}
   function notificationsView(){return `<div class="safe-brand"><span class="eyebrow">ALERTAS</span><h1>Notificaciones</h1><p>Configura qué quieres recibir.</p></div><div class="safe-inbox">${state.inbox.map(n=>`<button class="${n.read?'read':''}" data-safe-inbox="${n.id}"><span>${svg('bell')}</span><div><b>${esc(n.title)}</b><small>${esc(n.body)}</small></div></button>`).join('')}</div><section class="section"><div class="section-head"><h2>Preferencias</h2></div>${[['goals','Goles'],['kickoff','Inicio del partido'],['final','Final del partido'],['news','Noticias'],['video','Nuevo vídeo'],['fantasy','Fantasy'],['predictor','Quiniela'],['transfers','Fichajes']].map(([k,l])=>`<label class="safe-toggle"><span>${l}</span><input type="checkbox" data-safe-notif="${k}" ${state.notif[k]?'checked':''}></label>`).join('')}</section>`}
