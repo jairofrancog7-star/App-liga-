@@ -2,6 +2,14 @@ const V16_VIDEO_HERO='https://skyagent-artifacts.skywork.ai/image/52214636594728
 const V16_VIDEO_SHOW='https://skyagent-artifacts.skywork.ai/image/5221463659472822263/2100485077397905408/2100485077397905409.png';
 const V16_VIDEO_LOGO='https://d2ol7oe51mr4n9.cloudfront.net/user_3JNvttsAwr0QjxhuX5O1uaa9bvv/720d1f82-1d59-4a7a-af69-9e7e8da0250a.png';
 
+const V16_EDITOR_PICKS=[
+  {image:V16_VIDEO_SHOW,title:'GOLES CLÁSICOS',sub:'Jornada 2',watch:'Goles clásicos de la liga'},
+  {image:V16_VIDEO_HERO,title:'EL SHOW DE LA LIGA',sub:'Nuevo episodio',watch:'El Show de la Liga'},
+  {image:V16_VIDEO_SHOW,title:'MOMENTOS',sub:'Mejores jugadas',watch:'Momentos de la Liga'},
+  {image:V16_VIDEO_HERO,title:'ATAJADAS',sub:'Porteros de la jornada',watch:'Grandes atajadas'},
+  {image:V16_VIDEO_SHOW,title:'RESUMEN',sub:'Partido de la semana',watch:'Resumen del partido'}
+];
+
 const V16_VIDEO_SLIDES=[
   {
     image:V16_VIDEO_HERO,
@@ -66,6 +74,16 @@ function v16DotsMarkup(){
   ).join('');
 }
 
+function v16PicksMarkup(){
+  return V16_EDITOR_PICKS.map((item,i)=>`
+    <button type="button" class="v17-tv-pick" data-v16-pick="${i}" data-v16-watch="${item.watch}" aria-label="${item.title}">
+      <img src="${item.image}" alt="">
+      <span class="v17-tv-pickshade" aria-hidden="true"></span>
+      <span class="v17-tv-pickcopy"><b>${item.title}</b><small>${item.sub}</small></span>
+      <span class="v17-tv-picklogin">▶ Ver</span>
+    </button>`).join('');
+}
+
 function v16VideoMarkup(){
   const slide=V16_VIDEO_SLIDES[v16Slide];
   return `
@@ -100,11 +118,11 @@ function v16VideoMarkup(){
 
       <div class="v17-tv-content">
         <h2>Selección de la liga</h2>
-        <article class="v17-tv-show">
-          <img src="${V16_VIDEO_SHOW}" alt="Jugadores ficticios para El Show de la Liga">
-          <div class="v17-tv-showcopy">EL SHOW<br>DE LA LIGA</div>
-          <button class="v17-tv-login" data-v16-watch="El Show de la Liga">▶ Iniciar sesión para ver</button>
-        </article>
+        <div class="v17-tv-picks" aria-label="Selección de vídeos">
+          <div class="v17-tv-picks-track" data-v16-picks-track>
+            ${v16PicksMarkup()}
+          </div>
+        </div>
       </div>
     </section>`;
 }
