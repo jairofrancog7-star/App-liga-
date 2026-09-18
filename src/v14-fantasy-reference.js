@@ -22,7 +22,7 @@ function v18Markup(){
   return '<section class="v18-fantasy-master" data-v18-fantasy>'+
     '<img class="v18-fantasy-bg" alt="" aria-hidden="true">'+
     '<div class="v18-card-cover" aria-hidden="true"></div>'+
-    '<img class="v18-card-stretch" alt="" aria-hidden="true">'+
+    '<div class="v18-card-window" aria-hidden="true"><img class="v18-card-stretch" alt=""></div>'+
     '<img class="v18-title-art" src="./fantasy-title-master.webp?v=parts18" alt="Fantasy">'+
     '<div class="v18-league">'+
       '<strong>LIGA MUNICIPAL DE FÚTBOL</strong>'+
