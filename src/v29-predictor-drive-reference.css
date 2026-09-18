@@ -1,0 +1,310 @@
+/* V29 — Pronostica Seis: reconstrucción funcional del diseño de Drive. */
+body[data-app-route="predictor"]{
+  --v29-bg:#02065f;
+  --v29-cyan:#0fe8ff;
+  --v29-blue:#097dff;
+  --v29-pink:#ff18d9;
+  background:var(--v29-bg)!important;
+  overflow:hidden!important;
+}
+body[data-app-route="predictor"] #app,
+body[data-app-route="predictor"] .app-shell{
+  background:var(--v29-bg)!important;
+  min-height:100dvh!important;
+  padding-bottom:0!important;
+}
+body[data-app-route="predictor"] #app>.topbar{display:none!important}
+body[data-app-route="predictor"] #screen{
+  position:relative!important;
+  width:100%!important;
+  height:100dvh!important;
+  min-height:100dvh!important;
+  max-height:100dvh!important;
+  margin:0!important;
+  padding:0 0 88px!important;
+  overflow:hidden!important;
+  background:
+    radial-gradient(circle at 50% 9%,rgba(0,68,255,.98) 0%,rgba(0,51,235,.72) 18%,rgba(0,23,157,.18) 48%,transparent 64%),
+    linear-gradient(180deg,#061bd3 0%,#0410a6 23%,#02086c 58%,#01045c 100%)!important;
+  animation:none!important;
+}
+body[data-app-route="predictor"] .v29-predictor-page{
+  position:relative!important;
+  width:100%!important;
+  height:100%!important;
+  min-height:0!important;
+  overflow:hidden!important;
+  isolation:isolate!important;
+}
+body[data-app-route="predictor"] .v29-predictor-page::before{
+  content:""!important;
+  position:absolute!important;
+  inset:0!important;
+  pointer-events:none!important;
+  background:
+    radial-gradient(ellipse at 50% 58%,rgba(16,90,255,.23),transparent 40%),
+    radial-gradient(ellipse at 50% 76%,rgba(0,160,255,.12),transparent 38%)!important;
+  z-index:-1!important;
+}
+body[data-app-route="predictor"] .v29-title-deco{
+  position:absolute!important;
+  color:#0aa7ff!important;
+  opacity:.92!important;
+  pointer-events:none!important;
+  z-index:1!important;
+}
+body[data-app-route="predictor"] .v29-title-deco svg{width:100%!important;height:100%!important;display:block!important}
+body[data-app-route="predictor"] .v29-title-deco-left{
+  width:17%!important;
+  height:11%!important;
+  left:16%!important;
+  top:18.7%!important;
+  transform:rotate(-1deg)!important;
+}
+body[data-app-route="predictor"] .v29-title-deco-right{
+  width:17%!important;
+  height:10.5%!important;
+  right:18%!important;
+  top:15.5%!important;
+  color:#1297ff!important;
+}
+body[data-app-route="predictor"] .v29-predictor-title{
+  position:absolute!important;
+  z-index:4!important;
+  top:19.8%!important;
+  left:25.5%!important;
+  width:49%!important;
+  margin:0!important;
+  color:#fff!important;
+  text-align:center!important;
+  text-transform:uppercase!important;
+  font-family:Impact,"Arial Narrow","Roboto Condensed",sans-serif!important;
+  font-style:italic!important;
+  font-weight:900!important;
+  font-size:clamp(42px,8.7vw,70px)!important;
+  line-height:.84!important;
+  letter-spacing:-.028em!important;
+  transform:skewX(-7deg)!important;
+  text-shadow:0 1px 0 rgba(255,255,255,.35)!important;
+}
+body[data-app-route="predictor"] .v29-predictor-title span{display:block!important}
+
+body[data-app-route="predictor"] .v29-master-crop{
+  position:absolute!important;
+  overflow:hidden!important;
+  pointer-events:none!important;
+  z-index:3!important;
+}
+body[data-app-route="predictor"] .v29-master-crop img{
+  position:absolute!important;
+  display:block!important;
+  max-width:none!important;
+  user-select:none!important;
+  -webkit-user-drag:none!important;
+}
+body[data-app-route="predictor"] .v29-logo-crop{
+  left:35.4%!important;
+  top:34.1%!important;
+  width:29.2%!important;
+  aspect-ratio:270/238!important;
+}
+body[data-app-route="predictor"] .v29-logo-crop img{
+  width:348.52%!important;
+  height:auto!important;
+  transform:translate(-35.81%,-34.09%)!important;
+  transform-origin:0 0!important;
+}
+body[data-app-route="predictor"] .v29-board{
+  position:absolute!important;
+  inset:0!important;
+  z-index:2!important;
+}
+body[data-app-route="predictor"] .v29-panel{
+  position:absolute!important;
+  z-index:1!important;
+  left:21.1%!important;
+  top:54.55%!important;
+  width:57.8%!important;
+  height:12.0%!important;
+  border-radius:18px!important;
+  background:linear-gradient(180deg,rgba(33,47,166,.46),rgba(14,21,127,.34))!important;
+  border:1.4px solid rgba(41,150,255,.62)!important;
+  box-shadow:inset 0 0 22px rgba(78,71,255,.24),0 0 10px rgba(0,163,255,.11)!important;
+}
+body[data-app-route="predictor"] .v29-panel::before{
+  content:""!important;
+  position:absolute!important;
+  inset:-2px!important;
+  border-radius:20px!important;
+  padding:2px!important;
+  background:linear-gradient(100deg,#0b82ff 0%,#1dd4ff 16%,#ff31dc 48%,#0aff9d 79%,#0d8cff 100%)!important;
+  -webkit-mask:linear-gradient(#fff 0 0) content-box,linear-gradient(#fff 0 0)!important;
+  -webkit-mask-composite:xor!important;
+  mask-composite:exclude!important;
+  opacity:.65!important;
+  pointer-events:none!important;
+}
+body[data-app-route="predictor"] .v29-pick{
+  position:absolute!important;
+  z-index:8!important;
+  border:0!important;
+  outline:0!important;
+  padding:0!important;
+  margin:0!important;
+  background:transparent!important;
+  color:#fff!important;
+  font-family:Impact,"Arial Narrow",sans-serif!important;
+  font-size:clamp(52px,10vw,82px)!important;
+  font-weight:800!important;
+  line-height:1!important;
+  text-align:center!important;
+  cursor:pointer!important;
+  text-shadow:0 2px 0 rgba(255,255,255,.18)!important;
+  -webkit-tap-highlight-color:transparent!important;
+  touch-action:manipulation!important;
+}
+body[data-app-route="predictor"] .v29-pick:active{transform:scale(.96)!important}
+body[data-app-route="predictor"] .v29-pick-1{
+  left:24.6%!important;
+  top:57.2%!important;
+  width:16%!important;
+  height:8%!important;
+}
+body[data-app-route="predictor"] .v29-pick-2{
+  right:23.0%!important;
+  top:54.75%!important;
+  width:14%!important;
+  height:7%!important;
+}
+body[data-app-route="predictor"] .v29-pick-3{
+  right:22.8%!important;
+  top:60.35%!important;
+  width:14%!important;
+  height:7%!important;
+}
+body[data-app-route="predictor"] .v29-trophy-crop{
+  left:36.0%!important;
+  top:48.85%!important;
+  width:28.0%!important;
+  aspect-ratio:265/388!important;
+  z-index:6!important;
+}
+body[data-app-route="predictor"] .v29-trophy-crop img{
+  width:355.09%!important;
+  height:auto!important;
+  transform:translate(-37.30%,-48.74%)!important;
+  transform-origin:0 0!important;
+}
+body[data-app-route="predictor"] .v29-pitch{
+  position:absolute!important;
+  z-index:2!important;
+  left:13.0%!important;
+  top:66.15%!important;
+  width:74.0%!important;
+  height:11.5%!important;
+  clip-path:polygon(17% 0,83% 0,100% 100%,0 100%)!important;
+  background:
+    linear-gradient(180deg,rgba(0,138,255,.55),rgba(0,62,210,.7)),
+    radial-gradient(circle at 50% 0,rgba(0,229,255,.55),transparent 44%)!important;
+  border-bottom:2px solid rgba(28,110,255,.8)!important;
+  box-shadow:0 9px 0 rgba(0,20,115,.52),0 18px 24px rgba(0,0,45,.35)!important;
+}
+body[data-app-route="predictor"] .v29-pitch::before{
+  content:""!important;
+  position:absolute!important;
+  inset:4% 6% 8%!important;
+  border:2px solid rgba(41,223,255,.65)!important;
+  clip-path:polygon(16% 0,84% 0,100% 100%,0 100%)!important;
+}
+body[data-app-route="predictor"] .v29-pitch-half{
+  position:absolute!important;
+  left:50%!important;
+  top:7%!important;
+  width:1px!important;
+  height:84%!important;
+  background:rgba(38,209,255,.55)!important;
+  transform:translateX(-50%)!important;
+}
+body[data-app-route="predictor"] .v29-pitch-circle{
+  position:absolute!important;
+  left:50%!important;
+  top:43%!important;
+  width:15%!important;
+  aspect-ratio:1!important;
+  border:1.5px solid rgba(38,209,255,.58)!important;
+  border-radius:50%!important;
+  transform:translate(-50%,-50%) scaleY(.45)!important;
+}
+body[data-app-route="predictor"] .v29-pitch-box{
+  position:absolute!important;
+  left:39%!important;
+  width:22%!important;
+  height:16%!important;
+  border:1.5px solid rgba(38,209,255,.58)!important;
+}
+body[data-app-route="predictor"] .v29-pitch-box-top{top:2%!important}
+body[data-app-route="predictor"] .v29-pitch-box-bottom{bottom:5%!important}
+
+body[data-app-route="predictor"] .v29-stadium-crop{
+  left:8.8%!important;
+  top:79.55%!important;
+  width:82.4%!important;
+  aspect-ratio:744/190!important;
+  z-index:4!important;
+}
+body[data-app-route="predictor"] .v29-stadium-crop img{
+  width:126.48%!important;
+  height:auto!important;
+  transform:translate(-12.05%,-79.31%)!important;
+  transform-origin:0 0!important;
+}
+
+body[data-app-route="predictor"] .bottom-nav{
+  height:88px!important;
+  padding:9px 10px calc(6px + env(safe-area-inset-bottom))!important;
+  background:linear-gradient(90deg,#101786,#07116f,#101786)!important;
+  border-top:1px solid rgba(82,102,255,.5)!important;
+  box-shadow:0 -4px 20px rgba(0,0,57,.28)!important;
+}
+body[data-app-route="predictor"] .bottom-nav .nav-item{color:#a5a8c7!important}
+body[data-app-route="predictor"] .bottom-nav .nav-item.active{color:#11e9ff!important}
+body[data-app-route="predictor"] .bottom-nav .nav-item small{
+  font-size:12px!important;
+  font-weight:500!important;
+  letter-spacing:0!important;
+  text-transform:none!important;
+}
+body[data-app-route="predictor"] .bottom-nav .nav-icon{
+  width:31px!important;
+  height:31px!important;
+  margin-bottom:3px!important;
+}
+body[data-app-route="predictor"] .v29-sr-only{
+  position:absolute!important;
+  width:1px!important;
+  height:1px!important;
+  padding:0!important;
+  margin:-1px!important;
+  overflow:hidden!important;
+  clip:rect(0,0,0,0)!important;
+  white-space:nowrap!important;
+  border:0!important;
+}
+@media(min-width:521px){
+  body[data-app-route="predictor"] #screen,
+  body[data-app-route="predictor"] .bottom-nav{
+    width:520px!important;
+    left:50%!important;
+    transform:translateX(-50%)!important;
+  }
+}
+@media(max-height:720px){
+  body[data-app-route="predictor"] .v29-predictor-title{top:17.5%!important}
+  body[data-app-route="predictor"] .v29-title-deco-left{top:16.5%!important}
+  body[data-app-route="predictor"] .v29-title-deco-right{top:14.0%!important}
+  body[data-app-route="predictor"] .v29-logo-crop{top:32.5%!important}
+  body[data-app-route="predictor"] .v29-panel{top:53.5%!important}
+  body[data-app-route="predictor"] .v29-trophy-crop{top:47.8%!important}
+  body[data-app-route="predictor"] .v29-pitch{top:65.2%!important}
+  body[data-app-route="predictor"] .v29-stadium-crop{top:78.5%!important}
+}
