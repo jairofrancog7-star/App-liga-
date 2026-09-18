@@ -493,3 +493,62 @@ body[data-app-route="fantasyAccess"] .bottom-nav .nav-item[data-route="fantasy"]
     transform:translateX(-50%)!important;
   }
 }
+
+
+/* PARTS24 — ajuste puntual solicitado:
+   solo el logo blanco de la Liga en la parte superior se hace más chico
+   para que se vea completa toda la leyenda circular. */
+body[data-app-route="fantasyAccess"] .v23-access-sponsor{
+  width:100%!important;
+  min-height:clamp(84px,16.65vw,104px)!important;
+  display:grid!important;
+  grid-template-columns:1fr auto 1fr!important;
+  align-items:center!important;
+  justify-items:center!important;
+  padding:0 clamp(26px,7vw,52px)!important;
+  box-sizing:border-box!important;
+  background:linear-gradient(90deg,#0455cf 0%,#0872e7 46%,#0559cf 100%)!important;
+  flex:0 0 auto!important;
+}
+body[data-app-route="fantasyAccess"] .v23-access-sponsor>span{
+  grid-column:1/2!important;
+  justify-self:end!important;
+  margin-right:clamp(18px,4vw,34px)!important;
+  color:#fff!important;
+  font:400 clamp(17px,3.3vw,21px)/1.1 Inter,ui-sans-serif,system-ui,sans-serif!important;
+  white-space:nowrap!important;
+}
+body[data-app-route="fantasyAccess"] .v23-access-sponsor>img{
+  grid-column:2/3!important;
+  width:clamp(66px,14.2vw,78px)!important;
+  height:auto!important;
+  max-height:78px!important;
+  display:block!important;
+  object-fit:contain!important;
+  object-position:center!important;
+  mix-blend-mode:screen!important;
+  filter:brightness(1.08) contrast(1.04)!important;
+  pointer-events:none!important;
+  user-select:none!important;
+}
+body[data-app-route="fantasyAccess"] .v23-access-sponsor.v23-ref-crop{aspect-ratio:auto!important}
+body[data-app-route="fantasyAccess"] .v23-access-sponsor.v23-ref-crop>img{
+  position:static!important;
+  width:clamp(66px,14.2vw,78px)!important;
+  left:auto!important;
+  top:auto!important;
+}
+@media(max-width:380px){
+  body[data-app-route="fantasyAccess"] .v23-access-sponsor{
+    min-height:82px!important;
+    padding:0 20px!important;
+  }
+  body[data-app-route="fantasyAccess"] .v23-access-sponsor>span{
+    margin-right:16px!important;
+    font-size:16px!important;
+  }
+  body[data-app-route="fantasyAccess"] .v23-access-sponsor>img{
+    width:64px!important;
+    max-height:64px!important;
+  }
+}
