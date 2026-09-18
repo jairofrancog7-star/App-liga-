@@ -319,18 +319,52 @@ function v12BracketRoute(route){
   '</section>';
 }
 
+function v12FinalTrophy(){
+  return '<svg class="v12-final-trophy" viewBox="0 0 220 250" aria-hidden="true">'+
+    '<defs>'+
+      '<linearGradient id="v12CupMetal" x1="0" x2="1"><stop offset="0" stop-color="#ffffff"/><stop offset=".22" stop-color="#9eaccb"/><stop offset=".48" stop-color="#ffffff"/><stop offset=".72" stop-color="#9db2ff"/><stop offset="1" stop-color="#f7e8ff"/></linearGradient>'+
+      '<linearGradient id="v12CupNeon" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#0cf4ff"/><stop offset=".52" stop-color="#ffffff"/><stop offset="1" stop-color="#ff31bf"/></linearGradient>'+
+      '<filter id="v12CupGlow"><feGaussianBlur stdDeviation="3" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>'+
+    '</defs>'+
+    '<path d="M77 48h66l-7 83c-2 26-13 45-26 51-13-6-24-25-26-51L77 48Z" fill="url(#v12CupMetal)" stroke="#fff" stroke-width="3"/>'+
+    '<path d="M77 61C46 58 36 76 40 103c5 30 22 46 49 53M143 61c31-3 41 15 37 42-5 30-22 46-49 53" fill="none" stroke="url(#v12CupNeon)" stroke-width="9" stroke-linecap="round" filter="url(#v12CupGlow)"/>'+
+    '<path d="M96 182h28v23H96zM78 207h64v18H78z" fill="url(#v12CupMetal)" stroke="#fff" stroke-width="2"/>'+
+    '<circle cx="110" cy="111" r="25" fill="#dce5ff" stroke="#fff" stroke-width="2"/>'+
+    '<path d="m110 91 8 13 15 3-10 12 2 15-15-6-15 6 2-15-10-12 15-3Z" fill="#b8c5e7"/>'+
+    '<path d="M83 48c0-13 7-23 15-28l12 10 12-10c8 5 15 15 15 28" fill="none" stroke="url(#v12CupMetal)" stroke-width="9" stroke-linecap="round"/>'+
+  '</svg>';
+}
+function v12FinalCard(){
+  return '<section class="v12-final-card" data-v12-final>'+
+    '<div class="v12-final-noise" aria-hidden="true"></div>'+
+    '<div class="v12-final-corner c1" aria-hidden="true"></div><div class="v12-final-corner c2" aria-hidden="true"></div>'+
+    '<div class="v12-final-neon-line" aria-hidden="true"></div>'+
+    '<div class="v12-final-city left" aria-hidden="true"><i></i><b></b><span></span></div>'+
+    '<div class="v12-final-city right" aria-hidden="true"><i></i><b></b><span></span></div>'+
+    '<img class="v12-final-logo" src="'+V12_LOGO+'" alt="Liga Municipal de Fútbol Juventino Rosas">'+
+    '<div class="v12-final-cup">'+v12FinalTrophy()+'</div>'+
+    '<div class="v12-final-title"><strong>FINAL LIGA</strong><span>FINAL</span></div>'+
+    '<div class="v12-final-match">'+
+      '<div class="v12-final-team"><span class="v12-final-shield">'+V12_BRACKET_SHIELD+'</span><small>RAMA PLATEADA</small><b>Ganador</b></div>'+
+      '<em>VS</em>'+
+      '<div class="v12-final-team"><span class="v12-final-shield cyan">'+V12_BRACKET_SHIELD+'</span><small>RAMA AZUL</small><b>Ganador</b></div>'+
+    '</div>'+
+  '</section>';
+}
 function v12BracketMarkup(){
   return '<section class="v12-bracket-reference stage-playoff" data-v12-bracket>'+
     '<div class="v12-bracket-stage-tabs" role="tablist" aria-label="Etapas del cuadro">'+
       '<button class="active" data-v12-bracket-stage="playoff">Play-off</button>'+
       '<button data-v12-bracket-stage="octavos">Octavos de final</button>'+
       '<button data-v12-bracket-stage="cuartos">Cuartos de final</button>'+
+      '<button data-v12-bracket-stage="final">Final</button>'+
     '</div>'+
     '<div class="v12-bracket-dates"><span>16-19 &amp; 23-26 feb</span><span>9-12 &amp; 17-18 mar</span></div>'+
     '<div class="v12-bracket-board">'+
       v12BracketRoute(V12_BRACKET_ROUTE_LEFT)+
       v12BracketRoute(V12_BRACKET_ROUTE_RIGHT)+
     '</div>'+
+    v12FinalCard()+
   '</section>';
 }
 
@@ -372,7 +406,7 @@ document.addEventListener('click',e=>{
     const box=bracketStage.closest('[data-v12-bracket]');
     if(box){
       box.querySelectorAll('[data-v12-bracket-stage]').forEach(b=>b.classList.toggle('active',b===bracketStage));
-      box.classList.remove('stage-playoff','stage-octavos','stage-cuartos');
+      box.classList.remove('stage-playoff','stage-octavos','stage-cuartos','stage-final');
       box.classList.add('stage-'+bracketStage.dataset.v12BracketStage);
     }
     return;
