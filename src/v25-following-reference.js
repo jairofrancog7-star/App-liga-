@@ -1,162 +1,140 @@
-/* PARTS26 — Siguiendo reconstruido como interfaz real.
-   Las tres capturas de Drive son la referencia visual; no se usan como
-   fondo estirado, así que no se duplican barras/textos ni se comprime. */
-const V26_LOGO='https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/assets/liga-logo.webp';
-const V26_BASE='https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/';
+/* PARTS27 — Siguiendo: las 3 capturas de Google Drive son el diseño maestro.
+   No se redibuja, no se reinterpreta y no se añaden textos visibles.
+   Solo se agregan zonas táctiles transparentes para conectar los 3 estados. */
 
-const V26_TEAMS=[
-  {id:'AME',name:'América Veteranos',logo:'assets/branding/america-veteranos-35-user.png'},
-  {id:'HUE',name:'La Huerta',logo:'assets/official-logos/la-huerta.png'},
-  {id:'PRO',name:'Promesas FC',logo:'assets/official-logos/promesas-fc.png'},
-  {id:'GAL',name:'Atlético Galeana',logo:'assets/official-logos/galeana.png'},
-  {id:'LOB',name:'Lobos CDG',logo:'assets/official-logos/lobos-cdg.png'},
-  {id:'CUE',name:'Cuenda',logo:'assets/official-logos/toros-de-cuenda.png'},
-  {id:'POZ',name:'Pozos',logo:'assets/teams/pozos-fc.webp'},
-  {id:'RIN',name:'Rincón de Centeno',logo:'',abbr:'RIN'},
-  {id:'ROS',name:'Deportivo Rosas',logo:'',abbr:'ROS'},
-  {id:'STC',name:'Santa Cruz',logo:'assets/teams/atletico-santa-cruz.webp'},
-  {id:'SJO',name:'San José',logo:'assets/official-logos/san-jose-fc.png'},
-  {id:'SIS',name:'San Isidro',logo:'',abbr:'SIS'},
-  {id:'RJU',name:'Real Juventino',logo:'',abbr:'RJU'},
-  {id:'VAL',name:'Valle Verde',logo:'',abbr:'VAL'},
-  {id:'LAB',name:'La Labor',logo:'',abbr:'LAB'},
-  {id:'DUR',name:'El Durazno',logo:'',abbr:'DUR'},
-  {id:'SAN',name:'San Antonio',logo:'assets/official-logos/san-antonio-fc.png'},
-  {id:'ARC',name:'Los Arcos',logo:'',abbr:'ARC'},
-  {id:'JUV',name:'Deportivo Juventino',logo:'',abbr:'JUV'},
-  {id:'PAL',name:'Las Palomas',logo:'',abbr:'PAL'},
-  {id:'FRA',name:'Franco FC',logo:'assets/official-logos/franco-fc.png'},
-  {id:'EST',name:'La Estancia',logo:'',abbr:'EST'}
-];
+const V27_EMPTY='./following-empty-ref.png?v=parts27';
+const V27_SHEET='./following-sheet-ref.png?v=parts27';
+const V27_PICKER='./following-picker-ref.png?v=parts27';
+const V27_STATE_KEY='lj-following-reference-state-v27';
 
-let v26Mode='auto';
-let v26Active='AME';
-let v26Query='';
+let v27Mode='auto';
+let v27Previous='empty';
 
-function v26Route(){return location.hash.replace('#/','')||'home'}
-function v26Store(){try{return JSON.parse(localStorage.getItem('lj-store-v3')||'{}')||{}}catch{return {}}}
-function v26Save(s){localStorage.setItem('lj-store-v3',JSON.stringify(s))}
-function v26Followed(){const a=v26Store().followed;return Array.isArray(a)?a:[]}
-function v26Favorites(){const a=v26Store().favorites;return Array.isArray(a)?a:[]}
-function v26Team(id){return V26_TEAMS.find(t=>t.id===id)||V26_TEAMS[0]}
-function v26Follow(id,on){const s=v26Store();const a=Array.isArray(s.followed)?s.followed:[];s.followed=on?[...new Set([...a,id])]:a.filter(x=>x!==id);v26Save(s)}
-function v26Fav(id,on){const s=v26Store();const key='team:'+id;const a=Array.isArray(s.favorites)?s.favorites:[];s.favorites=on?[...new Set([...a,key])]:a.filter(x=>x!==key);v26Save(s)}
-function v26IsFav(id){return v26Favorites().includes('team:'+id)}
+function v27Route(){return location.hash.replace('#/','')||'home'}
 
-function v26Arrow(){return '<svg viewBox="0 0 48 48" aria-hidden="true"><path d="M29 10 15 24l14 14M16 24h24"/></svg>'}
-function v26Plus(){return '<svg viewBox="0 0 48 48" aria-hidden="true"><path d="M24 10v28M10 24h28"/></svg>'}
-function v26SearchIcon(){return '<svg viewBox="0 0 48 48" aria-hidden="true"><circle cx="20" cy="20" r="11"/><path d="m28 28 10 10"/></svg>'}
-function v26Star(){return '<svg viewBox="0 0 48 48" aria-hidden="true"><path d="m24 5 5.8 11.7 12.9 1.9-9.3 9 2.2 12.8L24 34.3l-11.6 6.1 2.2-12.8-9.3-9 12.9-1.9Z"/></svg>'}
-
-function v26Logo(t,large=false){
-  if(t.logo) return '<img class="v26-team-logo '+(large?'large':'')+'" src="'+V26_BASE+t.logo+'" alt="'+t.name+'">';
-  return '<span class="v26-team-fallback '+(large?'large':'')+'">'+(t.abbr||t.id)+'</span>';
+function v27IsFollowed(){
+  try{return localStorage.getItem(V27_STATE_KEY)==='followed'}catch{return false}
+}
+function v27SetFollowed(on){
+  try{localStorage.setItem(V27_STATE_KEY,on?'followed':'empty')}catch{}
 }
 
-function v26Header(title,close=false){
-  return '<header class="v26-follow-head">'+
-    '<button class="v26-head-btn" data-v26-back aria-label="'+(close?'Cerrar':'Volver')+'">'+(close?'×':v26Arrow())+'</button>'+
-    '<h1>'+title+'</h1>'+
-    (!close?'<button class="v26-head-btn plus" data-v26-picker aria-label="Añadir equipos">'+v26Plus()+'</button>':'<span class="v26-head-spacer"></span>')+
-  '</header>';
+function v27NavHotspots(top){
+  return '<div class="v27-nav-hits" style="top:'+top+'%">'+
+    '<button data-v27-route="home" aria-label="Inicio"></button>'+
+    '<button data-v27-route="competition" aria-label="Competición"></button>'+
+    '<button data-v27-route="video" aria-label="Vídeo"></button>'+
+    '<button data-v27-route="fantasy" aria-label="Fantasy"></button>'+
+    '<button data-v27-route="more" aria-label="Más"></button>'+
+  '</div>';
 }
 
-function v26Empty(){
-  return '<section class="v26-follow-page v26-empty" data-v26-follow>'+
-    '<div class="v26-neon-top" aria-hidden="true"><i></i><i></i><i></i></div>'+
-    v26Header('Siguiendo')+
-    '<main class="v26-empty-main">'+
-      '<img class="v26-league-logo" src="'+V26_LOGO+'" alt="Liga Municipal de Fútbol Juventino Rosas">'+
-      '<h2>Sin equipos seguidos todavía</h2>'+
-      '<p>¡Sigue a los equipos de la Liga Municipal<br>de Fútbol Juventino Rosas para acceder<br>rápidamente a noticias, alertas de partidos<br>y resúmenes en vídeo!</p>'+
-      '<button class="v26-add-btn" data-v26-picker><span>＋</span>Añadir equipos</button>'+
-    '</main>'+
+function v27Empty(){
+  return '<section class="v27-following v27-empty" data-v27-following>'+
+    '<div class="v27-shot v27-empty-shot">'+
+      '<img src="'+V27_EMPTY+'" alt="Siguiendo">'+
+      '<button class="v27-hit v27-empty-back" data-v27-route="more" aria-label="Volver"></button>'+
+      '<button class="v27-hit v27-empty-plus" data-v27-picker aria-label="Añadir equipos"></button>'+
+      '<button class="v27-hit v27-empty-add" data-v27-picker aria-label="Añadir equipos"></button>'+
+      v27NavHotspots(92.05)+
+    '</div>'+
   '</section>';
 }
 
-function v26Following(){
-  const followed=v26Followed();
-  if(!followed.length) return v26Empty();
-  if(!followed.includes(v26Active)) v26Active=followed[0];
-  const active=v26Team(v26Active);
-  return '<section class="v26-follow-page v26-followed" data-v26-follow>'+
-    '<div class="v26-neon-top" aria-hidden="true"><i></i><i></i><i></i></div>'+
-    v26Header('Siguiendo')+
-    '<main class="v26-follow-list">'+
-      followed.map(id=>{const t=v26Team(id);return '<button class="v26-follow-row '+(id===v26Active?'active':'')+'" data-v26-team="'+id+'">'+v26Logo(t)+'<strong>'+t.name+'</strong><span>Siguiendo</span></button>'}).join('')+
-    '</main>'+
-    '<section class="v26-sheet">'+
-      '<div class="v26-sheet-team">'+v26Logo(active,true)+'<strong>'+active.name+'</strong></div>'+
-      '<div class="v26-sheet-line"></div>'+
-      '<button class="v26-sheet-action" data-v26-favorite="'+active.id+'">'+v26Star()+'<span>Equipo favorito</span></button>'+
-      '<button class="v26-sheet-action" data-v26-unfollow="'+active.id+'"><b>−</b><span>Dejar de seguir</span></button>'+
-    '</section>'+
+function v27Sheet(){
+  return '<section class="v27-following v27-sheet" data-v27-following>'+
+    '<div class="v27-shot v27-sheet-shot">'+
+      '<img src="'+V27_SHEET+'" alt="Siguiendo América Veteranos">'+
+      '<button class="v27-hit v27-sheet-back" data-v27-route="more" aria-label="Volver"></button>'+
+      '<button class="v27-hit v27-sheet-plus" data-v27-picker aria-label="Añadir equipos"></button>'+
+      '<button class="v27-hit v27-sheet-followed" aria-label="Siguiendo"></button>'+
+      '<button class="v27-hit v27-sheet-favorite" data-v27-favorite aria-label="Equipo favorito"></button>'+
+      '<button class="v27-hit v27-sheet-unfollow" data-v27-unfollow aria-label="Dejar de seguir"></button>'+
+    '</div>'+
   '</section>';
 }
 
-function v26Picker(){
-  const followed=v26Followed();
-  const q=v26Query.trim().toLocaleLowerCase('es');
-  const list=V26_TEAMS.filter(t=>!q||t.name.toLocaleLowerCase('es').includes(q)||t.id.toLowerCase().includes(q));
-  return '<section class="v26-follow-page v26-picker" data-v26-follow>'+
-    '<header class="v26-picker-head">'+
-      '<div class="v26-search">'+v26SearchIcon()+'<input id="v26Search" type="search" placeholder="Buscar equipos" value="'+v26Query.replace(/"/g,'&quot;')+'" autocomplete="off"></div>'+
-      '<button class="v26-close" data-v26-back aria-label="Cerrar">×</button>'+
-    '</header>'+
-    '<h2>Equipos en la competición</h2>'+
-    '<main class="v26-team-list">'+
-      list.map(t=>'<div class="v26-pick-row">'+v26Logo(t)+'<strong>'+t.name+'</strong><button class="'+(followed.includes(t.id)?'following':'')+'" data-v26-follow="'+t.id+'">'+(followed.includes(t.id)?'Siguiendo':'Seguir')+'</button></div>').join('')+
-    '</main>'+
+function v27Picker(){
+  const followButtons=[
+    [433,156,552,198],[433,216,552,259],[433,278,552,320],[433,340,552,384],
+    [433,404,552,448],[433,470,552,513],[433,534,552,577],[433,598,552,641],
+    [433,662,552,706],[433,726,552,770],[433,790,552,834],[433,854,552,898],
+    [433,920,552,963],[433,984,552,1027],[433,1048,552,1091],[433,1112,552,1156],
+    [433,1176,552,1220],[433,1243,552,1287],[433,1307,552,1351],[433,1371,552,1415],
+    [433,1439,552,1482],[433,1504,552,1548]
+  ];
+  return '<section class="v27-following v27-picker" data-v27-following>'+
+    '<div class="v27-shot v27-picker-shot">'+
+      '<img src="'+V27_PICKER+'" alt="Equipos en la competición">'+
+      '<button class="v27-hit v27-picker-close" data-v27-close aria-label="Cerrar"></button>'+
+      '<button class="v27-hit v27-picker-search" aria-label="Buscar equipos"></button>'+
+      followButtons.map((b,i)=>{
+        const l=(b[0]/585*100).toFixed(4), t=(b[1]/1702*100).toFixed(4);
+        const w=((b[2]-b[0])/585*100).toFixed(4), h=((b[3]-b[1])/1702*100).toFixed(4);
+        return '<button class="v27-hit v27-follow-hit" style="left:'+l+'%;top:'+t+'%;width:'+w+'%;height:'+h+'%" data-v27-follow="'+i+'" aria-label="Seguir equipo"></button>';
+      }).join('')+
+      v27NavHotspots(94.0)+
+    '</div>'+
   '</section>';
 }
 
-function v26Bind(){
-  document.querySelectorAll('[data-v26-picker]').forEach(b=>b.onclick=()=>{v26Mode='picker';v26Query='';v26Render()});
-  document.querySelectorAll('[data-v26-back]').forEach(b=>b.onclick=()=>{
-    if(v26Mode==='picker'){v26Mode=v26Followed().length?'following':'empty';v26Render()}
-    else location.hash='#/more';
+function v27Bind(){
+  document.querySelectorAll('[data-v27-route]').forEach(btn=>{
+    btn.onclick=()=>{location.hash='#/'+btn.dataset.v27Route};
   });
-  document.querySelectorAll('[data-v26-team]').forEach(b=>b.onclick=()=>{v26Active=b.dataset.v26Team;v26Render()});
-  document.querySelectorAll('[data-v26-follow]').forEach(b=>b.onclick=()=>{
-    const id=b.dataset.v26Follow;
-    const on=!v26Followed().includes(id);
-    v26Follow(id,on);
-    if(on) v26Active=id;
-    v26Render();
+  document.querySelectorAll('[data-v27-picker]').forEach(btn=>{
+    btn.onclick=()=>{v27Previous=v27IsFollowed()?'sheet':'empty';v27Mode='picker';v27Render()};
   });
-  document.querySelectorAll('[data-v26-unfollow]').forEach(b=>b.onclick=()=>{
-    v26Follow(b.dataset.v26Unfollow,false);
-    const left=v26Followed();
-    v26Active=left[0]||'AME';
-    v26Mode=left.length?'following':'empty';
-    v26Render();
+  const close=document.querySelector('[data-v27-close]');
+  if(close)close.onclick=()=>{v27Mode=v27Previous;v27Render()};
+
+  document.querySelectorAll('[data-v27-follow]').forEach(btn=>{
+    btn.onclick=()=>{
+      v27SetFollowed(true);
+      v27Mode='sheet';
+      v27Previous='sheet';
+      v27Render();
+    };
   });
-  document.querySelectorAll('[data-v26-favorite]').forEach(b=>b.onclick=()=>{
-    const id=b.dataset.v26Favorite;
-    v26Fav(id,!v26IsFav(id));
-    b.classList.toggle('selected',v26IsFav(id));
-  });
-  const s=document.querySelector('#v26Search');
-  if(s)s.oninput=()=>{v26Query=s.value;v26Render();requestAnimationFrame(()=>{const n=document.querySelector('#v26Search');if(n){n.focus();n.setSelectionRange(n.value.length,n.value.length)}})};
+
+  const unfollow=document.querySelector('[data-v27-unfollow]');
+  if(unfollow)unfollow.onclick=()=>{
+    v27SetFollowed(false);
+    v27Mode='empty';
+    v27Previous='empty';
+    v27Render();
+  };
+
+  const favorite=document.querySelector('[data-v27-favorite]');
+  if(favorite)favorite.onclick=()=>{
+    try{
+      const key='lj-following-favorite-v27';
+      localStorage.setItem(key,localStorage.getItem(key)==='1'?'0':'1');
+    }catch{}
+  };
 }
 
-function v26Render(){
-  if(v26Route()!=='following') return;
+function v27Render(){
+  if(v27Route()!=='following')return;
   const screen=document.querySelector('#screen');
   if(!screen)return;
-  const followed=v26Followed();
-  if(v26Mode==='auto')v26Mode=followed.length?'following':'empty';
-  if(v26Mode==='following'&&!followed.length)v26Mode='empty';
-  screen.innerHTML=v26Mode==='picker'?v26Picker():(v26Mode==='following'?v26Following():v26Empty());
-  document.querySelectorAll('.bottom-nav .nav-item').forEach(n=>n.classList.toggle('active',n.dataset.route==='more'));
-  v26Bind();
+  if(v27Mode==='auto')v27Mode=v27IsFollowed()?'sheet':'empty';
+  screen.innerHTML=v27Mode==='picker'?v27Picker():(v27Mode==='sheet'?v27Sheet():v27Empty());
+  v27Bind();
+  requestAnimationFrame(()=>window.scrollTo(0,0));
 }
 
-function v26Schedule(){
-  if(v26Route()!=='following'){v26Mode='auto';return}
-  requestAnimationFrame(()=>requestAnimationFrame(v26Render));
+function v27Schedule(){
+  if(v27Route()!=='following'){v27Mode='auto';return}
+  requestAnimationFrame(()=>requestAnimationFrame(v27Render));
 }
-window.addEventListener('hashchange',v26Schedule);
-const v26Target=document.querySelector('#screen');
-if(v26Target)new MutationObserver(()=>{if(v26Route()==='following'&&!v26Target.querySelector('[data-v26-follow]'))v26Schedule()}).observe(v26Target,{childList:true,subtree:false});
-if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',v26Schedule,{once:true});else v26Schedule();
+
+window.addEventListener('hashchange',v27Schedule);
+const v27Screen=document.querySelector('#screen');
+if(v27Screen){
+  new MutationObserver(()=>{
+    if(v27Route()==='following'&&!v27Screen.querySelector('[data-v27-following]'))v27Schedule();
+  }).observe(v27Screen,{childList:true,subtree:false});
+}
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',v27Schedule,{once:true});
+else v27Schedule();
