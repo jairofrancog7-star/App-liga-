@@ -93,6 +93,84 @@ function v12Toast(text){
   if(!t){t=document.createElement('div');t.className='v12-toast';document.body.appendChild(t)}
   t.textContent=text;t.classList.add('show');clearTimeout(v12Toast.t);v12Toast.t=setTimeout(()=>t.classList.remove('show'),1700)
 }
+
+const V12_FIXTURE_LOGOS={
+  'Club América Vet.':'assets/branding/america-veteranos-35-user.png',
+  'La Huerta':'assets/teams/la-huerta-cuenda.webp',
+  'Promesas FC':'assets/teams/promesas-fc-pozos.webp',
+  'Santa Cruz':'assets/teams/atletico-santa-cruz.webp',
+  'Franco FC':'assets/teams/franco-fc.webp',
+  'Cuenda':'assets/official-logos/toros-de-cuenda.png',
+  'Atlético Galeana':'assets/teams/atletico-galeana.webp',
+  'Lobos CDG':'assets/teams/lobos-cdg.webp',
+  'Juventino':null,
+  'Rincón de Centeno':null,
+  'Deportivo Rosas':null,
+  'Pozos':'assets/teams/pozos-fc.webp'
+};
+function v12FixtureLogo(name){
+  const p=V12_FIXTURE_LOGOS[name];
+  if(p) return '<img src="'+V12_TEAM_ASSET_BASE+p+'" alt="'+name+'" class="v12-fixture-logo" loading="eager" decoding="async">';
+  if(name==='Juventino') return '<img src="'+V12_LOGO+'" alt="'+name+'" class="v12-fixture-logo" loading="eager" decoding="async">';
+  const ab=name.split(/\s+/).map(x=>x[0]).join('').slice(0,3).toUpperCase();
+  return '<span class="v12-fixture-fallback">'+ab+'</span>';
+}
+const V12_DAY_13=[
+  ['Club América Vet.','La Huerta','10:45','m1'],
+  ['Promesas FC','Santa Cruz','10:45','m2'],
+  ['Franco FC','Cuenda','13:00','m2'],
+  ['Atlético Galeana','Lobos CDG','13:00','m1'],
+  ['Juventino','Rincón de Centeno','13:00','m1'],
+  ['Deportivo Rosas','Pozos','13:00','m2'],
+  ['La Huerta','Franco FC','13:00','m2'],
+  ['Promesas FC','Club América Vet.','13:00','m1'],
+  ['Lobos CDG','Cuenda','13:00','m2']
+];
+const V12_DAY_14=[
+  ['Deportivo Rosas','Pozos','10:45','m2'],
+  ['Juventino','La Huerta','13:00','m1'],
+  ['Franco FC','Promesas FC','13:00','m2']
+];
+function v12FixtureRow(m){
+  return '<div class="v12-schedule-match">'+
+    '<div class="v12-schedule-clubs">'+
+      '<div>'+v12FixtureLogo(m[0])+'<b>'+m[0]+'</b></div>'+
+      '<div>'+v12FixtureLogo(m[1])+'<b>'+m[1]+'</b></div>'+
+    '</div>'+
+    '<div class="v12-schedule-meta"><time>'+m[2]+'</time><button data-match="'+m[3]+'">Ver detalles</button></div>'+
+  '</div>';
+}
+function v12ScheduleCard(list){
+  return '<section class="v12-schedule-card"><h3>Liga local - Jornada 2</h3><div>'+list.map(v12FixtureRow).join('')+'</div></section>';
+}
+function v12FixturesMarkup(){
+  return '<section class="v12-fixtures-reference" data-v12-fixtures>'+
+    '<div class="v12-date-strip">'+
+      '<button data-v12-date="9">mié 9 sept</button>'+
+      '<button data-v12-date="10">jue 10 sept</button>'+
+      '<button class="active" data-v12-date="13">mar 13 oct</button>'+
+      '<button data-v12-date="14">mié 14 oct</button>'+
+    '</div>'+
+    '<h2 id="v12-day-13">martes, 13 octubre 2026</h2>'+
+    v12ScheduleCard(V12_DAY_13)+
+    '<div class="v12-league-banner"><img src="'+V12_LOGO+'" alt="Liga Juventino"><strong>LIGA MUNICIPAL DE FÚTBOL<br>JUVENTINO ROSAS, GUANAJUATO</strong><i>⚽</i></div>'+
+    '<h2 id="v12-day-14">miércoles, 14 octubre 2026</h2>'+
+    v12ScheduleCard(V12_DAY_14)+
+  '</section>';
+}
+function patchFixturesReference(){
+  if(v12Route()!=='competition') return;
+  const screen=document.querySelector('#screen');
+  const tabs=screen?.querySelector('.tabs');
+  if(!screen||!tabs) return;
+  const active=tabs.querySelector('.tab.active');
+  if(!active||!/Partidos/i.test(active.textContent||'')) return;
+  if(screen.querySelector('[data-v12-fixtures]')) return;
+  let node=tabs.nextSibling;
+  while(node){const next=node.nextSibling;node.remove();node=next}
+  tabs.insertAdjacentHTML('afterend',v12FixturesMarkup());
+}
+
 function v12NavBrand(){
   const labels={home:'Inicio',competition:'Competición',video:'Video',fantasy:'Fantasy',more:'Más'};
   document.querySelectorAll('.bottom-nav .nav-item').forEach(item=>{
@@ -107,10 +185,18 @@ function v12NavBrand(){
 function patch(){
   v12NavBrand();
   patchStandings();
+  patchFixturesReference();
   patchProfile();
   patchMoreLess();
 }
 document.addEventListener('click',e=>{
+  const dateBtn=e.target.closest('[data-v12-date]');
+  if(dateBtn){
+    document.querySelectorAll('[data-v12-date]').forEach(b=>b.classList.toggle('active',b===dateBtn));
+    const id=dateBtn.dataset.v12Date==='14'?'v12-day-14':'v12-day-13';
+    document.getElementById(id)?.scrollIntoView({behavior:'smooth',block:'start'});
+    return;
+  }
   const route=e.target.closest('[data-v12-route]');
   if(route){e.preventDefault();location.hash='#/'+route.dataset.v12Route;return}
   const mode=e.target.closest('[data-v12-mode]');
