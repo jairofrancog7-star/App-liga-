@@ -1,4 +1,5 @@
-/* PARTS19 — Fantasy corregido: título visible, tarjetas/cancha HD sin bloque rectangular. */
+/* PARTS20 — vuelve al diseño anterior.
+   ÚNICOS cambios: quitar el bloque encima de las playeras y colocar FANTASY arriba. */
 
 body[data-app-route="fantasy"]{
   background:#03065b!important;
@@ -29,16 +30,15 @@ body[data-app-route="fantasy"] #screen>.section.v4-injected{
   visibility:hidden!important;
 }
 
-body[data-app-route="fantasy"] .v19-fantasy-master{
+body[data-app-route="fantasy"] .v20-fantasy-master{
   position:absolute!important;
   inset:0!important;
   overflow:hidden!important;
   color:#fff!important;
   font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif!important;
-  isolation:isolate!important;
 }
 
-body[data-app-route="fantasy"] .v19-fantasy-bg{
+body[data-app-route="fantasy"] .v20-fantasy-bg{
   position:absolute!important;
   z-index:0!important;
   inset:0!important;
@@ -50,27 +50,14 @@ body[data-app-route="fantasy"] .v19-fantasy-bg{
   user-select:none!important;
 }
 
-/* Elimina visualmente el bloque pixelado previo sin crear un cuadro duro. */
-body[data-app-route="fantasy"] .v19-lower-clean{
+/* Imagen 3 exactamente en la zona superior.
+   screen hace desaparecer el negro sin meter otro cuadro encima. */
+body[data-app-route="fantasy"] .v20-title-art{
   position:absolute!important;
-  z-index:1!important;
-  left:-10%!important;
-  right:-10%!important;
-  top:49.5%!important;
-  height:31%!important;
-  background:
-    radial-gradient(ellipse at 50% 38%,rgba(12,25,126,.98) 0%,rgba(5,13,96,.96) 48%,rgba(3,8,79,.82) 68%,rgba(3,7,73,0) 88%)!important;
-  filter:blur(10px)!important;
-  pointer-events:none!important;
-}
-
-/* Imagen 2: arte FANTASY + líneas neón. */
-body[data-app-route="fantasy"] .v19-title-art{
-  position:absolute!important;
-  z-index:4!important;
-  top:4.1%!important;
+  z-index:3!important;
+  top:3.6%!important;
   left:50%!important;
-  width:90%!important;
+  width:91%!important;
   height:auto!important;
   display:block!important;
   transform:translateX(-50%)!important;
@@ -80,28 +67,11 @@ body[data-app-route="fantasy"] .v19-title-art{
   user-select:none!important;
 }
 
-/* Respaldo visible si el navegador tarda en cargar el arte; queda debajo de la imagen 2. */
-body[data-app-route="fantasy"] .v19-title-fallback{
+/* Conserva el texto y dimensiones que ya estaban funcionando antes. */
+body[data-app-route="fantasy"] .v20-league{
   position:absolute!important;
-  z-index:3!important;
-  top:16.1%!important;
-  left:50%!important;
-  transform:translateX(-50%) skewX(-7deg) scaleX(.76)!important;
-  transform-origin:center!important;
-  color:#fff!important;
-  font-family:Impact,"Arial Narrow",Haettenschweiler,sans-serif!important;
-  font-size:clamp(69px,19vw,112px)!important;
-  line-height:.84!important;
-  font-weight:900!important;
-  letter-spacing:-.045em!important;
-  white-space:nowrap!important;
-  pointer-events:none!important;
-}
-
-body[data-app-route="fantasy"] .v19-league{
-  position:absolute!important;
-  z-index:5!important;
-  top:26.2%!important;
+  z-index:4!important;
+  top:26.0%!important;
   left:0!important;
   right:0!important;
   display:flex!important;
@@ -112,17 +82,18 @@ body[data-app-route="fantasy"] .v19-league{
   color:#fff!important;
   pointer-events:none!important;
 }
-body[data-app-route="fantasy"] .v19-league strong{
+
+body[data-app-route="fantasy"] .v20-league strong{
   font-size:clamp(13px,3.7vw,19px)!important;
   line-height:1.08!important;
   font-weight:850!important;
   letter-spacing:.01em!important;
 }
-body[data-app-route="fantasy"] .v19-league strong:nth-child(2){
+body[data-app-route="fantasy"] .v20-league strong:nth-child(2){
   font-size:clamp(18px,5vw,26px)!important;
   letter-spacing:.035em!important;
 }
-body[data-app-route="fantasy"] .v19-league span{
+body[data-app-route="fantasy"] .v20-league span{
   margin-top:7px!important;
   padding-left:.43em!important;
   font-size:clamp(10px,2.6vw,14px)!important;
@@ -131,10 +102,10 @@ body[data-app-route="fantasy"] .v19-league span{
   letter-spacing:.43em!important;
 }
 
-body[data-app-route="fantasy"] .v19-sponsor{
+body[data-app-route="fantasy"] .v20-sponsor{
   position:absolute!important;
-  z-index:5!important;
-  top:36.8%!important;
+  z-index:4!important;
+  top:36.7%!important;
   left:0!important;
   right:0!important;
   display:flex!important;
@@ -143,43 +114,29 @@ body[data-app-route="fantasy"] .v19-sponsor{
   text-align:center!important;
   pointer-events:none!important;
 }
-body[data-app-route="fantasy"] .v19-sponsor>span{
-  margin-bottom:11px!important;
+body[data-app-route="fantasy"] .v20-sponsor>span{
+  margin-bottom:12px!important;
   color:#e9e9f4!important;
   font-size:clamp(13px,3.6vw,18px)!important;
   line-height:1!important;
   font-weight:400!important;
 }
-body[data-app-route="fantasy"] .v19-sponsor img{
-  width:clamp(91px,24vw,122px)!important;
+body[data-app-route="fantasy"] .v20-sponsor img{
+  width:clamp(90px,24vw,120px)!important;
   height:auto!important;
   display:block!important;
   object-fit:contain!important;
   mix-blend-mode:screen!important;
   filter:brightness(1.12) contrast(1.08)!important;
-  -webkit-mask-image:radial-gradient(ellipse at center,#000 54%,rgba(0,0,0,.94) 66%,rgba(0,0,0,.55) 80%,transparent 100%)!important;
-  mask-image:radial-gradient(ellipse at center,#000 54%,rgba(0,0,0,.94) 66%,rgba(0,0,0,.55) 80%,transparent 100%)!important;
 }
 
-/* Tarjetas, playeras y cancha vectoriales: HD a cualquier resolución. */
-body[data-app-route="fantasy"] .v19-fantasy-art{
+/* NO se añade ninguna capa, panel, cuadro o SVG encima de las playeras/cancha.
+   Se usa directamente el arte original del fondo para que quede pegado al diseño. */
+body[data-app-route="fantasy"] .v20-card-hotspot{
   position:absolute!important;
-  z-index:3!important;
-  left:50%!important;
-  top:50.6%!important;
-  width:91%!important;
-  height:auto!important;
-  transform:translateX(-50%)!important;
-  overflow:visible!important;
-  pointer-events:none!important;
-  shape-rendering:geometricPrecision!important;
-}
-
-body[data-app-route="fantasy"] .v19-card-hotspot{
-  position:absolute!important;
-  z-index:6!important;
-  left:12%!important;
-  right:12%!important;
+  z-index:5!important;
+  left:14%!important;
+  right:14%!important;
   top:50.5%!important;
   height:29%!important;
   border:0!important;
@@ -191,9 +148,7 @@ body[data-app-route="fantasy"] .v19-card-hotspot{
 body[data-app-route="fantasy"] .bottom-nav{z-index:50!important}
 
 @media(max-width:380px){
-  body[data-app-route="fantasy"] .v19-title-art{top:3.9%!important;width:91%!important}
-  body[data-app-route="fantasy"] .v19-title-fallback{top:15.9%!important;font-size:clamp(66px,19vw,90px)!important}
-  body[data-app-route="fantasy"] .v19-league{top:26.1%!important}
-  body[data-app-route="fantasy"] .v19-sponsor{top:36.6%!important}
-  body[data-app-route="fantasy"] .v19-fantasy-art{top:50.4%!important;width:94%!important}
+  body[data-app-route="fantasy"] .v20-title-art{top:3.4%!important;width:92%!important}
+  body[data-app-route="fantasy"] .v20-league{top:25.9%!important}
+  body[data-app-route="fantasy"] .v20-sponsor{top:36.5%!important}
 }
