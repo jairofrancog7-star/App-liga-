@@ -68,6 +68,10 @@
     object-position:center;
     pointer-events:none;
     user-select:none;
+    /* Quitar únicamente el fondo oscuro del logo que está a la derecha del menú.
+       El dibujo blanco del escudo se conserva. */
+    mix-blend-mode:lighten;
+    background:transparent!important;
   }
 
   .v19-more-menu{
