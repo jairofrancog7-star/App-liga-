@@ -1,140 +1,291 @@
-/* PARTS27 — Siguiendo: las 3 capturas de Google Drive son el diseño maestro.
-   No se redibuja, no se reinterpreta y no se añaden textos visibles.
-   Solo se agregan zonas táctiles transparentes para conectar los 3 estados. */
+/* PARTS28 — Siguiendo reconstruido como UI real, tomando las 3 capturas
+   y el video del usuario como referencia visual/funcional.
+   IMPORTANTE: no se usa ninguna captura completa como fondo de pantalla. */
+(function(){
+  'use strict';
 
-const V27_EMPTY='./following-empty-ref.png?v=parts27';
-const V27_SHEET='./following-sheet-ref.png?v=parts27';
-const V27_PICKER='./following-picker-ref.png?v=parts27';
-const V27_STATE_KEY='lj-following-reference-state-v27';
+  const BASE='https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/';
+  const LEAGUE=BASE+'assets/liga-logo.webp';
 
-let v27Mode='auto';
-let v27Previous='empty';
-
-function v27Route(){return location.hash.replace('#/','')||'home'}
-
-function v27IsFollowed(){
-  try{return localStorage.getItem(V27_STATE_KEY)==='followed'}catch{return false}
-}
-function v27SetFollowed(on){
-  try{localStorage.setItem(V27_STATE_KEY,on?'followed':'empty')}catch{}
-}
-
-function v27NavHotspots(top){
-  return '<div class="v27-nav-hits" style="top:'+top+'%">'+
-    '<button data-v27-route="home" aria-label="Inicio"></button>'+
-    '<button data-v27-route="competition" aria-label="Competición"></button>'+
-    '<button data-v27-route="video" aria-label="Vídeo"></button>'+
-    '<button data-v27-route="fantasy" aria-label="Fantasy"></button>'+
-    '<button data-v27-route="more" aria-label="Más"></button>'+
-  '</div>';
-}
-
-function v27Empty(){
-  return '<section class="v27-following v27-empty" data-v27-following>'+
-    '<div class="v27-shot v27-empty-shot">'+
-      '<img src="'+V27_EMPTY+'" alt="Siguiendo">'+
-      '<button class="v27-hit v27-empty-back" data-v27-route="more" aria-label="Volver"></button>'+
-      '<button class="v27-hit v27-empty-plus" data-v27-picker aria-label="Añadir equipos"></button>'+
-      '<button class="v27-hit v27-empty-add" data-v27-picker aria-label="Añadir equipos"></button>'+
-      v27NavHotspots(92.05)+
-    '</div>'+
-  '</section>';
-}
-
-function v27Sheet(){
-  return '<section class="v27-following v27-sheet" data-v27-following>'+
-    '<div class="v27-shot v27-sheet-shot">'+
-      '<img src="'+V27_SHEET+'" alt="Siguiendo América Veteranos">'+
-      '<button class="v27-hit v27-sheet-back" data-v27-route="more" aria-label="Volver"></button>'+
-      '<button class="v27-hit v27-sheet-plus" data-v27-picker aria-label="Añadir equipos"></button>'+
-      '<button class="v27-hit v27-sheet-followed" aria-label="Siguiendo"></button>'+
-      '<button class="v27-hit v27-sheet-favorite" data-v27-favorite aria-label="Equipo favorito"></button>'+
-      '<button class="v27-hit v27-sheet-unfollow" data-v27-unfollow aria-label="Dejar de seguir"></button>'+
-    '</div>'+
-  '</section>';
-}
-
-function v27Picker(){
-  const followButtons=[
-    [433,156,552,198],[433,216,552,259],[433,278,552,320],[433,340,552,384],
-    [433,404,552,448],[433,470,552,513],[433,534,552,577],[433,598,552,641],
-    [433,662,552,706],[433,726,552,770],[433,790,552,834],[433,854,552,898],
-    [433,920,552,963],[433,984,552,1027],[433,1048,552,1091],[433,1112,552,1156],
-    [433,1176,552,1220],[433,1243,552,1287],[433,1307,552,1351],[433,1371,552,1415],
-    [433,1439,552,1482],[433,1504,552,1548]
+  const TEAMS=[
+    {id:'AME',name:'América Veteranos',logo:'assets/branding/america-veteranos-35-user.png',abbr:'AME'},
+    {id:'HUE',name:'La Huerta',logo:'assets/official-logos/la-huerta.png',abbr:'HUE'},
+    {id:'PRO',name:'Promesas FC',logo:'assets/official-logos/promesas-fc.png',abbr:'PRO'},
+    {id:'GAL',name:'Atlético Galeana',logo:'assets/official-logos/galeana.png',abbr:'GAL'},
+    {id:'LOB',name:'Lobos CDG',logo:'assets/official-logos/lobos-cdg.png',abbr:'LOB'},
+    {id:'CUE',name:'Cuenda',logo:'assets/official-logos/toros-de-cuenda.png',abbr:'CUE'},
+    {id:'POZ',name:'Pozos',logo:'assets/teams/pozos-fc.webp',abbr:'POZ'},
+    {id:'RIN',name:'Rincón de Centeno',logo:'',abbr:'RIN'},
+    {id:'ROS',name:'Deportivo Rosas',logo:'',abbr:'ROS'},
+    {id:'STC',name:'Santa Cruz',logo:'assets/teams/atletico-santa-cruz.webp',abbr:'STC'},
+    {id:'SJO',name:'San José',logo:'assets/official-logos/san-jose-fc.png',abbr:'SJO'},
+    {id:'SIS',name:'San Isidro',logo:'',abbr:'SIS'},
+    {id:'RJU',name:'Real Juventino',logo:'',abbr:'RJU'},
+    {id:'VAL',name:'Valle Verde',logo:'',abbr:'VAL'},
+    {id:'LAB',name:'La Labor',logo:'',abbr:'LAB'},
+    {id:'DUR',name:'El Durazno',logo:'',abbr:'DUR'},
+    {id:'SAN',name:'San Antonio',logo:'assets/official-logos/san-antonio-fc.png',abbr:'SAN'},
+    {id:'ARC',name:'Los Arcos',logo:'',abbr:'ARC'},
+    {id:'JUV',name:'Deportivo Juventino',logo:'',abbr:'JUV'},
+    {id:'PAL',name:'Las Palomas',logo:'',abbr:'PAL'},
+    {id:'FRA',name:'Franco FC',logo:'assets/official-logos/franco-fc.png',abbr:'FRA'},
+    {id:'EST',name:'La Estancia',logo:'',abbr:'EST'}
   ];
-  return '<section class="v27-following v27-picker" data-v27-following>'+
-    '<div class="v27-shot v27-picker-shot">'+
-      '<img src="'+V27_PICKER+'" alt="Equipos en la competición">'+
-      '<button class="v27-hit v27-picker-close" data-v27-close aria-label="Cerrar"></button>'+
-      '<button class="v27-hit v27-picker-search" aria-label="Buscar equipos"></button>'+
-      followButtons.map((b,i)=>{
-        const l=(b[0]/585*100).toFixed(4), t=(b[1]/1702*100).toFixed(4);
-        const w=((b[2]-b[0])/585*100).toFixed(4), h=((b[3]-b[1])/1702*100).toFixed(4);
-        return '<button class="v27-hit v27-follow-hit" style="left:'+l+'%;top:'+t+'%;width:'+w+'%;height:'+h+'%" data-v27-follow="'+i+'" aria-label="Seguir equipo"></button>';
-      }).join('')+
-      v27NavHotspots(94.0)+
-    '</div>'+
-  '</section>';
-}
 
-function v27Bind(){
-  document.querySelectorAll('[data-v27-route]').forEach(btn=>{
-    btn.onclick=()=>{location.hash='#/'+btn.dataset.v27Route};
-  });
-  document.querySelectorAll('[data-v27-picker]').forEach(btn=>{
-    btn.onclick=()=>{v27Previous=v27IsFollowed()?'sheet':'empty';v27Mode='picker';v27Render()};
-  });
-  const close=document.querySelector('[data-v27-close]');
-  if(close)close.onclick=()=>{v27Mode=v27Previous;v27Render()};
+  let pickerOpen=false;
+  let sheetOpen=false;
+  let activeTeam='AME';
+  let searchText='';
 
-  document.querySelectorAll('[data-v27-follow]').forEach(btn=>{
-    btn.onclick=()=>{
-      v27SetFollowed(true);
-      v27Mode='sheet';
-      v27Previous='sheet';
-      v27Render();
-    };
-  });
+  function route(){return location.hash.replace('#/','')||'home'}
+  function esc(s){return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+  function store(){try{return JSON.parse(localStorage.getItem('lj-store-v3')||'{}')||{}}catch(e){return {}}}
+  function saveStore(s){localStorage.setItem('lj-store-v3',JSON.stringify(s))}
+  function followed(){
+    const a=store().followed;
+    return Array.isArray(a)?a:[];
+  }
+  function favorites(){
+    const a=store().favorites;
+    return Array.isArray(a)?a:[];
+  }
+  function isFollowed(id){return followed().includes(id)}
+  function isFavorite(id){return favorites().includes('team:'+id)}
+  function team(id){return TEAMS.find(t=>t.id===id)||TEAMS[0]}
 
-  const unfollow=document.querySelector('[data-v27-unfollow]');
-  if(unfollow)unfollow.onclick=()=>{
-    v27SetFollowed(false);
-    v27Mode='empty';
-    v27Previous='empty';
-    v27Render();
-  };
-
-  const favorite=document.querySelector('[data-v27-favorite]');
-  if(favorite)favorite.onclick=()=>{
+  function migrateOldState(){
+    const s=store();
+    const current=Array.isArray(s.followed)?s.followed:[];
+    if(current.length)return;
     try{
-      const key='lj-following-favorite-v27';
-      localStorage.setItem(key,localStorage.getItem(key)==='1'?'0':'1');
-    }catch{}
-  };
-}
+      if(localStorage.getItem('lj-following-reference-state-v27')==='followed'){
+        s.followed=['AME'];
+        saveStore(s);
+      }
+    }catch(e){}
+  }
 
-function v27Render(){
-  if(v27Route()!=='following')return;
-  const screen=document.querySelector('#screen');
-  if(!screen)return;
-  if(v27Mode==='auto')v27Mode=v27IsFollowed()?'sheet':'empty';
-  screen.innerHTML=v27Mode==='picker'?v27Picker():(v27Mode==='sheet'?v27Sheet():v27Empty());
-  v27Bind();
-  requestAnimationFrame(()=>window.scrollTo(0,0));
-}
+  function setFollow(id,on){
+    const s=store();
+    const a=Array.isArray(s.followed)?s.followed.slice():[];
+    s.followed=on?[...new Set([...a,id])]:a.filter(x=>x!==id);
+    saveStore(s);
+  }
+  function setFavorite(id,on){
+    const s=store();
+    const key='team:'+id;
+    const a=Array.isArray(s.favorites)?s.favorites.slice():[];
+    s.favorites=on?[...new Set([...a,key])]:a.filter(x=>x!==key);
+    saveStore(s);
+  }
 
-function v27Schedule(){
-  if(v27Route()!=='following'){v27Mode='auto';return}
-  requestAnimationFrame(()=>requestAnimationFrame(v27Render));
-}
+  function backIcon(){return '<svg viewBox="0 0 40 40" aria-hidden="true"><path d="M24 8 12 20l12 12M13 20h20"/></svg>'}
+  function plusIcon(){return '<svg viewBox="0 0 40 40" aria-hidden="true"><path d="M20 8v24M8 20h24"/></svg>'}
+  function searchIcon(){return '<svg viewBox="0 0 40 40" aria-hidden="true"><circle cx="17" cy="17" r="9.5"/><path d="m24 24 8 8"/></svg>'}
+  function starIcon(){return '<svg viewBox="0 0 40 40" aria-hidden="true"><path d="m20 5 4.5 9.1 10 1.5-7.2 7 1.7 10-9-4.7-9 4.7 1.7-10-7.2-7 10-1.5Z"/></svg>'}
 
-window.addEventListener('hashchange',v27Schedule);
-const v27Screen=document.querySelector('#screen');
-if(v27Screen){
-  new MutationObserver(()=>{
-    if(v27Route()==='following'&&!v27Screen.querySelector('[data-v27-following]'))v27Schedule();
-  }).observe(v27Screen,{childList:true,subtree:false});
-}
-if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',v27Schedule,{once:true});
-else v27Schedule();
+  function logo(t,extra=''){
+    const cls='v28-logo '+extra;
+    if(t.logo){
+      return '<span class="'+cls+'"><img src="'+BASE+t.logo+'" alt="'+esc(t.name)+'" loading="lazy" decoding="async" onerror="this.style.display=\'none\';this.nextElementSibling.style.display=\'grid\'"><span class="v28-fallback" style="display:none">'+esc(t.abbr)+'</span></span>';
+    }
+    return '<span class="'+cls+'"><span class="v28-fallback">'+esc(t.abbr)+'</span></span>';
+  }
+
+  function neon(){
+    return '<div class="v28-neon" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i></div>';
+  }
+
+  function header(){
+    return '<header class="v28-head">'+
+      '<button class="v28-icon-btn back" data-v28-back aria-label="Volver">'+backIcon()+'</button>'+
+      '<h1>Siguiendo</h1>'+
+      '<button class="v28-icon-btn plus" data-v28-picker aria-label="Añadir equipos">'+plusIcon()+'</button>'+
+    '</header>';
+  }
+
+  function emptyMarkup(){
+    return '<section class="v28-follow-page v28-empty" data-v28-following>'+
+      neon()+header()+
+      '<main class="v28-empty-main">'+
+        '<img class="v28-league-logo" src="'+LEAGUE+'" alt="Liga Municipal de Fútbol Juventino Rosas">'+
+        '<h2>Sin equipos seguidos todavía</h2>'+
+        '<p>¡Sigue a los equipos de la Liga Municipal<br>de Fútbol Juventino Rosas para acceder<br>rápidamente a noticias, alertas de partidos<br>y resúmenes en video!</p>'+
+        '<button class="v28-add" data-v28-picker><span>＋</span>Añadir equipos</button>'+
+      '</main>'+
+      '<div class="v28-side-notch" aria-hidden="true"></div>'+
+    '</section>';
+  }
+
+  function followedMarkup(){
+    const ids=followed();
+    if(!ids.length)return emptyMarkup();
+    if(!ids.includes(activeTeam))activeTeam=ids[0];
+    return '<section class="v28-follow-page v28-followed" data-v28-following>'+
+      neon()+header()+
+      '<main class="v28-follow-list">'+
+        ids.map(id=>{
+          const t=team(id);
+          return '<div class="v28-follow-row">'+
+            '<button class="v28-team-link" data-v28-team="'+id+'">'+logo(t)+'<strong>'+esc(t.name)+'</strong></button>'+
+            '<button class="v28-following-pill" data-v28-menu="'+id+'">Siguiendo</button>'+
+          '</div>';
+        }).join('')+
+      '</main>'+
+      '<div class="v28-side-notch" aria-hidden="true"></div>'+
+      (sheetOpen?actionSheet():'')+
+    '</section>';
+  }
+
+  function actionSheet(){
+    const t=team(activeTeam);
+    const fav=isFavorite(t.id);
+    return '<div class="v28-sheet-layer" data-v28-sheet>'+
+      '<button class="v28-sheet-backdrop" data-v28-close-sheet aria-label="Cerrar"></button>'+
+      '<section class="v28-sheet" role="dialog" aria-modal="true" aria-label="Opciones de '+esc(t.name)+'">'+
+        '<div class="v28-sheet-team">'+logo(t,'big')+'<strong>'+esc(t.name)+'</strong></div>'+
+        '<div class="v28-divider"></div>'+
+        '<button class="v28-sheet-action '+(fav?'selected':'')+'" data-v28-favorite="'+t.id+'">'+starIcon()+'<span>Equipo favorito</span></button>'+
+        '<button class="v28-sheet-action" data-v28-unfollow="'+t.id+'"><b>−</b><span>Dejar de seguir</span></button>'+
+      '</section>'+
+    '</div>';
+  }
+
+  function pickerMarkup(){
+    const q=searchText.trim().toLocaleLowerCase('es');
+    const list=TEAMS.filter(t=>!q||t.name.toLocaleLowerCase('es').includes(q)||t.id.toLowerCase().includes(q));
+    const f=followed();
+    return '<section class="v28-follow-page v28-picker" data-v28-following>'+
+      '<header class="v28-picker-top">'+
+        '<div class="v28-search">'+searchIcon()+'<input id="v28Search" type="search" autocomplete="off" placeholder="Buscar equipos" value="'+esc(searchText)+'"></div>'+
+        '<button class="v28-close" data-v28-close-picker aria-label="Cerrar">×</button>'+
+      '</header>'+
+      '<h2>Equipos en la competición</h2>'+
+      '<main class="v28-picker-list">'+
+        list.map(t=>'<div class="v28-picker-row">'+
+          logo(t)+
+          '<strong>'+esc(t.name)+'</strong>'+
+          '<button class="v28-picker-follow '+(f.includes(t.id)?'following':'')+'" data-v28-follow="'+t.id+'">'+(f.includes(t.id)?'Siguiendo':'Seguir')+'</button>'+
+        '</div>').join('')+
+      '</main>'+
+      '<div class="v28-side-notch" aria-hidden="true"></div>'+
+    '</section>';
+  }
+
+  function setNav(){
+    const nav=document.querySelector('.bottom-nav');
+    if(!nav)return;
+    const labels={home:'Inicio',competition:'Competición',video:'Video',fantasy:'Fantasy',more:'Más'};
+    nav.querySelectorAll('.nav-item').forEach(n=>{
+      n.classList.toggle('active',n.dataset.route==='more');
+      const s=n.querySelector('small');
+      if(s&&labels[n.dataset.route])s.textContent=labels[n.dataset.route];
+    });
+  }
+
+  function restoreNav(){
+    const nav=document.querySelector('.bottom-nav');
+    if(!nav)return;
+    const labels={home:'INICIO',competition:'COMPETICIÓN',video:'VÍDEO',fantasy:'FANTASY',more:'MÁS'};
+    nav.querySelectorAll('.nav-item').forEach(n=>{
+      const s=n.querySelector('small');
+      if(s&&labels[n.dataset.route])s.textContent=labels[n.dataset.route];
+    });
+  }
+
+  function bind(){
+    document.querySelectorAll('[data-v28-back]').forEach(b=>b.onclick=()=>{location.hash='#/more'});
+    document.querySelectorAll('[data-v28-picker]').forEach(b=>b.onclick=()=>{
+      pickerOpen=true;sheetOpen=false;searchText='';render();
+    });
+    const closePicker=document.querySelector('[data-v28-close-picker]');
+    if(closePicker)closePicker.onclick=()=>{pickerOpen=false;searchText='';render()};
+
+    document.querySelectorAll('[data-v28-menu]').forEach(b=>b.onclick=()=>{
+      activeTeam=b.dataset.v28Menu;
+      sheetOpen=true;
+      render();
+    });
+    document.querySelectorAll('[data-v28-team]').forEach(b=>b.onclick=()=>{
+      activeTeam=b.dataset.v28Team;
+      sheetOpen=true;
+      render();
+    });
+    const closeSheet=document.querySelector('[data-v28-close-sheet]');
+    if(closeSheet)closeSheet.onclick=()=>{sheetOpen=false;render()};
+
+    const search=document.querySelector('#v28Search');
+    if(search){
+      search.oninput=()=>{
+        searchText=search.value;
+        render();
+        requestAnimationFrame(()=>{
+          const n=document.querySelector('#v28Search');
+          if(n){n.focus();n.setSelectionRange(n.value.length,n.value.length)}
+        });
+      };
+    }
+
+    document.querySelectorAll('[data-v28-follow]').forEach(b=>b.onclick=()=>{
+      const id=b.dataset.v28Follow;
+      if(isFollowed(id)){
+        activeTeam=id;
+        pickerOpen=false;
+        sheetOpen=true;
+        render();
+      }else{
+        setFollow(id,true);
+        activeTeam=id;
+        render();
+      }
+    });
+
+    document.querySelectorAll('[data-v28-favorite]').forEach(b=>b.onclick=()=>{
+      const id=b.dataset.v28Favorite;
+      setFavorite(id,!isFavorite(id));
+      render();
+    });
+
+    document.querySelectorAll('[data-v28-unfollow]').forEach(b=>b.onclick=()=>{
+      const id=b.dataset.v28Unfollow;
+      setFollow(id,false);
+      sheetOpen=false;
+      const left=followed();
+      activeTeam=left[0]||'AME';
+      render();
+    });
+  }
+
+  function render(){
+    if(route()!=='following')return;
+    migrateOldState();
+    const screen=document.querySelector('#screen');
+    if(!screen)return;
+    document.body.classList.toggle('v28-follow-sheet-open',sheetOpen);
+    document.body.classList.toggle('v28-follow-picker-open',pickerOpen);
+    screen.innerHTML=pickerOpen?pickerMarkup():(followed().length?followedMarkup():emptyMarkup());
+    setNav();
+    bind();
+    if(!pickerOpen)screen.scrollTop=0;
+  }
+
+  function schedule(){
+    if(route()!=='following'){
+      pickerOpen=false;sheetOpen=false;searchText='';
+      document.body.classList.remove('v28-follow-sheet-open','v28-follow-picker-open');
+      restoreNav();
+      return;
+    }
+    requestAnimationFrame(()=>requestAnimationFrame(render));
+  }
+
+  window.addEventListener('hashchange',schedule);
+  const target=document.querySelector('#screen');
+  if(target){
+    new MutationObserver(()=>{
+      if(route()==='following'&&!target.querySelector('[data-v28-following]'))schedule();
+    }).observe(target,{childList:true,subtree:false});
+  }
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',schedule,{once:true});
+  else schedule();
+})();
