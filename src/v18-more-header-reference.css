@@ -1,7 +1,8 @@
-/* PARTS21 — SOLO cabecera superior de MÁS según referencia del usuario. */
+/* PARTS23 — SOLO cabecera superior de MÁS según imagen 2 del usuario.
+   Mantiene intactos contenido, menús y barra inferior. */
 body[data-app-route="more"] .topbar{
-  height:calc(158px + env(safe-area-inset-top))!important;
-  min-height:calc(158px + env(safe-area-inset-top))!important;
+  height:calc(112px + env(safe-area-inset-top))!important;
+  min-height:calc(112px + env(safe-area-inset-top))!important;
   padding:0!important;
   display:block!important;
   position:sticky!important;
@@ -9,41 +10,39 @@ body[data-app-route="more"] .topbar{
   overflow:hidden!important;
   isolation:isolate!important;
   background:
-    radial-gradient(260px 145px at 18% 18%,rgba(26,73,214,.30),transparent 72%),
-    radial-gradient(240px 160px at 86% 10%,rgba(18,74,205,.18),transparent 72%),
-    linear-gradient(180deg,#050a64 0%,#07117f 58%,#0a1eae 100%)!important;
+    radial-gradient(150px 90px at 90% 80%,rgba(34,229,239,.08),transparent 76%),
+    linear-gradient(105deg,#07106f 0%,#091182 54%,#101db1 100%)!important;
   border:0!important;
   border-bottom:0!important;
   box-shadow:none!important;
   backdrop-filter:none!important;
+  -webkit-backdrop-filter:none!important;
   z-index:30!important;
 }
 
+/* La referencia es limpia: sin líneas ni arte adicional en esta cabecera. */
 body[data-app-route="more"] .topbar::before{
-  content:""!important;
-  position:absolute!important;
-  inset:0!important;
-  display:block!important;
-  pointer-events:none!important;
-  opacity:.16!important;
-  background:
-    linear-gradient(136deg,transparent 0 62%,rgba(35,74,190,.25) 63%,transparent 66%)!important;
+  content:none!important;
+  display:none!important;
 }
 
+/* "Más" con la misma escala y posición de la imagen 2. */
 body[data-app-route="more"] .topbar::after{
   content:"Más"!important;
   position:absolute!important;
-  left:34px!important;
-  right:100px!important;
-  bottom:30px!important;
+  left:22px!important;
+  right:auto!important;
+  bottom:18px!important;
   top:auto!important;
   display:block!important;
+  width:auto!important;
+  height:auto!important;
   color:#fff!important;
   font-family:Inter,Roboto,Arial,sans-serif!important;
-  font-size:clamp(52px,15vw,66px)!important;
+  font-size:34px!important;
   font-weight:900!important;
-  line-height:.92!important;
-  letter-spacing:-.045em!important;
+  line-height:1!important;
+  letter-spacing:-.035em!important;
   white-space:nowrap!important;
   overflow:visible!important;
   text-overflow:clip!important;
@@ -51,33 +50,35 @@ body[data-app-route="more"] .topbar::after{
   z-index:3!important;
 }
 
-/* La referencia NO lleva el logo de la Liga a la izquierda. */
+/* Imagen 2: no logo de liga a la izquierda. */
 body[data-app-route="more"] .topbar .wordmark{
   display:none!important;
   visibility:hidden!important;
   pointer-events:none!important;
 }
 
-/* Perfil: mismo icono de la referencia, sin círculo genérico adicional. */
+/* Icono exacto del usuario, más pequeño y sin borde doble. */
 body[data-app-route="more"] .topbar .profile-button{
   display:block!important;
   visibility:visible!important;
   opacity:1!important;
   position:absolute!important;
-  right:28px!important;
+  right:22px!important;
   left:auto!important;
   top:auto!important;
-  bottom:29px!important;
-  width:50px!important;
-  height:50px!important;
-  max-width:50px!important;
-  max-height:50px!important;
+  bottom:19px!important;
+  width:28px!important;
+  height:28px!important;
+  min-width:28px!important;
+  min-height:28px!important;
+  max-width:28px!important;
+  max-height:28px!important;
   margin:0!important;
   padding:0!important;
   border:0!important;
   border-radius:0!important;
   background-color:transparent!important;
-  background-image:url('../profile-reference.svg?v=parts21')!important;
+  background-image:url('../profile-more-reference.svg?v=parts23')!important;
   background-position:center!important;
   background-repeat:no-repeat!important;
   background-size:contain!important;
@@ -88,36 +89,42 @@ body[data-app-route="more"] .topbar .profile-button{
 body[data-app-route="more"] .topbar .profile-button svg{
   display:none!important;
 }
+body[data-app-route="more"] .topbar .back-button{
+  display:none!important;
+}
 
-/* Evitar duplicar "LIGA JUVENTINO" y el segundo título Más debajo. */
+/* Quitar el segundo título grande del contenido. */
 body[data-app-route="more"] #screen>.eyebrow:first-child,
 body[data-app-route="more"] #screen>.screen-title{
   display:none!important;
 }
 
 body[data-app-route="more"] #screen{
-  padding-top:20px!important;
+  padding-top:14px!important;
 }
 
-/* Mantener PRINCIPAL en la misma zona visual de la captura. */
 body[data-app-route="more"] #screen>.menu-group:first-of-type{
   margin-top:0!important;
 }
 
 @media(max-width:380px){
   body[data-app-route="more"] .topbar{
-    height:calc(148px + env(safe-area-inset-top))!important;
-    min-height:calc(148px + env(safe-area-inset-top))!important;
+    height:calc(106px + env(safe-area-inset-top))!important;
+    min-height:calc(106px + env(safe-area-inset-top))!important;
   }
   body[data-app-route="more"] .topbar::after{
-    left:28px!important;
-    bottom:27px!important;
-    font-size:52px!important;
+    left:20px!important;
+    bottom:17px!important;
+    font-size:32px!important;
   }
   body[data-app-route="more"] .topbar .profile-button{
-    right:24px!important;
-    bottom:27px!important;
-    width:46px!important;
-    height:46px!important;
+    right:20px!important;
+    bottom:18px!important;
+    width:26px!important;
+    height:26px!important;
+    min-width:26px!important;
+    min-height:26px!important;
+    max-width:26px!important;
+    max-height:26px!important;
   }
 }
