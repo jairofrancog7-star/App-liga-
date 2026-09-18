@@ -999,3 +999,351 @@ body[data-app-route="competition"] .v12-league-banner i{
   body[data-app-route="competition"] .v12-schedule-clubs b{font-size:13.5px!important}
   body[data-app-route="competition"] .v12-schedule-meta button{min-width:80px!important;font-size:11.5px!important}
 }
+
+
+/* === PARTS25 — CUADRO / PLAY-OFF REFERENCIA GOOGLE PHOTOS === */
+body[data-app-route="competition"] .v12-bracket-reference{
+  --br-cyan:#17e4ef;
+  --br-card:#0b227f;
+  --br-card2:#0a1c72;
+  --br-line:#aeb7d8;
+  margin:0 -14px!important;
+  padding:14px 12px 112px!important;
+  min-height:100vh!important;
+  color:#fff!important;
+  background:
+    radial-gradient(300px 220px at 75% 8%,rgba(37,69,220,.22),transparent 72%),
+    linear-gradient(180deg,#05085f 0%,#020451 100%)!important;
+  overflow:hidden!important;
+}
+
+body[data-app-route="competition"] .v12-bracket-stage-tabs{
+  display:grid!important;
+  grid-template-columns:1fr 1.5fr 1.42fr!important;
+  gap:10px!important;
+  margin:0 8px 14px!important;
+}
+body[data-app-route="competition"] .v12-bracket-stage-tabs button{
+  min-width:0!important;
+  height:48px!important;
+  padding:0 12px!important;
+  border:0!important;
+  border-radius:13px!important;
+  background:#111c72!important;
+  color:#f6f7ff!important;
+  font:800 14px/1 Inter,Roboto,Arial,sans-serif!important;
+  white-space:nowrap!important;
+  box-shadow:none!important;
+}
+body[data-app-route="competition"] .v12-bracket-stage-tabs button.active{
+  background:var(--br-cyan)!important;
+  color:#05115d!important;
+}
+
+body[data-app-route="competition"] .v12-bracket-dates{
+  display:grid!important;
+  grid-template-columns:1fr 1fr!important;
+  gap:20px!important;
+  margin:0 8px 12px!important;
+  color:#d7daec!important;
+}
+body[data-app-route="competition"] .v12-bracket-dates span{
+  position:relative!important;
+  padding-top:10px!important;
+  font:600 12px/1.2 Inter,Roboto,Arial,sans-serif!important;
+  white-space:nowrap!important;
+}
+body[data-app-route="competition"] .v12-bracket-dates span::before{
+  content:""!important;
+  position:absolute!important;
+  left:0!important;
+  right:8px!important;
+  top:0!important;
+  height:1px!important;
+  background:#263593!important;
+}
+
+body[data-app-route="competition"] .v12-bracket-board{
+  display:grid!important;
+  gap:34px!important;
+  padding:0 0 8px!important;
+}
+
+body[data-app-route="competition"] .v12-bracket-route{
+  position:relative!important;
+  display:grid!important;
+  grid-template-columns:18px minmax(0,1.08fr) 18px minmax(0,.92fr)!important;
+  gap:7px!important;
+  min-height:340px!important;
+}
+
+body[data-app-route="competition"] .v12-bracket-side-label{
+  position:relative!important;
+  min-height:100%!important;
+  border-left:3px solid var(--br-line)!important;
+}
+body[data-app-route="competition"] .v12-bracket-route:nth-child(2) .v12-bracket-side-label{
+  border-left-color:var(--br-cyan)!important;
+}
+body[data-app-route="competition"] .v12-bracket-side-label span{
+  position:absolute!important;
+  left:-12px!important;
+  top:50%!important;
+  transform:translate(-50%,-50%) rotate(-90deg)!important;
+  transform-origin:center!important;
+  color:#e9ecff!important;
+  font:800 10px/1 Inter,Roboto,Arial,sans-serif!important;
+  letter-spacing:.025em!important;
+  white-space:nowrap!important;
+}
+
+body[data-app-route="competition"] .v12-bracket-pairs{
+  display:grid!important;
+  grid-template-rows:repeat(4,1fr)!important;
+  gap:11px!important;
+  min-width:0!important;
+}
+body[data-app-route="competition"] .v12-bracket-pair{
+  min-width:0!important;
+  display:grid!important;
+  grid-template-columns:minmax(0,1fr) 12px minmax(0,1fr)!important;
+  gap:4px!important;
+  align-items:center!important;
+}
+
+body[data-app-route="competition"] .v12-bracket-team{
+  position:relative!important;
+  min-width:0!important;
+  min-height:58px!important;
+  padding:6px 6px 6px 20px!important;
+  display:grid!important;
+  grid-template-columns:30px minmax(0,1fr)!important;
+  grid-template-rows:1fr!important;
+  align-items:center!important;
+  gap:6px!important;
+  border-radius:11px!important;
+  background:linear-gradient(180deg,#0c2587 0%,#091e74 100%)!important;
+  box-shadow:inset 0 0 0 1px rgba(61,97,220,.10)!important;
+}
+body[data-app-route="competition"] .v12-bracket-team img,
+body[data-app-route="competition"] .v12-bracket-fallback{
+  width:30px!important;
+  height:30px!important;
+  min-width:30px!important;
+  min-height:30px!important;
+  object-fit:contain!important;
+}
+body[data-app-route="competition"] .v12-bracket-fallback{
+  display:grid!important;
+  place-items:center!important;
+  border-radius:50%!important;
+  background:#142f92!important;
+  border:1px solid rgba(64,231,243,.52)!important;
+  color:#fff!important;
+  font:900 8px/1 Inter,Roboto,Arial,sans-serif!important;
+}
+body[data-app-route="competition"] .v12-bracket-team strong{
+  min-width:0!important;
+  color:#fff!important;
+  font:800 10px/1.12 Inter,Roboto,Arial,sans-serif!important;
+  overflow:hidden!important;
+  text-overflow:ellipsis!important;
+  display:-webkit-box!important;
+  -webkit-line-clamp:2!important;
+  -webkit-box-orient:vertical!important;
+}
+body[data-app-route="competition"] .v12-bracket-seed{
+  position:absolute!important;
+  left:5px!important;
+  top:50%!important;
+  transform:translateY(-50%)!important;
+  color:#d7dcf6!important;
+  font:700 8px/1 Inter,Roboto,Arial,sans-serif!important;
+}
+body[data-app-route="competition"] .v12-bracket-score{
+  position:absolute!important;
+  right:-11px!important;
+  top:50%!important;
+  transform:translateY(-50%)!important;
+  color:var(--br-cyan)!important;
+  font:900 8px/1 Inter,Roboto,Arial,sans-serif!important;
+}
+body[data-app-route="competition"] .v12-bracket-vs{
+  display:block!important;
+  color:var(--br-cyan)!important;
+  font:900 8px/1 Inter,Roboto,Arial,sans-serif!important;
+  text-align:center!important;
+  font-style:normal!important;
+}
+
+body[data-app-route="competition"] .v12-bracket-connectors{
+  position:relative!important;
+  min-height:100%!important;
+}
+body[data-app-route="competition"] .v12-bracket-connectors .c{
+  position:absolute!important;
+  right:0!important;
+  width:15px!important;
+  border-top:2px solid var(--br-line)!important;
+  border-bottom:2px solid var(--br-line)!important;
+  border-right:2px solid var(--br-line)!important;
+  border-radius:0 7px 7px 0!important;
+}
+body[data-app-route="competition"] .v12-bracket-route:nth-child(2) .v12-bracket-connectors .c{
+  border-color:var(--br-cyan)!important;
+}
+body[data-app-route="competition"] .v12-bracket-connectors .c1{
+  top:41px!important;
+  height:76px!important;
+}
+body[data-app-route="competition"] .v12-bracket-connectors .c2{
+  top:216px!important;
+  height:76px!important;
+}
+body[data-app-route="competition"] .v12-bracket-connectors .c3,
+body[data-app-route="competition"] .v12-bracket-connectors .c4{
+  display:none!important;
+}
+
+body[data-app-route="competition"] .v12-bracket-winners{
+  display:grid!important;
+  grid-template-rows:1fr 1fr!important;
+  gap:18px!important;
+  min-width:0!important;
+  align-items:stretch!important;
+}
+body[data-app-route="competition"] .v12-bracket-winner-block{
+  position:relative!important;
+  display:grid!important;
+  align-content:center!important;
+  gap:8px!important;
+}
+body[data-app-route="competition"] .v12-bracket-winner-block::after{
+  content:""!important;
+  position:absolute!important;
+  right:-10px!important;
+  top:42px!important;
+  width:10px!important;
+  height:58px!important;
+  border-top:2px solid var(--br-line)!important;
+  border-bottom:2px solid var(--br-line)!important;
+  border-right:2px solid var(--br-line)!important;
+  border-radius:0 6px 6px 0!important;
+}
+body[data-app-route="competition"] .v12-bracket-route:nth-child(2) .v12-bracket-winner-block::after{
+  border-color:var(--br-cyan)!important;
+}
+body[data-app-route="competition"] .v12-bracket-winner{
+  height:58px!important;
+  padding:0 11px!important;
+  display:flex!important;
+  align-items:center!important;
+  gap:7px!important;
+  border-radius:11px!important;
+  background:linear-gradient(180deg,#122a91 0%,#0c227e 100%)!important;
+}
+body[data-app-route="competition"] .v12-bracket-winner .shield{
+  width:22px!important;
+  height:22px!important;
+  display:grid!important;
+  place-items:center!important;
+  color:#aeb8de!important;
+}
+body[data-app-route="competition"] .v12-bracket-winner .shield svg{
+  width:22px!important;
+  height:22px!important;
+  display:block!important;
+}
+body[data-app-route="competition"] .v12-bracket-winner strong{
+  color:#eef0ff!important;
+  font:700 10.5px/1.15 Inter,Roboto,Arial,sans-serif!important;
+}
+
+body[data-app-route="competition"] .v12-bracket-seeded{
+  display:grid!important;
+  grid-template-columns:minmax(0,1fr) 10px minmax(0,1fr)!important;
+  gap:4px!important;
+  align-items:center!important;
+}
+body[data-app-route="competition"] .v12-bracket-team.mini{
+  min-height:52px!important;
+  padding-left:7px!important;
+  grid-template-columns:25px minmax(0,1fr)!important;
+  gap:5px!important;
+}
+body[data-app-route="competition"] .v12-bracket-team.mini img,
+body[data-app-route="competition"] .v12-bracket-team.mini .v12-bracket-fallback{
+  width:25px!important;
+  height:25px!important;
+  min-width:25px!important;
+  min-height:25px!important;
+}
+body[data-app-route="competition"] .v12-bracket-team.mini .v12-bracket-seed{
+  display:none!important;
+}
+body[data-app-route="competition"] .v12-bracket-team.mini strong{
+  font-size:8.7px!important;
+}
+
+/* Los filtros son funcionales: conservan el mismo lenguaje visual de la referencia. */
+body[data-app-route="competition"] .v12-bracket-reference.stage-octavos .v12-bracket-route,
+body[data-app-route="competition"] .v12-bracket-reference.stage-cuartos .v12-bracket-route{
+  grid-template-columns:18px 0 0 minmax(0,1fr)!important;
+}
+body[data-app-route="competition"] .v12-bracket-reference.stage-octavos .v12-bracket-pairs,
+body[data-app-route="competition"] .v12-bracket-reference.stage-octavos .v12-bracket-connectors,
+body[data-app-route="competition"] .v12-bracket-reference.stage-cuartos .v12-bracket-pairs,
+body[data-app-route="competition"] .v12-bracket-reference.stage-cuartos .v12-bracket-connectors{
+  display:none!important;
+}
+body[data-app-route="competition"] .v12-bracket-reference.stage-octavos .v12-bracket-winners,
+body[data-app-route="competition"] .v12-bracket-reference.stage-cuartos .v12-bracket-winners{
+  grid-column:4!important;
+}
+body[data-app-route="competition"] .v12-bracket-reference.stage-octavos .v12-bracket-winner,
+body[data-app-route="competition"] .v12-bracket-reference.stage-cuartos .v12-bracket-winner{
+  height:64px!important;
+}
+body[data-app-route="competition"] .v12-bracket-reference.stage-cuartos .v12-bracket-seeded{
+  opacity:.45!important;
+}
+
+@media(max-width:380px){
+  body[data-app-route="competition"] .v12-bracket-reference{
+    padding-left:9px!important;
+    padding-right:9px!important;
+  }
+  body[data-app-route="competition"] .v12-bracket-stage-tabs{
+    gap:7px!important;
+    margin-left:4px!important;
+    margin-right:4px!important;
+  }
+  body[data-app-route="competition"] .v12-bracket-stage-tabs button{
+    height:44px!important;
+    padding:0 8px!important;
+    font-size:12.5px!important;
+  }
+  body[data-app-route="competition"] .v12-bracket-route{
+    grid-template-columns:16px minmax(0,1.1fr) 15px minmax(0,.9fr)!important;
+    gap:5px!important;
+  }
+  body[data-app-route="competition"] .v12-bracket-team{
+    min-height:54px!important;
+    padding-left:18px!important;
+    grid-template-columns:26px minmax(0,1fr)!important;
+    gap:4px!important;
+  }
+  body[data-app-route="competition"] .v12-bracket-team img,
+  body[data-app-route="competition"] .v12-bracket-fallback{
+    width:26px!important;
+    height:26px!important;
+    min-width:26px!important;
+    min-height:26px!important;
+  }
+  body[data-app-route="competition"] .v12-bracket-team strong{
+    font-size:9px!important;
+  }
+  body[data-app-route="competition"] .v12-bracket-winner strong{
+    font-size:9.5px!important;
+  }
+}
