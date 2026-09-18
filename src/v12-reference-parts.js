@@ -18,7 +18,7 @@ function v12Form(t){return '<div class="v12-form">'+t.form.map(s=>'<i class="'+s
 function v12Rows(mode='compact'){
   if(mode==='criteria') return '<div class="v12-criteria"><h3>Criterios de desempate</h3><ol><li>Puntos obtenidos</li><li>Diferencia de goles</li><li>Goles a favor</li><li>Resultado entre los equipos empatados</li><li>Disciplina</li></ol></div>';
   return '<div class="v12-stand-head"><span>LIGA MUNICIPAL JUVENTINO ROSAS</span><b>P</b><b>+/-</b><b>PTOS</b><b>FORMA</b></div>'+
-    '<div class="v12-stand-list">'+V12_TEAMS.map((t,i)=>'<div class="v12-stand-row"><span class="v12-rank">'+(i+1)+'</span><span class="v12-team-cell">'+v12TeamLogo(t)+'<strong>'+t.name+'</strong></span><span>'+t.p+'</span><span>'+(t.gd>0?'+':'')+t.gd+'</span><span>'+t.pts+'</span>'+v12Form(t)+'</div>').join('')+'</div>';
+    '<div class="v12-stand-list">'+V12_TEAMS.map((t,i)=>'<div class="v12-stand-row"><span class="v12-rank">'+(i+1)+'</span><span class="v12-team-cell">'+v12TeamLogo(t)+'<strong>'+t.name+'</strong></span><span>'+t.p+'</span><span>'+t.gd+'</span><span>'+t.pts+'</span>'+v12Form(t)+'</div>').join('')+'</div>';
 }
 function v12StandingsBody(){
   return '<section class="v12-standings-reference" data-v12-standings>'+
@@ -93,7 +93,17 @@ function v12Toast(text){
   if(!t){t=document.createElement('div');t.className='v12-toast';document.body.appendChild(t)}
   t.textContent=text;t.classList.add('show');clearTimeout(v12Toast.t);v12Toast.t=setTimeout(()=>t.classList.remove('show'),1700)
 }
+function v12NavBrand(){
+  const labels={home:'Inicio',competition:'Competición',video:'Video',fantasy:'Fantasy',more:'Más'};
+  document.querySelectorAll('.bottom-nav .nav-item').forEach(item=>{
+    const small=item.querySelector('small');
+    if(small&&labels[item.dataset.route]) small.textContent=labels[item.dataset.route];
+  });
+  const comp=document.querySelector('.bottom-nav .nav-item[data-route="competition"] .nav-icon');
+  if(comp) comp.innerHTML='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 3v18M17 3v18M3 8h8M13 16h8"/><circle cx="7" cy="8" r="2.3"/><circle cx="17" cy="16" r="2.3"/></svg>';
+}
 function patch(){
+  v12NavBrand();
   patchStandings();
   patchProfile();
   patchMoreLess();
