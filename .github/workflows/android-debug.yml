@@ -38,12 +38,6 @@ jobs:
       - name: Create Android project
         run: npx cap add android
 
-      - name: Apply corrected full-blue Liga Juventino app icon
-        run: |
-          mkdir -p assets
-          curl -fL 'https://d2ol7oe51mr4n9.cloudfront.net/user_3JNvttsAwr0QjxhuX5O1uaa9bvv/720d1f82-1d59-4a7a-af69-9e7e8da0250a.png' -o assets/icon.png
-          npx --yes @capacitor/assets generate --android --iconBackgroundColor '#02065F' --iconBackgroundColorDark '#02065F'
-
       - name: Sync Capacitor
         run: npx cap sync android
 
