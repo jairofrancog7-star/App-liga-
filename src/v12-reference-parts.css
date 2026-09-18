@@ -1551,3 +1551,45 @@ body[data-app-route="competition"] .v12-final-trophy{
     bottom:24px!important;
   }
 }
+
+/* === PARTS28 — FINAL EXACTA DESDE DRIVE === */
+body[data-app-route="competition"] .v12-bracket-reference.stage-final{
+  background:#03055a!important;
+  padding-top:8px!important;
+}
+body[data-app-route="competition"] .v12-bracket-reference.stage-final .v12-final-reference{display:block!important}
+body[data-app-route="competition"] .v12-final-reference{
+  min-height:705px!important;
+  margin:0 -12px!important;
+  background:radial-gradient(280px 250px at 76% 72%,rgba(20,31,165,.28),transparent 74%),linear-gradient(180deg,#050762 0%,#020450 100%)!important;
+}
+body[data-app-route="competition"] .v12-final-top-date{top:26px!important;left:22px!important;width:48%!important}
+body[data-app-route="competition"] .v12-final-top-date span{height:2px!important;margin-bottom:17px!important;background:#242c80!important}
+body[data-app-route="competition"] .v12-final-top-date b{color:#aeb5d1!important;font-size:17px!important;font-weight:500!important}
+body[data-app-route="competition"] .v12-final-match-card{
+  left:22px!important;bottom:72px!important;width:45%!important;max-width:none!important;height:148px!important;
+  padding:18px 18px 14px!important;border-radius:16px!important;
+  background:linear-gradient(145deg,#0b1673 0%,#09115f 100%)!important;
+}
+body[data-app-route="competition"] .v12-final-match-card time{color:#aeb5d2!important;font-size:17px!important;margin-bottom:18px!important}
+body[data-app-route="competition"] .v12-final-shield{color:#717aa2!important}
+body[data-app-route="competition"] .v12-final-opponent b{color:#f6f7ff!important;font-size:18px!important}
+
+/* Recorte del trofeo EXACTO contenido en la captura del Drive del usuario (941x1672). */
+body[data-app-route="competition"] .v12-final-trophy-wrap{
+  position:absolute!important;right:4.5%!important;bottom:28px!important;width:37%!important;height:auto!important;
+  aspect-ratio:345/580!important;overflow:hidden!important;display:block!important;pointer-events:none!important;z-index:3!important;
+}
+body[data-app-route="competition"] .v12-final-trophy-crop{position:absolute!important;inset:0!important;overflow:hidden!important}
+body[data-app-route="competition"] .v12-final-trophy-source{
+  position:absolute!important;width:272.754%!important;max-width:none!important;height:auto!important;
+  left:-137.681%!important;top:-263.768%!important;display:block!important;object-fit:none!important;filter:none!important;transform:none!important;
+}
+body[data-app-route="competition"] .v12-final-side-mark{right:-13px!important;top:48px!important;height:92px!important;opacity:.8!important}
+@media(max-width:390px){
+  body[data-app-route="competition"] .v12-final-reference{min-height:650px!important}
+  body[data-app-route="competition"] .v12-final-match-card{left:16px!important;bottom:64px!important;width:46%!important;height:136px!important;padding:15px!important}
+  body[data-app-route="competition"] .v12-final-match-card time{font-size:15px!important;margin-bottom:14px!important}
+  body[data-app-route="competition"] .v12-final-opponent b{font-size:16px!important}
+  body[data-app-route="competition"] .v12-final-trophy-wrap{right:3%!important;bottom:24px!important;width:38.5%!important}
+}

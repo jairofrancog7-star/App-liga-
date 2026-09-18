@@ -320,34 +320,9 @@ function v12BracketRoute(route){
 }
 
 function v12FinalTrophy(){
-  return '<svg class="v12-final-trophy" viewBox="0 0 300 430" aria-hidden="true">'+
-    '<defs>'+
-      '<linearGradient id="cupSilver" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ffffff"/><stop offset=".16" stop-color="#7180a8"/><stop offset=".30" stop-color="#f7f9ff"/><stop offset=".48" stop-color="#3b4156"/><stop offset=".65" stop-color="#ffffff"/><stop offset=".82" stop-color="#7f8db8"/><stop offset="1" stop-color="#eef3ff"/></linearGradient>'+
-      '<linearGradient id="cupDark" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#394052"/><stop offset=".5" stop-color="#090b14"/><stop offset="1" stop-color="#444b62"/></linearGradient>'+
-      '<linearGradient id="neonL" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#22ff65"/><stop offset=".45" stop-color="#00eaff"/><stop offset="1" stop-color="#1477ff"/></linearGradient>'+
-      '<linearGradient id="neonR" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ff27c2"/><stop offset=".55" stop-color="#ff39d1"/><stop offset="1" stop-color="#3a8cff"/></linearGradient>'+
-      '<filter id="glowC"><feGaussianBlur stdDeviation="4" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>'+
-    '</defs>'+
-    '<path d="M55 98 130 187 94 278 34 163Z" fill="url(#cupDark)" stroke="url(#neonL)" stroke-width="5" filter="url(#glowC)"/>'+
-    '<path d="M245 98 170 187 206 278 266 163Z" fill="url(#cupDark)" stroke="url(#neonR)" stroke-width="5" filter="url(#glowC)"/>'+
-    '<path d="M94 78 116 41 138 74 151 30 165 75 190 43 207 82 196 101H105Z" fill="url(#cupSilver)" stroke="#fff" stroke-width="3"/>'+
-    '<circle cx="116" cy="45" r="6" fill="#dffaff" stroke="#00eaff" stroke-width="2"/><circle cx="151" cy="30" r="6" fill="#fff" stroke="#8da7ff" stroke-width="2"/><circle cx="190" cy="47" r="6" fill="#fff" stroke="#ff2ac2" stroke-width="2"/>'+
-    '<path d="M98 103h104l-8 79c-3 48-20 88-44 111-24-23-41-63-44-111Z" fill="url(#cupSilver)" stroke="#fff" stroke-width="3"/>'+
-    '<ellipse cx="150" cy="109" rx="54" ry="16" fill="url(#cupDark)" stroke="#fff" stroke-width="3"/>'+
-    '<ellipse cx="150" cy="142" rx="46" ry="14" fill="#10131c" stroke="#dfe7ff" stroke-width="2"/>'+
-    '<circle cx="150" cy="215" r="42" fill="url(#cupSilver)" stroke="#d9e3ff" stroke-width="3"/>'+
-    '<circle cx="150" cy="215" r="28" fill="#d5d9e3" stroke="#5f6575" stroke-width="2"/>'+
-    '<path d="m150 191 10 8-4 13-13 0-4-13Zm-20 17 10 4 3 13-9 8-10-7Zm40 0 6 18-10 7-9-8 3-13Zm-29 31 18 0 4 11-13 10-13-10Z" fill="#343845"/>'+
-    '<path d="M118 286h64l-8 34h-48Z" fill="url(#cupSilver)" stroke="#fff" stroke-width="3"/>'+
-    '<path d="M103 322h94l20 67H83Z" fill="url(#cupDark)" stroke="#a5b0d8" stroke-width="3"/>'+
-    '<path d="M77 390h146l-7 27H84Z" fill="#09102c" stroke="#ffffff" stroke-width="3"/>'+
-    '<path d="M77 390h146" stroke="url(#neonR)" stroke-width="5" filter="url(#glowC)"/>'+
-    '<path d="M84 417h132" stroke="url(#neonL)" stroke-width="5" filter="url(#glowC)"/>'+
-    '<path d="M58 130 117 263" stroke="#ffffff" stroke-width="9" opacity=".72"/>'+
-    '<path d="M242 130 183 263" stroke="#ffffff" stroke-width="9" opacity=".72"/>'+
-    '<path d="M53 132 117 268" stroke="url(#neonL)" stroke-width="4" filter="url(#glowC)"/>'+
-    '<path d="M247 132 183 268" stroke="url(#neonR)" stroke-width="4" filter="url(#glowC)"/>'+
-  '</svg>';
+  return '<div class="v12-final-trophy-crop" aria-label="Trofeo de la final">'+
+    '<img class="v12-final-trophy-source" src="./assets/reference/final-drive-reference.png?v=parts28" alt="Trofeo de la final">'+
+  '</div>';
 }
 function v12FinalCard(){
   return '<section class="v12-final-reference" data-v12-final>'+
