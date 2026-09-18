@@ -15,9 +15,9 @@ body[data-app-route] .bottom-nav{
   transform:translateX(-50%)!important;
   width:min(100%,520px)!important;
   box-sizing:border-box!important;
-  min-height:66px!important;
-  height:66px!important;
-  padding:4px 8px max(4px,env(safe-area-inset-bottom))!important;
+  min-height:60px!important;
+  height:60px!important;
+  padding:3px 8px max(3px,env(safe-area-inset-bottom))!important;
   grid-template-columns:repeat(5,minmax(0,1fr))!important;
   align-items:center!important;
   background:var(--v16-nav-bg)!important;
@@ -34,10 +34,10 @@ body[data-app-route] .bottom-nav .nav-item{
   padding:2px 0 1px!important;
   margin:0!important;
   display:grid!important;
-  grid-template-rows:29px 15px!important;
+  grid-template-rows:25px 14px!important;
   place-items:center!important;
   align-content:center!important;
-  gap:2px!important;
+  gap:1px!important;
   border:0!important;
   background:transparent!important;
   color:var(--v16-nav-inactive)!important;
@@ -52,12 +52,12 @@ body[data-app-route] .bottom-nav .nav-item.active{
 
 .bottom-nav .nav-icon,
 body[data-app-route] .bottom-nav .nav-icon{
-  width:27px!important;
-  height:27px!important;
-  min-width:27px!important;
-  min-height:27px!important;
-  max-width:27px!important;
-  max-height:27px!important;
+  width:24px!important;
+  height:24px!important;
+  min-width:24px!important;
+  min-height:24px!important;
+  max-width:24px!important;
+  max-height:24px!important;
   display:grid!important;
   place-items:center!important;
   color:inherit!important;
@@ -86,9 +86,9 @@ body[data-app-route] .bottom-nav .nav-item small{
   padding:0!important;
   color:inherit!important;
   font-family:Inter,Roboto,Arial,sans-serif!important;
-  font-size:10.5px!important;
+  font-size:10px!important;
   font-weight:700!important;
-  line-height:13px!important;
+  line-height:12px!important;
   letter-spacing:0!important;
   text-transform:none!important;
   white-space:nowrap!important;
@@ -98,29 +98,29 @@ body[data-app-route] .bottom-nav .nav-item small{
 @media(max-width:380px){
   .bottom-nav,
   body[data-app-route] .bottom-nav{
-    min-height:63px!important;
-    height:63px!important;
-    padding:3px 5px max(3px,env(safe-area-inset-bottom))!important;
+    min-height:58px!important;
+    height:58px!important;
+    padding:2px 5px max(2px,env(safe-area-inset-bottom))!important;
   }
   .bottom-nav .nav-item,
   body[data-app-route] .bottom-nav .nav-item{
-    grid-template-rows:27px 14px!important;
+    grid-template-rows:24px 13px!important;
     gap:1px!important;
   }
   .bottom-nav .nav-icon,
   body[data-app-route] .bottom-nav .nav-icon,
   .bottom-nav .nav-icon svg,
   body[data-app-route] .bottom-nav .nav-icon svg{
-    width:25px!important;
-    height:25px!important;
-    min-width:25px!important;
-    min-height:25px!important;
-    max-width:25px!important;
-    max-height:25px!important;
+    width:23px!important;
+    height:23px!important;
+    min-width:23px!important;
+    min-height:23px!important;
+    max-width:23px!important;
+    max-height:23px!important;
   }
   .bottom-nav .nav-item small,
   body[data-app-route] .bottom-nav .nav-item small{
-    font-size:9.6px!important;
+    font-size:9.4px!important;
     line-height:12px!important;
   }
 }
