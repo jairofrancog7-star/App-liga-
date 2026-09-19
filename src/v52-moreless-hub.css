@@ -1,0 +1,299 @@
+/* V52 — Hub Más o Menos basado en la referencia larga del usuario.
+   Solo #/moreLessHub. Mantiene la barra inferior global. */
+body[data-app-route="moreLessHub"]{
+  --v52-bg:#07075f;
+  --v52-card:#10118f;
+  --v52-card2:#0c0e7d;
+  --v52-cyan:#16e8f3;
+  --v52-text:#ffffff;
+  --v52-soft:#aeb3de;
+  background:var(--v52-bg)!important;
+}
+body[data-app-route="moreLessHub"] .topbar{display:none!important}
+body[data-app-route="moreLessHub"] #app,
+body[data-app-route="moreLessHub"] .app-shell{
+  width:min(100%,520px)!important;
+  max-width:520px!important;
+  min-height:100dvh!important;
+  margin:0 auto!important;
+  background:var(--v52-bg)!important;
+}
+body[data-app-route="moreLessHub"] #screen{
+  width:100%!important;
+  max-width:520px!important;
+  min-height:100dvh!important;
+  height:auto!important;
+  margin:0!important;
+  padding:0 0 calc(72px + env(safe-area-inset-bottom))!important;
+  overflow-x:hidden!important;
+  overflow-y:auto!important;
+  background:var(--v52-bg)!important;
+}
+.v52-mol-hub{
+  width:100%;
+  min-height:100dvh;
+  color:#fff;
+  background:
+    radial-gradient(110% 16% at 50% 0%,rgba(0,216,255,.20),transparent 58%),
+    linear-gradient(180deg,#091774 0,#07075f 15%,#07075f 100%);
+  font-family:Inter,Roboto,Arial,sans-serif;
+}
+.v52-mol-head{
+  position:relative;
+  height:96px;
+  padding:47px 14px 12px;
+  display:flex;
+  align-items:flex-end;
+  gap:12px;
+  box-sizing:border-box;
+  background:
+    linear-gradient(145deg,transparent 0 16%,rgba(0,229,248,.16) 16.5% 17.5%,transparent 18% 28%,rgba(69,52,255,.28) 28.5% 35%,transparent 35.5%),
+    radial-gradient(circle at 78% 0%,rgba(14,219,246,.30),transparent 27%),
+    linear-gradient(180deg,#073ee8 0%,#071a9d 100%);
+  overflow:hidden;
+}
+.v52-mol-head::after{
+  content:"";
+  position:absolute;
+  left:-10%;right:-10%;bottom:-8px;
+  height:20px;
+  background:linear-gradient(90deg,transparent,#14deed 38%,#5b5bff 62%,transparent);
+  opacity:.18;
+  transform:skewY(-3deg);
+}
+.v52-back{
+  position:relative;
+  z-index:2;
+  width:28px;height:30px;
+  display:grid;place-items:center;
+  padding:0;margin:0;
+  border:0;background:transparent;
+}
+.v52-back img{width:9px;height:16px;display:block}
+.v52-mol-head h1{
+  position:relative;z-index:2;
+  margin:0 0 1px;
+  font-size:21px;
+  line-height:1;
+  font-weight:750;
+  letter-spacing:-.02em;
+}
+.v52-content{padding:14px 11px 22px}
+.v52-feature,
+.v52-game-card,
+.v52-friends,
+.v52-rank-shell{
+  overflow:hidden;
+  border-radius:11px;
+  background:linear-gradient(180deg,#11129a,#0d0e83);
+  box-shadow:0 2px 0 rgba(255,255,255,.03) inset,0 4px 14px rgba(0,0,35,.15);
+}
+.v52-feature{margin-bottom:15px}
+.v52-card-image{
+  position:relative;
+  width:100%;
+  height:134px;
+  overflow:hidden;
+  background:#08085d;
+}
+.v52-card-image img{
+  width:100%;height:100%;
+  display:block;
+  object-fit:cover;
+  object-position:center 44%;
+}
+.v52-card-image::after{
+  content:"";
+  position:absolute;inset:auto 0 0;
+  height:30%;
+  background:linear-gradient(180deg,transparent,rgba(6,7,96,.36));
+  pointer-events:none;
+}
+.v52-card-copy{padding:12px 12px 13px}
+.v52-card-copy h2{
+  margin:0 0 4px;
+  font-size:16px;
+  line-height:1.05;
+  font-weight:800;
+}
+.v52-card-copy p{
+  margin:0 0 12px;
+  color:#c2c5e6;
+  font-size:8.8px;
+  line-height:1.35;
+}
+.v52-actions{
+  display:grid;
+  grid-template-columns:1.06fr .94fr;
+  gap:6px;
+}
+.v52-actions button{
+  min-height:39px;
+  border-radius:8px;
+  font-size:8.9px;
+  line-height:1.05;
+  font-weight:750;
+  text-align:left;
+  padding:7px 10px;
+  border:1px solid var(--v52-cyan);
+}
+.v52-actions .primary{
+  color:#07105f;
+  background:linear-gradient(180deg,#2cf0f6,#18ddea);
+}
+.v52-actions .secondary{
+  color:var(--v52-cyan);
+  background:transparent;
+}
+.v52-play-title{
+  position:relative;
+  height:52px;
+  margin:14px 0 14px;
+  display:grid;
+  place-items:center;
+  font-family:Impact,"Arial Narrow Bold",Arial,sans-serif;
+  font-size:23px;
+  letter-spacing:-.04em;
+  color:#fff;
+  text-transform:uppercase;
+}
+.v52-play-title::before{
+  content:"";
+  position:absolute;inset:0 18px;
+  background:
+    linear-gradient(90deg,transparent 0 4%,rgba(35,61,255,.45) 14%,transparent 27% 72%,rgba(48,38,255,.45) 86%,transparent 96%),
+    linear-gradient(90deg,transparent,#1016a0 21%,#1016a0 79%,transparent);
+  clip-path:polygon(7% 0,93% 0,100% 50%,93% 100%,7% 100%,0 50%);
+}
+.v52-play-title span{position:relative;z-index:2}
+.v52-friends{
+  min-height:94px;
+  margin-bottom:15px;
+  padding:14px 14px;
+  display:grid;
+  grid-template-columns:1fr 58px;
+  align-items:center;
+  gap:8px;
+}
+.v52-friends h3{
+  margin:0 0 8px;
+  font-size:11px;
+  line-height:1.18;
+  font-weight:800;
+}
+.v52-friends button{
+  border:0;background:transparent;
+  color:var(--v52-cyan);
+  font-size:8.5px;
+  font-weight:700;
+  padding:0;
+  text-align:left;
+}
+.v52-friends-badge{
+  width:52px;height:52px;
+  border-radius:50%;
+  background:linear-gradient(135deg,#0f72ff,#2336d9);
+  display:grid;place-items:center;
+  position:relative;
+}
+.v52-friends-badge::before{
+  content:"";
+  position:absolute;
+  inset:7px;
+  border-radius:50%;
+  border:1px solid rgba(255,255,255,.12);
+}
+.v52-friends-badge img.league{
+  width:34px;height:34px;
+  object-fit:contain;
+  position:relative;z-index:2;
+}
+.v52-friends-badge img.people{
+  position:absolute;
+  right:-3px;bottom:-3px;
+  width:20px;height:20px;
+  opacity:.9;
+}
+.v52-game-card{margin-bottom:14px}
+.v52-game-card .v52-card-image{height:126px}
+.v52-game-card .v52-card-copy{padding:10px 12px 12px}
+.v52-game-card .v52-card-copy h2{font-size:15px}
+.v52-game-card .v52-card-copy p{font-size:8.5px;margin-bottom:10px}
+.v52-game-card .v52-actions button{min-height:35px}
+.v52-section-title{
+  margin:22px 3px 10px;
+  font-size:15px;
+  font-weight:800;
+}
+.v52-rank-shell{padding:10px 0 11px}
+.v52-rank-strip{
+  display:flex;
+  gap:8px;
+  padding:0 10px 8px;
+  overflow-x:auto;
+  scrollbar-width:none;
+  scroll-snap-type:x mandatory;
+}
+.v52-rank-strip::-webkit-scrollbar{display:none}
+.v52-rank-card{
+  flex:0 0 82%;
+  min-height:165px;
+  padding:11px;
+  border-radius:9px;
+  background:#15169a;
+  scroll-snap-align:start;
+  box-sizing:border-box;
+}
+.v52-rank-card h4{
+  margin:0 0 11px;
+  font-size:10px;
+  font-weight:750;
+}
+.v52-rank-row{
+  display:grid;
+  grid-template-columns:18px 28px 1fr auto;
+  align-items:center;
+  gap:6px;
+  min-height:39px;
+  border-bottom:1px solid rgba(255,255,255,.07);
+}
+.v52-rank-row:last-child{border-bottom:0}
+.v52-rank-row>span:first-child{
+  font-size:10px;
+  color:#c8cbea;
+  text-align:center;
+}
+.v52-rank-logo{
+  width:24px;height:24px;
+  object-fit:contain;
+}
+.v52-rank-name{
+  font-size:9px;
+  font-weight:650;
+  min-width:0;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+.v52-rank-points{
+  font-size:8.5px;
+  color:#fff;
+  font-weight:700;
+}
+.v52-rank-link{
+  margin:0 11px;
+  border:0;background:transparent;
+  color:var(--v52-cyan);
+  font-size:8.3px;
+  font-weight:700;
+  padding:3px 0 0;
+}
+@media(min-width:390px){
+  .v52-content{padding-left:14px;padding-right:14px}
+  .v52-card-image{height:158px}
+  .v52-game-card .v52-card-image{height:150px}
+  .v52-card-copy h2{font-size:18px}
+  .v52-card-copy p{font-size:10px}
+  .v52-actions button{font-size:10px}
+  .v52-play-title{font-size:27px}
+}
