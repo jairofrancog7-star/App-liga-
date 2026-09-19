@@ -612,7 +612,7 @@ body[data-app-route="home"] .v21-home-feature-photo-image{
   border:0!important;
   object-fit:cover!important;
   object-position:center 46%!important;
-  filter:saturate(.92) contrast(1.04) brightness(.92)!important;
+  filter:brightness(.58) saturate(.76) contrast(1.14) sepia(.04) hue-rotate(6deg)!important;
   transform:none!important;
   image-rendering:auto!important;
   user-select:none!important;
@@ -626,8 +626,7 @@ body[data-app-route="home"] .v21-home-feature-photo-fade{
   inset:0!important;
   display:block!important;
   pointer-events:none!important;
-  background:
-    linear-gradient(180deg,rgba(2,4,61,0) 0%,rgba(2,4,61,.04) 48%,rgba(2,4,61,.55) 76%,#02043d 100%)!important;
+  background:linear-gradient(180deg,rgba(0,18,82,.28) 0%,rgba(0,12,74,.34) 48%,rgba(2,4,61,.70) 78%,#02043d 100%)!important;
 }
 
 body[data-app-route="home"] .v21-home-feature-copy{
@@ -698,4 +697,22 @@ body[data-app-route="home"] #screen>.section.hero[data-v15-home-feature="3"] .v1
   body[data-app-route="home"] .v21-home-feature-copy p{
     font-size:clamp(15px,4.25vw,18px)!important;
   }
+}
+
+
+/* V22 HOME NIGHT IMAGE — imagen proporcionada por el usuario, con acabado nocturno azul. */
+body[data-app-route="home"] .v21-home-feature-photo::after{
+  content:""!important;
+  position:absolute!important;
+  z-index:2!important;
+  inset:0!important;
+  display:block!important;
+  pointer-events:none!important;
+  background:
+    radial-gradient(circle at 50% 8%,rgba(110,160,255,.10),transparent 30%),
+    linear-gradient(180deg,rgba(0,16,70,.18),rgba(0,8,52,.24))!important;
+  mix-blend-mode:multiply!important;
+}
+body[data-app-route="home"] .v21-home-feature-photo-fade{
+  z-index:3!important;
 }
