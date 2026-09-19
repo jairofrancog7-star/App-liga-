@@ -1,0 +1,40 @@
+name: Sincronizar portada de Inicio
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - '.github/workflows/sync-home-image.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  sync-image:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      - name: Descargar imagen elegida por el usuario
+        run: |
+          curl -fL --retry 3 --retry-delay 2 \
+            'https://d2ol7oe51mr4n9.cloudfront.net/user_3JNvttsAwr0QjxhuX5O1uaa9bvv/9d801af6-2092-4a4a-afbc-0b9e6c880ba9.png' \
+            -o assets/home-players-fictional.jpg
+          test -s assets/home-players-fictional.jpg
+
+      - name: Guardar imagen en el repositorio
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add assets/home-players-fictional.jpg
+          if git diff --cached --quiet; then
+            echo "La imagen ya coincide"
+          else
+            git commit -m "asset: usar imagen elegida en portada de Inicio"
+            git push origin main
+          fi
