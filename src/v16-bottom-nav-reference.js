@@ -25,7 +25,7 @@ const I={
   }
 };
 
-const labels={home:'Inicio',competition:'Competición',video:'Vídeo',fantasy:'Fantasy',more:'Más'};
+const labels={home:'INICIO',competition:'COMPETICIÓN',video:'VÍDEO',fantasy:'FANTASY',more:'MÁS'};
 
 function apply(){
   const nav=document.querySelector('.bottom-nav');
