@@ -56,7 +56,72 @@ function save(){const data={theme:state.theme,followed:state.followed,favorites:
 function toast(text){const t=document.createElement('div');t.className='toast';t.textContent=text;document.body.appendChild(t);setTimeout(()=>t.remove(),1800)}
 function setTheme(theme){state.theme=theme;document.documentElement.classList.toggle('lightmode',theme==='light');save()}setTheme(state.theme);
 function team(code){return teams.find(t=>t.code===code)||teams[0]}function player(id){return players.find(p=>p.id===id)}function crest(code){return `<span class="crest">${code}</span>`}function formDots(list){return `<span class="form">${list.map(x=>`<b class="${x}">${x.toUpperCase()}</b>`).join('')}</span>`}function sectionHead(title,route,label='Ver todo'){return `<div class="section-head"><h2>${title}</h2>${route?`<button class="link-button" data-route="${route}">${label}</button>`:''}</div>`}function teamCell(code){const t=team(code);return `<span class="club-cell">${crest(code)}<span>${t.name}</span></span>`}function matchRow(m){const live=m.status==='LIVE'?`<span class="live">${m.minute}'</span>`:(m.score||m.time);return `<button class="match-row match-button" data-match="${m.id}"><span class="home">${team(m.home).name}</span>${crest(m.home)}<b class="score">${live}</b>${crest(m.away)}<span>${team(m.away).name}</span></button>`}function isFav(id){return state.favorites.includes(id)}function favButton(id,label='Favorito'){return `<button class="icon-action ${isFav(id)?'active':''}" data-favorite="${id}" aria-label="${label}">${icons.star}</button>`}function switchRow(key,label,sub=''){return `<label class="setting-row"><span><b>${label}</b>${sub?`<small>${sub}</small>`:''}</span><input type="checkbox" data-notification="${key}" ${state.notifications[key]?'checked':''}><i></i></label>`}function menuGroup(title,items){return `<div class="menu-group"><h3>${title}</h3>${items.map(([label,route,meta])=>`<button class="menu-row" data-route="${route}"><span>${label}${meta?`<small>${meta}</small>`:''}</span><span>›</span></button>`).join('')}</div>`}
-function homeView(){return `<div class="eyebrow">TORNEO MUNICIPAL · JORNADA 5</div><h1 class="screen-title">El fútbol de<br>nuestro municipio</h1><div class="stories">${[['Jornada','competition'],['Resultados','competition'],['Goleadores','scorers'],['Equipos','teams'],['Momentos','moments']].map(([n,r])=>`<button class="story" data-route="${r}"><span class="story-ring"><span class="story-inner"></span></span><small>${n}</small></button>`).join('')}</div><section class="section hero"><span class="eyebrow" style="color:#fff">PARTIDO DE LA SEMANA</span><h2>Juventino vs<br>Pozos</h2><p>Una noche que se juega con la grada completa.</p><div class="button-row"><button class="btn primary" data-match="m1">Ver previa</button><button class="btn outline" data-action="cheer" data-cheer="m1">Apoyar · ${state.cheers.m1||0}</button></div></section><section class="section">${sectionHead('Momentos','moments')}<div class="grid-2"><button class="moment" data-route="moments"><span class="badge">NUEVO</span><strong>Gol que encendió<br>la cancha</strong></button><button class="moment" data-route="moments"><span class="badge">NUEVO</span><strong>La atajada<br>de la fecha</strong></button></div></section><section class="section">${sectionHead('Próximos partidos','competition','Calendario')}<div class="card match-card"><div class="match-meta"><span class="live">EN VIVO · Jornada 5</span><span>18:00</span></div>${matchRow(matches[0])}${matchRow(matches[1])}</div></section><section class="section">${sectionHead('Noticias','news')}<div class="media-carousel">${news.slice(0,3).map(n=>`<button class="news-card" data-news="${n.id}"><span class="eyebrow">${n.category}</span><h3>${n.title}</h3><small>${n.date}</small></button>`).join('')}</div></section>`}
+function homeView(){
+  const homeStandings=teams.slice().sort((a,b)=>b.pts-a.pts||b.gd-a.gd).slice(0,5);
+  const homeFields=(typeof V60_FIELDS!=='undefined'?V60_FIELDS:[]).slice(0,4);
+  return `<div class="eyebrow">TORNEO MUNICIPAL · JORNADA 5</div>
+    <h1 class="screen-title">El fútbol de<br>nuestro municipio</h1>
+    <div class="stories">${[['Jornada','competition'],['Resultados','competition'],['Goleadores','scorers'],['Equipos','teams'],['Momentos','moments']].map(([n,r])=>`<button class="story" data-route="${r}"><span class="story-ring"><span class="story-inner"></span></span><small>${n}</small></button>`).join('')}</div>
+
+    <section class="section hero">
+      <span class="eyebrow" style="color:#fff">PARTIDO DE LA SEMANA</span>
+      <h2>Juventino vs<br>Pozos</h2>
+      <p>Una noche que se juega con la grada completa.</p>
+      <div class="button-row"><button class="btn primary" data-match="m1">Ver previa</button><button class="btn outline" data-action="cheer" data-cheer="m1">Apoyar · ${state.cheers.m1||0}</button></div>
+    </section>
+
+    <section class="section">${sectionHead('Momentos','moments')}
+      <div class="grid-2">
+        <button class="moment" data-route="moments"><span class="badge">NUEVO</span><strong>Gol que encendió<br>la cancha</strong></button>
+        <button class="moment" data-route="moments"><span class="badge">NUEVO</span><strong>La atajada<br>de la fecha</strong></button>
+      </div>
+    </section>
+
+    <section class="section">${sectionHead('Próximos partidos','competition','Calendario')}
+      <div class="card match-card"><div class="match-meta"><span class="live">EN VIVO · Jornada 5</span><span>18:00</span></div>${matchRow(matches[0])}${matchRow(matches[1])}</div>
+    </section>
+
+    <section class="section">${sectionHead('Noticias','news')}
+      <div class="media-carousel">${news.slice(0,3).map(n=>`<button class="news-card" data-news="${n.id}"><span class="eyebrow">${n.category}</span><h3>${n.title}</h3><small>${n.date}</small></button>`).join('')}</div>
+    </section>
+
+    <section class="section v65-home-weather">
+      <button type="button" class="v65-weather-main" data-route="weatherFields" aria-label="Abrir Clima y campos">
+        <span class="v65-weather-icon">${v60Icon('weather')}</span>
+        <span class="v65-weather-title">Clima y campos</span>
+        <span class="v65-weather-arrow">›</span>
+      </button>
+      <div class="v65-weather-copy">
+        <span>Consulta el clima, la sede y el estado informativo de los campos de la Liga.</span>
+        <button type="button" data-route="weatherFields">Ver clima y campos</button>
+      </div>
+    </section>
+
+    <section class="section v65-home-table">
+      <div class="section-head"><h2>Tabla de posiciones</h2><button class="link-button" data-v63-comp="standings">Ver tabla</button></div>
+      <div class="v65-table-card">
+        <div class="v65-table-head"><span>#</span><span>Equipo</span><span>PJ</span><span>DG</span><span>Pts</span></div>
+        ${homeStandings.map((t,i)=>`<button type="button" class="v65-table-row" data-team="${t.code}">
+          <b>${i+1}</b>
+          <span class="v65-table-team">${crest(t.code)}<strong>${t.name}</strong></span>
+          <span>${t.p}</span>
+          <span>${t.gd>0?'+':''}${t.gd}</span>
+          <strong>${t.pts}</strong>
+        </button>`).join('')}
+      </div>
+    </section>
+
+    <section class="section v65-home-fields">
+      <div class="section-head"><h2>Campos de la Liga</h2><button class="link-button" data-route="venues">Ver todos</button></div>
+      <div class="v65-field-carousel">
+        ${homeFields.map((f,i)=>`<button type="button" class="v65-field-card" data-route="venues" aria-label="Ver ${f.name}">
+          <span class="v65-field-visual" aria-hidden="true"><img src="./assets/reference/predictor-v36/predictor-stadium.webp" alt=""></span>
+          <span class="v65-field-info"><small>${f.community}</small><b>${f.name}</b><em>${f.weather?'Clima disponible':'Ubicación disponible'}</em></span>
+          <span class="v65-field-go">›</span>
+        </button>`).join('')}
+      </div>
+    </section>`;
+}
 function competitionBody(){if(state.competitionTab==='standings')return `<div class="segmented"><button class="segment active">Compacta</button><button class="segment">Completa</button><button class="segment">Criterios</button></div><div class="table-wrap"><table class="table"><thead><tr><th>#</th><th>Equipo</th><th>P</th><th>+/-</th><th>Pts</th><th>Forma</th></tr></thead><tbody>${teams.map((t,i)=>`<tr><td>${i+1}</td><td>${teamCell(t.code)}</td><td>${t.p}</td><td>${t.gd>0?'+':''}${t.gd}</td><td><b>${t.pts}</b></td><td>${formDots(t.form)}</td></tr>`).join('')}</tbody></table></div>`;if(state.competitionTab==='bracket')return `<div class="chips"><button class="chip active">Play-off</button><button class="chip">Octavos</button><button class="chip">Cuartos</button><button class="chip">Semifinal</button><button class="chip">Final</button></div><p class="muted tiny">15–18 noviembre 2026 · Desliza para ver el cuadro</p><div class="bracket-shell"><div class="bracket"><div class="round-col"><div class="node"><div class="node-row"><span>1 Juventino</span><b>2</b></div><div class="node-row"><span>8 Morales</span><b>0</b></div></div><div class="node"><div class="node-row"><span>4 Cuenda</span><b>1</b></div><div class="node-row"><span>5 Pozos</span><b>1</b></div></div></div><div class="connector"></div><div class="round-col"><div class="node"><div class="node-row"><span>JUV</span><b>—</b></div><div class="node-row"><span>CUE</span><b>—</b></div></div></div><div class="connector"></div><div class="round-col"><div class="node"><div class="node-row"><span>Final</span><b>—</b></div><div class="node-row"><span>2026</span><b>—</b></div></div></div></div></div>`;const filtered=matches.filter(m=>(state.selectedDay==='Todos'||m.day===state.selectedDay)&&(state.matchCategory==='Todas'||m.category===state.matchCategory));return `<div class="datebar">${['Ayer','Hoy','Mañana','Todos'].map(d=>`<button class="chip ${state.selectedDay===d?'active':''}" data-day="${d}">${d}</button>`).join('')}</div><div class="chips"><button class="chip ${state.matchCategory==='Todas'?'active':''}" data-category="Todas">Todas</button><button class="chip ${state.matchCategory==='Primera Fuerza'?'active':''}" data-category="Primera Fuerza">Primera Fuerza</button><button class="chip ${state.matchCategory==='Veteranos 35+'?'active':''}" data-category="Veteranos 35+">Veteranos 35+</button></div><h2 class="compact-title">${state.selectedDay==='Todos'?'Todos los partidos':state.selectedDay}</h2><div class="card match-card">${filtered.length?filtered.map(matchRow).join(''):`<div class="empty-mini">No hay partidos con estos filtros.</div>`}</div>`}
 function competitionView(){return `<div class="eyebrow">TORNEO MUNICIPAL</div><h1 class="screen-title">Competición</h1><div class="tabs"><button class="tab ${state.competitionTab==='fixtures'?'active':''}" data-comp-tab="fixtures">Partidos y resultados</button><button class="tab ${state.competitionTab==='standings'?'active':''}" data-comp-tab="standings">Clasificación</button><button class="tab ${state.competitionTab==='bracket'?'active':''}" data-comp-tab="bracket">Cuadro</button></div>${competitionBody()}`}
 function matchView(){const m=matches.find(x=>x.id===state.selectedMatch)||matches[0];const pred=state.predictions[m.id];return `<div class="eyebrow">${m.category} · JORNADA ${m.jornada}</div><h1 class="screen-title">${team(m.home).name}<br>vs ${team(m.away).name}</h1><div class="card match-detail"><p class="muted tiny">${m.day.toUpperCase()} · ${m.time} · ${m.venue}</p><div class="scoreboard"><div>${crest(m.home)}<b>${team(m.home).name}</b></div><strong>${m.score||'—'}</strong><div>${crest(m.away)}<b>${team(m.away).name}</b></div></div><p class="muted tiny">Árbitro: ${m.referee}</p><div class="button-row center"><button class="btn primary" data-action="cheer" data-cheer="${m.id}">Apoyar partido · ${state.cheers[m.id]||0}</button>${favButton(`match:${m.id}`,'Guardar partido')}</div></div><section class="section">${sectionHead('Tu quiniela')}<div class="card predictor-card"><div class="prediction-teams"><b>${m.home}</b><input id="predHome" type="number" min="0" max="20" value="${pred?.home??0}"><span>–</span><input id="predAway" type="number" min="0" max="20" value="${pred?.away??0}"><b>${m.away}</b></div><button class="btn primary full" data-save-prediction="${m.id}">${pred?'Actualizar pronóstico':'Guardar pronóstico'}</button>${pred?`<small class="muted">Guardado: ${pred.home}–${pred.away}</small>`:''}</div></section><section class="section">${sectionHead('Cronología')}<div class="card match-card"><div class="match-meta"><span>12' · Gol</span><b>Juan Pérez</b></div><div class="match-meta"><span>34' · Amarilla</span><b>Luis Gómez</b></div><div class="match-meta"><span>63' · En juego</span><b>${m.status==='LIVE'?'Partido en vivo':'Información del partido'}</b></div></div></section>`}
@@ -333,7 +398,6 @@ function leagueToolsView(){
       v60ToolCard('qr','QR de la Liga','Compartir acceso directo a la app','ligaQR')+
       v60ToolCard('rules','Reglamento','Reglamento oficial 2026–2027','rulebook')+
       v60ToolCard('matchday','Match Day','Checklist y operación de jornada','matchday')+
-      v60ToolCard('weather','Clima y campos','Condiciones por sede','weatherFields')+
       v60ToolCard('field','Dónde se juega','Campos, comunidades y Maps','venues')+
       v60ToolCard('cedula','Cédulas','Generador interno, plantillas y PDF','cedulaBuilder')+
       v60ToolCard('center','Match Center','Marcador, cronología y previa','match')+
