@@ -1,5 +1,4 @@
 /* V66 — directorio oficial AdminFut compacto, oscuro y móvil. */
-body[data-app-route="teams"] #screen,
 body[data-app-route="players"] #screen,
 body[data-app-route="club-store"] #screen{background:#06055f!important}
 .v66-directory{
