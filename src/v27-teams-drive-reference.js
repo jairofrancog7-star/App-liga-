@@ -90,8 +90,10 @@
   }
   function logo(t,extra){
     const cls='v27-logo'+(extra?' '+extra:'');
-    if(t.logo){
-      return '<span class="'+cls+'"><img src="'+BASE+t.logo+'" alt="'+esc(t.name)+'" loading="lazy" decoding="async" onerror="this.style.display=\'none\';this.nextElementSibling.style.display=\'grid\'"><span class="v27-fallback" style="display:none">'+esc(t.abbr||t.id)+'</span></span>';
+    const globalLogo=window.LJR_TEAM_LOGOS?.get?.(t.name);
+    const src=globalLogo||(t.logo?BASE+t.logo:'');
+    if(src){
+      return '<span class="'+cls+'"><img src="'+src+'" alt="'+esc(t.name)+'" loading="lazy" decoding="async" onerror="this.style.display=\'none\';this.nextElementSibling.style.display=\'grid\'"><span class="v27-fallback" style="display:none">'+esc(t.abbr||t.id)+'</span></span>';
     }
     return '<span class="'+cls+'"><span class="v27-fallback">'+esc(t.abbr||t.id)+'</span></span>';
   }
