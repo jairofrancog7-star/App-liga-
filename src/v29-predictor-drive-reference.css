@@ -110,3 +110,23 @@ body[data-app-route="predictor"] .v37-predictor-hotnav button{
     transform:translateX(-50%)!important;
   }
 }
+
+
+/* V39 — mantener intacta la pantalla original y abrir la segunda experiencia
+   únicamente al tocar la zona central de Pronostica Seis. */
+body[data-app-route="predictor"] .v37-predictor-enter{
+  position:absolute!important;
+  z-index:6!important;
+  left:16%!important;
+  right:16%!important;
+  top:27%!important;
+  height:43%!important;
+  margin:0!important;
+  padding:0!important;
+  border:0!important;
+  border-radius:24px!important;
+  background:transparent!important;
+  color:transparent!important;
+  cursor:pointer!important;
+  -webkit-tap-highlight-color:transparent!important;
+}
