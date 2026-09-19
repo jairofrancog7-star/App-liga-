@@ -8,40 +8,270 @@
   const LEAGUE=BASE+'assets/liga-logo.webp';
 
   const TEAMS=[
-    {id:'AME',name:'América Veteranos',logo:'assets/branding/america-veteranos-35.svg',abbr:'AME'},
-    {id:'HUE',name:'La Huerta',logo:'assets/teams/la-huerta-cuenda.webp',abbr:'HUE'},
-    {id:'PRO',name:'Promesas FC',logo:'assets/teams/promesas-fc-pozos.webp',abbr:'PRO'},
-    {id:'GAL',name:'Atlético Galeana',logo:'assets/teams/atletico-galeana.webp',abbr:'GAL'},
-    {id:'LOB',name:'Lobos CDG',logo:'assets/teams/lobos-cdg.webp',abbr:'LOB'},
-    {id:'CUE',name:'Cuenda',logo:'assets/teams/tc-cuenda.webp',abbr:'CUE'},
-    {id:'POZ',name:'Pozos FC',logo:'assets/teams/veteranos-pozos-fc.webp',abbr:'POZ'},
-    {id:'RIN',name:'Rincón de Centeno',logo:'',abbr:'RIN'},
-    {id:'ROS',name:'Deportivo Rosas',logo:'',abbr:'ROS'},
-    {id:'STC',name:'Santa Cruz',logo:'assets/teams/atletico-santa-cruz.webp',abbr:'STC'},
-    {id:'SJO',name:'San José',logo:'assets/teams/san-jose.webp',abbr:'SJO'},
-    {id:'SIS',name:'San Isidro',logo:'',abbr:'SIS'},
-    {id:'RJU',name:'Real Juventino',logo:'assets/teams/juventus.webp',abbr:'RJU'},
-    {id:'VAL',name:'Valle Verde',logo:'',abbr:'VAL'},
-    {id:'LAB',name:'La Labor',logo:'',abbr:'LAB'},
-    {id:'DUR',name:'El Durazno',logo:'',abbr:'DUR'},
-    {id:'SAN',name:'San Antonio',logo:'assets/teams/san-antonio-jr.webp',abbr:'SAN'},
-    {id:'ARC',name:'Los Arcos',logo:'',abbr:'ARC'},
-    {id:'JUV',name:'Deportivo Juventino',logo:'assets/teams/juventus.webp',abbr:'JUV'},
-    {id:'PAL',name:'Las Palomas',logo:'',abbr:'PAL'},
-    {id:'FRA',name:'Franco FC',logo:'assets/teams/franco-fc.webp',abbr:'FRA'},
-    {id:'EST',name:'La Estancia',logo:'',abbr:'EST'},
-    {id:'CGS',name:'C. de Gasca',logo:'assets/teams/deportivo-cg.webp',abbr:'CGS'},
-    {id:'J35',name:'Juventus',logo:'assets/official-logos/juventus.png',abbr:'JUV'},
-    {id:'BOA',name:'Boavista',logo:'assets/official-logos/boavista.png',abbr:'BOA'},
-    {id:'PSV',name:'PSV',logo:'assets/teams/psv.webp',abbr:'PSV'},
-    {id:'AST',name:'A. Santiago',logo:'assets/teams/atletico-santiago.webp',abbr:'AST'},
-    {id:'TAV',name:'F. Tavera',logo:'assets/teams/franco-tavera-jr-veteranos.webp',abbr:'TAV'},
-    {id:'HUR',name:'Huracán',logo:'',abbr:'HUR'}
-  ];
+  {
+    "id": "OFF-MANCHESTER",
+    "name": "MANCHESTER",
+    "logo": "assets/official-logos/manchester.png",
+    "abbr": "M"
+  },
+  {
+    "id": "OFF-DYNAMO",
+    "name": "DYNAMO",
+    "logo": "assets/official-logos/dynamo.png",
+    "abbr": "D"
+  },
+  {
+    "id": "OFF-LA-ESPERANZA",
+    "name": "LA ESPERANZA",
+    "logo": "assets/official-logos/la-esperanza.png",
+    "abbr": "LE"
+  },
+  {
+    "id": "OFF-BOAVISTA",
+    "name": "BOAVISTA",
+    "logo": "assets/official-logos/boavista.png",
+    "abbr": "B"
+  },
+  {
+    "id": "OFF-TOROS-DE-CUENDA",
+    "name": "TOROS DE CUENDA",
+    "logo": "assets/official-logos/toros-de-cuenda.png",
+    "abbr": "TDC"
+  },
+  {
+    "id": "OFF-BOCA-JRS",
+    "name": "BOCA JRS",
+    "logo": "",
+    "abbr": "BJ"
+  },
+  {
+    "id": "OFF-SAN-JOSE-FC",
+    "name": "SAN JOSE FC",
+    "logo": "assets/official-logos/san-jose-fc.png",
+    "abbr": "SJF"
+  },
+  {
+    "id": "OFF-JUVENTUS",
+    "name": "JUVENTUS",
+    "logo": "assets/official-logos/juventus.png",
+    "abbr": "J"
+  },
+  {
+    "id": "OFF-HERMANOS",
+    "name": "HERMANOS",
+    "logo": "assets/official-logos/hermanos.png",
+    "abbr": "H"
+  },
+  {
+    "id": "OFF-LINCES",
+    "name": "LINCES",
+    "logo": "assets/official-logos/linces.png",
+    "abbr": "L"
+  },
+  {
+    "id": "OFF-NAPOLI",
+    "name": "NAPOLI",
+    "logo": "assets/official-logos/napoli.png",
+    "abbr": "N"
+  },
+  {
+    "id": "OFF-FRANCO-FC",
+    "name": "FRANCO FC",
+    "logo": "assets/official-logos/franco-fc.png",
+    "abbr": "FF"
+  },
+  {
+    "id": "OFF-HERRERAS-FC",
+    "name": "HERRERAS FC",
+    "logo": "assets/official-logos/herreras-fc.png",
+    "abbr": "HF"
+  },
+  {
+    "id": "OFF-ABEJAS",
+    "name": "ABEJAS",
+    "logo": "assets/official-logos/abejas.png",
+    "abbr": "A"
+  },
+  {
+    "id": "OFF-LOBOS-CDG",
+    "name": "LOBOS CDG",
+    "logo": "assets/official-logos/lobos-cdg.png",
+    "abbr": "LC"
+  },
+  {
+    "id": "OFF-TERRICOLAS",
+    "name": "TERRICOLAS",
+    "logo": "assets/official-logos/terricolas.png",
+    "abbr": "T"
+  },
+  {
+    "id": "OFF-GALACTICOS",
+    "name": "GALACTICOS",
+    "logo": "assets/teams/galacticos-pozos.webp",
+    "abbr": "G"
+  },
+  {
+    "id": "OFF-SAN-JULIAN",
+    "name": "SAN JULIAN",
+    "logo": "assets/official-logos/san-julian.png",
+    "abbr": "SJ"
+  },
+  {
+    "id": "OFF-SAN-JUAN-FC",
+    "name": "SAN JUAN FC",
+    "logo": "assets/official-logos/san-juan-fc.png",
+    "abbr": "SJF"
+  },
+  {
+    "id": "OFF-SAN-JOSE-JRS",
+    "name": "SAN JOSE JRS",
+    "logo": "assets/official-logos/san-jose-jrs.png",
+    "abbr": "SJJ"
+  },
+  {
+    "id": "OFF-TAVERA-FC",
+    "name": "TAVERA FC",
+    "logo": "assets/official-logos/tavera-fc.png",
+    "abbr": "TF"
+  },
+  {
+    "id": "OFF-CELTICOS",
+    "name": "CELTICOS",
+    "logo": "assets/official-logos/celticos.png",
+    "abbr": "C"
+  },
+  {
+    "id": "OFF-DEP-NOPALERO",
+    "name": "DEP. NOPALERO",
+    "logo": "assets/official-logos/dep-nopalero.png",
+    "abbr": "DN"
+  },
+  {
+    "id": "OFF-PACHANGAS-FC",
+    "name": "PACHANGAS FC",
+    "logo": "assets/official-logos/pachangas-fc.png",
+    "abbr": "PF"
+  },
+  {
+    "id": "OFF-DEP-ZAPATA",
+    "name": "DEP. ZAPATA",
+    "logo": "assets/official-logos/dep-zapata.png",
+    "abbr": "DZ"
+  },
+  {
+    "id": "OFF-BARZA",
+    "name": "BARZA",
+    "logo": "assets/official-logos/barza.png",
+    "abbr": "B"
+  },
+  {
+    "id": "OFF-SAN-ANTONIO-FC",
+    "name": "SAN ANTONIO FC",
+    "logo": "assets/official-logos/san-antonio-fc.png",
+    "abbr": "SAF"
+  },
+  {
+    "id": "OFF-DEP-LA-LUZ",
+    "name": "DEP. LA LUZ",
+    "logo": "assets/official-logos/dep-la-luz.png",
+    "abbr": "DLL"
+  },
+  {
+    "id": "OFF-TAPATIO",
+    "name": "TAPATIO",
+    "logo": "assets/official-logos/tapatio.png",
+    "abbr": "T"
+  },
+  {
+    "id": "OFF-LA-CANCHITA-DEPORTES",
+    "name": "LA CANCHITA DEPORTES",
+    "logo": "assets/official-logos/la-canchita-deportes.png",
+    "abbr": "LCD"
+  },
+  {
+    "id": "OFF-LA-CUADRILLA",
+    "name": "LA CUADRILLA",
+    "logo": "assets/official-logos/la-cuadrilla.png",
+    "abbr": "LC"
+  },
+  {
+    "id": "OFF-CAPIBARAS",
+    "name": "CAPIBARAS",
+    "logo": "assets/official-logos/capibaras.png",
+    "abbr": "C"
+  },
+  {
+    "id": "OFF-ATL-GALEANA",
+    "name": "ATL. GALEANA",
+    "logo": "",
+    "abbr": "AG"
+  },
+  {
+    "id": "OFF-ALDAMA-FC",
+    "name": "ALDAMA FC",
+    "logo": "assets/official-logos/aldama-fc.png",
+    "abbr": "AF"
+  },
+  {
+    "id": "OFF-MALVINAS",
+    "name": "MALVINAS",
+    "logo": "assets/official-logos/malvinas.png",
+    "abbr": "M"
+  },
+  {
+    "id": "OFF-SAN-ANTONIO-JRS",
+    "name": "SAN ANTONIO JRS",
+    "logo": "assets/official-logos/san-antonio-jrs.png",
+    "abbr": "SAJ"
+  },
+  {
+    "id": "OFF-POPULARES",
+    "name": "POPULARES",
+    "logo": "assets/official-logos/populares.png",
+    "abbr": "P"
+  },
+  {
+    "id": "OFF-PROMESAS-FC",
+    "name": "PROMESAS FC",
+    "logo": "assets/official-logos/promesas-fc.png",
+    "abbr": "PF"
+  },
+  {
+    "id": "OFF-LA-HUERTA",
+    "name": "LA HUERTA",
+    "logo": "assets/official-logos/la-huerta.png",
+    "abbr": "LH"
+  },
+  {
+    "id": "OFF-DEP-MARAVILLAS",
+    "name": "DEP. MARAVILLAS",
+    "logo": "assets/official-logos/dep-maravillas.png",
+    "abbr": "DM"
+  },
+  {
+    "id": "OFF-MAZACOTES-FC",
+    "name": "MAZACOTES FC",
+    "logo": "assets/official-logos/mazacotes-fc.png",
+    "abbr": "MF"
+  },
+  {
+    "id": "OFF-OSASUNA",
+    "name": "OSASUNA",
+    "logo": "assets/official-logos/osasuna.png",
+    "abbr": "O"
+  },
+  {
+    "id": "OFF-GALEANA",
+    "name": "GALEANA",
+    "logo": "assets/official-logos/galeana.png",
+    "abbr": "G"
+  }
+];
+
 
   let pickerOpen=false;
   let sheetOpen=false;
-  let activeTeam='AME';
+  let activeTeam=TEAMS[0]?.id||'';
   let searchText='';
 
   function route(){return location.hash.replace('#/','')||'home'}
@@ -50,7 +280,7 @@
   function saveStore(s){localStorage.setItem('lj-store-v3',JSON.stringify(s))}
   function followed(){
     const a=store().followed;
-    return Array.isArray(a)?a:[];
+    return (Array.isArray(a)?a:[]).filter(id=>TEAMS.some(t=>t.id===id));
   }
   function favorites(){
     const a=store().favorites;
@@ -61,25 +291,11 @@
   function team(id){return TEAMS.find(t=>t.id===id)||TEAMS[0]}
 
   function migrateOldState(){
-    const s=store();
-    const current=Array.isArray(s.followed)?s.followed:[];
-    if(current.length){
-      try{localStorage.setItem('lj-following-v29-initialized','1')}catch(e){}
-      return;
-    }
-    try{
-      const initialized=localStorage.getItem('lj-following-v29-initialized')==='1';
-      const legacyFollowed=localStorage.getItem('lj-following-reference-state-v27')==='followed';
-      // The original reference state starts with América Veteranos already followed.
-      // Seed it once only; after the user chooses "Dejar de seguir", an empty state remains valid.
-      if(!initialized||legacyFollowed){
-        s.followed=['AME'];
-        saveStore(s);
-      }
-      localStorage.setItem('lj-following-v29-initialized','1');
-    }catch(e){}
+    const st=store();
+    const clean=(Array.isArray(st.followed)?st.followed:[]).filter(id=>TEAMS.some(t=>t.id===id));
+    if(JSON.stringify(clean)!==JSON.stringify(st.followed||[])){st.followed=clean;saveStore(st)}
+    try{localStorage.setItem('lj-following-v29-initialized','1')}catch(e){}
   }
-
   function setFollow(id,on){
     const s=store();
     const a=Array.isArray(s.followed)?s.followed.slice():[];
