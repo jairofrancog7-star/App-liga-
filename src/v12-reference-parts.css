@@ -1785,3 +1785,18 @@ body[data-app-route="competition"] .v12-bracket-reference.stage-final .v12-final
     height:48px!important;min-height:48px!important;max-height:48px!important;font-size:14px!important;
   }
 }
+
+
+/* === PARTS32 — CUADRO: ALTURAS UNIFORMES CUARTOS + SEMIFINALES === */
+/* Corrige únicamente la dimensión vertical de las tarjetas del cuadro.
+   Ganador del play-off y tarjetas de equipos quedan con la misma altura
+   en Cuartos de final y Semifinales, sin cambiar anchos, posiciones ni diseño. */
+body[data-app-route="competition"] .v12-bracket-reference.stage-cuartos .v12-bracket-winner,
+body[data-app-route="competition"] .v12-bracket-reference.stage-cuartos .v12-bracket-team.mini,
+body[data-app-route="competition"] .v12-bracket-reference.stage-semifinal .v12-bracket-winner,
+body[data-app-route="competition"] .v12-bracket-reference.stage-semifinal .v12-bracket-team.mini{
+  height:64px!important;
+  min-height:64px!important;
+  max-height:64px!important;
+  box-sizing:border-box!important;
+}
