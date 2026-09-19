@@ -190,7 +190,7 @@
   function setNav(){
     const nav=document.querySelector('.bottom-nav');
     if(!nav)return;
-    const labels={home:'Inicio',competition:'Competición',video:'Video',fantasy:'Fantasy',more:'Más'};
+    const labels={home:'Inicio',competition:'Competición',video:'Vídeo',fantasy:'Fantasy',more:'Más'};
     nav.querySelectorAll('.nav-item').forEach(n=>{
       n.classList.toggle('active',n.dataset.route==='more');
       const s=n.querySelector('small');
