@@ -1,87 +1,172 @@
 const V12_LOGO='https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/assets/liga-logo.webp';
 const V12_TEAM_ASSET_BASE='https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/';
 const V12_TEAMS=[
-  {name:'Club América Veteranos JR',logo:'assets/branding/america-veteranos-35-user.png',p:1,gd:8,pts:3,form:['w','w','w'],last:'V'},
-  {name:'Lobos CDG',logo:'assets/official-logos/lobos-cdg.png',p:1,gd:5,pts:3,form:['w','w','n'],last:'V'},
-  {name:'La Huerta de Cuenda',logo:'assets/official-logos/la-huerta.png',p:1,gd:4,pts:3,form:['w','w','n'],last:'V'},
-  {name:'Atlético Galeana',logo:'assets/official-logos/galeana.png',p:1,gd:2,pts:3,form:['w','n','w'],last:'V'},
-  {name:'Promesas FC Pozos',logo:'assets/official-logos/promesas-fc.png',p:1,gd:0,pts:1,form:['n','w','n'],last:'E'},
-  {name:'San Antonio J.R.',logo:'assets/teams/san-antonio-jr.webp',p:1,gd:-2,pts:0,form:['l','l','n'],last:'D'},
-  {name:'Franco FC',logo:'assets/official-logos/franco-fc.png',p:1,gd:-4,pts:0,form:['l','n','l'],last:'D'},
-  {name:'Juventino Rosas',logo:null,p:1,gd:-8,pts:0,form:['l','l','l'],last:'D'}
+  {
+    "name": "SAN JOSE FC",
+    "logo": "assets/official-logos/san-jose-fc.png",
+    "p": 4,
+    "w": 4,
+    "d": 0,
+    "l": 0,
+    "gf": 13,
+    "ga": 3,
+    "gd": 10,
+    "pts": 12
+  },
+  {
+    "name": "JUVENTUS",
+    "logo": "assets/official-logos/juventus.png",
+    "p": 4,
+    "w": 3,
+    "d": 0,
+    "l": 1,
+    "gf": 20,
+    "ga": 6,
+    "gd": 14,
+    "pts": 9
+  },
+  {
+    "name": "HERMANOS",
+    "logo": "assets/official-logos/hermanos.png",
+    "p": 3,
+    "w": 2,
+    "d": 1,
+    "l": 0,
+    "gf": 8,
+    "ga": 4,
+    "gd": 4,
+    "pts": 7
+  },
+  {
+    "name": "LINCES",
+    "logo": "assets/official-logos/linces.png",
+    "p": 3,
+    "w": 2,
+    "d": 0,
+    "l": 1,
+    "gf": 10,
+    "ga": 7,
+    "gd": 3,
+    "pts": 6
+  },
+  {
+    "name": "NAPOLI",
+    "logo": "assets/official-logos/napoli.png",
+    "p": 4,
+    "w": 2,
+    "d": 0,
+    "l": 2,
+    "gf": 8,
+    "ga": 7,
+    "gd": 1,
+    "pts": 6
+  },
+  {
+    "name": "FRANCO FC",
+    "logo": "assets/official-logos/franco-fc.png",
+    "p": 3,
+    "w": 2,
+    "d": 0,
+    "l": 1,
+    "gf": 3,
+    "ga": 3,
+    "gd": 0,
+    "pts": 6
+  },
+  {
+    "name": "HERRERAS FC",
+    "logo": "assets/official-logos/herreras-fc.png",
+    "p": 4,
+    "w": 1,
+    "d": 1,
+    "l": 2,
+    "gf": 9,
+    "ga": 12,
+    "gd": -3,
+    "pts": 4
+  },
+  {
+    "name": "ABEJAS",
+    "logo": "assets/official-logos/abejas.png",
+    "p": 4,
+    "w": 2,
+    "d": 0,
+    "l": 2,
+    "gf": 7,
+    "ga": 7,
+    "gd": 0,
+    "pts": 3
+  },
+  {
+    "name": "LOBOS CDG",
+    "logo": "assets/official-logos/lobos-cdg.png",
+    "p": 4,
+    "w": 1,
+    "d": 0,
+    "l": 3,
+    "gf": 2,
+    "ga": 17,
+    "gd": -15,
+    "pts": 3
+  },
+  {
+    "name": "TERRICOLAS",
+    "logo": "assets/official-logos/terricolas.png",
+    "p": 3,
+    "w": 0,
+    "d": 0,
+    "l": 3,
+    "gf": 4,
+    "ga": 14,
+    "gd": -10,
+    "pts": 0
+  },
+  {
+    "name": "GALACTICOS",
+    "logo": "assets/teams/galacticos-pozos.webp",
+    "p": 4,
+    "w": 0,
+    "d": 0,
+    "l": 4,
+    "gf": 0,
+    "ga": 4,
+    "gd": -4,
+    "pts": -12
+  }
 ];
 
 function v12Route(){return location.hash.replace('#/','')||'home'}
-function v12Logo(src,alt,cls=''){return '<img class="'+cls+'" src="'+src+'" alt="'+alt+'" loading="eager" decoding="async">'}
-function v12TeamLogo(t){return v12Logo(t.logo?V12_TEAM_ASSET_BASE+t.logo:V12_LOGO,t.name,'v12-team-logo')}
-function v12Form(t){return '<div class="v12-form">'+t.form.map(s=>'<i class="'+s+'"></i>').join('')+'<b class="'+t.last.toLowerCase()+'">'+t.last+'</b></div>'}
+function v12Logo(src,alt,cls=''){return src?'<img class="'+cls+'" src="'+src+'" alt="'+alt+'" loading="eager" decoding="async">':'<span class="'+cls+' v12-team-fallback">'+String(alt).split(/\s+/).map(x=>x[0]||'').join('').slice(0,3)+'</span>'}
+function v12TeamLogo(t){return v12Logo(t.logo?V12_TEAM_ASSET_BASE+t.logo:'',t.name,'v12-team-logo')}
+function v12Form(){return '<div class="v12-form"><b>—</b></div>'}
 function v12Rows(mode='compact'){
   if(mode==='criteria'){
-    const criteriaTeams=[
-      {name:'La Huerta',logo:'assets/official-logos/la-huerta.png',stats:[3,5,6,0,1,0,0],mark:2},
-      {name:'Promesas FC',logo:'assets/official-logos/promesas-fc.png',stats:[3,5,5,0,1,0,0],mark:2},
-      {name:'Franco FC',logo:'assets/official-logos/franco-fc.png',stats:[3,4,5,0,1,0,0],mark:2},
-      {name:'Atlético Galeana',logo:'assets/official-logos/galeana.png',stats:[3,4,4,0,1,0,0],mark:2},
-      {name:'Lobos CDG',logo:'assets/official-logos/lobos-cdg.png',stats:[3,3,4,0,1,0,0],mark:1},
-      {name:'Juventino',logo:null,stats:[3,2,3,0,1,0,0],mark:-1},
-      {name:'Cuenda',logo:'assets/official-logos/toros-de-cuenda.png',stats:[3,2,3,0,1,0,0],mark:-1},
-      {name:'Pozos',logo:'assets/teams/veteranos-pozos-fc.webp',stats:[3,2,2,2,1,1,0],mark:2}
-    ];
-    const head=['PTOS','+/-','GF','GA','V','VA','P'];
-    const rows=criteriaTeams.map((t,i)=>{
-      const logo=t.logo?V12_TEAM_ASSET_BASE+t.logo:V12_LOGO;
-      return '<div class="v12-criteria-row">'+
-        '<span class="v12-criteria-rank">'+(i+1)+'</span>'+
-        '<span class="v12-criteria-team">'+v12Logo(logo,t.name,'v12-criteria-logo')+'<strong>'+t.name+'</strong></span>'+
-        t.stats.map((n,idx)=>'<span class="v12-criteria-stat '+(idx===t.mark?'mark':'')+'">'+n+'</span>').join('')+
-      '</div>';
-    }).join('');
-    return '<div class="v12-table-shell v12-criteria-shell">'+
-      '<div class="v12-table-scroll v12-criteria-scroll">'+
-        '<div class="v12-table-inner v12-criteria-table">'+
-          '<div class="v12-criteria-head"><span></span><span></span>'+head.map(h=>'<b>'+h+'</b>').join('')+'</div>'+
-          '<div class="v12-criteria-direct">DIRECTOS A OCTAVOS</div>'+
-          '<div class="v12-criteria-line"></div>'+
-          rows+
-        '</div>'+
-      '</div>'+
-      '<span class="v12-table-edge v12-criteria-edge" aria-hidden="true"></span>'+
-    '</div>';
+    const head=['PTOS','+/-','GF','GA','V','E','P'];
+    const rows=V12_TEAMS.map((t,i)=>'<div class="v12-criteria-row">'+
+      '<span class="v12-criteria-rank">'+(i+1)+'</span>'+
+      '<span class="v12-criteria-team">'+v12TeamLogo(t)+'<strong>'+t.name+'</strong></span>'+
+      [t.pts,t.gd,t.gf,t.ga,t.w,t.d,t.l].map(n=>'<span class="v12-criteria-stat">'+n+'</span>').join('')+
+    '</div>').join('');
+    return '<div class="v12-table-shell v12-criteria-shell"><div class="v12-table-scroll v12-criteria-scroll"><div class="v12-table-inner v12-criteria-table">'+
+      '<div class="v12-criteria-head"><span></span><span></span>'+head.map(h=>'<b>'+h+'</b>').join('')+'</div>'+
+      '<div class="v12-criteria-direct">CLASIFICACIÓN ACTUAL</div><div class="v12-criteria-line"></div>'+rows+
+    '</div></div><span class="v12-table-edge v12-criteria-edge" aria-hidden="true"></span></div>';
   }
   if(mode==='complete'){
-    const rows=V12_TEAMS.map((t,i)=>{
-      const v=t.form.filter(x=>x==='w').length;
-      const e=t.form.filter(x=>x==='n').length;
-      const d=t.form.filter(x=>x==='l').length;
-      return '<div class="v12-complete-row">'+
-        '<span class="v12-rank">'+(i+1)+'</span>'+
-        '<span class="v12-team-cell">'+v12TeamLogo(t)+'<strong>'+t.name+'</strong></span>'+
-        '<span>'+t.p+'</span><span>'+v+'</span><span>'+e+'</span><span>'+d+'</span><b>'+t.pts+'</b>'+
-      '</div>';
-    }).join('');
-    return '<div class="v12-table-shell v12-complete-shell">'+
-      '<div class="v12-table-scroll">'+
-        '<div class="v12-table-inner v12-table-inner-complete">'+
-          '<div class="v12-complete-head"><span></span><span></span><b>P</b><b>V</b><b>E</b><b>D</b><b>+PTOS</b></div>'+
-          '<div class="v12-direct-label">DIRECTOS A OCTAVOS</div>'+
-          '<div class="v12-direct-line"></div>'+
-          '<div class="v12-complete-list">'+rows+'</div>'+
-        '</div>'+
-      '</div>'+
-      '<span class="v12-table-edge" aria-hidden="true"></span>'+
-    '</div>';
+    const rows=V12_TEAMS.map((t,i)=>'<div class="v12-complete-row"><span class="v12-rank">'+(i+1)+'</span>'+
+      '<span class="v12-team-cell">'+v12TeamLogo(t)+'<strong>'+t.name+'</strong></span>'+
+      '<span>'+t.p+'</span><span>'+t.w+'</span><span>'+t.d+'</span><span>'+t.l+'</span><b>'+t.pts+'</b></div>').join('');
+    return '<div class="v12-table-shell v12-complete-shell"><div class="v12-table-scroll"><div class="v12-table-inner v12-table-inner-complete">'+
+      '<div class="v12-complete-head"><span></span><span></span><b>P</b><b>V</b><b>E</b><b>D</b><b>PTOS</b></div>'+
+      '<div class="v12-direct-label">CLASIFICACIÓN ACTUAL</div><div class="v12-direct-line"></div><div class="v12-complete-list">'+rows+'</div>'+
+    '</div></div><span class="v12-table-edge" aria-hidden="true"></span></div>';
   }
-  return '<div class="v12-table-shell v12-compact-shell">'+
-    '<div class="v12-table-scroll">'+
-      '<div class="v12-table-inner v12-table-inner-compact">'+
-        '<div class="v12-stand-head"><span></span><b>P</b><b>+/-</b><b>PTOS</b><b>FORMA</b></div>'+
-        '<div class="v12-direct-label">DIRECTOS A OCTAVOS</div>'+
-        '<div class="v12-direct-line"></div>'+
-        '<div class="v12-stand-list">'+V12_TEAMS.map((t,i)=>'<div class="v12-stand-row"><span class="v12-rank">'+(i+1)+'</span><span class="v12-team-cell">'+v12TeamLogo(t)+'<strong>'+t.name+'</strong></span><span>'+t.p+'</span><span>'+t.gd+'</span><span>'+t.pts+'</span>'+v12Form(t)+'</div>').join('')+'</div>'+
-      '</div>'+
-    '</div>'+
-    '<span class="v12-table-edge" aria-hidden="true"></span>'+
-  '</div>';
+  return '<div class="v12-table-shell v12-compact-shell"><div class="v12-table-scroll"><div class="v12-table-inner v12-table-inner-compact">'+
+    '<div class="v12-stand-head"><span></span><b>P</b><b>+/-</b><b>PTOS</b><b>FORMA</b></div>'+
+    '<div class="v12-direct-label">CLASIFICACIÓN ACTUAL</div><div class="v12-direct-line"></div>'+
+    '<div class="v12-stand-list">'+V12_TEAMS.map((t,i)=>'<div class="v12-stand-row"><span class="v12-rank">'+(i+1)+'</span>'+
+      '<span class="v12-team-cell">'+v12TeamLogo(t)+'<strong>'+t.name+'</strong></span><span>'+t.p+'</span><span>'+t.gd+'</span><span>'+t.pts+'</span>'+v12Form()+'</div>').join('')+'</div>'+
+  '</div></div><span class="v12-table-edge" aria-hidden="true"></span></div>';
 }
 function v12StandingsBody(){
   return '<section class="v12-standings-reference" data-v12-standings>'+
@@ -197,78 +282,89 @@ function v12Toast(text){
 }
 
 const V12_FIXTURE_LOGOS={
-  'Club América Vet.':'assets/branding/america-veteranos-35-user.png',
-  'La Huerta':'assets/teams/la-huerta-cuenda.webp',
-  'Promesas FC':'assets/teams/promesas-fc-pozos.webp',
-  'Santa Cruz':'assets/teams/atletico-santa-cruz.webp',
-  'Franco FC':'assets/teams/franco-fc.webp',
-  'Cuenda':'assets/official-logos/toros-de-cuenda.png',
-  'Atlético Galeana':'assets/teams/atletico-galeana.webp',
-  'Lobos CDG':'assets/teams/lobos-cdg.webp',
-  'Juventino':null,
-  'Rincón de Centeno':null,
-  'Deportivo Rosas':null,
-  'Linces':'assets/official-logos/linces.png',
-  'Abejas':'assets/official-logos/abejas.png',
-  'Pozos':'assets/teams/pozos-fc.webp',
-  'Club América Veteranos JR':'assets/branding/america-veteranos-35-user.png',
-  'Juventino Rosas A.C.':'assets/liga-logo.webp',
-  'Pozos FC':'assets/teams/pozos-fc.webp'
+  "FRANCO FC": "assets/official-logos/franco-fc.png",
+  "HERRERAS FC": "assets/official-logos/herreras-fc.png",
+  "TERRICOLAS": "assets/official-logos/terricolas.png",
+  "GALACTICOS": "assets/teams/galacticos-pozos.webp",
+  "LINCES": "assets/official-logos/linces.png",
+  "JUVENTUS": "assets/official-logos/juventus.png",
+  "HERMANOS": "assets/official-logos/hermanos.png",
+  "SAN JOSE FC": "assets/official-logos/san-jose-fc.png",
+  "LOBOS CDG": "assets/official-logos/lobos-cdg.png",
+  "NAPOLI": "assets/official-logos/napoli.png"
 };
 function v12FixtureLogo(name){
   const p=V12_FIXTURE_LOGOS[name];
-  if(p) return '<img src="'+V12_TEAM_ASSET_BASE+p+'" alt="'+name+'" class="v12-fixture-logo" loading="eager" decoding="async">';
-  if(name==='Juventino') return '<img src="'+V12_LOGO+'" alt="'+name+'" class="v12-fixture-logo" loading="eager" decoding="async">';
-  const ab=name.split(/\s+/).map(x=>x[0]).join('').slice(0,3).toUpperCase();
+  if(p)return '<img src="'+V12_TEAM_ASSET_BASE+p+'" alt="'+name+'" class="v12-fixture-logo" loading="eager" decoding="async">';
+  const ab=name.split(/\s+/).map(x=>x[0]||'').join('').slice(0,3).toUpperCase();
   return '<span class="v12-fixture-fallback">'+ab+'</span>';
 }
-const V12_RESULTS_JUL7=[
-  ['Club América Veteranos JR','La Huerta','2','0','m1','JR','HUE','home'],
-  ['Promesas FC','Atlético Galeana','3','1','m2','PRO','GAL',''],
-  ['Juventino Rosas A.C.','Lobos CDG','2','0','m1','JR','CDG',''],
-  ['Cuenda','Pozos','1','1','m2','CUE','POZ',''],
-  ['Linces','Abejas','6','4','m1','LIN','ABE','']
+const V12_OFFICIAL_UPCOMING=[
+  {
+    "home": "FRANCO FC",
+    "away": "HERRERAS FC",
+    "id": "m1",
+    "venue": "Romerillo",
+    "datetime": "20/09/2026 08:00",
+    "jornada": "5"
+  },
+  {
+    "home": "TERRICOLAS",
+    "away": "GALACTICOS",
+    "id": "m2",
+    "venue": "Campo por confirmar",
+    "datetime": "20/09/2026 08:00",
+    "jornada": "5"
+  },
+  {
+    "home": "LINCES",
+    "away": "JUVENTUS",
+    "id": "m3",
+    "venue": "Campo 3",
+    "datetime": "20/09/2026 08:00",
+    "jornada": "5"
+  },
+  {
+    "home": "HERMANOS",
+    "away": "SAN JOSE FC",
+    "id": "m4",
+    "venue": "Campo 3",
+    "datetime": "20/09/2026 10:00",
+    "jornada": "5"
+  },
+  {
+    "home": "LOBOS CDG",
+    "away": "NAPOLI",
+    "id": "m5",
+    "venue": "Cerrito de Gasca",
+    "datetime": "20/09/2026 12:00",
+    "jornada": "5"
+  }
 ];
-function v12ResultTeam(name,code,score,card){
-  return '<div class="v12-result-team">'+v12FixtureLogo(name)+
-    '<b>'+name+' <small>('+code+')</small></b>'+
-    (card?'<i class="v12-red-card" aria-label="Tarjeta roja"></i>':'')+
-    '<strong class="v12-result-score">'+score+'</strong></div>';
-}
-function v12ResultRow(m){
-  return '<div class="v12-schedule-match v12-result-match">'+
-    '<div class="v12-schedule-clubs">'+v12ResultTeam(m[0],m[5],m[2],m[7]==='home')+v12ResultTeam(m[1],m[6],m[3],false)+'</div>'+
-    '<div class="v12-schedule-meta"><time>Final</time><button data-match="'+m[4]+'">Ver detalles</button></div></div>';
-}
-function v12ScheduleCard(list){
-  return '<section class="v12-schedule-card"><h3>Jornada 1 - Partido oficial</h3><div>'+list.map(v12ResultRow).join('')+'</div></section>';
+function v12UpcomingRow(m){
+  const tm=String(m.datetime||'').match(/\s(\d{1,2}:\d{2})/);
+  return '<div class="v12-schedule-match">'+
+    '<div class="v12-schedule-clubs"><div class="v12-result-team">'+v12FixtureLogo(m.home)+'<b>'+m.home+'</b></div>'+
+    '<div class="v12-result-team">'+v12FixtureLogo(m.away)+'<b>'+m.away+'</b></div></div>'+
+    '<div class="v12-schedule-meta"><time>'+(tm?tm[1]:'Por confirmar')+'</time><small>'+m.venue+'</small><button data-match="'+m.id+'">Ver detalles</button></div></div>';
 }
 function v12FixturesMarkup(){
   return '<section class="v12-fixtures-reference" data-v12-fixtures>'+
-    '<div class="v12-date-strip">'+
-      '<button data-v12-date="16">mar 16 jun</button>'+
-      '<button data-v12-date="17">mié 17 jun</button>'+
-      '<button class="active" data-v12-date="7">mar 7 jul</button>'+
-      '<button data-v12-date="8">mié 8 jul</button>'+
-      '<button data-v12-date="15">mié 15 jul</button>'+
-    '</div>'+
-    '<h2 id="v12-day-13">martes, 7 julio 2026</h2>'+
-    v12ScheduleCard(V12_RESULTS_JUL7)+
+    '<div class="v12-date-strip"><button class="active" data-v12-date="20">dom 20 sep</button></div>'+
+    '<h2 id="v12-day-20">domingo, 20 septiembre 2026</h2>'+
+    '<section class="v12-schedule-card"><h3>Jornada 5 · Primera Fuerza</h3><div>'+V12_OFFICIAL_UPCOMING.map(v12UpcomingRow).join('')+'</div></section>'+
   '</section>';
 }
 function patchFixturesReference(){
   if(v12Route()!=='competition') return;
-  const screen=document.querySelector('#screen');
-  const tabs=screen?.querySelector('.tabs');
-  if(!screen||!tabs) return;
+  const screen=document.querySelector('#screen'),tabs=screen?.querySelector('.tabs');
+  if(!screen||!tabs)return;
   const active=tabs.querySelector('.tab.active');
-  if(!active||!/Partidos/i.test(active.textContent||'')) return;
-  if(screen.querySelector('[data-v12-fixtures]')) return;
-  let node=tabs.nextSibling;
-  while(node){const next=node.nextSibling;node.remove();node=next}
+  if(!active||!/Partidos/i.test(active.textContent||''))return;
+  if(screen.querySelector('[data-v12-fixtures]'))return;
+  let node=tabs.nextSibling;while(node){const next=node.nextSibling;node.remove();node=next}
   tabs.insertAdjacentHTML('afterend',v12FixturesMarkup());
 }
-
 
 /* === PARTS25 — CUADRO / PLAY-OFF EXACTO DE REFERENCIA === */
 const V12_BRACKET_SHIELD='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.7 20 5.6v5.7c0 5.1-3.3 8.6-8 10-4.7-1.4-8-4.9-8-10V5.6L12 2.7Z" fill="currentColor"/></svg>';
@@ -518,22 +614,7 @@ function v12StagePanels(){
 }
 
 function v12BracketMarkup(){
-  return '<section class="v12-bracket-reference stage-playoff" data-v12-bracket>'+
-    '<div class="v12-bracket-stage-tabs" role="tablist" aria-label="Etapas del cuadro">'+
-      '<button class="active" data-v12-bracket-stage="playoff">Play-off</button>'+
-      '<button data-v12-bracket-stage="octavos">Octavos de final</button>'+
-      '<button data-v12-bracket-stage="cuartos">Cuartos de final</button>'+
-      '<button data-v12-bracket-stage="semifinal">Semifinales</button>'+
-      '<button data-v12-bracket-stage="final">Final</button>'+
-    '</div>'+
-    '<div class="v12-bracket-dates"><span>'+V12_STAGE_DATES.playoff[0]+'</span><span>'+V12_STAGE_DATES.playoff[1]+'</span></div>'+
-    '<div class="v12-bracket-board">'+
-      v12BracketRoute(V12_BRACKET_ROUTE_LEFT)+
-      v12BracketRoute(V12_BRACKET_ROUTE_RIGHT)+
-    '</div>'+
-    v12StagePanels()+
-    v12FinalCard()+
-  '</section>';
+  return '<section class="v12-bracket-reference" data-v12-bracket><div class="empty-state"><h2>Cuadro no publicado</h2><p>No se muestran cruces de liguilla hasta que exista un cuadro oficial publicado por la Liga.</p></div></section>';
 }
 function patchBracketReference(){
   if(v12Route()!=='competition') return;
