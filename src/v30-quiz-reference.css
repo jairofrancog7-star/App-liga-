@@ -515,3 +515,15 @@ body[data-app-route="quiz"] .v30-quiz-page.v30-answer-result .quiz-option.is-cor
 body[data-app-route="quiz"] .v30-quiz-page.v30-answer-result .quiz-option:not(.is-correct) .v30-answer-check{
   display:none!important;
 }
+
+
+/* QUIZ_TEXT_CLEAR_1 — separa la palomita rosa del texto del logo.
+   Conserva el símbolo y el diseño; sólo lo desplaza hacia la derecha
+   para que ninguna línea rosa quede por detrás/encima de QUIZ / LIGA. */
+@media (max-width:520px){
+  body[data-app-route="quiz"] .v30-check-box{
+    right:-18%!important;
+    top:6.5%!important;
+    width:27%!important;
+  }
+}
