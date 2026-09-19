@@ -1,5 +1,5 @@
-/* V66 — Directorio oficial AdminFut: equipos/plantillas reales.
-   Sustituye únicamente #/teams, #/players y #/club-store con datos públicos sincronizados. */
+/* V66 — Directorio oficial AdminFut: plantillas/tienda y datos auxiliares.
+   #/teams queda bajo V27 + V62 para evitar dos renderizados consecutivos y conservar una sola pantalla estable. */
 (function(){
 'use strict';
 const LOCAL='./public/data/official-live.json?v=20260919-v66-official';
@@ -129,14 +129,14 @@ function bind(){
   });
 }
 async function render(force=false){
-  const r=route(); if(!['teams','players','club-store'].includes(r))return;
+  const r=route(); if(!['players','club-store'].includes(r))return;
   await load(); if(!db)return;
   const screen=document.querySelector('#screen'); if(!screen)return;
-  const kind=r==='club-store'?'store':r;
+  const kind=r==='club-store'?'store':'players';
   if(!force&&screen.querySelector('[data-v66-directory="'+kind+'"]'))return;
-  screen.innerHTML=r==='players'?playerMarkup():teamMarkup(r==='club-store');
+  screen.innerHTML=r==='players'?playerMarkup():teamMarkup(true);
   bind();
-  if(r==='teams'||r==='club-store'){
+  if(r==='club-store'){
     const input=screen.querySelector('[data-v66-team-search]'); if(force&&input){input.focus();input.setSelectionRange(input.value.length,input.value.length)}
   }else{
     const input=screen.querySelector('[data-v66-player-search]'); if(force&&input){input.focus();input.setSelectionRange(input.value.length,input.value.length)}
@@ -145,7 +145,7 @@ async function render(force=false){
 function schedule(){requestAnimationFrame(()=>requestAnimationFrame(()=>render(false)))}
 window.addEventListener('hashchange',schedule);
 const screen=document.querySelector('#screen');
-if(screen)new MutationObserver(()=>{if(['teams','players','club-store'].includes(route())&&!screen.querySelector('[data-v66-directory]'))schedule()}).observe(screen,{childList:true,subtree:false});
+if(screen)new MutationObserver(()=>{if(['players','club-store'].includes(route())&&!screen.querySelector('[data-v66-directory]'))schedule()}).observe(screen,{childList:true,subtree:false});
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',schedule,{once:true});else schedule();
 
 
