@@ -66,26 +66,41 @@ function patchStandings(){
   tabs.insertAdjacentHTML('afterend',v12StandingsBody());
 }
 
-function profileMenuRow(icon,label,route,action){
+function v12ProfileIcon(type){
+  const icons={
+    following:'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M22 9.24l-7.19-.62L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21 12 17.27 18.18 21l-1.63-7.03L22 9.24Zm-10 6.16-3.76 2.27 1-4.28-3.32-2.88 4.38-.38L12 6.1l1.71 4.04 4.38.38-3.32 2.88 1 4.28L12 15.4Z" fill="currentColor"/></svg>',
+    notifications:'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="m19.29 17.29-1.29-1.29v-5c0-3.07-1.64-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5S10.5 3.17 10.5 4v.68C7.63 5.36 6 7.92 6 11v5l-1.29 1.29C4.08 17.92 4.52 19 5.41 19h13.17c.9 0 1.34-1.08.71-1.71ZM16 17H8v-6c0-2.48 1.51-4.5 4-4.5s4 2.02 4 4.5v6Zm-4 5c1.1 0 2-.9 2-2h-4c0 1.1.89 2 2 2Z" fill="currentColor"/></svg>',
+    language:'<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="1.7"/><path d="M3.6 12h16.8M12 3c2.35 2.45 3.55 5.45 3.55 9S14.35 18.55 12 21M12 3C9.65 5.45 8.45 8.45 8.45 12S9.65 18.55 12 21" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>',
+    feedback:'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4.8 4.8h14.4v10.8H5.853L4.8 16.653V4.8ZM4.8 3C3.81 3 3.009 3.81 3.009 4.8L3 21l3.6-3.6h12.6c.99 0 1.8-.81 1.8-1.8V4.8C21 3.81 20.19 3 19.2 3H4.8Zm1.8 9h7.2v1.8H6.6V12Zm0-2.7h10.8v1.8H6.6V9.3Zm0-2.7h10.8v1.8H6.6V6.6Z" fill="currentColor"/></svg>',
+    chevron:'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10.705 6.705a.997.997 0 0 0-1.41 0 .997.997 0 0 0-.001 1.41L13.17 12l-3.876 3.885a.997.997 0 1 0 1.411 1.41l4.588-4.588a1 1 0 0 0 0-1.414l-4.588-4.588Z" fill="currentColor"/></svg>'
+  };
+  return icons[type]||'';
+}
+function profileMenuRow(icon,label,route,action,chevron=false){
   const attr=route?'data-v12-route="'+route+'"':'data-v12-action="'+action+'"';
-  return '<button class="v12-profile-row" '+attr+'><span class="v12-profile-row-icon">'+icon+'</span><span>'+label+'</span><b>›</b></button>';
+  return '<button class="v12-profile-row" '+attr+'>'+
+    '<span class="v12-profile-row-icon">'+(icon?v12ProfileIcon(icon):'')+'</span>'+
+    '<span class="v12-profile-row-label">'+label+'</span>'+
+    '<span class="v12-profile-row-chevron">'+(chevron?v12ProfileIcon('chevron'):'')+'</span>'+
+  '</button>';
 }
 function patchProfile(){
   if(v12Route()!=='profile') return;
   const screen=document.querySelector('#screen');
-  if(!screen||screen.querySelector('[data-v12-profile]')) return;
-  screen.innerHTML='<section class="v12-profile-page" data-v12-profile>'+
+  if(!screen) return;
+  const existing=screen.querySelector('[data-v12-profile]');
+  if(existing?.dataset.profileRef==='parts36') return;
+  screen.innerHTML='<section class="v12-profile-page" data-v12-profile data-profile-ref="parts36">'+
     '<div class="v12-profile-card">'+
-      '<div class="v12-profile-copy"><h1>Liga Municipal<br>de Futbol</h1><h2>Juventino Rosas, Gto.</h2><p>Crea tu cuenta y disfruta de un acceso inigualable a resultados, estadísticas, calendarios, equipos de la liga y mucho más.</p></div>'+
-      v12Logo(V12_LOGO,'Liga Municipal de Fútbol Juventino Rosas','v12-profile-logo')+
+      '<div class="v12-profile-copy"><h1>Más de la Liga</h1><p>Crea tu cuenta y disfruta de un acceso inigualable a resultados, estadísticas, calendarios, equipos de la liga y mucho más.</p></div>'+
       '<div class="v12-profile-actions"><button class="outline" data-v12-action="login">Iniciar sesión</button><button class="solid" data-v12-action="create">Crear una cuenta</button></div>'+
     '</div>'+
     '<div class="v12-profile-menu">'+
-      profileMenuRow('☆','Siguiendo','following')+
-      profileMenuRow('♧','Notificaciones','notifications')+
-      profileMenuRow('◎','Tu idioma preferido',null,'language')+
-      profileMenuRow('▤','Ayúdanos a mejorar',null,'feedback')+
-      profileMenuRow('','Ajustes de privacidad','privacy')+
+      profileMenuRow('following','Siguiendo','following',null,true)+
+      profileMenuRow('notifications','Notificaciones','notifications',null,true)+
+      profileMenuRow('language','Tu idioma preferido',null,'language',false)+
+      profileMenuRow('feedback','Ayúdanos a mejorar',null,'feedback',false)+
+      profileMenuRow(null,'Ajustes de privacidad',null,'privacy',true)+
     '</div>'+
   '</section>';
 }
