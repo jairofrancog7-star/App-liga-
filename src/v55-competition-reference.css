@@ -439,3 +439,17 @@
     min-width:88px!important;
   }
 }
+
+
+/* V56.1 — geometría del Cuadro medida contra la captura maestra.
+   La columna izquierda estaba corrida ~17px y el bloque Ganador ~60px.
+   Se redistribuyen sólo las columnas; no se toca la altura del cuadro. */
+@media (max-width:520px){
+  body[data-app-route="competition"] .v12-bracket-route{
+    grid-template-columns:5px minmax(0,1.04fr) 4px minmax(0,.96fr)!important;
+    gap:2px!important;
+    margin-left:-2px!important;
+    padding-right:20px!important;
+    box-sizing:border-box!important;
+  }
+}
