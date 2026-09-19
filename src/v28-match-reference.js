@@ -47,7 +47,7 @@
 
   function route(){return location.hash.replace('#/','')||'home'}
   function esc(s){return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
-  function logoPath(name){const p=LOGOS[name];return p?(p.startsWith('http')?p:BASE+p):LEAGUE}
+  function logoPath(name){const globalLogo=window.LJR_TEAM_LOGOS?.get?.(name);if(globalLogo)return globalLogo;const p=LOGOS[name];return p?(p.startsWith('http')?p:BASE+p):LEAGUE}
   function teamLogo(name,cls=''){return '<img class="'+cls+'" src="'+logoPath(name)+'" alt="'+esc(name)+'" loading="eager" decoding="async">'}
   function backIcon(){return '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 12H5m7-7-7 7 7 7"/></svg>'}
   function muteIcon(){return '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 9v6h4l5 4V5L9 9H5Zm13-1 3 8M21 8l-3 8"/></svg>'}
