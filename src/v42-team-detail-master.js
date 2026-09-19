@@ -104,6 +104,8 @@
     ['news','▤','Noticias',true]
   ];
 
+  const COMPARE_EXCLUDED=new Set(['SPD','SIS']); // equipos marcados por el usuario como inexistentes
+
   let activeTab=localStorage.getItem('v42-team-tab')||'summary';
   let menuOpen=false,notifyOpen=false,compareOpen=false,compareTarget=null;
 
@@ -279,7 +281,7 @@
 
   function compareSheet(){
     if(!compareOpen)return '';
-    const ids=Object.keys(TEAMS).filter(id=>id!==selectedId()).sort((a,b)=>team(a).name.localeCompare(team(b).name,'es'));
+    const ids=Object.keys(TEAMS).filter(id=>id!==selectedId()&&!COMPARE_EXCLUDED.has(id)).sort((a,b)=>team(a).name.localeCompare(team(b).name,'es'));
     return '<div class="v42-overlay" data-v42-close-overlay><section class="v42-compare-sheet" role="dialog" aria-label="Comparar equipos" onclick="event.stopPropagation()"><div class="v42-sheet-head"><h2>Comparar</h2><button type="button" data-v42-close-compare>Hecho</button></div>'+
       (compareTarget?compareResult(compareTarget):'<p class="v42-compare-help">Selecciona otro equipo</p><div class="v42-compare-grid">'+ids.map(id=>'<button type="button" data-v42-compare-team="'+id+'"><img src="'+logo(team(id))+'" alt=""><span>'+esc(team(id).name)+'</span></button>').join('')+'</div>')+
     '</section></div>';
