@@ -131,7 +131,7 @@
       <div class="v21-home-feature-photo" aria-hidden="true">
         <img
           class="v21-home-feature-photo-image"
-          src="https://d2ol7oe51mr4n9.cloudfront.net/user_3JNvttsAwr0QjxhuX5O1uaa9bvv/9d801af6-2092-4a4a-afbc-0b9e6c880ba9.png"
+          src="./assets/home-players-fictional.jpg?v=home23"
           alt=""
           loading="eager"
           decoding="async"
