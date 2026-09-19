@@ -632,10 +632,6 @@ function v64CanvasBracket(){
   return new Promise(function(resolve){canvas.toBlob(function(b){resolve(b)},'image/png',1)});
 }
 
-function v64TeamSelect(name,attr){
-  const list=v64TeamNames();return '<select '+attr+'><option value="">Por confirmar</option>'+list.map(function(n){return '<option>'+v64Esc(n)+'</option>'}).join('')+'</select>';
-}
-
 function v64ExportTableView(){
   const rows=v64StandingsRows();
   return '<section class="v60-tool-page v64-page">'+v60Header('EXPORTAR','Tabla completa','Descarga o comparte la tabla desde la app sin cambiar su diseño.')+
