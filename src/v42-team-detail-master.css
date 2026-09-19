@@ -834,3 +834,24 @@ body.v42-team-active .bottom-nav .nav-item small{
   }
   .v42-team-page{width:520px!important;margin:0 auto!important}
 }
+
+/* TEAMDETAIL_NAV_FIX1 — navegación inferior sin texto encimado. */
+body.v42-team-active .bottom-nav .nav-item{
+  overflow:hidden!important;
+  padding-left:2px!important;
+  padding-right:2px!important;
+}
+body.v42-team-active .bottom-nav .nav-item small{
+  display:block!important;
+  max-width:100%!important;
+  overflow:hidden!important;
+  text-overflow:clip!important;
+  white-space:nowrap!important;
+  font-size:clamp(9.5px,2.65vw,11px)!important;
+  line-height:1!important;
+}
+@media(max-width:380px){
+  body.v42-team-active .bottom-nav .nav-item small{
+    font-size:9.5px!important;
+  }
+}
