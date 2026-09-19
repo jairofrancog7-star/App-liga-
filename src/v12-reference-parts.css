@@ -2982,3 +2982,77 @@ body[data-app-route="competition"] .v12-criteria-stat{
     font-size:12.5px!important;
   }
 }
+
+
+/* === V12 PARTS41 — ALINEACIÓN EXACTA DE TEXTO === */
+/* Ajuste únicamente tipográfico/alineación dentro de Clasificación. */
+body[data-app-route="competition"] .v12-team-cell strong,
+body[data-app-route="competition"] .v12-criteria-team strong{
+  display:flex!important;
+  align-items:center!important;
+  justify-content:flex-start!important;
+  height:34px!important;
+  max-height:34px!important;
+  width:100%!important;
+  margin:0!important;
+  padding:0!important;
+  text-align:left!important;
+  vertical-align:middle!important;
+  font-size:13.5px!important;
+  line-height:1.12!important;
+  font-weight:700!important;
+  letter-spacing:0!important;
+  white-space:normal!important;
+  overflow:hidden!important;
+  word-break:normal!important;
+  overflow-wrap:normal!important;
+}
+
+/* La caja del equipo empieza siempre en el mismo punto y el nombre también. */
+body[data-app-route="competition"] .v12-team-cell,
+body[data-app-route="competition"] .v12-criteria-team{
+  padding:0!important;
+  margin:0!important;
+  justify-self:stretch!important;
+  align-self:center!important;
+}
+
+/* Números y encabezados centrados exactamente sobre la misma columna. */
+body[data-app-route="competition"] .v12-stand-head>b,
+body[data-app-route="competition"] .v12-stand-row>span:nth-of-type(3),
+body[data-app-route="competition"] .v12-stand-row>span:nth-of-type(4),
+body[data-app-route="competition"] .v12-stand-row>span:nth-of-type(5),
+body[data-app-route="competition"] .v12-criteria-head>b,
+body[data-app-route="competition"] .v12-criteria-stat{
+  width:100%!important;
+  margin:0!important;
+  padding:0!important;
+  justify-self:stretch!important;
+  text-align:center!important;
+}
+
+/* Ranking centrado verticalmente y con línea base uniforme. */
+body[data-app-route="competition"] .v12-rank,
+body[data-app-route="competition"] .v12-criteria-rank{
+  display:flex!important;
+  align-items:center!important;
+  justify-content:flex-start!important;
+  height:34px!important;
+  line-height:1!important;
+  margin:0!important;
+  padding:0!important;
+}
+
+@media(max-width:380px){
+  body[data-app-route="competition"] .v12-team-cell strong,
+  body[data-app-route="competition"] .v12-criteria-team strong{
+    height:32px!important;
+    max-height:32px!important;
+    font-size:12.5px!important;
+    line-height:1.1!important;
+  }
+  body[data-app-route="competition"] .v12-rank,
+  body[data-app-route="competition"] .v12-criteria-rank{
+    height:32px!important;
+  }
+}
