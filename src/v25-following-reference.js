@@ -212,6 +212,12 @@
     document.querySelectorAll('[data-v28-back]').forEach(b=>b.onclick=()=>{location.hash='#/more'});
     document.querySelectorAll('[data-v28-picker]').forEach(b=>b.onclick=()=>{
       pickerOpen=true;sheetOpen=false;searchText='';render();
+      requestAnimationFrame(()=>{
+        const screen=document.querySelector('#screen');
+        if(screen)screen.scrollTop=0;
+        window.scrollTo(0,0);
+        if(document.scrollingElement)document.scrollingElement.scrollTop=0;
+      });
     });
     const closePicker=document.querySelector('[data-v28-close-picker]');
     if(closePicker)closePicker.onclick=()=>{pickerOpen=false;searchText='';render()};
