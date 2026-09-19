@@ -669,3 +669,109 @@ body.v33-data-active .v33-data-head.is-collapsed .v33-tabs button{
   .v33-expanded-title p{font-size:22px}
   .v33-collapsed-title{font-size:25px}
 }
+
+
+/* V35 — dimensiones del VIDEO 1001959722:
+   referencia 864x433 abierta y ~864x235 compacta.
+   Reduce alto y tipografía; conserva exactamente la función de expansión/contracción. */
+body.v33-data-active .v33-data-head{
+  --v33-head-h:clamp(184px,50.12vw,258px);
+  height:var(--v33-head-h)!important;
+  min-height:var(--v33-head-h)!important;
+}
+body.v33-data-active .v33-head-actions{
+  left:clamp(18px,5.2vw,28px)!important;
+  right:clamp(18px,5.2vw,28px)!important;
+  top:clamp(18px,7.5vw,38px)!important;
+  height:40px!important;
+}
+body.v33-data-active .v33-head-actions button{
+  width:38px!important;
+  height:38px!important;
+}
+body.v33-data-active .v33-head-actions svg{
+  width:28px!important;
+  height:28px!important;
+  stroke-width:2.1!important;
+}
+
+.v33-expanded-title{
+  left:clamp(20px,5.4vw,32px)!important;
+  right:22px!important;
+  top:clamp(103px,27.4vw,142px)!important;
+  transform:translateY(calc(var(--v33-collapse,0) * -18px))!important;
+}
+.v33-expanded-title h1{
+  font-size:clamp(34px,8.55vw,44px)!important;
+  line-height:.98!important;
+  font-weight:500!important;
+  letter-spacing:-.035em!important;
+}
+.v33-expanded-title p{
+  margin-top:clamp(12px,3.5vw,18px)!important;
+  font-size:clamp(16px,4.25vw,21px)!important;
+  line-height:1!important;
+  font-weight:600!important;
+}
+
+.v33-collapsed-title{
+  top:clamp(22px,7vw,34px)!important;
+  font-size:clamp(18px,4.8vw,25px)!important;
+  font-weight:600!important;
+  max-width:58%!important;
+}
+
+body.v33-data-active .v33-tabs{
+  height:clamp(42px,10.9vw,56px)!important;
+}
+body.v33-data-active .v33-tabs button{
+  height:clamp(42px,10.9vw,56px)!important;
+  padding:0 clamp(16px,4.8vw,25px)!important;
+  font-size:clamp(10px,2.8vw,14px)!important;
+  font-weight:600!important;
+}
+body.v33-data-active .v33-tabs button.active::after{
+  left:clamp(15px,4.4vw,23px)!important;
+  right:clamp(15px,4.4vw,23px)!important;
+  height:3px!important;
+}
+
+/* El estado compacto del video ocupa ~27.2% del ancho. */
+body.v33-data-active .v33-data-head.is-collapsed .v33-head-actions{
+  top:clamp(13px,4vw,20px)!important;
+}
+body.v33-data-active .v33-data-head.is-collapsed .v33-tabs{
+  height:clamp(39px,10.2vw,53px)!important;
+}
+body.v33-data-active .v33-data-head.is-collapsed .v33-tabs button{
+  height:clamp(39px,10.2vw,53px)!important;
+  font-size:clamp(9px,2.55vw,13px)!important;
+  padding:0 clamp(14px,4.2vw,22px)!important;
+}
+
+@media(max-width:430px){
+  body.v33-data-active .v33-data-head{
+    --v33-head-h:50.12vw;
+  }
+  body.v33-data-active .v33-head-actions{
+    left:18px!important;
+    right:18px!important;
+  }
+  .v33-expanded-title{
+    left:22px!important;
+  }
+}
+@media(max-width:360px){
+  body.v33-data-active .v33-data-head{
+    --v33-head-h:184px;
+  }
+  .v33-expanded-title{
+    top:98px!important;
+  }
+  .v33-expanded-title h1{
+    font-size:32px!important;
+  }
+  .v33-expanded-title p{
+    font-size:15px!important;
+  }
+}
