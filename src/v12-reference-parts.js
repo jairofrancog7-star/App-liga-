@@ -16,7 +16,38 @@ function v12Logo(src,alt,cls=''){return '<img class="'+cls+'" src="'+src+'" alt=
 function v12TeamLogo(t){return v12Logo(t.logo?V12_TEAM_ASSET_BASE+t.logo:V12_LOGO,t.name,'v12-team-logo')}
 function v12Form(t){return '<div class="v12-form">'+t.form.map(s=>'<i class="'+s+'"></i>').join('')+'<b class="'+t.last.toLowerCase()+'">'+t.last+'</b></div>'}
 function v12Rows(mode='compact'){
-  if(mode==='criteria') return '<div class="v12-criteria"><h3>Criterios de desempate</h3><ol><li>Puntos obtenidos</li><li>Diferencia de goles</li><li>Goles a favor</li><li>Resultado entre los equipos empatados</li><li>Disciplina</li></ol></div>';
+  if(mode==='criteria'){
+    const criteriaTeams=[
+      {name:'La Huerta',logo:'assets/teams/la-huerta-cuenda.webp',stats:[3,5,6,0,1,0,0],mark:2},
+      {name:'Promesas FC',logo:'assets/teams/promesas-fc-pozos.webp',stats:[3,5,5,0,1,0,0],mark:2},
+      {name:'Franco FC',logo:'assets/teams/franco-fc.webp',stats:[3,4,5,0,1,0,0],mark:2},
+      {name:'Atlético Galeana',logo:'assets/teams/atletico-galeana.webp',stats:[3,4,4,0,1,0,0],mark:2},
+      {name:'Lobos CDG',logo:'assets/teams/lobos-cdg.webp',stats:[3,3,4,0,1,0,0],mark:1},
+      {name:'Juventino',logo:null,stats:[3,2,3,0,1,0,0],mark:-1},
+      {name:'Cuenda',logo:'assets/official-logos/toros-de-cuenda.png',stats:[3,2,3,0,1,0,0],mark:-1},
+      {name:'Pozos',logo:'assets/teams/pozos-fc.webp',stats:[3,2,2,2,1,1,0],mark:2}
+    ];
+    const head=['PTOS','+/-','GF','GA','V','VA','P'];
+    const rows=criteriaTeams.map((t,i)=>{
+      const logo=t.logo?V12_TEAM_ASSET_BASE+t.logo:V12_LOGO;
+      return '<div class="v12-criteria-row">'+
+        '<span class="v12-criteria-rank">'+(i+1)+'</span>'+
+        '<span class="v12-criteria-team">'+v12Logo(logo,t.name,'v12-criteria-logo')+'<strong>'+t.name+'</strong></span>'+
+        t.stats.map((n,idx)=>'<span class="v12-criteria-stat '+(idx===t.mark?'mark':'')+'">'+n+'</span>').join('')+
+      '</div>';
+    }).join('');
+    return '<div class="v12-criteria-shell">'+
+      '<div class="v12-criteria-scroll">'+
+        '<div class="v12-criteria-table">'+
+          '<div class="v12-criteria-head"><span></span><span></span>'+head.map(h=>'<b>'+h+'</b>').join('')+'</div>'+
+          '<div class="v12-criteria-direct">DIRECTOS A OCTAVOS</div>'+
+          '<div class="v12-criteria-line"></div>'+
+          rows+
+        '</div>'+
+      '</div>'+
+      '<span class="v12-criteria-edge" aria-hidden="true"></span>'+
+    '</div>';
+  }
   return '<div class="v12-stand-head"><span>LIGA MUNICIPAL JUVENTINO ROSAS</span><b>P</b><b>+/-</b><b>PTOS</b><b>FORMA</b></div>'+
     '<div class="v12-stand-list">'+V12_TEAMS.map((t,i)=>'<div class="v12-stand-row"><span class="v12-rank">'+(i+1)+'</span><span class="v12-team-cell">'+v12TeamLogo(t)+'<strong>'+t.name+'</strong></span><span>'+t.p+'</span><span>'+t.gd+'</span><span>'+t.pts+'</span>'+v12Form(t)+'</div>').join('')+'</div>';
 }
