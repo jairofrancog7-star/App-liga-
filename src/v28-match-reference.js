@@ -144,14 +144,53 @@
     '</div></div>';
   }
 
-  function newsPanel(m){
-    return '<section class="v28-panel v28-news-panel active" data-v28-panel="news">'+
-      '<h2>Novedades</h2>'+
-      '<div class="v28-news-card"><b>'+esc(m.home)+' vs '+esc(m.away)+'</b><p>Consulta aquí las novedades oficiales, avisos y actualizaciones del partido.</p></div>'+
-      '<div class="v28-news-card"><b>Información de la jornada</b><p>'+esc(m.date)+' · '+esc(m.time)+' · '+esc(m.venue)+'</p></div>'+
-    '</section>';
+  function formDots(pattern){
+    return '<span class="v28-form-dots">'+pattern.map(function(x,i){
+      const c=x==='V'?'w':x==='E'?'e':'d';
+      return '<i class="'+c+(i===pattern.length-1?' current':'')+'">'+x+'</i>';
+    }).join('')+'<i class="v28-form-arrow"></i></span>';
   }
 
+  function teamForm(name,pattern){
+    return '<div class="v28-form-line">'+
+      '<div class="v28-form-team">'+teamLogo(name)+'<span>'+esc(name)+'</span></div>'+
+      formDots(pattern)+
+    '</div>';
+  }
+
+  function newsPanel(m){
+    return '<section class="v28-panel v28-news-panel active" data-v28-panel="news">'+
+      '<section class="v28-section" id="v28-info">'+
+        '<h2>Información del partido</h2>'+
+        '<div class="v28-stadium" role="img" aria-label="Cancha municipal"></div>'+
+        '<div class="v28-stadium-caption">'+esc(m.venue)+'<small>Juventino Rosas</small></div>'+
+        '<div class="v28-divider"></div>'+
+      '</section>'+
+      '<section class="v28-section v28-h2h">'+
+        '<h2>Enfrentamiento directo</h2>'+
+        '<div class="v28-h2h-row">'+
+          '<div class="v28-h2h-team">'+teamLogo(m.home)+'<span>'+esc(m.home)+'</span></div>'+
+          '<div class="v28-h2h-team right"><span>'+esc(m.away)+'</span>'+teamLogo(m.away)+'</div>'+
+        '</div>'+
+        '<div class="v28-h2h-values">'+
+          '<div><b>0</b><span>Victorias</span></div>'+
+          '<div><b>0</b><span>Empates</span></div>'+
+          '<div><b>0</b><span>Victorias</span></div>'+
+        '</div>'+
+        '<div class="v28-goals-row"><b>0</b><span>Goles</span><b>0</b></div>'+
+      '</section>'+
+      '<section class="v28-section v28-form-block">'+
+        '<h2>Estado de forma</h2>'+
+        teamForm(m.home,['D','D','V','E','D'])+
+        '<div class="v28-form-goals"><b>0</b><span>Goles</span><b>0</b></div>'+
+      '</section>'+
+      '<section class="v28-section v28-form-block v28-dual">'+
+        '<h2>Estado de forma</h2>'+
+        teamForm(m.home,['D','D','V','E','D'])+
+        teamForm(m.away,['V','V','V','V','E'])+
+      '</section>'+
+    '</section>';
+  }
   function standingsPanel(){
     return '<section class="v28-panel v28-standings-panel" data-v28-panel="standings">'+
       '<div class="v28-segmented">'+
@@ -192,8 +231,8 @@
           '<div class="v28-side right">'+teamLogo(m.away,'v28-team-logo')+'<span>'+esc(m.away)+'</span></div>'+
         '</div>'+
         '<nav class="v28-tabs" aria-label="Información del partido">'+
-          '<button class="v28-tab" type="button" data-v28-tab="news">Novedades</button>'+
-          '<button class="v28-tab active" type="button" data-v28-tab="standings">Clasificación</button>'+
+          '<button class="v28-tab active" type="button" data-v28-tab="news">Novedades</button>'+
+          '<button class="v28-tab" type="button" data-v28-tab="standings">Clasificación</button>'+
           '<button class="v28-tab" type="button" data-v28-tab="info">Info del partido</button>'+
         '</nav>'+
       '</header>'+
