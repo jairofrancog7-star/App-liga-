@@ -115,37 +115,32 @@
     return '<span class="v28-stand-form"><i></i><i></i><b class="'+cls+'">'+last+'</b></span>';
   }
 
+  function v40Form(last){
+    return '<span class="v40-form"><i></i><i></i><b class="'+(last==='V'?'win':last==='E'?'draw':'loss')+'">'+last+'</b></span>';
+  }
+
   function standings(mode='compact'){
     if(mode==='criteria'){
-      const head=['PTOS','+/-','GF','GA','V','E','D'];
-      return '<div class="v28-table-scroll"><div class="v28-criteria-table">'+
-        '<div class="v28-criteria-head"><span></span><span></span>'+head.map(x=>'<b>'+x+'</b>').join('')+'</div>'+
-        '<div class="v28-direct">DIRECTOS A OCTAVOS</div><div class="v28-direct-line"></div>'+
-        TABLE.map((t,i)=>'<div class="v28-criteria-row">'+
-          '<span>'+(i+1)+'</span><span class="v28-team">'+teamLogo(t.name)+'<strong>'+esc(t.name)+'</strong></span>'+
-          '<span>'+t.pts+'</span><span>'+t.gd+'</span><span>'+(Math.max(0,t.gd+1))+'</span><span>0</span><span>'+(t.last==='V'?1:0)+'</span><span>'+(t.last==='E'?1:0)+'</span><span>'+(t.last==='D'?1:0)+'</span>'+
-        '</div>').join('')+
+      return '<div class="v40-scroll-shell"><div class="v40-wide criteria">'+
+        '<div class="v40-wide-head criteria-head"><span></span><span>Equipo</span><b>PTOS</b><b>+/-</b><b>GF</b><b>GA</b><b>V</b><b>E</b><b>P</b></div>'+
+        '<div class="v40-direct">DIRECTOS A OCTAVOS</div><div class="v40-rule"></div>'+
+        TABLE.map((t,i)=>'<div class="v40-wide-row criteria-row"><span>'+(i+1)+'</span><span class="v40-team">'+teamLogo(t.name,'v40-team-logo')+'<strong>'+esc(t.name)+'</strong></span><span>'+t.pts+'</span><span>'+t.gd+'</span><span>'+Math.max(0,t.gd+1)+'</span><span>0</span><span>'+(t.last==='V'?1:0)+'</span><span>'+(t.last==='E'?1:0)+'</span><span>'+(t.last==='D'?1:0)+'</span></div>').join('')+
       '</div></div>';
     }
     if(mode==='complete'){
-      return '<div class="v28-table-scroll"><div class="v28-complete-table">'+
-        '<div class="v28-complete-head"><span></span><span></span><b>P</b><b>V</b><b>E</b><b>D</b><b>PTOS</b></div>'+
-        '<div class="v28-direct">DIRECTOS A OCTAVOS</div><div class="v28-direct-line"></div>'+
-        TABLE.map((t,i)=>'<div class="v28-complete-row">'+
-          '<span>'+(i+1)+'</span><span class="v28-team">'+teamLogo(t.name)+'<strong>'+esc(t.name)+'</strong></span>'+
-          '<span>'+t.p+'</span><span>'+(t.last==='V'?1:0)+'</span><span>'+(t.last==='E'?1:0)+'</span><span>'+(t.last==='D'?1:0)+'</span><b>'+t.pts+'</b>'+
-        '</div>').join('')+
+      return '<div class="v40-scroll-shell"><div class="v40-wide complete">'+
+        '<div class="v40-wide-head"><span></span><span>Equipo</span><b>P</b><b>V</b><b>E</b><b>D</b><b>PTOS</b></div>'+
+        '<div class="v40-direct">DIRECTOS A OCTAVOS</div><div class="v40-rule"></div>'+
+        TABLE.map((t,i)=>'<div class="v40-wide-row"><span>'+(i+1)+'</span><span class="v40-team">'+teamLogo(t.name,'v40-team-logo')+'<strong>'+esc(t.name)+'</strong></span><span>'+t.p+'</span><span>'+(t.last==='V'?1:0)+'</span><span>'+(t.last==='E'?1:0)+'</span><span>'+(t.last==='D'?1:0)+'</span><b>'+t.pts+'</b></div>').join('')+
       '</div></div>';
     }
-    return '<div class="v28-table-scroll"><div class="v28-compact-table">'+
-      '<div class="v28-compact-head"><span></span><span></span><b>P</b><b>+/-</b><b>PTOS</b><b>FORMA</b></div>'+
-      '<div class="v28-direct">DIRECTOS A OCTAVOS</div><div class="v28-direct-line"></div>'+
-      TABLE.map((t,i)=>'<div class="v28-compact-row">'+
-        '<span class="v28-rank">'+(i+1)+'</span>'+
-        '<span class="v28-team">'+teamLogo(t.name)+'<strong>'+esc(t.name)+'</strong></span>'+
-        '<span>'+t.p+'</span><span>'+t.gd+'</span><span>'+t.pts+'</span>'+formCell(t.last)+
-      '</div>').join('')+
-    '</div></div>';
+    return '<div class="v40-table-wrap compact">'+
+      '<div class="v40-table-head"><span></span><span></span><b>P</b><b>+/-</b><b>PTOS</b><b>FORMA</b></div>'+
+      '<div class="v40-direct">DIRECTOS A OCTAVOS</div><div class="v40-rule"></div>'+
+      '<div class="v40-table-body">'+TABLE.map((t,i)=>
+        '<div class="v40-row"><span class="v40-rank">'+(i+1)+'</span><span class="v40-team">'+teamLogo(t.name,'v40-team-logo')+'<strong>'+esc(t.name)+'</strong></span><span>'+t.p+'</span><span>'+t.gd+'</span><span>'+t.pts+'</span>'+v40Form(t.last)+'</div>'
+      ).join('')+'</div>'+
+    '</div>';
   }
 
   function formDots(pattern){
@@ -183,12 +178,14 @@
   }
   function standingsPanel(){
     return '<section class="v28-panel v28-standings-panel" data-v28-panel="standings">'+
-      '<div class="v28-segmented">'+
-        '<button class="active" type="button" data-v28-mode="compact">Compacta</button>'+
-        '<button type="button" data-v28-mode="complete">Completa</button>'+
-        '<button type="button" data-v28-mode="criteria">Criterios de<br>desempate</button>'+
+      '<div class="v40-standings v28-embedded-standings">'+
+        '<div class="v40-segmented" role="tablist" aria-label="Vista de clasificación">'+
+          '<button class="active" type="button" data-v28-mode="compact">Compacta</button>'+
+          '<button type="button" data-v28-mode="complete">Completa</button>'+
+          '<button type="button" data-v28-mode="criteria">Criterios de<br>desempate</button>'+
+        '</div>'+
+        '<div class="v40-content v28-stand-content" data-v28-stand-content>'+standings('compact')+'</div>'+
       '</div>'+
-      '<div class="v28-stand-content" data-v28-stand-content>'+standings('compact')+'</div>'+
     '</section>';
   }
 
