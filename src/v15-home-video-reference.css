@@ -1183,3 +1183,96 @@ body[data-app-route="home"] .topbar{
     box-shadow:0 0 0 6px rgba(3,8,91,.94)!important;
   }
 }
+
+
+/* V30 HOME HEADER RESTORE WHITE ICONS — quitar overlays añadidos y usar
+   únicamente los dos iconos blancos que ya vienen dibujados en el arte original.
+   La imagen se ajusta por ancho para que ninguno quede cortado en los extremos. */
+body[data-app-route="home"] .topbar{
+  background-color:#02065f!important;
+  background-size:100% auto!important;
+  background-repeat:no-repeat!important;
+  background-position:center top!important;
+}
+
+/* Izquierda: botón invisible sobre el icono blanco original, sin logo/círculo extra. */
+body[data-app-route="home"] .topbar .wordmark{
+  display:block!important;
+  visibility:visible!important;
+  opacity:1!important;
+  position:absolute!important;
+  left:3.8%!important;
+  top:10%!important;
+  width:18%!important;
+  height:46%!important;
+  max-width:none!important;
+  max-height:none!important;
+  aspect-ratio:auto!important;
+  margin:0!important;
+  padding:0!important;
+  border:0!important;
+  border-radius:0!important;
+  background:transparent!important;
+  background-image:none!important;
+  box-shadow:none!important;
+  color:transparent!important;
+  font-size:0!important;
+  overflow:visible!important;
+  transform:none!important;
+  pointer-events:auto!important;
+  z-index:25!important;
+}
+body[data-app-route="home"] .topbar .wordmark::before,
+body[data-app-route="home"] .topbar .wordmark::after{
+  content:none!important;
+  display:none!important;
+}
+
+/* Derecha: mismo criterio, solo hit-area; el icono visible es el del fondo original. */
+body[data-app-route="home"] .topbar .profile-button{
+  display:block!important;
+  visibility:visible!important;
+  opacity:1!important;
+  position:absolute!important;
+  right:3.8%!important;
+  top:10%!important;
+  width:15%!important;
+  height:46%!important;
+  max-width:none!important;
+  max-height:none!important;
+  aspect-ratio:auto!important;
+  margin:0!important;
+  padding:0!important;
+  border:0!important;
+  border-radius:0!important;
+  background:transparent!important;
+  background-image:none!important;
+  box-shadow:none!important;
+  color:transparent!important;
+  overflow:visible!important;
+  transform:none!important;
+  pointer-events:auto!important;
+  z-index:25!important;
+}
+body[data-app-route="home"] .topbar .profile-button svg{
+  display:none!important;
+}
+
+@media(max-width:380px){
+  body[data-app-route="home"] .topbar{
+    background-size:100% auto!important;
+    background-position:center top!important;
+  }
+  body[data-app-route="home"] .topbar .wordmark{
+    left:4.2%!important;
+    top:9%!important;
+    width:18%!important;
+    height:47%!important;
+  }
+  body[data-app-route="home"] .topbar .profile-button{
+    right:4.2%!important;
+    top:9%!important;
+    width:15%!important;
+    height:47%!important;
+  }
+}
