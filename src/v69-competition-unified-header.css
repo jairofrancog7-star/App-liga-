@@ -279,3 +279,19 @@
     top:60%!important;
   }
 }
+
+
+/* V75 — Competición sin animación/gráfico dentro de la barra superior.
+   La barra queda limpia; las animaciones se muestran únicamente como bloques de contenido. */
+@media (max-width:520px){
+  body[data-app-route="competition"] .topbar::before{
+    content:none!important;
+    display:none!important;
+    background:none!important;
+    opacity:0!important;
+    -webkit-mask-image:none!important;
+    mask-image:none!important;
+    animation:none!important;
+    transform:none!important;
+  }
+}
