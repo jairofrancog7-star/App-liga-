@@ -219,7 +219,7 @@ function storeView(){
 function quizArenaView(){
   return `<section class="v48-quiz-arena-page" aria-label="Quiz Arena">
     <div class="v48-quiz-arena-shot">
-      <img class="v48-quiz-arena-image" src="./quiz-arena-reference.jpg?v=20260919-quiz-arena-original3" alt="Quiz Arena" loading="eager" decoding="async" draggable="false" onerror="this.onerror=null;this.src='/App-liga-/quiz-arena-reference.jpg?v=20260919-quizrestore2'">
+      <img class="v48-quiz-arena-image" src="https://raw.githubusercontent.com/jairofrancog7-star/App-liga-/e9e05830f59509de197aaab7e3147d8a69c4dca1/quiz-arena-reference.jpg?v=20260919-quiz-arena-pinned4" alt="Quiz Arena" loading="eager" decoding="async" draggable="false" onerror="this.onerror=null;this.src='https://jairofrancog7-star.github.io/App-liga-/quiz-arena-reference.jpg?v=20260919-quiz-arena-pinned4'">
       <button type="button" class="v48-hotspot v48-back" data-route="more" aria-label="Volver a Más"></button>
       <button type="button" class="v48-hotspot v48-login-main" data-route="quiz" aria-label="Inicia sesión para jugar"></button>
       <button type="button" class="v48-hotspot v48-guest-main" data-route="quiz" aria-label="Prueba como invitado"></button>
