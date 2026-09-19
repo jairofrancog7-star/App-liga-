@@ -459,3 +459,29 @@ body.v28-scorers-active .v28-feature-person small{
     min-width:78px!important;
   }
 }
+
+
+/* V72 — restaurar la separación original sin crear un bloque de otro color.
+   La columna de goles comparte exactamente el fondo de la tarjeta y conserva
+   únicamente la línea vertical blanca del diseño. */
+@media (max-width:520px){
+  body.v28-scorers-active .v28-feature-info{
+    background:#0d0c72!important;
+  }
+
+  body.v28-scorers-active .v28-feature-goals{
+    background:transparent!important;
+    border-left:1px solid rgba(255,255,255,.24)!important;
+    box-shadow:none!important;
+  }
+
+  body.v28-scorers-active .v28-feature-goals b,
+  body.v28-scorers-active .v28-feature-goals small{
+    background:transparent!important;
+    border:0!important;
+    box-shadow:none!important;
+    outline:0!important;
+    padding:0!important;
+    border-radius:0!important;
+  }
+}
