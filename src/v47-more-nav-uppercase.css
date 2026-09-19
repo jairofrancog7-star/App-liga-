@@ -1,0 +1,32 @@
+/* V47 — Barra inferior en MAYÚSCULAS para todas las pantallas de “Más”.
+   No cambia tamaño, iconos, colores, espaciado ni navegación. */
+body[data-app-route="more"] .bottom-nav .nav-item small,
+body[data-app-route="predictor"] .bottom-nav .nav-item small,
+body[data-app-route="quiz"] .bottom-nav .nav-item small,
+body[data-app-route="moreLess"] .bottom-nav .nav-item small,
+body[data-app-route="teams"] .bottom-nav .nav-item small,
+body[data-app-route="teamDetail"] .bottom-nav .nav-item small,
+body[data-app-route="players"] .bottom-nav .nav-item small,
+body[data-app-route="playerDetail"] .bottom-nav .nav-item small,
+body[data-app-route="scorers"] .bottom-nav .nav-item small,
+body[data-app-route="stats"] .bottom-nav .nav-item small,
+body[data-app-route="rankings"] .bottom-nav .nav-item small,
+body[data-app-route="history"] .bottom-nav .nav-item small,
+body[data-app-route="news"] .bottom-nav .nav-item small,
+body[data-app-route="newsDetail"] .bottom-nav .nav-item small,
+body[data-app-route="transfers"] .bottom-nav .nav-item small,
+body[data-app-route="favorites"] .bottom-nav .nav-item small,
+body[data-app-route="search"] .bottom-nav .nav-item small,
+body[data-app-route="vote"] .bottom-nav .nav-item small,
+body[data-app-route="notifications"] .bottom-nav .nav-item small,
+body[data-app-route="privacy"] .bottom-nav .nav-item small,
+body[data-app-route="profile"] .bottom-nav .nav-item small,
+body[data-app-route="venues"] .bottom-nav .nav-item small,
+body[data-app-route="club-store"] .bottom-nav .nav-item small,
+body[data-app-route="safe-data"] .bottom-nav .nav-item small,
+body[data-app-route="safe-performance"] .bottom-nav .nav-item small,
+body[data-app-route="hospitality"] .bottom-nav .nav-item small,
+body[data-app-route="following"] .bottom-nav .nav-item small,
+body[data-app-route="moments"] .bottom-nav .nav-item small{
+  text-transform:uppercase!important;
+}
