@@ -7,12 +7,12 @@ const teams = [
   { code:'MOR', id:'morales', name:'Morales', category:'Veteranos 35+', coach:'Jesús Molina', field:'Campo Morales', p:5, gd:-4, pts:4, form:['d','e','d','v','d'], founded:1990, news:'Morales anuncia nuevo entrenador' }
 ];
 const HOME_OFFICIAL_STANDINGS=[
-  {name:'SAN JOSE FC',p:4,gd:10,pts:12,logo:'https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/assets/official-logos/san-jose-fc.png'},
-  {name:'JUVENTUS',p:4,gd:14,pts:9,logo:'https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/assets/official-logos/juventus.png'},
-  {name:'HERMANOS',p:3,gd:4,pts:7,logo:'https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/assets/official-logos/hermanos.png'},
-  {name:'LINCES',p:3,gd:3,pts:6,logo:'https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/assets/official-logos/linces.png'},
-  {name:'NAPOLI',p:4,gd:1,pts:6,logo:'https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/assets/official-logos/napoli.png'},
-  {name:'FRANCO FC',p:3,gd:0,pts:6,logo:'https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/assets/official-logos/franco-fc.png'}
+  {name:'San José FC',officialName:'SAN JOSE FC',p:4,gd:10,pts:12,logo:'https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/SanJoseMonta%C3%B1a_ilen4d'},
+  {name:'Juventus',officialName:'JUVENTUS',p:4,gd:14,pts:9,logo:'https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/Juventus_ntqr0b'},
+  {name:'Hermanos',officialName:'HERMANOS',p:3,gd:4,pts:7,logo:'https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/Hermanos_kbfrmh'},
+  {name:'Linces',officialName:'LINCES',p:3,gd:3,pts:6,logo:'https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/Linces_l1lc7c'},
+  {name:'Napoli',officialName:'NAPOLI',p:4,gd:1,pts:6,logo:'https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/Napoli_cp25dv'},
+  {name:'Franco FC',officialName:'FRANCO FC',p:3,gd:0,pts:6,logo:'https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/FrancoFC_vtd8d7'}
 ];
 const players = [
   {id:'p1',name:'Juan Pérez',team:'JUV',position:'DEL',number:9,goals:8,assists:3,cards:1,minutes:420,cost:9.5,points:46},
@@ -126,7 +126,7 @@ function homeView(){
       <div class="section-head"><h2>Tabla de posiciones</h2><button class="link-button" data-v63-comp="standings">Ver tabla</button></div>
       <div class="v65-table-card">
         <div class="v65-table-head"><span>#</span><span>Equipo</span><span>PJ</span><span>DG</span><span>Pts</span></div>
-        ${homeStandings.map((t,i)=>`<button type="button" class="v65-table-row" data-v62-team="${t.name}" aria-label="Ver ${t.name}">
+        ${homeStandings.map((t,i)=>`<button type="button" class="v65-table-row" data-v62-team="${t.officialName||t.name}" aria-label="Ver ${t.name}">
           <b>${i+1}</b>
           <span class="v65-table-team"><span class="v65-table-logo"><img src="${t.logo}" alt="${t.name}" loading="lazy" decoding="async"></span><strong>${t.name}</strong></span>
           <span>${t.p}</span>
