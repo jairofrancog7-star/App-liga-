@@ -53,6 +53,56 @@
   function muteIcon(){return '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 9v6h4l5 4V5L9 9H5Zm13-1 3 8M21 8l-3 8"/></svg>'}
   function soundIcon(){return '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 9v6h4l5 4V5L9 9H5Zm12 0c1.3 1.5 1.3 4.5 0 6m2.5-9c3 3.2 3 8.8 0 12"/></svg>'}
   function shareIcon(){return '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="18" cy="5" r="2"/><circle cx="6" cy="12" r="2"/><circle cx="18" cy="19" r="2"/><path d="m8 11 8-5m-8 7 8 5"/></svg>'}
+  function bellIcon(){return '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.5 16.7h11l-1.2-2.1V10a4.3 4.3 0 0 0-8.6 0v4.6l-1.2 2.1Z"/><path d="M10 19a2.1 2.1 0 0 0 4 0"/></svg>'}
+  function notifIcon(type){
+    const icons={
+      goals:'<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="m12 7 2.2 1.6-.8 2.6H10.6l-.8-2.6L12 7Zm-5 5 3.6-.8m6.4.8-3.6-.8m-5.2 5 2.4-2.8m5.2 2.8-2.4-2.8"/></svg>',
+      penalties:'<svg viewBox="0 0 24 24"><path d="M4 7h16v10H4zM8 7v3m8-3v3M8 17v-3m8 3v-3"/><circle cx="12" cy="13" r="2.2"/></svg>',
+      startFinal:'<svg viewBox="0 0 24 24"><path d="M4 14c3-5 6-5 9-2l3-5 2 1-2.2 5.3c2.3 1.2 3.7 3 4.2 5.7"/><path d="M3 18h7M6 5l2 3"/></svg>',
+      lineups:'<svg viewBox="0 0 24 24"><path d="M5 4h14v16H5zM9 4v4m6-4v4M8 12h8M8 16h8"/></svg>',
+      redCards:'<svg viewBox="0 0 24 24"><rect x="7" y="4" width="10" height="16" rx="1"/></svg>',
+      subs:'<svg viewBox="0 0 24 24"><path d="m7 5-4 5h8L7 5Zm10 14 4-5h-8l4 5Z"/></svg>',
+      video:'<svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="13" rx="1"/><path d="m10 9 5 3-5 3Z"/></svg>',
+      news:'<svg viewBox="0 0 24 24"><path d="M6 3h11l2 2v16H6z"/><path d="M9 9h7M9 13h7M9 17h5"/></svg>'
+    };
+    return icons[type]||icons.news;
+  }
+
+  const MATCH_NOTIF_ROWS=[
+    ['goals','Goles',false],
+    ['penalties','Tandas de penalti',false],
+    ['startFinal','Inicio / Final',false],
+    ['lineups','Alineaciones oficiales',false],
+    ['redCards','Tarjetas rojas',false],
+    ['subs','Cambios',false],
+    ['video','Resumen en vídeo disponible',false],
+    ['news','Noticias',true]
+  ];
+  function matchNotifKey(m){return 'lj-match-notifications-v68-'+String(m?.id||'match')}
+  function matchNotifState(m){
+    const base=Object.fromEntries(MATCH_NOTIF_ROWS.map(r=>[r[0],r[2]]));
+    let saved={};try{saved=JSON.parse(localStorage.getItem(matchNotifKey(m))||'{}')||{}}catch(e){}
+    return {...base,...saved};
+  }
+  function saveMatchNotifState(m,state){try{localStorage.setItem(matchNotifKey(m),JSON.stringify(state))}catch(e){}}
+  function notifSwitch(key,on,all=false){
+    return '<button type="button" class="v68-notif-switch '+(on?'on':'')+'" '+(all?'data-v68-all':'data-v68-pref="'+key+'"')+' role="switch" aria-checked="'+(on?'true':'false')+'" aria-label="'+(all?'Todas las notificaciones':key)+'"><i></i></button>';
+  }
+  function notificationSheet(m){
+    const prefs=matchNotifState(m);
+    const all=MATCH_NOTIF_ROWS.every(r=>!!prefs[r[0]]);
+    return '<div class="v68-notif-layer" data-v68-notif-layer aria-hidden="true">'+
+      '<button type="button" class="v68-notif-backdrop" data-v68-notif-close aria-label="Cerrar notificaciones"></button>'+
+      '<section class="v68-notif-sheet" role="dialog" aria-modal="true" aria-label="Notificaciones del partido">'+
+        '<div class="v68-notif-head"><h2>Notificaciones</h2><button type="button" data-v68-notif-close>Hecho</button></div>'+
+        '<p class="v68-notif-sub">Elige tus alertas para este partido</p>'+
+        '<div class="v68-notif-all"><strong>Todas las notificaciones</strong>'+notifSwitch('all',all,true)+'</div>'+
+        '<div class="v68-notif-list">'+
+          MATCH_NOTIF_ROWS.map(r=>'<div class="v68-notif-row"><span class="v68-notif-row-icon '+(r[0]==='redCards'?'red':'')+'">'+notifIcon(r[0])+'</span><span class="v68-notif-label">'+r[1]+'</span>'+notifSwitch(r[0],!!prefs[r[0]],false)+'</div>').join('')+
+        '</div>'+
+      '</section>'+
+    '</div>';
+  }
 
   function readSaved(){
     try{return JSON.parse(sessionStorage.getItem('lj-match-detail')||'null')}catch{return null}
@@ -201,7 +251,7 @@
         '<div class="v28-actions">'+
           '<button class="v28-icon-btn" type="button" data-v28-back aria-label="Volver">'+backIcon()+'</button>'+
           '<div class="v28-action-right">'+
-            '<button class="v28-icon-btn" type="button" data-v28-mute aria-label="Silenciar">'+muteIcon()+'</button>'+
+            '<button class="v28-icon-btn" type="button" data-v28-notifications aria-label="Notificaciones">'+bellIcon()+'</button>'+
             '<button class="v28-icon-btn" type="button" data-v28-share aria-label="Compartir">'+shareIcon()+'</button>'+
           '</div>'+
         '</div>'+
@@ -219,10 +269,10 @@
         '</nav>'+
       '</header>'+
       '<main class="v28-body">'+newsPanel(m)+standingsPanel()+infoPanel(m)+'</main>'+
+      notificationSheet(m)+
     '</article>';
   }
 
-  let muted=true;
 
   function bind(){
     const m=selected();
@@ -232,11 +282,52 @@
       location.hash=from;
     };
 
-    const mute=document.querySelector('[data-v28-mute]');
-    if(mute)mute.onclick=function(){
-      muted=!muted;mute.innerHTML=muted?muteIcon():soundIcon();
-      mute.setAttribute('aria-label',muted?'Activar sonido':'Silenciar');
-      toast(muted?'Sonido desactivado':'Sonido activado');
+    const notifButton=document.querySelector('[data-v28-notifications]');
+    const notifLayer=document.querySelector('[data-v68-notif-layer]');
+    function syncNotifAll(){
+      const prefs=matchNotifState(m);
+      const all=MATCH_NOTIF_ROWS.every(r=>!!prefs[r[0]]);
+      const allBtn=notifLayer?.querySelector('[data-v68-all]');
+      if(allBtn){
+        allBtn.classList.toggle('on',all);
+        allBtn.setAttribute('aria-checked',all?'true':'false');
+      }
+    }
+    function openNotifSheet(){
+      if(!notifLayer)return;
+      notifLayer.classList.add('open');
+      notifLayer.setAttribute('aria-hidden','false');
+      document.body.classList.add('v68-notif-open');
+      requestAnimationFrame(()=>notifLayer.querySelector('.v68-notif-sheet')?.focus?.());
+    }
+    function closeNotifSheet(){
+      if(!notifLayer)return;
+      notifLayer.classList.remove('open');
+      notifLayer.setAttribute('aria-hidden','true');
+      document.body.classList.remove('v68-notif-open');
+    }
+    if(notifButton)notifButton.onclick=openNotifSheet;
+    notifLayer?.querySelectorAll('[data-v68-notif-close]').forEach(el=>el.onclick=closeNotifSheet);
+    notifLayer?.querySelectorAll('[data-v68-pref]').forEach(btn=>btn.onclick=function(){
+      const key=btn.dataset.v68Pref,prefs=matchNotifState(m);
+      prefs[key]=!prefs[key];
+      saveMatchNotifState(m,prefs);
+      btn.classList.toggle('on',!!prefs[key]);
+      btn.setAttribute('aria-checked',prefs[key]?'true':'false');
+      syncNotifAll();
+    });
+    const allBtn=notifLayer?.querySelector('[data-v68-all]');
+    if(allBtn)allBtn.onclick=function(){
+      const prefs=matchNotifState(m);
+      const next=!MATCH_NOTIF_ROWS.every(r=>!!prefs[r[0]]);
+      MATCH_NOTIF_ROWS.forEach(r=>prefs[r[0]]=next);
+      saveMatchNotifState(m,prefs);
+      notifLayer.querySelectorAll('[data-v68-pref]').forEach(btn=>{
+        btn.classList.toggle('on',next);
+        btn.setAttribute('aria-checked',next?'true':'false');
+      });
+      allBtn.classList.toggle('on',next);
+      allBtn.setAttribute('aria-checked',next?'true':'false');
     };
 
     const share=document.querySelector('[data-v28-share]');
