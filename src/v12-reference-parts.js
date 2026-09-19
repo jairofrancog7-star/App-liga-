@@ -207,7 +207,10 @@ const V12_FIXTURE_LOGOS={
   'Juventino':null,
   'Rincón de Centeno':null,
   'Deportivo Rosas':null,
-  'Pozos':'assets/teams/pozos-fc.webp'
+  'Pozos':'assets/teams/pozos-fc.webp',
+  'Club América Veteranos JR':'assets/branding/america-veteranos-35-user.png',
+  'Juventino Rosas A.C.':'assets/liga-logo.webp',
+  'Pozos FC':'assets/teams/pozos-fc.webp'
 };
 function v12FixtureLogo(name){
   const p=V12_FIXTURE_LOGOS[name];
@@ -216,47 +219,38 @@ function v12FixtureLogo(name){
   const ab=name.split(/\s+/).map(x=>x[0]).join('').slice(0,3).toUpperCase();
   return '<span class="v12-fixture-fallback">'+ab+'</span>';
 }
-const V12_DAY_13=[
-  ['Club América Vet.','La Huerta','10:45','m1'],
-  ['Promesas FC','Santa Cruz','10:45','m2'],
-  ['Franco FC','Cuenda','13:00','m2'],
-  ['Atlético Galeana','Lobos CDG','13:00','m1'],
-  ['Juventino','Rincón de Centeno','13:00','m1'],
-  ['Deportivo Rosas','Pozos','13:00','m2'],
-  ['La Huerta','Franco FC','13:00','m2'],
-  ['Promesas FC','Club América Vet.','13:00','m1'],
-  ['Lobos CDG','Cuenda','13:00','m2']
+const V12_RESULTS_JUL7=[
+  ['Club América Veteranos JR','La Huerta','2','0','m1','JR','HUE','home'],
+  ['Promesas FC','Atlético Galeana','3','1','m2','PRO','GAL',''],
+  ['Juventino Rosas A.C.','Lobos CDG','2','0','m1','JR','CDG',''],
+  ['Cuenda','Pozos','1','1','m2','CUE','POZ',''],
+  ['Rincón de Centeno','Deportivo Rosas','0','2','m1','RDC','ROS','home']
 ];
-const V12_DAY_14=[
-  ['Deportivo Rosas','Pozos','10:45','m2'],
-  ['Juventino','La Huerta','13:00','m1'],
-  ['Franco FC','Promesas FC','13:00','m2']
-];
-function v12FixtureRow(m){
-  return '<div class="v12-schedule-match">'+
-    '<div class="v12-schedule-clubs">'+
-      '<div>'+v12FixtureLogo(m[0])+'<b>'+m[0]+'</b></div>'+
-      '<div>'+v12FixtureLogo(m[1])+'<b>'+m[1]+'</b></div>'+
-    '</div>'+
-    '<div class="v12-schedule-meta"><time>'+m[2]+'</time><button data-match="'+m[3]+'">Ver detalles</button></div>'+
-  '</div>';
+function v12ResultTeam(name,code,score,card){
+  return '<div class="v12-result-team">'+v12FixtureLogo(name)+
+    '<b>'+name+' <small>('+code+')</small></b>'+
+    (card?'<i class="v12-red-card" aria-label="Tarjeta roja"></i>':'')+
+    '<strong class="v12-result-score">'+score+'</strong></div>';
+}
+function v12ResultRow(m){
+  return '<div class="v12-schedule-match v12-result-match">'+
+    '<div class="v12-schedule-clubs">'+v12ResultTeam(m[0],m[5],m[2],m[7]==='home')+v12ResultTeam(m[1],m[6],m[3],false)+'</div>'+
+    '<div class="v12-schedule-meta"><time>Final</time><button data-match="'+m[4]+'">Ver detalles</button></div></div>';
 }
 function v12ScheduleCard(list){
-  return '<section class="v12-schedule-card"><h3>Liga local - Jornada 2</h3><div>'+list.map(v12FixtureRow).join('')+'</div></section>';
+  return '<section class="v12-schedule-card"><h3>Jornada 1 - Partido oficial</h3><div>'+list.map(v12ResultRow).join('')+'</div></section>';
 }
 function v12FixturesMarkup(){
   return '<section class="v12-fixtures-reference" data-v12-fixtures>'+
     '<div class="v12-date-strip">'+
-      '<button data-v12-date="9">mié 9 sept</button>'+
-      '<button data-v12-date="10">jue 10 sept</button>'+
-      '<button class="active" data-v12-date="13">mar 13 oct</button>'+
-      '<button data-v12-date="14">mié 14 oct</button>'+
+      '<button data-v12-date="16">mar 16 jun</button>'+
+      '<button data-v12-date="17">mié 17 jun</button>'+
+      '<button class="active" data-v12-date="7">mar 7 jul</button>'+
+      '<button data-v12-date="8">mié 8 jul</button>'+
+      '<button data-v12-date="15">mié 15 jul</button>'+
     '</div>'+
-    '<h2 id="v12-day-13">martes, 13 octubre 2026</h2>'+
-    v12ScheduleCard(V12_DAY_13)+
-    '<div class="v12-league-banner"><img src="'+V12_LOGO+'" alt="Liga Juventino"><strong>LIGA MUNICIPAL DE FÚTBOL<br>JUVENTINO ROSAS, GUANAJUATO</strong><i>⚽</i></div>'+
-    '<h2 id="v12-day-14">miércoles, 14 octubre 2026</h2>'+
-    v12ScheduleCard(V12_DAY_14)+
+    '<h2 id="v12-day-13">martes, 7 julio 2026</h2>'+
+    v12ScheduleCard(V12_RESULTS_JUL7)+
   '</section>';
 }
 function patchFixturesReference(){
