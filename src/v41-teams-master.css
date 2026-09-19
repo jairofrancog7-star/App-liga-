@@ -1,0 +1,230 @@
+/* V41 — Equipos: master visual de la captura del usuario. */
+body.v41-teams-active{
+  background:#090a65!important;
+}
+body.v41-teams-active .topbar{display:none!important}
+body.v41-teams-active #screen{
+  padding:0!important;
+  margin:0!important;
+  max-width:none!important;
+  overflow:visible!important;
+  background:#090a65!important;
+}
+body.v41-teams-active .bottom-nav{display:none!important}
+
+.v41-teams-page{
+  width:100%!important;
+  min-height:100dvh!important;
+  padding:calc(16px + env(safe-area-inset-top)) 0 56px!important;
+  box-sizing:border-box!important;
+  color:#fff!important;
+  background:linear-gradient(180deg,#08095f 0%,#0b0c6d 18%,#0b0b69 100%)!important;
+  font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif!important;
+}
+.v41-teams-page *{box-sizing:border-box!important}
+
+.v41-head{
+  position:relative!important;
+  padding:0 32px!important;
+}
+.v41-close{
+  position:relative!important;
+  display:grid!important;
+  place-items:center!important;
+  width:48px!important;
+  height:48px!important;
+  margin-left:auto!important;
+  margin-right:0!important;
+  padding:0!important;
+  border:0!important;
+  border-radius:50%!important;
+  color:#fff!important;
+  background:#10147d!important;
+  box-shadow:none!important;
+}
+.v41-close svg{
+  width:29px!important;
+  height:29px!important;
+  fill:none!important;
+  stroke:currentColor!important;
+  stroke-width:2.8!important;
+  stroke-linecap:round!important;
+}
+.v41-search{
+  height:74px!important;
+  margin-top:35px!important;
+  display:flex!important;
+  align-items:center!important;
+  gap:21px!important;
+  padding:0 28px!important;
+  border-radius:19px!important;
+  background:#222287!important;
+  border:0!important;
+}
+.v41-search svg{
+  width:35px!important;
+  height:35px!important;
+  flex:0 0 auto!important;
+  fill:none!important;
+  stroke:#9da2cf!important;
+  stroke-width:2!important;
+}
+.v41-search input{
+  width:100%!important;
+  min-width:0!important;
+  padding:0!important;
+  border:0!important;
+  outline:0!important;
+  background:transparent!important;
+  color:#fff!important;
+  font:500 clamp(20px,4.8vw,29px)/1 Inter,Roboto,Arial,sans-serif!important;
+}
+.v41-search input::placeholder{color:#a8aad0!important;opacity:1!important}
+
+.v41-average{
+  width:100%!important;
+  min-height:205px!important;
+  margin:32px 0 0!important;
+  padding:0 32px!important;
+  display:flex!important;
+  align-items:center!important;
+  gap:16px!important;
+  border:0!important;
+  background:#0d0e72!important;
+  color:#fff!important;
+  text-align:left!important;
+}
+.v41-average-badge{
+  width:82px!important;
+  height:82px!important;
+  flex:0 0 auto!important;
+  display:grid!important;
+  place-items:center!important;
+  border-radius:50%!important;
+  background:#6f70b0!important;
+  color:#fff!important;
+  font:500 clamp(26px,6vw,38px)/1 Inter,Roboto,Arial,sans-serif!important;
+}
+.v41-average-copy{
+  min-width:0!important;
+  display:block!important;
+}
+.v41-average-copy strong{
+  display:block!important;
+  margin:0 0 4px!important;
+  color:#fff!important;
+  font:700 clamp(20px,4.6vw,29px)/1.1 Inter,Roboto,Arial,sans-serif!important;
+  letter-spacing:-.02em!important;
+}
+.v41-average-copy small{
+  display:block!important;
+  color:#bbbde0!important;
+  font:400 clamp(16px,4vw,24px)/1.28 Inter,Roboto,Arial,sans-serif!important;
+}
+.v41-divider{
+  width:100%!important;
+  height:3px!important;
+  background:#060754!important;
+  border-top:1px solid rgba(255,255,255,.015)!important;
+}
+
+.v41-grid-section{
+  padding:34px 32px 0!important;
+  background:#0d0e72!important;
+}
+.v41-grid-section h1{
+  position:relative!important;
+  margin:0 0 48px!important;
+  color:#fff!important;
+  font:700 clamp(25px,5.6vw,36px)/1.05 Inter,Roboto,Arial,sans-serif!important;
+  letter-spacing:-.025em!important;
+}
+.v41-grid-section h1::before{
+  content:""!important;
+  position:absolute!important;
+  left:-22px!important;
+  top:-16px!important;
+  width:22px!important;
+  height:68px!important;
+  border-left:3px solid rgba(84,91,170,.38)!important;
+  border-top:3px solid rgba(84,91,170,.38)!important;
+  border-bottom:3px solid rgba(84,91,170,.38)!important;
+  border-radius:0 20px 20px 0!important;
+  transform:scaleX(-1)!important;
+}
+.v41-grid{
+  display:grid!important;
+  grid-template-columns:repeat(4,minmax(0,1fr))!important;
+  column-gap:22px!important;
+  row-gap:54px!important;
+}
+.v41-team-tile{
+  min-width:0!important;
+  padding:0!important;
+  border:0!important;
+  background:transparent!important;
+  color:#fff!important;
+  display:flex!important;
+  flex-direction:column!important;
+  align-items:center!important;
+  gap:12px!important;
+}
+.v41-team-logo{
+  width:72px!important;
+  height:72px!important;
+  display:grid!important;
+  place-items:center!important;
+  flex:0 0 auto!important;
+}
+.v41-team-logo img{
+  width:100%!important;
+  height:100%!important;
+  object-fit:contain!important;
+  display:block!important;
+  filter:none!important;
+}
+.v41-fallback{
+  width:68px!important;
+  height:68px!important;
+  display:grid!important;
+  place-items:center!important;
+  border-radius:50%!important;
+  background:#686aab!important;
+  color:#fff!important;
+  font:700 15px/1 Inter,Roboto,Arial,sans-serif!important;
+}
+.v41-team-name{
+  display:block!important;
+  width:100%!important;
+  min-height:44px!important;
+  color:#fff!important;
+  font:500 clamp(15px,3.7vw,22px)/1.08 Inter,Roboto,Arial,sans-serif!important;
+  text-align:center!important;
+  overflow-wrap:normal!important;
+}
+.v41-empty{
+  grid-column:1/-1!important;
+  color:#c4c6e2!important;
+  font-size:16px!important;
+  padding:20px 0 40px!important;
+}
+
+@media(max-width:420px){
+  .v41-head{padding-left:20px!important;padding-right:20px!important}
+  .v41-search{height:58px!important;margin-top:28px!important;padding:0 18px!important;border-radius:14px!important;gap:15px!important}
+  .v41-search svg{width:29px!important;height:29px!important}
+  .v41-average{min-height:170px!important;padding-left:20px!important;padding-right:20px!important}
+  .v41-average-badge{width:68px!important;height:68px!important}
+  .v41-grid-section{padding-left:20px!important;padding-right:20px!important;padding-top:27px!important}
+  .v41-grid-section h1{margin-bottom:40px!important}
+  .v41-grid{column-gap:12px!important;row-gap:42px!important}
+  .v41-team-logo{width:60px!important;height:60px!important}
+  .v41-fallback{width:56px!important;height:56px!important;font-size:12px!important}
+  .v41-team-name{min-height:38px!important;font-size:15px!important}
+}
+@media(max-width:350px){
+  .v41-grid{column-gap:7px!important;row-gap:36px!important}
+  .v41-team-logo{width:54px!important;height:54px!important}
+  .v41-team-name{font-size:13px!important}
+  .v41-average-copy small{font-size:14px!important}
+}
