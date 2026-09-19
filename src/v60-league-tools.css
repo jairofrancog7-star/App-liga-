@@ -310,3 +310,109 @@
   body.v64-print-credential .v64-credential-preview,body.v64-print-credential .v64-credential-preview *{visibility:visible!important}
   body.v64-print-credential .v64-credential-preview{position:absolute!important;left:18mm!important;top:18mm!important;width:174mm!important;max-width:none!important}
 }
+
+
+/* V72 RULEBOOK INLINE READER — reemplaza la zona blanca/fallback por una
+   visualización real del PDF dentro de la aplicación, con navegación por páginas. */
+.v60-pdf-reader{
+  background:#0a0b6a!important;
+}
+.v60-pdf-toolbar{
+  min-height:48px;
+  display:grid;
+  grid-template-columns:44px minmax(0,1fr) 44px;
+  align-items:center;
+  gap:8px;
+  padding:7px 10px;
+  border-bottom:1px solid rgba(255,255,255,.10);
+  background:#111279;
+}
+.v60-pdf-toolbar strong{
+  min-width:0;
+  color:#fff;
+  font-size:12px;
+  line-height:1;
+  font-weight:800;
+  text-align:center;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+.v60-pdf-toolbar button{
+  width:36px;
+  height:36px;
+  display:grid;
+  place-items:center;
+  margin:auto;
+  padding:0;
+  border:1px solid rgba(52,224,237,.32);
+  border-radius:10px;
+  background:#102b95;
+  color:#fff;
+  font-size:28px;
+  line-height:1;
+  font-weight:400;
+}
+.v60-pdf-toolbar button:disabled{
+  opacity:.32;
+}
+.v60-pdf-canvas-wrap{
+  position:relative;
+  width:100%;
+  min-height:430px;
+  max-height:68dvh;
+  overflow:auto;
+  padding:10px;
+  display:flex;
+  align-items:flex-start;
+  justify-content:center;
+  background:
+    linear-gradient(180deg,#101174 0%,#080861 100%);
+  -webkit-overflow-scrolling:touch;
+}
+.v60-pdf-canvas-wrap canvas{
+  display:block;
+  max-width:100%;
+  height:auto;
+  margin:0 auto;
+  background:#fff;
+  box-shadow:0 8px 24px rgba(0,0,35,.28);
+}
+.v60-pdf-loading{
+  width:100%;
+  min-height:410px;
+  padding:28px 20px;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  gap:10px;
+  color:#fff;
+  text-align:center;
+  background:
+    radial-gradient(circle at 50% 22%,rgba(27,79,255,.20),transparent 38%),
+    #101174;
+}
+.v60-pdf-loading[hidden]{
+  display:none!important;
+}
+.v60-pdf-loading b{
+  font-size:16px;
+}
+.v60-pdf-loading span{
+  max-width:300px;
+  color:#bdc1dd;
+  font-size:12px;
+  line-height:1.4;
+}
+
+@media(max-width:390px){
+  .v60-pdf-canvas-wrap{
+    min-height:390px;
+    max-height:64dvh;
+    padding:8px;
+  }
+  .v60-pdf-loading{
+    min-height:372px;
+  }
+}
