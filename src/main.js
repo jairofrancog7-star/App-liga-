@@ -137,7 +137,7 @@ function homeView(){
     </section>
 
     <section class="section v65-home-fields">
-      <div class="section-head"><h2>Campos de la Liga</h2><button class="link-button" data-route="venues">Ver todos</button></div>
+      <div class="section-head"><h2>Dónde se juega</h2><button class="link-button" data-route="venues">Ver todos</button></div>
       <div class="v65-field-carousel">
         ${homeFields.map((f,i)=>`<button type="button" class="v65-field-card" data-route="venues" aria-label="Ver ${f.name}">
           <span class="v65-field-visual" aria-hidden="true"><img src="./assets/reference/predictor-v36/predictor-stadium.webp" alt=""></span>
@@ -426,8 +426,8 @@ function leagueToolsView(){
       v60ToolCard('cedula','Cédulas','Consulta y plantillas de partido','cedulas')+
       v60ToolCard('cedula','Generar cédula','Cédula y plantillas del partido','cedulaBuilder')+
       v60ToolCard('card','Generar credencial','Foto, OCR y credencial del jugador','credentialBuilder')+
-      v60ToolCard('rules','Reglamento','Reglamento oficial 2026–2027','rulebook')+
       v60ToolCard('matchday','Match Day','Checklist y operación de jornada','matchday')+
+      v60ToolCard('rules','Reglamento','Reglamento oficial 2026–2027','rulebook')+
       v60ToolCard('field','Dónde se juega','Campos, comunidades y Maps','venues')+
       v60ToolCard('center','Match Center','Marcador, cronología y previa','match')+
       v60ToolCard('matchday','Jornadas','Calendario y resultados','', 'data-v60-comp="fixtures"')+
@@ -797,8 +797,6 @@ function moreView(){
     '<div class="v19-more-menu">'+v19MoreButton('glasses','Hospitalidad','hospitality')+'</div>'+
     '<div class="v19-more-menu">'+
       v19MoreButton('info','Reglamento','rulebook')+
-      v19MoreButton('score','Match Day','matchday')+
-      v19MoreButton('shield','Dónde se juega','venues')+
       v19MoreButton('data','Todas las herramientas','leagueTools')+
     '</div>'+
     '<div class="v19-more-label explore">Explorar</div>'+
