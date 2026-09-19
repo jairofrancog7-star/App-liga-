@@ -56,7 +56,9 @@ var clubRows=[
 var activeTab=localStorage.getItem('v32-rankings-tab')||'federations';
 var season=localStorage.getItem('v32-rankings-season')||'2026/27';
 var selectedClub=localStorage.getItem('v32-rankings-club')||'';
+var selectedFederation=localStorage.getItem('v32-rankings-federation')||'';
 var pendingClub=selectedClub;
+var pendingFederation=selectedFederation;
 var filterMode=false;
 var filterQuery='';
 var expanded=-1;
@@ -107,6 +109,7 @@ function fedControls(){
   return '<div class="v32-controls fed">'+
     '<button type="button" class="v32-select" data-v32-info="season-type"><span>Temporada</span><i class="v32-chevron"></i></button>'+
     '<button type="button" class="v32-select" data-v32-season><span>'+esc(season)+'</span><i class="v32-chevron"></i></button>'+
+    '<button type="button" class="v32-filter '+(selectedFederation?'active':'')+'" data-v32-filter aria-label="Filtrar federaciones">'+filterIcon()+'</button>'+
   '</div>';
 }
 function clubsControls(){
@@ -118,10 +121,15 @@ function clubsControls(){
     '<button type="button" class="v32-filter '+(selected?'active':'')+'" data-v32-filter aria-label="Filtrar clubes">'+filterIcon()+'</button>'+
   '</div>';
 }
+function filteredFederationRows(){
+  if(!selectedFederation)return federationRows;
+  return federationRows.filter(function(row){return row[0]===selectedFederation});
+}
 function fedRows(){
-  return federationRows.map(function(row,index){
-    return '<button type="button" class="v32-fed-row" data-v32-fed="'+index+'">'+
-      '<span class="v32-pos">'+(index+1)+'</span>'+logo(row[0],row[1])+
+  return filteredFederationRows().map(function(row){
+    var originalIndex=federationRows.findIndex(function(r){return r[0]===row[0]});
+    return '<button type="button" class="v32-fed-row" data-v32-fed="'+originalIndex+'">'+
+      '<span class="v32-pos">'+(originalIndex+1)+'</span>'+logo(row[0],row[1])+
       '<span class="v32-fed-name">'+esc(row[1])+'</span>'+
       '<span class="v32-fed-points">'+esc(row[2])+'</span>'+
       '<strong class="v32-fed-average">'+esc(row[3])+'</strong>'+
@@ -164,20 +172,24 @@ function clubsView(){
 }
 function filterGrid(){
   var q=filterQuery.trim().toLocaleLowerCase('es');
-  var rows=clubRows.filter(function(row){return !q||row[1].toLocaleLowerCase('es').includes(q)});
+  var isFed=activeTab==='federations';
+  var source=isFed?federationRows:clubRows;
+  var rows=source.filter(function(row){return !q||row[1].toLocaleLowerCase('es').includes(q)});
   return rows.map(function(row){
-    var checked=pendingClub===row[0];
-    return '<button type="button" class="v32-filter-club '+(checked?'selected':'')+'" data-v32-pick-club="'+esc(row[0])+'">'+
+    var checked=isFed?pendingFederation===row[0]:pendingClub===row[0];
+    var attr=isFed?'data-v32-pick-fed':'data-v32-pick-club';
+    return '<button type="button" class="v32-filter-club '+(checked?'selected':'')+'" '+attr+'="'+esc(row[0])+'">'+
       '<span class="v32-filter-club-logo">'+logo(row[0],row[1],'filter')+(checked?'<i class="v32-filter-check">✓</i>':'')+'</span>'+
       '<span>'+esc(row[1])+'</span>'+
     '</button>';
   }).join('');
 }
 function filterScreen(){
+  var label=activeTab==='federations'?'Federaciones':'Clubes';
   return '<section class="v32-filter-screen" data-v32-filter-screen>'+
     '<header class="v32-filter-head"><button type="button" data-v32-filter-cancel>Cancelar</button><h1>Filtros</h1><button type="button" data-v32-filter-done>Hecho</button></header>'+
     '<label class="v32-filter-search">'+searchIcon()+'<input id="v32FilterSearch" type="search" autocomplete="off" placeholder="Buscar" value="'+esc(filterQuery)+'"></label>'+
-    '<div class="v32-filter-body"><h2>Clubes</h2><div class="v32-filter-grid">'+filterGrid()+'</div></div>'+
+    '<div class="v32-filter-body"><h2>'+label+'</h2><div class="v32-filter-grid">'+filterGrid()+'</div></div>'+
   '</section>';
 }
 function markup(){
@@ -231,16 +243,34 @@ function bindFilterTiles(){
       renderFilterGridOnly();
     };
   });
+  document.querySelectorAll('[data-v32-pick-fed]').forEach(function(button){
+    button.onclick=function(){
+      pendingFederation=pendingFederation===button.dataset.v32PickFed?'':button.dataset.v32PickFed;
+      renderFilterGridOnly();
+    };
+  });
 }
 function bind(){
   if(filterMode){
     var cancel=document.querySelector('[data-v32-filter-cancel]');
     var done=document.querySelector('[data-v32-filter-done]');
-    if(cancel)cancel.onclick=function(){pendingClub=selectedClub;filterQuery='';filterMode=false;render()};
+    if(cancel)cancel.onclick=function(){
+      pendingClub=selectedClub;
+      pendingFederation=selectedFederation;
+      filterQuery='';
+      filterMode=false;
+      render();
+    };
     if(done)done.onclick=function(){
-      selectedClub=pendingClub;
-      if(selectedClub)localStorage.setItem('v32-rankings-club',selectedClub);
-      else localStorage.removeItem('v32-rankings-club');
+      if(activeTab==='federations'){
+        selectedFederation=pendingFederation;
+        if(selectedFederation)localStorage.setItem('v32-rankings-federation',selectedFederation);
+        else localStorage.removeItem('v32-rankings-federation');
+      }else{
+        selectedClub=pendingClub;
+        if(selectedClub)localStorage.setItem('v32-rankings-club',selectedClub);
+        else localStorage.removeItem('v32-rankings-club');
+      }
       filterQuery='';filterMode=false;expanded=-1;render();
     };
     var search=document.querySelector('#v32FilterSearch');
@@ -266,7 +296,13 @@ function bind(){
     };
   });
   var filter=document.querySelector('[data-v32-filter]');
-  if(filter)filter.onclick=function(){pendingClub=selectedClub;filterQuery='';filterMode=true;render()};
+  if(filter)filter.onclick=function(){
+    pendingClub=selectedClub;
+    pendingFederation=selectedFederation;
+    filterQuery='';
+    filterMode=true;
+    render();
+  };
   var clear=document.querySelector('[data-v32-clear-club]');
   if(clear)clear.onclick=function(){
     selectedClub='';pendingClub='';localStorage.removeItem('v32-rankings-club');expanded=-1;render();
