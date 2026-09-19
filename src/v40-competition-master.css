@@ -639,3 +639,246 @@ body.v40-standings-master #screen>.tabs .tab.active::after{
     height:27px!important;
   }
 }
+
+
+/* V43 — AJUSTE FINAL CLASIFICACIÓN.
+   Las tres vistas siguen exactamente las capturas del usuario:
+   1) Compacta = tabla con P / +/- / PTOS / FORMA.
+   2) Completa = P / V / E / D + dos cifras auxiliares + PTS.
+   3) Criterios = PTOS / +/- / GF / GA / V / VA / P y logo de la Liga a la izquierda.
+   No modifica cabecera, tabs principales ni barra inferior. */
+body.v40-standings-master .v40-standings{
+  padding-top:25px!important;
+  background:#04045b!important;
+}
+body.v40-standings-master .v40-segmented{
+  height:53px!important;
+  min-height:53px!important;
+  grid-template-columns:1fr 1fr 1.12fr!important;
+  border:1px solid #66689a!important;
+  border-radius:29px!important;
+  background:#171863!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.04)!important;
+}
+body.v40-standings-master .v40-segmented button{
+  border-left:1px solid #7375a5!important;
+  background:transparent!important;
+  color:#fff!important;
+  font-family:Inter,Roboto,Arial,sans-serif!important;
+  font-size:13px!important;
+  line-height:1.05!important;
+  font-weight:700!important;
+  letter-spacing:-.018em!important;
+}
+body.v40-standings-master .v40-segmented button:first-child{border-left:0!important}
+body.v40-standings-master .v40-segmented button.active{
+  background:#4d4f7f!important;
+  box-shadow:inset 0 0 0 1px rgba(255,255,255,.07)!important;
+}
+body.v40-standings-master .v40-content{
+  margin-top:29px!important;
+}
+body.v40-standings-master .v40-direct{
+  margin-top:10px!important;
+  color:#d3d4e2!important;
+  font-size:10px!important;
+  font-weight:700!important;
+}
+body.v40-standings-master .v40-rule{
+  margin-top:15px!important;
+  height:2px!important;
+  background:#a7a7bc!important;
+}
+body.v40-standings-master .v40-row,
+body.v40-standings-master .v40-wide-row{
+  border-bottom:1px solid rgba(255,255,255,.095)!important;
+}
+body.v40-standings-master .v40-team strong{
+  color:#fff!important;
+  font-family:Inter,Roboto,Arial,sans-serif!important;
+  font-weight:700!important;
+  letter-spacing:-.015em!important;
+}
+body.v40-standings-master .v40-team-logo{
+  object-fit:contain!important;
+  object-position:center!important;
+  filter:none!important;
+}
+
+/* COMPACTA — proporciones de 1001960503.png. */
+body.v40-standings-master .v40-table-head{
+  min-height:25px!important;
+  height:25px!important;
+  color:#c9cada!important;
+}
+body.v40-standings-master .v40-table-head b{
+  font-size:10px!important;
+  font-weight:650!important;
+}
+body.v40-standings-master .v40-row{
+  min-height:57px!important;
+  height:57px!important;
+}
+body.v40-standings-master .v40-form i{
+  background:#171a70!important;
+}
+body.v40-standings-master .v40-form .win{
+  background:#2eaf48!important;
+}
+body.v40-standings-master .v40-form .win::after{
+  background:#45c95d!important;
+}
+
+/* COMPLETA — 7 valores numéricos como en 1001960504.png. */
+body.v40-standings-master .v40-wide.complete{
+  position:relative!important;
+}
+body.v40-standings-master .v40-wide.complete .v40-wide-head,
+body.v40-standings-master .v40-wide.complete .v40-wide-row{
+  grid-template-columns:22px 132px repeat(7,26px)!important;
+}
+body.v40-standings-master .v40-wide.complete .v40-wide-head{
+  min-height:25px!important;
+  height:25px!important;
+  color:#d1d2df!important;
+}
+body.v40-standings-master .v40-wide.complete .v40-wide-head span:nth-child(2){
+  color:transparent!important;
+}
+body.v40-standings-master .v40-wide.complete .v40-pluspts{
+  white-space:nowrap!important;
+  overflow:visible!important;
+  transform:translateX(-3px)!important;
+}
+body.v40-standings-master .v40-wide.complete .v40-wide-row{
+  min-height:57px!important;
+  height:57px!important;
+}
+body.v40-standings-master .v40-wide.complete .v40-wide-row>span,
+body.v40-standings-master .v40-wide.complete .v40-wide-row>b{
+  font-size:12px!important;
+  font-weight:500!important;
+  color:#fff!important;
+}
+body.v40-standings-master .v40-wide.complete .v40-wide-row>b{
+  font-weight:800!important;
+}
+body.v40-standings-master .v40-wide.complete .v40-muted-number{
+  color:#676b9d!important;
+}
+
+/* CRITERIOS — logo en cabecera y columnas como 1001960500.png. */
+body.v40-standings-master .v40-wide.criteria{
+  position:relative!important;
+}
+body.v40-standings-master .v40-wide.criteria .criteria-head{
+  min-height:61px!important;
+  height:61px!important;
+  align-items:center!important;
+}
+body.v40-standings-master .v40-criteria-league{
+  position:absolute!important;
+  z-index:3!important;
+  left:9px!important;
+  top:-4px!important;
+  width:75px!important;
+  height:75px!important;
+  object-fit:contain!important;
+  object-position:center!important;
+  pointer-events:none!important;
+}
+body.v40-standings-master .v40-wide.criteria .v40-direct{
+  margin-top:0!important;
+}
+body.v40-standings-master .v40-wide.criteria .v40-wide-row{
+  min-height:57px!important;
+  height:57px!important;
+}
+body.v40-standings-master .v40-wide.criteria .v40-wide-head b{
+  color:#cfd0dc!important;
+  font-size:9px!important;
+  font-weight:650!important;
+}
+body.v40-standings-master .v40-wide.criteria .v40-wide-row>span{
+  color:#fff!important;
+  font-size:12px!important;
+  font-weight:500!important;
+}
+
+/* Móvil: las medidas quedan en el mismo espacio visual de las capturas. */
+@media(max-width:420px){
+  body.v40-standings-master .v40-standings{
+    padding-left:18px!important;
+    padding-right:18px!important;
+  }
+  body.v40-standings-master .v40-segmented{
+    height:52px!important;
+    min-height:52px!important;
+  }
+  body.v40-standings-master .v40-segmented button{
+    font-size:13px!important;
+  }
+  body.v40-standings-master .v40-table-head,
+  body.v40-standings-master .v40-row{
+    grid-template-columns:22px 137px 34px 34px 34px 65px!important;
+  }
+  body.v40-standings-master .v40-team{
+    grid-template-columns:32px minmax(0,1fr)!important;
+    gap:6px!important;
+  }
+  body.v40-standings-master .v40-team-logo{
+    width:27px!important;
+    height:27px!important;
+  }
+  body.v40-standings-master .v40-team strong{
+    font-size:13px!important;
+    line-height:1.05!important;
+  }
+  body.v40-standings-master .v40-rank{
+    font-size:10px!important;
+  }
+  body.v40-standings-master .v40-row>span:nth-child(3),
+  body.v40-standings-master .v40-row>span:nth-child(4),
+  body.v40-standings-master .v40-row>span:nth-child(5){
+    font-size:12px!important;
+  }
+  body.v40-standings-master .v40-form{
+    gap:4px!important;
+    padding-right:2px!important;
+  }
+  body.v40-standings-master .v40-form i{
+    width:19px!important;
+    height:19px!important;
+  }
+  body.v40-standings-master .v40-form b{
+    width:21px!important;
+    height:21px!important;
+    font-size:9px!important;
+  }
+  body.v40-standings-master .v40-scroll-shell{
+    width:calc(100% + 18px)!important;
+    margin-right:-18px!important;
+  }
+  body.v40-standings-master .v40-wide.complete{
+    min-width:336px!important;
+    width:336px!important;
+    padding-right:0!important;
+  }
+  body.v40-standings-master .v40-wide.criteria{
+    min-width:370px!important;
+    width:370px!important;
+    padding-right:0!important;
+  }
+  body.v40-standings-master .v40-wide.criteria .v40-wide-head,
+  body.v40-standings-master .v40-wide.criteria .v40-wide-row{
+    grid-template-columns:22px 110px repeat(7,34px)!important;
+  }
+}
+
+/* Mantén la navegación inferior idéntica a la captura. */
+body.v40-standings-master .bottom-nav{
+  background:#11106f!important;
+}
+body.v40-standings-master .bottom-nav .nav-item[data-route="competition"]{
+  color:#1ce5ef!important;
+}
