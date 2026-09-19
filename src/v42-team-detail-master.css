@@ -1,0 +1,293 @@
+/* V42 — perfil/plantilla de equipo calcado de la referencia móvil. */
+body.v42-team-active{
+  background:#070865!important;
+}
+body.v42-team-active .topbar{display:none!important}
+body.v42-team-active #screen{
+  padding:0!important;
+  margin:0!important;
+  max-width:none!important;
+  overflow:visible!important;
+  background:#070865!important;
+}
+body.v42-team-active .bottom-nav{
+  display:flex!important;
+  height:86px!important;
+  min-height:86px!important;
+  background:#11116f!important;
+  border-top:1px solid rgba(255,255,255,.12)!important;
+}
+body.v42-team-active .bottom-nav .nav-item small{
+  text-transform:none!important;
+  letter-spacing:0!important;
+  font-size:12px!important;
+}
+body.v42-team-active .bottom-nav .nav-item[data-route="more"]{
+  color:#18def1!important;
+}
+body.v42-team-active .bottom-nav .nav-item[data-route="more"] svg{
+  stroke:#18def1!important;
+}
+
+.v42-team-page{
+  width:100%!important;
+  min-height:100dvh!important;
+  color:#fff!important;
+  background:#070865!important;
+  font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif!important;
+}
+.v42-team-page *{box-sizing:border-box!important}
+
+.v42-hero{
+  position:relative!important;
+  min-height:690px!important;
+  padding:calc(58px + env(safe-area-inset-top)) 32px 0!important;
+  overflow:hidden!important;
+  background:
+    radial-gradient(circle at 78% 8%,rgba(38,93,255,.55),transparent 31rem),
+    linear-gradient(180deg,#0839c9 0%,#0a2aa8 34%,#0a1885 60%,#070867 100%)!important;
+}
+.v42-neon{
+  position:absolute!important;
+  inset:0!important;
+  overflow:hidden!important;
+  pointer-events:none!important;
+}
+.v42-neon:before{
+  content:""!important;
+  position:absolute!important;
+  width:570px!important;
+  height:570px!important;
+  right:-168px!important;
+  top:-90px!important;
+  border:2px solid rgba(40,227,255,.7)!important;
+  border-radius:42% 58% 55% 45%!important;
+  transform:rotate(19deg)!important;
+  box-shadow:
+    inset 0 0 0 78px rgba(47,88,255,.05),
+    inset 0 0 0 148px rgba(255,69,212,.03)!important;
+}
+.v42-neon i{
+  position:absolute!important;
+  display:block!important;
+  height:2px!important;
+  transform-origin:left center!important;
+  filter:drop-shadow(0 0 6px currentColor)!important;
+  opacity:.9!important;
+}
+.v42-neon i:nth-child(1){width:330px;right:-38px;top:170px;background:#86f0ff;transform:rotate(13deg)}
+.v42-neon i:nth-child(2){width:260px;right:42px;top:285px;background:#e9ff62;transform:rotate(31deg)}
+.v42-neon i:nth-child(3){width:225px;right:24px;top:393px;background:#2ef1d0;transform:rotate(-9deg)}
+.v42-neon i:nth-child(4){width:180px;left:228px;top:25px;background:#ff4bd9;transform:rotate(55deg)}
+.v42-neon i:nth-child(5){width:150px;right:5px;top:95px;background:#ff4eb9;transform:rotate(84deg)}
+
+.v42-top-actions{
+  position:relative!important;
+  z-index:3!important;
+  display:flex!important;
+  align-items:center!important;
+  justify-content:space-between!important;
+}
+.v42-back,.v42-bell{
+  width:50px!important;
+  height:50px!important;
+  display:grid!important;
+  place-items:center!important;
+  padding:0!important;
+  border:0!important;
+  border-radius:50%!important;
+  color:#fff!important;
+  background:transparent!important;
+}
+.v42-back svg{width:34px!important;height:34px!important;fill:none!important;stroke:currentColor!important;stroke-width:2!important;stroke-linecap:round!important;stroke-linejoin:round!important}
+.v42-bell svg{width:33px!important;height:33px!important;fill:none!important;stroke:currentColor!important;stroke-width:2!important;stroke-linecap:round!important;stroke-linejoin:round!important}
+.v42-bell.active{background:rgba(255,255,255,.12)!important}
+
+.v42-team-crest{
+  position:relative!important;
+  z-index:3!important;
+  width:94px!important;
+  height:94px!important;
+  margin-top:10px!important;
+  object-fit:contain!important;
+  display:block!important;
+}
+.v42-title{
+  position:relative!important;
+  z-index:3!important;
+  margin-top:42px!important;
+}
+.v42-title h1{
+  margin:0!important;
+  max-width:90%!important;
+  color:#fff!important;
+  font:800 clamp(41px,8.7vw,64px)/.98 Inter,Roboto,Arial,sans-serif!important;
+  letter-spacing:-.045em!important;
+}
+.v42-title p{
+  margin:17px 0 0!important;
+  color:#c8cbe2!important;
+  font:400 clamp(21px,4.7vw,30px)/1.1 Inter,Roboto,Arial,sans-serif!important;
+}
+
+.v42-actions{
+  position:relative!important;
+  z-index:3!important;
+  display:grid!important;
+  grid-template-columns:1.35fr 1.35fr 82px!important;
+  gap:14px!important;
+  margin-top:38px!important;
+}
+.v42-actions button{
+  height:82px!important;
+  border:0!important;
+  border-radius:18px!important;
+  color:#fff!important;
+  background:rgba(71,69,145,.82)!important;
+  font:700 clamp(18px,4.2vw,27px)/1 Inter,Roboto,Arial,sans-serif!important;
+}
+.v42-follow{
+  display:flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  gap:12px!important;
+}
+.v42-follow svg{width:29px!important;height:29px!important;fill:none!important;stroke:#fff!important;stroke-width:2.2!important;stroke-linecap:round!important;stroke-linejoin:round!important}
+.v42-follow.active{background:rgba(79,77,151,.9)!important}
+.v42-share{display:grid!important;place-items:center!important;padding:0!important}
+.v42-share svg{width:34px!important;height:34px!important;fill:none!important;stroke:#fff!important;stroke-width:2!important;stroke-linecap:round!important;stroke-linejoin:round!important}
+
+.v42-tabs{
+  position:absolute!important;
+  z-index:4!important;
+  left:0!important;
+  right:0!important;
+  bottom:0!important;
+  height:120px!important;
+  display:flex!important;
+  align-items:flex-end!important;
+  overflow-x:auto!important;
+  background:linear-gradient(180deg,rgba(7,8,101,.15),rgba(7,8,101,.98))!important;
+  border-bottom:1px solid rgba(255,255,255,.82)!important;
+  scrollbar-width:none!important;
+}
+.v42-tabs::-webkit-scrollbar{display:none!important}
+.v42-tabs button{
+  position:relative!important;
+  flex:0 0 auto!important;
+  min-width:150px!important;
+  height:100%!important;
+  padding:0 20px 27px!important;
+  border:0!important;
+  background:transparent!important;
+  color:#cbcde4!important;
+  font:700 clamp(17px,4vw,25px)/1 Inter,Roboto,Arial,sans-serif!important;
+  white-space:nowrap!important;
+}
+.v42-tabs button.active{color:#19e1ee!important}
+.v42-tabs button.active::after{
+  content:""!important;
+  position:absolute!important;
+  left:32px!important;
+  right:32px!important;
+  bottom:0!important;
+  height:6px!important;
+  border-radius:6px 6px 0 0!important;
+  background:#18e4ee!important;
+  box-shadow:0 0 9px rgba(24,228,238,.65)!important;
+}
+
+.v42-squad{
+  padding:0 0 calc(110px + env(safe-area-inset-bottom))!important;
+  background:#070865!important;
+}
+.v42-roster-card{
+  margin:0 0 16px!important;
+  padding:33px 32px 0!important;
+  background:#0e0e75!important;
+  border-top:1px solid rgba(70,77,188,.17)!important;
+  border-bottom:1px solid rgba(0,0,0,.12)!important;
+}
+.v42-roster-card h2{
+  margin:0 0 20px!important;
+  color:#fff!important;
+  font:700 clamp(25px,5.6vw,37px)/1 Inter,Roboto,Arial,sans-serif!important;
+}
+.v42-roster-list{width:100%!important}
+.v42-player-row{
+  min-height:124px!important;
+  display:grid!important;
+  grid-template-columns:72px minmax(0,1fr) 55px!important;
+  align-items:center!important;
+  gap:18px!important;
+  border-bottom:1px solid rgba(255,255,255,.09)!important;
+}
+.v42-player-row:last-child{border-bottom:0!important}
+.v42-avatar{
+  width:68px!important;
+  height:68px!important;
+  display:block!important;
+  border-radius:50%!important;
+  overflow:hidden!important;
+  background:#fff!important;
+  box-shadow:0 0 0 2px rgba(255,255,255,.96)!important;
+}
+.v42-avatar svg{width:100%!important;height:100%!important;display:block!important}
+.v42-player-copy{
+  min-width:0!important;
+  display:flex!important;
+  flex-direction:column!important;
+  justify-content:center!important;
+}
+.v42-player-copy strong{
+  color:#fff!important;
+  font:700 clamp(20px,4.7vw,30px)/1.05 Inter,Roboto,Arial,sans-serif!important;
+  letter-spacing:-.025em!important;
+  white-space:nowrap!important;
+  overflow:hidden!important;
+  text-overflow:ellipsis!important;
+}
+.v42-player-copy small{
+  margin-top:6px!important;
+  color:#c5c6dd!important;
+  font:400 clamp(16px,3.8vw,24px)/1 Inter,Roboto,Arial,sans-serif!important;
+}
+.v42-number{
+  color:#fff!important;
+  font:500 clamp(32px,6.5vw,45px)/1 Inter,Roboto,Arial,sans-serif!important;
+  text-align:right!important;
+}
+
+.v42-toast{
+  position:fixed!important;
+  z-index:9999!important;
+  left:50%!important;
+  bottom:102px!important;
+  transform:translateX(-50%)!important;
+  padding:11px 16px!important;
+  border-radius:14px!important;
+  background:rgba(3,5,55,.96)!important;
+  color:#fff!important;
+  border:1px solid rgba(24,226,238,.35)!important;
+  box-shadow:0 10px 30px rgba(0,0,0,.32)!important;
+  font-size:13px!important;
+  white-space:nowrap!important;
+}
+
+@media(max-width:420px){
+  .v42-hero{min-height:560px!important;padding-left:20px!important;padding-right:20px!important;padding-top:calc(30px + env(safe-area-inset-top))!important}
+  .v42-team-crest{width:76px!important;height:76px!important}
+  .v42-title{margin-top:30px!important}
+  .v42-title h1{font-size:42px!important}
+  .v42-title p{font-size:20px!important}
+  .v42-actions{grid-template-columns:1.25fr 1.25fr 62px!important;gap:10px!important;margin-top:30px!important}
+  .v42-actions button{height:64px!important;border-radius:14px!important;font-size:17px!important}
+  .v42-tabs{height:94px!important}
+  .v42-tabs button{min-width:120px!important;padding-left:15px!important;padding-right:15px!important;padding-bottom:22px!important;font-size:16px!important}
+  .v42-roster-card{padding-left:20px!important;padding-right:20px!important;padding-top:27px!important}
+  .v42-player-row{min-height:102px!important;grid-template-columns:60px minmax(0,1fr) 44px!important;gap:13px!important}
+  .v42-avatar{width:56px!important;height:56px!important}
+  .v42-player-copy strong{font-size:20px!important}
+  .v42-player-copy small{font-size:16px!important}
+  .v42-number{font-size:31px!important}
+}
