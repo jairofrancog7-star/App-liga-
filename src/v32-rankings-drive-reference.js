@@ -4,57 +4,117 @@
 
 var BASE='https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/';
 var LOGOS={
-  LEAGUE:'assets/liga-logo.webp',
-  AME:'assets/branding/america-veteranos-35-user.png',
-  HUE:'assets/official-logos/la-huerta.png',
-  PRO:'assets/official-logos/promesas-fc.png',
-  FRA:'assets/official-logos/franco-fc.png',
-  GAL:'assets/official-logos/galeana.png',
-  LOB:'assets/official-logos/lobos-cdg.png',
-  CUE:'assets/official-logos/toros-de-cuenda.png',
-  POZ:'assets/teams/pozos-fc.webp',
-  ESP:'assets/official-logos/la-esperanza.png',
-  STC:'assets/teams/atletico-santa-cruz.webp',
-  TAV:'assets/teams/franco-tavera-jr-veteranos.webp',
-  SAN:'assets/teams/atletico-santiago.webp',
-  HER:'assets/teams/club-deportivo-hermanos.webp',
-  LIN:'assets/teams/linces.webp',
-  TER:'assets/teams/terricolas-fc.webp',
-  GAC:'assets/teams/galacticos-pozos.webp'
+  "CAT3": "assets/branding/primera-fuerza-hd.png",
+  "CAT5": "assets/categories/intermedia.webp",
+  "CAT4": "assets/categories/segunda-fuerza.webp",
+  "CAT2": "assets/categories/veteranos-35-user.png",
+  "CAT1": "assets/categories/veteranos-50.webp",
+  "SJO": "assets/official-logos/san-jose-fc.png",
+  "JVS": "assets/official-logos/juventus.png",
+  "HER": "assets/official-logos/hermanos.png",
+  "LIN": "assets/official-logos/linces.png",
+  "NAP": "assets/official-logos/napoli.png",
+  "FRA": "assets/official-logos/franco-fc.png",
+  "HFC": "assets/official-logos/herreras-fc.png",
+  "ABE": "assets/official-logos/abejas.png",
+  "LOB": "assets/official-logos/lobos-cdg.png",
+  "TER": "assets/official-logos/terricolas.png",
+  "GAC": "assets/teams/galacticos-pozos.webp"
 };
 
 var federationRows=[
-  ['LEAGUE','Juventino Rosas','36,000 / 8','4,500'],
-  ['AME','América VR','32,000 / 8','4,000'],
-  ['PRO','Promesas FC','28,000 / 8','3,500'],
-  ['ESP','La Esperanza','26,000 / 8','3,250'],
-  ['LOB','Lobos CDG','24,000 / 8','3,000'],
-  ['GAL','Atlético Galeana','20,000 / 8','2,500'],
-  ['FRA','Franco FC','18,000 / 8','2,250']
+  [
+    "CAT3",
+    "Primera Fuerza",
+    "291",
+    "11"
+  ],
+  [
+    "CAT5",
+    "Intermedia",
+    "336",
+    "13"
+  ],
+  [
+    "CAT4",
+    "Segunda Fuerza",
+    "322",
+    "12"
+  ],
+  [
+    "CAT2",
+    "Veteranos 35+",
+    "0",
+    "10"
+  ],
+  [
+    "CAT1",
+    "Veteranos 50+",
+    "109",
+    "6"
+  ]
 ];
 
 var clubRows=[
-  ['AME','América Veteranos','129,500'],
-  ['HUE','La Huerta','127,000'],
-  ['PRO','Promesas FC','122,500'],
-  ['FRA','Franco FC','121,000'],
-  ['GAL','Atlético Galeana','115,000'],
-  ['LOB','Lobos CDG','106,500'],
-  ['JUV','Juventino','106,250'],
-  ['CUE','Cuenda','105,000'],
-  ['POZ','Pozos','98,750'],
-  ['STC','Atlético Santa Cruz','94,500'],
-  ['TAV','Franco Tavera','91,250'],
-  ['ESP','La Esperanza','88,000'],
-  ['SAN','Atlético Santiago','84,500'],
-  ['HER','Hermanos','82,000'],
-  ['LIN','Linces','79,750'],
-  ['TER','Terrícolas','76,500'],
-  ['GAC','Galácticos','74,250']
+  [
+    "SJO",
+    "SAN JOSE FC",
+    "12"
+  ],
+  [
+    "JVS",
+    "JUVENTUS",
+    "9"
+  ],
+  [
+    "HER",
+    "HERMANOS",
+    "7"
+  ],
+  [
+    "LIN",
+    "LINCES",
+    "6"
+  ],
+  [
+    "NAP",
+    "NAPOLI",
+    "6"
+  ],
+  [
+    "FRA",
+    "FRANCO FC",
+    "6"
+  ],
+  [
+    "HFC",
+    "HERRERAS FC",
+    "4"
+  ],
+  [
+    "ABE",
+    "ABEJAS",
+    "3"
+  ],
+  [
+    "LOB",
+    "LOBOS CDG",
+    "3"
+  ],
+  [
+    "TER",
+    "TERRICOLAS",
+    "0"
+  ],
+  [
+    "GAC",
+    "GALACTICOS",
+    "-12"
+  ]
 ];
 
 var activeTab=localStorage.getItem('v32-rankings-tab')||'federations';
-var season=localStorage.getItem('v32-rankings-season')||'2026/27';
+var season='Temporada actual';
 var selectedClub=localStorage.getItem('v32-rankings-club')||'';
 var selectedFederation=localStorage.getItem('v32-rankings-federation')||'';
 var pendingClub=selectedClub;
@@ -113,7 +173,7 @@ function fedControls(){
 function clubsControls(){
   var selected=clubByCode(selectedClub);
   return '<div class="v32-controls clubs '+(selected?'has-club-filter':'')+'">'+
-    '<button type="button" class="v32-select v32-coefficient" data-v32-info="coefficient"><span>Coeficientes de clubes</span><i class="v32-chevron"></i></button>'+
+    '<button type="button" class="v32-select v32-coefficient" data-v32-info="coefficient"><span>Clasificación de clubes</span><i class="v32-chevron"></i></button>'+
     '<button type="button" class="v32-select v32-season-select" data-v32-season><span>'+esc(season)+'</span><i class="v32-chevron"></i></button>'+
     (selected?'<button type="button" class="v32-selected-club" data-v32-clear-club><span>'+esc(selected[1])+'</span><i>×</i></button>':'')+
     '<button type="button" class="v32-filter '+(selected?'active':'')+'" data-v32-filter aria-label="Filtrar clubes">'+filterIcon()+'</button>'+
@@ -137,7 +197,7 @@ function fedRows(){
 function fedView(){
   return fedControls()+
     '<section class="v32-card v32-fed-card">'+
-      '<div class="v32-fed-head"><span>Federación</span><span>Puntos / Clubes</span><span>Promedio</span></div>'+
+      '<div class="v32-fed-head"><span>Categoría</span><span>Jugadores</span><span>Equipos</span></div>'+
       '<div class="v32-fed-group">Liga Municipal de Fútbol Juventino Rosas</div>'+fedRows()+
     '</section>';
 }
@@ -156,7 +216,7 @@ function clubItems(){
         '<span class="v32-club-copy"><b>'+esc(row[1])+'</b><small>Juventino Rosas</small></span>'+
         '<strong class="v32-club-points">'+esc(row[2])+'</strong><i class="v32-row-chevron"></i>'+
       '</button>'+
-      '<div class="v32-club-detail '+(isOpen?'show':'')+'"><span>Temporada '+esc(season)+' · Coeficiente de clubes</span><button type="button" data-v32-open-team="'+esc(row[0])+'">Ver equipo</button></div>'+
+      '<div class="v32-club-detail '+(isOpen?'show':'')+'"><span>Primera Fuerza · Clasificación oficial</span><button type="button" data-v32-open-team="'+esc(row[0])+'">Ver equipo</button></div>'+
     '</div>';
   }).join('');
 }
@@ -166,7 +226,7 @@ function clubsView(){
       '<div class="v32-club-head"><span>Club</span><span>Puntos</span><span></span></div>'+
       clubItems()+
     '</section>'+
-    '<p class="v32-update">Última actualización: 18/09/2026</p>';
+    '<p class="v32-update">Datos deportivos sincronizados con AdminFut</p>';
 }
 function filterGrid(){
   var q=filterQuery.trim().toLocaleLowerCase('es');
@@ -199,17 +259,8 @@ function closePopover(){var p=document.querySelector('.v32-popover');if(p)p.remo
 function seasonPopover(){
   closePopover();
   var p=document.createElement('div');p.className='v32-popover';
-  p.innerHTML='<b>Temporada</b>'+['2026/27','2025/26','2024/25'].map(function(s){
-    return '<button type="button" class="'+(s===season?'active':'')+'" data-v32-season-value="'+s+'">'+s+'</button>';
-  }).join('');
+  p.innerHTML='<b>Temporada</b><button type="button" class="active">Temporada actual</button>';
   document.body.appendChild(p);
-  p.querySelectorAll('[data-v32-season-value]').forEach(function(button){
-    button.onclick=function(){
-      season=button.dataset.v32SeasonValue;
-      localStorage.setItem('v32-rankings-season',season);
-      closePopover();render();
-    };
-  });
 }
 function setBottomNav(){
   var nav=document.querySelector('.bottom-nav');if(!nav)return;
@@ -290,7 +341,7 @@ function bind(){
   document.querySelectorAll('[data-v32-info]').forEach(function(button){
     button.onclick=function(){
       if(button.dataset.v32Info==='season-type')toast('Ranking por temporada');
-      else toast('Coeficientes de clubes');
+      else toast('Clasificación oficial de Primera Fuerza');
     };
   });
   var filter=document.querySelector('[data-v32-filter]');
@@ -306,7 +357,7 @@ function bind(){
     selectedClub='';pendingClub='';localStorage.removeItem('v32-rankings-club');expanded=-1;render();
   };
   document.querySelectorAll('[data-v32-fed]').forEach(function(button){
-    button.onclick=function(){var row=federationRows[Number(button.dataset.v32Fed)];if(row)toast(row[1]+' · promedio '+row[3])};
+    button.onclick=function(){var row=federationRows[Number(button.dataset.v32Fed)];if(row)toast(row[1]+' · '+row[2]+' jugadores · '+row[3]+' equipos')};
   });
   document.querySelectorAll('[data-v32-club]').forEach(function(button){
     button.onclick=function(){var index=Number(button.dataset.v32Club);expanded=expanded===index?-1:index;render()};
@@ -314,7 +365,9 @@ function bind(){
   document.querySelectorAll('[data-v32-open-team]').forEach(function(button){
     button.onclick=function(event){
       event.stopPropagation();
-      localStorage.setItem('v27-selected-team',button.dataset.v32OpenTeam);
+      var row=clubRows.find(function(r){return r[0]===button.dataset.v32OpenTeam});
+      if(row&&window.LJR_OFFICIAL_API?.openTeam){window.LJR_OFFICIAL_API.openTeam(row[1]);return}
+      if(row)localStorage.setItem('v62-team-name',row[1]);
       location.hash='#/teamDetail';
     };
   });
