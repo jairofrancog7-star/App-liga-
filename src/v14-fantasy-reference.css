@@ -624,3 +624,24 @@ body[data-app-route="fantasyAccess"] .v23-access-sponsor>img{
   filter:brightness(1.08) contrast(1.12)!important;
   object-fit:contain!important;
 }
+
+
+/* V40 — el logo visible en Fantasy ya es un PNG transparente generado
+   desde la imagen del usuario: solo conserva las partes blancas. */
+body[data-app-route="fantasy"] img[data-v24-fantasy-logo],
+body[data-app-route="fantasyAccess"] img[data-v24-fantasy-logo]{
+  opacity:0!important;
+  mix-blend-mode:normal!important;
+  filter:none!important;
+  background:transparent!important;
+  border:0!important;
+  outline:0!important;
+  box-shadow:none!important;
+  -webkit-mask-image:none!important;
+  mask-image:none!important;
+  transition:opacity .12s ease!important;
+}
+body[data-app-route="fantasy"] img[data-v24-fantasy-logo].is-ready,
+body[data-app-route="fantasyAccess"] img[data-v24-fantasy-logo].is-ready{
+  opacity:1!important;
+}
