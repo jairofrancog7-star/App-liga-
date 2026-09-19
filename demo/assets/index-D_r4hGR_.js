@@ -13,6 +13,10 @@
       <button type="button" data-route="more" aria-label="Más"></button>
     </nav>
   </section>`}function St(){return`<div class="hero video-hero"><span class="eyebrow" style="color:#fff">REVIVE LA JORNADA</span><h1>FÚTBOL QUE<br>NOS UNE</h1><p>Mira goles, atajadas, entrevistas y resúmenes completos.</p><div class="button-row"><button class="btn primary" data-video="Resumen de la Jornada">Ver ahora</button><button class="btn outline" data-match="m1">Partido de la semana</button></div></div><section class="section">${na("Selección del editor")}<div class="media-carousel"><button class="media-card" data-video="Final dramático en Cuenda"><span class="badge">12:46</span><h3>Final dramático en Cuenda</h3></button><button class="media-card" data-video="Resumen de la jornada"><span class="badge">08:20</span><h3>Resumen de la jornada</h3></button></div></section>`}function Et(){return`<div class="v26-moments-original" aria-label="Momentos">
+  <div class="v26-moments-sticky" aria-label="Cabecera fija de Momentos">
+    <img class="v26-moments-sticky__image" src="./assets/moments/moments-original-a.png?v=20260918-moments3" alt="" aria-hidden="true" draggable="false">
+    <button type="button" class="v26-moments-sticky-back" data-route="more" aria-label="Volver a Más"></button>
+  </div>
   <section class="v26-moments-panel" data-v26-panel="a" aria-label="Momentos principales">
     <img class="v26-moments-original__image" src="./assets/moments/moments-original-a.png?v=20260918-moments3" alt="Momentos de la Liga Municipal de Fútbol Juventino Rosas" draggable="false">
 
