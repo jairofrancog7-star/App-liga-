@@ -3608,3 +3608,379 @@ body[data-app-route="competition"] .v12-bracket-reference.stage-cuartos .v12-bra
   max-height:52px!important;
   box-sizing:border-box!important;
 }
+
+
+/* === PARTS50 — CUADRO COMPLETO POR RONDA / REFERENCIAS DEL USUARIO === */
+/* Play-off conserva equipos reales. Las demás rondas muestran la progresión con
+   fechas, escudos, signos ¿? y conectores según las capturas maestras. */
+body[data-app-route="competition"] .v12-stage-panels,
+body[data-app-route="competition"] .v12-stage-panel{
+  width:100%!important;
+  box-sizing:border-box!important;
+}
+body[data-app-route="competition"] .v12-stage-panel{display:none!important}
+
+body[data-app-route="competition"] .v12-bracket-reference.stage-octavos>.v12-bracket-dates,
+body[data-app-route="competition"] .v12-bracket-reference.stage-octavos>.v12-bracket-board,
+body[data-app-route="competition"] .v12-bracket-reference.stage-cuartos>.v12-bracket-dates,
+body[data-app-route="competition"] .v12-bracket-reference.stage-cuartos>.v12-bracket-board,
+body[data-app-route="competition"] .v12-bracket-reference.stage-semifinal>.v12-bracket-dates,
+body[data-app-route="competition"] .v12-bracket-reference.stage-semifinal>.v12-bracket-board{
+  display:none!important;
+}
+body[data-app-route="competition"] .v12-bracket-reference.stage-octavos .v12-stage-panel-octavos,
+body[data-app-route="competition"] .v12-bracket-reference.stage-cuartos .v12-stage-panel-cuartos,
+body[data-app-route="competition"] .v12-bracket-reference.stage-semifinal .v12-stage-panel-semifinal{
+  display:block!important;
+}
+
+/* Fechas de cada columna. */
+body[data-app-route="competition"] .v12-progress-dates{
+  display:grid!important;
+  grid-template-columns:1fr 1fr!important;
+  gap:32px!important;
+  padding:0 14px!important;
+  margin:0 0 18px!important;
+  color:#aeb5d2!important;
+}
+body[data-app-route="competition"] .v12-progress-dates span{
+  position:relative!important;
+  display:block!important;
+  padding-top:15px!important;
+  white-space:nowrap!important;
+  font:500 clamp(12px,3.25vw,17px)/1.12 Inter,Roboto,Arial,sans-serif!important;
+}
+body[data-app-route="competition"] .v12-progress-dates span::before{
+  content:""!important;
+  position:absolute!important;
+  left:0!important;
+  right:0!important;
+  top:0!important;
+  height:2px!important;
+  background:#20297e!important;
+}
+
+/* Tablero común: dos rutas, plateada y azul. */
+body[data-app-route="competition"] .v12-progress-board{
+  display:grid!important;
+  gap:58px!important;
+  width:100%!important;
+  max-width:520px!important;
+  margin:0 auto!important;
+  padding:0 6px 18px!important;
+  overflow:visible!important;
+}
+body[data-app-route="competition"] .v12-progress-route{
+  --branch:#b9c0dc;
+  position:relative!important;
+  display:grid!important;
+  grid-template-columns:14px minmax(0,1fr) 28px minmax(0,1fr)!important;
+  column-gap:6px!important;
+  width:100%!important;
+  min-height:clamp(300px,79vw,408px)!important;
+  overflow:visible!important;
+}
+body[data-app-route="competition"] .v12-progress-route.route-blue{--branch:#13e4ef}
+
+/* Riel lateral / nombre de la ruta. */
+body[data-app-route="competition"] .v12-progress-rail{
+  position:relative!important;
+  height:100%!important;
+  min-height:100%!important;
+  border-left:3px solid var(--branch)!important;
+  box-sizing:border-box!important;
+}
+body[data-app-route="competition"] .v12-progress-rail::before,
+body[data-app-route="competition"] .v12-progress-rail::after{
+  content:""!important;
+  position:absolute!important;
+  left:-3px!important;
+  width:3px!important;
+  height:52px!important;
+  background:#020451!important;
+}
+body[data-app-route="competition"] .v12-progress-rail::before{top:24%!important}
+body[data-app-route="competition"] .v12-progress-rail::after{bottom:24%!important}
+body[data-app-route="competition"] .v12-progress-rail span{
+  position:absolute!important;
+  left:-11px!important;
+  top:50%!important;
+  transform:translate(-50%,-50%) rotate(-90deg)!important;
+  color:var(--branch)!important;
+  font:700 clamp(9px,2.4vw,12px)/1 Inter,Roboto,Arial,sans-serif!important;
+  white-space:nowrap!important;
+}
+
+/* Columna izquierda: dos partidos/bloques exactamente del mismo tamaño. */
+body[data-app-route="competition"] .v12-progress-left{
+  display:grid!important;
+  grid-template-rows:1fr 1fr!important;
+  gap:clamp(38px,10vw,54px)!important;
+  min-width:0!important;
+  height:100%!important;
+  align-items:center!important;
+}
+body[data-app-route="competition"] .v12-progress-winner-block{
+  position:relative!important;
+  display:grid!important;
+  grid-template-rows:clamp(58px,15vw,78px) clamp(50px,13vw,68px)!important;
+  gap:clamp(10px,2.8vw,14px)!important;
+  min-width:0!important;
+  width:100%!important;
+  align-content:center!important;
+}
+body[data-app-route="competition"] .v12-progress-winner{
+  width:100%!important;
+  height:100%!important;
+  min-width:0!important;
+  display:flex!important;
+  align-items:center!important;
+  gap:8px!important;
+  padding:0 clamp(10px,3vw,16px)!important;
+  border-radius:clamp(12px,3.2vw,17px)!important;
+  box-sizing:border-box!important;
+  color:#eef0ff!important;
+  background:linear-gradient(180deg,#142e9c 0%,#0d2484 100%)!important;
+}
+body[data-app-route="competition"] .v12-progress-winner .shield{
+  width:clamp(22px,6vw,30px)!important;
+  height:clamp(22px,6vw,30px)!important;
+  flex:0 0 auto!important;
+  display:grid!important;
+  place-items:center!important;
+  color:#aeb8de!important;
+}
+body[data-app-route="competition"] .v12-progress-winner .shield svg{
+  width:100%!important;
+  height:100%!important;
+}
+body[data-app-route="competition"] .v12-progress-winner strong{
+  min-width:0!important;
+  color:#f0f2ff!important;
+  font:700 clamp(11px,3vw,15px)/1.12 Inter,Roboto,Arial,sans-serif!important;
+  white-space:normal!important;
+}
+body[data-app-route="competition"] .v12-progress-seeded{
+  display:grid!important;
+  grid-template-columns:minmax(0,1fr) 12px minmax(0,1fr)!important;
+  gap:5px!important;
+  min-width:0!important;
+  align-items:center!important;
+}
+body[data-app-route="competition"] .v12-progress-seeded .v12-bracket-team.mini{
+  width:100%!important;
+  height:100%!important;
+  min-height:0!important;
+  max-height:none!important;
+  border-radius:clamp(10px,2.7vw,14px)!important;
+  background:linear-gradient(180deg,#0d278b 0%,#0a1e76 100%)!important;
+}
+body[data-app-route="competition"] .v12-progress-vs{
+  color:#16dce9!important;
+  font:800 clamp(9px,2.4vw,12px)/1 Inter,Roboto,Arial,sans-serif!important;
+  text-align:center!important;
+  font-style:normal!important;
+}
+
+/* Partidos aún por definir: mismo rectángulo en Cuartos, Semis y Final. */
+body[data-app-route="competition"] .v12-progress-match{
+  width:100%!important;
+  aspect-ratio:1.45 / 1!important;
+  min-height:0!important;
+  box-sizing:border-box!important;
+  display:flex!important;
+  flex-direction:column!important;
+  justify-content:center!important;
+  padding:clamp(14px,4vw,22px)!important;
+  border-radius:clamp(14px,3.8vw,20px)!important;
+  color:#fff!important;
+  background:#0a0875!important;
+}
+body[data-app-route="competition"] .v12-progress-match time,
+body[data-app-route="competition"] .v12-progress-match small{
+  display:block!important;
+  color:#b3b8d2!important;
+  font:500 clamp(12px,3.35vw,17px)/1.12 Inter,Roboto,Arial,sans-serif!important;
+}
+body[data-app-route="competition"] .v12-progress-match small{
+  margin-top:3px!important;
+}
+body[data-app-route="competition"] .v12-progress-opponent{
+  display:flex!important;
+  align-items:center!important;
+  gap:8px!important;
+  min-height:clamp(30px,8vw,42px)!important;
+  margin-top:clamp(8px,2.3vw,12px)!important;
+}
+body[data-app-route="competition"] .v12-progress-opponent .shield{
+  width:clamp(24px,6.8vw,34px)!important;
+  height:clamp(24px,6.8vw,34px)!important;
+  flex:0 0 auto!important;
+  display:grid!important;
+  place-items:center!important;
+  color:#7f86b5!important;
+}
+body[data-app-route="competition"] .v12-progress-opponent .shield svg{
+  width:100%!important;
+  height:100%!important;
+}
+body[data-app-route="competition"] .v12-progress-opponent b{
+  color:#fff!important;
+  font:700 clamp(17px,4.7vw,24px)/1 Inter,Roboto,Arial,sans-serif!important;
+}
+
+/* Conector central: C plateada/cian y tramo hacia la tarjeta siguiente. */
+body[data-app-route="competition"] .v12-progress-connector{
+  position:relative!important;
+  height:100%!important;
+  min-height:100%!important;
+}
+body[data-app-route="competition"] .v12-progress-connector::before{
+  content:""!important;
+  position:absolute!important;
+  left:0!important;
+  top:25%!important;
+  width:19px!important;
+  height:50%!important;
+  border-top:3px solid var(--branch)!important;
+  border-bottom:3px solid var(--branch)!important;
+  border-right:3px solid var(--branch)!important;
+  border-radius:0 9px 9px 0!important;
+  box-sizing:border-box!important;
+}
+body[data-app-route="competition"] .v12-progress-connector::after{
+  content:""!important;
+  position:absolute!important;
+  left:19px!important;
+  top:50%!important;
+  width:12px!important;
+  border-top:3px solid var(--branch)!important;
+  transform:translateY(-1px)!important;
+}
+body[data-app-route="competition"] .v12-progress-right{
+  display:flex!important;
+  align-items:center!important;
+  min-width:0!important;
+}
+
+/* En Cuartos la columna izquierda son dos tarjetas grandes, no bloques de ganador. */
+body[data-app-route="competition"] .v12-stage-panel-cuartos .v12-progress-left{
+  align-items:stretch!important;
+}
+body[data-app-route="competition"] .v12-stage-panel-cuartos .v12-progress-left>.v12-progress-match{
+  align-self:center!important;
+}
+
+/* Semifinal: dos rutas (plateada/azul) desembocan en la tarjeta del 5 de junio. */
+body[data-app-route="competition"] .v12-semifinal-flow{
+  position:relative!important;
+  display:grid!important;
+  grid-template-columns:minmax(0,1fr) 34px minmax(0,1fr)!important;
+  grid-template-rows:1fr 1fr!important;
+  gap:clamp(100px,27vw,140px) 6px!important;
+  width:100%!important;
+  max-width:520px!important;
+  min-height:clamp(590px,154vw,800px)!important;
+  margin:0 auto!important;
+  padding:0 6px 18px!important;
+  box-sizing:border-box!important;
+}
+body[data-app-route="competition"] .v12-semifinal-source{
+  --branch:#b9c0dc;
+  position:relative!important;
+  display:grid!important;
+  grid-template-columns:14px minmax(0,1fr)!important;
+  gap:6px!important;
+  min-width:0!important;
+  align-items:center!important;
+}
+body[data-app-route="competition"] .v12-semifinal-source.blue{
+  --branch:#13e4ef;
+  grid-row:2!important;
+}
+body[data-app-route="competition"] .v12-semifinal-source .v12-progress-rail{
+  grid-column:1!important;
+}
+body[data-app-route="competition"] .v12-semifinal-source>.v12-progress-match{
+  grid-column:2!important;
+}
+body[data-app-route="competition"] .v12-semifinal-source::after{
+  content:""!important;
+  position:absolute!important;
+  right:-25px!important;
+  top:50%!important;
+  width:25px!important;
+  border-top:3px solid var(--branch)!important;
+}
+body[data-app-route="competition"] .v12-semifinal-join{
+  position:absolute!important;
+  left:calc(50% - 17px)!important;
+  top:25%!important;
+  width:34px!important;
+  height:50%!important;
+  border-right:3px solid #b9c0dc!important;
+  box-sizing:border-box!important;
+}
+body[data-app-route="competition"] .v12-semifinal-join::after{
+  content:""!important;
+  position:absolute!important;
+  right:-20px!important;
+  top:50%!important;
+  width:20px!important;
+  border-top:3px solid #13e4ef!important;
+}
+body[data-app-route="competition"] .v12-semifinal-target{
+  grid-column:3!important;
+  grid-row:1 / span 2!important;
+  display:flex!important;
+  align-items:center!important;
+  min-width:0!important;
+}
+
+/* Final: conservar trofeo y hacer la tarjeta del mismo lenguaje/tamaño de las referencias. */
+body[data-app-route="competition"] .v12-bracket-reference.stage-final .v12-final-reference{
+  min-height:clamp(650px,165vw,860px)!important;
+}
+body[data-app-route="competition"] .v12-bracket-reference.stage-final .v12-final-match-card{
+  width:44.5%!important;
+  max-width:none!important;
+  height:auto!important;
+  aspect-ratio:1.45 / 1!important;
+  left:4.5%!important;
+  bottom:clamp(88px,23vw,120px)!important;
+  padding:clamp(14px,4vw,22px)!important;
+  border-radius:clamp(14px,3.8vw,20px)!important;
+}
+body[data-app-route="competition"] .v12-bracket-reference.stage-final .v12-final-match-card time{
+  font-size:clamp(14px,3.8vw,19px)!important;
+}
+body[data-app-route="competition"] .v12-bracket-reference.stage-final .v12-final-opponent{
+  min-height:clamp(32px,8.5vw,44px)!important;
+}
+body[data-app-route="competition"] .v12-bracket-reference.stage-final .v12-final-shield{
+  width:clamp(26px,7vw,36px)!important;
+  height:clamp(26px,7vw,36px)!important;
+}
+body[data-app-route="competition"] .v12-bracket-reference.stage-final .v12-final-opponent b{
+  font-size:clamp(18px,5vw,25px)!important;
+}
+
+/* Mantener proporciones idénticas en teléfonos estrechos. */
+@media(max-width:390px){
+  body[data-app-route="competition"] .v12-progress-dates{
+    gap:24px!important;
+    padding:0 10px!important;
+  }
+  body[data-app-route="competition"] .v12-progress-board{
+    gap:50px!important;
+    padding-left:2px!important;
+    padding-right:2px!important;
+  }
+  body[data-app-route="competition"] .v12-progress-route{
+    grid-template-columns:12px minmax(0,1fr) 24px minmax(0,1fr)!important;
+    column-gap:4px!important;
+  }
+  body[data-app-route="competition"] .v12-semifinal-flow{
+    grid-template-columns:minmax(0,1fr) 28px minmax(0,1fr)!important;
+  }
+}
