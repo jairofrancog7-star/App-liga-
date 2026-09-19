@@ -3063,3 +3063,90 @@ body[data-app-route="competition"] .v12-criteria-rank{
 body[data-app-route="competition"] .v12-segmented button:nth-child(2){
   transform:translateY(2px)!important;
 }
+
+
+/* === V12 PARTS43 — DESLIZAMIENTO LATERAL EN LAS 3 TABLAS === */
+/* Compacta y Completa usan ahora el mismo patrón táctil horizontal de Criterios. */
+body[data-app-route="competition"] .v12-basic-shell{
+  position:relative!important;
+  width:100%!important;
+  max-width:100%!important;
+  min-width:0!important;
+  margin:0!important;
+  padding:0!important;
+  overflow:hidden!important;
+  box-sizing:border-box!important;
+}
+
+body[data-app-route="competition"] .v12-basic-scroll{
+  width:100%!important;
+  max-width:100%!important;
+  min-width:0!important;
+  overflow-x:auto!important;
+  overflow-y:hidden!important;
+  -webkit-overflow-scrolling:touch!important;
+  overscroll-behavior-x:contain!important;
+  touch-action:pan-x pan-y!important;
+  scrollbar-width:none!important;
+  scroll-snap-type:x proximity!important;
+}
+body[data-app-route="competition"] .v12-basic-scroll::-webkit-scrollbar{
+  display:none!important;
+}
+
+/* Ancho extra real para que el gesto lateral tenga recorrido, sin comprimir columnas. */
+body[data-app-route="competition"] .v12-basic-table{
+  width:520px!important;
+  min-width:520px!important;
+  max-width:none!important;
+  margin:0!important;
+  padding:0 14px 0 0!important;
+  box-sizing:border-box!important;
+}
+body[data-app-route="competition"] .v12-basic-shell.is-complete .v12-basic-table{
+  width:590px!important;
+  min-width:590px!important;
+}
+
+/* Al tener ancho propio, cabecera y filas ocupan el mismo ancho de la tabla. */
+body[data-app-route="competition"] .v12-basic-table .v12-stand-head,
+body[data-app-route="competition"] .v12-basic-table .v12-stand-row{
+  width:100%!important;
+}
+
+/* Indicador derecho igual al de Criterios: avisa que hay más contenido al costado. */
+body[data-app-route="competition"] .v12-basic-edge{
+  position:absolute!important;
+  top:58px!important;
+  right:0!important;
+  width:12px!important;
+  height:70px!important;
+  border-left:3px solid rgba(116,129,190,.25)!important;
+  border-top:3px solid rgba(116,129,190,.25)!important;
+  border-bottom:3px solid rgba(116,129,190,.25)!important;
+  border-radius:20px 0 0 20px!important;
+  pointer-events:none!important;
+  z-index:3!important;
+}
+
+/* Criterios conserva su scroll y recibe el mismo comportamiento táctil. */
+body[data-app-route="competition"] .v12-criteria-scroll{
+  -webkit-overflow-scrolling:touch!important;
+  overscroll-behavior-x:contain!important;
+  touch-action:pan-x pan-y!important;
+  scrollbar-width:none!important;
+}
+body[data-app-route="competition"] .v12-criteria-scroll::-webkit-scrollbar{
+  display:none!important;
+}
+
+@media(max-width:380px){
+  body[data-app-route="competition"] .v12-basic-table{
+    width:485px!important;
+    min-width:485px!important;
+  }
+  body[data-app-route="competition"] .v12-basic-shell.is-complete .v12-basic-table{
+    width:550px!important;
+    min-width:550px!important;
+  }
+}
