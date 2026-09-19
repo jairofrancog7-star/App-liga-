@@ -1108,12 +1108,9 @@ body[data-app-route="competition"] #screen>.tabs .tab::after{
 }
 
 
-/* V45 — AJUSTE EXACTO SEGÚN LAS 4 CAPTURAS DE DRIVE.
-   1) Partidos y resultados + Cuadro quedan EXACTAMENTE a la misma altura que Clasificación.
-   2) Compacta / Completa / Criterios usan tres cuadros IGUALES:
-      misma altura, mismo ancho, mismo tamaño de letra, misma posición y misma separación. */
-
-/* Barra principal: una sola línea base para las tres pestañas. */
+/* V46 — corregir SOLO la barra superior Partidos / Clasificación / Cuadro.
+   Se restaura Compacta / Completa / Criterios al diseño anterior (V43)
+   y se elimina el logo extra de la tabla. */
 body[data-app-route="competition"] #screen>.tabs{
   align-items:stretch!important;
 }
@@ -1132,66 +1129,40 @@ body[data-app-route="competition"] #screen>.tabs .tab:nth-child(3){
   margin:0!important;
   transform:none!important;
   line-height:1!important;
-  vertical-align:baseline!important;
 }
 body[data-app-route="competition"] #screen>.tabs .tab::after{
   bottom:0!important;
 }
 
-/* En Clasificación quitamos el doble margen lateral que hacía el selector
-   mucho más angosto que las capturas originales. */
-body.v40-standings-master #screen{
-  padding-left:0!important;
-  padding-right:0!important;
-}
-body.v40-standings-master #screen>.tabs{
-  margin-left:0!important;
-  margin-right:0!important;
-  padding-left:14px!important;
-  padding-right:14px!important;
-}
-body.v40-standings-master .v40-standings{
-  padding-left:17px!important;
-  padding-right:17px!important;
-  padding-top:26px!important;
-}
-
-/* Selector de 3 cuadros: 3 tercios exactamente iguales. */
+/* Volver al selector de clasificación que estaba antes del ajuste V45. */
 body.v40-standings-master .v40-segmented{
   width:100%!important;
-  height:58px!important;
-  min-height:58px!important;
-  max-height:58px!important;
+  height:53px!important;
+  min-height:53px!important;
+  max-height:none!important;
   display:grid!important;
-  grid-template-columns:repeat(3,minmax(0,1fr))!important;
-  gap:0!important;
+  grid-template-columns:1fr 1fr 1.12fr!important;
   overflow:hidden!important;
-  border:1px solid #65689a!important;
-  border-radius:30px!important;
-  background:#1b1c63!important;
-  box-shadow:none!important;
+  border:1px solid #66689a!important;
+  border-radius:29px!important;
+  background:#171863!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.04)!important;
 }
 body.v40-standings-master .v40-segmented button{
-  width:100%!important;
   min-width:0!important;
-  height:58px!important;
-  min-height:58px!important;
-  max-height:58px!important;
-  padding:0 6px!important;
+  height:auto!important;
+  min-height:0!important;
+  max-height:none!important;
+  padding:0 5px!important;
   margin:0!important;
-  box-sizing:border-box!important;
-  display:flex!important;
-  align-items:center!important;
-  justify-content:center!important;
-  text-align:center!important;
   border:0!important;
-  border-left:1px solid #7376a5!important;
+  border-left:1px solid #7375a5!important;
   border-radius:0!important;
   background:transparent!important;
   color:#fff!important;
   font-family:Inter,Roboto,Arial,sans-serif!important;
-  font-size:14px!important;
-  line-height:1.12!important;
+  font-size:13px!important;
+  line-height:1.05!important;
   font-weight:700!important;
   letter-spacing:-.015em!important;
   white-space:normal!important;
@@ -1200,57 +1171,35 @@ body.v40-standings-master .v40-segmented button:first-child{
   border-left:0!important;
 }
 body.v40-standings-master .v40-segmented button.active{
-  background:#50527f!important;
+  background:#4d4f7f!important;
   color:#fff!important;
-  font-size:14px!important;
-  font-weight:700!important;
 }
 
-/* La separación inferior también queda idéntica en Compacta, Completa y Criterios. */
+/* Restaurar márgenes/padding que V45 había tocado. */
+body.v40-standings-master #screen{
+  padding-left:14px!important;
+  padding-right:14px!important;
+}
+body.v40-standings-master #screen>.tabs{
+  margin-left:-14px!important;
+  margin-right:-14px!important;
+  padding-left:14px!important;
+  padding-right:14px!important;
+}
+body.v40-standings-master .v40-standings{
+  padding-left:18px!important;
+  padding-right:18px!important;
+  padding-top:25px!important;
+}
 body.v40-standings-master .v40-content{
-  margin-top:30px!important;
+  margin-top:29px!important;
 }
 
-/* El renderer V12 de respaldo usa las mismas dimensiones para que al cambiar
-   de caché o de estado no salte el tamaño del selector. */
-body[data-app-route="competition"] .v12-segmented{
-  height:58px!important;
-  min-height:58px!important;
-  max-height:58px!important;
-  grid-template-columns:repeat(3,minmax(0,1fr))!important;
-  gap:0!important;
-  border-radius:30px!important;
-  background:#1b1c63!important;
-  border:1px solid #65689a!important;
-  overflow:hidden!important;
-}
-body[data-app-route="competition"] .v12-segmented button{
-  height:58px!important;
-  min-height:58px!important;
-  max-height:58px!important;
-  padding:0 6px!important;
-  display:flex!important;
-  align-items:center!important;
-  justify-content:center!important;
-  text-align:center!important;
-  background:transparent!important;
-  color:#fff!important;
-  border-left:1px solid #7376a5!important;
-  font-family:Inter,Roboto,Arial,sans-serif!important;
-  font-size:14px!important;
-  line-height:1.12!important;
-  font-weight:700!important;
-  letter-spacing:-.015em!important;
-}
-body[data-app-route="competition"] .v12-segmented button:first-child{
-  border-left:0!important;
-}
-body[data-app-route="competition"] .v12-segmented button.active{
-  background:#50527f!important;
-  color:#fff!important;
+/* El logo extra no debe existir ni dejar espacio en Criterios. */
+body.v40-standings-master .v40-criteria-league{
+  display:none!important;
 }
 
-/* Dispositivos realmente estrechos conservan la misma relación visual. */
 @media(max-width:380px){
   body[data-app-route="competition"] #screen>.tabs .tab,
   body[data-app-route="competition"] #screen>.tabs .tab:nth-child(1),
@@ -1261,21 +1210,11 @@ body[data-app-route="competition"] .v12-segmented button.active{
     max-height:41px!important;
     padding-bottom:8px!important;
   }
-
-  body.v40-standings-master .v40-standings{
-    padding-left:16px!important;
-    padding-right:16px!important;
+  body.v40-standings-master .v40-segmented{
+    height:52px!important;
+    min-height:52px!important;
   }
-  body.v40-standings-master .v40-segmented,
-  body.v40-standings-master .v40-segmented button,
-  body[data-app-route="competition"] .v12-segmented,
-  body[data-app-route="competition"] .v12-segmented button{
-    height:56px!important;
-    min-height:56px!important;
-    max-height:56px!important;
-  }
-  body.v40-standings-master .v40-segmented button,
-  body[data-app-route="competition"] .v12-segmented button{
+  body.v40-standings-master .v40-segmented button{
     font-size:13px!important;
   }
 }
