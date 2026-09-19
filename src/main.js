@@ -423,12 +423,12 @@ function leagueToolsView(){
       v60ToolCard('qr','QR de la Liga','Compartir acceso directo a la app','ligaQR')+
       v60ToolCard('center','Equipos registrados','Solo equipos oficiales sincronizados','teams')+
       v60ToolCard('center','Jugadores registrados','Plantillas oficiales de AdminFut','', 'data-v63-official="players"')+
-      v60ToolCard('card','Generar credencial','Foto, OCR y credencial del jugador','credentialBuilder')+
+      v60ToolCard('cedula','Cédulas','Consulta y plantillas de partido','cedulas')+
       v60ToolCard('cedula','Generar cédula','Cédula y plantillas del partido','cedulaBuilder')+
+      v60ToolCard('card','Generar credencial','Foto, OCR y credencial del jugador','credentialBuilder')+
       v60ToolCard('rules','Reglamento','Reglamento oficial 2026–2027','rulebook')+
       v60ToolCard('matchday','Match Day','Checklist y operación de jornada','matchday')+
       v60ToolCard('field','Dónde se juega','Campos, comunidades y Maps','venues')+
-      v60ToolCard('cedula','Cédulas','Consulta y plantillas de partido','cedulas')+
       v60ToolCard('center','Match Center','Marcador, cronología y previa','match')+
       v60ToolCard('matchday','Jornadas','Calendario y resultados','', 'data-v60-comp="fixtures"')+
       v60ToolCard('bracket','Liguilla','Cuadro de eliminatorias','', 'data-v60-comp="bracket"')+
@@ -799,10 +799,6 @@ function moreView(){
       v19MoreButton('info','Reglamento','rulebook')+
       v19MoreButton('score','Match Day','matchday')+
       v19MoreButton('shield','Dónde se juega','venues')+
-      v19MoreButton('history','Cédulas','cedulas')+
-      v19MoreButton('history','Generar cédula','cedulaBuilder')+
-      v19MoreButton('shield','Jugadores registrados','players')+
-      v19MoreButton('shield','Generar credencial','credentialBuilder')+
       v19MoreButton('data','Todas las herramientas','leagueTools')+
     '</div>'+
     '<div class="v19-more-label explore">Explorar</div>'+
