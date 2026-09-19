@@ -4272,3 +4272,121 @@ body[data-app-route="competition"] .v12-bracket-reference.stage-final .v12-final
   body[data-app-route="competition"] .v12-bracket-stage-tabs > button[data-v12-bracket-stage="semifinal"]{width:150px!important}
   body[data-app-route="competition"] .v12-bracket-stage-tabs > button[data-v12-bracket-stage="final"]{width:88px!important}
 }
+
+
+/* === CUADRO_REF502 — ESCALA Y POSICIÓN DE LA CAPTURA DEL USUARIO === */
+/* Solo afecta el contenido interno de Cuadro. No cambia Partidos/Resultados ni Clasificación. */
+body[data-app-route="competition"] .v12-bracket-reference{
+  padding-top:14px!important;
+}
+
+/* Botones de rondas más compactos y en las posiciones de la captura. */
+body[data-app-route="competition"] .v12-bracket-reference .v12-bracket-stage-tabs{
+  display:flex!important;
+  align-items:center!important;
+  gap:clamp(7px,2.15vw,9px)!important;
+  margin:0 -12px 12px!important;
+  padding:14px 14px 10px!important;
+  overflow-x:auto!important;
+  overflow-y:hidden!important;
+  scrollbar-width:none!important;
+  scroll-snap-type:x proximity!important;
+  background:#05065b!important;
+}
+body[data-app-route="competition"] .v12-bracket-reference .v12-bracket-stage-tabs::-webkit-scrollbar{
+  display:none!important;
+}
+body[data-app-route="competition"] .v12-bracket-reference .v12-bracket-stage-tabs > button[data-v12-bracket-stage]{
+  flex:0 0 auto!important;
+  height:clamp(31px,9.5vw,40px)!important;
+  min-height:clamp(31px,9.5vw,40px)!important;
+  max-height:clamp(31px,9.5vw,40px)!important;
+  padding:0 8px!important;
+  border-radius:clamp(9px,2.8vw,12px)!important;
+  font-family:Inter,Roboto,Arial,sans-serif!important;
+  font-size:clamp(10.5px,3.15vw,13px)!important;
+  line-height:1!important;
+  font-weight:700!important;
+  letter-spacing:-.018em!important;
+  white-space:nowrap!important;
+  scroll-snap-align:start!important;
+}
+body[data-app-route="competition"] .v12-bracket-reference .v12-bracket-stage-tabs > button[data-v12-bracket-stage="playoff"]{
+  width:clamp(70px,21.5vw,92px)!important;
+  min-width:clamp(70px,21.5vw,92px)!important;
+  max-width:clamp(70px,21.5vw,92px)!important;
+}
+body[data-app-route="competition"] .v12-bracket-reference .v12-bracket-stage-tabs > button[data-v12-bracket-stage="octavos"],
+body[data-app-route="competition"] .v12-bracket-reference .v12-bracket-stage-tabs > button[data-v12-bracket-stage="cuartos"]{
+  width:clamp(112px,34.5vw,148px)!important;
+  min-width:clamp(112px,34.5vw,148px)!important;
+  max-width:clamp(112px,34.5vw,148px)!important;
+}
+body[data-app-route="competition"] .v12-bracket-reference .v12-bracket-stage-tabs > button[data-v12-bracket-stage="semifinal"]{
+  width:clamp(96px,29.5vw,127px)!important;
+  min-width:clamp(96px,29.5vw,127px)!important;
+  max-width:clamp(96px,29.5vw,127px)!important;
+}
+body[data-app-route="competition"] .v12-bracket-reference .v12-bracket-stage-tabs > button[data-v12-bracket-stage="final"]{
+  width:clamp(62px,19vw,82px)!important;
+  min-width:clamp(62px,19vw,82px)!important;
+  max-width:clamp(62px,19vw,82px)!important;
+}
+body[data-app-route="competition"] .v12-bracket-reference .v12-bracket-stage-tabs > button[data-v12-bracket-stage].active{
+  background:#14dce8!important;
+  color:#06115b!important;
+}
+
+/* Líneas y fechas/números: más pequeños, en las mismas columnas de la referencia. */
+body[data-app-route="competition"] .v12-bracket-reference > .v12-bracket-dates,
+body[data-app-route="competition"] .v12-bracket-reference .v12-progress-dates{
+  display:grid!important;
+  grid-template-columns:1fr 1fr!important;
+  gap:clamp(15px,4.6vw,20px)!important;
+  margin:0 0 14px!important;
+  padding:0 14px!important;
+}
+body[data-app-route="competition"] .v12-bracket-reference > .v12-bracket-dates span,
+body[data-app-route="competition"] .v12-bracket-reference .v12-progress-dates span{
+  padding-top:10px!important;
+  color:#b7bad1!important;
+  font-family:Inter,Roboto,Arial,sans-serif!important;
+  font-size:clamp(9.5px,2.9vw,12px)!important;
+  line-height:1.12!important;
+  font-weight:500!important;
+  letter-spacing:-.01em!important;
+  white-space:nowrap!important;
+}
+body[data-app-route="competition"] .v12-bracket-reference > .v12-bracket-dates span::before,
+body[data-app-route="competition"] .v12-bracket-reference .v12-progress-dates span::before{
+  top:0!important;
+  height:1px!important;
+  background:#20297e!important;
+}
+
+/* En móviles angostos conserva exactamente la primera fila visible: Play-off / Octavos / Cuartos. */
+@media(max-width:380px){
+  body[data-app-route="competition"] .v12-bracket-reference .v12-bracket-stage-tabs{
+    gap:7px!important;
+    padding-left:14px!important;
+    padding-right:14px!important;
+  }
+  body[data-app-route="competition"] .v12-bracket-reference .v12-bracket-stage-tabs > button[data-v12-bracket-stage]{
+    height:31px!important;
+    min-height:31px!important;
+    max-height:31px!important;
+    font-size:10.5px!important;
+    border-radius:9px!important;
+  }
+  body[data-app-route="competition"] .v12-bracket-reference .v12-bracket-stage-tabs > button[data-v12-bracket-stage="playoff"]{
+    width:70px!important;min-width:70px!important;max-width:70px!important;
+  }
+  body[data-app-route="competition"] .v12-bracket-reference .v12-bracket-stage-tabs > button[data-v12-bracket-stage="octavos"],
+  body[data-app-route="competition"] .v12-bracket-reference .v12-bracket-stage-tabs > button[data-v12-bracket-stage="cuartos"]{
+    width:112px!important;min-width:112px!important;max-width:112px!important;
+  }
+  body[data-app-route="competition"] .v12-bracket-reference > .v12-bracket-dates span,
+  body[data-app-route="competition"] .v12-bracket-reference .v12-progress-dates span{
+    font-size:9.5px!important;
+  }
+}
