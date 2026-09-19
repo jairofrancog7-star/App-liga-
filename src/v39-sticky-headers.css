@@ -1,0 +1,103 @@
+/* V39 — Cabeceras móviles persistentes.
+   Petición: toda pantalla que ya tenga barra/cabecera superior debe conservarla
+   mientras el contenido baja por debajo. No crea cabeceras nuevas en pantallas
+   de una sola vista (Fantasy, Quiz, Predictor, Hospitalidad). */
+
+@media (max-width:1023px){
+
+  /* Barra oficial compartida: conserva el diseño propio de cada ruta. */
+  body[data-app-route] #app > .topbar{
+    position:sticky!important;
+    top:0!important;
+    z-index:120!important;
+    isolation:isolate!important;
+  }
+
+  /* SIGUIENDO — cabecera propia. overflow:clip mantiene el arte recortado
+     sin convertir el contenedor en un scroll-container que rompa sticky. */
+  body[data-app-route="following"] #screen{
+    overflow-x:clip!important;
+    overflow-y:visible!important;
+  }
+  body[data-app-route="following"] .v28-follow-page{
+    overflow:clip!important;
+  }
+  body[data-app-route="following"] .v28-head{
+    position:sticky!important;
+    top:0!important;
+    z-index:80!important;
+    isolation:isolate!important;
+  }
+  body[data-app-route="following"] .v28-follow-page:not(.v28-empty) .v28-head{
+    background:
+      radial-gradient(120% 120% at 86% 0%,rgba(28,92,255,.32),transparent 54%),
+      linear-gradient(180deg,#09127e 0%,#050766 100%)!important;
+  }
+
+  /* EQUIPOS — pasa el espacio superior al propio header para que al pegarse
+     a top:0 conserve exactamente la zona segura y el espaciado inicial. */
+  body.v27-teams-active .v27-teams-page{
+    padding-top:0!important;
+    overflow:clip!important;
+  }
+  body.v27-teams-active .v27-teams-head{
+    position:sticky!important;
+    top:0!important;
+    z-index:80!important;
+    margin:0 -16px!important;
+    padding:calc(16px + env(safe-area-inset-top)) 16px 14px!important;
+    isolation:isolate!important;
+    background:
+      radial-gradient(150% 110% at 82% 0%,rgba(48,92,255,.58),transparent 55%),
+      linear-gradient(180deg,#07106d 0%,#07065f 100%)!important;
+  }
+
+  /* RANKINGS — misma lógica: el header conserva botones, título y tabs. */
+  body.v32-rankings-active .v32-rankings{
+    padding-top:0!important;
+    overflow:clip!important;
+  }
+  body.v32-rankings-active .v32-head{
+    position:sticky!important;
+    top:0!important;
+    z-index:80!important;
+    padding:calc(20px + env(safe-area-inset-top)) 22px 12px!important;
+    isolation:isolate!important;
+    background:
+      radial-gradient(140% 120% at 78% 0%,rgba(42,88,255,.70),transparent 57%),
+      linear-gradient(180deg,#071070 0%,#07065f 100%)!important;
+  }
+
+  /* SOBRE LA LIGA — solo fija la franja de controles superior; el contenido
+     sigue desplazándose por debajo sin alterar el resto de la composición. */
+  body.v33-about-active .v33-about{
+    padding-top:0!important;
+    overflow:clip!important;
+  }
+  body.v33-about-active .v33-about-tools{
+    position:sticky!important;
+    top:0!important;
+    z-index:80!important;
+    box-sizing:border-box!important;
+    height:calc(84px + env(safe-area-inset-top))!important;
+    padding:calc(20px + env(safe-area-inset-top)) 22px 0!important;
+    isolation:isolate!important;
+    background:
+      radial-gradient(120% 180% at 54% 0%,rgba(27,86,255,.72),transparent 64%),
+      linear-gradient(180deg,#06176f 0%,#04034f 100%)!important;
+  }
+
+  /* Historia y Estadísticas ya tienen cabeceras sticky/collapsing específicas.
+     Solo elevamos su capa para que el contenido siempre pase por debajo. */
+  body[data-app-route="history"] .v35-compact-bar,
+  body.v33-data-active .v33-data-head{
+    z-index:120!important;
+  }
+}
+
+@media (max-width:430px){
+  body.v33-about-active .v33-about-tools{
+    height:calc(80px + env(safe-area-inset-top))!important;
+    padding:calc(20px + env(safe-area-inset-top)) 16px 0!important;
+  }
+}
