@@ -521,3 +521,250 @@
     padding-right:18px!important;
   }
 }
+
+
+/* V58 — TABLAS CLASIFICACION EXACTAS A REFERENCIAS 1001960733/34 */
+@media(max-width:520px){
+  /* Selector: misma anchura, altura y división de las capturas maestras. */
+  body.v40-standings-master .v40-standings{
+    width:calc(100% + 28px)!important;
+    max-width:none!important;
+    margin-left:-14px!important;
+    margin-right:-14px!important;
+    padding:25px 18px 22px!important;
+    box-sizing:border-box!important;
+  }
+  body.v40-standings-master .v40-segmented{
+    width:100%!important;
+    height:53px!important;
+    min-height:53px!important;
+    max-height:53px!important;
+    grid-template-columns:1fr 1fr 1.12fr!important;
+    border:1px solid #66689a!important;
+    border-radius:29px!important;
+    background:#171863!important;
+  }
+  body.v40-standings-master .v40-segmented button{
+    min-width:0!important;
+    padding:0 5px!important;
+    border-left:1px solid #7375a5!important;
+    background:transparent!important;
+    color:#fff!important;
+    font-size:13px!important;
+    line-height:1.05!important;
+    font-weight:700!important;
+    letter-spacing:-.015em!important;
+  }
+  body.v40-standings-master .v40-segmented button:first-child{
+    border-left:0!important;
+  }
+  body.v40-standings-master .v40-segmented button.active{
+    background:#4d4f7f!important;
+    color:#fff!important;
+  }
+
+  body.v40-standings-master .v40-content{
+    margin-top:29px!important;
+  }
+  body.v40-standings-master .v40-direct{
+    margin-top:10px!important;
+    font-size:10px!important;
+    line-height:1!important;
+    font-weight:700!important;
+    color:#d3d4e2!important;
+  }
+  body.v40-standings-master .v40-rule{
+    height:2px!important;
+    margin-top:15px!important;
+    background:#a7a7bc!important;
+  }
+
+  /* Misma escala de escudos, nombres y filas en las tres tablas. */
+  body.v40-standings-master .v40-team{
+    grid-template-columns:32px minmax(0,1fr)!important;
+    gap:6px!important;
+    align-items:center!important;
+  }
+  body.v40-standings-master .v40-team-logo{
+    width:27px!important;
+    height:27px!important;
+    min-width:27px!important;
+    max-width:27px!important;
+    object-fit:contain!important;
+  }
+  body.v40-standings-master .v40-team strong{
+    min-width:0!important;
+    font-size:13px!important;
+    line-height:1.05!important;
+    font-weight:700!important;
+    letter-spacing:-.015em!important;
+    white-space:normal!important;
+    overflow:visible!important;
+    text-overflow:clip!important;
+  }
+
+  /* COMPACTA — # / equipo / P / +/- / PTOS / FORMA. */
+  body.v40-standings-master .v40-table-head,
+  body.v40-standings-master .v40-row{
+    grid-template-columns:22px 137px 34px 34px 34px 65px!important;
+    column-gap:0!important;
+  }
+  body.v40-standings-master .v40-table-head{
+    min-height:25px!important;
+    height:25px!important;
+    font-size:10px!important;
+  }
+  body.v40-standings-master .v40-row{
+    min-height:57px!important;
+    height:57px!important;
+    max-height:57px!important;
+  }
+  body.v40-standings-master .v40-rank{
+    font-size:10px!important;
+  }
+  body.v40-standings-master .v40-row>span:nth-child(3),
+  body.v40-standings-master .v40-row>span:nth-child(4),
+  body.v40-standings-master .v40-row>span:nth-child(5){
+    font-size:12px!important;
+    line-height:1!important;
+  }
+  body.v40-standings-master .v40-form{
+    gap:4px!important;
+    padding-right:2px!important;
+  }
+  body.v40-standings-master .v40-form i{
+    width:19px!important;
+    height:19px!important;
+  }
+  body.v40-standings-master .v40-form b{
+    width:21px!important;
+    height:21px!important;
+    font-size:9px!important;
+  }
+
+  /* El shell arranca en el mismo eje izquierdo del selector.
+     Completa cabe completa; Criterios conserva el pequeño desplazamiento
+     horizontal de la captura de referencia. */
+  body.v40-standings-master .v40-scroll-shell{
+    width:calc(100% + 18px)!important;
+    margin-right:-18px!important;
+    overflow-x:auto!important;
+    overflow-y:hidden!important;
+    scrollbar-width:none!important;
+    -webkit-overflow-scrolling:touch!important;
+  }
+  body.v40-standings-master .v40-scroll-shell::-webkit-scrollbar{
+    display:none!important;
+  }
+
+  /* COMPLETA — P / V / E / D / dos cifras auxiliares / +PTOS. */
+  body.v40-standings-master .v40-wide.complete{
+    width:336px!important;
+    min-width:336px!important;
+    max-width:336px!important;
+    padding-right:0!important;
+  }
+  body.v40-standings-master .v40-wide.complete .v40-wide-head,
+  body.v40-standings-master .v40-wide.complete .v40-wide-row{
+    grid-template-columns:22px 132px repeat(7,26px)!important;
+    column-gap:0!important;
+  }
+  body.v40-standings-master .v40-wide.complete .v40-wide-head{
+    min-height:25px!important;
+    height:25px!important;
+    max-height:25px!important;
+    font-size:10px!important;
+    line-height:1!important;
+    color:#d1d2df!important;
+  }
+  body.v40-standings-master .v40-wide.complete .v40-wide-row{
+    min-height:57px!important;
+    height:57px!important;
+    max-height:57px!important;
+  }
+  body.v40-standings-master .v40-wide.complete .v40-wide-row>span,
+  body.v40-standings-master .v40-wide.complete .v40-wide-row>b{
+    font-size:12px!important;
+    line-height:1!important;
+    font-weight:500!important;
+  }
+  body.v40-standings-master .v40-wide.complete .v40-wide-row>b{
+    font-weight:800!important;
+  }
+  body.v40-standings-master .v40-wide.complete .v40-muted-number{
+    color:#676b9d!important;
+  }
+  body.v40-standings-master .v40-wide.complete .v40-pluspts{
+    white-space:nowrap!important;
+    overflow:visible!important;
+    transform:translateX(-3px)!important;
+  }
+
+  /* CRITERIOS — PTOS / +/- / GF / GA / V / VA / P, con el último valor
+     llegando al borde derecho exactamente como la primera captura. */
+  body.v40-standings-master .v40-wide.criteria{
+    width:370px!important;
+    min-width:370px!important;
+    max-width:370px!important;
+    padding:0!important;
+  }
+  body.v40-standings-master .v40-wide.criteria .criteria-head,
+  body.v40-standings-master .v40-wide.criteria .v40-wide-head{
+    min-height:25px!important;
+    height:25px!important;
+    max-height:25px!important;
+    grid-template-columns:22px 110px repeat(7,34px)!important;
+    column-gap:0!important;
+    align-items:center!important;
+  }
+  body.v40-standings-master .v40-wide.criteria .v40-wide-row{
+    min-height:57px!important;
+    height:57px!important;
+    max-height:57px!important;
+    grid-template-columns:22px 110px repeat(7,34px)!important;
+    column-gap:0!important;
+  }
+  body.v40-standings-master .v40-wide.criteria .v40-wide-head b{
+    font-size:9px!important;
+    line-height:1!important;
+    font-weight:650!important;
+    color:#cfd0dc!important;
+  }
+  body.v40-standings-master .v40-wide.criteria .v40-wide-row>span{
+    font-size:12px!important;
+    line-height:1!important;
+    font-weight:500!important;
+    color:#fff!important;
+  }
+  body.v40-standings-master .v40-wide.criteria .v40-direct{
+    margin-top:10px!important;
+  }
+
+  /* Evita que reglas antiguas vuelvan a cambiar las tres alturas. */
+  body.v40-standings-master .v40-row,
+  body.v40-standings-master .v40-wide-row,
+  body.v40-standings-master .v40-wide.complete .v40-wide-row,
+  body.v40-standings-master .v40-wide.criteria .v40-wide-row{
+    box-sizing:border-box!important;
+    border-bottom:1px solid rgba(255,255,255,.095)!important;
+  }
+}
+
+@media(max-width:390px){
+  body.v40-standings-master .v40-row,
+  body.v40-standings-master .v40-wide-row,
+  body.v40-standings-master .v40-wide.complete .v40-wide-row,
+  body.v40-standings-master .v40-wide.criteria .v40-wide-row{
+    min-height:57px!important;
+    height:57px!important;
+    max-height:57px!important;
+  }
+  body.v40-standings-master .v40-team-logo,
+  body.v40-standings-master .v40-wide-row .v40-team-logo{
+    width:27px!important;
+    height:27px!important;
+  }
+  body.v40-standings-master .v40-team strong{
+    font-size:13px!important;
+  }
+}
