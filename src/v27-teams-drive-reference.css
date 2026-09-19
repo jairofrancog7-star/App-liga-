@@ -190,6 +190,61 @@ body.v27-teams-active .bottom-nav .nav-item[data-route="more"] svg{
   opacity:.86;
 }
 
+/* Ajuste solicitado — lista Equipos más compacta y escudos uniformes. */
+.v27-teams-page .v27-teams-head h1{
+  font-size:28px;
+  line-height:1.05;
+  letter-spacing:-.45px;
+}
+.v27-teams-page .v27-team-tile{
+  gap:9px;
+}
+.v27-teams-page .v27-logo{
+  width:50px;
+  height:50px;
+  display:grid;
+  place-items:center;
+  background:transparent !important;
+  border:0 !important;
+  border-radius:0 !important;
+  padding:0 !important;
+  box-shadow:none !important;
+  overflow:visible;
+}
+.v27-teams-page .v27-logo img{
+  width:46px;
+  height:46px;
+  max-width:46px;
+  max-height:46px;
+  margin:auto;
+  object-fit:contain;
+  object-position:center;
+  display:block;
+  background:transparent !important;
+  border:0 !important;
+  border-radius:0 !important;
+  padding:0 !important;
+  box-shadow:none !important;
+  filter:none !important;
+}
+.v27-teams-page .v27-team-tile span:last-child{
+  min-height:30px;
+  margin-top:2px;
+  position:relative;
+  z-index:2;
+  line-height:1.2;
+}
+@media (max-width:360px){
+  .v27-teams-page .v27-teams-head h1{font-size:25px}
+  .v27-teams-page .v27-logo{width:46px;height:46px}
+  .v27-teams-page .v27-logo img{
+    width:42px;
+    height:42px;
+    max-width:42px;
+    max-height:42px;
+  }
+}
+
 /* team profile */
 .v27-team-detail{
   padding-bottom:calc(112px + env(safe-area-inset-bottom));
