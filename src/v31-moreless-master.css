@@ -394,3 +394,82 @@ body[data-app-route="moreLess"] .v12-ml-curves .down .v12-curve-arrow{
     stroke-width:11px!important;
   }
 }
+
+
+/* V42 MORELESS NAVY UPWARD + ARROWS TIGHT TO TITLE */
+/* Fondo azul marino continuo de abajo hacia arriba, sin azul eléctrico brillante. */
+body[data-app-route="moreLess"],
+body[data-app-route="moreLess"] .app-shell,
+body[data-app-route="moreLess"] #screen{
+  background:#02052f!important;
+}
+body[data-app-route="moreLess"] .v12-moreless{
+  background:
+    linear-gradient(
+      to top,
+      #02042f 0%,
+      #030640 24%,
+      #04084f 46%,
+      #050c5f 66%,
+      #07136f 84%,
+      #091b80 100%
+    )!important;
+  background-image:
+    linear-gradient(
+      to top,
+      #02042f 0%,
+      #030640 24%,
+      #04084f 46%,
+      #050c5f 66%,
+      #07136f 84%,
+      #091b80 100%
+    )!important;
+}
+body[data-app-route="moreLess"] .v12-moreless::before{
+  background:
+    radial-gradient(ellipse at 50% 8%,rgba(35,62,150,.12),transparent 31%),
+    linear-gradient(90deg,rgba(1,2,32,.12),transparent 31%,transparent 69%,rgba(1,2,32,.14))!important;
+}
+
+/* Flechas curva pegadas al bloque MÁS / O / MENOS. */
+body[data-app-route="moreLess"] .v12-ml-curves{
+  left:50%!important;
+  top:7.2%!important;
+  width:min(49vw,250px)!important;
+  height:23%!important;
+  transform:translateX(-50%)!important;
+}
+body[data-app-route="moreLess"] .v12-curve-arrow{
+  width:clamp(48px,10.5vw,58px)!important;
+  height:clamp(94px,18vw,112px)!important;
+}
+body[data-app-route="moreLess"] .v12-curve-arrow path{
+  stroke-width:11px!important;
+}
+body[data-app-route="moreLess"] .v12-ml-curves .up .v12-curve-arrow{
+  right:-10px!important;
+  top:0!important;
+}
+body[data-app-route="moreLess"] .v12-ml-curves .down .v12-curve-arrow{
+  left:-10px!important;
+  top:43%!important;
+}
+
+@media(max-width:390px){
+  body[data-app-route="moreLess"] .v12-ml-curves{
+    top:7%!important;
+    width:51vw!important;
+    height:23%!important;
+  }
+  body[data-app-route="moreLess"] .v12-curve-arrow{
+    width:49px!important;
+    height:98px!important;
+  }
+  body[data-app-route="moreLess"] .v12-ml-curves .up .v12-curve-arrow{
+    right:-8px!important;
+  }
+  body[data-app-route="moreLess"] .v12-ml-curves .down .v12-curve-arrow{
+    left:-8px!important;
+    top:43%!important;
+  }
+}
