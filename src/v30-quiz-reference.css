@@ -455,3 +455,63 @@ body[data-app-route="quiz"] .nav-item[data-route="competition"] .nav-icon svg{
   fill:currentColor!important;
   stroke:none!important;
 }
+
+
+/* V30.2 — resultado clásico de Quiz Arena.
+   Este estado aparece DESPUÉS de tocar cualquier respuesta A/B/C/D,
+   como en la referencia del usuario: C verde con palomita y las demás azules. */
+body[data-app-route="quiz"] .v30-quiz-page.v30-answer-result .quiz-card p{
+  display:none!important;
+}
+body[data-app-route="quiz"] .v30-quiz-page.v30-answer-result .v30-logo-de{
+  display:none!important;
+}
+body[data-app-route="quiz"] .v30-quiz-page.v30-answer-result .v30-logo-liga{
+  top:42%!important;
+  font-size:0!important;
+}
+body[data-app-route="quiz"] .v30-quiz-page.v30-answer-result .v30-logo-liga::after{
+  content:"ARENA"!important;
+  display:block!important;
+  color:#fff!important;
+  font-family:Impact,"Arial Narrow","Roboto Condensed","Barlow Condensed",sans-serif!important;
+  font-style:italic!important;
+  font-weight:950!important;
+  font-size:clamp(58px,15vw,90px)!important;
+  line-height:.78!important;
+  letter-spacing:-.045em!important;
+}
+body[data-app-route="quiz"] .v30-quiz-page.v30-answer-result .v30-quiz-subtitle{
+  display:none!important;
+}
+body[data-app-route="quiz"] .v30-quiz-page.v30-answer-result .quiz-card{
+  top:54%!important;
+}
+body[data-app-route="quiz"] .v30-quiz-page.v30-answer-result .v30-answer-text{
+  font-size:0!important;
+  position:relative!important;
+  height:100%!important;
+}
+body[data-app-route="quiz"] .v30-quiz-page.v30-answer-result .v30-answer-text::after{
+  content:""!important;
+  position:absolute!important;
+  left:16%!important;
+  top:50%!important;
+  width:44%!important;
+  height:8px!important;
+  border-radius:999px!important;
+  transform:translateY(-50%)!important;
+  background:rgba(149,184,255,.48)!important;
+}
+body[data-app-route="quiz"] .v30-quiz-page.v30-answer-result .quiz-option{
+  background:linear-gradient(90deg,#094cff 0%,#0759ff 100%)!important;
+}
+body[data-app-route="quiz"] .v30-quiz-page.v30-answer-result .quiz-option.is-correct{
+  background:linear-gradient(90deg,#45bf48 0%,#2db13d 100%)!important;
+}
+body[data-app-route="quiz"] .v30-quiz-page.v30-answer-result .quiz-option.is-correct .v30-answer-text::after{
+  background:rgba(190,238,182,.46)!important;
+}
+body[data-app-route="quiz"] .v30-quiz-page.v30-answer-result .quiz-option:not(.is-correct) .v30-answer-check{
+  display:none!important;
+}
