@@ -471,7 +471,7 @@ document.addEventListener('click',e=>{
     if(box){
       box.querySelectorAll('[data-v12-bracket-stage]').forEach(b=>b.classList.toggle('active',b===bracketStage));
       box.classList.remove('stage-playoff','stage-octavos','stage-cuartos','stage-semifinal','stage-final');
-      box.classList.add('stage-'+bracketStage.dataset.v12BracketStage); if(bracketStage.dataset.v12BracketStage==='final') setTimeout(()=>bracketStage.scrollIntoView({behavior:'smooth',inline:'end',block:'nearest'}),40);
+      box.classList.add('stage-'+bracketStage.dataset.v12BracketStage); setTimeout(()=>bracketStage.scrollIntoView({behavior:'smooth',inline:bracketStage.dataset.v12BracketStage==='final'?'end':'center',block:'nearest'}),40);
     }
     return;
   }
