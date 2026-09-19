@@ -13,6 +13,19 @@
   const crest=c=>`<span class="v6-crest">${c}</span>`;
   const teams=[['JUV','Juventino',13,5,9],['POZ','Pozos',11,5,6],['RIN','Rincón de Centeno',9,5,3],['CUE','Cuenda',8,5,1],['SPD','San Pedro',6,5,-1],['MOR','Morales',4,5,-4]];
   const scorers=[['Juan Pérez','JUV',8,3],['Carlos Ramírez','POZ',6,4],['Miguel Torres','RIN',5,5],['Ángel Cruz','CUE',5,2]];
+  const v6TeamName=code=>(teams.find(t=>t[0]===code)||[code,code])[1];
+  const V6_LOGO_BASE='https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/';
+  const V6_LOGOS={
+    POZ:V6_LOGO_BASE+'assets/teams/pozos-fc.webp',
+    CUE:V6_LOGO_BASE+'assets/official-logos/toros-de-cuenda.png'
+  };
+  const scorerTeamMark=code=>{
+    const name=v6TeamName(code);
+    const src=V6_LOGOS[code]||'';
+    return src
+      ?`<span class="v6-scorer-logo"><img src="${src}" alt="${esc(name)}" loading="lazy" decoding="async"></span>`
+      :`<span class="v6-scorer-logo v6-scorer-logo-fallback">${esc(code)}</span>`;
+  };
   const actionCard=(ico,title,sub,to)=>`<button class="v6-action-card" data-safe-route="${to}"><span class="v6-action-icon">${svg(ico)}</span><span><b>${title}</b><small>${sub}</small></span><span class="v6-arrow">›</span></button>`;
   function ensureBell(){const top=document.querySelector('.topbar');if(!top)return;let b=document.querySelector('#safeBell');if(!b){b=document.createElement('button');b.id='safeBell';b.className='icon-button v5-bell';b.setAttribute('aria-label','Notificaciones');b.dataset.safeRoute='safe-notifications';const profile=top.querySelector('.profile-button');profile?top.insertBefore(b,profile):top.appendChild(b)}const unread=state.inbox.filter(x=>!x.read).length;const html=`${svg('bell')}${unread?`<span class="v5-badge">${unread}</span>`:''}`;if(b.innerHTML!==html)b.innerHTML=html}
   function homeExtra(){return `<div id="safeHomeExtra" class="v6-home-super">
@@ -23,7 +36,7 @@
     <section class="v6-section"><div class="v6-section-head"><h2>Clasificación</h2><button class="link-button" data-safe-route="competition">Ver completa</button></div><div class="v6-table-card"><div class="v6-table-head"><span>#</span><span>Equipo</span><span>PJ</span><span>DG</span><span>PTS</span></div>${teams.map((t,i)=>`<button class="v6-table-row" data-safe-route="competition"><span>${i+1}</span><span>${crest(t[0])}<b>${t[1]}</b></span><span>${t[3]}</span><span>${t[4]>0?'+':''}${t[4]}</span><strong>${t[2]}</strong></button>`).join('')}</div></section>
     <section class="v6-section"><button class="v6-performance-card" data-safe-route="safe-performance"><span class="v6-performance-icon">${svg('bolt')}</span><span><small>ANÁLISIS DE LA JORNADA</small><b>Performance Zone</b><p>Rendimiento, tendencias y clips tácticos.</p></span><span>›</span></button></section>
     <section class="v6-section"><div class="v6-section-head"><h2>Estadísticas de equipo</h2><button class="link-button" data-safe-route="stats">Ver todo</button></div><div class="v6-stat-carousel"><div class="v6-stat-card"><small>GOLES</small><b class="v6-big">14</b><p>Juventino</p><div class="v6-mini-bar"><i style="width:88%"></i></div></div><div class="v6-stat-card"><small>MEJOR DIFERENCIA</small><b class="v6-big">+9</b><p>Juventino</p><div class="v6-mini-bar"><i style="width:76%"></i></div></div><div class="v6-stat-card"><small>PUNTOS</small><b class="v6-big">13</b><p>Juventino</p><div class="v6-mini-bar"><i style="width:82%"></i></div></div></div><div class="v6-demo-note">Datos locales de demostración hasta conectar la base oficial.</div></section>
-    <section class="v6-section"><div class="v6-section-head"><h2>Máximos goleadores</h2><button class="link-button" data-safe-route="scorers">Ver ranking</button></div><div class="v6-scorers">${scorers.map((s,i)=>`<button data-safe-route="scorers"><span class="v6-rank">${i+1}</span>${crest(s[1])}<span><b>${s[0]}</b><small>${s[1]}</small></span><strong>${s[2]}</strong></button>`).join('')}</div></section>
+    <section class="v6-section"><div class="v6-section-head"><h2>Máximos goleadores</h2><button class="link-button" data-safe-route="scorers">Ver ranking</button></div><div class="v6-scorers">${scorers.map((s,i)=>`<button data-safe-route="scorers"><span class="v6-rank">${i+1}</span>${scorerTeamMark(s[1])}<span class="v6-scorer-copy"><b>${s[0]}</b><small>${v6TeamName(s[1])}</small></span><strong>${s[2]}</strong></button>`).join('')}</div></section>
     <section class="v6-section"><div class="v6-section-head"><h2>Equipo de la Semana</h2><button class="link-button" data-safe-action="week-team">Ver equipo</button></div><button class="v6-teamweek" data-safe-action="week-team"><span>${svg('team')}</span><div><b>XI de la Jornada 5</b><p>Formación destacada basada en los datos disponibles.</p></div><span>›</span></button></section>
     <section class="v6-section"><div class="v6-section-head"><h2>Calendario y resultados</h2><button class="link-button" data-safe-route="v4-calendar">Abrir calendario</button></div><div class="v6-calendar-card"><div><span>12</span><small>OCT</small><b>RIN 1–3 JUV</b></div><div class="active"><span>13</span><small>OCT</small><b>JUV 1–0 POZ</b></div><div><span>14</span><small>OCT</small><b>SPD · MOR 19:00</b></div></div></section>
     <section class="v6-section"><div class="v6-section-head"><h2>Más datos</h2></div><div class="v6-action-grid">${actionCard('chart','Estadísticas','General, equipos y jugadores','stats')}${actionCard('trophy','Rankings','Clasificación y líderes','rankings')}${actionCard('history','Historia','Temporadas y campeones','history')}${actionCard('chart','Datos avanzados','KPIs y comparativas','safe-data')}</div></section>
