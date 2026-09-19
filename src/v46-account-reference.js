@@ -180,18 +180,22 @@
 
   function takeover(){
     const r=route();
-    if(r!=='notifications'&&r!=='following'){
+
+    // IMPORTANT: #/following belongs to v25-following-reference.js.
+    // V46 must never replace that legacy/reference screen.
+    if(r!=='notifications'){
       document.body.classList.remove('v46-account-active','v46-notifications-active','v46-following-active');
       return;
     }
+
     const screen=document.querySelector('#screen');
     if(!screen)return;
     document.body.classList.add('v46-account-active');
-    document.body.classList.toggle('v46-notifications-active',r==='notifications');
-    document.body.classList.toggle('v46-following-active',r==='following');
-    const expected=r;
-    if(screen.querySelector('[data-v46-account="'+expected+'"]'))return;
-    screen.innerHTML=r==='notifications'?notificationsMarkup():followingMarkup();
+    document.body.classList.add('v46-notifications-active');
+    document.body.classList.remove('v46-following-active');
+
+    if(screen.querySelector('[data-v46-account="notifications"]'))return;
+    screen.innerHTML=notificationsMarkup();
     window.scrollTo(0,0);
     bind();
   }
@@ -200,8 +204,7 @@
   window.addEventListener('hashchange',schedule);
   const screen=document.querySelector('#screen');
   if(screen)new MutationObserver(function(){
-    const r=route();
-    if((r==='notifications'||r==='following')&&!screen.querySelector('[data-v46-account="'+r+'"]'))schedule();
+    if(route()==='notifications'&&!screen.querySelector('[data-v46-account="notifications"]'))schedule();
   }).observe(screen,{childList:true,subtree:false});
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',schedule,{once:true});else schedule();
 })();
