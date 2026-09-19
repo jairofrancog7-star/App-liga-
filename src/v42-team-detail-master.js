@@ -216,7 +216,18 @@
     if(navigator.share)navigator.share(p).catch(()=>{});
     else navigator.clipboard?.writeText(location.href).then(()=>toast('Enlace copiado')).catch(()=>toast('Enlace listo para compartir'));
   }
-  function rerender(){const screen=document.querySelector('#screen');if(screen){screen.innerHTML=markup();bind()}}
+  function rerender(){const screen=document.querySelector('#screen');if(screen){screen.innerHTML=markup();bind();fixBottomNav();fixBottomNav()}}
+  function fixBottomNav(){
+    /* TEAMDETAIL_NAV_FIX1 — evita COMPETICIÓN/VIDEO encimados al entrar a un equipo. */
+    const nav=document.querySelector('.bottom-nav');
+    if(!nav)return;
+    const labels={home:'Inicio',competition:'Competición',video:'Video',fantasy:'Fantasy',more:'Más'};
+    nav.querySelectorAll('.nav-item').forEach(item=>{
+      const small=item.querySelector('small');
+      if(small&&labels[item.dataset.route])small.textContent=labels[item.dataset.route];
+      item.classList.toggle('active',item.dataset.route==='competition');
+    });
+  }
   function render(){
     const active=route()==='teamDetail';
     document.body.classList.toggle('v42-team-active',active);
