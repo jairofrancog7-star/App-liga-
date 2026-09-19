@@ -39,6 +39,36 @@ const titleRows=[
 ];
 
 let activeTab='Resumen';
+let v35ScrollRaf=0;
+
+function scrollTop(){
+  return window.scrollY || document.documentElement.scrollTop || document.body.scrollTop || 0;
+}
+function syncHistoryCollapse(){
+  if(route()!=='history') return;
+  const root=document.querySelector('.v35-history-page');
+  const tabs=root?.querySelector('.v35-tabs');
+  const compact=root?.querySelector('.v35-compact-bar');
+  if(!root||!tabs||!compact) return;
+
+  const compactHeight=compact.getBoundingClientRect().height || 78;
+  const pageTop=root.getBoundingClientRect().top + scrollTop();
+  const tabsNaturalTop=pageTop + tabs.offsetTop;
+  const trigger=Math.max(72,tabsNaturalTop-pageTop-compactHeight);
+  const y=Math.max(0,scrollTop()-pageTop);
+  const p=Math.max(0,Math.min(1,y/trigger));
+
+  root.style.setProperty('--v35-collapse',p.toFixed(4));
+  root.style.setProperty('--v35-compact-h',compactHeight+'px');
+  root.classList.toggle('is-compact',y>=trigger-2);
+}
+function scheduleHistoryCollapse(){
+  if(v35ScrollRaf) return;
+  v35ScrollRaf=requestAnimationFrame(()=>{
+    v35ScrollRaf=0;
+    syncHistoryCollapse();
+  });
+}
 
 function route(){
   return (location.hash.replace(/^#\//,'')||'home').split('?')[0];
@@ -151,13 +181,15 @@ function transparentizeTopLogo(img){
   if(img.complete) run(); else img.addEventListener('load',run,{once:true});
 }
 function pageHtml(){
+  const back='<button class="v35-back" type="button" data-v35-back aria-label="Volver"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 11H7.83L13.42 5.41 12 4l-8 8 8 8 1.41-1.41L7.83 13H20Z"/></svg></button>';
   return '<div class="v35-history-page">'+linesSvg()+
+    '<div class="v35-compact-bar">'+back+'<div class="v35-compact-title">Historia</div></div>'+
     '<header class="v35-history-head">'+
-      '<button class="v35-back" type="button" data-v35-back aria-label="Volver"><svg viewBox="0 0 32 32" aria-hidden="true"><path d="M26 16H7M14 9l-7 7 7 7"/></svg></button>'+
+      back+
       '<div class="v35-logo-wrap"><img data-v35-top-logo crossorigin="anonymous" src="'+ASSETS.league+'" alt="Liga Municipal de Fútbol Juventino Rosas A.C." decoding="async"></div>'+
       '<h1>Historia</h1>'+
-      '<nav class="v35-tabs" aria-label="Secciones de Historia">'+tabs()+'</nav>'+
     '</header>'+
+    '<nav class="v35-tabs" aria-label="Secciones de Historia">'+tabs()+'</nav>'+
     '<main class="v35-history-content" data-v35-content>'+bodyForTab()+'</main>'+
   '</div>';
 }
@@ -169,7 +201,10 @@ function renderHistory(){
   screen.innerHTML=pageHtml();
   document.body.classList.add('v35-history-mounted');
   transparentizeTopLogo(screen.querySelector('[data-v35-top-logo]'));
-  requestAnimationFrame(()=>{ window.scrollTo({top:0,left:0,behavior:'auto'}); });
+  requestAnimationFrame(()=>{
+    window.scrollTo({top:0,left:0,behavior:'auto'});
+    syncHistoryCollapse();
+  });
 }
 function rerenderContent(){
   const root=document.querySelector('.v35-history-page');
@@ -179,6 +214,7 @@ function rerenderContent(){
   nav.innerHTML=tabs();
   content.innerHTML=bodyForTab();
   root.scrollIntoView({block:'start',behavior:'auto'});
+  requestAnimationFrame(syncHistoryCollapse);
 }
 function toast(msg){
   let el=document.querySelector('.v35-toast');
@@ -215,7 +251,9 @@ function cleanup(){
 }
 function boot(){
   renderHistory();
-  window.addEventListener('hashchange',()=>requestAnimationFrame(()=>{cleanup();renderHistory();}));
+  window.addEventListener('hashchange',()=>requestAnimationFrame(()=>{cleanup();renderHistory();syncHistoryCollapse();}));
+  window.addEventListener('scroll',scheduleHistoryCollapse,{passive:true});
+  window.addEventListener('resize',scheduleHistoryCollapse,{passive:true});
   document.addEventListener('click',onClick,true);
   const screen=document.querySelector('#screen');
   if(screen){
