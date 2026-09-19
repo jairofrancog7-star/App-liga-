@@ -60,27 +60,8 @@ function v15TransparentizeLogo(img){
 }
 
 function v15EnsureProfessionalHomeLogo(){
-  if(v15Route()!=='home') return;
-  const topbar=document.querySelector('.topbar');
-  if(!topbar) return;
-  let badge=topbar.querySelector('.v15-home-clean-logo');
-  if(!badge){
-    badge=document.createElement('span');
-    badge.className='v15-home-clean-logo';
-    badge.setAttribute('aria-hidden','true');
-    const img=document.createElement('img');
-    img.className='v15-home-clean-logo-image';
-    img.alt='';
-    img.crossOrigin='anonymous';
-    img.decoding='async';
-    img.src=V15_TEAM_BASE+'assets/liga-logo.webp';
-    badge.appendChild(img);
-    topbar.appendChild(badge);
-    v15TransparentizeLogo(img);
-  }else{
-    const img=badge.querySelector('img');
-    if(img) v15TransparentizeLogo(img);
-  }
+  const badge=document.querySelector('.topbar .v15-home-clean-logo');
+  if(badge) badge.remove();
 }
 
 function v15PatchHome(){
