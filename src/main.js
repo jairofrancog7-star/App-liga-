@@ -226,7 +226,7 @@ function v19MoreButton(icon,label,route,safe=false){
   return '<button type="button" class="v19-more-item" '+attr+'>'+v19MoreIcon(icon)+'<span>'+label+'</span></button>';
 }
 
-const V60_RULEBOOK='./docs/Reglamento_Liga_Juventino_Rosas_2026_2027.pdf';
+const V60_RULEBOOK='https://raw.githubusercontent.com/jairofrancog7-star/App-liga-/main/docs/Reglamento_Liga_Juventino_Rosas_2026_2027.pdf';
 const V60_FIELDS=[
   {id:'sur-1',name:'Campo 1 · Unidad Deportiva Sur',community:'Juventino Rosas',address:'Unidad Deportiva Sur, Juventino Rosas, Guanajuato',maps:'Unidad Deportiva Sur, Juventino Rosas, Guanajuato',lat:20.63753,lon:-100.99297,weather:true},
   {id:'sur-2',name:'Campo 2 · Unidad Deportiva Sur',community:'Juventino Rosas',address:'Unidad Deportiva Sur, Juventino Rosas, Guanajuato',maps:'Unidad Deportiva Sur, Juventino Rosas, Guanajuato',lat:20.63753,lon:-100.99297,weather:true},
@@ -289,8 +289,8 @@ function leagueToolsView(){
 }
 function rulebookView(){
   return '<section class="v60-tool-page">'+v60Header('DOCUMENTOS','Reglamento','Consulta el Reglamento oficial de la Liga Municipal de Fútbol Juventino Rosas 2026–2027.')+
-    '<div class="v60-panel"><div class="v60-actions"><a class="v60-link" href="'+V60_RULEBOOK+'" target="_blank" rel="noopener">Abrir PDF</a><a class="v60-link outline" href="'+V60_RULEBOOK+'" download>Descargar</a></div><p class="v60-note">El documento está incluido dentro de esta app. No cambia tablas, resultados ni otras pantallas.</p></div>'+
-    '<iframe class="v60-pdf-frame" title="Reglamento Liga Juventino Rosas" src="'+V60_RULEBOOK+'#view=FitH"></iframe></section>';
+    '<div class="v60-panel"><div class="v60-actions"><a class="v60-link" href="'+V60_RULEBOOK+'" target="_blank" rel="noopener noreferrer">Abrir PDF</a><a class="v60-link outline" href="'+V60_RULEBOOK+'" target="_blank" rel="noopener noreferrer">Descargar</a></div><p class="v60-note">El reglamento abre desde el archivo PDF oficial guardado en GitHub para evitar el error de archivo no encontrado.</p></div>'+
+    '<div class="v60-pdf-shell"><object class="v60-pdf-frame" data="'+V60_RULEBOOK+'" type="application/pdf"><div class="v60-pdf-fallback"><b>Vista previa no disponible en este navegador.</b><span>Usa “Abrir PDF” para verlo o descargarlo.</span><a class="v60-link" href="'+V60_RULEBOOK+'" target="_blank" rel="noopener noreferrer">Abrir PDF</a></div></object></div></section>';
 }
 function v60MatchdayState(){try{return JSON.parse(localStorage.getItem('v60-matchday')||'{}')||{}}catch(e){return {}}}
 function matchdayView(){
