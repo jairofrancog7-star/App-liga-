@@ -396,14 +396,17 @@ function leagueToolsView(){
     '<div class="v60-tool-grid">'+
       v60ToolCard('search','Buscador','Equipos, jugadores, partidos, campos y noticias','search')+
       v60ToolCard('qr','QR de la Liga','Compartir acceso directo a la app','ligaQR')+
+      v60ToolCard('center','Equipos registrados','Solo equipos oficiales sincronizados','teams')+
+      v60ToolCard('center','Jugadores registrados','Plantillas oficiales de AdminFut','', 'data-v63-official="players"')+
+      v60ToolCard('card','Generar credencial','Foto, OCR y credencial del jugador','credentialBuilder')+
+      v60ToolCard('cedula','Generar cédula','Cédula y plantillas del partido','cedulaBuilder')+
       v60ToolCard('rules','Reglamento','Reglamento oficial 2026–2027','rulebook')+
       v60ToolCard('matchday','Match Day','Checklist y operación de jornada','matchday')+
       v60ToolCard('field','Dónde se juega','Campos, comunidades y Maps','venues')+
-      v60ToolCard('cedula','Cédulas','Generador interno, plantillas y PDF','cedulaBuilder')+
+      v60ToolCard('cedula','Cédulas','Consulta y plantillas de partido','cedulas')+
       v60ToolCard('center','Match Center','Marcador, cronología y previa','match')+
       v60ToolCard('matchday','Jornadas','Calendario y resultados','', 'data-v60-comp="fixtures"')+
       v60ToolCard('bracket','Liguilla','Cuadro de eliminatorias','', 'data-v60-comp="bracket"')+
-      v60ToolCard('card','Credencial','Foto, OCR local y datos del jugador','credentialBuilder')+
       v60ToolCard('share','Publicaciones','Compartir jornada / WhatsApp','publications')+
       v60ToolCard('tactics','Tácticas','Pizarra 2D y formaciones','tactics')+
       v60ToolCard('sim','Simulador','Simulación local de clasificación','simulator')+
@@ -421,7 +424,7 @@ function leagueToolsView(){
       v60ToolCard('share','Aviso de suspensión','Borrador y vista previa de jornada suspendida','suspensionTool')+
     '</div></section>';
 }
-function rulebookView(){
+function rulebookView(){function rulebookView(){
   return '<section class="v60-tool-page">'+v60Header('DOCUMENTOS','Reglamento','Consulta el Reglamento oficial de la Liga Municipal de Fútbol Juventino Rosas 2026–2027.')+
     '<div class="v60-panel"><div class="v60-actions"><a class="v60-link" href="'+V60_RULEBOOK+'" target="_blank" rel="noopener noreferrer">Abrir PDF</a><a class="v60-link outline" href="'+V60_RULEBOOK+'" target="_blank" rel="noopener noreferrer">Descargar</a></div><p class="v60-note">El reglamento abre desde el archivo PDF oficial guardado en GitHub para evitar el error de archivo no encontrado.</p></div>'+
     '<div class="v60-pdf-shell"><object class="v60-pdf-frame" data="'+V60_RULEBOOK+'" type="application/pdf"><div class="v60-pdf-fallback"><b>Vista previa no disponible en este navegador.</b><span>Usa “Abrir PDF” para verlo o descargarlo.</span><a class="v60-link" href="'+V60_RULEBOOK+'" target="_blank" rel="noopener noreferrer">Abrir PDF</a></div></object></div>'+
@@ -579,11 +582,22 @@ function v64TeamNames(){
       ((cat.fixtures||[])[0]?.rows||[]).forEach(function(r){add(r[2]);add(r[6])});
     });
   }catch(e){}
-  teams.forEach(function(t){add(t.name)});
+  if(!out.length){
+    ['TOROS DE CUENDA','MANCHESTER','BOAVISTA','DYNAMO','LA ESPERANZA','BOCA JRS',
+     'FRANCO FC','HERMANOS','NAPOLI','HERRERAS FC','LINCES','ABEJAS','LOBOS CDG','JUVENTUS','SAN JOSE FC','TERRICOLAS','GALACTICOS',
+     'DEP. ZAPATA','SAN JULIAN','BARZA','SAN JUAN FC','CELTICOS','SAN JOSE JRS','DEP. NOPALERO','TAPATIO','DEP. LA LUZ','PACHANGAS FC','SAN ANTONIO FC','TAVERA FC',
+     'CAPIBARAS','MAZACOTES FC','LA HUERTA','LA CANCHITA DEPORTES','POPULARES','MALVINAS','PROMESAS FC','LA CUADRILLA','DEP. MARAVILLAS','GALEANA','SAN ANTONIO JRS','OSASUNA','ALDAMA FC'
+    ].forEach(add);
+  }
   return out;
 }
 
-function v64StandingsRows(){
+function v64TeamSelect(name,attr){
+  const list=v64TeamNames(),selected=String(name||'').trim().toLowerCase();
+  return '<select '+attr+'><option value="">Por confirmar</option>'+list.map(function(n){return '<option '+(n.toLowerCase()===selected?'selected':'')+'>'+v64Esc(n)+'</option>'}).join('')+'</select>';
+}
+
+function v64StandingsRows(){function v64StandingsRows(){
   try{
     const db=window.LJR_OFFICIAL_DATA||{};
     const id=localStorage.getItem('v62-category')||'3';
@@ -636,15 +650,16 @@ function v64BracketView(){
 }
 
 function v64CredentialBuilderView(){
+  const v66Player=localStorage.getItem('v66-selected-player')||'',v66Team=localStorage.getItem('v66-selected-player-team')||'';
   return '<section class="v60-tool-page v64-page">'+v60Header('CREDENCIALES','Credencial de jugador','Carga una foto del documento y una foto del jugador. La lectura OCR se realiza en este dispositivo y no se guarda en GitHub.')+
     '<div class="v64-form-grid one">'+
       '<label><b>Foto de CURP o INE</b><input type="file" accept="image/*" data-v64-doc></label>'+
       '<label><b>Foto del jugador</b><input type="file" accept="image/*" data-v64-photo></label>'+
       '<div class="v60-actions"><button class="v60-btn" data-v64-ocr>Detectar texto</button><button class="v60-btn outline" data-v64-clear-ocr>Borrar documento y lectura</button></div>'+
       '<label><b>Texto detectado — revisa y corrige</b><textarea class="v60-textarea" data-v64-ocr-text></textarea></label>'+
-      '<label><b>Nombre del jugador</b><input type="text" data-v64-cred-name placeholder="Nombre completo"></label>'+
+      '<label><b>Nombre del jugador</b><input type="text" data-v64-cred-name placeholder="Nombre completo" value="'+v64Esc(v66Player)+'"></label>'+
       '<label><b>CURP (solo para captura local)</b><input type="text" maxlength="18" data-v64-cred-curp placeholder="CURP"></label>'+
-      '<label><b>Equipo</b>'+v64TeamSelect('', 'data-v64-cred-team')+'</label>'+
+      '<label><b>Equipo</b>'+v64TeamSelect(v66Team, 'data-v64-cred-team')+'</label>'+
       '<label><b>Categoría</b><select data-v64-cred-cat><option>Primera Fuerza</option><option>Intermedia</option><option>Segunda Fuerza</option><option>Veteranos 35+</option><option>Veteranos 50+</option></select></label>'+
       '<label><b>Número</b><input type="number" min="0" max="99" value="0" data-v64-cred-number></label>'+
     '</div>'+
@@ -652,7 +667,7 @@ function v64CredentialBuilderView(){
     '<div class="v60-actions"><button class="v60-btn" data-v64-print-credential>Imprimir / guardar PDF</button></div></section>';
 }
 
-function v64CedulaBuilderView(){
+function v64CedulaBuilderView(){function v64CedulaBuilderView(){
   return '<section class="v60-tool-page v64-page">'+v60Header('CÉDULAS','Generador interno de cédulas','Genera una cédula y plantillas dentro de Liga Juventino Rosas; no redirige a una página externa.')+
     '<div class="v64-form-grid one">'+
       '<label><b>Categoría</b><select data-v64-ced-cat><option>Primera Fuerza</option><option>Intermedia</option><option>Segunda Fuerza</option><option>Veteranos 35+</option><option>Veteranos 50+</option></select></label>'+
@@ -747,6 +762,7 @@ function moreView(){
       v19MoreButton('medal','Máximo goleador','scorers')+
       v19MoreButton('video','Momentos','moments')+
       v19MoreButton('data','Datos','safe-data',true)+
+      v19MoreButton('qr','QR de la Liga','ligaQR')+
     '</div>'+
     '<div class="v19-more-label">Gaming</div>'+
     '<div class="v19-more-menu">'+
@@ -756,10 +772,19 @@ function moreView(){
     '</div>'+
     '<div class="v19-more-label event">En el evento</div>'+
     '<div class="v19-more-menu">'+v19MoreButton('glasses','Hospitalidad','hospitality')+'</div>'+
-    '<div class="v19-more-menu">'+v19MoreButton('info','Reglamento','rulebook')+v19MoreButton('score','Match Day','matchday')+v19MoreButton('shield','Dónde se juega','venues')+v19MoreButton('history','Cédulas','cedulas')+v19MoreButton('data','Todas las herramientas','leagueTools')+'</div>'+'<div class="v19-more-label explore">Explorar</div>'+
+    '<div class="v19-more-menu">'+
+      v19MoreButton('info','Reglamento','rulebook')+
+      v19MoreButton('score','Match Day','matchday')+
+      v19MoreButton('shield','Dónde se juega','venues')+
+      v19MoreButton('history','Cédulas','cedulas')+
+      v19MoreButton('history','Generar cédula','cedulaBuilder')+
+      v19MoreButton('shield','Jugadores registrados','players')+
+      v19MoreButton('shield','Generar credencial','credentialBuilder')+
+      v19MoreButton('data','Todas las herramientas','leagueTools')+
+    '</div>'+
+    '<div class="v19-more-label explore">Explorar</div>'+
     '<div class="v19-more-menu">'+
       v19MoreButton('search','Buscar','search')+
-      v19MoreButton('qr','QR de la Liga','ligaQR')+
       v19MoreButton('trophy','Rankings de la Liga','rankings')+
       v19MoreButton('history','Historia','history')+
       v19MoreButton('bag','Tienda','club-store')+
@@ -778,7 +803,7 @@ function moreView(){
     '</div>'+
   '</section>';
 }
-function hospitalityView(){
+function hospitalityView(){function hospitalityView(){
   return '<div class="eyebrow">EN EL EVENTO</div><h1 class="screen-title">Hospitalidad</h1>'+
     '<section class="section"><div class="profile-card"><h2>Hospitalidad de la Liga</h2><p>Consulta sedes, accesos y servicios disponibles para los partidos de la Liga Municipal de Fútbol Juventino Rosas.</p><div class="button-row"><button class="btn primary" data-route="venues">Ver campos / sedes</button><button class="btn outline" data-route="competition">Ver partidos</button></div></div></section>'+
     '<section class="section"><div class="section-head"><h2>Accesos rápidos</h2></div><div class="menu-group">'+
