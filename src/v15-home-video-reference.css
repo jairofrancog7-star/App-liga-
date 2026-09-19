@@ -562,3 +562,140 @@ body[data-app-route="home"] #screen>.stories{
   box-shadow:none!important;
   border-top:0!important;
 }
+
+
+/* V21 HOME FEATURE PHOTO — sustituye únicamente la ilustración por una portada
+   fotorealista con futbolistas ficticios. Mantiene texto, tamaño y navegación. */
+body[data-app-route="home"] #screen>.section.hero[data-v15-home-feature="3"]{
+  position:relative!important;
+  display:block!important;
+  width:min(88%,430px)!important;
+  max-width:430px!important;
+  min-height:0!important;
+  height:auto!important;
+  aspect-ratio:860/1285!important;
+  margin:2px auto 24px!important;
+  padding:0!important;
+  border:0!important;
+  border-radius:32px!important;
+  overflow:hidden!important;
+  background:#03063f!important;
+  box-shadow:none!important;
+  isolation:isolate!important;
+}
+
+body[data-app-route="home"] #screen>.stories + .section.hero[data-v15-home-feature="3"]{
+  margin-top:2px!important;
+}
+
+body[data-app-route="home"] .v21-home-feature-photo{
+  position:absolute!important;
+  z-index:1!important;
+  inset:0 0 31% 0!important;
+  display:block!important;
+  overflow:hidden!important;
+  background:
+    radial-gradient(circle at 22% 18%,rgba(255,255,255,.11),transparent 24%),
+    linear-gradient(180deg,#071124 0%,#03063f 100%)!important;
+}
+
+body[data-app-route="home"] .v21-home-feature-photo-image{
+  position:absolute!important;
+  inset:0!important;
+  display:block!important;
+  width:100%!important;
+  height:100%!important;
+  max-width:none!important;
+  max-height:none!important;
+  margin:0!important;
+  padding:0!important;
+  border:0!important;
+  object-fit:cover!important;
+  object-position:center 46%!important;
+  filter:saturate(.92) contrast(1.04) brightness(.92)!important;
+  transform:none!important;
+  image-rendering:auto!important;
+  user-select:none!important;
+  pointer-events:none!important;
+  -webkit-user-drag:none!important;
+}
+
+body[data-app-route="home"] .v21-home-feature-photo-fade{
+  position:absolute!important;
+  z-index:2!important;
+  inset:0!important;
+  display:block!important;
+  pointer-events:none!important;
+  background:
+    linear-gradient(180deg,rgba(2,4,61,0) 0%,rgba(2,4,61,.04) 48%,rgba(2,4,61,.55) 76%,#02043d 100%)!important;
+}
+
+body[data-app-route="home"] .v21-home-feature-copy{
+  position:absolute!important;
+  z-index:3!important;
+  left:7.6%!important;
+  right:7.6%!important;
+  bottom:5.3%!important;
+  margin:0!important;
+  padding:0!important;
+  color:#fff!important;
+  text-align:left!important;
+  pointer-events:none!important;
+}
+
+body[data-app-route="home"] .v21-home-feature-copy h2{
+  margin:0 0 9.5%!important;
+  padding:0!important;
+  color:#fff!important;
+  font-family:Inter,Roboto,Arial,sans-serif!important;
+  font-size:clamp(28px,7.4vw,42px)!important;
+  line-height:1.08!important;
+  font-weight:900!important;
+  letter-spacing:-.035em!important;
+  text-wrap:balance!important;
+}
+
+body[data-app-route="home"] .v21-home-feature-copy p{
+  margin:0!important;
+  padding:0!important;
+  color:rgba(255,255,255,.93)!important;
+  font-family:Inter,Roboto,Arial,sans-serif!important;
+  font-size:clamp(16px,4.35vw,23px)!important;
+  line-height:1.25!important;
+  font-weight:400!important;
+  letter-spacing:-.012em!important;
+}
+
+body[data-app-route="home"] #screen>.section.hero[data-v15-home-feature="3"] .v15-home-feature-hit{
+  position:absolute!important;
+  z-index:5!important;
+  inset:0!important;
+  display:block!important;
+  width:100%!important;
+  height:100%!important;
+  margin:0!important;
+  padding:0!important;
+  border:0!important;
+  border-radius:inherit!important;
+  background:transparent!important;
+  cursor:pointer!important;
+  -webkit-tap-highlight-color:transparent!important;
+}
+
+body[data-app-route="home"] #screen>.section.hero[data-v15-home-feature="3"] .v15-home-feature-art,
+body[data-app-route="home"] #screen>.section.hero[data-v15-home-feature="3"] .v15-home-feature-image{
+  display:none!important;
+}
+
+@media(max-width:380px){
+  body[data-app-route="home"] #screen>.section.hero[data-v15-home-feature="3"]{
+    width:90%!important;
+    border-radius:26px!important;
+  }
+  body[data-app-route="home"] .v21-home-feature-copy h2{
+    font-size:clamp(27px,7.8vw,34px)!important;
+  }
+  body[data-app-route="home"] .v21-home-feature-copy p{
+    font-size:clamp(15px,4.25vw,18px)!important;
+  }
+}
