@@ -842,3 +842,56 @@
     padding-bottom:10px!important;
   }
 }
+
+
+/* V60 — BAJAR FONDO SUPERIOR EN PARTIDOS Y CUADRO */
+/* Clasificación ya usa una cabecera de 108px. Igualamos Partidos y Cuadro
+   para que el fondo superior baje hasta la misma altura sin cambiar diseño. */
+@media(max-width:520px){
+  body[data-app-route="competition"] .topbar{
+    height:calc(108px + env(safe-area-inset-top))!important;
+    min-height:calc(108px + env(safe-area-inset-top))!important;
+    max-height:calc(108px + env(safe-area-inset-top))!important;
+  }
+
+  body[data-app-route="competition"] #screen{
+    min-height:calc(100dvh - 108px)!important;
+  }
+
+  /* El calendario pegajoso de Partidos debe respetar la nueva altura
+     y no montarse encima de la cabecera más baja. */
+  body[data-app-route="competition"] .v12-date-strip{
+    top:calc(108px + env(safe-area-inset-top))!important;
+  }
+
+  /* Mantener título e icono dentro de la nueva cabecera sin estirarlos. */
+  body[data-app-route="competition"] .topbar::after{
+    top:58px!important;
+    bottom:auto!important;
+  }
+  body[data-app-route="competition"] .topbar .profile-button{
+    top:56px!important;
+    bottom:auto!important;
+  }
+}
+
+/* En teléfonos angostos NO volver a la cabecera antigua de 86px.
+   Partidos, Clasificación y Cuadro conservan exactamente la misma altura. */
+@media(max-width:380px){
+  body[data-app-route="competition"] .topbar{
+    height:calc(108px + env(safe-area-inset-top))!important;
+    min-height:calc(108px + env(safe-area-inset-top))!important;
+    max-height:calc(108px + env(safe-area-inset-top))!important;
+  }
+  body[data-app-route="competition"] .v12-date-strip{
+    top:calc(108px + env(safe-area-inset-top))!important;
+  }
+  body[data-app-route="competition"] .topbar::after{
+    top:58px!important;
+    bottom:auto!important;
+  }
+  body[data-app-route="competition"] .topbar .profile-button{
+    top:56px!important;
+    bottom:auto!important;
+  }
+}
