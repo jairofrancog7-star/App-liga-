@@ -364,3 +364,72 @@ body[data-app-route="moreLess"] .v12-ml-curves{
     top:46.5%!important;
   }
 }
+
+
+/* V48 — MÁS O MENOS · flecha roja más arriba + fondo azul oscuro continuo.
+   Mantiene avatares, zonas de toque, título y navegación; solo corrige posición/color. */
+body[data-app-route="moreLess"],
+body[data-app-route="moreLess"] .app-shell,
+body[data-app-route="moreLess"] #screen,
+body[data-app-route="moreLess"] .v12-moreless{
+  background:#05075f!important;
+}
+
+body[data-app-route="moreLess"] .v12-moreless{
+  background-image:
+    radial-gradient(ellipse at 50% 5%,rgba(33,56,145,.16) 0%,rgba(11,18,102,.08) 30%,transparent 58%),
+    linear-gradient(180deg,#07106f 0%,#060b67 30%,#05085f 58%,#040657 100%)!important;
+}
+
+body[data-app-route="moreLess"] .v12-moreless::before{
+  background:
+    linear-gradient(90deg,rgba(1,2,36,.12),transparent 28%,transparent 72%,rgba(1,2,36,.14))!important;
+}
+
+/* La referencia inferior entra en degradado para que no exista una raya/corte horizontal. */
+body[data-app-route="moreLess"] .v12-moreless::after{
+  top:29%!important;
+  bottom:0!important;
+  background-position:center bottom!important;
+  background-size:auto 100%!important;
+  -webkit-mask-image:linear-gradient(to bottom,transparent 0%,rgba(0,0,0,.35) 10%,#000 24%)!important;
+  mask-image:linear-gradient(to bottom,transparent 0%,rgba(0,0,0,.35) 10%,#000 24%)!important;
+}
+
+/* Acerca la flecha roja al bloque MÁS / O / MENOS. */
+body[data-app-route="moreLess"] .v12-ml-curves{
+  top:7.2%!important;
+  width:min(69vw,325px)!important;
+  height:27%!important;
+}
+
+body[data-app-route="moreLess"] .v12-ml-curves .down .v12-curve-arrow{
+  left:4%!important;
+  top:29%!important;
+}
+
+body[data-app-route="moreLess"] .v12-ml-curves .up .v12-curve-arrow{
+  right:4%!important;
+  top:-2%!important;
+}
+
+/* Mantener las flechas con el mismo grosor y sin deformarlas. */
+body[data-app-route="moreLess"] .v12-curve-arrow{
+  width:clamp(43px,9.4vw,52px)!important;
+  height:clamp(90px,16.8vw,108px)!important;
+}
+
+@media(max-width:390px){
+  body[data-app-route="moreLess"] .v12-moreless::after{
+    top:28%!important;
+  }
+  body[data-app-route="moreLess"] .v12-ml-curves{
+    top:7.0%!important;
+    width:72vw!important;
+    height:27%!important;
+  }
+  body[data-app-route="moreLess"] .v12-ml-curves .down .v12-curve-arrow{
+    left:4%!important;
+    top:28%!important;
+  }
+}
