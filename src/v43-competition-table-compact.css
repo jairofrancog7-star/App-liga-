@@ -989,3 +989,183 @@ body.v40-standings-master .v40-wide.criteria .v40-wide-row{
     max-height:43px!important;
   }
 }
+
+
+/* CUADRO_SEMI_LINES_FIX1 — corrige únicamente Semifinales:
+   tres cuadros del mismo tamaño y conectores continuos/alineados. */
+body[data-app-route="competition"] .v12-bracket-reference.stage-semifinal .v12-semifinal-flow{
+  position:relative!important;
+  display:grid!important;
+  grid-template-columns:minmax(0,1fr) 34px minmax(0,1fr)!important;
+  grid-template-rows:1fr 1fr!important;
+  column-gap:0!important;
+  row-gap:clamp(110px,29vw,150px)!important;
+  width:100%!important;
+  max-width:520px!important;
+  min-height:clamp(620px,164vw,850px)!important;
+  margin:0 auto!important;
+  padding:0 8px 18px!important;
+  box-sizing:border-box!important;
+  overflow:visible!important;
+}
+
+body[data-app-route="competition"] .v12-bracket-reference.stage-semifinal .v12-semifinal-source.silver{
+  grid-column:1!important;
+  grid-row:1!important;
+}
+body[data-app-route="competition"] .v12-bracket-reference.stage-semifinal .v12-semifinal-source.blue{
+  grid-column:1!important;
+  grid-row:2!important;
+}
+
+/* La columna izquierda incluye el riel; el cuadro de la derecha descuenta
+   exactamente ese ancho para que los tres partidos tengan la misma caja. */
+body[data-app-route="competition"] .v12-bracket-reference.stage-semifinal .v12-semifinal-target{
+  grid-column:3!important;
+  grid-row:1 / span 2!important;
+  width:calc(100% - 20px)!important;
+  min-width:0!important;
+  justify-self:start!important;
+  align-self:stretch!important;
+  display:flex!important;
+  align-items:center!important;
+  padding:0!important;
+  margin:0!important;
+}
+body[data-app-route="competition"] .v12-bracket-reference.stage-semifinal .v12-semifinal-source>.v12-progress-match,
+body[data-app-route="competition"] .v12-bracket-reference.stage-semifinal .v12-semifinal-target>.v12-progress-match{
+  width:100%!important;
+  max-width:none!important;
+  min-width:0!important;
+  aspect-ratio:1.43 / 1!important;
+  height:auto!important;
+  margin:0!important;
+  box-sizing:border-box!important;
+}
+
+/* Cada ruta llega exactamente al eje central: sin huecos entre tarjeta y llave. */
+body[data-app-route="competition"] .v12-bracket-reference.stage-semifinal .v12-semifinal-source::after{
+  content:""!important;
+  position:absolute!important;
+  right:-17px!important;
+  top:50%!important;
+  width:17px!important;
+  height:0!important;
+  border:0!important;
+  border-top:3px solid var(--branch)!important;
+  transform:translateY(-1.5px)!important;
+  box-sizing:border-box!important;
+  z-index:4!important;
+}
+
+/* La llave central vive en su propia columna; empieza en el centro del
+   cuadro superior y termina en el centro del inferior. */
+body[data-app-route="competition"] .v12-bracket-reference.stage-semifinal .v12-semifinal-join{
+  position:relative!important;
+  grid-column:2!important;
+  grid-row:1 / span 2!important;
+  left:auto!important;
+  right:auto!important;
+  top:auto!important;
+  bottom:auto!important;
+  width:34px!important;
+  height:100%!important;
+  min-height:100%!important;
+  margin:0!important;
+  padding:0!important;
+  border:0!important;
+  box-sizing:border-box!important;
+  z-index:3!important;
+}
+body[data-app-route="competition"] .v12-bracket-reference.stage-semifinal .v12-semifinal-join::before{
+  content:""!important;
+  position:absolute!important;
+  left:50%!important;
+  top:25%!important;
+  bottom:25%!important;
+  width:3px!important;
+  height:auto!important;
+  margin-left:-1.5px!important;
+  border:0!important;
+  background:linear-gradient(180deg,#c0c5da 0%,#c0c5da 49.5%,#13e4ef 50.5%,#13e4ef 100%)!important;
+  box-shadow:none!important;
+}
+body[data-app-route="competition"] .v12-bracket-reference.stage-semifinal .v12-semifinal-join::after{
+  content:""!important;
+  position:absolute!important;
+  left:50%!important;
+  right:auto!important;
+  top:50%!important;
+  width:50%!important;
+  height:0!important;
+  border:0!important;
+  border-top:3px solid #13e4ef!important;
+  transform:translateY(-1.5px)!important;
+  filter:drop-shadow(0 0 4px rgba(19,228,239,.30))!important;
+}
+
+/* Quita los cortes grandes artificiales de los rieles laterales en Semis.
+   El propio rótulo mantiene el pequeño corte limpio detrás del texto. */
+body[data-app-route="competition"] .v12-bracket-reference.stage-semifinal .v12-semifinal-source .v12-progress-rail::before,
+body[data-app-route="competition"] .v12-bracket-reference.stage-semifinal .v12-semifinal-source .v12-progress-rail::after{
+  content:none!important;
+  display:none!important;
+}
+body[data-app-route="competition"] .v12-bracket-reference.stage-semifinal .v12-semifinal-source .v12-progress-rail{
+  height:100%!important;
+  min-height:100%!important;
+  border-left-width:3px!important;
+}
+body[data-app-route="competition"] .v12-bracket-reference.stage-semifinal .v12-semifinal-source .v12-progress-rail span{
+  z-index:5!important;
+  background:#020451!important;
+  padding:8px 3px!important;
+}
+
+/* Mantiene el conector pegado visualmente a la tarjeta central. */
+body[data-app-route="competition"] .v12-bracket-reference.stage-semifinal .v12-semifinal-target{
+  position:relative!important;
+}
+body[data-app-route="competition"] .v12-bracket-reference.stage-semifinal .v12-semifinal-target::before{
+  content:""!important;
+  position:absolute!important;
+  left:-17px!important;
+  top:50%!important;
+  width:17px!important;
+  height:0!important;
+  border-top:3px solid #13e4ef!important;
+  transform:translateY(-1.5px)!important;
+  filter:drop-shadow(0 0 4px rgba(19,228,239,.30))!important;
+}
+
+/* Evita dibujar dos veces el mismo tramo horizontal central. */
+body[data-app-route="competition"] .v12-bracket-reference.stage-semifinal .v12-semifinal-join::after{
+  width:17px!important;
+}
+
+@media(max-width:390px){
+  body[data-app-route="competition"] .v12-bracket-reference.stage-semifinal .v12-semifinal-flow{
+    grid-template-columns:minmax(0,1fr) 30px minmax(0,1fr)!important;
+    row-gap:104px!important;
+    min-height:610px!important;
+    padding-left:6px!important;
+    padding-right:6px!important;
+  }
+  body[data-app-route="competition"] .v12-bracket-reference.stage-semifinal .v12-semifinal-join{
+    width:30px!important;
+  }
+  body[data-app-route="competition"] .v12-bracket-reference.stage-semifinal .v12-semifinal-source::after{
+    right:-15px!important;
+    width:15px!important;
+  }
+  body[data-app-route="competition"] .v12-bracket-reference.stage-semifinal .v12-semifinal-target{
+    width:calc(100% - 18px)!important;
+  }
+  body[data-app-route="competition"] .v12-bracket-reference.stage-semifinal .v12-semifinal-target::before{
+    left:-15px!important;
+    width:15px!important;
+  }
+  body[data-app-route="competition"] .v12-bracket-reference.stage-semifinal .v12-semifinal-join::after{
+    width:15px!important;
+  }
+}
