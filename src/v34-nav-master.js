@@ -24,7 +24,7 @@ on:'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4.9985,14.4937C6.3784,
 }
 };
 const labels={home:'Inicio',competition:'Competición',video:'Vídeo',fantasy:'Fantasy',more:'Más'};
-const moreChildren=new Set(['more','predictor','quiz','moreLess','teams','teamDetail','players','playerDetail','scorers','stats','rankings','history','news','newsDetail','transfers','favorites','search','vote','notifications','privacy','profile','venues','club-store']);
+const moreChildren=new Set(['more','predictor','quiz','moreLess','teams','teamDetail','players','playerDetail','scorers','stats','rankings','history','news','newsDetail','transfers','favorites','search','vote','notifications','privacy','profile','venues','club-store','safe-data','safe-performance','hospitality','following','moments']);
 function route(){return location.hash.replace('#/','')||'home'}
 function activeRoute(r){
   if(moreChildren.has(r))return 'more';
@@ -35,14 +35,16 @@ function activeRoute(r){
 function paint(){
   const nav=document.querySelector('.bottom-nav');
   if(!nav)return;
-  const active=activeRoute(route());
+  const current=route();
+  const active=activeRoute(current);
+  const upper=moreChildren.has(current);
   nav.querySelectorAll('.nav-item[data-route]').forEach(btn=>{
     const r=btn.dataset.route;
     const on=r===active;
     btn.classList.toggle('active',on);
     btn.setAttribute('aria-current',on?'page':'false');
     const small=btn.querySelector('small');
-    if(small&&labels[r])small.textContent=labels[r];
+    if(small&&labels[r])small.textContent=upper?labels[r].toLocaleUpperCase('es-MX'):labels[r];
     const icon=btn.querySelector('.nav-icon');
     if(icon&&I[r])icon.innerHTML=I[r][on?'on':'off'];
     btn.style.pointerEvents='auto';
