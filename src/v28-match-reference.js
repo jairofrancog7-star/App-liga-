@@ -145,7 +145,7 @@
   }
 
   function newsPanel(m){
-    return '<section class="v28-panel v28-news-panel" data-v28-panel="news">'+
+    return '<section class="v28-panel v28-news-panel active" data-v28-panel="news">'+
       '<h2>Novedades</h2>'+
       '<div class="v28-news-card"><b>'+esc(m.home)+' vs '+esc(m.away)+'</b><p>Consulta aquí las novedades oficiales, avisos y actualizaciones del partido.</p></div>'+
       '<div class="v28-news-card"><b>Información de la jornada</b><p>'+esc(m.date)+' · '+esc(m.time)+' · '+esc(m.venue)+'</p></div>'+
@@ -153,7 +153,7 @@
   }
 
   function standingsPanel(){
-    return '<section class="v28-panel v28-standings-panel active" data-v28-panel="standings">'+
+    return '<section class="v28-panel v28-standings-panel" data-v28-panel="standings">'+
       '<div class="v28-segmented">'+
         '<button class="active" type="button" data-v28-mode="compact">Compacta</button>'+
         '<button type="button" data-v28-mode="complete">Completa</button>'+
