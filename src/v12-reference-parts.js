@@ -208,6 +208,8 @@ const V12_FIXTURE_LOGOS={
   'Juventino':null,
   'Rincón de Centeno':null,
   'Deportivo Rosas':null,
+  'Linces':'assets/official-logos/linces.png',
+  'Abejas':'assets/official-logos/abejas.png',
   'Pozos':'assets/teams/pozos-fc.webp',
   'Club América Veteranos JR':'assets/branding/america-veteranos-35-user.png',
   'Juventino Rosas A.C.':'assets/liga-logo.webp',
@@ -225,7 +227,7 @@ const V12_RESULTS_JUL7=[
   ['Promesas FC','Atlético Galeana','3','1','m2','PRO','GAL',''],
   ['Juventino Rosas A.C.','Lobos CDG','2','0','m1','JR','CDG',''],
   ['Cuenda','Pozos','1','1','m2','CUE','POZ',''],
-  ['Rincón de Centeno','Deportivo Rosas','0','2','m1','RDC','ROS','home']
+  ['Linces','Abejas','6','4','m1','LIN','ABE','']
 ];
 function v12ResultTeam(name,code,score,card){
   return '<div class="v12-result-team">'+v12FixtureLogo(name)+
