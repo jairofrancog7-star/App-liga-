@@ -135,20 +135,10 @@ function tabs(){
   '</nav>';
 }
 function header(){
-  const compact=activeTab!=='general';
-  return '<header class="v33-data-head '+(compact?'compact':'general')+'">'+
+  return '<header class="v33-data-head" data-v33-head>'+
     '<div class="v33-head-actions"><button type="button" data-v33-back aria-label="Volver">'+backIcon()+'</button><button type="button" data-v33-share aria-label="Compartir">'+shareIcon()+'</button></div>'+
-    (compact?
-      '<div class="v33-compact-brand">'+
-        teamLogo('LEAGUE','Liga Municipal de Fútbol Juventino Rosas','league')+
-        '<div><h1>Estadísticas</h1><p>Liga Municipal de Fútbol<br>Juventino Rosas</p></div>'+
-      '</div>':
-      '<div class="v33-general-brand">'+
-        '<div class="v33-league-lockup">'+teamLogo('LEAGUE','Liga Municipal de Fútbol Juventino Rosas','league')+
-          '<div><b>LIGA MUNICIPAL DE FÚTBOL</b><strong>JUVENTINO ROSAS</strong><small>GUANAJUATO</small></div>'+
-        '</div>'+
-        '<h1>Estadísticas</h1><p>Fase final</p>'+
-      '</div>')+
+    '<div class="v33-expanded-title"><h1>Estadísticas</h1><p>Fase final</p></div>'+
+    '<div class="v33-collapsed-title" aria-hidden="true">Estadísticas</div>'+
     tabs()+
   '</header>';
 }
@@ -247,6 +237,27 @@ function bind(){
     toast(b.dataset.v33Player+' · estadísticas del jugador');
   });
 }
+
+let v33ScrollTick=0;
+function applyHeaderScroll(){
+  if(route()!=='safe-data')return;
+  const head=document.querySelector('[data-v33-head]');
+  if(!head)return;
+  const y=Math.max(0,window.scrollY||document.documentElement.scrollTop||0);
+  const p=Math.min(1,y/210);
+  head.style.setProperty('--v33-collapse',p.toFixed(4));
+  head.style.setProperty('--v33-head-h',(390-(245*p)).toFixed(1)+'px');
+  head.style.setProperty('--v33-expanded-opacity',Math.max(0,1-(p*1.35)).toFixed(3));
+  head.style.setProperty('--v33-collapsed-opacity',Math.max(0,(p-.42)/.58).toFixed(3));
+  head.style.setProperty('--v33-tabs-opacity',Math.max(.88,1-(p*.08)).toFixed(3));
+  head.classList.toggle('is-collapsed',p>.82);
+}
+function requestHeaderScroll(){
+  if(v33ScrollTick)return;
+  v33ScrollTick=requestAnimationFrame(()=>{v33ScrollTick=0;applyHeaderScroll()});
+}
+window.addEventListener('scroll',requestHeaderScroll,{passive:true});
+
 function render(){
   const active=route()==='safe-data';
   document.body.classList.toggle('v33-data-active',active);
@@ -255,6 +266,7 @@ function render(){
   screen.innerHTML=markup();
   setBottomNav();
   bind();
+  applyHeaderScroll();
 }
 function schedule(){requestAnimationFrame(()=>requestAnimationFrame(render))}
 window.addEventListener('hashchange',schedule);
