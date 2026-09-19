@@ -1,0 +1,147 @@
+/* V48 — Quiz Arena landing from the exact Drive reference.
+   The screenshot itself supplies the requested visual design; interactive hotspots keep
+   back/play/classifications functional while the app's real bottom navigation remains active. */
+
+body[data-app-route="quizArena"]{
+  --v48-nav-h:88px;
+  background:#050064!important;
+  overflow-x:hidden!important;
+}
+body[data-app-route="quizArena"] #app,
+body[data-app-route="quizArena"] .app-shell{
+  width:min(100%,520px)!important;
+  min-height:100dvh!important;
+  margin:0 auto!important;
+  padding:0!important;
+  background:#050064!important;
+  overflow-x:hidden!important;
+}
+body[data-app-route="quizArena"] #app>.topbar{
+  display:none!important;
+}
+body[data-app-route="quizArena"] #screen{
+  position:relative!important;
+  width:100%!important;
+  max-width:520px!important;
+  min-height:100dvh!important;
+  margin:0 auto!important;
+  padding:0 0 calc(var(--v48-nav-h) + env(safe-area-inset-bottom))!important;
+  overflow-x:hidden!important;
+  background:#050064!important;
+}
+body[data-app-route="quizArena"] .v48-quiz-arena-page{
+  position:relative!important;
+  width:100%!important;
+  margin:0!important;
+  padding:0!important;
+  background:#050064!important;
+}
+body[data-app-route="quizArena"] .v48-quiz-arena-shot{
+  position:relative!important;
+  width:100%!important;
+  aspect-ratio:469 / 1885!important;
+  overflow:hidden!important;
+  background:#050064!important;
+}
+body[data-app-route="quizArena"] .v48-quiz-arena-image{
+  position:absolute!important;
+  z-index:1!important;
+  left:0!important;
+  top:0!important;
+  width:100%!important;
+  height:auto!important;
+  max-width:none!important;
+  margin:0!important;
+  display:block!important;
+  transform:translateY(-3.02734375%)!important;
+  transform-origin:top left!important;
+  user-select:none!important;
+  pointer-events:none!important;
+  -webkit-user-drag:none!important;
+}
+body[data-app-route="quizArena"] .v48-hotspot{
+  position:absolute!important;
+  z-index:4!important;
+  display:block!important;
+  margin:0!important;
+  padding:0!important;
+  border:0!important;
+  border-radius:12px!important;
+  background:transparent!important;
+  box-shadow:none!important;
+  color:transparent!important;
+  font-size:0!important;
+  cursor:pointer!important;
+  -webkit-tap-highlight-color:transparent!important;
+  touch-action:manipulation!important;
+}
+body[data-app-route="quizArena"] .v48-hotspot:focus-visible{
+  outline:2px solid #13e4f4!important;
+  outline-offset:2px!important;
+}
+body[data-app-route="quizArena"] .v48-back{
+  left:3.2%!important;
+  top:.45%!important;
+  width:14%!important;
+  height:3.4%!important;
+  border-radius:999px!important;
+}
+body[data-app-route="quizArena"] .v48-login-main{
+  left:9.4%!important;
+  top:25.82%!important;
+  width:44.1%!important;
+  height:3.48%!important;
+}
+body[data-app-route="quizArena"] .v48-guest-main{
+  left:55.2%!important;
+  top:25.82%!important;
+  width:35.3%!important;
+  height:3.48%!important;
+}
+body[data-app-route="quizArena"] .v48-login-random{
+  left:9.4%!important;
+  top:69.15%!important;
+  width:44.1%!important;
+  height:3.55%!important;
+}
+body[data-app-route="quizArena"] .v48-guest-random{
+  left:55.2%!important;
+  top:69.15%!important;
+  width:35.3%!important;
+  height:3.55%!important;
+}
+body[data-app-route="quizArena"] .v48-rankings{
+  left:7.8%!important;
+  top:96.55%!important;
+  width:40%!important;
+  height:2.7%!important;
+  border-radius:4px!important;
+}
+
+/* Keep the real app nav, not the nav baked into the reference screenshot. */
+body[data-app-route="quizArena"] .bottom-nav{
+  height:var(--v48-nav-h)!important;
+  grid-template-columns:repeat(5,minmax(0,1fr))!important;
+  padding:8px 8px calc(7px + env(safe-area-inset-bottom))!important;
+  background:#17166f!important;
+  border-top:1px solid rgba(121,124,206,.33)!important;
+  box-shadow:none!important;
+  backdrop-filter:none!important;
+}
+body[data-app-route="quizArena"] .bottom-nav .nav-item{
+  min-width:0!important;
+  color:#a8a7cb!important;
+}
+body[data-app-route="quizArena"] .bottom-nav .nav-item[data-route="more"],
+body[data-app-route="quizArena"] .bottom-nav .nav-item.active{
+  color:#17e5f8!important;
+}
+
+@media(min-width:521px){
+  body[data-app-route="quizArena"] #screen,
+  body[data-app-route="quizArena"] .bottom-nav{
+    width:520px!important;
+    left:50%!important;
+    transform:translateX(-50%)!important;
+  }
+}

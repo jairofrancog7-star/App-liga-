@@ -24,7 +24,7 @@ on:'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4.9985,14.4937C6.3784,
 }
 };
 const labels={home:'Inicio',competition:'Competición',video:'Vídeo',fantasy:'Fantasy',more:'Más'};
-const moreChildren=new Set(['more','predictor','quiz','moreLess','teams','teamDetail','players','playerDetail','scorers','stats','rankings','history','news','newsDetail','transfers','favorites','search','vote','notifications','privacy','profile','venues','club-store','safe-data','safe-performance','hospitality','following','moments']);
+const moreChildren=new Set(['more','predictor','quizArena','quiz','moreLess','teams','teamDetail','players','playerDetail','scorers','stats','rankings','history','news','newsDetail','transfers','favorites','search','vote','notifications','privacy','profile','venues','club-store','safe-data','safe-performance','hospitality','following','moments']);
 function route(){return location.hash.replace('#/','')||'home'}
 function activeRoute(r){
   if(moreChildren.has(r))return 'more';
