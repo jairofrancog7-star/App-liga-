@@ -2898,3 +2898,87 @@ body[data-app-route="competition"] .v12-criteria-edge{
   body[data-app-route="competition"] .v12-team-cell strong,
   body[data-app-route="competition"] .v12-criteria-team strong{font-size:12.5px!important}
 }
+
+
+/* === V12 PARTS40 — TEXTO ALINEADO + ESCUDOS UNIFORMES === */
+/* Solo Clasificación. No modifica header, tabs, navegación, colores ni animaciones. */
+body[data-app-route="competition"] .v12-standings-reference{
+  --v12-logo:42px;
+  --v12-logo-slot:46px;
+}
+
+/* Mismo punto de inicio para TODOS los nombres. */
+body[data-app-route="competition"] .v12-team-cell,
+body[data-app-route="competition"] .v12-criteria-team{
+  grid-template-columns:var(--v12-logo-slot) minmax(0,1fr)!important;
+  gap:8px!important;
+  align-items:center!important;
+  min-width:0!important;
+}
+
+/* Todos los escudos ocupan exactamente la misma caja. */
+body[data-app-route="competition"] .v12-team-logo,
+body[data-app-route="competition"] .v12-criteria-logo{
+  width:var(--v12-logo)!important;
+  height:var(--v12-logo)!important;
+  min-width:var(--v12-logo)!important;
+  max-width:var(--v12-logo)!important;
+  min-height:var(--v12-logo)!important;
+  max-height:var(--v12-logo)!important;
+  display:block!important;
+  justify-self:center!important;
+  align-self:center!important;
+  object-fit:contain!important;
+  object-position:center!important;
+  box-sizing:border-box!important;
+  margin:0!important;
+  padding:0!important;
+  border:0!important;
+  background:transparent!important;
+}
+
+/* Nombres alineados a la misma guía, centrados verticalmente y máximo 2 líneas. */
+body[data-app-route="competition"] .v12-team-cell strong,
+body[data-app-route="competition"] .v12-criteria-team strong{
+  width:100%!important;
+  min-width:0!important;
+  margin:0!important;
+  padding:0!important;
+  align-self:center!important;
+  text-align:left!important;
+  font-size:13.5px!important;
+  line-height:1.14!important;
+  font-weight:700!important;
+  white-space:normal!important;
+  overflow:hidden!important;
+  text-overflow:clip!important;
+  max-height:2.28em!important;
+  overflow-wrap:normal!important;
+  word-break:normal!important;
+}
+
+/* La fila completa mantiene la misma altura y centra logo/texto/números. */
+body[data-app-route="competition"] .v12-stand-row,
+body[data-app-route="competition"] .v12-criteria-row{
+  align-items:center!important;
+}
+
+/* Cabeceras y cifras quedan en su propia columna sin empujar el nombre. */
+body[data-app-route="competition"] .v12-stand-head>b,
+body[data-app-route="competition"] .v12-stand-row>span:nth-of-type(n+3),
+body[data-app-route="competition"] .v12-criteria-head>b,
+body[data-app-route="competition"] .v12-criteria-stat{
+  justify-self:center!important;
+  text-align:center!important;
+}
+
+@media(max-width:380px){
+  body[data-app-route="competition"] .v12-standings-reference{
+    --v12-logo:38px;
+    --v12-logo-slot:42px;
+  }
+  body[data-app-route="competition"] .v12-team-cell strong,
+  body[data-app-route="competition"] .v12-criteria-team strong{
+    font-size:12.5px!important;
+  }
+}
