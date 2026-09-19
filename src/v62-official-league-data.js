@@ -467,24 +467,66 @@ function patchTeamSummary(page,ctx){
 function patchTeams(){
   if(route()!=='teams'||!db)return;
   const page=document.querySelector('[data-v27-reference="teams"]');if(!page)return;
-  const all=[];CAT_ORDER.forEach(id=>categoryTeams(cat(id)).forEach(n=>{if(!all.some(x=>same(x,n)))all.push(n)}));
-  page.querySelectorAll('.v27-team-tile').forEach(tile=>{
-    const name=tile.querySelector('span:last-child')?.textContent?.trim()||tile.textContent.trim();
-    const ctx=teamContext(name),src=ctx&&logoFor(ctx.name),img=tile.querySelector('img');
-    if(src&&img)img.src=src;
-    if(ctx)tile.addEventListener('click',()=>saveTeam(ctx.name),{capture:true,once:true});
-  });
-  const existing=[...page.querySelectorAll('.v27-team-tile')].map(x=>x.textContent.trim());
-  const grid=page.querySelector('.v27-eliminated .v27-grid')||page.querySelector('.v27-grid');
-  if(grid){
-    all.filter(n=>!existing.some(x=>same(x,n))).forEach(n=>{
-      const b=document.createElement('button');b.type='button';b.className='v27-team-tile';b.dataset.v62Team=n;
-      b.innerHTML=teamLogoHtml(n,'v27-logo')+'<span>'+esc(n)+'</span>';grid.appendChild(b);
-      b.addEventListener('click',()=>openTeam(n),{once:true});
-    });
-  }
-}
 
+  /* TEAMS_CURRENT_ONLY1
+     La pantalla Equipos se reconstruye desde el snapshot oficial actual.
+     Evita que el MutationObserver vuelva a anexar los mismos clubes una y otra vez
+     y elimina entradas heredadas que ya no existen en ninguna categoría. */
+  const all=[];
+  CAT_ORDER.forEach(id=>categoryTeams(cat(id)).forEach(n=>{
+    if(n&&!all.some(x=>same(x,n)))all.push(n);
+  }));
+
+  const q=(page.querySelector('#v27TeamSearch')?.value||'').trim();
+  const nq=norm(q);
+  const visible=q?all.filter(n=>norm(n).includes(nq)):all.slice();
+  const sig=String(db.captured_at_utc||'')+'|'+visible.map(norm).join('|')+'|'+nq;
+  if(page.dataset.v62TeamsSig===sig)return;
+  page.dataset.v62TeamsSig=sig;
+
+  /* Limpia ids seguidos obsoletos para que no reaparezcan clubes eliminados. */
+  let store={};
+  try{store=JSON.parse(localStorage.getItem('lj-store-v3')||'{}')||{}}catch{}
+  const followed=Array.isArray(store.followed)?store.followed.slice():[];
+  const validIds=new Set(all.map(codeFor).filter(Boolean));
+  const cleaned=followed.filter(id=>validIds.has(id));
+  if(cleaned.length!==followed.length){
+    store.followed=cleaned;
+    localStorage.setItem('lj-store-v3',JSON.stringify(store));
+  }
+
+  const makeTile=n=>{
+    const b=document.createElement('button');
+    b.type='button';
+    b.className='v27-team-tile';
+    b.dataset.v62Team=n;
+    b.innerHTML=teamLogoHtml(n,'v27-logo')+'<span>'+esc(n)+'</span>';
+    b.addEventListener('click',e=>{e.preventDefault();openTeam(n)},{once:true});
+    return b;
+  };
+
+  /* Siguiendo: sólo clubes oficiales actuales y sin duplicados. */
+  const followedRow=page.querySelector('.v27-followed-row');
+  if(followedRow){
+    followedRow.innerHTML='';
+    const current=all.filter(n=>cleaned.includes(codeFor(n))).slice(0,4);
+    if(current.length)current.forEach(n=>followedRow.appendChild(makeTile(n)));
+    else followedRow.innerHTML='<div class="v27-empty-grid">Aún no sigues equipos.</div>';
+  }
+
+  /* Una sola cuadrícula oficial. No se deja la antigua lista estática ni
+     la sección secundaria que provocaba repeticiones al desplazarse. */
+  const sections=[...page.querySelectorAll('.v27-section')];
+  const competitionSection=sections.find(s=>/Equipos en la competición/i.test(s.querySelector('h2')?.textContent||''))||sections[1];
+  const grid=competitionSection?.querySelector('.v27-grid');
+  if(grid){
+    grid.innerHTML='';
+    if(visible.length)visible.forEach(n=>grid.appendChild(makeTile(n)));
+    else grid.innerHTML='<div class="v27-empty-grid">No se encontraron equipos.</div>';
+  }
+
+  page.querySelectorAll('.v27-eliminated').forEach(s=>s.remove());
+}
 function intercept(){
   document.addEventListener('click',e=>{
     /* FIX: "Datos" vuelve a abrir #/safe-data con el diseño/tablas V33 originales.
