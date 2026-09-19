@@ -1,0 +1,160 @@
+/* V45 — MÁS O MENOS: misma composición visual de la segunda referencia del usuario.
+   Solo afecta #/moreLess. Mantiene botones y navegación funcionales. */
+body[data-app-route="moreLess"],
+body[data-app-route="moreLess"] .app-shell,
+body[data-app-route="moreLess"] #screen{
+  background:#030052!important;
+  overflow:hidden!important;
+}
+
+body[data-app-route="moreLess"] #screen{
+  width:100%!important;
+  max-width:none!important;
+  margin:0!important;
+  padding:0!important;
+  height:calc(100dvh - var(--v34-nav-h,60px) - env(safe-area-inset-bottom))!important;
+  min-height:0!important;
+}
+
+body[data-app-route="moreLess"] .v12-moreless{
+  position:relative!important;
+  width:100%!important;
+  max-width:none!important;
+  height:100%!important;
+  min-height:0!important;
+  margin:0!important;
+  padding:0!important;
+  overflow:hidden!important;
+  background:
+    radial-gradient(ellipse at 49% 8%,rgba(34,83,255,.60) 0%,rgba(20,56,225,.38) 25%,transparent 49%),
+    radial-gradient(ellipse at 16% 35%,rgba(0,70,255,.16),transparent 38%),
+    linear-gradient(180deg,#123dff 0%,#0b28d7 22%,#091997 48%,#060b70 73%,#030052 100%)!important;
+}
+
+/* Título compacto y centrado como en la referencia; se conserva en español y mayúsculas. */
+body[data-app-route="moreLess"] .v12-ml-title{
+  left:50%!important;
+  top:8.7%!important;
+  width:min(40vw,205px)!important;
+  height:auto!important;
+  transform:translateX(-50%) skewX(-5deg)!important;
+  text-align:center!important;
+}
+body[data-app-route="moreLess"] .v12-ml-title span{
+  font-size:clamp(44px,11.6vw,61px)!important;
+  line-height:.78!important;
+  letter-spacing:-.055em!important;
+  text-transform:uppercase!important;
+}
+body[data-app-route="moreLess"] .v12-ml-title small{
+  left:-1%!important;
+  top:46%!important;
+  font-size:clamp(22px,5.8vw,31px)!important;
+  text-transform:uppercase!important;
+}
+
+/* Flechas curva roja/verde en la misma zona del título de la referencia. */
+body[data-app-route="moreLess"] .v12-ml-curves{
+  left:50%!important;
+  top:7.2%!important;
+  width:min(57vw,285px)!important;
+  height:27%!important;
+  transform:translateX(-50%)!important;
+}
+body[data-app-route="moreLess"] .v12-curve-arrow{
+  width:clamp(45px,10vw,58px)!important;
+  height:clamp(94px,18vw,118px)!important;
+}
+body[data-app-route="moreLess"] .v12-ml-curves .up .v12-curve-arrow{
+  right:0!important;
+  top:-2%!important;
+}
+body[data-app-route="moreLess"] .v12-ml-curves .down .v12-curve-arrow{
+  left:0!important;
+  top:53%!important;
+}
+
+/* La referencia no lleva un escudo grande entre el título y los jugadores. */
+body[data-app-route="moreLess"] .v12-ml-logo{
+  display:none!important;
+}
+
+/* Personas y flechas centrales en la misma altura/proporción de la segunda imagen. */
+body[data-app-route="moreLess"] .v12-ml-choice{
+  left:50%!important;
+  top:58.5%!important;
+  width:min(49vw,245px)!important;
+  height:auto!important;
+  transform:translateX(-50%)!important;
+  grid-template-columns:1fr 24% 1fr!important;
+  gap:3px!important;
+}
+body[data-app-route="moreLess"] .v12-avatar{
+  width:min(19.5vw,97px)!important;
+  height:min(19.5vw,97px)!important;
+}
+body[data-app-route="moreLess"] .v12-ml-mid{
+  min-height:90px!important;
+}
+body[data-app-route="moreLess"] .v12-ml-mid .up-arrow{
+  top:-57px!important;
+}
+body[data-app-route="moreLess"] .v12-ml-mid .down-arrow{
+  bottom:-58px!important;
+}
+
+/* Usa solamente la zona del estadio del asset: desplazar el fondo hacia arriba evita
+   que la barra de navegación integrada en la imagen vuelva a aparecer duplicada. */
+body[data-app-route="moreLess"] .v12-stadium{
+  left:0!important;
+  right:0!important;
+  bottom:0!important;
+  width:100%!important;
+  height:18.8%!important;
+  overflow:hidden!important;
+  background-size:100% auto!important;
+  background-position:center 88.7%!important;
+  background-repeat:no-repeat!important;
+  border:0!important;
+  box-shadow:none!important;
+}
+
+/* Una sola barra real, con las etiquetas de la referencia y mayúscula inicial. */
+body[data-app-route="moreLess"] .bottom-nav{
+  display:grid!important;
+  height:var(--v34-nav-h,60px)!important;
+  min-height:var(--v34-nav-h,60px)!important;
+  background:#17166f!important;
+  border-top:1px solid rgba(255,255,255,.12)!important;
+  box-shadow:none!important;
+}
+body[data-app-route="moreLess"] .bottom-nav .nav-item small{
+  display:block!important;
+  text-transform:none!important;
+  font-size:10px!important;
+  line-height:12px!important;
+  font-weight:500!important;
+  white-space:nowrap!important;
+}
+body[data-app-route="moreLess"] .bottom-nav .nav-item[data-route="more"]{
+  color:#18e3f6!important;
+}
+
+/* Protección adicional: si una versión cacheada llegara a insertar otra barra,
+   nunca se renderiza una segunda barra dentro del contenido de Más o Menos. */
+body[data-app-route="moreLess"] #screen .bottom-nav,
+body[data-app-route="moreLess"] .v12-moreless .bottom-nav{
+  display:none!important;
+}
+
+@media(max-height:740px){
+  body[data-app-route="moreLess"] .v12-ml-title{top:7.6%!important}
+  body[data-app-route="moreLess"] .v12-ml-choice{top:57.8%!important}
+  body[data-app-route="moreLess"] .v12-stadium{height:18.2%!important;background-position:center 88.2%!important}
+}
+
+@media(max-width:370px){
+  body[data-app-route="moreLess"] .v12-ml-title{width:42vw!important}
+  body[data-app-route="moreLess"] .v12-ml-choice{width:52vw!important}
+  body[data-app-route="moreLess"] .v12-avatar{width:20.5vw!important;height:20.5vw!important}
+}
