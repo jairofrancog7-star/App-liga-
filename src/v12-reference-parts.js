@@ -559,6 +559,20 @@ function patch(){
   patchMoreLess();
 }
 document.addEventListener('click',e=>{
+  /* RESTORE_CUADRO_PLAYOFF — al entrar a Cuadro vuelve al diseño inicial del video. */
+  const mainCompetitionTab=e.target.closest('#screen>.tabs .tab');
+  if(mainCompetitionTab && /Cuadro/i.test(mainCompetitionTab.textContent||'')){
+    setTimeout(()=>{
+      const box=document.querySelector('[data-v12-bracket]');
+      if(!box) return;
+      box.classList.remove('stage-octavos','stage-cuartos','stage-semifinal','stage-final','is-stage-changing','is-stage-ready');
+      box.classList.add('stage-playoff');
+      box.dataset.v12Stage='playoff';
+      box.querySelectorAll('[data-v12-bracket-stage]').forEach((b,i)=>b.classList.toggle('active',i===0));
+      const strip=box.querySelector('.v12-bracket-stage-tabs');
+      if(strip) strip.scrollLeft=0;
+    },100);
+  }
   const bracketStage=e.target.closest('[data-v12-bracket-stage]');
   if(bracketStage){
     const box=bracketStage.closest('[data-v12-bracket]');
