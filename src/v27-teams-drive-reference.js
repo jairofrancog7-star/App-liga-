@@ -33,7 +33,33 @@
     {id:'CGS',name:'C. de Gasca',short:'C. de Gasca',logo:'assets/teams/deportivo-cg.webp'},
     {id:'SJL',name:'San Julián',short:'San Julián',logo:'assets/teams/san-julian-fc.webp'},
     {id:'NOP',name:'Dep. Nopalero',short:'Dep. Nopalero',logo:'assets/teams/deportivo-nopalero.webp'},
-    {id:'TVF',name:'Tavera FC',short:'Tavera FC',logo:'assets/teams/tavera-fc.webp'}
+    {id:'TVF',name:'Tavera FC',short:'Tavera FC',logo:'assets/teams/tavera-fc.webp'},
+    {id:'JUVS',name:'Juventus',short:'Juventus',logo:'assets/official-logos/juventus.png'},
+    {id:'HUR',name:'Huracán',short:'Huracán',logo:'',abbr:'HUR'},
+    {id:'DYN',name:'Dynamo',short:'Dynamo',logo:'assets/official-logos/dynamo.png'},
+    {id:'BOC',name:'Boca Jrs',short:'Boca Jrs',logo:'',abbr:'BOC'},
+    {id:'MAN',name:'Manchester',short:'Manchester',logo:'assets/official-logos/manchester.png'},
+    {id:'NAP',name:'Napoli',short:'Napoli',logo:'assets/official-logos/napoli.png'},
+    {id:'ABE',name:'Abejas',short:'Abejas',logo:'assets/official-logos/abejas.png'},
+    {id:'CAN',name:'La Canchita Deportes',short:'La Canchita',logo:'assets/official-logos/la-canchita-deportes.png'},
+    {id:'ALD',name:'Aldama FC',short:'Aldama FC',logo:'assets/official-logos/aldama-fc.png'},
+    {id:'MAL',name:'Malvinas',short:'Malvinas',logo:'assets/official-logos/malvinas.png'},
+    {id:'CAP',name:'Capibaras',short:'Capibaras',logo:'assets/official-logos/capibaras.png'},
+    {id:'CUA',name:'La Cuadrilla',short:'La Cuadrilla',logo:'assets/official-logos/la-cuadrilla.png'},
+    {id:'MAZ',name:'Mazacotes FC',short:'Mazacotes FC',logo:'assets/official-logos/mazacotes-fc.png'},
+    {id:'MAR',name:'Dep. Maravillas',short:'Dep. Maravillas',logo:'assets/official-logos/dep-maravillas.png'},
+    {id:'OSA',name:'Osasuna',short:'Osasuna',logo:'assets/official-logos/osasuna.png'},
+    {id:'SAJ',name:'San Antonio Jrs',short:'San Antonio Jrs',logo:'assets/official-logos/san-antonio-jrs.png'},
+    {id:'POP',name:'Populares',short:'Populares',logo:'assets/official-logos/populares.png'},
+    {id:'PAC',name:'Pachangas FC',short:'Pachangas FC',logo:'assets/official-logos/pachangas-fc.png'},
+    {id:'SJU',name:'San Juan FC',short:'San Juan FC',logo:'assets/official-logos/san-juan-fc.png'},
+    {id:'TAP',name:'Tapatío',short:'Tapatío',logo:'assets/official-logos/tapatio.png'},
+    {id:'LAL',name:'Dep. La Luz',short:'Dep. La Luz',logo:'assets/official-logos/dep-la-luz.png'},
+    {id:'BAR',name:'Barza',short:'Barza',logo:'assets/official-logos/barza.png'},
+    {id:'SJJ',name:'San José Jrs',short:'San José Jrs',logo:'assets/official-logos/san-jose-jrs.png'},
+    {id:'SAF',name:'San Antonio FC',short:'San Antonio FC',logo:'assets/official-logos/san-antonio-fc.png'},
+    {id:'CEL',name:'Célticos FC',short:'Célticos FC',logo:'assets/official-logos/celticos.png'},
+    {id:'ZAP',name:'Dep. Zapata',short:'Dep. Zapata',logo:'assets/official-logos/dep-zapata.png'}
   ];
 
   const FIRST_GRID=V27_TEAMS.slice(0,16);
@@ -111,7 +137,7 @@
       '</header>'+
       '<section class="v27-section"><h2>Siguiendo</h2><div class="v27-followed-row">'+followedTeams.slice(0,4).map(function(t){return tile(t,true)}).join('')+'</div></section>'+
       '<section class="v27-section"><h2>Equipos en la competición</h2><div class="v27-grid">'+(list.length?list.map(function(t){return tile(t,false)}).join(''):'<div class="v27-empty-grid">No se encontraron equipos.</div>')+'</div></section>'+
-      '<section class="v27-section v27-eliminated"><h2>Equipos eliminados</h2><div class="v27-grid">'+ELIMINATED.map(function(t){return tile(t,false)}).join('')+'</div></section>'+
+      '<section class="v27-section v27-eliminated"><h2>Más equipos de la Liga</h2><div class="v27-grid">'+ELIMINATED.map(function(t){return tile(t,false)}).join('')+'</div></section>'+
     '</section>';
   }
 
