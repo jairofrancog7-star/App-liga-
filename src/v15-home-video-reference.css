@@ -962,3 +962,83 @@ body[data-app-route="home"] #screen>.stories{
     height:66px!important;
   }
 }
+
+/* V27 HOME PROFESSIONAL LOGO — elimina visualmente el cuadro negro del logo
+   superior izquierdo sin mover el resto de la portada. */
+.v15-home-clean-logo{display:none!important}
+
+body[data-app-route="home"] .topbar .v15-home-clean-logo{
+  position:absolute!important;
+  z-index:8!important;
+  left:6%!important;
+  top:47.8%!important;
+  width:23%!important;
+  height:auto!important;
+  aspect-ratio:1/1!important;
+  display:grid!important;
+  place-items:center!important;
+  margin:0!important;
+  padding:0!important;
+  border:0!important;
+  background:transparent!important;
+  pointer-events:none!important;
+  isolation:isolate!important;
+  overflow:visible!important;
+}
+
+body[data-app-route="home"] .topbar .v15-home-clean-logo::before{
+  content:""!important;
+  position:absolute!important;
+  z-index:-1!important;
+  inset:-14%!important;
+  display:block!important;
+  border:0!important;
+  border-radius:50%!important;
+  background:
+    radial-gradient(
+      ellipse at 50% 50%,
+      rgba(1,9,52,.98) 0%,
+      rgba(1,9,52,.95) 53%,
+      rgba(1,8,47,.82) 68%,
+      rgba(1,7,43,.44) 82%,
+      rgba(1,7,43,0) 100%
+    )!important;
+  -webkit-backdrop-filter:blur(14px) brightness(.88) saturate(.92)!important;
+  backdrop-filter:blur(14px) brightness(.88) saturate(.92)!important;
+  -webkit-mask-image:radial-gradient(ellipse at center,#000 0 66%,rgba(0,0,0,.95) 76%,rgba(0,0,0,.48) 89%,transparent 100%)!important;
+  mask-image:radial-gradient(ellipse at center,#000 0 66%,rgba(0,0,0,.95) 76%,rgba(0,0,0,.48) 89%,transparent 100%)!important;
+}
+
+body[data-app-route="home"] .topbar .v15-home-clean-logo-image{
+  position:relative!important;
+  z-index:1!important;
+  display:block!important;
+  width:88%!important;
+  height:88%!important;
+  max-width:88%!important;
+  max-height:88%!important;
+  margin:0!important;
+  padding:0!important;
+  border:0!important;
+  border-radius:0!important;
+  object-fit:contain!important;
+  object-position:center!important;
+  background:transparent!important;
+  box-shadow:none!important;
+  filter:
+    drop-shadow(0 4px 8px rgba(0,0,0,.50))
+    drop-shadow(0 0 5px rgba(80,215,255,.10))!important;
+}
+
+body[data-app-route="home"] .topbar .v15-home-clean-logo-image.v15-home-logo-blend-fallback{
+  mix-blend-mode:screen!important;
+}
+
+@media(max-width:380px){
+  body[data-app-route="home"] .topbar .v15-home-clean-logo{
+    left:5.8%!important;
+    top:47.5%!important;
+    width:23.5%!important;
+  }
+}
+
