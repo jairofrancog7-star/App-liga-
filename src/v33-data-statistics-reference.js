@@ -273,7 +273,7 @@ function applyHeaderScroll(){
      del contenido debe cambiar con ella; si se queda con la altura expandida
      aparece una franja azul vacía encima de "Datos clave". */
   const page=document.querySelector('[data-v33-data]');
-  if(page)page.style.paddingTop=currentHeadH.toFixed(1)+'px';
+  if(page)page.style.setProperty('padding-top',currentHeadH.toFixed(1)+'px','important');
 
   title.style.left=lerp(expandedLeft,compactLeft,p).toFixed(1)+'px';
   title.style.top=lerp(expandedTop,compactTop,p).toFixed(1)+'px';
