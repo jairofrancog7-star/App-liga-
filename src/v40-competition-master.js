@@ -1,7 +1,7 @@
 /* V40 — Competición / Clasificación calcada de la referencia del usuario.
    Mantiene la estructura visual azul y sustituye contenido profesional por equipos locales. */
 (function(){
-  const ASSET='./assets/';
+  const ASSET='https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/assets/';
   const teams=[
     {name:'Lobos CDG',logo:ASSET+'official-logos/lobos-cdg.png',p:1,gd:5,pts:3,last:'V'},
     {name:'La Huerta',logo:ASSET+'official-logos/la-huerta.png',p:1,gd:5,pts:3,last:'V'},
