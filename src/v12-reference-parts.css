@@ -3056,3 +3056,10 @@ body[data-app-route="competition"] .v12-criteria-rank{
     height:32px!important;
   }
 }
+
+
+/* === V12 PARTS42 — CENTRAR BOTÓN COMPLETA === */
+/* Solo baja ligeramente el texto del botón central del selector. */
+body[data-app-route="competition"] .v12-segmented button:nth-child(2){
+  transform:translateY(2px)!important;
+}
