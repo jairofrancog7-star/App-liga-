@@ -20,8 +20,8 @@ body[data-app-route="home"] .topbar{
   background-color:var(--v10-deep)!important;
   background-image:url('https://d2ol7oe51mr4n9.cloudfront.net/user_3JNvttsAwr0QjxhuX5O1uaa9bvv/f2d42133-aeeb-4665-bfd1-693941efa7ee.jpg')!important;
   background-repeat:no-repeat!important;
-  background-size:100% 100%!important;
-  background-position:center center!important;
+  background-size:cover!important;
+  background-position:center top!important;
   border:0!important;
   box-shadow:none!important;
   backdrop-filter:none!important;
