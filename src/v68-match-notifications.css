@@ -1,0 +1,239 @@
+/* V68 — Notificaciones por partido.
+   Sustituye el antiguo control de sonido por un panel inferior tipo bottom-sheet.
+   Se aplica a la pantalla universal de partido, por lo tanto funciona con todos los equipos. */
+
+body.v68-notif-open{
+  overflow:hidden!important;
+  touch-action:none;
+}
+
+body.v28-match-active .v28-icon-btn[data-v28-notifications] svg{
+  width:30px!important;
+  height:30px!important;
+  fill:none!important;
+  stroke:currentColor!important;
+  stroke-width:2!important;
+  stroke-linecap:round!important;
+  stroke-linejoin:round!important;
+}
+
+.v68-notif-layer{
+  position:fixed;
+  z-index:999;
+  inset:0;
+  display:block;
+  pointer-events:none;
+}
+
+.v68-notif-layer.open{
+  pointer-events:auto;
+}
+
+.v68-notif-backdrop{
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+  padding:0;
+  border:0;
+  background:rgba(0,0,28,.68);
+  opacity:0;
+  transition:opacity .22s ease;
+}
+
+.v68-notif-layer.open .v68-notif-backdrop{
+  opacity:1;
+}
+
+.v68-notif-sheet{
+  position:absolute;
+  left:50%;
+  bottom:0;
+  width:min(100%,520px);
+  max-height:min(76dvh,760px);
+  overflow-y:auto;
+  overscroll-behavior:contain;
+  padding:18px 24px calc(28px + env(safe-area-inset-bottom));
+  border-radius:24px 24px 0 0;
+  background:#0b0877;
+  color:#fff;
+  box-shadow:0 -18px 48px rgba(0,0,45,.30);
+  transform:translate(-50%,100%);
+  transition:transform .28s cubic-bezier(.2,.72,.25,1);
+  scrollbar-width:none;
+  -webkit-overflow-scrolling:touch;
+}
+
+.v68-notif-sheet::-webkit-scrollbar{display:none}
+
+.v68-notif-layer.open .v68-notif-sheet{
+  transform:translate(-50%,0);
+}
+
+.v68-notif-head{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:16px;
+}
+
+.v68-notif-head h2{
+  margin:0;
+  color:#fff;
+  font:760 28px/1.05 Inter,Roboto,Arial,sans-serif;
+  letter-spacing:-.025em;
+}
+
+.v68-notif-head button{
+  min-width:60px;
+  padding:5px 0;
+  border:0;
+  background:transparent;
+  color:#14e4ef;
+  font:700 20px/1 Inter,Roboto,Arial,sans-serif;
+  text-align:right;
+}
+
+.v68-notif-sub{
+  margin:18px 0 20px;
+  color:#c4c7df;
+  font:400 17px/1.25 Inter,Roboto,Arial,sans-serif;
+}
+
+.v68-notif-all{
+  min-height:86px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:18px;
+  padding:14px 16px;
+  border-radius:15px;
+  background:#171582;
+}
+
+.v68-notif-all strong{
+  font:500 18px/1.12 Inter,Roboto,Arial,sans-serif;
+}
+
+.v68-notif-list{
+  margin-top:7px;
+}
+
+.v68-notif-row{
+  min-height:78px;
+  display:grid;
+  grid-template-columns:45px minmax(0,1fr) 78px;
+  align-items:center;
+  gap:12px;
+  padding:7px 0;
+}
+
+.v68-notif-row-icon{
+  width:42px;
+  height:42px;
+  display:grid;
+  place-items:center;
+  color:#fff;
+}
+
+.v68-notif-row-icon svg{
+  width:29px;
+  height:29px;
+  display:block;
+  fill:none;
+  stroke:currentColor;
+  stroke-width:1.8;
+  stroke-linecap:round;
+  stroke-linejoin:round;
+}
+
+.v68-notif-row-icon.red{
+  color:#ff4d5f;
+}
+.v68-notif-row-icon.red svg{
+  fill:currentColor;
+  stroke:currentColor;
+}
+
+.v68-notif-label{
+  min-width:0;
+  color:#fff;
+  font:450 18px/1.16 Inter,Roboto,Arial,sans-serif;
+}
+
+.v68-notif-switch{
+  position:relative;
+  width:76px;
+  height:46px;
+  padding:0;
+  border:0;
+  border-radius:999px;
+  background:#7778aa;
+  box-shadow:
+    inset 0 0 0 2px rgba(176,169,122,.52),
+    0 1px 1px rgba(0,0,0,.10);
+  transition:background .18s ease,box-shadow .18s ease;
+}
+
+.v68-notif-switch i{
+  position:absolute;
+  top:6px;
+  left:7px;
+  width:34px;
+  height:34px;
+  border-radius:50%;
+  background:#fff;
+  box-shadow:0 2px 4px rgba(0,0,0,.18);
+  transition:transform .18s ease;
+}
+
+.v68-notif-switch.on{
+  background:#12dce9;
+  box-shadow:inset 0 0 0 2px rgba(22,226,239,.35);
+}
+
+.v68-notif-switch.on i{
+  transform:translateX(28px);
+}
+
+@media(max-width:390px){
+  .v68-notif-sheet{
+    max-height:77dvh;
+    padding:16px 20px calc(24px + env(safe-area-inset-bottom));
+    border-radius:22px 22px 0 0;
+  }
+  .v68-notif-head h2{font-size:25px}
+  .v68-notif-head button{font-size:18px}
+  .v68-notif-sub{
+    margin:15px 0 17px;
+    font-size:15.5px;
+  }
+  .v68-notif-all{
+    min-height:78px;
+    padding:12px 14px;
+  }
+  .v68-notif-all strong{font-size:17px}
+  .v68-notif-row{
+    min-height:71px;
+    grid-template-columns:42px minmax(0,1fr) 72px;
+    gap:10px;
+  }
+  .v68-notif-label{font-size:16.5px}
+  .v68-notif-switch{
+    width:70px;
+    height:43px;
+  }
+  .v68-notif-switch i{
+    top:5.5px;
+    left:6px;
+    width:32px;
+    height:32px;
+  }
+  .v68-notif-switch.on i{
+    transform:translateX(26px);
+  }
+  .v68-notif-row-icon svg{
+    width:27px;
+    height:27px;
+  }
+}
