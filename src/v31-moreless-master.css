@@ -291,3 +291,55 @@ body[data-app-route="moreLess"] .bottom-nav .nav-item small{
     transform:translateX(-50%)!important;
   }
 }
+
+
+/* V31 FIX — lower More/Less layout from Drive reference */
+body[data-app-route="moreLess"] .v12-stadium{
+  display:none!important;
+  background:none!important;
+  height:0!important;
+  min-height:0!important;
+  overflow:hidden!important;
+}
+
+body[data-app-route="moreLess"] .v12-ml-choice{
+  grid-template-columns:1fr 15% 1fr!important;
+  gap:0!important;
+}
+
+body[data-app-route="moreLess"] .v12-ml-mid{
+  min-height:80px!important;
+}
+
+body[data-app-route="moreLess"] .v12-ml-mid button{
+  width:clamp(24px,6.1vw,31px)!important;
+  height:clamp(42px,10.4vw,52px)!important;
+}
+
+body[data-app-route="moreLess"] .v12-ml-mid .up-arrow{
+  top:-40px!important;
+}
+
+body[data-app-route="moreLess"] .v12-ml-mid .down-arrow{
+  bottom:-40px!important;
+}
+
+@media(max-width:370px){
+  body[data-app-route="moreLess"] .v12-ml-choice{
+    grid-template-columns:1fr 14% 1fr!important;
+    gap:0!important;
+  }
+  body[data-app-route="moreLess"] .v12-ml-mid{
+    min-height:74px!important;
+  }
+  body[data-app-route="moreLess"] .v12-ml-mid button{
+    width:23px!important;
+    height:42px!important;
+  }
+  body[data-app-route="moreLess"] .v12-ml-mid .up-arrow{
+    top:-34px!important;
+  }
+  body[data-app-route="moreLess"] .v12-ml-mid .down-arrow{
+    bottom:-34px!important;
+  }
+}
