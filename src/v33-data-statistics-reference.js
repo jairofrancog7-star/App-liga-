@@ -245,8 +245,10 @@ function applyHeaderScroll(){
   if(!head)return;
   const y=Math.max(0,window.scrollY||document.documentElement.scrollTop||0);
   const p=Math.min(1,y/210);
+  const expanded=window.innerWidth<=360?334:(window.innerWidth<=430?350:390);
+  const collapsed=window.innerWidth<=430?132:145;
   head.style.setProperty('--v33-collapse',p.toFixed(4));
-  head.style.setProperty('--v33-head-h',(390-(245*p)).toFixed(1)+'px');
+  head.style.setProperty('--v33-head-h',(expanded-((expanded-collapsed)*p)).toFixed(1)+'px');
   head.style.setProperty('--v33-expanded-opacity',Math.max(0,1-(p*1.35)).toFixed(3));
   head.style.setProperty('--v33-collapsed-opacity',Math.max(0,(p-.42)/.58).toFixed(3));
   head.style.setProperty('--v33-tabs-opacity',Math.max(.88,1-(p*.08)).toFixed(3));
