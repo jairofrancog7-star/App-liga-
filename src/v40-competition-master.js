@@ -10,7 +10,7 @@
     LOB:ASSET+'official-logos/lobos-cdg.png',
     FRA:ASSET+'official-logos/franco-fc.png',
     CUE:ASSET+'official-logos/toros-de-cuenda.png',
-    JUV:ASSET+'liga-logo.webp',
+    JUV:'',
     STC:ASSET+'teams/atletico-santa-cruz.webp',
     POZ:ASSET+'teams/pozos-fc.webp',
     RIN:ASSET+'teams/pozos-fc.webp'
@@ -63,7 +63,7 @@
     const tabs=currentTabs();
     return route()==='competition' && !!tabs?.querySelector('.tab.active') && /Clasificaci/i.test(tabs.querySelector('.tab.active').textContent||'');
   }
-  function img(src,alt,cls=''){return '<img class="'+cls+'" src="'+src+'" alt="'+alt+'" loading="eager" decoding="async">'}
+  function img(src,alt,cls=''){if(!src)return '';return '<img class="'+cls+'" src="'+src+'" alt="'+alt+'" loading="eager" decoding="async">'}
   function header(){
     return '<section class="v40-match-master" data-v40-master>'+
       '<div class="v40-actions"><button type="button" data-v40-back aria-label="Volver">'+iconBack+'</button><span></span><button type="button" data-v40-mute aria-label="Silenciar">'+iconMute+'</button><button type="button" data-v40-share aria-label="Compartir">'+iconShare+'</button></div>'+
