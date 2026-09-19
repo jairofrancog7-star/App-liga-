@@ -723,3 +723,250 @@ body.v32-rankings-active .bottom-nav .nav-item[data-route="more"] .nav-icon{
   .v32-filter-club>span:last-child{font-size:11px}
   .v32-filter-body h2{font-size:25px}
 }
+
+
+/* PARTS32.3 — compactación solicitada + tercer botón de filtro en Federaciones. */
+.v32-head{padding-left:18px!important;padding-right:18px!important}
+.v32-head-fed .v32-head-row{margin-bottom:5px!important;min-height:42px!important}
+.v32-head-clubs .v32-head-row{margin-bottom:15px!important;min-height:42px!important}
+.v32-icon{width:38px!important;height:38px!important}
+.v32-icon svg{width:26px!important;height:26px!important}
+.v32-head-fed h1{
+  margin:0 0 15px!important;
+  font-size:34px!important;
+  letter-spacing:-.8px!important;
+}
+.v32-head-clubs .v32-head-row h1{
+  font-size:25px!important;
+  letter-spacing:-.4px!important;
+}
+
+.v32-tabs{height:50px!important}
+.v32-tab{
+  height:50px!important;
+  font-size:17px!important;
+}
+.v32-tab.active:after{
+  left:24%!important;
+  right:24%!important;
+  height:3px!important;
+}
+
+.v32-controls{
+  gap:8px!important;
+  padding:14px 16px 10px!important;
+}
+.v32-controls.fed{
+  grid-template-columns:minmax(0,1.42fr) minmax(92px,.78fr) 42px!important;
+}
+.v32-select,
+.v32-filter{
+  height:42px!important;
+  border-radius:9px!important;
+}
+.v32-select{
+  padding:0 12px!important;
+  gap:7px!important;
+  font-size:14px!important;
+}
+.v32-select .v32-chevron{
+  width:8px!important;
+  height:8px!important;
+  border-right-width:2px!important;
+  border-bottom-width:2px!important;
+}
+.v32-filter svg{
+  width:21px!important;
+  height:21px!important;
+}
+
+.v32-controls.clubs{
+  gap:8px!important;
+  padding-left:16px!important;
+  padding-right:16px!important;
+}
+.v32-controls.clubs .v32-coefficient{flex-basis:188px!important}
+.v32-controls.clubs .v32-season-select{flex-basis:106px!important}
+.v32-controls.clubs .v32-filter{flex-basis:42px!important}
+.v32-selected-club{
+  min-width:108px!important;
+  max-width:150px!important;
+  height:42px!important;
+  border-radius:9px!important;
+  padding-left:12px!important;
+  font-size:13px!important;
+}
+.v32-selected-club i{
+  width:23px!important;
+  height:23px!important;
+  flex-basis:23px!important;
+  font-size:19px!important;
+}
+
+.v32-card{
+  margin-left:16px!important;
+  margin-right:16px!important;
+  border-radius:17px 17px 0 0!important;
+}
+.v32-fed-card{padding:13px 12px 7px!important}
+.v32-fed-head{
+  grid-template-columns:minmax(0,1.12fr) minmax(101px,.82fr) 68px!important;
+  gap:6px!important;
+  padding-bottom:11px!important;
+  font-size:10px!important;
+}
+.v32-fed-group{
+  padding-bottom:8px!important;
+  font-size:10.5px!important;
+  border-bottom-width:1px!important;
+}
+.v32-fed-row{
+  min-height:54px!important;
+  padding:5px 0!important;
+  grid-template-columns:18px 38px minmax(0,1fr) minmax(101px,.8fr) 68px!important;
+  gap:5px!important;
+}
+.v32-pos{font-size:12px!important}
+.v32-logo{width:36px!important;height:36px!important}
+.v32-logo-fallback{
+  width:33px!important;
+  height:36px!important;
+  font-size:7px!important;
+}
+.v32-fed-name{
+  font-size:13px!important;
+  line-height:1.05!important;
+}
+.v32-fed-points,
+.v32-fed-average{
+  font-size:13px!important;
+}
+
+.v32-club-card{padding:0 12px 6px!important}
+.v32-club-head{
+  grid-template-columns:1fr 83px 18px!important;
+  gap:5px!important;
+  padding:13px 0 9px!important;
+  font-size:10.5px!important;
+}
+.v32-club-row{
+  min-height:56px!important;
+  grid-template-columns:18px 38px minmax(0,1fr) 83px 18px!important;
+  gap:5px!important;
+  padding:5px 0!important;
+}
+.v32-club-copy b{
+  font-size:13.5px!important;
+  line-height:1.05!important;
+}
+.v32-club-copy small{
+  margin-top:2px!important;
+  font-size:9.5px!important;
+}
+.v32-club-points{font-size:14px!important}
+.v32-row-chevron{
+  width:7px!important;
+  height:7px!important;
+  border-right-width:2px!important;
+  border-bottom-width:2px!important;
+}
+.v32-club-detail{
+  margin-left:61px!important;
+  padding-bottom:8px!important;
+  font-size:10px!important;
+}
+.v32-club-detail button{font-size:10px!important}
+.v32-update{
+  margin:18px 16px 0!important;
+  font-size:10.5px!important;
+}
+
+/* El filtro también queda compacto y conserva iconos/logos visibles. */
+.v32-filter-head{
+  height:56px!important;
+  padding:0 16px!important;
+}
+.v32-filter-head h1{font-size:17px!important}
+.v32-filter-head button{font-size:14px!important}
+.v32-filter-search{
+  height:46px!important;
+  margin:0 16px 14px!important;
+  padding:0 13px!important;
+  gap:10px!important;
+  border-radius:10px!important;
+}
+.v32-filter-search svg{width:21px!important;height:21px!important}
+.v32-filter-search input{font-size:14px!important}
+.v32-filter-body{padding-top:18px!important}
+.v32-filter-body h2{
+  margin:0 16px 16px!important;
+  font-size:22px!important;
+}
+.v32-filter-grid{
+  grid-template-columns:repeat(4,minmax(0,1fr))!important;
+  column-gap:4px!important;
+  row-gap:16px!important;
+  padding:0 5px 10px!important;
+}
+.v32-filter-club{
+  min-height:98px!important;
+  padding:5px 2px!important;
+  gap:5px!important;
+}
+.v32-filter-club-logo{
+  width:50px!important;
+  height:50px!important;
+}
+.v32-filter-club .v32-logo.filter{
+  width:47px!important;
+  height:47px!important;
+}
+.v32-filter-club .v32-logo.filter .v32-logo-fallback{
+  width:43px!important;
+  height:46px!important;
+}
+.v32-filter-check{
+  top:-5px!important;
+  right:-5px!important;
+  width:23px!important;
+  height:23px!important;
+  font-size:17px!important;
+}
+.v32-filter-club>span:last-child{
+  font-size:10px!important;
+  line-height:1.05!important;
+}
+
+@media(max-width:390px){
+  .v32-head-fed h1{font-size:31px!important}
+  .v32-head-clubs .v32-head-row h1{font-size:23px!important}
+  .v32-tab{font-size:15.5px!important}
+  .v32-controls{padding-left:13px!important;padding-right:13px!important}
+  .v32-controls.fed{
+    grid-template-columns:minmax(0,1.38fr) minmax(84px,.75fr) 40px!important;
+  }
+  .v32-select{font-size:13px!important;padding-left:10px!important;padding-right:10px!important}
+  .v32-controls.clubs .v32-coefficient{flex-basis:174px!important}
+  .v32-controls.clubs .v32-season-select{flex-basis:99px!important}
+  .v32-controls.clubs .v32-filter{flex-basis:40px!important}
+  .v32-card{margin-left:13px!important;margin-right:13px!important}
+  .v32-fed-head{
+    grid-template-columns:minmax(0,1fr) minmax(92px,.79fr) 61px!important;
+    font-size:9px!important;
+  }
+  .v32-fed-row{
+    grid-template-columns:17px 34px minmax(0,1fr) minmax(92px,.78fr) 61px!important;
+    gap:4px!important;
+  }
+  .v32-logo{width:33px!important;height:33px!important}
+  .v32-fed-name,.v32-fed-points,.v32-fed-average{font-size:12px!important}
+  .v32-club-head{grid-template-columns:1fr 76px 16px!important}
+  .v32-club-row{grid-template-columns:17px 34px minmax(0,1fr) 76px 16px!important}
+  .v32-club-copy b{font-size:12.5px!important}
+  .v32-club-points{font-size:13px!important}
+  .v32-filter-grid{row-gap:13px!important}
+  .v32-filter-club{min-height:91px!important}
+  .v32-filter-club-logo{width:46px!important;height:46px!important}
+  .v32-filter-club .v32-logo.filter{width:43px!important;height:43px!important}
+  .v32-filter-club>span:last-child{font-size:9.5px!important}
+}
