@@ -12,7 +12,8 @@ const HEADER_TITLES = {
 };
 
 function routeFromLocation(){
-  return location.hash.replace('#/','') || 'home';
+  const route=location.hash.replace('#/','') || 'home';
+  return route==='quiz' ? 'quizArena' : route;
 }
 
 function installBrandHeader(){
