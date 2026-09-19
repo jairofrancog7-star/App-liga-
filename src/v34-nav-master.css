@@ -331,3 +331,115 @@ body[data-app-route="moreLess"] .v12-stadium{
   background-size:100% auto!important;
   background-position:center 96%!important;
 }
+
+
+/* V46 — MÁS O MENOS: separar título/flechas y eliminar barra visual duplicada */
+body[data-app-route="moreLess"] .v12-ml-title{
+  top:9.4%!important;
+  width:min(45vw,222px)!important;
+  height:auto!important;
+  transform:translateX(-50%) skewX(-5deg)!important;
+  overflow:visible!important;
+}
+body[data-app-route="moreLess"] .v12-ml-title span{
+  display:block!important;
+  font-size:clamp(42px,10.8vw,56px)!important;
+  line-height:.92!important;
+  letter-spacing:-.045em!important;
+  text-transform:uppercase!important;
+}
+body[data-app-route="moreLess"] .v12-ml-title span:first-child{
+  margin:0 0 5px 0!important;
+  text-align:center!important;
+}
+body[data-app-route="moreLess"] .v12-ml-title span:last-child{
+  margin:0!important;
+  padding-left:24px!important;
+  text-align:center!important;
+}
+body[data-app-route="moreLess"] .v12-ml-title small{
+  left:1%!important;
+  top:55%!important;
+  font-size:clamp(20px,5vw,27px)!important;
+  line-height:1!important;
+  transform:skewX(5deg)!important;
+  text-transform:uppercase!important;
+}
+
+/* Flechas curvas quedan por fuera del bloque de texto: ninguna pisa MÁS / O / MENOS. */
+body[data-app-route="moreLess"] .v12-ml-curves{
+  left:50%!important;
+  top:8.0%!important;
+  width:min(72vw,340px)!important;
+  height:29%!important;
+  transform:translateX(-50%)!important;
+  overflow:visible!important;
+}
+body[data-app-route="moreLess"] .v12-curve-arrow{
+  width:clamp(40px,8.8vw,50px)!important;
+  height:clamp(88px,17vw,108px)!important;
+}
+body[data-app-route="moreLess"] .v12-ml-curves .up .v12-curve-arrow{
+  right:2%!important;
+  top:0!important;
+}
+body[data-app-route="moreLess"] .v12-ml-curves .down .v12-curve-arrow{
+  left:2%!important;
+  top:52%!important;
+}
+
+/* Sin escudo intermedio: deja el espacio limpio como la referencia. */
+body[data-app-route="moreLess"] .v12-ml-logo{
+  display:none!important;
+  visibility:hidden!important;
+  opacity:0!important;
+}
+
+/* Jugadores y flechas centrales separados del título. */
+body[data-app-route="moreLess"] .v12-ml-choice{
+  top:59.4%!important;
+  width:min(49vw,245px)!important;
+}
+body[data-app-route="moreLess"] .v12-ml-mid .up-arrow{
+  top:-54px!important;
+}
+body[data-app-route="moreLess"] .v12-ml-mid .down-arrow{
+  bottom:-55px!important;
+}
+
+/* Recorta solamente el estadio y nunca la navegación que venía dibujada en el asset. */
+body[data-app-route="moreLess"] .v12-stadium{
+  height:18.0%!important;
+  bottom:0!important;
+  background-size:100% auto!important;
+  background-position:center 87.2%!important;
+  overflow:hidden!important;
+}
+body[data-app-route="moreLess"] .v12-stadium::after{
+  content:""!important;
+  display:block!important;
+  position:absolute!important;
+  left:0!important;
+  right:0!important;
+  bottom:0!important;
+  height:8%!important;
+  background:#030052!important;
+  border:0!important;
+  pointer-events:none!important;
+}
+
+/* Solo una barra real. */
+body[data-app-route="moreLess"] #screen .bottom-nav,
+body[data-app-route="moreLess"] .v12-moreless .bottom-nav{
+  display:none!important;
+}
+body[data-app-route="moreLess"] #app>.bottom-nav{
+  display:grid!important;
+  z-index:2147483000!important;
+}
+
+@media(max-width:370px){
+  body[data-app-route="moreLess"] .v12-ml-title{width:47vw!important;top:9.0%!important}
+  body[data-app-route="moreLess"] .v12-ml-title span{font-size:clamp(39px,10.5vw,50px)!important}
+  body[data-app-route="moreLess"] .v12-ml-curves{width:75vw!important}
+}
