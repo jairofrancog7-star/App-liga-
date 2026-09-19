@@ -532,8 +532,8 @@ body[data-app-route="home"] .topbar{
   background-color:#02065f!important;
   background-image:url('https://d2ol7oe51mr4n9.cloudfront.net/user_3JNvttsAwr0QjxhuX5O1uaa9bvv/f2d42133-aeeb-4665-bfd1-693941efa7ee.jpg')!important;
   background-repeat:no-repeat!important;
-  background-size:100% 100%!important;
-  background-position:center center!important;
+  background-size:cover!important;
+  background-position:center top!important;
   border:0!important;
   border-bottom:0!important;
   box-shadow:none!important;
@@ -1067,4 +1067,17 @@ body[data-app-route="home"] .topbar .v15-home-clean-logo::before{
   backdrop-filter:none!important;
   -webkit-mask-image:none!important;
   mask-image:none!important;
+}
+
+
+/* HOME_LOGO_REMOVE_AND_ICON_RATIO1 */
+body[data-app-route="home"] .topbar .v15-home-clean-logo{
+  display:none!important;
+  visibility:hidden!important;
+  opacity:0!important;
+  pointer-events:none!important;
+}
+body[data-app-route="home"] .topbar{
+  background-size:cover!important;
+  background-position:center top!important;
 }
