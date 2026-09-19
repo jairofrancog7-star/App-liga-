@@ -106,11 +106,55 @@ function bodyForTab(){
 function tabs(){
   return ['Resumen','Temporadas','Campeones','Finales','Récords'].map(t=>'<button type="button" class="v35-tab '+(t===activeTab?'active':'')+'" data-v35-tab="'+esc(t)+'">'+esc(t)+'</button>').join('');
 }
+function transparentizeTopLogo(img){
+  if(!img||img.dataset.v35TransparentReady==='1') return;
+  img.dataset.v35TransparentReady='1';
+  const run=()=>{
+    try{
+      const w=img.naturalWidth||0,h=img.naturalHeight||0;
+      if(!w||!h) return;
+      const canvas=document.createElement('canvas');
+      canvas.width=w;canvas.height=h;
+      const ctx=canvas.getContext('2d',{willReadFrequently:true});
+      if(!ctx) return;
+      ctx.drawImage(img,0,0,w,h);
+      const data=ctx.getImageData(0,0,w,h);
+      const p=data.data;
+      const seen=new Uint8Array(w*h);
+      const queue=new Int32Array(w*h);
+      let head=0,tail=0;
+      const isBg=(idx)=>{
+        const o=idx*4,r=p[o],g=p[o+1],b=p[o+2],a=p[o+3];
+        if(a<8) return true;
+        const max=Math.max(r,g,b),min=Math.min(r,g,b);
+        return max<78 && (max-min)<42;
+      };
+      const push=(idx)=>{
+        if(idx<0||idx>=w*h||seen[idx]||!isBg(idx)) return;
+        seen[idx]=1;queue[tail++]=idx;
+      };
+      for(let x=0;x<w;x++){push(x);push((h-1)*w+x);}
+      for(let y=0;y<h;y++){push(y*w);push(y*w+w-1);}
+      while(head<tail){
+        const idx=queue[head++],x=idx%w,y=(idx/w)|0,o=idx*4;
+        p[o+3]=0;
+        if(x>0)push(idx-1);if(x<w-1)push(idx+1);
+        if(y>0)push(idx-w);if(y<h-1)push(idx+w);
+      }
+      ctx.putImageData(data,0,0);
+      img.src=canvas.toDataURL('image/png');
+      img.classList.add('v35-top-logo-transparent');
+    }catch(e){
+      img.classList.add('v35-top-logo-blend-fallback');
+    }
+  };
+  if(img.complete) run(); else img.addEventListener('load',run,{once:true});
+}
 function pageHtml(){
   return '<div class="v35-history-page">'+linesSvg()+
     '<header class="v35-history-head">'+
       '<button class="v35-back" type="button" data-v35-back aria-label="Volver"><svg viewBox="0 0 32 32" aria-hidden="true"><path d="M26 16H7M14 9l-7 7 7 7"/></svg></button>'+
-      '<div class="v35-logo-wrap"><img src="'+ASSETS.league+'" alt="Liga Municipal de Fútbol Juventino Rosas A.C." decoding="async"></div>'+
+      '<div class="v35-logo-wrap"><img data-v35-top-logo crossorigin="anonymous" src="'+ASSETS.league+'" alt="Liga Municipal de Fútbol Juventino Rosas A.C." decoding="async"></div>'+
       '<h1>Historia</h1>'+
       '<nav class="v35-tabs" aria-label="Secciones de Historia">'+tabs()+'</nav>'+
     '</header>'+
@@ -124,6 +168,7 @@ function renderHistory(){
   if(screen.querySelector('.v35-history-page')) return;
   screen.innerHTML=pageHtml();
   document.body.classList.add('v35-history-mounted');
+  transparentizeTopLogo(screen.querySelector('[data-v35-top-logo]'));
   requestAnimationFrame(()=>{ window.scrollTo({top:0,left:0,behavior:'auto'}); });
 }
 function rerenderContent(){
