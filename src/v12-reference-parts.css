@@ -3063,3 +3063,63 @@ body[data-app-route="competition"] .v12-criteria-rank{
 body[data-app-route="competition"] .v12-segmented button:nth-child(2){
   transform:translateY(2px)!important;
 }
+
+
+/* === V12 PARTS45 — AJUSTE MINIMO: SIN LINEA SUPERIOR + CRITERIOS SWIPE + FORMA === */
+/* No cambia dimensiones ni distribución: solo elimina la línea superior del encabezado. */
+body[data-app-route="competition"] .v12-stand-head{
+  border-top:0!important;
+  box-shadow:none!important;
+}
+body[data-app-route="competition"] .v12-stand-head::before,
+body[data-app-route="competition"] .v12-stand-head::after{
+  content:none!important;
+  display:none!important;
+}
+
+/* Conserva la línea inferior del encabezado. */
+body[data-app-route="competition"] .v12-stand-head{
+  border-bottom:2px solid rgba(255,255,255,.72)!important;
+}
+
+/* Criterios de desempate: deslizamiento lateral real sin cambiar su diseño. */
+body[data-app-route="competition"] .v12-criteria-shell{
+  overflow:hidden!important;
+}
+body[data-app-route="competition"] .v12-criteria-scroll{
+  width:100%!important;
+  max-width:100%!important;
+  overflow-x:auto!important;
+  overflow-y:hidden!important;
+  -webkit-overflow-scrolling:touch!important;
+  touch-action:pan-x pan-y!important;
+  overscroll-behavior-x:contain!important;
+  scrollbar-width:none!important;
+}
+body[data-app-route="competition"] .v12-criteria-scroll::-webkit-scrollbar{
+  display:none!important;
+}
+body[data-app-route="competition"] .v12-criteria-table{
+  min-width:470px!important;
+  width:max-content!important;
+}
+
+/* Restaurar y mantener visibles los puntos de FORMA. */
+body[data-app-route="competition"] .v12-form{
+  overflow:visible!important;
+  visibility:visible!important;
+  opacity:1!important;
+}
+body[data-app-route="competition"] .v12-form i{
+  display:block!important;
+  visibility:visible!important;
+  opacity:1!important;
+  border-radius:50%!important;
+}
+body[data-app-route="competition"] .v12-form i.w{background:#35c74d!important}
+body[data-app-route="competition"] .v12-form i.l{background:#ff4346!important}
+body[data-app-route="competition"] .v12-form i.n{background:#202768!important}
+body[data-app-route="competition"] .v12-form b{
+  visibility:visible!important;
+  opacity:1!important;
+}
