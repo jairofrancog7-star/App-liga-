@@ -1,0 +1,298 @@
+/* V56 — PRONOSTICA SEIS · ajuste final a la captura maestra (imagen 2).
+   Mantiene la lógica real y los equipos locales; corrige escala, cabecera, barra,
+   botones, tarjetas, tipografía e iconos para que la composición sea compacta. */
+
+@media (max-width:1023px){
+  body[data-app-route="predictorSix"]{
+    overflow:hidden!important;
+    background:#06065f!important;
+  }
+
+  body[data-app-route="predictorSix"] #app,
+  body[data-app-route="predictorSix"] .app-shell{
+    width:min(100%,520px)!important;
+    height:100dvh!important;
+    min-height:100dvh!important;
+    margin:0 auto!important;
+    overflow:hidden!important;
+    background:#06065f!important;
+  }
+
+  body[data-app-route="predictorSix"] #screen{
+    width:100%!important;
+    height:calc(100dvh - var(--v34-nav-h,60px) - env(safe-area-inset-bottom))!important;
+    min-height:0!important;
+    max-height:none!important;
+    margin:0!important;
+    padding:0!important;
+    overflow:hidden!important;
+    background:#06065f!important;
+  }
+
+  .v53-predictor-six{
+    box-sizing:border-box!important;
+    width:100%!important;
+    height:100%!important;
+    min-height:0!important;
+    padding:0!important;
+    display:grid!important;
+    grid-template-rows:
+      94px
+      58px
+      32%
+      minmax(0,1fr)
+      132px!important;
+    overflow:hidden!important;
+    background:
+      radial-gradient(520px 170px at 50% 0,rgba(30,95,255,.40),transparent 70%),
+      linear-gradient(180deg,#07179d 0%,#070d77 19%,#06055f 36%,#0b0a78 64%,#1426ee 100%)!important;
+  }
+
+  /* Arte superior neón como la referencia. */
+  .v53-predictor-six::before{
+    height:125px!important;
+    opacity:.72!important;
+    background:
+      repeating-linear-gradient(158deg,
+        transparent 0 30px,
+        rgba(38,235,255,.45) 31px 33px,
+        rgba(255,54,166,.18) 34px 35px,
+        transparent 36px 70px)!important;
+    transform:translateY(-24px)!important;
+  }
+
+  /* Barra superior: flecha + Pronostica Seis, compacta y siempre visible. */
+  .v53-p6-head{
+    position:relative!important;
+    z-index:5!important;
+    box-sizing:border-box!important;
+    height:94px!important;
+    min-height:94px!important;
+    padding:0 20px!important;
+    display:flex!important;
+    align-items:center!important;
+    gap:14px!important;
+    background:linear-gradient(180deg,rgba(13,51,216,.20),rgba(4,8,91,.62))!important;
+  }
+  .v53-p6-back{
+    width:36px!important;
+    height:36px!important;
+    margin:0!important;
+    flex:0 0 36px!important;
+  }
+  .v53-p6-back svg{
+    width:29px!important;
+    height:29px!important;
+    stroke-width:2.5!important;
+  }
+  .v53-p6-head h1{
+    margin:0!important;
+    font-size:24px!important;
+    line-height:1!important;
+    font-weight:700!important;
+    letter-spacing:-.025em!important;
+  }
+
+  /* Franja intermedia de patrocinio/local branding. */
+  .v53-p6-sponsor{
+    box-sizing:border-box!important;
+    min-height:0!important;
+    height:58px!important;
+    padding:6px 20px!important;
+    gap:10px!important;
+    background:#183f88!important;
+    font-size:13px!important;
+    line-height:1!important;
+  }
+  .v53-p6-sponsor-mark{
+    min-width:108px!important;
+    width:108px!important;
+    height:43px!important;
+    padding:0 8px!important;
+    gap:6px!important;
+    border-radius:7px!important;
+  }
+  .v53-p6-sponsor-mark img{
+    width:25px!important;
+    height:25px!important;
+  }
+  .v53-p6-sponsor-mark b{
+    font-size:9.5px!important;
+    line-height:1.02!important;
+  }
+
+  /* Seis partidos: más chicos y en la misma zona que la imagen 2. */
+  .v53-p6-stage{
+    box-sizing:border-box!important;
+    min-height:0!important;
+    height:100%!important;
+    padding:20px 48px 14px 48px!important;
+    display:flex!important;
+    align-items:center!important;
+    justify-content:center!important;
+  }
+  .v53-p6-stage::after{
+    left:23%!important;
+    right:23%!important;
+    bottom:10px!important;
+    height:13px!important;
+    filter:blur(7px)!important;
+  }
+  .v53-p6-grid{
+    width:min(70vw,298px)!important;
+    gap:9px!important;
+  }
+  .v53-p6-game{
+    aspect-ratio:1.30/1!important;
+    padding:7px 6px 8px!important;
+    grid-template-columns:1fr 15px 1fr!important;
+    gap:1px!important;
+    border-radius:8px!important;
+    box-shadow:
+      inset 0 1px rgba(255,255,255,.15),
+      0 4px 10px rgba(0,0,70,.20)!important;
+  }
+  .v53-p6-team img{
+    width:30px!important;
+    height:30px!important;
+  }
+  .v53-p6-vs{
+    font-size:7px!important;
+  }
+  .v53-p6-pick{
+    right:4px!important;
+    bottom:3px!important;
+    min-width:18px!important;
+    height:18px!important;
+    padding:0 3px!important;
+    font-size:8.5px!important;
+  }
+  .v53-p6-next{
+    right:10px!important;
+    top:50%!important;
+    width:30px!important;
+    height:48px!important;
+    margin-top:-24px!important;
+  }
+  .v53-p6-next svg{
+    width:19px!important;
+    height:32px!important;
+    stroke-width:3.3!important;
+  }
+
+  /* Texto central: misma jerarquía pero sensiblemente más pequeño. */
+  .v53-p6-copy{
+    box-sizing:border-box!important;
+    min-height:0!important;
+    padding:10px 30px 0!important;
+    display:flex!important;
+    flex-direction:column!important;
+    align-items:center!important;
+    justify-content:center!important;
+    text-align:center!important;
+  }
+  .v53-p6-copy h2{
+    margin:0!important;
+    font-size:22px!important;
+    line-height:1.06!important;
+    font-weight:800!important;
+    letter-spacing:-.03em!important;
+  }
+  .v53-p6-copy p{
+    max-width:360px!important;
+    margin:14px auto 0!important;
+    font-size:14px!important;
+    line-height:1.30!important;
+    font-weight:500!important;
+  }
+  .v53-p6-dots{
+    margin:24px auto 0!important;
+    gap:9px!important;
+  }
+  .v53-p6-dots i{
+    width:9px!important;
+    height:9px!important;
+  }
+
+  /* Botones inferiores: más chicos, centrados y con proporción de la referencia. */
+  .v53-p6-actions{
+    box-sizing:border-box!important;
+    height:132px!important;
+    padding:8px 8.5% 12px!important;
+    display:grid!important;
+    align-content:center!important;
+    gap:9px!important;
+  }
+  .v53-p6-primary,
+  .v53-p6-secondary{
+    min-height:48px!important;
+    height:48px!important;
+    border-radius:16px!important;
+    font-size:16px!important;
+    line-height:1!important;
+    font-weight:700!important;
+  }
+  .v53-p6-secondary{
+    border-width:2px!important;
+  }
+
+  /* Barra inferior igual a la referencia: escala pequeña, texto normal y Inicio activo. */
+  body[data-app-route="predictorSix"] .bottom-nav{
+    height:60px!important;
+    min-height:60px!important;
+    padding:3px 7px max(3px,env(safe-area-inset-bottom))!important;
+    background:#11106f!important;
+    border-top:1px solid rgba(255,255,255,.12)!important;
+  }
+  body[data-app-route="predictorSix"] .bottom-nav .nav-item{
+    color:#a8a7cb!important;
+  }
+  body[data-app-route="predictorSix"] .bottom-nav .nav-item[data-route="home"]{
+    color:#18e3f6!important;
+  }
+  body[data-app-route="predictorSix"] .bottom-nav .nav-item[data-route="more"]{
+    color:#a8a7cb!important;
+  }
+  body[data-app-route="predictorSix"] .bottom-nav .nav-icon,
+  body[data-app-route="predictorSix"] .bottom-nav .nav-icon svg{
+    width:25px!important;
+    height:25px!important;
+    min-width:25px!important;
+    min-height:25px!important;
+    max-width:25px!important;
+    max-height:25px!important;
+  }
+  body[data-app-route="predictorSix"] .bottom-nav .nav-item small{
+    font-size:10px!important;
+    line-height:12px!important;
+    font-weight:500!important;
+    text-transform:none!important;
+    letter-spacing:0!important;
+  }
+
+  @media(max-width:390px){
+    .v53-predictor-six{
+      grid-template-rows:88px 54px 31% minmax(0,1fr) 124px!important;
+    }
+    .v53-p6-head{
+      height:88px!important;
+      min-height:88px!important;
+      padding:0 17px!important;
+      gap:12px!important;
+    }
+    .v53-p6-head h1{font-size:22px!important}
+    .v53-p6-back{width:33px!important;height:33px!important;flex-basis:33px!important}
+    .v53-p6-back svg{width:27px!important;height:27px!important}
+    .v53-p6-sponsor{height:54px!important;padding:5px 17px!important;font-size:12px!important}
+    .v53-p6-sponsor-mark{width:101px!important;min-width:101px!important;height:40px!important}
+    .v53-p6-stage{padding:16px 42px 10px!important}
+    .v53-p6-grid{width:69vw!important;gap:8px!important}
+    .v53-p6-team img{width:28px!important;height:28px!important}
+    .v53-p6-copy{padding-left:22px!important;padding-right:22px!important}
+    .v53-p6-copy h2{font-size:20px!important}
+    .v53-p6-copy p{font-size:13px!important;margin-top:12px!important}
+    .v53-p6-dots{margin-top:20px!important}
+    .v53-p6-actions{height:124px!important;padding-left:8%!important;padding-right:8%!important}
+    .v53-p6-primary,.v53-p6-secondary{height:45px!important;min-height:45px!important;font-size:15px!important;border-radius:15px!important}
+  }
+}
