@@ -588,3 +588,39 @@ body[data-app-route="fantasyAccess"] .v23-access-sponsor>img{
   -webkit-mask-size:100% 100%!important;
   mask-size:100% 100%!important;
 }
+
+
+/* V39 — logo Fantasy con la imagen exacta enviada por el usuario.
+   El fondo negro del archivo se mezcla con el fondo completo de la página,
+   por lo que ya no aparece como cuadro/marco alrededor del escudo. */
+body[data-app-route="fantasy"] .v22-sponsor{
+  isolation:isolate!important;
+}
+body[data-app-route="fantasy"] .v22-sponsor img{
+  border:0!important;
+  outline:0!important;
+  box-shadow:none!important;
+  border-radius:0!important;
+  background:transparent!important;
+  -webkit-mask-image:none!important;
+  mask-image:none!important;
+  mix-blend-mode:screen!important;
+  filter:brightness(1.08) contrast(1.12)!important;
+  object-fit:contain!important;
+}
+
+body[data-app-route="fantasyAccess"] .v23-access-sponsor{
+  isolation:isolate!important;
+}
+body[data-app-route="fantasyAccess"] .v23-access-sponsor>img{
+  border:0!important;
+  outline:0!important;
+  box-shadow:none!important;
+  border-radius:0!important;
+  background:transparent!important;
+  -webkit-mask-image:none!important;
+  mask-image:none!important;
+  mix-blend-mode:screen!important;
+  filter:brightness(1.08) contrast(1.12)!important;
+  object-fit:contain!important;
+}
