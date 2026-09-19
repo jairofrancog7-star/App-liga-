@@ -285,7 +285,7 @@ const V60_FIELDS=[
   {id:'sur-1',name:'Campo 1 · Unidad Deportiva Sur',community:'Juventino Rosas',address:'Unidad Deportiva Sur, Juventino Rosas, Guanajuato',maps:'Unidad Deportiva Sur, Juventino Rosas, Guanajuato',lat:20.63753,lon:-100.99297,weather:true},
   {id:'sur-2',name:'Campo 2 · Unidad Deportiva Sur',community:'Juventino Rosas',address:'Unidad Deportiva Sur, Juventino Rosas, Guanajuato',maps:'Unidad Deportiva Sur, Juventino Rosas, Guanajuato',lat:20.63753,lon:-100.99297,weather:true},
   {id:'sur-3',name:'Campo 3 · Unidad Deportiva Sur',community:'Juventino Rosas',address:'Unidad Deportiva Sur, Juventino Rosas, Guanajuato',maps:'Unidad Deportiva Sur, Juventino Rosas, Guanajuato',lat:20.63753,lon:-100.99297,weather:true},
-  {id:'zapata-4',name:'Campo 4 · Emiliano Zapata',community:'Juventino Rosas',address:'Prolongación Emiliano Zapata, Juventino Rosas, Guanajuato',maps:'Campo de futbol prolongación Emiliano Zapata, Juventino Rosas, Guanajuato',lat:null,lon:null,weather:false},
+  {id:'zapata-4',name:'Campo 4 · Emiliano Zapata',community:'Juventino Rosas',address:'Prolongación Emiliano Zapata, Juventino Rosas, Guanajuato',maps:'https://maps.app.goo.gl/vTCjxxked88JuKCY6',lat:null,lon:null,weather:false},
   {id:'cerrito',name:'Campo Cerrito de Gasca',community:'Cerrito de Gasca',address:'Cerrito de Gasca, Santa Cruz de Juventino Rosas, Guanajuato',maps:'Campo de futbol Cerrito de Gasca, Guanajuato',lat:20.617778,lon:-101.0625,weather:true},
   {id:'tavera',name:'Campo de Tavera',community:'Franco Tavera',address:'Franco Tavera, Santa Cruz de Juventino Rosas, Guanajuato',maps:'Campo de futbol Franco Tavera, Santa Cruz de Juventino Rosas, Guanajuato',lat:20.60839,lon:-100.93238,weather:true},
   {id:'san-juan',name:'Campo San Juan de la Cruz',community:'San Juan de la Cruz',address:'San Juan de la Cruz, Santa Cruz de Juventino Rosas, Guanajuato 38250',maps:'Campo de futbol San Juan de la Cruz, Santa Cruz de Juventino Rosas, Guanajuato',lat:20.63379,lon:-100.911569,weather:true},
@@ -298,7 +298,7 @@ const V60_FIELDS=[
   {id:'san-julian',name:'Campo San Julián Tierra Blanca',community:'San Julián Tierra Blanca',address:'Los Fundadores 100, San Julián Tierra Blanca, Santa Cruz de Juventino Rosas, Guanajuato',maps:'Cancha de futbol San Julián Tierra Blanca, Juventino Rosas, Guanajuato',lat:20.591403,lon:-101.040358,weather:true}
 ];
 function v60Field(id){return V60_FIELDS.find(f=>f.id===id)||V60_FIELDS[0]}
-function v60MapUrl(f){return 'https://www.google.com/maps/search/?api=1&query='+encodeURIComponent(f.maps||f.address||f.name)}
+function v60MapUrl(f){const m=f.maps||f.address||f.name;return /^https?:\/\//i.test(m)?m:'https://www.google.com/maps/search/?api=1&query='+encodeURIComponent(m)}
 function v60Icon(name){
   const p={
     rules:'<path d="M6 3h10a3 3 0 0 1 3 3v15H8a3 3 0 0 1-3-3V4a1 1 0 0 1 1-1Z"/><path d="M8 7h8M8 11h8M8 15h5"/>',
