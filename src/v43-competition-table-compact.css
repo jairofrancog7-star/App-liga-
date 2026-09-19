@@ -1,0 +1,303 @@
+/* V43 — COMPETICIÓN: tablas compactas uniformes.
+   Solo reduce tamaños/espaciado de tablas y tarjetas. No cambia cabecera,
+   pestañas principales, colores, orden, navegación ni estructura. */
+
+body[data-app-route="competition"]{
+  --v43-row:52px;
+  --v43-logo:24px;
+  --v43-team-font:11.5px;
+  --v43-num-font:11px;
+}
+
+/* ===== PARTIDOS Y RESULTADOS ===== */
+body[data-app-route="competition"] .v12-fixtures-reference{
+  padding-top:0!important;
+}
+body[data-app-route="competition"] .v12-fixtures-reference>h2{
+  margin:10px 0 9px!important;
+  font-size:18px!important;
+  line-height:1.1!important;
+  font-weight:700!important;
+}
+body[data-app-route="competition"] .v12-schedule-card{
+  margin:0 0 11px!important;
+  border-radius:10px!important;
+  overflow:hidden!important;
+}
+body[data-app-route="competition"] .v12-schedule-card>h3{
+  min-height:38px!important;
+  padding:9px 12px!important;
+  display:flex!important;
+  align-items:center!important;
+  font-size:12.5px!important;
+  line-height:1.05!important;
+  font-weight:700!important;
+}
+body[data-app-route="competition"] .v12-schedule-match{
+  min-height:58px!important;
+  height:58px!important;
+  grid-template-columns:minmax(0,1fr) 84px!important;
+}
+body[data-app-route="competition"] .v12-schedule-clubs{
+  min-width:0!important;
+  padding:5px 7px 5px 11px!important;
+  gap:2px!important;
+}
+body[data-app-route="competition"] .v12-schedule-clubs>div{
+  min-height:23px!important;
+  gap:6px!important;
+}
+body[data-app-route="competition"] .v12-schedule-clubs b{
+  min-width:0!important;
+  font-size:11.5px!important;
+  line-height:1.05!important;
+  font-weight:700!important;
+  white-space:nowrap!important;
+  overflow:hidden!important;
+  text-overflow:ellipsis!important;
+}
+body[data-app-route="competition"] .v12-schedule-clubs small{
+  font-size:9px!important;
+  line-height:1!important;
+}
+body[data-app-route="competition"] .v12-fixture-logo,
+body[data-app-route="competition"] .v12-fixture-fallback{
+  flex:0 0 22px!important;
+  width:22px!important;
+  height:22px!important;
+  max-width:22px!important;
+  max-height:22px!important;
+}
+body[data-app-route="competition"] .v12-fixture-fallback{
+  font-size:7px!important;
+}
+body[data-app-route="competition"] .v12-schedule-score{
+  font-size:12px!important;
+  line-height:1!important;
+  min-width:14px!important;
+}
+body[data-app-route="competition"] .v12-schedule-meta{
+  padding:4px 7px!important;
+}
+body[data-app-route="competition"] .v12-schedule-meta time{
+  margin:0 0 3px!important;
+  font-size:11px!important;
+  line-height:1!important;
+}
+body[data-app-route="competition"] .v12-schedule-meta button{
+  min-width:66px!important;
+  width:auto!important;
+  height:23px!important;
+  min-height:23px!important;
+  padding:0 7px!important;
+  margin:0!important;
+  border-radius:4px!important;
+  font-size:9.5px!important;
+  line-height:1!important;
+}
+
+/* Calendario superior también más fino, sin moverlo. */
+body[data-app-route="competition"] .v12-date-strip{
+  gap:7px!important;
+  padding-top:7px!important;
+  padding-bottom:8px!important;
+  margin-bottom:11px!important;
+}
+body[data-app-route="competition"] .v12-date-strip button{
+  min-width:72px!important;
+  height:31px!important;
+  padding:0 10px!important;
+  border-radius:7px!important;
+  font-size:11.5px!important;
+}
+body[data-app-route="competition"] .v12-date-strip button.active{
+  min-width:86px!important;
+}
+
+/* ===== CLASIFICACIÓN: COMPACTA ===== */
+body.v40-standings-master .v40-standings{
+  padding-left:16px!important;
+  padding-right:16px!important;
+  padding-top:20px!important;
+}
+body.v40-standings-master .v40-segmented{
+  height:46px!important;
+  min-height:46px!important;
+  border-radius:24px!important;
+}
+body.v40-standings-master .v40-segmented button{
+  padding:0 4px!important;
+  font-size:11.5px!important;
+  line-height:1.05!important;
+}
+body.v40-standings-master .v40-content{
+  margin-top:23px!important;
+}
+body.v40-standings-master .v40-table-head{
+  min-height:20px!important;
+  height:20px!important;
+  font-size:9px!important;
+}
+body.v40-standings-master .v40-direct{
+  margin-top:8px!important;
+  font-size:9px!important;
+}
+body.v40-standings-master .v40-rule{
+  margin-top:12px!important;
+  height:2px!important;
+}
+body.v40-standings-master .v40-table-head,
+body.v40-standings-master .v40-row{
+  grid-template-columns:18px minmax(0,1fr) 28px 28px 30px 58px!important;
+  column-gap:0!important;
+}
+body.v40-standings-master .v40-row{
+  min-height:var(--v43-row)!important;
+  height:var(--v43-row)!important;
+}
+body.v40-standings-master .v40-rank{
+  font-size:9.5px!important;
+}
+body.v40-standings-master .v40-team{
+  grid-template-columns:29px minmax(0,1fr)!important;
+  gap:5px!important;
+}
+body.v40-standings-master .v40-team-logo{
+  width:var(--v43-logo)!important;
+  height:var(--v43-logo)!important;
+}
+body.v40-standings-master .v40-team strong{
+  font-size:var(--v43-team-font)!important;
+  line-height:1.04!important;
+  font-weight:700!important;
+}
+body.v40-standings-master .v40-row>span:nth-child(3),
+body.v40-standings-master .v40-row>span:nth-child(4),
+body.v40-standings-master .v40-row>span:nth-child(5){
+  font-size:var(--v43-num-font)!important;
+}
+body.v40-standings-master .v40-form{
+  gap:3px!important;
+  padding-right:1px!important;
+}
+body.v40-standings-master .v40-form i{
+  width:17px!important;
+  height:17px!important;
+}
+body.v40-standings-master .v40-form b{
+  width:19px!important;
+  height:19px!important;
+  font-size:8px!important;
+}
+body.v40-standings-master .v40-form b::after{
+  left:2px!important;
+  right:2px!important;
+  bottom:-5px!important;
+  height:3px!important;
+}
+
+/* ===== CLASIFICACIÓN: COMPLETA / CRITERIOS ===== */
+body.v40-standings-master .v40-scroll-shell{
+  width:calc(100% + 16px)!important;
+  margin-right:-16px!important;
+}
+body.v40-standings-master .v40-wide{
+  min-width:560px!important;
+  padding-right:18px!important;
+}
+body.v40-standings-master .v40-wide.criteria{
+  min-width:680px!important;
+}
+body.v40-standings-master .v40-wide-head,
+body.v40-standings-master .v40-wide-row{
+  min-height:50px!important;
+  height:50px!important;
+  grid-template-columns:22px 168px 46px 46px 46px 46px 52px!important;
+  font-size:10px!important;
+}
+body.v40-standings-master .v40-wide.criteria .v40-wide-head,
+body.v40-standings-master .v40-wide.criteria .v40-wide-row{
+  grid-template-columns:22px 168px repeat(7,48px)!important;
+}
+body.v40-standings-master .v40-wide-head{
+  min-height:22px!important;
+  height:22px!important;
+  font-size:9px!important;
+}
+body.v40-standings-master .v40-wide-row .v40-team{
+  grid-template-columns:29px minmax(0,1fr)!important;
+  gap:5px!important;
+}
+body.v40-standings-master .v40-wide-row .v40-team-logo{
+  width:24px!important;
+  height:24px!important;
+}
+body.v40-standings-master .v40-wide-row .v40-team strong{
+  font-size:11px!important;
+}
+body.v40-standings-master .v40-wide-row>span,
+body.v40-standings-master .v40-wide-row>b{
+  font-size:10.5px!important;
+}
+
+/* ===== CUADRO / LIGUILLA =====
+   Misma estructura y tarjetas, sólo menor escala interna. */
+body[data-app-route="competition"] .v12-bracket-reference .v12-bracket-stage-tabs{
+  gap:6px!important;
+  padding-top:10px!important;
+  padding-bottom:8px!important;
+  margin-bottom:9px!important;
+}
+body[data-app-route="competition"] .v12-bracket-reference .v12-bracket-stage-tabs > button[data-v12-bracket-stage]{
+  height:29px!important;
+  min-height:29px!important;
+  max-height:29px!important;
+  padding:0 7px!important;
+  border-radius:8px!important;
+  font-size:9.8px!important;
+}
+body[data-app-route="competition"] .v12-progress-match,
+body[data-app-route="competition"] .v12-final-match-card{
+  padding:11px!important;
+  border-radius:12px!important;
+}
+body[data-app-route="competition"] .v12-progress-match time,
+body[data-app-route="competition"] .v12-progress-match small,
+body[data-app-route="competition"] .v12-final-match-card time{
+  font-size:10.5px!important;
+}
+body[data-app-route="competition"] .v12-progress-opponent{
+  gap:6px!important;
+  min-height:25px!important;
+  margin-top:6px!important;
+}
+body[data-app-route="competition"] .v12-progress-opponent .shield,
+body[data-app-route="competition"] .v12-final-shield{
+  width:22px!important;
+  height:22px!important;
+}
+body[data-app-route="competition"] .v12-progress-opponent b,
+body[data-app-route="competition"] .v12-final-opponent b{
+  font-size:14px!important;
+}
+
+/* Mantener todo proporcional en 360-390 px sin volver a crecer. */
+@media(max-width:390px){
+  body[data-app-route="competition"] .v12-schedule-match{
+    min-height:55px!important;
+    height:55px!important;
+    grid-template-columns:minmax(0,1fr) 78px!important;
+  }
+  body[data-app-route="competition"] .v12-schedule-clubs b{font-size:10.8px!important}
+  body[data-app-route="competition"] .v12-fixture-logo,
+  body[data-app-route="competition"] .v12-fixture-fallback{
+    width:21px!important;height:21px!important;flex-basis:21px!important;
+  }
+  body.v40-standings-master{--v43-row:49px;--v43-logo:22px;--v43-team-font:10.5px;--v43-num-font:10px}
+  body.v40-standings-master .v40-table-head,
+  body.v40-standings-master .v40-row{
+    grid-template-columns:17px minmax(0,1fr) 25px 25px 28px 54px!important;
+  }
+  body.v40-standings-master .v40-form i{width:16px!important;height:16px!important}
+  body.v40-standings-master .v40-form b{width:18px!important;height:18px!important;font-size:7.5px!important}
+}
