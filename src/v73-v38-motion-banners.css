@@ -236,3 +236,17 @@
   .v73-motion-video,.v73-gallery-video{display:none!important}
   .v73-motion-pills button{transition:none!important}
 }
+
+
+/* V75 — Animaciones de Inicio separadas e intercaladas.
+   Ningún banner se pega a la cabecera ni forma una galería única. */
+body[data-app-route="home"] .v73-home-interleaved{
+  margin:22px 0 26px!important;
+}
+body[data-app-route="home"] #safeHomeExtra>.v73-home-interleaved:first-child{
+  margin-top:22px!important;
+}
+body[data-app-route="competition"] .v73-motion-banner,
+body[data-app-route="competition"] .v73-motion-gallery{
+  display:none!important;
+}
