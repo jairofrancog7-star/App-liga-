@@ -1,10 +1,10 @@
 const V15_TEAM_BASE='https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/';
 const V15_STORIES=[
-  {label:'Atlético Galeana 📸',route:'teams',logo:'assets/teams/atletico-galeana.webp'},
-  {label:'Promesas FC 📸',route:'teams',logo:'assets/teams/promesas-fc-pozos.webp'},
+  {label:'Atlético Galeana 📸',route:'teams',logo:'assets/official-logos/galeana.png'},
+  {label:'Promesas FC 📸',route:'teams',logo:'assets/official-logos/promesas-fc.png'},
   {label:'Momentos<br>de la Liga ✨',route:'moments',logo:'assets/liga-logo.webp',type:'moments'},
-  {label:'La Huerta 📸',route:'teams',logo:'assets/teams/la-huerta-cuenda.webp'},
-  {label:'Franco FC 📸',route:'teams',logo:'assets/teams/franco-fc.webp'}
+  {label:'La Huerta 📸',route:'teams',logo:'assets/official-logos/la-huerta.png'},
+  {label:'Franco FC 📸',route:'teams',logo:'assets/official-logos/franco-fc.png'}
 ];
 
 function v15Route(){return location.hash.replace('#/','')||'home'}
@@ -27,12 +27,6 @@ function v15PatchHome(){
     }
     if(label) label.innerHTML=item.label;
   });
-
-  const hero=screen.querySelector(':scope > .section.hero');
-  if(hero&&hero.dataset.v15HomeFeature!=='1'){
-    hero.dataset.v15HomeFeature='1';
-    hero.innerHTML='<img class="v15-home-feature-image" src="./home-feature-reference.webp?v=parts14" alt="Mira todos los goles de la Jornada 1"><button class="v15-home-feature-hit" type="button" aria-label="Ver vídeos de la Jornada 1"></button>';
-  }
 }
 
 function v15PatchVideo(){
@@ -58,10 +52,6 @@ function v15Patch(){
 }
 
 document.addEventListener('click',e=>{
-  if(e.target.closest('.v15-home-feature-hit')){
-    const videoNav=document.querySelector('.bottom-nav [data-route="video"]');
-    if(videoNav){videoNav.click();return}
-  }
   if(e.target.closest('.v15-video-hit-primary')){v15Toast('Repetición del partido');return}
   if(e.target.closest('.v15-video-hit-secondary')){v15Toast('Partido de la semana');return}
 },true);

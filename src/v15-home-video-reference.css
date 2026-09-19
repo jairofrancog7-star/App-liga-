@@ -175,3 +175,130 @@ body[data-app-route="home"] #screen>.stories .story-ring::after{
   body[data-app-route="home"] #screen>.section.hero[data-v15-home-feature="1"]{max-width:536px!important;border-radius:32px!important}
 }
 
+
+
+/* V16 HOME STORIES CLEAN — una sola franja azul oscuro, sin capas encimadas.
+   Las historias son elementos reales, no una captura dentro de otra captura. */
+body[data-app-route="home"] #screen{
+  background:#02045d!important;
+}
+body[data-app-route="home"] #screen>.stories{
+  position:relative!important;
+  z-index:2!important;
+  box-sizing:border-box!important;
+  width:calc(100% + 34px)!important;
+  max-width:none!important;
+  min-height:0!important;
+  margin:0 -17px!important;
+  padding:16px 16px 18px!important;
+  gap:14px!important;
+  background:#02045d!important;
+  background-image:none!important;
+  border:0!important;
+  border-radius:0!important;
+  box-shadow:none!important;
+  outline:0!important;
+}
+body[data-app-route="home"] #screen>.stories::before,
+body[data-app-route="home"] #screen>.stories::after{
+  content:none!important;
+  display:none!important;
+}
+body[data-app-route="home"] #screen>.stories .story{
+  flex:0 0 102px!important;
+  width:102px!important;
+  min-width:102px!important;
+  max-width:102px!important;
+  gap:9px!important;
+  background:transparent!important;
+  border:0!important;
+  box-shadow:none!important;
+}
+body[data-app-route="home"] #screen>.stories .story-ring{
+  flex:0 0 88px!important;
+  width:88px!important;
+  height:88px!important;
+  min-width:88px!important;
+  min-height:88px!important;
+  max-width:88px!important;
+  max-height:88px!important;
+  padding:5px!important;
+  border:3px solid #12e8ef!important;
+  border-radius:50%!important;
+  background:#07106b!important;
+  background-image:none!important;
+  box-shadow:0 0 0 2px #02045d inset!important;
+}
+body[data-app-route="home"] #screen>.stories .story-inner.v15-story-inner{
+  width:100%!important;
+  height:100%!important;
+  border-radius:50%!important;
+  background:#07106b!important;
+  overflow:hidden!important;
+}
+body[data-app-route="home"] #screen>.stories .v15-story-inner img{
+  width:100%!important;
+  height:100%!important;
+  object-fit:contain!important;
+  object-position:center!important;
+  background:transparent!important;
+  border-radius:0!important;
+  filter:none!important;
+}
+body[data-app-route="home"] #screen>.stories .story small{
+  width:102px!important;
+  min-width:102px!important;
+  max-width:102px!important;
+  min-height:36px!important;
+  color:#fff!important;
+  font-size:13px!important;
+  line-height:1.08!important;
+  font-weight:760!important;
+  text-align:center!important;
+  text-shadow:none!important;
+}
+
+/* El contenido que sigue empieza DESPUÉS de las historias: nunca debajo de ellas. */
+body[data-app-route="home"] #screen>.stories + *{
+  position:relative!important;
+  z-index:1!important;
+  margin-top:0!important;
+}
+
+/* Anula por completo la antigua tarjeta que podía cargar una captura completa
+   de Inicio y repetir las historias dentro de otra imagen. */
+body[data-app-route="home"] .v15-home-feature-image,
+body[data-app-route="home"] .v15-home-feature-hit{
+  display:none!important;
+}
+
+@media(max-width:380px){
+  body[data-app-route="home"] #screen>.stories{
+    width:calc(100% + 34px)!important;
+    margin-left:-17px!important;
+    margin-right:-17px!important;
+    padding:14px 12px 17px!important;
+    gap:11px!important;
+  }
+  body[data-app-route="home"] #screen>.stories .story{
+    flex-basis:94px!important;
+    width:94px!important;
+    min-width:94px!important;
+    max-width:94px!important;
+  }
+  body[data-app-route="home"] #screen>.stories .story-ring{
+    flex-basis:82px!important;
+    width:82px!important;
+    height:82px!important;
+    min-width:82px!important;
+    min-height:82px!important;
+    max-width:82px!important;
+    max-height:82px!important;
+  }
+  body[data-app-route="home"] #screen>.stories .story small{
+    width:94px!important;
+    min-width:94px!important;
+    max-width:94px!important;
+    font-size:12px!important;
+  }
+}
