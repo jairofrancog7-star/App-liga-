@@ -308,3 +308,16 @@ body[data-app-route="predictor"] .v29-sr-only{
   body[data-app-route="predictor"] .v29-pitch{top:65.2%!important}
   body[data-app-route="predictor"] .v29-stadium-crop{top:78.5%!important}
 }
+/* MASTER FIX — keep the real cropped reference assets visible in the built Pages app. */
+body[data-app-route="predictor"] .v29-master-crop,
+body[data-app-route="predictor"] .v29-master-crop img{
+  visibility:visible!important;
+  opacity:1!important;
+}
+body[data-app-route="predictor"] .bottom-nav{
+  display:grid!important;
+  grid-template-columns:repeat(5,minmax(0,1fr))!important;
+}
+body[data-app-route="predictor"] .bottom-nav .nav-item[data-route="more"]{
+  color:#11e9ff!important;
+}

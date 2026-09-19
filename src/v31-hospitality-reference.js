@@ -3,22 +3,6 @@ const V31_HOSPITALITY_LOGO = 'https://raw.githubusercontent.com/jairofrancog7-st
 function v31HospitalityMarkup(){
   return `
   <section class="v31-hospitality-page" aria-label="Hospitalidad">
-    <div class="v31-status" aria-hidden="true">
-      <div class="v31-status-left">
-        <span>3:17</span>
-        <span class="v31-status-photo"></span>
-      </div>
-      <div class="v31-status-right">
-        <span class="v31-status-person">♙</span>
-        <span class="v31-status-alarm"></span>
-        <span class="v31-status-hz"><b>60</b><small>Hz</small></span>
-        <span class="v31-status-wifi"></span>
-        <span class="v31-status-signal"></span>
-        <span class="v31-status-battery"></span>
-        <span class="v31-battery-number">62%</span>
-      </div>
-    </div>
-
     <button type="button" class="v31-back" data-v31-back aria-label="Volver">
       <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 12H5M11 18l-6-6 6-6"/></svg>
     </button>
