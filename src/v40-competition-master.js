@@ -98,7 +98,7 @@
     }
     const tabs=currentTabs();
     if(!tabs) return;
-    if(!screen.querySelector('[data-v40-master]')) tabs.insertAdjacentHTML('beforebegin',header());
+    screen.querySelector('[data-v40-master]')?.remove();
     let old=screen.querySelector('[data-v12-standings]');
     if(old){
       old.className='v40-standings-host';
