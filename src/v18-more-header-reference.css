@@ -37,10 +37,10 @@ body[data-app-route="more"] .topbar::after{
   display:block!important;
   width:auto!important;
   height:auto!important;
-  color:#fff!important;
+  color:#f1f2f7!important;
   font-family:Inter,Roboto,Arial,sans-serif!important;
   font-size:34px!important;
-  font-weight:900!important;
+  font-weight:700!important;
   line-height:1!important;
   letter-spacing:-.035em!important;
   white-space:nowrap!important;
