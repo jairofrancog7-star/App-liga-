@@ -1038,7 +1038,10 @@ body[data-app-route="following"] #screen{
 .v28-picker-row .v28-fallback{
   width:40px!important;
   height:40px!important;
-  display:grid!important;
+  /* No forzar display con !important: los equipos que sí tienen escudo
+     llevan el fallback oculto inline. Forzarlo hacía aparecer el círculo
+     de abreviatura debajo del escudo y desbordarse sobre la fila siguiente. */
+  display:grid;
   place-items:center!important;
   border:2px solid rgba(255,255,255,.85)!important;
   border-radius:50%!important;
@@ -1432,4 +1435,18 @@ body[data-app-route="following"] #app{
     height:32px!important;
     font-size:12.2px!important;
   }
+}
+
+
+/* V40.1 ICON DEDUPE — un solo icono por equipo en el selector.
+   Mantiene imagen y fallback en la misma celda para impedir que se apilen. */
+body[data-app-route="following"] .v28-picker-row .v28-logo{
+  grid-template-areas:"team-logo"!important;
+  overflow:hidden!important;
+}
+body[data-app-route="following"] .v28-picker-row .v28-logo>img,
+body[data-app-route="following"] .v28-picker-row .v28-logo>.v28-fallback{
+  grid-area:team-logo!important;
+  align-self:center!important;
+  justify-self:center!important;
 }
