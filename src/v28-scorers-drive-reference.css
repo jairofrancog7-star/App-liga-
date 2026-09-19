@@ -378,3 +378,84 @@ body.v28-scorers-active .v28-feature-person small{
   body.v28-scorers-active .v28-rank-copy small{font-size:12.5px!important}
   body.v28-scorers-active .v28-rank-goals{font-size:17px!important}
 }
+
+
+/* V71 — Máximo goleador: separar nombre del jugador del total de goles.
+   Evita que nombres largos de los puestos #1 y #2 invadan la columna derecha. */
+@media (max-width:520px){
+  body.v28-scorers-active .v28-feature-info{
+    grid-template-columns:minmax(0,1fr) 84px!important;
+    column-gap:10px!important;
+    padding:12px 14px 12px 16px!important;
+  }
+
+  body.v28-scorers-active .v28-feature-person{
+    min-width:0!important;
+    width:100%!important;
+    overflow:hidden!important;
+  }
+
+  body.v28-scorers-active .v28-feature-person > span:last-child{
+    min-width:0!important;
+    width:100%!important;
+    max-width:100%!important;
+    overflow:hidden!important;
+    padding-right:2px!important;
+    box-sizing:border-box!important;
+  }
+
+  body.v28-scorers-active .v28-feature-person b{
+    max-width:100%!important;
+    overflow:hidden!important;
+    white-space:nowrap!important;
+    text-overflow:ellipsis!important;
+  }
+
+  body.v28-scorers-active .v28-feature-person small{
+    max-width:100%!important;
+    min-width:0!important;
+    font-size:17px!important;
+    line-height:1.08!important;
+    white-space:normal!important;
+    overflow:hidden!important;
+    text-overflow:clip!important;
+    display:-webkit-box!important;
+    -webkit-box-orient:vertical!important;
+    -webkit-line-clamp:2!important;
+    overflow-wrap:anywhere!important;
+    word-break:normal!important;
+  }
+
+  body.v28-scorers-active .v28-feature-goals{
+    width:84px!important;
+    min-width:84px!important;
+    justify-self:end!important;
+    align-self:stretch!important;
+    position:relative!important;
+    z-index:2!important;
+    background:#151386!important;
+  }
+
+  body.v28-scorers-active .v28-feature-goals b{
+    font-size:34px!important;
+  }
+
+  body.v28-scorers-active .v28-feature-goals small{
+    font-size:14px!important;
+    margin-top:-4px!important;
+  }
+}
+
+@media (max-width:390px){
+  body.v28-scorers-active .v28-feature-info{
+    grid-template-columns:minmax(0,1fr) 78px!important;
+    column-gap:8px!important;
+  }
+  body.v28-scorers-active .v28-feature-person small{
+    font-size:16px!important;
+  }
+  body.v28-scorers-active .v28-feature-goals{
+    width:78px!important;
+    min-width:78px!important;
+  }
+}
