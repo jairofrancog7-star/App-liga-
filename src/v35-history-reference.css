@@ -668,3 +668,177 @@
     }
   }
 }
+
+
+/* V35 HISTORY COLLAPSING HEADER — ZIP + VIDEO */
+@media (max-width:1023px){
+  .v35-history-page{
+    --v35-collapse:0;
+    --v35-compact-h:78px;
+  }
+
+  /* Use the original header artwork found inside Miapp_imagenes_iconos(8).zip. */
+  .v35-history-lines{display:none!important}
+
+  .v35-history-head{
+    position:relative!important;
+    z-index:5!important;
+    height:clamp(202px,53vw,236px)!important;
+    min-height:0!important;
+    padding:0 var(--v35-pad)!important;
+    overflow:hidden!important;
+    background:
+      linear-gradient(180deg,rgba(5,28,216,.08),rgba(5,10,91,.20)),
+      url('../public/history-regularscroll-header.webp') center top/100% 100% no-repeat!important;
+  }
+
+  .v35-history-head .v35-back{
+    left:var(--v35-pad)!important;
+    top:clamp(19px,5.2vw,27px)!important;
+    width:42px!important;
+    height:42px!important;
+    color:#fff!important;
+    opacity:calc(1 - (var(--v35-collapse) * .34))!important;
+  }
+  .v35-history-head .v35-back svg{
+    width:34px!important;
+    height:34px!important;
+    fill:currentColor!important;
+    stroke:none!important;
+  }
+
+  .v35-logo-wrap{
+    top:clamp(15px,4vw,21px)!important;
+    width:clamp(48px,12.6vw,60px)!important;
+    height:clamp(48px,12.6vw,60px)!important;
+    opacity:calc(1 - var(--v35-collapse))!important;
+    transform:translateX(-50%) scale(calc(1 - (var(--v35-collapse) * .12)))!important;
+    transition:opacity .08s linear!important;
+  }
+
+  .v35-history-head h1{
+    position:absolute!important;
+    left:var(--v35-pad)!important;
+    right:var(--v35-pad)!important;
+    bottom:clamp(27px,7vw,35px)!important;
+    margin:0!important;
+    color:#fff!important;
+    font-size:clamp(49px,12.8vw,61px)!important;
+    line-height:.95!important;
+    font-weight:520!important;
+    letter-spacing:-.045em!important;
+    transform-origin:left bottom!important;
+    opacity:calc(1 - (var(--v35-collapse) * .34))!important;
+  }
+
+  /* Compact bar shown only after the large top content has scrolled away. */
+  .v35-compact-bar{
+    position:fixed!important;
+    z-index:72!important;
+    top:0!important;
+    left:50%!important;
+    width:min(100%,520px)!important;
+    height:78px!important;
+    padding:0 var(--v35-pad)!important;
+    display:flex!important;
+    align-items:center!important;
+    gap:22px!important;
+    transform:translate(-50%,-102%)!important;
+    opacity:0!important;
+    pointer-events:none!important;
+    background:
+      linear-gradient(180deg,rgba(7,54,246,.18),rgba(6,12,105,.38)),
+      url('../public/history-regularscroll-header.webp') center top/cover no-repeat!important;
+    box-shadow:none!important;
+    transition:transform .16s ease-out,opacity .12s linear!important;
+  }
+  .v35-history-page.is-compact .v35-compact-bar{
+    transform:translate(-50%,0)!important;
+    opacity:1!important;
+    pointer-events:auto!important;
+  }
+  .v35-compact-bar .v35-back{
+    position:static!important;
+    flex:0 0 42px!important;
+    width:42px!important;
+    height:42px!important;
+    color:#fff!important;
+    opacity:1!important;
+  }
+  .v35-compact-bar .v35-back svg{
+    width:34px!important;
+    height:34px!important;
+    fill:currentColor!important;
+    stroke:none!important;
+  }
+  .v35-compact-title{
+    color:#fff!important;
+    font-size:clamp(29px,7.5vw,36px)!important;
+    line-height:1!important;
+    font-weight:560!important;
+    letter-spacing:-.032em!important;
+    transform:translateY(-1px);
+  }
+
+  /* The tab strip stays fixed under the compact header while the page continues underneath. */
+  .v35-tabs{
+    position:sticky!important;
+    z-index:70!important;
+    top:var(--v35-compact-h)!important;
+    width:100%!important;
+    margin:0!important;
+    padding:0 var(--v35-pad)!important;
+    gap:clamp(34px,9vw,48px)!important;
+    min-height:58px!important;
+    align-items:flex-end!important;
+    background:linear-gradient(180deg,#0619bd 0%,#07117f 72%,#070d69 100%)!important;
+    border-bottom:1px solid rgba(195,199,236,.25)!important;
+    box-shadow:none!important;
+  }
+  .v35-tab{
+    min-height:58px!important;
+    padding:0 0 16px!important;
+    font-size:clamp(17px,4.55vw,20px)!important;
+    font-weight:480!important;
+  }
+  .v35-tab.active{
+    font-weight:650!important;
+  }
+  .v35-tab.active::after{
+    bottom:-1px!important;
+    height:4px!important;
+    width:clamp(78px,20vw,106px)!important;
+  }
+
+  .v35-history-content{
+    z-index:1!important;
+  }
+
+  /* Content naturally passes under the sticky header exactly like the reference video. */
+  .v35-history-page.is-compact .v35-history-head .v35-logo-wrap{
+    opacity:0!important;
+  }
+
+  @media (max-width:374px){
+    .v35-history-head{
+      height:196px!important;
+    }
+    .v35-history-head h1{
+      font-size:47px!important;
+      bottom:27px!important;
+    }
+    .v35-compact-bar{
+      height:74px!important;
+      gap:17px!important;
+    }
+    .v35-tabs{
+      min-height:55px!important;
+      gap:30px!important;
+    }
+    .v35-tab{
+      min-height:55px!important;
+      font-size:16px!important;
+      padding-bottom:15px!important;
+    }
+  }
+}
