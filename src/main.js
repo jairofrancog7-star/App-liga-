@@ -335,11 +335,11 @@ function leagueToolsView(){
       v60ToolCard('matchday','Match Day','Checklist y operación de jornada','matchday')+
       v60ToolCard('weather','Clima y campos','Condiciones por sede','weatherFields')+
       v60ToolCard('field','Dónde se juega','Campos, comunidades y Maps','venues')+
-      v60ToolCard('cedula','Cédulas','Cédula interna de partido','cedulas')+
+      v60ToolCard('cedula','Cédulas','Generador interno, plantillas y PDF','cedulaBuilder')+
       v60ToolCard('center','Match Center','Marcador, cronología y previa','match')+
       v60ToolCard('matchday','Jornadas','Calendario y resultados','', 'data-v60-comp="fixtures"')+
       v60ToolCard('bracket','Liguilla','Cuadro de eliminatorias','', 'data-v60-comp="bracket"')+
-      v60ToolCard('card','Credencial','Credencial deportiva dentro de la app','credential')+
+      v60ToolCard('card','Credencial','Foto, OCR local y datos del jugador','credentialBuilder')+
       v60ToolCard('share','Publicaciones','Compartir jornada / WhatsApp','publications')+
       v60ToolCard('tactics','Tácticas','Pizarra 2D y formaciones','tactics')+
       v60ToolCard('sim','Simulador','Simulación local de clasificación','simulator')+
@@ -351,8 +351,6 @@ function leagueToolsView(){
       v60ToolCard('center','Notificaciones','Próxima jornada, cambios de sede y favoritos','v38Alerts')+
       v60ToolCard('admin','Central oficial','Categorías, equipos, jugadores, tarjetas y castigos','', 'data-v63-official="summary"')+
       v60ToolCard('bracket','Cuadro PNG','8 lugares y exportación para liguilla','bracketBuilder')+
-      v60ToolCard('card','Credencial avanzada','Foto, OCR local y datos del jugador','credentialBuilder')+
-      v60ToolCard('cedula','Generador de cédulas','Partido, plantillas e impresión PDF','cedulaBuilder')+
       v60ToolCard('center','Exportar tabla','PNG completo, compartir y CSV','tableExport')+
       v60ToolCard('matchday','Preparar mi jornada','Agenda local, cruces y JSON','agendaBuilder')+
       v60ToolCard('tactics','Jornada animada','Balones en movimiento y accesos','motionHub')+
@@ -444,7 +442,7 @@ function jrControlView(){
   return '<section class="v60-tool-page">'+v60Header('OPERACIÓN','JR Control','Accesos operativos integrados sin sacar al usuario del diseño azul.')+
     '<div class="v60-tool-grid">'+
       v60ToolCard('matchday','Centro de jornada','Checklist, partidos y cierre','matchday')+
-      v60ToolCard('cedula','Cédulas','Generación interna','cedulas')+
+      v60ToolCard('cedula','Cédulas','Generación interna, plantillas y PDF','cedulaBuilder')+
       v60ToolCard('weather','Clima / campos','Condiciones y sedes','weatherFields')+
       v60ToolCard('share','Publicaciones','Compartir jornada','publications')+
       v60ToolCard('field','Equipos','Directorio de clubes','teams')+
