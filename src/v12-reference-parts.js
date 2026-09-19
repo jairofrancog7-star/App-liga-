@@ -616,9 +616,8 @@ document.addEventListener('click',e=>{
   }
   const choice=e.target.closest('[data-v12-choice]');
   if(choice){
-    document.querySelectorAll('[data-v12-choice]').forEach(x=>x.classList.remove('selected'));
-    choice.classList.add('selected');
-    v12Toast(choice.dataset.v12Choice==='more'?'Elegiste MÁS':'Elegiste MENOS');
+    location.hash='#/moreLessHub';
+    return;
   }
 },true);
 window.addEventListener('hashchange',()=>requestAnimationFrame(patch));
