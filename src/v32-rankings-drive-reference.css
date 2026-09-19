@@ -527,3 +527,199 @@ body.v32-rankings-active .bottom-nav .nav-item[data-route="more"] .nav-icon{
     transform:translateX(-50%)!important;
   }
 }
+
+/* PARTS32.2 — corrections from user video: "Coeficientes de clubes" + functional club filter screen. */
+.v32-controls.clubs{
+  display:flex!important;
+  grid-template-columns:none!important;
+  gap:12px!important;
+  overflow-x:auto;
+  overflow-y:hidden;
+  scrollbar-width:none;
+  -webkit-overflow-scrolling:touch;
+}
+.v32-controls.clubs::-webkit-scrollbar{display:none}
+.v32-controls.clubs .v32-coefficient{flex:0 0 230px}
+.v32-controls.clubs .v32-season-select{flex:0 0 130px}
+.v32-controls.clubs .v32-filter{flex:0 0 50px}
+.v32-selected-club{
+  flex:0 0 auto;
+  min-width:128px;
+  max-width:180px;
+  height:50px;
+  border:0;
+  border-radius:11px;
+  padding:0 10px 0 16px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:9px;
+  background:rgba(30,31,127,.88);
+  color:#fff;
+  font:650 16px/1 Inter,ui-sans-serif,system-ui,sans-serif;
+  cursor:pointer;
+}
+.v32-selected-club span{
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+}
+.v32-selected-club i{
+  width:27px;height:27px;
+  flex:0 0 27px;
+  border-radius:50%;
+  display:grid;
+  place-items:center;
+  background:#39439a;
+  color:#aeb6dd;
+  font:400 24px/1 Arial,sans-serif;
+}
+.v32-update{
+  margin:26px 20px 0;
+  color:#8992c8;
+  font-size:13px;
+}
+
+/* Full filter screen, matching the behavior shown in the user's video. */
+.v32-rankings.v32-filter-mode{
+  background:#07065f;
+}
+.v32-rankings.v32-filter-mode:before,
+.v32-rankings.v32-filter-mode:after{display:none}
+.v32-filter-screen{
+  min-height:calc(100vh - 82px);
+  padding:calc(13px + env(safe-area-inset-top)) 0 calc(100px + env(safe-area-inset-bottom));
+  background:linear-gradient(180deg,#07065f 0,#07065f 100%);
+}
+.v32-filter-head{
+  height:70px;
+  padding:0 21px;
+  display:grid;
+  grid-template-columns:1fr auto 1fr;
+  align-items:center;
+}
+.v32-filter-head h1{
+  margin:0;
+  font-size:20px;
+  font-weight:700;
+  text-align:center;
+}
+.v32-filter-head button{
+  border:0;
+  background:transparent;
+  color:#fff;
+  font:500 18px/1 inherit;
+  padding:12px 0;
+}
+.v32-filter-head button:first-child{text-align:left}
+.v32-filter-head button:last-child{text-align:right}
+.v32-filter-search{
+  height:58px;
+  margin:0 20px 20px;
+  padding:0 17px;
+  display:flex;
+  align-items:center;
+  gap:15px;
+  border-radius:13px;
+  background:#1b2188;
+}
+.v32-filter-search svg{
+  width:27px;height:27px;
+  fill:none;stroke:#9aa4d7;stroke-width:2.1;stroke-linecap:round;
+}
+.v32-filter-search input{
+  min-width:0;
+  flex:1;
+  border:0;
+  outline:0;
+  background:transparent;
+  color:#fff;
+  font:500 17px/1 inherit;
+}
+.v32-filter-search input::placeholder{color:#8f99cd;opacity:1}
+.v32-filter-body{
+  padding:25px 0 18px;
+  border-top:1px solid rgba(255,255,255,.06);
+  background:linear-gradient(180deg,#0a0b6f,#080866);
+}
+.v32-filter-body h2{
+  margin:0 20px 22px;
+  font-size:28px;
+  line-height:1;
+  font-weight:650;
+}
+.v32-filter-grid{
+  display:grid;
+  grid-template-columns:repeat(4,minmax(0,1fr));
+  column-gap:8px;
+  row-gap:28px;
+  padding:0 9px 14px;
+}
+.v32-filter-club{
+  position:relative;
+  min-width:0;
+  min-height:122px;
+  padding:8px 3px 7px;
+  border:2px solid transparent;
+  border-radius:4px;
+  background:transparent;
+  color:#fff;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:flex-start;
+  gap:7px;
+  cursor:pointer;
+}
+.v32-filter-club.selected{
+  border-color:#18e7f3;
+  box-shadow:inset 0 0 0 1px rgba(24,231,243,.18);
+}
+.v32-filter-club-logo{
+  position:relative;
+  width:64px;
+  height:64px;
+  display:grid;
+  place-items:center;
+}
+.v32-filter-club .v32-logo.filter{
+  width:60px;
+  height:60px;
+}
+.v32-filter-club .v32-logo.filter .v32-logo-fallback{
+  width:54px;
+  height:58px;
+}
+.v32-filter-check{
+  position:absolute;
+  top:-8px;
+  right:-9px;
+  width:29px;
+  height:29px;
+  border-radius:5px;
+  display:grid;
+  place-items:center;
+  background:#18e7f3;
+  color:#06105f;
+  font:900 22px/1 Arial,sans-serif;
+}
+.v32-filter-club>span:last-child{
+  width:100%;
+  color:#fff;
+  font-size:12px;
+  line-height:1.13;
+  text-align:center;
+  overflow-wrap:anywhere;
+}
+
+@media(max-width:390px){
+  .v32-controls.clubs .v32-coefficient{flex-basis:208px}
+  .v32-controls.clubs .v32-season-select{flex-basis:119px}
+  .v32-selected-club{min-width:118px;max-width:155px;font-size:14px}
+  .v32-filter-grid{column-gap:4px;row-gap:22px;padding-left:4px;padding-right:4px}
+  .v32-filter-club{min-height:113px}
+  .v32-filter-club-logo{width:58px;height:58px}
+  .v32-filter-club .v32-logo.filter{width:55px;height:55px}
+  .v32-filter-club>span:last-child{font-size:11px}
+  .v32-filter-body h2{font-size:25px}
+}
