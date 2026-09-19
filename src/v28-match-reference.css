@@ -193,3 +193,17 @@ body.v28-match-active .bottom-nav .nav-item small{text-transform:none!important;
   .v28-standings-panel{padding-left:16px!important;padding-right:16px!important}
   .v28-segmented{height:62px}.v28-segmented button{font-size:14px}
 }
+
+/* PARTS53 — Restaurar flujo de Ver detalles */
+/* La tabla agregada pertenece solo al detalle de partido.
+   Al abrir Ver detalles, Novedades es la vista inicial; Clasificación aparece
+   únicamente al pulsar su pestaña. No toca la clasificación principal de Competición. */
+body.v28-match-active .v28-panel{display:none!important}
+body.v28-match-active .v28-panel.active{display:block!important}
+body.v28-match-active .v28-news-panel.active{
+  min-height:360px!important;
+}
+body.v28-match-active .v28-standings-panel:not(.active),
+body.v28-match-active .v28-info-panel:not(.active){
+  display:none!important;
+}
