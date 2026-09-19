@@ -8,27 +8,27 @@
   const LEAGUE=BASE+'assets/liga-logo.webp';
 
   const TEAMS=[
-    {id:'AME',name:'América Veteranos',logo:'assets/branding/america-veteranos-35-user.png',abbr:'AME'},
-    {id:'HUE',name:'La Huerta',logo:'assets/official-logos/la-huerta.png',abbr:'HUE'},
-    {id:'PRO',name:'Promesas FC',logo:'assets/official-logos/promesas-fc.png',abbr:'PRO'},
-    {id:'GAL',name:'Atlético Galeana',logo:'assets/official-logos/galeana.png',abbr:'GAL'},
-    {id:'LOB',name:'Lobos CDG',logo:'assets/official-logos/lobos-cdg.png',abbr:'LOB'},
-    {id:'CUE',name:'Cuenda',logo:'assets/official-logos/toros-de-cuenda.png',abbr:'CUE'},
+    {id:'AME',name:'América Veteranos',logo:'assets/branding/america-veteranos-35.svg',abbr:'AME'},
+    {id:'HUE',name:'La Huerta',logo:'assets/teams/la-huerta-cuenda.webp',abbr:'HUE'},
+    {id:'PRO',name:'Promesas FC',logo:'assets/teams/promesas-fc-pozos.webp',abbr:'PRO'},
+    {id:'GAL',name:'Atlético Galeana',logo:'assets/teams/atletico-galeana.webp',abbr:'GAL'},
+    {id:'LOB',name:'Lobos CDG',logo:'assets/teams/lobos-cdg.webp',abbr:'LOB'},
+    {id:'CUE',name:'Cuenda',logo:'assets/teams/tc-cuenda.webp',abbr:'CUE'},
     {id:'POZ',name:'Pozos',logo:'assets/teams/pozos-fc.webp',abbr:'POZ'},
     {id:'RIN',name:'Rincón de Centeno',logo:'',abbr:'RIN'},
     {id:'ROS',name:'Deportivo Rosas',logo:'',abbr:'ROS'},
     {id:'STC',name:'Santa Cruz',logo:'assets/teams/atletico-santa-cruz.webp',abbr:'STC'},
-    {id:'SJO',name:'San José',logo:'assets/official-logos/san-jose-fc.png',abbr:'SJO'},
+    {id:'SJO',name:'San José',logo:'assets/teams/san-jose.webp',abbr:'SJO'},
     {id:'SIS',name:'San Isidro',logo:'',abbr:'SIS'},
     {id:'RJU',name:'Real Juventino',logo:'',abbr:'RJU'},
     {id:'VAL',name:'Valle Verde',logo:'',abbr:'VAL'},
     {id:'LAB',name:'La Labor',logo:'',abbr:'LAB'},
     {id:'DUR',name:'El Durazno',logo:'',abbr:'DUR'},
-    {id:'SAN',name:'San Antonio',logo:'assets/official-logos/san-antonio-fc.png',abbr:'SAN'},
+    {id:'SAN',name:'San Antonio',logo:'assets/teams/san-antonio-jr.webp',abbr:'SAN'},
     {id:'ARC',name:'Los Arcos',logo:'',abbr:'ARC'},
     {id:'JUV',name:'Deportivo Juventino',logo:'',abbr:'JUV'},
     {id:'PAL',name:'Las Palomas',logo:'',abbr:'PAL'},
-    {id:'FRA',name:'Franco FC',logo:'assets/official-logos/franco-fc.png',abbr:'FRA'},
+    {id:'FRA',name:'Franco FC',logo:'assets/teams/franco-fc.webp',abbr:'FRA'},
     {id:'EST',name:'La Estancia',logo:'',abbr:'EST'}
   ];
 
@@ -155,7 +155,7 @@
     const q=searchText.trim().toLocaleLowerCase('es');
     const list=TEAMS.filter(t=>!q||t.name.toLocaleLowerCase('es').includes(q)||t.id.toLowerCase().includes(q));
     const f=followed();
-    return '<section class="v28-follow-page v28-picker" data-v28-following>'+
+    return '<section class="v28-follow-page v28-picker" data-v28-following>'+neon()+
       '<header class="v28-picker-top">'+
         '<div class="v28-search">'+searchIcon()+'<input id="v28Search" type="search" autocomplete="off" placeholder="Buscar equipos" value="'+esc(searchText)+'"></div>'+
         '<button class="v28-close" data-v28-close-picker aria-label="Cerrar">×</button>'+

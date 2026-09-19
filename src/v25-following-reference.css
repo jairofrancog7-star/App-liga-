@@ -597,3 +597,266 @@ body[data-app-route="following"] .bottom-nav .nav-item[data-route="more"]{
     width:520px!important;
   }
 }
+
+
+/* V30 FOLLOWING MATCH — referencias 2/3/4: mismo header, selector compacto, logos sin cajas blancas. */
+body[data-app-route="following"] #screen,
+.v28-follow-page{
+  background:
+    radial-gradient(420px 245px at 90% -3%,rgba(33,104,255,.33),transparent 70%),
+    linear-gradient(180deg,#0a117f 0%,#03065f 20%,#02055b 100%)!important;
+}
+
+/* La misma cabecera visual en estado vacío, seguido y selector. */
+.v28-neon{
+  height:188px!important;
+  opacity:1!important;
+}
+.v28-head{
+  height:154px!important;
+  padding:34px 28px 0!important;
+}
+.v28-head h1{
+  font-size:34px!important;
+  font-weight:720!important;
+}
+.v28-head::after{
+  content:""!important;
+  position:absolute!important;
+  left:0!important;
+  right:0!important;
+  bottom:-1px!important;
+  height:42px!important;
+  z-index:-1!important;
+  pointer-events:none!important;
+  background:linear-gradient(180deg,rgba(3,6,95,0),#03065f 94%)!important;
+}
+
+/* Logos limpios: nunca una tarjeta blanca detrás del escudo. */
+.v28-logo,
+.v28-picker-row .v28-logo,
+.v28-sheet-team .v28-logo{
+  background:transparent!important;
+  border:0!important;
+  box-shadow:none!important;
+  overflow:visible!important;
+}
+.v28-logo img,
+.v28-picker-row .v28-logo img,
+.v28-sheet-team .v28-logo img{
+  object-fit:contain!important;
+  object-position:center!important;
+  background:transparent!important;
+  border:0!important;
+  border-radius:0!important;
+  box-shadow:none!important;
+  filter:drop-shadow(0 2px 4px rgba(0,0,0,.32))!important;
+}
+
+/* Pantalla vacía de la referencia 3. */
+.v28-empty-main{
+  padding:76px 30px 112px!important;
+}
+.v28-league-logo{
+  width:205px!important;
+  height:205px!important;
+  margin-bottom:30px!important;
+  background:transparent!important;
+}
+.v28-empty-main h2{
+  margin-bottom:14px!important;
+  font-size:29px!important;
+  font-weight:700!important;
+}
+.v28-empty-main p{
+  max-width:455px!important;
+  font-size:19px!important;
+  line-height:1.34!important;
+}
+.v28-add{
+  min-width:275px!important;
+  height:66px!important;
+  margin-top:24px!important;
+  border-radius:22px!important;
+}
+
+/* Equipos seguidos: mismo fondo/encabezado que la imagen 2. */
+.v28-follow-list{
+  padding:20px 36px 105px!important;
+}
+.v28-follow-row{
+  min-height:88px!important;
+  border-bottom-color:rgba(72,90,183,.22)!important;
+}
+.v28-team-link{
+  grid-template-columns:64px minmax(0,1fr)!important;
+  gap:15px!important;
+}
+.v28-team-link strong{
+  font-size:23px!important;
+  font-weight:650!important;
+}
+.v28-following-pill{
+  min-width:126px!important;
+  height:54px!important;
+  border-radius:16px!important;
+  background:rgba(77,83,164,.28)!important;
+  font-size:19px!important;
+}
+
+/* Selector de la referencia 4: misma cabecera superior, sin bloque de otro color. */
+.v28-picker{
+  min-height:calc(100dvh - 60px)!important;
+  background:
+    radial-gradient(420px 245px at 90% -3%,rgba(33,104,255,.33),transparent 70%),
+    linear-gradient(180deg,#0a117f 0%,#03065f 21%,#02055b 100%)!important;
+}
+.v28-picker .v28-neon{
+  display:block!important;
+  z-index:0!important;
+  height:176px!important;
+}
+.v28-picker-top{
+  position:relative!important;
+  z-index:4!important;
+  top:auto!important;
+  height:142px!important;
+  padding:69px 28px 14px!important;
+  background:transparent!important;
+  border:0!important;
+}
+.v28-picker-top::after{
+  content:""!important;
+  position:absolute!important;
+  left:0!important;
+  right:0!important;
+  bottom:-1px!important;
+  height:36px!important;
+  z-index:-1!important;
+  background:linear-gradient(180deg,rgba(3,6,95,0),rgba(3,6,95,.82))!important;
+}
+.v28-search{
+  height:48px!important;
+  border-radius:13px!important;
+  background:rgba(34,40,142,.78)!important;
+  border:1px solid rgba(111,126,224,.10)!important;
+}
+.v28-search input{
+  font-size:17px!important;
+  font-weight:520!important;
+}
+.v28-close{
+  top:13px!important;
+  right:25px!important;
+  width:42px!important;
+  height:42px!important;
+  background:rgba(91,98,171,.27)!important;
+  color:#bfc4e4!important;
+}
+.v28-picker>h2{
+  margin:0!important;
+  padding:15px 30px 12px!important;
+  background:rgba(4,7,101,.96)!important;
+  border-top:1px solid rgba(61,83,188,.13)!important;
+  border-bottom:1px solid rgba(61,83,188,.13)!important;
+  font-size:22px!important;
+  font-weight:680!important;
+}
+.v28-picker-list{
+  padding:0 28px 86px!important;
+  background:linear-gradient(180deg,rgba(5,8,106,.96),rgba(3,5,94,.99))!important;
+}
+.v28-picker-row{
+  min-height:55px!important;
+  grid-template-columns:48px minmax(0,1fr) auto!important;
+  gap:12px!important;
+  border-bottom:1px solid rgba(79,95,184,.23)!important;
+}
+.v28-picker-row .v28-logo{
+  width:44px!important;
+  height:44px!important;
+}
+.v28-picker-row .v28-logo img{
+  width:42px!important;
+  height:42px!important;
+}
+.v28-picker-row .v28-fallback{
+  width:40px!important;
+  height:40px!important;
+  background:transparent!important;
+  border:2px solid rgba(222,228,255,.86)!important;
+  font-size:10px!important;
+}
+.v28-picker-row>strong{
+  font-size:16px!important;
+  line-height:1.08!important;
+  font-weight:600!important;
+}
+.v28-picker-follow{
+  width:103px!important;
+  height:39px!important;
+  border-radius:11px!important;
+  background:#12def0!important;
+  color:#06105c!important;
+  font-size:14.5px!important;
+  font-weight:720!important;
+}
+.v28-picker-follow.following{
+  background:rgba(82,89,169,.36)!important;
+  color:#fff!important;
+}
+
+/* Evita cualquier rectángulo blanco aunque un asset falle o tarde en cargar. */
+.v28-logo img,
+.v28-picker-row img{
+  color-scheme:dark!important;
+}
+.v28-logo img[src$=".svg"]{
+  padding:1px!important;
+}
+
+/* Referencia 4: lista larga aprovechando mejor el alto de pantalla. */
+@media(max-width:390px){
+  .v28-picker-top{
+    height:132px!important;
+    padding:62px 18px 12px!important;
+  }
+  .v28-picker>h2{
+    padding:13px 22px 10px!important;
+    font-size:20px!important;
+  }
+  .v28-picker-list{
+    padding-left:18px!important;
+    padding-right:18px!important;
+  }
+  .v28-picker-row{
+    min-height:52px!important;
+    grid-template-columns:45px minmax(0,1fr) auto!important;
+    gap:9px!important;
+  }
+  .v28-picker-row .v28-logo{
+    width:41px!important;
+    height:41px!important;
+  }
+  .v28-picker-row .v28-logo img{
+    width:39px!important;
+    height:39px!important;
+  }
+  .v28-picker-row>strong{
+    font-size:15.2px!important;
+  }
+  .v28-picker-follow{
+    width:91px!important;
+    height:37px!important;
+    font-size:13.5px!important;
+  }
+  .v28-empty-main{
+    padding-top:70px!important;
+  }
+  .v28-league-logo{
+    width:182px!important;
+    height:182px!important;
+  }
+  .v28-empty-main h2{font-size:25px!important}
+  .v28-empty-main p{font-size:17px!important}
+}
