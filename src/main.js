@@ -434,21 +434,38 @@ function storeView(){
 }
 function quizArenaView(){
   return `<section class="v48-quiz-arena-page" aria-label="Quiz Arena">
-    <div class="v48-quiz-arena-shot">
-      <img class="v48-quiz-arena-image" src="./quiz-arena-main.jpg?v=20260919-quiz-main-drive1" alt="Quiz de la Liga" loading="eager" decoding="async" draggable="false" onerror="this.onerror=null;this.src='./quiz-arena-reference.jpg?v=20260919-quiz-result1'">
+    <header class="v48-arena-head">
+      <button type="button" class="v48-back-real" data-route="more" aria-label="Volver a Más">
+        <svg viewBox="0 0 32 32" aria-hidden="true"><path d="M20.5 7.5 12 16l8.5 8.5M12.5 16H27"/></svg>
+      </button>
+      <h1>Quiz Arena</h1>
+    </header>
 
-      <button type="button" class="v48-hotspot v48-answer v48-answer-a" data-v48-answer="A" aria-label="Respuesta A, Pozos"></button>
-      <button type="button" class="v48-hotspot v48-answer v48-answer-b" data-v48-answer="B" aria-label="Respuesta B, Rincón de Centeno"></button>
-      <button type="button" class="v48-hotspot v48-answer v48-answer-c" data-v48-answer="C" aria-label="Respuesta C, Juventino"></button>
-      <button type="button" class="v48-hotspot v48-answer v48-answer-d" data-v48-answer="D" aria-label="Respuesta D, Cuenda"></button>
+    <section class="v48-arena-card" aria-label="Entrar a Quiz Arena">
+      <div class="v48-ball-stage" aria-hidden="true">
+        <span class="v48-orbit one"></span><span class="v48-orbit two"></span>
+        <div class="v48-ball"><i></i><i></i><i></i><i></i><i></i></div>
+      </div>
+      <div class="v48-arena-actions">
+        <button type="button" class="v48-primary" data-route="profile">Inicia sesión para<br>jugar</button>
+        <button type="button" class="v48-secondary" data-route="quiz">Prueba como<br>invitado</button>
+      </div>
+    </section>
 
-      <button type="button" class="v48-hotspot v48-result-control v48-back" data-route="more" aria-label="Volver a Más"></button>
-      <button type="button" class="v48-hotspot v48-result-control v48-login-main" data-route="quiz" aria-label="Inicia sesión para jugar"></button>
-      <button type="button" class="v48-hotspot v48-result-control v48-guest-main" data-route="quiz" aria-label="Prueba como invitado"></button>
-      <button type="button" class="v48-hotspot v48-result-control v48-login-random" data-route="quiz" aria-label="Inicia sesión para jugar Quiz Aleatorio"></button>
-      <button type="button" class="v48-hotspot v48-result-control v48-guest-random" data-route="quiz" aria-label="Prueba Quiz Aleatorio como invitado"></button>
-      <button type="button" class="v48-hotspot v48-result-control v48-rankings" data-route="rankings" aria-label="Ver clasificaciones"></button>
-    </div>
+    <div class="v48-play-title"><span>PLAY GAMES</span></div>
+
+    <section class="v48-challenge-card">
+      <div>
+        <h2>¡Reta a tus amigos en el Quiz Arena!</h2>
+        <p>Preguntas de fútbol de la Liga Juventino Rosas, con respuestas reales y botones funcionales.</p>
+        <button type="button" data-route="quiz">Jugar ahora</button>
+      </div>
+      <div class="v48-mini-ball" aria-hidden="true"><i></i></div>
+    </section>
+
+    <button type="button" class="v48-ranking-link" data-route="rankings">
+      <span>Clasificaciones</span><b>›</b>
+    </button>
   </section>`;
 }
 function quizView(){
@@ -468,7 +485,7 @@ function quizView(){
       <p>¿Qué equipo lidera actualmente la tabla?</p>
       ${options.map(([letter,label])=>`<button type="button" class="quiz-option" data-quiz="${label}" aria-label="${letter}. ${label}"><span class="v30-answer-letter">${letter}</span><span class="v30-answer-text">${label}</span><span class="v30-answer-check" aria-hidden="true">✓</span></button>`).join('')}
     </div>
-    <img class="v30-quiz-stadium" src="./quiz-stadium-reference.webp?v=20260918-quiz3" alt="" aria-hidden="true" loading="eager" decoding="async">
+    <div class="v30-quiz-stadium" aria-hidden="true"><i class="v30-light left"></i><i class="v30-light right"></i><i class="v30-stands"></i></div>
     <span class="v30-stadium-tint" aria-hidden="true"></span>
   </section>`;
 }function moreLessView(){const a=players[0],b=players[1];return `<div class="game-hero"><span class="eyebrow">JUEGO</span><h1 class="game-title">MÁS<br>O MENOS</h1><p class="muted">¿Quién tiene más goles?</p><div class="compare-two"><button data-moreless="${a.id}"><div class="avatar-ball">${a.number}</div><b>${a.name}</b></button><span>VS</span><button data-moreless="${b.id}"><div class="avatar-ball">${b.number}</div><b>${b.name}</b></button></div></div>`}function venuesView(){return `<div class="eyebrow">SEDES</div><h1 class="screen-title">Campos</h1><div class="news-list">${[...new Set(teams.map(t=>t.field))].map((v,i)=>`<div class="news-row"><span class="venue-thumb"></span><span><small>Sede ${i+1}</small><b>${v}</b><p>Consulta los próximos partidos programados.</p></span></div>`).join('')}</div>`}
