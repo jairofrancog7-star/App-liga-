@@ -291,6 +291,13 @@ function leagueToolsView(){
       v60ToolCard('matchday','Partidos y jornadas','Todos, jugados, próximos y calendario','', 'data-v63-official="fixtures"')+
       v60ToolCard('center','Notificaciones','Próxima jornada, cambios de sede y favoritos','v38Alerts')+
       v60ToolCard('admin','Central oficial','Categorías, equipos, jugadores, tarjetas y castigos','', 'data-v63-official="summary"')+
+      v60ToolCard('bracket','Cuadro PNG','8 lugares y exportación para liguilla','bracketBuilder')+
+      v60ToolCard('card','Credencial avanzada','Foto, OCR local y datos del jugador','credentialBuilder')+
+      v60ToolCard('cedula','Generador de cédulas','Partido, plantillas e impresión PDF','cedulaBuilder')+
+      v60ToolCard('center','Exportar tabla','PNG completo, compartir y CSV','tableExport')+
+      v60ToolCard('matchday','Preparar mi jornada','Agenda local, cruces y JSON','agendaBuilder')+
+      v60ToolCard('tactics','Jornada animada','Balones en movimiento y accesos','motionHub')+
+      v60ToolCard('share','Aviso de suspensión','Borrador y vista previa de jornada suspendida','suspensionTool')+
     '</div></section>';
 }
 function rulebookView(){
@@ -438,6 +445,152 @@ function v38AlertsView(){
   '</section>';
 }
 
+function v64Esc(v){return String(v??'').replace(/[&<>"']/g,function(ch){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]})}
+
+function v64TeamNames(){
+  const out=[];
+  const add=function(n){n=String(n||'').trim();if(n&&!out.some(function(x){return x.toLowerCase()===n.toLowerCase()}))out.push(n)};
+  try{
+    const db=window.LJR_OFFICIAL_DATA||{};
+    Object.values(db.categories||{}).forEach(function(cat){
+      Object.keys(cat.rosters||{}).forEach(add);
+      ((cat.standings||[])[0]?.rows||[]).forEach(function(r){add(r[1])});
+      ((cat.fixtures||[])[0]?.rows||[]).forEach(function(r){add(r[2]);add(r[6])});
+    });
+  }catch(e){}
+  teams.forEach(function(t){add(t.name)});
+  return out;
+}
+
+function v64StandingsRows(){
+  try{
+    const db=window.LJR_OFFICIAL_DATA||{};
+    const id=localStorage.getItem('v62-category')||'3';
+    const cat=(db.categories||{})[id];
+    const rows=((cat?.standings||[])[0]?.rows||[]);
+    if(rows.length)return rows.map(function(r,i){return {pos:r[0]||i+1,name:r[1]||'',pj:r[2]||'',dg:r[8]||'',pts:r[9]||''}});
+  }catch(e){}
+  return teams.slice().sort(function(a,b){return b.pts-a.pts}).map(function(t,i){return {pos:i+1,name:t.name,pj:t.p,dg:t.gd,pts:t.pts}});
+}
+
+function v64Download(blob,name){
+  const url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download=name;document.body.appendChild(a);a.click();a.remove();setTimeout(function(){URL.revokeObjectURL(url)},1200);
+}
+
+function v64CanvasTable(){
+  const rows=v64StandingsRows(),w=1200,rowH=86,h=190+rows.length*rowH,canvas=document.createElement('canvas');canvas.width=w;canvas.height=h;
+  const x=canvas.getContext('2d');x.fillStyle='#07105d';x.fillRect(0,0,w,h);x.fillStyle='#19e1f2';x.font='700 28px Arial';x.fillText('LIGA JUVENTINO ROSAS',58,58);
+  x.fillStyle='#fff';x.font='800 52px Arial';x.fillText('TABLA DE POSICIONES',58,120);
+  x.font='700 25px Arial';x.fillStyle='#aeb4d2';x.fillText('#',58,168);x.fillText('EQUIPO',140,168);x.fillText('PJ',820,168);x.fillText('DG',930,168);x.fillText('PTS',1045,168);
+  rows.forEach(function(r,i){const y=190+i*rowH;x.fillStyle=i%2?'#0b0c70':'#10117d';x.fillRect(42,y,w-84,rowH-8);x.fillStyle='#fff';x.font='700 28px Arial';x.fillText(String(r.pos),62,y+52);x.fillText(String(r.name).slice(0,34),140,y+52);x.fillText(String(r.pj),825,y+52);x.fillText(String(r.dg),935,y+52);x.fillStyle='#19e1f2';x.fillText(String(r.pts),1050,y+52)});
+  return new Promise(function(resolve){canvas.toBlob(function(b){resolve(b)},'image/png',1)});
+}
+
+function v64CanvasBracket(){
+  const sels=[...document.querySelectorAll('[data-v64-place]')].map(function(s){return s.value||'Por confirmar'}),w=1200,h=900,canvas=document.createElement('canvas');canvas.width=w;canvas.height=h;
+  const x=canvas.getContext('2d');x.fillStyle='#07105d';x.fillRect(0,0,w,h);x.fillStyle='#19e1f2';x.font='700 28px Arial';x.fillText('LIGA JUVENTINO ROSAS',55,58);x.fillStyle='#fff';x.font='800 50px Arial';x.fillText('CUADRO FINAL · 8 LUGARES',55,120);
+  const pairs=[[0,7],[3,4],[1,6],[2,5]],ys=[210,370,530,690];
+  pairs.forEach(function(p,k){const y=ys[k];x.fillStyle='#12137a';x.fillRect(70,y,420,112);x.fillStyle='#fff';x.font='700 25px Arial';x.fillText((p[0]+1)+'. '+sels[p[0]].slice(0,25),92,y+43);x.fillText((p[1]+1)+'. '+sels[p[1]].slice(0,25),92,y+86);x.strokeStyle='#19e1f2';x.lineWidth=3;x.beginPath();x.moveTo(490,y+56);x.lineTo(590,y+56);x.stroke()});
+  x.fillStyle='#111274';x.fillRect(590,290,260,130);x.fillRect(590,610,260,130);x.fillStyle='#fff';x.font='700 25px Arial';x.fillText('SEMIFINAL 1',620,350);x.fillText('SEMIFINAL 2',620,670);
+  x.strokeStyle='#19e1f2';x.beginPath();x.moveTo(850,355);x.lineTo(930,355);x.lineTo(930,515);x.lineTo(990,515);x.moveTo(850,675);x.lineTo(930,675);x.lineTo(930,515);x.stroke();
+  x.fillStyle='#0b2c91';x.fillRect(990,455,170,120);x.fillStyle='#19e1f2';x.font='800 30px Arial';x.fillText('FINAL',1035,525);
+  return new Promise(function(resolve){canvas.toBlob(function(b){resolve(b)},'image/png',1)});
+}
+
+function v64TeamSelect(name,attr){
+  const list=v64TeamNames();return '<select '+attr+'><option value="">Por confirmar</option>'+list.map(function(n){return '<option>'+v64Esc(n)+'</option>'}).join('')+'</select>';
+}
+
+function v64ExportTableView(){
+  const rows=v64StandingsRows();
+  return '<section class="v60-tool-page v64-page">'+v60Header('EXPORTAR','Tabla completa','Descarga o comparte la tabla desde la app sin cambiar su diseño.')+
+    '<div class="v64-mini-table">'+rows.map(function(r){return '<div><b>'+v64Esc(r.pos)+'</b><span>'+v64Esc(r.name)+'</span><em>'+v64Esc(r.pts)+'</em></div>'}).join('')+'</div>'+
+    '<div class="v64-stack-actions"><button class="v60-btn" data-v64-export-png>↓ Descargar PNG completo</button><button class="v60-btn outline" data-v64-share-png>Compartir PNG</button><button class="v60-btn outline" data-v64-export-csv>Descargar CSV</button></div></section>';
+}
+
+function v64BracketView(){
+  return '<section class="v60-tool-page v64-page">'+v60Header('LIGUILLA','Generar cuadro PNG','Selecciona los ocho lugares y descarga un cuadro listo para compartir.')+
+    '<div class="v64-form-grid">'+Array.from({length:8},function(_,i){return '<label><b>Lugar '+(i+1)+'</b>'+v64TeamSelect('', 'data-v64-place="'+(i+1)+'"')+'</label>'}).join('')+'</div>'+
+    '<div class="v60-actions"><button class="v60-btn" data-v64-bracket-png>Generar cuadro PNG</button></div></section>';
+}
+
+function v64CredentialBuilderView(){
+  return '<section class="v60-tool-page v64-page">'+v60Header('CREDENCIALES','Credencial de jugador','Carga una foto del documento y una foto del jugador. La lectura OCR se realiza en este dispositivo y no se guarda en GitHub.')+
+    '<div class="v64-form-grid one">'+
+      '<label><b>Foto de CURP o INE</b><input type="file" accept="image/*" data-v64-doc></label>'+
+      '<label><b>Foto del jugador</b><input type="file" accept="image/*" data-v64-photo></label>'+
+      '<div class="v60-actions"><button class="v60-btn" data-v64-ocr>Detectar texto</button><button class="v60-btn outline" data-v64-clear-ocr>Borrar documento y lectura</button></div>'+
+      '<label><b>Texto detectado — revisa y corrige</b><textarea class="v60-textarea" data-v64-ocr-text></textarea></label>'+
+      '<label><b>Nombre del jugador</b><input type="text" data-v64-cred-name placeholder="Nombre completo"></label>'+
+      '<label><b>CURP (solo para captura local)</b><input type="text" maxlength="18" data-v64-cred-curp placeholder="CURP"></label>'+
+      '<label><b>Equipo</b>'+v64TeamSelect('', 'data-v64-cred-team')+'</label>'+
+      '<label><b>Categoría</b><select data-v64-cred-cat><option>Primera Fuerza</option><option>Intermedia</option><option>Segunda Fuerza</option><option>Veteranos 35+</option><option>Veteranos 50+</option></select></label>'+
+      '<label><b>Número</b><input type="number" min="0" max="99" value="0" data-v64-cred-number></label>'+
+    '</div>'+
+    '<article class="v64-credential-preview"><div class="v64-cred-photo" data-v64-photo-preview><span>FOTO</span></div><div><small>LIGA JUVENTINO ROSAS</small><h2 data-v64-preview-name>Jugador</h2><p data-v64-preview-team>Equipo · Categoría</p><b data-v64-preview-number>#0</b><em data-v64-preview-curp>CURP ••••</em></div></article>'+
+    '<div class="v60-actions"><button class="v60-btn" data-v64-print-credential>Imprimir / guardar PDF</button></div></section>';
+}
+
+function v64CedulaBuilderView(){
+  return '<section class="v60-tool-page v64-page">'+v60Header('CÉDULAS','Generador interno de cédulas','Genera una cédula y plantillas dentro de Liga Juventino Rosas; no redirige a una página externa.')+
+    '<div class="v64-form-grid one">'+
+      '<label><b>Categoría</b><select data-v64-ced-cat><option>Primera Fuerza</option><option>Intermedia</option><option>Segunda Fuerza</option><option>Veteranos 35+</option><option>Veteranos 50+</option></select></label>'+
+      '<label><b>Equipo local</b>'+v64TeamSelect('', 'data-v64-ced-home')+'</label>'+
+      '<label><b>Visitante</b>'+v64TeamSelect('', 'data-v64-ced-away')+'</label>'+
+      '<label><b>Fecha</b><input type="datetime-local" data-v64-ced-date></label>'+
+      '<label><b>Campo</b><input type="text" placeholder="Por confirmar" data-v64-ced-field></label>'+
+      '<label><b>Árbitro</b><input type="text" placeholder="Por asignar" data-v64-ced-ref></label>'+
+    '</div>'+
+    '<div class="v60-actions"><button class="v60-btn" data-v64-generate-cedula>Generar cédula del partido</button><button class="v60-btn outline" data-v64-team-template>Generar plantillas de equipos</button><button class="v60-btn ghost" data-v64-print-cedula>Imprimir / guardar PDF</button></div>'+
+    '<div data-v64-cedula-preview></div></section>';
+}
+
+function v64AgendaView(){
+  return '<section class="v60-tool-page v64-page">'+v60Header('JORNADA','Preparar mi jornada','Agenda y lista de revisión guardadas en este dispositivo. Son borradores y no modifican partidos ni resultados oficiales.')+
+    '<div class="v64-form-grid one">'+
+      '<label><b>Equipo local</b>'+v64TeamSelect('', 'data-v64-ag-home')+'</label>'+
+      '<label><b>Equipo visitante</b>'+v64TeamSelect('', 'data-v64-ag-away')+'</label>'+
+      '<label><b>Campo</b><input type="text" data-v64-ag-field placeholder="Campo"></label>'+
+      '<label><b>Inicio · hora de Juventino Rosas</b><input type="datetime-local" data-v64-ag-start></label>'+
+      '<label><b>Duración reservada (minutos)</b><input type="number" value="120" min="30" step="15" data-v64-ag-duration></label>'+
+    '</div>'+
+    '<div class="v64-stack-actions"><button class="v60-btn" data-v64-ag-add>Agregar y revisar cruces</button><button class="v60-btn outline" data-v64-ag-json>Exportar agenda JSON</button><button class="v60-btn ghost" data-v64-ag-clear>Limpiar agenda local</button></div>'+
+    '<div class="v64-agenda-list" data-v64-agenda-list></div></section>';
+}
+
+function v64MotionView(){
+  return '<section class="v60-tool-page v64-page v64-motion-page">'+v60Header('JORNADA','Fútbol en movimiento','Animación ligera adaptada a la app. Puedes pausarla cuando quieras.')+
+    '<div class="v64-motion-tabs"><button data-v63-official="fixtures">JORNADA</button><button data-route="competition">RESULTADOS</button><button data-route="venues">CAMPOS</button></div>'+
+    '<div class="v64-orbit-stage" data-v64-orbit><div class="v64-orbit one"><span>⚽</span></div><div class="v64-orbit two"><span>⚽</span></div><div class="v64-orbit-core">LIGA<br>JUVENTINO</div></div>'+
+    '<div class="v60-actions"><button class="v60-btn" data-v64-motion-toggle>Pausar movimiento</button><button class="v60-btn outline" data-v63-official="fixtures">Ver jornada</button></div></section>';
+}
+
+function v64SuspensionView(){
+  let s={};try{s=JSON.parse(localStorage.getItem('v64-suspension-draft')||'{}')}catch(e){}
+  return '<section class="v60-tool-page v64-page">'+v60Header('AVISO OFICIAL','Suspensión de jornada','Prepara un aviso local antes de publicarlo. No cambia automáticamente el estado oficial de los partidos.')+
+    '<div class="v64-form-grid one"><label><b>Categoría</b><select data-v64-susp-cat><option '+(s.category==='Veteranos 50+'?'selected':'')+'>Veteranos 50+</option><option '+(s.category==='Veteranos 35+'?'selected':'')+'>Veteranos 35+</option><option '+(s.category==='Primera Fuerza'?'selected':'')+'>Primera Fuerza</option><option>Intermedia</option><option>Segunda Fuerza</option></select></label>'+
+    '<label><b>Jornada</b><input type="number" min="1" value="'+v64Esc(s.jornada||6)+'" data-v64-susp-round></label></div>'+
+    '<div class="v60-actions"><button class="v60-btn" data-v64-susp-preview>Vista previa del aviso</button><button class="v60-btn outline" data-v64-susp-save>Guardar borrador local</button></div>'+
+    '<div data-v64-susp-modal></div></section>';
+}
+
+function v64RenderAgenda(){
+  const host=document.querySelector('[data-v64-agenda-list]');if(!host)return;let list=[];try{list=JSON.parse(localStorage.getItem('v64-agenda')||'[]')}catch(e){}
+  host.innerHTML=list.length?list.map(function(x,i){return '<article><b>'+v64Esc(x.home)+' vs '+v64Esc(x.away)+'</b><small>'+v64Esc(x.start||'Sin hora')+' · '+v64Esc(x.field||'Campo por confirmar')+' · '+v64Esc(x.duration)+' min</small><button data-v64-ag-remove="'+i+'">Quitar</button></article>'}).join(''):'<p class="v60-note">Todavía no hay cruces guardados.</p>';
+  host.querySelectorAll('[data-v64-ag-remove]').forEach(function(b){b.onclick=function(){list.splice(Number(b.dataset.v64AgRemove),1);localStorage.setItem('v64-agenda',JSON.stringify(list));v64RenderAgenda()}});
+}
+
+function v64CredentialSync(){
+  const name=document.querySelector('[data-v64-cred-name]')?.value||'Jugador',teamName=document.querySelector('[data-v64-cred-team]')?.value||'Equipo',cat=document.querySelector('[data-v64-cred-cat]')?.value||'Categoría',num=document.querySelector('[data-v64-cred-number]')?.value||'0',curp=document.querySelector('[data-v64-cred-curp]')?.value||'';
+  const n=document.querySelector('[data-v64-preview-name]'),t=document.querySelector('[data-v64-preview-team]'),no=document.querySelector('[data-v64-preview-number]'),cu=document.querySelector('[data-v64-preview-curp]');
+  if(n)n.textContent=name;if(t)t.textContent=teamName+' · '+cat;if(no)no.textContent='#'+num;if(cu)cu.textContent=curp?'CURP ••••'+curp.slice(-4):'CURP ••••';
+}
+
+function v64LoadTesseract(){
+  if(window.Tesseract)return Promise.resolve(window.Tesseract);
+  return new Promise(function(resolve,reject){const s=document.createElement('script');s.src='https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js';s.onload=function(){resolve(window.Tesseract)};s.onerror=reject;document.head.appendChild(s)});
+}
+
 function moreView(){
   return '<section class="v19-more-page" data-v19-more>'+
     '<img class="v19-more-logo" src="'+V19_MORE_LOGO+'" alt="Liga Municipal de Fútbol Juventino Rosas" loading="eager" decoding="async">'+
@@ -575,8 +728,8 @@ function quizView(){
     <span class="v30-stadium-tint" aria-hidden="true"></span>
   </section>`;
 }function moreLessView(){const a=players[0],b=players[1];return `<div class="game-hero"><span class="eyebrow">JUEGO</span><h1 class="game-title">MÁS<br>O MENOS</h1><p class="muted">¿Quién tiene más goles?</p><div class="compare-two"><button data-moreless="${a.id}"><div class="avatar-ball">${a.number}</div><b>${a.name}</b></button><span>VS</span><button data-moreless="${b.id}"><div class="avatar-ball">${b.number}</div><b>${b.name}</b></button></div></div>`}function venuesView(){return `<div class="eyebrow">SEDES</div><h1 class="screen-title">Campos</h1><div class="news-list">${[...new Set(teams.map(t=>t.field))].map((v,i)=>`<div class="news-row"><span class="venue-thumb"></span><span><small>Sede ${i+1}</small><b>${v}</b><p>Consulta los próximos partidos programados.</p></span></div>`).join('')}</div>`}
-const views={home:homeView,competition:competitionView,match:matchView,video:videoView,fantasy:fantasyView,fantasyTeam:fantasyTeamView,fantasyLeagues:()=>`<div class="eyebrow">FANTASY</div><h1 class="screen-title">Ligas</h1><div class="profile-card"><h2>Compite con amigos</h2><p>Crea una liga privada o únete con un código.</p><div class="button-row"><button class="btn primary" data-action="create-league">Crear liga</button><button class="btn outline" data-action="join-league">Unirme</button></div></div>`,more:moreView,hospitality:hospitalityView,'club-store':storeView,following:followingView,teams:teamsView,teamDetail:teamDetailView,players:playersView,playerDetail:playerDetailView,scorers:scorersView,moments:momentsView,stats:statsView,rankings:rankingsView,history:historyView,news:newsView,newsDetail:newsDetailView,transfers:transfersView,favorites:favoritesView,search:searchView,vote:voteView,notifications:notificationsView,privacy:privacyView,profile:profileView,predictor:predictorView,predictorSix:predictorSixView,quizArena:quizArenaView,quiz:quizArenaView,moreLess:moreLessView,moreLessHub:()=>`<div data-v52-mount></div>`,venues:v60VenuesView,leagueTools:leagueToolsView,v38Stats:v38StatsView,v38Weekly:v38WeeklyView,v38Weather:v38WeatherView,v38Alerts:v38AlertsView,rulebook:rulebookView,matchday:matchdayView,weatherFields:weatherFieldsView,cedulas:cedulasView,cedulaDetail:cedulaDetailView,credential:credentialView,publications:publicationsView,tactics:tacticsView,simulator:simulatorView,jrControl:jrControlView,error:()=>`<div class="empty-state"><div class="empty-illustration error"></div><h2>No pudimos cargar la información</h2><p>Comprueba tu conexión e inténtalo nuevamente.</p><button class="btn outline" data-route="home">Reintentar</button></div>`};
-function render(){if(state.route==='quiz'){state.route='quizArena';if(location.hash!=='#/quizArena')history.replaceState(null,'','#/quizArena')}if(state.route==='theme'){setTheme(state.theme==='dark'?'light':'dark');state.route='more'}screen.innerHTML=views[state.route]?views[state.route]():views.home();const rootRoutes=['home','competition','video','fantasy','more'];backButton.classList.toggle('is-hidden',rootRoutes.includes(state.route));const navRoute=['predictor','predictorSix','quizArena','quiz','moreLess','moreLessHub','leagueTools','v38Stats','v38Weekly','v38Weather','v38Alerts','rulebook','matchday','weatherFields','venues','cedulas','cedulaDetail','credential','publications','tactics','simulator','jrControl','leagueData'].includes(state.route)?'more':state.route;navItems.forEach(n=>n.classList.toggle('active',n.dataset.route===navRoute));bind();window.scrollTo(0,0)}
+const views={home:homeView,competition:competitionView,match:matchView,video:videoView,fantasy:fantasyView,fantasyTeam:fantasyTeamView,fantasyLeagues:()=>`<div class="eyebrow">FANTASY</div><h1 class="screen-title">Ligas</h1><div class="profile-card"><h2>Compite con amigos</h2><p>Crea una liga privada o únete con un código.</p><div class="button-row"><button class="btn primary" data-action="create-league">Crear liga</button><button class="btn outline" data-action="join-league">Unirme</button></div></div>`,more:moreView,hospitality:hospitalityView,'club-store':storeView,following:followingView,teams:teamsView,teamDetail:teamDetailView,players:playersView,playerDetail:playerDetailView,scorers:scorersView,moments:momentsView,stats:statsView,rankings:rankingsView,history:historyView,news:newsView,newsDetail:newsDetailView,transfers:transfersView,favorites:favoritesView,search:searchView,vote:voteView,notifications:notificationsView,privacy:privacyView,profile:profileView,predictor:predictorView,predictorSix:predictorSixView,quizArena:quizArenaView,quiz:quizArenaView,moreLess:moreLessView,moreLessHub:()=>`<div data-v52-mount></div>`,venues:v60VenuesView,leagueTools:leagueToolsView,v38Stats:v38StatsView,v38Weekly:v38WeeklyView,v38Weather:v38WeatherView,v38Alerts:v38AlertsView,tableExport:v64ExportTableView,bracketBuilder:v64BracketView,credentialBuilder:v64CredentialBuilderView,cedulaBuilder:v64CedulaBuilderView,agendaBuilder:v64AgendaView,motionHub:v64MotionView,suspensionTool:v64SuspensionView,rulebook:rulebookView,matchday:matchdayView,weatherFields:weatherFieldsView,cedulas:cedulasView,cedulaDetail:cedulaDetailView,credential:credentialView,publications:publicationsView,tactics:tacticsView,simulator:simulatorView,jrControl:jrControlView,error:()=>`<div class="empty-state"><div class="empty-illustration error"></div><h2>No pudimos cargar la información</h2><p>Comprueba tu conexión e inténtalo nuevamente.</p><button class="btn outline" data-route="home">Reintentar</button></div>`};
+function render(){if(state.route==='quiz'){state.route='quizArena';if(location.hash!=='#/quizArena')history.replaceState(null,'','#/quizArena')}if(state.route==='theme'){setTheme(state.theme==='dark'?'light':'dark');state.route='more'}screen.innerHTML=views[state.route]?views[state.route]():views.home();const rootRoutes=['home','competition','video','fantasy','more'];backButton.classList.toggle('is-hidden',rootRoutes.includes(state.route));const navRoute=['predictor','predictorSix','quizArena','quiz','moreLess','moreLessHub','leagueTools','v38Stats','v38Weekly','v38Weather','v38Alerts','tableExport','bracketBuilder','credentialBuilder','cedulaBuilder','agendaBuilder','motionHub','suspensionTool','rulebook','matchday','weatherFields','venues','cedulas','cedulaDetail','credential','publications','tactics','simulator','jrControl','leagueData'].includes(state.route)?'more':state.route;navItems.forEach(n=>n.classList.toggle('active',n.dataset.route===navRoute));bind();window.scrollTo(0,0)}
 function go(route,push=true){if(route==='quiz')route='quizArena';if(push&&state.route!==route)state.history.push(state.route);state.route=route;location.hash='#/'+route;render()}
 function bind(){document.querySelectorAll('[data-route]').forEach(el=>el.onclick=()=>go(el.dataset.route));
 document.querySelectorAll('[data-v48-start]').forEach(el=>el.onclick=()=>{const page=el.closest('[data-v48-arena]');if(!page)return;page.classList.add('v48-playing');page.querySelector('.v48-game')?.setAttribute('aria-hidden','false');window.scrollTo(0,0)});
@@ -587,6 +740,26 @@ document.querySelectorAll('[data-v60-comp]').forEach(el=>el.onclick=()=>{state.c
 document.querySelectorAll('[data-v63-comp]').forEach(el=>el.onclick=()=>{state.competitionTab=el.dataset.v63Comp||'standings';save();go('competition')});
 document.querySelectorAll('[data-v63-official]').forEach(el=>el.onclick=()=>{const tab=el.dataset.v63Official||'summary';localStorage.setItem('v62-data-tab',tab);try{window.LJR_OFFICIAL_API?.setDataTab?.(tab)}catch(e){}go('leagueData')});
 document.querySelectorAll('[data-v60-check]').forEach(el=>el.onchange=()=>{const s=v60MatchdayState();s[el.dataset.v60Check]=el.checked;localStorage.setItem('v60-matchday',JSON.stringify(s));toast('Match Day actualizado')});
+document.querySelector('[data-v64-export-png]')?.addEventListener('click',async()=>{const b=await v64CanvasTable();if(b)v64Download(b,'Liga_Juventino_Tabla.png')},{once:true});
+document.querySelector('[data-v64-share-png]')?.addEventListener('click',async()=>{const b=await v64CanvasTable();if(!b)return;const file=new File([b],'Liga_Juventino_Tabla.png',{type:'image/png'});try{if(navigator.canShare?.({files:[file]}))await navigator.share({title:'Tabla Liga Juventino Rosas',files:[file]});else v64Download(b,file.name)}catch(e){}},{once:true});
+document.querySelector('[data-v64-export-csv]')?.addEventListener('click',()=>{const rows=v64StandingsRows(),csv='Posicion,Equipo,PJ,DG,PTS\n'+rows.map(r=>[r.pos,r.name,r.pj,r.dg,r.pts].map(v=>'"'+String(v??'').replace(/"/g,'""')+'"').join(',')).join('\n');v64Download(new Blob([csv],{type:'text/csv;charset=utf-8'}),'Liga_Juventino_Tabla.csv')},{once:true});
+document.querySelector('[data-v64-bracket-png]')?.addEventListener('click',async()=>{const b=await v64CanvasBracket();if(b)v64Download(b,'Liga_Juventino_Cuadro.png')},{once:true});
+document.querySelector('[data-v64-photo]')?.addEventListener('change',e=>{const file=e.target.files?.[0],host=document.querySelector('[data-v64-photo-preview]');if(!file||!host)return;host.innerHTML='<img alt="Foto del jugador">';host.querySelector('img').src=URL.createObjectURL(file)},{once:true});
+document.querySelectorAll('[data-v64-cred-name],[data-v64-cred-curp],[data-v64-cred-team],[data-v64-cred-cat],[data-v64-cred-number]').forEach(el=>{el.addEventListener('input',v64CredentialSync);el.addEventListener('change',v64CredentialSync)});
+v64CredentialSync();
+document.querySelector('[data-v64-ocr]')?.addEventListener('click',async e=>{const file=document.querySelector('[data-v64-doc]')?.files?.[0],out=document.querySelector('[data-v64-ocr-text]');if(!file||!out){toast('Selecciona una foto de CURP o INE');return}const btn=e.currentTarget;btn.disabled=true;btn.textContent='Leyendo…';try{const T=await v64LoadTesseract();const r=await T.recognize(file,'spa');const txt=r?.data?.text||'';out.value=txt;const curp=(txt.toUpperCase().match(/\b[A-Z]{4}\d{6}[HM][A-Z]{5}[A-Z0-9]\d\b/)||[])[0]||'';if(curp){const f=document.querySelector('[data-v64-cred-curp]');if(f)f.value=curp}v64CredentialSync();toast('Texto detectado; revisa los datos')}catch(err){toast('No se pudo leer el documento; puedes capturar los datos manualmente')}finally{btn.disabled=false;btn.textContent='Detectar texto'}},{once:true});
+document.querySelector('[data-v64-clear-ocr]')?.addEventListener('click',()=>{const d=document.querySelector('[data-v64-doc]'),t=document.querySelector('[data-v64-ocr-text]'),q=document.querySelector('[data-v64-cred-curp]');if(d)d.value='';if(t)t.value='';if(q)q.value='';v64CredentialSync()},{once:true});
+document.querySelector('[data-v64-print-credential]')?.addEventListener('click',()=>{document.body.classList.add('v64-print-credential');window.print();setTimeout(()=>document.body.classList.remove('v64-print-credential'),300)},{once:true});
+document.querySelector('[data-v64-generate-cedula]')?.addEventListener('click',()=>{const q=s=>document.querySelector(s)?.value||'';const home=q('[data-v64-ced-home]')||'Local',away=q('[data-v64-ced-away]')||'Visitante',cat=q('[data-v64-ced-cat]'),date=q('[data-v64-ced-date]')||'Por confirmar',field=q('[data-v64-ced-field]')||'Por confirmar',ref=q('[data-v64-ced-ref]')||'Por asignar',host=document.querySelector('[data-v64-cedula-preview]');if(host)host.innerHTML='<article class="v60-cedula v64-generated-cedula"><div class="v60-cedula-head"><b>LIGA MUNICIPAL DE FÚTBOL · JUVENTINO ROSAS</b><span>'+v64Esc(cat)+'</span></div><div class="v60-versus"><div><strong>'+v64Esc(home)+'</strong></div><span>VS</span><div><strong>'+v64Esc(away)+'</strong></div></div><div class="v60-cedula-meta"><div><small>Fecha</small><b>'+v64Esc(date)+'</b></div><div><small>Campo</small><b>'+v64Esc(field)+'</b></div><div><small>Árbitro</small><b>'+v64Esc(ref)+'</b></div><div><small>Estado</small><b>Por confirmar</b></div></div></article>';toast('Cédula generada')},{once:true});
+document.querySelector('[data-v64-team-template]')?.addEventListener('click',()=>{const h=document.querySelector('[data-v64-ced-home]')?.value||'Local',a=document.querySelector('[data-v64-ced-away]')?.value||'Visitante',csv='Equipo,Numero,Jugador,Posicion,Firma\n'+[h,a].map(n=>'"'+n+'",,,,').join('\n');v64Download(new Blob([csv],{type:'text/csv;charset=utf-8'}),'Plantillas_Equipos.csv')},{once:true});
+document.querySelector('[data-v64-print-cedula]')?.addEventListener('click',()=>window.print(),{once:true});
+document.querySelector('[data-v64-ag-add]')?.addEventListener('click',()=>{let list=[];try{list=JSON.parse(localStorage.getItem('v64-agenda')||'[]')}catch(e){}const q=s=>document.querySelector(s)?.value||'';list.push({home:q('[data-v64-ag-home]')||'Local',away:q('[data-v64-ag-away]')||'Visitante',field:q('[data-v64-ag-field]'),start:q('[data-v64-ag-start]'),duration:Number(q('[data-v64-ag-duration]')||120)});localStorage.setItem('v64-agenda',JSON.stringify(list));v64RenderAgenda();toast('Cruce guardado en este dispositivo')},{once:true});
+document.querySelector('[data-v64-ag-json]')?.addEventListener('click',()=>{let raw=localStorage.getItem('v64-agenda')||'[]';v64Download(new Blob([raw],{type:'application/json'}),'Agenda_Liga_Juventino.json')},{once:true});
+document.querySelector('[data-v64-ag-clear]')?.addEventListener('click',()=>{localStorage.removeItem('v64-agenda');v64RenderAgenda();toast('Agenda local limpiada')},{once:true});
+v64RenderAgenda();
+document.querySelector('[data-v64-motion-toggle]')?.addEventListener('click',e=>{const stage=document.querySelector('[data-v64-orbit]');stage?.classList.toggle('paused');e.currentTarget.textContent=stage?.classList.contains('paused')?'Reanudar movimiento':'Pausar movimiento'},{once:true});
+document.querySelector('[data-v64-susp-save]')?.addEventListener('click',()=>{const category=document.querySelector('[data-v64-susp-cat]')?.value||'',jornada=document.querySelector('[data-v64-susp-round]')?.value||'';localStorage.setItem('v64-suspension-draft',JSON.stringify({category,jornada}));toast('Borrador guardado solo en este dispositivo')},{once:true});
+document.querySelector('[data-v64-susp-preview]')?.addEventListener('click',()=>{const category=document.querySelector('[data-v64-susp-cat]')?.value||'',jornada=document.querySelector('[data-v64-susp-round]')?.value||'',host=document.querySelector('[data-v64-susp-modal]');if(host)host.innerHTML='<div class="v64-susp-modal"><div><b>⚠ Jornada suspendida hoy</b><button type="button" data-v64-susp-close>×</button></div><p>Se suspende la jornada de la categoría seleccionada que tenía juego programado para hoy.</p><strong>'+v64Esc(category)+'</strong><span>Jornada: '+v64Esc(jornada)+'</span><em>Vista previa · no publicada</em><button class="v60-btn" data-v64-susp-ok>Entendido</button></div>';const close=()=>{if(host)host.innerHTML=''};host?.querySelector('[data-v64-susp-close]')?.addEventListener('click',close);host?.querySelector('[data-v64-susp-ok]')?.addEventListener('click',close)},{once:true});
 const v60note=document.querySelector('[data-v60-matchday-note]');if(v60note)v60note.oninput=()=>{const s=v60MatchdayState();s.note=v60note.value;localStorage.setItem('v60-matchday',JSON.stringify(s))};
 document.querySelectorAll('[data-v60-weather]').forEach(el=>el.onclick=async()=>{const f=v60Field(el.dataset.v60Weather),out=document.querySelector('[data-v60-weather-result="'+f.id+'"]');if(!out||!f.weather||!Number.isFinite(f.lat)||!Number.isFinite(f.lon))return;out.hidden=false;out.classList.remove('is-error');out.textContent='Consultando clima…';el.disabled=true;try{const u='https://api.open-meteo.com/v1/forecast?latitude='+encodeURIComponent(f.lat)+'&longitude='+encodeURIComponent(f.lon)+'&current=temperature_2m,precipitation,weather_code,wind_speed_10m&timezone=America%2FMexico_City';const r=await fetch(u);if(!r.ok)throw new Error('weather');const j=await r.json(),w=j.current||{};out.innerHTML='<b>'+Math.round(w.temperature_2m??0)+' °C</b><div class="v60-weather-grid"><span><b>'+Number(w.precipitation??0).toFixed(1)+' mm</b><small>Precipitación</small></span><span><b>'+Math.round(w.wind_speed_10m??0)+' km/h</b><small>Viento</small></span><span><b>'+String(w.weather_code??'—')+'</b><small>Código clima</small></span></div><small>Actualización: '+String(w.time||'ahora')+'</small>'}catch(e){out.classList.add('is-error');out.textContent='No se pudo consultar el clima en este momento.'}finally{el.disabled=false}});
 document.querySelectorAll('[data-v60-cedula]').forEach(el=>el.onclick=()=>{state.selectedMatch=el.dataset.v60Cedula;save();go('cedulaDetail')});
