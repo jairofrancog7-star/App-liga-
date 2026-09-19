@@ -424,7 +424,7 @@ function leagueToolsView(){
       v60ToolCard('share','Aviso de suspensión','Borrador y vista previa de jornada suspendida','suspensionTool')+
     '</div></section>';
 }
-function rulebookView(){function rulebookView(){
+function rulebookView(){
   return '<section class="v60-tool-page">'+v60Header('DOCUMENTOS','Reglamento','Consulta el Reglamento oficial de la Liga Municipal de Fútbol Juventino Rosas 2026–2027.')+
     '<div class="v60-panel"><div class="v60-actions"><a class="v60-link" href="'+V60_RULEBOOK+'" target="_blank" rel="noopener noreferrer">Abrir PDF</a><a class="v60-link outline" href="'+V60_RULEBOOK+'" target="_blank" rel="noopener noreferrer">Descargar</a></div><p class="v60-note">El reglamento abre desde el archivo PDF oficial guardado en GitHub para evitar el error de archivo no encontrado.</p></div>'+
     '<div class="v60-pdf-shell"><object class="v60-pdf-frame" data="'+V60_RULEBOOK+'" type="application/pdf"><div class="v60-pdf-fallback"><b>Vista previa no disponible en este navegador.</b><span>Usa “Abrir PDF” para verlo o descargarlo.</span><a class="v60-link" href="'+V60_RULEBOOK+'" target="_blank" rel="noopener noreferrer">Abrir PDF</a></div></object></div>'+
@@ -597,7 +597,7 @@ function v64TeamSelect(name,attr){
   return '<select '+attr+'><option value="">Por confirmar</option>'+list.map(function(n){return '<option '+(n.toLowerCase()===selected?'selected':'')+'>'+v64Esc(n)+'</option>'}).join('')+'</select>';
 }
 
-function v64StandingsRows(){function v64StandingsRows(){
+function v64StandingsRows(){
   try{
     const db=window.LJR_OFFICIAL_DATA||{};
     const id=localStorage.getItem('v62-category')||'3';
@@ -667,7 +667,7 @@ function v64CredentialBuilderView(){
     '<div class="v60-actions"><button class="v60-btn" data-v64-print-credential>Imprimir / guardar PDF</button></div></section>';
 }
 
-function v64CedulaBuilderView(){function v64CedulaBuilderView(){
+function v64CedulaBuilderView(){
   return '<section class="v60-tool-page v64-page">'+v60Header('CÉDULAS','Generador interno de cédulas','Genera una cédula y plantillas dentro de Liga Juventino Rosas; no redirige a una página externa.')+
     '<div class="v64-form-grid one">'+
       '<label><b>Categoría</b><select data-v64-ced-cat><option>Primera Fuerza</option><option>Intermedia</option><option>Segunda Fuerza</option><option>Veteranos 35+</option><option>Veteranos 50+</option></select></label>'+
@@ -803,7 +803,7 @@ function moreView(){
     '</div>'+
   '</section>';
 }
-function hospitalityView(){function hospitalityView(){
+function hospitalityView(){
   return '<div class="eyebrow">EN EL EVENTO</div><h1 class="screen-title">Hospitalidad</h1>'+
     '<section class="section"><div class="profile-card"><h2>Hospitalidad de la Liga</h2><p>Consulta sedes, accesos y servicios disponibles para los partidos de la Liga Municipal de Fútbol Juventino Rosas.</p><div class="button-row"><button class="btn primary" data-route="venues">Ver campos / sedes</button><button class="btn outline" data-route="competition">Ver partidos</button></div></div></section>'+
     '<section class="section"><div class="section-head"><h2>Accesos rápidos</h2></div><div class="menu-group">'+
