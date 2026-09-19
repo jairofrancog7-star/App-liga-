@@ -1,0 +1,349 @@
+/* V65 — Inicio ampliado + Clima y campos.
+   Mantiene el diseño existente y usa el azul marino oscuro de la portada. */
+
+@media (max-width:1023px){
+  body[data-app-route="home"] .v65-home-weather,
+  body[data-app-route="home"] .v65-home-table,
+  body[data-app-route="home"] .v65-home-fields{
+    margin-top:28px!important;
+  }
+
+  body[data-app-route="home"] .v65-home-weather{
+    overflow:hidden;
+    border:1px solid rgba(71,91,191,.30);
+    border-radius:18px;
+    background:
+      radial-gradient(circle at 100% 0,rgba(26,91,204,.16),transparent 34%),
+      linear-gradient(155deg,#070b66 0%,#050653 58%,#030443 100%);
+    box-shadow:0 12px 28px rgba(0,0,40,.17);
+  }
+
+  body[data-app-route="home"] .v65-weather-main{
+    appearance:none;
+    -webkit-appearance:none;
+    width:100%;
+    min-height:80px;
+    display:grid;
+    grid-template-columns:52px minmax(0,1fr) 22px;
+    align-items:center;
+    gap:13px;
+    padding:14px 16px;
+    border:0;
+    background:transparent;
+    color:#fff;
+    text-align:left;
+  }
+
+  body[data-app-route="home"] .v65-weather-icon{
+    width:48px;
+    height:48px;
+    display:grid;
+    place-items:center;
+    color:#fff;
+  }
+
+  body[data-app-route="home"] .v65-weather-icon svg{
+    width:39px;
+    height:39px;
+    display:block;
+    fill:none;
+    stroke:currentColor;
+    stroke-width:1.8;
+    stroke-linecap:round;
+    stroke-linejoin:round;
+  }
+
+  body[data-app-route="home"] .v65-weather-title{
+    min-width:0;
+    font:760 23px/1.04 Inter,Roboto,Arial,sans-serif;
+    letter-spacing:-.025em;
+  }
+
+  body[data-app-route="home"] .v65-weather-arrow{
+    color:#16e5f2;
+    font:400 34px/1 Arial,sans-serif;
+    text-align:right;
+  }
+
+  body[data-app-route="home"] .v65-weather-copy{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:12px;
+    padding:12px 15px 14px;
+    border-top:1px solid rgba(255,255,255,.07);
+    background:rgba(0,0,35,.13);
+  }
+
+  body[data-app-route="home"] .v65-weather-copy>span{
+    max-width:70%;
+    color:#b8bedf;
+    font-size:11px;
+    line-height:1.35;
+  }
+
+  body[data-app-route="home"] .v65-weather-copy>button{
+    flex:0 0 auto;
+    min-height:34px;
+    padding:0 10px;
+    border:1px solid #12dce9;
+    border-radius:10px;
+    background:transparent;
+    color:#20e4ef;
+    font-size:10px;
+    font-weight:800;
+  }
+
+  body[data-app-route="home"] .v65-table-card{
+    overflow:hidden;
+    border:1px solid rgba(86,102,196,.26);
+    border-radius:16px;
+    background:#050653;
+    box-shadow:0 10px 24px rgba(0,0,40,.12);
+  }
+
+  body[data-app-route="home"] .v65-table-head,
+  body[data-app-route="home"] .v65-table-row{
+    display:grid;
+    grid-template-columns:24px minmax(0,1fr) 32px 36px 34px;
+    align-items:center;
+    gap:6px;
+  }
+
+  body[data-app-route="home"] .v65-table-head{
+    min-height:34px;
+    padding:0 10px;
+    color:#7f89bc;
+    background:#040547;
+    font-size:8px;
+    font-weight:800;
+    text-transform:uppercase;
+  }
+
+  body[data-app-route="home"] .v65-table-head span:not(:nth-child(2)){
+    text-align:center;
+  }
+
+  body[data-app-route="home"] .v65-table-row{
+    appearance:none;
+    -webkit-appearance:none;
+    width:100%;
+    min-height:52px;
+    padding:6px 10px;
+    border:0;
+    border-top:1px solid rgba(255,255,255,.065);
+    background:transparent;
+    color:#fff;
+    text-align:left;
+    font-size:10px;
+  }
+
+  body[data-app-route="home"] .v65-table-row>span:not(.v65-table-team),
+  body[data-app-route="home"] .v65-table-row>b,
+  body[data-app-route="home"] .v65-table-row>strong{
+    text-align:center;
+  }
+
+  body[data-app-route="home"] .v65-table-team{
+    min-width:0;
+    display:flex;
+    align-items:center;
+    gap:8px;
+  }
+
+  body[data-app-route="home"] .v65-table-team .crest{
+    width:29px!important;
+    height:29px!important;
+    flex:0 0 29px!important;
+    font-size:7px!important;
+  }
+
+  body[data-app-route="home"] .v65-table-team strong{
+    min-width:0;
+    overflow:hidden;
+    color:#fff;
+    font-size:11.5px;
+    font-weight:760;
+    text-overflow:ellipsis;
+    white-space:nowrap;
+  }
+
+  body[data-app-route="home"] .v65-table-row>strong:last-child{
+    color:#1ee2ee;
+    font-size:12px;
+  }
+
+  body[data-app-route="home"] .v65-field-carousel{
+    display:flex;
+    gap:10px;
+    overflow-x:auto;
+    overflow-y:hidden;
+    padding:1px 36px 4px 0;
+    scrollbar-width:none;
+    -webkit-overflow-scrolling:touch;
+  }
+  body[data-app-route="home"] .v65-field-carousel::-webkit-scrollbar{display:none}
+
+  body[data-app-route="home"] .v65-field-card{
+    appearance:none;
+    -webkit-appearance:none;
+    position:relative;
+    flex:0 0 210px;
+    min-height:190px;
+    overflow:hidden;
+    padding:0;
+    border:1px solid rgba(90,110,211,.28);
+    border-radius:18px;
+    background:#050653;
+    color:#fff;
+    text-align:left;
+    box-shadow:0 10px 24px rgba(0,0,45,.16);
+  }
+
+  body[data-app-route="home"] .v65-field-visual{
+    position:relative;
+    display:block;
+    width:100%;
+    height:105px;
+    overflow:hidden;
+    background:#040544;
+  }
+
+  body[data-app-route="home"] .v65-field-visual::after{
+    content:"";
+    position:absolute;
+    inset:0;
+    background:
+      linear-gradient(180deg,rgba(3,4,62,.12),rgba(3,4,62,.75)),
+      radial-gradient(circle at 50% 20%,rgba(38,115,255,.16),transparent 55%);
+  }
+
+  body[data-app-route="home"] .v65-field-visual img{
+    display:block;
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    object-position:center 58%;
+    filter:saturate(.72) brightness(.58) hue-rotate(6deg);
+    transform:scale(1.03);
+  }
+
+  body[data-app-route="home"] .v65-field-info{
+    display:block;
+    padding:12px 34px 13px 13px;
+  }
+
+  body[data-app-route="home"] .v65-field-info small,
+  body[data-app-route="home"] .v65-field-info b,
+  body[data-app-route="home"] .v65-field-info em{
+    display:block;
+  }
+
+  body[data-app-route="home"] .v65-field-info small{
+    margin-bottom:5px;
+    color:#18e2ef;
+    font-size:9px;
+    font-weight:800;
+    text-transform:uppercase;
+    letter-spacing:.07em;
+  }
+
+  body[data-app-route="home"] .v65-field-info b{
+    color:#fff;
+    font-size:14px;
+    line-height:1.08;
+  }
+
+  body[data-app-route="home"] .v65-field-info em{
+    margin-top:7px;
+    color:#abb2d6;
+    font-size:10px;
+    line-height:1.15;
+    font-style:normal;
+  }
+
+  body[data-app-route="home"] .v65-field-go{
+    position:absolute;
+    right:12px;
+    bottom:13px;
+    color:#1de2ee;
+    font:400 28px/1 Arial,sans-serif;
+  }
+
+  /* Clima y campos deja el azul eléctrico de herramientas y toma el azul marino de Inicio. */
+  body[data-app-route="weatherFields"],
+  body[data-app-route="weatherFields"] #app,
+  body[data-app-route="weatherFields"] .app-shell,
+  body[data-app-route="venues"],
+  body[data-app-route="venues"] #app,
+  body[data-app-route="venues"] .app-shell{
+    background:#02045d!important;
+  }
+
+  body[data-app-route="weatherFields"] #screen,
+  body[data-app-route="venues"] #screen{
+    background:#02045d!important;
+  }
+
+  body[data-app-route="weatherFields"] .v60-tool-page,
+  body[data-app-route="venues"] .v60-tool-page{
+    background:
+      radial-gradient(circle at 82% -4%,rgba(34,78,181,.15),transparent 25%),
+      linear-gradient(180deg,#060962 0%,#040652 36%,#030448 68%,#02043d 100%)!important;
+  }
+
+  body[data-app-route="weatherFields"] .v60-field-card,
+  body[data-app-route="venues"] .v60-field-card{
+    border-color:rgba(78,96,190,.28)!important;
+    background:linear-gradient(160deg,#090a67,#050653 68%,#040447)!important;
+  }
+
+  body[data-app-route="weatherFields"] .v60-field-top span,
+  body[data-app-route="venues"] .v60-field-top span{
+    background:#0b1d78!important;
+  }
+
+  body[data-app-route="weatherFields"] .v60-weather-result{
+    background:#09166f!important;
+  }
+
+  body[data-app-route="weatherFields"] .v60-note,
+  body[data-app-route="venues"] .v60-note{
+    background:rgba(6,12,91,.72)!important;
+  }
+
+  @media(max-width:390px){
+    body[data-app-route="home"] .v65-weather-main{
+      min-height:72px;
+      grid-template-columns:46px minmax(0,1fr) 20px;
+      gap:11px;
+      padding:12px 14px;
+    }
+    body[data-app-route="home"] .v65-weather-icon{
+      width:42px;
+      height:42px;
+    }
+    body[data-app-route="home"] .v65-weather-icon svg{
+      width:35px;
+      height:35px;
+    }
+    body[data-app-route="home"] .v65-weather-title{
+      font-size:20px;
+    }
+    body[data-app-route="home"] .v65-weather-copy{
+      padding-left:13px;
+      padding-right:13px;
+    }
+    body[data-app-route="home"] .v65-weather-copy>span{
+      max-width:66%;
+      font-size:10px;
+    }
+    body[data-app-route="home"] .v65-field-card{
+      flex-basis:194px;
+      min-height:181px;
+    }
+    body[data-app-route="home"] .v65-field-visual{
+      height:98px;
+    }
+  }
+}
