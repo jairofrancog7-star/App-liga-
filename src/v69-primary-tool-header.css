@@ -1,0 +1,93 @@
+/* V69 — cabecera principal reutilizada en Calendario mensual, Match Center,
+   Disciplina y Comparar. Usa exactamente el arte y hotspots del HOME. */
+@media (max-width:1023px){
+  body.v69-primary-tool-header .topbar{
+    height:var(--v10-home-header-h,clamp(138px,35.22vw,183px))!important;
+    min-height:var(--v10-home-header-h,clamp(138px,35.22vw,183px))!important;
+    max-height:none!important;
+    padding:0!important;
+    position:sticky!important;
+    top:0!important;
+    display:block!important;
+    overflow:hidden!important;
+    isolation:isolate!important;
+    z-index:30!important;
+    background-color:#02065f!important;
+    background-image:url('https://d2ol7oe51mr4n9.cloudfront.net/user_3JNvttsAwr0QjxhuX5O1uaa9bvv/f2d42133-aeeb-4665-bfd1-693941efa7ee.jpg')!important;
+    background-repeat:no-repeat!important;
+    background-size:cover!important;
+    background-position:center top!important;
+    border:0!important;
+    border-bottom:0!important;
+    box-shadow:none!important;
+    backdrop-filter:none!important;
+  }
+
+  body.v69-primary-tool-header .topbar::before,
+  body.v69-primary-tool-header .topbar::after{
+    content:none!important;
+    display:none!important;
+  }
+
+  /* El logo y el perfil ya están dibujados en el arte principal.
+     Estos botones quedan como zonas táctiles transparentes, igual que HOME. */
+  body.v69-primary-tool-header .topbar .wordmark{
+    display:block!important;
+    visibility:visible!important;
+    position:absolute!important;
+    left:2.5%!important;
+    top:13%!important;
+    width:20%!important;
+    height:42%!important;
+    min-width:0!important;
+    max-width:none!important;
+    margin:0!important;
+    padding:0!important;
+    border:0!important;
+    border-radius:0!important;
+    background:none!important;
+    color:transparent!important;
+    font-size:0!important;
+    z-index:4!important;
+    cursor:pointer!important;
+    pointer-events:auto!important;
+  }
+  body.v69-primary-tool-header .topbar .wordmark::before,
+  body.v69-primary-tool-header .topbar .wordmark::after{
+    content:none!important;
+    display:none!important;
+  }
+
+  body.v69-primary-tool-header .topbar .profile-button{
+    display:block!important;
+    visibility:visible!important;
+    position:absolute!important;
+    right:2.2%!important;
+    left:auto!important;
+    top:12%!important;
+    bottom:auto!important;
+    width:15%!important;
+    height:42%!important;
+    min-width:0!important;
+    min-height:0!important;
+    max-width:none!important;
+    max-height:none!important;
+    margin:0!important;
+    padding:0!important;
+    border:0!important;
+    border-radius:0!important;
+    background:none!important;
+    color:transparent!important;
+    box-shadow:none!important;
+    z-index:4!important;
+    cursor:pointer!important;
+    pointer-events:auto!important;
+  }
+  body.v69-primary-tool-header .topbar .profile-button svg{
+    display:none!important;
+  }
+
+  body.v69-primary-tool-header .topbar .back-button{
+    display:none!important;
+  }
+}
