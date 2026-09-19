@@ -63,12 +63,20 @@
   function migrateOldState(){
     const s=store();
     const current=Array.isArray(s.followed)?s.followed:[];
-    if(current.length)return;
+    if(current.length){
+      try{localStorage.setItem('lj-following-v29-initialized','1')}catch(e){}
+      return;
+    }
     try{
-      if(localStorage.getItem('lj-following-reference-state-v27')==='followed'){
+      const initialized=localStorage.getItem('lj-following-v29-initialized')==='1';
+      const legacyFollowed=localStorage.getItem('lj-following-reference-state-v27')==='followed';
+      // The original reference state starts with América Veteranos already followed.
+      // Seed it once only; after the user chooses "Dejar de seguir", an empty state remains valid.
+      if(!initialized||legacyFollowed){
         s.followed=['AME'];
         saveStore(s);
       }
+      localStorage.setItem('lj-following-v29-initialized','1');
     }catch(e){}
   }
 
