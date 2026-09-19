@@ -182,7 +182,7 @@
   }
   function selectedId(){return normalizeId(localStorage.getItem('v27-selected-team')||'JUV')}
   function team(id=selectedId()){return TEAMS[id]||TEAMS.JUV}
-  function logo(t){return BASE+t.logo}
+  function logo(t){const globalLogo=window.LJR_TEAM_LOGOS?.get?.(t?.name);return globalLogo||BASE+t.logo}
   function getStore(){try{return JSON.parse(localStorage.getItem('lj-store-v3')||'{}')||{}}catch(e){return {}}}
   function putStore(s){localStorage.setItem('lj-store-v3',JSON.stringify(s))}
   function followed(){const s=getStore();return Array.isArray(s.followed)&&s.followed.includes(selectedId())}
