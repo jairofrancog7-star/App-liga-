@@ -9,10 +9,26 @@
     './assets/moments/moments-original-b.png'
   ];
   const RANK=[
-    ['AME','América Veteranos','assets/branding/america-veteranos-35-user.png','651400'],
-    ['HUE','La Huerta','assets/official-logos/la-huerta.png','517000'],
-    ['PRO','Promesas FC','assets/official-logos/promesas-fc.png','431700']
-  ];
+  [
+    "SJO",
+    "SAN JOSE FC",
+    "assets/official-logos/san-jose-fc.png",
+    "12"
+  ],
+  [
+    "JVS",
+    "JUVENTUS",
+    "assets/official-logos/juventus.png",
+    "9"
+  ],
+  [
+    "HER",
+    "HERMANOS",
+    "assets/official-logos/hermanos.png",
+    "7"
+  ]
+];
+
   function route(){return location.hash.replace('#/','')||'home'}
   function esc(s){return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
   function card(img){
@@ -25,7 +41,7 @@
   function rankCard(title,offset){
     const rows=RANK.map((r,i)=>RANK[(i+offset)%RANK.length]);
     return '<article class="v52-rank-card"><h4>'+esc(title)+'</h4>'+
-      rows.map((r,i)=>'<div class="v52-rank-row"><span>'+(i+1)+'</span><img class="v52-rank-logo" src="'+RAW+r[2]+'" alt=""><span class="v52-rank-name">'+esc(r[1])+'</span><span class="v52-rank-points">'+r[3]+'</span></div>').join('')+
+      rows.map((r,i)=>'<div class="v52-rank-row"><span>'+(i+1)+'</span><img class="v52-rank-logo" src="'+RAW+r[2]+'" alt=""><span class="v52-rank-name">'+esc(r[1])+'</span><span class="v52-rank-points">undefined pts</span></div>').join('')+
     '</article>';
   }
   function markup(){
