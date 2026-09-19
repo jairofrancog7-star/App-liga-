@@ -1134,3 +1134,140 @@ body[data-app-route="following"] .bottom-nav .nav-item[data-route="more"]{
   .v28-picker-row>strong{font-size:15.2px!important}
   .v28-picker-follow{width:91px!important;height:37px!important;font-size:13.5px!important}
 }
+
+
+/* V32 EXACT EMPTY HEADER — usa el encabezado exacto de la captura maestra del usuario.
+   Se conserva la funcionalidad: los botones reales permanecen encima, pero transparentes. */
+.v28-follow-page.v28-empty{
+  background:#02045d!important;
+}
+.v28-empty .v28-neon{
+  display:none!important;
+}
+.v28-empty .v28-head{
+  position:relative!important;
+  z-index:5!important;
+  width:100%!important;
+  height:auto!important;
+  min-height:0!important;
+  aspect-ratio:691/253!important;
+  margin:0!important;
+  padding:0!important;
+  display:block!important;
+  background:url('../assets/reference/following-header-master.jpg?v=20260919-following-master1') center top/100% 100% no-repeat!important;
+  overflow:hidden!important;
+}
+.v28-empty .v28-head h1{
+  opacity:0!important;
+  position:absolute!important;
+  pointer-events:none!important;
+}
+.v28-empty .v28-head .v28-icon-btn{
+  position:absolute!important;
+  z-index:10!important;
+  margin:0!important;
+  padding:0!important;
+  background:transparent!important;
+  border:0!important;
+  color:transparent!important;
+  opacity:1!important;
+}
+.v28-empty .v28-head .v28-icon-btn svg{
+  opacity:0!important;
+}
+.v28-empty .v28-head .v28-icon-btn:first-child{
+  left:3.7%!important;
+  top:14%!important;
+  width:12%!important;
+  height:42%!important;
+}
+.v28-empty .v28-head .v28-icon-btn.plus{
+  right:2.8%!important;
+  top:13%!important;
+  width:12%!important;
+  height:42%!important;
+}
+
+/* Colocación y tamaños tomados de la captura maestra. */
+.v28-empty-main{
+  min-height:calc(100dvh - 250px)!important;
+  padding:118px 28px 112px!important;
+  background:#02045d!important;
+}
+.v28-league-logo{
+  width:252px!important;
+  height:252px!important;
+  margin:0 0 43px!important;
+  object-fit:contain!important;
+  object-position:center!important;
+  background:transparent!important;
+  border:0!important;
+  box-shadow:none!important;
+  filter:none!important;
+  mix-blend-mode:screen!important;
+}
+.v28-empty-main h2{
+  margin:0 0 15px!important;
+  font-family:Inter,Roboto,Arial,sans-serif!important;
+  font-size:30px!important;
+  line-height:1.08!important;
+  font-weight:650!important;
+  letter-spacing:-.02em!important;
+}
+.v28-empty-main p{
+  width:100%!important;
+  max-width:470px!important;
+  margin:0!important;
+  color:#c6c8dc!important;
+  font-size:19px!important;
+  line-height:1.36!important;
+  font-weight:400!important;
+}
+.v28-add{
+  min-width:278px!important;
+  height:66px!important;
+  margin-top:28px!important;
+  padding:0 27px!important;
+  gap:17px!important;
+  border:2px solid #16e2ef!important;
+  border-radius:22px!important;
+  background:transparent!important;
+  color:#16e2ef!important;
+  font-size:23px!important;
+  line-height:1!important;
+  font-weight:600!important;
+}
+.v28-add span{
+  font-size:35px!important;
+  line-height:1!important;
+  font-weight:300!important;
+}
+
+/* Fondo continuo: no añadir otro degradado distinto debajo del header exacto. */
+body[data-app-route="following"] #screen,
+body[data-app-route="following"] #app{
+  background:#02045d!important;
+}
+
+@media(max-width:390px){
+  .v28-empty-main{
+    padding:88px 20px 100px!important;
+  }
+  .v28-league-logo{
+    width:218px!important;
+    height:218px!important;
+    margin-bottom:38px!important;
+  }
+  .v28-empty-main h2{
+    font-size:26px!important;
+  }
+  .v28-empty-main p{
+    font-size:17px!important;
+    line-height:1.36!important;
+  }
+  .v28-add{
+    min-width:248px!important;
+    height:61px!important;
+    font-size:21px!important;
+  }
+}
