@@ -94,14 +94,12 @@ function tabs(){
   '</nav>';
 }
 function header(){
-  if(activeTab==='federations'){
-    return '<header class="v32-head v32-head-fed">'+
-      '<div class="v32-head-row"><button type="button" class="v32-icon" data-v32-back aria-label="Volver">'+backIcon()+'</button><button type="button" class="v32-icon" data-v32-share aria-label="Compartir">'+shareIcon()+'</button></div>'+
-      '<h1>Rankings</h1>'+tabs()+
-    '</header>';
-  }
-  return '<header class="v32-head v32-head-clubs">'+
-    '<div class="v32-head-row"><button type="button" class="v32-icon" data-v32-back aria-label="Volver">'+backIcon()+'</button><h1>Rankings de la Liga</h1><button type="button" class="v32-icon" data-v32-share aria-label="Compartir">'+shareIcon()+'</button></div>'+
+  return '<header class="v32-head v32-head-unified">'+
+    '<div class="v32-head-row">'+
+      '<button type="button" class="v32-icon" data-v32-back aria-label="Volver">'+backIcon()+'</button>'+
+      '<h1>Rankings de la Liga</h1>'+
+      '<button type="button" class="v32-icon" data-v32-share aria-label="Compartir">'+shareIcon()+'</button>'+
+    '</div>'+
     tabs()+
   '</header>';
 }
