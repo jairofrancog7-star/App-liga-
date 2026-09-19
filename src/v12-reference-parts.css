@@ -2801,3 +2801,100 @@ body[data-app-route="competition"] .v12-criteria-edge{
     font-size:13px!important;
   }
 }
+
+
+/* === V12 PARTS39 — TABLAS MISMA ALTURA Y ESCALA === */
+body[data-app-route="competition"] .v12-standings-reference{
+  --v12-row-h:59px;
+  --v12-logo:40px;
+  --v12-team:clamp(132px,39vw,170px);
+}
+body[data-app-route="competition"] .v12-stand-content,
+body[data-app-route="competition"] .v12-criteria-shell,
+body[data-app-route="competition"] .v12-criteria-scroll{
+  position:relative!important;inset:auto!important;transform:none!important;
+  width:100%!important;max-width:100%!important;min-width:0!important;
+  margin:0!important;padding:0!important;box-sizing:border-box!important;
+}
+body[data-app-route="competition"] .v12-criteria-shell{overflow:hidden!important}
+body[data-app-route="competition"] .v12-criteria-scroll{overflow-x:auto!important;overflow-y:hidden!important}
+
+/* Compacta y Completa: misma cabecera y misma fila */
+body[data-app-route="competition"] .v12-stand-head{
+  height:58px!important;min-height:58px!important;box-sizing:border-box!important;
+  grid-template-columns:16px var(--v12-team) 22px 30px 34px minmax(70px,1fr)!important;
+  gap:4px!important;padding:0 0 8px!important;align-items:end!important;
+}
+body[data-app-route="competition"] .v12-stand-head>span:first-child{grid-column:1 / span 2!important}
+body[data-app-route="competition"] .v12-stand-head>b:nth-of-type(1){grid-column:3!important}
+body[data-app-route="competition"] .v12-stand-head>b:nth-of-type(2){grid-column:4!important}
+body[data-app-route="competition"] .v12-stand-head>b:nth-of-type(3){grid-column:5!important}
+body[data-app-route="competition"] .v12-stand-head>b:nth-of-type(4){grid-column:6!important}
+body[data-app-route="competition"] .v12-stand-row{
+  height:var(--v12-row-h)!important;min-height:var(--v12-row-h)!important;
+  grid-template-columns:16px var(--v12-team) 22px 30px 34px minmax(70px,1fr)!important;
+  gap:4px!important;box-sizing:border-box!important;
+}
+body[data-app-route="competition"] .v12-team-cell,
+body[data-app-route="competition"] .v12-criteria-team{
+  grid-template-columns:var(--v12-logo) minmax(0,1fr)!important;gap:7px!important;
+}
+body[data-app-route="competition"] .v12-team-logo,
+body[data-app-route="competition"] .v12-criteria-logo{
+  width:var(--v12-logo)!important;height:var(--v12-logo)!important;
+}
+body[data-app-route="competition"] .v12-team-cell strong,
+body[data-app-route="competition"] .v12-criteria-team strong{
+  font-size:13.5px!important;line-height:1.18!important;
+}
+
+/* Criterios: mismo arranque vertical y mismas filas; solo sobran columnas a la derecha */
+body[data-app-route="competition"] .v12-criteria-table{
+  width:max-content!important;min-width:0!important;margin:0!important;padding:0!important;
+}
+body[data-app-route="competition"] .v12-criteria-head,
+body[data-app-route="competition"] .v12-criteria-row{
+  grid-template-columns:16px var(--v12-team) repeat(7,34px)!important;
+  column-gap:4px!important;
+}
+body[data-app-route="competition"] .v12-criteria-head{
+  height:26px!important;min-height:26px!important;padding:0!important;
+  box-sizing:border-box!important;align-items:end!important;
+  font:800 9px/1 Inter,ui-sans-serif,system-ui,sans-serif!important;
+}
+body[data-app-route="competition"] .v12-criteria-direct{
+  width:100%!important;height:30px!important;min-height:30px!important;
+  padding:0 0 6px!important;box-sizing:border-box!important;
+  display:flex!important;align-items:flex-end!important;
+  font:700 10px/1 Inter,ui-sans-serif,system-ui,sans-serif!important;
+}
+body[data-app-route="competition"] .v12-criteria-line{width:100%!important;height:2px!important;margin:0!important}
+body[data-app-route="competition"] .v12-criteria-row{
+  height:var(--v12-row-h)!important;min-height:var(--v12-row-h)!important;
+  padding:0!important;box-sizing:border-box!important;
+  font:500 13.5px/1 Inter,ui-sans-serif,system-ui,sans-serif!important;
+}
+body[data-app-route="competition"] .v12-criteria-rank{font-size:14px!important}
+body[data-app-route="competition"] .v12-criteria-stat{
+  width:30px!important;height:30px!important;margin:auto!important;font-size:13.5px!important;
+}
+body[data-app-route="competition"] .v12-criteria-edge{
+  top:28px!important;right:0!important;height:68px!important;z-index:3!important;
+}
+
+@media(max-width:380px){
+  body[data-app-route="competition"] .v12-standings-reference{--v12-logo:36px;--v12-team:132px}
+  body[data-app-route="competition"] .v12-stand-head,
+  body[data-app-route="competition"] .v12-stand-row{
+    grid-template-columns:15px var(--v12-team) 20px 27px 30px minmax(64px,1fr)!important;
+  }
+  body[data-app-route="competition"] .v12-criteria-head,
+  body[data-app-route="competition"] .v12-criteria-row{
+    grid-template-columns:15px var(--v12-team) repeat(7,30px)!important;
+  }
+  body[data-app-route="competition"] .v12-criteria-stat{
+    width:27px!important;height:27px!important;font-size:12.5px!important;
+  }
+  body[data-app-route="competition"] .v12-team-cell strong,
+  body[data-app-route="competition"] .v12-criteria-team strong{font-size:12.5px!important}
+}
