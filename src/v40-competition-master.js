@@ -105,6 +105,7 @@
   }
   function criteria(){
     return '<div class="v40-scroll-shell"><div class="v40-wide criteria">'+
+      img(ASSET+'liga-logo.webp','Liga Municipal de Fútbol Juventino Rosas','v40-criteria-league')+
       '<div class="v40-wide-head criteria-head"><span></span><span></span><b>PTOS</b><b>+/-</b><b>GF</b><b>GA</b><b>V</b><b>VA</b><b>P</b></div>'+
       '<div class="v40-direct">DIRECTOS A OCTAVOS</div><div class="v40-rule"></div>'+
       criteriaTeams.map((t,i)=>'<div class="v40-wide-row criteria-row"><span>'+(i+1)+'</span><span class="v40-team">'+img(t.logo,t.name,'v40-team-logo')+'<strong>'+t.name+'</strong></span><span>'+t.pts+'</span><span>'+t.gd+'</span><span>'+t.gf+'</span><span>'+t.ga+'</span><span>'+t.w+'</span><span>'+t.d+'</span><span>'+t.l+'</span></div>').join('')+
