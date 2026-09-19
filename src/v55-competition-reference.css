@@ -319,3 +319,123 @@
     font-size:12px!important;
   }
 }
+
+
+/* V56 — corrección fina después de comparar las capturas reales.
+   1) Clasificación ocupa el ancho correcto (antes quedaba un bloque azul vacío a la derecha).
+   2) Completa cabe completa como la referencia.
+   3) Fechas de Partidos son más bajas/compactas.
+   4) Tabs principales y del Cuadro recuperan la posición horizontal de referencia. */
+@media (max-width:520px){
+
+  /* Barra Partidos / Clasificación / Cuadro: 8px laterales como la referencia. */
+  body[data-app-route="competition"] #screen>.tabs{
+    padding-left:8px!important;
+    padding-right:8px!important;
+  }
+  body[data-app-route="competition"] #screen>.tabs .tab{
+    font-size:13px!important;
+  }
+
+  /* CLAVE: el host mide el ancho interior del #screen.
+     El bloque anterior sólo tenía márgenes negativos pero conservaba ese ancho,
+     por eso terminaba ~30 CSS px antes del borde derecho. */
+  body.v40-standings-master .v40-standings{
+    width:calc(100% + 28px)!important;
+    max-width:none!important;
+    margin-left:-14px!important;
+    margin-right:-14px!important;
+    padding-left:16px!important;
+    padding-right:16px!important;
+    box-sizing:border-box!important;
+  }
+  body.v40-standings-master .v40-segmented,
+  body.v40-standings-master .v40-table-wrap{
+    width:100%!important;
+    max-width:none!important;
+    box-sizing:border-box!important;
+  }
+
+  /* Compacta: al ganar los 28px faltantes, el nombre deja de cortarse y las
+     estadísticas quedan en los mismos ejes que la captura maestra. */
+  body.v40-standings-master .v40-table-head,
+  body.v40-standings-master .v40-row{
+    grid-template-columns:12px minmax(0,1fr) 31px 31px 37px 61px!important;
+  }
+
+  /* Completa: en la referencia se alcanzan a ver P,V,E,D, dos columnas y +PTS
+     sin tener que arrastrar la tabla. */
+  body.v40-standings-master .v40-scroll-shell{
+    width:calc(100% + 16px)!important;
+    margin-right:-16px!important;
+    overflow-x:hidden!important;
+  }
+  body.v40-standings-master .v40-wide.complete{
+    min-width:0!important;
+    width:100%!important;
+    padding-right:0!important;
+  }
+  body.v40-standings-master .v40-wide.complete .v40-wide-head,
+  body.v40-standings-master .v40-wide.complete .v40-wide-row{
+    grid-template-columns:12px minmax(118px,1fr) repeat(7,25px)!important;
+  }
+
+  /* Criterios conserva sus columnas de 32px (coinciden con la referencia),
+     pero aprovecha el ancho recuperado del contenedor. */
+  body.v40-standings-master .v40-wide.criteria{
+    min-width:345px!important;
+    padding-right:0!important;
+  }
+
+  /* PARTIDOS Y RESULTADOS — tarjetas de fechas menos altas y menos pesadas. */
+  body[data-app-route="competition"] .v12-date-strip{
+    gap:7px!important;
+    padding-top:7px!important;
+    padding-bottom:8px!important;
+    margin-bottom:12px!important;
+  }
+  body[data-app-route="competition"] .v12-date-strip button{
+    min-width:82px!important;
+    width:auto!important;
+    height:32px!important;
+    min-height:32px!important;
+    padding:0 11px!important;
+    border-radius:8px!important;
+    font-size:11px!important;
+    line-height:1!important;
+    font-weight:700!important;
+  }
+  body[data-app-route="competition"] .v12-date-strip button.active{
+    min-width:90px!important;
+  }
+
+  /* CUADRO — la franja de etapas debe llegar casi al borde derecho,
+     como en la captura maestra; mantiene el borde izquierdo actual. */
+  body[data-app-route="competition"] .v12-bracket-reference .v12-bracket-stage-tabs{
+    margin-left:13px!important;
+    margin-right:3px!important;
+    grid-template-columns:1fr 1.58fr 1.55fr!important;
+  }
+  body[data-app-route="competition"] .v12-bracket-reference .v12-bracket-stage-tabs > button[data-v12-bracket-stage]{
+    height:33px!important;
+    min-height:33px!important;
+    max-height:33px!important;
+    font-size:12px!important;
+  }
+}
+
+/* No volver a encoger la clasificación en teléfonos de 360–390 CSS px. */
+@media (max-width:390px){
+  body.v40-standings-master .v40-standings{
+    width:calc(100% + 28px)!important;
+  }
+  body[data-app-route="competition"] .v12-date-strip button{
+    min-width:80px!important;
+    height:31px!important;
+    min-height:31px!important;
+    font-size:10.7px!important;
+  }
+  body[data-app-route="competition"] .v12-date-strip button.active{
+    min-width:88px!important;
+  }
+}
