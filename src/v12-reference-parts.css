@@ -4706,3 +4706,216 @@ body[data-app-route="competition"] #screen>.tabs .tab::after{
     width:calc(100vw - 28px)!important;
   }
 }
+
+
+/* PROFILE_IMAGE1_EXACT1 — escala/posición de la imagen 1.
+   Mantiene identidad de Liga Juventino; solo corrige tamaños, espacios,
+   iconos, flechas, tarjeta y cabecera de Perfil. */
+body[data-app-route="profile"] .topbar{
+  height:64px!important;
+  min-height:64px!important;
+  max-height:64px!important;
+  padding:0!important;
+  position:relative!important;
+}
+body[data-app-route="profile"] .topbar::after{
+  left:57px!important;
+  right:auto!important;
+  bottom:22px!important;
+  font-size:18px!important;
+  line-height:1!important;
+  font-weight:800!important;
+  letter-spacing:-.02em!important;
+}
+body[data-app-route="profile"] .topbar .back-button,
+body[data-app-route="profile"] .topbar .back-button.is-hidden{
+  display:grid!important;
+  visibility:visible!important;
+  left:9px!important;
+  bottom:10px!important;
+  width:34px!important;
+  height:34px!important;
+  padding:0!important;
+  border:0!important;
+  background:transparent!important;
+}
+body[data-app-route="profile"] .topbar .back-button svg{
+  width:24px!important;
+  height:24px!important;
+  stroke-width:1.8!important;
+}
+
+body[data-app-route="profile"] #screen{
+  min-height:calc(100dvh - 64px)!important;
+  padding:0 16px 42px!important;
+  overflow:visible!important;
+}
+body[data-app-route="profile"] .v12-profile-page{
+  width:100%!important;
+  max-width:640px!important;
+  margin:0 auto!important;
+  padding:33px 0 34px!important;
+}
+
+/* Tarjeta de cuenta: misma anchura que antes, pero altura/texto/botones
+   reducidos a la proporción de la imagen 1. */
+body[data-app-route="profile"] .v12-profile-card{
+  width:100%!important;
+  padding:17px 17px 15px!important;
+  border-radius:16px!important;
+  box-sizing:border-box!important;
+}
+body[data-app-route="profile"] .v12-profile-copy h1{
+  margin:0 0 6px!important;
+  font-size:22px!important;
+  line-height:1.04!important;
+  font-weight:800!important;
+  letter-spacing:-.02em!important;
+}
+body[data-app-route="profile"] .v12-profile-copy p{
+  margin:0!important;
+  max-width:none!important;
+  font-size:14px!important;
+  line-height:1.43!important;
+  font-weight:400!important;
+  letter-spacing:-.006em!important;
+}
+body[data-app-route="profile"] .v12-profile-actions{
+  grid-template-columns:1fr 1fr!important;
+  gap:8px!important;
+  margin-top:14px!important;
+}
+body[data-app-route="profile"] .v12-profile-actions button{
+  height:33px!important;
+  min-height:33px!important;
+  max-height:33px!important;
+  padding:0 8px!important;
+  border-radius:10px!important;
+  font-size:14px!important;
+  line-height:1!important;
+  font-weight:800!important;
+  white-space:nowrap!important;
+  overflow:hidden!important;
+  text-overflow:clip!important;
+}
+body[data-app-route="profile"] .v12-profile-actions .outline{
+  border-width:2px!important;
+}
+
+/* Menú: posiciones de icono/texto/flecha como en imagen 1. */
+body[data-app-route="profile"] .v12-profile-menu{
+  padding:19px 12px 0!important;
+}
+body[data-app-route="profile"] .v12-profile-row{
+  width:100%!important;
+  min-height:73px!important;
+  height:73px!important;
+  margin:0!important;
+  padding:0!important;
+  grid-template-columns:30px minmax(0,1fr) 18px!important;
+  column-gap:8px!important;
+  align-items:center!important;
+  font-size:17px!important;
+  line-height:1.1!important;
+  font-weight:400!important;
+  letter-spacing:-.018em!important;
+}
+body[data-app-route="profile"] .v12-profile-row + .v12-profile-row{
+  margin-top:0!important;
+}
+body[data-app-route="profile"] .v12-profile-row-icon{
+  width:30px!important;
+  height:30px!important;
+  display:grid!important;
+  place-items:center!important;
+}
+body[data-app-route="profile"] .v12-profile-row-icon svg{
+  width:24px!important;
+  height:24px!important;
+}
+body[data-app-route="profile"] .v12-profile-row-chevron{
+  width:18px!important;
+  height:26px!important;
+  display:grid!important;
+  place-items:center!important;
+}
+body[data-app-route="profile"] .v12-profile-row-chevron svg{
+  width:20px!important;
+  height:20px!important;
+}
+
+/* Privacidad y términos arrancan desde el margen izquierdo, como la referencia. */
+body[data-app-route="profile"] .v12-profile-row--plain{
+  grid-template-columns:minmax(0,1fr) 18px!important;
+  column-gap:8px!important;
+  margin-left:-4px!important;
+  width:calc(100% + 4px)!important;
+}
+body[data-app-route="profile"] .v12-profile-row--plain .v12-profile-row-icon{
+  display:none!important;
+}
+body[data-app-route="profile"] .v12-profile-row:nth-child(5){
+  margin-top:17px!important;
+}
+
+/* Evita que la regla antigua de <=390 px vuelva a agrandar Perfil. */
+@media(max-width:390px){
+  body[data-app-route="profile"] .topbar{
+    height:64px!important;
+    min-height:64px!important;
+    max-height:64px!important;
+  }
+  body[data-app-route="profile"] .topbar::after{
+    left:57px!important;
+    bottom:22px!important;
+    font-size:18px!important;
+  }
+  body[data-app-route="profile"] #screen{
+    min-height:calc(100dvh - 64px)!important;
+    padding-left:16px!important;
+    padding-right:16px!important;
+  }
+  body[data-app-route="profile"] .v12-profile-page{
+    padding-top:33px!important;
+  }
+  body[data-app-route="profile"] .v12-profile-card{
+    padding:17px 17px 15px!important;
+    border-radius:16px!important;
+  }
+  body[data-app-route="profile"] .v12-profile-copy h1{font-size:22px!important}
+  body[data-app-route="profile"] .v12-profile-copy p{
+    font-size:14px!important;
+    line-height:1.43!important;
+  }
+  body[data-app-route="profile"] .v12-profile-actions{
+    gap:8px!important;
+    margin-top:14px!important;
+  }
+  body[data-app-route="profile"] .v12-profile-actions button{
+    height:33px!important;
+    min-height:33px!important;
+    max-height:33px!important;
+    font-size:14px!important;
+  }
+  body[data-app-route="profile"] .v12-profile-menu{
+    padding:19px 12px 0!important;
+  }
+  body[data-app-route="profile"] .v12-profile-row{
+    min-height:73px!important;
+    height:73px!important;
+    grid-template-columns:30px minmax(0,1fr) 18px!important;
+    column-gap:8px!important;
+    font-size:17px!important;
+  }
+  body[data-app-route="profile"] .v12-profile-row-icon{
+    width:30px!important;
+    height:30px!important;
+  }
+  body[data-app-route="profile"] .v12-profile-row-icon svg{
+    width:24px!important;
+    height:24px!important;
+  }
+  body[data-app-route="profile"] .v12-profile-row--plain{
+    grid-template-columns:minmax(0,1fr) 18px!important;
+  }
+}
