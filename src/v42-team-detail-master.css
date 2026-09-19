@@ -855,3 +855,302 @@ body.v42-team-active .bottom-nav .nav-item small{
     font-size:9.5px!important;
   }
 }
+
+/* TEAMDETAIL_COMPACT_EXACT3 — tamaños unificados con las referencias móviles del usuario. */
+@media(max-width:520px){
+  body.v42-team-active .bottom-nav{
+    height:68px!important;
+    min-height:68px!important;
+    padding:5px 5px calc(5px + env(safe-area-inset-bottom))!important;
+  }
+  body.v42-team-active .bottom-nav .nav-item small{
+    font-size:10px!important;
+    line-height:1!important;
+  }
+
+  .v42-hero{
+    min-height:360px!important;
+    padding:14px 14px 0!important;
+  }
+  .v42-top-actions{min-height:40px!important}
+  .v42-back,.v42-bell,.v42-more{
+    width:38px!important;
+    height:38px!important;
+  }
+  .v42-back svg{width:28px!important;height:28px!important}
+  .v42-bell svg{width:24px!important;height:24px!important}
+  .v42-more svg{width:24px!important;height:24px!important}
+
+  .v42-team-crest{
+    width:54px!important;
+    height:54px!important;
+    margin:2px 0 0 1px!important;
+  }
+  .v42-title{margin-top:10px!important}
+  .v42-title h1{
+    max-width:94%!important;
+    font-size:32px!important;
+    line-height:1!important;
+    letter-spacing:-.035em!important;
+  }
+  .v42-title p{
+    margin-top:5px!important;
+    font-size:13px!important;
+    line-height:1.08!important;
+  }
+
+  .v42-actions{
+    grid-template-columns:minmax(0,1fr) minmax(0,1fr) 44px!important;
+    gap:8px!important;
+    margin-top:14px!important;
+  }
+  .v42-actions button{
+    height:40px!important;
+    padding:0 10px!important;
+    border-radius:7px!important;
+    font-size:13px!important;
+  }
+  .v42-follow{gap:6px!important}
+  .v42-follow svg{width:16px!important;height:16px!important}
+  .v42-share svg{width:21px!important;height:21px!important}
+
+  .v42-tabs{
+    height:62px!important;
+  }
+  .v42-tabs button{
+    min-width:90px!important;
+    padding:0 12px 17px!important;
+    font-size:13px!important;
+  }
+  .v42-tabs button.active::after{
+    left:12px!important;
+    right:12px!important;
+    height:3px!important;
+  }
+
+  .v42-summary,.v42-tab-page,.v42-squad,.v42-stats{
+    padding-bottom:calc(78px + env(safe-area-inset-bottom))!important;
+  }
+  .v42-section{
+    padding:18px 14px 20px!important;
+    border-bottom-width:8px!important;
+  }
+  .v42-section-head{
+    margin-bottom:12px!important;
+  }
+  .v42-section-head h2,.v42-page-heading{
+    font-size:21px!important;
+  }
+  .v42-section-head button{
+    font-size:13px!important;
+  }
+
+  .v42-round-strip{
+    gap:8px!important;
+    padding:6px 10px 9px!important;
+  }
+  .v42-round-strip button{
+    flex-basis:56px!important;
+    min-width:56px!important;
+  }
+  .v42-round-strip .v42-mini-team{
+    width:48px!important;
+    height:48px!important;
+  }
+  .v42-round-strip small{
+    margin-top:4px!important;
+    font-size:9px!important;
+  }
+
+  .v42-next-card,.v42-match-card{
+    border-radius:12px!important;
+  }
+  .v42-next-card h3{
+    padding:14px 15px!important;
+    font-size:13px!important;
+  }
+  .v42-next-body{
+    grid-template-columns:minmax(0,1fr) 74px!important;
+    padding:12px 14px!important;
+  }
+  .v42-mini-team{gap:7px!important}
+  .v42-mini-team img{
+    width:22px!important;
+    height:22px!important;
+  }
+  .v42-mini-team b{
+    font-size:13px!important;
+  }
+  .v42-next-time{
+    min-height:58px!important;
+    gap:8px!important;
+  }
+  .v42-next-time b{font-size:14px!important}
+  .v42-next-time button,.v42-match-time button{
+    padding:6px 8px!important;
+    font-size:11px!important;
+  }
+
+  .v42-preview-grid{gap:10px!important}
+  .v42-preview-grid .v42-avatar.large{
+    width:66px!important;
+    height:66px!important;
+  }
+  .v42-preview-grid strong{
+    margin-top:6px!important;
+    font-size:12px!important;
+  }
+  .v42-preview-grid small{
+    margin-top:2px!important;
+    font-size:11px!important;
+  }
+  .v42-form-card{
+    padding:18px 14px 22px!important;
+  }
+  .v42-form-title h2{font-size:21px!important}
+  .v42-form-dots{
+    gap:7px!important;
+    margin-top:13px!important;
+  }
+  .v42-form-dots b{
+    width:38px!important;
+    height:38px!important;
+    font-size:14px!important;
+  }
+
+  .v42-tab-page .v42-section{padding-top:20px!important}
+  .v42-page-heading{margin-bottom:12px!important}
+  .v42-page-heading.next{margin-top:22px!important}
+  .v42-match-card{
+    margin-bottom:11px!important;
+  }
+  .v42-match-card h3{
+    padding:13px 14px!important;
+    font-size:12px!important;
+  }
+  .v42-match-body{
+    grid-template-columns:minmax(0,1fr) 68px!important;
+    gap:10px!important;
+    padding:11px 13px!important;
+  }
+  .v42-score-list{gap:6px!important}
+  .v42-score-list strong{font-size:15px!important}
+  .v42-video-thumb{
+    width:62px!important;
+    height:46px!important;
+    font-size:18px!important;
+  }
+  .v42-match-time{
+    gap:7px!important;
+    font-size:14px!important;
+  }
+
+  .v42-standings{
+    border-radius:11px!important;
+  }
+  .v42-table-head,.v42-standings>button{
+    grid-template-columns:24px minmax(0,1fr) 29px 35px 38px!important;
+    gap:4px!important;
+  }
+  .v42-table-head{
+    min-height:34px!important;
+    padding:0 9px!important;
+    font-size:9px!important;
+  }
+  .v42-standings>button{
+    min-height:46px!important;
+    padding:5px 9px!important;
+  }
+  .v42-standings>button .v42-mini-team img{
+    width:23px!important;
+    height:23px!important;
+  }
+  .v42-standings>button .v42-mini-team b{
+    font-size:11px!important;
+  }
+  .v42-standings>button>span:not(:nth-child(2)),.v42-standings>button>strong{
+    font-size:11px!important;
+  }
+
+  .v42-roster-card{
+    margin-bottom:6px!important;
+    padding:17px 14px 0!important;
+  }
+  .v42-roster-card h2{
+    margin-bottom:7px!important;
+    font-size:19px!important;
+  }
+  .v42-player-row{
+    min-height:58px!important;
+    grid-template-columns:36px minmax(0,1fr) 30px!important;
+    gap:9px!important;
+  }
+  .v42-avatar{
+    width:34px!important;
+    height:34px!important;
+  }
+  .v42-player-copy strong{
+    font-size:14px!important;
+  }
+  .v42-player-copy small{
+    margin-top:2px!important;
+    font-size:11px!important;
+  }
+  .v42-number{
+    font-size:20px!important;
+  }
+
+  .v42-key-card,.v42-stat-panel{
+    margin-bottom:6px!important;
+    padding:17px 14px 19px!important;
+  }
+  .v42-key-head,.v42-stat-title{
+    margin-bottom:14px!important;
+  }
+  .v42-key-head h2,.v42-stat-title h2{
+    font-size:18px!important;
+  }
+  .v42-key-grid{
+    gap:15px 14px!important;
+  }
+  .v42-ring{
+    width:76px!important;
+    height:76px!important;
+  }
+  .v42-ring b{font-size:19px!important}
+  .v42-ring small{font-size:9px!important}
+  .v42-wdl{gap:7px!important}
+  .v42-wdl p{font-size:10px!important}
+  .v42-key-grid>div:not(.v42-ring):not(.v42-wdl) b{
+    font-size:18px!important;
+  }
+  .v42-key-grid>div:not(.v42-ring):not(.v42-wdl) small{
+    font-size:9px!important;
+  }
+  .v42-stat-lines{gap:10px!important}
+  .v42-stat-lines p{font-size:11px!important}
+  .v42-stat-lines b{font-size:12px!important}
+
+  .v42-menu-pop{
+    right:14px!important;
+    top:54px!important;
+    width:205px!important;
+  }
+  .v42-menu-pop button{
+    height:54px!important;
+    gap:14px!important;
+    padding:0 16px!important;
+    font-size:15px!important;
+  }
+}
+
+/* Keep one shared geometry for every team profile, regardless of team-name length. */
+@media(max-width:520px){
+  .v42-title h1{
+    white-space:normal!important;
+    overflow-wrap:anywhere!important;
+  }
+  .v42-title,.v42-team-crest,.v42-actions,.v42-tabs{
+    transform:none!important;
+  }
+}
