@@ -443,3 +443,101 @@ body[data-app-route="moreLess"] #app>.bottom-nav{
   body[data-app-route="moreLess"] .v12-ml-title span{font-size:clamp(39px,10.5vw,50px)!important}
   body[data-app-route="moreLess"] .v12-ml-curves{width:75vw!important}
 }
+
+
+/* === V50 HOSPITALITY — TEXTO SIN ENCIMAR + POSICION DE REFERENCIA === */
+/* Ajuste únicamente de #/hospitality según la referencia compartida. */
+html.v31-hospitality-active .v31-access-switch{
+  height:58px!important;
+}
+
+html.v31-hospitality-active .v31-selected-content{
+  grid-template-columns:25px 40px minmax(0,1fr)!important;
+  gap:6px!important;
+  padding:4px 8px 4px 13px!important;
+  align-items:center!important;
+}
+
+html.v31-hospitality-active .v31-league-logo{
+  width:38px!important;
+  height:38px!important;
+  object-fit:contain!important;
+  object-position:center!important;
+}
+
+html.v31-hospitality-active .v31-league-name{
+  display:block!important;
+  min-width:0!important;
+  margin:0!important;
+  padding:0!important;
+  color:#fff!important;
+  font-size:12px!important;
+  line-height:1.08!important;
+  font-weight:600!important;
+  letter-spacing:0!important;
+  white-space:normal!important;
+  overflow:visible!important;
+}
+
+html.v31-hospitality-active .v31-vip{
+  font-size:16px!important;
+  line-height:1!important;
+  font-weight:400!important;
+}
+
+/* Cuadro de código: conserva dimensiones y la línea SOLO en la parte inferior. */
+html.v31-hospitality-active .v31-code-wrap{
+  height:58px!important;
+  padding:0 20px!important;
+  gap:22px!important;
+  border-top:0!important;
+  border-left:0!important;
+  border-right:0!important;
+  border-bottom:2px solid rgba(255,255,255,.95)!important;
+  overflow:visible!important;
+}
+
+html.v31-hospitality-active .v31-code-input{
+  font-size:16px!important;
+  line-height:1!important;
+}
+
+/* El texto explicativo queda completamente FUERA del cuadro, sin pisar la línea. */
+html.v31-hospitality-active .v31-code-note{
+  top:calc(31.8% + 70px)!important;
+  left:30px!important;
+  right:20px!important;
+  margin:0!important;
+  padding:0!important;
+  font-size:14px!important;
+  line-height:1.25!important;
+  font-weight:400!important;
+  white-space:normal!important;
+}
+
+/* Botón inferior conserva la ubicación baja de la referencia. */
+html.v31-hospitality-active .v31-continue{
+  height:54px!important;
+  border-radius:21px!important;
+  font-size:20px!important;
+  bottom:calc(env(safe-area-inset-bottom,0px) + 38px)!important;
+}
+
+@media(min-width:421px){
+  html.v31-hospitality-active .v31-league-name{
+    font-size:13px!important;
+  }
+  html.v31-hospitality-active .v31-code-note{
+    top:calc(31.65% + 76px)!important;
+    left:44px!important;
+    font-size:16px!important;
+  }
+  html.v31-hospitality-active .v31-code-wrap{
+    height:62px!important;
+  }
+  html.v31-hospitality-active .v31-continue{
+    height:56px!important;
+    font-size:21px!important;
+    bottom:calc(env(safe-area-inset-bottom,0px) + 46px)!important;
+  }
+}
