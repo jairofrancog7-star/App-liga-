@@ -36,6 +36,8 @@ const CODE_BY_NAME={
 let db=null;
 let categoryId=localStorage.getItem('v62-category')||'3';
 let dataTab=localStorage.getItem('v62-data-tab')||'standings';
+let fixtureFilter=localStorage.getItem('v62-fixture-filter')||'all';
+let playerTeamFilter=localStorage.getItem('v62-player-team-filter')||'all';
 let applying=false;
 
 function route(){return location.hash.replace('#/','')||'home'}
@@ -140,7 +142,7 @@ async function load(){
   db=chooseNewer(local,remote)||local||remote;
   if(!db)return;
   window.LJR_OFFICIAL_DATA=db;
-  window.LJR_OFFICIAL_API={getData:()=>db,getCategory:id=>cat(id),getTeam:teamContext,getLogo:logoFor,setCategory:setCategory,openTeam};
+  window.LJR_OFFICIAL_API={getData:()=>db,getCategory:id=>cat(id),getTeam:teamContext,getLogo:logoFor,setCategory:setCategory,setDataTab:(id)=>{dataTab=String(id||'summary');localStorage.setItem('v62-data-tab',dataTab);if(route()==='leagueData')renderDataPage()},openTeam};
   if(!cat(categoryId))categoryId='3';
   schedule();
 }
@@ -158,7 +160,7 @@ function categoryRail(){
 }
 function dataTabs(){
   const tabs=[
-    ['standings','Tabla'],['scorers','Goleo'],['cards','Tarjetas'],['suspensions','Castigados'],
+    ['summary','Resumen'],['standings','Tabla'],['scorers','Goleo'],['cards','Tarjetas'],['suspensions','Castigados'],
     ['fixtures','Jornadas'],['teams','Equipos'],['players','Jugadores'],['rules','Reglamento']
   ];
   return '<div class="v62-data-tabs">'+tabs.map(([id,label])=>'<button type="button" class="'+(dataTab===id?'active':'')+'" data-v62-tab="'+id+'">'+label+'</button>').join('')+'</div>';
@@ -178,6 +180,49 @@ function genericTable(kind){
     }).join('')+'</tr>').join('')+
   '</tbody></table></div>';
 }
+
+function summaryView(){
+  const current=cat(),counts=current?.counts||current?.dashboard?.counts||{};
+  const fixtures=rows('fixtures'),scorers=rows('scorers').filter(r=>r.length>=4&&/^\d+$/.test(String(r[3]||'')));
+  const goals=scorers.reduce((sum,r)=>sum+scoreNum(r[3]),0);
+  return '<div class="v62-summary-grid">'+
+    '<button type="button" data-v62-tab="teams"><b>'+esc(counts.Equipos??categoryTeams(current).length)+'</b><small>Equipos</small></button>'+
+    '<button type="button" data-v62-tab="players"><b>'+esc(counts.Jugadores??0)+'</b><small>Jugadores</small></button>'+
+    '<button type="button" data-v62-tab="fixtures"><b>'+esc(fixtures.length)+'</b><small>Partidos</small></button>'+
+    '<button type="button" data-v62-tab="scorers"><b>'+esc(goals)+'</b><small>Goles registrados</small></button>'+
+  '</div>'+
+  '<div class="v62-summary-actions">'+
+    '<button type="button" data-v62-tab="standings">Ver tabla</button>'+
+    '<button type="button" data-v62-tab="cards">Tarjetas</button>'+
+    '<button type="button" data-v62-tab="suspensions">Castigados</button>'+
+  '</div>';
+}
+function v62CalendarDownload(){
+  const rs=(block('fixtures')?.rows||[]).filter(r=>parseDate(r[8]));
+  if(!rs.length)return;
+  const stamp=d=>d.toISOString().replace(/[-:]/g,'').replace(/\.\d{3}Z$/,'Z');
+  const clean=s=>String(s??'').replace(/\\/g,'\\\\').replace(/\n/g,'\\n').replace(/,/g,'\\,').replace(/;/g,'\\;');
+  const events=rs.map((r,i)=>{
+    const start=parseDate(r[8]),end=new Date(start.getTime()+2*60*60*1000);
+    return ['BEGIN:VEVENT','UID:ljr-'+categoryId+'-'+i+'-'+start.getTime()+'@liga-juventino','DTSTAMP:'+stamp(new Date()),
+      'DTSTART:'+stamp(start),'DTEND:'+stamp(end),'SUMMARY:'+clean((r[2]||'Equipo')+' vs '+(r[6]||'Equipo')),
+      'LOCATION:'+clean(r[7]||'Campo por confirmar'),'DESCRIPTION:'+clean((cat()?.name||'Liga Juventino Rosas')+' · Jornada '+(r[1]||'')),'END:VEVENT'].join('\r\n');
+  }).join('\r\n');
+  const body='BEGIN:VCALENDAR\r\nVERSION:2.0\r\nPRODID:-//Liga Juventino Rosas//Jornadas//ES\r\n'+events+'\r\nEND:VCALENDAR\r\n';
+  const blob=new Blob([body],{type:'text/calendar;charset=utf-8'});
+  const url=URL.createObjectURL(blob),a=document.createElement('a');
+  a.href=url;a.download='Liga_Juventino_'+String(cat()?.name||'Jornadas').replace(/[^a-z0-9]+/gi,'_')+'.ics';
+  document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1000);
+}
+function applyPlayerFilters(){
+  const input=document.querySelector('[data-v62-player-search]'),q=norm(input?.value||'');
+  document.querySelectorAll('[data-v62-search]').forEach(el=>{
+    const okText=!q||String(el.dataset.v62Search||'').includes(q);
+    const okTeam=playerTeamFilter==='all'||same(el.dataset.v62TeamName||'',playerTeamFilter);
+    el.hidden=!(okText&&okTeam);
+  });
+}
+
 function fixtureCard(r){
   const pending=isFutureFixture(r);
   const home=r[2]||'',away=r[6]||'',hs=r[3]??'',as=r[5]??'';
@@ -192,11 +237,21 @@ function fixtureCard(r){
 function fixturesView(){
   const b=block('fixtures');
   if(!b||!b.rows?.length)return empty('No hay jornadas publicadas para esta categoría.');
+  const all=b.rows.slice();
+  const shown=fixtureFilter==='upcoming'?all.filter(isFutureFixture):fixtureFilter==='played'?all.filter(r=>!isFutureFixture(r)):all;
   const groups={};
-  b.rows.forEach(r=>(groups[r[1]||'?']||(groups[r[1]||'?']=[])).push(r));
-  const pending=b.rows.filter(isFutureFixture).length;
-  return '<div class="v62-kpis"><span><b>'+b.rows.length+'</b><small>partidos publicados</small></span><span><b>'+pending+'</b><small>con fecha futura</small></span></div>'+
-    Object.entries(groups).map(([j,rs])=>'<section class="v62-round"><h2>Jornada '+esc(j)+'</h2><div class="v62-match-grid">'+rs.map(fixtureCard).join('')+'</div></section>').join('');
+  shown.forEach(r=>(groups[r[1]||'?']||(groups[r[1]||'?']=[])).push(r));
+  const pending=all.filter(isFutureFixture).length;
+  return '<div class="v62-fixture-toolbar">'+
+      '<div class="v62-fixture-filter">'+
+        '<button type="button" class="'+(fixtureFilter==='all'?'active':'')+'" data-v62-fixture-filter="all">Todos</button>'+
+        '<button type="button" class="'+(fixtureFilter==='played'?'active':'')+'" data-v62-fixture-filter="played">Jugados</button>'+
+        '<button type="button" class="'+(fixtureFilter==='upcoming'?'active':'')+'" data-v62-fixture-filter="upcoming">Próximos</button>'+
+      '</div>'+
+      '<div class="v62-fixture-actions"><button type="button" data-v62-calendar>Calendario</button><button type="button" data-v62-simulator>Simular jornada</button></div>'+
+    '</div>'+
+    '<div class="v62-kpis"><span><b>'+all.length+'</b><small>partidos publicados</small></span><span><b>'+pending+'</b><small>próximos con fecha</small></span></div>'+
+    (shown.length?Object.entries(groups).map(([j,rs])=>'<section class="v62-round"><h2>Jornada '+esc(j)+'</h2><div class="v62-match-grid">'+rs.map(fixtureCard).join('')+'</div></section>').join(''):empty('No hay partidos para este filtro.'));
 }
 function teamsView(){
   const list=categoryTeams(cat());
@@ -207,8 +262,12 @@ function playersView(){
   const c=cat(),rosters=c?.rosters||{};
   const entries=Object.entries(rosters);
   if(!entries.length)return empty('La fuente pública no expone jugadores actuales para esta categoría.');
-  return '<div class="v62-player-search"><input type="search" data-v62-player-search placeholder="Buscar jugador o equipo" autocomplete="off"></div>'+
-    '<div data-v62-player-list>'+entries.map(([team,players])=>'<section class="v62-roster-group" data-v62-search="'+esc(norm(team+' '+players.join(' ')))+'"><button type="button" class="v62-roster-title" data-v62-team="'+esc(team)+'">'+teamLogoHtml(team,'v62-inline-logo')+'<b>'+esc(team)+'</b><span>'+players.length+' jugadores</span></button>'+
+  if(playerTeamFilter!=='all'&&!entries.some(([t])=>same(t,playerTeamFilter)))playerTeamFilter='all';
+  return '<div class="v62-player-tools"><select data-v62-team-filter aria-label="Filtrar por equipo">'+
+      '<option value="all">Todos los equipos</option>'+
+      entries.map(([team])=>'<option value="'+esc(team)+'" '+(same(team,playerTeamFilter)?'selected':'')+'>'+esc(team)+'</option>').join('')+
+    '</select><div class="v62-player-search"><input type="search" data-v62-player-search placeholder="Buscar jugador o equipo" autocomplete="off"></div></div>'+
+    '<div data-v62-player-list>'+entries.map(([team,players])=>'<section class="v62-roster-group" data-v62-team-name="'+esc(team)+'" data-v62-search="'+esc(norm(team+' '+players.join(' ')))+'"><button type="button" class="v62-roster-title" data-v62-team="'+esc(team)+'">'+teamLogoHtml(team,'v62-inline-logo')+'<b>'+esc(team)+'</b><span>'+players.length+' jugadores</span></button>'+
       '<div>'+players.map(p=>'<p><span class="v62-player-dot"></span><b>'+esc(p)+'</b></p>').join('')+'</div></section>').join('')+'</div>';
 }
 function rulesView(){
@@ -217,6 +276,7 @@ function rulesView(){
 }
 function empty(msg){return '<div class="v62-empty"><span>⚽</span><p>'+esc(msg)+'</p></div>'}
 function dataBody(){
+  if(dataTab==='summary')return summaryView();
   if(dataTab==='fixtures')return fixturesView();
   if(dataTab==='teams')return teamsView();
   if(dataTab==='players')return playersView();
@@ -239,11 +299,14 @@ function bindData(){
   document.querySelectorAll('[data-v62-cat]').forEach(b=>b.addEventListener('click',()=>{setCategory(b.dataset.v62Cat);renderDataPage()},{once:true}));
   document.querySelectorAll('[data-v62-tab]').forEach(b=>b.addEventListener('click',()=>{dataTab=b.dataset.v62Tab;localStorage.setItem('v62-data-tab',dataTab);renderDataPage()},{once:true}));
   document.querySelectorAll('[data-v62-team]').forEach(b=>b.addEventListener('click',e=>{e.preventDefault();openTeam(b.dataset.v62Team)},{once:true}));
+  document.querySelectorAll('[data-v62-fixture-filter]').forEach(b=>b.addEventListener('click',()=>{fixtureFilter=b.dataset.v62FixtureFilter||'all';localStorage.setItem('v62-fixture-filter',fixtureFilter);renderDataPage()},{once:true}));
+  document.querySelector('[data-v62-calendar]')?.addEventListener('click',v62CalendarDownload,{once:true});
+  document.querySelector('[data-v62-simulator]')?.addEventListener('click',()=>{location.hash='#/simulator'},{once:true});
+  const teamFilter=document.querySelector('[data-v62-team-filter]');
+  if(teamFilter)teamFilter.addEventListener('change',()=>{playerTeamFilter=teamFilter.value||'all';localStorage.setItem('v62-player-team-filter',playerTeamFilter);applyPlayerFilters()});
   const input=document.querySelector('[data-v62-player-search]');
-  if(input)input.addEventListener('input',()=>{
-    const q=norm(input.value);
-    document.querySelectorAll('[data-v62-search]').forEach(el=>el.hidden=!!q&&!String(el.dataset.v62Search||'').includes(q));
-  });
+  if(input)input.addEventListener('input',applyPlayerFilters);
+  applyPlayerFilters();
 }
 function setCategory(id){
   id=String(id);
