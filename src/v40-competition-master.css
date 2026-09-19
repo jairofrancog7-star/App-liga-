@@ -404,3 +404,42 @@ body.v40-standings-master .v40-standings{
   body.v40-standings-master #screen{padding-left:14px!important;padding-right:14px!important}
   body.v40-standings-master #screen>.tabs{margin-left:-14px!important;margin-right:-14px!important;padding-left:14px!important;padding-right:14px!important}
 }
+
+
+/* TABRESTORE1 — devuelve tamaño y posición original de Partidos / Clasificación / Cuadro. */
+body.v40-standings-master #screen>.tabs{
+  height:10.0vw!important;
+  min-height:43px!important;
+  max-height:46px!important;
+  margin:0 -14px!important;
+  padding:0 3.8vw!important;
+  grid-template-columns:1.38fr 1fr .72fr!important;
+  align-items:stretch!important;
+  background:#07075f!important;
+}
+body.v40-standings-master #screen>.tabs .tab{
+  height:100%!important;
+  padding:0 .8vw 2.3vw!important;
+  font-size:3.55vw!important;
+  line-height:1!important;
+  font-weight:700!important;
+  letter-spacing:-.02em!important;
+}
+body.v40-standings-master #screen>.tabs .tab.active::after{
+  left:17%!important;
+  right:17%!important;
+  height:3px!important;
+}
+@media(min-width:433px){
+  body.v40-standings-master #screen>.tabs{
+    height:46px!important;
+    min-height:46px!important;
+    max-height:46px!important;
+    padding-left:16px!important;
+    padding-right:16px!important;
+  }
+  body.v40-standings-master #screen>.tabs .tab{
+    padding-bottom:10px!important;
+    font-size:15.4px!important;
+  }
+}
