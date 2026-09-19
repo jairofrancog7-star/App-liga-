@@ -75,27 +75,13 @@ function historyView(){return `<div class="eyebrow">ARCHIVO MUNICIPAL</div><h1 c
 function historyBody(){if(state.historyTab==='Temporadas')return `<section class="section"><div class="season-grid">${seasons.map(s=>`<button class="season-card"><b>${s.year}</b><span>${crest(s.champion)} Campeón: ${team(s.champion).name}</span><small>Final ${s.score}</small></button>`).join('')}</div></section>`;if(state.historyTab==='Campeones')return `<section class="section"><div class="stat-card">${[['JUV',3],['POZ',2],['CUE',2],['RIN',1]].map((x,i)=>`<div class="rank-row"><b>${i+1}</b>${crest(x[0])}<span>${team(x[0]).name}</span><b>${x[1]}</b></div>`).join('')}</div></section>`;if(state.historyTab==='Finales')return `<section class="section"><div class="news-list">${seasons.map(s=>`<div class="news-row"><span class="news-thumb"></span><span><small>Final ${s.year}</small><b>${team(s.champion).name} ${s.score} ${team(s.runner).name}</b><p>MVP: ${s.mvp}</p></span></div>`).join('')}</div></section>`;if(state.historyTab==='Récords')return `<section class="section"><div class="card stat-grid"><div><b>11</b><small>Máx. goles temporada</small></div><div><b>5</b><small>Victorias seguidas</small></div><div><b>3</b><small>Títulos Juventino</small></div><div><b>118</b><small>Goles récord</small></div></div></section>`;return `<section class="section">${sectionHead('Buscar por temporada')}<div class="media-carousel">${seasons.map(s=>`<button class="season-card"><b>${s.year}</b><span>${crest(s.champion)}</span><small>${team(s.champion).name}</small></button>`).join('')}</div></section><section class="section"><div class="history-feature"><span class="eyebrow">PALMARÉS</span><h2>La historia de Liga Juventino</h2><p>Campeones, finales y partidos que marcaron al torneo.</p></div></section>`}
 function profileView(){return `<div class="eyebrow">CUENTA</div><h1 class="screen-title">Perfil</h1>${state.user?`<div class="profile-card"><div class="avatar-ball">${state.user.name.slice(0,1).toUpperCase()}</div><h2>${state.user.name}</h2><p>${state.user.email}</p><button class="btn outline" data-action="logout">Cerrar sesión</button></div>`:`<div class="profile-card"><h2>Más de Liga Juventino</h2><p>Inicia sesión para guardar tu identidad, tu Fantasy y tus preferencias.</p><div class="button-row"><button class="btn primary" data-action="login-demo">Iniciar sesión</button><button class="btn outline" data-action="login-demo">Crear cuenta</button></div></div>`}${menuGroup('Tu contenido',[['Favoritos','favorites',`${state.favorites.length} guardados`],['Siguiendo','following',`${state.followed.length} equipos`],['Mi Fantasy','fantasyTeam'],['Quiniela','predictor']])}${menuGroup('Ajustes',[['Notificaciones','notifications'],['Privacidad','privacy'],['Cambiar tema','theme']])}`}
 function predictorView(){
-  const upcoming=matches.filter(m=>m.status!=='FINISHED').slice(0,6);
-  const firstThree=upcoming.slice(0,3);
-  const picks=firstThree.map((m,i)=>state.predictions['six:'+m.id]?.pick||(i===0?'2':'?'));
-  const asset='./assets/reference/predictor-v36/';
-  const pickVisual=(value)=>{
-    if(value==='2') return '<img src="'+asset+'predictor-two.webp?v=20260919-predictor-v36" alt="" aria-hidden="true" draggable="false">';
-    if(value==='?') return '<img src="'+asset+'predictor-question.webp?v=20260919-predictor-v36" alt="" aria-hidden="true" draggable="false">';
-    return '<span class="v29-pick-text">'+value+'</span>';
-  };
-  return `<section class="v29-predictor-page" aria-label="Pronostica Seis">
-    <img class="v29-title-art" src="${asset}predictor-title.webp?v=20260919-predictor-v36" alt="Pronostica Seis" draggable="false">
-    <img class="v29-league-crest" src="${asset}liga-crest-white.webp?v=20260919-predictor-v36" alt="Liga Municipal de Fútbol Juventino Rosas" draggable="false">
-
-    <div class="v29-board" aria-label="Pronósticos de la jornada">
-      <div class="v29-panel" aria-hidden="true"></div>
-      ${firstThree.map((m,i)=>`<button type="button" class="v29-pick v29-pick-${i+1}" data-v29-pick="${m.id}" data-v29-default="${i===0?'2':'?'}" aria-label="Pronóstico ${team(m.home).name} contra ${team(m.away).name}: ${picks[i]}">${pickVisual(picks[i])}</button>`).join('')}
-      <img class="v29-trophy-art" src="${asset}predictor-trophy.webp?v=20260919-predictor-v36" alt="" aria-hidden="true" draggable="false">
-      <img class="v29-pitch-art" src="${asset}predictor-pitch.webp?v=20260919-predictor-v36" alt="" aria-hidden="true" draggable="false">
-    </div>
-
-    <img class="v29-stadium-art" src="${asset}predictor-stadium.webp?v=20260919-predictor-v36" alt="" aria-hidden="true" draggable="false">
+  return `<section class="v37-predictor-reference" aria-label="Pronostica Seis">
+    <img
+      class="v37-predictor-reference-image"
+      src="./assets/reference/predictor-v37/predictor-reference-body.webp?v=20260919-predictor-v37"
+      alt="Pronostica Seis"
+      draggable="false"
+    >
   </section>`;
 }
 function videoView(){return `<div class="hero video-hero"><span class="eyebrow" style="color:#fff">REVIVE LA JORNADA</span><h1>FÚTBOL QUE<br>NOS UNE</h1><p>Mira goles, atajadas, entrevistas y resúmenes completos.</p><div class="button-row"><button class="btn primary" data-video="Resumen de la Jornada">Ver ahora</button><button class="btn outline" data-match="m1">Partido de la semana</button></div></div><section class="section">${sectionHead('Selección del editor')}<div class="media-carousel"><button class="media-card" data-video="Final dramático en Cuenda"><span class="badge">12:46</span><h3>Final dramático en Cuenda</h3></button><button class="media-card" data-video="Resumen de la jornada"><span class="badge">08:20</span><h3>Resumen de la jornada</h3></button></div></section>`}
