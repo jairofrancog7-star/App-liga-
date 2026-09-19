@@ -2,6 +2,7 @@
    Mantiene tamaños, colores, espaciado y navegación. */
 body[data-app-route="more"] .bottom-nav .nav-item small,
 body[data-app-route="predictor"] .bottom-nav .nav-item small,
+body[data-app-route="predictorSix"] .bottom-nav .nav-item small,
 body[data-app-route="quiz"] .bottom-nav .nav-item small,
 body[data-app-route="moreLess"] .bottom-nav .nav-item small,
 body[data-app-route="teams"] .bottom-nav .nav-item small,
@@ -71,6 +72,7 @@ body[data-app-route="moments"] .bottom-nav .nav-item small{
    Evita la cancha horizontal de overrides/caché anteriores y conserva la caja 25×25. */
 body[data-app-route="more"] .bottom-nav .nav-item[data-route="competition"] .nav-icon,
 body[data-app-route="predictor"] .bottom-nav .nav-item[data-route="competition"] .nav-icon,
+body[data-app-route="predictorSix"] .bottom-nav .nav-item[data-route="competition"] .nav-icon,
 body[data-app-route="quizArena"] .bottom-nav .nav-item[data-route="competition"] .nav-icon,
 body[data-app-route="quiz"] .bottom-nav .nav-item[data-route="competition"] .nav-icon,
 body[data-app-route="moreLess"] .bottom-nav .nav-item[data-route="competition"] .nav-icon,
