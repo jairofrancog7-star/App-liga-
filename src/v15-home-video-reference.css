@@ -1042,3 +1042,29 @@ body[data-app-route="home"] .topbar .v15-home-clean-logo-image.v15-home-logo-ble
   }
 }
 
+
+
+/* V28 HOME LOGO BLACK-BG REMOVE — elimina el cuadro negro del logo de la Liga.
+   No mueve ni redimensiona el logo; solo hace transparente visualmente el negro. */
+body[data-app-route="home"] .topbar .v15-home-clean-logo-image{
+  background:transparent!important;
+  mix-blend-mode:screen!important;
+  isolation:auto!important;
+}
+
+/* El logo de Liga usado dentro de Historias recibe el mismo tratamiento,
+   sin afectar los escudos de otros equipos. */
+body[data-app-route="home"] #screen>.stories .v15-story-inner img[src*="liga-logo.webp"]{
+  background:transparent!important;
+  mix-blend-mode:screen!important;
+  filter:none!important;
+}
+
+/* Evita que el soporte detrás del logo vuelva a verse como un cuadro oscuro. */
+body[data-app-route="home"] .topbar .v15-home-clean-logo::before{
+  background:transparent!important;
+  -webkit-backdrop-filter:none!important;
+  backdrop-filter:none!important;
+  -webkit-mask-image:none!important;
+  mask-image:none!important;
+}
