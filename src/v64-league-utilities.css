@@ -1,0 +1,123 @@
+/* V64 — Utilidades de la Liga tomadas como idea funcional de la app de referencia.
+   No copia contenido de entrenamientos. Solo añade Buscador + QR dentro del diseño azul existente. */
+
+@media (max-width:1023px){
+  body[data-app-route="ligaQR"],
+  body[data-app-route="ligaQR"] #app,
+  body[data-app-route="ligaQR"] .app-shell{
+    background:#06106f!important;
+  }
+
+  body[data-app-route="ligaQR"] #screen{
+    width:100%!important;
+    max-width:none!important;
+    margin:0!important;
+    padding:0 0 calc(68px + env(safe-area-inset-bottom))!important;
+    background:
+      radial-gradient(110% 45% at 50% -6%,rgba(31,96,255,.52),transparent 68%),
+      linear-gradient(180deg,#07199e 0%,#071078 36%,#05065f 72%,#040451 100%)!important;
+  }
+
+  .v64-qr-page{
+    min-height:calc(100dvh - 60px);
+  }
+
+  .v64-qr-card{
+    text-align:center;
+    overflow:hidden;
+  }
+
+  .v64-qr-frame{
+    width:min(64vw,260px);
+    aspect-ratio:1;
+    margin:2px auto 18px;
+    padding:12px;
+    display:grid;
+    place-items:center;
+    border-radius:22px;
+    background:#fff;
+    box-shadow:
+      0 18px 34px rgba(0,0,55,.24),
+      0 0 0 1px rgba(255,255,255,.14);
+  }
+
+  .v64-qr-frame img{
+    display:block;
+    width:100%;
+    height:100%;
+    object-fit:contain;
+    image-rendering:auto;
+  }
+
+  .v64-qr-card h2{
+    margin:0;
+    color:#fff;
+    font-size:24px;
+    line-height:1.08;
+    font-weight:780;
+    letter-spacing:-.025em;
+  }
+
+  .v64-qr-card p{
+    max-width:430px;
+    margin:10px auto 0;
+    color:#c6cae7;
+    font-size:15px;
+    line-height:1.38;
+  }
+
+  .v64-qr-url{
+    width:100%;
+    margin:15px 0 0;
+    padding:11px 12px;
+    display:block;
+    overflow:hidden;
+    border:1px solid rgba(119,142,235,.28);
+    border-radius:12px;
+    background:rgba(4,7,84,.52);
+    color:#b9f9ff;
+    font:500 11px/1.35 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+    text-overflow:ellipsis;
+    white-space:nowrap;
+  }
+
+  .v64-qr-card .v60-actions{
+    justify-content:center;
+    margin-top:16px;
+  }
+
+  .v64-qr-how{
+    margin-top:16px;
+  }
+
+  .v64-qr-how .v60-row-copy b{
+    color:#fff;
+  }
+
+  .v64-qr-how .v60-row-copy small{
+    color:#bfc5e4;
+  }
+
+  body[data-app-route="search"] .searchbox{
+    position:relative;
+  }
+
+  body[data-app-route="search"] .searchbox>span{
+    color:#cbd1ee;
+  }
+
+  body[data-app-route="search"] .search-result{
+    min-height:58px;
+  }
+
+  @media(max-width:390px){
+    .v64-qr-frame{
+      width:min(62vw,220px);
+      padding:10px;
+      border-radius:18px;
+    }
+    .v64-qr-card h2{font-size:21px}
+    .v64-qr-card p{font-size:14px}
+    .v64-qr-url{font-size:10px}
+  }
+}
