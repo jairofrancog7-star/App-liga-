@@ -3566,3 +3566,45 @@ body[data-app-route="competition"] .v12-stand-content{overflow:visible!important
     left:18px!important;
   }
 }
+
+
+/* === PARTS40 — OCTAVOS Y CUARTOS: MISMO TAMAÑO Y POSICIÓN === */
+/* Octavos es la referencia correcta. Cuartos usa exactamente la misma geometría:
+   ganador 64px, tarjetas de equipos 52px y el mismo ancho/columna. */
+body[data-app-route="competition"] .v12-bracket-reference.stage-octavos .v12-bracket-route,
+body[data-app-route="competition"] .v12-bracket-reference.stage-cuartos .v12-bracket-route{
+  grid-template-columns:18px 0 0 minmax(0,1fr)!important;
+}
+body[data-app-route="competition"] .v12-bracket-reference.stage-octavos .v12-bracket-winners,
+body[data-app-route="competition"] .v12-bracket-reference.stage-cuartos .v12-bracket-winners{
+  grid-column:4!important;
+  width:100%!important;
+  min-width:0!important;
+}
+body[data-app-route="competition"] .v12-bracket-reference.stage-octavos .v12-bracket-winner-block,
+body[data-app-route="competition"] .v12-bracket-reference.stage-cuartos .v12-bracket-winner-block{
+  width:100%!important;
+  max-width:none!important;
+  box-sizing:border-box!important;
+}
+body[data-app-route="competition"] .v12-bracket-reference.stage-octavos .v12-bracket-winner,
+body[data-app-route="competition"] .v12-bracket-reference.stage-cuartos .v12-bracket-winner{
+  width:100%!important;
+  height:64px!important;
+  min-height:64px!important;
+  max-height:64px!important;
+  box-sizing:border-box!important;
+}
+body[data-app-route="competition"] .v12-bracket-reference.stage-octavos .v12-bracket-seeded,
+body[data-app-route="competition"] .v12-bracket-reference.stage-cuartos .v12-bracket-seeded{
+  width:100%!important;
+  min-width:0!important;
+  box-sizing:border-box!important;
+}
+body[data-app-route="competition"] .v12-bracket-reference.stage-octavos .v12-bracket-team.mini,
+body[data-app-route="competition"] .v12-bracket-reference.stage-cuartos .v12-bracket-team.mini{
+  height:52px!important;
+  min-height:52px!important;
+  max-height:52px!important;
+  box-sizing:border-box!important;
+}
