@@ -2498,3 +2498,11 @@ body[data-app-route="profile"] .v12-profile-row-chevron svg{
     height:32px!important;
   }
 }
+
+/* === PARTS36 — QUITAR LÍNEA PEGADA AL CUADRO === */
+/* Quita únicamente el pequeño tramo horizontal pegado a cada tarjeta.
+   Se conserva completa la llave curva que une los partidos. */
+body[data-app-route="competition"] .v12-bracket-reference.stage-playoff .v12-bracket-pair::after{
+  display:none!important;
+  content:none!important;
+}
