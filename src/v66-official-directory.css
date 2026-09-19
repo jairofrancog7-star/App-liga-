@@ -59,3 +59,19 @@ body[data-app-route="club-store"] #screen{background:#06055f!important}
   background:#11127d!important;border:1px solid #20dce9!important;color:#fff!important;font-size:10px!important;font-weight:800!important;
 }
 @media(min-width:480px){.v66-team-grid{grid-template-columns:1fr 1fr!important}.v66-team-card{min-height:68px!important}}
+
+.v66-cedula-headline{display:flex!important;align-items:end!important;justify-content:space-between!important;gap:10px!important;margin:0 0 10px!important}
+.v66-cedula-headline b{color:#fff!important;font-size:18px!important;line-height:1!important}
+.v66-cedula-headline small{color:#999bc4!important;font-size:10px!important;white-space:nowrap!important}
+.v66-primary-action{
+  width:100%!important;min-height:38px!important;margin:0 0 10px!important;border:1px solid #20dce9!important;border-radius:10px!important;
+  background:#13dce8!important;color:#07105d!important;font-size:12px!important;font-weight:800!important
+}
+.v66-fixture-row{grid-template-columns:42px minmax(0,1fr) 18px!important}
+.v66-fixture-row .v66-player-avatar{font-size:9px!important}
+.v66-roster-avatar{
+  display:grid!important;place-items:center!important;color:#fff!important;background:#15167d!important;border:1px solid #1eddea!important;
+  font-size:10px!important;font-weight:800!important
+}
+body[data-app-route="teamDetail"] .v66-official-roster .v42-player-row{min-height:62px!important}
+body[data-app-route="teamDetail"] .v66-official-roster h2{font-size:18px!important}
