@@ -756,7 +756,7 @@ function moreView(){
     '</div>'+
     '<div class="v19-more-label event">En el evento</div>'+
     '<div class="v19-more-menu">'+v19MoreButton('glasses','Hospitalidad','hospitality')+'</div>'+
-    '<div class="v19-more-menu">'+v19MoreButton('info','Reglamento','rulebook')+v19MoreButton('score','Match Day','matchday')+v19MoreButton('performance','Clima y campos','weatherFields')+v19MoreButton('shield','Dónde se juega','venues')+v19MoreButton('history','Cédulas','cedulas')+v19MoreButton('data','Todas las herramientas','leagueTools')+'</div>'+'<div class="v19-more-label explore">Explorar</div>'+
+    '<div class="v19-more-menu">'+v19MoreButton('info','Reglamento','rulebook')+v19MoreButton('score','Match Day','matchday')+v19MoreButton('shield','Dónde se juega','venues')+v19MoreButton('history','Cédulas','cedulas')+v19MoreButton('data','Todas las herramientas','leagueTools')+'</div>'+'<div class="v19-more-label explore">Explorar</div>'+
     '<div class="v19-more-menu">'+
       v19MoreButton('search','Buscar','search')+
       v19MoreButton('qr','QR de la Liga','ligaQR')+
