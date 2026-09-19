@@ -563,9 +563,21 @@ document.addEventListener('click',e=>{
   if(bracketStage){
     const box=bracketStage.closest('[data-v12-bracket]');
     if(box){
+      const stage=bracketStage.dataset.v12BracketStage;
       box.querySelectorAll('[data-v12-bracket-stage]').forEach(b=>b.classList.toggle('active',b===bracketStage));
-      box.classList.remove('stage-playoff','stage-octavos','stage-cuartos','stage-semifinal','stage-final');
-      box.classList.add('stage-'+bracketStage.dataset.v12BracketStage); setTimeout(()=>bracketStage.scrollIntoView({behavior:'smooth',inline:bracketStage.dataset.v12BracketStage==='final'?'end':'center',block:'nearest'}),40);
+      box.classList.remove('stage-playoff','stage-octavos','stage-cuartos','stage-semifinal','stage-final','is-stage-changing','is-stage-ready');
+      box.classList.add('stage-'+stage,'is-stage-changing');
+      box.dataset.v12Stage=stage;
+      const strip=bracketStage.parentElement;
+      requestAnimationFrame(()=>{
+        box.classList.remove('is-stage-changing');
+        box.classList.add('is-stage-ready');
+        if(strip){
+          const target=Math.max(0,bracketStage.offsetLeft-(strip.clientWidth-bracketStage.offsetWidth)/2);
+          strip.scrollTo({left:target,behavior:'smooth'});
+        }
+      });
+      setTimeout(()=>box.classList.remove('is-stage-ready'),430);
     }
     return;
   }
