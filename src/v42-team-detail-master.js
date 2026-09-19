@@ -216,7 +216,7 @@
     if(navigator.share)navigator.share(p).catch(()=>{});
     else navigator.clipboard?.writeText(location.href).then(()=>toast('Enlace copiado')).catch(()=>toast('Enlace listo para compartir'));
   }
-  function rerender(){const screen=document.querySelector('#screen');if(screen){screen.innerHTML=markup();bind();fixBottomNav();fixBottomNav()}}
+  function rerender(){const screen=document.querySelector('#screen');if(screen){screen.innerHTML=markup();bind();fixBottomNav()}}
   function fixBottomNav(){
     /* TEAMDETAIL_NAV_FIX1 — evita COMPETICIÓN/VIDEO encimados al entrar a un equipo. */
     const nav=document.querySelector('.bottom-nav');
@@ -233,7 +233,7 @@
     document.body.classList.toggle('v42-team-active',active);
     if(!active)return;
     const screen=document.querySelector('#screen');if(!screen)return;
-    screen.innerHTML=markup();bind();
+    screen.innerHTML=markup();bind();fixBottomNav();
   }
 
   function bind(){
