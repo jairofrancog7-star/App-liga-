@@ -29,7 +29,14 @@
     {id:'JUV',name:'Deportivo Juventino',logo:'assets/teams/juventus.webp',abbr:'JUV'},
     {id:'PAL',name:'Las Palomas',logo:'',abbr:'PAL'},
     {id:'FRA',name:'Franco FC',logo:'assets/teams/franco-fc.webp',abbr:'FRA'},
-    {id:'EST',name:'La Estancia',logo:'',abbr:'EST'}
+    {id:'EST',name:'La Estancia',logo:'',abbr:'EST'},
+    {id:'CGS',name:'C. de Gasca',logo:'assets/teams/deportivo-cg.webp',abbr:'CGS'},
+    {id:'J35',name:'Juventus',logo:'assets/official-logos/juventus.png',abbr:'JUV'},
+    {id:'BOA',name:'Boavista',logo:'assets/official-logos/boavista.png',abbr:'BOA'},
+    {id:'PSV',name:'PSV',logo:'assets/teams/psv.webp',abbr:'PSV'},
+    {id:'AST',name:'A. Santiago',logo:'assets/teams/atletico-santiago.webp',abbr:'AST'},
+    {id:'TAV',name:'F. Tavera',logo:'assets/teams/franco-tavera-jr-veteranos.webp',abbr:'TAV'},
+    {id:'HUR',name:'Huracán',logo:'',abbr:'HUR'}
   ];
 
   let pickerOpen=false;
