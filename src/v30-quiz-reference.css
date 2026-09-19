@@ -423,3 +423,35 @@ body[data-app-route="quiz"] .nav-item[data-route="more"] .nav-icon::before{
     transform:translateX(-50%)!important;
   }
 }
+
+
+/* V30.1 — restaurar icono cancha y etiquetas MAYÚSCULAS en barra inferior. */
+body[data-app-route="quiz"] .bottom-nav .nav-item small{
+  text-transform:uppercase!important;
+}
+body[data-app-route="quiz"] .bottom-nav .nav-item[data-route="home"] small::after{content:"INICIO"!important}
+body[data-app-route="quiz"] .bottom-nav .nav-item[data-route="competition"] small::after{content:"COMPETICIÓN"!important}
+body[data-app-route="quiz"] .bottom-nav .nav-item[data-route="video"] small::after{content:"VÍDEO"!important}
+body[data-app-route="quiz"] .bottom-nav .nav-item[data-route="fantasy"] small::after{content:"FANTASY"!important}
+body[data-app-route="quiz"] .bottom-nav .nav-item[data-route="more"] small::after{content:"MÁS"!important}
+
+/* Mostrar el SVG real de cancha/campo en Competición. */
+body[data-app-route="quiz"] .nav-item[data-route="competition"] .nav-icon{
+  width:31px!important;
+  height:31px!important;
+  border:0!important;
+  border-radius:0!important;
+  background:transparent!important;
+}
+body[data-app-route="quiz"] .nav-item[data-route="competition"] .nav-icon::before,
+body[data-app-route="quiz"] .nav-item[data-route="competition"] .nav-icon::after{
+  content:none!important;
+  display:none!important;
+}
+body[data-app-route="quiz"] .nav-item[data-route="competition"] .nav-icon svg{
+  display:block!important;
+  width:29px!important;
+  height:29px!important;
+  fill:currentColor!important;
+  stroke:none!important;
+}
