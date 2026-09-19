@@ -31,6 +31,51 @@
     TVF:{name:'Tavera FC',city:'Tavera · Juventino Rosas',category:'Segunda Fuerza',logo:'assets/official-logos/tavera-fc.png',p:5,pts:6,gd:-1,form:['D','V','E','V','D']}
   };
 
+  /* TEAM_LINKS_ALL_V1 — perfiles disponibles para todos los clubes mostrados en la app. */
+  Object.assign(TEAMS,{
+    ROS:{name:'Deportivo Rosas',city:'Juventino Rosas',category:'Liga Municipal',logo:'assets/liga-logo.webp',p:0,pts:0,gd:0,form:['E','E','E','E','E']},
+    HFC:{name:'Herreras FC',city:'Juventino Rosas',category:'Liga Municipal',logo:'assets/official-logos/herreras-fc.png',p:0,pts:0,gd:0,form:['E','E','E','E','E']},
+    BOA:{name:'Boavista',city:'Juventino Rosas',category:'Liga Municipal',logo:'assets/official-logos/boavista.png',p:0,pts:0,gd:0,form:['E','E','E','E','E']},
+    PSV:{name:'PSV',city:'Juventino Rosas',category:'Liga Municipal',logo:'assets/teams/psv.webp',p:0,pts:0,gd:0,form:['E','E','E','E','E']},
+    CGS:{name:'C. de Gasca',city:'Cerrito de Gasca',category:'Liga Municipal',logo:'assets/teams/deportivo-cg.webp',p:0,pts:0,gd:0,form:['E','E','E','E','E']},
+    SJL:{name:'San Julián',city:'Juventino Rosas',category:'Liga Municipal',logo:'assets/official-logos/san-julian.png',p:0,pts:0,gd:0,form:['E','E','E','E','E']},
+    NOP:{name:'Dep. Nopalero',city:'Juventino Rosas',category:'Liga Municipal',logo:'assets/official-logos/dep-nopalero.png',p:0,pts:0,gd:0,form:['E','E','E','E','E']},
+    JUVS:{name:'Juventus',city:'Juventino Rosas',category:'Liga Municipal',logo:'assets/official-logos/juventus.png',p:0,pts:0,gd:0,form:['E','E','E','E','E']},
+    HUR:{name:'Huracán',city:'Juventino Rosas',category:'Liga Municipal',logo:'assets/liga-logo.webp',p:0,pts:0,gd:0,form:['E','E','E','E','E']},
+    DYN:{name:'Dynamo',city:'Juventino Rosas',category:'Liga Municipal',logo:'assets/official-logos/dynamo.png',p:0,pts:0,gd:0,form:['E','E','E','E','E']},
+    BOC:{name:'Boca Jrs',city:'Juventino Rosas',category:'Liga Municipal',logo:'assets/liga-logo.webp',p:0,pts:0,gd:0,form:['E','E','E','E','E']},
+    MAN:{name:'Manchester',city:'Juventino Rosas',category:'Liga Municipal',logo:'assets/official-logos/manchester.png',p:0,pts:0,gd:0,form:['E','E','E','E','E']},
+    NAP:{name:'Napoli',city:'Juventino Rosas',category:'Liga Municipal',logo:'assets/official-logos/napoli.png',p:0,pts:0,gd:0,form:['E','E','E','E','E']},
+    ABE:{name:'Abejas',city:'Juventino Rosas',category:'Liga Municipal',logo:'assets/official-logos/abejas.png',p:0,pts:0,gd:0,form:['E','E','E','E','E']},
+    CAN:{name:'La Canchita Deportes',city:'Juventino Rosas',category:'Liga Municipal',logo:'assets/official-logos/la-canchita-deportes.png',p:0,pts:0,gd:0,form:['E','E','E','E','E']},
+    ALD:{name:'Aldama FC',city:'Juventino Rosas',category:'Liga Municipal',logo:'assets/official-logos/aldama-fc.png',p:0,pts:0,gd:0,form:['E','E','E','E','E']},
+    MAL:{name:'Malvinas',city:'Juventino Rosas',category:'Liga Municipal',logo:'assets/official-logos/malvinas.png',p:0,pts:0,gd:0,form:['E','E','E','E','E']},
+    CAP:{name:'Capibaras',city:'Juventino Rosas',category:'Liga Municipal',logo:'assets/official-logos/capibaras.png',p:0,pts:0,gd:0,form:['E','E','E','E','E']},
+    CUA:{name:'La Cuadrilla',city:'Juventino Rosas',category:'Liga Municipal',logo:'assets/official-logos/la-cuadrilla.png',p:0,pts:0,gd:0,form:['E','E','E','E','E']},
+    MAZ:{name:'Mazacotes FC',city:'Juventino Rosas',category:'Liga Municipal',logo:'assets/official-logos/mazacotes-fc.png',p:0,pts:0,gd:0,form:['E','E','E','E','E']},
+    MAR:{name:'Dep. Maravillas',city:'Juventino Rosas',category:'Liga Municipal',logo:'assets/official-logos/dep-maravillas.png',p:0,pts:0,gd:0,form:['E','E','E','E','E']},
+    OSA:{name:'Osasuna',city:'Juventino Rosas',category:'Liga Municipal',logo:'assets/official-logos/osasuna.png',p:0,pts:0,gd:0,form:['E','E','E','E','E']},
+    SAJ:{name:'San Antonio Jrs',city:'Juventino Rosas',category:'Liga Municipal',logo:'assets/official-logos/san-antonio-jrs.png',p:0,pts:0,gd:0,form:['E','E','E','E','E']},
+    POP:{name:'Populares',city:'Juventino Rosas',category:'Liga Municipal',logo:'assets/official-logos/populares.png',p:0,pts:0,gd:0,form:['E','E','E','E','E']},
+    PAC:{name:'Pachangas FC',city:'Juventino Rosas',category:'Liga Municipal',logo:'assets/official-logos/pachangas-fc.png',p:0,pts:0,gd:0,form:['E','E','E','E','E']},
+    SJU:{name:'San Juan FC',city:'Juventino Rosas',category:'Liga Municipal',logo:'assets/official-logos/san-juan-fc.png',p:0,pts:0,gd:0,form:['E','E','E','E','E']},
+    TAP:{name:'Tapatío',city:'Juventino Rosas',category:'Liga Municipal',logo:'assets/official-logos/tapatio.png',p:0,pts:0,gd:0,form:['E','E','E','E','E']},
+    LAL:{name:'Dep. La Luz',city:'Juventino Rosas',category:'Liga Municipal',logo:'assets/official-logos/dep-la-luz.png',p:0,pts:0,gd:0,form:['E','E','E','E','E']},
+    BAR:{name:'Barza',city:'Juventino Rosas',category:'Liga Municipal',logo:'assets/official-logos/barza.png',p:0,pts:0,gd:0,form:['E','E','E','E','E']},
+    SJJ:{name:'San José Jrs',city:'Juventino Rosas',category:'Liga Municipal',logo:'assets/official-logos/san-jose-jrs.png',p:0,pts:0,gd:0,form:['E','E','E','E','E']},
+    SAF:{name:'San Antonio FC',city:'Juventino Rosas',category:'Liga Municipal',logo:'assets/official-logos/san-antonio-fc.png',p:0,pts:0,gd:0,form:['E','E','E','E','E']},
+    CEL:{name:'Célticos FC',city:'Juventino Rosas',category:'Liga Municipal',logo:'assets/official-logos/celticos.png',p:0,pts:0,gd:0,form:['E','E','E','E','E']},
+    ZAP:{name:'Dep. Zapata',city:'Juventino Rosas',category:'Liga Municipal',logo:'assets/official-logos/dep-zapata.png',p:0,pts:0,gd:0,form:['E','E','E','E','E']},
+    SIS:{name:'San Isidro',city:'Juventino Rosas',category:'Liga Municipal',logo:'assets/liga-logo.webp',p:0,pts:0,gd:0,form:['E','E','E','E','E']},
+    RJU:{name:'Real Juventino',city:'Juventino Rosas',category:'Liga Municipal',logo:'assets/teams/juventus.webp',p:0,pts:0,gd:0,form:['E','E','E','E','E']},
+    VAL:{name:'Valle Verde',city:'Juventino Rosas',category:'Liga Municipal',logo:'assets/liga-logo.webp',p:0,pts:0,gd:0,form:['E','E','E','E','E']},
+    LAB:{name:'La Labor',city:'Juventino Rosas',category:'Liga Municipal',logo:'assets/liga-logo.webp',p:0,pts:0,gd:0,form:['E','E','E','E','E']},
+    DUR:{name:'El Durazno',city:'Juventino Rosas',category:'Liga Municipal',logo:'assets/liga-logo.webp',p:0,pts:0,gd:0,form:['E','E','E','E','E']},
+    ARC:{name:'Los Arcos',city:'Juventino Rosas',category:'Liga Municipal',logo:'assets/liga-logo.webp',p:0,pts:0,gd:0,form:['E','E','E','E','E']},
+    PAL:{name:'Las Palomas',city:'Juventino Rosas',category:'Liga Municipal',logo:'assets/liga-logo.webp',p:0,pts:0,gd:0,form:['E','E','E','E','E']},
+    EST:{name:'La Estancia',city:'Juventino Rosas',category:'Liga Municipal',logo:'assets/liga-logo.webp',p:0,pts:0,gd:0,form:['E','E','E','E','E']}
+  });
+
   const ALIASES={
     juventino:'JUV',pozos:'POZ','pozos fc':'POZ',rincon:'RIN','rincón de centeno':'RIN',cuenda:'CUE',
     sanpedro:'SPD','san pedro':'SPD',morales:'MOR',america:'AME','club america veteranos':'AME',
@@ -64,11 +109,68 @@
 
   function route(){return location.hash.replace('#/','')||'home'}
   function esc(s){return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+  function normalizeKey(raw){
+    return String(raw||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase()
+      .replace(/&/g,' y ').replace(/[^a-z0-9]+/g,' ').trim().replace(/\s+/g,' ');
+  }
   function normalizeId(raw){
     const v=String(raw||'').trim();
     if(TEAMS[v])return v;
-    const key=v.normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase();
-    return ALIASES[key]||ALIASES[String(raw||'').toLowerCase()]||'JUV';
+    const key=normalizeKey(v);
+    const alias=ALIASES[key]||ALIASES[String(raw||'').toLowerCase()];
+    if(alias&&TEAMS[alias])return alias;
+    const manual={
+      'america veteranos':'AME','club america veteranos jr':'AME','atletico santa cruz':'STC',
+      'deportivo rosas':'ROS','pozos':'POZ','deportivo juventino':'JUV','san antonio':'SAJ',
+      'a santiago':'SAN','atletico santiago':'SAN','dep la luz':'LAL','deportivo la luz':'LAL'
+    };
+    if(manual[key]&&TEAMS[manual[key]])return manual[key];
+    for(const [id,t] of Object.entries(TEAMS)){
+      if(normalizeKey(id)===key||normalizeKey(t.name)===key)return id;
+    }
+    return '';
+  }
+  function openTeam(id){
+    const resolved=normalizeId(id);
+    if(!resolved||!TEAMS[resolved])return false;
+    localStorage.setItem('v27-selected-team',resolved);
+    activeTab='summary';
+    localStorage.setItem('v42-team-tab','summary');
+    menuOpen=false;notifyOpen=false;compareOpen=false;compareTarget=null;
+    if(route()==='teamDetail')rerender();
+    else location.hash='#/teamDetail';
+    return true;
+  }
+  function teamIdFromClick(target){
+    if(!(target instanceof Element))return '';
+    const explicit=target.closest('[data-v41-team],[data-v32-open-team],[data-v27-team],[data-v28-team],[data-v33-team],[data-v40-team],[data-team]');
+    if(explicit){
+      const textId=normalizeId((explicit.textContent||'').trim());
+      if(textId)return textId;
+      const raw=explicit.dataset.v41Team||explicit.dataset.v32OpenTeam||explicit.dataset.v27Team||
+        explicit.dataset.v28Team||explicit.dataset.v33Team||explicit.dataset.v40Team||explicit.dataset.team;
+      const rawId=normalizeId(raw);
+      if(rawId)return rawId;
+    }
+    const img=target.closest('img')||(target.closest('button,a,article,li,tr,div')?.querySelector('img')||null);
+    if(img){
+      const altId=normalizeId(img.getAttribute('alt')||img.getAttribute('title')||'');
+      if(altId)return altId;
+      const src=String(img.getAttribute('src')||'').toLowerCase();
+      if(src&&!src.includes('liga-logo.webp')){
+        const hits=Object.entries(TEAMS).filter(([,t])=>t.logo&&src.includes(t.logo.split('/').pop().toLowerCase()));
+        if(hits.length===1)return hits[0][0];
+      }
+    }
+    let node=target;
+    for(let i=0;i<4&&node;i++,node=node.parentElement){
+      const txt=(node.textContent||'').trim();
+      if(txt&&txt.length<=56){
+        const id=normalizeId(txt);
+        if(id)return id;
+      }
+    }
+    return '';
   }
   function selectedId(){return normalizeId(localStorage.getItem('v27-selected-team')||'JUV')}
   function team(id=selectedId()){return TEAMS[id]||TEAMS.JUV}
@@ -171,7 +273,7 @@
 
   function compareSheet(){
     if(!compareOpen)return '';
-    const ids=Object.keys(TEAMS).filter(id=>id!==selectedId()).slice(0,12);
+    const ids=Object.keys(TEAMS).filter(id=>id!==selectedId()).sort((a,b)=>team(a).name.localeCompare(team(b).name,'es'));
     return '<div class="v42-overlay" data-v42-close-overlay><section class="v42-compare-sheet" role="dialog" aria-label="Comparar equipos" onclick="event.stopPropagation()"><div class="v42-sheet-head"><h2>Comparar</h2><button type="button" data-v42-close-compare>Hecho</button></div>'+
       (compareTarget?compareResult(compareTarget):'<p class="v42-compare-help">Selecciona otro equipo</p><div class="v42-compare-grid">'+ids.map(id=>'<button type="button" data-v42-compare-team="'+id+'"><img src="'+logo(team(id))+'" alt=""><span>'+esc(team(id).name)+'</span></button>').join('')+'</div>')+
     '</section></div>';
@@ -262,13 +364,15 @@
     document.querySelectorAll('[data-v42-video]').forEach(b=>b.addEventListener('click',()=>toast('Resumen en vídeo'),{once:true}));
   }
 
-  // Cualquier control de equipo de la aplicación debe conservar el equipo elegido.
+  // TEAM_LINKS_ALL_V1 — cualquier escudo o nombre de equipo abre su ficha desde cualquier pantalla.
   document.addEventListener('click',e=>{
-    const el=e.target.closest('[data-v41-team],[data-v32-open-team],[data-team]');
-    if(!el)return;
-    const raw=el.dataset.v41Team||el.dataset.v32OpenTeam||el.dataset.team;
-    const id=normalizeId(raw);
-    if(TEAMS[id])localStorage.setItem('v27-selected-team',id);
+    if(route()==='teamDetail')return;
+    if(e.target.closest('.bottom-nav,[data-v28-menu],[data-v28-follow],[data-v28-favorite],[data-v28-unfollow]'))return;
+    const id=teamIdFromClick(e.target);
+    if(!id)return;
+    e.preventDefault();
+    e.stopPropagation();
+    openTeam(id);
   },true);
 
   window.addEventListener('hashchange',()=>requestAnimationFrame(render));
