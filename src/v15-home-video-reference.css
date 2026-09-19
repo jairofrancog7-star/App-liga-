@@ -841,3 +841,78 @@ body[data-app-route="home"] #screen>.stories::after{
     height:68px!important;
   }
 }
+
+
+/* V25 HOME ONE BLUE — mismo azul de la parte superior en toda la página. */
+/* Solo corrige color/unión. NO modifica ni sustituye la imagen de portada. */
+body[data-app-route="home"]{
+  --home-one-blue:#000144;
+  background:var(--home-one-blue)!important;
+}
+
+body[data-app-route="home"] .app-shell,
+body[data-app-route="home"] #screen,
+body[data-app-route="home"] #screen>.stories,
+body[data-app-route="home"] #screen>.section,
+body[data-app-route="home"] #screen>.section.hero{
+  background-color:var(--home-one-blue)!important;
+}
+
+/* La cabecera conserva su imagen/arte; solo igualamos su color base y la unión inferior. */
+body[data-app-route="home"] .topbar{
+  background-color:var(--home-one-blue)!important;
+  border-bottom:0!important;
+  outline:0!important;
+  box-shadow:none!important;
+}
+
+body[data-app-route="home"] .topbar::after{
+  content:""!important;
+  display:block!important;
+  position:absolute!important;
+  z-index:2!important;
+  left:0!important;
+  right:0!important;
+  bottom:-2px!important;
+  height:82px!important;
+  pointer-events:none!important;
+  background:var(--home-one-blue)!important;
+  background-image:none!important;
+  border:0!important;
+  outline:0!important;
+  box-shadow:none!important;
+  opacity:1!important;
+}
+
+/* Sin línea, franja ni cambio de tono entre cabecera e historias. */
+body[data-app-route="home"] #screen{
+  margin-top:-2px!important;
+  padding-top:0!important;
+  border-top:0!important;
+}
+
+body[data-app-route="home"] #screen>.stories{
+  margin-top:0!important;
+  border:0!important;
+  outline:0!important;
+  box-shadow:none!important;
+  background:var(--home-one-blue)!important;
+  background-image:none!important;
+}
+
+body[data-app-route="home"] #screen>.stories::before,
+body[data-app-route="home"] #screen>.stories::after{
+  content:none!important;
+  display:none!important;
+}
+
+/* Mantiene transparente la zona alrededor de la imagen inferior para que no aparezca otro azul. */
+body[data-app-route="home"] #screen>.section.hero[data-v15-home-feature="3"]{
+  background-color:var(--home-one-blue)!important;
+}
+
+@media(max-width:380px){
+  body[data-app-route="home"] .topbar::after{
+    height:76px!important;
+  }
+}
