@@ -1,0 +1,102 @@
+/* V71 — Fichajes con equipos existentes y escudos reales.
+   Mantiene el diseño actual; solo adapta los escudos y nombres largos. */
+
+@media (max-width:1023px){
+  body[data-app-route="transfers"] .transfer-row{
+    grid-template-columns:82px minmax(0,1fr) 82px!important;
+    gap:8px!important;
+  }
+
+  body[data-app-route="transfers"] .transfer-row>span{
+    min-width:0!important;
+  }
+
+  body[data-app-route="transfers"] .v71-transfer-crest{
+    position:relative!important;
+    width:46px!important;
+    height:46px!important;
+    min-width:46px!important;
+    min-height:46px!important;
+    display:grid!important;
+    place-items:center!important;
+    overflow:hidden!important;
+    border-radius:50%!important;
+    background:linear-gradient(135deg,#173b9b,#08d7e6)!important;
+    border:2px solid rgba(104,225,255,.72)!important;
+    box-shadow:inset 0 0 0 1px rgba(255,255,255,.10)!important;
+  }
+
+  body[data-app-route="transfers"] .v71-transfer-crest img{
+    width:39px!important;
+    height:39px!important;
+    display:block!important;
+    object-fit:contain!important;
+  }
+
+  body[data-app-route="transfers"] .v71-transfer-crest.fallback::after{
+    content:attr(data-fallback)!important;
+    color:#fff!important;
+    font-size:8px!important;
+    line-height:1!important;
+    font-weight:900!important;
+  }
+
+  body[data-app-route="transfers"] .transfer-row>span>small{
+    width:100%!important;
+    max-width:78px!important;
+    min-height:20px!important;
+    display:block!important;
+    overflow:hidden!important;
+    color:#9da5ca!important;
+    font-size:8px!important;
+    line-height:1.12!important;
+    text-align:center!important;
+    text-overflow:ellipsis!important;
+  }
+
+  body[data-app-route="transfers"] .transfer-row>div{
+    min-width:0!important;
+  }
+
+  body[data-app-route="transfers"] .transfer-row>div>b{
+    display:block!important;
+    overflow:hidden!important;
+    color:#fff!important;
+    font-size:14px!important;
+    line-height:1.08!important;
+    font-weight:800!important;
+    text-overflow:ellipsis!important;
+  }
+
+  body[data-app-route="transfers"] .transfer-row>div>small{
+    font-size:8px!important;
+  }
+
+  body[data-app-route="transfers"] .transfer-row>div>em{
+    font-size:8px!important;
+  }
+
+  @media(max-width:390px){
+    body[data-app-route="transfers"] .transfer-row{
+      grid-template-columns:76px minmax(0,1fr) 76px!important;
+      padding-left:10px!important;
+      padding-right:10px!important;
+    }
+
+    body[data-app-route="transfers"] .v71-transfer-crest{
+      width:42px!important;
+      height:42px!important;
+      min-width:42px!important;
+      min-height:42px!important;
+    }
+
+    body[data-app-route="transfers"] .v71-transfer-crest img{
+      width:36px!important;
+      height:36px!important;
+    }
+
+    body[data-app-route="transfers"] .transfer-row>div>b{
+      font-size:13px!important;
+    }
+  }
+}
