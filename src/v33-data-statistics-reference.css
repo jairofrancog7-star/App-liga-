@@ -857,3 +857,96 @@ body.v33-data-active .v33-data-head.is-collapsed .v33-morph-title h1{
     max-width:62%!important;
   }
 }
+
+
+/* V37 — comportamiento exacto del video:
+   la cabecera NO empuja las tablas. Queda flotando/fija encima.
+   Las tablas continúan subiendo por detrás y se van ocultando debajo
+   de "Estadísticas" y de las pestañas, como en la referencia. */
+body.v33-data-active .v33-data-page{
+  position:relative!important;
+  padding-top:clamp(184px,50.12vw,258px)!important;
+}
+
+body.v33-data-active .v33-data-head{
+  position:fixed!important;
+  z-index:500!important;
+  top:0!important;
+  left:0!important;
+  right:0!important;
+  width:100%!important;
+  margin:0!important;
+  overflow:hidden!important;
+  pointer-events:auto!important;
+  /* Fondo completamente opaco para que las tablas "entren" debajo
+     y desaparezcan en vez de verse atravesando la cabecera. */
+  background:
+    radial-gradient(circle at 76% 4%,rgba(39,91,255,.72),transparent 27%),
+    radial-gradient(circle at 33% 16%,rgba(26,57,220,.36),transparent 38%),
+    linear-gradient(180deg,#172fe5 0%,#1029d0 28%,#071596 60%,#02065e 100%)!important;
+}
+
+body.v33-data-active .v33-data-head.is-collapsed{
+  background:
+    radial-gradient(circle at 76% 0%,rgba(38,86,255,.64),transparent 30%),
+    linear-gradient(180deg,#1730dd 0%,#0f25c3 42%,#07127d 100%)!important;
+}
+
+/* El contenido conserva su posición original de inicio, pero durante el
+   scroll pasa POR DETRÁS de la cabecera fija. No se reacomoda cuando
+   la cabecera se hace más corta/larga. */
+body.v33-data-active .v33-data-content{
+  position:relative!important;
+  z-index:1!important;
+  margin-top:0!important;
+  transform:none!important;
+}
+
+/* "Estadísticas" siempre queda por encima de las tablas. */
+body.v33-data-active .v33-morph-title,
+body.v33-data-active .v33-head-actions,
+body.v33-data-active .v33-tabs{
+  z-index:520!important;
+}
+
+/* Una pequeña máscara inferior reproduce el efecto del video donde
+   la primera fila se va perdiendo dentro del borde inferior del header. */
+body.v33-data-active .v33-data-head::before{
+  content:""!important;
+  position:absolute!important;
+  z-index:515!important;
+  left:0!important;
+  right:0!important;
+  bottom:0!important;
+  height:10px!important;
+  pointer-events:none!important;
+  background:linear-gradient(180deg,rgba(7,13,113,0),rgba(5,8,88,.96))!important;
+}
+
+/* La barra inferior de pestañas sigue siendo parte de la cabecera fija. */
+body.v33-data-active .v33-tabs{
+  position:absolute!important;
+  left:0!important;
+  right:0!important;
+  bottom:0!important;
+}
+
+/* En pantallas grandes, la cabecera fija conserva exactamente el mismo
+   ancho centrado que el contenido. */
+@media(min-width:700px){
+  body.v33-data-active .v33-data-head{
+    width:520px!important;
+    left:50%!important;
+    right:auto!important;
+    transform:translateX(-50%)!important;
+  }
+  body.v33-data-active .v33-data-page{
+    padding-top:258px!important;
+  }
+}
+
+@media(max-width:360px){
+  body.v33-data-active .v33-data-page{
+    padding-top:184px!important;
+  }
+}
