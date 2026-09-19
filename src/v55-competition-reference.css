@@ -895,3 +895,56 @@
     bottom:auto!important;
   }
 }
+
+
+/* V61 — UNIR FLECHAS / CONECTORES DEL CUADRO */
+/* La línea vertical de Semifinales ahora empieza y termina exactamente
+   en el centro de los dos cuadros de origen. Antes usaba 25%/25% y
+   dejaba un hueco visible entre la línea horizontal y la vertical. */
+@media(max-width:520px){
+  body[data-app-route="competition"] .v12-bracket-reference.stage-semifinal .v12-semifinal-flow{
+    --v61-semi-gap:clamp(110px,29vw,150px);
+    row-gap:var(--v61-semi-gap)!important;
+  }
+
+  body[data-app-route="competition"] .v12-bracket-reference.stage-semifinal .v12-semifinal-join::before{
+    top:calc((100% - var(--v61-semi-gap)) / 4)!important;
+    bottom:calc((100% - var(--v61-semi-gap)) / 4)!important;
+  }
+
+  /* Los tramos horizontales llegan hasta el mismo eje de la llave central,
+     sin separación ni sobreposición visible. */
+  body[data-app-route="competition"] .v12-bracket-reference.stage-semifinal .v12-semifinal-source::after{
+    right:-17px!important;
+    width:17px!important;
+    transform:translateY(-1.5px)!important;
+  }
+  body[data-app-route="competition"] .v12-bracket-reference.stage-semifinal .v12-semifinal-join::after{
+    left:50%!important;
+    width:17px!important;
+    transform:translateY(-1.5px)!important;
+  }
+  body[data-app-route="competition"] .v12-bracket-reference.stage-semifinal .v12-semifinal-target::before{
+    left:-17px!important;
+    width:17px!important;
+    transform:translateY(-1.5px)!important;
+  }
+}
+
+@media(max-width:390px){
+  body[data-app-route="competition"] .v12-bracket-reference.stage-semifinal .v12-semifinal-flow{
+    --v61-semi-gap:104px;
+    row-gap:var(--v61-semi-gap)!important;
+  }
+  body[data-app-route="competition"] .v12-bracket-reference.stage-semifinal .v12-semifinal-source::after{
+    right:-15px!important;
+    width:15px!important;
+  }
+  body[data-app-route="competition"] .v12-bracket-reference.stage-semifinal .v12-semifinal-join::after,
+  body[data-app-route="competition"] .v12-bracket-reference.stage-semifinal .v12-semifinal-target::before{
+    width:15px!important;
+  }
+  body[data-app-route="competition"] .v12-bracket-reference.stage-semifinal .v12-semifinal-target::before{
+    left:-15px!important;
+  }
+}
