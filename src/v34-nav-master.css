@@ -1,0 +1,272 @@
+/* V34 — Barra inferior unificada + correcciones de escala móvil.
+   Cargado al final para que ninguna pantalla vuelva a deformar la navegación. */
+:root{
+  --v34-nav-h:60px;
+  --v34-nav-bg:#17166f;
+  --v34-nav-off:#a8a7cb;
+  --v34-nav-on:#18e3f6;
+}
+
+.bottom-nav,
+body[data-app-route] .bottom-nav{
+  position:fixed!important;
+  z-index:2147483000!important;
+  left:50%!important;
+  right:auto!important;
+  bottom:0!important;
+  transform:translateX(-50%)!important;
+  width:min(100%,520px)!important;
+  min-height:var(--v34-nav-h)!important;
+  height:var(--v34-nav-h)!important;
+  box-sizing:border-box!important;
+  padding:3px 7px max(3px,env(safe-area-inset-bottom))!important;
+  display:grid!important;
+  grid-template-columns:repeat(5,minmax(0,1fr))!important;
+  align-items:center!important;
+  background:var(--v34-nav-bg)!important;
+  border-top:1px solid rgba(255,255,255,.12)!important;
+  box-shadow:none!important;
+  opacity:1!important;
+  pointer-events:auto!important;
+  touch-action:manipulation!important;
+  -webkit-tap-highlight-color:transparent!important;
+}
+.bottom-nav .nav-item,
+body[data-app-route] .bottom-nav .nav-item{
+  position:relative!important;
+  z-index:2!important;
+  width:100%!important;
+  min-width:0!important;
+  height:100%!important;
+  margin:0!important;
+  padding:2px 0 1px!important;
+  display:grid!important;
+  grid-template-rows:25px 14px!important;
+  place-items:center!important;
+  align-content:center!important;
+  gap:1px!important;
+  border:0!important;
+  outline:0!important;
+  background:transparent!important;
+  color:var(--v34-nav-off)!important;
+  pointer-events:auto!important;
+  touch-action:manipulation!important;
+  cursor:pointer!important;
+}
+.bottom-nav .nav-item.active,
+body[data-app-route] .bottom-nav .nav-item.active{
+  color:var(--v34-nav-on)!important;
+}
+.bottom-nav .nav-icon,
+body[data-app-route] .bottom-nav .nav-icon{
+  position:relative!important;
+  width:25px!important;
+  height:25px!important;
+  min-width:25px!important;
+  min-height:25px!important;
+  max-width:25px!important;
+  max-height:25px!important;
+  margin:0!important;
+  padding:0!important;
+  display:grid!important;
+  place-items:center!important;
+  color:inherit!important;
+  border:0!important;
+  background:transparent!important;
+  overflow:visible!important;
+}
+.bottom-nav .nav-icon svg,
+body[data-app-route] .bottom-nav .nav-icon svg{
+  display:block!important;
+  width:25px!important;
+  height:25px!important;
+  min-width:25px!important;
+  min-height:25px!important;
+  max-width:25px!important;
+  max-height:25px!important;
+  overflow:visible!important;
+  fill:currentColor!important;
+  stroke:none!important;
+  stroke-width:0!important;
+  transform:none!important;
+}
+.bottom-nav .nav-item small,
+body[data-app-route] .bottom-nav .nav-item small{
+  display:block!important;
+  width:100%!important;
+  min-width:0!important;
+  margin:0!important;
+  padding:0!important;
+  color:inherit!important;
+  font-family:Roboto,Inter,Arial,sans-serif!important;
+  font-size:10px!important;
+  line-height:12px!important;
+  font-weight:500!important;
+  letter-spacing:0!important;
+  text-transform:none!important;
+  white-space:nowrap!important;
+  text-align:center!important;
+  overflow:visible!important;
+}
+
+/* Las pantallas dedicadas de referencia siguen sin barra inferior. */
+html.v31-hospitality-active .bottom-nav,
+body[data-app-route="moments"] .bottom-nav,
+body[data-app-route="following"] .bottom-nav{
+  display:none!important;
+}
+
+/* Anular pseudo-iconos antiguos que deformaban Quiz. */
+body[data-app-route="quiz"] .nav-item[data-route="competition"] .nav-icon,
+body[data-app-route="quiz"] .nav-item[data-route="more"] .nav-icon{
+  border:0!important;
+  border-radius:0!important;
+}
+body[data-app-route="quiz"] .nav-item[data-route="competition"] .nav-icon::before,
+body[data-app-route="quiz"] .nav-item[data-route="competition"] .nav-icon::after,
+body[data-app-route="quiz"] .nav-item[data-route="more"] .nav-icon::before,
+body[data-app-route="quiz"] .nav-item[data-route="more"] .nav-icon::after{
+  display:none!important;
+  content:none!important;
+}
+
+/* Quiz, Pronostica Seis y Más o Menos reservan exactamente el mismo alto de barra. */
+body[data-app-route="quiz"] #screen{
+  padding-bottom:calc(var(--v34-nav-h) + env(safe-area-inset-bottom))!important;
+}
+body[data-app-route="quiz"] .v30-quiz-page{
+  height:calc(100dvh - var(--v34-nav-h) - env(safe-area-inset-bottom))!important;
+}
+body[data-app-route="predictor"] #screen{
+  padding-bottom:calc(var(--v34-nav-h) + env(safe-area-inset-bottom))!important;
+}
+body[data-app-route="predictor"] .v29-predictor-page{
+  height:calc(100dvh - var(--v34-nav-h) - env(safe-area-inset-bottom))!important;
+  min-height:0!important;
+}
+body[data-app-route="moreLess"]{
+  --ml-nav-h:var(--v34-nav-h)!important;
+}
+body[data-app-route="moreLess"] .v12-moreless{
+  height:calc(100dvh - var(--v34-nav-h) - env(safe-area-inset-bottom))!important;
+  min-height:0!important;
+}
+
+/* Quiz: acercar la columna de respuestas al tamaño de la referencia maestra. */
+body[data-app-route="quiz"] .quiz-card{
+  width:min(41.5vw,205px)!important;
+  min-width:145px!important;
+  gap:clamp(7px,1dvh,10px)!important;
+}
+body[data-app-route="quiz"] .quiz-option{
+  height:clamp(42px,5.2dvh,58px)!important;
+  min-height:42px!important;
+  border-radius:12px!important;
+  padding-right:28px!important;
+}
+body[data-app-route="quiz"] .v30-answer-letter{
+  border-radius:12px!important;
+  font-size:clamp(24px,6.4vw,34px)!important;
+}
+body[data-app-route="quiz"] .v30-answer-text{
+  font-size:clamp(9px,2.15vw,12px)!important;
+}
+
+/* Más o Menos: liberar logo/flechas y eliminar el aspecto de bloque. */
+body[data-app-route="moreLess"] .v12-ml-logo{
+  top:34.0%!important;
+  width:min(43vw,215px)!important;
+  max-height:24%!important;
+  background:transparent!important;
+  filter:none!important;
+}
+body[data-app-route="moreLess"] .v12-ml-choice{
+  top:62.7%!important;
+  width:min(51vw,255px)!important;
+}
+body[data-app-route="moreLess"] .v12-avatar{
+  width:min(21vw,104px)!important;
+  height:min(21vw,104px)!important;
+}
+body[data-app-route="moreLess"] .v12-ml-mid .up-arrow{
+  top:-42px!important;
+}
+body[data-app-route="moreLess"] .v12-ml-mid .down-arrow{
+  bottom:-54px!important;
+}
+body[data-app-route="moreLess"] .v12-stadium{
+  height:18.8%!important;
+  background-position:center 96%!important;
+}
+
+/* Introduce tus datos: corregir los elementos que aún salían demasiado grandes. */
+html.v31-hospitality-active .v31-access-switch{
+  height:62px!important;
+  border-radius:999px!important;
+}
+html.v31-hospitality-active .v31-selected-content{
+  grid-template-columns:27px 44px minmax(0,1fr)!important;
+  gap:6px!important;
+  padding:4px 8px 4px 18px!important;
+}
+html.v31-hospitality-active .v31-check{
+  width:23px!important;
+  height:15px!important;
+  border-left-width:3px!important;
+  border-bottom-width:3px!important;
+}
+html.v31-hospitality-active .v31-league-logo{
+  width:42px!important;
+  height:42px!important;
+  object-fit:contain!important;
+  background:transparent!important;
+}
+html.v31-hospitality-active .v31-league-name{
+  font-size:10px!important;
+  line-height:1.08!important;
+  font-weight:600!important;
+  white-space:nowrap!important;
+}
+html.v31-hospitality-active .v31-vip{
+  font-size:17px!important;
+  font-weight:400!important;
+}
+html.v31-hospitality-active .v31-code-wrap{
+  height:62px!important;
+  padding:0 20px!important;
+  gap:22px!important;
+}
+html.v31-hospitality-active .v31-qr{
+  width:28px!important;
+  height:28px!important;
+  flex-basis:28px!important;
+}
+html.v31-hospitality-active .v31-code-input{
+  font-size:16px!important;
+}
+html.v31-hospitality-active .v31-code-note{
+  top:37.15%!important;
+  font-size:14px!important;
+  line-height:1.24!important;
+}
+html.v31-hospitality-active .v31-continue{
+  height:56px!important;
+  border-radius:21px!important;
+  font-size:21px!important;
+  bottom:calc(env(safe-area-inset-bottom,0px) + 46px)!important;
+}
+
+@media(max-width:420px){
+  html.v31-hospitality-active .v31-access-switch{height:58px!important}
+  html.v31-hospitality-active .v31-selected-content{
+    grid-template-columns:25px 40px minmax(0,1fr)!important;
+    gap:5px!important;
+    padding-left:13px!important;
+  }
+  html.v31-hospitality-active .v31-league-logo{width:38px!important;height:38px!important}
+  html.v31-hospitality-active .v31-league-name{font-size:9px!important}
+  html.v31-hospitality-active .v31-vip{font-size:16px!important}
+  html.v31-hospitality-active .v31-code-wrap{height:58px!important}
+  html.v31-hospitality-active .v31-code-note{font-size:13px!important}
+  html.v31-hospitality-active .v31-continue{height:54px!important;font-size:20px!important}
+}
