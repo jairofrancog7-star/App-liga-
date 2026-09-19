@@ -6,7 +6,6 @@
   const LEAGUE_LOGO=BASE+'assets/liga-logo.webp';
 
   const V27_TEAMS=[
-    {id:'JUV',name:'Juventino',short:'Juventino',logo:'',abbr:'JUV'},
     {id:'PRO',name:'Promesas FC',short:'Promesas FC',logo:'assets/official-logos/promesas-fc.png'},
     {id:'HUE',name:'La Huerta',short:'La Huerta',logo:'assets/official-logos/la-huerta.png'},
     {id:'FRA',name:'Franco FC',short:'Franco FC',logo:'assets/official-logos/franco-fc.png'},
