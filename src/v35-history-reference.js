@@ -19,11 +19,11 @@ const ASSETS={
 };
 
 const seasons=[
-  {label:'2025/26',crest:ASSETS.america,alt:'Club América Veteranos'},
+  {label:'2025/26',crest:ASSETS.league,alt:'Liga Municipal de Fútbol Juventino Rosas'},
   {label:'2024/25',crest:ASSETS.league,alt:'Liga Municipal de Fútbol Juventino Rosas'},
-  {label:'2023/24',crest:ASSETS.huerta,alt:'La Huerta'},
-  {label:'2022/23',crest:ASSETS.franco,alt:'Franco FC'},
-  {label:'2021/22',crest:ASSETS.galeana,alt:'Atlético Galeana'}
+  {label:'2023/24',crest:ASSETS.league,alt:'Liga Municipal de Fútbol Juventino Rosas'},
+  {label:'2022/23',crest:ASSETS.league,alt:'Liga Municipal de Fútbol Juventino Rosas'},
+  {label:'2021/22',crest:ASSETS.league,alt:'Liga Municipal de Fútbol Juventino Rosas'}
 ];
 
 const videos=[
@@ -92,7 +92,7 @@ function seasonCards(){
   return seasons.map((s,i)=>'<button class="v35-season-card" type="button" data-v35-season="'+i+'" aria-label="Temporada '+esc(s.label)+'"><span class="v35-season-crest"><img src="'+s.crest+'" alt="'+esc(s.alt)+'" loading="lazy" decoding="async"></span><span class="v35-season-label">'+esc(s.label)+'</span></button>').join('');
 }
 function featureCard(){
-  return '<article class="v35-feature-card"><img class="v35-feature-photo" src="'+ASSETS.feature+'" alt="" loading="eager" decoding="async"><img class="v35-feature-trophy" src="'+ASSETS.trophy+'" alt="" loading="eager" decoding="async"><span class="v35-feature-shade"></span><h2>Palmarés de la Liga<br>Municipal de Fútbol<br>Juventino Rosas</h2><button class="v35-share" type="button" data-v35-share aria-label="Compartir palmarés">'+shareSvg()+'</button></article>';
+  return '<article class="v35-feature-card"><img class="v35-feature-photo" src="'+ASSETS.feature+'" alt="" loading="eager" decoding="async"><img class="v35-feature-trophy" src="'+ASSETS.trophy+'" alt="" loading="eager" decoding="async"><span class="v35-feature-shade"></span><div class="v35-feature-copy"><h2>La historia de<br>nuestra Liga</h2><p>Liga Municipal de Fútbol<br>Juventino Rosas</p></div><button class="v35-share" type="button" data-v35-share aria-label="Compartir historia">'+shareSvg()+'</button></article>';
 }
 function videosRow(){
   return '<div class="v35-video-carousel" aria-label="Partidos clásicos">'+videos.map((v,i)=>'<button class="v35-video-card" type="button" data-v35-video="'+i+'"><span class="v35-video-thumb"><img src="'+v.image+'" alt="" loading="lazy" decoding="async"><span class="v35-video-duration">'+v.duration+'</span><span class="v35-video-play">'+playSvg()+'</span></span><span class="v35-video-title">'+esc(v.title)+'</span></button>').join('')+'</div>';
@@ -186,7 +186,6 @@ function pageHtml(){
     '<div class="v35-compact-bar">'+back+'<div class="v35-compact-title">Historia</div></div>'+
     '<header class="v35-history-head">'+
       back+
-      '<div class="v35-logo-wrap"><img data-v35-top-logo crossorigin="anonymous" src="'+ASSETS.league+'" alt="Liga Municipal de Fútbol Juventino Rosas A.C." decoding="async"></div>'+
       '<h1>Historia</h1>'+
     '</header>'+
     '<nav class="v35-tabs" aria-label="Secciones de Historia">'+tabs()+'</nav>'+
@@ -200,7 +199,7 @@ function renderHistory(){
   if(screen.querySelector('.v35-history-page')) return;
   screen.innerHTML=pageHtml();
   document.body.classList.add('v35-history-mounted');
-  transparentizeTopLogo(screen.querySelector('[data-v35-top-logo]'));
+  const topLogo=screen.querySelector('[data-v35-top-logo]'); if(topLogo) transparentizeTopLogo(topLogo);
   requestAnimationFrame(()=>{
     window.scrollTo({top:0,left:0,behavior:'auto'});
     syncHistoryCollapse();
