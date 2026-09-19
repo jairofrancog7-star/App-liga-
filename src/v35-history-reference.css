@@ -62,16 +62,17 @@
 
   .v35-history-head{
     position:relative;
-    padding:max(20px,env(safe-area-inset-top)) var(--v35-pad) 0;
+    padding:max(10px,env(safe-area-inset-top)) var(--v35-pad) 0;
+    min-height:0;
   }
 
   .v35-back{
     position:absolute;
     z-index:3;
     left:var(--v35-pad);
-    top:max(24px,calc(env(safe-area-inset-top) + 8px));
-    width:40px;
-    height:40px;
+    top:max(14px,calc(env(safe-area-inset-top) + 4px));
+    width:38px;
+    height:38px;
     padding:0;
     display:grid;
     place-items:center;
@@ -82,8 +83,8 @@
     cursor:pointer;
   }
   .v35-back svg{
-    width:33px;
-    height:33px;
+    width:31px;
+    height:31px;
     fill:none;
     stroke:currentColor;
     stroke-width:2.2;
@@ -92,11 +93,18 @@
   }
 
   .v35-logo-wrap{
-    width:clamp(124px,31vw,175px);
-    aspect-ratio:1/1;
-    margin:22px auto 2px;
+    position:absolute;
+    z-index:2;
+    top:max(12px,calc(env(safe-area-inset-top) + 3px));
+    left:50%;
+    transform:translateX(-50%);
+    width:clamp(54px,14vw,72px);
+    height:clamp(54px,14vw,72px);
+    margin:0;
     display:grid;
     place-items:center;
+    pointer-events:none;
+    background:transparent!important;
   }
   .v35-logo-wrap img{
     width:100%;
@@ -104,11 +112,15 @@
     display:block;
     object-fit:contain;
     object-position:center;
-    filter:drop-shadow(0 9px 14px rgba(0,0,45,.18));
+    background:transparent!important;
+    filter:drop-shadow(0 4px 7px rgba(0,0,45,.16));
+  }
+  .v35-logo-wrap img.v35-top-logo-blend-fallback{
+    mix-blend-mode:screen;
   }
 
   .v35-history-head h1{
-    margin:clamp(-2px,-.4vw,0px) 0 27px;
+    margin:clamp(86px,23vw,108px) 0 20px;
     color:#fff;
     font-size:clamp(40px,10.3vw,57px);
     line-height:.96;
@@ -134,8 +146,8 @@
   .v35-tab{
     flex:0 0 auto;
     position:relative;
-    min-height:49px;
-    padding:0 0 18px;
+    min-height:43px;
+    padding:0 0 14px;
     border:0;
     background:none;
     color:var(--v35-soft);
@@ -154,7 +166,7 @@
     position:absolute;
     left:0;
     bottom:-1px;
-    width:clamp(79px,20vw,112px);
+    width:clamp(78px,20vw,108px);
     height:4px;
     border-radius:4px 4px 0 0;
     background:var(--v35-cyan);
