@@ -1,82 +1,98 @@
-/* V15 PARTS14 — solo INICIO y VIDEO según las capturas del usuario.
-   No modifica Competición, Fantasy, Más ni el resto de pantallas. */
+/* V15 HOME STORIES — ajuste fiel a referencia del usuario.
+   Mantiene funcionalidad y corrige tamaño, orden y color de las historias. */
 
-/* INICIO: mantener intacta la cabecera superior que ya estaba corregida. */
+/* INICIO: franja de historias en azul noche, sin panel brillante independiente. */
 body[data-app-route="home"] #screen>.stories{
+  box-sizing:border-box!important;
+  width:100%!important;
   margin:0!important;
-  padding:4.2vw 0 5.4vw 11.4vw!important;
-  min-height:43.5vw!important;
+  padding:3.5vw 0 4.1vw 4.8vw!important;
+  min-height:33.5vw!important;
   display:flex!important;
   align-items:flex-start!important;
-  gap:3.8vw!important;
+  justify-content:flex-start!important;
+  gap:1.2vw!important;
   overflow-x:auto!important;
   overflow-y:hidden!important;
-  background:linear-gradient(180deg,#1353df 0%,#1029b8 48%,#0b1a94 100%)!important;
+  background:#02045d!important;
+  scroll-snap-type:x proximity!important;
+  scroll-padding-left:4.8vw!important;
+  -webkit-overflow-scrolling:touch!important;
   scrollbar-width:none!important;
 }
 body[data-app-route="home"] #screen>.stories::-webkit-scrollbar{display:none!important}
+
 body[data-app-route="home"] #screen>.stories .story{
-  flex:0 0 20.9vw!important;
-  width:20.9vw!important;
-  min-width:20.9vw!important;
+  box-sizing:border-box!important;
+  flex:0 0 20.4vw!important;
+  width:20.4vw!important;
+  min-width:20.4vw!important;
   margin:0!important;
   padding:0!important;
   display:flex!important;
   flex-direction:column!important;
   align-items:center!important;
-  gap:2.1vw!important;
+  justify-content:flex-start!important;
+  gap:2.15vw!important;
   background:transparent!important;
   border:0!important;
   overflow:visible!important;
+  scroll-snap-align:start!important;
 }
+
 body[data-app-route="home"] #screen>.stories .story-ring{
-  width:20.9vw!important;
-  height:20.9vw!important;
-  min-width:20.9vw!important;
-  min-height:20.9vw!important;
+  width:15.7vw!important;
+  height:15.7vw!important;
+  min-width:15.7vw!important;
+  min-height:15.7vw!important;
   display:grid!important;
   place-items:center!important;
-  border:3px solid #10e9ef!important;
+  border:3px solid #10e7ef!important;
   border-radius:50%!important;
-  background:radial-gradient(circle at 50% 40%,#163bc0 0%,#0b177c 70%,#080e65 100%)!important;
-  box-shadow:0 0 0 3px rgba(8,13,96,.68) inset,0 0 18px rgba(5,230,239,.12)!important;
+  background:radial-gradient(circle at 50% 42%,#151d8f 0%,#0b126f 62%,#070b59 100%)!important;
+  box-shadow:
+    0 0 0 2px rgba(7,9,78,.96) inset,
+    0 0 11px rgba(16,231,239,.10)!important;
   overflow:hidden!important;
 }
+
 body[data-app-route="home"] #screen>.stories .story-inner.v15-story-inner{
-  width:78%!important;
-  height:78%!important;
+  width:82%!important;
+  height:82%!important;
   display:grid!important;
   place-items:center!important;
   background:transparent!important;
   border:0!important;
   border-radius:0!important;
 }
+
 body[data-app-route="home"] #screen>.stories .v15-story-inner img{
   width:100%!important;
   height:100%!important;
   display:block!important;
   object-fit:contain!important;
-  filter:drop-shadow(0 4px 7px rgba(0,0,0,.4))!important;
+  object-position:center!important;
+  filter:drop-shadow(0 3px 5px rgba(0,0,0,.28))!important;
 }
+
 body[data-app-route="home"] #screen>.stories .story small{
-  width:24vw!important;
-  min-height:7.2vw!important;
+  width:20.8vw!important;
+  min-height:6.2vw!important;
   margin:0!important;
   padding:0!important;
   color:#fff!important;
-  font-size:3.7vw!important;
-  line-height:1.03!important;
+  font-family:Inter,Roboto,Arial,sans-serif!important;
+  font-size:3.05vw!important;
+  line-height:1.06!important;
   font-weight:760!important;
+  letter-spacing:-.018em!important;
   text-align:center!important;
   white-space:normal!important;
   overflow:visible!important;
 }
-.v15-moments-mark{
-  width:100%!important;height:100%!important;display:flex!important;flex-direction:column!important;
-  align-items:center!important;justify-content:center!important;color:#fff!important;gap:.4vw!important;
-}
-.v15-moments-mark i{font-style:normal!important;font-size:3.5vw!important;line-height:1!important}
-.v15-moments-mark b{font-size:3vw!important;line-height:1!important;font-weight:900!important}
+
+/* El antiguo marcador de MOMENTOS ya no se usa: ahora se muestra el escudo real de la Liga. */
+.v15-moments-mark{display:none!important}
 
 /* INICIO: sustituir únicamente la tarjeta principal por la referencia enviada. */
 body[data-app-route="home"] #screen>.section.hero[data-v15-home-feature="1"]{
@@ -162,7 +178,33 @@ body[data-app-route="video"] #screen>.section{
 .v15-toast.show{opacity:1!important;transform:translate(-50%,0)!important}
 
 @media(min-width:700px){
-  body[data-app-route="home"] #screen>.stories{padding-left:8vw!important}
+  body[data-app-route="home"] #screen>.stories{
+    padding-left:24px!important;
+    padding-right:0!important;
+    gap:6px!important;
+    min-height:178px!important;
+    scroll-padding-left:24px!important;
+  }
+  body[data-app-route="home"] #screen>.stories .story{
+    flex-basis:106px!important;
+    width:106px!important;
+    min-width:106px!important;
+    gap:11px!important;
+  }
+  body[data-app-route="home"] #screen>.stories .story-ring{
+    width:82px!important;
+    height:82px!important;
+    min-width:82px!important;
+    min-height:82px!important;
+  }
+  body[data-app-route="home"] #screen>.stories .story small{
+    width:108px!important;
+    min-height:34px!important;
+    font-size:16px!important;
+  }
+  body[data-app-route="home"] #screen>.section.hero[data-v15-home-feature="1"]{max-width:536px!important;border-radius:32px!important}
+}
+
   body[data-app-route="home"] #screen>.stories .story{flex-basis:145px!important;width:145px!important;min-width:145px!important}
   body[data-app-route="home"] #screen>.stories .story-ring{width:145px!important;height:145px!important;min-width:145px!important;min-height:145px!important}
   body[data-app-route="home"] #screen>.stories .story small{font-size:23px!important;width:165px!important}
