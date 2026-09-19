@@ -63,6 +63,8 @@ function cat(id=categoryId){return db?.categories?.[String(id)]||null}
 function block(kind,id=categoryId){return cat(id)?.[kind]?.[0]||null}
 function rows(kind,id=categoryId){return block(kind,id)?.rows||[]}
 function logoFor(name){
+  const shared=window.LJR_TEAM_LOGOS?.get?.(name);
+  if(shared)return shared;
   if(!db)return '';
   const hit=Object.entries(db.team_logos||{}).find(([k])=>same(k,name));
   const v=hit?.[1];
@@ -484,16 +486,8 @@ function patchTeams(){
   if(page.dataset.v62TeamsSig===sig)return;
   page.dataset.v62TeamsSig=sig;
 
-  /* Limpia ids seguidos obsoletos para que no reaparezcan clubes eliminados. */
-  let store={};
-  try{store=JSON.parse(localStorage.getItem('lj-store-v3')||'{}')||{}}catch{}
-  const followed=Array.isArray(store.followed)?store.followed.slice():[];
-  const validIds=new Set(all.map(codeFor).filter(Boolean));
-  const cleaned=followed.filter(id=>validIds.has(id));
-  if(cleaned.length!==followed.length){
-    store.followed=cleaned;
-    localStorage.setItem('lj-store-v3',JSON.stringify(store));
-  }
+  /* Siguiendo pertenece al diseño V27 y conserva exactamente los equipos
+     elegidos por el usuario. No se limpia ni se reemplaza desde el directorio oficial. */
 
   const makeTile=n=>{
     const b=document.createElement('button');
@@ -505,14 +499,8 @@ function patchTeams(){
     return b;
   };
 
-  /* Siguiendo: sólo clubes oficiales actuales y sin duplicados. */
-  const followedRow=page.querySelector('.v27-followed-row');
-  if(followedRow){
-    followedRow.innerHTML='';
-    const current=all.filter(n=>cleaned.includes(codeFor(n))).slice(0,4);
-    if(current.length)current.forEach(n=>followedRow.appendChild(makeTile(n)));
-    else followedRow.innerHTML='<div class="v27-empty-grid">Aún no sigues equipos.</div>';
-  }
+  /* No tocar .v27-followed-row: V27 conserva sus escudos, orden horizontal
+     y clase followed-only, que evita que un solo equipo ocupe todo el ancho. */
 
   /* Una sola cuadrícula oficial. No se deja la antigua lista estática ni
      la sección secundaria que provocaba repeticiones al desplazarse. */
