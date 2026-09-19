@@ -1,0 +1,57 @@
+/* V74 — Facebook official source card, adapted to App-liga blue UI */
+.v74-facebook-source{
+  margin:14px 0 18px;
+  padding:14px;
+  display:grid;
+  grid-template-columns:42px minmax(0,1fr);
+  gap:11px;
+  border:1px solid rgba(51,199,255,.32);
+  border-radius:17px;
+  background:
+    radial-gradient(circle at 100% 0,rgba(31,143,255,.18),transparent 35%),
+    linear-gradient(145deg,rgba(10,17,113,.96),rgba(7,8,86,.96));
+  box-shadow:0 12px 30px rgba(0,0,50,.18);
+}
+.v74-fb-icon{
+  width:42px;height:42px;display:grid;place-items:center;
+  border-radius:12px;background:#1877f2;color:#fff;
+  font:900 29px/1 Arial,sans-serif;
+}
+.v74-fb-copy{min-width:0}
+.v74-fb-copy small{
+  display:block;color:#20e3ef;font-size:8.5px;font-weight:900;letter-spacing:.13em
+}
+.v74-fb-copy h3{
+  margin:4px 0 5px;color:#fff;font-size:18px;line-height:1.05
+}
+.v74-fb-copy p{
+  margin:0;color:#b9c0df;font-size:10.5px;line-height:1.38
+}
+.v74-fb-tags{
+  margin-top:9px;display:flex;gap:5px;flex-wrap:wrap
+}
+.v74-fb-tags span{
+  padding:5px 7px;border:1px solid rgba(255,255,255,.13);
+  border-radius:999px;background:rgba(255,255,255,.04);
+  color:#d9def3;font-size:8px;font-weight:750
+}
+.v74-fb-actions{
+  grid-column:1/-1;display:grid;grid-template-columns:1fr auto;gap:7px
+}
+.v74-fb-actions button{
+  min-height:38px;padding:0 12px;border:1px solid rgba(32,227,239,.48);
+  border-radius:10px;background:#16d8e6;color:#06105c;
+  font-size:10.5px;font-weight:900
+}
+.v74-fb-actions button+button{
+  background:#10116d;color:#fff;border-color:rgba(255,255,255,.16)
+}
+.v35-history-content>.v74-facebook-source{
+  margin-left:0;margin-right:0
+}
+@media(max-width:390px){
+  .v74-facebook-source{grid-template-columns:38px minmax(0,1fr);padding:12px;gap:9px}
+  .v74-fb-icon{width:38px;height:38px;font-size:26px}
+  .v74-fb-copy h3{font-size:17px}
+  .v74-fb-copy p{font-size:10px}
+}
