@@ -79,6 +79,7 @@ function parseDate(v){
   return new Date(+m[3],+m[2]-1,+m[1],+(m[4]||0),+(m[5]||0));
 }
 function isFutureFixture(r){const d=parseDate(r?.[8]);return !!d&&d.getTime()>Date.now()}
+function isPlayedFixture(r){return /^\d+$/.test(String(r?.[3]??''))&&/^\d+$/.test(String(r?.[5]??''))}
 function categoryTeams(c){
   if(!c)return [];
   const out=[];
@@ -224,7 +225,7 @@ function applyPlayerFilters(){
 }
 
 function fixtureCard(r){
-  const pending=isFutureFixture(r);
+  const pending=!isPlayedFixture(r);
   const home=r[2]||'',away=r[6]||'',hs=r[3]??'',as=r[5]??'';
   const place=r[7]||'Campo por confirmar',when=r[8]||'Fecha por confirmar';
   return '<article class="v62-match-card '+(pending?'pending':'played')+'">'+
@@ -238,10 +239,10 @@ function fixturesView(){
   const b=block('fixtures');
   if(!b||!b.rows?.length)return empty('No hay jornadas publicadas para esta categoría.');
   const all=b.rows.slice();
-  const shown=fixtureFilter==='upcoming'?all.filter(isFutureFixture):fixtureFilter==='played'?all.filter(r=>!isFutureFixture(r)):all;
+  const shown=fixtureFilter==='upcoming'?all.filter(r=>!isPlayedFixture(r)):fixtureFilter==='played'?all.filter(isPlayedFixture):all;
   const groups={};
   shown.forEach(r=>(groups[r[1]||'?']||(groups[r[1]||'?']=[])).push(r));
-  const pending=all.filter(isFutureFixture).length;
+  const pending=all.filter(r=>!isPlayedFixture(r)).length;
   return '<div class="v62-fixture-toolbar">'+
       '<div class="v62-fixture-filter">'+
         '<button type="button" class="'+(fixtureFilter==='all'?'active':'')+'" data-v62-fixture-filter="all">Todos</button>'+
