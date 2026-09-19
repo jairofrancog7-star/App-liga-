@@ -95,7 +95,7 @@ function videosRow(){
 }
 function stats(){
   return '<section class="v35-block v35-stats-block"><h2 class="v35-section-title">Estadísticas históricas</h2>'+
-    '<article class="v35-stat-card"><h3>Archivo oficial</h3><div class="v35-stat-rule"></div><p>No hay palmarés ni récords históricos verificados publicados en la fuente oficial actual.</p></article></section>';
+    '<article class="v35-stat-card"><h3>Archivo oficial</h3><div class="v35-stat-rule"></div><p>Facebook de la Liga quedó enlazado como fuente histórica. Los campeones, finales y récords se mostrarán únicamente cuando cada publicación o imagen haya sido verificada.</p></article></section>';
 }
 function summaryBody(){
   return '<section class="v35-block v35-seasons-block"><div class="v35-section-row"><h2>Buscar por temporada</h2><button type="button" data-v35-tab-jump="Temporadas">Ver todo</button></div><div class="v35-season-carousel">'+seasonCards()+'</div></section>'+
@@ -105,19 +105,19 @@ function summaryBody(){
 }
 function seasonsBody(){
   return '<section class="v35-block v35-tab-body"><div class="v35-section-row"><h2>Temporadas</h2></div>'+
-    '<div class="v35-season-detail"><span>Archivo histórico</span><h3>Datos pendientes de publicación oficial</h3><p>No se asignan campeones ni goleadores sin una fuente oficial.</p></div></section>';
+    '<div class="v35-season-detail"><span>Archivo histórico</span><h3>Archivo histórico conectado</h3><p>La fuente de Facebook ya está enlazada; no se asignan campeones ni goleadores hasta verificar la publicación o imagen correspondiente.</p></div></section>';
 }
 function championsBody(){
   return '<section class="v35-block v35-tab-body"><h2 class="v35-section-title">Campeones</h2>'+
-    '<article class="v35-stat-card"><h3>Sin datos oficiales publicados</h3><p>Esta sección no mostrará campeones de ejemplo.</p></article></section>';
+    '<article class="v35-stat-card"><h3>Fuente histórica enlazada</h3><p>Esta sección mostrará campeones reales documentados en las publicaciones históricas de la Liga; no se usarán campeones de ejemplo.</p></article></section>';
 }
 function finalsBody(){
   return '<section class="v35-block v35-tab-body"><h2 class="v35-section-title">Finales</h2>'+
-    '<div class="v35-season-detail"><h3>Sin finales históricas verificadas publicadas</h3><p>Se mostrarán cuando estén disponibles en la fuente oficial.</p></div></section>';
+    '<div class="v35-season-detail"><h3>Finales históricas por verificar</h3><p>Se mostrarán después de verificar las publicaciones e imágenes históricas enlazadas desde Facebook.</p></div></section>';
 }
 function recordsBody(){
   return '<section class="v35-block v35-tab-body"><h2 class="v35-section-title">Récords</h2>'+
-    '<article class="v35-stat-card"><h3>Sin récords oficiales publicados</h3><p>No se muestran números estimados o de ejemplo.</p></article></section>';
+    '<article class="v35-stat-card"><h3>Récords históricos por verificar</h3><p>No se muestran números estimados o de ejemplo; solo datos comprobados en publicaciones de la Liga.</p></article></section>';
 }
 function bodyForTab(){
   if(activeTab==='Temporadas') return seasonsBody();
