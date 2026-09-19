@@ -3984,3 +3984,291 @@ body[data-app-route="competition"] .v12-bracket-reference.stage-final .v12-final
     grid-template-columns:minmax(0,1fr) 28px minmax(0,1fr)!important;
   }
 }
+
+
+/* === PARTS51 — INTERACCIÓN Y ESCALA EXACTA DEL VIDEO DEL CUADRO === */
+/* Pestañas de etapas: proporciones del video. Play-off y Final son más cortas;
+   Octavos/Cuartos conservan el ancho grande de la referencia. */
+body[data-app-route="competition"] .v12-bracket-stage-tabs{
+  position:relative!important;
+  z-index:35!important;
+  display:flex!important;
+  align-items:center!important;
+  gap:clamp(9px,2.4vw,13px)!important;
+  width:auto!important;
+  max-width:none!important;
+  margin:0 -12px 10px!important;
+  padding:10px 14px 10px!important;
+  overflow-x:auto!important;
+  overflow-y:hidden!important;
+  scroll-behavior:smooth!important;
+  scroll-snap-type:x proximity!important;
+  -webkit-overflow-scrolling:touch!important;
+  scrollbar-width:none!important;
+  background:#05065b!important;
+  border:0!important;
+}
+body[data-app-route="competition"] .v12-bracket-stage-tabs::-webkit-scrollbar{display:none!important}
+body[data-app-route="competition"] .v12-bracket-stage-tabs > button[data-v12-bracket-stage]{
+  flex:0 0 auto!important;
+  width:auto!important;
+  min-width:0!important;
+  max-width:none!important;
+  height:clamp(48px,12.8vw,66px)!important;
+  min-height:clamp(48px,12.8vw,66px)!important;
+  max-height:clamp(48px,12.8vw,66px)!important;
+  padding:0 clamp(18px,4.8vw,25px)!important;
+  box-sizing:border-box!important;
+  display:flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  border:0!important;
+  border-radius:clamp(13px,3.6vw,18px)!important;
+  background:#17176b!important;
+  color:#f0f1fb!important;
+  font-family:Inter,Roboto,Arial,sans-serif!important;
+  font-size:clamp(14px,3.8vw,19px)!important;
+  line-height:1!important;
+  font-weight:700!important;
+  letter-spacing:-.018em!important;
+  white-space:nowrap!important;
+  scroll-snap-align:center!important;
+  transition:background-color .18s ease,color .18s ease,transform .18s ease!important;
+}
+body[data-app-route="competition"] .v12-bracket-stage-tabs > button[data-v12-bracket-stage="playoff"]{
+  width:clamp(118px,31vw,160px)!important;
+  padding-left:12px!important;
+  padding-right:12px!important;
+}
+body[data-app-route="competition"] .v12-bracket-stage-tabs > button[data-v12-bracket-stage="octavos"],
+body[data-app-route="competition"] .v12-bracket-stage-tabs > button[data-v12-bracket-stage="cuartos"]{
+  width:clamp(188px,49vw,255px)!important;
+}
+body[data-app-route="competition"] .v12-bracket-stage-tabs > button[data-v12-bracket-stage="semifinal"]{
+  width:clamp(155px,41vw,212px)!important;
+}
+body[data-app-route="competition"] .v12-bracket-stage-tabs > button[data-v12-bracket-stage="final"]{
+  width:clamp(92px,24vw,125px)!important;
+  padding-left:10px!important;
+  padding-right:10px!important;
+}
+body[data-app-route="competition"] .v12-bracket-stage-tabs > button[data-v12-bracket-stage].active{
+  background:#14dce8!important;
+  color:#06115b!important;
+  font-weight:700!important;
+}
+
+/* Fechas: misma escala/posición del video. */
+body[data-app-route="competition"] .v12-bracket-dates,
+body[data-app-route="competition"] .v12-progress-dates{
+  grid-template-columns:1fr 1fr!important;
+  gap:clamp(26px,7vw,36px)!important;
+  margin-bottom:clamp(18px,4.8vw,25px)!important;
+  padding-left:clamp(15px,4vw,21px)!important;
+  padding-right:clamp(15px,4vw,21px)!important;
+}
+body[data-app-route="competition"] .v12-bracket-dates span,
+body[data-app-route="competition"] .v12-progress-dates span{
+  padding-top:clamp(13px,3.4vw,18px)!important;
+  color:#b7bad1!important;
+  font-family:Inter,Roboto,Arial,sans-serif!important;
+  font-size:clamp(12px,3.35vw,17px)!important;
+  line-height:1.12!important;
+  font-weight:500!important;
+  letter-spacing:-.01em!important;
+  white-space:nowrap!important;
+}
+body[data-app-route="competition"] .v12-bracket-dates span::before,
+body[data-app-route="competition"] .v12-progress-dates span::before{
+  height:2px!important;
+  background:#20297e!important;
+}
+
+/* El cuadro del video usa dos columnas de igual peso. */
+body[data-app-route="competition"] .v12-progress-route{
+  grid-template-columns:clamp(11px,2.8vw,15px) minmax(0,1fr) clamp(25px,6.6vw,34px) minmax(0,1fr)!important;
+  column-gap:clamp(4px,1.2vw,7px)!important;
+  min-height:clamp(332px,88vw,455px)!important;
+}
+body[data-app-route="competition"] .v12-progress-board{
+  gap:clamp(70px,18vw,94px)!important;
+  padding-left:clamp(2px,.8vw,5px)!important;
+  padding-right:clamp(2px,.8vw,5px)!important;
+}
+
+/* Todas las tarjetas grandes mantienen exactamente la misma proporción visual. */
+body[data-app-route="competition"] .v12-progress-match{
+  aspect-ratio:1.43 / 1!important;
+  min-height:0!important;
+  border-radius:clamp(14px,3.6vw,19px)!important;
+  padding:clamp(14px,3.8vw,20px)!important;
+  background:linear-gradient(180deg,#0c0a78 0%,#09076b 100%)!important;
+}
+body[data-app-route="competition"] .v12-progress-match time,
+body[data-app-route="competition"] .v12-progress-match small{
+  color:#b6bad2!important;
+  font-size:clamp(12px,3.3vw,17px)!important;
+  line-height:1.12!important;
+  font-weight:500!important;
+}
+body[data-app-route="competition"] .v12-progress-opponent{
+  gap:clamp(7px,1.9vw,10px)!important;
+  min-height:clamp(30px,7.7vw,40px)!important;
+  margin-top:clamp(8px,2.2vw,12px)!important;
+}
+body[data-app-route="competition"] .v12-progress-opponent .shield{
+  width:clamp(25px,6.6vw,34px)!important;
+  height:clamp(25px,6.6vw,34px)!important;
+  color:#7f86b5!important;
+}
+body[data-app-route="competition"] .v12-progress-opponent b{
+  font-size:clamp(17px,4.5vw,23px)!important;
+  line-height:1!important;
+  font-weight:700!important;
+}
+
+/* Octavos: ganador + pareja, conservando proporción del video. */
+body[data-app-route="competition"] .v12-progress-winner-block{
+  grid-template-rows:clamp(58px,15.4vw,80px) clamp(50px,13.2vw,69px)!important;
+  gap:clamp(10px,2.7vw,14px)!important;
+}
+body[data-app-route="competition"] .v12-progress-winner{
+  padding:0 clamp(11px,3vw,16px)!important;
+  border-radius:clamp(12px,3.2vw,17px)!important;
+  background:linear-gradient(180deg,#142d99 0%,#0d247f 100%)!important;
+}
+body[data-app-route="competition"] .v12-progress-winner strong{
+  font-size:clamp(11px,3.0vw,15px)!important;
+  font-weight:700!important;
+}
+body[data-app-route="competition"] .v12-progress-seeded{
+  grid-template-columns:minmax(0,1fr) clamp(9px,2.4vw,12px) minmax(0,1fr)!important;
+  gap:clamp(3px,.9vw,5px)!important;
+}
+body[data-app-route="competition"] .v12-progress-seeded .v12-bracket-team.mini{
+  height:100%!important;
+  min-height:0!important;
+  max-height:none!important;
+  border-radius:clamp(10px,2.7vw,14px)!important;
+}
+
+/* Rutas laterales como en el video: texto vertical sobre una línea cortada. */
+body[data-app-route="competition"] .v12-progress-rail{
+  border-left-width:3px!important;
+  border-left-color:var(--branch)!important;
+  opacity:1!important;
+}
+body[data-app-route="competition"] .v12-progress-rail::before,
+body[data-app-route="competition"] .v12-progress-rail::after{
+  left:-4px!important;
+  width:5px!important;
+  height:clamp(70px,18vw,94px)!important;
+  background:#020451!important;
+  z-index:2!important;
+}
+body[data-app-route="competition"] .v12-progress-rail span{
+  left:clamp(-12px,-2.8vw,-9px)!important;
+  z-index:3!important;
+  padding:7px 2px!important;
+  background:#020451!important;
+  color:var(--branch)!important;
+  font-size:clamp(9px,2.5vw,13px)!important;
+  font-weight:700!important;
+  letter-spacing:0!important;
+}
+body[data-app-route="competition"] .v12-progress-route.route-silver{--branch:#c0c5da!important}
+body[data-app-route="competition"] .v12-progress-route.route-blue{--branch:#13e4ef!important}
+
+/* Líneas que se iluminan al cambiar de ronda. */
+body[data-app-route="competition"] .v12-progress-connector::before{
+  border-width:3px 3px 3px 0!important;
+  border-color:var(--branch)!important;
+  opacity:.96!important;
+}
+body[data-app-route="competition"] .v12-progress-connector::after{
+  border-top:3px solid var(--branch)!important;
+  opacity:.96!important;
+}
+body[data-app-route="competition"] .route-blue .v12-progress-rail,
+body[data-app-route="competition"] .route-blue .v12-progress-connector::before,
+body[data-app-route="competition"] .route-blue .v12-progress-connector::after{
+  filter:drop-shadow(0 0 4px rgba(19,228,239,.34))!important;
+}
+body[data-app-route="competition"] .v12-bracket-reference.is-stage-ready .v12-stage-panel:not([style*="display:none"]) .v12-progress-rail,
+body[data-app-route="competition"] .v12-bracket-reference.is-stage-ready .v12-stage-panel:not([style*="display:none"]) .v12-progress-connector{
+  animation:v12LineOn .34s ease-out both!important;
+}
+@keyframes v12LineOn{
+  from{opacity:.18;filter:brightness(.7)}
+  to{opacity:1;filter:brightness(1)}
+}
+
+/* Cambio de etapa: la nueva tabla entra como en el video, sin rediseñar la página. */
+body[data-app-route="competition"] .v12-stage-panel{
+  transform-origin:top center!important;
+}
+body[data-app-route="competition"] .v12-bracket-reference.is-stage-ready .v12-stage-panel-octavos,
+body[data-app-route="competition"] .v12-bracket-reference.is-stage-ready .v12-stage-panel-cuartos,
+body[data-app-route="competition"] .v12-bracket-reference.is-stage-ready .v12-stage-panel-semifinal,
+body[data-app-route="competition"] .v12-bracket-reference.is-stage-ready .v12-final-reference,
+body[data-app-route="competition"] .v12-bracket-reference.is-stage-ready>.v12-bracket-board{
+  animation:v12StageIn .24s ease-out both!important;
+}
+@keyframes v12StageIn{
+  from{opacity:.35;transform:translateX(12px)}
+  to{opacity:1;transform:translateX(0)}
+}
+
+/* Semifinales: los dos rótulos de ruta quedan a la izquierda y cada color
+   continúa hasta la unión central. */
+body[data-app-route="competition"] .v12-semifinal-source.silver{--branch:#c0c5da!important}
+body[data-app-route="competition"] .v12-semifinal-source.blue{--branch:#13e4ef!important}
+body[data-app-route="competition"] .v12-semifinal-source .v12-progress-rail span{
+  color:var(--branch)!important;
+}
+body[data-app-route="competition"] .v12-semifinal-source::after{
+  border-top-color:var(--branch)!important;
+}
+body[data-app-route="competition"] .v12-semifinal-source.blue::after{
+  filter:drop-shadow(0 0 4px rgba(19,228,239,.34))!important;
+}
+body[data-app-route="competition"] .v12-semifinal-flow{
+  min-height:clamp(660px,174vw,900px)!important;
+  gap:clamp(118px,31vw,160px) clamp(4px,1vw,6px)!important;
+}
+body[data-app-route="competition"] .v12-semifinal-join{
+  border-right:3px solid #c0c5da!important;
+}
+body[data-app-route="competition"] .v12-semifinal-join::after{
+  border-top:3px solid #13e4ef!important;
+  filter:drop-shadow(0 0 4px rgba(19,228,239,.34))!important;
+}
+
+/* Final: la tarjeta conserva la misma escala tipográfica/símbolos de Semis y
+   el trofeo queda al costado como en la referencia. */
+body[data-app-route="competition"] .v12-bracket-reference.stage-final .v12-final-reference{
+  min-height:clamp(680px,179vw,930px)!important;
+}
+body[data-app-route="competition"] .v12-bracket-reference.stage-final .v12-final-match-card{
+  width:44.5%!important;
+  aspect-ratio:1.43 / 1!important;
+  height:auto!important;
+  left:4.5%!important;
+  bottom:clamp(100px,26vw,136px)!important;
+  padding:clamp(14px,3.8vw,20px)!important;
+  border-radius:clamp(14px,3.6vw,19px)!important;
+}
+body[data-app-route="competition"] .v12-bracket-reference.stage-final .v12-final-trophy-wrap{
+  right:1.8%!important;
+  bottom:clamp(82px,21vw,112px)!important;
+  width:38%!important;
+}
+
+/* En teléfonos angostos conserva exactamente la relación de tamaño del video. */
+@media(max-width:390px){
+  body[data-app-route="competition"] .v12-bracket-stage-tabs > button[data-v12-bracket-stage="playoff"]{width:114px!important}
+  body[data-app-route="competition"] .v12-bracket-stage-tabs > button[data-v12-bracket-stage="octavos"],
+  body[data-app-route="competition"] .v12-bracket-stage-tabs > button[data-v12-bracket-stage="cuartos"]{width:184px!important}
+  body[data-app-route="competition"] .v12-bracket-stage-tabs > button[data-v12-bracket-stage="semifinal"]{width:150px!important}
+  body[data-app-route="competition"] .v12-bracket-stage-tabs > button[data-v12-bracket-stage="final"]{width:88px!important}
+}
