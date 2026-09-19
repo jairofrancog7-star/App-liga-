@@ -1,0 +1,61 @@
+/* V66 — directorio oficial AdminFut compacto, oscuro y móvil. */
+body[data-app-route="teams"] #screen,
+body[data-app-route="players"] #screen,
+body[data-app-route="club-store"] #screen{background:#06055f!important}
+.v66-directory{
+  width:100%!important;max-width:520px!important;margin:0 auto!important;
+  padding:12px 14px calc(96px + env(safe-area-inset-bottom))!important;
+  color:#fff!important;background:#06055f!important;font-family:Inter,Roboto,Arial,sans-serif!important;
+}
+.v66-search{
+  height:44px!important;display:grid!important;grid-template-columns:34px minmax(0,1fr)!important;
+  align-items:center!important;gap:4px!important;margin:0 0 10px!important;padding:0 10px!important;
+  border:1px solid #292a91!important;border-radius:12px!important;background:#0c0b70!important;
+}
+.v66-search span{color:#16dfe9!important;font-size:23px!important;text-align:center!important}
+.v66-search input{
+  width:100%!important;height:100%!important;border:0!important;outline:0!important;background:transparent!important;
+  color:#fff!important;font-size:14px!important;min-width:0!important;
+}
+.v66-search input::placeholder{color:#9598c5!important}
+.v66-source-note{margin:4px 2px 12px!important;color:#9799bf!important;font-size:11px!important;line-height:1.2!important}
+.v66-category-rail{
+  display:flex!important;flex-flow:row nowrap!important;gap:8px!important;width:100%!important;
+  margin:0 0 10px!important;padding:1px 0 6px!important;overflow-x:auto!important;scrollbar-width:none!important;
+}
+.v66-category-rail::-webkit-scrollbar{display:none!important}
+.v66-category-rail button{
+  flex:0 0 auto!important;height:34px!important;padding:0 12px!important;border:1px solid #292a91!important;
+  border-radius:10px!important;background:#0d0c72!important;color:#c3c4dc!important;font-size:11px!important;font-weight:650!important;
+  white-space:nowrap!important;
+}
+.v66-category-rail button.active{background:#16ddea!important;color:#081060!important;border-color:#16ddea!important}
+.v66-team-grid{display:grid!important;grid-template-columns:1fr!important;gap:8px!important}
+.v66-team-card,.v66-player-row{
+  width:100%!important;min-height:62px!important;display:grid!important;grid-template-columns:46px minmax(0,1fr) 20px!important;
+  align-items:center!important;gap:10px!important;margin:0!important;padding:8px 10px!important;border:1px solid #22238b!important;
+  border-radius:12px!important;background:#0d0c72!important;color:#fff!important;text-align:left!important;box-shadow:none!important;
+}
+.v66-team-logo{
+  width:44px!important;height:44px!important;display:grid!important;place-items:center!important;overflow:hidden!important;
+  border-radius:50%!important;background:#12127b!important;border:1px solid #22ddea!important;
+}
+.v66-team-logo img{width:38px!important;height:38px!important;object-fit:contain!important;background:transparent!important}
+.v66-team-logo b{font-size:10px!important;line-height:1!important}
+.v66-team-card>span:nth-child(2),.v66-player-row>span:nth-child(2){min-width:0!important;display:block!important}
+.v66-team-card b,.v66-player-row b{
+  display:block!important;max-width:100%!important;color:#fff!important;font-size:14px!important;line-height:1.08!important;
+  font-weight:700!important;white-space:nowrap!important;overflow:hidden!important;text-overflow:ellipsis!important;
+}
+.v66-team-card small,.v66-player-row small{
+  display:block!important;max-width:100%!important;margin-top:4px!important;color:#9ea0c6!important;font-size:10px!important;line-height:1.05!important;
+  white-space:nowrap!important;overflow:hidden!important;text-overflow:ellipsis!important;
+}
+.v66-team-card i,.v66-player-row i{justify-self:end!important;color:#16dfe9!important;font-style:normal!important;font-size:22px!important}
+.v66-player-list{display:grid!important;gap:7px!important}
+.v66-player-row{grid-template-columns:42px minmax(0,1fr) 18px!important;min-height:58px!important;padding:7px 9px!important}
+.v66-player-avatar{
+  width:40px!important;height:40px!important;display:grid!important;place-items:center!important;border-radius:50%!important;
+  background:#11127d!important;border:1px solid #20dce9!important;color:#fff!important;font-size:10px!important;font-weight:800!important;
+}
+@media(min-width:480px){.v66-team-grid{grid-template-columns:1fr 1fr!important}.v66-team-card{min-height:68px!important}}
