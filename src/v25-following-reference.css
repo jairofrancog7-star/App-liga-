@@ -860,3 +860,277 @@ body[data-app-route="following"] #screen,
   .v28-empty-main h2{font-size:25px!important}
   .v28-empty-main p{font-size:17px!important}
 }
+
+
+/* V31 EXACT REF 3-4 — reconstrucción estricta Siguiendo + Equipos.
+   Referencia 3 = Siguiendo vacío. Referencia 4 = selector de equipos. */
+body[data-app-route="following"]{
+  background:#02045d!important;
+}
+body[data-app-route="following"] #app,
+body[data-app-route="following"] #screen{
+  background:#02045d!important;
+}
+
+/* ---------- REFERENCIA 3: SIGUIENDO VACÍO ---------- */
+.v28-follow-page.v28-empty{
+  min-height:calc(100dvh - 60px)!important;
+  background:
+    radial-gradient(430px 250px at 82% 1%,rgba(25,89,250,.28),transparent 70%),
+    linear-gradient(180deg,#07107c 0%,#02055f 21%,#02045b 100%)!important;
+}
+.v28-empty .v28-neon{
+  display:block!important;
+  height:178px!important;
+}
+.v28-empty .v28-head{
+  height:150px!important;
+  grid-template-columns:52px minmax(0,1fr) 52px!important;
+  padding:34px 28px 0!important;
+}
+.v28-empty .v28-head h1{
+  font-size:32px!important;
+  line-height:1!important;
+  font-weight:720!important;
+}
+.v28-empty .v28-icon-btn{
+  width:46px!important;
+  height:46px!important;
+}
+.v28-empty .v28-icon-btn svg{
+  width:38px!important;
+  height:38px!important;
+  stroke-width:2.8!important;
+}
+.v28-empty-main{
+  min-height:calc(100dvh - 228px)!important;
+  padding:72px 26px 110px!important;
+}
+.v28-league-logo{
+  width:205px!important;
+  height:205px!important;
+  margin:0 0 31px!important;
+  object-fit:contain!important;
+  background:transparent!important;
+  filter:none!important;
+}
+.v28-empty-main h2{
+  margin:0 0 15px!important;
+  font-size:30px!important;
+  line-height:1.08!important;
+  font-weight:680!important;
+  letter-spacing:-.018em!important;
+}
+.v28-empty-main p{
+  width:100%!important;
+  max-width:455px!important;
+  margin:0!important;
+  color:#c1c5df!important;
+  font-size:19px!important;
+  line-height:1.35!important;
+  font-weight:400!important;
+}
+.v28-add{
+  min-width:274px!important;
+  height:65px!important;
+  margin-top:27px!important;
+  padding:0 26px!important;
+  gap:16px!important;
+  border:2px solid #14e1ed!important;
+  border-radius:22px!important;
+  color:#14e1ed!important;
+  background:transparent!important;
+  font-size:23px!important;
+  font-weight:600!important;
+}
+.v28-add span{
+  font-size:34px!important;
+  font-weight:300!important;
+}
+
+/* ---------- REFERENCIA 4: SELECTOR DE EQUIPOS ---------- */
+.v28-follow-page.v28-picker{
+  min-height:calc(100dvh - 60px)!important;
+  overflow:visible!important;
+  background:linear-gradient(180deg,#04065f 0%,#05076a 100%)!important;
+}
+/* La imagen 4 NO lleva el arte neón en el selector. */
+.v28-picker>.v28-neon{
+  display:none!important;
+}
+.v28-picker-top{
+  position:relative!important;
+  z-index:3!important;
+  top:auto!important;
+  height:142px!important;
+  padding:61px 28px 15px!important;
+  background:#04065f!important;
+  border:0!important;
+}
+.v28-close{
+  top:12px!important;
+  right:24px!important;
+  width:42px!important;
+  height:42px!important;
+  border-radius:50%!important;
+  background:rgba(80,86,158,.30)!important;
+  color:#b8bdd9!important;
+  font-size:35px!important;
+  line-height:1!important;
+}
+.v28-search{
+  height:48px!important;
+  grid-template-columns:40px minmax(0,1fr)!important;
+  padding:0 15px!important;
+  border:0!important;
+  border-radius:13px!important;
+  background:#171b87!important;
+  color:#9da4cf!important;
+  box-shadow:none!important;
+}
+.v28-search svg{
+  width:27px!important;
+  height:27px!important;
+  stroke-width:1.8!important;
+}
+.v28-search input{
+  font-size:17px!important;
+  line-height:1!important;
+  font-weight:500!important;
+}
+.v28-picker>h2{
+  margin:0!important;
+  padding:16px 30px 13px!important;
+  background:#07096b!important;
+  border-top:1px solid rgba(87,101,184,.16)!important;
+  border-bottom:1px solid rgba(87,101,184,.14)!important;
+  color:#fff!important;
+  font-size:22px!important;
+  line-height:1.08!important;
+  font-weight:650!important;
+}
+.v28-picker-list{
+  padding:0 27px 86px!important;
+  background:#07096b!important;
+}
+.v28-picker-row{
+  min-height:55px!important;
+  grid-template-columns:49px minmax(0,1fr) 103px!important;
+  gap:12px!important;
+  border-bottom:1px solid rgba(83,98,189,.26)!important;
+}
+.v28-picker-row .v28-logo{
+  width:44px!important;
+  height:44px!important;
+  background:transparent!important;
+  border:0!important;
+}
+.v28-picker-row .v28-logo img{
+  width:42px!important;
+  height:42px!important;
+  object-fit:contain!important;
+  background:transparent!important;
+  border:0!important;
+  border-radius:0!important;
+  box-shadow:none!important;
+  filter:none!important;
+}
+.v28-picker-row .v28-fallback{
+  width:40px!important;
+  height:40px!important;
+  display:grid!important;
+  place-items:center!important;
+  border:2px solid rgba(255,255,255,.85)!important;
+  border-radius:50%!important;
+  background:transparent!important;
+  color:#fff!important;
+  font-size:9px!important;
+  font-weight:850!important;
+}
+.v28-picker-row>strong{
+  min-width:0!important;
+  overflow:hidden!important;
+  white-space:nowrap!important;
+  text-overflow:ellipsis!important;
+  color:#fff!important;
+  font-size:16px!important;
+  line-height:1.05!important;
+  font-weight:600!important;
+}
+.v28-picker-follow{
+  width:103px!important;
+  height:39px!important;
+  padding:0!important;
+  border:0!important;
+  border-radius:11px!important;
+  background:#11ddec!important;
+  color:#06105c!important;
+  font-size:14px!important;
+  line-height:1!important;
+  font-weight:720!important;
+}
+.v28-picker-follow.following{
+  background:#11ddec!important;
+  color:#06105c!important;
+}
+
+/* Nunca mostrar cuadros blancos detrás de escudos. */
+.v28-logo,
+.v28-logo img,
+.v28-picker-row .v28-logo,
+.v28-picker-row .v28-logo img{
+  background-color:transparent!important;
+}
+
+/* Barra inferior exactamente visible en ambas referencias. */
+body[data-app-route="following"] .bottom-nav{
+  height:60px!important;
+  display:grid!important;
+  background:#11106f!important;
+  border-top:1px solid rgba(255,255,255,.11)!important;
+}
+body[data-app-route="following"] .bottom-nav .nav-item{
+  color:#9ca1c2!important;
+}
+body[data-app-route="following"] .bottom-nav .nav-item[data-route="more"]{
+  color:#20dfee!important;
+}
+
+/* Ajuste móvil estrecho manteniendo proporciones de la referencia. */
+@media(max-width:390px){
+  .v28-empty .v28-head{
+    height:140px!important;
+    padding:30px 20px 0!important;
+  }
+  .v28-empty .v28-head h1{font-size:29px!important}
+  .v28-empty-main{padding:66px 20px 100px!important}
+  .v28-league-logo{width:182px!important;height:182px!important;margin-bottom:28px!important}
+  .v28-empty-main h2{font-size:25px!important}
+  .v28-empty-main p{font-size:17px!important}
+  .v28-add{min-width:246px!important;height:61px!important;font-size:21px!important}
+
+  .v28-picker-top{
+    height:132px!important;
+    padding:55px 18px 12px!important;
+  }
+  .v28-close{
+    right:18px!important;
+  }
+  .v28-picker>h2{
+    padding:14px 22px 11px!important;
+    font-size:20px!important;
+  }
+  .v28-picker-list{
+    padding-left:18px!important;
+    padding-right:18px!important;
+  }
+  .v28-picker-row{
+    min-height:52px!important;
+    grid-template-columns:45px minmax(0,1fr) 91px!important;
+    gap:9px!important;
+  }
+  .v28-picker-row .v28-logo{width:41px!important;height:41px!important}
+  .v28-picker-row .v28-logo img{width:39px!important;height:39px!important}
+  .v28-picker-row>strong{font-size:15.2px!important}
+  .v28-picker-follow{width:91px!important;height:37px!important;font-size:13.5px!important}
+}

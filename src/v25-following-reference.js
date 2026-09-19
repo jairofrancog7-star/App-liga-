@@ -20,13 +20,13 @@
     {id:'STC',name:'Santa Cruz',logo:'assets/teams/atletico-santa-cruz.webp',abbr:'STC'},
     {id:'SJO',name:'San José',logo:'assets/teams/san-jose.webp',abbr:'SJO'},
     {id:'SIS',name:'San Isidro',logo:'',abbr:'SIS'},
-    {id:'RJU',name:'Real Juventino',logo:'',abbr:'RJU'},
+    {id:'RJU',name:'Real Juventino',logo:'assets/teams/juventus.webp',abbr:'RJU'},
     {id:'VAL',name:'Valle Verde',logo:'',abbr:'VAL'},
     {id:'LAB',name:'La Labor',logo:'',abbr:'LAB'},
     {id:'DUR',name:'El Durazno',logo:'',abbr:'DUR'},
     {id:'SAN',name:'San Antonio',logo:'assets/teams/san-antonio-jr.webp',abbr:'SAN'},
     {id:'ARC',name:'Los Arcos',logo:'',abbr:'ARC'},
-    {id:'JUV',name:'Deportivo Juventino',logo:'',abbr:'JUV'},
+    {id:'JUV',name:'Deportivo Juventino',logo:'assets/teams/juventus.webp',abbr:'JUV'},
     {id:'PAL',name:'Las Palomas',logo:'',abbr:'PAL'},
     {id:'FRA',name:'Franco FC',logo:'assets/teams/franco-fc.webp',abbr:'FRA'},
     {id:'EST',name:'La Estancia',logo:'',abbr:'EST'}
@@ -155,7 +155,7 @@
     const q=searchText.trim().toLocaleLowerCase('es');
     const list=TEAMS.filter(t=>!q||t.name.toLocaleLowerCase('es').includes(q)||t.id.toLowerCase().includes(q));
     const f=followed();
-    return '<section class="v28-follow-page v28-picker" data-v28-following>'+neon()+
+    return '<section class="v28-follow-page v28-picker" data-v28-following>'+
       '<header class="v28-picker-top">'+
         '<div class="v28-search">'+searchIcon()+'<input id="v28Search" type="search" autocomplete="off" placeholder="Buscar equipos" value="'+esc(searchText)+'"></div>'+
         '<button class="v28-close" data-v28-close-picker aria-label="Cerrar">×</button>'+
