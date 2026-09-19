@@ -1,0 +1,60 @@
+/* V51 — Bloqueo global de iconos de la barra inferior.
+   Todos los iconos usan la misma caja visual en TODAS las pantallas.
+   El icono de COMPETICIÓN mantiene siempre la misma cancha cuadrada;
+   al activar una sección cambia solamente el color, no la forma ni el tamaño. */
+
+html body .bottom-nav .nav-item .nav-icon,
+html body[data-app-route] .bottom-nav .nav-item .nav-icon{
+  position:relative!important;
+  width:25px!important;
+  height:25px!important;
+  min-width:25px!important;
+  min-height:25px!important;
+  max-width:25px!important;
+  max-height:25px!important;
+  margin:0!important;
+  padding:0!important;
+  display:grid!important;
+  place-items:center!important;
+  border:0!important;
+  border-radius:0!important;
+  background:transparent!important;
+  overflow:visible!important;
+  transform:none!important;
+  box-sizing:border-box!important;
+}
+
+html body .bottom-nav .nav-item .nav-icon svg,
+html body[data-app-route] .bottom-nav .nav-item .nav-icon svg{
+  display:block!important;
+  width:25px!important;
+  height:25px!important;
+  min-width:25px!important;
+  min-height:25px!important;
+  max-width:25px!important;
+  max-height:25px!important;
+  margin:0!important;
+  padding:0!important;
+  overflow:visible!important;
+  fill:currentColor!important;
+  stroke:none!important;
+  stroke-width:0!important;
+  transform:none!important;
+  box-sizing:border-box!important;
+}
+
+/* Ninguna vista puede volver a dibujar COMPETICIÓN o MÁS con pseudo-elementos. */
+html body .bottom-nav .nav-item[data-route="competition"] .nav-icon::before,
+html body .bottom-nav .nav-item[data-route="competition"] .nav-icon::after,
+html body .bottom-nav .nav-item[data-route="more"] .nav-icon::before,
+html body .bottom-nav .nav-item[data-route="more"] .nav-icon::after{
+  content:none!important;
+  display:none!important;
+}
+
+/* Conserva alineación idéntica entre los cinco botones sin cambiar la altura de la barra. */
+html body .bottom-nav .nav-item,
+html body[data-app-route] .bottom-nav .nav-item{
+  align-items:center!important;
+  justify-items:center!important;
+}
