@@ -1,201 +1,599 @@
-/* PARTS27 — las capturas originales de Drive son el diseño maestro.
-   Se muestran sin estirarlas ni redibujarlas. Solo hay hotspots transparentes. */
+/* PARTS29 — SIGUIENDO reparado como interfaz real.
+   Referencias: 3 capturas de Google Drive + video del usuario.
+   No usa screenshots como fondo; conserva la barra inferior común de la app. */
 
+:root{
+  --v29-follow-bg:#02055f;
+  --v29-follow-bg2:#07107c;
+  --v29-follow-panel:#121777;
+  --v29-follow-panel2:#171d8f;
+  --v29-follow-cyan:#11e6f1;
+  --v29-follow-white:#f7f8ff;
+  --v29-follow-muted:#aeb5dc;
+  --v29-follow-line:rgba(92,112,216,.28);
+}
+
+/* La pantalla Siguiendo usa su propia cabecera interna, pero mantiene la barra inferior oficial. */
 body[data-app-route="following"]{
-  background:#03045b!important;
-  overflow:hidden!important;
+  overflow-x:hidden!important;
+  background:var(--v29-follow-bg)!important;
 }
 body[data-app-route="following"] #app{
-  padding-bottom:0!important;
-  background:#03045b!important;
+  background:var(--v29-follow-bg)!important;
+  padding-bottom:60px!important;
 }
-body[data-app-route="following"] #app>.topbar,
-body[data-app-route="following"] #app>.bottom-nav{
+body[data-app-route="following"] #app>.topbar{
   display:none!important;
+}
+body[data-app-route="following"] #app>.bottom-nav{
+  display:grid!important;
 }
 body[data-app-route="following"] #screen{
   position:relative!important;
   width:100%!important;
-  height:100dvh!important;
-  min-height:100dvh!important;
-  max-height:100dvh!important;
-  margin:0!important;
-  padding:0!important;
-  overflow-y:auto!important;
-  overflow-x:hidden!important;
-  background:#03045b!important;
-  animation:none!important;
-  scrollbar-width:none!important;
-}
-body[data-app-route="following"] #screen::-webkit-scrollbar{display:none!important}
-
-body[data-app-route="following"] .v27-following{
-  position:relative!important;
-  width:100%!important;
-  min-height:100%!important;
-  background:#03045b!important;
-  overflow:visible!important;
-}
-body[data-app-route="following"] .v27-shot{
-  position:relative!important;
-  width:100%!important;
+  max-width:520px!important;
+  min-height:calc(100dvh - 60px)!important;
+  height:auto!important;
+  max-height:none!important;
   margin:0 auto!important;
-  overflow:hidden!important;
-  background:#03045b!important;
-}
-body[data-app-route="following"] .v27-shot>img{
-  position:absolute!important;
-  z-index:0!important;
-  display:block!important;
-  max-width:none!important;
-  pointer-events:none!important;
-  user-select:none!important;
-  -webkit-user-drag:none!important;
-}
-
-/* Imagen 1: recorte exacto del status bar; resto intacto. */
-body[data-app-route="following"] .v27-empty-shot{
-  aspect-ratio:841 / 1784!important;
-}
-body[data-app-route="following"] .v27-empty-shot>img{
-  left:0!important;
-  top:-4.8206%!important;
-  width:100%!important;
-  height:104.8206%!important;
-}
-
-/* Imagen 2: recorte exacto del status bar; sin cambiar proporciones. */
-body[data-app-route="following"] .v27-sheet-shot{
-  aspect-ratio:941 / 1584!important;
-}
-body[data-app-route="following"] .v27-sheet-shot>img{
-  left:0!important;
-  top:-5.5556%!important;
-  width:100%!important;
-  height:105.5556%!important;
-}
-
-/* Imagen 3: se eliminan únicamente los márgenes blancos laterales y status bar.
-   La lista mantiene su altura original, por eso esta vista hace scroll real. */
-body[data-app-route="following"] .v27-picker-shot{
-  aspect-ratio:585 / 1702!important;
-}
-body[data-app-route="following"] .v27-picker-shot>img{
-  left:-25.8120%!important;
-  top:-4.2303%!important;
-  width:151.6239%!important;
-  height:104.2303%!important;
-}
-
-/* Todas las zonas funcionales son invisibles para no alterar ni un pixel del diseño. */
-body[data-app-route="following"] .v27-hit,
-body[data-app-route="following"] .v27-nav-hits>button{
-  position:absolute!important;
-  z-index:6!important;
-  border:0!important;
-  outline:0!important;
   padding:0!important;
-  margin:0!important;
-  background:transparent!important;
-  color:transparent!important;
-  box-shadow:none!important;
-  cursor:pointer!important;
-  -webkit-tap-highlight-color:transparent!important;
-  touch-action:manipulation!important;
+  overflow-x:hidden!important;
+  overflow-y:visible!important;
+  background:
+    radial-gradient(75% 38% at 88% 1%,rgba(20,88,255,.34),transparent 66%),
+    linear-gradient(180deg,#08107b 0%,#02055f 18%,#02045b 100%)!important;
+  animation:none!important;
 }
 
-/* Imagen 1 */
-body[data-app-route="following"] .v27-empty-back{
-  left:4.0%!important;
-  top:1.8%!important;
-  width:10.5%!important;
-  height:5.2%!important;
-}
-body[data-app-route="following"] .v27-empty-plus{
-  right:3.3%!important;
-  top:1.7%!important;
-  width:10.5%!important;
-  height:5.3%!important;
-}
-body[data-app-route="following"] .v27-empty-add{
-  left:22.7%!important;
-  top:59.3%!important;
-  width:54.2%!important;
-  height:7.7%!important;
+/* Página */
+.v28-follow-page{
+  position:relative;
+  width:100%;
+  min-height:calc(100dvh - 60px);
+  box-sizing:border-box;
+  overflow:hidden;
+  color:var(--v29-follow-white);
+  font-family:Inter,Roboto,Arial,sans-serif;
+  background:
+    radial-gradient(330px 260px at 91% 2%,rgba(0,89,255,.34),transparent 69%),
+    linear-gradient(180deg,#09127e 0%,#03065f 21%,#02055b 100%);
 }
 
-/* Imagen 2 */
-body[data-app-route="following"] .v27-sheet-back{
-  left:3.8%!important;
-  top:1.8%!important;
-  width:10.0%!important;
-  height:6.2%!important;
+/* Arte neón de la cabecera: sólo decorativo. */
+.v28-neon{
+  position:absolute;
+  z-index:0;
+  left:0;
+  right:0;
+  top:0;
+  height:176px;
+  overflow:hidden;
+  pointer-events:none;
 }
-body[data-app-route="following"] .v27-sheet-plus{
-  right:3.5%!important;
-  top:1.8%!important;
-  width:10.0%!important;
-  height:6.2%!important;
+.v28-neon::before{
+  content:"";
+  position:absolute;
+  width:370px;
+  height:140px;
+  right:-86px;
+  top:-64px;
+  border:4px solid rgba(20,229,244,.34);
+  border-left-color:rgba(255,49,109,.30);
+  border-bottom-color:rgba(255,224,45,.26);
+  border-radius:46% 54% 52% 48%;
+  transform:rotate(-10deg) skewX(-14deg);
+  filter:drop-shadow(0 0 7px rgba(26,228,250,.28));
 }
-body[data-app-route="following"] .v27-sheet-followed{
-  right:4.7%!important;
-  top:13.2%!important;
-  width:28.7%!important;
-  height:7.3%!important;
+.v28-neon::after{
+  content:"";
+  position:absolute;
+  left:-88px;
+  top:-56px;
+  width:380px;
+  height:130px;
+  border:4px solid rgba(20,229,244,.28);
+  border-right-color:rgba(255,61,108,.28);
+  border-bottom-color:rgba(255,225,49,.22);
+  border-radius:50%;
+  transform:rotate(10deg) skewX(12deg);
 }
-body[data-app-route="following"] .v27-sheet-favorite{
-  left:4.5%!important;
-  right:4.5%!important;
-  top:80.2%!important;
-  height:8.4%!important;
+.v28-neon i{
+  position:absolute;
+  display:block;
+  width:260px;
+  height:2px;
+  right:-26px;
+  top:18px;
+  transform-origin:right center;
+  background:linear-gradient(90deg,transparent,rgba(16,228,242,.72),rgba(255,76,107,.48),rgba(255,235,61,.40));
+  box-shadow:0 0 6px rgba(18,227,245,.28);
 }
-body[data-app-route="following"] .v27-sheet-unfollow{
-  left:4.5%!important;
-  right:4.5%!important;
-  top:89.0%!important;
-  height:8.2%!important;
+.v28-neon i:nth-child(1){transform:rotate(14deg)}
+.v28-neon i:nth-child(2){transform:rotate(21deg);top:28px}
+.v28-neon i:nth-child(3){transform:rotate(29deg);top:40px}
+.v28-neon i:nth-child(4){left:-22px;right:auto;top:26px;transform:rotate(-16deg)}
+.v28-neon i:nth-child(5){left:-18px;right:auto;top:38px;transform:rotate(-23deg)}
+.v28-neon i:nth-child(6){left:-10px;right:auto;top:52px;transform:rotate(-31deg)}
+
+/* Cabecera: flecha, Siguiendo y + */
+.v28-head{
+  position:relative;
+  z-index:3;
+  height:150px;
+  box-sizing:border-box;
+  display:grid;
+  grid-template-columns:54px minmax(0,1fr) 54px;
+  align-items:center;
+  gap:6px;
+  padding:34px 27px 0;
+}
+.v28-head h1{
+  margin:0;
+  align-self:center;
+  color:#fff;
+  font-size:33px;
+  line-height:1;
+  font-weight:750;
+  letter-spacing:-.025em;
+}
+.v28-icon-btn{
+  appearance:none;
+  -webkit-appearance:none;
+  width:48px;
+  height:48px;
+  display:grid;
+  place-items:center;
+  margin:0;
+  padding:0;
+  border:0;
+  background:transparent;
+  color:#fff;
+  cursor:pointer;
+  -webkit-tap-highlight-color:transparent;
+}
+.v28-icon-btn.plus{justify-self:end}
+.v28-icon-btn svg{
+  width:39px;
+  height:39px;
+  fill:none;
+  stroke:currentColor;
+  stroke-width:3;
+  stroke-linecap:round;
+  stroke-linejoin:round;
 }
 
-/* Imagen 3 */
-body[data-app-route="following"] .v27-picker-close{
-  right:2.2%!important;
-  top:0!important;
-  width:11.5%!important;
-  height:4.2%!important;
-}
-body[data-app-route="following"] .v27-picker-search{
-  left:5.2%!important;
-  top:1.3%!important;
-  width:89.3%!important;
-  height:3.5%!important;
-}
-body[data-app-route="following"] .v27-follow-hit{
-  position:absolute!important;
-  z-index:7!important;
+/* Muesca lateral derecha presente en las referencias. */
+.v28-side-notch{
+  position:absolute;
+  z-index:2;
+  right:-8px;
+  top:29%;
+  width:24px;
+  height:76px;
+  border:3px solid rgba(112,124,204,.22);
+  border-right:0;
+  border-radius:18px 0 0 18px;
+  pointer-events:none;
 }
 
-/* Navegación que ya forma parte de las capturas. */
-body[data-app-route="following"] .v27-nav-hits{
-  position:absolute!important;
-  z-index:8!important;
-  left:0!important;
-  right:0!important;
-  bottom:0!important;
-  height:8%!important;
-  display:grid!important;
-  grid-template-columns:repeat(5,1fr)!important;
+/* Estado vacío */
+.v28-empty-main{
+  position:relative;
+  z-index:2;
+  min-height:calc(100dvh - 245px);
+  box-sizing:border-box;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  padding:98px 34px 118px;
+  text-align:center;
 }
-body[data-app-route="following"] .v27-nav-hits>button{
-  position:relative!important;
-  width:100%!important;
-  height:100%!important;
+.v28-league-logo{
+  width:210px;
+  height:210px;
+  display:block;
+  margin:0 0 36px;
+  object-fit:contain;
+  filter:drop-shadow(0 8px 16px rgba(0,0,0,.30));
+}
+.v28-empty-main h2{
+  margin:0 0 20px;
+  color:#fff;
+  font-size:30px;
+  line-height:1.08;
+  font-weight:760;
+  letter-spacing:-.025em;
+}
+.v28-empty-main p{
+  margin:0;
+  color:#c0c5e4;
+  font-size:20px;
+  line-height:1.36;
+  font-weight:400;
+}
+.v28-add{
+  min-width:272px;
+  height:68px;
+  margin-top:28px;
+  padding:0 28px;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:18px;
+  border:2px solid var(--v29-follow-cyan);
+  border-radius:23px;
+  background:transparent;
+  color:var(--v29-follow-cyan);
+  font-size:24px;
+  line-height:1;
+  font-weight:650;
+  cursor:pointer;
+}
+.v28-add span{
+  font-size:37px;
+  line-height:1;
+  font-weight:300;
 }
 
-/* Mantiene el mismo ancho de la app también en escritorio/preview. */
+/* Estado con equipos seguidos */
+.v28-follow-list{
+  position:relative;
+  z-index:2;
+  padding:18px 38px 104px;
+}
+.v28-follow-row{
+  min-height:88px;
+  display:grid;
+  grid-template-columns:minmax(0,1fr) auto;
+  align-items:center;
+  gap:16px;
+  border-bottom:1px solid rgba(60,79,172,.18);
+}
+.v28-team-link{
+  appearance:none;
+  -webkit-appearance:none;
+  min-width:0;
+  display:grid;
+  grid-template-columns:66px minmax(0,1fr);
+  align-items:center;
+  gap:17px;
+  padding:0;
+  border:0;
+  background:transparent;
+  color:#fff;
+  text-align:left;
+  cursor:pointer;
+}
+.v28-team-link strong{
+  min-width:0;
+  overflow:hidden;
+  font-size:24px;
+  line-height:1.12;
+  font-weight:650;
+  white-space:nowrap;
+  text-overflow:ellipsis;
+}
+.v28-logo{
+  width:60px;
+  height:60px;
+  display:grid;
+  place-items:center;
+  flex:0 0 auto;
+}
+.v28-logo img{
+  width:58px;
+  height:58px;
+  display:block;
+  object-fit:contain;
+  filter:drop-shadow(0 2px 5px rgba(0,0,0,.35));
+}
+.v28-fallback{
+  width:54px;
+  height:54px;
+  display:grid;
+  place-items:center;
+  border:2px solid rgba(255,255,255,.78);
+  border-radius:50%;
+  background:#101970;
+  color:#fff;
+  font-size:11px;
+  font-weight:900;
+  letter-spacing:.02em;
+}
+.v28-following-pill{
+  appearance:none;
+  -webkit-appearance:none;
+  min-width:126px;
+  height:53px;
+  padding:0 20px;
+  border:0;
+  border-radius:15px;
+  background:rgba(92,100,174,.28);
+  color:#fff;
+  font-size:20px;
+  line-height:1;
+  font-weight:580;
+  cursor:pointer;
+}
+
+/* Selector de equipos */
+.v28-picker{
+  min-height:calc(100dvh - 60px);
+  overflow:visible;
+  background:linear-gradient(180deg,#04065f 0%,#06076d 100%);
+}
+.v28-picker-top{
+  position:sticky;
+  z-index:12;
+  top:0;
+  height:112px;
+  box-sizing:border-box;
+  padding:51px 28px 14px;
+  background:#050661;
+}
+.v28-search{
+  height:49px;
+  display:grid;
+  grid-template-columns:42px minmax(0,1fr);
+  align-items:center;
+  padding:0 16px;
+  border-radius:13px;
+  background:#171b87;
+  color:#9ea6d6;
+}
+.v28-search svg{
+  width:28px;
+  height:28px;
+  fill:none;
+  stroke:currentColor;
+  stroke-width:2;
+}
+.v28-search input{
+  width:100%;
+  height:100%;
+  padding:0;
+  border:0;
+  outline:0;
+  background:transparent;
+  color:#fff;
+  font:500 17px/1 Inter,Roboto,Arial,sans-serif;
+}
+.v28-search input::placeholder{color:#a3aad4;opacity:1}
+.v28-close{
+  appearance:none;
+  -webkit-appearance:none;
+  position:absolute;
+  right:19px;
+  top:11px;
+  width:38px;
+  height:38px;
+  display:grid;
+  place-items:center;
+  padding:0 0 3px;
+  border:0;
+  border-radius:50%;
+  background:rgba(98,104,168,.25);
+  color:#aeb5da;
+  font-size:34px;
+  line-height:1;
+  font-weight:300;
+  cursor:pointer;
+}
+.v28-picker>h2{
+  position:relative;
+  z-index:2;
+  margin:0;
+  padding:17px 31px 11px;
+  background:#080a6d;
+  color:#fff;
+  font-size:23px;
+  line-height:1.1;
+  font-weight:650;
+}
+.v28-picker-list{
+  position:relative;
+  z-index:2;
+  padding:0 28px 84px;
+  background:linear-gradient(180deg,#080a6d,#06076a);
+}
+.v28-picker-row{
+  min-height:65px;
+  display:grid;
+  grid-template-columns:55px minmax(0,1fr) auto;
+  align-items:center;
+  gap:14px;
+  border-bottom:1px solid rgba(83,98,189,.30);
+}
+.v28-picker-row .v28-logo{
+  width:48px;
+  height:48px;
+}
+.v28-picker-row .v28-logo img{
+  width:46px;
+  height:46px;
+}
+.v28-picker-row .v28-fallback{
+  width:43px;
+  height:43px;
+  font-size:9px;
+}
+.v28-picker-row>strong{
+  min-width:0;
+  overflow:hidden;
+  color:#fff;
+  font-size:17px;
+  line-height:1.1;
+  font-weight:620;
+  white-space:nowrap;
+  text-overflow:ellipsis;
+}
+.v28-picker-follow{
+  appearance:none;
+  -webkit-appearance:none;
+  width:104px;
+  height:42px;
+  padding:0;
+  border:0;
+  border-radius:12px;
+  background:var(--v29-follow-cyan);
+  color:#06105c;
+  font-size:15px;
+  line-height:1;
+  font-weight:720;
+  cursor:pointer;
+}
+.v28-picker-follow.following{
+  background:rgba(91,98,171,.30);
+  color:#fff;
+}
+
+/* Bottom sheet al tocar “Siguiendo” o el equipo. */
+.v28-sheet-layer{
+  position:fixed;
+  z-index:250;
+  inset:0;
+  display:flex;
+  align-items:flex-end;
+  justify-content:center;
+}
+.v28-sheet-backdrop{
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+  border:0;
+  background:rgba(0,0,32,.22);
+  cursor:pointer;
+}
+.v28-sheet{
+  position:relative;
+  z-index:2;
+  width:min(100%,520px);
+  min-height:365px;
+  box-sizing:border-box;
+  padding:36px 35px 30px;
+  border-radius:34px 34px 0 0;
+  background:
+    radial-gradient(140% 95% at 28% 0%,#2636d9 0%,#111a8e 47%,#08106b 100%);
+  box-shadow:0 -10px 38px rgba(0,0,0,.24);
+  color:#fff;
+}
+.v28-sheet-team{
+  min-height:92px;
+  display:grid;
+  grid-template-columns:76px minmax(0,1fr);
+  align-items:center;
+  gap:18px;
+}
+.v28-sheet-team .v28-logo.big{
+  width:70px;
+  height:70px;
+}
+.v28-sheet-team .v28-logo.big img{
+  width:68px;
+  height:68px;
+}
+.v28-sheet-team strong{
+  font-size:27px;
+  line-height:1.1;
+  font-weight:620;
+}
+.v28-divider{
+  height:1px;
+  margin:2px 0 17px;
+  background:rgba(145,155,228,.25);
+}
+.v28-sheet-action{
+  appearance:none;
+  -webkit-appearance:none;
+  width:100%;
+  min-height:78px;
+  display:grid;
+  grid-template-columns:66px minmax(0,1fr);
+  align-items:center;
+  gap:8px;
+  padding:0;
+  border:0;
+  background:transparent;
+  color:#fff;
+  text-align:left;
+  cursor:pointer;
+}
+.v28-sheet-action svg{
+  width:39px;
+  height:39px;
+  margin-left:6px;
+  fill:none;
+  stroke:currentColor;
+  stroke-width:2.2;
+  stroke-linejoin:round;
+}
+.v28-sheet-action b{
+  margin-left:11px;
+  font-size:38px;
+  line-height:1;
+  font-weight:300;
+}
+.v28-sheet-action span{
+  font-size:25px;
+  line-height:1;
+  font-weight:450;
+}
+.v28-sheet-action.selected{color:var(--v29-follow-cyan)}
+
+/* En la hoja inferior no aparece la barra inferior, como en la referencia. */
+body.v28-follow-sheet-open .bottom-nav{
+  display:none!important;
+}
+
+/* Cuando el selector está abierto, la barra inferior sigue visible y “Más” queda activo. */
+body[data-app-route="following"] .bottom-nav{
+  background:#11106f!important;
+  border-top:1px solid rgba(255,255,255,.10)!important;
+}
+body[data-app-route="following"] .bottom-nav .nav-item{
+  color:#999fc2!important;
+}
+body[data-app-route="following"] .bottom-nav .nav-item[data-route="more"]{
+  color:#20dfee!important;
+}
+
+/* Ajustes para móviles estrechos */
+@media(max-width:390px){
+  .v28-head{
+    height:138px;
+    grid-template-columns:48px minmax(0,1fr) 48px;
+    padding:30px 20px 0;
+  }
+  .v28-head h1{font-size:29px}
+  .v28-icon-btn{width:44px;height:44px}
+  .v28-icon-btn svg{width:35px;height:35px}
+  .v28-empty-main{padding:86px 22px 100px}
+  .v28-league-logo{width:184px;height:184px;margin-bottom:30px}
+  .v28-empty-main h2{font-size:26px}
+  .v28-empty-main p{font-size:17.5px}
+  .v28-add{min-width:246px;height:61px;font-size:21px}
+  .v28-follow-list{padding-left:24px;padding-right:24px}
+  .v28-follow-row{min-height:79px;gap:10px}
+  .v28-team-link{grid-template-columns:56px minmax(0,1fr);gap:12px}
+  .v28-team-link strong{font-size:20px}
+  .v28-logo{width:52px;height:52px}
+  .v28-logo img{width:50px;height:50px}
+  .v28-following-pill{min-width:108px;height:48px;padding:0 15px;font-size:17px}
+  .v28-picker-top{padding-left:18px;padding-right:18px}
+  .v28-picker>h2{padding-left:22px;font-size:21px}
+  .v28-picker-list{padding-left:18px;padding-right:18px}
+  .v28-picker-row{grid-template-columns:50px minmax(0,1fr) auto;gap:10px}
+  .v28-picker-row>strong{font-size:15.5px}
+  .v28-picker-follow{width:91px;height:39px;font-size:14px}
+  .v28-sheet{padding-left:28px;padding-right:28px}
+  .v28-sheet-team strong{font-size:24px}
+  .v28-sheet-action span{font-size:22px}
+}
+
+/* Preview escritorio: sigue siendo una app móvil centrada. */
 @media(min-width:521px){
   body[data-app-route="following"] #screen{
     width:520px!important;
-    left:50%!important;
-    transform:translateX(-50%)!important;
   }
 }
