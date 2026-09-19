@@ -60,6 +60,12 @@
   const team=(code)=>teams.find(t=>t.code===code)||teams[0];
   const player=(id)=>players.find(p=>p.id===id)||players[0];
   const crest=(code)=>`<span class="crest">${esc(code)}</span>`;
+  const calendarTeamIcon=(code)=>{
+    const t=team(code);
+    const src=window.LJR_TEAM_LOGOS?.get?.(t.name)||'';
+    if(src)return `<span class="v70-team-icon"><img src="${esc(src)}" alt="${esc(t.name)}" loading="lazy" decoding="async"></span>`;
+    return `<span class="v70-team-icon v70-team-icon-fallback" aria-label="${esc(t.name)}"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 18.8 6.7 17.5 15 12 20l-5.5-5L5.2 6.7 12 3Z"/><path d="m9.1 9.1 2.9-2 2.9 2-1.1 3.3h-3.6L9.1 9.1Zm-2.6 5.8 3.7-2.5m3.6 0 3.7 2.5M12 7.1V3.8"/></svg></span>`;
+  };
   const header=(eyebrow,title,sub='')=>`<div class="eyebrow">${esc(eyebrow)}</div><h1 class="screen-title">${title}</h1>${sub?`<p class="muted v4-sub">${esc(sub)}</p>`:''}`;
   const section=(title,body)=>`<section class="section"><div class="section-head"><h2>${esc(title)}</h2></div>${body}</section>`;
   const stat=(value,label)=>`<div><b>${esc(value)}</b><small>${esc(label)}</small></div>`;
@@ -94,8 +100,26 @@
   function barStat(label,a,b,suffix){return `<div class="v4-bar-stat"><b>${a}${suffix}</b><span><small>${label}</small><i><em style="width:${a/(a+b)*100}%"></em></i></span><b>${b}${suffix}</b></div>`}
   function matchBody(tab){if(tab==='Alineaciones')return section('Formaciones',`<div class="v4-lineups"><div><h3>Juventino · 4-3-3</h3>${['Jorge Medina','Luis Gómez','Edgar Ruiz','Juan Pérez','Miguel Torres'].map((n,i)=>`<div><b>${i+1}</b><span>${esc(n)}</span></div>`).join('')}</div><div><h3>Pozos · 4-4-2</h3>${['Mario Nieto','Iván Sánchez','Sergio Luna','Carlos Ramírez','Ángel Cruz'].map((n,i)=>`<div><b>${i+1}</b><span>${esc(n)}</span></div>`).join('')}</div></div>`);if(tab==='Estadísticas')return section('Estadísticas del partido',`<div class="v4-match-stats">${barStat('Posesión',54,46,'%')}${barStat('Tiros',9,7,'')}${barStat('A puerta',4,3,'')}${barStat('Corners',5,2,'')}${barStat('Faltas',8,11,'')}</div><p class="muted tiny">Datos de demostración hasta conectar el proveedor oficial de estadísticas.</p>`);if(tab==='Cronología')return section('Cronología',`<div class="v4-timeline"><div><b>63'</b><span>Partido en juego</span></div><div><b>48'</b><span>Cambio · Pozos</span></div><div><b>34'</b><span>Amarilla · Luis Gómez</span></div><div><b>12'</b><span>⚽ Gol · Juan Pérez</span></div><div><b>1'</b><span>Inicio del partido</span></div></div>`);return `<div class="card v4-summary">${stat('1–0','Marcador')}${stat('63′','Minuto')}${stat('Campo Municipal','Sede')}</div>${section('Figura del partido',miniPlayer(player('p1')))}${section('Acciones rápidas','<div class="v4-action-grid"><button data-v4-route="v4-predictor-history">Quiniela</button><button data-v4-route="v4-compare">Comparar jugadores</button><button data-v4-route="v4-notifications">Alertas</button><button data-v4-route="v4-discipline">Disciplina</button></div>')}`}
 
-  function dateMatches(date){const games=schedule.filter(x=>x.date===date);return section(`Partidos · ${date}`,games.length?`<div class="card match-card">${games.map(m=>`<div class="match-row"><span class="home">${team(m.home).name}</span>${crest(m.home)}<b class="score">${m.score||m.time}</b>${crest(m.away)}<span>${team(m.away).name}</span></div>`).join('')}</div>`:'<div class="empty-mini">No hay partidos programados para esta fecha.</div>')}
-  function calendarView(){const y=v4.calendarYear,m=v4.calendarMonth,first=new Date(y,m,1),days=new Date(y,m+1,0).getDate(),offset=(first.getDay()+6)%7,names=['L','M','X','J','V','S','D'];let cells=Array(offset).fill('<span class="v4-day empty"></span>');for(let d=1;d<=days;d++){const iso=`${y}-${String(m+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`,games=schedule.filter(x=>x.date===iso);cells.push(`<button class="v4-day ${games.length?'has-match':''}" data-v4-date="${iso}"><b>${d}</b>${games.length?`<i>${games.length}</i>`:''}</button>`)}return `${header('CALENDARIO','Octubre 2026','Consulta jornadas y partidos por fecha.')}<div class="v4-week">${names.map(n=>`<b>${n}</b>`).join('')}</div><div class="v4-calendar">${cells.join('')}</div><div id="v4DateMatches">${dateMatches('2026-10-13')}</div>`}
+  function dateMatches(date){
+    const games=schedule.filter(x=>x.date===date);
+    return '<section class="section v70-calendar-matches"><div class="section-head"><h2><span class="v70-inline-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="3.5" y="5.5" width="17" height="15" rx="2"/><path d="M7 3.5v4M17 3.5v4M3.5 9.5h17"/></svg></span>Partidos · '+esc(date)+'</h2></div>'+
+      (games.length?'<div class="card match-card v70-match-card">'+games.map(m=>'<div class="v70-match-row"><span class="v70-club home">'+calendarTeamIcon(m.home)+'<b>'+esc(team(m.home).name)+'</b></span><strong class="v70-score">'+esc(m.score||m.time)+'</strong><span class="v70-club away">'+calendarTeamIcon(m.away)+'<b>'+esc(team(m.away).name)+'</b></span></div>').join('')+'</div>':'<div class="empty-mini">No hay partidos programados para esta fecha.</div>')+
+    '</section>';
+  }
+  function calendarView(){
+    const y=v4.calendarYear,m=v4.calendarMonth,first=new Date(y,m,1),days=new Date(y,m+1,0).getDate(),offset=(first.getDay()+6)%7,names=['L','M','X','J','V','S','D'];
+    let cells=Array(offset).fill('<span class="v4-day empty"></span>');
+    for(let d=1;d<=days;d++){
+      const iso=`${y}-${String(m+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`,games=schedule.filter(x=>x.date===iso);
+      cells.push(`<button class="v4-day ${games.length?'has-match':''}" data-v4-date="${iso}"><b>${d}</b>${games.length?`<i>${games.length}</i>`:''}</button>`);
+    }
+    return '<section class="v70-calendar-page">'+
+      '<div class="v70-calendar-title"><span class="v70-calendar-kicker"><span class="v70-calendar-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="3.5" y="5.5" width="17" height="15" rx="2"/><path d="M7 3.5v4M17 3.5v4M3.5 9.5h17"/></svg></span>CALENDARIO</span><h1>Octubre 2026</h1><p>Consulta jornadas y partidos por fecha.</p></div>'+
+      '<div class="v4-week">'+names.map(n=>'<b>'+n+'</b>').join('')+'</div>'+
+      '<div class="v4-calendar">'+cells.join('')+'</div>'+
+      '<div id="v4DateMatches">'+dateMatches('2026-10-13')+'</div>'+
+    '</section>';
+  }
 
   function compareMetric(label,a,b){return `<div><b class="${a>b?'winner':''}">${a}</b><span>${esc(label)}</span><b class="${b>a?'winner':''}">${b}</b></div>`}
   function compareView(){const c=v4.comparison,opts=players.map(p=>`<option value="${p.id}">${esc(p.name)} · ${p.team}</option>`).join(''),a=player(c.left),b=player(c.right);return `${header('DATOS','Comparador','Compara estadísticas de dos jugadores.')}<div class="v4-select-row"><select id="v4CompareLeft">${opts}</select><b>VS</b><select id="v4CompareRight">${opts}</select></div><div class="v4-compare-cards"><div>${crest(a.team)}<h2>${esc(a.name)}</h2></div><div>${crest(b.team)}<h2>${esc(b.name)}</h2></div></div><div class="v4-compare-table">${compareMetric('Goles',a.goals,b.goals)}${compareMetric('Asistencias',a.assists,b.assists)}${compareMetric('Minutos',a.minutes,b.minutes)}${compareMetric('Tarjetas',a.cards,b.cards)}${compareMetric('Fantasy pts',a.points,b.points)}</div>`}
@@ -114,7 +138,23 @@
   function settingsView(){const s=v4.settings;return `${header('AJUSTES','Experiencia y accesibilidad','Estas opciones funcionan localmente.')}<div class="settings-card"><label class="setting-row"><span><b>Reducir movimiento</b><small>Desactiva animaciones decorativas</small></span><input type="checkbox" data-v4-setting="reducedMotion" ${s.reducedMotion?'checked':''}><i></i></label><label class="setting-row"><span><b>Texto grande</b><small>Aumenta la escala de lectura</small></span><input type="checkbox" data-v4-setting="largeText" ${s.largeText?'checked':''}><i></i></label><label class="setting-row"><span><b>Modo compacto</b><small>Reduce espacios entre tarjetas</small></span><input type="checkbox" data-v4-setting="compactMode" ${s.compactMode?'checked':''}><i></i></label></div>${section('Almacenamiento','<button class="btn outline full" data-v4-action="export-data">Exportar mis datos locales</button><button class="btn outline full v4-mt" data-v4-action="reset-v4">Restablecer funciones V4</button>')}`}
 
   const views={'v4-hub':hubView,'v4-challenge':challengeView,'v4-draft':draftView,'v4-transfers':transfersView,'v4-leagues':leaguesView,'v4-matchcenter':matchCenterView,'v4-calendar':calendarView,'v4-compare':compareView,'v4-discipline':disciplineView,'v4-rules':rulesView,'v4-notifications':notificationsView,'v4-quiz':quizView,'v4-moreless':moreLessView,'v4-predictor-history':predictorHistoryView,'v4-settings':settingsView};
-  function renderIfV4(){const route=routeName();if(!views[route]){setTimeout(injectEntryPoints,0);applySettings();return}const root=screen();if(!root)return;root.innerHTML=views[route]();backButton()?.classList.remove('is-hidden');$$('.nav-item').forEach(n=>n.classList.remove('active'));bind();applySettings();window.scrollTo(0,0)}
+  function renderIfV4(){
+    const route=routeName();
+    document.body.classList.toggle('v70-calendar-active',route==='v4-calendar');
+    if(!views[route]){
+      setTimeout(injectEntryPoints,0);
+      applySettings();
+      return;
+    }
+    const root=screen();if(!root)return;
+    root.innerHTML=views[route]();
+    backButton()?.classList.remove('is-hidden');
+    $('.nav-item').forEach(n=>n.classList.remove('active'));
+    bind();
+    applySettings();
+    if(route==='v4-calendar')requestAnimationFrame(()=>window.LJR_TEAM_LOGOS?.refresh?.());
+    window.scrollTo(0,0);
+  }
   function applySettings(){document.documentElement.classList.toggle('v4-reduced-motion',!!v4.settings.reducedMotion);document.documentElement.classList.toggle('v4-large-text',!!v4.settings.largeText);document.documentElement.classList.toggle('v4-compact',!!v4.settings.compactMode)}
   function bind(){
     $$('[data-v4-route]').forEach(el=>el.onclick=e=>{e.preventDefault();go(el.dataset.v4Route)});
