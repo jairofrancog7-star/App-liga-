@@ -263,9 +263,17 @@ function applyHeaderScroll(){
 
   const lerp=(a,b,t)=>a+(b-a)*t;
 
+  const currentHeadH=lerp(expandedH,collapsedH,p);
   head.style.setProperty('--v33-collapse',p.toFixed(4));
-  head.style.setProperty('--v33-head-h',lerp(expandedH,collapsedH,p).toFixed(1)+'px');
+  head.style.setProperty('--v33-head-h',currentHeadH.toFixed(1)+'px');
   head.style.setProperty('--v33-tabs-opacity','1');
+
+  /* SAFE_DATA_GAP_FIX1
+     La cabecera es fija y cambia de altura al hacer scroll. El espacio reservado
+     del contenido debe cambiar con ella; si se queda con la altura expandida
+     aparece una franja azul vacía encima de "Datos clave". */
+  const page=document.querySelector('[data-v33-data]');
+  if(page)page.style.paddingTop=currentHeadH.toFixed(1)+'px';
 
   title.style.left=lerp(expandedLeft,compactLeft,p).toFixed(1)+'px';
   title.style.top=lerp(expandedTop,compactTop,p).toFixed(1)+'px';
