@@ -16,12 +16,12 @@
   };
 
   const CONFIG={
-    competition:{
+    home:{
       asset:'matchday',
       kicker:'JORNADAS · FÚTBOL ASOCIACIÓN',
       title:'PARTIDOS Y RESULTADOS',
       desc:'Tarjetas de jornada más claras, rápidas y pensadas para la liga municipal.',
-      pills:[['Jornada','scroll'],['Horarios','matchday'],['Campos','venues']]
+      pills:[['Jornada','competition'],['Horarios','matchday'],['Campos','venues']]
     },
     match:{
       asset:'matchday',
@@ -278,8 +278,24 @@
 
     let banner=screen.querySelector('[data-v73-motion-banner]');
     if(!banner){
-      banner=buildBanner(cfg);
-      screen.insertBefore(banner,screen.firstChild);
+      if(r==='home'){
+        const extra=screen.querySelector('#safeHomeExtra');
+        if(!extra){
+          syncAll();
+          return;
+        }
+        banner=buildBanner(cfg);
+        const sections=[...extra.querySelectorAll(':scope > .v6-section')];
+        const target=sections.find(section=>{
+          const title=section.querySelector('.v6-section-head h2');
+          return title&&/equipo de la semana/i.test(title.textContent||'');
+        })||sections[Math.max(0,Math.floor(sections.length*.72))]||null;
+        if(target)extra.insertBefore(banner,target);
+        else extra.appendChild(banner);
+      }else{
+        banner=buildBanner(cfg);
+        screen.insertBefore(banner,screen.firstChild);
+      }
     }
 
     if(r==='motionHub'&&!screen.querySelector('[data-v73-gallery]')){
