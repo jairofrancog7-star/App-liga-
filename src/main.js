@@ -78,10 +78,17 @@ function predictorView(){
   return `<section class="v37-predictor-reference" aria-label="Pronostica Seis">
     <img
       class="v37-predictor-reference-image"
-      src="./assets/reference/predictor-v37/predictor-reference-body.webp?v=20260919-predictor-v37"
+      src="./assets/reference/predictor-master.png?v=20260919-predictor-master"
       alt="Pronostica Seis"
       draggable="false"
     >
+    <nav class="v37-predictor-hotnav" aria-label="Navegación">
+      <button type="button" data-route="home" aria-label="Inicio"></button>
+      <button type="button" data-route="competition" aria-label="Competición"></button>
+      <button type="button" data-route="video" aria-label="Vídeo"></button>
+      <button type="button" data-route="fantasy" aria-label="Fantasy"></button>
+      <button type="button" data-route="more" aria-label="Más"></button>
+    </nav>
   </section>`;
 }
 function videoView(){return `<div class="hero video-hero"><span class="eyebrow" style="color:#fff">REVIVE LA JORNADA</span><h1>FÚTBOL QUE<br>NOS UNE</h1><p>Mira goles, atajadas, entrevistas y resúmenes completos.</p><div class="button-row"><button class="btn primary" data-video="Resumen de la Jornada">Ver ahora</button><button class="btn outline" data-match="m1">Partido de la semana</button></div></div><section class="section">${sectionHead('Selección del editor')}<div class="media-carousel"><button class="media-card" data-video="Final dramático en Cuenda"><span class="badge">12:46</span><h3>Final dramático en Cuenda</h3></button><button class="media-card" data-video="Resumen de la jornada"><span class="badge">08:20</span><h3>Resumen de la jornada</h3></button></div></section>`}
