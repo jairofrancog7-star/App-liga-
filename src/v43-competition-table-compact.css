@@ -842,3 +842,150 @@ body[data-app-route="competition"] .v12-final-opponent b{
     font-size:7px!important;
   }
 }
+
+
+/* V43.4 — las 3 tablas de Clasificación con la misma escala.
+   Medida tomada de las capturas del usuario: misma altura de fila,
+   mismo escudo, misma tipografía y mismos números en Compacta,
+   Completa y Criterios. */
+
+/* Nunca mostrar el logo grande encima de la tercera tabla. */
+body.v40-standings-master .v40-criteria-league{
+  display:none!important;
+}
+
+/* El encabezado de cada modo comienza en la misma altura visual. */
+body.v40-standings-master .v40-content{
+  margin-top:20px!important;
+}
+body.v40-standings-master .v40-table-head,
+body.v40-standings-master .v40-wide-head{
+  min-height:19px!important;
+  height:19px!important;
+  font-size:8.5px!important;
+  line-height:1!important;
+}
+body.v40-standings-master .v40-direct{
+  margin-top:8px!important;
+  font-size:8.5px!important;
+  line-height:1!important;
+}
+body.v40-standings-master .v40-rule{
+  height:2px!important;
+  margin-top:11px!important;
+}
+
+/* MISMA ALTURA DE FILA EN LAS TRES TABLAS */
+body.v40-standings-master .v40-row,
+body.v40-standings-master .v40-wide-row,
+body.v40-standings-master .v40-wide.criteria .v40-wide-row,
+body.v40-standings-master .v40-wide.complete .v40-wide-row{
+  min-height:43px!important;
+  height:43px!important;
+  max-height:43px!important;
+  box-sizing:border-box!important;
+}
+
+/* MISMO TAMAÑO DE ESCUDO */
+body.v40-standings-master .v40-team-logo,
+body.v40-standings-master .v40-wide-row .v40-team-logo,
+body.v40-standings-master .v40-wide.criteria .v40-team-logo,
+body.v40-standings-master .v40-wide.complete .v40-team-logo{
+  width:18px!important;
+  height:18px!important;
+  min-width:18px!important;
+  max-width:18px!important;
+  object-fit:contain!important;
+}
+
+/* MISMO BLOQUE EQUIPO + NOMBRE */
+body.v40-standings-master .v40-team,
+body.v40-standings-master .v40-wide-row .v40-team{
+  grid-template-columns:22px minmax(0,1fr)!important;
+  gap:4px!important;
+  align-items:center!important;
+}
+body.v40-standings-master .v40-team strong,
+body.v40-standings-master .v40-wide-row .v40-team strong{
+  font-size:9.4px!important;
+  line-height:1.05!important;
+  font-weight:700!important;
+}
+
+/* MISMO TAMAÑO DE RANK Y NÚMEROS */
+body.v40-standings-master .v40-rank,
+body.v40-standings-master .v40-wide-row>span:first-child{
+  font-size:8.6px!important;
+  line-height:1!important;
+}
+body.v40-standings-master .v40-row>span:nth-child(3),
+body.v40-standings-master .v40-row>span:nth-child(4),
+body.v40-standings-master .v40-row>span:nth-child(5),
+body.v40-standings-master .v40-wide-row>span,
+body.v40-standings-master .v40-wide-row>b{
+  font-size:9px!important;
+  line-height:1!important;
+}
+
+/* Compacta: conservar distribución visible de la referencia. */
+body.v40-standings-master .v40-table-head,
+body.v40-standings-master .v40-row{
+  grid-template-columns:16px minmax(0,1fr) 23px 23px 25px 50px!important;
+  column-gap:0!important;
+}
+body.v40-standings-master .v40-form{
+  gap:2px!important;
+  padding-right:1px!important;
+}
+body.v40-standings-master .v40-form i{
+  width:14px!important;
+  height:14px!important;
+}
+body.v40-standings-master .v40-form b{
+  width:16px!important;
+  height:16px!important;
+  font-size:7px!important;
+}
+body.v40-standings-master .v40-form b::after{
+  left:2px!important;
+  right:2px!important;
+  bottom:-4px!important;
+  height:2px!important;
+}
+
+/* Completa: misma altura/escala, sólo conserva el ancho horizontal necesario. */
+body.v40-standings-master .v40-wide.complete{
+  min-width:520px!important;
+}
+body.v40-standings-master .v40-wide.complete .v40-wide-head,
+body.v40-standings-master .v40-wide.complete .v40-wide-row{
+  grid-template-columns:18px 145px repeat(7,42px)!important;
+}
+
+/* Criterios: misma altura/escala que Compacta, sin logo arriba. */
+body.v40-standings-master .v40-wide.criteria{
+  min-width:610px!important;
+  padding-top:0!important;
+}
+body.v40-standings-master .v40-wide.criteria .v40-wide-head,
+body.v40-standings-master .v40-wide.criteria .v40-wide-row{
+  grid-template-columns:18px 145px repeat(7,42px)!important;
+}
+
+/* En móviles 360–390 px mantener exactamente la misma escala, no encoger más. */
+@media(max-width:390px){
+  body.v40-standings-master{
+    --v43-row:43px!important;
+    --v43-logo:18px!important;
+    --v43-team-font:9.4px!important;
+    --v43-num-font:9px!important;
+  }
+  body.v40-standings-master .v40-row,
+  body.v40-standings-master .v40-wide-row,
+  body.v40-standings-master .v40-wide.criteria .v40-wide-row,
+  body.v40-standings-master .v40-wide.complete .v40-wide-row{
+    min-height:43px!important;
+    height:43px!important;
+    max-height:43px!important;
+  }
+}
