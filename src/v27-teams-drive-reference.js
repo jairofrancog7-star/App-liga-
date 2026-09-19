@@ -208,8 +208,9 @@
   }
 
   function render(){
+    /* TEAMDETAIL_OWNER_FIX1 — V27 solo controla la lista Equipos; V42 controla la ficha del equipo. */
     const r=route();
-    const active=r==='teams'||r==='teamDetail';
+    const active=r==='teams';
     document.body.classList.toggle('v27-teams-active',active);
     navReferenceMode(active);
     if(!active)return;
@@ -264,7 +265,7 @@
   if(target){
     new MutationObserver(function(){
       const r=route();
-      if((r==='teams'||r==='teamDetail')&&!target.querySelector('[data-v27-reference]'))schedule();
+      if(r==='teams'&&!target.querySelector('[data-v27-reference]'))schedule();
     }).observe(target,{childList:true,subtree:false});
   }
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',schedule,{once:true});
