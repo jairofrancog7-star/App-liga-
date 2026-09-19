@@ -6,6 +6,14 @@ const teams = [
   { code:'SPD', id:'sanpedro', name:'San Pedro', category:'Veteranos 35+', coach:'Óscar Martínez', field:'Campo San Pedro', p:5, gd:-1, pts:6, form:['d','v','e','e','d'], founded:1987, news:'San Pedro prepara su regreso' },
   { code:'MOR', id:'morales', name:'Morales', category:'Veteranos 35+', coach:'Jesús Molina', field:'Campo Morales', p:5, gd:-4, pts:4, form:['d','e','d','v','d'], founded:1990, news:'Morales anuncia nuevo entrenador' }
 ];
+const HOME_OFFICIAL_STANDINGS=[
+  {name:'SAN JOSE FC',p:4,gd:10,pts:12,logo:'https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/assets/official-logos/san-jose-fc.png'},
+  {name:'JUVENTUS',p:4,gd:14,pts:9,logo:'https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/assets/official-logos/juventus.png'},
+  {name:'HERMANOS',p:3,gd:4,pts:7,logo:'https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/assets/official-logos/hermanos.png'},
+  {name:'LINCES',p:3,gd:3,pts:6,logo:'https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/assets/official-logos/linces.png'},
+  {name:'NAPOLI',p:4,gd:1,pts:6,logo:'https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/assets/official-logos/napoli.png'},
+  {name:'FRANCO FC',p:3,gd:0,pts:6,logo:'https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/assets/official-logos/franco-fc.png'}
+];
 const players = [
   {id:'p1',name:'Juan Pérez',team:'JUV',position:'DEL',number:9,goals:8,assists:3,cards:1,minutes:420,cost:9.5,points:46},
   {id:'p2',name:'Carlos Ramírez',team:'POZ',position:'DEL',number:11,goals:6,assists:4,cards:0,minutes:405,cost:9.0,points:42},
@@ -57,7 +65,7 @@ function toast(text){const t=document.createElement('div');t.className='toast';t
 function setTheme(theme){state.theme=theme;document.documentElement.classList.toggle('lightmode',theme==='light');save()}setTheme(state.theme);
 function team(code){return teams.find(t=>t.code===code)||teams[0]}function player(id){return players.find(p=>p.id===id)}function crest(code){return `<span class="crest">${code}</span>`}function formDots(list){return `<span class="form">${list.map(x=>`<b class="${x}">${x.toUpperCase()}</b>`).join('')}</span>`}function sectionHead(title,route,label='Ver todo'){return `<div class="section-head"><h2>${title}</h2>${route?`<button class="link-button" data-route="${route}">${label}</button>`:''}</div>`}function teamCell(code){const t=team(code);return `<span class="club-cell">${crest(code)}<span>${t.name}</span></span>`}function matchRow(m){const live=m.status==='LIVE'?`<span class="live">${m.minute}'</span>`:(m.score||m.time);return `<button class="match-row match-button" data-match="${m.id}"><span class="home">${team(m.home).name}</span>${crest(m.home)}<b class="score">${live}</b>${crest(m.away)}<span>${team(m.away).name}</span></button>`}function isFav(id){return state.favorites.includes(id)}function favButton(id,label='Favorito'){return `<button class="icon-action ${isFav(id)?'active':''}" data-favorite="${id}" aria-label="${label}">${icons.star}</button>`}function switchRow(key,label,sub=''){return `<label class="setting-row"><span><b>${label}</b>${sub?`<small>${sub}</small>`:''}</span><input type="checkbox" data-notification="${key}" ${state.notifications[key]?'checked':''}><i></i></label>`}function menuGroup(title,items){return `<div class="menu-group"><h3>${title}</h3>${items.map(([label,route,meta])=>`<button class="menu-row" data-route="${route}"><span>${label}${meta?`<small>${meta}</small>`:''}</span><span>›</span></button>`).join('')}</div>`}
 function homeView(){
-  const homeStandings=teams.slice().sort((a,b)=>b.pts-a.pts||b.gd-a.gd).slice(0,5);
+  const homeStandings=HOME_OFFICIAL_STANDINGS;
   const homeFields=(typeof V60_FIELDS!=='undefined'?V60_FIELDS:[]).slice(0,4);
   return `<div class="eyebrow">TORNEO MUNICIPAL · JORNADA 5</div>
     <h1 class="screen-title">El fútbol de<br>nuestro municipio</h1>
@@ -101,9 +109,9 @@ function homeView(){
       <div class="section-head"><h2>Tabla de posiciones</h2><button class="link-button" data-v63-comp="standings">Ver tabla</button></div>
       <div class="v65-table-card">
         <div class="v65-table-head"><span>#</span><span>Equipo</span><span>PJ</span><span>DG</span><span>Pts</span></div>
-        ${homeStandings.map((t,i)=>`<button type="button" class="v65-table-row" data-team="${t.code}">
+        ${homeStandings.map((t,i)=>`<button type="button" class="v65-table-row" data-v62-team="${t.name}" aria-label="Ver ${t.name}">
           <b>${i+1}</b>
-          <span class="v65-table-team">${crest(t.code)}<strong>${t.name}</strong></span>
+          <span class="v65-table-team"><span class="v65-table-logo"><img src="${t.logo}" alt="${t.name}" loading="lazy" decoding="async"></span><strong>${t.name}</strong></span>
           <span>${t.p}</span>
           <span>${t.gd>0?'+':''}${t.gd}</span>
           <strong>${t.pts}</strong>
