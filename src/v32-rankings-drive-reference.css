@@ -970,3 +970,85 @@ body.v32-rankings-active .bottom-nav .nav-item[data-route="more"] .nav-icon{
   .v32-filter-club .v32-logo.filter{width:43px!important;height:43px!important}
   .v32-filter-club>span:last-child{font-size:9.5px!important}
 }
+
+
+/* PARTS32.4 — cabecera superior más pequeña y estable entre Federaciones/Clubes. */
+.v32-head.v32-head-unified{
+  padding:0 16px!important;
+}
+.v32-head-unified .v32-head-row{
+  display:grid!important;
+  grid-template-columns:36px minmax(0,1fr) 36px!important;
+  align-items:center!important;
+  min-height:42px!important;
+  height:42px!important;
+  margin:0 0 8px!important;
+  gap:8px!important;
+}
+.v32-head-unified .v32-icon{
+  width:36px!important;
+  height:36px!important;
+}
+.v32-head-unified .v32-icon svg{
+  width:23px!important;
+  height:23px!important;
+}
+.v32-head-unified .v32-head-row h1{
+  margin:0!important;
+  padding:0!important;
+  min-width:0!important;
+  text-align:center!important;
+  white-space:nowrap!important;
+  overflow:hidden!important;
+  text-overflow:ellipsis!important;
+  font-size:20px!important;
+  line-height:1!important;
+  font-weight:650!important;
+  letter-spacing:-.25px!important;
+}
+.v32-head-unified .v32-tabs{
+  height:42px!important;
+  margin:0!important;
+  align-items:end!important;
+}
+.v32-head-unified .v32-tab{
+  height:42px!important;
+  padding:0 4px!important;
+  font-size:14px!important;
+  line-height:1!important;
+}
+.v32-head-unified .v32-tab.active:after{
+  left:27%!important;
+  right:27%!important;
+  height:3px!important;
+}
+@media(max-width:390px){
+  .v32-head.v32-head-unified{
+    padding-left:13px!important;
+    padding-right:13px!important;
+  }
+  .v32-head-unified .v32-head-row{
+    grid-template-columns:34px minmax(0,1fr) 34px!important;
+    min-height:40px!important;
+    height:40px!important;
+    margin-bottom:7px!important;
+  }
+  .v32-head-unified .v32-icon{
+    width:34px!important;
+    height:34px!important;
+  }
+  .v32-head-unified .v32-icon svg{
+    width:22px!important;
+    height:22px!important;
+  }
+  .v32-head-unified .v32-head-row h1{
+    font-size:18px!important;
+  }
+  .v32-head-unified .v32-tabs{
+    height:40px!important;
+  }
+  .v32-head-unified .v32-tab{
+    height:40px!important;
+    font-size:13px!important;
+  }
+}
