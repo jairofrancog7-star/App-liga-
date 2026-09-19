@@ -1,5 +1,5 @@
 /* V62 — capa de datos oficiales. No recolorea ni sustituye el diseño azul existente. */
-body.v62-data-active #screen{padding-left:0!important;padding-right:0!important;background:#05055d!important}
+body.v62-data-active .topbar{display:none!important}\nbody.v62-data-active #screen{padding-left:0!important;padding-right:0!important;margin-top:0!important;min-height:100dvh!important;background:#05055d!important}
 .v62-data-page{min-height:100dvh;padding:0 0 calc(92px + env(safe-area-inset-bottom));color:#fff;background:linear-gradient(180deg,#07106f 0,#05055d 32%,#030451 100%);font-family:Inter,Roboto,Arial,sans-serif}
 .v62-data-head{display:flex;align-items:center;gap:12px;padding:18px 16px 15px;border-bottom:1px solid rgba(255,255,255,.10);background:linear-gradient(180deg,rgba(18,52,215,.42),rgba(7,8,100,.18))}
 .v62-data-head>button{width:38px;height:38px;border:0;background:transparent;color:#fff;font-size:38px;line-height:1;display:grid;place-items:center}
