@@ -552,3 +552,39 @@ body[data-app-route="fantasyAccess"] .v23-access-sponsor.v23-ref-crop>img{
     max-height:64px!important;
   }
 }
+
+
+/* V38 — quitar únicamente el marco/cuadro visible alrededor del escudo en Fantasy.
+   No cambia tamaño, posición ni diseño del resto de la pantalla. */
+body[data-app-route="fantasy"] .v22-sponsor img{
+  border:0!important;
+  outline:0!important;
+  box-shadow:none!important;
+  background:transparent!important;
+  border-radius:0!important;
+  /* El archivo tiene un fondo rectangular integrado; esta máscara elimina
+     visualmente ese marco sin recortar el escudo ni moverlo. */
+  -webkit-mask-image:radial-gradient(ellipse 66% 62% at 50% 50%,#000 0 83%,rgba(0,0,0,.92) 90%,transparent 100%)!important;
+  mask-image:radial-gradient(ellipse 66% 62% at 50% 50%,#000 0 83%,rgba(0,0,0,.92) 90%,transparent 100%)!important;
+  -webkit-mask-repeat:no-repeat!important;
+  mask-repeat:no-repeat!important;
+  -webkit-mask-size:100% 100%!important;
+  mask-size:100% 100%!important;
+  mix-blend-mode:screen!important;
+  filter:brightness(1.10) contrast(1.22)!important;
+}
+
+/* También se elimina cualquier borde del mismo escudo en la pantalla de acceso Fantasy. */
+body[data-app-route="fantasyAccess"] .v23-access-sponsor>img{
+  border:0!important;
+  outline:0!important;
+  box-shadow:none!important;
+  background:transparent!important;
+  border-radius:0!important;
+  -webkit-mask-image:radial-gradient(ellipse 66% 62% at 50% 50%,#000 0 83%,rgba(0,0,0,.92) 90%,transparent 100%)!important;
+  mask-image:radial-gradient(ellipse 66% 62% at 50% 50%,#000 0 83%,rgba(0,0,0,.92) 90%,transparent 100%)!important;
+  -webkit-mask-repeat:no-repeat!important;
+  mask-repeat:no-repeat!important;
+  -webkit-mask-size:100% 100%!important;
+  mask-size:100% 100%!important;
+}
