@@ -14,7 +14,7 @@
     {id:'GAL',name:'Atlético Galeana',logo:'assets/teams/atletico-galeana.webp',abbr:'GAL'},
     {id:'LOB',name:'Lobos CDG',logo:'assets/teams/lobos-cdg.webp',abbr:'LOB'},
     {id:'CUE',name:'Cuenda',logo:'assets/teams/tc-cuenda.webp',abbr:'CUE'},
-    {id:'POZ',name:'Pozos',logo:'assets/teams/pozos-fc.webp',abbr:'POZ'},
+    {id:'POZ',name:'Pozos FC',logo:'assets/teams/veteranos-pozos-fc.webp',abbr:'POZ'},
     {id:'RIN',name:'Rincón de Centeno',logo:'',abbr:'RIN'},
     {id:'ROS',name:'Deportivo Rosas',logo:'',abbr:'ROS'},
     {id:'STC',name:'Santa Cruz',logo:'assets/teams/atletico-santa-cruz.webp',abbr:'STC'},
