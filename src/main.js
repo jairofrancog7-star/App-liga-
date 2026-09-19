@@ -797,31 +797,6 @@ function quizArenaView(){
   const options=[['A','Pozos'],['B','Rincón de Centeno'],['C','Juventino'],['D','Cuenda']];
   return `<section class="v48-quiz-arena-page" data-v48-arena data-v48-correct="${correct}" aria-label="Quiz Arena">
 
-    <section class="v48-game" data-v48-game aria-label="Quiz de la Liga">
-      <button type="button" class="v48-game-back" data-route="more" aria-label="Volver a Más">
-        <svg viewBox="0 0 32 32" aria-hidden="true"><path d="M20.5 7.5 12 16l8.5 8.5M12.5 16H27"/></svg>
-      </button>
-
-      <div class="v48-game-logo" aria-label="Quiz de la Liga">
-        <span class="v48-game-quiz">QUIZ</span>
-        <span class="v48-game-de">DE LA</span>
-        <span class="v48-game-liga">LIGA</span>
-        <i class="v48-game-check" aria-hidden="true"></i>
-        <i class="v48-game-left" aria-hidden="true"></i>
-        <i class="v48-game-right" aria-hidden="true"></i>
-      </div>
-      <div class="v48-game-subtitle"><i></i><span>LIGA MUNICIPAL DE FÚTBOL<br>JUVENTINO ROSAS</span><i></i></div>
-
-      <div class="v48-game-card">
-        <p>¿Qué equipo lidera actualmente la tabla?</p>
-        ${options.map(([letter,label])=>`<button type="button" class="v48-game-option" data-v48-quiz="${label}" aria-label="${letter}. ${label}"><span class="v48-game-letter">${letter}</span><span class="v48-game-text">${label}</span><span class="v48-game-ok" aria-hidden="true">✓</span></button>`).join('')}
-      </div>
-
-      <div class="v48-game-stadium" aria-hidden="true"><i></i><i></i><span></span></div>
-      <div class="v48-game-message" aria-live="polite"></div>
-      <div class="v48-scroll-cue" aria-hidden="true"><span>QUIZ ARENA</span><b>↓</b></div>
-    </section>
-
     <div class="v48-arena-landing" data-v48-landing>
       <header class="v48-arena-head">
         <button type="button" class="v48-back-real" data-route="more" aria-label="Volver a Más">
@@ -857,6 +832,30 @@ function quizArenaView(){
         <span>Clasificaciones</span><b>›</b>
       </button>
     </div>
+
+    <section class="v48-game" data-v48-game aria-label="Quiz de la Liga" aria-hidden="true">
+      <button type="button" class="v48-game-back" data-v48-game-back aria-label="Volver a Quiz Arena">
+        <svg viewBox="0 0 32 32" aria-hidden="true"><path d="M20.5 7.5 12 16l8.5 8.5M12.5 16H27"/></svg>
+      </button>
+
+      <div class="v48-game-logo" aria-label="Quiz de la Liga">
+        <span class="v48-game-quiz">QUIZ</span>
+        <span class="v48-game-de">DE LA</span>
+        <span class="v48-game-liga">LIGA</span>
+        <i class="v48-game-check" aria-hidden="true"></i>
+        <i class="v48-game-left" aria-hidden="true"></i>
+        <i class="v48-game-right" aria-hidden="true"></i>
+      </div>
+      <div class="v48-game-subtitle"><i></i><span>LIGA MUNICIPAL DE FÚTBOL<br>JUVENTINO ROSAS</span><i></i></div>
+
+      <div class="v48-game-card">
+        <p>¿Qué equipo lidera actualmente la tabla?</p>
+        ${options.map(([letter,label])=>`<button type="button" class="v48-game-option" data-v48-quiz="${label}" aria-label="${letter}. ${label}"><span class="v48-game-letter">${letter}</span><span class="v48-game-text">${label}</span><span class="v48-game-ok" aria-hidden="true">✓</span></button>`).join('')}
+      </div>
+
+      <div class="v48-game-stadium" aria-hidden="true"><i></i><i></i><span></span></div>
+      <div class="v48-game-message" aria-live="polite"></div>
+    </section>
   </section>`;
 }
 function quizView(){
@@ -884,7 +883,8 @@ const views={home:homeView,competition:competitionView,match:matchView,video:vid
 function render(){if(state.route==='quiz'){state.route='quizArena';if(location.hash!=='#/quizArena')history.replaceState(null,'','#/quizArena')}if(state.route==='theme'){setTheme(state.theme==='dark'?'light':'dark');state.route='more'}screen.innerHTML=views[state.route]?views[state.route]():views.home();const rootRoutes=['home','competition','video','fantasy','more'];backButton.classList.toggle('is-hidden',rootRoutes.includes(state.route));const navRoute=['predictor','predictorSix','quizArena','quiz','moreLess','moreLessHub','ligaQR','leagueTools','v38Stats','v38Weekly','v38Weather','v38Alerts','tableExport','bracketBuilder','credentialBuilder','cedulaBuilder','agendaBuilder','motionHub','suspensionTool','rulebook','matchday','weatherFields','venues','cedulas','cedulaDetail','credential','publications','tactics','simulator','jrControl','leagueData'].includes(state.route)?'more':state.route;navItems.forEach(n=>n.classList.toggle('active',n.dataset.route===navRoute));bind();window.scrollTo(0,0)}
 function go(route,push=true){if(route==='quiz')route='quizArena';if(push&&state.route!==route)state.history.push(state.route);state.route=route;location.hash='#/'+route;render()}
 function bind(){document.querySelectorAll('[data-route]').forEach(el=>el.onclick=()=>go(el.dataset.route));
-document.querySelectorAll('[data-v48-start]').forEach(el=>el.onclick=()=>{const page=el.closest('[data-v48-arena]');const game=page?.querySelector('[data-v48-game]');if(!game)return;game.scrollIntoView({behavior:'smooth',block:'start'});window.setTimeout(()=>page.querySelector('[data-v48-quiz]')?.focus({preventScroll:true}),420)});
+document.querySelectorAll('[data-v48-start]').forEach(el=>el.onclick=()=>{const page=el.closest('[data-v48-arena]');if(!page)return;page.classList.add('v48-playing');page.querySelector('[data-v48-game]')?.setAttribute('aria-hidden','false');window.scrollTo({top:0,behavior:'smooth'});window.setTimeout(()=>page.querySelector('[data-v48-quiz]')?.focus({preventScroll:true}),260)});
+document.querySelectorAll('[data-v48-game-back]').forEach(el=>el.onclick=()=>{const page=el.closest('[data-v48-arena]');if(!page)return;page.classList.remove('v48-playing','v48-answered');page.dataset.v48Answered='false';page.querySelector('[data-v48-game]')?.setAttribute('aria-hidden','true');page.querySelectorAll('[data-v48-quiz]').forEach(btn=>{btn.disabled=false;btn.classList.remove('is-correct','is-wrong');btn.removeAttribute('aria-pressed')});const msg=page.querySelector('.v48-game-message');if(msg)msg.textContent='';window.scrollTo({top:0,behavior:'smooth'})});
 document.querySelectorAll('[data-v48-quiz]').forEach(el=>el.onclick=()=>{const page=el.closest('[data-v48-arena]');if(!page||page.dataset.v48Answered==='true')return;page.dataset.v48Answered='true';page.classList.add('v48-answered');const correct=page.dataset.v48Correct||'Juventino';page.querySelectorAll('[data-v48-quiz]').forEach(btn=>{btn.disabled=true;btn.setAttribute('aria-pressed',btn===el?'true':'false');btn.classList.toggle('is-correct',btn.dataset.v48Quiz===correct);btn.classList.toggle('is-wrong',btn.dataset.v48Quiz!==correct)});const msg=page.querySelector('.v48-game-message');if(msg)msg.textContent=el.dataset.v48Quiz===correct?'¡Correcto! +10 puntos':'Respuesta incorrecta · Correcta: '+correct});
 
 document.querySelectorAll('[data-v60-comp]').forEach(el=>el.onclick=()=>{state.competitionTab=el.dataset.v60Comp||'fixtures';save();go('competition')});
