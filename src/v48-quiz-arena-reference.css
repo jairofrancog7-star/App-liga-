@@ -820,3 +820,95 @@ body[data-app-route="quizArena"] .bottom-nav{
     min-height:0!important;
   }
 }
+
+
+/* V48.6 — ENTRADA = QUIZ ARENA DE LA REFERENCIA; JUEGO SOLO AL TOCAR BOTON */
+body[data-app-route="quizArena"] #app,
+body[data-app-route="quizArena"] .app-shell{
+  overflow:hidden!important;
+}
+body[data-app-route="quizArena"] #screen{
+  min-height:100dvh!important;
+  overflow-x:hidden!important;
+  overflow-y:auto!important;
+}
+body[data-app-route="quizArena"] .v48-quiz-arena-page{
+  min-height:calc(100dvh - var(--v48-nav-h))!important;
+  overflow:hidden!important;
+}
+
+/* Al entrar: sólo aparece el diseño de Quiz Arena con sus botones. */
+body[data-app-route="quizArena"] .v48-arena-landing{
+  display:block!important;
+}
+body[data-app-route="quizArena"] .v48-game{
+  display:none!important;
+}
+body[data-app-route="quizArena"] .v48-quiz-arena-page.v48-playing .v48-arena-landing{
+  display:none!important;
+}
+body[data-app-route="quizArena"] .v48-quiz-arena-page.v48-playing .v48-game{
+  position:relative!important;
+  display:block!important;
+  width:100%!important;
+  height:calc(100dvh - var(--v48-nav-h) - env(safe-area-inset-bottom))!important;
+  min-height:620px!important;
+  margin:0!important;
+  overflow:hidden!important;
+}
+
+/* Ajuste exacto de proporciones según la captura subida. */
+body[data-app-route="quizArena"] .v48-arena-head{
+  height:min(39.5vw,205px)!important;
+  min-height:142px!important;
+}
+body[data-app-route="quizArena"] .v48-back-real{
+  top:min(15vw,78px)!important;
+}
+body[data-app-route="quizArena"] .v48-arena-card{
+  height:min(86.8vw,451px)!important;
+  min-height:312px!important;
+  margin:min(4vw,20px) 0 0!important;
+}
+body[data-app-route="quizArena"] .v48-ball-stage{
+  height:min(49.2vw,256px)!important;
+}
+body[data-app-route="quizArena"] .v48-arena-actions{
+  height:min(37.6vw,195px)!important;
+}
+
+/* Botones son controles reales; no forman parte de una captura. */
+body[data-app-route="quizArena"] .v48-arena-actions button{
+  cursor:pointer!important;
+  touch-action:manipulation!important;
+  -webkit-tap-highlight-color:transparent!important;
+}
+body[data-app-route="quizArena"] .v48-arena-actions button:active{
+  transform:scale(.985)!important;
+}
+
+/* En el juego, la flecha vuelve al diseño de entrada, no sale a otra ruta. */
+body[data-app-route="quizArena"] .v48-game-back{
+  cursor:pointer!important;
+  touch-action:manipulation!important;
+}
+
+@media(max-width:390px){
+  body[data-app-route="quizArena"] .v48-arena-head{
+    height:39.5vw!important;
+    min-height:142px!important;
+  }
+  body[data-app-route="quizArena"] .v48-back-real{
+    top:15vw!important;
+  }
+  body[data-app-route="quizArena"] .v48-arena-card{
+    height:86.8vw!important;
+    min-height:0!important;
+  }
+  body[data-app-route="quizArena"] .v48-ball-stage{
+    height:49.2vw!important;
+  }
+  body[data-app-route="quizArena"] .v48-arena-actions{
+    height:37.6vw!important;
+  }
+}
