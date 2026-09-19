@@ -4390,3 +4390,197 @@ body[data-app-route="competition"] .v12-bracket-reference .v12-progress-dates sp
     font-size:9.5px!important;
   }
 }
+
+
+/* === COMP_COMPACT601 — COMPETICIÓN MÁS COMPACTA EN MÓVIL === */
+/* Reduce cabecera, pestañas, calendario, tarjetas, texto e iconos sin cambiar el orden del diseño. */
+body[data-app-route="competition"] .topbar{
+  height:calc(92px + env(safe-area-inset-top))!important;
+  min-height:calc(92px + env(safe-area-inset-top))!important;
+  max-height:calc(92px + env(safe-area-inset-top))!important;
+}
+body[data-app-route="competition"] .topbar::after{
+  left:82px!important;
+  right:54px!important;
+  bottom:27px!important;
+  font-size:24px!important;
+  line-height:1!important;
+}
+body[data-app-route="competition"] .topbar .wordmark{
+  left:15px!important;
+  top:auto!important;
+  bottom:10px!important;
+  width:54px!important;
+  height:54px!important;
+}
+body[data-app-route="competition"] .topbar .profile-button{
+  right:15px!important;
+  top:auto!important;
+  bottom:25px!important;
+  width:30px!important;
+  height:30px!important;
+  border-width:1.7px!important;
+}
+body[data-app-route="competition"] .topbar .profile-button svg,
+body[data-app-route="competition"] .topbar .profile-button svg.v12-profile-master-icon{
+  width:21px!important;
+  height:21px!important;
+}
+body[data-app-route="competition"] #screen{
+  min-height:calc(100dvh - 92px)!important;
+}
+body[data-app-route="competition"] #screen>.tabs{
+  height:43px!important;
+  min-height:43px!important;
+  max-height:43px!important;
+  padding-left:12px!important;
+  padding-right:12px!important;
+}
+body[data-app-route="competition"] #screen>.tabs .tab{
+  height:43px!important;
+  padding:0 3px 9px!important;
+  font-size:12.5px!important;
+  line-height:1!important;
+}
+body[data-app-route="competition"] #screen>.tabs .tab::after{
+  height:3px!important;
+  left:18%!important;
+  right:18%!important;
+}
+
+/* Partidos y resultados: calendario compacto. */
+body[data-app-route="competition"] .v12-date-strip{
+  top:calc(92px + env(safe-area-inset-top))!important;
+  gap:8px!important;
+  padding-top:8px!important;
+  padding-bottom:10px!important;
+  margin-bottom:14px!important;
+}
+body[data-app-route="competition"] .v12-date-strip button{
+  min-width:78px!important;
+  height:34px!important;
+  padding:0 12px!important;
+  border-radius:7px!important;
+  font-size:12.5px!important;
+  line-height:1!important;
+}
+body[data-app-route="competition"] .v12-date-strip button.active{
+  min-width:96px!important;
+}
+body[data-app-route="competition"] .v12-fixtures-reference>h2{
+  margin-bottom:11px!important;
+  scroll-margin-top:155px!important;
+  font-size:20px!important;
+  line-height:1.15!important;
+}
+body[data-app-route="competition"] .v12-schedule-card{
+  margin-bottom:14px!important;
+  border-radius:11px!important;
+}
+body[data-app-route="competition"] .v12-schedule-card>h3{
+  padding:10px 14px!important;
+  font-size:13.5px!important;
+  line-height:1!important;
+}
+body[data-app-route="competition"] .v12-schedule-match{
+  min-height:64px!important;
+  grid-template-columns:minmax(0,1fr) 96px!important;
+}
+body[data-app-route="competition"] .v12-schedule-clubs{
+  padding:7px 8px 7px 14px!important;
+  gap:4px!important;
+}
+body[data-app-route="competition"] .v12-schedule-clubs>div{
+  gap:7px!important;
+}
+body[data-app-route="competition"] .v12-schedule-clubs b{
+  font-size:12.5px!important;
+  line-height:1.08!important;
+}
+body[data-app-route="competition"] .v12-fixture-logo,
+body[data-app-route="competition"] .v12-fixture-fallback{
+  flex-basis:23px!important;
+  width:23px!important;
+  height:23px!important;
+}
+body[data-app-route="competition"] .v12-fixture-fallback{
+  font-size:7.5px!important;
+}
+body[data-app-route="competition"] .v12-schedule-meta time{
+  margin-bottom:4px!important;
+  font-size:12px!important;
+}
+body[data-app-route="competition"] .v12-schedule-meta button{
+  min-width:74px!important;
+  height:25px!important;
+  margin-top:1px!important;
+  border-radius:4px!important;
+  font-size:10.5px!important;
+}
+body[data-app-route="competition"] .v12-league-banner{
+  height:56px!important;
+  margin:15px 0!important;
+  grid-template-columns:66px 1fr 38px!important;
+  gap:7px!important;
+}
+body[data-app-route="competition"] .v12-league-banner img{
+  width:52px!important;
+  height:46px!important;
+}
+body[data-app-route="competition"] .v12-league-banner strong{
+  font-size:10.5px!important;
+  line-height:1.22!important;
+}
+body[data-app-route="competition"] .v12-league-banner i{
+  font-size:26px!important;
+}
+
+/* En pantallas muy angostas mantener todo proporcional sin agrandar otra vez. */
+@media(max-width:380px){
+  body[data-app-route="competition"] .topbar{
+    height:calc(86px + env(safe-area-inset-top))!important;
+    min-height:calc(86px + env(safe-area-inset-top))!important;
+    max-height:calc(86px + env(safe-area-inset-top))!important;
+  }
+  body[data-app-route="competition"] .topbar::after{
+    left:75px!important;
+    bottom:25px!important;
+    font-size:22px!important;
+  }
+  body[data-app-route="competition"] .topbar .wordmark{
+    left:14px!important;
+    bottom:10px!important;
+    width:48px!important;
+    height:48px!important;
+  }
+  body[data-app-route="competition"] .topbar .profile-button{
+    right:14px!important;
+    bottom:24px!important;
+    width:28px!important;
+    height:28px!important;
+  }
+  body[data-app-route="competition"] #screen>.tabs{
+    height:41px!important;
+    min-height:41px!important;
+    max-height:41px!important;
+  }
+  body[data-app-route="competition"] #screen>.tabs .tab{
+    height:41px!important;
+    font-size:11.7px!important;
+    padding-bottom:8px!important;
+  }
+  body[data-app-route="competition"] .v12-date-strip{
+    top:calc(86px + env(safe-area-inset-top))!important;
+  }
+  body[data-app-route="competition"] .v12-date-strip button{
+    min-width:74px!important;
+    height:32px!important;
+    font-size:11.8px!important;
+  }
+  body[data-app-route="competition"] .v12-date-strip button.active{
+    min-width:90px!important;
+  }
+  body[data-app-route="competition"] .v12-fixtures-reference>h2{
+    font-size:18.5px!important;
+  }
+}
