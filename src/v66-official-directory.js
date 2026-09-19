@@ -148,5 +148,112 @@ const screen=document.querySelector('#screen');
 if(screen)new MutationObserver(()=>{if(['teams','players','club-store'].includes(route())&&!screen.querySelector('[data-v66-directory]'))schedule()}).observe(screen,{childList:true,subtree:false});
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',schedule,{once:true});else schedule();
 
-window.V66_OFFICIAL_DIRECTORY={load,teamList,playerList,rosterFor,logoFor};
+
+function officialScorers(){
+  const rows=[];
+  for(const id of CAT_ORDER){
+    const cat=db?.categories?.[id]; if(!cat)continue;
+    const b=(cat.scorers||[])[0];
+    for(const r of (b?.rows||[])){
+      if(!Array.isArray(r)||r.length<4||!/^\d+$/.test(String(r[3]||'')))continue;
+      rows.push({player:String(r[1]||''),team:String(r[2]||''),goals:Number(r[3])||0,cat:id,category:cat.name||CAT_LABEL[id]||id});
+    }
+  }
+  return rows.sort((a,b)=>b.goals-a.goals||a.player.localeCompare(b.player,'es'));
+}
+function scorerLogo(name){
+  const src=logoFor(name),ab=fallback(name);
+  return '<span class="v28-team-logo">'+(src?'<img src="'+esc(src)+'" alt="'+esc(name)+'" loading="lazy" decoding="async">':'<span class="v28-team-fallback">'+esc(ab)+'</span>')+'</span>';
+}
+function patchScorers(){
+  const page=document.querySelector('[data-v28-scorers]'); if(!page)return;
+  const rows=officialScorers(); if(!rows.length)return;
+  const feats=page.querySelectorAll('.v28-feature');
+  rows.slice(0,2).forEach((r,i)=>{
+    const f=feats[i]; if(!f)return;
+    const team=f.querySelector('.v28-feature-person b'),player=f.querySelector('.v28-feature-person small'),goals=f.querySelector('.v28-feature-goals b');
+    if(team)team.textContent=r.team;if(player)player.textContent=r.player;if(goals)goals.textContent=String(r.goals);
+  });
+  const rank=page.querySelector('.v28-ranking'); if(rank){
+    rank.innerHTML=rows.slice(2).map((r,i)=>'<button type="button" class="v28-rank-row" data-v66-scorer="'+esc(r.player)+'">'+
+      '<span class="v28-rank-number">#'+(i+3)+'</span>'+scorerLogo(r.team)+
+      '<span class="v28-rank-copy"><b>'+esc(r.team)+'</b><small>'+esc(r.player)+'</small></span>'+
+      '<strong class="v28-rank-goals">'+r.goals+'</strong></button>').join('');
+  }
+}
+function currentOfficialTeam(){
+  const list=teamList(),stored=localStorage.getItem('v62-team-name')||'';
+  let hit=list.find(t=>same(t.name,stored));
+  if(hit)return hit;
+  const title=document.querySelector('.v42-title h1')?.textContent||'';
+  hit=list.find(t=>same(t.name,title));
+  return hit||list.find(t=>t.cat==='3')||list[0]||null;
+}
+function patchTeamDetail(){
+  const page=document.querySelector('[data-v42-reference="teamDetail"]'); if(!page)return;
+  const t=currentOfficialTeam(); if(!t)return;
+  saveTeam(t.name,t.cat);
+  const h=page.querySelector('.v42-title h1'),sub=page.querySelector('.v42-title p'),crest=page.querySelector('.v42-team-crest');
+  if(h)h.textContent=t.name;if(sub)sub.textContent=t.category+' · Liga Juventino Rosas';
+  const src=logoFor(t.name); if(crest&&src){crest.src=src;crest.alt=t.name}
+  const roster=rosterFor(t.name,t.cat);
+  const preview=page.querySelector('.v42-preview-grid');
+  if(preview&&roster.length){
+    preview.innerHTML=roster.slice(0,3).map((n,i)=>'<button type="button" data-v66-roster-player="'+esc(n)+'"><span class="v42-avatar large v66-roster-avatar">'+esc(fallback(n).slice(0,2))+'</span><strong>'+esc(n)+'</strong><small>Jugador registrado</small></button>').join('');
+  }
+  const squad=page.querySelector('.v42-squad');
+  if(squad&&roster.length){
+    squad.innerHTML='<section class="v42-roster-card v66-official-roster"><h2>Jugadores registrados · '+roster.length+'</h2><div class="v42-roster-list">'+
+      roster.map(n=>'<button type="button" class="v42-player-row" data-v66-roster-player="'+esc(n)+'"><span class="v42-avatar v66-roster-avatar">'+esc(fallback(n).slice(0,2))+'</span><span class="v42-player-copy"><strong>'+esc(n)+'</strong><small>'+esc(t.name)+'</small></span><b class="v42-number"></b></button>').join('')+
+      '</div></section>';
+  }
+}
+function fixtureRows(){
+  const out=[];
+  for(const id of CAT_ORDER){
+    const cat=db?.categories?.[id];if(!cat)continue;
+    const b=(cat.fixtures||[])[0];
+    for(const r of (b?.rows||[])){
+      if(!Array.isArray(r)||r.length<7)continue;
+      out.push({cat:id,category:cat.name||CAT_LABEL[id]||id,round:r[1]||'',home:r[2]||'',away:r[6]||'',field:r[7]||'Por confirmar',date:r[8]||'Por confirmar'});
+    }
+  }
+  return out;
+}
+function cedulasMarkup(){
+  const rows=fixtureRows();
+  return '<section class="v66-directory v66-cedulas-official" data-v66-directory="cedulas">'+
+    '<div class="v66-cedula-headline"><b>Cédulas oficiales</b><small>'+rows.length+' partidos sincronizados</small></div>'+
+    '<button type="button" class="v66-primary-action" data-route="cedulaBuilder">Generar cédula</button>'+
+    '<div class="v66-player-list">'+rows.map(r=>'<button type="button" class="v66-player-row v66-fixture-row" data-v66-cedula-home="'+esc(r.home)+'" data-v66-cedula-away="'+esc(r.away)+'" data-v66-cedula-cat="'+esc(r.category)+'" data-v66-cedula-date="'+esc(r.date)+'" data-v66-cedula-field="'+esc(r.field)+'">'+
+      '<span class="v66-player-avatar">J'+esc(r.round||'—')+'</span><span><b>'+esc(r.home)+' vs '+esc(r.away)+'</b><small>'+esc(r.category)+' · '+esc(r.date)+' · '+esc(r.field)+'</small></span><i>›</i></button>').join('')+'</div>'+
+  '</section>';
+}
+function bindCedulas(){
+  document.querySelectorAll('[data-v66-cedula-home]').forEach(b=>b.onclick=()=>{
+    localStorage.setItem('v66-cedula-home',b.dataset.v66CedulaHome||'');
+    localStorage.setItem('v66-cedula-away',b.dataset.v66CedulaAway||'');
+    localStorage.setItem('v66-cedula-cat',b.dataset.v66CedulaCat||'');
+    localStorage.setItem('v66-cedula-date',b.dataset.v66CedulaDate||'');
+    localStorage.setItem('v66-cedula-field',b.dataset.v66CedulaField||'');
+    location.hash='#/cedulaBuilder';
+  });
+}
+async function renderExtras(){
+  const r=route(); if(!['scorers','teamDetail','cedulas'].includes(r))return;
+  await load(); if(!db)return;
+  if(r==='scorers'){patchScorers();return}
+  if(r==='teamDetail'){patchTeamDetail();return}
+  if(r==='cedulas'){
+    const screen=document.querySelector('#screen');if(!screen)return;
+    if(!screen.querySelector('[data-v66-directory="cedulas"]')){screen.innerHTML=cedulasMarkup();bindCedulas()}
+  }
+}
+function extraSchedule(){requestAnimationFrame(()=>requestAnimationFrame(renderExtras))}
+window.addEventListener('hashchange',extraSchedule);
+const extraScreen=document.querySelector('#screen');
+if(extraScreen)new MutationObserver(()=>{if(['scorers','teamDetail','cedulas'].includes(route()))extraSchedule()}).observe(extraScreen,{childList:true,subtree:false});
+extraSchedule();
+
+window.V66_OFFICIAL_DIRECTORY={load,teamList,playerList,rosterFor,logoFor,officialScorers,fixtureRows};
 })();
