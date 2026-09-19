@@ -482,3 +482,41 @@ body[data-app-route="home"] .v15-home-feature-image{
     border-radius:26px!important;
   }
 }
+
+
+/* V19 HOME ARC CLEANUP — quitar medias lunas/lineas fantasma sobre historias.
+   Solo tapa la franja inferior del header; no mueve historias ni tarjetas. */
+body[data-app-route="home"] .topbar{
+  overflow:hidden!important;
+  border-bottom:0!important;
+  box-shadow:none!important;
+}
+body[data-app-route="home"] .topbar::before{
+  content:none!important;
+  display:none!important;
+}
+body[data-app-route="home"] .topbar::after{
+  content:""!important;
+  display:block!important;
+  position:absolute!important;
+  z-index:20!important;
+  left:0!important;
+  right:0!important;
+  bottom:-1px!important;
+  height:92px!important;
+  pointer-events:none!important;
+  background:#02045d!important;
+  background-image:none!important;
+  border:0!important;
+  box-shadow:none!important;
+  opacity:1!important;
+}
+body[data-app-route="home"] #screen>.stories{
+  border-top:0!important;
+  box-shadow:none!important;
+}
+@media(max-width:380px){
+  body[data-app-route="home"] .topbar::after{
+    height:84px!important;
+  }
+}
