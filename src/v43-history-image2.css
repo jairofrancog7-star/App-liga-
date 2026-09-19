@@ -598,3 +598,238 @@
     .v35-video-card{min-width:137px!important;max-width:148px!important}
   }
 }
+
+
+/* V45 — HISTORIA exact scale pass: smaller type/cards/icons to match reference */
+@media (max-width:1023px){
+  .v35-history-page{
+    --v35-pad:18px!important;
+  }
+
+  /* Header: keep position, reduce only visual scale. */
+  .v35-history-head h1{
+    font-size:33px!important;
+    font-weight:500!important;
+    letter-spacing:-.03em!important;
+  }
+  .v35-history-head .v35-back{
+    width:29px!important;
+    height:29px!important;
+  }
+  .v35-history-head .v35-back svg{
+    width:24px!important;
+    height:24px!important;
+  }
+
+  /* Tabs exactly more compact like reference. */
+  .v35-tabs{
+    min-height:53px!important;
+    height:53px!important;
+    gap:36px!important;
+    padding:0 var(--v35-pad)!important;
+  }
+  .v35-tab{
+    min-height:53px!important;
+    height:53px!important;
+    padding:0 0 13px!important;
+    font-size:13.5px!important;
+    font-weight:500!important;
+    letter-spacing:-.015em!important;
+  }
+  .v35-tab.active{
+    font-weight:650!important;
+  }
+  .v35-tab.active::after{
+    width:68px!important;
+    height:3px!important;
+  }
+
+  /* Section title and action smaller and aligned to reference. */
+  .v35-block{
+    margin-top:6px!important;
+  }
+  .v35-section-row h2,
+  .v35-section-title{
+    margin-bottom:10px!important;
+    font-size:18px!important;
+    line-height:1.04!important;
+    font-weight:700!important;
+    letter-spacing:-.02em!important;
+  }
+  .v35-section-row button{
+    font-size:12.5px!important;
+    font-weight:600!important;
+  }
+
+  /* Season cards: same compact footprint as the master. */
+  .v35-season-carousel{
+    gap:9px!important;
+    margin-top:7px!important;
+  }
+  .v35-season-card{
+    flex:0 0 67px!important;
+    width:67px!important;
+    min-height:78px!important;
+    height:78px!important;
+    padding:5px 4px 6px!important;
+    border-radius:11px!important;
+  }
+  .v35-season-crest{
+    width:45px!important;
+    height:45px!important;
+    flex:0 0 45px!important;
+  }
+  .v35-season-crest img{
+    width:38px!important;
+    height:38px!important;
+  }
+  .v35-season-label{
+    font-size:13.5px!important;
+    line-height:1!important;
+    font-weight:450!important;
+  }
+
+  /* Main history card stays the same width; move it up by reducing excess gap. */
+  .v35-feature-block{
+    margin-top:15px!important;
+  }
+  .v35-feature-copy{
+    left:17px!important;
+    bottom:15px!important;
+    width:58%!important;
+  }
+  .v35-feature-copy h2{
+    font-size:18.5px!important;
+    line-height:1.05!important;
+  }
+  .v35-feature-copy p{
+    margin-top:7px!important;
+    font-size:11px!important;
+    line-height:1.2!important;
+  }
+  .v35-share{
+    width:29px!important;
+    height:29px!important;
+    right:12px!important;
+    bottom:12px!important;
+  }
+  .v35-share svg{
+    width:21px!important;
+    height:21px!important;
+  }
+
+  /* Classics: title, cards, overlay SVG and copy reduced to the same scale. */
+  .v35-classics-block{
+    margin-top:27px!important;
+  }
+  .v35-classics-block .v35-section-title{
+    margin-bottom:15px!important;
+    font-size:18.5px!important;
+  }
+  .v35-video-carousel{
+    gap:9px!important;
+  }
+  .v35-video-card{
+    flex:0 0 36vw!important;
+    width:36vw!important;
+    min-width:139px!important;
+    max-width:152px!important;
+  }
+  .v35-video-thumb{
+    border-radius:11px!important;
+  }
+  .v35-video-duration{
+    top:7px!important;
+    right:39px!important;
+    font-size:11px!important;
+  }
+  .v35-video-play{
+    top:5px!important;
+    right:6px!important;
+    width:31px!important;
+    height:31px!important;
+  }
+  .v35-video-title{
+    margin-top:7px!important;
+    font-size:12px!important;
+    line-height:1.13!important;
+  }
+
+  /* Historical tables/cards also use the smaller master scale. */
+  .v35-stats-block{
+    margin-top:25px!important;
+  }
+  .v35-stat-card{
+    max-width:350px!important;
+    border-radius:13px!important;
+    padding:14px 15px 9px!important;
+  }
+  .v35-stat-card h3{
+    margin-bottom:9px!important;
+    font-size:17px!important;
+  }
+  .v35-rank-row{
+    min-height:53px!important;
+    grid-template-columns:42px minmax(0,1fr) 28px 20px!important;
+    gap:8px!important;
+    padding:5px 0!important;
+  }
+  .v35-rank-row>img{
+    width:38px!important;
+    height:38px!important;
+  }
+  .v35-rank-row>span{
+    font-size:13px!important;
+  }
+  .v35-rank-row>strong{
+    font-size:17px!important;
+  }
+  .v35-rank-row>i,
+  .v35-rank-row>i svg{
+    width:18px!important;
+    height:18px!important;
+  }
+
+  /* Bottom navigation SVG + labels match the reference scale. */
+  body[data-app-route="history"] .bottom-nav .nav-icon,
+  body[data-app-route="history"] .bottom-nav .nav-icon svg{
+    width:23px!important;
+    height:23px!important;
+    min-width:23px!important;
+    min-height:23px!important;
+    max-width:23px!important;
+    max-height:23px!important;
+  }
+  body[data-app-route="history"] .bottom-nav .nav-item small{
+    font-size:9.5px!important;
+    line-height:11px!important;
+  }
+
+  /* Compact header while scrolling. */
+  .v35-compact-bar .v35-back{
+    flex-basis:29px!important;
+    width:29px!important;
+    height:29px!important;
+  }
+  .v35-compact-bar .v35-back svg{
+    width:24px!important;
+    height:24px!important;
+  }
+  .v35-compact-title{
+    font-size:21px!important;
+  }
+
+  @media(max-width:374px){
+    .v35-history-page{--v35-pad:17px!important}
+    .v35-history-head h1{font-size:31px!important}
+    .v35-tabs{gap:32px!important}
+    .v35-tab{font-size:13px!important}
+    .v35-section-row h2,.v35-section-title{font-size:17px!important}
+    .v35-season-card{flex-basis:64px!important;width:64px!important;height:75px!important;min-height:75px!important}
+    .v35-season-crest{width:42px!important;height:42px!important;flex-basis:42px!important}
+    .v35-season-crest img{width:36px!important;height:36px!important}
+    .v35-season-label{font-size:13px!important}
+    .v35-feature-copy h2{font-size:17px!important}
+    .v35-video-card{min-width:133px!important;max-width:145px!important}
+  }
+}
