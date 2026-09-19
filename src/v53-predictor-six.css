@@ -1,0 +1,296 @@
+/* V53 — PRONOSTICA SEIS · segunda pantalla funcional.
+   Se abre después de tocar el centro de la pantalla original #/predictor.
+   Reconstruida desde la referencia de Drive, sin sustituir el diseño anterior. */
+
+body[data-app-route="predictorSix"]{
+  background:#07065f!important;
+  overflow-x:hidden!important;
+}
+body[data-app-route="predictorSix"] #app,
+body[data-app-route="predictorSix"] .app-shell{
+  width:min(100%,520px)!important;
+  min-height:100dvh!important;
+  margin:0 auto!important;
+  background:#07065f!important;
+}
+body[data-app-route="predictorSix"] #app>.topbar{
+  display:none!important;
+}
+body[data-app-route="predictorSix"] #screen{
+  width:100%!important;
+  min-height:calc(100dvh - var(--v34-nav-h,60px) - env(safe-area-inset-bottom))!important;
+  margin:0!important;
+  padding:0!important;
+  overflow-x:hidden!important;
+  background:#07065f!important;
+}
+body[data-app-route="predictorSix"] #app>.bottom-nav{
+  display:grid!important;
+  z-index:2147483000!important;
+}
+
+.v53-predictor-six{
+  position:relative;
+  box-sizing:border-box;
+  width:100%;
+  min-height:calc(100dvh - var(--v34-nav-h,60px) - env(safe-area-inset-bottom));
+  padding:0 0 28px;
+  overflow:hidden;
+  color:#fff;
+  font-family:Inter,Roboto,Arial,sans-serif;
+  background:
+    radial-gradient(600px 260px at 50% 0,rgba(24,72,255,.42),transparent 70%),
+    linear-gradient(180deg,#0716a8 0 14%,#05056a 23%,#070761 48%,#1117e7 100%);
+}
+.v53-predictor-six::before{
+  content:"";
+  position:absolute;
+  inset:0 0 auto;
+  height:170px;
+  pointer-events:none;
+  opacity:.68;
+  background:
+    repeating-linear-gradient(158deg,transparent 0 28px,rgba(36,235,255,.42) 29px 31px,rgba(255,58,166,.22) 32px 34px,transparent 35px 67px);
+  transform:translateY(-20px);
+}
+
+.v53-p6-head{
+  position:relative;
+  z-index:2;
+  height:150px;
+  padding:0 28px;
+  display:flex;
+  align-items:flex-end;
+  gap:24px;
+  background:linear-gradient(180deg,rgba(12,39,197,.25),rgba(4,9,100,.45));
+}
+.v53-p6-back{
+  width:50px;
+  height:50px;
+  margin:0 0 25px;
+  padding:0;
+  border:0;
+  display:grid;
+  place-items:center;
+  background:transparent;
+  color:#fff;
+}
+.v53-p6-back svg{width:38px;height:38px;fill:none;stroke:currentColor;stroke-width:3}
+.v53-p6-head h1{
+  margin:0 0 29px;
+  font-size:31px;
+  line-height:1;
+  font-weight:800;
+  letter-spacing:-.035em;
+}
+
+.v53-p6-sponsor{
+  position:relative;
+  z-index:2;
+  min-height:78px;
+  padding:10px 28px;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  gap:14px;
+  background:#173e89;
+  color:#fff;
+  font-size:17px;
+}
+.v53-p6-sponsor-mark{
+  min-width:136px;
+  height:54px;
+  padding:0 12px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:8px;
+  border-radius:8px;
+  background:linear-gradient(180deg,#10268c,#091b64);
+  box-shadow:inset 0 1px rgba(255,255,255,.14);
+}
+.v53-p6-sponsor-mark img{
+  width:32px;height:32px;display:block;object-fit:contain;
+}
+.v53-p6-sponsor-mark b{
+  font-size:12px;
+  line-height:1.05;
+  letter-spacing:.02em;
+}
+
+.v53-p6-stage{
+  position:relative;
+  z-index:2;
+  min-height:340px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:36px 50px 24px 56px;
+}
+.v53-p6-stage::after{
+  content:"";
+  position:absolute;
+  left:17%;
+  right:17%;
+  bottom:19px;
+  height:22px;
+  border-radius:50%;
+  background:rgba(0,0,0,.25);
+  filter:blur(8px);
+}
+.v53-p6-grid{
+  position:relative;
+  z-index:2;
+  width:min(76vw,340px);
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:12px;
+}
+.v53-p6-game{
+  position:relative;
+  aspect-ratio:1.22/1;
+  min-width:0;
+  padding:10px 9px 12px;
+  display:grid;
+  grid-template-columns:1fr 18px 1fr;
+  align-items:center;
+  gap:2px;
+  border:0;
+  border-radius:9px;
+  color:#9ef9ff;
+  background:
+    linear-gradient(180deg,rgba(32,83,255,.95),rgba(16,36,207,.96));
+  box-shadow:
+    inset 0 1px rgba(255,255,255,.18),
+    0 6px 14px rgba(0,0,80,.24);
+}
+.v53-p6-game.is-picked{
+  outline:2px solid #17e9ef;
+  box-shadow:0 0 0 2px rgba(23,233,239,.12),0 0 18px rgba(23,233,239,.24);
+}
+.v53-p6-team{
+  min-width:0;
+  display:grid;
+  place-items:center;
+}
+.v53-p6-team img{
+  width:38px;
+  height:38px;
+  max-width:100%;
+  display:block;
+  object-fit:contain;
+}
+.v53-p6-vs{
+  color:rgba(255,255,255,.62);
+  font-size:8px;
+  font-weight:800;
+  text-align:center;
+}
+.v53-p6-pick{
+  position:absolute;
+  right:5px;
+  bottom:4px;
+  min-width:21px;
+  height:21px;
+  padding:0 4px;
+  display:grid;
+  place-items:center;
+  border-radius:999px;
+  color:#fff;
+  background:rgba(4,10,100,.78);
+  font-size:10px;
+  line-height:1;
+}
+.v53-p6-next{
+  position:absolute;
+  z-index:3;
+  right:18px;
+  top:50%;
+  width:38px;
+  height:64px;
+  margin-top:-32px;
+  padding:0;
+  border:0;
+  display:grid;
+  place-items:center;
+  background:transparent;
+  color:#fff;
+}
+.v53-p6-next svg{width:24px;height:40px;fill:none;stroke:currentColor;stroke-width:4;stroke-linecap:round;stroke-linejoin:round}
+
+.v53-p6-copy{
+  position:relative;
+  z-index:2;
+  padding:18px 34px 8px;
+  text-align:center;
+}
+.v53-p6-copy h2{
+  margin:0;
+  font-size:27px;
+  line-height:1.08;
+  font-weight:850;
+  letter-spacing:-.035em;
+}
+.v53-p6-copy p{
+  max-width:420px;
+  margin:20px auto 0;
+  color:#c1c4df;
+  font-size:18px;
+  line-height:1.32;
+  font-weight:500;
+}
+.v53-p6-dots{
+  margin:34px auto 0;
+  display:flex;
+  justify-content:center;
+  gap:13px;
+}
+.v53-p6-dots i{
+  width:12px;height:12px;border-radius:50%;
+  background:#6674c8;
+}
+.v53-p6-dots i.active{background:#fff}
+
+.v53-p6-actions{
+  position:relative;
+  z-index:2;
+  padding:18px 28px 10px;
+  display:grid;
+  gap:14px;
+}
+.v53-p6-primary,
+.v53-p6-secondary{
+  min-height:62px;
+  border-radius:20px;
+  font-size:20px;
+  line-height:1.1;
+  font-weight:800;
+}
+.v53-p6-primary{
+  border:0;
+  color:#061052;
+  background:#13dfea;
+}
+.v53-p6-secondary{
+  border:2px solid #13e5ef;
+  color:#13e5ef;
+  background:rgba(24,32,215,.65);
+}
+
+@media(max-width:390px){
+  .v53-p6-head{height:138px;padding-left:22px;padding-right:22px;gap:16px}
+  .v53-p6-head h1{margin-bottom:27px;font-size:28px}
+  .v53-p6-back{margin-bottom:20px}
+  .v53-p6-sponsor{min-height:72px;padding-left:18px;padding-right:18px;font-size:15px}
+  .v53-p6-sponsor-mark{min-width:128px;height:50px}
+  .v53-p6-stage{min-height:306px;padding:30px 43px 20px 45px}
+  .v53-p6-grid{width:78vw;gap:10px}
+  .v53-p6-game{padding:8px 7px 10px}
+  .v53-p6-team img{width:34px;height:34px}
+  .v53-p6-next{right:9px}
+  .v53-p6-copy{padding-left:24px;padding-right:24px}
+  .v53-p6-copy h2{font-size:25px}
+  .v53-p6-copy p{font-size:16px}
+  .v53-p6-actions{padding-left:22px;padding-right:22px}
+  .v53-p6-primary,.v53-p6-secondary{min-height:58px;font-size:18px;border-radius:18px}
+}
