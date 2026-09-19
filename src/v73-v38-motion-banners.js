@@ -139,6 +139,35 @@
     ['Tabla y estadísticas','stats']
   ];
 
+  /* V75 — En Inicio las animaciones van SEPARADAS e intercaladas entre contenido.
+     Nunca se agrupan todas en una sola sección ni se montan dentro de una barra. */
+  const HOME_SEQUENCE=[
+    {
+      slot:'matchday',
+      asset:'matchday',
+      kicker:'JORNADAS · FÚTBOL ASOCIACIÓN',
+      title:'PARTIDOS Y RESULTADOS',
+      desc:'La jornada de la Liga con movimiento, colocada entre bloques de Inicio.',
+      pills:[['Jornada','competition'],['Horarios','matchday'],['Campos','venues']]
+    },
+    {
+      slot:'teams',
+      asset:'teams',
+      kicker:'EQUIPOS DE LA LIGA',
+      title:'NOMBRES PROPIOS.',
+      desc:'Escudos y equipos locales presentados como un bloque independiente.',
+      pills:[['Equipos','teams'],['Jugadores','players'],['Siguiendo','following']]
+    },
+    {
+      slot:'stats',
+      asset:'stats',
+      kicker:'TABLA Y ESTADÍSTICAS',
+      title:'LA TEMPORADA DE UN VISTAZO.',
+      desc:'Datos y rendimiento en otra parte de Inicio, separado de las demás animaciones.',
+      pills:[['Tabla','competition'],['Goleadores','scorers'],['Datos','safe-data']]
+    }
+  ];
+
   const reduced=window.matchMedia?window.matchMedia('(prefers-reduced-motion: reduce)'):{matches:false};
   const saveData=!!(navigator.connection&&navigator.connection.saveData);
   const STORE='ljr-v73-motion';
@@ -262,6 +291,41 @@
     return wrap;
   }
 
+  function mountHomeInterleaved(screen){
+    const extra=screen.querySelector('#safeHomeExtra');
+    if(!extra)return false;
+
+    /* Elimina cualquier banner antiguo de Inicio para evitar duplicados o un bloque arriba. */
+    screen.querySelectorAll('[data-v73-motion-banner]:not([data-v73-home-slot])').forEach(x=>x.remove());
+
+    const baseSections=[...extra.querySelectorAll(':scope > .v6-section')];
+    if(!baseSections.length)return false;
+
+    const targets=[
+      baseSections[Math.min(baseSections.length-1,Math.max(1,Math.floor(baseSections.length*.28)))],
+      baseSections[Math.min(baseSections.length-1,Math.max(2,Math.floor(baseSections.length*.56)))],
+      baseSections[Math.min(baseSections.length-1,Math.max(3,Math.floor(baseSections.length*.82)))]
+    ];
+
+    HOME_SEQUENCE.forEach((cfg,index)=>{
+      let banner=extra.querySelector('[data-v73-home-slot="'+cfg.slot+'"]');
+      if(!banner){
+        banner=buildBanner(cfg);
+        banner.dataset.v73HomeSlot=cfg.slot;
+        banner.classList.add('v73-home-interleaved');
+      }
+      const target=targets[index];
+      if(target){
+        target.insertAdjacentElement('afterend',banner);
+      }else{
+        extra.appendChild(banner);
+      }
+    });
+
+    syncAll();
+    return true;
+  }
+
   function mount(){
     const screen=document.querySelector('#screen');
     if(!screen)return;
@@ -276,26 +340,17 @@
       return;
     }
 
+    if(r==='home'){
+      if(!mountHomeInterleaved(screen)){
+        syncAll();
+      }
+      return;
+    }
+
     let banner=screen.querySelector('[data-v73-motion-banner]');
     if(!banner){
-      if(r==='home'){
-        const extra=screen.querySelector('#safeHomeExtra');
-        if(!extra){
-          syncAll();
-          return;
-        }
-        banner=buildBanner(cfg);
-        const sections=[...extra.querySelectorAll(':scope > .v6-section')];
-        const target=sections.find(section=>{
-          const title=section.querySelector('.v6-section-head h2');
-          return title&&/equipo de la semana/i.test(title.textContent||'');
-        })||sections[Math.max(0,Math.floor(sections.length*.72))]||null;
-        if(target)extra.insertBefore(banner,target);
-        else extra.appendChild(banner);
-      }else{
-        banner=buildBanner(cfg);
-        screen.insertBefore(banner,screen.firstChild);
-      }
+      banner=buildBanner(cfg);
+      screen.insertBefore(banner,screen.firstChild);
     }
 
     if(r==='motionHub'&&!screen.querySelector('[data-v73-gallery]')){
