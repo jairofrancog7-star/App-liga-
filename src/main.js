@@ -668,13 +668,15 @@ function v64CredentialBuilderView(){
 }
 
 function v64CedulaBuilderView(){
+  const v66Home=localStorage.getItem('v66-cedula-home')||'',v66Away=localStorage.getItem('v66-cedula-away')||'',v66Cat=localStorage.getItem('v66-cedula-cat')||'Primera Fuerza',v66Date=localStorage.getItem('v66-cedula-date')||'',v66Field=localStorage.getItem('v66-cedula-field')||'';
+  const v66DateValue=/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}/.test(v66Date)?v66Date.slice(0,16):'';
   return '<section class="v60-tool-page v64-page">'+v60Header('CÉDULAS','Generador interno de cédulas','Genera una cédula y plantillas dentro de Liga Juventino Rosas; no redirige a una página externa.')+
     '<div class="v64-form-grid one">'+
-      '<label><b>Categoría</b><select data-v64-ced-cat><option>Primera Fuerza</option><option>Intermedia</option><option>Segunda Fuerza</option><option>Veteranos 35+</option><option>Veteranos 50+</option></select></label>'+
-      '<label><b>Equipo local</b>'+v64TeamSelect('', 'data-v64-ced-home')+'</label>'+
-      '<label><b>Visitante</b>'+v64TeamSelect('', 'data-v64-ced-away')+'</label>'+
-      '<label><b>Fecha</b><input type="datetime-local" data-v64-ced-date></label>'+
-      '<label><b>Campo</b><input type="text" placeholder="Por confirmar" data-v64-ced-field></label>'+
+      '<label><b>Categoría</b><select data-v64-ced-cat><option '+(v66Cat==='Primera Fuerza'?'selected':'')+'>Primera Fuerza</option><option '+(v66Cat==='Intermedia'?'selected':'')+'>Intermedia</option><option '+(v66Cat==='Segunda Fuerza'?'selected':'')+'>Segunda Fuerza</option><option '+(v66Cat==='Veteranos 35+'?'selected':'')+'>Veteranos 35+</option><option '+(v66Cat==='Veteranos 50+'?'selected':'')+'>Veteranos 50+</option></select></label>'+
+      '<label><b>Equipo local</b>'+v64TeamSelect(v66Home, 'data-v64-ced-home')+'</label>'+
+      '<label><b>Visitante</b>'+v64TeamSelect(v66Away, 'data-v64-ced-away')+'</label>'+
+      '<label><b>Fecha</b><input type="datetime-local" value="'+v64Esc(v66DateValue)+'" data-v64-ced-date></label>'+
+      '<label><b>Campo</b><input type="text" value="'+v64Esc(v66Field)+'" placeholder="Por confirmar" data-v64-ced-field></label>'+
       '<label><b>Árbitro</b><input type="text" placeholder="Por asignar" data-v64-ced-ref></label>'+
     '</div>'+
     '<div class="v60-actions"><button class="v60-btn" data-v64-generate-cedula>Generar cédula del partido</button><button class="v60-btn outline" data-v64-team-template>Generar plantillas de equipos</button><button class="v60-btn ghost" data-v64-print-cedula>Imprimir / guardar PDF</button></div>'+
