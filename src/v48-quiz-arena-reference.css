@@ -161,3 +161,53 @@ body[data-app-route="quizArena"] .v48-quiz-arena-shot{
 body[data-app-route="quizArena"] .v48-quiz-arena-image{
   font-size:0!important;
 }
+
+
+/* V48.2 — restauración solicitada 2026-09-19.
+   Imagen Drive = pantalla principal. La imagen que ya tenía Quiz Arena
+   aparece solamente después de tocar A, B, C o D. */
+body[data-app-route="quizArena"] .v48-quiz-arena-shot{
+  aspect-ratio:691 / 1347!important;
+  background-color:#050064!important;
+  background-image:url("../quiz-arena-main.jpg?v=20260919-quiz-main-drive1")!important;
+  background-repeat:no-repeat!important;
+  background-size:100% auto!important;
+  background-position:center top!important;
+}
+body[data-app-route="quizArena"] .v48-quiz-arena-image{
+  width:100%!important;
+  height:auto!important;
+  transform:translateY(-4.4270833%)!important;
+  transform-origin:top left!important;
+}
+body[data-app-route="quizArena"] .v48-answer{
+  display:block!important;
+  left:28.6%!important;
+  width:43%!important;
+  height:6.4%!important;
+  border-radius:14px!important;
+}
+body[data-app-route="quizArena"] .v48-answer-a{top:47.4%!important}
+body[data-app-route="quizArena"] .v48-answer-b{top:54.9%!important}
+body[data-app-route="quizArena"] .v48-answer-c{top:62.4%!important}
+body[data-app-route="quizArena"] .v48-answer-d{top:69.9%!important}
+body[data-app-route="quizArena"] .v48-result-control{
+  display:none!important;
+}
+body[data-app-route="quizArena"] .v48-quiz-arena-page.v48-answered .v48-quiz-arena-shot{
+  aspect-ratio:469 / 1885!important;
+  background-image:
+    url("../quiz-arena-reference.jpg?v=20260919-quiz-result1"),
+    url("https://raw.githubusercontent.com/jairofrancog7-star/App-liga-/e9e05830f59509de197aaab7e3147d8a69c4dca1/quiz-arena-reference.jpg?v=20260919-quiz-result1")!important;
+  background-size:100% auto,100% auto!important;
+  background-position:center top,center top!important;
+}
+body[data-app-route="quizArena"] .v48-quiz-arena-page.v48-answered .v48-quiz-arena-image{
+  transform:translateY(-3.02734375%)!important;
+}
+body[data-app-route="quizArena"] .v48-quiz-arena-page.v48-answered .v48-answer{
+  display:none!important;
+}
+body[data-app-route="quizArena"] .v48-quiz-arena-page.v48-answered .v48-result-control{
+  display:block!important;
+}
