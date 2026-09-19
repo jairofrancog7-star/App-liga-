@@ -8,42 +8,193 @@
   const LEAGUE=BASE+'assets/liga-logo.webp';
 
   const LOGOS={
-    'Club América Vet.':'assets/branding/america-veteranos-35-user.png',
-    'Club América Veteranos JR':'assets/branding/america-veteranos-35-user.png',
-    'La Huerta':'assets/official-logos/la-huerta.png',
-    'La Huerta de Cuenda':'assets/official-logos/la-huerta.png',
-    'Promesas FC':'assets/official-logos/promesas-fc.png',
-    'Promesas FC Pozos':'assets/official-logos/promesas-fc.png',
-    'Santa Cruz':'assets/teams/atletico-santa-cruz.webp',
-    'Franco FC':'assets/official-logos/franco-fc.png',
-    'Franco Tavera':'assets/teams/franco-tavera-jr-veteranos.webp',
-    'Cuenda':'assets/official-logos/toros-de-cuenda.png',
-    'Atlético Galeana':'assets/official-logos/galeana.png',
-    'Lobos CDG':'assets/official-logos/lobos-cdg.png',
-    'Juventino':'assets/liga-logo.webp',
-    'Juventino Rosas':'assets/liga-logo.webp',
-    'Pozos':'assets/teams/pozos-fc.webp',
-    'Pozos FC':'assets/teams/pozos-fc.webp'
-  };
+  "SAN JOSE FC": "assets/official-logos/san-jose-fc.png",
+  "JUVENTUS": "assets/official-logos/juventus.png",
+  "HERMANOS": "assets/official-logos/hermanos.png",
+  "LINCES": "assets/official-logos/linces.png",
+  "NAPOLI": "assets/official-logos/napoli.png",
+  "FRANCO FC": "assets/official-logos/franco-fc.png",
+  "HERRERAS FC": "assets/official-logos/herreras-fc.png",
+  "ABEJAS": "assets/official-logos/abejas.png",
+  "LOBOS CDG": "assets/official-logos/lobos-cdg.png",
+  "TERRICOLAS": "assets/official-logos/terricolas.png",
+  "GALACTICOS": "assets/teams/galacticos-pozos.webp"
+};
+
 
   const MAIN_MATCHES={
-    m1:{home:'Juventino',away:'Pozos FC',time:'18:00',date:'13 oct',venue:'Campo Municipal',category:'Liga Municipal'},
-    m2:{home:'Cuenda',away:'Rincón de Centeno',time:'20:00',date:'13 oct',venue:'Campo Cuenda',category:'Liga Municipal'},
-    m3:{home:'San Pedro',away:'Morales',time:'19:00',date:'14 oct',venue:'Campo San Pedro',category:'Liga Municipal'},
-    m4:{home:'Rincón de Centeno',away:'Juventino',time:'18:00',date:'12 oct',venue:'Campo Rincón',category:'Liga Municipal'},
-    m5:{home:'Pozos FC',away:'Cuenda',time:'20:00',date:'12 oct',venue:'Unidad Deportiva Pozos',category:'Liga Municipal'}
-  };
+  "m1": {
+    "home": "FRANCO FC",
+    "away": "HERRERAS FC",
+    "time": "08:00",
+    "date": "20/09/2026",
+    "venue": "Romerillo",
+    "category": "Primera Fuerza",
+    "jornada": "5"
+  },
+  "m2": {
+    "home": "TERRICOLAS",
+    "away": "GALACTICOS",
+    "time": "08:00",
+    "date": "20/09/2026",
+    "venue": "Campo por confirmar",
+    "category": "Primera Fuerza",
+    "jornada": "5"
+  },
+  "m3": {
+    "home": "LINCES",
+    "away": "JUVENTUS",
+    "time": "08:00",
+    "date": "20/09/2026",
+    "venue": "Campo 3",
+    "category": "Primera Fuerza",
+    "jornada": "5"
+  },
+  "m4": {
+    "home": "HERMANOS",
+    "away": "SAN JOSE FC",
+    "time": "10:00",
+    "date": "20/09/2026",
+    "venue": "Campo 3",
+    "category": "Primera Fuerza",
+    "jornada": "5"
+  },
+  "m5": {
+    "home": "LOBOS CDG",
+    "away": "NAPOLI",
+    "time": "12:00",
+    "date": "20/09/2026",
+    "venue": "Cerrito de Gasca",
+    "category": "Primera Fuerza",
+    "jornada": "5"
+  }
+};
+
 
   const TABLE=[
-    {name:'Lobos CDG',logo:'assets/official-logos/lobos-cdg.png',p:1,gd:5,pts:3,last:'V'},
-    {name:'La Huerta',logo:'assets/official-logos/la-huerta.png',p:1,gd:5,pts:3,last:'V'},
-    {name:'Atlético Galeana',logo:'assets/official-logos/galeana.png',p:1,gd:4,pts:3,last:'V'},
-    {name:'Franco FC',logo:'assets/official-logos/franco-fc.png',p:1,gd:4,pts:3,last:'V'},
-    {name:'Promesas FC',logo:'assets/official-logos/promesas-fc.png',p:1,gd:3,pts:3,last:'V'},
-    {name:'Club América Vet.',logo:'assets/branding/america-veteranos-35-user.png',p:1,gd:2,pts:3,last:'V'},
-    {name:'Cuenda',logo:'assets/official-logos/toros-de-cuenda.png',p:1,gd:0,pts:1,last:'E'},
-    {name:'Juventino',logo:'assets/liga-logo.webp',p:1,gd:-1,pts:0,last:'D'}
-  ];
+  {
+    "name": "SAN JOSE FC",
+    "p": 4,
+    "w": 4,
+    "d": 0,
+    "l": 0,
+    "gf": 13,
+    "ga": 3,
+    "gd": 10,
+    "pts": 12
+  },
+  {
+    "name": "JUVENTUS",
+    "p": 4,
+    "w": 3,
+    "d": 0,
+    "l": 1,
+    "gf": 20,
+    "ga": 6,
+    "gd": 14,
+    "pts": 9
+  },
+  {
+    "name": "HERMANOS",
+    "p": 3,
+    "w": 2,
+    "d": 1,
+    "l": 0,
+    "gf": 8,
+    "ga": 4,
+    "gd": 4,
+    "pts": 7
+  },
+  {
+    "name": "LINCES",
+    "p": 3,
+    "w": 2,
+    "d": 0,
+    "l": 1,
+    "gf": 10,
+    "ga": 7,
+    "gd": 3,
+    "pts": 6
+  },
+  {
+    "name": "NAPOLI",
+    "p": 4,
+    "w": 2,
+    "d": 0,
+    "l": 2,
+    "gf": 8,
+    "ga": 7,
+    "gd": 1,
+    "pts": 6
+  },
+  {
+    "name": "FRANCO FC",
+    "p": 3,
+    "w": 2,
+    "d": 0,
+    "l": 1,
+    "gf": 3,
+    "ga": 3,
+    "gd": 0,
+    "pts": 6
+  },
+  {
+    "name": "HERRERAS FC",
+    "p": 4,
+    "w": 1,
+    "d": 1,
+    "l": 2,
+    "gf": 9,
+    "ga": 12,
+    "gd": -3,
+    "pts": 4
+  },
+  {
+    "name": "ABEJAS",
+    "p": 4,
+    "w": 2,
+    "d": 0,
+    "l": 2,
+    "gf": 7,
+    "ga": 7,
+    "gd": 0,
+    "pts": 3
+  },
+  {
+    "name": "LOBOS CDG",
+    "p": 4,
+    "w": 1,
+    "d": 0,
+    "l": 3,
+    "gf": 2,
+    "ga": 17,
+    "gd": -15,
+    "pts": 3
+  },
+  {
+    "name": "TERRICOLAS",
+    "p": 3,
+    "w": 0,
+    "d": 0,
+    "l": 3,
+    "gf": 4,
+    "ga": 14,
+    "gd": -10,
+    "pts": 0
+  },
+  {
+    "name": "GALACTICOS",
+    "p": 4,
+    "w": 0,
+    "d": 0,
+    "l": 4,
+    "gf": 0,
+    "ga": 4,
+    "gd": -4,
+    "pts": -12
+  }
+];
+
 
   function route(){return location.hash.replace('#/','')||'home'}
   function esc(s){return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
@@ -132,8 +283,8 @@
         away:names[1]||'Promesas FC',
         time,
         date:heading?.textContent?.trim()||'sáb 19 sept',
-        venue:'Campo Municipal',
-        category:'Liga Municipal'
+        venue:card?.querySelector('.v12-schedule-venue')?.textContent?.trim()||'Campo por confirmar',
+        category:'Primera Fuerza'
       };
     }else{
       const m=MAIN_MATCHES[data.id];
@@ -149,8 +300,7 @@
     if(saved?.home&&saved?.away)return saved;
     const id=saved?.id||'m1';
     return {id,from:saved?.from||'#/competition',...(MAIN_MATCHES[id]||{
-      home:'Franco FC',away:'Promesas FC',time:'10:45',date:'sáb 19 sept',
-      venue:'Campo Municipal',category:'Liga Municipal'
+      home:'FRANCO FC',away:'HERRERAS FC',time:'08:00',date:'20/09/2026',venue:'Romerillo',category:'Primera Fuerza',jornada:'5'
     })};
   }
 
@@ -165,30 +315,28 @@
     return '<span class="v28-stand-form"><i></i><i></i><b class="'+cls+'">'+last+'</b></span>';
   }
 
-  function v40Form(last){
-    return '<span class="v40-form"><i></i><i></i><b class="'+(last==='V'?'win':last==='E'?'draw':'loss')+'">'+last+'</b></span>';
-  }
+  function v40Form(){return '<span class="v40-form"><b>—</b></span>';}
 
   function standings(mode='compact'){
     if(mode==='criteria'){
       return '<div class="v40-scroll-shell"><div class="v40-wide criteria">'+
         '<div class="v40-wide-head criteria-head"><span></span><span>Equipo</span><b>PTOS</b><b>+/-</b><b>GF</b><b>GA</b><b>V</b><b>E</b><b>P</b></div>'+
-        '<div class="v40-direct">DIRECTOS A OCTAVOS</div><div class="v40-rule"></div>'+
+        '<div class="v40-direct">CLASIFICACIÓN ACTUAL</div><div class="v40-rule"></div>'+
         TABLE.map((t,i)=>'<div class="v40-wide-row criteria-row"><span>'+(i+1)+'</span><span class="v40-team">'+teamLogo(t.name,'v40-team-logo')+'<strong>'+esc(t.name)+'</strong></span><span>'+t.pts+'</span><span>'+t.gd+'</span><span>'+Math.max(0,t.gd+1)+'</span><span>0</span><span>'+(t.last==='V'?1:0)+'</span><span>'+(t.last==='E'?1:0)+'</span><span>'+(t.last==='D'?1:0)+'</span></div>').join('')+
       '</div></div>';
     }
     if(mode==='complete'){
       return '<div class="v40-scroll-shell"><div class="v40-wide complete">'+
         '<div class="v40-wide-head"><span></span><span>Equipo</span><b>P</b><b>V</b><b>E</b><b>D</b><b>PTOS</b></div>'+
-        '<div class="v40-direct">DIRECTOS A OCTAVOS</div><div class="v40-rule"></div>'+
+        '<div class="v40-direct">CLASIFICACIÓN ACTUAL</div><div class="v40-rule"></div>'+
         TABLE.map((t,i)=>'<div class="v40-wide-row"><span>'+(i+1)+'</span><span class="v40-team">'+teamLogo(t.name,'v40-team-logo')+'<strong>'+esc(t.name)+'</strong></span><span>'+t.p+'</span><span>'+(t.last==='V'?1:0)+'</span><span>'+(t.last==='E'?1:0)+'</span><span>'+(t.last==='D'?1:0)+'</span><b>'+t.pts+'</b></div>').join('')+
       '</div></div>';
     }
     return '<div class="v40-table-wrap compact">'+
       '<div class="v40-table-head"><span></span><span></span><b>P</b><b>+/-</b><b>PTOS</b><b>FORMA</b></div>'+
-      '<div class="v40-direct">DIRECTOS A OCTAVOS</div><div class="v40-rule"></div>'+
+      '<div class="v40-direct">CLASIFICACIÓN ACTUAL</div><div class="v40-rule"></div>'+
       '<div class="v40-table-body">'+TABLE.map((t,i)=>
-        '<div class="v40-row"><span class="v40-rank">'+(i+1)+'</span><span class="v40-team">'+teamLogo(t.name,'v40-team-logo')+'<strong>'+esc(t.name)+'</strong></span><span>'+t.p+'</span><span>'+t.gd+'</span><span>'+t.pts+'</span>'+v40Form(t.last)+'</div>'
+        '<div class="v40-row"><span class="v40-rank">'+(i+1)+'</span><span class="v40-team">'+teamLogo(t.name,'v40-team-logo')+'<strong>'+esc(t.name)+'</strong></span><span>'+t.p+'</span><span>'+t.gd+'</span><span>'+t.pts+'</span>'+v40Form()+'</div>'
       ).join('')+'</div>'+
     '</div>';
   }
@@ -209,13 +357,13 @@
 
   function matchInfoContent(m){
     const competition=(m.category||'Liga Municipal');
-    const venue=(m.venue||'Campo Municipal');
+    const venue=(m.venue||'Campo por confirmar');
     return '<div class="v28-video-info">'+
       '<h2>Información del partido</h2>'+
       '<div class="v28-stadium-photo" role="img" aria-label="Estadio"></div>'+
       '<div class="v28-video-venue"><strong>'+esc(venue)+'</strong><small>Juventino Rosas</small></div>'+
       '<div class="v28-video-rule"></div>'+
-      '<div class="v28-video-round"><strong>'+esc(competition)+', Jornada 2</strong><small>'+esc(m.date)+' - '+esc(m.time)+'</small></div>'+
+      '<div class="v28-video-round"><strong>'+esc(competition)+', Jornada '+esc(m.jornada||'')+'</strong><small>'+esc(m.date)+' - '+esc(m.time)+'</small></div>'+
       '<div class="v28-video-rule"></div>'+
       '<div class="v28-local-time"><i aria-hidden="true"></i><span>Los horarios se muestran en tu hora local</span></div>'+
     '</div>';
