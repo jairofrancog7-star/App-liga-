@@ -132,6 +132,113 @@ function sourceStamp(){
   try{return 'Actualizado '+new Date(d).toLocaleString('es-MX',{dateStyle:'medium',timeStyle:'short'})}
   catch{return 'Actualizado '+d}
 }
+
+/* V72 — Próximos partidos / EN VIVO calculado desde los horarios oficiales.
+   No muestra marcador porque no existe un feed de goles en tiempo real.
+   Reloj de referencia: 45' + 15' descanso + 45'; la ventana de partido se
+   mantiene hasta 120 minutos para tolerar compensación/retrasos. */
+let homeLiveTimer=null;
+function mexicoWallClockStamp(now=new Date()){
+  try{
+    const parts=new Intl.DateTimeFormat('en-CA',{
+      timeZone:'America/Mexico_City',year:'numeric',month:'2-digit',day:'2-digit',
+      hour:'2-digit',minute:'2-digit',second:'2-digit',hourCycle:'h23'
+    }).formatToParts(now);
+    const get=t=>Number(parts.find(p=>p.type===t)?.value||0);
+    return Date.UTC(get('year'),get('month')-1,get('day'),get('hour'),get('minute'),get('second'));
+  }catch(e){return now.getTime()}
+}
+function fixtureWallClockStamp(v){
+  const m=String(v||'').match(/(\d{1,2})\/(\d{1,2})\/(\d{4})(?:\s+(\d{1,2}):(\d{2}))?/);
+  if(!m)return NaN;
+  return Date.UTC(+m[3],+m[2]-1,+m[1],+(m[4]||0),+(m[5]||0),0);
+}
+function fixtureClock(v){
+  const m=String(v||'').match(/\s(\d{1,2}:\d{2})/);
+  return m?.[1]||'Por confirmar';
+}
+function fixtureShortDate(v){
+  const m=String(v||'').match(/(\d{1,2})\/(\d{1,2})\/(\d{4})/);
+  if(!m)return '';
+  const d=new Date(Date.UTC(+m[3],+m[2]-1,+m[1]));
+  try{return new Intl.DateTimeFormat('es-MX',{weekday:'short',day:'numeric',month:'short',timeZone:'UTC'}).format(d).replace('.','')}
+  catch{return m[1]+'/'+m[2]}
+}
+function liveClockFor(startMs,nowMs){
+  const elapsed=(nowMs-startMs)/60000;
+  if(!Number.isFinite(elapsed)||elapsed<0)return {kind:'upcoming',label:''};
+  if(elapsed<45)return {kind:'live',label:'1T · '+Math.max(1,Math.floor(elapsed)+1)+"'"};
+  if(elapsed<60)return {kind:'live',label:'DESCANSO'};
+  if(elapsed<105)return {kind:'live',label:'2T · '+Math.min(90,45+Math.floor(elapsed-60)+1)+"'"};
+  if(elapsed<120)return {kind:'live',label:"2T · 90+"+Math.max(1,Math.floor(elapsed-105)+1)+"'"};
+  return {kind:'ended',label:''};
+}
+function officialFixtureEntries(id='3'){
+  const c=cat(id),rs=c?.fixtures?.[0]?.rows||[];
+  return rs.map((r,i)=>({id:String(id),category:c?.name||CAT_META[String(id)]?.name||'',r,index:i,start:fixtureWallClockStamp(r?.[8])}))
+    .filter(x=>Number.isFinite(x.start)&&String(x.r?.[2]||'').trim()&&String(x.r?.[6]||'').trim());
+}
+function homeFixturePool(){
+  const now=mexicoWallClockStamp();
+  const primary=officialFixtureEntries('3');
+  const all=CAT_ORDER.flatMap(id=>officialFixtureEntries(id));
+  const usable=x=>{
+    const status=liveClockFor(x.start,now);
+    return status.kind==='live'||x.start>now;
+  };
+  let pool=primary.filter(usable);
+  if(pool.length<2){
+    const seen=new Set(pool.map(x=>x.id+':'+x.index));
+    all.filter(usable).forEach(x=>{const k=x.id+':'+x.index;if(!seen.has(k)){seen.add(k);pool.push(x)}});
+  }
+  return pool.sort((a,b)=>{
+    const sa=liveClockFor(a.start,now).kind==='live'?0:1;
+    const sb=liveClockFor(b.start,now).kind==='live'?0:1;
+    return sa-sb||a.start-b.start||a.index-b.index;
+  }).slice(0,2);
+}
+function homeOfficialLogo(name){
+  return teamLogoHtml(name,'v72-home-team-logo');
+}
+function homeFixtureRow(x,now){
+  const r=x.r,home=String(r[2]||''),away=String(r[6]||''),status=liveClockFor(x.start,now);
+  const center=status.kind==='live'
+    ? '<strong class="v72-home-live-clock"><i></i>'+esc(status.label)+'</strong>'
+    : '<strong class="v72-home-kickoff">'+esc(fixtureClock(r[8]))+'</strong>';
+  return '<div class="v72-home-match-row '+(status.kind==='live'?'is-live':'')+'">'+
+    '<button type="button" class="v72-home-club home" data-v62-team="'+esc(home)+'"><span>'+esc(home)+'</span>'+homeOfficialLogo(home)+'</button>'+
+    center+
+    '<button type="button" class="v72-home-club away" data-v62-team="'+esc(away)+'">'+homeOfficialLogo(away)+'<span>'+esc(away)+'</span></button>'+
+  '</div>';
+}
+function patchHomeUpcoming(force=false){
+  if(route()!=='home'||!db)return;
+  const screen=document.querySelector('#screen');if(!screen)return;
+  const section=[...screen.querySelectorAll('.section')].find(s=>/Próximos partidos/i.test(s.querySelector('.section-head h2,h2')?.textContent||''));
+  if(!section)return;
+  const pool=homeFixturePool(),now=mexicoWallClockStamp();
+  if(!pool.length)return;
+  const sig=pool.map(x=>x.id+':'+x.index+':'+liveClockFor(x.start,now).label).join('|');
+  if(!force&&section.dataset.v72LiveSig===sig)return;
+  section.dataset.v72LiveSig=sig;
+  section.classList.add('v72-home-live-section');
+
+  const first=pool[0],firstStatus=liveClockFor(first.start,now),r=first.r;
+  const metaLeft=firstStatus.kind==='live'
+    ? '<span class="v72-home-live-meta"><i></i>EN VIVO · Jornada '+esc(r[1]||'')+'</span>'
+    : '<span class="v72-home-next-meta">PRÓXIMO · Jornada '+esc(r[1]||'')+'</span>';
+  const metaRight='<span>'+esc(fixtureShortDate(r[8]))+(fixtureClock(r[8])!=='Por confirmar'?' · '+esc(fixtureClock(r[8])):'')+'</span>';
+  let card=section.querySelector('.match-card');
+  if(!card){card=document.createElement('div');card.className='card match-card';section.appendChild(card)}
+  card.classList.add('v72-home-live-card');
+  card.innerHTML='<div class="match-meta v72-home-match-meta">'+metaLeft+metaRight+'</div>'+
+    '<div class="v72-home-match-list">'+pool.map(x=>homeFixtureRow(x,now)).join('')+'</div>'+
+    '<div class="v72-home-live-note">Minuto estimado por horario oficial · sin marcador en vivo</div>';
+}
+function startHomeLiveTimer(){
+  if(homeLiveTimer)return;
+  homeLiveTimer=setInterval(()=>patchHomeUpcoming(true),30000);
+}
 function chooseNewer(a,b){
   if(!a)return b;if(!b)return a;
   return String(b.captured_at_utc||'')>String(a.captured_at_utc||'')?b:a;
@@ -147,6 +254,7 @@ async function load(){
   window.LJR_OFFICIAL_DATA=db;
   window.LJR_OFFICIAL_API={getData:()=>db,getCategory:id=>cat(id),getTeam:teamContext,getLogo:logoFor,setCategory:setCategory,setDataTab:(id)=>{dataTab=String(id||'summary');localStorage.setItem('v62-data-tab',dataTab);if(route()==='leagueData')renderDataPage()},openTeam};
   if(!cat(categoryId))categoryId='3';
+  startHomeLiveTimer();
   schedule();
 }
 
@@ -545,6 +653,7 @@ function schedule(){
       document.body.classList.toggle('v62-data-active',r==='leagueData');
       if(r==='leagueData')renderDataPage();
       else{
+        patchHomeUpcoming();
         patchScorers();
         patchTeamDetail();
         patchTeams();
