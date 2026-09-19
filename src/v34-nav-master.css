@@ -270,3 +270,64 @@ html.v31-hospitality-active .v31-continue{
   html.v31-hospitality-active .v31-code-note{font-size:13px!important}
   html.v31-hospitality-active .v31-continue{height:54px!important;font-size:20px!important}
 }
+
+
+/* V35 — Quiz Arena + Más o Menos: fidelidad de referencia */
+/* Ninguna pantalla puede volver a duplicar los textos de la barra inferior.
+   Los nombres reales los pinta v34-nav-master.js con los iconos del ZIP. */
+.bottom-nav .nav-item small::before,
+.bottom-nav .nav-item small::after,
+body[data-app-route] .bottom-nav .nav-item small::before,
+body[data-app-route] .bottom-nav .nav-item small::after{
+  content:none!important;
+  display:none!important;
+}
+
+/* QUIZ ARENA — conserva la composición de la referencia y elimina overrides
+   antiguos que deformaban la barra y los botones. */
+body[data-app-route="quiz"] .bottom-nav .nav-item small{
+  display:block!important;
+  font-size:10px!important;
+  line-height:12px!important;
+}
+body[data-app-route="quiz"] .quiz-option{
+  box-sizing:border-box!important;
+}
+body[data-app-route="quiz"] .v30-quiz-stadium{
+  left:0!important;
+  right:0!important;
+  bottom:0!important;
+  width:100%!important;
+  max-width:none!important;
+}
+
+/* MÁS O MENOS — el escudo original tiene negro integrado en el archivo.
+   Screen hace transparente visualmente ese negro sobre el azul, como la referencia,
+   sin convertir la pantalla en una imagen plana y manteniendo todos los botones reales. */
+body[data-app-route="moreLess"] .v12-ml-logo{
+  top:35.0%!important;
+  width:min(47vw,235px)!important;
+  height:auto!important;
+  max-height:27%!important;
+  object-fit:contain!important;
+  background:transparent!important;
+  mix-blend-mode:screen!important;
+  filter:saturate(1.08) contrast(1.06) drop-shadow(0 5px 9px rgba(0,0,45,.24))!important;
+}
+body[data-app-route="moreLess"] .v12-ml-choice{
+  top:62.8%!important;
+  width:min(51vw,255px)!important;
+}
+body[data-app-route="moreLess"] .v12-avatar{
+  width:min(20.5vw,102px)!important;
+  height:min(20.5vw,102px)!important;
+}
+body[data-app-route="moreLess"] .v12-stadium{
+  left:0!important;
+  right:0!important;
+  bottom:0!important;
+  width:100%!important;
+  height:19%!important;
+  background-size:100% auto!important;
+  background-position:center 96%!important;
+}
