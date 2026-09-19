@@ -145,3 +145,19 @@ body[data-app-route="quizArena"] .bottom-nav .nav-item.active{
     transform:translateX(-50%)!important;
   }
 }
+
+
+/* V48.1 — fallback robusto para la imagen maestra de Quiz Arena.
+   Usa primero el asset del sitio y deja una copia fijada por commit debajo. */
+body[data-app-route="quizArena"] .v48-quiz-arena-shot{
+  background-color:#050064!important;
+  background-image:
+    url("../quiz-arena-reference.jpg?v=20260919-quiz-arena-pinned4"),
+    url("https://raw.githubusercontent.com/jairofrancog7-star/App-liga-/e9e05830f59509de197aaab7e3147d8a69c4dca1/quiz-arena-reference.jpg?v=20260919-quiz-arena-pinned4")!important;
+  background-repeat:no-repeat,no-repeat!important;
+  background-size:100% auto,100% auto!important;
+  background-position:center top,center top!important;
+}
+body[data-app-route="quizArena"] .v48-quiz-arena-image{
+  font-size:0!important;
+}
