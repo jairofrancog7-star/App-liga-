@@ -43,7 +43,11 @@
   }
 
   function sync(){
-    document.body.classList.toggle('v69-primary-tool-header',shouldUseMainHeader());
+    const r=route();
+    const useMain=shouldUseMainHeader();
+    const isMatchCenter=/^(v4-matchcenter|matchCenter|match-center)$/i.test(r) || (r==='match'&&isMatchCenterEntry());
+    document.body.classList.toggle('v69-primary-tool-header',useMain);
+    document.body.classList.toggle('v69-match-center-header',useMain&&isMatchCenter);
   }
 
   /* Distingue la tarjeta Match Center de cualquier botón "Ver detalles". */
