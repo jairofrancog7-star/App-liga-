@@ -4381,13 +4381,50 @@ function predictorView(){
 function predictorSixView(){
   const BASE='https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/';
   const games=[
-    ['p6a','América Veteranos','assets/branding/america-veteranos-35-user.png','La Huerta','assets/official-logos/la-huerta.png'],
-    ['p6b','Promesas FC','assets/official-logos/promesas-fc.png','Franco FC','assets/official-logos/franco-fc.png'],
-    ['p6c','Atlético Galeana','assets/official-logos/galeana.png','Lobos CDG','assets/official-logos/lobos-cdg.png'],
-    ['p6d','La Huerta','assets/official-logos/la-huerta.png','Promesas FC','assets/official-logos/promesas-fc.png'],
-    ['p6e','Franco FC','assets/official-logos/franco-fc.png','Atlético Galeana','assets/official-logos/galeana.png'],
-    ['p6f','Lobos CDG','assets/official-logos/lobos-cdg.png','América Veteranos','assets/branding/america-veteranos-35-user.png']
-  ];
+  [
+    "p6a",
+    "FRANCO FC",
+    "assets/official-logos/franco-fc.png",
+    "HERRERAS FC",
+    "assets/official-logos/herreras-fc.png"
+  ],
+  [
+    "p6b",
+    "TERRICOLAS",
+    "assets/official-logos/terricolas.png",
+    "GALACTICOS",
+    "assets/teams/galacticos-pozos.webp"
+  ],
+  [
+    "p6c",
+    "LINCES",
+    "assets/official-logos/linces.png",
+    "JUVENTUS",
+    "assets/official-logos/juventus.png"
+  ],
+  [
+    "p6d",
+    "HERMANOS",
+    "assets/official-logos/hermanos.png",
+    "SAN JOSE FC",
+    "assets/official-logos/san-jose-fc.png"
+  ],
+  [
+    "p6e",
+    "LOBOS CDG",
+    "assets/official-logos/lobos-cdg.png",
+    "NAPOLI",
+    "assets/official-logos/napoli.png"
+  ],
+  [
+    "p6f",
+    "HERMANOS",
+    "assets/official-logos/hermanos.png",
+    "ABEJAS",
+    "assets/official-logos/abejas.png"
+  ]
+];
+
   const slides=[
     ['Pronostica seis resultados','Consigue puntos por el marcador, la diferencia de goles y los goles marcados por cada equipo.'],
     ['Elige tus marcadores','Toca cada partido para cambiar tu pronóstico entre 1, X y 2. Tus selecciones se guardan en este dispositivo.'],
@@ -4438,7 +4475,7 @@ function predictorSixView(){
     </div>
   </section>`;
 }
-function videoView(){return `<div class="hero video-hero"><span class="eyebrow" style="color:#fff">REVIVE LA JORNADA</span><h1>FÚTBOL QUE<br>NOS UNE</h1><p>Mira goles, atajadas, entrevistas y resúmenes completos.</p><div class="button-row"><button class="btn primary" data-video="Resumen de la Jornada">Ver ahora</button><button class="btn outline" data-match="m1">Partido de la semana</button></div></div><section class="section">${sectionHead('Selección del editor')}<div class="media-carousel"><button class="media-card" data-video="Final dramático en Cuenda"><span class="badge">12:46</span><h3>Final dramático en Cuenda</h3></button><button class="media-card" data-video="Resumen de la jornada"><span class="badge">08:20</span><h3>Resumen de la jornada</h3></button></div></section>`}
+function videoView(){return `<div class="hero video-hero"><span class="eyebrow" style="color:#fff">REVIVE LA JORNADA</span><h1>FÚTBOL QUE<br>NOS UNE</h1><p>Mira goles, atajadas, entrevistas y resúmenes completos.</p><div class="button-row"><button class="btn primary" data-video="Resumen de la Jornada">Ver ahora</button><button class="btn outline" data-match="m1">Partido de la semana</button></div></div><section class="section">${sectionHead('Selección del editor')}<div class="media-carousel"><button class="media-card" data-video="Momentos de la Liga"><span class="badge">VIDEO</span><h3>Momentos de la Liga</h3></button><button class="media-card" data-video="Resumen de la jornada"><span class="badge">08:20</span><h3>Resumen de la jornada</h3></button></div></section>`}
 function momentsView(){return `<div class="v26-moments-original" aria-label="Momentos">
   <div class="v26-moments-sticky" aria-label="Cabecera fija de Momentos">
     <img class="v26-moments-sticky__image" src="./assets/moments/moments-original-a.png?v=20260918-moments3" alt="" aria-hidden="true" draggable="false">
@@ -5106,26 +5143,10 @@ function quizArenaView(){
   </section>`;
 }
 function quizView(){
-  const correct='Juventino';
-  const options=[['A','Pozos'],['B','Rincón de Centeno'],['C','Juventino'],['D','Cuenda']];
-  return `<section class="v30-quiz-page" data-quiz-correct="${correct}">
-    <div class="v30-quiz-logo" aria-label="Quiz de la Liga">
-      <span class="v30-logo-quiz">QUIZ</span>
-      <span class="v30-logo-de">DE LA</span>
-      <span class="v30-logo-liga">LIGA</span>
-      <i class="v30-check-box" aria-hidden="true"></i>
-      <i class="v30-angle-left" aria-hidden="true"></i>
-      <i class="v30-angle-right" aria-hidden="true"></i>
-    </div>
-    <div class="v30-quiz-subtitle" aria-hidden="true"><i></i><span>LIGA MUNICIPAL DE FÚTBOL<br>JUVENTINO ROSAS</span><i></i></div>
-    <div class="quiz-card">
-      <p>¿Qué equipo lidera actualmente la tabla?</p>
-      ${options.map(([letter,label])=>`<button type="button" class="quiz-option" data-quiz="${label}" aria-label="${letter}. ${label}"><span class="v30-answer-letter">${letter}</span><span class="v30-answer-text">${label}</span><span class="v30-answer-check" aria-hidden="true">✓</span></button>`).join('')}
-    </div>
-    <div class="v30-quiz-stadium" aria-hidden="true"><i class="v30-light left"></i><i class="v30-light right"></i><i class="v30-stands"></i></div>
-    <span class="v30-stadium-tint" aria-hidden="true"></span>
-  </section>`;
-}function moreLessView(){const a=players[0],b=players[1];return `<div class="game-hero"><span class="eyebrow">JUEGO</span><h1 class="game-title">MÁS<br>O MENOS</h1><p class="muted">¿Quién tiene más goles?</p><div class="compare-two"><button data-moreless="${a.id}"><div class="avatar-ball">${a.number}</div><b>${a.name}</b></button><span>VS</span><button data-moreless="${b.id}"><div class="avatar-ball">${b.number}</div><b>${b.name}</b></button></div></div>`}function venuesView(){return `<div class="eyebrow">SEDES</div><h1 class="screen-title">Campos</h1><div class="news-list">${[...new Set(teams.map(t=>t.field))].map((v,i)=>`<div class="news-row"><span class="venue-thumb"></span><span><small>Sede ${i+1}</small><b>${v}</b><p>Consulta los próximos partidos programados.</p></span></div>`).join('')}</div>`}
+  const correct='San José FC';
+  const options=[['A','Juventus'],['B','Hermanos'],['C','San José FC'],['D','Linces']];
+  return `<section class="v30-quiz-page" data-quiz-correct="${correct}"><div class="v30-quiz-logo"><span class="v30-logo-quiz">QUIZ</span><span class="v30-logo-de">DE LA</span><span class="v30-logo-liga">LIGA</span></div><div class="quiz-card"><p>¿Qué equipo lidera actualmente la tabla?</p>${options.map(([letter,label])=>`<button type="button" class="quiz-option" data-quiz="${label}"><span class="v30-answer-letter">${letter}</span><span class="v30-answer-text">${label}</span></button>`).join('')}</div></section>`;
+}function moreLessView(){const a=players[0],b=players[1];return `<div class="game-hero"><span class="eyebrow">REGISTROS OFICIALES</span><h1 class="game-title">MÁS<br>O MENOS</h1><p class="muted">Las comparaciones se habilitarán cuando AdminFut publique estadísticas individuales verificables.</p><div class="compare-two">${a?`<button data-player="${a.id}"><div class="avatar-ball">⚽</div><b>${a.name}</b><small>${team(a.team).name}</small></button>`:''}<span>VS</span>${b?`<button data-player="${b.id}"><div class="avatar-ball">⚽</div><b>${b.name}</b><small>${team(b.team).name}</small></button>`:''}</div></div>`}function venuesView(){return `<div class="eyebrow">SEDES</div><h1 class="screen-title">Campos</h1><div class="news-list">${[...new Set(teams.map(t=>t.field))].map((v,i)=>`<div class="news-row"><span class="venue-thumb"></span><span><small>Sede ${i+1}</small><b>${v}</b><p>Consulta los próximos partidos programados.</p></span></div>`).join('')}</div>`}
 const views={home:homeView,competition:competitionView,match:matchView,video:videoView,fantasy:fantasyView,fantasyTeam:fantasyTeamView,fantasyLeagues:()=>`<div class="eyebrow">FANTASY</div><h1 class="screen-title">Ligas</h1><div class="profile-card"><h2>Compite con amigos</h2><p>Crea una liga privada o únete con un código.</p><div class="button-row"><button class="btn primary" data-action="create-league">Crear liga</button><button class="btn outline" data-action="join-league">Unirme</button></div></div>`,more:moreView,ligaQR:ligaQRView,hospitality:hospitalityView,'club-store':storeView,following:followingView,teams:teamsView,teamDetail:teamDetailView,players:playersView,playerDetail:playerDetailView,scorers:scorersView,moments:momentsView,stats:statsView,rankings:rankingsView,history:historyView,news:newsView,newsDetail:newsDetailView,transfers:transfersView,favorites:favoritesView,search:searchView,vote:voteView,notifications:notificationsView,privacy:privacyView,profile:profileView,predictor:predictorView,predictorSix:predictorSixView,quizArena:quizArenaView,quiz:quizArenaView,moreLess:moreLessView,moreLessHub:()=>`<div data-v52-mount></div>`,venues:v60VenuesView,leagueTools:leagueToolsView,v38Stats:v38StatsView,v38Weekly:v38WeeklyView,v38Weather:v38WeatherView,v38Alerts:v38AlertsView,tableExport:v64ExportTableView,bracketBuilder:v64BracketView,credentialBuilder:v64CredentialBuilderView,cedulaBuilder:v64CedulaBuilderView,agendaBuilder:v64AgendaView,motionHub:v64MotionView,suspensionTool:v64SuspensionView,rulebook:rulebookView,matchday:matchdayView,weatherFields:weatherFieldsView,cedulas:cedulasView,cedulaDetail:cedulaDetailView,credential:credentialView,publications:publicationsView,tactics:tacticsView,simulator:simulatorView,jrControl:jrControlView,error:()=>`<div class="empty-state"><div class="empty-illustration error"></div><h2>No pudimos cargar la información</h2><p>Comprueba tu conexión e inténtalo nuevamente.</p><button class="btn outline" data-route="home">Reintentar</button></div>`};
 function render(){if(state.route==='quiz'){state.route='quizArena';if(location.hash!=='#/quizArena')history.replaceState(null,'','#/quizArena')}if(state.route==='theme'){setTheme(state.theme==='dark'?'light':'dark');state.route='more'}screen.innerHTML=views[state.route]?views[state.route]():views.home();const rootRoutes=['home','competition','video','fantasy','more'];backButton.classList.toggle('is-hidden',rootRoutes.includes(state.route));const navRoute=['predictor','predictorSix','quizArena','quiz','moreLess','moreLessHub','ligaQR','leagueTools','v38Stats','v38Weekly','v38Weather','v38Alerts','tableExport','bracketBuilder','credentialBuilder','cedulaBuilder','agendaBuilder','motionHub','suspensionTool','rulebook','matchday','weatherFields','venues','cedulas','cedulaDetail','credential','publications','tactics','simulator','jrControl','leagueData'].includes(state.route)?'more':state.route;navItems.forEach(n=>n.classList.toggle('active',n.dataset.route===navRoute));bind();window.scrollTo(0,0)}
 function go(route,push=true){if(route==='quiz')route='quizArena';if(push&&state.route!==route)state.history.push(state.route);state.route=route;location.hash='#/'+route;render()}
