@@ -105,6 +105,42 @@
       '<div class="v42-roster-list">'+g.players.map(playerRow).join('')+'</div></section>').join('');
   }
 
+  let activeTab=localStorage.getItem('v42-team-tab')||'matches';
+
+  function opponentList(){
+    const ids=Object.keys(TEAMS).filter(id=>id!==selectedId());
+    return [TEAMS[ids[0]]||TEAMS.HUE,TEAMS[ids[1]]||TEAMS.PRO];
+  }
+  function teamMini(t){
+    return '<span class="v42-mini-team"><img src="'+BASE+t.logo+'" alt="" loading="lazy" decoding="async"><b>'+esc(t.name)+'</b></span>';
+  }
+  function playThumb(seed){
+    return '<span class="v42-match-thumb" aria-hidden="true"><span class="v42-fake-player p1"></span><span class="v42-fake-player p2"></span><i>▶</i></span>';
+  }
+  function matchesMarkup(){
+    const t=team(),o=opponentList();
+    return '<main class="v42-matches">'+
+      '<h2>Partidos anteriores</h2>'+
+      '<article class="v42-match-card"><h3>Sáb 19 sep - Jornada 5 - Liga Municipal</h3><div class="v42-match-body">'+
+        '<div class="v42-score-list"><div>'+teamMini(o[0])+'<strong>0</strong></div><div>'+teamMini(t)+'<strong>0</strong></div></div>'+playThumb(1)+'</div></article>'+
+      '<article class="v42-match-card"><h3>Sáb 26 sep - Jornada 6 - Liga Municipal</h3><p class="v42-global">Global: 4-1. Gana '+esc(t.name)+'</p><div class="v42-match-body">'+
+        '<div class="v42-score-list"><div>'+teamMini(t)+'<strong>4</strong></div><div>'+teamMini(o[1])+'<strong>1</strong></div></div>'+playThumb(2)+'</div></article>'+
+    '</main>';
+  }
+  function summaryMarkup(){
+    const t=team();
+    return '<main class="v42-summary"><section class="v42-summary-card"><h2>'+esc(t.name)+'</h2><p>Equipo de la Liga Municipal de Fútbol Juventino Rosas.</p><div class="v42-summary-stats"><div><b>1</b><span>PJ</span></div><div><b>1</b><span>PG</span></div><div><b>0</b><span>PE</span></div><div><b>0</b><span>PP</span></div></div></section></main>';
+  }
+  function statsMarkup(){
+    return '<main class="v42-summary"><section class="v42-summary-card"><h2>Estadísticas</h2><div class="v42-summary-stats"><div><b>4</b><span>Goles</span></div><div><b>1</b><span>Encajados</span></div><div><b>3</b><span>Puntos</span></div><div><b>+3</b><span>DG</span></div></div></section></main>';
+  }
+  function bodyMarkup(){
+    if(activeTab==='squad')return '<main class="v42-squad">'+rosterMarkup()+'</main>';
+    if(activeTab==='matches')return matchesMarkup();
+    if(activeTab==='stats')return statsMarkup();
+    return summaryMarkup();
+  }
+
   function markup(){
     const t=team(),isFollowing=followed();
     return '<section class="v42-team-page" data-v27-reference="teamDetail" data-v42-reference="teamDetail">'+
@@ -120,14 +156,13 @@
           '<button type="button" class="v42-share" data-v42-share aria-label="Compartir">'+shareIcon()+'</button>'+
         '</div>'+
         '<nav class="v42-tabs" aria-label="Secciones del equipo">'+
-          '<button type="button" data-v42-tab="summary">Resumen</button>'+
-          '<button type="button" data-v42-tab="matches">Partidos</button>'+
-          '<button type="button" data-v42-tab="standings">Clasificación</button>'+
-          '<button type="button" class="active" data-v42-tab="squad">Plantilla</button>'+
-          '<button type="button" data-v42-tab="stats">Estadísticas</button>'+
+          '<button type="button" class="'+(activeTab==='summary'?'active':'')+'" data-v42-tab="summary">Resumen</button>'+
+          '<button type="button" class="'+(activeTab==='matches'?'active':'')+'" data-v42-tab="matches">Partidos</button>'+
+          '<button type="button" class="'+(activeTab==='standings'?'active':'')+'" data-v42-tab="standings">Clasificación</button>'+
+          '<button type="button" class="'+(activeTab==='squad'?'active':'')+'" data-v42-tab="squad">Plantilla</button>'+
+          '<button type="button" class="'+(activeTab==='stats'?'active':'')+'" data-v42-tab="stats">Estadísticas</button>'+
         '</nav>'+
-      '</header>'+
-      '<main class="v42-squad">'+rosterMarkup()+'</main>'+
+      '</header>'+bodyMarkup()+
     '</section>';
   }
 
@@ -150,7 +185,11 @@
     document.querySelector('[data-v42-back]')?.addEventListener('click',()=>{location.hash='#/teams'},{once:true});
     document.querySelector('[data-v42-follow]')?.addEventListener('click',()=>{toggleFollow();document.querySelector('#screen').innerHTML=markup();bind()},{once:true});
     document.querySelector('[data-v42-bell]')?.addEventListener('click',e=>{e.currentTarget.classList.toggle('active');toast(e.currentTarget.classList.contains('active')?'Alertas activadas':'Alertas desactivadas')},{once:true});
-    document.querySelector('[data-v42-compare]')?.addEventListener('click',()=>toast('Comparación preparada para '+team().name),{once:true});
+    document.querySelector('[data-v42-compare]')?.addEventListener('click',()=>{
+      localStorage.setItem('v46-compare-a',selectedId());
+      localStorage.removeItem('v46-compare-b');
+      location.hash='#/teamCompare';
+    },{once:true});
     document.querySelector('[data-v42-share]')?.addEventListener('click',()=>{
       const p={title:team().name,text:'Liga Municipal de Fútbol Juventino Rosas · '+team().name,url:location.href};
       if(navigator.share)navigator.share(p).catch(()=>{});
@@ -158,9 +197,11 @@
     },{once:true});
     document.querySelectorAll('[data-v42-tab]').forEach(b=>b.addEventListener('click',()=>{
       const tab=b.dataset.v42Tab;
-      if(tab==='squad')return;
       if(tab==='standings'){location.hash='#/competition';return;}
-      toast(b.textContent.trim()+' · sección disponible');
+      activeTab=tab;
+      localStorage.setItem('v42-team-tab',tab);
+      const screen=document.querySelector('#screen');
+      if(screen){screen.innerHTML=markup();bind();}
     },{once:true}));
   }
 
