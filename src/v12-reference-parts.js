@@ -245,7 +245,7 @@ function v12BracketWinnerBlock(a,b){
 }
 
 const V12_BRACKET_ROUTE_LEFT={
-  label:'RAMA IZQUIERDA',
+  label:'RUTA PLATEADA',
   pairs:[
     [
       v12BracketTeam('América Veteranos','america','AME','1','8'),
@@ -277,7 +277,7 @@ const V12_BRACKET_ROUTE_LEFT={
 };
 
 const V12_BRACKET_ROUTE_RIGHT={
-  label:'RAMA DERECHA',
+  label:'RUTA AZUL',
   pairs:[
     [
       v12BracketTeam('San Isidro','sanisidro','SIS','2','6'),
@@ -321,7 +321,7 @@ function v12BracketRoute(route){
 
 function v12FinalTrophy(){
   return '<div class="v12-final-trophy-new" aria-label="Trofeo de la final">'+
-    '<img src="./assets/reference/final-trophy-drive.png?v=parts29" alt="Trofeo de la final">'+
+    '<img src="./final-trophy-drive.png?v=parts35" alt="" aria-hidden="true">'+
   '</div>';
 }
 function v12FinalCard(){

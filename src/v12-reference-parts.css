@@ -1936,3 +1936,301 @@ body[data-app-route="competition"] .v12-bracket-winner strong{
     font-size:8.4px!important;
   }
 }
+
+/* === PARTS35 — CUADRO COMPACTO + CONECTORES EXACTOS === */
+/* Reconstrucción de geometría a partir de la captura de referencia:
+   tarjetas compactas, ramas plateada/azul y líneas que realmente conectan cada ronda. */
+body[data-app-route="competition"] .v12-bracket-reference.stage-playoff .v12-bracket-board{
+  display:grid!important;
+  gap:28px!important;
+  width:100%!important;
+  max-width:430px!important;
+  margin:0 auto!important;
+  padding:0 2px 8px!important;
+  overflow:visible!important;
+}
+body[data-app-route="competition"] .v12-bracket-reference.stage-playoff .v12-bracket-route{
+  --row-h:44px;
+  --row-gap:18px;
+  --branch:var(--br-line);
+  position:relative!important;
+  display:grid!important;
+  grid-template-columns:13px minmax(0,1.18fr) 20px minmax(0,.92fr)!important;
+  column-gap:4px!important;
+  width:100%!important;
+  min-height:calc((4 * var(--row-h)) + (3 * var(--row-gap)))!important;
+  height:calc((4 * var(--row-h)) + (3 * var(--row-gap)))!important;
+  overflow:visible!important;
+}
+body[data-app-route="competition"] .v12-bracket-reference.stage-playoff .v12-bracket-route:nth-child(2){
+  --branch:var(--br-cyan);
+}
+
+/* Vertical route rail */
+body[data-app-route="competition"] .v12-bracket-reference.stage-playoff .v12-bracket-side-label{
+  position:relative!important;
+  min-height:100%!important;
+  border-left:2px solid var(--branch)!important;
+  overflow:visible!important;
+}
+body[data-app-route="competition"] .v12-bracket-reference.stage-playoff .v12-bracket-side-label span{
+  position:absolute!important;
+  left:-8px!important;
+  top:50%!important;
+  transform:translate(-50%,-50%) rotate(-90deg)!important;
+  color:#eef1ff!important;
+  font:800 8px/1 Inter,Roboto,Arial,sans-serif!important;
+  letter-spacing:.03em!important;
+  white-space:nowrap!important;
+}
+
+/* Four compact first-round rows */
+body[data-app-route="competition"] .v12-bracket-reference.stage-playoff .v12-bracket-pairs{
+  display:grid!important;
+  grid-template-rows:repeat(4,var(--row-h))!important;
+  row-gap:var(--row-gap)!important;
+  min-width:0!important;
+  overflow:visible!important;
+}
+body[data-app-route="competition"] .v12-bracket-reference.stage-playoff .v12-bracket-pair{
+  position:relative!important;
+  display:grid!important;
+  grid-template-columns:minmax(0,1fr) 8px minmax(0,1fr)!important;
+  gap:3px!important;
+  align-items:center!important;
+  min-width:0!important;
+  height:var(--row-h)!important;
+  overflow:visible!important;
+}
+/* Short horizontal line from every pair to its bracket */
+body[data-app-route="competition"] .v12-bracket-reference.stage-playoff .v12-bracket-pair::after{
+  content:""!important;
+  position:absolute!important;
+  right:-8px!important;
+  top:50%!important;
+  width:8px!important;
+  border-top:2px solid var(--branch)!important;
+  transform:translateY(-1px)!important;
+}
+
+/* Team cards: same compact proportions as the master image */
+body[data-app-route="competition"] .v12-bracket-reference.stage-playoff .v12-bracket-team{
+  position:relative!important;
+  height:44px!important;
+  min-height:44px!important;
+  max-height:44px!important;
+  padding:4px 3px 4px 12px!important;
+  grid-template-columns:21px minmax(0,1fr)!important;
+  gap:3px!important;
+  border-radius:9px!important;
+  overflow:hidden!important;
+  box-sizing:border-box!important;
+  background:linear-gradient(180deg,#0b2588 0%,#091d73 100%)!important;
+}
+body[data-app-route="competition"] .v12-bracket-reference.stage-playoff .v12-bracket-team img,
+body[data-app-route="competition"] .v12-bracket-reference.stage-playoff .v12-bracket-fallback{
+  width:21px!important;
+  height:21px!important;
+  min-width:21px!important;
+  min-height:21px!important;
+  object-fit:contain!important;
+}
+body[data-app-route="competition"] .v12-bracket-reference.stage-playoff .v12-bracket-team strong{
+  display:block!important;
+  white-space:normal!important;
+  overflow:hidden!important;
+  overflow-wrap:normal!important;
+  word-break:normal!important;
+  font:800 7.8px/1.03 Inter,Roboto,Arial,sans-serif!important;
+  letter-spacing:-.02em!important;
+}
+body[data-app-route="competition"] .v12-bracket-reference.stage-playoff .v12-bracket-seed{
+  left:3px!important;
+  font-size:6.8px!important;
+}
+body[data-app-route="competition"] .v12-bracket-reference.stage-playoff .v12-bracket-score{
+  right:-7px!important;
+  font-size:7px!important;
+}
+body[data-app-route="competition"] .v12-bracket-reference.stage-playoff .v12-bracket-vs{
+  font-size:7px!important;
+}
+
+/* The two C-shaped connectors: rows 1+2 -> winner 1, rows 3+4 -> winner 2 */
+body[data-app-route="competition"] .v12-bracket-reference.stage-playoff .v12-bracket-connectors{
+  position:relative!important;
+  display:block!important;
+  height:100%!important;
+  min-height:100%!important;
+  overflow:visible!important;
+}
+body[data-app-route="competition"] .v12-bracket-reference.stage-playoff .v12-bracket-connectors .c{
+  position:absolute!important;
+  left:0!important;
+  right:auto!important;
+  width:15px!important;
+  border-top:2px solid var(--branch)!important;
+  border-bottom:2px solid var(--branch)!important;
+  border-right:2px solid var(--branch)!important;
+  border-left:0!important;
+  border-radius:0 7px 7px 0!important;
+  display:block!important;
+  box-sizing:border-box!important;
+}
+body[data-app-route="competition"] .v12-bracket-reference.stage-playoff .v12-bracket-connectors .c::after{
+  content:""!important;
+  position:absolute!important;
+  right:-8px!important;
+  top:50%!important;
+  width:8px!important;
+  border-top:2px solid var(--branch)!important;
+  transform:translateY(-1px)!important;
+}
+body[data-app-route="competition"] .v12-bracket-reference.stage-playoff .v12-bracket-connectors .c1{
+  top:calc(var(--row-h) / 2)!important;
+  height:calc(var(--row-h) + var(--row-gap))!important;
+}
+body[data-app-route="competition"] .v12-bracket-reference.stage-playoff .v12-bracket-connectors .c2{
+  top:calc((2.5 * var(--row-h)) + (2 * var(--row-gap)))!important;
+  height:calc(var(--row-h) + var(--row-gap))!important;
+}
+body[data-app-route="competition"] .v12-bracket-reference.stage-playoff .v12-bracket-connectors .c3,
+body[data-app-route="competition"] .v12-bracket-reference.stage-playoff .v12-bracket-connectors .c4{
+  display:none!important;
+}
+
+/* Winner column aligns exactly with the branch midpoints */
+body[data-app-route="competition"] .v12-bracket-reference.stage-playoff .v12-bracket-winners{
+  display:grid!important;
+  grid-template-rows:1fr 1fr!important;
+  gap:18px!important;
+  min-width:0!important;
+  height:100%!important;
+  overflow:visible!important;
+}
+body[data-app-route="competition"] .v12-bracket-reference.stage-playoff .v12-bracket-winner-block{
+  position:relative!important;
+  display:grid!important;
+  grid-template-rows:50px 42px!important;
+  align-content:center!important;
+  gap:8px!important;
+  min-width:0!important;
+  overflow:visible!important;
+}
+body[data-app-route="competition"] .v12-bracket-reference.stage-playoff .v12-bracket-winner{
+  height:50px!important;
+  min-height:50px!important;
+  max-height:50px!important;
+  padding:0 7px!important;
+  gap:5px!important;
+  border-radius:9px!important;
+  box-sizing:border-box!important;
+}
+body[data-app-route="competition"] .v12-bracket-reference.stage-playoff .v12-bracket-winner .shield{
+  width:18px!important;
+  height:18px!important;
+  flex:0 0 18px!important;
+}
+body[data-app-route="competition"] .v12-bracket-reference.stage-playoff .v12-bracket-winner .shield svg{
+  width:18px!important;
+  height:18px!important;
+}
+body[data-app-route="competition"] .v12-bracket-reference.stage-playoff .v12-bracket-winner strong{
+  font:700 8.6px/1.08 Inter,Roboto,Arial,sans-serif!important;
+}
+body[data-app-route="competition"] .v12-bracket-reference.stage-playoff .v12-bracket-seeded{
+  display:grid!important;
+  grid-template-columns:minmax(0,1fr) 7px minmax(0,1fr)!important;
+  gap:3px!important;
+  align-items:center!important;
+  min-width:0!important;
+}
+body[data-app-route="competition"] .v12-bracket-reference.stage-playoff .v12-bracket-team.mini{
+  height:42px!important;
+  min-height:42px!important;
+  max-height:42px!important;
+  padding:4px 3px!important;
+  grid-template-columns:19px minmax(0,1fr)!important;
+  gap:3px!important;
+  border-radius:9px!important;
+}
+body[data-app-route="competition"] .v12-bracket-reference.stage-playoff .v12-bracket-team.mini img,
+body[data-app-route="competition"] .v12-bracket-reference.stage-playoff .v12-bracket-team.mini .v12-bracket-fallback{
+  width:19px!important;
+  height:19px!important;
+  min-width:19px!important;
+  min-height:19px!important;
+}
+body[data-app-route="competition"] .v12-bracket-reference.stage-playoff .v12-bracket-team.mini strong{
+  font:800 7.2px/1.03 Inter,Roboto,Arial,sans-serif!important;
+}
+
+/* Bracket from winner + seeded teams toward the next round */
+body[data-app-route="competition"] .v12-bracket-reference.stage-playoff .v12-bracket-winner-block::after{
+  content:""!important;
+  position:absolute!important;
+  right:-9px!important;
+  top:calc(50% - 27px)!important;
+  width:9px!important;
+  height:54px!important;
+  border-top:2px solid var(--branch)!important;
+  border-bottom:2px solid var(--branch)!important;
+  border-right:2px solid var(--branch)!important;
+  border-left:0!important;
+  border-radius:0 6px 6px 0!important;
+  box-sizing:border-box!important;
+}
+body[data-app-route="competition"] .v12-bracket-reference.stage-playoff .v12-bracket-winner-block::before{
+  content:""!important;
+  position:absolute!important;
+  right:-18px!important;
+  top:50%!important;
+  width:9px!important;
+  border-top:2px solid var(--branch)!important;
+  transform:translateY(-1px)!important;
+}
+
+/* All stage buttons remain the same exact box length/height. */
+body[data-app-route="competition"] .v12-bracket-stage-tabs > button[data-v12-bracket-stage]{
+  flex:0 0 132px!important;
+  width:132px!important;
+  min-width:132px!important;
+  max-width:132px!important;
+  height:45px!important;
+  min-height:45px!important;
+  max-height:45px!important;
+}
+
+/* Make trophy available in Pages/APK from /public and keep it at reference scale. */
+body[data-app-route="competition"] .v12-final-trophy-wrap{
+  right:16%!important;
+  bottom:46px!important;
+  width:31%!important;
+  height:auto!important;
+  aspect-ratio:2/3!important;
+  overflow:visible!important;
+  z-index:5!important;
+}
+body[data-app-route="competition"] .v12-final-trophy-new,
+body[data-app-route="competition"] .v12-final-trophy-new img{
+  display:block!important;
+  opacity:1!important;
+  visibility:visible!important;
+}
+body[data-app-route="competition"] .v12-final-trophy-new img{
+  width:100%!important;
+  height:100%!important;
+  object-fit:contain!important;
+  object-position:center bottom!important;
+  mix-blend-mode:screen!important;
+}
+
+/* Wider screens: keep the compact bracket proportions rather than stretching cards. */
+@media(min-width:420px){
+  body[data-app-route="competition"] .v12-bracket-reference.stage-playoff .v12-bracket-board{
+    max-width:455px!important;
+  }
+  body[data-app-route="competition"] .v12-bracket-reference.stage-playoff .v12-bracket-route{
+    grid-template-columns:14px minmax(0,1.18fr) 22px minmax(0,.92fr)!important;
+  }
+}
