@@ -4,7 +4,7 @@
 const desktop=()=>document.body.classList.contains('lj-desktop')||new URLSearchParams(location.search).get('mode')==='desktop'||innerWidth>=1024;
 const route=()=>location.hash.replace(/^#\/?/,'')||'home';
 const go=r=>{location.hash='#/'+r};
-const clubs=['Juventino','Franco Tavera','Pozos','Cuenda','América','Rincón del Carmen','San Pedro','Morales','La Luz','Valencia','Real Juventino','Atlético Rosas'];
+const clubs=["SAN JOSE FC","JUVENTUS","HERMANOS","LINCES","NAPOLI","FRANCO FC","HERRERAS FC","ABEJAS","LOBOS CDG","TERRICOLAS","GALACTICOS"];
 const menus={
   'Gaming':[
     ['Todos los juegos','gaming'],['Fantasy Football','fantasy'],['Pronostica Seis','predictor'],['Bracket','bracket'],['Gol del Día','scorers'],['eChampions League','gaming'],['Mi perfil de juegos','profile']
