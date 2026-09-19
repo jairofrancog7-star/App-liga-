@@ -520,3 +520,45 @@ body[data-app-route="home"] #screen>.stories{
     height:84px!important;
   }
 }
+
+
+/* V20 HOME HEADER RESTORE — vuelve la parte superior original completa (referencia imagen 3).
+   No tapa la mitad inferior del arte con bloques sólidos. */
+body[data-app-route="home"] .topbar{
+  height:var(--v10-home-header-h)!important;
+  min-height:var(--v10-home-header-h)!important;
+  padding:0!important;
+  overflow:hidden!important;
+  background-color:#02065f!important;
+  background-image:url('https://d2ol7oe51mr4n9.cloudfront.net/user_3JNvttsAwr0QjxhuX5O1uaa9bvv/f2d42133-aeeb-4665-bfd1-693941efa7ee.jpg')!important;
+  background-repeat:no-repeat!important;
+  background-size:100% 100%!important;
+  background-position:center center!important;
+  border:0!important;
+  border-bottom:0!important;
+  box-shadow:none!important;
+}
+body[data-app-route="home"] .topbar::before,
+body[data-app-route="home"] .topbar::after{
+  content:none!important;
+  display:none!important;
+  background:none!important;
+  height:0!important;
+  opacity:0!important;
+}
+
+/* Historias empiezan justo al terminar la cabecera: sin hueco artificial
+   y sin círculos asomándose dentro de la parte superior. */
+body[data-app-route="home"] #screen{
+  margin-top:0!important;
+  padding-top:0!important;
+  background:#02045d!important;
+}
+body[data-app-route="home"] #screen>.stories{
+  margin-top:0!important;
+  padding-top:14px!important;
+  overflow-y:hidden!important;
+  background:#02045d!important;
+  box-shadow:none!important;
+  border-top:0!important;
+}
