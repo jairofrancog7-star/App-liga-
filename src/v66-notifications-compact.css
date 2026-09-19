@@ -1,0 +1,197 @@
+/* V66 — NOTIFICACIONES compactas, escala de la referencia móvil del usuario.
+   Corrige títulos, iconos, logos, filas y switches demasiado grandes. */
+body.v46-notifications-active{
+  --v66-notif-pad:20px;
+}
+body.v46-notifications-active #screen{
+  width:min(100vw,430px)!important;
+  max-width:430px!important;
+}
+
+/* Cabecera */
+body.v46-notifications-active .v46-notif-head{
+  height:112px!important;
+  min-height:112px!important;
+  grid-template-columns:36px minmax(0,1fr)!important;
+  align-items:end!important;
+  gap:10px!important;
+  padding:0 var(--v66-notif-pad) 24px!important;
+  background:#0a096f!important;
+}
+body.v46-notifications-active .v46-back{
+  width:34px!important;
+  height:34px!important;
+  padding:0!important;
+  align-self:end!important;
+}
+body.v46-notifications-active .v46-back svg{
+  width:30px!important;
+  height:30px!important;
+  stroke-width:2.4!important;
+}
+body.v46-notifications-active .v46-notif-head h1{
+  margin:0!important;
+  font-size:23px!important;
+  line-height:1!important;
+  font-weight:700!important;
+  letter-spacing:-.025em!important;
+}
+
+/* Texto introductorio */
+body.v46-notifications-active .v46-notif-intro{
+  min-height:78px!important;
+  padding:24px var(--v66-notif-pad) 18px!important;
+  display:block!important;
+  font-size:14px!important;
+  line-height:1.35!important;
+  font-weight:400!important;
+}
+
+/* Secciones */
+body.v46-notifications-active .v46-section{
+  border-top:9px solid #03034f!important;
+  padding:20px var(--v66-notif-pad) 10px!important;
+}
+body.v46-notifications-active .v46-section h2{
+  margin:0 0 16px!important;
+  font-size:21px!important;
+  line-height:1!important;
+  font-weight:700!important;
+  letter-spacing:-.02em!important;
+}
+
+/* Fila de equipo */
+body.v46-notifications-active .v46-team-notif{
+  min-height:76px!important;
+  grid-template-columns:48px minmax(0,1fr) 24px!important;
+  gap:11px!important;
+  padding:0!important;
+}
+body.v46-notifications-active .v46-team-logo{
+  width:44px!important;
+  height:44px!important;
+  max-width:44px!important;
+  max-height:44px!important;
+  object-fit:contain!important;
+  object-position:center!important;
+  justify-self:center!important;
+}
+body.v46-notifications-active .v46-team-copy{
+  gap:2px!important;
+  min-width:0!important;
+}
+body.v46-notifications-active .v46-team-copy strong{
+  font-size:17px!important;
+  line-height:1.08!important;
+  font-weight:650!important;
+  white-space:nowrap!important;
+  overflow:hidden!important;
+  text-overflow:ellipsis!important;
+}
+body.v46-notifications-active .v46-team-copy small{
+  font-size:12px!important;
+  line-height:1.12!important;
+  font-weight:400!important;
+}
+body.v46-notifications-active .v46-team-chevron svg{
+  width:22px!important;
+  height:22px!important;
+  stroke-width:3!important;
+}
+
+/* Juegos / General */
+body.v46-notifications-active .v46-games-section,
+body.v46-notifications-active .v46-general-section{
+  padding-bottom:12px!important;
+}
+body.v46-notifications-active .v46-switch-row{
+  min-height:70px!important;
+  grid-template-columns:minmax(0,1fr) 72px!important;
+  gap:14px!important;
+}
+body.v46-notifications-active .v46-switch-row>span{
+  max-width:none!important;
+  font-size:17px!important;
+  line-height:1.14!important;
+  font-weight:400!important;
+}
+body.v46-notifications-active .v46-switch-row i{
+  width:66px!important;
+  height:42px!important;
+  border-width:2px!important;
+}
+body.v46-notifications-active .v46-switch-row i::after{
+  width:32px!important;
+  height:32px!important;
+  left:4px!important;
+  top:3px!important;
+}
+body.v46-notifications-active .v46-switch-row input:checked+i::after{
+  transform:translateX(24px)!important;
+}
+
+/* Evita que textos largos agranden o deformen las filas. */
+body.v46-notifications-active .v46-switch-row>span,
+body.v46-notifications-active .v46-team-copy strong,
+body.v46-notifications-active .v46-team-copy small{
+  word-break:normal!important;
+  overflow-wrap:normal!important;
+  hyphens:none!important;
+}
+
+/* Escala extra para teléfonos angostos, manteniendo la misma posición. */
+@media(max-width:390px){
+  body.v46-notifications-active{--v66-notif-pad:18px}
+  body.v46-notifications-active .v46-notif-head{
+    height:106px!important;
+    min-height:106px!important;
+    padding-bottom:22px!important;
+    grid-template-columns:34px minmax(0,1fr)!important;
+  }
+  body.v46-notifications-active .v46-notif-head h1{font-size:21px!important}
+  body.v46-notifications-active .v46-back,
+  body.v46-notifications-active .v46-back svg{
+    width:30px!important;
+    height:30px!important;
+  }
+  body.v46-notifications-active .v46-notif-intro{
+    min-height:72px!important;
+    padding-top:21px!important;
+    font-size:13px!important;
+  }
+  body.v46-notifications-active .v46-section{
+    padding-top:18px!important;
+  }
+  body.v46-notifications-active .v46-section h2{
+    font-size:19px!important;
+    margin-bottom:14px!important;
+  }
+  body.v46-notifications-active .v46-team-notif{
+    min-height:70px!important;
+    grid-template-columns:44px minmax(0,1fr) 22px!important;
+    gap:10px!important;
+  }
+  body.v46-notifications-active .v46-team-logo{
+    width:40px!important;
+    height:40px!important;
+  }
+  body.v46-notifications-active .v46-team-copy strong{font-size:15.5px!important}
+  body.v46-notifications-active .v46-team-copy small{font-size:11px!important}
+  body.v46-notifications-active .v46-switch-row{
+    min-height:66px!important;
+    grid-template-columns:minmax(0,1fr) 66px!important;
+  }
+  body.v46-notifications-active .v46-switch-row>span{font-size:15.5px!important}
+  body.v46-notifications-active .v46-switch-row i{
+    width:60px!important;
+    height:38px!important;
+  }
+  body.v46-notifications-active .v46-switch-row i::after{
+    width:29px!important;
+    height:29px!important;
+    top:2.5px!important;
+  }
+  body.v46-notifications-active .v46-switch-row input:checked+i::after{
+    transform:translateX(21px)!important;
+  }
+}
