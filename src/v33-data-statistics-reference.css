@@ -775,3 +775,85 @@ body.v33-data-active .v33-data-head.is-collapsed .v33-tabs button{
     font-size:15px!important;
   }
 }
+
+
+/* V36 — comportamiento del video: UN SOLO título "Estadísticas".
+   No hay crossfade entre dos títulos. El mismo texto sube y reduce tamaño,
+   por eso nunca se oculta durante el scroll. */
+.v33-morph-title{
+  position:absolute!important;
+  z-index:7!important;
+  left:22px;
+  top:118px;
+  width:max-content!important;
+  max-width:66%!important;
+  margin:0!important;
+  padding:0!important;
+  opacity:1!important;
+  transform:none!important;
+  transition:none!important;
+  pointer-events:none!important;
+  will-change:left,top;
+}
+.v33-morph-title h1{
+  margin:0!important;
+  padding:0!important;
+  color:#fff!important;
+  font-size:37px;
+  line-height:.98!important;
+  font-weight:500!important;
+  letter-spacing:-.035em!important;
+  white-space:nowrap!important;
+  opacity:1!important;
+  transform:none!important;
+  transition:none!important;
+}
+.v33-morph-title p{
+  margin:14px 0 0!important;
+  padding:0!important;
+  color:#c9cadf!important;
+  font-size:clamp(15px,4.1vw,21px)!important;
+  line-height:1!important;
+  font-weight:600!important;
+  white-space:nowrap!important;
+  transition:none!important;
+  will-change:opacity,transform;
+}
+
+/* Las variantes viejas ya no participan: evita que durante la transición
+   aparezca un segundo título o haya un instante sin texto. */
+.v33-expanded-title,
+.v33-collapsed-title{
+  display:none!important;
+}
+
+/* La cabecera completa permanece pegada arriba; las tablas se deslizan
+   debajo. Las pestañas siguen en la parte inferior de la cabecera. */
+body.v33-data-active .v33-data-head{
+  position:sticky!important;
+  top:0!important;
+  z-index:120!important;
+  overflow:hidden!important;
+}
+body.v33-data-active .v33-data-content{
+  position:relative!important;
+  z-index:1!important;
+}
+body.v33-data-active .v33-tabs{
+  opacity:1!important;
+  z-index:10!important;
+}
+
+/* En estado compacto solo se elimina "Fase final"; Estadísticas permanece. */
+body.v33-data-active .v33-data-head.is-collapsed .v33-morph-title{
+  opacity:1!important;
+}
+body.v33-data-active .v33-data-head.is-collapsed .v33-morph-title h1{
+  opacity:1!important;
+}
+
+@media(max-width:430px){
+  .v33-morph-title{
+    max-width:62%!important;
+  }
+}
