@@ -27,6 +27,14 @@ function v15PatchHome(){
     }
     if(label) label.innerHTML=item.label;
   });
+
+  // Mantener la imagen/tarjeta de referencia debajo de Historias.
+  // Se inserta solo dentro de la tarjeta principal, nunca sobre las historias.
+  const hero=screen.querySelector(':scope > .section.hero');
+  if(hero&&hero.dataset.v15HomeFeature!=='1'){
+    hero.dataset.v15HomeFeature='1';
+    hero.innerHTML='<img class="v15-home-feature-image" src="./home-feature-reference.webp?v=home-stories-join2" alt="Destacado de la Liga Juventino"><button class="v15-home-feature-hit" type="button" aria-label="Ver destacado"></button>';
+  }
 }
 
 function v15PatchVideo(){
@@ -52,6 +60,10 @@ function v15Patch(){
 }
 
 document.addEventListener('click',e=>{
+  if(e.target.closest('.v15-home-feature-hit')){
+    const videoNav=document.querySelector('.bottom-nav [data-route="video"]');
+    if(videoNav){videoNav.click();return}
+  }
   if(e.target.closest('.v15-video-hit-primary')){v15Toast('Repetición del partido');return}
   if(e.target.closest('.v15-video-hit-secondary')){v15Toast('Partido de la semana');return}
 },true);

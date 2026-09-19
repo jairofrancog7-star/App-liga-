@@ -302,3 +302,98 @@ body[data-app-route="home"] .v15-home-feature-hit{
     font-size:12px!important;
   }
 }
+
+
+/* V17 HOME JOIN — conservar imagen inferior y unir visualmente header + historias. */
+body[data-app-route="home"]{
+  background:#02045d!important;
+}
+body[data-app-route="home"] .app-shell,
+body[data-app-route="home"] #screen{
+  background:#02045d!important;
+}
+
+/* La imagen superior termina en el mismo azul oscuro de Historias.
+   Esta máscara tapa los arcos/fragmentos que quedaban asomándose y elimina
+   la sensación de una caja separada por una línea. */
+body[data-app-route="home"] .topbar{
+  border-bottom:0!important;
+  box-shadow:
+    inset 0 -34px 0 #02045d!important;
+}
+body[data-app-route="home"] #screen{
+  padding-top:0!important;
+  margin-top:-1px!important;
+}
+body[data-app-route="home"] #screen>.stories{
+  margin-top:-1px!important;
+  padding-top:14px!important;
+  background:#02045d!important;
+  border-top:0!important;
+  border-bottom:0!important;
+  outline:0!important;
+  box-shadow:0 -2px 0 #02045d!important;
+}
+
+/* Recupera la imagen que estaba debajo, pero sin estirarla ni aplicar
+   filtros que la hagan verse borrosa. */
+body[data-app-route="home"] #screen>.section.hero[data-v15-home-feature="1"]{
+  position:relative!important;
+  display:block!important;
+  width:min(88%,430px)!important;
+  max-width:430px!important;
+  min-height:0!important;
+  height:auto!important;
+  aspect-ratio:430/638!important;
+  margin:0 auto 24px!important;
+  padding:0!important;
+  border:0!important;
+  border-radius:28px!important;
+  overflow:hidden!important;
+  background:#02045d!important;
+  box-shadow:none!important;
+}
+body[data-app-route="home"] .v15-home-feature-image{
+  position:static!important;
+  display:block!important;
+  width:100%!important;
+  height:100%!important;
+  max-width:100%!important;
+  max-height:none!important;
+  margin:0!important;
+  padding:0!important;
+  object-fit:contain!important;
+  object-position:center!important;
+  border:0!important;
+  border-radius:inherit!important;
+  filter:none!important;
+  transform:none!important;
+  opacity:1!important;
+  image-rendering:auto!important;
+}
+body[data-app-route="home"] .v15-home-feature-hit{
+  display:block!important;
+  position:absolute!important;
+  inset:0!important;
+  width:100%!important;
+  height:100%!important;
+  margin:0!important;
+  padding:0!important;
+  border:0!important;
+  background:transparent!important;
+  cursor:pointer!important;
+}
+
+/* Evita cualquier hueco o franja de otro azul entre Historias y la imagen. */
+body[data-app-route="home"] #screen>.stories + .section.hero[data-v15-home-feature="1"]{
+  margin-top:0!important;
+}
+@media(max-width:380px){
+  body[data-app-route="home"] .topbar{
+    box-shadow:inset 0 -30px 0 #02045d!important;
+  }
+  body[data-app-route="home"] #screen>.section.hero[data-v15-home-feature="1"]{
+    width:90%!important;
+    border-radius:24px!important;
+  }
+}
