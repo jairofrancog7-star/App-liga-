@@ -48,12 +48,8 @@ function v12Rows(mode='compact'){
       '<span class="v12-criteria-edge" aria-hidden="true"></span>'+
     '</div>';
   }
-  const basic='<div class="v12-stand-head"><span>LIGA MUNICIPAL JUVENTINO ROSAS</span><b>P</b><b>+/-</b><b>PTOS</b><b>FORMA</b></div>'+
+  return '<div class="v12-stand-head"><span>LIGA MUNICIPAL JUVENTINO ROSAS</span><b>P</b><b>+/-</b><b>PTOS</b><b>FORMA</b></div>'+
     '<div class="v12-stand-list">'+V12_TEAMS.map((t,i)=>'<div class="v12-stand-row"><span class="v12-rank">'+(i+1)+'</span><span class="v12-team-cell">'+v12TeamLogo(t)+'<strong>'+t.name+'</strong></span><span>'+t.p+'</span><span>'+t.gd+'</span><span>'+t.pts+'</span>'+v12Form(t)+'</div>').join('')+'</div>';
-  return '<div class="v12-basic-shell '+(mode==='complete'?'is-complete':'is-compact')+'">'+
-    '<div class="v12-basic-scroll"><div class="v12-basic-table">'+basic+'</div></div>'+
-    '<span class="v12-basic-edge" aria-hidden="true"></span>'+
-  '</div>';
 }
 function v12StandingsBody(){
   return '<section class="v12-standings-reference" data-v12-standings>'+
