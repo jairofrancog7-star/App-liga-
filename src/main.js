@@ -295,7 +295,7 @@ const V60_FIELDS=[
   {id:'pozos',name:'Campo de Fútbol de Pozos',community:'Pozos',address:'Campo de Fútbol de Pozos, Santa Cruz de Juventino Rosas, Guanajuato',maps:'20.61767,-100.90033',lat:20.61767,lon:-100.90033,weather:true},
   {id:'rincon',name:'Campo Rincón de Centeno',community:'Rincón de Centeno',address:'Rincón de Centeno, Santa Cruz de Juventino Rosas, Guanajuato',maps:'Campo de futbol Rincón de Centeno, Santa Cruz de Juventino Rosas, Guanajuato',lat:20.660153,lon:-100.886766,weather:true},
   {id:'san-jose',name:'Campo San José de la Montaña',community:'San José de la Montaña',address:'San José de la Montaña, Salamanca, Guanajuato 36867',maps:'Campo de futbol San José de la Montaña, Guanajuato',lat:20.60102,lon:-101.07242,weather:true},
-  {id:'san-julian',name:'Campo San Julián Tierra Blanca',community:'San Julián Tierra Blanca',address:'Los Fundadores 100, San Julián Tierra Blanca, Santa Cruz de Juventino Rosas, Guanajuato',maps:'Cancha de futbol San Julián Tierra Blanca, Juventino Rosas, Guanajuato',lat:20.591403,lon:-101.040358,weather:true}
+  {id:'san-julian',name:'Campo San Julián Tierra Blanca',community:'San Julián Tierra Blanca',address:'Los Fundadores 100, San Julián Tierra Blanca, Santa Cruz de Juventino Rosas, Guanajuato',maps:'https://maps.app.goo.gl/Rkb9PH3LF5pVu2FTA',lat:20.591403,lon:-101.040358,weather:true}
 ];
 function v60Field(id){return V60_FIELDS.find(f=>f.id===id)||V60_FIELDS[0]}
 function v60MapUrl(f){const m=f.maps||f.address||f.name;return /^https?:\/\//i.test(m)?m:'https://www.google.com/maps/search/?api=1&query='+encodeURIComponent(m)}
