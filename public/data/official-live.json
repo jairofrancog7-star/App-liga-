@@ -1,7 +1,7 @@
 {
   "schema": 1,
   "source": "https://juventinorosasliga.com/",
-  "captured_at_utc": "2026-09-19T12:54:28Z",
+  "captured_at_utc": "2026-09-19T22:28:32Z",
   "mode": "fast",
   "categories": {
     "1": {
@@ -4634,7 +4634,7 @@
           "Equipos": 12,
           "Partidos Jugados": 23,
           "Partidos Pendientes": 42,
-          "Jugadores": 312
+          "Jugadores": 322
         },
         "current_cedulas": [
           384,
@@ -4762,7 +4762,7 @@
         "Equipos": 12,
         "Partidos Jugados": 23,
         "Partidos Pendientes": 42,
-        "Jugadores": 312
+        "Jugadores": 322
       },
       "standings": [
         {
@@ -8063,7 +8063,7 @@
           "Equipos": 13,
           "Partidos Jugados": 22,
           "Partidos Pendientes": 54,
-          "Jugadores": 332
+          "Jugadores": 336
         },
         "current_cedulas": [
           209,
@@ -8187,7 +8187,7 @@
         "Equipos": 13,
         "Partidos Jugados": 22,
         "Partidos Pendientes": 54,
-        "Jugadores": 332
+        "Jugadores": 336
       },
       "standings": [
         {
