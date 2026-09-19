@@ -453,3 +453,71 @@
     box-sizing:border-box!important;
   }
 }
+
+
+/* V57 — CUADRO TABS FULL WIDTH + COLOR FIX */
+@media (max-width:520px){
+  /* La franja de Play-off / Octavos / Cuartos ocupa TODO el ancho visible.
+     Conserva el inicio de los botones y añade aire real a la derecha para
+     que el último botón visible nunca quede cortado. */
+  body[data-app-route="competition"] .v12-bracket-reference .v12-bracket-stage-tabs{
+    position:relative!important;
+    box-sizing:border-box!important;
+    width:calc(100% + 36px)!important;
+    max-width:none!important;
+    margin-left:-18px!important;
+    margin-right:-18px!important;
+    padding-left:18px!important;
+    padding-right:18px!important;
+    overflow-x:auto!important;
+    overflow-y:hidden!important;
+    scroll-padding-left:18px!important;
+    scroll-padding-right:18px!important;
+    scrollbar-width:none!important;
+    -webkit-overflow-scrolling:touch!important;
+    background:#05065b!important;
+    background-image:none!important;
+    border:0!important;
+    outline:0!important;
+    box-shadow:none!important;
+  }
+  body[data-app-route="competition"] .v12-bracket-reference .v12-bracket-stage-tabs::-webkit-scrollbar{
+    display:none!important;
+  }
+
+  /* Colores unificados: sin cambio de azul en la franja derecha. */
+  body[data-app-route="competition"] .v12-bracket-reference .v12-bracket-stage-tabs > button[data-v12-bracket-stage]{
+    flex-shrink:0!important;
+    border:0!important;
+    background:#18186f!important;
+    color:#f2f3ff!important;
+    box-shadow:none!important;
+  }
+  body[data-app-route="competition"] .v12-bracket-reference .v12-bracket-stage-tabs > button[data-v12-bracket-stage].active{
+    background:#1fd6e2!important;
+    color:#06115b!important;
+  }
+
+  /* La zona inmediatamente bajo los botones usa el mismo navy para evitar
+     la franja de otro tono que se veía en el extremo derecho. */
+  body[data-app-route="competition"] .v12-bracket-reference,
+  body[data-app-route="competition"] .v12-bracket-reference .v12-stage-panels{
+    background-color:#05065b!important;
+  }
+
+  /* Líneas de fecha uniformes con la paleta del cuadro. */
+  body[data-app-route="competition"] .v12-bracket-reference > .v12-bracket-dates span::before,
+  body[data-app-route="competition"] .v12-bracket-reference .v12-progress-dates span::before{
+    background:#242c80!important;
+  }
+}
+
+@media (max-width:390px){
+  body[data-app-route="competition"] .v12-bracket-reference .v12-bracket-stage-tabs{
+    width:calc(100% + 36px)!important;
+    margin-left:-18px!important;
+    margin-right:-18px!important;
+    padding-left:18px!important;
+    padding-right:18px!important;
+  }
+}
