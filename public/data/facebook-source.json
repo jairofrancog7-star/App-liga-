@@ -1,0 +1,18 @@
+{
+  "name": "Facebook de la Liga Municipal de Fútbol Juventino Rosas",
+  "type": "facebook_page_source",
+  "url": "https://www.facebook.com/share/19SsGuzsRi/",
+  "content_types": [
+    "tablas",
+    "calendarios",
+    "avisos",
+    "campeones",
+    "finales",
+    "historia",
+    "fotografias"
+  ],
+  "verification": {
+    "status": "manual_required",
+    "note": "No publicar nombres de campeones, finales o datos históricos hasta verificar la publicación o imagen original."
+  }
+}
