@@ -9,10 +9,86 @@ const V15_STORIES=[
 
 function v15Route(){return location.hash.replace('#/','')||'home'}
 
+
+function v15TransparentizeLogo(img){
+  if(!img||img.dataset.v15TransparentReady==='1') return;
+  img.dataset.v15TransparentReady='1';
+  const run=()=>{
+    try{
+      const w=img.naturalWidth||0,h=img.naturalHeight||0;
+      if(!w||!h) return;
+      const canvas=document.createElement('canvas');
+      canvas.width=w; canvas.height=h;
+      const ctx=canvas.getContext('2d',{willReadFrequently:true});
+      if(!ctx) throw new Error('canvas');
+      ctx.drawImage(img,0,0,w,h);
+      const data=ctx.getImageData(0,0,w,h);
+      const p=data.data;
+      const seen=new Uint8Array(w*h);
+      const queue=new Int32Array(w*h);
+      let head=0,tail=0;
+      const isDarkBg=(idx)=>{
+        const o=idx*4,r=p[o],g=p[o+1],b=p[o+2],a=p[o+3];
+        if(a<8) return true;
+        const mx=Math.max(r,g,b),mn=Math.min(r,g,b);
+        return mx<92 && (mx-mn)<55;
+      };
+      const push=(idx)=>{
+        if(idx<0||idx>=w*h||seen[idx]||!isDarkBg(idx)) return;
+        seen[idx]=1; queue[tail++]=idx;
+      };
+      for(let x=0;x<w;x++){push(x);push((h-1)*w+x);}
+      for(let y=0;y<h;y++){push(y*w);push(y*w+w-1);}
+      while(head<tail){
+        const idx=queue[head++],x=idx%w,y=(idx/w)|0,o=idx*4;
+        p[o+3]=0;
+        if(x>0)push(idx-1);
+        if(x<w-1)push(idx+1);
+        if(y>0)push(idx-w);
+        if(y<h-1)push(idx+w);
+      }
+      ctx.putImageData(data,0,0);
+      img.removeAttribute('crossorigin');
+      img.src=canvas.toDataURL('image/png');
+      img.classList.add('v15-home-logo-transparent');
+    }catch(e){
+      img.classList.add('v15-home-logo-blend-fallback');
+    }
+  };
+  if(img.complete&&img.naturalWidth) run();
+  else img.addEventListener('load',run,{once:true});
+}
+
+function v15EnsureProfessionalHomeLogo(){
+  if(v15Route()!=='home') return;
+  const topbar=document.querySelector('.topbar');
+  if(!topbar) return;
+  let badge=topbar.querySelector('.v15-home-clean-logo');
+  if(!badge){
+    badge=document.createElement('span');
+    badge.className='v15-home-clean-logo';
+    badge.setAttribute('aria-hidden','true');
+    const img=document.createElement('img');
+    img.className='v15-home-clean-logo-image';
+    img.alt='';
+    img.crossOrigin='anonymous';
+    img.decoding='async';
+    img.src=V15_TEAM_BASE+'assets/liga-logo.webp';
+    badge.appendChild(img);
+    topbar.appendChild(badge);
+    v15TransparentizeLogo(img);
+  }else{
+    const img=badge.querySelector('img');
+    if(img) v15TransparentizeLogo(img);
+  }
+}
+
 function v15PatchHome(){
   if(v15Route()!=='home') return;
   const screen=document.querySelector('#screen');
   if(!screen) return;
+
+  v15EnsureProfessionalHomeLogo();
 
   const stories=[...screen.querySelectorAll(':scope > .stories .story')];
   stories.forEach((story,i)=>{
