@@ -282,7 +282,19 @@ const V12_BRACKET_PATHS={
   santa:'assets/teams/atletico-santa-cruz.webp',
   galeana:'assets/teams/atletico-galeana.webp',
   sanantonio:'assets/teams/san-antonio-jr.webp',
-  sanjose:'assets/teams/san-jose.webp'
+  sanjose:'assets/teams/san-jose.webp',
+  sanjosefc:'assets/official-logos/san-jose-fc.png',
+  hermanos:'assets/official-logos/hermanos.png',
+  linces:'assets/official-logos/linces.png',
+  napoli:'assets/official-logos/napoli.png',
+  herreras:'assets/official-logos/herreras-fc.png',
+  abejas:'assets/official-logos/abejas.png',
+  terricolas:'assets/official-logos/terricolas.png',
+  galacticos:'assets/teams/galacticos-pozos.webp',
+  sanjulian:'assets/official-logos/san-julian.png',
+  sanjuan:'assets/official-logos/san-juan-fc.png',
+  taverafc:'assets/official-logos/tavera-fc.png',
+  celticos:'assets/official-logos/celticos.png'
 };
 
 function v12BracketTeam(name,key,abbr,seed,score){
@@ -353,30 +365,30 @@ const V12_BRACKET_ROUTE_RIGHT={
   label:'RUTA AZUL',
   pairs:[
     [
-      v12BracketTeam('San Isidro','sanisidro','SIS','2','6'),
-      v12BracketTeam('El Naranjeño','naranjeno','NAR','16','')
+      v12BracketTeam('San José FC','sanjosefc','SJO','2','6'),
+      v12BracketTeam('Hermanos','hermanos','HER','16','')
     ],
     [
-      v12BracketTeam('Real Juventino','realjuventino','RJU','12','5'),
-      v12BracketTeam('Valle Verde','valleverde','VAL','13','')
+      v12BracketTeam('Linces','linces','LIN','12','5'),
+      v12BracketTeam('Napoli','napoli','NAP','13','')
     ],
     [
-      v12BracketTeam('La Labor','labor','LAB','11','6'),
-      v12BracketTeam('San Antonio','sanantonio','SAN','14','')
+      v12BracketTeam('Herreras FC','herreras','HFC','11','6'),
+      v12BracketTeam('Abejas','abejas','ABE','14','')
     ],
     [
-      v12BracketTeam('El Durazno','durazno','DUR','10','5'),
-      v12BracketTeam('Los Arcos','arcos','ARC','15','')
+      v12BracketTeam('Terrícolas','terricolas','TER','10','5'),
+      v12BracketTeam('Galácticos','galacticos','GAC','15','')
     ]
   ],
   winners:[
     [
-      v12BracketTeam('Las Palomas','palomas','PAL','',''),
-      v12BracketTeam('Deportivo Juventino','depjuv','DJU','','')
+      v12BracketTeam('San Julián','sanjulian','SJL','',''),
+      v12BracketTeam('San Juan FC','sanjuan','SJU','','')
     ],
     [
-      v12BracketTeam('San José','sanjose','SJO','',''),
-      v12BracketTeam('La Estancia','estancia','EST','','')
+      v12BracketTeam('Tavera FC','taverafc','TVF','',''),
+      v12BracketTeam('Célticos FC','celticos','CEL','','')
     ]
   ]
 };
