@@ -347,3 +347,36 @@
     }
   }
 }
+
+
+/* V70 — LOGOS REALES EN CLASIFICACION DE INICIO */
+@media (max-width:1023px){
+  body[data-app-route="home"] .v65-table-team .v65-table-logo{
+    width:29px!important;
+    height:29px!important;
+    flex:0 0 29px!important;
+    display:grid!important;
+    place-items:center!important;
+    overflow:visible!important;
+    background:transparent!important;
+    border:0!important;
+    border-radius:0!important;
+  }
+  body[data-app-route="home"] .v65-table-team .v65-table-logo img{
+    display:block!important;
+    width:29px!important;
+    height:29px!important;
+    max-width:29px!important;
+    max-height:29px!important;
+    object-fit:contain!important;
+    object-position:center!important;
+    margin:0!important;
+    padding:0!important;
+    background:transparent!important;
+    border:0!important;
+    border-radius:0!important;
+  }
+  body[data-app-route="home"] .v65-table-team strong{
+    text-transform:none!important;
+  }
+}
