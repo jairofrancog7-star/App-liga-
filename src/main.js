@@ -68,7 +68,58 @@ function playersView(){return `<div class="eyebrow">JUGADORES</div><h1 class="sc
 function statsView(){return `<div class="eyebrow">DATOS</div><h1 class="screen-title">Estadísticas</h1><div class="tabs"><button class="tab ${state.statsTab==='General'?'active':''}" data-stats-tab="General">General</button><button class="tab ${state.statsTab==='Equipos'?'active':''}" data-stats-tab="Equipos">Equipos</button><button class="tab ${state.statsTab==='Jugadores'?'active':''}" data-stats-tab="Jugadores">Jugadores</button></div>${state.statsTab==='Jugadores'?`<section class="section">${sectionHead('Goleadores','scorers')}<div class="stat-card">${players.slice().sort((a,b)=>b.goals-a.goals).slice(0,5).map((p,i)=>`<button class="rank-row" data-player="${p.id}"><b>${i+1}</b>${crest(p.team)}<span><b>${p.name}</b><small>${team(p.team).name}</small></span><b>${p.goals}</b></button>`).join('')}</div></section><section class="section">${sectionHead('Asistencias')}<div class="stat-card">${players.slice().sort((a,b)=>b.assists-a.assists).slice(0,5).map((p,i)=>`<div class="rank-row"><b>${i+1}</b>${crest(p.team)}<span>${p.name}</span><b>${p.assists}</b></div>`).join('')}</div></section>`:state.statsTab==='Equipos'?`<section class="section">${sectionHead('Rendimiento de equipos')}<div class="stat-card">${teams.map((t,i)=>`<div class="rank-row"><b>${i+1}</b>${crest(t.code)}<span>${t.name}</span><b>${t.pts}</b></div>`).join('')}</div></section>`:`<section class="section"><div class="card stat-grid"><div><b>42</b><small>Goles</small></div><div><b>15</b><small>Partidos</small></div><div><b>2.8</b><small>Goles/partido</small></div><div><b>6</b><small>Equipos</small></div></div></section>${sectionHead('Líderes')}<div class="media-carousel"><div class="stat-card"><h3>Goles</h3>${players.slice().sort((a,b)=>b.goals-a.goals).slice(0,3).map((p,i)=>`<div class="rank-row"><b>${i+1}</b>${crest(p.team)}<span>${p.name}</span><b>${p.goals}</b></div>`).join('')}</div><div class="stat-card"><h3>Asistencias</h3>${players.slice().sort((a,b)=>b.assists-a.assists).slice(0,3).map((p,i)=>`<div class="rank-row"><b>${i+1}</b>${crest(p.team)}<span>${p.name}</span><b>${p.assists}</b></div>`).join('')}</div></div>`}`}
 function newsView(){return `<div class="eyebrow">ACTUALIDAD</div><h1 class="screen-title">Noticias</h1><div class="chips"><button class="chip active">Todas</button><button class="chip">Liga</button><button class="chip">Equipos</button><button class="chip">Fichajes</button></div><div class="news-list">${news.map(n=>`<button class="news-row" data-news="${n.id}"><span class="news-thumb"></span><span><small>${n.category} · ${n.date}</small><b>${n.title}</b><p>${n.subtitle}</p></span></button>`).join('')}</div>`}function newsDetailView(){const n=news.find(x=>x.id===state.selectedNews)||news[0];return `<div class="eyebrow">${n.category} · ${n.date}</div><h1 class="screen-title">${n.title}</h1><div class="news-feature"></div><p class="article-lead">${n.subtitle}</p><p class="article-body">${n.content}</p><div class="button-row"><button class="btn outline" data-action="share">Compartir</button>${favButton(`news:${n.id}`,'Guardar noticia')}</div>`}function transfersView(){const list=transfers.filter(t=>state.transferFilter==='Todos'||t.status===state.transferFilter);return `<div class="eyebrow">MERCADO MUNICIPAL</div><h1 class="screen-title">Fichajes</h1><div class="chips">${['Todos','Confirmado','Rumor','Alta'].map(f=>`<button class="chip ${state.transferFilter===f?'active':''}" data-transfer-filter="${f}">${f}</button>`).join('')}</div><div class="transfer-list">${list.map(t=>`<div class="transfer-row"><span>${crest(t.from)}<small>${team(t.from).name}</small></span><div><b>${t.player}</b><small>${t.position} · ${t.date}</small><em>${t.status}</em></div><span>${crest(t.to)}<small>${team(t.to).name}</small></span></div>`).join('')}</div>`}
 function favoritesView(){const ids=state.favorites;if(!ids.length)return `<div class="empty-state"><div class="empty-illustration"></div><h2>Sin favoritos todavía</h2><p>Guarda equipos, jugadores, partidos y noticias para encontrarlos aquí.</p><button class="btn outline" data-route="search">Explorar</button></div>`;return `<div class="eyebrow">TU COLECCIÓN</div><h1 class="screen-title">Favoritos</h1><div class="favorite-list">${ids.map(id=>favoriteCard(id)).join('')}</div>`}function favoriteCard(id){const [type,key]=id.split(':');if(type==='team'){const t=team(key);return `<div class="favorite-card"><button data-team="${key}">${crest(key)}<span><b>${t.name}</b><small>Equipo</small></span></button>${favButton(id)}</div>`}if(type==='player'){const p=player(key);return `<div class="favorite-card"><button data-player="${key}">${crest(p.team)}<span><b>${p.name}</b><small>Jugador</small></span></button>${favButton(id)}</div>`}if(type==='match'){const m=matches.find(x=>x.id===key);return `<div class="favorite-card"><button data-match="${key}">${crest(m.home)}<span><b>${team(m.home).name} vs ${team(m.away).name}</b><small>Partido</small></span></button>${favButton(id)}</div>`}if(type==='news'){const n=news.find(x=>x.id===key);return `<div class="favorite-card"><button data-news="${key}"><span class="mini-news"></span><span><b>${n.title}</b><small>Noticia</small></span></button>${favButton(id)}</div>`}return ''}
-function searchView(){return `<div class="eyebrow">EXPLORAR</div><h1 class="screen-title">Buscar</h1><div class="searchbox"><span>${icons.search}</span><input id="globalSearch" placeholder="Equipos, jugadores, noticias..." value="${state.searchQuery||''}"></div><div id="searchResults">${searchResultsHtml(state.searchQuery||'')}</div>`}function searchResultsHtml(q){q=q.toLowerCase().trim();if(!q)return `<section class="section">${sectionHead('Sugerencias')}<div class="quick-grid"><button data-route="teams">Equipos</button><button data-route="players">Jugadores</button><button data-route="news">Noticias</button><button data-route="transfers">Fichajes</button><button data-route="stats">Estadísticas</button><button data-route="history">Historia</button></div></section>`;const ts=teams.filter(t=>t.name.toLowerCase().includes(q));const ps=players.filter(p=>p.name.toLowerCase().includes(q));const ns=news.filter(n=>(n.title+' '+n.category).toLowerCase().includes(q));return `<section class="section">${ts.length?sectionHead('Equipos')+ts.map(t=>`<button class="search-result" data-team="${t.code}">${crest(t.code)}<span><b>${t.name}</b><small>${t.category}</small></span></button>`).join(''):''}${ps.length?sectionHead('Jugadores')+ps.map(p=>`<button class="search-result" data-player="${p.id}">${crest(p.team)}<span><b>${p.name}</b><small>${p.position} · ${team(p.team).name}</small></span></button>`).join(''):''}${ns.length?sectionHead('Noticias')+ns.map(n=>`<button class="search-result" data-news="${n.id}"><span class="mini-news"></span><span><b>${n.title}</b><small>${n.category}</small></span></button>`).join(''):''}${!ts.length&&!ps.length&&!ns.length?`<div class="empty-mini">No encontramos resultados.</div>`:''}</section>`}
+function normLeagueSearch(s){
+  try{return String(s||'').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').trim()}
+  catch(e){return String(s||'').toLowerCase().trim()}
+}
+function searchView(){
+  return '<div class="eyebrow">EXPLORAR</div><h1 class="screen-title">Buscar</h1>'+
+    '<div class="searchbox"><span>'+icons.search+'</span><input id="globalSearch" type="search" autocomplete="off" placeholder="Equipos, jugadores, partidos, campos..." value="'+(state.searchQuery||'')+'"></div>'+
+    '<div id="searchResults">'+searchResultsHtml(state.searchQuery||'')+'</div>';
+}
+function searchResultsHtml(q){
+  const raw=String(q||''),needle=normLeagueSearch(raw);
+  const tools=[
+    ['Reglamento','rulebook','Reglamento oficial documentos PDF'],
+    ['Match Day','matchday','jornada partidos operación'],
+    ['Clima y campos','weatherFields','clima campo sede lluvia'],
+    ['Dónde se juega','venues','campos sedes comunidades mapas'],
+    ['Cédulas','cedulas','cedulas partidos documentos'],
+    ['Credencial','credential','credencial jugador deportiva'],
+    ['Publicaciones','publications','whatsapp compartir jornada'],
+    ['QR de la Liga','ligaQR','qr compartir app acceso'],
+    ['Rankings de la Liga','rankings','ranking clubes clasificación'],
+    ['Historia','history','historia temporadas campeones finales'],
+    ['Máximo goleador','scorers','goleadores jugadores goles'],
+    ['Equipos','teams','clubes equipos'],
+    ['Siguiendo','following','equipos seguidos favoritos']
+  ];
+  if(!needle){
+    return '<section class="section">'+sectionHead('Accesos rápidos')+
+      '<div class="quick-grid">'+
+        '<button data-route="teams">Equipos</button>'+
+        '<button data-route="players">Jugadores</button>'+
+        '<button data-route="competition">Partidos</button>'+
+        '<button data-route="venues">Campos</button>'+
+        '<button data-route="news">Noticias</button>'+
+        '<button data-route="ligaQR">QR de la Liga</button>'+
+      '</div></section>';
+  }
+  const ts=teams.filter(t=>normLeagueSearch([t.name,t.category,t.field,t.news].join(' ')).includes(needle));
+  const ps=players.filter(p=>normLeagueSearch([p.name,p.position,team(p.team).name].join(' ')).includes(needle));
+  const ns=news.filter(n=>normLeagueSearch([n.title,n.category,n.subtitle,n.content].join(' ')).includes(needle));
+  const ms=matches.filter(m=>normLeagueSearch([team(m.home).name,team(m.away).name,m.category,m.day,m.date,m.time,m.venue,m.referee].join(' ')).includes(needle));
+  const fs=(typeof V60_FIELDS!=='undefined'?V60_FIELDS:[]).filter(f=>normLeagueSearch([f.name,f.community,f.address].join(' ')).includes(needle));
+  const us=tools.filter(x=>normLeagueSearch(x.join(' ')).includes(needle));
+  const parts=[];
+  if(ts.length)parts.push(sectionHead('Equipos')+ts.map(t=>'<button class="search-result" data-team="'+t.code+'">'+crest(t.code)+'<span><b>'+t.name+'</b><small>'+t.category+'</small></span></button>').join(''));
+  if(ps.length)parts.push(sectionHead('Jugadores')+ps.map(p=>'<button class="search-result" data-player="'+p.id+'">'+crest(p.team)+'<span><b>'+p.name+'</b><small>'+p.position+' · '+team(p.team).name+'</small></span></button>').join(''));
+  if(ms.length)parts.push(sectionHead('Partidos')+ms.map(m=>'<button class="search-result" data-match="'+m.id+'">'+crest(m.home)+'<span><b>'+team(m.home).name+' vs '+team(m.away).name+'</b><small>'+m.day+' · '+m.time+' · '+m.venue+'</small></span></button>').join(''));
+  if(fs.length)parts.push(sectionHead('Campos y sedes')+fs.map(f=>'<button class="search-result" data-route="venues"><span class="mini-news"></span><span><b>'+f.name+'</b><small>'+f.community+'</small></span></button>').join(''));
+  if(ns.length)parts.push(sectionHead('Noticias')+ns.map(n=>'<button class="search-result" data-news="'+n.id+'"><span class="mini-news"></span><span><b>'+n.title+'</b><small>'+n.category+'</small></span></button>').join(''));
+  if(us.length)parts.push(sectionHead('Herramientas')+us.map(x=>'<button class="search-result" data-route="'+x[1]+'"><span class="mini-news"></span><span><b>'+x[0]+'</b><small>Liga Municipal de Fútbol</small></span></button>').join(''));
+  return '<section class="section">'+(parts.length?parts.join(''):'<div class="empty-mini">No encontramos resultados en la Liga.</div>')+'</section>';
+}
 function voteView(){const candidates=players.slice().sort((a,b)=>b.points-a.points).slice(0,4);return `<div class="eyebrow">VOTACIÓN</div><h1 class="screen-title">Jugador de la Jornada</h1><p class="muted">Elige una sola vez. Tu voto queda guardado en este dispositivo.</p><div class="vote-grid">${candidates.map(p=>`<button class="vote-card ${state.vote===p.id?'selected':''}" data-vote="${p.id}" ${state.vote&&state.vote!==p.id?'disabled':''}><div class="avatar-ball">${p.number}</div>${crest(p.team)}<b>${p.name}</b><small>${p.goals} goles · ${p.assists} asistencias</small><span>${state.vote===p.id?'VOTADO':'VOTAR'}</span></button>`).join('')}</div>`}
 function notificationsView(){return `<div class="eyebrow">PREFERENCIAS</div><h1 class="screen-title">Notificaciones</h1>${sectionHead('Partidos')}<div class="settings-card">${switchRow('goal','Goles','Alertas cuando cambie el marcador')}${switchRow('kickoff','Inicio de partido')}${switchRow('halftime','Medio tiempo')}${switchRow('final','Final del partido')}</div>${sectionHead('Contenido')}<div class="settings-card">${switchRow('news','Noticias')}${switchRow('video','Nuevos videos')}${switchRow('transfers','Fichajes')}</div>${sectionHead('Juegos')}<div class="settings-card">${switchRow('fantasy','Fantasy')}${switchRow('predictor','Quiniela')}</div>`}function privacyView(){return `<div class="eyebrow">TU PRIVACIDAD</div><h1 class="screen-title">Privacidad</h1><div class="profile-card"><h2>Controla tus datos</h2><p>Estas preferencias se guardan localmente. Cuando conectemos Firebase, podrán sincronizarse con tu cuenta.</p></div><div class="settings-card section"><label class="setting-row"><span><b>Analítica opcional</b><small>Ayuda a mejorar la app</small></span><input type="checkbox" data-privacy="analytics" ${state.privacy.analytics?'checked':''}><i></i></label><label class="setting-row"><span><b>Personalización</b><small>Ordenar contenido según tus equipos</small></span><input type="checkbox" data-privacy="personalization" ${state.privacy.personalization?'checked':''}><i></i></label></div><button class="btn primary full section" data-action="accept-privacy">${state.privacy.accepted?'Preferencias guardadas':'Aceptar y guardar'}</button>`}
 function historyView(){return `<div class="eyebrow">ARCHIVO MUNICIPAL</div><h1 class="screen-title">Historia</h1><div class="tabs">${['Resumen','Temporadas','Campeones','Finales','Récords'].map(x=>`<button class="tab ${state.historyTab===x?'active':''}" data-history-tab="${x}">${x}</button>`).join('')}</div>${historyBody()}`}
@@ -217,7 +268,10 @@ function v19MoreIcon(name){
     trophy:'<path d="M8 4h8v4.8a4 4 0 0 1-8 0V4Zm4 9v5m-4 3h8M8 6H4v1.5A4.5 4.5 0 0 0 8.5 12M16 6h4v1.5a4.5 4.5 0 0 1-4.5 4.5"/>',
     history:'<path d="M4 7V3m0 0h4M4.4 3.6A9 9 0 1 1 3 14"/><path d="M12 7v5l3.5 2"/>',
     bag:'<path d="M5 8h14l1 13H4L5 8Z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/>',
-    info:'<circle cx="12" cy="12" r="9"/><path d="M12 11v6m0-10h.01"/>'
+    info:'<circle cx="12" cy="12" r="9"/><path d="M12 11v6m0-10h.01"/>',
+    search:'<circle cx="11" cy="11" r="6.5"/><path d="m16 16 4.5 4.5"/>',
+    qr:'<rect x="3" y="3" width="6" height="6" rx=".5"/><rect x="15" y="3" width="6" height="6" rx=".5"/><rect x="3" y="15" width="6" height="6" rx=".5"/><path d="M12 4v3m0 3v2m3 0h3m3 0v3m-9 0h3v3h3v3m3-3v3"/>'
+
   };
   return '<span class="v19-more-icon"><svg viewBox="0 0 24 24" aria-hidden="true">'+(icons[name]||icons.info)+'</svg></span>';
 }
@@ -259,7 +313,10 @@ function v60Icon(name){
     share:'<circle cx="18" cy="5" r="2"/><circle cx="6" cy="12" r="2"/><circle cx="18" cy="19" r="2"/><path d="m8 11 8-5M8 13l8 5"/>',
     tactics:'<path d="M4 20V4h16v16H4Z"/><circle cx="12" cy="12" r="3"/><path d="M12 4v16M7 7h2m6 10h2"/>',
     sim:'<path d="M4 18h16M6 15l3-4 3 2 5-7"/><path d="M15 6h3v3"/>',
-    admin:'<circle cx="12" cy="12" r="3"/><path d="M12 2v3m0 14v3M2 12h3m14 0h3M5 5l2 2m10 10 2 2M19 5l-2 2M7 17l-2 2"/>'
+    admin:'<circle cx="12" cy="12" r="3"/><path d="M12 2v3m0 14v3M2 12h3m14 0h3M5 5l2 2m10 10 2 2M19 5l-2 2M7 17l-2 2"/>',
+    search:'<circle cx="11" cy="11" r="6.5"/><path d="m16 16 4.5 4.5"/>',
+    qr:'<rect x="3" y="3" width="6" height="6" rx=".5"/><rect x="15" y="3" width="6" height="6" rx=".5"/><rect x="3" y="15" width="6" height="6" rx=".5"/><path d="M12 4v3m0 3v2m3 0h3m3 0v3m-9 0h3v3h3v3m3-3v3"/>'
+
   };
   return '<svg viewBox="0 0 24 24" aria-hidden="true">'+(p[name]||p.tools)+'</svg>';
 }
@@ -272,6 +329,8 @@ function v60Header(kicker,title,desc){
 function leagueToolsView(){
   return '<section class="v60-tool-page">'+v60Header('LIGA JUVENTINO','Herramientas de la Liga','Funciones operativas y públicas integradas a la app azul sin sustituir su diseño.')+
     '<div class="v60-tool-grid">'+
+      v60ToolCard('search','Buscador','Equipos, jugadores, partidos, campos y noticias','search')+
+      v60ToolCard('qr','QR de la Liga','Compartir acceso directo a la app','ligaQR')+
       v60ToolCard('rules','Reglamento','Reglamento oficial 2026–2027','rulebook')+
       v60ToolCard('matchday','Match Day','Checklist y operación de jornada','matchday')+
       v60ToolCard('weather','Clima y campos','Condiciones por sede','weatherFields')+
@@ -591,6 +650,31 @@ function v64LoadTesseract(){
   return new Promise(function(resolve,reject){const s=document.createElement('script');s.src='https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js';s.onload=function(){resolve(window.Tesseract)};s.onerror=reject;document.head.appendChild(s)});
 }
 
+const V64_APP_URL='https://jairofrancog7-star.github.io/App-liga-/?mode=apk#/home';
+const V64_QR_SRC='https://api.qrserver.com/v1/create-qr-code/?size=320x320&margin=12&data='+encodeURIComponent(V64_APP_URL);
+function ligaQRView(){
+  return '<section class="v60-tool-page v64-qr-page">'+
+    v60Header('ACCESO A LA LIGA','QR de la Liga','Comparte la aplicación oficial de la Liga Municipal de Fútbol Juventino Rosas sin añadir contenido de entrenamientos.')+
+    '<article class="v60-panel v64-qr-card">'+
+      '<div class="v64-qr-frame"><img src="'+V64_QR_SRC+'" alt="Código QR para abrir la app de la Liga Municipal de Fútbol Juventino Rosas" loading="eager" decoding="async"></div>'+
+      '<h2>Abre la app oficial</h2>'+
+      '<p>Escanea este código con la cámara de otro teléfono. El QR abre directamente la aplicación de la Liga.</p>'+
+      '<code class="v64-qr-url">'+V64_APP_URL+'</code>'+
+      '<div class="v60-actions">'+
+        '<a class="v60-link" href="'+V64_APP_URL+'" target="_blank" rel="noopener noreferrer">Abrir app</a>'+
+        '<button class="v60-btn outline" data-v64-share>Compartir</button>'+
+        '<button class="v60-btn ghost" data-v64-copy>Copiar enlace</button>'+
+      '</div>'+
+    '</article>'+
+    '<div class="v60-panel v64-qr-how">'+
+      '<div class="v60-row"><span class="v60-row-copy"><b>1 · Mostrar el QR</b><small>Abre esta pantalla desde Más → QR de la Liga.</small></span></div>'+
+      '<div class="v60-row"><span class="v60-row-copy"><b>2 · Escanear</b><small>La otra persona apunta su cámara al código.</small></span></div>'+
+      '<div class="v60-row"><span class="v60-row-copy"><b>3 · Abrir la Liga</b><small>El enlace lleva a la app, no a contenidos de entrenamientos.</small></span></div>'+
+    '</div>'+
+    '<div class="v60-actions"><button class="v60-btn outline" data-route="search">Buscar en la Liga</button><button class="v60-btn ghost" data-route="leagueTools">Todas las herramientas</button></div>'+
+  '</section>';
+}
+
 function moreView(){
   return '<section class="v19-more-page" data-v19-more>'+
     '<img class="v19-more-logo" src="'+V19_MORE_LOGO+'" alt="Liga Municipal de Fútbol Juventino Rosas" loading="eager" decoding="async">'+
@@ -728,8 +812,8 @@ function quizView(){
     <span class="v30-stadium-tint" aria-hidden="true"></span>
   </section>`;
 }function moreLessView(){const a=players[0],b=players[1];return `<div class="game-hero"><span class="eyebrow">JUEGO</span><h1 class="game-title">MÁS<br>O MENOS</h1><p class="muted">¿Quién tiene más goles?</p><div class="compare-two"><button data-moreless="${a.id}"><div class="avatar-ball">${a.number}</div><b>${a.name}</b></button><span>VS</span><button data-moreless="${b.id}"><div class="avatar-ball">${b.number}</div><b>${b.name}</b></button></div></div>`}function venuesView(){return `<div class="eyebrow">SEDES</div><h1 class="screen-title">Campos</h1><div class="news-list">${[...new Set(teams.map(t=>t.field))].map((v,i)=>`<div class="news-row"><span class="venue-thumb"></span><span><small>Sede ${i+1}</small><b>${v}</b><p>Consulta los próximos partidos programados.</p></span></div>`).join('')}</div>`}
-const views={home:homeView,competition:competitionView,match:matchView,video:videoView,fantasy:fantasyView,fantasyTeam:fantasyTeamView,fantasyLeagues:()=>`<div class="eyebrow">FANTASY</div><h1 class="screen-title">Ligas</h1><div class="profile-card"><h2>Compite con amigos</h2><p>Crea una liga privada o únete con un código.</p><div class="button-row"><button class="btn primary" data-action="create-league">Crear liga</button><button class="btn outline" data-action="join-league">Unirme</button></div></div>`,more:moreView,hospitality:hospitalityView,'club-store':storeView,following:followingView,teams:teamsView,teamDetail:teamDetailView,players:playersView,playerDetail:playerDetailView,scorers:scorersView,moments:momentsView,stats:statsView,rankings:rankingsView,history:historyView,news:newsView,newsDetail:newsDetailView,transfers:transfersView,favorites:favoritesView,search:searchView,vote:voteView,notifications:notificationsView,privacy:privacyView,profile:profileView,predictor:predictorView,predictorSix:predictorSixView,quizArena:quizArenaView,quiz:quizArenaView,moreLess:moreLessView,moreLessHub:()=>`<div data-v52-mount></div>`,venues:v60VenuesView,leagueTools:leagueToolsView,v38Stats:v38StatsView,v38Weekly:v38WeeklyView,v38Weather:v38WeatherView,v38Alerts:v38AlertsView,tableExport:v64ExportTableView,bracketBuilder:v64BracketView,credentialBuilder:v64CredentialBuilderView,cedulaBuilder:v64CedulaBuilderView,agendaBuilder:v64AgendaView,motionHub:v64MotionView,suspensionTool:v64SuspensionView,rulebook:rulebookView,matchday:matchdayView,weatherFields:weatherFieldsView,cedulas:cedulasView,cedulaDetail:cedulaDetailView,credential:credentialView,publications:publicationsView,tactics:tacticsView,simulator:simulatorView,jrControl:jrControlView,error:()=>`<div class="empty-state"><div class="empty-illustration error"></div><h2>No pudimos cargar la información</h2><p>Comprueba tu conexión e inténtalo nuevamente.</p><button class="btn outline" data-route="home">Reintentar</button></div>`};
-function render(){if(state.route==='quiz'){state.route='quizArena';if(location.hash!=='#/quizArena')history.replaceState(null,'','#/quizArena')}if(state.route==='theme'){setTheme(state.theme==='dark'?'light':'dark');state.route='more'}screen.innerHTML=views[state.route]?views[state.route]():views.home();const rootRoutes=['home','competition','video','fantasy','more'];backButton.classList.toggle('is-hidden',rootRoutes.includes(state.route));const navRoute=['predictor','predictorSix','quizArena','quiz','moreLess','moreLessHub','leagueTools','v38Stats','v38Weekly','v38Weather','v38Alerts','tableExport','bracketBuilder','credentialBuilder','cedulaBuilder','agendaBuilder','motionHub','suspensionTool','rulebook','matchday','weatherFields','venues','cedulas','cedulaDetail','credential','publications','tactics','simulator','jrControl','leagueData'].includes(state.route)?'more':state.route;navItems.forEach(n=>n.classList.toggle('active',n.dataset.route===navRoute));bind();window.scrollTo(0,0)}
+const views={home:homeView,competition:competitionView,match:matchView,video:videoView,fantasy:fantasyView,fantasyTeam:fantasyTeamView,fantasyLeagues:()=>`<div class="eyebrow">FANTASY</div><h1 class="screen-title">Ligas</h1><div class="profile-card"><h2>Compite con amigos</h2><p>Crea una liga privada o únete con un código.</p><div class="button-row"><button class="btn primary" data-action="create-league">Crear liga</button><button class="btn outline" data-action="join-league">Unirme</button></div></div>`,more:moreView,ligaQR:ligaQRView,hospitality:hospitalityView,'club-store':storeView,following:followingView,teams:teamsView,teamDetail:teamDetailView,players:playersView,playerDetail:playerDetailView,scorers:scorersView,moments:momentsView,stats:statsView,rankings:rankingsView,history:historyView,news:newsView,newsDetail:newsDetailView,transfers:transfersView,favorites:favoritesView,search:searchView,vote:voteView,notifications:notificationsView,privacy:privacyView,profile:profileView,predictor:predictorView,predictorSix:predictorSixView,quizArena:quizArenaView,quiz:quizArenaView,moreLess:moreLessView,moreLessHub:()=>`<div data-v52-mount></div>`,venues:v60VenuesView,leagueTools:leagueToolsView,v38Stats:v38StatsView,v38Weekly:v38WeeklyView,v38Weather:v38WeatherView,v38Alerts:v38AlertsView,tableExport:v64ExportTableView,bracketBuilder:v64BracketView,credentialBuilder:v64CredentialBuilderView,cedulaBuilder:v64CedulaBuilderView,agendaBuilder:v64AgendaView,motionHub:v64MotionView,suspensionTool:v64SuspensionView,rulebook:rulebookView,matchday:matchdayView,weatherFields:weatherFieldsView,cedulas:cedulasView,cedulaDetail:cedulaDetailView,credential:credentialView,publications:publicationsView,tactics:tacticsView,simulator:simulatorView,jrControl:jrControlView,error:()=>`<div class="empty-state"><div class="empty-illustration error"></div><h2>No pudimos cargar la información</h2><p>Comprueba tu conexión e inténtalo nuevamente.</p><button class="btn outline" data-route="home">Reintentar</button></div>`};
+function render(){if(state.route==='quiz'){state.route='quizArena';if(location.hash!=='#/quizArena')history.replaceState(null,'','#/quizArena')}if(state.route==='theme'){setTheme(state.theme==='dark'?'light':'dark');state.route='more'}screen.innerHTML=views[state.route]?views[state.route]():views.home();const rootRoutes=['home','competition','video','fantasy','more'];backButton.classList.toggle('is-hidden',rootRoutes.includes(state.route));const navRoute=['predictor','predictorSix','quizArena','quiz','moreLess','moreLessHub','ligaQR','leagueTools','v38Stats','v38Weekly','v38Weather','v38Alerts','tableExport','bracketBuilder','credentialBuilder','cedulaBuilder','agendaBuilder','motionHub','suspensionTool','rulebook','matchday','weatherFields','venues','cedulas','cedulaDetail','credential','publications','tactics','simulator','jrControl','leagueData'].includes(state.route)?'more':state.route;navItems.forEach(n=>n.classList.toggle('active',n.dataset.route===navRoute));bind();window.scrollTo(0,0)}
 function go(route,push=true){if(route==='quiz')route='quizArena';if(push&&state.route!==route)state.history.push(state.route);state.route=route;location.hash='#/'+route;render()}
 function bind(){document.querySelectorAll('[data-route]').forEach(el=>el.onclick=()=>go(el.dataset.route));
 document.querySelectorAll('[data-v48-start]').forEach(el=>el.onclick=()=>{const page=el.closest('[data-v48-arena]');if(!page)return;page.classList.add('v48-playing');page.querySelector('.v48-game')?.setAttribute('aria-hidden','false');window.scrollTo(0,0)});
@@ -766,6 +850,8 @@ document.querySelectorAll('[data-v60-cedula]').forEach(el=>el.onclick=()=>{state
 document.querySelectorAll('[data-v60-print]').forEach(el=>el.onclick=()=>window.print());
 document.querySelectorAll('[data-v60-share]').forEach(el=>el.onclick=async()=>{const txt=document.querySelector('[data-v60-share-text]')?.textContent?.trim()||'Liga Juventino Rosas';try{if(navigator.share)await navigator.share({title:'Liga Juventino Rosas',text:txt});else{await navigator.clipboard.writeText(txt);toast('Texto copiado')}}catch(e){}});
 document.querySelectorAll('[data-v60-copy]').forEach(el=>el.onclick=async()=>{const txt=document.querySelector('[data-v60-share-text]')?.textContent?.trim()||'';try{await navigator.clipboard.writeText(txt);toast('Texto copiado')}catch(e){toast('No se pudo copiar')}});
+document.querySelectorAll('[data-v64-share]').forEach(el=>el.onclick=async()=>{try{if(navigator.share)await navigator.share({title:'Liga Municipal de Fútbol Juventino Rosas',text:'App oficial de la Liga Municipal de Fútbol Juventino Rosas',url:V64_APP_URL});else{await navigator.clipboard.writeText(V64_APP_URL);toast('Enlace de la Liga copiado')}}catch(e){}});
+document.querySelectorAll('[data-v64-copy]').forEach(el=>el.onclick=async()=>{try{await navigator.clipboard.writeText(V64_APP_URL);toast('Enlace de la Liga copiado')}catch(e){toast('No se pudo copiar el enlace')}});
 document.querySelectorAll('[data-v60-formation]').forEach(el=>el.onclick=()=>{localStorage.setItem('v60-formation',el.dataset.v60Formation);render()});
 document.querySelectorAll('[data-v60-sim]').forEach(el=>el.onclick=()=>{const s=v60SimState(),k=el.dataset.v60Sim;s[k]=(s[k]||0)+Number(el.dataset.delta||0);localStorage.setItem('v60-sim',JSON.stringify(s));render()});
 document.querySelectorAll('[data-v60-sim-reset]').forEach(el=>el.onclick=()=>{localStorage.removeItem('v60-sim');render()});
