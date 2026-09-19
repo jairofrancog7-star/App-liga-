@@ -414,6 +414,100 @@ function v12FinalCard(){
     '<div class="v12-final-trophy-wrap">'+v12FinalTrophy()+'</div>'+
   '</section>';
 }
+
+/* PARTS50 — PROGRESIÓN VISUAL POR RONDA */
+const V12_STAGE_DATES={
+  playoff:['16-19 & 24-25 feb','9-12 & 17-18 mar'],
+  octavos:['9-12 & 17-18 mar','6-7 & 14-15 abr'],
+  cuartos:['6-7 & 14-15 abr','27-28 abr & 5-6 may'],
+  semifinal:['27-28 abr & 5-6 may','5 jun'],
+  final:['5 jun','']
+};
+
+function v12ProgressWinnerBlock(pair){
+  return '<div class="v12-progress-winner-block">'+
+    '<div class="v12-progress-winner"><span class="shield">'+V12_BRACKET_SHIELD+'</span><strong>Ganador del play-off</strong></div>'+
+    '<div class="v12-progress-seeded">'+
+      v12BracketTeamCard(pair[0],true)+
+      '<i class="v12-progress-vs">o</i>'+
+      v12BracketTeamCard(pair[1],true)+
+    '</div>'+
+  '</div>';
+}
+
+function v12ProgressUnknown(dateText,legText='Ida'){
+  return '<div class="v12-progress-match">'+
+    '<time>'+dateText+'</time>'+
+    '<small>'+legText+'</small>'+
+    '<div class="v12-progress-opponent"><span class="shield">'+V12_BRACKET_SHIELD+'</span><b>¿?</b></div>'+
+    '<div class="v12-progress-opponent"><span class="shield">'+V12_BRACKET_SHIELD+'</span><b>¿?</b></div>'+
+  '</div>';
+}
+
+function v12ProgressDates(stage){
+  const d=V12_STAGE_DATES[stage]||['',''];
+  return '<div class="v12-progress-dates"><span>'+d[0]+'</span><span>'+d[1]+'</span></div>';
+}
+
+function v12OctavosRoute(route,tone){
+  return '<section class="v12-progress-route '+tone+'">'+
+    '<div class="v12-progress-rail"><span>'+route.label+'</span></div>'+
+    '<div class="v12-progress-left">'+route.winners.map(w=>v12ProgressWinnerBlock(w)).join('')+'</div>'+
+    '<div class="v12-progress-connector" aria-hidden="true"><i></i></div>'+
+    '<div class="v12-progress-right">'+v12ProgressUnknown('6 - 7 abr')+'</div>'+
+  '</section>';
+}
+
+function v12CuartosRoute(tone){
+  return '<section class="v12-progress-route '+tone+'">'+
+    '<div class="v12-progress-rail"><span>'+(tone==='route-blue'?'RUTA AZUL':'RUTA PLATEADA')+'</span></div>'+
+    '<div class="v12-progress-left v12-progress-left-matches">'+
+      v12ProgressUnknown('6 - 7 abr')+
+      v12ProgressUnknown('6 - 7 abr')+
+    '</div>'+
+    '<div class="v12-progress-connector" aria-hidden="true"><i></i></div>'+
+    '<div class="v12-progress-right">'+v12ProgressUnknown('27 - 28 abr')+'</div>'+
+  '</section>';
+}
+
+function v12SemifinalFlow(){
+  return '<div class="v12-semifinal-flow">'+
+    '<div class="v12-semifinal-source silver">'+
+      '<div class="v12-progress-rail"><span>RUTA PLATEADA</span></div>'+
+      v12ProgressUnknown('27 - 28 abr')+
+    '</div>'+
+    '<div class="v12-semifinal-source blue">'+
+      '<div class="v12-progress-rail"><span>RUTA AZUL</span></div>'+
+      v12ProgressUnknown('27 - 28 abr')+
+    '</div>'+
+    '<div class="v12-semifinal-join" aria-hidden="true"></div>'+
+    '<div class="v12-semifinal-target">'+v12ProgressUnknown('5 jun','')+'</div>'+
+  '</div>';
+}
+
+function v12StagePanels(){
+  return '<div class="v12-stage-panels">'+
+    '<section class="v12-stage-panel v12-stage-panel-octavos">'+
+      v12ProgressDates('octavos')+
+      '<div class="v12-progress-board">'+
+        v12OctavosRoute(V12_BRACKET_ROUTE_LEFT,'route-silver')+
+        v12OctavosRoute(V12_BRACKET_ROUTE_RIGHT,'route-blue')+
+      '</div>'+
+    '</section>'+
+    '<section class="v12-stage-panel v12-stage-panel-cuartos">'+
+      v12ProgressDates('cuartos')+
+      '<div class="v12-progress-board">'+
+        v12CuartosRoute('route-silver')+
+        v12CuartosRoute('route-blue')+
+      '</div>'+
+    '</section>'+
+    '<section class="v12-stage-panel v12-stage-panel-semifinal">'+
+      v12ProgressDates('semifinal')+
+      v12SemifinalFlow()+
+    '</section>'+
+  '</div>';
+}
+
 function v12BracketMarkup(){
   return '<section class="v12-bracket-reference stage-playoff" data-v12-bracket>'+
     '<div class="v12-bracket-stage-tabs" role="tablist" aria-label="Etapas del cuadro">'+
@@ -423,15 +517,15 @@ function v12BracketMarkup(){
       '<button data-v12-bracket-stage="semifinal">Semifinales</button>'+
       '<button data-v12-bracket-stage="final">Final</button>'+
     '</div>'+
-    '<div class="v12-bracket-dates"><span>16-19 &amp; 23-26 feb</span><span>9-12 &amp; 17-18 mar</span></div>'+
+    '<div class="v12-bracket-dates"><span>'+V12_STAGE_DATES.playoff[0]+'</span><span>'+V12_STAGE_DATES.playoff[1]+'</span></div>'+
     '<div class="v12-bracket-board">'+
       v12BracketRoute(V12_BRACKET_ROUTE_LEFT)+
       v12BracketRoute(V12_BRACKET_ROUTE_RIGHT)+
     '</div>'+
+    v12StagePanels()+
     v12FinalCard()+
   '</section>';
 }
-
 function patchBracketReference(){
   if(v12Route()!=='competition') return;
   const screen=document.querySelector('#screen');
