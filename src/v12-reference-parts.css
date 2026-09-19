@@ -4584,3 +4584,125 @@ body[data-app-route="competition"] .v12-league-banner i{
     font-size:18.5px!important;
   }
 }
+
+
+/* === CLASS_TABLE_HEIGHT_UNIFY1 — MISMA ALTURA EN COMPACTA / COMPLETA / CRITERIOS === */
+/* Mantiene las tres vistas de Clasificación sobre la misma línea y a la misma altura al cambiar. */
+body[data-app-route="competition"] .v12-standings-reference{
+  --v12-unified-head:42px;
+  --v12-unified-label:38px;
+  --v12-unified-line:3px;
+  --v12-unified-row:59px;
+}
+body[data-app-route="competition"] .v12-stand-content,
+body[data-app-route="competition"] .v12-table-shell,
+body[data-app-route="competition"] .v12-table-scroll,
+body[data-app-route="competition"] .v12-table-inner,
+body[data-app-route="competition"] .v12-table-inner-compact,
+body[data-app-route="competition"] .v12-table-inner-complete,
+body[data-app-route="competition"] .v12-criteria-table{
+  margin-top:0!important;
+  padding-top:0!important;
+  top:0!important;
+  transform:none!important;
+  box-sizing:border-box!important;
+}
+body[data-app-route="competition"] .v12-table-shell{
+  min-height:calc(var(--v12-unified-head) + var(--v12-unified-label) + var(--v12-unified-line) + (8 * var(--v12-unified-row)))!important;
+}
+
+/* Los tres encabezados arrancan exactamente en el mismo eje vertical. */
+body[data-app-route="competition"] .v12-stand-head,
+body[data-app-route="competition"] .v12-complete-head,
+body[data-app-route="competition"] .v12-criteria-head{
+  height:var(--v12-unified-head)!important;
+  min-height:var(--v12-unified-head)!important;
+  max-height:var(--v12-unified-head)!important;
+  margin:0!important;
+  padding-top:0!important;
+  padding-bottom:0!important;
+  align-items:center!important;
+  box-sizing:border-box!important;
+}
+
+/* DIRECTOS A OCTAVOS ocupa la misma franja en los tres modos. */
+body[data-app-route="competition"] .v12-direct-label,
+body[data-app-route="competition"] .v12-criteria-direct{
+  height:var(--v12-unified-label)!important;
+  min-height:var(--v12-unified-label)!important;
+  max-height:var(--v12-unified-label)!important;
+  margin:0!important;
+  padding:0 0 8px!important;
+  display:flex!important;
+  align-items:flex-end!important;
+  box-sizing:border-box!important;
+}
+
+/* Una sola línea visual: misma Y, mismo grosor y mismo ancho visible. */
+body[data-app-route="competition"] .v12-direct-line,
+body[data-app-route="competition"] .v12-criteria-line{
+  display:block!important;
+  position:relative!important;
+  left:0!important;
+  top:0!important;
+  width:calc(100vw - 28px)!important;
+  max-width:100%!important;
+  height:var(--v12-unified-line)!important;
+  min-height:var(--v12-unified-line)!important;
+  max-height:var(--v12-unified-line)!important;
+  margin:0!important;
+  padding:0!important;
+  background:rgba(255,255,255,.72)!important;
+  box-sizing:border-box!important;
+}
+
+/* Todas las filas conservan exactamente la misma altura al cambiar de modo. */
+body[data-app-route="competition"] .v12-stand-row,
+body[data-app-route="competition"] .v12-complete-row,
+body[data-app-route="competition"] .v12-criteria-row{
+  height:var(--v12-unified-row)!important;
+  min-height:var(--v12-unified-row)!important;
+  max-height:var(--v12-unified-row)!important;
+  box-sizing:border-box!important;
+}
+
+/* La botonera Compacta / Completa / Criterios tampoco cambia de altura. */
+body[data-app-route="competition"] .v12-segmented{
+  height:54px!important;
+  min-height:54px!important;
+  max-height:54px!important;
+  margin-bottom:16px!important;
+  box-sizing:border-box!important;
+}
+body[data-app-route="competition"] .v12-segmented button{
+  height:54px!important;
+  min-height:54px!important;
+  max-height:54px!important;
+  box-sizing:border-box!important;
+}
+
+/* Mantener además la franja superior Partidos / Clasificación / Cuadro como una sola línea estable. */
+body[data-app-route="competition"] #screen>.tabs{
+  align-items:stretch!important;
+}
+body[data-app-route="competition"] #screen>.tabs .tab{
+  align-self:stretch!important;
+  display:flex!important;
+  align-items:flex-end!important;
+  justify-content:center!important;
+}
+body[data-app-route="competition"] #screen>.tabs .tab::after{
+  bottom:0!important;
+}
+
+@media(max-width:380px){
+  body[data-app-route="competition"] .v12-standings-reference{
+    --v12-unified-head:40px;
+    --v12-unified-label:36px;
+    --v12-unified-row:57px;
+  }
+  body[data-app-route="competition"] .v12-direct-line,
+  body[data-app-route="competition"] .v12-criteria-line{
+    width:calc(100vw - 28px)!important;
+  }
+}
