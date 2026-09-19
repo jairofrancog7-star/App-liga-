@@ -1,0 +1,55 @@
+{
+  "source_page": "https://www.juventinorosasliga.com/?categoria=2",
+  "source_mirror": "jairofrancog7-star/Liga_Futbol",
+  "category_id": 2,
+  "category": "Veteranos 35+",
+  "scope": "Categoría por edad",
+  "team_count": 10,
+  "category_logo": "https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/assets/categories/veteranos-35-user.png",
+  "teams": [
+    {
+      "name": "C. de Gasca",
+      "logo": "https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/assets/teams/deportivo-cg.webp"
+    },
+    {
+      "name": "Juventus",
+      "logo": "https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/assets/official-logos/juventus.png"
+    },
+    {
+      "name": "Cuenda",
+      "logo": "https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/assets/teams/tc-cuenda.webp"
+    },
+    {
+      "name": "Pozos FC",
+      "logo": "https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/assets/teams/veteranos-pozos-fc.webp"
+    },
+    {
+      "name": "Boavista",
+      "logo": "https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/assets/official-logos/boavista.png"
+    },
+    {
+      "name": "PSV",
+      "logo": "https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/assets/teams/psv.webp"
+    },
+    {
+      "name": "A. Santiago",
+      "logo": "https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/assets/teams/atletico-santiago.webp"
+    },
+    {
+      "name": "F. Tavera",
+      "logo": "https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/assets/teams/franco-tavera-jr-veteranos.webp"
+    },
+    {
+      "name": "América",
+      "logo": "https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/assets/branding/america-veteranos-35-user.png"
+    },
+    {
+      "name": "Huracán",
+      "logo": null
+    }
+  ],
+  "notes": [
+    "Datos públicos de categoría y equipos integrados sin modificar el diseño de App-liga-.",
+    "Huracán conserva fallback de iniciales porque no existe un archivo de escudo válido en el repositorio fuente actual."
+  ]
+}
