@@ -1800,3 +1800,122 @@ body[data-app-route="following"] .v28-picker-row .v28-logo>.v28-fallback{
     font-size:20px!important;
   }
 }
+
+
+/* V44 ACTION SHEET IMAGE-1 MATCH — panel compacto como la referencia Barcelona.
+   Ajusta únicamente la hoja que aparece al tocar “Siguiendo”. */
+@media (max-width:520px){
+  body[data-app-route="following"] .v28-sheet{
+    width:min(100%,520px)!important;
+    min-height:276px!important;
+    padding:24px 28px 18px!important;
+    border-radius:30px 30px 0 0!important;
+    background:linear-gradient(180deg,#191b7f 0%,#171976 100%)!important;
+    box-shadow:0 -8px 28px rgba(0,0,0,.22)!important;
+  }
+
+  body[data-app-route="following"] .v28-sheet-team{
+    min-height:72px!important;
+    grid-template-columns:54px minmax(0,1fr)!important;
+    gap:14px!important;
+  }
+  body[data-app-route="following"] .v28-sheet-team .v28-logo.big{
+    width:50px!important;
+    height:50px!important;
+  }
+  body[data-app-route="following"] .v28-sheet-team .v28-logo.big img{
+    width:48px!important;
+    height:48px!important;
+    object-fit:contain!important;
+  }
+  body[data-app-route="following"] .v28-sheet-team .v28-fallback{
+    width:46px!important;
+    height:46px!important;
+    font-size:9px!important;
+  }
+  body[data-app-route="following"] .v28-sheet-team strong{
+    font-family:Inter,Roboto,Arial,sans-serif!important;
+    font-size:18px!important;
+    line-height:1.08!important;
+    font-weight:650!important;
+    letter-spacing:-.01em!important;
+  }
+
+  body[data-app-route="following"] .v28-divider{
+    height:1px!important;
+    margin:5px 0 10px!important;
+    background:rgba(151,158,226,.25)!important;
+  }
+
+  body[data-app-route="following"] .v28-sheet-action{
+    min-height:68px!important;
+    grid-template-columns:54px minmax(0,1fr)!important;
+    gap:8px!important;
+  }
+  body[data-app-route="following"] .v28-sheet-action svg{
+    width:30px!important;
+    height:30px!important;
+    margin-left:4px!important;
+    stroke-width:2.2!important;
+  }
+  body[data-app-route="following"] .v28-sheet-action b{
+    margin-left:8px!important;
+    font-size:31px!important;
+    line-height:1!important;
+    font-weight:300!important;
+  }
+  body[data-app-route="following"] .v28-sheet-action span{
+    font-family:Inter,Roboto,Arial,sans-serif!important;
+    font-size:17px!important;
+    line-height:1!important;
+    font-weight:430!important;
+    letter-spacing:0!important;
+  }
+
+  /* La referencia 1 no muestra la navegación inferior cuando el panel está abierto. */
+  body[data-app-route="following"].v28-follow-sheet-open .bottom-nav,
+  body.v28-follow-sheet-open[data-app-route="following"] #app>.bottom-nav{
+    display:none!important;
+  }
+  body[data-app-route="following"].v28-follow-sheet-open #app{
+    padding-bottom:0!important;
+  }
+}
+
+@media (max-width:390px){
+  body[data-app-route="following"] .v28-sheet{
+    min-height:268px!important;
+    padding:22px 24px 16px!important;
+    border-radius:28px 28px 0 0!important;
+  }
+  body[data-app-route="following"] .v28-sheet-team{
+    min-height:70px!important;
+    grid-template-columns:52px minmax(0,1fr)!important;
+    gap:13px!important;
+  }
+  body[data-app-route="following"] .v28-sheet-team .v28-logo.big{
+    width:48px!important;
+    height:48px!important;
+  }
+  body[data-app-route="following"] .v28-sheet-team .v28-logo.big img{
+    width:46px!important;
+    height:46px!important;
+  }
+  body[data-app-route="following"] .v28-sheet-team strong{
+    font-size:17px!important;
+  }
+  body[data-app-route="following"] .v28-sheet-action{
+    min-height:64px!important;
+    grid-template-columns:50px minmax(0,1fr)!important;
+  }
+  body[data-app-route="following"] .v28-sheet-action svg{
+    width:29px!important;
+    height:29px!important;
+  }
+  body[data-app-route="following"] .v28-sheet-action b{
+    font-size:30px!important;
+  }
+  body[data-app-route="following"] .v28-sheet-action span{
+    font-size:16.5px!important;
+  }
+}
