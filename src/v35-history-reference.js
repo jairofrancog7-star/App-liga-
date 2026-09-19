@@ -27,16 +27,12 @@ const seasons=[
 ];
 
 const videos=[
-  {image:ASSETS.videoA,duration:'03:36',title:'Tandas de penales en la final de la Liga Municipal Juventino Rosas'},
-  {image:ASSETS.videoB,duration:'03:16',title:'Los diez mejores goles de la temporada 2024/25'},
-  {image:ASSETS.videoC,duration:'02:48',title:'Los clásicos que marcaron la historia de nuestra Liga'}
+  {image:ASSETS.videoA,duration:'',title:'Archivo audiovisual de la Liga'},
+  {image:ASSETS.videoB,duration:'',title:'Momentos de la Liga Municipal'},
+  {image:ASSETS.videoC,duration:'',title:'Fútbol de Juventino Rosas'}
 ];
 
-const titleRows=[
-  {crest:ASSETS.america,name:'Club América Veteranos',value:'15'},
-  {crest:ASSETS.huerta,name:'La Huerta',value:'7'},
-  {crest:ASSETS.promesas,name:'Promesas FC',value:'6'}
-];
+const titleRows=[];
 
 let activeTab='Resumen';
 let v35ScrollRaf=0;
@@ -98,9 +94,8 @@ function videosRow(){
   return '<div class="v35-video-carousel" aria-label="Partidos clásicos">'+videos.map((v,i)=>'<button class="v35-video-card" type="button" data-v35-video="'+i+'"><span class="v35-video-thumb"><img src="'+v.image+'" alt="" loading="lazy" decoding="async"><span class="v35-video-duration">'+v.duration+'</span><span class="v35-video-play">'+playSvg()+'</span></span><span class="v35-video-title">'+esc(v.title)+'</span></button>').join('')+'</div>';
 }
 function stats(){
-  const first='<article class="v35-stat-card"><h3>Más títulos</h3><div class="v35-stat-rule"></div>'+titleRows.map(r=>'<button class="v35-rank-row" type="button" data-v35-team><img src="'+r.crest+'" alt="" loading="lazy" decoding="async"><span>'+esc(r.name)+'</span><strong>'+r.value+'</strong><i>'+trophySvg()+'</i></button>').join('')+'</article>';
-  const second='<article class="v35-stat-card v35-stat-card-records"><h3>Récords</h3><div class="v35-stat-rule"></div><div class="v35-record-row"><span>Máx. goles temporada</span><strong>11</strong></div><div class="v35-record-row"><span>Victorias seguidas</span><strong>5</strong></div><div class="v35-record-row"><span>Goles récord</span><strong>118</strong></div></article>';
-  return '<section class="v35-block v35-stats-block"><h2 class="v35-section-title">Estadísticas históricas</h2><div class="v35-stats-carousel">'+first+second+'</div></section>';
+  return '<section class="v35-block v35-stats-block"><h2 class="v35-section-title">Estadísticas históricas</h2>'+
+    '<article class="v35-stat-card"><h3>Archivo oficial</h3><div class="v35-stat-rule"></div><p>No hay palmarés ni récords históricos verificados publicados en la fuente oficial actual.</p></article></section>';
 }
 function summaryBody(){
   return '<section class="v35-block v35-seasons-block"><div class="v35-section-row"><h2>Buscar por temporada</h2><button type="button" data-v35-tab-jump="Temporadas">Ver todo</button></div><div class="v35-season-carousel">'+seasonCards()+'</div></section>'+
@@ -109,22 +104,20 @@ function summaryBody(){
     stats();
 }
 function seasonsBody(){
-  return '<section class="v35-block v35-tab-body"><div class="v35-section-row"><h2>Temporadas</h2></div><div class="v35-season-grid">'+seasonCards()+'</div><div class="v35-season-detail"><span>Archivo histórico</span><h3>Selecciona una temporada</h3><p>Consulta el campeón, la final, los goleadores y los momentos principales de cada edición.</p></div></section>';
+  return '<section class="v35-block v35-tab-body"><div class="v35-section-row"><h2>Temporadas</h2></div>'+
+    '<div class="v35-season-detail"><span>Archivo histórico</span><h3>Datos pendientes de publicación oficial</h3><p>No se asignan campeones ni goleadores sin una fuente oficial.</p></div></section>';
 }
 function championsBody(){
-  return '<section class="v35-block v35-tab-body"><h2 class="v35-section-title">Campeones</h2><div class="v35-stats-carousel">'+
-    '<article class="v35-stat-card"><h3>Más títulos</h3><div class="v35-stat-rule"></div>'+titleRows.map(r=>'<button class="v35-rank-row" type="button" data-v35-team><img src="'+r.crest+'" alt=""><span>'+esc(r.name)+'</span><strong>'+r.value+'</strong><i>'+trophySvg()+'</i></button>').join('')+'</article>'+
-    '</div></section>';
+  return '<section class="v35-block v35-tab-body"><h2 class="v35-section-title">Campeones</h2>'+
+    '<article class="v35-stat-card"><h3>Sin datos oficiales publicados</h3><p>Esta sección no mostrará campeones de ejemplo.</p></article></section>';
 }
 function finalsBody(){
-  return '<section class="v35-block v35-tab-body"><h2 class="v35-section-title">Finales</h2><div class="v35-final-list">'+
-    '<article><span>2025/26</span><strong>Club América Veteranos</strong><small>Final histórica de la Liga Municipal</small></article>'+
-    '<article><span>2024/25</span><strong>Liga Municipal Juventino Rosas</strong><small>Temporada del archivo histórico</small></article>'+
-    '<article><span>2023/24</span><strong>La Huerta</strong><small>Campeón de temporada</small></article>'+
-    '</div></section>';
+  return '<section class="v35-block v35-tab-body"><h2 class="v35-section-title">Finales</h2>'+
+    '<div class="v35-season-detail"><h3>Sin finales históricas verificadas publicadas</h3><p>Se mostrarán cuando estén disponibles en la fuente oficial.</p></div></section>';
 }
 function recordsBody(){
-  return '<section class="v35-block v35-tab-body"><h2 class="v35-section-title">Récords</h2><div class="v35-stats-carousel"><article class="v35-stat-card v35-stat-card-records"><h3>Históricos</h3><div class="v35-stat-rule"></div><div class="v35-record-row"><span>Máx. goles temporada</span><strong>11</strong></div><div class="v35-record-row"><span>Victorias seguidas</span><strong>5</strong></div><div class="v35-record-row"><span>Goles récord</span><strong>118</strong></div></article></div></section>';
+  return '<section class="v35-block v35-tab-body"><h2 class="v35-section-title">Récords</h2>'+
+    '<article class="v35-stat-card"><h3>Sin récords oficiales publicados</h3><p>No se muestran números estimados o de ejemplo.</p></article></section>';
 }
 function bodyForTab(){
   if(activeTab==='Temporadas') return seasonsBody();
