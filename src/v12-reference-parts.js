@@ -2,12 +2,12 @@ const V12_LOGO='https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol
 const V12_TEAM_ASSET_BASE='https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/';
 const V12_TEAMS=[
   {name:'Club América Veteranos JR',logo:'assets/branding/america-veteranos-35-user.png',p:1,gd:8,pts:3,form:['w','w','w'],last:'V'},
-  {name:'Lobos CDG',logo:'assets/teams/lobos-cdg.webp',p:1,gd:5,pts:3,form:['w','w','n'],last:'V'},
-  {name:'La Huerta de Cuenda',logo:'assets/teams/la-huerta-cuenda.webp',p:1,gd:4,pts:3,form:['w','w','n'],last:'V'},
-  {name:'Atlético Galeana',logo:'assets/teams/atletico-galeana.webp',p:1,gd:2,pts:3,form:['w','n','w'],last:'V'},
-  {name:'Promesas FC Pozos',logo:'assets/teams/promesas-fc-pozos.webp',p:1,gd:0,pts:1,form:['n','w','n'],last:'E'},
+  {name:'Lobos CDG',logo:'assets/official-logos/lobos-cdg.png',p:1,gd:5,pts:3,form:['w','w','n'],last:'V'},
+  {name:'La Huerta de Cuenda',logo:'assets/official-logos/la-huerta.png',p:1,gd:4,pts:3,form:['w','w','n'],last:'V'},
+  {name:'Atlético Galeana',logo:'assets/official-logos/galeana.png',p:1,gd:2,pts:3,form:['w','n','w'],last:'V'},
+  {name:'Promesas FC Pozos',logo:'assets/official-logos/promesas-fc.png',p:1,gd:0,pts:1,form:['n','w','n'],last:'E'},
   {name:'San Antonio J.R.',logo:'assets/teams/san-antonio-jr.webp',p:1,gd:-2,pts:0,form:['l','l','n'],last:'D'},
-  {name:'Franco FC',logo:'assets/teams/franco-fc.webp',p:1,gd:-4,pts:0,form:['l','n','l'],last:'D'},
+  {name:'Franco FC',logo:'assets/official-logos/franco-fc.png',p:1,gd:-4,pts:0,form:['l','n','l'],last:'D'},
   {name:'Juventino Rosas',logo:null,p:1,gd:-8,pts:0,form:['l','l','l'],last:'D'}
 ];
 
@@ -18,14 +18,14 @@ function v12Form(t){return '<div class="v12-form">'+t.form.map(s=>'<i class="'+s
 function v12Rows(mode='compact'){
   if(mode==='criteria'){
     const criteriaTeams=[
-      {name:'La Huerta',logo:'assets/teams/la-huerta-cuenda.webp',stats:[3,5,6,0,1,0,0],mark:2},
-      {name:'Promesas FC',logo:'assets/teams/promesas-fc-pozos.webp',stats:[3,5,5,0,1,0,0],mark:2},
-      {name:'Franco FC',logo:'assets/teams/franco-fc.webp',stats:[3,4,5,0,1,0,0],mark:2},
-      {name:'Atlético Galeana',logo:'assets/teams/atletico-galeana.webp',stats:[3,4,4,0,1,0,0],mark:2},
-      {name:'Lobos CDG',logo:'assets/teams/lobos-cdg.webp',stats:[3,3,4,0,1,0,0],mark:1},
+      {name:'La Huerta',logo:'assets/official-logos/la-huerta.png',stats:[3,5,6,0,1,0,0],mark:2},
+      {name:'Promesas FC',logo:'assets/official-logos/promesas-fc.png',stats:[3,5,5,0,1,0,0],mark:2},
+      {name:'Franco FC',logo:'assets/official-logos/franco-fc.png',stats:[3,4,5,0,1,0,0],mark:2},
+      {name:'Atlético Galeana',logo:'assets/official-logos/galeana.png',stats:[3,4,4,0,1,0,0],mark:2},
+      {name:'Lobos CDG',logo:'assets/official-logos/lobos-cdg.png',stats:[3,3,4,0,1,0,0],mark:1},
       {name:'Juventino',logo:null,stats:[3,2,3,0,1,0,0],mark:-1},
       {name:'Cuenda',logo:'assets/official-logos/toros-de-cuenda.png',stats:[3,2,3,0,1,0,0],mark:-1},
-      {name:'Pozos',logo:'assets/teams/pozos-fc.webp',stats:[3,2,2,2,1,1,0],mark:2}
+      {name:'Pozos',logo:'assets/teams/veteranos-pozos-fc.webp',stats:[3,2,2,2,1,1,0],mark:2}
     ];
     const head=['PTOS','+/-','GF','GA','V','VA','P'];
     const rows=criteriaTeams.map((t,i)=>{
