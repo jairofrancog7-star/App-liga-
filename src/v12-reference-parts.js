@@ -164,6 +164,7 @@ function patchProfile(){
       profileMenuRow('language','Tu idioma preferido',null,'language',false)+
       profileMenuRow('feedback','Ayúdanos a mejorar',null,'feedback',false)+
       profileMenuRow(null,'Ajustes de privacidad',null,'privacy',true)+
+      profileMenuRow(null,'Términos y condiciones',null,'terms',true)+
     '</div>'+
   '</section>';
 }
@@ -612,6 +613,8 @@ document.addEventListener('click',e=>{
     if(a==='create') v12Toast('Registro de cuenta listo para conectar');
     if(a==='language') v12Toast('Idioma: Español (México)');
     if(a==='feedback') v12Toast('Gracias. Aquí se conectará el formulario de comentarios.');
+    if(a==='privacy') v12Toast('Ajustes de privacidad');
+    if(a==='terms') v12Toast('Términos y condiciones');
     return;
   }
   const choice=e.target.closest('[data-v12-choice]');
