@@ -158,37 +158,23 @@
     '</div>';
   }
 
+  function matchInfoContent(m){
+    const competition=(m.category||'Liga Municipal');
+    const venue=(m.venue||'Campo Municipal');
+    return '<div class="v28-video-info">'+
+      '<h2>Información del partido</h2>'+
+      '<div class="v28-stadium-photo" role="img" aria-label="Estadio"></div>'+
+      '<div class="v28-video-venue"><strong>'+esc(venue)+'</strong><small>Juventino Rosas</small></div>'+
+      '<div class="v28-video-rule"></div>'+
+      '<div class="v28-video-round"><strong>'+esc(competition)+', Jornada 2</strong><small>'+esc(m.date)+' - '+esc(m.time)+'</small></div>'+
+      '<div class="v28-video-rule"></div>'+
+      '<div class="v28-local-time"><i aria-hidden="true"></i><span>Los horarios se muestran en tu hora local</span></div>'+
+    '</div>';
+  }
+
   function newsPanel(m){
     return '<section class="v28-panel v28-news-panel active" data-v28-panel="news">'+
-      '<section class="v28-section" id="v28-info">'+
-        '<h2>Información del partido</h2>'+
-        '<div class="v28-stadium" role="img" aria-label="Cancha municipal"></div>'+
-        '<div class="v28-stadium-caption">'+esc(m.venue)+'<small>Juventino Rosas</small></div>'+
-        '<div class="v28-divider"></div>'+
-      '</section>'+
-      '<section class="v28-section v28-h2h">'+
-        '<h2>Enfrentamiento directo</h2>'+
-        '<div class="v28-h2h-row">'+
-          '<div class="v28-h2h-team">'+teamLogo(m.home)+'<span>'+esc(m.home)+'</span></div>'+
-          '<div class="v28-h2h-team right"><span>'+esc(m.away)+'</span>'+teamLogo(m.away)+'</div>'+
-        '</div>'+
-        '<div class="v28-h2h-values">'+
-          '<div><b>0</b><span>Victorias</span></div>'+
-          '<div><b>0</b><span>Empates</span></div>'+
-          '<div><b>0</b><span>Victorias</span></div>'+
-        '</div>'+
-        '<div class="v28-goals-row"><b>0</b><span>Goles</span><b>0</b></div>'+
-      '</section>'+
-      '<section class="v28-section v28-form-block">'+
-        '<h2>Estado de forma</h2>'+
-        teamForm(m.home,['D','D','V','E','D'])+
-        '<div class="v28-form-goals"><b>0</b><span>Goles</span><b>0</b></div>'+
-      '</section>'+
-      '<section class="v28-section v28-form-block v28-dual">'+
-        '<h2>Estado de forma</h2>'+
-        teamForm(m.home,['D','D','V','E','D'])+
-        teamForm(m.away,['V','V','V','V','E'])+
-      '</section>'+
+      matchInfoContent(m)+
     '</section>';
   }
   function standingsPanel(){
@@ -204,14 +190,9 @@
 
   function infoPanel(m){
     return '<section class="v28-panel v28-info-panel" data-v28-panel="info">'+
-      '<h2>Info del partido</h2>'+
-      '<div class="v28-info-card"><span>Fecha</span><b>'+esc(m.date)+'</b></div>'+
-      '<div class="v28-info-card"><span>Hora</span><b>'+esc(m.time)+'</b></div>'+
-      '<div class="v28-info-card"><span>Campo</span><b>'+esc(m.venue)+' · Juventino Rosas</b></div>'+
-      '<div class="v28-info-card"><span>Competición</span><b>'+esc(m.category||'Liga Municipal')+'</b></div>'+
+      matchInfoContent(m)+
     '</section>';
   }
-
   function markup(){
     const m=selected();
     return '<article class="v28-match" data-v28-match>'+
@@ -270,6 +251,11 @@
         const key=btn.dataset.v28Tab;
         document.querySelectorAll('[data-v28-tab]').forEach(x=>x.classList.toggle('active',x===btn));
         document.querySelectorAll('[data-v28-panel]').forEach(x=>x.classList.toggle('active',x.dataset.v28Panel===key));
+        const body=document.querySelector('.v28-body');
+        if(body){
+          body.classList.remove('v28-panel-enter');
+          requestAnimationFrame(()=>body.classList.add('v28-panel-enter'));
+        }
       };
     });
 
