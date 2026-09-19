@@ -1800,3 +1800,32 @@ body[data-app-route="competition"] .v12-bracket-reference.stage-semifinal .v12-b
   max-height:64px!important;
   box-sizing:border-box!important;
 }
+
+
+/* === PARTS33 — CUADRO: ANCHO HORIZONTAL + FINAL MÁS ESTRECHA === */
+/* Mantiene el diseño y solo reajusta dimensiones.
+   1) Los bloques horizontales del play-off ocupan exactamente el ancho de su columna.
+   2) La tarjeta vertical de la Final vuelve a ser menos ancha, aproximadamente igual
+      al ancho visual de los cuadros de semifinal/cuarto en móvil. */
+body[data-app-route="competition"] .v12-bracket-reference.stage-playoff .v12-bracket-winner-block,
+body[data-app-route="competition"] .v12-bracket-reference.stage-playoff .v12-bracket-winner,
+body[data-app-route="competition"] .v12-bracket-reference.stage-playoff .v12-bracket-seeded{
+  width:100%!important;
+  max-width:none!important;
+  box-sizing:border-box!important;
+}
+
+body[data-app-route="competition"] .v12-bracket-reference.stage-final .v12-final-match-card{
+  width:36.5%!important;
+  max-width:220px!important;
+  left:4.5%!important;
+  box-sizing:border-box!important;
+}
+
+@media(max-width:390px){
+  body[data-app-route="competition"] .v12-bracket-reference.stage-final .v12-final-match-card{
+    width:36.5%!important;
+    max-width:none!important;
+    left:4.5%!important;
+  }
+}
