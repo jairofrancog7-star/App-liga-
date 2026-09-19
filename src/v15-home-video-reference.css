@@ -777,3 +777,67 @@ body[data-app-route="home"] #screen>.stories::after{
     height:38px!important;
   }
 }
+
+
+/* V24 HOME COLOR ONLY — unir azul oscuro y borrar únicamente arcos/lineas cortadas. */
+/* IMPORTANTE: este parche NO modifica la imagen/portada inferior. */
+body[data-app-route="home"],
+body[data-app-route="home"] .app-shell,
+body[data-app-route="home"] #screen,
+body[data-app-route="home"] #screen>.stories{
+  background-color:#02045d!important;
+}
+
+body[data-app-route="home"] .topbar{
+  border:0!important;
+  border-bottom:0!important;
+  box-shadow:none!important;
+}
+
+/* Cubre solo la zona decorativa inferior de la cabecera donde aparecían
+   las medias circunferencias celestes. El logo y controles superiores siguen intactos. */
+body[data-app-route="home"] .topbar::after{
+  content:""!important;
+  display:block!important;
+  position:absolute!important;
+  z-index:2!important;
+  left:0!important;
+  right:0!important;
+  bottom:-2px!important;
+  height:74px!important;
+  pointer-events:none!important;
+  background:#02045d!important;
+  background-image:none!important;
+  border:0!important;
+  outline:0!important;
+  box-shadow:none!important;
+  opacity:1!important;
+}
+
+body[data-app-route="home"] #screen{
+  margin-top:-2px!important;
+  padding-top:0!important;
+}
+
+body[data-app-route="home"] #screen>.stories{
+  margin-top:0!important;
+  border-top:0!important;
+  border-bottom:0!important;
+  outline:0!important;
+  box-shadow:none!important;
+  background:#02045d!important;
+  background-image:none!important;
+}
+
+/* Evita pseudo-elementos o brillos que puedan volver a dibujar líneas en la unión. */
+body[data-app-route="home"] #screen>.stories::before,
+body[data-app-route="home"] #screen>.stories::after{
+  content:none!important;
+  display:none!important;
+}
+
+@media(max-width:380px){
+  body[data-app-route="home"] .topbar::after{
+    height:68px!important;
+  }
+}
