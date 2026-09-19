@@ -205,8 +205,3 @@ body[data-app-route="video"] #screen>.section{
   body[data-app-route="home"] #screen>.section.hero[data-v15-home-feature="1"]{max-width:536px!important;border-radius:32px!important}
 }
 
-  body[data-app-route="home"] #screen>.stories .story{flex-basis:145px!important;width:145px!important;min-width:145px!important}
-  body[data-app-route="home"] #screen>.stories .story-ring{width:145px!important;height:145px!important;min-width:145px!important;min-height:145px!important}
-  body[data-app-route="home"] #screen>.stories .story small{font-size:23px!important;width:165px!important}
-  body[data-app-route="home"] #screen>.section.hero[data-v15-home-feature="1"]{max-width:536px!important;border-radius:32px!important}
-}
