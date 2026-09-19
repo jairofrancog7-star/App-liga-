@@ -3298,3 +3298,158 @@ body[data-app-route="competition"] .v12-segmented button{
     font-size:11px!important;
   }
 }
+
+
+/* === V12 PARTS48 — COLUMNA IZQUIERDA FIJA + TABLA DESLIZABLE === */
+/* Mantiene fija la parte izquierda (posición + equipo) y desplaza estadísticas. */
+body[data-app-route="competition"] .v12-stand-content{
+  overflow-x:auto!important;
+  overflow-y:visible!important;
+  -webkit-overflow-scrolling:touch!important;
+  touch-action:pan-x pan-y!important;
+  overscroll-behavior-x:contain!important;
+  scrollbar-width:none!important;
+}
+body[data-app-route="competition"] .v12-stand-content::-webkit-scrollbar{
+  display:none!important;
+}
+
+/* Compacta: ancho real para poder mover columnas a la derecha. */
+body[data-app-route="competition"] .v12-stand-head,
+body[data-app-route="competition"] .v12-stand-row{
+  width:520px!important;
+  min-width:520px!important;
+  grid-template-columns:20px 180px 44px 52px 58px 150px!important;
+}
+
+/* Completa: mismo comportamiento lateral. */
+body[data-app-route="competition"] .v12-complete-head,
+body[data-app-route="competition"] .v12-complete-row{
+  width:540px!important;
+  min-width:540px!important;
+  grid-template-columns:20px 180px 48px 48px 48px 48px 80px!important;
+}
+
+/* Fijar ranking y equipo al lado izquierdo. */
+body[data-app-route="competition"] .v12-stand-row>.v12-rank,
+body[data-app-route="competition"] .v12-complete-row>.v12-rank{
+  position:sticky!important;
+  left:0!important;
+  z-index:6!important;
+  background:#04065a!important;
+}
+body[data-app-route="competition"] .v12-stand-row>.v12-team-cell,
+body[data-app-route="competition"] .v12-complete-row>.v12-team-cell{
+  position:sticky!important;
+  left:20px!important;
+  z-index:5!important;
+  background:#04065a!important;
+}
+
+/* También fija el hueco izquierdo del encabezado para que las columnas se deslicen detrás. */
+body[data-app-route="competition"] .v12-stand-head>span:first-child,
+body[data-app-route="competition"] .v12-complete-head>span:nth-child(1),
+body[data-app-route="competition"] .v12-complete-head>span:nth-child(2){
+  position:sticky!important;
+  z-index:7!important;
+  background:#04065a!important;
+}
+body[data-app-route="competition"] .v12-stand-head>span:first-child{
+  left:0!important;
+}
+body[data-app-route="competition"] .v12-complete-head>span:nth-child(1){
+  left:0!important;
+}
+body[data-app-route="competition"] .v12-complete-head>span:nth-child(2){
+  left:20px!important;
+}
+
+/* Criterios: misma idea, con equipo fijo y métricas desplazables. */
+body[data-app-route="competition"] .v12-criteria-scroll{
+  overflow-x:auto!important;
+  overflow-y:hidden!important;
+  -webkit-overflow-scrolling:touch!important;
+  touch-action:pan-x pan-y!important;
+  overscroll-behavior-x:contain!important;
+  scrollbar-width:none!important;
+}
+body[data-app-route="competition"] .v12-criteria-scroll::-webkit-scrollbar{
+  display:none!important;
+}
+body[data-app-route="competition"] .v12-criteria-table{
+  min-width:620px!important;
+  width:620px!important;
+}
+body[data-app-route="competition"] .v12-criteria-head,
+body[data-app-route="competition"] .v12-criteria-row{
+  grid-template-columns:20px 180px repeat(7,56px)!important;
+}
+body[data-app-route="competition"] .v12-criteria-row>.v12-criteria-rank{
+  position:sticky!important;
+  left:0!important;
+  z-index:6!important;
+  background:#04065a!important;
+}
+body[data-app-route="competition"] .v12-criteria-row>.v12-criteria-team{
+  position:sticky!important;
+  left:20px!important;
+  z-index:5!important;
+  background:#04065a!important;
+}
+body[data-app-route="competition"] .v12-criteria-head>span:nth-child(1){
+  position:sticky!important;
+  left:0!important;
+  z-index:7!important;
+  background:#04065a!important;
+}
+body[data-app-route="competition"] .v12-criteria-head>span:nth-child(2){
+  position:sticky!important;
+  left:20px!important;
+  z-index:7!important;
+  background:#04065a!important;
+}
+
+/* Sombra suave para indicar dónde termina la parte fija. */
+body[data-app-route="competition"] .v12-stand-row>.v12-team-cell::after,
+body[data-app-route="competition"] .v12-complete-row>.v12-team-cell::after,
+body[data-app-route="competition"] .v12-criteria-row>.v12-criteria-team::after{
+  content:""!important;
+  position:absolute!important;
+  top:0!important;
+  right:-8px!important;
+  width:8px!important;
+  height:100%!important;
+  pointer-events:none!important;
+  background:linear-gradient(90deg,rgba(4,6,90,.35),rgba(4,6,90,0))!important;
+}
+
+@media(max-width:380px){
+  body[data-app-route="competition"] .v12-stand-head,
+  body[data-app-route="competition"] .v12-stand-row{
+    width:500px!important;
+    min-width:500px!important;
+    grid-template-columns:18px 165px 42px 48px 54px 145px!important;
+  }
+  body[data-app-route="competition"] .v12-complete-head,
+  body[data-app-route="competition"] .v12-complete-row{
+    width:520px!important;
+    min-width:520px!important;
+    grid-template-columns:18px 165px 46px 46px 46px 46px 76px!important;
+  }
+  body[data-app-route="competition"] .v12-stand-row>.v12-team-cell,
+  body[data-app-route="competition"] .v12-complete-row>.v12-team-cell{
+    left:18px!important;
+  }
+  body[data-app-route="competition"] .v12-criteria-table{
+    min-width:585px!important;
+    width:585px!important;
+  }
+  body[data-app-route="competition"] .v12-criteria-head,
+  body[data-app-route="competition"] .v12-criteria-row{
+    grid-template-columns:18px 165px repeat(7,54px)!important;
+  }
+  body[data-app-route="competition"] .v12-criteria-row>.v12-criteria-team,
+  body[data-app-route="competition"] .v12-criteria-head>span:nth-child(2){
+    left:18px!important;
+  }
+}
