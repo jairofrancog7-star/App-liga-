@@ -36,16 +36,16 @@ function v12Rows(mode='compact'){
         t.stats.map((n,idx)=>'<span class="v12-criteria-stat '+(idx===t.mark?'mark':'')+'">'+n+'</span>').join('')+
       '</div>';
     }).join('');
-    return '<div class="v12-criteria-shell">'+
-      '<div class="v12-criteria-scroll">'+
-        '<div class="v12-criteria-table">'+
+    return '<div class="v12-table-shell v12-criteria-shell">'+
+      '<div class="v12-table-scroll v12-criteria-scroll">'+
+        '<div class="v12-table-inner v12-criteria-table">'+
           '<div class="v12-criteria-head"><span></span><span></span>'+head.map(h=>'<b>'+h+'</b>').join('')+'</div>'+
           '<div class="v12-criteria-direct">DIRECTOS A OCTAVOS</div>'+
           '<div class="v12-criteria-line"></div>'+
           rows+
         '</div>'+
       '</div>'+
-      '<span class="v12-criteria-edge" aria-hidden="true"></span>'+
+      '<span class="v12-table-edge v12-criteria-edge" aria-hidden="true"></span>'+
     '</div>';
   }
   if(mode==='complete'){
@@ -59,15 +59,29 @@ function v12Rows(mode='compact'){
         '<span>'+t.p+'</span><span>'+v+'</span><span>'+e+'</span><span>'+d+'</span><b>'+t.pts+'</b>'+
       '</div>';
     }).join('');
-    return '<div class="v12-complete-head"><span></span><span></span><b>P</b><b>V</b><b>E</b><b>D</b><b>+PTOS</b></div>'+
-      '<div class="v12-direct-label">DIRECTOS A OCTAVOS</div>'+
-      '<div class="v12-direct-line"></div>'+
-      '<div class="v12-complete-list">'+rows+'</div>';
+    return '<div class="v12-table-shell v12-complete-shell">'+
+      '<div class="v12-table-scroll">'+
+        '<div class="v12-table-inner v12-table-inner-complete">'+
+          '<div class="v12-complete-head"><span></span><span></span><b>P</b><b>V</b><b>E</b><b>D</b><b>+PTOS</b></div>'+
+          '<div class="v12-direct-label">DIRECTOS A OCTAVOS</div>'+
+          '<div class="v12-direct-line"></div>'+
+          '<div class="v12-complete-list">'+rows+'</div>'+
+        '</div>'+
+      '</div>'+
+      '<span class="v12-table-edge" aria-hidden="true"></span>'+
+    '</div>';
   }
-  return '<div class="v12-stand-head"><span></span><b>P</b><b>+/-</b><b>PTOS</b><b>FORMA</b></div>'+
-    '<div class="v12-direct-label">DIRECTOS A OCTAVOS</div>'+
-    '<div class="v12-direct-line"></div>'+
-    '<div class="v12-stand-list">'+V12_TEAMS.map((t,i)=>'<div class="v12-stand-row"><span class="v12-rank">'+(i+1)+'</span><span class="v12-team-cell">'+v12TeamLogo(t)+'<strong>'+t.name+'</strong></span><span>'+t.p+'</span><span>'+t.gd+'</span><span>'+t.pts+'</span>'+v12Form(t)+'</div>').join('')+'</div>';
+  return '<div class="v12-table-shell v12-compact-shell">'+
+    '<div class="v12-table-scroll">'+
+      '<div class="v12-table-inner v12-table-inner-compact">'+
+        '<div class="v12-stand-head"><span></span><b>P</b><b>+/-</b><b>PTOS</b><b>FORMA</b></div>'+
+        '<div class="v12-direct-label">DIRECTOS A OCTAVOS</div>'+
+        '<div class="v12-direct-line"></div>'+
+        '<div class="v12-stand-list">'+V12_TEAMS.map((t,i)=>'<div class="v12-stand-row"><span class="v12-rank">'+(i+1)+'</span><span class="v12-team-cell">'+v12TeamLogo(t)+'<strong>'+t.name+'</strong></span><span>'+t.p+'</span><span>'+t.gd+'</span><span>'+t.pts+'</span>'+v12Form(t)+'</div>').join('')+'</div>'+
+      '</div>'+
+    '</div>'+
+    '<span class="v12-table-edge" aria-hidden="true"></span>'+
+  '</div>';
 }
 function v12StandingsBody(){
   return '<section class="v12-standings-reference" data-v12-standings>'+
