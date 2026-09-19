@@ -37,7 +37,7 @@ function v15PatchHome(){
       <div class="v21-home-feature-photo" aria-hidden="true">
         <img
           class="v21-home-feature-photo-image"
-          src="./assets/home-players-fictional.jpg?v=20260919-user-photo-4"
+          src="./assets/home-players-user.png?v=20260919-user-exact-5"
           alt=""
           loading="eager"
           decoding="async"

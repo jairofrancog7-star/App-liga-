@@ -20,21 +20,24 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Descargar imagen elegida por el usuario
+      - name: Descargar exactamente la imagen enviada por el usuario
         run: |
-          curl -fL --retry 3 --retry-delay 2 \
-            'https://d2ol7oe51mr4n9.cloudfront.net/user_3JNvttsAwr0QjxhuX5O1uaa9bvv/9d801af6-2092-4a4a-afbc-0b9e6c880ba9.png' \
-            -o assets/home-players-fictional.jpg
-          test -s assets/home-players-fictional.jpg
+          mkdir -p assets
+          curl -fL --retry 5 --retry-delay 2 \
+            'https://d2ol7oe51mr4n9.cloudfront.net/user_3JNvttsAwr0QjxhuX5O1uaa9bvv/23f05376-ed2b-4ddb-a074-24f77221b520.png' \
+            -o assets/home-players-user.png
+          test -s assets/home-players-user.png
+          test "$(wc -c < assets/home-players-user.png)" -gt 300000
+          file assets/home-players-user.png
 
-      - name: Guardar imagen en el repositorio
+      - name: Guardar imagen exacta en el repositorio
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add assets/home-players-fictional.jpg
+          git add assets/home-players-user.png
           if git diff --cached --quiet; then
-            echo "La imagen ya coincide"
+            echo "La imagen exacta ya está guardada"
           else
-            git commit -m "asset: usar imagen elegida en portada de Inicio"
+            git commit -m "asset(home): guardar imagen exacta enviada por el usuario"
             git push origin main
           fi
