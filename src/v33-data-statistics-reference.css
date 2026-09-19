@@ -1570,3 +1570,17 @@ body.v33-data-active .v33-detailed .v33-see-all{
     font-size:14px!important;
   }
 }
+
+
+/* V41 DATA — “Ver todos los equipos/jugadores” un poco más chico. */
+body.v33-data-active .v33-carousel .v33-see-all,
+body.v33-data-active .v33-detailed .v33-see-all{
+  font-size:14px!important;
+}
+
+@media(max-width:430px){
+  body.v33-data-active .v33-carousel .v33-see-all,
+  body.v33-data-active .v33-detailed .v33-see-all{
+    font-size:12.5px!important;
+  }
+}
