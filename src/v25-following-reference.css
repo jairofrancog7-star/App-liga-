@@ -1919,3 +1919,58 @@ body[data-app-route="following"] .v28-picker-row .v28-logo>.v28-fallback{
     font-size:16.5px!important;
   }
 }
+
+
+/* V45 FOLLOWING BUTTON INSET FIX — evita que “Siguiendo” se pegue a la orilla.
+   El selector reserva el mismo ancho para “Seguir” y “Siguiendo”, por lo que
+   el botón ya no se desplaza al cambiar de estado. */
+@media (max-width:520px){
+  body[data-app-route="following"] .v28-follow-page.v28-picker .v28-picker-list{
+    padding-left:16px!important;
+    padding-right:22px!important;
+  }
+  body[data-app-route="following"] .v28-follow-page.v28-picker .v28-picker-row{
+    grid-template-columns:42px minmax(0,1fr) 96px!important;
+    gap:8px!important;
+  }
+  body[data-app-route="following"] .v28-follow-page.v28-picker .v28-picker-follow,
+  body[data-app-route="following"] .v28-follow-page.v28-picker .v28-picker-follow.following{
+    width:92px!important;
+    min-width:92px!important;
+    max-width:92px!important;
+    justify-self:end!important;
+    margin-right:2px!important;
+    padding:0 8px!important;
+    box-sizing:border-box!important;
+  }
+
+  /* También conserva un margen cómodo en la lista principal de equipos seguidos. */
+  body[data-app-route="following"] .v28-follow-page.v28-followed .v28-follow-list{
+    padding-right:28px!important;
+  }
+  body[data-app-route="following"] .v28-follow-page.v28-followed .v28-following-pill{
+    margin-right:0!important;
+    justify-self:end!important;
+  }
+}
+
+@media (max-width:390px){
+  body[data-app-route="following"] .v28-follow-page.v28-picker .v28-picker-list{
+    padding-left:16px!important;
+    padding-right:20px!important;
+  }
+  body[data-app-route="following"] .v28-follow-page.v28-picker .v28-picker-row{
+    grid-template-columns:40px minmax(0,1fr) 92px!important;
+    gap:8px!important;
+  }
+  body[data-app-route="following"] .v28-follow-page.v28-picker .v28-picker-follow,
+  body[data-app-route="following"] .v28-follow-page.v28-picker .v28-picker-follow.following{
+    width:88px!important;
+    min-width:88px!important;
+    max-width:88px!important;
+    margin-right:2px!important;
+  }
+  body[data-app-route="following"] .v28-follow-page.v28-followed .v28-follow-list{
+    padding-right:26px!important;
+  }
+}
