@@ -27,3 +27,25 @@ body.v62-data-active .topbar{display:none!important}\nbody.v62-data-active #scre
 .v62-inline-rail{margin-bottom:8px}.v28-scorers-page .v62-category-rail{margin:0 -14px 10px;padding-left:14px;padding-right:14px}.v28-scorers-page .v62-category-rail>button{flex-basis:140px;min-height:49px}.v28-scorers-page .v62-cat-logo{width:36px;height:36px}.v28-scorers-page .v62-cat-logo img{width:32px;height:32px}
 .v62-v42-logo{width:24px;height:24px;min-width:24px;display:grid;place-items:center}.v62-v42-logo img{width:24px;height:24px;object-fit:contain}.v42-avatar.v62-player-initial{display:grid!important;place-items:center!important;background:#f3f4fb!important;color:#0a0b62!important;font-size:12px!important;font-weight:900!important}.v42-avatar.large.v62-player-initial{font-size:16px!important}
 @media(max-width:390px){.v62-category-rail>button{flex-basis:145px}.v62-data-head h1{font-size:22px}.v62-team-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+
+
+/* V63 — controles oficiales añadidos desde la otra app, manteniendo diseño azul */
+.v62-summary-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin-bottom:10px}
+.v62-summary-grid button{min-height:78px;padding:12px;border:1px solid rgba(76,94,196,.24);border-radius:12px;background:#0d0e6b;color:#fff;text-align:left}
+.v62-summary-grid b{display:block;color:#1de0eb;font-size:25px;line-height:1}.v62-summary-grid small{display:block;margin-top:7px;color:#c0c5df;font-size:10px;font-weight:700}
+.v62-summary-actions{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:7px;margin-bottom:14px}
+.v62-summary-actions button{height:36px;border:1px solid rgba(91,108,204,.28);border-radius:9px;background:#13146e;color:#fff;font-size:10.5px;font-weight:800}
+.v62-fixture-toolbar{display:grid;gap:9px;margin-bottom:12px}
+.v62-fixture-filter{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px;padding:5px;border:1px solid rgba(89,104,199,.24);border-radius:12px;background:#0b0c67}
+.v62-fixture-filter button{height:36px;border:0;border-radius:8px;background:#11126d;color:#c5c9df;font-size:11px;font-weight:800}
+.v62-fixture-filter button.active{background:#1ddde8;color:#06105a}
+.v62-fixture-actions{display:grid;grid-template-columns:1fr 1fr;gap:7px}
+.v62-fixture-actions button{height:36px;border:1px solid rgba(29,221,232,.45);border-radius:9px;background:#11126d;color:#1de0eb;font-size:10.5px;font-weight:850}
+.v62-player-tools{display:grid;gap:8px;margin:0 0 10px}
+.v62-player-tools select{width:100%;height:40px;padding:0 11px;border:1px solid rgba(109,124,214,.32);border-radius:10px;background:#0e0f68;color:#fff;outline:none;font-size:11px}
+.v62-player-tools .v62-player-search{margin:0}
+@media(max-width:390px){
+  .v62-summary-grid button{min-height:72px}
+  .v62-summary-grid b{font-size:23px}
+  .v62-summary-actions button,.v62-fixture-actions button{font-size:10px}
+}
