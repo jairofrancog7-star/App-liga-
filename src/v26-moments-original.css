@@ -159,3 +159,61 @@ body[data-app-route="moments"] .screen{
 .v26-moments-panel[data-v26-panel="b"] .v26-nav{
   height:10.55%!important;
 }
+
+
+/* V26 sticky header — comportamiento del video de referencia. */
+body[data-app-route="moments"] .v26-moments-sticky{
+  position:fixed!important;
+  top:0!important;
+  left:50%!important;
+  transform:translateX(-50%)!important;
+  z-index:50!important;
+  width:min(100vw,520px)!important;
+  height:calc(min(100vw,520px) * .3154)!important;
+  margin:0!important;
+  padding:0!important;
+  overflow:hidden!important;
+  background:#02065f!important;
+  line-height:0!important;
+  pointer-events:none!important;
+  contain:paint!important;
+}
+body[data-app-route="moments"] .v26-moments-sticky__image{
+  position:absolute!important;
+  inset:0 auto auto 0!important;
+  display:block!important;
+  width:100%!important;
+  height:auto!important;
+  max-width:none!important;
+  margin:0!important;
+  padding:0!important;
+  object-fit:contain!important;
+  pointer-events:none!important;
+  user-select:none!important;
+  -webkit-user-drag:none!important;
+}
+body[data-app-route="moments"] .v26-moments-sticky-back{
+  position:absolute!important;
+  left:3.7%!important;
+  top:40.84%!important;
+  width:11.5%!important;
+  height:40.84%!important;
+  z-index:2!important;
+  display:block!important;
+  margin:0!important;
+  padding:0!important;
+  border:0!important;
+  border-radius:0!important;
+  background:transparent!important;
+  box-shadow:none!important;
+  outline:0!important;
+  cursor:pointer!important;
+  pointer-events:auto!important;
+  touch-action:manipulation!important;
+  -webkit-tap-highlight-color:transparent!important;
+}
+body[data-app-route="moments"] .v26-moments-sticky-back:focus-visible{
+  outline:2px solid #20dfee!important;
+  outline-offset:-2px!important;
+  border-radius:14px!important;
+}
