@@ -48,7 +48,25 @@ function v12Rows(mode='compact'){
       '<span class="v12-criteria-edge" aria-hidden="true"></span>'+
     '</div>';
   }
-  return '<div class="v12-stand-head"><span>LIGA MUNICIPAL JUVENTINO ROSAS</span><b>P</b><b>+/-</b><b>PTOS</b><b>FORMA</b></div>'+
+  if(mode==='complete'){
+    const rows=V12_TEAMS.map((t,i)=>{
+      const v=t.form.filter(x=>x==='w').length;
+      const e=t.form.filter(x=>x==='n').length;
+      const d=t.form.filter(x=>x==='l').length;
+      return '<div class="v12-complete-row">'+
+        '<span class="v12-rank">'+(i+1)+'</span>'+
+        '<span class="v12-team-cell">'+v12TeamLogo(t)+'<strong>'+t.name+'</strong></span>'+
+        '<span>'+t.p+'</span><span>'+v+'</span><span>'+e+'</span><span>'+d+'</span><b>'+t.pts+'</b>'+
+      '</div>';
+    }).join('');
+    return '<div class="v12-complete-head"><span></span><span></span><b>P</b><b>V</b><b>E</b><b>D</b><b>+PTOS</b></div>'+
+      '<div class="v12-direct-label">DIRECTOS A OCTAVOS</div>'+
+      '<div class="v12-direct-line"></div>'+
+      '<div class="v12-complete-list">'+rows+'</div>';
+  }
+  return '<div class="v12-stand-head"><span></span><b>P</b><b>+/-</b><b>PTOS</b><b>FORMA</b></div>'+
+    '<div class="v12-direct-label">DIRECTOS A OCTAVOS</div>'+
+    '<div class="v12-direct-line"></div>'+
     '<div class="v12-stand-list">'+V12_TEAMS.map((t,i)=>'<div class="v12-stand-row"><span class="v12-rank">'+(i+1)+'</span><span class="v12-team-cell">'+v12TeamLogo(t)+'<strong>'+t.name+'</strong></span><span>'+t.p+'</span><span>'+t.gd+'</span><span>'+t.pts+'</span>'+v12Form(t)+'</div>').join('')+'</div>';
 }
 function v12StandingsBody(){
