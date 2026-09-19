@@ -436,10 +436,10 @@ body.v28-match-active .v28-stadium-photo{
   border-radius:0!important;
   background-image:
     linear-gradient(rgba(3,20,85,.10),rgba(3,10,65,.22)),
-    url("../assets/reference/predictor-master.png")!important;
+    url("../quiz-stadium-reference.webp")!important;
   background-repeat:no-repeat!important;
-  background-size:100% auto!important;
-  background-position:center 92.5%!important;
+  background-size:cover!important;
+  background-position:center center!important;
   box-shadow:none!important;
 }
 body.v28-match-active .v28-video-venue{
@@ -506,11 +506,30 @@ body.v28-match-active .v28-local-time i::after{
 
 /* En el video Clasificación baja el selector antes de mostrar la tabla. */
 body.v28-match-active .v28-standings-panel{
-  padding:
-    clamp(175px,23vh,245px)
-    clamp(20px,5.2vw,28px)
-    clamp(24px,6vw,34px)!important;
+  padding:0!important;
   background:#05065a!important;
+}
+body.v28-match-active .v28-embedded-standings{
+  --v40-cyan:#20e7f0;
+  --v40-navy:#05065a;
+  min-height:auto!important;
+  padding:clamp(24px,5.2vw,30px) clamp(20px,5.2vw,28px) clamp(30px,7vw,42px)!important;
+  background:linear-gradient(180deg,#05065f 0%,#03045a 100%)!important;
+}
+body.v28-match-active .v28-embedded-standings .v40-content{
+  margin-top:clamp(28px,6vw,36px)!important;
+}
+body.v28-match-active .v28-embedded-standings .v40-segmented{
+  height:clamp(58px,8.2vh,68px)!important;
+}
+body.v28-match-active .v28-embedded-standings .v40-table-head,
+body.v28-match-active .v28-embedded-standings .v40-row{
+  width:100%!important;
+}
+body.v28-match-active .v28-embedded-standings .v40-team strong{
+  white-space:nowrap!important;
+  overflow:hidden!important;
+  text-overflow:ellipsis!important;
 }
 body.v28-match-active .v28-segmented{
   height:clamp(62px,8.2vh,74px)!important;
@@ -556,6 +575,6 @@ body.v28-match-active .v28-body{
     margin-top:38px!important;
   }
   body.v28-match-active .v28-standings-panel{
-    padding-top:165px!important;
+    padding-top:0!important;
   }
 }
