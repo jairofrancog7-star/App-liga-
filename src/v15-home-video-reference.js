@@ -1,10 +1,10 @@
 const V15_TEAM_BASE='https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/';
 const V15_STORIES=[
-  {label:'Momentos<br>de la Liga ✦',route:'moments',type:'moments'},
-  {label:'La Huerta 📸',route:'teams',logo:'assets/teams/la-huerta-cuenda.webp'},
+  {label:'Atlético Galeana 📸',route:'teams',logo:'assets/teams/atletico-galeana.webp'},
   {label:'Promesas FC 📸',route:'teams',logo:'assets/teams/promesas-fc-pozos.webp'},
-  {label:'Franco FC 📸',route:'teams',logo:'assets/teams/franco-fc.webp'},
-  {label:'Lobos CDG 📸',route:'teams',logo:'assets/teams/lobos-cdg.webp'}
+  {label:'Momentos<br>de la Liga ✨',route:'moments',logo:'assets/liga-logo.webp',type:'moments'},
+  {label:'La Huerta 📸',route:'teams',logo:'assets/teams/la-huerta-cuenda.webp'},
+  {label:'Franco FC 📸',route:'teams',logo:'assets/teams/franco-fc.webp'}
 ];
 
 function v15Route(){return location.hash.replace('#/','')||'home'}
@@ -23,11 +23,7 @@ function v15PatchHome(){
     const ring=story.querySelector('.story-ring');
     const label=story.querySelector('small');
     if(ring){
-      if(item.type==='moments'){
-        ring.innerHTML='<span class="v15-moments-mark"><i>⚽</i><b>MOMENTOS</b></span>';
-      }else{
-        ring.innerHTML='<span class="story-inner v15-story-inner"><img src="'+V15_TEAM_BASE+item.logo+'" alt="'+item.label.replace(/<br>|📸/g,'').trim()+'"></span>';
-      }
+      ring.innerHTML='<span class="story-inner v15-story-inner"><img src="'+V15_TEAM_BASE+item.logo+'" alt="'+item.label.replace(/<br>|📸|✨/g,'').trim()+'"></span>';
     }
     if(label) label.innerHTML=item.label;
   });
