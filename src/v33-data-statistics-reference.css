@@ -436,3 +436,236 @@ body.v33-data-active .bottom-nav .nav-item:last-child .nav-icon{
   }
   .v33-data-page{max-width:520px;margin:0 auto}
 }
+
+
+/* V34 — cabecera dinámica exacta para las tres vistas de Estadísticas.
+   Estado superior: referencia 2 (grande con "Fase final").
+   Al bajar por las estadísticas: se transforma suavemente en referencia 1. */
+body.v33-data-active .v33-data-head{
+  --v33-head-h:390px;
+  --v33-expanded-opacity:1;
+  --v33-collapsed-opacity:0;
+  --v33-tabs-opacity:1;
+  position:sticky!important;
+  top:0!important;
+  z-index:120!important;
+  width:100%!important;
+  height:var(--v33-head-h)!important;
+  min-height:var(--v33-head-h)!important;
+  overflow:hidden!important;
+  transition:height .06s linear,min-height .06s linear!important;
+  background:
+    radial-gradient(circle at 76% 4%,rgba(39,91,255,.72),transparent 27%),
+    radial-gradient(circle at 33% 16%,rgba(26,57,220,.36),transparent 38%),
+    linear-gradient(180deg,#172fe5 0%,#1029d0 28%,#071596 60%,#02065e 100%)!important;
+  box-shadow:none!important;
+}
+body.v33-data-active .v33-data-head::after{
+  display:block!important;
+  opacity:.38!important;
+  background:
+    linear-gradient(118deg,transparent 0 20%,rgba(68,120,255,.22) 20.4% 20.8%,transparent 21.2% 100%),
+    linear-gradient(33deg,transparent 0 67%,rgba(60,111,255,.18) 67.4% 67.8%,transparent 68.2% 100%)!important;
+}
+
+body.v33-data-active .v33-head-actions{
+  position:absolute!important;
+  z-index:8!important;
+  left:28px!important;
+  right:28px!important;
+  top:27px!important;
+  height:54px!important;
+}
+body.v33-data-active .v33-head-actions button{
+  width:54px!important;
+  height:54px!important;
+}
+body.v33-data-active .v33-head-actions svg{
+  width:39px!important;
+  height:39px!important;
+  stroke-width:2.05!important;
+}
+
+.v33-expanded-title{
+  position:absolute;
+  z-index:6;
+  left:39px;
+  right:30px;
+  top:174px;
+  opacity:var(--v33-expanded-opacity);
+  transform:translateY(calc(var(--v33-collapse,0) * -26px));
+  transform-origin:left center;
+  transition:opacity .05s linear;
+  pointer-events:none;
+}
+.v33-expanded-title h1{
+  margin:0;
+  color:#fff;
+  font-size:68px;
+  line-height:.98;
+  font-weight:500;
+  letter-spacing:-.045em;
+}
+.v33-expanded-title p{
+  margin:30px 0 0;
+  color:#cacbdf;
+  font-size:31px;
+  line-height:1;
+  font-weight:600;
+  letter-spacing:-.018em;
+}
+
+.v33-collapsed-title{
+  position:absolute;
+  z-index:7;
+  left:50%;
+  top:40px;
+  transform:translateX(-50%);
+  width:max-content;
+  max-width:56%;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+  color:#fff;
+  font-size:34px;
+  line-height:1;
+  font-weight:500;
+  letter-spacing:-.025em;
+  opacity:var(--v33-collapsed-opacity);
+  pointer-events:none;
+}
+
+body.v33-data-active .v33-tabs{
+  position:absolute!important;
+  z-index:9!important;
+  left:0!important;
+  right:0!important;
+  bottom:0!important;
+  height:76px!important;
+  opacity:var(--v33-tabs-opacity)!important;
+  display:flex!important;
+  align-items:stretch!important;
+  overflow-x:auto!important;
+  overflow-y:hidden!important;
+  scroll-snap-type:x proximity!important;
+  background:#171778!important;
+  border-top:0!important;
+  border-bottom:2px solid rgba(220,224,255,.88)!important;
+  box-shadow:none!important;
+}
+body.v33-data-active .v33-tabs button{
+  height:76px!important;
+  min-width:max-content!important;
+  padding:0 34px!important;
+  color:#d6d6e3!important;
+  font-size:22px!important;
+  font-weight:600!important;
+  letter-spacing:-.015em!important;
+  scroll-snap-align:center!important;
+}
+body.v33-data-active .v33-tabs button.active{
+  color:#13e3ee!important;
+}
+body.v33-data-active .v33-tabs button.active::after{
+  left:32px!important;
+  right:32px!important;
+  bottom:0!important;
+  height:4px!important;
+  background:#7c5bdf!important;
+  border-radius:5px 5px 0 0!important;
+}
+body.v33-data-active .v33-data-page[data-v33-mode="team"] .v33-tabs button.active::after,
+body.v33-data-active .v33-data-page[data-v33-mode="player"] .v33-tabs button.active::after{
+  background:#12dce8!important;
+}
+
+/* La misma cabecera funciona en General, Equipo y Jugador. */
+body.v33-data-active .v33-data-head.general,
+body.v33-data-active .v33-data-head.compact{
+  height:var(--v33-head-h)!important;
+  min-height:var(--v33-head-h)!important;
+}
+body.v33-data-active .v33-general-brand,
+body.v33-data-active .v33-compact-brand,
+body.v33-data-active .v33-league-lockup{
+  display:none!important;
+}
+
+/* Estado compacto equivalente a la primera referencia. */
+body.v33-data-active .v33-data-head.is-collapsed{
+  background:
+    radial-gradient(circle at 76% 0%,rgba(38,86,255,.64),transparent 30%),
+    linear-gradient(180deg,#1730dd 0%,#0f25c3 42%,#07127d 100%)!important;
+}
+body.v33-data-active .v33-data-head.is-collapsed .v33-head-actions{
+  top:18px!important;
+}
+body.v33-data-active .v33-data-head.is-collapsed .v33-tabs{
+  height:63px!important;
+}
+body.v33-data-active .v33-data-head.is-collapsed .v33-tabs button{
+  height:63px!important;
+  font-size:15px!important;
+  padding:0 25px!important;
+}
+
+@media(max-width:430px){
+  body.v33-data-active .v33-data-head{
+    --v33-head-h:350px;
+  }
+  body.v33-data-active .v33-head-actions{
+    left:20px!important;
+    right:20px!important;
+    top:22px!important;
+  }
+  body.v33-data-active .v33-head-actions button{
+    width:46px!important;
+    height:46px!important;
+  }
+  body.v33-data-active .v33-head-actions svg{
+    width:34px!important;
+    height:34px!important;
+  }
+  .v33-expanded-title{
+    left:28px;
+    right:22px;
+    top:153px;
+  }
+  .v33-expanded-title h1{
+    font-size:56px;
+  }
+  .v33-expanded-title p{
+    margin-top:24px;
+    font-size:25px;
+  }
+  .v33-collapsed-title{
+    top:34px;
+    max-width:54%;
+    font-size:29px;
+  }
+  body.v33-data-active .v33-tabs{
+    height:70px!important;
+  }
+  body.v33-data-active .v33-tabs button{
+    height:70px!important;
+    padding:0 25px!important;
+    font-size:18px!important;
+  }
+  body.v33-data-active .v33-data-head.is-collapsed .v33-tabs{
+    height:59px!important;
+  }
+  body.v33-data-active .v33-data-head.is-collapsed .v33-tabs button{
+    height:59px!important;
+    font-size:13px!important;
+    padding:0 19px!important;
+  }
+}
+@media(max-width:360px){
+  .v33-expanded-title{
+    left:22px;
+    top:145px;
+  }
+  .v33-expanded-title h1{font-size:49px}
+  .v33-expanded-title p{font-size:22px}
+  .v33-collapsed-title{font-size:25px}
+}
