@@ -1081,3 +1081,105 @@ body[data-app-route="home"] .topbar{
   background-size:cover!important;
   background-position:center top!important;
 }
+
+
+/* V29 HOME HEADER ICON RATIO — logo de Liga + perfil sin estirar.
+   Se dibujan como cuadrados con background-size:contain para conservar proporción. */
+body[data-app-route="home"] .topbar .wordmark{
+  display:block!important;
+  visibility:visible!important;
+  opacity:1!important;
+  pointer-events:auto!important;
+  position:absolute!important;
+  left:4.2%!important;
+  top:20%!important;
+  width:22%!important;
+  height:auto!important;
+  aspect-ratio:1 / 1!important;
+  max-width:92px!important;
+  max-height:92px!important;
+  min-width:0!important;
+  min-height:0!important;
+  margin:0!important;
+  padding:0!important;
+  border:0!important;
+  border-radius:50%!important;
+  background-color:rgba(3,8,91,.94)!important;
+  background-image:var(--v12-league-white)!important;
+  background-repeat:no-repeat!important;
+  background-position:center!important;
+  background-size:contain!important;
+  color:transparent!important;
+  font-size:0!important;
+  box-shadow:0 0 0 10px rgba(3,8,91,.94)!important;
+  overflow:visible!important;
+  transform:none!important;
+  z-index:25!important;
+}
+
+body[data-app-route="home"] .topbar .wordmark::before,
+body[data-app-route="home"] .topbar .wordmark::after{
+  content:none!important;
+  display:none!important;
+}
+
+body[data-app-route="home"] .topbar .profile-button{
+  display:block!important;
+  visibility:visible!important;
+  opacity:1!important;
+  pointer-events:auto!important;
+  position:absolute!important;
+  right:4.2%!important;
+  top:22%!important;
+  width:12.5%!important;
+  height:auto!important;
+  aspect-ratio:1 / 1!important;
+  max-width:54px!important;
+  max-height:54px!important;
+  min-width:0!important;
+  min-height:0!important;
+  margin:0!important;
+  padding:0!important;
+  border:0!important;
+  border-radius:50%!important;
+  background-color:rgba(3,8,91,.94)!important;
+  background-image:var(--v12-profile-white)!important;
+  background-repeat:no-repeat!important;
+  background-position:center!important;
+  background-size:contain!important;
+  color:transparent!important;
+  box-shadow:0 0 0 8px rgba(3,8,91,.94)!important;
+  overflow:visible!important;
+  transform:none!important;
+  z-index:25!important;
+}
+
+body[data-app-route="home"] .topbar .profile-button svg{
+  display:none!important;
+}
+
+/* La imagen de fondo nunca se fuerza a un rectángulo: conserva su relación de aspecto. */
+body[data-app-route="home"] .topbar{
+  background-size:cover!important;
+  background-repeat:no-repeat!important;
+  background-position:center top!important;
+}
+
+@media(max-width:380px){
+  body[data-app-route="home"] .topbar .wordmark{
+    left:4.5%!important;
+    top:21%!important;
+    width:21%!important;
+    max-width:78px!important;
+    max-height:78px!important;
+    box-shadow:0 0 0 8px rgba(3,8,91,.94)!important;
+  }
+  body[data-app-route="home"] .topbar .profile-button{
+    right:4.5%!important;
+    top:23%!important;
+    width:12%!important;
+    max-width:46px!important;
+    max-height:46px!important;
+    box-shadow:0 0 0 6px rgba(3,8,91,.94)!important;
+  }
+}
