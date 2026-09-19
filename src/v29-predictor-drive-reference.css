@@ -1,270 +1,87 @@
-/* V36 — Pronostica Seis: reconstrucción con los recursos originales del ZIP.
-   Sin capturas apiladas: título, campo, números, trofeo y escudo son capas transparentes reales. */
+/* V37 — Pronostica Seis.
+   El usuario pidió plasmar directamente la referencia visual completa.
+   Se muestra una sola imagen continua, sin capas, tarjetas o recortes encimados. */
+
 body[data-app-route="predictor"]{
-  --v29-bg:#02045a;
-  --v29-cyan:#19e7ff;
-  background:var(--v29-bg)!important;
+  --v37-predictor-navy:#17166f;
+  background:#01034f!important;
   overflow:hidden!important;
 }
+
 body[data-app-route="predictor"] #app,
 body[data-app-route="predictor"] .app-shell{
   width:min(100%,520px)!important;
   min-height:100dvh!important;
   margin:0 auto!important;
   padding:0!important;
-  background:var(--v29-bg)!important;
+  background:#01034f!important;
   overflow:hidden!important;
 }
-body[data-app-route="predictor"] #app>.topbar{display:none!important}
+
+body[data-app-route="predictor"] #app>.topbar{
+  display:none!important;
+}
+
 body[data-app-route="predictor"] #screen{
   position:relative!important;
   width:100%!important;
-  height:100dvh!important;
-  min-height:100dvh!important;
-  max-height:100dvh!important;
+  height:calc(100dvh - var(--v34-nav-h,60px) - env(safe-area-inset-bottom))!important;
+  min-height:0!important;
+  max-height:none!important;
   margin:0!important;
   padding:0!important;
   overflow:hidden!important;
-  background:
-    radial-gradient(ellipse at 50% 3%,rgba(22,82,255,.94) 0%,rgba(8,44,225,.70) 23%,rgba(4,19,153,.27) 47%,transparent 67%),
-    radial-gradient(ellipse at 50% 58%,rgba(0,83,255,.16),transparent 43%),
-    linear-gradient(180deg,#061bcf 0%,#0412a8 28%,#020875 60%,#01034f 100%)!important;
+  background:#01034f!important;
   animation:none!important;
 }
-body[data-app-route="predictor"] .v29-predictor-page{
-  position:relative!important;
-  isolation:isolate!important;
+
+body[data-app-route="predictor"] .v37-predictor-reference{
+  position:absolute!important;
+  inset:0!important;
   width:100%!important;
-  height:calc(100dvh - var(--v34-nav-h,60px) - env(safe-area-inset-bottom))!important;
-  min-height:0!important;
+  height:100%!important;
   margin:0!important;
+  padding:0!important;
   overflow:hidden!important;
+  background:#01034f!important;
 }
-body[data-app-route="predictor"] .v29-predictor-page::before{
-  content:""!important;
+
+body[data-app-route="predictor"] .v37-predictor-reference-image{
   position:absolute!important;
   inset:0!important;
-  z-index:0!important;
-  pointer-events:none!important;
-  background:
-    linear-gradient(90deg,rgba(0,4,76,.13),transparent 20%,transparent 80%,rgba(0,4,76,.14)),
-    radial-gradient(ellipse at 50% 76%,rgba(0,154,255,.10),transparent 38%)!important;
-}
-
-/* Logo PRONOSTICA SEIS original del ZIP (drawable-es-xxhdpi/uclpredictor_logo.webp). */
-body[data-app-route="predictor"] .v29-title-art{
-  position:absolute!important;
-  z-index:6!important;
-  left:50%!important;
-  top:9.5%!important;
-  width:min(62%,330px)!important;
-  height:auto!important;
+  display:block!important;
+  width:100%!important;
+  height:100%!important;
   max-width:none!important;
-  transform:translateX(-50%)!important;
-  object-fit:contain!important;
-  user-select:none!important;
-  pointer-events:none!important;
-  -webkit-user-drag:none!important;
-}
-
-/* Escudo de la Liga limpio y sin rectángulo de fondo. */
-body[data-app-route="predictor"] .v29-league-crest{
-  position:absolute!important;
-  z-index:6!important;
-  left:50%!important;
-  top:36.5%!important;
-  width:min(26.5%,138px)!important;
-  height:auto!important;
-  max-width:none!important;
-  transform:translateX(-50%)!important;
-  object-fit:contain!important;
-  filter:drop-shadow(0 3px 7px rgba(0,0,50,.20))!important;
-  user-select:none!important;
-  pointer-events:none!important;
-  -webkit-user-drag:none!important;
-}
-
-body[data-app-route="predictor"] .v29-board{
-  position:absolute!important;
-  inset:0!important;
-  z-index:2!important;
-  pointer-events:none!important;
-}
-
-/* Tarjeta de pronóstico: una sola superficie integrada, no una imagen rectangular pegada. */
-body[data-app-route="predictor"] .v29-panel{
-  position:absolute!important;
-  z-index:2!important;
-  left:21.2%!important;
-  top:58.2%!important;
-  width:57.6%!important;
-  height:13.2%!important;
-  box-sizing:border-box!important;
-  border-radius:17px!important;
-  border:1.3px solid rgba(36,180,255,.72)!important;
-  background:
-    radial-gradient(circle at 48% 30%,rgba(88,70,255,.22),transparent 47%),
-    linear-gradient(180deg,rgba(33,42,163,.48),rgba(12,18,116,.40))!important;
-  box-shadow:
-    inset 0 0 24px rgba(47,68,255,.22),
-    0 0 12px rgba(0,177,255,.10)!important;
-}
-body[data-app-route="predictor"] .v29-panel::before{
-  content:""!important;
-  position:absolute!important;
-  inset:-1px!important;
-  border-radius:18px!important;
-  pointer-events:none!important;
-  border-top:1px solid rgba(255,42,210,.46)!important;
-  border-left:1px solid rgba(19,219,255,.52)!important;
-  border-right:1px solid rgba(31,255,170,.45)!important;
-}
-
-/* Trofeo Juventino: PNG/WebP transparente, sin el fondo azul cuadrado anterior. */
-body[data-app-route="predictor"] .v29-trophy-art{
-  position:absolute!important;
-  z-index:7!important;
-  left:50%!important;
-  top:49.9%!important;
-  width:min(24.5%,128px)!important;
-  height:auto!important;
-  max-width:none!important;
-  transform:translateX(-50%)!important;
-  object-fit:contain!important;
-  filter:drop-shadow(0 9px 12px rgba(0,0,55,.34)) drop-shadow(0 0 9px rgba(0,225,255,.18))!important;
-  user-select:none!important;
-  pointer-events:none!important;
-  -webkit-user-drag:none!important;
-}
-
-/* Campo original del ZIP, recoloreado a la paleta azul de la referencia. */
-body[data-app-route="predictor"] .v29-pitch-art{
-  position:absolute!important;
-  z-index:3!important;
-  left:50%!important;
-  top:68.8%!important;
-  width:min(78%,405px)!important;
-  height:auto!important;
-  max-width:none!important;
-  transform:translateX(-50%)!important;
-  object-fit:contain!important;
-  filter:drop-shadow(0 14px 14px rgba(0,0,54,.26))!important;
-  user-select:none!important;
-  pointer-events:none!important;
-  -webkit-user-drag:none!important;
-}
-
-/* Los símbolos 2 y ? también vienen del recurso original, no se dibujan con tipografía. */
-body[data-app-route="predictor"] .v29-pick{
-  position:absolute!important;
-  z-index:9!important;
-  display:grid!important;
-  place-items:center!important;
+  max-height:none!important;
   margin:0!important;
   padding:0!important;
   border:0!important;
-  outline:0!important;
-  background:transparent!important;
-  color:#fff!important;
-  cursor:pointer!important;
-  pointer-events:auto!important;
-  touch-action:manipulation!important;
-  -webkit-tap-highlight-color:transparent!important;
-}
-body[data-app-route="predictor"] .v29-pick img{
-  display:block!important;
-  width:auto!important;
-  height:100%!important;
-  max-width:100%!important;
-  object-fit:contain!important;
-  pointer-events:none!important;
-  filter:drop-shadow(0 2px 1px rgba(255,255,255,.08)) drop-shadow(0 4px 5px rgba(0,0,60,.16))!important;
-}
-body[data-app-route="predictor"] .v29-pick-text{
-  display:grid!important;
-  place-items:center!important;
-  width:100%!important;
-  height:100%!important;
-  color:#fff!important;
-  font-family:Impact,"Arial Narrow",sans-serif!important;
-  font-size:clamp(38px,9vw,62px)!important;
-  font-weight:800!important;
-  line-height:1!important;
-  text-shadow:0 3px 6px rgba(0,0,50,.22)!important;
-}
-body[data-app-route="predictor"] .v29-pick:active{transform:scale(.96)!important}
-body[data-app-route="predictor"] .v29-pick-1{
-  left:25.8%!important;
-  top:60.7%!important;
-  width:14.3%!important;
-  height:8.8%!important;
-}
-body[data-app-route="predictor"] .v29-pick-2{
-  right:23.7%!important;
-  top:57.8%!important;
-  width:12.5%!important;
-  height:7.8%!important;
-}
-body[data-app-route="predictor"] .v29-pick-3{
-  right:23.7%!important;
-  top:64.2%!important;
-  width:12.5%!important;
-  height:7.8%!important;
-}
-
-/* Estadio real del recurso del ZIP. El degradado de máscara funde su borde superior con el fondo. */
-body[data-app-route="predictor"] .v29-stadium-art{
-  position:absolute!important;
-  z-index:4!important;
-  left:50%!important;
-  bottom:0!important;
-  width:100%!important;
-  height:17.2%!important;
-  max-width:none!important;
-  transform:translateX(-50%)!important;
   object-fit:cover!important;
-  object-position:center 58%!important;
+  object-position:center center!important;
   user-select:none!important;
   pointer-events:none!important;
   -webkit-user-drag:none!important;
-  -webkit-mask-image:linear-gradient(180deg,transparent 0%,rgba(0,0,0,.58) 17%,#000 34%,#000 100%)!important;
-  mask-image:linear-gradient(180deg,transparent 0%,rgba(0,0,0,.58) 17%,#000 34%,#000 100%)!important;
 }
 
-/* Barra inferior común de toda la app. v34 fija medidas e iconos del ZIP. */
+/* Mantener la barra inferior real y funcional de la app. */
 body[data-app-route="predictor"] .bottom-nav{
   display:grid!important;
   grid-template-columns:repeat(5,minmax(0,1fr))!important;
-  background:#17166f!important;
+  background:var(--v37-predictor-navy)!important;
   border-top:1px solid rgba(84,103,255,.38)!important;
   box-shadow:none!important;
 }
-body[data-app-route="predictor"] .bottom-nav .nav-item{color:#a8a7cb!important}
-body[data-app-route="predictor"] .bottom-nav .nav-item[data-route="more"]{color:var(--v29-cyan)!important}
 
-body[data-app-route="predictor"] .v29-sr-only{
-  position:absolute!important;
-  width:1px!important;
-  height:1px!important;
-  padding:0!important;
-  margin:-1px!important;
-  overflow:hidden!important;
-  clip:rect(0,0,0,0)!important;
-  white-space:nowrap!important;
-  border:0!important;
+body[data-app-route="predictor"] .bottom-nav .nav-item{
+  color:#a8a7cb!important;
 }
 
-@media(max-height:740px){
-  body[data-app-route="predictor"] .v29-title-art{top:7.5%!important;width:min(58%,300px)!important}
-  body[data-app-route="predictor"] .v29-league-crest{top:34.5%!important;width:min(24.5%,122px)!important}
-  body[data-app-route="predictor"] .v29-panel{top:56.9%!important}
-  body[data-app-route="predictor"] .v29-trophy-art{top:48.5%!important;width:min(23%,116px)!important}
-  body[data-app-route="predictor"] .v29-pick-1{top:59.3%!important}
-  body[data-app-route="predictor"] .v29-pick-2{top:56.5%!important}
-  body[data-app-route="predictor"] .v29-pick-3{top:62.8%!important}
-  body[data-app-route="predictor"] .v29-pitch-art{top:67.4%!important}
-  body[data-app-route="predictor"] .v29-stadium-art{height:16.2%!important}
+body[data-app-route="predictor"] .bottom-nav .nav-item[data-route="more"],
+body[data-app-route="predictor"] .bottom-nav .nav-item.active{
+  color:#19e7ff!important;
 }
+
 @media(min-width:521px){
   body[data-app-route="predictor"] #screen,
   body[data-app-route="predictor"] .bottom-nav{
