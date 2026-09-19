@@ -66,6 +66,8 @@
   document.addEventListener('click',function(e){
     const hit=e.target.closest('[data-match]');
     if(!hit)return;
+    e.preventDefault();
+    e.stopPropagation();
     let data={id:hit.dataset.match||'m1',from:location.hash||'#/competition'};
     const schedule=hit.closest('.v12-schedule-match');
     if(schedule){
@@ -88,6 +90,8 @@
       if(m)data={...data,...m};
     }
     saveMatch(data);
+    if(location.hash!=='#/match') location.hash='#/match';
+    else schedule();
   },true);
 
   function selected(){
