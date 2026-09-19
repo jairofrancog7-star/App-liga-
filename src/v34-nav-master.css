@@ -541,3 +541,48 @@ html.v31-hospitality-active .v31-continue{
     bottom:calc(env(safe-area-inset-bottom,0px) + 46px)!important;
   }
 }
+
+
+/* === V51 HOSPITALITY — CENTRADO VISUAL DE CHECK / LOGO / VIP ===
+   Ajuste solicitado sobre la cápsula de acceso. No cambia tamaños ni estructura. */
+html.v31-hospitality-active .v31-access-option{
+  height:100%!important;
+  padding:0!important;
+  align-items:center!important;
+  justify-content:center!important;
+  line-height:1!important;
+}
+html.v31-hospitality-active .v31-selected-content{
+  height:100%!important;
+  align-items:center!important;
+}
+html.v31-hospitality-active .v31-check{
+  position:relative!important;
+  top:-8px!important;
+  align-self:center!important;
+  justify-self:center!important;
+}
+html.v31-hospitality-active .v31-league-logo{
+  position:relative!important;
+  top:-8px!important;
+  align-self:center!important;
+  justify-self:center!important;
+}
+html.v31-hospitality-active .v31-access-option:last-child{
+  display:flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+}
+html.v31-hospitality-active .v31-vip{
+  position:relative!important;
+  top:-7px!important;
+  height:100%!important;
+  display:flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  width:100%!important;
+  margin:0!important;
+  padding:0!important;
+  text-align:center!important;
+  line-height:1!important;
+}
