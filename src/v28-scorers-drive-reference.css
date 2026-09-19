@@ -276,3 +276,105 @@ body.v28-scorers-active .v28-feature-person small{
     font-size:18px!important;
   }
 }
+
+
+/* V54 — ranking compacto como referencia 2: filas, iconos y números reducidos. */
+@media (max-width:520px){
+  /* Sólo la lista #3 en adelante: más compacta y más pegada al borde izquierdo. */
+  body.v28-scorers-active .v28-ranking{
+    width:calc(100% + 8px)!important;
+    margin-left:-4px!important;
+    margin-top:4px!important;
+  }
+
+  body.v28-scorers-active .v28-rank-row{
+    min-height:62px!important;
+    height:62px!important;
+    padding:0!important;
+    grid-template-columns:30px 40px minmax(0,1fr) 26px!important;
+    column-gap:5px!important;
+    align-items:center!important;
+  }
+
+  body.v28-scorers-active .v28-rank-number{
+    font-size:14px!important;
+    line-height:1!important;
+    font-weight:600!important;
+    color:#fff!important;
+    text-align:left!important;
+  }
+
+  body.v28-scorers-active .v28-team-logo{
+    width:38px!important;
+    height:38px!important;
+    min-width:38px!important;
+    min-height:38px!important;
+    max-width:38px!important;
+    max-height:38px!important;
+    flex:0 0 38px!important;
+    border-width:1.5px!important;
+  }
+  body.v28-scorers-active .v28-team-logo img{
+    width:34px!important;
+    height:34px!important;
+    min-width:34px!important;
+    min-height:34px!important;
+    max-width:34px!important;
+    max-height:34px!important;
+    object-fit:contain!important;
+  }
+  body.v28-scorers-active .v28-team-fallback{
+    font-size:10px!important;
+  }
+
+  body.v28-scorers-active .v28-rank-copy{
+    gap:2px!important;
+  }
+  body.v28-scorers-active .v28-rank-copy b{
+    font-size:15px!important;
+    line-height:1.04!important;
+    font-weight:600!important;
+  }
+  body.v28-scorers-active .v28-rank-copy small{
+    font-size:13px!important;
+    line-height:1.04!important;
+    font-weight:400!important;
+  }
+
+  /* La referencia 2 lleva el total de goles a la derecha en blanco. */
+  body.v28-scorers-active .v28-rank-goals{
+    justify-self:end!important;
+    color:#fff!important;
+    font-size:18px!important;
+    line-height:1!important;
+    font-weight:500!important;
+    text-align:right!important;
+  }
+}
+
+@media (max-width:390px){
+  body.v28-scorers-active .v28-ranking{
+    width:calc(100% + 8px)!important;
+    margin-left:-4px!important;
+  }
+  body.v28-scorers-active .v28-rank-row{
+    min-height:60px!important;
+    height:60px!important;
+    grid-template-columns:29px 39px minmax(0,1fr) 25px!important;
+    column-gap:5px!important;
+  }
+  body.v28-scorers-active .v28-rank-number{font-size:13.5px!important}
+  body.v28-scorers-active .v28-team-logo{
+    width:37px!important;height:37px!important;
+    min-width:37px!important;min-height:37px!important;
+    max-width:37px!important;max-height:37px!important;
+  }
+  body.v28-scorers-active .v28-team-logo img{
+    width:33px!important;height:33px!important;
+    min-width:33px!important;min-height:33px!important;
+    max-width:33px!important;max-height:33px!important;
+  }
+  body.v28-scorers-active .v28-rank-copy b{font-size:14.5px!important}
+  body.v28-scorers-active .v28-rank-copy small{font-size:12.5px!important}
+  body.v28-scorers-active .v28-rank-goals{font-size:17px!important}
+}
