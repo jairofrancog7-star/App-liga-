@@ -145,6 +145,12 @@
     if(!(target instanceof Element))return '';
     const explicit=target.closest('[data-v41-team],[data-v32-open-team],[data-v27-team],[data-v28-team],[data-v33-team],[data-v40-team],[data-team]');
     if(explicit){
+      const label=explicit.querySelector('strong,small')?.textContent||'';
+      const labelId=normalizeId(label);
+      if(labelId)return labelId;
+      const explicitImg=explicit.querySelector('img');
+      const altId=normalizeId(explicitImg?.getAttribute('alt')||explicitImg?.getAttribute('title')||'');
+      if(altId)return altId;
       const textId=normalizeId((explicit.textContent||'').trim());
       if(textId)return textId;
       const raw=explicit.dataset.v41Team||explicit.dataset.v32OpenTeam||explicit.dataset.v27Team||
