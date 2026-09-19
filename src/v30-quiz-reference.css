@@ -527,3 +527,46 @@ body[data-app-route="quiz"] .v30-quiz-page.v30-answer-result .quiz-option:not(.i
     width:27%!important;
   }
 }
+
+
+/* V30.3 — estadio generado con CSS; evita imágenes rotas o capturas con barra del teléfono. */
+body[data-app-route="quiz"] .v30-quiz-stadium{
+  position:absolute!important;
+  z-index:2!important;
+  left:0!important;
+  right:0!important;
+  bottom:0!important;
+  width:100%!important;
+  height:19%!important;
+  display:block!important;
+  overflow:hidden!important;
+  pointer-events:none!important;
+  background:
+    radial-gradient(ellipse at 8% 82%,rgba(102,172,255,.30) 0 5%,transparent 22%),
+    radial-gradient(ellipse at 92% 82%,rgba(102,172,255,.30) 0 5%,transparent 22%),
+    linear-gradient(180deg,transparent 0 20%,rgba(4,13,95,.48) 60%,#030453 100%)!important;
+}
+body[data-app-route="quiz"] .v30-quiz-stadium::before,
+body[data-app-route="quiz"] .v30-quiz-stadium::after{
+  content:""!important;
+  position:absolute!important;
+  bottom:34%!important;
+  width:54px!important;
+  height:31px!important;
+  border-radius:8px!important;
+  background:
+    radial-gradient(circle,#fff 0 18%,#9ec8ff 23% 34%,transparent 38%) 0 0/12px 12px,
+    linear-gradient(180deg,#d8ecff,#5da2ff)!important;
+  filter:drop-shadow(0 0 12px rgba(114,174,255,.85))!important;
+  opacity:.86!important;
+}
+body[data-app-route="quiz"] .v30-quiz-stadium::before{left:4%!important;transform:rotate(4deg)!important}
+body[data-app-route="quiz"] .v30-quiz-stadium::after{right:4%!important;transform:rotate(-4deg)!important}
+body[data-app-route="quiz"] .v30-stands{
+  position:absolute!important;
+  left:-5%!important;right:-5%!important;bottom:-4%!important;height:48%!important;
+  border-radius:50% 50% 0 0/55% 55% 0 0!important;
+  background:linear-gradient(180deg,#07136d 0,#020441 72%)!important;
+  box-shadow:0 -6px 18px rgba(25,63,190,.30)!important;
+}
+body[data-app-route="quiz"] .v30-light{display:none!important}
