@@ -119,7 +119,7 @@
   function followingMarkup(){
     const teams=visibleTeams();
     const followed=new Set(followedIds());
-    return '<section class="v46-account-page v46-following" data-v46-account="following">'+
+    return '<section class="v46-account-page v46-following" data-v46-account="following" data-v28-following>'+
       '<header class="v46-follow-head">'+
         '<button type="button" class="v46-back" data-v46-back aria-label="Volver">'+backIcon()+'</button>'+
         '<h1>Siguiendo</h1>'+
