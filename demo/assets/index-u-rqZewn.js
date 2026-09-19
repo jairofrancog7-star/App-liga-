@@ -131,7 +131,7 @@
       <div class="v21-home-feature-photo" aria-hidden="true">
         <img
           class="v21-home-feature-photo-image"
-          src="https://image.pollinations.ai/prompt/photorealistic%20cinematic%20night%20football%20match%20two%20fully%20fictional%20adult%20male%20soccer%20players%20real%20human%20appearance%20one%20navy%20cyan%20striped%20kit%20one%20deep%20red%20kit%20local%20municipal%20stadium%20floodlights%20realistic%20skin%20sweat%20sports%20photography%20dark%20blue%20night%20no%20text%20no%20logos%20no%20watermark?width=1024&height=1024&model=flux&nologo=true&seed=48192"
+          src="https://d2ol7oe51mr4n9.cloudfront.net/user_3JNvttsAwr0QjxhuX5O1uaa9bvv/9d801af6-2092-4a4a-afbc-0b9e6c880ba9.png"
           alt=""
           loading="eager"
           decoding="async"
