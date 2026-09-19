@@ -3255,3 +3255,46 @@ body[data-app-route="competition"] .v12-criteria-scroll::-webkit-scrollbar{
     font-size:11px!important;
   }
 }
+
+
+/* === V12 PARTS47 — MISMO TAMAÑO DE LETRA EN LOS 3 MODOS === */
+/* Solo tipografía de los encabezados de Clasificación. */
+body[data-app-route="competition"] .v12-stand-head,
+body[data-app-route="competition"] .v12-complete-head,
+body[data-app-route="competition"] .v12-criteria-head{
+  font-family:Inter,ui-sans-serif,system-ui,sans-serif!important;
+  font-size:12px!important;
+  font-weight:700!important;
+  line-height:1!important;
+  letter-spacing:0!important;
+}
+
+body[data-app-route="competition"] .v12-stand-head>b,
+body[data-app-route="competition"] .v12-complete-head>b,
+body[data-app-route="competition"] .v12-criteria-head>b,
+body[data-app-route="competition"] .v12-direct-label,
+body[data-app-route="competition"] .v12-criteria-direct{
+  font-size:12px!important;
+  font-weight:700!important;
+  line-height:1!important;
+  letter-spacing:0!important;
+}
+
+body[data-app-route="competition"] .v12-segmented button{
+  font-size:13px!important;
+  font-weight:800!important;
+  line-height:1.15!important;
+}
+
+@media(max-width:380px){
+  body[data-app-route="competition"] .v12-stand-head,
+  body[data-app-route="competition"] .v12-complete-head,
+  body[data-app-route="competition"] .v12-criteria-head,
+  body[data-app-route="competition"] .v12-stand-head>b,
+  body[data-app-route="competition"] .v12-complete-head>b,
+  body[data-app-route="competition"] .v12-criteria-head>b,
+  body[data-app-route="competition"] .v12-direct-label,
+  body[data-app-route="competition"] .v12-criteria-direct{
+    font-size:11px!important;
+  }
+}
