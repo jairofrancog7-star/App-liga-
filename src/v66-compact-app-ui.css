@@ -1,0 +1,154 @@
+/* V66 — barra compacta + normalización visual de páginas nuevas. */
+body.v66-compact-route{background:#06055f!important;overflow-x:hidden!important}
+body.v66-compact-route .topbar{display:none!important}
+body.v66-compact-route #screen{
+  width:100%!important;max-width:520px!important;margin:0 auto!important;padding-left:0!important;padding-right:0!important;
+  background:#06055f!important;overflow-x:hidden!important;
+}
+.v66-compact-top{
+  position:relative!important;z-index:70!important;width:100%!important;height:108px!important;
+  display:flex!important;align-items:center!important;justify-content:space-between!important;
+  padding:calc(12px + env(safe-area-inset-top)) 22px 12px!important;
+  background:
+    radial-gradient(ellipse at 35% -30%,rgba(36,81,255,.34),transparent 54%),
+    linear-gradient(180deg,#0b2aa0 0%,#09177d 58%,#080d6c 100%)!important;
+  border-bottom:1px solid rgba(56,99,218,.35)!important;
+  box-sizing:border-box!important;
+}
+.v66-compact-back,.v66-compact-profile{
+  width:54px!important;height:54px!important;display:grid!important;place-items:center!important;margin:0!important;padding:0!important;
+  border:1px solid rgba(255,255,255,.20)!important;border-radius:50%!important;background:rgba(5,10,93,.34)!important;
+  color:#fff!important;box-shadow:none!important;
+}
+.v66-compact-back svg,.v66-compact-profile svg{
+  width:31px!important;height:31px!important;fill:none!important;stroke:currentColor!important;stroke-width:2.2!important;
+  stroke-linecap:round!important;stroke-linejoin:round!important;
+}
+.v66-compact-profile{background:transparent!important;border:3px solid rgba(255,255,255,.86)!important}
+.v66-compact-profile svg{width:29px!important;height:29px!important;stroke-width:2!important}
+
+/* Quitar encabezados grandes duplicados en herramientas/tienda. */
+body.v66-compact-route .v60-tool-head,
+body[data-app-route="club-store"].v66-compact-route #screen>.eyebrow,
+body[data-app-route="club-store"].v66-compact-route #screen>.screen-title{
+  display:none!important;
+}
+
+/* Fondo azul oscuro uniforme, sin saltos a azul claro. */
+body.v66-compact-route .v60-tool-page,
+body.v66-compact-route .v64-page,
+body.v66-compact-route .v66-directory,
+body[data-app-route="scorers"].v66-compact-route .v28-scorers-page{
+  background:#06055f!important;
+}
+body.v66-compact-route .v60-tool-page{
+  width:100%!important;max-width:520px!important;margin:0 auto!important;
+  min-height:calc(100dvh - 108px)!important;padding:12px 14px calc(94px + env(safe-area-inset-bottom))!important;
+}
+
+/* Herramientas en tarjetas pequeñas tipo app. */
+body.v66-compact-route .v60-tool-grid{
+  display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:9px!important;
+}
+body.v66-compact-route .v60-tool-card{
+  min-width:0!important;min-height:72px!important;height:auto!important;margin:0!important;padding:9px 10px!important;
+  display:grid!important;grid-template-columns:32px minmax(0,1fr)!important;align-items:center!important;gap:9px!important;
+  border:1px solid #25278f!important;border-radius:12px!important;background:#0d0c72!important;color:#fff!important;box-shadow:none!important;
+}
+body.v66-compact-route .v60-tool-card>svg{
+  width:28px!important;height:28px!important;min-width:28px!important;stroke:#16dfe9!important;fill:none!important;stroke-width:1.8!important;
+}
+body.v66-compact-route .v60-tool-card span{min-width:0!important}
+body.v66-compact-route .v60-tool-card b{
+  display:block!important;max-width:100%!important;color:#fff!important;font-size:13px!important;line-height:1.08!important;font-weight:700!important;
+  white-space:nowrap!important;overflow:hidden!important;text-overflow:ellipsis!important;
+}
+body.v66-compact-route .v60-tool-card small{
+  display:block!important;max-width:100%!important;margin-top:4px!important;color:#9da0c8!important;font-size:9.5px!important;line-height:1.12!important;
+  overflow:hidden!important;display:-webkit-box!important;-webkit-line-clamp:2!important;-webkit-box-orient:vertical!important;
+}
+
+/* Paneles, campos y formularios: mismos tonos y menor altura. */
+body.v66-compact-route .v60-panel,
+body.v66-compact-route .v60-field-card,
+body.v66-compact-route .v64-form-grid>label,
+body.v66-compact-route .v64-credential-preview,
+body.v66-compact-route .v60-share-card,
+body.v66-compact-route .v64-qr-card,
+body.v66-compact-route .v64-qr-how{
+  background:#0d0c72!important;border:1px solid #25278f!important;border-radius:12px!important;box-shadow:none!important;
+}
+body.v66-compact-route .v60-panel,
+body.v66-compact-route .v60-field-card{padding:12px!important}
+body.v66-compact-route .v60-field-list{gap:8px!important}
+body.v66-compact-route .v60-field-card h3,
+body.v66-compact-route .v60-panel h2,
+body.v66-compact-route .v60-tool-section h2{font-size:16px!important;line-height:1.12!important;margin:0!important}
+body.v66-compact-route .v60-field-card p,
+body.v66-compact-route .v60-note{font-size:10.5px!important;line-height:1.35!important;color:#a6a8cd!important}
+body.v66-compact-route .v60-row{min-height:50px!important;padding:8px 0!important}
+body.v66-compact-route .v60-row-copy b{font-size:12px!important;line-height:1.12!important}
+body.v66-compact-route .v60-row-copy small{font-size:9.5px!important;line-height:1.15!important}
+
+/* Botones y barras: compactos, sin piezas gigantes. */
+body.v66-compact-route .v60-actions,
+body.v66-compact-route .v64-stack-actions{
+  display:flex!important;flex-wrap:wrap!important;gap:7px!important;margin-top:10px!important;
+}
+body.v66-compact-route .v60-btn,
+body.v66-compact-route .v60-link,
+body.v66-compact-route .v64-stack-actions button{
+  min-height:36px!important;height:auto!important;min-width:0!important;padding:7px 10px!important;border-radius:9px!important;
+  font-size:10.5px!important;line-height:1.1!important;font-weight:700!important;box-shadow:none!important;
+}
+body.v66-compact-route .v60-btn,
+body.v66-compact-route .v60-link{background:#102c98!important;color:#fff!important;border:1px solid #2d49ba!important}
+body.v66-compact-route .v60-btn.outline,
+body.v66-compact-route .v60-link.outline,
+body.v66-compact-route .v60-btn.ghost{background:#0b0a69!important;color:#19dfea!important;border:1px solid #24419f!important}
+
+/* Inputs compactos y oscuros. */
+body.v66-compact-route input,
+body.v66-compact-route select,
+body.v66-compact-route textarea{
+  max-width:100%!important;min-height:38px!important;padding:8px 9px!important;border:1px solid #2b2d91!important;border-radius:9px!important;
+  background:#090966!important;color:#fff!important;font-size:11px!important;box-shadow:none!important;
+}
+body.v66-compact-route textarea{min-height:82px!important}
+
+/* Máximo goleador: barra nueva arriba y contenido más pegado. */
+body[data-app-route="scorers"].v66-compact-route #screen{
+  background:#06055f!important;
+}
+body[data-app-route="scorers"].v66-compact-route .v28-scorers-page{
+  padding:12px 18px calc(88px + env(safe-area-inset-bottom))!important;
+}
+body[data-app-route="scorers"].v66-compact-route .v28-feature{
+  border-radius:16px!important;margin-bottom:14px!important;background:#0d0c72!important;
+}
+body[data-app-route="scorers"].v66-compact-route .v28-feature-info{background:#0d0c72!important}
+body[data-app-route="scorers"].v66-compact-route .v28-rank-row{background:transparent!important}
+
+/* Tienda: no usar el catálogo ficticio grande del layout viejo; V66 lo sustituye por equipos oficiales. */
+body[data-app-route="club-store"].v66-compact-route .section,
+body[data-app-route="club-store"].v66-compact-route .team-list{background:#06055f!important}
+
+/* Perfil de equipo: nombres largos en una sola línea, sin bajar letra por letra. */
+body[data-app-route="teamDetail"] .v42-title h1{
+  max-width:calc(100% - 8px)!important;font-size:clamp(25px,7.2vw,37px)!important;line-height:1.05!important;
+  white-space:nowrap!important;overflow:hidden!important;text-overflow:ellipsis!important;
+}
+body[data-app-route="teamDetail"] .v42-player-copy strong,
+body[data-app-route="teamDetail"] .v42-mini-team b{
+  white-space:nowrap!important;overflow:hidden!important;text-overflow:ellipsis!important;
+}
+
+@media(max-width:370px){
+  .v66-compact-top{height:98px!important;padding-left:16px!important;padding-right:16px!important}
+  .v66-compact-back,.v66-compact-profile{width:50px!important;height:50px!important}
+  body.v66-compact-route .v60-tool-grid{gap:7px!important}
+  body.v66-compact-route .v60-tool-card{min-height:68px!important;padding:8px!important;grid-template-columns:28px minmax(0,1fr)!important}
+  body.v66-compact-route .v60-tool-card>svg{width:25px!important;height:25px!important}
+  body.v66-compact-route .v60-tool-card b{font-size:12px!important}
+  body.v66-compact-route .v60-tool-card small{font-size:8.8px!important}
+}
