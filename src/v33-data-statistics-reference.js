@@ -137,8 +137,7 @@ function tabs(){
 function header(){
   return '<header class="v33-data-head" data-v33-head>'+
     '<div class="v33-head-actions"><button type="button" data-v33-back aria-label="Volver">'+backIcon()+'</button><button type="button" data-v33-share aria-label="Compartir">'+shareIcon()+'</button></div>'+
-    '<div class="v33-expanded-title"><h1>Estadísticas</h1><p>Fase final</p></div>'+
-    '<div class="v33-collapsed-title" aria-hidden="true">Estadísticas</div>'+
+    '<div class="v33-morph-title" data-v33-morph-title><h1>Estadísticas</h1><p>Fase final</p></div>'+
     tabs()+
   '</header>';
 }
@@ -242,19 +241,42 @@ let v33ScrollTick=0;
 function applyHeaderScroll(){
   if(route()!=='safe-data')return;
   const head=document.querySelector('[data-v33-head]');
-  if(!head)return;
+  const title=head?.querySelector('[data-v33-morph-title]');
+  if(!head||!title)return;
+
   const y=Math.max(0,window.scrollY||document.documentElement.scrollTop||0);
   const p=Math.min(1,y/165);
-  /* Medidas tomadas del video de referencia: 864 px de ancho,
-     cabecera abierta ~433 px y compacta ~235 px. Se escala por ancho. */
+
+  /* En el video "Estadísticas" NUNCA desaparece:
+     es el mismo título que sube, se hace más pequeño y queda fijo arriba.
+     Las tablas continúan desplazándose por debajo de la cabecera compacta. */
   const vw=Math.min(window.innerWidth,520);
-  const expanded=Math.max(184,Math.min(258,vw*0.5012));
-  const collapsed=Math.max(104,Math.min(142,vw*0.2720));
+  const expandedH=Math.max(184,Math.min(258,vw*0.5012));
+  const collapsedH=Math.max(104,Math.min(142,vw*0.2720));
+
+  const expandedLeft=Math.max(20,Math.min(32,vw*0.055));
+  const compactLeft=Math.max(92,Math.min(132,vw*0.255));
+  const expandedTop=Math.max(98,Math.min(142,vw*0.274));
+  const compactTop=Math.max(24,Math.min(36,vw*0.070));
+  const expandedSize=Math.max(32,Math.min(44,vw*0.0855));
+  const compactSize=Math.max(18,Math.min(25,vw*0.048));
+
+  const lerp=(a,b,t)=>a+(b-a)*t;
+
   head.style.setProperty('--v33-collapse',p.toFixed(4));
-  head.style.setProperty('--v33-head-h',(expanded-((expanded-collapsed)*p)).toFixed(1)+'px');
-  head.style.setProperty('--v33-expanded-opacity',Math.max(0,1-(p*1.35)).toFixed(3));
-  head.style.setProperty('--v33-collapsed-opacity',Math.max(0,(p-.42)/.58).toFixed(3));
-  head.style.setProperty('--v33-tabs-opacity',Math.max(.88,1-(p*.08)).toFixed(3));
+  head.style.setProperty('--v33-head-h',lerp(expandedH,collapsedH,p).toFixed(1)+'px');
+  head.style.setProperty('--v33-tabs-opacity','1');
+
+  title.style.left=lerp(expandedLeft,compactLeft,p).toFixed(1)+'px';
+  title.style.top=lerp(expandedTop,compactTop,p).toFixed(1)+'px';
+  title.querySelector('h1').style.fontSize=lerp(expandedSize,compactSize,p).toFixed(1)+'px';
+
+  const phase=title.querySelector('p');
+  if(phase){
+    phase.style.opacity=Math.max(0,1-(p*1.55)).toFixed(3);
+    phase.style.transform='translateY('+(-10*p).toFixed(1)+'px)';
+  }
+
   head.classList.toggle('is-collapsed',p>.82);
 }
 function requestHeaderScroll(){
