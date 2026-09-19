@@ -65,3 +65,60 @@ body[data-app-route="moments"] .bottom-nav .nav-item small{
   content:none!important;
   display:none!important;
 }
+
+
+/* V50 — Restauración definitiva del icono vertical de COMPETICIÓN en la familia de MÁS.
+   Evita la cancha horizontal de overrides/caché anteriores y conserva la caja 25×25. */
+body[data-app-route="more"] .bottom-nav .nav-item[data-route="competition"] .nav-icon,
+body[data-app-route="predictor"] .bottom-nav .nav-item[data-route="competition"] .nav-icon,
+body[data-app-route="quizArena"] .bottom-nav .nav-item[data-route="competition"] .nav-icon,
+body[data-app-route="quiz"] .bottom-nav .nav-item[data-route="competition"] .nav-icon,
+body[data-app-route="moreLess"] .bottom-nav .nav-item[data-route="competition"] .nav-icon,
+body[data-app-route="rankings"] .bottom-nav .nav-item[data-route="competition"] .nav-icon,
+body[data-app-route="history"] .bottom-nav .nav-item[data-route="competition"] .nav-icon{
+  position:relative!important;
+  width:25px!important;
+  min-width:25px!important;
+  max-width:25px!important;
+  height:25px!important;
+  min-height:25px!important;
+  max-height:25px!important;
+  border:0!important;
+  border-radius:0!important;
+  background:transparent!important;
+  overflow:visible!important;
+}
+body[data-app-route="more"] .bottom-nav .nav-item[data-route="competition"] .nav-icon svg,
+body[data-app-route="predictor"] .bottom-nav .nav-item[data-route="competition"] .nav-icon svg,
+body[data-app-route="quizArena"] .bottom-nav .nav-item[data-route="competition"] .nav-icon svg,
+body[data-app-route="quiz"] .bottom-nav .nav-item[data-route="competition"] .nav-icon svg,
+body[data-app-route="moreLess"] .bottom-nav .nav-item[data-route="competition"] .nav-icon svg,
+body[data-app-route="rankings"] .bottom-nav .nav-item[data-route="competition"] .nav-icon svg,
+body[data-app-route="history"] .bottom-nav .nav-item[data-route="competition"] .nav-icon svg{
+  display:block!important;
+  width:25px!important;
+  min-width:25px!important;
+  max-width:25px!important;
+  height:25px!important;
+  min-height:25px!important;
+  max-height:25px!important;
+  transform:none!important;
+  fill:currentColor!important;
+}
+body[data-app-route="more"] .bottom-nav .nav-item[data-route="competition"] .nav-icon::before,
+body[data-app-route="more"] .bottom-nav .nav-item[data-route="competition"] .nav-icon::after,
+body[data-app-route="predictor"] .bottom-nav .nav-item[data-route="competition"] .nav-icon::before,
+body[data-app-route="predictor"] .bottom-nav .nav-item[data-route="competition"] .nav-icon::after,
+body[data-app-route="quizArena"] .bottom-nav .nav-item[data-route="competition"] .nav-icon::before,
+body[data-app-route="quizArena"] .bottom-nav .nav-item[data-route="competition"] .nav-icon::after,
+body[data-app-route="quiz"] .bottom-nav .nav-item[data-route="competition"] .nav-icon::before,
+body[data-app-route="quiz"] .bottom-nav .nav-item[data-route="competition"] .nav-icon::after,
+body[data-app-route="moreLess"] .bottom-nav .nav-item[data-route="competition"] .nav-icon::before,
+body[data-app-route="moreLess"] .bottom-nav .nav-item[data-route="competition"] .nav-icon::after,
+body[data-app-route="rankings"] .bottom-nav .nav-item[data-route="competition"] .nav-icon::before,
+body[data-app-route="rankings"] .bottom-nav .nav-item[data-route="competition"] .nav-icon::after,
+body[data-app-route="history"] .bottom-nav .nav-item[data-route="competition"] .nav-icon::before,
+body[data-app-route="history"] .bottom-nav .nav-item[data-route="competition"] .nav-icon::after{
+  content:none!important;
+  display:none!important;
+}
