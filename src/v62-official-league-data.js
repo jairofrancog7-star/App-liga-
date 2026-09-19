@@ -423,11 +423,9 @@ function patchTeams(){
 
 function intercept(){
   document.addEventListener('click',e=>{
-    const safe=e.target.closest?.('[data-safe-route="safe-data"]');
-    if(safe){
-      e.preventDefault();e.stopImmediatePropagation();
-      location.hash='#/leagueData';schedule();return;
-    }
+    /* FIX: "Datos" vuelve a abrir #/safe-data con el diseño/tablas V33 originales.
+       Los datos oficiales V62 siguen disponibles únicamente en #/leagueData y
+       no sustituyen la pantalla existente de Datos. */
     const own=e.target.closest?.('[data-v62-team]');
     if(own&&route()!=='leagueData'&&route()!=='scorers'&&route()!=='teamDetail'){
       e.preventDefault();e.stopPropagation();openTeam(own.dataset.v62Team);return;
