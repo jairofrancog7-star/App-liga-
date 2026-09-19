@@ -244,9 +244,12 @@ function applyHeaderScroll(){
   const head=document.querySelector('[data-v33-head]');
   if(!head)return;
   const y=Math.max(0,window.scrollY||document.documentElement.scrollTop||0);
-  const p=Math.min(1,y/210);
-  const expanded=window.innerWidth<=360?334:(window.innerWidth<=430?350:390);
-  const collapsed=window.innerWidth<=430?132:145;
+  const p=Math.min(1,y/165);
+  /* Medidas tomadas del video de referencia: 864 px de ancho,
+     cabecera abierta ~433 px y compacta ~235 px. Se escala por ancho. */
+  const vw=Math.min(window.innerWidth,520);
+  const expanded=Math.max(184,Math.min(258,vw*0.5012));
+  const collapsed=Math.max(104,Math.min(142,vw*0.2720));
   head.style.setProperty('--v33-collapse',p.toFixed(4));
   head.style.setProperty('--v33-head-h',(expanded-((expanded-collapsed)*p)).toFixed(1)+'px');
   head.style.setProperty('--v33-expanded-opacity',Math.max(0,1-(p*1.35)).toFixed(3));
