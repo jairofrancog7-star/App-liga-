@@ -343,3 +343,54 @@ body[data-app-route="moreLess"] .v12-ml-mid .down-arrow{
     bottom:-34px!important;
   }
 }
+
+
+/* V41 MORELESS DARK BLUE + CLOSE WIDE ARROWS */
+body[data-app-route="moreLess"] .v12-moreless{
+  background:
+    radial-gradient(ellipse at 50% 10%,rgba(23,43,170,.18),transparent 34%),
+    linear-gradient(180deg,#081078 0%,#070b6d 38%,#05075f 70%,#03044f 100%)!important;
+  background-image:
+    radial-gradient(ellipse at 50% 10%,rgba(23,43,170,.18),transparent 34%),
+    linear-gradient(180deg,#081078 0%,#070b6d 38%,#05075f 70%,#03044f 100%)!important;
+}
+body[data-app-route="moreLess"] .v12-moreless::before{
+  background:
+    linear-gradient(90deg,rgba(2,2,49,.16),transparent 27%,transparent 73%,rgba(2,2,49,.18))!important;
+}
+
+/* Acerca las flechas curva al título MÁS O MENOS y las hace más gruesas. */
+body[data-app-route="moreLess"] .v12-ml-curves{
+  top:5.8%!important;
+  width:min(58vw,295px)!important;
+  height:30%!important;
+}
+body[data-app-route="moreLess"] .v12-curve-arrow{
+  width:clamp(54px,12vw,70px)!important;
+  height:clamp(108px,21vw,138px)!important;
+}
+body[data-app-route="moreLess"] .v12-curve-arrow path{
+  stroke-width:11px!important;
+}
+body[data-app-route="moreLess"] .v12-ml-curves .up .v12-curve-arrow{
+  right:-2%!important;
+  top:1%!important;
+}
+body[data-app-route="moreLess"] .v12-ml-curves .down .v12-curve-arrow{
+  left:-2%!important;
+  top:50%!important;
+}
+
+@media(max-width:390px){
+  body[data-app-route="moreLess"] .v12-ml-curves{
+    width:61vw!important;
+    top:5.5%!important;
+  }
+  body[data-app-route="moreLess"] .v12-curve-arrow{
+    width:56px!important;
+    height:116px!important;
+  }
+  body[data-app-route="moreLess"] .v12-curve-arrow path{
+    stroke-width:11px!important;
+  }
+}
