@@ -1,4 +1,4 @@
-const V24_FANTASY_LOGO='./fantasy-logo-ref.webp?v=parts24';
+const V24_FANTASY_LOGO='./fantasy-logo-user-black.webp?v=20260918-user-logo2';
 const V24_ACCESS_REF='./fantasy-access-reference.png?v=parts24';
 let v23FantasyBgPromise=null;
 
