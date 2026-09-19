@@ -1,0 +1,177 @@
+/* V60 — Herramientas Liga Juventino Rosas dentro de la app azul.
+   Aislado a las páginas .v60-* para no alterar el diseño existente. */
+.v60-tool-page{
+  width:100%;
+  min-height:calc(100dvh - 110px);
+  padding:18px 16px 112px;
+  color:#fff;
+  background:
+    radial-gradient(circle at 80% -5%,rgba(18,221,245,.16),transparent 24%),
+    linear-gradient(180deg,#0a35d0 0%,#0a1a91 20%,#08096f 47%,#07065f 100%);
+  font-family:Inter,Roboto,Arial,sans-serif;
+}
+.v60-tool-page *{box-sizing:border-box}
+.v60-tool-head{margin:0 0 22px}
+.v60-tool-kicker{display:block;margin:0 0 7px;color:#17e4f4;font-size:12px;font-weight:800;letter-spacing:.14em;text-transform:uppercase}
+.v60-tool-head h1{margin:0;color:#fff;font-size:clamp(34px,9vw,48px);line-height:.98;font-weight:820;letter-spacing:-.04em}
+.v60-tool-head p{margin:11px 0 0;max-width:42rem;color:#c2c4de;font-size:14px;line-height:1.45}
+.v60-tool-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:11px}
+.v60-tool-card{
+  min-width:0;min-height:128px;display:flex;flex-direction:column;align-items:flex-start;justify-content:space-between;
+  gap:13px;padding:17px;border:1px solid rgba(90,123,255,.36);border-radius:18px;
+  background:linear-gradient(155deg,rgba(29,56,171,.95),rgba(20,18,116,.96));
+  color:#fff;text-align:left;box-shadow:inset 0 1px 0 rgba(255,255,255,.06),0 10px 22px rgba(0,0,50,.15);
+}
+.v60-tool-card:active{transform:scale(.985)}
+.v60-tool-card svg{width:30px;height:30px;fill:none;stroke:#19e1f2;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+.v60-tool-card b{display:block;font-size:16px;line-height:1.08}
+.v60-tool-card small{display:block;margin-top:5px;color:#bfc3dc;font-size:11px;line-height:1.25}
+.v60-tool-section{margin-top:22px}
+.v60-tool-section h2{margin:0 0 12px;font-size:23px;line-height:1.05}
+.v60-panel{
+  overflow:hidden;padding:18px;border:1px solid rgba(92,118,227,.34);border-radius:18px;
+  background:linear-gradient(180deg,#15147d,#11106f);box-shadow:0 10px 25px rgba(0,0,50,.12)
+}
+.v60-panel+.v60-panel{margin-top:12px}
+.v60-row{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:13px 0;border-bottom:1px solid rgba(255,255,255,.08)}
+.v60-row:last-child{border-bottom:0}
+.v60-row-copy{min-width:0}
+.v60-row-copy b{display:block;font-size:15px;line-height:1.2}
+.v60-row-copy small{display:block;margin-top:5px;color:#b8b9d3;font-size:12px;line-height:1.3}
+.v60-btn,.v60-link{
+  min-height:43px;display:inline-flex;align-items:center;justify-content:center;gap:7px;
+  padding:0 14px;border:1px solid #19dce9;border-radius:11px;background:#18dce9;color:#07105d;
+  font:800 13px/1 Inter,Roboto,Arial,sans-serif;text-decoration:none
+}
+.v60-btn.outline,.v60-link.outline{background:transparent;color:#19e1f2}
+.v60-btn.ghost{border-color:rgba(255,255,255,.13);background:#252486;color:#fff}
+.v60-actions{display:flex;flex-wrap:wrap;gap:9px;margin-top:15px}
+.v60-note{margin:12px 0 0;padding:11px 13px;border-left:3px solid #19dce9;border-radius:7px;background:rgba(12,43,146,.55);color:#c6cce3;font-size:12px;line-height:1.4}
+
+/* Match Day */
+.v60-checklist{display:grid;gap:7px}
+.v60-check{
+  display:grid;grid-template-columns:28px minmax(0,1fr);gap:10px;align-items:center;
+  min-height:54px;padding:8px 2px;border-bottom:1px solid rgba(255,255,255,.08)
+}
+.v60-check:last-child{border-bottom:0}
+.v60-check input{width:21px;height:21px;accent-color:#18dce9}
+.v60-check span b{display:block;font-size:14px}
+.v60-check span small{display:block;margin-top:4px;color:#afb2d0;font-size:11px;line-height:1.3}
+.v60-textarea{
+  width:100%;min-height:110px;margin-top:10px;padding:13px;border:1px solid #36369c;border-radius:12px;
+  resize:vertical;background:#0c0b69;color:#fff;font:14px/1.4 Inter,Roboto,Arial,sans-serif;outline:none
+}
+.v60-textarea:focus{border-color:#17dce9;box-shadow:0 0 0 2px rgba(23,220,233,.12)}
+
+/* Campos y clima */
+.v60-field-list{display:grid;gap:11px}
+.v60-field-card{
+  padding:16px;border:1px solid rgba(91,119,229,.34);border-radius:17px;background:linear-gradient(160deg,#15147f,#10106e)
+}
+.v60-field-top{display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
+.v60-field-top h3{margin:0;font-size:17px;line-height:1.12}
+.v60-field-top span{flex:0 0 auto;padding:5px 8px;border-radius:999px;background:#073ba0;color:#1ce4f2;font-size:10px;font-weight:800}
+.v60-field-card p{margin:7px 0 0;color:#b9bbd5;font-size:12px;line-height:1.35}
+.v60-weather-result{margin-top:12px;padding:11px;border-radius:11px;background:#0b2b91;color:#fff;font-size:12px;line-height:1.45}
+.v60-weather-result b{font-size:16px}
+.v60-weather-result.is-error{background:#5b1e54}
+.v60-weather-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:7px;margin-top:8px}
+.v60-weather-grid span{padding:8px;border-radius:9px;background:rgba(0,0,0,.15);text-align:center}
+.v60-weather-grid b,.v60-weather-grid small{display:block}
+.v60-weather-grid small{margin-top:3px;color:#c9cbe0;font-size:9px}
+
+/* Cédulas */
+.v60-cedula{
+  position:relative;overflow:hidden;padding:18px;border:1px solid rgba(31,224,239,.45);border-radius:18px;
+  background:linear-gradient(145deg,#0a2cb1,#14127e 55%,#090965);box-shadow:inset 0 1px 0 rgba(255,255,255,.08)
+}
+.v60-cedula::before{content:"";position:absolute;width:180px;height:180px;border:1px solid rgba(26,225,241,.18);border-radius:50%;right:-80px;top:-95px}
+.v60-cedula-head{display:flex;align-items:center;justify-content:space-between;gap:10px;padding-bottom:13px;border-bottom:1px solid rgba(255,255,255,.13)}
+.v60-cedula-head b{font-size:12px;letter-spacing:.1em}
+.v60-cedula-head span{color:#19e2ef;font-size:11px;font-weight:800}
+.v60-versus{display:grid;grid-template-columns:1fr 44px 1fr;align-items:center;gap:8px;padding:22px 0}
+.v60-versus>div{text-align:center;min-width:0}
+.v60-versus img{width:54px;height:54px;object-fit:contain}
+.v60-versus strong{display:block;margin-top:8px;font-size:13px;line-height:1.1}
+.v60-versus>span{text-align:center;color:#18e0ee;font-size:13px;font-weight:900}
+.v60-cedula-meta{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
+.v60-cedula-meta div{padding:10px;border-radius:10px;background:rgba(0,0,0,.12)}
+.v60-cedula-meta small,.v60-cedula-meta b{display:block}
+.v60-cedula-meta small{color:#adb1ce;font-size:9px;text-transform:uppercase;letter-spacing:.08em}
+.v60-cedula-meta b{margin-top:4px;font-size:12px;line-height:1.25}
+
+/* Credencial */
+.v60-credential{
+  max-width:390px;margin:0 auto;padding:19px;border:1px solid #18dce9;border-radius:22px;
+  background:linear-gradient(155deg,#062aba,#12117c 58%,#080962);box-shadow:0 18px 38px rgba(0,0,50,.25)
+}
+.v60-cred-head{display:flex;align-items:center;gap:12px}
+.v60-cred-avatar{width:72px;height:72px;display:grid;place-items:center;border:2px solid #19e1f0;border-radius:50%;background:#17168a;font-size:26px;font-weight:900}
+.v60-cred-head h2{margin:0;font-size:21px}
+.v60-cred-head p{margin:4px 0 0;color:#b7bad6;font-size:12px}
+.v60-cred-status{display:inline-flex;margin-top:9px;padding:5px 9px;border-radius:999px;background:#0c9d62;color:#fff;font-size:10px;font-weight:900}
+.v60-cred-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px;margin-top:17px}
+.v60-cred-grid div{padding:10px;border-radius:10px;background:rgba(0,0,0,.13)}
+.v60-cred-grid small,.v60-cred-grid b{display:block}
+.v60-cred-grid small{color:#adb1cd;font-size:9px}
+.v60-cred-grid b{margin-top:4px;font-size:12px}
+
+/* Tácticas */
+.v60-pitch{
+  position:relative;aspect-ratio:7/10;max-width:360px;margin:0 auto;border:2px solid rgba(29,228,242,.7);
+  border-radius:14px;background:
+    linear-gradient(90deg,transparent 49.5%,rgba(29,228,242,.55) 49.5%,rgba(29,228,242,.55) 50.5%,transparent 50.5%),
+    linear-gradient(180deg,#0a3d9b,#062d7b);
+  overflow:hidden
+}
+.v60-pitch::before{content:"";position:absolute;left:50%;top:50%;width:88px;height:88px;transform:translate(-50%,-50%);border:2px solid rgba(29,228,242,.55);border-radius:50%}
+.v60-pitch::after{content:"";position:absolute;left:23%;right:23%;top:-1px;height:17%;border:2px solid rgba(29,228,242,.55);border-top:0}
+.v60-player-dot{
+  position:absolute;width:42px;height:42px;display:grid;place-items:center;border:2px solid #fff;border-radius:50%;
+  background:#12117d;color:#fff;font-size:11px;font-weight:900;box-shadow:0 4px 13px rgba(0,0,0,.22)
+}
+.v60-formations{display:flex;gap:8px;overflow-x:auto;margin:0 0 12px;padding-bottom:3px;scrollbar-width:none}
+.v60-formations::-webkit-scrollbar{display:none}
+.v60-formations button{flex:0 0 auto;min-height:40px;padding:0 13px;border:1px solid #34349b;border-radius:10px;background:#171681;color:#fff;font-weight:800}
+.v60-formations button.active{border-color:#18e0ee;color:#18e0ee}
+
+/* Simulador */
+.v60-sim-table{overflow:hidden;border-radius:15px;background:#111071}
+.v60-sim-row{display:grid;grid-template-columns:27px minmax(0,1fr) 42px 80px;align-items:center;gap:8px;min-height:55px;padding:7px 11px;border-bottom:1px solid rgba(255,255,255,.075)}
+.v60-sim-row:last-child{border-bottom:0}
+.v60-sim-row img{width:27px;height:27px;object-fit:contain}
+.v60-sim-team{min-width:0;display:flex;align-items:center;gap:7px}
+.v60-sim-team b{min-width:0;font-size:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.v60-sim-pts{text-align:center;font-size:14px}
+.v60-sim-actions{display:flex;justify-content:flex-end;gap:5px}
+.v60-sim-actions button{width:35px;height:32px;border:1px solid #18dce9;border-radius:8px;background:#0b2c91;color:#18e0ee;font-weight:900}
+
+/* Publicaciones */
+.v60-share-card{padding:18px;border-radius:18px;background:linear-gradient(145deg,#0a35cf,#13117a);border:1px solid rgba(26,225,240,.34)}
+.v60-share-card h2{margin:0;font-size:25px}
+.v60-share-card p{margin:10px 0 0;color:#c2c5de;font-size:13px;line-height:1.45}
+.v60-share-preview{margin-top:14px;padding:14px;border-radius:12px;background:#090968;color:#fff;font-size:13px;line-height:1.5;white-space:pre-line}
+
+/* Reglamento */
+.v60-pdf-frame{width:100%;height:60dvh;margin-top:14px;border:1px solid #35359b;border-radius:14px;background:#fff}
+
+/* Más: nuevo grupo conserva el diseño actual */
+.v19-more-page .v60-more-tool-note{margin:-3px 0 13px;color:#aeb2cf;font-size:11px;line-height:1.35}
+
+@media(max-width:370px){
+  .v60-tool-page{padding-left:12px;padding-right:12px}
+  .v60-tool-grid{gap:8px}
+  .v60-tool-card{min-height:119px;padding:14px}
+  .v60-tool-card b{font-size:14px}
+  .v60-weather-grid{grid-template-columns:1fr}
+}
+@media(min-width:540px){
+  .v60-tool-page{width:520px;margin:0 auto}
+  .v60-tool-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
+}
+@media print{
+  body *{visibility:hidden!important}
+  .v60-cedula,.v60-cedula *{visibility:visible!important}
+  .v60-cedula{position:absolute!important;left:0!important;top:0!important;width:100%!important;max-width:none!important;color:#000!important;background:#fff!important;border-color:#000!important}
+}
