@@ -218,3 +218,64 @@
     min-width:100px!important;
   }
 }
+
+
+/* V70 — fondo neón de referencia colocado debajo del título */
+@media (max-width:520px){
+  /* ÚNICO CAMBIO: añade el fondo gráfico bajo Competición.
+     No modifica tamaños, posiciones, tabs, fechas ni contenido. */
+  body[data-app-route="competition"] .topbar{
+    isolation:isolate!important;
+  }
+
+  body[data-app-route="competition"] .topbar::before{
+    content:""!important;
+    display:block!important;
+    position:absolute!important;
+    left:-8%!important;
+    right:-8%!important;
+    top:58%!important;
+    bottom:0!important;
+    z-index:1!important;
+    pointer-events:none!important;
+    opacity:.96!important;
+    transform:none!important;
+    background:
+      linear-gradient(154deg,
+        transparent 0 31%,
+        rgba(30,224,255,.16) 31.4%,
+        rgba(231,252,255,.96) 31.9%,
+        rgba(40,232,255,.82) 32.25%,
+        rgba(255,72,170,.72) 32.55%,
+        transparent 33.15% 100%),
+      linear-gradient(24deg,
+        transparent 0 45%,
+        rgba(24,220,255,.12) 45.3%,
+        rgba(246,255,255,.92) 45.8%,
+        rgba(40,232,255,.80) 46.15%,
+        rgba(255,73,172,.66) 46.45%,
+        transparent 47.05% 100%),
+      repeating-linear-gradient(158deg,
+        transparent 0 13px,
+        rgba(64,232,255,.45) 14px 15px,
+        rgba(249,255,255,.72) 16px,
+        rgba(255,73,170,.38) 17px,
+        transparent 18px 29px)!important;
+    background-position:center bottom!important;
+    background-size:100% 100%!important;
+    -webkit-mask-image:linear-gradient(to bottom,transparent 0%,rgba(0,0,0,.32) 11%,#000 32%,#000 100%)!important;
+    mask-image:linear-gradient(to bottom,transparent 0%,rgba(0,0,0,.32) 11%,#000 32%,#000 100%)!important;
+  }
+
+  /* Texto e icono quedan siempre por encima del fondo, sin sobreencimarse. */
+  body[data-app-route="competition"] .topbar::after,
+  body[data-app-route="competition"] .topbar .profile-button{
+    z-index:4!important;
+  }
+}
+
+@media (max-width:380px){
+  body[data-app-route="competition"] .topbar::before{
+    top:60%!important;
+  }
+}
