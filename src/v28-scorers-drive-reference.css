@@ -1,28 +1,278 @@
-/* V28 scorers — ajuste tipográfico de los puestos 1 y 2.
-   Sólo reduce nombres/equipos de las dos tarjetas destacadas; no cambia layout. */
+/* V52 — MÁXIMO GOLEADOR · tabla compacta y profesional basada en las referencias 2/3.
+   Solo afecta #/scorers. Mantiene logos/equipos locales y navegación funcional. */
 
-body.v28-scorers-active .v28-feature-person b{
-  font-size:20px!important;
-  line-height:1.08!important;
-  font-weight:650!important;
-  letter-spacing:-.01em!important;
+body.v28-scorers-active{
+  background:#07066f!important;
+}
+body.v28-scorers-active #screen{
+  padding-left:0!important;
+  padding-right:0!important;
+  padding-bottom:calc(var(--v34-nav-h,60px) + env(safe-area-inset-bottom) + 8px)!important;
+  background:linear-gradient(180deg,#101eaf 0%,#0d138f 34%,#09076f 100%)!important;
 }
 
-body.v28-scorers-active .v28-feature-person small{
+.v28-scorers-page{
+  width:100%!important;
+  max-width:691px!important;
+  margin:0 auto!important;
+  padding:0 28px 18px!important;
+  color:#fff!important;
+  font-family:Roboto,Inter,Arial,sans-serif!important;
+  box-sizing:border-box!important;
+}
+
+/* Tarjetas superiores: proporción más limpia como la imagen 3. */
+.v28-feature{
+  width:100%!important;
+  margin:0 0 26px!important;
+  overflow:hidden!important;
+  border-radius:24px!important;
+  background:#11107f!important;
+  box-shadow:0 8px 20px rgba(0,0,40,.12)!important;
+}
+.v28-feature-photo{
+  position:relative!important;
+  width:100%!important;
+  aspect-ratio:1.78/1!important;
+  min-height:0!important;
+  overflow:hidden!important;
+  background-position:center!important;
+  background-size:cover!important;
+}
+.v28-feature-info{
+  min-height:92px!important;
+  display:grid!important;
+  grid-template-columns:minmax(0,1fr) 92px!important;
+  align-items:center!important;
+  padding:13px 18px 13px 20px!important;
+  background:#151386!important;
+}
+.v28-feature-person{
+  min-width:0!important;
+  display:flex!important;
+  align-items:center!important;
+  gap:10px!important;
+}
+.v28-feature-person .v28-ball{
+  width:28px!important;
+  height:28px!important;
+  flex:0 0 28px!important;
+  display:grid!important;
+  place-items:center!important;
+  font-size:18px!important;
+}
+.v28-feature-person b{
+  display:block!important;
+  font-size:16px!important;
+  line-height:1.1!important;
+  font-weight:500!important;
+}
+.v28-feature-person small{
   display:block!important;
   margin-top:4px!important;
-  font-size:27px!important;
+  color:#fff!important;
+  font-size:24px!important;
   line-height:1.05!important;
   font-weight:500!important;
-  letter-spacing:-.015em!important;
+  white-space:nowrap!important;
+  overflow:hidden!important;
+  text-overflow:ellipsis!important;
+}
+.v28-feature-goals{
+  min-height:64px!important;
+  display:grid!important;
+  place-items:center!important;
+  border-left:1px solid rgba(255,255,255,.18)!important;
+}
+.v28-feature-goals b{
+  color:#20e3f3!important;
+  font-size:39px!important;
+  line-height:.9!important;
+  font-weight:400!important;
+}
+.v28-feature-goals small{
+  margin-top:-7px!important;
+  color:rgba(255,255,255,.70)!important;
+  font-size:16px!important;
+}
+
+/* Tabla/lista — misma escala en todas las filas. */
+.v28-ranking{
+  width:100%!important;
+  margin:4px 0 0!important;
+  border-top:1px solid rgba(255,255,255,.14)!important;
+}
+.v28-rank-row{
+  appearance:none!important;
+  -webkit-appearance:none!important;
+  width:100%!important;
+  min-height:102px!important;
+  height:102px!important;
+  margin:0!important;
+  padding:0 8px 0 0!important;
+  display:grid!important;
+  grid-template-columns:66px 68px minmax(0,1fr) 54px!important;
+  align-items:center!important;
+  column-gap:8px!important;
+  border:0!important;
+  border-bottom:1px solid rgba(255,255,255,.14)!important;
+  border-radius:0!important;
+  background:transparent!important;
+  color:#fff!important;
+  text-align:left!important;
+  box-shadow:none!important;
+  cursor:pointer!important;
+}
+
+.v28-rank-number{
+  display:block!important;
+  width:100%!important;
+  color:#fff!important;
+  font-size:22px!important;
+  line-height:1!important;
+  font-weight:700!important;
+  text-align:left!important;
   white-space:nowrap!important;
 }
 
-@media (max-width:390px){
+/* Todos los escudos entran en el MISMO círculo; sin cuadros negros ni tamaños distintos. */
+body.v28-scorers-active .v28-team-logo{
+  width:62px!important;
+  height:62px!important;
+  min-width:62px!important;
+  min-height:62px!important;
+  max-width:62px!important;
+  max-height:62px!important;
+  flex:0 0 62px!important;
+  display:grid!important;
+  place-items:center!important;
+  overflow:hidden!important;
+  box-sizing:border-box!important;
+  border:2px solid rgba(255,255,255,.82)!important;
+  border-radius:50%!important;
+  background:rgba(255,255,255,.97)!important;
+  object-fit:unset!important;
+}
+body.v28-scorers-active .v28-team-logo img{
+  display:block!important;
+  width:52px!important;
+  height:52px!important;
+  max-width:52px!important;
+  max-height:52px!important;
+  margin:0!important;
+  padding:0!important;
+  object-fit:contain!important;
+  object-position:center!important;
+  border:0!important;
+  border-radius:0!important;
+  background:transparent!important;
+  transform:none!important;
+  filter:none!important;
+}
+.v28-team-fallback{
+  width:100%!important;
+  height:100%!important;
+  display:grid!important;
+  place-items:center!important;
+  color:#fff!important;
+  background:#151776!important;
+  border-radius:50%!important;
+  font-size:14px!important;
+  line-height:1!important;
+  font-weight:700!important;
+  letter-spacing:.2px!important;
+}
+
+.v28-rank-copy{
+  min-width:0!important;
+  display:flex!important;
+  flex-direction:column!important;
+  justify-content:center!important;
+  gap:4px!important;
+  overflow:hidden!important;
+}
+.v28-rank-copy b{
+  display:block!important;
+  max-width:100%!important;
+  color:#fff!important;
+  font-size:21px!important;
+  line-height:1.05!important;
+  font-weight:700!important;
+  white-space:nowrap!important;
+  overflow:hidden!important;
+  text-overflow:ellipsis!important;
+}
+.v28-rank-copy small{
+  display:block!important;
+  max-width:100%!important;
+  color:rgba(221,222,244,.72)!important;
+  font-size:18px!important;
+  line-height:1.05!important;
+  font-weight:400!important;
+  white-space:nowrap!important;
+  overflow:hidden!important;
+  text-overflow:ellipsis!important;
+}
+.v28-rank-goals{
+  justify-self:end!important;
+  color:#1de5f4!important;
+  font-size:31px!important;
+  line-height:1!important;
+  font-weight:500!important;
+  text-align:right!important;
+}
+.v28-criteria{
+  margin:18px 0 4px!important;
+  color:rgba(255,255,255,.58)!important;
+  font-size:12px!important;
+  line-height:1.3!important;
+}
+
+/* Móvil angosto: mantener proporciones sin amontonar nombres. */
+@media(max-width:420px){
+  .v28-scorers-page{padding-left:20px!important;padding-right:20px!important}
+  .v28-rank-row{
+    min-height:92px!important;
+    height:92px!important;
+    grid-template-columns:54px 58px minmax(0,1fr) 42px!important;
+    column-gap:7px!important;
+  }
+  .v28-rank-number{font-size:19px!important}
+  body.v28-scorers-active .v28-team-logo{
+    width:54px!important;height:54px!important;
+    min-width:54px!important;min-height:54px!important;
+    max-width:54px!important;max-height:54px!important;
+  }
+  body.v28-scorers-active .v28-team-logo img{
+    width:46px!important;height:46px!important;
+    max-width:46px!important;max-height:46px!important;
+  }
+  .v28-rank-copy b{font-size:18px!important}
+  .v28-rank-copy small{font-size:15px!important}
+  .v28-rank-goals{font-size:27px!important}
+  .v28-feature{border-radius:20px!important}
+  .v28-feature-info{grid-template-columns:minmax(0,1fr) 76px!important;min-height:82px!important;padding:11px 14px!important}
+  .v28-feature-person small{font-size:21px!important}
+  .v28-feature-goals b{font-size:34px!important}
+}
+
+
+/* V53 — ajuste pedido: nombres de los puestos 1 y 2 más pequeños,
+   conservando íntegro el diseño restaurado. */
+body.v28-scorers-active .v28-feature-person b{
+  font-size:15px!important;
+  line-height:1.08!important;
+}
+body.v28-scorers-active .v28-feature-person small{
+  font-size:20px!important;
+  line-height:1.04!important;
+  margin-top:4px!important;
+}
+@media(max-width:420px){
   body.v28-scorers-active .v28-feature-person b{
-    font-size:18px!important;
+    font-size:14px!important;
   }
   body.v28-scorers-active .v28-feature-person small{
-    font-size:24px!important;
+    font-size:18px!important;
   }
 }
