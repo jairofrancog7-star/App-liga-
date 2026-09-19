@@ -270,3 +270,97 @@ body[data-app-route="moreLess"] #app>.bottom-nav{
   body[data-app-route="moreLess"] .v12-ml-title span{font-size:clamp(39px,10.5vw,50px)!important}
   body[data-app-route="moreLess"] .v12-ml-curves{width:75vw!important}
 }
+
+
+/* V47 — restaurar el diseño exacto enviado por Drive en la zona inferior de Más o Menos.
+   La imagen funciona como referencia visual; los controles reales siguen encima y son clicables. */
+body[data-app-route="moreLess"] .v12-moreless::after{
+  content:""!important;
+  position:absolute!important;
+  z-index:3!important;
+  left:0!important;
+  right:0!important;
+  top:36%!important;
+  bottom:0!important;
+  display:block!important;
+  pointer-events:none!important;
+  background-image:url("../public/moreless-drive-reference.jpg")!important;
+  background-repeat:no-repeat!important;
+  background-position:center bottom!important;
+  background-size:auto 100%!important;
+}
+
+/* El asset de Drive ya trae avatares, flechas y estadio: evitar dibujos duplicados. */
+body[data-app-route="moreLess"] .v12-stadium{
+  display:none!important;
+  visibility:hidden!important;
+  opacity:0!important;
+}
+body[data-app-route="moreLess"] .v12-avatar{
+  opacity:0!important;
+  visibility:hidden!important;
+}
+body[data-app-route="moreLess"] .v12-ml-mid button::before{
+  opacity:0!important;
+}
+
+/* Mantener las zonas de toque funcionales exactamente encima de los dos avatares y flechas. */
+body[data-app-route="moreLess"] .v12-ml-choice{
+  z-index:10!important;
+  left:50%!important;
+  top:47.2%!important;
+  width:min(58vw,290px)!important;
+  height:18%!important;
+  transform:translateX(-50%)!important;
+  grid-template-columns:1fr 22% 1fr!important;
+  gap:0!important;
+  pointer-events:none!important;
+}
+body[data-app-route="moreLess"] .v12-ml-choice>button,
+body[data-app-route="moreLess"] .v12-ml-mid,
+body[data-app-route="moreLess"] .v12-ml-mid button{
+  pointer-events:auto!important;
+}
+body[data-app-route="moreLess"] .v12-ml-choice>button{
+  width:100%!important;
+  height:100%!important;
+}
+body[data-app-route="moreLess"] .v12-ml-mid{
+  min-height:100%!important;
+  height:100%!important;
+}
+body[data-app-route="moreLess"] .v12-ml-mid .up-arrow{
+  top:-18%!important;
+  width:100%!important;
+  height:48%!important;
+}
+body[data-app-route="moreLess"] .v12-ml-mid .down-arrow{
+  bottom:-18%!important;
+  width:100%!important;
+  height:48%!important;
+}
+
+/* Título superior y flechas curvas se conservan sin cambiar su diseño. */
+body[data-app-route="moreLess"] .v12-ml-title,
+body[data-app-route="moreLess"] .v12-ml-curves{
+  z-index:12!important;
+}
+
+@media(max-height:740px){
+  body[data-app-route="moreLess"] .v12-moreless::after{
+    top:34%!important;
+  }
+  body[data-app-route="moreLess"] .v12-ml-choice{
+    top:45.6%!important;
+  }
+}
+
+@media(max-width:370px){
+  body[data-app-route="moreLess"] .v12-moreless::after{
+    top:35%!important;
+  }
+  body[data-app-route="moreLess"] .v12-ml-choice{
+    width:61vw!important;
+    top:46.5%!important;
+  }
+}
