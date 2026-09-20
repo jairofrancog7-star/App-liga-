@@ -1,0 +1,28 @@
+/* V104 — directorio oficial de jugadores */
+body[data-app-route="players"] #screen{overflow-x:hidden!important}
+.v104-players{padding:8px 14px 118px;color:#fff}
+.v104-head small{color:#28e0eb;font-size:9px;font-weight:900;letter-spacing:.13em}
+.v104-head h1{margin:6px 0 4px;font-size:34px;line-height:.96;letter-spacing:-.04em}
+.v104-head p{margin:0;color:#aeb7d8;font-size:11px;line-height:1.35}
+.v104-cats{display:flex;gap:7px;margin:16px -14px 10px;padding:0 14px;overflow-x:auto;scrollbar-width:none}
+.v104-cats::-webkit-scrollbar{display:none}
+.v104-cats button{flex:0 0 auto;height:34px;padding:0 12px;border:1px solid rgba(96,117,220,.28);border-radius:18px;background:#111476;color:#c7cbed;font-size:10px;font-weight:800}
+.v104-cats button.active{border-color:#25dce7;background:#0d318f;color:#28e0eb}
+.v104-search{height:44px;display:grid;grid-template-columns:28px 1fr;align-items:center;margin-bottom:12px;padding:0 12px;border:1px solid rgba(95,118,223,.26);border-radius:13px;background:#10136f;color:#22dfea}
+.v104-search input{width:100%;border:0;outline:0;background:transparent;color:#fff;font:inherit;font-size:12px}
+.v104-search input::placeholder{color:#8f99c4}
+.v104-list{display:grid;gap:10px}
+.v104-team{overflow:hidden;border:1px solid rgba(89,109,214,.25);border-radius:15px;background:#090c69}
+.v104-team-head{width:100%;min-height:62px;display:grid;grid-template-columns:40px 1fr 12px;gap:10px;align-items:center;padding:9px 11px;border:0;background:#111579;color:#fff;text-align:left}
+.v104-team-logo,.v104-team-logo img{width:38px;height:38px;max-width:38px;max-height:38px;object-fit:contain}
+.v104-fallback{display:grid;place-items:center;border:1px solid #24dae5;border-radius:50%;font-size:8px}
+.v104-team-head b{display:block;font-size:12px;line-height:1.1}
+.v104-team-head small{display:block;margin-top:3px;color:#99a4cf;font-size:8.5px}
+.v104-team-head i{color:#27dce6;font-size:20px;font-style:normal}
+.v104-roster{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:rgba(255,255,255,.06)}
+.v104-player{min-height:48px;display:grid;grid-template-columns:28px 1fr;gap:7px;align-items:center;padding:7px 9px;background:#090c69}
+.v104-player>span{width:27px;height:27px;display:grid;place-items:center;border-radius:50%;background:#12358d;color:#28dfe9;font-size:7px;font-weight:900}
+.v104-player b{font-size:9.5px;line-height:1.12}
+.v104-source{margin:14px 3px 0;color:#7f89b8;font-size:8px;line-height:1.35}
+.v104-empty{padding:28px 14px;text-align:center;color:#a7afd0;font-size:11px;border:1px solid rgba(89,109,214,.22);border-radius:14px;background:#090c69}
+@media(max-width:360px){.v104-roster{grid-template-columns:1fr}.v104-head h1{font-size:31px}}
