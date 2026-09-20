@@ -257,6 +257,68 @@
     <section class="v6-section"><div class="v6-section-head"><h2>Calendario y resultados</h2><button class="link-button" data-safe-route="v4-calendar">Abrir calendario</button></div><div class="v6-calendar-card">${v6CalendarHtml()}</div></section>
     <section class="v6-section"><div class="v6-section-head"><h2>Más datos</h2></div><div class="v6-action-grid">${actionCard('chart','Estadísticas','General, equipos y jugadores','stats')}${actionCard('trophy','Rankings','Clasificación y líderes','rankings')}${actionCard('history','Historia','Temporadas y campeones','history')}${actionCard('chart','Datos oficiales','Equipos, jugadores y jornadas','leagueData')}</div></section>
   </div>`}
+  function v20TransparentizeLeagueLogo(img){
+    if(!img||img.dataset.v20PngReady==='1')return;
+    img.dataset.v20PngReady='1';
+
+    const original=img.getAttribute('src')||'';
+    const run=()=>{
+      try{
+        const w=img.naturalWidth||0,h=img.naturalHeight||0;
+        if(!w||!h)throw new Error('logo-size');
+        const canvas=document.createElement('canvas');
+        canvas.width=w;canvas.height=h;
+        const ctx=canvas.getContext('2d',{willReadFrequently:true});
+        if(!ctx)throw new Error('canvas');
+        ctx.drawImage(img,0,0,w,h);
+        const data=ctx.getImageData(0,0,w,h),p=data.data;
+        const seen=new Uint8Array(w*h),queue=new Int32Array(w*h);
+        let head=0,tail=0;
+        const isDarkBg=(idx)=>{
+          const o=idx*4,r=p[o],g=p[o+1],b=p[o+2],a=p[o+3];
+          if(a<8)return true;
+          const mx=Math.max(r,g,b),mn=Math.min(r,g,b);
+          return mx<92&&(mx-mn)<55;
+        };
+        const push=(idx)=>{
+          if(idx<0||idx>=w*h||seen[idx]||!isDarkBg(idx))return;
+          seen[idx]=1;queue[tail++]=idx;
+        };
+        for(let x=0;x<w;x++){push(x);push((h-1)*w+x);}
+        for(let y=0;y<h;y++){push(y*w);push(y*w+w-1);}
+        while(head<tail){
+          const idx=queue[head++],x=idx%w,y=(idx/w)|0,o=idx*4;
+          p[o+3]=0;
+          if(x>0)push(idx-1);
+          if(x<w-1)push(idx+1);
+          if(y>0)push(idx-w);
+          if(y<h-1)push(idx+w);
+        }
+        ctx.putImageData(data,0,0);
+        img.removeAttribute('crossorigin');
+        img.src=canvas.toDataURL('image/png');
+        img.classList.add('v20-league-logo-png');
+      }catch(_){
+        img.classList.add('v20-league-logo-blend-fallback');
+      }
+    };
+
+    if(!original.includes('liga-logo.webp'))return;
+    img.crossOrigin='anonymous';
+    if(img.complete&&img.naturalWidth){
+      const reload=original+(original.includes('?')?'&':'?')+'transparent=1';
+      img.addEventListener('load',run,{once:true});
+      img.src=reload;
+    }else{
+      img.addEventListener('load',run,{once:true});
+    }
+  }
+
+  function v20MakePerformanceLogosTransparent(root){
+    if(!root)return;
+    root.querySelectorAll('.v20-performance-brand>img,.v20-story-ring img,.v20-card-logo').forEach(v20TransparentizeLeagueLogo);
+  }
+
   function performanceView(){
     const base='https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/';
     const leagueLogo=base+'assets/liga-logo.webp';
@@ -269,13 +331,13 @@
       {label:'Clasificación',logo:leagueLogo,route:'competition'},
       {label:'Goleadores',logo:leagueLogo,route:'scorers'}
     ];
-    const storyHtml=stories.map(s=>`<button class="v20-story" type="button" data-safe-route="${s.route}"><span class="v20-story-ring"><img src="${s.logo}" alt="" loading="lazy"></span><small>${s.label}</small></button>`).join('');
+    const storyHtml=stories.map(s=>`<button class="v20-story" type="button" data-safe-route="${s.route}"><span class="v20-story-ring"><img src="${s.logo}" crossorigin="anonymous" alt="" loading="lazy"></span><small>${s.label}</small></button>`).join('');
     return `<section class="v20-performance" aria-label="Performance Liga Municipal de Fútbol Juventino Rosas">
       <div class="v20-performance-hero">
         <img class="v20-performance-heroimg" src="${hero}" alt="Partido de la Liga Municipal de Fútbol Juventino Rosas" loading="eager" decoding="async">
         <div class="v20-performance-heroshade"></div>
         <div class="v20-performance-brand">
-          <img src="${leagueLogo}" alt="Liga Municipal de Fútbol Juventino Rosas">
+          <img src="${leagueLogo}" crossorigin="anonymous" alt="Liga Municipal de Fútbol Juventino Rosas">
           <h1>Liga Municipal de Fútbol<br>Juventino Rosas</h1>
           <p>GUANAJUATO</p>
         </div>
@@ -287,7 +349,7 @@
         <button class="v20-performance-card v20-card-america" type="button" data-safe-route="competition">
           <img src="${show}" alt="" loading="lazy">
           <span class="v20-card-shade"></span>
-          <img class="v20-card-logo" src="${leagueLogo}" alt="">
+          <img class="v20-card-logo" src="${leagueLogo}" crossorigin="anonymous" alt="">
           <strong>Clasificación oficial<br>de Primera Fuerza</strong>
         </button>
 
@@ -354,7 +416,7 @@
   const customViews={'safe-performance':performanceView,'safe-data':dataView,'safe-notifications':notificationsView,'safe-language':()=>simpleView('Idioma','globe',`Idioma preferido: ${state.language}. La app está preparada para español y futuras traducciones.`),'safe-feedback':()=>simpleView('Ayúdanos a mejorar','msg','Puedes reportar errores, sugerencias o datos incorrectos desde esta sección.'),'safe-privacy':()=>simpleView('Privacidad','shield','Las preferencias y datos demo se guardan localmente en este dispositivo hasta conectar el backend oficial.'),'safe-terms':()=>simpleView('Términos y condiciones','doc','Consulta aquí las reglas de uso de Liga Juventino.'),'safe-about':()=>simpleView('Sobre la competición','info','Torneo Municipal Liga Juventino: partidos, clasificación, estadísticas, Fantasy, juegos y contenido.')};
   function injectMore(){const root=screen();if(!root||route()!=='more'||root.querySelector('#safeMore'))return;const box=document.createElement('div');box.id='safeMore';box.className='menu-group';box.innerHTML=`<h3>EXPERIENCIA Y DATOS</h3><button class="menu-row" data-safe-route="safe-performance"><span>Performance Zone<small>Análisis y rendimiento</small></span><span>›</span></button><button class="menu-row" data-safe-route="leagueData"><span>Datos de la Liga<small>Equipos, tabla y jugadores oficiales</small></span><span>›</span></button><button class="menu-row" data-safe-route="safe-notifications"><span>Notificaciones<small>Partidos, juegos y noticias</small></span><span>›</span></button><button class="menu-row" data-safe-route="safe-about"><span>Sobre la competición</span><span>›</span></button>`;root.appendChild(box)}
   function injectProfile(){const root=screen();if(!root||route()!=='profile'||root.querySelector('#safeProfile'))return;const box=document.createElement('div');box.id='safeProfile';box.className='menu-group';box.innerHTML=`<h3>CONFIGURACIÓN</h3><button class="menu-row" data-safe-route="safe-language"><span>Idioma preferido<small>${state.language}</small></span><span>›</span></button><button class="menu-row" data-safe-route="safe-feedback"><span>Ayúdanos a mejorar</span><span>›</span></button><button class="menu-row" data-safe-route="safe-privacy"><span>Privacidad</span><span>›</span></button><button class="menu-row" data-safe-route="safe-terms"><span>Términos y condiciones</span><span>›</span></button>`;root.appendChild(box)}
-  function renderCustom(){const r=route();if(!customViews[r])return false;const root=screen();if(!root)return false;root.innerHTML=customViews[r]();back()?.classList.remove('is-hidden');document.querySelectorAll('.nav-item').forEach(n=>n.classList.toggle('active',n.dataset.route==='more'));window.scrollTo(0,0);return true}
+  function renderCustom(){const r=route();if(!customViews[r])return false;const root=screen();if(!root)return false;root.innerHTML=customViews[r]();if(r==='safe-performance')v20MakePerformanceLogosTransparent(root);back()?.classList.remove('is-hidden');document.querySelectorAll('.nav-item').forEach(n=>n.classList.toggle('active',n.dataset.route==='more'));window.scrollTo(0,0);return true}
   function enhance(){try{ensureBell();if(renderCustom())return;const root=screen();if(!root)return;if(route()==='home'&&!root.querySelector('#safeHomeExtra'))root.insertAdjacentHTML('beforeend',homeExtra());if(route()==='more')injectMore();if(route()==='profile')injectProfile()}catch(err){console.error('Liga Juventino safe enhancement error',err)}}
   function openWeek(){const modal=document.createElement('div');modal.className='modal';modal.innerHTML=`<div class="video-modal"><button class="modal-close">×</button><span class="eyebrow">EQUIPO DE LA SEMANA</span><h2>XI oficial pendiente</h2><p class="muted">La Liga todavía no ha publicado una selección oficial de la jornada. No se mostrarán jugadores inventados.</p><button class="btn outline full" data-safe-close>Cerrar</button></div>`;document.body.appendChild(modal);modal.querySelector('.modal-close').onclick=()=>modal.remove();modal.querySelector('[data-safe-close]').onclick=()=>modal.remove()}
   document.addEventListener('click',e=>{const sr=e.target.closest('[data-safe-route]');if(sr){e.preventDefault();location.hash='#/'+sr.dataset.safeRoute;setTimeout(enhance,0);return}const base=e.target.closest('[data-route]');if(base)setTimeout(enhance,0);const act=e.target.closest('[data-safe-action]');if(act?.dataset.safeAction==='week-team'){e.preventDefault();openWeek()}const f=e.target.closest('[data-safe-filter]');if(f){state.performanceFilter=f.dataset.safeFilter;save();renderCustom()}const dt=e.target.closest('[data-safe-data-tab]');if(dt){state.dataTab=dt.dataset.safeDataTab;save();renderCustom()}const inbox=e.target.closest('[data-safe-inbox]');if(inbox){const n=state.inbox.find(x=>x.id===inbox.dataset.safeInbox);if(n){n.read=true;save();ensureBell();location.hash='#/'+n.go}}},true);
