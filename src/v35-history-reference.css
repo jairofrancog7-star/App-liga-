@@ -1488,3 +1488,69 @@
   .v35-timeline-list:before{left:39px}
   .v35-timeline-list article:after{left:35px}
 }
+
+
+/* V103 — Historia: goles por equipo y por jugador recuperados del archivo. */
+@media(max-width:1023px){
+  .v35-history-goals{
+    margin-top:18px;
+  }
+  .v35-team-goals-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:9px;
+    margin-top:12px;
+  }
+  .v35-team-goal-card{
+    min-width:0;
+    padding:12px;
+    border:1px solid rgba(81,112,229,.24);
+    border-radius:15px;
+    background:
+      radial-gradient(90% 120% at 100% 0%,rgba(31,112,255,.17),transparent 64%),
+      linear-gradient(145deg,rgba(18,29,130,.96),rgba(9,17,94,.99));
+  }
+  .v35-team-goal-top{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:10px;
+  }
+  .v35-team-goal-top span{
+    color:#22e7f2;
+    font-size:8.5px;
+    font-weight:850;
+    letter-spacing:.05em;
+  }
+  .v35-team-goal-top strong{
+    color:#22e7f2;
+    font-size:24px;
+    line-height:1;
+    font-weight:800;
+  }
+  .v35-team-goal-card h4{
+    margin:7px 0 3px;
+    color:#fff;
+    font-size:14px;
+    line-height:1.08;
+    font-weight:760;
+  }
+  .v35-team-goal-card small{
+    display:block;
+    color:#b5bddc;
+    font-size:8.2px;
+    line-height:1.25;
+  }
+  .v35-team-goal-card p{
+    margin:7px 0 0;
+    color:#9fa9cf;
+    font-size:8.4px;
+    line-height:1.38;
+  }
+  .v35-records-goals-anchor{
+    margin-top:18px;
+  }
+}
+@media(max-width:360px){
+  .v35-team-goals-grid{grid-template-columns:1fr}
+}
