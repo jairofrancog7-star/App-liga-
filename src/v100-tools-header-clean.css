@@ -1,0 +1,170 @@
+/* V100 — Herramientas: una sola barra superior limpia, azul oscuro exacto.
+   Ajuste solicitado: quitar barra inferior/duplicada, eliminar semicírculos y
+   meter los iconos hacia dentro del borde. Solo afecta #/leagueTools. */
+
+@media (max-width:1023px){
+  html body[data-app-route="leagueTools"],
+  html body[data-app-route="leagueTools"] #app,
+  html body[data-app-route="leagueTools"] .app-shell,
+  html body[data-app-route="leagueTools"] #screen,
+  html body[data-app-route="leagueTools"] .v60-tool-page{
+    background:#000144!important;
+    background-image:none!important;
+  }
+
+  /* Dejar UNA sola barra: la principal de arriba. */
+  html body[data-app-route="leagueTools"].v66-compact-route #app>.topbar,
+  html body[data-app-route="leagueTools"].v69-primary-tool-header #app>.topbar,
+  html body[data-app-route="leagueTools"] #app>.topbar{
+    display:block!important;
+    visibility:visible!important;
+    opacity:1!important;
+    position:sticky!important;
+    top:0!important;
+    z-index:150!important;
+    width:100%!important;
+    height:calc(88px + env(safe-area-inset-top))!important;
+    min-height:calc(88px + env(safe-area-inset-top))!important;
+    max-height:calc(88px + env(safe-area-inset-top))!important;
+    margin:0!important;
+    padding:env(safe-area-inset-top) 0 0!important;
+    overflow:hidden!important;
+    background:#000144!important;
+    background-image:none!important;
+    border:0!important;
+    border-bottom:0!important;
+    box-shadow:none!important;
+    backdrop-filter:none!important;
+    -webkit-backdrop-filter:none!important;
+  }
+
+  /* Quitar todo arco, círculo parcial, línea decorativa o arte heredado. */
+  html body[data-app-route="leagueTools"] #app>.topbar::before,
+  html body[data-app-route="leagueTools"] #app>.topbar::after,
+  html body[data-app-route="leagueTools"] #screen::before,
+  html body[data-app-route="leagueTools"] #screen::after,
+  html body[data-app-route="leagueTools"] .v60-tool-page::before,
+  html body[data-app-route="leagueTools"] .v60-tool-page::after{
+    content:none!important;
+    display:none!important;
+    background:none!important;
+    border:0!important;
+    box-shadow:none!important;
+  }
+
+  /* La barra compacta duplicada que estaba debajo ya no se muestra. */
+  html body[data-app-route="leagueTools"] .v66-compact-top{
+    display:none!important;
+    visibility:hidden!important;
+    height:0!important;
+    min-height:0!important;
+    margin:0!important;
+    padding:0!important;
+    border:0!important;
+  }
+
+  /* El usuario pidió quitar la barra de abajo en esta pantalla. */
+  html body[data-app-route="leagueTools"] #app>.bottom-nav{
+    display:none!important;
+    visibility:hidden!important;
+  }
+
+  /* Sin wordmark ni campana: solo volver + cuenta, bien metidos hacia dentro. */
+  html body[data-app-route="leagueTools"] #app>.topbar .wordmark,
+  html body[data-app-route="leagueTools"] #app>.topbar #safeBell{
+    display:none!important;
+    visibility:hidden!important;
+  }
+
+  html body[data-app-route="leagueTools"] #app>.topbar .back-button{
+    display:grid!important;
+    visibility:visible!important;
+    opacity:1!important;
+    position:absolute!important;
+    left:26px!important;
+    right:auto!important;
+    top:calc(env(safe-area-inset-top) + 19px)!important;
+    bottom:auto!important;
+    width:50px!important;
+    height:50px!important;
+    min-width:50px!important;
+    min-height:50px!important;
+    margin:0!important;
+    padding:0!important;
+    place-items:center!important;
+    border:1px solid rgba(255,255,255,.18)!important;
+    border-radius:50%!important;
+    background:rgba(0,1,68,.72)!important;
+    color:#fff!important;
+    box-shadow:none!important;
+    transform:none!important;
+  }
+  html body[data-app-route="leagueTools"] #app>.topbar .back-button svg{
+    display:block!important;
+    width:29px!important;
+    height:29px!important;
+    fill:none!important;
+    stroke:currentColor!important;
+    stroke-width:2!important;
+    stroke-linecap:round!important;
+    stroke-linejoin:round!important;
+  }
+
+  html body[data-app-route="leagueTools"] #app>.topbar .profile-button{
+    display:grid!important;
+    visibility:visible!important;
+    opacity:1!important;
+    position:absolute!important;
+    right:26px!important;
+    left:auto!important;
+    top:calc(env(safe-area-inset-top) + 18px)!important;
+    bottom:auto!important;
+    width:52px!important;
+    height:52px!important;
+    min-width:52px!important;
+    min-height:52px!important;
+    max-width:52px!important;
+    max-height:52px!important;
+    margin:0!important;
+    padding:0!important;
+    place-items:center!important;
+    border:3px solid rgba(255,255,255,.92)!important;
+    border-radius:50%!important;
+    background:transparent!important;
+    background-image:none!important;
+    color:#fff!important;
+    box-shadow:none!important;
+    transform:none!important;
+  }
+  html body[data-app-route="leagueTools"] #app>.topbar .profile-button svg{
+    display:block!important;
+    width:29px!important;
+    height:29px!important;
+    fill:none!important;
+    stroke:currentColor!important;
+    stroke-width:1.9!important;
+    stroke-linecap:round!important;
+    stroke-linejoin:round!important;
+  }
+
+  html body[data-app-route="leagueTools"] #screen{
+    width:100%!important;
+    max-width:520px!important;
+    margin:0 auto!important;
+    padding:0!important;
+    overflow-x:hidden!important;
+  }
+  html body[data-app-route="leagueTools"] .v60-tool-page{
+    min-height:calc(100dvh - 88px - env(safe-area-inset-top))!important;
+    padding:18px 14px calc(28px + env(safe-area-inset-bottom))!important;
+  }
+}
+
+@media(max-width:390px){
+  html body[data-app-route="leagueTools"] #app>.topbar .back-button{
+    left:22px!important;
+  }
+  html body[data-app-route="leagueTools"] #app>.topbar .profile-button{
+    right:22px!important;
+  }
+}
