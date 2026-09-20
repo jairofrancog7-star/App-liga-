@@ -203,7 +203,11 @@ window.addEventListener('hashchange',async()=>{
 });
 
 const root=screen();
-if(root)new MutationObserver(()=>queuePatch()).observe(root,{childList:true,subtree:false});
+if(root)new MutationObserver(()=>{
+  /* No volver a renderizar el calendario por nuestras propias mutaciones. */
+  if(route()==='v4-calendar'&&root.querySelector('.v103-calendar-page'))return;
+  queuePatch();
+}).observe(root,{childList:true,subtree:false});
 
 (async()=>{
   await loadOfficial();
