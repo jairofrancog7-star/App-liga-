@@ -67,7 +67,7 @@ function homeExtra(){
   const pulse=read('v100-fan-pulse',{fire:0,goal:0,clap:0,heart:0});
   const captured=window.LJR_OFFICIAL_DATA?.captured_at_utc;
   const logo=chosen?teamLogo(chosen.name):'';
-  return '<section class="section v100-block" id="v100-home-extra">'+
+  return '<section class="section v100-block" id="v100-home-extra" data-v100-team-count="'+teams.length+'">'+
     sectionTitle('PERSONALIZA TU LIGA','Mi equipo','Guarda un equipo favorito para tener acceso rápido. Se guarda solo en este dispositivo.')+
     '<div class="v100-fav-card">'+
       '<div class="v100-fav-summary"><span class="v100-fav-logo">'+(logo?'<img src="'+esc(logo)+'" alt="">':'⚽')+'</span><span><small>FAVORITO</small><b data-v100-fav-label>'+esc(chosen?.name||'Elige un equipo')+'</b><em>'+esc(chosen?.category||'Categoría')+'</em></span></div>'+
@@ -90,7 +90,7 @@ function bindHome(root){
   const cat=$('[data-v100-fav-cat]',root),teamSel=$('[data-v100-fav-team]',root);
   const rebuild=()=>{const list=officialTeams().filter(t=>!cat.value||t.category===cat.value);teamSel.innerHTML=list.map(t=>'<option>'+esc(t.name)+'</option>').join('')};
   cat?.addEventListener('change',rebuild);
-  $('[data-v100-save-fav]',root)?.addEventListener('click',()=>{const all=officialTeams(),t=all.find(x=>x.name===teamSel.value);if(!t)return toast('Selecciona un equipo');write('v100-favorite-team',t);toast('Equipo favorito guardado');schedule()});
+  $('[data-v100-save-fav]',root)?.addEventListener('click',()=>{const all=officialTeams(),t=all.find(x=>x.name===teamSel.value);if(!t)return toast('Selecciona un equipo');write('v100-favorite-team',t);toast('Equipo favorito guardado');root.remove();schedule()});
   $('[data-v100-open-fav]',root)?.addEventListener('click',()=>{const t=read('v100-favorite-team',{});const name=t.name||teamSel?.value;if(name)openOfficialTeam(name)});
   $$('[data-v100-react]',root).forEach(b=>b.onclick=()=>{const p=read('v100-fan-pulse',{fire:0,goal:0,clap:0,heart:0}),k=b.dataset.v100React;p[k]=(p[k]||0)+1;write('v100-fan-pulse',p);b.querySelector('b').textContent=p[k]});
 }
@@ -243,7 +243,7 @@ function bindGeneric(root){$$('[data-v100-route]',root).forEach(b=>b.onclick=()=
 
 function mount(){
   const screen=$('#screen');if(!screen)return;const r=route();
-  if(r==='home'&&!$('#v100-home-extra',screen)){screen.insertAdjacentHTML('beforeend',homeExtra());const n=$('#v100-home-extra',screen);bindGeneric(n);bindHome(n)}
+  if(r==='home'){const old=$('#v100-home-extra',screen);if(old&&Number(old.dataset.v100TeamCount||0)===0&&officialTeams().length)old.remove();if(!$('#v100-home-extra',screen)){screen.insertAdjacentHTML('beforeend',homeExtra());const n=$('#v100-home-extra',screen);bindGeneric(n);bindHome(n)}}
   if(r==='more'&&!$('#v100-more-extra',screen)){screen.insertAdjacentHTML('beforeend',toolsExtra('v100-more-extra'));bindGeneric($('#v100-more-extra',screen))}
   if(r==='leagueTools'&&!$('#v100-league-tools-extra',screen)){screen.insertAdjacentHTML('beforeend',toolsExtra('v100-league-tools-extra'));bindGeneric($('#v100-league-tools-extra',screen))}
   if(r==='credentialBuilder'&&!$('#v100-credential-extra',screen)){screen.insertAdjacentHTML('beforeend',credentialExtra());const n=$('#v100-credential-extra',screen);bindGeneric(n);bindCredential(n)}
@@ -256,6 +256,6 @@ let timer=0;function schedule(){clearTimeout(timer);timer=setTimeout(mount,80)}
 window.addEventListener('hashchange',schedule);
 window.addEventListener('ljr:official-data',schedule);
 const screen=$('#screen');if(screen)new MutationObserver(schedule).observe(screen,{childList:true,subtree:false});
-window.addEventListener('load',schedule);schedule();
+window.addEventListener('load',schedule);schedule();setTimeout(schedule,1500);setTimeout(schedule,4000);
 window.LJR_V100={build:BUILD,mount,officialTeams};
 })();
