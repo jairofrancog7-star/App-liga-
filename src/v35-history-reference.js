@@ -31,13 +31,18 @@ const seasons=[
    Nunca se importan equipos de estas fuentes a la lista de equipos de la temporada actual. */
 const historicalSources=[
   {
+    title:'Golazo Liga · primer registro digital confirmado',
+    note:'Captura aportada por el usuario con publicación fechada 5 OCT 2012. Es el registro digital más antiguo localizado hasta ahora; no se presenta como fecha de fundación.',
+    url:'https://www.facebook.com/golazo.liga'
+  },
+  {
     title:'Archivo histórico · imágenes y tablas',
-    note:'ZIP entregado por el usuario: roles, tablas, fotografías, finales y equipos de distintas épocas.',
+    note:'ZIP entregado por el usuario: tablas, fotografías, finales, equipos y publicaciones de la Liga adulta.',
     url:'https://drive.google.com/file/d/1BAb5avW4QFWG1LVy5dWR9_meuacFli1v/view?usp=drivesdk'
   },
   {
     title:'Facebook histórico · fuente 1',
-    note:'Página/perfil aportado por el usuario para rastrear publicaciones, campeones y temporadas.',
+    note:'Página/perfil aportado por el usuario para rastrear publicaciones, campeones y temporadas de la Liga.',
     url:'https://www.facebook.com/share/19UuQUvSiL/'
   },
   {
@@ -47,23 +52,23 @@ const historicalSources=[
   },
   {
     title:'Administración histórica · fuente aportada',
-    note:'Perfil indicado por el usuario como fuente de publicaciones de una administración anterior.',
+    note:'Perfil indicado por el usuario como fuente de publicaciones de una administración anterior de la Liga.',
     url:'https://www.facebook.com/share/1dN3djL6Pr/'
   },
   {
     title:'Administración actual · fuente aportada',
-    note:'Perfil indicado por el usuario como fuente de publicaciones de la administración actual.',
+    note:'Perfil indicado por el usuario como fuente de publicaciones de la administración actual de la Liga.',
     url:'https://www.facebook.com/share/1GdSsb7ocg/'
   },
   {
     title:'Ángel Arias · fuente histórica aportada',
-    note:'Perfil indicado por el usuario para localizar material de una administración anterior.',
+    note:'Perfil indicado por el usuario para localizar material de una administración anterior de la Liga.',
     url:'https://www.facebook.com/share/1DeWwcJiGX/'
   },
   {
-    title:'Hemeroteca · Liga Sabatina 2015',
-    note:'Periódico AM documentó el doble campeonato de Galácticos FC en Juvenil Menor y Juvenil Mayor.',
-    url:'https://www.am.com.mx/news/2015/11/23/dominantes-192734.html'
+    title:'Administrador de Golazo Liga · 2015',
+    note:'Perfil aportado por el usuario como administrador de la página Golazo Liga durante 2015.',
+    url:'https://www.facebook.com/share/1TXjdtGMgk/'
   },
   {
     title:'Archivo histórico · video 1',
@@ -92,11 +97,7 @@ const historyMoments=[
   {kind:'CLÁSICO',title:'Olímpicos de Pozos vs Abejas FC',subtitle:'Campo de Pozos · domingo 21 de junio · 10:00',detail:'Rivalidad histórica: unidos por la comunidad y separados por el fútbol.',image:HIST_ROOT+'assets/official-logos/abejas.png'}
 ];
 
-const historyYouth=[
-  {year:'2013–2014',title:'Torneo infantil y juvenil',detail:'Álbum histórico con equipos y jornadas del torneo infantil y juvenil.'},
-  {year:'2013–2014',title:'Inauguración del torneo infantil y juvenil',detail:'Registro fotográfico de la inauguración de aquella temporada.'},
-  {year:'Archivo',title:'Juventino Rosas campeón · Torneo Azul–Esmeralda “Chino Estrada”',detail:'Álbum histórico conservado entre las fuentes de la Liga.'}
-];
+const historyYouth=[];
 
 const retroClubs=[
   {name:'Tavera FC',logo:'assets/official-logos/tavera-fc.png',note:'Campeón de Copa · Segunda'},
@@ -110,10 +111,8 @@ const retroClubs=[
 const retroNames=['Universidad','Valencia','Halcones','Chelse','Olímpicos de Pozos'];
 
 const verifiedChampions=[
-  {season:'2015',competition:'Liga Sabatina · Juvenil Menor',champion:'Galácticos FC',runner:'JLP',source:'Periódico AM · 23 nov 2015 · marcador 3–0; Galácticos quedó como tricampeón.'},
-  {season:'2015',competition:'Liga Sabatina · Juvenil Mayor',champion:'Galácticos FC',runner:'Linces',source:'Periódico AM · 23 nov 2015 · marcador 2–0; primer título de Galácticos en esa categoría.'},
   {season:'2018–2019',competition:'Torneo de Liga',champion:'Juventus',runner:'Boavista',source:'Publicaciones históricas de Golazo Liga del 3 nov 2019.',championLogo:HIST_ROOT+'assets/official-logos/juventus.png',runnerLogo:HIST_ROOT+'assets/official-logos/boavista.png'},
-  {season:'Archivo fotográfico',competition:'Campeonato · categoría por identificar',champion:'Tecos',runner:'—',source:'Fotografía del archivo: el plantel aparece con camisetas “CAMPEON TECOS” y trofeo.'},
+  {season:'Archivo fotográfico',competition:'Campeonato · categoría adulta por identificar',champion:'Tecos',runner:'—',source:'Fotografía del archivo: el plantel aparece con camisetas “CAMPEON TECOS” y trofeo.'},
   {season:'Archivo histórico',competition:'Copa · Categoría Segunda',champion:'Tavera FC',runner:'—',source:'Álbum histórico entregado por el usuario.',championLogo:HIST_ROOT+'assets/official-logos/tavera-fc.png'}
 ];
 
@@ -170,17 +169,14 @@ const historicResults=[
 ];
 
 const historicFinalists=[
-  {year:'07 sep 2013',category:'Liga Sabatina · Final de Copa Infantil 2002–2003',a:'Redimi2',b:'René’s',note:'09:00 · Campo 8. Rol histórico de Liga Sabatina Pony, Infantil y Juvenil.'},
-  {year:'07 sep 2013',category:'Liga Sabatina · Final de Copa Intermedia 2000–2001',a:'Resto del Mundo',b:'Redimi2',note:'10:00 · Campo Siglo XXI.'},
-  {year:'07 sep 2013',category:'Liga Sabatina · Final de Copa Juvenil 1998–1999',a:'Redimi2',b:'Halcones',note:'11:00 · Campo Siglo XXI.'},
-  {year:'08 dic 2013',category:'Primera · Gran Final',a:'Juventus',b:'Olímpicos',note:'10:00 · Campo 1. El mismo rol programó Chelsea vs PSV por el tercer lugar.',logoA:HIST_ROOT+'assets/official-logos/juventus.png'},
-  {year:'01 mar 2014',category:'Veteranos · Gran Final',a:'UNAM',b:'La Esperanza',note:'16:00 · Campo 1.'},
-  {year:'2019',category:'Veteranos · Final de Copa',a:'Chelsea',b:'La Esperanza',note:'Programada a las 17:30 en Campo 1. El material revisado no muestra aquí el ganador.'},
+  {year:'08 dic 2013',category:'Categoría libre · Primera · Gran Final',a:'Juventus',b:'Olímpicos',note:'10:00 · Campo 1. Archivo adulto de Golazo Liga; Chelsea vs PSV aparece por el tercer lugar.',logoA:HIST_ROOT+'assets/official-logos/juventus.png'},
+  {year:'01 mar 2014',category:'Veteranos · Gran Final',a:'UNAM',b:'La Esperanza',note:'16:00 · Campo 1. Archivo histórico adulto.'},
+  {year:'2019',category:'Veteranos · Final de Copa',a:'Chelsea',b:'La Esperanza',note:'Programada a las 17:30 en Campo 1. El material revisado confirma la final y su programación.'},
   {year:'2021',category:'Veteranos · Gran Final de Liga',a:'La Esperanza',b:'Real Cuenda',note:'17:00 · Campo 1. Rol histórico del 25–26 sep 2021.'},
   {year:'2022',category:'Veteranos · Final de Copa',a:'Juventus',b:'PSV',note:'16:00 · Campo 1.',logoA:HIST_ROOT+'assets/official-logos/juventus.png'},
   {year:'2022–2023',category:'Veteranos · Final de Copa',a:'Juventus',b:'Cuenda',note:'16:30 · Campo 1.',logoA:HIST_ROOT+'assets/official-logos/juventus.png'},
   {year:'2023',category:'Veteranos · Gran Final de Liga',a:'Juventus',b:'América',note:'16:30 · Campo 1.',logoA:HIST_ROOT+'assets/official-logos/juventus.png'},
-  {year:'2023',category:'Segunda Fuerza · Gran Final de Liga',a:'Titanes FC',b:'Terrícolas SEDER',note:'Final programada en el rol histórico revisado; el material no muestra aquí el ganador.',logoB:HIST_ROOT+'assets/official-logos/terricolas.png'}
+  {year:'2023',category:'Categoría libre · Segunda Fuerza · Gran Final de Liga',a:'Titanes FC',b:'Terrícolas SEDER',note:'Final programada en el rol histórico revisado.',logoB:HIST_ROOT+'assets/official-logos/terricolas.png'}
 ];
 
 const expandedRetroNames=[
@@ -188,40 +184,41 @@ const expandedRetroNames=[
   'Mazacotes','Titanes Tavera','Morales','Populares','A. Centeno','Chelsea','La Cuadrilla',
   'PSV','Sección 14','Dep. Maravillas','La Esperanza FC','A. Pozos','Galaxy','San Juan FC',
   'Tapatío','Guadalupanos','Barrio Seco','UNAM','Átomos','Deportivo Rafa','Arsenal',
-  'Olímpicos','Linces','Jaralillo','Birds Eye','Puros Cuates','Dulces Nombres','Malvinas',
+  'Olímpicos','Linces','Birds Eye','Puros Cuates','Dulces Nombres','Malvinas',
   'Halcones de Cuenda','Deportivo Pozos','Real Cerrito de Gasca','San José de la Montaña',
-  'Río Grande','Unión Allende','Novatos','Salvajes','Continental','Toros','Aldama',
-  'Magisterio','Picosos','Guadalajara','Barcelona','Redimi2','René’s','Resto del Mundo'
+  'Río Grande','Unión Allende','Novatos','Salvajes','Continental','Toros','Aldama'
 ];
 
 const historicalTimeline=[
-  {date:'10 ago 2013',title:'Fútbol formativo municipal',detail:'Un rol de la Liga Municipal de Fut-Bol convocó categorías Pony 6–8, Infantil 9–10, Intermedia 11–12 y Juvenil 13–14. El documento identifica como presidente al Lic. Jonás Cervantes Noria y como organizador a Antonio López Moreno.'},
-  {date:'07 sep 2013',title:'Liga Sabatina Pony, Infantil y Juvenil',detail:'El archivo usa expresamente el nombre “Liga Sabatina Pony, Infantil y Juvenil” y programa finales de Copa en Infantil, Intermedia y Juvenil.'},
-  {date:'12 oct 2013',title:'Sábado de Veteranos / domingo de fuerzas',detail:'El rol programa Veteranos el sábado por la tarde y, al día siguiente, Primera, Intermedia y Segunda. Es una estructura que vuelve a aparecer en otros roles de 2013 y 2014.'},
-  {date:'08 dic 2013',title:'Final de Primera',detail:'Juventus vs Olímpicos fue programada como Gran Final de Primera; Chelsea vs PSV disputaron el tercer lugar. En Segunda se jugaron semifinales Tavera vs Cerrito de Gasca y DHP vs San José de la Montaña.'},
-  {date:'12 ene 2014',title:'Torneo de Copa',detail:'El archivo muestra Jornada 1 de Copa en Primera, Intermedia y Segunda, mientras Veteranos conservaba programación sabatina.'},
-  {date:'01 mar 2014',title:'Final de Veteranos',detail:'UNAM vs La Esperanza, 16:00 en Campo 1. El domingo 2 de marzo continuó la programación de Primera, Intermedia y Segunda.'},
-  {date:'23 nov 2015',title:'Galácticos domina la Liga Sabatina',detail:'Periódico AM documentó a Galácticos FC campeón de Juvenil Menor (3–0 a JLP, tricampeón) y Juvenil Mayor (2–0 a Linces).'},
-  {date:'24 may 2016',title:'Proyecto de oficinas',detail:'El reglamento actual conserva el antecedente de un acuerdo de asamblea del 24 de mayo de 2016 para destinar aportaciones al proyecto de construcción de nuevas oficinas.'},
-  {date:'Etapa Golazo Liga',title:'Archivo digital de temporadas',detail:'Las publicaciones conocidas como Golazo Liga funcionan como una fuente histórica de tablas, resultados, campeones, fotografías y roles de temporadas anteriores. Se mantiene separado el nombre de publicación en redes del nombre institucional Liga Municipal de Fútbol Juventino Rosas A. C.'},
-  {date:'2026–2027',title:'Reglamento vigente',detail:'La Liga mantiene torneos de Copa y Liga, Campeón de Campeones, torneo sabatino de Veteranos y categorías dominicales, con mecanismos de competencia definidos por categoría.'}
+  {date:'05 oct 2012',title:'Golazo Liga · primer registro digital localizado',detail:'La captura aportada muestra una publicación de Golazo Liga fechada el 5 de octubre de 2012. Se toma como el registro digital más antiguo encontrado hasta ahora, no como una afirmación de la fecha exacta de fundación.'},
+  {date:'2012 en adelante',title:'Liga adulta independiente',detail:'El archivo de esta Historia corresponde a la Liga adulta de Juventino Rosas: categoría libre y Veteranos. Es una organización deportiva independiente de la Presidencia Municipal y de COMUDE; no se mezclan aquí torneos infantiles, Pony, juveniles ni competiciones municipales ajenas.'},
+  {date:'08 dic 2013',title:'Final de Primera en el archivo adulto',detail:'Juventus vs Olímpicos aparece programado como Gran Final de Primera; Chelsea vs PSV por el tercer lugar. En Segunda aparecen semifinales Tavera vs Cerrito de Gasca y DHP vs San José de la Montaña.'},
+  {date:'01 mar 2014',title:'Final de Veteranos',detail:'UNAM vs La Esperanza aparece programado a las 16:00 en Campo 1 dentro del archivo adulto.'},
+  {date:'2015',title:'Administración de Golazo Liga',detail:'Se añadió como fuente el perfil que el usuario identifica como administrador de la página Golazo Liga durante 2015, para seguir rastreando publicaciones y temporadas.'},
+  {date:'24 may 2016',title:'Acuerdo interno de la Liga',detail:'El reglamento vigente conserva el antecedente de un acuerdo de asamblea del 24 de mayo de 2016 relacionado con el proyecto de nuevas oficinas de la propia Liga.'},
+  {date:'2018',title:'Tablas y goleadores históricos',detail:'El archivo conserva cortes de Primera e Intermedia con equipos, puntos y goleadores de la categoría libre.'},
+  {date:'03 nov 2019',title:'Juventus campeón de Liga',detail:'Publicaciones históricas de Golazo Liga identifican a Juventus como campeón y a Boavista como subcampeón de la Liga 2018–2019.'},
+  {date:'2022',title:'Veteranos · tabla final',detail:'El archivo conserva una tabla final de Veteranos con Juventus en primer lugar con 53 puntos.'},
+  {date:'2026–2027',title:'Reglamento vigente',detail:'La Liga mantiene Copa, Liga, Campeón de Campeones, categoría libre por fuerzas y Veteranos 35+ y 50+, bajo una mesa directiva propia.'}
 ];
 
 const currentCompetitionFormat=[
-  {title:'Sábados · Veteranos',detail:'Veteranos 35+ y 50+ se programan los sábados; el archivo histórico ya muestra Veteranos sabatino en 2013–2014. El reglamento vigente reconoce el torneo sabatino de Veteranos.'},
-  {title:'Domingos · Primera, Intermedia y Segunda',detail:'La dominical se disputa en Primera, Intermedia y Segunda. Los roles históricos de 2013–2014 muestran estas fuerzas jugando el domingo.'},
-  {title:'Copa',detail:'Una vuelta y un grupo. Clasifican cuatro: 1 vs 4 y 2 vs 3; semifinal y final a un partido. En empate se resuelve por penales según el reglamento.'},
-  {title:'Liga dominical',detail:'Dos vueltas; los ocho primeros entran a liguilla. Cuartos y semifinales son a dos juegos; la final es a un partido en la cabecera municipal.'},
-  {title:'Veteranos 35+',detail:'Un grupo, dos vueltas y ocho clasificados: 1 vs 8, 2 vs 7, 3 vs 6, 4 vs 5; las siguientes rondas vuelven a ordenar primero contra último.'},
+  {title:'Categoría libre · domingo',detail:'La rama libre se organiza por fuerzas: Primera, Intermedia y Segunda. El torneo de Liga se juega a dos vueltas y los ocho mejores entran a liguilla.'},
+  {title:'Veteranos · sábado',detail:'Veteranos 35+ y 50+ se programan los sábados, normalmente por la tarde. Es una rama distinta de la categoría libre.'},
+  {title:'Copa · categoría libre',detail:'Una vuelta y un grupo por fuerza. Clasifican cuatro: 1 vs 4 y 2 vs 3; semifinal y final a un partido.'},
+  {title:'Liga · categoría libre',detail:'Dos vueltas; los ocho primeros entran a liguilla. Cuartos y semifinales son a dos juegos; la final es a un partido.'},
+  {title:'Veteranos 35+',detail:'Un grupo, dos vueltas y ocho clasificados: 1 vs 8, 2 vs 7, 3 vs 6 y 4 vs 5.'},
   {title:'Veteranos 50+',detail:'La cantidad de enfrentamientos se acuerda en asamblea y los dos mejores de la tabla general pasan a la final.'},
   {title:'Desempates',detail:'Diferencia de goles, goles anotados, menos goles recibidos, enfrentamiento directo y disciplina.'},
   {title:'Final y Campeón de Campeones',detail:'La final es a un partido; empate: tiempos extra y penales. Campeón de Campeones enfrenta al campeón de Copa con el de Liga; si es el mismo equipo, el nombramiento es automático.'}
 ];
 
 const archiveMethod=[
+  'Esta Historia corresponde únicamente a la Liga adulta: categoría libre y Veteranos.',
+  'La Liga es una organización deportiva independiente de la Presidencia Municipal y de COMUDE; “presidente” significa presidente de la propia Liga.',
+  'Se excluye material de ligas Pony, infantiles, juveniles y otras competencias municipales que no pertenecen a esta organización.',
   'Se acepta como campeón cuando una publicación, tabla, álbum, texto o imagen de la Liga o de sus administradores lo identifica como campeón.',
-  'No es obligatorio que exista una fotografía del trofeo para registrar un campeonato si la publicación oficial o administrativa lo confirma.',
-  'Un rol que solo anuncia una final confirma a los finalistas y la fecha, pero no por sí solo el ganador.',
+  'No es obligatorio que exista una fotografía del trofeo para registrar un campeonato si la publicación de la Liga o de su administración lo confirma.',
   'Los equipos antiguos se conservan en Historia y no se mezclan con los equipos activos de la temporada actual.'
 ];
 
@@ -361,7 +358,7 @@ function historyYouthCards(){
 }
 function historicalTimelineBlock(){
   return '<section class="v35-history-timeline">'+
-    '<div class="v35-history-subhead"><span>LÍNEA DEL TIEMPO</span><h3>Cómo fue cambiando la Liga</h3><p>Roles, tablas, álbumes, reglamento y hemeroteca permiten reconstruir etapas sin mezclar la historia con la temporada actual.</p></div>'+
+    '<div class="v35-history-subhead"><span>LÍNEA DEL TIEMPO</span><h3>Cómo fue cambiando la Liga</h3><p>Publicaciones de Golazo Liga, tablas, álbumes, reglamento y perfiles de administradores permiten reconstruir la historia adulta sin mezclarla con otras ligas del municipio.</p></div>'+
     '<div class="v35-timeline-list">'+historicalTimeline.map(x=>'<article><time>'+esc(x.date)+'</time><div><h4>'+esc(x.title)+'</h4><p>'+esc(x.detail)+'</p></div></article>').join('')+'</div>'+
   '</section>';
 }
@@ -374,15 +371,13 @@ function competitionFormatBlock(){
 }
 function historyArchiveBlock(){
   return '<section class="v35-block v35-history-archive">'+
-    '<div class="v35-history-archive-head"><span>ARCHIVO HISTÓRICO</span><h2>Historias de la Liga</h2><p>Información tomada únicamente de fotografías, álbumes y videos históricos entregados. Los videos se revisan como fuente y no se insertan en esta página.</p></div>'+
+    '<div class="v35-history-archive-head"><span>ARCHIVO HISTÓRICO</span><h2>Historias de la Liga</h2><p>Archivo histórico de la Liga adulta: categoría libre y Veteranos. Se excluyen ligas infantiles, Pony, juveniles y torneos de Presidencia Municipal/COMUDE que pertenecen a organizaciones distintas. Los videos se revisan como fuente y no se insertan en esta página.</p></div>'+
     historicalTimelineBlock()+
     competitionFormatBlock()+
     historyMomentCards()+
     '<div class="v35-history-subhead"><span>EQUIPOS PARA EL RECUERDO</span><h3>Clubes y nombres del archivo</h3><p>Estos registros históricos no alteran la lista de equipos de la temporada actual.</p></div>'+
     retroClubCards()+
     verifiedHistoryBlocks()+
-    '<div class="v35-history-subhead"><span>FÚTBOL FORMATIVO</span><h3>Infantil y juvenil</h3></div>'+
-    historyYouthCards()+
   '</section>';
 }
 function championsArchiveBlock(){
