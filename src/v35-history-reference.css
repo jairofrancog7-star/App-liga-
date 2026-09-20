@@ -1214,3 +1214,161 @@
   .v35-result-list article>i{color:#7886c3;font-size:9px;font-style:normal;text-align:center}
   .v35-result-list article>p{grid-column:2/5;margin:2px 0 0;color:#aeb7d4;font-size:9px;line-height:1.3}
 }
+
+
+/* V98 — imágenes de Campeones/Finales + Récords/Recuerdos documentados. */
+@media(max-width:1023px){
+  .v35-history-visual{
+    width:100%;
+    min-height:64px;
+    margin:0 0 12px;
+    display:flex;
+    align-items:center;
+    gap:10px;
+  }
+  .v35-history-visual img{
+    width:58px;
+    height:58px;
+    object-fit:contain;
+    object-position:center;
+    display:block;
+    padding:5px;
+    border-radius:14px;
+    background:rgba(255,255,255,.05);
+    border:1px solid rgba(95,121,230,.22);
+  }
+  .v35-champion-logos{
+    display:flex;
+    gap:8px;
+    margin:0 0 10px;
+  }
+  .v35-champion-logos img{
+    width:48px;
+    height:48px;
+    object-fit:contain;
+    display:block;
+    padding:4px;
+    border-radius:12px;
+    background:rgba(255,255,255,.045);
+    border:1px solid rgba(90,115,225,.23);
+  }
+  .v35-scorer-history{
+    display:grid;
+    gap:8px;
+  }
+  .v35-scorer-history article{
+    min-height:68px;
+    padding:10px 12px;
+    display:grid;
+    grid-template-columns:42px minmax(0,1fr) auto;
+    gap:9px;
+    align-items:center;
+    border:1px solid rgba(89,110,218,.22);
+    border-radius:14px;
+    background:linear-gradient(180deg,rgba(18,28,124,.97),rgba(10,18,100,.99));
+  }
+  .v35-scorer-history article>span{
+    color:#20e7f2;
+    font-size:9px;
+    font-weight:850;
+  }
+  .v35-scorer-history b{
+    display:block;
+    color:#fff;
+    font-size:11.5px;
+    line-height:1.12;
+  }
+  .v35-scorer-history small{
+    display:block;
+    margin-top:3px;
+    color:#aeb7d6;
+    font-size:8.5px;
+    line-height:1.25;
+  }
+  .v35-scorer-history strong{
+    color:#fff;
+    font-size:11px;
+    white-space:nowrap;
+  }
+  .v35-final-row{
+    position:relative;
+  }
+  .v35-final-logos{
+    grid-column:1/5;
+    display:flex;
+    gap:7px;
+    margin:0 0 2px 48px;
+  }
+  .v35-final-logos img{
+    width:34px;
+    height:34px;
+    object-fit:contain;
+    display:block;
+    padding:3px;
+    border-radius:10px;
+    background:rgba(255,255,255,.045);
+  }
+
+  .v35-record-grid{
+    display:grid;
+    grid-template-columns:1fr;
+    gap:10px;
+    margin-top:14px;
+  }
+  .v35-record-card{
+    min-height:116px;
+    padding:14px;
+    display:grid;
+    grid-template-columns:58px minmax(0,1fr);
+    gap:12px;
+    align-items:start;
+    border:1px solid rgba(91,114,222,.26);
+    border-radius:17px;
+    background:
+      radial-gradient(85% 120% at 100% 0%,rgba(35,90,255,.20),transparent 62%),
+      linear-gradient(145deg,rgba(22,32,139,.98),rgba(10,17,96,.99));
+  }
+  .v35-record-card>img,
+  .v35-record-mark{
+    width:58px;
+    height:58px;
+    box-sizing:border-box;
+    display:grid;
+    place-items:center;
+    object-fit:contain;
+    padding:5px;
+    border-radius:14px;
+    border:1px solid rgba(32,229,241,.26);
+    background:rgba(255,255,255,.04);
+  }
+  .v35-record-mark{
+    color:#23e8f2;
+    font-size:15px;
+    font-weight:900;
+  }
+  .v35-record-card small{
+    display:block;
+    color:#22e7f2;
+    font-size:9px;
+    line-height:1;
+    font-weight:850;
+    letter-spacing:.08em;
+  }
+  .v35-record-card h3{
+    margin:5px 0 2px;
+    color:#fff;
+    font-size:19px;
+    line-height:1.05;
+    font-weight:740;
+  }
+  .v35-record-card strong{
+    color:#fff;
+    font-size:12px;
+  }
+  .v35-record-card p{
+    margin:7px 0 0;
+    color:#aeb7d7;
+    font-size:10px;
+    line-height:1.4;
+  }
+}
