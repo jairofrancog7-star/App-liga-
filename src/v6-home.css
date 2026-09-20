@@ -69,3 +69,122 @@
   border:0!important;
   border-radius:0!important;
 }
+
+
+/* V92 — calendario oficial con escudos y marcadores reales */
+.v6-calendar-card{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:8px;
+}
+.v6-calendar-card>.v6-calendar-match{
+  min-width:0;
+  padding:11px 7px 10px;
+  text-align:center;
+  border-radius:14px;
+  background:#101663;
+  border:1px solid rgba(255,255,255,.08);
+}
+.v6-calendar-card>.v6-calendar-match.active{
+  background:linear-gradient(145deg,#1139b5,#00a2c7);
+}
+.v6-calendar-card .v6-calendar-day{
+  display:block!important;
+  font:900 23px/1 var(--display,Arial,sans-serif)!important;
+}
+.v6-calendar-card .v6-calendar-month{
+  display:block!important;
+  margin:3px 0 8px!important;
+  color:#9eabd0!important;
+  font-size:8px!important;
+}
+.v6-calendar-card .v6-calendar-pair{
+  display:grid!important;
+  grid-template-columns:minmax(0,1fr) 38px minmax(0,1fr)!important;
+  align-items:center!important;
+  gap:3px!important;
+  min-height:44px!important;
+  margin:0 0 7px!important;
+}
+.v6-calendar-card .v6-calendar-team{
+  min-width:0!important;
+  display:flex!important;
+  flex-direction:column!important;
+  align-items:center!important;
+  justify-content:center!important;
+  gap:3px!important;
+  font:inherit!important;
+}
+.v6-calendar-card .v6-calendar-team .v6-crest{
+  width:22px!important;
+  height:22px!important;
+  min-width:22px!important;
+  display:grid!important;
+  place-items:center!important;
+  margin:0!important;
+  font-size:6px!important;
+}
+.v6-calendar-card .v6-calendar-team .v6-crest.v6-crest-image{
+  overflow:visible!important;
+  border:0!important;
+  border-radius:0!important;
+  background:transparent!important;
+}
+.v6-calendar-card .v6-calendar-team .v6-crest img{
+  display:block!important;
+  width:22px!important;
+  height:22px!important;
+  max-width:22px!important;
+  max-height:22px!important;
+  object-fit:contain!important;
+  object-position:center!important;
+  background:transparent!important;
+  border:0!important;
+  border-radius:0!important;
+}
+.v6-calendar-card .v6-calendar-team em{
+  display:block!important;
+  width:100%!important;
+  overflow:hidden!important;
+  color:#fff!important;
+  font-size:6.8px!important;
+  line-height:1.05!important;
+  font-style:normal!important;
+  font-weight:800!important;
+  text-overflow:ellipsis!important;
+  white-space:nowrap!important;
+}
+.v6-calendar-card .v6-calendar-score{
+  display:block!important;
+  color:#fff!important;
+  font-size:11px!important;
+  line-height:1!important;
+  font-weight:900!important;
+  white-space:nowrap!important;
+}
+.v6-calendar-card .v6-calendar-match.is-upcoming .v6-calendar-score{
+  color:#7ff4ff!important;
+  font-size:9px!important;
+}
+.v6-calendar-card .v6-calendar-status{
+  display:block!important;
+  overflow:hidden!important;
+  color:#c7cff0!important;
+  font-size:6.6px!important;
+  line-height:1.15!important;
+  text-overflow:ellipsis!important;
+  white-space:nowrap!important;
+}
+.lightmode .v6-calendar-card>.v6-calendar-match{
+  background:#fff;
+  color:#131522;
+  border-color:#e2e6ef;
+}
+.lightmode .v6-calendar-card .v6-calendar-team em{color:#131522!important}
+.lightmode .v6-calendar-card .v6-calendar-status{color:#697186!important}
+@media(max-width:360px){
+  .v6-calendar-card{gap:6px}
+  .v6-calendar-card>.v6-calendar-match{padding-left:5px;padding-right:5px}
+  .v6-calendar-card .v6-calendar-pair{grid-template-columns:minmax(0,1fr) 34px minmax(0,1fr)!important}
+  .v6-calendar-card .v6-calendar-team em{font-size:6px!important}
+}
