@@ -190,7 +190,9 @@ const HIST_MEDIA='https://raw.githubusercontent.com/jairofrancog7-star/App-liga-
 const HIST_PHOTOS=window.LJR_HISTORY_PHOTOS||{};
 const historyMoments=[
   {kind:'TERCER LUGAR',date:'23 nov 2013',title:'Romerillo',subtitle:'Tercer lugar · Fuerza Intermedia',detail:'Golazo Liga publicó que el portero de Romerillo fue clave para que su equipo obtuviera el tercer lugar, destacando una atajada de penal en la serie final. El nombre del portero no es visible en la captura aportada.'},
+  {kind:'CAMPEÓN',date:'2014 · fecha exacta pendiente',season:'2014',winner:'DHP',title:'DHP',subtitle:'Campeón del Torneo de Copa 2014 · Segunda Fuerza',detail:'Dato histórico aportado directamente por el usuario: DHP fue campeón del Torneo de Copa 2014 de Segunda Fuerza. La publicación o fotografía original queda pendiente de adjuntar para documentar la fecha exacta.'},
   {kind:'CAMPEÓN',date:'22 feb 2014',season:'2014',winner:'Puros Cuates',title:'Puros Cuates',subtitle:'Campeón de Copa · Fuerza Intermedia',detail:'La publicación de Golazo Liga muestra el trofeo entregado al equipo campeón.',backgroundPhoto:HIST_PHOTOS.purosCuatesTrophy2014||'',image:''},
+  {kind:'CAMPEÓN',date:'25 sep 2022',season:'2022',winner:'Barza',title:'Barza',subtitle:'Campeón de Copa · Fuerza Intermedia',detail:'Publicación de Golazo Liga del 25 de septiembre de 2022: “Barza, campeón de Copa fuerza intermedia. Felicidades!!!”.',image:HIST_ROOT+'assets/official-logos/barza.png'},
   {kind:'CAMPEÓN',date:'03 nov 2019',season:'2018–2019',winner:'Juventus',title:'Juventus',subtitle:'Campeón de Liga · temporada 2018–2019',detail:'Fotografía histórica del plantel campeón; Boavista quedó registrado como subcampeón.',backgroundPhoto:HIST_MEDIA+'juventus-campeon-2019.jpg',image:HIST_ROOT+'assets/official-logos/juventus.png'},
   {kind:'CAMPEÓN',date:'Fecha exacta pendiente',season:'Temporada por confirmar',winner:'Tecos',title:'Tecos',subtitle:'Plantel campeón · categoría adulta por identificar',detail:'La fotografía conservada muestra al plantel con camisetas de campeón y trofeo. La fecha exacta no es legible en el material revisado.',backgroundPhoto:HIST_MEDIA+'tecos-campeon-historico.jpg'},
   {kind:'CAMPEÓN',date:'11 dic 2012',season:'2012',winner:'Tavera FC',title:'Tavera FC',subtitle:'Campeón de Copa · Categoría Segunda',detail:'Golazo Liga felicitó al equipo Tavera como campeón de Copa de la Categoría Segunda el 11 de diciembre de 2012.',image:HIST_ROOT+'assets/official-logos/tavera-fc.png'},
@@ -208,6 +210,7 @@ const historyMoments=[
 const historyYouth=[];
 
 const taggedFacebookPosts=[
+  {date:'25 sep 2022',person:'Xavier Lara Valencia',type:'CAMPEÓN DE COPA',title:'Barza · campeón de Copa de Fuerza Intermedia',detail:'Xavier Lara Valencia publicó en Golazo Liga: “Barza, campeón de Copa fuerza intermedia. Felicidades!!!”.'},
   {date:'Fecha exacta pendiente',person:'Xavier Lara Valencia',type:'ROLES / PUBLICACIONES HISTÓRICAS',title:'Roles de juego publicados en Golazo Liga',detail:'Referencia histórica aportada para revisar publicaciones y roles de juego asociados a Golazo Liga. La búsqueda pública actual de Facebook/web no devolvió una publicación indexada con su nombre, por lo que las fechas, jornadas y equipos exactos quedan pendientes de extraer del material visual o del perfil original antes de atribuir resultados concretos.'},
   {date:'04 nov 2012',person:'Richard JR Centeno + 2 personas',type:'ETIQUETADOS',title:'Partidos pendientes · Copa de Primera',detail:'Golazo Liga aparece etiquetado con Richard JR Centeno y dos personas más en Santa Cruz de Juventino Rosas. La publicación corresponde a partidos pendientes del Torneo de Copa de Primera.'},
   {date:'26 nov 2012',person:'Manuel Pantoja Hernandez',type:'FOTOS / ETIQUETA',title:'Álbum de Copa · Hermanos vs Juventus',detail:'Golazo Liga agregó 12 fotos nuevas con Manuel Pantoja Hernandez. El archivo contiguo identifica una serie de penales Hermanos vs Juventus del Torneo de Copa.'},
@@ -235,7 +238,7 @@ const retroClubs=[
   {name:'Malvinas',logo:'assets/official-logos/malvinas.png',note:'Intermedia · archivo 2015–2016'},
   {name:'La Cuadrilla',logo:'assets/official-logos/la-cuadrilla.png',note:'Primera e Intermedia · tablas históricas'},
   {name:'Populares',logo:'assets/official-logos/populares.png',note:'Intermedia · tablas y goleadores'},
-  {name:'Barza',logo:'assets/official-logos/barza.png',note:'Intermedia · archivo histórico'},
+  {name:'Barza',logo:'assets/official-logos/barza.png',note:'Campeón de Copa · Fuerza Intermedia · 2022'},
   {name:'Osasuna',logo:'assets/official-logos/osasuna.png',note:'Intermedia · archivo histórico'},
   {name:'San Antonio Jr.',logo:'assets/official-logos/san-antonio-jrs.png',note:'Intermedia · líder del corte J20 de 2015'},
   {name:'Napoli',logo:'assets/official-logos/napoli.png',note:'Primera Fuerza · archivo histórico'},
@@ -245,6 +248,8 @@ const retroClubs=[
 const retroNames=['Universidad','Valencia','Halcones','Chelse','Olímpicos de Pozos','Romerillo'];
 
 const verifiedChampions=[
+  {season:'2014 · fecha exacta pendiente',competition:'Torneo de Copa · Segunda Fuerza',champion:'DHP',runner:'—',source:'Dato histórico aportado directamente por el usuario. Falta adjuntar la publicación o fotografía original para fijar la fecha exacta del título.'},
+  {season:'25 sep 2022',competition:'Torneo de Copa · Fuerza Intermedia',champion:'Barza',runner:'—',source:'Golazo Liga, publicación del 25 de septiembre de 2022: “Barza, campeón de Copa fuerza intermedia. Felicidades!!!”.',championLogo:HIST_ROOT+'assets/official-logos/barza.png'},
   {season:'15 dic 2013',competition:'Segunda Fuerza',champion:'Real Cerrito de Gasca',runner:'DHP',source:'Golazo Liga publicó al capitán “Nudo” recibiendo el trofeo de campeón de Segunda Fuerza. Otra publicación de la misma final registró a Real Cerrito arriba 3–0 sobre DHP al minuto 35; no se usa ese marcador parcial como resultado final.',championLogo:HIST_ROOT+'assets/teams/deportivo-cg.webp'},
   {season:'22 feb 2014',competition:'Torneo de Copa · Fuerza Intermedia',champion:'Puros Cuates',runner:'—',source:'Publicación de Golazo Liga: “Trofeo para el equipo Puros Cuates Campeón del Torneo De Copa 2014 en la Categoría Fuerza Intermedia”.',photo:HIST_PHOTOS.purosCuatesTrophy2014||''},
   {season:'11 ene 2015',competition:'Campeonato · Intermedia',champion:'Puros Cuates',runner:'—',source:'Publicación de Golazo Liga del 11 de enero de 2015: “Puros cuates... campeón de intermedia”.'},
@@ -289,6 +294,7 @@ const videoArchiveFindings=[
   {date:'15 abr 2017',title:'Eusebio Rangel · campeón goleador de Veteranos',detail:'La publicación solicita a Eusebio Rangel, del equipo Hermanos, presentarse a la final para recibir el trofeo de campeón de goleo.'},
   {date:'15 abr 2017',title:'Primera Fuerza · goleo J28',detail:'Juan Manuel Gámez López (Hermanos) encabeza el corte con 34 goles; Fernando Gámez Reyes (Abejas), Jorge Alberto Sánchez Mendoza (Juventus) y Noé Alfredo Silva Martínez (La Cuadrilla) aparecen con 29.'},
   {date:'06 may 2017',title:'Primera · corte de Liga J30',detail:'Linces aparece líder con 79 puntos. Hermanos registra 111 goles a favor; Linces, 107 y diferencia de +75. Son marcas del corte publicado, no récords absolutos de toda la historia.',image:HIST_ROOT+'assets/official-logos/linces.png'},
+  {date:'25 sep 2022',title:'Barza · campeón de Copa de Fuerza Intermedia',detail:'Publicación de Golazo Liga realizada por Xavier Lara Valencia: “Barza, campeón de Copa fuerza intermedia. Felicidades!!!”.',image:HIST_ROOT+'assets/official-logos/barza.png'},
   {date:'08 jun 2025 · memoria de 1950',title:'José Carmen Guerrero Velásquez · primer equipo de 1950',detail:'La Liga Municipal de Fútbol “Juventino Rosas” A.C. publicó un reconocimiento al Prof. José Carmen Guerrero Velásquez y lo describió como el único sobreviviente del primer equipo de fútbol formado en Juventino Rosas, GTO., en 1950. Esta publicación aporta un antecedente local anterior al partido de 1953 citado por una fuente secundaria.'},
   {date:'12 abr 2025',title:'Boavista FC · campeón de Veteranos 50+',detail:'El rol de la final de Liga 2025 muestra Boca Jrs. vs Boavista a las 16:00 en Campo 1. Una publicación del mismo 12 de abril presenta a Boavista F C como “CAMPEÓN 2025”.',image:HIST_ROOT+'assets/official-logos/boavista.png'},
   {date:'26 abr 2025',title:'Campeón de Campeones · Veteranos 50+',detail:'Cartel histórico: Manchester United vs B.F.C., 17:00, Campo 1, Unidad Deportiva Sur. El material identifica el encuentro como “CAMPEÓN DE CAMPEONES”; no se asigna ganador porque el cuadro revisado no muestra el resultado.',image:HIST_ROOT+'assets/official-logos/manchester.png'},
