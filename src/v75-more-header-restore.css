@@ -304,3 +304,68 @@
     max-height:40px!important;
   }
 }
+
+
+/* V77 — MÁS según el video de referencia:
+   un solo azul continuo y el arte de balón empieza debajo de la cabecera.
+   No se superpone ningún logo sobre el icono superior derecho. */
+@media (max-width:1023px){
+  body[data-app-route="more"],
+  body[data-app-route="more"] #app,
+  body[data-app-route="more"] .app-shell{
+    background:#080b82!important;
+  }
+
+  body[data-app-route="more"] .topbar,
+  body[data-app-route="more"].v66-compact-route .topbar,
+  body[data-app-route="more"].v69-primary-tool-header .topbar{
+    background:#080b82!important;
+    background-image:none!important;
+    border-bottom:0!important;
+    box-shadow:none!important;
+  }
+
+  /* El video de referencia no tiene un escudo flotando encima del balón:
+     se elimina ese elemento para dejar libre la parte superior derecha. */
+  body[data-app-route="more"] .v19-more-logo{
+    display:none!important;
+    visibility:hidden!important;
+  }
+
+  body[data-app-route="more"] .v19-more-page{
+    background-color:#080b82!important;
+    background-image:url('../more-bg-v19.webp?v=20260918-v19')!important;
+    background-repeat:no-repeat!important;
+    background-size:100% auto!important;
+    background-position:center -118px!important;
+  }
+
+  /* Sin capa azul diferente encima del arte: mismo tono de extremo a extremo. */
+  body[data-app-route="more"] .v19-more-page::before{
+    background:linear-gradient(90deg,rgba(2,5,90,.10),transparent 58%)!important;
+  }
+
+  /* Perfil completo, limpio y por encima de cualquier decoración. */
+  body[data-app-route="more"] .topbar .profile-button,
+  body[data-app-route="more"].v66-compact-route .topbar .profile-button,
+  body[data-app-route="more"].v69-primary-tool-header .topbar .profile-button{
+    right:30px!important;
+    z-index:20!important;
+    background-color:transparent!important;
+  }
+}
+
+@media(max-width:560px){
+  body[data-app-route="more"] .v19-more-page{
+    background-position:center -102px!important;
+  }
+}
+
+@media(max-width:390px){
+  body[data-app-route="more"] .v19-more-page{
+    background-position:center -88px!important;
+  }
+  body[data-app-route="more"] .topbar .profile-button{
+    right:26px!important;
+  }
+}
