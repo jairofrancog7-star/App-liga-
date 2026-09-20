@@ -218,13 +218,13 @@ function bind(){
  document.querySelector('[data-v42-follow]')?.addEventListener('click',()=>{toggleFollow();render()},{once:true});
  document.querySelector('[data-v42-bell]')?.addEventListener('click',()=>{notifyOpen=true;render()},{once:true});
  document.querySelectorAll('[data-v42-share]').forEach(b=>b.addEventListener('click',share,{once:true}));
- document.querySelector('[data-v42-compare]')?.addEventListener('click',()=>{compareOpen=true;compareTarget='';render()},{once:true});
+ document.querySelectorAll('[data-v42-compare]').forEach(b=>b.addEventListener('click',e=>{e.preventDefault();e.stopPropagation();compareOpen=true;compareTarget='';render()},{once:true}));
  document.querySelector('[data-v42-close-notify]')?.addEventListener('click',()=>{notifyOpen=false;render()},{once:true});
  document.querySelector('[data-v42-close-compare]')?.addEventListener('click',()=>{compareOpen=false;compareTarget='';render()},{once:true});
  document.querySelectorAll('[data-v42-close-overlay]').forEach(x=>x.addEventListener('click',()=>{notifyOpen=false;compareOpen=false;render()},{once:true}));
  document.querySelectorAll('[data-v42-tab]').forEach(b=>b.addEventListener('click',()=>{activeTab=b.dataset.v42Tab;localStorage.setItem('v42-team-tab',activeTab);render()},{once:true}));
  document.querySelectorAll('[data-v42-select-name]').forEach(b=>b.addEventListener('click',()=>{localStorage.setItem('v62-team-name',b.dataset.v42SelectName);activeTab='summary';render()},{once:true}));
- document.querySelectorAll('[data-v42-compare-name]').forEach(b=>b.addEventListener('click',()=>{compareTarget=b.dataset.v42CompareName;render()},{once:true}));
+ document.querySelectorAll('[data-v42-compare-name]').forEach(b=>b.addEventListener('click',e=>{e.preventDefault();e.stopPropagation();compareTarget=b.dataset.v42CompareName;render()},{once:true}));
  document.querySelector('[data-v42-compare-again]')?.addEventListener('click',()=>{compareTarget='';render()},{once:true});
  document.querySelectorAll('[data-v42-player]').forEach(b=>b.addEventListener('click',()=>toast(b.dataset.v42Player+' · jugador registrado'),{once:true}));
 }
