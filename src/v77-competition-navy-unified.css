@@ -1,62 +1,119 @@
-/* V77 — Competición: un solo fondo azul oscuro.
-   Ajuste visual aislado. No cambia contenido, equipos, tablas, cuadro, tamaños ni navegación. */
-@media (max-width:520px){
-  body[data-app-route="competition"]{
-    --v77-competition-navy:#070963;
-    background:var(--v77-competition-navy)!important;
-  }
-
-  body[data-app-route="competition"] .app-shell,
-  body[data-app-route="competition"] .topbar,
-  body[data-app-route="competition"] #screen,
-  body[data-app-route="competition"] #screen>.tabs,
-  body[data-app-route="competition"] .v12-date-strip,
-  body[data-app-route="competition"] .v12-fixtures-reference,
-  body[data-app-route="competition"] .v12-standings-reference,
-  body[data-app-route="competition"] .v40-standings,
-  body[data-app-route="competition"] .v40-standings-host,
-  body[data-app-route="competition"] .v12-bracket-reference,
-  body[data-app-route="competition"] .bottom-nav{
-    background:var(--v77-competition-navy)!important;
+/* V77 FORCE2 — Competición: un solo azul oscuro en barra, página y navegación.
+   No cambia estructura, tamaños, logos, equipos, tablas ni funcionalidad. */
+@media (max-width:1023px){
+  html body[data-app-route="competition"],
+  html body.v40-standings-master,
+  html body[data-app-route="competition"] #app,
+  html body[data-app-route="competition"] .app-shell,
+  html body.v40-standings-master #app,
+  html body.v40-standings-master .app-shell{
+    --competition-solid-navy:#06075f;
+    background:#06075f!important;
+    background-color:#06075f!important;
     background-image:none!important;
   }
 
-  /* La cabecera ya no cambia a azul brillante: queda igual que el resto. */
-  body[data-app-route="competition"] .topbar{
+  /* CABECERA: mismo azul oscuro, sin degradado ni azul brillante. */
+  html body[data-app-route="competition"] .topbar,
+  html body.v40-standings-master .topbar,
+  html body.v40-standings-master[data-app-route="competition"] .topbar{
+    background:#06075f!important;
+    background-color:#06075f!important;
+    background-image:none!important;
     border:0!important;
     border-bottom:0!important;
     box-shadow:none!important;
   }
 
-  /* Pestañas principales integradas al mismo fondo. */
-  body[data-app-route="competition"] #screen>.tabs{
-    border:0!important;
-    border-bottom:0!important;
+  html body[data-app-route="competition"] .topbar::before,
+  html body.v40-standings-master .topbar::before{
+    content:none!important;
+    display:none!important;
+    background:none!important;
+    background-image:none!important;
+    opacity:0!important;
+  }
+
+  /* CONTENIDO Y TABS PRINCIPALES: mismo color exacto. */
+  html body[data-app-route="competition"] #screen,
+  html body.v40-standings-master #screen,
+  html body[data-app-route="competition"] #screen>.tabs,
+  html body.v40-standings-master #screen>.tabs{
+    background:#06075f!important;
+    background-color:#06075f!important;
+    background-image:none!important;
+    border-color:transparent!important;
     box-shadow:none!important;
   }
 
-  /* Clasificación: elimina saltos de tono entre selector, tabla y fondo. */
-  body.v40-standings-master[data-app-route="competition"] #screen,
-  body.v40-standings-master[data-app-route="competition"] .v40-standings,
-  body.v40-standings-master[data-app-route="competition"] .v40-content,
-  body.v40-standings-master[data-app-route="competition"] .v40-table-shell,
-  body.v40-standings-master[data-app-route="competition"] .v40-table{
-    background:var(--v77-competition-navy)!important;
+  /* Partidos / resultados. */
+  html body[data-app-route="competition"] .v12-date-strip,
+  html body[data-app-route="competition"] .v12-fixtures-reference,
+  html body[data-app-route="competition"] .v12-results-reference,
+  html body[data-app-route="competition"] .v12-fixtures-host,
+  html body[data-app-route="competition"] .v40-match-master,
+  html body[data-app-route="competition"] .v40-subtabs{
+    background:#06075f!important;
+    background-color:#06075f!important;
     background-image:none!important;
   }
 
-  /* Cuadro / play-off: el lienzo conserva exactamente el mismo navy. */
-  body[data-app-route="competition"] .v12-bracket-reference,
-  body[data-app-route="competition"] .v12-bracket-board,
-  body[data-app-route="competition"] .v12-bracket-dates,
-  body[data-app-route="competition"] .v12-stage-panels,
-  body[data-app-route="competition"] .v12-final-reference{
-    background-color:var(--v77-competition-navy)!important;
+  /* Clasificación: evita cualquier salto a otro azul. */
+  html body[data-app-route="competition"] .v12-standings-reference,
+  html body[data-app-route="competition"] .v40-standings-host,
+  html body[data-app-route="competition"] .v40-standings,
+  html body[data-app-route="competition"] .v40-content,
+  html body[data-app-route="competition"] .v40-table-wrap,
+  html body[data-app-route="competition"] .v40-scroll-shell,
+  html body.v40-standings-master .v40-standings-host,
+  html body.v40-standings-master .v40-standings,
+  html body.v40-standings-master .v40-content,
+  html body.v40-standings-master .v40-table-wrap,
+  html body.v40-standings-master .v40-scroll-shell{
+    background:#06075f!important;
+    background-color:#06075f!important;
+    background-image:none!important;
   }
 
-  /* Se conservan cian, tarjetas y botones para contraste; solo se unifica el fondo. */
-  body[data-app-route="competition"] .bottom-nav{
+  /* Cuadro / play-off: fondo continuo. */
+  html body[data-app-route="competition"] .v12-bracket-reference,
+  html body[data-app-route="competition"] .v12-bracket-board,
+  html body[data-app-route="competition"] .v12-bracket-dates,
+  html body[data-app-route="competition"] .v12-stage-panels,
+  html body[data-app-route="competition"] .v12-final-reference,
+  html body[data-app-route="competition"] .v12-semifinal-source,
+  html body[data-app-route="competition"] .v12-final-stage{
+    background:#06075f!important;
+    background-color:#06075f!important;
+    background-image:none!important;
+  }
+
+  /* BARRA INFERIOR: mismo azul exacto que la página. */
+  html body[data-app-route="competition"] .bottom-nav,
+  html body.v40-standings-master .bottom-nav,
+  html body.v40-standings-master[data-app-route="competition"] .bottom-nav{
+    background:#06075f!important;
+    background-color:#06075f!important;
+    background-image:none!important;
     border-top:1px solid rgba(255,255,255,.10)!important;
-    box-shadow:0 -8px 24px rgba(0,0,0,.08)!important;
+    box-shadow:none!important;
+  }
+
+  html body[data-app-route="competition"] .bottom-nav::before,
+  html body[data-app-route="competition"] .bottom-nav::after,
+  html body.v40-standings-master .bottom-nav::before,
+  html body.v40-standings-master .bottom-nav::after{
+    background:#06075f!important;
+    background-color:#06075f!important;
+    background-image:none!important;
+    box-shadow:none!important;
+  }
+
+  /* Conserva los elementos activos/cian y tarjetas; solo unifica el lienzo de fondo. */
+  html body[data-app-route="competition"] #screen>.tabs .tab.active,
+  html body.v40-standings-master #screen>.tabs .tab.active,
+  html body[data-app-route="competition"] .bottom-nav .nav-item[data-route="competition"],
+  html body.v40-standings-master .bottom-nav .nav-item[data-route="competition"]{
+    color:#20e7f0!important;
   }
 }
