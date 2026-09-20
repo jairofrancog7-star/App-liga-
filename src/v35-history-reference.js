@@ -45,14 +45,16 @@ const historicalSources=[
 
 // V96 — Archivo histórico real: contenido verificado en capturas, álbumes y videos entregados por el usuario.
 // Los videos se usan únicamente como fuente de consulta; NO se incrustan dentro de Historia.
+const HIST_ROOT='https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/';
 const historyMoments=[
-  {kind:'CAMPEÓN',title:'Tavera FC',subtitle:'Campeón de Copa · Categoría Segunda',detail:'Registro histórico del álbum de la Liga.'},
-  {kind:'FINAL',title:'Universidad vs Dinamo',subtitle:'Final de Veteranos',detail:'Final documentada en el archivo fotográfico histórico.'},
-  {kind:'ANIVERSARIO',title:'Boavista',subtitle:'XXV aniversario',detail:'Álbum conmemorativo del equipo Boavista.'},
-  {kind:'PENALES',title:'Hermanos vs Juventus',subtitle:'Torneo de Copa',detail:'Serie de penales registrada en el archivo histórico.'},
+  {kind:'CAMPEÓN',title:'Tavera FC',subtitle:'Campeón de Copa · Categoría Segunda',detail:'Registro histórico del álbum de la Liga.',image:HIST_ROOT+'assets/official-logos/tavera-fc.png'},
+  {kind:'FINAL',title:'Universidad vs Dinamo',subtitle:'Final de Veteranos',detail:'Final documentada en el archivo fotográfico histórico.',image:HIST_ROOT+'assets/official-logos/dynamo.png'},
+  {kind:'FINAL',title:'Chelsea vs La Esperanza',subtitle:'Veteranos · Final de Copa 2019 · 17:30 · Campo 1',detail:'El rol histórico confirma la final y su programación; no se asigna ganador sin resultado publicado.'},
+  {kind:'ANIVERSARIO',title:'Boavista',subtitle:'XXV aniversario',detail:'Álbum conmemorativo del equipo Boavista.',image:HIST_ROOT+'assets/official-logos/boavista.png'},
+  {kind:'PENALES',title:'Hermanos vs Juventus',subtitle:'Torneo de Copa',detail:'Serie de penales registrada en el archivo histórico.',imageA:HIST_ROOT+'assets/official-logos/hermanos.png',imageB:HIST_ROOT+'assets/official-logos/juventus.png'},
   {kind:'ENCUENTRO',title:'Valencia vs Halcones',subtitle:'Partido histórico',detail:'Encuentro conservado dentro del archivo fotográfico.'},
-  {kind:'PENALES',title:'Hermanos vs Chelse',subtitle:'Archivo histórico',detail:'Serie de penales conservada en los álbumes de la Liga.'},
-  {kind:'CLÁSICO',title:'Olímpicos de Pozos vs Abejas FC',subtitle:'Campo de Pozos · domingo 21 de junio · 10:00',detail:'Rivalidad histórica: unidos por la comunidad y separados por el fútbol.'}
+  {kind:'PENALES',title:'Hermanos vs Chelse',subtitle:'Archivo histórico',detail:'Serie de penales conservada en los álbumes de la Liga.',image:HIST_ROOT+'assets/official-logos/hermanos.png'},
+  {kind:'CLÁSICO',title:'Olímpicos de Pozos vs Abejas FC',subtitle:'Campo de Pozos · domingo 21 de junio · 10:00',detail:'Rivalidad histórica: unidos por la comunidad y separados por el fútbol.',image:HIST_ROOT+'assets/official-logos/abejas.png'}
 ];
 
 const historyYouth=[
@@ -73,7 +75,8 @@ const retroClubs=[
 const retroNames=['Universidad','Valencia','Halcones','Chelse','Olímpicos de Pozos'];
 
 const verifiedChampions=[
-  {season:'2018–2019',competition:'Torneo de Liga',champion:'Juventus',runner:'Boavista',source:'Publicaciones históricas de Golazo Liga del 3 nov 2019.'}
+  {season:'2018–2019',competition:'Torneo de Liga',champion:'Juventus',runner:'Boavista',source:'Publicaciones históricas de Golazo Liga del 3 nov 2019.',championLogo:HIST_ROOT+'assets/official-logos/juventus.png',runnerLogo:HIST_ROOT+'assets/official-logos/boavista.png'},
+  {season:'Archivo histórico',competition:'Copa · Categoría Segunda',champion:'Tavera FC',runner:'—',source:'Álbum histórico entregado por el usuario.',championLogo:HIST_ROOT+'assets/official-logos/tavera-fc.png'}
 ];
 
 const historicTables=[
@@ -87,6 +90,14 @@ const historicTables=[
     ]
   },
   {
+    season:'2018',title:'Primera Fuerza · Jornada 26',note:'Corte histórico recuperado de una tabla publicada.',
+    rows:[
+      ['1','A. Centeno','64'],['2','Olímpicos','63'],['3','Hermanos','59'],['4','Juventus','56'],
+      ['5','Linces','56'],['6','PSV','45'],['7','La Esperanza','43'],['8','La Cuadrilla','42'],
+      ['9','Boavista','35'],['10','Napoli','24'],['11','Tavera','20'],['12','Abejas','16'],['13','Chelsea','16']
+    ]
+  },
+  {
     season:'2022',title:'Veteranos · Tabla final de Liga',note:'Tabla publicada como final tras 22 jornadas.',
     rows:[
       ['1','Juventus','53'],['2','Hermanos','45'],['3','América','41'],['4','Dynamo','39'],
@@ -94,6 +105,23 @@ const historicTables=[
       ['9','Cuenda','22'],['10','Barrio Seco','15'],['11','UNAM','15'],['12','Átomos','8']
     ]
   }
+];
+
+const historicScorers=[
+  {season:'2018',category:'Intermedia · Jornada 23',player:'Alejandro Juárez Merino',team:'Populares',value:'31 goles'},
+  {season:'2018',category:'Intermedia · Jornada 23',player:'Juan Carlos Hernández',team:'Barza',value:'18 goles'},
+  {season:'2018',category:'Intermedia · Jornada 23',player:'Alejandro Ramírez Medina',team:'Real DHP',value:'16 goles'},
+  {season:'2018',category:'Intermedia · Jornada 23',player:'César Agustín Pérez Campos',team:'Oklahoma',value:'16 goles'},
+  {season:'2018',category:'Intermedia · Jornada 23',player:'Miguel Presa García',team:'Populares',value:'16 goles'}
+];
+
+const recordMemories=[
+  {tag:'GOLEO',title:'Alejandro Juárez Merino',value:'31 goles',detail:'Populares · líder de goleo en el corte de Intermedia J23 de 2018.'},
+  {tag:'TABLA',title:'A. Centeno',value:'64 puntos',detail:'Líder del corte de Primera Fuerza J26 de 2018.'},
+  {tag:'TABLA',title:'Lobos CDG',value:'52 puntos',detail:'Líder del corte de Intermedia J23 de 2018.',image:HIST_ROOT+'assets/official-logos/lobos-cdg.png'},
+  {tag:'TABLA FINAL',title:'Juventus',value:'53 puntos',detail:'Primer lugar de la tabla final de Veteranos 2022.',image:HIST_ROOT+'assets/official-logos/juventus.png'},
+  {tag:'CAMPEÓN',title:'Juventus',value:'Liga 2018–2019',detail:'Campeón confirmado en publicación histórica del 3 de noviembre de 2019.',image:HIST_ROOT+'assets/official-logos/juventus.png'},
+  {tag:'RECUERDO',title:'Boavista',value:'XXV aniversario',detail:'Álbum conmemorativo conservado en el archivo histórico.',image:HIST_ROOT+'assets/official-logos/boavista.png'}
 ];
 
 const historicResults=[
@@ -104,7 +132,8 @@ const historicResults=[
 ];
 
 const historicFinalists=[
-  {year:'2023',category:'Segunda Fuerza · Gran Final de Liga',a:'Titanes FC',b:'Terrícolas SEDER',note:'Final programada en el rol histórico revisado; el material no muestra aquí el ganador.'}
+  {year:'2019',category:'Veteranos · Final de Copa',a:'Chelsea',b:'La Esperanza',note:'Programada a las 17:30 en Campo 1. El material revisado no muestra aquí el ganador.'},
+  {year:'2023',category:'Segunda Fuerza · Gran Final de Liga',a:'Titanes FC',b:'Terrícolas SEDER',note:'Final programada en el rol histórico revisado; el material no muestra aquí el ganador.',logoB:HIST_ROOT+'assets/official-logos/terricolas.png'}
 ];
 
 const expandedRetroNames=[
@@ -198,6 +227,11 @@ function historicalSourcesBlock(){
 function historyMomentCards(){
   return '<div class="v35-history-moments">'+historyMoments.map((m,i)=>
     '<article class="v35-history-moment">'+
+      ((m.image||m.imageA||m.imageB)?'<div class="v35-history-visual">'+
+        (m.image?'<img src="'+m.image+'" alt="" loading="lazy" decoding="async">':'')+
+        (m.imageA?'<img src="'+m.imageA+'" alt="" loading="lazy" decoding="async">':'')+
+        (m.imageB?'<img src="'+m.imageB+'" alt="" loading="lazy" decoding="async">':'')+
+      '</div>':'')+
       '<span class="v35-history-kind">'+esc(m.kind)+'</span>'+
       '<h3>'+esc(m.title)+'</h3>'+
       '<strong>'+esc(m.subtitle)+'</strong>'+
@@ -219,14 +253,20 @@ function verifiedHistoryBlocks(){
   return '<div class="v35-verified-history">'+
     '<div class="v35-history-subhead"><span>CAMPEONES CONFIRMADOS</span><h3>Palmarés verificado en el archivo</h3></div>'+
     '<div class="v35-champion-list">'+verifiedChampions.map(x=>
-      '<article class="v35-champion-card"><span>'+esc(x.season)+'</span><h4>'+esc(x.champion)+'</h4><b>'+esc(x.competition)+'</b><p>Subcampeón: '+esc(x.runner)+'. '+esc(x.source)+'</p></article>'
+      '<article class="v35-champion-card">'+
+        ((x.championLogo||x.runnerLogo)?'<div class="v35-champion-logos">'+(x.championLogo?'<img src="'+x.championLogo+'" alt="" loading="lazy">':'')+(x.runnerLogo?'<img src="'+x.runnerLogo+'" alt="" loading="lazy">':'')+'</div>':'')+
+        '<span>'+esc(x.season)+'</span><h4>'+esc(x.champion)+'</h4><b>'+esc(x.competition)+'</b><p>'+(x.runner&&x.runner!=='—'?'Subcampeón: '+esc(x.runner)+'. ':'')+esc(x.source)+'</p></article>'
     ).join('')+'</div>'+
+    '<div class="v35-history-subhead"><span>GOLEO HISTÓRICO</span><h3>Registros recuperados de tablas</h3></div>'+
+    '<div class="v35-scorer-history">'+historicScorers.map(x=>'<article><span>'+esc(x.season)+'</span><div><b>'+esc(x.player)+'</b><small>'+esc(x.team)+' · '+esc(x.category)+'</small></div><strong>'+esc(x.value)+'</strong></article>').join('')+'</div>'+
     '<div class="v35-history-subhead"><span>TABLAS HISTÓRICAS</span><h3>Clasificaciones recuperadas</h3><p>Se conserva el contexto exacto del material: una tabla final se marca como final; un corte de jornada se marca solo como corte.</p></div>'+
     historicTables.map(t=>'<article class="v35-old-table"><header><span>'+esc(t.season)+'</span><div><b>'+esc(t.title)+'</b><small>'+esc(t.note)+'</small></div></header><div class="v35-old-table-head"><span>POS</span><span>EQUIPO</span><span>PTS</span></div>'+t.rows.map(r=>'<div class="v35-old-table-row"><span>'+esc(r[0])+'</span><b>'+esc(r[1])+'</b><strong>'+esc(r[2])+'</strong></div>').join('')+'</article>').join('')+
     '<div class="v35-history-subhead"><span>RESULTADOS CONSERVADOS</span><h3>Ganadores publicados en roles antiguos</h3></div>'+
     '<div class="v35-result-list">'+historicResults.map(r=>'<article><span>'+esc(r.date)+'</span><small>'+esc(r.category)+'</small><b>'+esc(r.winner)+'</b><i>vs</i><strong>'+esc(r.against)+'</strong></article>').join('')+'</div>'+
     '<div class="v35-history-subhead"><span>FINALES DOCUMENTADAS</span><h3>Llaves y finalistas</h3></div>'+
-    '<div class="v35-result-list">'+historicFinalists.map(r=>'<article><span>'+esc(r.year)+'</span><small>'+esc(r.category)+'</small><b>'+esc(r.a)+'</b><i>vs</i><strong>'+esc(r.b)+'</strong><p>'+esc(r.note)+'</p></article>').join('')+'</div>'+
+    '<div class="v35-result-list">'+historicFinalists.map(r=>'<article class="v35-final-row">'+
+      ((r.logoA||r.logoB)?'<div class="v35-final-logos">'+(r.logoA?'<img src="'+r.logoA+'" alt="">':'')+(r.logoB?'<img src="'+r.logoB+'" alt="">':'')+'</div>':'')+
+      '<span>'+esc(r.year)+'</span><small>'+esc(r.category)+'</small><b>'+esc(r.a)+'</b><i>vs</i><strong>'+esc(r.b)+'</strong><p>'+esc(r.note)+'</p></article>').join('')+'</div>'+
     '<div class="v35-history-subhead"><span>MÁS EQUIPOS DEL RECUERDO</span><h3>Nombres encontrados en tablas y roles antiguos</h3></div>'+
     '<div class="v35-retro-names">'+expandedRetroNames.map(n=>'<span>'+esc(n)+'</span>').join('')+'</div>'+
   '</div>';
@@ -289,8 +329,14 @@ function finalsBody(){
     finalsArchiveBlock();
 }
 function recordsBody(){
-  return '<section class="v35-block v35-tab-body"><h2 class="v35-section-title">Récords</h2>'+
-    '<article class="v35-stat-card"><h3>Récords históricos por verificar</h3><p>No se muestran números estimados o de ejemplo; solo datos comprobados en publicaciones de la Liga.</p></article></section>';
+  return '<section class="v35-block v35-tab-body v35-records-body"><h2 class="v35-section-title">Récords y recuerdos</h2>'+
+    '<article class="v35-stat-card"><h3>Archivo comprobado</h3><p>Esta sección reúne marcas visibles en tablas históricas y recuerdos documentados en fotografías, álbumes y videos. Un corte de jornada no se presenta como récord absoluto de toda la Liga.</p></article>'+
+    '<div class="v35-record-grid">'+recordMemories.map(r=>'<article class="v35-record-card">'+
+      (r.image?'<img src="'+r.image+'" alt="" loading="lazy" decoding="async">':'<span class="v35-record-mark">LM</span>')+
+      '<div><small>'+esc(r.tag)+'</small><h3>'+esc(r.title)+'</h3><strong>'+esc(r.value)+'</strong><p>'+esc(r.detail)+'</p></div></article>').join('')+'</div>'+
+    '<div class="v35-history-subhead"><span>EQUIPOS DEL ARCHIVO</span><h3>Nombres recuperados de tablas, roles y álbumes</h3></div>'+
+    '<div class="v35-retro-names">'+expandedRetroNames.concat(retroNames).filter((x,i,a)=>a.indexOf(x)===i).map(n=>'<span>'+esc(n)+'</span>').join('')+'</div>'+
+  '</section>';
 }
 function bodyForTab(){
   if(activeTab==='Temporadas') return seasonsBody();
