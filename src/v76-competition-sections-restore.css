@@ -1,0 +1,219 @@
+/* V76 — Restauración de Partidos/Resultados y Cuadro.
+   Mantiene los datos actuales, recupera la composición anterior y evita solapamientos. */
+
+@media (max-width:520px){
+  /* PARTIDOS Y RESULTADOS: la franja vuelve a quedar pegada a las pestañas,
+     sin el hueco grande provocado por el sticky/top. */
+  body[data-app-route="competition"] .v12-fixtures-reference{
+    margin:0 -14px!important;
+    padding:0 14px 116px!important;
+    background:linear-gradient(180deg,#060861 0%,#05065a 42%,#03044d 100%)!important;
+  }
+
+  body[data-app-route="competition"] .v12-date-strip{
+    position:relative!important;
+    top:auto!important;
+    z-index:2!important;
+    margin:0 -14px 14px!important;
+    padding:10px 14px 12px!important;
+    gap:8px!important;
+    background:linear-gradient(180deg,#080b6d 0%,#060861 100%)!important;
+    border:0!important;
+    box-shadow:none!important;
+  }
+
+  body[data-app-route="competition"] .v12-fixtures-reference>h2{
+    margin:0 0 12px!important;
+    padding:0!important;
+    font-size:20px!important;
+    line-height:1.16!important;
+    font-weight:500!important;
+  }
+
+  body[data-app-route="competition"] .v12-schedule-card{
+    width:100%!important;
+    margin:0 0 18px!important;
+    overflow:hidden!important;
+    border-radius:13px!important;
+    border:1px solid rgba(67,91,214,.22)!important;
+    background:linear-gradient(180deg,#0d1475 0%,#091061 100%)!important;
+  }
+
+  body[data-app-route="competition"] .v12-schedule-card>h3{
+    min-height:46px!important;
+    margin:0!important;
+    padding:12px 14px!important;
+    display:flex!important;
+    align-items:center!important;
+    border-bottom:1px solid rgba(255,255,255,.10)!important;
+    font-size:14.5px!important;
+    line-height:1.08!important;
+    font-weight:700!important;
+  }
+
+  /* Cada partido recupera una fila independiente: dos equipos a la izquierda,
+     hora/campo/botón a la derecha. */
+  body[data-app-route="competition"] .v76-upcoming-match{
+    position:relative!important;
+    width:100%!important;
+    min-height:84px!important;
+    height:84px!important;
+    display:grid!important;
+    grid-template-columns:minmax(0,1fr) 108px!important;
+    align-items:stretch!important;
+    overflow:hidden!important;
+    border:0!important;
+  }
+
+  body[data-app-route="competition"] .v76-upcoming-match:not(:last-child)::after{
+    content:""!important;
+    position:absolute!important;
+    left:14px!important;
+    right:14px!important;
+    bottom:0!important;
+    height:1px!important;
+    background:rgba(255,255,255,.10)!important;
+  }
+
+  body[data-app-route="competition"] .v76-upcoming-match .v12-schedule-clubs{
+    min-width:0!important;
+    padding:7px 9px 7px 13px!important;
+    display:grid!important;
+    grid-template-rows:1fr 1fr!important;
+    gap:2px!important;
+    align-items:center!important;
+  }
+
+  body[data-app-route="competition"] .v76-upcoming-match .v12-result-team{
+    min-width:0!important;
+    display:grid!important;
+    grid-template-columns:29px minmax(0,1fr)!important;
+    align-items:center!important;
+    gap:8px!important;
+  }
+
+  body[data-app-route="competition"] .v76-upcoming-match .v12-fixture-logo,
+  body[data-app-route="competition"] .v76-upcoming-match .v12-fixture-fallback{
+    width:29px!important;
+    height:29px!important;
+    max-width:29px!important;
+    max-height:29px!important;
+    object-fit:contain!important;
+  }
+
+  body[data-app-route="competition"] .v76-upcoming-match .v12-result-team b{
+    min-width:0!important;
+    overflow:hidden!important;
+    color:#fff!important;
+    font-size:13px!important;
+    line-height:1.05!important;
+    font-weight:750!important;
+    text-overflow:ellipsis!important;
+    white-space:nowrap!important;
+  }
+
+  body[data-app-route="competition"] .v76-upcoming-match .v12-schedule-meta{
+    position:relative!important;
+    min-width:0!important;
+    padding:7px 7px!important;
+    display:grid!important;
+    grid-template-rows:17px minmax(22px,1fr) 28px!important;
+    align-items:center!important;
+    justify-items:center!important;
+    gap:1px!important;
+    border-left:1px solid rgba(255,255,255,.10)!important;
+  }
+
+  body[data-app-route="competition"] .v76-upcoming-match .v12-schedule-meta::before{
+    display:none!important;
+    content:none!important;
+  }
+
+  body[data-app-route="competition"] .v76-upcoming-match .v12-schedule-meta time{
+    margin:0!important;
+    color:#d8d9ea!important;
+    font-size:11px!important;
+    line-height:1!important;
+    font-weight:650!important;
+  }
+
+  body[data-app-route="competition"] .v76-upcoming-match .v76-match-venue{
+    width:100%!important;
+    max-height:25px!important;
+    margin:0!important;
+    overflow:hidden!important;
+    color:#fff!important;
+    font-size:10.5px!important;
+    line-height:1.12!important;
+    text-align:center!important;
+    display:-webkit-box!important;
+    -webkit-line-clamp:2!important;
+    -webkit-box-orient:vertical!important;
+  }
+
+  body[data-app-route="competition"] .v76-upcoming-match .v12-schedule-meta button{
+    width:82px!important;
+    min-width:82px!important;
+    height:27px!important;
+    min-height:27px!important;
+    margin:0!important;
+    padding:0 6px!important;
+    border-radius:5px!important;
+    font-size:9.5px!important;
+    line-height:1!important;
+  }
+
+  /* CUADRO: recupera el tablero completo anterior y sus etapas. */
+  body[data-app-route="competition"] .v12-bracket-reference{
+    display:block!important;
+    min-height:0!important;
+    margin:0 -14px!important;
+    padding-bottom:110px!important;
+    overflow-x:hidden!important;
+  }
+
+  body[data-app-route="competition"] .v12-bracket-reference .v12-bracket-stage-tabs{
+    display:flex!important;
+  }
+
+  body[data-app-route="competition"] .v12-bracket-reference.stage-playoff .v12-bracket-dates,
+  body[data-app-route="competition"] .v12-bracket-reference.stage-playoff .v12-bracket-board{
+    display:grid!important;
+  }
+
+  body[data-app-route="competition"] .v12-bracket-reference.stage-playoff .v12-stage-panels,
+  body[data-app-route="competition"] .v12-bracket-reference.stage-playoff .v12-final-reference{
+    display:none!important;
+  }
+}
+
+@media (max-width:390px){
+  body[data-app-route="competition"] .v76-upcoming-match{
+    min-height:80px!important;
+    height:80px!important;
+    grid-template-columns:minmax(0,1fr) 101px!important;
+  }
+
+  body[data-app-route="competition"] .v76-upcoming-match .v12-result-team{
+    grid-template-columns:27px minmax(0,1fr)!important;
+    gap:7px!important;
+  }
+
+  body[data-app-route="competition"] .v76-upcoming-match .v12-fixture-logo,
+  body[data-app-route="competition"] .v76-upcoming-match .v12-fixture-fallback{
+    width:27px!important;
+    height:27px!important;
+    max-width:27px!important;
+    max-height:27px!important;
+  }
+
+  body[data-app-route="competition"] .v76-upcoming-match .v12-result-team b{
+    font-size:12.2px!important;
+  }
+
+  body[data-app-route="competition"] .v76-upcoming-match .v12-schedule-meta button{
+    width:76px!important;
+    min-width:76px!important;
+    font-size:9px!important;
+  }
+}
