@@ -12,7 +12,7 @@ permissions:
   id-token: write
 
 concurrency:
-  group: github-pages-v6
+  group: github-pages-v7
   cancel-in-progress: true
 
 jobs:
