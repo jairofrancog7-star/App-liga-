@@ -1918,3 +1918,38 @@
   .v35-history-moment-photo{min-height:260px!important}
   .v35-champion-card-photo{min-height:252px!important}
 }
+
+
+/* V114 — ganador, temporada y estado de fecha en tarjetas históricas. */
+@media(max-width:1023px){
+  .v35-history-status{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:8px;
+    margin:10px 0 2px;
+  }
+  .v35-history-status span{
+    min-width:0;
+    padding:8px 9px;
+    border:1px solid rgba(37,229,240,.22);
+    border-radius:11px;
+    background:rgba(8,20,105,.58);
+    color:#fff;
+    font-size:10px;
+    line-height:1.25;
+    font-weight:700;
+    overflow-wrap:anywhere;
+  }
+  .v35-history-status b{
+    display:block;
+    margin-bottom:3px;
+    color:#22e7f2;
+    font-size:7.5px;
+    line-height:1;
+    letter-spacing:.08em;
+    text-transform:uppercase;
+  }
+}
+@media(max-width:360px){
+  .v35-history-status{grid-template-columns:1fr}
+}
