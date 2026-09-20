@@ -117,6 +117,24 @@ var activeTab=localStorage.getItem('v32-rankings-tab')||'federations';
 var season='Temporada actual';
 var selectedClub=localStorage.getItem('v32-rankings-club')||'';
 var selectedFederation=localStorage.getItem('v32-rankings-federation')||'';
+
+/* V80 — limpia filtros guardados de versiones anteriores.
+   Antes el ranking usaba códigos como AME/HUE/PRO. Tras cambiar a la tabla
+   oficial de AdminFut esos códigos quedaron obsoletos y podían dejar la tabla
+   totalmente vacía aunque sí hubiera equipos. */
+if(selectedClub&&!clubRows.some(function(row){return row[0]===selectedClub})){
+  selectedClub='';
+  localStorage.removeItem('v32-rankings-club');
+}
+if(selectedFederation&&!federationRows.some(function(row){return row[0]===selectedFederation})){
+  selectedFederation='';
+  localStorage.removeItem('v32-rankings-federation');
+}
+if(activeTab!=='federations'&&activeTab!=='clubs'){
+  activeTab='clubs';
+  localStorage.setItem('v32-rankings-tab','clubs');
+}
+
 var pendingClub=selectedClub;
 var pendingFederation=selectedFederation;
 var filterMode=false;
@@ -181,7 +199,14 @@ function clubsControls(){
 }
 function filteredFederationRows(){
   if(!selectedFederation)return federationRows;
-  return federationRows.filter(function(row){return row[0]===selectedFederation});
+  var rows=federationRows.filter(function(row){return row[0]===selectedFederation});
+  if(!rows.length){
+    selectedFederation='';
+    pendingFederation='';
+    localStorage.removeItem('v32-rankings-federation');
+    return federationRows;
+  }
+  return rows;
 }
 function fedRows(){
   return filteredFederationRows().map(function(row){
@@ -203,7 +228,16 @@ function fedView(){
 }
 function filteredClubRows(){
   if(!selectedClub)return clubRows;
-  return clubRows.filter(function(row){return row[0]===selectedClub});
+  var rows=clubRows.filter(function(row){return row[0]===selectedClub});
+  /* Protección adicional: nunca renderizar una tabla vacía por un filtro
+     antiguo o inválido. En ese caso vuelve automáticamente a todos los clubes. */
+  if(!rows.length){
+    selectedClub='';
+    pendingClub='';
+    localStorage.removeItem('v32-rankings-club');
+    return clubRows;
+  }
+  return rows;
 }
 function clubItems(){
   var rows=filteredClubRows();
