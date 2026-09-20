@@ -403,6 +403,20 @@
       return;
     }
 
+    /* V92 — En Estadísticas primero va el contenido nativo DATOS / Estadísticas.
+       El cuadro animado "Tabla y estadísticas" se baja al final de la página. */
+    if(r==='stats'){
+      let banner=screen.querySelector(':scope > [data-v73-motion-banner]');
+      if(!banner){
+        banner=buildBanner(cfg);
+        banner.classList.add('v73-below-native','v73-stats-below-native');
+        banner.dataset.v73BelowNative='stats';
+      }
+      if(screen.lastElementChild!==banner)screen.appendChild(banner);
+      syncAll();
+      return;
+    }
+
     let banner=screen.querySelector('[data-v73-motion-banner]');
     if(!banner){
       banner=buildBanner(cfg);
