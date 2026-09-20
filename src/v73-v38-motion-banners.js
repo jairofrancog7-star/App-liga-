@@ -326,6 +326,33 @@
     return true;
   }
 
+  function mountBelowNative(screen,r,cfg){
+    /* En Equipos y Goleadores el diseño original debe ser lo primero.
+       La animación se conserva, pero va al FINAL de la página, nunca encima
+       de la cabecera/barra propia de esas pantallas. */
+    const nativePage=r==='teams'
+      ?screen.querySelector('[data-v27-reference="teams"]')
+      :screen.querySelector('[data-v28-scorers]');
+    if(!nativePage){
+      screen.querySelectorAll(':scope > [data-v73-motion-banner]').forEach(x=>x.remove());
+      return false;
+    }
+
+    let banner=nativePage.querySelector(':scope > [data-v73-motion-banner]');
+    if(!banner){
+      /* Quita cualquier copia antigua que haya quedado arriba. */
+      screen.querySelectorAll(':scope > [data-v73-motion-banner]').forEach(x=>x.remove());
+      banner=buildBanner(cfg);
+      banner.classList.add('v73-below-native');
+      banner.dataset.v73BelowNative=r;
+      nativePage.appendChild(banner);
+    }else if(nativePage.lastElementChild!==banner){
+      nativePage.appendChild(banner);
+    }
+    syncAll();
+    return true;
+  }
+
   function mount(){
     const screen=document.querySelector('#screen');
     if(!screen)return;
@@ -344,6 +371,11 @@
       if(!mountHomeInterleaved(screen)){
         syncAll();
       }
+      return;
+    }
+
+    if(r==='teams'||r==='scorers'){
+      mountBelowNative(screen,r,cfg);
       return;
     }
 
