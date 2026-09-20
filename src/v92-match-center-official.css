@@ -171,3 +171,147 @@
   .v92-tabs button{font-size:10px}
   .v92-section-head h2{font-size:22px}
 }
+
+
+/* V96 — Match Center más compacto.
+   Mantiene EXACTAMENTE los tamaños de los cuadros/tarjetas.
+   Solo reduce tipografía, logos y cifras para que la pantalla respire mejor. */
+@media (max-width:1023px){
+  /* Cabecera */
+  .v92-kicker{
+    font-size:9px!important;
+    letter-spacing:.13em!important;
+  }
+  .v92-match-head h1{
+    font-size:29px!important;
+    line-height:1!important;
+    margin-top:7px!important;
+    margin-bottom:6px!important;
+  }
+  .v92-match-head p{
+    font-size:11px!important;
+    line-height:1.24!important;
+  }
+
+  /* Tarjeta principal: NO cambiar dimensiones del cuadro. */
+  .v92-side{
+    gap:6px!important;
+  }
+  .v92-side b{
+    font-size:12px!important;
+    line-height:1.08!important;
+  }
+  .v92-team-logo,
+  .v92-team-logo img{
+    width:44px!important;
+    height:44px!important;
+  }
+  .v92-team-logo.small,
+  .v92-team-logo.small img{
+    width:34px!important;
+    height:34px!important;
+  }
+  .v92-team-logo.tiny,
+  .v92-team-logo.tiny img{
+    width:23px!important;
+    height:23px!important;
+  }
+  .v92-center{
+    gap:4px!important;
+  }
+  .v92-center strong{
+    font-size:20px!important;
+    line-height:1!important;
+  }
+  .v92-center small{
+    font-size:8.5px!important;
+  }
+
+  /* Pestañas */
+  .v92-tabs button{
+    font-size:9.5px!important;
+    padding-left:2px!important;
+    padding-right:2px!important;
+  }
+
+  /* Resumen: mismos cuadros, números/textos más chicos. */
+  .v92-summary-grid b{
+    font-size:17px!important;
+    line-height:1.06!important;
+    overflow-wrap:normal!important;
+    word-break:normal!important;
+  }
+  .v92-summary-grid small{
+    font-size:8px!important;
+    line-height:1.12!important;
+  }
+
+  /* Títulos de secciones */
+  .v92-section-head h2{
+    font-size:19px!important;
+    line-height:1.02!important;
+  }
+  .v92-section-head small{
+    font-size:7.5px!important;
+    line-height:1.18!important;
+  }
+
+  /* Jugadores: mismos cuadros, contenido más compacto. */
+  .v92-player-card{
+    grid-template-columns:34px minmax(0,1fr)!important;
+    gap:7px!important;
+  }
+  .v92-player-card b{
+    font-size:9.5px!important;
+  }
+  .v92-player-card small{
+    font-size:7.2px!important;
+    margin-top:3px!important;
+  }
+
+  /* Acciones / plantillas / estadísticas / cronología */
+  .v92-actions button{
+    font-size:10px!important;
+  }
+  .v92-roster-title{
+    grid-template-columns:23px minmax(0,1fr)!important;
+    gap:6px!important;
+  }
+  .v92-roster-title b{
+    font-size:9.5px!important;
+  }
+  .v92-roster-title small{
+    font-size:6.8px!important;
+  }
+  .v92-roster li{
+    font-size:8px!important;
+  }
+  .v92-stat-head>span{
+    font-size:8.5px!important;
+  }
+  .v92-stat-row span{
+    font-size:8px!important;
+  }
+  .v92-stat-row b{
+    font-size:11px!important;
+  }
+  .v92-timeline b{
+    font-size:9.5px!important;
+  }
+  .v92-timeline span{
+    font-size:8.5px!important;
+  }
+  .v92-source{
+    font-size:7px!important;
+  }
+}
+
+@media(max-width:390px){
+  .v92-match-head h1{font-size:27px!important}
+  .v92-side b{font-size:11.5px!important}
+  .v92-team-logo,.v92-team-logo img{width:42px!important;height:42px!important}
+  .v92-center strong{font-size:19px!important}
+  .v92-tabs button{font-size:9px!important}
+  .v92-summary-grid b{font-size:16px!important}
+  .v92-section-head h2{font-size:18px!important}
+}
