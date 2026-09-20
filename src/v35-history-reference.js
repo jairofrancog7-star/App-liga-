@@ -212,6 +212,7 @@ const verifiedChampions=[
 
 // V106 — archivo histórico ampliado desde los videos y el ZIP entregados por el usuario.
 const videoArchiveFindings=[
+  {date:'28 nov 2012 · publicación sobre oct 1987',title:'Boavista · origen documentado del club',detail:'En una publicación por su XXV aniversario, Golazo Liga relata que estudiantes de la Preparatoria “Juventino Rosas” organizaron Boavista en octubre de 1987 para registrarlo en la Primera Fuerza de la Liga Municipal. El mismo texto recuerda como equipos fuertes de comunidades a Cuenda, Aguilares, San Julián, Merino, Santa María de Guadalupe y Pozos. Es historia del club, no fecha de fundación de la Liga.',image:HIST_ROOT+'assets/official-logos/boavista.png'},
   {date:'15 dic 2013',title:'Podio de Segunda Fuerza',detail:'DHP recibió el trofeo de segundo lugar. San José de la Montaña recibió el tercer lugar después de ganar por default a Tavera en el partido por el tercer puesto.'},
   {date:'22 feb 2014',title:'Puros Cuates · campeón de Copa',detail:'Golazo Liga identifica a Puros Cuates como campeón del Torneo de Copa 2014 en Fuerza Intermedia.'},
   {date:'11 ene 2015',title:'Puros Cuates · campeón de Intermedia',detail:'La publicación histórica identifica a Puros Cuates como campeón de Intermedia. Ese mismo día José Guadalupe Moreno recibió el trofeo de campeón goleador de Primera Fuerza.'},
@@ -228,10 +229,36 @@ const videoArchiveFindings=[
   {date:'15 abr 2017',title:'Primera Fuerza · goleo J28',detail:'Juan Manuel Gámez López (Hermanos) encabeza el corte con 34 goles; Fernando Gámez Reyes (Abejas), Jorge Alberto Sánchez Mendoza (Juventus) y Noé Alfredo Silva Martínez (La Cuadrilla) aparecen con 29.'},
   {date:'06 may 2017',title:'Primera · corte de Liga J30',detail:'Linces aparece líder con 79 puntos. Hermanos registra 111 goles a favor; Linces, 107 y diferencia de +75. Son marcas del corte publicado, no récords absolutos de toda la historia.',image:HIST_ROOT+'assets/official-logos/linces.png'},
   {date:'20 may 2026',title:'Final de Liga · Veteranos 50+',detail:'Publicación de Juventino Rosas Liga anuncia la Gran Final de Veteranos 50 y más entre La Esperanza y Boavista. La fecha exacta del partido no es visible en el cuadro recuperado.',image:HIST_ROOT+'assets/official-logos/boavista.png'},
+  {date:'24 nov 2024',title:'Semifinal de vuelta · Fuerza Intermedia',detail:'A. San Julián vs Lobos CDG · 12:00 · San Julián. Herreras F.C. vs Oklahoma · 12:00 · Cuenda. El cartel fue publicado el 22 nov 2024.',image:HIST_ROOT+'assets/official-logos/lobos-cdg.png'},
   {date:'07 jun 2026',title:'Gran Final · Segunda Fuerza',detail:'La Canchita Deportes vs Aldama FC · 10:00 · Campo 1, Deportiva Sur. La publicación fue realizada el 3 de junio de 2026.',image:HIST_ROOT+'assets/official-logos/la-canchita-deportes.png'}
 ];
 
 const historicTables=[
+  {
+    season:'2013',title:'Segunda Fuerza · Tabla General · publicación 5 nov 2013',note:'Corte histórico. El asterisco visible en la publicación marca equipos clasificados; quedan pendientes Aldama–Osasuna y Tavera–Osasuna.',
+    rows:[
+      ['1','San José de la Montaña','77'],['2','Real Cerrito de Gasca','75'],['3','DHP','68'],['4','San Juan FC','64'],
+      ['5','Tavera','63'],['6','Morales','55'],['7','La Río Grande','43'],['8','Oklahoma','43'],
+      ['9','Salvajes','42'],['10','San José de Allende','41'],['11','Novatos','35'],['12','Deportivo Aldama','32'],
+      ['13','Unión Allende','31'],['14','Osasuna','23'],['15','Continental','22'],['16','La Pandilla de Rancho V.','16']
+    ]
+  },
+  {
+    season:'2014',title:'Intermedia · publicación 3 sep 2014',note:'Tabla histórica recuperada de Golazo Liga; se conserva como corte de la competencia.',
+    rows:[
+      ['1','La Pandilla','40'],['2','La Cuadrilla','37'],['3','San José de la Montaña','31'],['4','Puros Cuates','29'],
+      ['5','Populares','28'],['6','Real Cerrito de Gasca','28'],['7','Dulces Nombres','27'],['8','Halcones de Cuenda','26'],
+      ['9','Terrícolas','24'],['10','Malvinas','22'],['11','San Antonio Jr.','19'],['12','Barza','19'],['13','Atlas','13']
+    ]
+  },
+  {
+    season:'2014',title:'Veteranos · publicación 28 ago 2014',note:'Tabla de posición de Veteranos recuperada del archivo de Golazo Liga.',
+    rows:[
+      ['1','Dynamo','15'],['2','Hermanos','10'],['3','Magisterio','10'],['4','La Esperanza','9'],
+      ['5','UNAM','8'],['6','Picosos','7'],['7','Aldama','6'],['8','Boavista','5'],
+      ['9','Sección XIV','4'],['10','Valedores','4'],['11','Cuenda','4']
+    ]
+  },
   {
     season:'2015',title:'Veteranos · Torneo de Liga · Jornada 13',note:'Corte publicado el 25 nov 2015; no se presenta como tabla final.',
     rows:[
@@ -255,6 +282,15 @@ const historicTables=[
       ['5','Abejas','49'],['6','La Cuadrilla','48'],['7','San Antonio Jr.','42'],['8','Chelsea','39'],
       ['9','Napoli','36'],['10','La Pandilla','36'],['11','Boavista','33'],['12','Puros Cuates','30'],
       ['13','PSV','29'],['14','Olímpicos','23'],['15','Malvinas','23'],['16','Cerrito de Gasca','21'],['17','El Alto','BAJA']
+    ]
+  },
+  {
+    season:'ene 2018',title:'Primera Fuerza · corte de 16 partidos',note:'Corte visible en el archivo alrededor del 12 ene 2018. Se conserva como fotografía de la clasificación en ese momento, no como tabla final.',
+    rows:[
+      ['1','Olímpicos','38'],['2','A. Centeno','37'],['3','Hermanos','36'],['4','Juventus','36'],
+      ['5','Linces','32'],['6','La Esperanza','29'],['7','PSV','29'],['8','Boavista','26'],
+      ['9','La Cuadrilla','24'],['10','Puros Cuates','17'],['11','Napoli','14'],['12','Tavera','13'],
+      ['13','Malvinas','12'],['14','Chelsea','8'],['15','Abejas','7'],['16','San Antonio Jr.','7']
     ]
   },
   {
@@ -294,6 +330,11 @@ const historicScorers=[
   {season:'2017',category:'Primera Fuerza · corte J28 · 15 abr 2017',player:'Fernando Gámez Reyes',team:'Abejas',goals:29,value:'29 goles'},
   {season:'2017',category:'Primera Fuerza · corte J28 · 15 abr 2017',player:'Jorge Alberto Sánchez Mendoza',team:'Juventus',goals:29,value:'29 goles'},
   {season:'2017',category:'Primera Fuerza · corte J28 · 15 abr 2017',player:'Noé Alfredo Silva Martínez',team:'La Cuadrilla',goals:29,value:'29 goles'},
+  {season:'2017',category:'Fuerza Intermedia · Jornada 10 · 11 nov 2017',player:'Antonio Calero',team:'Real DHP',goals:17,value:'17 goles · J10'},
+  {season:'2017',category:'Fuerza Intermedia · Jornada 10 · 11 nov 2017',player:'Alejandro Juárez Merino',team:'Populares',goals:16,value:'16 goles · J10'},
+  {season:'2017',category:'Fuerza Intermedia · Jornada 10 · 11 nov 2017',player:'Juan Carlos Acosta Zárate',team:'Real DHP',goals:11,value:'11 goles · J10'},
+  {season:'2017',category:'Fuerza Intermedia · Jornada 10 · 11 nov 2017',player:'Oscar Muñoz Badillo',team:'Oklahoma',goals:10,value:'10 goles · J10'},
+  {season:'2017',category:'Fuerza Intermedia · Jornada 10 · 11 nov 2017',player:'Santiago Ramírez',team:'Lobos CDG',goals:10,value:'10 goles · J10'},
   {season:'2017',category:'Fuerza Intermedia · J22 · 21 feb 2017',player:'Alejandro Juárez Merino',team:'Populares',goals:20,value:'20 goles · J22 2017'},
   {season:'2017',category:'Fuerza Intermedia · J22 · 21 feb 2017',player:'Víctor Calderón',team:'Oklahoma',goals:18,value:'18 goles'},
   {season:'2017',category:'Fuerza Intermedia · J22 · 21 feb 2017',player:'Oscar Muñoz Badillo',team:'Oklahoma',goals:17,value:'17 goles'},
@@ -391,6 +432,72 @@ const historicFinalists=[
   {year:'2023',category:'Categoría libre · Segunda Fuerza · Gran Final de Liga',a:'Titanes FC',b:'Terrícolas SEDER',note:'Final programada en el rol histórico revisado.',logoB:HIST_ROOT+'assets/official-logos/terricolas.png'}
 ];
 
+// V108 — inventario de equipos por época recuperado de los siete videos de Drive y el ZIP histórico.
+// Son apariciones históricas: NO alteran los equipos inscritos en la temporada actual.
+const historicTeamLogoMap={
+  'boavista':'assets/official-logos/boavista.png',
+  'cuenda':'assets/official-logos/toros-de-cuenda.png',
+  'san julian':'assets/official-logos/san-julian.png',
+  'san jose de la montana':'assets/teams/san-jose-montana.webp',
+  'real cerrito de gasca':'assets/teams/deportivo-cg.webp',
+  'real cerrito':'assets/teams/deportivo-cg.webp',
+  'cerrito de gasca':'assets/teams/deportivo-cg.webp',
+  'san juan fc':'assets/official-logos/san-juan-fc.png',
+  'tavera':'assets/official-logos/tavera-fc.png',
+  'tavera fc':'assets/official-logos/tavera-fc.png',
+  'oklahoma':'assets/teams/oklahoma-city-fc.webp',
+  'deportivo aldama':'assets/official-logos/aldama-fc.png',
+  'aldama':'assets/official-logos/aldama-fc.png',
+  'osasuna':'assets/official-logos/osasuna.png',
+  'la cuadrilla':'assets/official-logos/la-cuadrilla.png',
+  'populares':'assets/official-logos/populares.png',
+  'terricolas':'assets/official-logos/terricolas.png',
+  'malvinas':'assets/official-logos/malvinas.png',
+  'san antonio jr':'assets/official-logos/san-antonio-jrs.png',
+  'san antonio':'assets/official-logos/san-antonio-fc.png',
+  'barza':'assets/official-logos/barza.png',
+  'dynamo':'assets/official-logos/dynamo.png',
+  'dinamo':'assets/official-logos/dynamo.png',
+  'hermanos':'assets/official-logos/hermanos.png',
+  'la esperanza':'assets/official-logos/la-esperanza.png',
+  'juventus':'assets/official-logos/juventus.png',
+  'linces':'assets/official-logos/linces.png',
+  'psv':'assets/teams/psv.webp',
+  'napoli':'assets/official-logos/napoli.png',
+  'abejas':'assets/official-logos/abejas.png',
+  'lobos cdg':'assets/official-logos/lobos-cdg.png',
+  'la huerta':'assets/official-logos/la-huerta.png',
+  'franco fc':'assets/official-logos/franco-fc.png',
+  'mineros':'assets/teams/mineros-fc.webp',
+  'mazacotes':'assets/official-logos/mazacotes-fc.png',
+  'herreras fc':'assets/official-logos/herreras-fc.png',
+  'atletico galeana':'assets/official-logos/galeana.png',
+  'promesas fc':'assets/official-logos/promesas-fc.png',
+  'la canchita deportes':'assets/official-logos/la-canchita-deportes.png',
+  'deportivo maravillas':'assets/official-logos/dep-maravillas.png',
+  'dep maravillas':'assets/official-logos/dep-maravillas.png',
+  'tapatio':'assets/official-logos/tapatio.png',
+  'san jose fc':'assets/official-logos/san-jose-fc.png',
+  'san jose jrs':'assets/official-logos/san-jose-jrs.png',
+  'celticos':'assets/official-logos/celticos.png'
+};
+function histTeamKey(v){return String(v||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[().]/g,' ').replace(/[^a-z0-9]+/g,' ').trim().replace(/\s+/g,' ')}
+function historicLogo(name){const p=historicTeamLogoMap[histTeamKey(name)];return p?HIST_ROOT+p:''}
+
+const historicalTeamEras=[
+  {period:'1987 · referencia retrospectiva publicada en 2012',category:'Primera Fuerza / fútbol de comunidades',teams:['Boavista','Cuenda','Aguilares','San Julián','Merino','Santa María de Guadalupe','Pozos']},
+  {period:'2013',category:'Segunda Fuerza',teams:['San José de la Montaña','Real Cerrito de Gasca','DHP','San Juan FC','Tavera','Morales','La Río Grande','Oklahoma','Salvajes','San José de Allende','Novatos','Deportivo Aldama','Unión Allende','Osasuna','Continental','La Pandilla de Rancho V.']},
+  {period:'2014',category:'Intermedia',teams:['La Pandilla','La Cuadrilla','San José de la Montaña','Puros Cuates','Populares','Real Cerrito de Gasca','Dulces Nombres','Halcones de Cuenda','Terrícolas','Malvinas','San Antonio Jr.','Barza','Atlas']},
+  {period:'2014',category:'Veteranos',teams:['Dynamo','Hermanos','Magisterio','La Esperanza','UNAM','Picosos','Aldama','Boavista','Sección XIV','Valedores','Cuenda']},
+  {period:'2015–2016',category:'Liga / Intermedia / Veteranos',teams:['San Antonio Jr.','Malvinas','Tavera','La Cuadrilla','Centeno','Real Cerrito de Gasca','Halcones de Cuenda','Barza','Populares','Terrícolas','DHP','Dulces Nombres','Xolos Jaralillo','La Esperanza','Cuenda','Magisterio','Chelsea','Boavista','Picosos','Dynamo','UNAM','Hermanos','Valedores','Sección XIV','Guadalajara']},
+  {period:'2016–2017',category:'Fuerzas y Veteranos',teams:['Toros','Morales','Galeana','San Julián','Birds Eye Jr.','San José de Allende','Río Grande','Tecos','Portugal','San Antonio FC','Dortmund','A. Centeno','Puros Cuates','Oklahoma','Mazacotes','Real Cerrito de Gasca','Osasuna']},
+  {period:'2017–2018',category:'Primera Fuerza',teams:['Olímpicos','A. Centeno','Hermanos','Juventus','Linces','La Esperanza','PSV','Boavista','La Cuadrilla','Puros Cuates','Napoli','Tavera','Malvinas','Chelsea','Abejas','San Antonio Jr.']},
+  {period:'2017–2018',category:'Intermedia',teams:['Lobos CDG','Vatos Locos','Real DHP','San Antonio','Populares','Tecos','Oklahoma','Mineros','Titanes Tavera','La Huerta','Franco FC','Osasuna','Terrícolas','Barza','Mazacotes','Morales']},
+  {period:'2022',category:'Veteranos · tabla final',teams:['Juventus','Hermanos','América','Dynamo','PSV','Deportivo Rafa','Boavista','Arsenal','Cuenda','Barrio Seco','UNAM','Átomos']},
+  {period:'2024',category:'Fuerza Intermedia / archivo reciente',teams:['A. San Julián','Lobos CDG','Herreras FC','Oklahoma','Atlético Galeana','Promesas FC','Franco FC','Mineros','Terrícolas','Juventus','Hermanos','Linces']},
+  {period:'2025–2026',category:'Finales conservadas',teams:['La Esperanza','Boavista','La Canchita Deportes','Aldama FC']}
+];
+
 const expandedRetroNames=[
   'Real DHP','Vatos Locos','Tecos','Oklahoma','Mineros','Barza','San Antonio','Osasuna',
   'Mazacotes','Titanes Tavera','Morales','Populares','A. Centeno','Chelsea','La Cuadrilla',
@@ -398,11 +505,14 @@ const expandedRetroNames=[
   'Tapatío','Guadalupanos','Barrio Seco','UNAM','Átomos','Deportivo Rafa','Arsenal',
   'Olímpicos','Linces','Birds Eye','Puros Cuates','Dulces Nombres','Malvinas','Magisterio','Picosos','Valedores','La Pandilla','El Alto','Xolos Jaralillo','Real Cerrito','DHP',
   'Halcones de Cuenda','Deportivo Pozos','Real Cerrito de Gasca','San José de la Montaña',
-  'Río Grande','Unión Allende','Novatos','Salvajes','Continental','Toros','Aldama'
+  'Río Grande','Unión Allende','Novatos','Salvajes','Continental','Toros','Aldama',
+  'Aguilares','Merino','Santa María de Guadalupe','Pozos','San José de Allende','Atlas',
+  'Guadalajara','Sección XIV','La Pandilla de Rancho V.','Dortmund','Portugal','Birds Eye Jr.','Centeno'
 ];
 
 const historicalTimeline=[
   {date:'15 sep 1953',title:'Antecedente del fútbol local',detail:'Una fuente histórica secundaria sitúa un primer partido de fútbol en Juventino Rosas entre Deportivo Santa Cruz y Deportivo Villagrán. Sirve como contexto del fútbol local, pero no demuestra la fundación ni continuidad jurídica de la Liga actual.'},
+  {date:'oct 1987',title:'Boavista se organiza para entrar a Primera Fuerza',detail:'Una publicación retrospectiva de Golazo Liga del 28 nov 2012, hecha por el XXV aniversario del club, relata que estudiantes de la Preparatoria “Juventino Rosas” organizaron Boavista en octubre de 1987 para registrarlo en la Primera Fuerza de la Liga Municipal. En esa memoria se mencionan también Cuenda, Aguilares, San Julián, Merino, Santa María de Guadalupe y Pozos como equipos fuertes de comunidades. Es un dato de historia del club, no una fecha de fundación de la Liga.'},
   {date:'05 oct 2012',title:'Golazo Liga · primer registro digital localizado',detail:'La captura aportada muestra una publicación que Facebook presenta bajo el nombre Golazo Liga con fecha 5 de octubre de 2012 y con el escudo histórico de la Liga Municipal. Es la fecha digital mínima comprobable dentro del material conservado, no la fecha de fundación.'},
   {date:'feb 2014',title:'Administrador de Golazo Liga · fuente histórica',detail:'El usuario aporta otro perfil identificado como administrador de Golazo Liga en febrero de 2014. Se incorpora como pista para localizar roles, equipos, jornadas y resultados de esa etapa. La búsqueda web pública no permitió verificar directamente publicaciones indexadas del enlace compartido.'},
   {date:'may 2014',title:'Administrador de Golazo Liga · roles',detail:'El usuario aporta un perfil que identifica como administrador de Golazo Liga en mayo de 2014 y señala que publicaba roles de juego. Se registra como fuente histórica aportada y pista para reconstruir calendarios, equipos y jornadas de esa etapa; el enlace compartido no pudo verificarse de forma independiente fuera de Facebook.'},
@@ -585,6 +695,8 @@ function verifiedHistoryBlocks(){
     historicalGoalsBlock()+
     '<div class="v35-history-subhead"><span>HALLAZGOS DE LOS VIDEOS</span><h3>Fechas y publicaciones recuperadas</h3><p>Se revisaron los segmentos de Drive cuadro por cuadro. Cuando una publicación no muestra el nombre del equipo o el resultado, se conserva esa limitación en vez de inventarlo.</p></div>'+
     '<div class="v35-result-list v35-video-findings">'+videoArchiveFindings.map(x=>'<article class="v35-final-row">'+(x.image?'<div class="v35-final-logos"><img src="'+x.image+'" alt="" loading="lazy"></div>':'')+'<span>'+esc(x.date)+'</span><b>'+esc(x.title)+'</b><p>'+esc(x.detail)+'</p></article>').join('')+'</div>'+
+    '<div class="v35-history-subhead"><span>EQUIPOS HISTÓRICOS</span><h3>Equipos encontrados en los videos, tablas, roles y publicaciones</h3><p>Se agrupan por la época en que aparecen en el archivo. Un nombre aquí no significa que el equipo siga inscrito hoy. Cuando ya existe un escudo correspondiente en el proyecto, se muestra junto al equipo.</p></div>'+
+    '<div class="v35-era-archive">'+historicalTeamEras.map(g=>'<section class="v35-era-group"><header><span>'+esc(g.period)+'</span><b>'+esc(g.category)+'</b></header><div class="v35-era-team-grid">'+g.teams.map(n=>{const logo=historicLogo(n);return '<article class="v35-era-team">'+(logo?'<img src="'+logo+'" alt="" loading="lazy" decoding="async">':'<span class="v35-era-fallback">LM</span>')+'<b>'+esc(n)+'</b></article>'}).join('')+'</div></section>').join('')+'</div>'+
     '<div class="v35-history-subhead"><span>TABLAS HISTÓRICAS</span><h3>Clasificaciones recuperadas</h3><p>Se conserva el contexto exacto del material: una tabla final se marca como final; un corte de jornada se marca solo como corte.</p></div>'+
     historicTables.map(t=>'<article class="v35-old-table"><header><span>'+esc(t.season)+'</span><div><b>'+esc(t.title)+'</b><small>'+esc(t.note)+'</small></div></header><div class="v35-old-table-head"><span>POS</span><span>EQUIPO</span><span>PTS</span></div>'+t.rows.map(r=>'<div class="v35-old-table-row"><span>'+esc(r[0])+'</span><b>'+esc(r[1])+'</b><strong>'+esc(r[2])+'</strong></div>').join('')+'</article>').join('')+
     '<div class="v35-history-subhead"><span>RESULTADOS CONSERVADOS</span><h3>Ganadores publicados en roles antiguos</h3></div>'+
