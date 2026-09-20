@@ -22,7 +22,7 @@ function markup(){
       '<img class="v33-about-logo" src="'+LEAGUE_LOGO+'" alt="Liga Municipal de Fútbol Juventino Rosas A.C." loading="eager" decoding="async">'+
       '<h1>Liga Municipal de Fútbol Juventino Rosas 2026/27: equipos, fechas, sorteos, formato, final</h1>'+
       '<p class="v33-about-date">Actualizado · 20 sept 2026</p>'+
-      '<p class="v33-about-lead">Qué es la Liga, cómo se organiza, cómo se juegan Copa y Liga, qué categorías participan y cómo se conecta la competición actual con su archivo histórico.</p>'+
+      '<p class="v33-about-lead">Qué es la Liga, cómo se gobierna, cómo se juegan Copa y Liga, qué categorías participan y qué puede afirmarse hoy sobre su origen, su etapa Golazo Liga y su continuidad histórica.</p>'+
     '</section>'+
     '<figure class="v33-about-figure">'+
       '<img class="v33-about-stadium" src="'+STADIUM+'" alt="Estadio Municipal de Juventino Rosas durante un partido de fútbol" loading="eager" decoding="async">'+
@@ -32,48 +32,53 @@ function markup(){
       '</figcaption>'+
     '</figure>'+
     '<section class="v33-about-now">'+
-      '<div class="v33-about-history-head"><span>QUÉ ES LA LIGA</span><h2>Liga amateur independiente</h2><p>La Liga Municipal de Fútbol Juventino Rosas A. C. organiza la competencia adulta de la zona. “Municipal” identifica su ámbito en Juventino Rosas; no significa que dependa de la Presidencia Municipal ni de COMUDE.</p></div>'+
+      '<div class="v33-about-history-head"><span>QUÉ ES LA LIGA</span><h2>Organización adulta con gobierno interno propio</h2><p>La denominación institucional mejor documentada es Liga Municipal de Futbol Juventino Rosas A.C. Aparece en el logotipo histórico y vuelve a utilizarse en el reglamento 2026–2027.</p></div>'+
       '<div class="v33-about-board">'+
         '<article><small>PRESIDENTE DE LA LIGA</small><b>Florencio Franco Lerma</b></article>'+
         '<article><small>VICEPRESIDENTE</small><b>Martín Jaramillo Celedón</b></article>'+
         '<article><small>SECRETARIO</small><b>Javier Gonzalez Lopez</b></article>'+
         '<article><small>TESORERO</small><b>Octavio Alberto García</b></article>'+
       '</div>'+
-      '<p class="v33-about-note">La presidencia y la mesa directiva son cargos internos de la propia Liga, comparables a la administración de una organización deportiva. No son cargos del Ayuntamiento. La mayoría de la actividad se concentra en la Deportiva Sur y también se utilizan campos de comunidades y otras sedes.</p>'+
+      '<p class="v33-about-note">El reglamento describe una Asamblea integrada por representantes de los equipos y una Mesa Directiva elegida dentro de la propia organización. Eso respalda una autonomía deportiva y administrativa frente a Presidencia Municipal y COMUDE. Para establecer jurídicamente la fecha de constitución de la A.C., sus fundadores o su primera Mesa Directiva todavía hace falta localizar el acta constitutiva o registro correspondiente.</p>'+
     '</section>'+
     '<section class="v33-about-format">'+
-      '<div class="v33-about-history-head"><span>CÓMO SE JUEGA</span><h2>Solo categoría libre y Veteranos</h2><p>Esta Liga no maneja Pony, Infantil ni Juvenil. El archivo histórico de esta sección debe limitarse a la categoría libre y a Veteranos.</p></div>'+
+      '<div class="v33-about-history-head"><span>CÓMO FUNCIONA</span><h2>Categoría libre y Veteranos</h2><p>La investigación delimita esta Liga a fútbol adulto/libre y Veteranos. No se mezclan ligas Mini Pony, infantiles o juveniles con nombres parecidos.</p></div>'+
       '<div class="v33-about-format-grid">'+
         '<article><small>DOMINGO · CATEGORÍA LIBRE</small><h3>Primera · Intermedia · Segunda</h3><p>La categoría libre se organiza por fuerzas. En Liga se juega a dos vueltas y los ocho primeros clasifican a liguilla: 1–8, 2–7, 3–6 y 4–5.</p></article>'+
-        '<article><small>SÁBADO · VETERANOS</small><h3>35+ y 50+</h3><p>Veteranos se programa los sábados, normalmente por la tarde. 35+ juega un grupo a dos vueltas y ocho avanzan; en 50+ la asamblea acuerda los enfrentamientos y los dos mejores pasan a la final.</p></article>'+
-        '<article><small>COPA</small><h3>Una vuelta · Top 4</h3><p>En la categoría libre se juega una vuelta y un grupo por fuerza. Clasifican cuatro a semifinales: 1–4 y 2–3; semifinal y final son a un partido.</p></article>'+
-        '<article><small>DESEMPATE</small><h3>Tabla y finales</h3><p>En tabla: diferencia de goles, más goles anotados, menos recibidos, duelo particular y disciplina. Una final empatada va a tiempos extra y después a penales.</p></article>'+
+        '<article><small>SÁBADO · VETERANOS</small><h3>35+ y 50+</h3><p>Veteranos se programa los sábados, normalmente por la tarde. En 35+ hay un grupo a dos vueltas y ocho clasificados; en 50+ la asamblea acuerda los enfrentamientos y los dos mejores pasan a la final.</p></article>'+
+        '<article><small>COPA</small><h3>Una vuelta · Top 4</h3><p>En categoría libre se juega una vuelta y un grupo por fuerza. Clasifican cuatro a semifinales: 1–4 y 2–3; semifinal y final son a un partido.</p></article>'+
+        '<article><small>DESEMPATE</small><h3>Tabla y finales</h3><p>Se consideran diferencia de goles, goles anotados, menos goles recibidos, enfrentamiento directo y disciplina. Una final empatada pasa a tiempos extra y después a penales.</p></article>'+
         '<article><small>CAMPEÓN DE CAMPEONES</small><h3>Copa vs Liga</h3><p>Se disputa a un partido entre el campeón de Copa y el campeón de Liga. Si el mismo equipo ganó ambos torneos, el nombramiento es automático.</p></article>'+
-        '<article><small>ALCANCE DEL ARCHIVO</small><h3>Sin mezclar otras ligas</h3><p>No se incorporan torneos de Presidencia Municipal, COMUDE, escuelas, Pony, Infantil o Juvenil aunque también se hayan jugado en Juventino Rosas.</p></article>'+
+        '<article><small>GOBIERNO INTERNO</small><h3>Asamblea y Mesa Directiva</h3><p>Los equipos participan mediante delegados o suplentes; el presidente representa oficialmente a la Liga y preside sus asambleas. Las autoridades municipales pueden ser interlocutores externos para gestiones.</p></article>'+
       '</div>'+
     '</section>'+
     '<section class="v33-about-history">'+
-      '<div class="v33-about-history-head"><span>GOLAZO LIGA · ARCHIVO DIGITAL</span><h2>Historia documentada de la Liga adulta</h2><p>La captura aportada por el usuario confirma una publicación de Golazo Liga fechada el 5 de octubre de 2012. Por ahora se toma como el registro digital más antiguo localizado, no como prueba de que la Liga haya sido fundada exactamente ese día.</p></div>'+
+      '<div class="v33-about-history-head"><span>ORIGEN E IDENTIDAD</span><h2>Lo que sí está documentado</h2><p>La evidencia permite reconstruir una continuidad de nombre e identidad, pero no fijar todavía una fecha exacta de fundación. Golazo Liga está muy bien documentado como presencia digital histórica; no está probado como razón social de la asociación.</p></div>'+
       '<div class="v33-about-timeline">'+
-        '<article><time>05 oct 2012</time><div><h3>Primer registro digital localizado</h3><p>Publicación de Golazo Liga con el logotipo histórico de Liga Municipal de Fútbol Juventino Rosas A. C.</p></div></article>'+
-        '<article><time>2012 →</time><div><h3>Archivo adulto independiente</h3><p>La investigación histórica se limita a categoría libre y Veteranos, separando material perteneciente a Presidencia Municipal, COMUDE y otras ligas.</p></div></article>'+
-        '<article><time>2015</time><div><h3>Administrador histórico de Golazo Liga</h3><p>Se añadió el perfil aportado por el usuario como administrador de la página Golazo Liga en 2015 para seguir rastreando publicaciones, tablas, equipos y campeones.</p></div></article>'+
-        '<article><time>24 may 2016</time><div><h3>Acuerdo interno de la Liga</h3><p>El reglamento vigente conserva un acuerdo de asamblea relacionado con el proyecto de nuevas oficinas de la propia organización.</p></div></article>'+
-        '<article><time>2018</time><div><h3>Tablas y goleadores</h3><p>El archivo conserva cortes de Primera e Intermedia con puntos, posiciones y goleadores de la categoría libre.</p></div></article>'+
+        '<article><time>15 sep 1953</time><div><h3>Antecedente del fútbol local</h3><p>Una fuente secundaria sitúa un primer partido en Juventino Rosas entre Deportivo Santa Cruz y Deportivo Villagrán. Es contexto histórico del fútbol local, no prueba de que la Liga actual naciera en 1953.</p></div></article>'+
+        '<article><time>05 oct 2012</time><div><h3>Golazo Liga · fecha digital mínima</h3><p>La captura aportada muestra una publicación que Facebook presenta como Golazo Liga y el escudo histórico de la Liga. Esta fecha prueba actividad digital al menos desde entonces, no la fundación de la organización.</p></div></article>'+
+        '<article><time>c. 2015</time><div><h3>Administrador de Golazo Liga</h3><p>El perfil aportado sirve como pista para reconstruir esa etapa. Administrar la página no demuestra por sí solo que esa persona haya sido presidente de la Liga.</p></div></article>'+
+        '<article><time>24 may 2016</time><div><h3>Acuerdo interno</h3><p>El reglamento vigente conserva un antecedente de asamblea relacionado con el proyecto de nuevas oficinas de la Liga.</p></div></article>'+
+        '<article><time>2018</time><div><h3>Tablas y goleadores</h3><p>El archivo conserva cortes históricos de Primera e Intermedia con equipos, puntos y goleadores de la categoría libre.</p></div></article>'+
         '<article><time>03 nov 2019</time><div><h3>Juventus campeón</h3><p>El archivo histórico de Golazo Liga identifica a Juventus como campeón de Liga 2018–2019 y a Boavista como subcampeón.</p></div></article>'+
+        '<article><time>dic 2019</time><div><h3>Documento público externo</h3><p>El Congreso del Estado de Guanajuato registra “LIGA MUNICIPAL JUVENTINO ROSAS” por $11,600 dentro de apoyos para construcción y reparación, reforzando la continuidad de la denominación institucional.</p></div></article>'+
         '<article><time>2022</time><div><h3>Veteranos</h3><p>Se conserva una tabla final de Veteranos con Juventus en primer lugar con 53 puntos.</p></div></article>'+
+        '<article><time>2026</time><div><h3>Continuidad pública</h3><p>Medios regionales y nacionales siguieron utilizando el nombre Liga Municipal de Juventino Rosas al referirse a la competencia.</p></div></article>'+
+        '<article><time>2026–27</time><div><h3>Reglamento vigente</h3><p>El documento actual vuelve a usar la forma Liga Municipal de Fútbol “Juventino Rosas A.C.” y define Mesa Directiva, Asamblea, Copa, Liga, Campeón de Campeones y Veteranos.</p></div></article>'+
       '</div>'+
       '<div class="v33-about-history-grid">'+
-        '<article><span class="v33-about-history-badge">2012</span><small>PRIMER REGISTRO DIGITAL</small><h3>Golazo Liga</h3><b>5 de octubre de 2012</b><p>Fecha visible en la captura aportada. No se presenta todavía como fecha de fundación.</p></article>'+
-        '<article><span class="v33-about-history-badge">CAMPEÓN</span><small>ARCHIVO FOTOGRÁFICO</small><h3>Tecos</h3><b>Trofeo y camisetas “CAMPEON TECOS”</b><p>El campeonato queda documentado visualmente; la temporada y fuerza exactas se mantienen pendientes hasta cruzarlas con una publicación o tabla.</p></article>'+
-        '<article><img src="https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/assets/official-logos/juventus.png" alt=""><small>CAMPEÓN CONFIRMADO</small><h3>Juventus</h3><b>Liga 2018–2019</b><p>Publicación histórica del 3 nov 2019.</p></article>'+
-        '<article><img src="https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/assets/official-logos/tavera-fc.png" alt=""><small>CAMPEÓN DE COPA</small><h3>Tavera FC</h3><b>Categoría Segunda</b><p>Registro conservado en el archivo histórico adulto.</p></article>'+
+        '<article><span class="v33-about-history-badge">2012</span><small>PRIMER REGISTRO DIGITAL</small><h3>Golazo Liga</h3><b>5 de octubre de 2012</b><p>Fecha mínima comprobada dentro del material conservado. No es una fecha de fundación.</p></article>'+
+        '<article><span class="v33-about-history-badge">A.C.</span><small>NOMBRE INSTITUCIONAL</small><h3>Liga Municipal</h3><b>Juventino Rosas A.C.</b><p>Coincide entre el logotipo histórico y el reglamento 2026–2027.</p></article>'+
+        '<article><span class="v33-about-history-badge">2019</span><small>EVIDENCIA EXTERNA</small><h3>Congreso de Guanajuato</h3><b>LIGA MUNICIPAL JUVENTINO ROSAS</b><p>Registro público por $11,600 para construcción y reparación.</p></article>'+
+        '<article><span class="v33-about-history-badge">?</span><small>FUNDACIÓN</small><h3>Fecha pendiente</h3><b>No demostrada</b><p>Falta el acta constitutiva o documentación primaria que identifique fecha, fundadores y primera Mesa Directiva.</p></article>'+
       '</div>'+
       '<div class="v33-about-history-facts">'+
-        '<div><b>Identidad propia</b><span>Golazo Liga y Liga Municipal de Fútbol Juventino Rosas A. C. se documentan como organización deportiva adulta independiente de Presidencia Municipal/COMUDE.</span></div>'+
-        '<div><b>Categorías correctas</b><span>Categoría libre —con sus fuerzas— y Veteranos. No Pony, Infantil ni Juvenil.</span></div>'+
-        '<div><b>Intermedia 2018 · J23</b><span>Alejandro Juárez Merino, de Populares, aparece como líder de goleo con 31 goles.</span></div>'+
-        '<div><b>Cómo se confirma un campeón</b><span>Una publicación, texto, tabla, álbum o imagen de Golazo Liga, de la Liga o de sus administradores puede confirmar el campeonato; no hace falta una fotografía levantando el trofeo.</span></div>'+
+        '<div><b>Golazo Liga</b><span>Está documentado con mucha fuerza como nombre de página o identidad digital histórica. La evidencia disponible no demuestra que haya sido la razón social de la Liga.</span></div>'+
+        '<div><b>Autonomía de la Liga</b><span>La Asamblea y Mesa Directiva propias respaldan autonomía deportiva frente a Presidencia Municipal y COMUDE. Jugar en instalaciones municipales no demuestra dependencia administrativa.</span></div>'+
+        '<div><b>Categorías correctas</b><span>Fútbol adulto/libre —Primera, Intermedia y Segunda— y Veteranos 35+ / 50+. Se excluyen Mini Pony, Infantil y Juvenil salvo que aparezca una conexión documental directa.</span></div>'+
+        '<div><b>Qué no está demostrado todavía</b><span>Fundador, primer presidente, fecha exacta de constitución de la A.C., una página anterior a 2012 o una denominación legal previa.</span></div>'+
+        '<div><b>Qué documentos resolverían el origen</b><span>Acta constitutiva, reformas de estatutos, libros de Asamblea y Mesa Directiva, reglamentos o roles anteriores a 2012, papelería, credenciales, sellos y premiaciones antiguas.</span></div>'+
+        '<div><b>Cómo se confirma un campeón</b><span>Una publicación, texto, tabla, álbum o imagen de la Liga o de sus administradores puede confirmar el campeonato; no hace falta una fotografía levantando el trofeo.</span></div>'+
       '</div>'+
       '<button type="button" class="v33-about-history-button" data-v33-history>Ver Historia, campeones, finales y récords</button>'+
     '</section>'+
