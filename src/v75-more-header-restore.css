@@ -133,3 +133,53 @@
     max-height:26px!important;
   }
 }
+
+
+/* V75.1 — integración visual de MÁS con el resto de la pantalla.
+   La cabecera usa el mismo azul de la página y el logo lateral deja de recortarse. */
+@media (max-width:1023px){
+  body[data-app-route="more"] .topbar,
+  body[data-app-route="more"].v66-compact-route .topbar,
+  body[data-app-route="more"].v69-primary-tool-header .topbar{
+    background:
+      linear-gradient(180deg,#0717bd 0%,#0716bd 52%,#0715c4 100%)!important;
+  }
+
+  /* Perfil un poco más adentro para que nunca toque ni se corte en el borde derecho. */
+  body[data-app-route="more"] .topbar .profile-button,
+  body[data-app-route="more"].v66-compact-route .topbar .profile-button,
+  body[data-app-route="more"].v69-primary-tool-header .topbar .profile-button{
+    right:28px!important;
+  }
+
+  /* Escudo/logo grande del lado derecho: completo dentro del viewport. */
+  body[data-app-route="more"] .v19-more-logo{
+    right:16%!important;
+    width:25%!important;
+    max-width:150px!important;
+    height:138px!important;
+    object-fit:contain!important;
+    object-position:center!important;
+  }
+}
+
+@media(max-width:560px){
+  body[data-app-route="more"] .v19-more-logo{
+    right:13%!important;
+    width:27%!important;
+    max-width:142px!important;
+    height:132px!important;
+  }
+}
+
+@media(max-width:390px){
+  body[data-app-route="more"] .topbar .profile-button{
+    right:24px!important;
+  }
+  body[data-app-route="more"] .v19-more-logo{
+    right:10%!important;
+    width:29%!important;
+    max-width:126px!important;
+    height:120px!important;
+  }
+}
