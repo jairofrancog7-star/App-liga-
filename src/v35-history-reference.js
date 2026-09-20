@@ -31,8 +31,8 @@ const seasons=[
    Nunca se importan equipos de estas fuentes a la lista de equipos de la temporada actual. */
 const historicalSources=[
   {
-    title:'Golazo Liga · primer registro digital confirmado',
-    note:'Captura aportada por el usuario con publicación fechada 5 OCT 2012. Es el registro digital más antiguo localizado hasta ahora; no se presenta como fecha de fundación.',
+    title:'Golazo Liga · fecha digital mínima comprobada',
+    note:'Captura aportada: publicación visible con fecha 5 OCT 2012. Prueba actividad digital al menos desde entonces, pero no la fundación de la Liga ni la fecha de creación del perfil.',
     url:'https://www.facebook.com/golazo.liga'
   },
   {
@@ -66,9 +66,44 @@ const historicalSources=[
     url:'https://www.facebook.com/share/1DeWwcJiGX/'
   },
   {
-    title:'Administrador de Golazo Liga · 2015',
-    note:'Perfil aportado por el usuario como administrador de la página Golazo Liga durante 2015.',
+    title:'Administrador de Golazo Liga · hacia 2015',
+    note:'Perfil aportado por el usuario como administrador conocido de la página. Ser administrador de Facebook no demuestra por sí solo haber sido presidente de la Liga.',
     url:'https://www.facebook.com/share/1TXjdtGMgk/'
+  },
+  {
+    title:'Sitio actual de la Liga',
+    note:'Referencia operativa actual de la Liga Municipal de Futbol Juventino Rosas.',
+    url:'https://www.juventinorosasliga.com/'
+  },
+  {
+    title:'Reglamento 2026–2027',
+    note:'Documento interno actual que usa la denominación Liga Municipal de Fútbol “Juventino Rosas A.C.” y describe Asamblea, Mesa Directiva y formato de competencia.',
+    url:'https://juventinorosasliga.com/reglamento/descargar/'
+  },
+  {
+    title:'Programación actual',
+    note:'Reporte semanal usado para delimitar las categorías vigentes: categoría libre por fuerzas y Veteranos 35+ / 50+.',
+    url:'https://www.juventinorosasliga.com/reporte-semanal/'
+  },
+  {
+    title:'Congreso de Guanajuato · diciembre 2019',
+    note:'Documento público externo que registra “LIGA MUNICIPAL JUVENTINO ROSAS” por $11,600 dentro de apoyos para construcción y reparación.',
+    url:'https://congreso-gto.s3.amazonaws.com/uploads/periodo_armonizacion/partidas/2019_12_4411.pdf'
+  },
+  {
+    title:'Notus · referencia pública 2026',
+    note:'Nota periodística que utiliza la denominación “Liga Municipal de Juventino Rosas”, útil para documentar continuidad pública del nombre.',
+    url:'https://notus.com.mx/ligas-suspenden-jornada-futbolera-este-fin-de-semana/'
+  },
+  {
+    title:'Uno TV · referencia pública 2026',
+    note:'Cobertura de ligas amateur que menciona a la Liga Municipal de Juventino Rosas.',
+    url:'https://www.unotv.com/estados/guanajuato/paran-ligas-futbol-guanajuato-despues-masacre-salamanca/'
+  },
+  {
+    title:'Antecedente del fútbol local · 1953',
+    note:'Fuente secundaria que sitúa un primer partido local el 15 sep 1953 entre Deportivo Santa Cruz y Deportivo Villagrán. Es contexto del fútbol local, no fecha de fundación de la Liga actual.',
+    url:'https://es.wikipedia.org/wiki/Juventino_Rosas_%28Guanajuato%29'
   },
   {
     title:'Archivo histórico · video 1',
@@ -190,16 +225,16 @@ const expandedRetroNames=[
 ];
 
 const historicalTimeline=[
-  {date:'05 oct 2012',title:'Golazo Liga · primer registro digital localizado',detail:'La captura aportada muestra una publicación de Golazo Liga fechada el 5 de octubre de 2012. Se toma como el registro digital más antiguo encontrado hasta ahora, no como una afirmación de la fecha exacta de fundación.'},
-  {date:'2012 en adelante',title:'Liga adulta independiente',detail:'El archivo de esta Historia corresponde a la Liga adulta de Juventino Rosas: categoría libre y Veteranos. Es una organización deportiva independiente de la Presidencia Municipal y de COMUDE; no se mezclan aquí torneos infantiles, Pony, juveniles ni competiciones municipales ajenas.'},
-  {date:'08 dic 2013',title:'Final de Primera en el archivo adulto',detail:'Juventus vs Olímpicos aparece programado como Gran Final de Primera; Chelsea vs PSV por el tercer lugar. En Segunda aparecen semifinales Tavera vs Cerrito de Gasca y DHP vs San José de la Montaña.'},
-  {date:'01 mar 2014',title:'Final de Veteranos',detail:'UNAM vs La Esperanza aparece programado a las 16:00 en Campo 1 dentro del archivo adulto.'},
-  {date:'2015',title:'Administración de Golazo Liga',detail:'Se añadió como fuente el perfil que el usuario identifica como administrador de la página Golazo Liga durante 2015, para seguir rastreando publicaciones y temporadas.'},
-  {date:'24 may 2016',title:'Acuerdo interno de la Liga',detail:'El reglamento vigente conserva el antecedente de un acuerdo de asamblea del 24 de mayo de 2016 relacionado con el proyecto de nuevas oficinas de la propia Liga.'},
+  {date:'15 sep 1953',title:'Antecedente del fútbol local',detail:'Una fuente histórica secundaria sitúa un primer partido de fútbol en Juventino Rosas entre Deportivo Santa Cruz y Deportivo Villagrán. Sirve como contexto del fútbol local, pero no demuestra la fundación ni continuidad jurídica de la Liga actual.'},
+  {date:'05 oct 2012',title:'Golazo Liga · primer registro digital localizado',detail:'La captura aportada muestra una publicación que Facebook presenta bajo el nombre Golazo Liga con fecha 5 de octubre de 2012 y con el escudo histórico de la Liga Municipal. Es la fecha digital mínima comprobable dentro del material conservado, no la fecha de fundación.'},
+  {date:'c. 2015',title:'Administrador conocido de Golazo Liga',detail:'El usuario identifica un perfil como administrador de Golazo Liga hacia 2015. Es una pista útil para reconstruir publicaciones y dirigentes, pero el cargo de presidente de la Liga no queda probado solo por administrar la página.'},
+  {date:'24 may 2016',title:'Acuerdo interno de la Liga',detail:'El reglamento vigente conserva el antecedente de un acuerdo de asamblea del 24 de mayo de 2016 relacionado con el proyecto de construcción de nuevas oficinas.'},
   {date:'2018',title:'Tablas y goleadores históricos',detail:'El archivo conserva cortes de Primera e Intermedia con equipos, puntos y goleadores de la categoría libre.'},
   {date:'03 nov 2019',title:'Juventus campeón de Liga',detail:'Publicaciones históricas de Golazo Liga identifican a Juventus como campeón y a Boavista como subcampeón de la Liga 2018–2019.'},
+  {date:'dic 2019',title:'Nombre reconocido en un documento público',detail:'Un reporte del Congreso del Estado de Guanajuato registra “LIGA MUNICIPAL JUVENTINO ROSAS” por $11,600 dentro de apoyos para construcción y reparación. Es una evidencia externa importante de continuidad del nombre institucional.'},
   {date:'2022',title:'Veteranos · tabla final',detail:'El archivo conserva una tabla final de Veteranos con Juventus en primer lugar con 53 puntos.'},
-  {date:'2026–2027',title:'Reglamento vigente',detail:'La Liga mantiene Copa, Liga, Campeón de Campeones, categoría libre por fuerzas y Veteranos 35+ y 50+, bajo una mesa directiva propia.'}
+  {date:'2026',title:'Continuidad pública de la denominación',detail:'Medios regionales y nacionales siguieron refiriéndose a la competencia como Liga Municipal de Juventino Rosas, reforzando la continuidad pública del nombre.'},
+  {date:'2026–2027',title:'Reglamento vigente',detail:'El reglamento usa la forma Liga Municipal de Fútbol “Juventino Rosas A.C.” y describe una Asamblea y Mesa Directiva propias, además de Copa, Liga, Campeón de Campeones, categoría libre y Veteranos 35+ / 50+.'}
 ];
 
 const currentCompetitionFormat=[
@@ -215,11 +250,31 @@ const currentCompetitionFormat=[
 
 const archiveMethod=[
   'Esta Historia corresponde únicamente a la Liga adulta: categoría libre y Veteranos.',
-  'La Liga es una organización deportiva independiente de la Presidencia Municipal y de COMUDE; “presidente” significa presidente de la propia Liga.',
+  'La denominación institucional mejor documentada es “Liga Municipal de Futbol Juventino Rosas A.C.”; Golazo Liga está documentado como identidad digital histórica, no como razón social probada.',
+  'La Liga funciona con Asamblea y Mesa Directiva propias. La evidencia disponible respalda autonomía deportiva frente a Presidencia Municipal y COMUDE, aunque la personalidad jurídica y fecha de constitución de la A.C. requieren el acta constitutiva o registro.',
   'Se excluye material de ligas Pony, infantiles, juveniles y otras competencias municipales que no pertenecen a esta organización.',
   'Se acepta como campeón cuando una publicación, tabla, álbum, texto o imagen de la Liga o de sus administradores lo identifica como campeón.',
-  'No es obligatorio que exista una fotografía del trofeo para registrar un campeonato si la publicación de la Liga o de su administración lo confirma.',
+  'Administrar una página de Facebook no equivale automáticamente a haber sido presidente de la Liga; esos cargos se documentan por separado.',
   'Los equipos antiguos se conservan en Historia y no se mezclan con los equipos activos de la temporada actual.'
+];
+
+const institutionalHistoryFacts=[
+  {tag:'NOMBRE INSTITUCIONAL',title:'Liga Municipal de Futbol Juventino Rosas A.C.',detail:'Coincide en el logotipo histórico aportado y en el reglamento 2026–2027. Es la denominación institucional mejor documentada.'},
+  {tag:'IDENTIDAD DIGITAL',title:'Golazo Liga',detail:'La presencia de Facebook está documentada al menos desde el 5 de octubre de 2012. La interpretación más consistente es que fue una página, alias o proyecto de difusión de la Liga.'},
+  {tag:'FUNDACIÓN',title:'Fecha todavía no demostrada',detail:'2012 no debe mostrarse como año de fundación. Tampoco están demostrados el fundador, el primer presidente ni la fecha exacta de constitución de la A.C.'},
+  {tag:'AUTONOMÍA',title:'Gobierno interno propio',detail:'El reglamento actual describe Asamblea de equipos y Mesa Directiva electa dentro de la propia Liga. Las autoridades municipales aparecen como interlocutores externos para gestiones, no como dirección interna.'},
+  {tag:'EVIDENCIA EXTERNA',title:'Congreso de Guanajuato · 2019',detail:'El reporte público de diciembre de 2019 registra “LIGA MUNICIPAL JUVENTINO ROSAS” y un apoyo de $11,600 para construcción y reparación.'},
+  {tag:'CONTINUIDAD PÚBLICA',title:'Medios · 2026',detail:'Notas de 2026 siguen utilizando “Liga Municipal de Juventino Rosas”, en línea con el nombre institucional actual.'},
+  {tag:'ANTECEDENTE LOCAL',title:'Fútbol en Juventino Rosas desde 1953',detail:'Una efeméride secundaria registra un partido Deportivo Santa Cruz vs Deportivo Villagrán el 15 de septiembre de 1953. No prueba continuidad legal con la Liga actual.'}
+];
+
+const openHistoricalQuestions=[
+  'Fecha exacta de fundación o constitución de la Liga Municipal de Fútbol Juventino Rosas A.C.',
+  'Fundador o fundadores y primera Mesa Directiva.',
+  'Primer presidente de la Liga.',
+  'Si existió una página o presencia digital anterior a Golazo Liga antes de 2012.',
+  'Si la A.C. tuvo una denominación legal diferente en alguna etapa.',
+  'Cadena completa de presidentes y periodos anteriores.'
 ];
 
 const videos=[
@@ -356,6 +411,14 @@ function historyYouthCards(){
     '<article><span>'+esc(x.year)+'</span><div><b>'+esc(x.title)+'</b><small>'+esc(x.detail)+'</small></div></article>'
   ).join('')+'</div>';
 }
+function institutionalHistoryBlock(){
+  return '<section class="v35-history-format v35-institutional-history">'+
+    '<div class="v35-history-subhead"><span>IDENTIDAD Y ORIGEN</span><h3>Lo que está comprobado y lo que sigue pendiente</h3><p>La investigación separa identidad institucional, presencia digital y antecedentes del fútbol local para no convertir una fecha de Facebook en una fecha de fundación.</p></div>'+
+    '<div class="v35-format-grid">'+institutionalHistoryFacts.map(x=>'<article><span class="v35-history-kind">'+esc(x.tag)+'</span><h4>'+esc(x.title)+'</h4><p>'+esc(x.detail)+'</p></article>').join('')+'</div>'+
+    '<div class="v35-archive-method"><h4>Investigación todavía abierta</h4>'+openHistoricalQuestions.map(x=>'<p>• '+esc(x)+'</p>').join('')+'</div>'+
+  '</section>';
+}
+
 function historicalTimelineBlock(){
   return '<section class="v35-history-timeline">'+
     '<div class="v35-history-subhead"><span>LÍNEA DEL TIEMPO</span><h3>Cómo fue cambiando la Liga</h3><p>Publicaciones de Golazo Liga, tablas, álbumes, reglamento y perfiles de administradores permiten reconstruir la historia adulta sin mezclarla con otras ligas del municipio.</p></div>'+
@@ -373,6 +436,7 @@ function historyArchiveBlock(){
   return '<section class="v35-block v35-history-archive">'+
     '<div class="v35-history-archive-head"><span>ARCHIVO HISTÓRICO</span><h2>Historias de la Liga</h2><p>Archivo histórico de la Liga adulta: categoría libre y Veteranos. Se excluyen ligas infantiles, Pony, juveniles y torneos de Presidencia Municipal/COMUDE que pertenecen a organizaciones distintas. Los videos se revisan como fuente y no se insertan en esta página.</p></div>'+
     historicalTimelineBlock()+
+    institutionalHistoryBlock()+
     competitionFormatBlock()+
     historyMomentCards()+
     '<div class="v35-history-subhead"><span>EQUIPOS PARA EL RECUERDO</span><h3>Clubes y nombres del archivo</h3><p>Estos registros históricos no alteran la lista de equipos de la temporada actual.</p></div>'+
@@ -397,7 +461,7 @@ function finalsArchiveBlock(){
 
 function stats(){
   return '<section class="v35-block v35-stats-block"><h2 class="v35-section-title">Estadísticas históricas</h2>'+
-    '<article class="v35-stat-card"><h3>Archivo oficial y administrativo</h3><div class="v35-stat-rule"></div><p>Se consideran fuentes las publicaciones de la Liga, Golazo Liga, administradores y presidentes vinculados a la organización, además de roles, tablas, fotografías y álbumes. Si una de esas fuentes identifica a un equipo como campeón, se registra como campeón aunque no exista una foto del trofeo.</p></article></section>';
+    '<article class="v35-stat-card"><h3>Archivo oficial y administrativo</h3><div class="v35-stat-rule"></div><p>Se consideran fuentes las publicaciones de la Liga, Golazo Liga, administradores de sus páginas y dirigentes cuando su cargo está documentado, además de reglamentos, roles, tablas, fotografías, álbumes y documentos públicos externos. Si una de esas fuentes identifica a un equipo como campeón, se registra como campeón aunque no exista una foto del trofeo.</p></article></section>';
 }
 function summaryBody(){
   return '<section class="v35-block v35-seasons-block"><div class="v35-section-row"><h2>Buscar por temporada</h2><button type="button" data-v35-tab-jump="Temporadas">Ver todo</button></div><div class="v35-season-carousel">'+seasonCards()+'</div></section>'+
