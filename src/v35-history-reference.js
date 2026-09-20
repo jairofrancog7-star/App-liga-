@@ -124,6 +124,41 @@ const historicalSources=[
     title:'Archivo histórico · video 2',
     note:'Material audiovisual usado como fuente de consulta; no se incrusta dentro de Historia.',
     url:'https://drive.google.com/file/d/1GFvoNisldXaqIMwQJR9HQx2_xhgTls45/view?usp=drivesdk'
+  },
+  {
+    title:'Archivo histórico · 19 sep 2026 · 23-29-34 · segmento 1',
+    note:'Grabación de Facebook usada para recuperar publicaciones, tablas, goleadores, campeones y equipos de 2015–2017. Fuente de consulta; el video no se incrusta en Historia.',
+    url:'https://drive.google.com/file/d/11z3SB6QXQrJLxBk6Hgjbh1pRkcyYl3n_/view?usp=drivesdk'
+  },
+  {
+    title:'Archivo histórico · 19 sep 2026 · 23-29-34 · segmento 2',
+    note:'Continuación de la grabación histórica de Facebook. Se usa para contrastar temporadas y publicaciones antiguas sin insertar el video en la página.',
+    url:'https://drive.google.com/file/d/1LyK_VCWcsKmE22z3_7KSwiFaUoXQgbf1/view?usp=drivesdk'
+  },
+  {
+    title:'Archivo histórico · 19 sep 2026 · 23-29-34 · segmento 3',
+    note:'Continuación del archivo histórico de Facebook. Fuente de consulta para temporadas antiguas; no se muestra como video dentro de Historia.',
+    url:'https://drive.google.com/file/d/1_XC74YN7LDtI2CUQfAuFdQWQq0SY4X_F/view?usp=drivesdk'
+  },
+  {
+    title:'Archivo histórico · 20 sep 2026 · 02-18-29 · segmento 1',
+    note:'Grabación de Golazo Liga usada para verificar tablas, campeones y goleadores de 2015–2017.',
+    url:'https://drive.google.com/file/d/1PIwlmIx68P63eSsNHiaAOASM28D39Zd6/view?usp=drivesdk'
+  },
+  {
+    title:'Archivo histórico · 20 sep 2026 · 02-18-29 · segmento 2',
+    note:'Grabación de Golazo Liga usada para verificar publicaciones de 2014–2015, trofeos y campeones.',
+    url:'https://drive.google.com/file/d/1TQSth_qmbyK9D8uzpTOHFrV6dRuvHVXO/view?usp=drivesdk'
+  },
+  {
+    title:'Archivo histórico · 20 sep 2026 · 02-18-29 · segmento 3',
+    note:'Grabación de Golazo Liga usada para verificar publicaciones de 2012–2014, finales y equipos históricos.',
+    url:'https://drive.google.com/file/d/12hOjfs01zm7hWzwfxbjPMlTxmNglafPg/view?usp=drivesdk'
+  },
+  {
+    title:'Archivo Juventino Rosas Liga · 19 sep 2026 · 22-02-26',
+    note:'Grabación de la página actual usada para documentar finales y publicaciones de la temporada 2025–2026.',
+    url:'https://drive.google.com/file/d/1iUrPOcAfT9KMMuHlPuhJPPmtZAiNHlYr/view?usp=drivesdk'
   }
 ];
 
@@ -151,18 +186,77 @@ const retroClubs=[
   {name:'Dynamo',logo:'assets/official-logos/dynamo.png',note:'Final de Veteranos vs Universidad'},
   {name:'Juventus',logo:'assets/official-logos/juventus.png',note:'Torneo de Copa · archivo histórico'},
   {name:'Hermanos',logo:'assets/official-logos/hermanos.png',note:'Series de penales y torneos de Copa'},
-  {name:'Abejas FC',logo:'assets/official-logos/abejas.png',note:'Clásico vs Olímpicos de Pozos'}
+  {name:'Abejas FC',logo:'assets/official-logos/abejas.png',note:'Clásico vs Olímpicos de Pozos'},
+  {name:'La Esperanza',logo:'assets/official-logos/la-esperanza.png',note:'Finales y tablas históricas de Veteranos'},
+  {name:'Malvinas',logo:'assets/official-logos/malvinas.png',note:'Intermedia · archivo 2015–2016'},
+  {name:'La Cuadrilla',logo:'assets/official-logos/la-cuadrilla.png',note:'Primera e Intermedia · tablas históricas'},
+  {name:'Populares',logo:'assets/official-logos/populares.png',note:'Intermedia · tablas y goleadores'},
+  {name:'Barza',logo:'assets/official-logos/barza.png',note:'Intermedia · archivo histórico'},
+  {name:'Osasuna',logo:'assets/official-logos/osasuna.png',note:'Intermedia · archivo histórico'},
+  {name:'San Antonio Jr.',logo:'assets/official-logos/san-antonio-jrs.png',note:'Intermedia · líder del corte J20 de 2015'},
+  {name:'Napoli',logo:'assets/official-logos/napoli.png',note:'Primera Fuerza · archivo histórico'},
+  {name:'Manchester',logo:'assets/official-logos/manchester.png',note:'Equipo conservado en el archivo antiguo'}
 ];
 
 const retroNames=['Universidad','Valencia','Halcones','Chelse','Olímpicos de Pozos'];
 
 const verifiedChampions=[
+  {season:'22 feb 2014',competition:'Torneo de Copa · Fuerza Intermedia',champion:'Puros Cuates',runner:'—',source:'Publicación de Golazo Liga: “Trofeo para el equipo Puros Cuates Campeón del Torneo De Copa 2014 en la Categoría Fuerza Intermedia”.'},
+  {season:'11 ene 2015',competition:'Campeonato · Intermedia',champion:'Puros Cuates',runner:'—',source:'Publicación de Golazo Liga del 11 de enero de 2015: “Puros cuates... campeón de intermedia”.'},
+  {season:'18 ene 2015',competition:'Campeón de Campeones · Primera',champion:'Boavista',runner:'—',source:'Publicación de Golazo Liga: el capitán de Boavista recibe el trofeo de Campeón de Campeones de Primera.',championLogo:HIST_ROOT+'assets/official-logos/boavista.png'},
+  {season:'09 jul 2016',competition:'Torneo de Copa · categoría no visible en la publicación',champion:'Magisterio',runner:'—',source:'Publicación de Golazo Liga del 9 de julio de 2016: “Felicidades al campeón de copa. Felicidades Magisterio”.'},
   {season:'2018–2019',competition:'Torneo de Liga',champion:'Juventus',runner:'Boavista',source:'Publicaciones históricas de Golazo Liga del 3 nov 2019.',photo:HIST_MEDIA+'juventus-campeon-2019.jpg',championLogo:HIST_ROOT+'assets/official-logos/juventus.png',runnerLogo:HIST_ROOT+'assets/official-logos/boavista.png'},
   {season:'Archivo fotográfico',competition:'Campeonato · categoría adulta por identificar',champion:'Tecos',runner:'—',source:'Fotografía del archivo: el plantel aparece con camisetas “CAMPEON TECOS” y trofeo.',photo:HIST_MEDIA+'tecos-campeon-historico.jpg'},
   {season:'Archivo histórico',competition:'Copa · Categoría Segunda',champion:'Tavera FC',runner:'—',source:'Álbum histórico entregado por el usuario.',championLogo:HIST_ROOT+'assets/official-logos/tavera-fc.png'}
 ];
 
+// V106 — archivo histórico ampliado desde los videos y el ZIP entregados por el usuario.
+const videoArchiveFindings=[
+  {date:'15 dic 2013',title:'Podio de Segunda Fuerza',detail:'DHP recibió el trofeo de segundo lugar. San José de la Montaña recibió el tercer lugar después de ganar por default a Tavera en el partido por el tercer puesto.'},
+  {date:'22 feb 2014',title:'Puros Cuates · campeón de Copa',detail:'Golazo Liga identifica a Puros Cuates como campeón del Torneo de Copa 2014 en Fuerza Intermedia.'},
+  {date:'11 ene 2015',title:'Puros Cuates · campeón de Intermedia',detail:'La publicación histórica identifica a Puros Cuates como campeón de Intermedia. Ese mismo día José Guadalupe Moreno recibió el trofeo de campeón goleador de Primera Fuerza.'},
+  {date:'18 ene 2015',title:'Boavista · Campeón de Campeones',detail:'El capitán de Boavista aparece recibiendo el trofeo de Campeón de Campeones de Primera.',image:HIST_ROOT+'assets/official-logos/boavista.png'},
+  {date:'25 nov 2015',title:'Veteranos · corte de Liga J13',detail:'La Esperanza aparece primero con 35 puntos, 11 ganados, 2 empatados, 0 perdidos, 38 GF y 13 GC. Es un corte de jornada, no un título final.',image:HIST_ROOT+'assets/official-logos/la-esperanza.png'},
+  {date:'03 dic 2015',title:'Intermedia · corte de Liga J20',detail:'San Antonio Jr. y Malvinas aparecen empatados en 43 puntos; Tavera suma 41 y La Cuadrilla 40. Es un corte histórico, no la tabla final.'},
+  {date:'21 feb 2016',title:'Final y premiación de Intermedia',detail:'El archivo conserva la premiación del campeón y del subcampeón de Intermedia. En comentarios de la publicación se identifica al campeón como Malvinas; por eso el nombre se conserva con esa salvedad.',image:HIST_ROOT+'assets/official-logos/malvinas.png'},
+  {date:'28 feb 2016',title:'Campeón de Campeones · Intermedia',detail:'Publicación de Golazo Liga con entrega del trofeo de Campeón de Campeones de Intermedia; el nombre del equipo no es legible en el texto visible.'},
+  {date:'27 mar 2016',title:'Campeón de Campeones · Segunda Fuerza',detail:'Publicación de Golazo Liga de la premiación. El nombre del campeón no aparece legible en el texto visible.'},
+  {date:'09 jul 2016',title:'Magisterio · campeón de Copa',detail:'La publicación felicita de manera explícita a Magisterio como campeón de Copa.'},
+  {date:'06 oct 2016',title:'Veteranos · goleo J5',detail:'Francisco Hortelano Laguna y Juan Carlos Barrientos, ambos de Cuenda, encabezan el corte con 5 goles cada uno. Es un corte de jornada.'},
+  {date:'21 feb 2017',title:'Daniel Gómez Delgado · campeón goleador',detail:'Golazo Liga da por campeón de goleo de Fuerza Intermedia a Daniel Gómez Delgado, de A. Centeno, con 34 goles.'},
+  {date:'15 abr 2017',title:'Eusebio Rangel · campeón goleador de Veteranos',detail:'La publicación solicita a Eusebio Rangel, del equipo Hermanos, presentarse a la final para recibir el trofeo de campeón de goleo.'},
+  {date:'15 abr 2017',title:'Primera Fuerza · goleo J28',detail:'Juan Manuel Gámez López (Hermanos) encabeza el corte con 34 goles; Fernando Gámez Reyes (Abejas), Jorge Alberto Sánchez Mendoza (Juventus) y Noé Alfredo Silva Martínez (La Cuadrilla) aparecen con 29.'},
+  {date:'06 may 2017',title:'Primera · corte de Liga J30',detail:'Linces aparece líder con 79 puntos. Hermanos registra 111 goles a favor; Linces, 107 y diferencia de +75. Son marcas del corte publicado, no récords absolutos de toda la historia.',image:HIST_ROOT+'assets/official-logos/linces.png'},
+  {date:'20 may 2026',title:'Final de Liga · Veteranos 50+',detail:'Publicación de Juventino Rosas Liga anuncia la Gran Final de Veteranos 50 y más entre La Esperanza y Boavista. La fecha exacta del partido no es visible en el cuadro recuperado.',image:HIST_ROOT+'assets/official-logos/boavista.png'},
+  {date:'07 jun 2026',title:'Gran Final · Segunda Fuerza',detail:'La Canchita Deportes vs Aldama FC · 10:00 · Campo 1, Deportiva Sur. La publicación fue realizada el 3 de junio de 2026.',image:HIST_ROOT+'assets/official-logos/la-canchita-deportes.png'}
+];
+
 const historicTables=[
+  {
+    season:'2015',title:'Veteranos · Torneo de Liga · Jornada 13',note:'Corte publicado el 25 nov 2015; no se presenta como tabla final.',
+    rows:[
+      ['1','La Esperanza','35'],['2','Cuenda','27'],['3','Magisterio','25'],['4','Chelsea','25'],
+      ['5','Boavista','24'],['6','Picosos','19'],['7','Dynamo','16'],['8','UNAM','15'],
+      ['9','Hermanos','13'],['10','Valedores','12'],['11','Sección XIV','5'],['12','Guadalajara','4']
+    ]
+  },
+  {
+    season:'2015',title:'Intermedia · Torneo de Liga · Jornada 20',note:'Corte publicado el 3 dic 2015. Los puntos se conservan exactamente como aparecen en la tabla histórica.',
+    rows:[
+      ['1','San Antonio Jr.','43'],['2','Malvinas','43'],['3','Tavera','41'],['4','La Cuadrilla','40'],
+      ['5','Centeno','31'],['6','Real Cerrito','22'],['7','Halcones','21'],['8','Barza','21'],
+      ['9','Populares','16'],['10','Terrícolas','11'],['11','DHP','11'],['12','Dulces Nombres','3'],['13','Xolos Jaralillo','2']
+    ]
+  },
+  {
+    season:'2017',title:'Primera · Torneo de Liga · Jornada 30',note:'Corte publicado el 6 may 2017; no se presenta como tabla final.',
+    rows:[
+      ['1','Linces','79'],['2','Hermanos','74'],['3','Juventus','63'],['4','La Esperanza','58'],
+      ['5','Abejas','49'],['6','La Cuadrilla','48'],['7','San Antonio Jr.','42'],['8','Chelsea','39'],
+      ['9','Napoli','36'],['10','La Pandilla','36'],['11','Boavista','33'],['12','Puros Cuates','30'],
+      ['13','PSV','29'],['14','Olímpicos','23'],['15','Malvinas','23'],['16','Cerrito de Gasca','21'],['17','El Alto','BAJA']
+    ]
+  },
   {
     season:'2018',title:'Intermedia · Jornada 23',note:'Corte histórico, no se presenta como tabla final.',
     rows:[
@@ -191,6 +285,15 @@ const historicTables=[
 ];
 
 const historicScorers=[
+  {season:'2015',category:'Primera Fuerza · premiación 11 ene 2015',player:'José Guadalupe Moreno',team:'Equipo no visible en la publicación',goals:null,value:'Campeón goleador'},
+  {season:'2016',category:'Veteranos · Jornada 5 · 06 oct 2016',player:'Francisco Hortelano Laguna',team:'Cuenda',goals:5,value:'5 goles'},
+  {season:'2016',category:'Veteranos · Jornada 5 · 06 oct 2016',player:'Juan Carlos Barrientos',team:'Cuenda',goals:5,value:'5 goles'},
+  {season:'2017',category:'Fuerza Intermedia · tabla final de goleo J22 · 21 feb 2017',player:'Daniel Gómez Delgado',team:'A. Centeno',goals:34,value:'34 goles · campeón'},
+  {season:'2017',category:'Veteranos · premiación 15 abr 2017',player:'Eusebio Rangel',team:'Hermanos',goals:null,value:'Campeón goleador'},
+  {season:'2017',category:'Primera Fuerza · corte J28 · 15 abr 2017',player:'Juan Manuel Gámez López',team:'Hermanos',goals:34,value:'34 goles'},
+  {season:'2017',category:'Primera Fuerza · corte J28 · 15 abr 2017',player:'Fernando Gámez Reyes',team:'Abejas',goals:29,value:'29 goles'},
+  {season:'2017',category:'Primera Fuerza · corte J28 · 15 abr 2017',player:'Jorge Alberto Sánchez Mendoza',team:'Juventus',goals:29,value:'29 goles'},
+  {season:'2017',category:'Primera Fuerza · corte J28 · 15 abr 2017',player:'Noé Alfredo Silva Martínez',team:'La Cuadrilla',goals:29,value:'29 goles'},
   {season:'2018',category:'Intermedia · Jornada 23',player:'Alejandro Juárez Merino',team:'Populares',goals:31,value:'31 goles'},
   {season:'2018',category:'Intermedia · Jornada 23',player:'Juan Carlos Hernández',team:'Barza',goals:18,value:'18 goles'},
   {season:'2018',category:'Intermedia · Jornada 23',player:'Alejandro Ramírez Medina',team:'Real DHP',goals:16,value:'16 goles'},
@@ -206,6 +309,12 @@ const historicTeamGoalRecords=[
 ];
 
 const recordMemories=[
+  {tag:'CORTE J30',title:'Linces',value:'79 puntos',detail:'Líder del corte de Primera publicado el 6 may 2017; no se presenta como récord absoluto.',image:HIST_ROOT+'assets/official-logos/linces.png'},
+  {tag:'CORTE J30',title:'Hermanos',value:'111 GF',detail:'Goles a favor visibles en la tabla de Primera J30 del 6 may 2017.',image:HIST_ROOT+'assets/official-logos/hermanos.png'},
+  {tag:'CORTE J30',title:'Linces',value:'+75 DG',detail:'Diferencia de goles visible en la tabla de Primera J30 del 6 may 2017.',image:HIST_ROOT+'assets/official-logos/linces.png'},
+  {tag:'VETERANOS J13',title:'La Esperanza',value:'11 G · 2 E · 0 P',detail:'Corte del 25 nov 2015: 35 puntos, 38 GF y 13 GC; no se presenta como cierre final.',image:HIST_ROOT+'assets/official-logos/la-esperanza.png'},
+  {tag:'GOLEO',title:'Daniel Gómez Delgado',value:'34 goles',detail:'A. Centeno · campeón de goleo de Fuerza Intermedia, publicación del 21 feb 2017.'},
+  {tag:'GOLEO',title:'José Guadalupe Moreno',value:'Campeón',detail:'Campeón goleador de Primera Fuerza; premiación publicada el 11 ene 2015.'},
   {tag:'GOLEO',title:'Alejandro Juárez Merino',value:'31 goles',detail:'Populares · líder de goleo en el corte de Intermedia J23 de 2018.'},
   {tag:'TABLA',title:'A. Centeno',value:'64 puntos',detail:'Líder del corte de Primera Fuerza J26 de 2018.'},
   {tag:'TABLA',title:'Lobos CDG',value:'52 puntos',detail:'Líder del corte de Intermedia J23 de 2018.',image:HIST_ROOT+'assets/official-logos/lobos-cdg.png'},
@@ -222,6 +331,9 @@ const historicResults=[
 ];
 
 const historicFinalists=[
+  {year:'15 dic 2013',category:'Segunda Fuerza · podio de la final',a:'Subcampeón: DHP',b:'3.º: San José de la Montaña',note:'San José de la Montaña obtuvo el tercer lugar por default ante Tavera. El campeón no quedó identificado en el texto visible del fragmento revisado.'},
+  {year:'20 may 2026 · publicación',category:'Veteranos 50+ · Gran Final de Liga',a:'La Esperanza',b:'Boavista',note:'La publicación anuncia la final; el día exacto del partido no aparece visible en el cuadro recuperado.',logoA:HIST_ROOT+'assets/official-logos/la-esperanza.png',logoB:HIST_ROOT+'assets/official-logos/boavista.png'},
+  {year:'07 jun 2026',category:'Segunda Fuerza · Gran Final de Liga 2025–2026',a:'La Canchita Deportes',b:'Aldama FC',note:'10:00 · Campo 1 · Deportiva Sur.',logoA:HIST_ROOT+'assets/official-logos/la-canchita-deportes.png',logoB:HIST_ROOT+'assets/official-logos/aldama-fc.png'},
   {year:'08 dic 2013',category:'Categoría libre · Primera · Gran Final',a:'Juventus',b:'Olímpicos',note:'10:00 · Campo 1. Archivo adulto de Golazo Liga; Chelsea vs PSV aparece por el tercer lugar.',logoA:HIST_ROOT+'assets/official-logos/juventus.png'},
   {year:'01 mar 2014',category:'Veteranos · Gran Final',a:'UNAM',b:'La Esperanza',note:'16:00 · Campo 1. Archivo histórico adulto.'},
   {year:'2019',category:'Veteranos · Final de Copa',a:'Chelsea',b:'La Esperanza',note:'Programada a las 17:30 en Campo 1. El material revisado confirma la final y su programación.'},
@@ -237,7 +349,7 @@ const expandedRetroNames=[
   'Mazacotes','Titanes Tavera','Morales','Populares','A. Centeno','Chelsea','La Cuadrilla',
   'PSV','Sección 14','Dep. Maravillas','La Esperanza FC','A. Pozos','Galaxy','San Juan FC',
   'Tapatío','Guadalupanos','Barrio Seco','UNAM','Átomos','Deportivo Rafa','Arsenal',
-  'Olímpicos','Linces','Birds Eye','Puros Cuates','Dulces Nombres','Malvinas',
+  'Olímpicos','Linces','Birds Eye','Puros Cuates','Dulces Nombres','Malvinas','Magisterio','Picosos','Valedores','La Pandilla','El Alto','Xolos Jaralillo','Real Cerrito','DHP',
   'Halcones de Cuenda','Deportivo Pozos','Real Cerrito de Gasca','San José de la Montaña',
   'Río Grande','Unión Allende','Novatos','Salvajes','Continental','Toros','Aldama'
 ];
@@ -424,6 +536,8 @@ function verifiedHistoryBlocks(){
         '<span>'+esc(x.season)+'</span><h4>'+esc(x.champion)+'</h4><b>'+esc(x.competition)+'</b><p>'+(x.runner&&x.runner!=='—'?'Subcampeón: '+esc(x.runner)+'. ':'')+esc(x.source)+'</p></article>'
     ).join('')+'</div>'+
     historicalGoalsBlock()+
+    '<div class="v35-history-subhead"><span>HALLAZGOS DE LOS VIDEOS</span><h3>Fechas y publicaciones recuperadas</h3><p>Se revisaron los segmentos de Drive cuadro por cuadro. Cuando una publicación no muestra el nombre del equipo o el resultado, se conserva esa limitación en vez de inventarlo.</p></div>'+
+    '<div class="v35-result-list v35-video-findings">'+videoArchiveFindings.map(x=>'<article class="v35-final-row">'+(x.image?'<div class="v35-final-logos"><img src="'+x.image+'" alt="" loading="lazy"></div>':'')+'<span>'+esc(x.date)+'</span><b>'+esc(x.title)+'</b><p>'+esc(x.detail)+'</p></article>').join('')+'</div>'+
     '<div class="v35-history-subhead"><span>TABLAS HISTÓRICAS</span><h3>Clasificaciones recuperadas</h3><p>Se conserva el contexto exacto del material: una tabla final se marca como final; un corte de jornada se marca solo como corte.</p></div>'+
     historicTables.map(t=>'<article class="v35-old-table"><header><span>'+esc(t.season)+'</span><div><b>'+esc(t.title)+'</b><small>'+esc(t.note)+'</small></div></header><div class="v35-old-table-head"><span>POS</span><span>EQUIPO</span><span>PTS</span></div>'+t.rows.map(r=>'<div class="v35-old-table-row"><span>'+esc(r[0])+'</span><b>'+esc(r[1])+'</b><strong>'+esc(r[2])+'</strong></div>').join('')+'</article>').join('')+
     '<div class="v35-history-subhead"><span>RESULTADOS CONSERVADOS</span><h3>Ganadores publicados en roles antiguos</h3></div>'+
