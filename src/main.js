@@ -5097,7 +5097,7 @@ function storeView(){
 function quizArenaView(){
   const correct='San José FC';
   const options=[['A','Juventus'],['B','Hermanos'],['C','San José FC'],['D','Linces']];
-  return `<section class="v48-quiz-arena-page" data-v48-arena data-v48-correct="${correct}" aria-label="Quiz Arena">
+  return `<section class="v48-quiz-arena-page v48-playing" data-v48-arena data-v48-correct="${correct}" aria-label="Quiz Arena">
 
     <div class="v48-arena-landing" data-v48-landing>
       <header class="v48-arena-head">
@@ -5108,7 +5108,19 @@ function quizArenaView(){
       </header>
 
       <section class="v48-arena-card" aria-label="Entrar a Quiz Arena">
-        <div class="v48-ball-stage" aria-hidden="true"></div>
+        <div class="v48-ball-stage" aria-hidden="true">
+          <div class="v48-local-visual">
+            <img class="v48-local-league" src="https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/assets/liga-logo.webp" alt="">
+            <div class="v48-local-logos">
+              <span><img src="https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/assets/official-logos/juventus.png" alt=""></span>
+              <span><img src="https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/assets/official-logos/hermanos.png" alt=""></span>
+              <span><img src="https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/assets/official-logos/san-jose-fc.png" alt=""></span>
+              <span><img src="https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/assets/official-logos/linces.png" alt=""></span>
+            </div>
+            <strong>QUIZ ARENA</strong>
+            <small>LIGA MUNICIPAL · JUVENTINO ROSAS</small>
+          </div>
+        </div>
         <div class="v48-arena-actions">
           <button type="button" class="v48-primary" data-route="profile">Inicia sesión para<br>jugar</button>
           <button type="button" class="v48-secondary" data-v48-start>Prueba como<br>invitado</button>
@@ -5171,7 +5183,7 @@ function go(route,push=true){if(route==='quiz')route='quizArena';if(push&&state.
 function bind(){document.querySelectorAll('[data-route]').forEach(el=>el.onclick=()=>go(el.dataset.route));
 document.querySelectorAll('[data-v48-start]').forEach(el=>el.onclick=()=>{const page=el.closest('[data-v48-arena]');if(!page)return;page.classList.add('v48-playing');page.querySelector('[data-v48-game]')?.setAttribute('aria-hidden','false');window.scrollTo({top:0,behavior:'smooth'});window.setTimeout(()=>page.querySelector('[data-v48-quiz]')?.focus({preventScroll:true}),260)});
 document.querySelectorAll('[data-v48-game-back]').forEach(el=>el.onclick=()=>{const page=el.closest('[data-v48-arena]');if(!page)return;page.classList.remove('v48-playing','v48-answered');page.dataset.v48Answered='false';page.querySelector('[data-v48-game]')?.setAttribute('aria-hidden','true');page.querySelectorAll('[data-v48-quiz]').forEach(btn=>{btn.disabled=false;btn.classList.remove('is-correct','is-wrong');btn.removeAttribute('aria-pressed')});const msg=page.querySelector('.v48-game-message');if(msg)msg.textContent='';window.scrollTo({top:0,behavior:'smooth'})});
-document.querySelectorAll('[data-v48-quiz]').forEach(el=>el.onclick=()=>{const page=el.closest('[data-v48-arena]');if(!page||page.dataset.v48Answered==='true')return;page.dataset.v48Answered='true';page.classList.add('v48-answered');const correct=page.dataset.v48Correct||'Juventino';page.querySelectorAll('[data-v48-quiz]').forEach(btn=>{btn.disabled=true;btn.setAttribute('aria-pressed',btn===el?'true':'false');btn.classList.toggle('is-correct',btn.dataset.v48Quiz===correct);btn.classList.toggle('is-wrong',btn.dataset.v48Quiz!==correct)});const msg=page.querySelector('.v48-game-message');if(msg)msg.textContent=el.dataset.v48Quiz===correct?'¡Correcto! +10 puntos':'Respuesta incorrecta · Correcta: '+correct});
+document.querySelectorAll('[data-v48-quiz]').forEach(el=>el.onclick=()=>{const page=el.closest('[data-v48-arena]');if(!page)return;page.dataset.v48LastAnswer=el.dataset.v48Quiz||'';page.classList.remove('v48-playing','v48-answered');page.dataset.v48Answered='false';page.querySelector('[data-v48-game]')?.setAttribute('aria-hidden','true');page.querySelectorAll('[data-v48-quiz]').forEach(btn=>{btn.disabled=false;btn.classList.remove('is-correct','is-wrong');btn.removeAttribute('aria-pressed')});const msg=page.querySelector('.v48-game-message');if(msg)msg.textContent='';window.scrollTo({top:0,behavior:'smooth'});window.setTimeout(()=>page.querySelector('[data-v48-start]')?.focus({preventScroll:true}),260)});
 
 document.querySelectorAll('[data-v60-pdf-prev]').forEach(el=>el.onclick=()=>v60RenderRulebookPage(v60RulebookPage-1));
 document.querySelectorAll('[data-v60-pdf-next]').forEach(el=>el.onclick=()=>v60RenderRulebookPage(v60RulebookPage+1));
