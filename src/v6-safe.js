@@ -170,10 +170,33 @@
       return '<div class="'+(i===0?'active':'')+'"><span>'+esc(day)+'</span><small>'+esc(month)+'</small><b>'+esc(v6PrettyTeam(r[2]))+' vs '+esc(v6PrettyTeam(r[6]))+' · '+esc(time)+'</b></div>';
     }).join('');
   }
+  function v6OfficialSummary(){
+    const c=v6OfficialDb?.categories?.['3']||null;
+    const standings=c?.standings?.[0]?.rows||[];
+    const counts=c?.counts||c?.dashboard?.counts||{};
+    const gf=standings.reduce((sum,r)=>sum+(Number(r?.[6])||0),0);
+    return {
+      teams:Number(counts.Equipos)||standings.length||0,
+      played:Number(counts['Partidos Jugados'])||0,
+      players:Number(counts.Jugadores)||0,
+      gf,
+      standings
+    };
+  }
+  function v6OfficialPlayers(){
+    const c=v6OfficialDb?.categories?.['3']||null;
+    const out=[];
+    for(const [team,names] of Object.entries(c?.rosters||{})){
+      for(const name of (Array.isArray(names)?names:[])){
+        if(name)out.push({name:String(name),team:String(team)});
+      }
+    }
+    return out;
+  }
   function ensureBell(){const top=document.querySelector('.topbar');if(!top)return;let b=document.querySelector('#safeBell');if(!b){b=document.createElement('button');b.id='safeBell';b.className='icon-button v5-bell';b.setAttribute('aria-label','Notificaciones');b.dataset.safeRoute='safe-notifications';const profile=top.querySelector('.profile-button');profile?top.insertBefore(b,profile):top.appendChild(b)}const unread=state.inbox.filter(x=>!x.read).length;const html=`${svg('bell')}${unread?`<span class="v5-badge">${unread}</span>`:''}`;if(b.innerHTML!==html)b.innerHTML=html}
   function homeExtra(){return `<div id="safeHomeExtra" class="v6-home-super">
     <section class="v6-section v6-quick"><div class="v6-section-head"><div><span class="eyebrow">TODO EN INICIO</span><h2>Explora Liga Juventino</h2></div><button class="v6-icon-btn" data-safe-route="safe-notifications" aria-label="Notificaciones">${svg('bell')}</button></div><div class="v6-action-grid">${actionCard('bolt','Performance Zone','Análisis y rendimiento','safe-performance')}${actionCard('chart','Datos','Equipos y jugadores','safe-data')}${actionCard('calendar','Calendario','Fechas y resultados','v4-calendar')}${actionCard('star','Jugador de la Jornada','Vota y consulta candidatos','vote')}</div></section>
-    <section class="v6-section"><div class="v6-section-head"><h2>Noticias</h2><button class="link-button" data-safe-route="news">Ver todo</button></div><div class="v6-news-strip"><button class="v6-news-card" data-safe-route="news"><span>${svg('news')}</span><small>JORNADA 5</small><b>Todo listo para la próxima fecha</b><em>Hoy</em></button><button class="v6-news-card" data-safe-route="news"><span>${svg('news')}</span><small>LIGA</small><b>Horarios y sedes confirmados</b><em>Ayer</em></button><button class="v6-news-card" data-safe-route="transfers"><span>${svg('news')}</span><small>FICHAJES</small><b>Movimientos antes del cierre</b><em>Hace 2 días</em></button></div></section>
+    <section class="v6-section"><div class="v6-section-head"><h2>Información oficial</h2><button class="link-button" data-safe-route="leagueData">Ver datos</button></div><div class="v6-news-strip"><button class="v6-news-card" data-safe-route="competition"><span>${svg('calendar')}</span><small>JORNADA 5</small><b>Consulta partidos, horarios y sedes publicados</b><em>Fuente oficial</em></button><button class="v6-news-card" data-safe-route="leagueData"><span>${svg('chart')}</span><small>DATOS DE LA LIGA</small><b>Clasificación, equipos y jugadores registrados</b><em>Fuente oficial</em></button><button class="v6-news-card" data-safe-route="scorers"><span>${svg('trophy')}</span><small>GOLEADORES</small><b>Consulta únicamente goles oficialmente publicados</b><em>Fuente oficial</em></button></div></section>
     <section class="v6-section"><div class="v6-section-head"><h2>Vídeos destacados</h2><button class="link-button" data-safe-route="video">Ver todo</button></div><div class="v6-video-list"><button class="v6-video-card" data-safe-route="video"><span class="v6-play">${svg('play')}</span><small>Técnica · 00:21</small><b>Precisión a balón parado</b></button><button class="v6-video-card" data-safe-route="video"><span class="v6-play">${svg('play')}</span><small>Ataque · 00:18</small><b>Definición rápida</b></button><button class="v6-video-card" data-safe-route="safe-performance"><span class="v6-play">${svg('play')}</span><small>Rendimiento · 00:26</small><b>Transición y presión</b></button></div></section>
     <section class="v6-section">${v6FeaturedScorer()}</section>
     <section class="v6-section"><div class="v6-section-head"><h2>Clasificación · Primera Fuerza</h2><button class="link-button" data-safe-route="competition">Ver completa</button></div><div class="v6-table-card"><div class="v6-table-head"><span>#</span><span>Equipo</span><span>PJ</span><span>DG</span><span>PTS</span></div>${teams.map((t,i)=>`<button class="v6-table-row" data-safe-route="competition"><span>${i+1}</span><span>${crest(t[0])}<b>${t[1]}</b></span><span>${t[3]}</span><span>${t[4]>0?'+':''}${t[4]}</span><strong>${t[2]}</strong></button>`).join('')}</div></section>
@@ -190,11 +213,11 @@
     const hero='https://skyagent-artifacts.skywork.ai/image/5221463659472822263/2100485172215463936/2100485172215463937.png';
     const show='https://skyagent-artifacts.skywork.ai/image/5221463659472822263/2100485077397905408/2100485077397905409.png';
     const stories=[
-      {label:'Jornada 1 ⚽',logo:leagueLogo,route:'competition'},
-      {label:'Datos 2025/26 …',logo:base+'assets/branding/america-veteranos-35-user.png',route:'safe-data'},
-      {label:'Vuelta SF Unpacked…',logo:base+'assets/teams/la-huerta-cuenda.webp',route:'video'},
-      {label:'Cara a cara 📊',logo:leagueLogo,route:'rankings'},
-      {label:'Ida semifinal',logo:base+'assets/teams/lobos-cdg.webp',route:'competition'}
+      {label:'Partidos',logo:leagueLogo,route:'competition'},
+      {label:'Datos oficiales',logo:leagueLogo,route:'leagueData'},
+      {label:'Equipos',logo:leagueLogo,route:'teams'},
+      {label:'Clasificación',logo:leagueLogo,route:'competition'},
+      {label:'Goleadores',logo:leagueLogo,route:'scorers'}
     ];
     const storyHtml=stories.map(s=>`<button class="v20-story" type="button" data-safe-route="${s.route}"><span class="v20-story-ring"><img src="${s.logo}" alt="" loading="lazy"></span><small>${s.label}</small></button>`).join('');
     return `<section class="v20-performance" aria-label="Performance Liga Municipal de Fútbol Juventino Rosas">
@@ -211,44 +234,71 @@
       <div class="v20-stories" aria-label="Accesos de Performance">${storyHtml}</div>
 
       <div class="v20-performance-feed">
-        <button class="v20-performance-card v20-card-america" type="button" data-safe-route="teams">
+        <button class="v20-performance-card v20-card-america" type="button" data-safe-route="competition">
           <img src="${show}" alt="" loading="lazy">
           <span class="v20-card-shade"></span>
           <img class="v20-card-logo" src="${leagueLogo}" alt="">
-          <strong>Veteranos América: líderes<br>en la tabla ⚽</strong>
+          <strong>Clasificación oficial<br>de Primera Fuerza</strong>
         </button>
 
-        <button class="v20-performance-card" type="button" data-safe-route="video">
+        <button class="v20-performance-card" type="button" data-safe-route="competition">
           <img src="${hero}" alt="" loading="lazy">
           <span class="v20-card-shade"></span>
           <span class="v20-card-time">00:51</span>
           <span class="v20-card-play" aria-hidden="true">▶</span>
-          <strong>Juventino Rosas: ataque<br>con mucho gol</strong>
+          <strong>Partidos y resultados<br>publicados por la Liga</strong>
         </button>
 
         <button class="v20-performance-card" type="button" data-safe-route="teams">
           <img src="./home-feature-reference.webp?v=20260918" alt="" loading="lazy">
           <span class="v20-card-shade"></span>
-          <strong>La Huerta: el impacto de<br>su mediocampo</strong>
+          <strong>Equipos y plantillas<br>registradas</strong>
         </button>
 
-        <button class="v20-performance-card" type="button" data-safe-route="video">
+        <button class="v20-performance-card" type="button" data-safe-route="scorers">
           <img src="${show}" alt="" loading="lazy">
           <span class="v20-card-shade"></span>
           <span class="v20-card-time">00:50</span>
           <span class="v20-card-play" aria-hidden="true">▶</span>
-          <strong>Deportivo Rosas: la seguridad<br>en la portería</strong>
+          <strong>Goleadores<br>oficialmente publicados</strong>
         </button>
 
-        <button class="v20-performance-card v20-card-more" type="button" data-safe-route="moments">
+        <button class="v20-performance-card v20-card-more" type="button" data-safe-route="leagueData">
           <img src="./video-hero-reference.webp?v=20260918" alt="" loading="lazy">
           <span class="v20-card-shade"></span>
-          <strong>Más momentos de la Liga</strong>
+          <strong>Más datos oficiales de la Liga</strong>
         </button>
       </div>
     </section>`
   }
-  function dataView(){const tab=state.dataTab;return `<div class="safe-brand"><span class="eyebrow">LIGA JUVENTINO</span><h1>Datos</h1><p>Estadísticas principales de equipos y jugadores.</p></div><div class="safe-tabs">${['General','Equipos','Jugadores'].map(x=>`<button class="${tab===x?'active':''}" data-safe-data-tab="${x}">${x}</button>`).join('')}</div>${tab==='General'?`<div class="safe-kpis"><div><b>42</b><small>Goles</small></div><div><b>15</b><small>Partidos</small></div><div><b>2.8</b><small>Goles / partido</small></div><div><b>6</b><small>Equipos</small></div></div>`:''}${tab==='Equipos'?`<div class="v6-table-card">${teams.map((t,i)=>`<div class="safe-rank"><b>${i+1}</b>${crest(t[0])}<span>${t[1]}</span><strong>${t[2]} pts</strong></div>`).join('')}</div>`:''}${tab==='Jugadores'?`<div class="v6-table-card">${scorers.map((s,i)=>`<div class="safe-rank"><b>${i+1}</b>${crest(s[1])}<span>${s[0]}</span><strong>${s[2]} G · ${s[3]} A</strong></div>`).join('')}</div>`:''}<div class="safe-note">Datos oficiales sincronizados con los registros publicados de la Liga.</div>`}
+  function dataView(){
+    const tab=state.dataTab;
+    const summary=v6OfficialSummary();
+    const standings=summary.standings;
+    const playersNow=v6OfficialPlayers();
+    const teamRows=standings.map((r,i)=>{
+      const official=String(r?.[1]||'').trim(),code=v6CodeFor(official),logo=v6LogoPathFromDb(v6OfficialDb,official);
+      if(logo)V6_LOGOS[code]=logo;
+      return '<div class="safe-rank"><b>'+(i+1)+'</b>'+crest(code)+'<span>'+esc(v6PrettyTeam(official))+'</span><strong>'+esc(r?.[9]??0)+' pts</strong></div>';
+    }).join('');
+    const playerRows=playersNow.slice(0,40).map((p,i)=>{
+      const code=v6CodeFor(p.team),logo=v6LogoPathFromDb(v6OfficialDb,p.team);
+      if(logo)V6_LOGOS[code]=logo;
+      return '<div class="safe-rank"><b>'+(i+1)+'</b>'+crest(code)+'<span>'+esc(p.name)+'</span><strong>'+esc(v6PrettyTeam(p.team))+'</strong></div>';
+    }).join('');
+    return '<div class="safe-brand"><span class="eyebrow">LIGA JUVENTINO</span><h1>Datos</h1><p>Datos públicos sincronizados con la fuente oficial.</p></div>'+
+      '<div class="safe-tabs">'+['General','Equipos','Jugadores'].map(x=>'<button class="'+(tab===x?'active':'')+'" data-safe-data-tab="'+x+'">'+x+'</button>').join('')+'</div>'+
+      (tab==='General'
+        ?'<div class="safe-kpis"><div><b>'+esc(summary.gf)+'</b><small>GF registrados</small></div><div><b>'+esc(summary.played)+'</b><small>Partidos jugados</small></div><div><b>'+esc(summary.teams)+'</b><small>Equipos</small></div><div><b>'+esc(summary.players)+'</b><small>Jugadores registrados</small></div></div>'
+        :'')+
+      (tab==='Equipos'
+        ?'<div class="v6-table-card">'+(teamRows||'<div class="safe-note">Sin tabla oficial publicada.</div>')+'</div>'
+        :'')+
+      (tab==='Jugadores'
+        ?'<div class="v6-table-card">'+(playerRows||'<div class="safe-note">Sin plantillas públicas registradas.</div>')+'</div>'
+        :'')+
+      '<div class="safe-note">Primera Fuerza · sin estadísticas inventadas. Los goles de jugadores sólo se muestran cuando la Liga publica tabla de goleo.</div>';
+  }
   function notificationsView(){return `<div class="safe-brand"><span class="eyebrow">ALERTAS</span><h1>Notificaciones</h1><p>Configura qué quieres recibir.</p></div><div class="safe-inbox">${state.inbox.map(n=>`<button class="${n.read?'read':''}" data-safe-inbox="${n.id}"><span>${svg('bell')}</span><div><b>${esc(n.title)}</b><small>${esc(n.body)}</small></div></button>`).join('')}</div><section class="section"><div class="section-head"><h2>Preferencias</h2></div>${[['goals','Goles'],['kickoff','Inicio del partido'],['final','Final del partido'],['news','Noticias'],['video','Nuevo vídeo'],['fantasy','Fantasy'],['predictor','Quiniela'],['transfers','Fichajes']].map(([k,l])=>`<label class="safe-toggle"><span>${l}</span><input type="checkbox" data-safe-notif="${k}" ${state.notif[k]?'checked':''}></label>`).join('')}</section>`}
   function simpleView(title,iconName,body){return `<div class="safe-brand"><span>${svg(iconName)}</span><h1>${title}</h1><p>${body}</p></div><button class="btn outline full" data-safe-route="profile">Volver a Perfil</button>`}
   const customViews={'safe-performance':performanceView,'safe-data':dataView,'safe-notifications':notificationsView,'safe-language':()=>simpleView('Idioma','globe',`Idioma preferido: ${state.language}. La app está preparada para español y futuras traducciones.`),'safe-feedback':()=>simpleView('Ayúdanos a mejorar','msg','Puedes reportar errores, sugerencias o datos incorrectos desde esta sección.'),'safe-privacy':()=>simpleView('Privacidad','shield','Las preferencias y datos demo se guardan localmente en este dispositivo hasta conectar el backend oficial.'),'safe-terms':()=>simpleView('Términos y condiciones','doc','Consulta aquí las reglas de uso de Liga Juventino.'),'safe-about':()=>simpleView('Sobre la competición','info','Torneo Municipal Liga Juventino: partidos, clasificación, estadísticas, Fantasy, juegos y contenido.')};
