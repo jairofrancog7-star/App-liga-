@@ -119,7 +119,7 @@ function rosterRows(t){
 }
 function summaryDataMarkup(t){
  const r=t.row;
- if(!r)return '<section class="v42-section v42-summary-data"><div class="v42-section-head"><h2>Datos clave</h2></div><div class="empty-mini">No hay datos oficiales de clasificación publicados para este equipo.</div><button type="button" class="v42-compare-bottom" data-v42-compare>Comparar equipos</button></section>';
+ if(!r)return '<section class="v42-section v42-summary-data"><div class="v42-section-head"><h2>Datos clave</h2></div><div class="empty-mini">No hay datos oficiales de clasificación publicados para este equipo.</div></section>';
  return '<section class="v42-section v42-summary-data">'+
   '<div class="v42-section-head"><h2>Datos clave</h2><button type="button" data-v42-tab="stats">Ver todo</button></div>'+
   '<div class="v42-key-card v42-key-card-summary"><div class="v42-key-grid">'+
@@ -130,7 +130,6 @@ function summaryDataMarkup(t){
    '<div><b>'+esc(r[8])+'</b><small>Diferencia de goles</small></div>'+
    '<div><b>'+esc(r[9])+'</b><small>Puntos</small></div>'+
   '</div></div>'+
-  '<button type="button" class="v42-compare-bottom" data-v42-compare>Comparar equipos <span>›</span></button>'+
  '</section>';
 }
 function summaryMarkup(t){
@@ -172,6 +171,9 @@ function statsMarkup(t){
   '<p class="empty-mini">No se muestran posesión, pases, disparos u otras métricas que AdminFut no publique.</p></section></main>';
 }
 function body(t){if(activeTab==='matches')return matchesMarkup(t);if(activeTab==='standings')return standingsMarkup(t);if(activeTab==='squad')return squadMarkup(t);if(activeTab==='stats')return statsMarkup(t);return summaryMarkup(t)}
+function lowerActionsMarkup(t){
+ return '<section class="v42-team-lower-actions"><button type="button" class="v42-compare-bottom" data-v42-compare><span><small>HERRAMIENTA DE EQUIPO</small><b>Comparar equipos</b></span><i>›</i></button></section>';
+}
 function notifySheet(t){if(!notifyOpen)return '';return '<div class="v42-overlay" data-v42-close-overlay><section class="v42-notify-sheet"><div class="v42-sheet-head"><h2>'+esc(t.name)+'</h2><button type="button" data-v42-close-notify>Hecho</button></div><p class="empty-mini">Las notificaciones se vinculan a este equipo registrado.</p></section></div>'}
 function compareSheet(t){
  if(!compareOpen)return '';
@@ -206,7 +208,7 @@ function markup(){
   '<img class="v42-team-crest" src="'+esc(logoUrl(t.name))+'" alt="'+esc(t.name)+'"><div class="v42-title"><h1>'+esc(t.name)+'</h1><p>'+esc(t.category)+' · Juventino Rosas, Guanajuato</p></div>'+
   '<div class="v42-actions"><button type="button" class="v42-follow '+(followed()?'active':'')+'" data-v42-follow>'+checkIcon()+'<span>'+(followed()?'Siguiendo':'Seguir')+'</span></button><button type="button" class="v42-share" data-v42-share aria-label="Compartir">'+shareIcon()+'</button></div>'+
   '<nav class="v42-tabs"><button class="'+(activeTab==='summary'?'active':'')+'" data-v42-tab="summary">Resumen</button><button class="'+(activeTab==='matches'?'active':'')+'" data-v42-tab="matches">Partidos</button><button class="'+(activeTab==='standings'?'active':'')+'" data-v42-tab="standings">Clasificación</button><button class="'+(activeTab==='squad'?'active':'')+'" data-v42-tab="squad">Plantilla</button><button class="'+(activeTab==='stats'?'active':'')+'" data-v42-tab="stats">Estadísticas</button></nav>'+
-  '</header>'+body(t)+notifySheet(t)+compareSheet(t)+'</section>';
+  '</header>'+body(t)+lowerActionsMarkup(t)+notifySheet(t)+compareSheet(t)+'</section>';
 }
 function toast(msg){document.querySelector('.v42-toast')?.remove();const n=document.createElement('div');n.className='v42-toast';n.textContent=msg;document.body.appendChild(n);setTimeout(()=>n.remove(),1500)}
 function share(){const t=teamData();const p={title:t?.name||'Liga Juventino',text:'Liga Municipal de Fútbol Juventino Rosas · '+(t?.name||''),url:location.href};if(navigator.share)navigator.share(p).catch(()=>{});else navigator.clipboard?.writeText(location.href).then(()=>toast('Enlace copiado')).catch(()=>{})}
