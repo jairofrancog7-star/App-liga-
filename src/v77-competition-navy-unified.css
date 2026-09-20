@@ -425,3 +425,13 @@
     box-sizing:border-box!important;
   }
 }
+
+
+/* V90 — Separación vertical del deslizador de fechas.
+   Lo baja para que tenga el mismo aire visual que el deslizador de Cuadro,
+   sin mover las pestañas principales ni la cabecera. */
+@media (max-width:520px){
+  html body[data-app-route="competition"] .v12-fixtures-reference .v12-date-strip{
+    margin-top:20px!important;
+  }
+}
