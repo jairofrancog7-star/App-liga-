@@ -510,16 +510,31 @@
     if(all)all.onclick=function(){location.hash='#/competition'};
   }
 
+  /* TEAMS_RESTORE_GUARD4 — V27 vuelve a ser el dueño visible de #/teams.
+     Si cualquier módulo dibuja la lista genérica (tarjetas largas con Seguir/estrella),
+     se reemplaza inmediatamente por el diseño anterior: cabecera propia, buscador,
+     Siguiendo horizontal y cuadrícula de escudos. */
+  let rendering=false;
+  function forceRender(){
+    if(rendering||route()!=='teams')return;
+    const target=document.querySelector('#screen');
+    if(!target)return;
+    const ok=!!target.querySelector('.v27-teams-page[data-v27-reference="teams"]');
+    const generic=!!target.querySelector('.team-list,.team-row,.chips');
+    if(ok&&!generic)return;
+    rendering=true;
+    try{render()}finally{rendering=false}
+  }
   function schedule(){
-    requestAnimationFrame(function(){requestAnimationFrame(render)});
+    queueMicrotask(forceRender);
+    requestAnimationFrame(forceRender);
   }
 
   window.addEventListener('hashchange',schedule);
   const target=document.querySelector('#screen');
   if(target){
     new MutationObserver(function(){
-      const r=route();
-      if(r==='teams'&&!target.querySelector('[data-v27-reference]'))schedule();
+      if(route()==='teams')schedule();
     }).observe(target,{childList:true,subtree:false});
   }
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',schedule,{once:true});
