@@ -615,3 +615,37 @@
     font-weight:850!important;
   }
 }
+
+
+/* V78 — HOME: fondo unificado + clasificación oficial visible */
+@media (max-width:1023px){
+  body[data-app-route="home"],
+  body[data-app-route="home"] #app,
+  body[data-app-route="home"] .app-shell,
+  body[data-app-route="home"] #screen{
+    background:#02045d!important;
+  }
+
+  body[data-app-route="home"] .v65-table-card,
+  body[data-app-route="home"] .v65-table-head,
+  body[data-app-route="home"] .v65-table-row{
+    background:#080963!important;
+  }
+
+  body[data-app-route="home"] .v65-table-head{
+    border-bottom:1px solid rgba(94,114,214,.24)!important;
+  }
+
+  body[data-app-route="home"] .v65-table-row{
+    border-top:1px solid rgba(255,255,255,.075)!important;
+  }
+
+  body[data-app-route="home"] .v65-table-row:active{
+    background:#0b0e72!important;
+  }
+
+  body[data-app-route="home"] .v65-table-team .v65-table-logo,
+  body[data-app-route="home"] .v65-table-team .v65-table-logo img{
+    background:transparent!important;
+  }
+}
