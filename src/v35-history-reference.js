@@ -66,6 +66,11 @@ const historicalSources=[
     url:'https://www.facebook.com/share/1DeWwcJiGX/'
   },
   {
+    title:'Administrador de Golazo Liga · mayo 2014',
+    note:'Perfil aportado por el usuario como administrador de la página Golazo Liga en mayo de 2014 y fuente de publicación de roles. El enlace compartido de Facebook no pudo verificarse de forma independiente fuera de Facebook, por lo que se conserva como fuente aportada y pista histórica.',
+    url:'https://www.facebook.com/share/1JLpQm4pxc/'
+  },
+  {
     title:'Administrador de Golazo Liga · hacia 2015',
     note:'Perfil aportado por el usuario como administrador conocido de la página. Ser administrador de Facebook no demuestra por sí solo haber sido presidente de la Liga.',
     url:'https://www.facebook.com/share/1TXjdtGMgk/'
@@ -227,6 +232,7 @@ const expandedRetroNames=[
 const historicalTimeline=[
   {date:'15 sep 1953',title:'Antecedente del fútbol local',detail:'Una fuente histórica secundaria sitúa un primer partido de fútbol en Juventino Rosas entre Deportivo Santa Cruz y Deportivo Villagrán. Sirve como contexto del fútbol local, pero no demuestra la fundación ni continuidad jurídica de la Liga actual.'},
   {date:'05 oct 2012',title:'Golazo Liga · primer registro digital localizado',detail:'La captura aportada muestra una publicación que Facebook presenta bajo el nombre Golazo Liga con fecha 5 de octubre de 2012 y con el escudo histórico de la Liga Municipal. Es la fecha digital mínima comprobable dentro del material conservado, no la fecha de fundación.'},
+  {date:'may 2014',title:'Administrador de Golazo Liga · roles',detail:'El usuario aporta un perfil que identifica como administrador de Golazo Liga en mayo de 2014 y señala que publicaba roles de juego. Se registra como fuente histórica aportada y pista para reconstruir calendarios, equipos y jornadas de esa etapa; el enlace compartido no pudo verificarse de forma independiente fuera de Facebook.'},
   {date:'c. 2015',title:'Administrador conocido de Golazo Liga',detail:'El usuario identifica un perfil como administrador de Golazo Liga hacia 2015. Es una pista útil para reconstruir publicaciones y dirigentes, pero el cargo de presidente de la Liga no queda probado solo por administrar la página.'},
   {date:'24 may 2016',title:'Acuerdo interno de la Liga',detail:'El reglamento vigente conserva el antecedente de un acuerdo de asamblea del 24 de mayo de 2016 relacionado con el proyecto de construcción de nuevas oficinas.'},
   {date:'2018',title:'Tablas y goleadores históricos',detail:'El archivo conserva cortes de Primera e Intermedia con equipos, puntos y goleadores de la categoría libre.'},
@@ -274,7 +280,8 @@ const openHistoricalQuestions=[
   'Primer presidente de la Liga.',
   'Si existió una página o presencia digital anterior a Golazo Liga antes de 2012.',
   'Si la A.C. tuvo una denominación legal diferente en alguna etapa.',
-  'Cadena completa de presidentes y periodos anteriores.'
+  'Cadena completa de presidentes y periodos anteriores.',
+  'Cruzar los roles y publicaciones de mayo de 2014 con otras fuentes para identificar equipos, jornadas, dirigentes y temporadas con mayor precisión.'
 ];
 
 const videos=[
