@@ -1,4 +1,4 @@
-/* V67 / V108 aliases históricos — Registro único de escudos de equipos.
+/* V67 / V108 / V111 aliases históricos — Registro único de escudos de equipos.
    Evita que los partidos, tablas, perfiles y comparadores usen el logo genérico
    de la Liga cuando ya existe un escudo real en Liga_Futbol. */
 (function(){
@@ -97,7 +97,21 @@
     'san antonio jr':'assets/official-logos/san-antonio-jrs.png',
     'san antonio jrs':'assets/official-logos/san-antonio-jrs.png',
     'mazacotes':'assets/official-logos/mazacotes-fc.png',
-    'terricolas fc':'assets/official-logos/terricolas.png'
+    'terricolas fc':'assets/official-logos/terricolas.png',
+
+    // V111 logos de referencia solicitados para equipos históricos/homónimos.
+    'unam':'https://www.clipartmax.com/png/middle/278-2789076_pumas-de-la-unam-mexican-football-teams-badges.png',
+    'guadalajara':'https://www.clipartmax.com/png/middle/114-1145991_cd-guadalajara-imagenes-de-las-chivas-2018.png',
+    'arsenal':'https://upload.wikimedia.org/wikipedia/en/5/53/Arsenal_FC.svg',
+    'chelsea':'https://upload.wikimedia.org/wikipedia/en/c/cc/Chelsea_FC.svg',
+    'dortmund':'https://commons.wikimedia.org/wiki/Special:Redirect/file/Borussia_Dortmund_logo.svg',
+    'atlas':'https://commons.wikimedia.org/wiki/Special:Redirect/file/F%C3%BAtbol_Club_Atlas.svg',
+    'boca jrs':'https://commons.wikimedia.org/wiki/Special:Redirect/file/Escudo_del_Club_Atl%C3%A9tico_Boca_Juniors_2012.svg',
+    'boca juniors':'https://commons.wikimedia.org/wiki/Special:Redirect/file/Escudo_del_Club_Atl%C3%A9tico_Boca_Juniors_2012.svg',
+    'huracan':'https://commons.wikimedia.org/wiki/Special:Redirect/file/Emblema_oficial_del_Club_Atl%C3%A9tico_Hurac%C3%A1n.svg',
+    'a santiago':'assets/teams/atletico-santiago.webp',
+    'f tavera':'assets/teams/franco-tavera-jr-veteranos.webp',
+    'promesas':'assets/official-logos/promesas-fc.png'
   };
 
   function norm(v){
@@ -109,7 +123,7 @@
     const dyn=DYNAMIC[key];
     if(dyn)return dyn;
     const path=MAP[key];
-    if(path)return BASE+path;
+    if(path)return /^https?:\/\//i.test(path)?path:BASE+path;
     const official=window.LJR_OFFICIAL_API?.getLogo?.(name);
     return official||'';
   }
