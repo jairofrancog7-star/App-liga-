@@ -912,3 +912,143 @@ body[data-app-route="quizArena"] .v48-game-back{
     height:37.6vw!important;
   }
 }
+
+
+/* V48.7 — FLUJO CORREGIDO SEGÚN REFERENCIAS DEL USUARIO
+   1) Primero se muestra el Quiz de la Liga con respuestas A/B/C/D.
+   2) Al tocar cualquier respuesta se abre la pantalla Quiz Arena.
+   3) La tarjeta de Quiz Arena ya NO reutiliza la misma imagen del cuestionario:
+      usa una composición propia con escudo de Liga + escudos reales locales. */
+
+/* La zona visual de la pantalla Arena deja de usar quiz-arena-main.jpg. */
+body[data-app-route="quizArena"] .v48-ball-stage{
+  background:
+    radial-gradient(circle at 50% 34%,rgba(39,126,255,.38),transparent 28%),
+    radial-gradient(circle at 18% 74%,rgba(255,45,150,.16),transparent 20%),
+    radial-gradient(circle at 82% 70%,rgba(29,232,240,.15),transparent 22%),
+    linear-gradient(180deg,#1025c8 0%,#0c168f 56%,#090b70 100%)!important;
+  background-image:
+    radial-gradient(circle at 50% 34%,rgba(39,126,255,.38),transparent 28%),
+    radial-gradient(circle at 18% 74%,rgba(255,45,150,.16),transparent 20%),
+    radial-gradient(circle at 82% 70%,rgba(29,232,240,.15),transparent 22%),
+    linear-gradient(180deg,#1025c8 0%,#0c168f 56%,#090b70 100%)!important;
+  background-repeat:no-repeat!important;
+  background-size:auto!important;
+  background-position:center!important;
+}
+
+body[data-app-route="quizArena"] .v48-local-visual{
+  position:absolute!important;
+  inset:0!important;
+  display:flex!important;
+  flex-direction:column!important;
+  align-items:center!important;
+  justify-content:center!important;
+  padding:18px 20px 25px!important;
+  box-sizing:border-box!important;
+}
+
+body[data-app-route="quizArena"] .v48-local-visual::before,
+body[data-app-route="quizArena"] .v48-local-visual::after{
+  content:""!important;
+  position:absolute!important;
+  width:72%!important;
+  height:42%!important;
+  border:1px solid rgba(49,225,242,.28)!important;
+  border-radius:50%!important;
+  pointer-events:none!important;
+}
+body[data-app-route="quizArena"] .v48-local-visual::before{
+  transform:rotate(-11deg)!important;
+}
+body[data-app-route="quizArena"] .v48-local-visual::after{
+  width:62%!important;
+  height:34%!important;
+  border-color:rgba(255,61,159,.20)!important;
+  transform:rotate(14deg)!important;
+}
+
+body[data-app-route="quizArena"] .v48-local-league{
+  position:relative!important;
+  z-index:2!important;
+  width:min(22vw,112px)!important;
+  height:min(22vw,112px)!important;
+  object-fit:contain!important;
+  display:block!important;
+  margin:0 0 min(3vw,15px)!important;
+  filter:drop-shadow(0 8px 16px rgba(0,0,0,.26))!important;
+}
+
+body[data-app-route="quizArena"] .v48-local-logos{
+  position:relative!important;
+  z-index:3!important;
+  width:min(82%,360px)!important;
+  display:grid!important;
+  grid-template-columns:repeat(4,1fr)!important;
+  gap:min(3vw,15px)!important;
+  align-items:center!important;
+  margin:0 auto min(3.2vw,16px)!important;
+}
+body[data-app-route="quizArena"] .v48-local-logos span{
+  aspect-ratio:1!important;
+  display:grid!important;
+  place-items:center!important;
+  border-radius:50%!important;
+  background:rgba(7,10,92,.70)!important;
+  border:1.5px solid rgba(29,225,240,.62)!important;
+  box-shadow:0 0 0 3px rgba(21,63,214,.18),0 8px 16px rgba(0,0,45,.24)!important;
+}
+body[data-app-route="quizArena"] .v48-local-logos img{
+  width:76%!important;
+  height:76%!important;
+  object-fit:contain!important;
+  display:block!important;
+  background:transparent!important;
+}
+
+body[data-app-route="quizArena"] .v48-local-visual>strong{
+  position:relative!important;
+  z-index:3!important;
+  color:#fff!important;
+  font-size:min(6vw,31px)!important;
+  line-height:1!important;
+  font-style:italic!important;
+  font-weight:950!important;
+  letter-spacing:-.03em!important;
+  text-shadow:0 3px 12px rgba(0,0,45,.35)!important;
+}
+body[data-app-route="quizArena"] .v48-local-visual>small{
+  position:relative!important;
+  z-index:3!important;
+  margin-top:6px!important;
+  color:#cfd8ff!important;
+  font-size:min(2.5vw,13px)!important;
+  line-height:1.1!important;
+  font-weight:700!important;
+  letter-spacing:.08em!important;
+  text-align:center!important;
+}
+
+/* El primer estado real de la ruta lo define la clase v48-playing que añade
+   el HTML: así se ve primero la referencia del Quiz con A/B/C/D. */
+body[data-app-route="quizArena"] .v48-quiz-arena-page.v48-playing .v48-game{
+  display:block!important;
+}
+body[data-app-route="quizArena"] .v48-quiz-arena-page:not(.v48-playing) .v48-arena-landing{
+  display:block!important;
+}
+
+/* En pantallas estrechas conserva tamaño de escudos sin tapar los botones. */
+@media(max-width:390px){
+  body[data-app-route="quizArena"] .v48-local-league{
+    width:21vw!important;
+    height:21vw!important;
+  }
+  body[data-app-route="quizArena"] .v48-local-logos{
+    width:84%!important;
+    gap:2.5vw!important;
+  }
+  body[data-app-route="quizArena"] .v48-local-visual>strong{
+    font-size:5.8vw!important;
+  }
+}
