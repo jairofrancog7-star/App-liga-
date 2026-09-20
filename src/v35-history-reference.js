@@ -208,6 +208,7 @@ const historyMoments=[
 const historyYouth=[];
 
 const taggedFacebookPosts=[
+  {date:'Fecha exacta pendiente',person:'Xavier Lara Valencia',type:'ROLES / PUBLICACIONES HISTÓRICAS',title:'Roles de juego publicados en Golazo Liga',detail:'Referencia histórica aportada para revisar publicaciones y roles de juego asociados a Golazo Liga. La búsqueda pública actual de Facebook/web no devolvió una publicación indexada con su nombre, por lo que las fechas, jornadas y equipos exactos quedan pendientes de extraer del material visual o del perfil original antes de atribuir resultados concretos.'},
   {date:'04 nov 2012',person:'Richard JR Centeno + 2 personas',type:'ETIQUETADOS',title:'Partidos pendientes · Copa de Primera',detail:'Golazo Liga aparece etiquetado con Richard JR Centeno y dos personas más en Santa Cruz de Juventino Rosas. La publicación corresponde a partidos pendientes del Torneo de Copa de Primera.'},
   {date:'26 nov 2012',person:'Manuel Pantoja Hernandez',type:'FOTOS / ETIQUETA',title:'Álbum de Copa · Hermanos vs Juventus',detail:'Golazo Liga agregó 12 fotos nuevas con Manuel Pantoja Hernandez. El archivo contiguo identifica una serie de penales Hermanos vs Juventus del Torneo de Copa.'},
   {date:'11 dic 2012',person:'Brayan Paz',type:'ETIQUETADO',title:'Tavera campeón de Copa · Segunda',detail:'Golazo Liga aparece con Brayan Paz en la publicación que felicita a Tavera como campeón de Copa de la Categoría Segunda.'},
@@ -677,6 +678,7 @@ const historicalTimeline=[
   {date:'05 oct 2012',title:'Golazo Liga · primer registro digital localizado',detail:'La captura aportada muestra una publicación que Facebook presenta bajo el nombre Golazo Liga con fecha 5 de octubre de 2012 y con el escudo histórico de la Liga Municipal. Es la fecha digital mínima comprobable dentro del material conservado, no la fecha de fundación.'},
   {date:'05–18 nov 2013',title:'Tablas generales publicadas por Enrique Aboytes',detail:'El archivo conserva publicaciones de Enrique Aboytes en Golazo Liga con Tabla General de Segunda Fuerza, Tabla General de Primera Fuerza, descensos de Terrícolas y La Pandilla de Rancho Viejo a Fuerza Intermedia y avisos de finales de Primera y Segunda Fuerza.'},
   {date:'15 dic 2013',title:'Octavio Alberto García documenta la final de Segunda',detail:'Publicaciones de Octavio Alberto García en Golazo Liga registran a Real Cerrito de Gasca como campeón de Segunda Fuerza y muestran un marcador parcial de 3–0 sobre DHP al minuto 35.'},
+  {date:'fecha por precisar',title:'Xavier Lara Valencia · roles de juego',detail:'Se incorpora como pista del archivo histórico por publicaciones de roles atribuidas a su actividad en Golazo Liga. Falta fijar las fechas, jornadas y equipos exactos con la publicación visual original; no se inventan esos datos mientras no estén visibles.'},
   {date:'feb 2014',title:'Administrador de Golazo Liga · fuente histórica',detail:'El usuario aporta otro perfil identificado como administrador de Golazo Liga en febrero de 2014. Se incorpora como pista para localizar roles, equipos, jornadas y resultados de esa etapa. La búsqueda web pública no permitió verificar directamente publicaciones indexadas del enlace compartido.'},
   {date:'may 2014',title:'Administrador de Golazo Liga · roles',detail:'El usuario aporta un perfil que identifica como administrador de Golazo Liga en mayo de 2014 y señala que publicaba roles de juego. Se registra como fuente histórica aportada y pista para reconstruir calendarios, equipos y jornadas de esa etapa; el enlace compartido no pudo verificarse de forma independiente fuera de Facebook.'},
   {date:'c. 2015',title:'Administrador conocido de Golazo Liga',detail:'El usuario identifica un perfil como administrador de Golazo Liga hacia 2015. Es una pista útil para reconstruir publicaciones y dirigentes, pero el cargo de presidente de la Liga no queda probado solo por administrar la página.'},
@@ -731,7 +733,8 @@ const openHistoricalQuestions=[
   'Si existió una página o presencia digital anterior a Golazo Liga antes de 2012.',
   'Si la A.C. tuvo una denominación legal diferente en alguna etapa.',
   'Cadena completa de presidentes y periodos anteriores.',
-  'Cruzar los roles y publicaciones de febrero y mayo de 2014 con otras fuentes para identificar equipos, jornadas, dirigentes y temporadas con mayor precisión.'
+  'Cruzar los roles y publicaciones de febrero y mayo de 2014 con otras fuentes para identificar equipos, jornadas, dirigentes y temporadas con mayor precisión.',
+  'Localizar y fechar los roles publicados por Xavier Lara Valencia en Golazo Liga para recuperar jornadas, horarios, campos y equipos sin depender de memoria o inferencia.'
 ];
 
 const videos=[
