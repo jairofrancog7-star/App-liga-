@@ -4,7 +4,7 @@
 (function(){
 'use strict';
 
-const BUILD='20260920-home-official-live2';
+const BUILD='20260920-scorers-official81';
 const LOCAL_DATA='./public/data/official-live.json?v='+BUILD;
 const REMOTE_DATA='https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/data/official-live.json?v='+BUILD;
 const SRC='https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/';
@@ -604,6 +604,32 @@ function scorerRow(r,i){
     '<span class="v28-rank-number">#'+esc(r[0]||i+1)+'</span>'+teamLogoHtml(r[2],'v28-team-logo')+
     '<span class="v28-rank-copy"><b>'+esc(r[2])+'</b><small>'+esc(r[1])+'</small></span><strong class="v28-rank-goals">'+esc(r[3])+'</strong></button>';
 }
+function teamGoalRows(){
+  const rs=rows('standings');
+  return rs.filter(r=>Array.isArray(r)&&r.length>=7&&String(r[1]||'').trim()&&/^\d+$/.test(String(r[6]||'')))
+    .map(r=>({team:String(r[1]).trim(),played:Number(r[2])||0,goals:Number(r[6])||0}))
+    .sort((a,b)=>b.goals-a.goals||b.played-a.played||a.team.localeCompare(b.team,'es'));
+}
+function scorerFallback(){
+  const teams=teamGoalRows();
+  const played=(rows('fixtures')||[]).filter(isPlayedFixture).length;
+  const total=teams.reduce((sum,t)=>sum+t.goals,0);
+  if(!played&&!total){
+    return empty('La fuente oficial todavía no publica datos de goleo para '+(cat()?.name||'esta categoría')+'.');
+  }
+  return '<section class="v81-scorer-fallback">'+
+    '<div class="v81-scorer-state"><span>⚽</span><div><b>Los resultados oficiales sí están registrados</b>'+
+      '<p>'+esc(cat()?.name||'')+' tiene '+esc(played)+' partidos con marcador y '+esc(total)+' goles a favor acumulados en la tabla.</p>'+
+      '<small>El snapshot actual no trae todavía el desglose individual de goleadores de esta categoría. No se inventan nombres ni goles.</small></div></div>'+
+    '<div class="v81-team-goals-title"><b>Goles por equipo</b><span>GF oficiales</span></div>'+
+    '<div class="v81-team-goals">'+teams.map((t,i)=>
+      '<button type="button" data-v62-team="'+esc(t.team)+'">'+
+        '<span class="v81-team-rank">#'+(i+1)+'</span>'+teamLogoHtml(t.team,'v81-team-logo')+
+        '<span><b>'+esc(t.team)+'</b><small>'+esc(t.played)+' PJ</small></span><strong>'+esc(t.goals)+'</strong>'+
+      '</button>').join('')+'</div>'+
+    '<button type="button" class="v81-refresh-scorers" data-v62-refresh-scorers>Actualizar goleadores</button>'+
+  '</section>';
+}
 function patchScorers(force=false){
   if(route()!=='scorers'||!db)return;
   const page=document.querySelector('[data-v28-scorers]');if(!page)return;
@@ -613,10 +639,16 @@ function patchScorers(force=false){
   page.dataset.v62Sig=sig;
   page.innerHTML='<div class="v62-inline-rail">'+categoryRail()+'</div>'+
     (rs.length?rs.slice(0,2).map(scorerFeature).join('')+'<div class="v28-ranking">'+rs.slice(2).map(scorerRow).join('')+'</div>':
-      empty(rows('scorers')?.[0]?.[0]||'No hay goles registrados en esta temporada.'))+
+      scorerFallback())+
     '<p class="v28-criteria">Datos deportivos públicos · '+esc(cat()?.name||'')+' · '+esc(sourceStamp())+'</p>';
   page.querySelectorAll('[data-v62-cat]').forEach(b=>b.addEventListener('click',()=>setCategory(b.dataset.v62Cat),{once:true}));
   page.querySelectorAll('[data-v62-team]').forEach(b=>b.addEventListener('click',e=>{e.preventDefault();openTeam(b.dataset.v62Team)},{once:true}));
+  page.querySelector('[data-v62-refresh-scorers]')?.addEventListener('click',async()=>{
+    const btn=page.querySelector('[data-v62-refresh-scorers]');
+    if(btn){btn.disabled=true;btn.textContent='Actualizando…'}
+    await refreshOfficialData();
+    patchScorers(true);
+  },{once:true});
 }
 
 function teamStanding(ctx){
