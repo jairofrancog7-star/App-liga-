@@ -369,3 +369,162 @@
     right:26px!important;
   }
 }
+
+
+/* V78 — ajuste final de MÁS siguiendo el video:
+   1) cabecera más baja,
+   2) mismo azul exacto entre cabecera y contenido,
+   3) los renglones se deslizan por debajo de la cabecera y se ocultan al subir,
+   4) título e icono de cuenta más pequeños. */
+@media (max-width:1023px){
+  body[data-app-route="more"]{
+    --v78-more-bg:#080b82;
+    background:var(--v78-more-bg)!important;
+  }
+  body[data-app-route="more"] #app,
+  body[data-app-route="more"] .app-shell{
+    background:var(--v78-more-bg)!important;
+  }
+
+  body[data-app-route="more"] .topbar,
+  body[data-app-route="more"].v66-compact-route .topbar,
+  body[data-app-route="more"].v69-primary-tool-header .topbar{
+    display:block!important;
+    position:sticky!important;
+    top:0!important;
+    z-index:100!important;
+    height:calc(126px + env(safe-area-inset-top))!important;
+    min-height:calc(126px + env(safe-area-inset-top))!important;
+    max-height:calc(126px + env(safe-area-inset-top))!important;
+    background:var(--v78-more-bg)!important;
+    background-image:none!important;
+    border:0!important;
+    border-bottom:0!important;
+    box-shadow:none!important;
+    overflow:hidden!important;
+    isolation:isolate!important;
+  }
+
+  body[data-app-route="more"] .topbar::after,
+  body[data-app-route="more"].v66-compact-route .topbar::after,
+  body[data-app-route="more"].v69-primary-tool-header .topbar::after{
+    content:"Más"!important;
+    left:24px!important;
+    right:auto!important;
+    top:auto!important;
+    bottom:24px!important;
+    font-size:39px!important;
+    line-height:.96!important;
+    font-weight:700!important;
+    letter-spacing:-.04em!important;
+    color:#f4f4f8!important;
+    z-index:4!important;
+  }
+
+  body[data-app-route="more"] .topbar .profile-button,
+  body[data-app-route="more"].v66-compact-route .topbar .profile-button,
+  body[data-app-route="more"].v69-primary-tool-header .topbar .profile-button{
+    right:24px!important;
+    top:auto!important;
+    bottom:24px!important;
+    width:31px!important;
+    height:31px!important;
+    min-width:31px!important;
+    min-height:31px!important;
+    max-width:31px!important;
+    max-height:31px!important;
+    z-index:5!important;
+    background-size:contain!important;
+  }
+
+  /* El contenido empieza con exactamente el mismo azul de la cabecera.
+     El arte aparece gradualmente más abajo, evitando la franja de otro tono. */
+  body[data-app-route="more"] #screen{
+    position:relative!important;
+    z-index:1!important;
+    background:var(--v78-more-bg)!important;
+    overflow-x:hidden!important;
+    overflow-y:visible!important;
+  }
+  body[data-app-route="more"] .v19-more-page{
+    position:relative!important;
+    z-index:1!important;
+    padding-top:20px!important;
+    background-color:var(--v78-more-bg)!important;
+    background-image:
+      linear-gradient(180deg,
+        var(--v78-more-bg) 0px,
+        var(--v78-more-bg) 72px,
+        rgba(8,11,130,.94) 112px,
+        rgba(8,11,130,.58) 165px,
+        rgba(8,11,130,0) 230px),
+      url('../more-bg-v19.webp?v=20260918-v19')!important;
+    background-repeat:no-repeat,no-repeat!important;
+    background-size:100% 230px,100% auto!important;
+    background-position:center top,center -96px!important;
+  }
+
+  /* El encabezado queda por encima de la lista. Al hacer scroll,
+     Siguiendo/Equipos/etc. pasan por debajo y desaparecen como en el video. */
+  body[data-app-route="more"] .topbar{
+    transform:translateZ(0)!important;
+  }
+  body[data-app-route="more"] .v19-more-menu,
+  body[data-app-route="more"] .v19-more-label,
+  body[data-app-route="more"] .v19-more-bottom{
+    position:relative!important;
+    z-index:1!important;
+  }
+
+  /* El escudo flotante sigue fuera para no tapar el arte superior derecho. */
+  body[data-app-route="more"] .v19-more-logo{
+    display:none!important;
+    visibility:hidden!important;
+  }
+}
+
+@media(max-width:560px){
+  body[data-app-route="more"] .topbar{
+    height:calc(122px + env(safe-area-inset-top))!important;
+    min-height:calc(122px + env(safe-area-inset-top))!important;
+    max-height:calc(122px + env(safe-area-inset-top))!important;
+  }
+  body[data-app-route="more"] .topbar::after{
+    left:22px!important;
+    bottom:22px!important;
+    font-size:37px!important;
+  }
+  body[data-app-route="more"] .topbar .profile-button{
+    right:22px!important;
+    bottom:22px!important;
+    width:29px!important;
+    height:29px!important;
+    min-width:29px!important;
+    min-height:29px!important;
+    max-width:29px!important;
+    max-height:29px!important;
+  }
+}
+
+@media(max-width:390px){
+  body[data-app-route="more"] .topbar{
+    height:calc(116px + env(safe-area-inset-top))!important;
+    min-height:calc(116px + env(safe-area-inset-top))!important;
+    max-height:calc(116px + env(safe-area-inset-top))!important;
+  }
+  body[data-app-route="more"] .topbar::after{
+    left:20px!important;
+    bottom:20px!important;
+    font-size:35px!important;
+  }
+  body[data-app-route="more"] .topbar .profile-button{
+    right:20px!important;
+    bottom:20px!important;
+    width:27px!important;
+    height:27px!important;
+    min-width:27px!important;
+    min-height:27px!important;
+    max-width:27px!important;
+    max-height:27px!important;
+  }
+}
