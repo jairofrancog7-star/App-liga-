@@ -207,3 +207,122 @@ body.v33-about-active .bottom-nav .nav-item[data-route="more"] .nav-icon{
     transform:translateX(-50%)!important;
   }
 }
+
+/* V99 — Información de la Liga: archivo histórico añadido debajo del contenido actual. */
+@media(max-width:1023px){
+  .v33-about-history{
+    margin:22px 18px 28px;
+    padding:18px;
+    border:1px solid rgba(82,111,231,.25);
+    border-radius:20px;
+    background:
+      radial-gradient(90% 120% at 100% 0%,rgba(37,93,255,.18),transparent 62%),
+      linear-gradient(180deg,rgba(18,29,128,.97),rgba(8,15,92,.99));
+  }
+  .v33-about-history-head>span{
+    display:block;
+    margin-bottom:7px;
+    color:#20e7f2;
+    font-size:10px;
+    line-height:1;
+    font-weight:850;
+    letter-spacing:.09em;
+  }
+  .v33-about-history-head h2{
+    margin:0;
+    color:#fff;
+    font-size:24px;
+    line-height:1.03;
+    letter-spacing:-.03em;
+    font-weight:740;
+  }
+  .v33-about-history-head p{
+    margin:10px 0 0;
+    color:#aeb7d7;
+    font-size:10.5px;
+    line-height:1.45;
+  }
+  .v33-about-history-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:10px;
+    margin-top:16px;
+  }
+  .v33-about-history-grid article{
+    min-width:0;
+    padding:12px;
+    border:1px solid rgba(88,110,219,.23);
+    border-radius:15px;
+    background:rgba(10,18,98,.78);
+  }
+  .v33-about-history-grid img{
+    width:44px;
+    height:44px;
+    display:block;
+    object-fit:contain;
+    margin-bottom:8px;
+    padding:4px;
+    border-radius:11px;
+    background:rgba(255,255,255,.04);
+  }
+  .v33-about-history-grid small{
+    color:#20e7f2;
+    font-size:7.5px;
+    font-weight:850;
+    letter-spacing:.07em;
+  }
+  .v33-about-history-grid h3{
+    margin:4px 0 2px;
+    color:#fff;
+    font-size:15px;
+    line-height:1.05;
+    font-weight:720;
+  }
+  .v33-about-history-grid b{
+    color:#dce0f5;
+    font-size:10px;
+  }
+  .v33-about-history-grid p{
+    margin:5px 0 0;
+    color:#9fa9cf;
+    font-size:8.5px;
+    line-height:1.3;
+  }
+  .v33-about-history-facts{
+    display:grid;
+    gap:8px;
+    margin-top:14px;
+  }
+  .v33-about-history-facts>div{
+    padding:10px 11px;
+    border-radius:13px;
+    background:rgba(12,20,105,.72);
+    border:1px solid rgba(87,109,213,.20);
+  }
+  .v33-about-history-facts b{
+    display:block;
+    color:#fff;
+    font-size:10.5px;
+  }
+  .v33-about-history-facts span{
+    display:block;
+    margin-top:3px;
+    color:#aeb7d7;
+    font-size:9px;
+    line-height:1.35;
+  }
+  .v33-about-history-button{
+    width:100%;
+    min-height:44px;
+    margin-top:14px;
+    border:1px solid #1fe5ef;
+    border-radius:13px;
+    color:#16e4ef;
+    background:rgba(15,26,125,.82);
+    font-size:11px;
+    font-weight:800;
+  }
+  @media(max-width:360px){
+    .v33-about-history-grid{grid-template-columns:1fr}
+  }
+}
