@@ -65,8 +65,10 @@
     color:#f4f5ff!important;
   }
   html body[data-app-route="competition"] .v12-date-strip > button[data-v12-date].active{
-    background:#d8d8da!important;
-    color:#202020!important;
+    background:#21dce8!important;
+    color:#06104f!important;
+    border-color:#21dce8!important;
+    box-shadow:0 0 0 1px rgba(33,220,232,.14),0 5px 14px rgba(33,220,232,.16)!important;
   }
   html body[data-app-route="competition"] .v12-date-strip > .v89-date-chip{
     background:#06085f!important;
