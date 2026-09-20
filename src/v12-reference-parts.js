@@ -350,7 +350,7 @@ function v12UpcomingRow(m){
 }
 function v12FixturesMarkup(){
   return '<section class="v12-fixtures-reference" data-v12-fixtures>'+
-    '<div class="v12-date-strip"><button class="active" data-v12-date="20">dom 20 sep</button></div>'+
+    '<div class="v12-date-strip"><button class="active" data-v12-date="20">dom 20 sep</button><span class="v89-date-chip">Jornada 5</span><span class="v89-date-chip">Primera Fuerza</span></div>'+
     '<h2 id="v12-day-20">domingo, 20 septiembre 2026</h2>'+
     '<section class="v12-schedule-card"><h3>Jornada 5 · Primera Fuerza</h3><div>'+V12_OFFICIAL_UPCOMING.map(v12UpcomingRow).join('')+'</div></section>'+
   '</section>';
