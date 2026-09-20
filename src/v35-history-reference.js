@@ -42,6 +42,36 @@ const historicalSources=[
   }
 ];
 
+
+// V96 — Archivo histórico real: contenido verificado en capturas, álbumes y videos entregados por el usuario.
+// Los videos se usan únicamente como fuente de consulta; NO se incrustan dentro de Historia.
+const historyMoments=[
+  {kind:'CAMPEÓN',title:'Tavera FC',subtitle:'Campeón de Copa · Categoría Segunda',detail:'Registro histórico del álbum de la Liga.'},
+  {kind:'FINAL',title:'Universidad vs Dinamo',subtitle:'Final de Veteranos',detail:'Final documentada en el archivo fotográfico histórico.'},
+  {kind:'ANIVERSARIO',title:'Boavista',subtitle:'XXV aniversario',detail:'Álbum conmemorativo del equipo Boavista.'},
+  {kind:'PENALES',title:'Hermanos vs Juventus',subtitle:'Torneo de Copa',detail:'Serie de penales registrada en el archivo histórico.'},
+  {kind:'ENCUENTRO',title:'Valencia vs Halcones',subtitle:'Partido histórico',detail:'Encuentro conservado dentro del archivo fotográfico.'},
+  {kind:'PENALES',title:'Hermanos vs Chelse',subtitle:'Archivo histórico',detail:'Serie de penales conservada en los álbumes de la Liga.'},
+  {kind:'CLÁSICO',title:'Olímpicos de Pozos vs Abejas FC',subtitle:'Campo de Pozos · domingo 21 de junio · 10:00',detail:'Rivalidad histórica: unidos por la comunidad y separados por el fútbol.'}
+];
+
+const historyYouth=[
+  {year:'2013–2014',title:'Torneo infantil y juvenil',detail:'Álbum histórico con equipos y jornadas del torneo infantil y juvenil.'},
+  {year:'2013–2014',title:'Inauguración del torneo infantil y juvenil',detail:'Registro fotográfico de la inauguración de aquella temporada.'},
+  {year:'Archivo',title:'Juventino Rosas campeón · Torneo Azul–Esmeralda “Chino Estrada”',detail:'Álbum histórico conservado entre las fuentes de la Liga.'}
+];
+
+const retroClubs=[
+  {name:'Tavera FC',logo:'assets/official-logos/tavera-fc.png',note:'Campeón de Copa · Segunda'},
+  {name:'Boavista',logo:'assets/official-logos/boavista.png',note:'XXV aniversario · archivo histórico'},
+  {name:'Dynamo',logo:'assets/official-logos/dynamo.png',note:'Final de Veteranos vs Universidad'},
+  {name:'Juventus',logo:'assets/official-logos/juventus.png',note:'Torneo de Copa · archivo histórico'},
+  {name:'Hermanos',logo:'assets/official-logos/hermanos.png',note:'Series de penales y torneos de Copa'},
+  {name:'Abejas FC',logo:'assets/official-logos/abejas.png',note:'Clásico vs Olímpicos de Pozos'}
+];
+
+const retroNames=['Universidad','Valencia','Halcones','Chelse','Olímpicos de Pozos'];
+
 const videos=[
   {image:ASSETS.videoA,duration:'',title:'Archivo audiovisual de la Liga'},
   {image:ASSETS.videoB,duration:'',title:'Momentos de la Liga Municipal'},
@@ -122,6 +152,56 @@ function historicalSourcesBlock(){
     ).join('')+'</div>'+
   '</section>';
 }
+
+function historyMomentCards(){
+  return '<div class="v35-history-moments">'+historyMoments.map((m,i)=>
+    '<article class="v35-history-moment">'+
+      '<span class="v35-history-kind">'+esc(m.kind)+'</span>'+
+      '<h3>'+esc(m.title)+'</h3>'+
+      '<strong>'+esc(m.subtitle)+'</strong>'+
+      '<p>'+esc(m.detail)+'</p>'+
+    '</article>'
+  ).join('')+'</div>';
+}
+function retroClubCards(){
+  return '<div class="v35-retro-clubs">'+retroClubs.map(c=>
+    '<article class="v35-retro-club">'+
+      '<span class="v35-retro-logo"><img src="'+c.logo+'" alt="'+esc(c.name)+'" loading="lazy" decoding="async"></span>'+
+      '<span class="v35-retro-copy"><b>'+esc(c.name)+'</b><small>'+esc(c.note)+'</small></span>'+
+    '</article>'
+  ).join('')+'</div>'+
+  '<div class="v35-retro-names">'+retroNames.map(n=>'<span>'+esc(n)+'</span>').join('')+'</div>';
+}
+function historyYouthCards(){
+  return '<div class="v35-youth-list">'+historyYouth.map(x=>
+    '<article><span>'+esc(x.year)+'</span><div><b>'+esc(x.title)+'</b><small>'+esc(x.detail)+'</small></div></article>'
+  ).join('')+'</div>';
+}
+function historyArchiveBlock(){
+  return '<section class="v35-block v35-history-archive">'+
+    '<div class="v35-history-archive-head"><span>ARCHIVO HISTÓRICO</span><h2>Historias de la Liga</h2><p>Información tomada únicamente de fotografías, álbumes y videos históricos entregados. Los videos se revisan como fuente y no se insertan en esta página.</p></div>'+
+    historyMomentCards()+
+    '<div class="v35-history-subhead"><span>EQUIPOS PARA EL RECUERDO</span><h3>Clubes y nombres del archivo</h3><p>Estos registros históricos no alteran la lista de equipos de la temporada actual.</p></div>'+
+    retroClubCards()+
+    '<div class="v35-history-subhead"><span>FÚTBOL FORMATIVO</span><h3>Infantil y juvenil</h3></div>'+
+    historyYouthCards()+
+  '</section>';
+}
+function championsArchiveBlock(){
+  const rows=historyMoments.filter(m=>m.kind==='CAMPEÓN'||m.kind==='FINAL');
+  return '<section class="v35-block v35-history-archive v35-history-archive-compact">'+
+    '<div class="v35-history-archive-head"><span>PALMARÉS HISTÓRICO</span><h2>Campeones y finales documentadas</h2><p>Solo se muestran datos que aparecen en el material histórico revisado.</p></div>'+
+    '<div class="v35-history-moments">'+rows.map(m=>'<article class="v35-history-moment"><span class="v35-history-kind">'+esc(m.kind)+'</span><h3>'+esc(m.title)+'</h3><strong>'+esc(m.subtitle)+'</strong><p>'+esc(m.detail)+'</p></article>').join('')+'</div>'+
+  '</section>';
+}
+function finalsArchiveBlock(){
+  const rows=historyMoments.filter(m=>['FINAL','PENALES','CLÁSICO','ENCUENTRO'].includes(m.kind));
+  return '<section class="v35-block v35-history-archive v35-history-archive-compact">'+
+    '<div class="v35-history-archive-head"><span>PARTIDOS PARA EL RECUERDO</span><h2>Finales, penales y clásicos</h2></div>'+
+    '<div class="v35-history-moments">'+rows.map(m=>'<article class="v35-history-moment"><span class="v35-history-kind">'+esc(m.kind)+'</span><h3>'+esc(m.title)+'</h3><strong>'+esc(m.subtitle)+'</strong><p>'+esc(m.detail)+'</p></article>').join('')+'</div>'+
+  '</section>';
+}
+
 function stats(){
   return '<section class="v35-block v35-stats-block"><h2 class="v35-section-title">Estadísticas históricas</h2>'+
     '<article class="v35-stat-card"><h3>Archivo oficial</h3><div class="v35-stat-rule"></div><p>Facebook de la Liga quedó enlazado como fuente histórica. Los campeones, finales y récords se mostrarán únicamente cuando cada publicación o imagen haya sido verificada.</p></article></section>';
@@ -129,23 +209,23 @@ function stats(){
 function summaryBody(){
   return '<section class="v35-block v35-seasons-block"><div class="v35-section-row"><h2>Buscar por temporada</h2><button type="button" data-v35-tab-jump="Temporadas">Ver todo</button></div><div class="v35-season-carousel">'+seasonCards()+'</div></section>'+
     '<section class="v35-block v35-feature-block">'+featureCard()+'</section>'+
-    historicalSourcesBlock()+
-    '<section class="v35-block v35-classics-block"><h2 class="v35-section-title">Ver partidos clásicos</h2>'+videosRow()+'</section>'+
+    historyArchiveBlock()+
     stats();
 }
 function seasonsBody(){
   return '<section class="v35-block v35-tab-body"><div class="v35-section-row"><h2>Temporadas</h2></div>'+
     '<div class="v35-season-detail"><span>Archivo histórico</span><h3>Temporadas anteriores separadas de la actual</h3><p>Los equipos antiguos pueden aparecer aquí como parte de su temporada histórica, pero nunca se agregan otra vez a la lista de equipos actuales si ya no participan.</p></div></section>'+
-    historicalSourcesBlock();
+    historyArchiveBlock();
 }
 function championsBody(){
   return '<section class="v35-block v35-tab-body"><h2 class="v35-section-title">Campeones de otros años</h2>'+
     '<article class="v35-stat-card"><h3>Archivo histórico real</h3><p>Los campeones de temporadas anteriores se registran aquí aunque el club ya no exista. Eso no lo vuelve a meter en la temporada actual: Historia y Equipos actuales quedan separados.</p></article></section>'+
-    historicalSourcesBlock();
+    championsArchiveBlock();
 }
 function finalsBody(){
   return '<section class="v35-block v35-tab-body"><h2 class="v35-section-title">Finales</h2>'+
-    '<div class="v35-season-detail"><h3>Finales históricas por verificar</h3><p>Se mostrarán después de verificar las publicaciones e imágenes históricas enlazadas desde Facebook.</p></div></section>';
+    '<div class="v35-season-detail"><h3>Finales históricas documentadas</h3><p>Se muestran únicamente las finales, series y clásicos que aparecen en el material histórico revisado.</p></div></section>'+
+    finalsArchiveBlock();
 }
 function recordsBody(){
   return '<section class="v35-block v35-tab-body"><h2 class="v35-section-title">Récords</h2>'+
