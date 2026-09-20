@@ -326,3 +326,154 @@ body.v33-about-active .bottom-nav .nav-item[data-route="more"] .nav-icon{
     .v33-about-history-grid{grid-template-columns:1fr}
   }
 }
+
+
+/* V101 — Sobre la Liga completo: organización, formato y cronología histórica. */
+@media(max-width:1023px){
+  .v33-about-now,
+  .v33-about-format{
+    margin:22px 18px 0;
+    padding:18px;
+    border:1px solid rgba(82,111,231,.25);
+    border-radius:20px;
+    background:
+      radial-gradient(85% 100% at 100% 0%,rgba(34,88,255,.18),transparent 63%),
+      linear-gradient(180deg,rgba(18,29,128,.97),rgba(8,15,92,.99));
+  }
+  .v33-about-board{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:9px;
+    margin-top:15px;
+  }
+  .v33-about-board article{
+    min-width:0;
+    padding:11px;
+    border:1px solid rgba(84,108,220,.22);
+    border-radius:14px;
+    background:rgba(8,16,92,.68);
+  }
+  .v33-about-board small,
+  .v33-about-format-grid small{
+    display:block;
+    color:#20e7f2;
+    font-size:7.6px;
+    font-weight:850;
+    letter-spacing:.08em;
+  }
+  .v33-about-board b{
+    display:block;
+    margin-top:4px;
+    color:#fff;
+    font-size:10.5px;
+    line-height:1.2;
+  }
+  .v33-about-note{
+    margin:13px 0 0;
+    color:#b0b9d8;
+    font-size:9.5px;
+    line-height:1.45;
+  }
+  .v33-about-format-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:9px;
+    margin-top:15px;
+  }
+  .v33-about-format-grid article{
+    min-width:0;
+    padding:12px;
+    border:1px solid rgba(82,109,222,.22);
+    border-radius:15px;
+    background:rgba(8,16,91,.72);
+  }
+  .v33-about-format-grid h3{
+    margin:5px 0 0;
+    color:#fff;
+    font-size:12px;
+    line-height:1.12;
+  }
+  .v33-about-format-grid p{
+    margin:6px 0 0;
+    color:#aeb7d5;
+    font-size:8.6px;
+    line-height:1.38;
+  }
+  .v33-about-timeline{
+    position:relative;
+    display:grid;
+    gap:9px;
+    margin-top:15px;
+  }
+  .v33-about-timeline:before{
+    content:"";
+    position:absolute;
+    left:45px;
+    top:10px;
+    bottom:10px;
+    width:1px;
+    background:linear-gradient(180deg,#22e7f2,rgba(80,96,221,.12));
+  }
+  .v33-about-timeline article{
+    position:relative;
+    display:grid;
+    grid-template-columns:78px minmax(0,1fr);
+    gap:11px;
+    padding:11px 12px;
+    border-radius:14px;
+    border:1px solid rgba(87,109,216,.21);
+    background:rgba(9,17,94,.72);
+  }
+  .v33-about-timeline article:after{
+    content:"";
+    position:absolute;
+    left:41px;
+    top:18px;
+    width:9px;
+    height:9px;
+    border-radius:50%;
+    background:#22e7f2;
+    box-shadow:0 0 0 4px rgba(34,231,242,.10),0 0 15px rgba(34,231,242,.28);
+  }
+  .v33-about-timeline time{
+    padding-right:11px;
+    color:#22e7f2;
+    font-size:8px;
+    line-height:1.25;
+    font-weight:850;
+    text-align:right;
+  }
+  .v33-about-timeline h3{
+    margin:0;
+    color:#fff;
+    font-size:11px;
+    line-height:1.14;
+  }
+  .v33-about-timeline p{
+    margin:5px 0 0;
+    color:#aeb7d7;
+    font-size:8.7px;
+    line-height:1.38;
+  }
+  .v33-about-history-badge{
+    width:44px;
+    height:44px;
+    display:grid;
+    place-items:center;
+    margin-bottom:8px;
+    border-radius:11px;
+    border:1px solid rgba(32,231,242,.34);
+    color:#20e7f2;
+    background:rgba(32,231,242,.06);
+    font-size:7px;
+    font-weight:900;
+    letter-spacing:.03em;
+  }
+}
+@media(max-width:360px){
+  .v33-about-board,
+  .v33-about-format-grid{grid-template-columns:1fr}
+  .v33-about-timeline article{grid-template-columns:68px minmax(0,1fr)}
+  .v33-about-timeline:before{left:39px}
+  .v33-about-timeline article:after{left:35px}
+}
