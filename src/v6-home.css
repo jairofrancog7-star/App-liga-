@@ -48,3 +48,24 @@
   overflow:hidden;
   text-overflow:ellipsis;
 }
+
+
+/* V91 — logos oficiales en tabla de Inicio */
+.v6-crest.v6-crest-image{
+  overflow:visible!important;
+  border:0!important;
+  border-radius:0!important;
+  background:transparent!important;
+}
+.v6-crest.v6-crest-image img{
+  display:block!important;
+  width:23px!important;
+  height:23px!important;
+  max-width:23px!important;
+  max-height:23px!important;
+  object-fit:contain!important;
+  object-position:center!important;
+  background:transparent!important;
+  border:0!important;
+  border-radius:0!important;
+}
