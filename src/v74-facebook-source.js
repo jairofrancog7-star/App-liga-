@@ -43,7 +43,8 @@
     const root=document.querySelector('.v35-history-page');
     const content=root?.querySelector('[data-v35-content]');
     if(!content||content.querySelector('[data-v74-facebook-source="history"]'))return;
-    content.prepend(card('history'));
+    /* Las fuentes externas van al final: primero se conserva todo el diseño nativo de Historia. */
+    content.appendChild(card('history'));
   }
 
   function mountNews(){
@@ -51,10 +52,8 @@
     if(!screen||screen.querySelector('[data-v74-facebook-source="news"]'))return;
     const title=[...screen.querySelectorAll('h1')].find(h=>(h.textContent||'').trim()==='Noticias');
     if(!title)return;
-    const c=card('news');
-    const chips=screen.querySelector('.chips');
-    if(chips)chips.insertAdjacentElement('afterend',c);
-    else title.insertAdjacentElement('afterend',c);
+    /* Noticias mantiene primero su contenido propio; la fuente queda como bloque de respaldo al final. */
+    screen.appendChild(card('news'));
   }
 
   function mountTools(){
@@ -64,10 +63,8 @@
     if(!page)return;
     const text=(page.textContent||'').toLowerCase();
     if(!text.includes('herramientas')&&!text.includes('liga completa'))return;
-    const firstPanel=page.querySelector('.v60-panel,.v60-tool-grid');
-    const c=card('tools');
-    if(firstPanel)page.insertBefore(c,firstPanel);
-    else page.appendChild(c);
+    /* Las fuentes/portales no desplazan herramientas principales: siempre quedan hasta abajo. */
+    page.appendChild(card('tools'));
   }
 
   function mount(){
