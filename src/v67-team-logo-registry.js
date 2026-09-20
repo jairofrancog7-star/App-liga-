@@ -5,6 +5,7 @@
   'use strict';
 
   const BASE='https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/';
+  const DYNAMIC={};
   const MAP={
     'america veteranos':'assets/branding/america-veteranos-35-user.png',
     'club america veteranos':'assets/branding/america-veteranos-35-user.png',
@@ -17,6 +18,7 @@
     'promesas fc pozos':'assets/official-logos/promesas-fc.png',
     'franco fc':'assets/official-logos/franco-fc.png',
     'atletico galeana':'assets/official-logos/galeana.png',
+    'atl galeana':'assets/official-logos/galeana.png',
     'galeana':'assets/official-logos/galeana.png',
     'lobos cdg':'assets/official-logos/lobos-cdg.png',
     'cuenda':'assets/official-logos/toros-de-cuenda.png',
@@ -84,10 +86,27 @@
   }
   function get(name){
     const key=norm(name);
+    const dyn=DYNAMIC[key];
+    if(dyn)return dyn;
     const path=MAP[key];
     if(path)return BASE+path;
     const official=window.LJR_OFFICIAL_API?.getLogo?.(name);
     return official||'';
+  }
+  async function loadDynamic(){
+    try{
+      const r=await fetch(BASE+'data/official-live.json?v=20260920-logo-all',{cache:'no-store'});
+      if(!r.ok)return;
+      const d=await r.json();
+      for(const [name,v] of Object.entries(d.team_logos||{})){
+        let src='';
+        if(typeof v==='string')src=v;
+        else if(v?.local)src=BASE+String(v.local).replace(/^\.\//,'');
+        else if(v?.source)src=v.source;
+        if(src)DYNAMIC[norm(name)]=src;
+      }
+      patchNode(document);
+    }catch(_){}
   }
   function teamNameFrom(el){
     if(!(el instanceof Element))return '';
@@ -131,8 +150,9 @@
     ).forEach(patchImg);
   }
   function start(){
-    window.LJR_TEAM_LOGOS={get,map:{...MAP},base:BASE,refresh:()=>patchNode(document)};
+    window.LJR_TEAM_LOGOS={get,map:{...MAP},dynamic:DYNAMIC,base:BASE,refresh:()=>patchNode(document)};
     patchNode(document);
+    loadDynamic();
     const mo=new MutationObserver(muts=>{
       for(const m of muts){
         for(const n of m.addedNodes){
