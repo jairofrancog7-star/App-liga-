@@ -31,13 +31,48 @@ const seasons=[
    Nunca se importan equipos de estas fuentes a la lista de equipos de la temporada actual. */
 const historicalSources=[
   {
+    title:'Archivo histórico · imágenes y tablas',
+    note:'ZIP entregado por el usuario: roles, tablas, fotografías, finales y equipos de distintas épocas.',
+    url:'https://drive.google.com/file/d/1BAb5avW4QFWG1LVy5dWR9_meuacFli1v/view?usp=drivesdk'
+  },
+  {
+    title:'Facebook histórico · fuente 1',
+    note:'Página/perfil aportado por el usuario para rastrear publicaciones, campeones y temporadas.',
+    url:'https://www.facebook.com/share/19UuQUvSiL/'
+  },
+  {
+    title:'Facebook histórico · fuente 2',
+    note:'Página/perfil aportado por el usuario como parte del archivo de la Liga.',
+    url:'https://www.facebook.com/share/1V1aAQCzBn/'
+  },
+  {
+    title:'Administración histórica · fuente aportada',
+    note:'Perfil indicado por el usuario como fuente de publicaciones de una administración anterior.',
+    url:'https://www.facebook.com/share/1dN3djL6Pr/'
+  },
+  {
+    title:'Administración actual · fuente aportada',
+    note:'Perfil indicado por el usuario como fuente de publicaciones de la administración actual.',
+    url:'https://www.facebook.com/share/1GdSsb7ocg/'
+  },
+  {
+    title:'Ángel Arias · fuente histórica aportada',
+    note:'Perfil indicado por el usuario para localizar material de una administración anterior.',
+    url:'https://www.facebook.com/share/1DeWwcJiGX/'
+  },
+  {
+    title:'Hemeroteca · Liga Sabatina 2015',
+    note:'Periódico AM documentó el doble campeonato de Galácticos FC en Juvenil Menor y Juvenil Mayor.',
+    url:'https://www.am.com.mx/news/2015/11/23/dominantes-192734.html'
+  },
+  {
     title:'Archivo histórico · video 1',
-    note:'Temporadas anteriores, campeones, tablas y material histórico.',
+    note:'Material audiovisual usado como fuente de consulta; no se incrusta dentro de Historia.',
     url:'https://drive.google.com/file/d/1G5IIosS0jhyga6FdhozUn2DEPSxpkvxU/view?usp=drivesdk'
   },
   {
     title:'Archivo histórico · video 2',
-    note:'Temporadas anteriores y referencias adicionales de la Liga.',
+    note:'Material audiovisual usado como fuente de consulta; no se incrusta dentro de Historia.',
     url:'https://drive.google.com/file/d/1GFvoNisldXaqIMwQJR9HQx2_xhgTls45/view?usp=drivesdk'
   }
 ];
