@@ -43,7 +43,7 @@ function tabs(){
  return '<nav class="v33-tabs" aria-label="Tipos de estadísticas">'+
   '<button type="button" class="'+(activeTab==='general'?'active':'')+'" data-v33-tab="general">General</button>'+
   '<button type="button" class="'+(activeTab==='team'?'active':'')+'" data-v33-tab="team">Estadísticas de equipo</button>'+
-  '<button type="button" class="'+(activeTab==='player'?'active':'')+'" data-v33-tab="player">Jugadores registrados</button>'+
+  '<button type="button" class="'+(activeTab==='player'?'active':'')+'" data-v33-tab="player">Estadísticas de jugadores</button>'+
  '</nav>';
 }
 function header(){
@@ -52,54 +52,138 @@ function header(){
    '<div class="v33-morph-title" data-v33-morph-title><h1>Estadísticas</h1><p>Datos oficiales · Primera Fuerza</p></div>'+tabs()+
  '</header>';
 }
-function summaryCard(title,value,sub){
- return '<article class="v33-stat-card"><h3>'+esc(title)+'</h3><div class="v33-stat-list"><div class="v33-stat-row"><span class="v33-rank">•</span><span class="v33-row-copy"><b>'+esc(value)+'</b><small>'+esc(sub)+'</small></span></div></div></article>';
+function standings(){
+ return current()?.standings?.[0]?.rows||[];
 }
-function standingsRows(limit=11){
- const rows=current()?.standings?.[0]?.rows||[];
- return rows.slice(0,limit).map(r=>'<div class="v33-stat-row" data-v33-team="'+esc(r[1])+'">'+
-   '<span class="v33-rank">#'+esc(r[0])+'</span>'+teamLogo(r[1])+
-   '<span class="v33-row-copy"><b>'+esc(r[1])+'</b><small>'+esc(r[2])+' PJ · DG '+esc(r[8])+'</small></span>'+
-   '<strong>'+esc(r[9])+' pts</strong></div>').join('');
+function num(v){
+ const n=Number(String(v??'').replace('+',''));
+ return Number.isFinite(n)?n:0;
+}
+function metricRows(index,order='desc',limit=5){
+ const rows=standings().slice();
+ rows.sort((a,b)=>{
+   const av=num(a[index]),bv=num(b[index]);
+   return order==='asc'?av-bv:bv-av;
+ });
+ return rows.slice(0,limit);
+}
+function metricLabel(index,value){
+ const v=String(value??'');
+ if(index===8&&num(v)>0)return '+'+num(v);
+ return v;
+}
+function teamMetricRow(r,index,metricIndex){
+ return '<button type="button" class="v33-stat-row" data-v33-team="'+esc(r[1])+'">'+
+   '<span class="v33-rank">'+(index+1)+'</span>'+teamLogo(r[1])+
+   '<span class="v33-row-copy"><b>'+esc(r[1])+'</b><small>Primera Fuerza</small></span>'+
+   '<strong>'+esc(metricLabel(metricIndex,r[metricIndex]))+'</strong>'+
+ '</button>';
+}
+function teamStatCard(title,metricIndex,order='desc',limit=5){
+ const rs=metricRows(metricIndex,order,limit);
+ return '<article class="v33-stat-card"><h3>'+esc(title)+'</h3><div class="v33-stat-list">'+
+   rs.map((r,i)=>teamMetricRow(r,i,metricIndex)).join('')+
+   '</div><button type="button" class="v33-see-all" data-v33-tab="team">Ver todos los equipos <span>›</span></button></article>';
+}
+function rosterEntries(){
+ const out=[];
+ for(const [team,names] of Object.entries(current()?.rosters||{})){
+   for(const name of (Array.isArray(names)?names:[]))out.push({team,name});
+ }
+ return out;
+}
+function playerRow(p,index){
+ return '<button type="button" class="v33-stat-row player" data-v33-player="'+esc(p.name)+'">'+
+   '<span class="v33-rank">'+(index+1)+'</span>'+teamLogo(p.team,'v33-player-team-logo')+
+   '<span class="v33-row-copy"><b>'+esc(p.name)+'</b><small>'+esc(p.team)+' · Jugador registrado</small></span>'+
+   '<strong>✓</strong>'+
+ '</button>';
+}
+function playerStatCard(title,players){
+ return '<article class="v33-stat-card"><h3>'+esc(title)+'</h3><div class="v33-stat-list">'+
+   players.slice(0,5).map((p,i)=>playerRow(p,i)).join('')+
+   '</div><button type="button" class="v33-see-all" data-v33-tab="player">Ver todos los jugadores <span>›</span></button></article>';
+}
+function teamSections(){
+ return [
+   ['Datos clave',[
+     ['Partidos disputados',2,'desc'],
+     ['Ganados',3,'desc']
+   ]],
+   ['Goles',[
+     ['Goles a favor',6,'desc'],
+     ['Goles en contra',7,'asc']
+   ]],
+   ['Resultados',[
+     ['Empates',4,'desc'],
+     ['Perdidos',5,'asc']
+   ]],
+   ['Clasificación',[
+     ['Diferencia de goles',8,'desc'],
+     ['Puntos',9,'desc']
+   ]]
+ ];
+}
+function teamDetailedView(){
+ return '<main class="v33-data-content v33-detailed">'+teamSections().map(section=>
+   '<section class="v33-section"><h2>'+esc(section[0])+'</h2><div class="v33-stat-grid">'+
+     teamStatCard(section[1][0][0],section[1][0][1],section[1][0][2])+
+     teamStatCard(section[1][1][0],section[1][1][1],section[1][1][2])+
+   '</div></section>'
+ ).join('')+'</main>';
+}
+function playerSections(){
+ const groups=Object.entries(current()?.rosters||{}).map(([team,names])=>({
+   team,
+   players:(Array.isArray(names)?names:[]).map(name=>({team,name}))
+ })).filter(g=>g.players.length);
+ const sections=[];
+ for(let i=0;i<groups.length;i+=2){
+   const a=groups[i],b=groups[i+1];
+   sections.push([
+     i===0?'Jugadores registrados':'Plantillas oficiales',
+     [a,b].filter(Boolean)
+   ]);
+ }
+ return sections;
+}
+function playerDetailedView(){
+ const sections=playerSections();
+ if(!sections.length){
+   return '<main class="v33-data-content v33-detailed"><section class="v33-section"><h2>Jugadores registrados</h2><div class="v33-stat-grid"><article class="v33-stat-card"><div class="v33-stat-list"><div class="v33-stat-row"><span class="v33-row-copy"><b>No hay jugadores publicados</b><small>AdminFut no expone una plantilla pública para esta categoría.</small></span></div></div></article></div></section></main>';
+ }
+ return '<main class="v33-data-content v33-detailed">'+sections.map(section=>
+   '<section class="v33-section"><h2>'+esc(section[0])+'</h2><div class="v33-stat-grid">'+
+     section[1].map(g=>playerStatCard(g.team,g.players)).join('')+
+   '</div></section>'
+ ).join('')+'</main>';
 }
 function generalView(){
- const c=current(),co=c?.counts||{};
+ const entries=rosterEntries();
+ const firstTeams=Object.entries(current()?.rosters||{}).slice(0,3).map(([team,names])=>({
+   team,players:(Array.isArray(names)?names:[]).map(name=>({team,name}))
+ }));
  return '<main class="v33-data-content v33-general-content">'+
-   '<section class="v33-general-section"><div class="v33-general-title"><h2>Datos clave</h2><button type="button" data-v33-tab="team">Ver tabla</button></div>'+
-   '<div class="v33-carousel">'+
-     summaryCard('Equipos',co.Equipos??0,'registrados en Primera Fuerza')+
-     summaryCard('Jugadores',co.Jugadores??0,'registrados públicamente')+
-     summaryCard('Partidos jugados',co['Partidos Jugados']??0,'dato oficial actual')+
-     summaryCard('Partidos pendientes',co['Partidos Pendientes']??0,'dato oficial actual')+
-   '</div></section>'+
-   '<section class="v33-general-section"><div class="v33-general-title"><h2>Clasificación actual</h2><button type="button" data-v33-tab="team">Ver todo</button></div>'+
-   '<article class="v33-stat-card"><div class="v33-stat-list">'+standingsRows(5)+'</div></article></section>'+
-   '<section class="v33-general-section"><div class="v33-general-title"><h2>Goleo de Primera Fuerza</h2></div>'+
-   '<article class="v33-stat-card"><div class="v33-stat-list"><div class="v33-stat-row"><span class="v33-row-copy"><b>No publicado</b><small>AdminFut indica que no hay goles registrados en esta temporada de Primera Fuerza.</small></span></div></div></article></section>'+
+   '<section class="v33-general-section">'+
+     '<div class="v33-general-title"><h2>Estadísticas de equipo</h2><button type="button" data-v33-tab="team">Ver todo</button></div>'+
+     '<div class="v33-carousel">'+
+       teamStatCard('Goles a favor',6,'desc')+
+       teamStatCard('Partidos ganados',3,'desc')+
+       teamStatCard('Puntos',9,'desc')+
+     '</div>'+
+   '</section>'+
+   '<section class="v33-general-section">'+
+     '<div class="v33-general-title"><h2>Estadísticas de jugadores</h2><button type="button" data-v33-tab="player">Ver todo</button></div>'+
+     '<div class="v33-carousel">'+
+       firstTeams.map(g=>playerStatCard(g.team,g.players)).join('')+
+       (!firstTeams.length?playerStatCard('Jugadores registrados',entries):'')+
+     '</div>'+
+   '</section>'+
  '</main>';
-}
-function teamView(){
- return '<main class="v33-data-content v33-detailed"><section class="v33-section"><h2>Clasificación oficial · Primera Fuerza</h2>'+
-   '<div class="v33-stat-grid"><article class="v33-stat-card"><div class="v33-stat-list">'+standingsRows(50)+'</div></article></div></section></main>';
-}
-function playerRows(){
- const c=current(),out=[];
- for(const [team,names] of Object.entries(c?.rosters||{})){
-   for(const n of (Array.isArray(names)?names:[])){
-     out.push('<div class="v33-stat-row" data-v33-player="'+esc(n)+'">'+teamLogo(team)+
-       '<span class="v33-row-copy"><b>'+esc(n)+'</b><small>'+esc(team)+' · Jugador registrado</small></span></div>');
-   }
- }
- return out.join('');
-}
-function playerView(){
- return '<main class="v33-data-content v33-detailed"><section class="v33-section"><h2>Jugadores registrados · Primera Fuerza</h2>'+
-   '<div class="v33-stat-grid"><article class="v33-stat-card"><div class="v33-stat-list">'+playerRows()+'</div></article></div>'+
-   '<p class="v33-see-all">No se muestran goles, asistencias, minutos o posiciones si AdminFut no los publica.</p></section></main>';
 }
 function markup(){
  return '<section class="v33-data-page" data-v33-data data-v33-mode="'+activeTab+'">'+header()+
-   (activeTab==='general'?generalView():activeTab==='team'?teamView():playerView())+'</section>';
+   (activeTab==='general'?generalView():activeTab==='team'?teamDetailedView():playerDetailedView())+'</section>';
 }
 function toast(msg){const old=document.querySelector('.v33-toast');if(old)old.remove();const n=document.createElement('div');n.className='v33-toast';n.textContent=msg;document.body.appendChild(n);setTimeout(()=>n.remove(),1500)}
 function setBottomNav(){const nav=document.querySelector('.bottom-nav');if(nav)nav.querySelectorAll('.nav-item').forEach(i=>i.classList.toggle('active',i.dataset.route==='more'))}
