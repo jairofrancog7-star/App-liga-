@@ -27,53 +27,53 @@ function markup(){
     '<figure class="v33-about-figure">'+
       '<img class="v33-about-stadium" src="'+STADIUM+'" alt="Estadio Municipal de Juventino Rosas durante un partido de fútbol" loading="eager" decoding="async">'+
       '<figcaption class="v33-about-caption">'+
-        '<p>El Estadio Municipal de Juventino Rosas fue sede de la gran final de la Liga Municipal</p>'+
+        '<p>La Liga organiza fútbol amateur de Juventino Rosas de manera independiente; sus partidos se reparten entre la Deportiva Sur y otros campos de la cabecera y comunidades.</p>'+
         '<small>Liga Municipal de Fútbol Juventino Rosas A.C.</small>'+
       '</figcaption>'+
     '</figure>'+
     '<section class="v33-about-now">'+
-      '<div class="v33-about-history-head"><span>QUÉ ES LA LIGA</span><h2>Fútbol municipal organizado</h2><p>El objetivo establecido en el reglamento 2026–2027 es impulsar, fomentar y organizar de manera sistemática el desarrollo del fútbol en todos los ámbitos del municipio.</p></div>'+
+      '<div class="v33-about-history-head"><span>QUÉ ES LA LIGA</span><h2>Liga amateur independiente</h2><p>La Liga Municipal de Fútbol Juventino Rosas A. C. organiza la competencia adulta de la zona. “Municipal” identifica su ámbito en Juventino Rosas; no significa que dependa de la Presidencia Municipal ni de COMUDE.</p></div>'+
       '<div class="v33-about-board">'+
-        '<article><small>PRESIDENTE</small><b>Florencio Franco Lerma</b></article>'+
+        '<article><small>PRESIDENTE DE LA LIGA</small><b>Florencio Franco Lerma</b></article>'+
         '<article><small>VICEPRESIDENTE</small><b>Martín Jaramillo Celedón</b></article>'+
         '<article><small>SECRETARIO</small><b>Javier Gonzalez Lopez</b></article>'+
         '<article><small>TESORERO</small><b>Octavio Alberto García</b></article>'+
       '</div>'+
-      '<p class="v33-about-note">La mesa directiva organiza Copa, Liga, Campeón de Campeones, torneo sabatino de Veteranos y torneos extraoficiales. La gestión directiva equivale a dos temporadas: dos torneos de Copa y dos de Liga.</p>'+
+      '<p class="v33-about-note">La presidencia y la mesa directiva son cargos internos de la propia Liga, comparables a la administración de una organización deportiva. No son cargos del Ayuntamiento. La mayoría de la actividad se concentra en la Deportiva Sur y también se utilizan campos de comunidades y otras sedes.</p>'+
     '</section>'+
     '<section class="v33-about-format">'+
-      '<div class="v33-about-history-head"><span>CÓMO SE JUEGA</span><h2>Formato 2026–2027</h2><p>La Liga combina competición dominical y Veteranos sabatino. Los roles históricos muestran que esta separación de días ya existía al menos desde 2013–2014.</p></div>'+
+      '<div class="v33-about-history-head"><span>CÓMO SE JUEGA</span><h2>Solo categoría libre y Veteranos</h2><p>Esta Liga no maneja Pony, Infantil ni Juvenil. El archivo histórico de esta sección debe limitarse a la categoría libre y a Veteranos.</p></div>'+
       '<div class="v33-about-format-grid">'+
-        '<article><small>SÁBADO</small><h3>Veteranos 35+ y 50+</h3><p>Los Veteranos se programan los sábados, habitualmente por la tarde. 35+ juega un grupo a dos vueltas y ocho equipos avanzan a liguilla. En 50+ la asamblea acuerda la cantidad de enfrentamientos y los dos mejores pasan a la final.</p></article>'+
-        '<article><small>DOMINGO</small><h3>Primera · Intermedia · Segunda</h3><p>La Liga dominical se juega a dos vueltas. Los ocho primeros clasifican a cuartos: 1–8, 2–7, 3–6 y 4–5. Cuartos y semifinales son a dos juegos; la final es a uno.</p></article>'+
-        '<article><small>COPA</small><h3>Una vuelta · Top 4</h3><p>En Copa se juega una vuelta y un grupo por fuerza. Clasifican cuatro a semifinales: 1–4 y 2–3; semifinal y final son a un partido.</p></article>'+
-        '<article><small>DESEMPATE</small><h3>Tabla y finales</h3><p>En tabla: diferencia de goles, más goles anotados, menos recibidos, duelo particular y disciplina. Una final empatada va a dos tiempos extra de 15 minutos y después a penales.</p></article>'+
+        '<article><small>DOMINGO · CATEGORÍA LIBRE</small><h3>Primera · Intermedia · Segunda</h3><p>La categoría libre se organiza por fuerzas. En Liga se juega a dos vueltas y los ocho primeros clasifican a liguilla: 1–8, 2–7, 3–6 y 4–5.</p></article>'+
+        '<article><small>SÁBADO · VETERANOS</small><h3>35+ y 50+</h3><p>Veteranos se programa los sábados, normalmente por la tarde. 35+ juega un grupo a dos vueltas y ocho avanzan; en 50+ la asamblea acuerda los enfrentamientos y los dos mejores pasan a la final.</p></article>'+
+        '<article><small>COPA</small><h3>Una vuelta · Top 4</h3><p>En la categoría libre se juega una vuelta y un grupo por fuerza. Clasifican cuatro a semifinales: 1–4 y 2–3; semifinal y final son a un partido.</p></article>'+
+        '<article><small>DESEMPATE</small><h3>Tabla y finales</h3><p>En tabla: diferencia de goles, más goles anotados, menos recibidos, duelo particular y disciplina. Una final empatada va a tiempos extra y después a penales.</p></article>'+
         '<article><small>CAMPEÓN DE CAMPEONES</small><h3>Copa vs Liga</h3><p>Se disputa a un partido entre el campeón de Copa y el campeón de Liga. Si el mismo equipo ganó ambos torneos, el nombramiento es automático.</p></article>'+
-        '<article><small>PREMIACIÓN</small><h3>Más que el campeón</h3><p>En la dominical también se reconoce subcampeón de Liga, líder general y equipo líder de goleo por categoría; Veteranos contempla campeón de Copa, Liga, subcampeón y Campeón de Campeones.</p></article>'+
+        '<article><small>ALCANCE DEL ARCHIVO</small><h3>Sin mezclar otras ligas</h3><p>No se incorporan torneos de Presidencia Municipal, COMUDE, escuelas, Pony, Infantil o Juvenil aunque también se hayan jugado en Juventino Rosas.</p></article>'+
       '</div>'+
     '</section>'+
     '<section class="v33-about-history">'+
-      '<div class="v33-about-history-head"><span>DE LA SABATINA AL ARCHIVO ACTUAL</span><h2>Historia documentada de la Liga</h2><p>Los documentos antiguos conservan el nombre institucional Liga Municipal de Fut-Bol / Juventino Rosas A. C. y, en 2013, una rama identificada como “Liga Sabatina Pony, Infantil y Juvenil”. En redes, otra etapa del archivo quedó asociada al nombre Golazo Liga.</p></div>'+
+      '<div class="v33-about-history-head"><span>GOLAZO LIGA · ARCHIVO DIGITAL</span><h2>Historia documentada de la Liga adulta</h2><p>La captura aportada por el usuario confirma una publicación de Golazo Liga fechada el 5 de octubre de 2012. Por ahora se toma como el registro digital más antiguo localizado, no como prueba de que la Liga haya sido fundada exactamente ese día.</p></div>'+
       '<div class="v33-about-timeline">'+
-        '<article><time>10 ago 2013</time><div><h3>Pony, Infantil, Intermedia y Juvenil</h3><p>Un volante municipal convocó Pony 6–8, Infantil 9–10, Intermedia 11–12 y Juvenil 13–14. Firma como presidente el Lic. Jonás Cervantes Noria y como organizador Antonio López Moreno.</p></div></article>'+
-        '<article><time>07 sep 2013</time><div><h3>Liga Sabatina</h3><p>Finales de Copa: Redimi2–René’s en Infantil, Resto del Mundo–Redimi2 en Intermedia y Redimi2–Halcones en Juvenil.</p></div></article>'+
-        '<article><time>12 oct 2013</time><div><h3>Veteranos sábado; fuerzas domingo</h3><p>El rol programa Veteranos por la tarde del sábado y Primera, Intermedia y Segunda el domingo. Ese patrón se repite en los archivos posteriores.</p></div></article>'+
-        '<article><time>08 dic 2013</time><div><h3>Gran Final de Primera</h3><p>Juventus–Olímpicos en Campo 1; Chelsea–PSV por el tercer lugar. En Segunda: semifinales Tavera–Cerrito de Gasca y DHP–San José de la Montaña.</p></div></article>'+
-        '<article><time>01 mar 2014</time><div><h3>Gran Final de Veteranos</h3><p>UNAM–La Esperanza, 16:00, Campo 1. El domingo siguiente continuaron Primera, Intermedia y Segunda.</p></div></article>'+
-        '<article><time>23 nov 2015</time><div><h3>Galácticos FC, doble campeón sabatino</h3><p>Registro hemerográfico: campeón Juvenil Menor 3–0 ante JLP y campeón Juvenil Mayor 2–0 ante Linces.</p></div></article>'+
-        '<article><time>24 may 2016</time><div><h3>Proyecto de nuevas oficinas</h3><p>El reglamento vigente conserva el antecedente de un acuerdo de asamblea para destinar aportaciones al proyecto de construcción de oficinas.</p></div></article>'+
+        '<article><time>05 oct 2012</time><div><h3>Primer registro digital localizado</h3><p>Publicación de Golazo Liga con el logotipo histórico de Liga Municipal de Fútbol Juventino Rosas A. C.</p></div></article>'+
+        '<article><time>2012 →</time><div><h3>Archivo adulto independiente</h3><p>La investigación histórica se limita a categoría libre y Veteranos, separando material perteneciente a Presidencia Municipal, COMUDE y otras ligas.</p></div></article>'+
+        '<article><time>2015</time><div><h3>Administrador histórico de Golazo Liga</h3><p>Se añadió el perfil aportado por el usuario como administrador de la página Golazo Liga en 2015 para seguir rastreando publicaciones, tablas, equipos y campeones.</p></div></article>'+
+        '<article><time>24 may 2016</time><div><h3>Acuerdo interno de la Liga</h3><p>El reglamento vigente conserva un acuerdo de asamblea relacionado con el proyecto de nuevas oficinas de la propia organización.</p></div></article>'+
+        '<article><time>2018</time><div><h3>Tablas y goleadores</h3><p>El archivo conserva cortes de Primera e Intermedia con puntos, posiciones y goleadores de la categoría libre.</p></div></article>'+
+        '<article><time>03 nov 2019</time><div><h3>Juventus campeón</h3><p>El archivo histórico de Golazo Liga identifica a Juventus como campeón de Liga 2018–2019 y a Boavista como subcampeón.</p></div></article>'+
+        '<article><time>2022</time><div><h3>Veteranos</h3><p>Se conserva una tabla final de Veteranos con Juventus en primer lugar con 53 puntos.</p></div></article>'+
       '</div>'+
       '<div class="v33-about-history-grid">'+
-        '<article><span class="v33-about-history-badge">CAMPEÓN</span><small>ARCHIVO FOTOGRÁFICO</small><h3>Tecos</h3><b>Trofeo y camisetas “CAMPEON TECOS”</b><p>El campeonato queda documentado visualmente; la categoría y temporada exactas siguen pendientes de amarrarse con el rol correspondiente.</p></article>'+
+        '<article><span class="v33-about-history-badge">2012</span><small>PRIMER REGISTRO DIGITAL</small><h3>Golazo Liga</h3><b>5 de octubre de 2012</b><p>Fecha visible en la captura aportada. No se presenta todavía como fecha de fundación.</p></article>'+
+        '<article><span class="v33-about-history-badge">CAMPEÓN</span><small>ARCHIVO FOTOGRÁFICO</small><h3>Tecos</h3><b>Trofeo y camisetas “CAMPEON TECOS”</b><p>El campeonato queda documentado visualmente; la temporada y fuerza exactas se mantienen pendientes hasta cruzarlas con una publicación o tabla.</p></article>'+
         '<article><img src="https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/assets/official-logos/juventus.png" alt=""><small>CAMPEÓN CONFIRMADO</small><h3>Juventus</h3><b>Liga 2018–2019</b><p>Publicación histórica del 3 nov 2019.</p></article>'+
-        '<article><img src="https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/assets/official-logos/tavera-fc.png" alt=""><small>CAMPEÓN DE COPA</small><h3>Tavera FC</h3><b>Categoría Segunda</b><p>Registro conservado en el archivo histórico.</p></article>'+
-        '<article><img src="https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/assets/official-logos/boavista.png" alt=""><small>SUBCAMPEÓN</small><h3>Boavista</h3><b>Liga 2018–2019</b><p>También aparece en el archivo de su XXV aniversario.</p></article>'+
+        '<article><img src="https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/assets/official-logos/tavera-fc.png" alt=""><small>CAMPEÓN DE COPA</small><h3>Tavera FC</h3><b>Categoría Segunda</b><p>Registro conservado en el archivo histórico adulto.</p></article>'+
       '</div>'+
       '<div class="v33-about-history-facts">'+
-        '<div><b>2015 · Liga Sabatina</b><span>Galácticos FC fue campeón en Juvenil Menor y Juvenil Mayor; en Menor quedó tricampeón.</span></div>'+
-        '<div><b>Veteranos 2022</b><span>Juventus terminó primero en la tabla final con 53 puntos.</span></div>'+
+        '<div><b>Identidad propia</b><span>Golazo Liga y Liga Municipal de Fútbol Juventino Rosas A. C. se documentan como organización deportiva adulta independiente de Presidencia Municipal/COMUDE.</span></div>'+
+        '<div><b>Categorías correctas</b><span>Categoría libre —con sus fuerzas— y Veteranos. No Pony, Infantil ni Juvenil.</span></div>'+
         '<div><b>Intermedia 2018 · J23</b><span>Alejandro Juárez Merino, de Populares, aparece como líder de goleo con 31 goles.</span></div>'+
-        '<div><b>Cómo se confirma un campeón</b><span>Es suficiente una publicación, texto, tabla, álbum o imagen de la Liga o de sus administradores que lo identifique como campeón; no hace falta una fotografía del trofeo.</span></div>'+
+        '<div><b>Cómo se confirma un campeón</b><span>Una publicación, texto, tabla, álbum o imagen de Golazo Liga, de la Liga o de sus administradores puede confirmar el campeonato; no hace falta una fotografía levantando el trofeo.</span></div>'+
       '</div>'+
       '<button type="button" class="v33-about-history-button" data-v33-history>Ver Historia, campeones, finales y récords</button>'+
     '</section>'+
