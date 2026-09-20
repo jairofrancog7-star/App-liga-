@@ -337,12 +337,17 @@
   }
 
   function mountBelowNative(screen,r,cfg){
-    /* En Equipos y Goleadores el diseño original debe ser lo primero.
-       La animación se conserva, pero va al FINAL de la página, nunca encima
-       de la cabecera/barra propia de esas pantallas. */
+    /* El contenido original de estas pantallas debe ir primero.
+       La animación se coloca al FINAL de la sección, nunca arriba de filtros,
+       buscador, tabla, lista ni cabecera. */
     const nativePage=r==='teams'
       ?screen.querySelector('[data-v27-reference="teams"]')
-      :screen.querySelector('[data-v28-scorers]');
+      :r==='scorers'
+        ?screen.querySelector('[data-v28-scorers]')
+        :r==='players'
+          ?screen.querySelector('[data-v66-directory="players"]')
+          :null;
+
     if(!nativePage){
       screen.querySelectorAll(':scope > [data-v73-motion-banner]').forEach(x=>x.remove());
       return false;
@@ -350,7 +355,7 @@
 
     let banner=nativePage.querySelector(':scope > [data-v73-motion-banner]');
     if(!banner){
-      /* Quita cualquier copia antigua que haya quedado arriba. */
+      /* Quita cualquier copia antigua que haya quedado arriba de la sección. */
       screen.querySelectorAll(':scope > [data-v73-motion-banner]').forEach(x=>x.remove());
       banner=buildBanner(cfg);
       banner.classList.add('v73-below-native');
@@ -359,6 +364,15 @@
     }else if(nativePage.lastElementChild!==banner){
       nativePage.appendChild(banner);
     }
+
+    /* En Jugadores, fuerza que quede después de toda la lista registrada. */
+    if(r==='players'){
+      const list=nativePage.querySelector('.v66-player-list');
+      if(list&&banner.previousElementSibling!==list){
+        list.insertAdjacentElement('afterend',banner);
+      }
+    }
+
     syncAll();
     return true;
   }
@@ -384,7 +398,7 @@
       return;
     }
 
-    if(r==='teams'||r==='scorers'){
+    if(r==='teams'||r==='scorers'||r==='players'){
       mountBelowNative(screen,r,cfg);
       return;
     }
