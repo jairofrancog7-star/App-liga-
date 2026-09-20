@@ -184,12 +184,12 @@ const HIST_ROOT='https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbo
 const HIST_MEDIA='./assets/history/';
 const HIST_PHOTOS=window.LJR_HISTORY_PHOTOS||{};
 const historyMoments=[
-  {kind:'CAMPEÓN',date:'22 feb 2014',title:'Puros Cuates',subtitle:'Campeón de Copa · Fuerza Intermedia',detail:'La publicación de Golazo Liga muestra el trofeo entregado al equipo campeón.',backgroundPhoto:HIST_PHOTOS.purosCuatesTrophy2014||'',image:''},
-  {kind:'CAMPEÓN',date:'03 nov 2019',title:'Juventus',subtitle:'Campeón de Liga · temporada 2018–2019',detail:'Fotografía histórica del plantel campeón; Boavista quedó registrado como subcampeón.',backgroundPhoto:HIST_MEDIA+'juventus-campeon-2019.jpg',image:HIST_ROOT+'assets/official-logos/juventus.png'},
-  {kind:'CAMPEÓN',date:'Archivo histórico · fecha exacta por identificar',title:'Tecos',subtitle:'Plantel campeón · categoría adulta por identificar',detail:'La fotografía conservada muestra al plantel con camisetas de campeón y trofeo.',backgroundPhoto:HIST_MEDIA+'tecos-campeon-historico.jpg'},
-  {kind:'CAMPEÓN',date:'Archivo histórico · fecha exacta no visible',title:'Tavera FC',subtitle:'Campeón de Copa · Categoría Segunda',detail:'El título está documentado en el álbum de la Liga. No se asigna una foto de fondo distinta hasta identificar la imagen exacta de esa premiación.',image:HIST_ROOT+'assets/official-logos/tavera-fc.png'},
-  {kind:'FINAL',date:'Archivo histórico · fecha no visible',title:'Universidad vs Dinamo',subtitle:'Final de Veteranos',detail:'Final documentada en el archivo fotográfico histórico.',image:HIST_ROOT+'assets/official-logos/dynamo.png'},
-  {kind:'FINAL',date:'2019 · día exacto no visible',title:'Chelsea vs La Esperanza',subtitle:'Veteranos · Final de Copa · 17:30 · Campo 1',detail:'El rol histórico confirma la final y su programación; no se asigna ganador sin resultado publicado.'},
+  {kind:'CAMPEÓN',date:'22 feb 2014',season:'2014',winner:'Puros Cuates',title:'Puros Cuates',subtitle:'Campeón de Copa · Fuerza Intermedia',detail:'La publicación de Golazo Liga muestra el trofeo entregado al equipo campeón.',backgroundPhoto:HIST_PHOTOS.purosCuatesTrophy2014||'',image:''},
+  {kind:'CAMPEÓN',date:'03 nov 2019',season:'2018–2019',winner:'Juventus',title:'Juventus',subtitle:'Campeón de Liga · temporada 2018–2019',detail:'Fotografía histórica del plantel campeón; Boavista quedó registrado como subcampeón.',backgroundPhoto:HIST_MEDIA+'juventus-campeon-2019.jpg',image:HIST_ROOT+'assets/official-logos/juventus.png'},
+  {kind:'CAMPEÓN',date:'Fecha exacta pendiente',season:'Temporada por confirmar',winner:'Tecos',title:'Tecos',subtitle:'Plantel campeón · categoría adulta por identificar',detail:'La fotografía conservada muestra al plantel con camisetas de campeón y trofeo. La fecha exacta no es legible en el material revisado.',backgroundPhoto:HIST_MEDIA+'tecos-campeon-historico.jpg'},
+  {kind:'CAMPEÓN',date:'Fecha exacta pendiente',season:'Temporada por confirmar',winner:'Tavera FC',title:'Tavera FC',subtitle:'Campeón de Copa · Categoría Segunda',detail:'GANADOR CONFIRMADO: Tavera FC. El título está documentado en el álbum de la Liga, pero la fecha exacta y la temporada no aparecen legibles en el material recuperado. No se inventan.',image:HIST_ROOT+'assets/official-logos/tavera-fc.png'},
+  {kind:'FINAL',date:'Fecha exacta pendiente',season:'Temporada por confirmar',winner:'Ganador por confirmar',title:'Universidad vs Dinamo',subtitle:'Final de Veteranos',detail:'La final está documentada en el archivo fotográfico histórico. El resultado, el campeón y la fecha exacta no aparecen legibles en el material recuperado; quedan marcados como pendientes para no atribuir un ganador incorrecto.',image:HIST_ROOT+'assets/official-logos/dynamo.png'},
+  {kind:'FINAL',date:'2019 · día exacto pendiente',season:'2019',winner:'Ganador por confirmar',title:'Chelsea vs La Esperanza',subtitle:'Veteranos · Final de Copa · 17:30 · Campo 1',detail:'El rol histórico confirma el año 2019, la final, la hora y el Campo 1. El día exacto y el resultado no son legibles en el material recuperado.'},
   {kind:'ANIVERSARIO',date:'28 nov 2012 · memoria de oct 1987',title:'Boavista',subtitle:'XXV aniversario',detail:'Álbum conmemorativo del equipo Boavista.',image:HIST_ROOT+'assets/official-logos/boavista.png'},
   {kind:'PENALES',date:'Archivo histórico',title:'Hermanos vs Juventus',subtitle:'Torneo de Copa',detail:'Serie de penales registrada en el archivo histórico.',imageA:HIST_ROOT+'assets/official-logos/hermanos.png',imageB:HIST_ROOT+'assets/official-logos/juventus.png'},
   {kind:'ENCUENTRO',date:'Archivo histórico',title:'Valencia vs Halcones',subtitle:'Partido histórico',detail:'Encuentro conservado dentro del archivo fotográfico.'},
@@ -796,6 +796,10 @@ function historyMomentCard(m){
       '<div class="v35-history-meta"><span class="v35-history-kind">'+esc(m.kind)+'</span>'+(m.date?'<time class="v35-history-date">'+esc(m.date)+'</time>':'')+'</div>'+
       '<h3>'+esc(m.title)+'</h3>'+
       '<strong>'+esc(m.subtitle)+'</strong>'+
+      ((m.winner||m.season)?'<div class="v35-history-status">'+
+        (m.winner?'<span><b>Ganador</b>'+esc(m.winner)+'</span>':'')+
+        (m.season?'<span><b>Temporada</b>'+esc(m.season)+'</span>':'')+
+      '</div>':'')+
       '<p>'+esc(m.detail)+'</p>'+
     '</div>'+
   '</article>';
