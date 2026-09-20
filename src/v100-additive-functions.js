@@ -114,6 +114,24 @@ function toolsExtra(id='v100-more-extra'){
   '</section>';
 }
 
+function inlineTool(icon,title,sub,action,routeName){
+  return '<button type="button" class="v60-tool-card v100-inline-tool" data-v100-inline-tool="1" '+(routeName?'data-v100-route="'+esc(routeName)+'"':'data-v100-action="'+esc(action)+'"')+'><span class="v100-inline-emoji" aria-hidden="true">'+icon+'</span><span><b>'+esc(title)+'</b><small>'+esc(sub)+'</small></span></button>';
+}
+function toolsInline(){
+  return [
+    inlineTool('🪪','Credencial con OCR','Lectura OCR y PNG','', 'credentialBuilder'),
+    inlineTool('📷','Importar desde WhatsApp','Leer imagen guardada','whatsapp-ocr'),
+    inlineTool('🗓️','JR Matchday+','Checklist de jornada','', 'matchday'),
+    inlineTool('🧠','Simulador de jornada','Escenario local','journey-sim'),
+    inlineTool('🧩','Pizarra táctica avanzada','2D/3D, JSON y PNG','', 'tactics'),
+    inlineTool('🎯','Shot Map','Mapa de tiros local','shotmap'),
+    inlineTool('📣','Fan Zone','Reacciones de afición','fanzone'),
+    inlineTool('📇','Directorio de delegados','Contactos locales','delegates'),
+    inlineTool('📲','Instalar app','PWA en este dispositivo','install-app'),
+    inlineTool('🖼️','Boletín PNG','Imagen para compartir','', 'publications')
+  ].join('');
+}
+
 /* ---------- CREDENCIAL OCR: campos extra y exportación ---------- */
 function curpDob(curp){
   const m=String(curp||'').toUpperCase().match(/^[A-Z]{4}(\d{2})(\d{2})(\d{2})/);if(!m)return '';
@@ -245,7 +263,14 @@ function mount(){
   const screen=$('#screen');if(!screen)return;const r=route();
   if(r==='home'){const old=$('#v100-home-extra',screen);if(old&&Number(old.dataset.v100TeamCount||0)===0&&officialTeams().length)old.remove();if(!$('#v100-home-extra',screen)){screen.insertAdjacentHTML('beforeend',homeExtra());const n=$('#v100-home-extra',screen);bindGeneric(n);bindHome(n)}}
   if(r==='more'&&!$('#v100-more-extra',screen)){screen.insertAdjacentHTML('beforeend',toolsExtra('v100-more-extra'));bindGeneric($('#v100-more-extra',screen))}
-  if(r==='leagueTools'&&!$('#v100-league-tools-extra',screen)){screen.insertAdjacentHTML('beforeend',toolsExtra('v100-league-tools-extra'));bindGeneric($('#v100-league-tools-extra',screen))}
+  if(r==='leagueTools'){
+    $('#v100-league-tools-extra',screen)?.remove();
+    const grid=$('.v60-tool-grid',screen);
+    if(grid&&!$('[data-v100-inline-tool]',grid)){
+      grid.insertAdjacentHTML('beforeend',toolsInline());
+      bindGeneric(grid);
+    }
+  }
   if(r==='credentialBuilder'&&!$('#v100-credential-extra',screen)){screen.insertAdjacentHTML('beforeend',credentialExtra());const n=$('#v100-credential-extra',screen);bindGeneric(n);bindCredential(n)}
   if(r==='tactics'&&!$('#v100-tactics-extra',screen)){screen.insertAdjacentHTML('beforeend',tacticsExtra());const n=$('#v100-tactics-extra',screen);bindGeneric(n);bindTactics(n)}
   if(r==='weatherFields'&&!$('#v100-weather-extra',screen)){screen.insertAdjacentHTML('beforeend',weatherExtra());const n=$('#v100-weather-extra',screen);bindGeneric(n);bindWeather(n)}
