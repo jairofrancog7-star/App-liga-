@@ -450,11 +450,24 @@ function genericTable(kind){
   '</tbody></table></div>';
 }
 
+function summaryTeamsView(current){
+  const list=categoryTeams(current).slice(0,8);
+  if(!list.length)return '';
+  return '<section class="v62-summary-teams-block">'+
+    '<div class="v62-summary-teams-head"><span><small>EQUIPOS REGISTRADOS</small><b>'+esc(current?.name||'Categoría')+'</b></span><button type="button" data-v62-tab="teams">Ver todos</button></div>'+
+    '<div class="v62-summary-teams">'+list.map(name=>
+      '<button type="button" class="v62-summary-team" data-v62-team="'+esc(name)+'">'+
+        teamLogoHtml(name,'v62-summary-team-logo')+
+        '<span>'+esc(name)+'</span>'+
+      '</button>').join('')+'</div>'+
+  '</section>';
+}
 function summaryView(){
   const current=cat(),counts=current?.counts||current?.dashboard?.counts||{};
   const fixtures=rows('fixtures'),scorers=rows('scorers').filter(r=>r.length>=4&&/^\d+$/.test(String(r[3]||'')));
   const goals=scorers.length?scorers.reduce((sum,r)=>sum+scoreNum(r[3]),0):'—';
-  return '<div class="v62-summary-grid">'+
+  return summaryTeamsView(current)+
+  '<div class="v62-summary-grid">'+
     '<button type="button" data-v62-tab="teams"><b>'+esc(counts.Equipos??categoryTeams(current).length)+'</b><small>Equipos</small></button>'+
     '<button type="button" data-v62-tab="players"><b>'+esc(counts.Jugadores??0)+'</b><small>Jugadores</small></button>'+
     '<button type="button" data-v62-tab="fixtures"><b>'+esc(fixtures.length)+'</b><small>Partidos</small></button>'+
@@ -462,8 +475,8 @@ function summaryView(){
   '</div>'+
   '<div class="v62-summary-actions">'+
     '<button type="button" data-v62-tab="standings">Ver tabla</button>'+
-    '<button type="button" data-v62-tab="cards">Tarjetas</button>'+
-    '<button type="button" data-v62-tab="suspensions">Castigados</button>'+
+    '<button type="button" data-v62-tab="fixtures">Jornadas</button>'+
+    '<button type="button" data-v62-tab="players">Jugadores</button>'+
   '</div>';
 }
 function v62CalendarDownload(){
@@ -556,7 +569,7 @@ function renderDataPage(){
   const screen=document.querySelector('#screen');if(!screen||!db)return;
   document.body.classList.add('v62-data-active');
   screen.innerHTML='<section class="v62-data-page" data-v62-page>'+
-    '<header class="v62-data-head"><button type="button" data-v62-back aria-label="Volver">‹</button><div><small>DATOS OFICIALES</small><h1>Liga Juventino Rosas</h1><p>'+esc(sourceStamp())+'</p></div></header>'+
+    '<header class="v62-data-head"><button type="button" data-v62-back aria-label="Volver">‹</button><span class="v62-data-head-logo"><img src="'+esc(catLogo(categoryId))+'" alt="" loading="eager" decoding="async"></span><div><small>DATOS OFICIALES DE LA LIGA</small><h1>Datos de la Liga</h1><p>'+esc(cat()?.name||'Categoría')+' · '+esc(sourceStamp())+'</p></div></header>'+
     categoryRail()+dataTabs()+
     '<main class="v62-data-body" data-v62-body><div class="v62-source-line"><b>'+esc(cat()?.name||'Categoría')+'</b><span>'+esc((cat()?.counts||cat()?.dashboard?.counts||{}).Jugadores??0)+' jugadores · '+esc((cat()?.counts||cat()?.dashboard?.counts||{}).Equipos??0)+' equipos</span></div>'+dataBody()+'</main>'+
   '</section>';
