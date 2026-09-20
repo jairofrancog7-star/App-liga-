@@ -26,6 +26,22 @@ const seasons=[
   {label:'2021/22',crest:ASSETS.league,alt:'Liga Municipal de Fútbol Juventino Rosas'}
 ];
 
+/* V75 — fuentes históricas entregadas por el usuario.
+   IMPORTANTE: estos videos pertenecen SOLO a Historia.
+   Nunca se importan equipos de estas fuentes a la lista de equipos de la temporada actual. */
+const historicalSources=[
+  {
+    title:'Archivo histórico · video 1',
+    note:'Temporadas anteriores, campeones, tablas y material histórico.',
+    url:'https://drive.google.com/file/d/1G5IIosS0jhyga6FdhozUn2DEPSxpkvxU/view?usp=drivesdk'
+  },
+  {
+    title:'Archivo histórico · video 2',
+    note:'Temporadas anteriores y referencias adicionales de la Liga.',
+    url:'https://drive.google.com/file/d/1GFvoNisldXaqIMwQJR9HQx2_xhgTls45/view?usp=drivesdk'
+  }
+];
+
 const videos=[
   {image:ASSETS.videoA,duration:'',title:'Archivo audiovisual de la Liga'},
   {image:ASSETS.videoB,duration:'',title:'Momentos de la Liga Municipal'},
@@ -93,6 +109,19 @@ function featureCard(){
 function videosRow(){
   return '<div class="v35-video-carousel" aria-label="Partidos clásicos">'+videos.map((v,i)=>'<button class="v35-video-card" type="button" data-v35-video="'+i+'"><span class="v35-video-thumb"><img src="'+v.image+'" alt="" loading="lazy" decoding="async"><span class="v35-video-duration">'+v.duration+'</span><span class="v35-video-play">'+playSvg()+'</span></span><span class="v35-video-title">'+esc(v.title)+'</span></button>').join('')+'</div>';
 }
+function historicalSourcesBlock(){
+  return '<section class="v35-history-sources">'+
+    '<div class="v35-section-row"><h2>Fuentes de temporadas anteriores</h2></div>'+
+    '<p class="v35-history-scope">Los equipos que ya no participan se conservan únicamente dentro de Historia. No se agregan a Equipos, clasificación, calendarios ni estadísticas de la temporada actual.</p>'+
+    '<div class="v35-history-source-list">'+historicalSources.map((s,i)=>
+      '<button type="button" class="v35-history-source-card" data-v35-history-source="'+i+'">'+
+        '<span class="v35-history-source-icon">▶</span>'+
+        '<span><b>'+esc(s.title)+'</b><small>'+esc(s.note)+'</small></span>'+
+        '<em>Abrir</em>'+
+      '</button>'
+    ).join('')+'</div>'+
+  '</section>';
+}
 function stats(){
   return '<section class="v35-block v35-stats-block"><h2 class="v35-section-title">Estadísticas históricas</h2>'+
     '<article class="v35-stat-card"><h3>Archivo oficial</h3><div class="v35-stat-rule"></div><p>Facebook de la Liga quedó enlazado como fuente histórica. Los campeones, finales y récords se mostrarán únicamente cuando cada publicación o imagen haya sido verificada.</p></article></section>';
@@ -100,16 +129,19 @@ function stats(){
 function summaryBody(){
   return '<section class="v35-block v35-seasons-block"><div class="v35-section-row"><h2>Buscar por temporada</h2><button type="button" data-v35-tab-jump="Temporadas">Ver todo</button></div><div class="v35-season-carousel">'+seasonCards()+'</div></section>'+
     '<section class="v35-block v35-feature-block">'+featureCard()+'</section>'+
+    historicalSourcesBlock()+
     '<section class="v35-block v35-classics-block"><h2 class="v35-section-title">Ver partidos clásicos</h2>'+videosRow()+'</section>'+
     stats();
 }
 function seasonsBody(){
   return '<section class="v35-block v35-tab-body"><div class="v35-section-row"><h2>Temporadas</h2></div>'+
-    '<div class="v35-season-detail"><span>Archivo histórico</span><h3>Archivo histórico conectado</h3><p>La fuente de Facebook ya está enlazada; no se asignan campeones ni goleadores hasta verificar la publicación o imagen correspondiente.</p></div></section>';
+    '<div class="v35-season-detail"><span>Archivo histórico</span><h3>Temporadas anteriores separadas de la actual</h3><p>Los equipos antiguos pueden aparecer aquí como parte de su temporada histórica, pero nunca se agregan otra vez a la lista de equipos actuales si ya no participan.</p></div></section>'+
+    historicalSourcesBlock();
 }
 function championsBody(){
-  return '<section class="v35-block v35-tab-body"><h2 class="v35-section-title">Campeones</h2>'+
-    '<article class="v35-stat-card"><h3>Fuente histórica enlazada</h3><p>Esta sección mostrará campeones reales documentados en las publicaciones históricas de la Liga; no se usarán campeones de ejemplo.</p></article></section>';
+  return '<section class="v35-block v35-tab-body"><h2 class="v35-section-title">Campeones de otros años</h2>'+
+    '<article class="v35-stat-card"><h3>Archivo histórico real</h3><p>Los campeones de temporadas anteriores se registran aquí aunque el club ya no exista. Eso no lo vuelve a meter en la temporada actual: Historia y Equipos actuales quedan separados.</p></article></section>'+
+    historicalSourcesBlock();
 }
 function finalsBody(){
   return '<section class="v35-block v35-tab-body"><h2 class="v35-section-title">Finales</h2>'+
@@ -233,6 +265,14 @@ function onClick(e){
   if(season){e.preventDefault();e.stopPropagation();const idx=Number(season.dataset.v35Season||0);activeTab='Temporadas';rerenderContent();requestAnimationFrame(()=>{const cards=document.querySelectorAll('.v35-season-grid .v35-season-card');cards[idx]?.scrollIntoView({block:'center',behavior:'smooth'});});return;}
   const shareBtn=e.target.closest('[data-v35-share]');
   if(shareBtn){e.preventDefault();e.stopPropagation();share();return;}
+  const source=e.target.closest('[data-v35-history-source]');
+  if(source){
+    e.preventDefault();e.stopPropagation();
+    const idx=Number(source.dataset.v35HistorySource||0);
+    const item=historicalSources[idx];
+    if(item?.url)window.open(item.url,'_blank','noopener,noreferrer');
+    return;
+  }
   const video=e.target.closest('[data-v35-video]');
   if(video){e.preventDefault();e.stopPropagation();location.hash='#/video';return;}
   const team=e.target.closest('[data-v35-team]');
