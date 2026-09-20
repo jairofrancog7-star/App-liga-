@@ -343,10 +343,10 @@ const V12_OFFICIAL_UPCOMING=[
 ];
 function v12UpcomingRow(m){
   const tm=String(m.datetime||'').match(/\s(\d{1,2}:\d{2})/);
-  return '<div class="v12-schedule-match">'+
+  return '<div class="v12-schedule-match v12-result-match v76-upcoming-match">'+
     '<div class="v12-schedule-clubs"><div class="v12-result-team">'+v12FixtureLogo(m.home)+'<b>'+m.home+'</b></div>'+
     '<div class="v12-result-team">'+v12FixtureLogo(m.away)+'<b>'+m.away+'</b></div></div>'+
-    '<div class="v12-schedule-meta"><time>'+(tm?tm[1]:'Por confirmar')+'</time><small>'+m.venue+'</small><button data-match="'+m.id+'">Ver detalles</button></div></div>';
+    '<div class="v12-schedule-meta"><time>'+(tm?tm[1]:'Por confirmar')+'</time><small class="v76-match-venue">'+m.venue+'</small><button data-match="'+m.id+'">Ver detalles</button></div></div>';
 }
 function v12FixturesMarkup(){
   return '<section class="v12-fixtures-reference" data-v12-fixtures>'+
@@ -614,7 +614,22 @@ function v12StagePanels(){
 }
 
 function v12BracketMarkup(){
-  return '<section class="v12-bracket-reference" data-v12-bracket><div class="empty-state"><h2>Cuadro no publicado</h2><p>No se muestran cruces de liguilla hasta que exista un cuadro oficial publicado por la Liga.</p></div></section>';
+  return '<section class="v12-bracket-reference stage-playoff" data-v12-bracket>'+
+    '<div class="v12-bracket-stage-tabs" role="tablist" aria-label="Etapas del cuadro">'+
+      '<button class="active" data-v12-bracket-stage="playoff">Play-off</button>'+
+      '<button data-v12-bracket-stage="octavos">Octavos de final</button>'+
+      '<button data-v12-bracket-stage="cuartos">Cuartos de final</button>'+
+      '<button data-v12-bracket-stage="semifinal">Semifinales</button>'+
+      '<button data-v12-bracket-stage="final">Final</button>'+
+    '</div>'+
+    '<div class="v12-bracket-dates"><span>'+V12_STAGE_DATES.playoff[0]+'</span><span>'+V12_STAGE_DATES.playoff[1]+'</span></div>'+
+    '<div class="v12-bracket-board">'+
+      v12BracketRoute(V12_BRACKET_ROUTE_LEFT)+
+      v12BracketRoute(V12_BRACKET_ROUTE_RIGHT)+
+    '</div>'+
+    v12StagePanels()+
+    v12FinalCard()+
+  '</section>';
 }
 function patchBracketReference(){
   if(v12Route()!=='competition') return;
