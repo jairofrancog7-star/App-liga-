@@ -828,9 +828,18 @@ function patchTeams(){
 }
 function intercept(){
   document.addEventListener('click',e=>{
-    /* FIX: "Datos" vuelve a abrir #/safe-data con el diseño/tablas V33 originales.
-       Los datos oficiales V62 siguen disponibles únicamente en #/leagueData y
-       no sustituyen la pantalla existente de Datos. */
+    /* FIX: "Datos" dentro de Más debe abrir la pantalla V33 original de
+       Estadísticas, no la página V62 de Datos de la Liga. Se intercepta en
+       captura antes del router principal para restaurar exactamente ese flujo. */
+    const moreData=e.target.closest?.('[data-route="leagueData"],[data-safe-route="leagueData"]');
+    if(route()==='more'&&moreData&&/Datos/i.test(moreData.textContent||'')){
+      e.preventDefault();
+      e.stopImmediatePropagation();
+      location.hash='#/safe-data';
+      return;
+    }
+    /* Los datos oficiales V62 siguen disponibles en #/leagueData cuando se
+       abren desde otras herramientas o enlaces específicos. */
     const own=e.target.closest?.('[data-v62-team]');
     if(own&&route()!=='leagueData'&&route()!=='scorers'&&route()!=='teamDetail'){
       e.preventDefault();e.stopPropagation();openTeam(own.dataset.v62Team);return;
