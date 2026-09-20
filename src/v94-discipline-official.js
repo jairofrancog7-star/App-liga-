@@ -25,9 +25,20 @@
     return String(v??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
   }
   function teamLogo(data,team){
-    const rec=data.team_logos?.[team]||data.team_logos?.[norm(team)]||null;
-    const src=rec?.local||rec?.source||'';
-    if(src)return '<img class="v94-discipline-logo" src="'+esc(src)+'" alt="'+esc(team)+'" loading="lazy" decoding="async">';
+    const logos=data.team_logos||{};
+    const key=Object.keys(logos).find(k=>norm(k)===norm(team));
+    const rec=key?logos[key]:null;
+    const local=rec?.local||'';
+    const rawLocal=local
+      ? 'https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/'+local.replace(/^\.\//,'')
+      : '';
+    const src=rec?.source||rawLocal;
+    if(src){
+      const fallback=rawLocal&&rawLocal!==src?rawLocal:'';
+      return '<img class="v94-discipline-logo" src="'+esc(src)+'"'+
+        (fallback?' data-v94-logo-fallback="'+esc(fallback)+'"':'')+
+        ' alt="'+esc(team)+'" loading="eager" decoding="async">';
+    }
     return '<span class="v94-discipline-logo-fallback">⚽</span>';
   }
   function rosterHas(cat,team,player){
@@ -131,7 +142,7 @@
 
     const items=extract(data);
     const sig=(data.captured_at_utc||'')+'|'+items.map(x=>[x.player,x.team,x.category].join('~')).join('|');
-    if(screen.dataset.v94DisciplineSig===sig)return;
+    if(screen.dataset.v94DisciplineSig===sig&&screen.querySelector('.v94-discipline-page'))return;
     screen.dataset.v94DisciplineSig=sig;
 
     const currentTeams=new Set();
@@ -151,6 +162,15 @@
       '</section>';
 
     document.body.classList.add('v94-discipline-official');
+    screen.querySelectorAll('img[data-v94-logo-fallback]').forEach(img=>{
+      img.addEventListener('error',()=>{
+        const fallback=img.dataset.v94LogoFallback||'';
+        if(fallback&&img.src!==fallback){
+          img.removeAttribute('data-v94-logo-fallback');
+          img.src=fallback;
+        }
+      },{once:true});
+    });
   }
 
   let dataPromise=null;
@@ -169,7 +189,13 @@
   window.addEventListener('hashchange',()=>setTimeout(load,20));
   document.addEventListener('click',()=>setTimeout(load,60),true);
   const screen=document.querySelector('#screen');
-  if(screen)new MutationObserver(()=>{if(isDiscipline()&&!screen.dataset.v94DisciplineSig)setTimeout(load,20)}).observe(screen,{childList:true,subtree:true});
+  if(screen)new MutationObserver(()=>{
+    if(!isDiscipline())return;
+    if(!screen.querySelector('.v94-discipline-page')){
+      screen.dataset.v94DisciplineSig='';
+      setTimeout(load,20);
+    }
+  }).observe(screen,{childList:true,subtree:false});
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',load,{once:true});
   else load();
 })();
