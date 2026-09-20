@@ -254,30 +254,18 @@
 
 
 
-/* V85 — Replica EXACTAMENTE el indicador de Clasificación en los tabs 1 y 3.
-   Clasificación (tab 2) NO se toca.
-   Para evitar conflictos antiguos usamos ::before solo en Partidos/Resultados y Cuadro. */
+
+/* V86 — Indicador REAL para Partidos y resultados + Cuadro.
+   Se usa un elemento interno, no pseudo-elemento, para que la línea no pueda
+   desaparecer por conflictos con estilos anteriores. Clasificación queda intacta. */
 @media (max-width:1023px){
-
-  /* Mismo color activo que Clasificación. */
-  html body[data-app-route="competition"] #screen>.tabs .tab:nth-child(1).active,
-  html body[data-app-route="competition"] #screen>.tabs .tab:nth-child(3).active{
-    color:#22e5ef!important;
+  html body[data-app-route="competition"] #screen>.tabs .tab[data-comp-tab="fixtures"],
+  html body[data-app-route="competition"] #screen>.tabs .tab[data-comp-tab="bracket"]{
+    position:relative!important;
+    overflow:visible!important;
   }
 
-  /* Anula cualquier línea antigua de ::after SOLO en los tabs 1 y 3. */
-  html body[data-app-route="competition"] #screen>.tabs .tab:nth-child(1)::after,
-  html body[data-app-route="competition"] #screen>.tabs .tab:nth-child(3)::after{
-    background:transparent!important;
-    box-shadow:none!important;
-  }
-
-  /* Línea igual a la de Clasificación:
-     corta, centrada, 3px, borde superior redondeado y base recortada/plana. */
-  html body[data-app-route="competition"] #screen>.tabs .tab:nth-child(1)::before,
-  html body[data-app-route="competition"] #screen>.tabs .tab:nth-child(3)::before{
-    content:""!important;
-    display:block!important;
+  html body[data-app-route="competition"] #screen>.tabs .tab .v86-tab-line{
     position:absolute!important;
     left:17%!important;
     right:17%!important;
@@ -293,18 +281,31 @@
     background:transparent!important;
     background-image:none!important;
     box-shadow:none!important;
-    opacity:1!important;
-    visibility:visible!important;
-    transform:none!important;
-    z-index:80!important;
+    opacity:0!important;
+    visibility:hidden!important;
     pointer-events:none!important;
+    z-index:100!important;
   }
 
-  html body[data-app-route="competition"] #screen>.tabs .tab:nth-child(1).active::before,
-  html body[data-app-route="competition"] #screen>.tabs .tab:nth-child(3).active::before{
+  html body[data-app-route="competition"] #screen>.tabs .tab.active .v86-tab-line{
     background:#22e5ef!important;
     background-color:#22e5ef!important;
-    background-image:none!important;
+    opacity:1!important;
+    visibility:visible!important;
+  }
+
+  /* Evita que pseudo-elementos anteriores dupliquen o tapen el indicador
+     en Partidos/Resultados y Cuadro. */
+  html body[data-app-route="competition"] #screen>.tabs .tab[data-comp-tab="fixtures"]::before,
+  html body[data-app-route="competition"] #screen>.tabs .tab[data-comp-tab="fixtures"]::after,
+  html body[data-app-route="competition"] #screen>.tabs .tab[data-comp-tab="bracket"]::before,
+  html body[data-app-route="competition"] #screen>.tabs .tab[data-comp-tab="bracket"]::after{
+    background:transparent!important;
     box-shadow:none!important;
+  }
+
+  html body[data-app-route="competition"] #screen>.tabs .tab[data-comp-tab="fixtures"].active,
+  html body[data-app-route="competition"] #screen>.tabs .tab[data-comp-tab="bracket"].active{
+    color:#22e5ef!important;
   }
 }
