@@ -403,3 +403,25 @@
     font-size:12px!important;
   }
 }
+
+
+/* V89.1 — fichas informativas del mismo deslizador: misma escala que Cuadro. */
+@media (max-width:520px){
+  html body[data-app-route="competition"] .v12-date-strip > .v89-date-chip{
+    flex:0 0 auto!important;
+    height:33px!important;
+    min-height:33px!important;
+    padding:0 9px!important;
+    display:flex!important;
+    align-items:center!important;
+    justify-content:center!important;
+    border-radius:10px!important;
+    background:#1a1b78!important;
+    color:#f2f3ff!important;
+    font-size:12px!important;
+    line-height:1!important;
+    font-weight:800!important;
+    white-space:nowrap!important;
+    box-sizing:border-box!important;
+  }
+}
