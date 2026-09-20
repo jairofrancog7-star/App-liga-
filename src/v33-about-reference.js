@@ -31,6 +31,22 @@ function markup(){
         '<small>Liga Municipal de Fútbol Juventino Rosas A.C.</small>'+
       '</figcaption>'+
     '</figure>'+
+    '<section class="v33-about-history">'+
+      '<div class="v33-about-history-head"><span>ARCHIVO DE LA LIGA</span><h2>Historia, campeones y equipos para el recuerdo</h2><p>La información histórica se mantiene separada de la temporada actual. Se incorporan únicamente datos comprobados en tablas, roles, álbumes, fotografías y videos entregados.</p></div>'+
+      '<div class="v33-about-history-grid">'+
+        '<article><img src="https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/assets/official-logos/juventus.png" alt=""><small>CAMPEÓN CONFIRMADO</small><h3>Juventus</h3><b>Liga 2018–2019</b><p>Publicación histórica del 3 nov 2019.</p></article>'+
+        '<article><img src="https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/assets/official-logos/tavera-fc.png" alt=""><small>CAMPEÓN DE COPA</small><h3>Tavera FC</h3><b>Categoría Segunda</b><p>Registro conservado en el archivo histórico.</p></article>'+
+        '<article><img src="https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/assets/official-logos/boavista.png" alt=""><small>SUBCAMPEÓN</small><h3>Boavista</h3><b>Liga 2018–2019</b><p>También aparece en el archivo de su XXV aniversario.</p></article>'+
+        '<article><img src="https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/assets/official-logos/lobos-cdg.png" alt=""><small>TABLA HISTÓRICA</small><h3>Lobos CDG</h3><b>52 puntos</b><p>Líder del corte de Intermedia J23 de 2018.</p></article>'+
+      '</div>'+
+      '<div class="v33-about-history-facts">'+
+        '<div><b>Veteranos 2022</b><span>Juventus terminó primero en la tabla final con 53 puntos.</span></div>'+
+        '<div><b>Primera Fuerza 2018 · J26</b><span>A. Centeno encabezaba el corte con 64 puntos, seguido por Olímpicos con 63.</span></div>'+
+        '<div><b>Intermedia 2018 · J23</b><span>Alejandro Juárez Merino, de Populares, aparecía como líder de goleo con 31 goles.</span></div>'+
+        '<div><b>Final de Copa Veteranos 2019</b><span>Chelsea vs La Esperanza · 17:30 · Campo 1. No se asigna ganador sin resultado publicado.</span></div>'+
+      '</div>'+
+      '<button type="button" class="v33-about-history-button" data-v33-history>Ver archivo histórico completo</button>'+
+    '</section>'+
   '</article>';
 }
 function setBottomNav(){
@@ -65,6 +81,8 @@ function bind(){
   if(back)back.onclick=function(){location.hash='#/more'};
   const shareButton=document.querySelector('[data-v33-about-share]');
   if(shareButton)shareButton.onclick=share;
+  const historyButton=document.querySelector('[data-v33-history]');
+  if(historyButton)historyButton.onclick=function(){location.hash='#/history'};
 }
 function render(){
   const active=route()==='safe-about';
