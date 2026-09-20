@@ -403,6 +403,28 @@
       return;
     }
 
+    /* V106 — PERFIL DE EQUIPO:
+       La animación "IDENTIDAD DE CLUB" nunca va arriba ni en medio.
+       Primero se muestra la ficha V42 completa (escudo, acciones, tabs, datos);
+       después, al final de la pantalla, se agrega el banner animado. */
+    if(r==='teamDetail'){
+      const nativeTeam=screen.querySelector('[data-v42-reference="teamDetail"]');
+      if(!nativeTeam){
+        screen.querySelectorAll(':scope > [data-v73-motion-banner]').forEach(x=>x.remove());
+        syncAll();
+        return;
+      }
+      let banner=screen.querySelector(':scope > [data-v73-motion-banner]');
+      if(!banner){
+        banner=buildBanner(cfg);
+        banner.classList.add('v73-below-native','v73-team-detail-bottom');
+        banner.dataset.v73BelowNative='team-detail';
+      }
+      if(screen.lastElementChild!==banner)screen.appendChild(banner);
+      syncAll();
+      return;
+    }
+
     /* V92 — En Estadísticas primero va el contenido nativo DATOS / Estadísticas.
        El cuadro animado "Tabla y estadísticas" se baja al final de la página. */
     if(r==='stats'){
