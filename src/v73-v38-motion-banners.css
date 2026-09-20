@@ -289,3 +289,36 @@ body[data-app-route="scorers"] .v28-scorers-page > .v73-below-native h2{
     min-height:292px!important;
   }
 }
+
+
+/* V77 — JUGADORES: animación únicamente al final de la lista */
+body[data-app-route="players"] #screen > .v73-motion-banner{
+  display:none!important;
+}
+
+body[data-app-route="players"] [data-v66-directory="players"] > .v73-below-native{
+  display:block!important;
+  margin:28px 14px calc(96px + env(safe-area-inset-bottom))!important;
+  min-height:320px!important;
+  border-radius:20px!important;
+}
+
+body[data-app-route="players"] [data-v66-directory="players"] > .v73-below-native .v73-motion-inner{
+  min-height:320px!important;
+  padding:20px 18px 18px!important;
+}
+
+body[data-app-route="players"] [data-v66-directory="players"] > .v73-below-native h2{
+  font-size:clamp(34px,10vw,48px)!important;
+}
+
+@media(max-width:390px){
+  body[data-app-route="players"] [data-v66-directory="players"] > .v73-below-native{
+    min-height:292px!important;
+    margin-left:12px!important;
+    margin-right:12px!important;
+  }
+  body[data-app-route="players"] [data-v66-directory="players"] > .v73-below-native .v73-motion-inner{
+    min-height:292px!important;
+  }
+}
