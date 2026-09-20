@@ -417,6 +417,32 @@
       return;
     }
 
+    /* V93 — VER DETALLES:
+       La animación MATCH CENTER / EL PARTIDO, EN VIVO no va arriba.
+       En la ficha real del partido se coloca después de TODO el contenido
+       nativo (marcador, tabs, novedades, clasificación e info del partido).
+       Match Center conserva su comportamiento independiente. */
+    if(r==='match' && sessionStorage.getItem('v69-match-center-entry')!=='1'){
+      const nativeMatch=screen.querySelector('[data-v28-match]');
+      if(!nativeMatch){
+        /* Evita que aparezca un instante arriba mientras V28 termina de
+           construir la pantalla de Ver detalles. */
+        screen.querySelectorAll(':scope > [data-v73-motion-banner]').forEach(x=>x.remove());
+        syncAll();
+        return;
+      }
+
+      let banner=screen.querySelector(':scope > [data-v73-motion-banner]');
+      if(!banner){
+        banner=buildBanner(cfg);
+        banner.classList.add('v73-below-native','v73-match-detail-bottom');
+        banner.dataset.v73BelowNative='match-detail';
+      }
+      if(screen.lastElementChild!==banner)screen.appendChild(banner);
+      syncAll();
+      return;
+    }
+
     let banner=screen.querySelector('[data-v73-motion-banner]');
     if(!banner){
       banner=buildBanner(cfg);
