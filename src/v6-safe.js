@@ -255,7 +255,7 @@
     ${v6LeagueDataHomeCard()}
     <section class="v6-section"><div class="v6-section-head"><h2>Equipo de la Semana</h2><button class="link-button" data-safe-route="stats">Ver datos</button></div><button class="v6-teamweek" data-safe-route="stats"><span>${svg('team')}</span><div><b>XI oficial pendiente</b><p>Se mostrará cuando la Liga publique una selección oficial.</p></div><span>›</span></button></section>
     <section class="v6-section"><div class="v6-section-head"><h2>Calendario y resultados</h2><button class="link-button" data-safe-route="v4-calendar">Abrir calendario</button></div><div class="v6-calendar-card">${v6CalendarHtml()}</div></section>
-    <section class="v6-section"><div class="v6-section-head"><h2>Más datos</h2></div><div class="v6-action-grid">${actionCard('chart','Estadísticas','General, equipos y jugadores','stats')}${actionCard('trophy','Rankings','Clasificación y líderes','rankings')}${actionCard('history','Historia','Temporadas y campeones','history')}${actionCard('chart','Datos avanzados','KPIs y comparativas','safe-data')}</div></section>
+    <section class="v6-section"><div class="v6-section-head"><h2>Más datos</h2></div><div class="v6-action-grid">${actionCard('chart','Estadísticas','General, equipos y jugadores','stats')}${actionCard('trophy','Rankings','Clasificación y líderes','rankings')}${actionCard('history','Historia','Temporadas y campeones','history')}${actionCard('chart','Datos oficiales','Equipos, jugadores y jornadas','leagueData')}</div></section>
   </div>`}
   function performanceView(){
     const base='https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/';
