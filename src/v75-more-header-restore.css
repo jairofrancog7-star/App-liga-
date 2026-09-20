@@ -528,3 +528,196 @@
     max-height:27px!important;
   }
 }
+
+
+/* V79 — ajuste real según el video del usuario.
+   - Sin difuminar ni tapar el arte superior derecho.
+   - Cabecera más baja.
+   - "Más" e icono de cuenta más pequeños.
+   - Sticky real: los renglones pasan por debajo y se ocultan al hacer scroll.
+   - El fondo es una sola imagen continua, sin cambio de tono. */
+@media (max-width:1023px){
+  body[data-app-route="more"]{
+    --v79-more-header-h:104px;
+    --v79-more-bg:#080b82;
+    overflow-x:hidden!important;
+    overflow-y:auto!important;
+    background:var(--v79-more-bg)!important;
+  }
+
+  /* overflow:hidden en app-shell impedía que position:sticky funcionara.
+     Se libera SOLO en Más. */
+  body[data-app-route="more"] #app,
+  body[data-app-route="more"] .app-shell{
+    overflow:visible!important;
+    background:var(--v79-more-bg)!important;
+  }
+
+  body[data-app-route="more"] .topbar,
+  body[data-app-route="more"].v66-compact-route .topbar,
+  body[data-app-route="more"].v69-primary-tool-header .topbar{
+    display:block!important;
+    visibility:visible!important;
+    position:sticky!important;
+    top:0!important;
+    z-index:120!important;
+    height:calc(var(--v79-more-header-h) + env(safe-area-inset-top))!important;
+    min-height:calc(var(--v79-more-header-h) + env(safe-area-inset-top))!important;
+    max-height:calc(var(--v79-more-header-h) + env(safe-area-inset-top))!important;
+    margin:0!important;
+    padding:0!important;
+    overflow:hidden!important;
+    isolation:isolate!important;
+
+    /* Mismo arte, SIN gradiente ni velo: el diseño de la derecha queda nítido. */
+    background-color:var(--v79-more-bg)!important;
+    background-image:url('../more-bg-v19.webp?v=20260918-v19')!important;
+    background-repeat:no-repeat!important;
+    background-size:100% auto!important;
+    background-position:center top!important;
+
+    border:0!important;
+    border-bottom:0!important;
+    box-shadow:none!important;
+    backdrop-filter:none!important;
+    -webkit-backdrop-filter:none!important;
+  }
+
+  body[data-app-route="more"] .topbar::before{
+    content:none!important;
+    display:none!important;
+  }
+
+  body[data-app-route="more"] .topbar::after,
+  body[data-app-route="more"].v66-compact-route .topbar::after,
+  body[data-app-route="more"].v69-primary-tool-header .topbar::after{
+    content:"Más"!important;
+    display:block!important;
+    position:absolute!important;
+    left:22px!important;
+    right:auto!important;
+    top:auto!important;
+    bottom:17px!important;
+    width:auto!important;
+    height:auto!important;
+    margin:0!important;
+    padding:0!important;
+    color:#f4f4f8!important;
+    font-family:Inter,Roboto,Arial,sans-serif!important;
+    font-size:31px!important;
+    font-weight:700!important;
+    line-height:1!important;
+    letter-spacing:-.035em!important;
+    white-space:nowrap!important;
+    pointer-events:none!important;
+    z-index:5!important;
+  }
+
+  body[data-app-route="more"] .topbar .profile-button,
+  body[data-app-route="more"].v66-compact-route .topbar .profile-button,
+  body[data-app-route="more"].v69-primary-tool-header .topbar .profile-button{
+    display:block!important;
+    visibility:visible!important;
+    opacity:1!important;
+    position:absolute!important;
+    right:22px!important;
+    left:auto!important;
+    top:auto!important;
+    bottom:17px!important;
+    width:25px!important;
+    height:25px!important;
+    min-width:25px!important;
+    min-height:25px!important;
+    max-width:25px!important;
+    max-height:25px!important;
+    margin:0!important;
+    padding:0!important;
+    border:0!important;
+    border-radius:0!important;
+    background-color:transparent!important;
+    background-image:url('../profile-more-reference.svg?v=parts23')!important;
+    background-repeat:no-repeat!important;
+    background-position:center!important;
+    background-size:contain!important;
+    box-shadow:none!important;
+    color:transparent!important;
+    z-index:6!important;
+  }
+
+  body[data-app-route="more"] #screen{
+    position:relative!important;
+    z-index:1!important;
+    overflow:visible!important;
+    background:var(--v79-more-bg)!important;
+  }
+
+  body[data-app-route="more"] .v19-more-page{
+    position:relative!important;
+    z-index:1!important;
+    padding-top:18px!important;
+    overflow:hidden!important;
+
+    /* Continuación exacta del mismo bitmap:
+       la página empieza después de la cabecera, por eso el offset coincide
+       con la altura del header. No hay capas que difuminen el balón. */
+    background-color:var(--v79-more-bg)!important;
+    background-image:url('../more-bg-v19.webp?v=20260918-v19')!important;
+    background-repeat:no-repeat!important;
+    background-size:100% auto!important;
+    background-position:center calc(-1 * var(--v79-more-header-h))!important;
+  }
+
+  body[data-app-route="more"] .v19-more-page::before{
+    content:none!important;
+    display:none!important;
+    background:none!important;
+  }
+
+  /* Se mantiene fuera el escudo flotante duplicado; el arte derecho queda limpio. */
+  body[data-app-route="more"] .v19-more-logo{
+    display:none!important;
+    visibility:hidden!important;
+  }
+}
+
+@media(max-width:560px){
+  body[data-app-route="more"]{
+    --v79-more-header-h:100px;
+  }
+  body[data-app-route="more"] .topbar::after{
+    left:20px!important;
+    bottom:16px!important;
+    font-size:29px!important;
+  }
+  body[data-app-route="more"] .topbar .profile-button{
+    right:20px!important;
+    bottom:16px!important;
+    width:24px!important;
+    height:24px!important;
+    min-width:24px!important;
+    min-height:24px!important;
+    max-width:24px!important;
+    max-height:24px!important;
+  }
+}
+
+@media(max-width:390px){
+  body[data-app-route="more"]{
+    --v79-more-header-h:96px;
+  }
+  body[data-app-route="more"] .topbar::after{
+    left:18px!important;
+    bottom:15px!important;
+    font-size:28px!important;
+  }
+  body[data-app-route="more"] .topbar .profile-button{
+    right:18px!important;
+    bottom:15px!important;
+    width:23px!important;
+    height:23px!important;
+    min-width:23px!important;
+    min-height:23px!important;
+    max-width:23px!important;
+    max-height:23px!important;
+  }
+}
