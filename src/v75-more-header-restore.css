@@ -183,3 +183,124 @@
     height:120px!important;
   }
 }
+
+
+/* V76 — MÁS ajustado a la nueva referencia del usuario:
+   cabecera alta integrada, título grande y perfil completo dentro del borde. */
+@media (max-width:1023px){
+  body[data-app-route="more"],
+  body[data-app-route="more"] .app-shell{
+    background:#080b82!important;
+  }
+
+  body[data-app-route="more"] .topbar,
+  body[data-app-route="more"].v66-compact-route .topbar,
+  body[data-app-route="more"].v69-primary-tool-header .topbar{
+    height:calc(184px + env(safe-area-inset-top))!important;
+    min-height:calc(184px + env(safe-area-inset-top))!important;
+    max-height:calc(184px + env(safe-area-inset-top))!important;
+    background:
+      linear-gradient(180deg,#080b82 0%,#080b82 56%,#090c83 100%)!important;
+    border:0!important;
+    border-bottom:0!important;
+    box-shadow:none!important;
+  }
+
+  body[data-app-route="more"] .topbar::after,
+  body[data-app-route="more"].v66-compact-route .topbar::after,
+  body[data-app-route="more"].v69-primary-tool-header .topbar::after{
+    left:34px!important;
+    bottom:38px!important;
+    font-size:52px!important;
+    line-height:.96!important;
+    font-weight:700!important;
+    letter-spacing:-.045em!important;
+  }
+
+  body[data-app-route="more"] .topbar .profile-button,
+  body[data-app-route="more"].v66-compact-route .topbar .profile-button,
+  body[data-app-route="more"].v69-primary-tool-header .topbar .profile-button{
+    right:34px!important;
+    bottom:39px!important;
+    width:46px!important;
+    height:46px!important;
+    min-width:46px!important;
+    min-height:46px!important;
+    max-width:46px!important;
+    max-height:46px!important;
+    background-size:contain!important;
+    background-position:center!important;
+  }
+
+  /* Empata el primer tramo del contenido con el mismo azul del header,
+     sin franja distinta entre "Más" y "Siguiendo". */
+  body[data-app-route="more"] .v19-more-page{
+    padding-top:28px!important;
+    background:
+      linear-gradient(180deg,rgba(9,12,131,.00) 0%,rgba(7,17,158,.10) 30%,rgba(5,27,216,.34) 78%,rgba(6,29,229,.72) 100%),
+      url('../more-bg-v19.webp?v=20260918-v19') center -154px/100% auto no-repeat,
+      #090c83!important;
+  }
+
+  /* El escudo decorativo lateral debe quedar completo y no pegado al borde. */
+  body[data-app-route="more"] .v19-more-logo{
+    right:17%!important;
+    width:24%!important;
+    max-width:142px!important;
+    height:132px!important;
+    object-fit:contain!important;
+    object-position:center!important;
+  }
+}
+
+@media (max-width:560px){
+  body[data-app-route="more"] .topbar{
+    height:calc(176px + env(safe-area-inset-top))!important;
+    min-height:calc(176px + env(safe-area-inset-top))!important;
+    max-height:calc(176px + env(safe-area-inset-top))!important;
+  }
+  body[data-app-route="more"] .topbar::after{
+    left:30px!important;
+    bottom:35px!important;
+    font-size:48px!important;
+  }
+  body[data-app-route="more"] .topbar .profile-button{
+    right:30px!important;
+    bottom:36px!important;
+    width:43px!important;
+    height:43px!important;
+    min-width:43px!important;
+    min-height:43px!important;
+    max-width:43px!important;
+    max-height:43px!important;
+  }
+  body[data-app-route="more"] .v19-more-logo{
+    right:14%!important;
+    width:26%!important;
+    max-width:134px!important;
+    height:126px!important;
+  }
+}
+
+@media (max-width:390px){
+  body[data-app-route="more"] .topbar{
+    height:calc(168px + env(safe-area-inset-top))!important;
+    min-height:calc(168px + env(safe-area-inset-top))!important;
+    max-height:calc(168px + env(safe-area-inset-top))!important;
+  }
+  body[data-app-route="more"] .topbar::after{
+    left:26px!important;
+    bottom:32px!important;
+    font-size:44px!important;
+  }
+  body[data-app-route="more"] .topbar .profile-button{
+    right:26px!important;
+    bottom:33px!important;
+    width:40px!important;
+    height:40px!important;
+    min-width:40px!important;
+    min-height:40px!important;
+    max-width:40px!important;
+    max-height:40px!important;
+  }
+}
