@@ -5049,7 +5049,7 @@ function moreView(){
       v19MoreButton('performance','Performance Zone','safe-performance',true)+
       v19MoreButton('medal','Máximo goleador','scorers')+
       v19MoreButton('video','Momentos','moments')+
-      v19MoreButton('data','Datos','safe-data',true)+
+      v19MoreButton('data','Datos','leagueData',true)+
       v19MoreButton('qr','QR de la Liga','ligaQR')+
     '</div>'+
     '<div class="v19-more-label">Gaming</div>'+
