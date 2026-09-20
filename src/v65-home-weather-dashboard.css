@@ -649,3 +649,106 @@
     background:transparent!important;
   }
 }
+
+
+/* V74 — GOLEADORES REALES EN INICIO */
+@media (max-width:1023px){
+  body[data-app-route="home"] .v74-home-scorers .section-head{
+    align-items:center!important;
+  }
+  body[data-app-route="home"] .v74-scorer-card{
+    overflow:hidden!important;
+    border:1px solid rgba(83,99,199,.30)!important;
+    border-radius:18px!important;
+    background:#070966!important;
+  }
+  body[data-app-route="home"] .v74-scorer-row{
+    appearance:none!important;
+    -webkit-appearance:none!important;
+    width:100%!important;
+    min-height:66px!important;
+    display:grid!important;
+    grid-template-columns:30px 42px minmax(0,1fr) 32px!important;
+    align-items:center!important;
+    gap:10px!important;
+    padding:8px 12px!important;
+    border:0!important;
+    border-top:1px solid rgba(255,255,255,.08)!important;
+    background:transparent!important;
+    color:#fff!important;
+    text-align:left!important;
+  }
+  body[data-app-route="home"] .v74-scorer-row:first-child{border-top:0!important}
+  body[data-app-route="home"] .v74-scorer-rank{
+    color:#8993c3!important;
+    text-align:center!important;
+    font:700 18px/1 Inter,Roboto,Arial,sans-serif!important;
+  }
+  body[data-app-route="home"] .v74-scorer-logo{
+    width:40px!important;
+    height:40px!important;
+    display:grid!important;
+    place-items:center!important;
+    overflow:visible!important;
+    background:transparent!important;
+  }
+  body[data-app-route="home"] .v74-scorer-logo img{
+    display:block!important;
+    width:40px!important;
+    height:40px!important;
+    max-width:40px!important;
+    max-height:40px!important;
+    object-fit:contain!important;
+    background:transparent!important;
+  }
+  body[data-app-route="home"] .v74-scorer-fallback{
+    border:1px solid rgba(61,219,243,.75)!important;
+    border-radius:50%!important;
+    background:linear-gradient(145deg,#1761c4,#13c9df)!important;
+    font-size:7px!important;
+    font-weight:900!important;
+  }
+  body[data-app-route="home"] .v74-scorer-copy{
+    min-width:0!important;
+    display:flex!important;
+    flex-direction:column!important;
+    gap:3px!important;
+  }
+  body[data-app-route="home"] .v74-scorer-copy strong{
+    overflow:hidden!important;
+    text-overflow:ellipsis!important;
+    white-space:nowrap!important;
+    color:#fff!important;
+    font:760 14px/1.08 Inter,Roboto,Arial,sans-serif!important;
+  }
+  body[data-app-route="home"] .v74-scorer-copy small{
+    overflow:hidden!important;
+    text-overflow:ellipsis!important;
+    white-space:nowrap!important;
+    color:#9ea7d0!important;
+    font:500 9.5px/1.1 Inter,Roboto,Arial,sans-serif!important;
+  }
+  body[data-app-route="home"] .v74-scorer-goals{
+    color:#12ddeb!important;
+    text-align:right!important;
+    font:850 18px/1 Inter,Roboto,Arial,sans-serif!important;
+  }
+  body[data-app-route="home"] .v74-scorer-note{
+    margin:0!important;
+    padding:8px 12px 10px!important;
+    border-top:1px solid rgba(255,255,255,.07)!important;
+    color:#8f98c8!important;
+    font:500 8.5px/1.25 Inter,Roboto,Arial,sans-serif!important;
+    text-align:center!important;
+  }
+  body[data-app-route="home"] .v74-scorer-empty{
+    min-height:92px!important;
+    display:grid!important;
+    place-content:center!important;
+    gap:5px!important;
+    padding:18px!important;
+    text-align:center!important;
+  }
+  body[data-app-route="home"] .v74-scorer-empty b{font-size:14px!important}
+  body[data-app-route="home"] .v74-scorer-empty span{color:#9da6cf!important;font-size:10px!important}
+}
