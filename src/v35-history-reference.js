@@ -530,10 +530,39 @@ const historicTeamLogoMap={
   'pozos':'assets/teams/pozos-fc.webp',
   'a pozos':'assets/teams/pozos-fc.webp',
   'america':'assets/branding/america-veteranos-35-user.png',
-  'america veteranos':'assets/branding/america-veteranos-35-user.png'
+  'america veteranos':'assets/branding/america-veteranos-35-user.png',
+  'c de gasca':'assets/teams/deportivo-cg.webp',
+  'pozos fc':'assets/teams/pozos-fc.webp',
+  'a santiago':'assets/teams/atletico-santiago.webp',
+  'atletico santiago':'assets/teams/atletico-santiago.webp',
+  'f tavera':'assets/teams/franco-tavera-jr-veteranos.webp',
+  'franco tavera':'assets/teams/franco-tavera-jr-veteranos.webp',
+  'huracan':'assets/teams/huracan.webp',
+  'toros de cuenda':'assets/official-logos/toros-de-cuenda.png',
+  'capibaras':'assets/official-logos/capibaras.png',
+  'pachangas fc':'assets/official-logos/pachangas-fc.png',
+  'dep la luz':'assets/official-logos/dep-la-luz.png',
+  'deportivo la luz':'assets/official-logos/dep-la-luz.png',
+  'dep nopalero':'assets/official-logos/dep-nopalero.png',
+  'deportivo nopalero':'assets/official-logos/dep-nopalero.png',
+  'dep zapata':'assets/official-logos/dep-zapata.png',
+  'deportivo zapata':'assets/official-logos/dep-zapata.png',
+  'promesas':'assets/official-logos/promesas-fc.png',
+  'galeana':'assets/official-logos/galeana.png',
+  'aldama fc':'assets/official-logos/aldama-fc.png',
+
+  // Homónimos históricos: el usuario pidió mostrar el escudo del club real como referencia visual.
+  'unam':'https://www.clipartmax.com/png/middle/278-2789076_pumas-de-la-unam-mexican-football-teams-badges.png',
+  'guadalajara':'https://www.clipartmax.com/png/middle/114-1145991_cd-guadalajara-imagenes-de-las-chivas-2018.png',
+  'arsenal':'https://upload.wikimedia.org/wikipedia/en/5/53/Arsenal_FC.svg',
+  'chelsea':'https://upload.wikimedia.org/wikipedia/en/c/cc/Chelsea_FC.svg',
+  'dortmund':'https://commons.wikimedia.org/wiki/Special:Redirect/file/Borussia_Dortmund_logo.svg',
+  'atlas':'https://commons.wikimedia.org/wiki/Special:Redirect/file/F%C3%BAtbol_Club_Atlas.svg',
+  'boca jrs':'https://commons.wikimedia.org/wiki/Special:Redirect/file/Escudo_del_Club_Atl%C3%A9tico_Boca_Juniors_2012.svg',
+  'boca jrs ':'https://commons.wikimedia.org/wiki/Special:Redirect/file/Escudo_del_Club_Atl%C3%A9tico_Boca_Juniors_2012.svg'
 };
 function histTeamKey(v){return String(v||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[().]/g,' ').replace(/[^a-z0-9]+/g,' ').trim().replace(/\s+/g,' ')}
-function historicLogo(name){const p=historicTeamLogoMap[histTeamKey(name)];return p?HIST_ROOT+p:''}
+function historicLogo(name){const p=historicTeamLogoMap[histTeamKey(name)];if(!p)return '';return /^https?:\/\//i.test(p)?p:HIST_ROOT+p}
 
 const historicalTeamEras=[
   {period:'1987 · referencia retrospectiva publicada en 2012',category:'Primera Fuerza / fútbol de comunidades',teams:['Boavista','Cuenda','Aguilares','San Julián','Merino','Santa María de Guadalupe','Pozos']},
@@ -547,8 +576,37 @@ const historicalTeamEras=[
   {period:'2018–2023',category:'Roles y tablas complementarias',teams:['Deportivo Maravillas','A. Pozos','Galaxy','Tapatío','Guadalupanos','Deportivo Pozos','Universidad','Valencia','Halcones','Galácticos FC','Sección 14','San Juan FC']},
   {period:'2022',category:'Veteranos · tabla final',teams:['Juventus','Hermanos','América','Dynamo','PSV','Deportivo Rafa','Boavista','Arsenal','Cuenda','Barrio Seco','UNAM','Átomos']},
   {period:'2024',category:'Fuerza Intermedia / archivo reciente',teams:['A. San Julián','Lobos CDG','Herreras FC','Oklahoma','Atlético Galeana','Promesas FC','Franco FC','Mineros','Terrícolas','Juventus','Hermanos','Linces']},
-  {period:'2025–2026',category:'Finales, Copa y Veteranos conservados',teams:['Boca Jrs.','Boavista','Manchester United','B.F.C.','Galácticos (Pozos)','Herreras FC','Lobos CDG','Franco FC','Salvajes','Juventus','San Antonio Jrs.','Real de Roque','La Esperanza','La Canchita Deportes','Aldama FC']}
+  {period:'2025–2026',category:'Finales, Copa y Veteranos conservados',teams:['Boca Jrs.','Boavista','Manchester United','B.F.C.','Galácticos (Pozos)','Herreras FC','Lobos CDG','Franco FC','Salvajes','Juventus','San Antonio Jrs.','Real de Roque','La Esperanza','La Canchita Deportes','Aldama FC']},
+  {period:'2026 · temporada actual documentada',category:'Cinco categorías de la Liga',teams:[
+    'C. de Gasca','Juventus','Cuenda','Pozos FC','Boavista','PSV','A. Santiago','F. Tavera','América','Huracán',
+    'La Esperanza','Dynamo','Boca JRS','Toros de Cuenda','Manchester',
+    'Hermanos','San José FC','Linces','Napoli','Lobos CDG','Terrícolas','Galácticos','Franco FC','Herreras FC','Abejas',
+    'La Canchita Deportes','Galeana','Aldama FC','Malvinas','Capibaras','La Cuadrilla','Mazacotes FC','Dep. Maravillas','Osasuna','San Antonio JRS','Populares','Promesas','La Huerta',
+    'Tavera FC','Pachangas FC','San Juan FC','Tapatío','Dep. La Luz','San Julián','Barza','San José JRS','San Antonio FC','Célticos FC','Dep. Nopalero','Dep. Zapata'
+  ]}
 ];
+
+/* V111 — catálogo total 2012+.
+   Reúne todos los nombres encontrados en tablas, roles, publicaciones y temporada actual.
+   No implica que sigan activos; sirve únicamente como archivo histórico. */
+const allHistoricalTeams2012Plus=[...new Set(
+  historicalTeamEras
+    .filter(g=>!String(g.period).startsWith('1987'))
+    .flatMap(g=>g.teams)
+    .concat([
+      'Real DHP','Vatos Locos','Tecos','Oklahoma','Mineros','Barza','San Antonio','Osasuna',
+      'Mazacotes','Titanes Tavera','Morales','Populares','A. Centeno','Chelsea','La Cuadrilla',
+      'PSV','Sección 14','Dep. Maravillas','La Esperanza FC','A. Pozos','Galaxy','San Juan FC',
+      'Tapatío','Guadalupanos','Barrio Seco','UNAM','Átomos','Deportivo Rafa','Arsenal',
+      'Olímpicos','Linces','Birds Eye','Puros Cuates','Dulces Nombres','Malvinas','Magisterio',
+      'Picosos','Valedores','La Pandilla','El Alto','Xolos Jaralillo','Real Cerrito','DHP',
+      'Halcones de Cuenda','Deportivo Pozos','Real Cerrito de Gasca','San José de la Montaña',
+      'Río Grande','Unión Allende','Novatos','Salvajes','Continental','Toros','Aldama',
+      'Pozos','San José de Allende','Atlas','Guadalajara','Sección XIV','La Pandilla de Rancho V.',
+      'Dortmund','Portugal','Birds Eye Jr.','Centeno','Boca Jrs.','B.F.C.','Manchester United',
+      'Galácticos (Pozos)','Herreras FC (Cuenda)','San Antonio Jrs.','Real de Roque'
+    ])
+)].sort((a,b)=>a.localeCompare(b,'es',{sensitivity:'base'}));
 
 const expandedRetroNames=[
   'Real DHP','Vatos Locos','Tecos','Oklahoma','Mineros','Barza','San Antonio','Osasuna',
@@ -753,8 +811,10 @@ function verifiedHistoryBlocks(){
     historicalGoalsBlock()+
     '<div class="v35-history-subhead"><span>HALLAZGOS DE LOS VIDEOS</span><h3>Fechas y publicaciones recuperadas</h3><p>Se revisaron los segmentos completos de Drive mediante muestreo visual sistemático y ampliaciones de las publicaciones importantes. Cuando una publicación no muestra el nombre del equipo o el resultado, se conserva esa limitación en vez de inventarlo.</p></div>'+
     '<div class="v35-result-list v35-video-findings">'+videoArchiveFindings.map(x=>'<article class="v35-final-row">'+(x.image?'<div class="v35-final-logos"><img src="'+x.image+'" alt="" loading="lazy"></div>':'')+'<span>'+esc(x.date)+'</span><b>'+esc(x.title)+'</b><p>'+esc(x.detail)+'</p></article>').join('')+'</div>'+
-    '<div class="v35-history-subhead"><span>EQUIPOS HISTÓRICOS</span><h3>Equipos encontrados en los videos, tablas, roles y publicaciones</h3><p>Se agrupan por la época en que aparecen en el archivo. Un nombre aquí no significa que el equipo siga inscrito hoy. Cuando ya existe un escudo correspondiente en el proyecto, se muestra junto al equipo.</p></div>'+
+    '<div class="v35-history-subhead"><span>EQUIPOS HISTÓRICOS</span><h3>Equipos encontrados en los videos, tablas, roles y publicaciones</h3><p>Se agrupan por la época en que aparecen en el archivo. Un nombre aquí no significa que el equipo siga inscrito hoy. Se usa el escudo local confirmado cuando existe; para equipos históricos llamados UNAM, Guadalajara, Arsenal, Chelsea, Manchester, Juventus, PSV, Dortmund y otros nombres de clubes conocidos, puede mostrarse el emblema del club real como referencia visual.</p></div>'+
     '<div class="v35-era-archive">'+historicalTeamEras.map(g=>'<section class="v35-era-group"><header><span>'+esc(g.period)+'</span><b>'+esc(g.category)+'</b></header><div class="v35-era-team-grid">'+g.teams.map(n=>{const logo=historicLogo(n);return '<article class="v35-era-team">'+(logo?'<img src="'+logo+'" alt="" loading="lazy" decoding="async">':'<span class="v35-era-fallback">LM</span>')+'<b>'+esc(n)+'</b></article>'}).join('')+'</div></section>').join('')+'</div>'+
+    '<div class="v35-history-subhead"><span>TODOS LOS EQUIPOS · 2012 EN ADELANTE</span><h3>Catálogo histórico completo encontrado hasta ahora</h3><p>'+allHistoricalTeams2012Plus.length+' nombres distintos recuperados del archivo. Los escudos de UNAM, Guadalajara/Chivas, Arsenal, Chelsea, Dortmund y otros homónimos se usan como referencia visual por solicitud del usuario; no significan afiliación con el club profesional.</p></div>'+
+    '<section class="v35-era-group v35-all-teams-group"><header><span>2012–2026</span><b>Equipos documentados</b></header><div class="v35-era-team-grid">'+allHistoricalTeams2012Plus.map(n=>{const logo=historicLogo(n);return '<article class="v35-era-team">'+(logo?'<img src="'+logo+'" alt="" loading="lazy" decoding="async">':'<span class="v35-era-fallback">LM</span>')+'<b>'+esc(n)+'</b></article>'}).join('')+'</div></section>'+
     '<div class="v35-history-subhead"><span>TABLAS HISTÓRICAS</span><h3>Clasificaciones recuperadas</h3><p>Se conserva el contexto exacto del material: una tabla final se marca como final; un corte de jornada se marca solo como corte.</p></div>'+
     historicTables.map(t=>'<article class="v35-old-table"><header><span>'+esc(t.season)+'</span><div><b>'+esc(t.title)+'</b><small>'+esc(t.note)+'</small></div></header><div class="v35-old-table-head"><span>POS</span><span>EQUIPO</span><span>PTS</span></div>'+t.rows.map(r=>'<div class="v35-old-table-row"><span>'+esc(r[0])+'</span><b>'+esc(r[1])+'</b><strong>'+esc(r[2])+'</strong></div>').join('')+'</article>').join('')+
     '<div class="v35-history-subhead"><span>RESULTADOS CONSERVADOS</span><h3>Ganadores publicados en roles antiguos</h3></div>'+
