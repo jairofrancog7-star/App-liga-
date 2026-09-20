@@ -49,7 +49,7 @@ function tabs(){
 function header(){
  return '<header class="v33-data-head" data-v33-head>'+
    '<div class="v33-head-actions"><button type="button" data-v33-back aria-label="Volver">'+backIcon()+'</button><button type="button" data-v33-share aria-label="Compartir">'+shareIcon()+'</button></div>'+
-   '<div class="v33-morph-title" data-v33-morph-title><h1>Estadísticas</h1><p>Datos oficiales · Primera Fuerza</p></div>'+tabs()+
+   '<div class="v33-morph-title" data-v33-morph-title><h1>Estadísticas</h1><p>Fase final</p></div>'+tabs()+
  '</header>';
 }
 function standings(){
@@ -167,7 +167,7 @@ function generalView(){
    '<section class="v33-general-section">'+
      '<div class="v33-general-title"><h2>Estadísticas de equipo</h2><button type="button" data-v33-tab="team">Ver todo</button></div>'+
      '<div class="v33-carousel">'+
-       teamStatCard('Goles a favor',6,'desc')+
+       teamStatCard('Goles',6,'desc')+
        teamStatCard('Partidos ganados',3,'desc')+
        teamStatCard('Puntos',9,'desc')+
      '</div>'+
