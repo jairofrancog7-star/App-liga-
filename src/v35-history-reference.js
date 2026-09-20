@@ -229,6 +229,7 @@ const videoArchiveFindings=[
   {date:'15 abr 2017',title:'Primera Fuerza · goleo J28',detail:'Juan Manuel Gámez López (Hermanos) encabeza el corte con 34 goles; Fernando Gámez Reyes (Abejas), Jorge Alberto Sánchez Mendoza (Juventus) y Noé Alfredo Silva Martínez (La Cuadrilla) aparecen con 29.'},
   {date:'06 may 2017',title:'Primera · corte de Liga J30',detail:'Linces aparece líder con 79 puntos. Hermanos registra 111 goles a favor; Linces, 107 y diferencia de +75. Son marcas del corte publicado, no récords absolutos de toda la historia.',image:HIST_ROOT+'assets/official-logos/linces.png'},
   {date:'20 may 2026',title:'Final de Liga · Veteranos 50+',detail:'Publicación de Juventino Rosas Liga anuncia la Gran Final de Veteranos 50 y más entre La Esperanza y Boavista. La fecha exacta del partido no es visible en el cuadro recuperado.',image:HIST_ROOT+'assets/official-logos/boavista.png'},
+  {date:'2024',title:'Atlético Galeana · subcampeón en el archivo reciente',detail:'El material reciente conserva una publicación de premiación que identifica a Atlético Galeana como subcampeón. La categoría no se asigna aquí porque no queda legible en el fragmento revisado.',image:HIST_ROOT+'assets/official-logos/galeana.png'},
   {date:'24 nov 2024',title:'Semifinal de vuelta · Fuerza Intermedia',detail:'A. San Julián vs Lobos CDG · 12:00 · San Julián. Herreras F.C. vs Oklahoma · 12:00 · Cuenda. El cartel fue publicado el 22 nov 2024.',image:HIST_ROOT+'assets/official-logos/lobos-cdg.png'},
   {date:'07 jun 2026',title:'Gran Final · Segunda Fuerza',detail:'La Canchita Deportes vs Aldama FC · 10:00 · Campo 1, Deportiva Sur. La publicación fue realizada el 3 de junio de 2026.',image:HIST_ROOT+'assets/official-logos/la-canchita-deportes.png'}
 ];
@@ -479,7 +480,14 @@ const historicTeamLogoMap={
   'tapatio':'assets/official-logos/tapatio.png',
   'san jose fc':'assets/official-logos/san-jose-fc.png',
   'san jose jrs':'assets/official-logos/san-jose-jrs.png',
-  'celticos':'assets/official-logos/celticos.png'
+  'celticos':'assets/official-logos/celticos.png',
+  'galacticos fc':'assets/teams/galacticos-pozos.webp',
+  'galacticos':'assets/teams/galacticos-pozos.webp',
+  'deportivo pozos':'assets/teams/pozos-fc.webp',
+  'pozos':'assets/teams/pozos-fc.webp',
+  'a pozos':'assets/teams/pozos-fc.webp',
+  'america':'assets/branding/america-veteranos-35-user.png',
+  'america veteranos':'assets/branding/america-veteranos-35-user.png'
 };
 function histTeamKey(v){return String(v||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[().]/g,' ').replace(/[^a-z0-9]+/g,' ').trim().replace(/\s+/g,' ')}
 function historicLogo(name){const p=historicTeamLogoMap[histTeamKey(name)];return p?HIST_ROOT+p:''}
@@ -493,6 +501,7 @@ const historicalTeamEras=[
   {period:'2016–2017',category:'Fuerzas y Veteranos',teams:['Toros','Morales','Galeana','San Julián','Birds Eye Jr.','San José de Allende','Río Grande','Tecos','Portugal','San Antonio FC','Dortmund','A. Centeno','Puros Cuates','Oklahoma','Mazacotes','Real Cerrito de Gasca','Osasuna']},
   {period:'2017–2018',category:'Primera Fuerza',teams:['Olímpicos','A. Centeno','Hermanos','Juventus','Linces','La Esperanza','PSV','Boavista','La Cuadrilla','Puros Cuates','Napoli','Tavera','Malvinas','Chelsea','Abejas','San Antonio Jr.']},
   {period:'2017–2018',category:'Intermedia',teams:['Lobos CDG','Vatos Locos','Real DHP','San Antonio','Populares','Tecos','Oklahoma','Mineros','Titanes Tavera','La Huerta','Franco FC','Osasuna','Terrícolas','Barza','Mazacotes','Morales']},
+  {period:'2018–2023',category:'Roles y tablas complementarias',teams:['Deportivo Maravillas','A. Pozos','Galaxy','Tapatío','Guadalupanos','Deportivo Pozos','Universidad','Valencia','Halcones','Galácticos FC','Sección 14','San Juan FC']},
   {period:'2022',category:'Veteranos · tabla final',teams:['Juventus','Hermanos','América','Dynamo','PSV','Deportivo Rafa','Boavista','Arsenal','Cuenda','Barrio Seco','UNAM','Átomos']},
   {period:'2024',category:'Fuerza Intermedia / archivo reciente',teams:['A. San Julián','Lobos CDG','Herreras FC','Oklahoma','Atlético Galeana','Promesas FC','Franco FC','Mineros','Terrícolas','Juventus','Hermanos','Linces']},
   {period:'2025–2026',category:'Finales conservadas',teams:['La Esperanza','Boavista','La Canchita Deportes','Aldama FC']}
