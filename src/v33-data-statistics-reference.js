@@ -195,8 +195,9 @@ function bind(){
  document.querySelectorAll('[data-v33-team]').forEach(b=>b.onclick=()=>{if(window.LJR_OFFICIAL_API?.openTeam)window.LJR_OFFICIAL_API.openTeam(b.dataset.v33Team);else toast(b.dataset.v33Team)});
  document.querySelectorAll('[data-v33-player]').forEach(b=>b.onclick=()=>toast(b.dataset.v33Player+' · jugador registrado'));
 }
+function isDataRoute(){const r=route();return r==='safe-data'||r==='leagueData'}
 function applyHeaderScroll(){
- if(route()!=='safe-data')return;
+ if(!isDataRoute())return;
  const head=document.querySelector('[data-v33-head]'),title=head?.querySelector('[data-v33-morph-title]');if(!head||!title)return;
  const y=Math.max(0,window.scrollY||document.documentElement.scrollTop||0),p=Math.min(1,y/165),vw=Math.min(window.innerWidth,520);
  const lerp=(a,b,t)=>a+(b-a)*t,eh=Math.max(184,Math.min(258,vw*.5012)),ch=Math.max(104,Math.min(142,vw*.272));
@@ -210,12 +211,12 @@ function applyHeaderScroll(){
 let tick=0;function onScroll(){if(tick)return;tick=requestAnimationFrame(()=>{tick=0;applyHeaderScroll()})}
 window.addEventListener('scroll',onScroll,{passive:true});
 async function render(){
- const active=route()==='safe-data';document.body.classList.toggle('v33-data-active',active);if(!active)return;
+ const active=isDataRoute();document.body.classList.toggle('v33-data-active',active);if(!active)return;
  await load();if(!db)return;
  const screen=document.querySelector('#screen');if(!screen)return;screen.innerHTML=markup();setBottomNav();bind();applyHeaderScroll();
 }
 function schedule(){requestAnimationFrame(()=>requestAnimationFrame(render))}
 window.addEventListener('hashchange',schedule);
-const target=document.querySelector('#screen');if(target)new MutationObserver(()=>{if(route()==='safe-data'&&!target.querySelector('[data-v33-data]'))schedule()}).observe(target,{childList:true,subtree:false});
+const target=document.querySelector('#screen');if(target)new MutationObserver(()=>{if(isDataRoute()&&!target.querySelector('[data-v33-data]'))schedule()}).observe(target,{childList:true,subtree:false});
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',schedule,{once:true});else schedule();
 })();
