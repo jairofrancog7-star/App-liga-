@@ -207,6 +207,22 @@ const historyMoments=[
 
 const historyYouth=[];
 
+const taggedFacebookPosts=[
+  {date:'04 nov 2012',person:'Richard JR Centeno + 2 personas',type:'ETIQUETADOS',title:'Partidos pendientes · Copa de Primera',detail:'Golazo Liga aparece etiquetado con Richard JR Centeno y dos personas más en Santa Cruz de Juventino Rosas. La publicación corresponde a partidos pendientes del Torneo de Copa de Primera.'},
+  {date:'26 nov 2012',person:'Manuel Pantoja Hernandez',type:'FOTOS / ETIQUETA',title:'Álbum de Copa · Hermanos vs Juventus',detail:'Golazo Liga agregó 12 fotos nuevas con Manuel Pantoja Hernandez. El archivo contiguo identifica una serie de penales Hermanos vs Juventus del Torneo de Copa.'},
+  {date:'11 dic 2012',person:'Brayan Paz',type:'ETIQUETADO',title:'Tavera campeón de Copa · Segunda',detail:'Golazo Liga aparece con Brayan Paz en la publicación que felicita a Tavera como campeón de Copa de la Categoría Segunda.'},
+  {date:'09 may 2013',person:'Javier Peña Luna + Mazacotes FC',type:'ETIQUETADOS',title:'Publicación administrativa',detail:'Golazo Liga aparece con Javier Peña Luna y Mazacotes FC. El texto visible indica que las aclaraciones debían hacerse por el conducto correspondiente y no en Facebook.'},
+  {date:'19 jun 2013',person:'Octavio Alberto García',type:'PUBLICÓ EN GOLAZO LIGA',title:'Tres publicaciones visuales recuperadas',detail:'El archivo conserva tres entradas del 19 de junio de 2013 publicadas por Octavio Alberto García en Golazo Liga. El texto extraído no conserva el contenido de las imágenes, por lo que las tablas o roles exactos quedan pendientes de revisión visual.'},
+  {date:'17 jul 2013',person:'German Vazquez',type:'ETIQUETADO',title:'Tablas de posiciones',detail:'Golazo Liga aparece con German Vazquez. Un comentario de Emmanuel Ibarra felicita que la Liga publique las tablas de posiciones para mantener informados a los aficionados.'},
+  {date:'20 ago 2013',person:'Jorge Luiz Buenavista',type:'ETIQUETADO',title:'Publicación histórica por revisar',detail:'Golazo Liga aparece con Jorge Luiz Buenavista. El texto recuperado no conserva el contenido de la imagen o publicación, así que no se atribuyen resultados ni equipos sin revisar el material visual.'},
+  {date:'21 sep 2013',person:'Mary Flores',type:'PUBLICÓ EN GOLAZO LIGA',title:'Rol de juego · 21 y 22 de septiembre',detail:'Mary Flores publicó en Golazo Liga el rol del sábado 21 y domingo 22 de septiembre de 2013. En el mismo registro se informa suspensión general porque los campos no estaban en condiciones.'},
+  {date:'17 oct 2013',person:'Enrique Aboytes',type:'PUBLICÓ EN GOLAZO LIGA',title:'Tablas y aclaraciones',detail:'El archivo conserva varias publicaciones de Enrique Aboytes en Golazo Liga. Un comentario de Juventus FC Jr. señala que una tabla mostrada no incluía PJ, PG y PE; Enrique recuerda que las aclaraciones debían hacerse en la reunión del lunes.'},
+  {date:'05 nov 2013',person:'Enrique Aboytes',type:'TABLAS',title:'Tabla General · Primera y Segunda Fuerza',detail:'Enrique Aboytes publicó en Golazo Liga dos tablas generales: una de Segunda Fuerza y otra de Primera Fuerza.'},
+  {date:'12 nov 2013',person:'Enrique Aboytes',type:'DESCENSOS',title:'Terrícolas y La Pandilla de Rancho Viejo',detail:'Enrique Aboytes publicó que Terrícolas y La Pandilla de Rancho Viejo descendían a Fuerza Intermedia.'},
+  {date:'18 nov 2013',person:'Enrique Aboytes',type:'FINALES',title:'Primera Fuerza y Segunda Fuerza',detail:'Enrique Aboytes publicó en Golazo Liga información de las finales de Primera Fuerza y Segunda Fuerza.'},
+  {date:'15 dic 2013',person:'Octavio Alberto García',type:'FINAL / CAMPEÓN',title:'Real Cerrito de Gasca · campeón de Segunda',detail:'Octavio Alberto García publicó que el capitán “Nudo” recibió el trofeo de campeón de Segunda Fuerza para Real Cerrito de Gasca. Otra actualización de la final registraba a Real Cerrito 3–0 sobre DHP al minuto 35; ese marcador se conserva como parcial, no como resultado final.'}
+];
+
 const retroClubs=[
   {name:'Tavera FC',logo:'assets/official-logos/tavera-fc.png',note:'Campeón de Copa · Segunda'},
   {name:'Boavista',logo:'assets/official-logos/boavista.png',note:'XXV aniversario · archivo histórico'},
@@ -659,6 +675,8 @@ const historicalTimeline=[
   {date:'15 sep 1953',title:'Antecedente del fútbol local',detail:'Una fuente histórica secundaria sitúa un primer partido de fútbol en Juventino Rosas entre Deportivo Santa Cruz y Deportivo Villagrán. Sirve como contexto del fútbol local, pero no demuestra la fundación ni continuidad jurídica de la Liga actual.'},
   {date:'oct 1987',title:'Boavista se organiza para entrar a Primera Fuerza',detail:'Una publicación retrospectiva de Golazo Liga del 28 nov 2012, hecha por el XXV aniversario del club, relata que estudiantes de la Preparatoria “Juventino Rosas” organizaron Boavista en octubre de 1987 para registrarlo en la Primera Fuerza de la Liga Municipal. En esa memoria se mencionan también Cuenda, Aguilares, San Julián, Merino, Santa María de Guadalupe y Pozos como equipos fuertes de comunidades. Es un dato de historia del club, no una fecha de fundación de la Liga.'},
   {date:'05 oct 2012',title:'Golazo Liga · primer registro digital localizado',detail:'La captura aportada muestra una publicación que Facebook presenta bajo el nombre Golazo Liga con fecha 5 de octubre de 2012 y con el escudo histórico de la Liga Municipal. Es la fecha digital mínima comprobable dentro del material conservado, no la fecha de fundación.'},
+  {date:'05–18 nov 2013',title:'Tablas generales publicadas por Enrique Aboytes',detail:'El archivo conserva publicaciones de Enrique Aboytes en Golazo Liga con Tabla General de Segunda Fuerza, Tabla General de Primera Fuerza, descensos de Terrícolas y La Pandilla de Rancho Viejo a Fuerza Intermedia y avisos de finales de Primera y Segunda Fuerza.'},
+  {date:'15 dic 2013',title:'Octavio Alberto García documenta la final de Segunda',detail:'Publicaciones de Octavio Alberto García en Golazo Liga registran a Real Cerrito de Gasca como campeón de Segunda Fuerza y muestran un marcador parcial de 3–0 sobre DHP al minuto 35.'},
   {date:'feb 2014',title:'Administrador de Golazo Liga · fuente histórica',detail:'El usuario aporta otro perfil identificado como administrador de Golazo Liga en febrero de 2014. Se incorpora como pista para localizar roles, equipos, jornadas y resultados de esa etapa. La búsqueda web pública no permitió verificar directamente publicaciones indexadas del enlace compartido.'},
   {date:'may 2014',title:'Administrador de Golazo Liga · roles',detail:'El usuario aporta un perfil que identifica como administrador de Golazo Liga en mayo de 2014 y señala que publicaba roles de juego. Se registra como fuente histórica aportada y pista para reconstruir calendarios, equipos y jornadas de esa etapa; el enlace compartido no pudo verificarse de forma independiente fuera de Facebook.'},
   {date:'c. 2015',title:'Administrador conocido de Golazo Liga',detail:'El usuario identifica un perfil como administrador de Golazo Liga hacia 2015. Es una pista útil para reconstruir publicaciones y dirigentes, pero el cargo de presidente de la Liga no queda probado solo por administrar la página.'},
@@ -889,6 +907,13 @@ function institutionalHistoryBlock(){
   '</section>';
 }
 
+function taggedFacebookBlock(){
+  return '<section class="v35-history-format v35-tagged-facebook">'+
+    '<div class="v35-history-subhead"><span>PUBLICACIONES EN LA BIOGRAFÍA DE GOLAZO LIGA</span><h3>Personas que publicaban, etiquetaban o compartían tablas y roles</h3><p>Facebook conserva parte del archivo como publicaciones hechas por otras personas en Golazo Liga o como publicaciones donde Golazo Liga aparece etiquetado. Por eso muchas tablas no necesariamente aparecen dentro de la galería de fotos propia del perfil.</p></div>'+
+    '<div class="v35-result-list v35-video-findings">'+taggedFacebookPosts.map(x=>'<article class="v35-final-row"><span>'+esc(x.date)+'</span><small>'+esc(x.type)+'</small><b>'+esc(x.person)+'</b><strong>'+esc(x.title)+'</strong><p>'+esc(x.detail)+'</p></article>').join('')+'</div>'+
+  '</section>';
+}
+
 function historicalTimelineBlock(){
   return '<section class="v35-history-timeline">'+
     '<div class="v35-history-subhead"><span>LÍNEA DEL TIEMPO</span><h3>Cómo fue cambiando la Liga</h3><p>Publicaciones de Golazo Liga, tablas, álbumes, reglamento y perfiles de administradores permiten reconstruir la historia adulta sin mezclarla con otras ligas del municipio.</p></div>'+
@@ -906,6 +931,7 @@ function historyArchiveBlock(){
   return '<section class="v35-block v35-history-archive">'+
     '<div class="v35-history-archive-head"><span>ARCHIVO HISTÓRICO</span><h2>Historias de la Liga</h2><p>Archivo histórico de la Liga adulta: categoría libre y Veteranos. Se excluyen ligas infantiles, Pony, juveniles y torneos de Presidencia Municipal/COMUDE que pertenecen a organizaciones distintas. Los videos se revisan como fuente y no se insertan en esta página.</p></div>'+
     historicalTimelineBlock()+
+    taggedFacebookBlock()+
     institutionalHistoryBlock()+
     competitionFormatBlock()+
     historyMomentCards()+
