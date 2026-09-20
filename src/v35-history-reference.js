@@ -184,14 +184,17 @@ const HIST_ROOT='https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbo
 const HIST_MEDIA='./assets/history/';
 const HIST_PHOTOS=window.LJR_HISTORY_PHOTOS||{};
 const historyMoments=[
-  {kind:'CAMPEÓN',title:'Tavera FC',subtitle:'Campeón de Copa · Categoría Segunda',detail:'Registro histórico del álbum de la Liga.',image:HIST_ROOT+'assets/official-logos/tavera-fc.png'},
-  {kind:'FINAL',title:'Universidad vs Dinamo',subtitle:'Final de Veteranos',detail:'Final documentada en el archivo fotográfico histórico.',image:HIST_ROOT+'assets/official-logos/dynamo.png'},
-  {kind:'FINAL',title:'Chelsea vs La Esperanza',subtitle:'Veteranos · Final de Copa 2019 · 17:30 · Campo 1',detail:'El rol histórico confirma la final y su programación; no se asigna ganador sin resultado publicado.'},
-  {kind:'ANIVERSARIO',title:'Boavista',subtitle:'XXV aniversario',detail:'Álbum conmemorativo del equipo Boavista.',image:HIST_ROOT+'assets/official-logos/boavista.png'},
-  {kind:'PENALES',title:'Hermanos vs Juventus',subtitle:'Torneo de Copa',detail:'Serie de penales registrada en el archivo histórico.',imageA:HIST_ROOT+'assets/official-logos/hermanos.png',imageB:HIST_ROOT+'assets/official-logos/juventus.png'},
-  {kind:'ENCUENTRO',title:'Valencia vs Halcones',subtitle:'Partido histórico',detail:'Encuentro conservado dentro del archivo fotográfico.'},
-  {kind:'PENALES',title:'Hermanos vs Chelse',subtitle:'Archivo histórico',detail:'Serie de penales conservada en los álbumes de la Liga.',image:HIST_ROOT+'assets/official-logos/hermanos.png'},
-  {kind:'CLÁSICO',title:'Olímpicos de Pozos vs Abejas FC',subtitle:'Campo de Pozos · domingo 21 de junio · 10:00',detail:'Rivalidad histórica: unidos por la comunidad y separados por el fútbol.',image:HIST_ROOT+'assets/official-logos/abejas.png'}
+  {kind:'CAMPEÓN',date:'22 feb 2014',title:'Puros Cuates',subtitle:'Campeón de Copa · Fuerza Intermedia',detail:'La publicación de Golazo Liga muestra el trofeo entregado al equipo campeón.',backgroundPhoto:HIST_PHOTOS.purosCuatesTrophy2014||'',image:''},
+  {kind:'CAMPEÓN',date:'03 nov 2019',title:'Juventus',subtitle:'Campeón de Liga · temporada 2018–2019',detail:'Fotografía histórica del plantel campeón; Boavista quedó registrado como subcampeón.',backgroundPhoto:HIST_MEDIA+'juventus-campeon-2019.jpg',image:HIST_ROOT+'assets/official-logos/juventus.png'},
+  {kind:'CAMPEÓN',date:'Archivo histórico · fecha exacta por identificar',title:'Tecos',subtitle:'Plantel campeón · categoría adulta por identificar',detail:'La fotografía conservada muestra al plantel con camisetas de campeón y trofeo.',backgroundPhoto:HIST_MEDIA+'tecos-campeon-historico.jpg'},
+  {kind:'CAMPEÓN',date:'Archivo histórico · fecha exacta no visible',title:'Tavera FC',subtitle:'Campeón de Copa · Categoría Segunda',detail:'El título está documentado en el álbum de la Liga. No se asigna una foto de fondo distinta hasta identificar la imagen exacta de esa premiación.',image:HIST_ROOT+'assets/official-logos/tavera-fc.png'},
+  {kind:'FINAL',date:'Archivo histórico · fecha no visible',title:'Universidad vs Dinamo',subtitle:'Final de Veteranos',detail:'Final documentada en el archivo fotográfico histórico.',image:HIST_ROOT+'assets/official-logos/dynamo.png'},
+  {kind:'FINAL',date:'2019 · día exacto no visible',title:'Chelsea vs La Esperanza',subtitle:'Veteranos · Final de Copa · 17:30 · Campo 1',detail:'El rol histórico confirma la final y su programación; no se asigna ganador sin resultado publicado.'},
+  {kind:'ANIVERSARIO',date:'28 nov 2012 · memoria de oct 1987',title:'Boavista',subtitle:'XXV aniversario',detail:'Álbum conmemorativo del equipo Boavista.',image:HIST_ROOT+'assets/official-logos/boavista.png'},
+  {kind:'PENALES',date:'Archivo histórico',title:'Hermanos vs Juventus',subtitle:'Torneo de Copa',detail:'Serie de penales registrada en el archivo histórico.',imageA:HIST_ROOT+'assets/official-logos/hermanos.png',imageB:HIST_ROOT+'assets/official-logos/juventus.png'},
+  {kind:'ENCUENTRO',date:'Archivo histórico',title:'Valencia vs Halcones',subtitle:'Partido histórico',detail:'Encuentro conservado dentro del archivo fotográfico.'},
+  {kind:'PENALES',date:'Archivo histórico',title:'Hermanos vs Chelse',subtitle:'Archivo histórico',detail:'Serie de penales conservada en los álbumes de la Liga.',image:HIST_ROOT+'assets/official-logos/hermanos.png'},
+  {kind:'CLÁSICO',date:'Domingo 21 de junio · año no visible',title:'Olímpicos de Pozos vs Abejas FC',subtitle:'Campo de Pozos · 10:00',detail:'Rivalidad histórica: unidos por la comunidad y separados por el fútbol.',image:HIST_ROOT+'assets/official-logos/abejas.png'}
 ];
 
 const historyYouth=[];
@@ -779,20 +782,26 @@ function historicalSourcesBlock(){
   '</section>';
 }
 
-function historyMomentCards(){
-  return '<div class="v35-history-moments">'+historyMoments.map((m,i)=>
-    '<article class="v35-history-moment">'+
+function historyMomentCard(m){
+  const hasBg=!!m.backgroundPhoto;
+  return '<article class="v35-history-moment '+(hasBg?'v35-history-moment-photo':'')+'">'+
+    (hasBg?'<img class="v35-history-bg-photo" src="'+m.backgroundPhoto+'" alt="'+esc(m.title)+' · archivo histórico" loading="lazy" decoding="async">':'')+
+    '<div class="v35-history-moment-shade" aria-hidden="true"></div>'+
+    '<div class="v35-history-moment-content">'+
       ((m.image||m.imageA||m.imageB)?'<div class="v35-history-visual">'+
         (m.image?'<img src="'+m.image+'" alt="" loading="lazy" decoding="async">':'')+
         (m.imageA?'<img src="'+m.imageA+'" alt="" loading="lazy" decoding="async">':'')+
         (m.imageB?'<img src="'+m.imageB+'" alt="" loading="lazy" decoding="async">':'')+
       '</div>':'')+
-      '<span class="v35-history-kind">'+esc(m.kind)+'</span>'+
+      '<div class="v35-history-meta"><span class="v35-history-kind">'+esc(m.kind)+'</span>'+(m.date?'<time class="v35-history-date">'+esc(m.date)+'</time>':'')+'</div>'+
       '<h3>'+esc(m.title)+'</h3>'+
       '<strong>'+esc(m.subtitle)+'</strong>'+
       '<p>'+esc(m.detail)+'</p>'+
-    '</article>'
-  ).join('')+'</div>';
+    '</div>'+
+  '</article>';
+}
+function historyMomentCards(){
+  return '<div class="v35-history-moments">'+historyMoments.map(historyMomentCard).join('')+'</div>';
 }
 function retroClubCards(){
   return '<div class="v35-retro-clubs">'+retroClubs.map(c=>
@@ -818,10 +827,12 @@ function verifiedHistoryBlocks(){
   return '<div class="v35-verified-history">'+
     '<div class="v35-history-subhead"><span>CAMPEONES CONFIRMADOS</span><h3>Palmarés verificado en el archivo</h3></div>'+
     '<div class="v35-champion-list">'+verifiedChampions.map(x=>
-      '<article class="v35-champion-card">'+
-        (x.photo?'<img class="v35-champion-photo" src="'+x.photo+'" alt="'+esc(x.champion)+' · archivo histórico" loading="lazy" decoding="async">':'')+
-        ((x.championLogo||x.runnerLogo)?'<div class="v35-champion-logos">'+(x.championLogo?'<img src="'+x.championLogo+'" alt="" loading="lazy">':'')+(x.runnerLogo?'<img src="'+x.runnerLogo+'" alt="" loading="lazy">':'')+'</div>':'')+
-        '<span>'+esc(x.season)+'</span><h4>'+esc(x.champion)+'</h4><b>'+esc(x.competition)+'</b><p>'+(x.runner&&x.runner!=='—'?'Subcampeón: '+esc(x.runner)+'. ':'')+esc(x.source)+'</p></article>'
+      '<article class="v35-champion-card '+(x.photo?'v35-champion-card-photo':'')+'">'+
+        (x.photo?'<img class="v35-champion-bg-photo" src="'+x.photo+'" alt="'+esc(x.champion)+' · campeón · '+esc(x.season)+'" loading="lazy" decoding="async"><span class="v35-champion-shade" aria-hidden="true"></span>':'')+
+        '<div class="v35-champion-content">'+
+          ((x.championLogo||x.runnerLogo)?'<div class="v35-champion-logos">'+(x.championLogo?'<img src="'+x.championLogo+'" alt="" loading="lazy">':'')+(x.runnerLogo?'<img src="'+x.runnerLogo+'" alt="" loading="lazy">':'')+'</div>':'')+
+          '<span class="v35-champion-date">'+esc(x.season)+'</span><h4>'+esc(x.champion)+'</h4><b>'+esc(x.competition)+'</b><p>'+(x.runner&&x.runner!=='—'?'Subcampeón: '+esc(x.runner)+'. ':'')+esc(x.source)+'</p>'+
+        '</div></article>'
     ).join('')+'</div>'+
     '<div class="v35-history-subhead"><span>FOTOS DE CAMPEONES Y TROFEOS</span><h3>Archivo visual recuperado</h3><p>Fotografías reales conservadas en el archivo de la Liga. Se muestran debajo del palmarés sin modificar la parte superior de Historia.</p></div>'+
     '<div class="v35-champion-list v35-photo-archive">'+historicalPhotoArchive.filter(x=>x.image).map(x=>'<article class="v35-champion-card"><img class="v35-champion-photo" src="'+x.image+'" alt="'+esc(x.title)+'" loading="lazy" decoding="async"><span>'+esc(x.date)+'</span><h4>'+esc(x.title)+'</h4><p>'+esc(x.detail)+'</p></article>').join('')+'</div>'+
@@ -887,14 +898,7 @@ function championsArchiveBlock(){
   const rows=historyMoments.filter(m=>m.kind==='CAMPEÓN'||m.kind==='FINAL');
   return '<section class="v35-block v35-history-archive v35-history-archive-compact">'+
     '<div class="v35-history-archive-head"><span>PALMARÉS HISTÓRICO</span><h2>Campeones y finales documentadas</h2><p>Solo se muestran datos que aparecen en el material histórico revisado.</p></div>'+
-    '<div class="v35-history-moments">'+rows.map(m=>'<article class="v35-history-moment">'+
-      ((m.photo||m.image||m.imageA||m.imageB)?'<div class="v35-history-card-media">'+
-        (m.photo?'<img src="'+m.photo+'" alt="'+esc(m.title)+'" loading="lazy" decoding="async">':'')+
-        (!m.photo&&m.image?'<img src="'+m.image+'" alt="'+esc(m.title)+'" loading="lazy" decoding="async">':'')+
-        (!m.photo&&m.imageA?'<img src="'+m.imageA+'" alt="" loading="lazy" decoding="async">':'')+
-        (!m.photo&&m.imageB?'<img src="'+m.imageB+'" alt="" loading="lazy" decoding="async">':'')+
-      '</div>':'')+
-      '<span class="v35-history-kind">'+esc(m.kind)+'</span><h3>'+esc(m.title)+'</h3><strong>'+esc(m.subtitle)+'</strong><p>'+esc(m.detail)+'</p></article>').join('')+'</div>'+verifiedHistoryBlocks()+
+    '<div class="v35-history-moments">'+rows.map(historyMomentCard).join('')+'</div>'+verifiedHistoryBlocks()+
   '</section>';
 }
 function finalsArchiveBlock(){
