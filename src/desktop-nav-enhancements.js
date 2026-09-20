@@ -99,11 +99,26 @@ function installMenus(){
   });
 }
 const dirSections=[
- ['Competiciones de la Liga',[['🏆','Liga Juventino','competition'],['⚽','Primera categoría','competition'],['🟢','Veteranos 35+','competition'],['⭐','Juvenil','competition'],['🥇','Torneo relámpago','competition'],['🎯','Finales','bracket']]],
- ['Selecciones y categorías',[['📋','Clasificación','standings'],['🎟️','Sorteos','draws'],['📊','Datos','safe-data'],['👕','Equipos','teams'],['📰','Noticias','news'],['🎥','Liga TV','video']]],
- ['Fútbol femenino',[['⚽','Liga femenil','teams'],['🏆','Copa femenil','competition'],['📈','Clasificación femenil','standings'],['🎬','Videos femenil','video'],['⭐','Jugadora de la jornada','vote'],['📰','Noticias femenil','news']]],
- ['Juvenil y amateur',[['🟩','Juvenil','teams'],['🟧','Amateur','teams'],['🔵','Reservas','teams'],['🏟️','Sedes','v4-calendar'],['🏆','Copa municipal','competition'],['📅','Calendario','v4-calendar']]]
-];
+ ['Competiciones de la Liga',[
+   ['🏆','Categoría libre','competition'],
+   ['⚽','Primera Fuerza','competition'],
+   ['⚽','Intermedia','competition'],
+   ['⚽','Segunda Fuerza','competition'],
+   ['🟢','Veteranos 35+','competition'],
+   ['🟦','Veteranos 50+','competition'],
+   ['🎯','Finales','bracket']
+ ]],
+ ['Liga y servicios',[
+   ['📋','Clasificación','standings'],
+   ['🎟️','Sorteos','draws'],
+   ['📊','Datos','safe-data'],
+   ['👕','Equipos','teams'],
+   ['📰','Noticias','news'],
+   ['🎥','Liga TV','video'],
+   ['🏟️','Sedes','v4-calendar'],
+   ['📅','Calendario','v4-calendar']
+ ]]
+]
 function directoryMarkup(){return `<div class="lj-directory" data-lj-special="more"><div class="ds-utility"><div class="ds-wrap"><span><b style="color:#fff">LIGA</b> · Juventino Rosas</span><button data-lj-route="profile">Iniciar sesión ◉</button></div></div><div class="lj-directory-main"><aside class="lj-directory-left"><div class="lj-dir-panel"><h4>Liga Juventino Rosas</h4><div class="lj-dir-links"><button data-lj-route="home">Inicio</button><button data-lj-route="about">Sobre</button><button data-lj-route="competition">Partidos</button><button data-lj-route="standings">Clasificación</button><button data-lj-route="news">Noticias</button><button data-lj-route="history">Historia</button></div></div><div class="lj-dir-tiles"><button class="lj-dir-tile" data-lj-route="gaming"><span>🎮</span>Gaming</button><button class="lj-dir-tile" data-lj-route="video"><span>📺</span>Liga TV</button><button class="lj-dir-tile" data-lj-route="v4-calendar"><span>📅</span>Calendario de partidos</button><button class="lj-dir-tile" data-lj-route="club-store"><span>🛍️</span>Tienda (clubes)</button><button class="lj-dir-tile" data-lj-route="safe-data"><span>📊</span>Datos y rankings</button><button class="lj-dir-tile" data-lj-route="credentials"><span>🪪</span>Credenciales</button></div><div class="lj-dir-panel"><div class="lj-dir-links"><button data-lj-route="teams">Equipos</button><button data-lj-route="draws">Sorteos</button><button data-lj-route="transfers">Fichajes</button><button data-lj-route="safe-notifications">Notificaciones</button></div></div></aside><main class="lj-directory-right"><h2>Competiciones y servicios de la Liga</h2>${dirSections.map(([title,items])=>`<section class="lj-dir-section"><h3>${title}</h3><div class="lj-dir-grid">${items.map(([icon,text,r])=>`<button class="lj-dir-item" data-lj-route="${r}"><span class="lj-dir-icon">${icon}</span>${text}</button>`).join('')}</div></section>`).join('')}</main></div></div>`}
 function loginMarkup(){return `<div class="lj-login-page" data-lj-special="profile"><div class="lj-login-wrap"><button class="lj-login-back" data-lj-route="home">← Volver a Liga Juventino</button><div class="lj-login-card"><section class="lj-login-info"><div class="lj-login-brand">MI LIGA</div><h1>Únete a la comunidad de Liga Juventino Rosas</h1><ul><li>Consulta resúmenes y partidos destacados</li><li>Participa en Fantasy, Predictor y votaciones</li><li>Recibe avisos de jornadas y resultados</li><li>Administra tu perfil y preferencias</li></ul><div class="lj-login-badges">Tu acceso personalizado a:<div><span>LIGA</span><span>TV</span><span>GAME</span><span>DATA</span></div></div></section><section class="lj-login-form"><h2>Iniciar sesión</h2><button class="lj-social fb" data-demo-auth="Facebook">● &nbsp; Iniciar sesión con Facebook</button><button class="lj-social" data-demo-auth="Google">G &nbsp; Iniciar sesión con Google</button><button class="lj-social apple" data-demo-auth="Apple">● &nbsp; Iniciar sesión con Apple</button><div class="lj-or">o</div><label class="lj-field"><span>Email</span><input type="email" autocomplete="email" placeholder="tu@correo.com"></label><label class="lj-field"><span>Contraseña</span><input type="password" autocomplete="current-password" placeholder="••••••••"></label><button class="lj-forgot" data-demo-auth="Recuperar contraseña">Olvidé mi contraseña</button><button class="lj-submit" data-demo-auth="Email">Entrar</button><div class="lj-new">¿Nuevo en Liga Juventino?</div><button class="lj-create" data-demo-auth="Crear cuenta">Crear mi cuenta</button><p class="lj-login-note">Vista de interfaz. La autenticación real necesita conectarse a un proveedor de cuentas antes de aceptar credenciales.</p></section></div></div></div>`}
 function storeMarkup(){const selected=sessionStorage.getItem('ljSelectedClub');const title=selected?`Tienda · ${selected}`:'Tienda (clubes)';const desc=selected?`Sección del club ${selected}. Aquí se podrán mostrar uniformes, artículos oficiales y productos del equipo.`:'Selecciona un club para entrar a su tienda. La estructura está lista para conectar inventario y pagos.';return `<div class="lj-directory" data-lj-special="club-store"><div class="ds-utility"><div class="ds-wrap"><span><b style="color:#fff">LIGA</b> · Tienda de clubes</span><button data-lj-route="home">Cerrar ✕</button></div></div><div class="lj-directory-main" style="grid-template-columns:1fr"><main class="lj-directory-right"><h2>${title}</h2><p style="color:#b8cfda;font-size:12px;max-width:700px">${desc}</p><div class="lj-dir-grid" style="margin-top:30px">${clubs.map(n=>`<button class="lj-dir-item${selected===n?' lj-store-club-active':''}" data-store-page-club="${n}"><span class="lj-dir-icon">👕</span>${n}</button>`).join('')}</div></main></div></div>`}
