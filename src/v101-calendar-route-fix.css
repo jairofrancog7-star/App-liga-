@@ -1,0 +1,91 @@
+/* V101 — Calendario mensual: bloqueo de tamaño y eliminación de arte sobredimensionado.
+   Sólo aplica a #/v4-calendar. */
+@media (max-width:1023px){
+  body.v70-calendar-active .topbar,
+  body.v70-calendar-active.v69-primary-tool-header .topbar{
+    box-sizing:border-box!important;
+    display:block!important;
+    position:sticky!important;
+    top:0!important;
+    width:100%!important;
+    height:clamp(138px,35.22vw,183px)!important;
+    min-height:clamp(138px,35.22vw,183px)!important;
+    max-height:183px!important;
+    flex:0 0 clamp(138px,35.22vw,183px)!important;
+    overflow:hidden!important;
+    background:#06158b!important;
+    background-image:none!important;
+    border:0!important;
+    box-shadow:none!important;
+  }
+
+  body.v70-calendar-active #screen{
+    display:block!important;
+    position:relative!important;
+    width:100%!important;
+    max-width:100%!important;
+    min-height:calc(100dvh - 138px)!important;
+    height:auto!important;
+    overflow-x:hidden!important;
+    overflow-y:visible!important;
+    background:linear-gradient(180deg,#07168a 0%,#060d73 24%,#040863 58%,#03065b 100%)!important;
+  }
+
+  body.v70-calendar-active .v70-calendar-page{
+    display:block!important;
+    position:relative!important;
+    z-index:2!important;
+    width:100%!important;
+    max-width:100%!important;
+    min-height:0!important;
+    height:auto!important;
+    overflow:visible!important;
+  }
+
+  body.v70-calendar-active .v70-calendar-title,
+  body.v70-calendar-active .v4-week,
+  body.v70-calendar-active .v4-calendar,
+  body.v70-calendar-active #v4DateMatches{
+    position:relative!important;
+    z-index:3!important;
+  }
+
+  body.v70-calendar-active .v4-calendar{
+    display:grid!important;
+    grid-template-columns:repeat(7,minmax(0,1fr))!important;
+  }
+
+  body.v70-calendar-active .v4-day{
+    width:auto!important;
+    max-width:none!important;
+    height:auto!important;
+    min-height:0!important;
+  }
+
+  body.v70-calendar-active .topbar .wordmark{
+    left:16px!important;
+    top:18px!important;
+    width:54px!important;
+    height:54px!important;
+    min-width:54px!important;
+    min-height:54px!important;
+    background-color:transparent!important;
+    background-image:url('../assets/reference/predictor-v36/liga-crest-white.webp')!important;
+    background-size:contain!important;
+    background-repeat:no-repeat!important;
+    background-position:center!important;
+  }
+
+  body.v70-calendar-active .topbar .profile-button{
+    right:17px!important;
+    top:21px!important;
+    width:43px!important;
+    height:43px!important;
+    min-width:43px!important;
+    min-height:43px!important;
+    max-width:43px!important;
+    max-height:43px!important;
+    border-radius:50%!important;
+    color:#fff!important;
+  }
+}
