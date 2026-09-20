@@ -117,3 +117,29 @@
     color:#20e7f0!important;
   }
 }
+
+
+/* V78 — Tabs de Competición: solo la pestaña seleccionada se pinta azul claro.
+   Aplica igual a Partidos y resultados, Clasificación y Cuadro. */
+@media (max-width:1023px){
+  html body[data-app-route="competition"] #screen>.tabs .tab,
+  html body.v40-standings-master #screen>.tabs .tab{
+    color:#f1f3ff!important;
+  }
+
+  html body[data-app-route="competition"] #screen>.tabs .tab.active,
+  html body.v40-standings-master #screen>.tabs .tab.active{
+    color:#27e7f2!important;
+  }
+
+  html body[data-app-route="competition"] #screen>.tabs .tab::after,
+  html body.v40-standings-master #screen>.tabs .tab::after{
+    background:transparent!important;
+  }
+
+  html body[data-app-route="competition"] #screen>.tabs .tab.active::after,
+  html body.v40-standings-master #screen>.tabs .tab.active::after{
+    background:#27e7f2!important;
+    box-shadow:0 0 10px rgba(39,231,242,.28)!important;
+  }
+}
