@@ -296,6 +296,72 @@ function patchHomeStandings(force=false){
     b.addEventListener('click',e=>{e.preventDefault();openTeam(b.dataset.v62Team)},{once:true});
   });
 }
+
+/* V74 — Máximos goleadores de Inicio con nombres/equipos reales.
+   Primera Fuerza se usa primero. Si todavía no publica goleo, se muestran
+   únicamente goleadores oficiales de las demás categorías con datos,
+   nunca jugadores ni goles inventados. */
+function validScorerRows(id){
+  const c=cat(id),rs=c?.scorers?.[0]?.rows||[];
+  return rs.filter(r=>Array.isArray(r)&&r.length>=4&&/^\d+$/.test(String(r[3]||''))&&String(r[1]||'').trim()&&String(r[2]||'').trim())
+    .map(r=>({rank:Number(r[0])||999,player:String(r[1]).trim(),team:String(r[2]).trim(),goals:Number(r[3])||0,category:c?.name||CAT_META[String(id)]?.name||'',categoryId:String(id)}));
+}
+function officialHomeScorers(){
+  const primary=validScorerRows('3');
+  if(primary.length)return primary.sort((a,b)=>b.goals-a.goals||a.rank-b.rank).slice(0,4);
+  return CAT_ORDER.flatMap(id=>validScorerRows(id))
+    .sort((a,b)=>b.goals-a.goals||a.rank-b.rank||a.player.localeCompare(b.player,'es'))
+    .slice(0,4);
+}
+function homeScorerRow(s,i){
+  const src=logoFor(s.team);
+  const logo=src
+    ? '<span class="v74-scorer-logo"><img src="'+esc(src)+'" alt="'+esc(s.team)+'" loading="lazy" decoding="async"></span>'
+    : '<span class="v74-scorer-logo v74-scorer-fallback">'+esc(s.team.split(/\s+/).map(x=>x[0]).join('').slice(0,3))+'</span>';
+  return '<button type="button" class="v74-scorer-row" data-v62-team="'+esc(s.team)+'">'+
+    '<span class="v74-scorer-rank">'+(i+1)+'</span>'+logo+
+    '<span class="v74-scorer-copy"><strong>'+esc(s.player)+'</strong><small>'+esc(s.team)+(s.categoryId!=='3'?' · '+esc(s.category):'')+'</small></span>'+
+    '<b class="v74-scorer-goals">'+esc(s.goals)+'</b>'+
+  '</button>';
+}
+function patchHomeScorers(force=false){
+  if(route()!=='home'||!db)return;
+  const screen=document.querySelector('#screen');if(!screen)return;
+  const sections=[...screen.querySelectorAll('.section')];
+  let section=sections.find(s=>/máximos?\s+goleadores?|maximos?\s+goleadores?/i.test(s.querySelector('.section-head h2,h2')?.textContent||''));
+  if(!section)return;
+
+  const scorers=officialHomeScorers();
+  const sig=String(db.captured_at_utc||'')+'|'+scorers.map(s=>[s.player,s.team,s.goals,s.categoryId].join(':')).join('|');
+  if(!force&&section.dataset.v74ScorerSig===sig)return;
+  section.dataset.v74ScorerSig=sig;
+  section.classList.add('v74-home-scorers');
+
+  const head=section.querySelector('.section-head');
+  if(head){
+    const h=head.querySelector('h2');if(h)h.textContent='Máximos goleadores';
+    const link=head.querySelector('.link-button,button');
+    if(link){
+      link.textContent='Ver ranking';
+      link.setAttribute('data-route','scorers');
+      link.removeAttribute('data-v63-comp');
+    }
+  }
+
+  [...section.children].forEach(el=>{if(el!==head)el.remove()});
+  const card=document.createElement('div');
+  card.className='v74-scorer-card';
+  if(scorers.length){
+    card.innerHTML=scorers.map(homeScorerRow).join('')+
+      '<p class="v74-scorer-note">'+
+      (validScorerRows('3').length?'Primera Fuerza · datos oficiales':'Goleadores oficiales publicados · Primera Fuerza aún sin tabla de goleo')+
+      '</p>';
+  }else{
+    card.innerHTML='<div class="v74-scorer-empty"><b>Sin goleadores publicados</b><span>AdminFut todavía no registra goles oficiales para mostrar.</span></div>';
+  }
+  section.appendChild(card);
+  card.querySelectorAll('[data-v62-team]').forEach(b=>b.addEventListener('click',e=>{e.preventDefault();openTeam(b.dataset.v62Team)},{once:true}));
+}
 function chooseNewer(a,b){
   if(!a)return b;if(!b)return a;
   return String(b.captured_at_utc||'')>String(a.captured_at_utc||'')?b:a;
@@ -712,6 +778,7 @@ function schedule(){
       else{
         patchHomeUpcoming();
         patchHomeStandings();
+        patchHomeScorers();
         patchScorers();
         patchTeamDetail();
         patchTeams();
