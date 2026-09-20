@@ -159,6 +159,21 @@ const historicalSources=[
     title:'Archivo Juventino Rosas Liga · 19 sep 2026 · 22-02-26',
     note:'Grabación de la página actual usada para documentar finales y publicaciones de la temporada 2025–2026.',
     url:'https://drive.google.com/file/d/1iUrPOcAfT9KMMuHlPuhJPPmtZAiNHlYr/view?usp=drivesdk'
+  },
+  {
+    title:'Archivo histórico · 19 sep 2026 · 22-32-59 · segmento 1',
+    note:'Grabación adicional de Juventino Rosas Liga. Fuente de cuartos, semifinales y la final de Copa de Veteranos 35+ de diciembre de 2025; el video no se incrusta en Historia.',
+    url:'https://drive.google.com/file/d/1wDpnO3rbSPMqlP8ZB5jFa3SqHnYvE6S0/view?usp=drivesdk'
+  },
+  {
+    title:'Archivo histórico · 19 sep 2026 · 22-32-59 · segmento 2',
+    note:'Grabación adicional usada para recuperar campeones de Copa 2025, finalistas, reconocimientos a figuras históricas y roles de junio de 2025.',
+    url:'https://drive.google.com/file/d/1nl1NjoMZkFk-5WZG36x0yLf61Fq6mfPc/view?usp=drivesdk'
+  },
+  {
+    title:'Archivo histórico · 19 sep 2026 · 22-32-59 · segmento 3',
+    note:'Grabación adicional usada para documentar la final de Veteranos 50+ de abril de 2025, Boavista campeón 2025, Campeón de Campeones y equipos finalistas.',
+    url:'https://drive.google.com/file/d/1nl2s5c_gYM4fSU1nvCaltLHetj1b-l8G/view?usp=drivesdk'
   }
 ];
 
@@ -207,7 +222,10 @@ const verifiedChampions=[
   {season:'09 jul 2016',competition:'Torneo de Copa · categoría no visible en la publicación',champion:'Magisterio',runner:'—',source:'Publicación de Golazo Liga del 9 de julio de 2016: “Felicidades al campeón de copa. Felicidades Magisterio”.'},
   {season:'2018–2019',competition:'Torneo de Liga',champion:'Juventus',runner:'Boavista',source:'Publicaciones históricas de Golazo Liga del 3 nov 2019.',photo:HIST_MEDIA+'juventus-campeon-2019.jpg',championLogo:HIST_ROOT+'assets/official-logos/juventus.png',runnerLogo:HIST_ROOT+'assets/official-logos/boavista.png'},
   {season:'Archivo fotográfico',competition:'Campeonato · categoría adulta por identificar',champion:'Tecos',runner:'—',source:'Fotografía del archivo: el plantel aparece con camisetas “CAMPEON TECOS” y trofeo.',photo:HIST_MEDIA+'tecos-campeon-historico.jpg'},
-  {season:'Archivo histórico',competition:'Copa · Categoría Segunda',champion:'Tavera FC',runner:'—',source:'Álbum histórico entregado por el usuario.',championLogo:HIST_ROOT+'assets/official-logos/tavera-fc.png'}
+  {season:'Archivo histórico',competition:'Copa · Categoría Segunda',champion:'Tavera FC',runner:'—',source:'Álbum histórico entregado por el usuario.',championLogo:HIST_ROOT+'assets/official-logos/tavera-fc.png'},
+  {season:'12 abr 2025',competition:'Torneo de Liga · Veteranos 50+',champion:'Boavista FC',runner:'Boca Jrs.',source:'El rol publicado el 9 abr 2025 programa Boca Jrs. vs Boavista a las 16:00 en Campo 1; la publicación del 12 abr presenta a Boavista F C como “CAMPEÓN 2025”.',championLogo:HIST_ROOT+'assets/official-logos/boavista.png'},
+  {season:'08 jun 2025',competition:'Torneo de Copa · Primera Fuerza',champion:'Galácticos (Pozos)',runner:'Herreras FC (Cuenda)',source:'La final fue Galácticos vs Herreras FC, domingo 8 de junio de 2025 a las 10:00 en Campo 1 de la Unidad Deportiva Sur. Ese mismo día la Liga publicó a Galácticos (Pozos) como “CAMPEÓN DE COPA 2025”.',championLogo:HIST_ROOT+'assets/teams/galacticos-pozos.webp',runnerLogo:HIST_ROOT+'assets/official-logos/herreras-fc.png'},
+  {season:'15 jun 2025',competition:'Torneo de Copa · Fuerza Intermedia',champion:'Lobos CDG',runner:'Franco FC',source:'La Liga felicitó a Lobos CDG, de Cerrito de Gasca, por el título de Campeón de Copa 2025 tras vencer a Franco F.C., de San José de Manantiales. Los roles previos sitúan a ambos en las semifinales de Intermedia.',championLogo:HIST_ROOT+'assets/official-logos/lobos-cdg.png',runnerLogo:HIST_ROOT+'assets/official-logos/franco-fc.png'}
 ];
 
 // V106 — archivo histórico ampliado desde los videos y el ZIP entregados por el usuario.
@@ -228,6 +246,16 @@ const videoArchiveFindings=[
   {date:'15 abr 2017',title:'Eusebio Rangel · campeón goleador de Veteranos',detail:'La publicación solicita a Eusebio Rangel, del equipo Hermanos, presentarse a la final para recibir el trofeo de campeón de goleo.'},
   {date:'15 abr 2017',title:'Primera Fuerza · goleo J28',detail:'Juan Manuel Gámez López (Hermanos) encabeza el corte con 34 goles; Fernando Gámez Reyes (Abejas), Jorge Alberto Sánchez Mendoza (Juventus) y Noé Alfredo Silva Martínez (La Cuadrilla) aparecen con 29.'},
   {date:'06 may 2017',title:'Primera · corte de Liga J30',detail:'Linces aparece líder con 79 puntos. Hermanos registra 111 goles a favor; Linces, 107 y diferencia de +75. Son marcas del corte publicado, no récords absolutos de toda la historia.',image:HIST_ROOT+'assets/official-logos/linces.png'},
+  {date:'08 jun 2025 · memoria de 1950',title:'José Carmen Guerrero Velásquez · primer equipo de 1950',detail:'La Liga Municipal de Fútbol “Juventino Rosas” A.C. publicó un reconocimiento al Prof. José Carmen Guerrero Velásquez y lo describió como el único sobreviviente del primer equipo de fútbol formado en Juventino Rosas, GTO., en 1950. Esta publicación aporta un antecedente local anterior al partido de 1953 citado por una fuente secundaria.'},
+  {date:'12 abr 2025',title:'Boavista FC · campeón de Veteranos 50+',detail:'El rol de la final de Liga 2025 muestra Boca Jrs. vs Boavista a las 16:00 en Campo 1. Una publicación del mismo 12 de abril presenta a Boavista F C como “CAMPEÓN 2025”.',image:HIST_ROOT+'assets/official-logos/boavista.png'},
+  {date:'26 abr 2025',title:'Campeón de Campeones · Veteranos 50+',detail:'Cartel histórico: Manchester United vs B.F.C., 17:00, Campo 1, Unidad Deportiva Sur. El material identifica el encuentro como “CAMPEÓN DE CAMPEONES”; no se asigna ganador porque el cuadro revisado no muestra el resultado.',image:HIST_ROOT+'assets/official-logos/manchester.png'},
+  {date:'08 jun 2025',title:'Galácticos (Pozos) · campeón de Copa',detail:'Final de Primera Fuerza: Galácticos vs Herreras FC (Cuenda), 10:00, Campo 1, Unidad Deportiva Sur. La publicación del mismo día identifica a Galácticos (Pozos) como Campeón de Copa 2025.',image:HIST_ROOT+'assets/teams/galacticos-pozos.webp'},
+  {date:'15 jun 2025',title:'Lobos CDG · campeón de Copa',detail:'La Liga felicita a Lobos CDG, de Cerrito de Gasca, por obtener el título de Campeón de Copa 2025 al vencer a Franco F.C., de San José de Manantiales.',image:HIST_ROOT+'assets/official-logos/lobos-cdg.png'},
+  {date:'15 jun 2025',title:'Gabriel Roque Hortelano · trayectoria arbitral',detail:'La Liga publicó un reconocimiento por más de 25 años de servicio; el texto señala que obtuvo certificación como árbitro federado en 2002 por parte de la Federación Mexicana de Fútbol y que en su currículum llevaba más de 100 finales pitadas.'},
+  {date:'15 jun 2025',title:'Juan Morales Vásquez “Chacharín” · servicio a los campos',detail:'La Liga publicó un reconocimiento por más de 50 años en activo y más de 35 años como encargado de pintar los campos de fútbol.'},
+  {date:'20 dic 2025',title:'Gran Final de Copa · Veteranos 35+',detail:'Salvajes vs Juventus · 15:30 · Campo 1 · Unidad Deportiva Sur. El rol del 19 dic 2025 y el cartel de la final coinciden en fecha, hora y sede.',image:HIST_ROOT+'assets/official-logos/juventus.png'},
+  {date:'08 mar 2026',title:'Cuartos de final · Primera Fuerza',detail:'Unidad Deportiva Sur: Hermanos vs Terrícolas 08:00; Galácticos vs Herreras 10:00; Linces vs Oklahoma 12:00; San José vs Juventus 14:00. Se conserva como programación de cuartos, no como resultados.'},
+  {date:'12 abr 2026',title:'Cuartos de final de ida',detail:'San Antonio Jrs. vs Franco FC · 10:00 · comunidad de Romerillo. El cartel identifica el partido como Torneo de Liga, cuartos de final de ida.',image:HIST_ROOT+'assets/official-logos/franco-fc.png'},
   {date:'20 may 2026',title:'Final de Liga · Veteranos 50+',detail:'Publicación de Juventino Rosas Liga anuncia la Gran Final de Veteranos 50 y más entre La Esperanza y Boavista. La fecha exacta del partido no es visible en el cuadro recuperado.',image:HIST_ROOT+'assets/official-logos/boavista.png'},
   {date:'2024',title:'Atlético Galeana · subcampeón en el archivo reciente',detail:'El material reciente conserva una publicación de premiación que identifica a Atlético Galeana como subcampeón. La categoría no se asigna aquí porque no queda legible en el fragmento revisado.',image:HIST_ROOT+'assets/official-logos/galeana.png'},
   {date:'24 nov 2024',title:'Semifinal de vuelta · Fuerza Intermedia',detail:'A. San Julián vs Lobos CDG · 12:00 · San Julián. Herreras F.C. vs Oklahoma · 12:00 · Cuenda. El cartel fue publicado el 22 nov 2024.',image:HIST_ROOT+'assets/official-logos/lobos-cdg.png'},
@@ -409,7 +437,13 @@ const recordMemories=[
   {tag:'TABLA',title:'Lobos CDG',value:'52 puntos',detail:'Líder del corte de Intermedia J23 de 2018.',image:HIST_ROOT+'assets/official-logos/lobos-cdg.png'},
   {tag:'TABLA FINAL',title:'Juventus',value:'53 puntos',detail:'Primer lugar de la tabla final de Veteranos 2022.',image:HIST_ROOT+'assets/official-logos/juventus.png'},
   {tag:'CAMPEÓN',title:'Juventus',value:'Liga 2018–2019',detail:'Campeón confirmado en publicación histórica del 3 de noviembre de 2019.',image:HIST_ROOT+'assets/official-logos/juventus.png'},
-  {tag:'RECUERDO',title:'Boavista',value:'XXV aniversario',detail:'Álbum conmemorativo conservado en el archivo histórico.',image:HIST_ROOT+'assets/official-logos/boavista.png'}
+  {tag:'RECUERDO',title:'Boavista',value:'XXV aniversario',detail:'Álbum conmemorativo conservado en el archivo histórico.',image:HIST_ROOT+'assets/official-logos/boavista.png'},
+  {tag:'MEMORIA',title:'José Carmen Guerrero Velásquez',value:'Equipo de 1950',detail:'Reconocimiento publicado por la Liga el 8 jun 2025: lo describe como el único sobreviviente del primer equipo de fútbol formado en Juventino Rosas en 1950.'},
+  {tag:'ARBITRAJE',title:'Gabriel Roque Hortelano',value:'100+ finales',detail:'Reconocimiento del 15 jun 2025: más de 25 años de servicio; la publicación señala certificación federada en 2002 y más de 100 finales pitadas.'},
+  {tag:'TRAYECTORIA',title:'Juan Morales Vásquez “Chacharín”',value:'50+ años',detail:'Reconocimiento del 15 jun 2025: más de 50 años en activo y más de 35 años como encargado de pintar campos.'},
+  {tag:'CAMPEÓN',title:'Boavista FC',value:'Liga 2025 · V50+',detail:'Campeón de la final Boca Jrs. vs Boavista del 12 abr 2025.',image:HIST_ROOT+'assets/official-logos/boavista.png'},
+  {tag:'CAMPEÓN',title:'Galácticos (Pozos)',value:'Copa 2025',detail:'Campeón de Primera Fuerza el 8 jun 2025 ante Herreras FC (Cuenda).',image:HIST_ROOT+'assets/teams/galacticos-pozos.webp'},
+  {tag:'CAMPEÓN',title:'Lobos CDG',value:'Copa 2025',detail:'Campeón tras vencer a Franco FC; publicación del 15 jun 2025.',image:HIST_ROOT+'assets/official-logos/lobos-cdg.png'}
 ];
 
 const historicResults=[
@@ -421,6 +455,11 @@ const historicResults=[
 
 const historicFinalists=[
   {year:'15 dic 2013',category:'Segunda Fuerza · podio de la final',a:'Subcampeón: DHP',b:'3.º: San José de la Montaña',note:'San José de la Montaña obtuvo el tercer lugar por default ante Tavera. El campeón no quedó identificado en el texto visible del fragmento revisado.'},
+  {year:'12 abr 2025',category:'Veteranos 50+ · Final de Liga 2025',a:'Boca Jrs.',b:'Boavista FC',note:'16:00 · Campo 1 · Unidad Deportiva Sur. Boavista aparece publicado como CAMPEÓN 2025 el mismo día.',logoB:HIST_ROOT+'assets/official-logos/boavista.png'},
+  {year:'26 abr 2025',category:'Veteranos 50+ · Campeón de Campeones',a:'Manchester United',b:'B.F.C.',note:'17:00 · Campo 1 · Unidad Deportiva Sur. El resultado no es visible en el fragmento revisado.',logoA:HIST_ROOT+'assets/official-logos/manchester.png'},
+  {year:'08 jun 2025',category:'Primera Fuerza · Final de Copa 2025',a:'Galácticos (Pozos)',b:'Herreras FC (Cuenda)',note:'10:00 · Campo 1 · Unidad Deportiva Sur. Galácticos fue publicado como campeón.',logoA:HIST_ROOT+'assets/teams/galacticos-pozos.webp',logoB:HIST_ROOT+'assets/official-logos/herreras-fc.png'},
+  {year:'15 jun 2025',category:'Fuerza Intermedia · Final de Copa 2025',a:'Lobos CDG',b:'Franco FC',note:'Lobos CDG fue publicado como campeón tras vencer a Franco FC.',logoA:HIST_ROOT+'assets/official-logos/lobos-cdg.png',logoB:HIST_ROOT+'assets/official-logos/franco-fc.png'},
+  {year:'20 dic 2025',category:'Veteranos 35+ · Final de Copa',a:'Salvajes',b:'Juventus',note:'15:30 · Campo 1 · Unidad Deportiva Sur. El material revisado confirma la programación, no el ganador.',logoB:HIST_ROOT+'assets/official-logos/juventus.png'},
   {year:'20 may 2026 · publicación',category:'Veteranos 50+ · Gran Final de Liga',a:'La Esperanza',b:'Boavista',note:'La publicación anuncia la final; el día exacto del partido no aparece visible en el cuadro recuperado.',logoA:HIST_ROOT+'assets/official-logos/la-esperanza.png',logoB:HIST_ROOT+'assets/official-logos/boavista.png'},
   {year:'07 jun 2026',category:'Segunda Fuerza · Gran Final de Liga 2025–2026',a:'La Canchita Deportes',b:'Aldama FC',note:'10:00 · Campo 1 · Deportiva Sur.',logoA:HIST_ROOT+'assets/official-logos/la-canchita-deportes.png',logoB:HIST_ROOT+'assets/official-logos/aldama-fc.png'},
   {year:'08 dic 2013',category:'Categoría libre · Primera · Gran Final',a:'Juventus',b:'Olímpicos',note:'10:00 · Campo 1. Archivo adulto de Golazo Liga; Chelsea vs PSV aparece por el tercer lugar.',logoA:HIST_ROOT+'assets/official-logos/juventus.png'},
@@ -472,6 +511,10 @@ const historicTeamLogoMap={
   'mineros':'assets/teams/mineros-fc.webp',
   'mazacotes':'assets/official-logos/mazacotes-fc.png',
   'herreras fc':'assets/official-logos/herreras-fc.png',
+  'galacticos pozos':'assets/teams/galacticos-pozos.webp',
+  'galacticos':'assets/teams/galacticos-pozos.webp',
+  'manchester united':'assets/official-logos/manchester.png',
+  'manchester':'assets/official-logos/manchester.png',
   'atletico galeana':'assets/official-logos/galeana.png',
   'promesas fc':'assets/official-logos/promesas-fc.png',
   'la canchita deportes':'assets/official-logos/la-canchita-deportes.png',
@@ -504,7 +547,7 @@ const historicalTeamEras=[
   {period:'2018–2023',category:'Roles y tablas complementarias',teams:['Deportivo Maravillas','A. Pozos','Galaxy','Tapatío','Guadalupanos','Deportivo Pozos','Universidad','Valencia','Halcones','Galácticos FC','Sección 14','San Juan FC']},
   {period:'2022',category:'Veteranos · tabla final',teams:['Juventus','Hermanos','América','Dynamo','PSV','Deportivo Rafa','Boavista','Arsenal','Cuenda','Barrio Seco','UNAM','Átomos']},
   {period:'2024',category:'Fuerza Intermedia / archivo reciente',teams:['A. San Julián','Lobos CDG','Herreras FC','Oklahoma','Atlético Galeana','Promesas FC','Franco FC','Mineros','Terrícolas','Juventus','Hermanos','Linces']},
-  {period:'2025–2026',category:'Finales conservadas',teams:['La Esperanza','Boavista','La Canchita Deportes','Aldama FC']}
+  {period:'2025–2026',category:'Finales, Copa y Veteranos conservados',teams:['Boca Jrs.','Boavista','Manchester United','B.F.C.','Galácticos (Pozos)','Herreras FC','Lobos CDG','Franco FC','Salvajes','Juventus','San Antonio Jrs.','Real de Roque','La Esperanza','La Canchita Deportes','Aldama FC']}
 ];
 
 const expandedRetroNames=[
@@ -516,10 +559,12 @@ const expandedRetroNames=[
   'Halcones de Cuenda','Deportivo Pozos','Real Cerrito de Gasca','San José de la Montaña',
   'Río Grande','Unión Allende','Novatos','Salvajes','Continental','Toros','Aldama',
   'Aguilares','Merino','Santa María de Guadalupe','Pozos','San José de Allende','Atlas',
-  'Guadalajara','Sección XIV','La Pandilla de Rancho V.','Dortmund','Portugal','Birds Eye Jr.','Centeno'
+  'Guadalajara','Sección XIV','La Pandilla de Rancho V.','Dortmund','Portugal','Birds Eye Jr.','Centeno',
+  'Boca Jrs.','B.F.C.','Manchester United','Galácticos (Pozos)','Herreras FC (Cuenda)','Lobos CDG','Franco FC','Salvajes','San Antonio Jrs.','Real de Roque'
 ];
 
 const historicalTimeline=[
+  {date:'1950 · memoria publicada en 2025',title:'Primer equipo de fútbol recordado por la Liga',detail:'En un reconocimiento publicado el 8 jun 2025, la Liga Municipal de Fútbol “Juventino Rosas” A.C. identifica al Prof. José Carmen Guerrero Velásquez como el único sobreviviente del primer equipo de fútbol formado en Juventino Rosas, GTO., en 1950. Es un antecedente del fútbol local, no una fecha probada de fundación de la A.C.'},
   {date:'15 sep 1953',title:'Antecedente del fútbol local',detail:'Una fuente histórica secundaria sitúa un primer partido de fútbol en Juventino Rosas entre Deportivo Santa Cruz y Deportivo Villagrán. Sirve como contexto del fútbol local, pero no demuestra la fundación ni continuidad jurídica de la Liga actual.'},
   {date:'oct 1987',title:'Boavista se organiza para entrar a Primera Fuerza',detail:'Una publicación retrospectiva de Golazo Liga del 28 nov 2012, hecha por el XXV aniversario del club, relata que estudiantes de la Preparatoria “Juventino Rosas” organizaron Boavista en octubre de 1987 para registrarlo en la Primera Fuerza de la Liga Municipal. En esa memoria se mencionan también Cuenda, Aguilares, San Julián, Merino, Santa María de Guadalupe y Pozos como equipos fuertes de comunidades. Es un dato de historia del club, no una fecha de fundación de la Liga.'},
   {date:'05 oct 2012',title:'Golazo Liga · primer registro digital localizado',detail:'La captura aportada muestra una publicación que Facebook presenta bajo el nombre Golazo Liga con fecha 5 de octubre de 2012 y con el escudo histórico de la Liga Municipal. Es la fecha digital mínima comprobable dentro del material conservado, no la fecha de fundación.'},
@@ -531,6 +576,9 @@ const historicalTimeline=[
   {date:'03 nov 2019',title:'Juventus campeón de Liga',detail:'Publicaciones históricas de Golazo Liga identifican a Juventus como campeón y a Boavista como subcampeón de la Liga 2018–2019.'},
   {date:'dic 2019',title:'Nombre reconocido en un documento público',detail:'Un reporte del Congreso del Estado de Guanajuato registra “LIGA MUNICIPAL JUVENTINO ROSAS” por $11,600 dentro de apoyos para construcción y reparación. Es una evidencia externa importante de continuidad del nombre institucional.'},
   {date:'2022',title:'Veteranos · tabla final',detail:'El archivo conserva una tabla final de Veteranos con Juventus en primer lugar con 53 puntos.'},
+  {date:'12 abr 2025',title:'Boavista campeón de Liga · Veteranos 50+',detail:'La final publicada fue Boca Jrs. vs Boavista, 16:00, Campo 1. La publicación del mismo día identifica a Boavista F C como campeón 2025.'},
+  {date:'08–15 jun 2025',title:'Campeones de Copa y reconocimientos históricos',detail:'Galácticos (Pozos) fue publicado campeón de Copa de Primera Fuerza ante Herreras FC; Lobos CDG fue felicitado como campeón de Copa ante Franco FC. En esas fechas la Liga también reconoció las trayectorias de José Carmen Guerrero Velásquez, Gabriel Roque Hortelano y Juan Morales Vásquez “Chacharín”.'},
+  {date:'20 dic 2025',title:'Final de Copa · Veteranos 35+',detail:'El archivo conserva Salvajes vs Juventus, 15:30, Campo 1 de la Unidad Deportiva Sur. El resultado no se atribuye sin una publicación posterior legible.'},
   {date:'2026',title:'Continuidad pública de la denominación',detail:'Medios regionales y nacionales siguieron refiriéndose a la competencia como Liga Municipal de Juventino Rosas, reforzando la continuidad pública del nombre.'},
   {date:'2026–2027',title:'Reglamento vigente',detail:'El reglamento usa la forma Liga Municipal de Fútbol “Juventino Rosas A.C.” y describe una Asamblea y Mesa Directiva propias, además de Copa, Liga, Campeón de Campeones, categoría libre y Veteranos 35+ / 50+.'}
 ];
@@ -563,7 +611,8 @@ const institutionalHistoryFacts=[
   {tag:'AUTONOMÍA',title:'Gobierno interno propio',detail:'El reglamento actual describe Asamblea de equipos y Mesa Directiva electa dentro de la propia Liga. Las autoridades municipales aparecen como interlocutores externos para gestiones, no como dirección interna.'},
   {tag:'EVIDENCIA EXTERNA',title:'Congreso de Guanajuato · 2019',detail:'El reporte público de diciembre de 2019 registra “LIGA MUNICIPAL JUVENTINO ROSAS” y un apoyo de $11,600 para construcción y reparación.'},
   {tag:'CONTINUIDAD PÚBLICA',title:'Medios · 2026',detail:'Notas de 2026 siguen utilizando “Liga Municipal de Juventino Rosas”, en línea con el nombre institucional actual.'},
-  {tag:'ANTECEDENTE LOCAL',title:'Fútbol en Juventino Rosas desde 1953',detail:'Una efeméride secundaria registra un partido Deportivo Santa Cruz vs Deportivo Villagrán el 15 de septiembre de 1953. No prueba continuidad legal con la Liga actual.'}
+  {tag:'ANTECEDENTE LOCAL',title:'Primer equipo recordado en 1950',detail:'La propia Liga publicó en 2025 un reconocimiento que sitúa un primer equipo de fútbol de Juventino Rosas en 1950 y nombra al Prof. José Carmen Guerrero Velásquez como su único sobreviviente. No equivale a fecha de fundación de la A.C.'},
+  {tag:'ANTECEDENTE LOCAL',title:'Partido documentado en 1953',detail:'Una efeméride secundaria registra un partido Deportivo Santa Cruz vs Deportivo Villagrán el 15 de septiembre de 1953. Puede convivir con la memoria del equipo de 1950 y tampoco prueba continuidad legal con la Liga actual.'}
 ];
 
 const openHistoricalQuestions=[
