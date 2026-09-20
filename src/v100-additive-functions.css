@@ -14,3 +14,116 @@
 .v100-shot-pitch{position:relative;width:min(100%,390px);aspect-ratio:68/105;margin:8px auto;border:2px solid #fff;border-radius:6px;background:#07582e;overflow:hidden}.v100-shot-pitch:before{content:"";position:absolute;left:0;right:0;top:50%;border-top:2px solid #fff}.v100-shot-pitch i{position:absolute;transform:translate(-50%,-50%);width:17px;height:17px;border-radius:50%;background:#ffe369;border:2px solid #07104d;z-index:2}.v100-toast{position:fixed;left:50%;bottom:90px;z-index:100000;transform:translateX(-50%);max-width:86vw;padding:10px 14px;border-radius:999px;background:#07105f;color:#fff;border:1px solid rgba(84,230,242,.4);font-size:11px;box-shadow:0 10px 30px rgba(0,0,0,.3)}
 @media(max-width:520px){.v100-form-grid{grid-template-columns:1fr}.v100-weather-grid{grid-template-columns:repeat(2,1fr)}.v100-block,.v100-subblock{padding:15px;border-radius:20px}.v100-actions>*{flex:1 1 130px}.v100-modal-card{padding:20px 14px}.v100-reactions,.v100-big-reactions{grid-template-columns:repeat(4,1fr)}}
 .lightmode .v100-block,.lightmode .v100-subblock{background:#fff;color:#10152e;border-color:#cfe0eb}.lightmode .v100-head h2{color:#10152e}.lightmode .v100-head p,.lightmode .v100-note{color:#66708a}.lightmode .v100-fav-card,.lightmode .v100-quick-grid button,.lightmode .v100-tool,.lightmode .v100-weather-grid span{background:#eef3ff;color:#10152e}.lightmode .v100-fav-card select,.lightmode .v100-form-grid input,.lightmode .v100-form-grid select{background:#fff;color:#10152e;border-color:#ccd5e6}
+
+
+/* V104 — Todas las herramientas juntas y compactas.
+   En leagueTools, las nuevas funciones entran en la misma cuadrícula de las existentes. */
+body[data-app-route="leagueTools"] .v60-tool-grid{
+  display:grid!important;
+  grid-template-columns:repeat(2,minmax(0,1fr))!important;
+  gap:8px!important;
+}
+body[data-app-route="leagueTools"] .v60-tool-card{
+  min-width:0!important;
+  min-height:70px!important;
+  height:auto!important;
+  padding:8px 9px!important;
+  gap:8px!important;
+  border-radius:11px!important;
+  align-items:center!important;
+}
+body[data-app-route="leagueTools"] .v60-tool-card>svg{
+  width:25px!important;
+  height:25px!important;
+  min-width:25px!important;
+}
+body[data-app-route="leagueTools"] .v60-tool-card b{
+  display:-webkit-box!important;
+  max-width:100%!important;
+  white-space:normal!important;
+  overflow:hidden!important;
+  text-overflow:clip!important;
+  -webkit-box-orient:vertical!important;
+  -webkit-line-clamp:2!important;
+  font-size:11.5px!important;
+  line-height:1.08!important;
+  font-weight:800!important;
+}
+body[data-app-route="leagueTools"] .v60-tool-card small{
+  display:-webkit-box!important;
+  max-width:100%!important;
+  margin-top:3px!important;
+  overflow:hidden!important;
+  -webkit-box-orient:vertical!important;
+  -webkit-line-clamp:2!important;
+  font-size:8.5px!important;
+  line-height:1.1!important;
+}
+body[data-app-route="leagueTools"] .v100-inline-tool{
+  grid-template-columns:28px minmax(0,1fr)!important;
+}
+body[data-app-route="leagueTools"] .v100-inline-emoji{
+  display:grid!important;
+  place-items:center!important;
+  width:26px!important;
+  height:26px!important;
+  min-width:26px!important;
+  font-size:18px!important;
+  line-height:1!important;
+}
+body[data-app-route="leagueTools"] #v100-league-tools-extra{
+  display:none!important;
+}
+
+/* En Más también quedan en cuadros chicos de dos columnas, con el nombre completo visible. */
+.v100-tools-grid{
+  grid-template-columns:repeat(2,minmax(0,1fr))!important;
+  gap:8px!important;
+}
+.v100-tool{
+  min-width:0!important;
+  min-height:72px!important;
+  padding:8px!important;
+  grid-template-columns:27px minmax(0,1fr)!important;
+  gap:7px!important;
+  border-radius:12px!important;
+}
+.v100-tool-icon{
+  font-size:18px!important;
+  line-height:1!important;
+}
+.v100-tool span:nth-child(2){
+  min-width:0!important;
+}
+.v100-tool b{
+  display:-webkit-box!important;
+  white-space:normal!important;
+  overflow:hidden!important;
+  -webkit-box-orient:vertical!important;
+  -webkit-line-clamp:2!important;
+  font-size:11px!important;
+  line-height:1.08!important;
+}
+.v100-tool small{
+  display:-webkit-box!important;
+  overflow:hidden!important;
+  -webkit-box-orient:vertical!important;
+  -webkit-line-clamp:2!important;
+  font-size:8.5px!important;
+  line-height:1.1!important;
+}
+.v100-tool>i{
+  display:none!important;
+}
+
+@media(max-width:360px){
+  body[data-app-route="leagueTools"] .v60-tool-grid,
+  .v100-tools-grid{
+    gap:6px!important;
+  }
+  body[data-app-route="leagueTools"] .v60-tool-card,
+  .v100-tool{
+    min-height:68px!important;
+    padding:7px!important;
+  }
+}
