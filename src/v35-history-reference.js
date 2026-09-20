@@ -31,6 +31,11 @@ const seasons=[
    Nunca se importan equipos de estas fuentes a la lista de equipos de la temporada actual. */
 const historicalSources=[
   {
+    title:'Golazo Liga · archivo 2012–2013 recuperado',
+    note:'Texto histórico aportado por el usuario con publicaciones de 2012 y 2013: Tavera campeón de Copa de Segunda, Real Cerrito de Gasca campeón de Segunda Fuerza, final de Veteranos Universidad vs Dinamo y Magisterio vs Boavista por penales.',
+    url:'https://www.facebook.com/golazo.liga'
+  },
+  {
     title:'Golazo Liga · fecha digital mínima comprobada',
     note:'Captura aportada: publicación visible con fecha 5 OCT 2012. Prueba actividad digital al menos desde entonces, pero no la fundación de la Liga ni la fecha de creación del perfil.',
     url:'https://www.facebook.com/golazo.liga'
@@ -221,13 +226,14 @@ const retroClubs=[
 const retroNames=['Universidad','Valencia','Halcones','Chelse','Olímpicos de Pozos','Romerillo'];
 
 const verifiedChampions=[
+  {season:'15 dic 2013',competition:'Segunda Fuerza',champion:'Real Cerrito de Gasca',runner:'DHP',source:'Golazo Liga publicó al capitán “Nudo” recibiendo el trofeo de campeón de Segunda Fuerza. Otra publicación de la misma final registró a Real Cerrito arriba 3–0 sobre DHP al minuto 35; no se usa ese marcador parcial como resultado final.',championLogo:HIST_ROOT+'assets/teams/deportivo-cg.webp'},
   {season:'22 feb 2014',competition:'Torneo de Copa · Fuerza Intermedia',champion:'Puros Cuates',runner:'—',source:'Publicación de Golazo Liga: “Trofeo para el equipo Puros Cuates Campeón del Torneo De Copa 2014 en la Categoría Fuerza Intermedia”.',photo:HIST_PHOTOS.purosCuatesTrophy2014||''},
   {season:'11 ene 2015',competition:'Campeonato · Intermedia',champion:'Puros Cuates',runner:'—',source:'Publicación de Golazo Liga del 11 de enero de 2015: “Puros cuates... campeón de intermedia”.'},
   {season:'18 ene 2015',competition:'Campeón de Campeones · Primera',champion:'Boavista',runner:'—',source:'Publicación de Golazo Liga: el capitán de Boavista recibe el trofeo de Campeón de Campeones de Primera.',championLogo:HIST_ROOT+'assets/official-logos/boavista.png'},
   {season:'09 jul 2016',competition:'Torneo de Copa · categoría no visible en la publicación',champion:'Magisterio',runner:'—',source:'Publicación de Golazo Liga del 9 de julio de 2016: “Felicidades al campeón de copa. Felicidades Magisterio”.'},
   {season:'2018–2019',competition:'Torneo de Liga',champion:'Juventus',runner:'Boavista',source:'Publicaciones históricas de Golazo Liga del 3 nov 2019.',photo:HIST_MEDIA+'juventus-campeon-2019.jpg',championLogo:HIST_ROOT+'assets/official-logos/juventus.png',runnerLogo:HIST_ROOT+'assets/official-logos/boavista.png'},
   {season:'Archivo fotográfico',competition:'Campeonato · categoría adulta por identificar',champion:'Tecos',runner:'—',source:'Fotografía del archivo: el plantel aparece con camisetas “CAMPEON TECOS” y trofeo.',photo:HIST_MEDIA+'tecos-campeon-historico.jpg'},
-  {season:'Archivo histórico',competition:'Copa · Categoría Segunda',champion:'Tavera FC',runner:'—',source:'Álbum histórico entregado por el usuario.',championLogo:HIST_ROOT+'assets/official-logos/tavera-fc.png'},
+  {season:'11 dic 2012',competition:'Torneo de Copa · Categoría Segunda',champion:'Tavera FC',runner:'—',source:'Golazo Liga publicó el 11 de diciembre de 2012 una felicitación explícita al equipo Tavera como campeón de Copa de la Categoría Segunda.',championLogo:HIST_ROOT+'assets/official-logos/tavera-fc.png'},
   {season:'12 abr 2025',competition:'Torneo de Liga · Veteranos 50+',champion:'Boavista FC',runner:'Boca Jrs.',source:'El rol publicado el 9 abr 2025 programa Boca Jrs. vs Boavista a las 16:00 en Campo 1; la publicación del 12 abr presenta a Boavista F C como “CAMPEÓN 2025”.',championLogo:HIST_ROOT+'assets/official-logos/boavista.png'},
   {season:'08 jun 2025',competition:'Torneo de Copa · Primera Fuerza',champion:'Galácticos (Pozos)',runner:'Herreras FC (Cuenda)',source:'La final fue Galácticos vs Herreras FC, domingo 8 de junio de 2025 a las 10:00 en Campo 1 de la Unidad Deportiva Sur. Ese mismo día la Liga publicó a Galácticos (Pozos) como “CAMPEÓN DE COPA 2025”.',championLogo:HIST_ROOT+'assets/teams/galacticos-pozos.webp',runnerLogo:HIST_ROOT+'assets/official-logos/herreras-fc.png'},
   {season:'15 jun 2025',competition:'Torneo de Copa · Fuerza Intermedia',champion:'Lobos CDG',runner:'Franco FC',source:'La Liga felicitó a Lobos CDG, de Cerrito de Gasca, por el título de Campeón de Copa 2025 tras vencer a Franco F.C., de San José de Manantiales. Los roles previos sitúan a ambos en las semifinales de Intermedia.',championLogo:HIST_ROOT+'assets/official-logos/lobos-cdg.png',runnerLogo:HIST_ROOT+'assets/official-logos/franco-fc.png'}
@@ -245,7 +251,11 @@ const videoArchiveFindings=[
   {date:'23 nov 2013',title:'Romerillo · tercer lugar en Fuerza Intermedia',detail:'Publicación de Golazo Liga: el portero del equipo Romerillo de Fuerza Intermedia fue clave para que su equipo obtuviera el tercer lugar; la nota destaca una atajada de penal en la serie final. La captura no permite identificar por nombre al guardameta.'},
   {date:'nov 2012',title:'Equipos con publicación fotográfica localizada',detail:'En el archivo de Golazo Liga aparecen publicaciones o fotografías directas de PSV, Real Cerrito, Unión Allende, Chelse, Hermanos, Aldama, Osasuna, Manchester, Halcones, San Antonio Jr. y Boavista. Se registran como equipos documentados en publicaciones de 2012; no se presenta esta lista como tabla final de inscritos.'},
   {date:'28 nov 2012 · publicación sobre oct 1987',title:'Boavista · origen documentado del club',detail:'En una publicación por su XXV aniversario, Golazo Liga relata que estudiantes de la Preparatoria “Juventino Rosas” organizaron Boavista en octubre de 1987 para registrarlo en la Primera Fuerza de la Liga Municipal. El mismo texto recuerda como equipos fuertes de comunidades a Cuenda, Aguilares, San Julián, Merino, Santa María de Guadalupe y Pozos. Es historia del club, no fecha de fundación de la Liga.',image:HIST_ROOT+'assets/official-logos/boavista.png'},
-  {date:'15 dic 2013',title:'Podio de Segunda Fuerza',detail:'DHP recibió el trofeo de segundo lugar. San José de la Montaña recibió el tercer lugar después de ganar por default a Tavera en el partido por el tercer puesto.'},
+  {date:'15 dic 2013',title:'Podio de Segunda Fuerza',detail:'Real Cerrito de Gasca fue campeón. DHP recibió el trofeo de segundo lugar. San José de la Montaña recibió el tercer lugar después de ganar por default a Tavera en el partido por el tercer puesto.'},
+  {date:'11 dic 2012',title:'Tavera · campeón de Copa de Segunda',detail:'Golazo Liga felicitó de forma explícita al equipo Tavera como campeón de Copa de la Categoría Segunda.'},
+  {date:'23 feb 2013',title:'Magisterio vs Boavista · penales',detail:'El partido terminó 0–0 en tiempo reglamentario y Magisterio ganó 4–2 la tanda de penales.'},
+  {date:'09 mar 2013',title:'Final de Veteranos · Universidad vs Dinamo',detail:'Final programada en la Unidad Deportiva Sur a las 16:00. El material recuperado no muestra el resultado.'},
+  {date:'15 dic 2013',title:'Real Cerrito de Gasca · campeón de Segunda Fuerza',detail:'Golazo Liga documentó la entrega del trofeo de campeón al capitán de Real Cerrito de Gasca; DHP fue el rival de la final.'},
   {date:'22 feb 2014',title:'Puros Cuates · campeón de Copa',detail:'Golazo Liga identifica a Puros Cuates como campeón del Torneo de Copa 2014 en Fuerza Intermedia.'},
   {date:'11 ene 2015',title:'Puros Cuates · campeón de Intermedia',detail:'La publicación histórica identifica a Puros Cuates como campeón de Intermedia. Ese mismo día José Guadalupe Moreno recibió el trofeo de campeón goleador de Primera Fuerza.'},
   {date:'18 ene 2015',title:'Boavista · Campeón de Campeones',detail:'El capitán de Boavista aparece recibiendo el trofeo de Campeón de Campeones de Primera.',image:HIST_ROOT+'assets/official-logos/boavista.png'},
@@ -469,7 +479,7 @@ const historicResults=[
 ];
 
 const historicFinalists=[
-  {year:'15 dic 2013',category:'Segunda Fuerza · podio de la final',a:'Subcampeón: DHP',b:'3.º: San José de la Montaña',note:'San José de la Montaña obtuvo el tercer lugar por default ante Tavera. El campeón no quedó identificado en el texto visible del fragmento revisado.'},
+  {year:'15 dic 2013',category:'Segunda Fuerza · final y podio',a:'Campeón: Real Cerrito de Gasca',b:'Subcampeón: DHP',note:'Golazo Liga documentó al capitán de Real Cerrito recibiendo el trofeo de campeón. San José de la Montaña quedó tercero por default ante Tavera.',logoA:HIST_ROOT+'assets/teams/deportivo-cg.webp'},
   {year:'12 abr 2025',category:'Veteranos 50+ · Final de Liga 2025',a:'Boca Jrs.',b:'Boavista FC',note:'16:00 · Campo 1 · Unidad Deportiva Sur. Boavista aparece publicado como CAMPEÓN 2025 el mismo día.',logoB:HIST_ROOT+'assets/official-logos/boavista.png'},
   {year:'26 abr 2025',category:'Veteranos 50+ · Campeón de Campeones',a:'Manchester United',b:'B.F.C.',note:'17:00 · Campo 1 · Unidad Deportiva Sur. El resultado no es visible en el fragmento revisado.',logoA:HIST_ROOT+'assets/official-logos/manchester.png'},
   {year:'08 jun 2025',category:'Primera Fuerza · Final de Copa 2025',a:'Galácticos (Pozos)',b:'Herreras FC (Cuenda)',note:'10:00 · Campo 1 · Unidad Deportiva Sur. Galácticos fue publicado como campeón.',logoA:HIST_ROOT+'assets/teams/galacticos-pozos.webp',logoB:HIST_ROOT+'assets/official-logos/herreras-fc.png'},
