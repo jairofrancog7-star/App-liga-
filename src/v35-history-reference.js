@@ -181,7 +181,7 @@ const historicalSources=[
 // V96 — Archivo histórico real: contenido verificado en capturas, álbumes y videos entregados por el usuario.
 // Los videos se usan únicamente como fuente de consulta; NO se incrustan dentro de Historia.
 const HIST_ROOT='https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/';
-const HIST_MEDIA='./assets/history/';
+const HIST_MEDIA='https://raw.githubusercontent.com/jairofrancog7-star/App-liga-/main/assets/history/';
 const HIST_PHOTOS=window.LJR_HISTORY_PHOTOS||{};
 const historyMoments=[
   {kind:'CAMPEÓN',date:'22 feb 2014',season:'2014',winner:'Puros Cuates',title:'Puros Cuates',subtitle:'Campeón de Copa · Fuerza Intermedia',detail:'La publicación de Golazo Liga muestra el trofeo entregado al equipo campeón.',backgroundPhoto:HIST_PHOTOS.purosCuatesTrophy2014||'',image:''},
@@ -805,7 +805,8 @@ function historyMomentCard(m){
   '</article>';
 }
 function historyMomentCards(){
-  return '<div class="v35-history-moments">'+historyMoments.map(historyMomentCard).join('')+'</div>';
+  const featured=historyMoments.filter(m=>!m.archiveOnly);
+  return '<div class="v35-history-moments">'+featured.map(historyMomentCard).join('')+'</div>';
 }
 function retroClubCards(){
   return '<div class="v35-retro-clubs">'+retroClubs.map(c=>
@@ -899,7 +900,7 @@ function historyArchiveBlock(){
   '</section>';
 }
 function championsArchiveBlock(){
-  const rows=historyMoments.filter(m=>m.kind==='CAMPEÓN'||m.kind==='FINAL');
+  const rows=historyMoments.filter(m=>(m.kind==='CAMPEÓN'||m.kind==='FINAL')&&!m.archiveOnly);
   return '<section class="v35-block v35-history-archive v35-history-archive-compact">'+
     '<div class="v35-history-archive-head"><span>PALMARÉS HISTÓRICO</span><h2>Campeones y finales documentadas</h2><p>Solo se muestran datos que aparecen en el material histórico revisado.</p></div>'+
     '<div class="v35-history-moments">'+rows.map(historyMomentCard).join('')+'</div>'+verifiedHistoryBlocks()+
