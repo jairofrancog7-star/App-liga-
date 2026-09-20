@@ -1718,3 +1718,203 @@
 @media(max-width:360px){
   .v35-era-team-grid{grid-template-columns:1fr}
 }
+
+
+/* V113 — Historia: la foto real del campeonato va DE FONDO y la fecha queda visible.
+   No toca header, tabs, navegación ni orden general de la página. */
+.v35-history-moment{
+  isolation:isolate;
+}
+.v35-history-bg-photo{
+  position:absolute!important;
+  inset:0!important;
+  z-index:0!important;
+  width:100%!important;
+  height:100%!important;
+  margin:0!important;
+  padding:0!important;
+  object-fit:cover!important;
+  object-position:center!important;
+  border:0!important;
+  border-radius:inherit!important;
+  background:#08075e!important;
+}
+.v35-history-moment-shade{
+  position:absolute;
+  inset:0;
+  z-index:1;
+  pointer-events:none;
+  border-radius:inherit;
+  background:
+    linear-gradient(180deg,rgba(3,6,50,.18) 0%,rgba(3,6,50,.42) 32%,rgba(3,6,50,.92) 100%),
+    linear-gradient(90deg,rgba(3,6,50,.84) 0%,rgba(3,6,50,.44) 62%,rgba(3,6,50,.16) 100%);
+}
+.v35-history-moment:not(.v35-history-moment-photo) .v35-history-moment-shade{
+  display:none;
+}
+.v35-history-moment-content{
+  position:relative;
+  z-index:2;
+  min-height:inherit;
+}
+.v35-history-moment-photo{
+  min-height:280px!important;
+  display:flex!important;
+  align-items:flex-end!important;
+  padding:0!important;
+  background:#060653!important;
+}
+.v35-history-moment-photo .v35-history-moment-content{
+  width:100%;
+  padding:20px 18px 18px;
+}
+.v35-history-moment-photo::after{
+  display:none!important;
+}
+.v35-history-meta{
+  display:flex;
+  flex-wrap:wrap;
+  align-items:center;
+  gap:7px;
+  margin:0 0 10px;
+}
+.v35-history-meta .v35-history-kind{
+  margin:0!important;
+}
+.v35-history-date{
+  display:inline-flex;
+  align-items:center;
+  min-height:23px;
+  padding:0 9px;
+  border:1px solid rgba(255,255,255,.2);
+  border-radius:999px;
+  color:#fff;
+  background:rgba(3,7,60,.58);
+  backdrop-filter:blur(8px);
+  -webkit-backdrop-filter:blur(8px);
+  font-size:9px;
+  line-height:1;
+  font-weight:800;
+  letter-spacing:.025em;
+}
+.v35-history-moment-photo h3{
+  max-width:100%!important;
+  font-size:clamp(28px,7.5vw,38px)!important;
+  text-shadow:0 2px 12px rgba(0,0,0,.58);
+}
+.v35-history-moment-photo strong{
+  color:#fff!important;
+  text-shadow:0 2px 10px rgba(0,0,0,.52);
+}
+.v35-history-moment-photo p{
+  max-width:100%!important;
+  color:#d9def1!important;
+  text-shadow:0 1px 8px rgba(0,0,0,.55);
+}
+.v35-history-moment-photo .v35-history-visual{
+  position:absolute;
+  top:16px;
+  right:16px;
+  width:auto!important;
+  min-height:0!important;
+  margin:0!important;
+  z-index:3;
+}
+.v35-history-moment-photo .v35-history-visual img{
+  width:54px!important;
+  height:54px!important;
+  padding:5px!important;
+  object-fit:contain!important;
+  border:1px solid rgba(255,255,255,.22)!important;
+  border-radius:13px!important;
+  background:rgba(3,7,60,.66)!important;
+  backdrop-filter:blur(8px);
+  -webkit-backdrop-filter:blur(8px);
+}
+
+/* Palmarés: cuando existe foto exacta del campeón, también ocupa el fondo de la tarjeta. */
+.v35-champion-card{
+  position:relative;
+  overflow:hidden;
+  isolation:isolate;
+}
+.v35-champion-bg-photo{
+  position:absolute!important;
+  inset:0!important;
+  z-index:0!important;
+  width:100%!important;
+  height:100%!important;
+  margin:0!important;
+  padding:0!important;
+  object-fit:cover!important;
+  object-position:center!important;
+  border:0!important;
+  border-radius:inherit!important;
+}
+.v35-champion-shade{
+  position:absolute;
+  inset:0;
+  z-index:1;
+  pointer-events:none;
+  background:
+    linear-gradient(180deg,rgba(5,7,55,.16),rgba(5,7,55,.48) 38%,rgba(5,7,55,.95) 100%),
+    linear-gradient(90deg,rgba(5,7,55,.82),rgba(5,7,55,.24));
+}
+.v35-champion-content{
+  position:relative;
+  z-index:2;
+}
+.v35-champion-card-photo{
+  min-height:270px;
+  display:flex;
+  align-items:flex-end;
+  padding:0!important;
+  background:#060653!important;
+}
+.v35-champion-card-photo .v35-champion-content{
+  width:100%;
+  padding:18px 16px 17px;
+}
+.v35-champion-card-photo .v35-champion-logos{
+  margin-bottom:10px!important;
+}
+.v35-champion-card-photo .v35-champion-logos img{
+  background:rgba(4,8,63,.62)!important;
+  border-color:rgba(255,255,255,.2)!important;
+  backdrop-filter:blur(7px);
+  -webkit-backdrop-filter:blur(7px);
+}
+.v35-champion-date{
+  display:inline-flex!important;
+  align-items:center!important;
+  min-height:24px!important;
+  padding:0 9px!important;
+  border:1px solid rgba(34,231,242,.48)!important;
+  border-radius:999px!important;
+  color:#32eef7!important;
+  background:rgba(4,8,63,.64)!important;
+  backdrop-filter:blur(8px);
+  -webkit-backdrop-filter:blur(8px);
+  font-size:9px!important;
+  font-weight:900!important;
+  letter-spacing:.055em!important;
+}
+.v35-champion-card-photo h4{
+  margin-top:9px!important;
+  color:#fff!important;
+  font-size:clamp(27px,7vw,36px)!important;
+  text-shadow:0 2px 12px rgba(0,0,0,.6);
+}
+.v35-champion-card-photo b{
+  color:#fff!important;
+  text-shadow:0 1px 8px rgba(0,0,0,.55);
+}
+.v35-champion-card-photo p{
+  color:#d9def1!important;
+  text-shadow:0 1px 8px rgba(0,0,0,.55);
+}
+
+@media(max-width:420px){
+  .v35-history-moment-photo{min-height:260px!important}
+  .v35-champion-card-photo{min-height:252px!important}
+}
