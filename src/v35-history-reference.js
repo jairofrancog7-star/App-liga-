@@ -190,11 +190,18 @@ const historicTables=[
 ];
 
 const historicScorers=[
-  {season:'2018',category:'Intermedia · Jornada 23',player:'Alejandro Juárez Merino',team:'Populares',value:'31 goles'},
-  {season:'2018',category:'Intermedia · Jornada 23',player:'Juan Carlos Hernández',team:'Barza',value:'18 goles'},
-  {season:'2018',category:'Intermedia · Jornada 23',player:'Alejandro Ramírez Medina',team:'Real DHP',value:'16 goles'},
-  {season:'2018',category:'Intermedia · Jornada 23',player:'César Agustín Pérez Campos',team:'Oklahoma',value:'16 goles'},
-  {season:'2018',category:'Intermedia · Jornada 23',player:'Miguel Presa García',team:'Populares',value:'16 goles'}
+  {season:'2018',category:'Intermedia · Jornada 23',player:'Alejandro Juárez Merino',team:'Populares',goals:31,value:'31 goles'},
+  {season:'2018',category:'Intermedia · Jornada 23',player:'Juan Carlos Hernández',team:'Barza',goals:18,value:'18 goles'},
+  {season:'2018',category:'Intermedia · Jornada 23',player:'Alejandro Ramírez Medina',team:'Real DHP',goals:16,value:'16 goles'},
+  {season:'2018',category:'Intermedia · Jornada 23',player:'César Agustín Pérez Campos',team:'Oklahoma',goals:16,value:'16 goles'},
+  {season:'2018',category:'Intermedia · Jornada 23',player:'Miguel Presa García',team:'Populares',goals:16,value:'16 goles'}
+];
+
+const historicTeamGoalRecords=[
+  {season:'2018',category:'Intermedia · Jornada 23',team:'Populares',identifiedGoals:47,players:2,note:'47 goles identificados al sumar los dos goleadores visibles del equipo (31 + 16). No se presenta como total oficial del club porque la tabla recuperada usada aquí no conserva la columna completa de GF.'},
+  {season:'2018',category:'Intermedia · Jornada 23',team:'Barza',identifiedGoals:18,players:1,note:'18 goles identificados en el registro de goleo visible. El total completo del equipo sigue pendiente de recuperar de una tabla con GF.'},
+  {season:'2018',category:'Intermedia · Jornada 23',team:'Real DHP',identifiedGoals:16,players:1,note:'16 goles identificados en el registro de goleo visible. El total completo del equipo sigue pendiente de recuperar de una tabla con GF.'},
+  {season:'2018',category:'Intermedia · Jornada 23',team:'Oklahoma',identifiedGoals:16,players:1,note:'16 goles identificados en el registro de goleo visible. El total completo del equipo sigue pendiente de recuperar de una tabla con GF.'}
 ];
 
 const recordMemories=[
@@ -396,6 +403,15 @@ function retroClubCards(){
   '<div class="v35-retro-names">'+retroNames.map(n=>'<span>'+esc(n)+'</span>').join('')+'</div>';
 }
 
+function historicalGoalsBlock(){
+  return '<div class="v35-history-goals">'+
+    '<div class="v35-history-subhead"><span>GOLES POR EQUIPO</span><h3>Goles identificados en los registros históricos</h3><p>Cuando la tabla conserva el total de goles a favor (GF), se mostrará como total del equipo. Cuando solo se recuperó una tabla de goleadores, se muestra únicamente la suma comprobable de los jugadores visibles para no inventar el total del club.</p></div>'+
+    '<div class="v35-team-goals-grid">'+historicTeamGoalRecords.map(x=>'<article class="v35-team-goal-card"><div class="v35-team-goal-top"><span>'+esc(x.season)+'</span><strong>'+esc(x.identifiedGoals)+'</strong></div><h4>'+esc(x.team)+'</h4><small>'+esc(x.category)+' · '+esc(x.players)+' jugador'+(x.players===1?'':'es')+' identificado'+(x.players===1?'':'s')+'</small><p>'+esc(x.note)+'</p></article>').join('')+'</div>'+
+    '<div class="v35-history-subhead"><span>GOLES POR JUGADOR</span><h3>Goleadores recuperados por temporada</h3><p>Se mantiene el año, la categoría, el equipo y el total visible de goles de cada jugador.</p></div>'+
+    '<div class="v35-scorer-history">'+historicScorers.map((x,i)=>'<article><span>#'+(i+1)+'</span><div><b>'+esc(x.player)+'</b><small>'+esc(x.team)+' · '+esc(x.season)+' · '+esc(x.category)+'</small></div><strong>'+esc(x.value)+'</strong></article>').join('')+'</div>'+
+  '</div>';
+}
+
 function verifiedHistoryBlocks(){
   return '<div class="v35-verified-history">'+
     '<div class="v35-history-subhead"><span>CAMPEONES CONFIRMADOS</span><h3>Palmarés verificado en el archivo</h3></div>'+
@@ -404,8 +420,7 @@ function verifiedHistoryBlocks(){
         ((x.championLogo||x.runnerLogo)?'<div class="v35-champion-logos">'+(x.championLogo?'<img src="'+x.championLogo+'" alt="" loading="lazy">':'')+(x.runnerLogo?'<img src="'+x.runnerLogo+'" alt="" loading="lazy">':'')+'</div>':'')+
         '<span>'+esc(x.season)+'</span><h4>'+esc(x.champion)+'</h4><b>'+esc(x.competition)+'</b><p>'+(x.runner&&x.runner!=='—'?'Subcampeón: '+esc(x.runner)+'. ':'')+esc(x.source)+'</p></article>'
     ).join('')+'</div>'+
-    '<div class="v35-history-subhead"><span>GOLEO HISTÓRICO</span><h3>Registros recuperados de tablas</h3></div>'+
-    '<div class="v35-scorer-history">'+historicScorers.map(x=>'<article><span>'+esc(x.season)+'</span><div><b>'+esc(x.player)+'</b><small>'+esc(x.team)+' · '+esc(x.category)+'</small></div><strong>'+esc(x.value)+'</strong></article>').join('')+'</div>'+
+    historicalGoalsBlock()+
     '<div class="v35-history-subhead"><span>TABLAS HISTÓRICAS</span><h3>Clasificaciones recuperadas</h3><p>Se conserva el contexto exacto del material: una tabla final se marca como final; un corte de jornada se marca solo como corte.</p></div>'+
     historicTables.map(t=>'<article class="v35-old-table"><header><span>'+esc(t.season)+'</span><div><b>'+esc(t.title)+'</b><small>'+esc(t.note)+'</small></div></header><div class="v35-old-table-head"><span>POS</span><span>EQUIPO</span><span>PTS</span></div>'+t.rows.map(r=>'<div class="v35-old-table-row"><span>'+esc(r[0])+'</span><b>'+esc(r[1])+'</b><strong>'+esc(r[2])+'</strong></div>').join('')+'</article>').join('')+
     '<div class="v35-history-subhead"><span>RESULTADOS CONSERVADOS</span><h3>Ganadores publicados en roles antiguos</h3></div>'+
@@ -502,7 +517,7 @@ function recordsBody(){
     '<article class="v35-stat-card"><h3>Archivo comprobado</h3><p>Esta sección reúne marcas visibles en tablas históricas y recuerdos documentados en fotografías, álbumes y videos. Un corte de jornada no se presenta como récord absoluto de toda la Liga.</p></article>'+
     '<div class="v35-record-grid">'+recordMemories.map(r=>'<article class="v35-record-card">'+
       (r.image?'<img src="'+r.image+'" alt="" loading="lazy" decoding="async">':'<span class="v35-record-mark">LM</span>')+
-      '<div><small>'+esc(r.tag)+'</small><h3>'+esc(r.title)+'</h3><strong>'+esc(r.value)+'</strong><p>'+esc(r.detail)+'</p></div></article>').join('')+'</div>'+
+      '<div><small>'+esc(r.tag)+'</small><h3>'+esc(r.title)+'</h3><strong>'+esc(r.value)+'</strong><p>'+esc(r.detail)+'</p></div></article>').join('')+'</div>'+    '<div class="v35-records-goals-anchor">'+historicalGoalsBlock()+'</div>'+
     '<div class="v35-history-subhead"><span>EQUIPOS DEL ARCHIVO</span><h3>Nombres recuperados de tablas, roles y álbumes</h3></div>'+
     '<div class="v35-retro-names">'+expandedRetroNames.concat(retroNames).filter((x,i,a)=>a.indexOf(x)===i).map(n=>'<span>'+esc(n)+'</span>').join('')+'</div>'+
   '</section>';
