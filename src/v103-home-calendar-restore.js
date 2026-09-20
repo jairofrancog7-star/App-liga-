@@ -30,7 +30,7 @@ function homeImageMarkup(){
     '<img class="v103-home-image" src="'+HOME_IMAGE+'" alt="Fútbol de la Liga Juventino Rosas" loading="eager" decoding="async">'+
     '<span class="v103-home-image-shade" aria-hidden="true"></span>'+
     '<div class="v103-home-image-copy"><small>MOMENTOS DE LA LIGA</small><h2>Mira todos los goles de la Jornada 1</h2><p>La pasión del fútbol local en un solo lugar</p></div>'+
-    '<button type="button" class="v103-home-image-hit" data-route="video" aria-label="Abrir videos de la Liga"></button>'+
+    '<button type="button" class="v103-home-image-hit" data-safe-route="video" aria-label="Abrir videos de la Liga"></button>'+
   '</section>';
 }
 
