@@ -149,7 +149,7 @@
     const root=screen();if(!root)return;
     root.innerHTML=views[route]();
     backButton()?.classList.remove('is-hidden');
-    $('.nav-item').forEach(n=>n.classList.remove('active'));
+    $$('[data-route]').forEach(n=>n.classList.remove('active'));
     bind();
     applySettings();
     if(route==='v4-calendar')requestAnimationFrame(()=>window.LJR_TEAM_LOGOS?.refresh?.());
