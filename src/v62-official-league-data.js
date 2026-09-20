@@ -4,7 +4,7 @@
 (function(){
 'use strict';
 
-const BUILD='20260919-official-integrity1';
+const BUILD='20260920-home-official-live2';
 const LOCAL_DATA='./public/data/official-live.json?v='+BUILD;
 const REMOTE_DATA='https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/data/official-live.json?v='+BUILD;
 const SRC='https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/';
@@ -81,7 +81,16 @@ function parseDate(v){
   return new Date(+m[3],+m[2]-1,+m[1],+(m[4]||0),+(m[5]||0));
 }
 function isFutureFixture(r){const d=parseDate(r?.[8]);return !!d&&d.getTime()>Date.now()}
-function isPlayedFixture(r){return /^\d+$/.test(String(r?.[3]??''))&&/^\d+$/.test(String(r?.[5]??''))}
+function hasPublishedScore(r){
+  const a=String(r?.[3]??'').trim(),b=String(r?.[5]??'').trim();
+  const cell=v=>/^\d+$/.test(v)||v==='-';
+  return cell(a)&&cell(b)&&(/^\d+$/.test(a)||/^\d+$/.test(b));
+}
+function officialScoreCell(v){
+  const x=String(v??'').trim();
+  return x==='-'?'0':(/^\d+$/.test(x)?x:'—');
+}
+function isPlayedFixture(r){return hasPublishedScore(r)}
 function categoryTeams(c){
   if(!c)return [];
   const out=[];
@@ -133,11 +142,11 @@ function sourceStamp(){
   catch{return 'Actualizado '+d}
 }
 
-/* V72 — Próximos partidos / EN VIVO calculado desde los horarios oficiales.
-   No muestra marcador porque no existe un feed de goles en tiempo real.
-   Reloj de referencia: 45' + 15' descanso + 45'; la ventana de partido se
-   mantiene hasta 120 minutos para tolerar compensación/retrasos. */
-let homeLiveTimer=null;
+/* V78 — Calendario y resultados de Inicio: solo datos oficiales.
+   No inventa equipos, marcadores, minutos ni goleadores. El marcador se muestra
+   únicamente cuando la fuente oficial publica al menos uno de los dos goles.
+   Los dos guiones de un partido futuro siguen significando "sin resultado". */
+let officialRefreshTimer=null;
 function mexicoWallClockStamp(now=new Date()){
   try{
     const parts=new Intl.DateTimeFormat('en-CA',{
@@ -164,80 +173,106 @@ function fixtureShortDate(v){
   try{return new Intl.DateTimeFormat('es-MX',{weekday:'short',day:'numeric',month:'short',timeZone:'UTC'}).format(d).replace('.','')}
   catch{return m[1]+'/'+m[2]}
 }
-function liveClockFor(startMs,nowMs){
-  const elapsed=(nowMs-startMs)/60000;
-  if(!Number.isFinite(elapsed)||elapsed<0)return {kind:'upcoming',label:''};
-  if(elapsed<45)return {kind:'live',label:'1T · '+Math.max(1,Math.floor(elapsed)+1)+"'"};
-  if(elapsed<60)return {kind:'live',label:'DESCANSO'};
-  if(elapsed<105)return {kind:'live',label:'2T · '+Math.min(90,45+Math.floor(elapsed-60)+1)+"'"};
-  if(elapsed<120)return {kind:'live',label:"2T · 90+"+Math.max(1,Math.floor(elapsed-105)+1)+"'"};
-  return {kind:'ended',label:''};
+function fixtureDateParts(v){
+  const m=String(v||'').match(/(\d{1,2})\/(\d{1,2})\/(\d{4})/);
+  if(!m)return {day:'—',month:'',year:''};
+  const d=new Date(Date.UTC(+m[3],+m[2]-1,+m[1]));
+  let month='';
+  try{month=new Intl.DateTimeFormat('es-MX',{month:'short',timeZone:'UTC'}).format(d).replace('.','').toUpperCase()}
+  catch{month=m[2]}
+  return {day:String(+m[1]),month,year:m[3]};
 }
 function officialFixtureEntries(id='3'){
   const c=cat(id),rs=c?.fixtures?.[0]?.rows||[];
   return rs.map((r,i)=>({id:String(id),category:c?.name||CAT_META[String(id)]?.name||'',r,index:i,start:fixtureWallClockStamp(r?.[8])}))
     .filter(x=>Number.isFinite(x.start)&&String(x.r?.[2]||'').trim()&&String(x.r?.[6]||'').trim());
 }
-function homeFixturePool(){
+function officialHomeCalendarItems(){
   const now=mexicoWallClockStamp();
   const primary=officialFixtureEntries('3');
-  const all=CAT_ORDER.flatMap(id=>officialFixtureEntries(id));
-  const usable=x=>{
-    const status=liveClockFor(x.start,now);
-    return status.kind==='live'||x.start>now;
-  };
-  let pool=primary.filter(usable);
-  if(pool.length<2){
-    const seen=new Set(pool.map(x=>x.id+':'+x.index));
-    all.filter(usable).forEach(x=>{const k=x.id+':'+x.index;if(!seen.has(k)){seen.add(k);pool.push(x)}});
+  const results=primary.filter(x=>isPlayedFixture(x.r)&&x.start<=now).sort((a,b)=>b.start-a.start);
+  const upcoming=primary.filter(x=>!isPlayedFixture(x.r)&&x.start>=now-2*60*60*1000).sort((a,b)=>a.start-b.start);
+  const chosen=[];
+  if(results.length)chosen.push(results[0]);
+  upcoming.slice(0,Math.max(0,3-chosen.length)).forEach(x=>chosen.push(x));
+  if(chosen.length<3){
+    results.slice(1).forEach(x=>{if(chosen.length<3)chosen.push(x)});
   }
-  return pool.sort((a,b)=>{
-    const sa=liveClockFor(a.start,now).kind==='live'?0:1;
-    const sb=liveClockFor(b.start,now).kind==='live'?0:1;
-    return sa-sb||a.start-b.start||a.index-b.index;
-  }).slice(0,2);
+  return chosen.slice(0,3);
 }
-function homeOfficialLogo(name){
-  return teamLogoHtml(name,'v72-home-team-logo');
+function homeOfficialLogo(name,cls='v78-calendar-logo'){
+  return teamLogoHtml(name,cls);
 }
-function homeFixtureRow(x,now){
-  const r=x.r,home=String(r[2]||''),away=String(r[6]||''),status=liveClockFor(x.start,now);
-  const center=status.kind==='live'
-    ? '<strong class="v72-home-live-clock"><i></i>'+esc(status.label)+'</strong>'
-    : '<strong class="v72-home-kickoff">'+esc(fixtureClock(r[8]))+'</strong>';
-  return '<div class="v72-home-match-row '+(status.kind==='live'?'is-live':'')+'">'+
-    '<button type="button" class="v72-home-club home" data-v62-team="'+esc(home)+'"><span>'+esc(home)+'</span>'+homeOfficialLogo(home)+'</button>'+
-    center+
-    '<button type="button" class="v72-home-club away" data-v62-team="'+esc(away)+'">'+homeOfficialLogo(away)+'<span>'+esc(away)+'</span></button>'+
-  '</div>';
+function homeCalendarCard(x){
+  const r=x.r,home=String(r[2]||'').trim(),away=String(r[6]||'').trim();
+  const d=fixtureDateParts(r[8]),played=isPlayedFixture(r);
+  const score=played?officialScoreCell(r[3])+'–'+officialScoreCell(r[5]):fixtureClock(r[8]);
+  const status=played?'RESULTADO OFICIAL':'HORARIO OFICIAL';
+  const venue=String(r[7]||'Campo por confirmar').trim()||'Campo por confirmar';
+  return '<article class="v78-calendar-card '+(played?'is-result':'is-upcoming')+'">'+
+    '<div class="v78-calendar-date"><b>'+esc(d.day)+'</b><span>'+esc(d.month)+'</span></div>'+
+    '<div class="v78-calendar-teams">'+
+      '<button type="button" data-v62-team="'+esc(home)+'">'+homeOfficialLogo(home)+'<span>'+esc(home)+'</span></button>'+
+      '<strong class="v78-calendar-score">'+esc(score)+'</strong>'+
+      '<button type="button" data-v62-team="'+esc(away)+'">'+homeOfficialLogo(away)+'<span>'+esc(away)+'</span></button>'+
+    '</div>'+
+    '<div class="v78-calendar-meta"><b>'+status+'</b><span>Jornada '+esc(r[1]||'')+' · '+esc(venue)+'</span></div>'+
+  '</article>';
 }
-function patchHomeUpcoming(force=false){
+function patchHomeCalendarResults(force=false){
   if(route()!=='home'||!db)return;
   const screen=document.querySelector('#screen');if(!screen)return;
-  const section=[...screen.querySelectorAll('.section')].find(s=>/Próximos partidos/i.test(s.querySelector('.section-head h2,h2')?.textContent||''));
+  const sections=[...screen.querySelectorAll('.section')];
+  let section=sections.find(el=>/Calendario\s+y\s+resultados/i.test(el.querySelector('.section-head h2,h2')?.textContent||''));
+  if(!section)section=sections.find(el=>/Próximos\s+partidos/i.test(el.querySelector('.section-head h2,h2')?.textContent||''));
   if(!section)return;
-  const pool=homeFixturePool(),now=mexicoWallClockStamp();
-  if(!pool.length)return;
-  const sig=pool.map(x=>x.id+':'+x.index+':'+liveClockFor(x.start,now).label).join('|');
-  if(!force&&section.dataset.v72LiveSig===sig)return;
-  section.dataset.v72LiveSig=sig;
-  section.classList.add('v72-home-live-section');
 
-  const first=pool[0],firstStatus=liveClockFor(first.start,now),r=first.r;
-  const metaLeft=firstStatus.kind==='live'
-    ? '<span class="v72-home-live-meta"><i></i>EN VIVO · Jornada '+esc(r[1]||'')+'</span>'
-    : '<span class="v72-home-next-meta">PRÓXIMO · Jornada '+esc(r[1]||'')+'</span>';
-  const metaRight='<span>'+esc(fixtureShortDate(r[8]))+(fixtureClock(r[8])!=='Por confirmar'?' · '+esc(fixtureClock(r[8])):'')+'</span>';
-  let card=section.querySelector('.match-card');
-  if(!card){card=document.createElement('div');card.className='card match-card';section.appendChild(card)}
-  card.classList.add('v72-home-live-card');
-  card.innerHTML='<div class="match-meta v72-home-match-meta">'+metaLeft+metaRight+'</div>'+
-    '<div class="v72-home-match-list">'+pool.map(x=>homeFixtureRow(x,now)).join('')+'</div>'+
-    '<div class="v72-home-live-note">Minuto estimado por horario oficial · sin marcador en vivo</div>';
+  const items=officialHomeCalendarItems();
+  const sig=String(db.captured_at_utc||'')+'|'+items.map(x=>x.id+':'+x.index+':'+[x.r[3],x.r[5],x.r[8]].join(':')).join('|');
+  if(!force&&section.dataset.v78CalendarSig===sig)return;
+  section.dataset.v78CalendarSig=sig;
+  section.classList.add('v78-home-calendar');
+
+  let head=section.querySelector('.section-head');
+  if(!head){
+    head=document.createElement('div');head.className='section-head';section.prepend(head);
+  }
+  head.innerHTML='<h2>Calendario y resultados</h2><button type="button" class="link-button" data-route="competition">Abrir calendario</button>';
+  [...section.children].forEach(el=>{if(el!==head)el.remove()});
+
+  const wrap=document.createElement('div');
+  wrap.className='v78-calendar-track';
+  wrap.innerHTML=items.length?items.map(homeCalendarCard).join(''):
+    '<div class="v78-calendar-empty">No hay partidos oficiales publicados para mostrar.</div>';
+  section.appendChild(wrap);
+
+  const stamp=document.createElement('p');
+  stamp.className='v78-calendar-source';
+  stamp.textContent='Fuente deportiva oficial · '+sourceStamp()+' · los marcadores aparecen solo cuando la Liga los publica.';
+  section.appendChild(stamp);
+
+  section.querySelectorAll('[data-v62-team]').forEach(b=>{
+    b.addEventListener('click',e=>{e.preventDefault();openTeam(b.dataset.v62Team)},{once:true});
+  });
 }
-function startHomeLiveTimer(){
-  if(homeLiveTimer)return;
-  homeLiveTimer=setInterval(()=>patchHomeUpcoming(true),30000);
+async function refreshOfficialData(){
+  const fresh=await fetchJson(REMOTE_DATA+'&ts='+Date.now());
+  if(!fresh)return;
+  const currentStamp=String(db?.captured_at_utc||''),freshStamp=String(fresh?.captured_at_utc||'');
+  if(!db||freshStamp>currentStamp){
+    db=fresh;
+    window.LJR_OFFICIAL_DATA=db;
+    patchHomeCalendarResults(true);
+    patchHomeStandings(true);
+    patchHomeScorers(true);
+    patchScorers(true);
+    patchTeamDetail();
+    patchTeams();
+  }
+}
+function startOfficialRefreshTimer(){
+  if(officialRefreshTimer)return;
+  officialRefreshTimer=setInterval(refreshOfficialData,60000);
 }
 
 /* V73 — Clasificación de Inicio tomada únicamente de Primera Fuerza oficial.
@@ -377,7 +412,7 @@ async function load(){
   window.LJR_OFFICIAL_DATA=db;
   window.LJR_OFFICIAL_API={getData:()=>db,getCategory:id=>cat(id),getTeam:teamContext,getLogo:logoFor,setCategory:setCategory,setDataTab:(id)=>{dataTab=String(id||'summary');localStorage.setItem('v62-data-tab',dataTab);if(route()==='leagueData')renderDataPage()},openTeam};
   if(!cat(categoryId))categoryId='3';
-  startHomeLiveTimer();
+  startOfficialRefreshTimer();
   schedule();
 }
 
@@ -418,12 +453,12 @@ function genericTable(kind){
 function summaryView(){
   const current=cat(),counts=current?.counts||current?.dashboard?.counts||{};
   const fixtures=rows('fixtures'),scorers=rows('scorers').filter(r=>r.length>=4&&/^\d+$/.test(String(r[3]||'')));
-  const goals=scorers.reduce((sum,r)=>sum+scoreNum(r[3]),0);
+  const goals=scorers.length?scorers.reduce((sum,r)=>sum+scoreNum(r[3]),0):'—';
   return '<div class="v62-summary-grid">'+
     '<button type="button" data-v62-tab="teams"><b>'+esc(counts.Equipos??categoryTeams(current).length)+'</b><small>Equipos</small></button>'+
     '<button type="button" data-v62-tab="players"><b>'+esc(counts.Jugadores??0)+'</b><small>Jugadores</small></button>'+
     '<button type="button" data-v62-tab="fixtures"><b>'+esc(fixtures.length)+'</b><small>Partidos</small></button>'+
-    '<button type="button" data-v62-tab="scorers"><b>'+esc(goals)+'</b><small>Goles registrados</small></button>'+
+    '<button type="button" data-v62-tab="scorers"><b>'+esc(goals)+'</b><small>Goleo oficial publicado</small></button>'+
   '</div>'+
   '<div class="v62-summary-actions">'+
     '<button type="button" data-v62-tab="standings">Ver tabla</button>'+
@@ -591,7 +626,7 @@ function teamFixtures(ctx){
   return (ctx?.c?.fixtures?.[0]?.rows||[]).filter(r=>same(r[2],ctx.name)||same(r[6],ctx.name));
 }
 function teamForm(ctx){
-  const games=teamFixtures(ctx).map(r=>({r,d:parseDate(r[8])})).filter(x=>x.d&&x.d.getTime()<=Date.now()).sort((a,b)=>a.d-b.d);
+  const games=teamFixtures(ctx).map(r=>({r,d:parseDate(r[8])})).filter(x=>x.d&&x.d.getTime()<=Date.now()&&isPlayedFixture(x.r)).sort((a,b)=>a.d-b.d);
   return games.slice(-5).map(({r})=>{
     const home=same(r[2],ctx.name),a=scoreNum(r[3]),b=scoreNum(r[5]);
     if(a===b)return 'E';
@@ -776,7 +811,7 @@ function schedule(){
       document.body.classList.toggle('v62-data-active',r==='leagueData');
       if(r==='leagueData')renderDataPage();
       else{
-        patchHomeUpcoming();
+        patchHomeCalendarResults();
         patchHomeStandings();
         patchHomeScorers();
         patchScorers();
