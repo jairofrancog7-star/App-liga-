@@ -1613,3 +1613,108 @@
     line-height:1.35;
   }
 }
+
+
+/* V108 — inventario visual de equipos históricos recuperado de videos/ZIP. */
+@media(max-width:1023px){
+  .v35-era-archive{
+    display:grid;
+    gap:12px;
+    margin:0 0 22px;
+  }
+  .v35-era-group{
+    overflow:hidden;
+    border:1px solid rgba(86,111,222,.24);
+    border-radius:17px;
+    background:linear-gradient(180deg,rgba(20,30,130,.96),rgba(10,17,92,.99));
+  }
+  .v35-era-group>header{
+    display:flex;
+    align-items:flex-start;
+    justify-content:space-between;
+    gap:12px;
+    padding:12px 13px 10px;
+    border-bottom:1px solid rgba(95,117,225,.18);
+    background:rgba(34,49,166,.26);
+  }
+  .v35-era-group>header span{
+    color:#22e7f2;
+    font-size:10px;
+    line-height:1.15;
+    font-weight:850;
+    letter-spacing:.04em;
+  }
+  .v35-era-group>header b{
+    max-width:56%;
+    color:#cfd5ef;
+    font-size:9px;
+    line-height:1.25;
+    text-align:right;
+    font-weight:700;
+  }
+  .v35-era-team-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:1px;
+    background:rgba(82,104,211,.16);
+  }
+  .v35-era-team{
+    min-width:0;
+    min-height:52px;
+    display:grid;
+    grid-template-columns:34px minmax(0,1fr);
+    gap:8px;
+    align-items:center;
+    padding:8px 9px;
+    background:rgba(10,18,96,.96);
+  }
+  .v35-era-team img,
+  .v35-era-fallback{
+    width:32px;
+    height:32px;
+    display:grid;
+    place-items:center;
+    object-fit:contain;
+    object-position:center;
+    border-radius:9px;
+    background:rgba(255,255,255,.055);
+  }
+  .v35-era-fallback{
+    color:#22e7f2;
+    font-size:8px;
+    font-style:normal;
+    font-weight:900;
+    border:1px solid rgba(34,231,242,.18);
+  }
+  .v35-era-team>b{
+    min-width:0;
+    color:#fff;
+    font-size:10px;
+    line-height:1.15;
+    font-weight:700;
+    overflow-wrap:anywhere;
+  }
+  .v35-old-team{
+    min-width:0;
+    display:flex!important;
+    align-items:center;
+    gap:7px;
+    font-style:normal;
+  }
+  .v35-old-team img{
+    width:24px;
+    height:24px;
+    flex:0 0 24px;
+    object-fit:contain;
+    object-position:center;
+  }
+  .v35-old-team em{
+    min-width:0;
+    color:inherit;
+    font-style:normal;
+    overflow-wrap:anywhere;
+  }
+}
+@media(max-width:360px){
+  .v35-era-team-grid{grid-template-columns:1fr}
+}
