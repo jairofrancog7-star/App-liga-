@@ -322,3 +322,30 @@ body[data-app-route="players"] [data-v66-directory="players"] > .v73-below-nativ
     min-height:292px!important;
   }
 }
+
+
+/* V95 — Datos/Estadísticas: la animación va después del contenido, no arriba. */
+body[data-app-route="stats"] #screen,
+body[data-app-route="leagueData"] #screen{
+  display:flex!important;
+  flex-direction:column!important;
+}
+body[data-app-route="stats"] #screen>.v73-motion-banner,
+body[data-app-route="leagueData"] #screen>.v73-motion-banner{
+  order:99!important;
+  margin:28px 14px 100px!important;
+}
+body[data-app-route="stats"] #screen>*:not(.v73-motion-banner),
+body[data-app-route="leagueData"] #screen>*:not(.v73-motion-banner){
+  order:0!important;
+}
+body[data-app-route="leagueData"] .v73-motion-banner{
+  background:#080a65!important;
+}
+@media(max-width:390px){
+  body[data-app-route="stats"] #screen>.v73-motion-banner,
+  body[data-app-route="leagueData"] #screen>.v73-motion-banner{
+    margin-left:12px!important;
+    margin-right:12px!important;
+  }
+}
