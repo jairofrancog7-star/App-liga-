@@ -93,13 +93,6 @@
       desc:'Ranking de anotadores conectado a los datos registrados de la Liga.',
       pills:[['Ranking','scroll'],['Tabla','competition'],['Estadísticas','stats']]
     },
-    rankings:{
-      asset:'stats',
-      kicker:'RANKINGS',
-      title:'RENDIMIENTO DE LA LIGA.',
-      desc:'Una lectura visual de posiciones, tendencias y estadísticas.',
-      pills:[['Ranking','scroll'],['Tabla','competition'],['Goleadores','scorers']]
-    },
     v38Stats:{
       asset:'stats',
       kicker:'TABLA Y ESTADÍSTICAS',
@@ -165,6 +158,14 @@
       title:'LA TEMPORADA DE UN VISTAZO.',
       desc:'Datos y rendimiento en otra parte de Inicio, separado de las demás animaciones.',
       pills:[['Tabla','competition'],['Goleadores','scorers'],['Datos','safe-data']]
+    },
+    {
+      slot:'rankings',
+      asset:'stats',
+      kicker:'RANKINGS',
+      title:'RENDIMIENTO DE LA LIGA.',
+      desc:'Una lectura visual de posiciones, tendencias y estadísticas.',
+      pills:[['Ranking','rankings'],['Tabla','competition'],['Goleadores','scorers']]
     }
   ];
 
@@ -314,6 +315,15 @@
         banner.dataset.v73HomeSlot=cfg.slot;
         banner.classList.add('v73-home-interleaved');
       }
+
+      /* Rendimiento de la Liga va SIEMPRE como la última sección de Inicio.
+         No se inserta arriba de ninguna cabecera/barra ni dentro de Rankings. */
+      if(cfg.slot==='rankings'){
+        extra.appendChild(banner);
+        banner.classList.add('v73-home-bottom-performance');
+        return;
+      }
+
       const target=targets[index];
       if(target){
         target.insertAdjacentElement('afterend',banner);
