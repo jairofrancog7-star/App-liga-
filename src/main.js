@@ -4250,7 +4250,8 @@ function searchResultsHtml(q){
     ['Publicaciones','publications','whatsapp compartir jornada'],
     ['QR de la Liga','ligaQR','qr compartir app acceso'],
     ['Rankings de la Liga','rankings','ranking clubes clasificación'],
-    ['Historia','history','historia temporadas campeones finales'],\n    ['Facebook oficial de la Liga','history','facebook tablas calendarios avisos campeones historia fotografias'],
+    ['Historia','history','historia temporadas campeones finales'],
+    ['Facebook oficial de la Liga','history','facebook tablas calendarios avisos campeones historia fotografias'],
     ['Máximo goleador','scorers','goleadores jugadores goles'],
     ['Equipos','teams','clubes equipos'],
     ['Siguiendo','following','equipos seguidos favoritos']
