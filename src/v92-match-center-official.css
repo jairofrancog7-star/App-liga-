@@ -1,0 +1,173 @@
+/* V92 — Match Center oficial, limpio y unido al fondo. */
+@media (max-width:1023px){
+  body.v92-match-center-official,
+  body.v92-match-center-official .app-shell,
+  body.v92-match-center-official #screen{
+    background:#05075f!important;
+  }
+  /* Quita el arte con arcos/líneas cyan y deja una cabecera continua. */
+  body.v92-match-center-official .topbar{
+    height:92px!important;
+    min-height:92px!important;
+    margin:0!important;
+    background:#05075f!important;
+    background-image:none!important;
+    border:0!important;
+    box-shadow:none!important;
+  }
+  body.v92-match-center-official .topbar::before,
+  body.v92-match-center-official .topbar::after,
+  body.v92-match-center-official #screen::before{
+    content:none!important;
+    display:none!important;
+  }
+  body.v92-match-center-official .topbar .wordmark{
+    display:block!important;
+    visibility:visible!important;
+    position:absolute!important;
+    left:20px!important;
+    top:20px!important;
+    width:52px!important;
+    height:52px!important;
+    background:url('../assets/liga-logo.webp') center/contain no-repeat!important;
+    color:transparent!important;
+    font-size:0!important;
+    border:0!important;
+  }
+  body.v92-match-center-official .topbar .profile-button{
+    display:block!important;
+    visibility:visible!important;
+    position:absolute!important;
+    right:20px!important;
+    top:20px!important;
+    width:46px!important;
+    height:46px!important;
+    border:0!important;
+    background:transparent url('../profile-reference.svg') center/contain no-repeat!important;
+    color:transparent!important;
+  }
+  body.v92-match-center-official .topbar .profile-button::before,
+  body.v92-match-center-official .topbar .profile-button::after{content:none!important}
+  body.v92-match-center-official #screen{
+    margin-top:0!important;
+    padding-top:0!important;
+    border-top:0!important;
+    box-shadow:none!important;
+  }
+
+  .v92-matchcenter{
+    min-height:calc(100vh - 92px);
+    padding:0 18px 112px;
+    color:#fff;
+    background:#05075f;
+  }
+  .v92-match-head{padding:18px 0 16px}
+  .v92-kicker{color:#24dce9;font:800 11px/1.1 Inter,Roboto,Arial,sans-serif;letter-spacing:.14em}
+  .v92-match-head h1{margin:8px 0 7px;font:850 36px/.98 Inter,Roboto,Arial,sans-serif;letter-spacing:-.035em}
+  .v92-match-head p{margin:0;color:#bac3e1;font:500 13px/1.25 Inter,Roboto,Arial,sans-serif}
+
+  .v92-score-card{
+    min-height:126px;
+    display:grid;
+    grid-template-columns:minmax(0,1fr) 92px minmax(0,1fr);
+    align-items:center;
+    gap:8px;
+    padding:16px 14px;
+    border:1px solid rgba(91,108,211,.34);
+    border-radius:22px;
+    background:linear-gradient(145deg,#111b82 0%,#0b126f 65%,#090b62 100%);
+  }
+  .v92-side{min-width:0;display:grid;justify-items:center;gap:8px;text-align:center}
+  .v92-side b{max-width:100%;font:750 14px/1.08 Inter,Roboto,Arial,sans-serif}
+  .v92-team-logo{width:54px;height:54px;display:grid;place-items:center}
+  .v92-team-logo img{width:54px;height:54px;object-fit:contain;display:block}
+  .v92-team-logo.small,.v92-team-logo.small img{width:42px;height:42px}
+  .v92-team-logo.tiny,.v92-team-logo.tiny img{width:28px;height:28px}
+  .v92-center{display:grid;justify-items:center;gap:5px;text-align:center}
+  .v92-center strong{font:850 25px/1 Inter,Roboto,Arial,sans-serif;white-space:nowrap}
+  .v92-center small{color:#ff6685;font:750 10px/1.1 Inter,Roboto,Arial,sans-serif}
+
+  .v92-tabs{
+    display:grid;
+    grid-template-columns:repeat(4,minmax(0,1fr));
+    gap:0;
+    margin-top:8px;
+    border-bottom:1px solid rgba(255,255,255,.10);
+  }
+  .v92-tabs button{
+    min-width:0;
+    padding:13px 3px 12px;
+    border:0;
+    border-bottom:3px solid transparent;
+    background:transparent;
+    color:#aeb7d8;
+    font:600 11px/1 Inter,Roboto,Arial,sans-serif;
+    white-space:nowrap;
+  }
+  .v92-tabs button.active{color:#26dce9;border-bottom-color:#26dce9;font-weight:800}
+
+  .v92-body{padding-top:12px}
+  .v92-summary-grid{
+    display:grid;
+    grid-template-columns:repeat(3,minmax(0,1fr));
+    overflow:hidden;
+    border:1px solid rgba(89,106,204,.31);
+    border-radius:22px;
+    background:linear-gradient(145deg,#101a7c,#0b126c);
+  }
+  .v92-summary-grid>div{min-height:100px;display:grid;place-content:center;gap:6px;padding:12px 8px;text-align:center;border-left:1px solid rgba(255,255,255,.07)}
+  .v92-summary-grid>div:first-child{border-left:0}
+  .v92-summary-grid b{color:#20ddea;font:850 22px/1.05 Inter,Roboto,Arial,sans-serif;overflow-wrap:anywhere}
+  .v92-summary-grid small{color:#aab3d5;font:500 9.5px/1.15 Inter,Roboto,Arial,sans-serif}
+
+  .v92-section{margin-top:25px}
+  .v92-section-head{display:flex;align-items:flex-end;justify-content:space-between;gap:10px;margin-bottom:11px}
+  .v92-section-head h2{margin:0;font:820 24px/1 Inter,Roboto,Arial,sans-serif;letter-spacing:-.02em}
+  .v92-section-head small{max-width:48%;color:#8f99c2;text-align:right;font-size:8.5px;line-height:1.2}
+  .v92-player-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  .v92-player-card{
+    min-width:0;display:grid;grid-template-columns:42px minmax(0,1fr);align-items:center;gap:9px;
+    padding:11px;border:1px solid rgba(255,255,255,.09);border-radius:15px;background:#0b116b;
+  }
+  .v92-player-card span:last-child{min-width:0}
+  .v92-player-card b,.v92-player-card small{display:block;overflow:hidden;text-overflow:ellipsis}
+  .v92-player-card b{font-size:11px;line-height:1.1}
+  .v92-player-card small{margin-top:4px;color:#99a4cc;font-size:8px;white-space:normal;line-height:1.15}
+
+  .v92-actions{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  .v92-actions button{
+    min-height:62px;border:1px solid rgba(100,118,224,.32);border-radius:17px;
+    background:linear-gradient(145deg,#111a7a,#0c1268);color:#fff;font:750 12px/1 Inter,Roboto,Arial,sans-serif;
+  }
+
+  .v92-roster-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  .v92-roster{min-width:0;padding:12px;border:1px solid rgba(255,255,255,.09);border-radius:16px;background:#0a1068}
+  .v92-roster-title{display:grid;grid-template-columns:28px minmax(0,1fr);gap:8px;align-items:center;padding-bottom:8px;border-bottom:1px solid rgba(255,255,255,.08)}
+  .v92-roster-title b,.v92-roster-title small{display:block}
+  .v92-roster-title b{font-size:11px}.v92-roster-title small{margin-top:2px;color:#919bc1;font-size:7.5px;line-height:1.15}
+  .v92-roster ol{margin:10px 0 0;padding-left:22px;color:#dce2f6}
+  .v92-roster li{margin:0 0 7px;font-size:9px;line-height:1.15}
+
+  .v92-stat-head{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:8px}
+  .v92-stat-head>span{display:flex;align-items:center;gap:7px;font-size:10px;font-weight:750}
+  .v92-stat-head>span:last-child{justify-content:flex-end;text-align:right}
+  .v92-stat-table{overflow:hidden;border:1px solid rgba(255,255,255,.09);border-radius:16px;background:#0a1068}
+  .v92-stat-row{display:grid;grid-template-columns:1fr 1.3fr 1fr;align-items:center;padding:12px;border-top:1px solid rgba(255,255,255,.07);text-align:center}
+  .v92-stat-row:first-child{border-top:0}
+  .v92-stat-row span{color:#9ca6ca;font-size:9px}.v92-stat-row b{font-size:13px}
+
+  .v92-timeline{display:grid;gap:0;border:1px solid rgba(255,255,255,.09);border-radius:16px;background:#0a1068;overflow:hidden}
+  .v92-timeline>div{display:grid;grid-template-columns:70px 1fr;gap:10px;padding:13px;border-top:1px solid rgba(255,255,255,.07)}
+  .v92-timeline>div:first-child{border-top:0}.v92-timeline b{color:#22dcea;font-size:11px}.v92-timeline span{font-size:10px;color:#d7dcf1}
+
+  .v92-source{margin:26px 0 0;color:#7f8ab6;text-align:center;font-size:8px;line-height:1.25}
+}
+@media(max-width:390px){
+  .v92-matchcenter{padding-left:15px;padding-right:15px}
+  .v92-match-head h1{font-size:34px}
+  .v92-score-card{grid-template-columns:minmax(0,1fr) 82px minmax(0,1fr)}
+  .v92-team-logo,.v92-team-logo img{width:50px;height:50px}
+  .v92-center strong{font-size:22px}
+  .v92-tabs button{font-size:10px}
+  .v92-section-head h2{font-size:22px}
+}
