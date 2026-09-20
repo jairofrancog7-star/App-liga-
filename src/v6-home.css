@@ -188,3 +188,140 @@
   .v6-calendar-card .v6-calendar-pair{grid-template-columns:minmax(0,1fr) 34px minmax(0,1fr)!important}
   .v6-calendar-card .v6-calendar-team em{font-size:6px!important}
 }
+
+
+/* V93 — HOME: fondo azul marino uniforme + Datos de la Liga reubicados */
+body[data-app-route="home"],
+body[data-app-route="home"] #app,
+body[data-app-route="home"] .app-shell,
+body[data-app-route="home"] #screen,
+body[data-app-route="home"] #safeHomeExtra,
+body[data-app-route="home"] .v6-home-super{
+  background:#03045e!important;
+  background-image:none!important;
+}
+body[data-app-route="home"] .v6-home-super,
+body[data-app-route="home"] .v6-section{
+  background:transparent!important;
+}
+body[data-app-route="home"] #screen{
+  min-height:100dvh!important;
+}
+body[data-app-route="home"] .v6-league-data-home{
+  margin-top:30px!important;
+  margin-bottom:30px!important;
+}
+body[data-app-route="home"] .v6-league-data-home .eyebrow{
+  display:block!important;
+  margin-bottom:4px!important;
+  color:#62edf5!important;
+  font-size:9px!important;
+  font-weight:900!important;
+  letter-spacing:.12em!important;
+}
+body[data-app-route="home"] .v6-league-data-card{
+  width:100%!important;
+  min-height:92px!important;
+  display:grid!important;
+  grid-template-columns:42px minmax(0,1fr) 18px!important;
+  align-items:center!important;
+  gap:11px!important;
+  padding:14px!important;
+  border:1px solid rgba(84,110,220,.28)!important;
+  border-radius:17px!important;
+  background:#0b0d6a!important;
+  color:#fff!important;
+  text-align:left!important;
+  box-shadow:none!important;
+}
+body[data-app-route="home"] .v6-league-data-icon{
+  width:42px!important;
+  height:42px!important;
+  display:grid!important;
+  place-items:center!important;
+  border-radius:12px!important;
+  background:#101a86!important;
+  color:#24e1ee!important;
+}
+body[data-app-route="home"] .v6-league-data-copy{
+  min-width:0!important;
+}
+body[data-app-route="home"] .v6-league-data-copy small,
+body[data-app-route="home"] .v6-league-data-copy b,
+body[data-app-route="home"] .v6-league-data-copy p{
+  display:block!important;
+}
+body[data-app-route="home"] .v6-league-data-copy small{
+  color:#64ecf5!important;
+  font-size:8.5px!important;
+  font-weight:900!important;
+  letter-spacing:.09em!important;
+}
+body[data-app-route="home"] .v6-league-data-copy b{
+  margin-top:3px!important;
+  font-size:13px!important;
+  line-height:1.12!important;
+}
+body[data-app-route="home"] .v6-league-data-copy p{
+  margin:4px 0 0!important;
+  color:#aeb7da!important;
+  font-size:9.5px!important;
+  line-height:1.25!important;
+}
+body[data-app-route="home"] .v6-league-data-arrow{
+  color:#24e1ee!important;
+  font-size:24px!important;
+  line-height:1!important;
+}
+body[data-app-route="home"] .v6-league-team-strip{
+  display:grid!important;
+  grid-auto-flow:column!important;
+  grid-auto-columns:66px!important;
+  gap:8px!important;
+  overflow-x:auto!important;
+  margin-top:10px!important;
+  padding:2px 1px 5px!important;
+  scrollbar-width:none!important;
+}
+body[data-app-route="home"] .v6-league-team-strip::-webkit-scrollbar{display:none!important}
+body[data-app-route="home"] .v6-league-team{
+  min-width:0!important;
+  min-height:64px!important;
+  display:grid!important;
+  grid-template-rows:36px auto!important;
+  justify-items:center!important;
+  align-items:center!important;
+  gap:4px!important;
+  padding:6px 4px!important;
+  border:1px solid rgba(75,94,190,.22)!important;
+  border-radius:12px!important;
+  background:#090b65!important;
+  color:#fff!important;
+}
+body[data-app-route="home"] .v6-league-team>span{
+  display:grid!important;
+  place-items:center!important;
+}
+body[data-app-route="home"] .v6-league-team .v6-crest{
+  width:34px!important;
+  height:34px!important;
+  min-width:34px!important;
+}
+body[data-app-route="home"] .v6-league-team .v6-crest img{
+  width:34px!important;
+  height:34px!important;
+  max-width:34px!important;
+  max-height:34px!important;
+  object-fit:contain!important;
+}
+body[data-app-route="home"] .v6-league-team small{
+  width:100%!important;
+  overflow:hidden!important;
+  color:#c4c9e2!important;
+  font-size:7.5px!important;
+  font-weight:800!important;
+  line-height:1.05!important;
+  text-align:center!important;
+  text-overflow:ellipsis!important;
+  white-space:nowrap!important;
+}
