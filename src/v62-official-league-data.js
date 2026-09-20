@@ -237,7 +237,7 @@ function patchHomeCalendarResults(force=false){
   if(!head){
     head=document.createElement('div');head.className='section-head';section.prepend(head);
   }
-  head.innerHTML='<h2>Calendario y resultados</h2><button type="button" class="link-button" data-route="competition">Abrir calendario</button>';
+  head.innerHTML='<h2>Calendario y resultados</h2><button type="button" class="link-button" data-safe-route="v4-calendar">Abrir calendario</button>';
   [...section.children].forEach(el=>{if(el!==head)el.remove()});
 
   const wrap=document.createElement('div');
