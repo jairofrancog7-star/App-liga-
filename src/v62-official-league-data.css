@@ -49,3 +49,114 @@ body.v62-data-active .topbar{display:none!important}\nbody.v62-data-active #scre
   .v62-summary-grid b{font-size:23px}
   .v62-summary-actions button,.v62-fixture-actions button{font-size:10px}
 }
+
+
+/* V81 — GOLEADORES: no mostrar "sin goles" cuando sí existen resultados oficiales. */
+body.v28-scorers-active .v81-scorer-fallback{
+  margin:12px 0 0!important;
+  padding:0!important;
+  color:#fff!important;
+}
+body.v28-scorers-active .v81-scorer-state{
+  display:grid!important;
+  grid-template-columns:42px minmax(0,1fr)!important;
+  gap:10px!important;
+  align-items:start!important;
+  margin:0 0 14px!important;
+  padding:13px 14px!important;
+  border:1px solid rgba(35,222,239,.30)!important;
+  border-radius:12px!important;
+  background:#0d0e78!important;
+}
+body.v28-scorers-active .v81-scorer-state>span{
+  font-size:30px!important;
+  line-height:1!important;
+  text-align:center!important;
+}
+body.v28-scorers-active .v81-scorer-state b{
+  display:block!important;
+  font-size:13px!important;
+  line-height:1.15!important;
+}
+body.v28-scorers-active .v81-scorer-state p{
+  margin:5px 0 4px!important;
+  color:#d8dbf1!important;
+  font-size:10.5px!important;
+  line-height:1.35!important;
+}
+body.v28-scorers-active .v81-scorer-state small{
+  display:block!important;
+  color:#9fa6d0!important;
+  font-size:9px!important;
+  line-height:1.35!important;
+}
+body.v28-scorers-active .v81-team-goals-title{
+  display:flex!important;
+  align-items:end!important;
+  justify-content:space-between!important;
+  gap:10px!important;
+  padding:0 2px 7px!important;
+  border-bottom:1px solid rgba(255,255,255,.14)!important;
+}
+body.v28-scorers-active .v81-team-goals-title b{font-size:13px!important}
+body.v28-scorers-active .v81-team-goals-title span{color:#9fa6d0!important;font-size:9px!important}
+body.v28-scorers-active .v81-team-goals>button{
+  width:100%!important;
+  min-height:54px!important;
+  display:grid!important;
+  grid-template-columns:30px 38px minmax(0,1fr) 28px!important;
+  align-items:center!important;
+  gap:6px!important;
+  padding:0!important;
+  border:0!important;
+  border-bottom:1px solid rgba(255,255,255,.10)!important;
+  background:transparent!important;
+  color:#fff!important;
+  text-align:left!important;
+}
+body.v28-scorers-active .v81-team-rank{
+  font-size:11px!important;
+  color:#cbd0e7!important;
+}
+body.v28-scorers-active .v81-team-logo{
+  width:34px!important;
+  height:34px!important;
+  display:grid!important;
+  place-items:center!important;
+}
+body.v28-scorers-active .v81-team-logo img{
+  width:32px!important;
+  height:32px!important;
+  object-fit:contain!important;
+}
+body.v28-scorers-active .v81-team-goals>button>span:nth-child(3) b{
+  display:block!important;
+  font-size:12px!important;
+  line-height:1.05!important;
+  white-space:nowrap!important;
+  overflow:hidden!important;
+  text-overflow:ellipsis!important;
+}
+body.v28-scorers-active .v81-team-goals>button>span:nth-child(3) small{
+  display:block!important;
+  margin-top:2px!important;
+  color:#9fa6d0!important;
+  font-size:8.5px!important;
+}
+body.v28-scorers-active .v81-team-goals>button>strong{
+  justify-self:end!important;
+  color:#fff!important;
+  font-size:15px!important;
+}
+body.v28-scorers-active .v81-refresh-scorers{
+  width:100%!important;
+  height:36px!important;
+  margin:13px 0 2px!important;
+  border:1px solid #1de0eb!important;
+  border-radius:9px!important;
+  background:#111277!important;
+  color:#1de0eb!important;
+  font-size:10px!important;
+  font-weight:800!important;
+}
+body.v28-scorers-active .v81-refresh-scorers:disabled{opacity:.55!important}
