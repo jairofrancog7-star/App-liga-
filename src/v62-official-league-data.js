@@ -862,9 +862,10 @@ function schedule(){
     if(applying)return;applying=true;
     try{
       const r=route();
-      document.body.classList.toggle('v62-data-active',r==='leagueData');
-      if(r==='leagueData')renderDataPage();
-      else{
+      /* leagueData vuelve a usar el diseño histórico V33. V62 conserva
+         la fuente/API oficial, pero ya no sustituye visualmente esa ruta. */
+      document.body.classList.remove('v62-data-active');
+      if(r!=='leagueData'){
         patchHomeCalendarResults();
         patchHomeStandings();
         patchHomeScorers();
