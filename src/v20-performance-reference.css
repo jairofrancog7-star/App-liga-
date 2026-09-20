@@ -287,3 +287,21 @@ body[data-app-route="safe-performance"] .bottom-nav .nav-item:last-child .nav-ic
     background:#03006f!important;
   }
 }
+
+
+/* V95 — logo de Liga sin cuadro negro en Performance.
+   JS convierte el fondo oscuro conectado al borde a PNG con transparencia.
+   Si el navegador bloquea el canvas, screen blend elimina visualmente el negro. */
+body[data-app-route="safe-performance"] .v20-league-logo-png{
+  background:transparent!important;
+  box-shadow:none!important;
+}
+body[data-app-route="safe-performance"] .v20-league-logo-blend-fallback{
+  background:transparent!important;
+  mix-blend-mode:screen!important;
+  box-shadow:none!important;
+}
+body[data-app-route="safe-performance"] .v20-story-ring img.v20-league-logo-png,
+body[data-app-route="safe-performance"] .v20-story-ring img.v20-league-logo-blend-fallback{
+  background:transparent!important;
+}
