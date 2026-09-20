@@ -1372,3 +1372,119 @@
     line-height:1.4;
   }
 }
+
+
+/* V100 — línea del tiempo histórica + formato de competencia documentado. */
+@media(max-width:1023px){
+  .v35-history-timeline,
+  .v35-history-format{
+    margin-top:18px;
+  }
+  .v35-timeline-list{
+    position:relative;
+    display:grid;
+    gap:10px;
+    margin-top:12px;
+  }
+  .v35-timeline-list:before{
+    content:"";
+    position:absolute;
+    left:47px;
+    top:8px;
+    bottom:8px;
+    width:1px;
+    background:linear-gradient(180deg,rgba(28,230,242,.85),rgba(74,92,220,.18));
+  }
+  .v35-timeline-list article{
+    position:relative;
+    display:grid;
+    grid-template-columns:82px minmax(0,1fr);
+    gap:12px;
+    padding:11px 12px;
+    border:1px solid rgba(87,110,224,.22);
+    border-radius:15px;
+    background:linear-gradient(145deg,rgba(18,28,129,.94),rgba(9,16,92,.98));
+  }
+  .v35-timeline-list article:after{
+    content:"";
+    position:absolute;
+    left:43px;
+    top:18px;
+    width:9px;
+    height:9px;
+    border-radius:50%;
+    background:#21e5ef;
+    box-shadow:0 0 0 4px rgba(33,229,239,.10),0 0 16px rgba(33,229,239,.32);
+  }
+  .v35-timeline-list time{
+    padding-right:13px;
+    color:#22e7f2;
+    font-size:8.5px;
+    line-height:1.25;
+    font-weight:850;
+    letter-spacing:.04em;
+    text-align:right;
+  }
+  .v35-timeline-list h4{
+    margin:0;
+    color:#fff;
+    font-size:12px;
+    line-height:1.15;
+    font-weight:760;
+  }
+  .v35-timeline-list p{
+    margin:5px 0 0;
+    color:#aeb7d7;
+    font-size:9px;
+    line-height:1.4;
+  }
+  .v35-format-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:9px;
+    margin-top:12px;
+  }
+  .v35-format-grid article{
+    min-width:0;
+    padding:12px;
+    border-radius:15px;
+    border:1px solid rgba(89,114,225,.23);
+    background:rgba(10,18,99,.78);
+  }
+  .v35-format-grid h4{
+    margin:0;
+    color:#fff;
+    font-size:11px;
+    line-height:1.16;
+  }
+  .v35-format-grid p{
+    margin:6px 0 0;
+    color:#aeb7d4;
+    font-size:8.7px;
+    line-height:1.38;
+  }
+  .v35-archive-method{
+    margin-top:10px;
+    padding:13px;
+    border:1px solid rgba(29,227,239,.22);
+    border-radius:15px;
+    background:linear-gradient(135deg,rgba(15,30,128,.88),rgba(7,16,86,.96));
+  }
+  .v35-archive-method h4{
+    margin:0 0 7px;
+    color:#21e6ef;
+    font-size:11px;
+  }
+  .v35-archive-method p{
+    margin:5px 0;
+    color:#c0c7e3;
+    font-size:9px;
+    line-height:1.35;
+  }
+}
+@media(max-width:360px){
+  .v35-format-grid{grid-template-columns:1fr}
+  .v35-timeline-list article{grid-template-columns:70px minmax(0,1fr)}
+  .v35-timeline-list:before{left:39px}
+  .v35-timeline-list article:after{left:35px}
+}
