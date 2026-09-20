@@ -1194,10 +1194,34 @@ body.v42-team-active .v42-compare-bottom{
   font-weight:700!important;
   text-align:left!important;
 }
-body.v42-team-active .v42-compare-bottom span{
+body.v42-team-active .v42-team-lower-actions{
+  padding:14px 18px calc(104px + env(safe-area-inset-bottom))!important;
+  background:#080766!important;
+  border-top:11px solid #060557!important;
+}
+body.v42-team-active .v42-compare-bottom>span{
+  min-width:0!important;
+  display:grid!important;
+  gap:4px!important;
+}
+body.v42-team-active .v42-compare-bottom small{
+  color:#65edf4!important;
+  font-size:8px!important;
+  line-height:1!important;
+  font-weight:900!important;
+  letter-spacing:.12em!important;
+}
+body.v42-team-active .v42-compare-bottom b{
+  color:#fff!important;
+  font-size:14px!important;
+  line-height:1.1!important;
+  font-weight:700!important;
+}
+body.v42-team-active .v42-compare-bottom i{
   color:var(--v42-cyan)!important;
   font-size:24px!important;
   line-height:1!important;
+  font-style:normal!important;
 }
 body.v42-team-active .v42-compare-bottom:active{
   transform:scale(.99)!important;
