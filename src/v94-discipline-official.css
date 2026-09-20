@@ -1,0 +1,172 @@
+/* V94 — Disciplina oficial, sin equipos/jugadores ficticios. */
+body.v94-discipline-official #screen{
+  background:#071081!important;
+  color:#fff!important;
+}
+.v94-discipline-page{
+  padding:14px 18px 32px;
+}
+.v94-kicker{
+  color:#72eef4;
+  font-size:11px;
+  line-height:1;
+  font-weight:850;
+  letter-spacing:.14em;
+}
+.v94-discipline-page h1{
+  margin:12px 0 8px;
+  font-size:34px;
+  line-height:1;
+  letter-spacing:-.04em;
+}
+.v94-lead{
+  margin:0 0 15px;
+  max-width:560px;
+  color:#c7cbe0;
+  font-size:13px;
+  line-height:1.35;
+}
+.v94-source{
+  display:flex;
+  justify-content:space-between;
+  gap:10px;
+  align-items:center;
+  margin:0 0 12px;
+  padding:9px 12px;
+  border:1px solid rgba(255,255,255,.09);
+  border-radius:12px;
+  background:rgba(255,255,255,.035);
+}
+.v94-source span{
+  color:#fff;
+  font-size:11px;
+  font-weight:800;
+}
+.v94-source small{
+  color:#8f99c5;
+  font-size:8.5px;
+  text-align:right;
+}
+.v94-discipline-list{
+  border:1px solid rgba(255,255,255,.10);
+  border-radius:18px;
+  overflow:hidden;
+  background:linear-gradient(180deg,rgba(21,31,142,.88),rgba(12,18,112,.92));
+}
+.v94-discipline-row{
+  min-height:82px;
+  display:grid;
+  grid-template-columns:22px 42px minmax(0,1fr) 42px;
+  gap:9px;
+  align-items:center;
+  padding:10px 12px;
+  border-top:1px solid rgba(255,255,255,.10);
+}
+.v94-discipline-row:first-child{border-top:0}
+.v94-rank{
+  color:#fff;
+  font-size:12px;
+  font-weight:800;
+  text-align:center;
+}
+.v94-logo-wrap{
+  width:42px;
+  height:42px;
+  display:grid;
+  place-items:center;
+}
+.v94-discipline-logo{
+  width:38px;
+  height:38px;
+  object-fit:contain;
+  display:block;
+}
+.v94-discipline-logo-fallback{
+  width:34px;
+  height:34px;
+  display:grid;
+  place-items:center;
+  border-radius:50%;
+  background:#1634a7;
+  font-size:20px;
+}
+.v94-person{
+  min-width:0;
+  display:block;
+}
+.v94-person>b{
+  display:block;
+  color:#fff;
+  font-size:12.5px;
+  line-height:1.08;
+  font-weight:800;
+}
+.v94-person>small{
+  display:block;
+  margin-top:3px;
+  color:#aeb5d3;
+  font-size:9.5px;
+  line-height:1.15;
+}
+.v94-tags{
+  display:flex;
+  flex-wrap:wrap;
+  gap:4px;
+  margin-top:6px;
+}
+.v94-card-tag{
+  display:inline-flex;
+  align-items:center;
+  min-height:18px;
+  padding:2px 6px;
+  border-radius:999px;
+  font-size:8px;
+  font-weight:800;
+  line-height:1;
+}
+.v94-yellow{background:#ffd447;color:#151515}
+.v94-red{background:#ef6672;color:#fff}
+.v94-sanction{background:#183db5;color:#dbe8ff;border:1px solid rgba(93,211,255,.32)}
+.v94-total{
+  min-width:0;
+  text-align:center;
+}
+.v94-total b{
+  display:block;
+  color:#65e8f1;
+  font-size:18px;
+  line-height:1;
+}
+.v94-total small{
+  display:block;
+  margin-top:3px;
+  color:#aeb5d3;
+  font-size:8px;
+  line-height:1;
+}
+.v94-empty{
+  padding:28px 18px;
+  border:1px solid rgba(255,255,255,.10);
+  border-radius:18px;
+  background:rgba(255,255,255,.035);
+  text-align:center;
+}
+.v94-empty b{
+  display:block;
+  color:#fff;
+  font-size:14px;
+}
+.v94-empty span{
+  display:block;
+  margin-top:7px;
+  color:#aeb5d3;
+  font-size:11px;
+}
+@media(max-width:390px){
+  .v94-discipline-page{padding-left:14px;padding-right:14px}
+  .v94-discipline-row{grid-template-columns:20px 38px minmax(0,1fr) 38px;gap:7px;padding-left:9px;padding-right:9px}
+  .v94-logo-wrap{width:38px;height:38px}
+  .v94-discipline-logo{width:35px;height:35px}
+  .v94-person>b{font-size:11.7px}
+  .v94-person>small{font-size:8.8px}
+}
