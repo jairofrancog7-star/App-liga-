@@ -86,8 +86,29 @@ function v15PatchHome(){
   });
 
 
-  // V100: conservar la tarjeta principal nativa de Inicio.
-  // No sustituirla por una imagen alta: evita portada gigante/desacomodada en móvil.
+  // Portada principal: restaurar el bloque que estaba antes del cuadro “Partido de la semana”.
+  const hero=screen.querySelector(':scope > .section.hero');
+  if(hero&&hero.dataset.v15HomeFeature!=='3'){
+    hero.dataset.v15HomeFeature='3';
+    hero.innerHTML=`
+      <div class="v21-home-feature-photo" aria-hidden="true">
+        <img
+          class="v21-home-feature-photo-image"
+          src="./assets/home-players-user.jpg?v=20260919-user-photo-public-1"
+          alt=""
+          loading="eager"
+          decoding="async"
+          draggable="false"
+        >
+        <span class="v21-home-feature-photo-fade"></span>
+      </div>
+      <div class="v21-home-feature-copy">
+        <h2>Mira todos los goles de la Jornada 1</h2>
+        <p>La pasión del fútbol local en un solo lugar</p>
+      </div>
+      <button class="v15-home-feature-hit" type="button" aria-label="Ver todos los goles de la Jornada 1"></button>
+    `;
+  }
 
 }
 
