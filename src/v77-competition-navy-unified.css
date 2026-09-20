@@ -143,3 +143,36 @@
     box-shadow:0 0 10px rgba(39,231,242,.28)!important;
   }
 }
+
+
+/* V79 — línea azul claro visible bajo la pestaña activa en las 3 opciones. */
+@media (max-width:1023px){
+  html body[data-app-route="competition"] #screen>.tabs .tab,
+  html body.v40-standings-master #screen>.tabs .tab{
+    position:relative!important;
+    overflow:visible!important;
+  }
+
+  html body[data-app-route="competition"] #screen>.tabs .tab::after,
+  html body.v40-standings-master #screen>.tabs .tab::after{
+    content:""!important;
+    position:absolute!important;
+    left:16%!important;
+    right:16%!important;
+    bottom:0!important;
+    width:auto!important;
+    height:4px!important;
+    border-radius:8px 8px 0 0!important;
+    background:transparent!important;
+    opacity:1!important;
+    transform:none!important;
+    box-shadow:none!important;
+    display:block!important;
+  }
+
+  html body[data-app-route="competition"] #screen>.tabs .tab.active::after,
+  html body.v40-standings-master #screen>.tabs .tab.active::after{
+    background:#27e7f2!important;
+    box-shadow:0 0 10px rgba(39,231,242,.34)!important;
+  }
+}
