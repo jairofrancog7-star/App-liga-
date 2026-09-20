@@ -54,3 +54,41 @@ body[data-app-route="home"] .v78-calendar-teams > button{
 
 /* Mantener sin tocar las piezas visuales principales: hero, Momentos, Noticias,
    imágenes de campos, logos, botones e iconos. */
+
+
+/* V94 — rellenar también los espacios ENTRE tablas, tarjetas y bloques de Inicio.
+   Estas capas heredadas todavía pintaban un azul distinto aunque el fondo principal
+   ya fuera #000144. Se igualan al fondo sin tocar los cuadros. */
+body[data-app-route="home"] #safeHomeExtra,
+body[data-app-route="home"] .v6-home-super,
+body[data-app-route="home"] .v6-section,
+body[data-app-route="home"] .v6-quick,
+body[data-app-route="home"] .v6-section-head,
+body[data-app-route="home"] .v6-action-grid,
+body[data-app-route="home"] .v6-news-strip,
+body[data-app-route="home"] .v6-video-list,
+body[data-app-route="home"] .v6-stat-carousel,
+body[data-app-route="home"] .v6-calendar-card,
+body[data-app-route="home"] .v65-field-carousel,
+body[data-app-route="home"] .v78-calendar-track{
+  background:var(--v93-home-bg)!important;
+  background-image:none!important;
+}
+
+/* Los huecos entre las tarjetas se ven con el mismo azul marino del fondo. */
+body[data-app-route="home"] .v6-action-grid,
+body[data-app-route="home"] .v6-video-list,
+body[data-app-route="home"] .v65-field-carousel,
+body[data-app-route="home"] .v78-calendar-track{
+  background-color:var(--v93-home-bg)!important;
+}
+
+/* Mantener los cuadros claramente visibles sobre ese fondo unificado. */
+body[data-app-route="home"] .v6-action-card,
+body[data-app-route="home"] .v6-calendar-card > div,
+body[data-app-route="home"] .v6-stat-card,
+body[data-app-route="home"] .v6-scorers,
+body[data-app-route="home"] .v6-teamweek{
+  background:var(--v93-home-card)!important;
+  border-color:var(--v93-home-line)!important;
+}
