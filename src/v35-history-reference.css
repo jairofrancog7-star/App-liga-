@@ -1554,3 +1554,62 @@
 @media(max-width:360px){
   .v35-team-goals-grid{grid-template-columns:1fr}
 }
+
+
+/* V104 — fotos históricas tomadas del ZIP del usuario.
+   Se integran dentro de las tarjetas existentes sin alterar navegación ni estructura. */
+@media(max-width:1023px){
+  .v35-history-card-media{
+    width:100%;
+    min-height:68px;
+    display:flex;
+    align-items:center;
+    gap:8px;
+    margin:0 0 11px;
+  }
+  .v35-history-card-media img{
+    width:62px;
+    height:62px;
+    display:block;
+    object-fit:contain;
+    object-position:center;
+    padding:4px;
+    border-radius:13px;
+    border:1px solid rgba(91,121,230,.24);
+    background:rgba(255,255,255,.045);
+  }
+  .v35-champion-photo{
+    width:100%!important;
+    height:154px!important;
+    display:block!important;
+    margin:0 0 12px!important;
+    padding:0!important;
+    object-fit:cover!important;
+    object-position:center!important;
+    border:1px solid rgba(95,121,230,.25)!important;
+    border-radius:14px!important;
+    background:#0c126e!important;
+  }
+  .v35-scorer-reference{
+    width:100%;
+    margin:0 0 10px;
+    overflow:hidden;
+    border:1px solid rgba(89,111,220,.24);
+    border-radius:15px;
+    background:linear-gradient(180deg,rgba(18,28,124,.98),rgba(9,17,96,.99));
+  }
+  .v35-scorer-reference img{
+    width:100%;
+    height:142px;
+    display:block;
+    object-fit:cover;
+    object-position:center;
+  }
+  .v35-scorer-reference figcaption{
+    margin:0;
+    padding:8px 10px 9px;
+    color:#aeb7d6;
+    font-size:8.5px;
+    line-height:1.35;
+  }
+}
