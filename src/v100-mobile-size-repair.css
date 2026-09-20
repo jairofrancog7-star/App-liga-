@@ -376,44 +376,10 @@
     object-fit:contain!important;
   }
 
-  /* ESTADÍSTICAS / DATOS: cabecera y pestañas más pequeñas */
-  body.v33-data-active .v33-data-head{
-    --v33-head-h:178px!important;
-    height:var(--v33-head-h)!important;
-    min-height:var(--v33-head-h)!important;
-  }
-  body.v33-data-active .v33-morph-title{
-    left:22px!important;
-    top:84px!important;
-    max-width:62%!important;
-  }
-  body.v33-data-active .v33-morph-title h1{
-    font-size:34px!important;
-    line-height:.98!important;
-  }
-  body.v33-data-active .v33-morph-title p{
-    margin-top:8px!important;
-    font-size:13px!important;
-  }
-  body.v33-data-active .v33-tabs{
-    height:46px!important;
-  }
-  body.v33-data-active .v33-tabs button{
-    height:46px!important;
-    padding:0 16px!important;
-    font-size:11px!important;
-  }
-  body.v33-data-active .v33-stat-card h3{
-    font-size:14px!important;
-  }
-  body.v33-data-active .v33-team-logo,
-  body.v33-data-active .v33-team-logo img{
-    width:32px!important;
-    height:32px!important;
-    max-width:32px!important;
-    max-height:32px!important;
-    object-fit:contain!important;
-  }
+  /* DATOS / ESTADÍSTICAS V33
+     No tocar aquí: esta pantalla conserva su reconstrucción original de
+     v33-data-statistics-reference.css (cabecera, tabs, carruseles, tablas,
+     logos, tipografía y números). V100 sólo repara otras pantallas. */
 
   /* CALENDARIO mensual y lista de partidos */
   body.v70-calendar-active .v70-calendar-title h1{
