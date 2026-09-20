@@ -602,3 +602,16 @@
     white-space:nowrap!important;
   }
 }
+
+
+/* V73 — fallback de logo en clasificación oficial */
+@media (max-width:1023px){
+  body[data-app-route="home"] .v65-table-logo-fallback{
+    border:1px solid rgba(63,221,245,.65)!important;
+    border-radius:50%!important;
+    background:linear-gradient(145deg,#1b55b9,#11c9de)!important;
+    color:#fff!important;
+    font-size:7px!important;
+    font-weight:850!important;
+  }
+}
