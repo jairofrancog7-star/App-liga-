@@ -156,18 +156,55 @@
     const card=(label,row,idx)=>'<div class="v6-stat-card"><small>'+label+'</small><b class="v6-big">'+esc(row?.[idx]??0)+'</b><p>'+esc(v6PrettyTeam(row?.[1]||''))+'</p><div class="v6-mini-bar"><i style="width:82%"></i></div></div>';
     return card('GOLES',topGF,6)+card('MEJOR DIFERENCIA',topDG,8)+card('PUNTOS',topPTS,9);
   }
+  function v6PublishedScore(r){
+    const a=String(r?.[3]??'').trim(),b=String(r?.[5]??'').trim();
+    const valid=v=>/^\d+$/.test(v)||v==='-';
+    return valid(a)&&valid(b)&&(/^\d+$/.test(a)||/^\d+$/.test(b));
+  }
+  function v6ScoreCell(v){
+    const x=String(v??'').trim();
+    return x==='-'?'0':(/^\d+$/.test(x)?x:'—');
+  }
+  function v6FixtureStamp(v){
+    const m=String(v||'').match(/(\d{1,2})\/(\d{1,2})\/(\d{4})\s+(\d{1,2}):(\d{2})/);
+    return m?new Date(+m[3],+m[2]-1,+m[1],+m[4],+m[5]).getTime():NaN;
+  }
   function v6CalendarHtml(){
     const rs=v6OfficialDb?.categories?.['3']?.fixtures?.[0]?.rows||[];
-    const upcoming=rs.filter(r=>Array.isArray(r)&&String(r[8]||'').trim()&&String(r[3]||'')==='-'&&String(r[5]||'')==='-').slice(0,3);
-    const rows=upcoming.length?upcoming:[
-      ['','5','FRANCO FC','-','vs','-','HERRERAS FC','Romerillo','20/09/2026 08:00'],
-      ['','5','TERRICOLAS','-','vs','-','GALACTICOS','','20/09/2026 08:00'],
-      ['','5','LINCES','-','vs','-','JUVENTUS','Campo 3','20/09/2026 08:00']
+    const now=Date.now();
+    const entries=rs.filter(r=>Array.isArray(r)&&r[2]&&r[6]&&String(r[8]||'').trim())
+      .map(r=>({r,ts:v6FixtureStamp(r[8])})).filter(x=>Number.isFinite(x.ts));
+    const results=entries.filter(x=>v6PublishedScore(x.r)&&x.ts<=now).sort((a,b)=>b.ts-a.ts);
+    const upcoming=entries.filter(x=>!v6PublishedScore(x.r)&&x.ts>=now-2*60*60*1000).sort((a,b)=>a.ts-b.ts);
+    const chosen=[];
+    if(results.length)chosen.push(results[0]);
+    upcoming.slice(0,Math.max(0,3-chosen.length)).forEach(x=>chosen.push(x));
+    if(chosen.length<3)results.slice(1).forEach(x=>{if(chosen.length<3)chosen.push(x)});
+
+    const fallback=[
+      {r:['','5','FRANCO FC','-','vs','-','HERRERAS FC','Romerillo','20/09/2026 08:00'],ts:v6FixtureStamp('20/09/2026 08:00')},
+      {r:['','5','TERRICOLAS','-','vs','-','GALACTICOS','','20/09/2026 08:00'],ts:v6FixtureStamp('20/09/2026 08:00')},
+      {r:['','5','LINCES','-','vs','-','JUVENTUS','Campo 3','20/09/2026 08:00'],ts:v6FixtureStamp('20/09/2026 08:00')}
     ];
-    return rows.map((r,i)=>{
+    const rows=(chosen.length?chosen:fallback).slice(0,3);
+    return rows.map((x,i)=>{
+      const r=x.r;
       const m=String(r[8]||'').match(/(\d{1,2})\/(\d{1,2})\/\d{4}\s+(\d{1,2}:\d{2})/);
-      const day=m?m[1]:'—',month=m?['ENE','FEB','MAR','ABR','MAY','JUN','JUL','AGO','SEP','OCT','NOV','DIC'][Number(m[2])-1]:'',time=m?m[3]:'';
-      return '<div class="'+(i===0?'active':'')+'"><span>'+esc(day)+'</span><small>'+esc(month)+'</small><b>'+esc(v6PrettyTeam(r[2]))+' vs '+esc(v6PrettyTeam(r[6]))+' · '+esc(time)+'</b></div>';
+      const day=m?String(+m[1]):'—',month=m?['ENE','FEB','MAR','ABR','MAY','JUN','JUL','AGO','SEP','OCT','NOV','DIC'][Number(m[2])-1]:'',time=m?m[3]:'';
+      const home=String(r[2]||'').trim(),away=String(r[6]||'').trim();
+      const hc=v6CodeFor(home),ac=v6CodeFor(away);
+      const hl=v6LogoPathFromDb(v6OfficialDb,home),al=v6LogoPathFromDb(v6OfficialDb,away);
+      if(hl)V6_LOGOS[hc]=hl;if(al)V6_LOGOS[ac]=al;
+      const played=v6PublishedScore(r),center=played?v6ScoreCell(r[3])+'–'+v6ScoreCell(r[5]):time;
+      return '<div class="'+(i===0?'active ':'')+'v6-calendar-match '+(played?'is-result':'is-upcoming')+'">'+
+        '<span class="v6-calendar-day">'+esc(day)+'</span><small class="v6-calendar-month">'+esc(month)+'</small>'+
+        '<div class="v6-calendar-pair">'+
+          '<span class="v6-calendar-team">'+v6Crest(hc)+'<em>'+esc(v6PrettyTeam(home))+'</em></span>'+
+          '<strong class="v6-calendar-score">'+esc(center)+'</strong>'+
+          '<span class="v6-calendar-team">'+v6Crest(ac)+'<em>'+esc(v6PrettyTeam(away))+'</em></span>'+
+        '</div>'+
+        '<b class="v6-calendar-status">'+(played?'RESULTADO OFICIAL':'HORARIO OFICIAL')+' · J'+esc(r[1]||'')+'</b>'+
+      '</div>';
     }).join('');
   }
   function v6OfficialSummary(){
@@ -314,4 +351,5 @@
   let tries=0;const timer=setInterval(()=>{tries++;enhance();if(screen()?.children.length||tries>=12)clearInterval(timer)},100);
   setTimeout(enhance,0);
   v6LoadOfficial();
+  setInterval(v6LoadOfficial,60000);
 })();
