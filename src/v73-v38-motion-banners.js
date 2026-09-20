@@ -157,7 +157,7 @@
       kicker:'TABLA Y ESTADÍSTICAS',
       title:'LA TEMPORADA DE UN VISTAZO.',
       desc:'Datos y rendimiento en otra parte de Inicio, separado de las demás animaciones.',
-      pills:[['Tabla','competition'],['Goleadores','scorers'],['Datos','safe-data']]
+      pills:[['Tabla','competition'],['Goleadores','scorers'],['Datos','leagueData']]
     },
     {
       slot:'rankings',
