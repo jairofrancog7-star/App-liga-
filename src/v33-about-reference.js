@@ -83,6 +83,20 @@ function markup(){
 
         '<div><b>Cómo se confirma un campeón</b><span>Una publicación, texto, tabla, álbum o imagen de la Liga o de sus administradores puede confirmar el campeonato; no hace falta una fotografía levantando el trofeo.</span></div>'+
       '</div>'+
+      '<div class="v33-about-history-head" style="margin-top:18px"><span>ARCHIVO RECUPERADO · VIDEOS Y ZIP</span><h2>Campeones, goleadores, tablas y finales</h2><p>Se revisaron los nuevos segmentos de Google Drive y el archivo de imágenes. Los datos siguientes se agregan como historia de su temporada; no vuelven a meter equipos antiguos a la temporada actual.</p></div>'+
+      '<div class="v33-about-history-grid">'+
+        '<article><span class="v33-about-history-badge">2014</span><small>CAMPEÓN DE COPA</small><h3>Puros Cuates</h3><b>22 feb 2014 · Fuerza Intermedia</b><p>Golazo Liga identifica al equipo como campeón del Torneo de Copa 2014.</p></article>'+
+        '<article><img src="https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/assets/official-logos/boavista.png" alt="Boavista" loading="lazy"><small>CAMPEÓN DE CAMPEONES</small><h3>Boavista</h3><b>18 ene 2015 · Primera</b><p>El capitán aparece recibiendo el trofeo de Campeón de Campeones.</p></article>'+
+        '<article><span class="v33-about-history-badge">2016</span><small>CAMPEÓN DE COPA</small><h3>Magisterio</h3><b>9 jul 2016</b><p>La publicación histórica felicita expresamente a Magisterio como campeón de Copa.</p></article>'+
+        '<article><img src="https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/assets/official-logos/la-esperanza.png" alt="La Esperanza" loading="lazy"><small>VETERANOS J13</small><h3>La Esperanza</h3><b>25 nov 2015 · 35 pts</b><p>Corte histórico: 11 ganados, 2 empates, 0 derrotas, 38 GF y 13 GC.</p></article>'+
+      '</div>'+
+      '<div class="v33-about-history-facts">'+
+        '<div><b>Goleadores recuperados</b><span>José Guadalupe Moreno — campeón goleador de Primera Fuerza, 11 ene 2015. Daniel Gómez Delgado — A. Centeno, 34 goles y campeón de goleo de Intermedia, 21 feb 2017. Eusebio Rangel — Hermanos, campeón goleador de Veteranos, publicación del 15 abr 2017.</span></div>'+
+        '<div><b>Tablas recuperadas</b><span>Veteranos J13 del 25 nov 2015; Intermedia J20 del 3 dic 2015; Primera J30 del 6 may 2017. Se muestran como cortes de jornada, no como tablas finales cuando el material no lo afirma.</span></div>'+
+        '<div><b>Finales recientes conservadas</b><span>Publicación del 20 may 2026: La Esperanza vs Boavista, Gran Final de Liga de Veteranos 50+. 7 jun 2026: La Canchita Deportes vs Aldama FC, Gran Final de Segunda Fuerza, 10:00, Campo 1 Deportiva Sur.</span></div>'+
+        '<div><b>Equipos que aparecen en el archivo</b><span>Además de los clubes actuales, las tablas, roles y álbumes conservan nombres como Puros Cuates, Magisterio, Picosos, Valedores, Malvinas, Real Cerrito, DHP, La Pandilla, Xolos Jaralillo, Dulces Nombres, A. Centeno, Tecos, Oklahoma, Mineros, Populares, Boavista, La Esperanza, Universidad y San José de la Montaña, entre otros.</span></div>'+
+        '<div><b>Criterio de precisión</b><span>Si el video solo muestra una premiación pero no permite leer el nombre del equipo, se deja como “equipo no identificado” y no se inventa. Los puntos y goles se copian tal como aparecen en cada publicación histórica.</span></div>'+
+      '</div>'+
       '<button type="button" class="v33-about-history-button" data-v33-history>Ver Historia, campeones, finales y récords</button>'+
     '</section>'+
   '</article>';
