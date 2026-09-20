@@ -184,6 +184,7 @@ const HIST_ROOT='https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbo
 const HIST_MEDIA='https://raw.githubusercontent.com/jairofrancog7-star/App-liga-/main/assets/history/';
 const HIST_PHOTOS=window.LJR_HISTORY_PHOTOS||{};
 const historyMoments=[
+  {kind:'TERCER LUGAR',date:'23 nov 2013',title:'Romerillo',subtitle:'Tercer lugar · Fuerza Intermedia',detail:'Golazo Liga publicó que el portero de Romerillo fue clave para que su equipo obtuviera el tercer lugar, destacando una atajada de penal en la serie final. El nombre del portero no es visible en la captura aportada.'},
   {kind:'CAMPEÓN',date:'22 feb 2014',season:'2014',winner:'Puros Cuates',title:'Puros Cuates',subtitle:'Campeón de Copa · Fuerza Intermedia',detail:'La publicación de Golazo Liga muestra el trofeo entregado al equipo campeón.',backgroundPhoto:HIST_PHOTOS.purosCuatesTrophy2014||'',image:''},
   {kind:'CAMPEÓN',date:'03 nov 2019',season:'2018–2019',winner:'Juventus',title:'Juventus',subtitle:'Campeón de Liga · temporada 2018–2019',detail:'Fotografía histórica del plantel campeón; Boavista quedó registrado como subcampeón.',backgroundPhoto:HIST_MEDIA+'juventus-campeon-2019.jpg',image:HIST_ROOT+'assets/official-logos/juventus.png'},
   {kind:'CAMPEÓN',date:'Fecha exacta pendiente',season:'Temporada por confirmar',winner:'Tecos',title:'Tecos',subtitle:'Plantel campeón · categoría adulta por identificar',detail:'La fotografía conservada muestra al plantel con camisetas de campeón y trofeo. La fecha exacta no es legible en el material revisado.',backgroundPhoto:HIST_MEDIA+'tecos-campeon-historico.jpg'},
@@ -217,7 +218,7 @@ const retroClubs=[
   {name:'Manchester',logo:'assets/official-logos/manchester.png',note:'Equipo conservado en el archivo antiguo'}
 ];
 
-const retroNames=['Universidad','Valencia','Halcones','Chelse','Olímpicos de Pozos'];
+const retroNames=['Universidad','Valencia','Halcones','Chelse','Olímpicos de Pozos','Romerillo'];
 
 const verifiedChampions=[
   {season:'22 feb 2014',competition:'Torneo de Copa · Fuerza Intermedia',champion:'Puros Cuates',runner:'—',source:'Publicación de Golazo Liga: “Trofeo para el equipo Puros Cuates Campeón del Torneo De Copa 2014 en la Categoría Fuerza Intermedia”.',photo:HIST_PHOTOS.purosCuatesTrophy2014||''},
@@ -241,6 +242,7 @@ const historicalPhotoArchive=[
 
 // V106 — archivo histórico ampliado desde los videos y el ZIP entregados por el usuario.
 const videoArchiveFindings=[
+  {date:'23 nov 2013',title:'Romerillo · tercer lugar en Fuerza Intermedia',detail:'Publicación de Golazo Liga: el portero del equipo Romerillo de Fuerza Intermedia fue clave para que su equipo obtuviera el tercer lugar; la nota destaca una atajada de penal en la serie final. La captura no permite identificar por nombre al guardameta.'},
   {date:'nov 2012',title:'Equipos con publicación fotográfica localizada',detail:'En el archivo de Golazo Liga aparecen publicaciones o fotografías directas de PSV, Real Cerrito, Unión Allende, Chelse, Hermanos, Aldama, Osasuna, Manchester, Halcones, San Antonio Jr. y Boavista. Se registran como equipos documentados en publicaciones de 2012; no se presenta esta lista como tabla final de inscritos.'},
   {date:'28 nov 2012 · publicación sobre oct 1987',title:'Boavista · origen documentado del club',detail:'En una publicación por su XXV aniversario, Golazo Liga relata que estudiantes de la Preparatoria “Juventino Rosas” organizaron Boavista en octubre de 1987 para registrarlo en la Primera Fuerza de la Liga Municipal. El mismo texto recuerda como equipos fuertes de comunidades a Cuenda, Aguilares, San Julián, Merino, Santa María de Guadalupe y Pozos. Es historia del club, no fecha de fundación de la Liga.',image:HIST_ROOT+'assets/official-logos/boavista.png'},
   {date:'15 dic 2013',title:'Podio de Segunda Fuerza',detail:'DHP recibió el trofeo de segundo lugar. San José de la Montaña recibió el tercer lugar después de ganar por default a Tavera en el partido por el tercer puesto.'},
@@ -438,6 +440,7 @@ const historicTeamGoalRecords=[
 ];
 
 const recordMemories=[
+  {tag:'PODIO 2013',title:'Romerillo',value:'3.er lugar',detail:'Fuerza Intermedia · publicación de Golazo Liga del 23 nov 2013. La nota destaca al portero de Romerillo por una atajada de penal en la serie final.'},
   {tag:'CORTE J30',title:'Linces',value:'79 puntos',detail:'Líder del corte de Primera publicado el 6 may 2017; no se presenta como récord absoluto.',image:HIST_ROOT+'assets/official-logos/linces.png'},
   {tag:'CORTE J30',title:'Hermanos',value:'111 GF',detail:'Goles a favor visibles en la tabla de Primera J30 del 6 may 2017.',image:HIST_ROOT+'assets/official-logos/hermanos.png'},
   {tag:'CORTE J30',title:'Linces',value:'+75 DG',detail:'Diferencia de goles visible en la tabla de Primera J30 del 6 may 2017.',image:HIST_ROOT+'assets/official-logos/linces.png'},
