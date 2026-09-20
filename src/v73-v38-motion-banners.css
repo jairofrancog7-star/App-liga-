@@ -349,3 +349,14 @@ body[data-app-route="leagueData"] .v73-motion-banner{
     margin-right:12px!important;
   }
 }
+
+
+/* V96 — último override para que Inicio conserve un solo azul marino hasta abajo */
+body[data-app-route="home"],
+body[data-app-route="home"] #app,
+body[data-app-route="home"] .app-shell,
+body[data-app-route="home"] #screen,
+body[data-app-route="home"] #safeHomeExtra{
+  background:#03045e!important;
+  background-image:none!important;
+}
