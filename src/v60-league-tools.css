@@ -416,3 +416,115 @@
     min-height:372px;
   }
 }
+
+
+/* V72.2 — VISTA PREVIA REAL DEL REGLAMENTO
+   Sustituye el canvas fallido por un visor PDF embebido y evita cualquier
+   texto cortado o pantalla blanca vacía. */
+.v72-rulebook-preview{
+  overflow:hidden!important;
+  background:#0b0b69!important;
+  border:1px solid rgba(76,101,225,.32)!important;
+  border-radius:18px!important;
+}
+
+.v72-preview-head{
+  min-height:64px!important;
+  display:flex!important;
+  align-items:center!important;
+  justify-content:space-between!important;
+  gap:12px!important;
+  padding:0 18px!important;
+  border-bottom:1px solid rgba(255,255,255,.10)!important;
+  background:linear-gradient(180deg,#12147f,#0d0d70)!important;
+}
+.v72-preview-head span{
+  color:#1ce3ee!important;
+  font-size:11px!important;
+  line-height:1!important;
+  font-weight:900!important;
+  letter-spacing:.08em!important;
+}
+.v72-preview-head strong{
+  min-width:0!important;
+  color:#fff!important;
+  font-size:15px!important;
+  line-height:1.1!important;
+  font-weight:850!important;
+  text-align:right!important;
+}
+
+.v72-preview-frame-wrap{
+  position:relative!important;
+  width:100%!important;
+  height:min(118vw,690px)!important;
+  min-height:470px!important;
+  overflow:hidden!important;
+  background:
+    radial-gradient(circle at 50% 20%,rgba(36,89,255,.16),transparent 38%),
+    #08085f!important;
+}
+
+.v72-preview-frame{
+  position:absolute!important;
+  z-index:2!important;
+  inset:0!important;
+  width:100%!important;
+  height:100%!important;
+  margin:0!important;
+  padding:0!important;
+  border:0!important;
+  display:block!important;
+  background:#fff!important;
+}
+
+.v72-preview-fallback{
+  position:absolute!important;
+  z-index:1!important;
+  inset:0!important;
+  display:flex!important;
+  flex-direction:column!important;
+  align-items:center!important;
+  justify-content:center!important;
+  gap:12px!important;
+  padding:28px!important;
+  box-sizing:border-box!important;
+  color:#fff!important;
+  text-align:center!important;
+  background:linear-gradient(180deg,#101174,#08085f)!important;
+}
+.v72-preview-fallback b{
+  font-size:18px!important;
+  line-height:1.15!important;
+}
+.v72-preview-fallback span{
+  max-width:310px!important;
+  color:#bfc5e6!important;
+  font-size:13px!important;
+  line-height:1.4!important;
+}
+
+/* El lector nuevo no usa la barra/canvas anterior. */
+.v72-rulebook-preview .v60-pdf-toolbar,
+.v72-rulebook-preview .v60-pdf-canvas-wrap,
+.v72-rulebook-preview .v60-pdf-loading{
+  display:none!important;
+}
+
+@media(max-width:390px){
+  .v72-preview-head{
+    min-height:58px!important;
+    padding-left:14px!important;
+    padding-right:14px!important;
+  }
+  .v72-preview-head span{
+    font-size:10px!important;
+  }
+  .v72-preview-head strong{
+    font-size:13px!important;
+  }
+  .v72-preview-frame-wrap{
+    height:122vw!important;
+    min-height:455px!important;
+  }
+}
