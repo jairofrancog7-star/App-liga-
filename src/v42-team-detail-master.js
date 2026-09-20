@@ -117,6 +117,22 @@ function rosterRows(t){
  if(!t.roster.length)return '<div class="empty-mini">No hay plantilla pública disponible para este equipo.</div>';
  return t.roster.map((n,i)=>'<button type="button" class="v42-player-row" data-v42-player="'+esc(n)+'"><span class="v42-avatar" aria-hidden="true">⚽</span><span class="v42-player-copy"><strong>'+esc(n)+'</strong><small>'+esc(t.name)+' · Jugador registrado</small></span><b class="v42-number">—</b></button>').join('');
 }
+function summaryDataMarkup(t){
+ const r=t.row;
+ if(!r)return '<section class="v42-section v42-summary-data"><div class="v42-section-head"><h2>Datos clave</h2></div><div class="empty-mini">No hay datos oficiales de clasificación publicados para este equipo.</div><button type="button" class="v42-compare-bottom" data-v42-compare>Comparar equipos</button></section>';
+ return '<section class="v42-section v42-summary-data">'+
+  '<div class="v42-section-head"><h2>Datos clave</h2><button type="button" data-v42-tab="stats">Ver todo</button></div>'+
+  '<div class="v42-key-card v42-key-card-summary"><div class="v42-key-grid">'+
+   '<div class="v42-ring"><b>'+esc(r[2])+'</b><small>Partidos<br>disputados</small></div>'+
+   '<div class="v42-wdl"><p><i></i>Ganados <b>'+esc(r[3])+'</b></p><p><i></i>Empates <b>'+esc(r[4])+'</b></p><p><i></i>Perdidos <b>'+esc(r[5])+'</b></p></div>'+
+   '<div><b>'+esc(r[6])+'</b><small>Goles marcados</small></div>'+
+   '<div><b>'+esc(r[7])+'</b><small>Goles recibidos</small></div>'+
+   '<div><b>'+esc(r[8])+'</b><small>Diferencia de goles</small></div>'+
+   '<div><b>'+esc(r[9])+'</b><small>Puntos</small></div>'+
+  '</div></div>'+
+  '<button type="button" class="v42-compare-bottom" data-v42-compare>Comparar equipos <span>›</span></button>'+
+ '</section>';
+}
 function summaryMarkup(t){
  const next=nextFixture(t),recent=played(t).slice(-5).reverse();
  return '<main class="v42-summary">'+
@@ -126,7 +142,9 @@ function summaryMarkup(t){
   '</section>'+
   '<section class="v42-section v42-squad-preview"><div class="v42-section-head"><h2>Plantilla</h2><button type="button" data-v42-tab="squad">Ver todo</button></div><div class="v42-preview-grid">'+
    t.roster.slice(0,3).map(n=>'<button type="button" data-v42-tab="squad"><span class="v42-avatar large">⚽</span><strong>'+esc(n)+'</strong><small>Jugador registrado</small></button>').join('')+
-  '</div></section></main>';
+  '</div></section>'+
+  summaryDataMarkup(t)+
+ '</main>';
 }
 function matchesMarkup(t){
  const rows=t.fixtures.slice().reverse();
@@ -186,7 +204,7 @@ function markup(){
   '<div class="v42-neon" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div>'+
   '<div class="v42-top-actions"><button type="button" class="v42-back" data-v42-back aria-label="Volver">'+backIcon()+'</button><div class="v42-top-right"><button type="button" class="v42-bell" data-v42-bell>'+bellIcon()+'</button><button type="button" class="v42-more" data-v42-share>'+shareIcon()+'</button></div></div>'+
   '<img class="v42-team-crest" src="'+esc(logoUrl(t.name))+'" alt="'+esc(t.name)+'"><div class="v42-title"><h1>'+esc(t.name)+'</h1><p>'+esc(t.category)+' · Juventino Rosas, Guanajuato</p></div>'+
-  '<div class="v42-actions"><button type="button" class="v42-follow '+(followed()?'active':'')+'" data-v42-follow>'+checkIcon()+'<span>'+(followed()?'Siguiendo':'Seguir')+'</span></button><button type="button" class="v42-compare" data-v42-compare>Comparar</button><button type="button" class="v42-share" data-v42-share>'+shareIcon()+'</button></div>'+
+  '<div class="v42-actions"><button type="button" class="v42-follow '+(followed()?'active':'')+'" data-v42-follow>'+checkIcon()+'<span>'+(followed()?'Siguiendo':'Seguir')+'</span></button><button type="button" class="v42-share" data-v42-share aria-label="Compartir">'+shareIcon()+'</button></div>'+
   '<nav class="v42-tabs"><button class="'+(activeTab==='summary'?'active':'')+'" data-v42-tab="summary">Resumen</button><button class="'+(activeTab==='matches'?'active':'')+'" data-v42-tab="matches">Partidos</button><button class="'+(activeTab==='standings'?'active':'')+'" data-v42-tab="standings">Clasificación</button><button class="'+(activeTab==='squad'?'active':'')+'" data-v42-tab="squad">Plantilla</button><button class="'+(activeTab==='stats'?'active':'')+'" data-v42-tab="stats">Estadísticas</button></nav>'+
   '</header>'+body(t)+notifySheet(t)+compareSheet(t)+'</section>';
 }
