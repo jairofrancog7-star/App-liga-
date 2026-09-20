@@ -1,4 +1,4 @@
-/* V67 — Registro único de escudos de equipos.
+/* V67 / V108 aliases históricos — Registro único de escudos de equipos.
    Evita que los partidos, tablas, perfiles y comparadores usen el logo genérico
    de la Liga cuando ya existe un escudo real en Liga_Futbol. */
 (function(){
@@ -77,7 +77,27 @@
     'celticos':'assets/official-logos/celticos.png',
     'celticos fc':'assets/official-logos/celticos.png',
     'dep zapata':'assets/official-logos/dep-zapata.png',
-    'deportivo zapata':'assets/official-logos/dep-zapata.png'
+    'deportivo zapata':'assets/official-logos/dep-zapata.png',
+
+    // V108 aliases históricos — solo resuelven escudos; no agregan estos equipos a la temporada actual.
+    'oklahoma':'assets/teams/oklahoma-city-fc.webp',
+    'oklahoma fc':'assets/teams/oklahoma-city-fc.webp',
+    'oklahoma city':'assets/teams/oklahoma-city-fc.webp',
+    'mineros':'assets/teams/mineros-fc.webp',
+    'mineros fc':'assets/teams/mineros-fc.webp',
+    'san jose de la montana':'assets/teams/san-jose-montana.webp',
+    'san jose montana':'assets/teams/san-jose-montana.webp',
+    'sn jose de la m':'assets/teams/san-jose-montana.webp',
+    'real cerrito de gasca':'assets/teams/deportivo-cg.webp',
+    'real cerrito':'assets/teams/deportivo-cg.webp',
+    'deportivo aldama':'assets/official-logos/aldama-fc.png',
+    'aldama':'assets/official-logos/aldama-fc.png',
+    'dinamo':'assets/official-logos/dynamo.png',
+    'la esperanza fc':'assets/official-logos/la-esperanza.png',
+    'san antonio jr':'assets/official-logos/san-antonio-jrs.png',
+    'san antonio jrs':'assets/official-logos/san-antonio-jrs.png',
+    'mazacotes':'assets/official-logos/mazacotes-fc.png',
+    'terricolas fc':'assets/official-logos/terricolas.png'
   };
 
   function norm(v){
