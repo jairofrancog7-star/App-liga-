@@ -270,3 +270,110 @@
     background-image:none!important;
   }
 }
+
+
+/* V81 — Restaurar subrayado original redondeado y unir TODO el fondo de Cuadro.
+   Referencia del usuario: línea corta con extremos circulares, no barra rectangular. */
+@media (max-width:1023px){
+  html body[data-app-route="competition"],
+  html body[data-app-route="competition"] #app,
+  html body[data-app-route="competition"] .app-shell,
+  html body[data-app-route="competition"] .topbar,
+  html body[data-app-route="competition"] #screen,
+  html body[data-app-route="competition"] #screen>.tabs,
+  html body[data-app-route="competition"] .bottom-nav{
+    --competition-solid-navy:#06085f;
+    background:#06085f!important;
+    background-color:#06085f!important;
+    background-image:none!important;
+  }
+
+  /* Quita la barra rectangular añadida antes. */
+  html body[data-app-route="competition"] #screen>.tabs .tab,
+  html body[data-app-route="competition"] #screen>.tabs .tab.active{
+    box-shadow:none!important;
+    border-bottom:0!important;
+  }
+
+  /* Subrayado ORIGINAL: corto, centrado y con extremos totalmente redondeados. */
+  html body[data-app-route="competition"] #screen>.tabs .tab::after{
+    content:""!important;
+    display:block!important;
+    position:absolute!important;
+    left:18%!important;
+    right:18%!important;
+    bottom:0!important;
+    width:auto!important;
+    height:4px!important;
+    min-height:4px!important;
+    max-height:4px!important;
+    border:0!important;
+    border-radius:999px!important;
+    background:transparent!important;
+    background-image:none!important;
+    box-shadow:none!important;
+    opacity:1!important;
+    visibility:visible!important;
+    transform:none!important;
+    z-index:30!important;
+    pointer-events:none!important;
+  }
+
+  html body[data-app-route="competition"] #screen>.tabs .tab.active::after{
+    background:#27e7f2!important;
+    background-color:#27e7f2!important;
+    border-radius:999px!important;
+    box-shadow:0 0 7px rgba(39,231,242,.22)!important;
+  }
+
+  /* CUADRO: mismo azul exacto arriba, centro y abajo. */
+  html body[data-app-route="competition"] .v12-bracket-reference,
+  html body[data-app-route="competition"] .v12-bracket-reference.stage-playoff,
+  html body[data-app-route="competition"] .v12-bracket-reference.stage-octavos,
+  html body[data-app-route="competition"] .v12-bracket-reference.stage-cuartos,
+  html body[data-app-route="competition"] .v12-bracket-reference.stage-semifinal,
+  html body[data-app-route="competition"] .v12-bracket-reference.stage-final,
+  html body[data-app-route="competition"] .v12-bracket-stage-tabs,
+  html body[data-app-route="competition"] .v12-bracket-dates,
+  html body[data-app-route="competition"] .v12-bracket-board,
+  html body[data-app-route="competition"] .v12-bracket-route,
+  html body[data-app-route="competition"] .v12-bracket-winners,
+  html body[data-app-route="competition"] .v12-stage-panels,
+  html body[data-app-route="competition"] .v12-stage-panel,
+  html body[data-app-route="competition"] .v12-progress-dates,
+  html body[data-app-route="competition"] .v12-progress-board,
+  html body[data-app-route="competition"] .v12-progress-route,
+  html body[data-app-route="competition"] .v12-progress-left,
+  html body[data-app-route="competition"] .v12-progress-right,
+  html body[data-app-route="competition"] .v12-progress-connector,
+  html body[data-app-route="competition"] .v12-semifinal-flow,
+  html body[data-app-route="competition"] .v12-semifinal-source,
+  html body[data-app-route="competition"] .v12-semifinal-target,
+  html body[data-app-route="competition"] .v12-final-reference,
+  html body[data-app-route="competition"] .v12-final-trophy-wrap{
+    background:#06085f!important;
+    background-color:#06085f!important;
+    background-image:none!important;
+  }
+
+  /* Elimina cortes visuales entre secciones del cuadro. */
+  html body[data-app-route="competition"] .v12-bracket-reference,
+  html body[data-app-route="competition"] .v12-bracket-stage-tabs,
+  html body[data-app-route="competition"] .v12-bracket-dates,
+  html body[data-app-route="competition"] .v12-bracket-board,
+  html body[data-app-route="competition"] .v12-stage-panels,
+  html body[data-app-route="competition"] .v12-stage-panel{
+    border-top-color:transparent!important;
+    border-bottom-color:transparent!important;
+    outline:0!important;
+    box-shadow:none!important;
+  }
+
+  /* Mantiene las tarjetas de etapas y partidos con su contraste original. */
+  html body[data-app-route="competition"] .v12-bracket-stage-tabs > button[data-v12-bracket-stage]{
+    background:#18186f!important;
+  }
+  html body[data-app-route="competition"] .v12-bracket-stage-tabs > button[data-v12-bracket-stage].active{
+    background:#1fd6e2!important;
+  }
+}
