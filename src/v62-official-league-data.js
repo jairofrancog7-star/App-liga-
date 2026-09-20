@@ -239,6 +239,63 @@ function startHomeLiveTimer(){
   if(homeLiveTimer)return;
   homeLiveTimer=setInterval(()=>patchHomeUpcoming(true),30000);
 }
+
+/* V73 — Clasificación de Inicio tomada únicamente de Primera Fuerza oficial.
+   Sustituye cualquier tabla heredada con equipos antiguos/ficticios. */
+function patchHomeStandings(force=false){
+  if(route()!=='home'||!db)return;
+  const section=document.querySelector('#screen .v65-home-table');
+  if(!section)return;
+
+  const block=db?.categories?.['3']?.standings?.[0];
+  const rs=(block?.rows||[]).filter(r=>Array.isArray(r)&&r[1]).slice(0,6);
+  if(!rs.length)return;
+
+  const sig=String(db.captured_at_utc||'')+'|'+rs.map(r=>[r[1],r[2],r[8],r[9]].join(':')).join('|');
+  if(!force&&section.dataset.v73StandingsSig===sig)return;
+  section.dataset.v73StandingsSig=sig;
+
+  const heading=section.querySelector('.section-head h2');
+  if(heading)heading.textContent='Clasificación';
+  const link=section.querySelector('.section-head .link-button');
+  if(link){
+    link.textContent='Ver completa';
+    link.dataset.v63Comp='standings';
+  }
+
+  let card=section.querySelector('.v65-table-card');
+  if(!card){
+    card=document.createElement('div');
+    card.className='v65-table-card';
+    section.appendChild(card);
+  }
+
+  const rowHtml=(r,i)=>{
+    const name=String(r[1]||'').trim();
+    const src=logoFor(name);
+    const display=name.toLowerCase().replace(/(^|\s)\S/g,m=>m.toUpperCase())
+      .replace(/\bFc\b/g,'FC').replace(/\bCdg\b/g,'CDG');
+    const logo=src
+      ? '<span class="v65-table-logo"><img src="'+esc(src)+'" alt="'+esc(display)+'" loading="lazy" decoding="async"></span>'
+      : '<span class="v65-table-logo v65-table-logo-fallback">'+esc(name.split(/\s+/).map(x=>x[0]).join('').slice(0,3))+'</span>';
+
+    return '<button type="button" class="v65-table-row" data-v62-team="'+esc(name)+'" aria-label="Ver '+esc(display)+'">'+
+      '<b>'+(i+1)+'</b>'+
+      '<span class="v65-table-team">'+logo+'<strong>'+esc(display)+'</strong></span>'+
+      '<span>'+esc(r[2]??'')+'</span>'+
+      '<span>'+esc(r[8]??'')+'</span>'+
+      '<strong>'+esc(r[9]??'')+'</strong>'+
+    '</button>';
+  };
+
+  card.innerHTML=
+    '<div class="v65-table-head"><span>#</span><span>Equipo</span><span>PJ</span><span>DG</span><span>Pts</span></div>'+
+    rs.map(rowHtml).join('');
+
+  card.querySelectorAll('[data-v62-team]').forEach(b=>{
+    b.addEventListener('click',e=>{e.preventDefault();openTeam(b.dataset.v62Team)},{once:true});
+  });
+}
 function chooseNewer(a,b){
   if(!a)return b;if(!b)return a;
   return String(b.captured_at_utc||'')>String(a.captured_at_utc||'')?b:a;
@@ -654,6 +711,7 @@ function schedule(){
       if(r==='leagueData')renderDataPage();
       else{
         patchHomeUpcoming();
+        patchHomeStandings();
         patchScorers();
         patchTeamDetail();
         patchTeams();
