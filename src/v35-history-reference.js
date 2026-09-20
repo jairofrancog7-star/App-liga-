@@ -72,6 +72,48 @@ const retroClubs=[
 
 const retroNames=['Universidad','Valencia','Halcones','Chelse','Olímpicos de Pozos'];
 
+const verifiedChampions=[
+  {season:'2018–2019',competition:'Torneo de Liga',champion:'Juventus',runner:'Boavista',source:'Publicaciones históricas de Golazo Liga del 3 nov 2019.'}
+];
+
+const historicTables=[
+  {
+    season:'2018',title:'Intermedia · Jornada 23',note:'Corte histórico, no se presenta como tabla final.',
+    rows:[
+      ['1','Lobos CDG','52'],['2','Populares','49'],['3','Real DHP','48'],['4','Vatos Locos','47'],
+      ['5','Tecos','43'],['6','Oklahoma','38'],['7','Mineros','36'],['8','Barza','33'],
+      ['9','San Antonio','33'],['10','Franco FC','26'],['11','Osasuna','24'],['12','La Huerta','23'],
+      ['13','Mazacotes','23'],['14','Titanes Tavera','21'],['15','Terrícolas','14'],['16','Morales','Baja']
+    ]
+  },
+  {
+    season:'2022',title:'Veteranos · Tabla final de Liga',note:'Tabla publicada como final tras 22 jornadas.',
+    rows:[
+      ['1','Juventus','53'],['2','Hermanos','45'],['3','América','41'],['4','Dynamo','39'],
+      ['5','PSV','36'],['6','Deportivo Rafa','34'],['7','Boavista','31'],['8','Arsenal','29'],
+      ['9','Cuenda','22'],['10','Barrio Seco','15'],['11','UNAM','15'],['12','Átomos','8']
+    ]
+  }
+];
+
+const historicResults=[
+  {date:'2022',category:'Primera Fuerza · J19',winner:'Juventus',against:'Lobos CDG'},
+  {date:'2022',category:'Intermedia · J19',winner:'La Huerta',against:'Galaxy'},
+  {date:'2022',category:'Intermedia · J19',winner:'Sección 14',against:'A. Pozos'},
+  {date:'2022',category:'Segunda Fuerza · J18',winner:'Galácticos FC',against:'San Juan FC'}
+];
+
+const historicFinalists=[
+  {year:'2023',category:'Segunda Fuerza · Gran Final de Liga',a:'Titanes FC',b:'Terrícolas SEDER',note:'Final programada en el rol histórico revisado; el material no muestra aquí el ganador.'}
+];
+
+const expandedRetroNames=[
+  'Real DHP','Vatos Locos','Tecos','Oklahoma','Mineros','Barza','San Antonio','Osasuna',
+  'Mazacotes','Titanes Tavera','Morales','Populares','A. Centeno','Chelsea','La Cuadrilla',
+  'PSV','Sección 14','Dep. Maravillas','La Esperanza FC','A. Pozos','Galaxy','San Juan FC',
+  'Tapatío','Guadalupanos','Barrio Seco','UNAM','Átomos','Deportivo Rafa','Arsenal'
+];
+
 const videos=[
   {image:ASSETS.videoA,duration:'',title:'Archivo audiovisual de la Liga'},
   {image:ASSETS.videoB,duration:'',title:'Momentos de la Liga Municipal'},
@@ -172,6 +214,24 @@ function retroClubCards(){
   ).join('')+'</div>'+
   '<div class="v35-retro-names">'+retroNames.map(n=>'<span>'+esc(n)+'</span>').join('')+'</div>';
 }
+
+function verifiedHistoryBlocks(){
+  return '<div class="v35-verified-history">'+
+    '<div class="v35-history-subhead"><span>CAMPEONES CONFIRMADOS</span><h3>Palmarés verificado en el archivo</h3></div>'+
+    '<div class="v35-champion-list">'+verifiedChampions.map(x=>
+      '<article class="v35-champion-card"><span>'+esc(x.season)+'</span><h4>'+esc(x.champion)+'</h4><b>'+esc(x.competition)+'</b><p>Subcampeón: '+esc(x.runner)+'. '+esc(x.source)+'</p></article>'
+    ).join('')+'</div>'+
+    '<div class="v35-history-subhead"><span>TABLAS HISTÓRICAS</span><h3>Clasificaciones recuperadas</h3><p>Se conserva el contexto exacto del material: una tabla final se marca como final; un corte de jornada se marca solo como corte.</p></div>'+
+    historicTables.map(t=>'<article class="v35-old-table"><header><span>'+esc(t.season)+'</span><div><b>'+esc(t.title)+'</b><small>'+esc(t.note)+'</small></div></header><div class="v35-old-table-head"><span>POS</span><span>EQUIPO</span><span>PTS</span></div>'+t.rows.map(r=>'<div class="v35-old-table-row"><span>'+esc(r[0])+'</span><b>'+esc(r[1])+'</b><strong>'+esc(r[2])+'</strong></div>').join('')+'</article>').join('')+
+    '<div class="v35-history-subhead"><span>RESULTADOS CONSERVADOS</span><h3>Ganadores publicados en roles antiguos</h3></div>'+
+    '<div class="v35-result-list">'+historicResults.map(r=>'<article><span>'+esc(r.date)+'</span><small>'+esc(r.category)+'</small><b>'+esc(r.winner)+'</b><i>vs</i><strong>'+esc(r.against)+'</strong></article>').join('')+'</div>'+
+    '<div class="v35-history-subhead"><span>FINALES DOCUMENTADAS</span><h3>Llaves y finalistas</h3></div>'+
+    '<div class="v35-result-list">'+historicFinalists.map(r=>'<article><span>'+esc(r.year)+'</span><small>'+esc(r.category)+'</small><b>'+esc(r.a)+'</b><i>vs</i><strong>'+esc(r.b)+'</strong><p>'+esc(r.note)+'</p></article>').join('')+'</div>'+
+    '<div class="v35-history-subhead"><span>MÁS EQUIPOS DEL RECUERDO</span><h3>Nombres encontrados en tablas y roles antiguos</h3></div>'+
+    '<div class="v35-retro-names">'+expandedRetroNames.map(n=>'<span>'+esc(n)+'</span>').join('')+'</div>'+
+  '</div>';
+}
+
 function historyYouthCards(){
   return '<div class="v35-youth-list">'+historyYouth.map(x=>
     '<article><span>'+esc(x.year)+'</span><div><b>'+esc(x.title)+'</b><small>'+esc(x.detail)+'</small></div></article>'
@@ -183,6 +243,7 @@ function historyArchiveBlock(){
     historyMomentCards()+
     '<div class="v35-history-subhead"><span>EQUIPOS PARA EL RECUERDO</span><h3>Clubes y nombres del archivo</h3><p>Estos registros históricos no alteran la lista de equipos de la temporada actual.</p></div>'+
     retroClubCards()+
+    verifiedHistoryBlocks()+
     '<div class="v35-history-subhead"><span>FÚTBOL FORMATIVO</span><h3>Infantil y juvenil</h3></div>'+
     historyYouthCards()+
   '</section>';
@@ -191,7 +252,7 @@ function championsArchiveBlock(){
   const rows=historyMoments.filter(m=>m.kind==='CAMPEÓN'||m.kind==='FINAL');
   return '<section class="v35-block v35-history-archive v35-history-archive-compact">'+
     '<div class="v35-history-archive-head"><span>PALMARÉS HISTÓRICO</span><h2>Campeones y finales documentadas</h2><p>Solo se muestran datos que aparecen en el material histórico revisado.</p></div>'+
-    '<div class="v35-history-moments">'+rows.map(m=>'<article class="v35-history-moment"><span class="v35-history-kind">'+esc(m.kind)+'</span><h3>'+esc(m.title)+'</h3><strong>'+esc(m.subtitle)+'</strong><p>'+esc(m.detail)+'</p></article>').join('')+'</div>'+
+    '<div class="v35-history-moments">'+rows.map(m=>'<article class="v35-history-moment"><span class="v35-history-kind">'+esc(m.kind)+'</span><h3>'+esc(m.title)+'</h3><strong>'+esc(m.subtitle)+'</strong><p>'+esc(m.detail)+'</p></article>').join('')+'</div>'+verifiedHistoryBlocks()+
   '</section>';
 }
 function finalsArchiveBlock(){
