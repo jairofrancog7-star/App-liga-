@@ -1,0 +1,56 @@
+/* V93 — HOME: fondo azul marino sólido solicitado por el usuario.
+   Solo afecta #/home. Conserva imágenes, tarjetas, navegación y estructura. */
+:root{
+  --v93-home-bg:#000144;
+  --v93-home-card:#070966;
+  --v93-home-card-2:#080a62;
+  --v93-home-line:rgba(105,122,220,.28);
+}
+
+/* Un solo color de fondo desde el contenido de Inicio hasta la zona inferior. */
+body[data-app-route="home"],
+body[data-app-route="home"] #app,
+body[data-app-route="home"] .app-shell,
+body[data-app-route="home"] #screen{
+  background-color:var(--v93-home-bg)!important;
+  background-image:none!important;
+}
+
+/* El fondo general de las secciones queda transparente para que no aparezcan
+   franjas azul claro / azul medio entre los cuadros. */
+body[data-app-route="home"] #screen > .section:not(.hero),
+body[data-app-route="home"] .v65-home-table,
+body[data-app-route="home"] .v65-home-fields,
+body[data-app-route="home"] .v74-home-scorers,
+body[data-app-route="home"] .v78-home-calendar{
+  background:transparent!important;
+}
+
+/* Cuadros funcionales ligeramente más claros que el fondo para que sigan visibles. */
+body[data-app-route="home"] .match-card,
+body[data-app-route="home"] .v65-home-weather,
+body[data-app-route="home"] .v65-table-card,
+body[data-app-route="home"] .v65-field-card,
+body[data-app-route="home"] .v74-scorer-card,
+body[data-app-route="home"] .v78-calendar-card,
+body[data-app-route="home"] .v78-calendar-card.is-result,
+body[data-app-route="home"] .v78-calendar-empty{
+  background:var(--v93-home-card)!important;
+  border-color:var(--v93-home-line)!important;
+  box-shadow:none!important;
+}
+
+/* Cabeceras internas de tabla: un tono aparte, todavía dentro de la misma paleta. */
+body[data-app-route="home"] .v65-table-head{
+  background:var(--v93-home-card-2)!important;
+}
+
+/* Filas y áreas internas no crean otro bloque de color. */
+body[data-app-route="home"] .v65-table-row,
+body[data-app-route="home"] .v74-scorer-row,
+body[data-app-route="home"] .v78-calendar-teams > button{
+  background:transparent!important;
+}
+
+/* Mantener sin tocar las piezas visuales principales: hero, Momentos, Noticias,
+   imágenes de campos, logos, botones e iconos. */
