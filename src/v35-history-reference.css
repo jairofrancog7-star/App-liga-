@@ -1953,3 +1953,49 @@
 @media(max-width:360px){
   .v35-history-status{grid-template-columns:1fr}
 }
+
+
+/* V115 — CAMPEONES: todas las tarjetas muestran una imagen de fondo visible.
+   Foto exacta si existe; imagen histórica/referente si todavía no está la toma exacta. */
+.v35-history-moment-photo,
+.v35-champion-card-photo{
+  min-height:300px!important;
+  background:#07075d!important;
+}
+.v35-history-bg-photo,
+.v35-champion-bg-photo{
+  opacity:1!important;
+  filter:saturate(1.12) contrast(1.04) brightness(.92)!important;
+}
+.v35-history-moment-photo .v35-history-moment-shade{
+  display:block!important;
+  background:
+    linear-gradient(180deg,rgba(3,6,50,.05) 0%,rgba(3,6,50,.14) 30%,rgba(3,6,50,.74) 76%,rgba(3,6,50,.91) 100%),
+    linear-gradient(90deg,rgba(3,6,50,.48) 0%,rgba(3,6,50,.14) 70%,rgba(3,6,50,.04) 100%)!important;
+}
+.v35-champion-shade{
+  background:
+    linear-gradient(180deg,rgba(5,7,55,.04) 0%,rgba(5,7,55,.12) 30%,rgba(5,7,55,.72) 76%,rgba(5,7,55,.92) 100%),
+    linear-gradient(90deg,rgba(5,7,55,.46) 0%,rgba(5,7,55,.12) 72%,rgba(5,7,55,.03) 100%)!important;
+}
+.v35-history-moment-reference .v35-history-bg-photo,
+.v35-champion-card-reference .v35-champion-bg-photo{
+  object-fit:cover!important;
+  object-position:center!important;
+}
+.v35-history-moment-photo .v35-history-moment-content,
+.v35-champion-card-photo .v35-champion-content{
+  text-shadow:0 2px 10px rgba(0,0,0,.64);
+}
+.v35-history-moment-photo .v35-history-status span{
+  background:rgba(5,12,79,.68)!important;
+  backdrop-filter:blur(8px);
+  -webkit-backdrop-filter:blur(8px);
+}
+.v35-champion-card-photo .v35-champion-date{
+  background:rgba(4,8,63,.70)!important;
+}
+@media(max-width:420px){
+  .v35-history-moment-photo,
+  .v35-champion-card-photo{min-height:286px!important}
+}
