@@ -528,3 +528,27 @@
     min-height:455px!important;
   }
 }
+
+
+/* V101 — vista del lugar dentro de Campos / Clima y campos. */
+.v60-field-preview-card{
+  display:block;
+  position:relative;
+  width:100%;
+  height:150px;
+  margin:0 0 12px;
+  overflow:hidden;
+  border-radius:13px;
+  background:#050653;
+  border:1px solid rgba(85,105,205,.24);
+}
+.v60-field-preview-card iframe,
+.v60-field-preview-card img{
+  display:block;
+  width:100%;
+  height:100%;
+  border:0;
+  object-fit:cover;
+  pointer-events:none;
+  filter:saturate(.82) brightness(.74) contrast(1.04);
+}
