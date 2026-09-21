@@ -593,3 +593,107 @@
   }
   body[data-app-route="home"] .v103-upcoming-match>strong{min-width:62px!important}
 }
+
+
+/* V112 — HOME: restaurar el cuadro principal vertical después de Historias.
+   Debajo quedan los dos cuadros de Momentos; Próximos partidos aparece una sola vez más abajo. */
+@media(max-width:1023px){
+  body[data-app-route="home"] #screen>.section.hero[data-v15-home-feature="3"]{
+    position:relative!important;
+    display:block!important;
+    width:min(92%,460px)!important;
+    max-width:460px!important;
+    height:auto!important;
+    min-height:0!important;
+    aspect-ratio:860/1285!important;
+    margin:8px auto 22px!important;
+    padding:0!important;
+    overflow:hidden!important;
+    border:0!important;
+    border-radius:30px!important;
+    background:#03063f!important;
+    box-shadow:none!important;
+    isolation:isolate!important;
+  }
+
+  body[data-app-route="home"] #screen>.section.hero[data-v15-home-feature="3"] .v21-home-feature-photo{
+    position:absolute!important;
+    z-index:1!important;
+    inset:0 0 31% 0!important;
+    display:block!important;
+    overflow:hidden!important;
+    background:#03063f!important;
+  }
+
+  body[data-app-route="home"] #screen>.section.hero[data-v15-home-feature="3"] .v21-home-feature-photo-image{
+    position:absolute!important;
+    inset:0!important;
+    display:block!important;
+    width:100%!important;
+    height:100%!important;
+    max-width:none!important;
+    max-height:none!important;
+    object-fit:cover!important;
+    object-position:center 46%!important;
+    filter:brightness(.58) saturate(.76) contrast(1.14) sepia(.04) hue-rotate(6deg)!important;
+  }
+
+  body[data-app-route="home"] #screen>.section.hero[data-v15-home-feature="3"] .v21-home-feature-photo-fade{
+    position:absolute!important;
+    z-index:2!important;
+    inset:0!important;
+    display:block!important;
+    background:linear-gradient(180deg,rgba(0,18,82,.28) 0%,rgba(0,12,74,.34) 48%,rgba(2,4,61,.70) 78%,#02043d 100%)!important;
+  }
+
+  body[data-app-route="home"] #screen>.section.hero[data-v15-home-feature="3"] .v21-home-feature-copy{
+    position:absolute!important;
+    z-index:3!important;
+    left:7.6%!important;
+    right:7.6%!important;
+    bottom:5.3%!important;
+    display:block!important;
+    color:#fff!important;
+    text-align:left!important;
+    pointer-events:none!important;
+  }
+
+  body[data-app-route="home"] #screen>.section.hero[data-v15-home-feature="3"] .v21-home-feature-copy h2{
+    margin:0 0 9.5%!important;
+    color:#fff!important;
+    font-size:clamp(29px,7.6vw,42px)!important;
+    line-height:1.08!important;
+    font-weight:900!important;
+    letter-spacing:-.035em!important;
+  }
+
+  body[data-app-route="home"] #screen>.section.hero[data-v15-home-feature="3"] .v21-home-feature-copy p{
+    margin:0!important;
+    color:rgba(255,255,255,.93)!important;
+    font-size:clamp(15px,4.2vw,22px)!important;
+    line-height:1.25!important;
+  }
+
+  body[data-app-route="home"] #screen>.section.hero[data-v15-home-feature="3"] .v15-home-feature-hit{
+    position:absolute!important;
+    z-index:5!important;
+    inset:0!important;
+    display:block!important;
+    width:100%!important;
+    height:100%!important;
+    border:0!important;
+    border-radius:inherit!important;
+    background:transparent!important;
+  }
+
+  body[data-app-route="home"] #screen>.section.hero[data-v15-home-feature="3"] + .section{
+    margin-top:0!important;
+  }
+}
+
+@media(max-width:380px){
+  body[data-app-route="home"] #screen>.section.hero[data-v15-home-feature="3"]{
+    width:94%!important;
+    border-radius:26px!important;
+  }
+}
