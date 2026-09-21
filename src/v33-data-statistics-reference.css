@@ -1111,3 +1111,82 @@ body.v33-data-active .v33-stat-row>strong{
     font-size:5.5px!important;
   }
 }
+
+
+/* V38.1 — recortar hueco azul grande en Datos/Estadísticas.
+   Une visualmente la cabecera con las tablas sin dejar el bloque azul claro vacío. */
+@media(max-width:699px){
+  body.v33-data-active .v33-data-head,
+  body.v33-data-active .v33-data-head.general,
+  body.v33-data-active .v33-data-head.compact{
+    height:clamp(146px,40vw,174px)!important;
+    min-height:clamp(146px,40vw,174px)!important;
+    max-height:174px!important;
+  }
+
+  body.v33-data-active .v33-data-page{
+    padding-top:clamp(146px,40vw,174px)!important;
+  }
+
+  body.v33-data-active .v33-head-actions{
+    top:10px!important;
+    left:18px!important;
+    right:18px!important;
+    height:42px!important;
+  }
+  body.v33-data-active .v33-head-actions button{
+    width:42px!important;
+    height:42px!important;
+  }
+  body.v33-data-active .v33-head-actions svg{
+    width:30px!important;
+    height:30px!important;
+  }
+
+  body.v33-data-active .v33-morph-title{
+    left:22px!important;
+    top:58px!important;
+    max-width:72%!important;
+  }
+  body.v33-data-active .v33-morph-title h1{
+    font-size:32px!important;
+    line-height:1!important;
+  }
+  body.v33-data-active .v33-morph-title p{
+    display:none!important;
+  }
+
+  body.v33-data-active .v33-tabs{
+    height:52px!important;
+    min-height:52px!important;
+  }
+  body.v33-data-active .v33-tabs button{
+    height:52px!important;
+    min-height:52px!important;
+    padding:0 18px!important;
+    font-size:13px!important;
+  }
+
+  body.v33-data-active .v33-data-content{
+    margin-top:0!important;
+    padding-top:12px!important;
+  }
+}
+@media(max-width:390px){
+  body.v33-data-active .v33-data-head,
+  body.v33-data-active .v33-data-head.general,
+  body.v33-data-active .v33-data-head.compact{
+    height:154px!important;
+    min-height:154px!important;
+    max-height:154px!important;
+  }
+  body.v33-data-active .v33-data-page{
+    padding-top:154px!important;
+  }
+  body.v33-data-active .v33-morph-title{
+    top:56px!important;
+  }
+  body.v33-data-active .v33-morph-title h1{
+    font-size:30px!important;
+  }
+}
