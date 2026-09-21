@@ -217,3 +217,26 @@ body[data-app-route="moments"] .v26-moments-sticky-back:focus-visible{
   outline-offset:-2px!important;
   border-radius:14px!important;
 }
+
+
+/* V124 — Momentos: quitar la barra de estado capturada (hora, batería, Wi‑Fi,
+   notificaciones e iconos blancos) de la cabecera fija. La imagen se desplaza
+   hacia arriba para que quede visible solamente el diseño azul de fondo y la
+   cabecera de Momentos. */
+body[data-app-route="moments"] .v26-moments-sticky__image{
+  top:calc(min(100vw,520px) * -0.115)!important;
+}
+
+/* Evita que quede una franja transparente arriba al recortar la captura. */
+body[data-app-route="moments"] .v26-moments-sticky{
+  background:
+    radial-gradient(circle at 52% 0%,rgba(18,71,238,.74),transparent 48%),
+    linear-gradient(180deg,#0a2bc7 0%,#050b74 62%,#02065f 100%)!important;
+}
+
+/* También oculta la zona de barra de estado de la captura base cuando queda
+   debajo de la cabecera fija, sin tocar las tarjetas ni hotspots. */
+body[data-app-route="moments"] .v26-moments-panel[data-v26-panel="a"]{
+  clip-path:inset(calc(min(100vw,520px) * .115) 0 0 0)!important;
+  margin-top:calc(min(100vw,520px) * -0.115)!important;
+}
