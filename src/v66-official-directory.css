@@ -74,3 +74,27 @@ body[data-app-route="club-store"] #screen{background:#06055f!important}
 }
 body[data-app-route="teamDetail"] .v66-official-roster .v42-player-row{min-height:62px!important}
 body[data-app-route="teamDetail"] .v66-official-roster h2{font-size:18px!important}
+
+.v66-filter-title{
+  margin:0 0 10px!important;color:#fff!important;font-size:13px!important;font-weight:900!important;letter-spacing:.08em!important
+}
+.v66-filter-label{
+  margin:5px 2px 6px!important;color:#25dfe9!important;font-size:9px!important;font-weight:900!important;letter-spacing:.11em!important
+}
+.v66-team-filter-rail{
+  display:flex!important;flex-flow:row nowrap!important;gap:8px!important;width:100%!important;
+  margin:0 0 12px!important;padding:1px 0 6px!important;overflow-x:auto!important;scrollbar-width:none!important
+}
+.v66-team-filter-rail::-webkit-scrollbar{display:none!important}
+.v66-team-filter-rail button{
+  flex:0 0 auto!important;min-width:max-content!important;height:42px!important;display:flex!important;align-items:center!important;gap:7px!important;
+  padding:0 11px!important;border:1px solid #292a91!important;border-radius:12px!important;background:#0d0c72!important;color:#d4d6eb!important;
+  font-size:10.5px!important;font-weight:800!important;white-space:nowrap!important
+}
+.v66-team-filter-rail button img{
+  width:26px!important;height:26px!important;max-width:26px!important;max-height:26px!important;object-fit:contain!important;border-radius:50%!important
+}
+.v66-team-filter-rail button.active{
+  background:#16ddea!important;color:#081060!important;border-color:#16ddea!important
+}
+.v66-team-filter-rail button.active img{background:rgba(255,255,255,.9)!important}
