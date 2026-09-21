@@ -79,7 +79,9 @@ function apply(card){
   if(!card.querySelector('.v120-photo-proof')){
     const proof=document.createElement('span'); proof.className='v120-photo-proof'; proof.textContent='FOTO DEL ARCHIVO'; card.appendChild(proof);
   }
-  card.classList.add('v120-has-exact-bg','v35-history-moment-photo','v35-champion-card-photo');
+  card.classList.add('v120-has-exact-bg');
+  if(card.matches('.v35-history-moment'))card.classList.add('v35-history-moment-photo');
+  if(card.matches('.v35-champion-card'))card.classList.add('v35-champion-card-photo');
 }
 function patch(){
   if((location.hash||'').indexOf('history')<0 && (location.hash||'').indexOf('safe-about')<0)return;
