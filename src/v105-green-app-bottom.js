@@ -204,6 +204,14 @@ function block(r){
  else if(r==='news'||r==='v38Weekly'){title='Noticias, avisos y juntas';desc='Comunicación y operación semanal de la Liga.';cards=[{icon:'news',title:'Avisos',sub:'Noticias publicadas',route:'news'},{icon:'calendar',title:'Junta semanal',sub:'Agenda y acuerdos locales',action:'meeting'},{icon:'alert',title:'Cambios de horario y sedes',sub:'Notificaciones',route:'notifications'},{icon:'video',title:'Semifinales, finales y momentos',sub:'Videos',route:'moments'}];asset='v38-soccer-matchday.mp4'}
  else if(r==='notifications'){title='Notificaciones y participación';desc='Preferencias, encuesta y pulso de afición.';cards=[{icon:'bell',title:'Notificaciones',sub:'Preferencias actuales',route:'notifications'},{icon:'fire',title:'Fan Zone',sub:'Reacciones locales',action:'fanzone'},{icon:'poll',title:'Encuesta',sub:'Voto local',action:'poll'}];asset='v38-soccer-hero.mp4'}
  else return '';
+ if(r==='notifications'){
+   return '<section class="v105-bottom" id="v105-bottom" data-v105-route="'+esc(r)+'">'+
+     head(k,title,desc)+
+     '<div class="v105-grid">'+cards.map(card).join('')+'</div>'+
+     '<p class="v105-footnote">Estas funciones complementan las preferencias de arriba y no cambian datos oficiales.</p>'+
+     motion(asset,'LIGA JUVENTINO · AZUL','FÚTBOL QUE SE MUEVE','Animaciones de la app verde adaptadas visualmente al diseño azul y colocadas al final.')+
+   '</section>';
+ }
  return '<section class="v105-bottom" id="v105-bottom" data-v105-route="'+esc(r)+'">'+head(k,title,desc)+motion(asset,'LIGA JUVENTINO · AZUL','FÚTBOL QUE SE MUEVE','Animaciones de la app verde adaptadas visualmente al diseño azul y colocadas abajo.')+html+(cards.length?'<div class="v105-grid">'+cards.map(card).join('')+'</div>':'')+'<p class="v105-footnote">Estas funciones se anexan debajo de la página. Los simuladores, notas, encuestas y directorios locales no cambian datos oficiales.</p></section>';
 }
 
