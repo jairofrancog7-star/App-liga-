@@ -23,10 +23,15 @@ const IMG={
   america:RAW+'assets/branding/america-veteranos-35-user.png',
   promesas:RAW+'assets/official-logos/promesas-fc.png',
   herreras:RAW+'assets/official-logos/herreras-fc.png',
-  lobos:RAW+'assets/official-logos/lobos-cdg.png'
+  lobos:RAW+'assets/official-logos/lobos-cdg.png',
+  huerta:RAW+'assets/teams/la-huerta-cuenda.webp',
+  cerrito:RAW+'assets/teams/deportivo-cg.webp'
 };
 
 const champions=[
+  {date:'jun 2025',team:'La Huerta de Cuenda',title:'Campeón de Liga · Segunda Fuerza 2025',detail:'Los videos incluidos dentro del ZIP documentan la Gran Final de Segunda Fuerza entre La Huerta y Tavera FC. Hay dos versiones promocionales con 22 y 29 de junio; por eso se conserva junio de 2025 sin fijar el día exacto. El resultado aportado por el archivo del usuario identifica a La Huerta de Cuenda como ganador de la final.',source:'ZIP histórico entregado · videos de la final La Huerta vs Tavera FC',image:IMG.huerta},
+  {date:'19 sep 2026',team:'Deportivo CG · Cerrito de Gasca',title:'Campeón de Liga 2025–2026 · Veteranos 35 y más + Campeón de Campeones',detail:'Un clip del ZIP muestra al plantel con trofeos y el texto “CAMPEÓN TORNEO DE LIGA 2025-2026 · VETERANOS 35 Y MAS” y “CAMPEÓN DE CAMPEONES”. Otro video del mismo ZIP anuncia la Gran Final Pozos F.C. vs Cerrito de Gasca para el 19 de septiembre de 2026.',source:'ZIP histórico entregado · video de premiación / final 19 sep 2026',image:IMG.cerrito},
+  {date:'año exacto pendiente',team:'Oklahoma City',title:'Campeón · Intermedia · archivo audiovisual',detail:'El ZIP contiene un clip de Oklahoma City levantando el trofeo con la palabra “CAMPEÓN”. Otro clip del mismo conjunto anuncia la final de Intermedia Oklahoma City vs San Julián, domingo 1 de diciembre. Se conserva la categoría y el rival documentados, pero no se fija el año hasta cruzarlo con una publicación fechada.',source:'ZIP histórico entregado · video de campeón + cartel de final Intermedia',image:IMG.archive},
   {date:'10 sep 2023',team:'América',title:'Campeón de Liga · Veteranos',detail:'Golazo Liga publicó “AMERICA, NUEVO CAMPEON DE LIGA DE LA FUERZA DE VETERANOS”.',source:'Golazo Liga · 10 sep 2023',image:IMG.america},
   {date:'23 jul 2023',team:'Barza',title:'Campeón de Campeones · Intermedia · 2022–2023',detail:'Publicación de Golazo Liga felicitó a Barza por la obtención del título de Campeón de Campeones de la categoría Intermedia.',source:'Golazo Liga · 23 jul 2023',image:IMG.barza},
   {date:'02 oct 2022',team:'Juventus',title:'Campeón de Copa 2022 · Primera Fuerza',detail:'Publicación de Golazo Liga: Juventus, campeón de Copa 2022 de Primera Fuerza.',source:'Golazo Liga · 02 oct 2022',image:IMG.juventus},
@@ -46,6 +51,9 @@ const podiums=[
 ];
 
 const finals=[
+  {date:'jun 2025',title:'La Huerta de Cuenda vs Tavera FC · Gran Final Segunda Fuerza',detail:'Los videos del ZIP muestran la final de Segunda Fuerza 2025 entre La Huerta y Tavera FC. Una versión anuncia 22 de junio y otra 29 de junio, señal de reprogramación o versiones distintas del cartel. La Huerta de Cuenda queda registrada como campeón; no se inventa marcador porque no aparece legible en los clips revisados.',source:'ZIP histórico entregado · final Segunda Fuerza 2025',image:IMG.huerta},
+  {date:'19 sep 2026',title:'Pozos F.C. vs Deportivo CG · Gran Final Veteranos 35+',detail:'El ZIP anuncia la Gran Final del Torneo de Liga 2025–2026, Veteranos 35 y más, para el 19 de septiembre de 2026 a las 16:00 en Campo 1. El clip de premiación del mismo ZIP identifica posteriormente a Deportivo CG de Cerrito de Gasca como campeón de Liga y Campeón de Campeones. No se muestra un marcador final legible.',source:'ZIP histórico entregado · cartel de final + premiación',image:IMG.cerrito},
+  {date:'01 dic · año pendiente',title:'Oklahoma City vs San Julián · Final Intermedia',detail:'Un video del ZIP anuncia la final de Intermedia entre Oklahoma City y San Julián, Campo 1, 10:00. Otro clip muestra a Oklahoma City levantando el trofeo como campeón. El año exacto queda pendiente de confirmar.',source:'ZIP histórico entregado · final Intermedia / video de campeón',image:IMG.archive},
   {date:'26 nov 2012',title:'Hermanos vs Juventus · Torneo de Copa',detail:'El archivo conserva la referencia a una trepidante serie de penales entre Hermanos y Juventus. Juventus aparece publicado como campeón de Primera Fuerza ese mismo 26 de noviembre.',source:'Golazo Liga · 26 nov 2012',image:IMG.juventus2019},
   {date:'17 nov 2013',title:'Barza vs Deportivo El Alto · Final Intermedia',detail:'La Liga invitó a la Gran Final de Intermedia a las 12:00 en Campo 1 de la Deportiva Sur. En el material recuperado no se identifica aquí al ganador, por lo que no se inventa.',source:'Liga Municipal / Golazo Liga · nov 2013',image:IMG.archive},
   {date:'15 dic 2013',title:'Real Cerrito de Gasca vs DHP · Final Segunda',detail:'Real Cerrito de Gasca aparece como campeón y DHP como subcampeón. Otra publicación del partido indica que al minuto 35 Real Cerrito ganaba 3–0; ese dato se conserva como marcador parcial, no como marcador final.',source:'Golazo Liga · 15 dic 2013',image:IMG.archive},
@@ -123,15 +131,17 @@ function head(kicker,title,desc){return '<header class="v115-head"><span>'+esc(k
 function videoCard(url,title,detail,label){return '<a class="v115-video-card" href="'+esc(url)+'" target="_blank" rel="noopener noreferrer"><div class="v115-video-poster"><span class="v115-play">▶</span><b>'+esc(label)+'</b></div><div><small>VIDEO · GOOGLE DRIVE</small><h3>'+esc(title)+'</h3><p>'+esc(detail)+'</p><strong>Abrir grabación ↗</strong></div></a>';}
 
 function summaryHtml(){
-  return head('AMPLIACIÓN 2012–2024','Más historia recuperada','Nueva información añadida al final sin reemplazar el archivo que ya existía. Los clubes antiguos se conservan solo como historia y no se vuelven a registrar como equipos de la temporada actual.')+
+  return head('AMPLIACIÓN 2012–2026','Más historia recuperada','Nueva información añadida al final sin reemplazar el archivo que ya existía. Los clubes antiguos se conservan solo como historia y no se vuelven a registrar como equipos de la temporada actual.')+
     '<div class="v115-kpis"><article><b>1982</b><span>Hermanos · fundación publicada</span></article><article><b>1987</b><span>Boavista y Terrícolas</span></article><article><b>1990</b><span>Inicio documentado de Linces</span></article><article><b>2007/08</b><span>Barza / Unión</span></article></div>'+
-    '<div class="v115-subhead"><span>CAMPEONES AÑADIDOS</span><h3>2022–2024</h3></div><div class="v115-grid">'+champions.slice(0,4).map(x=>factCard(x)).join('')+'</div>'+
+    '<div class="v115-subhead"><span>CAMPEONES RECUPERADOS DEL ZIP</span><h3>Finales y premiaciones 2025–2026</h3><p>Se revisaron los 54 clips de video incluidos en el ZIP. Aquí se agregan solo ganadores que el material permite identificar, sin inventar marcadores ni fechas cuando los carteles difieren.</p></div><div class="v115-grid">'+champions.slice(0,3).map(x=>factCard(x)).join('')+'</div>'+
+    '<div class="v115-subhead"><span>CAMPEONES AÑADIDOS</span><h3>2022–2024</h3></div><div class="v115-grid">'+champions.slice(3,7).map(x=>factCard(x)).join('')+'</div>'+
     '<div class="v115-subhead"><span>EQUIPOS PARA EL RECUERDO</span><h3>Copa 2023–2024 y trayectorias</h3></div><div class="v115-team-grid">'+oldTeams.slice(0,10).map(teamCard).join('')+'</div>'+
     '<div class="v115-subhead"><span>FUENTES AUDIOVISUALES</span><h3>Grabaciones sincronizadas con el archivo</h3></div><div class="v115-video-grid">'+videoCard(DRIVE_2025,'Juventino Rosas Liga · segmento 22-32-59 · parte 2','Grabación revisada para finales, campeones, reconocimientos y roles de 2025. Se usa como referencia del archivo histórico.','2025')+videoCard(DRIVE_OLD,'Golazo Liga · segmento 02-18-29 · parte 3','Grabación revisada para publicaciones de 2012–2014, trofeos, finales y equipos históricos.','2012–14')+'</div>';
 }
 function seasonsHtml(){
   const season2022=champions.filter(x=>/2022/.test(x.date)||/2022/.test(x.title));
   return head('TEMPORADAS RECUPERADAS','Resumen por temporada y categoría','Se agregan campeones, líderes, ascensos y clubes localizados en las fuentes. Cuando no hay una tabla final completa, el dato se etiqueta como publicación o corte y no se completa por inferencia.')+
+    '<div class="v115-subhead"><span>2025–2026 · VIDEOS DEL ZIP</span><h3>Campeones y finales recuperados</h3><p>Incluye La Huerta de Cuenda en Segunda Fuerza 2025, Deportivo CG de Cerrito de Gasca en Veteranos 35+ 2025–2026 y el registro audiovisual de Oklahoma City campeón de Intermedia con año exacto pendiente.</p></div><div class="v115-grid">'+champions.slice(0,3).map(x=>factCard(x)).join('')+'</div>'+
     '<div class="v115-subhead"><span>2022</span><h3>Liga, Copa y ascensos documentados</h3></div><div class="v115-grid">'+season2022.map(x=>factCard(x)).join('')+'</div>'+
     '<div class="v115-subhead"><span>2022–2023 / 2023</span><h3>Campeón de Campeones y Veteranos</h3></div><div class="v115-grid">'+champions.slice(0,2).map(x=>factCard(x)).join('')+'</div>'+
     '<div class="v115-subhead"><span>CLASIFICADOS, LÍDERES Y ASCENSOS</span><h3>Solo lo que la publicación identifica</h3></div><div class="v115-list">'+leaders.map(simpleRow).join('')+'</div>'+
