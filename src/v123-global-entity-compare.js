@@ -193,6 +193,11 @@ document.addEventListener('click',e=>{
  if(e.defaultPrevented)return;
  if(!(e.target instanceof Element))return;
  const target=e.target;
+
+ /* V109 — Los botones superiores de Jugadores son FILTROS.
+    No deben ser capturados por el comparador global de equipos/jugadores. */
+ if(route()==='players'&&target.closest('[data-v66-player-team-filter],[data-v66-player-cat],.v66-team-filter-rail,.v66-category-rail'))return;
+
  if(target.closest('.bottom-nav,input,select,textarea,.modal,.v105-modal,[data-v42-reference="teamDetail"] .v42-overlay'))return;
 
  const row=target.closest(PLAYER_SELECTOR);
