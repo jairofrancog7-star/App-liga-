@@ -1190,3 +1190,34 @@ body.v33-data-active .v33-stat-row>strong{
     font-size:30px!important;
   }
 }
+
+
+/* V119 — elimina el hueco grande al bajar en Datos > Estadísticas de jugadores.
+   Conserva cabecera, pestañas y tablas; sólo quita espacio sobrante al final. */
+body.v33-data-active #screen{
+  display:block!important;
+  height:auto!important;
+  min-height:0!important;
+  padding-bottom:calc(78px + env(safe-area-inset-bottom))!important;
+}
+body.v33-data-active .v33-data-page{
+  height:auto!important;
+  min-height:0!important;
+  padding-bottom:0!important;
+}
+body.v33-data-active .v33-data-content{
+  min-height:0!important;
+  padding-bottom:18px!important;
+  margin-bottom:0!important;
+}
+body.v33-data-active #screen>[data-v73-motion-banner],
+body.v33-data-active #screen .v73-motion-banner,
+body.v33-data-active #v105-bottom{
+  display:none!important;
+  height:0!important;
+  min-height:0!important;
+  margin:0!important;
+  padding:0!important;
+  border:0!important;
+  overflow:hidden!important;
+}
