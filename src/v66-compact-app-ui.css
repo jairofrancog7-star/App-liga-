@@ -152,3 +152,14 @@ body[data-app-route="teamDetail"] .v42-mini-team b{
   body.v66-compact-route .v60-tool-card b{font-size:12px!important}
   body.v66-compact-route .v60-tool-card small{font-size:8.8px!important}
 }
+
+
+/* V66.1 — tableExport usa solo la barra superior principal.
+   Quita la segunda barra azul (volver/perfil) y cualquier banner azul animado duplicado. */
+body[data-app-route="tableExport"] .v66-compact-top,
+body[data-app-route="tableExport"] [data-v73-motion-banner]{
+  display:none!important;
+}
+body[data-app-route="tableExport"] .topbar{
+  display:flex!important;
+}
