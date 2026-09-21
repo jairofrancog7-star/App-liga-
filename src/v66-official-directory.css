@@ -105,3 +105,17 @@ body[data-app-route="players"] [data-v66-player-team-filter] span,
 body[data-app-route="players"] [data-v66-player-cat] *{
   pointer-events:none!important;
 }
+
+/* V108 — carruseles de filtros táctiles: el botón seleccionado se mantiene visible. */
+body[data-app-route="players"] .v66-category-rail,
+body[data-app-route="players"] .v66-team-filter-rail{
+  -webkit-overflow-scrolling:touch!important;
+  touch-action:pan-x!important;
+  overscroll-behavior-inline:contain!important;
+  scroll-behavior:smooth!important;
+  scroll-snap-type:x proximity!important;
+}
+body[data-app-route="players"] .v66-category-rail button,
+body[data-app-route="players"] .v66-team-filter-rail button{
+  scroll-snap-align:center!important;
+}
