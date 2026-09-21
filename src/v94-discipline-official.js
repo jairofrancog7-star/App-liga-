@@ -13,7 +13,7 @@
   }
   function isDiscipline(){
     const r=route();
-    if(/discip/i.test(r))return true;
+    if(/^(v4-discipline|discipline|disciplina|disciplineTool)$/i.test(r)||/discip/i.test(r))return true;
     const s=document.querySelector('#screen');
     const txt=(s?.innerText||'').replace(/\s+/g,' ').trim();
     return /^COMPETICIÓN\s+Disciplina\b/i.test(txt)||/Seguimiento informativo de tarjetas/i.test(txt);
@@ -32,9 +32,10 @@
     const rawLocal=local
       ? 'https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/'+local.replace(/^\.\//,'')
       : '';
-    const src=rec?.source||rawLocal;
+    const localInApp=local?local.replace(/^\.\//,''):'';
+    const src=localInApp||rec?.source||rawLocal;
     if(src){
-      const fallback=rawLocal&&rawLocal!==src?rawLocal:'';
+      const fallback=rec?.source&&rec.source!==src?rec.source:(rawLocal&&rawLocal!==src?rawLocal:'');
       return '<img class="v94-discipline-logo" src="'+esc(src)+'"'+
         (fallback?' data-v94-logo-fallback="'+esc(fallback)+'"':'')+
         ' alt="'+esc(team)+'" loading="eager" decoding="async">';
@@ -49,7 +50,9 @@
   }
   function validTeams(cat){
     const rows=cat.standings?.[0]?.rows||[];
-    return new Set(rows.map(r=>norm(r?.[1])).filter(Boolean));
+    const out=new Set(rows.map(r=>norm(r?.[1])).filter(Boolean));
+    Object.keys(cat.rosters||{}).forEach(t=>out.add(norm(t)));
+    return out;
   }
   function extract(data){
     const map=new Map();
@@ -186,16 +189,27 @@
     dataPromise.then(render).catch(()=>{});
   }
 
-  window.addEventListener('hashchange',()=>setTimeout(load,20));
-  document.addEventListener('click',()=>setTimeout(load,60),true);
+  function forceLoad(){
+    if(!isDiscipline()){
+      document.body.classList.remove('v94-discipline-official');
+      return;
+    }
+    const screen=document.querySelector('#screen');
+    if(screen&&!screen.querySelector('.v94-discipline-page'))screen.dataset.v94DisciplineSig='';
+    load();
+  }
+  window.addEventListener('hashchange',()=>{setTimeout(forceLoad,20);setTimeout(forceLoad,180);setTimeout(forceLoad,650)});
+  window.addEventListener('popstate',()=>setTimeout(forceLoad,20));
+  document.addEventListener('click',()=>setTimeout(forceLoad,90),true);
   const screen=document.querySelector('#screen');
   if(screen)new MutationObserver(()=>{
     if(!isDiscipline())return;
     if(!screen.querySelector('.v94-discipline-page')){
       screen.dataset.v94DisciplineSig='';
-      setTimeout(load,20);
+      setTimeout(forceLoad,20);
     }
-  }).observe(screen,{childList:true,subtree:false});
-  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',load,{once:true});
-  else load();
+  }).observe(screen,{childList:true,subtree:true});
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',forceLoad,{once:true});
+  else forceLoad();
+  [120,350,800,1500,2600].forEach(ms=>setTimeout(forceLoad,ms));
 })();
