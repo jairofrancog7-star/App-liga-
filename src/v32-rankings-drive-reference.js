@@ -259,8 +259,7 @@ function clubsView(){
     '<section class="v32-card v32-club-card">'+
       '<div class="v32-club-head"><span>Club</span><span>Puntos</span><span></span></div>'+
       clubItems()+
-    '</section>'+
-    '<p class="v32-update">Datos deportivos sincronizados con AdminFut</p>';
+    '</section>';
 }
 function filterGrid(){
   var q=filterQuery.trim().toLocaleLowerCase('es');
