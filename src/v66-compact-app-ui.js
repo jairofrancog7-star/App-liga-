@@ -5,7 +5,7 @@
 const ROUTES=new Set([
   'leagueTools','rulebook','matchday','weatherFields','venues','cedulas','cedulaDetail','credential','credentialBuilder',
   'cedulaBuilder','publications','tactics','simulator','jrControl','v38Stats','v38Weekly','v38Weather','v38Alerts',
-  'tableExport','bracketBuilder','agendaBuilder','motionHub','suspensionTool','ligaQR','club-store','scorers','players'
+  'bracketBuilder','agendaBuilder','motionHub','suspensionTool','ligaQR','club-store','scorers','players'
 ]);
 function route(){return location.hash.replace(/^#\/?/,'')||'home'}
 function backSvg(){return '<svg viewBox="0 0 32 32" aria-hidden="true"><path d="M20.5 7.5 12 16l8.5 8.5M12.5 16H27"/></svg>'}
