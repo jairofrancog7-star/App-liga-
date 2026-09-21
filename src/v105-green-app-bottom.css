@@ -53,3 +53,123 @@
 @media(max-width:360px){.v105-grid,.v105-video-grid{grid-template-columns:1fr}}
 @media(prefers-reduced-motion:reduce){.v105-ball{animation:none}.v105-card{transition:none}.v105-pitch{transition:none}.v105-motion video{display:none}}
 .lightmode .v105-bottom{background:#fff!important;color:#12172d!important;border-color:#cbd9e9!important}.lightmode .v105-head h2,.lightmode .v105-card{color:#11172d}.lightmode .v105-head p,.lightmode .v105-copy small,.lightmode .v105-footnote{color:#66718b}.lightmode .v105-card{background:#eef3ff;border-color:#d5def0}.lightmode .v105-icon{background:#dff9fc;color:#087b92}
+
+
+/* V105.1 — Notificaciones como módulo nativo y movimiento al final. */
+.v105-bottom[data-v105-route="notifications"]{
+  margin:0!important;
+  padding:0!important;
+  border:0!important;
+  border-top:12px solid #03034f!important;
+  border-radius:0!important;
+  background:#090879!important;
+  box-shadow:none!important;
+  overflow:hidden!important;
+}
+.v105-bottom[data-v105-route="notifications"] .v105-head{
+  margin:0!important;
+  padding:22px 26px 12px!important;
+  background:#090879!important;
+}
+.v105-bottom[data-v105-route="notifications"] .v105-head>small{
+  display:none!important;
+}
+.v105-bottom[data-v105-route="notifications"] .v105-head h2{
+  margin:0 0 8px!important;
+  color:#fff!important;
+  font-size:29px!important;
+  line-height:1!important;
+  font-weight:700!important;
+  letter-spacing:-.02em!important;
+}
+.v105-bottom[data-v105-route="notifications"] .v105-head p{
+  margin:0!important;
+  color:#b5bad6!important;
+  font-size:15px!important;
+  line-height:1.3!important;
+}
+.v105-bottom[data-v105-route="notifications"] .v105-grid{
+  display:grid!important;
+  grid-template-columns:1fr!important;
+  gap:0!important;
+  padding:0 26px 8px!important;
+}
+.v105-bottom[data-v105-route="notifications"] .v105-card{
+  min-height:72px!important;
+  padding:0!important;
+  border:0!important;
+  border-bottom:1px solid rgba(255,255,255,.08)!important;
+  border-radius:0!important;
+  background:transparent!important;
+  box-shadow:none!important;
+  display:grid!important;
+  grid-template-columns:minmax(0,1fr) 18px!important;
+  gap:12px!important;
+  align-items:center!important;
+}
+.v105-bottom[data-v105-route="notifications"] .v105-card:last-child{
+  border-bottom:0!important;
+}
+.v105-bottom[data-v105-route="notifications"] .v105-icon{
+  display:none!important;
+}
+.v105-bottom[data-v105-route="notifications"] .v105-copy b{
+  color:#fff!important;
+  font-size:20px!important;
+  line-height:1.08!important;
+  font-weight:500!important;
+}
+.v105-bottom[data-v105-route="notifications"] .v105-copy small{
+  margin-top:4px!important;
+  color:#aeb5d2!important;
+  font-size:13px!important;
+  line-height:1.2!important;
+}
+.v105-bottom[data-v105-route="notifications"] .v105-arrow{
+  justify-self:end!important;
+  color:#39e0ed!important;
+  font-size:24px!important;
+  line-height:1!important;
+}
+.v105-bottom[data-v105-route="notifications"] .v105-footnote{
+  margin:0!important;
+  padding:8px 26px 18px!important;
+  color:#8f9abb!important;
+  font-size:10px!important;
+  line-height:1.35!important;
+}
+.v105-bottom[data-v105-route="notifications"] .v105-motion{
+  margin:0 26px 24px!important;
+  min-height:155px!important;
+  border-radius:18px!important;
+}
+.v105-bottom[data-v105-route="notifications"] .v105-motion-copy{
+  min-height:155px!important;
+  padding:17px!important;
+}
+@media(max-width:390px){
+  .v105-bottom[data-v105-route="notifications"] .v105-head{
+    padding:20px 20px 10px!important;
+  }
+  .v105-bottom[data-v105-route="notifications"] .v105-head h2{
+    font-size:26px!important;
+  }
+  .v105-bottom[data-v105-route="notifications"] .v105-grid{
+    padding:0 20px 8px!important;
+  }
+  .v105-bottom[data-v105-route="notifications"] .v105-card{
+    min-height:68px!important;
+  }
+  .v105-bottom[data-v105-route="notifications"] .v105-copy b{
+    font-size:18px!important;
+  }
+  .v105-bottom[data-v105-route="notifications"] .v105-copy small{
+    font-size:12px!important;
+  }
+  .v105-bottom[data-v105-route="notifications"] .v105-footnote{
+    padding:7px 20px 16px!important;
+  }
+  .v105-bottom[data-v105-route="notifications"] .v105-motion{
+    margin:0 20px 20px!important;
+  }
+}
