@@ -1,0 +1,120 @@
+/* V117 — #/match: scroll completo + compactar espacios vacíos.
+   Corrige el detalle de partido sin tocar Match Center oficial ni otras rutas. */
+@media (max-width:1023px){
+  html:has(body.v28-match-active){
+    height:auto!important;
+    min-height:100%!important;
+    overflow-y:auto!important;
+    overflow-x:hidden!important;
+  }
+
+  body.v28-match-active{
+    height:auto!important;
+    min-height:100dvh!important;
+    max-height:none!important;
+    overflow-y:auto!important;
+    overflow-x:hidden!important;
+    overscroll-behavior-y:auto!important;
+    -webkit-overflow-scrolling:touch!important;
+    background:#05065a!important;
+  }
+
+  body.v28-match-active #app,
+  body.v28-match-active .app-shell{
+    height:auto!important;
+    min-height:100dvh!important;
+    max-height:none!important;
+    overflow:visible!important;
+    background:#05065a!important;
+  }
+
+  body.v28-match-active #screen{
+    position:relative!important;
+    display:block!important;
+    width:100%!important;
+    height:auto!important;
+    min-height:0!important;
+    max-height:none!important;
+    margin:0!important;
+    padding:0 0 calc(84px + env(safe-area-inset-bottom))!important;
+    overflow-x:hidden!important;
+    overflow-y:visible!important;
+    touch-action:pan-y!important;
+    background:#05065a!important;
+  }
+
+  /* El detalle nativo termina exactamente donde termina su contenido. */
+  body.v28-match-active .v28-match{
+    width:100%!important;
+    height:auto!important;
+    min-height:0!important;
+    max-height:none!important;
+    padding-bottom:0!important;
+    margin-bottom:0!important;
+    overflow:visible!important;
+  }
+  body.v28-match-active .v28-body{
+    height:auto!important;
+    min-height:0!important;
+    max-height:none!important;
+    padding-bottom:0!important;
+    margin-bottom:0!important;
+    overflow:visible!important;
+  }
+  body.v28-match-active .v28-panel,
+  body.v28-match-active .v28-panel.active,
+  body.v28-match-active .v28-news-panel.active,
+  body.v28-match-active .v28-info-panel.active,
+  body.v28-match-active .v28-standings-panel.active{
+    height:auto!important;
+    min-height:0!important;
+    max-height:none!important;
+    margin-bottom:0!important;
+  }
+
+  /* Quita huecos grandes al terminar cada tabla/panel. */
+  body.v28-match-active .v28-video-info{
+    padding-bottom:18px!important;
+    margin-bottom:0!important;
+  }
+  body.v28-match-active .v28-embedded-standings{
+    min-height:0!important;
+    height:auto!important;
+    padding-bottom:18px!important;
+    margin-bottom:0!important;
+  }
+  body.v28-match-active .v28-embedded-standings .v40-content,
+  body.v28-match-active .v28-embedded-standings .v40-table-wrap,
+  body.v28-match-active .v28-embedded-standings .v40-table,
+  body.v28-match-active .v28-embedded-standings .v40-groups{
+    min-height:0!important;
+    height:auto!important;
+    margin-bottom:0!important;
+    padding-bottom:0!important;
+  }
+
+  /* Bloques anexos: unidos al contenido, sin franjas vacías gigantes. */
+  body.v28-match-active #screen > .v73-match-detail-bottom{
+    margin:12px 14px 0!important;
+  }
+  body.v28-match-active #screen > #v105-bottom[data-v105-route="match"]{
+    margin:12px 12px 0!important;
+    min-height:0!important;
+    height:auto!important;
+  }
+  body.v28-match-active #v105-bottom[data-v105-route="match"] .v105-grid{
+    margin-bottom:0!important;
+  }
+  body.v28-match-active #v105-bottom[data-v105-route="match"] .v105-footnote{
+    margin-bottom:0!important;
+  }
+
+  /* La barra fija conserva espacio real al final para que el último cuadro sea alcanzable. */
+  body.v28-match-active .bottom-nav{
+    position:fixed!important;
+    left:0!important;
+    right:0!important;
+    bottom:0!important;
+    z-index:1000!important;
+  }
+}
