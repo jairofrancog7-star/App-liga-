@@ -460,7 +460,16 @@
         banner.classList.add('v73-below-native','v73-match-detail-bottom');
         banner.dataset.v73BelowNative='match-detail';
       }
-      if(screen.lastElementChild!==banner)screen.appendChild(banner);
+
+      /* V117 — evita que V73 y V105 se peleen por ser el último hijo de #screen.
+         La animación queda después del detalle nativo y ANTES de las herramientas V105.
+         Así el DOM deja de moverse durante el scroll y se puede llegar hasta el final. */
+      const greenTools=screen.querySelector(':scope > #v105-bottom[data-v105-route="match"]');
+      if(greenTools){
+        if(banner.nextElementSibling!==greenTools)screen.insertBefore(banner,greenTools);
+      }else if(screen.lastElementChild!==banner){
+        screen.appendChild(banner);
+      }
       syncAll();
       return;
     }
