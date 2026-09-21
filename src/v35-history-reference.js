@@ -23,13 +23,19 @@ const seasons=[
   {label:'2024/25',crest:ASSETS.league,alt:'Liga Municipal de Fútbol Juventino Rosas'},
   {label:'2023/24',crest:ASSETS.league,alt:'Liga Municipal de Fútbol Juventino Rosas'},
   {label:'2022/23',crest:ASSETS.league,alt:'Liga Municipal de Fútbol Juventino Rosas'},
-  {label:'2021/22',crest:ASSETS.league,alt:'Liga Municipal de Fútbol Juventino Rosas'}
+  {label:'2021/22',crest:ASSETS.league,alt:'Liga Municipal de Fútbol Juventino Rosas'},
+  {label:'2019/20',crest:ASSETS.league,alt:'Liga Municipal de Fútbol Juventino Rosas'}
 ];
 
 /* V75 — fuentes históricas entregadas por el usuario.
    IMPORTANTE: estos videos pertenecen SOLO a Historia.
    Nunca se importan equipos de estas fuentes a la lista de equipos de la temporada actual. */
 const historicalSources=[
+  {
+    title:'Convocatoria oficial · temporada 2019–2020',
+    note:'Texto histórico aportado por el usuario. Fechado en Santa Cruz de Juventino Rosas, Gto., el 12 de noviembre de 2019. Convoca a equipos de Primera, Intermedia y Segunda; fija el inicio del campeonato para el domingo 8 de diciembre de 2019, cierre de inscripciones el martes 26 de noviembre a las 19:00 en la Unidad Deportiva Sur y junta previa el martes 3 de diciembre a las 19:00.',
+    url:''
+  },
   {
     title:'Golazo Liga · archivo 2012–2013 recuperado',
     note:'Texto histórico aportado por el usuario con publicaciones de 2012 y 2013: Tavera campeón de Copa de Segunda, Real Cerrito de Gasca campeón de Segunda Fuerza, final de Veteranos Universidad vs Dinamo y Magisterio vs Boavista por penales.',
@@ -223,7 +229,8 @@ const historyMoments=[
   {kind:'CAMPEÓN',date:'20 mar 2022',season:'2022',winner:'Galácticos FC',title:'Galácticos FC',subtitle:'Campeón de Liga · Segunda Fuerza',detail:'Publicación aportada por el usuario desde Golazo Liga: Galácticos FC fue campeón de Liga en Segunda Fuerza y con ese título logró su ascenso a Fuerza Intermedia.',image:HIST_ROOT+'assets/teams/galacticos-pozos.webp'},
     {kind:'CAMPEÓN',date:'Temporada 2020–2021',season:'2020–2021',winner:'PSV',title:'PSV',subtitle:'Campeón de Campeones · Veteranos · 2020–2021',detail:'Dato histórico aportado por el usuario: PSV fue Campeón de Campeones de la temporada 2020–2021 en la categoría Veteranos.',image:HIST_ROOT+'assets/teams/psv.webp'},
   {kind:'CAMPEÓN',date:'Temporada 2020–2021',season:'2020–2021',winner:'La Esperanza',title:'La Esperanza',subtitle:'Campeón de Liga · Veteranos · 2020–2021',detail:'La Esperanza se llevó el título de Liga 2020–2021 de Veteranos al derrotar a Real Cuenda en una final que se decidió por tiros penales.',image:HIST_ROOT+'assets/official-logos/la-esperanza.png'},
-  {kind:'CAMPEÓN',date:'16 feb 2020',season:'2019–2020',winner:'Juventus',title:'Juventus',subtitle:'Campeón de Copa · Primera Fuerza',detail:'Dato histórico aportado por el usuario: Juventus fue campeón de Copa 2019–2020 de Primera Fuerza.',image:HIST_ROOT+'assets/official-logos/juventus.png'},
+    {kind:'CONVOCATORIA',date:'12 nov 2019',season:'2019–2020',title:'Convocatoria temporada 2019–2020',subtitle:'Inicio: domingo 8 dic 2019 · Primera, Intermedia y Segunda',detail:'La Liga Municipal de Fútbol “Juventino Rosas A.C.” convocó a delegados y nuevos equipos. Inscripciones hasta el martes 26 de noviembre de 2019 a las 19:00 en la Unidad Deportiva Sur; máximo 26 jugadores por registro; junta previa el martes 3 de diciembre a las 19:00. Uniformación, cuotas, arbitrajes, credenciales, reglamento y premiación quedarían sujetos a los acuerdos y normas de la Liga.'},
+{kind:'CAMPEÓN',date:'16 feb 2020',season:'2019–2020',winner:'Juventus',title:'Juventus',subtitle:'Campeón de Copa · Primera Fuerza',detail:'Dato histórico aportado por el usuario: Juventus fue campeón de Copa 2019–2020 de Primera Fuerza.',image:HIST_ROOT+'assets/official-logos/juventus.png'},
   {kind:'CAMPEÓN',date:'16 feb 2020',season:'2019–2020',winner:'Tavera',title:'Tavera',subtitle:'Campeón de Copa · Segunda Fuerza',detail:'Dato histórico aportado por el usuario: Tavera fue campeón de Copa 2019–2020 de Segunda Fuerza.',image:HIST_ROOT+'assets/official-logos/tavera-fc.png'},
 {kind:'CAMPEÓN',date:'25 sep 2022',season:'2022',winner:'Barza',title:'Barza',subtitle:'Campeón de Copa · Fuerza Intermedia',detail:'Publicación de Golazo Liga del 25 de septiembre de 2022: “Barza, campeón de Copa fuerza intermedia. Felicidades!!!”.',image:HIST_ROOT+'assets/official-logos/barza.png'},
   {kind:'CAMPEÓN',date:'03 nov 2019',season:'2018–2019',winner:'Juventus',title:'Juventus',subtitle:'Campeón de Liga · temporada 2018–2019',detail:'Fotografía histórica del plantel campeón; Boavista quedó registrado como subcampeón.',backgroundPhoto:HIST_MEDIA+'juventus-campeon-2019.jpg',image:HIST_ROOT+'assets/official-logos/juventus.png'},
@@ -792,7 +799,8 @@ const historicalTimeline=[
   {date:'24 may 2016',title:'Acuerdo interno de la Liga',detail:'El reglamento vigente conserva el antecedente de un acuerdo de asamblea del 24 de mayo de 2016 relacionado con el proyecto de construcción de nuevas oficinas.'},
   {date:'2018',title:'Tablas y goleadores históricos',detail:'El archivo conserva cortes de Primera e Intermedia con equipos, puntos y goleadores de la categoría libre.'},
   {date:'03 nov 2019',title:'Juventus campeón de Liga',detail:'Publicaciones históricas de Golazo Liga identifican a Juventus como campeón y a Boavista como subcampeón de la Liga 2018–2019.'},
-  {date:'dic 2019',title:'Nombre reconocido en un documento público',detail:'Un reporte del Congreso del Estado de Guanajuato registra “LIGA MUNICIPAL JUVENTINO ROSAS” por $11,600 dentro de apoyos para construcción y reparación. Es una evidencia externa importante de continuidad del nombre institucional.'},
+    {date:'12 nov 2019',title:'Convocatoria de la temporada 2019–2020',detail:'La Liga Municipal de Fútbol “Juventino Rosas A.C.” emitió convocatoria para Primera, Intermedia y Segunda. El campeonato iniciaría el domingo 8 de diciembre; las inscripciones cerrarían el martes 26 de noviembre a las 19:00 en la Unidad Deportiva Sur y la junta previa se fijó para el martes 3 de diciembre a las 19:00. El registro admitía un máximo de 26 jugadores.'},
+{date:'dic 2019',title:'Nombre reconocido en un documento público',detail:'Un reporte del Congreso del Estado de Guanajuato registra “LIGA MUNICIPAL JUVENTINO ROSAS” por $11,600 dentro de apoyos para construcción y reparación. Es una evidencia externa importante de continuidad del nombre institucional.'},
   {date:'2022',title:'Veteranos · tabla final',detail:'El archivo conserva una tabla final de Veteranos con Juventus en primer lugar con 53 puntos.'},
   {date:'12 abr 2025',title:'Boavista campeón de Liga · Veteranos 50+',detail:'La final publicada fue Boca Jrs. vs Boavista, 16:00, Campo 1. La publicación del mismo día identifica a Boavista F C como campeón 2025.'},
   {date:'08–15 jun 2025',title:'Campeones de Copa y reconocimientos históricos',detail:'Galácticos (Pozos) fue publicado campeón de Copa de Primera Fuerza ante Herreras FC; Lobos CDG fue felicitado como campeón de Copa ante Franco FC. En esas fechas la Liga también reconoció las trayectorias de José Carmen Guerrero Velásquez, Gabriel Roque Hortelano y Juan Morales Vásquez “Chacharín”.'},
@@ -1138,7 +1146,8 @@ function summaryBody(){
 }
 function seasonsBody(){
   return '<section class="v35-block v35-tab-body"><div class="v35-section-row"><h2>Temporadas</h2></div>'+
-    '<div class="v35-season-detail"><span>Archivo histórico</span><h3>Temporadas anteriores separadas de la actual</h3><p>Los equipos antiguos pueden aparecer aquí como parte de su temporada histórica, pero nunca se agregan otra vez a la lista de equipos actuales si ya no participan.</p></div></section>'+
+    '<div class="v35-season-detail"><span>Archivo histórico</span><h3>Temporadas anteriores separadas de la actual</h3><p>Los equipos antiguos pueden aparecer aquí como parte de su temporada histórica, pero nunca se agregan otra vez a la lista de equipos actuales si ya no participan.</p></div>'+
+    '<div class="v35-season-detail"><span>Convocatoria · 12 nov 2019</span><h3>Temporada 2019–2020</h3><p><b>Inicio:</b> domingo 8 de diciembre de 2019. <b>Fuerzas:</b> Primera, Intermedia y Segunda. <b>Inscripciones:</b> hasta el martes 26 de noviembre, 19:00, Unidad Deportiva Sur. <b>Registro:</b> digital o físico, máximo 26 jugadores. <b>Junta previa:</b> martes 3 de diciembre, 19:00. Uniformación, cuotas, arbitrajes, credenciales, reglamento, premiación y transitorios se resolverían conforme al reglamento y a los acuerdos de asamblea.</p></div></section>'+
     historyArchiveBlock();
 }
 function championsBody(){
