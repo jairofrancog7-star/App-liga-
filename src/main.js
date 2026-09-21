@@ -4583,13 +4583,17 @@ const V60_FIELDS=[
   {id:'romerillo',name:'Campo San Antonio de Romerillo',community:'San Antonio de Romerillo',address:'San Antonio de Romerillo, Santa Cruz de Juventino Rosas, Guanajuato 38255',maps:'https://maps.app.goo.gl/K46mpaJvHMMtnUq27',lat:20.60784,lon:-100.94854,weather:true},
   {id:'fraccionamiento',name:'Campo Fraccionamiento Comontuoso',community:'Comontuoso / Santiago de Cuenda',address:'Fraccionamiento Comontuoso, Santa Cruz de Juventino Rosas, Guanajuato',maps:'https://maps.app.goo.gl/frhHxqfK9TAd3NhE8',lat:null,lon:null,weather:false},
   {id:'pozos',name:'Campo de Fútbol de Pozos',community:'Pozos',address:'Campo de Fútbol de Pozos, Santa Cruz de Juventino Rosas, Guanajuato',maps:'20.61767,-100.90033',lat:20.61767,lon:-100.90033,weather:true},
-  {id:'rincon',name:'Campo Rincón de Centeno',community:'Rincón de Centeno',address:'Rincón de Centeno, Santa Cruz de Juventino Rosas, Guanajuato',maps:'Campo de futbol Rincón de Centeno, Santa Cruz de Juventino Rosas, Guanajuato',lat:20.660153,lon:-100.886766,weather:true},
+  {id:'rincon',name:'Campo Rincón de Centeno',community:'Rincón de Centeno',address:'Rincón de Centeno, Santa Cruz de Juventino Rosas, Guanajuato',maps:'https://maps.app.goo.gl/Pfa6zMwZFBgexQEj8',streetViewQuery:'Campo Rincón de Centeno, Santa Cruz de Juventino Rosas, Guanajuato',lat:null,lon:null,weather:false},
   {id:'san-jose',name:'Campo San José de la Montaña',community:'San José de la Montaña',address:'San José de la Montaña, Salamanca, Guanajuato 36867',maps:'Campo de futbol San José de la Montaña, Guanajuato',lat:20.60102,lon:-101.07242,weather:true},
   {id:'san-julian',name:'Campo San Julián Tierra Blanca',community:'San Julián Tierra Blanca',address:'Los Fundadores 100, San Julián Tierra Blanca, Santa Cruz de Juventino Rosas, Guanajuato',maps:'https://maps.app.goo.gl/Rkb9PH3LF5pVu2FTA',lat:20.591403,lon:-101.040358,weather:true}
 ];
 function v60Field(id){return V60_FIELDS.find(f=>f.id===id)||V60_FIELDS[0]}
 function v60MapUrl(f){const m=f.maps||f.address||f.name;return /^https?:\/\//i.test(m)?m:'https://www.google.com/maps/search/?api=1&query='+encodeURIComponent(m)}
 function v60FieldPreview(f,cls=''){
+  if(f?.streetViewQuery){
+    const src='https://maps.google.com/maps?q='+encodeURIComponent(f.streetViewQuery)+'&layer=c&output=svembed';
+    return '<span class="v60-field-preview '+cls+'"><iframe src="'+src+'" title="Vista a nivel de calle de '+String(f.name||'campo').replace(/"/g,'&quot;')+'" loading="lazy" tabindex="-1" aria-hidden="true" referrerpolicy="no-referrer-when-downgrade"></iframe></span>';
+  }
   if(Number.isFinite(Number(f?.lat))&&Number.isFinite(Number(f?.lon))){
     const lat=Number(f.lat).toFixed(6),lon=Number(f.lon).toFixed(6);
     const src='https://maps.google.com/maps?q=&layer=c&cbll='+lat+','+lon+'&cbp=11,0,0,0,0&output=svembed';
