@@ -6,7 +6,7 @@
   if(window.__LJR_V94_DISCIPLINE__)return;
   window.__LJR_V94_DISCIPLINE__=true;
 
-  const DATA_URL='./public/data/official-live.json';
+  const DATA_URLS=['./public/data/official-live.json','https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/data/official-live.json'];
 
   function route(){
     return (location.hash.replace(/^#\/?/,'')||'home').split('?')[0];
@@ -177,16 +177,32 @@
   }
 
   let dataPromise=null;
+  function fetchOfficial(){
+    if(window.LJR_OFFICIAL_DATA)return Promise.resolve(window.LJR_OFFICIAL_DATA);
+    return (async()=>{
+      let lastError=null;
+      for(const url of DATA_URLS){
+        try{
+          const r=await fetch(url+'?v=20260921-discipline-restore1',{cache:'no-store'});
+          if(!r.ok)throw new Error('official-live '+r.status);
+          const data=await r.json();
+          if(data&&data.categories)return data;
+        }catch(err){lastError=err}
+      }
+      throw lastError||new Error('No se pudo cargar official-live');
+    })();
+  }
   function load(){
     if(!isDiscipline()){
       document.body.classList.remove('v94-discipline-official');
       return;
     }
-    if(!dataPromise)dataPromise=fetch(DATA_URL+'?v=20260920-discipline94',{cache:'no-store'}).then(r=>{
-      if(!r.ok)throw new Error('official-live '+r.status);
-      return r.json();
-    });
-    dataPromise.then(render).catch(()=>{});
+    if(window.LJR_OFFICIAL_DATA){
+      render(window.LJR_OFFICIAL_DATA);
+      return;
+    }
+    if(!dataPromise)dataPromise=fetchOfficial();
+    dataPromise.then(data=>{window.LJR_OFFICIAL_DATA=window.LJR_OFFICIAL_DATA||data;render(data)}).catch(()=>{});
   }
 
   function forceLoad(){
