@@ -22,7 +22,7 @@
        Sólo Match Center usa la cabecera principal; Ver detalles conserva V28. */
     if(r==='match') return isMatchCenterEntry();
 
-    if(/^(matchCenter|match-center|v4-calendar|calendar|monthlyCalendar|calendarMonthly|discipline|disciplina|disciplineTool|compare|comparar|compareTeams)$/i.test(r)){
+    if(/^(matchCenter|match-center|v4-calendar|calendar|monthlyCalendar|calendarMonthly|v4-discipline|discipline|disciplina|disciplineTool|compare|comparar|compareTeams)$/i.test(r)){
       return true;
     }
 
