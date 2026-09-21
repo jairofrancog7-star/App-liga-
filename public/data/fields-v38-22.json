@@ -236,10 +236,10 @@
       "longitude": null,
       "precision": "user-map-link",
       "weatherEligible": false,
-      "mapsQuery": "https://maps.app.goo.gl/Pfa6zMwZFBgexQEj8",
-      "address": "Rincón de Centeno, Santa Cruz de Juventino Rosas, Guanajuato",
-      "source": "https://maps.app.goo.gl/Pfa6zMwZFBgexQEj8",
-      "sourceNote": "Ubicación del Campo Rincón de Centeno corregida con el enlace de Google Maps aportado por el usuario. Se retiró el pin anterior de localidad para no mostrar una ubicación incorrecta."
+      "mapsQuery": "https://maps.app.goo.gl/RzxJokJsPw86ZePC9",
+      "address": "Campo Rincón de Centeno · ubicación exacta en Google Maps",
+      "source": "https://maps.app.goo.gl/RzxJokJsPw86ZePC9",
+      "sourceNote": "Ubicación exacta del Campo Rincón de Centeno actualizada con el enlace de Google Maps aportado por el usuario. No se muestra 'Pin pendiente' porque ya existe enlace exacto."
     },
     {
       "id": "san-jose",
