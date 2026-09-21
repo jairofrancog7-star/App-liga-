@@ -207,7 +207,7 @@ body.v94-discipline-official #screen{
 }
 
 
-/* V124.5 — Disciplina: restaurar la barra superior original y tapar sólo
+/* V124.6 — Disciplina: restaurar la barra superior original y tapar sólo
    la franja cyan inferior. Mantiene el arte, logo y perfil exactamente arriba. */
 @media(max-width:1023px){
   body.v94-discipline-official,
@@ -220,6 +220,9 @@ body.v94-discipline-official #screen{
   /* RESTAURA la barra superior original V69, sin moverla ni cambiar su tamaño. */
   body.v94-discipline-official .topbar,
   body.v94-discipline-official.v69-primary-tool-header .topbar{
+    display:block!important;
+    visibility:visible!important;
+    opacity:1!important;
     background-color:#02065f!important;
     background-image:url('https://d2ol7oe51mr4n9.cloudfront.net/user_3JNvttsAwr0QjxhuX5O1uaa9bvv/f2d42133-aeeb-4665-bfd1-693941efa7ee.jpg')!important;
     background-repeat:no-repeat!important;
@@ -228,6 +231,7 @@ body.v94-discipline-official #screen{
     border:0!important;
     border-bottom:0!important;
     box-shadow:none!important;
+    z-index:40!important;
   }
 
   /* La imagen ya trae logo y perfil: conserva los hotspots originales. */
