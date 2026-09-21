@@ -418,6 +418,30 @@
       return;
     }
 
+    /* V118 — CANCHAS / SEDES:
+       El cuadro animado "PRIMERO REVISA EL TERRENO" debe ir hasta abajo,
+       después de toda la lista real de campos. No se cambia el contenido,
+       sólo su posición. */
+    if(r==='venues'){
+      const nativeVenues=screen.querySelector('.v60-tool-page');
+      if(!nativeVenues){
+        screen.querySelectorAll(':scope > [data-v73-motion-banner]').forEach(x=>x.remove());
+        syncAll();
+        return;
+      }
+
+      let banner=screen.querySelector(':scope > [data-v73-motion-banner]');
+      if(!banner){
+        banner=buildBanner(cfg);
+        banner.classList.add('v73-below-native','v73-venues-bottom');
+        banner.dataset.v73BelowNative='venues';
+      }
+
+      if(screen.lastElementChild!==banner)screen.appendChild(banner);
+      syncAll();
+      return;
+    }
+
     /* V92 — En Estadísticas primero va el contenido nativo DATOS / Estadísticas.
        El cuadro animado "Tabla y estadísticas" se baja al final de la página. */
     if(r==='stats'){
