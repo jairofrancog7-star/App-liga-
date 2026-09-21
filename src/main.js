@@ -4583,12 +4583,13 @@ const V60_FIELDS=[
   {id:'romerillo',name:'Campo San Antonio de Romerillo',community:'San Antonio de Romerillo',address:'San Antonio de Romerillo, Santa Cruz de Juventino Rosas, Guanajuato 38255',maps:'https://maps.app.goo.gl/K46mpaJvHMMtnUq27',lat:20.60784,lon:-100.94854,weather:true},
   {id:'fraccionamiento',name:'Campo Fraccionamiento Comontuoso',community:'Comontuoso / Santiago de Cuenda',address:'Fraccionamiento Comontuoso, Santa Cruz de Juventino Rosas, Guanajuato',maps:'https://maps.app.goo.gl/frhHxqfK9TAd3NhE8',lat:null,lon:null,weather:false},
   {id:'pozos',name:'Campo de Fútbol de Pozos',community:'Pozos',address:'Campo de Fútbol de Pozos, Santa Cruz de Juventino Rosas, Guanajuato',maps:'20.61767,-100.90033',lat:20.61767,lon:-100.90033,weather:true},
-  {id:'rincon',name:'Campo Rincón de Centeno',community:'Rincón de Centeno',address:'Rincón de Centeno, Santa Cruz de Juventino Rosas, Guanajuato',maps:'https://maps.app.goo.gl/Pfa6zMwZFBgexQEj8',streetViewQuery:'Campo Rincón de Centeno, Santa Cruz de Juventino Rosas, Guanajuato',lat:null,lon:null,weather:false},
+  {id:'rincon',name:'Campo Rincón de Centeno',community:'Rincón de Centeno',address:'Campo Rincón de Centeno · ubicación exacta en Google Maps',maps:'https://maps.app.goo.gl/RzxJokJsPw86ZePC9',streetViewQuery:'Campo Rincón de Centeno, Santa Cruz de Juventino Rosas, Guanajuato',lat:null,lon:null,weather:false},
   {id:'san-jose',name:'Campo San José de la Montaña',community:'San José de la Montaña',address:'San José de la Montaña, Salamanca, Guanajuato 36867',maps:'Campo de futbol San José de la Montaña, Guanajuato',lat:20.60102,lon:-101.07242,weather:true},
   {id:'san-julian',name:'Campo San Julián Tierra Blanca',community:'San Julián Tierra Blanca',address:'Los Fundadores 100, San Julián Tierra Blanca, Santa Cruz de Juventino Rosas, Guanajuato',maps:'https://maps.app.goo.gl/Rkb9PH3LF5pVu2FTA',lat:20.591403,lon:-101.040358,weather:true}
 ];
 function v60Field(id){return V60_FIELDS.find(f=>f.id===id)||V60_FIELDS[0]}
 function v60MapUrl(f){const m=f.maps||f.address||f.name;return /^https?:\/\//i.test(m)?m:'https://www.google.com/maps/search/?api=1&query='+encodeURIComponent(m)}
+function v60HasExactMap(f){return /^https?:\/\//i.test(String(f?.maps||''))}
 function v60FieldPreview(f,cls=''){
   if(f?.streetViewQuery){
     const src='https://maps.google.com/maps?q='+encodeURIComponent(f.streetViewQuery)+'&layer=c&output=svembed';
@@ -4759,7 +4760,7 @@ function matchdayView(){
 function weatherFieldsView(){
   return '<section class="v60-tool-page">'+v60Header('SEDES','Clima y campos','Consulta condiciones meteorológicas por las sedes que tienen referencia geográfica disponible.')+
     '<p class="v60-note">El clima es informativo. No marca un partido como suspendido o cancelado automáticamente.</p>'+
-    '<div class="v60-field-list" style="margin-top:14px">'+V60_FIELDS.map(f=>'<article class="v60-field-card">'+v60FieldPreview(f,'v60-field-preview-card')+'<div class="v60-field-top"><h3>'+f.name+'</h3><span>'+f.community+'</span></div><p>'+f.address+'</p><div class="v60-actions"><button class="v60-btn '+(f.weather?'':'ghost')+'" '+(f.weather?'data-v60-weather="'+f.id+'"':'disabled')+'>'+(f.weather?'Ver clima':'Pin pendiente')+'</button><a class="v60-link outline" href="'+v60MapUrl(f)+'" target="_blank" rel="noopener">Mapa</a></div><div class="v60-weather-result" data-v60-weather-result="'+f.id+'" hidden></div></article>').join('')+'</div></section>';
+    '<div class="v60-field-list" style="margin-top:14px">'+V60_FIELDS.map(f=>'<article class="v60-field-card">'+v60FieldPreview(f,'v60-field-preview-card')+'<div class="v60-field-top"><h3>'+f.name+'</h3><span>'+f.community+'</span></div><p>'+f.address+'</p><div class="v60-actions">'+(f.weather?'<button class="v60-btn" data-v60-weather="'+f.id+'">Ver clima</button>':v60HasExactMap(f)?'<a class="v60-link" href="'+v60MapUrl(f)+'" target="_blank" rel="noopener">Ver ubicación</a>':'<button class="v60-btn ghost" disabled>Pin pendiente</button>')+'<a class="v60-link outline" href="'+v60MapUrl(f)+'" target="_blank" rel="noopener">Mapa</a></div><div class="v60-weather-result" data-v60-weather-result="'+f.id+'" hidden></div></article>').join('')+'</div></section>';
 }
 function v60VenuesView(){
   return '<section class="v60-tool-page">'+v60Header('SEDES','Dónde se juega','Campos y comunidades de la Liga con acceso directo a su ubicación.')+
