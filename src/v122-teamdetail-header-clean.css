@@ -1,0 +1,28 @@
+/* V122 — TEAM DETAIL / COMPARAR EQUIPOS
+   Elimina la cabecera global grande que se alcanzaba a ver encima del perfil.
+   No toca la cabecera propia V42, tarjetas, pestañas, contenido ni barra inferior. */
+html body[data-app-route="teamDetail"] #app > .topbar,
+html body.v42-team-active #app > .topbar,
+html body:has(#screen [data-v42-reference="teamDetail"]) #app > .topbar{
+  display:none!important;
+  visibility:hidden!important;
+  height:0!important;
+  min-height:0!important;
+  max-height:0!important;
+  margin:0!important;
+  padding:0!important;
+  border:0!important;
+  overflow:hidden!important;
+}
+
+html body[data-app-route="teamDetail"] #screen,
+html body.v42-team-active #screen,
+html body:has(#screen [data-v42-reference="teamDetail"]) #screen{
+  margin-top:0!important;
+  padding-top:0!important;
+}
+
+html body[data-app-route="teamDetail"] .app-shell,
+html body.v42-team-active .app-shell{
+  padding-top:0!important;
+}
