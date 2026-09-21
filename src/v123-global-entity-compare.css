@@ -37,3 +37,58 @@ button.v123-player-card{width:100%;font:inherit}
  .v123-player-card{min-height:166px;padding:14px 9px}.v123-avatar{width:58px;height:58px}.v123-player-copy strong{font-size:12px}.v123-team-chip b{font-size:8px}
  .v123-results,.v123-empty-note{margin-left:14px;margin-right:14px}.v123-picker{padding-left:14px;padding-right:14px}
 }
+
+/* V126 — Comparar jugadores: fondo uniforme oscuro en toda la página.
+   Mantiene estructura y tamaños. Los cuadros usan un azul ligeramente más
+   claro para distinguirse del fondo sin introducir franjas o degradados. */
+:root{
+  --v126-player-bg:#03045f;
+  --v126-player-card:#0b126f;
+  --v126-player-card-2:#0d167b;
+  --v126-player-line:rgba(91,125,255,.30);
+}
+
+body[data-app-route="playerCompare"],
+body.v123-player-compare-active,
+body[data-app-route="playerCompare"] #app,
+body.v123-player-compare-active #app,
+body[data-app-route="playerCompare"] .app-shell,
+body.v123-player-compare-active .app-shell,
+body[data-app-route="playerCompare"] #screen,
+body.v123-player-compare-active #screen,
+body[data-app-route="playerCompare"] .v123-player-compare,
+body.v123-player-compare-active .v123-player-compare,
+body[data-app-route="playerCompare"] .v123-head,
+body.v123-player-compare-active .v123-head{
+  background:var(--v126-player-bg)!important;
+  background-image:none!important;
+}
+
+body[data-app-route="playerCompare"] .v123-player-card,
+body.v123-player-compare-active .v123-player-card,
+body[data-app-route="playerCompare"] .v123-empty-note,
+body.v123-player-compare-active .v123-empty-note,
+body[data-app-route="playerCompare"] .v123-results,
+body.v123-player-compare-active .v123-results,
+body[data-app-route="playerCompare"] .v123-search,
+body.v123-player-compare-active .v123-search,
+body[data-app-route="playerCompare"] .v123-player-option,
+body.v123-player-compare-active .v123-player-option{
+  background:var(--v126-player-card)!important;
+  background-image:none!important;
+  border-color:var(--v126-player-line)!important;
+  box-shadow:none!important;
+}
+
+body[data-app-route="playerCompare"] .v123-player-card.primary,
+body.v123-player-compare-active .v123-player-card.primary,
+body[data-app-route="playerCompare"] .v123-player-option.active,
+body.v123-player-compare-active .v123-player-option.active{
+  background:var(--v126-player-card-2)!important;
+}
+
+body[data-app-route="playerCompare"] .v123-back,
+body.v123-player-compare-active .v123-back{
+  background:#080b70!important;
+  border-color:rgba(255,255,255,.18)!important;
+}
