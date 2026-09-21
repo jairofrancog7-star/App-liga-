@@ -232,14 +232,14 @@
         "Rincón del Centeno"
       ],
       "community": "Rincón de Centeno",
-      "latitude": 20.660153,
-      "longitude": -100.886766,
-      "precision": "locality",
-      "weatherEligible": true,
-      "mapsQuery": "Campo de futbol Rincón de Centeno, Santa Cruz de Juventino Rosas, Guanajuato",
+      "latitude": null,
+      "longitude": null,
+      "precision": "user-map-link",
+      "weatherEligible": false,
+      "mapsQuery": "https://maps.app.goo.gl/Pfa6zMwZFBgexQEj8",
       "address": "Rincón de Centeno, Santa Cruz de Juventino Rosas, Guanajuato",
-      "source": "https://mapcarta.com/es/20394100",
-      "sourceNote": "Pin meteorológico de la localidad; confirmar pin exacto del campo."
+      "source": "https://maps.app.goo.gl/Pfa6zMwZFBgexQEj8",
+      "sourceNote": "Ubicación del Campo Rincón de Centeno corregida con el enlace de Google Maps aportado por el usuario. Se retiró el pin anterior de localidad para no mostrar una ubicación incorrecta."
     },
     {
       "id": "san-jose",
