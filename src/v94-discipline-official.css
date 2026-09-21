@@ -207,79 +207,94 @@ body.v94-discipline-official #screen{
 }
 
 
-/* V124.4 — Disciplina: un solo fondo oscuro, sin líneas/arcos cyan.
-   Mantiene la barra en su sitio y conserva sus accesos; sólo cambia el fondo
-   para unir visualmente cabecera y contenido. */
+/* V124.5 — Disciplina: restaurar la barra superior original y tapar sólo
+   la franja cyan inferior. Mantiene el arte, logo y perfil exactamente arriba. */
 @media(max-width:1023px){
   body.v94-discipline-official,
   body.v94-discipline-official .app-shell,
   body.v94-discipline-official #screen,
   body.v94-discipline-official .v94-discipline-page{
     background:#05075f!important;
-    background-image:none!important;
   }
 
-  /* Misma barra, mismo tamaño y mismas posiciones, pero con fondo sólido
-     para eliminar completamente los medios círculos y líneas azul claro. */
+  /* RESTAURA la barra superior original V69, sin moverla ni cambiar su tamaño. */
   body.v94-discipline-official .topbar,
   body.v94-discipline-official.v69-primary-tool-header .topbar{
-    background:#05075f!important;
-    background-image:none!important;
+    background-color:#02065f!important;
+    background-image:url('https://d2ol7oe51mr4n9.cloudfront.net/user_3JNvttsAwr0QjxhuX5O1uaa9bvv/f2d42133-aeeb-4665-bfd1-693941efa7ee.jpg')!important;
+    background-repeat:no-repeat!important;
+    background-size:cover!important;
+    background-position:center top!important;
     border:0!important;
     border-bottom:0!important;
     box-shadow:none!important;
   }
-  body.v94-discipline-official .topbar::before,
-  body.v94-discipline-official .topbar::after{
-    content:none!important;
-    display:none!important;
+
+  /* La imagen ya trae logo y perfil: conserva los hotspots originales. */
+  body.v94-discipline-official .topbar .wordmark,
+  body.v94-discipline-official .topbar .profile-button{
     background:none!important;
   }
 
-  /* El arte anterior dibujaba el logo y el perfil dentro de la imagen.
-     Se muestran de nuevo en exactamente las mismas zonas táctiles. */
-  body.v94-discipline-official .topbar .wordmark{
-    background:transparent url('../assets/liga-logo.webp') center/contain no-repeat!important;
+  /* ÚNICAMENTE tapa la línea/medios círculos cyan de la parte inferior.
+     Se deja una franja plana oscura para unir cabecera y contenido. */
+  body.v94-discipline-official .topbar::before{
+    content:none!important;
+    display:none!important;
   }
-  body.v94-discipline-official .topbar .profile-button{
-    background:transparent url('../profile-reference.svg') center/contain no-repeat!important;
+  body.v94-discipline-official .topbar::after{
+    content:""!important;
+    display:block!important;
+    position:absolute!important;
+    left:0!important;
+    right:0!important;
+    bottom:0!important;
+    height:34px!important;
+    background:#05075f!important;
+    z-index:2!important;
+    pointer-events:none!important;
   }
 
-  /* Acerca la información a la barra, sin tapar Disciplina ni su descripción. */
+  /* Logo/perfil táctiles siempre quedan por encima de la franja. */
+  body.v94-discipline-official .topbar .wordmark,
+  body.v94-discipline-official .topbar .profile-button{
+    z-index:4!important;
+  }
+
+  /* Une el contenido con la franja oscura sin cortar el título. */
   body.v94-discipline-official #screen{
     position:relative!important;
     z-index:31!important;
-    margin-top:-28px!important;
+    margin-top:-18px!important;
     padding-top:0!important;
     border-top:0!important;
     box-shadow:none!important;
     background:#05075f!important;
-    background-image:none!important;
   }
   body.v94-discipline-official #screen::before,
   body.v94-discipline-official #screen::after{
     content:none!important;
     display:none!important;
-    background:none!important;
   }
 
   body.v94-discipline-official .v94-discipline-page{
     margin:0!important;
-    padding-top:6px!important;
+    padding-top:4px!important;
     background:#05075f!important;
-    background-image:none!important;
   }
-
   body.v94-discipline-official .v94-kicker{
     margin-top:0!important;
   }
 }
 
 @media(max-width:390px){
+  body.v94-discipline-official .topbar::after{
+    height:30px!important;
+  }
   body.v94-discipline-official #screen{
-    margin-top:-24px!important;
+    margin-top:-16px!important;
   }
   body.v94-discipline-official .v94-discipline-page{
-    padding-top:4px!important;
+    padding-top:2px!important;
   }
 }
