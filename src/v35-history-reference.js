@@ -208,19 +208,16 @@ const HIST_CHAMPION_BACKGROUNDS={
 };
 function championBackground(name,explicitPhoto){
   const exact=(explicitPhoto||'').trim();
-  // The embedded Puros Cuates data image is currently failing in the browser.
-  // Prefer a stable repository image until the exact source is re-exported.
+  // V119: nunca reutilizar una foto genérica ni un escudo como fondo de un campeón.
+  // Solo se muestra una fotografía cuando el archivo la identifica para ese campeonato.
   if(exact && !exact.startsWith('data:image/')) return {url:exact,exact:true};
-  const key=String(name||'').trim().toLowerCase();
-  const teamRef=HIST_CHAMPION_BACKGROUNDS[key]||'';
-  return {url:teamRef||HIST_CHAMPION_REFERENCE,exact:false};
+  return {url:'',exact:false};
 }
 function championBgImg(name,explicitPhoto,season,klass){
   const bg=championBackground(name,explicitPhoto);
-  const alt=bg.exact
-    ? String(name||'')+' · campeón · '+String(season||'')
-    : 'Imagen histórica referente al campeonato de '+String(name||'');
-  return '<img class="'+klass+' '+(bg.exact?'v35-bg-exact':'v35-bg-reference')+'" src="'+bg.url+'" alt="'+esc(alt)+'" loading="lazy" decoding="async" onerror="this.onerror=null;this.src=\''+HIST_CHAMPION_REFERENCE+'\';this.classList.add(\'v35-bg-reference\')">';
+  if(!bg.url) return '';
+  const alt=String(name||'')+' · campeón · '+String(season||'');
+  return '<img class="'+klass+' v35-bg-exact" src="'+bg.url+'" alt="'+esc(alt)+'" loading="lazy" decoding="async" onerror="this.remove()">';
 }
 const historyMoments=[
   {kind:'TERCER LUGAR',date:'23 nov 2013',title:'Romerillo',subtitle:'Tercer lugar · Fuerza Intermedia',detail:'Golazo Liga publicó que el portero de Romerillo fue clave para que su equipo obtuviera el tercer lugar, destacando una atajada de penal en la serie final. El nombre del portero no es visible en la captura aportada.'},
