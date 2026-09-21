@@ -334,7 +334,8 @@ const historicalPhotoArchive=[
   {date:'22 feb 2014',title:'Puros Cuates · trofeo de campeón',detail:'Fotografía recuperada de la publicación de Golazo Liga que identifica a Puros Cuates como Campeón del Torneo de Copa 2014 de Fuerza Intermedia.',image:HIST_PHOTOS.purosCuatesTrophy2014||''},
   {date:'2018–2019',title:'Juventus · campeón de Liga',detail:'Fotografía histórica conservada en el proyecto junto con el registro de Juventus campeón y Boavista subcampeón.',image:HIST_MEDIA+'juventus-campeon-2019.jpg'},
   {date:'Archivo histórico',title:'Tecos · plantel campeón',detail:'Fotografía del archivo histórico en la que el plantel aparece identificado como campeón.',image:HIST_MEDIA+'tecos-campeon-historico.jpg'},
-  {date:'Archivo histórico',title:'Premiación y trofeos',detail:'Fotografía de premiación conservada en el archivo. Se muestra como memoria visual sin asignar identidades que no estén confirmadas.',image:HIST_MEDIA+'premiacion-historica.jpg'}
+  {date:'Archivo histórico',title:'Premiación y trofeos',detail:'Fotografía de premiación conservada en el archivo. Se muestra como memoria visual sin asignar identidades que no estén confirmadas.',image:HIST_MEDIA+'premiacion-historica.jpg'},
+  {date:'2024',title:'Promesas · campeón',detail:'Fotografía real recuperada del ZIP histórico y conservada como referencia visual de Promesas campeón 2024. No se asigna categoría ni marcador mientras no aparezcan confirmados en la fuente.',image:HIST_MEDIA+'archive-v117/promesas-campeon-2024.webp'}
 ];
 
 // V106 — archivo histórico ampliado desde los videos y el ZIP entregados por el usuario.
