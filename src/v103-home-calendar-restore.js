@@ -68,18 +68,25 @@ function patchHome(){
     },{once:true});
   }
 
-  /* El espacio grande debajo de Momentos recupera el diseño anterior de
-     "Próximos partidos". Se reutiliza el mismo bloque para no crear secciones extra. */
-  const hero=root.querySelector(':scope > .section.hero');
-  const moments=[...root.querySelectorAll(':scope > .section')].find(s=>/^Momentos$/i.test((s.querySelector('.section-head h2,h2')?.textContent||'').trim()));
-  if(hero&&moments){
-    if(hero.previousElementSibling!==moments)moments.insertAdjacentElement('afterend',hero);
-    if(!hero.querySelector('[data-v103-upcoming]')){
-      hero.dataset.v15HomeFeature='3';
-      hero.classList.add('v103-upcoming-host');
-      hero.innerHTML=homeUpcomingMarkup();
-    }
-  }
+  /* V110 — En Inicio debe existir UNA sola tabla de "Próximos partidos".
+     La tarjeta hero de "Partido de la semana" había sido convertida en una segunda
+     copia grande. Se elimina esa copia superior y se conserva la sección nativa
+     que ya existe más abajo en Home. */
+  root.querySelectorAll(':scope > .section.hero').forEach(hero=>hero.remove());
+
+  const upcomingSections=[...root.querySelectorAll(':scope > .section')].filter(s=>
+    /^Próximos\s+partidos$/i.test((s.querySelector(':scope > .section-head h2')?.textContent||'').trim())
+  );
+  upcomingSections.forEach((s,i)=>{
+    if(i===0)s.classList.add('v110-home-upcoming-native');
+    else s.remove();
+  });
+
+  /* Quitar cualquier resto de la copia V103 si quedó montada por una versión en caché. */
+  root.querySelectorAll('[data-v103-upcoming]').forEach(el=>{
+    const host=el.closest('.section.hero');
+    if(host)host.remove();else el.remove();
+  });
 
   /* Quitar el bloque grande duplicado de Datos; Datos oficiales permanece en "Más datos"
      y en el acceso compacto de Explora Liga. */
