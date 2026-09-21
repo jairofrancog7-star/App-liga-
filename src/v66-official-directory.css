@@ -98,3 +98,10 @@ body[data-app-route="teamDetail"] .v66-official-roster h2{font-size:18px!importa
   background:#16ddea!important;color:#081060!important;border-color:#16ddea!important
 }
 .v66-team-filter-rail button.active img{background:rgba(255,255,255,.9)!important}
+
+/* V107 — filtros de Jugadores aislados de los accesos globales a equipos. */
+body[data-app-route="players"] [data-v66-player-team-filter] img,
+body[data-app-route="players"] [data-v66-player-team-filter] span,
+body[data-app-route="players"] [data-v66-player-cat] *{
+  pointer-events:none!important;
+}
