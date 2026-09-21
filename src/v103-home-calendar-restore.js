@@ -34,6 +34,26 @@ function homeImageMarkup(){
   '</section>';
 }
 
+function homeUpcomingMarkup(){
+  const games=[
+    {home:'Franco FC',away:'Herreras FC',time:'08:00'},
+    {home:'Terricolas',away:'Galacticos',time:'08:00'}
+  ];
+  return '<div class="v103-upcoming-wrap" data-v103-upcoming>'+
+    '<div class="v103-upcoming-head"><h2>Próximos partidos</h2><button type="button" data-safe-route="v4-calendar">Calendario</button></div>'+
+    '<div class="v103-upcoming-card">'+
+      '<div class="v103-upcoming-meta"><span><i></i>EN VIVO · Jornada 5</span><b>18:00</b></div>'+
+      games.map((g,i)=>
+        '<button type="button" class="v103-upcoming-match'+(i?' is-second':'')+'" data-route="competition" aria-label="'+esc(g.home)+' contra '+esc(g.away)+'">'+
+          '<span class="v103-upcoming-team home"><b>'+esc(g.home)+'</b>'+teamMark(g.home)+'</span>'+
+          '<strong>'+esc(g.time)+'</strong>'+
+          '<span class="v103-upcoming-team away">'+teamMark(g.away)+'<b>'+esc(g.away)+'</b></span>'+
+        '</button>'
+      ).join('')+
+    '</div>'+
+  '</div>';
+}
+
 function patchHome(){
   if(route()!=='home')return;
   const root=screen();if(!root)return;
@@ -48,11 +68,17 @@ function patchHome(){
     },{once:true});
   }
 
-  /* El Partido de la semana ya no ocupa el lugar de la imagen: baja debajo de Momentos. */
+  /* El espacio grande debajo de Momentos recupera el diseño anterior de
+     "Próximos partidos". Se reutiliza el mismo bloque para no crear secciones extra. */
   const hero=root.querySelector(':scope > .section.hero');
   const moments=[...root.querySelectorAll(':scope > .section')].find(s=>/^Momentos$/i.test((s.querySelector('.section-head h2,h2')?.textContent||'').trim()));
-  if(hero&&moments&&hero.previousElementSibling!==moments){
-    moments.insertAdjacentElement('afterend',hero);
+  if(hero&&moments){
+    if(hero.previousElementSibling!==moments)moments.insertAdjacentElement('afterend',hero);
+    if(!hero.querySelector('[data-v103-upcoming]')){
+      hero.dataset.v15HomeFeature='3';
+      hero.classList.add('v103-upcoming-host');
+      hero.innerHTML=homeUpcomingMarkup();
+    }
   }
 
   /* Quitar el bloque grande duplicado de Datos; Datos oficiales permanece en "Más datos"
