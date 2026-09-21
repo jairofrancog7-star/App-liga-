@@ -4211,7 +4211,7 @@ function homeView(){
       <div class="section-head"><h2>Dónde se juega</h2><button class="link-button" data-route="venues">Ver todos</button></div>
       <div class="v65-field-carousel">
         ${homeFields.map((f,i)=>`<button type="button" class="v65-field-card" data-route="venues" aria-label="Ver ${f.name}">
-          <span class="v65-field-visual" aria-hidden="true"><img src="./assets/reference/predictor-v36/predictor-stadium.webp" alt=""></span>
+          <span class="v65-field-visual" aria-hidden="true">${v60FieldPreview(f,'v65-field-map')}</span>
           <span class="v65-field-info"><small>${f.community}</small><b>${f.name}</b><em>${f.weather?'Clima disponible':'Ubicación disponible'}</em></span>
           <span class="v65-field-go">›</span>
         </button>`).join('')}
@@ -4589,6 +4589,14 @@ const V60_FIELDS=[
 ];
 function v60Field(id){return V60_FIELDS.find(f=>f.id===id)||V60_FIELDS[0]}
 function v60MapUrl(f){const m=f.maps||f.address||f.name;return /^https?:\/\//i.test(m)?m:'https://www.google.com/maps/search/?api=1&query='+encodeURIComponent(m)}
+function v60FieldPreview(f,cls=''){
+  if(Number.isFinite(Number(f?.lat))&&Number.isFinite(Number(f?.lon))){
+    const lat=Number(f.lat).toFixed(6),lon=Number(f.lon).toFixed(6);
+    const src='https://maps.google.com/maps?q=&layer=c&cbll='+lat+','+lon+'&cbp=11,0,0,0,0&output=svembed';
+    return '<span class="v60-field-preview '+cls+'"><iframe src="'+src+'" title="Vista de '+String(f.name||'campo').replace(/"/g,'&quot;')+'" loading="lazy" tabindex="-1" aria-hidden="true" referrerpolicy="no-referrer-when-downgrade"></iframe></span>';
+  }
+  return '<span class="v60-field-preview '+cls+'"><img src="./assets/reference/predictor-v36/predictor-stadium.webp" alt="" loading="lazy" decoding="async"></span>';
+}
 function v60Icon(name){
   const p={
     rules:'<path d="M6 3h10a3 3 0 0 1 3 3v15H8a3 3 0 0 1-3-3V4a1 1 0 0 1 1-1Z"/><path d="M8 7h8M8 11h8M8 15h5"/>',
@@ -4747,11 +4755,11 @@ function matchdayView(){
 function weatherFieldsView(){
   return '<section class="v60-tool-page">'+v60Header('SEDES','Clima y campos','Consulta condiciones meteorológicas por las sedes que tienen referencia geográfica disponible.')+
     '<p class="v60-note">El clima es informativo. No marca un partido como suspendido o cancelado automáticamente.</p>'+
-    '<div class="v60-field-list" style="margin-top:14px">'+V60_FIELDS.map(f=>'<article class="v60-field-card"><div class="v60-field-top"><h3>'+f.name+'</h3><span>'+f.community+'</span></div><p>'+f.address+'</p><div class="v60-actions"><button class="v60-btn '+(f.weather?'':'ghost')+'" '+(f.weather?'data-v60-weather="'+f.id+'"':'disabled')+'>'+(f.weather?'Ver clima':'Pin pendiente')+'</button><a class="v60-link outline" href="'+v60MapUrl(f)+'" target="_blank" rel="noopener">Mapa</a></div><div class="v60-weather-result" data-v60-weather-result="'+f.id+'" hidden></div></article>').join('')+'</div></section>';
+    '<div class="v60-field-list" style="margin-top:14px">'+V60_FIELDS.map(f=>'<article class="v60-field-card">'+v60FieldPreview(f,'v60-field-preview-card')+'<div class="v60-field-top"><h3>'+f.name+'</h3><span>'+f.community+'</span></div><p>'+f.address+'</p><div class="v60-actions"><button class="v60-btn '+(f.weather?'':'ghost')+'" '+(f.weather?'data-v60-weather="'+f.id+'"':'disabled')+'>'+(f.weather?'Ver clima':'Pin pendiente')+'</button><a class="v60-link outline" href="'+v60MapUrl(f)+'" target="_blank" rel="noopener">Mapa</a></div><div class="v60-weather-result" data-v60-weather-result="'+f.id+'" hidden></div></article>').join('')+'</div></section>';
 }
 function v60VenuesView(){
   return '<section class="v60-tool-page">'+v60Header('SEDES','Dónde se juega','Campos y comunidades de la Liga con acceso directo a su ubicación.')+
-    '<div class="v60-field-list">'+V60_FIELDS.map(f=>'<article class="v60-field-card"><div class="v60-field-top"><h3>'+f.name+'</h3><span>'+f.community+'</span></div><p>'+f.address+'</p><div class="v60-actions"><a class="v60-link" href="'+v60MapUrl(f)+'" target="_blank" rel="noopener">Abrir en Maps</a>'+(f.weather?'<button class="v60-btn outline" data-route="weatherFields">Clima</button>':'')+'</div></article>').join('')+'</div></section>';
+    '<div class="v60-field-list">'+V60_FIELDS.map(f=>'<article class="v60-field-card">'+v60FieldPreview(f,'v60-field-preview-card')+'<div class="v60-field-top"><h3>'+f.name+'</h3><span>'+f.community+'</span></div><p>'+f.address+'</p><div class="v60-actions"><a class="v60-link" href="'+v60MapUrl(f)+'" target="_blank" rel="noopener">Abrir en Maps</a>'+(f.weather?'<button class="v60-btn outline" data-route="weatherFields">Clima</button>':'')+'</div></article>').join('')+'</div></section>';
 }
 function cedulasView(){
   return '<section class="v60-tool-page">'+v60Header('PARTIDOS','Cédulas','Genera y consulta una cédula deportiva dentro de la aplicación.')+
