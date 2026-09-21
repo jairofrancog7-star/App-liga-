@@ -989,6 +989,40 @@ function historicalGoalsBlock(){
   '</div>';
 }
 
+function historyYearKey(period){
+  const m=String(period||'').match(/\b(20\d{2})\b/);
+  return m?m[1]:String(period||'Sin año');
+}
+function teamDirectoryCard(n){
+  const display=canonicalHistoricName(n),logo=historicLogo(display);
+  return '<article class="v35-era-team">'+(logo?'<img src="'+logo+'" alt="'+esc(display)+'" loading="lazy" decoding="async">':'<span class="v35-era-fallback">'+esc(historicInitials(display))+'</span>')+'<b>'+esc(display)+'</b></article>';
+}
+function historicalTeamDirectoryHtml(){
+  const groups=historicalTeamEras.filter(g=>/^20\d{2}/.test(String(g.period||'')));
+  const byYear=new Map();
+  groups.forEach(g=>{
+    const year=historyYearKey(g.period);
+    if(!byYear.has(year))byYear.set(year,[]);
+    byYear.get(year).push(g);
+  });
+  const assigned=new Set(groups.flatMap(g=>g.teams||[]).map(n=>histTeamKey(canonicalHistoricName(n))));
+  const unplaced=allHistoricalTeams2012Plus.filter(n=>!assigned.has(histTeamKey(canonicalHistoricName(n))));
+  const years=[...byYear.entries()].sort((a,b)=>Number(a[0])-Number(b[0]));
+  let html='<div class="v35-year-directory">';
+  years.forEach(([year,parts])=>{
+    const appearances=parts.reduce((sum,p)=>sum+(p.teams||[]).length,0);
+    html+='<section class="v35-year-block"><header class="v35-year-head"><div><span>AÑO</span><h4>'+esc(year)+'</h4></div><b>'+appearances+' apariciones</b></header>';
+    parts.forEach(p=>{
+      html+='<div class="v35-category-block"><div class="v35-category-head"><span>'+esc(p.category)+'</span><small>'+esc(p.period)+'</small><b>'+(p.teams||[]).length+' equipos</b></div><div class="v35-era-team-grid">'+(p.teams||[]).map(teamDirectoryCard).join('')+'</div></div>';
+    });
+    html+='</section>';
+  });
+  if(unplaced.length){
+    html+='<section class="v35-year-block v35-year-pending"><header class="v35-year-head"><div><span>ARCHIVO COMPLEMENTARIO</span><h4>Año/categoría por precisar</h4></div><b>'+unplaced.length+' nombres</b></header><div class="v35-category-block"><div class="v35-category-head"><span>Registro encontrado, ubicación exacta pendiente</span><small>No se asigna un año o categoría sin una fuente visible.</small></div><div class="v35-era-team-grid">'+unplaced.map(teamDirectoryCard).join('')+'</div></div></section>';
+  }
+  return html+'</div>';
+}
+
 function verifiedHistoryBlocks(){
   return '<div class="v35-verified-history">'+
     '<div class="v35-history-subhead"><span>CAMPEONES CONFIRMADOS</span><h3>Palmarés verificado en el archivo</h3></div>'+
@@ -1008,8 +1042,8 @@ function verifiedHistoryBlocks(){
     '<div class="v35-result-list v35-video-findings">'+videoArchiveFindings.map(x=>'<article class="v35-final-row">'+(x.image?'<div class="v35-final-logos"><img src="'+x.image+'" alt="" loading="lazy"></div>':'')+'<span>'+esc(x.date)+'</span><b>'+esc(x.title)+'</b><p>'+esc(x.detail)+'</p></article>').join('')+'</div>'+
     '<div class="v35-history-subhead"><span>EQUIPOS HISTÓRICOS</span><h3>Equipos encontrados en los videos, tablas, roles y publicaciones</h3><p>Se agrupan por la época en que aparecen en el archivo. Un nombre aquí no significa que el equipo siga inscrito hoy. Se usa el escudo local confirmado cuando existe; para equipos históricos llamados UNAM, Guadalajara, Arsenal, Chelsea, Manchester, Juventus, PSV, Dortmund y otros nombres de clubes conocidos, puede mostrarse el emblema del club real como referencia visual.</p></div>'+
     '<div class="v35-era-archive">'+historicalTeamEras.map(g=>'<section class="v35-era-group"><header><span>'+esc(g.period)+'</span><b>'+esc(g.category)+'</b></header><div class="v35-era-team-grid">'+g.teams.map(n=>{const display=canonicalHistoricName(n),logo=historicLogo(display);return '<article class="v35-era-team">'+(logo?'<img src="'+logo+'" alt="'+esc(display)+'" loading="lazy" decoding="async">':'<span class="v35-era-fallback">'+esc(historicInitials(display))+'</span>')+'<b>'+esc(display)+'</b></article>'}).join('')+'</div></section>').join('')+'</div>'+
-    '<div class="v35-history-subhead"><span>TODOS LOS EQUIPOS · 2012 EN ADELANTE</span><h3>Catálogo histórico completo encontrado hasta ahora</h3><p>'+allHistoricalTeams2012Plus.length+' nombres distintos recuperados del archivo. Los escudos de UNAM, Guadalajara/Chivas, Arsenal, Chelsea, Dortmund y otros homónimos se usan como referencia visual por solicitud del usuario; no significan afiliación con el club profesional.</p></div>'+
-    '<section class="v35-era-group v35-all-teams-group"><header><span>2012–2026</span><b>Equipos documentados</b></header><div class="v35-era-team-grid">'+allHistoricalTeams2012Plus.map(n=>{const logo=historicLogo(n);return '<article class="v35-era-team">'+(logo?'<img src="'+logo+'" alt="'+esc(n)+'" loading="lazy" decoding="async">':'<span class="v35-era-fallback">'+esc(historicInitials(n))+'</span>')+'<b>'+esc(n)+'</b></article>'}).join('')+'</div></section>'+
+    '<div class="v35-history-subhead"><span>TODOS LOS EQUIPOS · ORDENADOS POR AÑO Y CATEGORÍA</span><h3>Quién jugó, cuándo y en qué categoría</h3><p>'+allHistoricalTeams2012Plus.length+' nombres/variantes históricas recuperadas hasta ahora. Un mismo club puede aparecer en varios años; cuando la categoría no se ve en la fuente se indica expresamente en vez de inventarla.</p></div>'+
+    historicalTeamDirectoryHtml()+
     '<div class="v35-history-subhead"><span>TABLAS HISTÓRICAS</span><h3>Clasificaciones recuperadas</h3><p>Se conserva el contexto exacto del material: una tabla final se marca como final; un corte de jornada se marca solo como corte.</p></div>'+
     historicTables.map(t=>'<article class="v35-old-table"><header><span>'+esc(t.season)+'</span><div><b>'+esc(t.title)+'</b><small>'+esc(t.note)+'</small></div></header><div class="v35-old-table-head"><span>POS</span><span>EQUIPO</span><span>PTS</span></div>'+t.rows.map(r=>'<div class="v35-old-table-row"><span>'+esc(r[0])+'</span><b>'+esc(r[1])+'</b><strong>'+esc(r[2])+'</strong></div>').join('')+'</article>').join('')+
     '<div class="v35-history-subhead"><span>RESULTADOS CONSERVADOS</span><h3>Ganadores publicados en roles antiguos</h3></div>'+
