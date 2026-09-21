@@ -188,6 +188,7 @@ const historicalSources=[
 const HIST_ROOT='https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/';
 const HIST_MEDIA='https://raw.githubusercontent.com/jairofrancog7-star/App-liga-/main/assets/history/';
 const HIST_PHOTOS=window.LJR_HISTORY_PHOTOS||{};
+const HIST_CHAMPION_REFERENCE=HIST_MEDIA+'premiacion-historica.jpg';
 const historyMoments=[
   {kind:'TERCER LUGAR',date:'23 nov 2013',title:'Romerillo',subtitle:'Tercer lugar · Fuerza Intermedia',detail:'Golazo Liga publicó que el portero de Romerillo fue clave para que su equipo obtuviera el tercer lugar, destacando una atajada de penal en la serie final. El nombre del portero no es visible en la captura aportada.'},
   {kind:'CAMPEÓN',date:'2014 · fecha exacta pendiente',season:'2014',winner:'DHP',title:'DHP',subtitle:'Campeón del Torneo de Copa 2014 · Segunda Fuerza',detail:'Dato histórico aportado directamente por el usuario: DHP fue campeón del Torneo de Copa 2014 de Segunda Fuerza. La publicación o fotografía original queda pendiente de adjuntar para documentar la fecha exacta.'},
@@ -848,9 +849,13 @@ function historicalSourcesBlock(){
 }
 
 function historyMomentCard(m){
-  const hasBg=!!m.backgroundPhoto;
-  return '<article class="v35-history-moment '+(hasBg?'v35-history-moment-photo':'')+'">'+
-    (hasBg?'<img class="v35-history-bg-photo" src="'+m.backgroundPhoto+'" alt="'+esc(m.title)+' · archivo histórico" loading="lazy" decoding="async">':'')+
+  const exactBg=m.backgroundPhoto||'';
+  const referenceBg=(!exactBg&&m.kind==='CAMPEÓN')?HIST_CHAMPION_REFERENCE:'';
+  const bg=exactBg||referenceBg;
+  const hasBg=!!bg;
+  const isReference=!!referenceBg;
+  return '<article class="v35-history-moment '+(hasBg?'v35-history-moment-photo ':'')+(isReference?'v35-history-moment-reference':'')+'">'+
+    (hasBg?'<img class="v35-history-bg-photo" src="'+bg+'" alt="'+(isReference?'Imagen histórica de premiación · referencia visual para '+esc(m.title):esc(m.title)+' · archivo histórico')+'" loading="lazy" decoding="async">':'')+
     '<div class="v35-history-moment-shade" aria-hidden="true"></div>'+
     '<div class="v35-history-moment-content">'+
       ((m.image||m.imageA||m.imageB)?'<div class="v35-history-visual">'+
@@ -896,14 +901,17 @@ function historicalGoalsBlock(){
 function verifiedHistoryBlocks(){
   return '<div class="v35-verified-history">'+
     '<div class="v35-history-subhead"><span>CAMPEONES CONFIRMADOS</span><h3>Palmarés verificado en el archivo</h3></div>'+
-    '<div class="v35-champion-list">'+verifiedChampions.map(x=>
-      '<article class="v35-champion-card '+(x.photo?'v35-champion-card-photo':'')+'">'+
-        (x.photo?'<img class="v35-champion-bg-photo" src="'+x.photo+'" alt="'+esc(x.champion)+' · campeón · '+esc(x.season)+'" loading="lazy" decoding="async"><span class="v35-champion-shade" aria-hidden="true"></span>':'')+
+    '<div class="v35-champion-list">'+verifiedChampions.map(x=>{
+      const exactPhoto=x.photo||'';
+      const bg=exactPhoto||HIST_CHAMPION_REFERENCE;
+      const isReference=!exactPhoto;
+      return '<article class="v35-champion-card v35-champion-card-photo '+(isReference?'v35-champion-card-reference':'')+'">'+
+        '<img class="v35-champion-bg-photo" src="'+bg+'" alt="'+(isReference?'Imagen histórica de premiación · referencia visual para '+esc(x.champion):esc(x.champion)+' · campeón · '+esc(x.season))+'" loading="lazy" decoding="async"><span class="v35-champion-shade" aria-hidden="true"></span>'+
         '<div class="v35-champion-content">'+
           ((x.championLogo||x.runnerLogo)?'<div class="v35-champion-logos">'+(x.championLogo?'<img src="'+x.championLogo+'" alt="" loading="lazy">':'')+(x.runnerLogo?'<img src="'+x.runnerLogo+'" alt="" loading="lazy">':'')+'</div>':'')+
           '<span class="v35-champion-date">'+esc(x.season)+'</span><h4>'+esc(x.champion)+'</h4><b>'+esc(x.competition)+'</b><p>'+(x.runner&&x.runner!=='—'?'Subcampeón: '+esc(x.runner)+'. ':'')+esc(x.source)+'</p>'+
-        '</div></article>'
-    ).join('')+'</div>'+
+        '</div></article>';
+    }).join('')+'</div>'+
     '<div class="v35-history-subhead"><span>FOTOS DE CAMPEONES Y TROFEOS</span><h3>Archivo visual recuperado</h3><p>Fotografías reales conservadas en el archivo de la Liga. Se muestran debajo del palmarés sin modificar la parte superior de Historia.</p></div>'+
     '<div class="v35-champion-list v35-photo-archive">'+historicalPhotoArchive.filter(x=>x.image).map(x=>'<article class="v35-champion-card"><img class="v35-champion-photo" src="'+x.image+'" alt="'+esc(x.title)+'" loading="lazy" decoding="async"><span>'+esc(x.date)+'</span><h4>'+esc(x.title)+'</h4><p>'+esc(x.detail)+'</p></article>').join('')+'</div>'+
     historicalGoalsBlock()+
