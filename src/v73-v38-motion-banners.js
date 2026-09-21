@@ -100,13 +100,6 @@
       desc:'Posiciones, goleadores y rendimiento con accesos rápidos.',
       pills:[['Tabla','competition'],['Goleadores','scorers'],['Rendimiento','scroll']]
     },
-    tableExport:{
-      asset:'stats',
-      kicker:'EXPORTAR TABLA',
-      title:'DATOS LISTOS PARA COMPARTIR.',
-      desc:'Convierte la tabla en PNG o CSV sin salir de la aplicación.',
-      pills:[['Tabla','competition'],['PNG','scroll'],['CSV','scroll']]
-    },
     leagueData:{
       asset:'stats',
       kicker:'CENTRAL OFICIAL',
