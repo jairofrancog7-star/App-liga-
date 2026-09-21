@@ -170,3 +170,38 @@ body.v94-discipline-official #screen{
   .v94-person>b{font-size:11.7px}
   .v94-person>small{font-size:8.8px}
 }
+
+/* V115 — escudos oficiales más visibles junto al jugador/equipo. */
+.v94-discipline-row{
+  grid-template-columns:22px 52px minmax(0,1fr) 44px!important;
+  min-height:88px!important;
+}
+.v94-logo-wrap{
+  width:52px!important;
+  height:52px!important;
+  border-radius:12px!important;
+  background:rgba(255,255,255,.025)!important;
+}
+.v94-discipline-logo{
+  width:48px!important;
+  height:48px!important;
+  object-fit:contain!important;
+  object-position:center!important;
+}
+.v94-person>b{
+  font-size:13px!important;
+}
+.v94-person>small{
+  margin-top:4px!important;
+  color:#c2c8e2!important;
+  font-size:10px!important;
+  font-weight:650!important;
+}
+@media(max-width:390px){
+  .v94-discipline-row{
+    grid-template-columns:20px 46px minmax(0,1fr) 38px!important;
+    gap:8px!important;
+  }
+  .v94-logo-wrap{width:46px!important;height:46px!important}
+  .v94-discipline-logo{width:43px!important;height:43px!important}
+}
