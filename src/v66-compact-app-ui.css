@@ -163,3 +163,100 @@ body[data-app-route="tableExport"] [data-v73-motion-banner]{
 body[data-app-route="tableExport"] .topbar{
   display:flex!important;
 }
+
+
+/* V66.2 — TABLA COMPLETA: un solo fondo azul oscuro en toda la página.
+   Quita franjas, degradados, líneas azules decorativas y superficies claras.
+   Conserva texto, tabla y controles funcionales. */
+body[data-app-route="tableExport"],
+body[data-app-route="tableExport"] #app,
+body[data-app-route="tableExport"] .app-shell,
+body[data-app-route="tableExport"] #screen,
+body[data-app-route="tableExport"] .v60-tool-page,
+body[data-app-route="tableExport"] .v64-page{
+  background:#02065f!important;
+  background-color:#02065f!important;
+  background-image:none!important;
+  box-shadow:none!important;
+}
+
+body[data-app-route="tableExport"] #screen{
+  min-height:100dvh!important;
+  border:0!important;
+  outline:0!important;
+}
+
+/* Sin bloque azul claro detrás del título. */
+body[data-app-route="tableExport"] .v60-tool-head{
+  display:block!important;
+  margin:0 0 20px!important;
+  padding:0!important;
+  background:transparent!important;
+  background-image:none!important;
+  border:0!important;
+  box-shadow:none!important;
+}
+
+body[data-app-route="tableExport"] .v60-tool-kicker{
+  color:#23e1ec!important;
+}
+
+body[data-app-route="tableExport"] .v60-tool-head h1,
+body[data-app-route="tableExport"] .v60-tool-head p{
+  background:transparent!important;
+  background-image:none!important;
+}
+
+/* Tabla central: misma base azul oscuro, sin caja azul diferente ni borde azul. */
+body[data-app-route="tableExport"] .v64-mini-table{
+  overflow:hidden!important;
+  border:0!important;
+  border-radius:16px!important;
+  background:#02065f!important;
+  background-color:#02065f!important;
+  background-image:none!important;
+  box-shadow:none!important;
+}
+
+body[data-app-route="tableExport"] .v64-mini-table>div{
+  background:#02065f!important;
+  background-color:#02065f!important;
+  background-image:none!important;
+  border:0!important;
+  border-bottom:1px solid rgba(255,255,255,.08)!important;
+  box-shadow:none!important;
+}
+
+body[data-app-route="tableExport"] .v64-mini-table>div:last-child{
+  border-bottom:0!important;
+}
+
+body[data-app-route="tableExport"] .v64-mini-table b,
+body[data-app-route="tableExport"] .v64-mini-table span{
+  color:#fff!important;
+}
+
+body[data-app-route="tableExport"] .v64-mini-table em{
+  color:#25e1ec!important;
+}
+
+/* Botones: sin bloques azul claro; mismo fondo oscuro de la página. */
+body[data-app-route="tableExport"] .v64-stack-actions,
+body[data-app-route="tableExport"] .v64-stack-actions button{
+  background:#02065f!important;
+  background-color:#02065f!important;
+  background-image:none!important;
+  box-shadow:none!important;
+}
+
+body[data-app-route="tableExport"] .v64-stack-actions button{
+  color:#fff!important;
+  border:1px solid rgba(255,255,255,.14)!important;
+}
+
+/* Quita decoraciones añadidas debajo de esta herramienta. */
+body[data-app-route="tableExport"] #v105-bottom,
+body[data-app-route="tableExport"] [data-v105-route="tableExport"],
+body[data-app-route="tableExport"] [data-v73-motion-banner]{
+  display:none!important;
+}
