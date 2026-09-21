@@ -68,33 +68,44 @@ function patchHome(){
     },{once:true});
   }
 
-  /* V111 — Restaurar Inicio como estaba:
-     - conservar el cuadro original "Partido de la semana" arriba de Momentos;
-     - conservar UNA sola sección nativa de "Próximos partidos" más abajo;
-     - no modificar los demás cuadros de Home. */
+  /* V112 — Restaurar el Inicio anterior:
+     - el cuadro PRINCIPAL vertical con imagen va inmediatamente después de Historias;
+     - debajo quedan los dos cuadros de Momentos;
+     - más abajo queda UNA sola sección de Próximos partidos;
+     - no tocar los demás cuadros. */
+  const storiesNow=root.querySelector(':scope > .stories');
   const moments=[...root.querySelectorAll(':scope > .section')].find(s=>
     /^Momentos$/i.test((s.querySelector('.section-head h2,h2')?.textContent||'').trim())
   );
-  const hero=root.querySelector(':scope > .section.hero');
+  let hero=root.querySelector(':scope > .section.hero');
 
   if(hero){
-    /* Si una versión anterior convirtió el hero en Próximos partidos, restaurarlo. */
-    if(hero.querySelector('[data-v103-upcoming]') || hero.classList.contains('v103-upcoming-host')){
-      hero.classList.remove('v103-upcoming-host');
-      delete hero.dataset.v15HomeFeature;
+    hero.classList.remove('v103-upcoming-host');
+    hero.dataset.v15HomeFeature='3';
+    if(!hero.querySelector('.v21-home-feature-photo')){
       hero.innerHTML=
-        '<span class="eyebrow" style="color:#fff">PARTIDO DE LA SEMANA</span>'+
-        '<h2>Franco FC vs<br>Herreras FC</h2>'+
-        '<p>Próximo partido oficial de Primera Fuerza.</p>'+
-        '<div class="button-row"><button class="btn primary" data-match="m1">Ver previa</button><button class="btn outline" data-action="cheer" data-cheer="m1">Apoyar · 0</button></div>';
+        '<div class="v21-home-feature-photo" aria-hidden="true">'+
+          '<img class="v21-home-feature-photo-image" src="./assets/home-players-user.jpg?v=20260919-user-photo-public-1" alt="" loading="eager" decoding="async" draggable="false">'+
+          '<span class="v21-home-feature-photo-fade"></span>'+
+        '</div>'+
+        '<div class="v21-home-feature-copy">'+
+          '<h2>Mira todos los goles de la Jornada 1</h2>'+
+          '<p>La pasión del fútbol local en un solo lugar</p>'+
+        '</div>'+
+        '<button class="v15-home-feature-hit" type="button" aria-label="Ver todos los goles de la Jornada 1"></button>';
     }
-    /* Posición original: debajo de Historias y antes de Momentos. */
-    if(moments && hero.nextElementSibling!==moments){
-      moments.insertAdjacentElement('beforebegin',hero);
+    /* Debe quedar exactamente después de Historias, antes de Momentos. */
+    if(storiesNow && storiesNow.nextElementSibling!==hero){
+      storiesNow.insertAdjacentElement('afterend',hero);
     }
   }
 
-  /* Dejar sólo la sección nativa inferior de Próximos partidos, sin tocar su diseño. */
+  /* Los dos cuadros de Momentos permanecen inmediatamente debajo del principal. */
+  if(hero && moments && hero.nextElementSibling!==moments){
+    hero.insertAdjacentElement('afterend',moments);
+  }
+
+  /* Dejar una sola sección nativa inferior de Próximos partidos. */
   const upcomingSections=[...root.querySelectorAll(':scope > .section')].filter(s=>
     /^Próximos\s+partidos$/i.test((s.querySelector(':scope > .section-head h2')?.textContent||'').trim())
   );
@@ -103,9 +114,13 @@ function patchHome(){
     if(i>0)s.remove();
   });
 
-  /* Cualquier copia V103 que no esté dentro del hero se elimina. */
+  /* Eliminar solamente copias viejas V103 de Próximos partidos. */
   root.querySelectorAll('[data-v103-upcoming]').forEach(el=>{
-    if(!el.closest('.section.hero'))el.remove();
+    const host=el.closest('.section.hero');
+    if(host){
+      host.classList.remove('v103-upcoming-host');
+      host.dataset.v15HomeFeature='3';
+    }else el.remove();
   });
 
   /* Quitar el bloque grande duplicado de Datos; Datos oficiales permanece en "Más datos"
