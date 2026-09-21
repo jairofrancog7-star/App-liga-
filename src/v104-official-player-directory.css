@@ -1,14 +1,21 @@
-/* V104 — directorio oficial de jugadores */
+/* V105 — directorio oficial de jugadores con filtros */
 body[data-app-route="players"] #screen{overflow-x:hidden!important}
 .v104-players{padding:8px 14px 118px;color:#fff}
 .v104-head small{color:#28e0eb;font-size:9px;font-weight:900;letter-spacing:.13em}
 .v104-head h1{margin:6px 0 4px;font-size:34px;line-height:.96;letter-spacing:-.04em}
 .v104-head p{margin:0;color:#aeb7d8;font-size:11px;line-height:1.35}
+.v104-filter-panel{margin:15px 0 12px;padding:10px;border:1px solid rgba(77,108,220,.28);border-radius:15px;background:linear-gradient(180deg,rgba(18,24,126,.96),rgba(7,10,92,.96));box-shadow:inset 0 1px 0 rgba(255,255,255,.035)}
+.v104-filter-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px}
+.v104-filter{display:block;min-width:0}
+.v104-filter>span{display:block;margin:0 0 5px 3px;color:#28e0eb;font-size:8px;font-weight:900;letter-spacing:.08em;text-transform:uppercase}
+.v104-filter select{width:100%;height:42px;padding:0 30px 0 10px;border:1px solid rgba(93,119,231,.34);border-radius:12px;outline:0;background:#0c1170;color:#fff;font:inherit;font-size:10.5px;font-weight:800;white-space:nowrap;text-overflow:ellipsis}
+.v104-filter select:focus{border-color:#24dbe6;box-shadow:0 0 0 2px rgba(36,219,230,.12)}
+.v104-clear{width:100%;height:32px;margin-top:7px;border:1px solid rgba(36,219,230,.28);border-radius:10px;background:transparent;color:#28dfe9;font-size:9px;font-weight:900}
 .v104-cats{display:flex;gap:7px;margin:16px -14px 10px;padding:0 14px;overflow-x:auto;scrollbar-width:none}
 .v104-cats::-webkit-scrollbar{display:none}
 .v104-cats button{flex:0 0 auto;height:34px;padding:0 12px;border:1px solid rgba(96,117,220,.28);border-radius:18px;background:#111476;color:#c7cbed;font-size:10px;font-weight:800}
 .v104-cats button.active{border-color:#25dce7;background:#0d318f;color:#28e0eb}
-.v104-search{height:44px;display:grid;grid-template-columns:28px 1fr;align-items:center;margin-bottom:12px;padding:0 12px;border:1px solid rgba(95,118,223,.26);border-radius:13px;background:#10136f;color:#22dfea}
+.v104-search{height:42px;display:grid;grid-template-columns:28px 1fr;align-items:center;margin-bottom:0;padding:0 12px;border:1px solid rgba(95,118,223,.26);border-radius:13px;background:#10136f;color:#22dfea}
 .v104-search input{width:100%;border:0;outline:0;background:transparent;color:#fff;font:inherit;font-size:12px}
 .v104-search input::placeholder{color:#8f99c4}
 .v104-list{display:grid;gap:10px}
@@ -25,4 +32,4 @@ body[data-app-route="players"] #screen{overflow-x:hidden!important}
 .v104-player b{font-size:9.5px;line-height:1.12}
 .v104-source{margin:14px 3px 0;color:#7f89b8;font-size:8px;line-height:1.35}
 .v104-empty{padding:28px 14px;text-align:center;color:#a7afd0;font-size:11px;border:1px solid rgba(89,109,214,.22);border-radius:14px;background:#090c69}
-@media(max-width:360px){.v104-roster{grid-template-columns:1fr}.v104-head h1{font-size:31px}}
+@media(max-width:390px){.v104-filter-grid{grid-template-columns:1fr}.v104-roster{grid-template-columns:1fr}.v104-head h1{font-size:31px}}
