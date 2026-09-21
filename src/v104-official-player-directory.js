@@ -1,4 +1,4 @@
-/* V104 — Directorio oficial de jugadores.
+/* V105 — Directorio oficial de jugadores con filtros por categoría y equipo.
    Sustituye los nombres demo de #/players por los nombres deportivos públicos
    de data/official-live.json. No inventa jugadores, dorsales, goles ni fotos. */
 (function(){
@@ -10,7 +10,7 @@ const BASE='https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/mai
 const DATA=BASE+'data/official-live.json?v=20260920-players-all';
 const ORDER=['all','3','5','4','2','1'];
 const NAMES={'all':'Todos','3':'Primera Fuerza','5':'Intermedia','4':'Segunda Fuerza','2':'Veteranos 35+','1':'Veteranos 50+'};
-let db=null,loading=null,active=localStorage.getItem('v104-player-category')||'all',query='';
+let db=null,loading=null,active=localStorage.getItem('v104-player-category')||'all',selectedTeam=localStorage.getItem('v104-player-team')||'all',query='';
 
 const route=()=>location.hash.replace(/^#\//,'').split('?')[0]||'home';
 const screen=()=>document.querySelector('#screen');
@@ -47,23 +47,68 @@ function logo(name){
   return '';
 }
 
+function categoryIds(){
+  return ['3','5','4','2','1'];
+}
+
+function teamChoices(){
+  const cats=db?.categories||{};
+  const groups=[];
+  for(const id of categoryIds()){
+    if(active!=='all'&&id!==active)continue;
+    const c=cats[id];if(!c)continue;
+    const teams=Object.keys(c.rosters||{}).filter(Boolean).sort((a,b)=>a.localeCompare(b,'es',{sensitivity:'base'}));
+    if(teams.length)groups.push({id,name:c.name||NAMES[id],teams});
+  }
+  const valid=new Set(groups.flatMap(g=>g.teams.map(norm)));
+  if(selectedTeam!=='all'&&!valid.has(norm(selectedTeam))){
+    selectedTeam='all';
+    localStorage.setItem('v104-player-team','all');
+  }
+  return groups;
+}
+
 function entries(){
   const out=[];
   const cats=db?.categories||{};
-  for(const id of ['3','5','4','2','1']){
+  for(const id of categoryIds()){
     if(active!=='all'&&id!==active)continue;
     const c=cats[id]; if(!c)continue;
-    for(const [team,players] of Object.entries(c.rosters||{})){
+    const teams=Object.entries(c.rosters||{}).sort((a,b)=>a[0].localeCompare(b[0],'es',{sensitivity:'base'}));
+    for(const [team,players] of teams){
+      if(selectedTeam!=='all'&&norm(team)!==norm(selectedTeam))continue;
       const unique=[]; const seen=new Set();
       for(const p of (players||[])){
         const k=norm(p);if(!k||seen.has(k))continue;seen.add(k);unique.push(String(p).trim());
       }
+      unique.sort((a,b)=>a.localeCompare(b,'es',{sensitivity:'base'}));
       if(unique.length)out.push({id,category:c.name||NAMES[id],team,players:unique});
     }
   }
   const q=norm(query);
   if(!q)return out;
   return out.map(x=>({...x,players:x.players.filter(p=>norm(p+' '+x.team+' '+x.category).includes(q))})).filter(x=>x.players.length);
+}
+
+function categorySelectHtml(){
+  return '<label class="v104-filter"><span>Categoría</span><select data-v104-category-select>'+
+    ORDER.map(id=>'<option value="'+id+'" '+(active===id?'selected':'')+'>'+esc(NAMES[id])+'</option>').join('')+
+  '</select></label>';
+}
+
+function teamSelectHtml(){
+  const groups=teamChoices();
+  let options='<option value="all">Todos los equipos</option>';
+  if(active==='all'){
+    options+=groups.map(g=>'<optgroup label="'+esc(g.name)+'">'+g.teams.map(team=>
+      '<option value="'+esc(team)+'" '+(norm(selectedTeam)===norm(team)?'selected':'')+'>'+esc(team)+'</option>'
+    ).join('')+'</optgroup>').join('');
+  }else{
+    options+=groups.flatMap(g=>g.teams).map(team=>
+      '<option value="'+esc(team)+'" '+(norm(selectedTeam)===norm(team)?'selected':'')+'>'+esc(team)+'</option>'
+    ).join('');
+  }
+  return '<label class="v104-filter"><span>Equipo</span><select data-v104-team-select>'+options+'</select></label>';
 }
 
 function teamLogo(team){
@@ -85,9 +130,10 @@ function render(){
   const groups=entries();
   const total=totalPlayers();
   root.innerHTML='<section class="v104-players" data-v104-players>'+
-    '<header class="v104-head"><div><small>DATOS OFICIALES</small><h1>Jugadores registrados</h1><p>'+esc(total)+' nombres públicos encontrados en cédulas y registros deportivos.</p></div></header>'+
-    '<div class="v104-cats">'+ORDER.map(id=>'<button type="button" class="'+(active===id?'active':'')+'" data-v104-cat="'+id+'">'+esc(NAMES[id])+'</button>').join('')+'</div>'+
-    '<label class="v104-search"><span>⌕</span><input type="search" data-v104-search value="'+esc(query)+'" placeholder="Buscar jugador o equipo" autocomplete="off"></label>'+
+    '<header class="v104-head"><div><small>DATOS OFICIALES</small><h1>Jugadores registrados</h1><p>'+esc(total)+' nombres visibles con los filtros seleccionados.</p></div></header>'+
+    '<div class="v104-filter-panel"><div class="v104-filter-grid">'+categorySelectHtml()+teamSelectHtml()+'</div>'+
+      '<label class="v104-search"><span>⌕</span><input type="search" data-v104-search value="'+esc(query)+'" placeholder="Buscar jugador" autocomplete="off"></label>'+
+      '<button type="button" class="v104-clear" data-v104-clear>Limpiar filtros</button></div>'+
     '<div class="v104-list">'+(groups.length?groups.map(g=>
       '<section class="v104-team">'+
         '<button type="button" class="v104-team-head" data-v104-team="'+esc(g.team)+'">'+teamLogo(g.team)+'<span><b>'+esc(g.team)+'</b><small>'+esc(g.category)+' · '+g.players.length+' jugadores</small></span><i>›</i></button>'+
@@ -97,9 +143,37 @@ function render(){
     '<p class="v104-source">Fuente deportiva pública: juventinorosasliga.com sincronizada en Liga_Futbol. No se muestran CURP, INE, domicilio ni documentos.</p>'+
   '</section>';
 
-  root.querySelectorAll('[data-v104-cat]').forEach(b=>b.onclick=()=>{active=b.dataset.v104Cat||'all';localStorage.setItem('v104-player-category',active);render()});
+  const catSelect=root.querySelector('[data-v104-category-select]');
+  if(catSelect)catSelect.onchange=()=>{
+    active=catSelect.value||'all';
+    selectedTeam='all';
+    localStorage.setItem('v104-player-category',active);
+    localStorage.setItem('v104-player-team','all');
+    render();
+  };
+  const teamSelect=root.querySelector('[data-v104-team-select]');
+  if(teamSelect)teamSelect.onchange=()=>{
+    selectedTeam=teamSelect.value||'all';
+    localStorage.setItem('v104-player-team',selectedTeam);
+    render();
+  };
+  const clear=root.querySelector('[data-v104-clear]');
+  if(clear)clear.onclick=()=>{
+    active='all';selectedTeam='all';query='';
+    localStorage.setItem('v104-player-category','all');
+    localStorage.setItem('v104-player-team','all');
+    render();
+  };
   const inp=root.querySelector('[data-v104-search]');
-  if(inp)inp.oninput=()=>{query=inp.value||'';render()};
+  if(inp)inp.oninput=()=>{
+    query=inp.value||'';
+    const q=norm(query);
+    root.querySelectorAll('.v104-team').forEach(card=>{
+      const hay=[...card.querySelectorAll('.v104-player')].some(row=>norm(row.textContent).includes(q));
+      card.hidden=!!q&&!hay;
+      card.querySelectorAll('.v104-player').forEach(row=>row.hidden=!!q&&!norm(row.textContent).includes(q));
+    });
+  };
   root.querySelectorAll('[data-v104-team]').forEach(b=>b.onclick=()=>{
     const name=b.dataset.v104Team||'';
     try{window.LJR_OFFICIAL_API?.openTeam?.(name)}catch(_){}
