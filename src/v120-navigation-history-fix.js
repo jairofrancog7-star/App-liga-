@@ -76,13 +76,45 @@
     try{return !!document.referrer && new URL(document.referrer).origin===location.origin;}catch{return false;}
   };
 
-  function fallbackHome(){
-    if(normRoute()==='home') return;
+  const FALLBACK_ROUTE={
+    teamDetail:'teams',
+    playerDetail:'players',
+    match:'competition',
+    newsDetail:'news',
+    cedulaDetail:'cedulas',
+    credential:'cedulas',
+    notifications:'more',
+    following:'more',
+    rankings:'more',
+    history:'more',
+    'safe-data':'more',
+    leagueData:'more',
+    tableExport:'leagueTools',
+    bracketBuilder:'leagueTools',
+    credentialBuilder:'leagueTools',
+    cedulaBuilder:'leagueTools',
+    agendaBuilder:'leagueTools',
+    motionHub:'leagueTools',
+    suspensionTool:'leagueTools',
+    rulebook:'leagueTools',
+    matchday:'leagueTools',
+    weatherFields:'leagueTools',
+    venues:'leagueTools',
+    publications:'leagueTools',
+    tactics:'leagueTools',
+    simulator:'leagueTools',
+    jrControl:'leagueTools'
+  };
+
+  function fallbackRoute(){
+    const now=normRoute();
+    const target=FALLBACK_ROUTE[now]||'home';
+    if(now===target) return;
     const old=location.href;
-    const base=location.pathname+location.search+'#/home';
+    const base=location.pathname+location.search+'#/'+target;
     history.replaceState(history.state,'',base);
-    current='home';
-    stack=['home'];
+    current=target;
+    stack=[target];
     writeJson(STACK_KEY,stack);
     try{
       window.dispatchEvent(new HashChangeEvent('hashchange',{oldURL:old,newURL:location.href}));
@@ -101,7 +133,7 @@
       history.back();
       return;
     }
-    fallbackHome();
+    fallbackRoute();
   }
 
   window.LJR_APP_BACK=appBack;
