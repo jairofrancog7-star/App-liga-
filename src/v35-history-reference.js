@@ -196,6 +196,8 @@ const HIST_CHAMPION_BACKGROUNDS={
   'boavista fc':HIST_ROOT+'assets/teams/boavista-fc.webp',
   'galácticos (pozos)':HIST_ROOT+'assets/teams/galacticos-pozos.webp',
   'galacticos (pozos)':HIST_ROOT+'assets/teams/galacticos-pozos.webp',
+  'galácticos fc':HIST_ROOT+'assets/teams/galacticos-pozos.webp',
+  'galacticos fc':HIST_ROOT+'assets/teams/galacticos-pozos.webp',
   'lobos cdg':HIST_ROOT+'assets/teams/lobos-cdg.webp'
 };
 function championBackground(name,explicitPhoto){
