@@ -1931,9 +1931,9 @@
   .v35-history-status span{
     min-width:0;
     padding:8px 9px;
-    border:1px solid rgba(37,229,240,.22);
+    border:1px solid rgba(55,231,242,.42);
     border-radius:11px;
-    background:rgba(8,20,105,.58);
+    background:rgba(5,12,73,.14);
     color:#fff;
     font-size:10px;
     line-height:1.25;
@@ -1970,13 +1970,13 @@
 .v35-history-moment-photo .v35-history-moment-shade{
   display:block!important;
   background:
-    linear-gradient(180deg,rgba(3,6,50,.05) 0%,rgba(3,6,50,.14) 30%,rgba(3,6,50,.74) 76%,rgba(3,6,50,.91) 100%),
-    linear-gradient(90deg,rgba(3,6,50,.48) 0%,rgba(3,6,50,.14) 70%,rgba(3,6,50,.04) 100%)!important;
+    linear-gradient(180deg,rgba(3,6,50,.02) 0%,rgba(3,6,50,.05) 32%,rgba(3,6,50,.28) 72%,rgba(3,6,50,.56) 100%),
+    linear-gradient(90deg,rgba(3,6,50,.20) 0%,rgba(3,6,50,.05) 70%,rgba(3,6,50,0) 100%)!important;
 }
 .v35-champion-shade{
   background:
-    linear-gradient(180deg,rgba(5,7,55,.04) 0%,rgba(5,7,55,.12) 30%,rgba(5,7,55,.72) 76%,rgba(5,7,55,.92) 100%),
-    linear-gradient(90deg,rgba(5,7,55,.46) 0%,rgba(5,7,55,.12) 72%,rgba(5,7,55,.03) 100%)!important;
+    linear-gradient(180deg,rgba(5,7,55,.02) 0%,rgba(5,7,55,.05) 30%,rgba(5,7,55,.26) 76%,rgba(5,7,55,.54) 100%),
+    linear-gradient(90deg,rgba(5,7,55,.18) 0%,rgba(5,7,55,.04) 72%,rgba(5,7,55,0) 100%)!important;
 }
 .v35-history-moment-reference .v35-history-bg-photo,
 .v35-champion-card-reference .v35-champion-bg-photo{
@@ -1988,9 +1988,11 @@
   text-shadow:0 2px 10px rgba(0,0,0,.64);
 }
 .v35-history-moment-photo .v35-history-status span{
-  background:rgba(5,12,79,.68)!important;
-  backdrop-filter:blur(8px);
-  -webkit-backdrop-filter:blur(8px);
+  background:rgba(5,12,79,.10)!important;
+  border-color:rgba(62,231,242,.48)!important;
+  box-shadow:inset 0 0 0 1px rgba(255,255,255,.025);
+  backdrop-filter:none!important;
+  -webkit-backdrop-filter:none!important;
 }
 .v35-champion-card-photo .v35-champion-date{
   background:rgba(4,8,63,.70)!important;
@@ -2103,5 +2105,31 @@
   .v35-year-pending .v35-year-head span,
   .v35-year-pending .v35-category-head>b{
     color:#ffd76b;
+  }
+}
+
+
+/* V119 — Historia: foto completa visible y paneles centrales transparentes.
+   Nunca tapa la fotografía del campeonato con bloques azules opacos. */
+@media(max-width:1023px){
+  .v35-history-moment-photo .v35-history-status span{
+    background:rgba(3,8,58,.10)!important;
+    border:1px solid rgba(58,232,242,.48)!important;
+    box-shadow:0 1px 0 rgba(255,255,255,.025), inset 0 0 0 1px rgba(255,255,255,.018)!important;
+    backdrop-filter:none!important;
+    -webkit-backdrop-filter:none!important;
+  }
+  .v35-history-moment-photo .v35-history-bg-photo,
+  .v35-champion-card-photo .v35-champion-bg-photo{
+    opacity:1!important;
+    filter:saturate(1.06) contrast(1.02) brightness(.98)!important;
+  }
+  .v35-history-moment-photo .v35-history-moment-shade{
+    background:
+      linear-gradient(180deg,rgba(2,5,45,0) 0%,rgba(2,5,45,.02) 34%,rgba(2,5,45,.18) 70%,rgba(2,5,45,.48) 100%),
+      linear-gradient(90deg,rgba(2,5,45,.14) 0%,rgba(2,5,45,.03) 72%,rgba(2,5,45,0) 100%)!important;
+  }
+  .v35-history-status b{
+    text-shadow:0 2px 7px rgba(0,0,0,.82);
   }
 }
