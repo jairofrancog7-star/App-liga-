@@ -593,3 +593,42 @@
   }
   body[data-app-route="home"] .v103-upcoming-match>strong{min-width:62px!important}
 }
+
+
+/* V110 — HOME: conservar sólo la tabla nativa inferior de Próximos partidos
+   y centrarla horizontalmente. */
+@media(max-width:1023px){
+  body[data-app-route="home"] #screen>.section.hero.v103-upcoming-host,
+  body[data-app-route="home"] [data-v103-upcoming]{
+    display:none!important;
+  }
+
+  body[data-app-route="home"] #screen>.section.v110-home-upcoming-native{
+    width:calc(100% - 28px)!important;
+    max-width:620px!important;
+    margin:28px auto 30px!important;
+    padding-left:0!important;
+    padding-right:0!important;
+  }
+
+  body[data-app-route="home"] #screen>.section.v110-home-upcoming-native>.section-head{
+    width:100%!important;
+    margin-left:auto!important;
+    margin-right:auto!important;
+  }
+
+  body[data-app-route="home"] #screen>.section.v110-home-upcoming-native>.match-card{
+    width:100%!important;
+    max-width:100%!important;
+    margin-left:auto!important;
+    margin-right:auto!important;
+    box-sizing:border-box!important;
+  }
+}
+
+@media(max-width:420px){
+  body[data-app-route="home"] #screen>.section.v110-home-upcoming-native{
+    width:calc(100% - 20px)!important;
+    margin-top:24px!important;
+  }
+}
