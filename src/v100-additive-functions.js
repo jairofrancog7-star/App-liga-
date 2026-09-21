@@ -118,7 +118,8 @@ function inlineTool(icon,title,sub,action,routeName){
   return '<button type="button" class="v60-tool-card v100-inline-tool" data-v100-inline-tool="1" '+(routeName?'data-v100-route="'+esc(routeName)+'"':'data-v100-action="'+esc(action)+'"')+'><span class="v100-inline-emoji" aria-hidden="true">'+icon+'</span><span><b>'+esc(title)+'</b><small>'+esc(sub)+'</small></span></button>';
 }
 function toolsInline(){
-  return [
+  return '<div class="v100-inline-tools-title"><small>FUNCIONES ADICIONALES</small><strong>Más herramientas</strong><span>Estas funciones quedan dentro de “Todas las herramientas”.</span></div>'+
+  [
     inlineTool('🪪','Credencial con OCR','Lectura OCR y PNG','', 'credentialBuilder'),
     inlineTool('📷','Importar desde WhatsApp','Leer imagen guardada','whatsapp-ocr'),
     inlineTool('🗓️','JR Matchday+','Checklist de jornada','', 'matchday'),
@@ -262,7 +263,7 @@ function bindGeneric(root){$$('[data-v100-route]',root).forEach(b=>b.onclick=()=
 function mount(){
   const screen=$('#screen');if(!screen)return;const r=route();
   if(r==='home'){const old=$('#v100-home-extra',screen);if(old&&Number(old.dataset.v100TeamCount||0)===0&&officialTeams().length)old.remove();if(!$('#v100-home-extra',screen)){screen.insertAdjacentHTML('beforeend',homeExtra());const n=$('#v100-home-extra',screen);bindGeneric(n);bindHome(n)}}
-  if(r==='more'&&!$('#v100-more-extra',screen)){screen.insertAdjacentHTML('beforeend',toolsExtra('v100-more-extra'));bindGeneric($('#v100-more-extra',screen))}
+  if(r==='more') $('#v100-more-extra',screen)?.remove();
   if(r==='leagueTools'){
     $('#v100-league-tools-extra',screen)?.remove();
     const grid=$('.v60-tool-grid',screen);
