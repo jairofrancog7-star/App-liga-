@@ -207,8 +207,9 @@ body.v94-discipline-official #screen{
 }
 
 
-/* V124.3 — Disciplina: contenido más arriba y fondo continuo.
-   Mantiene intacta la barra superior; sólo acerca toda la información a ella. */
+/* V124.4 — Disciplina: un solo fondo oscuro, sin líneas/arcos cyan.
+   Mantiene la barra en su sitio y conserva sus accesos; sólo cambia el fondo
+   para unir visualmente cabecera y contenido. */
 @media(max-width:1023px){
   body.v94-discipline-official,
   body.v94-discipline-official .app-shell,
@@ -218,17 +219,43 @@ body.v94-discipline-official #screen{
     background-image:none!important;
   }
 
+  /* Misma barra, mismo tamaño y mismas posiciones, pero con fondo sólido
+     para eliminar completamente los medios círculos y líneas azul claro. */
+  body.v94-discipline-official .topbar,
+  body.v94-discipline-official.v69-primary-tool-header .topbar{
+    background:#05075f!important;
+    background-image:none!important;
+    border:0!important;
+    border-bottom:0!important;
+    box-shadow:none!important;
+  }
+  body.v94-discipline-official .topbar::before,
+  body.v94-discipline-official .topbar::after{
+    content:none!important;
+    display:none!important;
+    background:none!important;
+  }
+
+  /* El arte anterior dibujaba el logo y el perfil dentro de la imagen.
+     Se muestran de nuevo en exactamente las mismas zonas táctiles. */
+  body.v94-discipline-official .topbar .wordmark{
+    background:transparent url('../assets/liga-logo.webp') center/contain no-repeat!important;
+  }
+  body.v94-discipline-official .topbar .profile-button{
+    background:transparent url('../profile-reference.svg') center/contain no-repeat!important;
+  }
+
+  /* Acerca la información a la barra, sin tapar Disciplina ni su descripción. */
   body.v94-discipline-official #screen{
     position:relative!important;
     z-index:31!important;
-    margin-top:-72px!important;
+    margin-top:-28px!important;
     padding-top:0!important;
     border-top:0!important;
     box-shadow:none!important;
     background:#05075f!important;
     background-image:none!important;
   }
-
   body.v94-discipline-official #screen::before,
   body.v94-discipline-official #screen::after{
     content:none!important;
@@ -238,7 +265,7 @@ body.v94-discipline-official #screen{
 
   body.v94-discipline-official .v94-discipline-page{
     margin:0!important;
-    padding-top:2px!important;
+    padding-top:6px!important;
     background:#05075f!important;
     background-image:none!important;
   }
@@ -250,9 +277,9 @@ body.v94-discipline-official #screen{
 
 @media(max-width:390px){
   body.v94-discipline-official #screen{
-    margin-top:-66px!important;
+    margin-top:-24px!important;
   }
   body.v94-discipline-official .v94-discipline-page{
-    padding-top:0!important;
+    padding-top:4px!important;
   }
 }
