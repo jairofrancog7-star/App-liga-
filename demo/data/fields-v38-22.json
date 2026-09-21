@@ -148,14 +148,14 @@
         "San Juan de la Cruz"
       ],
       "community": "San Juan de la Cruz",
-      "latitude": 20.63379,
-      "longitude": -100.911569,
-      "precision": "locality",
-      "weatherEligible": true,
-      "mapsQuery": "Campo de futbol San Juan de la Cruz, Santa Cruz de Juventino Rosas, Guanajuato",
+      "latitude": null,
+      "longitude": null,
+      "precision": "user-map-link",
+      "weatherEligible": false,
+      "mapsQuery": "https://maps.app.goo.gl/VJkp1fRa9t5yzfkb9",
       "address": "San Juan de la Cruz, Santa Cruz de Juventino Rosas, Guanajuato 38250",
-      "source": "https://mx.micodigopostal.info/distrito/guanajuato-santa-cruz-de-juventino-rosas",
-      "sourceNote": "Pin meteorológico de la localidad; confirmar pin exacto del campo."
+      "source": "https://maps.app.goo.gl/VJkp1fRa9t5yzfkb9",
+      "sourceNote": "Ubicación del Campo San Juan de la Cruz corregida con el enlace exacto de Google Maps aportado por el usuario. Se retiró el pin anterior para evitar mostrar una ubicación incorrecta."
     },
     {
       "id": "cuenda",
