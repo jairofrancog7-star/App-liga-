@@ -1999,3 +1999,109 @@
   .v35-history-moment-photo,
   .v35-champion-card-photo{min-height:286px!important}
 }
+
+
+/* V115 — Equipos históricos ordenados por año y categoría.
+   Sustituye únicamente el catálogo plano inferior; no modifica la parte superior de Historia. */
+@media(max-width:1023px){
+  .v35-year-directory{
+    display:grid;
+    gap:16px;
+    margin:0 0 24px;
+  }
+  .v35-year-block{
+    overflow:hidden;
+    border:1px solid rgba(65,225,241,.22);
+    border-radius:19px;
+    background:linear-gradient(180deg,rgba(13,27,128,.98),rgba(7,14,82,.99));
+    box-shadow:0 12px 28px rgba(0,0,48,.14);
+  }
+  .v35-year-head{
+    min-height:67px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:12px;
+    padding:12px 14px;
+    border-bottom:1px solid rgba(69,226,241,.2);
+    background:linear-gradient(105deg,rgba(20,66,210,.78),rgba(13,25,119,.74));
+  }
+  .v35-year-head>div{
+    display:grid;
+    gap:2px;
+  }
+  .v35-year-head span{
+    color:#50edf5;
+    font-size:8px;
+    line-height:1;
+    font-weight:900;
+    letter-spacing:.16em;
+  }
+  .v35-year-head h4{
+    margin:0;
+    color:#fff;
+    font-size:25px;
+    line-height:1;
+    font-weight:900;
+  }
+  .v35-year-head>b{
+    max-width:46%;
+    padding:6px 9px;
+    border:1px solid rgba(80,237,245,.28);
+    border-radius:999px;
+    color:#d8faff;
+    background:rgba(3,14,82,.45);
+    font-size:9px;
+    line-height:1.15;
+    text-align:center;
+  }
+  .v35-category-block{
+    border-top:1px solid rgba(255,255,255,.035);
+  }
+  .v35-category-block:first-of-type{
+    border-top:0;
+  }
+  .v35-category-head{
+    display:grid;
+    grid-template-columns:minmax(0,1fr) auto;
+    gap:3px 10px;
+    align-items:center;
+    padding:11px 13px 9px;
+    background:rgba(22,34,144,.64);
+  }
+  .v35-category-head>span{
+    min-width:0;
+    color:#fff;
+    font-size:11px;
+    line-height:1.22;
+    font-weight:850;
+    overflow-wrap:anywhere;
+  }
+  .v35-category-head>small{
+    grid-column:1;
+    color:#9faee0;
+    font-size:8px;
+    line-height:1.2;
+  }
+  .v35-category-head>b{
+    grid-column:2;
+    grid-row:1 / span 2;
+    align-self:center;
+    color:#49e8f3;
+    font-size:8.5px;
+    line-height:1.15;
+    text-align:right;
+    white-space:nowrap;
+  }
+  .v35-year-block .v35-era-team-grid{
+    border-top:1px solid rgba(82,104,211,.12);
+  }
+  .v35-year-pending{
+    border-style:dashed;
+    border-color:rgba(255,210,99,.3);
+  }
+  .v35-year-pending .v35-year-head span,
+  .v35-year-pending .v35-category-head>b{
+    color:#ffd76b;
+  }
+}
