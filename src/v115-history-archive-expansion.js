@@ -1,4 +1,4 @@
-/* V115 — expansión aditiva del archivo histórico 2012–2024.
+/* V115 — expansión aditiva del archivo histórico 2012–2026.
    Se monta al final de Historia / Sobre la Liga sin reemplazar contenido previo. */
 (function(){
 'use strict';
@@ -143,7 +143,7 @@ function seasonsHtml(){
   return head('TEMPORADAS RECUPERADAS','Resumen por temporada y categoría','Se agregan campeones, líderes, ascensos y clubes localizados en las fuentes. Cuando no hay una tabla final completa, el dato se etiqueta como publicación o corte y no se completa por inferencia.')+
     '<div class="v115-subhead"><span>2025–2026 · VIDEOS DEL ZIP</span><h3>Campeones y finales recuperados</h3><p>Incluye La Huerta de Cuenda en Segunda Fuerza 2025, Deportivo CG de Cerrito de Gasca en Veteranos 35+ 2025–2026 y el registro audiovisual de Oklahoma City campeón de Intermedia con año exacto pendiente.</p></div><div class="v115-grid">'+champions.slice(0,3).map(x=>factCard(x)).join('')+'</div>'+
     '<div class="v115-subhead"><span>2022</span><h3>Liga, Copa y ascensos documentados</h3></div><div class="v115-grid">'+season2022.map(x=>factCard(x)).join('')+'</div>'+
-    '<div class="v115-subhead"><span>2022–2023 / 2023</span><h3>Campeón de Campeones y Veteranos</h3></div><div class="v115-grid">'+champions.slice(0,2).map(x=>factCard(x)).join('')+'</div>'+
+    '<div class="v115-subhead"><span>2022–2023 / 2023</span><h3>Campeón de Campeones y Veteranos</h3></div><div class="v115-grid">'+champions.filter(x=>/2023/.test(x.date)||/2022–2023/.test(x.title)).map(x=>factCard(x)).join('')+'</div>'+
     '<div class="v115-subhead"><span>CLASIFICADOS, LÍDERES Y ASCENSOS</span><h3>Solo lo que la publicación identifica</h3></div><div class="v115-list">'+leaders.map(simpleRow).join('')+'</div>'+
     '<div class="v115-subhead"><span>COPA 2023–2024</span><h3>Equipos documentados por la Liga</h3><p>Este directorio histórico no modifica los equipos actualmente inscritos.</p></div><div class="v115-team-grid">'+oldTeams.map(teamCard).join('')+'</div>';
 }
@@ -183,7 +183,7 @@ function injectHistory(){
   content.appendChild(box);
 }
 function aboutHtml(){
-  return head('ARCHIVO HISTÓRICO · 2023–2024','Clubes, comunidades y memoria de la Liga','Nueva ampliación añadida en la parte inferior de Sobre la Liga. Son perfiles históricos fechados: no alteran la plantilla ni el directorio de equipos actuales.')+
+  return head('ARCHIVO HISTÓRICO · 2012–2026','Clubes, campeones y memoria de la Liga','Nueva ampliación añadida en la parte inferior de Sobre la Liga. Son perfiles históricos fechados: no alteran la plantilla ni el directorio de equipos actuales.')+
     '<div class="v115-team-grid">'+oldTeams.map(teamCard).join('')+'</div>'+
     '<div class="v115-subhead"><span>PALMARÉS NUEVO</span><h3>Hechos incorporados del archivo recuperado</h3></div><div class="v115-grid">'+champions.slice(0,10).map(x=>factCard(x)).join('')+'</div>'+
     '<div class="v115-subhead"><span>GOLEO Y LIDERAZGO</span><h3>Registros históricos confirmados</h3></div><div class="v115-list">'+scorers.map(simpleRow).join('')+leaders.map(simpleRow).join('')+'</div>'+
