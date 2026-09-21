@@ -427,6 +427,29 @@
       return;
     }
 
+    /* V120 — CLIMA Y CAMPOS:
+       Primero se muestran las canchas y sus controles reales.
+       El cuadro animado "PRONÓSTICO NO ES DECISIÓN" va hasta abajo de esta pantalla. */
+    if(r==='weatherFields'){
+      const nativeWeather=screen.querySelector('.v60-tool-page');
+      if(!nativeWeather){
+        screen.querySelectorAll(':scope > [data-v73-motion-banner]').forEach(x=>x.remove());
+        syncAll();
+        return;
+      }
+
+      let banner=screen.querySelector(':scope > [data-v73-motion-banner]');
+      if(!banner){
+        banner=buildBanner(cfg);
+        banner.classList.add('v73-below-native','v73-weatherfields-bottom');
+        banner.dataset.v73BelowNative='weather-fields';
+      }
+
+      if(screen.lastElementChild!==banner)screen.appendChild(banner);
+      syncAll();
+      return;
+    }
+
     /* V118 — CANCHAS / SEDES:
        El cuadro animado "PRIMERO REVISA EL TERRENO" debe ir hasta abajo,
        después de toda la lista real de campos. No se cambia el contenido,
