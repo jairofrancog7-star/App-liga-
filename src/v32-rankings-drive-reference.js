@@ -167,7 +167,7 @@ function toast(message){
 }
 function tabs(){
   return '<nav class="v32-tabs" aria-label="Tipo de ranking">'+
-    '<button type="button" class="v32-tab '+(activeTab==='federations'?'active':'')+'" data-v32-tab="federations">Federaciones</button>'+
+    '<button type="button" class="v32-tab '+(activeTab==='federations'?'active':'')+'" data-v32-tab="federations">Categorías</button>'+
     '<button type="button" class="v32-tab '+(activeTab==='clubs'?'active':'')+'" data-v32-tab="clubs">Clubes</button>'+
   '</nav>';
 }
@@ -185,7 +185,7 @@ function fedControls(){
   return '<div class="v32-controls fed">'+
     '<button type="button" class="v32-select" data-v32-info="season-type"><span>Temporada</span><i class="v32-chevron"></i></button>'+
     '<button type="button" class="v32-select" data-v32-season><span>'+esc(season)+'</span><i class="v32-chevron"></i></button>'+
-    '<button type="button" class="v32-filter '+(selectedFederation?'active':'')+'" data-v32-filter aria-label="Filtrar federaciones">'+filterIcon()+'</button>'+
+    '<button type="button" class="v32-filter '+(selectedFederation?'active':'')+'" data-v32-filter aria-label="Filtrar categorías">'+filterIcon()+'</button>'+
   '</div>';
 }
 function clubsControls(){
@@ -277,7 +277,7 @@ function filterGrid(){
   }).join('');
 }
 function filterScreen(){
-  var label=activeTab==='federations'?'Federaciones':'Clubes';
+  var label=activeTab==='federations'?'Categorías':'Clubes';
   return '<section class="v32-filter-screen" data-v32-filter-screen>'+
     '<header class="v32-filter-head"><button type="button" data-v32-filter-cancel>Cancelar</button><h1>Filtros</h1><button type="button" data-v32-filter-done>Hecho</button></header>'+
     '<label class="v32-filter-search">'+searchIcon()+'<input id="v32FilterSearch" type="search" autocomplete="off" placeholder="Buscar" value="'+esc(filterQuery)+'"></label>'+
