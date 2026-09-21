@@ -390,6 +390,15 @@
       }
       return;
     }
+    /* V119 — DATOS / ESTADÍSTICAS:
+       En estas pantallas NO se agrega un banner cinematográfico de 400px.
+       Ese bloque era el espacio azul grande que aparecía al seguir deslizando. */
+    if(r==='stats'||r==='leagueData'||r==='safe-data'){
+      screen.querySelectorAll(':scope > [data-v73-motion-banner], [data-v73-motion-banner]').forEach(x=>x.remove());
+      syncAll();
+      return;
+    }
+
 
     if(r==='teams'||r==='scorers'||r==='players'){
       mountBelowNative(screen,r,cfg);
