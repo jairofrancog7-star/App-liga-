@@ -4618,6 +4618,13 @@ function v60Header(kicker,title,desc){
 }
 function leagueToolsView(){
   return '<section class="v60-tool-page">'+v60Header('LIGA JUVENTINO','Todas las herramientas','Todas las funciones de la Liga reunidas aquí, incluyendo las herramientas adicionales.')+
+    '<div class="v60-tools-featured" aria-label="Accesos principales">'+
+      '<button type="button" class="v60-tools-featured-card" data-route="teams"><span class="v60-tools-featured-icon">'+v60Icon('center')+'</span><span class="v60-tools-featured-copy"><b>Equipos</b><small>Ver equipos registrados</small></span><i>›</i></button>'+
+      '<button type="button" class="v60-tools-featured-card" data-route="players"><span class="v60-tools-featured-icon">'+v60Icon('center')+'</span><span class="v60-tools-featured-copy"><b>Jugadores</b><small>Ver jugadores registrados</small></span><i>›</i></button>'+
+      '<button type="button" class="v60-tools-featured-card" data-route="bracketBuilder"><span class="v60-tools-featured-icon">'+v60Icon('bracket')+'</span><span class="v60-tools-featured-copy"><b>Liguilla</b><small>Cuadro eliminatorio</small></span><i>›</i></button>'+
+      '<button type="button" class="v60-tools-featured-card" data-route="news"><span class="v60-tools-featured-icon">'+v60Icon('share')+'</span><span class="v60-tools-featured-copy"><b>Avisos</b><small>Noticias y comunicados</small></span><i>›</i></button>'+
+    '</div>'+
+    '<div class="v60-tools-all-label"><span>TODAS LAS FUNCIONES</span><b>Herramientas</b></div>'+
     '<div class="v60-tool-grid">'+
       v60ToolCard('search','Buscador','Equipos, jugadores, partidos, campos y noticias','search')+
       v60ToolCard('qr','QR de la Liga','Compartir acceso directo a la app','ligaQR')+
