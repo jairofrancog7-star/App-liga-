@@ -173,11 +173,23 @@ function bind(){
     try{if(window.LJR_OFFICIAL_API?.openTeam){window.LJR_OFFICIAL_API.openTeam(name);return}}catch(e){}
     location.hash='#/teamDetail';
   });
-  document.querySelectorAll('[data-v66-player]').forEach(b=>b.onclick=()=>{
-    localStorage.setItem('v66-selected-player',b.dataset.v66Player||'');
-    localStorage.setItem('v66-selected-player-team',b.dataset.v66PlayerTeam||'');
-    localStorage.setItem('v62-category',b.dataset.v66CatId||'3');
-    location.hash='#/credentialBuilder';
+  document.querySelectorAll('[data-v66-player]').forEach(b=>b.onclick=e=>{
+    e?.preventDefault?.();
+    e?.stopPropagation?.();
+    const player={
+      name:b.dataset.v66Player||'',
+      team:b.dataset.v66PlayerTeam||'',
+      cat:b.dataset.v66CatId||''
+    };
+    try{
+      localStorage.setItem('v123-compare-player',JSON.stringify(player));
+      localStorage.removeItem('v123-compare-player-2');
+    }catch(_){}
+    if(window.LJR_PLAYER_COMPARE_API?.open){
+      window.LJR_PLAYER_COMPARE_API.open(player);
+      return;
+    }
+    location.hash='#/playerCompare';
   });
 }
 function revealActivePlayerFilters(screen){
