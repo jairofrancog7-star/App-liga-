@@ -386,3 +386,21 @@ body[data-app-route="venues"] #screen>.v73-venues-bottom{
   margin-top:28px!important;
   margin-bottom:96px!important;
 }
+
+
+/* V119 — Datos/Estadísticas sin bloque vacío de movimiento. */
+body[data-app-route="stats"] #screen,
+body[data-app-route="leagueData"] #screen,
+body[data-app-route="safe-data"] #screen{
+  display:block!important;
+}
+body[data-app-route="stats"] #screen>.v73-motion-banner,
+body[data-app-route="leagueData"] #screen>.v73-motion-banner,
+body[data-app-route="safe-data"] #screen>.v73-motion-banner{
+  display:none!important;
+  min-height:0!important;
+  height:0!important;
+  margin:0!important;
+  padding:0!important;
+  border:0!important;
+}
