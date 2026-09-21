@@ -182,34 +182,57 @@ function exactPlayerFromTarget(target,list){
  return null;
 }
 
-document.addEventListener('click',async e=>{
+document.addEventListener('click',e=>{
  if(route()==='playerCompare')return;
  if(e.defaultPrevented)return;
  if(!(e.target instanceof Element))return;
  const target=e.target;
  if(target.closest('.bottom-nav,input,select,textarea,.modal,.v105-modal,[data-v42-reference="teamDetail"] .v42-overlay'))return;
 
- const a=await getApi();if(!a)return;
- const teams=a.teamList(),players=a.playerList();
+ const row=target.closest(PLAYER_SELECTOR);
+ let immediatePlayer=null;
 
- // Un toque explícito sobre un escudo/nombre de equipo pertenece al comparador de equipos.
- const exactTeamText=norm(target.textContent||'');
- const teamHit=(target.matches('img')&&target.alt?teams.find(t=>norm(t.name)===norm(target.alt)):null)||
-               (exactTeamText?teams.find(t=>norm(t.name)===exactTeamText):null);
- if(teamHit)return;
-
- let p=exactPlayerFromTarget(target,players);
- if(!p){
-  const row=target.closest(PLAYER_SELECTOR);
-  if(row)p=playerFromElement(row,players);
+ // Si el directorio ya está listo, también reconoce un toque directo al nombre
+ // aunque el diseño concreto de esa página no tenga data-* especial.
+ if(api?.playerList){
+  const teams=api.teamList();
+  const exactTeamText=norm(target.textContent||'');
+  const teamHit=(target.matches('img')&&target.alt?teams.find(t=>norm(t.name)===norm(target.alt)):null)||
+                (exactTeamText?teams.find(t=>norm(t.name)===exactTeamText):null);
+  if(teamHit)return;
+  immediatePlayer=exactPlayerFromTarget(target,api.playerList());
  }
- if(!p)return;
+
+ // Las filas de jugador conocidas se detienen ANTES de que sus handlers antiguos
+ // puedan mandar a Credencial/Detalle. Así el toque siempre termina en comparar.
+ if(!row&&!immediatePlayer)return;
+
+ // Dentro de una fila de jugador, tocar explícitamente el escudo del equipo sigue
+ // perteneciendo al comparador de equipos.
+ if(target.matches('img')&&target.alt)return;
+ if(row?.dataset?.v66PlayerTeam&&norm(target.textContent||'')===norm(row.dataset.v66PlayerTeam))return;
 
  e.preventDefault();e.stopPropagation();e.stopImmediatePropagation();
- write(PRIMARY_KEY,p);
- localStorage.removeItem(SECONDARY_KEY);
- query='';
- location.hash='#/playerCompare';
+
+ (async()=>{
+  const a=await getApi();if(!a)return;
+  const players=a.playerList(),teams=a.teamList();
+  const exactTeamText=norm(target.textContent||'');
+  const teamHit=(target.matches('img')&&target.alt?teams.find(t=>norm(t.name)===norm(target.alt)):null)||
+                (exactTeamText?teams.find(t=>norm(t.name)===exactTeamText):null);
+  if(teamHit){
+   if(window.LJR_TEAM_DETAIL_API?.openCompare)window.LJR_TEAM_DETAIL_API.openCompare(teamHit.name);
+   return;
+  }
+
+  let p=immediatePlayer||exactPlayerFromTarget(target,players);
+  if(!p&&row)p=playerFromElement(row,players);
+  if(!p)return;
+  write(PRIMARY_KEY,p);
+  localStorage.removeItem(SECONDARY_KEY);
+  query='';
+  location.hash='#/playerCompare';
+ })();
 },true);
 
 window.LJR_PLAYER_COMPARE_API={
