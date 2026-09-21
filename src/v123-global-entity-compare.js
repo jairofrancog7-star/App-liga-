@@ -145,6 +145,12 @@ function bindCompare(){
  },{once:true}));
 }
 
+const TEAM_SELECTOR=[
+ '[data-v62-team]','[data-v27-team]','[data-v41-team]','[data-v32-open-team]',
+ '[data-v28-team]','[data-v33-team]','[data-v40-team]','[data-team]',
+ '[data-v66-open-team]','[data-v42-select-name]',
+ '.club-cell','.v27-team-tile','.v28-rank-row','.v66-team-card','.v42-mini-team'
+].join(',');
 const PLAYER_SELECTOR=[
  '[data-v66-player]','[data-v33-player]','[data-v42-player]','[data-v28-player]','[data-v66-scorer]','[data-player]',
  '.v66-player-row','.v42-player-row','.player-row','.v33-stat-row.player','.v28-rank-row','.v92-player-card'
@@ -190,16 +196,36 @@ document.addEventListener('click',e=>{
  if(target.closest('.bottom-nav,input,select,textarea,.modal,.v105-modal,[data-v42-reference="teamDetail"] .v42-overlay'))return;
 
  const row=target.closest(PLAYER_SELECTOR);
+ const teamEl=target.closest(TEAM_SELECTOR);
  let immediatePlayer=null;
 
- // Si el directorio ya está listo, también reconoce un toque directo al nombre
- // aunque el diseño concreto de esa página no tenga data-* especial.
- if(api?.playerList){
+ // EQUIPOS: un toque directo al escudo o al nombre abre de inmediato la ficha
+ // con “Comparar equipos” desplegado, y bloquea el handler viejo del contenedor
+ // (por ejemplo, una fila de partido completa).
+ if(api?.teamList){
   const teams=api.teamList();
   const exactTeamText=norm(target.textContent||'');
-  const teamHit=(target.matches('img')&&target.alt?teams.find(t=>norm(t.name)===norm(target.alt)):null)||
-                (exactTeamText?teams.find(t=>norm(t.name)===exactTeamText):null);
-  if(teamHit)return;
+  let teamHit=(target.matches('img')&&target.alt?teams.find(t=>norm(t.name)===norm(target.alt)):null)||
+              (exactTeamText?teams.find(t=>norm(t.name)===exactTeamText):null);
+  if(!teamHit&&teamEl){
+   const d=teamEl.dataset||{};
+   const raws=[d.v62Team,d.v27Team,d.v41Team,d.v32OpenTeam,d.v28Team,d.v33Team,d.v40Team,d.team,d.v66OpenTeam,d.v42SelectName].filter(Boolean);
+   for(const raw of raws){
+    const hit=window.LJR_TEAM_DETAIL_API?.resolveTeam?.(raw);
+    if(hit){teamHit=hit;break}
+   }
+   if(!teamHit){
+    const txt=norm(teamEl.textContent||'');
+    const hits=teams.filter(t=>txt===norm(t.name)||txt.includes(norm(t.name)));
+    if(hits.length===1)teamHit=hits[0];
+   }
+  }
+  if(teamHit){
+   e.preventDefault();e.stopPropagation();e.stopImmediatePropagation();
+   if(window.LJR_TEAM_DETAIL_API?.openCompare)window.LJR_TEAM_DETAIL_API.openCompare(teamHit.name);
+   else{localStorage.setItem('v62-team-name',teamHit.name);localStorage.setItem('v42-open-compare','1');location.hash='#/teamDetail'}
+   return;
+  }
   immediatePlayer=exactPlayerFromTarget(target,api.playerList());
  }
 
