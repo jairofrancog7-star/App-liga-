@@ -8,11 +8,11 @@ const HIST='https://raw.githubusercontent.com/jairofrancog7-star/App-liga-/main/
 
 const ARCH119=HIST+'archive-v119/';
 const IMG={
-  archive:HIST+'premiacion-historica.jpg',
+  archive:'',
   juventus2019:HIST+'juventus-campeon-2019.jpg',
   tecos:HIST+'tecos-campeon-historico.jpg',
   huerta2025:ARCH119+'la-huerta-finalista-2025.jpg',
-  tavera2025:ARCH119+'tavera-finalista-2025.jpg',
+  tavera2025:'',
   lobos2025:ARCH119+'lobos-cdg-campeon-copa-2025.jpg',
   boavista2012:ARCH119+'boavista-xxv-2012.jpg',
   promesas2024:HIST+'archive-v117/promesas-campeon-2024.webp',
@@ -21,7 +21,12 @@ const IMG={
 };
 
 const champions=[
-  {date:'jun 2025',team:'La Huerta de Cuenda',title:'Campeón de Liga · Segunda Fuerza 2025',detail:'El archivo aportado documenta la Gran Final de Segunda Fuerza entre La Huerta y Tavera FC. Hay dos versiones promocionales con 22 y 29 de junio; por eso se conserva junio de 2025 sin fijar el día exacto. El resultado aportado por el archivo del usuario identifica a La Huerta de Cuenda como ganador de la final.',source:'Archivo histórico aportado · final La Huerta vs Tavera FC',image:IMG.huerta2025},
+  {date:'09 feb 2025',team:'Herreras FC',title:'Campeón · Torneo Relámpago · Fuerza Intermedia',detail:'El archivo de la Liga identifica a Herreras FC como campeón del Torneo Relámpago de Fuerza Intermedia ante Oklahoma. No se exige marcador para reconocer el título cuando la publicación identifica expresamente al campeón.',source:'Archivo histórico aportado · 09 feb 2025',image:HIST+'archive-v120/herreras-fc-campeon-relampago-intermedia-2025.jpg'},
+  {date:'12 abr 2025',team:'Boavista FC',title:'Campeón de Liga 2025 · Veteranos 50+',detail:'La publicación del 12 de abril de 2025 presenta expresamente a Boavista FC como CAMPEÓN 2025 después de la final ante Boca Jrs.',source:'Juventino Rosas Liga · 12 abr 2025',image:HIST+'archive-v120/boavista-fc-campeon-2025.jpg'},
+  {date:'08 jun 2025',team:'Galácticos (Pozos)',title:'Campeón de Copa 2025 · Primera Fuerza',detail:'La publicación de la Liga identifica a Galácticos de Pozos como Campeón de Copa 2025; Herreras FC fue finalista.',source:'Juventino Rosas Liga · 08 jun 2025',image:HIST+'archive-v120/galacticos-pozos-campeon-copa-2025.jpg'},
+  {date:'20 sep 2025',team:'Juventus',title:'Campeón de Liga · Veteranos 35 y más · 2025',detail:'El archivo audiovisual identifica expresamente a Juventus como campeón de Liga de Veteranos 35 y más. Salvajes aparece como subcampeón.',source:'Archivo histórico aportado · sep 2025',image:HIST+'archive-v120/juventus-campeon-liga-veteranos-35-2025.jpg'},
+
+  {date:'jun 2025',team:'La Huerta de Cuenda',title:'Campeón de Liga · Segunda Fuerza 2025',detail:'El archivo aportado documenta la Gran Final de Segunda Fuerza entre La Huerta y Tavera FC. Hay dos versiones promocionales con 22 y 29 de junio; por eso se conserva junio de 2025 sin fijar el día exacto. El resultado aportado por el archivo del usuario identifica a La Huerta de Cuenda como ganador de la final.',source:'Archivo histórico aportado · final La Huerta vs Tavera FC',image:''},
   {date:'19 sep 2026',team:'Deportivo CG · Cerrito de Gasca',title:'Campeón de Liga 2025–2026 · Veteranos 35 y más + Campeón de Campeones',detail:'El archivo aportado muestra al plantel con trofeos y el texto “CAMPEÓN TORNEO DE LIGA 2025-2026 · VETERANOS 35 Y MAS” y “CAMPEÓN DE CAMPEONES”. Otra referencia del mismo archivo anuncia la Gran Final Pozos F.C. vs Cerrito de Gasca para el 19 de septiembre de 2026.',source:'Archivo histórico aportado · premiación / final 19 sep 2026',image:IMG.archive},
   {date:'año exacto pendiente',team:'Oklahoma City',title:'Campeón · Intermedia · archivo audiovisual',detail:'El archivo contiene una referencia de Oklahoma City levantando el trofeo con la palabra “CAMPEÓN”. Otra referencia del mismo conjunto anuncia la final de Intermedia Oklahoma City vs San Julián, domingo 1 de diciembre. Se conserva la categoría y el rival documentados, pero no se fija el año hasta cruzarlo con una publicación fechada.',source:'Archivo histórico aportado · campeón + cartel de final Intermedia',image:IMG.archive},
   {date:'10 sep 2023',team:'América',title:'Campeón de Liga · Veteranos',detail:'Golazo Liga publicó “AMERICA, NUEVO CAMPEON DE LIGA DE LA FUERZA DE VETERANOS”.',source:'Golazo Liga · 10 sep 2023',image:IMG.archive},
