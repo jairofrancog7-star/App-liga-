@@ -7,7 +7,7 @@ const REMOTE='https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/m
 const SRC='https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/';
 const CAT_ORDER=['3','5','4','2','1'];
 const CAT_LABEL={'1':'Veteranos 50+','2':'Veteranos 35+','3':'Primera Fuerza','4':'Segunda Fuerza','5':'Intermedia'};
-let db=null, loading=null, teamQuery='', playerQuery='', playerCat='all';
+let db=null, loading=null, teamQuery='', playerQuery='', playerCat=localStorage.getItem('v66-player-cat')||'all', playerTeam=localStorage.getItem('v66-player-team')||'all';
 
 function route(){return location.hash.replace(/^#\/?/,'')||'home'}
 function esc(v){return String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
@@ -87,6 +87,39 @@ function categoryRail(active='all',attr='data-v66-cat'){
   return '<div class="v66-category-rail"><button class="'+(active==='all'?'active':'')+'" '+attr+'="all">Todos</button>'+
     ids.map(id=>'<button class="'+(active===id?'active':'')+'" '+attr+'="'+id+'">'+esc(db.categories[id].name||CAT_LABEL[id])+'</button>').join('')+'</div>';
 }
+function teamsForPlayerFilter(){
+  const seen=[];
+  const add=(name,id)=>{
+    name=String(name||'').trim();if(!name)return;
+    if(playerCat!=='all'&&String(id)!==String(playerCat))return;
+    if(seen.some(x=>same(x.name,name)))return;
+    seen.push({name,cat:String(id),category:db?.categories?.[String(id)]?.name||CAT_LABEL[String(id)]||''});
+  };
+  for(const id of CAT_ORDER){
+    const c=db?.categories?.[id];if(!c)continue;
+    Object.keys(c.rosters||{}).forEach(n=>add(n,id));
+  }
+  seen.sort((a,b)=>a.name.localeCompare(b.name,'es',{sensitivity:'base'}));
+  if(playerTeam!=='all'&&!seen.some(t=>same(t.name,playerTeam))){
+    playerTeam='all';
+    localStorage.setItem('v66-player-team','all');
+  }
+  return seen;
+}
+function playerTeamRail(){
+  const teams=teamsForPlayerFilter();
+  return '<div class="v66-filter-label">EQUIPO</div>'+
+    '<div class="v66-team-filter-rail">'+
+      '<button type="button" class="'+(playerTeam==='all'?'active':'')+'" data-v66-player-team-filter="all">Todos los equipos</button>'+
+      teams.map(t=>{
+        const src=logoFor(t.name);
+        return '<button type="button" class="'+(same(playerTeam,t.name)?'active':'')+'" data-v66-player-team-filter="'+esc(t.name)+'">'+
+          (src?'<img src="'+esc(src)+'" alt="" loading="lazy" decoding="async">':'')+
+          '<span>'+esc(t.name)+'</span>'+
+        '</button>';
+      }).join('')+
+    '</div>';
+}
 function teamMarkup(store=false){
   const q=norm(teamQuery);
   const list=teamList().filter(t=>!q||norm(t.name).includes(q)||norm(t.category).includes(q));
@@ -99,11 +132,19 @@ function teamMarkup(store=false){
 function playerMarkup(){
   const q=norm(playerQuery);
   const all=playerList();
-  const list=all.filter(p=>(playerCat==='all'||p.cat===playerCat)&&(!q||norm(p.name).includes(q)||norm(p.team).includes(q)));
+  teamsForPlayerFilter();
+  const list=all.filter(p=>
+    (playerCat==='all'||p.cat===playerCat)&&
+    (playerTeam==='all'||same(p.team,playerTeam))&&
+    (!q||norm(p.name).includes(q)||norm(p.team).includes(q))
+  );
   return '<section class="v66-directory" data-v66-directory="players">'+
+    '<div class="v66-filter-title">ORDENAR JUGADORES</div>'+
+    '<div class="v66-filter-label">CATEGORÍA</div>'+
     categoryRail(playerCat,'data-v66-player-cat')+
-    '<div class="v66-search"><span>⌕</span><input data-v66-player-search type="search" autocomplete="off" placeholder="Buscar jugador o equipo" value="'+esc(playerQuery)+'"></div>'+
-    '<p class="v66-source-note">'+list.length+' jugadores registrados'+(playerCat==='all'?'':' · '+esc(CAT_LABEL[playerCat]||''))+'</p>'+
+    playerTeamRail()+
+    '<div class="v66-search"><span>⌕</span><input data-v66-player-search type="search" autocomplete="off" placeholder="Buscar jugador por nombre" value="'+esc(playerQuery)+'"></div>'+
+    '<p class="v66-source-note">'+list.length+' jugadores registrados'+(playerCat==='all'?'':' · '+esc(CAT_LABEL[playerCat]||''))+(playerTeam==='all'?'':' · '+esc(playerTeam))+'</p>'+
     '<div class="v66-player-list">'+list.map((p,i)=>'<button type="button" class="v66-player-row" data-v66-player="'+esc(p.name)+'" data-v66-player-team="'+esc(p.team)+'" data-v66-cat-id="'+esc(p.cat)+'"><span class="v66-player-avatar">'+esc(fallback(p.name).slice(0,2))+'</span><span><b>'+esc(p.name)+'</b><small>'+esc(p.team)+' · '+esc(p.category)+'</small></span><i>›</i></button>').join('')+'</div>'+
   '</section>';
 }
@@ -115,7 +156,18 @@ function saveTeam(name,cat){
 function bind(){
   document.querySelector('[data-v66-team-search]')?.addEventListener('input',e=>{teamQuery=e.target.value;render(true)});
   document.querySelector('[data-v66-player-search]')?.addEventListener('input',e=>{playerQuery=e.target.value;render(true)});
-  document.querySelectorAll('[data-v66-player-cat]').forEach(b=>b.onclick=()=>{playerCat=b.dataset.v66PlayerCat||'all';render(true)});
+  document.querySelectorAll('[data-v66-player-cat]').forEach(b=>b.onclick=()=>{
+    playerCat=b.dataset.v66PlayerCat||'all';
+    playerTeam='all';
+    localStorage.setItem('v66-player-cat',playerCat);
+    localStorage.setItem('v66-player-team','all');
+    render(true);
+  });
+  document.querySelectorAll('[data-v66-player-team-filter]').forEach(b=>b.onclick=()=>{
+    playerTeam=b.dataset.v66PlayerTeamFilter||'all';
+    localStorage.setItem('v66-player-team',playerTeam);
+    render(true);
+  });
   document.querySelectorAll('[data-v66-open-team]').forEach(b=>b.onclick=()=>{
     const name=b.dataset.v66OpenTeam,cat=b.dataset.v66CatId; saveTeam(name,cat);
     try{if(window.LJR_OFFICIAL_API?.openTeam){window.LJR_OFFICIAL_API.openTeam(name);return}}catch(e){}
