@@ -207,39 +207,40 @@ body.v94-discipline-official #screen{
 }
 
 
-/* V124.2 — Disciplina: conservar la barra superior y unirla con el contenido.
-   La pantalla sube sobre la franja inferior del header para tapar los arcos cyan
-   sin mover logo, perfil, altura ni hotspots de la barra. */
+/* V124.3 — Disciplina: contenido más arriba y fondo continuo.
+   Mantiene intacta la barra superior; sólo acerca toda la información a ella. */
 @media(max-width:1023px){
   body.v94-discipline-official,
   body.v94-discipline-official .app-shell,
   body.v94-discipline-official #screen,
   body.v94-discipline-official .v94-discipline-page{
     background:#05075f!important;
+    background-image:none!important;
   }
 
-  /* La barra superior queda intacta. Sólo el contenido cubre su parte inferior
-     para eliminar los medios círculos y hacer un fondo continuo. */
   body.v94-discipline-official #screen{
     position:relative!important;
     z-index:31!important;
-    margin-top:-40px!important;
+    margin-top:-72px!important;
     padding-top:0!important;
     border-top:0!important;
     box-shadow:none!important;
     background:#05075f!important;
+    background-image:none!important;
   }
 
   body.v94-discipline-official #screen::before,
   body.v94-discipline-official #screen::after{
     content:none!important;
     display:none!important;
+    background:none!important;
   }
 
   body.v94-discipline-official .v94-discipline-page{
     margin:0!important;
-    padding-top:8px!important;
+    padding-top:2px!important;
     background:#05075f!important;
+    background-image:none!important;
   }
 
   body.v94-discipline-official .v94-kicker{
@@ -249,9 +250,9 @@ body.v94-discipline-official #screen{
 
 @media(max-width:390px){
   body.v94-discipline-official #screen{
-    margin-top:-36px!important;
+    margin-top:-66px!important;
   }
   body.v94-discipline-official .v94-discipline-page{
-    padding-top:6px!important;
+    padding-top:0!important;
   }
 }
