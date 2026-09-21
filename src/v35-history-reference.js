@@ -195,22 +195,11 @@ const HIST_ROOT='https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbo
 const HIST_MEDIA='https://raw.githubusercontent.com/jairofrancog7-star/App-liga-/main/assets/history/';
 const HIST_PHOTOS=window.LJR_HISTORY_PHOTOS||{};
 const HIST_CHAMPION_REFERENCE=HIST_MEDIA+'premiacion-historica.jpg';
-const HIST_CHAMPION_BACKGROUNDS={
-  'tavera fc':HIST_ROOT+'assets/teams/tavera-fc.webp',
-  'real cerrito de gasca':HIST_ROOT+'assets/teams/deportivo-cg.webp',
-  'boavista':HIST_ROOT+'assets/teams/boavista-fc.webp',
-  'boavista fc':HIST_ROOT+'assets/teams/boavista-fc.webp',
-  'galácticos (pozos)':HIST_ROOT+'assets/teams/galacticos-pozos.webp',
-  'galacticos (pozos)':HIST_ROOT+'assets/teams/galacticos-pozos.webp',
-  'galácticos fc':HIST_ROOT+'assets/teams/galacticos-pozos.webp',
-  'galacticos fc':HIST_ROOT+'assets/teams/galacticos-pozos.webp',
-  'lobos cdg':HIST_ROOT+'assets/teams/lobos-cdg.webp'
-};
 function championBackground(name,explicitPhoto){
   const exact=(explicitPhoto||'').trim();
   // V119: nunca reutilizar una foto genérica ni un escudo como fondo de un campeón.
   // Solo se muestra una fotografía cuando el archivo la identifica para ese campeonato.
-  if(exact && !exact.startsWith('data:image/')) return {url:exact,exact:true};
+  if(exact) return {url:exact,exact:true};
   return {url:'',exact:false};
 }
 function championBgImg(name,explicitPhoto,season,klass){
@@ -249,7 +238,7 @@ const historyMoments=[
   {kind:'CAMPEÓN',date:'15 dic 2013',season:'2013',winner:'Real Cerrito de Gasca',title:'Real Cerrito de Gasca',subtitle:'Campeón · Segunda Fuerza',detail:'Golazo Liga publicó al capitán “Nudo” recibiendo el trofeo de campeón de Segunda Fuerza. En una actualización de la final, Real Cerrito vencía 3–0 a DHP al minuto 35.',image:HIST_ROOT+'assets/teams/deportivo-cg.webp'},
   {kind:'FINAL',date:'09 mar 2013',season:'2013',winner:'Ganador por confirmar',title:'Universidad vs Dinamo',subtitle:'Final de Veteranos · Unidad Deportiva Sur · 16:00',detail:'Golazo Liga anunció la final de Veteranos para el sábado 9 de marzo en la Unidad Deportiva Sur a las 16:00. El resultado y el campeón no aparecen en el texto recuperado.',image:HIST_ROOT+'assets/official-logos/dynamo.png'},
   {kind:'FINAL',date:'2019 · día exacto pendiente',season:'2019',winner:'Ganador por confirmar',title:'Chelsea vs La Esperanza',subtitle:'Veteranos · Final de Copa · 17:30 · Campo 1',detail:'El rol histórico confirma el año 2019, la final, la hora y el Campo 1. El día exacto y el resultado no son legibles en el material recuperado.'},
-  {kind:'ANIVERSARIO',date:'28 nov 2012 · memoria de oct 1987',title:'Boavista',subtitle:'XXV aniversario',detail:'Álbum conmemorativo del equipo Boavista.',image:HIST_ROOT+'assets/official-logos/boavista.png'},
+  {kind:'ANIVERSARIO',date:'28 nov 2012 · memoria de oct 1987',title:'Boavista',subtitle:'XXV aniversario',detail:'Álbum conmemorativo del equipo Boavista.',backgroundPhoto:HIST_MEDIA+'archive-v119/boavista-xxv-2012.jpg'},
   {kind:'PENALES',date:'Archivo histórico',title:'Hermanos vs Juventus',subtitle:'Torneo de Copa',detail:'Serie de penales registrada en el archivo histórico.',imageA:HIST_ROOT+'assets/official-logos/hermanos.png',imageB:HIST_ROOT+'assets/official-logos/juventus.png'},
   {kind:'ENCUENTRO',date:'Archivo histórico',title:'Valencia vs Halcones',subtitle:'Partido histórico',detail:'Encuentro conservado dentro del archivo fotográfico.'},
   {kind:'PENALES',date:'Archivo histórico',title:'Hermanos vs Chelse',subtitle:'Archivo histórico',detail:'Serie de penales conservada en los álbumes de la Liga.',image:HIST_ROOT+'assets/official-logos/hermanos.png'},
@@ -324,10 +313,15 @@ const verifiedChampions=[
   {season:'11 dic 2012',competition:'Torneo de Copa · Categoría Segunda',champion:'Tavera FC',runner:'—',source:'Golazo Liga publicó el 11 de diciembre de 2012 una felicitación explícita al equipo Tavera como campeón de Copa de la Categoría Segunda.',championLogo:HIST_ROOT+'assets/official-logos/tavera-fc.png'},
   {season:'12 abr 2025',competition:'Torneo de Liga · Veteranos 50+',champion:'Boavista FC',runner:'Boca Jrs.',source:'El rol publicado el 9 abr 2025 programa Boca Jrs. vs Boavista a las 16:00 en Campo 1; la publicación del 12 abr presenta a Boavista F C como “CAMPEÓN 2025”.',championLogo:HIST_ROOT+'assets/official-logos/boavista.png'},
   {season:'08 jun 2025',competition:'Torneo de Copa · Primera Fuerza',champion:'Galácticos (Pozos)',runner:'Herreras FC (Cuenda)',source:'La final fue Galácticos vs Herreras FC, domingo 8 de junio de 2025 a las 10:00 en Campo 1 de la Unidad Deportiva Sur. Ese mismo día la Liga publicó a Galácticos (Pozos) como “CAMPEÓN DE COPA 2025”.',championLogo:HIST_ROOT+'assets/teams/galacticos-pozos.webp',runnerLogo:HIST_ROOT+'assets/official-logos/herreras-fc.png'},
-  {season:'15 jun 2025',competition:'Torneo de Copa · Fuerza Intermedia',champion:'Lobos CDG',runner:'Franco FC',source:'La Liga felicitó a Lobos CDG, de Cerrito de Gasca, por el título de Campeón de Copa 2025 tras vencer a Franco F.C., de San José de Manantiales. Los roles previos sitúan a ambos en las semifinales de Intermedia.',championLogo:HIST_ROOT+'assets/official-logos/lobos-cdg.png',runnerLogo:HIST_ROOT+'assets/official-logos/franco-fc.png'}
+  {season:'15 jun 2025',competition:'Torneo de Copa · Fuerza Intermedia',champion:'Lobos CDG',runner:'Franco FC',source:'La Liga felicitó a Lobos CDG, de Cerrito de Gasca, por el título de Campeón de Copa 2025 tras vencer a Franco F.C., de San José de Manantiales. Los roles previos sitúan a ambos en las semifinales de Intermedia.',photo:HIST_MEDIA+'archive-v119/lobos-cdg-campeon-copa-2025.jpg'}
 ];
 
 const historicalPhotoArchive=[
+  {date:'jun 2025',title:'La Huerta de Cuenda · Final Segunda Fuerza',detail:'Fotografía recuperada del archivo de la final de Segunda Fuerza 2025.',image:HIST_MEDIA+'archive-v119/la-huerta-finalista-2025.jpg'},
+  {date:'jun 2025',title:'Tavera FC · Final Segunda Fuerza',detail:'Fotografía recuperada del archivo de la final de Segunda Fuerza 2025.',image:HIST_MEDIA+'archive-v119/tavera-finalista-2025.jpg'},
+  {date:'15 jun 2025',title:'Lobos CDG · Campeón de Copa 2025',detail:'Fotografía del plantel asociada al título de Copa de Fuerza Intermedia 2025.',image:HIST_MEDIA+'archive-v119/lobos-cdg-campeon-copa-2025.jpg'},
+  {date:'28 nov 2012',title:'Boavista · XXV aniversario',detail:'Fotografía del álbum histórico de Boavista recuperada del archivo de 2012.',image:HIST_MEDIA+'archive-v119/boavista-xxv-2012.jpg'},
+
   {date:'22 feb 2014',title:'Puros Cuates · trofeo de campeón',detail:'Fotografía recuperada de la publicación de Golazo Liga que identifica a Puros Cuates como Campeón del Torneo de Copa 2014 de Fuerza Intermedia.',image:HIST_PHOTOS.purosCuatesTrophy2014||''},
   {date:'2018–2019',title:'Juventus · campeón de Liga',detail:'Fotografía histórica conservada en el proyecto junto con el registro de Juventus campeón y Boavista subcampeón.',image:HIST_MEDIA+'juventus-campeon-2019.jpg'},
   {date:'Archivo histórico',title:'Tecos · plantel campeón',detail:'Fotografía del archivo histórico en la que el plantel aparece identificado como campeón.',image:HIST_MEDIA+'tecos-campeon-historico.jpg'},
@@ -551,24 +545,24 @@ const historicTeamGoalRecords=[
 
 const recordMemories=[
   {tag:'PODIO 2013',title:'Romerillo',value:'3.er lugar',detail:'Fuerza Intermedia · publicación de Golazo Liga del 23 nov 2013. La nota destaca al portero de Romerillo por una atajada de penal en la serie final.'},
-  {tag:'CORTE J30',title:'Linces',value:'79 puntos',detail:'Líder del corte de Primera publicado el 6 may 2017; no se presenta como récord absoluto.',image:HIST_ROOT+'assets/official-logos/linces.png'},
-  {tag:'CORTE J30',title:'Hermanos',value:'111 GF',detail:'Goles a favor visibles en la tabla de Primera J30 del 6 may 2017.',image:HIST_ROOT+'assets/official-logos/hermanos.png'},
-  {tag:'CORTE J30',title:'Linces',value:'+75 DG',detail:'Diferencia de goles visible en la tabla de Primera J30 del 6 may 2017.',image:HIST_ROOT+'assets/official-logos/linces.png'},
-  {tag:'VETERANOS J13',title:'La Esperanza',value:'11 G · 2 E · 0 P',detail:'Corte del 25 nov 2015: 35 puntos, 38 GF y 13 GC; no se presenta como cierre final.',image:HIST_ROOT+'assets/official-logos/la-esperanza.png'},
+  {tag:'CORTE J30',title:'Linces',value:'79 puntos',detail:'Líder del corte de Primera publicado el 6 may 2017; no se presenta como récord absoluto.'},
+  {tag:'CORTE J30',title:'Hermanos',value:'111 GF',detail:'Goles a favor visibles en la tabla de Primera J30 del 6 may 2017.'},
+  {tag:'CORTE J30',title:'Linces',value:'+75 DG',detail:'Diferencia de goles visible en la tabla de Primera J30 del 6 may 2017.'},
+  {tag:'VETERANOS J13',title:'La Esperanza',value:'11 G · 2 E · 0 P',detail:'Corte del 25 nov 2015: 35 puntos, 38 GF y 13 GC; no se presenta como cierre final.'},
   {tag:'GOLEO',title:'Daniel Gómez Delgado',value:'34 goles',detail:'A. Centeno · campeón de goleo de Fuerza Intermedia, publicación del 21 feb 2017.'},
   {tag:'GOLEO',title:'José Guadalupe Moreno',value:'Campeón',detail:'Campeón goleador de Primera Fuerza; premiación publicada el 11 ene 2015.'},
   {tag:'GOLEO',title:'Alejandro Juárez Merino',value:'31 goles',detail:'Populares · líder de goleo en el corte de Intermedia J23 de 2018.'},
   {tag:'TABLA',title:'A. Centeno',value:'64 puntos',detail:'Líder del corte de Primera Fuerza J26 de 2018.'},
-  {tag:'TABLA',title:'Lobos CDG',value:'52 puntos',detail:'Líder del corte de Intermedia J23 de 2018.',image:HIST_ROOT+'assets/official-logos/lobos-cdg.png'},
-  {tag:'TABLA FINAL',title:'Juventus',value:'53 puntos',detail:'Primer lugar de la tabla final de Veteranos 2022.',image:HIST_ROOT+'assets/official-logos/juventus.png'},
-  {tag:'CAMPEÓN',title:'Juventus',value:'Liga 2018–2019',detail:'Campeón confirmado en publicación histórica del 3 de noviembre de 2019.',image:HIST_ROOT+'assets/official-logos/juventus.png'},
-  {tag:'RECUERDO',title:'Boavista',value:'XXV aniversario',detail:'Álbum conmemorativo conservado en el archivo histórico.',image:HIST_ROOT+'assets/official-logos/boavista.png'},
+  {tag:'TABLA',title:'Lobos CDG',value:'52 puntos',detail:'Líder del corte de Intermedia J23 de 2018.'},
+  {tag:'TABLA FINAL',title:'Juventus',value:'53 puntos',detail:'Primer lugar de la tabla final de Veteranos 2022.'},
+  {tag:'CAMPEÓN',title:'Juventus',value:'Liga 2018–2019',detail:'Campeón confirmado en publicación histórica del 3 de noviembre de 2019.',image:HIST_MEDIA+'juventus-campeon-2019.jpg'},
+  {tag:'RECUERDO',title:'Boavista',value:'XXV aniversario',detail:'Álbum conmemorativo conservado en el archivo histórico.',image:HIST_MEDIA+'archive-v119/boavista-xxv-2012.jpg'},
   {tag:'MEMORIA',title:'José Carmen Guerrero Velásquez',value:'Equipo de 1950',detail:'Reconocimiento publicado por la Liga el 8 jun 2025: lo describe como el único sobreviviente del primer equipo de fútbol formado en Juventino Rosas en 1950.'},
   {tag:'ARBITRAJE',title:'Gabriel Roque Hortelano',value:'100+ finales',detail:'Reconocimiento del 15 jun 2025: más de 25 años de servicio; la publicación señala certificación federada en 2002 y más de 100 finales pitadas.'},
   {tag:'TRAYECTORIA',title:'Juan Morales Vásquez “Chacharín”',value:'50+ años',detail:'Reconocimiento del 15 jun 2025: más de 50 años en activo y más de 35 años como encargado de pintar campos.'},
-  {tag:'CAMPEÓN',title:'Boavista FC',value:'Liga 2025 · V50+',detail:'Campeón de la final Boca Jrs. vs Boavista del 12 abr 2025.',image:HIST_ROOT+'assets/official-logos/boavista.png'},
-  {tag:'CAMPEÓN',title:'Galácticos (Pozos)',value:'Copa 2025',detail:'Campeón de Primera Fuerza el 8 jun 2025 ante Herreras FC (Cuenda).',image:HIST_ROOT+'assets/teams/galacticos-pozos.webp'},
-  {tag:'CAMPEÓN',title:'Lobos CDG',value:'Copa 2025',detail:'Campeón tras vencer a Franco FC; publicación del 15 jun 2025.',image:HIST_ROOT+'assets/official-logos/lobos-cdg.png'}
+  {tag:'CAMPEÓN',title:'Boavista FC',value:'Liga 2025 · V50+',detail:'Campeón de la final Boca Jrs. vs Boavista del 12 abr 2025.'},
+  {tag:'CAMPEÓN',title:'Galácticos (Pozos)',value:'Copa 2025',detail:'Campeón de Primera Fuerza el 8 jun 2025 ante Herreras FC (Cuenda).'},
+  {tag:'CAMPEÓN',title:'Lobos CDG',value:'Copa 2025',detail:'Campeón tras vencer a Franco FC; publicación del 15 jun 2025.',image:HIST_MEDIA+'archive-v119/lobos-cdg-campeon-copa-2025.jpg'}
 ];
 
 const historicResults=[
@@ -986,11 +980,7 @@ function historyMomentCard(m){
     (m.kind==='CAMPEÓN'?championBgImg(m.title,m.backgroundPhoto||'',m.season||m.date,'v35-history-bg-photo'):(m.backgroundPhoto?'<img class="v35-history-bg-photo v35-bg-exact" src="'+m.backgroundPhoto+'" alt="'+esc(m.title)+' · archivo histórico" loading="lazy" decoding="async">':''))+
     '<div class="v35-history-moment-shade" aria-hidden="true"></div>'+
     '<div class="v35-history-moment-content">'+
-      ((m.image||m.imageA||m.imageB)?'<div class="v35-history-visual">'+
-        (m.image?'<img src="'+m.image+'" alt="" loading="lazy" decoding="async">':'')+
-        (m.imageA?'<img src="'+m.imageA+'" alt="" loading="lazy" decoding="async">':'')+
-        (m.imageB?'<img src="'+m.imageB+'" alt="" loading="lazy" decoding="async">':'')+
-      '</div>':'')+
+
       '<div class="v35-history-meta"><span class="v35-history-kind">'+esc(m.kind)+'</span>'+(m.date?'<time class="v35-history-date">'+esc(m.date)+'</time>':'')+'</div>'+
       '<h3>'+esc(m.title)+'</h3>'+
       '<strong>'+esc(m.subtitle)+'</strong>'+
@@ -1068,16 +1058,15 @@ function verifiedHistoryBlocks(){
       return '<article class="v35-champion-card v35-champion-card-photo '+(!bg.exact?'v35-champion-card-reference':'')+'">'+
         championBgImg(x.champion,x.photo||'',x.season,'v35-champion-bg-photo')+'<span class="v35-champion-shade" aria-hidden="true"></span>'+
         '<div class="v35-champion-content">'+
-          ((x.championLogo||x.runnerLogo)?'<div class="v35-champion-logos">'+(x.championLogo?'<img src="'+x.championLogo+'" alt="" loading="lazy">':'')+(x.runnerLogo?'<img src="'+x.runnerLogo+'" alt="" loading="lazy">':'')+'</div>':'')+
+
           '<span class="v35-champion-date">'+esc(x.season)+'</span><h4>'+esc(x.champion)+'</h4><b>'+esc(x.competition)+'</b><p>'+(x.runner&&x.runner!=='—'?'Subcampeón: '+esc(x.runner)+'. ':'')+esc(x.source)+'</p>'+
         '</div></article>';
     }).join('')+'</div>'+
     '<div class="v35-history-subhead"><span>FOTOS DE CAMPEONES Y TROFEOS</span><h3>Archivo visual recuperado</h3><p>Fotografías reales conservadas en el archivo de la Liga. Se muestran debajo del palmarés sin modificar la parte superior de Historia.</p></div>'+
     '<div class="v35-champion-list v35-photo-archive">'+historicalPhotoArchive.filter(x=>x.image).map(x=>'<article class="v35-champion-card"><img class="v35-champion-photo" src="'+x.image+'" alt="'+esc(x.title)+'" loading="lazy" decoding="async"><span>'+esc(x.date)+'</span><h4>'+esc(x.title)+'</h4><p>'+esc(x.detail)+'</p></article>').join('')+'</div>'+
     historicalGoalsBlock()+
-    '<div class="v35-history-subhead"><span>HALLAZGOS DE LOS VIDEOS</span><h3>Fechas y publicaciones recuperadas</h3><p>Se revisaron los segmentos completos de Drive mediante muestreo visual sistemático y ampliaciones de las publicaciones importantes. Cuando una publicación no muestra el nombre del equipo o el resultado, se conserva esa limitación en vez de inventarlo.</p></div>'+
-    '<div class="v35-result-list v35-video-findings">'+videoArchiveFindings.map(x=>'<article class="v35-final-row">'+(x.image?'<div class="v35-final-logos"><img src="'+x.image+'" alt="" loading="lazy"></div>':'')+'<span>'+esc(x.date)+'</span><b>'+esc(x.title)+'</b><p>'+esc(x.detail)+'</p></article>').join('')+'</div>'+
-    '<div class="v35-history-subhead"><span>EQUIPOS HISTÓRICOS</span><h3>Equipos encontrados en los videos, tablas, roles y publicaciones</h3><p>Se agrupan por la época en que aparecen en el archivo. Un nombre aquí no significa que el equipo siga inscrito hoy. Se usa el escudo local confirmado cuando existe; para equipos históricos llamados UNAM, Guadalajara, Arsenal, Chelsea, Manchester, Juventus, PSV, Dortmund y otros nombres de clubes conocidos, puede mostrarse el emblema del club real como referencia visual.</p></div>'+
+
+    '<div class="v35-history-subhead"><span>EQUIPOS HISTÓRICOS</span><h3>Equipos encontrados en tablas, roles, publicaciones y archivo</h3><p>Se agrupan por la época en que aparecen en el archivo. Un nombre aquí no significa que el equipo siga inscrito hoy.</p></div>'+
     '<div class="v35-era-archive">'+historicalTeamEras.map(g=>'<section class="v35-era-group"><header><span>'+esc(g.period)+'</span><b>'+esc(g.category)+'</b></header><div class="v35-era-team-grid">'+g.teams.map(n=>{const display=canonicalHistoricName(n),logo=historicLogo(display);return '<article class="v35-era-team">'+(logo?'<img src="'+logo+'" alt="'+esc(display)+'" loading="lazy" decoding="async">':'<span class="v35-era-fallback">'+esc(historicInitials(display))+'</span>')+'<b>'+esc(display)+'</b></article>'}).join('')+'</div></section>').join('')+'</div>'+
     '<div class="v35-history-subhead"><span>TODOS LOS EQUIPOS · ORDENADOS POR AÑO Y CATEGORÍA</span><h3>Quién jugó, cuándo y en qué categoría</h3><p>'+allHistoricalTeams2012Plus.length+' nombres/variantes históricas recuperadas hasta ahora. Un mismo club puede aparecer en varios años; cuando la categoría no se ve en la fuente se indica expresamente en vez de inventarla.</p></div>'+
     historicalTeamDirectoryHtml()+
@@ -1087,7 +1076,7 @@ function verifiedHistoryBlocks(){
     '<div class="v35-result-list">'+historicResults.map(r=>'<article><span>'+esc(r.date)+'</span><small>'+esc(r.category)+'</small><b>'+esc(r.winner)+'</b><i>vs</i><strong>'+esc(r.against)+'</strong></article>').join('')+'</div>'+
     '<div class="v35-history-subhead"><span>FINALES DOCUMENTADAS</span><h3>Llaves y finalistas</h3></div>'+
     '<div class="v35-result-list">'+historicFinalists.map(r=>'<article class="v35-final-row">'+
-      ((r.logoA||r.logoB)?'<div class="v35-final-logos">'+(r.logoA?'<img src="'+r.logoA+'" alt="">':'')+(r.logoB?'<img src="'+r.logoB+'" alt="">':'')+'</div>':'')+
+
       '<span>'+esc(r.year)+'</span><small>'+esc(r.category)+'</small><b>'+esc(r.a)+'</b><i>vs</i><strong>'+esc(r.b)+'</strong><p>'+esc(r.note)+'</p></article>').join('')+'</div>'+
     '<div class="v35-history-subhead"><span>MÁS EQUIPOS DEL RECUERDO</span><h3>Nombres encontrados en tablas y roles antiguos</h3></div>'+
     '<div class="v35-retro-names">'+expandedRetroNames.map(n=>'<span>'+esc(n)+'</span>').join('')+'</div>'+
@@ -1137,7 +1126,7 @@ function refereeTravelBlock(){
 
 function historyArchiveBlock(){
   return '<section class="v35-block v35-history-archive">'+
-    '<div class="v35-history-archive-head"><span>ARCHIVO HISTÓRICO</span><h2>Historias de la Liga</h2><p>Archivo histórico de la Liga adulta: categoría libre y Veteranos. Se excluyen ligas infantiles, Pony, juveniles y torneos de Presidencia Municipal/COMUDE que pertenecen a organizaciones distintas. Los videos se revisan como fuente y no se insertan en esta página.</p></div>'+
+    '<div class="v35-history-archive-head"><span>ARCHIVO HISTÓRICO</span><h2>Historias de la Liga</h2><p>Archivo histórico de la Liga adulta: categoría libre y Veteranos. Se excluyen ligas infantiles, Pony, juveniles y torneos de Presidencia Municipal/COMUDE que pertenecen a organizaciones distintas. El material aportado se usa como fuente de consulta y no se inserta en esta página.</p></div>'+
     historicalTimelineBlock()+
     taggedFacebookBlock()+
     institutionalHistoryBlock()+
