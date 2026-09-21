@@ -154,19 +154,19 @@ function saveTeam(name,cat){
   localStorage.setItem('v42-team-tab','summary');
 }
 function bind(){
-  document.querySelector('[data-v66-team-search]')?.addEventListener('input',e=>{teamQuery=e.target.value;render(true)});
-  document.querySelector('[data-v66-player-search]')?.addEventListener('input',e=>{playerQuery=e.target.value;render(true)});
+  document.querySelector('[data-v66-team-search]')?.addEventListener('input',e=>{teamQuery=e.target.value;render(true,true,false)});
+  document.querySelector('[data-v66-player-search]')?.addEventListener('input',e=>{playerQuery=e.target.value;render(true,true,false)});
   document.querySelectorAll('[data-v66-player-cat]').forEach(b=>b.onclick=()=>{
     playerCat=b.dataset.v66PlayerCat||'all';
     playerTeam='all';
     localStorage.setItem('v66-player-cat',playerCat);
     localStorage.setItem('v66-player-team','all');
-    render(true);
+    render(true,false,true);
   });
   document.querySelectorAll('[data-v66-player-team-filter]').forEach(b=>b.onclick=()=>{
     playerTeam=b.dataset.v66PlayerTeamFilter||'all';
     localStorage.setItem('v66-player-team',playerTeam);
-    render(true);
+    render(true,false,true);
   });
   document.querySelectorAll('[data-v66-open-team]').forEach(b=>b.onclick=()=>{
     const name=b.dataset.v66OpenTeam,cat=b.dataset.v66CatId; saveTeam(name,cat);
@@ -180,7 +180,15 @@ function bind(){
     location.hash='#/credentialBuilder';
   });
 }
-async function render(force=false){
+function revealActivePlayerFilters(screen){
+  requestAnimationFrame(()=>{
+    const activeCat=screen.querySelector('[data-v66-player-cat].active');
+    const activeTeam=screen.querySelector('[data-v66-player-team-filter].active');
+    activeCat?.scrollIntoView?.({behavior:'smooth',block:'nearest',inline:'center'});
+    activeTeam?.scrollIntoView?.({behavior:'smooth',block:'nearest',inline:'center'});
+  });
+}
+async function render(force=false,focusSearch=false,revealFilters=false){
   const r=route(); if(!['players','club-store'].includes(r))return;
   await load(); if(!db)return;
   const screen=document.querySelector('#screen'); if(!screen)return;
@@ -188,11 +196,14 @@ async function render(force=false){
   if(!force&&screen.querySelector('[data-v66-directory="'+kind+'"]'))return;
   screen.innerHTML=r==='players'?playerMarkup():teamMarkup(true);
   bind();
-  if(r==='club-store'){
-    const input=screen.querySelector('[data-v66-team-search]'); if(force&&input){input.focus();input.setSelectionRange(input.value.length,input.value.length)}
-  }else{
-    const input=screen.querySelector('[data-v66-player-search]'); if(force&&input){input.focus();input.setSelectionRange(input.value.length,input.value.length)}
+  if(focusSearch){
+    if(r==='club-store'){
+      const input=screen.querySelector('[data-v66-team-search]'); if(input){input.focus({preventScroll:true});input.setSelectionRange(input.value.length,input.value.length)}
+    }else{
+      const input=screen.querySelector('[data-v66-player-search]'); if(input){input.focus({preventScroll:true});input.setSelectionRange(input.value.length,input.value.length)}
+    }
   }
+  if(r==='players'&&revealFilters)revealActivePlayerFilters(screen);
 }
 function schedule(){requestAnimationFrame(()=>requestAnimationFrame(()=>render(false)))}
 window.addEventListener('hashchange',schedule);
