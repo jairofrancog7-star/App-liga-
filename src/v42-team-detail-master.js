@@ -46,7 +46,9 @@ function teamData(name=selectedName()){
 const TEAM_CLICK_SELECTOR=[
  '[data-v62-team]','[data-v27-team]','[data-v41-team]','[data-v32-open-team]',
  '[data-v28-team]','[data-v33-team]','[data-v40-team]','[data-team]',
- '.club-cell','.v6-table-row','.v65-table-row','.v27-team-tile','.v28-rank-row'
+ '[data-v66-open-team]','[data-v42-select-name]',
+ '.club-cell','.v6-table-row','.v65-table-row','.v27-team-tile','.v28-rank-row',
+ '.v66-team-card','.v42-mini-team','.team-cell','.team-logo'
 ].join(',');
 const LEGACY_CODE_TO_NAME={
  SJO:'SAN JOSE FC',JVS:'JUVENTUS',HER:'HERMANOS',LIN:'LINCES',NAP:'NAPOLI',
@@ -69,7 +71,8 @@ function officialTeamFromElement(el){
  const data=el.dataset||{};
  const raws=[
   data.v62Team,data.v27Team,data.v41Team,data.v32OpenTeam,data.v28Team,
-  data.v33Team,data.v40Team,data.team,el.querySelector?.('img')?.alt
+  data.v33Team,data.v40Team,data.team,data.v66OpenTeam,data.v42SelectName,
+  el.matches?.('img')?el.alt:null,el.querySelector?.('img')?.alt
  ].filter(Boolean);
  for(const raw of raws){const hit=officialTeamByRaw(raw);if(hit)return hit}
  const text=norm(el.textContent||'');
@@ -77,13 +80,14 @@ function officialTeamFromElement(el){
  return allTeams().slice().sort((a,b)=>norm(b.name).length-norm(a.name).length)
    .find(x=>{const n=norm(x.name);return text===n||text.includes(n)})||null;
 }
-function openOfficialTeamProfile(name){
+function openOfficialTeamProfile(name,openCompare=false){
  const found=allTeams().find(x=>norm(x.name)===norm(name));if(!found)return false;
  localStorage.setItem('v62-team-name',found.name);
  localStorage.setItem('v62-category',String(found.catId));
  localStorage.setItem('v27-selected-team',slug(found.name));
  activeTab='summary';localStorage.setItem('v42-team-tab','summary');
- notifyOpen=false;compareOpen=false;compareTarget='';
+ notifyOpen=false;compareOpen=!!openCompare;compareTarget='';
+ if(openCompare)localStorage.setItem('v42-open-compare','1');else localStorage.removeItem('v42-open-compare');
  if(route()==='teamDetail')render();else location.hash='#/teamDetail';
  return true;
 }
@@ -223,12 +227,12 @@ function bind(){
  document.querySelector('[data-v42-close-compare]')?.addEventListener('click',()=>{compareOpen=false;compareTarget='';render()},{once:true});
  document.querySelectorAll('[data-v42-close-overlay]').forEach(x=>x.addEventListener('click',()=>{notifyOpen=false;compareOpen=false;render()},{once:true}));
  document.querySelectorAll('[data-v42-tab]').forEach(b=>b.addEventListener('click',()=>{activeTab=b.dataset.v42Tab;localStorage.setItem('v42-team-tab',activeTab);render()},{once:true}));
- document.querySelectorAll('[data-v42-select-name]').forEach(b=>b.addEventListener('click',()=>{localStorage.setItem('v62-team-name',b.dataset.v42SelectName);activeTab='summary';render()},{once:true}));
+ document.querySelectorAll('[data-v42-select-name]').forEach(b=>b.addEventListener('click',e=>{e.preventDefault();e.stopPropagation();const n=b.dataset.v42SelectName||'';compareOpen=true;compareTarget=norm(n)===norm(selectedName())?'':n;render()},{once:true}));
  document.querySelectorAll('[data-v42-compare-name]').forEach(b=>b.addEventListener('click',e=>{e.preventDefault();e.stopPropagation();compareTarget=b.dataset.v42CompareName;render()},{once:true}));
  document.querySelector('[data-v42-compare-again]')?.addEventListener('click',()=>{compareTarget='';render()},{once:true});
- document.querySelectorAll('[data-v42-player]').forEach(b=>b.addEventListener('click',()=>toast(b.dataset.v42Player+' · jugador registrado'),{once:true}));
+ document.querySelectorAll('[data-v42-player]').forEach(b=>b.addEventListener('click',e=>{e.preventDefault();e.stopPropagation();const t=teamData();localStorage.setItem('v123-compare-player',JSON.stringify({name:b.dataset.v42Player||'',team:t?.name||'',cat:String(t?.catId||'')}));location.hash='#/playerCompare'},{once:true}));
 }
-async function render(){const active=route()==='teamDetail';document.body.classList.toggle('v42-team-active',active);if(!active)return;await load();if(!db)return;const screen=document.querySelector('#screen');if(!screen)return;screen.innerHTML=markup();bind();nav()}
+async function render(){const active=route()==='teamDetail';document.body.classList.toggle('v42-team-active',active);if(!active)return;await load();if(!db)return;if(localStorage.getItem('v42-open-compare')==='1'){compareOpen=true;localStorage.removeItem('v42-open-compare')}const screen=document.querySelector('#screen');if(!screen)return;screen.innerHTML=markup();bind();nav()}
 function schedule(){requestAnimationFrame(()=>requestAnimationFrame(render))}
 
 /* V93 — desde tablas, rankings, tarjetas y nombres de equipos vuelve a abrirse
@@ -236,13 +240,35 @@ function schedule(){requestAnimationFrame(()=>requestAnimationFrame(render))}
 document.addEventListener('click',async e=>{
  if(route()==='teamDetail')return;
  if(!(e.target instanceof Element))return;
- if(e.target.closest('.bottom-nav,[data-v42-reference],[data-v42-close-overlay]'))return;
- const el=e.target.closest(TEAM_CLICK_SELECTOR);if(!el)return;
+ if(e.target.closest('.bottom-nav,[data-v42-reference],[data-v42-close-overlay],input,select,textarea'))return;
  await load();if(!db)return;
- const found=officialTeamFromElement(el);if(!found)return;
+
+ const target=e.target;
+ let found=null;
+
+ // Si se toca exactamente un escudo o el texto del club, ese equipo tiene prioridad
+ // incluso dentro de una fila que también contiene un jugador.
+ if(target.matches('img')&&target.alt)found=officialTeamByRaw(target.alt);
+ if(!found&&/^(B|STRONG|SPAN|SMALL|P|H1|H2|H3|H4)$/i.test(target.tagName)){
+   found=officialTeamByRaw(String(target.textContent||'').trim());
+ }
+
+ // Después usa los atributos/tarjetas de equipo conocidos en toda la app.
+ if(!found){
+   const el=target.closest(TEAM_CLICK_SELECTOR);
+   if(el)found=officialTeamFromElement(el);
+ }
+ if(!found)return;
+
  e.preventDefault();e.stopPropagation();
- openOfficialTeamProfile(found.name);
+ openOfficialTeamProfile(found.name,true);
 },true);
+
+window.LJR_TEAM_DETAIL_API={
+ openTeam:name=>openOfficialTeamProfile(name,false),
+ openCompare:name=>openOfficialTeamProfile(name,true),
+ resolveTeam:raw=>officialTeamByRaw(raw)
+};
 
 window.addEventListener('hashchange',schedule);
 const screen=document.querySelector('#screen');if(screen)new MutationObserver(()=>{if(route()==='teamDetail'&&!screen.querySelector('[data-v42-reference]'))schedule()}).observe(screen,{childList:true,subtree:false});
