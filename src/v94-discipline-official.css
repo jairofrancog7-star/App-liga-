@@ -205,3 +205,130 @@ body.v94-discipline-official #screen{
   .v94-logo-wrap{width:46px!important;height:46px!important}
   .v94-discipline-logo{width:43px!important;height:43px!important}
 }
+
+
+/* V124 — Disciplina: cabecera oscura limpia, sin arcos cyan.
+   Igual que Match Center: fondo continuo y contenido pegado a la barra superior. */
+@media(max-width:1023px){
+  body.v94-discipline-official,
+  body.v94-discipline-official .app-shell,
+  body.v94-discipline-official #screen,
+  body.v94-discipline-official .v94-discipline-page{
+    background:#05075f!important;
+  }
+
+  body.v94-discipline-official .topbar,
+  body.v94-discipline-official.v69-primary-tool-header .topbar{
+    height:92px!important;
+    min-height:92px!important;
+    max-height:92px!important;
+    margin:0!important;
+    padding:0!important;
+    background:#05075f!important;
+    background-image:none!important;
+    border:0!important;
+    border-bottom:0!important;
+    box-shadow:none!important;
+    overflow:hidden!important;
+  }
+
+  body.v94-discipline-official .topbar::before,
+  body.v94-discipline-official .topbar::after,
+  body.v94-discipline-official #screen::before,
+  body.v94-discipline-official #screen::after{
+    content:none!important;
+    display:none!important;
+    background:none!important;
+  }
+
+  /* Mantiene los dos accesos de la barra, pero sin usar el arte con líneas cyan. */
+  body.v94-discipline-official .topbar .wordmark{
+    display:block!important;
+    visibility:visible!important;
+    position:absolute!important;
+    left:20px!important;
+    top:20px!important;
+    width:52px!important;
+    height:52px!important;
+    min-width:52px!important;
+    min-height:52px!important;
+    margin:0!important;
+    padding:0!important;
+    border:0!important;
+    border-radius:0!important;
+    background:transparent url('../assets/liga-logo.webp') center/contain no-repeat!important;
+    color:transparent!important;
+    font-size:0!important;
+    line-height:0!important;
+  }
+
+  body.v94-discipline-official .topbar .profile-button{
+    display:block!important;
+    visibility:visible!important;
+    position:absolute!important;
+    right:20px!important;
+    left:auto!important;
+    top:20px!important;
+    bottom:auto!important;
+    width:46px!important;
+    height:46px!important;
+    min-width:46px!important;
+    min-height:46px!important;
+    margin:0!important;
+    padding:0!important;
+    border:0!important;
+    border-radius:50%!important;
+    background:transparent url('../profile-reference.svg') center/contain no-repeat!important;
+    color:transparent!important;
+    box-shadow:none!important;
+  }
+  body.v94-discipline-official .topbar .profile-button svg{
+    display:none!important;
+  }
+  body.v94-discipline-official .topbar .back-button{
+    display:none!important;
+  }
+
+  body.v94-discipline-official #screen{
+    margin-top:0!important;
+    padding-top:0!important;
+    border-top:0!important;
+    box-shadow:none!important;
+  }
+
+  body.v94-discipline-official .v94-discipline-page{
+    padding-top:10px!important;
+  }
+
+  body.v94-discipline-official .v94-kicker{
+    margin-top:0!important;
+  }
+}
+
+@media(max-width:390px){
+  body.v94-discipline-official .topbar,
+  body.v94-discipline-official.v69-primary-tool-header .topbar{
+    height:88px!important;
+    min-height:88px!important;
+    max-height:88px!important;
+  }
+  body.v94-discipline-official .topbar .wordmark{
+    left:16px!important;
+    top:18px!important;
+    width:48px!important;
+    height:48px!important;
+    min-width:48px!important;
+    min-height:48px!important;
+  }
+  body.v94-discipline-official .topbar .profile-button{
+    right:16px!important;
+    top:19px!important;
+    width:42px!important;
+    height:42px!important;
+    min-width:42px!important;
+    min-height:42px!important;
+  }
+  body.v94-discipline-official .v94-discipline-page{
+    padding-top:8px!important;
+  }
+}
