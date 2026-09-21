@@ -173,3 +173,150 @@
     margin:0 20px 20px!important;
   }
 }
+
+
+/* V123 — MOMENTOS: barra inferior real fija + archivo integrado al mismo diseño azul. */
+body[data-app-route="moments"]{
+  padding-bottom:0!important;
+}
+body[data-app-route="moments"] #screen{
+  padding-bottom:calc(86px + env(safe-area-inset-bottom))!important;
+}
+
+/* La navegación real permanece fija abajo durante todo el scroll. */
+body[data-app-route="moments"] .bottom-nav{
+  display:grid!important;
+  position:fixed!important;
+  left:50%!important;
+  right:auto!important;
+  bottom:0!important;
+  transform:translateX(-50%)!important;
+  z-index:10050!important;
+  width:min(100vw,520px)!important;
+  max-width:520px!important;
+  height:86px!important;
+  min-height:86px!important;
+  margin:0!important;
+  padding:7px 8px calc(7px + env(safe-area-inset-bottom))!important;
+  background:#11116f!important;
+  border-top:1px solid rgba(255,255,255,.14)!important;
+  box-shadow:0 -8px 22px rgba(0,0,50,.18)!important;
+}
+
+/* Quita de la propia captura la barra inferior que quedaba en medio.
+   El recorte conserva las tres filas de Momentos completas. */
+body[data-app-route="moments"] .v26-moments-panel[data-v26-panel="b"]{
+  aspect-ratio:832 / 1441!important;
+}
+body[data-app-route="moments"] .v26-moments-panel[data-v26-panel="b"] .v26-nav{
+  display:none!important;
+}
+body[data-app-route="moments"] .v26-moments-panel[data-v26-panel="b"] .v26-card-1,
+body[data-app-route="moments"] .v26-moments-panel[data-v26-panel="b"] .v26-card-2{
+  top:1.796%!important;
+  height:32.95%!important;
+}
+body[data-app-route="moments"] .v26-moments-panel[data-v26-panel="b"] .v26-card-3,
+body[data-app-route="moments"] .v26-moments-panel[data-v26-panel="b"] .v26-card-4{
+  top:36.29%!important;
+  height:32.95%!important;
+}
+body[data-app-route="moments"] .v26-moments-panel[data-v26-panel="b"] .v26-card-5,
+body[data-app-route="moments"] .v26-moments-panel[data-v26-panel="b"] .v26-card-6{
+  top:70.40%!important;
+  height:29.60%!important;
+}
+
+/* El bloque recuperado deja de verse como otra app o como un cuadro aparte. */
+body[data-app-route="moments"] .v26-moments-original > .v105-bottom[data-v105-route="moments"]{
+  width:100%!important;
+  margin:0!important;
+  padding:24px 22px 30px!important;
+  border:0!important;
+  border-radius:0!important;
+  background:#02065f!important;
+  background-image:none!important;
+  box-shadow:none!important;
+  color:#fff!important;
+  line-height:normal!important;
+  overflow:visible!important;
+}
+body[data-app-route="moments"] .v105-bottom[data-v105-route="moments"] .v105-head{
+  margin:0 0 18px!important;
+  padding:0!important;
+}
+body[data-app-route="moments"] .v105-bottom[data-v105-route="moments"] .v105-head small{
+  color:#23e2ef!important;
+  font-size:10px!important;
+  letter-spacing:.15em!important;
+}
+body[data-app-route="moments"] .v105-bottom[data-v105-route="moments"] .v105-head h2{
+  margin:6px 0 7px!important;
+  color:#fff!important;
+  font-size:28px!important;
+  line-height:1.02!important;
+}
+body[data-app-route="moments"] .v105-bottom[data-v105-route="moments"] .v105-head p{
+  color:#b6bddb!important;
+  font-size:13px!important;
+  line-height:1.4!important;
+}
+
+/* Animación, videos y accesos usan la misma familia de azul de Momentos. */
+body[data-app-route="moments"] .v105-bottom[data-v105-route="moments"] .v105-motion,
+body[data-app-route="moments"] .v105-bottom[data-v105-route="moments"] .v105-video-card,
+body[data-app-route="moments"] .v105-bottom[data-v105-route="moments"] .v105-card{
+  border:1px solid rgba(42,224,238,.24)!important;
+  background:#0a0c70!important;
+  box-shadow:none!important;
+}
+body[data-app-route="moments"] .v105-bottom[data-v105-route="moments"] .v105-motion{
+  min-height:170px!important;
+  margin:0 0 16px!important;
+  border-radius:20px!important;
+}
+body[data-app-route="moments"] .v105-bottom[data-v105-route="moments"] .v105-motion video{
+  filter:saturate(.82) brightness(.58) contrast(1.04)!important;
+}
+body[data-app-route="moments"] .v105-bottom[data-v105-route="moments"] .v105-motion:after{
+  background:linear-gradient(90deg,rgba(2,6,72,.94),rgba(5,12,102,.63),rgba(0,181,212,.12))!important;
+}
+body[data-app-route="moments"] .v105-bottom[data-v105-route="moments"] .v105-video-grid{
+  gap:12px!important;
+  margin:0 0 16px!important;
+}
+body[data-app-route="moments"] .v105-bottom[data-v105-route="moments"] .v105-video-card{
+  border-radius:18px!important;
+  overflow:hidden!important;
+}
+body[data-app-route="moments"] .v105-bottom[data-v105-route="moments"] .v105-video-card video{
+  background:#06085c!important;
+}
+body[data-app-route="moments"] .v105-bottom[data-v105-route="moments"] .v105-video-card b{
+  color:#fff!important;
+  font-size:12px!important;
+  line-height:1.2!important;
+}
+body[data-app-route="moments"] .v105-bottom[data-v105-route="moments"] .v105-video-card small{
+  color:#aeb8db!important;
+}
+body[data-app-route="moments"] .v105-bottom[data-v105-route="moments"] .v105-grid{
+  gap:10px!important;
+}
+body[data-app-route="moments"] .v105-bottom[data-v105-route="moments"] .v105-card{
+  border-radius:18px!important;
+  background:#0b0d73!important;
+}
+body[data-app-route="moments"] .v105-bottom[data-v105-route="moments"] .v105-footnote{
+  display:none!important;
+}
+
+@media(max-width:390px){
+  body[data-app-route="moments"] .v26-moments-original > .v105-bottom[data-v105-route="moments"]{
+    padding-left:18px!important;
+    padding-right:18px!important;
+  }
+  body[data-app-route="moments"] .v105-bottom[data-v105-route="moments"] .v105-head h2{
+    font-size:25px!important;
+  }
+}
