@@ -240,7 +240,13 @@ function schedule(){requestAnimationFrame(()=>requestAnimationFrame(render))}
 document.addEventListener('click',async e=>{
  if(route()==='teamDetail')return;
  if(!(e.target instanceof Element))return;
- if(e.target.closest('.bottom-nav,[data-v42-reference],[data-v42-close-overlay],input,select,textarea'))return;
+
+ /* V107 — no interceptar controles del directorio de Jugadores.
+    Los botones de categoría/equipo son filtros, no accesos a Comparar equipos.
+    También dejamos que las filas de jugador conserven su acción propia. */
+ if(route()==='players'&&e.target.closest('[data-v66-directory="players"]'))return;
+
+ if(e.target.closest('.bottom-nav,[data-v42-reference],[data-v42-close-overlay],input,select,textarea,[data-v66-player-team-filter],[data-v66-player-cat]'))return;
  await load();if(!db)return;
 
  const target=e.target;
