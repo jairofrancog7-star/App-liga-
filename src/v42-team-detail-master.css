@@ -1234,3 +1234,25 @@ body.v42-team-active .v42-compare-bottom:active{
     gap:16px 13px!important;
   }
 }
+
+
+/* V123 — Perfil/Comparar equipos: scroll estable hasta el final. */
+body.v42-team-active,
+body[data-app-route="teamDetail"]{
+  overflow-y:auto!important;
+  overscroll-behavior-y:auto!important;
+}
+body.v42-team-active #screen,
+body[data-app-route="teamDetail"] #screen{
+  height:auto!important;
+  min-height:100dvh!important;
+  max-height:none!important;
+  overflow-y:visible!important;
+  overflow-anchor:none!important;
+  padding-bottom:calc(82px + env(safe-area-inset-bottom))!important;
+}
+body[data-app-route="teamDetail"] #screen > [data-v42-reference="teamDetail"],
+body[data-app-route="teamDetail"] #screen > .v73-team-detail-bottom,
+body[data-app-route="teamDetail"] #screen > #v105-bottom{
+  position:relative!important;
+}
