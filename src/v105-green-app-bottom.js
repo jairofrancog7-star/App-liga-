@@ -200,7 +200,7 @@ function block(r){
  else if(r==='moments'||r==='video'){title='Videos y momentos · archivo verde';desc='Cuartos, semifinales y final recuperados, colocados al final.';cards=[{icon:'video',title:'Momentos',sub:'Contenido de la Liga',route:'moments'},{icon:'history',title:'Historial',sub:'Temporadas y archivo',route:'history'},{icon:'share',title:'Compartir jornada',sub:'Publicaciones',route:'publications'}];asset='v38-soccer-liguilla.mp4';html+=gallery()}
  else if(r==='history'){title='Historial · temporadas y palmarés';desc='Accesos de la app verde agrupados debajo del historial actual.';cards=[{icon:'history',title:'Temporada actual',sub:'Información vigente',route:'leagueData'},{icon:'trophy',title:'Palmarés',sub:'Campeones e historia',route:'history'},{icon:'history',title:'Históricos',sub:'Equipos y temporadas anteriores',route:'history'},{icon:'video',title:'Finales y momentos',sub:'Archivo audiovisual',route:'moments'}];asset='v38-soccer-liguilla.mp4'}
  else if(r==='tactics'){title='Táctica 3D · versión azul';desc='Tablero táctil inspirado en la función de Liga_Futbol; se agrega al final y guarda sólo en este dispositivo.';cards=[];asset='v38-fix10-tactics-motion.mp4';html+=tacticsBoard()}
- else if(r==='more'||r==='leagueTools'||r==='jrControl'){title='Explora la Liga · todas las herramientas';desc='Botones recuperados de la app verde y adaptados al azul, colocados al final.';cards=MORE_CARDS;asset='v38-soccer-teams.mp4'}
+ else if(r==='jrControl'){title='Explora la Liga · herramientas de control';desc='Accesos operativos complementarios de JR Control.';cards=MORE_CARDS;asset='v38-soccer-teams.mp4'}
  else if(r==='news'||r==='v38Weekly'){title='Noticias, avisos y juntas';desc='Comunicación y operación semanal de la Liga.';cards=[{icon:'news',title:'Avisos',sub:'Noticias publicadas',route:'news'},{icon:'calendar',title:'Junta semanal',sub:'Agenda y acuerdos locales',action:'meeting'},{icon:'alert',title:'Cambios de horario y sedes',sub:'Notificaciones',route:'notifications'},{icon:'video',title:'Semifinales, finales y momentos',sub:'Videos',route:'moments'}];asset='v38-soccer-matchday.mp4'}
  else if(r==='notifications'){title='Notificaciones y participación';desc='Preferencias, encuesta y pulso de afición.';cards=[{icon:'bell',title:'Notificaciones',sub:'Preferencias actuales',route:'notifications'},{icon:'fire',title:'Fan Zone',sub:'Reacciones locales',action:'fanzone'},{icon:'poll',title:'Encuesta',sub:'Voto local',action:'poll'}];asset='v38-soccer-hero.mp4'}
  else return '';
@@ -301,7 +301,7 @@ function bind(root){
  });
 }
 function supported(r){
- return ['home','competition','v4-calendar','calendar','monthlyCalendar','calendarMonthly','leagueData','bracketBuilder','tableExport','teams','players','teamDetail','match','stats','scorers','rankings','v38Stats','moments','video','history','tactics','more','leagueTools','jrControl','news','v38Weekly','notifications'].includes(r);
+ return ['home','competition','v4-calendar','calendar','monthlyCalendar','calendarMonthly','leagueData','bracketBuilder','tableExport','teams','players','teamDetail','match','stats','scorers','rankings','v38Stats','moments','video','history','tactics','jrControl','news','v38Weekly','notifications'].includes(r);
 }
 let timer=0;
 function mount(){
