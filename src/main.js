@@ -4617,7 +4617,7 @@ function v60Header(kicker,title,desc){
   return '<div class="v60-tool-head"><span class="v60-tool-kicker">'+kicker+'</span><h1>'+title+'</h1><p>'+desc+'</p></div>';
 }
 function leagueToolsView(){
-  return '<section class="v60-tool-page">'+v60Header('LIGA JUVENTINO','Herramientas de la Liga','Funciones operativas y públicas integradas a la app azul sin sustituir su diseño.')+
+  return '<section class="v60-tool-page">'+v60Header('LIGA JUVENTINO','Todas las herramientas','Todas las funciones de la Liga reunidas aquí, incluyendo las herramientas adicionales.')+
     '<div class="v60-tool-grid">'+
       v60ToolCard('search','Buscador','Equipos, jugadores, partidos, campos y noticias','search')+
       v60ToolCard('qr','QR de la Liga','Compartir acceso directo a la app','ligaQR')+
