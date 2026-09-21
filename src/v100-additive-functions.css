@@ -127,3 +127,32 @@ body[data-app-route="leagueTools"] #v100-league-tools-extra{
     padding:7px!important;
   }
 }
+
+
+/* V104.1 — Más herramientas dentro de Todas las herramientas. */
+body[data-app-route="leagueTools"] .v100-inline-tools-title{
+  grid-column:1 / -1!important;
+  display:grid!important;
+  gap:3px!important;
+  margin:10px 0 2px!important;
+  padding:12px 10px 9px!important;
+  border-top:1px solid rgba(84,230,242,.28)!important;
+}
+body[data-app-route="leagueTools"] .v100-inline-tools-title small{
+  color:#55e6f2!important;
+  font-size:9px!important;
+  line-height:1!important;
+  letter-spacing:.16em!important;
+  font-weight:900!important;
+}
+body[data-app-route="leagueTools"] .v100-inline-tools-title strong{
+  color:#fff!important;
+  font-size:18px!important;
+  line-height:1.08!important;
+  font-weight:900!important;
+}
+body[data-app-route="leagueTools"] .v100-inline-tools-title span{
+  color:#aebde0!important;
+  font-size:9px!important;
+  line-height:1.25!important;
+}
