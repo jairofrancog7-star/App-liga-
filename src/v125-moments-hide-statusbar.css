@@ -1,0 +1,57 @@
+/* V125 — Momentos: cabecera limpia SIN la barra de estado capturada.
+   Se oculta la imagen <img> que contiene 3:13, batería, Wi‑Fi, alarma y notificaciones,
+   y se reutiliza la misma referencia como fondo recortado/desplazado.
+   Así conserva el diseño azul y elimina por completo los iconos blancos. */
+
+body[data-app-route="moments"] .v26-moments-sticky{
+  position:fixed!important;
+  overflow:hidden!important;
+  background-color:#07107a!important;
+  background-image:url("./assets/moments/moments-original-a.png?v=20260921-clean-status2")!important;
+  background-repeat:no-repeat!important;
+  background-size:100% auto!important;
+  background-position:center calc(min(100vw,520px) * -0.118)!important;
+}
+
+/* La imagen original ya no se pinta: evita que la barra de estado reaparezca
+   aunque otra regla CSS vuelva a cambiar top/inset/transform. */
+body[data-app-route="moments"] .v26-moments-sticky > .v26-moments-sticky__image{
+  display:none!important;
+  visibility:hidden!important;
+  opacity:0!important;
+}
+
+/* Tapa cualquier resto de la barra de estado de la captura base debajo de la
+   cabecera fija. El degradado coincide con el azul del propio diseño. */
+body[data-app-route="moments"] .v26-moments-sticky::before{
+  content:""!important;
+  position:absolute!important;
+  left:0!important;
+  right:0!important;
+  top:0!important;
+  height:10px!important;
+  z-index:1!important;
+  pointer-events:none!important;
+  background:linear-gradient(180deg,#0929c7 0%,rgba(8,28,163,.96) 100%)!important;
+}
+
+/* El botón de volver sigue operativo por encima del fondo recortado. */
+body[data-app-route="moments"] .v26-moments-sticky-back{
+  z-index:5!important;
+}
+
+/* En la captura de contenido normal no debe asomarse la franja de status.
+   Se cubre sólo esa franja; no se tocan tarjetas ni textos de Momentos. */
+body[data-app-route="moments"] .v26-moments-panel[data-v26-panel="a"]::before{
+  content:""!important;
+  position:absolute!important;
+  left:0!important;
+  right:0!important;
+  top:0!important;
+  height:calc(min(100vw,520px) * .118)!important;
+  z-index:3!important;
+  pointer-events:none!important;
+  background:
+    url("./assets/moments/moments-original-a.png?v=20260921-clean-status2")
+    center calc(min(100vw,520px) * -0.118) / 100% auto no-repeat!important;
+}
