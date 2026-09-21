@@ -981,3 +981,27 @@
     body[data-app-route="home"] .v78-calendar-card{min-height:182px!important}
   }
 }
+
+
+/* V101 — vistas reales de las canchas en Inicio.
+   Usa Google Maps/Street View embebido en el área visual existente; no cambia tamaño ni estructura. */
+body[data-app-route="home"] .v65-field-visual .v60-field-preview,
+body[data-app-route="home"] .v65-field-visual .v65-field-map{
+  position:absolute!important;
+  inset:0!important;
+  display:block!important;
+  width:100%!important;
+  height:100%!important;
+  overflow:hidden!important;
+}
+body[data-app-route="home"] .v65-field-visual iframe,
+body[data-app-route="home"] .v65-field-visual .v60-field-preview img{
+  display:block!important;
+  width:100%!important;
+  height:100%!important;
+  border:0!important;
+  object-fit:cover!important;
+  pointer-events:none!important;
+  filter:saturate(.78) brightness(.68) contrast(1.05)!important;
+  transform:scale(1.02)!important;
+}
