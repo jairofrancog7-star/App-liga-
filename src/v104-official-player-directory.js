@@ -127,6 +127,7 @@ function totalPlayers(){
 function render(){
   if(route()!=='players'||!db)return;
   const root=screen();if(!root)return;
+  teamChoices(); // valida el equipo guardado contra la categoría actual
   const groups=entries();
   const total=totalPlayers();
   root.innerHTML='<section class="v104-players" data-v104-players>'+
