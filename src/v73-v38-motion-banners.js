@@ -422,7 +422,19 @@
         banner.classList.add('v73-below-native','v73-team-detail-bottom');
         banner.dataset.v73BelowNative='team-detail';
       }
-      if(screen.lastElementChild!==banner)screen.appendChild(banner);
+
+      /* V123 — PERFIL / COMPARAR EQUIPOS:
+         V73 y V105 antes intentaban ser ambos el último hijo de #screen.
+         Sus MutationObserver se alternaban moviendo los bloques y el navegador
+         regresaba el scroll al llegar al final. El orden ahora es estable:
+         ficha V42 -> banner V73 -> herramientas V105. */
+      const greenTools=screen.querySelector(':scope > #v105-bottom[data-v105-route="teamDetail"]');
+      if(greenTools){
+        if(banner.nextElementSibling!==greenTools)screen.insertBefore(banner,greenTools);
+      }else if(screen.lastElementChild!==banner){
+        screen.appendChild(banner);
+      }
+
       syncAll();
       return;
     }
