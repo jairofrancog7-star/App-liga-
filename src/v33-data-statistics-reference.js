@@ -201,8 +201,7 @@ function applyHeaderScroll(){
  const head=document.querySelector('[data-v33-head]'),title=head?.querySelector('[data-v33-morph-title]');if(!head||!title)return;
  const y=Math.max(0,window.scrollY||document.documentElement.scrollTop||0),p=Math.min(1,y/165),vw=Math.min(window.innerWidth,520);
  const lerp=(a,b,t)=>a+(b-a)*t,eh=Math.max(184,Math.min(258,vw*.5012)),ch=Math.max(104,Math.min(142,vw*.272));
- const h=lerp(eh,ch,p),page=document.querySelector('[data-v33-data]');head.style.setProperty('--v33-collapse',p.toFixed(4));head.style.setProperty('--v33-head-h',h.toFixed(1)+'px');
- if(page)page.style.setProperty('padding-top',h.toFixed(1)+'px','important');
+ const h=lerp(eh,ch,p);head.style.setProperty('--v33-collapse',p.toFixed(4));head.style.setProperty('--v33-head-h',h.toFixed(1)+'px');
  title.style.left=lerp(Math.max(20,vw*.055),Math.max(92,vw*.255),p).toFixed(1)+'px';
  title.style.top=lerp(Math.max(98,vw*.274),Math.max(24,vw*.070),p).toFixed(1)+'px';
  title.querySelector('h1').style.fontSize=lerp(Math.max(32,vw*.0855),Math.max(18,vw*.048),p).toFixed(1)+'px';
