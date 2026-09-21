@@ -68,24 +68,44 @@ function patchHome(){
     },{once:true});
   }
 
-  /* V110 — En Inicio debe existir UNA sola tabla de "Próximos partidos".
-     La tarjeta hero de "Partido de la semana" había sido convertida en una segunda
-     copia grande. Se elimina esa copia superior y se conserva la sección nativa
-     que ya existe más abajo en Home. */
-  root.querySelectorAll(':scope > .section.hero').forEach(hero=>hero.remove());
+  /* V111 — Restaurar Inicio como estaba:
+     - conservar el cuadro original "Partido de la semana" arriba de Momentos;
+     - conservar UNA sola sección nativa de "Próximos partidos" más abajo;
+     - no modificar los demás cuadros de Home. */
+  const moments=[...root.querySelectorAll(':scope > .section')].find(s=>
+    /^Momentos$/i.test((s.querySelector('.section-head h2,h2')?.textContent||'').trim())
+  );
+  const hero=root.querySelector(':scope > .section.hero');
 
+  if(hero){
+    /* Si una versión anterior convirtió el hero en Próximos partidos, restaurarlo. */
+    if(hero.querySelector('[data-v103-upcoming]') || hero.classList.contains('v103-upcoming-host')){
+      hero.classList.remove('v103-upcoming-host');
+      delete hero.dataset.v15HomeFeature;
+      hero.innerHTML=
+        '<span class="eyebrow" style="color:#fff">PARTIDO DE LA SEMANA</span>'+
+        '<h2>Franco FC vs<br>Herreras FC</h2>'+
+        '<p>Próximo partido oficial de Primera Fuerza.</p>'+
+        '<div class="button-row"><button class="btn primary" data-match="m1">Ver previa</button><button class="btn outline" data-action="cheer" data-cheer="m1">Apoyar · 0</button></div>';
+    }
+    /* Posición original: debajo de Historias y antes de Momentos. */
+    if(moments && hero.nextElementSibling!==moments){
+      moments.insertAdjacentElement('beforebegin',hero);
+    }
+  }
+
+  /* Dejar sólo la sección nativa inferior de Próximos partidos, sin tocar su diseño. */
   const upcomingSections=[...root.querySelectorAll(':scope > .section')].filter(s=>
     /^Próximos\s+partidos$/i.test((s.querySelector(':scope > .section-head h2')?.textContent||'').trim())
   );
   upcomingSections.forEach((s,i)=>{
-    if(i===0)s.classList.add('v110-home-upcoming-native');
-    else s.remove();
+    s.classList.remove('v110-home-upcoming-native');
+    if(i>0)s.remove();
   });
 
-  /* Quitar cualquier resto de la copia V103 si quedó montada por una versión en caché. */
+  /* Cualquier copia V103 que no esté dentro del hero se elimina. */
   root.querySelectorAll('[data-v103-upcoming]').forEach(el=>{
-    const host=el.closest('.section.hero');
-    if(host)host.remove();else el.remove();
+    if(!el.closest('.section.hero'))el.remove();
   });
 
   /* Quitar el bloque grande duplicado de Datos; Datos oficiales permanece en "Más datos"
