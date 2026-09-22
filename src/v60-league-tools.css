@@ -552,3 +552,20 @@
   pointer-events:none;
   filter:saturate(.82) brightness(.74) contrast(1.04);
 }
+
+
+/* V142 — vistas previas pequeñas para documento y foto del jugador */
+.v64-upload-field{align-items:start}
+.v64-upload-mini{
+  width:126px;height:78px;display:grid;place-items:center;overflow:hidden;
+  border:1px solid rgba(29,224,235,.55);border-radius:12px;
+  background:linear-gradient(145deg,#10147f,#090b62);
+  color:#9fa9d6;font-size:10px;font-weight:800;text-align:center;
+}
+.v64-upload-mini.v64-upload-player{width:78px;height:88px}
+.v64-upload-mini img{width:100%;height:100%;display:block;object-fit:cover}
+.v64-upload-doc img{object-fit:contain;background:#07094f}
+@media(max-width:430px){
+  .v64-upload-mini{width:112px;height:70px}
+  .v64-upload-mini.v64-upload-player{width:72px;height:82px}
+}
