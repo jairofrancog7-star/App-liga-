@@ -281,23 +281,46 @@ function parseOcrText(text){
 }
 function credentialExtra(){
   const saved=read('v100-credential-extra',{});
-  return '<section class="v100-subblock" id="v100-credential-extra">'+sectionTitle('DATOS COMPLEMENTARIOS','Registro de credencial','La ciudad / municipio / comunidad se completa automáticamente solo cuando se carga una INE. Si cargas CURP, ese dato se captura manualmente.')+
+  const states={
+    '':'Por confirmar','AS':'Aguascalientes','BC':'Baja California','BS':'Baja California Sur','CC':'Campeche',
+    'CL':'Coahuila','CM':'Colima','CS':'Chiapas','CH':'Chihuahua','DF':'Ciudad de México',
+    'DG':'Durango','GT':'Guanajuato','GR':'Guerrero','HG':'Hidalgo','JC':'Jalisco',
+    'MC':'Estado de México','MN':'Michoacán','MS':'Morelos','NT':'Nayarit','NL':'Nuevo León',
+    'OC':'Oaxaca','PL':'Puebla','QT':'Querétaro','QR':'Quintana Roo','SP':'San Luis Potosí',
+    'SL':'Sinaloa','SR':'Sonora','TC':'Tabasco','TS':'Tamaulipas','TL':'Tlaxcala',
+    'VZ':'Veracruz','YN':'Yucatán','ZS':'Zacatecas','NE':'Nacido en el extranjero'
+  };
+  return '<section class="v100-subblock" id="v100-credential-extra">'+sectionTitle('DATOS COMPLEMENTARIOS','Registro de credencial','Nombre, fecha de nacimiento, sexo y entidad de nacimiento ayudan a validar la CURP. La app no inventa una CURP si la evidencia no alcanza.')+
     '<div class="v100-form-grid">'+
       '<label><span>Fecha de nacimiento</span><input type="date" data-v100-dob value="'+esc(saved.dob||'')+'"></label>'+
       '<label><span>Edad</span><input type="text" data-v100-age readonly value="'+esc(saved.age||'')+'"></label>'+
+      '<label><span>Sexo para CURP</span><select data-v100-sex><option value="">Por confirmar</option><option value="H" '+(saved.sex==='H'?'selected':'')+'>H · Hombre</option><option value="M" '+(saved.sex==='M'?'selected':'')+'>M · Mujer</option></select></label>'+
+      '<label><span>Entidad de nacimiento</span><select data-v100-birth-state>'+Object.entries(states).map(([code,label])=>'<option value="'+code+'" '+(saved.birthState===code?'selected':'')+'>'+label+'</option>').join('')+'</select></label>'+
       '<label><span>Ciudad / municipio / comunidad</span><input type="text" data-v100-city placeholder="INE: se detecta automáticamente · si falla, escribe manualmente" value="'+esc(saved.city||'')+'"></label>'+
       '<label><span>Posición</span><select data-v100-position>'+['Portero','Defensa','Mediocampista','Delantero','Sin definir'].map(x=>'<option '+(saved.position===x?'selected':'')+'>'+x+'</option>').join('')+'</select></label>'+
       '<label><span>Temporada</span><input type="text" data-v100-season value="'+esc(saved.season||'2026–2027')+'"></label>'+
-      '<label><span>Estado</span><select data-v100-status>'+['Pendiente de validación','Revisado','Habilitado'].map(x=>'<option '+(saved.status===x?'selected':'')+'>'+x+'</option>').join('')+'</select></label>'+
+      '<label><span>Estatus del registro</span><select data-v100-status>'+['Pendiente de validación','Revisado','Habilitado'].map(x=>'<option '+(saved.status===x?'selected':'')+'>'+x+'</option>').join('')+'</select></label>'+
     '</div>'+
     '<div class="v100-actions"><button class="v100-primary" data-v100-credential-png>Descargar imagen PNG</button><button class="v100-secondary" data-v100-credential-pdf>Descargar PDF · 1 hoja</button><button class="v100-secondary" data-v100-credential-share>Compartir imagen</button></div>'+
-    '<p class="v100-note">La fecha de nacimiento también se obtiene de la CURP cuando ésta se detecta correctamente. Ciudad / municipio / comunidad se intenta leer desde la INE; si no aparece o la lectura falla, puedes escribirlo manualmente.</p>'+
+    '<p class="v100-note">La entidad de nacimiento es la que corresponde a la CURP; no siempre coincide con el estado de residencia que aparece en la INE. Si la CURP se detecta y valida, fecha, sexo y entidad se sincronizan automáticamente.</p>'+
   '</section>';
 }
 function syncCredentialExtra(){
-  const curp=$('[data-v64-cred-curp]')?.value||'',dob=$('[data-v100-dob]'),age=$('[data-v100-age]');
-  const fromCurp=curpDob(curp);if(dob&&fromCurp)dob.value=fromCurp;if(age)age.value=ageFromDob(dob?.value||'');
-  const d={dob:dob?.value||'',age:age?.value||'',city:$('[data-v100-city]')?.value||'',position:$('[data-v100-position]')?.value||'',season:$('[data-v100-season]')?.value||'',status:$('[data-v100-status]')?.value||''};write('v100-credential-extra',d);
+  const curp=$('[data-v64-cred-curp]')?.value||'',dob=$('[data-v100-dob]'),age=$('[data-v100-age]'),sex=$('[data-v100-sex]'),birthState=$('[data-v100-birth-state]');
+  const fromCurp=curpDob(curp);
+  if(dob&&fromCurp)dob.value=fromCurp;
+  const clean=String(curp||'').toUpperCase().replace(/[^A-Z0-9]/g,'');
+  if(clean.length===18){
+    if(sex&&/^[HM]$/.test(clean[10]))sex.value=clean[10];
+    if(birthState&&birthState.querySelector('option[value="'+clean.slice(11,13)+'"]'))birthState.value=clean.slice(11,13);
+  }
+  if(age)age.value=ageFromDob(dob?.value||'');
+  const d={
+    dob:dob?.value||'',age:age?.value||'',sex:sex?.value||'',birthState:birthState?.value||'',
+    city:$('[data-v100-city]')?.value||'',position:$('[data-v100-position]')?.value||'',
+    season:$('[data-v100-season]')?.value||'',status:$('[data-v100-status]')?.value||''
+  };
+  write('v100-credential-extra',d);
 }
 async function v100LoadImage(src){
   if(!src)return null;
