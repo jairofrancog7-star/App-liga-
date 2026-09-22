@@ -228,7 +228,24 @@ function sourceLabel(s){if(!s)return 'sin datos';if(s.observedHours&&s.forecastH
 function availableCategories(){return [...new Set(fixtures.map(x=>x.category))]}
 function matchesForCategory(cat){return fixtures.filter(x=>x.category===cat)}
 function currentMatch(){return fixtures.find(x=>x.id===selectedMatch)||null}
-function currentField(){return mode==='field'?(cfg?.fields||[]).find(f=>f.id===selectedField)||null:currentMatch()?.field||null}
+function validFieldId(value){
+  const fields=cfg?.fields||[];
+  const id=String(value||'');
+  return fields.some(f=>String(f.id)===id)?id:(fields[0]?.id||'');
+}
+function syncFieldFromControl(){
+  const sel=$('[data-v172-field-select]',hub);
+  if(sel&&sel.value)selectedField=validFieldId(sel.value);
+  else selectedField=validFieldId(selectedField||localStorage.getItem(FIELD_KEY));
+  if(selectedField)localStorage.setItem(FIELD_KEY,selectedField);
+  return selectedField;
+}
+function currentField(){
+  if(mode!=='field')return currentMatch()?.field||null;
+  selectedField=validFieldId(selectedField||localStorage.getItem(FIELD_KEY));
+  if(selectedField)localStorage.setItem(FIELD_KEY,selectedField);
+  return (cfg?.fields||[]).find(f=>String(f.id)===String(selectedField))||null;
+}
 function option(value,label,selected){return '<option value="'+esc(value)+'" '+(selected?'selected':'')+'>'+esc(label)+'</option>'}
 function fmtDate(match){
   if(!match?.schedule?.at)return 'Fecha pendiente';
@@ -241,7 +258,12 @@ function emptyMarkup(text){return '<div class="v172-empty">'+esc(text)+'</div>'}
 
 function controlsMarkup(){
   if(mode==='field'){
-    return '<label class="v172-control grow"><span>Campo</span><select data-v172-field-select>'+(cfg?.fields||[]).map(f=>option(f.id,f.name,f.id===selectedField)).join('')+'</select></label>'+
+    const fields=cfg?.fields||[];
+    selectedField=validFieldId(selectedField||localStorage.getItem(FIELD_KEY));
+    if(selectedField)localStorage.setItem(FIELD_KEY,selectedField);
+    return '<label class="v172-control grow"><span>Campo</span><select data-v172-field-select>' +
+      fields.map(f=>option(f.id,f.name,String(f.id)===String(selectedField))).join('')+
+      '</select></label>'+
       '<button type="button" class="primary" data-v172-action="analyze">Analizar campo</button>'+
       '<button type="button" data-v172-action="match-mode">← Volver a partido</button>';
   }
@@ -333,20 +355,33 @@ async function checkCategoryAlerts(force=false){
 /* ---- Estado / eventos ---- */
 function setMode(next){
   mode=next==='field'?'field':'match';
-  if(mode==='field'&&!selectedField)selectedField=localStorage.getItem(FIELD_KEY)||(cfg?.fields?.[0]?.id||'');
-  renderControls();analyzeSelection(false);
+  if(mode==='field'){
+    selectedField=validFieldId(selectedField||localStorage.getItem(FIELD_KEY));
+    if(selectedField)localStorage.setItem(FIELD_KEY,selectedField);
+  }
+  renderControls();
+  analyzeSelection(false);
 }
 function openFields(){if(!hub)return;setMode('field');hub.scrollIntoView({behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth',block:'start'});setTimeout(()=>$('[data-v172-field-select]',hub)?.focus(),220)}
 function openMatches(){if(!hub)return;setMode('match');hub.scrollIntoView({behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth',block:'start'})}
 function bindHub(){
-  hub.addEventListener('change',e=>{
+  const onSelect=e=>{
     if(e.target.matches('[data-v172-category]')){selectedCategory=e.target.value;localStorage.setItem(CAT_KEY,selectedCategory);selectedMatch=matchesForCategory(selectedCategory)[0]?.id||'';if(selectedMatch)localStorage.setItem(MATCH_KEY,selectedMatch);renderControls();analyzeSelection(false);checkCategoryAlerts(true)}
     else if(e.target.matches('[data-v172-match]')){selectedMatch=e.target.value;localStorage.setItem(MATCH_KEY,selectedMatch);analyzeSelection(false)}
-    else if(e.target.matches('[data-v172-field-select]')){selectedField=e.target.value;localStorage.setItem(FIELD_KEY,selectedField);analyzeSelection(false)}
-  });
+    else if(e.target.matches('[data-v172-field-select]')){
+      selectedField=validFieldId(e.target.value);
+      if(selectedField)localStorage.setItem(FIELD_KEY,selectedField);
+      analyzeSelection(false);
+    }
+  };
+  hub.addEventListener('change',onSelect);
+  hub.addEventListener('input',e=>{if(e.target.matches('[data-v172-field-select]'))onSelect(e)});
   hub.addEventListener('click',async e=>{
     const b=e.target.closest('[data-v172-action]');if(!b)return;const a=b.dataset.v172Action;
-    if(a==='analyze')await analyzeSelection(true);else if(a==='field-mode')setMode('field');else if(a==='match-mode')setMode('match');else if(a==='alerts')await toggleAlerts();else if(a==='pin')await adjustPin(b.dataset.field);else if(a==='share')await shareCurrent(false);else if(a==='copy')await shareCurrent(true);
+    if(a==='analyze'){
+      if(mode==='field')syncFieldFromControl();
+      await analyzeSelection(true);
+    }else if(a==='field-mode')setMode('field');else if(a==='match-mode')setMode('match');else if(a==='alerts')await toggleAlerts();else if(a==='pin')await adjustPin(b.dataset.field);else if(a==='share')await shareCurrent(false);else if(a==='copy')await shareCurrent(true);
   });
 }
 function bindTopWeatherButtons(){
@@ -362,7 +397,8 @@ async function initData(){
     selectedCategory=savedCat&&cats.includes(savedCat)?savedCat:(cats.includes('Veteranos 50+')?'Veteranos 50+':cats[0]||'');
     const ms=matchesForCategory(selectedCategory),savedMatch=localStorage.getItem(MATCH_KEY);
     selectedMatch=ms.some(x=>x.id===savedMatch)?savedMatch:(ms[0]?.id||'');
-    selectedField=localStorage.getItem(FIELD_KEY)||(cfg?.fields?.[0]?.id||'');
+    selectedField=validFieldId(localStorage.getItem(FIELD_KEY));
+    if(selectedField)localStorage.setItem(FIELD_KEY,selectedField);
     renderControls();await analyzeSelection(false);await checkCategoryAlerts(false);
   }catch(err){
     const p=$('.v172-panel',hub);if(p)p.innerHTML='<div class="v172-empty error"><b>No se pudo cargar clima/jornada.</b><span>'+esc(err?.message||err)+'</span><button type="button" data-v172-action="analyze">Reintentar</button></div>';
@@ -396,5 +432,5 @@ const screen=$('#screen');if(screen)new MutationObserver(schedule).observe(scree
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',schedule,{once:true});else schedule();
 setTimeout(schedule,700);
 
-window.LJR_V172_WEATHER={openFields,openMatches,refresh:()=>analyzeSelection(true),get selectedCategory(){return selectedCategory},get selectedMatch(){return selectedMatch}};
+window.LJR_V172_WEATHER={openFields,openMatches,refresh:()=>analyzeSelection(true),get selectedCategory(){return selectedCategory},get selectedMatch(){return selectedMatch},get selectedField(){return selectedField},get mode(){return mode}};
 })();
