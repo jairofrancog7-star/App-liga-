@@ -142,7 +142,7 @@ const HOME_CARDS=[
  {icon:'stats',title:'Top goleadores',sub:'Goleo y rendimiento',route:'scorers'},
  {icon:'news',title:'Lo importante de la semana',sub:'Avisos y novedades',route:'v38Weekly'},
  {icon:'alert',title:'Cambios de horario y sedes',sub:'Reprograma y crea aviso para compartir',route:'scheduleChanges'},
- {icon:'calendar',title:'Junta semanal de liga',sub:'Agenda y acuerdos locales',action:'meeting'},
+ {icon:'calendar',title:'Junta semanal de liga · martes',sub:'Todos los martes · asistencia, orden del día y acuerdos',action:'meeting'},
  {icon:'video',title:'Semifinales, finales y momentos',sub:'Galería recuperada',route:'moments'},
  {icon:'history',title:'Historial',sub:'Temporadas, palmarés y archivo',route:'history'},
  {icon:'match',title:'Match Center real',sub:'Partido oficial, marcador y contexto',route:'v4-matchcenter'},
@@ -315,11 +315,61 @@ function bindTactics(root){
 function saveTac(host){const pitch=$('[data-v105-pitch]',host),pa=[],pb=[];$$('[data-i]',pitch).forEach(p=>{const arr=p.dataset.side==='a'?pa:pb;arr[Number(p.dataset.i)]=[parseFloat(p.style.left),parseFloat(p.style.top)]});write('v105-tactics',{view3d:pitch.classList.contains('is3d'),posA:pa,posB:pb})}
 
 /* ===== Acciones locales ===== */
-function meeting(){
- const old=read('v105-meeting',{date:'',agenda:'',agreements:'',attendance:''});
- const m=modal('Junta semanal de liga','Agenda y acuerdos se guardan sólo en este dispositivo.','<div class="v105-form"><label><span>Fecha</span><input type="date" data-x="date" value="'+esc(old.date)+'"></label><label><span>Asistencia</span><input data-x="attendance" value="'+esc(old.attendance)+'" placeholder="Delegados presentes"></label><label style="grid-column:1/-1"><span>Agenda</span><textarea data-x="agenda">'+esc(old.agenda)+'</textarea></label><label style="grid-column:1/-1"><span>Acuerdos</span><textarea data-x="agreements">'+esc(old.agreements)+'</textarea></label></div><div class="v105-actions"><button class="v105-btn" data-save>Guardar</button><button class="v105-btn alt" data-pdf>Imprimir / PDF</button></div>');
- $('[data-save]',m).onclick=()=>{const o={};$$('[data-x]',m).forEach(x=>o[x.dataset.x]=x.value);write('v105-meeting',o);log('Guardar junta semanal');toast('Junta guardada localmente')};$('[data-pdf]',m).onclick=()=>window.print();
+function v105TuesdayDate(base=new Date()){
+  const d=new Date(base.getFullYear(),base.getMonth(),base.getDate(),12,0,0);
+  const delta=(2-d.getDay()+7)%7;
+  d.setDate(d.getDate()+delta);
+  return d;
 }
+function v105DateInput(d){
+  return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
+}
+function v105SpanishLongDate(d){
+  try{return new Intl.DateTimeFormat('es-MX',{weekday:'long',day:'numeric',month:'long',year:'numeric'}).format(d)}
+  catch(_){return d.toLocaleDateString('es-MX')}
+}
+function v105IsTuesday(value){
+  if(!value)return false;
+  const m=String(value).match(/^(\d{4})-(\d{2})-(\d{2})$/);if(!m)return false;
+  return new Date(Number(m[1]),Number(m[2])-1,Number(m[3]),12,0,0).getDay()===2;
+}
+function meeting(){
+ const next=v105TuesdayDate();
+ const nextValue=v105DateInput(next);
+ const defaultAgenda='Revisión de jornada · sanciones · programación · campos · arbitraje · asuntos generales';
+ const old=read('v105-meeting',{date:'',agenda:'',agreements:'',attendance:''});
+ const savedDate=v105IsTuesday(old.date)?old.date:nextValue;
+ const agenda=old.agenda||defaultAgenda;
+ const m=modal(
+   'Junta semanal de liga · martes',
+   'Las juntas ordinarias de la Liga se realizan los martes.',
+   '<div class="v105-meeting-notice"><b>Próxima junta: '+esc(v105SpanishLongDate(next))+'.</b><span>Aquí se puede llevar asistencia, orden del día y acuerdos.</span></div>'+
+   '<div class="v105-form v105-meeting-form">'+
+     '<label><span>Fecha de junta · martes</span><input type="date" data-x="date" value="'+esc(savedDate)+'"></label>'+
+     '<label><span>Asistencia</span><input data-x="attendance" value="'+esc(old.attendance)+'" placeholder="Delegados presentes"></label>'+
+     '<label style="grid-column:1/-1"><span>Orden del día</span><textarea data-x="agenda">'+esc(agenda)+'</textarea></label>'+
+     '<label style="grid-column:1/-1"><span>Acuerdos / minuta</span><textarea data-x="agreements">'+esc(old.agreements)+'</textarea></label>'+
+   '</div>'+
+   '<div class="v105-actions"><button class="v105-btn" data-save>Guardar junta</button><button class="v105-btn alt" data-pdf>Imprimir minuta</button></div>'
+ );
+ const date=$('[data-x="date"]',m);
+ date?.addEventListener('change',()=>{
+   if(!date.value)return;
+   if(!v105IsTuesday(date.value)){
+     date.value=nextValue;
+     toast('Las juntas ordinarias de la Liga son los martes');
+   }
+ });
+ $('[data-save]',m).onclick=()=>{
+   const o={};$$('[data-x]',m).forEach(x=>o[x.dataset.x]=x.value);
+   if(!v105IsTuesday(o.date))return toast('La junta debe registrarse en martes');
+   write('v105-meeting',o);
+   log('Guardar junta semanal · martes');
+   toast('Junta del martes guardada localmente');
+ };
+ $('[data-pdf]',m).onclick=()=>window.print();
+}
+
 function poll(){
  const p=read('v105-poll',{si:0,no:0,despues:0});
  const m=modal('Encuesta de la Liga','Participación local en este dispositivo; no es una votación oficial.','<div class="v105-grid"><button class="v105-card" data-v="si"><span class="v105-icon">'+icon('shield')+'</span><span class="v105-copy"><b>Sí</b><small>'+p.si+' votos locales</small></span><span class="v105-arrow">›</span></button><button class="v105-card" data-v="no"><span class="v105-icon">'+icon('alert')+'</span><span class="v105-copy"><b>No</b><small>'+p.no+' votos locales</small></span><span class="v105-arrow">›</span></button><button class="v105-card" data-v="despues"><span class="v105-icon">'+icon('calendar')+'</span><span class="v105-copy"><b>Revisar después</b><small>'+p.despues+' votos locales</small></span><span class="v105-arrow">›</span></button></div>');
