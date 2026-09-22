@@ -916,7 +916,12 @@ document.addEventListener('click',e=>{
   if(action){
     const a=action.dataset.v12Action;
     if(a==='login') v12Toast('Inicio de sesión listo para conectar');
-    if(a==='create') v12Toast('Registro de cuenta listo para conectar');
+    if(a==='create'){
+      e.preventDefault();
+      e.stopPropagation();
+      if(window.LJR_V105?.registerAlerts) window.LJR_V105.registerAlerts();
+      else v12Toast('Abriendo registro de cuenta…');
+    }
     if(a==='language') v12Toast('Idioma: Español (México)');
     if(a==='feedback') v12Toast('Gracias. Aquí se conectará el formulario de comentarios.');
     if(a==='privacy') v12Toast('Ajustes de privacidad');
