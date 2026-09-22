@@ -5588,6 +5588,11 @@ document.querySelector('[data-v64-ocr]')?.addEventListener('click',async e=>{
   const file=document.querySelector('[data-v64-doc]')?.files?.[0],out=document.querySelector('[data-v64-ocr-text]');
   if(!file||!out){toast('Selecciona una foto de CURP o INE');return}
   const btn=e.currentTarget,original=btn.textContent;btn.disabled=true;btn.textContent='Preparando…';
+  /* Cada lectura empieza limpia para no conservar basura de una prueba anterior. */
+  for(const sel of ['[data-v64-cred-name]','[data-v64-cred-curp]','[data-v100-dob]','[data-v100-age]','[data-v100-city]']){
+    const el=document.querySelector(sel);if(el)el.value='';
+  }
+  v64CredentialSync();
   try{
     const best=await v64RecognizeDocument(file,msg=>btn.textContent=msg);
     const txt=best.text||'';out.value=txt;
