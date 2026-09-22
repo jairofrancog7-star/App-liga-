@@ -293,7 +293,7 @@ const V12_FIXTURE_LOGOS={
   "LOBOS CDG":"assets/official-logos/lobos-cdg.png",
   "NAPOLI":"assets/official-logos/napoli.png"
 };
-const V12_FIXTURE_BUILD='20260921-all-categories-v134';
+const V12_FIXTURE_BUILD='20260921-category-box-bottom-v135';
 const V12_FIXTURE_ORDER=['3','4','5','2','1'];
 const V12_FIXTURE_LABELS={'1':'Veteranos 50+','2':'Veteranos 35+','3':'Primera Fuerza','4':'Segunda Fuerza','5':'Intermedia'};
 const V12_MONTHS=['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
@@ -509,9 +509,10 @@ function v12FixturesMarkup(){
   const catId=v12StoredCat(),cat=cats.find(c=>c.id===catId)||cats[0],groups=v12FixtureGroups(cat.id),selected=v12PickGroup(cat.id,groups);
   const catStrip='<div class="v12-category-grid">'+cats.map(c=>'<button class="'+(c.id===cat.id?'active':'')+'" data-v12-cat="'+v12Esc(c.id)+'">'+v12Esc(c.name)+'</button>').join('')+'</div>';
   if(!selected){
-    return '<section class="v12-fixtures-reference" data-v12-fixtures data-v12-version="'+V12_FIXTURE_BUILD+'">'+catStrip+
+    return '<section class="v12-fixtures-reference" data-v12-fixtures data-v12-version="'+V12_FIXTURE_BUILD+'">'+
       '<p class="v12-fixture-rule">'+v12Esc(v12CategoryRule(cat.name))+'</p>'+
-      '<h2>'+v12Esc(cat.name)+'</h2><section class="v12-schedule-card"><h3>Calendario oficial</h3><div class="v12-fixture-empty">Todavía no hay partidos publicados para esta categoría en la fuente actual.</div></section></section>';
+      '<h2>'+v12Esc(cat.name)+'</h2><section class="v12-schedule-card"><h3>Calendario oficial</h3><div class="v12-fixture-empty">Todavía no hay partidos publicados para esta categoría en la fuente actual.</div></section>'+
+      catStrip+'</section>';
   }
   const weekStrip='<div class="v12-date-strip v12-week-strip">'+groups.map(g=>{
     const jornada=g.label||[...new Set(g.rows.map(r=>String(r?.[1]||'—')))].join('/');
@@ -523,10 +524,11 @@ function v12FixturesMarkup(){
   const games=selected.rows.map(r=>v12FixtureModel(r,cat.id,cat.name));
   const longDate=selected.longLabel||v12DateLong(selected.info);
   const title=selected.label?(selected.label+' · '+cat.name):('Jornada '+jornadas+' · '+cat.name);
-  return '<section class="v12-fixtures-reference" data-v12-fixtures data-v12-version="'+V12_FIXTURE_BUILD+'">'+catStrip+
+  return '<section class="v12-fixtures-reference" data-v12-fixtures data-v12-version="'+V12_FIXTURE_BUILD+'">'+
     '<p class="v12-fixture-rule">'+v12Esc(v12CategoryRule(cat.name))+'</p>'+weekStrip+
     '<h2 id="v12-day-'+v12Esc(selected.key)+'">'+v12Esc(longDate)+'</h2>'+
     '<section class="v12-schedule-card"><h3>'+v12Esc(title)+'</h3><div>'+games.map(v12UpcomingRow).join('')+'</div></section>'+
+    catStrip+
   '</section>';
 }
 function v12RefreshFixtures(){
