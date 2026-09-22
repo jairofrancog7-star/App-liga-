@@ -11,10 +11,10 @@ const PRIMARY_KEY='v123-compare-player';
 const SECONDARY_KEY='v123-compare-player-2';
 let api=null,loading=null,query='';
 
-function route(){return String(location.hash||'').replace(/^#\/?/,'')||'home'}
+function route(){return String(location.hash||'').replace(/^#\/?/,'').split('?')[0]||'home'}
 function esc(v){return String(v??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]))}
 function norm(v){try{return String(v??'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[^a-z0-9]+/g,' ').trim()}catch{return String(v??'').toLowerCase().trim()}}
-function initials(v){return String(v||'').split(/\s+/).filter(Boolean).map(x=>x[0]).join('').slice(0,2).toUpperCase()||'JG'}
+function registrationActive(){\n const r=route();\n return r==='credentialBuilder'||r.startsWith('credentialBuilder')||!!document.querySelector('#screen [data-v64-cred-team],#v124-player-registry,[data-v132-layer].open,.v126-team-panel');\n}\nfunction initials(v){return String(v||'').split(/\s+/).filter(Boolean).map(x=>x[0]).join('').slice(0,2).toUpperCase()||'JG'}
 
 async function getApi(){
  if(api?.playerList)return api;
