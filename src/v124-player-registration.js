@@ -437,6 +437,23 @@ function v124RecoverCurp(text,name,current=''){
   }
   return current&&v124CurpValid(current)?current:'';
 }
+function v124RawNameGuess(text){
+  const bad=/instituto|nacional|electoral|credencial|votar|mexico|méxico|domicilio|municipio|seccion|vigencia|curp|clave|fecha|nacimiento|sexo|entidad|localidad/i;
+  const lines=String(text||'').split(/\r?\n/).map(x=>x
+    .replace(/NOMBRE(?:S)?/ig,' ')
+    .replace(/APELLIDO(?:S)?/ig,' ')
+    .replace(/[^A-Za-zÁÉÍÓÚÜÑáéíóúüñ'\-\s]/g,' ')
+    .replace(/\s+/g,' ').trim()
+  ).filter(Boolean);
+  const list=lines.map(x=>{
+    const words=x.split(/\s+/).filter(w=>w.length>=2);
+    const letters=(x.match(/[A-Za-zÁÉÍÓÚÜÑáéíóúüñ]/g)||[]).length;
+    const score=(words.length>=2?30:0)+(words.length>=3?22:0)+(words.length<=5?12:0)+Math.min(35,letters);
+    return {x,words,score};
+  }).filter(o=>o.words.length>=2&&o.words.length<=6&&o.x.length>=5&&o.x.length<=70&&!bad.test(o.x))
+    .sort((a,b)=>b.score-a.score);
+  return list[0]?.x||'';
+}
 function bindOcrAssist(){
   const btn=$('[data-v64-ocr]');if(!btn||btn.dataset.v124Bound)return;btn.dataset.v124Bound='1';
   btn.addEventListener('click',()=>{
@@ -456,8 +473,15 @@ function bindOcrAssist(){
         }
         toast('Nombre completo reconocido: '+guess.name);
       }else if(v124BadOcrName(name)){
-        setValue('[data-v64-cred-name]','');
-        toast('No pude confirmar el nombre completo; intenta otra foto más recta y cercana');
+        const fallback=v124RawNameGuess(raw);
+        if(fallback&&!v124BadOcrName(fallback)){
+          setValue('[data-v64-cred-name]',fallback);
+          const fixedCurp=v124RecoverCurp(raw,fallback,curp);
+          if(fixedCurp)setValue('[data-v64-cred-curp]',fixedCurp);
+          toast('Encontré una lectura posible. Revisa nombre y CURP antes de guardar');
+        }else{
+          toast('No pude confirmar contra el padrón todavía; conservé la lectura para que pueda intentarse de nuevo');
+        }
       }
       renderEligibility();
       renderManager();
