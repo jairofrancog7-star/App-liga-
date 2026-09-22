@@ -1,0 +1,193 @@
+/* V160 — Funciones de la app verde adaptadas a la app azul.
+   Todo está aislado a bloques nuevos; no cambia el diseño existente. */
+
+/* Botones operativos de clima */
+#v100-weather-extra .v100-weather-ops{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:9px;
+  margin-top:12px;
+}
+#v100-weather-extra .v100-weather-ops button{
+  min-height:44px;
+  padding:9px 10px;
+  border:1px solid rgba(82,213,239,.24);
+  border-radius:13px;
+  background:linear-gradient(145deg,rgba(15,30,117,.96),rgba(7,15,86,.98));
+  color:#fff;
+  font:800 11px/1.15 Inter,Roboto,Arial,sans-serif;
+}
+#v100-weather-extra .v100-weather-ops button:disabled{opacity:.45}
+
+/* Centro de jornada inspirado en sports-app, pero en azul */
+.v160-matchday-extra{overflow:hidden}
+.v160-matchday-hero{
+  padding:18px;
+  border:1px solid rgba(65,222,240,.25);
+  border-radius:20px;
+  background:
+    radial-gradient(circle at 80% 0,rgba(39,222,239,.12),transparent 36%),
+    linear-gradient(145deg,#0d1678,#080d5d);
+}
+.v160-matchday-hero>small{
+  color:#34e0ed;
+  font:900 9px/1 Inter,Roboto,Arial,sans-serif;
+  letter-spacing:.15em;
+}
+.v160-matchday-hero h3{
+  margin:8px 0 12px;
+  color:#fff;
+  font:850 22px/1.05 Inter,Roboto,Arial,sans-serif;
+  letter-spacing:-.02em;
+}
+.v160-matchday-hero>strong{
+  display:block;
+  margin:0 0 10px;
+  color:#22dcea;
+  font:900 35px/.95 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  letter-spacing:.02em;
+}
+.v160-matchday-hero p{
+  margin:0 0 13px;
+  color:#a9b3d6;
+  font-size:11px;
+  line-height:1.35;
+}
+.v160-matchday-bar{
+  margin-top:14px;
+  padding:15px;
+  border:1px solid rgba(83,100,203,.30);
+  border-radius:19px;
+  background:#080d62;
+}
+.v160-matchday-bar h3{margin:0 0 10px;color:#fff;font-size:17px}
+.v160-matchday-bar>div{
+  display:grid;
+  grid-template-columns:minmax(0,1fr) auto;
+  gap:12px;
+  align-items:center;
+  min-height:48px;
+  padding:9px 10px;
+  border-top:1px solid rgba(255,255,255,.08);
+}
+.v160-matchday-bar>div:first-of-type{border-top:0}
+.v160-matchday-bar span{color:#fff;font-size:11px;line-height:1.2}
+.v160-matchday-bar b{color:#aeb5d4;font-size:11px;white-space:nowrap}
+.v160-matchday-bar b.live{color:#ff6686}
+.v160-matchday-bar b.final{color:#20dca7}
+.v160-matchday-bar>.v100-secondary{width:100%;margin-top:10px}
+
+/* Modo TV funcional: overlay propio sin alterar las pantallas normales */
+.v160-tv-layer{
+  position:fixed;
+  inset:0;
+  z-index:200000;
+  overflow:auto;
+  padding:18px 16px calc(24px + env(safe-area-inset-bottom));
+  background:
+    radial-gradient(circle at 50% -10%,rgba(27,76,194,.26),transparent 35%),
+    #020332;
+  color:#fff;
+}
+.v160-tv-board{
+  width:min(720px,100%);
+  margin:0 auto;
+  padding:18px;
+  border:1px solid rgba(74,220,239,.22);
+  border-radius:24px;
+  background:linear-gradient(160deg,#080d63,#050744 70%,#03042f);
+  box-shadow:0 24px 70px rgba(0,0,0,.38);
+}
+.v160-tv-close{
+  display:block;
+  margin:0 0 18px auto;
+  min-height:42px;
+  padding:0 15px;
+  border:1px solid rgba(255,255,255,.15);
+  border-radius:13px;
+  background:#0b156f;
+  color:#fff;
+  font-weight:850;
+}
+.v160-tv-live{
+  display:inline-flex;
+  align-items:center;
+  min-height:34px;
+  padding:0 12px;
+  border-radius:999px;
+  background:#111975;
+  color:#36dfea;
+  font:900 10px/1 Inter,Roboto,Arial,sans-serif;
+  letter-spacing:.08em;
+}
+.v160-tv-live.is-live{background:#c7254b;color:#fff}
+.v160-tv-board>h2{
+  margin:18px 0 10px;
+  text-align:center;
+  font:900 31px/.98 Inter,Roboto,Arial,sans-serif;
+}
+.v160-tv-board>h2 span{color:#7d87b8;font-weight:600}
+.v160-tv-score{
+  margin:12px 0;
+  text-align:center;
+  color:#22dce8;
+  font:950 64px/.95 Inter,Roboto,Arial,sans-serif;
+  letter-spacing:-.04em;
+}
+.v160-tv-meta{
+  margin:0 0 18px;
+  text-align:center;
+  color:#9ca7cf;
+  font-size:12px;
+}
+.v160-tv-board>article{
+  margin-top:12px;
+  padding:15px;
+  border:1px solid rgba(255,255,255,.09);
+  border-radius:17px;
+  background:#080b4e;
+}
+.v160-tv-board>article small{
+  display:block;
+  margin-bottom:8px;
+  color:#2fdde8;
+  font:900 9px/1 Inter,Roboto,Arial,sans-serif;
+  letter-spacing:.13em;
+}
+.v160-tv-board>article b{
+  display:block;
+  margin-top:4px;
+  color:#fff;
+  font-size:15px;
+  line-height:1.2;
+}
+.v160-tv-board>article span{
+  display:block;
+  margin-top:6px;
+  color:#9da6cb;
+  font-size:10px;
+}
+.v160-tv-actions{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px;
+  margin-top:15px;
+}
+.v160-tv-actions button{
+  min-height:46px;
+  border:1px solid rgba(51,223,239,.30);
+  border-radius:14px;
+  background:#0b1770;
+  color:#fff;
+  font-weight:850;
+}
+
+@media(max-width:520px){
+  #v100-weather-extra .v100-weather-ops{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .v160-matchday-hero{padding:15px}
+  .v160-matchday-hero h3{font-size:20px}
+  .v160-matchday-hero>strong{font-size:31px}
+  .v160-tv-board{padding:14px;border-radius:20px}
+  .v160-tv-board>h2{font-size:27px}
+  .v160-tv-score{font-size:56px}
+}
