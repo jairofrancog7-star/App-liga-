@@ -5064,14 +5064,33 @@ function v38WeeklyView(){
   '</section>';
 }
 function v38WeatherView(){
-  return '<section class="v60-tool-page v63-page">'+
-    v60Header('CENTRAL OPERATIVA','Clima ≠ terreno ≠ decisión oficial','El pronóstico es informativo. La decisión oficial de un partido se consulta por separado.')+
-    '<div class="v63-feature-list">'+
-      v63FeatureCard('weather','PRONÓSTICO','Referencia meteorológica','Consulta clima por sede cuando existen coordenadas verificadas.','weatherFields')+
-      v63FeatureCard('field','ESTADO DEL TERRENO','Consulta los campos','Revisa sede, comunidad, mapa y condiciones disponibles.','venues')+
-      v63FeatureCard('center','DECISIÓN OFICIAL','Consulta partidos y resultados','El estado deportivo se mantiene separado del pronóstico meteorológico.','competition')+
+  return '<section class="v60-tool-page v63-page v163-weather-page">'+
+    '<header class="v163-weather-head">'+
+      '<span class="v163-weather-kicker">CENTRAL OPERATIVA V38</span>'+
+      '<h1>Clima ≠ terreno ≠ decisión oficial</h1>'+
+      '<p>Un porcentaje de lluvia nunca suspende por sí solo un partido. La Liga conserva la decisión oficial.</p>'+
+    '</header>'+
+    '<div class="v163-weather-stack">'+
+      '<button type="button" class="v163-weather-card forecast" data-route="weatherFields">'+
+        '<span class="v163-weather-card-kicker">🌧️ PRONÓSTICO</span>'+
+        '<strong>Referencia meteorológica</strong>'+
+        '<p>Se etiqueta como regional cuando no existen coordenadas exactas verificadas del campo.</p>'+
+      '</button>'+
+      '<button type="button" class="v163-weather-card field" data-route="venues">'+
+        '<span class="v163-weather-card-kicker">🏟️ ESTADO DEL TERRENO</span>'+
+        '<strong>Consulta la vista Campos</strong>'+
+        '<p>Apto, En revisión, Pesado, No apto, Cerrado o Sin revisión.</p>'+
+      '</button>'+
+      '<button type="button" class="v163-weather-card official" data-route="competition">'+
+        '<span class="v163-weather-card-kicker">✓ DECISIÓN OFICIAL</span>'+
+        '<strong>Consulta el estado oficial</strong>'+
+        '<p>Programado, Por confirmar, Retrasado o Suspendido.</p>'+
+      '</button>'+
     '</div>'+
-    '<p class="v60-note">La lluvia por sí sola no marca un partido como suspendido. La Liga conserva la decisión oficial.</p>'+
+    '<div class="v163-weather-actions">'+
+      '<button type="button" class="v163-weather-primary" data-route="venues">Revisar campos →</button>'+
+      '<button type="button" class="v163-weather-secondary" data-route="competition">Ver jornada</button>'+
+    '</div>'+
   '</section>';
 }
 function v38AlertsView(){
