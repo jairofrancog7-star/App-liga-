@@ -294,19 +294,20 @@ function bindCredential(root){
   }
 
   $('[data-v64-ocr]')?.addEventListener('click',()=>{
+    /* El OCR principal de main.js es la única fuente que rellena nombre/CURP/lugar.
+       Este módulo solo espera a que termine y recalcula fecha + edad para no
+       sobrescribir una lectura buena con una segunda interpretación peor. */
     const poll=setInterval(()=>{
       const b=$('[data-v64-ocr]');
       if(!b||!b.disabled){
         clearInterval(poll);
-        const txt=$('[data-v64-ocr-text]')?.value||'',p=parseOcrText(txt);
-        if(curp&&p.curp)curp.value=p.curp;
-        if(name&&p.name)name.value=p.name;
-        if(dob&&p.dob)dob.value=p.dob;
-        if(city&&p.city)city.value=p.city;
+        const detectedCurp=$('[data-v64-cred-curp]')?.value||'';
+        const fromCurp=curpDob(detectedCurp);
+        if(dob&&fromCurp)dob.value=fromCurp;
         syncCredentialExtra();
       }
     },350);
-    setTimeout(()=>clearInterval(poll),30000);
+    setTimeout(()=>clearInterval(poll),45000);
   });
   $('[data-v100-credential-png]',root)?.addEventListener('click',async()=>{const b=await credentialCanvas();if(b)download(b,'Credencial_Liga_Juventino.png')});
   $('[data-v100-credential-share]',root)?.addEventListener('click',async()=>{const b=await credentialCanvas();if(b)try{await fileShare(b,'Credencial_Liga_Juventino.png','Credencial Liga Juventino')}catch(e){}});
