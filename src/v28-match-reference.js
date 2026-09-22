@@ -273,18 +273,18 @@
     const schedule=hit.closest('.v12-schedule-match');
     if(schedule){
       const names=[...schedule.querySelectorAll('.v12-schedule-clubs b')].map(x=>x.textContent.trim());
-      const time=schedule.querySelector('time')?.textContent.trim()||'10:45';
       const card=schedule.closest('.v12-schedule-card');
       let heading=card?.previousElementSibling;
       while(heading && !/^H[1-6]$/.test(heading.tagName))heading=heading.previousElementSibling;
       data={
         ...data,
-        home:names[0]||'Franco FC',
-        away:names[1]||'Promesas FC',
-        time,
-        date:heading?.textContent?.trim()||'sáb 19 sept',
-        venue:card?.querySelector('.v12-schedule-venue')?.textContent?.trim()||'Campo por confirmar',
-        category:'Primera Fuerza'
+        home:names[0]||'Local',
+        away:names[1]||'Visitante',
+        time:schedule.dataset.v12Time||schedule.querySelector('time')?.textContent.trim()||'Por confirmar',
+        date:schedule.dataset.v12DateLabel||heading?.textContent?.trim()||'Fecha por confirmar',
+        venue:schedule.dataset.v12Venue||schedule.querySelector('.v76-match-venue')?.textContent?.trim()||'Campo por confirmar',
+        category:schedule.dataset.v12Category||'Liga Municipal',
+        jornada:schedule.dataset.v12Jornada||''
       };
     }else{
       const m=MAIN_MATCHES[data.id];
