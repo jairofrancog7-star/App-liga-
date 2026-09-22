@@ -57,6 +57,30 @@ function provider(url){
   if(u.includes('tiktok.com'))return {name:'TikTok Live',icon:'♪'};
   return {name:'Transmisión externa',icon:'●'};
 }
+function youtubeId(url){
+  const s=String(url||'');
+  let m=s.match(/[?&]v=([^&#]+)/i);if(m)return m[1];
+  m=s.match(/youtu\.be\/([^?&#/]+)/i);if(m)return m[1];
+  m=s.match(/youtube\.com\/(?:live|embed)\/([^?&#/]+)/i);if(m)return m[1];
+  return '';
+}
+function streamEmbedHtml(s){
+  const url=String(s?.source?.url||'').trim();
+  if(!url)return '';
+  const p=provider(url);
+  if(p.name==='Facebook Live'){
+    const src='https://www.facebook.com/plugins/video.php?href='+encodeURIComponent(url)+'&show_text=false&width=500&autoplay=true';
+    return '<section class="v144-stream-embed"><header><span><small>TRANSMISIÓN EN VIVO</small><b>'+esc(s.source.name||p.name)+'</b></span><i>SIMULTÁNEO</i></header><div class="v144-stream-frame"><iframe src="'+esc(src)+'" title="Facebook Live" loading="lazy" allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share" allowfullscreen></iframe></div><footer><span>Si Facebook bloquea la vista incrustada, abre la transmisión directamente.</span><button type="button" data-v144-open>Facebook</button></footer></section>';
+  }
+  if(p.name==='YouTube Live'){
+    const id=youtubeId(url);
+    if(id){
+      const src='https://www.youtube-nocookie.com/embed/'+encodeURIComponent(id)+'?autoplay=1&mute=1&playsinline=1';
+      return '<section class="v144-stream-embed"><header><span><small>TRANSMISIÓN EN VIVO</small><b>'+esc(s.source.name||p.name)+'</b></span><i>SIMULTÁNEO</i></header><div class="v144-stream-frame"><iframe src="'+esc(src)+'" title="YouTube Live" loading="lazy" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen></iframe></div><footer><span>Video y Match Center visibles al mismo tiempo.</span><button type="button" data-v144-open>YouTube</button></footer></section>';
+    }
+  }
+  return '<section class="v144-stream-embed fallback"><header><span><small>TRANSMISIÓN VINCULADA</small><b>'+esc(s.source.name||p.name)+'</b></span><i>LIVE</i></header><div class="v144-stream-fallback"><b>Transmisión externa</b><span>Este proveedor no admite reproductor incrustado aquí.</span><button type="button" data-v144-open>Abrir transmisión</button></div></section>';
+}
 function roster(c,side){
   try{
     const cat=window.LJR_OFFICIAL_DATA?.categories?.[c.catId],team=side==='home'?c.home:c.away;
@@ -186,7 +210,8 @@ function hubHtml(c,s){
   const p=provider(s.source.url),x=counters(s),live=s.phase==='first'||s.phase==='second';
   return '<section class="v144-live-hub" data-v144-live-hub data-match="'+esc(c.key)+'">'+
     '<div class="v144-head"><i class="'+(live?'on':'')+'"></i><span><small>LIVE INTELLIGENCE</small><b>'+esc(phaseLabel(s))+'</b></span><strong>'+x.home.goals+'–'+x.away.goals+'</strong></div>'+
-    '<div class="v144-source"><em>'+esc(p.icon)+'</em><span><b>'+esc(s.source.name||p.name)+'</b><small>'+esc(p.name)+'</small></span><button data-v144-open>Ver transmisión</button></div>'+
+    '<div class="v144-source"><em>'+esc(p.icon)+'</em><span><b>'+esc(s.source.name||p.name)+'</b><small>'+esc(p.name)+'</small></span><button data-v144-config>Subir / vincular LIVE</button></div>'+
+    streamEmbedHtml(s)+
     '<div class="v144-stats"><div><small>'+esc(c.home)+'</small><b>'+x.home.goals+'</b><span>'+x.home.subs+' cambios · '+x.home.yellow+' 🟨 · '+x.home.red+' 🟥</span></div><div><small>'+esc(c.away)+'</small><b>'+x.away.goals+'</b><span>'+x.away.subs+' cambios · '+x.away.yellow+' 🟨 · '+x.away.red+' 🟥</span></div></div>'+
     '<div class="v144-ai"><button class="'+(listening?'active':'')+'" data-v144-listen>'+(listening?'■ Detener escucha':'🎙 Detectar narración')+'</button><button data-v144-config>Fuente / IA</button><small>Detecta gol, cambio, tarjetas, medio tiempo y final. Pide confirmación antes de modificar el partido.</small></div>'+
     (s.lastTranscript?'<div class="v144-transcript"><small>ÚLTIMO AUDIO</small><span>'+esc(s.lastTranscript)+'</span></div>':'')+
@@ -196,7 +221,7 @@ function hubHtml(c,s){
   '</section>';
 }
 function modalHtml(s){
-  return '<div class="v144-modal"><button class="v144-backdrop" data-close></button><section><header><b>Fuente de transmisión</b><button data-close>×</button></header><label><span>Nombre del medio</span><input data-name value="'+esc(s.source.name||'Facebook / transmisión externa')+'" placeholder="Talacha Deportes"></label><label><span>Enlace del en vivo</span><input data-url value="'+esc(s.source.url||DEFAULT_SOURCE)+'"></label><label><span>Feed en tiempo real (JSON / WebSocket / SSE)</span><input data-feed value="'+esc(s.source.feedUrl||'')+'" placeholder="https://.../live.json o wss://..."></label><p>Facebook no permite que una página externa lea directamente su video/audio por seguridad. La app se puede apoyar en la narración mediante micrófono y, cuando exista un proveedor de datos, usar HTTP JSON cada 5 s, WebSocket o SSE para minuto, marcador y eventos en tiempo real.</p><button class="v144-save" data-save>Guardar fuente</button></section></div>';
+  return '<div class="v144-modal"><button class="v144-backdrop" data-close></button><section><header><b>Publicar transmisión en vivo</b><button data-close>×</button></header><label><span>Nombre del medio / página</span><input data-name value="'+esc(s.source.name||'Facebook / transmisión externa')+'" placeholder="Talacha Deportes"></label><label><span>Enlace del Facebook Live / YouTube Live</span><input data-url value="'+esc(s.source.url||DEFAULT_SOURCE)+'" placeholder="Pega aquí el enlace de la transmisión"></label><label><span>Feed en tiempo real (JSON / WebSocket / SSE)</span><input data-feed value="'+esc(s.source.feedUrl||'')+'" placeholder="https://.../live.json o wss://..."></label><p>Al guardar, la transmisión se muestra dentro del Match Center para ver el video y el minuto, marcador y cronología simultáneamente. Facebook puede impedir algunos enlaces compartidos; en ese caso queda el botón para abrir el Live directamente. El feed de datos es opcional y sirve para sincronizar minuto, goles y eventos.</p><button class="v144-save" data-save>Publicar transmisión en Match Center</button></section></div>';
 }
 function openConfig(c,s){
   $$('.v144-modal').forEach(x=>x.remove());
@@ -205,7 +230,7 @@ function openConfig(c,s){
   $('[data-save]',m).onclick=()=>{
     s.source.name=$('[data-name]',m).value.trim();s.source.url=$('[data-url]',m).value.trim();s.source.feedUrl=$('[data-feed]',m).value.trim();
     try{localStorage.setItem(SOURCE_KEY,JSON.stringify({url:s.source.url,name:s.source.name}))}catch(_){}
-    save(s);m.remove();schedule();startPoll();toast('Fuente guardada.');
+    save(s);m.remove();schedule();startPoll();toast('Transmisión vinculada al Match Center.');
   };
 }
 function confirmSuggestion(c,s,id){
