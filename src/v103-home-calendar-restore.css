@@ -897,3 +897,249 @@
     font-size:clamp(16px,4.1vw,21px)!important;
   }
 }
+
+
+/* V116 — ajuste fino según referencia 2:
+   cuadro más largo, títulos/números/logos más pequeños y nombres completos en horizontal. */
+@media(max-width:1023px){
+  body[data-app-route="home"] .v114-upcoming-slot{
+    width:calc(100% + 28px)!important;
+    max-width:none!important;
+    margin:22px -14px 26px!important;
+  }
+
+  body[data-app-route="home"] .v114-upcoming-slot .v103-upcoming-wrap{
+    width:100%!important;
+    max-width:none!important;
+    margin:0!important;
+    padding:0 4px 8px!important;
+  }
+
+  body[data-app-route="home"] .v114-upcoming-slot .v103-upcoming-head{
+    width:100%!important;
+    display:grid!important;
+    grid-template-columns:minmax(0,1fr) auto!important;
+    align-items:center!important;
+    gap:10px!important;
+    margin:0 10px 13px!important;
+  }
+
+  body[data-app-route="home"] .v114-upcoming-slot .v103-upcoming-head h2{
+    min-width:0!important;
+    margin:0!important;
+    font-size:24px!important;
+    line-height:1!important;
+    font-weight:900!important;
+    letter-spacing:-.025em!important;
+    white-space:nowrap!important;
+  }
+
+  body[data-app-route="home"] .v114-upcoming-slot .v103-upcoming-head button{
+    padding:4px 0!important;
+    font-size:13px!important;
+    line-height:1!important;
+    font-weight:800!important;
+    white-space:nowrap!important;
+  }
+
+  body[data-app-route="home"] .v114-upcoming-slot .v103-upcoming-card{
+    width:100%!important;
+    max-width:none!important;
+    padding:14px 12px 13px!important;
+    border-radius:23px!important;
+  }
+
+  body[data-app-route="home"] .v114-upcoming-slot .v103-upcoming-meta{
+    margin:0 0 10px!important;
+    gap:8px!important;
+    font-size:11px!important;
+    line-height:1!important;
+  }
+
+  body[data-app-route="home"] .v114-upcoming-slot .v103-upcoming-meta span{
+    gap:6px!important;
+    white-space:nowrap!important;
+  }
+
+  body[data-app-route="home"] .v114-upcoming-slot .v103-upcoming-meta i{
+    width:9px!important;
+    height:9px!important;
+    flex:0 0 9px!important;
+    box-shadow:0 0 0 5px rgba(255,77,117,.14)!important;
+  }
+
+  body[data-app-route="home"] .v114-upcoming-slot .v103-upcoming-meta b{
+    font-size:12px!important;
+    line-height:1!important;
+    font-weight:500!important;
+  }
+
+  body[data-app-route="home"] .v114-upcoming-slot .v103-upcoming-match{
+    width:100%!important;
+    min-height:66px!important;
+    grid-template-columns:minmax(0,1fr) 48px minmax(0,1fr)!important;
+    align-items:center!important;
+    column-gap:8px!important;
+    row-gap:0!important;
+    padding:10px 0!important;
+  }
+
+  body[data-app-route="home"] .v114-upcoming-slot .v103-upcoming-team{
+    min-width:0!important;
+    width:100%!important;
+    gap:7px!important;
+    overflow:visible!important;
+  }
+
+  body[data-app-route="home"] .v114-upcoming-slot .v103-upcoming-team.home{
+    display:grid!important;
+    grid-template-columns:minmax(0,1fr) 32px!important;
+    justify-items:end!important;
+    align-items:center!important;
+    padding:0!important;
+    text-align:right!important;
+  }
+
+  body[data-app-route="home"] .v114-upcoming-slot .v103-upcoming-team.away{
+    display:grid!important;
+    grid-template-columns:32px minmax(0,1fr)!important;
+    justify-items:start!important;
+    align-items:center!important;
+    padding:0!important;
+    text-align:left!important;
+  }
+
+  body[data-app-route="home"] .v114-upcoming-slot .v103-upcoming-team b{
+    width:100%!important;
+    min-width:0!important;
+    margin:0!important;
+    color:#fff!important;
+    font-size:11px!important;
+    line-height:1!important;
+    font-weight:500!important;
+    white-space:nowrap!important;
+    overflow:visible!important;
+    text-overflow:clip!important;
+  }
+
+  body[data-app-route="home"] .v114-upcoming-slot .v103-upcoming-team.home b{
+    text-align:right!important;
+  }
+  body[data-app-route="home"] .v114-upcoming-slot .v103-upcoming-team.away b{
+    text-align:left!important;
+  }
+
+  body[data-app-route="home"] .v114-upcoming-slot .v103-upcoming-team .v103-cal-logo{
+    width:32px!important;
+    height:32px!important;
+    min-width:32px!important;
+    max-width:32px!important;
+    max-height:32px!important;
+    flex:0 0 32px!important;
+    margin:0!important;
+    box-shadow:0 0 0 2px rgba(109,224,255,.58)!important;
+  }
+
+  body[data-app-route="home"] .v114-upcoming-slot .v103-upcoming-team .v103-cal-logo img{
+    width:29px!important;
+    height:29px!important;
+    max-width:29px!important;
+    max-height:29px!important;
+    object-fit:contain!important;
+    object-position:center!important;
+    margin:auto!important;
+  }
+
+  body[data-app-route="home"] .v114-upcoming-slot .v103-upcoming-match>strong{
+    min-width:48px!important;
+    width:48px!important;
+    font-size:17px!important;
+    line-height:1!important;
+    font-weight:800!important;
+    text-align:center!important;
+    white-space:nowrap!important;
+  }
+}
+
+@media(max-width:430px){
+  body[data-app-route="home"] .v114-upcoming-slot{
+    width:calc(100% + 32px)!important;
+    margin-left:-16px!important;
+    margin-right:-16px!important;
+  }
+
+  body[data-app-route="home"] .v114-upcoming-slot .v103-upcoming-wrap{
+    padding-left:2px!important;
+    padding-right:2px!important;
+  }
+
+  body[data-app-route="home"] .v114-upcoming-slot .v103-upcoming-head{
+    margin-left:8px!important;
+    margin-right:8px!important;
+  }
+
+  body[data-app-route="home"] .v114-upcoming-slot .v103-upcoming-head h2{
+    font-size:22px!important;
+  }
+
+  body[data-app-route="home"] .v114-upcoming-slot .v103-upcoming-head button{
+    font-size:12px!important;
+  }
+
+  body[data-app-route="home"] .v114-upcoming-slot .v103-upcoming-card{
+    padding:13px 9px 12px!important;
+    border-radius:22px!important;
+  }
+
+  body[data-app-route="home"] .v114-upcoming-slot .v103-upcoming-match{
+    grid-template-columns:minmax(0,1fr) 44px minmax(0,1fr)!important;
+    column-gap:6px!important;
+    min-height:62px!important;
+  }
+
+  body[data-app-route="home"] .v114-upcoming-slot .v103-upcoming-team.home{
+    grid-template-columns:minmax(0,1fr) 29px!important;
+  }
+
+  body[data-app-route="home"] .v114-upcoming-slot .v103-upcoming-team.away{
+    grid-template-columns:29px minmax(0,1fr)!important;
+  }
+
+  body[data-app-route="home"] .v114-upcoming-slot .v103-upcoming-team{
+    gap:6px!important;
+  }
+
+  body[data-app-route="home"] .v114-upcoming-slot .v103-upcoming-team b{
+    font-size:10px!important;
+  }
+
+  body[data-app-route="home"] .v114-upcoming-slot .v103-upcoming-team .v103-cal-logo{
+    width:29px!important;
+    height:29px!important;
+    min-width:29px!important;
+    max-width:29px!important;
+    max-height:29px!important;
+    flex-basis:29px!important;
+  }
+
+  body[data-app-route="home"] .v114-upcoming-slot .v103-upcoming-team .v103-cal-logo img{
+    width:26px!important;
+    height:26px!important;
+    max-width:26px!important;
+    max-height:26px!important;
+  }
+
+  body[data-app-route="home"] .v114-upcoming-slot .v103-upcoming-match>strong{
+    width:44px!important;
+    min-width:44px!important;
+    font-size:15px!important;
+  }
+
+  body[data-app-route="home"] .v114-upcoming-slot .v103-upcoming-meta{
+    font-size:10px!important;
+  }
+
+  body[data-app-route="home"] .v114-upcoming-slot .v103-upcoming-meta b{
+    font-size:11px!important;
+  }
+}
