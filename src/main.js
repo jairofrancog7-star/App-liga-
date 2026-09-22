@@ -5395,18 +5395,22 @@ async function v64PrepareOcrCrop(file,region='nameA'){
     let sx,sy,sw,sh;
     if(landscape){
       const map={
-        nameA:[.27,.23,.70,.30],
-        nameB:[.28,.31,.69,.31],
-        nameC:[.23,.18,.74,.48],
-        data:[.22,.45,.75,.48]
+        nameA:[.03,.16,.60,.38],
+        nameB:[.03,.22,.72,.34],
+        nameC:[.02,.12,.90,.48],
+        nameWide:[.01,.08,.98,.55],
+        data:[.02,.40,.96,.56],
+        curpBand:[.18,.44,.80,.30]
       };
       [sx,sy,sw,sh]=map[region]||map.nameA;
     }else{
       const map={
-        nameA:[.07,.22,.86,.28],
-        nameB:[.07,.30,.86,.32],
-        nameC:[.05,.18,.90,.48],
-        data:[.05,.47,.90,.48]
+        nameA:[.04,.16,.92,.34],
+        nameB:[.04,.24,.92,.34],
+        nameC:[.03,.12,.94,.50],
+        nameWide:[.02,.08,.96,.56],
+        data:[.03,.40,.94,.56],
+        curpBand:[.03,.44,.94,.30]
       };
       [sx,sy,sw,sh]=map[region]||map.nameA;
     }
@@ -5458,66 +5462,190 @@ function v64OcrQuality(text,confidence){
   score-=Math.min(80,(t.match(/[<>_=]{1,}/g)||[]).length*6);
   return {score,parsed:p};
 }
+function v64OcrNorm(v){
+  return String(v||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toUpperCase().replace(/[^A-Z0-9Ñ]+/g,' ').replace(/\s+/g,' ').trim();
+}
+function v64NameStrength(name){
+  const n=String(name||'').trim(),words=n.split(/\s+/).filter(Boolean);
+  if(!n||words.length<2||words.length>6)return -999;
+  if(/INSTITUTO|ELECTORAL|CREDENCIAL|VOTAR|DOMICILIO|CLAVE|CURP|SECCI[ÓO]N|VIGENCIA|DEPENDENCIA|MUNICIPIO|REGISTRO|FECHA|NACIMIENTO/i.test(n))return -999;
+  const shorts=words.filter(w=>w.length<=2).length,vowels=(n.match(/[AEIOUÁÉÍÓÚÜaeiouáéíóúü]/g)||[]).length;
+  if(shorts/words.length>.34||vowels<2)return -999;
+  let score=40+Math.min(40,n.length)+Math.min(24,words.length*6);
+  if(words.length===3||words.length===4)score+=18;
+  if(words.every(w=>w.length>=3))score+=12;
+  return score;
+}
+function v64NameTokenSimilarity(a,b){
+  const A=v64OcrNorm(a).split(' ').filter(Boolean),B=v64OcrNorm(b).split(' ').filter(Boolean);
+  if(!A.length||!B.length)return 0;
+  let hit=0;
+  for(const x of A){
+    let best=0;
+    for(const y of B){
+      if(x===y){best=1;break}
+      if(x.length>=4&&y.length>=4){
+        const m=Math.min(x.length,y.length),same=[...Array(m)].filter((_,i)=>x[i]===y[i]).length;
+        best=Math.max(best,same/Math.max(x.length,y.length));
+      }
+    }
+    if(best>=.72)hit++;
+  }
+  return hit/Math.max(A.length,B.length);
+}
+function v64BestOfficialNameFromTexts(texts){
+  let players=[];
+  try{players=window.LJR_PLAYER_REGISTRY?.officialPlayers?.()||[]}catch(_){}
+  if(!players.length)return '';
+  const joined=v64OcrNorm(texts.join('\n'));
+  let best=null,score=0;
+  for(const p of players){
+    const words=v64OcrNorm(p?.name).split(' ').filter(w=>w.length>=3);
+    if(words.length<2)continue;
+    let exact=0;
+    for(const w of words)if(joined.includes(w))exact++;
+    const s=exact/words.length;
+    if(exact>=2&&s>score){score=s;best=p}
+  }
+  return score>=.5?String(best?.name||''):'';
+}
+function v64ResolveName(texts){
+  const candidates=[];
+  const add=(name,sourceWeight=0)=>{
+    name=String(name||'').replace(/\s+/g,' ').trim();
+    const base=v64NameStrength(name);if(base<0)return;
+    candidates.push({name,score:base+sourceWeight});
+  };
+  for(const t of texts){
+    add(v64IneNameFromText(t),24);
+    add(v64NameFromFocusedText(t),10);
+  }
+  add(v64BestOfficialNameFromTexts(texts),42);
+  if(!candidates.length)return '';
+  for(const a of candidates){
+    for(const b of candidates){
+      if(a===b)continue;
+      const sim=v64NameTokenSimilarity(a.name,b.name);
+      if(sim>=.66)a.score+=22*sim;
+    }
+  }
+  candidates.sort((a,b)=>b.score-a.score);
+  const top=candidates[0],second=candidates[1];
+  if(!top||top.score<76)return '';
+  if(second&&top.score-second.score<7&&v64NameTokenSimilarity(top.name,second.name)<.55)return '';
+  return top.name;
+}
+function v64ResolveIdentity(texts){
+  const clean=texts.filter(Boolean),joined=clean.join('\n');
+  const name=v64ResolveName(clean);
+  const parsed=clean.map(t=>v64ParseOcrIdentity(t));
+  let city='',dob='';
+  for(const p of parsed){if(!city&&p.city)city=p.city;if(!dob&&p.dob)dob=p.dob}
+  if(!city&&v64LooksLikeIne(joined))city=v64KnownPlaceFromText(joined);
+  const curp=v64FindCurp(joined,name);
+  if(curp)dob=v64CurpDob(curp)||dob;
+  return {name,curp,dob,city};
+}
+let v64OcradPromise=null;
+function v64LoadOcrad(){
+  if(window.OCRAD)return Promise.resolve(window.OCRAD);
+  if(v64OcradPromise)return v64OcradPromise;
+  v64OcradPromise=new Promise(resolve=>{
+    const s=document.createElement('script');
+    s.src='https://cdn.jsdelivr.net/npm/ocrad.js@0.1.1/ocrad.min.js';
+    s.async=true;s.onload=()=>resolve(window.OCRAD||null);s.onerror=()=>resolve(null);
+    document.head.appendChild(s);
+  });
+  return v64OcradPromise;
+}
+async function v64BlobToCanvas(blob,maxW=2200){
+  const img=await v64BitmapFromFile(blob),iw=img.width||img.naturalWidth,ih=img.height||img.naturalHeight;
+  const scale=Math.min(1,maxW/Math.max(1,iw)),w=Math.max(1,Math.round(iw*scale)),h=Math.max(1,Math.round(ih*scale));
+  const c=document.createElement('canvas');c.width=w;c.height=h;c.getContext('2d').drawImage(img,0,0,w,h);return c;
+}
+async function v64OcradText(blob){
+  try{
+    const O=await v64LoadOcrad();if(!O||!blob)return '';
+    const c=await v64BlobToCanvas(blob,1900);
+    return String(O(c)||'');
+  }catch(_){return ''}
+}
+async function v64NativeText(blob){
+  try{
+    if(!window.TextDetector||!blob)return '';
+    const detector=new window.TextDetector(),img=await v64BitmapFromFile(blob),blocks=await detector.detect(img);
+    return (blocks||[]).map(b=>b.rawValue||b.text||'').filter(Boolean).join('\n');
+  }catch(_){return ''}
+}
+async function v64TesseractRead(T,image,psm='6',whitelist=''){
+  if(!image)return {text:'',confidence:0};
+  try{
+    const opts={tessedit_pageseg_mode:String(psm),preserve_interword_spaces:'1'};
+    if(whitelist)opts.tessedit_char_whitelist=whitelist;
+    const r=await T.recognize(image,'spa',opts);
+    return {text:r?.data?.text||'',confidence:Number(r?.data?.confidence||0)};
+  }catch(_){return {text:'',confidence:0}}
+}
 async function v64RecognizeDocument(file,onStatus){
-  const T=await v64LoadTesseract(),variants=[
-    {label:'Mejorando imagen…',image:await v64PrepareOcrImage(file,'contrast')},
-    {label:'Segunda lectura…',image:await v64PrepareOcrImage(file,'binary')}
-  ];
-  let best={text:'',score:-Infinity,parsed:{}};const seen=[];
-  for(const v of variants){
-    onStatus?.(v.label);
-    const r=await T.recognize(v.image,'spa');
-    const text=r?.data?.text||'',q=v64OcrQuality(text,r?.data?.confidence||0);
-    seen.push(text);
-    if(q.score>best.score)best={text,score:q.score,parsed:q.parsed};
-  }
+  const T=await v64LoadTesseract(),seen=[],push=t=>{if(t&&String(t).trim())seen.push(String(t))};
 
-  if(!best.parsed?.name||/FECHA|NACIM|INSTITUTO|ELECTORAL|CREDENCIAL/i.test(best.parsed?.name||'')){
-    const candidates=[];
-    for(const [region,label] of [['nameA','Leyendo nombre…'],['nameB','Confirmando nombre…'],['nameC','Revisando nombre completo…']]){
-      onStatus?.(label);
+  onStatus?.('OCR inteligente · lectura inicial…');
+  const contrast=await v64PrepareOcrImage(file,'contrast');
+  const binary=await v64PrepareOcrImage(file,'binary');
+
+  const native=await v64NativeText(file);push(native);
+  const full1=await v64TesseractRead(T,contrast,'11');push(full1.text);
+  const full2=await v64TesseractRead(T,binary,'6');push(full2.text);
+
+  let parsed=v64ResolveIdentity(seen);
+
+  if(!parsed.name||v64NameStrength(parsed.name)<80){
+    onStatus?.('Analizando zona del nombre…');
+    for(const region of ['nameA','nameB','nameC','nameWide']){
       const crop=await v64PrepareOcrCrop(file,region);if(!crop)continue;
-      const r=await T.recognize(crop,'spa',{
-        tessedit_pageseg_mode:'6',
-        preserve_interword_spaces:'1'
-      });
-      const focused=r?.data?.text||'';seen.push(focused);
-      const name=v64NameFromFocusedText(focused);
-      if(name)candidates.push({name,text:focused,confidence:Number(r?.data?.confidence||0)});
-    }
-    candidates.sort((a,b)=>b.confidence-a.confidence||b.name.length-a.name.length);
-    const merged=[best.text,...candidates.map(x=>x.text)].join('\n');
-    const parsed=v64ParseOcrIdentity(merged);
-    const picked=candidates.find(x=>!/INSTITUTO|ELECTORAL|CREDENCIAL|FECHA|NACIMIENTO/i.test(x.name));
-    if((!parsed.name||/INSTITUTO|ELECTORAL|CREDENCIAL|FECHA|NACIMIENTO/i.test(parsed.name))&&picked)parsed.name=picked.name;
-    const q=v64OcrQuality(merged,candidates[0]?.confidence||0);
-    best={text:merged,score:q.score+(parsed.name?70:0),parsed};
-  }
-
-  if(!best.parsed?.curp||!best.parsed?.dob||!best.parsed?.city){
-    onStatus?.('Buscando CURP y nacimiento…');
-    const crop=await v64PrepareOcrCrop(file,'data');
-    if(crop){
-      const r=await T.recognize(crop,'spa',{tessedit_pageseg_mode:'6',preserve_interword_spaces:'1'});
-      const focused=r?.data?.text||'';seen.push(focused);
-      const merged=best.text+'\n'+focused,parsed=v64ParseOcrIdentity(merged);
-      if(best.parsed?.name&&!parsed.name)parsed.name=best.parsed.name;
-      const q=v64OcrQuality(merged,r?.data?.confidence||0);
-      best={text:merged,score:Math.max(best.score,q.score),parsed};
+      const a=await v64TesseractRead(T,crop,'6');push(a.text);
+      if(region==='nameWide'){
+        const b=await v64TesseractRead(T,crop,'11');push(b.text);
+        const o=await v64OcradText(crop);push(o);
+      }
+      parsed=v64ResolveIdentity(seen);
+      if(parsed.name&&v64NameStrength(parsed.name)>=105)break;
     }
   }
 
-  if((!best.parsed?.name&&!best.parsed?.curp)||best.text.trim().length<18){
-    onStatus?.('Comprobando documento completo…');
-    const r=await T.recognize(file,'spa'),text=r?.data?.text||'',merged=best.text+'\n'+text,q=v64OcrQuality(merged,r?.data?.confidence||0);
-    if(q.score>best.score)best={text:merged,score:q.score,parsed:q.parsed};
+  if(!parsed.curp){
+    onStatus?.('Validando CURP…');
+    const curpCrop=await v64PrepareOcrCrop(file,'curpBand');
+    if(curpCrop){
+      const c1=await v64TesseractRead(T,curpCrop,'7','ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789');push(c1.text);
+      const c2=await v64TesseractRead(T,curpCrop,'11','ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789');push(c2.text);
+      parsed=v64ResolveIdentity(seen);
+    }
   }
-  if(best.parsed?.curp){
-    const fixed=v64CurpDob(best.parsed.curp);
-    if(fixed)best.parsed.dob=fixed;
+
+  if(!parsed.city||!parsed.curp){
+    onStatus?.('Revisando datos de la INE…');
+    const dataCrop=await v64PrepareOcrCrop(file,'data');
+    if(dataCrop){
+      const d1=await v64TesseractRead(T,dataCrop,'6');push(d1.text);
+      const d2=await v64OcradText(dataCrop);push(d2);
+    }
+    parsed=v64ResolveIdentity(seen);
   }
-  best.allText=seen.filter(Boolean).join('\n');
-  return best;
+
+  // Último pase original completo, útil cuando el preprocesamiento elimina trazos finos.
+  if(!parsed.name||!parsed.curp){
+    onStatus?.('Confirmando con lectura original…');
+    const raw=await v64TesseractRead(T,file,'11');push(raw.text);
+    parsed=v64ResolveIdentity(seen);
+  }
+
+  // Nunca devolver CURP si no pasa estructura + dígito verificador.
+  if(parsed.curp&&!v64CurpChecksumValid(parsed.curp))parsed.curp='';
+  // Nunca devolver nombre si el consenso no alcanza calidad mínima.
+  if(parsed.name&&v64NameStrength(parsed.name)<76)parsed.name='';
+
+  return {text:seen[0]||'',allText:seen.join('\n'),parsed,score:(parsed.name?100:0)+(parsed.curp?180:0)+(parsed.city?60:0)+(parsed.dob?60:0)};
 }
 
 function v64LoadTesseract(){
@@ -5749,14 +5877,12 @@ document.querySelector('[data-v64-ocr]')?.addEventListener('click',async e=>{
     const best=await v64RecognizeDocument(file,msg=>btn.textContent=msg);
     const txt=best.text||'',all=best.allText||'';out.value=[txt,all].filter(Boolean).join('\n');
     const combined=[txt,all].filter(Boolean).join('\n');
-    const first=best.parsed||v64ParseOcrIdentity(txt);
-    const retry=combined?v64ParseOcrIdentity(combined):{};
-    const bestName=first.name||retry.name||v64IneNameFromText(combined)||'';
+    const strong=best.parsed||v64ResolveIdentity([combined]);
     const p={
-      name:bestName,
-      curp:first.curp||retry.curp||v64FindCurp(combined,bestName)||'',
-      dob:first.dob||retry.dob||'',
-      city:first.city||retry.city||(v64LooksLikeIne(combined)?v64KnownPlaceFromText(combined):'')
+      name:v64NameStrength(strong.name)>=76?strong.name:'',
+      curp:(strong.curp&&v64CurpChecksumValid(strong.curp))?strong.curp:'',
+      dob:strong.dob||'',
+      city:strong.city||(v64LooksLikeIne(combined)?v64KnownPlaceFromText(combined):'')
     };
     v64ApplyOcrIdentity(p);
     const found=[p.name&&'nombre',p.curp&&'CURP',p.dob&&'fecha',p.city&&'municipio/comunidad'].filter(Boolean);
