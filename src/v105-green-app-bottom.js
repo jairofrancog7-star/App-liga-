@@ -114,7 +114,7 @@ const HOME_CARDS=[
  {icon:'table',title:'Tabla · Primera Fuerza',sub:'Clasificación oficial',route:'leagueData'},
  {icon:'stats',title:'Top goleadores',sub:'Goleo y rendimiento',route:'scorers'},
  {icon:'news',title:'Lo importante de la semana',sub:'Avisos y novedades',route:'v38Weekly'},
- {icon:'alert',title:'Cambios de horario y sedes',sub:'Notificaciones de la Liga',route:'notifications'},
+ {icon:'alert',title:'Cambios de horario y sedes',sub:'Reprograma y crea aviso para compartir',route:'scheduleChanges'},
  {icon:'calendar',title:'Junta semanal de liga',sub:'Agenda y acuerdos locales',action:'meeting'},
  {icon:'video',title:'Semifinales, finales y momentos',sub:'Galería recuperada',route:'moments'},
  {icon:'match',title:'Match Center animado',sub:'Partido, eventos y contexto',route:'match'},
