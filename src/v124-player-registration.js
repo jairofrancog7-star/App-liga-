@@ -1110,7 +1110,7 @@ function bindRosterImport(root){
     rosterHandwritingMode=!!e.target.checked;
     v126SetImportStatus(rosterHandwritingMode
       ?'Pluma/lápiz activado: usaré realce de trazos tenues, tabla/columnas y 6 pasadas OCR.'
-      :'Modo rápido: solo 2 pasadas para texto impreso.');
+      : 'Modo rápido: 4 pasadas OCR para texto impreso y tablas.');
   });
   $('[data-v126-analyse]',root)?.addEventListener('click',async()=>{
     if(!rosterImportTeam)return toast('Primero selecciona el equipo de la lista');
@@ -1134,15 +1134,15 @@ function bindRosterImport(root){
     const item=entries[index];if(!item)return;
     item.decision=decision;item.include=decision==='approved';
     const row=$('[data-v172-review-row="'+index+'"]',root);
-    if(row){row.classList.remove('pending','approved','rejected');row.classList.add(decision);const state=$('.v172-review-state',row);if(state)state.textContent=decision==='approved'?'✓':'✕';$('.v172-review-actions button',row).forEach(b=>b.classList.toggle('active',(decision==='approved'&&b.classList.contains('approve'))||(decision==='rejected'&&b.classList.contains('reject'))))}
+    if(row){row.classList.remove('pending','approved','rejected');row.classList.add(decision);const state=$('.v172-review-state',row);if(state)state.textContent=decision==='approved'?'✓':'✕';$$('.v172-review-actions button',row).forEach(b=>b.classList.toggle('active',(decision==='approved'&&b.classList.contains('approve'))||(decision==='rejected'&&b.classList.contains('reject'))))}
     const s=v126ImportSummary();
     const a=$('[data-v172-approved]',root),r=$('[data-v172-rejected]',root),p=$('[data-v172-pending]',root),apply=$('[data-v126-apply]',root);
     if(a)a.textContent=String(s.approved);if(r)r.textContent=String(s.rejected);if(p)p.textContent=String(s.pending);
     if(apply){apply.disabled=!s.approved;apply.textContent='Registrar / aplicar aprobados ('+s.approved+')'}
   };
-  $('[data-v172-approve]',root).forEach(b=>b.addEventListener('click',e=>{e.preventDefault();e.stopPropagation();reviewDecision(Number(b.dataset.v172Approve),'approved')}));
-  $('[data-v172-reject]',root).forEach(b=>b.addEventListener('click',e=>{e.preventDefault();e.stopPropagation();reviewDecision(Number(b.dataset.v172Reject),'rejected')}));
-  $('[data-v126-remove]',root).forEach(c=>c.onchange=()=>{const r=rosterImport.missing?.[Number(c.dataset.v126Remove)];if(r)r.remove=c.checked});
+  $$('[data-v172-approve]',root).forEach(b=>b.addEventListener('click',e=>{e.preventDefault();e.stopPropagation();reviewDecision(Number(b.dataset.v172Approve),'approved')}));
+  $$('[data-v172-reject]',root).forEach(b=>b.addEventListener('click',e=>{e.preventDefault();e.stopPropagation();reviewDecision(Number(b.dataset.v172Reject),'rejected')}));
+  $$('[data-v126-remove]',root).forEach(c=>c.onchange=()=>{const r=rosterImport.missing?.[Number(c.dataset.v126Remove)];if(r)r.remove=c.checked});
   $('[data-v126-mark-missing]',root)?.addEventListener('click',()=>{for(const r of rosterImport.missing||[])r.remove=true;renderManager()});
   $('[data-v126-reanalyse]',root)?.addEventListener('click',()=>{
     const text=$('[data-v126-raw-text]',root)?.value||'';
@@ -1315,9 +1315,9 @@ function bindManager(root){
   $('[data-v161-category]',root)?.addEventListener('change',e=>{registryCategory=e.target.value||'Todas';registryTeam='Todos';renderManager(true)});
   $('[data-v161-team]',root)?.addEventListener('change',e=>{registryTeam=e.target.value||'Todos';applyRegistryFilters(root)});
   $('[data-v161-source]',root)?.addEventListener('change',e=>{registrySource=e.target.value||'Todos';applyRegistryFilters(root)});
-  $('[data-v161-letter]',root).forEach(b=>b.addEventListener('click',()=>{
+  $$('[data-v161-letter]',root).forEach(b=>b.addEventListener('click',()=>{
     registryLetter=b.dataset.v161Letter||'Todas';
-    $('[data-v161-letter]',root).forEach(x=>x.classList.toggle('active',x===b));
+    $$('[data-v161-letter]',root).forEach(x=>x.classList.toggle('active',x===b));
     applyRegistryFilters(root);
   }));
   bindList(root);
