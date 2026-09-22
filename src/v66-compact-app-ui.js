@@ -3,7 +3,7 @@
 (function(){
 'use strict';
 const ROUTES=new Set([
-  'leagueTools','rulebook','matchday','weatherFields','venues','cedulas','cedulaDetail','credential','credentialBuilder',
+  'leagueTools','rulebook','matchday','weatherFields','venues','cedulas','cedulaDetail','credential',
   'cedulaBuilder','publications','tactics','simulator','jrControl','v38Stats','v38Weekly','v38Weather','v38Alerts',
   'bracketBuilder','agendaBuilder','motionHub','suspensionTool','ligaQR','club-store','scorers','players'
 ]);
@@ -20,7 +20,10 @@ function apply(){
   const r=route(),on=ROUTES.has(r);
   document.body.classList.toggle('v66-compact-route',on);
   document.body.dataset.v66CompactRoute=on?r:'';
-  if(!on)return;
+  if(!on){
+    document.querySelectorAll('[data-v66-compact-top]').forEach(el=>el.remove());
+    return;
+  }
   const screen=document.querySelector('#screen');if(!screen)return;
   if(!screen.querySelector('[data-v66-compact-top]'))screen.insertAdjacentHTML('afterbegin',markup());
   screen.querySelector('.v66-compact-back')?.addEventListener('click',()=>{
