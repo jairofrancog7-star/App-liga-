@@ -315,3 +315,62 @@
   .v92-summary-grid b{font-size:16px!important}
   .v92-section-head h2{font-size:18px!important}
 }
+
+
+/* V141 — Selector de partido oficial + metadatos reales. */
+@media (max-width:1023px){
+  body.v92-match-center-official .v92-match-picker{
+    margin:0 0 12px;
+    padding:12px 13px;
+    border:1px solid rgba(74,218,235,.22);
+    border-radius:16px;
+    background:#0a116c;
+  }
+  body.v92-match-center-official .v92-match-picker label{
+    display:grid;
+    gap:7px;
+  }
+  body.v92-match-center-official .v92-match-picker label>span{
+    color:#56e5ef;
+    font:800 10px/1 Inter,Roboto,Arial,sans-serif;
+    letter-spacing:.08em;
+    text-transform:uppercase;
+  }
+  body.v92-match-center-official .v92-match-picker select{
+    width:100%;
+    min-height:44px;
+    padding:0 38px 0 11px;
+    border:1px solid rgba(255,255,255,.15);
+    border-radius:12px;
+    background:#07105f;
+    color:#fff;
+    font:700 11px/1.2 Inter,Roboto,Arial,sans-serif;
+    outline:none;
+  }
+  body.v92-match-center-official .v92-match-picker>small{
+    display:block;
+    margin-top:7px;
+    color:#9eabd2;
+    font:500 9px/1.35 Inter,Roboto,Arial,sans-serif;
+  }
+  body.v92-match-center-official .v92-official-meta{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:8px;
+    margin:9px 0 0;
+  }
+  body.v92-match-center-official .v92-official-meta span{
+    min-width:0;
+    padding:8px 10px;
+    border:1px solid rgba(255,255,255,.08);
+    border-radius:11px;
+    background:#090f68;
+    color:#b9c4e3;
+    font:650 9px/1.25 Inter,Roboto,Arial,sans-serif;
+    text-align:center;
+    overflow-wrap:anywhere;
+  }
+  body.v92-match-center-official .v92-score-card{
+    margin-top:0!important;
+  }
+}
