@@ -473,3 +473,26 @@ body[data-app-route="home"] #v105-bottom[data-v105-route="home"]{
 body[data-app-route="home"] #v105-bottom[data-v105-route="home"] .v105-grid{
   background:transparent!important;
 }
+
+
+/* V127 — FIX REAL: fondo trasero de Home sin depender de data-app-route */
+#v105-bottom[data-v105-route="home"]{
+  background:#02022f!important;
+  background-image:none!important;
+  border-color:rgba(48,224,241,.14)!important;
+  box-shadow:none!important;
+}
+
+#v105-bottom[data-v105-route="home"] .v105-grid{
+  background:transparent!important;
+}
+
+/* Mantener exactamente el color actual de los cuadros internos. */
+#v105-bottom[data-v105-route="home"] .v105-card{
+  background:linear-gradient(145deg,rgba(17,38,141,.93),rgba(7,16,98,.97))!important;
+}
+
+#v105-bottom[data-v105-route="home"] .v105-head{
+  background:transparent!important;
+  background-image:none!important;
+}
