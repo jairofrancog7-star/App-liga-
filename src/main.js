@@ -5058,10 +5058,12 @@ function v64CurpDob(curp){
   const m=c.match(/^[A-Z]{4}(\d{2})(\d{2})(\d{2})/);if(!m)return '';
   const yy=Number(m[1]),mm=Number(m[2]),dd=Number(m[3]);
   if(mm<1||mm>12||dd<1||dd>31)return '';
-  const century=/[A-Z]/.test(c.charAt(16))?2000:1900;
-  const year=century+yy;
+  const now=new Date(),currentYear=now.getFullYear();
+  let year=(/[A-Z]/.test(c.charAt(16))?2000:1900)+yy;
+  if(year>currentYear)year-=100;
+  if(currentYear-year>120)year+=100;
   const test=new Date(year,mm-1,dd);
-  if(test.getFullYear()!==year||test.getMonth()!==mm-1||test.getDate()!==dd)return '';
+  if(test.getFullYear()!==year||test.getMonth()!==mm-1||test.getDate()!==dd||test>now)return '';
   return String(year).padStart(4,'0')+'-'+String(mm).padStart(2,'0')+'-'+String(dd).padStart(2,'0');
 }
 function v64OcrDate(text){
@@ -5194,31 +5196,42 @@ async function v64PrepareOcrImage(file,mode='contrast'){
     return await new Promise(resolve=>c.toBlob(b=>resolve(b||file),'image/jpeg',.94));
   }catch(e){return file}
 }
-async function v64PrepareOcrCrop(file,region='name'){
+async function v64PrepareOcrCrop(file,region='nameA'){
   try{
     const img=await v64BitmapFromFile(file),iw=img.width||img.naturalWidth,ih=img.height||img.naturalHeight;
     if(!iw||!ih)return null;
     const landscape=iw>=ih;
     let sx,sy,sw,sh;
-    if(region==='name'){
-      if(landscape){sx=iw*.29;sy=ih*.19;sw=iw*.66;sh=ih*.48}
-      else{sx=iw*.08;sy=ih*.20;sw=iw*.84;sh=ih*.48}
+    if(landscape){
+      const map={
+        nameA:[.27,.23,.70,.30],
+        nameB:[.28,.31,.69,.31],
+        nameC:[.23,.18,.74,.48],
+        data:[.22,.45,.75,.48]
+      };
+      [sx,sy,sw,sh]=map[region]||map.nameA;
     }else{
-      if(landscape){sx=iw*.24;sy=ih*.48;sw=iw*.72;sh=ih*.44}
-      else{sx=iw*.07;sy=ih*.48;sw=iw*.86;sh=ih*.44}
+      const map={
+        nameA:[.07,.22,.86,.28],
+        nameB:[.07,.30,.86,.32],
+        nameC:[.05,.18,.90,.48],
+        data:[.05,.47,.90,.48]
+      };
+      [sx,sy,sw,sh]=map[region]||map.nameA;
     }
-    const target=2200,scale=target/sw,w=Math.round(sw*scale),h=Math.round(sh*scale);
+    sx*=iw;sy*=ih;sw*=iw;sh*=ih;
+    const target=2400,scale=target/sw,w=Math.max(1,Math.round(sw*scale)),h=Math.max(1,Math.round(sh*scale));
     const c=document.createElement('canvas');c.width=w;c.height=h;const x=c.getContext('2d',{willReadFrequently:true});
     x.imageSmoothingEnabled=true;x.imageSmoothingQuality='high';
     x.drawImage(img,sx,sy,sw,sh,0,0,w,h);
     const data=x.getImageData(0,0,w,h),p=data.data;
     for(let i=0;i<p.length;i+=4){
       const g=.299*p[i]+.587*p[i+1]+.114*p[i+2];
-      const v=Math.max(0,Math.min(255,(g-128)*2.05+128));
+      const v=Math.max(0,Math.min(255,(g-128)*2.15+128));
       p[i]=p[i+1]=p[i+2]=v;p[i+3]=255;
     }
     x.putImageData(data,0,0);
-    return await new Promise(resolve=>c.toBlob(b=>resolve(b),'image/jpeg',.96));
+    return await new Promise(resolve=>c.toBlob(b=>resolve(b),'image/jpeg',.97));
   }catch(e){return null}
 }
 function v64CleanNameCandidate(text){
@@ -5256,51 +5269,58 @@ async function v64RecognizeDocument(file,onStatus){
     {label:'Mejorando imagen…',image:await v64PrepareOcrImage(file,'contrast')},
     {label:'Segunda lectura…',image:await v64PrepareOcrImage(file,'binary')}
   ];
-  let best={text:'',score:-Infinity,parsed:{}};
-  const seen=[];
-  for(let i=0;i<variants.length;i++){
-    onStatus?.(variants[i].label);
-    const r=await T.recognize(variants[i].image,'spa');
+  let best={text:'',score:-Infinity,parsed:{}};const seen=[];
+  for(const v of variants){
+    onStatus?.(v.label);
+    const r=await T.recognize(v.image,'spa');
     const text=r?.data?.text||'',q=v64OcrQuality(text,r?.data?.confidence||0);
     seen.push(text);
     if(q.score>best.score)best={text,score:q.score,parsed:q.parsed};
-    if(q.parsed?.curp&&q.parsed?.name)break;
   }
 
-  if(!best.parsed?.name){
-    onStatus?.('Buscando nombre en el INE…');
-    const crop=await v64PrepareOcrCrop(file,'name');
-    if(crop){
-      const r=await T.recognize(crop,'spa');
+  if(!best.parsed?.name||/FECHA|NACIM|INSTITUTO|ELECTORAL|CREDENCIAL/i.test(best.parsed?.name||'')){
+    const candidates=[];
+    for(const [region,label] of [['nameA','Leyendo nombre…'],['nameB','Confirmando nombre…'],['nameC','Revisando nombre completo…']]){
+      onStatus?.(label);
+      const crop=await v64PrepareOcrCrop(file,region);if(!crop)continue;
+      const r=await T.recognize(crop,'spa',{
+        tessedit_pageseg_mode:'6',
+        preserve_interword_spaces:'1'
+      });
       const focused=r?.data?.text||'';seen.push(focused);
-      const combined=best.text+'\n'+focused;
-      const parsed=v64ParseOcrIdentity(combined);
-      const focusedName=v64NameFromFocusedText(focused);
-      if(!parsed.name&&focusedName)parsed.name=focusedName;
-      const q=v64OcrQuality(combined,r?.data?.confidence||0);
-      q.parsed=parsed;
-      if(parsed.name||q.score>best.score)best={text:combined,score:q.score+45,parsed};
+      const name=v64NameFromFocusedText(focused);
+      if(name)candidates.push({name,text:focused,confidence:Number(r?.data?.confidence||0)});
     }
+    candidates.sort((a,b)=>b.confidence-a.confidence||b.name.length-a.name.length);
+    const merged=[best.text,...candidates.map(x=>x.text)].join('\n');
+    const parsed=v64ParseOcrIdentity(merged);
+    const picked=candidates.find(x=>!/INSTITUTO|ELECTORAL|CREDENCIAL|FECHA|NACIMIENTO/i.test(x.name));
+    if((!parsed.name||/INSTITUTO|ELECTORAL|CREDENCIAL|FECHA|NACIMIENTO/i.test(parsed.name))&&picked)parsed.name=picked.name;
+    const q=v64OcrQuality(merged,candidates[0]?.confidence||0);
+    best={text:merged,score:q.score+(parsed.name?70:0),parsed};
   }
 
   if(!best.parsed?.curp||!best.parsed?.dob||!best.parsed?.city){
-    onStatus?.('Buscando datos del documento…');
+    onStatus?.('Buscando CURP y nacimiento…');
     const crop=await v64PrepareOcrCrop(file,'data');
     if(crop){
-      const r=await T.recognize(crop,'spa');
+      const r=await T.recognize(crop,'spa',{tessedit_pageseg_mode:'6',preserve_interword_spaces:'1'});
       const focused=r?.data?.text||'';seen.push(focused);
-      const combined=best.text+'\n'+focused;
-      const parsed=v64ParseOcrIdentity(combined);
+      const merged=best.text+'\n'+focused,parsed=v64ParseOcrIdentity(merged);
       if(best.parsed?.name&&!parsed.name)parsed.name=best.parsed.name;
-      const q=v64OcrQuality(combined,r?.data?.confidence||0);
-      if(q.score>best.score||parsed.curp||parsed.dob||parsed.city)best={text:combined,score:q.score,parsed};
+      const q=v64OcrQuality(merged,r?.data?.confidence||0);
+      best={text:merged,score:Math.max(best.score,q.score),parsed};
     }
   }
 
   if((!best.parsed?.name&&!best.parsed?.curp)||best.text.trim().length<18){
-    onStatus?.('Probando imagen original…');
-    const r=await T.recognize(file,'spa'),text=r?.data?.text||'',combined=best.text+'\n'+text,q=v64OcrQuality(combined,r?.data?.confidence||0);
-    if(q.score>best.score)best={text:combined,score:q.score,parsed:q.parsed};
+    onStatus?.('Comprobando documento completo…');
+    const r=await T.recognize(file,'spa'),text=r?.data?.text||'',merged=best.text+'\n'+text,q=v64OcrQuality(merged,r?.data?.confidence||0);
+    if(q.score>best.score)best={text:merged,score:q.score,parsed:q.parsed};
+  }
+  if(best.parsed?.curp){
+    const fixed=v64CurpDob(best.parsed.curp);
+    if(fixed)best.parsed.dob=fixed;
   }
   best.allText=seen.filter(Boolean).join('\n');
   return best;
