@@ -274,3 +274,77 @@ body[data-app-route="bracketBuilder"].v66-compact-route .topbar{
 body[data-app-route="bracketBuilder"].v66-compact-route #screen{
   padding-top:0!important;
 }
+
+
+/* V129 — LIGUILLA: transición limpia entre cabecera y formulario.
+   Quita los arcos/círculos cyan de la unión y deja un solo azul oscuro continuo. */
+body[data-app-route="bracketBuilder"],
+body[data-app-route="bracketBuilder"] #app,
+body[data-app-route="bracketBuilder"] .app-shell,
+body[data-app-route="bracketBuilder"] #screen,
+body[data-app-route="bracketBuilder"] .v60-tool-page,
+body[data-app-route="bracketBuilder"] .v64-page{
+  background-color:#06055f!important;
+  box-shadow:none!important;
+}
+
+body[data-app-route="bracketBuilder"] #screen,
+body[data-app-route="bracketBuilder"] .v60-tool-page,
+body[data-app-route="bracketBuilder"] .v64-page{
+  background:#06055f!important;
+  background-image:none!important;
+  border-top:0!important;
+  outline:0!important;
+}
+
+/* Elimina cualquier decoración circular/cyan que aparezca justo en la unión. */
+body[data-app-route="bracketBuilder"] #screen::before,
+body[data-app-route="bracketBuilder"] #screen::after,
+body[data-app-route="bracketBuilder"] .v60-tool-page::before,
+body[data-app-route="bracketBuilder"] .v60-tool-page::after,
+body[data-app-route="bracketBuilder"] .v64-page::before,
+body[data-app-route="bracketBuilder"] .v64-page::after{
+  content:none!important;
+  display:none!important;
+}
+
+/* Conserva el arte superior, pero tapa únicamente su franja inferior
+   con el mismo azul del formulario para borrar las medias lunas cyan. */
+body[data-app-route="bracketBuilder"] .topbar{
+  border-bottom:0!important;
+  box-shadow:none!important;
+  overflow:hidden!important;
+}
+body[data-app-route="bracketBuilder"] .topbar::after{
+  content:""!important;
+  display:block!important;
+  position:absolute!important;
+  z-index:3!important;
+  left:0!important;
+  right:0!important;
+  bottom:-1px!important;
+  height:42px!important;
+  pointer-events:none!important;
+  background:#06055f!important;
+  background-image:none!important;
+  border:0!important;
+  box-shadow:none!important;
+  opacity:1!important;
+}
+
+/* Logo/perfil siguen por encima de la franja de unión. */
+body[data-app-route="bracketBuilder"] .topbar .wordmark,
+body[data-app-route="bracketBuilder"] .topbar .profile-button,
+body[data-app-route="bracketBuilder"] .topbar .back-button{
+  z-index:4!important;
+}
+
+/* El formulario empieza pegado al mismo fondo, sin franja distinta. */
+body[data-app-route="bracketBuilder"].v66-compact-route #screen{
+  margin-top:0!important;
+  padding-top:0!important;
+}
+body[data-app-route="bracketBuilder"] .v64-page{
+  margin-top:0!important;
+  padding-top:12px!important;
+}
