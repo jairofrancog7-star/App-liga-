@@ -103,7 +103,8 @@
     publications:'leagueTools',
     tactics:'leagueTools',
     simulator:'leagueTools',
-    jrControl:'leagueTools'
+    jrControl:'leagueTools',
+    scheduleChanges:'home'
   };
 
   function fallbackRoute(){
