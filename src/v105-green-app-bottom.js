@@ -251,14 +251,6 @@ function block(r){
  else if(r==='video'){k='LIGA JUVENTINO TV';title='Videos y momentos';desc='Archivo audiovisual de la Liga.';cards=[{icon:'video',title:'Momentos',sub:'Contenido de la Liga',route:'moments'},{icon:'history',title:'Historial',sub:'Temporadas y archivo',route:'history'},{icon:'share',title:'Compartir jornada',sub:'Publicaciones',route:'publications'}];asset='v38-soccer-liguilla.mp4';html+=gallery()}
  else if(r==='history'){title='Historial · temporadas y palmarés';desc='Accesos de la app verde agrupados debajo del historial actual.';cards=[{icon:'history',title:'Temporada actual',sub:'Información vigente',route:'leagueData'},{icon:'trophy',title:'Palmarés',sub:'Campeones e historia',route:'history'},{icon:'history',title:'Históricos',sub:'Equipos y temporadas anteriores',route:'history'},{icon:'video',title:'Finales y momentos',sub:'Archivo audiovisual',route:'moments'}];asset='v38-soccer-liguilla.mp4'}
  else if(r==='tactics'){title='Táctica 3D · versión azul';desc='Tablero táctil inspirado en la función de Liga_Futbol; se agrega al final y guarda sólo en este dispositivo.';cards=[];asset='v38-fix10-tactics-motion.mp4';html+=tacticsBoard()}
- else if(r==='more'){k='MÁS DE LA LIGA';title='Accesos que faltaban';desc='Funciones recuperadas de la otra app, añadidas al final sin reemplazar el diseño actual.';cards=[
-   {icon:'history',title:'Historial',sub:'Temporadas, palmarés e históricos',route:'history'},
-   {icon:'match',title:'Match Center real',sub:'Partido oficial, marcador y contexto',route:'v4-matchcenter'},
-   {icon:'timer',title:'Centro de jornada',sub:'Checklist y operación del día',route:'matchday'},
-   {icon:'bell',title:'Notificaciones',sub:'Avisos y preferencias',route:'notifications'},
-   {icon:'admin',title:'JR Control',sub:'Centro operativo',route:'jrControl'},
-   {icon:'tactics',title:'Tácticas 2D / 3D',sub:'Pizarra interactiva',route:'tactics'}
- ];asset='v38-soccer-teams.mp4'}
  else if(r==='matchday'){k='CENTRO DE JORNADA';title='Partido y operación';desc='Accesos complementarios debajo del centro de jornada, sin mover el contenido principal.';cards=[
    {icon:'match',title:'Match Center real',sub:'Abrir partido oficial',route:'v4-matchcenter'},
    {icon:'calendar',title:'Calendario y resultados',sub:'Jornadas oficiales',route:'competition'},
@@ -276,7 +268,6 @@ function block(r){
  else if(r==='jrControl'){title='Explora la Liga · herramientas de control';desc='Accesos operativos complementarios de JR Control.';cards=MORE_CARDS;asset='v38-soccer-teams.mp4'}
  else if(r==='news'||r==='v38Weekly'){title='Noticias, avisos y juntas';desc='Comunicación y operación semanal de la Liga.';cards=[{icon:'news',title:'Avisos',sub:'Comunicados y cambios de la Liga',route:'notices'},{icon:'calendar',title:'Junta semanal',sub:'Agenda y acuerdos locales',action:'meeting'},{icon:'alert',title:'Cambios de horario y sedes',sub:'Notificaciones',route:'notifications'},{icon:'video',title:'Semifinales, finales y momentos',sub:'Videos',route:'moments'}];asset='v38-soccer-matchday.mp4'}
  else if(r==='notifications'){title='Notificaciones y participación';desc='Preferencias, encuesta y pulso de afición.';cards=[{icon:'bell',title:'Notificaciones',sub:'Preferencias actuales',route:'notifications'},{icon:'fire',title:'Fan Zone',sub:'Reacciones locales',action:'fanzone'},{icon:'poll',title:'Encuesta',sub:'Voto local',action:'poll'}];asset='v38-soccer-hero.mp4'}
- else if(r==='more'){k='FUNCIONES DE LA LIGA';title='Herramientas adaptadas';desc='Funciones de la app verde integradas abajo sin cambiar el diseño azul.';cards=MORE_CARDS;asset='v38-soccer-teams.mp4'}
  else return '';
  if(r==='moments'){
    return '<section class="v105-bottom" id="v105-bottom" data-v105-route="'+esc(r)+'">'+
@@ -566,21 +557,37 @@ function newSanction(){
  $('[data-x-discipline]',m).onclick=()=>{m.remove();go('discipline')};
 }
 function tvPanel(){
- const db=window.LJR_OFFICIAL_DATA||{},cat=db.categories?.['3']||{},stand=cat.standings?.[0]?.rows||[],fix=cat.fixtures?.[0]?.rows||[];
+ const db=window.LJR_OFFICIAL_API?.getData?.()||window.LJR_OFFICIAL_DATA||{},cat=db.categories?.['3']||{},stand=cat.standings?.[0]?.rows||[],fix=cat.fixtures?.[0]?.rows||[];
  const now=Date.now(),parse=v=>{const m=String(v||'').match(/(\d{1,2})\/(\d{1,2})\/(\d{4})\s+(\d{1,2}):(\d{2})/);return m?new Date(+m[3],+m[2]-1,+m[1],+m[4],+m[5]).getTime():NaN};
- const future=fix.map(r=>({r,t:parse(r?.[8])})).filter(x=>Number.isFinite(x.t)&&x.t>=now-2*60*60*1000).sort((a,b)=>a.t-b.t)[0]?.r||fix[0]||[];
+ const list=fix.map(r=>({r,t:parse(r?.[8])})).filter(x=>Number.isFinite(x.t)).sort((a,b)=>a.t-b.t);
+ const live=list.find(x=>now>=x.t&&now<x.t+120*60000);
+ const current=live||list.find(x=>x.t>now)||list[list.length-1]||{r:[],t:NaN};
+ const next=list.find(x=>Number.isFinite(current.t)&&x.t>current.t)||null;
+ const r=current.r||[],elapsed=Number.isFinite(current.t)?Math.max(0,(now-current.t)/60000):0;
+ const phase=live?(elapsed<45?'1T · '+Math.max(1,Math.floor(elapsed)+1)+"'":elapsed<60?'DESCANSO':elapsed<105?'2T · '+Math.min(90,45+Math.floor(elapsed-60)+1)+"'":"2T · 90+'"):'PROGRAMADO';
+ const score=(/^\d+$/.test(String(r?.[3]||''))&&/^\d+$/.test(String(r?.[5]||'')))?String(r[3])+' – '+String(r[5]):'VS';
  const top=stand.slice(0,3);
- const scorers=Object.values(db.categories||{}).flatMap(c=>(c.scorers?.[0]?.rows||[]).filter(r=>r?.[1]&&r?.[2]&&/^\d+$/.test(String(r?.[3]||''))).map(r=>({name:r[1],team:r[2],goals:Number(r[3])||0}))).sort((a,b)=>b.goals-a.goals);
- const m=modal('Modo TV','Vista compacta con información publicada. No inventa marcador ni goleador si no existe un dato oficial.',
-  '<div class="v105-list">'+
-   '<article><small>SIGUIENTE PARTIDO</small><b>'+esc(future?.[2]||'Por confirmar')+' vs '+esc(future?.[6]||'Por confirmar')+'</b><small>'+esc(future?.[8]||'Fecha por confirmar')+' · '+esc(future?.[7]||'Cancha por confirmar')+'</small></article>'+
-   '<article><small>TABLA · PRIMERA FUERZA</small>'+ (top.length?top.map((r,i)=>'<b>'+(i+1)+'. '+esc(r[1])+' · '+esc(r[9])+' pts</b>').join(''):'<b>Sin tabla publicada</b>') +'</article>'+
-   '<article><small>GOLEADOR PUBLICADO</small><b>'+(scorers[0]?esc(scorers[0].name)+' · '+esc(scorers[0].goals)+' goles':'Sin goleo publicado')+'</b><small>'+(scorers[0]?esc(scorers[0].team):'')+'</small></article>'+
-  '</div><div class="v105-actions"><button class="v105-btn" data-tv-match>Match Center</button><button class="v105-btn alt" data-tv-video>Videos</button></div>',true);
- $('[data-tv-match]',m).onclick=()=>{m.remove();go('v4-matchcenter')};
- $('[data-tv-video]',m).onclick=()=>{m.remove();go('video')};
+ const scorers=Object.values(db.categories||{}).flatMap(c=>(c.scorers?.[0]?.rows||[]).filter(x=>x?.[1]&&x?.[2]&&/^\d+$/.test(String(x?.[3]||''))).map(x=>({name:x[1],team:x[2],goals:Number(x[3])||0}))).sort((a,b)=>b.goals-a.goals);
+ let old=document.querySelector('.v160-tv-layer');if(old)old.remove();
+ const layer=document.createElement('div');layer.className='v160-tv-layer';layer.innerHTML=
+  '<section class="v160-tv-board" role="dialog" aria-modal="true">'+
+   '<button class="v160-tv-close" type="button">× Salir de TV</button>'+
+   '<div class="v160-tv-live '+(live?'is-live':'')+'">'+(live?'● EN VIVO · '+esc(phase):'PRÓXIMO PARTIDO')+'</div>'+
+   '<h2>'+esc(r?.[2]||'Por confirmar')+' <span>vs</span> '+esc(r?.[6]||'Por confirmar')+'</h2>'+
+   '<div class="v160-tv-score">'+esc(score)+'</div>'+
+   '<p class="v160-tv-meta">'+esc(r?.[7]||'Cancha por confirmar')+' · Jornada '+esc(r?.[1]||'—')+' · '+esc(r?.[8]||'Fecha por confirmar')+'</p>'+
+   '<article><small>SIGUIENTE</small><b>'+(next?esc(next.r?.[2]||'')+' vs '+esc(next.r?.[6]||''):'Sin siguiente partido publicado')+'</b><span>'+(next?esc(next.r?.[8]||'')+' · '+esc(next.r?.[7]||'Cancha por confirmar'):'')+'</span></article>'+
+   '<article><small>TABLA · PRIMERA FUERZA</small>'+ (top.length?top.map((x,i)=>'<b>'+(i+1)+'. '+esc(x[1])+' · '+esc(x[9])+' pts</b>').join(''):'<b>Sin tabla publicada</b>') +'</article>'+
+   '<article><small>GOLEADOR PUBLICADO</small><b>'+(scorers[0]?esc(scorers[0].name)+' · '+esc(scorers[0].goals)+' goles':'Sin goleo publicado')+'</b><span>'+(scorers[0]?esc(scorers[0].team):'')+'</span></article>'+
+   '<div class="v160-tv-actions"><button data-tv-match>Match Center</button><button data-tv-video>Vídeos</button></div>'+
+  '</section>';
+ document.body.appendChild(layer);
+ const close=()=>layer.remove();
+ $('.v160-tv-close',layer).onclick=close;
+ $('[data-tv-match]',layer).onclick=()=>{close();go('v4-matchcenter')};
+ $('[data-tv-video]',layer).onclick=()=>{close();go('video')};
+ layer.addEventListener('click',e=>{if(e.target===layer)close()});
 }
-
 function act(a){
  if(a==='meeting')meeting();else if(a==='poll')poll();else if(a==='fanzone')fanzone();else if(a==='delegates')delegates();else if(a==='officials')officials();else if(a==='incidents')incidents();else if(a==='motm')motm();else if(a==='calendar-generator')calendarGenerator();else if(a==='csv-import')csvImport();else if(a==='backup-export')backupExport();else if(a==='audit')audit();else if(a==='sponsors')sponsors();else if(a==='shotmap')shotmap();
  else if(a==='register-alerts')registerAlerts();else if(a==='schedule-match')scheduleMatch();else if(a==='new-sanction')newSanction();else if(a==='tv-panel')tvPanel();
@@ -637,5 +644,5 @@ window.addEventListener('load',()=>schedule(200));
 document.addEventListener('visibilitychange',()=>{if(!document.hidden)$$('[data-v105-motion]').forEach(v=>v.play().catch(()=>{}))});
 const screen=$('#screen');if(screen)new MutationObserver(()=>schedule(90)).observe(screen,{childList:true,subtree:false});
 schedule(150);setTimeout(()=>schedule(0),1200);setTimeout(()=>schedule(0),3500);
-window.LJR_V105={build:BUILD,mount,officialTeams,officialPlayers};
+window.LJR_V105={build:BUILD,mount,officialTeams,officialPlayers,openTv:tvPanel,registerAlerts,scheduleMatch,newSanction};
 })();
