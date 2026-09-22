@@ -29,6 +29,7 @@ let rosterTeamQuery='';
 let rosterImportFile=null;
 let rosterHandwritingMode=false;
 let rosterDetectedKind='auto';
+let rosterExpectedRows=0;
 let rosterImport={fileName:'',rawText:'',entries:[],missing:[],status:'',busy:false};
 let lastManagerHtml='';
 let filePickerCooldownUntil=0;
@@ -656,7 +657,8 @@ function v162MergeOcrTexts(parts){
 async function v157Recognize(source,label,pass,mode,psm,totalPasses){
   const T=await v126Tesseract(),canvas=await v157PreparedCanvas(source,mode);
   const handwritten=mode==='pencil'||mode==='handwriting';
-  const result=await T.recognize(canvas,'spa',{
+  const nameColumn=/columna\s+jugador/i.test(String(label||''));
+  const options={
     tessedit_pageseg_mode:String(psm||6),
     preserve_interword_spaces:'1',
     user_defined_dpi:'300',
@@ -668,7 +670,11 @@ async function v157Recognize(source,label,pass,mode,psm,totalPasses){
         v126SetImportStatus('Preparando '+(handwritten?'lectura de escritura manual':'OCR')+' · '+label+'…');
       }
     }
-  });
+  };
+  if(nameColumn){
+    options.tessedit_char_whitelist=" ABCDEFGHIJKLMNOPQRSTUVWXYZÁÉÍÓÚÜÑabcdefghijklmnopqrstuvwxyzáéíóúüñ'-";
+  }
+  const result=await T.recognize(canvas,'spa',options);
   return {text:result?.data?.text||'',mode,confidence:Number(result?.data?.confidence||0)};
 }
 function v178MergeSweepTexts(parts){
@@ -746,6 +752,139 @@ async function v179DetectImageKind(source){
     return {kind:'mixed',label:'Mixto / automático',confidence:50};
   }
 }
+
+async function v180DetectPrintedTable(source){
+  try{
+    const bmp=await v157Bitmap(source);
+    const sw=bmp.width||bmp.videoWidth||bmp.naturalWidth||1,sh=bmp.height||bmp.videoHeight||bmp.naturalHeight||1;
+    const scale=Math.min(1,900/sw),w=Math.max(1,Math.round(sw*scale)),h=Math.max(1,Math.round(sh*scale));
+    const canvas=document.createElement('canvas');canvas.width=w;canvas.height=h;
+    const ctx=canvas.getContext('2d',{willReadFrequently:true,alpha:false});
+    ctx.fillStyle='#fff';ctx.fillRect(0,0,w,h);ctx.drawImage(bmp,0,0,w,h);
+    const data=ctx.getImageData(0,0,w,h).data;
+    const gray=(x,y)=>{const i=(y*w+x)*4;return .299*data[i]+.587*data[i+1]+.114*data[i+2]};
+
+    /* Líneas verticales continuas: una tabla real las conserva cientos de píxeles;
+       letras/números no. Esto evita confundir columnas por alineación de texto. */
+    const y0=Math.floor(h*.10),y1=Math.max(y0+1,Math.floor(h*.995)),roiH=y1-y0;
+    const rawX=[];
+    for(let x=0;x<w;x++){
+      let run=0,maxRun=0;
+      for(let y=y0;y<y1;y++){
+        if(gray(x,y)<178){run++;if(run>maxRun)maxRun=run}else run=0;
+      }
+      if(maxRun>=roiH*.62)rawX.push(x);
+    }
+    const xGroups=[];
+    for(const x of rawX){
+      if(!xGroups.length||x-xGroups[xGroups.length-1][xGroups[xGroups.length-1].length-1]>Math.max(2,Math.round(w*.012)))xGroups.push([x]);
+      else xGroups[xGroups.length-1].push(x);
+    }
+    const xs=xGroups.map(g=>Math.round(g.reduce((a,b)=>a+b,0)/g.length)).sort((a,b)=>a-b);
+    if(xs.length<4)return null;
+
+    let best=null;
+    for(let i=0;i<xs.length-1;i++){
+      const left=xs[i],right=xs[i+1],gap=right-left;
+      if(gap<w*.20||gap>w*.72)continue;
+      if(!best||gap>best.gap)best={left,right,gap};
+    }
+    if(!best)return null;
+
+    /* Estimación de filas a partir de líneas horizontales largas.
+       En tablas como NO | Jugador | Equipo | G.Total, grupos-2 ≈ jugadores. */
+    const rawY=[];
+    for(let y=0;y<h;y++){
+      let run=0,maxRun=0;
+      for(let x=0;x<w;x++){
+        if(gray(x,y)<178){run++;if(run>maxRun)maxRun=run}else run=0;
+      }
+      if(maxRun>=w*.54)rawY.push(y);
+    }
+    const yGroups=[];
+    for(const y of rawY){
+      if(!yGroups.length||y-yGroups[yGroups.length-1][yGroups[yGroups.length-1].length-1]>Math.max(2,Math.round(h*.006)))yGroups.push([y]);
+      else yGroups[yGroups.length-1].push(y);
+    }
+    let rows=Math.max(0,yGroups.length-2);
+    if(rows<5||rows>80)rows=0;
+
+    const inset=Math.max(2,Math.round(w*.006));
+    const x0=Math.max(0,(best.left+inset)/w),x1=Math.min(1,(best.right-inset)/w);
+    if(x1-x0<.18)return null;
+    return {x0,width:x1-x0,rows,columns:xs.length};
+  }catch(_){return null}
+}
+function v180NameColumnLines(text){
+  const out=[];
+  for(let line of String(text||'').split(/\r?\n/)){
+    line=line.replace(/[|¦]+/g,' ').replace(/\s+/g,' ').trim();
+    if(!line)continue;
+    line=line.replace(/^\s*(?:NO\.?\s*)?[#Nº°]?\s*\d{1,3}\s*[.)\-:]?\s*/i,'').trim();
+    if(!line)continue;
+    const n=norm(line);
+    if(!n||/^(jugador|nombre|nombres|equipo|g total|total)$/.test(n))continue;
+    let candidate=v178PlausibleFullName(line);
+    if(!candidate){
+      const best=v157BestNameWindow(line);
+      if(best.name&&best.score>=.34)candidate=best.name;
+    }
+    if(!candidate||v126LooksLikeNonPlayerName(candidate))continue;
+    const key=norm(candidate);
+    if(!out.some(x=>norm(x)===key||v124TokenSim(norm(x),key)>.975))out.push(candidate);
+  }
+  return out;
+}
+function v180NameQuality(name){
+  const clean=v157CleanNameText(name),tokens=clean.split(/\s+/).filter(Boolean),up=tokens.map(v157Upper);
+  let q=v157MexNameScore(clean)*3;
+  q+=up.filter(t=>V157_MX_GIVEN.has(t)).length*.35;
+  q+=up.filter(t=>V157_MX_SURNAME.has(t)).length*.28;
+  q-=up.filter(t=>t.length<=1).length*1.4;
+  q-=up.filter(t=>/^[BCDFGHJKLMNPQRSTVWXYZ]{4,}$/.test(t)).length*.6;
+  return q;
+}
+function v180BestNameColumnText(parts,target=0){
+  const choices=(parts||[]).map(p=>{
+    const names=v180NameColumnLines(p?.text||'');
+    let score=names.reduce((s,n)=>s+v180NameQuality(n),0);
+    if(target)score-=Math.abs(names.length-target)*3.5;
+    score+=(Number(p?.confidence||0)/100)*2;
+    return {names,score,confidence:Number(p?.confidence||0)};
+  }).filter(x=>x.names.length);
+  if(!choices.length)return '';
+  choices.sort((a,b)=>b.score-a.score);
+  let best=choices[0];
+
+  /* Si dos lecturas tienen la misma cantidad de filas, elegimos por fila la
+     escritura más verosímil. Esto corrige casos como “E Jandro” vs “Alejandro”
+     sin mezclar filas ni inventar personas adicionales. */
+  const peer=choices.find(x=>x!==best&&x.names.length===best.names.length);
+  if(peer){
+    const merged=[];
+    for(let i=0;i<best.names.length;i++){
+      const a=best.names[i],b=peer.names[i],sim=v124TokenSim(norm(a),norm(b));
+      if(sim>=.52){
+        const qa=v180NameQuality(a),qb=v180NameQuality(b);
+        merged.push(qb>qa+.08?b:a);
+      }else merged.push(a);
+    }
+    best={...best,names:merged};
+  }
+  if(target&&best.names.length>target)best.names=best.names.slice(0,target);
+  return best.names.join('\n');
+}
+async function v180ReadPrintedNameColumn(source,label,layout){
+  const xPad=Math.min(.01,layout.width*.02);
+  const crop=await v177CropSource(source,layout.x0+xPad,.10,Math.max(.05,layout.width-xPad*2),.895);
+  const parts=[];
+  v126SetImportStatus('Tabla detectada · aislando columna “Jugador” · pasada 1/2');
+  parts.push(await v157Recognize(crop,label+' · columna Jugador',1,'contrast',6,2));
+  await new Promise(resolve=>setTimeout(resolve,20));
+  v126SetImportStatus('Tabla detectada · verificando nombres · pasada 2/2');
+  parts.push(await v157Recognize(crop,label+' · columna Jugador',2,'soft',6,2));
+  return v180BestNameColumnText(parts,layout.rows||0);
+}
 async function v179TwoBandSweep(source,label,pass,total,kind){
   const parts=[];
   const zones=[['mitad superior',0,.56],['mitad inferior',.44,.56]];
@@ -760,16 +899,32 @@ async function v179TwoBandSweep(source,label,pass,total,kind){
   return {parts,pass};
 }
 async function v126OcrImage(source,label='imagen'){
-  /* V179 — OCR adaptativo y rápido.
-     Detecta primero si la imagen parece texto impreso/Word, escritura manual o
-     contenido mixto. En móvil limita el trabajo a 4–5 pasadas para evitar que
-     Tesseract se quede congelado después de la pasada 5/7. */
-  const parts=[];
+  /* V180 — primero detecta estructura. Si hay tabla impresa, NO lee toda la
+     hoja: aísla sólo la columna Jugador y hace 2 pasadas. Esto evita que Equipo,
+     goles y encabezados terminen pegados al nombre y evita 25 filas -> 37 nombres. */
   const type=await v179DetectImageKind(source);
   rosterDetectedKind=type.kind;
+  rosterExpectedRows=0;
   rosterHandwritingMode=type.kind==='handwriting';
-  v126SetImportStatus('Autodetección: '+type.label+' · '+type.confidence+'% · preparando OCR rápido…');
 
+  if(type.kind!=='handwriting'){
+    const table=await v180DetectPrintedTable(source);
+    if(table){
+      rosterDetectedKind='printed-table';
+      rosterExpectedRows=table.rows||0;
+      const namesOnly=await v180ReadPrintedNameColumn(source,label,table);
+      const count=v180NameColumnLines(namesOnly).length;
+      if(count>=Math.max(3,Math.floor((table.rows||count)*.55))){
+        v126SetImportStatus('Tabla impresa detectada · columna Jugador aislada · '+count+(table.rows?' de ~'+table.rows:'')+' nombres · NO se registró ninguno.');
+        return namesOnly;
+      }
+      /* Si la tabla es atípica y la columna aislada no dio suficiente texto,
+         continúa al OCR adaptativo general como respaldo. */
+    }
+  }
+
+  const parts=[];
+  v126SetImportStatus('Autodetección: '+type.label+' · '+type.confidence+'% · preparando OCR rápido…');
   const nativeText=await v177NativeText(source);
   if(nativeText)parts.push({text:nativeText,mode:'native',confidence:92});
 
@@ -798,8 +953,6 @@ async function v126OcrImage(source,label='imagen'){
     await new Promise(resolve=>setTimeout(resolve,25));
   }
 
-  /* Sólo dos recortes grandes, arriba y abajo. Así se cubre toda la hoja con
-     traslape sin hacer 10+ recortes que saturaban memoria en Android. */
   if(foundCount<24&&pass<5){
     const sweep=await v179TwoBandSweep(source,label,pass,5,type.kind);
     pass=sweep.pass;parts.push(...sweep.parts);
@@ -967,7 +1120,8 @@ function v172BestKnownFromRow(line,known){
     if(body.includes(pn))score=1;
     if(score>bestScore){bestScore=score;best=p}
   }
-  return best&&bestScore>=.60?{name:best.name,score:Math.min(1,bestScore)}:null;
+  const minScore=(rosterDetectedKind==='printed-table'||rosterDetectedKind==='printed')?.90:.60;
+  return best&&bestScore>=minScore?{name:best.name,score:Math.min(1,bestScore)}:null;
 }
 function v178PlausibleFullName(value){
   let clean=v172StripTableColumns(value);
@@ -1027,7 +1181,15 @@ function v172NumberedTableCandidates(raw,known){
   return out;
 }
 function v126ExtractCandidates(text){
-  const known=v126KnownPeople(),found=new Map(),order=[],raw=String(text||''),flat=norm(raw);
+  const raw=String(text||'');
+  if(rosterDetectedKind==='printed-table'){
+    const direct=v180NameColumnLines(raw);
+    if(direct.length){
+      const limit=rosterExpectedRows>0?Math.min(80,rosterExpectedRows):80;
+      return direct.slice(0,limit);
+    }
+  }
+  const known=v126KnownPeople(),found=new Map(),order=[],flat=norm(raw);
   const add=(name,score=0)=>{
     if(v126LooksLikeNonPlayerName(name))return;
     const n=norm(name);if(!n||n.length<5)return;
@@ -1078,7 +1240,8 @@ function v126BestKnown(name,team=''){
     if(target&&norm(r.team)===target)s+=.035;
     if(s>score){score=s;best=r}
   }
-  return score>=.80?{record:best,score}:null;
+  const minScore=rosterDetectedKind==='printed-table'?.93:(rosterDetectedKind==='printed'?.89:.80);
+  return score>=minScore?{record:best,score}:null;
 }
 function v126AutoRegisterNewEntries(){
   /* V179 safety lock: OCR only proposes names. Never writes to registry automatically. */
@@ -1145,7 +1308,7 @@ function v126RosterResultHtml(){
     const decision=e.decision||'pending';
     return '<article class="v126-person v172-review-person '+esc(e.status)+' '+esc(decision)+'" data-v172-review-row="'+i+'">'+
       '<span class="v172-review-state" aria-hidden="true">'+(decision==='approved'?'✓':decision==='rejected'?'✕':'?')+'</span>'+
-      '<span class="v126-person-copy"><b>'+esc(e.name)+'</b><small>'+esc(v126RosterStatusLabel(e))+(e.source?.team&&e.status==='transfer'?' · antes: '+esc(e.source.team):'')+'</small></span>'+
+      '<span class="v126-person-copy"><b>'+esc(e.name)+'</b><small>'+esc(v126RosterStatusLabel(e))+(e.source?.team&&e.status==='transfer'?' · antes: '+esc(e.source.team):'')+'</small><button type="button" class="v180-correct-name" data-v180-correct-name="'+i+'">✎ Corregir nombre</button></span>'+
       '<span class="v172-review-actions">'+
         '<button type="button" class="approve '+(decision==='approved'?'active':'')+'" data-v172-approve="'+i+'" aria-label="Aprobar '+esc(e.name)+'">✓ <em>Aprobar</em></button>'+
         '<button type="button" class="reject '+(decision==='rejected'?'active':'')+'" data-v172-reject="'+i+'" aria-label="Rechazar '+esc(e.name)+'">✕ <em>Rechazar</em></button>'+
@@ -1206,7 +1369,7 @@ function rosterImportHtml(){
     '<div class="v126-file-name">'+esc(rosterImport.fileName||'Ningún archivo seleccionado')+'</div>'+
     '<div class="v162-handwriting v179-auto-detect"><span class="v162-handwriting-check">AI</span><span><b>Detección automática del documento</b><small>Reconoce si parece texto impreso/Word/Arial, pluma/lápiz o mixto y usa sólo las pasadas necesarias. Máximo 5 para evitar bloqueos en Android.</small></span></div>'+
     '<button type="button" class="v126-analyse" data-v126-analyse '+(rosterImport.busy?'disabled':'')+'>'+(rosterImport.busy?'Leyendo lista…':'Detectar y comparar jugadores')+'</button>'+
-    '<p class="v126-status" data-v126-import-status>'+esc(rosterImport.status||'Autodetector activo: distingue texto impreso/Word, escritura manual o mixto y usa un máximo de 5 pasadas. Nada se registra automáticamente; primero debes revisar TODOS los nombres con ✓ o ✕.')+'</p>'+
+    '<p class="v126-status" data-v126-import-status>'+esc(rosterImport.status||'Autodetector activo: si encuentra una tabla impresa, aísla primero la columna Jugador para no mezclar Equipo/Goles; si no, distingue Word/impreso, pluma/lápiz o mixto. Nada se registra automáticamente; revisa TODOS los nombres con ✓ o ✕.')+'</p>'+
     v126RosterResultHtml()+
   '</section>';
 }
@@ -1308,7 +1471,18 @@ function bindRosterImport(root){
     if(a)a.textContent=String(s.approved);if(r)r.textContent=String(s.rejected);if(p)p.textContent=String(s.pending);
     if(apply){apply.disabled=!s.approved||s.pending>0;apply.textContent=s.pending?'Revisa todos antes de registrar ('+s.pending+' pendientes)':'Registrar / aplicar aprobados ('+s.approved+')'}
   };
-  $$('[data-v172-approve]',root).forEach(b=>b.addEventListener('click',e=>{e.preventDefault();e.stopPropagation();reviewDecision(Number(b.dataset.v172Approve),'approved')}));
+  $('[data-v180-correct-name]',root).forEach(b=>b.addEventListener('click',e=>{
+    e.preventDefault();e.stopPropagation();
+    const i=Number(b.dataset.v180CorrectName),item=rosterImport.entries?.[i];
+    if(!item)return;
+    const value=prompt('Corrige el nombre completo exactamente como aparece en la lista:',item.name||'');
+    if(value===null)return;
+    const corrected=v178PlausibleFullName(value)||v157TitleName(v157CleanNameText(value));
+    if(!corrected)return toast('Escribe al menos nombre y apellido');
+    item.name=corrected;item.rawName=corrected;item.decision='pending';item.include=false;item.status='review';item.source=null;
+    toast('Nombre corregido · revísalo y apruébalo');renderManager();
+  }));
+  $('[data-v172-approve]',root).forEach(b=>b.addEventListener('click',e=>{e.preventDefault();e.stopPropagation();reviewDecision(Number(b.dataset.v172Approve),'approved')}));
   $$('[data-v172-reject]',root).forEach(b=>b.addEventListener('click',e=>{e.preventDefault();e.stopPropagation();reviewDecision(Number(b.dataset.v172Reject),'rejected')}));
   $$('[data-v126-remove]',root).forEach(c=>c.onchange=()=>{const r=rosterImport.missing?.[Number(c.dataset.v126Remove)];if(r)r.remove=c.checked});
   $('[data-v126-mark-missing]',root)?.addEventListener('click',()=>{for(const r of rosterImport.missing||[])r.remove=true;renderManager()});
