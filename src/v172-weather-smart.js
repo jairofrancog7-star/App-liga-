@@ -7,7 +7,7 @@
 if(window.__LJR_V172_WEATHER_SMART__)return;
 window.__LJR_V172_WEATHER_SMART__=true;
 
-const BUILD='20260922-field-ai-v177';
+const BUILD='20260922-field-ai-v177a';
 const FALLBACK_FIELD_CONFIG={"build":"38-22","timezone":"America/Mexico_City","weatherProvider":"Open-Meteo","mapsProvider":"Google Maps","regionalFallback":{"latitude":20.64337,"longitude":-100.99286,"label":"Referencia regional Juventino Rosas","precision":"regional"},"playPatterns":{"Veteranos 35+":{"dayOfWeek":6,"label":"Sábado","timeRule":"afternoon"},"Veteranos 50+":{"dayOfWeek":6,"label":"Sábado","timeRule":"afternoon"},"Primera Fuerza":{"dayOfWeek":0,"label":"Domingo","timeRule":"morning"},"Intermedia":{"dayOfWeek":0,"label":"Domingo","timeRule":"morning"},"Segunda Fuerza":{"dayOfWeek":0,"label":"Domingo","timeRule":"morning"}},"fields":[{"id":"sur-1","name":"Campo 1 · Unidad Deportiva Sur","aliases":["1","Campo 1"],"community":"Juventino Rosas","latitude":20.63753,"longitude":-100.99297,"precision":"complex","weatherEligible":true,"mapsQuery":"Unidad Deportiva Sur, Juventino Rosas, Guanajuato","address":"Unidad Deportiva Sur, Juventino Rosas, Guanajuato","source":"https://mapcarta.com/es/W544245910","sourceNote":"Coordenada del complejo deportivo; no del rectángulo exacto del Campo 1."},{"id":"sur-2","name":"Campo 2 · Unidad Deportiva Sur","aliases":["2","Campo 2"],"community":"Juventino Rosas","latitude":20.63753,"longitude":-100.99297,"precision":"complex","weatherEligible":true,"mapsQuery":"Unidad Deportiva Sur, Juventino Rosas, Guanajuato","address":"Unidad Deportiva Sur, Juventino Rosas, Guanajuato","source":"https://mapcarta.com/es/W544245910","sourceNote":"Coordenada del complejo deportivo; no del rectángulo exacto del Campo 2."},{"id":"sur-3","name":"Campo 3 · Unidad Deportiva Sur","aliases":["3","Campo 3"],"community":"Juventino Rosas","latitude":20.63753,"longitude":-100.99297,"precision":"complex","weatherEligible":true,"mapsQuery":"Unidad Deportiva Sur, Juventino Rosas, Guanajuato","address":"Unidad Deportiva Sur, Juventino Rosas, Guanajuato","source":"https://mapcarta.com/es/W544245910","sourceNote":"Coordenada del complejo deportivo; no del rectángulo exacto del Campo 3."},{"id":"zapata-4","name":"Campo 4 · Emiliano Zapata","aliases":["4","Campo 4"],"community":"Juventino Rosas","latitude":null,"longitude":null,"precision":"pending","weatherEligible":true,"mapsQuery":"Campo de futbol prolongación Emiliano Zapata, Juventino Rosas, Guanajuato","address":"Prolongación Emiliano Zapata, Juventino Rosas, Guanajuato","source":"https://juventinorosas.gob.mx/documentos/primerInforme.pdf","sourceNote":"La fuente municipal confirma un campo de futbol en prolongación Emiliano Zapata, pero no aporta pin exacto.","weatherLatitude":20.64337,"weatherLongitude":-100.99286,"weatherPrecision":"regional","weatherSourceNote":"Clima disponible con referencia regional de Juventino Rosas; el pin exacto del campo sigue pendiente."},{"id":"cerrito","name":"Campo Cerrito de Gasca","aliases":["Cerrito de Gasca","C. de Gasca"],"community":"Cerrito de Gasca","latitude":20.617778,"longitude":-101.0625,"precision":"locality","weatherEligible":true,"mapsQuery":"Campo de futbol Cerrito de Gasca, Guanajuato","address":"Cerrito de Gasca, Santa Cruz de Juventino Rosas, Guanajuato","source":"https://mx.micodigopostal.info/distrito/guanajuato-santa-cruz-de-juventino-rosas","sourceNote":"Pin meteorológico de la localidad; confirmar el pin exacto del campo en JR Control."},{"id":"tavera","name":"Campo de Tavera","aliases":["Tavera","Franco Tavera"],"community":"Franco Tavera","latitude":20.60839,"longitude":-100.93238,"precision":"locality","weatherEligible":true,"mapsQuery":"Campo de futbol Franco Tavera, Santa Cruz de Juventino Rosas, Guanajuato","address":"Franco Tavera, Santa Cruz de Juventino Rosas, Guanajuato","source":"https://mapcarta.com/es/N9038832918","sourceNote":"Pin meteorológico de Franco Tavera. Parque de Tavera y campos deportivos cercanos están documentados, pero no el pin exacto del campo de liga."},{"id":"san-juan","name":"Campo San Juan de la Cruz","aliases":["San Juan","S. Juan de la Cruz","San Juan de la Cruz"],"community":"San Juan de la Cruz","latitude":null,"longitude":null,"precision":"user-map-link","weatherEligible":true,"mapsQuery":"https://maps.app.goo.gl/VJkp1fRa9t5yzfkb9","address":"San Juan de la Cruz, Santa Cruz de Juventino Rosas, Guanajuato 38250","source":"https://maps.app.goo.gl/VJkp1fRa9t5yzfkb9","sourceNote":"Ubicación del Campo San Juan de la Cruz corregida con el enlace exacto de Google Maps aportado por el usuario. Se retiró el pin anterior para evitar mostrar una ubicación incorrecta.","weatherLatitude":20.63379,"weatherLongitude":-100.911569,"weatherPrecision":"community","weatherSourceNote":"Clima disponible con referencia meteorológica de San Juan de la Cruz; el enlace de Maps sigue siendo la referencia de ubicación."},{"id":"cuenda","name":"Unidad Deportiva Santiago de Cuenda","aliases":["Cuenda","Santiago de Cuenda"],"community":"Santiago de Cuenda","latitude":20.59793,"longitude":-100.99663,"precision":"locality","weatherEligible":true,"mapsQuery":"Unidad Deportiva Santiago de Cuenda, Guanajuato","address":"38253 Santiago de Cuenda, Santa Cruz de Juventino Rosas, Guanajuato","source":"https://mapcarta.com/es/20312960","sourceNote":"La Unidad Deportiva existe; el pin meteorológico usa el centro de Santiago de Cuenda hasta confirmar coordenada exacta del campo."},{"id":"romerillo","name":"Campo San Antonio de Romerillo","aliases":["Romerillo","San Antonio de Romerillo"],"community":"San Antonio de Romerillo","latitude":20.60784,"longitude":-100.94854,"precision":"locality","weatherEligible":true,"mapsQuery":"Campo de futbol San Antonio de Romerillo, Guanajuato","address":"San Antonio de Romerillo, Santa Cruz de Juventino Rosas, Guanajuato 38255","source":"https://mapcarta.com/es/20322614","sourceNote":"Pin meteorológico de la localidad; la infraestructura deportiva en Romerillo está documentada."},{"id":"fraccionamiento","name":"Campo Fraccionamiento Comontuoso","aliases":["Fraccionamiento"],"community":"Comontuoso / Santiago de Cuenda","latitude":null,"longitude":null,"precision":"pending","weatherEligible":true,"mapsQuery":"Campo de futbol Fraccionamiento Comontuoso, Juventino Rosas, Guanajuato","address":"Fraccionamiento Comontuoso, Santa Cruz de Juventino Rosas, Guanajuato","source":"https://juventinorosas.gob.mx/documentos/primerInforme.pdf","sourceNote":"La fuente municipal confirma rehabilitación del campo de futbol del Fraccionamiento Comontuoso; falta pin exacto.","weatherLatitude":20.59793,"weatherLongitude":-100.99663,"weatherPrecision":"community","weatherSourceNote":"Clima disponible con referencia de Santiago de Cuenda/Comontuoso; el pin exacto del campo sigue pendiente."},{"id":"pozos","name":"Campo de Fútbol de Pozos","aliases":["Pozos"],"community":"Pozos","latitude":20.61767,"longitude":-100.90033,"precision":"exact","weatherEligible":true,"mapsQuery":"20.61767,-100.90033","address":"Campo de Fútbol de Pozos, Santa Cruz de Juventino Rosas, Guanajuato","source":"https://mapcarta.com/es/W269638702","sourceNote":"Pin del terreno de juego de fútbol (OpenStreetMap way 269638702)."},{"id":"rincon","name":"Campo Rincón de Centeno","aliases":["Rincón de Centeno","Rincon de Centeno","Rincón del Centeno"],"community":"Rincón de Centeno","latitude":null,"longitude":null,"precision":"user-map-link","weatherEligible":true,"mapsQuery":"https://maps.app.goo.gl/RzxJokJsPw86ZePC9","address":"Campo Rincón de Centeno · ubicación exacta en Google Maps","source":"https://maps.app.goo.gl/RzxJokJsPw86ZePC9","sourceNote":"Ubicación exacta del Campo Rincón de Centeno actualizada con el enlace de Google Maps aportado por el usuario. No se muestra 'Pin pendiente' porque ya existe enlace exacto.","weatherLatitude":20.660153,"weatherLongitude":-100.886766,"weatherPrecision":"community","weatherSourceNote":"Clima disponible con referencia meteorológica de Rincón de Centeno; el enlace exacto de Google Maps se conserva por separado."},{"id":"san-jose","name":"Campo San José de la Montaña","aliases":["San José","San Jose","San José de la Montaña"],"community":"San José de la Montaña","latitude":20.60102,"longitude":-101.07242,"precision":"locality","weatherEligible":true,"mapsQuery":"Campo de futbol San José de la Montaña, Guanajuato","address":"San José de la Montaña, Salamanca, Guanajuato 36867","source":"https://mapcarta.com/es/20394190","sourceNote":"Pin meteorológico de la localidad. El campo debe confirmarse con el pin que usa la liga."},{"id":"san-julian","name":"Campo San Julián Tierra Blanca","aliases":["San Julián","San Julian"],"community":"San Julián Tierra Blanca","latitude":20.591403,"longitude":-101.040358,"precision":"near-field","weatherEligible":true,"mapsQuery":"Cancha de futbol San Julián Tierra Blanca, Juventino Rosas, Guanajuato","address":"Los Fundadores 100, San Julián Tierra Blanca, Santa Cruz de Juventino Rosas, Guanajuato","source":"https://app.seg.guanajuato.gob.mx/ceo/IU/Busquedas/PAG_General.aspx?ClaveCCT=11ETV0722F&turno=1","sourceNote":"La fuente oficial SEG ubica la escuela en Los Fundadores 100 y dice expresamente 'frente a cancha de fut-ball de la comunidad'; el pin es referencia inmediata, no centro confirmado del césped."}]};
 
 const TZ='America/Mexico_City';
@@ -25,6 +25,7 @@ const norm=v=>String(v??'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLo
 const route=()=>String(location.hash||'').replace(/^#\/?/,'').split('?')[0]||'home';
 const clamp=(n,min,max)=>Math.max(min,Math.min(max,n));
 const num=(v,d=0)=>Number.isFinite(Number(v))?Number(v):d;
+const maybe=(v,d=null)=>v===null||v===undefined||v===''?d:(Number.isFinite(Number(v))?Number(v):d);
 
 let hub=null,cfg=null,fixtures=[],mode='match',selectedCategory='',selectedMatch='',selectedField='',lastAnalysis=null;
 let refreshTimer=0,lastAlertCheck=0,loadingPromise=null;
@@ -54,7 +55,7 @@ function inspectionStats(x={}){
   return {answered,total:keys.length,complete:answered===keys.length};
 }
 function terrainEstimate(p24,p48,m={},inspection={}){
-  const a=num(p24?.precipTotal),b=num(p48?.precipTotal),top=num(m?.soilTopAvg,-1),sub=num(m?.soilSubAvg,-1);
+  const a=num(p24?.precipTotal),b=num(p48?.precipTotal),top=maybe(m?.soilTopAvg,-1),sub=maybe(m?.soilSubAvg,-1);
   if(inspection.standingWater==='yes')return {level:'very-wet',label:'Charcos reportados',detail:'La inspección física marcó agua estancada; la superficie necesita revisión antes de jugar.'};
   if(inspection.footing==='unsafe')return {level:'unsafe',label:'Superficie insegura reportada',detail:'La inspección física indicó apoyo inseguro o terreno inestable.'};
   if(top>=0.42||sub>=0.43||a>=18||b>=30)return {level:'very-wet',label:'Saturación alta probable',detail:'La combinación de lluvia previa y humedad de suelo modelada apunta a terreno muy húmedo o con drenaje exigido.'};
@@ -88,8 +89,8 @@ function scorePlayability(input){
   if(!m)return {probability:null,confidence:confidenceFor(precision,p48,inspection,m),verdict:{key:'na',label:'SIN DATOS SUFICIENTES',short:'SIN DATOS',tone:'na'},terrain,reasons:['No hay datos meteorológicos suficientes para el horario seleccionado.'],inspection:inspectionStats(inspection)};
   let score=96,hardCap=98;const reasons=[],positives=[];
   const code=num(m.code),gust=num(m.gustMax),rainMax=num(m.rainMax),precipMax=num(m.precipMax),prob=num(m.probMax),p24sum=num(p24.precipTotal),p48sum=num(p48.precipTotal);
-  const tmin=Number.isFinite(Number(m.tempMin))?Number(m.tempMin):num(m.temp),apparent=num(m.apparentMax,m.temp),vis=num(m.visibilityMin,99999),humidity=num(m.humidityAvg),dewSpread=num(m.dewSpreadAvg,99);
-  const soilTop=num(m.soilTopAvg,-1),soilSub=num(m.soilSubAvg,-1),et24=num(p24.et0Total),sun24=num(p24.sunshineHours);
+  const tmin=maybe(m.tempMin,maybe(m.temp,20)),apparent=maybe(m.apparentMax,maybe(m.temp,20)),vis=maybe(m.visibilityMin,99999),humidity=maybe(m.humidityAvg,-1),dewSpread=maybe(m.dewSpreadAvg,99);
+  const soilTop=maybe(m.soilTopAvg,-1),soilSub=maybe(m.soilSubAvg,-1),et24=maybe(p24.et0Total,-1),sun24=maybe(p24.sunshineHours,-1);
 
   if(code>=95){score-=48;hardCap=Math.min(hardCap,35);reasons.push('Tormenta eléctrica prevista cerca del horario: requiere criterio de seguridad y posible suspensión.')}
   else if(code>=80){score-=10;reasons.push('Tiempo inestable cerca del horario.')}
@@ -112,7 +113,7 @@ function scorePlayability(input){
   else if(soilSub>=0.38){score-=5;reasons.push('Subsuelo modelado húmedo.')}
 
   if(humidity>=92&&dewSpread<=2){score-=5;reasons.push('Humedad relativa alta y aire cerca de saturación: secado lento de la superficie.')}
-  if(et24>=3){score+=4;positives.push('Evapotranspiración previa favorece el secado.')}else if(et24>0&&et24<0.6){score-=3;reasons.push('Poco potencial de secado en las 24 h previas.')}
+  if(et24>=3){score+=4;positives.push('Evapotranspiración previa favorece el secado.')}else if(et24>=0&&et24<0.6){score-=3;reasons.push('Poco potencial de secado en las 24 h previas.')}
   if(sun24>=5){score+=2;positives.push('Varias horas de sol previas favorecen el secado.')}
 
   if(inspection.standingWater==='yes'){score-=45;hardCap=Math.min(hardCap,22);reasons.push('Inspección: hay agua estancada/charcos.')}else if(inspection.standingWater==='no'){score+=2;positives.push('Inspección: sin agua estancada.')}
@@ -267,31 +268,36 @@ function buildOfficialFixtures(){
 }
 
 /* ---- Open-Meteo ---- */
-function forecastUrl(coords){
-  const p=new URLSearchParams({latitude:String(coords.latitude),longitude:String(coords.longitude),hourly:'temperature_2m,apparent_temperature,relative_humidity_2m,dew_point_2m,precipitation_probability,precipitation,rain,weather_code,wind_gusts_10m,visibility,et0_fao_evapotranspiration,evapotranspiration,sunshine_duration,soil_temperature_0cm,soil_moisture_0_to_1cm,soil_moisture_1_to_3cm,soil_moisture_3_to_9cm,soil_moisture_9_to_27cm',past_days:'2',forecast_days:'16',timezone:TZ,temperature_unit:'celsius',wind_speed_unit:'kmh',precipitation_unit:'mm'});
+function forecastUrl(coords,rich=true){
+  const base='temperature_2m,precipitation_probability,precipitation,rain,weather_code,wind_gusts_10m';
+  const extra=',apparent_temperature,relative_humidity_2m,dew_point_2m,visibility,et0_fao_evapotranspiration,evapotranspiration,sunshine_duration,soil_temperature_0cm,soil_moisture_0_to_1cm,soil_moisture_1_to_3cm,soil_moisture_3_to_9cm,soil_moisture_9_to_27cm';
+  const p=new URLSearchParams({latitude:String(coords.latitude),longitude:String(coords.longitude),hourly:base+(rich?extra:''),past_days:'2',forecast_days:'16',timezone:TZ,temperature_unit:'celsius',wind_speed_unit:'kmh',precipitation_unit:'mm'});
   return 'https://api.open-meteo.com/v1/forecast?'+p.toString();
 }
 async function getForecast(field,force=false){
-  const coords=weatherCoords(field),key=coords.latitude+','+coords.longitude,old=wxCache.get(key);
-  if(!force&&old&&Date.now()-old.at<CACHE_TTL)return {data:old.data,coords};
+  const coords=weatherCoords(field),key=coords.latitude+','+coords.longitude,cacheKey='v172wx:'+BUILD+':'+key,old=wxCache.get(key);
+  if(!force&&old&&Date.now()-old.at<CACHE_TTL)return {data:old.data,coords,rich:old.rich!==false};
   if(!force){
     try{
-      const stored=JSON.parse(sessionStorage.getItem('v172wx:'+key)||'null');
-      if(stored&&Date.now()-stored.at<CACHE_TTL){wxCache.set(key,stored);return {data:stored.data,coords}}
+      const stored=JSON.parse(sessionStorage.getItem(cacheKey)||'null');
+      if(stored&&Date.now()-stored.at<CACHE_TTL){wxCache.set(key,stored);return {data:stored.data,coords,rich:stored.rich!==false}}
     }catch(_){}
   }
-  const r=await fetch(forecastUrl(coords),{cache:'no-store',credentials:'omit'});
+  let r=await fetch(forecastUrl(coords,true),{cache:'no-store',credentials:'omit'}),rich=true;
+  if(!r.ok){
+    r=await fetch(forecastUrl(coords,false),{cache:'no-store',credentials:'omit'});rich=false;
+  }
   if(!r.ok)throw new Error('Open-Meteo HTTP '+r.status);
-  const data=await r.json(),entry={at:Date.now(),data};wxCache.set(key,entry);
-  try{sessionStorage.setItem('v172wx:'+key,JSON.stringify(entry))}catch(_){}
-  return {data,coords};
+  const data=await r.json(),entry={at:Date.now(),data,rich};wxCache.set(key,entry);
+  try{sessionStorage.setItem(cacheKey,JSON.stringify(entry))}catch(_){}
+  return {data,coords,rich};
 }
 function summarize(data,startAt,endAt){
   const h=data?.hourly;if(!h||!Array.isArray(h.time))return null;const indexes=[];
   for(let i=0;i<h.time.length;i++){const at=localToEpoch(String(h.time[i]).slice(0,16));if(at&&at>=startAt&&at<=endAt)indexes.push({i,at})}
   if(!indexes.length)return null;
   const vals=key=>indexes.map(x=>Number(h[key]?.[x.i])).filter(Number.isFinite);
-  const sum=a=>a.length?a.reduce((s,x)=>s+x,0):0,max=a=>a.length?Math.max(...a):null,min=a=>a.length?Math.min(...a):null,avg=a=>a.length?a.reduce((s,x)=>s+x,0)/a.length:null,now=Date.now();
+  const sum=a=>a.length?a.reduce((s,x)=>s+x,0):0,sumMaybe=a=>a.length?a.reduce((s,x)=>s+x,0):null,max=a=>a.length?Math.max(...a):null,min=a=>a.length?Math.min(...a):null,avg=a=>a.length?a.reduce((s,x)=>s+x,0)/a.length:null,now=Date.now();
   const temp=vals('temperature_2m'),dew=vals('dew_point_2m');
   const dewSpread=temp.length&&dew.length?avg(temp.map((v,i)=>Number.isFinite(dew[i])?Math.max(0,v-dew[i]):null).filter(Number.isFinite)):null;
   const soilTop=[...vals('soil_moisture_0_to_1cm'),...vals('soil_moisture_1_to_3cm')];
@@ -301,7 +307,7 @@ function summarize(data,startAt,endAt){
     precipTotal:sum(vals('precipitation')),rainTotal:sum(vals('rain')),rainMax:max(vals('rain')),precipMax:max(vals('precipitation')),probMax:max(vals('precipitation_probability')),
     gustMax:max(vals('wind_gusts_10m')),code:max(vals('weather_code')),temp:avg(temp),tempMin:min(temp),apparentMax:max(vals('apparent_temperature')),
     humidityAvg:avg(vals('relative_humidity_2m')),dewSpreadAvg:dewSpread,visibilityMin:min(vals('visibility')),
-    et0Total:sum(vals('et0_fao_evapotranspiration')),evapTotal:sum(vals('evapotranspiration')),sunshineHours:sum(vals('sunshine_duration'))/3600,
+    et0Total:sumMaybe(vals('et0_fao_evapotranspiration')),evapTotal:sumMaybe(vals('evapotranspiration')),sunshineHours:(()=>{const a=vals('sunshine_duration'),s=sumMaybe(a);return s==null?null:s/3600})(),
     soilTemp:avg(vals('soil_temperature_0cm')),soilTopAvg:avg(soilTop),soilSubAvg:avg(soilSub)
   };
 }
@@ -381,7 +387,7 @@ function controlsMarkup(){
 function renderControls(){const x=$('.v172-controls',hub);if(x)x.innerHTML=controlsMarkup()}
 
 function resultMarkup(ctx){
-  const {match,field,coords,windowWx,p24,p48,result,analysisAt}=ctx,p=result.probability,verdict=result.verdict,precision=coords?.precision||field?.precision||'regional';
+  const {match,field,coords,windowWx,p24,p48,result,analysisAt,rich}=ctx,p=result.probability,verdict=result.verdict,precision=coords?.precision||field?.precision||'regional';
   const title=match?(match.home+' vs '+match.away):(field?.name||'Campo');
   const kicker=match?(match.category+' · '+match.phase):'CONSULTA DIRECTA DE CAMPO';
   const when=match?(fmtDate(match)+(match.schedule?.kind==='estimada'?' · fecha estimada':'')):'Condición meteorológica alrededor de '+new Intl.DateTimeFormat('es-MX',{timeZone:TZ,hour:'2-digit',minute:'2-digit',hourCycle:'h23'}).format(new Date(analysisAt));
@@ -392,7 +398,7 @@ function resultMarkup(ctx){
     '<div class="v172-result-head"><div><div class="v172-kicker">'+esc(kicker)+'</div><h3>'+esc(title)+'</h3><p>'+esc(when)+'</p><p><b>'+esc(field?.name||match?.fieldValue||'Campo pendiente')+'</b> · <span class="v172-pill">'+esc(precisionLabel(precision))+'</span></p></div>'+
       '<div class="v172-score '+esc(verdict.tone)+'"><span>Jugabilidad estimada</span><strong>'+(p==null?'—':esc(p+'%'))+'</strong><b>'+esc(verdict.short)+'</b><small>confianza '+esc(result.confidence)+'%</small></div></div>'+
     '<div class="v172-verdict '+esc(verdict.tone)+'"><span>IA DE CONDICIÓN DEL CAMPO</span><strong>'+esc(verdict.label)+'</strong><p>'+esc(result.terrain.label)+'. '+esc(result.terrain.detail)+'</p><small>'+checked+'/6 puntos de inspección física registrados.</small></div>'+
-    '<div class="v177-model-groups"><span>🌧️ lluvia</span><span>💧 suelo</span><span>☀️ secado</span><span>🌫️ visibilidad</span><span>🌡️ temperatura</span><span>💨 viento</span><span>⚡ tormenta</span><span>🏟️ inspección</span></div>'+
+    '<div class="v177-model-groups"><span>🌧️ lluvia</span><span>💧 suelo</span><span>☀️ secado</span><span>🌫️ visibilidad</span><span>🌡️ temperatura</span><span>💨 viento</span><span>⚡ tormenta</span><span>🏟️ inspección</span></div>'+(!rich?'<div class="v177-data-note">Datos avanzados de suelo/secado no disponibles en esta consulta; el porcentaje usa el conjunto meteorológico básico + inspección.</div>':'')+
     '<div class="v172-metrics">'+
       metric('Lluvia 24 h',r24,sourceLabel(p24))+metric('Lluvia 48 h',r48,sourceLabel(p48))+metric('Prob. a la hora',wxProb,'ventana -1 h / +2 h')+metric('Lluvia a la hora',wxRain,'máximo horario')+
       metric('Humedad suelo 0–3 cm',soilTop,'indicador modelado')+metric('Humedad suelo 3–27 cm',soilSub,'indicador modelado')+
@@ -418,7 +424,7 @@ async function analyzeSelection(force=false){
   panel.innerHTML=loadingMarkup('Consultando el campo seleccionado…');hub.setAttribute('aria-busy','true');
   try{
     const wx=await getForecast(field,force),analysisAt=match?.schedule?.at||Date.now(),windowWx=summarize(wx.data,analysisAt-60*60*1000,analysisAt+2*60*60*1000),p24=summarize(wx.data,analysisAt-24*60*60*1000,analysisAt-1),p48=summarize(wx.data,analysisAt-48*60*60*1000,analysisAt-1),inspection=getInspection(field),result=scorePlayability({match:windowWx,prior24:p24,prior48:p48,precision:wx.coords.precision,inspection});
-    lastAnalysis={match,field,coords:wx.coords,windowWx,p24,p48,result,inspection,analysisAt};panel.innerHTML=resultMarkup(lastAnalysis);
+    lastAnalysis={match,field,coords:wx.coords,windowWx,p24,p48,result,inspection,analysisAt,rich:wx.rich};panel.innerHTML=resultMarkup(lastAnalysis);
     const u=$('.v172-updated',hub);if(u)u.textContent='Actualizado '+fmtUpdated();
     return lastAnalysis;
   }catch(err){
@@ -455,7 +461,7 @@ async function toggleAlerts(){
 }
 async function analyzeMatchQuiet(match){
   if(!match?.field||!match.schedule?.at)return null;
-  try{const wx=await getForecast(match.field,false),at=match.schedule.at,windowWx=summarize(wx.data,at-60*60*1000,at+2*60*60*1000),p24=summarize(wx.data,at-24*60*60*1000,at-1),p48=summarize(wx.data,at-48*60*60*1000,at-1),inspection=getInspection(match.field),result=scorePlayability({match:windowWx,prior24:p24,prior48:p48,precision:wx.coords.precision,inspection});return {match,field:match.field,coords:wx.coords,windowWx,p24,p48,result,inspection,analysisAt:at}}catch(_){return null}
+  try{const wx=await getForecast(match.field,false),at=match.schedule.at,windowWx=summarize(wx.data,at-60*60*1000,at+2*60*60*1000),p24=summarize(wx.data,at-24*60*60*1000,at-1),p48=summarize(wx.data,at-48*60*60*1000,at-1),inspection=getInspection(match.field),result=scorePlayability({match:windowWx,prior24:p24,prior48:p48,precision:wx.coords.precision,inspection});return {match,field:match.field,coords:wx.coords,windowWx,p24,p48,result,inspection,analysisAt:at,rich:wx.rich}}catch(_){return null}
 }
 async function checkCategoryAlerts(force=false){
   if(!alertsEnabled()||mode!=='match'||!selectedCategory)return;if(!force&&Date.now()-lastAlertCheck<5*60*1000)return;lastAlertCheck=Date.now();
