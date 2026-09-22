@@ -4642,7 +4642,7 @@ function leagueToolsView(){
       v60ToolCard('search','Buscador','Equipos, jugadores, partidos, campos y noticias','search')+
       v60ToolCard('qr','QR de la Liga','Compartir acceso directo a la app','ligaQR')+
       v60ToolCard('center','Equipos registrados','Solo equipos oficiales sincronizados','teams')+
-      v60ToolCard('center','Jugadores registrados','Plantillas oficiales de AdminFut','', 'data-v63-official="players"')+
+      v60ToolCard('center','Jugadores registrados','Plantillas oficiales de AdminFut','players', 'data-v60-all-players="1"')+
       v60ToolCard('cedula','Cédulas','Consulta y plantillas de partido','cedulas')+
       v60ToolCard('cedula','Generar cédula','Cédula y plantillas del partido','cedulaBuilder')+
       v60ToolCard('card','Generar credencial','Foto, OCR y credencial del jugador','credentialBuilder')+
@@ -5216,6 +5216,12 @@ if(state.route==='rulebook')requestAnimationFrame(()=>v60RenderRulebookPage(v60R
 document.querySelectorAll('[data-v60-comp]').forEach(el=>el.onclick=()=>{state.competitionTab=el.dataset.v60Comp||'fixtures';save();go('competition')});
 document.querySelectorAll('[data-v63-comp]').forEach(el=>el.onclick=()=>{state.competitionTab=el.dataset.v63Comp||'standings';save();go('competition')});
 document.querySelectorAll('[data-v63-official]').forEach(el=>el.onclick=()=>{const tab=el.dataset.v63Official||'summary';localStorage.setItem('v62-data-tab',tab);try{window.LJR_OFFICIAL_API?.setDataTab?.(tab)}catch(e){}go('leagueData')});
+document.querySelectorAll('[data-v60-all-players]').forEach(el=>el.onclick=()=>{
+  localStorage.setItem('v66-player-cat','all');
+  localStorage.setItem('v66-player-team','all');
+  state.searchQuery='';
+  go('players');
+});
 document.querySelectorAll('[data-v60-check]').forEach(el=>el.onchange=()=>{const s=v60MatchdayState();s[el.dataset.v60Check]=el.checked;localStorage.setItem('v60-matchday',JSON.stringify(s));toast('Match Day actualizado')});
 document.querySelector('[data-v64-export-png]')?.addEventListener('click',async()=>{const b=await v64CanvasTable();if(b)v64Download(b,'Liga_Juventino_Tabla.png')},{once:true});
 document.querySelector('[data-v64-share-png]')?.addEventListener('click',async()=>{const b=await v64CanvasTable();if(!b)return;const file=new File([b],'Liga_Juventino_Tabla.png',{type:'image/png'});try{if(navigator.canShare?.({files:[file]}))await navigator.share({title:'Tabla Liga Juventino Rosas',files:[file]});else v64Download(b,file.name)}catch(e){}},{once:true});
