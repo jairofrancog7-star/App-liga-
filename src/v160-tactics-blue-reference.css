@@ -324,3 +324,170 @@ body[data-app-route="tactics"] .v100-secondary{
   border:1px solid rgba(46,178,255,.42);background:#08166f;color:#55c8ff;
   font-size:8px;font-weight:900;letter-spacing:.08em;white-space:normal
 }
+
+
+/* V172 — TÁCTICA 3D: barra y mini-cancha recuperadas de Liga_Futbol V23.
+   Se conserva el resto de la app azul y todas las funciones existentes. */
+body[data-app-route="tactics"] .v160-source-stage{
+  position:relative;
+  min-height:250px;
+  display:grid;
+  place-items:center;
+  margin:40px 0 18px;
+  perspective:900px;
+  isolation:isolate;
+}
+body[data-app-route="tactics"] .v160-source-stage .v160-stage-label{
+  position:absolute!important;
+  z-index:6!important;
+  right:4%!important;
+  top:0!important;
+  left:auto!important;
+  width:max-content!important;
+  max-width:88%!important;
+  margin:0!important;
+  padding:8px 12px!important;
+  border:1px solid rgba(232,48,74,.32)!important;
+  border-radius:999px!important;
+  background:rgba(232,48,74,.12)!important;
+  color:#ff7385!important;
+  box-shadow:none!important;
+  backdrop-filter:blur(10px)!important;
+  -webkit-backdrop-filter:blur(10px)!important;
+  font-size:10px!important;
+  line-height:1!important;
+  font-weight:900!important;
+  letter-spacing:.08em!important;
+}
+body[data-app-route="tactics"] .v160-source-stage .v160-stage-label i{
+  width:7px!important;
+  height:7px!important;
+  flex:0 0 7px!important;
+  border-radius:50%!important;
+  background:#e8304a!important;
+  box-shadow:0 0 0 5px rgba(232,48,74,.09)!important;
+}
+body[data-app-route="tactics"] .v160-source-pitch{
+  position:relative!important;
+  display:block!important;
+  width:min(520px,96%)!important;
+  aspect-ratio:16/10!important;
+  margin:42px auto 0!important;
+  padding:0!important;
+  overflow:visible!important;
+  border:1px solid rgba(255,255,255,.12)!important;
+  border-radius:26px!important;
+  background:
+    repeating-linear-gradient(90deg,rgba(34,224,122,.055) 0 11%,rgba(34,224,122,.02) 11% 22%),
+    linear-gradient(#07120b,#08100b)!important;
+  transform:rotateX(59deg) rotateZ(-5deg)!important;
+  transform-style:preserve-3d!important;
+  transform-origin:center center!important;
+  box-shadow:0 35px 70px rgba(0,0,0,.56),inset 0 0 50px rgba(34,224,122,.05)!important;
+  transition:transform .2s ease!important;
+  cursor:pointer!important;
+}
+body[data-app-route="tactics"] .v160-source-pitch::before{
+  content:""!important;
+  position:absolute!important;
+  inset:8%!important;
+  border:2px solid rgba(255,255,255,.22)!important;
+  border-radius:3px!important;
+  background:linear-gradient(90deg,transparent 49.7%,rgba(255,255,255,.22) 50%,transparent 50.3%)!important;
+}
+body[data-app-route="tactics"] .v160-source-pitch::after{
+  content:""!important;
+  position:absolute!important;
+  left:50%!important;
+  top:50%!important;
+  width:18%!important;
+  aspect-ratio:1!important;
+  border:2px solid rgba(255,255,255,.22)!important;
+  border-radius:50%!important;
+  transform:translate(-50%,-50%)!important;
+}
+body[data-app-route="tactics"] .v160-source-ball{
+  position:absolute!important;
+  z-index:5!important;
+  width:34px!important;
+  height:34px!important;
+  left:49%!important;
+  top:44%!important;
+  border-radius:50%!important;
+  background:radial-gradient(circle at 35% 30%,#fff 0 28%,#c9ccd1 29% 38%,#17181c 39% 48%,#f8f8f8 49%)!important;
+  box-shadow:0 7px 14px rgba(0,0,0,.35),0 0 22px rgba(255,255,255,.18)!important;
+  transform:translateZ(30px)!important;
+  animation:v172TacticBall 5s ease-in-out infinite!important;
+}
+body[data-app-route="tactics"] .v160-source-player{
+  position:absolute!important;
+  z-index:6!important;
+  width:30px!important;
+  height:30px!important;
+  display:grid!important;
+  place-items:center!important;
+  margin:0!important;
+  padding:0!important;
+  border:2px solid rgba(255,255,255,.45)!important;
+  border-radius:50%!important;
+  background:linear-gradient(#4dffa5,#22e07a)!important;
+  color:#02110a!important;
+  box-shadow:0 0 18px rgba(34,224,122,.28)!important;
+  transform:translateZ(18px)!important;
+  font-size:10px!important;
+  line-height:1!important;
+  font-weight:900!important;
+}
+body[data-app-route="tactics"] .v160-source-player.rival{
+  background:linear-gradient(#ff6b7a,#e8304a)!important;
+  color:#fff!important;
+  box-shadow:0 0 18px rgba(232,48,74,.25)!important;
+}
+body[data-app-route="tactics"] .v160-source-player.p1{left:18%!important;top:28%!important}
+body[data-app-route="tactics"] .v160-source-player.p2{left:32%!important;top:63%!important}
+body[data-app-route="tactics"] .v160-source-player.p3{left:68%!important;top:31%!important}
+body[data-app-route="tactics"] .v160-source-player.p4{left:80%!important;top:66%!important}
+
+@keyframes v172TacticBall{
+  0%,100%{left:49%;top:44%;transform:translateZ(30px) rotate(0)}
+  25%{left:58%;top:35%;transform:translateZ(46px) rotate(90deg)}
+  50%{left:64%;top:54%;transform:translateZ(26px) rotate(180deg)}
+  75%{left:41%;top:58%;transform:translateZ(40px) rotate(270deg)}
+}
+
+/* La misma barra táctica también aparece en el tablero avanzado. */
+body[data-app-route="tactics"] #v100-tactics-extra .v160-advanced-source-label{
+  width:max-content;
+  max-width:100%;
+  margin:2px auto 16px;
+  padding:8px 12px;
+  display:flex;
+  align-items:center;
+  gap:8px;
+  border:1px solid rgba(232,48,74,.32);
+  border-radius:999px;
+  background:rgba(232,48,74,.12);
+  color:#ff7385;
+  font-size:10px;
+  font-weight:900;
+  letter-spacing:.08em;
+  backdrop-filter:blur(10px);
+  -webkit-backdrop-filter:blur(10px);
+}
+body[data-app-route="tactics"] #v100-tactics-extra .v160-advanced-source-label::before{
+  content:"";
+  width:7px;
+  height:7px;
+  border-radius:50%;
+  background:#e8304a;
+  box-shadow:0 0 0 5px rgba(232,48,74,.09);
+}
+
+@media(max-width:560px){
+  body[data-app-route="tactics"] .v160-source-stage{min-height:225px;margin-top:34px}
+  body[data-app-route="tactics"] .v160-source-pitch{width:100%!important;transform:rotateX(62deg) scale(.9)!important}
+}
+@media(prefers-reduced-motion:reduce){
+  body[data-app-route="tactics"] .v160-source-ball{animation:none!important}
+  body[data-app-route="tactics"] .v160-source-pitch{transition:none!important;transform:none!important}
+}
