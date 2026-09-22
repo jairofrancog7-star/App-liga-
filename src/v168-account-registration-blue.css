@@ -117,3 +117,40 @@ body[data-app-route="v38Weather"] #v168-weather-account{padding:12px 18px calc(1
 .v168-pref-row input:checked+i,.v168-notif-row input:checked+i{background:#19d7e5;border-color:#19d7e5}
 .v168-pref-row input:checked+i:after,.v168-notif-row input:checked+i:after{transform:translateX(17px)}
 .v105-modal.v168-account-modal .v168-inline-notifications{margin-top:12px}
+
+/* V170 — Crear cuenta integrado: mismo lenguaje de Perfil, líneas rectas y azul. */
+.v105-modal.v168-account-modal{
+  background:rgba(2,6,55,.82)!important;
+}
+.v105-modal.v168-account-modal .v105-dialog{
+  width:min(94vw,430px)!important;
+  border-left:1px solid rgba(54,102,204,.34)!important;
+  border-radius:18px 0 0 18px!important;
+  background:linear-gradient(180deg,#08106a 0%,#07095b 62%,#040744 100%)!important;
+}
+.v105-modal.v168-account-modal .v105-form label{
+  gap:5px!important;
+  padding:0 0 11px!important;
+  border-bottom:1px solid rgba(255,255,255,.08)!important;
+}
+.v105-modal.v168-account-modal .v105-form input,
+.v105-modal.v168-account-modal .v105-form select{
+  border-radius:8px!important;
+  border:1px solid rgba(83,111,216,.34)!important;
+  background:#0a0e69!important;
+}
+.v105-modal.v168-account-modal .v105-actions .v105-btn{
+  border-radius:9px!important;
+}
+.v105-modal.v168-account-modal .v105-actions .v105-btn.alt{
+  border-radius:9px!important;
+}
+.v105-modal.v168-account-modal .v168-inline-notifications{
+  border-radius:8px!important;
+}
+@media(max-width:430px){
+  .v105-modal.v168-account-modal .v105-dialog{
+    width:96vw!important;
+    border-radius:14px 0 0 14px!important;
+  }
+}
