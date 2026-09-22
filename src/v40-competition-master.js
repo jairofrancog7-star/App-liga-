@@ -357,6 +357,21 @@
   }
 ];
 
+  const v35CompleteTeams=[
+    {name:'C. DE GASCA',logo:ASSET+'teams/deportivo-cg.webp',p:17,w:13,d:1,l:3,gf:54,ga:17,pts:40},
+    {name:'JUVENTUS',logo:ASSET+'official-logos/juventus.png',p:17,w:10,d:4,l:3,gf:47,ga:27,pts:34},
+    {name:'CUENDA',logo:ASSET+'teams/tc-cuenda.webp',p:17,w:11,d:0,l:6,gf:41,ga:22,pts:33},
+    {name:'POZOS FC',logo:ASSET+'teams/veteranos-pozos-fc.webp',p:17,w:10,d:2,l:5,gf:48,ga:36,pts:32},
+    {name:'BOAVISTA',logo:ASSET+'official-logos/boavista.png',p:17,w:8,d:3,l:6,gf:38,ga:27,pts:27},
+    {name:'PSV',logo:ASSET+'teams/psv.webp',p:17,w:9,d:0,l:8,gf:49,ga:40,pts:27},
+    {name:'A. SANTIAGO',logo:ASSET+'teams/atletico-santiago.webp',p:17,w:7,d:1,l:9,gf:36,ga:57,pts:22},
+    {name:'F. TAVERA',logo:ASSET+'teams/franco-tavera-jr-veteranos.webp',p:17,w:4,d:2,l:11,gf:27,ga:50,pts:14},
+    {name:'AMÉRICA',logo:ASSET+'branding/america-veteranos-35-user.png',p:17,w:4,d:1,l:12,gf:22,ga:48,pts:13},
+    {name:'HURACÁN',logo:ASSET+'teams/huracan.webp',p:17,w:2,d:0,l:15,gf:19,ga:69,pts:6}
+  ];
+  const v35CompactTeams=v35CompleteTeams.map(t=>({...t,gd:t.gf-t.ga,last:'—'}));
+  const v35CriteriaTeams=v35CompleteTeams.map(t=>({...t,gd:t.gf-t.ga}));
+
   const headerTeams={
   "left": {
     "name": "FRANCO FC",
@@ -378,11 +393,12 @@
     return route()==='competition' && !!tabs?.querySelector('.tab.active') && /Clasificaci/i.test(tabs.querySelector('.tab.active').textContent||'');
   }
   function img(src,alt,cls=''){if(!src)return '';return '<img class="'+cls+'" src="'+src+'" alt="'+alt+'" loading="eager" decoding="async">'}
+  function isVet35(){return String(localStorage.getItem('v12-fixture-cat')||localStorage.getItem('v62-category')||'3')==='2'}
   function header(){
     return '<section class="v40-match-master" data-v40-master>'+
       '<div class="v40-actions"><button type="button" data-v40-back aria-label="Volver">'+iconBack+'</button><span></span><button type="button" data-v40-mute aria-label="Silenciar">'+iconMute+'</button><button type="button" data-v40-share aria-label="Compartir">'+iconShare+'</button></div>'+
       '<div class="v40-match-copy">'+
-        '<div class="v40-date">20 sep 2026 · Primera Fuerza</div>'+
+        '<div class="v40-date">20 sep 2026 · '+(isVet35()?'Veteranos 35+':'Primera Fuerza')+'</div>'+
         '<div class="v40-divider"></div>'+
         '<div class="v40-venue">Romerillo · Juventino Rosas</div>'+
         '<div class="v40-match-line">'+
@@ -402,26 +418,29 @@
     return '<span class="v40-form"><i></i><i></i><b class="'+(last==='V'?'win':last==='E'?'draw':'loss')+'">'+last+'</b></span>';
   }
   function compact(){
+    const list=isVet35()?v35CompactTeams:compactTeams;
     return '<div class="v40-table-wrap compact">'+
       '<div class="v40-table-head"><span></span><span></span><b>P</b><b>+/-</b><b>PTOS</b><b>FORMA</b></div>'+
       '<div class="v40-direct">CLASIFICACIÓN ACTUAL</div><div class="v40-rule"></div>'+
-      '<div class="v40-table-body">'+compactTeams.map((t,i)=>
+      '<div class="v40-table-body">'+list.map((t,i)=>
         '<div class="v40-row"><span class="v40-rank">'+(i+1)+'</span><span class="v40-team">'+img(t.logo,t.name,'v40-team-logo')+'<strong>'+t.name+'</strong></span><span>'+t.p+'</span><span>'+t.gd+'</span><span>'+t.pts+'</span>'+form(t.last)+'</div>'
       ).join('')+'</div>'+
     '</div>';
   }
   function complete(){
+    const list=isVet35()?v35CompleteTeams:completeTeams;
     return '<div class="v40-scroll-shell"><div class="v40-wide complete">'+
       '<div class="v40-wide-head complete-head"><span></span><span></span><b>P</b><b>V</b><b>E</b><b>D</b><b></b><b></b><b class="v40-pluspts">+ PTS</b></div>'+
       '<div class="v40-direct">CLASIFICACIÓN ACTUAL</div><div class="v40-rule"></div>'+
-      completeTeams.map((t,i)=>'<div class="v40-wide-row complete-row"><span>'+(i+1)+'</span><span class="v40-team">'+img(t.logo,t.name,'v40-team-logo')+'<strong>'+t.name+'</strong></span><span>'+t.p+'</span><span>'+t.w+'</span><span>'+t.d+'</span><span>'+t.l+'</span><span>'+t.gf+'</span><span class="v40-muted-number">'+t.ga+'</span><b>'+t.pts+'</b></div>').join('')+
+      list.map((t,i)=>'<div class="v40-wide-row complete-row"><span>'+(i+1)+'</span><span class="v40-team">'+img(t.logo,t.name,'v40-team-logo')+'<strong>'+t.name+'</strong></span><span>'+t.p+'</span><span>'+t.w+'</span><span>'+t.d+'</span><span>'+t.l+'</span><span>'+t.gf+'</span><span class="v40-muted-number">'+t.ga+'</span><b>'+t.pts+'</b></div>').join('')+
     '</div></div>';
   }
   function criteria(){
+    const list=isVet35()?v35CriteriaTeams:criteriaTeams;
     return '<div class="v40-scroll-shell"><div class="v40-wide criteria">'+
       '<div class="v40-wide-head criteria-head"><span></span><span></span><b>PTOS</b><b>+/-</b><b>GF</b><b>GA</b><b>V</b><b>E</b><b>P</b></div>'+
       '<div class="v40-direct">CLASIFICACIÓN ACTUAL</div><div class="v40-rule"></div>'+
-      criteriaTeams.map((t,i)=>'<div class="v40-wide-row criteria-row"><span>'+(i+1)+'</span><span class="v40-team">'+img(t.logo,t.name,'v40-team-logo')+'<strong>'+t.name+'</strong></span><span>'+t.pts+'</span><span>'+t.gd+'</span><span>'+t.gf+'</span><span>'+t.ga+'</span><span>'+t.w+'</span><span>'+t.d+'</span><span>'+t.l+'</span></div>').join('')+
+      list.map((t,i)=>'<div class="v40-wide-row criteria-row"><span>'+(i+1)+'</span><span class="v40-team">'+img(t.logo,t.name,'v40-team-logo')+'<strong>'+t.name+'</strong></span><span>'+t.pts+'</span><span>'+t.gd+'</span><span>'+t.gf+'</span><span>'+t.ga+'</span><span>'+t.w+'</span><span>'+t.d+'</span><span>'+t.l+'</span></div>').join('')+
     '</div></div>';
   }
   function standings(){
