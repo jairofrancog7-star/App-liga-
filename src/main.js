@@ -5007,7 +5007,16 @@ function tacticsView(){
       '<button type="button" data-v60-comp="fixtures">📅 <b>Ver partidos</b></button>'+
     '</div>'+
     '<p class="v160-motion-note">Optimizado para móvil y compatible con “reducir movimiento”.</p>'+
-    '<div class="v160-stage-label"><i></i><span>PARTIDO / TÁCTICA 3D</span></div>'+
+    '<div class="v160-source-stage" data-v160-source-stage>'+
+      '<div class="v160-stage-label"><i></i><span>PARTIDO / TÁCTICA 3D</span></div>'+
+      '<button type="button" class="v160-source-pitch" data-v160-scroll-advanced aria-label="Abrir tablero táctico avanzado">'+
+        '<span class="v160-source-ball" aria-hidden="true"></span>'+
+        '<span class="v160-source-player p1">8</span>'+
+        '<span class="v160-source-player p2">10</span>'+
+        '<span class="v160-source-player rival p3">4</span>'+
+        '<span class="v160-source-player rival p4">5</span>'+
+      '</button>'+
+    '</div>'+
     '<div class="v160-board-shell" data-v160-main-board>'+
       '<div class="v60-formations">'+['2-3-1','3-2-1','2-2-2'].map(x=>'<button class="'+(x===form?'active':'')+'" data-v60-formation="'+x+'">'+x+'</button>').join('')+'</div>'+
       '<div class="v160-pitch-frame"><div class="v60-pitch">'+v60PitchPlayers(form)+'</div></div>'+
