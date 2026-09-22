@@ -169,10 +169,16 @@ function calendarGames(){
 }
 
 function teamMark(name){
-  /* V115 — usar primero el registro global de escudos reales de Liga_Futbol.
-     Así Franco, Herreras, Terrícolas y Galácticos muestran su logo y no iniciales. */
-  let src='';
-  try{src=window.LJR_TEAM_LOGOS?.get?.(name)||''}catch(_){}
+  /* V116 — los cuatro partidos de Home deben mostrar siempre sus escudos reales,
+     incluso si el registro dinámico todavía no terminó de cargar. */
+  const fixed={
+    'franco fc':BASE+'assets/official-logos/franco-fc.png',
+    'herreras fc':BASE+'assets/official-logos/herreras-fc.png',
+    'terricolas':BASE+'assets/official-logos/terricolas.png',
+    'galacticos':BASE+'assets/teams/galacticos-pozos.webp'
+  };
+  let src=fixed[norm(name)]||'';
+  if(!src){try{src=window.LJR_TEAM_LOGOS?.get?.(name)||''}catch(_){}}
   if(!src)src=logoFor(name);
   if(src)return '<span class="v103-cal-logo"><img src="'+esc(src)+'" alt="'+esc(name)+'" loading="lazy" decoding="async"></span>';
   const ab=String(name||'').split(/\s+/).filter(Boolean).map(x=>x[0]).join('').slice(0,3).toUpperCase();
