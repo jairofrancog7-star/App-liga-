@@ -182,6 +182,7 @@ function ocrExplicitDob(text){
 function parseOcrText(text){
   const raw=String(text||''),up=raw.toUpperCase();
   const lines=raw.split(/\r?\n/).map(x=>x.replace(/[|]/g,'I').replace(/\s+/g,' ').trim()).filter(Boolean);
+  const isIne=/INSTITUTO\s+NACIONAL\s+ELECTORAL|CREDENCIAL\s+PARA\s+VOTAR|CLAVE\s+DE\s+ELECTOR|SECCI[ÓO]N|VIGENCIA/i.test(raw);
 
   let curp='';
   const cm=up.match(/\b[A-Z]{4}\s*\d{6}\s*[HM]\s*[A-Z]{5}\s*[A-Z0-9]\s*\d\b/);
@@ -213,54 +214,55 @@ function parseOcrText(text){
   if(name.length<3||name.length>90)name='';
 
   let city='';
-  for(const re of [
-    /^(?:CIUDAD|MUNICIPIO|LOCALIDAD|COMUNIDAD|POBLACION|POBLACIÓN)\b/i,
-    /^(?:LUGAR\s+DE\s+NACIMIENTO|ENTIDAD\s+DE\s+NACIMIENTO)\b/i
-  ]){city=ocrValueAfter(lines,re);if(city)break}
-  if(!city){
-    const normalized=up.normalize('NFD').replace(/[\u0300-\u036f]/g,'');
-    const known=[
-      ['SANTA CRUZ DE JUVENTINO ROSAS','Santa Cruz de Juventino Rosas'],
-      ['JUVENTINO ROSAS','Juventino Rosas'],
-      ['RINCON DE CENTENO','Rincón de Centeno'],
-      ['CERRITO DE GASCA','Cerrito de Gasca'],
-      ['SAN JUAN DE LA CRUZ','San Juan de la Cruz'],
-      ['SAN JULIAN TIERRA BLANCA','San Julián Tierra Blanca'],
-      ['SAN JOSE DE LA MONTANA','San José de la Montaña'],
-      ['TAVERA','Tavera'],['POZOS','Pozos'],['CUENDA','Cuenda']
-    ];
-    const hit=known.find(([k])=>normalized.includes(k));if(hit)city=hit[1];
-  }
-  if(!city){
-    const d=lines.findIndex(x=>/^DOMICILIO\b/i.test(x));
-    if(d>=0){
-      const addr=[];
-      for(let j=d+1;j<Math.min(lines.length,d+5);j++){
-        if(/^(CLAVE|CURP|FECHA|SEXO|SECCION|VIGENCIA)\b/i.test(lines[j]))break;
-        addr.push(lines[j]);
-      }
-      const place=addr.slice().reverse().find(x=>/GTO\.?|GUANAJUATO|MUNICIPIO|LOCALIDAD|C\.P\.|\bCP\b/i.test(x));
-      if(place)city=place;
+  if(isIne){
+    for(const re of [
+      /^(?:CIUDAD|MUNICIPIO|LOCALIDAD|COMUNIDAD|POBLACION|POBLACIÓN)\b/i
+    ]){city=ocrValueAfter(lines,re);if(city)break}
+    if(!city){
+      const normalized=up.normalize('NFD').replace(/[\u0300-\u036f]/g,'');
+      const known=[
+        ['SANTA CRUZ DE JUVENTINO ROSAS','Santa Cruz de Juventino Rosas'],
+        ['JUVENTINO ROSAS','Juventino Rosas'],
+        ['RINCON DE CENTENO','Rincón de Centeno'],
+        ['CERRITO DE GASCA','Cerrito de Gasca'],
+        ['SAN JUAN DE LA CRUZ','San Juan de la Cruz'],
+        ['SAN JULIAN TIERRA BLANCA','San Julián Tierra Blanca'],
+        ['SAN JOSE DE LA MONTANA','San José de la Montaña'],
+        ['TAVERA','Tavera'],['POZOS','Pozos'],['CUENDA','Cuenda']
+      ];
+      const hit=known.find(([k])=>normalized.includes(k));if(hit)city=hit[1];
     }
+    if(!city){
+      const d=lines.findIndex(x=>/^DOMICILIO\b/i.test(x));
+      if(d>=0){
+        const addr=[];
+        for(let j=d+1;j<Math.min(lines.length,d+5);j++){
+          if(/^(CLAVE|CURP|FECHA|SEXO|SECCION|VIGENCIA)\b/i.test(lines[j]))break;
+          addr.push(lines[j]);
+        }
+        const place=addr.slice().reverse().find(x=>/GTO\.?|GUANAJUATO|MUNICIPIO|LOCALIDAD|C\.P\.|\bCP\b/i.test(x));
+        if(place)city=place;
+      }
+    }
+    city=String(city||'').replace(/^\s*[:\-]\s*/,'').replace(/\s+/g,' ').trim().slice(0,100);
   }
-  city=String(city||'').replace(/^\s*[:\-]\s*/,'').replace(/\s+/g,' ').trim().slice(0,100);
 
   const dob=curpDob(curp)||ocrExplicitDob(raw);
   return {curp,name,dob,city};
 }
 function credentialExtra(){
   const saved=read('v100-credential-extra',{});
-  return '<section class="v100-subblock" id="v100-credential-extra">'+sectionTitle('DATOS COMPLEMENTARIOS','Registro de credencial','Al detectar el documento se intentan completar automáticamente nombre, CURP, fecha de nacimiento y ciudad / municipio / comunidad. Revisa siempre la lectura antes de usarla.')+
+  return '<section class="v100-subblock" id="v100-credential-extra">'+sectionTitle('DATOS COMPLEMENTARIOS','Registro de credencial','La ciudad / municipio / comunidad se completa automáticamente solo cuando se carga una INE. Si cargas CURP, ese dato se captura manualmente.')+
     '<div class="v100-form-grid">'+
       '<label><span>Fecha de nacimiento</span><input type="date" data-v100-dob value="'+esc(saved.dob||'')+'"></label>'+
       '<label><span>Edad</span><input type="text" data-v100-age readonly value="'+esc(saved.age||'')+'"></label>'+
-      '<label><span>Ciudad / municipio / comunidad</span><input type="text" data-v100-city placeholder="Se completa al detectar texto" value="'+esc(saved.city||'')+'"></label>'+
+      '<label><span>Ciudad / municipio / comunidad</span><input type="text" data-v100-city placeholder="INE: automático · CURP: capturar manualmente" value="'+esc(saved.city||'')+'"></label>'+
       '<label><span>Posición</span><select data-v100-position>'+['Portero','Defensa','Mediocampista','Delantero','Sin definir'].map(x=>'<option '+(saved.position===x?'selected':'')+'>'+x+'</option>').join('')+'</select></label>'+
       '<label><span>Temporada</span><input type="text" data-v100-season value="'+esc(saved.season||'2026–2027')+'"></label>'+
       '<label><span>Estado</span><select data-v100-status>'+['Pendiente de validación','Revisado','Habilitado'].map(x=>'<option '+(saved.status===x?'selected':'')+'>'+x+'</option>').join('')+'</select></label>'+
     '</div>'+
     '<div class="v100-actions"><button class="v100-primary" data-v100-credential-png>Descargar imagen PNG</button><button class="v100-secondary" data-v100-credential-pdf>Descargar PDF · 1 hoja</button><button class="v100-secondary" data-v100-credential-share>Compartir imagen</button></div>'+
-    '<p class="v100-note">La fecha de nacimiento también se obtiene de la CURP cuando ésta se detecta correctamente. La lectura OCR no sustituye la revisión del documento.</p>'+
+    '<p class="v100-note">La fecha de nacimiento también se obtiene de la CURP cuando ésta se detecta correctamente. Ciudad / municipio / comunidad solo se intenta leer desde la INE; con CURP se captura manualmente.</p>'+
   '</section>';
 }
 function syncCredentialExtra(){
