@@ -68,59 +68,44 @@ function patchHome(){
     },{once:true});
   }
 
-  /* V112 — Restaurar el Inicio anterior:
-     - el cuadro PRINCIPAL vertical con imagen va inmediatamente después de Historias;
-     - debajo quedan los dos cuadros de Momentos;
-     - más abajo queda UNA sola sección de Próximos partidos;
-     - no tocar los demás cuadros. */
+  /* V113 — Sustituir únicamente el cuadro principal después de Historias:
+     quitar "Mira todos los goles..." y poner ahí "Próximos partidos".
+     Mantener los dos cuadros de Momentos debajo y eliminar la copia inferior repetida. */
   const storiesNow=root.querySelector(':scope > .stories');
   const moments=[...root.querySelectorAll(':scope > .section')].find(s=>
     /^Momentos$/i.test((s.querySelector('.section-head h2,h2')?.textContent||'').trim())
   );
-  let hero=root.querySelector(':scope > .section.hero');
+  const hero=root.querySelector(':scope > .section.hero');
+
+  /* Quitar la tarjeta independiente con imagen si quedó de una versión anterior. */
+  root.querySelectorAll('[data-v103-home-image]').forEach(el=>el.remove());
 
   if(hero){
-    hero.classList.remove('v103-upcoming-host');
+    hero.classList.add('v103-upcoming-host');
     hero.dataset.v15HomeFeature='3';
-    if(!hero.querySelector('.v21-home-feature-photo')){
-      hero.innerHTML=
-        '<div class="v21-home-feature-photo" aria-hidden="true">'+
-          '<img class="v21-home-feature-photo-image" src="./assets/home-players-user.jpg?v=20260919-user-photo-public-1" alt="" loading="eager" decoding="async" draggable="false">'+
-          '<span class="v21-home-feature-photo-fade"></span>'+
-        '</div>'+
-        '<div class="v21-home-feature-copy">'+
-          '<h2>Mira todos los goles de la Jornada 1</h2>'+
-          '<p>La pasión del fútbol local en un solo lugar</p>'+
-        '</div>'+
-        '<button class="v15-home-feature-hit" type="button" aria-label="Ver todos los goles de la Jornada 1"></button>';
+    if(!hero.querySelector('[data-v103-upcoming]')){
+      hero.innerHTML=homeUpcomingMarkup();
     }
-    /* Debe quedar exactamente después de Historias, antes de Momentos. */
+    /* El nuevo cuadro ocupa exactamente el lugar principal después de Historias. */
     if(storiesNow && storiesNow.nextElementSibling!==hero){
       storiesNow.insertAdjacentElement('afterend',hero);
     }
   }
 
-  /* Los dos cuadros de Momentos permanecen inmediatamente debajo del principal. */
+  /* Los dos cuadros de Momentos permanecen debajo del nuevo cuadro. */
   if(hero && moments && hero.nextElementSibling!==moments){
     hero.insertAdjacentElement('afterend',moments);
   }
 
-  /* Dejar una sola sección nativa inferior de Próximos partidos. */
-  const upcomingSections=[...root.querySelectorAll(':scope > .section')].filter(s=>
-    /^Próximos\s+partidos$/i.test((s.querySelector(':scope > .section-head h2')?.textContent||'').trim())
-  );
-  upcomingSections.forEach((s,i)=>{
-    s.classList.remove('v110-home-upcoming-native');
-    if(i>0)s.remove();
+  /* Eliminar la sección nativa inferior de Próximos partidos para que exista una sola. */
+  [...root.querySelectorAll(':scope > .section')].forEach(s=>{
+    const title=(s.querySelector(':scope > .section-head h2')?.textContent||'').trim();
+    if(/^Próximos\s+partidos$/i.test(title) && s!==hero) s.remove();
   });
 
-  /* Eliminar solamente copias viejas V103 de Próximos partidos. */
+  /* Si hubiera otra copia V103 fuera del cuadro principal, eliminarla. */
   root.querySelectorAll('[data-v103-upcoming]').forEach(el=>{
-    const host=el.closest('.section.hero');
-    if(host){
-      host.classList.remove('v103-upcoming-host');
-      host.dataset.v15HomeFeature='3';
-    }else el.remove();
+    if(!hero || !hero.contains(el)) el.remove();
   });
 
   /* Quitar el bloque grande duplicado de Datos; Datos oficiales permanece en "Más datos"
