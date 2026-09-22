@@ -7,7 +7,7 @@
 if(window.__LJR_V100_ADDITIVE__) return;
 window.__LJR_V100_ADDITIVE__=true;
 
-const BUILD='20260922-fanzone-one-vote-v157';
+const BUILD='20260922-fanzone-touch-fix-v158';
 const $=(s,r=document)=>r.querySelector(s);
 const $$=(s,r=document)=>Array.from(r.querySelectorAll(s));
 const esc=(v)=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -99,6 +99,22 @@ function fanRenderButtons(root,selector,attr){
   return snap;
 }
 window.LJR_FAN_ZONE_ONE_VOTE={snapshot:fanSnapshot,vote:fanVote,render:fanRenderButtons};
+function fanDelegatedTap(e){
+  const b=e.target.closest?.('[data-v100-react]');
+  if(!b)return;
+  const root=b.closest('#v100-home-extra')||document;
+  if(b.dataset.fanHandled==='1')return;
+  const k=b.dataset.v100React;
+  if(!FAN_KEYS.includes(k))return;
+  const r=fanVote(k);
+  fanRenderButtons(root,'[data-v100-react]','v100React');
+  toast(r.same?'Ya registraste esa reacción':(r.previous?'Reacción cambiada · sigue contando como un solo voto':'Reacción registrada · 1 por visitante/perfil'));
+}
+if(!window.__LJR_FAN_DELEGATED_V158__){
+  window.__LJR_FAN_DELEGATED_V158__=true;
+  document.addEventListener('click',fanDelegatedTap);
+}
+
 
 
 function toast(msg){
