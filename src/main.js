@@ -4902,9 +4902,31 @@ function v64TeamNames(){
   return out;
 }
 
+function v64TeamCategory(name){
+  const target=String(name||'').trim().toLowerCase();if(!target)return '';
+  try{
+    const db=window.LJR_OFFICIAL_DATA||{};
+    for(const cat of Object.values(db.categories||{})){
+      const hit=Object.keys(cat.rosters||{}).find(n=>String(n).trim().toLowerCase()===target)||
+        (((cat.standings||[])[0]?.rows||[]).find(r=>String(r?.[1]||'').trim().toLowerCase()===target)||[])[1];
+      if(hit)return cat.name||'';
+    }
+  }catch(e){}
+  return '';
+}
 function v64TeamSelect(name,attr){
   const list=v64TeamNames(),selected=String(name||'').trim().toLowerCase();
-  return '<select '+attr+'><option value="">Por confirmar</option>'+list.map(function(n){return '<option '+(n.toLowerCase()===selected?'selected':'')+'>'+v64Esc(n)+'</option>'}).join('')+'</select>';
+  return '<select '+attr+'><option value="">Por confirmar</option>'+list.map(function(n){
+    const cat=v64TeamCategory(n);
+    return '<option data-category="'+v64Esc(cat)+'" '+(n.toLowerCase()===selected?'selected':'')+'>'+v64Esc(n)+'</option>';
+  }).join('')+'</select>';
+}
+function v64SyncCredentialTeamCategory(){
+  const team=document.querySelector('[data-v64-cred-team]'),cat=document.querySelector('[data-v64-cred-cat]'),label=document.querySelector('[data-v64-auto-category]');
+  const value=team?.selectedOptions?.[0]?.dataset?.category||v64TeamCategory(team?.value||'');
+  if(cat)cat.value=value||'Por confirmar';
+  if(label)label.textContent=value||'Por confirmar';
+  return value;
 }
 
 function v64StandingsRows(){
@@ -4957,7 +4979,7 @@ function v64BracketView(){
 
 function v64CredentialBuilderView(){
   const v66Player=localStorage.getItem('v66-selected-player')||'',v66Team=localStorage.getItem('v66-selected-player-team')||'';
-  return '<section class="v60-tool-page v64-page">'+v60Header('CREDENCIALES','Credencial de jugador','Carga una foto del documento y una foto del jugador. Al detectar texto se completan automáticamente nombre, CURP, fecha de nacimiento y ciudad / municipio / comunidad; revisa los datos antes de usarlos.')+
+  return '<section class="v60-tool-page v64-page">'+v60Header('REGISTRO DE JUGADOR','Registro y credencial','Carga una foto del documento y una foto del jugador. Al detectar texto se completan automáticamente nombre, CURP, fecha de nacimiento y ciudad / municipio / comunidad; revisa los datos antes de usarlos.')+
     '<div class="v64-form-grid one">'+
       '<label><b>Foto de CURP o INE</b><input type="file" accept="image/*" data-v64-doc></label>'+
       '<label><b>Foto del jugador</b><input type="file" accept="image/*" data-v64-photo></label>'+
@@ -4966,7 +4988,8 @@ function v64CredentialBuilderView(){
       '<label><b>Nombre del jugador</b><input type="text" data-v64-cred-name placeholder="Se completa al detectar texto" value="'+v64Esc(v66Player)+'"></label>'+
       '<label><b>CURP (detección automática local)</b><input type="text" maxlength="18" data-v64-cred-curp placeholder="Se completa al detectar texto" autocomplete="off"></label>'+
       '<label><b>Equipo</b>'+v64TeamSelect(v66Team, 'data-v64-cred-team')+'</label>'+
-      '<label><b>Categoría</b><select data-v64-cred-cat><option>Primera Fuerza</option><option>Intermedia</option><option>Segunda Fuerza</option><option>Veteranos 35+</option><option>Veteranos 50+</option></select></label>'+
+      '<input type="hidden" data-v64-cred-cat value="'+v64Esc(v64TeamCategory(v66Team)||'Por confirmar')+'">'+
+      '<div class="v64-auto-category"><small>Categoría automática</small><b data-v64-auto-category>'+v64Esc(v64TeamCategory(v66Team)||'Por confirmar')+'</b></div>'+
     '</div>'+
     '<article class="v64-credential-preview"><div class="v64-cred-photo" data-v64-photo-preview><span>FOTO</span></div><div><small>LIGA JUVENTINO ROSAS</small><h2 data-v64-preview-name>Jugador</h2><p data-v64-preview-team>Equipo · Categoría</p><em data-v64-preview-curp>CURP ••••</em></div></article>'+
     '<div class="v60-actions"><button class="v60-btn" data-v64-print-credential>Imprimir / guardar PDF</button></div></section>';
@@ -5024,7 +5047,8 @@ function v64RenderAgenda(){
 }
 
 function v64CredentialSync(){
-  const name=document.querySelector('[data-v64-cred-name]')?.value||'Jugador',teamName=document.querySelector('[data-v64-cred-team]')?.value||'Equipo',cat=document.querySelector('[data-v64-cred-cat]')?.value||'Categoría',curp=document.querySelector('[data-v64-cred-curp]')?.value||'';
+  const autoCat=v64SyncCredentialTeamCategory();
+  const name=document.querySelector('[data-v64-cred-name]')?.value||'Jugador',teamName=document.querySelector('[data-v64-cred-team]')?.value||'Equipo',cat=autoCat||document.querySelector('[data-v64-cred-cat]')?.value||'Categoría',curp=document.querySelector('[data-v64-cred-curp]')?.value||'';
   const n=document.querySelector('[data-v64-preview-name]'),t=document.querySelector('[data-v64-preview-team]'),cu=document.querySelector('[data-v64-preview-curp]');
   if(n)n.textContent=name;if(t)t.textContent=teamName+' · '+cat;if(cu)cu.textContent=curp?'CURP ••••'+curp.slice(-4):'CURP ••••';
 }
@@ -5141,6 +5165,62 @@ function v64ApplyOcrIdentity(p){
   set('[data-v100-dob]',p.dob);
   set('[data-v100-city]',p.city);
   v64CredentialSync();
+}
+
+async function v64BitmapFromFile(file){
+  if('createImageBitmap' in window)return await createImageBitmap(file);
+  return await new Promise((resolve,reject)=>{
+    const img=new Image(),url=URL.createObjectURL(file);
+    img.onload=()=>{URL.revokeObjectURL(url);resolve(img)};img.onerror=e=>{URL.revokeObjectURL(url);reject(e)};img.src=url;
+  });
+}
+async function v64PrepareOcrImage(file,mode='contrast'){
+  try{
+    const img=await v64BitmapFromFile(file),iw=img.width||img.naturalWidth,ih=img.height||img.naturalHeight;
+    if(!iw||!ih)return file;
+    const target=Math.min(2600,Math.max(1800,iw*2));
+    const scale=target/iw,w=Math.max(1,Math.round(iw*scale)),h=Math.max(1,Math.round(ih*scale));
+    const c=document.createElement('canvas');c.width=w;c.height=h;const x=c.getContext('2d',{willReadFrequently:true});
+    x.imageSmoothingEnabled=true;x.imageSmoothingQuality='high';x.drawImage(img,0,0,w,h);
+    const data=x.getImageData(0,0,w,h),p=data.data;
+    for(let i=0;i<p.length;i+=4){
+      const g=.299*p[i]+.587*p[i+1]+.114*p[i+2];
+      let v;
+      if(mode==='binary')v=g>168?255:g<92?0:Math.max(0,Math.min(255,(g-92)*3.35));
+      else v=Math.max(0,Math.min(255,(g-128)*1.75+128));
+      p[i]=p[i+1]=p[i+2]=v;p[i+3]=255;
+    }
+    x.putImageData(data,0,0);
+    return await new Promise(resolve=>c.toBlob(b=>resolve(b||file),'image/jpeg',.94));
+  }catch(e){return file}
+}
+function v64OcrQuality(text,confidence){
+  const t=String(text||''),p=v64ParseOcrIdentity(t);
+  let score=Number(confidence||0);
+  score+=(p.name?90:0)+(p.curp?150:0)+(p.dob?70:0)+(p.city?55:0);
+  score+=Math.min(90,(t.match(/[A-Za-zÁÉÍÓÚÜÑáéíóúüñ]/g)||[]).length*.7);
+  score-=Math.min(80,(t.match(/[<>_=]{1,}/g)||[]).length*6);
+  return {score,parsed:p};
+}
+async function v64RecognizeDocument(file,onStatus){
+  const T=await v64LoadTesseract(),variants=[
+    {label:'Mejorando imagen…',image:await v64PrepareOcrImage(file,'contrast')},
+    {label:'Segunda lectura…',image:await v64PrepareOcrImage(file,'binary')}
+  ];
+  let best={text:'',score:-Infinity,parsed:{}};
+  for(let i=0;i<variants.length;i++){
+    onStatus?.(variants[i].label);
+    const r=await T.recognize(variants[i].image,'spa');
+    const text=r?.data?.text||'',q=v64OcrQuality(text,r?.data?.confidence||0);
+    if(q.score>best.score)best={text,score:q.score,parsed:q.parsed};
+    if(q.parsed?.curp&&q.parsed?.name)break;
+  }
+  if((!best.parsed?.name&&!best.parsed?.curp)||best.text.trim().length<18){
+    onStatus?.('Probando imagen original…');
+    const r=await T.recognize(file,'spa'),text=r?.data?.text||'',q=v64OcrQuality(text,r?.data?.confidence||0);
+    if(q.score>best.score)best={text,score:q.score,parsed:q.parsed};
+  }
+  return best;
 }
 
 function v64LoadTesseract(){
@@ -5343,24 +5423,23 @@ document.querySelector('[data-v64-export-csv]')?.addEventListener('click',()=>{c
 document.querySelector('[data-v64-bracket-png]')?.addEventListener('click',async()=>{const b=await v64CanvasBracket();if(b)v64Download(b,'Liga_Juventino_Cuadro.png')},{once:true});
 document.querySelector('[data-v64-photo]')?.addEventListener('change',e=>{const file=e.target.files?.[0],host=document.querySelector('[data-v64-photo-preview]');if(!file||!host)return;host.innerHTML='<img alt="Foto del jugador">';host.querySelector('img').src=URL.createObjectURL(file)},{once:true});
 document.querySelectorAll('[data-v64-cred-name],[data-v64-cred-curp],[data-v64-cred-team],[data-v64-cred-cat]').forEach(el=>{el.addEventListener('input',v64CredentialSync);el.addEventListener('change',v64CredentialSync)});
+document.querySelector('[data-v64-cred-team]')?.addEventListener('change',()=>{v64SyncCredentialTeamCategory();v64CredentialSync()});
 v64CredentialSync();
 document.querySelector('[data-v64-ocr]')?.addEventListener('click',async e=>{
   const file=document.querySelector('[data-v64-doc]')?.files?.[0],out=document.querySelector('[data-v64-ocr-text]');
   if(!file||!out){toast('Selecciona una foto de CURP o INE');return}
-  const btn=e.currentTarget;btn.disabled=true;btn.textContent='Leyendo…';
+  const btn=e.currentTarget,original=btn.textContent;btn.disabled=true;btn.textContent='Preparando…';
   try{
-    const T=await v64LoadTesseract();
-    const r=await T.recognize(file,'spa');
-    const txt=r?.data?.text||'';
-    out.value=txt;
-    const p=v64ParseOcrIdentity(txt);
+    const best=await v64RecognizeDocument(file,msg=>btn.textContent=msg);
+    const txt=best.text||'';out.value=txt;
+    const p=best.parsed||v64ParseOcrIdentity(txt);
     v64ApplyOcrIdentity(p);
     const found=[p.name&&'nombre',p.curp&&'CURP',p.dob&&'fecha',p.city&&'municipio/comunidad'].filter(Boolean);
-    toast(found.length?'Datos detectados: '+found.join(', ') : 'Texto detectado; revisa y completa los datos');
+    toast(found.length?'Datos detectados: '+found.join(', ') : 'La lectura no fue suficiente; intenta una foto más recta y con buena luz');
   }catch(err){
-    toast('No se pudo leer el documento; puedes capturar los datos manualmente');
+    toast('No se pudo leer el documento; prueba una foto más clara o captura los datos manualmente');
   }finally{
-    btn.disabled=false;btn.textContent='Detectar texto';
+    btn.disabled=false;btn.textContent=original||'Detectar texto';
   }
 });
 document.querySelector('[data-v64-clear-ocr]')?.addEventListener('click',()=>{
