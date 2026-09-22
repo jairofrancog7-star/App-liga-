@@ -210,15 +210,20 @@ function render(){
   setMoreActive();
   let direct=false;
   try{
-    direct=sessionStorage.getItem('v16-open-official-scorers')==='1';
-    if(direct)sessionStorage.removeItem('v16-open-official-scorers');
+    direct=sessionStorage.getItem('v16-open-official-scorers')==='1'||
+           sessionStorage.getItem('v105-open-official-scorers')==='1';
+    if(direct){
+      sessionStorage.removeItem('v16-open-official-scorers');
+      sessionStorage.removeItem('v105-open-official-scorers');
+    }
   }catch(_){}
   if(direct){
     requestAnimationFrame(()=>requestAnimationFrame(()=>{
-      const page=screen.querySelector('[data-v28-scorers]');
-      if(page){
-        page.scrollIntoView({behavior:'auto',block:'start'});
-        window.scrollBy(0,-4);
+      const target=screen.querySelector('[data-v28-scorers] .v28-ranking')||
+                   screen.querySelector('[data-v28-scorers]');
+      if(target){
+        target.scrollIntoView({behavior:'auto',block:'start'});
+        window.scrollBy(0,-6);
       }else{
         window.scrollTo({top:0,left:0,behavior:'auto'});
       }
