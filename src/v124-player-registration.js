@@ -555,6 +555,38 @@ function v126BestKnown(name,team=''){
   }
   return score>=.80?{record:best,score}:null;
 }
+function v126AutoRegisterNewEntries(entries,team,season){
+  const list=seasonRecords(season).slice();
+  const info=teamInfo(team)||registryTeams().find(t=>norm(t.name)===norm(team))||{};
+  const now=new Date().toISOString();
+  let added=0;
+  for(const e of entries){
+    if(e.status!=='new')continue;
+    const existing=list.find(r=>norm(r.name)===norm(e.name)&&norm(r.team)===norm(team));
+    if(existing){
+      e.status='keep';e.source=existing;continue;
+    }
+    const rec={
+      id:uid(),name:e.name,team,
+      category:info.category||'',catId:String(info.cat||''),
+      season,status:'Auto-registrado desde lista · completar datos/foto',
+      source:'local',officialPresent:false,officialCheckedAt:'',
+      curp:'',dob:'',city:'',position:'Sin definir',
+      rosterAuto:true,createdAt:now,updatedAt:now
+    };
+    if(duplicateIndex(list,rec)>=0){
+      const dup=list[duplicateIndex(list,rec)];
+      e.status='keep';e.source=dup;continue;
+    }
+    list.unshift(rec);
+    e.status='autoregistered';
+    e.source=rec;
+    e.include=true;
+    added++;
+  }
+  if(added)putSeason(season,list);
+  return added;
+}
 function v126AnalyzeText(text){
   if(!rosterImportTeam)throw new Error('Primero elige el equipo de esta lista');
   const team=rosterImportTeam,season=selectedSeason(),current=seasonRecords(season),names=v126ExtractCandidates(text),entries=[];
@@ -574,31 +606,40 @@ function v126AnalyzeText(text){
   }
   const importedNorm=new Set(entries.map(e=>norm(e.name)));
   const missing=current.filter(r=>norm(r.team)===norm(team)&&!importedNorm.has(norm(r.name))).map(r=>({...r,remove:false}));
-  rosterImport={...rosterImport,rawText:String(text||''),entries,missing,status:'',busy:false};
+  const autoAdded=v126AutoRegisterNewEntries(entries,team,season);
+  rosterImport={...rosterImport,rawText:String(text||''),entries,missing,status:'',busy:false,autoAdded};
+  return {autoAdded};
 }
 function v126ImportSummary(){
   const e=rosterImport.entries||[],count=k=>e.filter(x=>x.status===k).length;
-  return {total:e.length,keep:count('keep'),transfer:count('transfer'),returning:count('return'),fresh:count('new'),missing:(rosterImport.missing||[]).length};
+  const keep=count('keep'),returning=count('return'),auto=count('autoregistered'),fresh=count('new');
+  return {total:e.length,keep,registered:keep+returning,transfer:count('transfer'),returning,auto,fresh,missing:(rosterImport.missing||[]).length};
 }
 function v126RosterStatusLabel(e){
-  if(e.status==='keep')return 'Ya está en este equipo';
-  if(e.status==='transfer')return 'Ya registrado · cambio de equipo';
-  if(e.status==='return')return 'Ya registrado · renovar temporada';
-  return 'Nuevo · faltan datos/foto';
+  if(e.status==='keep')return 'Ya registrado · ya está en este equipo';
+  if(e.status==='transfer')return 'Ya registrado · cambio de equipo disponible';
+  if(e.status==='return')return 'Ya registrado · listo para renovar temporada';
+  if(e.status==='autoregistered')return 'No estaba registrado · se registró automáticamente · falta completar datos/foto';
+  return 'No registrado · se registrará automáticamente';
 }
 function v126RosterResultHtml(){
   if(!(rosterImport.entries||[]).length&&!rosterImport.rawText)return '';
   const s=v126ImportSummary();
+  const personRows=(rosterImport.entries||[]).map((e,i)=>{
+    if(e.status==='autoregistered'){
+      return '<div class="v126-person autoregistered"><span class="v126-auto-mark">✓</span><span class="v126-person-copy"><b>'+esc(e.name)+'</b><small>'+esc(v126RosterStatusLabel(e))+'</small></span><button type="button" class="v126-complete" data-v126-complete="'+esc(e.source?.id||'')+'">Completar registro</button></div>';
+    }
+    return '<label class="v126-person '+esc(e.status)+'"><input type="checkbox" data-v126-include="'+i+'" '+(e.include?'checked':'')+'><span class="v126-check"></span><span class="v126-person-copy"><b>'+esc(e.name)+'</b><small>'+esc(v126RosterStatusLabel(e))+(e.source?.team&&e.status==='transfer'?' · antes: '+esc(e.source.team):'')+'</small></span></label>';
+  }).join('');
   return '<div class="v126-result">'+
-    '<div class="v126-summary"><div><b>'+s.total+'</b><span>Detectados</span></div><div><b>'+s.keep+'</b><span>Ya están</span></div><div><b>'+s.transfer+'</b><span>Cambios</span></div><div><b>'+s.fresh+'</b><span>Nuevos</span></div></div>'+
-    '<div class="v126-detected">'+(rosterImport.entries||[]).map((e,i)=>
-      '<label class="v126-person '+esc(e.status)+'"><input type="checkbox" data-v126-include="'+i+'" '+(e.include?'checked':'')+'><span class="v126-check"></span><span class="v126-person-copy"><b>'+esc(e.name)+'</b><small>'+esc(v126RosterStatusLabel(e))+(e.source?.team&&e.status==='transfer'?' · antes: '+esc(e.source.team):'')+'</small></span></label>'
-    ).join('')+'</div>'+
+    '<div class="v126-summary"><div><b>'+s.total+'</b><span>Detectados</span></div><div><b>'+s.registered+'</b><span>Ya registrados</span></div><div><b>'+s.transfer+'</b><span>Cambios</span></div><div><b>'+(s.auto+s.fresh)+'</b><span>Nuevos auto</span></div></div>'+
+    ((s.auto||s.fresh)?'<div class="v126-auto-info"><b>Registro automático activado</b><span>Los nombres que no existían se guardan como registro provisional. Toca “Completar registro” para agregar CURP, foto y demás datos.</span></div>':'')+
+    '<div class="v126-detected">'+personRows+'</div>'+
     ((rosterImport.missing||[]).length?'<div class="v126-missing"><div class="v126-missing-head"><span><b>No aparecen en la lista</b><small>No se borran automáticamente; marca solo los que realmente salen del equipo.</small></span><button type="button" data-v126-mark-missing>Marcar todos</button></div>'+
       rosterImport.missing.map((r,i)=>'<label><input type="checkbox" data-v126-remove="'+i+'" '+(r.remove?'checked':'')+'><span>'+esc(r.name)+'</span></label>').join('')+
     '</div>':'')+
     '<details class="v126-raw"><summary>Ver / corregir texto detectado</summary><textarea data-v126-raw-text>'+esc(rosterImport.rawText||'')+'</textarea><button type="button" data-v126-reanalyse>Volver a analizar este texto</button></details>'+
-    '<button type="button" class="v126-apply" data-v126-apply>Aplicar altas, cambios y bajas marcadas</button>'+
+    '<button type="button" class="v126-apply" data-v126-apply>Aplicar cambios de equipo y bajas marcadas</button>'+
   '</div>';
 }
 
@@ -650,7 +691,7 @@ function v126ApplyRoster(){
   const season=selectedSeason(),list=seasonRecords(season).slice(),info=teamInfo(rosterImportTeam)||{},now=new Date().toISOString();
   let kept=0,moved=0,added=0,renewed=0,removed=0;
   for(const e of entries){
-    if(e.status==='keep'){kept++;continue}
+    if(e.status==='keep'||e.status==='autoregistered'){kept++;continue}
     const existingIdx=list.findIndex(r=>norm(r.name)===norm(e.name));
     if(existingIdx>=0){
       const r=list[existingIdx],min=v124VeteranMinimum(info.category),age=v124AgeFromDob(r.dob);
@@ -718,8 +759,8 @@ function bindRosterImport(root){
     try{
       const text=await v126ReadRosterFile(rosterImportFile);
       if(!String(text||'').trim())throw new Error('No encontré texto en el archivo');
-      v126AnalyzeText(text);rosterImport.fileName=rosterImportFile.name;
-      toast('Lista detectada. Revisa coincidencias antes de aplicar.');
+      const analysis=v126AnalyzeText(text);rosterImport.fileName=rosterImportFile.name;
+      toast(analysis.autoAdded?('Lista detectada · '+analysis.autoAdded+' jugador(es) nuevos registrados automáticamente'):'Lista detectada · los jugadores encontrados ya estaban registrados o requieren cambio de equipo');
       renderManager();
     }catch(err){
       rosterImport.busy=false;v126SetImportStatus(err?.message||'No se pudo leer la lista');
@@ -727,12 +768,19 @@ function bindRosterImport(root){
       toast(err?.message||'No se pudo leer la lista');
     }
   });
-  $$('[data-v126-include]',root).forEach(c=>c.onchange=()=>{const e=rosterImport.entries?.[Number(c.dataset.v126Include)];if(e)e.include=c.checked});
+  $('[data-v126-complete]',root).forEach(b=>b.addEventListener('click',e=>{
+    e.preventDefault();e.stopPropagation();
+    const rec=seasonRecords().find(r=>r.id===b.dataset.v126Complete);
+    if(!rec)return toast('No encontré el registro provisional');
+    loadRecord(rec);
+    toast('Completa CURP, foto y datos de '+rec.name);
+  }));
+    $('[data-v126-include]',root).forEach(c=>c.onchange=()=>{const e=rosterImport.entries?.[Number(c.dataset.v126Include)];if(e)e.include=c.checked});
   $$('[data-v126-remove]',root).forEach(c=>c.onchange=()=>{const r=rosterImport.missing?.[Number(c.dataset.v126Remove)];if(r)r.remove=c.checked});
   $('[data-v126-mark-missing]',root)?.addEventListener('click',()=>{for(const r of rosterImport.missing||[])r.remove=true;renderManager()});
   $('[data-v126-reanalyse]',root)?.addEventListener('click',()=>{
     const text=$('[data-v126-raw-text]',root)?.value||'';
-    try{v126AnalyzeText(text);renderManager()}catch(err){toast(err?.message||'No se pudo analizar el texto')}
+    try{const analysis=v126AnalyzeText(text);toast(analysis.autoAdded?('Se registraron '+analysis.autoAdded+' nuevos automáticamente'):'Texto revisado · sin nuevos registros');renderManager()}catch(err){toast(err?.message||'No se pudo analizar el texto')}
   });
   $('[data-v126-apply]',root)?.addEventListener('click',v126ApplyRoster);
 }
