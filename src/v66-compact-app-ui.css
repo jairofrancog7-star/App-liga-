@@ -348,3 +348,63 @@ body[data-app-route="bracketBuilder"] .v64-page{
   margin-top:0!important;
   padding-top:12px!important;
 }
+
+
+/* V130 — LIGUILLA: fondo continuo EXACTO de la referencia aportada.
+   Arriba y abajo usan el mismo azul #020346; sin arte, degradados ni cortes. */
+body[data-app-route="bracketBuilder"],
+body[data-app-route="bracketBuilder"] #app,
+body[data-app-route="bracketBuilder"] .app-shell,
+body[data-app-route="bracketBuilder"] .topbar,
+body[data-app-route="bracketBuilder"] #screen,
+body[data-app-route="bracketBuilder"] .v60-tool-page,
+body[data-app-route="bracketBuilder"] .v64-page{
+  background:#020346!important;
+  background-color:#020346!important;
+  background-image:none!important;
+  box-shadow:none!important;
+  border-color:transparent!important;
+}
+
+/* Anula cualquier arte superior heredado de HOME / cabeceras especiales. */
+body[data-app-route="bracketBuilder"] .topbar{
+  border:0!important;
+  border-bottom:0!important;
+  margin:0!important;
+  box-shadow:none!important;
+  backdrop-filter:none!important;
+  -webkit-backdrop-filter:none!important;
+}
+body[data-app-route="bracketBuilder"] .topbar::before,
+body[data-app-route="bracketBuilder"] .topbar::after{
+  content:none!important;
+  display:none!important;
+  background:none!important;
+  background-image:none!important;
+  border:0!important;
+  box-shadow:none!important;
+}
+
+/* El contenido comienza sobre el mismo fondo sin franja intermedia. */
+body[data-app-route="bracketBuilder"] #screen{
+  margin-top:0!important;
+  padding-top:0!important;
+  border-top:0!important;
+  outline:0!important;
+}
+body[data-app-route="bracketBuilder"] .v64-page{
+  margin-top:0!important;
+  padding-top:12px!important;
+  border-top:0!important;
+}
+
+/* También borra adornos de unión que pudieran venir de otras versiones. */
+body[data-app-route="bracketBuilder"] #screen::before,
+body[data-app-route="bracketBuilder"] #screen::after,
+body[data-app-route="bracketBuilder"] .v64-page::before,
+body[data-app-route="bracketBuilder"] .v64-page::after,
+body[data-app-route="bracketBuilder"] .v60-tool-page::before,
+body[data-app-route="bracketBuilder"] .v60-tool-page::after{
+  content:none!important;
+  display:none!important;
+}
