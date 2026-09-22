@@ -170,3 +170,78 @@ body[data-app-route="credentialBuilder"] .v124-head p{
 .v157-review-note b{font-size:9px;color:#ffd077}
 .v157-review-note span{font-size:8px;line-height:1.35;color:#e9d8ae}
 .v126-person.review{border-color:rgba(255,190,80,.40)!important;background:#2b210d!important}
+
+
+/* V160 — buscador rápido de equipo destino por nombre, categoría y letra. */
+.v124-fast-team-field{display:grid;gap:4px;min-width:0}
+.v124-fast-team-field>span{font-size:9px;color:#bdc9e7;font-weight:800}
+.v160-fast-team-picker{display:grid;gap:7px;min-width:0}
+.v160-fast-team-open{
+  width:100%;min-height:48px;border:1px solid rgba(255,255,255,.16);border-radius:12px;
+  background:#070d61;color:#fff;padding:7px 10px;display:grid;
+  grid-template-columns:minmax(0,1fr) 22px;gap:8px;align-items:center;text-align:left;font:inherit;
+  touch-action:manipulation;-webkit-tap-highlight-color:transparent
+}
+.v160-fast-team-open>span{display:grid;gap:2px;min-width:0}
+.v160-fast-team-open small{font-size:7.5px;color:#93a7d8;text-transform:uppercase;letter-spacing:.05em}
+.v160-fast-team-open b{font-size:10px;line-height:1.2;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.v160-fast-team-open em{font-size:7.5px;color:#5fe7f2;font-style:normal;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.v160-fast-team-open>i{font-style:normal;font-size:18px;text-align:center;color:#fff}
+.v160-fast-team-panel{
+  grid-column:1/-1;padding:9px;border:1px solid rgba(79,229,241,.34);border-radius:14px;
+  background:#050a53;display:grid;gap:8px;min-width:0
+}
+.v160-fast-team-head{display:flex;align-items:center;gap:8px}
+.v160-fast-team-head>b{font-size:11px}
+.v160-fast-team-head>button{
+  margin-left:auto;width:30px;height:30px;border:0;border-radius:50%;background:#111d78;
+  color:#fff;font-size:18px;line-height:1
+}
+.v160-fast-team-search{display:grid!important;gap:4px!important}
+.v160-fast-team-search>span{font-size:8px!important;color:#b9c7e5!important;font-weight:850!important}
+.v160-fast-team-search>input{
+  width:100%!important;min-height:42px!important;border:1px solid rgba(83,229,241,.32)!important;
+  border-radius:11px!important;background:#030745!important;color:#fff!important;padding:0 11px!important;
+  font-size:10px!important;font-weight:750!important;outline:none!important
+}
+.v160-fast-team-search>input:focus{border-color:#52e4ef!important;box-shadow:0 0 0 2px rgba(82,228,239,.12)!important}
+.v160-fast-team-filter{display:grid;gap:5px;min-width:0}
+.v160-fast-team-filter>span{font-size:8px;color:#aebce0;font-weight:850;text-transform:uppercase;letter-spacing:.05em}
+.v160-fast-team-filter>div{
+  display:flex;gap:5px;overflow-x:auto;padding-bottom:2px;overscroll-behavior-x:contain;
+  -webkit-overflow-scrolling:touch;scrollbar-width:none
+}
+.v160-fast-team-filter>div::-webkit-scrollbar{display:none}
+.v160-fast-team-filter button{
+  flex:0 0 auto;min-height:30px;padding:0 9px;border:1px solid rgba(255,255,255,.11);
+  border-radius:999px;background:#0a146c;color:#c8d1ea;font-size:7.5px;font-weight:850;
+  white-space:nowrap;touch-action:manipulation
+}
+.v160-fast-team-filter button.active{background:#20d3df;border-color:#59e9f2;color:#04104f}
+.v160-fast-team-filter.letters button{min-width:30px;padding:0 7px}
+.v160-fast-team-count{display:flex;align-items:baseline;gap:4px;color:#aebce0}
+.v160-fast-team-count b{font-size:15px;color:#55e7f2}
+.v160-fast-team-count span{font-size:8px}
+.v160-fast-team-list{
+  display:grid;gap:6px;max-height:310px;overflow:auto;overscroll-behavior:contain;
+  -webkit-overflow-scrolling:touch;padding-right:2px
+}
+.v160-fast-team-choice{
+  width:100%;min-height:50px;border:1px solid rgba(255,255,255,.09);border-radius:11px;
+  background:#0a146c;color:#fff;padding:8px 9px;display:grid;grid-template-columns:minmax(0,1fr) 20px;
+  gap:8px;align-items:center;text-align:left;font:inherit;touch-action:manipulation
+}
+.v160-fast-team-choice>span{display:grid;gap:2px;min-width:0}
+.v160-fast-team-choice b{font-size:10.5px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.v160-fast-team-choice small{font-size:7.5px;color:#aebce0}
+.v160-fast-team-choice i{font-style:normal;color:transparent;font-weight:900;text-align:center}
+.v160-fast-team-choice.active{border-color:#4ee5ef;background:#11268f}
+.v160-fast-team-choice.active i{color:#55e9f2}
+.v160-fast-team-empty{padding:16px 10px;text-align:center;color:#9eadd2;font-size:9px;border:1px dashed rgba(255,255,255,.12);border-radius:10px}
+
+@media(max-width:390px){
+  .v124-fast-team-field{grid-column:1/-1}
+  .v160-fast-team-panel{padding:8px}
+  .v160-fast-team-list{max-height:270px}
+  .v160-fast-team-open{min-height:52px}
+}
