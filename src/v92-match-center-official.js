@@ -152,9 +152,66 @@ function rosterColumn(m,team){
   return '<article class="v92-roster"><div class="v92-roster-title">'+teamLogo(team,'tiny')+'<span><b>'+esc(team)+'</b><small>Plantilla oficial registrada · no alineación confirmada</small></span></div>'+
     (names.length?'<ol>'+names.map(n=>'<li>'+esc(n)+'</li>').join('')+'</ol>':'<p>No hay plantilla pública disponible.</p>')+'</article>';
 }
+function mvpKey(m){return 'v92-mvp-local:'+String(m?.key||'match')}
+function mvpSelection(m){
+  try{return JSON.parse(localStorage.getItem(mvpKey(m))||'null')}catch(_){return null}
+}
+function mvpPlayers(m){
+  const r=m.r,home=r[2],away=r[6],out=[];
+  roster(m,home).forEach(name=>out.push({team:home,name}));
+  roster(m,away).forEach(name=>out.push({team:away,name}));
+  return out;
+}
+function mvpCard(m){
+  const vote=mvpSelection(m);
+  return '<section class="v92-mvp-section">'+
+    '<div class="v92-mvp-head"><h2>Jugador del partido</h2><button type="button" data-v92-vote-mvp>⭐ Votar MVP</button></div>'+
+    '<article class="v92-mvp-card">'+
+      '<span class="v92-mvp-star">★</span>'+
+      '<span class="v92-mvp-copy"><b>'+(vote?.player?esc(vote.player):'MVP por elegir')+'</b><small>'+(vote?.team?esc(vote.team)+' · selección local':'Elige entre jugadores registrados del partido')+'</small></span>'+
+      '<strong>'+(vote?.player?'MVP':'—')+'</strong>'+
+    '</article>'+
+  '</section>';
+}
+function openMvpVote(m){
+  document.querySelector('.v92-mvp-modal')?.remove();
+  const players=mvpPlayers(m);
+  const r=m.r,home=r[2],away=r[6];
+  const modal=document.createElement('div');
+  modal.className='v92-mvp-modal';
+  modal.innerHTML='<button class="v92-mvp-backdrop" type="button" data-v92-mvp-close aria-label="Cerrar"></button>'+
+    '<section><header><span><small>VOTACIÓN LOCAL</small><b>Votar MVP</b></span><button type="button" data-v92-mvp-close>×</button></header>'+
+    (players.length?
+      '<label><span>Equipo</span><select data-v92-mvp-team><option>'+esc(home)+'</option><option>'+esc(away)+'</option></select></label>'+
+      '<label><span>Jugador</span><select data-v92-mvp-player></select></label>'+
+      '<button class="v92-mvp-save" type="button" data-v92-mvp-save>Guardar voto</button>'+
+      '<p>Selección local del dispositivo. No modifica estadísticas ni resultados oficiales.</p>'
+      :
+      '<div class="v92-mvp-empty"><b>Sin jugadores registrados disponibles</b><span>La votación se habilitará cuando existan plantillas públicas para este partido.</span></div>')+
+    '</section>';
+  document.body.appendChild(modal);
+  const close=()=>modal.remove();
+  modal.querySelectorAll('[data-v92-mvp-close]').forEach(b=>b.onclick=close);
+  if(!players.length)return;
+  const teamSel=modal.querySelector('[data-v92-mvp-team]');
+  const playerSel=modal.querySelector('[data-v92-mvp-player]');
+  const fill=()=>{playerSel.innerHTML=players.filter(x=>x.team===teamSel.value).map(x=>'<option>'+esc(x.name)+'</option>').join('')};
+  teamSel.onchange=fill;fill();
+  modal.querySelector('[data-v92-mvp-save]').onclick=()=>{
+    const player=playerSel.value,team=teamSel.value;
+    if(!player)return;
+    try{localStorage.setItem(mvpKey(m),JSON.stringify({player,team,at:new Date().toISOString()}))}catch(_){}
+    close();renderGuard=false;render();
+  };
+}
 function lineupsBody(m){
   const r=m.r;
-  return '<section class="v92-section"><div class="v92-section-head"><h2>Plantillas oficiales</h2><small>Las alineaciones del partido aparecerán únicamente si la Liga las publica.</small></div><div class="v92-roster-grid">'+rosterColumn(m,r[2])+rosterColumn(m,r[6])+'</div></section>';
+  return '<section class="v92-section v92-lineups-section">'+
+    '<div class="v92-lineups-head"><h2>Alineaciones</h2><button type="button" data-v92-pitch>Ver cancha</button></div>'+
+    '<small class="v92-lineups-note">Las alineaciones del partido aparecerán únicamente si la Liga las publica.</small>'+
+    '<div class="v92-roster-grid">'+rosterColumn(m,r[2])+rosterColumn(m,r[6])+'</div>'+
+    mvpCard(m)+
+  '</section>';
 }
 function statsBody(m){
   const r=m.r,h=standing(m,r[2]),a=standing(m,r[6]);
@@ -216,6 +273,11 @@ function render(){
   screen.querySelector('[data-v92-match-select]')?.addEventListener('change',e=>{selectedKey=e.target.value;activeTab='Resumen';renderGuard=false;render()});
   screen.querySelectorAll('[data-v92-tab]').forEach(b=>b.onclick=()=>{activeTab=b.dataset.v92Tab;renderGuard=false;render()});
   screen.querySelectorAll('[data-v92-route]').forEach(b=>b.onclick=()=>{location.hash='#/'+b.dataset.v92Route});
+  screen.querySelectorAll('[data-v92-pitch]').forEach(b=>b.onclick=()=>{
+    try{sessionStorage.setItem('v92-pitch-context',JSON.stringify({match:m.key,home,away,category:m.category}))}catch(_){}
+    location.hash='#/tactics';
+  });
+  screen.querySelectorAll('[data-v92-vote-mvp]').forEach(b=>b.onclick=()=>openMvpVote(m));
   renderGuard=false;
 }
 async function load(){
