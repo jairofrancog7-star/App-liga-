@@ -792,11 +792,12 @@ function v124Hamming(a,b){
   let d=0;for(let i=0;i<a.length;i++)if(a[i]!==b[i])d++;return d;
 }
 function v124BadOcrName(name){
-  const n=norm(name);
-  if(!n||n.length<4||n.length>70)return true;
-  if(/instituto|electoral|credencial|votar|fecha|nacim|domicilio|curp|clave|seccion|vigencia/.test(n))return true;
-  const words=n.split(' ').filter(Boolean);
-  return words.length<2;
+  const n=norm(name);if(!n||n.length<4||n.length>70)return true;
+  if(/instituto|electoral|credencial|votar|fecha|nacim|domicilio|curp|clave|seccion|vigencia|municipio|dependencia|registro/.test(n))return true;
+  const words=n.split(' ').filter(Boolean),shorts=words.filter(w=>w.length<=2).length;
+  const vowels=(n.match(/[aeiou]/g)||[]).length;
+  if(words.length<2||words.length>6||shorts/words.length>.34||vowels<2)return true;
+  return false;
 }
 function v124Levenshtein(a,b){
   a=norm(a);b=norm(b);
@@ -894,20 +895,36 @@ function v124RecoverCurp(text,name,current=''){
   }
   return current&&v124CurpValid(current)?current:'';
 }
+function v124IneNameGuess(text){
+  const lines=String(text||'').split(/\r?\n/).map(x=>x.replace(/[|]/g,'I').replace(/\s+/g,' ').trim()).filter(Boolean);
+  const i=lines.findIndex(x=>/\bNOMBRE(?:S)?\b/i.test(x));if(i<0)return '';
+  const clean=x=>String(x||'').replace(/NOMBRE(?:S)?/ig,' ').replace(/[^A-Za-zÁÉÍÓÚÜÑáéíóúüñ'\-\s]/g,' ').replace(/\s+/g,' ').trim();
+  const parts=[],same=clean(lines[i]);
+  if(same&&!v124BadOcrName(same)&&same.split(/\s+/).length<=5)parts.push(same);
+  for(let j=i+1;j<Math.min(lines.length,i+6);j++){
+    if(/^(DOMICILIO|CLAVE|CURP|FECHA|SEXO|ESTADO|MUNICIPIO|LOCALIDAD|CIUDAD|COMUNIDAD|ENTIDAD|SECCI[ÓO]N|VIGENCIA|A[NÑ]O)\b/i.test(lines[j]))break;
+    const p=clean(lines[j]);if(p&&p.split(/\s+/).length<=4)parts.push(p);
+    if(parts.length>=3)break;
+  }
+  if(parts.length>=3)return (parts.slice(2).join(' ')+' '+parts[0]+' '+parts[1]).replace(/\s+/g,' ').trim();
+  if(parts.length===1){
+    const w=parts[0].split(/\s+/);if(w.length>=3)return (w.slice(2).join(' ')+' '+w[0]+' '+w[1]).trim();
+  }
+  return '';
+}
 function v124RawNameGuess(text){
-  const bad=/instituto|nacional|electoral|credencial|votar|mexico|méxico|domicilio|municipio|seccion|vigencia|curp|clave|fecha|nacimiento|sexo|entidad|localidad/i;
+  const ine=v124IneNameGuess(text);if(ine&&!v124BadOcrName(ine))return ine;
+  const bad=/instituto|nacional|electoral|credencial|votar|mexico|méxico|domicilio|municipio|seccion|vigencia|curp|clave|fecha|nacimiento|sexo|entidad|localidad|dependencia|registro/i;
   const lines=String(text||'').split(/\r?\n/).map(x=>x
-    .replace(/NOMBRE(?:S)?/ig,' ')
-    .replace(/APELLIDO(?:S)?/ig,' ')
-    .replace(/[^A-Za-zÁÉÍÓÚÜÑáéíóúüñ'\-\s]/g,' ')
-    .replace(/\s+/g,' ').trim()
+    .replace(/NOMBRE(?:S)?/ig,' ').replace(/APELLIDO(?:S)?/ig,' ')
+    .replace(/[^A-Za-zÁÉÍÓÚÜÑáéíóúüñ'\-\s]/g,' ').replace(/\s+/g,' ').trim()
   ).filter(Boolean);
   const list=lines.map(x=>{
-    const words=x.split(/\s+/).filter(w=>w.length>=2);
-    const letters=(x.match(/[A-Za-zÁÉÍÓÚÜÑáéíóúüñ]/g)||[]).length;
+    const words=x.split(/\s+/).filter(w=>w.length>=2),shorts=words.filter(w=>w.length<=2).length;
+    const letters=(x.match(/[A-Za-zÁÉÍÓÚÜÑáéíóúüñ]/g)||[]).length,vowels=(x.match(/[AEIOUÁÉÍÓÚÜaeiouáéíóúü]/g)||[]).length;
     const score=(words.length>=2?30:0)+(words.length>=3?22:0)+(words.length<=5?12:0)+Math.min(35,letters);
-    return {x,words,score};
-  }).filter(o=>o.words.length>=2&&o.words.length<=6&&o.x.length>=5&&o.x.length<=70&&!bad.test(o.x))
+    return {x,words,shorts,vowels,score};
+  }).filter(o=>o.words.length>=2&&o.words.length<=5&&o.shorts/o.words.length<=.25&&o.vowels>=2&&o.x.length>=5&&o.x.length<=70&&!bad.test(o.x))
     .sort((a,b)=>b.score-a.score);
   return list[0]?.x||'';
 }
@@ -935,10 +952,15 @@ function bindOcrAssist(){
           setValue('[data-v64-cred-name]',fallback);
           const fixedCurp=v124RecoverCurp(raw,fallback,curp);
           if(fixedCurp)setValue('[data-v64-cred-curp]',fixedCurp);
-          toast('Encontré una lectura posible. Revisa nombre y CURP antes de guardar');
+          toast('Lectura recuperada. Revisa nombre y CURP antes de guardar');
         }else{
-          toast('No pude confirmar contra el padrón todavía; conservé la lectura para que pueda intentarse de nuevo');
+          if(curp&&!v124CurpValid(curp))setValue('[data-v64-cred-curp]','');
+          toast('No encontré un nombre confiable todavía; intenta detectar de nuevo');
         }
+      }else{
+        const fixedCurp=v124RecoverCurp(raw,name,curp);
+        if(fixedCurp&&fixedCurp!==curp)setValue('[data-v64-cred-curp]',fixedCurp);
+        else if(curp&&!v124CurpValid(curp))setValue('[data-v64-cred-curp]','');
       }
       renderEligibility();
       renderManager();
