@@ -279,59 +279,130 @@ function v100CredentialTheme(ctx,category,w,h){
   else if(key.includes('segunda')){colors=['#1a1110','#86451d','#d57b38'];accent='#ffd6a0';label='SEGUNDA FUERZA'}
   else if(key.includes('veteranos 35')){colors=['#0b3828','#2d7a4e','#87b56b'];accent='#d8ffd1';label='VETERANOS 35+'}
   else if(key.includes('veteranos 50')){colors=['#10291d','#4b6c35','#9e8f47'];accent='#fff0ae';label='VETERANOS 50+'}
-  const g=ctx.createLinearGradient(0,0,w,h);g.addColorStop(0,colors[0]);g.addColorStop(.52,colors[1]);g.addColorStop(1,colors[2]);ctx.fillStyle=g;ctx.fillRect(0,0,w,h);
-  const glow=ctx.createRadialGradient(w*.78,h*.28,20,w*.78,h*.28,w*.55);glow.addColorStop(0,'rgba(255,255,255,.18)');glow.addColorStop(1,'rgba(255,255,255,0)');ctx.fillStyle=glow;ctx.fillRect(0,0,w,h);
-  ctx.save();ctx.globalAlpha=.16;ctx.strokeStyle='#fff';ctx.lineWidth=4;
+
+  const g=ctx.createLinearGradient(0,0,w,h);
+  g.addColorStop(0,colors[0]);g.addColorStop(.52,colors[1]);g.addColorStop(1,colors[2]);
+  ctx.fillStyle=g;ctx.fillRect(0,0,w,h);
+
+  const glow=ctx.createRadialGradient(w*.78,h*.28,20,w*.78,h*.28,w*.55);
+  glow.addColorStop(0,'rgba(255,255,255,.18)');
+  glow.addColorStop(1,'rgba(255,255,255,0)');
+  ctx.fillStyle=glow;ctx.fillRect(0,0,w,h);
+
+  /* V143: la cancha decorativa termina ANTES de la zona de datos.
+     Así ninguna línea cruza nombre, equipo, edad, posición, temporada o CURP. */
+  const fx=68,fy=150,fw=690,fh=345;
+  ctx.save();
+  ctx.globalAlpha=.15;
+  ctx.strokeStyle='#fff';
+  ctx.lineWidth=4;
+
   if(key.includes('intermedia')){
-    ctx.fillStyle='rgba(12,8,35,.42)';ctx.fillRect(0,h*.66,w,h*.34);
-    for(let i=0;i<22;i++){const x=i*w/21;ctx.beginPath();ctx.moveTo(x,h*.66);ctx.lineTo(x+(i%2?22:-18),h*.56);ctx.stroke()}
+    ctx.fillStyle='rgba(12,8,35,.30)';
+    ctx.fillRect(fx,fy,fw,fh);
+    for(let i=0;i<18;i++){
+      const px=fx+i*fw/17;
+      ctx.beginPath();ctx.moveTo(px,fy+fh);ctx.lineTo(px+(i%2?20:-18),fy+fh-105);ctx.stroke();
+    }
   }else{
-    ctx.strokeRect(70,105,w-140,h-175);ctx.beginPath();ctx.moveTo(w*.52,105);ctx.lineTo(w*.52,h-70);ctx.stroke();
-    ctx.beginPath();ctx.arc(w*.52,h*.52,112,0,Math.PI*2);ctx.stroke();
+    ctx.strokeRect(fx,fy,fw,fh);
+    ctx.beginPath();ctx.moveTo(fx+fw/2,fy);ctx.lineTo(fx+fw/2,fy+fh);ctx.stroke();
+    ctx.beginPath();ctx.arc(fx+fw/2,fy+fh/2,88,0,Math.PI*2);ctx.stroke();
   }
   ctx.restore();
-  ctx.fillStyle=accent;ctx.globalAlpha=.82;ctx.font='800 28px Arial';ctx.fillText(label,78,h*.60);ctx.globalAlpha=1;
+
+  /* Categoría fuera de las líneas, en una banda limpia. */
+  ctx.fillStyle=accent;
+  ctx.globalAlpha=.92;
+  ctx.font='800 28px Arial';
+  ctx.fillText(label,78,530);
+  ctx.globalAlpha=1;
   return {accent,label};
 }
 async function credentialCanvas(){
   syncCredentialExtra();
-  const canvas=document.createElement('canvas');canvas.width=1200;canvas.height=760;const x=canvas.getContext('2d');
+  const canvas=document.createElement('canvas');
+  canvas.width=1200;canvas.height=760;
+  const x=canvas.getContext('2d');
+
   const name=$('[data-v64-cred-name]')?.value||'Jugador';
   const team=$('[data-v64-cred-team]')?.value||'Equipo';
   const cat=$('[data-v64-cred-team]')?.selectedOptions?.[0]?.dataset?.category||$('[data-v64-cred-cat]')?.value||'Categoría';
-  const curp=$('[data-v64-cred-curp]')?.value||'',e=read('v100-credential-extra',{});
+  const curp=$('[data-v64-cred-curp]')?.value||'';
+  const e=read('v100-credential-extra',{});
   const theme=v100CredentialTheme(x,cat,canvas.width,canvas.height);
 
-  x.fillStyle='rgba(0,0,0,.24)';x.fillRect(0,0,1200,760);
-  x.strokeStyle='rgba(255,255,255,.32)';x.lineWidth=3;x.strokeRect(22,22,1156,716);
+  /* Marco exterior. */
+  x.fillStyle='rgba(0,0,0,.18)';x.fillRect(0,0,1200,760);
+  x.strokeStyle='rgba(255,255,255,.34)';x.lineWidth=3;x.strokeRect(22,22,1156,716);
 
-  x.fillStyle='#fff';x.font='800 34px Arial';x.fillText('Liga Municipal de Futbol',62,72);x.font='800 29px Arial';x.fillText('Juventino Rosas, A.C.',62,108);
+  /* Encabezado: queda completamente por encima de la cancha. */
+  x.fillStyle='#fff';
+  x.font='800 34px Arial';x.fillText('Liga Municipal de Futbol',62,72);
+  x.font='800 29px Arial';x.fillText('Juventino Rosas, A.C.',62,108);
 
-  const league=await v100LoadImage('./assets/liga-logo.webp');
-  if(league){x.save();x.globalAlpha=.96;x.drawImage(league,64,590,92,92);x.restore()}
-
+  /* Foto a la derecha, separada de las líneas del campo. */
   const photo=$('[data-v64-photo-preview] img');
+  const px=815,py=92,pw=320,ph=370;
   if(photo?.src){
     try{
-      const pw=320,ph=392,px=815,py=98;
-      x.save();x.beginPath();x.roundRect?.(px,py,pw,ph,22);if(x.roundRect)x.clip();
-      x.drawImage(photo,px,py,pw,ph);x.restore();
+      x.save();
+      if(x.roundRect){
+        x.beginPath();x.roundRect(px,py,pw,ph,22);x.clip();
+      }
+      x.drawImage(photo,px,py,pw,ph);
+      x.restore();
       x.strokeStyle='rgba(255,255,255,.42)';x.lineWidth=3;x.strokeRect(px,py,pw,ph);
-    }catch(e){}
+    }catch(err){}
   }else{
-    x.fillStyle='rgba(4,6,35,.32)';x.fillRect(815,98,320,392);x.fillStyle='rgba(255,255,255,.55)';x.font='800 30px Arial';x.fillText('FOTO',924,300);
+    x.fillStyle='rgba(4,6,35,.34)';x.fillRect(px,py,pw,ph);
+    x.fillStyle='rgba(255,255,255,.58)';x.font='800 30px Arial';x.fillText('FOTO',924,286);
+    x.strokeStyle='rgba(255,255,255,.28)';x.lineWidth=3;x.strokeRect(px,py,pw,ph);
   }
 
-  x.fillStyle='rgba(0,0,0,.42)';x.fillRect(0,548,1200,212);
-  x.fillStyle='#fff';x.font='800 28px Arial';x.fillText(team.slice(0,28),790,568);
-  x.font='900 45px Arial';x.fillStyle=theme.accent;x.fillText(name.slice(0,32),270,648);
+  /* Equipo debajo de la foto: zona limpia, sin líneas detrás. */
+  x.fillStyle='rgba(255,255,255,.66)';x.font='800 15px Arial';x.fillText('EQUIPO',815,498);
+  x.fillStyle='#fff';x.font='800 28px Arial';x.fillText(team.slice(0,28),815,532);
 
-  const info=[e.age?e.age+' años':'Edad —',e.position||'Sin definir',e.season||'2026–2027',curp?'CURP •••• '+curp.slice(-4):'CURP no capturada'];
-  x.fillStyle='rgba(255,255,255,.92)';x.font='700 18px Arial';
-  x.fillText(info[0],270,690);x.fillText(info[1],430,690);x.fillText(info[2],630,690);x.fillText(info[3],820,690);
-  if(e.city){x.fillStyle='rgba(255,255,255,.78)';x.font='600 16px Arial';x.fillText(String(e.city).slice(0,48),270,718)}
-  x.fillStyle='rgba(255,255,255,.65)';x.font='14px Arial';x.fillText('Credencial generada por la Liga · revisar documento y elegibilidad antes de validar.',62,738);
+  /* Banda de datos: empieza después de que termina la cancha decorativa. */
+  x.fillStyle='rgba(1,8,45,.66)';x.fillRect(0,560,1200,180);
+
+  const league=await v100LoadImage('./assets/liga-logo.webp');
+  if(league){
+    x.save();x.globalAlpha=.96;x.drawImage(league,66,588,100,100);x.restore();
+  }
+
+  /* Nombre en su propia línea. */
+  x.font='900 43px Arial';x.fillStyle=theme.accent;
+  x.fillText(name.slice(0,32),245,625);
+
+  /* Datos alineados en columnas, todos lejos de líneas y del borde inferior. */
+  const info=[
+    {label:'EDAD',value:e.age?e.age+' años':'Edad —',x:245},
+    {label:'POSICIÓN',value:e.position||'Sin definir',x:420},
+    {label:'TEMPORADA',value:e.season||'2026–2027',x:620},
+    {label:'CURP',value:curp?'•••• '+curp.slice(-4):'No capturada',x:835}
+  ];
+  info.forEach(item=>{
+    x.fillStyle='rgba(93,233,243,.84)';x.font='800 12px Arial';x.fillText(item.label,item.x,661);
+    x.fillStyle='rgba(255,255,255,.94)';x.font='700 18px Arial';x.fillText(String(item.value).slice(0,24),item.x,686);
+  });
+
+  if(e.city){
+    x.fillStyle='rgba(255,255,255,.75)';x.font='600 15px Arial';
+    x.fillText(String(e.city).slice(0,56),245,711);
+  }
+
+  /* Pie por encima del marco inferior; ya no queda montado sobre la línea. */
+  x.fillStyle='rgba(255,255,255,.62)';x.font='13px Arial';
+  x.fillText('Credencial generada por la Liga · revisar documento y elegibilidad antes de validar.',62,724);
+
   return canvasBlob(canvas);
+}
+
+async function downloadCredentialPng(){
+  const blob=await credentialCanvas();
+  if(blob)download(blob,'Credencial_Liga_Juventino.png');
 }
 async function v100LoadJsPDF(){
   if(window.jspdf?.jsPDF)return window.jspdf.jsPDF;
@@ -487,5 +558,5 @@ window.addEventListener('hashchange',schedule);
 window.addEventListener('ljr:official-data',schedule);
 const screen=$('#screen');if(screen)new MutationObserver(schedule).observe(screen,{childList:true,subtree:false});
 window.addEventListener('load',schedule);schedule();setTimeout(schedule,1500);setTimeout(schedule,4000);
-window.LJR_V100={build:BUILD,mount,officialTeams,credentialCanvas,downloadCredentialPdf};
+window.LJR_V100={build:BUILD,mount,officialTeams,credentialCanvas,downloadCredentialPng,downloadCredentialPdf};
 })();
