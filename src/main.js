@@ -4244,7 +4244,81 @@ function teamsView(){
 function teamDetailView(){const t=team(state.selectedTeam||'JUV');const squad=players.filter(p=>p.team===t.code);return `<div class="team-hero">${crest(t.code)}<span><small>${t.category}</small><h1>${t.name}</h1><p>${t.field}${t.founded?` · Fundado ${t.founded}`:''}</p></span>${favButton(`team:${t.code}`)}</div><div class="button-row"><button class="btn ${state.followed.includes(t.code)?'ghost':'primary'}" data-follow="${t.code}">${state.followed.includes(t.code)?'Dejar de seguir':'Seguir equipo'}</button></div><section class="section">${sectionHead('Información')}<div class="card info-grid"><div><small>Entrenador</small><b>${t.coach}</b></div><div><small>Puntos</small><b>${t.pts}</b></div><div><small>Diferencia</small><b>${t.gd>0?'+':''}${t.gd}</b></div><div><small>Campo</small><b>${t.field}</b></div></div></section><section class="section">${sectionHead('Plantilla','players')}<div class="player-list">${squad.map(p=>`<button class="player-row" data-player="${p.id}"><span>${crest(p.team)}<b>${p.number}. ${p.name}</b><small>Jugador registrado</small></span><span>›</span></button>`).join('')}</div></section><section class="section">${sectionHead('Noticias','news')}<div class="card news-inline"><b>${t.news}</b><small>Actualizado hoy</small></div></section>`}
 function playersView(){return `<div class="eyebrow">JUGADORES</div><h1 class="screen-title">Plantillas</h1><div class="searchbox"><span>${icons.search}</span><input id="playerSearch" placeholder="Buscar jugador" value="${state.searchQuery||''}"></div><div class="player-list" id="playerResults">${filterPlayers(state.searchQuery||'').map(playerRowHtml).join('')}</div>`}function filterPlayers(q){q=(q||'').toLowerCase();return players.filter(p=>p.name.toLowerCase().includes(q)||team(p.team).name.toLowerCase().includes(q)||p.position.toLowerCase().includes(q))}function playerRowHtml(p){return `<button class="player-row" data-player="${p.id}"><span>${crest(p.team)}<b>${p.name}</b><small>${team(p.team).name} · Jugador registrado</small></span><span>Registro</span></button>`}function playerDetailView(){const p=player(state.selectedPlayer)||players[0];if(!p)return '<div class="empty-mini">Jugador no disponible.</div>';return `<div class="player-hero"><div class="avatar-ball">⚽</div><span><small>${team(p.team).name} · Jugador registrado</small><h1>${p.name}</h1></span>${favButton(`player:${p.id}`)}</div><section class="section"><div class="card stat-grid"><div><b>—</b><small>Goles no publicados</small></div><div><b>—</b><small>Asistencias no publicadas</small></div><div><b>—</b><small>Minutos no publicados</small></div><div><b>—</b><small>Tarjetas no publicadas</small></div></div></section>`}
 function statsView(){return `<div class="v81-stats-detail"><div class="eyebrow">DATOS</div><h1 class="screen-title">Estadísticas</h1><div class="tabs"><button class="tab active">General</button><button class="tab" data-route="leagueData">Datos oficiales</button><button class="tab" data-route="players">Jugadores</button></div><section class="section v81-stats-note"><div class="empty-mini">No se muestran asistencias, minutos ni estadísticas individuales que AdminFut no publique oficialmente.</div></section><section class="section v81-stats-summary-bottom"><div class="card stat-grid"><div><b>11</b><small>Equipos de Primera Fuerza</small></div><div><b>20</b><small>Partidos jugados</small></div><div><b>291</b><small>Jugadores registrados</small></div><div><b>—</b><small>Goleo de Primera no publicado</small></div></div></section></div>`}
+const LJR_NOTICE_KEY='ljr-notice-center-v1';
+function ljrReadNotices(){
+  try{
+    const value=JSON.parse(localStorage.getItem(LJR_NOTICE_KEY)||'[]');
+    return Array.isArray(value)?value:[];
+  }catch(e){return []}
+}
+function ljrWriteNotices(list){
+  localStorage.setItem(LJR_NOTICE_KEY,JSON.stringify((list||[]).slice(0,40)));
+}
+function ljrNoticeText(n){
+  const parts=['📣 '+String(n.title||'Aviso de la Liga')];
+  if(n.category)parts.push('Categoría: '+n.category);
+  if(n.matchLabel)parts.push('Partido: '+n.matchLabel);
+  if(n.date||n.time)parts.push('Fecha / hora: '+[n.date,n.time].filter(Boolean).join(' · '));
+  if(n.venue)parts.push('Sede: '+n.venue);
+  if(n.message)parts.push(String(n.message));
+  parts.push('Liga Municipal de Fútbol Juventino Rosas');
+  return parts.join('\n');
+}
+function ljrNoticeRows(){
+  const items=ljrReadNotices();
+  if(!items.length)return '';
+  return '<div class="ljr-notice-live-list">'+items.map(n=>
+    '<article class="news-row ljr-notice-live">'+
+      '<span class="news-thumb ljr-notice-thumb">📣</span>'+
+      '<span class="ljr-notice-live-copy">'+
+        '<small>'+v64Esc(n.type||'Aviso')+' · '+v64Esc(n.createdLabel||'Publicado desde la app')+'</small>'+
+        '<b>'+v64Esc(n.title||'Aviso de la Liga')+'</b>'+
+        '<p>'+v64Esc(n.message||[n.date,n.time,n.venue].filter(Boolean).join(' · '))+'</p>'+
+        '<div class="ljr-notice-row-actions">'+
+          '<button type="button" data-ljr-notice-share="'+v64Esc(n.id)+'">Compartir</button>'+
+          '<button type="button" data-ljr-notice-copy="'+v64Esc(n.id)+'">Copiar</button>'+
+          '<button type="button" data-ljr-notice-delete="'+v64Esc(n.id)+'">Eliminar</button>'+
+        '</div>'+
+      '</span>'+
+    '</article>'
+  ).join('')+'</div>';
+}
+function scheduleChangesView(){
+  const categories=[...new Set(teams.map(t=>t.category).filter(Boolean))];
+  return '<div class="eyebrow">CENTRO DE AVISOS</div>'+
+    '<h1 class="screen-title">Crear y compartir aviso</h1>'+
+    '<p class="muted">Genera cambios de horario, sede, suspensión o cualquier comunicado. Al guardarlo aparecerá en Avisos sin cambiar el diseño de la página.</p>'+
+    '<section class="section"><div class="profile-card ljr-notice-compose">'+
+      '<label><span>Tipo de aviso</span><select data-ljr-notice-type>'+
+        '<option>Cambio de horario</option><option>Cambio de sede</option><option>Jornada suspendida</option><option>Aviso general</option><option>Resultado / comunicado</option>'+
+      '</select></label>'+
+      '<label><span>Partido opcional</span><select data-ljr-notice-match><option value="">Sin partido específico</option>'+
+        matches.map(m=>'<option value="'+v64Esc(m.id)+'">'+v64Esc(team(m.home).name+' vs '+team(m.away).name+' · '+m.day+' '+m.time)+'</option>').join('')+
+      '</select></label>'+
+      '<label><span>Categoría</span><select data-ljr-notice-category><option value="">Todas</option>'+
+        categories.map(x=>'<option>'+v64Esc(x)+'</option>').join('')+
+      '</select></label>'+
+      '<label><span>Título</span><input type="text" data-ljr-notice-title placeholder="Ej. Cambio de horario · Jornada 6"></label>'+
+      '<div class="ljr-notice-grid">'+
+        '<label><span>Fecha</span><input type="date" data-ljr-notice-date></label>'+
+        '<label><span>Hora</span><input type="time" data-ljr-notice-time></label>'+
+      '</div>'+
+      '<label><span>Campo / sede</span><input type="text" data-ljr-notice-venue placeholder="Ej. Campo 1, Cerrito de Gasca"></label>'+
+      '<label><span>Mensaje</span><textarea data-ljr-notice-message rows="4" placeholder="Escribe el comunicado que verá la gente..."></textarea></label>'+
+      '<div class="button-row ljr-notice-actions">'+
+        '<button class="btn primary" type="button" data-ljr-notice-publish>Guardar en Avisos</button>'+
+        '<button class="btn outline" type="button" data-ljr-notice-share-draft>Compartir</button>'+
+        '<button class="btn outline" type="button" data-ljr-notice-whatsapp>WhatsApp</button>'+
+        '<button class="btn ghost" type="button" data-ljr-notice-copy-draft>Copiar texto</button>'+
+      '</div>'+
+    '</div></section>'+
+    '<section class="section"><div class="settings-card">'+
+      '<div class="setting-row"><span><b>Vista previa de notificación</b><small>Prueba el aviso en este teléfono cuando el navegador lo permita.</small></span><button class="btn outline" type="button" data-ljr-notice-test>Probar</button></div>'+
+      '<div class="setting-row"><span><b>Envío a todos los usuarios</b><small>La interfaz queda preparada para conectarse después a Supabase + FCM/Web Push sin rediseñar esta pantalla.</small></span></div>'+
+    '</div></section>';
+}
 function noticesView(){
+  const local=ljrNoticeRows();
   return `<div class="eyebrow">AVISOS OFICIALES</div>
     <h1 class="screen-title">Avisos de la Liga</h1>
     <section class="section">
@@ -4252,13 +4326,15 @@ function noticesView(){
         <h2>Cambios, horarios y sedes</h2>
         <p>Consulta aquí los comunicados y accesos relacionados con la jornada. Los estados oficiales de partidos se revisan en Competición.</p>
         <div class="button-row">
-          <button class="btn primary" data-route="competition">Ver jornada</button>
+          <button class="btn primary" data-route="scheduleChanges">Crear aviso</button>
+          <button class="btn outline" data-route="competition">Ver jornada</button>
           <button class="btn outline" data-route="venues">Ver campos</button>
         </div>
       </div>
     </section>
     <section class="section">
       ${sectionHead('Publicaciones recientes')}
+      ${local}
       <div class="news-list">${news.map(n=>`<button class="news-row" data-news="${n.id}"><span class="news-thumb"></span><span><small>${n.category} · ${n.date}</small><b>${n.title}</b><p>${n.subtitle}</p></span></button>`).join('')}</div>
     </section>
     <section class="section">
@@ -4294,6 +4370,7 @@ function searchResultsHtml(q){
     ['Historia','history','historia temporadas campeones finales'],
     ['Facebook oficial de la Liga','history','facebook tablas calendarios avisos campeones historia fotografias'],
     ['Avisos de la Liga','notices','avisos comunicados cambios horarios sedes jornada'],
+    ['Centro de avisos','scheduleChanges','crear enviar compartir aviso cambio horario sede suspension whatsapp'],
     ['Máximo goleador','scorers','goleadores jugadores goles'],
     ['Equipos','teams','clubes equipos'],
     ['Siguiendo','following','equipos seguidos favoritos']
@@ -6066,10 +6143,84 @@ function quizView(){
   const options=[['A','Juventus'],['B','Hermanos'],['C','San José FC'],['D','Linces']];
   return `<section class="v30-quiz-page" data-quiz-correct="${correct}"><div class="v30-quiz-logo"><span class="v30-logo-quiz">QUIZ</span><span class="v30-logo-de">DE LA</span><span class="v30-logo-liga">LIGA</span></div><div class="quiz-card"><p>¿Qué equipo lidera actualmente la tabla?</p>${options.map(([letter,label])=>`<button type="button" class="quiz-option" data-quiz="${label}"><span class="v30-answer-letter">${letter}</span><span class="v30-answer-text">${label}</span></button>`).join('')}</div></section>`;
 }function moreLessView(){const a=players[0],b=players[1];return `<div class="game-hero"><span class="eyebrow">REGISTROS OFICIALES</span><h1 class="game-title">MÁS<br>O MENOS</h1><p class="muted">Las comparaciones se habilitarán cuando AdminFut publique estadísticas individuales verificables.</p><div class="compare-two">${a?`<button data-player="${a.id}"><div class="avatar-ball">⚽</div><b>${a.name}</b><small>${team(a.team).name}</small></button>`:''}<span>VS</span>${b?`<button data-player="${b.id}"><div class="avatar-ball">⚽</div><b>${b.name}</b><small>${team(b.team).name}</small></button>`:''}</div></div>`}function venuesView(){return `<div class="eyebrow">SEDES</div><h1 class="screen-title">Campos</h1><div class="news-list">${[...new Set(teams.map(t=>t.field))].map((v,i)=>`<div class="news-row"><span class="venue-thumb"></span><span><small>Sede ${i+1}</small><b>${v}</b><p>Consulta los próximos partidos programados.</p></span></div>`).join('')}</div>`}
-const views={home:homeView,competition:competitionView,match:matchView,video:videoView,fantasy:fantasyView,fantasyTeam:fantasyTeamView,fantasyLeagues:()=>`<div class="eyebrow">FANTASY</div><h1 class="screen-title">Ligas</h1><div class="profile-card"><h2>Compite con amigos</h2><p>Crea una liga privada o únete con un código.</p><div class="button-row"><button class="btn primary" data-action="create-league">Crear liga</button><button class="btn outline" data-action="join-league">Unirme</button></div></div>`,more:moreView,ligaQR:ligaQRView,hospitality:hospitalityView,'club-store':storeView,following:followingView,teams:teamsView,teamDetail:teamDetailView,players:playersView,playerDetail:playerDetailView,playerCompare:()=>'<div data-v123-player-compare-mount></div>',scorers:scorersView,moments:momentsView,stats:statsView,rankings:rankingsView,history:historyView,news:newsView,notices:noticesView,newsDetail:newsDetailView,transfers:transfersView,favorites:favoritesView,search:searchView,vote:voteView,notifications:notificationsView,privacy:privacyView,profile:profileView,predictor:predictorView,predictorSix:predictorSixView,quizArena:quizArenaView,quiz:quizArenaView,moreLess:moreLessView,moreLessHub:()=>`<div data-v52-mount></div>`,venues:v60VenuesView,discipline:()=>'<div data-v94-discipline-mount></div>',disciplina:()=>'<div data-v94-discipline-mount></div>',disciplineTool:()=>'<div data-v94-discipline-mount></div>',leagueTools:leagueToolsView,v38Stats:v38StatsView,v38Weekly:v38WeeklyView,v38Weather:v38WeatherView,v38Alerts:v38AlertsView,tableExport:v64ExportTableView,bracketBuilder:v64BracketView,credentialBuilder:v64CredentialBuilderView,cedulaBuilder:v64CedulaBuilderView,agendaBuilder:v64AgendaView,motionHub:v64MotionView,suspensionTool:v64SuspensionView,rulebook:rulebookView,matchday:matchdayView,weatherFields:weatherFieldsView,cedulas:cedulasView,cedulaDetail:cedulaDetailView,credential:credentialView,publications:publicationsView,tactics:tacticsView,simulator:simulatorView,jrControl:jrControlView,error:()=>`<div class="empty-state"><div class="empty-illustration error"></div><h2>No pudimos cargar la información</h2><p>Comprueba tu conexión e inténtalo nuevamente.</p><button class="btn outline" data-route="home">Reintentar</button></div>`};
-function render(){if(state.route==='quiz'){state.route='quizArena';if(location.hash!=='#/quizArena')history.replaceState(null,'','#/quizArena')}if(state.route==='theme'){setTheme(state.theme==='dark'?'light':'dark');state.route='more'}screen.innerHTML=views[state.route]?views[state.route]():views.home();const rootRoutes=['home','competition','video','fantasy','more'];backButton.classList.toggle('is-hidden',rootRoutes.includes(state.route));const navRoute=['discipline','disciplina','disciplineTool'].includes(state.route)?'competition':['predictor','predictorSix','quizArena','quiz','moreLess','moreLessHub','ligaQR','leagueTools','v38Stats','v38Weekly','v38Weather','v38Alerts','tableExport','bracketBuilder','credentialBuilder','cedulaBuilder','agendaBuilder','motionHub','suspensionTool','rulebook','matchday','weatherFields','venues','cedulas','cedulaDetail','credential','publications','tactics','simulator','jrControl','leagueData','playerCompare','notices'].includes(state.route)?'more':state.route;navItems.forEach(n=>n.classList.toggle('active',n.dataset.route===navRoute));bind();window.scrollTo(0,0)}
+const views={home:homeView,competition:competitionView,match:matchView,video:videoView,fantasy:fantasyView,fantasyTeam:fantasyTeamView,fantasyLeagues:()=>`<div class="eyebrow">FANTASY</div><h1 class="screen-title">Ligas</h1><div class="profile-card"><h2>Compite con amigos</h2><p>Crea una liga privada o únete con un código.</p><div class="button-row"><button class="btn primary" data-action="create-league">Crear liga</button><button class="btn outline" data-action="join-league">Unirme</button></div></div>`,more:moreView,ligaQR:ligaQRView,hospitality:hospitalityView,'club-store':storeView,following:followingView,teams:teamsView,teamDetail:teamDetailView,players:playersView,playerDetail:playerDetailView,playerCompare:()=>'<div data-v123-player-compare-mount></div>',scorers:scorersView,moments:momentsView,stats:statsView,rankings:rankingsView,history:historyView,news:newsView,notices:noticesView,scheduleChanges:scheduleChangesView,newsDetail:newsDetailView,transfers:transfersView,favorites:favoritesView,search:searchView,vote:voteView,notifications:notificationsView,privacy:privacyView,profile:profileView,predictor:predictorView,predictorSix:predictorSixView,quizArena:quizArenaView,quiz:quizArenaView,moreLess:moreLessView,moreLessHub:()=>`<div data-v52-mount></div>`,venues:v60VenuesView,discipline:()=>'<div data-v94-discipline-mount></div>',disciplina:()=>'<div data-v94-discipline-mount></div>',disciplineTool:()=>'<div data-v94-discipline-mount></div>',leagueTools:leagueToolsView,v38Stats:v38StatsView,v38Weekly:v38WeeklyView,v38Weather:v38WeatherView,v38Alerts:v38AlertsView,tableExport:v64ExportTableView,bracketBuilder:v64BracketView,credentialBuilder:v64CredentialBuilderView,cedulaBuilder:v64CedulaBuilderView,agendaBuilder:v64AgendaView,motionHub:v64MotionView,suspensionTool:v64SuspensionView,rulebook:rulebookView,matchday:matchdayView,weatherFields:weatherFieldsView,cedulas:cedulasView,cedulaDetail:cedulaDetailView,credential:credentialView,publications:publicationsView,tactics:tacticsView,simulator:simulatorView,jrControl:jrControlView,error:()=>`<div class="empty-state"><div class="empty-illustration error"></div><h2>No pudimos cargar la información</h2><p>Comprueba tu conexión e inténtalo nuevamente.</p><button class="btn outline" data-route="home">Reintentar</button></div>`};
+function render(){if(state.route==='quiz'){state.route='quizArena';if(location.hash!=='#/quizArena')history.replaceState(null,'','#/quizArena')}if(state.route==='theme'){setTheme(state.theme==='dark'?'light':'dark');state.route='more'}screen.innerHTML=views[state.route]?views[state.route]():views.home();const rootRoutes=['home','competition','video','fantasy','more'];backButton.classList.toggle('is-hidden',rootRoutes.includes(state.route));const navRoute=['discipline','disciplina','disciplineTool'].includes(state.route)?'competition':['predictor','predictorSix','quizArena','quiz','moreLess','moreLessHub','ligaQR','leagueTools','v38Stats','v38Weekly','v38Weather','v38Alerts','tableExport','bracketBuilder','credentialBuilder','cedulaBuilder','agendaBuilder','motionHub','suspensionTool','rulebook','matchday','weatherFields','venues','cedulas','cedulaDetail','credential','publications','tactics','simulator','jrControl','leagueData','playerCompare','notices','scheduleChanges'].includes(state.route)?'more':state.route;navItems.forEach(n=>n.classList.toggle('active',n.dataset.route===navRoute));bind();window.scrollTo(0,0)}
 function go(route,push=true){if(route==='quiz')route='quizArena';if(push&&state.route!==route)state.history.push(state.route);state.route=route;location.hash='#/'+route;render()}
 function bind(){document.querySelectorAll('[data-route]').forEach(el=>el.onclick=()=>go(el.dataset.route));
+function noticeDraft(){
+  const pick=s=>document.querySelector(s);
+  const matchId=pick('[data-ljr-notice-match]')?.value||'';
+  const m=matches.find(x=>String(x.id)===String(matchId));
+  return {
+    id:'notice-'+Date.now(),
+    type:pick('[data-ljr-notice-type]')?.value||'Aviso general',
+    category:pick('[data-ljr-notice-category]')?.value||'',
+    title:(pick('[data-ljr-notice-title]')?.value||'').trim(),
+    date:pick('[data-ljr-notice-date]')?.value||'',
+    time:pick('[data-ljr-notice-time]')?.value||'',
+    venue:(pick('[data-ljr-notice-venue]')?.value||'').trim(),
+    message:(pick('[data-ljr-notice-message]')?.value||'').trim(),
+    matchId,
+    matchLabel:m?(team(m.home).name+' vs '+team(m.away).name):'',
+    createdAt:Date.now(),
+    createdLabel:'Publicado desde la app'
+  };
+}
+async function shareNoticeItem(n){
+  const text=ljrNoticeText(n);
+  try{
+    if(navigator.share)await navigator.share({title:n.title||'Aviso de la Liga',text});
+    else{await navigator.clipboard.writeText(text);toast('Aviso copiado')}
+  }catch(e){}
+}
+document.querySelector('[data-ljr-notice-match]')?.addEventListener('change',e=>{
+  const m=matches.find(x=>String(x.id)===String(e.target.value||''));
+  if(!m)return;
+  const title=document.querySelector('[data-ljr-notice-title]');
+  const cat=document.querySelector('[data-ljr-notice-category]');
+  const time=document.querySelector('[data-ljr-notice-time]');
+  const venue=document.querySelector('[data-ljr-notice-venue]');
+  if(title&&!title.value)title.value='Cambio de horario · '+team(m.home).name+' vs '+team(m.away).name;
+  if(cat)cat.value=m.category||'';
+  if(time)time.value=/^\d{1,2}:\d{2}$/.test(String(m.time||''))?String(m.time).padStart(5,'0'):'';
+  if(venue)venue.value=m.venue||'';
+});
+document.querySelector('[data-ljr-notice-publish]')?.addEventListener('click',()=>{
+  const n=noticeDraft();
+  if(!n.title&&!n.message){toast('Escribe un título o mensaje para el aviso');return}
+  if(!n.title)n.title=n.type;
+  const list=ljrReadNotices();list.unshift(n);ljrWriteNotices(list);
+  toast('Aviso guardado en Publicaciones recientes');
+  go('notices');
+});
+document.querySelector('[data-ljr-notice-share-draft]')?.addEventListener('click',()=>shareNoticeItem(noticeDraft()));
+document.querySelector('[data-ljr-notice-copy-draft]')?.addEventListener('click',async()=>{
+  try{await navigator.clipboard.writeText(ljrNoticeText(noticeDraft()));toast('Texto del aviso copiado')}catch(e){toast('No se pudo copiar')}
+});
+document.querySelector('[data-ljr-notice-whatsapp]')?.addEventListener('click',()=>{
+  const txt=encodeURIComponent(ljrNoticeText(noticeDraft()));
+  window.open('https://wa.me/?text='+txt,'_blank','noopener,noreferrer');
+});
+document.querySelector('[data-ljr-notice-test]')?.addEventListener('click',async()=>{
+  const n=noticeDraft(),title=n.title||n.type||'Aviso de la Liga',body=n.message||[n.date,n.time,n.venue].filter(Boolean).join(' · ')||'Liga Juventino Rosas';
+  try{
+    if(!('Notification' in window)){toast('Este navegador no admite notificaciones locales');return}
+    let p=Notification.permission;
+    if(p==='default')p=await Notification.requestPermission();
+    if(p==='granted')new Notification(title,{body});
+    else toast('Permiso de notificaciones no concedido');
+  }catch(e){toast('No se pudo mostrar la notificación en este teléfono')}
+});
+document.querySelectorAll('[data-ljr-notice-share]').forEach(el=>el.onclick=()=>{
+  const n=ljrReadNotices().find(x=>x.id===el.dataset.ljrNoticeShare);if(n)shareNoticeItem(n)
+});
+document.querySelectorAll('[data-ljr-notice-copy]').forEach(el=>el.onclick=async()=>{
+  const n=ljrReadNotices().find(x=>x.id===el.dataset.ljrNoticeCopy);if(!n)return;
+  try{await navigator.clipboard.writeText(ljrNoticeText(n));toast('Aviso copiado')}catch(e){}
+});
+document.querySelectorAll('[data-ljr-notice-delete]').forEach(el=>el.onclick=()=>{
+  ljrWriteNotices(ljrReadNotices().filter(x=>x.id!==el.dataset.ljrNoticeDelete));toast('Aviso eliminado');render()
+});
 document.querySelectorAll('[data-v48-start]').forEach(el=>el.onclick=()=>{const page=el.closest('[data-v48-arena]');if(!page)return;page.classList.add('v48-playing');page.querySelector('[data-v48-game]')?.setAttribute('aria-hidden','false');window.scrollTo({top:0,behavior:'smooth'});window.setTimeout(()=>page.querySelector('[data-v48-quiz]')?.focus({preventScroll:true}),260)});
 document.querySelectorAll('[data-v48-game-back]').forEach(el=>el.onclick=()=>{const page=el.closest('[data-v48-arena]');if(!page)return;page.classList.remove('v48-playing','v48-answered');page.dataset.v48Answered='false';page.querySelector('[data-v48-game]')?.setAttribute('aria-hidden','true');page.querySelectorAll('[data-v48-quiz]').forEach(btn=>{btn.disabled=false;btn.classList.remove('is-correct','is-wrong');btn.removeAttribute('aria-pressed')});const msg=page.querySelector('.v48-game-message');if(msg)msg.textContent='';window.scrollTo({top:0,behavior:'smooth'})});
 document.querySelectorAll('[data-v48-quiz]').forEach(el=>el.onclick=()=>{const page=el.closest('[data-v48-arena]');if(!page)return;page.dataset.v48LastAnswer=el.dataset.v48Quiz||'';page.classList.remove('v48-playing','v48-answered');page.dataset.v48Answered='false';page.querySelector('[data-v48-game]')?.setAttribute('aria-hidden','true');page.querySelectorAll('[data-v48-quiz]').forEach(btn=>{btn.disabled=false;btn.classList.remove('is-correct','is-wrong');btn.removeAttribute('aria-pressed')});const msg=page.querySelector('.v48-game-message');if(msg)msg.textContent='';window.scrollTo({top:0,behavior:'smooth'});window.setTimeout(()=>page.querySelector('[data-v48-start]')?.focus({preventScroll:true}),260)});
