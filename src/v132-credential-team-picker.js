@@ -123,15 +123,17 @@ function letters(list){
 
 function triggerSelect(name,category){
   const sel=nativeSelect();if(!sel)return;
+  window.__LJR_REGISTRATION_TEAM_PICKER__=true;
   let opt=[...sel.options].find(o=>norm(o.value)===norm(name));
   if(!opt){
     opt=document.createElement('option');opt.value=name;opt.textContent=name;sel.appendChild(opt);
   }
   if(category&&category!=='Por confirmar')opt.dataset.category=category;
   sel.value=opt.value;
-  sel.dispatchEvent(new Event('input',{bubbles:true}));
-  sel.dispatchEvent(new Event('change',{bubbles:true}));
+  sel.dispatchEvent(new Event('input',{bubbles:false}));
+  sel.dispatchEvent(new Event('change',{bubbles:false}));
   updateButton();
+  setTimeout(()=>{window.__LJR_REGISTRATION_TEAM_PICKER__=false},120);
 }
 
 function updateButton(){
@@ -186,7 +188,8 @@ function renderSheet(){
   $$('[data-v132-letter]',sheet).forEach(b=>b.onclick=()=>{
     activeLetter=b.dataset.v132Letter||'all';renderSheet();
   });
-  $$('[data-v132-team]',sheet).forEach(b=>b.onclick=()=>{
+  $('[data-v132-team]',sheet).forEach(b=>b.onclick=e=>{
+    e?.preventDefault?.();e?.stopPropagation?.();
     triggerSelect(b.dataset.v132Team||'',b.dataset.v132Category||'');
     closeSheet();
   });
