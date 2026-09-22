@@ -891,14 +891,14 @@ function bindRosterImport(root){
       toast(err?.message||'No se pudo leer la lista');
     }
   });
-  $('[data-v126-complete]',root).forEach(b=>b.addEventListener('click',e=>{
+  $$('[data-v126-complete]',root).forEach(b=>b.addEventListener('click',e=>{
     e.preventDefault();e.stopPropagation();
     const rec=seasonRecords().find(r=>r.id===b.dataset.v126Complete);
     if(!rec)return toast('No encontré el registro provisional');
     loadRecord(rec);
     toast('Completa CURP, foto y datos de '+rec.name);
   }));
-    $('[data-v126-include]',root).forEach(c=>c.onchange=()=>{const e=rosterImport.entries?.[Number(c.dataset.v126Include)];if(e)e.include=c.checked});
+    $$('[data-v126-include]',root).forEach(c=>c.onchange=()=>{const e=rosterImport.entries?.[Number(c.dataset.v126Include)];if(e)e.include=c.checked});
   $$('[data-v126-remove]',root).forEach(c=>c.onchange=()=>{const r=rosterImport.missing?.[Number(c.dataset.v126Remove)];if(r)r.remove=c.checked});
   $('[data-v126-mark-missing]',root)?.addEventListener('click',()=>{for(const r of rosterImport.missing||[])r.remove=true;renderManager()});
   $('[data-v126-reanalyse]',root)?.addEventListener('click',()=>{
@@ -942,7 +942,7 @@ function v160FastTeamPickerHtml(){
 function v160FilterFastTeams(root){
   const q=norm(quickTeamQuery);
   let count=0;
-  $('[data-v160-fast-team-choice]',root).forEach(b=>{
+  $$('[data-v160-fast-team-choice]',root).forEach(b=>{
     const name=b.dataset.v160FastTeamChoice||'';
     const cat=b.querySelector('small')?.textContent||'';
     const show=(quickTeamCategory==='Todas'||cat===quickTeamCategory)&&
@@ -1033,17 +1033,17 @@ function bindManager(root){
     quickTeamQuery=e.target.value||'';
     v160FilterFastTeams(root);
   });
-  $('[data-v160-fast-team-category]',root).forEach(b=>b.addEventListener('click',e=>{
+  $$('[data-v160-fast-team-category]',root).forEach(b=>b.addEventListener('click',e=>{
     e.preventDefault();e.stopPropagation();
     quickTeamCategory=b.dataset.v160FastTeamCategory||'Todas';
     renderManager(true);
   }));
-  $('[data-v160-fast-team-letter]',root).forEach(b=>b.addEventListener('click',e=>{
+  $$('[data-v160-fast-team-letter]',root).forEach(b=>b.addEventListener('click',e=>{
     e.preventDefault();e.stopPropagation();
     quickTeamLetter=b.dataset.v160FastTeamLetter||'Todas';
     renderManager(true);
   }));
-  $('[data-v160-fast-team-choice]',root).forEach(b=>b.addEventListener('click',e=>{
+  $$('[data-v160-fast-team-choice]',root).forEach(b=>b.addEventListener('click',e=>{
     e.preventDefault();e.stopPropagation();
     quickTeam=b.dataset.v160FastTeamChoice||'';
     quickTeamPickerOpen=false;
