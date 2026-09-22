@@ -460,3 +460,16 @@ body[data-app-route="home"] #v105-bottom[data-v105-route="home"] .v105-final vid
 body[data-app-route="home"] #v105-bottom[data-v105-route="home"] .v105-video-card video{
   background:#05065f!important;
 }
+
+
+/* V126 — HOME: fondo trasero más oscuro, tarjetas sin cambiar */
+body[data-app-route="home"] #v105-bottom[data-v105-route="home"]{
+  background:#020338!important;
+  background-image:none!important;
+}
+
+/* El área detrás de las tarjetas hereda únicamente el fondo oscuro.
+   No se cambia el color de los cuadros interiores. */
+body[data-app-route="home"] #v105-bottom[data-v105-route="home"] .v105-grid{
+  background:transparent!important;
+}
