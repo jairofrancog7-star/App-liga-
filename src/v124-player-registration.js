@@ -799,7 +799,7 @@ async function v180DetectPrintedTable(source){
       else xGroups[xGroups.length-1].push(x);
     }
     const xs=xGroups.map(g=>Math.round(g.reduce((a,b)=>a+b,0)/g.length)).sort((a,b)=>a-b);
-    if(xs.length<4)return null;
+    if(xs.length<3)return null;
 
     let best=null;
     for(let i=0;i<xs.length-1;i++){
@@ -1140,8 +1140,8 @@ function v180NameColumnLines(text){
     if(!n||/^(jugador|nombre|nombres|equipo|g total|total)$/.test(n))continue;
 
     let clean=v184SafeNameRepair(line);
-    const completion=v186CompleteFromKnown(clean,known,rosterImportTeam);
-    if(completion)clean=completion.name;
+    /* En tabla impresa la fuente manda. No completar apellidos desde el padrón
+       aquí; un "Víctor Calderón" no debe convertirse en otro Víctor Calderón. */
     let candidate='';
     const exact=known.find(p=>norm(p.name)===norm(clean));
     if(exact)candidate=exact.name;
@@ -1227,49 +1227,143 @@ async function v184BuildNameRowsCanvas(source,layout){
   });
   return canvas;
 }
+async function v187BuildPrintedRowBatches(source,layout,batchSize=5){
+  const lines=(Array.isArray(layout?.rowLines)?layout.rowLines:[])
+    .map(Number).filter(Number.isFinite).filter(x=>x>=0&&x<=1).sort((a,b)=>a-b);
+  const target=Number(layout?.rows||0);
+  if(target<3||lines.length<target+1)return [];
+
+  const all=[];
+  for(let i=0;i<lines.length-1;i++){
+    const a=lines[i],b=lines[i+1];
+    if(b-a>.004)all.push([a,b]);
+  }
+  if(all.length<target)return [];
+  const rows=all.slice(-target);
+
+  const bmp=await v157Bitmap(source);
+  const sw=bmp.width||bmp.videoWidth||bmp.naturalWidth||1,sh=bmp.height||bmp.videoHeight||bmp.naturalHeight||1;
+
+  /* Recorta DENTRO de Jugador. No toca Equipo ni G.Total.
+     Un margen mayor elimina la línea vertical que Tesseract confundía con letras. */
+  const xPad=Math.min(.018,Math.max(.005,layout.width*.032));
+  const sx=Math.max(0,Math.floor(sw*(layout.x0+xPad)));
+  const cw=Math.max(1,Math.min(sw-sx,Math.floor(sw*Math.max(.04,layout.width-xPad*2))));
+  const scale=Math.max(1.45,Math.min(2.55,1080/Math.max(1,cw)));
+  const outW=Math.max(820,Math.min(1320,Math.round(cw*scale)+44));
+  const rowH=94,gap=18,top=14;
+  const batches=[];
+
+  for(let start=0;start<rows.length;start+=batchSize){
+    const slice=rows.slice(start,start+batchSize);
+    const canvas=document.createElement('canvas');
+    canvas.width=outW;
+    canvas.height=top*2+slice.length*rowH+Math.max(0,slice.length-1)*gap;
+    const ctx=canvas.getContext('2d',{alpha:false});
+    ctx.imageSmoothingEnabled=true;ctx.imageSmoothingQuality='high';
+    ctx.fillStyle='#fff';ctx.fillRect(0,0,canvas.width,canvas.height);
+
+    slice.forEach(([a,b],i)=>{
+      const rawY0=sh*a,rawY1=sh*b,rawH=Math.max(1,rawY1-rawY0);
+      const insetY=Math.max(2,rawH*.16);
+      const sy=Math.max(0,Math.floor(rawY0+insetY));
+      const ch=Math.max(1,Math.min(sh-sy,Math.floor(rawH-insetY*2)));
+      const dh=Math.min(rowH-14,ch*scale);
+      const dw=Math.min(outW-34,cw*scale);
+      const dy=top+i*(rowH+gap)+Math.max(4,(rowH-dh)/2);
+      ctx.drawImage(bmp,sx,sy,cw,ch,17,dy,dw,dh);
+    });
+
+    batches.push({canvas,start,count:slice.length});
+  }
+  return batches;
+}
+
+async function v187ReadPrintedRowsBatched(source,label,layout){
+  const batches=await v187BuildPrintedRowBatches(source,layout,5);
+  if(!batches.length)return '';
+  const out=[],totalPasses=batches.length*2;
+  let pass=0;
+
+  for(let i=0;i<batches.length;i++){
+    const b=batches[i],from=b.start+1,to=b.start+b.count;
+    v126SetImportStatus('OCR por filas V187 · Jugador '+from+'–'+to+' · lectura principal');
+    const first=await v157Recognize(
+      b.canvas,
+      label+' · columna Jugador · filas '+from+'-'+to,
+      ++pass,'contrast',6,totalPasses
+    );
+    let list1=v180NameColumnLines(first.text),chosen=list1;
+
+    /* Segunda lectura sólo cuando el bloque no entrega exactamente sus filas.
+       Así no hacemos 50 lecturas ni congelamos Android. */
+    if(list1.length!==b.count){
+      v126SetImportStatus('OCR por filas V187 · Jugador '+from+'–'+to+' · verificando '+list1.length+'/'+b.count);
+      const second=await v157Recognize(
+        b.canvas,
+        label+' · columna Jugador · verificación filas '+from+'-'+to,
+        ++pass,'soft',6,totalPasses
+      );
+      const list2=v180NameColumnLines(second.text);
+      chosen=v183ConsensusNameLists([list1,list2],b.count);
+      if(chosen.length<b.count){
+        /* Escoge la lectura con el conteo más cercano; nunca mezcla con Equipo. */
+        const candidates=[chosen,list1,list2].filter(x=>x.length);
+        candidates.sort((a,b2)=>Math.abs(a.length-b.count)-Math.abs(b2.length-b.count));
+        chosen=candidates[0]||[];
+      }
+    }
+
+    if(chosen.length>b.count)chosen=chosen.slice(0,b.count);
+    out.push(...chosen);
+    await new Promise(resolve=>setTimeout(resolve,14));
+  }
+
+  return out.join('\n');
+}
+
 async function v180ReadPrintedNameColumn(source,label,layout){
   const target=layout.rows||0,parts=[];
+
+  // V187: primero lee bloques pequeños construidos fila por fila.
+  // En la tabla del usuario esto mantiene las 25 filas y evita pegar POPULARES,
+  // REAL CERRITO, OSASUNA, etc. al nombre.
+  const rowText=await v187ReadPrintedRowsBatched(source,label,layout);
+  const rowNames=v180NameColumnLines(rowText);
+  if(rowNames.length){
+    parts.push({text:rowText,mode:'row-batches',confidence:96});
+    const enough=target?rowNames.length>=Math.max(3,Math.floor(target*.84)):rowNames.length>=12;
+    if(enough){
+      v126SetImportStatus('OCR por filas V187 · '+rowNames.length+(target?' de '+target:'')+' nombres · sólo columna Jugador · revisión manual');
+      return rowNames.join('\n');
+    }
+  }
+
+  // Segunda opinión: la columna Jugador completa, todavía sin tocar Equipo.
   let crop=await v184BuildNameRowsCanvas(source,layout);
   if(!crop){
-    const xPad=Math.min(.01,layout.width*.02);
+    const xPad=Math.min(.012,layout.width*.03);
     crop=await v177CropSource(source,layout.x0+xPad,.10,Math.max(.05,layout.width-xPad*2),.895);
   }
 
   const nativeText=await v177NativeText(crop);
   if(nativeText)parts.push({text:nativeText,mode:'native-column',confidence:94});
 
-  v126SetImportStatus('OCR Preciso · aislando cada fila de la columna Jugador · lectura 1/2');
-  parts.push(await v157Recognize(crop,label+' · columna Jugador · filas limpias',1,'contrast',6,2));
+  v126SetImportStatus('OCR V187 · columna Jugador completa · contraste');
+  parts.push(await v157Recognize(crop,label+' · columna Jugador · columna completa',1,'contrast',6,2));
 
-  let bestText=v180BestNameColumnText(parts,target),bestNames=v180NameColumnLines(bestText),quality=v182NameSetQuality(bestNames,target);
+  let bestText=v180BestNameColumnText(parts,target);
+  let bestNames=v180NameColumnLines(bestText);
 
-  // Para tablas con filas detectadas hacemos siempre una segunda opinión:
-  // evita aceptar 25 nombres con uno o dos apellidos mal leídos.
-  v126SetImportStatus('OCR Preciso · verificando ortografía nombre por nombre · lectura 2/2');
-  parts.push(await v157Recognize(crop,label+' · columna Jugador · verificación',2,'soft',6,2));
-  await new Promise(resolve=>setTimeout(resolve,18));
-
-  bestText=v180BestNameColumnText(parts,target);
-  bestNames=v180NameColumnLines(bestText);
-  quality=v182NameSetQuality(bestNames,target);
-  if(quality.good){
-    v126SetImportStatus('OCR Preciso · '+bestNames.length+(target?' de '+target:'')+' nombres · filas completas y consenso verificado · revisión manual');
-    return bestText;
+  if(target&&bestNames.length<Math.max(3,Math.floor(target*.90))){
+    v126SetImportStatus('OCR V187 · verificando columna Jugador · lectura suave');
+    parts.push(await v157Recognize(crop,label+' · columna Jugador · verificación',2,'soft',6,2));
+    bestText=v180BestNameColumnText(parts,target);
+    bestNames=v180NameColumnLines(bestText);
   }
 
-  // Rescate pequeño, sólo si aún falta alguna fila. No vuelve a las 13 pasadas.
-  const halves=[['parte superior',0,.56],['parte inferior',.44,.56]];
-  for(let i=0;i<halves.length;i++){
-    const [name,y,h]=halves[i],half=await v177CropSource(crop,0,y,.999,h);
-    v126SetImportStatus('OCR Preciso · recuperando '+name+' · '+(i+1)+'/2');
-    parts.push(await v157Recognize(half,label+' · columna Jugador · '+name,3+i,i?'soft':'contrast',6,4));
-    await new Promise(resolve=>setTimeout(resolve,12));
-  }
-
-  bestText=v180BestNameColumnText(parts,target);
-  bestNames=v180NameColumnLines(bestText);
-  v126SetImportStatus('OCR Preciso V186 terminado · '+bestNames.length+(target?' de '+target:'')+' nombres · revisa ✓/✕ antes de aplicar');
-  return bestText;
+  v126SetImportStatus('OCR Preciso V187 terminado · '+bestNames.length+(target?' de '+target:'')+' nombres · nunca leyó Equipo/G.Total · revisa ✓/✕');
+  return bestNames.join('\n');
 }
 async function v179TwoBandSweep(source,label,pass,total,kind){
   const parts=[];
@@ -1303,12 +1397,11 @@ async function v126OcrImage(source,label='imagen'){
       rosterExpectedRows=table.rows||0;
       const namesOnly=await v180ReadPrintedNameColumn(source,label,table);
       const count=v180NameColumnLines(namesOnly).length;
-      if(count>=Math.max(3,Math.floor((table.rows||count)*.55))){
-        v126SetImportStatus('Tabla impresa detectada · OCR Preciso V186 · '+count+(table.rows?' de ~'+table.rows:'')+' nombres · NO se registró ninguno.');
-        return namesOnly;
-      }
-      /* Si la tabla es atípica y la columna aislada no dio suficiente texto,
-         continúa al OCR adaptativo general como respaldo. */
+      v126SetImportStatus('Tabla impresa detectada · OCR por filas V187 · '+count+(table.rows?' de '+table.rows:'')+' nombres · sólo Jugador · NO se registró ninguno.');
+      /* Importante: una vez reconocida la cuadrícula NO regresamos al OCR de
+         página completa. Ese respaldo mezclaba Jugador+Equipo+G.Total y era el
+         origen de "Realcerrito", "Populares", "Osasna", "Jbarza", etc. */
+      return namesOnly;
     }
   }
 
@@ -1755,7 +1848,7 @@ function v126AnalyzeText(text){
   const team=rosterImportTeam,season=selectedSeason(),current=seasonRecords(season),names=v126ExtractCandidates(text),entries=[];
   for(const rawName0 of names){
     let rawName=v184SafeNameRepair(rawName0);
-    const completion=v186CompleteFromKnown(rawName,v126KnownPeople(),team);
+    const completion=rosterDetectedKind==='printed-table'?null:v186CompleteFromKnown(rawName,v126KnownPeople(),team);
     if(completion)rawName=completion.name;
     const rawStructure=v185NameStructure(rawName);
     const hit=v126BestKnown(rawName,team),known=hit?.record||completion?.record||null;
@@ -1840,7 +1933,7 @@ function v126RosterResultHtml(){
       '<div><b data-v172-rejected>'+s.rejected+'</b><span>Rechazados ✕</span></div>'+
       '<div><b data-v172-pending>'+s.pending+'</b><span>Por revisar</span></div>'+
     '</div>'+
-    '<div class="v126-auto-info v172-manual-review"><b>Revisión manual obligatoria · 1 nombre + 2 apellidos</b><span>La lectura exige nombre completo. Si el padrón contiene una coincidencia inequívoca, completa el segundo apellido; si no existe esa información, bloquea ✓ Aprobar para no inventarlo. Nada se registra, mueve ni renueva automáticamente.</span></div>'+
+    '<div class="v126-auto-info v172-manual-review"><b>Revisión manual obligatoria · 1 nombre + 2 apellidos</b><span>En tablas impresas se respeta exactamente la columna Jugador y no se usan Equipo/G.Total para completar nombres. Si la hoja sólo trae un apellido, se marca para corregir antes de ✓ Aprobar; no se sustituye por otra persona del padrón. Nada se registra, mueve ni renueva automáticamente.</span></div>'+
     (s.total<20?'<div class="v157-review-note"><b>Se detectaron '+s.total+' nombres</b><span>Si la imagen tiene más jugadores, abre “Ver / corregir texto detectado” o vuelve a escanear con una foto recta y nítida. OCR Pro vuelve a leer la hoja por bloques superpuestos, columnas y contraste adaptativo para recuperar nombres pequeños.</span></div>':'')+
     '<div class="v126-detected">'+personRows+'</div>'+
     ((Array.isArray(rosterImport.missing)?rosterImport.missing:[]).length?'<div class="v126-missing"><div class="v126-missing-head"><span><b>No aparecen en la lista</b><small>No se borran automáticamente; marca sólo los que realmente salen del equipo.</small></span><button type="button" data-v126-mark-missing>Marcar todos</button></div>'+
