@@ -876,10 +876,26 @@ function v184SafeNameRepair(value){
   let s=v183CleanOcrName(value);
   if(!s)return '';
   let tokens=s.split(/\s+/).filter(Boolean);
-  while(tokens.length>=2&&v157Upper(tokens[0]).replace(/[^A-ZÑ]/g,'').length===1)tokens.shift();
 
-  // "De Guadalupe Razo..." es un artefacto frecuente del borde/celda; no quita
-  // conectores internos válidos como "Juan de la Cruz".
+  // V185: rescata fragmentos de la primera palabra antes de descartarlos.
+  // Ejemplos reales vistos: "E Jandro" -> "Alejandro",
+  // "Mm Antonio" -> "Antonio", "A Urielortega" -> "Uriel Ortega".
+  if(tokens.length>=2){
+    const lead=v157Upper(tokens[0]).replace(/[^A-ZÑ]/g,'');
+    const second=v157Upper(tokens[1]).replace(/[^A-ZÑ]/g,'');
+    if(lead.length<=2&&!V157_NAME_CONNECTORS.has(lead)&&!V157_MX_GIVEN.has(lead)){
+      const joined=v184UniqueEditOne(tokens[0]+tokens[1],V157_MX_GIVEN);
+      const joinedU=v157Upper(joined).replace(/[^A-ZÑ]/g,'');
+      const splitSecond=v184SplitJoinedToken(tokens[1]);
+      if(V157_MX_GIVEN.has(joinedU)){
+        tokens.splice(0,2,joined);
+      }else if(V157_MX_GIVEN.has(second)||(splitSecond&&V157_MX_GIVEN.has(v157Upper(splitSecond[0])))){
+        tokens.shift();
+      }
+    }
+  }
+
+  // "De Guadalupe Razo..." puede aparecer por ruido del borde de la celda.
   if(tokens.length>=3&&V157_NAME_CONNECTORS.has(v157Upper(tokens[0]))&&V157_MX_GIVEN.has(v157Upper(tokens[1]))){
     tokens.shift();
   }
@@ -895,10 +911,34 @@ function v184SafeNameRepair(value){
     const set=i===0?V157_MX_GIVEN:V157_MX_SURNAME;
     out.push(v184UniqueEditOne(token,set));
   }
-  return v157TitleName(out.join(' '));
+
+  // Repite la limpieza de equipo después de separar/corregir tokens:
+  // Realcerrito, Osasna, Jbarza, Aera, etc.
+  return v157TitleName(v182StripTeamSuffix(out.join(' ')));
 }
 function v183ContentTokens(value){
   return norm(value).split(' ').filter(w=>w.length>=2&&!['de','del','la','las','los','y'].includes(w));
+}
+function v185NameStructure(value){
+  const clean=v184SafeNameRepair(value),parts=v183ContentTokens(clean);
+  const complete=parts.length>=V185_NAME_RULE.minContentParts;
+  const given=complete?parts.slice(0,-V185_NAME_RULE.surnames):parts.slice(0,Math.min(1,parts.length));
+  const surnames=complete?parts.slice(-V185_NAME_RULE.surnames):parts.slice(1);
+  const missingSurnames=Math.max(0,V185_NAME_RULE.surnames-surnames.length);
+  return {
+    clean,parts,given,surnames,complete,missingSurnames,
+    label:complete?'Estructura completa':'Falta '+Math.max(1,missingSurnames)+' apellido'+(Math.max(1,missingSurnames)===1?'':'s')
+  };
+}
+function v185StructuredKnownSimilarity(a,b){
+  const A=v185NameStructure(a),B=v185NameStructure(b);
+  if(!A.complete||!B.complete)return {score:v183NameSimilarity(A.clean,B.clean),first:0,surname1:0,surname2:0,complete:false};
+  const first=v124TokenSim(A.given[0]||'',B.given[0]||'');
+  const surname1=v124TokenSim(A.surnames[0]||'',B.surnames[0]||'');
+  const surname2=v124TokenSim(A.surnames[1]||'',B.surnames[1]||'');
+  const overall=v183NameSimilarity(A.clean,B.clean);
+  const score=overall*.34+first*.22+surname1*.22+surname2*.22;
+  return {score,first,surname1,surname2,complete:true};
 }
 function v183NameSimilarity(a,b){
   const an=norm(a),bn=norm(b);if(!an||!bn)return 0;
@@ -1333,6 +1373,7 @@ function v126LooksLikeNonPlayerName(value){
 const V157_MX_GIVEN=new Set(('JOSE JUAN ERNESTO JESUS LUIS CARLOS MIGUEL ANGEL FRANCISCO JAVIER JORGE ROBERTO EDUARDO DANIEL DAVID ALEJANDRO MANUEL ANTONIO FERNANDO RICARDO SERGIO ALBERTO ARTURO RAUL MARIO OSCAR HECTOR RUBEN RAMON MARTIN ENRIQUE VICTOR GERARDO GUILLERMO MARCO MARCOS ADRIAN ALFREDO ARMANDO CESAR CRISTIAN CHRISTIAN DIEGO ERICK ERIK ESTEBAN FELIPE GABRIEL GUSTAVO IGNACIO IVAN JOAQUIN JONATHAN JULIO LEONARDO MAURICIO MAXIMILIANO OMAR PABLO PEDRO RAFAEL RODRIGO SALVADOR SAMUEL SANTIAGO SEBASTIAN TOMAS ULISES ISRAEL ABRAHAM ALAN AXEL BRYAN BRANDON EMILIANO GAEL HUGO ISAAC KEVIN MATEO MATIAS ALONSO ANDRES BENJAMIN EMANUEL EMMANUEL EVERARDO GENARO GERMAN GILBERTO GONZALO GUADALUPE HORACIO HONORIO CELSO ISMAEL JAIME JAIRO JERONIMO JOEL JOSUE LEONEL MARCELO NOE ORLANDO REYNALDO ROGELIO SAUL TELESFORO VALENTIN VICENTE URIEL').split(' '));
 const V157_MX_SURNAME=new Set(('AGUILAR ALMANZA ALVAREZ ANDRADE ARIAS ARIZA AVILA ABOYTES BADILLO BAUTISTA BECERRA BENITEZ BRAVO CABALLERO CABRERA CALDERON CANO CAMPOS CARMONA CARRILLO CASTAÑEDA CASTILLO CASTRO CERVANTES CHAVEZ CISNEROS CONTRERAS CORDOVA CORONA CORTES CRUZ DELGADO DIAZ DOMINGUEZ DUARTE ESCOBAR ESPARZA ESPINOZA FLORES FRANCO FUENTES GALINDO GALLARDO GAMUSERA GARCIA GARDUÑO GOMEZ GONZALEZ GRANADOS GUERRERO GUTIERREZ GUZMAN HERNANDEZ HERRERA HORTELANO HUERTA IBARRA JIMENEZ JUAREZ LADINO LARA LEON LOPEZ LUNA MACIAS MALDONADO MARIN MARTINEZ MEDINA MERINO MENDOZA MIRANDA MOLINA MORALES MORENO MUNOZ MUÑOZ MURILLO NAVA NAVARRO NEGRETE NIETO NUNEZ NUÑEZ OCHOA OLIVARES OLVERA ORTEGA ORTIZ PACHECO PADILLA PALACIOS PEREZ PRESA RAMIREZ RAMOS RANGEL RAZO REYES RIVERA RODRIGUEZ ROJAS ROMERO ROSALES ROSAS RUIZ SALAZAR SANCHEZ SANDOVAL SANTIAGO SEGOVIANO SILVA SOLIS SOTO SUAREZ TAPIA TORRES VALADEZ VALENCIA VARGAS VAZQUEZ VEGA VELAZQUEZ VILLAFUERTE VILLALOBOS ZAMORA ZARATE ZAVALA').split(' '));
 const V157_NAME_CONNECTORS=new Set(['DE','DEL','LA','LAS','LOS','Y']);
+const V185_NAME_RULE=Object.freeze({minGivenNames:1,surnames:2,minContentParts:3});
 const V157_NAME_NOISE=new Set(('LIGA MUNICIPAL FUTBOL FÚTBOL EQUIPO PLANTILLA JUGADOR JUGADORES DELEGADO DELEGADOS TEMPORADA CATEGORIA CATEGORÍA REGISTRO NOMBRE NOMBRES APELLIDO APELLIDOS NUMERO NÚMERO TELEFONO TELÉFONO CURP EDAD FECHA FIRMA POSICION POSICIÓN DOMICILIO CLAVE SECCION SECCIÓN VIGENCIA MUNICIPIO LOCALIDAD COMUNIDAD GUANAJUATO JUVENTINO ROSAS TABLA GOLEADORES CLASIFICACION CLASIFICACIÓN PUNTOS JORNADA').split(' '));
 function v157Upper(s){return String(s||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toUpperCase()}
 function v157CleanNameText(value){
@@ -1619,8 +1660,28 @@ function v126BestKnown(name,team=''){
   const known=v126KnownPeople(),clean=v184SafeNameRepair(name),n=norm(clean),target=norm(team);
 
   if(rosterDetectedKind==='printed-table'){
+    const shape=v185NameStructure(clean);
     const exact=known.find(r=>norm(r.name)===n);
-    return exact?{record:exact,score:1}:null;
+    if(exact)return {record:exact,score:1};
+
+    // If the OCR only found e.g. "Gabriel Cano", keep it incomplete.
+    // Never turn it into "Gabriel Cano González" from a fuzzy database match.
+    if(!shape.complete)return null;
+
+    let best=null,score=0,second=0,bestStruct=null;
+    for(const r of known){
+      const rs=v185NameStructure(r.name);
+      if(!rs.complete)continue;
+      const ss=v185StructuredKnownSimilarity(clean,r.name);
+      if(!ss.complete||ss.first<.72||ss.surname1<.78||ss.surname2<.78)continue;
+      let s=ss.score;
+      if(target&&norm(r.team)===target)s+=.018;
+      if(s>score){second=score;score=s;best=r;bestStruct=ss}
+      else if(s>second)second=s;
+    }
+    return best&&bestStruct&&score>=.90&&(score-second)>=.045
+      ?{record:best,score:Math.min(1,score)}
+      :null;
   }
 
   const hit=v183KnownMatch(clean,known,team);
@@ -1642,9 +1703,11 @@ function v126AutoRegisterNewEntries(){
 function v126AnalyzeText(text){
   if(!rosterImportTeam)throw new Error('Primero elige el equipo de esta lista');
   const team=rosterImportTeam,season=selectedSeason(),current=seasonRecords(season),names=v126ExtractCandidates(text),entries=[];
-  for(const rawName of names){
+  for(const rawName0 of names){
+    const rawName=v184SafeNameRepair(rawName0),rawStructure=v185NameStructure(rawName);
     const hit=v126BestKnown(rawName,team),known=hit?.record||null;
     const canonical=known?.name||rawName;
+    const canonicalStructure=v185NameStructure(canonical);
     const currentSame=current.find(r=>norm(r.name)===norm(canonical)&&norm(r.team)===norm(team));
     const currentOther=current.find(r=>norm(r.name)===norm(canonical)&&norm(r.team)!==norm(team));
     let status='new',source=null;
@@ -1655,13 +1718,21 @@ function v126AnalyzeText(text){
       status=norm(known.team)===norm(team)?'return':'transfer';
     }
     const nameScore=known?Math.max(.85,hit?.score||0):v157MexNameScore(canonical);
-    const contentTokens=v183ContentTokens(canonical);
-    if(status==='new'&&(nameScore<.46||contentTokens.length<2))status='review';
-    entries.push({name:canonical,rawName,status,source,decision:'pending',include:false,score:hit?.score||0,nameScore});
+    if(status==='new'&&nameScore<.46)status='review';
+
+    const structureComplete=rawStructure.complete&&canonicalStructure.complete;
+    if(!structureComplete)status='review';
+
+    entries.push({
+      name:canonical,rawName,status,source,decision:'pending',include:false,
+      score:hit?.score||0,nameScore,structureComplete,
+      missingSurnames:rawStructure.missingSurnames,
+      structureLabel:rawStructure.label
+    });
   }
   const importedNorm=new Set(entries.map(e=>norm(e.name)));
   const missing=current.filter(r=>norm(r.team)===norm(team)&&!importedNorm.has(norm(r.name))).map(r=>({...r,remove:false}));
-  rosterImport={...rosterImport,rawText:String(text||''),entries,missing,status:'Revisa cada nombre: ✓ aprobar o ✕ rechazar. Nada se registra automáticamente.',busy:false,autoAdded:0};
+  rosterImport={...rosterImport,rawText:String(text||''),entries,missing,status:'Revisa cada nombre: mínimo 1 nombre + 2 apellidos. ✓ aprobar o ✕ rechazar. Nada se registra automáticamente.',busy:false,autoAdded:0};
   return {detected:entries.length};
 }
 function v126CleanupNonPlayers(season=selectedSeason()){
@@ -1687,6 +1758,7 @@ function v126ImportSummary(){
   return {total:e.length,approved,rejected,pending,keep,registered:keep+returning,transfer:count('transfer'),returning,fresh,review,missing:(Array.isArray(rosterImport.missing)?rosterImport.missing:[]).length};
 }
 function v126RosterStatusLabel(e){
+  if(e.structureComplete===false)return (e.structureLabel||'Nombre incompleto')+' · regla: 1 nombre + 2 apellidos · corrige antes de aprobar';
   if(e.status==='keep')return 'Ya registrado · ya está en este equipo';
   if(e.status==='transfer')return 'Ya registrado · posible cambio de equipo · requiere aprobación';
   if(e.status==='return')return 'Ya registrado · posible renovación · requiere aprobación';
@@ -1703,7 +1775,7 @@ function v126RosterResultHtml(){
       '<span class="v172-review-state" aria-hidden="true">'+(decision==='approved'?'✓':decision==='rejected'?'✕':'?')+'</span>'+
       '<span class="v126-person-copy"><b>'+esc(e.name)+'</b><small>'+esc(v126RosterStatusLabel(e))+(e.source?.team&&e.status==='transfer'?' · antes: '+esc(e.source.team):'')+'</small><button type="button" class="v180-correct-name" data-v180-correct-name="'+i+'">✎ Corregir nombre</button></span>'+
       '<span class="v172-review-actions">'+
-        '<button type="button" class="approve '+(decision==='approved'?'active':'')+'" data-v172-approve="'+i+'" aria-label="Aprobar '+esc(e.name)+'">✓ <em>Aprobar</em></button>'+
+        '<button type="button" class="approve '+(decision==='approved'?'active':'')+'" data-v172-approve="'+i+'" aria-label="Aprobar '+esc(e.name)+'" '+(e.structureComplete===false?'disabled title="Completa 1 nombre y 2 apellidos"':'')+'>✓ <em>Aprobar</em></button>'+
         '<button type="button" class="reject '+(decision==='rejected'?'active':'')+'" data-v172-reject="'+i+'" aria-label="Rechazar '+esc(e.name)+'">✕ <em>Rechazar</em></button>'+
       '</span>'+
     '</article>';
@@ -1715,7 +1787,7 @@ function v126RosterResultHtml(){
       '<div><b data-v172-rejected>'+s.rejected+'</b><span>Rechazados ✕</span></div>'+
       '<div><b data-v172-pending>'+s.pending+'</b><span>Por revisar</span></div>'+
     '</div>'+
-    '<div class="v126-auto-info v172-manual-review"><b>Revisión manual obligatoria</b><span>La lectura sólo propone nombres. No registra, mueve ni renueva jugadores automáticamente. Revisa uno por uno y toca ✓ Aprobar o ✕ Rechazar.</span></div>'+
+    '<div class="v126-auto-info v172-manual-review"><b>Revisión manual obligatoria · 1 nombre + 2 apellidos</b><span>La lectura sólo propone nombres. No inventa apellidos desde jugadores anteriores. Si falta un apellido, corrige el nombre antes de ✓ Aprobar. Nada se registra, mueve ni renueva automáticamente.</span></div>'+
     (s.total<20?'<div class="v157-review-note"><b>Se detectaron '+s.total+' nombres</b><span>Si la imagen tiene más jugadores, abre “Ver / corregir texto detectado” o vuelve a escanear con una foto recta y nítida. OCR Pro vuelve a leer la hoja por bloques superpuestos, columnas y contraste adaptativo para recuperar nombres pequeños.</span></div>':'')+
     '<div class="v126-detected">'+personRows+'</div>'+
     ((Array.isArray(rosterImport.missing)?rosterImport.missing:[]).length?'<div class="v126-missing"><div class="v126-missing-head"><span><b>No aparecen en la lista</b><small>No se borran automáticamente; marca sólo los que realmente salen del equipo.</small></span><button type="button" data-v126-mark-missing>Marcar todos</button></div>'+
@@ -1762,7 +1834,7 @@ function rosterImportHtml(){
     '<div class="v126-file-name">'+esc(rosterImport.fileName||'Ningún archivo seleccionado')+'</div>'+
     '<div class="v162-handwriting v179-auto-detect"><span class="v162-handwriting-check">AI</span><span><b>Detección automática del documento</b><small>Reconoce si parece texto impreso/Word/Arial, pluma/lápiz o mixto y usa sólo las pasadas necesarias. Máximo 5 para evitar bloqueos en Android.</small></span></div>'+
     '<button type="button" class="v126-analyse" data-v126-analyse '+(rosterImport.busy?'disabled':'')+'>'+(rosterImport.busy?'Leyendo lista…':'Detectar y comparar jugadores')+'</button>'+
-    '<p class="v126-status" data-v126-import-status>'+esc(rosterImport.status||'Autodetector activo: si encuentra una tabla impresa, aísla primero la columna Jugador para no mezclar Equipo/Goles; si no, distingue Word/impreso, pluma/lápiz o mixto. Nada se registra automáticamente; revisa TODOS los nombres con ✓ o ✕.')+'</p>'+
+    '<p class="v126-status" data-v126-import-status>'+esc(rosterImport.status||'Autodetector activo: aísla Jugador, separa texto pegado y aplica la regla mínima 1 nombre + 2 apellidos. Si falta un apellido lo marca para corregir; no lo inventa desde la base. Nada se registra automáticamente; revisa TODOS los nombres con ✓ o ✕.')+'</p>'+
     v126RosterResultHtml()+
   '</section>';
 }
@@ -1856,6 +1928,13 @@ function bindRosterImport(root){
   const reviewDecision=(index,decision)=>{
     const entries=Array.isArray(rosterImport.entries)?rosterImport.entries:[];
     const item=entries[index];if(!item)return;
+    if(decision==='approved'){
+      const shape=v185NameStructure(item.name);
+      if(!shape.complete){
+        item.structureComplete=false;item.missingSurnames=shape.missingSurnames;item.structureLabel=shape.label;
+        return toast('Falta completar el nombre: se requiere mínimo 1 nombre y 2 apellidos');
+      }
+    }
     item.decision=decision;item.include=decision==='approved';
     const row=$('[data-v172-review-row="'+index+'"]',root);
     if(row){row.classList.remove('pending','approved','rejected');row.classList.add(decision);const state=$('.v172-review-state',row);if(state)state.textContent=decision==='approved'?'✓':'✕';$$('.v172-review-actions button',row).forEach(b=>b.classList.toggle('active',(decision==='approved'&&b.classList.contains('approve'))||(decision==='rejected'&&b.classList.contains('reject'))))}
@@ -1870,10 +1949,12 @@ function bindRosterImport(root){
     if(!item)return;
     const value=prompt('Corrige el nombre completo exactamente como aparece en la lista:',item.name||'');
     if(value===null)return;
-    const corrected=v178PlausibleFullName(value)||v157TitleName(v157CleanNameText(value));
-    if(!corrected)return toast('Escribe al menos nombre y apellido');
-    item.name=corrected;item.rawName=corrected;item.decision='pending';item.include=false;item.status='review';item.source=null;
-    toast('Nombre corregido · revísalo y apruébalo');renderManager();
+    const corrected=v184SafeNameRepair(v178PlausibleFullName(value)||v157TitleName(v157CleanNameText(value)));
+    const shape=v185NameStructure(corrected);
+    if(!corrected||!shape.complete)return toast('Escribe el nombre completo: mínimo 1 nombre y 2 apellidos');
+    item.name=shape.clean;item.rawName=shape.clean;item.decision='pending';item.include=false;item.status='review';item.source=null;
+    item.structureComplete=true;item.missingSurnames=0;item.structureLabel='Estructura completa';
+    toast('Nombre corregido · estructura completa · revísalo y apruébalo');renderManager();
   }));
   $('[data-v172-approve]',root).forEach(b=>b.addEventListener('click',e=>{e.preventDefault();e.stopPropagation();reviewDecision(Number(b.dataset.v172Approve),'approved')}));
   $$('[data-v172-reject]',root).forEach(b=>b.addEventListener('click',e=>{e.preventDefault();e.stopPropagation();reviewDecision(Number(b.dataset.v172Reject),'rejected')}));
