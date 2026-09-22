@@ -157,7 +157,7 @@ function clearForm(){
   toast('Formulario listo para un jugador nuevo');
   schedule();
 }
-function saveForm(){
+function saveForm(silent=false){
   const data=captureForm();
   if(!data.name)return toast('Falta el nombre del jugador');
   if(!data.team)return toast('Selecciona el equipo; la categoría se asigna sola');
@@ -177,7 +177,7 @@ function saveForm(){
   }
   if(idx>=0)list[idx]=rec;else list.unshift(rec);
   putSeason(season,list);localStorage.setItem(EDIT_KEY,rec.id);
-  toast(idx>=0?'Registro actualizado':'Jugador guardado en la temporada '+season);
+  if(!silent)toast(idx>=0?'Registro actualizado':'Jugador guardado en la temporada '+season);
   renderManager();
 }
 function deleteRecord(id){
@@ -283,13 +283,29 @@ function bindOcrAssist(){
     setTimeout(()=>clearInterval(timer),45000);
   });
 }
-function autoInitialSync(){
-  const season=selectedSeason(),x=store();
-  if(!x.seasons[season]&&officialPlayers().length){
-    x.seasons[season]=[];saveStore(x);syncOfficialSeason(true);
+function autoOfficialSync(){
+  const season=selectedSeason(),x=store(),official=officialPlayers();
+  if(!official.length)return;
+  const capture=String(window.LJR_OFFICIAL_DATA?.captured_at_utc||'');
+  const syncKey='v124-last-official-capture:'+season;
+  const last=localStorage.getItem(syncKey)||'';
+  if(!x.seasons[season]){x.seasons[season]=[];saveStore(x)}
+  if(season===currentSeason()&&capture&&capture!==last){
+    syncOfficialSeason(true);localStorage.setItem(syncKey,capture);
+  }else if(!seasonRecords(season).length&&season===currentSeason()){
+    syncOfficialSeason(true);if(capture)localStorage.setItem(syncKey,capture);
   }
 }
-let t=0;function schedule(){clearTimeout(t);t=setTimeout(()=>{if(route()!=='credentialBuilder')return;autoInitialSync();renderManager();bindOcrAssist()},140)}
+function bindCredentialAutoSave(){
+  ['[data-v100-credential-png]','[data-v100-credential-share]','[data-v64-print-credential]'].forEach(sel=>{
+    const b=$(sel);if(!b||b.dataset.v124AutoSave)return;b.dataset.v124AutoSave='1';
+    b.addEventListener('click',()=>{
+      const name=$('[data-v64-cred-name]')?.value.trim()||'',team=$('[data-v64-cred-team]')?.value||'';
+      if(name&&team)saveForm(true);
+    },{capture:true});
+  });
+}
+let t=0;function schedule(){clearTimeout(t);t=setTimeout(()=>{if(route()!=='credentialBuilder')return;autoOfficialSync();renderManager();bindOcrAssist();bindCredentialAutoSave()},140)}
 window.addEventListener('hashchange',schedule);
 window.addEventListener('ljr:official-data',schedule);
 const screen=$('#screen');if(screen)new MutationObserver(schedule).observe(screen,{childList:true,subtree:false});
