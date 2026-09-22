@@ -139,10 +139,12 @@ function curpDob(curp){
   const m=c.match(/^[A-Z]{4}(\d{2})(\d{2})(\d{2})/);if(!m)return '';
   const yy=Number(m[1]),mm=Number(m[2]),dd=Number(m[3]);
   if(mm<1||mm>12||dd<1||dd>31)return '';
-  const century=/[A-Z]/.test(c.charAt(16))?2000:1900;
-  const year=century+yy;
+  const now=new Date(),currentYear=now.getFullYear();
+  let year=(/[A-Z]/.test(c.charAt(16))?2000:1900)+yy;
+  if(year>currentYear)year-=100;
+  if(currentYear-year>120)year+=100;
   const test=new Date(year,mm-1,dd);
-  if(test.getFullYear()!==year||test.getMonth()!==mm-1||test.getDate()!==dd)return '';
+  if(test.getFullYear()!==year||test.getMonth()!==mm-1||test.getDate()!==dd||test>now)return '';
   return String(year).padStart(4,'0')+'-'+String(mm).padStart(2,'0')+'-'+String(dd).padStart(2,'0');
 }
 function ageFromDob(v){if(!v)return '';const d=new Date(v+'T12:00:00'),n=new Date();if(Number.isNaN(d.getTime()))return '';let a=n.getFullYear()-d.getFullYear();const md=n.getMonth()-d.getMonth();if(md<0||(md===0&&n.getDate()<d.getDate()))a--;return a>=0&&a<120?String(a):''}
