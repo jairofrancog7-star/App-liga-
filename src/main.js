@@ -5201,6 +5201,114 @@ function v64RepairCurpCandidate(value,name='',allowCheckRepair=false){
   }
   return '';
 }
+function v64IneStateCurpCode(text){
+  const raw=String(text||'').toUpperCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');
+  const m=raw.match(/\bESTADO\s*[:\-]?\s*([0-3OQIDLSBGZ]{2})\b/);
+  if(!m)return '';
+  const mapDigit={O:'0',Q:'0',D:'0',I:'1',L:'1',Z:'2',S:'5',G:'6',B:'8'};
+  const n=m[1].split('').map(ch=>/\d/.test(ch)?ch:(mapDigit[ch]||ch)).join('');
+  const states={
+    '01':'AS','02':'BC','03':'BS','04':'CC','05':'CL','06':'CM','07':'CS','08':'CH',
+    '09':'DF','10':'DG','11':'GT','12':'GR','13':'HG','14':'JC','15':'MC','16':'MN',
+    '17':'MS','18':'NT','19':'NL','20':'OC','21':'PL','22':'QT','23':'QR','24':'SP',
+    '25':'SL','26':'SR','27':'TC','28':'TS','29':'TL','30':'VZ','31':'YN','32':'ZS'
+  };
+  return states[n]||'';
+}
+function v64ElectorIdentity(text){
+  const raw=String(text||'').toUpperCase();
+  const mapDigit={O:'0',Q:'0',D:'0',I:'1',L:'1',Z:'2',S:'5',G:'6',B:'8'};
+  const lines=raw.split(/\r?\n/);
+  const pools=[];
+  for(let i=0;i<lines.length;i++){
+    const line=lines[i];
+    if(/ELECTOR|CLAVE/.test(line))pools.push(line+' '+(lines[i+1]||''));
+  }
+  pools.push(raw);
+  for(const pool of pools){
+    const compact=pool.replace(/[^A-Z0-9]/g,'');
+    for(let i=0;i<=compact.length-18;i++){
+      let s=compact.slice(i,i+18);
+      const letters=s.slice(0,6);
+      if(!/^[A-Z]{6}$/.test(letters))continue;
+      let dob=s.slice(6,12).split('').map(ch=>/\d/.test(ch)?ch:(mapDigit[ch]||ch)).join('');
+      let sex=s[14];
+      if(sex==='N')sex='M';
+      if(!/^\d{6}$/.test(dob)||!/^[HM]$/.test(sex))continue;
+      const yy=Number(dob.slice(0,2)),mm=Number(dob.slice(2,4)),dd=Number(dob.slice(4,6));
+      if(mm<1||mm>12||dd<1||dd>31)continue;
+      return {dob,sex,raw:s};
+    }
+  }
+  return null;
+}
+function v64CurpInternalConsonants(name){
+  const p=String(name||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toUpperCase().replace(/[^A-ZÑ ]+/g,' ').split(/\s+/).filter(Boolean);
+  if(p.length<3)return '';
+  const maternal=p[p.length-1],paternal=p[p.length-2],given=p.slice(0,-2);
+  const common=new Set(['JOSE','J','MARIA','MA']);
+  const g=(common.has(given[0])&&given[1]?given[1]:given[0])||'X';
+  const inner=w=>{
+    const m=String(w||'').slice(1).replace(/Ñ/g,'X').match(/[BCDFGHJKLMNPQRSTVWXYZ]/);
+    return m?m[0]:'X';
+  };
+  return inner(paternal)+inner(maternal)+inner(g);
+}
+function v64CurpTailHints(text){
+  const raw=String(text||'').toUpperCase(),out=[];
+  const lines=raw.split(/\r?\n/);
+  const mapDigit={O:'0',Q:'0',D:'0',I:'1',L:'1',Z:'2',S:'5',G:'6',B:'8'};
+  for(const line of lines){
+    const near=/CURP/.test(line);
+    const cleaned=line.replace(/CURP\s*[:\-]?/g,' ').replace(/[^A-Z0-9]/g,'');
+    for(let i=0;i<=cleaned.length-18;i++){
+      const s=cleaned.slice(i,i+18);
+      let h=s[16],d=s[17];
+      if(mapDigit[h])h=mapDigit[h];
+      if(mapDigit[d])d=mapDigit[d];
+      if(/^\d\d$/.test(h+d))out.push({tail:h+d,score:near?40:10});
+    }
+  }
+  out.sort((a,b)=>b.score-a.score);
+  return [...new Set(out.map(x=>x.tail))];
+}
+function v64InferCurpFromIne(text,name){
+  const np=v64NamePartsForCurp(name);
+  const inner=v64CurpInternalConsonants(name);
+  const elector=v64ElectorIdentity(text);
+  const state=v64IneStateCurpCode(text);
+  if(!np||!inner||!elector||!state)return '';
+
+  const base=np.prefix+elector.dob+elector.sex+state+inner;
+  if(base.length!==16)return '';
+
+  const born=Number(elector.dob.slice(0,2));
+  const tails=v64CurpTailHints(text);
+  for(const tail of tails){
+    let hom=tail[0],check=tail[1];
+    // Para nacidos antes de 2000, la posición 17 de CURP es numérica.
+    if(born<=99&&!/\d/.test(hom))continue;
+    const candidate=base+hom+check;
+    if(v64CurpChecksumValid(candidate))return candidate;
+    const expected=v64CurpCheckDigit(candidate);
+    if(expected!==null){
+      const repaired=base+hom+String(expected);
+      if(v64CurpChecksumValid(repaired))return repaired;
+    }
+  }
+
+  // Último recurso seguro: si el OCR trae el final como O2/02, normaliza O→0 y valida.
+  const compact=String(text||'').toUpperCase().replace(/[^A-Z0-9]/g,'');
+  const m=compact.match(/([0OQDBISZLG])([0-9OQDBISZLG])(?=$|[^A-Z0-9])/);
+  if(m){
+    const dm={O:'0',Q:'0',D:'0',I:'1',L:'1',Z:'2',S:'5',G:'6',B:'8'};
+    const hom=/\d/.test(m[1])?m[1]:(dm[m[1]]||'');
+    const dig=/\d/.test(m[2])?m[2]:(dm[m[2]]||'');
+    const candidate=base+hom+dig;
+    if(/^\d\d$/.test(hom+dig)&&v64CurpChecksumValid(candidate))return candidate;
+  }
+  return '';
+}
 function v64FindCurp(text,name=''){
   const raw=String(text||'').toUpperCase(),lines=raw.split(/\r?\n/),candidates=[];
   const push=(value,score,near=false)=>{
@@ -5227,7 +5335,11 @@ function v64FindCurp(text,name=''){
   const flat=raw.replace(/[^A-Z0-9]/g,'');
   for(let p=0;p<=flat.length-18;p++)push(flat.slice(p,p+18),10,false);
   candidates.sort((a,b)=>b.score-a.score);
-  return candidates[0]?.fixed||'';
+  if(candidates[0]?.fixed)return candidates[0].fixed;
+
+  // Si la línea CURP quedó muy dañada, reconstruye sólo con datos que sí están impresos
+  // en la misma INE: nombre, fecha/sexo de la clave de elector, ESTADO y el final OCR.
+  return v64InferCurpFromIne(raw,name);
 }
 function v64GoodCity(value){
   const v=String(value||'').trim();
