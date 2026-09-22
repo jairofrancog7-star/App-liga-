@@ -150,3 +150,16 @@ body[data-app-route="credentialBuilder"] .v124-head p{
     width:100%!important;
   }
 }
+
+
+/* V156 — detección y auto-registro desde lista del delegado. */
+.v126-auto-info{padding:10px 11px;border:1px solid rgba(74,233,205,.34);border-radius:12px;background:#083f5d;display:grid;gap:3px}
+.v126-auto-info b{font-size:10px;color:#69f0d6}.v126-auto-info span{font-size:8px;line-height:1.4;color:#c4e9e1}
+.v126-person.autoregistered{grid-template-columns:22px minmax(0,1fr) auto!important;border-color:rgba(74,233,205,.42)!important;background:#082b5c!important;cursor:default!important}
+.v126-auto-mark{width:19px;height:19px;border-radius:50%;display:grid;place-items:center;background:#42dbc2;color:#032a3d;font-size:11px;font-weight:1000}
+.v126-complete{min-height:34px;padding:0 9px;border:1px solid rgba(89,231,241,.46);border-radius:9px;background:#1352c6;color:#fff;font-size:8px;font-weight:900;white-space:nowrap;touch-action:manipulation}
+.v126-complete:active{transform:scale(.98)}
+@media(max-width:390px){
+  .v126-person.autoregistered{grid-template-columns:20px minmax(0,1fr)!important}
+  .v126-person.autoregistered .v126-complete{grid-column:2;width:100%;margin-top:4px}
+}
