@@ -1,0 +1,92 @@
+/* V168 — Cuenta/registro: composición verde de referencia llevada a azul. */
+body[data-app-route="profile"] #v168-profile-account,
+body[data-app-route="v38Weather"] #v168-weather-account{
+  width:min(100%,520px);margin:0 auto;box-sizing:border-box;
+}
+body[data-app-route="profile"] #v168-profile-account{padding:8px 18px calc(112px + env(safe-area-inset-bottom))}
+.v168-account-card{
+  position:relative;overflow:hidden;
+  padding:20px 18px 18px;
+  border:1px solid rgba(55,112,224,.32);
+  border-radius:25px;
+  background:
+    radial-gradient(circle at 100% 0%,rgba(39,122,245,.26),transparent 33%),
+    linear-gradient(155deg,#0a126f 0%,#070b59 56%,#04083f 100%);
+  color:#fff;
+  box-shadow:0 18px 45px rgba(0,0,42,.22);
+}
+.v168-account-card:before{
+  content:"";position:absolute;right:-36px;top:-28px;width:180px;height:180px;border-radius:50%;
+  border:1px solid rgba(35,220,236,.12);box-shadow:0 0 0 28px rgba(35,220,236,.03),0 0 0 58px rgba(35,220,236,.02);pointer-events:none
+}
+.v168-account-badge{position:relative;color:#31e0ec;font-size:9px;font-weight:900;letter-spacing:.15em}
+.v168-account-head{position:relative;display:grid;grid-template-columns:47px minmax(0,1fr);gap:12px;align-items:start;margin-top:12px}
+.v168-account-icon{width:44px;height:44px;display:grid;place-items:center;border:1px solid rgba(42,220,235,.45);border-radius:50%;background:#0a2b8c;color:#4ce8f2;font-size:22px}
+.v168-account-head h2{margin:0;color:#fff;font-size:25px;line-height:1.02;letter-spacing:-.025em}
+.v168-account-head p{margin:7px 0 0;color:#aeb9dc;font-size:11px;line-height:1.45}
+.v168-form{position:relative;display:grid;grid-template-columns:1fr;gap:12px;margin-top:18px}
+.v168-form label{display:grid;gap:6px}
+.v168-form label>span{color:#8f9dc8;font-size:9px;font-weight:900;letter-spacing:.04em}
+.v168-form input,.v168-form select{
+  width:100%;min-height:52px;padding:0 13px;box-sizing:border-box;border:1px solid rgba(91,116,221,.38);border-radius:14px;
+  background:#090d63;color:#fff;font:600 14px/1 Inter,Roboto,Arial,sans-serif;outline:0
+}
+.v168-form input:focus,.v168-form select:focus{border-color:#2ae1ec;box-shadow:0 0 0 2px rgba(42,225,236,.10)}
+.v168-account-status{display:flex;gap:5px;flex-wrap:wrap;margin-top:13px;color:#7edff0;font-size:9px;line-height:1.35}.v168-account-status b{color:#34e1ec}.v168-account-status span{color:#9eacd1}
+.v168-account-actions{display:grid;gap:9px;margin-top:17px}
+.v168-account-actions button{
+  min-height:50px;border:1px solid rgba(79,108,219,.48);border-radius:14px;background:#0a126b;color:#fff;font-size:12px;font-weight:900
+}
+.v168-account-actions button.primary{
+  border-color:#24dfea;background:linear-gradient(180deg,#24dfea,#0fb9da);color:#061258;
+  box-shadow:0 8px 22px rgba(18,162,230,.22)
+}
+.v168-account-note{margin:13px 0 0;color:#7f8caf;font-size:8.5px;line-height:1.45}
+
+/* Modal existente de registro: misma estructura/funciones, aspecto azul. */
+.v105-modal.v168-account-modal{
+  align-items:stretch!important;justify-items:end!important;padding:0!important;
+  background:rgba(1,4,38,.84)!important;backdrop-filter:blur(9px)!important
+}
+.v105-modal.v168-account-modal .v105-dialog{
+  width:min(92vw,410px)!important;max-width:410px!important;height:100dvh!important;max-height:100dvh!important;
+  margin:0!important;padding:38px 28px calc(28px + env(safe-area-inset-bottom))!important;border:0!important;border-left:1px solid rgba(60,121,230,.28)!important;border-radius:28px 0 0 28px!important;
+  background:
+    radial-gradient(circle at 105% 8%,rgba(31,126,246,.28),transparent 34%),
+    linear-gradient(180deg,#0a126c 0%,#060a52 58%,#03063d 100%)!important;
+  box-shadow:-22px 0 50px rgba(0,0,35,.36)!important;color:#fff!important
+}
+.v105-modal.v168-account-modal .v105-close{
+  right:18px!important;top:20px!important;width:48px!important;height:48px!important;border-radius:15px!important;
+  border:1px solid rgba(78,107,207,.44)!important;background:#0b1266!important;color:#fff!important;font-size:28px!important
+}
+.v105-modal.v168-account-modal .v105-dialog h3{max-width:255px!important;margin:0 64px 12px 0!important;font-size:29px!important;line-height:1.02!important;letter-spacing:-.035em!important}
+.v105-modal.v168-account-modal .v105-dialog>p{max-width:280px!important;margin:0 0 22px!important;color:#a8b3d6!important;font-size:12px!important;line-height:1.55!important}
+.v105-modal.v168-account-modal .v105-form{grid-template-columns:1fr!important;gap:14px!important}
+.v105-modal.v168-account-modal .v105-form label>span{color:#8997c1!important;font-size:9px!important;font-weight:900!important;text-transform:uppercase}
+.v105-modal.v168-account-modal .v105-form input,
+.v105-modal.v168-account-modal .v105-form select{
+  min-height:54px!important;border:1px solid rgba(82,104,191,.42)!important;border-radius:15px!important;background:#080c5d!important;color:#fff!important;font-size:15px!important
+}
+.v105-modal.v168-account-modal .v105-actions{display:grid!important;grid-template-columns:1fr!important;gap:10px!important;margin-top:20px!important}
+.v105-modal.v168-account-modal .v105-btn{min-height:52px!important;border-radius:15px!important;background:linear-gradient(180deg,#28dfea,#12badb)!important;color:#051257!important;font-size:12px!important;box-shadow:0 8px 24px rgba(20,166,225,.2)!important}
+.v105-modal.v168-account-modal .v105-btn.alt{border:1px solid rgba(74,106,210,.5)!important;background:#0a1166!important;color:#fff!important;box-shadow:none!important}
+
+/* Cuenta contextual al final de Clima: no reemplaza el contenido meteorológico. */
+body[data-app-route="v38Weather"] #v168-weather-account{padding:12px 18px calc(112px + env(safe-area-inset-bottom))}
+.v168-weather-account{
+  min-height:92px;display:grid;grid-template-columns:42px minmax(0,1fr) auto;gap:11px;align-items:center;padding:14px;
+  border:1px solid rgba(47,111,224,.3);border-radius:18px;background:linear-gradient(155deg,#0a1673,#070b59);color:#fff
+}
+.v168-weather-account-icon{width:40px;height:40px;display:grid;place-items:center;border-radius:50%;background:#0b2d91;color:#38e0eb;border:1px solid rgba(56,224,235,.35)}
+.v168-weather-account-copy{min-width:0}.v168-weather-account-copy small,.v168-weather-account-copy b,.v168-weather-account-copy em{display:block;min-width:0}
+.v168-weather-account-copy small{color:#34e0eb;font-size:8px;font-weight:900;letter-spacing:.12em}.v168-weather-account-copy b{margin-top:3px;font-size:13px;line-height:1.1}.v168-weather-account-copy em{margin-top:4px;color:#9fadd1;font-size:9px;line-height:1.3;font-style:normal}
+.v168-weather-account>button{min-height:38px;padding:0 12px;border:1px solid #27dfea;border-radius:11px;background:#0a2a8b;color:#46e6ef;font-size:10px;font-weight:900}
+.v168-toast{position:fixed;left:50%;bottom:105px;z-index:100010;transform:translateX(-50%);max-width:88vw;padding:10px 14px;border-radius:999px;background:#07105f;color:#fff;border:1px solid rgba(50,224,236,.5);font-size:11px;box-shadow:0 12px 30px rgba(0,0,0,.3)}
+@media(max-width:390px){
+  body[data-app-route="profile"] #v168-profile-account{padding-left:14px;padding-right:14px}
+  .v168-account-card{padding:18px 15px}.v168-account-head h2{font-size:23px}
+  .v105-modal.v168-account-modal .v105-dialog{width:94vw!important;padding-left:22px!important;padding-right:22px!important}
+  .v168-weather-account{grid-template-columns:38px minmax(0,1fr) auto;padding:12px;gap:9px}
+  .v168-weather-account>button{padding:0 9px}
+}
