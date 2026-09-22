@@ -6,7 +6,7 @@
 if(window.__LJR_V105_GREEN_BOTTOM__)return;
 window.__LJR_V105_GREEN_BOTTOM__=true;
 
-const BUILD='20260921-partidos-jornadas-button-v133';
+const BUILD='20260922-fanzone-one-vote-v157';
 const GREEN='https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/';
 const MOTION=GREEN+'assets/motion/';
 const MEDIA=GREEN+'media/';
@@ -141,7 +141,7 @@ const HOME_CARDS=[
  {icon:'match',title:'Match Center real',sub:'Partido oficial, marcador y contexto',route:'v4-matchcenter'},
  {icon:'tactics',title:'Tácticas 2D / 3D',sub:'Pizarra azul interactiva',route:'tactics'},
  {icon:'trophy',title:'Copa + escenarios',sub:'Liguilla y simulación',route:'bracketBuilder'},
- {icon:'fire',title:'Pulso de afición',sub:'Reacciones locales',action:'fanzone'},
+ {icon:'fire',title:'Pulso de afición',sub:'1 reacción por visitante o perfil',action:'fanzone'},
  {icon:'poll',title:'Pronóstico y encuesta',sub:'Participa con tu liga',action:'poll'}
 ];
 const COMP_CARDS=[
@@ -299,9 +299,37 @@ function poll(){
  $$('[data-v]',m).forEach(b=>b.onclick=()=>{p[b.dataset.v]=(p[b.dataset.v]||0)+1;write('v105-poll',p);log('Encuesta '+b.dataset.v);b.querySelector('small').textContent=p[b.dataset.v]+' votos locales'});
 }
 function fanzone(){
- const p=read('v105-fanzone',{gol:0,liga:0,aplauso:0,fuego:0});
- const m=modal('Fan Zone','Reacciones guardadas localmente; no representan estadísticas oficiales.','<div class="v105-grid">'+[['gol','Gol ⚽'],['liga','Liga 💙'],['aplauso','Aplauso 👏'],['fuego','Fuego 🔥']].map(x=>'<button class="v105-card" data-r="'+x[0]+'"><span class="v105-icon">'+icon('fire')+'</span><span class="v105-copy"><b>'+x[1]+'</b><small>'+p[x[0]]+' reacciones</small></span><span class="v105-arrow">›</span></button>').join('')+'</div>');
- $$('[data-r]',m).forEach(b=>b.onclick=()=>{p[b.dataset.r]=(p[b.dataset.r]||0)+1;write('v105-fanzone',p);b.querySelector('small').textContent=p[b.dataset.r]+' reacciones'});
+ const api=window.LJR_FAN_ZONE_ONE_VOTE;
+ if(!api)return toast('Fan Zone todavía está cargando');
+ const map={gol:'goal',liga:'heart',aplauso:'clap',fuego:'fire'};
+ const back={goal:'gol',heart:'liga',clap:'aplauso',fire:'fuego'};
+ const snap=api.snapshot(),p=snap.counts;
+ const m=modal(
+   'Fan Zone',
+   'Una reacción por visitante o perfil registrado. Puedes cambiarla sin duplicar tu voto.',
+   '<p class="v105-fan-rule" data-fan-status></p><div class="v105-grid">'+
+   [['gol','Gol ⚽'],['liga','Liga 💙'],['aplauso','Aplauso 👏'],['fuego','Fuego 🔥']].map(x=>
+     '<button class="v105-card" data-r="'+x[0]+'"><span class="v105-icon">'+icon('fire')+'</span><span class="v105-copy"><b>'+x[1]+'</b><small>'+Number(p[map[x[0]]]||0)+' reacciones</small></span><span class="v105-arrow">›</span></button>'
+   ).join('')+'</div>'
+ );
+ const render=()=>{
+   const z=api.snapshot();
+   $$('[data-r]',m).forEach(b=>{
+     const k=map[b.dataset.r],small=b.querySelector('small');
+     if(small)small.textContent=Number(z.counts[k]||0)+' reacciones';
+     b.classList.toggle('is-selected',z.choice===k);
+     b.setAttribute('aria-pressed',z.choice===k?'true':'false');
+   });
+   const status=$('[data-fan-status]',m);
+   if(status)status.textContent=z.choice
+     ?'Tu reacción ya está registrada. Puedes cambiarla sin sumar otro voto.'
+     :(z.profile?'Perfil registrado: puedes elegir una sola reacción.':'Visitante: puedes elegir una sola reacción en este dispositivo.');
+ };
+ $$('[data-r]',m).forEach(b=>b.onclick=()=>{
+   const r=api.vote(map[b.dataset.r]);render();
+   toast(r.same?'Ya registraste esa reacción':(r.previous?'Reacción cambiada · sigue contando como un solo voto':'Reacción registrada · 1 por visitante/perfil'));
+ });
+ render();
 }
 function delegates(){
  const list=read('v105-delegates',[]);
