@@ -7,7 +7,7 @@
 if(window.__LJR_V172_WEATHER_SMART__)return;
 window.__LJR_V172_WEATHER_SMART__=true;
 
-const BUILD='20260922-weather-smart-v172';
+const BUILD='20260922-weather-field-select-v174';
 const TZ='America/Mexico_City';
 const CACHE_TTL=20*60*1000;
 const ALERT_KEY='v172-weather-alerts';
