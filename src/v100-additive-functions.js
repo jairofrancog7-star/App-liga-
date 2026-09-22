@@ -185,18 +185,21 @@ function v100KnownPlaceFromText(text){
   const known=[
     ['SANTACRUZDEJUVENTINOROSAS','Santa Cruz de Juventino Rosas'],
     ['JUVENTINOROSAS','Juventino Rosas'],
-    ['RINCONDECENTENO','Rincón de Centeno'],
-    ['CERRITODEGASCA','Cerrito de Gasca'],
-    ['SANJUANDELACRUZ','San Juan de la Cruz'],
-    ['SANJULIANTIERRABLANCA','San Julián Tierra Blanca'],
-    ['SANJOSEDELAMONTANA','San José de la Montaña'],
-    ['RINCONDEPARRA','Rincón de Parra'],
-    ['VALENCIADEFUERA','Valencia de Fuera'],
-    ['SANTIAGODECUENDA','Santiago de Cuenda'],
-    ['TAVERA','Tavera'],['POZOS','Pozos'],['CUENDA','Cuenda']
+    ['CELAYA','Celaya'],['COMONFORT','Comonfort'],['CORTAZAR','Cortázar'],['VILLAGRAN','Villagrán'],['SALAMANCA','Salamanca'],
+    ['RINCONDECENTENO','Rincón de Centeno'],['CERRITODEGASCA','Cerrito de Gasca'],
+    ['FRANCOTAVERA','Franco Tavera'],['TAVERA','Tavera'],['SANJUANDELACRUZ','San Juan de la Cruz'],
+    ['SANTIAGODECUENDA','Santiago de Cuenda'],['SANANTONIODEROMERILLO','San Antonio de Romerillo'],
+    ['ROMERILLO','San Antonio de Romerillo'],['FRACCIONAMIENTOCOMONTUOSO','Fraccionamiento Comontuoso'],['COMONTUOSO','Comontuoso'],
+    ['POZOS','Pozos'],['SANJOSEDELAMONTANA','San José de la Montaña'],['SANJULIANTIERRABLANCA','San Julián Tierra Blanca'],
+    ['RINCONDEPARRA','Rincón de Parra'],['VALENCIADEFUERA','Valencia de Fuera']
   ];
-  const hit=known.find(([k])=>compact.includes(k));
-  return hit?hit[1]:'';
+  const hit=known.find(([k])=>compact.includes(k));if(hit)return hit[1];
+  const nearGto=normalized.match(/([A-ZÑ ]{4,45})\s*,?\s*GTO\b/);
+  if(nearGto){
+    const place=nearGto[1].replace(/\b(CALLE|COLONIA|COL|MUNICIPIO|LOCALIDAD|DOMICILIO|CP|C P)\b/g,' ').replace(/\s+/g,' ').trim();
+    if(place.length>=4&&place.length<=45)return place.toLowerCase().replace(/(^|\s)\p{L}/gu,m=>m.toUpperCase());
+  }
+  return '';
 }
 function v100LooksLikeIne(text){
   const t=String(text||'');
