@@ -352,7 +352,6 @@ body[data-app-route="profile"] .bottom-nav{display:none!important}
 .v12-profile-actions{grid-column:1/-1;display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:18px}.v12-profile-actions button{min-height:58px;border-radius:16px;font-size:20px;font-weight:800}
 .v12-profile-actions .outline{background:transparent;color:var(--v12-cyan);border:2px solid var(--v12-cyan)}.v12-profile-actions .solid{background:linear-gradient(180deg,#2fe5ef,#20d7e6);color:#04105e;border:0}
 .v12-profile-menu{padding:26px 12px 0}.v12-profile-row{width:100%;min-height:78px;display:grid;grid-template-columns:48px 1fr 24px;align-items:center;background:transparent;border:0;color:#fff;text-align:left;font-size:21px}.v12-profile-row-icon{font-size:31px;color:#fff;opacity:.95;text-align:center}.v12-profile-row b{font-size:39px;font-weight:300;color:#7f89b4;text-align:right}.v12-profile-row+ .v12-profile-row{border-top:0}
-.v12-profile-card-bottom{margin-top:28px;margin-bottom:26px}
 
 body[data-app-route="moreLess"] .topbar{display:none!important}
 body[data-app-route="moreLess"] #screen{padding:0!important;margin:0!important;min-height:calc(100dvh - 78px)!important;background:#020763!important}
