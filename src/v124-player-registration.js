@@ -16,6 +16,9 @@ const write=(k,v)=>localStorage.setItem(k,JSON.stringify(v));
 const KEY='v124-player-registry';
 const SEASON_KEY='v124-player-season';
 const EDIT_KEY='v124-player-edit-id';
+const selectedIds=new Set();
+let quickTeam='';
+let quickSeason='';
 
 function toast(msg){
   let n=$('.v124-toast');if(n)n.remove();
@@ -258,7 +261,151 @@ function deleteRecord(id){
 function newSeason(){
   const base=selectedSeason(),next=nextSeason(base);
   const x=store();if(!x.seasons[next])x.seasons[next]=[];saveStore(x);setSeason(next);localStorage.removeItem(EDIT_KEY);
-  toast('Temporada '+next+' creada. Sincroniza cuando AdminFut publique el nuevo padrón.');renderManager();
+  selectedIds.clear();quickSeason='';toast('Temporada '+next+' creada. Usa “Renovar temporada” para traer el padrón anterior en un toque.');renderManager();
+}
+
+function seasonStart(s){
+  const m=String(s||'').match(/(\d{4})/);return m?Number(m[1]):0;
+}
+function previousSeasonWithRecords(){
+  const current=selectedSeason(),cur=seasonStart(current);
+  return allSeasons()
+    .filter(s=>s!==current&&seasonStart(s)<cur&&seasonRecords(s).length)
+    .sort((a,b)=>seasonStart(b)-seasonStart(a))[0]||'';
+}
+function registryTeams(){
+  const out=[];
+  try{
+    const list=window.LJR_V100?.officialTeams?.();
+    if(Array.isArray(list))list.forEach(x=>out.push({name:x.name,category:x.category||'',cat:String(x.cat||'')}));
+  }catch(e){}
+  if(!out.length){
+    const seen=new Set();
+    for(const p of officialPlayers()){
+      const k=norm(p.team)+'|'+p.catId;if(seen.has(k))continue;seen.add(k);
+      out.push({name:p.team,category:p.category||'',cat:String(p.catId||'')});
+    }
+  }
+  const seen=new Set();
+  return out.filter(x=>{
+    if(!x?.name)return false;
+    const k=norm(x.name)+'|'+String(x.cat||'');
+    if(seen.has(k))return false;seen.add(k);return true;
+  }).sort((a,b)=>(a.category||'').localeCompare(b.category||'','es')||a.name.localeCompare(b.name,'es'));
+}
+function teamPickerOptions(){
+  const groups=new Map();
+  for(const t of registryTeams()){
+    const cat=t.category||'Sin categoría';
+    if(!groups.has(cat))groups.set(cat,[]);
+    groups.get(cat).push(t);
+  }
+  let html='<option value="">Elige equipo destino</option>';
+  for(const [cat,teams] of groups){
+    html+='<optgroup label="'+esc(cat)+'">'+teams.map(t=>'<option value="'+esc(t.name)+'" '+(quickTeam===t.name?'selected':'')+'>'+esc(t.name)+'</option>').join('')+'</optgroup>';
+  }
+  return html;
+}
+function targetSeasonOptions(){
+  const current=selectedSeason(),set=new Set(allSeasons());
+  set.add(nextSeason(current));
+  return [...set].sort((a,b)=>seasonStart(b)-seasonStart(a)).map(s=>'<option value="'+esc(s)+'" '+((quickSeason||nextSeason(current))===s?'selected':'')+'>'+esc(s)+(s===current?' · actual':'')+'</option>').join('');
+}
+function duplicateIndex(list,rec,ignoreId=''){
+  if(rec.curp){
+    const c=String(rec.curp).toUpperCase();
+    const i=list.findIndex(x=>x.id!==ignoreId&&x.curp&&String(x.curp).toUpperCase()===c);
+    if(i>=0)return i;
+  }
+  return list.findIndex(x=>x.id!==ignoreId&&norm(x.name)===norm(rec.name)&&norm(x.team)===norm(rec.team));
+}
+function renewFromPrevious(){
+  const from=previousSeasonWithRecords(),to=selectedSeason();
+  if(!from)return toast('No hay una temporada anterior con registros guardados');
+  const source=seasonRecords(from),target=seasonRecords(to).slice();
+  if(!source.length)return toast('La temporada anterior no tiene jugadores guardados');
+  if(!confirm('¿Traer a '+to+' los jugadores de '+from+'? Se copiarán como pendientes de confirmación.'))return;
+  const now=new Date().toISOString();let added=0,skipped=0;
+  for(const r of source){
+    const copy={...r,id:uid(),season:to,source:'local',officialPresent:false,
+      status:'Renovación · por confirmar',previousTeam:r.team||'',createdAt:now,updatedAt:now};
+    if(duplicateIndex(target,copy)>=0){skipped++;continue}
+    target.push(copy);added++;
+  }
+  putSeason(to,target);selectedIds.clear();
+  toast('Renovación rápida: '+added+' jugadores copiados'+(skipped?' · '+skipped+' ya existían':''));
+  renderManager();
+}
+function moveSelectedTeam(){
+  const ids=new Set(selectedIds);
+  if(!ids.size)return toast('Selecciona uno o más jugadores');
+  if(!quickTeam)return toast('Elige el equipo destino');
+  const info=teamInfo(quickTeam);
+  if(!info)return toast('No se encontró la categoría oficial del equipo destino');
+  const season=selectedSeason(),list=seasonRecords(season).slice(),now=new Date().toISOString();
+  let moved=0,blocked=0,duplicates=0;
+  for(let i=0;i<list.length;i++){
+    const r=list[i];if(!ids.has(r.id))continue;
+    const min=v124VeteranMinimum(info.category),age=v124AgeFromDob(r.dob);
+    if(min&&(age===null||age<min)){blocked++;continue}
+    const proposed={...r,team:quickTeam,category:info.category||'',catId:String(info.cat||''),season};
+    if(duplicateIndex(list,proposed,r.id)>=0){duplicates++;continue}
+    list[i]={...r,previousTeam:r.team||'',team:quickTeam,category:info.category||'',catId:String(info.cat||''),
+      source:'local',officialPresent:false,status:'Cambio de equipo · por confirmar',updatedAt:now};
+    moved++;
+  }
+  putSeason(season,list);selectedIds.clear();
+  toast('Cambio rápido: '+moved+' movidos'+(blocked?' · '+blocked+' bloqueados por edad/datos':'')+(duplicates?' · '+duplicates+' duplicados omitidos':''));
+  renderManager();
+}
+function copySelectedToSeason(){
+  const ids=new Set(selectedIds);
+  if(!ids.size)return toast('Selecciona uno o más jugadores');
+  const from=selectedSeason(),to=quickSeason||nextSeason(from);
+  if(to===from)return toast('Elige otra temporada como destino');
+  const source=seasonRecords(from).filter(r=>ids.has(r.id)),target=seasonRecords(to).slice(),now=new Date().toISOString();
+  let added=0,skipped=0;
+  for(const r of source){
+    const copy={...r,id:uid(),season:to,source:'local',officialPresent:false,
+      status:'Renovación · por confirmar',previousTeam:r.team||'',createdAt:now,updatedAt:now};
+    if(duplicateIndex(target,copy)>=0){skipped++;continue}
+    target.push(copy);added++;
+  }
+  const x=store();if(!x.seasons[to])x.seasons[to]=[];x.seasons[to]=target;saveStore(x);
+  selectedIds.clear();
+  toast('Copiados a '+to+': '+added+(skipped?' · '+skipped+' ya existían':''));
+  renderManager();
+}
+function removeSelectedRecords(){
+  const ids=new Set(selectedIds);
+  if(!ids.size)return toast('Selecciona uno o más jugadores');
+  const season=selectedSeason(),list=seasonRecords(season),picked=list.filter(r=>ids.has(r.id));
+  if(!confirm('¿Dar de baja '+picked.length+' jugador(es) de '+season+'? Solo se quitan de esta temporada.'))return;
+  putSeason(season,list.filter(r=>!ids.has(r.id)));
+  if(ids.has(localStorage.getItem(EDIT_KEY)))localStorage.removeItem(EDIT_KEY);
+  selectedIds.clear();toast(picked.length+' jugador(es) dados de baja de '+season);renderManager();
+}
+function fastToolsHtml(list){
+  const previous=previousSeasonWithRecords(),count=[...selectedIds].filter(id=>list.some(r=>r.id===id)).length;
+  return '<section class="v124-fast">'+
+    '<header><small>REGISTRO RÁPIDO</small><h3>Acciones para muchos jugadores</h3><p>Renueva una temporada, cambia varios jugadores de equipo o pásalos a la siguiente temporada sin volver a capturar todo.</p></header>'+
+    '<div class="v124-fast-top">'+
+      '<button type="button" data-v124-renew '+(previous?'':'disabled')+'><b>↻ Renovar temporada</b><span>'+(previous?'Traer jugadores de '+esc(previous):'Sin temporada anterior guardada')+'</span></button>'+
+      '<button type="button" data-v124-select-visible><b>☑ Seleccionar visibles</b><span>Marca rápidamente la lista filtrada</span></button>'+
+    '</div>'+
+    '<div class="v124-batch">'+
+      '<div class="v124-selected"><b data-v124-selected-count>'+count+'</b><span>seleccionados</span><button type="button" data-v124-clear-selected>Limpiar</button></div>'+
+      '<label><span>Cambiar de equipo</span><select data-v124-fast-team>'+teamPickerOptions()+'</select></label>'+
+      '<button type="button" class="move" data-v124-move-selected>Mover seleccionados</button>'+
+      '<label><span>Copiar a temporada</span><select data-v124-fast-season>'+targetSeasonOptions()+'</select></label>'+
+      '<button type="button" data-v124-copy-season>Copiar seleccionados</button>'+
+      '<button type="button" class="danger" data-v124-remove-selected>Dar de baja seleccionados</button>'+
+    '</div>'+
+  '</section>';
+}
+function updateSelectedUi(root=document){
+  const count=selectedIds.size,n=$('[data-v124-selected-count]',root);if(n)n.textContent=String(count);
+  $('[data-v124-select]',root).forEach(c=>{c.checked=selectedIds.has(c.dataset.v124Select)});
 }
 
 function statusClass(r){
@@ -269,7 +416,7 @@ function statusClass(r){
 function listHtml(list){
   if(!list.length)return '<div class="v124-empty"><b>Sin registros en esta temporada</b><span>Guarda un jugador nuevo o sincroniza con AdminFut.</span></div>';
   return list.map(r=>'<article class="v124-player-card" data-v124-id="'+esc(r.id)+'">'+
-    '<div class="v124-card-main"><span class="v124-avatar">'+esc(String(r.name).split(/\s+/).slice(0,2).map(x=>x[0]||'').join('').toUpperCase())+'</span>'+
+    '<div class="v124-card-main"><label class="v124-pick" aria-label="Seleccionar '+esc(r.name)+'"><input type="checkbox" data-v124-select="'+esc(r.id)+'" '+(selectedIds.has(r.id)?'checked':'')+'><span></span></label><span class="v124-avatar">'+esc(String(r.name).split(/\s+/).slice(0,2).map(x=>x[0]||'').join('').toUpperCase())+'</span>'+
     '<span><b>'+esc(r.name)+'</b><small>'+esc(r.team)+' · '+esc(r.category||'Categoría por confirmar')+'</small>'+
     '<em class="'+statusClass(r)+'">'+esc(r.source==='official'?'Oficial en AdminFut':(r.officialPresent?'Coincide con AdminFut':r.status||'Pendiente'))+'</em></span></div>'+
     '<div class="v124-card-actions"><button data-v124-edit="'+esc(r.id)+'">Revisar / corregir</button><button data-v124-card="'+esc(r.id)+'">Credencial</button><button class="danger" data-v124-delete="'+esc(r.id)+'">Borrar</button></div>'+
@@ -282,6 +429,7 @@ function managerHtml(){
     '<div class="v124-season-bar"><label><span>Temporada</span><select data-v124-season>'+allSeasons().map(s=>'<option '+(s===season?'selected':'')+'>'+esc(s)+'</option>').join('')+'</select></label>'+
       '<button data-v124-new-season>Nueva temporada</button></div>'+
     '<div class="v124-summary"><div><b>'+list.length+'</b><span>Registros</span></div><div><b>'+officialCount+'</b><span>Oficial / coincide</span></div><div><b>'+pending+'</b><span>Por revisar</span></div></div>'+
+    fastToolsHtml(list)+
     '<div class="v124-primary-actions"><button class="primary" data-v124-save>Guardar / actualizar jugador</button><button data-v124-new>Nuevo registro</button><button data-v124-sync>Sincronizar con AdminFut</button></div>'+
     '<label class="v124-search"><span>Buscar en esta temporada</span><input type="search" data-v124-search placeholder="Nombre o equipo"></label>'+
     '<div class="v124-list" data-v124-list>'+listHtml(list)+'</div>'+
@@ -289,8 +437,20 @@ function managerHtml(){
   '</section>';
 }
 function bindManager(root){
-  $('[data-v124-season]',root)?.addEventListener('change',e=>{setSeason(e.target.value);localStorage.removeItem(EDIT_KEY);renderManager()});
-  $('[data-v124-new-season]',root)?.addEventListener('click',newSeason);
+  $('[data-v124-season]',root)?.addEventListener('change',e=>{selectedIds.clear();quickTeam='';quickSeason='';setSeason(e.target.value);localStorage.removeItem(EDIT_KEY);renderManager()});
+  $('[data-v124-new-season]',root)?.addEventListener('click',()=>{selectedIds.clear();newSeason()});
+  $('[data-v124-renew]',root)?.addEventListener('click',renewFromPrevious);
+  $('[data-v124-select-visible]',root)?.addEventListener('click',()=>{
+    const boxes=$('[data-v124-select]',root),allSelected=boxes.length&&boxes.every(c=>selectedIds.has(c.dataset.v124Select));
+    boxes.forEach(c=>{if(allSelected)selectedIds.delete(c.dataset.v124Select);else selectedIds.add(c.dataset.v124Select)});
+    updateSelectedUi(root);
+  });
+  $('[data-v124-clear-selected]',root)?.addEventListener('click',()=>{selectedIds.clear();updateSelectedUi(root)});
+  $('[data-v124-fast-team]',root)?.addEventListener('change',e=>{quickTeam=e.target.value||''});
+  $('[data-v124-fast-season]',root)?.addEventListener('change',e=>{quickSeason=e.target.value||''});
+  $('[data-v124-move-selected]',root)?.addEventListener('click',moveSelectedTeam);
+  $('[data-v124-copy-season]',root)?.addEventListener('click',copySelectedToSeason);
+  $('[data-v124-remove-selected]',root)?.addEventListener('click',removeSelectedRecords);
   $('[data-v124-save]',root)?.addEventListener('click',saveForm);
   $('[data-v124-new]',root)?.addEventListener('click',clearForm);
   $('[data-v124-sync]',root)?.addEventListener('click',()=>{syncOfficialSeason(false);renderManager()});
@@ -299,7 +459,8 @@ function bindManager(root){
   bindList(root);
 }
 function bindList(root){
-  $$('[data-v124-edit]',root).forEach(b=>b.onclick=()=>{const r=seasonRecords().find(x=>x.id===b.dataset.v124Edit);if(r)loadRecord(r)});
+  $('[data-v124-select]',root).forEach(c=>c.onchange=()=>{if(c.checked)selectedIds.add(c.dataset.v124Select);else selectedIds.delete(c.dataset.v124Select);updateSelectedUi(root)});
+  $('[data-v124-edit]',root).forEach(b=>b.onclick=()=>{const r=seasonRecords().find(x=>x.id===b.dataset.v124Edit);if(r)loadRecord(r)});
   $$('[data-v124-card]',root).forEach(b=>b.onclick=()=>{const r=seasonRecords().find(x=>x.id===b.dataset.v124Card);if(r)loadRecord(r)});
   $$('[data-v124-delete]',root).forEach(b=>b.onclick=()=>deleteRecord(b.dataset.v124Delete));
 }
