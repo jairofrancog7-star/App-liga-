@@ -318,3 +318,9 @@ body[data-app-route="tactics"] .v100-secondary{
 @media(prefers-reduced-motion:reduce){
   body[data-app-route="tactics"] *{scroll-behavior:auto!important;transition:none!important;animation:none!important}
 }
+
+.v160-advanced-chip{
+  width:max-content;max-width:100%;margin:4px 0 14px;padding:8px 12px;border-radius:999px;
+  border:1px solid rgba(46,178,255,.42);background:#08166f;color:#55c8ff;
+  font-size:8px;font-weight:900;letter-spacing:.08em;white-space:normal
+}
