@@ -14,6 +14,49 @@ const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&
 const norm=v=>String(v??'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toUpperCase().replace(/[^A-Z0-9Ñ]+/g,' ').trim();
 const route=()=>String(location.hash||'').replace(/^#\/?/,'').split('?')[0]||'home';
 let official=null,loading=null,activeCategory='all',activeLetter='all',query='';
+const FALLBACK_TEAMS={
+  'Primera Fuerza':['Hermanos','San José FC','Linces','Juventus','Napoli','Lobos CDG','Terrícolas','Galácticos','Franco FC','Herreras FC','Abejas'],
+  'Intermedia':['La Canchita Deportes','Galeana','Aldama FC','Malvinas','Capibaras','La Cuadrilla','Mazacotes FC','Dep. Maravillas','Osasuna','San Antonio JRS','Populares','Promesas FC','La Huerta'],
+  'Segunda Fuerza':['Tavera FC','Pachangas FC','San Juan FC','Tapatío','Dep. La Luz','San Julián','Barza','San José JRS','San Antonio FC','Célticos FC','Dep. Nopalero','Dep. Zapata'],
+  'Veteranos 35+':['C. de Gasca','Juventus','Cuenda','Pozos FC','Boavista','PSV','A. Santiago','F. Tavera','América','Huracán'],
+  'Veteranos 50+':['La Esperanza','Dynamo','Boca JRS','Toros de Cuenda','Boavista','Manchester']
+};
+const CATEGORY_ORDER=['Primera Fuerza','Intermedia','Segunda Fuerza','Veteranos 35+','Veteranos 50+'];
+
+function ageFromDob(v){
+  if(!v)return null;
+  const d=new Date(v+'T12:00:00'),n=new Date();
+  if(Number.isNaN(d.getTime())||d>n)return null;
+  let a=n.getFullYear()-d.getFullYear(),md=n.getMonth()-d.getMonth();
+  if(md<0||(md===0&&n.getDate()<d.getDate()))a--;
+  return a>=0&&a<120?a:null;
+}
+function detectedAge(){
+  const explicit=Number($('[data-v100-age]')?.value);
+  if(Number.isFinite(explicit)&&explicit>=0&&explicit<120)return explicit;
+  return ageFromDob($('[data-v100-dob]')?.value||'');
+}
+function eligibleCategories(age=detectedAge()){
+  if(age===null)return CATEGORY_ORDER.slice();
+  const out=['Primera Fuerza','Intermedia','Segunda Fuerza'];
+  if(age>=35)out.push('Veteranos 35+');
+  if(age>=50)out.push('Veteranos 50+');
+  return out;
+}
+function ensureFallbackOptions(){
+  const sel=nativeSelect();if(!sel)return;
+  const existing=new Set([...sel.options].map(o=>norm(o.value)).filter(Boolean));
+  for(const category of CATEGORY_ORDER){
+    for(const name of FALLBACK_TEAMS[category]||[]){
+      const key=norm(name);let opt=[...sel.options].find(o=>norm(o.value)===key);
+      if(!opt){
+        opt=document.createElement('option');opt.value=name;opt.textContent=name;sel.appendChild(opt);existing.add(key);
+      }
+      if(!opt.dataset.category)opt.dataset.category=category;
+    }
+  }
+}
+
 
 async function loadOfficial(){
   if(window.LJR_OFFICIAL_DATA){official=window.LJR_OFFICIAL_DATA;return official}
@@ -38,6 +81,9 @@ function categoryFor(name){
     (c.fixtures||[]).forEach(b=>(b.rows||[]).forEach(r=>{if(r?.[2])names.add(norm(r[2]));if(r?.[6])names.add(norm(r[6]))}));
     if(names.has(target))return c.name||id;
   }
+  for(const category of CATEGORY_ORDER){
+    if((FALLBACK_TEAMS[category]||[]).some(n=>norm(n)===target))return category;
+  }
   return '';
 }
 
@@ -50,18 +96,21 @@ function nativeSelect(){
 }
 
 function teams(){
+  ensureFallbackOptions();
   const sel=nativeSelect();if(!sel)return [];
-  return [...sel.options].filter(o=>o.value).map(o=>{
+  const seen=new Set(),out=[];
+  [...sel.options].filter(o=>o.value).forEach(o=>{
     const category=o.dataset.category||categoryFor(o.value)||'Por confirmar';
     if(!o.dataset.category&&category!=='Por confirmar')o.dataset.category=category;
-    return {name:o.value,category,logo:logoFor(o.value),letter:(norm(o.value)[0]||'#')};
-  }).sort((a,b)=>a.category.localeCompare(b.category,'es',{sensitivity:'base'})||a.name.localeCompare(b.name,'es',{sensitivity:'base'}));
+    const key=norm(o.value)+'|'+category;if(seen.has(key))return;seen.add(key);
+    out.push({name:o.value,category,logo:logoFor(o.value),letter:(norm(o.value)[0]||'#')});
+  });
+  return out.sort((a,b)=>CATEGORY_ORDER.indexOf(a.category)-CATEGORY_ORDER.indexOf(b.category)||a.name.localeCompare(b.name,'es',{sensitivity:'base'}));
 }
 
 function categories(list){
-  const preferred=['Primera Fuerza','Intermedia','Segunda Fuerza','Veteranos 35+','Veteranos 50+'];
-  const found=[...new Set(list.map(x=>x.category).filter(Boolean))];
-  return [...preferred.filter(x=>found.includes(x)),...found.filter(x=>!preferred.includes(x)).sort((a,b)=>a.localeCompare(b,'es'))];
+  const found=[...new Set(list.map(x=>x.category).filter(Boolean))],eligible=eligibleCategories();
+  return [...CATEGORY_ORDER.filter(x=>found.includes(x)&&eligible.includes(x)),...found.filter(x=>!CATEGORY_ORDER.includes(x)).sort((a,b)=>a.localeCompare(b,'es'))];
 }
 
 function letters(list){
@@ -91,8 +140,9 @@ function updateButton(){
 }
 
 function filtered(list){
-  const q=norm(query);
+  const q=norm(query),eligible=eligibleCategories();
   return list.filter(x=>
+    eligible.includes(x.category)&&
     (activeCategory==='all'||x.category===activeCategory)&&
     (activeLetter==='all'||x.letter===activeLetter)&&
     (!q||norm(x.name).includes(q))
@@ -101,7 +151,15 @@ function filtered(list){
 
 function renderSheet(){
   const sheet=$('[data-v132-sheet]');if(!sheet)return;
-  const list=teams(),cats=categories(list),lets=letters(activeCategory==='all'?list:list.filter(x=>x.category===activeCategory)),show=filtered(list);
+  const list=teams(),cats=categories(list),eligible=eligibleCategories(),age=detectedAge();
+  if(activeCategory!=='all'&&!eligible.includes(activeCategory))activeCategory='all';
+  const eligibleList=list.filter(x=>eligible.includes(x.category));
+  const lets=letters(activeCategory==='all'?eligibleList:eligibleList.filter(x=>x.category===activeCategory)),show=filtered(list);
+  const status=$('[data-v132-eligibility]',sheet);
+  if(status)status.innerHTML=age===null
+    ?'<b>Edad aún no detectada</b><span>Al detectar la fecha de nacimiento se mostrarán únicamente las categorías en las que puede registrarse.</span>'
+    :'<b>'+age+' años · categorías elegibles</b><span>'+eligible.join(' · ')+'</span>';
+  const count=$('[data-v132-count]',sheet);if(count)count.textContent=show.length+' equipos disponibles';
   const catRail=$('[data-v132-cats]',sheet);
   catRail.innerHTML=
     '<button type="button" class="'+(activeCategory==='all'?'active':'')+'" data-v132-cat="all">Todas</button>'+
@@ -138,8 +196,9 @@ function openSheet(){
       '<button type="button" class="v132-backdrop" data-v132-close aria-label="Cerrar"></button>'+
       '<section class="v132-sheet" data-v132-sheet role="dialog" aria-modal="true" aria-label="Seleccionar equipo">'+
         '<header><div><small>REGISTRO DE JUGADOR</small><h2>Seleccionar equipo</h2></div><button type="button" data-v132-close>×</button></header>'+
-        '<label class="v132-search"><span>⌕</span><input type="search" data-v132-search placeholder="Buscar equipo o escribe una letra" autocomplete="off"></label>'+
-        '<div class="v132-filter-title">CATEGORÍA</div><div class="v132-rail" data-v132-cats></div>'+
+        '<label class="v132-search"><span>⌕</span><input type="search" data-v132-search placeholder="Ej. América, Ame, A..." autocomplete="off"></label>'+
+        '<div class="v132-eligibility" data-v132-eligibility></div>'+
+        '<div class="v132-filter-title">CATEGORÍA ELEGIBLE</div><div class="v132-rail" data-v132-cats></div>'+
         '<div class="v132-filter-title">LETRA INICIAL</div><div class="v132-rail letters" data-v132-letters></div>'+
         '<div class="v132-count" data-v132-count></div>'+
         '<div class="v132-results" data-v132-results></div>'+
@@ -162,7 +221,9 @@ function closeSheet(){
 async function enhance(){
   if(route()!=='credentialBuilder')return;
   await loadOfficial();
-  const sel=nativeSelect();if(!sel||sel.dataset.v132Enhanced)return;
+  const sel=nativeSelect();if(!sel)return;
+  ensureFallbackOptions();
+  if(sel.dataset.v132Enhanced){updateButton();return;}
   sel.dataset.v132Enhanced='1';sel.classList.add('v132-native-select');sel.tabIndex=-1;sel.setAttribute('aria-hidden','true');
 
   const label=sel.closest('label');if(!label)return;
@@ -172,6 +233,12 @@ async function enhance(){
   label.insertBefore(button,sel);
   button.onclick=e=>{e.preventDefault();e.stopPropagation();openSheet()};
   sel.addEventListener('change',updateButton);
+  ['[data-v100-age]','[data-v100-dob]','[data-v64-cred-curp]'].forEach(s=>{
+    const el=$(s);if(!el||el.dataset.v132AgeWatch)return;
+    el.dataset.v132AgeWatch='1';
+    el.addEventListener('input',()=>{if($('[data-v132-layer]')?.classList.contains('open'))renderSheet()});
+    el.addEventListener('change',()=>{if($('[data-v132-layer]')?.classList.contains('open'))renderSheet()});
+  });
   updateButton();
 }
 
