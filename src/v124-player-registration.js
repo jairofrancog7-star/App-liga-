@@ -500,6 +500,15 @@ function v126KnownPeople(){
   }
   return out.filter(r=>r.name);
 }
+function v126LooksLikeNonPlayerName(value){
+  const n=norm(value);
+  if(!n)return true;
+  if(/^(tabla|goleadores?|clasificacion|clasificación|posiciones|resultados?|jornada|estadisticas?|estadísticas?|categoria|categoría|plantilla|lista|equipo|liga|torneo|competicion|competición)\b/.test(n))return true;
+  if(/\btabla\s+de\s+goleadores\b/.test(n))return true;
+  if(/^(primera fuerza|fuerza intermedia|intermedia|segunda fuerza|veteranos? 35|veteranos? 50)(\b|\+)/.test(n))return true;
+  if(/\b(goles|puntos|partidos|pj|pg|pe|pp|gf|gc|dif)\b/.test(n)&&n.split(' ').length<=6)return true;
+  return false;
+}
 function v126Nameish(value){
   let s=String(value||'')
     .replace(/[|•·]+/g,' ')
@@ -507,8 +516,8 @@ function v126Nameish(value){
     .replace(/\b(?:TEL|TELEFONO|TELÉFONO|CURP|EDAD|FECHA|FIRMA|POSICION|POSICIÓN)\b.*$/i,'')
     .replace(/\b\d{1,2}[\/\-.]\d{1,2}[\/\-.]\d{2,4}\b.*$/,'')
     .replace(/\s+/g,' ').trim();
-  const stop=/^(lista|jugadores?|plantilla|equipo|delegado|temporada|categoria|categoría|registro|nombre|nombres|apellidos?|numero|número|liga|municipal|futbol|fútbol|juventino|rosas|guanajuato|firma|credencial|telefono|teléfono|fecha|curp)\b/i;
-  if(!s||stop.test(s)||/@/.test(s)||s.length<5||s.length>80)return '';
+  const stop=/^(lista|jugadores?|plantilla|equipo|delegado|temporada|categoria|categoría|registro|nombre|nombres|apellidos?|numero|número|liga|municipal|futbol|fútbol|juventino|rosas|guanajuato|firma|credencial|telefono|teléfono|fecha|curp|tabla|goleadores?|clasificacion|clasificación|posiciones|resultados?|jornada|estadisticas?|estadísticas?)\b/i;
+  if(!s||stop.test(s)||v126LooksLikeNonPlayerName(s)||/@/.test(s)||s.length<5||s.length>80)return '';
   const parts=s.split(/\s+/).filter(Boolean);
   const words=[];
   for(const p of parts){
@@ -537,7 +546,7 @@ function v126ExtractCandidates(text){
       const c=v126Nameish(piece);
       if(c&&c.length>best.length)best=c;
     }
-    if(!best)continue;
+    if(!best||v126LooksLikeNonPlayerName(best))continue;
     const n=norm(best);
     if(!n||found.has(n))continue;
     const near=[...found.keys()].some(k=>v124TokenSim(k,n)>.92);
@@ -561,7 +570,7 @@ function v126AutoRegisterNewEntries(entries,team,season){
   const now=new Date().toISOString();
   let added=0;
   for(const e of entries){
-    if(e.status!=='new')continue;
+    if(e.status!=='new'||v126LooksLikeNonPlayerName(e.name))continue;
     const existing=list.find(r=>norm(r.name)===norm(e.name)&&norm(r.team)===norm(team));
     if(existing){
       e.status='keep';e.source=existing;continue;
@@ -609,6 +618,22 @@ function v126AnalyzeText(text){
   const autoAdded=v126AutoRegisterNewEntries(entries,team,season);
   rosterImport={...rosterImport,rawText:String(text||''),entries,missing,status:'',busy:false,autoAdded};
   return {autoAdded};
+}
+function v126CleanupNonPlayers(season=selectedSeason()){
+  const x=store(),list=Array.isArray(x.seasons?.[season])?x.seasons[season]:[];
+  const cleaned=list.filter(r=>{
+    if(!v126LooksLikeNonPlayerName(r?.name))return true;
+    const auto=!!r?.rosterAuto||/auto-registrado|importado de lista/i.test(String(r?.status||''));
+    return !auto;
+  });
+  if(cleaned.length!==list.length){
+    x.seasons[season]=cleaned;saveStore(x);
+    for(const id of [...selectedIds])if(!cleaned.some(r=>r.id===id))selectedIds.delete(id);
+    const editId=localStorage.getItem(EDIT_KEY);
+    if(editId&&!cleaned.some(r=>r.id===editId))localStorage.removeItem(EDIT_KEY);
+    return list.length-cleaned.length;
+  }
+  return 0;
 }
 function v126ImportSummary(){
   const e=rosterImport.entries||[],count=k=>e.filter(x=>x.status===k).length;
@@ -1141,7 +1166,7 @@ function bindCredentialAutoSave(){
     },{capture:true});
   });
 }
-let t=0;function schedule(){clearTimeout(t);t=setTimeout(()=>{if(route()!=='credentialBuilder')return;autoOfficialSync();renderManager();bindOcrAssist();bindCredentialAutoSave();bindEligibility()},140)}
+let t=0;function schedule(){clearTimeout(t);t=setTimeout(()=>{if(route()!=='credentialBuilder')return;v126CleanupNonPlayers();autoOfficialSync();renderManager();bindOcrAssist();bindCredentialAutoSave();bindEligibility()},140)}
 window.addEventListener('hashchange',schedule);
 window.addEventListener('ljr:official-data',schedule);
 const screen=$('#screen');if(screen)new MutationObserver(schedule).observe(screen,{childList:true,subtree:false});
