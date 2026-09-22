@@ -5219,6 +5219,7 @@ document.querySelectorAll('[data-v63-official]').forEach(el=>el.onclick=()=>{con
 document.querySelectorAll('[data-v60-all-players]').forEach(el=>el.onclick=()=>{
   localStorage.setItem('v66-player-cat','all');
   localStorage.setItem('v66-player-team','all');
+  localStorage.setItem('v66-open-all','1');
   state.searchQuery='';
   go('players');
 });
