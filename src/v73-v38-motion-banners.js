@@ -374,7 +374,7 @@
     const screen=document.querySelector('#screen');
     if(!screen)return;
     const r=route();
-    const cfg=CONFIG[r];
+    const cfg=CONFIG[r]||(['v4-matchcenter','matchCenter','match-center'].includes(r)?CONFIG.match:null);
 
     document.body.classList.toggle('v73-motion-active',!!cfg);
 
@@ -519,6 +519,28 @@
         banner=buildBanner(cfg);
         banner.classList.add('v73-below-native','v73-stats-below-native');
         banner.dataset.v73BelowNative='stats';
+      }
+      if(screen.lastElementChild!==banner)screen.appendChild(banner);
+      syncAll();
+      return;
+    }
+
+    /* V141 — MATCH CENTER REAL:
+       Primero va el contenido oficial V92 (partido, selector, marcador, tabs y datos).
+       El cuadro cinematográfico "EL PARTIDO, EN VIVO." queda HASTA ABAJO. */
+    if(['v4-matchcenter','matchCenter','match-center'].includes(r)){
+      const nativeCenter=screen.querySelector('[data-v92-matchcenter]');
+      if(!nativeCenter){
+        screen.querySelectorAll(':scope > [data-v73-motion-banner]').forEach(x=>x.remove());
+        syncAll();
+        return;
+      }
+
+      let banner=screen.querySelector(':scope > [data-v73-motion-banner]');
+      if(!banner){
+        banner=buildBanner(cfg);
+        banner.classList.add('v73-below-native','v73-matchcenter-bottom');
+        banner.dataset.v73BelowNative='match-center';
       }
       if(screen.lastElementChild!==banner)screen.appendChild(banner);
       syncAll();
