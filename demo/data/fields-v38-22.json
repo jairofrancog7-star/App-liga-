@@ -99,11 +99,15 @@
       "latitude": null,
       "longitude": null,
       "precision": "pending",
-      "weatherEligible": false,
+      "weatherEligible": true,
       "mapsQuery": "Campo de futbol prolongación Emiliano Zapata, Juventino Rosas, Guanajuato",
       "address": "Prolongación Emiliano Zapata, Juventino Rosas, Guanajuato",
       "source": "https://juventinorosas.gob.mx/documentos/primerInforme.pdf",
-      "sourceNote": "La fuente municipal confirma un campo de futbol en prolongación Emiliano Zapata, pero no aporta pin exacto."
+      "sourceNote": "La fuente municipal confirma un campo de futbol en prolongación Emiliano Zapata, pero no aporta pin exacto.",
+      "weatherLatitude": 20.64337,
+      "weatherLongitude": -100.99286,
+      "weatherPrecision": "regional",
+      "weatherSourceNote": "Clima disponible con referencia regional de Juventino Rosas; el pin exacto del campo sigue pendiente."
     },
     {
       "id": "cerrito",
@@ -151,11 +155,15 @@
       "latitude": null,
       "longitude": null,
       "precision": "user-map-link",
-      "weatherEligible": false,
+      "weatherEligible": true,
       "mapsQuery": "https://maps.app.goo.gl/VJkp1fRa9t5yzfkb9",
       "address": "San Juan de la Cruz, Santa Cruz de Juventino Rosas, Guanajuato 38250",
       "source": "https://maps.app.goo.gl/VJkp1fRa9t5yzfkb9",
-      "sourceNote": "Ubicación del Campo San Juan de la Cruz corregida con el enlace exacto de Google Maps aportado por el usuario. Se retiró el pin anterior para evitar mostrar una ubicación incorrecta."
+      "sourceNote": "Ubicación del Campo San Juan de la Cruz corregida con el enlace exacto de Google Maps aportado por el usuario. Se retiró el pin anterior para evitar mostrar una ubicación incorrecta.",
+      "weatherLatitude": 20.63379,
+      "weatherLongitude": -100.911569,
+      "weatherPrecision": "community",
+      "weatherSourceNote": "Clima disponible con referencia meteorológica de San Juan de la Cruz; el enlace de Maps sigue siendo la referencia de ubicación."
     },
     {
       "id": "cuenda",
@@ -201,11 +209,15 @@
       "latitude": null,
       "longitude": null,
       "precision": "pending",
-      "weatherEligible": false,
+      "weatherEligible": true,
       "mapsQuery": "Campo de futbol Fraccionamiento Comontuoso, Juventino Rosas, Guanajuato",
       "address": "Fraccionamiento Comontuoso, Santa Cruz de Juventino Rosas, Guanajuato",
       "source": "https://juventinorosas.gob.mx/documentos/primerInforme.pdf",
-      "sourceNote": "La fuente municipal confirma rehabilitación del campo de futbol del Fraccionamiento Comontuoso; falta pin exacto."
+      "sourceNote": "La fuente municipal confirma rehabilitación del campo de futbol del Fraccionamiento Comontuoso; falta pin exacto.",
+      "weatherLatitude": 20.59793,
+      "weatherLongitude": -100.99663,
+      "weatherPrecision": "community",
+      "weatherSourceNote": "Clima disponible con referencia de Santiago de Cuenda/Comontuoso; el pin exacto del campo sigue pendiente."
     },
     {
       "id": "pozos",
@@ -235,11 +247,15 @@
       "latitude": null,
       "longitude": null,
       "precision": "user-map-link",
-      "weatherEligible": false,
+      "weatherEligible": true,
       "mapsQuery": "https://maps.app.goo.gl/RzxJokJsPw86ZePC9",
       "address": "Campo Rincón de Centeno · ubicación exacta en Google Maps",
       "source": "https://maps.app.goo.gl/RzxJokJsPw86ZePC9",
-      "sourceNote": "Ubicación exacta del Campo Rincón de Centeno actualizada con el enlace de Google Maps aportado por el usuario. No se muestra 'Pin pendiente' porque ya existe enlace exacto."
+      "sourceNote": "Ubicación exacta del Campo Rincón de Centeno actualizada con el enlace de Google Maps aportado por el usuario. No se muestra 'Pin pendiente' porque ya existe enlace exacto.",
+      "weatherLatitude": 20.660153,
+      "weatherLongitude": -100.886766,
+      "weatherPrecision": "community",
+      "weatherSourceNote": "Clima disponible con referencia meteorológica de Rincón de Centeno; el enlace exacto de Google Maps se conserva por separado."
     },
     {
       "id": "san-jose",

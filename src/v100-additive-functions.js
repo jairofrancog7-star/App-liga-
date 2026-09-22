@@ -421,6 +421,8 @@ function bindTactics(root){
 
 /* ---------- CLIMA: asistente informativo 24/48h ---------- */
 const FIELD_COORDS={
+  'emiliano zapata':[20.64337,-100.99286],
+  'fraccionamiento comontuoso':[20.59793,-100.99663],
   'cerrito de gasca':[20.60839,-100.93238],
   'san juan de la cruz':[20.63379,-100.911569],
   'santiago de cuenda':[20.59793,-100.99663],
