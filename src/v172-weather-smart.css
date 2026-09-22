@@ -600,3 +600,15 @@ body[data-app-route="v38Weather"] #v172-weather-smart .v172-verdict small{
     gap:5px;
   }
 }
+
+
+body[data-app-route="v38Weather"] #v172-weather-smart .v177-data-note{
+  margin:8px 0 12px;
+  padding:9px 10px;
+  border:1px solid rgba(255,196,82,.22);
+  border-radius:10px;
+  background:rgba(255,196,82,.055);
+  color:#d8c99f;
+  font-size:9.5px;
+  line-height:1.4;
+}
