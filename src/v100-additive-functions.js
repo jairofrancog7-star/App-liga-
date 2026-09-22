@@ -537,7 +537,88 @@ let installPrompt=null;window.addEventListener('beforeinstallprompt',e=>{e.preve
 function modal(html,cls=''){let m=$('.v100-modal');if(m)m.remove();m=document.createElement('div');m.className='v100-modal '+cls;m.innerHTML='<div class="v100-modal-card"><button class="v100-modal-close" aria-label="Cerrar">×</button>'+html+'</div>';document.body.appendChild(m);$('.v100-modal-close',m).onclick=()=>m.remove();m.addEventListener('click',e=>{if(e.target===m)m.remove()});return m}
 function loadTesseract(){if(window.Tesseract)return Promise.resolve(window.Tesseract);return new Promise((resolve,reject)=>{const s=document.createElement('script');s.src='https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js';s.onload=()=>resolve(window.Tesseract);s.onerror=reject;document.head.appendChild(s)})}
 function whatsappOcr(){const m=modal(sectionTitle('OCR LOCAL','Importar imagen de WhatsApp','Selecciona una foto que ya guardaste desde WhatsApp. La lectura ocurre en este dispositivo.')+'<label class="v100-file"><span>Imagen</span><input type="file" accept="image/*" data-v100-wa-file></label><div class="v100-actions"><button class="v100-primary" data-v100-wa-read>Leer imagen</button></div><div class="v100-modal-result" data-v100-wa-result></div>');$('[data-v100-wa-read]',m).onclick=async e=>{const f=$('[data-v100-wa-file]',m).files?.[0],out=$('[data-v100-wa-result]',m);if(!f)return toast('Selecciona una imagen');e.currentTarget.disabled=true;out.textContent='Leyendo imagen…';try{const T=await loadTesseract(),r=await T.recognize(f,'spa'),text=r?.data?.text||'',p=parseOcrText(text);write('v100-ocr-import',{text,...p});out.innerHTML='<b>Lectura terminada</b><p>'+esc(text.slice(0,600))+'</p><button class="v100-primary" data-v100-open-credential>Continuar a credencial</button>';$('[data-v100-open-credential]',m).onclick=()=>{m.remove();go('credentialBuilder')}}catch(err){out.textContent='No se pudo leer la imagen. Puedes capturar los datos manualmente.'}finally{e.currentTarget.disabled=false}}}
-function delegates(){const list=read('v100-delegates',[]);const render=()=>{const host=$('[data-v100-delegate-list]',m);host.innerHTML=list.length?list.map((d,i)=>'<article><span><b>'+esc(d.name)+'</b><small>'+esc(d.team)+'</small></span><div><a href="tel:'+esc(d.phone)+'">Llamar</a><a target="_blank" rel="noopener" href="https://wa.me/'+esc(String(d.phone).replace(/\D/g,''))+'">WhatsApp</a><button data-del="'+i+'">×</button></div></article>').join(''):'<p>No hay contactos guardados en este dispositivo.</p>';$$('[data-del]',host).forEach(b=>b.onclick=()=>{list.splice(Number(b.dataset.del),1);write('v100-delegates',list);render()})};const m=modal(sectionTitle('SOLO EN ESTE DISPOSITIVO','Directorio de delegados','Los teléfonos que agregues aquí no se publican ni se guardan en GitHub.')+'<div class="v100-form-grid"><label><span>Nombre</span><input data-v100-del-name></label><label><span>Equipo</span><input data-v100-del-team></label><label><span>Teléfono</span><input data-v100-del-phone inputmode="tel"></label></div><div class="v100-actions"><button class="v100-primary" data-v100-del-add>Agregar</button></div><div class="v100-delegate-list" data-v100-delegate-list></div>');render();$('[data-v100-del-add]',m).onclick=()=>{const name=$('[data-v100-del-name]',m).value.trim(),team=$('[data-v100-del-team]',m).value.trim(),phone=$('[data-v100-del-phone]',m).value.trim();if(!name||!phone)return toast('Agrega nombre y teléfono');list.push({name,team,phone});write('v100-delegates',list);render()}}
+function delegates(){
+  const list=read('v100-delegates',[]);
+  const teams=officialTeams()
+    .filter(t=>t&&t.name)
+    .map(t=>({name:String(t.name).trim(),category:String(t.category||t.cat||'Sin categoría').trim()}))
+    .filter((t,i,a)=>a.findIndex(x=>x.name===t.name&&x.category===t.category)===i)
+    .sort((a,b)=>a.category.localeCompare(b.category,'es')||a.name.localeCompare(b.name,'es'));
+  const categories=[...new Set(teams.map(t=>t.category).filter(Boolean))].sort((a,b)=>a.localeCompare(b,'es'));
+
+  const categoryOptions='<option value="">Selecciona una categoría</option>'+
+    categories.map(x=>'<option value="'+esc(x)+'">'+esc(x)+'</option>').join('');
+
+  const teamOptions=(category,selected='')=>{
+    const filtered=teams.filter(t=>!category||t.category===category);
+    return '<option value="">Selecciona un equipo</option>'+
+      filtered.map(t=>{
+        const key=t.category+'|||'+t.name;
+        return '<option value="'+esc(key)+'" '+(key===selected?'selected':'')+'>'+esc(t.name)+'</option>';
+      }).join('');
+  };
+
+  const render=()=>{
+    const host=$('[data-v100-delegate-list]',m);
+    host.innerHTML=list.length?list.map((d,i)=>{
+      const meta=[d.category,d.team].filter(Boolean).join(' · ');
+      return '<article><span><b>'+esc(d.name)+'</b><small>'+esc(meta||d.team||'Sin equipo')+'</small></span><div>'+
+        '<a href="tel:'+esc(d.phone)+'">Llamar</a>'+
+        '<a target="_blank" rel="noopener" href="https://wa.me/'+esc(String(d.phone).replace(/\D/g,''))+'">WhatsApp</a>'+
+        '<button data-del="'+i+'">×</button></div></article>';
+    }).join(''):'<p>No hay contactos guardados en este dispositivo.</p>';
+    $$('[data-del]',host).forEach(b=>b.onclick=()=>{
+      list.splice(Number(b.dataset.del),1);
+      write('v100-delegates',list);
+      render();
+    });
+  };
+
+  const m=modal(
+    sectionTitle('SOLO EN ESTE DISPOSITIVO','Directorio de delegados','Elige categoría y equipo de las opciones oficiales de la Liga. Los teléfonos se guardan solo en este dispositivo y no se publican en GitHub.')+
+    '<div class="v100-form-grid">'+
+      '<label><span>Nombre</span><input data-v100-del-name placeholder="Nombre del delegado"></label>'+
+      '<label><span>Categoría</span><select data-v100-del-category>'+categoryOptions+'</select></label>'+
+      '<label><span>Equipo</span><select data-v100-del-team>'+teamOptions('')+'</select></label>'+
+      '<label><span>Teléfono</span><input data-v100-del-phone inputmode="tel" autocomplete="tel" placeholder="Número de teléfono"></label>'+
+    '</div>'+
+    '<div class="v100-actions"><button class="v100-primary" data-v100-del-add>Agregar</button></div>'+
+    '<div class="v100-delegate-list" data-v100-delegate-list></div>'
+  );
+
+  const catSel=$('[data-v100-del-category]',m);
+  const teamSel=$('[data-v100-del-team]',m);
+
+  catSel.onchange=()=>{
+    teamSel.innerHTML=teamOptions(catSel.value);
+  };
+
+  teamSel.onchange=()=>{
+    if(catSel.value||!teamSel.value)return;
+    const [category]=teamSel.value.split('|||');
+    if(!category)return;
+    const selected=teamSel.value;
+    catSel.value=category;
+    teamSel.innerHTML=teamOptions(category,selected);
+  };
+
+  render();
+
+  $('[data-v100-del-add]',m).onclick=()=>{
+    const name=$('[data-v100-del-name]',m).value.trim();
+    const phone=$('[data-v100-del-phone]',m).value.trim();
+    const selected=teamSel.value;
+    const parts=selected.split('|||');
+    const category=catSel.value||parts[0]||'';
+    const team=parts.length>1?parts.slice(1).join('|||'):'';
+    if(!name||!category||!team||!phone)return toast('Completa nombre, categoría, equipo y teléfono');
+    list.push({name,category,team,phone});
+    write('v100-delegates',list);
+    $('[data-v100-del-name]',m).value='';
+    $('[data-v100-del-phone]',m).value='';
+    render();
+  };
+}
 function fanzone(){const p=read('v100-fan-pulse',{fire:0,goal:0,clap:0,heart:0});const m=modal(sectionTitle('FAN ZONE','Pulso de la afición','Reacciones locales; no representan una encuesta oficial.')+'<div class="v100-big-reactions"><button data-r="fire">🔥 <b>'+p.fire+'</b></button><button data-r="goal">⚽ <b>'+p.goal+'</b></button><button data-r="clap">👏 <b>'+p.clap+'</b></button><button data-r="heart">💙 <b>'+p.heart+'</b></button></div>');$$('[data-r]',m).forEach(b=>b.onclick=()=>{p[b.dataset.r]=(p[b.dataset.r]||0)+1;write('v100-fan-pulse',p);b.querySelector('b').textContent=p[b.dataset.r]})}
 function journeySim(){const teams=officialTeams();const opts=teams.map(t=>'<option>'+esc(t.name)+'</option>').join('');const m=modal(sectionTitle('ESCENARIO LOCAL','Simulador de jornada','Prueba un marcador hipotético. No modifica resultados ni tablas oficiales.')+'<div class="v100-form-grid"><label><span>Local</span><select data-js-home>'+opts+'</select></label><label><span>Visitante</span><select data-js-away>'+opts+'</select></label><label><span>Goles local</span><input type="number" min="0" max="30" value="0" data-js-hg></label><label><span>Goles visitante</span><input type="number" min="0" max="30" value="0" data-js-ag></label></div><div class="v100-actions"><button class="v100-primary" data-js-save>Guardar escenario</button></div><div data-js-list></div>');const render=()=>{const list=read('v100-journey-sim',[]),h=$('[data-js-list]',m);h.innerHTML=list.length?'<div class="v100-sim-list">'+list.map((x,i)=>'<article><span><b>'+esc(x.home)+' '+x.hg+'–'+x.ag+' '+esc(x.away)+'</b><small>Escenario hipotético</small></span><button data-js-del="'+i+'">Quitar</button></article>').join('')+'</div>':'<p class="v100-note">Sin escenarios guardados.</p>';$$('[data-js-del]',h).forEach(b=>b.onclick=()=>{list.splice(Number(b.dataset.jsDel),1);write('v100-journey-sim',list);render()})};render();$('[data-js-save]',m).onclick=()=>{const x={home:$('[data-js-home]',m).value,away:$('[data-js-away]',m).value,hg:Number($('[data-js-hg]',m).value||0),ag:Number($('[data-js-ag]',m).value||0)};if(x.home===x.away)return toast('Elige dos equipos distintos');const list=read('v100-journey-sim',[]);list.push(x);write('v100-journey-sim',list);render()}}
 function shotmap(){const shots=read('v100-shotmap',[]);const m=modal(sectionTitle('ANÁLISIS LOCAL','Shot Map','Toca la cancha para registrar tiros. Se guarda solo en este dispositivo.')+'<div class="v100-shot-pitch" data-shot-pitch></div><div class="v100-actions"><button class="v100-secondary" data-shot-undo>Deshacer</button><button class="v100-secondary" data-shot-clear>Limpiar</button><button class="v100-primary" data-shot-png>PNG</button><button class="v100-secondary" data-shot-json>JSON</button></div>','v100-shot-modal');const pitch=$('[data-shot-pitch]',m);const render=()=>{pitch.innerHTML=shots.map((s,i)=>'<i style="left:'+s.x+'%;top:'+s.y+'%" title="Tiro '+(i+1)+'"></i>').join('')};render();pitch.onclick=e=>{const r=pitch.getBoundingClientRect();shots.push({x:+(((e.clientX-r.left)/r.width)*100).toFixed(1),y:+(((e.clientY-r.top)/r.height)*100).toFixed(1),at:new Date().toISOString()});write('v100-shotmap',shots);render()};$('[data-shot-undo]',m).onclick=()=>{shots.pop();write('v100-shotmap',shots);render()};$('[data-shot-clear]',m).onclick=()=>{shots.splice(0);write('v100-shotmap',shots);render()};$('[data-shot-json]',m).onclick=()=>download(new Blob([JSON.stringify(shots,null,2)],{type:'application/json'}),'Shot_Map_Liga.json');$('[data-shot-png]',m).onclick=async()=>{const c=document.createElement('canvas');c.width=900;c.height=1300;const x=c.getContext('2d');x.fillStyle='#07582e';x.fillRect(0,0,900,1300);x.strokeStyle='#fff';x.lineWidth=6;x.strokeRect(35,35,830,1230);x.beginPath();x.moveTo(35,650);x.lineTo(865,650);x.stroke();shots.forEach((s,i)=>{x.fillStyle='#ffe369';x.beginPath();x.arc(35+s.x/100*830,35+s.y/100*1230,18,0,Math.PI*2);x.fill();x.fillStyle='#07104d';x.font='700 16px Arial';x.textAlign='center';x.fillText(String(i+1),35+s.x/100*830,41+s.y/100*1230)});const b=await canvasBlob(c);download(b,'Shot_Map_Liga.png')}}
