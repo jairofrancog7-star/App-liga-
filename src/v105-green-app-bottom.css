@@ -320,3 +320,100 @@ body[data-app-route="moments"] .v105-bottom[data-v105-route="moments"] .v105-foo
     font-size:25px!important;
   }
 }
+
+
+/* V124 — VIDEO: fusiona Liga Juventino TV con el archivo inferior como una sola pantalla.
+   Quita el marco exterior que hacía parecer que había otra app/cuadro dentro de la página. */
+body[data-app-route="video"] #screen{
+  background:#03105a!important;
+}
+body[data-app-route="video"] #v105-bottom[data-v105-route="video"]{
+  width:100%!important;
+  max-width:none!important;
+  margin:0!important;
+  padding:24px 49px 34px!important;
+  border:0!important;
+  border-radius:0!important;
+  background:#03105a!important;
+  background-image:none!important;
+  box-shadow:none!important;
+  overflow:visible!important;
+  color:#fff!important;
+}
+body[data-app-route="video"] #v105-bottom[data-v105-route="video"] .v105-head{
+  margin:0 0 18px!important;
+  padding:0!important;
+  background:transparent!important;
+}
+body[data-app-route="video"] #v105-bottom[data-v105-route="video"] .v105-head small{
+  color:#26ddeb!important;
+  font-size:10px!important;
+  line-height:1!important;
+  font-weight:900!important;
+  letter-spacing:.16em!important;
+}
+body[data-app-route="video"] #v105-bottom[data-v105-route="video"] .v105-head h2{
+  margin:7px 0 7px!important;
+  color:#fff!important;
+  font-size:28px!important;
+  line-height:1.04!important;
+  font-weight:900!important;
+  letter-spacing:-.025em!important;
+}
+body[data-app-route="video"] #v105-bottom[data-v105-route="video"] .v105-head p{
+  margin:0!important;
+  color:#b7c0df!important;
+  font-size:13px!important;
+  line-height:1.38!important;
+}
+body[data-app-route="video"] #v105-bottom[data-v105-route="video"] .v105-motion{
+  min-height:178px!important;
+  margin:0 0 18px!important;
+  border:1px solid rgba(38,221,235,.24)!important;
+  border-radius:18px!important;
+  background:#07105f!important;
+  box-shadow:none!important;
+}
+body[data-app-route="video"] #v105-bottom[data-v105-route="video"] .v105-motion-copy{
+  min-height:178px!important;
+  padding:20px!important;
+}
+body[data-app-route="video"] #v105-bottom[data-v105-route="video"] .v105-motion-copy small{
+  color:#32e1ee!important;
+}
+body[data-app-route="video"] #v105-bottom[data-v105-route="video"] .v105-video-grid{
+  gap:12px!important;
+  margin:0 0 18px!important;
+}
+body[data-app-route="video"] #v105-bottom[data-v105-route="video"] .v105-video-card{
+  border:1px solid rgba(38,221,235,.20)!important;
+  border-radius:16px!important;
+  background:#07105f!important;
+  box-shadow:none!important;
+}
+body[data-app-route="video"] #v105-bottom[data-v105-route="video"] .v105-video-card video{
+  background:#030846!important;
+}
+body[data-app-route="video"] #v105-bottom[data-v105-route="video"] .v105-video-card small{
+  color:#aeb9db!important;
+}
+body[data-app-route="video"] #v105-bottom[data-v105-route="video"] .v105-grid{
+  gap:10px!important;
+}
+body[data-app-route="video"] #v105-bottom[data-v105-route="video"] .v105-card{
+  border:1px solid rgba(38,221,235,.20)!important;
+  border-radius:16px!important;
+  background:#07105f!important;
+  box-shadow:none!important;
+}
+body[data-app-route="video"] #v105-bottom[data-v105-route="video"] .v105-footnote{
+  display:none!important;
+}
+@media(max-width:380px){
+  body[data-app-route="video"] #v105-bottom[data-v105-route="video"]{
+    padding:22px 34px 30px!important;
+  }
+  body[data-app-route="video"] #v105-bottom[data-v105-route="video"] .v105-head h2{
+    font-size:25px!important;
+  }
+}
