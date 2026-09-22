@@ -86,7 +86,7 @@ function fanVote(next){
 }
 function fanRenderButtons(root,selector,attr){
   const snap=fanSnapshot();
-  $(selector,root).forEach(b=>{
+  Array.from((root||document).querySelectorAll(selector)).forEach(b=>{
     const k=b.dataset[attr];
     const n=b.querySelector('b');if(n)n.textContent=Number(snap.counts[k]||0);
     b.classList.toggle('is-selected',snap.choice===k);
@@ -203,7 +203,7 @@ function bindHome(root){
   cat?.addEventListener('change',rebuild);
   $('[data-v100-save-fav]',root)?.addEventListener('click',()=>{const all=officialTeams(),t=all.find(x=>x.name===teamSel.value);if(!t)return toast('Selecciona un equipo');write('v100-favorite-team',t);toast('Equipo favorito guardado');root.remove();schedule()});
   $('[data-v100-open-fav]',root)?.addEventListener('click',()=>{const t=read('v100-favorite-team',{});const name=t.name||teamSel?.value;if(name)openOfficialTeam(name)});
-  $('[data-v100-react]',root).forEach(b=>b.onclick=()=>{const k=b.dataset.v100React,r=fanVote(k);fanRenderButtons(root,'[data-v100-react]','v100React');toast(r.same?'Ya registraste esa reacción':(r.previous?'Reacción cambiada · sigue contando como un solo voto':'Reacción registrada · 1 por visitante/perfil'))});fanRenderButtons(root,'[data-v100-react]','v100React');
+  Array.from(root.querySelectorAll('[data-v100-react]')).forEach(b=>{b.dataset.fanHandled='1';b.onclick=()=>{const k=b.dataset.v100React,r=fanVote(k);fanRenderButtons(root,'[data-v100-react]','v100React');toast(r.same?'Ya registraste esa reacción':(r.previous?'Reacción cambiada · sigue contando como un solo voto':'Reacción registrada · 1 por visitante/perfil'))}});fanRenderButtons(root,'[data-v100-react]','v100React');
 }
 
 /* ---------- MÁS / HERRAMIENTAS: únicamente anexado al final ---------- */
