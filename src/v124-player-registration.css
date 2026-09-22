@@ -163,3 +163,10 @@ body[data-app-route="credentialBuilder"] .v124-head p{
   .v126-person.autoregistered{grid-template-columns:20px minmax(0,1fr)!important}
   .v126-person.autoregistered .v126-complete{grid-column:2;width:100%;margin-top:4px}
 }
+
+
+/* V157 — OCR inteligente para nombres mexicanos. */
+.v157-review-note{padding:9px 10px;border:1px solid rgba(255,190,80,.34);border-radius:11px;background:#3b2a0a;display:grid;gap:2px}
+.v157-review-note b{font-size:9px;color:#ffd077}
+.v157-review-note span{font-size:8px;line-height:1.35;color:#e9d8ae}
+.v126-person.review{border-color:rgba(255,190,80,.40)!important;background:#2b210d!important}
