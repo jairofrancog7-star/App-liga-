@@ -117,10 +117,9 @@ function weatherMarkup(){
 function mount(){
   const r=route(),screen=$('#screen');if(!screen)return;
   if(r==='profile'){
-    if(!$('#v168-profile-account',screen)){
-      const wrap=document.createElement('div');wrap.id='v168-profile-account';wrap.innerHTML=profileMarkup();
-      screen.appendChild(wrap);bindProfile(wrap);
-    }
+    /* V170: Cuenta ya no aparece como tarjeta grande separada al final.
+       El registro se abre únicamente desde "Crear una cuenta". */
+    $('#v168-profile-account',screen)?.remove();
   }else $('#v168-profile-account',screen)?.remove();
   if(r==='v38Weather'){
     if(!$('#v168-weather-account',screen)){
