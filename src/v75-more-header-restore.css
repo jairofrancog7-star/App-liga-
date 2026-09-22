@@ -721,3 +721,49 @@
     max-height:23px!important;
   }
 }
+
+
+/* V80 — MÁS con un solo fondo sólido igual a la cabecera.
+   Quita la franja azul brillante/arte del contenido y deja toda la página
+   con el mismo tono oscuro de arriba, sin mover menús ni navegación. */
+@media (max-width:1023px){
+  body[data-app-route="more"]{
+    --v80-more-solid:#080b82;
+    background:var(--v80-more-solid)!important;
+    background-image:none!important;
+  }
+
+  body[data-app-route="more"] #app,
+  body[data-app-route="more"] .app-shell,
+  body[data-app-route="more"] #screen,
+  body[data-app-route="more"] .v19-more-page{
+    background:var(--v80-more-solid)!important;
+    background-color:var(--v80-more-solid)!important;
+    background-image:none!important;
+  }
+
+  body[data-app-route="more"] .topbar,
+  body[data-app-route="more"].v66-compact-route .topbar,
+  body[data-app-route="more"].v69-primary-tool-header .topbar{
+    background:var(--v80-more-solid)!important;
+    background-color:var(--v80-more-solid)!important;
+    background-image:none!important;
+    border-bottom:0!important;
+    box-shadow:none!important;
+  }
+
+  body[data-app-route="more"] .v19-more-page::before{
+    content:none!important;
+    display:none!important;
+    background:none!important;
+  }
+
+  /* Evita cualquier franja o bloque de otro azul detrás de los renglones. */
+  body[data-app-route="more"] .v19-more-menu,
+  body[data-app-route="more"] .v19-more-label,
+  body[data-app-route="more"] .v19-more-bottom,
+  body[data-app-route="more"] .v60-more-tool-note{
+    background:transparent!important;
+    background-image:none!important;
+  }
+}
