@@ -1,0 +1,239 @@
+/* V132 — La cédula ocupa prácticamente toda la hoja Carta al guardar como PDF.
+   Mantiene UNA sola página y evita el gran espacio blanco inferior. */
+
+@page{
+  size:Letter portrait;
+  margin:4mm;
+}
+
+@media print{
+  html,body{
+    width:auto!important;
+    height:auto!important;
+    min-width:0!important;
+    min-height:0!important;
+    margin:0!important;
+    padding:0!important;
+    background:#fff!important;
+  }
+
+  body.v131-print-cedula{
+    margin:0!important;
+    padding:0!important;
+    overflow:hidden!important;
+    background:#fff!important;
+    -webkit-print-color-adjust:exact!important;
+    print-color-adjust:exact!important;
+  }
+
+  /* El contenido útil de una hoja Carta con margen de 4 mm es ~271.4 mm de alto. */
+  body.v131-print-cedula .v131-cedula-sheet{
+    position:static!important;
+    inset:auto!important;
+    width:100%!important;
+    max-width:none!important;
+    height:271mm!important;
+    min-height:271mm!important;
+    max-height:271mm!important;
+    margin:0!important;
+    padding:5.5mm 6mm 4.5mm!important;
+    display:flex!important;
+    flex-direction:column!important;
+    overflow:hidden!important;
+    box-sizing:border-box!important;
+    transform:none!important;
+    zoom:1!important;
+    break-inside:avoid!important;
+    page-break-inside:avoid!important;
+    break-after:avoid-page!important;
+    page-break-after:avoid!important;
+  }
+
+  body.v131-print-cedula .v131-sheet-head{
+    grid-template-columns:21mm minmax(0,1fr) 21mm!important;
+    gap:5mm!important;
+    flex:0 0 auto!important;
+  }
+  body.v131-print-cedula .v131-head-logo{
+    width:21mm!important;
+    height:21mm!important;
+  }
+  body.v131-print-cedula .v131-logo-fallback{
+    width:18mm!important;
+    height:18mm!important;
+    font-size:7pt!important;
+  }
+  body.v131-print-cedula .v131-head-copy small{
+    font-size:7.8pt!important;
+    letter-spacing:.11em!important;
+  }
+  body.v131-print-cedula .v131-head-copy h1{
+    margin:1.7mm 0 .8mm!important;
+    font-size:18pt!important;
+    line-height:1!important;
+  }
+  body.v131-print-cedula .v131-head-copy p{
+    font-size:10.5pt!important;
+    line-height:1.08!important;
+  }
+
+  body.v131-print-cedula .v131-doc-tag{
+    margin:3.2mm 0 1mm!important;
+    font-size:7pt!important;
+  }
+  body.v131-print-cedula .v131-blue-rule{
+    height:1.3mm!important;
+    margin-bottom:1.6mm!important;
+  }
+  body.v131-print-cedula .v131-status{
+    min-height:7.5mm!important;
+    margin:0 0 2.4mm!important;
+    padding:0 2.8mm!important;
+    border-radius:2mm!important;
+    font-size:7.2pt!important;
+  }
+  body.v131-print-cedula .v131-matchup{
+    margin:0 0 2.7mm!important;
+    font-size:15pt!important;
+    line-height:1!important;
+  }
+
+  body.v131-print-cedula .v131-meta{
+    grid-template-columns:repeat(4,minmax(0,1fr))!important;
+    gap:1.7mm!important;
+    margin-bottom:3mm!important;
+    flex:0 0 auto!important;
+  }
+  body.v131-print-cedula .v131-meta div{
+    padding:1.8mm 2mm!important;
+    border-radius:1.2mm!important;
+  }
+  body.v131-print-cedula .v131-meta small{
+    font-size:5.8pt!important;
+  }
+  body.v131-print-cedula .v131-meta b{
+    margin-top:.9mm!important;
+    font-size:7.2pt!important;
+    line-height:1.08!important;
+  }
+
+  /* Los dos equipos ocupan la mayor parte de la página. */
+  body.v131-print-cedula .v131-rosters{
+    display:grid!important;
+    grid-template-columns:repeat(2,minmax(0,1fr))!important;
+    gap:3.2mm!important;
+    align-items:stretch!important;
+    flex:1 1 auto!important;
+    min-height:0!important;
+    overflow:hidden!important;
+  }
+  body.v131-print-cedula .v131-team-block{
+    min-height:0!important;
+    display:flex!important;
+    flex-direction:column!important;
+    break-inside:avoid!important;
+    page-break-inside:avoid!important;
+  }
+  body.v131-print-cedula .v131-team-title{
+    min-height:10mm!important;
+    gap:2mm!important;
+    padding:1.2mm 0!important;
+    flex:0 0 auto!important;
+  }
+  body.v131-print-cedula .v131-team-title img,
+  body.v131-print-cedula .v131-team-title .v131-team-fallback{
+    width:8.5mm!important;
+    height:8.5mm!important;
+  }
+  body.v131-print-cedula .v131-team-title b{
+    font-size:9.2pt!important;
+    line-height:1!important;
+  }
+
+  body.v131-print-cedula .v131-roster-table{
+    width:100%!important;
+    height:100%!important;
+    flex:1 1 auto!important;
+    table-layout:fixed!important;
+  }
+  body.v131-print-cedula .v131-roster-table th,
+  body.v131-print-cedula .v131-roster-table td{
+    padding:.8mm .65mm!important;
+    line-height:1.05!important;
+  }
+  body.v131-print-cedula .v131-roster-table th{
+    font-size:5.8pt!important;
+    height:6mm!important;
+  }
+  body.v131-print-cedula .v131-roster-table td{
+    height:7.2mm!important;
+    font-size:6.4pt!important;
+  }
+  body.v131-print-cedula .v131-roster-table td:nth-child(2){
+    white-space:normal!important;
+    overflow:visible!important;
+    text-overflow:clip!important;
+    overflow-wrap:anywhere!important;
+    line-height:1.05!important;
+  }
+
+  /* 23+ jugadores: reduce sólo lo necesario para seguir en una página. */
+  body.v131-print-cedula .v131-cedula-sheet.v131-dense .v131-roster-table th{
+    font-size:5.3pt!important;
+    height:5.2mm!important;
+  }
+  body.v131-print-cedula .v131-cedula-sheet.v131-dense .v131-roster-table td{
+    height:5.5mm!important;
+    font-size:5.7pt!important;
+    padding:.55mm!important;
+  }
+  body.v131-print-cedula .v131-cedula-sheet.v131-ultra .v131-roster-table th{
+    font-size:4.8pt!important;
+    height:4.6mm!important;
+  }
+  body.v131-print-cedula .v131-cedula-sheet.v131-ultra .v131-roster-table td{
+    height:4.55mm!important;
+    font-size:5.1pt!important;
+    padding:.4mm!important;
+  }
+  body.v131-print-cedula .v131-cedula-sheet.v131-ultra .v131-head-copy h1{
+    font-size:16.5pt!important;
+  }
+
+  /* Pie anclado abajo para aprovechar el resto de la hoja, no dejarlo en blanco. */
+  body.v131-print-cedula .v131-match-notes{
+    margin-top:3mm!important;
+    padding-top:2.3mm!important;
+    border-top-width:1.1mm!important;
+    flex:0 0 auto!important;
+  }
+  body.v131-print-cedula .v131-match-notes h3{
+    margin:0 0 1.2mm!important;
+    font-size:7.2pt!important;
+  }
+  body.v131-print-cedula .v131-result-line{
+    font-size:6.2pt!important;
+    line-height:1.2!important;
+  }
+  body.v131-print-cedula .v131-notes-box{
+    min-height:13mm!important;
+    margin-top:1.5mm!important;
+    padding:1.2mm!important;
+    font-size:6pt!important;
+  }
+  body.v131-print-cedula .v131-signatures{
+    grid-template-columns:repeat(3,minmax(0,1fr))!important;
+    gap:6mm!important;
+    margin-top:7mm!important;
+    padding-top:5mm!important;
+  }
+  body.v131-print-cedula .v131-signatures div{
+    font-size:5.8pt!important;
+    padding-top:1.2mm!important;
+  }
+  body.v131-print-cedula .v131-sheet-note{
+    margin-top:2mm!important;
+    font-size:5pt!important;
+    line-height:1.15!important;
+  }
+}
