@@ -5039,7 +5039,6 @@ function v64CredentialBuilderView(){
       '<input type="hidden" data-v64-cred-cat value="'+v64Esc(v64TeamCategory(v66Team)||'Por confirmar')+'">'+
       '<div class="v64-auto-category"><small>Categoría automática</small><b data-v64-auto-category>'+v64Esc(v64TeamCategory(v66Team)||'Por confirmar')+'</b></div>'+
     '</div>'+
-    '<article class="v64-credential-preview"><div class="v64-cred-photo" data-v64-photo-preview><span>FOTO</span></div><div><small>LIGA JUVENTINO ROSAS</small><h2 data-v64-preview-name>Jugador</h2><p data-v64-preview-team>Equipo · Categoría</p><em data-v64-preview-curp>CURP ••••</em></div></article>'+
     '<div class="v60-actions"><button class="v60-btn" data-v64-download-credential-png>Descargar PNG</button><button class="v60-btn outline" data-v64-print-credential>Descargar PDF · 1 hoja</button></div></section>';
 }
 
@@ -5635,14 +5634,10 @@ document.querySelector('[data-v64-doc]')?.addEventListener('change',e=>{
   if(file){const url=URL.createObjectURL(file);const img=host.querySelector('img');img.src=url;img.onload=()=>URL.revokeObjectURL(url)}
 },{once:true});
 document.querySelector('[data-v64-photo]')?.addEventListener('change',e=>{
-  const file=e.target.files?.[0],mini=document.querySelector('[data-v64-player-mini-preview]'),host=document.querySelector('[data-v64-photo-preview]');
-  if(mini){
-    mini.innerHTML=file?'<img alt="Vista previa de la foto del jugador">':'<span>Vista previa de la foto</span>';
-    if(file){const url=URL.createObjectURL(file);const img=mini.querySelector('img');img.src=url;img.onload=()=>URL.revokeObjectURL(url)}
-  }
-  if(!host)return;
-  host.innerHTML=file?'<img alt="Foto del jugador">':'<span>FOTO</span>';
-  if(file){const url=URL.createObjectURL(file);const img=host.querySelector('img');img.src=url;img.onload=()=>URL.revokeObjectURL(url)}
+  const file=e.target.files?.[0],mini=document.querySelector('[data-v64-player-mini-preview]');
+  if(!mini)return;
+  mini.innerHTML=file?'<img alt="Vista previa de la foto del jugador">':'<span>Vista previa de la foto</span>';
+  if(file){const url=URL.createObjectURL(file);const img=mini.querySelector('img');img.src=url;img.onload=()=>URL.revokeObjectURL(url)}
 },{once:true});
 document.querySelectorAll('[data-v64-cred-name],[data-v64-cred-curp],[data-v64-cred-team],[data-v64-cred-cat]').forEach(el=>{el.addEventListener('input',v64CredentialSync);el.addEventListener('change',v64CredentialSync)});
 document.querySelector('[data-v64-cred-team]')?.addEventListener('change',()=>{v64SyncCredentialTeamCategory();v64CredentialSync()});
