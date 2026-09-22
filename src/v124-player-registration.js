@@ -30,12 +30,97 @@ let rosterImportFile=null;
 let rosterImport={fileName:'',rawText:'',entries:[],missing:[],status:'',busy:false};
 let lastManagerHtml='';
 let filePickerCooldownUntil=0;
+let registryQuery='';
+let registrySort='newest';
+let registryCategory='Todas';
+let registryTeam='Todos';
+let registryLetter='Todas';
+let registrySource='Todos';
 
 function toast(msg){
   let n=$('.v124-toast');if(n)n.remove();
   n=document.createElement('div');n.className='v124-toast';n.textContent=msg;document.body.appendChild(n);
   setTimeout(()=>n.remove(),2400);
 }
+function currentRegistrarName(){
+  try{
+    const s=JSON.parse(localStorage.getItem('lj-store-v3')||'{}')||{};
+    const n=String(s?.user?.name||'').trim();
+    if(n)return n;
+  }catch(e){}
+  return 'Este dispositivo';
+}
+function recordOrigin(r){
+  if(r?.registrationOrigin)return String(r.registrationOrigin);
+  if(r?.source==='official')return 'AdminFut';
+  const st=norm(r?.status||'');
+  if(st.includes('renovacion'))return 'Renovación';
+  if(st.includes('cambio de equipo'))return 'Cambio de equipo';
+  if(st.includes('import'))return 'Importación';
+  return 'Registro en la app';
+}
+function recordRegistrar(r){
+  if(r?.registeredBy)return String(r.registeredBy);
+  if(r?.source==='official')return 'AdminFut';
+  return 'Registro local anterior';
+}
+function fmtRecordDate(v){
+  if(!v)return 'Sin fecha';
+  const d=new Date(v);if(Number.isNaN(d.getTime()))return 'Sin fecha';
+  return new Intl.DateTimeFormat('es-MX',{day:'2-digit',month:'short',year:'numeric',hour:'2-digit',minute:'2-digit'}).format(d);
+}
+function recordTimestamp(r){
+  const t=Date.parse(r?.createdAt||r?.updatedAt||'');
+  return Number.isFinite(t)?t:0;
+}
+function filterRegistry(list){
+  let out=(Array.isArray(list)?list:[]).slice();
+  const q=norm(registryQuery);
+  if(q)out=out.filter(r=>[r.name,r.team,r.category,recordOrigin(r),recordRegistrar(r)].some(v=>norm(v).includes(q)));
+  if(registryCategory!=='Todas')out=out.filter(r=>String(r.category||'')===registryCategory);
+  if(registryTeam!=='Todos')out=out.filter(r=>String(r.team||'')===registryTeam);
+  if(registryLetter!=='Todas')out=out.filter(r=>norm(r.name).charAt(0).toUpperCase()===registryLetter);
+  if(registrySource!=='Todos')out=out.filter(r=>recordOrigin(r)===registrySource);
+  const byName=(a,b)=>String(a.name||'').localeCompare(String(b.name||''),'es',{sensitivity:'base'});
+  if(registrySort==='oldest')out.sort((a,b)=>recordTimestamp(a)-recordTimestamp(b)||byName(a,b));
+  else if(registrySort==='az')out.sort(byName);
+  else if(registrySort==='za')out.sort((a,b)=>-byName(a,b));
+  else out.sort((a,b)=>recordTimestamp(b)-recordTimestamp(a)||byName(a,b));
+  return out;
+}
+function uniqueSorted(list,key){
+  return [...new Set((list||[]).map(key).filter(Boolean))].sort((a,b)=>String(a).localeCompare(String(b),'es',{sensitivity:'base'}));
+}
+function registryFilterHtml(list){
+  const cats=uniqueSorted(list,r=>r.category||'');
+  const teams=uniqueSorted(list,r=>r.team||'');
+  const sources=uniqueSorted(list,recordOrigin);
+  const letters=uniqueSorted(list,r=>norm(r.name).charAt(0).toUpperCase()).filter(x=>/^[A-Z0-9]$/.test(x));
+  const filtered=filterRegistry(list);
+  const opt=(v,label,current)=>'<option value="'+esc(v)+'" '+(current===v?'selected':'')+'>'+esc(label||v)+'</option>';
+  return '<section class="v161-registry-filters" data-v161-filters>'+
+    '<div class="v161-filter-head"><b>Encontrar jugadores rápido</b><span data-v161-count>'+filtered.length+' de '+list.length+' jugadores</span></div>'+
+    '<div class="v161-filter-grid">'+
+      '<label><span>Orden</span><select data-v161-sort>'+
+        opt('newest','Más nuevos primero',registrySort)+opt('oldest','Más antiguos primero',registrySort)+opt('az','Nombre A–Z',registrySort)+opt('za','Nombre Z–A',registrySort)+
+      '</select></label>'+
+      '<label><span>Categoría</span><select data-v161-category>'+opt('Todas','Todas',registryCategory)+cats.map(x=>opt(x,x,registryCategory)).join('')+'</select></label>'+
+      '<label><span>Equipo</span><select data-v161-team>'+opt('Todos','Todos',registryTeam)+teams.map(x=>opt(x,x,registryTeam)).join('')+'</select></label>'+
+      '<label><span>Origen</span><select data-v161-source>'+opt('Todos','Todos',registrySource)+sources.map(x=>opt(x,x,registrySource)).join('')+'</select></label>'+
+    '</div>'+
+    '<div class="v161-letter-filter"><span>Letra inicial</span><div>'+
+      '<button type="button" data-v161-letter="Todas" class="'+(registryLetter==='Todas'?'active':'')+'">Todas</button>'+
+      letters.map(x=>'<button type="button" data-v161-letter="'+esc(x)+'" class="'+(registryLetter===x?'active':'')+'">'+esc(x)+'</button>').join('')+
+    '</div></div>'+
+  '</section>';
+}
+function applyRegistryFilters(root){
+  if(!root)return;
+  const all=seasonRecords(),filtered=filterRegistry(all),host=$('[data-v124-list]',root);
+  if(host){host.innerHTML=listHtml(filtered);bindList(root)}
+  const count=$('[data-v161-count]',root);if(count)count.textContent=filtered.length+' de '+all.length+' jugadores';
+}
+
 function currentSeason(){
   const now=new Date(),y=now.getFullYear(),m=now.getMonth()+1;
   const start=m>=7?y:y-1;return start+'–'+(start+1);
@@ -101,11 +186,16 @@ function syncOfficialSeason(silent=false){
     const k=norm(p.name)+'|'+norm(p.team),old=byKey.get(k);
     if(old){
       old.category=p.category;old.catId=p.catId;old.officialPresent=true;old.officialCheckedAt=now;
-      if(old.source==='official')old.status='Oficial en AdminFut';
+      if(old.source==='official'){
+        old.status='Oficial en AdminFut';
+        old.registrationOrigin=old.registrationOrigin||'AdminFut';
+        old.registeredBy=old.registeredBy||'AdminFut';
+      }
       kept++;continue;
     }
     const rec={id:uid(),name:p.name,team:p.team,category:p.category,catId:p.catId,season,
-      status:'Oficial en AdminFut',source:'official',officialPresent:true,officialCheckedAt:now,
+      status:'Oficial en AdminFut',source:'official',registrationOrigin:'AdminFut',registeredBy:'AdminFut',
+      officialPresent:true,officialCheckedAt:now,
       curp:'',dob:'',city:'',position:'Sin definir',createdAt:now,updatedAt:now};
     list.push(rec);byKey.set(k,rec);added++;
   }
@@ -254,9 +344,12 @@ function saveForm(silent=false){
   if(idx<0&&data.curp)idx=list.findIndex(r=>r.curp&&r.curp===data.curp);
   if(idx<0)idx=list.findIndex(r=>recordKey(r)===norm(data.name)+'|'+norm(data.team));
   const now=new Date().toISOString(),hit=officialMatch(data);
-  const source=idx>=0?list[idx].source:'local';
-  const rec={...(idx>=0?list[idx]:{}),...data,id:idx>=0?list[idx].id:uid(),source,
-    officialPresent:!!hit,officialCheckedAt:now,createdAt:idx>=0?list[idx].createdAt||now:now,updatedAt:now};
+  const source=idx>=0?list[idx].source:'local',registrar=currentRegistrarName();
+  const prior=idx>=0?list[idx]:null;
+  const rec={...(prior||{}),...data,id:prior?prior.id:uid(),source,
+    registrationOrigin:prior?.registrationOrigin||(source==='official'?'AdminFut':'Registro en la app'),
+    registeredBy:prior?.registeredBy||(source==='official'?'AdminFut':registrar),
+    officialPresent:!!hit,officialCheckedAt:now,createdAt:prior?.createdAt||now,updatedAt:now};
   if(hit){
     rec.category=hit.category;rec.catId=hit.catId;
     if(source==='official')rec.status='Oficial en AdminFut';
@@ -343,7 +436,7 @@ function renewFromPrevious(){
   if(!confirm('¿Traer a '+to+' los jugadores de '+from+'? Se copiarán como pendientes de confirmación.'))return;
   const now=new Date().toISOString();let added=0,skipped=0;
   for(const r of source){
-    const copy={...r,id:uid(),season:to,source:'local',officialPresent:false,
+    const copy={...r,id:uid(),season:to,source:'local',registrationOrigin:'Renovación',registeredBy:currentRegistrarName(),officialPresent:false,
       status:'Renovación · por confirmar',previousTeam:r.team||'',createdAt:now,updatedAt:now};
     if(duplicateIndex(target,copy)>=0){skipped++;continue}
     target.push(copy);added++;
@@ -985,11 +1078,12 @@ function statusClass(r){
   return 'is-pending';
 }
 function listHtml(list){
-  if(!list.length)return '<div class="v124-empty"><b>Sin registros en esta temporada</b><span>Guarda un jugador nuevo o sincroniza con AdminFut.</span></div>';
+  if(!list.length)return '<div class="v124-empty"><b>Sin resultados con estos filtros</b><span>Cambia categoría, equipo, letra, origen o búsqueda.</span></div>';
   return list.map(r=>'<article class="v124-player-card" data-v124-id="'+esc(r.id)+'">'+
     '<div class="v124-card-main"><label class="v124-pick" aria-label="Seleccionar '+esc(r.name)+'"><input type="checkbox" data-v124-select="'+esc(r.id)+'" '+(selectedIds.has(r.id)?'checked':'')+'><span></span></label><span class="v124-avatar">'+esc(String(r.name).split(/\s+/).slice(0,2).map(x=>x[0]||'').join('').toUpperCase())+'</span>'+
     '<span><b>'+esc(r.name)+'</b><small>'+esc(r.team)+' · '+esc(r.category||'Categoría por confirmar')+'</small>'+
     '<em class="'+statusClass(r)+'">'+esc(r.source==='official'?'Oficial en AdminFut':(r.officialPresent?'Coincide con AdminFut':r.status||'Pendiente'))+'</em></span></div>'+
+    '<div class="v161-record-meta"><span><b>Origen</b>'+esc(recordOrigin(r))+'</span><span><b>Registró</b>'+esc(recordRegistrar(r))+'</span><span><b>Alta</b>'+esc(fmtRecordDate(r.createdAt||r.updatedAt))+'</span></div>'+
     '<div class="v124-card-actions"><button data-v124-edit="'+esc(r.id)+'">Revisar / corregir</button><button data-v124-card="'+esc(r.id)+'">Credencial</button><button class="danger" data-v124-delete="'+esc(r.id)+'">Borrar</button></div>'+
   '</article>').join('');
 }
@@ -1002,13 +1096,14 @@ function managerHtml(){
     '<div class="v124-summary"><div><b>'+list.length+'</b><span>Registros</span></div><div><b>'+officialCount+'</b><span>Oficial / coincide</span></div><div><b>'+pending+'</b><span>Por revisar</span></div></div>'+
     fastToolsHtml(list)+
     '<div class="v124-primary-actions"><button class="primary" data-v124-save>Guardar / actualizar jugador</button><button data-v124-new>Nuevo registro</button><button data-v124-sync>Sincronizar con AdminFut</button></div>'+
-    '<label class="v124-search"><span>Buscar en esta temporada</span><input type="search" data-v124-search placeholder="Nombre o equipo"></label>'+
-    '<div class="v124-list" data-v124-list>'+listHtml(list)+'</div>'+
+    '<label class="v124-search"><span>Buscar en esta temporada</span><input type="search" data-v124-search placeholder="Nombre, equipo, origen o quién registró" value="'+esc(registryQuery)+'"></label>'+
+    registryFilterHtml(list)+
+    '<div class="v124-list" data-v124-list>'+listHtml(filterRegistry(list))+'</div>'+
     '<p class="v124-privacy">CURP, fecha de nacimiento y localidad capturadas aquí se conservan solo en este dispositivo; no se suben al repositorio público.</p>'+
   '</section>';
 }
 function bindManager(root){
-  $('[data-v124-season]',root)?.addEventListener('change',e=>{selectedIds.clear();quickTeam='';quickSeason='';setSeason(e.target.value);localStorage.removeItem(EDIT_KEY);renderManager()});
+  $('[data-v124-season]',root)?.addEventListener('change',e=>{selectedIds.clear();quickTeam='';quickSeason='';registryQuery='';registryCategory='Todas';registryTeam='Todos';registryLetter='Todas';registrySource='Todos';setSeason(e.target.value);localStorage.removeItem(EDIT_KEY);renderManager()});
   $('[data-v124-new-season]',root)?.addEventListener('click',()=>{selectedIds.clear();newSeason()});
   bindRosterImport(root);
   $('[data-v124-renew]',root)?.addEventListener('click',renewFromPrevious);
@@ -1065,7 +1160,16 @@ function bindManager(root){
     renderManager(true);
   });
   const search=$('[data-v124-search]',root);
-  search?.addEventListener('input',()=>{const q=norm(search.value),list=seasonRecords().filter(r=>!q||norm(r.name).includes(q)||norm(r.team).includes(q));$('[data-v124-list]',root).innerHTML=listHtml(list);bindList(root)});
+  search?.addEventListener('input',()=>{registryQuery=search.value||'';applyRegistryFilters(root)});
+  $('[data-v161-sort]',root)?.addEventListener('change',e=>{registrySort=e.target.value||'newest';applyRegistryFilters(root)});
+  $('[data-v161-category]',root)?.addEventListener('change',e=>{registryCategory=e.target.value||'Todas';registryTeam='Todos';renderManager(true)});
+  $('[data-v161-team]',root)?.addEventListener('change',e=>{registryTeam=e.target.value||'Todos';applyRegistryFilters(root)});
+  $('[data-v161-source]',root)?.addEventListener('change',e=>{registrySource=e.target.value||'Todos';applyRegistryFilters(root)});
+  $('[data-v161-letter]',root).forEach(b=>b.addEventListener('click',()=>{
+    registryLetter=b.dataset.v161Letter||'Todas';
+    $('[data-v161-letter]',root).forEach(x=>x.classList.toggle('active',x===b));
+    applyRegistryFilters(root);
+  }));
   bindList(root);
 }
 function bindList(root){
