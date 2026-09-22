@@ -5071,25 +5071,25 @@ function v38WeatherView(){
       '<p>Un porcentaje de lluvia nunca suspende por sí solo un partido. La Liga conserva la decisión oficial.</p>'+
     '</header>'+
     '<div class="v163-weather-stack">'+
-      '<button type="button" class="v163-weather-card forecast" data-route="weatherFields">'+
+      '<button type="button" class="v163-weather-card forecast" data-v163-weather-inline="forecast">'+
         '<span class="v163-weather-card-kicker">🌧️ PRONÓSTICO</span>'+
         '<strong>Referencia meteorológica</strong>'+
         '<p>Se etiqueta como regional cuando no existen coordenadas exactas verificadas del campo.</p>'+
       '</button>'+
-      '<button type="button" class="v163-weather-card field" data-route="venues">'+
+      '<button type="button" class="v163-weather-card field" data-v163-weather-inline="fields">'+
         '<span class="v163-weather-card-kicker">🏟️ ESTADO DEL TERRENO</span>'+
         '<strong>Consulta la vista Campos</strong>'+
         '<p>Apto, En revisión, Pesado, No apto, Cerrado o Sin revisión.</p>'+
       '</button>'+
-      '<button type="button" class="v163-weather-card official" data-route="competition">'+
+      '<button type="button" class="v163-weather-card official" data-v163-weather-inline="fixtures">'+
         '<span class="v163-weather-card-kicker">✓ DECISIÓN OFICIAL</span>'+
         '<strong>Consulta el estado oficial</strong>'+
         '<p>Programado, Por confirmar, Retrasado o Suspendido.</p>'+
       '</button>'+
     '</div>'+
     '<div class="v163-weather-actions">'+
-      '<button type="button" class="v163-weather-primary" data-route="venues">Revisar campos →</button>'+
-      '<button type="button" class="v163-weather-secondary" data-route="competition">Ver jornada</button>'+
+      '<button type="button" class="v163-weather-primary" data-v163-weather-inline="fields">Revisar campos →</button>'+
+      '<button type="button" class="v163-weather-secondary" data-v163-weather-inline="fixtures">Ver jornada</button>'+
     '</div>'+
   '</section>';
 }
