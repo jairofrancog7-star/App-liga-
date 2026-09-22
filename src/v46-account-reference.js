@@ -250,36 +250,60 @@
         '<input type="checkbox" data-v46-notif="'+key+'" '+(p[key]?'checked':'')+'>'+
         '<i aria-hidden="true"></i></label>';
     }
-    return '<section class="v46-account-page v46-notifications" data-v46-account="notifications">'+
+    function icon(type){
+      const icons={
+        calendar:'<svg viewBox="0 0 48 48" aria-hidden="true"><rect x="8" y="11" width="32" height="29" rx="6"/><path d="M15 7v8M33 7v8M8 19h32"/><path d="m17 30 5 5 10-12"/></svg>',
+        venue:'<svg viewBox="0 0 48 48" aria-hidden="true"><rect x="8" y="10" width="32" height="28" rx="5"/><path d="M18 10v28M30 10v28M18 24h12"/><circle cx="24" cy="24" r="4"/></svg>',
+        match:'<svg viewBox="0 0 48 48" aria-hidden="true"><rect x="8" y="10" width="32" height="28" rx="5"/><path d="M14 18h20M14 25h20M14 32h13"/></svg>',
+        chevron:'<svg viewBox="0 0 32 32" aria-hidden="true"><path d="m12 7 9 9-9 9"/></svg>'
+      };
+      return icons[type]||'';
+    }
+    function card(kicker,title,sub,type,routeName){
+      return '<button type="button" class="v46-notice-card" data-route="'+routeName+'">'+
+        '<span class="v46-notice-icon">'+icon(type)+'</span>'+
+        '<span class="v46-notice-copy"><small>'+kicker+'</small><strong>'+title+'</strong><span>'+sub+'</span></span>'+
+        '<span class="v46-notice-arrow">'+icon('chevron')+'</span>'+
+      '</button>';
+    }
+    return '<section class="v46-account-page v46-notifications v46-notifications-blue" data-v46-account="notifications">'+
       '<header class="v46-notif-head">'+
         '<button type="button" class="v46-back" data-v46-back aria-label="Volver">'+backIcon()+'</button>'+
         '<h1>Notificaciones</h1>'+
       '</header>'+
-      '<p class="v46-notif-intro">Elige las notificaciones que te gustaría recibir.</p>'+
-      '<div class="v46-section v46-teams-section">'+
-        '<h2>Equipos</h2>'+
-        '<button class="v46-team-notif" type="button" data-v46-open-following>'+
-          logo(team,'v46-team-logo')+
-          '<span class="v46-team-copy"><strong>'+esc(team.name)+'</strong><small>'+enabled+'/7 notificaciones elegidas</small></span>'+
-          '<span class="v46-team-chevron">'+chevron()+'</span>'+
-        '</button>'+
-      '</div>'+
-      '<div class="v46-section v46-games-section">'+
-        '<h2>Juegos</h2>'+
-        sw('fantasy','Fantasy Football')+
-        sw('predictor','Quiniela')+
-        sw('quiz','Quiz')+
-        sw('moreless','Más o Menos')+
-      '</div>'+
-      '<div class="v46-section v46-general-section">'+
-        '<h2>General</h2>'+
-        sw('news','Noticias')+
-        sw('tickets','Ofertas de entradas y patrocinadores')+
-        sw('hospitality','Hospitalidad')+
-      '</div>'+
+      '<main class="v46-notif-main">'+
+        '<section class="v46-notice-hub">'+
+          card('PRÓXIMA JORNADA','Avisos de jornada','Configura tus preferencias de notificaciones.','calendar','scheduleChanges')+
+          card('CAMBIO DE SEDE','Campos y ubicaciones','Revisa cambios relevantes de cancha o sede.','venue','venues')+
+          card('PARTIDO FAVORITO','Equipos y encuentros destacados','Consulta tus favoritos y equipos seguidos.','match','following')+
+          '<button type="button" class="v46-followed-cta" data-v46-open-following>Equipos que sigues</button>'+
+        '</section>'+
+        '<section class="v46-notif-preferences">'+
+          '<div class="v46-section v46-teams-section">'+
+            '<h2>Equipo seguido</h2>'+
+            '<button class="v46-team-notif" type="button" data-v46-open-following>'+
+              logo(team,'v46-team-logo')+
+              '<span class="v46-team-copy"><strong>'+esc(team.name)+'</strong><small>'+enabled+'/7 notificaciones elegidas</small></span>'+
+              '<span class="v46-team-chevron">'+chevron()+'</span>'+
+            '</button>'+
+          '</div>'+
+          '<div class="v46-section v46-games-section">'+
+            '<h2>Juegos</h2>'+
+            sw('fantasy','Fantasy Football')+
+            sw('predictor','Quiniela')+
+            sw('quiz','Quiz')+
+            sw('moreless','Más o Menos')+
+          '</div>'+
+          '<div class="v46-section v46-general-section">'+
+            '<h2>General</h2>'+
+            sw('news','Noticias')+
+            sw('tickets','Ofertas de entradas y patrocinadores')+
+            sw('hospitality','Hospitalidad')+
+          '</div>'+
+        '</section>'+
+      '</main>'+
     '</section>';
   }
-
   function followingMarkup(){
     const teams=visibleTeams();
     const followed=new Set(followedIds());
