@@ -131,6 +131,12 @@ function toast(msg){const t=document.createElement('div');t.className='v100-toas
 
 /* ===== Bloques por pantalla ===== */
 const HOME_CARDS=[
+ {icon:'field',title:'Clima inteligente del partido',sub:'Clima, terreno y decisión oficial',route:'weatherFields'},
+ {icon:'bell',title:'Registrarse y recibir avisos',sub:'Categoría y equipo favorito',action:'register-alerts'},
+ {icon:'calendar',title:'Programar partido',sub:'Borrador local · fecha, hora y cancha',action:'schedule-match'},
+ {icon:'shield',title:'Nueva sanción',sub:'Borrador disciplinario local',action:'new-sanction'},
+ {icon:'admin',title:'Herramientas de la Liga',sub:'Credenciales, jornadas, cédulas y control',route:'leagueTools'},
+ {icon:'video',title:'Modo TV',sub:'Partido, tabla y datos oficiales en pantalla',action:'tv-panel'},
  {icon:'match',title:'Partidos de hoy',sub:'Jornada y resultados',route:'competition'},
  {icon:'table',title:'Tabla · Primera Fuerza',sub:'Clasificación oficial',route:'leagueData'},
  {icon:'stats',title:'Top goleadores',sub:'Goleo y rendimiento',route:'scorers'},
@@ -177,6 +183,11 @@ const MATCH_CARDS=[
  {icon:'shield',title:'Estados especiales',sub:'Suspensión / borrador',route:'suspensionTool'}
 ];
 const MORE_CARDS=[
+ {icon:'field',title:'Clima inteligente del partido',sub:'Pronóstico, campo y decisión oficial',route:'weatherFields'},
+ {icon:'bell',title:'Registrarse y recibir avisos',sub:'Categoría y equipo favorito',action:'register-alerts'},
+ {icon:'calendar',title:'Programar partido',sub:'Borrador local con fecha, hora y cancha',action:'schedule-match'},
+ {icon:'shield',title:'Nueva sanción',sub:'Borrador disciplinario local',action:'new-sanction'},
+ {icon:'video',title:'Modo TV',sub:'Resumen oficial para pantalla',action:'tv-panel'},
  {icon:'team',title:'Equipos',sub:'Ver equipos registrados',route:'teams'},
  {icon:'users',title:'Jugadores',sub:'Ver jugadores registrados',route:'players'},
  {icon:'trophy',title:'Liguilla',sub:'Cuadro eliminatorio',route:'bracketBuilder'},
@@ -241,6 +252,7 @@ function block(r){
  else if(r==='jrControl'){title='Explora la Liga · herramientas de control';desc='Accesos operativos complementarios de JR Control.';cards=MORE_CARDS;asset='v38-soccer-teams.mp4'}
  else if(r==='news'||r==='v38Weekly'){title='Noticias, avisos y juntas';desc='Comunicación y operación semanal de la Liga.';cards=[{icon:'news',title:'Avisos',sub:'Comunicados y cambios de la Liga',route:'notices'},{icon:'calendar',title:'Junta semanal',sub:'Agenda y acuerdos locales',action:'meeting'},{icon:'alert',title:'Cambios de horario y sedes',sub:'Notificaciones',route:'notifications'},{icon:'video',title:'Semifinales, finales y momentos',sub:'Videos',route:'moments'}];asset='v38-soccer-matchday.mp4'}
  else if(r==='notifications'){title='Notificaciones y participación';desc='Preferencias, encuesta y pulso de afición.';cards=[{icon:'bell',title:'Notificaciones',sub:'Preferencias actuales',route:'notifications'},{icon:'fire',title:'Fan Zone',sub:'Reacciones locales',action:'fanzone'},{icon:'poll',title:'Encuesta',sub:'Voto local',action:'poll'}];asset='v38-soccer-hero.mp4'}
+ else if(r==='more'){k='FUNCIONES DE LA LIGA';title='Herramientas adaptadas';desc='Funciones de la app verde integradas abajo sin cambiar el diseño azul.';cards=MORE_CARDS;asset='v38-soccer-teams.mp4'}
  else return '';
  if(r==='moments'){
    return '<section class="v105-bottom" id="v105-bottom" data-v105-route="'+esc(r)+'">'+
@@ -454,8 +466,100 @@ function shotmap(){
  const p=$('[data-pitch]',m),render=()=>{p.querySelectorAll('[data-shot]').forEach(x=>x.remove());shots.forEach((s,i)=>{const d=document.createElement('i');d.dataset.shot=i;d.style.cssText='position:absolute;left:'+s.x+'%;top:'+s.y+'%;width:14px;height:14px;border-radius:50%;background:#ffe463;border:2px solid #061058;transform:translate(-50%,-50%);z-index:6';p.appendChild(d)})};render();p.onclick=e=>{if(e.target.dataset.shot!==undefined)return;const r=p.getBoundingClientRect();shots.push({x:+((e.clientX-r.left)/r.width*100).toFixed(1),y:+((e.clientY-r.top)/r.height*100).toFixed(1)});write('v105-shotmap',shots);render()};$('[data-clear]',m).onclick=()=>{shots.splice(0);write('v105-shotmap',shots);render()};$('[data-json]',m).onclick=()=>dl(new Blob([JSON.stringify(shots,null,2)],{type:'application/json'}),'ShotMap_Liga.json');
 }
 
+
+/* V160 — funciones de la app verde adaptadas al diseño azul V105.
+   Se abren con los mismos modales/tarjetas existentes y se guardan localmente;
+   no cambian datos oficiales. */
+function v160Categories(){
+ const db=window.LJR_OFFICIAL_DATA||{},out=[];
+ Object.entries(db.categories||{}).forEach(([id,x])=>out.push({id,name:x.name||('Categoría '+id),x}));
+ return out;
+}
+function v160Teams(catId=''){
+ const db=window.LJR_OFFICIAL_DATA||{},set=new Set();
+ const addCat=c=>{
+   Object.keys(c?.rosters||{}).forEach(n=>set.add(String(n).trim()));
+   (c?.standings||[]).forEach(b=>(b.rows||[]).forEach(r=>r?.[1]&&set.add(String(r[1]).trim())));
+   (c?.fixtures||[]).forEach(b=>(b.rows||[]).forEach(r=>{if(r?.[2])set.add(String(r[2]).trim());if(r?.[6])set.add(String(r[6]).trim())}));
+ };
+ if(catId&&db.categories?.[catId])addCat(db.categories[catId]);else Object.values(db.categories||{}).forEach(addCat);
+ try{(window.V66_OFFICIAL_DIRECTORY?.teamList?.()||[]).forEach(t=>{if(!catId||String(t.cat||'')===String(catId))set.add(String(t.name||'').trim())})}catch(_){}
+ return [...set].filter(Boolean).sort((a,b)=>a.localeCompare(b,'es'));
+}
+function v160Players(){
+ const db=window.LJR_OFFICIAL_DATA||{},out=[];
+ Object.entries(db.categories||{}).forEach(([cat,c])=>Object.entries(c.rosters||{}).forEach(([team,names])=>(Array.isArray(names)?names:[]).forEach(name=>out.push({name,team,cat,category:c.name||''}))));
+ try{(window.V66_OFFICIAL_DIRECTORY?.playerList?.()||[]).forEach(p=>{if(p?.name&&!out.some(x=>norm(x.name)===norm(p.name)&&norm(x.team)===norm(p.team)))out.push(p)})}catch(_){}
+ return out;
+}
+function v160FieldOptions(selected=''){
+ const fields=['Campo 1 (Empastado)','Campo 2','Campo 3','Campo 4','Fraccionamiento','Romerillo','Tavera','Cuenda','Cerrito de Gasca','San José de la Montaña','San Juan de la Cruz','Pozos'];
+ return fields.map(x=>'<option '+(norm(x)===norm(selected)?'selected':'')+'>'+esc(x)+'</option>').join('');
+}
+function registerAlerts(){
+ const cats=v160Categories(),old=read('v160-alert-profile',{name:'',email:'',cat:cats[0]?.id||'',team:''});
+ const catOptions=cats.map(x=>'<option value="'+esc(x.id)+'" '+(String(old.cat)===String(x.id)?'selected':'')+'>'+esc(x.name)+'</option>').join('');
+ const m=modal('Registrarse y recibir notificaciones','Perfil local para personalizar avisos en la app azul. No sustituye una cuenta segura cuando se conecte backend.',
+   '<div class="v105-form">'+
+    '<label><span>Nombre</span><input data-r-name value="'+esc(old.name)+'" placeholder="Tu nombre"></label>'+
+    '<label><span>Correo (opcional)</span><input type="email" data-r-email value="'+esc(old.email)+'" placeholder="correo@ejemplo.com"></label>'+
+    '<label><span>Categoría favorita</span><select data-r-cat>'+catOptions+'</select></label>'+
+    '<label><span>Equipo favorito</span><select data-r-team></select></label>'+
+   '</div><div class="v105-actions"><button class="v105-btn" data-r-save>Guardar y activar avisos</button><button class="v105-btn alt" data-r-notif>Preferencias de notificación</button></div>');
+ const cat=$('[data-r-cat]',m),team=$('[data-r-team]',m);
+ const fill=()=>{const list=v160Teams(cat.value);team.innerHTML=list.map(n=>'<option '+(norm(n)===norm(old.team)?'selected':'')+'>'+esc(n)+'</option>').join('')||'<option>Sin equipos publicados</option>'};fill();
+ cat.onchange=()=>{old.team='';fill()};
+ $('[data-r-save]',m).onclick=()=>{const v={name:$('[data-r-name]',m).value.trim(),email:$('[data-r-email]',m).value.trim(),cat:cat.value,team:team.value,enabled:true,updatedAt:new Date().toISOString()};write('v160-alert-profile',v);log('Guardar perfil de avisos');toast('Avisos personalizados activados localmente')};
+ $('[data-r-notif]',m).onclick=()=>{m.remove();go('notifications')};
+}
+function scheduleMatch(){
+ const cats=v160Categories(),old=read('v160-scheduled-match',{home:'',away:'',date:'',time:'',field:'',cat:cats[0]?.id||'3'});
+ const catOptions=cats.map(x=>'<option value="'+esc(x.id)+'" '+(String(old.cat)===String(x.id)?'selected':'')+'>'+esc(x.name)+'</option>').join('');
+ const m=modal('Programar partido','Borrador local de programación. No publica ni cambia el calendario oficial.',
+  '<div class="v105-form">'+
+   '<label><span>Categoría</span><select data-s-cat>'+catOptions+'</select></label>'+
+   '<label><span>Local</span><select data-s-home></select></label>'+
+   '<label><span>Visitante</span><select data-s-away></select></label>'+
+   '<label><span>Fecha</span><input type="date" data-s-date value="'+esc(old.date)+'"></label>'+
+   '<label><span>Hora</span><input type="time" data-s-time value="'+esc(old.time)+'"></label>'+
+   '<label><span>Cancha</span><select data-s-field>'+v160FieldOptions(old.field)+'</select></label>'+
+  '</div><div class="v105-actions"><button class="v105-btn" data-s-save>Programar borrador</button><button class="v105-btn alt" data-s-agenda>Abrir agenda</button></div>');
+ const cat=$('[data-s-cat]',m),home=$('[data-s-home]',m),away=$('[data-s-away]',m);
+ const fill=()=>{const list=v160Teams(cat.value),opts=(sel)=>list.map(n=>'<option '+(norm(n)===norm(sel)?'selected':'')+'>'+esc(n)+'</option>').join('');home.innerHTML=opts(old.home);away.innerHTML=opts(old.away)};fill();
+ cat.onchange=()=>{old.home='';old.away='';fill()};
+ $('[data-s-save]',m).onclick=()=>{if(home.value===away.value)return toast('Elige equipos diferentes');const v={cat:cat.value,home:home.value,away:away.value,date:$('[data-s-date]',m).value,time:$('[data-s-time]',m).value,field:$('[data-s-field]',m).value,status:'Borrador local',updatedAt:new Date().toISOString()};write('v160-scheduled-match',v);log('Programar partido local '+v.home+' vs '+v.away);toast('Borrador de partido guardado')};
+ $('[data-s-agenda]',m).onclick=()=>{m.remove();go('agendaBuilder')};
+}
+function newSanction(){
+ const players=v160Players(),old=read('v160-sanction-draft',{player:'',reason:'',matches:1});
+ const m=modal('Nueva sanción','Borrador disciplinario local. No modifica sanciones oficiales hasta que la Liga lo publique.',
+  '<div class="v105-form">'+
+   '<label style="grid-column:1/-1"><span>Jugador registrado</span><select data-x-player>'+players.map(p=>'<option value="'+esc(p.name)+'" '+(norm(p.name)===norm(old.player)?'selected':'')+'>'+esc(p.name)+' · '+esc(p.team||'')+'</option>').join('')+'</select></label>'+
+   '<label><span>Motivo</span><input data-x-reason value="'+esc(old.reason)+'" placeholder="Motivo"></label>'+
+   '<label><span>Partidos de suspensión</span><input type="number" min="1" max="99" data-x-matches value="'+esc(old.matches||1)+'"></label>'+
+  '</div><div class="v105-actions"><button class="v105-btn" data-x-save>Guardar borrador</button><button class="v105-btn alt" data-x-discipline>Abrir disciplina oficial</button></div>');
+ $('[data-x-save]',m).onclick=()=>{const v={player:$('[data-x-player]',m).value,reason:$('[data-x-reason]',m).value.trim(),matches:Number($('[data-x-matches]',m).value)||1,status:'Borrador local',updatedAt:new Date().toISOString()};write('v160-sanction-draft',v);log('Guardar borrador de sanción '+v.player);toast('Borrador de sanción guardado')};
+ $('[data-x-discipline]',m).onclick=()=>{m.remove();go('discipline')};
+}
+function tvPanel(){
+ const db=window.LJR_OFFICIAL_DATA||{},cat=db.categories?.['3']||{},stand=cat.standings?.[0]?.rows||[],fix=cat.fixtures?.[0]?.rows||[];
+ const now=Date.now(),parse=v=>{const m=String(v||'').match(/(\d{1,2})\/(\d{1,2})\/(\d{4})\s+(\d{1,2}):(\d{2})/);return m?new Date(+m[3],+m[2]-1,+m[1],+m[4],+m[5]).getTime():NaN};
+ const future=fix.map(r=>({r,t:parse(r?.[8])})).filter(x=>Number.isFinite(x.t)&&x.t>=now-2*60*60*1000).sort((a,b)=>a.t-b.t)[0]?.r||fix[0]||[];
+ const top=stand.slice(0,3);
+ const scorers=Object.values(db.categories||{}).flatMap(c=>(c.scorers?.[0]?.rows||[]).filter(r=>r?.[1]&&r?.[2]&&/^\d+$/.test(String(r?.[3]||''))).map(r=>({name:r[1],team:r[2],goals:Number(r[3])||0}))).sort((a,b)=>b.goals-a.goals);
+ const m=modal('Modo TV','Vista compacta con información publicada. No inventa marcador ni goleador si no existe un dato oficial.',
+  '<div class="v105-list">'+
+   '<article><small>SIGUIENTE PARTIDO</small><b>'+esc(future?.[2]||'Por confirmar')+' vs '+esc(future?.[6]||'Por confirmar')+'</b><small>'+esc(future?.[8]||'Fecha por confirmar')+' · '+esc(future?.[7]||'Cancha por confirmar')+'</small></article>'+
+   '<article><small>TABLA · PRIMERA FUERZA</small>'+ (top.length?top.map((r,i)=>'<b>'+(i+1)+'. '+esc(r[1])+' · '+esc(r[9])+' pts</b>').join(''):'<b>Sin tabla publicada</b>') +'</article>'+
+   '<article><small>GOLEADOR PUBLICADO</small><b>'+(scorers[0]?esc(scorers[0].name)+' · '+esc(scorers[0].goals)+' goles':'Sin goleo publicado')+'</b><small>'+(scorers[0]?esc(scorers[0].team):'')+'</small></article>'+
+  '</div><div class="v105-actions"><button class="v105-btn" data-tv-match>Match Center</button><button class="v105-btn alt" data-tv-video>Videos</button></div>',true);
+ $('[data-tv-match]',m).onclick=()=>{m.remove();go('v4-matchcenter')};
+ $('[data-tv-video]',m).onclick=()=>{m.remove();go('video')};
+}
+
 function act(a){
  if(a==='meeting')meeting();else if(a==='poll')poll();else if(a==='fanzone')fanzone();else if(a==='delegates')delegates();else if(a==='officials')officials();else if(a==='incidents')incidents();else if(a==='motm')motm();else if(a==='calendar-generator')calendarGenerator();else if(a==='csv-import')csvImport();else if(a==='backup-export')backupExport();else if(a==='audit')audit();else if(a==='sponsors')sponsors();else if(a==='shotmap')shotmap();
+ else if(a==='register-alerts')registerAlerts();else if(a==='schedule-match')scheduleMatch();else if(a==='new-sanction')newSanction();else if(a==='tv-panel')tvPanel();
 }
 function bind(root){
  $$('[data-v105-route]',root).forEach(b=>b.onclick=()=>go(b.dataset.v105Route));
@@ -468,7 +572,7 @@ function bind(root){
  });
 }
 function supported(r){
- return ['home','competition','v4-calendar','calendar','monthlyCalendar','calendarMonthly','leagueData','bracketBuilder','tableExport','teams','players','teamDetail','match','stats','scorers','rankings','v38Stats','moments','video','history','tactics','jrControl','news','v38Weekly','notifications'].includes(r);
+ return ['home','more','competition','v4-calendar','calendar','monthlyCalendar','calendarMonthly','leagueData','bracketBuilder','tableExport','teams','players','teamDetail','match','stats','scorers','rankings','v38Stats','moments','video','history','tactics','jrControl','news','v38Weekly','notifications'].includes(r);
 }
 let timer=0;
 function mount(){
