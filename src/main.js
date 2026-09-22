@@ -5040,7 +5040,7 @@ function v64CredentialBuilderView(){
       '<div class="v64-auto-category"><small>Categoría automática</small><b data-v64-auto-category>'+v64Esc(v64TeamCategory(v66Team)||'Por confirmar')+'</b></div>'+
     '</div>'+
     '<article class="v64-credential-preview"><div class="v64-cred-photo" data-v64-photo-preview><span>FOTO</span></div><div><small>LIGA JUVENTINO ROSAS</small><h2 data-v64-preview-name>Jugador</h2><p data-v64-preview-team>Equipo · Categoría</p><em data-v64-preview-curp>CURP ••••</em></div></article>'+
-    '<div class="v60-actions"><button class="v60-btn" data-v64-print-credential>Imprimir / guardar PDF</button></div></section>';
+    '<div class="v60-actions"><button class="v60-btn" data-v64-print-credential>Descargar PDF · 1 hoja</button></div></section>';
 }
 
 function v64CedulaBuilderView(){
@@ -5659,7 +5659,7 @@ document.querySelector('[data-v64-clear-ocr]')?.addEventListener('click',()=>{
   selectors.forEach(sel=>{const el=document.querySelector(sel);if(!el)return;if(el.type==='file')el.value='';else el.value=''});
   v64CredentialSync();
 });
-document.querySelector('[data-v64-print-credential]')?.addEventListener('click',()=>{document.body.classList.add('v64-print-credential');window.print();setTimeout(()=>document.body.classList.remove('v64-print-credential'),300)},{once:true});
+document.querySelector('[data-v64-print-credential]')?.addEventListener('click',async e=>{e.preventDefault();if(window.LJR_V100?.downloadCredentialPdf){await window.LJR_V100.downloadCredentialPdf();return}document.body.classList.add('v64-print-credential');window.print();setTimeout(()=>document.body.classList.remove('v64-print-credential'),300)},{once:true});
 document.querySelector('[data-v64-generate-cedula]')?.addEventListener('click',()=>{const q=s=>document.querySelector(s)?.value||'';const home=q('[data-v64-ced-home]')||'Local',away=q('[data-v64-ced-away]')||'Visitante',cat=q('[data-v64-ced-cat]'),date=q('[data-v64-ced-date]')||'Por confirmar',field=q('[data-v64-ced-field]')||'Por confirmar',ref=q('[data-v64-ced-ref]')||'Por asignar',host=document.querySelector('[data-v64-cedula-preview]');if(host)host.innerHTML='<article class="v60-cedula v64-generated-cedula"><div class="v60-cedula-head"><b>LIGA MUNICIPAL DE FÚTBOL · JUVENTINO ROSAS</b><span>'+v64Esc(cat)+'</span></div><div class="v60-versus"><div><strong>'+v64Esc(home)+'</strong></div><span>VS</span><div><strong>'+v64Esc(away)+'</strong></div></div><div class="v60-cedula-meta"><div><small>Fecha</small><b>'+v64Esc(date)+'</b></div><div><small>Campo</small><b>'+v64Esc(field)+'</b></div><div><small>Árbitro</small><b>'+v64Esc(ref)+'</b></div><div><small>Estado</small><b>Por confirmar</b></div></div></article>';toast('Cédula generada')},{once:true});
 document.querySelector('[data-v64-team-template]')?.addEventListener('click',()=>{const h=document.querySelector('[data-v64-ced-home]')?.value||'Local',a=document.querySelector('[data-v64-ced-away]')?.value||'Visitante',csv='Equipo,Numero,Jugador,Posicion,Firma\n'+[h,a].map(n=>'"'+n+'",,,,').join('\n');v64Download(new Blob([csv],{type:'text/csv;charset=utf-8'}),'Plantillas_Equipos.csv')},{once:true});
 document.querySelector('[data-v64-print-cedula]')?.addEventListener('click',()=>window.print(),{once:true});
