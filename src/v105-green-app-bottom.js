@@ -198,7 +198,7 @@ function block(r){
  else if(r==='match'){title='Match Center · herramientas del partido';desc='Timeline, alineaciones, acta, incidencias, clima y operación.';cards=MATCH_CARDS;asset='v38-soccer-matchday.mp4'}
  else if(r==='stats'||r==='scorers'||r==='rankings'||r==='v38Stats'){title='Datos y rendimiento';desc='Tabla, goleadores, exportación y lectura de temporada.';cards=[...COMP_CARDS.filter(x=>['leagueData','stats','scorers','tableExport'].includes(x.route)),{icon:'sim',title:'Escenarios',sub:'Simulación local',route:'simulator'}];asset='v38-soccer-stats.mp4'}
  else if(r==='moments'){k='MOMENTOS DE LA LIGA';title='Videos y momentos';desc='Cuartos, semifinales, finales y archivo audiovisual de la Liga.';cards=[{icon:'video',title:'Momentos',sub:'Contenido de la Liga',route:'moments'},{icon:'history',title:'Historial',sub:'Temporadas y archivo',route:'history'},{icon:'share',title:'Compartir jornada',sub:'Publicaciones',route:'publications'}];asset='v38-soccer-liguilla.mp4';html+=gallery()}
- else if(r==='video'){title='Videos y momentos';desc='Archivo audiovisual de la Liga.';cards=[{icon:'video',title:'Momentos',sub:'Contenido de la Liga',route:'moments'},{icon:'history',title:'Historial',sub:'Temporadas y archivo',route:'history'},{icon:'share',title:'Compartir jornada',sub:'Publicaciones',route:'publications'}];asset='v38-soccer-liguilla.mp4';html+=gallery()}
+ else if(r==='video'){k='LIGA JUVENTINO TV';title='Videos y momentos';desc='Archivo audiovisual de la Liga.';cards=[{icon:'video',title:'Momentos',sub:'Contenido de la Liga',route:'moments'},{icon:'history',title:'Historial',sub:'Temporadas y archivo',route:'history'},{icon:'share',title:'Compartir jornada',sub:'Publicaciones',route:'publications'}];asset='v38-soccer-liguilla.mp4';html+=gallery()}
  else if(r==='history'){title='Historial · temporadas y palmarés';desc='Accesos de la app verde agrupados debajo del historial actual.';cards=[{icon:'history',title:'Temporada actual',sub:'Información vigente',route:'leagueData'},{icon:'trophy',title:'Palmarés',sub:'Campeones e historia',route:'history'},{icon:'history',title:'Históricos',sub:'Equipos y temporadas anteriores',route:'history'},{icon:'video',title:'Finales y momentos',sub:'Archivo audiovisual',route:'moments'}];asset='v38-soccer-liguilla.mp4'}
  else if(r==='tactics'){title='Táctica 3D · versión azul';desc='Tablero táctil inspirado en la función de Liga_Futbol; se agrega al final y guarda sólo en este dispositivo.';cards=[];asset='v38-fix10-tactics-motion.mp4';html+=tacticsBoard()}
  else if(r==='jrControl'){title='Explora la Liga · herramientas de control';desc='Accesos operativos complementarios de JR Control.';cards=MORE_CARDS;asset='v38-soccer-teams.mp4'}
@@ -209,6 +209,14 @@ function block(r){
    return '<section class="v105-bottom" id="v105-bottom" data-v105-route="'+esc(r)+'">'+
      head(k,title,desc)+
      motion(asset,'LIGA JUVENTINO · MOMENTOS','FÚTBOL QUE SE MUEVE','Videos, finales y recuerdos de la Liga integrados al mismo diseño de Momentos.')+
+     html+
+     (cards.length?'<div class="v105-grid">'+cards.map(card).join('')+'</div>':'')+
+   '</section>';
+ }
+ if(r==='video'){
+   return '<section class="v105-bottom v105-video-integrated" id="v105-bottom" data-v105-route="'+esc(r)+'">'+
+     head(k,title,desc)+
+     motion(asset,'LIGA JUVENTINO · TV','FÚTBOL QUE SE MUEVE','Finales, jugadas y archivo audiovisual integrado al mismo diseño de Liga Juventino TV.')+
      html+
      (cards.length?'<div class="v105-grid">'+cards.map(card).join('')+'</div>':'')+
    '</section>';
