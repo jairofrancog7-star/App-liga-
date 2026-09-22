@@ -62,6 +62,7 @@ function profileMarkup(){
       '<button type="button" class="primary" data-v168-save>Guardar y activar avisos</button>'+
       '<button type="button" data-v168-notifications>Preferencias de notificación</button>'+
     '</div>'+
+    '<div class="v168-pref-panel" data-v168-pref-panel hidden></div>'+
     '<p class="v168-account-note">La configuración se conserva en este dispositivo. No se elimina ni reemplaza tu Perfil, Fantasy, Quiniela, Favoritos o equipos seguidos.</p>'+
   '</section>';
 }
@@ -80,7 +81,30 @@ function bindProfile(root){
     const v={name:$('[data-v168-name]',host).value.trim(),email:$('[data-v168-email]',host).value.trim(),cat:cat.value,team:team.value,enabled:true,updatedAt:new Date().toISOString()};
     write('v160-alert-profile',v);status.innerHTML='<b>✓ Avisos activados</b><span>'+esc(team.value)+' · '+esc(cat.selectedOptions?.[0]?.textContent||'')+'</span>';toast('Cuenta local de avisos guardada');
   };
-  $('[data-v168-notifications]',host).onclick=()=>location.hash='#/notifications';
+  const prefPanel=$('[data-v168-pref-panel]',host);
+  const readPrefs=()=>{try{const s=JSON.parse(localStorage.getItem('lj-store-v3')||'{}');return Object.assign({goal:true,kickoff:true,halftime:false,final:true,news:true,video:true,fantasy:true,predictor:true,scheduleChanges:true,venueChanges:true},s.notifications||{})}catch(_){return {goal:true,kickoff:true,halftime:false,final:true,news:true,video:true,fantasy:true,predictor:true,scheduleChanges:true,venueChanges:true}}};
+  const writePref=(key,value)=>{let s={};try{s=JSON.parse(localStorage.getItem('lj-store-v3')||'{}')}catch(_){}s.notifications=Object.assign({},s.notifications||{},{[key]:value});localStorage.setItem('lj-store-v3',JSON.stringify(s))};
+  const renderPrefs=()=>{
+    const p=readPrefs(),rows=[
+      ['goal','Goles','Cambios en el marcador'],
+      ['kickoff','Inicio de partido','Aviso al comenzar'],
+      ['halftime','Medio tiempo','Aviso al descanso'],
+      ['final','Final del partido','Resultado final'],
+      ['scheduleChanges','Cambios de horario','Reprogramaciones'],
+      ['venueChanges','Cambios de sede','Campo o cancha'],
+      ['news','Noticias','Comunicados de la Liga'],
+      ['video','Nuevos videos','Momentos de la Liga'],
+      ['fantasy','Fantasy','Novedades Fantasy'],
+      ['predictor','Quiniela','Recordatorios']
+    ];
+    prefPanel.innerHTML='<div class="v168-pref-title"><b>Avisos dentro de la página</b><span>Activa o desactiva sin salir de Cuenta.</span></div>'+
+      rows.map(r=>'<label class="v168-pref-row"><span><b>'+esc(r[1])+'</b><small>'+esc(r[2])+'</small></span><input type="checkbox" data-v168-pref="'+r[0]+'" '+(p[r[0]]?'checked':'')+'><i></i></label>').join('');
+    $('[data-v168-pref]',prefPanel).forEach(x=>x.onchange=()=>{writePref(x.dataset.v168Pref,x.checked);toast('Preferencia guardada')});
+  };
+  $('[data-v168-notifications]',host).onclick=()=>{
+    if(prefPanel.hidden){renderPrefs();prefPanel.hidden=false;$('[data-v168-notifications]',host).textContent='Ocultar preferencias';prefPanel.scrollIntoView({behavior:'smooth',block:'nearest'})}
+    else{prefPanel.hidden=true;$('[data-v168-notifications]',host).textContent='Preferencias de notificación'}
+  };
 }
 function weatherMarkup(){
   const old=read('v160-alert-profile',{});
