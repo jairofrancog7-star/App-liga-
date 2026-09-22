@@ -27,7 +27,8 @@ let rosterImportTeam='';
 let rosterTeamPickerOpen=false;
 let rosterTeamQuery='';
 let rosterImportFile=null;
-let rosterHandwritingMode=true;
+let rosterHandwritingMode=false;
+let rosterDetectedKind='auto';
 let rosterImport={fileName:'',rawText:'',entries:[],missing:[],status:'',busy:false};
 let lastManagerHtml='';
 let filePickerCooldownUntil=0;
@@ -575,7 +576,7 @@ async function v157PreparedCanvas(source,mode='contrast'){
   const sw=bmp.width||bmp.videoWidth||bmp.naturalWidth||1;
   const sh=bmp.height||bmp.videoHeight||bmp.naturalHeight||1;
   /* V162: conserva más detalle de trazos finos de lápiz/pluma sin explotar memoria. */
-  const target=mode==='pencil'||mode==='handwriting'?2750:2450;
+  const target=mode==='pencil'||mode==='handwriting'?2250:1950;
   const scale=Math.max(1,Math.min(2.8,target/sw));
   const w=Math.max(1,Math.round(sw*scale)),h=Math.max(1,Math.round(sh*scale));
   const canvas=document.createElement('canvas');canvas.width=w;canvas.height=h;
@@ -702,86 +703,111 @@ async function v178TopToBottomSweep(source,label,startPass,totalPasses){
   }
   return {text:v178MergeSweepTexts(reads),pass};
 }
-async function v126OcrImage(source,label='imagen'){
-  /* V177 OCR Pro.
-     1) Intenta OCR nativo del dispositivo cuando el navegador lo ofrece.
-     2) Hace varias lecturas completas con contraste, Otsu y segmentación de tabla.
-     3) Si siguen faltando nombres, divide la hoja en zonas superpuestas (tipo escaneo
-        por bloques) para que nombres pequeños no se pierdan en una foto grande.
-     4) En pluma/lápiz agrega dos pasadas especiales.
-     Google Lens no expone una API web pública para incrustarla directamente; este
-     flujo combina OCR local y segmentación avanzada sin enviar la lista a terceros. */
+
+async function v179DetectImageKind(source){
+  try{
+    const bmp=await v157Bitmap(source);
+    const sw=bmp.width||bmp.videoWidth||bmp.naturalWidth||1,sh=bmp.height||bmp.videoHeight||bmp.naturalHeight||1;
+    const scale=Math.min(1,720/sw),w=Math.max(1,Math.round(sw*scale)),h=Math.max(1,Math.round(sh*scale));
+    const canvas=document.createElement('canvas');canvas.width=w;canvas.height=h;
+    const ctx=canvas.getContext('2d',{willReadFrequently:true,alpha:false});
+    ctx.fillStyle='#fff';ctx.fillRect(0,0,w,h);ctx.drawImage(bmp,0,0,w,h);
+    const d=ctx.getImageData(0,0,w,h).data,rowInk=new Uint32Array(h);
+    let dark=0,mid=0,total=w*h;
+    for(let y=0;y<h;y++){
+      let ri=0;
+      for(let x=0;x<w;x++){
+        const i=(y*w+x)*4,g=.299*d[i]+.587*d[i+1]+.114*d[i+2];
+        if(g<150){dark++;ri++} else if(g<215)mid++;
+      }
+      rowInk[y]=ri;
+    }
+    const activeThreshold=Math.max(3,Math.round(w*.018));
+    const bands=[];let start=-1;
+    for(let y=0;y<h;y++){
+      const on=rowInk[y]>=activeThreshold;
+      if(on&&start<0)start=y;
+      if((!on||y===h-1)&&start>=0){
+        const end=on&&y===h-1?y:y-1,hh=end-start+1;
+        if(hh>=2)bands.push(hh);
+        start=-1;
+      }
+    }
+    const usable=bands.filter(x=>x>=2&&x<=Math.max(40,h*.08));
+    const mean=usable.length?usable.reduce((a,b)=>a+b,0)/usable.length:0;
+    const variance=usable.length?usable.reduce((a,b)=>a+(b-mean)*(b-mean),0)/usable.length:0;
+    const cv=mean?Math.sqrt(variance)/mean:9;
+    const darkRatio=dark/Math.max(1,total),midRatio=mid/Math.max(1,total);
+    let kind='mixed',label='Mixto / formato no identificado';
+    if(usable.length>=8&&cv<.85&&darkRatio<.30){kind='printed';label='Texto impreso / Word / Arial o similar'}
+    else if(usable.length<=7||cv>1.05||midRatio>darkRatio*2.5){kind='handwriting';label='Pluma / lápiz / escritura manual'}
+    return {kind,label,confidence:Math.round(Math.max(55,Math.min(95,(kind==='printed'?(1-Math.min(1,cv))*55+40:(Math.min(1,cv)*40+45)))))};
+  }catch(_){
+    return {kind:'mixed',label:'Mixto / automático',confidence:50};
+  }
+}
+async function v179TwoBandSweep(source,label,pass,total,kind){
   const parts=[];
+  const zones=[['mitad superior',0,.56],['mitad inferior',.44,.56]];
+  for(let i=0;i<zones.length;i++){
+    pass++;
+    const crop=await v177CropSource(source,0,zones[i][1],.999,zones[i][2]);
+    v126SetImportStatus('OCR rápido · '+zones[i][0]+' · pasada '+pass+'/'+total);
+    const mode=kind==='handwriting'?(i?'handwriting':'pencil'):(i?'soft':'contrast');
+    parts.push(await v157Recognize(crop,label+' · '+zones[i][0],pass,mode,6,total));
+    await new Promise(resolve=>setTimeout(resolve,25));
+  }
+  return {parts,pass};
+}
+async function v126OcrImage(source,label='imagen'){
+  /* V179 — OCR adaptativo y rápido.
+     Detecta primero si la imagen parece texto impreso/Word, escritura manual o
+     contenido mixto. En móvil limita el trabajo a 4–5 pasadas para evitar que
+     Tesseract se quede congelado después de la pasada 5/7. */
+  const parts=[];
+  const type=await v179DetectImageKind(source);
+  rosterDetectedKind=type.kind;
+  rosterHandwritingMode=type.kind==='handwriting';
+  v126SetImportStatus('Autodetección: '+type.label+' · '+type.confidence+'% · preparando OCR rápido…');
+
   const nativeText=await v177NativeText(source);
   if(nativeText)parts.push({text:nativeText,mode:'native',confidence:92});
 
-  const basePlan=[
-    ['contrast',6,'bloque completo'],
-    ['threshold',11,'texto disperso'],
-    ['contrast',4,'tabla / columnas'],
-    ['otsu',3,'detección automática'],
-    ['soft',6,'contraste suave']
-  ];
-  const maxPasses=rosterHandwritingMode?13:11;
+  let foundCount=0,merged=nativeText||'';
+  try{foundCount=v126ExtractCandidates(merged).length}catch(_){}
+  if(foundCount>=20){
+    v126SetImportStatus('Autodetección: '+type.label+' · '+foundCount+' nombres candidatos · revisión manual obligatoria.');
+    return merged;
+  }
+
+  const plan=type.kind==='printed'
+    ?[['contrast',6,'impreso principal'],['soft',4,'tabla / columnas']]
+    :type.kind==='handwriting'
+      ?[['pencil',11,'trazo de pluma/lápiz'],['handwriting',6,'escritura manual'],['contrast',6,'respaldo de contraste']]
+      :[['contrast',6,'bloque principal'],['soft',4,'tabla / columnas'],['otsu',3,'respaldo automático']];
+
+  const total=Math.min(5,plan.length+2);
   let pass=0;
-  for(const [mode,psm,kind] of basePlan){
+  for(const [mode,psm,kind] of plan){
     pass++;
-    v126SetImportStatus('OCR Pro · '+kind+' · pasada '+pass+'/'+maxPasses);
-    parts.push(await v157Recognize(source,label,pass,mode,psm,maxPasses));
-  }
-
-  let merged=v162MergeOcrTexts(parts);
-  let foundCount=0,orderedSweep='';
-  try{foundCount=v126ExtractCandidates(merged).length}catch(_){}
-
-  /* V178: cuando la hoja tiene una plantilla larga, hacemos un barrido REAL
-     desde la parte superior hasta la inferior. Cada franja se amplía por separado,
-     así los 20–30 nombres pequeños no compiten dentro de una sola imagen. */
-  if(foundCount<24){
-    const sweep=await v178TopToBottomSweep(source,label,pass,Math.max(maxPasses,pass+10));
-    pass=sweep.pass;orderedSweep=sweep.text;
-    merged=[orderedSweep,v162MergeOcrTexts(parts)].filter(Boolean).join('\n');
+    v126SetImportStatus('OCR rápido · '+type.label+' · '+kind+' · pasada '+pass+'/'+total);
+    parts.push(await v157Recognize(source,label,pass,mode,psm,total));
+    merged=v162MergeOcrTexts(parts);
     try{foundCount=v126ExtractCandidates(merged).length}catch(_){}
+    if(foundCount>=24)break;
+    await new Promise(resolve=>setTimeout(resolve,25));
   }
 
-  /* Recuperación adicional por zonas/columnas si todavía faltan filas. */
-  if(foundCount<24){
-    const zones=[
-      ['superior',0,0,.999,.39],
-      ['centro',0,.28,.999,.44],
-      ['inferior',0,.61,.999,.39],
-      ['columna izquierda',0,0,.60,.999],
-      ['columna derecha',.40,0,.60,.999],
-      ['centro vertical',.18,0,.64,.999]
-    ];
-    for(const z of zones){
-      pass++;
-      const crop=await v177CropSource(source,z[1],z[2],z[3],z[4]);
-      v126SetImportStatus('OCR Pro · escaneo por zonas · '+z[0]+' · pasada '+pass+'/'+maxPasses);
-      parts.push(await v157Recognize(crop,label+' · '+z[0],pass,'contrast',6,maxPasses));
-      merged=v162MergeOcrTexts(parts);
-      try{foundCount=v126ExtractCandidates(merged).length}catch(_){}
-      if(foundCount>=28)break;
-    }
+  /* Sólo dos recortes grandes, arriba y abajo. Así se cubre toda la hoja con
+     traslape sin hacer 10+ recortes que saturaban memoria en Android. */
+  if(foundCount<24&&pass<5){
+    const sweep=await v179TwoBandSweep(source,label,pass,5,type.kind);
+    pass=sweep.pass;parts.push(...sweep.parts);
   }
 
-  if(rosterHandwritingMode){
-    pass++;
-    parts.push(await v157Recognize(source,label,pass,'pencil',11,Math.max(maxPasses,pass+1)));
-    pass++;
-    parts.push(await v157Recognize(source,label,pass,'handwriting',6,Math.max(maxPasses,pass)));
-  }
-
-  /* El barrido va primero para conservar el orden visual de la hoja.
-     Las lecturas globales y por columnas sólo complementan nombres faltantes. */
-  const qualityParts=parts.slice().sort((a,b)=>{
-    const qa=v157OcrTextQuality(a.text)+(a.confidence||0)*.35;
-    const qb=v157OcrTextQuality(b.text)+(b.confidence||0)*.35;
-    return qb-qa;
-  });
-  merged=[orderedSweep,v162MergeOcrTexts(qualityParts)].filter(Boolean).join('\n');
+  merged=v162MergeOcrTexts(parts);
   try{foundCount=v126ExtractCandidates(merged).length}catch(_){}
-  v126SetImportStatus('OCR Pro terminado · '+foundCount+' nombre(s) candidatos · lectura de arriba abajo completa · revisa uno por uno antes de registrar.');
+  v126SetImportStatus('OCR terminado · '+type.label+' · '+foundCount+' nombre(s) candidatos · NO se registró ninguno: revisa todos antes de aplicar.');
   return merged;
 }
 async function v126ReadPdf(file){
@@ -1054,38 +1080,9 @@ function v126BestKnown(name,team=''){
   }
   return score>=.80?{record:best,score}:null;
 }
-function v126AutoRegisterNewEntries(entries,team,season){
-  const list=seasonRecords(season).slice();
-  const info=teamInfo(team)||registryTeams().find(t=>norm(t.name)===norm(team))||{};
-  const now=new Date().toISOString();
-  let added=0;
-  for(const e of entries){
-    if(e.status!=='new'||v126LooksLikeNonPlayerName(e.name))continue;
-    if((e.nameScore||0)<.54){e.status='review';continue}
-    const existing=list.find(r=>norm(r.name)===norm(e.name)&&norm(r.team)===norm(team));
-    if(existing){
-      e.status='keep';e.source=existing;continue;
-    }
-    const rec={
-      id:uid(),name:e.name,team,
-      category:info.category||'',catId:String(info.cat||''),
-      season,status:'Auto-registrado desde lista · completar datos/foto',
-      source:'local',officialPresent:false,officialCheckedAt:'',
-      curp:'',dob:'',city:'',position:'Sin definir',
-      rosterAuto:true,createdAt:now,updatedAt:now
-    };
-    if(duplicateIndex(list,rec)>=0){
-      const dup=list[duplicateIndex(list,rec)];
-      e.status='keep';e.source=dup;continue;
-    }
-    list.unshift(rec);
-    e.status='autoregistered';
-    e.source=rec;
-    e.include=true;
-    added++;
-  }
-  if(added)putSeason(season,list);
-  return added;
+function v126AutoRegisterNewEntries(){
+  /* V179 safety lock: OCR only proposes names. Never writes to registry automatically. */
+  return 0;
 }
 function v126AnalyzeText(text){
   if(!rosterImportTeam)throw new Error('Primero elige el equipo de esta lista');
@@ -1207,17 +1204,18 @@ function rosterImportHtml(){
     '<button type="button" class="v126-file" data-v126-file-pick><span><b>Elegir lista del delegado</b><small>Foto · texto impreso · pluma · lápiz · PDF · Word · TXT · CSV</small></span></button>'+
     '<input class="v126-file-input" type="file" data-v126-file accept="image/*,.pdf,.docx,.txt,.csv,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document" tabindex="-1" aria-hidden="true">'+
     '<div class="v126-file-name">'+esc(rosterImport.fileName||'Ningún archivo seleccionado')+'</div>'+
-    '<label class="v162-handwriting"><input type="checkbox" data-v162-handwriting '+(rosterHandwritingMode?'checked':'')+'><span class="v162-handwriting-check"></span><span><b>Detectar escritura con pluma o lápiz</b><small>OCR Pro: realce de trazos + Otsu + lectura por bloques/columnas + recuperación de filas pequeñas. Úsalo también para listas largas y tablas de goleadores.</small></span></label>'+
+    '<div class="v162-handwriting v179-auto-detect"><span class="v162-handwriting-check">AI</span><span><b>Detección automática del documento</b><small>Reconoce si parece texto impreso/Word/Arial, pluma/lápiz o mixto y usa sólo las pasadas necesarias. Máximo 5 para evitar bloqueos en Android.</small></span></div>'+
     '<button type="button" class="v126-analyse" data-v126-analyse '+(rosterImport.busy?'disabled':'')+'>'+(rosterImport.busy?'Leyendo lista…':'Detectar y comparar jugadores')+'</button>'+
-    '<p class="v126-status" data-v126-import-status>'+esc(rosterImport.status||'OCR Pro español/México: lectura completa + bloques superpuestos + tablas/columnas + OCR nativo cuando esté disponible + comparación con padrón y revisión manual ✓/✕. Nada se registra hasta que lo apruebes.')+'</p>'+
+    '<p class="v126-status" data-v126-import-status>'+esc(rosterImport.status||'Autodetector activo: distingue texto impreso/Word, escritura manual o mixto y usa un máximo de 5 pasadas. Nada se registra automáticamente; primero debes revisar TODOS los nombres con ✓ o ✕.')+'</p>'+
     v126RosterResultHtml()+
   '</section>';
 }
 function v126ApplyRoster(){
   if(!rosterImportTeam)return toast('Elige el equipo de la lista');
-  const entries=(Array.isArray(rosterImport.entries)?rosterImport.entries:[]).filter(e=>e.decision==='approved'),removals=(Array.isArray(rosterImport.missing)?rosterImport.missing:[]).filter(r=>r.remove);
-  if(!entries.length&&!removals.length)return toast('Primero aprueba con ✓ los jugadores que sí quieres registrar o cambiar');
   const summary=v126ImportSummary();
+  if(summary.pending>0)return toast('Revisa los '+summary.pending+' nombre(s) pendientes. No se registrará nada hasta comprobar toda la lista.');
+  const entries=(Array.isArray(rosterImport.entries)?rosterImport.entries:[]).filter(e=>e.decision==='approved'),removals=(Array.isArray(rosterImport.missing)?rosterImport.missing:[]).filter(r=>r.remove);
+  if(!entries.length&&!removals.length)return toast('No hay jugadores aprobados para aplicar');
   if(!confirm('Aplicar la lista de '+rosterImportTeam+' en '+selectedSeason()+'? Se conservarán los datos de jugadores ya registrados. Las bajas sólo serán las que marcaste.'))return;
   const season=selectedSeason(),list=seasonRecords(season).slice(),info=teamInfo(rosterImportTeam)||{},now=new Date().toISOString();
   let kept=0,moved=0,added=0,renewed=0,removed=0;
@@ -1282,12 +1280,6 @@ function bindRosterImport(root){
     rosterImport.fileName=rosterImportFile?.name||'';
     const n=$('.v126-file-name',root);if(n)n.textContent=rosterImport.fileName||'Ningún archivo seleccionado';
   });
-  $('[data-v162-handwriting]',root)?.addEventListener('change',e=>{
-    rosterHandwritingMode=!!e.target.checked;
-    v126SetImportStatus(rosterHandwritingMode
-      ?'OCR Pro pluma/lápiz activado: usaré contraste adaptativo, Otsu, bloques superpuestos, columnas y trazos tenues.'
-      : 'OCR Pro impreso: lectura completa + recuperación automática por zonas si faltan nombres.');
-  });
   $('[data-v126-analyse]',root)?.addEventListener('click',async()=>{
     if(!rosterImportTeam)return toast('Primero selecciona el equipo de la lista');
     if(!rosterImportFile)return toast('Selecciona la foto, PDF, DOCX, TXT o CSV del delegado');
@@ -1314,7 +1306,7 @@ function bindRosterImport(root){
     const s=v126ImportSummary();
     const a=$('[data-v172-approved]',root),r=$('[data-v172-rejected]',root),p=$('[data-v172-pending]',root),apply=$('[data-v126-apply]',root);
     if(a)a.textContent=String(s.approved);if(r)r.textContent=String(s.rejected);if(p)p.textContent=String(s.pending);
-    if(apply){apply.disabled=!s.approved;apply.textContent='Registrar / aplicar aprobados ('+s.approved+')'}
+    if(apply){apply.disabled=!s.approved||s.pending>0;apply.textContent=s.pending?'Revisa todos antes de registrar ('+s.pending+' pendientes)':'Registrar / aplicar aprobados ('+s.approved+')'}
   };
   $$('[data-v172-approve]',root).forEach(b=>b.addEventListener('click',e=>{e.preventDefault();e.stopPropagation();reviewDecision(Number(b.dataset.v172Approve),'approved')}));
   $$('[data-v172-reject]',root).forEach(b=>b.addEventListener('click',e=>{e.preventDefault();e.stopPropagation();reviewDecision(Number(b.dataset.v172Reject),'rejected')}));
