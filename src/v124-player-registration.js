@@ -164,7 +164,7 @@ function renderEligibility(){
   const e=v124Eligibility();
   const save=$('[data-v124-save]');
   if(save){save.disabled=!e.ok;save.setAttribute('aria-disabled',String(!e.ok))}
-  ['[data-v100-credential-png]','[data-v100-credential-pdf]','[data-v100-credential-share]','[data-v64-print-credential]'].forEach(sel=>{
+  ['[data-v100-credential-png]','[data-v100-credential-pdf]','[data-v100-credential-share]','[data-v64-download-credential-png]','[data-v64-print-credential]'].forEach(sel=>{
     const b=$(sel);if(!b)return;b.disabled=!e.ok;b.setAttribute('aria-disabled',String(!e.ok));
   });
 }
@@ -479,7 +479,7 @@ function autoOfficialSync(){
   }
 }
 function bindCredentialAutoSave(){
-  ['[data-v100-credential-png]','[data-v100-credential-pdf]','[data-v100-credential-share]','[data-v64-print-credential]'].forEach(sel=>{
+  ['[data-v100-credential-png]','[data-v100-credential-pdf]','[data-v100-credential-share]','[data-v64-download-credential-png]','[data-v64-print-credential]'].forEach(sel=>{
     const b=$(sel);if(!b||b.dataset.v124AutoSave)return;b.dataset.v124AutoSave='1';
     b.addEventListener('click',e=>{
       const eligibility=v124Eligibility();
