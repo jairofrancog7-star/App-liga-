@@ -7,7 +7,7 @@
 if(window.__LJR_V172_WEATHER_SMART__)return;
 window.__LJR_V172_WEATHER_SMART__=true;
 
-const BUILD='20260922-weather-field-select-v174';
+const BUILD='20260922-weather-data-path-v175';
 const TZ='America/Mexico_City';
 const CACHE_TTL=20*60*1000;
 const ALERT_KEY='v172-weather-alerts';
@@ -87,9 +87,9 @@ async function ensureData(){
   if(cfg&&fixtures.length)return;
   if(loadingPromise)return loadingPromise;
   loadingPromise=(async()=>{
-    cfg=await loadJson('./public/data/fields-v38-22.json');
+    cfg=await loadJson('./data/fields-v38-22.json');
     let season=null;
-    try{season=await loadJson('./public/data/temporada-actual-2026.json')}catch(_){}
+    try{season=await loadJson('./data/temporada-actual-2026.json')}catch(_){}
     fixtures=season?buildSeasonFixtures(season):buildOfficialFixtures();
     if(!fixtures.length)fixtures=buildOfficialFixtures();
   })().finally(()=>loadingPromise=null);
