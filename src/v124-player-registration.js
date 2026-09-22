@@ -565,8 +565,18 @@ async function v177CropSource(source,x0,y0,w0,h0){
   const sw=bmp.width||bmp.videoWidth||bmp.naturalWidth||1,sh=bmp.height||bmp.videoHeight||bmp.naturalHeight||1;
   const sx=Math.max(0,Math.floor(sw*x0)),sy=Math.max(0,Math.floor(sh*y0));
   const cw=Math.max(1,Math.min(sw-sx,Math.floor(sw*w0))),ch=Math.max(1,Math.min(sh-sy,Math.floor(sh*h0)));
-  const scale=Math.max(1,Math.min(2.8,2300/cw));
-  const canvas=document.createElement('canvas');canvas.width=Math.round(cw*scale);canvas.height=Math.round(ch*scale);
+  /* V181 — no escalar por ancho solamente: en una hoja vertical eso disparaba
+     la altura a miles de píxeles y agotaba memoria en Chrome Android. */
+  const maxPixels=3200000,maxHeight=3000;
+  const scale=Math.max(.75,Math.min(
+    2.0,
+    1850/Math.max(1,cw),
+    maxHeight/Math.max(1,ch),
+    Math.sqrt(maxPixels/Math.max(1,cw*ch))
+  ));
+  const canvas=document.createElement('canvas');
+  canvas.width=Math.max(1,Math.round(cw*scale));
+  canvas.height=Math.max(1,Math.round(ch*scale));
   const ctx=canvas.getContext('2d',{alpha:false});
   ctx.imageSmoothingEnabled=true;ctx.imageSmoothingQuality='high';ctx.fillStyle='#fff';ctx.fillRect(0,0,canvas.width,canvas.height);
   ctx.drawImage(bmp,sx,sy,cw,ch,0,0,canvas.width,canvas.height);
@@ -577,8 +587,18 @@ async function v157PreparedCanvas(source,mode='contrast'){
   const sw=bmp.width||bmp.videoWidth||bmp.naturalWidth||1;
   const sh=bmp.height||bmp.videoHeight||bmp.naturalHeight||1;
   /* V162: conserva más detalle de trazos finos de lápiz/pluma sin explotar memoria. */
-  const target=mode==='pencil'||mode==='handwriting'?2250:1950;
-  const scale=Math.max(1,Math.min(2.8,target/sw));
+  /* V181 — límite de memoria móvil.
+     Una columna angosta y alta se estaba ampliando dos veces y podía terminar
+     con canvases gigantes, por eso parecía quedarse congelada en “pasada 2”. */
+  const fromCanvas=source instanceof HTMLCanvasElement;
+  const target=mode==='pencil'||mode==='handwriting'?2100:1850;
+  const maxDim=fromCanvas?3000:3400;
+  const maxPixels=fromCanvas?3200000:4200000;
+  const byWidth=target/Math.max(1,sw);
+  const byHeight=maxDim/Math.max(1,sh);
+  const byPixels=Math.sqrt(maxPixels/Math.max(1,sw*sh));
+  const maxUpscale=fromCanvas?1.12:2.05;
+  const scale=Math.max(.72,Math.min(maxUpscale,byWidth,byHeight,byPixels));
   const w=Math.max(1,Math.round(sw*scale)),h=Math.max(1,Math.round(sh*scale));
   const canvas=document.createElement('canvas');canvas.width=w;canvas.height=h;
   const ctx=canvas.getContext('2d',{willReadFrequently:true,alpha:false});
@@ -877,13 +897,39 @@ function v180BestNameColumnText(parts,target=0){
 async function v180ReadPrintedNameColumn(source,label,layout){
   const xPad=Math.min(.01,layout.width*.02);
   const crop=await v177CropSource(source,layout.x0+xPad,.10,Math.max(.05,layout.width-xPad*2),.895);
-  const parts=[];
-  v126SetImportStatus('Tabla detectada · aislando columna “Jugador” · pasada 1/2');
-  parts.push(await v157Recognize(crop,label+' · columna Jugador',1,'contrast',6,2));
-  await new Promise(resolve=>setTimeout(resolve,20));
-  v126SetImportStatus('Tabla detectada · verificando nombres · pasada 2/2');
-  parts.push(await v157Recognize(crop,label+' · columna Jugador',2,'soft',6,2));
-  return v180BestNameColumnText(parts,layout.rows||0);
+  const target=layout.rows||0,parts=[];
+
+  v126SetImportStatus('Tabla detectada · leyendo columna “Jugador” · lectura rápida');
+  const first=await v157Recognize(crop,label+' · columna Jugador',1,'contrast',6,1);
+  parts.push(first);
+
+  const firstNames=v180NameColumnLines(first.text||'');
+  const enough=target
+    ? firstNames.length>=Math.max(8,Math.floor(target*.72))
+    : firstNames.length>=18;
+
+  /* Si ya recuperó la mayoría, no ejecutamos una segunda lectura completa.
+     Esa pasada 2 era la que se quedaba trabada en móviles. */
+  if(enough){
+    v126SetImportStatus('Tabla detectada · '+firstNames.length+(target?' de ~'+target:'')+' nombres · terminando…');
+    return v180BestNameColumnText(parts,target);
+  }
+
+  /* Si faltan filas, recupera por dos mitades pequeñas y traslapadas. */
+  const halves=[['parte superior',0,.56],['parte inferior',.44,.56]];
+  for(let i=0;i<halves.length;i++){
+    const [name,y,h]=halves[i];
+    const half=await v177CropSource(crop,0,y,.999,h);
+    v126SetImportStatus('Tabla detectada · recuperando '+name+' · '+(i+1)+'/2');
+    parts.push(await v157Recognize(half,label+' · columna Jugador · '+name,i+2,i?'soft':'contrast',6,3));
+    await new Promise(resolve=>setTimeout(resolve,12));
+  }
+
+  const merged=v178MergeSweepTexts(parts),names=v180NameColumnLines(merged);
+  if(names.length){
+    return names.slice(0,target&&names.length>target?target:names.length).join('\n');
+  }
+  return v180BestNameColumnText(parts,target);
 }
 async function v179TwoBandSweep(source,label,pass,total,kind){
   const parts=[];
