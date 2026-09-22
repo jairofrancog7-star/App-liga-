@@ -20,6 +20,8 @@ const selectedIds=new Set();
 let quickTeam='';
 let quickSeason='';
 let rosterImportTeam='';
+let rosterTeamPickerOpen=false;
+let rosterTeamQuery='';
 let rosterImportFile=null;
 let rosterImport={fileName:'',rawText:'',entries:[],missing:[],status:'',busy:false};
 
@@ -592,6 +594,30 @@ function v126RosterResultHtml(){
     '<button type="button" class="v126-apply" data-v126-apply>Aplicar altas, cambios y bajas marcadas</button>'+
   '</div>';
 }
+
+function v126RosterTeamPickerHtml(){
+  const teams=registryTeams(),q=norm(rosterTeamQuery);
+  const visible=teams.filter(t=>!q||norm(t.name).includes(q)||norm(t.category||'').includes(q));
+  const selected=teams.find(t=>norm(t.name)===norm(rosterImportTeam));
+  return '<div class="v126-team-custom">'+
+    '<button type="button" class="v126-team-open" data-v126-team-open aria-expanded="'+(rosterTeamPickerOpen?'true':'false')+'">'+
+      '<span><small>Equipo de esta lista</small><b>'+esc(selected?.name||'Selecciona el equipo de la lista')+'</b>'+
+      '<em>'+esc(selected?.category||'Toca para elegir')+'</em></span><i>⌄</i>'+
+    '</button>'+
+    (rosterTeamPickerOpen?'<div class="v126-team-panel">'+
+      '<div class="v126-team-panel-head"><b>Seleccionar equipo</b><button type="button" data-v126-team-close>×</button></div>'+
+      '<input type="search" data-v126-team-search placeholder="Buscar equipo o categoría" value="'+esc(rosterTeamQuery)+'" autocomplete="off">'+
+      '<div class="v126-team-list">'+
+        (visible.length?visible.map(t=>
+          '<button type="button" class="v126-team-choice '+(norm(t.name)===norm(rosterImportTeam)?'active':'')+'" data-v126-team-choice="'+esc(t.name)+'">'+
+            '<span><b>'+esc(t.name)+'</b><small>'+esc(t.category||'Categoría por confirmar')+'</small></span><i>✓</i>'+
+          '</button>'
+        ).join(''):'<div class="v126-team-empty">No encontré equipos con esa búsqueda.</div>')+
+      '</div>'+
+    '</div>':'')+
+  '</div>';
+}
+
 function rosterImportHtml(){
   const teams=registryTeams(),groups=new Map();
   for(const t of teams){const cat=t.category||'Sin categoría';if(!groups.has(cat))groups.set(cat,[]);groups.get(cat).push(t)}
@@ -599,7 +625,7 @@ function rosterImportHtml(){
   for(const [cat,items] of groups)opts+='<optgroup label="'+esc(cat)+'">'+items.map(t=>'<option value="'+esc(t.name)+'" '+(rosterImportTeam===t.name?'selected':'')+'>'+esc(t.name)+'</option>').join('')+'</optgroup>';
   return '<section class="v126-import">'+
     '<header><small>LISTA DEL DELEGADO</small><h3>Importar jugadores desde foto, PDF o Word</h3><p>Lee la lista en este teléfono, compara quién sigue, quién ya existe, quién cambió de equipo y quién es nuevo. El archivo no se sube a GitHub.</p></header>'+
-    '<label class="v126-team"><span>Equipo de esta lista</span><select data-v126-team>'+opts+'</select></label>'+
+    v126RosterTeamPickerHtml()+
     '<label class="v126-file"><input type="file" data-v126-file accept="image/*,.pdf,.docx,.txt,.csv,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document"><span><b>Elegir lista del delegado</b><small>Imagen · PDF · Word DOCX · TXT · CSV</small></span></label>'+
     '<div class="v126-file-name">'+esc(rosterImport.fileName||'Ningún archivo seleccionado')+'</div>'+
     '<button type="button" class="v126-analyse" data-v126-analyse '+(rosterImport.busy?'disabled':'')+'>'+(rosterImport.busy?'Leyendo lista…':'Detectar y comparar jugadores')+'</button>'+
@@ -646,7 +672,23 @@ function v126ApplyRoster(){
   renderManager();
 }
 function bindRosterImport(root){
-  $('[data-v126-team]',root)?.addEventListener('change',e=>{rosterImportTeam=e.target.value||'';rosterImport={fileName:'',rawText:'',entries:[],missing:[],status:'',busy:false};rosterImportFile=null;renderManager()});
+  $('[data-v126-team-open]',root)?.addEventListener('click',()=>{rosterTeamPickerOpen=!rosterTeamPickerOpen;renderManager()});
+  $('[data-v126-team-close]',root)?.addEventListener('click',()=>{rosterTeamPickerOpen=false;rosterTeamQuery='';renderManager()});
+  $('[data-v126-team-search]',root)?.addEventListener('input',e=>{
+    rosterTeamQuery=e.target.value||'';
+    const q=norm(rosterTeamQuery);
+    $('[data-v126-team-choice]',root).forEach(b=>{
+      const txt=norm(b.textContent||'');b.hidden=!!q&&!txt.includes(q);
+    });
+  });
+  $('[data-v126-team-choice]',root).forEach(b=>b.addEventListener('click',()=>{
+    rosterImportTeam=b.dataset.v126TeamChoice||'';
+    rosterTeamPickerOpen=false;rosterTeamQuery='';
+    rosterImport={fileName:'',rawText:'',entries:[],missing:[],status:'',busy:false};
+    rosterImportFile=null;
+    renderManager();
+    toast('Equipo seleccionado: '+rosterImportTeam);
+  }));
   $('[data-v126-file]',root)?.addEventListener('change',e=>{
     rosterImportFile=e.target.files?.[0]||null;
     rosterImport.fileName=rosterImportFile?.name||'';
@@ -669,8 +711,8 @@ function bindRosterImport(root){
       toast(err?.message||'No se pudo leer la lista');
     }
   });
-  $('[data-v126-include]',root).forEach(c=>c.onchange=()=>{const e=rosterImport.entries?.[Number(c.dataset.v126Include)];if(e)e.include=c.checked});
-  $('[data-v126-remove]',root).forEach(c=>c.onchange=()=>{const r=rosterImport.missing?.[Number(c.dataset.v126Remove)];if(r)r.remove=c.checked});
+  $$('[data-v126-include]',root).forEach(c=>c.onchange=()=>{const e=rosterImport.entries?.[Number(c.dataset.v126Include)];if(e)e.include=c.checked});
+  $$('[data-v126-remove]',root).forEach(c=>c.onchange=()=>{const r=rosterImport.missing?.[Number(c.dataset.v126Remove)];if(r)r.remove=c.checked});
   $('[data-v126-mark-missing]',root)?.addEventListener('click',()=>{for(const r of rosterImport.missing||[])r.remove=true;renderManager()});
   $('[data-v126-reanalyse]',root)?.addEventListener('click',()=>{
     const text=$('[data-v126-raw-text]',root)?.value||'';
@@ -700,7 +742,7 @@ function fastToolsHtml(list){
 }
 function updateSelectedUi(root=document){
   const count=selectedIds.size,n=$('[data-v124-selected-count]',root);if(n)n.textContent=String(count);
-  $('[data-v124-select]',root).forEach(c=>{c.checked=selectedIds.has(c.dataset.v124Select)});
+  $$('[data-v124-select]',root).forEach(c=>{c.checked=selectedIds.has(c.dataset.v124Select)});
 }
 
 function statusClass(r){
@@ -737,7 +779,7 @@ function bindManager(root){
   bindRosterImport(root);
   $('[data-v124-renew]',root)?.addEventListener('click',renewFromPrevious);
   $('[data-v124-select-visible]',root)?.addEventListener('click',()=>{
-    const boxes=$('[data-v124-select]',root),allSelected=boxes.length&&boxes.every(c=>selectedIds.has(c.dataset.v124Select));
+    const boxes=$$('[data-v124-select]',root),allSelected=boxes.length&&boxes.every(c=>selectedIds.has(c.dataset.v124Select));
     boxes.forEach(c=>{if(allSelected)selectedIds.delete(c.dataset.v124Select);else selectedIds.add(c.dataset.v124Select)});
     updateSelectedUi(root);
   });
@@ -755,7 +797,7 @@ function bindManager(root){
   bindList(root);
 }
 function bindList(root){
-  $('[data-v124-select]',root).forEach(c=>c.onchange=()=>{if(c.checked)selectedIds.add(c.dataset.v124Select);else selectedIds.delete(c.dataset.v124Select);updateSelectedUi(root)});
+  $$('[data-v124-select]',root).forEach(c=>c.onchange=()=>{if(c.checked)selectedIds.add(c.dataset.v124Select);else selectedIds.delete(c.dataset.v124Select);updateSelectedUi(root)});
   $('[data-v124-edit]',root).forEach(b=>b.onclick=()=>{const r=seasonRecords().find(x=>x.id===b.dataset.v124Edit);if(r)loadRecord(r)});
   $$('[data-v124-card]',root).forEach(b=>b.onclick=()=>{const r=seasonRecords().find(x=>x.id===b.dataset.v124Card);if(r)loadRecord(r)});
   $$('[data-v124-delete]',root).forEach(b=>b.onclick=()=>deleteRecord(b.dataset.v124Delete));
