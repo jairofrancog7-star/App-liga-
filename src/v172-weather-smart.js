@@ -7,7 +7,7 @@
 if(window.__LJR_V172_WEATHER_SMART__)return;
 window.__LJR_V172_WEATHER_SMART__=true;
 
-const BUILD='20260922-weather-fields-fallback-v176';
+const BUILD='20260922-field-ai-v177';
 const FALLBACK_FIELD_CONFIG={"build":"38-22","timezone":"America/Mexico_City","weatherProvider":"Open-Meteo","mapsProvider":"Google Maps","regionalFallback":{"latitude":20.64337,"longitude":-100.99286,"label":"Referencia regional Juventino Rosas","precision":"regional"},"playPatterns":{"Veteranos 35+":{"dayOfWeek":6,"label":"Sábado","timeRule":"afternoon"},"Veteranos 50+":{"dayOfWeek":6,"label":"Sábado","timeRule":"afternoon"},"Primera Fuerza":{"dayOfWeek":0,"label":"Domingo","timeRule":"morning"},"Intermedia":{"dayOfWeek":0,"label":"Domingo","timeRule":"morning"},"Segunda Fuerza":{"dayOfWeek":0,"label":"Domingo","timeRule":"morning"}},"fields":[{"id":"sur-1","name":"Campo 1 · Unidad Deportiva Sur","aliases":["1","Campo 1"],"community":"Juventino Rosas","latitude":20.63753,"longitude":-100.99297,"precision":"complex","weatherEligible":true,"mapsQuery":"Unidad Deportiva Sur, Juventino Rosas, Guanajuato","address":"Unidad Deportiva Sur, Juventino Rosas, Guanajuato","source":"https://mapcarta.com/es/W544245910","sourceNote":"Coordenada del complejo deportivo; no del rectángulo exacto del Campo 1."},{"id":"sur-2","name":"Campo 2 · Unidad Deportiva Sur","aliases":["2","Campo 2"],"community":"Juventino Rosas","latitude":20.63753,"longitude":-100.99297,"precision":"complex","weatherEligible":true,"mapsQuery":"Unidad Deportiva Sur, Juventino Rosas, Guanajuato","address":"Unidad Deportiva Sur, Juventino Rosas, Guanajuato","source":"https://mapcarta.com/es/W544245910","sourceNote":"Coordenada del complejo deportivo; no del rectángulo exacto del Campo 2."},{"id":"sur-3","name":"Campo 3 · Unidad Deportiva Sur","aliases":["3","Campo 3"],"community":"Juventino Rosas","latitude":20.63753,"longitude":-100.99297,"precision":"complex","weatherEligible":true,"mapsQuery":"Unidad Deportiva Sur, Juventino Rosas, Guanajuato","address":"Unidad Deportiva Sur, Juventino Rosas, Guanajuato","source":"https://mapcarta.com/es/W544245910","sourceNote":"Coordenada del complejo deportivo; no del rectángulo exacto del Campo 3."},{"id":"zapata-4","name":"Campo 4 · Emiliano Zapata","aliases":["4","Campo 4"],"community":"Juventino Rosas","latitude":null,"longitude":null,"precision":"pending","weatherEligible":true,"mapsQuery":"Campo de futbol prolongación Emiliano Zapata, Juventino Rosas, Guanajuato","address":"Prolongación Emiliano Zapata, Juventino Rosas, Guanajuato","source":"https://juventinorosas.gob.mx/documentos/primerInforme.pdf","sourceNote":"La fuente municipal confirma un campo de futbol en prolongación Emiliano Zapata, pero no aporta pin exacto.","weatherLatitude":20.64337,"weatherLongitude":-100.99286,"weatherPrecision":"regional","weatherSourceNote":"Clima disponible con referencia regional de Juventino Rosas; el pin exacto del campo sigue pendiente."},{"id":"cerrito","name":"Campo Cerrito de Gasca","aliases":["Cerrito de Gasca","C. de Gasca"],"community":"Cerrito de Gasca","latitude":20.617778,"longitude":-101.0625,"precision":"locality","weatherEligible":true,"mapsQuery":"Campo de futbol Cerrito de Gasca, Guanajuato","address":"Cerrito de Gasca, Santa Cruz de Juventino Rosas, Guanajuato","source":"https://mx.micodigopostal.info/distrito/guanajuato-santa-cruz-de-juventino-rosas","sourceNote":"Pin meteorológico de la localidad; confirmar el pin exacto del campo en JR Control."},{"id":"tavera","name":"Campo de Tavera","aliases":["Tavera","Franco Tavera"],"community":"Franco Tavera","latitude":20.60839,"longitude":-100.93238,"precision":"locality","weatherEligible":true,"mapsQuery":"Campo de futbol Franco Tavera, Santa Cruz de Juventino Rosas, Guanajuato","address":"Franco Tavera, Santa Cruz de Juventino Rosas, Guanajuato","source":"https://mapcarta.com/es/N9038832918","sourceNote":"Pin meteorológico de Franco Tavera. Parque de Tavera y campos deportivos cercanos están documentados, pero no el pin exacto del campo de liga."},{"id":"san-juan","name":"Campo San Juan de la Cruz","aliases":["San Juan","S. Juan de la Cruz","San Juan de la Cruz"],"community":"San Juan de la Cruz","latitude":null,"longitude":null,"precision":"user-map-link","weatherEligible":true,"mapsQuery":"https://maps.app.goo.gl/VJkp1fRa9t5yzfkb9","address":"San Juan de la Cruz, Santa Cruz de Juventino Rosas, Guanajuato 38250","source":"https://maps.app.goo.gl/VJkp1fRa9t5yzfkb9","sourceNote":"Ubicación del Campo San Juan de la Cruz corregida con el enlace exacto de Google Maps aportado por el usuario. Se retiró el pin anterior para evitar mostrar una ubicación incorrecta.","weatherLatitude":20.63379,"weatherLongitude":-100.911569,"weatherPrecision":"community","weatherSourceNote":"Clima disponible con referencia meteorológica de San Juan de la Cruz; el enlace de Maps sigue siendo la referencia de ubicación."},{"id":"cuenda","name":"Unidad Deportiva Santiago de Cuenda","aliases":["Cuenda","Santiago de Cuenda"],"community":"Santiago de Cuenda","latitude":20.59793,"longitude":-100.99663,"precision":"locality","weatherEligible":true,"mapsQuery":"Unidad Deportiva Santiago de Cuenda, Guanajuato","address":"38253 Santiago de Cuenda, Santa Cruz de Juventino Rosas, Guanajuato","source":"https://mapcarta.com/es/20312960","sourceNote":"La Unidad Deportiva existe; el pin meteorológico usa el centro de Santiago de Cuenda hasta confirmar coordenada exacta del campo."},{"id":"romerillo","name":"Campo San Antonio de Romerillo","aliases":["Romerillo","San Antonio de Romerillo"],"community":"San Antonio de Romerillo","latitude":20.60784,"longitude":-100.94854,"precision":"locality","weatherEligible":true,"mapsQuery":"Campo de futbol San Antonio de Romerillo, Guanajuato","address":"San Antonio de Romerillo, Santa Cruz de Juventino Rosas, Guanajuato 38255","source":"https://mapcarta.com/es/20322614","sourceNote":"Pin meteorológico de la localidad; la infraestructura deportiva en Romerillo está documentada."},{"id":"fraccionamiento","name":"Campo Fraccionamiento Comontuoso","aliases":["Fraccionamiento"],"community":"Comontuoso / Santiago de Cuenda","latitude":null,"longitude":null,"precision":"pending","weatherEligible":true,"mapsQuery":"Campo de futbol Fraccionamiento Comontuoso, Juventino Rosas, Guanajuato","address":"Fraccionamiento Comontuoso, Santa Cruz de Juventino Rosas, Guanajuato","source":"https://juventinorosas.gob.mx/documentos/primerInforme.pdf","sourceNote":"La fuente municipal confirma rehabilitación del campo de futbol del Fraccionamiento Comontuoso; falta pin exacto.","weatherLatitude":20.59793,"weatherLongitude":-100.99663,"weatherPrecision":"community","weatherSourceNote":"Clima disponible con referencia de Santiago de Cuenda/Comontuoso; el pin exacto del campo sigue pendiente."},{"id":"pozos","name":"Campo de Fútbol de Pozos","aliases":["Pozos"],"community":"Pozos","latitude":20.61767,"longitude":-100.90033,"precision":"exact","weatherEligible":true,"mapsQuery":"20.61767,-100.90033","address":"Campo de Fútbol de Pozos, Santa Cruz de Juventino Rosas, Guanajuato","source":"https://mapcarta.com/es/W269638702","sourceNote":"Pin del terreno de juego de fútbol (OpenStreetMap way 269638702)."},{"id":"rincon","name":"Campo Rincón de Centeno","aliases":["Rincón de Centeno","Rincon de Centeno","Rincón del Centeno"],"community":"Rincón de Centeno","latitude":null,"longitude":null,"precision":"user-map-link","weatherEligible":true,"mapsQuery":"https://maps.app.goo.gl/RzxJokJsPw86ZePC9","address":"Campo Rincón de Centeno · ubicación exacta en Google Maps","source":"https://maps.app.goo.gl/RzxJokJsPw86ZePC9","sourceNote":"Ubicación exacta del Campo Rincón de Centeno actualizada con el enlace de Google Maps aportado por el usuario. No se muestra 'Pin pendiente' porque ya existe enlace exacto.","weatherLatitude":20.660153,"weatherLongitude":-100.886766,"weatherPrecision":"community","weatherSourceNote":"Clima disponible con referencia meteorológica de Rincón de Centeno; el enlace exacto de Google Maps se conserva por separado."},{"id":"san-jose","name":"Campo San José de la Montaña","aliases":["San José","San Jose","San José de la Montaña"],"community":"San José de la Montaña","latitude":20.60102,"longitude":-101.07242,"precision":"locality","weatherEligible":true,"mapsQuery":"Campo de futbol San José de la Montaña, Guanajuato","address":"San José de la Montaña, Salamanca, Guanajuato 36867","source":"https://mapcarta.com/es/20394190","sourceNote":"Pin meteorológico de la localidad. El campo debe confirmarse con el pin que usa la liga."},{"id":"san-julian","name":"Campo San Julián Tierra Blanca","aliases":["San Julián","San Julian"],"community":"San Julián Tierra Blanca","latitude":20.591403,"longitude":-101.040358,"precision":"near-field","weatherEligible":true,"mapsQuery":"Cancha de futbol San Julián Tierra Blanca, Juventino Rosas, Guanajuato","address":"Los Fundadores 100, San Julián Tierra Blanca, Santa Cruz de Juventino Rosas, Guanajuato","source":"https://app.seg.guanajuato.gob.mx/ceo/IU/Busquedas/PAG_General.aspx?ClaveCCT=11ETV0722F&turno=1","sourceNote":"La fuente oficial SEG ubica la escuela en Los Fundadores 100 y dice expresamente 'frente a cancha de fut-ball de la comunidad'; el pin es referencia inmediata, no centro confirmado del césped."}]};
 
 const TZ='America/Mexico_City';
@@ -16,6 +16,7 @@ const ALERT_KEY='v172-weather-alerts';
 const CAT_KEY='v172-weather-category';
 const MATCH_KEY='v172-weather-match';
 const FIELD_KEY='v172-weather-field';
+const INSPECTION_KEY='v177-field-inspection:';
 
 const $=(s,r=document)=>r.querySelector(s);
 const $$=(s,r=document)=>Array.from(r.querySelectorAll(s));
@@ -37,47 +38,95 @@ function toast(text,type='ok'){
 }
 
 /* ---- Motor inteligente: mismo criterio explicable de V38 FIX23 ---- */
-function terrainEstimate(p24,p48){
-  const a=num(p24?.precipTotal),b=num(p48?.precipTotal);
-  if(a>=18||b>=30)return {level:'very-wet',label:'Muy saturado probable',detail:'La lluvia acumulada de las 24–48 h previas puede dejar zonas pesadas o encharcadas.'};
-  if(a>=10||b>=18)return {level:'wet',label:'Pesado/húmedo probable',detail:'Hay acumulado suficiente para que el drenaje y la revisión física del campo sean importantes.'};
-  if(a>=4||b>=8)return {level:'damp',label:'Humedad moderada probable',detail:'Hubo o se prevé lluvia previa; conviene revisar zonas blandas antes de autorizar.'};
-  return {level:'dry',label:'Bajo impacto de lluvia previa',detail:'El acumulado de las 24–48 h previas es bajo según la referencia meteorológica.'};
+function getInspection(field){
+  if(!field?.id)return {};
+  try{return JSON.parse(localStorage.getItem(INSPECTION_KEY+field.id)||'{}')||{}}catch(_){return {}}
+}
+function saveInspection(fieldId,key,value){
+  if(!fieldId)return;
+  let data={};try{data=JSON.parse(localStorage.getItem(INSPECTION_KEY+fieldId)||'{}')||{}}catch(_){}
+  data[key]=value;data.updatedAt=Date.now();
+  localStorage.setItem(INSPECTION_KEY+fieldId,JSON.stringify(data));
+}
+function inspectionStats(x={}){
+  const keys=['standingWater','ball','footing','lines','goals','drainage'];
+  const answered=keys.filter(k=>x[k]&&x[k]!=='unknown').length;
+  return {answered,total:keys.length,complete:answered===keys.length};
+}
+function terrainEstimate(p24,p48,m={},inspection={}){
+  const a=num(p24?.precipTotal),b=num(p48?.precipTotal),top=num(m?.soilTopAvg,-1),sub=num(m?.soilSubAvg,-1);
+  if(inspection.standingWater==='yes')return {level:'very-wet',label:'Charcos reportados',detail:'La inspección física marcó agua estancada; la superficie necesita revisión antes de jugar.'};
+  if(inspection.footing==='unsafe')return {level:'unsafe',label:'Superficie insegura reportada',detail:'La inspección física indicó apoyo inseguro o terreno inestable.'};
+  if(top>=0.42||sub>=0.43||a>=18||b>=30)return {level:'very-wet',label:'Saturación alta probable',detail:'La combinación de lluvia previa y humedad de suelo modelada apunta a terreno muy húmedo o con drenaje exigido.'};
+  if(top>=0.36||sub>=0.38||a>=10||b>=18)return {level:'wet',label:'Pesado/húmedo probable',detail:'El terreno puede estar blando; drenaje, apoyo del calzado y rodamiento del balón deben comprobarse.'};
+  if(top>=0.30||a>=4||b>=8)return {level:'damp',label:'Humedad moderada probable',detail:'Hay señales de humedad suficientes para justificar una inspección de zonas blandas.'};
+  return {level:'dry',label:'Bajo impacto de humedad',detail:'No se detectan acumulados fuertes ni humedad de suelo elevada en el modelo.'};
 }
 function verdictFor(probability){
   const p=clamp(Math.round(num(probability)),0,100);
-  if(p>=80)return {key:'yes',label:'ALTA PROBABILIDAD DE JUGAR',short:'SÍ · MUY PROBABLE',tone:'good'};
-  if(p>=65)return {key:'likely',label:'PROBABLEMENTE SE JUEGA',short:'SÍ · PROBABLE',tone:'good'};
+  if(p>=82)return {key:'yes',label:'ALTA PROBABILIDAD DE JUGAR',short:'SÍ · MUY PROBABLE',tone:'good'};
+  if(p>=67)return {key:'likely',label:'PROBABLEMENTE SE JUEGA',short:'SÍ · PROBABLE',tone:'good'};
   if(p>=45)return {key:'review',label:'REVISAR CAMPO · POR CONFIRMAR',short:'REVISAR',tone:'watch'};
   return {key:'risk',label:'ALTO RIESGO DE NO JUGAR',short:'NO · ALTO RIESGO',tone:'high'};
 }
-function confidenceFor(precision,hours){
-  let c=92,p=String(precision||'regional');
-  if(p==='exact'||p==='admin-pin')c=96;
-  else if(p==='complex'||p==='near-field')c=88;
-  else if(p==='locality')c=78;
-  else if(p==='regional')c=64;
-  else if(p==='pending')c=55;
-  if(num(hours?.hours)<3)c-=15;
-  return clamp(Math.round(c),35,98);
+function confidenceFor(precision,hours,inspection={},m={}){
+  let x=82,p=String(precision||'regional');
+  if(p==='exact'||p==='admin-pin')x=86;
+  else if(p==='complex'||p==='near-field')x=80;
+  else if(p==='locality')x=72;
+  else if(p==='regional')x=58;
+  else if(p==='pending')x=48;
+  if(num(hours?.hours)<3)x-=12;
+  if(Number.isFinite(Number(m?.soilTopAvg)))x+=4;
+  const s=inspectionStats(inspection);
+  x+=Math.min(12,s.answered*2);
+  return clamp(Math.round(x),35,97);
 }
 function scorePlayability(input){
-  const m=input?.match||null,p24=input?.prior24||{},p48=input?.prior48||{},precision=input?.precision||'regional';
-  if(!m)return {probability:null,confidence:confidenceFor(precision,p48),verdict:{key:'na',label:'SIN DATOS SUFICIENTES',short:'SIN DATOS',tone:'na'},terrain:terrainEstimate(p24,p48),reasons:['No hay datos meteorológicos suficientes para el horario seleccionado.']};
-  let score=96;const reasons=[];
+  const m=input?.match||null,p24=input?.prior24||{},p48=input?.prior48||{},precision=input?.precision||'regional',inspection=input?.inspection||{};
+  const terrain=terrainEstimate(p24,p48,m,inspection);
+  if(!m)return {probability:null,confidence:confidenceFor(precision,p48,inspection,m),verdict:{key:'na',label:'SIN DATOS SUFICIENTES',short:'SIN DATOS',tone:'na'},terrain,reasons:['No hay datos meteorológicos suficientes para el horario seleccionado.'],inspection:inspectionStats(inspection)};
+  let score=96,hardCap=98;const reasons=[],positives=[];
   const code=num(m.code),gust=num(m.gustMax),rainMax=num(m.rainMax),precipMax=num(m.precipMax),prob=num(m.probMax),p24sum=num(p24.precipTotal),p48sum=num(p48.precipTotal);
-  if(code>=95){score-=42;reasons.push('Tormenta eléctrica prevista cerca del horario.')}else if(code>=80){score-=10;reasons.push('Tiempo inestable cerca del horario.')}
-  if(rainMax>=8){score-=35;reasons.push('Lluvia horaria fuerte prevista durante la ventana del partido.')}else if(rainMax>=2.5){score-=25;reasons.push('Lluvia moderada prevista durante la ventana del partido.')}else if(rainMax>=1){score-=13;reasons.push('Lluvia ligera prevista durante la ventana del partido.')}
-  if(prob>=85){score-=16;reasons.push('Probabilidad de precipitación muy alta a la hora del partido.')}else if(prob>=65){score-=10;reasons.push('Probabilidad de precipitación elevada a la hora del partido.')}else if(prob>=45){score-=5;reasons.push('Existe posibilidad de precipitación a la hora del partido.')}
+  const tmin=Number.isFinite(Number(m.tempMin))?Number(m.tempMin):num(m.temp),apparent=num(m.apparentMax,m.temp),vis=num(m.visibilityMin,99999),humidity=num(m.humidityAvg),dewSpread=num(m.dewSpreadAvg,99);
+  const soilTop=num(m.soilTopAvg,-1),soilSub=num(m.soilSubAvg,-1),et24=num(p24.et0Total),sun24=num(p24.sunshineHours);
+
+  if(code>=95){score-=48;hardCap=Math.min(hardCap,35);reasons.push('Tormenta eléctrica prevista cerca del horario: requiere criterio de seguridad y posible suspensión.')}
+  else if(code>=80){score-=10;reasons.push('Tiempo inestable cerca del horario.')}
+  if(rainMax>=8){score-=35;reasons.push('Lluvia horaria fuerte durante la ventana del partido.')}else if(rainMax>=2.5){score-=25;reasons.push('Lluvia moderada durante la ventana del partido.')}else if(rainMax>=1){score-=13;reasons.push('Lluvia ligera durante la ventana del partido.')}
+  if(prob>=85){score-=16;reasons.push('Probabilidad de precipitación muy alta a la hora del partido.')}else if(prob>=65){score-=10;reasons.push('Probabilidad de precipitación elevada.')}else if(prob>=45){score-=5;reasons.push('Existe posibilidad de precipitación a la hora del partido.')}
   if(gust>=70){score-=24;reasons.push('Rachas de viento fuertes.')}else if(gust>=50){score-=10;reasons.push('Rachas de viento a vigilar.')}
-  if(p48sum>=30){score-=31;reasons.push('Acumulado muy alto en las 48 h previas: posible saturación del terreno.')}else if(p48sum>=18){score-=23;reasons.push('Acumulado alto en las 48 h previas.')}else if(p48sum>=8){score-=13;reasons.push('Lluvia relevante en las 48 h previas.')}else if(p48sum>=3){score-=6;reasons.push('Algo de lluvia en las 48 h previas.')}
-  if(p24sum>=18){score-=18;reasons.push('Mucha lluvia en las 24 h inmediatamente previas.')}else if(p24sum>=10){score-=12;reasons.push('Lluvia importante en las 24 h previas.')}else if(p24sum>=4){score-=6;reasons.push('Lluvia moderada en las 24 h previas.')}
+  if(vis<1000){score-=20;reasons.push('Visibilidad muy reducida en el modelo.')}else if(vis<3000){score-=7;reasons.push('Visibilidad reducida; revisar condiciones reales en cancha.')}
+  if(tmin<=0){score-=32;hardCap=Math.min(hardCap,40);reasons.push('Temperatura cercana o inferior a congelación: revisar dureza/hielo del terreno.')}else if(tmin<=2){score-=10;reasons.push('Temperatura muy baja: comprobar firmeza y posible escarcha.')}
+  if(apparent>=40){score-=14;reasons.push('Sensación térmica muy alta: considerar medidas de seguridad por calor.')}else if(apparent>=36){score-=6;reasons.push('Sensación térmica alta durante la ventana del partido.')}
+  if(p48sum>=30){score-=31;reasons.push('Acumulado muy alto en 48 h: riesgo de saturación del terreno.')}else if(p48sum>=18){score-=23;reasons.push('Acumulado alto en 48 h.')}else if(p48sum>=8){score-=13;reasons.push('Lluvia relevante en las 48 h previas.')}else if(p48sum>=3){score-=6;reasons.push('Algo de lluvia en las 48 h previas.')}
+  if(p24sum>=18){score-=18;reasons.push('Mucha lluvia en las 24 h previas.')}else if(p24sum>=10){score-=12;reasons.push('Lluvia importante en las 24 h previas.')}else if(p24sum>=4){score-=6;reasons.push('Lluvia moderada en las 24 h previas.')}
   if(precipMax>=5&&rainMax<2.5){score-=6;reasons.push('Precipitación total relevante cerca del horario.')}
-  score=clamp(Math.round(score),5,98);
-  if(!reasons.length)reasons.push('No se detectan señales meteorológicas fuertes ni acumulados importantes en las 48 h previas.');
-  return {probability:score,confidence:confidenceFor(precision,p48),verdict:verdictFor(score),terrain:terrainEstimate(p24,p48),reasons};
+
+  if(soilTop>=0){
+    if(soilTop>=0.42){score-=18;reasons.push('Humedad superficial del suelo modelada muy alta.')}
+    else if(soilTop>=0.36){score-=10;reasons.push('Humedad superficial del suelo modelada alta.')}
+    else if(soilTop>=0.30){score-=4;reasons.push('Humedad superficial moderada.')}
+  }
+  if(soilSub>=0.43){score-=10;reasons.push('Subsuelo modelado con humedad alta; el drenaje puede recuperar más lento.')}
+  else if(soilSub>=0.38){score-=5;reasons.push('Subsuelo modelado húmedo.')}
+
+  if(humidity>=92&&dewSpread<=2){score-=5;reasons.push('Humedad relativa alta y aire cerca de saturación: secado lento de la superficie.')}
+  if(et24>=3){score+=4;positives.push('Evapotranspiración previa favorece el secado.')}else if(et24>0&&et24<0.6){score-=3;reasons.push('Poco potencial de secado en las 24 h previas.')}
+  if(sun24>=5){score+=2;positives.push('Varias horas de sol previas favorecen el secado.')}
+
+  if(inspection.standingWater==='yes'){score-=45;hardCap=Math.min(hardCap,22);reasons.push('Inspección: hay agua estancada/charcos.')}else if(inspection.standingWater==='no'){score+=2;positives.push('Inspección: sin agua estancada.')}
+  if(inspection.ball==='poor'){score-=25;hardCap=Math.min(hardCap,45);reasons.push('Inspección: el balón no rueda o rebota de forma normal.')}else if(inspection.ball==='normal'){score+=2;positives.push('Inspección: rodamiento/rebote del balón normal.')}
+  if(inspection.footing==='unsafe'){score-=55;hardCap=Math.min(hardCap,12);reasons.push('Inspección: apoyo del calzado inseguro.')}else if(inspection.footing==='soft'){score-=18;reasons.push('Inspección: terreno blando o se hunde al pisar.')}else if(inspection.footing==='firm'){score+=2;positives.push('Inspección: apoyo firme.')}
+  if(inspection.lines==='poor'){score-=8;reasons.push('Inspección: líneas poco visibles.')}else if(inspection.lines==='visible'){score+=1}
+  if(inspection.goals==='unsafe'){score-=70;hardCap=Math.min(hardCap,5);reasons.push('Inspección: porterías/postes no seguros.')}else if(inspection.goals==='safe'){score+=1}
+  if(inspection.drainage==='poor'){score-=15;reasons.push('Inspección: drenaje deficiente.')}else if(inspection.drainage==='average'){score-=5;reasons.push('Inspección: drenaje regular.')}else if(inspection.drainage==='good'){score+=3;positives.push('Inspección: drenaje funcionando bien.')}
+
+  score=clamp(Math.round(Math.min(score,hardCap)),5,98);
+  if(!reasons.length)reasons.push('No se detectan señales meteorológicas o del terreno que indiquen un problema fuerte.');
+  return {probability:score,confidence:confidenceFor(precision,p48,inspection,m),verdict:verdictFor(score),terrain,reasons,positives,inspection:inspectionStats(inspection)};
 }
-function signature(r){return [r?.verdict?.key||'na',r?.probability??'na',r?.terrain?.level||'na'].join('|')}
+function signature(r){return [r?.verdict?.key||'na',r?.probability??'na',r?.terrain?.level||'na',r?.inspection?.answered||0].join('|')}
 
 /* ---- Datos / fechas ---- */
 async function loadJson(url){
@@ -219,7 +268,7 @@ function buildOfficialFixtures(){
 
 /* ---- Open-Meteo ---- */
 function forecastUrl(coords){
-  const p=new URLSearchParams({latitude:String(coords.latitude),longitude:String(coords.longitude),hourly:'temperature_2m,precipitation_probability,precipitation,rain,weather_code,wind_gusts_10m',past_days:'2',forecast_days:'16',timezone:TZ,temperature_unit:'celsius',wind_speed_unit:'kmh',precipitation_unit:'mm'});
+  const p=new URLSearchParams({latitude:String(coords.latitude),longitude:String(coords.longitude),hourly:'temperature_2m,apparent_temperature,relative_humidity_2m,dew_point_2m,precipitation_probability,precipitation,rain,weather_code,wind_gusts_10m,visibility,et0_fao_evapotranspiration,evapotranspiration,sunshine_duration,soil_temperature_0cm,soil_moisture_0_to_1cm,soil_moisture_1_to_3cm,soil_moisture_3_to_9cm,soil_moisture_9_to_27cm',past_days:'2',forecast_days:'16',timezone:TZ,temperature_unit:'celsius',wind_speed_unit:'kmh',precipitation_unit:'mm'});
   return 'https://api.open-meteo.com/v1/forecast?'+p.toString();
 }
 async function getForecast(field,force=false){
@@ -241,8 +290,20 @@ function summarize(data,startAt,endAt){
   const h=data?.hourly;if(!h||!Array.isArray(h.time))return null;const indexes=[];
   for(let i=0;i<h.time.length;i++){const at=localToEpoch(String(h.time[i]).slice(0,16));if(at&&at>=startAt&&at<=endAt)indexes.push({i,at})}
   if(!indexes.length)return null;
-  const vals=key=>indexes.map(x=>Number(h[key]?.[x.i])).filter(Number.isFinite),sum=a=>a.length?a.reduce((s,x)=>s+x,0):0,max=a=>a.length?Math.max(...a):null,avg=a=>a.length?a.reduce((s,x)=>s+x,0)/a.length:null,now=Date.now();
-  return {hours:indexes.length,observedHours:indexes.filter(x=>x.at<=now).length,forecastHours:indexes.filter(x=>x.at>now).length,precipTotal:sum(vals('precipitation')),rainTotal:sum(vals('rain')),rainMax:max(vals('rain')),precipMax:max(vals('precipitation')),probMax:max(vals('precipitation_probability')),gustMax:max(vals('wind_gusts_10m')),code:max(vals('weather_code')),temp:avg(vals('temperature_2m'))};
+  const vals=key=>indexes.map(x=>Number(h[key]?.[x.i])).filter(Number.isFinite);
+  const sum=a=>a.length?a.reduce((s,x)=>s+x,0):0,max=a=>a.length?Math.max(...a):null,min=a=>a.length?Math.min(...a):null,avg=a=>a.length?a.reduce((s,x)=>s+x,0)/a.length:null,now=Date.now();
+  const temp=vals('temperature_2m'),dew=vals('dew_point_2m');
+  const dewSpread=temp.length&&dew.length?avg(temp.map((v,i)=>Number.isFinite(dew[i])?Math.max(0,v-dew[i]):null).filter(Number.isFinite)):null;
+  const soilTop=[...vals('soil_moisture_0_to_1cm'),...vals('soil_moisture_1_to_3cm')];
+  const soilSub=[...vals('soil_moisture_3_to_9cm'),...vals('soil_moisture_9_to_27cm')];
+  return {
+    hours:indexes.length,observedHours:indexes.filter(x=>x.at<=now).length,forecastHours:indexes.filter(x=>x.at>now).length,
+    precipTotal:sum(vals('precipitation')),rainTotal:sum(vals('rain')),rainMax:max(vals('rain')),precipMax:max(vals('precipitation')),probMax:max(vals('precipitation_probability')),
+    gustMax:max(vals('wind_gusts_10m')),code:max(vals('weather_code')),temp:avg(temp),tempMin:min(temp),apparentMax:max(vals('apparent_temperature')),
+    humidityAvg:avg(vals('relative_humidity_2m')),dewSpreadAvg:dewSpread,visibilityMin:min(vals('visibility')),
+    et0Total:sum(vals('et0_fao_evapotranspiration')),evapTotal:sum(vals('evapotranspiration')),sunshineHours:sum(vals('sunshine_duration'))/3600,
+    soilTemp:avg(vals('soil_temperature_0cm')),soilTopAvg:avg(soilTop),soilSubAvg:avg(soilSub)
+  };
 }
 function sourceLabel(s){if(!s)return 'sin datos';if(s.observedHours&&s.forecastHours)return 'mezcla de horas pasadas + pronóstico';if(s.observedHours)return 'horas pasadas/modeladas';return 'pronóstico previo al partido'}
 
@@ -275,6 +336,24 @@ function fmtDate(match){
 }
 function fmtUpdated(){return new Intl.DateTimeFormat('es-MX',{timeZone:TZ,hour:'2-digit',minute:'2-digit',hour12:true}).format(new Date())}
 function metric(label,value,sub=''){return '<div class="v172-metric"><span>'+esc(label)+'</span><strong>'+esc(value)+'</strong>'+(sub?'<small>'+esc(sub)+'</small>':'')+'</div>'}
+function inspectionSelect(field,key,label,values,current){
+  return '<label class="v177-check"><span>'+esc(label)+'</span><select data-v177-inspection="'+esc(key)+'" data-field="'+esc(field?.id||'')+'">'+
+    values.map(v=>'<option value="'+esc(v[0])+'" '+(String(current||'unknown')===v[0]?'selected':'')+'>'+esc(v[1])+'</option>').join('')+
+  '</select></label>';
+}
+function inspectionMarkup(field){
+  const x=getInspection(field),s=inspectionStats(x),when=x.updatedAt?new Intl.DateTimeFormat('es-MX',{timeZone:TZ,dateStyle:'short',timeStyle:'short'}).format(new Date(x.updatedAt)):'sin inspección';
+  return '<details class="v177-inspection"><summary>🧪 Inspección física del campo <b>'+s.answered+'/'+s.total+'</b></summary>'+
+    '<p>Mejora la confianza del porcentaje. Basado en revisión de seguridad, agua estancada, rodamiento/rebote, apoyo, líneas y drenaje.</p>'+
+    '<div class="v177-inspection-grid">'+
+      inspectionSelect(field,'standingWater','Agua estancada',[['unknown','Sin revisar'],['no','No'],['yes','Sí']],x.standingWater)+
+      inspectionSelect(field,'ball','Balón rueda/rebota',[['unknown','Sin revisar'],['normal','Normal'],['poor','Mal / se frena']],x.ball)+
+      inspectionSelect(field,'footing','Apoyo del calzado',[['unknown','Sin revisar'],['firm','Firme'],['soft','Blando / se hunde'],['unsafe','Inseguro']],x.footing)+
+      inspectionSelect(field,'lines','Líneas visibles',[['unknown','Sin revisar'],['visible','Sí'],['poor','No / poco']],x.lines)+
+      inspectionSelect(field,'goals','Porterías seguras',[['unknown','Sin revisar'],['safe','Sí'],['unsafe','No']],x.goals)+
+      inspectionSelect(field,'drainage','Drenaje',[['unknown','Sin revisar'],['good','Bueno'],['average','Regular'],['poor','Deficiente']],x.drainage)+
+    '</div><small>Última revisión: '+esc(when)+'. Se guarda en este dispositivo.</small></details>';
+}
 function loadingMarkup(text='Consultando clima…'){return '<div class="v172-loading"><span></span>'+esc(text)+'</div>'}
 function emptyMarkup(text){return '<div class="v172-empty">'+esc(text)+'</div>'}
 
@@ -307,14 +386,25 @@ function resultMarkup(ctx){
   const kicker=match?(match.category+' · '+match.phase):'CONSULTA DIRECTA DE CAMPO';
   const when=match?(fmtDate(match)+(match.schedule?.kind==='estimada'?' · fecha estimada':'')):'Condición meteorológica alrededor de '+new Intl.DateTimeFormat('es-MX',{timeZone:TZ,hour:'2-digit',minute:'2-digit',hourCycle:'h23'}).format(new Date(analysisAt));
   const r24=p24?(p24.precipTotal.toFixed(1)+' mm'):'—',r48=p48?(p48.precipTotal.toFixed(1)+' mm'):'—',wxProb=windowWx?.probMax==null?'—':Math.round(windowWx.probMax)+'%',wxRain=windowWx?.rainMax==null?'—':windowWx.rainMax.toFixed(1)+' mm/h',temp=windowWx?.temp==null?'—':windowWx.temp.toFixed(1)+' °C',gust=windowWx?.gustMax==null?'—':Math.round(windowWx.gustMax)+' km/h';
+  const soilTop=windowWx?.soilTopAvg==null?'—':Math.round(windowWx.soilTopAvg*100)+'%',soilSub=windowWx?.soilSubAvg==null?'—':Math.round(windowWx.soilSubAvg*100)+'%',rh=windowWx?.humidityAvg==null?'—':Math.round(windowWx.humidityAvg)+'%',vis=windowWx?.visibilityMin==null?'—':(windowWx.visibilityMin/1000).toFixed(1)+' km',et0=p24?.et0Total==null?'—':p24.et0Total.toFixed(1)+' mm',sun=p24?.sunshineHours==null?'—':p24.sunshineHours.toFixed(1)+' h';
+  const checked=result.inspection?.answered||0;
   return '<article class="v172-result '+esc(verdict.tone)+'">'+
     '<div class="v172-result-head"><div><div class="v172-kicker">'+esc(kicker)+'</div><h3>'+esc(title)+'</h3><p>'+esc(when)+'</p><p><b>'+esc(field?.name||match?.fieldValue||'Campo pendiente')+'</b> · <span class="v172-pill">'+esc(precisionLabel(precision))+'</span></p></div>'+
-      '<div class="v172-score '+esc(verdict.tone)+'"><span>Probabilidad orientativa</span><strong>'+(p==null?'—':esc(p+'%'))+'</strong><b>'+esc(verdict.short)+'</b><small>confianza '+esc(result.confidence)+'%</small></div></div>'+
-    '<div class="v172-verdict '+esc(verdict.tone)+'"><span>ASISTENTE INTELIGENTE</span><strong>'+esc(verdict.label)+'</strong><p>'+esc(result.terrain.label)+'. '+esc(result.terrain.detail)+'</p></div>'+
-    '<div class="v172-metrics">'+metric('Lluvia 24 h previas',r24,sourceLabel(p24))+metric('Lluvia 48 h previas',r48,sourceLabel(p48))+metric('Prob. a la hora',wxProb,'ventana -1 h / +2 h')+metric('Lluvia a la hora',wxRain,'máximo horario')+metric('Temperatura',temp)+metric('Racha máxima',gust)+'</div>'+
-    '<details class="v172-why"><summary>¿Por qué da esta probabilidad?</summary><ul>'+result.reasons.map(r=>'<li>'+esc(r)+'</li>').join('')+'</ul><p>El motor combina lluvia de las 24/48 h previas, lluvia/tormenta/viento cerca del horario y precisión del pin. Es una estimación automática explicable, no una inspección física.</p></details>'+
+      '<div class="v172-score '+esc(verdict.tone)+'"><span>Jugabilidad estimada</span><strong>'+(p==null?'—':esc(p+'%'))+'</strong><b>'+esc(verdict.short)+'</b><small>confianza '+esc(result.confidence)+'%</small></div></div>'+
+    '<div class="v172-verdict '+esc(verdict.tone)+'"><span>IA DE CONDICIÓN DEL CAMPO</span><strong>'+esc(verdict.label)+'</strong><p>'+esc(result.terrain.label)+'. '+esc(result.terrain.detail)+'</p><small>'+checked+'/6 puntos de inspección física registrados.</small></div>'+
+    '<div class="v177-model-groups"><span>🌧️ lluvia</span><span>💧 suelo</span><span>☀️ secado</span><span>🌫️ visibilidad</span><span>🌡️ temperatura</span><span>💨 viento</span><span>⚡ tormenta</span><span>🏟️ inspección</span></div>'+
+    '<div class="v172-metrics">'+
+      metric('Lluvia 24 h',r24,sourceLabel(p24))+metric('Lluvia 48 h',r48,sourceLabel(p48))+metric('Prob. a la hora',wxProb,'ventana -1 h / +2 h')+metric('Lluvia a la hora',wxRain,'máximo horario')+
+      metric('Humedad suelo 0–3 cm',soilTop,'indicador modelado')+metric('Humedad suelo 3–27 cm',soilSub,'indicador modelado')+
+      metric('Secado ET₀ 24 h',et0,'evapotranspiración de referencia')+metric('Sol 24 h',sun,'horas modeladas')+
+      metric('Humedad relativa',rh)+metric('Visibilidad mínima',vis)+metric('Temperatura',temp)+metric('Racha máxima',gust)+
+    '</div>'+
+    '<details class="v172-why"><summary>¿Por qué da este porcentaje?</summary><ul>'+result.reasons.map(r=>'<li>'+esc(r)+'</li>').join('')+'</ul>'+
+      (result.positives?.length?'<p><b>Factores favorables:</b> '+esc(result.positives.join(' '))+'</p>':'')+
+      '<p>El motor combina lluvia reciente, intensidad/probabilidad a la hora, humedad superficial y subsuelo modelada, capacidad de secado, humedad del aire, visibilidad, temperatura, viento, tormenta, precisión del pin e inspección física. La humedad de suelo es un indicador meteorológico y puede variar según tipo de suelo y drenaje real.</p></details>'+
+    inspectionMarkup(field)+
     '<div class="v172-actions"><a href="'+esc(mapsSearch(field))+'" target="_blank" rel="noopener">📍 Mapa</a><a href="'+esc(mapsDirections(field))+'" target="_blank" rel="noopener">🧭 Cómo llegar</a><a href="'+esc(googleWeather(field))+'" target="_blank" rel="noopener">☁️ Google clima</a><button type="button" data-v172-action="pin" data-field="'+esc(field?.id||'')+'">Ajustar pin</button><button type="button" data-v172-action="share">Compartir aviso</button><button type="button" data-v172-action="copy">Copiar aviso</button></div>'+
-    '<div class="v172-official"><b>Automático ≠ oficial.</b> “SÍ/NO probable” es una recomendación meteorológica. El estado oficial Programado / Por confirmar / Retrasado / Suspendido sigue siendo decisión de la Liga tras revisar el terreno.</div>'+
+    '<div class="v172-official"><b>IA ≠ decisión oficial.</b> El porcentaje es una estimación para apoyar la revisión. La decisión final debe considerar la inspección completa del terreno y corresponde a la Liga/árbitro según sus reglas.</div>'+
   '</article>';
 }
 async function analyzeSelection(force=false){
@@ -327,8 +417,8 @@ async function analyzeSelection(force=false){
   if(!field){panel.innerHTML=emptyMarkup(mode==='match'?'El partido seleccionado no tiene un campo reconocido. Usa “Buscar campo” para revisar una cancha.':'Selecciona un campo.');return null}
   panel.innerHTML=loadingMarkup('Consultando el campo seleccionado…');hub.setAttribute('aria-busy','true');
   try{
-    const wx=await getForecast(field,force),analysisAt=match?.schedule?.at||Date.now(),windowWx=summarize(wx.data,analysisAt-60*60*1000,analysisAt+2*60*60*1000),p24=summarize(wx.data,analysisAt-24*60*60*1000,analysisAt-1),p48=summarize(wx.data,analysisAt-48*60*60*1000,analysisAt-1),result=scorePlayability({match:windowWx,prior24:p24,prior48:p48,precision:wx.coords.precision});
-    lastAnalysis={match,field,coords:wx.coords,windowWx,p24,p48,result,analysisAt};panel.innerHTML=resultMarkup(lastAnalysis);
+    const wx=await getForecast(field,force),analysisAt=match?.schedule?.at||Date.now(),windowWx=summarize(wx.data,analysisAt-60*60*1000,analysisAt+2*60*60*1000),p24=summarize(wx.data,analysisAt-24*60*60*1000,analysisAt-1),p48=summarize(wx.data,analysisAt-48*60*60*1000,analysisAt-1),inspection=getInspection(field),result=scorePlayability({match:windowWx,prior24:p24,prior48:p48,precision:wx.coords.precision,inspection});
+    lastAnalysis={match,field,coords:wx.coords,windowWx,p24,p48,result,inspection,analysisAt};panel.innerHTML=resultMarkup(lastAnalysis);
     const u=$('.v172-updated',hub);if(u)u.textContent='Actualizado '+fmtUpdated();
     return lastAnalysis;
   }catch(err){
@@ -337,7 +427,7 @@ async function analyzeSelection(force=false){
 }
 function alertText(ctx){
   if(!ctx?.result)return '';const m=ctx.match,r=ctx.result,subject=m?(m.home+' vs '+m.away):(ctx.field?.name||'Campo');
-  return ['Liga Juventino Rosas · '+subject,'Estimación automática: '+r.verdict.label+' ('+(r.probability??'—')+'%).','Terreno meteorológico: '+r.terrain.label+'.',m?(fmtDate(m)+' · '+(ctx.field?.name||m.fieldValue)):(ctx.field?.name||''),'La decisión oficial corresponde a la Liga tras revisar el campo.'].filter(Boolean).join('\n');
+  return ['Liga Juventino Rosas · '+subject,'Estimación automática: '+r.verdict.label+' ('+(r.probability??'—')+'%).','Condición del campo por IA: '+r.terrain.label+'.',m?(fmtDate(m)+' · '+(ctx.field?.name||m.fieldValue)):(ctx.field?.name||''),'La decisión oficial corresponde a la Liga tras revisar el campo.'].filter(Boolean).join('\n');
 }
 async function shareCurrent(copyOnly=false){
   if(!lastAnalysis)return toast('Primero analiza un partido o campo','error');const text=alertText(lastAnalysis);
@@ -365,7 +455,7 @@ async function toggleAlerts(){
 }
 async function analyzeMatchQuiet(match){
   if(!match?.field||!match.schedule?.at)return null;
-  try{const wx=await getForecast(match.field,false),at=match.schedule.at,windowWx=summarize(wx.data,at-60*60*1000,at+2*60*60*1000),p24=summarize(wx.data,at-24*60*60*1000,at-1),p48=summarize(wx.data,at-48*60*60*1000,at-1),result=scorePlayability({match:windowWx,prior24:p24,prior48:p48,precision:wx.coords.precision});return {match,field:match.field,coords:wx.coords,windowWx,p24,p48,result,analysisAt:at}}catch(_){return null}
+  try{const wx=await getForecast(match.field,false),at=match.schedule.at,windowWx=summarize(wx.data,at-60*60*1000,at+2*60*60*1000),p24=summarize(wx.data,at-24*60*60*1000,at-1),p48=summarize(wx.data,at-48*60*60*1000,at-1),inspection=getInspection(match.field),result=scorePlayability({match:windowWx,prior24:p24,prior48:p48,precision:wx.coords.precision,inspection});return {match,field:match.field,coords:wx.coords,windowWx,p24,p48,result,inspection,analysisAt:at}}catch(_){return null}
 }
 async function checkCategoryAlerts(force=false){
   if(!alertsEnabled()||mode!=='match'||!selectedCategory)return;if(!force&&Date.now()-lastAlertCheck<5*60*1000)return;lastAlertCheck=Date.now();
@@ -412,6 +502,9 @@ function bindHub(){
       selectedField=validFieldId(e.target.value);
       if(selectedField)localStorage.setItem(FIELD_KEY,selectedField);
       analyzeSelection(false);
+    }else if(e.target.matches('[data-v177-inspection]')){
+      saveInspection(e.target.dataset.field,e.target.dataset.v177Inspection,e.target.value);
+      analyzeSelection(false);
     }
   };
   hub.addEventListener('change',onSelect);
@@ -446,10 +539,10 @@ async function initData(){
 }
 function markup(){
   return '<section id="v172-weather-smart" class="v172-weather-smart" aria-label="Clima inteligente del partido">'+
-    '<div class="v172-head"><div><div class="v172-kicker">CENTRAL OPERATIVA V38 · MOTOR INTELIGENTE</div><h2>Clima inteligente del partido</h2><p>Elige categoría y partido. Mostramos <b>un solo análisis</b>: clima del campo, lluvia de 24/48 h previas y probabilidad orientativa de que el terreno esté jugable.</p></div><button type="button" class="v172-alert" data-v172-action="alerts">🔕 Activar avisos</button></div>'+
+    '<div class="v172-head"><div><div class="v172-kicker">CENTRAL OPERATIVA V38 · MOTOR INTELIGENTE</div><h2>Clima inteligente del partido</h2><p>Elige categoría y partido. Mostramos <b>un solo análisis</b>: clima, lluvia previa, humedad del suelo, capacidad de secado, seguridad e inspección física para estimar qué tan jugable está el campo.</p></div><button type="button" class="v172-alert" data-v172-action="alerts">🔕 Activar avisos</button></div>'+
     '<div class="v172-rule"><b>🔔 Avisos dentro de la página</b><span>Automático: el motor inteligente puede avisar “sí probable / revisar / alto riesgo de no jugar”. No cambia por sí solo el estado oficial a “Suspendido”.</span></div>'+
     '<div class="v172-controls"></div>'+
-    '<div class="v172-status"><span class="v172-updated">Preparando análisis…</span><span>Open-Meteo · 2 días previos + hasta 16 días de pronóstico</span></div>'+
+    '<div class="v172-status"><span class="v172-updated">Preparando análisis…</span><span>Open-Meteo · lluvia + suelo + secado + viento + visibilidad + temperatura</span></div>'+
     '<div class="v172-panel" aria-live="polite">'+loadingMarkup('Cargando jornada…')+'</div>'+
   '</section>';
 }
