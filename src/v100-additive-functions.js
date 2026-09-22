@@ -7,7 +7,7 @@
 if(window.__LJR_V100_ADDITIVE__) return;
 window.__LJR_V100_ADDITIVE__=true;
 
-const BUILD='20260920-apps-falta1';
+const BUILD='20260922-fanzone-one-vote-v157';
 const $=(s,r=document)=>r.querySelector(s);
 const $$=(s,r=document)=>Array.from(r.querySelectorAll(s));
 const esc=(v)=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -15,6 +15,91 @@ const route=()=>location.hash.replace(/^#\//,'').split('?')[0]||'home';
 const norm=(v)=>String(v||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[^a-z0-9]+/g,' ').trim();
 const read=(k,d)=>{try{const v=JSON.parse(localStorage.getItem(k));return v??d}catch(e){return d}};
 const write=(k,v)=>localStorage.setItem(k,JSON.stringify(v));
+const FAN_STORE='lj-fanzone-one-vote-v157';
+const FAN_KEYS=['fire','goal','clap','heart'];
+function fanHash(v){
+  let h=2166136261;
+  for(const ch of String(v||'')){h^=ch.charCodeAt(0);h=Math.imul(h,16777619)}
+  return (h>>>0).toString(36);
+}
+function fanVisitorId(){
+  let id=localStorage.getItem('lj-fanzone-visitor-id-v157');
+  if(!id){
+    id=(window.crypto&&crypto.randomUUID?crypto.randomUUID():('v-'+Date.now().toString(36)+'-'+Math.random().toString(36).slice(2)));
+    localStorage.setItem('lj-fanzone-visitor-id-v157',id);
+  }
+  return 'visitor:'+id;
+}
+function fanProfileKey(){
+  const user=read('lj-store-v3',{})?.user;
+  if(!user)return '';
+  const raw=user.uid||user.id||user.email||user.name||'';
+  return raw?'profile:'+fanHash(String(raw).trim().toLowerCase()):'';
+}
+function fanLoad(){
+  let z=read(FAN_STORE,null);
+  if(!z||typeof z!=='object'||!z.counts||!z.votes){
+    const a=read('v100-fan-pulse',{fire:0,goal:0,clap:0,heart:0});
+    const b=read('v105-fanzone',{gol:0,liga:0,aplauso:0,fuego:0});
+    z={version:157,counts:{
+      fire:Math.max(Number(a.fire||0),Number(b.fuego||0)),
+      goal:Math.max(Number(a.goal||0),Number(b.gol||0)),
+      clap:Math.max(Number(a.clap||0),Number(b.aplauso||0)),
+      heart:Math.max(Number(a.heart||0),Number(b.liga||0))
+    },votes:{}};
+    write(FAN_STORE,z);
+  }
+  FAN_KEYS.forEach(k=>z.counts[k]=Math.max(0,Number(z.counts[k]||0)));
+  return z;
+}
+function fanMirror(z){
+  write(FAN_STORE,z);
+  write('v100-fan-pulse',{fire:z.counts.fire,goal:z.counts.goal,clap:z.counts.clap,heart:z.counts.heart});
+  write('v105-fanzone',{gol:z.counts.goal,liga:z.counts.heart,aplauso:z.counts.clap,fuego:z.counts.fire});
+}
+function fanIdentity(z){
+  const visitor=fanVisitorId(),profile=fanProfileKey();
+  if(profile&&z&&z.votes&&z.votes[visitor]&&!z.votes[profile]){
+    z.votes[profile]=z.votes[visitor];
+    delete z.votes[visitor];
+    fanMirror(z);
+  }
+  return profile||visitor;
+}
+function fanSnapshot(){
+  const z=fanLoad(),id=fanIdentity(z);
+  return {counts:Object.assign({},z.counts),choice:z.votes[id]||'',identity:id,profile:id.indexOf('profile:')===0};
+}
+function fanVote(next){
+  if(!FAN_KEYS.includes(next))return {ok:false};
+  const z=fanLoad(),id=fanIdentity(z),prev=z.votes[id]||'';
+  if(prev===next){
+    const same=fanSnapshot();
+    return Object.assign({ok:true,same:true,previous:prev},same);
+  }
+  if(prev&&FAN_KEYS.includes(prev))z.counts[prev]=Math.max(0,Number(z.counts[prev]||0)-1);
+  z.counts[next]=Number(z.counts[next]||0)+1;
+  z.votes[id]=next;
+  fanMirror(z);
+  const snap=fanSnapshot();
+  return Object.assign({ok:true,same:false,previous:prev},snap);
+}
+function fanRenderButtons(root,selector,attr){
+  const snap=fanSnapshot();
+  $(selector,root).forEach(b=>{
+    const k=b.dataset[attr];
+    const n=b.querySelector('b');if(n)n.textContent=Number(snap.counts[k]||0);
+    b.classList.toggle('is-selected',snap.choice===k);
+    b.setAttribute('aria-pressed',snap.choice===k?'true':'false');
+  });
+  const status=$('[data-fan-status]',root);
+  if(status)status.textContent=snap.choice
+    ?'Tu reacción ya está registrada. Puedes cambiarla sin sumar otro voto.'
+    :(snap.profile?'Perfil registrado: puedes elegir una sola reacción.':'Visitante: puedes elegir una sola reacción en este dispositivo.');
+  return snap;
+}
+window.LJR_FAN_ZONE_ONE_VOTE={snapshot:fanSnapshot,vote:fanVote,render:fanRenderButtons};
+
 
 function toast(msg){
   let t=$('.v100-toast'); if(t)t.remove();
@@ -74,7 +159,7 @@ function homeExtra(){
   const chosenCat=fav.category||cats[0]||'';
   const filtered=teams.filter(t=>!chosenCat||t.category===chosenCat);
   const chosen=teams.find(t=>t.name===fav.name)||filtered[0]||teams[0];
-  const pulse=read('v100-fan-pulse',{fire:0,goal:0,clap:0,heart:0});
+  const fan=fanSnapshot(); const pulse=fan.counts;
   const captured=window.LJR_OFFICIAL_DATA?.captured_at_utc;
   const logo=chosen?teamLogo(chosen.name):'';
   return '<section class="section v100-block" id="v100-home-extra" data-v100-team-count="'+teams.length+'">'+
@@ -91,7 +176,7 @@ function homeExtra(){
       '<button data-v100-route="leagueTools"><b>Herramientas</b><small>Operación de la Liga</small></button>'+
       '<button data-v100-action="delegates"><b>Delegados</b><small>Directorio local</small></button>'+
     '</div>'+
-    '<div class="v100-pulse"><div><small>FAN ZONE</small><b>Pulso de la afición</b><span>Reacciones guardadas localmente</span></div><div class="v100-reactions">'+
+    '<div class="v100-pulse"><div><small>FAN ZONE</small><b>Pulso de la afición</b><span>Una reacción por visitante o perfil registrado.</span><em class="v100-fan-rule" data-fan-status></em></div><div class="v100-reactions">'+
       '<button data-v100-react="fire">🔥 <b>'+Number(pulse.fire||0)+'</b></button><button data-v100-react="goal">⚽ <b>'+Number(pulse.goal||0)+'</b></button><button data-v100-react="clap">👏 <b>'+Number(pulse.clap||0)+'</b></button><button data-v100-react="heart">💙 <b>'+Number(pulse.heart||0)+'</b></button></div></div>'+
     '<div class="v100-status"><span>Estado de la Liga</span><b>'+(captured?'Datos oficiales sincronizados':'Esperando datos oficiales')+'</b>'+(captured?'<small>Última fuente: '+esc(new Date(captured).toLocaleString('es-MX'))+'</small>':'')+'</div>'+
   '</section>';
@@ -102,7 +187,7 @@ function bindHome(root){
   cat?.addEventListener('change',rebuild);
   $('[data-v100-save-fav]',root)?.addEventListener('click',()=>{const all=officialTeams(),t=all.find(x=>x.name===teamSel.value);if(!t)return toast('Selecciona un equipo');write('v100-favorite-team',t);toast('Equipo favorito guardado');root.remove();schedule()});
   $('[data-v100-open-fav]',root)?.addEventListener('click',()=>{const t=read('v100-favorite-team',{});const name=t.name||teamSel?.value;if(name)openOfficialTeam(name)});
-  $$('[data-v100-react]',root).forEach(b=>b.onclick=()=>{const p=read('v100-fan-pulse',{fire:0,goal:0,clap:0,heart:0}),k=b.dataset.v100React;p[k]=(p[k]||0)+1;write('v100-fan-pulse',p);b.querySelector('b').textContent=p[k]});
+  $('[data-v100-react]',root).forEach(b=>b.onclick=()=>{const k=b.dataset.v100React,r=fanVote(k);fanRenderButtons(root,'[data-v100-react]','v100React');toast(r.same?'Ya registraste esa reacción':(r.previous?'Reacción cambiada · sigue contando como un solo voto':'Reacción registrada · 1 por visitante/perfil'))});fanRenderButtons(root,'[data-v100-react]','v100React');
 }
 
 /* ---------- MÁS / HERRAMIENTAS: únicamente anexado al final ---------- */
@@ -619,7 +704,25 @@ function delegates(){
     render();
   };
 }
-function fanzone(){const p=read('v100-fan-pulse',{fire:0,goal:0,clap:0,heart:0});const m=modal(sectionTitle('FAN ZONE','Pulso de la afición','Reacciones locales; no representan una encuesta oficial.')+'<div class="v100-big-reactions"><button data-r="fire">🔥 <b>'+p.fire+'</b></button><button data-r="goal">⚽ <b>'+p.goal+'</b></button><button data-r="clap">👏 <b>'+p.clap+'</b></button><button data-r="heart">💙 <b>'+p.heart+'</b></button></div>');$$('[data-r]',m).forEach(b=>b.onclick=()=>{p[b.dataset.r]=(p[b.dataset.r]||0)+1;write('v100-fan-pulse',p);b.querySelector('b').textContent=p[b.dataset.r]})}
+function fanzone(){
+  const fan=fanSnapshot(),p=fan.counts;
+  const m=modal(
+    sectionTitle('FAN ZONE','Pulso de la afición','Una reacción por visitante o perfil registrado. Si cambias de opción, tu voto se mueve y no se duplica.')+
+    '<p class="v100-fan-rule" data-fan-status></p>'+
+    '<div class="v100-big-reactions">'+
+      '<button data-r="fire">🔥 <b>'+p.fire+'</b></button>'+
+      '<button data-r="goal">⚽ <b>'+p.goal+'</b></button>'+
+      '<button data-r="clap">👏 <b>'+p.clap+'</b></button>'+
+      '<button data-r="heart">💙 <b>'+p.heart+'</b></button>'+
+    '</div>'
+  );
+  $$('[data-r]',m).forEach(b=>b.onclick=()=>{
+    const r=fanVote(b.dataset.r);
+    fanRenderButtons(m,'[data-r]','r');
+    toast(r.same?'Ya registraste esa reacción':(r.previous?'Reacción cambiada · sigue contando como un solo voto':'Reacción registrada · 1 por visitante/perfil'));
+  });
+  fanRenderButtons(m,'[data-r]','r');
+}
 function journeySim(){const teams=officialTeams();const opts=teams.map(t=>'<option>'+esc(t.name)+'</option>').join('');const m=modal(sectionTitle('ESCENARIO LOCAL','Simulador de jornada','Prueba un marcador hipotético. No modifica resultados ni tablas oficiales.')+'<div class="v100-form-grid"><label><span>Local</span><select data-js-home>'+opts+'</select></label><label><span>Visitante</span><select data-js-away>'+opts+'</select></label><label><span>Goles local</span><input type="number" min="0" max="30" value="0" data-js-hg></label><label><span>Goles visitante</span><input type="number" min="0" max="30" value="0" data-js-ag></label></div><div class="v100-actions"><button class="v100-primary" data-js-save>Guardar escenario</button></div><div data-js-list></div>');const render=()=>{const list=read('v100-journey-sim',[]),h=$('[data-js-list]',m);h.innerHTML=list.length?'<div class="v100-sim-list">'+list.map((x,i)=>'<article><span><b>'+esc(x.home)+' '+x.hg+'–'+x.ag+' '+esc(x.away)+'</b><small>Escenario hipotético</small></span><button data-js-del="'+i+'">Quitar</button></article>').join('')+'</div>':'<p class="v100-note">Sin escenarios guardados.</p>';$$('[data-js-del]',h).forEach(b=>b.onclick=()=>{list.splice(Number(b.dataset.jsDel),1);write('v100-journey-sim',list);render()})};render();$('[data-js-save]',m).onclick=()=>{const x={home:$('[data-js-home]',m).value,away:$('[data-js-away]',m).value,hg:Number($('[data-js-hg]',m).value||0),ag:Number($('[data-js-ag]',m).value||0)};if(x.home===x.away)return toast('Elige dos equipos distintos');const list=read('v100-journey-sim',[]);list.push(x);write('v100-journey-sim',list);render()}}
 function shotmap(){const shots=read('v100-shotmap',[]);const m=modal(sectionTitle('ANÁLISIS LOCAL','Shot Map','Toca la cancha para registrar tiros. Se guarda solo en este dispositivo.')+'<div class="v100-shot-pitch" data-shot-pitch></div><div class="v100-actions"><button class="v100-secondary" data-shot-undo>Deshacer</button><button class="v100-secondary" data-shot-clear>Limpiar</button><button class="v100-primary" data-shot-png>PNG</button><button class="v100-secondary" data-shot-json>JSON</button></div>','v100-shot-modal');const pitch=$('[data-shot-pitch]',m);const render=()=>{pitch.innerHTML=shots.map((s,i)=>'<i style="left:'+s.x+'%;top:'+s.y+'%" title="Tiro '+(i+1)+'"></i>').join('')};render();pitch.onclick=e=>{const r=pitch.getBoundingClientRect();shots.push({x:+(((e.clientX-r.left)/r.width)*100).toFixed(1),y:+(((e.clientY-r.top)/r.height)*100).toFixed(1),at:new Date().toISOString()});write('v100-shotmap',shots);render()};$('[data-shot-undo]',m).onclick=()=>{shots.pop();write('v100-shotmap',shots);render()};$('[data-shot-clear]',m).onclick=()=>{shots.splice(0);write('v100-shotmap',shots);render()};$('[data-shot-json]',m).onclick=()=>download(new Blob([JSON.stringify(shots,null,2)],{type:'application/json'}),'Shot_Map_Liga.json');$('[data-shot-png]',m).onclick=async()=>{const c=document.createElement('canvas');c.width=900;c.height=1300;const x=c.getContext('2d');x.fillStyle='#07582e';x.fillRect(0,0,900,1300);x.strokeStyle='#fff';x.lineWidth=6;x.strokeRect(35,35,830,1230);x.beginPath();x.moveTo(35,650);x.lineTo(865,650);x.stroke();shots.forEach((s,i)=>{x.fillStyle='#ffe369';x.beginPath();x.arc(35+s.x/100*830,35+s.y/100*1230,18,0,Math.PI*2);x.fill();x.fillStyle='#07104d';x.font='700 16px Arial';x.textAlign='center';x.fillText(String(i+1),35+s.x/100*830,41+s.y/100*1230)});const b=await canvasBlob(c);download(b,'Shot_Map_Liga.png')}}
 async function installApp(){if(installPrompt){installPrompt.prompt();await installPrompt.userChoice;installPrompt=null;return}modal(sectionTitle('INSTALAR APP','Liga Juventino','Si el navegador permite instalación, usa el menú de Chrome → “Instalar aplicación” o “Agregar a pantalla de inicio”.')+'<p class="v100-note">No se muestra un botón de “APK real” porque este repositorio no contiene actualmente un archivo .apk publicado. Así evitamos ofrecer una descarga falsa.</p>')}
