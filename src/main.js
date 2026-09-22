@@ -4741,6 +4741,7 @@ function leagueToolsView(){
     '</div>'+
     '<div class="v60-tools-all-label"><span>TODAS LAS FUNCIONES</span><b>Herramientas</b></div>'+
     '<div class="v60-tool-grid">'+
+      v60ToolCard('history','Historia','Temporadas, campeones, finales y archivo','history')+
       v60ToolCard('search','Buscador','Equipos, jugadores, partidos, campos y noticias','search')+
       v60ToolCard('qr','QR de la Liga','Compartir acceso directo a la app','ligaQR')+
       v60ToolCard('center','Equipos registrados','Solo equipos oficiales sincronizados','teams')+
@@ -6077,7 +6078,6 @@ function moreView(){
       v19MoreButton('video','Momentos','moments')+
       v19MoreButton('data','Datos','leagueData',true)+
       v19MoreButton('qr','QR de la Liga','ligaQR')+
-      v19MoreButton('data','Match Center','matchCenter')+
     '</div>'+
     '<div class="v19-more-label">Gaming</div>'+
     '<div class="v19-more-menu">'+
@@ -6089,14 +6089,12 @@ function moreView(){
     '<div class="v19-more-menu">'+v19MoreButton('glasses','Hospitalidad','hospitality')+'</div>'+
     '<div class="v19-more-menu">'+
       v19MoreButton('info','Reglamento','rulebook')+
-      v19MoreButton('data','Todas las herramientas','leagueTools')+
+      v19MoreButton('data','Más herramientas','leagueTools')+
     '</div>'+
     '<div class="v19-more-label explore">Explorar</div>'+
     '<div class="v19-more-menu">'+
       v19MoreButton('search','Buscar','search')+
       v19MoreButton('trophy','Rankings de la Liga','rankings')+
-      v19MoreButton('history','Historia','history')+
-      v19MoreButton('data','Historial','historyLog')+
       v19MoreButton('bag','Tienda','club-store')+
       v19MoreButton('info','Sobre la Liga Municipal','safe-about',true)+
     '</div>'+
