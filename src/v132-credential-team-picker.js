@@ -163,14 +163,14 @@ async function enhance(){
   if(route()!=='credentialBuilder')return;
   await loadOfficial();
   const sel=nativeSelect();if(!sel||sel.dataset.v132Enhanced)return;
-  sel.dataset.v132Enhanced='1';sel.classList.add('v132-native-select');
+  sel.dataset.v132Enhanced='1';sel.classList.add('v132-native-select');sel.tabIndex=-1;sel.setAttribute('aria-hidden','true');
 
   const label=sel.closest('label');if(!label)return;
   const button=document.createElement('button');
   button.type='button';button.className='v132-team-picker';button.setAttribute('data-v132-open','');
   button.innerHTML='<span class="v132-picker-icon">⌕</span><span><b>Seleccionar equipo</b><small>Busca por categoría, letra o nombre</small></span><i>›</i>';
   label.insertBefore(button,sel);
-  button.onclick=openSheet;
+  button.onclick=e=>{e.preventDefault();e.stopPropagation();openSheet()};
   sel.addEventListener('change',updateButton);
   updateButton();
 }
