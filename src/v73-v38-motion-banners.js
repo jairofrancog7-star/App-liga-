@@ -458,8 +458,16 @@
         banner.dataset.v73BelowNative='bracket-builder';
       }
 
-      /* El banner queda después de TODO el formulario nativo. */
-      if(screen.lastElementChild!==banner)screen.appendChild(banner);
+      /* V142 — LIGUILLA / SCROLL COMPLETO:
+         V73 y V105 no pueden pelearse por ser el último hijo de #screen.
+         El orden queda fijo: formulario nativo -> CADA CRUCE CUENTA -> herramientas V105.
+         Así el DOM no se reordena mientras el usuario desliza y se puede llegar al final. */
+      const greenTools=screen.querySelector(':scope > #v105-bottom[data-v105-route="bracketBuilder"]');
+      if(greenTools){
+        if(banner.nextElementSibling!==greenTools)screen.insertBefore(banner,greenTools);
+      }else if(screen.lastElementChild!==banner){
+        screen.appendChild(banner);
+      }
       syncAll();
       return;
     }
