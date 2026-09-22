@@ -5200,6 +5200,7 @@ function v64GoodCity(value){
 function v64ParseOcrIdentity(text){
   const raw=String(text||''),up=raw.toUpperCase();
   const lines=raw.split(/\r?\n/).map(x=>x.replace(/[|]/g,'I').replace(/\s+/g,' ').trim()).filter(Boolean);
+  const isIne=/INSTITUTO\s+NACIONAL\s+ELECTORAL|CREDENCIAL\s+PARA\s+VOTAR|CLAVE\s+DE\s+ELECTOR|SECCI[ÓO]N|VIGENCIA/i.test(raw);
   let curp=v64FindCurp(raw);
 
   let name='';
@@ -5224,41 +5225,42 @@ function v64ParseOcrIdentity(text){
   if(name.length<3||name.length>90||/INSTITUTO|ELECTORAL|CREDENCIAL|VOTAR|FECHA|NACIM|EMISI[ÓO]N|VIGENCIA/i.test(name)||(nw.length>=4&&shorts/nw.length>.45))name='';
 
   let city='';
-  const cityPatterns=[
-    /^(?:CIUDAD|MUNICIPIO|LOCALIDAD|COMUNIDAD|POBLACION|POBLACIÓN)\b/i,
-    /^(?:LUGAR\s+DE\s+NACIMIENTO|ENTIDAD\s+DE\s+NACIMIENTO)\b/i
-  ];
-  for(const re of cityPatterns){city=v64OcrValueAfter(lines,re);if(city)break}
-  if(!city){
-    const known=[
-      ['SANTA CRUZ DE JUVENTINO ROSAS','Santa Cruz de Juventino Rosas'],
-      ['JUVENTINO ROSAS','Juventino Rosas'],
-      ['RINCON DE CENTENO','Rincón de Centeno'],
-      ['RINCÓN DE CENTENO','Rincón de Centeno'],
-      ['CERRITO DE GASCA','Cerrito de Gasca'],
-      ['SAN JUAN DE LA CRUZ','San Juan de la Cruz'],
-      ['SAN JULIAN TIERRA BLANCA','San Julián Tierra Blanca'],
-      ['SAN JOSÉ DE LA MONTAÑA','San José de la Montaña'],
-      ['SAN JOSE DE LA MONTAÑA','San José de la Montaña'],
-      ['TAVERA','Tavera'],['POZOS','Pozos'],['CUENDA','Cuenda']
+  if(isIne){
+    const cityPatterns=[
+      /^(?:CIUDAD|MUNICIPIO|LOCALIDAD|COMUNIDAD|POBLACION|POBLACIÓN)\b/i
     ];
-    const compact=up.normalize('NFD').replace(/[\u0300-\u036f]/g,'');
-    const hit=known.find(([k])=>compact.includes(k.normalize('NFD').replace(/[\u0300-\u036f]/g,'')));
-    if(hit)city=hit[1];
-  }
-  if(!city){
-    const d=lines.findIndex(x=>/^DOMICILIO\b/i.test(x));
-    if(d>=0){
-      const addr=[];
-      for(let j=d+1;j<Math.min(lines.length,d+5);j++){
-        if(/^(CLAVE|CURP|FECHA|SEXO|SECCION|VIGENCIA)\b/i.test(lines[j]))break;
-        addr.push(lines[j]);
-      }
-      const place=addr.slice().reverse().find(x=>/GTO\.?|GUANAJUATO|MUNICIPIO|LOCALIDAD|C\.P\.|\bCP\b/i.test(x));
-      if(place)city=place;
+    for(const re of cityPatterns){city=v64OcrValueAfter(lines,re);if(city)break}
+    if(!city){
+      const known=[
+        ['SANTA CRUZ DE JUVENTINO ROSAS','Santa Cruz de Juventino Rosas'],
+        ['JUVENTINO ROSAS','Juventino Rosas'],
+        ['RINCON DE CENTENO','Rincón de Centeno'],
+        ['RINCÓN DE CENTENO','Rincón de Centeno'],
+        ['CERRITO DE GASCA','Cerrito de Gasca'],
+        ['SAN JUAN DE LA CRUZ','San Juan de la Cruz'],
+        ['SAN JULIAN TIERRA BLANCA','San Julián Tierra Blanca'],
+        ['SAN JOSÉ DE LA MONTAÑA','San José de la Montaña'],
+        ['SAN JOSE DE LA MONTAÑA','San José de la Montaña'],
+        ['TAVERA','Tavera'],['POZOS','Pozos'],['CUENDA','Cuenda']
+      ];
+      const compact=up.normalize('NFD').replace(/[\u0300-\u036f]/g,'');
+      const hit=known.find(([k])=>compact.includes(k.normalize('NFD').replace(/[\u0300-\u036f]/g,'')));
+      if(hit)city=hit[1];
     }
+    if(!city){
+      const d=lines.findIndex(x=>/^DOMICILIO\b/i.test(x));
+      if(d>=0){
+        const addr=[];
+        for(let j=d+1;j<Math.min(lines.length,d+5);j++){
+          if(/^(CLAVE|CURP|FECHA|SEXO|SECCION|VIGENCIA)\b/i.test(lines[j]))break;
+          addr.push(lines[j]);
+        }
+        const place=addr.slice().reverse().find(x=>/GTO\.?|GUANAJUATO|MUNICIPIO|LOCALIDAD|C\.P\.|\bCP\b/i.test(x));
+        if(place)city=place;
+      }
+    }
+    city=v64GoodCity(String(city||'').replace(/^\s*[:\-]\s*/,'').replace(/\s+/g,' ').trim().slice(0,100));
   }
-  city=v64GoodCity(String(city||'').replace(/^\s*[:\-]\s*/,'').replace(/\s+/g,' ').trim().slice(0,100));
 
   const dob=v64CurpDob(curp)||v64OcrDate(raw);
   return {name,curp,dob,city};
