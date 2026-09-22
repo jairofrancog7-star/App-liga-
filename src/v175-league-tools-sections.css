@@ -1,0 +1,120 @@
+/* V175 — leagueTools ordenado por secciones.
+   Mantiene todos los botones compactos V174 y agrega barras de categoría. */
+
+body[data-app-route="leagueTools"] .v60-tools-all-label,
+body[data-app-route="leagueTools"] .v100-inline-tools-title{
+  display:none!important;
+}
+
+body[data-app-route="leagueTools"] .v175-featured-bar,
+body[data-app-route="leagueTools"] .v175-section-bar{
+  width:100%!important;
+  min-width:0!important;
+  display:grid!important;
+  grid-template-columns:30px minmax(0,1fr) auto!important;
+  align-items:center!important;
+  gap:9px!important;
+  padding:8px 10px!important;
+  border:1px solid rgba(59,94,190,.55)!important;
+  border-left:3px solid #19dfe9!important;
+  border-radius:10px!important;
+  background:linear-gradient(90deg,rgba(17,31,118,.96),rgba(9,14,91,.92))!important;
+  color:#fff!important;
+  box-shadow:none!important;
+}
+
+body[data-app-route="leagueTools"] .v175-featured-bar{
+  margin:0 0 8px!important;
+}
+
+body[data-app-route="leagueTools"] .v175-section-bar{
+  grid-column:1/-1!important;
+  margin:8px 0 0!important;
+}
+
+body[data-app-route="leagueTools"] .v175-section-icon{
+  width:28px!important;
+  height:28px!important;
+  display:grid!important;
+  place-items:center!important;
+  border-radius:8px!important;
+  background:#0a2c8e!important;
+  color:#23e1ec!important;
+  font-size:14px!important;
+  font-weight:900!important;
+  line-height:1!important;
+}
+
+body[data-app-route="leagueTools"] .v175-section-copy{
+  min-width:0!important;
+  display:grid!important;
+  gap:2px!important;
+}
+body[data-app-route="leagueTools"] .v175-section-copy b{
+  color:#fff!important;
+  font-size:12px!important;
+  line-height:1.1!important;
+  font-weight:900!important;
+}
+body[data-app-route="leagueTools"] .v175-section-copy small{
+  display:block!important;
+  min-width:0!important;
+  color:#99a7ce!important;
+  font-size:8.5px!important;
+  line-height:1.18!important;
+  white-space:nowrap!important;
+  overflow:hidden!important;
+  text-overflow:ellipsis!important;
+}
+body[data-app-route="leagueTools"] .v175-section-count{
+  min-width:25px!important;
+  height:22px!important;
+  padding:0 7px!important;
+  display:inline-flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  border:1px solid rgba(32,225,236,.30)!important;
+  border-radius:999px!important;
+  background:rgba(25,223,233,.08)!important;
+  color:#63edf5!important;
+  font-size:9px!important;
+  font-weight:900!important;
+}
+
+/* El primer bloque no necesita margen extra arriba. */
+body[data-app-route="leagueTools"] .v60-tool-grid > .v175-section-bar:first-of-type{
+  margin-top:0!important;
+}
+
+/* Mantener los botones V174 en dos columnas debajo de cada barra. */
+body[data-app-route="leagueTools"] .v60-tool-grid{
+  align-items:stretch!important;
+}
+body[data-app-route="leagueTools"] .v60-tool-grid > button[data-v175-group]{
+  align-self:stretch!important;
+}
+
+/* Una ligera diferencia por sección solo en la barra; los botones siguen iguales. */
+body[data-app-route="leagueTools"] .v175-section-bar[data-v175-section-bar="match"] .v175-section-icon{background:#0c348f!important}
+body[data-app-route="leagueTools"] .v175-section-bar[data-v175-section-bar="competition"] .v175-section-icon{background:#102b83!important}
+body[data-app-route="leagueTools"] .v175-section-bar[data-v175-section-bar="players"] .v175-section-icon{background:#0b347d!important}
+body[data-app-route="leagueTools"] .v175-section-bar[data-v175-section-bar="tactics"] .v175-section-icon{background:#10327a!important}
+body[data-app-route="leagueTools"] .v175-section-bar[data-v175-section-bar="communication"] .v175-section-icon{background:#0b2d7f!important}
+body[data-app-route="leagueTools"] .v175-section-bar[data-v175-section-bar="admin"] .v175-section-icon{background:#102672!important}
+
+@media(max-width:390px){
+  body[data-app-route="leagueTools"] .v175-featured-bar,
+  body[data-app-route="leagueTools"] .v175-section-bar{
+    grid-template-columns:27px minmax(0,1fr) auto!important;
+    gap:7px!important;
+    padding:7px 8px!important;
+  }
+  body[data-app-route="leagueTools"] .v175-section-icon{
+    width:25px!important;
+    height:25px!important;
+    border-radius:7px!important;
+    font-size:12px!important;
+  }
+  body[data-app-route="leagueTools"] .v175-section-copy b{font-size:11px!important}
+  body[data-app-route="leagueTools"] .v175-section-copy small{font-size:7.8px!important}
+}
