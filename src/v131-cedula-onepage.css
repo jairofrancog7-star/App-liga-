@@ -323,36 +323,34 @@ body[data-app-route="cedulaBuilder"] [data-v64-cedula-preview]{
   padding-top:12px;
   border-top:4px solid #235aa0;
 }
-.v131-scoreline{
-  display:grid;
-  grid-template-columns:minmax(0,1fr) 54px 18px 54px minmax(0,1fr);
-  gap:7px;
-  align-items:center;
-  font-size:11px;
-  font-weight:900;
+.v131-match-notes h3{
+  margin:0 0 7px;
+  color:#17211d;
+  font-size:13px;
+  line-height:1.1;
 }
-.v131-score-box{
-  height:31px;
-  border:1px solid #98a4a0;
-  border-radius:5px;
-  background:#fff;
-}
-.v131-observations{
-  margin-top:10px;
+.v131-result-line{
+  margin:0;
+  color:#17211d;
   font-size:9px;
-  font-weight:800;
+  line-height:1.35;
 }
-.v131-observations i{
-  display:block;
-  height:18px;
-  border-bottom:1px solid #aeb7b4;
+.v131-notes-box{
+  min-height:54px;
+  margin-top:8px;
+  padding:7px;
+  border:1px solid #98a4a0;
+  background:#fff;
+  color:#17211d;
+  font-size:9px;
+  line-height:1.3;
 }
 .v131-signatures{
   display:grid;
-  grid-template-columns:repeat(4,minmax(0,1fr));
-  gap:12px;
-  margin-top:18px;
-  padding-top:20px;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:18px;
+  margin-top:24px;
+  padding-top:22px;
 }
 .v131-signatures div{
   padding-top:5px;
@@ -387,7 +385,7 @@ body[data-app-route="cedulaBuilder"] [data-v64-cedula-preview]{
   .v131-team-title b{font-size:16px}
   .v131-roster-table th{font-size:7.5px}
   .v131-roster-table td{font-size:8px;padding:4px 3px}
-  .v131-signatures{grid-template-columns:repeat(2,minmax(0,1fr));row-gap:22px}
+  .v131-signatures{grid-template-columns:1fr;row-gap:22px}
 }
 
 /* IMPRESIÓN / GUARDAR PDF: una sola hoja A4 blanca con todo el texto. */
@@ -536,18 +534,26 @@ body[data-app-route="cedulaBuilder"] [data-v64-cedula-preview]{
     padding-top:2mm!important;
     border-top-width:1mm!important;
   }
-  body.v131-print-cedula .v131-scoreline{
-    grid-template-columns:minmax(0,1fr) 11mm 4mm 11mm minmax(0,1fr)!important;
-    gap:1.3mm!important;
-    font-size:6.2pt!important;
+  body.v131-print-cedula .v131-match-notes h3{
+    margin:0 0 1mm!important;
+    font-size:6.4pt!important;
+    line-height:1!important;
   }
-  body.v131-print-cedula .v131-score-box{height:6mm!important;border-radius:1mm!important}
-  body.v131-print-cedula .v131-observations{margin-top:1.7mm!important;font-size:5.6pt!important}
-  body.v131-print-cedula .v131-observations i{height:3.4mm!important}
+  body.v131-print-cedula .v131-result-line{
+    margin:0!important;
+    font-size:5.6pt!important;
+    line-height:1.15!important;
+  }
+  body.v131-print-cedula .v131-notes-box{
+    min-height:10mm!important;
+    margin-top:1.2mm!important;
+    padding:1mm!important;
+    font-size:5.4pt!important;
+  }
   body.v131-print-cedula .v131-signatures{
-    grid-template-columns:repeat(4,minmax(0,1fr))!important;
-    gap:3mm!important;
-    margin-top:4mm!important;
+    grid-template-columns:repeat(3,minmax(0,1fr))!important;
+    gap:5mm!important;
+    margin-top:5mm!important;
     padding-top:4mm!important;
   }
   body.v131-print-cedula .v131-signatures div{font-size:5.3pt!important;padding-top:1mm!important}
