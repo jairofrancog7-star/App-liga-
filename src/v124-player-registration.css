@@ -39,6 +39,7 @@ body[data-app-route="credentialBuilder"] .v64-auto-category b{font-size:16px;col
 .v124-eligibility.blocked{background:#4a1629;border-color:rgba(255,101,128,.55);color:#ffc0ca}
 .v124-primary-actions button:disabled,
 [data-v100-credential-png]:disabled,
+[data-v100-credential-pdf]:disabled,
 [data-v100-credential-share]:disabled,
 [data-v64-print-credential]:disabled{
   opacity:.42!important;
