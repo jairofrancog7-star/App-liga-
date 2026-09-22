@@ -5094,14 +5094,16 @@ function v38WeatherView(){
   '</section>';
 }
 function v38AlertsView(){
-  return '<section class="v60-tool-page v63-page">'+
-    v60Header('CENTRO DE AVISOS','Notificaciones','Accesos para próxima jornada, cambios de sede y seguimiento de favoritos.')+
-    '<div class="v63-feature-list">'+
+  return '<section class="v60-tool-page v63-page v63-alerts-page">'+
+    v60Header('CENTRO DE AVISOS','Notificaciones','Accesos rápidos con el mismo diseño de tarjetas, adaptado al azul de la app.')+
+    '<div class="v63-feature-list v63-alerts-grid">'+
       v63FeatureCard('matchday','PRÓXIMA JORNADA','Avisos de jornada','Configura tus preferencias de notificaciones.','notifications')+
       v63FeatureCard('field','CAMBIO DE SEDE','Campos y ubicaciones','Revisa cambios relevantes de cancha o sede.','venues')+
       v63FeatureCard('center','PARTIDO FAVORITO','Equipos y encuentros destacados','Consulta tus favoritos y equipos seguidos.','favorites')+
+      v63FeatureCard('bell','EQUIPOS SEGUIDOS','Equipos que sigues','Administra los clubes que quieres seguir.','following')+
+      v63FeatureCard('share','COMUNICADOS','Noticias y avisos','Revisa publicaciones y avisos oficiales de la Liga.','notices')+
+      v63FeatureCard('matchday','JORNADA','Centro de jornada','Consulta horarios, operación y seguimiento del día.','matchday')+
     '</div>'+
-    '<div class="v60-actions"><button class="v60-btn outline" data-route="following">Equipos que sigues</button></div>'+
   '</section>';
 }
 
