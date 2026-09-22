@@ -784,8 +784,6 @@ async function v180DetectPrintedTable(source){
     const data=ctx.getImageData(0,0,w,h).data;
     const gray=(x,y)=>{const i=(y*w+x)*4;return .299*data[i]+.587*data[i+1]+.114*data[i+2]};
 
-    /* Líneas verticales continuas: una tabla real las conserva cientos de píxeles;
-       letras/números no. Esto evita confundir columnas por alineación de texto. */
     const y0=Math.floor(h*.10),y1=Math.max(y0+1,Math.floor(h*.995)),roiH=y1-y0;
     const rawX=[];
     for(let x=0;x<w;x++){
@@ -811,8 +809,6 @@ async function v180DetectPrintedTable(source){
     }
     if(!best)return null;
 
-    /* Estimación de filas a partir de líneas horizontales largas.
-       En tablas como NO | Jugador | Equipo | G.Total, grupos-2 ≈ jugadores. */
     const rawY=[];
     for(let y=0;y<h;y++){
       let run=0,maxRun=0;
@@ -826,13 +822,16 @@ async function v180DetectPrintedTable(source){
       if(!yGroups.length||y-yGroups[yGroups.length-1][yGroups[yGroups.length-1].length-1]>Math.max(2,Math.round(h*.006)))yGroups.push([y]);
       else yGroups[yGroups.length-1].push(y);
     }
-    let rows=Math.max(0,yGroups.length-2);
+    const yCenters=yGroups.map(g=>Math.round(g.reduce((a,b)=>a+b,0)/g.length)).sort((a,b)=>a-b);
+    let rows=Math.max(0,yCenters.length-2);
     if(rows<5||rows>80)rows=0;
 
     const inset=Math.max(2,Math.round(w*.006));
     const x0=Math.max(0,(best.left+inset)/w),x1=Math.min(1,(best.right-inset)/w);
     if(x1-x0<.18)return null;
-    return {x0,width:x1-x0,rows,columns:xs.length};
+
+    const rowLines=yCenters.map(y=>y/h).filter(y=>y>=0&&y<=1);
+    return {x0,width:x1-x0,rows,columns:xs.length,rowLines};
   }catch(_){return null}
 }
 function v183CleanOcrName(value){
@@ -841,14 +840,59 @@ function v183CleanOcrName(value){
     .replace(/[^A-Za-zÁÉÍÓÚÜÑáéíóúüñ'’\-\s]/g,' ')
     .replace(/\s+/g,' ').trim();
   if(!s)return '';
-  /* Corrige sólo confusiones OCR muy seguras; NO inventa apellidos usando
-     diccionario. La versión anterior podía convertir un apellido poco común
-     en otro parecido y por eso algunos nombres salían "bien escritos" pero mal. */
   s=s.replace(/\b([A-Za-zÁÉÍÓÚÜÑáéíóúüñ])\s+([A-Za-zÁÉÍÓÚÜÑáéíóúüñ]{2,})\b/g,(m,a,b)=>{
     const joined=a+b;
     return V157_MX_GIVEN.has(v157Upper(joined))?joined:m;
   });
   return v157TitleName(s);
+}
+function v184UniqueEditOne(token,set){
+  const raw=v157Upper(token).replace(/[^A-ZÑ]/g,'');
+  if(!raw||raw.length<5||set.has(raw))return token;
+  const hits=[];
+  for(const w of set){
+    if(Math.abs(w.length-raw.length)>1)continue;
+    if(v124Levenshtein(raw,w)===1)hits.push(w);
+    if(hits.length>1)break;
+  }
+  return hits.length===1?v157TitleName(hits[0]):token;
+}
+function v184SplitJoinedToken(token){
+  const raw=v157Upper(token).replace(/[^A-ZÑ]/g,'');
+  if(raw.length<8)return null;
+  const dict=new Set([...V157_MX_GIVEN,...V157_MX_SURNAME]);
+  if(dict.has(raw))return null;
+  const hits=[];
+  for(let i=3;i<=raw.length-3;i++){
+    const a=raw.slice(0,i),b=raw.slice(i);
+    if(dict.has(a)&&dict.has(b))hits.push([a,b]);
+    if(hits.length>1)break;
+  }
+  return hits.length===1?hits[0].map(v157TitleName):null;
+}
+function v184SafeNameRepair(value){
+  let s=v183CleanOcrName(value);
+  if(!s)return '';
+  let tokens=s.split(/\s+/).filter(Boolean);
+
+  // "De Guadalupe Razo..." es un artefacto frecuente del borde/celda; no quita
+  // conectores internos válidos como "Juan de la Cruz".
+  if(tokens.length>=3&&V157_NAME_CONNECTORS.has(v157Upper(tokens[0]))&&V157_MX_GIVEN.has(v157Upper(tokens[1]))){
+    tokens.shift();
+  }
+
+  const out=[];
+  for(let i=0;i<tokens.length;i++){
+    const token=tokens[i],u=v157Upper(token);
+    if(V157_NAME_CONNECTORS.has(u)){out.push(token.toLocaleLowerCase('es-MX'));continue}
+
+    const split=v184SplitJoinedToken(token);
+    if(split){out.push(...split);continue}
+
+    const set=i===0?V157_MX_GIVEN:V157_MX_SURNAME;
+    out.push(v184UniqueEditOne(token,set));
+  }
+  return v157TitleName(out.join(' '));
 }
 function v183ContentTokens(value){
   return norm(value).split(' ').filter(w=>w.length>=2&&!['de','del','la','las','los','y'].includes(w));
@@ -1002,13 +1046,20 @@ function v180NameColumnLines(text){
     const n=norm(line);
     if(!n||/^(jugador|nombre|nombres|equipo|g total|total)$/.test(n))continue;
 
-    const clean=v183CleanOcrName(line);
-    const knownHit=v183KnownMatch(clean,known);
-    let candidate=knownHit?.name||v178PlausibleFullName(clean);
+    const clean=v184SafeNameRepair(line);
+    let candidate='';
+    const exact=known.find(p=>norm(p.name)===norm(clean));
+    if(exact)candidate=exact.name;
+    else if(rosterDetectedKind!=='printed-table'){
+      const knownHit=v183KnownMatch(clean,known);
+      if(knownHit)candidate=knownHit.name;
+    }
+    if(!candidate)candidate=v178PlausibleFullName(clean);
     if(!candidate){
       const best=v157BestNameWindow(clean);
-      if(best.name&&best.score>=.34)candidate=v183CleanOcrName(best.name);
+      if(best.name&&best.score>=.34)candidate=v184SafeNameRepair(best.name);
     }
+    candidate=v184SafeNameRepair(candidate);
     if(!candidate||v126LooksLikeNonPlayerName(candidate))continue;
     if(!out.some(x=>v183NameSimilarity(x,candidate)>.965))out.push(candidate);
   }
@@ -1028,7 +1079,9 @@ function v182NameSetQuality(names,target=0){
   if(!list.length)return {avg:0,bad:99,coverage:0,good:false};
   const qs=list.map(v180NameQuality),avg=qs.reduce((a,b)=>a+b,0)/qs.length,bad=qs.filter(x=>x<1.25).length;
   const coverage=target?list.length/Math.max(1,target):1;
-  const countGood=target?list.length>=Math.max(6,Math.floor(target*.88)):list.length>=14;
+  const countGood=target
+    ? (rosterDetectedKind==='printed-table'?list.length===target:list.length>=Math.max(6,Math.floor(target*.92)))
+    : list.length>=14;
   const good=countGood&&avg>=2.05&&bad<=Math.max(1,Math.floor(list.length*.12));
   return {avg,bad,coverage,good};
 }
@@ -1037,50 +1090,90 @@ function v180BestNameColumnText(parts,target=0){
   const consensus=v183ConsensusNameLists(lists,target);
   return consensus.join('\n');
 }
-async function v180ReadPrintedNameColumn(source,label,layout){
-  const xPad=Math.min(.01,layout.width*.02);
-  const crop=await v177CropSource(source,layout.x0+xPad,.10,Math.max(.05,layout.width-xPad*2),.895);
-  const target=layout.rows||0,parts=[];
+async function v184BuildNameRowsCanvas(source,layout){
+  const lines=(Array.isArray(layout?.rowLines)?layout.rowLines:[])
+    .map(Number).filter(Number.isFinite).filter(x=>x>=0&&x<=1).sort((a,b)=>a-b);
+  const target=Number(layout?.rows||0);
+  if(target<5||lines.length<target+1)return null;
 
-  /* V182: si Android/Chrome ofrece TextDetector, úsalo como segunda opinión
-     gratuita antes de gastar otra pasada Tesseract. */
+  const all=[];
+  for(let i=0;i<lines.length-1;i++){
+    const a=lines[i],b=lines[i+1];
+    if(b-a>.004)all.push([a,b]);
+  }
+  if(all.length<target)return null;
+  const rows=all.slice(-target);
+
+  const bmp=await v157Bitmap(source);
+  const sw=bmp.width||bmp.videoWidth||bmp.naturalWidth||1,sh=bmp.height||bmp.videoHeight||bmp.naturalHeight||1;
+  const xPad=Math.min(.012,layout.width*.025);
+  const sx=Math.max(0,Math.floor(sw*(layout.x0+xPad)));
+  const cw=Math.max(1,Math.min(sw-sx,Math.floor(sw*Math.max(.04,layout.width-xPad*2))));
+  const heights=rows.map(([a,b])=>Math.max(1,sh*(b-a)));
+  const avgH=heights.reduce((a,b)=>a+b,0)/Math.max(1,heights.length);
+  const scale=Math.max(1.6,Math.min(3.25,1120/Math.max(1,cw)));
+  const rowH=Math.max(62,Math.min(94,Math.round(avgH*scale+18)));
+  const outW=Math.max(760,Math.min(1320,Math.round(cw*scale)+36));
+  const canvas=document.createElement('canvas');
+  canvas.width=outW;canvas.height=Math.min(3000,rowH*rows.length);
+  const ctx=canvas.getContext('2d',{alpha:false});
+  ctx.imageSmoothingEnabled=true;ctx.imageSmoothingQuality='high';
+  ctx.fillStyle='#fff';ctx.fillRect(0,0,canvas.width,canvas.height);
+
+  rows.forEach(([a,b],idx)=>{
+    const rawY0=sh*a,rawY1=sh*b,rawH=Math.max(1,rawY1-rawY0);
+    const insetY=Math.max(1,rawH*.12);
+    const sy=Math.max(0,Math.floor(rawY0+insetY));
+    const ch=Math.max(1,Math.min(sh-sy,Math.floor(rawH-insetY*2)));
+    const dh=Math.min(rowH-10,ch*scale);
+    const dw=Math.min(outW-28,cw*scale);
+    const dy=idx*rowH+Math.max(4,(rowH-dh)/2);
+    ctx.drawImage(bmp,sx,sy,cw,ch,14,dy,dw,dh);
+  });
+  return canvas;
+}
+async function v180ReadPrintedNameColumn(source,label,layout){
+  const target=layout.rows||0,parts=[];
+  let crop=await v184BuildNameRowsCanvas(source,layout);
+  if(!crop){
+    const xPad=Math.min(.01,layout.width*.02);
+    crop=await v177CropSource(source,layout.x0+xPad,.10,Math.max(.05,layout.width-xPad*2),.895);
+  }
+
   const nativeText=await v177NativeText(crop);
   if(nativeText)parts.push({text:nativeText,mode:'native-column',confidence:94});
 
-  v126SetImportStatus('OCR Preciso de nombres · lectura principal');
-  const first=await v157Recognize(crop,label+' · columna Jugador',1,'contrast',6,3);
-  parts.push(first);
+  v126SetImportStatus('OCR Preciso · aislando cada fila de la columna Jugador · lectura 1/2');
+  parts.push(await v157Recognize(crop,label+' · columna Jugador · filas limpias',1,'contrast',6,2));
 
   let bestText=v180BestNameColumnText(parts,target),bestNames=v180NameColumnLines(bestText),quality=v182NameSetQuality(bestNames,target);
-  if(quality.good){
-    v126SetImportStatus('OCR Preciso · '+bestNames.length+(target?' de ~'+target:'')+' nombres · calidad alta · revisión manual');
-    return bestText;
-  }
 
-  /* Si la cantidad parece correcta pero hay nombres deformados, no nos detenemos:
-     hacemos una segunda lectura con contraste suave y elegimos por consenso. */
-  v126SetImportStatus('OCR Preciso · comparando segunda lectura nombre por nombre');
-  parts.push(await v157Recognize(crop,label+' · columna Jugador · verificación',2,'soft',6,3));
+  // Para tablas con filas detectadas hacemos siempre una segunda opinión:
+  // evita aceptar 25 nombres con uno o dos apellidos mal leídos.
+  v126SetImportStatus('OCR Preciso · verificando ortografía nombre por nombre · lectura 2/2');
+  parts.push(await v157Recognize(crop,label+' · columna Jugador · verificación',2,'soft',6,2));
   await new Promise(resolve=>setTimeout(resolve,18));
-  bestText=v180BestNameColumnText(parts,target);bestNames=v180NameColumnLines(bestText);quality=v182NameSetQuality(bestNames,target);
+
+  bestText=v180BestNameColumnText(parts,target);
+  bestNames=v180NameColumnLines(bestText);
+  quality=v182NameSetQuality(bestNames,target);
   if(quality.good){
-    v126SetImportStatus('OCR Preciso · '+bestNames.length+(target?' de ~'+target:'')+' nombres · consenso verificado · revisión manual');
+    v126SetImportStatus('OCR Preciso · '+bestNames.length+(target?' de '+target:'')+' nombres · filas completas y consenso verificado · revisión manual');
     return bestText;
   }
 
-  /* Último rescate: dos mitades pequeñas. Evita el canvas gigante que antes
-     congelaba Chrome Android y recupera apellidos o renglones tenues. */
+  // Rescate pequeño, sólo si aún falta alguna fila. No vuelve a las 13 pasadas.
   const halves=[['parte superior',0,.56],['parte inferior',.44,.56]];
   for(let i=0;i<halves.length;i++){
     const [name,y,h]=halves[i],half=await v177CropSource(crop,0,y,.999,h);
-    v126SetImportStatus('OCR Preciso · '+name+' · rescate '+(i+1)+'/2');
+    v126SetImportStatus('OCR Preciso · recuperando '+name+' · '+(i+1)+'/2');
     parts.push(await v157Recognize(half,label+' · columna Jugador · '+name,3+i,i?'soft':'contrast',6,4));
     await new Promise(resolve=>setTimeout(resolve,12));
   }
 
   bestText=v180BestNameColumnText(parts,target);
   bestNames=v180NameColumnLines(bestText);
-  v126SetImportStatus('OCR Preciso terminado · '+bestNames.length+(target?' de ~'+target:'')+' nombres · revisa ✓/✕ antes de aplicar');
+  v126SetImportStatus('OCR Preciso terminado · '+bestNames.length+(target?' de '+target:'')+' nombres · revisa ✓/✕ antes de aplicar');
   return bestText;
 }
 async function v179TwoBandSweep(source,label,pass,total,kind){
@@ -1232,8 +1325,8 @@ function v126LooksLikeNonPlayerName(value){
   if(/\b(goles|puntos|partidos|pj|pg|pe|pp|gf|gc|dif)\b/.test(n)&&n.split(' ').length<=6)return true;
   return false;
 }
-const V157_MX_GIVEN=new Set(('JOSE JUAN JESUS LUIS CARLOS MIGUEL ANGEL FRANCISCO JAVIER JORGE ROBERTO EDUARDO DANIEL DAVID ALEJANDRO MANUEL ANTONIO FERNANDO RICARDO SERGIO ALBERTO ARTURO RAUL MARIO OSCAR HECTOR RUBEN RAMON MARTIN ENRIQUE VICTOR GERARDO GUILLERMO MARCO MARCOS ADRIAN ALFREDO ARMANDO CESAR CRISTIAN CHRISTIAN DIEGO ERICK ERIK ESTEBAN FELIPE GABRIEL GUSTAVO IGNACIO IVAN JOAQUIN JONATHAN JULIO LEONARDO MAURICIO MAXIMILIANO OMAR PABLO PEDRO RAFAEL RODRIGO SALVADOR SAMUEL SANTIAGO SEBASTIAN TOMAS ULISES ISRAEL ABRAHAM ALAN AXEL BRYAN BRANDON EMILIANO GAEL HUGO ISAAC KEVIN MATEO MATIAS ALONSO ANDRES BENJAMIN EMANUEL EMMANUEL EVERARDO GENARO GERMAN GILBERTO GONZALO GUADALUPE HORACIO HONORIO CELSO ISMAEL JAIME JAIRO JERONIMO JOEL JOSUE LEONEL MARCELO NOE ORLANDO REYNALDO ROGELIO SAUL TELESFORO VALENTIN VICENTE URIEL').split(' '));
-const V157_MX_SURNAME=new Set(('AGUILAR ALMANZA ALVAREZ ANDRADE ARIAS ARIZA AVILA ABOYTES BADILLO BAUTISTA BECERRA BENITEZ BRAVO CABALLERO CABRERA CALDERON CANO CAMPOS CARMONA CARRILLO CASTAÑEDA CASTILLO CASTRO CERVANTES CHAVEZ CISNEROS CONTRERAS CORDOVA CORONA CORTES CRUZ DELGADO DIAZ DOMINGUEZ DUARTE ESCOBAR ESPARZA ESPINOZA FLORES FRANCO FUENTES GALINDO GALLARDO GAMUSERA GARCIA GARDUÑO GOMEZ GONZALEZ GRANADOS GUERRERO GUTIERREZ GUZMAN HERNANDEZ HERRERA HORTELANO HUERTA IBARRA JIMENEZ JUAREZ LADINO LARA LEON LOPEZ LUNA MACIAS MALDONADO MARIN MARTINEZ MEDINA MENDOZA MIRANDA MOLINA MORALES MORENO MUNOZ MUÑOZ MURILLO NAVA NAVARRO NEGRETE NIETO NUNEZ NUÑEZ OCHOA OLVERA ORTEGA ORTIZ PACHECO PADILLA PALACIOS PEREZ PRESA RAMIREZ RAMOS RANGEL RAZO REYES RIVERA RODRIGUEZ ROJAS ROMERO ROSALES ROSAS RUIZ SALAZAR SANCHEZ SANDOVAL SANTIAGO SEGOVIANO SILVA SOLIS SOTO SUAREZ TAPIA TORRES VALADEZ VALENCIA VARGAS VAZQUEZ VEGA VELAZQUEZ VILLAFUERTE VILLALOBOS ZAMORA ZARATE ZAVALA').split(' '));
+const V157_MX_GIVEN=new Set(('JOSE JUAN ERNESTO JESUS LUIS CARLOS MIGUEL ANGEL FRANCISCO JAVIER JORGE ROBERTO EDUARDO DANIEL DAVID ALEJANDRO MANUEL ANTONIO FERNANDO RICARDO SERGIO ALBERTO ARTURO RAUL MARIO OSCAR HECTOR RUBEN RAMON MARTIN ENRIQUE VICTOR GERARDO GUILLERMO MARCO MARCOS ADRIAN ALFREDO ARMANDO CESAR CRISTIAN CHRISTIAN DIEGO ERICK ERIK ESTEBAN FELIPE GABRIEL GUSTAVO IGNACIO IVAN JOAQUIN JONATHAN JULIO LEONARDO MAURICIO MAXIMILIANO OMAR PABLO PEDRO RAFAEL RODRIGO SALVADOR SAMUEL SANTIAGO SEBASTIAN TOMAS ULISES ISRAEL ABRAHAM ALAN AXEL BRYAN BRANDON EMILIANO GAEL HUGO ISAAC KEVIN MATEO MATIAS ALONSO ANDRES BENJAMIN EMANUEL EMMANUEL EVERARDO GENARO GERMAN GILBERTO GONZALO GUADALUPE HORACIO HONORIO CELSO ISMAEL JAIME JAIRO JERONIMO JOEL JOSUE LEONEL MARCELO NOE ORLANDO REYNALDO ROGELIO SAUL TELESFORO VALENTIN VICENTE URIEL').split(' '));
+const V157_MX_SURNAME=new Set(('AGUILAR ALMANZA ALVAREZ ANDRADE ARIAS ARIZA AVILA ABOYTES BADILLO BAUTISTA BECERRA BENITEZ BRAVO CABALLERO CABRERA CALDERON CANO CAMPOS CARMONA CARRILLO CASTAÑEDA CASTILLO CASTRO CERVANTES CHAVEZ CISNEROS CONTRERAS CORDOVA CORONA CORTES CRUZ DELGADO DIAZ DOMINGUEZ DUARTE ESCOBAR ESPARZA ESPINOZA FLORES FRANCO FUENTES GALINDO GALLARDO GAMUSERA GARCIA GARDUÑO GOMEZ GONZALEZ GRANADOS GUERRERO GUTIERREZ GUZMAN HERNANDEZ HERRERA HORTELANO HUERTA IBARRA JIMENEZ JUAREZ LADINO LARA LEON LOPEZ LUNA MACIAS MALDONADO MARIN MARTINEZ MEDINA MERINO MENDOZA MIRANDA MOLINA MORALES MORENO MUNOZ MUÑOZ MURILLO NAVA NAVARRO NEGRETE NIETO NUNEZ NUÑEZ OCHOA OLIVARES OLVERA ORTEGA ORTIZ PACHECO PADILLA PALACIOS PEREZ PRESA RAMIREZ RAMOS RANGEL RAZO REYES RIVERA RODRIGUEZ ROJAS ROMERO ROSALES ROSAS RUIZ SALAZAR SANCHEZ SANDOVAL SANTIAGO SEGOVIANO SILVA SOLIS SOTO SUAREZ TAPIA TORRES VALADEZ VALENCIA VARGAS VAZQUEZ VEGA VELAZQUEZ VILLAFUERTE VILLALOBOS ZAMORA ZARATE ZAVALA').split(' '));
 const V157_NAME_CONNECTORS=new Set(['DE','DEL','LA','LAS','LOS','Y']);
 const V157_NAME_NOISE=new Set(('LIGA MUNICIPAL FUTBOL FÚTBOL EQUIPO PLANTILLA JUGADOR JUGADORES DELEGADO DELEGADOS TEMPORADA CATEGORIA CATEGORÍA REGISTRO NOMBRE NOMBRES APELLIDO APELLIDOS NUMERO NÚMERO TELEFONO TELÉFONO CURP EDAD FECHA FIRMA POSICION POSICIÓN DOMICILIO CLAVE SECCION SECCIÓN VIGENCIA MUNICIPIO LOCALIDAD COMUNIDAD GUANAJUATO JUVENTINO ROSAS TABLA GOLEADORES CLASIFICACION CLASIFICACIÓN PUNTOS JORNADA').split(' '));
 function v157Upper(s){return String(s||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toUpperCase()}
@@ -1517,9 +1610,25 @@ function v126ExtractCandidates(text){
   return out.map(x=>x.name);
 }
 function v126BestKnown(name,team=''){
-  const known=v126KnownPeople(),hit=v183KnownMatch(name,known,team);
+  const known=v126KnownPeople(),clean=v184SafeNameRepair(name),n=norm(clean),target=norm(team);
+
+  if(rosterDetectedKind==='printed-table'){
+    const exact=known.find(r=>norm(r.name)===n);
+    if(exact)return {record:exact,score:1};
+
+    let best=null,score=0,second=0;
+    const tokenCount=v183ContentTokens(clean).length;
+    for(const r of known){
+      if(v183ContentTokens(r.name).length!==tokenCount)continue;
+      let s=v183NameSimilarity(clean,r.name);
+      if(target&&norm(r.team)===target)s+=.025;
+      if(s>score){second=score;score=s;best=r}else if(s>second)second=s;
+    }
+    return best&&score>=.975&&(score-second)>=.07?{record:best,score}:null;
+  }
+
+  const hit=v183KnownMatch(clean,known,team);
   if(hit)return {record:hit.record,score:hit.score};
-  const n=norm(v183CleanOcrName(name)),target=norm(team);
   let best=null,score=0,second=0;
   for(const r of known){
     let s=v183NameSimilarity(n,r.name);
@@ -1527,7 +1636,7 @@ function v126BestKnown(name,team=''){
     if(s>score){second=score;score=s;best=r}else if(s>second)second=s;
   }
   const margin=score-second;
-  const minScore=rosterDetectedKind==='printed-table'?.91:(rosterDetectedKind==='printed'?.89:.84);
+  const minScore=rosterDetectedKind==='printed'?.89:.84;
   return best&&score>=minScore&&margin>=.04?{record:best,score}:null;
 }
 function v126AutoRegisterNewEntries(){
