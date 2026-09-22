@@ -496,3 +496,17 @@ body[data-app-route="home"] #v105-bottom[data-v105-route="home"] .v105-grid{
   background:transparent!important;
   background-image:none!important;
 }
+
+
+/* V157 — Fan Zone: una reacción por visitante/perfil. */
+.v105-fan-rule{
+  margin:0 0 10px;
+  color:#9fdce5;
+  font-size:10px;
+  line-height:1.4;
+}
+.v105-card.is-selected{
+  border-color:#55e6f2!important;
+  background:#102a83!important;
+  box-shadow:0 0 0 1px rgba(85,230,242,.18) inset;
+}
