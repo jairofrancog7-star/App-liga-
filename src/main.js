@@ -5194,6 +5194,55 @@ async function v64PrepareOcrImage(file,mode='contrast'){
     return await new Promise(resolve=>c.toBlob(b=>resolve(b||file),'image/jpeg',.94));
   }catch(e){return file}
 }
+async function v64PrepareOcrCrop(file,region='name'){
+  try{
+    const img=await v64BitmapFromFile(file),iw=img.width||img.naturalWidth,ih=img.height||img.naturalHeight;
+    if(!iw||!ih)return null;
+    const landscape=iw>=ih;
+    let sx,sy,sw,sh;
+    if(region==='name'){
+      if(landscape){sx=iw*.29;sy=ih*.19;sw=iw*.66;sh=ih*.48}
+      else{sx=iw*.08;sy=ih*.20;sw=iw*.84;sh=ih*.48}
+    }else{
+      if(landscape){sx=iw*.24;sy=ih*.48;sw=iw*.72;sh=ih*.44}
+      else{sx=iw*.07;sy=ih*.48;sw=iw*.86;sh=ih*.44}
+    }
+    const target=2200,scale=target/sw,w=Math.round(sw*scale),h=Math.round(sh*scale);
+    const c=document.createElement('canvas');c.width=w;c.height=h;const x=c.getContext('2d',{willReadFrequently:true});
+    x.imageSmoothingEnabled=true;x.imageSmoothingQuality='high';
+    x.drawImage(img,sx,sy,sw,sh,0,0,w,h);
+    const data=x.getImageData(0,0,w,h),p=data.data;
+    for(let i=0;i<p.length;i+=4){
+      const g=.299*p[i]+.587*p[i+1]+.114*p[i+2];
+      const v=Math.max(0,Math.min(255,(g-128)*2.05+128));
+      p[i]=p[i+1]=p[i+2]=v;p[i+3]=255;
+    }
+    x.putImageData(data,0,0);
+    return await new Promise(resolve=>c.toBlob(b=>resolve(b),'image/jpeg',.96));
+  }catch(e){return null}
+}
+function v64CleanNameCandidate(text){
+  return String(text||'')
+    .replace(/INSTITUTO\s+NACIONAL\s+ELECTORAL/ig,' ')
+    .replace(/CREDENCIAL\s+PARA\s+VOTAR/ig,' ')
+    .replace(/ESTADOS?\s+UNIDOS\s+MEXICANOS/ig,' ')
+    .replace(/NOMBRE(?:S)?/ig,' ')
+    .replace(/DOMICILIO|CLAVE\s+DE\s+ELECTOR|CURP|SECCI[ÓO]N|VIGENCIA|FECHA\s+DE\s+NACIMIENTO/ig,' ')
+    .replace(/[^A-Za-zÁÉÍÓÚÜÑáéíóúüñ'\-\s]/g,' ')
+    .replace(/\s+/g,' ').trim();
+}
+function v64NameFromFocusedText(text){
+  const lines=String(text||'').split(/\r?\n/).map(v64CleanNameCandidate).filter(x=>x.length>=4&&x.length<=70);
+  const bad=/^(mexico|méxico|electoral|credencial|votar|domicilio|sexo|clave|estado|municipio|seccion|vigencia)$/i;
+  const useful=lines.filter(x=>!bad.test(x)&&!/^([A-ZÁÉÍÓÚÜÑ]\s*){1,4}$/i.test(x));
+  const scored=useful.map(x=>{
+    const words=x.split(/\s+/).filter(w=>w.length>=2);
+    const letters=(x.match(/[A-Za-zÁÉÍÓÚÜÑáéíóúüñ]/g)||[]).length;
+    const score=(words.length>=2?25:0)+(words.length>=3?20:0)+Math.min(35,letters);
+    return {x,score};
+  }).sort((a,b)=>b.score-a.score);
+  return scored[0]?.x||'';
+}
 function v64OcrQuality(text,confidence){
   const t=String(text||''),p=v64ParseOcrIdentity(t);
   let score=Number(confidence||0);
@@ -5208,18 +5257,52 @@ async function v64RecognizeDocument(file,onStatus){
     {label:'Segunda lectura…',image:await v64PrepareOcrImage(file,'binary')}
   ];
   let best={text:'',score:-Infinity,parsed:{}};
+  const seen=[];
   for(let i=0;i<variants.length;i++){
     onStatus?.(variants[i].label);
     const r=await T.recognize(variants[i].image,'spa');
     const text=r?.data?.text||'',q=v64OcrQuality(text,r?.data?.confidence||0);
+    seen.push(text);
     if(q.score>best.score)best={text,score:q.score,parsed:q.parsed};
     if(q.parsed?.curp&&q.parsed?.name)break;
   }
+
+  if(!best.parsed?.name){
+    onStatus?.('Buscando nombre en el INE…');
+    const crop=await v64PrepareOcrCrop(file,'name');
+    if(crop){
+      const r=await T.recognize(crop,'spa');
+      const focused=r?.data?.text||'';seen.push(focused);
+      const combined=best.text+'\n'+focused;
+      const parsed=v64ParseOcrIdentity(combined);
+      const focusedName=v64NameFromFocusedText(focused);
+      if(!parsed.name&&focusedName)parsed.name=focusedName;
+      const q=v64OcrQuality(combined,r?.data?.confidence||0);
+      q.parsed=parsed;
+      if(parsed.name||q.score>best.score)best={text:combined,score:q.score+45,parsed};
+    }
+  }
+
+  if(!best.parsed?.curp||!best.parsed?.dob||!best.parsed?.city){
+    onStatus?.('Buscando datos del documento…');
+    const crop=await v64PrepareOcrCrop(file,'data');
+    if(crop){
+      const r=await T.recognize(crop,'spa');
+      const focused=r?.data?.text||'';seen.push(focused);
+      const combined=best.text+'\n'+focused;
+      const parsed=v64ParseOcrIdentity(combined);
+      if(best.parsed?.name&&!parsed.name)parsed.name=best.parsed.name;
+      const q=v64OcrQuality(combined,r?.data?.confidence||0);
+      if(q.score>best.score||parsed.curp||parsed.dob||parsed.city)best={text:combined,score:q.score,parsed};
+    }
+  }
+
   if((!best.parsed?.name&&!best.parsed?.curp)||best.text.trim().length<18){
     onStatus?.('Probando imagen original…');
-    const r=await T.recognize(file,'spa'),text=r?.data?.text||'',q=v64OcrQuality(text,r?.data?.confidence||0);
-    if(q.score>best.score)best={text,score:q.score,parsed:q.parsed};
+    const r=await T.recognize(file,'spa'),text=r?.data?.text||'',combined=best.text+'\n'+text,q=v64OcrQuality(combined,r?.data?.confidence||0);
+    if(q.score>best.score)best={text:combined,score:q.score,parsed:q.parsed};
   }
+  best.allText=seen.filter(Boolean).join('\n');
   return best;
 }
 
