@@ -1011,3 +1011,60 @@
     font-size:28px!important;
   }
 }
+
+
+/* V170 — Acciones visibles del Match Center + eliminar bloque inferior de Más herramientas. */
+@media (max-width:1023px){
+  body.v92-match-center-official #v105-bottom,
+  body[data-app-route="v4-matchcenter"] #v105-bottom,
+  body[data-app-route="matchCenter"] #v105-bottom,
+  body[data-app-route="match-center"] #v105-bottom{
+    display:none!important;
+    height:0!important;
+    min-height:0!important;
+    margin:0!important;
+    padding:0!important;
+    overflow:hidden!important;
+  }
+
+  body.v92-match-center-official .v92-match-actions{
+    display:grid!important;
+    grid-template-columns:1fr 1fr 1.12fr!important;
+    gap:8px!important;
+    margin:12px 0 2px!important;
+  }
+
+  body.v92-match-center-official .v92-match-actions button{
+    min-width:0!important;
+    min-height:44px!important;
+    padding:0 10px!important;
+    border:1px solid rgba(58,102,232,.34)!important;
+    border-radius:13px!important;
+    background:linear-gradient(180deg,#101a55,#0a123d)!important;
+    color:#fff!important;
+    font-size:9.5px!important;
+    line-height:1.1!important;
+    font-weight:900!important;
+    box-shadow:inset 0 0 0 1px rgba(255,255,255,.03)!important;
+  }
+
+  body.v92-match-center-official .v92-match-actions button.mvp{
+    border-color:rgba(35,223,240,.50)!important;
+    background:linear-gradient(180deg,#173ebc,#102b8e)!important;
+    color:#fff!important;
+  }
+
+  body.v92-match-center-official .v92-match-actions button:active{
+    transform:scale(.98)!important;
+  }
+}
+
+@media(max-width:390px){
+  body.v92-match-center-official .v92-match-actions{
+    grid-template-columns:1fr 1fr!important;
+  }
+
+  body.v92-match-center-official .v92-match-actions button.mvp{
+    grid-column:1/-1!important;
+  }
+}
