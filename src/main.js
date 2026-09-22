@@ -5157,36 +5157,59 @@ function v64NormalizeCurpCandidate(value){
   if(!v64CurpDob(c))return '';
   return c;
 }
-function v64FindCurp(text){
-  const raw=String(text||'').toUpperCase();
-  const lines=raw.split(/\r?\n/);
-  const candidates=[];
-  for(let li=0;li<lines.length;li++){
-    const line=lines[li],near=/CURP/.test(line);
+function v64CurpCheckDigit(curp){
+  const chars='0123456789ABCDEFGHIJKLMNÑOPQRSTUVWXYZ';
+  const c=String(curp||'').toUpperCase().replace(/[^A-Z0-9Ñ]/g,'');
+  if(c.length!==18)return null;
+  let sum=0;
+  for(let i=0;i<17;i++){const v=chars.indexOf(c[i]);if(v<0)return null;sum+=v*(18-i)}
+  return (10-(sum%10))%10;
+}
+function v64CurpChecksumValid(curp){
+  const c=String(curp||'').toUpperCase().replace(/[^A-Z0-9Ñ]/g,'');
+  if(!/^[A-Z]{4}\d{6}[HM][A-Z]{5}[A-Z0-9]\d$/.test(c))return false;
+  const d=v64CurpCheckDigit(c);return d!==null&&String(d)===c[17];
+}
+function v64NamePartsForCurp(name){
+  const p=String(name||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toUpperCase().replace(/[^A-ZÑ ]+/g,' ').split(/\s+/).filter(Boolean);
+  if(p.length<3)return null;
+  const maternal=p[p.length-1],paternal=p[p.length-2],given=p.slice(0,-2);
+  const common=new Set(['JOSE','J','MARIA','MA']);
+  const g=(common.has(given[0])&&given[1]?given[1]:given[0])||'X';
+  const vowel=(paternal.slice(1).match(/[AEIOU]/)||['X'])[0];
+  return {prefix:(paternal[0]||'X')+vowel+(maternal[0]||'X')+(g[0]||'X')};
+}
+function v64FindCurp(text,name=''){
+  const raw=String(text||'').toUpperCase(),lines=raw.split(/\r?\n/),candidates=[];
+  const push=(value,score)=>{
+    const fixed=v64NormalizeCurpCandidate(value);if(!fixed)return;
+    const old=candidates.find(x=>x.fixed===fixed);if(old){old.score=Math.max(old.score,score);return}
+    candidates.push({fixed,score});
+  };
+  for(const line of lines){
+    const near=/CURP/.test(line);
     const cleaned=line.replace(/CURP\s*[:\-]?/g,' ').replace(/[^A-Z0-9]/g,'');
-    for(let p=0;p<=cleaned.length-18;p++){
-      const chunk=cleaned.slice(p,p+18),fixed=v64NormalizeCurpCandidate(chunk);
-      if(fixed)candidates.push({fixed,score:(near?100:0)+18});
-    }
+    for(let p=0;p<=cleaned.length-18;p++)push(cleaned.slice(p,p+18),(near?120:0)+24);
     const tokens=line.replace(/[^A-Z0-9]+/g,' ').split(/\s+/).filter(Boolean);
     for(let a=0;a<tokens.length;a++){
       let joined='';
       for(let b=a;b<Math.min(tokens.length,a+5)&&joined.length<=22;b++){
-        joined+=tokens[b];
-        if(joined.length===18){
-          const fixed=v64NormalizeCurpCandidate(joined);
-          if(fixed)candidates.push({fixed,score:(near?100:0)+20-(b-a)});
-        }
+        joined+=tokens[b];if(joined.length===18)push(joined,(near?120:0)+28-(b-a));
       }
     }
   }
   const flat=raw.replace(/[^A-Z0-9]/g,'');
-  for(let p=0;p<=flat.length-18;p++){
-    const fixed=v64NormalizeCurpCandidate(flat.slice(p,p+18));
-    if(fixed)candidates.push({fixed,score:10});
-  }
+  for(let p=0;p<=flat.length-18;p++)push(flat.slice(p,p+18),8);
   candidates.sort((a,b)=>b.score-a.score);
-  return candidates[0]?.fixed||'';
+  const np=v64NamePartsForCurp(name);
+  if(np){
+    for(const c of candidates){
+      const repaired=np.prefix+c.fixed.slice(4);
+      if(v64CurpChecksumValid(repaired))return repaired;
+    }
+  }
+  const valid=candidates.find(c=>v64CurpChecksumValid(c.fixed));
+  return valid?.fixed||'';
 }
 function v64GoodCity(value){
   const v=String(value||'').trim();
@@ -5203,18 +5226,36 @@ function v64KnownPlaceFromText(text){
   const known=[
     ['SANTACRUZDEJUVENTINOROSAS','Santa Cruz de Juventino Rosas'],
     ['JUVENTINOROSAS','Juventino Rosas'],
+    ['CELAYA','Celaya'],
+    ['COMONFORT','Comonfort'],
+    ['CORTAZAR','Cortázar'],
+    ['VILLAGRAN','Villagrán'],
+    ['SALAMANCA','Salamanca'],
     ['RINCONDECENTENO','Rincón de Centeno'],
     ['CERRITODEGASCA','Cerrito de Gasca'],
+    ['FRANCOTAVERA','Franco Tavera'],
+    ['TAVERA','Tavera'],
     ['SANJUANDELACRUZ','San Juan de la Cruz'],
-    ['SANJULIANTIERRABLANCA','San Julián Tierra Blanca'],
-    ['SANJOSEDELAMONTANA','San José de la Montaña'],
-    ['RINCONDEPARRA','Rincón de Parra'],
-    ['VALENCIADEFUERA','Valencia de Fuera'],
     ['SANTIAGODECUENDA','Santiago de Cuenda'],
-    ['TAVERA','Tavera'],['POZOS','Pozos'],['CUENDA','Cuenda']
+    ['SANANTONIODEROMERILLO','San Antonio de Romerillo'],
+    ['ROMERILLO','San Antonio de Romerillo'],
+    ['FRACCIONAMIENTOCOMONTUOSO','Fraccionamiento Comontuoso'],
+    ['COMONTUOSO','Comontuoso'],
+    ['POZOS','Pozos'],
+    ['RINCONDECENTENO','Rincón de Centeno'],
+    ['SANJOSEDELAMONTANA','San José de la Montaña'],
+    ['SANJULIANTIERRABLANCA','San Julián Tierra Blanca'],
+    ['RINCONDEPARRA','Rincón de Parra'],
+    ['VALENCIADEFUERA','Valencia de Fuera']
   ];
   const hit=known.find(([k])=>compact.includes(k));
-  return hit?hit[1]:'';
+  if(hit)return hit[1];
+  const nearGto=normalized.match(/([A-ZÑ ]{4,45})\s*,?\s*GTO\b/);
+  if(nearGto){
+    const place=nearGto[1].replace(/\b(CALLE|COLONIA|COL|MUNICIPIO|LOCALIDAD|DOMICILIO|CP|C P)\b/g,' ').replace(/\s+/g,' ').trim();
+    if(place.length>=4&&place.length<=45)return place.toLowerCase().replace(/(^|\s)\p{L}/gu,m=>m.toUpperCase());
+  }
+  return '';
 }
 function v64LooksLikeIne(text){
   const t=String(text||'');
@@ -5223,22 +5264,51 @@ function v64LooksLikeIne(text){
   const addressish=/\bGTO\.?\b|GUANAJUATO|C\.P\.?\s*\d{4,5}|\bCP\s*\d{4,5}/i.test(t);
   return !curpOnly&&(ine||addressish||!!v64KnownPlaceFromText(t));
 }
+function v64PlausiblePersonLine(value){
+  const v=String(value||'').replace(/[^A-Za-zÁÉÍÓÚÜÑáéíóúüñ'\-\s]/g,' ').replace(/\s+/g,' ').trim();
+  if(v.length<2||v.length>55||/INSTITUTO|NACIONAL|ELECTORAL|CREDENCIAL|VOTAR|DOMICILIO|CLAVE|CURP|SECCI[ÓO]N|VIGENCIA|FECHA|NACIMIENTO|MUNICIPIO|LOCALIDAD|ESTADO/i.test(v))return '';
+  const words=v.split(/\s+/).filter(Boolean),shorts=words.filter(w=>w.length<=1).length;
+  if(!words.length||shorts>0||words.length>5)return '';
+  return v;
+}
+function v64IneNameFromText(text){
+  const lines=String(text||'').split(/\r?\n/).map(x=>x.replace(/[|]/g,'I').replace(/\s+/g,' ').trim()).filter(Boolean);
+  const i=lines.findIndex(x=>/\bNOMBRE(?:S)?\b/i.test(x));
+  if(i<0)return '';
+  const parts=[],same=v64PlausiblePersonLine(lines[i].replace(/^.*?NOMBRE(?:S)?\s*[:\-]?\s*/i,''));
+  if(same)parts.push(same);
+  for(let j=i+1;j<Math.min(lines.length,i+6);j++){
+    if(/^(DOMICILIO|CLAVE|CURP|FECHA|SEXO|ESTADO|MUNICIPIO|LOCALIDAD|CIUDAD|COMUNIDAD|ENTIDAD|SECCI[ÓO]N|VIGENCIA|A[NÑ]O)\b/i.test(lines[j]))break;
+    const p=v64PlausiblePersonLine(lines[j]);if(p)parts.push(p);
+    if(parts.length>=3)break;
+  }
+  if(parts.length>=3){
+    const paternal=parts[0],maternal=parts[1],given=parts.slice(2).join(' ');
+    return (given+' '+paternal+' '+maternal).replace(/\s+/g,' ').trim();
+  }
+  if(parts.length===1){
+    const w=parts[0].split(/\s+/).filter(Boolean);
+    if(w.length>=3)return (w.slice(2).join(' ')+' '+w[0]+' '+w[1]).trim();
+  }
+  return '';
+}
 function v64ParseOcrIdentity(text){
   const raw=String(text||''),up=raw.toUpperCase();
   const lines=raw.split(/\r?\n/).map(x=>x.replace(/[|]/g,'I').replace(/\s+/g,' ').trim()).filter(Boolean);
   const isIne=v64LooksLikeIne(raw);
-  let curp=v64FindCurp(raw);
 
-  let name='';
-  const given=v64OcrValueAfter(lines,/^NOMBRE(?:S)?\b/i);
-  const first=v64OcrValueAfter(lines,/^(?:PRIMER\s+APELLIDO|APELLIDO\s+PATERNO)\b/i);
-  const second=v64OcrValueAfter(lines,/^(?:SEGUNDO\s+APELLIDO|APELLIDO\s+MATERNO)\b/i);
-  if((first||second)&&given)name=[given,first,second].filter(Boolean).join(' ');
+  let name=isIne?v64IneNameFromText(raw):'';
   if(!name){
+    const given=v64OcrValueAfter(lines,/^NOMBRE(?:S)?\b/i);
+    const first=v64OcrValueAfter(lines,/^(?:PRIMER\s+APELLIDO|APELLIDO\s+PATERNO)\b/i);
+    const second=v64OcrValueAfter(lines,/^(?:SEGUNDO\s+APELLIDO|APELLIDO\s+MATERNO)\b/i);
+    if((first||second)&&given)name=[given,first,second].filter(Boolean).join(' ');
+  }
+  if(!name&&!isIne){
     for(let i=0;i<lines.length;i++){
       if(!/^NOMBRE(?:S)?\b/i.test(lines[i]))continue;
-      const firstLine=lines[i].replace(/^NOMBRE(?:S)?\s*[:\-]?\s*/i,'').trim();
-      const parts=[];if(firstLine)parts.push(firstLine);
+      const firstLine=lines[i].replace(/^NOMBRE(?:S)?\s*[:\-]?\s*/i,'').trim(),parts=[];
+      if(firstLine)parts.push(firstLine);
       for(let j=i+1;j<Math.min(lines.length,i+4);j++){
         if(/^(DOMICILIO|CLAVE|CURP|FECHA|SEXO|ESTADO|MUNICIPIO|LOCALIDAD|CIUDAD|COMUNIDAD|ENTIDAD|SECCION|VIGENCIA|APELLIDO)\b/i.test(lines[j]))break;
         if(!/\d/.test(lines[j]))parts.push(lines[j]);
@@ -5248,38 +5318,31 @@ function v64ParseOcrIdentity(text){
   }
   name=String(name||'').replace(/[^A-Za-zÁÉÍÓÚÜÑáéíóúüñ .'-]/g,' ').replace(/\s+/g,' ').trim();
   const nw=name.split(/\s+/).filter(Boolean),shorts=nw.filter(w=>w.length<=2).length;
-  if(name.length<3||name.length>90||/INSTITUTO|ELECTORAL|CREDENCIAL|VOTAR|FECHA|NACIM|EMISI[ÓO]N|VIGENCIA/i.test(name)||(nw.length>=4&&shorts/nw.length>.45))name='';
+  const vowelCount=(name.match(/[AEIOUÁÉÍÓÚÜaeiouáéíóúü]/g)||[]).length;
+  if(name.length<4||name.length>80||nw.length<2||nw.length>6||shorts/Math.max(1,nw.length)>.34||vowelCount<2||
+     /INSTITUTO|ELECTORAL|CREDENCIAL|VOTAR|FECHA|NACIM|EMISI[ÓO]N|VIGENCIA|DEPENDENCIA|MUNICIPIO|SECCI[ÓO]N/i.test(name))name='';
+
+  let curp=v64FindCurp(raw,name);
 
   let city='';
   if(isIne){
-    const cityPatterns=[
-      /^(?:CIUDAD|MUNICIPIO|LOCALIDAD|COMUNIDAD|POBLACION|POBLACIÓN)\b/i
-    ];
-    for(const re of cityPatterns){city=v64OcrValueAfter(lines,re);if(city)break}
-    if(!city)city=v64KnownPlaceFromText(raw);
-    if(!city){
-      const gtoLine=lines.find(x=>/\bGTO\.?\b|GUANAJUATO/i.test(x)&&/[A-ZÁÉÍÓÚÜÑ]{4,}/i.test(x));
-      if(gtoLine){
-        const cleaned=gtoLine
-          .replace(/\bC\.?P\.?\s*\d{4,5}\b/ig,' ')
-          .replace(/\b\d{4,6}\b/g,' ')
-          .replace(/\bGTO\.?\b|GUANAJUATO/ig,' ')
-          .replace(/[^A-Za-zÁÉÍÓÚÜÑáéíóúüñ .'-]/g,' ')
-          .replace(/\s+/g,' ').trim();
-        const guess=v64KnownPlaceFromText(gtoLine)||cleaned;
-        if(guess&&guess.length>=4)city=guess;
-      }
+    for(const re of [/^(?:CIUDAD|MUNICIPIO|LOCALIDAD|COMUNIDAD|POBLACION|POBLACIÓN)\b/i]){
+      city=v64OcrValueAfter(lines,re);if(city)break;
     }
+    if(!city)city=v64KnownPlaceFromText(raw);
     if(!city){
       const d=lines.findIndex(x=>/^DOMICILIO\b/i.test(x));
       if(d>=0){
         const addr=[];
-        for(let j=d+1;j<Math.min(lines.length,d+5);j++){
+        for(let j=d+1;j<Math.min(lines.length,d+6);j++){
           if(/^(CLAVE|CURP|FECHA|SEXO|SECCION|VIGENCIA)\b/i.test(lines[j]))break;
           addr.push(lines[j]);
         }
-        const place=addr.slice().reverse().find(x=>/GTO\.?|GUANAJUATO|MUNICIPIO|LOCALIDAD|C\.P\.|\bCP\b/i.test(x));
-        if(place)city=place;
+        city=v64KnownPlaceFromText(addr.join(' '));
+        if(!city){
+          const place=addr.slice().reverse().find(x=>/GTO\.?|GUANAJUATO|MUNICIPIO|LOCALIDAD|C\.P\.|\bCP\b/i.test(x));
+          if(place)city=place;
+        }
       }
     }
     city=v64GoodCity(String(city||'').replace(/^\s*[:\-]\s*/,'').replace(/\s+/g,' ').trim().slice(0,100));
@@ -5373,16 +5436,19 @@ function v64CleanNameCandidate(text){
     .replace(/\s+/g,' ').trim();
 }
 function v64NameFromFocusedText(text){
+  const ine=v64IneNameFromText(text);if(ine)return ine;
   const lines=String(text||'').split(/\r?\n/).map(v64CleanNameCandidate).filter(x=>x.length>=4&&x.length<=70);
-  const bad=/^(mexico|méxico|electoral|credencial|votar|domicilio|sexo|clave|estado|municipio|seccion|vigencia)$/i;
-  const useful=lines.filter(x=>!bad.test(x)&&!/^([A-ZÁÉÍÓÚÜÑ]\s*){1,4}$/i.test(x));
-  const scored=useful.map(x=>{
-    const words=x.split(/\s+/).filter(w=>w.length>=2);
-    const letters=(x.match(/[A-Za-zÁÉÍÓÚÜÑáéíóúüñ]/g)||[]).length;
-    const score=(words.length>=2?25:0)+(words.length>=3?20:0)+Math.min(35,letters);
-    return {x,score};
-  }).sort((a,b)=>b.score-a.score);
-  return scored[0]?.x||'';
+  const bad=/mexico|méxico|electoral|credencial|votar|domicilio|sexo|clave|estado|municipio|seccion|vigencia|dependencia|registro/i;
+  const useful=lines.filter(x=>{
+    if(bad.test(x))return false;
+    const words=x.split(/\s+/).filter(Boolean),shorts=words.filter(w=>w.length<=2).length;
+    const vowels=(x.match(/[AEIOUÁÉÍÓÚÜaeiouáéíóúü]/g)||[]).length;
+    return words.length>=2&&words.length<=5&&shorts/words.length<=.25&&vowels>=2;
+  });
+  return useful.map(x=>{
+    const words=x.split(/\s+/).filter(Boolean),letters=(x.match(/[A-Za-zÁÉÍÓÚÜÑáéíóúüñ]/g)||[]).length;
+    return {x,score:(words.length>=2?25:0)+(words.length>=3?20:0)+Math.min(35,letters)};
+  }).sort((a,b)=>b.score-a.score)[0]?.x||'';
 }
 function v64OcrQuality(text,confidence){
   const t=String(text||''),p=v64ParseOcrIdentity(t);
@@ -5682,13 +5748,15 @@ document.querySelector('[data-v64-ocr]')?.addEventListener('click',async e=>{
   try{
     const best=await v64RecognizeDocument(file,msg=>btn.textContent=msg);
     const txt=best.text||'',all=best.allText||'';out.value=[txt,all].filter(Boolean).join('\n');
+    const combined=[txt,all].filter(Boolean).join('\n');
     const first=best.parsed||v64ParseOcrIdentity(txt);
-    const retry=all?v64ParseOcrIdentity(txt+'\n'+all):{};
+    const retry=combined?v64ParseOcrIdentity(combined):{};
+    const bestName=first.name||retry.name||v64IneNameFromText(combined)||'';
     const p={
-      name:first.name||retry.name||'',
-      curp:first.curp||retry.curp||'',
+      name:bestName,
+      curp:first.curp||retry.curp||v64FindCurp(combined,bestName)||'',
       dob:first.dob||retry.dob||'',
-      city:first.city||retry.city||''
+      city:first.city||retry.city||(v64LooksLikeIne(combined)?v64KnownPlaceFromText(combined):'')
     };
     v64ApplyOcrIdentity(p);
     const found=[p.name&&'nombre',p.curp&&'CURP',p.dob&&'fecha',p.city&&'municipio/comunidad'].filter(Boolean);
