@@ -720,3 +720,118 @@
   .v95-quick-copy{gap:5px}
   .v95-quick-copy button{font-size:9px;padding-inline:5px}
 }
+
+
+/* V171 — Centro de avisos: seis tarjetas grandes, estilo de referencia verde adaptado al azul. */
+.v63-alerts-page{
+  background:#070764!important;
+  background-image:none!important;
+}
+.v63-alerts-page .v60-tool-head{
+  margin-bottom:24px!important;
+}
+.v63-alerts-grid{
+  display:grid!important;
+  grid-template-columns:1fr!important;
+  gap:18px!important;
+  margin-top:18px!important;
+}
+.v63-alerts-grid .v63-feature-card{
+  position:relative!important;
+  overflow:hidden!important;
+  min-height:146px!important;
+  padding:24px 22px!important;
+  grid-template-columns:62px minmax(0,1fr) 22px!important;
+  gap:16px!important;
+  border:1px solid rgba(38,216,237,.30)!important;
+  border-radius:28px!important;
+  background:
+    radial-gradient(circle at 88% 82%,rgba(30,212,233,.13),transparent 28%),
+    linear-gradient(160deg,#11177d 0%,#0b0f6d 52%,#080b59 100%)!important;
+  box-shadow:0 12px 26px rgba(0,0,50,.18)!important;
+}
+.v63-alerts-grid .v63-feature-card:nth-child(2){
+  background:
+    radial-gradient(circle at 84% 86%,rgba(23,121,255,.17),transparent 29%),
+    linear-gradient(160deg,#121a85 0%,#0b106f 55%,#080b59 100%)!important;
+}
+.v63-alerts-grid .v63-feature-card:nth-child(3){
+  background:
+    radial-gradient(circle at 86% 84%,rgba(32,232,244,.12),transparent 28%),
+    linear-gradient(160deg,#11157c 0%,#0b0f6c 55%,#080a58 100%)!important;
+}
+.v63-alerts-grid .v63-feature-card:nth-child(4){
+  background:
+    radial-gradient(circle at 86% 82%,rgba(73,112,255,.18),transparent 28%),
+    linear-gradient(160deg,#141b87 0%,#0d126f 55%,#080b59 100%)!important;
+}
+.v63-alerts-grid .v63-feature-card:nth-child(5){
+  background:
+    radial-gradient(circle at 86% 82%,rgba(23,220,238,.15),transparent 28%),
+    linear-gradient(160deg,#10197d 0%,#0a1068 55%,#070a55 100%)!important;
+}
+.v63-alerts-grid .v63-feature-card:nth-child(6){
+  background:
+    radial-gradient(circle at 84% 82%,rgba(44,144,255,.16),transparent 28%),
+    linear-gradient(160deg,#121983 0%,#0c116d 55%,#080a57 100%)!important;
+}
+.v63-alerts-grid .v63-feature-icon{
+  width:58px!important;
+  height:58px!important;
+  border-radius:18px!important;
+  background:linear-gradient(145deg,#0a4bb7,#141b83)!important;
+  color:#20d9ec!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.05)!important;
+}
+.v63-alerts-grid .v63-feature-icon svg{
+  width:34px!important;
+  height:34px!important;
+  stroke-width:2!important;
+}
+.v63-alerts-grid .v63-feature-copy small{
+  margin-bottom:7px!important;
+  color:#21d9eb!important;
+  font-size:12px!important;
+  letter-spacing:.13em!important;
+}
+.v63-alerts-grid .v63-feature-copy b{
+  color:#fff!important;
+  font-size:23px!important;
+  line-height:1.04!important;
+}
+.v63-alerts-grid .v63-feature-copy em{
+  margin-top:10px!important;
+  color:#b8c0df!important;
+  font-size:15px!important;
+  line-height:1.35!important;
+}
+.v63-alerts-grid .v63-feature-arrow{
+  color:#8e97d4!important;
+  font-size:34px!important;
+}
+@media(max-width:390px){
+  .v63-alerts-grid{
+    gap:15px!important;
+  }
+  .v63-alerts-grid .v63-feature-card{
+    min-height:132px!important;
+    padding:20px 17px!important;
+    grid-template-columns:56px minmax(0,1fr) 18px!important;
+    gap:13px!important;
+    border-radius:24px!important;
+  }
+  .v63-alerts-grid .v63-feature-icon{
+    width:52px!important;
+    height:52px!important;
+    border-radius:16px!important;
+  }
+  .v63-alerts-grid .v63-feature-copy small{
+    font-size:11px!important;
+  }
+  .v63-alerts-grid .v63-feature-copy b{
+    font-size:20px!important;
+  }
+  .v63-alerts-grid .v63-feature-copy em{
+    font-size:13.5px!important;
+  }
+}
