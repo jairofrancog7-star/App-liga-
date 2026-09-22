@@ -439,6 +439,31 @@
       return;
     }
 
+    /* V127 — LIGUILLA / BRACKET BUILDER:
+       Primero se muestran los lugares, selectores y botón de generar cuadro.
+       El bloque animado "CADA CRUCE CUENTA" va HASTA ABAJO.
+       No debe aparecer encima del formulario ni entre los controles. */
+    if(r==='bracketBuilder'){
+      const nativeBracket=screen.querySelector('.v60-tool-page.v64-page');
+      if(!nativeBracket){
+        screen.querySelectorAll(':scope > [data-v73-motion-banner]').forEach(x=>x.remove());
+        syncAll();
+        return;
+      }
+
+      let banner=screen.querySelector(':scope > [data-v73-motion-banner]');
+      if(!banner){
+        banner=buildBanner(cfg);
+        banner.classList.add('v73-below-native','v73-bracket-bottom');
+        banner.dataset.v73BelowNative='bracket-builder';
+      }
+
+      /* El banner queda después de TODO el formulario nativo. */
+      if(screen.lastElementChild!==banner)screen.appendChild(banner);
+      syncAll();
+      return;
+    }
+
     /* V120 — CLIMA Y CAMPOS:
        Primero se muestran las canchas y sus controles reales.
        El cuadro animado "PRONÓSTICO NO ES DECISIÓN" va hasta abajo de esta pantalla. */
