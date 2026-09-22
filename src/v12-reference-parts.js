@@ -282,88 +282,201 @@ function v12Toast(text){
 }
 
 const V12_FIXTURE_LOGOS={
-  "FRANCO FC": "assets/official-logos/franco-fc.png",
-  "HERRERAS FC": "assets/official-logos/herreras-fc.png",
-  "TERRICOLAS": "assets/official-logos/terricolas.png",
-  "GALACTICOS": "assets/teams/galacticos-pozos.webp",
-  "LINCES": "assets/official-logos/linces.png",
-  "JUVENTUS": "assets/official-logos/juventus.png",
-  "HERMANOS": "assets/official-logos/hermanos.png",
-  "SAN JOSE FC": "assets/official-logos/san-jose-fc.png",
-  "LOBOS CDG": "assets/official-logos/lobos-cdg.png",
-  "NAPOLI": "assets/official-logos/napoli.png"
+  "FRANCO FC":"assets/official-logos/franco-fc.png",
+  "HERRERAS FC":"assets/official-logos/herreras-fc.png",
+  "TERRICOLAS":"assets/official-logos/terricolas.png",
+  "GALACTICOS":"assets/teams/galacticos-pozos.webp",
+  "LINCES":"assets/official-logos/linces.png",
+  "JUVENTUS":"assets/official-logos/juventus.png",
+  "HERMANOS":"assets/official-logos/hermanos.png",
+  "SAN JOSE FC":"assets/official-logos/san-jose-fc.png",
+  "LOBOS CDG":"assets/official-logos/lobos-cdg.png",
+  "NAPOLI":"assets/official-logos/napoli.png"
 };
-function v12FixtureLogo(name){
-  const p=V12_FIXTURE_LOGOS[name];
-  if(p)return '<img src="'+V12_TEAM_ASSET_BASE+p+'" alt="'+name+'" class="v12-fixture-logo" loading="eager" decoding="async">';
-  const ab=name.split(/\s+/).map(x=>x[0]||'').join('').slice(0,3).toUpperCase();
-  return '<span class="v12-fixture-fallback">'+ab+'</span>';
+const V12_FIXTURE_BUILD='20260921-all-weeks-categories-v132';
+const V12_FIXTURE_ORDER=['3','5','4','2','1'];
+const V12_MONTHS=['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
+const V12_MONTHS_SHORT=['ene','feb','mar','abr','may','jun','jul','ago','sep','oct','nov','dic'];
+const V12_DAYS=['domingo','lunes','martes','miércoles','jueves','viernes','sábado'];
+const V12_DAYS_SHORT=['dom','lun','mar','mié','jue','vie','sáb'];
+let V12_FIXTURE_DB=window.LJR_OFFICIAL_DATA||null;
+let V12_FIXTURE_LOADING=null;
+
+function v12Esc(v){return String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+function v12Norm(v){return String(v||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[^a-z0-9]+/g,' ').trim()}
+function v12LatestDb(a,b){
+  if(!a)return b||null;if(!b)return a;
+  const ta=Date.parse(a.captured_at_utc||'')||0,tb=Date.parse(b.captured_at_utc||'')||0;
+  return tb>ta?b:a;
 }
-const V12_OFFICIAL_UPCOMING=[
-  {
-    "home": "FRANCO FC",
-    "away": "HERRERAS FC",
-    "id": "m1",
-    "venue": "Romerillo",
-    "datetime": "20/09/2026 08:00",
-    "jornada": "5"
-  },
-  {
-    "home": "TERRICOLAS",
-    "away": "GALACTICOS",
-    "id": "m2",
-    "venue": "Campo por confirmar",
-    "datetime": "20/09/2026 08:00",
-    "jornada": "5"
-  },
-  {
-    "home": "LINCES",
-    "away": "JUVENTUS",
-    "id": "m3",
-    "venue": "Campo 3",
-    "datetime": "20/09/2026 08:00",
-    "jornada": "5"
-  },
-  {
-    "home": "HERMANOS",
-    "away": "SAN JOSE FC",
-    "id": "m4",
-    "venue": "Campo 3",
-    "datetime": "20/09/2026 10:00",
-    "jornada": "5"
-  },
-  {
-    "home": "LOBOS CDG",
-    "away": "NAPOLI",
-    "id": "m5",
-    "venue": "Cerrito de Gasca",
-    "datetime": "20/09/2026 12:00",
-    "jornada": "5"
+function v12FixtureDb(){
+  let live=null;
+  try{live=window.LJR_OFFICIAL_API?.getData?.()||window.LJR_OFFICIAL_DATA||null}catch(_){}
+  return v12LatestDb(V12_FIXTURE_DB,live);
+}
+async function v12LoadFixtureDb(){
+  if(V12_FIXTURE_LOADING)return V12_FIXTURE_LOADING;
+  V12_FIXTURE_LOADING=(async()=>{
+    let best=v12FixtureDb();
+    const urls=[
+      './public/data/official-live.json?v='+V12_FIXTURE_BUILD,
+      'https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/data/official-live.json?v='+V12_FIXTURE_BUILD
+    ];
+    for(const url of urls){
+      try{
+        const r=await fetch(url,{cache:'no-store'});if(!r.ok)continue;
+        const d=await r.json();if(d?.categories)best=v12LatestDb(best,d);
+      }catch(_){}
+    }
+    if(best)V12_FIXTURE_DB=best;
+    return best;
+  })().finally(()=>{V12_FIXTURE_LOADING=null});
+  return V12_FIXTURE_LOADING;
+}
+function v12ParseFixtureDate(raw){
+  const m=String(raw||'').match(/(\d{1,2})\/(\d{1,2})\/(\d{4})(?:\s+(\d{1,2}):(\d{2}))?/);
+  if(!m)return null;
+  const d=Number(m[1]),mo=Number(m[2]),y=Number(m[3]),h=Number(m[4]||0),mi=Number(m[5]||0);
+  const date=new Date(y,mo-1,d,h,mi,0,0);
+  if(Number.isNaN(date.getTime()))return null;
+  return {date,key:y+'-'+String(mo).padStart(2,'0')+'-'+String(d).padStart(2,'0'),day:d,month:mo,year:y,time:m[4]?String(h).padStart(2,'0')+':'+String(mi).padStart(2,'0'):'Por confirmar'};
+}
+function v12DateLong(info){
+  if(!info)return 'Fecha por confirmar';
+  return V12_DAYS[info.date.getDay()]+', '+info.day+' '+V12_MONTHS[info.month-1]+' '+info.year;
+}
+function v12DateShort(info){
+  if(!info)return 'Por confirmar';
+  return V12_DAYS_SHORT[info.date.getDay()]+' '+info.day+' '+V12_MONTHS_SHORT[info.month-1];
+}
+function v12FixtureCategories(){
+  const db=v12FixtureDb(),cats=db?.categories||{};
+  return V12_FIXTURE_ORDER.filter(id=>cats[id]).map(id=>({id,name:cats[id].name||('Categoría '+id)}));
+}
+function v12FixtureRows(catId){
+  const db=v12FixtureDb(),cat=db?.categories?.[String(catId)];
+  return (cat?.fixtures||[]).flatMap(b=>Array.isArray(b?.rows)?b.rows:[]).filter(r=>Array.isArray(r)&&r[2]&&r[6]).sort((a,b)=>{
+    const da=v12ParseFixtureDate(a[8])?.date?.getTime()||Number.MAX_SAFE_INTEGER;
+    const dbb=v12ParseFixtureDate(b[8])?.date?.getTime()||Number.MAX_SAFE_INTEGER;
+    return da-dbb||Number(a?.[0]||0)-Number(b?.[0]||0);
+  });
+}
+function v12FixtureGroups(catId){
+  const map=new Map();
+  v12FixtureRows(catId).forEach(r=>{
+    const info=v12ParseFixtureDate(r[8]),key=info?.key||'sin-fecha';
+    if(!map.has(key))map.set(key,{key,info,rows:[]});
+    map.get(key).rows.push(r);
+  });
+  return [...map.values()].sort((a,b)=>(a.info?.date?.getTime()||Number.MAX_SAFE_INTEGER)-(b.info?.date?.getTime()||Number.MAX_SAFE_INTEGER));
+}
+function v12StoredCat(){
+  const cats=v12FixtureCategories(),saved=localStorage.getItem('v12-fixture-cat')||'3';
+  return cats.some(c=>c.id===saved)?saved:(cats[0]?.id||'3');
+}
+function v12PickGroup(catId,groups){
+  if(!groups.length)return null;
+  const saved=localStorage.getItem('v12-fixture-date-'+catId);
+  if(saved&&groups.some(g=>g.key===saved))return groups.find(g=>g.key===saved);
+  const now=Date.now();
+  return groups.reduce((best,g)=>{
+    const d=g.info?.date?.getTime();
+    if(!Number.isFinite(d))return best;
+    if(!best)return g;
+    const bd=best.info?.date?.getTime();
+    return Math.abs(d-now)<Math.abs(bd-now)?g:best;
+  },null)||groups[0];
+}
+function v12CategoryRule(catName){
+  return /veteranos/i.test(catName||'')?'Veteranos · partidos los sábados':'Primera / Intermedia / Segunda · partidos los domingos';
+}
+function v12FixtureLogo(name){
+  let src='';
+  try{src=window.LJR_TEAM_LOGOS?.get?.(name)||window.LJR_OFFICIAL_API?.getLogo?.(name)||''}catch(_){}
+  const db=v12FixtureDb();
+  if(!src){
+    const hit=Object.entries(db?.team_logos||{}).find(([k])=>v12Norm(k)===v12Norm(name));
+    const v=hit?.[1];
+    src=typeof v==='string'?v:(v?.local||v?.source||'');
   }
-];
+  if(!src){
+    const p=V12_FIXTURE_LOGOS[String(name||'').toUpperCase()];
+    if(p)src=V12_TEAM_ASSET_BASE+p;
+  }
+  if(src)return '<img src="'+v12Esc(src)+'" alt="'+v12Esc(name)+'" class="v12-fixture-logo" loading="eager" decoding="async">';
+  const ab=String(name||'').split(/\s+/).filter(Boolean).map(x=>x[0]||'').join('').slice(0,3).toUpperCase();
+  return '<span class="v12-fixture-fallback">'+v12Esc(ab||'JR')+'</span>';
+}
+function v12FixtureModel(row,catId,catName){
+  const info=v12ParseFixtureDate(row?.[8]);
+  const hg=String(row?.[3]??''),ag=String(row?.[5]??''),played=/^\d+$/.test(hg)&&/^\d+$/.test(ag);
+  return {
+    id:'official-'+catId+'-'+String(row?.[0]||Math.random()),
+    home:String(row?.[2]||'Local'),
+    away:String(row?.[6]||'Visitante'),
+    venue:String(row?.[7]||'').trim()||'Campo por confirmar',
+    datetime:String(row?.[8]||''),
+    time:info?.time||'Por confirmar',
+    jornada:String(row?.[1]||'—'),
+    category:catName,
+    catId:String(catId),
+    dateLabel:v12DateLong(info),
+    played,
+    score:played?(hg+' - '+ag):''
+  };
+}
 function v12UpcomingRow(m){
-  const tm=String(m.datetime||'').match(/\s(\d{1,2}:\d{2})/);
-  return '<div class="v12-schedule-match v12-result-match v76-upcoming-match">'+
-    '<div class="v12-schedule-clubs"><div class="v12-result-team">'+v12FixtureLogo(m.home)+'<b>'+m.home+'</b></div>'+
-    '<div class="v12-result-team">'+v12FixtureLogo(m.away)+'<b>'+m.away+'</b></div></div>'+
-    '<div class="v12-schedule-meta"><time>'+(tm?tm[1]:'Por confirmar')+'</time><small class="v76-match-venue">'+m.venue+'</small><button data-match="'+m.id+'">Ver detalles</button></div></div>';
+  const primary=m.played?m.score:m.time;
+  return '<div class="v12-schedule-match v12-result-match v76-upcoming-match" data-v12-category="'+v12Esc(m.category)+'" data-v12-cat-id="'+v12Esc(m.catId)+'" data-v12-jornada="'+v12Esc(m.jornada)+'" data-v12-venue="'+v12Esc(m.venue)+'" data-v12-date-label="'+v12Esc(m.dateLabel)+'" data-v12-time="'+v12Esc(m.time)+'">'+
+    '<div class="v12-schedule-clubs"><div class="v12-result-team">'+v12FixtureLogo(m.home)+'<b>'+v12Esc(m.home)+'</b></div>'+
+    '<div class="v12-result-team">'+v12FixtureLogo(m.away)+'<b>'+v12Esc(m.away)+'</b></div></div>'+
+    '<div class="v12-schedule-meta"><time class="'+(m.played?'v12-score-time':'')+'">'+v12Esc(primary)+'</time><small class="v76-match-venue">'+v12Esc(m.venue)+'</small><button data-match="'+v12Esc(m.id)+'">Ver detalles</button></div></div>';
 }
 function v12FixturesMarkup(){
-  return '<section class="v12-fixtures-reference" data-v12-fixtures>'+
-    '<div class="v12-date-strip"><button class="active" data-v12-date="20">dom 20 sep</button><span class="v89-date-chip">Jornada 5</span><span class="v89-date-chip">Primera Fuerza</span></div>'+
-    '<h2 id="v12-day-20">domingo, 20 septiembre 2026</h2>'+
-    '<section class="v12-schedule-card"><h3>Jornada 5 · Primera Fuerza</h3><div>'+V12_OFFICIAL_UPCOMING.map(v12UpcomingRow).join('')+'</div></section>'+
+  const db=v12FixtureDb(),cats=v12FixtureCategories();
+  if(!db?.categories||!cats.length){
+    return '<section class="v12-fixtures-reference" data-v12-fixtures data-v12-version="'+V12_FIXTURE_BUILD+'"><div class="v12-fixture-loading">Cargando jornadas oficiales…</div></section>';
+  }
+  const catId=v12StoredCat(),cat=cats.find(c=>c.id===catId)||cats[0],groups=v12FixtureGroups(cat.id),selected=v12PickGroup(cat.id,groups);
+  const catStrip='<div class="v12-date-strip v12-category-strip">'+cats.map(c=>'<button class="'+(c.id===cat.id?'active':'')+'" data-v12-cat="'+v12Esc(c.id)+'">'+v12Esc(c.name)+'</button>').join('')+'</div>';
+  if(!selected){
+    return '<section class="v12-fixtures-reference" data-v12-fixtures data-v12-version="'+V12_FIXTURE_BUILD+'">'+catStrip+
+      '<p class="v12-fixture-rule">'+v12Esc(v12CategoryRule(cat.name))+'</p>'+
+      '<h2>'+v12Esc(cat.name)+'</h2><section class="v12-schedule-card"><h3>Calendario oficial</h3><div class="v12-fixture-empty">Todavía no hay jornadas oficiales publicadas para esta categoría en la fuente actual.</div></section></section>';
+  }
+  const weekStrip='<div class="v12-date-strip v12-week-strip">'+groups.map(g=>{
+    const jornada=[...new Set(g.rows.map(r=>String(r?.[1]||'—')))].join('/');
+    return '<button class="'+(g.key===selected.key?'active':'')+'" data-v12-date="'+v12Esc(g.key)+'"><span>'+v12Esc(v12DateShort(g.info))+'</span><small>Jornada '+v12Esc(jornada)+'</small></button>';
+  }).join('')+'</div>';
+  const jornadas=[...new Set(selected.rows.map(r=>String(r?.[1]||'—')))].join(' / ');
+  const games=selected.rows.map(r=>v12FixtureModel(r,cat.id,cat.name));
+  return '<section class="v12-fixtures-reference" data-v12-fixtures data-v12-version="'+V12_FIXTURE_BUILD+'">'+catStrip+
+    '<p class="v12-fixture-rule">'+v12Esc(v12CategoryRule(cat.name))+'</p>'+weekStrip+
+    '<h2 id="v12-day-'+v12Esc(selected.key)+'">'+v12Esc(v12DateLong(selected.info))+'</h2>'+
+    '<section class="v12-schedule-card"><h3>Jornada '+v12Esc(jornadas)+' · '+v12Esc(cat.name)+'</h3><div>'+games.map(v12UpcomingRow).join('')+'</div></section>'+
   '</section>';
 }
-function patchFixturesReference(){
-  if(v12Route()!=='competition') return;
+function v12RefreshFixtures(){
+  if(v12Route()!=='competition')return;
   const screen=document.querySelector('#screen'),tabs=screen?.querySelector('.tabs');
   if(!screen||!tabs)return;
   const active=tabs.querySelector('.tab.active');
   if(!active||!/Partidos/i.test(active.textContent||''))return;
-  if(screen.querySelector('[data-v12-fixtures]'))return;
+  const old=screen.querySelector('[data-v12-fixtures]');
+  if(old){old.outerHTML=v12FixturesMarkup();return}
   let node=tabs.nextSibling;while(node){const next=node.nextSibling;node.remove();node=next}
   tabs.insertAdjacentHTML('afterend',v12FixturesMarkup());
+}
+function patchFixturesReference(){
+  if(v12Route()!=='competition')return;
+  const screen=document.querySelector('#screen'),tabs=screen?.querySelector('.tabs');
+  if(!screen||!tabs)return;
+  const active=tabs.querySelector('.tab.active');
+  if(!active||!/Partidos/i.test(active.textContent||''))return;
+  const existing=screen.querySelector('[data-v12-fixtures]');
+  if(existing?.dataset.v12Version===V12_FIXTURE_BUILD)return;
+  v12RefreshFixtures();
+  v12LoadFixtureDb().then(()=>requestAnimationFrame(v12RefreshFixtures));
 }
 
 /* === PARTS25 — CUADRO / PLAY-OFF EXACTO DE REFERENCIA === */
@@ -700,11 +813,17 @@ document.addEventListener('click',e=>{
     }
     return;
   }
+  const catBtn=e.target.closest('[data-v12-cat]');
+  if(catBtn){
+    localStorage.setItem('v12-fixture-cat',catBtn.dataset.v12Cat||'3');
+    requestAnimationFrame(v12RefreshFixtures);
+    return;
+  }
   const dateBtn=e.target.closest('[data-v12-date]');
   if(dateBtn){
-    document.querySelectorAll('[data-v12-date]').forEach(b=>b.classList.toggle('active',b===dateBtn));
-    const id=dateBtn.dataset.v12Date==='14'?'v12-day-14':'v12-day-13';
-    document.getElementById(id)?.scrollIntoView({behavior:'smooth',block:'start'});
+    const cat=v12StoredCat();
+    localStorage.setItem('v12-fixture-date-'+cat,dateBtn.dataset.v12Date||'');
+    requestAnimationFrame(v12RefreshFixtures);
     return;
   }
   const route=e.target.closest('[data-v12-route]');
@@ -733,6 +852,8 @@ document.addEventListener('click',e=>{
     return;
   }
 },true);
+window.addEventListener('ljr:official-data',()=>{V12_FIXTURE_DB=v12LatestDb(V12_FIXTURE_DB,window.LJR_OFFICIAL_DATA||null);requestAnimationFrame(v12RefreshFixtures)});
+v12LoadFixtureDb().then(()=>requestAnimationFrame(v12RefreshFixtures));
 window.addEventListener('hashchange',()=>requestAnimationFrame(patch));
 const obs=new MutationObserver(()=>requestAnimationFrame(patch));
 const target=document.querySelector('#screen');
