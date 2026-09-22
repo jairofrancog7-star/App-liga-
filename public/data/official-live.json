@@ -1,7 +1,7 @@
 {
   "schema": 1,
   "source": "https://juventinorosasliga.com/",
-  "captured_at_utc": "2026-09-20T05:21:48Z",
+  "captured_at_utc": "2026-09-22T01:49:23Z",
   "mode": "fast",
   "categories": {
     "1": {
@@ -1566,6 +1566,7 @@
       "cedulas": [
         {
           "id": 1,
+          "url": "https://www.juventinorosasliga.com/cedula-arbitral/1/",
           "title": "Cédula Arbitral - TOROS DE CUENDA (Veteranos 50+) vs BOCA JRS (Veteranos 50+)",
           "local": "TOROS DE CUENDA",
           "away": "BOCA JRS",
@@ -1573,6 +1574,7 @@
         },
         {
           "id": 2,
+          "url": "https://www.juventinorosasliga.com/cedula-arbitral/2/",
           "title": "Cédula Arbitral - MANCHESTER (Veteranos 50+) vs BOAVISTA (Veteranos 50+)",
           "local": "MANCHESTER",
           "away": "BOAVISTA",
@@ -1580,6 +1582,7 @@
         },
         {
           "id": 3,
+          "url": "https://www.juventinorosasliga.com/cedula-arbitral/3/",
           "title": "Cédula Arbitral - DYNAMO (Veteranos 50+) vs LA ESPERANZA (Veteranos 50+)",
           "local": "DYNAMO",
           "away": "LA ESPERANZA",
@@ -1587,6 +1590,7 @@
         },
         {
           "id": 4,
+          "url": "https://www.juventinorosasliga.com/cedula-arbitral/4/",
           "title": "Cédula Arbitral - BOCA JRS (Veteranos 50+) vs MANCHESTER (Veteranos 50+)",
           "local": "BOCA JRS",
           "away": "MANCHESTER",
@@ -1594,6 +1598,7 @@
         },
         {
           "id": 5,
+          "url": "https://www.juventinorosasliga.com/cedula-arbitral/5/",
           "title": "Cédula Arbitral - BOAVISTA (Veteranos 50+) vs DYNAMO (Veteranos 50+)",
           "local": "BOAVISTA",
           "away": "DYNAMO",
@@ -1601,6 +1606,7 @@
         },
         {
           "id": 6,
+          "url": "https://www.juventinorosasliga.com/cedula-arbitral/6/",
           "title": "Cédula Arbitral - LA ESPERANZA (Veteranos 50+) vs TOROS DE CUENDA (Veteranos 50+)",
           "local": "LA ESPERANZA",
           "away": "TOROS DE CUENDA",
@@ -1608,6 +1614,7 @@
         },
         {
           "id": 7,
+          "url": "https://www.juventinorosasliga.com/cedula-arbitral/7/",
           "title": "Cédula Arbitral - DYNAMO (Veteranos 50+) vs TOROS DE CUENDA (Veteranos 50+)",
           "local": "DYNAMO",
           "away": "TOROS DE CUENDA",
@@ -1615,6 +1622,7 @@
         },
         {
           "id": 8,
+          "url": "https://www.juventinorosasliga.com/cedula-arbitral/8/",
           "title": "Cédula Arbitral - MANCHESTER (Veteranos 50+) vs LA ESPERANZA (Veteranos 50+)",
           "local": "MANCHESTER",
           "away": "LA ESPERANZA",
@@ -1622,6 +1630,7 @@
         },
         {
           "id": 9,
+          "url": "https://www.juventinorosasliga.com/cedula-arbitral/9/",
           "title": "Cédula Arbitral - BOCA JRS (Veteranos 50+) vs BOAVISTA (Veteranos 50+)",
           "local": "BOCA JRS",
           "away": "BOAVISTA",
@@ -1629,6 +1638,7 @@
         },
         {
           "id": 10,
+          "url": "https://www.juventinorosasliga.com/cedula-arbitral/10/",
           "title": "Cédula Arbitral - BOAVISTA (Veteranos 50+) vs LA ESPERANZA (Veteranos 50+)",
           "local": "BOAVISTA",
           "away": "LA ESPERANZA",
@@ -1636,6 +1646,7 @@
         },
         {
           "id": 11,
+          "url": "https://www.juventinorosasliga.com/cedula-arbitral/11/",
           "title": "Cédula Arbitral - TOROS DE CUENDA (Veteranos 50+) vs MANCHESTER (Veteranos 50+)",
           "local": "TOROS DE CUENDA",
           "away": "MANCHESTER",
@@ -1643,6 +1654,7 @@
         },
         {
           "id": 12,
+          "url": "https://www.juventinorosasliga.com/cedula-arbitral/12/",
           "title": "Cédula Arbitral - DYNAMO (Veteranos 50+) vs BOCA JRS (Veteranos 50+)",
           "local": "DYNAMO",
           "away": "BOCA JRS",
@@ -1650,6 +1662,7 @@
         },
         {
           "id": 13,
+          "url": "https://www.juventinorosasliga.com/cedula-arbitral/13/",
           "title": "Cédula Arbitral - TOROS DE CUENDA (Veteranos 50+) vs BOAVISTA (Veteranos 50+)",
           "local": "TOROS DE CUENDA",
           "away": "BOAVISTA",
@@ -1657,6 +1670,7 @@
         },
         {
           "id": 14,
+          "url": "https://www.juventinorosasliga.com/cedula-arbitral/14/",
           "title": "Cédula Arbitral - MANCHESTER (Veteranos 50+) vs DYNAMO (Veteranos 50+)",
           "local": "MANCHESTER",
           "away": "DYNAMO",
@@ -1664,6 +1678,7 @@
         },
         {
           "id": 15,
+          "url": "https://www.juventinorosasliga.com/cedula-arbitral/15/",
           "title": "Cédula Arbitral - BOCA JRS (Veteranos 50+) vs LA ESPERANZA (Veteranos 50+)",
           "local": "BOCA JRS",
           "away": "LA ESPERANZA",
@@ -2735,7 +2750,6 @@
           "Jose Antonio Aguilar Cano",
           "Erick Lopez Ramirez",
           "Harol Lenier Romana Mosqueda",
-          "Jonatan Gabriel Maidana",
           "Edgar Eduardo Garcia Castro",
           "Alejandro Moreno Banda",
           "Victor Hugo Perez Ramirez",
@@ -2751,6 +2765,7 @@
           "CRISTIAN IVAN VARGAS RODRIGUEZ",
           "Jesus Ernesto Negrete Aguilar",
           "Jose de Jesus Valenzuela Aboytes",
+          "Jonatan Gabriel Maidana",
           "Mario Razo Miranda"
         ],
         "NAPOLI": [
@@ -2819,35 +2834,35 @@
         ],
         "LINCES": [
           "JORGE LUIS ALMAGUER RUIZ",
-          "FRANCISCO MANUEL NUNEZ RAMIREZ",
-          "OSCAR YANEZ RAZO",
-          "FELIPE DE JESUS LEON PRESA",
+          "FRANCISCO MANUEL NUÑEZ RAMIREZ",
           "LEOPOLDO ONITSED SALDIVAR FLORES",
-          "EMILIO GONZALEZ ZERON",
           "BRYAN JOSE GONZALEZ MORENO",
           "MAURICIO VILLAGOMEZ MANCERA",
-          "ISRAEL SOLORZANO LINARES",
           "GIOVANI DE JESUS NEGRETE RUIZ",
           "MIGUEL ANGEL RAMIREZ LUNA",
           "GIOVANNI LEDEZMA ORNELAS",
           "JOSE ALEXIS DELGADO REYES",
           "MAXIMILIANO RIVERA HERNANDEZ",
-          "ANDFRES AGUILLON TIERRABLANCA",
-          "ANDRE JOSUE ALVAREZ PIZANO",
+          "ANDRES AGUILLON TIERRABLANCA",
           "JAVIER GONZALEZ LOPEZ",
-          "ERNESTO BALTAZAR SOSA ARREDONDO",
           "OMAR HERNANDEZ BARRIOS",
           "MOISES GONZALEZ MADO",
-          "ANGES DE JESUS PIZANO TORRES",
+          "ANGEL DE JESUS PIZANO TORRES",
           "DIEGO ABOYTES ESPEJEL",
           "LUIS ALONSO FLORES SANCHEZ",
           "ADRIAN VALADEZ RANGEL",
-          "JUAN FRANCISCO YANEZ RAZO",
-          "ANDRES SOLORZANO NORIA",
           "SALVADOR JUNIOR BENITEZ LEON",
           "EMILIO TADEO ROSAS RESENDIZ",
+          "SERGIO JASSO POMPA",
+          "EMILIO GONZALEZ ZERON",
+          "ISRAEL SOLORZANO LINARES",
+          "FELIPE DE JESUS LEON PRESA",
+          "ANDRE JOSUE ALVAREZ PIZANO",
+          "ANDRES SOLORZANO NORIA",
+          "OSCAR YAÑEZ RAZO",
+          "JUAN FRANCISCO YAÑEZ RAZO",
           "MIGUEL DE JESUS ABOYTES GONZALEZ",
-          "SERGIO JASSO POMPA"
+          "ERNESTO BALTAZAR SOSA ARREDONDO"
         ],
         "ABEJAS": [
           "Javier Lara Valencia",
@@ -3213,11 +3228,6 @@
           "team": "HERMANOS",
           "cedulas": 3
         },
-        "JONATAN GABRIEL MAIDANA": {
-          "name": "Jonatan Gabriel Maidana",
-          "team": "HERMANOS",
-          "cedulas": 3
-        },
         "EDGAR EDUARDO GARCIA CASTRO": {
           "name": "Edgar Eduardo Garcia Castro",
           "team": "HERMANOS",
@@ -3290,6 +3300,11 @@
         },
         "JOSE DE JESUS VALENZUELA ABOYTES": {
           "name": "Jose de Jesus Valenzuela Aboytes",
+          "team": "HERMANOS",
+          "cedulas": 3
+        },
+        "JONATAN GABRIEL MAIDANA": {
+          "name": "Jonatan Gabriel Maidana",
           "team": "HERMANOS",
           "cedulas": 3
         },
@@ -3604,27 +3619,12 @@
           "cedulas": 3
         },
         "FRANCISCO MANUEL NUNEZ RAMIREZ": {
-          "name": "FRANCISCO MANUEL NUNEZ RAMIREZ",
-          "team": "LINCES",
-          "cedulas": 3
-        },
-        "OSCAR YANEZ RAZO": {
-          "name": "OSCAR YANEZ RAZO",
-          "team": "LINCES",
-          "cedulas": 3
-        },
-        "FELIPE DE JESUS LEON PRESA": {
-          "name": "FELIPE DE JESUS LEON PRESA",
+          "name": "FRANCISCO MANUEL NUÑEZ RAMIREZ",
           "team": "LINCES",
           "cedulas": 3
         },
         "LEOPOLDO ONITSED SALDIVAR FLORES": {
           "name": "LEOPOLDO ONITSED SALDIVAR FLORES",
-          "team": "LINCES",
-          "cedulas": 3
-        },
-        "EMILIO GONZALEZ ZERON": {
-          "name": "EMILIO GONZALEZ ZERON",
           "team": "LINCES",
           "cedulas": 3
         },
@@ -3635,11 +3635,6 @@
         },
         "MAURICIO VILLAGOMEZ MANCERA": {
           "name": "MAURICIO VILLAGOMEZ MANCERA",
-          "team": "LINCES",
-          "cedulas": 3
-        },
-        "ISRAEL SOLORZANO LINARES": {
-          "name": "ISRAEL SOLORZANO LINARES",
           "team": "LINCES",
           "cedulas": 3
         },
@@ -3668,23 +3663,13 @@
           "team": "LINCES",
           "cedulas": 3
         },
-        "ANDFRES AGUILLON TIERRABLANCA": {
-          "name": "ANDFRES AGUILLON TIERRABLANCA",
-          "team": "LINCES",
-          "cedulas": 3
-        },
-        "ANDRE JOSUE ALVAREZ PIZANO": {
-          "name": "ANDRE JOSUE ALVAREZ PIZANO",
+        "ANDRES AGUILLON TIERRABLANCA": {
+          "name": "ANDRES AGUILLON TIERRABLANCA",
           "team": "LINCES",
           "cedulas": 3
         },
         "JAVIER GONZALEZ LOPEZ": {
           "name": "JAVIER GONZALEZ LOPEZ",
-          "team": "LINCES",
-          "cedulas": 3
-        },
-        "ERNESTO BALTAZAR SOSA ARREDONDO": {
-          "name": "ERNESTO BALTAZAR SOSA ARREDONDO",
           "team": "LINCES",
           "cedulas": 3
         },
@@ -3698,8 +3683,8 @@
           "team": "LINCES",
           "cedulas": 3
         },
-        "ANGES DE JESUS PIZANO TORRES": {
-          "name": "ANGES DE JESUS PIZANO TORRES",
+        "ANGEL DE JESUS PIZANO TORRES": {
+          "name": "ANGEL DE JESUS PIZANO TORRES",
           "team": "LINCES",
           "cedulas": 3
         },
@@ -3718,16 +3703,6 @@
           "team": "LINCES",
           "cedulas": 3
         },
-        "JUAN FRANCISCO YANEZ RAZO": {
-          "name": "JUAN FRANCISCO YANEZ RAZO",
-          "team": "LINCES",
-          "cedulas": 3
-        },
-        "ANDRES SOLORZANO NORIA": {
-          "name": "ANDRES SOLORZANO NORIA",
-          "team": "LINCES",
-          "cedulas": 3
-        },
         "SALVADOR JUNIOR BENITEZ LEON": {
           "name": "SALVADOR JUNIOR BENITEZ LEON",
           "team": "LINCES",
@@ -3738,13 +3713,53 @@
           "team": "LINCES",
           "cedulas": 3
         },
+        "SERGIO JASSO POMPA": {
+          "name": "SERGIO JASSO POMPA",
+          "team": "LINCES",
+          "cedulas": 3
+        },
+        "EMILIO GONZALEZ ZERON": {
+          "name": "EMILIO GONZALEZ ZERON",
+          "team": "LINCES",
+          "cedulas": 3
+        },
+        "ISRAEL SOLORZANO LINARES": {
+          "name": "ISRAEL SOLORZANO LINARES",
+          "team": "LINCES",
+          "cedulas": 3
+        },
+        "FELIPE DE JESUS LEON PRESA": {
+          "name": "FELIPE DE JESUS LEON PRESA",
+          "team": "LINCES",
+          "cedulas": 3
+        },
+        "ANDRE JOSUE ALVAREZ PIZANO": {
+          "name": "ANDRE JOSUE ALVAREZ PIZANO",
+          "team": "LINCES",
+          "cedulas": 3
+        },
+        "ANDRES SOLORZANO NORIA": {
+          "name": "ANDRES SOLORZANO NORIA",
+          "team": "LINCES",
+          "cedulas": 3
+        },
+        "OSCAR YANEZ RAZO": {
+          "name": "OSCAR YAÑEZ RAZO",
+          "team": "LINCES",
+          "cedulas": 3
+        },
+        "JUAN FRANCISCO YANEZ RAZO": {
+          "name": "JUAN FRANCISCO YAÑEZ RAZO",
+          "team": "LINCES",
+          "cedulas": 3
+        },
         "MIGUEL DE JESUS ABOYTES GONZALEZ": {
           "name": "MIGUEL DE JESUS ABOYTES GONZALEZ",
           "team": "LINCES",
           "cedulas": 3
         },
-        "SERGIO JASSO POMPA": {
-          "name": "SERGIO JASSO POMPA",
+        "ERNESTO BALTAZAR SOSA ARREDONDO": {
+          "name": "ERNESTO BALTAZAR SOSA ARREDONDO",
           "team": "LINCES",
           "cedulas": 3
         },
@@ -4462,6 +4477,7 @@
       "cedulas": [
         {
           "id": 76,
+          "url": "https://www.juventinorosasliga.com/cedula-arbitral/76/",
           "title": "Cédula Arbitral - FRANCO FC (Primera Fuerza) vs HERMANOS (Primera Fuerza)",
           "local": "FRANCO FC",
           "away": "HERMANOS",
@@ -4469,6 +4485,7 @@
         },
         {
           "id": 77,
+          "url": "https://www.juventinorosasliga.com/cedula-arbitral/77/",
           "title": "Cédula Arbitral - NAPOLI (Primera Fuerza) vs HERRERAS FC (Primera Fuerza)",
           "local": "NAPOLI",
           "away": "HERRERAS FC",
@@ -4476,6 +4493,7 @@
         },
         {
           "id": 78,
+          "url": "https://www.juventinorosasliga.com/cedula-arbitral/78/",
           "title": "Cédula Arbitral - LINCES (Primera Fuerza) vs ABEJAS (Primera Fuerza)",
           "local": "LINCES",
           "away": "ABEJAS",
@@ -4483,6 +4501,7 @@
         },
         {
           "id": 79,
+          "url": "https://www.juventinorosasliga.com/cedula-arbitral/79/",
           "title": "Cédula Arbitral - LOBOS CDG (Primera Fuerza) vs JUVENTUS (Primera Fuerza)",
           "local": "LOBOS CDG",
           "away": "JUVENTUS",
@@ -4490,6 +4509,7 @@
         },
         {
           "id": 80,
+          "url": "https://www.juventinorosasliga.com/cedula-arbitral/80/",
           "title": "Cédula Arbitral - GALACTICOS (Primera Fuerza) vs SAN JOSE FC (Primera Fuerza)",
           "local": "GALACTICOS",
           "away": "SAN JOSE FC",
@@ -4497,6 +4517,7 @@
         },
         {
           "id": 81,
+          "url": "https://www.juventinorosasliga.com/cedula-arbitral/81/",
           "title": "Cédula Arbitral - LOBOS CDG (Primera Fuerza) vs SAN JOSE FC (Primera Fuerza)",
           "local": "LOBOS CDG",
           "away": "SAN JOSE FC",
@@ -4504,6 +4525,7 @@
         },
         {
           "id": 82,
+          "url": "https://www.juventinorosasliga.com/cedula-arbitral/82/",
           "title": "Cédula Arbitral - HERRERAS FC (Primera Fuerza) vs TERRICOLAS (Primera Fuerza)",
           "local": "HERRERAS FC",
           "away": "TERRICOLAS",
@@ -4511,6 +4533,7 @@
         },
         {
           "id": 83,
+          "url": "https://www.juventinorosasliga.com/cedula-arbitral/83/",
           "title": "Cédula Arbitral - FRANCO FC (Primera Fuerza) vs LINCES (Primera Fuerza)",
           "local": "FRANCO FC",
           "away": "LINCES",
@@ -4518,6 +4541,7 @@
         },
         {
           "id": 84,
+          "url": "https://www.juventinorosasliga.com/cedula-arbitral/84/",
           "title": "Cédula Arbitral - JUVENTUS (Primera Fuerza) vs NAPOLI (Primera Fuerza)",
           "local": "JUVENTUS",
           "away": "NAPOLI",
@@ -4525,6 +4549,7 @@
         },
         {
           "id": 85,
+          "url": "https://www.juventinorosasliga.com/cedula-arbitral/85/",
           "title": "Cédula Arbitral - ABEJAS (Primera Fuerza) vs GALACTICOS (Primera Fuerza)",
           "local": "ABEJAS",
           "away": "GALACTICOS",
@@ -4532,6 +4557,7 @@
         },
         {
           "id": 86,
+          "url": "https://www.juventinorosasliga.com/cedula-arbitral/86/",
           "title": "Cédula Arbitral - HERMANOS (Primera Fuerza) vs HERRERAS FC (Primera Fuerza)",
           "local": "HERMANOS",
           "away": "HERRERAS FC",
@@ -4539,6 +4565,7 @@
         },
         {
           "id": 87,
+          "url": "https://www.juventinorosasliga.com/cedula-arbitral/87/",
           "title": "Cédula Arbitral - NAPOLI (Primera Fuerza) vs SAN JOSE FC (Primera Fuerza)",
           "local": "NAPOLI",
           "away": "SAN JOSE FC",
@@ -4546,6 +4573,7 @@
         },
         {
           "id": 88,
+          "url": "https://www.juventinorosasliga.com/cedula-arbitral/88/",
           "title": "Cédula Arbitral - ABEJAS (Primera Fuerza) vs FRANCO FC (Primera Fuerza)",
           "local": "ABEJAS",
           "away": "FRANCO FC",
@@ -4553,6 +4581,7 @@
         },
         {
           "id": 89,
+          "url": "https://www.juventinorosasliga.com/cedula-arbitral/89/",
           "title": "Cédula Arbitral - TERRICOLAS (Primera Fuerza) vs JUVENTUS (Primera Fuerza)",
           "local": "TERRICOLAS",
           "away": "JUVENTUS",
@@ -4560,6 +4589,7 @@
         },
         {
           "id": 90,
+          "url": "https://www.juventinorosasliga.com/cedula-arbitral/90/",
           "title": "Cédula Arbitral - LOBOS CDG (Primera Fuerza) vs GALACTICOS (Primera Fuerza)",
           "local": "LOBOS CDG",
           "away": "GALACTICOS",
@@ -4567,6 +4597,7 @@
         },
         {
           "id": 91,
+          "url": "https://www.juventinorosasliga.com/cedula-arbitral/91/",
           "title": "Cédula Arbitral - ABEJAS (Primera Fuerza) vs LOBOS CDG (Primera Fuerza)",
           "local": "ABEJAS",
           "away": "LOBOS CDG",
@@ -4574,6 +4605,7 @@
         },
         {
           "id": 92,
+          "url": "https://www.juventinorosasliga.com/cedula-arbitral/92/",
           "title": "Cédula Arbitral - GALACTICOS (Primera Fuerza) vs NAPOLI (Primera Fuerza)",
           "local": "GALACTICOS",
           "away": "NAPOLI",
@@ -4581,6 +4613,7 @@
         },
         {
           "id": 93,
+          "url": "https://www.juventinorosasliga.com/cedula-arbitral/93/",
           "title": "Cédula Arbitral - HERRERAS FC (Primera Fuerza) vs LINCES (Primera Fuerza)",
           "local": "HERRERAS FC",
           "away": "LINCES",
@@ -4588,6 +4621,7 @@
         },
         {
           "id": 94,
+          "url": "https://www.juventinorosasliga.com/cedula-arbitral/94/",
           "title": "Cédula Arbitral - JUVENTUS (Primera Fuerza) vs HERMANOS (Primera Fuerza)",
           "local": "JUVENTUS",
           "away": "HERMANOS",
@@ -4595,6 +4629,7 @@
         },
         {
           "id": 95,
+          "url": "https://www.juventinorosasliga.com/cedula-arbitral/95/",
           "title": "Cédula Arbitral - SAN JOSE FC (Primera Fuerza) vs TERRICOLAS (Primera Fuerza)",
           "local": "SAN JOSE FC",
           "away": "TERRICOLAS",
@@ -6084,7 +6119,6 @@
         "CELTICOS": [
           "Arturo Lopez Sierra",
           "Kevin Gustavo Ojeda Ortega",
-          "Gustavo Adolfo Garibay Vera",
           "Javier Lopez Armenta",
           "Jesus Leonardo Aparicio Rodriguez",
           "Santiago Alfaro Ramirez",
@@ -6100,7 +6134,6 @@
           "Juan Martin Mendoza Olivares",
           "Josue Uriel Lopez Apaseo",
           "Jonathan David Calderon Lopez",
-          "Angel Daniel Torres Perez",
           "Luis Humberto Ramirez Guzman",
           "Juan Jesus Ojeda Ortega",
           "Jose Guadalupe Flores Peñaloza",
@@ -6111,6 +6144,8 @@
           "Sergio Ojeda Campos",
           "Juan Jesus Rangel Ojodeagua",
           "Ismael Juarez Aldavera",
+          "Angel Daniel Torres Perez",
+          "Gustavo Adolfo Garibay Vera",
           "Ismael Juarez Aldavera S"
         ],
         "SAN JOSE JRS": [
@@ -6205,7 +6240,7 @@
           "Emmanuel Barrientos Arredondo",
           "Edwin Emmanuel Torres Mendiola",
           "Andy Aaron Arredondo Vazquez",
-          "Jose Mnauel Coyote Yañez",
+          "Jose Manuel Coyote Yañez",
           "Juan Diego Tovar Delgado",
           "Emmanuel Guzman Gasca",
           "Jose Juan Perez Ortega",
@@ -6218,7 +6253,12 @@
           "Jonathan Trinidad Guzman Gasca",
           "Pedro Dongu",
           "Juventino Rico Gutierrez",
-          "Ivan Montoya Enriquez"
+          "Ivan Montoya Enriquez",
+          "SANTOS ALFREDO TOVAR GUZMAN",
+          "BENJAMIN FIGUEROA ARELLANO",
+          "MIGUEL DARIO GARCIA RODRIGUEZ",
+          "LEONEL GARCIA ROMERO",
+          "REY DAVID RODRIGUEZ AGUILAR"
         ],
         "PACHANGAS FC": [
           "Jesus Guillermo Segura Sanchez",
@@ -6240,7 +6280,11 @@
           "Luis Rodriguez Perez",
           "Luis Julian Negrete Cervantes",
           "Julio Cesar Badillo Hernandez",
-          "Jose Antonio Lopez Diaz"
+          "Jose Antonio Lopez Diaz",
+          "JOSE FRANCISCO FRANCO LANDIN",
+          "BRYAN AARON LOPEZ TORRES",
+          "ANGEL JESUS LOPEZ CABELLO",
+          "JESUS TAPIA RODRIGUEZ"
         ],
         "SAN ANTONIO FC": [
           "Alexander Ariza Zermeño",
@@ -6297,9 +6341,10 @@
           "EDGARDO RIVERA BELMAN",
           "JOB CRUZ CENTENO GONZALEZ",
           "Francisco Javier Avila Huerta",
-          "Moises Gudalupe Arce Gutierrez",
           "Jose Luis Aguilar Solorzano",
-          "Jose Lara Flores"
+          "Jose Lara Flores",
+          "JOSE EMMANUEL MARTINEZ MENDOZA",
+          "Moises Gudalupe Arce Gutierrez"
         ]
       },
       "player_usage": {
@@ -6853,11 +6898,6 @@
           "team": "CELTICOS",
           "cedulas": 4
         },
-        "GUSTAVO ADOLFO GARIBAY VERA": {
-          "name": "Gustavo Adolfo Garibay Vera",
-          "team": "CELTICOS",
-          "cedulas": 4
-        },
         "JAVIER LOPEZ ARMENTA": {
           "name": "Javier Lopez Armenta",
           "team": "CELTICOS",
@@ -6933,11 +6973,6 @@
           "team": "CELTICOS",
           "cedulas": 4
         },
-        "ANGEL DANIEL TORRES PEREZ": {
-          "name": "Angel Daniel Torres Perez",
-          "team": "CELTICOS",
-          "cedulas": 4
-        },
         "LUIS HUMBERTO RAMIREZ GUZMAN": {
           "name": "Luis Humberto Ramirez Guzman",
           "team": "CELTICOS",
@@ -6987,6 +7022,16 @@
           "name": "Ismael Juarez Aldavera",
           "team": "CELTICOS",
           "cedulas": 3
+        },
+        "ANGEL DANIEL TORRES PEREZ": {
+          "name": "Angel Daniel Torres Perez",
+          "team": "CELTICOS",
+          "cedulas": 4
+        },
+        "GUSTAVO ADOLFO GARIBAY VERA": {
+          "name": "Gustavo Adolfo Garibay Vera",
+          "team": "CELTICOS",
+          "cedulas": 4
         },
         "ANTONIO RAMIREZ ALBERTO": {
           "name": "Antonio Ramirez Alberto",
@@ -7413,8 +7458,8 @@
           "team": "DEP. LA LUZ",
           "cedulas": 4
         },
-        "JOSE MNAUEL COYOTE YANEZ": {
-          "name": "Jose Mnauel Coyote Yañez",
+        "JOSE MANUEL COYOTE YANEZ": {
+          "name": "Jose Manuel Coyote Yañez",
           "team": "DEP. LA LUZ",
           "cedulas": 4
         },
@@ -7480,6 +7525,31 @@
         },
         "IVAN MONTOYA ENRIQUEZ": {
           "name": "Ivan Montoya Enriquez",
+          "team": "DEP. LA LUZ",
+          "cedulas": 4
+        },
+        "SANTOS ALFREDO TOVAR GUZMAN": {
+          "name": "SANTOS ALFREDO TOVAR GUZMAN",
+          "team": "DEP. LA LUZ",
+          "cedulas": 4
+        },
+        "BENJAMIN FIGUEROA ARELLANO": {
+          "name": "BENJAMIN FIGUEROA ARELLANO",
+          "team": "DEP. LA LUZ",
+          "cedulas": 4
+        },
+        "MIGUEL DARIO GARCIA RODRIGUEZ": {
+          "name": "MIGUEL DARIO GARCIA RODRIGUEZ",
+          "team": "DEP. LA LUZ",
+          "cedulas": 4
+        },
+        "LEONEL GARCIA ROMERO": {
+          "name": "LEONEL GARCIA ROMERO",
+          "team": "DEP. LA LUZ",
+          "cedulas": 4
+        },
+        "REY DAVID RODRIGUEZ AGUILAR": {
+          "name": "REY DAVID RODRIGUEZ AGUILAR",
           "team": "DEP. LA LUZ",
           "cedulas": 4
         },
@@ -7580,6 +7650,26 @@
         },
         "JOSE ANTONIO LOPEZ DIAZ": {
           "name": "Jose Antonio Lopez Diaz",
+          "team": "PACHANGAS FC",
+          "cedulas": 4
+        },
+        "JOSE FRANCISCO FRANCO LANDIN": {
+          "name": "JOSE FRANCISCO FRANCO LANDIN",
+          "team": "PACHANGAS FC",
+          "cedulas": 4
+        },
+        "BRYAN AARON LOPEZ TORRES": {
+          "name": "BRYAN AARON LOPEZ TORRES",
+          "team": "PACHANGAS FC",
+          "cedulas": 4
+        },
+        "ANGEL JESUS LOPEZ CABELLO": {
+          "name": "ANGEL JESUS LOPEZ CABELLO",
+          "team": "PACHANGAS FC",
+          "cedulas": 4
+        },
+        "JESUS TAPIA RODRIGUEZ": {
+          "name": "JESUS TAPIA RODRIGUEZ",
           "team": "PACHANGAS FC",
           "cedulas": 4
         },
@@ -7843,11 +7933,6 @@
           "team": "TAVERA FC",
           "cedulas": 3
         },
-        "MOISES GUDALUPE ARCE GUTIERREZ": {
-          "name": "Moises Gudalupe Arce Gutierrez",
-          "team": "TAVERA FC",
-          "cedulas": 3
-        },
         "JOSE LUIS AGUILAR SOLORZANO": {
           "name": "Jose Luis Aguilar Solorzano",
           "team": "TAVERA FC",
@@ -7855,6 +7940,16 @@
         },
         "JOSE LARA FLORES": {
           "name": "Jose Lara Flores",
+          "team": "TAVERA FC",
+          "cedulas": 3
+        },
+        "JOSE EMMANUEL MARTINEZ MENDOZA": {
+          "name": "JOSE EMMANUEL MARTINEZ MENDOZA",
+          "team": "TAVERA FC",
+          "cedulas": 3
+        },
+        "MOISES GUDALUPE ARCE GUTIERREZ": {
+          "name": "Moises Gudalupe Arce Gutierrez",
           "team": "TAVERA FC",
           "cedulas": 3
         },
@@ -7867,6 +7962,7 @@
       "cedulas": [
         {
           "id": 365,
+          "url": "https://www.juventinorosasliga.com/cedula-arbitral/365/",
           "title": "Cédula Arbitral - DEP. ZAPATA (Segunda Fuerza) vs SAN JULIAN (Segunda Fuerza)",
           "local": "DEP. ZAPATA",
           "away": "SAN JULIAN",
@@ -7874,6 +7970,7 @@
         },
         {
           "id": 366,
+          "url": "https://www.juventinorosasliga.com/cedula-arbitral/366/",
           "title": "Cédula Arbitral - BARZA (Segunda Fuerza) vs SAN JUAN FC (Segunda Fuerza)",
           "local": "BARZA",
           "away": "SAN JUAN FC",
@@ -7881,6 +7978,7 @@
         },
         {
           "id": 367,
+          "url": "https://www.juventinorosasliga.com/cedula-arbitral/367/",
           "title": "Cédula Arbitral - CELTICOS (Segunda Fuerza) vs SAN JOSE JRS (Segunda Fuerza)",
           "local": "CELTICOS",
           "away": "SAN JOSE JRS",
@@ -7888,6 +7986,7 @@
         },
         {
           "id": 368,
+          "url": "https://www.juventinorosasliga.com/cedula-arbitral/368/",
           "title": "Cédula Arbitral - DEP. NOPALERO (Segunda Fuerza) vs TAPATIO (Segunda Fuerza)",
           "local": "DEP. NOPALERO",
           "away": "TAPATIO",
@@ -7895,6 +7994,7 @@
         },
         {
           "id": 370,
+          "url": "https://www.juventinorosasliga.com/cedula-arbitral/370/",
           "title": "Cédula Arbitral - DEP. LA LUZ (Segunda Fuerza) vs PACHANGAS FC (Segunda Fuerza)",
           "local": "DEP. LA LUZ",
           "away": "PACHANGAS FC",
@@ -7902,6 +8002,7 @@
         },
         {
           "id": 371,
+          "url": "https://www.juventinorosasliga.com/cedula-arbitral/371/",
           "title": "Cédula Arbitral - PACHANGAS FC (Segunda Fuerza) vs CELTICOS (Segunda Fuerza)",
           "local": "PACHANGAS FC",
           "away": "CELTICOS",
@@ -7909,6 +8010,7 @@
         },
         {
           "id": 372,
+          "url": "https://www.juventinorosasliga.com/cedula-arbitral/372/",
           "title": "Cédula Arbitral - SAN JOSE JRS (Segunda Fuerza) vs DEP. ZAPATA (Segunda Fuerza)",
           "local": "SAN JOSE JRS",
           "away": "DEP. ZAPATA",
@@ -7916,6 +8018,7 @@
         },
         {
           "id": 373,
+          "url": "https://www.juventinorosasliga.com/cedula-arbitral/373/",
           "title": "Cédula Arbitral - SAN JULIAN (Segunda Fuerza) vs DEP. NOPALERO (Segunda Fuerza)",
           "local": "SAN JULIAN",
           "away": "DEP. NOPALERO",
@@ -7923,6 +8026,7 @@
         },
         {
           "id": 374,
+          "url": "https://www.juventinorosasliga.com/cedula-arbitral/374/",
           "title": "Cédula Arbitral - TAPATIO (Segunda Fuerza) vs SAN ANTONIO FC (Segunda Fuerza)",
           "local": "TAPATIO",
           "away": "SAN ANTONIO FC",
@@ -7930,6 +8034,7 @@
         },
         {
           "id": 375,
+          "url": "https://www.juventinorosasliga.com/cedula-arbitral/375/",
           "title": "Cédula Arbitral - TAVERA FC (Segunda Fuerza) vs BARZA (Segunda Fuerza)",
           "local": "TAVERA FC",
           "away": "BARZA",
@@ -7937,6 +8042,7 @@
         },
         {
           "id": 376,
+          "url": "https://www.juventinorosasliga.com/cedula-arbitral/376/",
           "title": "Cédula Arbitral - DEP. LA LUZ (Segunda Fuerza) vs SAN JUAN FC (Segunda Fuerza)",
           "local": "DEP. LA LUZ",
           "away": "SAN JUAN FC",
@@ -7944,6 +8050,7 @@
         },
         {
           "id": 377,
+          "url": "https://www.juventinorosasliga.com/cedula-arbitral/377/",
           "title": "Cédula Arbitral - SAN JUAN FC (Segunda Fuerza) vs PACHANGAS FC (Segunda Fuerza)",
           "local": "SAN JUAN FC",
           "away": "PACHANGAS FC",
@@ -7951,6 +8058,7 @@
         },
         {
           "id": 378,
+          "url": "https://www.juventinorosasliga.com/cedula-arbitral/378/",
           "title": "Cédula Arbitral - DEP. LA LUZ (Segunda Fuerza) vs TAVERA FC (Segunda Fuerza)",
           "local": "DEP. LA LUZ",
           "away": "TAVERA FC",
@@ -7958,6 +8066,7 @@
         },
         {
           "id": 379,
+          "url": "https://www.juventinorosasliga.com/cedula-arbitral/379/",
           "title": "Cédula Arbitral - BARZA (Segunda Fuerza) vs TAPATIO (Segunda Fuerza)",
           "local": "BARZA",
           "away": "TAPATIO",
@@ -7965,6 +8074,7 @@
         },
         {
           "id": 380,
+          "url": "https://www.juventinorosasliga.com/cedula-arbitral/380/",
           "title": "Cédula Arbitral - SAN ANTONIO FC (Segunda Fuerza) vs SAN JULIAN (Segunda Fuerza)",
           "local": "SAN ANTONIO FC",
           "away": "SAN JULIAN",
@@ -7972,6 +8082,7 @@
         },
         {
           "id": 381,
+          "url": "https://www.juventinorosasliga.com/cedula-arbitral/381/",
           "title": "Cédula Arbitral - DEP. NOPALERO (Segunda Fuerza) vs SAN JOSE JRS (Segunda Fuerza)",
           "local": "DEP. NOPALERO",
           "away": "SAN JOSE JRS",
@@ -7979,6 +8090,7 @@
         },
         {
           "id": 382,
+          "url": "https://www.juventinorosasliga.com/cedula-arbitral/382/",
           "title": "Cédula Arbitral - DEP. ZAPATA (Segunda Fuerza) vs CELTICOS (Segunda Fuerza)",
           "local": "DEP. ZAPATA",
           "away": "CELTICOS",
@@ -7986,6 +8098,7 @@
         },
         {
           "id": 383,
+          "url": "https://www.juventinorosasliga.com/cedula-arbitral/383/",
           "title": "Cédula Arbitral - PACHANGAS FC (Segunda Fuerza) vs DEP. ZAPATA (Segunda Fuerza)",
           "local": "PACHANGAS FC",
           "away": "DEP. ZAPATA",
@@ -7993,6 +8106,7 @@
         },
         {
           "id": 384,
+          "url": "https://www.juventinorosasliga.com/cedula-arbitral/384/",
           "title": "Cédula Arbitral - CELTICOS (Segunda Fuerza) vs DEP. NOPALERO (Segunda Fuerza)",
           "local": "CELTICOS",
           "away": "DEP. NOPALERO",
@@ -8000,6 +8114,7 @@
         },
         {
           "id": 385,
+          "url": "https://www.juventinorosasliga.com/cedula-arbitral/385/",
           "title": "Cédula Arbitral - SAN JOSE JRS (Segunda Fuerza) vs SAN ANTONIO FC (Segunda Fuerza)",
           "local": "SAN JOSE JRS",
           "away": "SAN ANTONIO FC",
@@ -8007,6 +8122,7 @@
         },
         {
           "id": 386,
+          "url": "https://www.juventinorosasliga.com/cedula-arbitral/386/",
           "title": "Cédula Arbitral - SAN JULIAN (Segunda Fuerza) vs BARZA (Segunda Fuerza)",
           "local": "SAN JULIAN",
           "away": "BARZA",
@@ -8014,6 +8130,7 @@
         },
         {
           "id": 387,
+          "url": "https://www.juventinorosasliga.com/cedula-arbitral/387/",
           "title": "Cédula Arbitral - TAPATIO (Segunda Fuerza) vs DEP. LA LUZ (Segunda Fuerza)",
           "local": "TAPATIO",
           "away": "DEP. LA LUZ",
@@ -8021,6 +8138,7 @@
         },
         {
           "id": 388,
+          "url": "https://www.juventinorosasliga.com/cedula-arbitral/388/",
           "title": "Cédula Arbitral - TAVERA FC (Segunda Fuerza) vs SAN JUAN FC (Segunda Fuerza)",
           "local": "TAVERA FC",
           "away": "SAN JUAN FC",
@@ -8052,7 +8170,7 @@
         387,
         388
       ],
-      "public_player_count_scraped": 312
+      "public_player_count_scraped": 322
     },
     "5": {
       "id": 5,
@@ -9660,7 +9778,7 @@
           "JUAN DIEGO MENDOZA GASCA",
           "JOSE OMAR BUENRROSTRO ROMERO"
         ],
-        "GALEANA": [
+        "ATL. GALEANA": [
           "Jose Guadalupe Valencia Luna",
           "Luis Angel Castillo Garcia",
           "Nestor Raymundo Mendoza Castillo",
@@ -9690,7 +9808,6 @@
           "Jesus Alejandro Gutierrez Reyes",
           "Jesus Alfonso Calero Cerrito",
           "Juan Carlos Obrajero Herrera",
-          "Juan Manuel Arcia Calero",
           "Juan Pablo Lopez Quintanilla",
           "Luis Miguel Lera Ramirez",
           "Martin Alexis Cerrito Ramirez",
@@ -9707,7 +9824,10 @@
           "Alexis Arturo Nolasco Garcia",
           "URIEL JOSAFAT ARIZA PANTOJA",
           "JUAN DIEGO CASTILLO CUEVAS",
-          "Ismael Hortelano Cerrito"
+          "Ismael Hortelano Cerrito",
+          "VICTOR MANUEL SILVA NORIA",
+          "ISRAEL HORTELANO CERRITO",
+          "Juan Manuel Arcia Calero"
         ],
         "OSASUNA": [
           "Alvaro Alejandro Delgado Oochoa",
@@ -9763,7 +9883,9 @@
           "Marco Polo Landin Ibarra",
           "Pedro Daniel Aguado Ortega",
           "Gerardo Belman Navarro",
-          "Carlos Alberto Gamez Lara"
+          "Carlos Alberto Gamez Lara",
+          "ANGEL GABRIEL CERVANTES OJEDA",
+          "JOSE RAMON ARELLANO MANCERA"
         ]
       },
       "player_usage": {
@@ -10939,107 +11061,107 @@
         },
         "JOSE GUADALUPE VALENCIA LUNA": {
           "name": "Jose Guadalupe Valencia Luna",
-          "team": "GALEANA",
+          "team": "ATL. GALEANA",
           "cedulas": 3
         },
         "LUIS ANGEL CASTILLO GARCIA": {
           "name": "Luis Angel Castillo Garcia",
-          "team": "GALEANA",
+          "team": "ATL. GALEANA",
           "cedulas": 3
         },
         "NESTOR RAYMUNDO MENDOZA CASTILLO": {
           "name": "Nestor Raymundo Mendoza Castillo",
-          "team": "GALEANA",
+          "team": "ATL. GALEANA",
           "cedulas": 3
         },
         "LUIS GERARDO GONZALEZ RUIZ": {
           "name": "Luis Gerardo Gonzalez Ruiz",
-          "team": "GALEANA",
+          "team": "ATL. GALEANA",
           "cedulas": 3
         },
         "ORLANDO HERRERA GUZMAN": {
           "name": "Orlando Herrera Guzman",
-          "team": "GALEANA",
+          "team": "ATL. GALEANA",
           "cedulas": 3
         },
         "CRISTIAN MARTIN RODRIGUEZ GODINEZ": {
           "name": "Cristian Martin Rodriguez Godinez",
-          "team": "GALEANA",
+          "team": "ATL. GALEANA",
           "cedulas": 3
         },
         "CARLOS ENRIQUE HERNANDEZ YUPE": {
           "name": "Carlos Enrique Hernandez Yupe",
-          "team": "GALEANA",
+          "team": "ATL. GALEANA",
           "cedulas": 3
         },
         "ENRIQUE JUAREZ MERINO": {
           "name": "Enrique Juarez Merino",
-          "team": "GALEANA",
+          "team": "ATL. GALEANA",
           "cedulas": 3
         },
         "JOSE DANIEL GARCIA CANO": {
           "name": "Jose Daniel Garcia Cano",
-          "team": "GALEANA",
+          "team": "ATL. GALEANA",
           "cedulas": 3
         },
         "JUAN PABLO RANGEL TOLEDO": {
           "name": "Juan Pablo Rangel Toledo",
-          "team": "GALEANA",
+          "team": "ATL. GALEANA",
           "cedulas": 3
         },
         "ERIC LOPEZ SOLORZANO": {
           "name": "Eric Lopez Solorzano",
-          "team": "GALEANA",
+          "team": "ATL. GALEANA",
           "cedulas": 3
         },
         "EDGAR ROQUE FLORES": {
           "name": "Edgar Roque Flores",
-          "team": "GALEANA",
+          "team": "ATL. GALEANA",
           "cedulas": 3
         },
         "DANIEL SOLORZANO LOPEZ": {
           "name": "Daniel Solorzano Lopez",
-          "team": "GALEANA",
+          "team": "ATL. GALEANA",
           "cedulas": 3
         },
         "PEDRO CESAR OLVERA CALERO": {
           "name": "Pedro Cesar Olvera Calero",
-          "team": "GALEANA",
+          "team": "ATL. GALEANA",
           "cedulas": 3
         },
         "MARCO ANTONIO SILLERO ZARATE": {
           "name": "Marco Antonio Sillero Zarate",
-          "team": "GALEANA",
+          "team": "ATL. GALEANA",
           "cedulas": 3
         },
         "ALEJANDRO GUERRERO RODRIGUEZ": {
           "name": "Alejandro Guerrero Rodriguez",
-          "team": "GALEANA",
+          "team": "ATL. GALEANA",
           "cedulas": 3
         },
         "JONATHAN MARES OLIVARES": {
           "name": "Jonathan Mares Olivares",
-          "team": "GALEANA",
+          "team": "ATL. GALEANA",
           "cedulas": 3
         },
         "CRISTIAN PERALTA ARIZA": {
           "name": "Cristian Peralta Ariza",
-          "team": "GALEANA",
+          "team": "ATL. GALEANA",
           "cedulas": 3
         },
         "MARTIN HORTELANO LUNA": {
           "name": "Martin Hortelano Luna",
-          "team": "GALEANA",
+          "team": "ATL. GALEANA",
           "cedulas": 3
         },
         "ERIK ANTONIO GONZALEZ MESITA": {
           "name": "Erik Antonio Gonzalez Mesita",
-          "team": "GALEANA",
+          "team": "ATL. GALEANA",
           "cedulas": 3
         },
         "ALEJANDRO MONTECINO RAMOS": {
           "name": "Alejandro Montecino Ramos",
-          "team": "GALEANA",
+          "team": "ATL. GALEANA",
           "cedulas": 3
         },
         "AARON AGUILAR GUTIERREZ": {
@@ -11069,11 +11191,6 @@
         },
         "JUAN CARLOS OBRAJERO HERRERA": {
           "name": "Juan Carlos Obrajero Herrera",
-          "team": "SAN ANTONIO JRS",
-          "cedulas": 3
-        },
-        "JUAN MANUEL ARCIA CALERO": {
-          "name": "Juan Manuel Arcia Calero",
           "team": "SAN ANTONIO JRS",
           "cedulas": 3
         },
@@ -11159,6 +11276,21 @@
         },
         "ISMAEL HORTELANO CERRITO": {
           "name": "Ismael Hortelano Cerrito",
+          "team": "SAN ANTONIO JRS",
+          "cedulas": 3
+        },
+        "VICTOR MANUEL SILVA NORIA": {
+          "name": "VICTOR MANUEL SILVA NORIA",
+          "team": "SAN ANTONIO JRS",
+          "cedulas": 3
+        },
+        "ISRAEL HORTELANO CERRITO": {
+          "name": "ISRAEL HORTELANO CERRITO",
+          "team": "SAN ANTONIO JRS",
+          "cedulas": 3
+        },
+        "JUAN MANUEL ARCIA CALERO": {
+          "name": "Juan Manuel Arcia Calero",
           "team": "SAN ANTONIO JRS",
           "cedulas": 3
         },
@@ -11421,11 +11553,22 @@
           "name": "Carlos Alberto Gamez Lara",
           "team": "ALDAMA FC",
           "cedulas": 3
+        },
+        "ANGEL GABRIEL CERVANTES OJEDA": {
+          "name": "ANGEL GABRIEL CERVANTES OJEDA",
+          "team": "ALDAMA FC",
+          "cedulas": 3
+        },
+        "JOSE RAMON ARELLANO MANCERA": {
+          "name": "JOSE RAMON ARELLANO MANCERA",
+          "team": "ALDAMA FC",
+          "cedulas": 3
         }
       },
       "cedulas": [
         {
           "id": 192,
+          "url": "https://www.juventinorosasliga.com/cedula-arbitral/192/",
           "title": "Cédula Arbitral - CAPIBARAS (Intermedia) vs MAZACOTES FC (Intermedia)",
           "local": "CAPIBARAS",
           "away": "MAZACOTES FC",
@@ -11433,6 +11576,7 @@
         },
         {
           "id": 193,
+          "url": "https://www.juventinorosasliga.com/cedula-arbitral/193/",
           "title": "Cédula Arbitral - LA HUERTA (Intermedia) vs LA CANCHITA DEPORTES (Intermedia)",
           "local": "LA HUERTA",
           "away": "LA CANCHITA DEPORTES",
@@ -11440,6 +11584,7 @@
         },
         {
           "id": 194,
+          "url": "https://www.juventinorosasliga.com/cedula-arbitral/194/",
           "title": "Cédula Arbitral - POPULARES (Intermedia) vs MALVINAS (Intermedia)",
           "local": "POPULARES",
           "away": "MALVINAS",
@@ -11447,6 +11592,7 @@
         },
         {
           "id": 195,
+          "url": "https://www.juventinorosasliga.com/cedula-arbitral/195/",
           "title": "Cédula Arbitral - PROMESAS FC (Intermedia) vs LA CUADRILLA (Intermedia)",
           "local": "PROMESAS FC",
           "away": "LA CUADRILLA",
@@ -11454,6 +11600,7 @@
         },
         {
           "id": 197,
+          "url": "https://www.juventinorosasliga.com/cedula-arbitral/197/",
           "title": "Cédula Arbitral - LA CUADRILLA (Intermedia) vs POPULARES (Intermedia)",
           "local": "LA CUADRILLA",
           "away": "POPULARES",
@@ -11461,6 +11608,7 @@
         },
         {
           "id": 198,
+          "url": "https://www.juventinorosasliga.com/cedula-arbitral/198/",
           "title": "Cédula Arbitral - DEP. MARAVILLAS (Intermedia) vs LA HUERTA (Intermedia)",
           "local": "DEP. MARAVILLAS",
           "away": "LA HUERTA",
@@ -11468,6 +11616,7 @@
         },
         {
           "id": 199,
+          "url": "https://www.juventinorosasliga.com/cedula-arbitral/199/",
           "title": "Cédula Arbitral - LA CANCHITA DEPORTES (Intermedia) vs CAPIBARAS (Intermedia)",
           "local": "LA CANCHITA DEPORTES",
           "away": "CAPIBARAS",
@@ -11475,13 +11624,15 @@
         },
         {
           "id": 200,
-          "title": "Cédula Arbitral - GALEANA (Intermedia) vs SAN ANTONIO JRS (Intermedia)",
-          "local": "GALEANA",
+          "url": "https://www.juventinorosasliga.com/cedula-arbitral/200/",
+          "title": "Cédula Arbitral - ATL. GALEANA (Intermedia) vs SAN ANTONIO JRS (Intermedia)",
+          "local": "ATL. GALEANA",
           "away": "SAN ANTONIO JRS",
           "category": "Intermedia"
         },
         {
           "id": 201,
+          "url": "https://www.juventinorosasliga.com/cedula-arbitral/201/",
           "title": "Cédula Arbitral - MALVINAS (Intermedia) vs OSASUNA (Intermedia)",
           "local": "MALVINAS",
           "away": "OSASUNA",
@@ -11489,6 +11640,7 @@
         },
         {
           "id": 202,
+          "url": "https://www.juventinorosasliga.com/cedula-arbitral/202/",
           "title": "Cédula Arbitral - MAZACOTES FC (Intermedia) vs ALDAMA FC (Intermedia)",
           "local": "MAZACOTES FC",
           "away": "ALDAMA FC",
@@ -11496,6 +11648,7 @@
         },
         {
           "id": 203,
+          "url": "https://www.juventinorosasliga.com/cedula-arbitral/203/",
           "title": "Cédula Arbitral - ALDAMA FC (Intermedia) vs LA CANCHITA DEPORTES (Intermedia)",
           "local": "ALDAMA FC",
           "away": "LA CANCHITA DEPORTES",
@@ -11503,6 +11656,7 @@
         },
         {
           "id": 204,
+          "url": "https://www.juventinorosasliga.com/cedula-arbitral/204/",
           "title": "Cédula Arbitral - CAPIBARAS (Intermedia) vs DEP. MARAVILLAS (Intermedia)",
           "local": "CAPIBARAS",
           "away": "DEP. MARAVILLAS",
@@ -11510,6 +11664,7 @@
         },
         {
           "id": 205,
+          "url": "https://www.juventinorosasliga.com/cedula-arbitral/205/",
           "title": "Cédula Arbitral - LA HUERTA (Intermedia) vs MALVINAS (Intermedia)",
           "local": "LA HUERTA",
           "away": "MALVINAS",
@@ -11517,13 +11672,15 @@
         },
         {
           "id": 206,
-          "title": "Cédula Arbitral - MAZACOTES FC (Intermedia) vs GALEANA (Intermedia)",
+          "url": "https://www.juventinorosasliga.com/cedula-arbitral/206/",
+          "title": "Cédula Arbitral - MAZACOTES FC (Intermedia) vs ATL. GALEANA (Intermedia)",
           "local": "MAZACOTES FC",
-          "away": "GALEANA",
+          "away": "ATL. GALEANA",
           "category": "Intermedia"
         },
         {
           "id": 207,
+          "url": "https://www.juventinorosasliga.com/cedula-arbitral/207/",
           "title": "Cédula Arbitral - OSASUNA (Intermedia) vs LA CUADRILLA (Intermedia)",
           "local": "OSASUNA",
           "away": "LA CUADRILLA",
@@ -11531,6 +11688,7 @@
         },
         {
           "id": 208,
+          "url": "https://www.juventinorosasliga.com/cedula-arbitral/208/",
           "title": "Cédula Arbitral - PROMESAS FC (Intermedia) vs SAN ANTONIO JRS (Intermedia)",
           "local": "PROMESAS FC",
           "away": "SAN ANTONIO JRS",
@@ -11538,6 +11696,7 @@
         },
         {
           "id": 209,
+          "url": "https://www.juventinorosasliga.com/cedula-arbitral/209/",
           "title": "Cédula Arbitral - LA CUADRILLA (Intermedia) vs LA HUERTA (Intermedia)",
           "local": "LA CUADRILLA",
           "away": "LA HUERTA",
@@ -11545,6 +11704,7 @@
         },
         {
           "id": 210,
+          "url": "https://www.juventinorosasliga.com/cedula-arbitral/210/",
           "title": "Cédula Arbitral - DEP. MARAVILLAS (Intermedia) vs ALDAMA FC (Intermedia)",
           "local": "DEP. MARAVILLAS",
           "away": "ALDAMA FC",
@@ -11552,6 +11712,7 @@
         },
         {
           "id": 211,
+          "url": "https://www.juventinorosasliga.com/cedula-arbitral/211/",
           "title": "Cédula Arbitral - SAN ANTONIO JRS (Intermedia) vs POPULARES (Intermedia)",
           "local": "SAN ANTONIO JRS",
           "away": "POPULARES",
@@ -11559,6 +11720,7 @@
         },
         {
           "id": 212,
+          "url": "https://www.juventinorosasliga.com/cedula-arbitral/212/",
           "title": "Cédula Arbitral - LA CANCHITA DEPORTES (Intermedia) vs MAZACOTES FC (Intermedia)",
           "local": "LA CANCHITA DEPORTES",
           "away": "MAZACOTES FC",
@@ -11566,13 +11728,15 @@
         },
         {
           "id": 213,
-          "title": "Cédula Arbitral - GALEANA (Intermedia) vs PROMESAS FC (Intermedia)",
-          "local": "GALEANA",
+          "url": "https://www.juventinorosasliga.com/cedula-arbitral/213/",
+          "title": "Cédula Arbitral - ATL. GALEANA (Intermedia) vs PROMESAS FC (Intermedia)",
+          "local": "ATL. GALEANA",
           "away": "PROMESAS FC",
           "category": "Intermedia"
         },
         {
           "id": 214,
+          "url": "https://www.juventinorosasliga.com/cedula-arbitral/214/",
           "title": "Cédula Arbitral - MALVINAS (Intermedia) vs CAPIBARAS (Intermedia)",
           "local": "MALVINAS",
           "away": "CAPIBARAS",
@@ -11603,7 +11767,7 @@
         213,
         214
       ],
-      "public_player_count_scraped": 331
+      "public_player_count_scraped": 335
     }
   },
   "team_logos": {
@@ -11614,6 +11778,10 @@
     "ALDAMA FC": {
       "local": "./assets/official-logos/aldama-fc.png",
       "source": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/Aldama_mqm3r1"
+    },
+    "ATL. GALEANA": {
+      "local": "./assets/official-logos/atl-galeana.png",
+      "source": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/Galeana_kujrh0"
     },
     "BARZA": {
       "local": "./assets/official-logos/barza.png",
@@ -11768,6 +11936,42 @@
       "source": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/TorosCuenda_od8vcf"
     }
   },
+  "cedula_audit": {
+    "build": "38-35",
+    "range": [
+      1,
+      1200
+    ],
+    "valid_public_cedulas": 80,
+    "summary": {
+      "Veteranos 50+": {
+        "cedulas": 15,
+        "public_names": 109,
+        "kept_previous": false
+      },
+      "Veteranos 35+": {
+        "cedulas": 0,
+        "public_names": 0,
+        "kept_previous": true
+      },
+      "Primera Fuerza": {
+        "cedulas": 20,
+        "public_names": 291,
+        "kept_previous": false
+      },
+      "Segunda Fuerza": {
+        "cedulas": 23,
+        "public_names": 322,
+        "kept_previous": false
+      },
+      "Intermedia": {
+        "cedulas": 22,
+        "public_names": 335,
+        "kept_previous": false
+      }
+    },
+    "privacy": "public sports data only; no CURP/INE/address/document images"
+  },
   "notes": [
     "Datos deportivos públicos; no se recopilan CURP, INE, domicilio ni documentos.",
     "La fuente oficial juventinorosasliga.com prevalece sobre este snapshot.",
@@ -11780,7 +11984,7 @@
   "checks": {
     "primera_dashboard_players": 291,
     "primera_roster_unique": 291,
-    "team_logos_known": 40,
+    "team_logos_known": 41,
     "categories": 5
   }
 }
