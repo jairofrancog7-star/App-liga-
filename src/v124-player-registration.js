@@ -161,7 +161,7 @@ function renderEligibility(){
 function bindEligibility(){
   const sels=['[data-v64-cred-team]','[data-v64-cred-cat]','[data-v64-cred-curp]','[data-v100-dob]','[data-v100-age]'];
   for(const sel of sels){
-    const el=$(sel);if(!el||el.dataset.v124EligibilityBound)return;
+    const el=$(sel);if(!el||el.dataset.v124EligibilityBound)continue;
     el.dataset.v124EligibilityBound='1';
     el.addEventListener('input',renderEligibility);
     el.addEventListener('change',renderEligibility);
