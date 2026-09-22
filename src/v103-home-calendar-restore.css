@@ -726,3 +726,174 @@
     padding-right:10px!important;
   }
 }
+
+
+/* V115 — Próximos partidos: misma proporción horizontal de la referencia.
+   Texto más pequeño, nombres en una sola línea, logos separados y horas compactas. */
+@media(max-width:1023px){
+  body[data-app-route="home"] .v114-upcoming-slot{
+    width:calc(100% + 14px)!important;
+    max-width:none!important;
+    margin:22px -7px 26px!important;
+  }
+
+  body[data-app-route="home"] .v114-upcoming-slot .v103-upcoming-wrap{
+    width:100%!important;
+    max-width:none!important;
+    padding:0 8px 8px!important;
+  }
+
+  body[data-app-route="home"] .v114-upcoming-slot .v103-upcoming-head{
+    display:flex!important;
+    align-items:center!important;
+    justify-content:space-between!important;
+    gap:16px!important;
+    margin:0 4px 14px!important;
+  }
+
+  body[data-app-route="home"] .v114-upcoming-slot .v103-upcoming-head h2{
+    flex:1 1 auto!important;
+    margin:0!important;
+    font-size:clamp(26px,6.4vw,36px)!important;
+    line-height:1!important;
+    letter-spacing:-.025em!important;
+    white-space:nowrap!important;
+  }
+
+  body[data-app-route="home"] .v114-upcoming-slot .v103-upcoming-head button{
+    flex:0 0 auto!important;
+    padding:5px 0!important;
+    font-size:clamp(14px,3.5vw,19px)!important;
+    line-height:1!important;
+    white-space:nowrap!important;
+  }
+
+  body[data-app-route="home"] .v114-upcoming-slot .v103-upcoming-card{
+    width:100%!important;
+    max-width:none!important;
+    padding:18px 20px 16px!important;
+    border-radius:25px!important;
+  }
+
+  body[data-app-route="home"] .v114-upcoming-slot .v103-upcoming-meta{
+    margin:0 0 12px!important;
+    font-size:clamp(11px,2.8vw,15px)!important;
+    line-height:1!important;
+  }
+
+  body[data-app-route="home"] .v114-upcoming-slot .v103-upcoming-meta i{
+    width:10px!important;
+    height:10px!important;
+    flex-basis:10px!important;
+    box-shadow:0 0 0 6px rgba(255,77,117,.14)!important;
+  }
+
+  body[data-app-route="home"] .v114-upcoming-slot .v103-upcoming-meta b{
+    font-size:clamp(12px,3vw,16px)!important;
+    font-weight:500!important;
+  }
+
+  body[data-app-route="home"] .v114-upcoming-slot .v103-upcoming-match{
+    min-height:78px!important;
+    grid-template-columns:minmax(0,1fr) 60px minmax(0,1fr)!important;
+    gap:15px!important;
+    padding:12px 0!important;
+  }
+
+  body[data-app-route="home"] .v114-upcoming-slot .v103-upcoming-team{
+    gap:13px!important;
+    overflow:visible!important;
+  }
+
+  body[data-app-route="home"] .v114-upcoming-slot .v103-upcoming-team.home{
+    justify-content:flex-end!important;
+    padding-right:2px!important;
+  }
+
+  body[data-app-route="home"] .v114-upcoming-slot .v103-upcoming-team.away{
+    justify-content:flex-start!important;
+    padding-left:2px!important;
+  }
+
+  body[data-app-route="home"] .v114-upcoming-slot .v103-upcoming-team b{
+    flex:0 1 auto!important;
+    min-width:0!important;
+    margin:0!important;
+    font-size:clamp(11px,2.8vw,15px)!important;
+    line-height:1!important;
+    font-weight:500!important;
+    white-space:nowrap!important;
+    overflow:visible!important;
+    text-overflow:clip!important;
+  }
+
+  body[data-app-route="home"] .v114-upcoming-slot .v103-upcoming-team .v103-cal-logo{
+    width:42px!important;
+    height:42px!important;
+    min-width:42px!important;
+    max-width:42px!important;
+    max-height:42px!important;
+    flex:0 0 42px!important;
+    margin:0!important;
+    box-shadow:0 0 0 3px rgba(109,224,255,.62)!important;
+  }
+
+  body[data-app-route="home"] .v114-upcoming-slot .v103-upcoming-team .v103-cal-logo img{
+    width:38px!important;
+    height:38px!important;
+    max-width:38px!important;
+    max-height:38px!important;
+    object-fit:contain!important;
+    margin:auto!important;
+  }
+
+  body[data-app-route="home"] .v114-upcoming-slot .v103-upcoming-match>strong{
+    min-width:60px!important;
+    font-size:clamp(18px,4.6vw,24px)!important;
+    line-height:1!important;
+    font-weight:800!important;
+    text-align:center!important;
+  }
+}
+
+@media(max-width:430px){
+  body[data-app-route="home"] .v114-upcoming-slot{
+    width:calc(100% + 10px)!important;
+    margin-left:-5px!important;
+    margin-right:-5px!important;
+  }
+  body[data-app-route="home"] .v114-upcoming-slot .v103-upcoming-wrap{
+    padding-left:5px!important;
+    padding-right:5px!important;
+  }
+  body[data-app-route="home"] .v114-upcoming-slot .v103-upcoming-card{
+    padding:15px 13px 13px!important;
+  }
+  body[data-app-route="home"] .v114-upcoming-slot .v103-upcoming-match{
+    grid-template-columns:minmax(0,1fr) 54px minmax(0,1fr)!important;
+    gap:10px!important;
+  }
+  body[data-app-route="home"] .v114-upcoming-slot .v103-upcoming-team{
+    gap:9px!important;
+  }
+  body[data-app-route="home"] .v114-upcoming-slot .v103-upcoming-team .v103-cal-logo{
+    width:38px!important;
+    height:38px!important;
+    min-width:38px!important;
+    max-width:38px!important;
+    flex-basis:38px!important;
+  }
+  body[data-app-route="home"] .v114-upcoming-slot .v103-upcoming-team .v103-cal-logo img{
+    width:34px!important;
+    height:34px!important;
+    max-width:34px!important;
+    max-height:34px!important;
+  }
+  body[data-app-route="home"] .v114-upcoming-slot .v103-upcoming-team b{
+    font-size:clamp(10px,2.6vw,13px)!important;
+  }
+  body[data-app-route="home"] .v114-upcoming-slot .v103-upcoming-match>strong{
+    min-width:54px!important;
+    font-size:clamp(16px,4.1vw,21px)!important;
+  }
+}
