@@ -237,8 +237,12 @@ function patchProfile(){
   const screen=document.querySelector('#screen');
   if(!screen) return;
   const existing=screen.querySelector('[data-v12-profile]');
-  if(existing?.dataset.profileRef==='parts37') return;
-  screen.innerHTML='<section class="v12-profile-page" data-v12-profile data-profile-ref="parts37">'+
+  if(existing?.dataset.profileRef==='parts36') return;
+  screen.innerHTML='<section class="v12-profile-page" data-v12-profile data-profile-ref="parts36">'+
+    '<div class="v12-profile-card">'+
+      '<div class="v12-profile-copy"><h1>Más de la Liga</h1><p>Crea tu cuenta y disfruta de un acceso inigualable a resultados, estadísticas, calendarios, equipos de la liga y mucho más.</p></div>'+
+      '<div class="v12-profile-actions"><button class="outline" data-v12-action="login">Iniciar sesión</button><button class="solid" data-v12-action="create">Crear una cuenta</button></div>'+
+    '</div>'+
     '<div class="v12-profile-menu">'+
       profileMenuRow('following','Siguiendo','following',null,true)+
       profileMenuRow('notifications','Notificaciones','notifications',null,true)+
@@ -246,10 +250,6 @@ function patchProfile(){
       profileMenuRow('feedback','Ayúdanos a mejorar',null,'feedback',false)+
       profileMenuRow(null,'Ajustes de privacidad',null,'privacy',true)+
       profileMenuRow(null,'Términos y condiciones',null,'terms',true)+
-    '</div>'+
-    '<div class="v12-profile-card v12-profile-card-bottom">'+
-      '<div class="v12-profile-copy"><h1>Más de la Liga</h1><p>Crea tu cuenta y disfruta de un acceso inigualable a resultados, estadísticas, calendarios, equipos de la liga y mucho más.</p></div>'+
-      '<div class="v12-profile-actions"><button class="outline" data-v12-action="login">Iniciar sesión</button><button class="solid" data-v12-action="create">Crear una cuenta</button></div>'+
     '</div>'+
   '</section>';
 }
