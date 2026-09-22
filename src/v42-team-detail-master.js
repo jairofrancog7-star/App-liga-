@@ -12,7 +12,13 @@ let notifyOpen=false,compareOpen=false,compareTarget='';
 function route(){return location.hash.replace(/^#\//,'').split('?')[0]||'home'}
 function esc(v){return String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
 function norm(v){return String(v??'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[^a-z0-9]+/g,' ').trim()}
-function slug(v){return 'OFF-'+String(v||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toUpperCase().replace(/[^A-Z0-9]+/g,'-').replace(/^-|-$/g,'')}\nfunction registrationActive(){\n const r=route();\n return r==='credentialBuilder'||r.startsWith('credentialBuilder')||!!document.querySelector('#screen [data-v64-cred-team],#v124-player-registry,[data-v132-layer].open,.v126-team-panel');\n}
+function slug(v){return 'OFF-'+String(v||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toUpperCase().replace(/[^A-Z0-9]+/g,'-').replace(/^-|-$/g,'')}
+function registrationActive(){
+ const r=route();
+ return !!window.__LJR_REGISTRATION_TEAM_PICKER__||
+   r==='credentialBuilder'||r.startsWith('credentialBuilder')||
+   !!document.querySelector('#screen [data-v64-cred-team],#v124-player-registry,[data-v132-layer].open,.v126-team-panel');
+}
 async function load(){if(db)return db;if(loading)return loading;loading=(async()=>{for(const u of [LOCAL,REMOTE]){try{const r=await fetch(u,{cache:'no-store'});if(r.ok){db=await r.json();break}}catch(e){}}return db})();return loading}
 function allTeams(){
  const out=[];
@@ -81,6 +87,7 @@ function officialTeamFromElement(el){
    .find(x=>{const n=norm(x.name);return text===n||text.includes(n)})||null;
 }
 function openOfficialTeamProfile(name,openCompare=false){
+ if(registrationActive())return false;
  const found=allTeams().find(x=>norm(x.name)===norm(name));if(!found)return false;
  localStorage.setItem('v62-team-name',found.name);
  localStorage.setItem('v62-category',String(found.catId));
@@ -245,8 +252,8 @@ document.addEventListener('click',async e=>{
     los nombres y escudos del selector de equipo son controles del formulario,
     NO accesos al perfil ni a “Comparar equipos”. Este listener global V42
     era el que interceptaba el toque antes de que V132 pudiera seleccionar. */
- if(route()==='credentialBuilder'||
-    e.target.closest('[data-v132-layer],[data-v132-open],[data-v64-cred-team],.v132-team-picker,.v132-team-row')){
+ if(registrationActive()||
+    e.target.closest('[data-v132-layer],[data-v132-open],[data-v64-cred-team],.v132-team-picker,.v132-team-row,[data-v126-team-open],[data-v126-team-choice],.v126-team-custom,.v126-team-panel,.v126-team-choice')){
    return;
  }
 
