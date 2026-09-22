@@ -144,7 +144,8 @@ const HOME_CARDS=[
  {icon:'alert',title:'Cambios de horario y sedes',sub:'Reprograma y crea aviso para compartir',route:'scheduleChanges'},
  {icon:'calendar',title:'Junta semanal de liga · martes',sub:'Todos los martes · asistencia, orden del día y acuerdos',action:'meeting'},
  {icon:'video',title:'Semifinales, finales y momentos',sub:'Galería recuperada',route:'moments'},
- {icon:'history',title:'Historial',sub:'Temporadas, palmarés y archivo',route:'history'},
+ {icon:'history',title:'Historia',sub:'Temporadas, campeones, finales y archivo histórico',route:'history'},
+ {icon:'history',title:'Historial',sub:'Resultados y partidos anteriores',route:'historyLog'},
  {icon:'match',title:'Match Center real',sub:'Partido oficial, marcador y contexto',route:'v4-matchcenter'},
  {icon:'tactics',title:'Tácticas 2D / 3D',sub:'Pizarra azul interactiva',route:'tactics'},
  {icon:'trophy',title:'Copa + escenarios',sub:'Liguilla y simulación',route:'bracketBuilder'},
@@ -194,7 +195,8 @@ const MORE_CARDS=[
  {icon:'trophy',title:'Liguilla',sub:'Cuadro eliminatorio',route:'bracketBuilder'},
  {icon:'news',title:'Avisos',sub:'Noticias y comunicados',route:'news'},
  {icon:'video',title:'Videos',sub:'Momentos y archivo',route:'moments'},
- {icon:'history',title:'Historial',sub:'Temporadas, palmarés e históricos',route:'history'},
+ {icon:'history',title:'Historia',sub:'Temporadas, campeones y finales',route:'history'},
+ {icon:'history',title:'Historial',sub:'Resultados y partidos anteriores',route:'historyLog'},
  {icon:'match',title:'Match Center real',sub:'Partido oficial, marcador y contexto',route:'v4-matchcenter'},
  {icon:'admin',title:'JR Control',sub:'Centro operativo',route:'jrControl'},
  {icon:'card',title:'Alta rápida',sub:'Registro y credencial de jugador',route:'credentialBuilder'},
@@ -247,7 +249,7 @@ function block(r){
  else if(r==='teams'||r==='players'||r==='teamDetail'){title='Equipos y jugadores · herramientas';desc='Plantillas, alineaciones, credenciales y encargados, siempre debajo del contenido existente.';cards=TEAM_CARDS;asset='v38-soccer-teams.mp4'}
  else if(r==='match'){title='Match Center · herramientas del partido';desc='Timeline, alineaciones, acta, incidencias, clima y operación.';cards=MATCH_CARDS;asset='v38-soccer-matchday.mp4'}
  else if(r==='stats'||r==='scorers'||r==='rankings'||r==='v38Stats'){title='Datos y rendimiento';desc='Tabla, goleadores, exportación y lectura de temporada.';cards=[...COMP_CARDS.filter(x=>['leagueData','stats','scorers','tableExport'].includes(x.route)),{icon:'sim',title:'Escenarios',sub:'Simulación local',route:'simulator'}];asset='v38-soccer-stats.mp4'}
- else if(r==='moments'){k='MOMENTOS DE LA LIGA';title='Videos y momentos';desc='Cuartos, semifinales, finales y archivo audiovisual de la Liga.';cards=[{icon:'video',title:'Momentos',sub:'Contenido de la Liga',route:'moments'},{icon:'history',title:'Historial',sub:'Temporadas y archivo',route:'history'},{icon:'share',title:'Compartir jornada',sub:'Publicaciones',route:'publications'}];asset='v38-soccer-liguilla.mp4';html+=gallery()}
+ else if(r==='moments'){k='MOMENTOS DE LA LIGA';title='Videos y momentos';desc='Cuartos, semifinales, finales y archivo audiovisual de la Liga.';cards=[{icon:'video',title:'Momentos',sub:'Contenido de la Liga',route:'moments'},{icon:'history',title:'Historial',sub:'Resultados y partidos anteriores',route:'historyLog'},{icon:'share',title:'Compartir jornada',sub:'Publicaciones',route:'publications'}];asset='v38-soccer-liguilla.mp4';html+=gallery()}
  else if(r==='video'){k='LIGA JUVENTINO TV';title='Videos y momentos';desc='Archivo audiovisual de la Liga.';cards=[{icon:'video',title:'Momentos',sub:'Contenido de la Liga',route:'moments'},{icon:'history',title:'Historial',sub:'Temporadas y archivo',route:'history'},{icon:'share',title:'Compartir jornada',sub:'Publicaciones',route:'publications'}];asset='v38-soccer-liguilla.mp4';html+=gallery()}
  else if(r==='history'){title='Historial · temporadas y palmarés';desc='Accesos de la app verde agrupados debajo del historial actual.';cards=[{icon:'history',title:'Temporada actual',sub:'Información vigente',route:'leagueData'},{icon:'trophy',title:'Palmarés',sub:'Campeones e historia',route:'history'},{icon:'history',title:'Históricos',sub:'Equipos y temporadas anteriores',route:'history'},{icon:'video',title:'Finales y momentos',sub:'Archivo audiovisual',route:'moments'}];asset='v38-soccer-liguilla.mp4'}
  else if(r==='tactics'){title='Táctica 3D · versión azul';desc='Tablero táctil inspirado en la función de Liga_Futbol; se agrega al final y guarda sólo en este dispositivo.';cards=[];asset='v38-fix10-tactics-motion.mp4';html+=tacticsBoard()}
@@ -263,7 +265,7 @@ function block(r){
    {icon:'tactics',title:'Alineaciones y tácticas',sub:'Preparar formación',route:'tactics'},
    {icon:'rule',title:'Acta arbitral digital',sub:'Cédula / PDF',route:'cedulas'},
    {icon:'field',title:'Clima y campo',sub:'Pronóstico y sede',route:'weatherFields'},
-   {icon:'history',title:'Historial',sub:'Archivo de temporadas',route:'history'}
+   {icon:'history',title:'Historial',sub:'Resultados y partidos anteriores',route:'historyLog'}
  ];asset='v38-soccer-matchday.mp4'}
  else if(r==='jrControl'){title='Explora la Liga · herramientas de control';desc='Accesos operativos complementarios de JR Control.';cards=MORE_CARDS;asset='v38-soccer-teams.mp4'}
  else if(r==='news'||r==='v38Weekly'){title='Noticias, avisos y juntas';desc='Comunicación y operación semanal de la Liga.';cards=[{icon:'news',title:'Avisos',sub:'Comunicados y cambios de la Liga',route:'notices'},{icon:'calendar',title:'Junta semanal',sub:'Agenda y acuerdos locales',action:'meeting'},{icon:'alert',title:'Cambios de horario y sedes',sub:'Notificaciones',route:'notifications'},{icon:'video',title:'Semifinales, finales y momentos',sub:'Videos',route:'moments'}];asset='v38-soccer-matchday.mp4'}
@@ -653,7 +655,7 @@ function bind(root){
  });
 }
 function supported(r){
- return ['home','more','competition','v4-calendar','calendar','monthlyCalendar','calendarMonthly','leagueData','bracketBuilder','tableExport','teams','players','teamDetail','match','v4-matchcenter','matchCenter','match-center','matchday','stats','scorers','rankings','v38Stats','moments','video','history','tactics','jrControl','news','v38Weekly','notifications'].includes(r);
+ return ['home','more','competition','v4-calendar','calendar','monthlyCalendar','calendarMonthly','leagueData','bracketBuilder','tableExport','teams','players','teamDetail','match','v4-matchcenter','matchCenter','match-center','matchday','stats','scorers','rankings','v38Stats','moments','video','history','historyLog','tactics','jrControl','news','v38Weekly','notifications'].includes(r);
 }
 let timer=0;
 function mount(){
