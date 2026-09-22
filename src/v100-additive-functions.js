@@ -645,7 +645,7 @@ const FIELD_LABELS={
   'san julian tierra blanca':'Campo San Julián Tierra Blanca'
 };
 function weatherFieldOptions(){
- const fromCards=$('.v60-field-card').map(card=>{const name=$('.v60-field-top h3',card)?.textContent?.trim()||'';const community=$('.v60-field-top span',card)?.textContent?.trim()||'';const key=Object.keys(FIELD_COORDS).find(k=>norm(name+' '+community).includes(norm(k)));return key?{name,coord:FIELD_COORDS[key]}:null}).filter(Boolean);
+ const fromCards=$$('.v60-field-card').map(card=>{const name=$('.v60-field-top h3',card)?.textContent?.trim()||'';const community=$('.v60-field-top span',card)?.textContent?.trim()||'';const key=Object.keys(FIELD_COORDS).find(k=>norm(name+' '+community).includes(norm(k)));return key?{name,coord:FIELD_COORDS[key]}:null}).filter(Boolean);
  if(fromCards.length)return fromCards;
  return Object.entries(FIELD_COORDS).map(([key,coord])=>({name:FIELD_LABELS[key]||key,coord}));
 }
@@ -667,17 +667,33 @@ function weatherFixtureRows(){
 function showWeatherInline(root,mode){
  const panel=$('[data-v100-weather-inline-panel]',root);
  if(!panel)return;
+ if(mode==='forecast'){
+  panel.hidden=true;
+  root.scrollIntoView({behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth',block:'start'});
+  setTimeout(()=>$('[data-v100-weather-field]',root)?.focus(),220);
+  return;
+ }
  if(mode==='fixtures'){
   const rows=weatherFixtureRows();
   panel.innerHTML='<b>Jornada dentro de Clima</b><small>Consulta rápida sin salir de esta pantalla.</small>'+
    (rows.length?rows.map(x=>'<article><strong>'+esc(x.home)+' vs '+esc(x.away)+'</strong><span>'+esc(x.cat)+(x.round?' · Jornada '+esc(x.round):'')+'</span><em>'+esc(x.date)+' · '+esc(x.venue)+'</em></article>').join(''):'<p>No hay partidos publicados para mostrar.</p>');
-  panel.hidden=false;panel.scrollIntoView({behavior:'smooth',block:'nearest'});return;
+  panel.hidden=false;
+  panel.scrollIntoView({behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth',block:'nearest'});
+  return;
  }
- const sel=$('[data-v100-weather-field]',root);
- panel.innerHTML='<b>Campos disponibles</b><small>Usa el selector de arriba para escoger una cancha y pulsa “Analizar campo”.</small>';
+ const opts=weatherFieldOptions(),sel=$('[data-v100-weather-field]',root);
+ panel.innerHTML='<b>Revisar campos</b><small>Elige una cancha. Se seleccionará arriba y se analizará aquí mismo, sin salir de Clima.</small>'+
+   '<div class="v171-weather-field-list">'+opts.map((f,i)=>
+     '<button type="button" class="v171-weather-field-pick" data-v171-weather-pick="'+i+'"><span>🏟️</span><b>'+esc(f.name)+'</b><i>›</i></button>'
+   ).join('')+'</div>';
  panel.hidden=false;
- sel?.focus();
- root.scrollIntoView({behavior:'smooth',block:'start'});
+ $$('[data-v171-weather-pick]',panel).forEach(b=>b.addEventListener('click',()=>{
+   const i=Number(b.dataset.v171WeatherPick||0),f=opts[i];
+   if(sel)sel.value=String(i);
+   if(f)toast('Campo seleccionado: '+f.name);
+   runWeather(root);
+ }));
+ panel.scrollIntoView({behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth',block:'nearest'});
 }
 function bindWeather(root){
  const current=()=>{const opts=weatherFieldOptions(),idx=Number($('[data-v100-weather-field]',root)?.value||0);return opts[idx]||opts[0]||null};
@@ -693,7 +709,14 @@ function bindWeather(root){
  $('[data-v100-weather-share]',root)?.addEventListener('click',async()=>{const text=root.dataset.weatherShare||'';if(!text)return;try{if(navigator.share)await navigator.share({title:'Clima · Liga Juventino',text});else{await navigator.clipboard.writeText(text);toast('Aviso copiado')}}catch(e){}});
  $('[data-v100-weather-copy]',root)?.addEventListener('click',async()=>{const text=root.dataset.weatherShare||'';if(!text)return;try{await navigator.clipboard.writeText(text);toast('Aviso copiado')}catch(e){toast('No se pudo copiar')}});
  if(inline){
-  $('[data-v163-weather-inline]').forEach(b=>{if(b.dataset.v171Bound)return;b.dataset.v171Bound='1';b.addEventListener('click',()=>showWeatherInline(root,b.dataset.v163WeatherInline==='fixtures'?'fixtures':'fields'))});
+  $$('[data-v163-weather-inline]').forEach(b=>{
+   if(b.dataset.v171Bound)return;
+   b.dataset.v171Bound='1';
+   b.addEventListener('click',()=>{
+    const mode=b.dataset.v163WeatherInline||'forecast';
+    showWeatherInline(root,mode==='fixtures'?'fixtures':mode==='fields'?'fields':'forecast');
+   });
+  });
  }
 }
 
