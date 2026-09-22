@@ -308,12 +308,22 @@ function cedulasMarkup(){
   const rows=fixtureRows();
   return '<section class="v66-directory v66-cedulas-official" data-v66-directory="cedulas">'+
     '<div class="v66-cedula-headline"><b>Cédulas oficiales</b><small>'+rows.length+' partidos sincronizados</small></div>'+
-    '<button type="button" class="v66-primary-action" data-route="cedulaBuilder">Generar cédula</button>'+
+    '<button type="button" class="v66-primary-action" data-route="cedulaBuilder" data-v66-generate-cedula>Generar cédula</button>'+
     '<div class="v66-player-list">'+rows.map(r=>'<button type="button" class="v66-player-row v66-fixture-row" data-v66-cedula-home="'+esc(r.home)+'" data-v66-cedula-away="'+esc(r.away)+'" data-v66-cedula-cat="'+esc(r.category)+'" data-v66-cedula-date="'+esc(r.date)+'" data-v66-cedula-field="'+esc(r.field)+'">'+
       '<span class="v66-player-avatar">J'+esc(r.round||'—')+'</span><span><b>'+esc(r.home)+' vs '+esc(r.away)+'</b><small>'+esc(r.category)+' · '+esc(r.date)+' · '+esc(r.field)+'</small></span><i>›</i></button>').join('')+'</div>'+
   '</section>';
 }
 function bindCedulas(){
+  const generate=document.querySelector('[data-v66-generate-cedula]');
+  if(generate)generate.onclick=e=>{
+    e?.preventDefault?.();
+    e?.stopPropagation?.();
+    /* Botón general: abre el generador limpio. Los partidos de la lista
+       siguen abriendo el mismo generador, pero prellenado con sus datos. */
+    ['v66-cedula-home','v66-cedula-away','v66-cedula-cat','v66-cedula-date','v66-cedula-field'].forEach(k=>localStorage.removeItem(k));
+    location.hash='#/cedulaBuilder';
+  };
+
   document.querySelectorAll('[data-v66-cedula-home]').forEach(b=>b.onclick=()=>{
     localStorage.setItem('v66-cedula-home',b.dataset.v66CedulaHome||'');
     localStorage.setItem('v66-cedula-away',b.dataset.v66CedulaAway||'');
