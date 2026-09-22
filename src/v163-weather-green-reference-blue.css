@@ -398,3 +398,286 @@ body[data-app-route="v38Weather"] #v100-weather-extra .v171-weather-field-pick:a
   transform:scale(.987);
   border-color:rgba(56,216,230,.58);
 }
+
+
+/* V173 — análisis meteorológico completo adaptado al azul.
+   Conserva funciones de la referencia verde, pero usa la identidad azul/cyan de App-liga. */
+body[data-app-route="v38Weather"] #v100-weather-extra .v173-weather-output{
+  margin-top:16px;
+  padding:12px;
+  border:1px solid rgba(50,211,232,.25);
+  border-radius:22px;
+  background:
+    radial-gradient(circle at 88% 8%,rgba(37,220,233,.08),transparent 30%),
+    linear-gradient(160deg,#090f63,#060a4e);
+  box-shadow:0 18px 34px rgba(0,0,40,.22);
+}
+body[data-app-route="v38Weather"] #v100-weather-extra .v100-weather-result{
+  margin:0!important;
+  padding:0!important;
+  border:0!important;
+  border-radius:0!important;
+  background:transparent!important;
+}
+body[data-app-route="v38Weather"] #v100-weather-extra .v173-weather-empty,
+body[data-app-route="v38Weather"] #v100-weather-extra .v173-weather-loading{
+  min-height:118px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:18px;
+  border:1px dashed rgba(73,218,235,.22);
+  border-radius:16px;
+  color:#aab7d7;
+  text-align:center;
+  font-size:12px;
+}
+body[data-app-route="v38Weather"] #v100-weather-extra .v173-weather-analysis{
+  padding:16px;
+  border:1px solid rgba(255,255,255,.08);
+  border-radius:18px;
+  background:linear-gradient(160deg,rgba(11,20,112,.96),rgba(5,9,70,.96));
+}
+body[data-app-route="v38Weather"] #v100-weather-extra .v173-weather-analysis.good{
+  border-color:rgba(45,221,235,.28);
+}
+body[data-app-route="v38Weather"] #v100-weather-extra .v173-weather-analysis.watch{
+  border-color:rgba(255,199,82,.30);
+}
+body[data-app-route="v38Weather"] #v100-weather-extra .v173-weather-analysis.high{
+  border-color:rgba(255,100,121,.35);
+}
+body[data-app-route="v38Weather"] #v100-weather-extra .v173-weather-result-head{
+  display:grid;
+  grid-template-columns:minmax(0,1fr) 168px;
+  gap:14px;
+  align-items:start;
+}
+body[data-app-route="v38Weather"] #v100-weather-extra .v173-weather-kicker{
+  display:block;
+  margin-bottom:6px;
+  color:#35deeb;
+  font-size:10px;
+  font-weight:900;
+  letter-spacing:.13em;
+}
+body[data-app-route="v38Weather"] #v100-weather-extra .v173-weather-result-copy h3{
+  margin:0 0 6px;
+  color:#fff;
+  font-size:clamp(21px,6vw,28px);
+  line-height:1.05;
+  letter-spacing:-.025em;
+}
+body[data-app-route="v38Weather"] #v100-weather-extra .v173-weather-result-copy p{
+  margin:4px 0;
+  color:#aeb8d6;
+  font-size:11px;
+  line-height:1.45;
+}
+body[data-app-route="v38Weather"] #v100-weather-extra .v173-weather-fieldline{
+  color:#d7e2ff!important;
+  font-weight:750;
+}
+body[data-app-route="v38Weather"] #v100-weather-extra .v173-weather-score{
+  padding:12px 10px;
+  border:1px solid rgba(85,111,216,.34);
+  border-radius:15px;
+  background:linear-gradient(180deg,#07105d,#050946);
+  text-align:center;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.04);
+}
+body[data-app-route="v38Weather"] #v100-weather-extra .v173-weather-score span,
+body[data-app-route="v38Weather"] #v100-weather-extra .v173-weather-score small{
+  display:block;
+  color:#8391bc;
+  font-size:8.5px;
+  text-transform:uppercase;
+  letter-spacing:.055em;
+}
+body[data-app-route="v38Weather"] #v100-weather-extra .v173-weather-score strong{
+  display:block;
+  margin:6px 0 3px;
+  font-size:39px;
+  line-height:1;
+  letter-spacing:-.045em;
+}
+body[data-app-route="v38Weather"] #v100-weather-extra .v173-weather-score b{
+  display:block;
+  color:#fff;
+  font-size:10px;
+  line-height:1.2;
+}
+body[data-app-route="v38Weather"] #v100-weather-extra .v173-weather-score.good strong,
+body[data-app-route="v38Weather"] #v100-weather-extra .v173-weather-verdict.good strong{
+  color:#37e1ed;
+}
+body[data-app-route="v38Weather"] #v100-weather-extra .v173-weather-score.watch strong,
+body[data-app-route="v38Weather"] #v100-weather-extra .v173-weather-verdict.watch strong{
+  color:#ffd25f;
+}
+body[data-app-route="v38Weather"] #v100-weather-extra .v173-weather-score.high strong,
+body[data-app-route="v38Weather"] #v100-weather-extra .v173-weather-verdict.high strong{
+  color:#ff718b;
+}
+body[data-app-route="v38Weather"] #v100-weather-extra .v173-weather-verdict{
+  margin:13px 0;
+  padding:13px 14px;
+  border-radius:15px;
+  border:1px solid rgba(255,255,255,.06);
+  background:linear-gradient(180deg,rgba(17,29,116,.86),rgba(8,14,84,.86));
+}
+body[data-app-route="v38Weather"] #v100-weather-extra .v173-weather-verdict span{
+  display:block;
+  color:#8394bc;
+  font-size:9px;
+  font-weight:900;
+  letter-spacing:.11em;
+}
+body[data-app-route="v38Weather"] #v100-weather-extra .v173-weather-verdict strong{
+  display:block;
+  margin:5px 0;
+  font-size:17px;
+  line-height:1.15;
+}
+body[data-app-route="v38Weather"] #v100-weather-extra .v173-weather-verdict p{
+  margin:0;
+  color:#aeb9d6;
+  font-size:11px;
+  line-height:1.45;
+}
+body[data-app-route="v38Weather"] #v100-weather-extra .v173-weather-metrics{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:9px;
+}
+body[data-app-route="v38Weather"] #v100-weather-extra .v173-weather-metric{
+  min-height:88px;
+  padding:12px;
+  border:1px solid rgba(78,102,190,.25);
+  border-radius:14px;
+  background:linear-gradient(180deg,#08115f,#060b52);
+}
+body[data-app-route="v38Weather"] #v100-weather-extra .v173-weather-metric span,
+body[data-app-route="v38Weather"] #v100-weather-extra .v173-weather-metric small{
+  display:block;
+  color:#7f8caf;
+  font-size:9px;
+  line-height:1.3;
+}
+body[data-app-route="v38Weather"] #v100-weather-extra .v173-weather-metric strong{
+  display:block;
+  margin:7px 0 5px;
+  color:#fff;
+  font-size:19px;
+  line-height:1;
+}
+body[data-app-route="v38Weather"] #v100-weather-extra .v173-weather-why{
+  margin-top:12px;
+  padding-top:10px;
+  border-top:1px solid rgba(255,255,255,.07);
+  color:#aeb8d6;
+}
+body[data-app-route="v38Weather"] #v100-weather-extra .v173-weather-why summary{
+  cursor:pointer;
+  color:#e6ebff;
+  font-size:11px;
+  font-weight:850;
+}
+body[data-app-route="v38Weather"] #v100-weather-extra .v173-weather-why ul{
+  margin:9px 0;
+  padding-left:20px;
+  color:#c5cdea;
+  font-size:10px;
+  line-height:1.45;
+}
+body[data-app-route="v38Weather"] #v100-weather-extra .v173-weather-why p{
+  margin:8px 0 0;
+  color:#818eae;
+  font-size:9.5px;
+  line-height:1.45;
+}
+body[data-app-route="v38Weather"] #v100-weather-extra .v100-weather-ops{
+  display:grid!important;
+  grid-template-columns:repeat(2,minmax(0,1fr))!important;
+  gap:9px!important;
+  margin-top:10px!important;
+}
+body[data-app-route="v38Weather"] #v100-weather-extra .v100-weather-ops button{
+  min-height:48px!important;
+  border:1px solid rgba(69,216,234,.20)!important;
+  border-radius:14px!important;
+  background:linear-gradient(180deg,#0b1673,#08105e)!important;
+  color:#fff!important;
+  font-size:11px!important;
+  font-weight:800!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.035);
+}
+body[data-app-route="v38Weather"] #v100-weather-extra .v100-weather-ops button:active{
+  transform:scale(.985);
+  border-color:rgba(69,216,234,.48)!important;
+}
+body[data-app-route="v38Weather"] #v100-weather-extra .v100-weather-ops button:disabled{
+  opacity:.40!important;
+}
+body[data-app-route="v38Weather"] #v100-weather-extra .v173-weather-official{
+  margin-top:11px;
+  padding:11px 4px 2px;
+  border-top:1px solid rgba(255,255,255,.07);
+  color:#8390ae;
+  font-size:9.5px;
+  line-height:1.5;
+}
+body[data-app-route="v38Weather"] #v100-weather-extra .v173-weather-official b{
+  color:#c9d3ee;
+}
+body[data-app-route="v38Weather"] #v100-weather-extra .v173-weather-error{
+  min-height:120px;
+  padding:18px;
+  display:grid;
+  place-content:center;
+  gap:5px;
+  border:1px solid rgba(255,100,121,.25);
+  border-radius:16px;
+  color:#dce5ff;
+  text-align:center;
+  background:#0a0d55;
+}
+body[data-app-route="v38Weather"] #v100-weather-extra .v173-weather-error b{
+  color:#ff91a4;
+}
+body[data-app-route="v38Weather"] #v100-weather-extra .v173-weather-error span{
+  color:#9da8c8;
+  font-size:10px;
+}
+
+@media(max-width:430px){
+  body[data-app-route="v38Weather"] #v100-weather-extra .v173-weather-output{padding:10px}
+  body[data-app-route="v38Weather"] #v100-weather-extra .v173-weather-analysis{padding:13px}
+  body[data-app-route="v38Weather"] #v100-weather-extra .v173-weather-result-head{
+    grid-template-columns:1fr;
+  }
+  body[data-app-route="v38Weather"] #v100-weather-extra .v173-weather-score{
+    display:grid;
+    grid-template-columns:1fr auto;
+    align-items:center;
+    text-align:left;
+  }
+  body[data-app-route="v38Weather"] #v100-weather-extra .v173-weather-score span,
+  body[data-app-route="v38Weather"] #v100-weather-extra .v173-weather-score b,
+  body[data-app-route="v38Weather"] #v100-weather-extra .v173-weather-score small{
+    grid-column:1;
+  }
+  body[data-app-route="v38Weather"] #v100-weather-extra .v173-weather-score strong{
+    grid-column:2;
+    grid-row:1/4;
+    margin:0;
+    font-size:38px;
+  }
+  body[data-app-route="v38Weather"] #v100-weather-extra .v173-weather-metric{
+    min-height:82px;
+    padding:11px;
+  }
+  body[data-app-route="v38Weather"] #v100-weather-extra .v173-weather-metric strong{
+    font-size:17px;
+  }
+}
