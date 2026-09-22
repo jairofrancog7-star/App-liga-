@@ -45,11 +45,11 @@
     },
     {
       "name": "Huracán",
-      "logo": null
+      "logo": "https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/assets/teams/huracan.webp"
     }
   ],
   "notes": [
     "Datos públicos de categoría y equipos integrados sin modificar el diseño de App-liga-.",
-    "Huracán conserva fallback de iniciales porque no existe un archivo de escudo válido en el repositorio fuente actual."
+    "Veteranos 35+ usa los escudos locales disponibles en Liga_Futbol, incluido Huracán."
   ]
 }
