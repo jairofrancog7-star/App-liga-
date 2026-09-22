@@ -685,11 +685,11 @@ function bindRosterImport(root){
   $('[data-v126-team-search]',root)?.addEventListener('input',e=>{
     rosterTeamQuery=e.target.value||'';
     const q=norm(rosterTeamQuery);
-    $('[data-v126-team-choice]',root).forEach(b=>{
+    $$('[data-v126-team-choice]',root).forEach(b=>{
       const txt=norm(b.textContent||'');b.hidden=!!q&&!txt.includes(q);
     });
   });
-  $('[data-v126-team-choice]',root).forEach(b=>b.addEventListener('click',e=>{
+  $$('[data-v126-team-choice]',root).forEach(b=>b.addEventListener('click',e=>{
     e.preventDefault();e.stopPropagation();
     filePickerCooldownUntil=Date.now()+700;
     rosterImportTeam=b.dataset.v126TeamChoice||'';
@@ -820,7 +820,7 @@ function bindManager(root){
 }
 function bindList(root){
   $$('[data-v124-select]',root).forEach(c=>c.onchange=()=>{if(c.checked)selectedIds.add(c.dataset.v124Select);else selectedIds.delete(c.dataset.v124Select);updateSelectedUi(root)});
-  $('[data-v124-edit]',root).forEach(b=>b.onclick=()=>{const r=seasonRecords().find(x=>x.id===b.dataset.v124Edit);if(r)loadRecord(r)});
+  $$('[data-v124-edit]',root).forEach(b=>b.onclick=()=>{const r=seasonRecords().find(x=>x.id===b.dataset.v124Edit);if(r)loadRecord(r)});
   $$('[data-v124-card]',root).forEach(b=>b.onclick=()=>{const r=seasonRecords().find(x=>x.id===b.dataset.v124Card);if(r)loadRecord(r)});
   $$('[data-v124-delete]',root).forEach(b=>b.onclick=()=>deleteRecord(b.dataset.v124Delete));
 }
