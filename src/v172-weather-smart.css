@@ -479,3 +479,23 @@ body[data-app-route="v38Weather"] #v172-weather-smart::before{
 @media(prefers-reduced-motion:reduce){
   .v172-loading>span{animation:none!important}
 }
+
+/* V174 — selector de campo táctil: evita que capas/estilos globales bloqueen el select en Android. */
+body[data-app-route="v38Weather"] #v172-weather-smart .v172-control{
+  position:relative!important;
+  z-index:5!important;
+  pointer-events:auto!important;
+}
+body[data-app-route="v38Weather"] #v172-weather-smart .v172-control select{
+  position:relative!important;
+  z-index:8!important;
+  pointer-events:auto!important;
+  touch-action:manipulation!important;
+  -webkit-appearance:menulist!important;
+  appearance:auto!important;
+  opacity:1!important;
+}
+body[data-app-route="v38Weather"] #v172-weather-smart .v172-controls{
+  overflow:visible!important;
+  pointer-events:auto!important;
+}
