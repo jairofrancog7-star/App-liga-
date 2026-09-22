@@ -7,6 +7,7 @@
   const BASE='https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/';
   const DYNAMIC={};
   const MAP={
+    'america':'assets/branding/america-veteranos-35-user.png',
     'america veteranos':'assets/branding/america-veteranos-35-user.png',
     'club america veteranos':'assets/branding/america-veteranos-35-user.png',
     'club america veteranos jr':'assets/branding/america-veteranos-35-user.png',
