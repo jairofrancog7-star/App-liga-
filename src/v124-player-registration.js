@@ -380,6 +380,53 @@ function bestOfficialFromOcr(text,curp='',selectedTeam=''){
   if(best&&bestScore>=.58&&(bestScore-second>=.09||bestScore>=.88))return {...best,matchScore:bestScore};
   return null;
 }
+function v124CurpValue(ch){
+  const chars='0123456789ABCDEFGHIJKLMNÑOPQRSTUVWXYZ';
+  return chars.indexOf(ch);
+}
+function v124CurpCheckDigit(curp){
+  const c=String(curp||'').toUpperCase().replace(/[^A-Z0-9Ñ]/g,'');
+  if(c.length!==18)return null;
+  let sum=0;
+  for(let i=0;i<17;i++){const v=v124CurpValue(c[i]);if(v<0)return null;sum+=v*(18-i)}
+  return (10-(sum%10))%10;
+}
+function v124CurpValid(curp){
+  const c=String(curp||'').toUpperCase().replace(/[^A-Z0-9]/g,'');
+  if(!/^[A-Z]{4}\d{6}[HM][A-Z]{5}[A-Z0-9]\d$/.test(c))return false;
+  const expected=v124CurpCheckDigit(c);return expected!==null&&String(expected)===c[17];
+}
+function v124RawCurpCandidate(text){
+  const raw=String(text||'').toUpperCase(),lines=raw.split(/\r?\n/),out=[];
+  for(const line of lines){
+    const cleaned=line.replace(/CURP\s*[:\-]?/g,' ').replace(/[^A-Z0-9]/g,'');
+    for(let i=0;i<=cleaned.length-18;i++)out.push(cleaned.slice(i,i+18));
+    const tokens=line.replace(/[^A-Z0-9]+/g,' ').split(/\s+/).filter(Boolean);
+    for(let a=0;a<tokens.length;a++){
+      let joined='';
+      for(let b=a;b<Math.min(tokens.length,a+5)&&joined.length<=18;b++){joined+=tokens[b];if(joined.length===18)out.push(joined)}
+    }
+  }
+  return out;
+}
+function v124RecoverCurp(text,name,current=''){
+  const parts=v124NameParts(name);if(!parts)return current||'';
+  const candidates=[String(current||'').toUpperCase().replace(/[^A-Z0-9]/g,''),...v124RawCurpCandidate(text)];
+  const digitMap={O:'0',Q:'0',D:'0',I:'1',L:'1',Z:'2',S:'5',G:'6',B:'8'};
+  const letterMap={'0':'O','1':'I','2':'Z','5':'S','6':'G','8':'B'};
+  for(let raw of candidates){
+    if(raw.length!==18)continue;
+    let c=raw.split('');
+    for(let i=0;i<18;i++){
+      if((i>=4&&i<=9)||i===17)c[i]=/\d/.test(c[i])?c[i]:(digitMap[c[i]]||c[i]);
+      else if((i<=3)||(i>=11&&i<=15))c[i]=/[A-Z]/.test(c[i])?c[i]:(letterMap[c[i]]||c[i]);
+    }
+    c=c.join('');
+    c=parts.prefix+c.slice(4);
+    if(v124CurpValid(c))return c;
+  }
+  return current&&v124CurpValid(current)?current:'';
+}
 function bindOcrAssist(){
   const btn=$('[data-v64-ocr]');if(!btn||btn.dataset.v124Bound)return;btn.dataset.v124Bound='1';
   btn.addEventListener('click',()=>{
@@ -391,6 +438,8 @@ function bindOcrAssist(){
       const guess=exact||bestOfficialFromOcr(raw,curp,team);
       if(guess){
         if(v124BadOcrName(name)||guess.matchScore>=.72||v124Dice(name,guess.name)>=.45)setValue('[data-v64-cred-name]',guess.name);
+        const fixedCurp=v124RecoverCurp(raw,guess.name,curp);
+        if(fixedCurp)setValue('[data-v64-cred-curp]',fixedCurp);
         if(!team){
           setValue('[data-v64-cred-team]',guess.team);
           setValue('[data-v64-cred-cat]',guess.category);
