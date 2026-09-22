@@ -14,7 +14,13 @@ let api=null,loading=null,query='';
 function route(){return String(location.hash||'').replace(/^#\/?/,'').split('?')[0]||'home'}
 function esc(v){return String(v??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]))}
 function norm(v){try{return String(v??'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[^a-z0-9]+/g,' ').trim()}catch{return String(v??'').toLowerCase().trim()}}
-function registrationActive(){\n const r=route();\n return r==='credentialBuilder'||r.startsWith('credentialBuilder')||!!document.querySelector('#screen [data-v64-cred-team],#v124-player-registry,[data-v132-layer].open,.v126-team-panel');\n}\nfunction initials(v){return String(v||'').split(/\s+/).filter(Boolean).map(x=>x[0]).join('').slice(0,2).toUpperCase()||'JG'}
+function registrationActive(){
+ const r=route();
+ return !!window.__LJR_REGISTRATION_TEAM_PICKER__||
+   r==='credentialBuilder'||r.startsWith('credentialBuilder')||
+   !!document.querySelector('#screen [data-v64-cred-team],#v124-player-registry,[data-v132-layer].open,.v126-team-panel');
+}
+function initials(v){return String(v||'').split(/\s+/).filter(Boolean).map(x=>x[0]).join('').slice(0,2).toUpperCase()||'JG'}
 
 async function getApi(){
  if(api?.playerList)return api;
@@ -198,8 +204,8 @@ document.addEventListener('click',e=>{
     elegir un equipo dentro de credentialBuilder pertenece únicamente al formulario
     de alta/credencial. Nunca debe abrir Team Detail ni “Comparar equipos”.
     El selector V132 recibe el toque, actualiza el <select> nativo y cierra su hoja. */
- if(route()==='credentialBuilder'||
-    target.closest('[data-v132-layer],[data-v132-open],[data-v64-cred-team],.v132-team-picker,.v132-team-row')){
+ if(registrationActive()||
+    target.closest('[data-v132-layer],[data-v132-open],[data-v64-cred-team],.v132-team-picker,.v132-team-row,[data-v126-team-open],[data-v126-team-choice],.v126-team-custom,.v126-team-panel,.v126-team-choice')){
    return;
  }
 
