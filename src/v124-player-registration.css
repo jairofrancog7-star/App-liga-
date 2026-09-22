@@ -102,3 +102,51 @@ body[data-app-route="credentialBuilder"] .v64-auto-category b{font-size:16px;col
 @media(max-width:390px){
   .v126-team-panel{max-height:340px}.v126-team-list{max-height:255px}
 }
+
+
+/* V155 — Registro estable en móvil.
+   El selector de archivos sólo responde a su botón explícito y nunca queda
+   como una capa invisible sobre los selectores de equipo/temporada. */
+body[data-app-route="credentialBuilder"] .v124-registry{
+  box-sizing:border-box!important;
+  max-width:calc(100% - 18px)!important;
+  overflow:hidden!important;
+}
+body[data-app-route="credentialBuilder"] .v124-head h2{
+  font-size:clamp(22px,5.8vw,30px)!important;
+  line-height:1.06!important;
+  overflow-wrap:anywhere!important;
+}
+body[data-app-route="credentialBuilder"] .v124-head p{
+  overflow-wrap:anywhere!important;
+}
+.v126-file{
+  width:100%!important;
+  color:#fff!important;
+  font:inherit!important;
+  cursor:pointer!important;
+  touch-action:manipulation!important;
+  -webkit-tap-highlight-color:transparent!important;
+}
+.v126-file>span{pointer-events:none!important}
+.v126-file-input{
+  display:none!important;
+  position:static!important;
+  width:0!important;
+  height:0!important;
+  opacity:0!important;
+  pointer-events:none!important;
+}
+@media(max-width:520px){
+  body[data-app-route="credentialBuilder"] .v124-registry{
+    margin-left:9px!important;
+    margin-right:9px!important;
+    max-width:calc(100% - 18px)!important;
+  }
+  body[data-app-route="credentialBuilder"] .v124-season-bar{
+    grid-template-columns:1fr!important;
+  }
+  body[data-app-route="credentialBuilder"] .v124-season-bar button{
+    width:100%!important;
+  }
+}
