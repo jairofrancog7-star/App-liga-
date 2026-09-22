@@ -219,6 +219,8 @@ function toolsExtra(id='v100-more-extra'){
       button('📣','Fan Zone','Reacciones rápidas de la afición','fanzone')+
       button('📇','Directorio de delegados','Contactos guardados solo en tu equipo','delegates')+
       button('📲','Instalar app','Instalar la PWA en este dispositivo','install-app')+
+      button('📁','Historia','Temporadas, campeones y archivo','', 'history')+
+      button('📊','Match Center','Partido oficial, marcador y cronología','', 'v4-matchcenter')+
       button('🖼️','Boletín PNG','Crear imagen lista para compartir','', 'publications')+
     '</div>'+
     '<p class="v100-note">El OCR funciona en el navegador con Tesseract.js. No es la API de Google Lens y las imágenes no se suben a GitHub.</p>'+
@@ -235,7 +237,7 @@ function toolsInline(){
     inlineTool('⏱️','Centro de jornada','Tiempo cronológico y operación del día','', 'matchday'),
     inlineTool('🧩','Pizarra táctica 3D','Tablero táctil 2D/3D, JSON y PNG','', 'tactics'),
     inlineTool('📺','Modo TV','Partido, tabla y datos oficiales','tv-mode'),
-    inlineTool('📁','Historial','Temporadas, palmarés y archivo','', 'history'),
+    inlineTool('📁','Historia','Temporadas, palmarés y archivo','', 'history'),\n    inlineTool('📊','Match Center','Partido oficial, marcador y cronología','', 'v4-matchcenter'),
     inlineTool('🔔','Registrarse y recibir avisos','Categoría y equipo favorito','register-alerts'),
     inlineTool('🗓️','Programar partido','Borrador local de fecha, hora y cancha','schedule-match'),
     inlineTool('🟥','Nueva sanción','Borrador disciplinario local','new-sanction'),
