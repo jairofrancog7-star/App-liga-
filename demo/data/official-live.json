@@ -1724,12 +1724,160 @@
         "Partidos Pendientes": 0,
         "Jugadores": 0
       },
-      "standings": [],
+      "standings": [
+        {
+          "headers": [
+            "#",
+            "Equipo",
+            "PJ",
+            "PG",
+            "PE",
+            "PP",
+            "GF",
+            "GC",
+            "DIF",
+            "PTS"
+          ],
+          "rows": [
+            [
+              "1",
+              "C. de Gasca",
+              "17",
+              "13",
+              "1",
+              "3",
+              "54",
+              "17",
+              "+37",
+              "40"
+            ],
+            [
+              "2",
+              "Juventus",
+              "17",
+              "10",
+              "4",
+              "3",
+              "47",
+              "27",
+              "+20",
+              "34"
+            ],
+            [
+              "3",
+              "Cuenda",
+              "17",
+              "11",
+              "0",
+              "6",
+              "41",
+              "22",
+              "+19",
+              "33"
+            ],
+            [
+              "4",
+              "Pozos FC",
+              "17",
+              "10",
+              "2",
+              "5",
+              "48",
+              "36",
+              "+12",
+              "32"
+            ],
+            [
+              "5",
+              "Boavista",
+              "17",
+              "8",
+              "3",
+              "6",
+              "38",
+              "27",
+              "+11",
+              "27"
+            ],
+            [
+              "6",
+              "PSV",
+              "17",
+              "9",
+              "0",
+              "8",
+              "49",
+              "40",
+              "+9",
+              "27"
+            ],
+            [
+              "7",
+              "A. Santiago",
+              "17",
+              "7",
+              "1",
+              "9",
+              "36",
+              "57",
+              "-21",
+              "22"
+            ],
+            [
+              "8",
+              "F. Tavera",
+              "17",
+              "4",
+              "2",
+              "11",
+              "27",
+              "50",
+              "-23",
+              "14"
+            ],
+            [
+              "9",
+              "América",
+              "17",
+              "4",
+              "1",
+              "12",
+              "22",
+              "48",
+              "-26",
+              "13"
+            ],
+            [
+              "10",
+              "Huracán",
+              "17",
+              "2",
+              "0",
+              "15",
+              "19",
+              "69",
+              "-50",
+              "6"
+            ]
+          ]
+        }
+      ],
       "scorers": [],
       "cards": [],
       "suspensions": [],
       "fixtures": [],
-      "rosters": {},
+      "rosters": {
+        "C. de Gasca": [],
+        "Juventus": [],
+        "Cuenda": [],
+        "Pozos FC": [],
+        "Boavista": [],
+        "PSV": [],
+        "A. Santiago": [],
+        "F. Tavera": [],
+        "América": [],
+        "Huracán": []
+      },
       "player_usage": {},
       "cedulas": [],
       "cedulas_scanned": [],
@@ -11934,6 +12082,30 @@
     "TOROS DE CUENDA": {
       "local": "./assets/official-logos/toros-de-cuenda.png",
       "source": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/TorosCuenda_od8vcf"
+    },
+    "C. DE GASCA": {
+      "local": "./assets/teams/deportivo-cg.webp"
+    },
+    "CUENDA": {
+      "local": "./assets/teams/tc-cuenda.webp"
+    },
+    "POZOS FC": {
+      "local": "./assets/teams/veteranos-pozos-fc.webp"
+    },
+    "PSV": {
+      "local": "./assets/teams/psv.webp"
+    },
+    "A. SANTIAGO": {
+      "local": "./assets/teams/atletico-santiago.webp"
+    },
+    "F. TAVERA": {
+      "local": "./assets/teams/franco-tavera-jr-veteranos.webp"
+    },
+    "AMERICA": {
+      "local": "./assets/branding/america-veteranos-35-user.png"
+    },
+    "HURACAN": {
+      "local": "./assets/teams/huracan.webp"
     }
   },
   "cedula_audit": {
