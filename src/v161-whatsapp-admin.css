@@ -1,0 +1,264 @@
+/* V161 — WhatsApp Admin dentro de Más > Todas las herramientas. */
+.v161-wa-tool{
+  position:relative!important;
+  overflow:hidden!important;
+}
+.v161-wa-tool .v161-wa-icon{
+  width:36px!important;
+  height:36px!important;
+  display:grid!important;
+  place-items:center!important;
+  border-radius:12px!important;
+  background:rgba(37,211,102,.16)!important;
+  border:1px solid rgba(37,211,102,.45)!important;
+  color:#72f1a0!important;
+  font-size:11px!important;
+  font-weight:900!important;
+  letter-spacing:.04em!important;
+}
+.v161-wa-tool .v60-tool-copy{min-width:0!important}
+.v161-wa-tool .v60-tool-copy b{color:#fff!important}
+.v161-wa-tool>i{
+  position:absolute!important;
+  right:14px!important;
+  top:14px!important;
+  color:#50e78a!important;
+  font-size:22px!important;
+  font-style:normal!important;
+}
+
+.v161-wa-admin{
+  margin-top:20px!important;
+  padding:17px!important;
+  border:1px solid rgba(37,211,102,.34)!important;
+  border-radius:22px!important;
+  background:
+    radial-gradient(circle at 90% 0,rgba(37,211,102,.10),transparent 34%),
+    linear-gradient(155deg,#071570 0%,#07105d 58%,#06104c 100%)!important;
+  color:#fff!important;
+  box-shadow:0 16px 36px rgba(0,0,55,.18)!important;
+}
+.v161-wa-admin *{box-sizing:border-box!important}
+.v161-wa-head{
+  display:grid!important;
+  grid-template-columns:48px minmax(0,1fr)!important;
+  gap:12px!important;
+  align-items:center!important;
+}
+.v161-wa-badge{
+  width:48px!important;
+  height:48px!important;
+  display:grid!important;
+  place-items:center!important;
+  border-radius:15px!important;
+  background:#25d366!important;
+  color:#062b18!important;
+  font-size:13px!important;
+  font-weight:950!important;
+  letter-spacing:.05em!important;
+}
+.v161-wa-head small{
+  display:block!important;
+  color:#6ff3a0!important;
+  font-size:9px!important;
+  font-weight:900!important;
+  letter-spacing:.14em!important;
+}
+.v161-wa-head h2{
+  margin:3px 0 3px!important;
+  color:#fff!important;
+  font-size:22px!important;
+  line-height:1.05!important;
+}
+.v161-wa-head p{
+  margin:0!important;
+  color:#bdc7e5!important;
+  font-size:11px!important;
+}
+.v161-wa-help{
+  margin:15px 0!important;
+  color:#c8d0e9!important;
+  font-size:12px!important;
+  line-height:1.42!important;
+}
+.v161-wa-kinds{
+  display:flex!important;
+  flex-wrap:wrap!important;
+  gap:7px!important;
+  margin-bottom:14px!important;
+}
+.v161-wa-kinds button{
+  min-height:36px!important;
+  padding:0 11px!important;
+  border:1px solid rgba(255,255,255,.15)!important;
+  border-radius:999px!important;
+  background:#111b78!important;
+  color:#fff!important;
+  font-size:10px!important;
+  font-weight:800!important;
+}
+.v161-wa-kinds button.active{
+  border-color:#25d366!important;
+  background:rgba(37,211,102,.15)!important;
+  color:#8af5b0!important;
+}
+.v161-file-picker{
+  min-height:86px!important;
+  padding:14px!important;
+  display:grid!important;
+  align-content:center!important;
+  justify-items:center!important;
+  gap:5px!important;
+  border:1.5px dashed rgba(37,211,102,.54)!important;
+  border-radius:16px!important;
+  background:rgba(37,211,102,.06)!important;
+  text-align:center!important;
+  cursor:pointer!important;
+}
+.v161-file-picker input{
+  position:absolute!important;
+  width:1px!important;
+  height:1px!important;
+  opacity:0!important;
+  pointer-events:none!important;
+}
+.v161-file-picker span{
+  color:#fff!important;
+  font-size:13px!important;
+  font-weight:900!important;
+}
+.v161-file-picker small{
+  color:#9fb2d6!important;
+  font-size:9px!important;
+}
+.v161-file-list{
+  display:grid!important;
+  gap:6px!important;
+  margin:10px 0 13px!important;
+}
+.v161-file-list>span{
+  color:#8999bd!important;
+  font-size:10px!important;
+}
+.v161-file-list>div{
+  min-height:42px!important;
+  display:flex!important;
+  align-items:center!important;
+  justify-content:space-between!important;
+  gap:10px!important;
+  padding:8px 10px!important;
+  border:1px solid rgba(255,255,255,.09)!important;
+  border-radius:11px!important;
+  background:#0b1469!important;
+}
+.v161-file-list b{
+  min-width:0!important;
+  overflow:hidden!important;
+  text-overflow:ellipsis!important;
+  white-space:nowrap!important;
+  font-size:10px!important;
+}
+.v161-file-list small{
+  flex:0 0 auto!important;
+  color:#9caad0!important;
+  font-size:9px!important;
+}
+.v161-message{
+  display:grid!important;
+  gap:6px!important;
+}
+.v161-message>span{
+  color:#b9c5e3!important;
+  font-size:10px!important;
+  font-weight:850!important;
+}
+.v161-message textarea{
+  width:100%!important;
+  min-height:92px!important;
+  resize:vertical!important;
+  padding:11px 12px!important;
+  border:1px solid rgba(74,114,225,.46)!important;
+  border-radius:13px!important;
+  outline:0!important;
+  background:#071064!important;
+  color:#fff!important;
+  font:500 12px/1.4 Inter,Roboto,Arial,sans-serif!important;
+}
+.v161-message textarea:focus{
+  border-color:#25d366!important;
+  box-shadow:0 0 0 2px rgba(37,211,102,.10)!important;
+}
+.v161-wa-actions{
+  display:grid!important;
+  grid-template-columns:1fr!important;
+  gap:8px!important;
+  margin-top:12px!important;
+}
+.v161-wa-actions button{
+  min-height:44px!important;
+  padding:0 13px!important;
+  border:1px solid rgba(255,255,255,.15)!important;
+  border-radius:12px!important;
+  background:#121b78!important;
+  color:#fff!important;
+  font-size:11px!important;
+  font-weight:900!important;
+}
+.v161-wa-actions button.primary{
+  border-color:#25d366!important;
+  background:#25d366!important;
+  color:#052914!important;
+}
+.v161-generators{
+  display:grid!important;
+  grid-template-columns:repeat(2,minmax(0,1fr))!important;
+  gap:7px!important;
+  margin-top:15px!important;
+  padding-top:14px!important;
+  border-top:1px solid rgba(255,255,255,.09)!important;
+}
+.v161-generators>b{
+  grid-column:1/-1!important;
+  color:#fff!important;
+  font-size:11px!important;
+}
+.v161-generators button{
+  min-height:40px!important;
+  padding:7px 8px!important;
+  border:1px solid rgba(65,226,240,.24)!important;
+  border-radius:11px!important;
+  background:#0a176d!important;
+  color:#d9faff!important;
+  font-size:9.5px!important;
+  font-weight:800!important;
+}
+.v161-wa-note{
+  margin:13px 0 0!important;
+  color:#94a4c9!important;
+  font-size:9px!important;
+  line-height:1.4!important;
+}
+.v161-toast{
+  position:fixed!important;
+  left:50%!important;
+  bottom:96px!important;
+  transform:translateX(-50%)!important;
+  z-index:2147483000!important;
+  max-width:calc(100vw - 32px)!important;
+  padding:10px 14px!important;
+  border:1px solid rgba(37,211,102,.45)!important;
+  border-radius:12px!important;
+  background:#061056!important;
+  color:#fff!important;
+  box-shadow:0 10px 28px rgba(0,0,0,.35)!important;
+  font-size:11px!important;
+  font-weight:800!important;
+  text-align:center!important;
+}
+@media(max-width:390px){
+  .v161-wa-admin{padding:14px!important;border-radius:18px!important}
+  .v161-wa-head{grid-template-columns:44px minmax(0,1fr)!important}
+  .v161-wa-badge{width:44px!important;height:44px!important}
+  .v161-wa-head h2{font-size:19px!important}
+  .v161-generators{grid-template-columns:1fr 1fr!important}
+}
