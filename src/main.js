@@ -4796,7 +4796,30 @@ function cedulasView(){
     '<div class="v60-panel">'+matches.map(m=>'<div class="v60-row"><span class="v60-row-copy"><b>'+team(m.home).name+' vs '+team(m.away).name+'</b><small>'+m.category+' · Jornada '+m.jornada+' · '+m.day+' '+m.time+'</small></span><button class="v60-btn ghost" data-v60-cedula="'+m.id+'">Cédula</button></div>').join('')+'</div>'+
     '<p class="v60-note">La cédula pública muestra únicamente información deportiva; no publica CURP, INE, domicilio ni documentos privados.</p></section>';
 }
+function v60OfficialFixtureCrest(name){
+  const label=String(name||'Equipo').trim();
+  const src=window.LJR_TEAM_LOGOS?.get?.(label)||window.V66_OFFICIAL_DIRECTORY?.logoFor?.(label)||'';
+  const fallback=label.split(/\s+/).filter(Boolean).slice(0,2).map(x=>x[0]||'').join('').toUpperCase()||'JR';
+  return src
+    ?'<span class="crest"><img src="'+v64Esc(src)+'" alt="'+v64Esc(label)+'" style="width:100%;height:100%;object-fit:contain;border-radius:50%" loading="eager" decoding="async"></span>'
+    :'<span class="crest">'+v64Esc(fallback)+'</span>';
+}
 function cedulaDetailView(){
+  const official=localStorage.getItem('v66-cedula-source')==='official-directory';
+  if(official){
+    const home=localStorage.getItem('v66-cedula-home')||'Equipo local';
+    const away=localStorage.getItem('v66-cedula-away')||'Equipo visitante';
+    const category=localStorage.getItem('v66-cedula-cat')||'Por confirmar';
+    const date=localStorage.getItem('v66-cedula-date')||'Por confirmar';
+    const field=localStorage.getItem('v66-cedula-field')||'Por confirmar';
+    const round=localStorage.getItem('v66-cedula-round')||'—';
+    return '<section class="v60-tool-page">'+v60Header('CÉDULA OFICIAL','Partido','Consulta interna del partido seleccionado. Lista para imprimir o guardar como PDF.')+
+      '<article class="v60-cedula"><div class="v60-cedula-head"><b>LIGA MUNICIPAL DE FÚTBOL · JUVENTINO ROSAS</b><span>J'+v64Esc(round)+'</span></div>'+
+        '<div class="v60-versus"><div>'+v60OfficialFixtureCrest(home)+'<strong>'+v64Esc(home)+'</strong></div><span>VS</span><div>'+v60OfficialFixtureCrest(away)+'<strong>'+v64Esc(away)+'</strong></div></div>'+
+        '<div class="v60-cedula-meta"><div><small>Categoría</small><b>'+v64Esc(category)+'</b></div><div><small>Fecha / hora</small><b>'+v64Esc(date)+'</b></div><div><small>Campo</small><b>'+v64Esc(field)+'</b></div><div><small>Árbitro</small><b>Por asignar</b></div></div>'+
+      '</article>'+
+      '<div class="v60-actions"><button class="v60-btn" data-v60-print>Imprimir / PDF</button><button class="v60-btn outline" data-route="cedulaBuilder">Abrir generador</button><button class="v60-btn ghost" data-route="cedulas">Volver a cédulas</button></div></section>';
+  }
   const m=matches.find(x=>x.id===state.selectedMatch)||matches[0];
   return '<section class="v60-tool-page">'+v60Header('CÉDULA OFICIAL','Partido','Vista interna preparada para imprimir o guardar como PDF.')+
     '<article class="v60-cedula"><div class="v60-cedula-head"><b>LIGA MUNICIPAL DE FÚTBOL · JUVENTINO ROSAS</b><span>J'+m.jornada+'</span></div>'+
@@ -5649,7 +5672,7 @@ document.querySelector('[data-v64-susp-save]')?.addEventListener('click',()=>{co
 document.querySelector('[data-v64-susp-preview]')?.addEventListener('click',()=>{const category=document.querySelector('[data-v64-susp-cat]')?.value||'',jornada=document.querySelector('[data-v64-susp-round]')?.value||'',host=document.querySelector('[data-v64-susp-modal]');if(host)host.innerHTML='<div class="v64-susp-modal"><div><b>⚠ Jornada suspendida hoy</b><button type="button" data-v64-susp-close>×</button></div><p>Se suspende la jornada de la categoría seleccionada que tenía juego programado para hoy.</p><strong>'+v64Esc(category)+'</strong><span>Jornada: '+v64Esc(jornada)+'</span><em>Vista previa · no publicada</em><button class="v60-btn" data-v64-susp-ok>Entendido</button></div>';const close=()=>{if(host)host.innerHTML=''};host?.querySelector('[data-v64-susp-close]')?.addEventListener('click',close);host?.querySelector('[data-v64-susp-ok]')?.addEventListener('click',close)},{once:true});
 const v60note=document.querySelector('[data-v60-matchday-note]');if(v60note)v60note.oninput=()=>{const s=v60MatchdayState();s.note=v60note.value;localStorage.setItem('v60-matchday',JSON.stringify(s))};
 document.querySelectorAll('[data-v60-weather]').forEach(el=>el.onclick=async()=>{const f=v60Field(el.dataset.v60Weather),out=document.querySelector('[data-v60-weather-result="'+f.id+'"]');if(!out||!f.weather||!Number.isFinite(f.lat)||!Number.isFinite(f.lon))return;out.hidden=false;out.classList.remove('is-error');out.textContent='Consultando clima…';el.disabled=true;try{const u='https://api.open-meteo.com/v1/forecast?latitude='+encodeURIComponent(f.lat)+'&longitude='+encodeURIComponent(f.lon)+'&current=temperature_2m,precipitation,weather_code,wind_speed_10m&timezone=America%2FMexico_City';const r=await fetch(u);if(!r.ok)throw new Error('weather');const j=await r.json(),w=j.current||{};out.innerHTML='<b>'+Math.round(w.temperature_2m??0)+' °C</b><div class="v60-weather-grid"><span><b>'+Number(w.precipitation??0).toFixed(1)+' mm</b><small>Precipitación</small></span><span><b>'+Math.round(w.wind_speed_10m??0)+' km/h</b><small>Viento</small></span><span><b>'+String(w.weather_code??'—')+'</b><small>Código clima</small></span></div><small>Actualización: '+String(w.time||'ahora')+'</small>'}catch(e){out.classList.add('is-error');out.textContent='No se pudo consultar el clima en este momento.'}finally{el.disabled=false}});
-document.querySelectorAll('[data-v60-cedula]').forEach(el=>el.onclick=()=>{state.selectedMatch=el.dataset.v60Cedula;save();go('cedulaDetail')});
+document.querySelectorAll('[data-v60-cedula]').forEach(el=>el.onclick=()=>{localStorage.removeItem('v66-cedula-source');state.selectedMatch=el.dataset.v60Cedula;save();go('cedulaDetail')});
 document.querySelectorAll('[data-v60-print]').forEach(el=>el.onclick=()=>window.print());
 document.querySelectorAll('[data-v60-share]').forEach(el=>el.onclick=async()=>{const txt=document.querySelector('[data-v60-share-text]')?.textContent?.trim()||'Liga Juventino Rosas';try{if(navigator.share)await navigator.share({title:'Liga Juventino Rosas',text:txt});else{await navigator.clipboard.writeText(txt);toast('Texto copiado')}}catch(e){}});
 document.querySelectorAll('[data-v60-copy]').forEach(el=>el.onclick=async()=>{const txt=document.querySelector('[data-v60-share-text]')?.textContent?.trim()||'';try{await navigator.clipboard.writeText(txt);toast('Texto copiado')}catch(e){toast('No se pudo copiar')}});
