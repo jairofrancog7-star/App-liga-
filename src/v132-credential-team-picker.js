@@ -222,7 +222,23 @@ function closeSheet(){
   $('[data-v132-layer]')?.classList.remove('open');document.body.classList.remove('v132-picker-open');
 }
 
+function hideCredentialDuplicateBar(){
+  const isCredential=route()==='credentialBuilder'||!!document.querySelector('#screen [data-v64-doc]');
+  if(!isCredential)return;
+  document.querySelectorAll('#screen [data-v66-compact-top],#screen .v66-compact-top').forEach(el=>{
+    el.hidden=true;
+    el.setAttribute('aria-hidden','true');
+    el.style.setProperty('display','none','important');
+    el.style.setProperty('height','0','important');
+    el.style.setProperty('min-height','0','important');
+    el.style.setProperty('margin','0','important');
+    el.style.setProperty('padding','0','important');
+    el.style.setProperty('border','0','important');
+  });
+}
+
 async function enhance(){
+  hideCredentialDuplicateBar();
   if(route()!=='credentialBuilder')return;
   await loadOfficial();
   const sel=nativeSelect();if(!sel)return;
@@ -246,7 +262,7 @@ async function enhance(){
   updateButton();
 }
 
-let timer=0;function schedule(){clearTimeout(timer);timer=setTimeout(enhance,80)}
+let timer=0;function schedule(){hideCredentialDuplicateBar();clearTimeout(timer);timer=setTimeout(()=>{hideCredentialDuplicateBar();enhance()},40)}
 window.addEventListener('hashchange',schedule);
 window.addEventListener('ljr:official-data',schedule);
 const screen=$('#screen');if(screen)new MutationObserver(schedule).observe(screen,{childList:true,subtree:true});
