@@ -921,14 +921,60 @@ function v183ContentTokens(value){
 }
 function v185NameStructure(value){
   const clean=v184SafeNameRepair(value),parts=v183ContentTokens(clean);
-  const complete=parts.length>=V185_NAME_RULE.minContentParts;
-  const given=complete?parts.slice(0,-V185_NAME_RULE.surnames):parts.slice(0,Math.min(1,parts.length));
-  const surnames=complete?parts.slice(-V185_NAME_RULE.surnames):parts.slice(1);
-  const missingSurnames=Math.max(0,V185_NAME_RULE.surnames-surnames.length);
+  const given=parts.length>=V185_NAME_RULE.minContentParts?parts.slice(0,-V185_NAME_RULE.surnames):parts.slice(0,Math.min(1,parts.length));
+  const surnames=parts.length>=V185_NAME_RULE.minContentParts?parts.slice(-V185_NAME_RULE.surnames):parts.slice(1);
+  const tinySurname=surnames.some(s=>norm(s).replace(/\s+/g,'').length<3);
+  const complete=parts.length>=V185_NAME_RULE.minContentParts&&surnames.length===V185_NAME_RULE.surnames&&!tinySurname;
+  const missingSurnames=Math.max(0,V185_NAME_RULE.surnames-surnames.filter(s=>norm(s).replace(/\s+/g,'').length>=3).length);
   return {
     clean,parts,given,surnames,complete,missingSurnames,
-    label:complete?'Estructura completa':'Falta '+Math.max(1,missingSurnames)+' apellido'+(Math.max(1,missingSurnames)===1?'':'s')
+    label:complete?'Estructura completa':'Falta '+Math.max(1,missingSurnames)+' apellido'+(Math.max(1,missingSurnames)===1?'':'s')+' completo'
   };
+}
+
+/* V186 — completar apellidos SOLO con el padrón cuando la coincidencia es
+   inequívoca. No inventa apellidos. Sirve para tablas que publican "Nombre
+   Apellido" pero el padrón sí conserva "Nombre Apellido1 Apellido2". */
+function v186CompleteFromKnown(value,known=v126KnownPeople(),team=''){
+  const clean=v184SafeNameRepair(value),shape=v185NameStructure(clean);
+  if(shape.complete)return null;
+
+  let observed=v183ContentTokens(clean);
+  // Descartar inicial/ruido final como "R." / "Rr" antes de buscar el nombre completo.
+  while(observed.length>=3&&String(observed.at(-1)||'').length<=2)observed.pop();
+  if(observed.length<2)return null;
+
+  const target=norm(team),rows=[];
+  for(const p of (known||[])){
+    if(!p?.name)continue;
+    const full=v185NameStructure(p.name);
+    if(!full.complete)continue;
+    const pt=v183ContentTokens(full.clean);
+    if(pt.length<observed.length)continue;
+
+    let exact=0,sum=0,min=1;
+    for(let i=0;i<observed.length;i++){
+      const s=v124TokenSim(observed[i],pt[i]||'');
+      sum+=s;min=Math.min(min,s);
+      if(norm(observed[i])===norm(pt[i]))exact++;
+    }
+    const avg=sum/observed.length;
+    const sameTeam=!!target&&norm(p.team)===target;
+    let score=avg+(exact===observed.length?.18:0)+(sameTeam?.025:0);
+    rows.push({record:p,name:p.name,score,avg,min,exact,sameTeam});
+  }
+  rows.sort((a,b)=>b.score-a.score);
+  const best=rows[0],second=rows[1];
+  if(!best)return null;
+  const margin=best.score-(second?.score??0);
+
+  // Dos palabras exactas seguidas + candidato único, o lectura fuzzy muy alta.
+  const safe=
+    (best.exact===observed.length&&best.avg>=.97&&margin>=.055)||
+    (observed.length>=3&&best.exact>=2&&best.avg>=.93&&best.min>=.82&&margin>=.04)||
+    (best.sameTeam&&best.exact>=2&&best.avg>=.92&&margin>=.035);
+
+  return safe?{name:best.name,record:best.record,score:Math.min(1,best.score),source:'padrón',raw:clean}:null;
 }
 function v185StructuredKnownSimilarity(a,b){
   const A=v185NameStructure(a),B=v185NameStructure(b);
@@ -1019,7 +1065,9 @@ function v183ResolveVariants(variants,known=v126KnownPeople()){
   }
 
   clean.sort((a,b)=>v183VariantScore(b,clean,known)-v183VariantScore(a,clean,known));
-  return v184SafeNameRepair(clean[0]);
+  const picked=v184SafeNameRepair(clean[0]);
+  const completed=v186CompleteFromKnown(picked,known,rosterImportTeam);
+  return completed?.name||picked;
 }
 function v183AlignNameLists(base,peer){
   const n=base.length,m=peer.length,gap=-.34;
@@ -1091,7 +1139,9 @@ function v180NameColumnLines(text){
     const n=norm(line);
     if(!n||/^(jugador|nombre|nombres|equipo|g total|total)$/.test(n))continue;
 
-    const clean=v184SafeNameRepair(line);
+    let clean=v184SafeNameRepair(line);
+    const completion=v186CompleteFromKnown(clean,known,rosterImportTeam);
+    if(completion)clean=completion.name;
     let candidate='';
     const exact=known.find(p=>norm(p.name)===norm(clean));
     if(exact)candidate=exact.name;
@@ -1218,7 +1268,7 @@ async function v180ReadPrintedNameColumn(source,label,layout){
 
   bestText=v180BestNameColumnText(parts,target);
   bestNames=v180NameColumnLines(bestText);
-  v126SetImportStatus('OCR Preciso V185 terminado · '+bestNames.length+(target?' de '+target:'')+' nombres · revisa ✓/✕ antes de aplicar');
+  v126SetImportStatus('OCR Preciso V186 terminado · '+bestNames.length+(target?' de '+target:'')+' nombres · revisa ✓/✕ antes de aplicar');
   return bestText;
 }
 async function v179TwoBandSweep(source,label,pass,total,kind){
@@ -1254,7 +1304,7 @@ async function v126OcrImage(source,label='imagen'){
       const namesOnly=await v180ReadPrintedNameColumn(source,label,table);
       const count=v180NameColumnLines(namesOnly).length;
       if(count>=Math.max(3,Math.floor((table.rows||count)*.55))){
-        v126SetImportStatus('Tabla impresa detectada · OCR Preciso V185 · '+count+(table.rows?' de ~'+table.rows:'')+' nombres · NO se registró ninguno.');
+        v126SetImportStatus('Tabla impresa detectada · OCR Preciso V186 · '+count+(table.rows?' de ~'+table.rows:'')+' nombres · NO se registró ninguno.');
         return namesOnly;
       }
       /* Si la tabla es atípica y la columna aislada no dio suficiente texto,
@@ -1704,8 +1754,11 @@ function v126AnalyzeText(text){
   if(!rosterImportTeam)throw new Error('Primero elige el equipo de esta lista');
   const team=rosterImportTeam,season=selectedSeason(),current=seasonRecords(season),names=v126ExtractCandidates(text),entries=[];
   for(const rawName0 of names){
-    const rawName=v184SafeNameRepair(rawName0),rawStructure=v185NameStructure(rawName);
-    const hit=v126BestKnown(rawName,team),known=hit?.record||null;
+    let rawName=v184SafeNameRepair(rawName0);
+    const completion=v186CompleteFromKnown(rawName,v126KnownPeople(),team);
+    if(completion)rawName=completion.name;
+    const rawStructure=v185NameStructure(rawName);
+    const hit=v126BestKnown(rawName,team),known=hit?.record||completion?.record||null;
     const canonical=known?.name||rawName;
     const canonicalStructure=v185NameStructure(canonical);
     const currentSame=current.find(r=>norm(r.name)===norm(canonical)&&norm(r.team)===norm(team));
@@ -1787,7 +1840,7 @@ function v126RosterResultHtml(){
       '<div><b data-v172-rejected>'+s.rejected+'</b><span>Rechazados ✕</span></div>'+
       '<div><b data-v172-pending>'+s.pending+'</b><span>Por revisar</span></div>'+
     '</div>'+
-    '<div class="v126-auto-info v172-manual-review"><b>Revisión manual obligatoria · 1 nombre + 2 apellidos</b><span>La lectura sólo propone nombres. No inventa apellidos desde jugadores anteriores. Si falta un apellido, corrige el nombre antes de ✓ Aprobar. Nada se registra, mueve ni renueva automáticamente.</span></div>'+
+    '<div class="v126-auto-info v172-manual-review"><b>Revisión manual obligatoria · 1 nombre + 2 apellidos</b><span>La lectura exige nombre completo. Si el padrón contiene una coincidencia inequívoca, completa el segundo apellido; si no existe esa información, bloquea ✓ Aprobar para no inventarlo. Nada se registra, mueve ni renueva automáticamente.</span></div>'+
     (s.total<20?'<div class="v157-review-note"><b>Se detectaron '+s.total+' nombres</b><span>Si la imagen tiene más jugadores, abre “Ver / corregir texto detectado” o vuelve a escanear con una foto recta y nítida. OCR Pro vuelve a leer la hoja por bloques superpuestos, columnas y contraste adaptativo para recuperar nombres pequeños.</span></div>':'')+
     '<div class="v126-detected">'+personRows+'</div>'+
     ((Array.isArray(rosterImport.missing)?rosterImport.missing:[]).length?'<div class="v126-missing"><div class="v126-missing-head"><span><b>No aparecen en la lista</b><small>No se borran automáticamente; marca sólo los que realmente salen del equipo.</small></span><button type="button" data-v126-mark-missing>Marcar todos</button></div>'+
