@@ -194,6 +194,15 @@ document.addEventListener('click',e=>{
  if(!(e.target instanceof Element))return;
  const target=e.target;
 
+ /* V144 — REGISTRO DE JUGADOR:
+    elegir un equipo dentro de credentialBuilder pertenece únicamente al formulario
+    de alta/credencial. Nunca debe abrir Team Detail ni “Comparar equipos”.
+    El selector V132 recibe el toque, actualiza el <select> nativo y cierra su hoja. */
+ if(route()==='credentialBuilder'||
+    target.closest('[data-v132-layer],[data-v132-open],[data-v64-cred-team],.v132-team-picker,.v132-team-row')){
+   return;
+ }
+
  /* V109 — Los botones superiores de Jugadores son FILTROS.
     No deben ser capturados por el comparador global de equipos/jugadores. */
  if(route()==='players'&&target.closest('[data-v66-player-team-filter],[data-v66-player-cat],.v66-team-filter-rail,.v66-category-rail'))return;
