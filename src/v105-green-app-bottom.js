@@ -6,7 +6,7 @@
 if(window.__LJR_V105_GREEN_BOTTOM__)return;
 window.__LJR_V105_GREEN_BOTTOM__=true;
 
-const BUILD='20260921-official-calendar1';
+const BUILD='20260921-partidos-jornadas-button-v133';
 const GREEN='https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/';
 const MOTION=GREEN+'assets/motion/';
 const MEDIA=GREEN+'media/';
@@ -66,9 +66,30 @@ function motion(asset,k,t,d){
 function log(action){
  const list=read('v105-activity',[]);list.unshift({action,at:new Date().toISOString()});write('v105-activity',list.slice(0,50));
 }
+function openCompetitionFixtures(){
+ const screen=document.querySelector('#screen');
+ if(!screen)return;
+ const tabs=screen.querySelector(':scope > .tabs')||screen.querySelector('.tabs');
+ const btn=tabs?[...tabs.querySelectorAll('.tab')].find(x=>/Partidos/i.test(x.textContent||''))||tabs.querySelector('.tab'):null;
+ if(btn&&!btn.classList.contains('active'))btn.click();
+ setTimeout(()=>{
+   const target=screen.querySelector('[data-v12-fixtures]')||tabs||screen;
+   target?.scrollIntoView({behavior:'smooth',block:'start'});
+ },140);
+}
 function go(r){
  if(!r)return;
  log('Abrir '+r);
+
+ if(r==='competition'){
+   const current=route();
+   try{sessionStorage.setItem('v105-open-competition-fixtures','1')}catch(_){}
+   if(current==='competition'){
+     openCompetitionFixtures();
+     try{sessionStorage.removeItem('v105-open-competition-fixtures')}catch(_){}
+     return;
+   }
+ }
 
  // V128: el botón Goleadores debe llevar al ranking de jugadores, incluso
  // cuando ya estamos dentro de #/scorers y el hash no cambia.
@@ -425,6 +446,14 @@ let timer=0;
 function mount(){
  const screen=$('#screen');if(!screen)return;
  const r=route(),existing=$('#v105-bottom',screen);
+ if(r==='competition'){
+   let shouldOpen=false;
+   try{shouldOpen=sessionStorage.getItem('v105-open-competition-fixtures')==='1'}catch(_){}
+   if(shouldOpen){
+     try{sessionStorage.removeItem('v105-open-competition-fixtures')}catch(_){}
+     setTimeout(openCompetitionFixtures,170);
+   }
+ }
  if(!supported(r)){if(existing)existing.remove();return}
  if(existing&&existing.dataset.v105Route!==r)existing.remove();
  let sec=$('#v105-bottom',screen);
