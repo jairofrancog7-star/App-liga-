@@ -9,10 +9,10 @@ let db=window.LJR_OFFICIAL_DATA||null,loading=null;
 let activeTab=localStorage.getItem('v42-team-tab')||'summary';
 let notifyOpen=false,compareOpen=false,compareTarget='';
 
-function route(){return location.hash.replace('#/','')||'home'}
+function route(){return location.hash.replace(/^#\//,'').split('?')[0]||'home'}
 function esc(v){return String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
 function norm(v){return String(v??'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[^a-z0-9]+/g,' ').trim()}
-function slug(v){return 'OFF-'+String(v||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toUpperCase().replace(/[^A-Z0-9]+/g,'-').replace(/^-|-$/g,'')}
+function slug(v){return 'OFF-'+String(v||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toUpperCase().replace(/[^A-Z0-9]+/g,'-').replace(/^-|-$/g,'')}\nfunction registrationActive(){\n const r=route();\n return r==='credentialBuilder'||r.startsWith('credentialBuilder')||!!document.querySelector('#screen [data-v64-cred-team],#v124-player-registry,[data-v132-layer].open,.v126-team-panel');\n}
 async function load(){if(db)return db;if(loading)return loading;loading=(async()=>{for(const u of [LOCAL,REMOTE]){try{const r=await fetch(u,{cache:'no-store'});if(r.ok){db=await r.json();break}}catch(e){}}return db})();return loading}
 function allTeams(){
  const out=[];
