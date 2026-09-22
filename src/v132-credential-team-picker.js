@@ -32,9 +32,13 @@ function ageFromDob(v){
   return a>=0&&a<120?a:null;
 }
 function detectedAge(){
-  const explicit=Number($('[data-v100-age]')?.value);
-  if(Number.isFinite(explicit)&&explicit>=0&&explicit<120)return explicit;
-  return ageFromDob($('[data-v100-dob]')?.value||'');
+  const raw=String($('[data-v100-age]')?.value??'').trim();
+  if(raw!==''){
+    const explicit=Number(raw);
+    if(Number.isFinite(explicit)&&explicit>=0&&explicit<120)return explicit;
+  }
+  const dob=String($('[data-v100-dob]')?.value??'').trim();
+  return dob?ageFromDob(dob):null;
 }
 function eligibleCategories(age=detectedAge()){
   if(age===null)return CATEGORY_ORDER.slice();
@@ -157,7 +161,7 @@ function renderSheet(){
   const lets=letters(activeCategory==='all'?eligibleList:eligibleList.filter(x=>x.category===activeCategory)),show=filtered(list);
   const status=$('[data-v132-eligibility]',sheet);
   if(status)status.innerHTML=age===null
-    ?'<b>Edad aún no detectada</b><span>Al detectar la fecha de nacimiento se mostrarán únicamente las categorías en las que puede registrarse.</span>'
+    ?'<b>Edad aún no detectada · todas las categorías visibles</b><span>Primera Fuerza · Intermedia · Segunda Fuerza · Veteranos 35+ · Veteranos 50+. Al detectar la edad se ocultarán las categorías que no correspondan.</span>'
     :'<b>'+age+' años · categorías elegibles</b><span>'+eligible.join(' · ')+'</span>';
   const count=$('[data-v132-count]',sheet);if(count)count.textContent=show.length+' equipos disponibles';
   const catRail=$('[data-v132-cats]',sheet);
