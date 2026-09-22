@@ -89,6 +89,13 @@
     font-size:6.7px;
     line-height:1.25;
   }
+  .v144-stream-embed>footer>div,
+  .v144-stream-fallback>div{
+    display:flex;
+    flex-wrap:wrap;
+    justify-content:flex-end;
+    gap:5px;
+  }
   .v144-stream-embed>footer button,
   .v144-stream-fallback button{
     min-height:30px;
