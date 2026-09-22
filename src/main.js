@@ -4995,9 +4995,25 @@ function v60PitchPlayers(form){
 }
 function tacticsView(){
   const form=v60Formation();
-  return '<section class="v60-tool-page">'+v60Header('PIZARRA','Tácticas','Cambia la formación y prepara una estructura rápida dentro de la app.')+
-    '<div class="v60-formations">'+['2-3-1','3-2-1','2-2-2'].map(x=>'<button class="'+(x===form?'active':'')+'" data-v60-formation="'+x+'">'+x+'</button>').join('')+'</div>'+
-    '<div class="v60-pitch">'+v60PitchPlayers(form)+'</div><p class="v60-note">La pizarra es una herramienta de planificación; no modifica alineaciones oficiales ni resultados.</p></section>';
+  return '<section class="v60-tool-page v160-tactics-page" data-v160-tactics>'+
+    '<div class="v160-tactics-hero">'+
+      '<span class="v160-kicker">LIGA JUVENTINO · TÁCTICAS 2D / 3D</span>'+
+      '<h1>FÚTBOL QUE <strong>SE MUEVE.</strong></h1>'+
+      '<p>Un solo sistema para preparar la táctica, probar formaciones, mover jugadores, guardar el tablero y exportarlo sin salir del diseño azul de la Liga.</p>'+
+    '</div>'+
+    '<div class="v160-quick-actions">'+
+      '<button type="button" class="primary" data-v160-scroll-board>⚽ <b>Abrir tablero táctico</b></button>'+
+      '<button type="button" data-route="simulator">📊 <b>Simular jornada inteligente</b></button>'+
+      '<button type="button" data-v60-comp="fixtures">📅 <b>Ver partidos</b></button>'+
+    '</div>'+
+    '<p class="v160-motion-note">Optimizado para móvil y compatible con “reducir movimiento”.</p>'+
+    '<div class="v160-stage-label"><i></i><span>PARTIDO / TÁCTICA 3D</span></div>'+
+    '<div class="v160-board-shell" data-v160-main-board>'+
+      '<div class="v60-formations">'+['2-3-1','3-2-1','2-2-2'].map(x=>'<button class="'+(x===form?'active':'')+'" data-v60-formation="'+x+'">'+x+'</button>').join('')+'</div>'+
+      '<div class="v160-pitch-frame"><div class="v60-pitch">'+v60PitchPlayers(form)+'</div></div>'+
+    '</div>'+
+    '<p class="v60-note v160-note">La pizarra es una herramienta de planificación; no modifica alineaciones oficiales ni resultados. Las funciones avanzadas 2D/3D, arrastre, guardado, PNG y JSON permanecen disponibles más abajo.</p>'+
+  '</section>';
 }
 function v60SimState(){try{return JSON.parse(localStorage.getItem('v60-sim')||'{}')||{}}catch(e){return {}}}
 function simulatorView(){
