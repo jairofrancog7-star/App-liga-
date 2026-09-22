@@ -320,7 +320,7 @@ function bindCedulas(){
     e?.stopPropagation?.();
     /* Botón general: abre el generador limpio. Los partidos de la lista
        siguen abriendo el mismo generador, pero prellenado con sus datos. */
-    ['v66-cedula-home','v66-cedula-away','v66-cedula-cat','v66-cedula-date','v66-cedula-field'].forEach(k=>localStorage.removeItem(k));
+    ['v66-cedula-home','v66-cedula-away','v66-cedula-cat','v66-cedula-date','v66-cedula-field','v66-cedula-round','v66-cedula-source'].forEach(k=>localStorage.removeItem(k));
     location.hash='#/cedulaBuilder';
   };
 
