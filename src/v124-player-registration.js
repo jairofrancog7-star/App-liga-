@@ -113,6 +113,62 @@ function syncOfficialSeason(silent=false){
   return {added,kept,removed};
 }
 
+function v124AgeFromDob(v){
+  if(!v)return null;
+  const d=new Date(v+'T12:00:00'),n=new Date();
+  if(Number.isNaN(d.getTime())||d>n)return null;
+  let a=n.getFullYear()-d.getFullYear();
+  const md=n.getMonth()-d.getMonth();
+  if(md<0||(md===0&&n.getDate()<d.getDate()))a--;
+  return a>=0&&a<120?a:null;
+}
+function v124VeteranMinimum(category){
+  const c=norm(category);
+  if(/50/.test(c)&&/veteran/.test(c))return 50;
+  if(/35/.test(c)&&/veteran/.test(c))return 35;
+  return 0;
+}
+function v124Eligibility(data=captureForm()){
+  const min=v124VeteranMinimum(data.category),age=v124AgeFromDob(data.dob);
+  if(!min)return {ok:true,min:0,age};
+  if(age===null)return {ok:false,min,age:null,message:'No se puede registrar en '+data.category+' hasta detectar o capturar una fecha de nacimiento válida.'};
+  if(age<min)return {ok:false,min,age,message:'No elegible para '+data.category+': tiene '+age+' años y se requieren '+min+' años cumplidos como mínimo.'};
+  return {ok:true,min,age,message:'Edad válida para '+data.category+': '+age+' años.'};
+}
+function v124EligibilityHtml(){
+  const e=v124Eligibility(),cls=e.ok?'ok':'blocked';
+  if(!e.min)return '<div class="v124-eligibility neutral" data-v124-eligibility><b>Edad deportiva</b><span>Esta categoría no tiene restricción de veteranos.</span></div>';
+  return '<div class="v124-eligibility '+cls+'" data-v124-eligibility><b>'+(e.ok?'✓ Elegible':'✕ No elegible')+'</b><span>'+esc(e.message||'')+'</span></div>';
+}
+function renderEligibility(){
+  if(route()!=='credentialBuilder')return;
+  let box=$('[data-v124-eligibility]');
+  const auto=$('.v64-auto-category'),extra=$('#v100-credential-extra');
+  if(!box){
+    const host=auto||extra;
+    if(!host)return;
+    host.insertAdjacentHTML('afterend',v124EligibilityHtml());
+    box=$('[data-v124-eligibility]');
+  }else box.outerHTML=v124EligibilityHtml();
+
+  const e=v124Eligibility();
+  const save=$('[data-v124-save]');
+  if(save){save.disabled=!e.ok;save.setAttribute('aria-disabled',String(!e.ok))}
+  ['[data-v100-credential-png]','[data-v100-credential-share]','[data-v64-print-credential]'].forEach(sel=>{
+    const b=$(sel);if(!b)return;b.disabled=!e.ok;b.setAttribute('aria-disabled',String(!e.ok));
+  });
+}
+function bindEligibility(){
+  const sels=['[data-v64-cred-team]','[data-v64-cred-cat]','[data-v64-cred-curp]','[data-v100-dob]','[data-v100-age]'];
+  for(const sel of sels){
+    const el=$(sel);if(!el||el.dataset.v124EligibilityBound)return;
+    el.dataset.v124EligibilityBound='1';
+    el.addEventListener('input',renderEligibility);
+    el.addEventListener('change',renderEligibility);
+  }
+  renderEligibility();
+}
+
 function captureForm(){
   const team=$('[data-v64-cred-team]')?.value||'',info=teamInfo(team);
   return {
@@ -162,6 +218,8 @@ function saveForm(silent=false){
   if(!data.name)return toast('Falta el nombre del jugador');
   if(!data.team)return toast('Selecciona el equipo; la categoría se asigna sola');
   if(!data.category)return toast('No se encontró la categoría oficial de ese equipo');
+  const eligibility=v124Eligibility(data);
+  if(!eligibility.ok){renderEligibility();return toast(eligibility.message)}
   const season=data.season,list=seasonRecords(season).slice(),editId=localStorage.getItem(EDIT_KEY);
   let idx=editId?list.findIndex(r=>r.id===editId):-1;
   if(idx<0&&data.curp)idx=list.findIndex(r=>r.curp&&r.curp===data.curp);
@@ -244,6 +302,7 @@ function renderManager(){
     if(anchor)anchor.insertAdjacentHTML('afterend',html);else screen.insertAdjacentHTML('beforeend',html);
   }
   const root=$('#v124-player-registry',screen);if(root)bindManager(root);
+  renderEligibility();
 }
 function v124Dice(a,b){
   a=norm(a);b=norm(b);if(!a||!b)return 0;if(a===b)return 1;
@@ -272,39 +331,53 @@ function v124BadOcrName(name){
   const words=n.split(' ').filter(Boolean);
   return words.length<2;
 }
+function v124Levenshtein(a,b){
+  a=norm(a);b=norm(b);
+  const m=a.length,n=b.length,dp=Array.from({length:m+1},()=>new Array(n+1).fill(0));
+  for(let i=0;i<=m;i++)dp[i][0]=i;for(let j=0;j<=n;j++)dp[0][j]=j;
+  for(let i=1;i<=m;i++)for(let j=1;j<=n;j++)dp[i][j]=Math.min(dp[i-1][j]+1,dp[i][j-1]+1,dp[i-1][j-1]+(a[i-1]===b[j-1]?0:1));
+  return dp[m][n];
+}
+function v124TokenSim(a,b){
+  a=norm(a);b=norm(b);if(!a||!b)return 0;if(a===b)return 1;
+  const lev=1-v124Levenshtein(a,b)/Math.max(a.length,b.length,1);
+  return Math.max(v124Dice(a,b),lev);
+}
 function bestOfficialFromOcr(text,curp='',selectedTeam=''){
   const raw=String(text||''),nraw=norm(raw);
-  const lines=raw.split(/\r?\n/).map(norm).filter(x=>x.length>=4&&x.length<=120);
+  const lines=raw.split(/\r?\n/).map(norm).filter(x=>x.length>=3&&x.length<=120);
   const tokens=nraw.split(' ').filter(x=>x.length>=3);
   const curpPrefix=String(curp||'').toUpperCase().replace(/[^A-Z0-9]/g,'').slice(0,4);
   const teamNorm=norm(selectedTeam);
   if(!lines.length&&!tokens.length&&!curpPrefix)return null;
-  const stop=new Set(['instituto','nacional','electoral','credencial','votar','mexico','mexicanos','domicilio','municipio','seccion','vigencia','nombre','fecha','nacimiento']);
+  const stop=new Set(['instituto','nacional','electoral','credencial','votar','mexico','mexicanos','domicilio','municipio','seccion','vigencia','nombre','fecha','nacimiento','emision']);
   let best=null,bestScore=-1,second=-1;
   for(const p of officialPlayers()){
-    const n=norm(p.name),words=n.split(' ').filter(x=>x.length>=3);
-    let score=0;
-    for(const l of lines)score=Math.max(score,v124Dice(n,l)*.55);
-    let matched=0;
+    const n=norm(p.name),words=n.split(' ').filter(x=>x.length>=3&&!stop.has(x));
+    let score=0,exactCount=0,fuzzyCount=0;
+    for(const l of lines)score=Math.max(score,v124Dice(n,l)*.48);
     for(const w of words){
-      if(stop.has(w))continue;
-      const exact=tokens.includes(w),fuzzy=Math.max(0,...tokens.map(t=>v124Dice(w,t)));
-      if(exact){matched++;score+=w.length>=5?.13:.08}
-      else if(fuzzy>=.82){matched++;score+=w.length>=5?.09:.05}
+      const exact=tokens.includes(w);
+      const fuzzy=Math.max(0,...tokens.map(t=>v124TokenSim(w,t)));
+      if(exact){exactCount++;score+=w.length>=5?.17:.11}
+      else if(fuzzy>=.58){fuzzyCount++;score+=(fuzzy>=.78?.12:.07)}
     }
-    if(matched>=2)score+=.18;
+    if(exactCount>=1&&fuzzyCount>=1)score+=.20;
+    if(exactCount+fuzzyCount>=2)score+=.14;
+
     const np=v124NameParts(p.name);
     if(curpPrefix&&np){
       const dist=v124Hamming(curpPrefix,np.prefix);
-      if(dist===0)score+=.55;
-      else if(dist===1)score+=.38;
-      else if(dist===2)score+=.08;
+      if(dist===0)score+=.62;
+      else if(dist===1)score+=.48;
+      else if(dist===2)score+=.12;
     }
-    if(teamNorm&&norm(p.team)===teamNorm)score+=.22;
-    else if(teamNorm)score-=.05;
-    if(score>bestScore){second=bestScore;bestScore=score;best=p}else if(score>second)second=score;
+    if(teamNorm&&norm(p.team)===teamNorm)score+=.08;
+
+    if(score>bestScore){second=bestScore;bestScore=score;best=p}
+    else if(score>second)second=score;
   }
-  if(best&&bestScore>=.60&&(bestScore-second>=.10||bestScore>=.92))return {...best,matchScore:bestScore};
+  if(best&&bestScore>=.58&&(bestScore-second>=.09||bestScore>=.88))return {...best,matchScore:bestScore};
   return null;
 }
 function bindOcrAssist(){
@@ -317,14 +390,17 @@ function bindOcrAssist(){
       const exact=!v124BadOcrName(name)?officialPlayers().find(p=>norm(p.name)===norm(name)):null;
       const guess=exact||bestOfficialFromOcr(raw,curp,team);
       if(guess){
-        if(v124BadOcrName(name)||v124Dice(name,guess.name)>=.45)setValue('[data-v64-cred-name]',guess.name);
-        if(!team||norm(team)===norm(guess.team))setValue('[data-v64-cred-team]',guess.team);
-        setValue('[data-v64-cred-cat]',guess.category);
+        if(v124BadOcrName(name)||guess.matchScore>=.72||v124Dice(name,guess.name)>=.45)setValue('[data-v64-cred-name]',guess.name);
+        if(!team){
+          setValue('[data-v64-cred-team]',guess.team);
+          setValue('[data-v64-cred-cat]',guess.category);
+        }
         toast('Nombre completo reconocido: '+guess.name);
       }else if(v124BadOcrName(name)){
         setValue('[data-v64-cred-name]','');
         toast('No pude confirmar el nombre completo; intenta otra foto más recta y cercana');
       }
+      renderEligibility();
       renderManager();
     },300);
     setTimeout(()=>clearInterval(timer),45000);
@@ -346,13 +422,17 @@ function autoOfficialSync(){
 function bindCredentialAutoSave(){
   ['[data-v100-credential-png]','[data-v100-credential-share]','[data-v64-print-credential]'].forEach(sel=>{
     const b=$(sel);if(!b||b.dataset.v124AutoSave)return;b.dataset.v124AutoSave='1';
-    b.addEventListener('click',()=>{
+    b.addEventListener('click',e=>{
+      const eligibility=v124Eligibility();
+      if(!eligibility.ok){
+        e.preventDefault();e.stopImmediatePropagation();renderEligibility();toast(eligibility.message);return;
+      }
       const name=$('[data-v64-cred-name]')?.value.trim()||'',team=$('[data-v64-cred-team]')?.value||'';
       if(name&&team)saveForm(true);
     },{capture:true});
   });
 }
-let t=0;function schedule(){clearTimeout(t);t=setTimeout(()=>{if(route()!=='credentialBuilder')return;autoOfficialSync();renderManager();bindOcrAssist();bindCredentialAutoSave()},140)}
+let t=0;function schedule(){clearTimeout(t);t=setTimeout(()=>{if(route()!=='credentialBuilder')return;autoOfficialSync();renderManager();bindOcrAssist();bindCredentialAutoSave();bindEligibility()},140)}
 window.addEventListener('hashchange',schedule);
 window.addEventListener('ljr:official-data',schedule);
 const screen=$('#screen');if(screen)new MutationObserver(schedule).observe(screen,{childList:true,subtree:false});
