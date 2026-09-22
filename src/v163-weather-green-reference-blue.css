@@ -356,3 +356,45 @@ body[data-app-route="v38Weather"] #v168-weather-account{
   body[data-app-route="v38Weather"] #v100-weather-extra .v100-actions{grid-template-columns:1fr!important}
   body[data-app-route="v38Weather"] #v100-weather-extra .v100-actions .v100-primary{grid-column:auto}
 }
+
+
+/* V172 — campos inline funcionales, mismo diseño azul. */
+body[data-app-route="v38Weather"] #v100-weather-extra .v171-weather-field-list{
+  display:grid;
+  gap:8px;
+  margin-top:12px;
+}
+body[data-app-route="v38Weather"] #v100-weather-extra .v171-weather-field-pick{
+  width:100%;
+  min-height:50px;
+  padding:9px 11px;
+  border:1px solid rgba(56,216,230,.24);
+  border-radius:13px;
+  background:linear-gradient(180deg,#0c1776,#08105f);
+  color:#fff;
+  display:grid;
+  grid-template-columns:28px minmax(0,1fr) 18px;
+  gap:8px;
+  align-items:center;
+  text-align:left;
+  font:inherit;
+  touch-action:manipulation;
+}
+body[data-app-route="v38Weather"] #v100-weather-extra .v171-weather-field-pick>span{
+  font-size:17px;
+  text-align:center;
+}
+body[data-app-route="v38Weather"] #v100-weather-extra .v171-weather-field-pick>b{
+  font-size:12px;
+  line-height:1.2;
+}
+body[data-app-route="v38Weather"] #v100-weather-extra .v171-weather-field-pick>i{
+  color:#2bdde8;
+  font-style:normal;
+  font-size:20px;
+  text-align:center;
+}
+body[data-app-route="v38Weather"] #v100-weather-extra .v171-weather-field-pick:active{
+  transform:scale(.987);
+  border-color:rgba(56,216,230,.58);
+}
