@@ -572,13 +572,37 @@ function registerAlerts(){
     '<label><span>Correo (opcional)</span><input type="email" data-r-email value="'+esc(old.email)+'" placeholder="correo@ejemplo.com"></label>'+
     '<label><span>Categoría favorita</span><select data-r-cat>'+catOptions+'</select></label>'+
     '<label><span>Equipo favorito</span><select data-r-team></select></label>'+
-   '</div><div class="v105-actions"><button class="v105-btn" data-r-save>Guardar y activar avisos</button><button class="v105-btn alt" data-r-notif>Preferencias de notificación</button></div>');
+   '</div><div class="v105-actions"><button class="v105-btn" data-r-save>Guardar y activar avisos</button><button class="v105-btn alt" data-r-notif>Preferencias de notificación</button></div>'+
+   '<div class="v168-inline-notifications" data-r-inline-notif hidden></div>');
  m.classList.add('v168-account-modal');
  const cat=$('[data-r-cat]',m),team=$('[data-r-team]',m);
  const fill=()=>{const list=v160Teams(cat.value);team.innerHTML=list.map(n=>'<option '+(norm(n)===norm(old.team)?'selected':'')+'>'+esc(n)+'</option>').join('')||'<option>Sin equipos publicados</option>'};fill();
  cat.onchange=()=>{old.team='';fill()};
  $('[data-r-save]',m).onclick=()=>{const v={name:$('[data-r-name]',m).value.trim(),email:$('[data-r-email]',m).value.trim(),cat:cat.value,team:team.value,enabled:true,updatedAt:new Date().toISOString()};write('v160-alert-profile',v);log('Guardar perfil de avisos');toast('Avisos personalizados activados localmente')};
- $('[data-r-notif]',m).onclick=()=>{m.remove();go('notifications')};
+ const notifBox=$('[data-r-inline-notif]',m);
+ const getNotif=()=>{try{const s=JSON.parse(localStorage.getItem('lj-store-v3')||'{}');return Object.assign({goal:true,kickoff:true,halftime:false,final:true,news:true,video:true,fantasy:true,predictor:true,scheduleChanges:true,venueChanges:true},s.notifications||{})}catch(_){return {goal:true,kickoff:true,halftime:false,final:true,news:true,video:true,fantasy:true,predictor:true,scheduleChanges:true,venueChanges:true}}};
+ const saveNotif=p=>{let s={};try{s=JSON.parse(localStorage.getItem('lj-store-v3')||'{}')}catch(_){}s.notifications=Object.assign({},s.notifications||{},p);localStorage.setItem('lj-store-v3',JSON.stringify(s))};
+ const renderNotif=()=>{
+   const p=getNotif(),rows=[
+     ['goal','Goles','Avisar cuando cambie el marcador'],
+     ['kickoff','Inicio de partido','Aviso al comenzar'],
+     ['halftime','Medio tiempo','Aviso al descanso'],
+     ['final','Final del partido','Resultado final'],
+     ['scheduleChanges','Cambios de horario','Reprogramaciones de última hora'],
+     ['venueChanges','Cambios de sede','Cambio de campo o cancha'],
+     ['news','Noticias','Comunicados de la Liga'],
+     ['video','Nuevos videos','Momentos y contenido'],
+     ['fantasy','Fantasy','Novedades de tu equipo Fantasy'],
+     ['predictor','Quiniela','Recordatorios del pronóstico']
+   ];
+   notifBox.innerHTML='<div class="v168-inline-head"><b>Avisos dentro de esta página</b><span>No te manda a otra sección.</span></div>'+
+     rows.map(r=>'<label class="v168-notif-row"><span><b>'+esc(r[1])+'</b><small>'+esc(r[2])+'</small></span><input type="checkbox" data-r-pref="'+r[0]+'" '+(p[r[0]]?'checked':'')+'><i></i></label>').join('');
+   $('[data-r-pref]',notifBox).forEach(x=>x.onchange=()=>{saveNotif({[x.dataset.rPref]:x.checked});toast('Preferencia guardada')});
+ };
+ $('[data-r-notif]',m).onclick=()=>{
+   if(notifBox.hidden){renderNotif();notifBox.hidden=false;$('[data-r-notif]',m).textContent='Ocultar preferencias';notifBox.scrollIntoView({behavior:'smooth',block:'nearest'})}
+   else{notifBox.hidden=true;$('[data-r-notif]',m).textContent='Preferencias de notificación'}
+ };
 }
 function scheduleMatch(){
  const cats=v160Categories(),old=read('v160-scheduled-match',{home:'',away:'',date:'',time:'',field:'',cat:cats[0]?.id||'3'});
