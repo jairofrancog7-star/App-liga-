@@ -4967,3 +4967,41 @@ body[data-app-route="competition"] .v12-score-time{
   color:#4be5f4!important;
   font-weight:900!important;
 }
+
+
+/* V134 — categorías visibles: Primera, Segunda, Intermedia, Veteranos 35+ y 50+ */
+body[data-app-route="competition"] .v12-category-grid{
+  display:grid!important;
+  grid-template-columns:repeat(2,minmax(0,1fr))!important;
+  gap:8px!important;
+  margin:8px 0 10px!important;
+}
+body[data-app-route="competition"] .v12-category-grid button{
+  min-height:44px!important;
+  border:1px solid rgba(86,215,244,.28)!important;
+  border-radius:14px!important;
+  background:rgba(14,33,139,.78)!important;
+  color:#dce7ff!important;
+  font-size:12px!important;
+  font-weight:850!important;
+  line-height:1.15!important;
+  padding:8px 10px!important;
+  text-align:center!important;
+}
+body[data-app-route="competition"] .v12-category-grid button.active{
+  background:#43def2!important;
+  color:#081149!important;
+  border-color:#43def2!important;
+  box-shadow:0 0 0 1px rgba(67,222,242,.18),0 6px 18px rgba(0,0,0,.16)!important;
+}
+body[data-app-route="competition"] .v12-category-grid button:last-child:nth-child(odd){
+  grid-column:1 / -1!important;
+}
+@media (min-width:760px){
+  body[data-app-route="competition"] .v12-category-grid{
+    grid-template-columns:repeat(5,minmax(0,1fr))!important;
+  }
+  body[data-app-route="competition"] .v12-category-grid button:last-child:nth-child(odd){
+    grid-column:auto!important;
+  }
+}
