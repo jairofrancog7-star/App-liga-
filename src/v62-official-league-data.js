@@ -43,7 +43,13 @@ let playerTeamFilter=localStorage.getItem('v62-player-team-filter')||'all';
 let applying=false;
 
 function route(){return location.hash.replace(/^#\//,'').split('?')[0]||'home'}
-function registrationActive(){\n const r=route();\n return r==='credentialBuilder'||r.startsWith('credentialBuilder')||!!document.querySelector('#screen [data-v64-cred-team],#v124-player-registry,[data-v132-layer].open,.v126-team-panel');\n}\nfunction norm(v){
+function registrationActive(){
+ const r=route();
+ return !!window.__LJR_REGISTRATION_TEAM_PICKER__||
+   r==='credentialBuilder'||r.startsWith('credentialBuilder')||
+   !!document.querySelector('#screen [data-v64-cred-team],#v124-player-registry,[data-v132-layer].open,.v126-team-panel');
+}
+function norm(v){
   return String(v??'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase()
     .replace(/&/g,' y ').replace(/\bfc\b/g,'fc').replace(/[^a-z0-9+]+/g,' ').trim().replace(/\s+/g,' ');
 }
@@ -127,6 +133,7 @@ function saveTeam(name){
   if(code)localStorage.setItem('v27-selected-team',code);
 }
 function openTeam(name){
+  if(registrationActive())return false;
   saveTeam(name);
   localStorage.setItem('v42-team-tab','summary');
   location.hash='#/teamDetail';
@@ -832,8 +839,8 @@ function intercept(){
   document.addEventListener('click',e=>{
     /* V145 — El selector de equipo de Registro/Credencial es local al formulario.
        Nunca debe convertirse en navegación a ficha/comparación de equipos. */
-    if(route()==='credentialBuilder'||
-       e.target.closest?.('[data-v132-layer],[data-v132-open],[data-v64-cred-team],.v132-team-picker,.v132-team-row')){
+    if(registrationActive()||
+       e.target.closest?.('[data-v132-layer],[data-v132-open],[data-v64-cred-team],.v132-team-picker,.v132-team-row,[data-v126-team-open],[data-v126-team-choice],.v126-team-custom,.v126-team-panel,.v126-team-choice')){
       return;
     }
 
