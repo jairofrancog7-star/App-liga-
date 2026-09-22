@@ -135,41 +135,125 @@ function toolsInline(){
 
 /* ---------- CREDENCIAL OCR: campos extra y exportación ---------- */
 function curpDob(curp){
-  const m=String(curp||'').toUpperCase().match(/^[A-Z]{4}(\d{2})(\d{2})(\d{2})/);if(!m)return '';
-  const yy=Number(m[1]),mm=Number(m[2]),dd=Number(m[3]),now=new Date();
-  let year=yy<=Number(String(now.getFullYear()).slice(-2))?2000+yy:1900+yy;
+  const c=String(curp||'').toUpperCase().replace(/[^A-Z0-9]/g,'');
+  const m=c.match(/^[A-Z]{4}(\d{2})(\d{2})(\d{2})/);if(!m)return '';
+  const yy=Number(m[1]),mm=Number(m[2]),dd=Number(m[3]);
   if(mm<1||mm>12||dd<1||dd>31)return '';
+  const century=/[A-Z]/.test(c.charAt(16))?2000:1900;
+  const year=century+yy;
+  const test=new Date(year,mm-1,dd);
+  if(test.getFullYear()!==year||test.getMonth()!==mm-1||test.getDate()!==dd)return '';
   return String(year).padStart(4,'0')+'-'+String(mm).padStart(2,'0')+'-'+String(dd).padStart(2,'0');
 }
 function ageFromDob(v){if(!v)return '';const d=new Date(v+'T12:00:00'),n=new Date();if(Number.isNaN(d.getTime()))return '';let a=n.getFullYear()-d.getFullYear();const md=n.getMonth()-d.getMonth();if(md<0||(md===0&&n.getDate()<d.getDate()))a--;return a>=0&&a<120?String(a):''}
-function parseOcrText(text){
-  const up=String(text||'').toUpperCase();
-  const curp=(up.match(/\b[A-Z]{4}\d{6}[HM][A-Z]{5}[A-Z0-9]\d\b/)||[])[0]||'';
-  const lines=String(text||'').split(/\r?\n/).map(x=>x.trim()).filter(Boolean);
-  let name='';
+function ocrValueAfter(lines,re){
   for(let i=0;i<lines.length;i++){
-    if(/^NOMBRE(S)?\b/i.test(lines[i])){name=lines[i].replace(/^NOMBRE(S)?\s*[:\-]?\s*/i,'').trim()||lines[i+1]||'';break}
+    if(!re.test(lines[i]))continue;
+    const same=lines[i].replace(re,'').replace(/^\s*[:\-]\s*/,'').trim();
+    if(same&&same.length>2)return same;
+    const next=lines[i+1]||'';
+    if(next&&!/^(NOMBRE|APELLIDO|DOMICILIO|CURP|CLAVE|FECHA|SEXO|MUNICIPIO|LOCALIDAD|CIUDAD|COMUNIDAD|ENTIDAD|SECCION|VIGENCIA)\b/i.test(next))return next;
   }
-  return {curp,name,dob:curpDob(curp)};
+  return '';
+}
+function ocrExplicitDob(text){
+  const lines=String(text||'').split(/\r?\n/).map(x=>x.replace(/\s+/g,' ').trim()).filter(Boolean);
+  const i=lines.findIndex(x=>/FECHA\s+(DE\s+)?NACIMIENTO|NACIMIENTO/i.test(x));
+  const sample=i>=0?[lines[i],lines[i+1]||''].join(' '):String(text||'');
+  const m=sample.match(/\b(\d{1,2})[\/\.\-](\d{1,2})[\/\.\-](\d{2,4})\b/);if(!m)return '';
+  let y=Number(m[3]);const mo=Number(m[2]),d=Number(m[1]);
+  if(y<100)y=(y<=Number(String(new Date().getFullYear()).slice(-2))?2000:1900)+y;
+  const test=new Date(y,mo-1,d);
+  if(test.getFullYear()!==y||test.getMonth()!==mo-1||test.getDate()!==d)return '';
+  return String(y).padStart(4,'0')+'-'+String(mo).padStart(2,'0')+'-'+String(d).padStart(2,'0');
+}
+function parseOcrText(text){
+  const raw=String(text||''),up=raw.toUpperCase();
+  const lines=raw.split(/\r?\n/).map(x=>x.replace(/[|]/g,'I').replace(/\s+/g,' ').trim()).filter(Boolean);
+
+  let curp='';
+  const cm=up.match(/\b[A-Z]{4}\s*\d{6}\s*[HM]\s*[A-Z]{5}\s*[A-Z0-9]\s*\d\b/);
+  if(cm)curp=cm[0].replace(/[^A-Z0-9]/g,'');
+  if(!curp){
+    for(const token of up.replace(/[^A-Z0-9]+/g,' ').split(/\s+/)){
+      if(/^[A-Z]{4}\d{6}[HM][A-Z]{5}[A-Z0-9]\d$/.test(token)){curp=token;break}
+    }
+  }
+
+  let name='';
+  const given=ocrValueAfter(lines,/^NOMBRE(?:S)?\b/i);
+  const first=ocrValueAfter(lines,/^(?:PRIMER\s+APELLIDO|APELLIDO\s+PATERNO)\b/i);
+  const second=ocrValueAfter(lines,/^(?:SEGUNDO\s+APELLIDO|APELLIDO\s+MATERNO)\b/i);
+  if((first||second)&&given)name=[given,first,second].filter(Boolean).join(' ');
+  if(!name){
+    for(let i=0;i<lines.length;i++){
+      if(!/^NOMBRE(?:S)?\b/i.test(lines[i]))continue;
+      const firstLine=lines[i].replace(/^NOMBRE(?:S)?\s*[:\-]?\s*/i,'').trim(),parts=[];
+      if(firstLine)parts.push(firstLine);
+      for(let j=i+1;j<Math.min(lines.length,i+4);j++){
+        if(/^(DOMICILIO|CLAVE|CURP|FECHA|SEXO|ESTADO|MUNICIPIO|LOCALIDAD|CIUDAD|COMUNIDAD|ENTIDAD|SECCION|VIGENCIA|APELLIDO)\b/i.test(lines[j]))break;
+        if(!/\d/.test(lines[j]))parts.push(lines[j]);
+      }
+      name=parts.join(' ');break;
+    }
+  }
+  name=String(name||'').replace(/[^A-Za-zÁÉÍÓÚÜÑáéíóúüñ .'-]/g,' ').replace(/\s+/g,' ').trim();
+  if(name.length<3||name.length>90)name='';
+
+  let city='';
+  for(const re of [
+    /^(?:CIUDAD|MUNICIPIO|LOCALIDAD|COMUNIDAD|POBLACION|POBLACIÓN)\b/i,
+    /^(?:LUGAR\s+DE\s+NACIMIENTO|ENTIDAD\s+DE\s+NACIMIENTO)\b/i
+  ]){city=ocrValueAfter(lines,re);if(city)break}
+  if(!city){
+    const normalized=up.normalize('NFD').replace(/[\u0300-\u036f]/g,'');
+    const known=[
+      ['SANTA CRUZ DE JUVENTINO ROSAS','Santa Cruz de Juventino Rosas'],
+      ['JUVENTINO ROSAS','Juventino Rosas'],
+      ['RINCON DE CENTENO','Rincón de Centeno'],
+      ['CERRITO DE GASCA','Cerrito de Gasca'],
+      ['SAN JUAN DE LA CRUZ','San Juan de la Cruz'],
+      ['SAN JULIAN TIERRA BLANCA','San Julián Tierra Blanca'],
+      ['SAN JOSE DE LA MONTANA','San José de la Montaña'],
+      ['TAVERA','Tavera'],['POZOS','Pozos'],['CUENDA','Cuenda']
+    ];
+    const hit=known.find(([k])=>normalized.includes(k));if(hit)city=hit[1];
+  }
+  if(!city){
+    const d=lines.findIndex(x=>/^DOMICILIO\b/i.test(x));
+    if(d>=0){
+      const addr=[];
+      for(let j=d+1;j<Math.min(lines.length,d+5);j++){
+        if(/^(CLAVE|CURP|FECHA|SEXO|SECCION|VIGENCIA)\b/i.test(lines[j]))break;
+        addr.push(lines[j]);
+      }
+      const place=addr.slice().reverse().find(x=>/GTO\.?|GUANAJUATO|MUNICIPIO|LOCALIDAD|C\.P\.|\bCP\b/i.test(x));
+      if(place)city=place;
+    }
+  }
+  city=String(city||'').replace(/^\s*[:\-]\s*/,'').replace(/\s+/g,' ').trim().slice(0,100);
+
+  const dob=curpDob(curp)||ocrExplicitDob(raw);
+  return {curp,name,dob,city};
 }
 function credentialExtra(){
   const saved=read('v100-credential-extra',{});
-  return '<section class="v100-subblock" id="v100-credential-extra">'+sectionTitle('DATOS COMPLEMENTARIOS','Registro de credencial','Campos agregados debajo del generador existente. Revisa siempre los datos detectados antes de usarlos.')+
+  return '<section class="v100-subblock" id="v100-credential-extra">'+sectionTitle('DATOS COMPLEMENTARIOS','Registro de credencial','Al detectar el documento se intentan completar automáticamente nombre, CURP, fecha de nacimiento y ciudad / municipio / comunidad. Revisa siempre la lectura antes de usarla.')+
     '<div class="v100-form-grid">'+
       '<label><span>Fecha de nacimiento</span><input type="date" data-v100-dob value="'+esc(saved.dob||'')+'"></label>'+
       '<label><span>Edad</span><input type="text" data-v100-age readonly value="'+esc(saved.age||'')+'"></label>'+
-      '<label><span>Ciudad / municipio</span><input type="text" data-v100-city placeholder="Municipio" value="'+esc(saved.city||'')+'"></label>'+
+      '<label><span>Ciudad / municipio / comunidad</span><input type="text" data-v100-city placeholder="Se completa al detectar texto" value="'+esc(saved.city||'')+'"></label>'+
       '<label><span>Posición</span><select data-v100-position>'+['Portero','Defensa','Mediocampista','Delantero','Sin definir'].map(x=>'<option '+(saved.position===x?'selected':'')+'>'+x+'</option>').join('')+'</select></label>'+
       '<label><span>Temporada</span><input type="text" data-v100-season value="'+esc(saved.season||'2026–2027')+'"></label>'+
       '<label><span>Estado</span><select data-v100-status>'+['Pendiente de validación','Revisado','Habilitado'].map(x=>'<option '+(saved.status===x?'selected':'')+'>'+x+'</option>').join('')+'</select></label>'+
     '</div>'+
     '<div class="v100-actions"><button class="v100-primary" data-v100-credential-png>Descargar credencial PNG</button><button class="v100-secondary" data-v100-credential-share>Compartir credencial</button></div>'+
-    '<p class="v100-note">La lectura OCR ayuda a capturar texto, pero no valida identidad, edad deportiva ni habilitación. La validación sigue siendo responsabilidad de la Liga.</p>'+
+    '<p class="v100-note">La fecha de nacimiento también se obtiene de la CURP cuando ésta se detecta correctamente. La lectura OCR no sustituye la revisión del documento.</p>'+
   '</section>';
 }
 function syncCredentialExtra(){
   const curp=$('[data-v64-cred-curp]')?.value||'',dob=$('[data-v100-dob]'),age=$('[data-v100-age]');
-  if(dob&&!dob.value&&curpDob(curp))dob.value=curpDob(curp);if(age)age.value=ageFromDob(dob?.value||'');
+  const fromCurp=curpDob(curp);if(dob&&fromCurp)dob.value=fromCurp;if(age)age.value=ageFromDob(dob?.value||'');
   const d={dob:dob?.value||'',age:age?.value||'',city:$('[data-v100-city]')?.value||'',position:$('[data-v100-position]')?.value||'',season:$('[data-v100-season]')?.value||'',status:$('[data-v100-status]')?.value||''};write('v100-credential-extra',d);
 }
 async function credentialCanvas(){
@@ -180,23 +264,53 @@ async function credentialCanvas(){
   x.fillStyle='#fff';x.font='800 31px Arial';x.fillText('LIGA MUNICIPAL DE FÚTBOL · JUVENTINO ROSAS',70,90);x.fillStyle='#21e2f1';x.font='700 19px Arial';x.fillText('CREDENCIAL DE JUGADOR · 2026–2027',70,128);
   const img=$('[data-v64-photo-preview] img');if(img?.src){try{x.drawImage(img,72,180,310,390)}catch(e){}}
   x.strokeStyle='rgba(255,255,255,.35)';x.strokeRect(72,180,310,390);
-  const name=$('[data-v64-cred-name]')?.value||'Jugador';const team=$('[data-v64-cred-team]')?.value||'Equipo';const cat=$('[data-v64-cred-cat]')?.value||'Categoría';const num=$('[data-v64-cred-number]')?.value||'0';const curp=$('[data-v64-cred-curp]')?.value||'';const e=read('v100-credential-extra',{});
+  const name=$('[data-v64-cred-name]')?.value||'Jugador';const team=$('[data-v64-cred-team]')?.value||'Equipo';const cat=$('[data-v64-cred-cat]')?.value||'Categoría';const curp=$('[data-v64-cred-curp]')?.value||'';const e=read('v100-credential-extra',{});
   x.fillStyle='#fff';x.font='800 48px Arial';x.fillText(name.slice(0,30),430,235);x.fillStyle='#bceaf2';x.font='700 27px Arial';x.fillText((team+' · '+cat).slice(0,42),430,285);
-  const rows=[['Número','#'+num],['Nacimiento',e.dob||'—'],['Edad',e.age?e.age+' años':'—'],['Municipio',e.city||'—'],['Posición',e.position||'—'],['Estado',e.status||'Pendiente de validación'],['CURP',curp?'•••• '+curp.slice(-4):'No capturada']];
-  let y=355;rows.forEach(([k,v])=>{x.fillStyle='#6debf5';x.font='700 18px Arial';x.fillText(k.toUpperCase(),430,y);x.fillStyle='#fff';x.font='700 26px Arial';x.fillText(String(v).slice(0,42),430,y+32);y+=76});
+  const rows=[['Nacimiento',e.dob||'—'],['Edad',e.age?e.age+' años':'—'],['Municipio / comunidad',e.city||'—'],['Posición',e.position||'—'],['Estado',e.status||'Pendiente de validación'],['CURP',curp?'•••• '+curp.slice(-4):'No capturada']];
+  let y=350;rows.forEach(([k,v])=>{x.fillStyle='#6debf5';x.font='700 18px Arial';x.fillText(k.toUpperCase(),430,y);x.fillStyle='#fff';x.font='700 26px Arial';x.fillText(String(v).slice(0,42),430,y+31);y+=72});
   x.fillStyle='rgba(255,255,255,.7)';x.font='16px Arial';x.fillText('Generada localmente · Verificar contra documentos oficiales antes de validar.',72,690);
   return canvasBlob(canvas);
 }
 function bindCredential(root){
-  const curp=$('[data-v64-cred-curp]');const dob=$('[data-v100-dob]',root);curp?.addEventListener('input',()=>{if(dob&&curpDob(curp.value))dob.value=curpDob(curp.value);syncCredentialExtra()});
+  const curp=$('[data-v64-cred-curp]'),dob=$('[data-v100-dob]',root),city=$('[data-v100-city]',root),name=$('[data-v64-cred-name]');
+  curp?.addEventListener('input',()=>{
+    curp.value=String(curp.value||'').toUpperCase().replace(/[^A-Z0-9]/g,'').slice(0,18);
+    const fromCurp=curpDob(curp.value);if(dob&&fromCurp)dob.value=fromCurp;
+    syncCredentialExtra();
+  });
   $$('input,select,textarea',root).forEach(el=>{el.addEventListener('input',syncCredentialExtra);el.addEventListener('change',syncCredentialExtra)});syncCredentialExtra();
-  const imported=read('v100-ocr-import',null);if(imported){const out=$('[data-v64-ocr-text]'),name=$('[data-v64-cred-name]');if(out&&!out.value)out.value=imported.text||'';if(curp&&!curp.value)curp.value=imported.curp||'';if(name&&!name.value&&imported.name)name.value=imported.name;if(dob&&!dob.value&&imported.dob)dob.value=imported.dob;localStorage.removeItem('v100-ocr-import');syncCredentialExtra();toast('Lectura importada; revisa y corrige los datos')}
-  $('[data-v64-ocr]')?.addEventListener('click',()=>{const poll=setInterval(()=>{const b=$('[data-v64-ocr]');if(!b||!b.disabled){clearInterval(poll);const txt=$('[data-v64-ocr-text]')?.value||'';const p=parseOcrText(txt);if(curp&&!curp.value&&p.curp)curp.value=p.curp;if(dob&&!dob.value&&p.dob)dob.value=p.dob;syncCredentialExtra()}},350);setTimeout(()=>clearInterval(poll),30000)});
+
+  const imported=read('v100-ocr-import',null);
+  if(imported){
+    const out=$('[data-v64-ocr-text]');
+    if(out&&!out.value)out.value=imported.text||'';
+    if(curp&&imported.curp)curp.value=imported.curp;
+    if(name&&imported.name)name.value=imported.name;
+    if(dob&&imported.dob)dob.value=imported.dob;
+    if(city&&imported.city)city.value=imported.city;
+    localStorage.removeItem('v100-ocr-import');syncCredentialExtra();toast('Lectura importada; revisa y corrige los datos');
+  }
+
+  $('[data-v64-ocr]')?.addEventListener('click',()=>{
+    const poll=setInterval(()=>{
+      const b=$('[data-v64-ocr]');
+      if(!b||!b.disabled){
+        clearInterval(poll);
+        const txt=$('[data-v64-ocr-text]')?.value||'',p=parseOcrText(txt);
+        if(curp&&p.curp)curp.value=p.curp;
+        if(name&&p.name)name.value=p.name;
+        if(dob&&p.dob)dob.value=p.dob;
+        if(city&&p.city)city.value=p.city;
+        syncCredentialExtra();
+      }
+    },350);
+    setTimeout(()=>clearInterval(poll),30000);
+  });
   $('[data-v100-credential-png]',root)?.addEventListener('click',async()=>{const b=await credentialCanvas();if(b)download(b,'Credencial_Liga_Juventino.png')});
   $('[data-v100-credential-share]',root)?.addEventListener('click',async()=>{const b=await credentialCanvas();if(b)try{await fileShare(b,'Credencial_Liga_Juventino.png','Credencial Liga Juventino')}catch(e){}});
 }
 
-/* ---------- PIZARRA TÁCTICA AVANZADA ---------- */
+/* ---------- PIZARRA TÁCTICA AVANZADA/* ---------- PIZARRA TÁCTICA AVANZADA ---------- */
 const TACTIC_PRESETS={
   '4-4-2':[[50,91],[16,75],[38,76],[62,76],[84,75],[16,49],[38,50],[62,50],[84,49],[36,22],[64,22]],
   '4-3-3':[[50,91],[16,75],[38,76],[62,76],[84,75],[24,49],[50,52],[76,49],[20,21],[50,17],[80,21]],
