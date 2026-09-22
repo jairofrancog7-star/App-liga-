@@ -830,6 +830,13 @@ function patchTeams(){
 }
 function intercept(){
   document.addEventListener('click',e=>{
+    /* V145 — El selector de equipo de Registro/Credencial es local al formulario.
+       Nunca debe convertirse en navegación a ficha/comparación de equipos. */
+    if(route()==='credentialBuilder'||
+       e.target.closest?.('[data-v132-layer],[data-v132-open],[data-v64-cred-team],.v132-team-picker,.v132-team-row')){
+      return;
+    }
+
     /* FIX: "Datos" dentro de Más debe abrir la pantalla V33 original de
        Estadísticas, no la página V62 de Datos de la Liga. Se intercepta en
        captura antes del router principal para restaurar exactamente ese flujo. */
