@@ -200,7 +200,31 @@ function pageMarkup(){
     '<p class="v28-criteria">Datos oficiales publicados por categoría en AdminFut. No se inventan goles ni jugadores.</p></section>';
 }
 function setMoreActive(){const nav=document.querySelector('.bottom-nav');if(nav)nav.querySelectorAll('.nav-item').forEach(n=>n.classList.toggle('active',n.dataset.route==='more'))}
-function render(){const active=route()==='scorers';document.body.classList.toggle('v28-scorers-active',active);if(!active)return;const screen=document.querySelector('#screen');if(!screen)return;if(!screen.querySelector('[data-v28-scorers]'))screen.innerHTML=pageMarkup();setMoreActive()}
+function render(){
+  const active=route()==='scorers';
+  document.body.classList.toggle('v28-scorers-active',active);
+  if(!active)return;
+  const screen=document.querySelector('#screen');
+  if(!screen)return;
+  if(!screen.querySelector('[data-v28-scorers]'))screen.innerHTML=pageMarkup();
+  setMoreActive();
+  let direct=false;
+  try{
+    direct=sessionStorage.getItem('v16-open-official-scorers')==='1';
+    if(direct)sessionStorage.removeItem('v16-open-official-scorers');
+  }catch(_){}
+  if(direct){
+    requestAnimationFrame(()=>requestAnimationFrame(()=>{
+      const page=screen.querySelector('[data-v28-scorers]');
+      if(page){
+        page.scrollIntoView({behavior:'auto',block:'start'});
+        window.scrollBy(0,-4);
+      }else{
+        window.scrollTo({top:0,left:0,behavior:'auto'});
+      }
+    }));
+  }
+}
 function schedule(){requestAnimationFrame(()=>requestAnimationFrame(render))}
 window.addEventListener('hashchange',schedule);
 const target=document.querySelector('#screen');
