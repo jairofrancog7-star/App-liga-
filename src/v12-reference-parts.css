@@ -5013,7 +5013,9 @@ body[data-app-route="competition"] .v12-fixtures-reference{
   flex-direction:column!important;
 }
 body[data-app-route="competition"] .v12-fixtures-reference>.v12-fixture-rule{
-  order:1!important;
+  order:100!important;
+  margin-top:6px!important;
+  margin-bottom:10px!important;
 }
 body[data-app-route="competition"] .v12-fixtures-reference>.v12-week-strip{
   order:2!important;
