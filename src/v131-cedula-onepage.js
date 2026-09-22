@@ -12,6 +12,23 @@
     'veteranos 35+':ROOT+'assets/categories/veteranos-35-user.png',
     'veteranos 50+':ROOT+'assets/categories/veteranos-50.webp'
   };
+  /* Mismo registro visual usado por la otra app de la Liga. */
+  const TEAM_LOGOS={
+    'c de gasca':'assets/teams/deportivo-cg.webp','cerrito de gasca':'assets/teams/deportivo-cg.webp',
+    'juventus':'assets/teams/juventus.webp','cuenda':'assets/teams/tc-cuenda.webp','toros de cuenda':'assets/teams/tc-cuenda.webp',
+    'pozos fc':'assets/teams/pozos-fc.webp','pozos':'assets/teams/pozos-fc.webp','boavista':'assets/teams/boavista-fc.webp',
+    'psv':'assets/teams/psv.webp','a santiago':'assets/teams/atletico-santiago.webp','atletico santiago':'assets/teams/atletico-santiago.webp',
+    'f tavera':'assets/teams/franco-tavera-jr-veteranos.webp','franco tavera':'assets/teams/franco-tavera-jr-veteranos.webp',
+    'america':'assets/branding/america-veteranos-35-user.png','america veteranos':'assets/branding/america-veteranos-35-user.png',
+    'hermanos':'assets/teams/club-deportivo-hermanos.webp','san jose fc':'assets/teams/san-jose.webp','linces':'assets/teams/linces.webp',
+    'lobos cdg':'assets/teams/lobos-cdg.webp','terricolas':'assets/teams/terricolas-fc.webp','galacticos':'assets/teams/galacticos-pozos.webp',
+    'franco fc':'assets/teams/franco-fc.webp','herreras fc':'assets/teams/herrera-fc.webp','la canchita deportes':'assets/teams/la-canchita.webp',
+    'galeana':'assets/teams/atletico-galeana.webp','atletico galeana':'assets/teams/atletico-galeana.webp','aldama fc':'assets/teams/aldama.webp',
+    'san antonio jrs':'assets/teams/san-antonio-jr.webp','promesas':'assets/teams/promesas-fc-pozos.webp','promesas fc':'assets/teams/promesas-fc-pozos.webp',
+    'la huerta':'assets/teams/la-huerta-cuenda.webp','tavera fc':'assets/teams/tavera-fc.webp','san jose jrs':'assets/teams/san-jose-jr.webp',
+    'san julian':'assets/teams/san-julian-fc.webp','dep nopalero':'assets/teams/deportivo-nopalero.webp','deportivo nopalero':'assets/teams/deportivo-nopalero.webp',
+    'la esperanza':'assets/teams/la-esperanza-fc.webp','manchester':'assets/teams/manchester-united.webp'
+  };
   let cachedDb=null;
 
   function route(){
@@ -73,6 +90,8 @@
     return '';
   }
   function logoFor(db,name){
+    const local=TEAM_LOGOS[norm(name)];
+    if(local)return ROOT+local;
     const direct=Object.entries(db?.team_logos||{}).find(([n])=>same(n,name));
     if(direct){
       const src=logoValue(direct[1]);
@@ -192,10 +211,11 @@
               rosterTable(away,awayRoster,awayLogo)+
             '</div>'+
             '<section class="v131-match-notes">'+
-              '<div class="v131-scoreline"><span>'+esc(home)+'</span><span class="v131-score-box"></span><b>–</b><span class="v131-score-box"></span><span>'+esc(away)+'</span></div>'+
-              '<div class="v131-observations">Observaciones / incidencias<i></i><i></i></div>'+
-              '<div class="v131-signatures"><div>Delegado local</div><div>Delegado visitante</div><div>Árbitro</div><div>Firma / sello de la Liga</div></div>'+
-              '<p class="v131-sheet-note">Liga Municipal de Fútbol Juventino Rosas A.C. · Cédula generada dentro de la aplicación. La validación oficial corresponde a la Liga.</p>'+
+              '<h3>Resultado final, cambios e incidencias</h3>'+
+              '<p class="v131-result-line">Hora de inicio: ____ · Hora de término: ____ · Marcador local: ____ · Visitante: ____</p>'+
+              '<div class="v131-notes-box" contenteditable="true" aria-label="Observaciones e incidencias"></div>'+
+              '<div class="v131-signatures"><div>Árbitro</div><div>Delegado / capitán</div><div>Validación de la Liga</div></div>'+
+              '<p class="v131-sheet-note">Generada dentro de Liga Juventino Rosas con el snapshot deportivo '+esc(db?.captured_at_utc||'sin fecha')+'. Documento interno sujeto a validación y firma de la Liga.</p>'+
             '</section>'+
           '</article>'+
         '</div>'+
