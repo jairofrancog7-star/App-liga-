@@ -41,6 +41,7 @@ body[data-app-route="credentialBuilder"] .v64-auto-category b{font-size:16px;col
 [data-v100-credential-png]:disabled,
 [data-v100-credential-pdf]:disabled,
 [data-v100-credential-share]:disabled,
+[data-v64-download-credential-png]:disabled,
 [data-v64-print-credential]:disabled{
   opacity:.42!important;
   filter:grayscale(.35);
