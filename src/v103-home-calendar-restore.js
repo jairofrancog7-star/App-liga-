@@ -35,11 +35,21 @@ function homeImageMarkup(){
   '</section>';
 }
 
+function localScheduleOverride(home,away){
+  try{
+    const list=JSON.parse(localStorage.getItem('ljr-schedule-changes-v1')||'[]');
+    const n=[...list].reverse().find(x=>norm(x.home)===norm(home)&&norm(x.away)===norm(away));
+    return n||null;
+  }catch{return null}
+}
 function homeUpcomingMarkup(){
   const games=[
     {home:'Franco FC',away:'Herreras FC',time:'08:00'},
     {home:'Terricolas',away:'Galacticos',time:'08:00'}
-  ];
+  ].map(g=>{
+    const ch=localScheduleOverride(g.home,g.away);
+    return ch?{...g,time:ch.newTime||g.time,venue:ch.newVenue||'',changed:true}:g;
+  });
   return '<div class="v103-upcoming-wrap" data-v103-upcoming>'+
     '<div class="v103-upcoming-head"><h2>Próximos partidos</h2><button type="button" data-safe-route="v4-calendar">Calendario</button></div>'+
     '<div class="v103-upcoming-card">'+
