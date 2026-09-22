@@ -45,6 +45,62 @@
     "abbr": "BJ"
   },
   {
+    "id": "OFF-C-DE-GASCA-V35",
+    "name": "C. DE GASCA",
+    "logo": "assets/teams/deportivo-cg.webp",
+    "abbr": "CDG",
+    "category": "Veteranos 35+"
+  },
+  {
+    "id": "OFF-CUENDA-V35",
+    "name": "CUENDA",
+    "logo": "assets/teams/tc-cuenda.webp",
+    "abbr": "CUE",
+    "category": "Veteranos 35+"
+  },
+  {
+    "id": "OFF-POZOS-FC-V35",
+    "name": "POZOS FC",
+    "logo": "assets/teams/veteranos-pozos-fc.webp",
+    "abbr": "POZ",
+    "category": "Veteranos 35+"
+  },
+  {
+    "id": "OFF-PSV-V35",
+    "name": "PSV",
+    "logo": "assets/teams/psv.webp",
+    "abbr": "PSV",
+    "category": "Veteranos 35+"
+  },
+  {
+    "id": "OFF-A-SANTIAGO-V35",
+    "name": "A. SANTIAGO",
+    "logo": "assets/teams/atletico-santiago.webp",
+    "abbr": "AS",
+    "category": "Veteranos 35+"
+  },
+  {
+    "id": "OFF-F-TAVERA-V35",
+    "name": "F. TAVERA",
+    "logo": "assets/teams/franco-tavera-jr-veteranos.webp",
+    "abbr": "FT",
+    "category": "Veteranos 35+"
+  },
+  {
+    "id": "OFF-AMERICA-V35",
+    "name": "AMÉRICA",
+    "logo": "assets/branding/america-veteranos-35-user.png",
+    "abbr": "AME",
+    "category": "Veteranos 35+"
+  },
+  {
+    "id": "OFF-HURACAN-V35",
+    "name": "HURACÁN",
+    "logo": "assets/teams/huracan.webp",
+    "abbr": "HUR",
+    "category": "Veteranos 35+"
+  },
+  {
     "id": "OFF-SAN-JOSE-FC",
     "name": "SAN JOSE FC",
     "logo": "assets/official-logos/san-jose-fc.png",
