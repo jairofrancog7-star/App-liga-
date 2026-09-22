@@ -1,0 +1,24 @@
+/* V158 — Selector de campos del generador de cédulas. */
+body[data-app-route="cedulaBuilder"] select[data-v64-ced-field]{
+  width:100%!important;
+  min-height:52px!important;
+  padding:0 46px 0 14px!important;
+  border:1px solid rgba(59,226,241,.78)!important;
+  border-radius:15px!important;
+  background-color:#0a0d68!important;
+  color:#fff!important;
+  font:800 14px/1.2 inherit!important;
+  box-shadow:0 0 0 2px rgba(33,223,234,.07)!important;
+  appearance:auto!important;
+  -webkit-appearance:auto!important;
+}
+body[data-app-route="cedulaBuilder"] select[data-v64-ced-field]:focus{
+  outline:none!important;
+  border-color:#2ee5ef!important;
+  box-shadow:0 0 0 3px rgba(46,229,239,.14)!important;
+}
+body[data-app-route="cedulaBuilder"] select[data-v64-ced-field] option,
+body[data-app-route="cedulaBuilder"] select[data-v64-ced-field] optgroup{
+  background:#080b63!important;
+  color:#fff!important;
+}
