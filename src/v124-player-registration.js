@@ -19,6 +19,9 @@ const EDIT_KEY='v124-player-edit-id';
 const selectedIds=new Set();
 let quickTeam='';
 let quickSeason='';
+let rosterImportTeam='';
+let rosterImportFile=null;
+let rosterImport={fileName:'',rawText:'',entries:[],missing:[],status:'',busy:false};
 
 function toast(msg){
   let n=$('.v124-toast');if(n)n.remove();
@@ -385,10 +388,302 @@ function removeSelectedRecords(){
   if(ids.has(localStorage.getItem(EDIT_KEY)))localStorage.removeItem(EDIT_KEY);
   selectedIds.clear();toast(picked.length+' jugador(es) dados de baja de '+season);renderManager();
 }
+
+function v126LoadScript(src,key){
+  if(key&&window[key])return Promise.resolve(window[key]);
+  const existing=[...document.scripts].find(s=>s.src===src);
+  if(existing)return new Promise((resolve,reject)=>{
+    if(key&&window[key])return resolve(window[key]);
+    existing.addEventListener('load',()=>resolve(key?window[key]:true),{once:true});
+    existing.addEventListener('error',reject,{once:true});
+  });
+  return new Promise((resolve,reject)=>{
+    const s=document.createElement('script');s.src=src;s.async=true;
+    s.onload=()=>resolve(key?window[key]:true);s.onerror=reject;document.head.appendChild(s);
+  });
+}
+async function v126Tesseract(){
+  if(window.Tesseract)return window.Tesseract;
+  return v126LoadScript('https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js','Tesseract');
+}
+async function v126PdfJs(){
+  if(window.pdfjsLib)return window.pdfjsLib;
+  const pdfjs=await v126LoadScript('https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js','pdfjsLib');
+  pdfjs.GlobalWorkerOptions.workerSrc='https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+  return pdfjs;
+}
+async function v126Mammoth(){
+  if(window.mammoth)return window.mammoth;
+  return v126LoadScript('https://cdn.jsdelivr.net/npm/mammoth@1.8.0/mammoth.browser.min.js','mammoth');
+}
+function v126SetImportStatus(msg){
+  rosterImport.status=String(msg||'');
+  const el=$('[data-v126-import-status]');if(el)el.textContent=rosterImport.status;
+}
+async function v126OcrImage(source,label='imagen'){
+  const T=await v126Tesseract();
+  const result=await T.recognize(source,'spa',{
+    logger:m=>{
+      if(m?.status==='recognizing text'){
+        const pct=Math.round((m.progress||0)*100);
+        v126SetImportStatus('Leyendo '+label+' · '+pct+'%');
+      }else if(m?.status)v126SetImportStatus('Procesando '+label+'…');
+    }
+  });
+  return result?.data?.text||'';
+}
+async function v126ReadPdf(file){
+  v126SetImportStatus('Abriendo PDF…');
+  const pdfjs=await v126PdfJs(),buf=await file.arrayBuffer(),doc=await pdfjs.getDocument({data:buf}).promise;
+  const textParts=[],ocrPages=[],maxPages=Math.min(doc.numPages,20);
+  for(let i=1;i<=maxPages;i++){
+    v126SetImportStatus('Leyendo PDF · página '+i+' de '+maxPages);
+    const page=await doc.getPage(i),content=await page.getTextContent();
+    const txt=(content.items||[]).map(x=>x.str||'').join(' ').replace(/\s+/g,' ').trim();
+    if(txt.length>=35)textParts.push(txt);
+    else ocrPages.push(page);
+  }
+  if(ocrPages.length){
+    const T=await v126Tesseract();
+    for(let i=0;i<ocrPages.length;i++){
+      const page=ocrPages[i],viewport=page.getViewport({scale:1.55});
+      const canvas=document.createElement('canvas'),ctx=canvas.getContext('2d',{alpha:false});
+      canvas.width=Math.min(1800,Math.ceil(viewport.width));canvas.height=Math.min(2400,Math.ceil(viewport.height));
+      const scale=Math.min(canvas.width/viewport.width,canvas.height/viewport.height);
+      const renderViewport=page.getViewport({scale:1.55*scale});
+      canvas.width=Math.ceil(renderViewport.width);canvas.height=Math.ceil(renderViewport.height);
+      await page.render({canvasContext:ctx,viewport:renderViewport}).promise;
+      v126SetImportStatus('OCR local del PDF · página '+(i+1)+' de '+ocrPages.length);
+      const res=await T.recognize(canvas,'spa');
+      if(res?.data?.text)textParts.push(res.data.text);
+    }
+  }
+  return textParts.join('\n');
+}
+async function v126ReadRosterFile(file){
+  if(!file)throw new Error('Selecciona un archivo');
+  const name=String(file.name||'').toLowerCase(),type=String(file.type||'').toLowerCase();
+  if(type.startsWith('image/')||/\.(png|jpe?g|webp|bmp)$/i.test(name))return v126OcrImage(file,'imagen');
+  if(type==='application/pdf'||/\.pdf$/i.test(name))return v126ReadPdf(file);
+  if(/\.docx$/i.test(name)||type.includes('wordprocessingml')){
+    v126SetImportStatus('Leyendo Word DOCX…');
+    const mammoth=await v126Mammoth(),result=await mammoth.extractRawText({arrayBuffer:await file.arrayBuffer()});
+    return result?.value||'';
+  }
+  if(/\.(txt|csv)$/i.test(name)||type.startsWith('text/')){
+    v126SetImportStatus('Leyendo archivo de texto…');return file.text();
+  }
+  if(/\.doc$/i.test(name))throw new Error('El formato .DOC antiguo no se puede leer de forma segura en el navegador. Guárdalo como .DOCX o PDF.');
+  throw new Error('Formato no compatible. Usa imagen, PDF, DOCX, TXT o CSV.');
+}
+function v126AllRegistryRecords(){
+  const x=store(),out=[];
+  for(const [season,list] of Object.entries(x.seasons||{}))for(const r of (Array.isArray(list)?list:[]))out.push({...r,_season:season,_kind:'registry'});
+  return out;
+}
+function v126KnownPeople(){
+  const out=v126AllRegistryRecords();
+  const keys=new Set(out.map(r=>norm(r.name)+'|'+norm(r.team)+'|'+String(r.catId||'')));
+  for(const p of officialPlayers()){
+    const k=norm(p.name)+'|'+norm(p.team)+'|'+String(p.catId||'');
+    if(keys.has(k))continue;keys.add(k);
+    out.push({id:'',name:p.name,team:p.team,category:p.category,catId:p.catId,season:selectedSeason(),_season:selectedSeason(),_kind:'official',source:'official'});
+  }
+  return out.filter(r=>r.name);
+}
+function v126Nameish(value){
+  let s=String(value||'')
+    .replace(/[|•·]+/g,' ')
+    .replace(/^\s*(?:NO\.?|NÚM(?:ERO)?\.?|#)?\s*\d{1,3}\s*[\)\].:\-–—]?\s*/i,'')
+    .replace(/\b(?:TEL|TELEFONO|TELÉFONO|CURP|EDAD|FECHA|FIRMA|POSICION|POSICIÓN)\b.*$/i,'')
+    .replace(/\b\d{1,2}[\/\-.]\d{1,2}[\/\-.]\d{2,4}\b.*$/,'')
+    .replace(/\s+/g,' ').trim();
+  const stop=/^(lista|jugadores?|plantilla|equipo|delegado|temporada|categoria|categoría|registro|nombre|nombres|apellidos?|numero|número|liga|municipal|futbol|fútbol|juventino|rosas|guanajuato|firma|credencial|telefono|teléfono|fecha|curp)\b/i;
+  if(!s||stop.test(s)||/@/.test(s)||s.length<5||s.length>80)return '';
+  const parts=s.split(/\s+/).filter(Boolean);
+  const words=[];
+  for(const p of parts){
+    if(/\d/.test(p)){if(words.length>=2)break;continue}
+    const clean=p.replace(/[^A-Za-zÁÉÍÓÚÜÑáéíóúüñ'’-]/g,'');
+    if(clean.length>=2)words.push(clean);
+    if(words.length>=6)break;
+  }
+  if(words.length<2)return '';
+  const candidate=words.join(' ');
+  if(stop.test(candidate))return '';
+  return candidate.replace(/\b\w/g,m=>m.toUpperCase());
+}
+function v126ExtractCandidates(text){
+  const known=v126KnownPeople(),found=new Map(),raw=String(text||''),flat=norm(raw);
+  // Primero reconoce nombres ya conocidos aunque estén en una tabla o renglón ruidoso.
+  for(const p of known){
+    const n=norm(p.name);if(n.length>=5&&flat.includes(n))found.set(n,p.name);
+  }
+  // Después agrega nombres nuevos que aparezcan como renglones.
+  for(const line of raw.split(/\r?\n/)){
+    const pieces=line.split(/\t| {2,}|;/).map(x=>x.trim()).filter(Boolean);
+    const pool=pieces.length>1?pieces:[line];
+    let best='';
+    for(const piece of pool){
+      const c=v126Nameish(piece);
+      if(c&&c.length>best.length)best=c;
+    }
+    if(!best)continue;
+    const n=norm(best);
+    if(!n||found.has(n))continue;
+    const near=[...found.keys()].some(k=>v124TokenSim(k,n)>.92);
+    if(!near)found.set(n,best);
+  }
+  return [...found.values()];
+}
+function v126BestKnown(name,team=''){
+  const n=norm(name),target=norm(team),known=v126KnownPeople();
+  let best=null,score=0;
+  for(const r of known){
+    let s=v124TokenSim(n,r.name);
+    if(target&&norm(r.team)===target)s+=.035;
+    if(s>score){score=s;best=r}
+  }
+  return score>=.80?{record:best,score}:null;
+}
+function v126AnalyzeText(text){
+  if(!rosterImportTeam)throw new Error('Primero elige el equipo de esta lista');
+  const team=rosterImportTeam,season=selectedSeason(),current=seasonRecords(season),names=v126ExtractCandidates(text),entries=[];
+  for(const rawName of names){
+    const hit=v126BestKnown(rawName,team),known=hit?.record||null;
+    const canonical=known?.name||rawName;
+    const currentSame=current.find(r=>norm(r.name)===norm(canonical)&&norm(r.team)===norm(team));
+    const currentOther=current.find(r=>norm(r.name)===norm(canonical)&&norm(r.team)!==norm(team));
+    let status='new',source=null;
+    if(currentSame){status='keep';source=currentSame}
+    else if(currentOther){status='transfer';source=currentOther}
+    else if(known){
+      source=known;
+      status=norm(known.team)===norm(team)?'return':'transfer';
+    }
+    entries.push({name:canonical,rawName,status,source,include:true,score:hit?.score||0});
+  }
+  const importedNorm=new Set(entries.map(e=>norm(e.name)));
+  const missing=current.filter(r=>norm(r.team)===norm(team)&&!importedNorm.has(norm(r.name))).map(r=>({...r,remove:false}));
+  rosterImport={...rosterImport,rawText:String(text||''),entries,missing,status:'',busy:false};
+}
+function v126ImportSummary(){
+  const e=rosterImport.entries||[],count=k=>e.filter(x=>x.status===k).length;
+  return {total:e.length,keep:count('keep'),transfer:count('transfer'),returning:count('return'),fresh:count('new'),missing:(rosterImport.missing||[]).length};
+}
+function v126RosterStatusLabel(e){
+  if(e.status==='keep')return 'Ya está en este equipo';
+  if(e.status==='transfer')return 'Ya registrado · cambio de equipo';
+  if(e.status==='return')return 'Ya registrado · renovar temporada';
+  return 'Nuevo · faltan datos/foto';
+}
+function v126RosterResultHtml(){
+  if(!(rosterImport.entries||[]).length&&!rosterImport.rawText)return '';
+  const s=v126ImportSummary();
+  return '<div class="v126-result">'+
+    '<div class="v126-summary"><div><b>'+s.total+'</b><span>Detectados</span></div><div><b>'+s.keep+'</b><span>Ya están</span></div><div><b>'+s.transfer+'</b><span>Cambios</span></div><div><b>'+s.fresh+'</b><span>Nuevos</span></div></div>'+
+    '<div class="v126-detected">'+(rosterImport.entries||[]).map((e,i)=>
+      '<label class="v126-person '+esc(e.status)+'"><input type="checkbox" data-v126-include="'+i+'" '+(e.include?'checked':'')+'><span class="v126-check"></span><span class="v126-person-copy"><b>'+esc(e.name)+'</b><small>'+esc(v126RosterStatusLabel(e))+(e.source?.team&&e.status==='transfer'?' · antes: '+esc(e.source.team):'')+'</small></span></label>'
+    ).join('')+'</div>'+
+    ((rosterImport.missing||[]).length?'<div class="v126-missing"><div class="v126-missing-head"><span><b>No aparecen en la lista</b><small>No se borran automáticamente; marca solo los que realmente salen del equipo.</small></span><button type="button" data-v126-mark-missing>Marcar todos</button></div>'+
+      rosterImport.missing.map((r,i)=>'<label><input type="checkbox" data-v126-remove="'+i+'" '+(r.remove?'checked':'')+'><span>'+esc(r.name)+'</span></label>').join('')+
+    '</div>':'')+
+    '<details class="v126-raw"><summary>Ver / corregir texto detectado</summary><textarea data-v126-raw-text>'+esc(rosterImport.rawText||'')+'</textarea><button type="button" data-v126-reanalyse>Volver a analizar este texto</button></details>'+
+    '<button type="button" class="v126-apply" data-v126-apply>Aplicar altas, cambios y bajas marcadas</button>'+
+  '</div>';
+}
+function rosterImportHtml(){
+  const teams=registryTeams(),groups=new Map();
+  for(const t of teams){const cat=t.category||'Sin categoría';if(!groups.has(cat))groups.set(cat,[]);groups.get(cat).push(t)}
+  let opts='<option value="">Selecciona el equipo de la lista</option>';
+  for(const [cat,items] of groups)opts+='<optgroup label="'+esc(cat)+'">'+items.map(t=>'<option value="'+esc(t.name)+'" '+(rosterImportTeam===t.name?'selected':'')+'>'+esc(t.name)+'</option>').join('')+'</optgroup>';
+  return '<section class="v126-import">'+
+    '<header><small>LISTA DEL DELEGADO</small><h3>Importar jugadores desde foto, PDF o Word</h3><p>Lee la lista en este teléfono, compara quién sigue, quién ya existe, quién cambió de equipo y quién es nuevo. El archivo no se sube a GitHub.</p></header>'+
+    '<label class="v126-team"><span>Equipo de esta lista</span><select data-v126-team>'+opts+'</select></label>'+
+    '<label class="v126-file"><input type="file" data-v126-file accept="image/*,.pdf,.docx,.txt,.csv,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document"><span><b>Elegir lista del delegado</b><small>Imagen · PDF · Word DOCX · TXT · CSV</small></span></label>'+
+    '<div class="v126-file-name">'+esc(rosterImport.fileName||'Ningún archivo seleccionado')+'</div>'+
+    '<button type="button" class="v126-analyse" data-v126-analyse '+(rosterImport.busy?'disabled':'')+'>'+(rosterImport.busy?'Leyendo lista…':'Detectar y comparar jugadores')+'</button>'+
+    '<p class="v126-status" data-v126-import-status>'+esc(rosterImport.status||'OCR local: no usa Google Lens y no envía la lista a GitHub.')+'</p>'+
+    v126RosterResultHtml()+
+  '</section>';
+}
+function v126ApplyRoster(){
+  if(!rosterImportTeam)return toast('Elige el equipo de la lista');
+  const entries=(rosterImport.entries||[]).filter(e=>e.include),removals=(rosterImport.missing||[]).filter(r=>r.remove);
+  if(!entries.length&&!removals.length)return toast('No hay cambios marcados para aplicar');
+  const summary=v126ImportSummary();
+  if(!confirm('Aplicar la lista de '+rosterImportTeam+' en '+selectedSeason()+'? Se conservarán los datos de jugadores ya registrados. Las bajas sólo serán las que marcaste.'))return;
+  const season=selectedSeason(),list=seasonRecords(season).slice(),info=teamInfo(rosterImportTeam)||{},now=new Date().toISOString();
+  let kept=0,moved=0,added=0,renewed=0,removed=0;
+  for(const e of entries){
+    if(e.status==='keep'){kept++;continue}
+    const existingIdx=list.findIndex(r=>norm(r.name)===norm(e.name));
+    if(existingIdx>=0){
+      const r=list[existingIdx],min=v124VeteranMinimum(info.category),age=v124AgeFromDob(r.dob);
+      if(min&&(age===null||age<min)){continue}
+      list[existingIdx]={...r,previousTeam:r.team||'',team:rosterImportTeam,category:info.category||r.category||'',catId:String(info.cat||r.catId||''),
+        source:'local',officialPresent:false,status:'Cambio de equipo · importado de lista',updatedAt:now};
+      moved++;continue;
+    }
+    if(e.source){
+      const base=e.source;
+      const rec={...base,id:uid(),season,team:rosterImportTeam,category:info.category||base.category||'',catId:String(info.cat||base.catId||''),
+        previousTeam:base.team||'',source:'local',officialPresent:false,status:(e.status==='transfer'?'Cambio de equipo':'Renovación')+' · importado de lista',createdAt:now,updatedAt:now};
+      delete rec._season;delete rec._kind;
+      if(duplicateIndex(list,rec)<0){list.push(rec);e.status==='transfer'?moved++:renewed++}
+      continue;
+    }
+    const rec={id:uid(),name:e.name,team:rosterImportTeam,category:info.category||'',catId:String(info.cat||''),season,
+      status:'Importado de lista · faltan datos/foto',source:'local',officialPresent:false,officialCheckedAt:'',
+      curp:'',dob:'',city:'',position:'Sin definir',createdAt:now,updatedAt:now};
+    if(duplicateIndex(list,rec)<0){list.push(rec);added++}
+  }
+  const removeIds=new Set(removals.map(r=>r.id));
+  const finalList=list.filter(r=>{if(removeIds.has(r.id)){removed++;return false}return true});
+  putSeason(season,finalList);
+  rosterImport={fileName:'',rawText:'',entries:[],missing:[],status:'',busy:false};rosterImportFile=null;
+  toast('Lista aplicada: '+kept+' ya estaban · '+moved+' cambios · '+renewed+' renovados · '+added+' nuevos · '+removed+' bajas');
+  renderManager();
+}
+function bindRosterImport(root){
+  $('[data-v126-team]',root)?.addEventListener('change',e=>{rosterImportTeam=e.target.value||'';rosterImport={fileName:'',rawText:'',entries:[],missing:[],status:'',busy:false};rosterImportFile=null;renderManager()});
+  $('[data-v126-file]',root)?.addEventListener('change',e=>{
+    rosterImportFile=e.target.files?.[0]||null;
+    rosterImport.fileName=rosterImportFile?.name||'';
+    const n=$('.v126-file-name',root);if(n)n.textContent=rosterImport.fileName||'Ningún archivo seleccionado';
+  });
+  $('[data-v126-analyse]',root)?.addEventListener('click',async()=>{
+    if(!rosterImportTeam)return toast('Primero selecciona el equipo de la lista');
+    if(!rosterImportFile)return toast('Selecciona la foto, PDF, DOCX, TXT o CSV del delegado');
+    rosterImport.busy=true;v126SetImportStatus('Preparando lectura…');
+    const btn=$('[data-v126-analyse]',root);if(btn){btn.disabled=true;btn.textContent='Leyendo lista…'}
+    try{
+      const text=await v126ReadRosterFile(rosterImportFile);
+      if(!String(text||'').trim())throw new Error('No encontré texto en el archivo');
+      v126AnalyzeText(text);rosterImport.fileName=rosterImportFile.name;
+      toast('Lista detectada. Revisa coincidencias antes de aplicar.');
+      renderManager();
+    }catch(err){
+      rosterImport.busy=false;v126SetImportStatus(err?.message||'No se pudo leer la lista');
+      if(btn){btn.disabled=false;btn.textContent='Detectar y comparar jugadores'}
+      toast(err?.message||'No se pudo leer la lista');
+    }
+  });
+  $('[data-v126-include]',root).forEach(c=>c.onchange=()=>{const e=rosterImport.entries?.[Number(c.dataset.v126Include)];if(e)e.include=c.checked});
+  $('[data-v126-remove]',root).forEach(c=>c.onchange=()=>{const r=rosterImport.missing?.[Number(c.dataset.v126Remove)];if(r)r.remove=c.checked});
+  $('[data-v126-mark-missing]',root)?.addEventListener('click',()=>{for(const r of rosterImport.missing||[])r.remove=true;renderManager()});
+  $('[data-v126-reanalyse]',root)?.addEventListener('click',()=>{
+    const text=$('[data-v126-raw-text]',root)?.value||'';
+    try{v126AnalyzeText(text);renderManager()}catch(err){toast(err?.message||'No se pudo analizar el texto')}
+  });
+  $('[data-v126-apply]',root)?.addEventListener('click',v126ApplyRoster);
+}
+
 function fastToolsHtml(list){
   const previous=previousSeasonWithRecords(),count=[...selectedIds].filter(id=>list.some(r=>r.id===id)).length;
   return '<section class="v124-fast">'+
     '<header><small>REGISTRO RÁPIDO</small><h3>Acciones para muchos jugadores</h3><p>Renueva una temporada, cambia varios jugadores de equipo o pásalos a la siguiente temporada sin volver a capturar todo.</p></header>'+
+    rosterImportHtml()+
     '<div class="v124-fast-top">'+
       '<button type="button" data-v124-renew '+(previous?'':'disabled')+'><b>↻ Renovar temporada</b><span>'+(previous?'Traer jugadores de '+esc(previous):'Sin temporada anterior guardada')+'</span></button>'+
       '<button type="button" data-v124-select-visible><b>☑ Seleccionar visibles</b><span>Marca rápidamente la lista filtrada</span></button>'+
@@ -439,6 +734,7 @@ function managerHtml(){
 function bindManager(root){
   $('[data-v124-season]',root)?.addEventListener('change',e=>{selectedIds.clear();quickTeam='';quickSeason='';setSeason(e.target.value);localStorage.removeItem(EDIT_KEY);renderManager()});
   $('[data-v124-new-season]',root)?.addEventListener('click',()=>{selectedIds.clear();newSeason()});
+  bindRosterImport(root);
   $('[data-v124-renew]',root)?.addEventListener('click',renewFromPrevious);
   $('[data-v124-select-visible]',root)?.addEventListener('click',()=>{
     const boxes=$('[data-v124-select]',root),allSelected=boxes.length&&boxes.every(c=>selectedIds.has(c.dataset.v124Select));
