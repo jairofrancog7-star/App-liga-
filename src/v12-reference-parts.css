@@ -5005,3 +5005,27 @@ body[data-app-route="competition"] .v12-category-grid button:last-child:nth-chil
     grid-column:auto!important;
   }
 }
+
+
+/* V136 — forzar selector de categorías debajo de la tabla/lista de partidos */
+body[data-app-route="competition"] .v12-fixtures-reference{
+  display:flex!important;
+  flex-direction:column!important;
+}
+body[data-app-route="competition"] .v12-fixtures-reference>.v12-fixture-rule{
+  order:1!important;
+}
+body[data-app-route="competition"] .v12-fixtures-reference>.v12-week-strip{
+  order:2!important;
+}
+body[data-app-route="competition"] .v12-fixtures-reference>h2{
+  order:3!important;
+}
+body[data-app-route="competition"] .v12-fixtures-reference>.v12-schedule-card{
+  order:4!important;
+}
+body[data-app-route="competition"] .v12-fixtures-reference>.v12-category-grid{
+  order:99!important;
+  margin-top:18px!important;
+  margin-bottom:10px!important;
+}
