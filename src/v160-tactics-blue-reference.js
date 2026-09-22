@@ -22,6 +22,18 @@ const bind=()=>{
       head.insertAdjacentElement('afterend',chip);
     }
   }
+  if(adv&&!adv.querySelector('.v160-advanced-source-label')){
+    const label=document.createElement('div');
+    label.className='v160-advanced-source-label';
+    label.textContent='PARTIDO / TÁCTICA 3D';
+    const controls=adv.querySelector('.v100-tactic-controls');
+    if(controls)controls.insertAdjacentElement('beforebegin',label);
+  }
+  document.querySelectorAll('[data-v160-scroll-advanced]').forEach(btn=>{
+    if(btn.dataset.v160AdvancedBound)return;
+    btn.dataset.v160AdvancedBound='1';
+    btn.addEventListener('click',()=>adv?.scrollIntoView({behavior:'smooth',block:'start'}));
+  });
 };
 let t=0;const schedule=()=>{clearTimeout(t);t=setTimeout(bind,80)};
 window.addEventListener('hashchange',schedule);
