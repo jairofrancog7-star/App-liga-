@@ -27,6 +27,7 @@ let rosterImportTeam='';
 let rosterTeamPickerOpen=false;
 let rosterTeamQuery='';
 let rosterImportFile=null;
+let rosterHandwritingMode=true;
 let rosterImport={fileName:'',rawText:'',entries:[],missing:[],status:'',busy:false};
 let lastManagerHtml='';
 let filePickerCooldownUntil=0;
@@ -542,51 +543,120 @@ async function v157PreparedCanvas(source,mode='contrast'){
   const bmp=await v157Bitmap(source);
   const sw=bmp.width||bmp.videoWidth||bmp.naturalWidth||1;
   const sh=bmp.height||bmp.videoHeight||bmp.naturalHeight||1;
-  const scale=Math.max(1,Math.min(2.2,2100/sw));
+  /* V162: conserva más detalle de trazos finos de lápiz/pluma sin explotar memoria. */
+  const target=mode==='pencil'||mode==='handwriting'?2200:2050;
+  const scale=Math.max(1,Math.min(2.45,target/sw));
   const w=Math.max(1,Math.round(sw*scale)),h=Math.max(1,Math.round(sh*scale));
-  const c=document.createElement('canvas');c.width=w;c.height=h;
-  const ctx=c.getContext('2d',{willReadFrequently:true,alpha:false});
+  const canvas=document.createElement('canvas');canvas.width=w;canvas.height=h;
+  const ctx=canvas.getContext('2d',{willReadFrequently:true,alpha:false});
   ctx.imageSmoothingEnabled=true;ctx.imageSmoothingQuality='high';
   ctx.fillStyle='#fff';ctx.fillRect(0,0,w,h);ctx.drawImage(bmp,0,0,w,h);
+
   const img=ctx.getImageData(0,0,w,h),d=img.data;
+  /* Histograma para adaptar el realce a papel blanco, foto sombreada o lápiz tenue. */
+  const hist=new Uint32Array(256);
+  for(let i=0;i<d.length;i+=4){
+    const g=Math.max(0,Math.min(255,Math.round(.299*d[i]+.587*d[i+1]+.114*d[i+2])));
+    hist[g]++;
+  }
+  const total=Math.max(1,w*h);
+  const percentile=p=>{
+    const targetCount=total*p;let acc=0;
+    for(let i=0;i<256;i++){acc+=hist[i];if(acc>=targetCount)return i}
+    return 255;
+  };
+  const lo=percentile(.03),hi=Math.max(lo+30,percentile(.97));
+
   for(let i=0;i<d.length;i+=4){
     let g=.299*d[i]+.587*d[i+1]+.114*d[i+2];
-    if(mode==='threshold')g=g>170?255:(g<90?0:Math.max(0,Math.min(255,(g-90)*3.2)));
-    else g=Math.max(0,Math.min(255,(g-128)*1.58+128));
+    if(mode==='threshold'){
+      g=g>174?255:(g<92?0:Math.max(0,Math.min(255,(g-92)*3.1)));
+    }else if(mode==='pencil'){
+      /* Normaliza el papel y multiplica la "tinta" para rescatar grafito tenue. */
+      g=Math.max(0,Math.min(255,(g-lo)*255/(hi-lo)));
+      const ink=255-g;
+      g=255-Math.min(255,ink*3.05);
+      if(g>238)g=255;
+      else if(g<118)g=0;
+      else g=Math.max(0,Math.min(255,(g-118)*1.35));
+    }else if(mode==='handwriting'){
+      /* Binarización más suave para letras unidas/cursivas escritas con pluma. */
+      g=Math.max(0,Math.min(255,(g-lo)*255/(hi-lo)));
+      const ink=255-g;
+      g=ink<14?255:(ink>82?0:255-Math.min(245,ink*2.45));
+    }else{
+      g=Math.max(0,Math.min(255,(g-128)*1.58+128));
+    }
     d[i]=d[i+1]=d[i+2]=g;
   }
   ctx.putImageData(img,0,0);
-  return c;
+  return canvas;
 }
 function v157OcrTextQuality(text){
   let score=0;
   for(const line of String(text||'').split(/\r?\n/)){
     const letters=(line.match(/[A-Za-zÁÉÍÓÚÜÑáéíóúüñ]/g)||[]).length;
     const digits=(line.match(/\d/g)||[]).length;
-    if(letters>=6)score+=Math.min(20,letters);
-    if(letters>=10&&digits<=5)score+=12;
+    if(letters>=4)score+=Math.min(24,letters);
+    if(letters>=8&&digits<=5)score+=12;
+    if(letters>=12&&/\s/.test(line))score+=8;
   }
   return score;
 }
-async function v157Recognize(source,label,pass,mode){
+function v162MergeOcrTexts(parts){
+  const lines=[],seen=[];
+  for(const part of parts){
+    for(let line of String(part?.text||'').split(/\r?\n/)){
+      line=line.replace(/[|¦]+/g,' ').replace(/\s+/g,' ').trim();
+      if(!line)continue;
+      const n=norm(line);
+      if(!n||seen.some(x=>x===n||v124TokenSim(x,n)>.94))continue;
+      seen.push(n);lines.push(line);
+    }
+  }
+  return lines.join('\n');
+}
+async function v157Recognize(source,label,pass,mode,psm,totalPasses){
   const T=await v126Tesseract(),canvas=await v157PreparedCanvas(source,mode);
+  const handwritten=mode==='pencil'||mode==='handwriting';
   const result=await T.recognize(canvas,'spa',{
+    tessedit_pageseg_mode:String(psm||6),
+    preserve_interword_spaces:'1',
+    user_defined_dpi:'300',
     logger:m=>{
       if(m?.status==='recognizing text'){
         const pct=Math.round((m.progress||0)*100);
-        v126SetImportStatus('OCR inteligente '+label+' · pasada '+pass+'/2 · '+pct+'%');
-      }else if(m?.status)v126SetImportStatus('Preparando OCR inteligente '+label+'…');
+        v126SetImportStatus((handwritten?'Pluma/lápiz':'OCR impreso')+' · '+label+' · pasada '+pass+'/'+totalPasses+' · '+pct+'%');
+      }else if(m?.status){
+        v126SetImportStatus('Preparando '+(handwritten?'lectura de escritura manual':'OCR')+' · '+label+'…');
+      }
     }
   });
-  return result?.data?.text||'';
+  return {text:result?.data?.text||'',mode,confidence:Number(result?.data?.confidence||0)};
 }
 async function v126OcrImage(source,label='imagen'){
-  const a=await v157Recognize(source,label,1,'contrast');
-  const b=await v157Recognize(source,label,2,'threshold');
-  if(!b.trim())return a;
-  if(!a.trim())return b;
-  const first=v157OcrTextQuality(a)>=v157OcrTextQuality(b)?a:b;
-  return first+'\n'+(first===a?b:a);
+  const total=rosterHandwritingMode?4:2,parts=[];
+  parts.push(await v157Recognize(source,label,1,'contrast',6,total));
+  parts.push(await v157Recognize(source,label,2,'threshold',11,total));
+
+  if(rosterHandwritingMode){
+    /* Dos pasadas adicionales: lápiz tenue + escritura manual dispersa.
+       PSM 11 encuentra nombres aunque estén separados en una hoja; PSM 6
+       conserva renglones cuando el delegado escribió una lista ordenada. */
+    parts.push(await v157Recognize(source,label,3,'pencil',11,total));
+    parts.push(await v157Recognize(source,label,4,'handwriting',6,total));
+  }
+
+  parts.sort((a,b)=>{
+    const qa=v157OcrTextQuality(a.text)+(a.confidence||0)*.35;
+    const qb=v157OcrTextQuality(b.text)+(b.confidence||0)*.35;
+    return qb-qa;
+  });
+  const merged=v162MergeOcrTexts(parts);
+  if(rosterHandwritingMode){
+    v126SetImportStatus('Lectura completa: texto impreso + pluma/lápiz · comparando nombres con el padrón…');
+  }
+  return merged;
 }
 async function v126ReadPdf(file){
   v126SetImportStatus('Abriendo PDF…');
@@ -890,11 +960,12 @@ function rosterImportHtml(){
   return '<section class="v126-import">'+
     '<header><small>LISTA DEL DELEGADO</small><h3>Importar jugadores desde foto, PDF o Word</h3><p>Lee la lista en este teléfono, compara quién sigue, quién ya existe, quién cambió de equipo y quién es nuevo. El archivo no se sube a GitHub.</p></header>'+
     v126RosterTeamPickerHtml()+
-    '<button type="button" class="v126-file" data-v126-file-pick><span><b>Elegir lista del delegado</b><small>Imagen · PDF · Word DOCX · TXT · CSV</small></span></button>'+
+    '<button type="button" class="v126-file" data-v126-file-pick><span><b>Elegir lista del delegado</b><small>Foto · texto impreso · pluma · lápiz · PDF · Word · TXT · CSV</small></span></button>'+
     '<input class="v126-file-input" type="file" data-v126-file accept="image/*,.pdf,.docx,.txt,.csv,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document" tabindex="-1" aria-hidden="true">'+
     '<div class="v126-file-name">'+esc(rosterImport.fileName||'Ningún archivo seleccionado')+'</div>'+
+    '<label class="v162-handwriting"><input type="checkbox" data-v162-handwriting '+(rosterHandwritingMode?'checked':'')+'><span class="v162-handwriting-check"></span><span><b>Detectar escritura con pluma o lápiz</b><small>Realce de trazos tenues + 4 lecturas OCR + modo de texto disperso. Úsalo para listas escritas a mano.</small></span></label>'+
     '<button type="button" class="v126-analyse" data-v126-analyse '+(rosterImport.busy?'disabled':'')+'>'+(rosterImport.busy?'Leyendo lista…':'Detectar y comparar jugadores')+'</button>'+
-    '<p class="v126-status" data-v126-import-status>'+esc(rosterImport.status||'OCR inteligente español/México: doble lectura, contraste, padrón existente y validación de nombres. No envía la lista a GitHub.')+'</p>'+
+    '<p class="v126-status" data-v126-import-status>'+esc(rosterImport.status||'OCR avanzado español/México: impreso + pluma/lápiz, realce de grafito, lectura dispersa, padrón existente y validación de nombres. El archivo se procesa en este teléfono y no se envía a GitHub.')+'</p>'+
     v126RosterResultHtml()+
   '</section>';
 }
@@ -966,6 +1037,12 @@ function bindRosterImport(root){
     rosterImportFile=e.target.files?.[0]||null;
     rosterImport.fileName=rosterImportFile?.name||'';
     const n=$('.v126-file-name',root);if(n)n.textContent=rosterImport.fileName||'Ningún archivo seleccionado';
+  });
+  $('[data-v162-handwriting]',root)?.addEventListener('change',e=>{
+    rosterHandwritingMode=!!e.target.checked;
+    v126SetImportStatus(rosterHandwritingMode
+      ?'Pluma/lápiz activado: usaré realce de trazos tenues y 4 pasadas OCR.'
+      :'Modo rápido: solo 2 pasadas para texto impreso.');
   });
   $('[data-v126-analyse]',root)?.addEventListener('click',async()=>{
     if(!rosterImportTeam)return toast('Primero selecciona el equipo de la lista');
