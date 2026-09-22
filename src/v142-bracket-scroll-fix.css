@@ -1,0 +1,87 @@
+/* V142 — Liguilla / bracketBuilder: scroll vertical completo.
+   Evita recortes de viewport y reserva espacio real sobre la barra inferior fija. */
+@media (max-width:1023px){
+  html:has(body[data-app-route="bracketBuilder"]){
+    height:auto!important;
+    min-height:100%!important;
+    overflow-y:auto!important;
+    overflow-x:hidden!important;
+  }
+
+  body[data-app-route="bracketBuilder"]{
+    height:auto!important;
+    min-height:100dvh!important;
+    max-height:none!important;
+    overflow-y:auto!important;
+    overflow-x:hidden!important;
+    overscroll-behavior-y:auto!important;
+    -webkit-overflow-scrolling:touch!important;
+    touch-action:pan-y!important;
+  }
+
+  body[data-app-route="bracketBuilder"] #app,
+  body[data-app-route="bracketBuilder"] .app-shell{
+    height:auto!important;
+    min-height:100dvh!important;
+    max-height:none!important;
+    overflow:visible!important;
+  }
+
+  body[data-app-route="bracketBuilder"] #screen{
+    position:relative!important;
+    display:block!important;
+    width:100%!important;
+    height:auto!important;
+    min-height:0!important;
+    max-height:none!important;
+    margin:0 auto!important;
+    padding-bottom:calc(96px + env(safe-area-inset-bottom))!important;
+    overflow-x:hidden!important;
+    overflow-y:visible!important;
+    touch-action:pan-y!important;
+  }
+
+  body[data-app-route="bracketBuilder"] .v60-tool-page,
+  body[data-app-route="bracketBuilder"] .v64-page{
+    height:auto!important;
+    min-height:0!important;
+    max-height:none!important;
+    overflow:visible!important;
+    padding-bottom:18px!important;
+  }
+
+  body[data-app-route="bracketBuilder"] #screen > .v73-bracket-bottom{
+    position:relative!important;
+    height:auto!important;
+    min-height:0!important;
+    max-height:none!important;
+    margin:18px 14px 14px!important;
+    overflow:hidden!important;
+  }
+
+  body[data-app-route="bracketBuilder"] #screen > #v105-bottom[data-v105-route="bracketBuilder"]{
+    position:relative!important;
+    height:auto!important;
+    min-height:0!important;
+    max-height:none!important;
+    margin:14px 12px 0!important;
+    overflow:visible!important;
+  }
+
+  body[data-app-route="bracketBuilder"] #v105-bottom[data-v105-route="bracketBuilder"] .v105-grid{
+    margin-bottom:0!important;
+  }
+
+  body[data-app-route="bracketBuilder"] #v105-bottom[data-v105-route="bracketBuilder"] .v105-footnote{
+    margin-bottom:0!important;
+  }
+
+  body[data-app-route="bracketBuilder"] .bottom-nav{
+    position:fixed!important;
+    left:50%!important;
+    right:auto!important;
+    bottom:0!important;
+    transform:translateX(-50%)!important;
+    z-index:2147483000!important;
+  }
+}
