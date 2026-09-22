@@ -296,7 +296,12 @@ function resultMarkup(ctx){
   '</article>';
 }
 async function analyzeSelection(force=false){
-  const panel=$('.v172-panel',hub);if(!panel)return null;const match=mode==='match'?currentMatch():null,field=currentField();
+  const panel=$('.v172-panel',hub);if(!panel)return null;
+  if(!cfg){
+    try{await ensureData();renderControls()}catch(err){panel.innerHTML=emptyMarkup('No se pudo cargar la lista de campos.');return null}
+  }
+  if(mode==='field')syncFieldFromControl();
+  const match=mode==='match'?currentMatch():null,field=currentField();
   if(!field){panel.innerHTML=emptyMarkup(mode==='match'?'El partido seleccionado no tiene un campo reconocido. Usa “Buscar campo” para revisar una cancha.':'Selecciona un campo.');return null}
   panel.innerHTML=loadingMarkup('Consultando el campo seleccionado…');hub.setAttribute('aria-busy','true');
   try{
@@ -362,8 +367,21 @@ function setMode(next){
   renderControls();
   analyzeSelection(false);
 }
-function openFields(){if(!hub)return;setMode('field');hub.scrollIntoView({behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth',block:'start'});setTimeout(()=>$('[data-v172-field-select]',hub)?.focus(),220)}
-function openMatches(){if(!hub)return;setMode('match');hub.scrollIntoView({behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth',block:'start'})}
+async function openFields(){
+  if(!hub)return;
+  try{await ensureData()}catch(err){toast('No se pudo cargar la lista de campos','error');return}
+  selectedField=validFieldId(selectedField||localStorage.getItem(FIELD_KEY));
+  if(selectedField)localStorage.setItem(FIELD_KEY,selectedField);
+  setMode('field');
+  hub.scrollIntoView({behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth',block:'start'});
+  setTimeout(()=>$('[data-v172-field-select]',hub)?.focus(),220);
+}
+async function openMatches(){
+  if(!hub)return;
+  try{await ensureData()}catch(_){}
+  setMode('match');
+  hub.scrollIntoView({behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth',block:'start'});
+}
 function bindHub(){
   const onSelect=e=>{
     if(e.target.matches('[data-v172-category]')){selectedCategory=e.target.value;localStorage.setItem(CAT_KEY,selectedCategory);selectedMatch=matchesForCategory(selectedCategory)[0]?.id||'';if(selectedMatch)localStorage.setItem(MATCH_KEY,selectedMatch);renderControls();analyzeSelection(false);checkCategoryAlerts(true)}
