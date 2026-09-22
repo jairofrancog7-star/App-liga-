@@ -8,6 +8,7 @@ if(window.__LJR_V129_SCHEDULE_CHANGES__)return;
 window.__LJR_V129_SCHEDULE_CHANGES__=true;
 
 const DATA_URL='https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/data/official-live.json';
+const FIELD_DATA='./public/data/fields-v38-22.json?v=20260922-schedule-field-picker-v166';
 const ASSET_BASE='https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/';
 const STORE_KEY='ljr-schedule-changes-v1';
 const route=()=>String(location.hash||'').replace(/^#\/?/,'').split('?')[0]||'home';
@@ -15,7 +16,7 @@ const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&
 const norm=v=>String(v??'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[^a-z0-9]+/g,' ').trim();
 const read=()=>{try{return JSON.parse(localStorage.getItem(STORE_KEY)||'[]')}catch{return []}};
 const write=v=>{try{localStorage.setItem(STORE_KEY,JSON.stringify(v))}catch{}};
-let db=null,loading=null,currentNotice=null;
+let db=null,loading=null,currentNotice=null,fieldCatalog=null,fieldLoading=null;
 
 function toast(msg){
   let t=document.querySelector('.v129-toast');
@@ -36,6 +37,63 @@ async function loadData(){
     return db;
   })();
   return loading;
+}
+
+function addField(list,value){
+  const v=String(value||'').trim();
+  if(!v||/^por confirmar$/i.test(v)||/^campo por confirmar$/i.test(v))return;
+  if(!list.some(x=>norm(x)===norm(v)))list.push(v);
+}
+async function loadFields(){
+  if(fieldCatalog)return fieldCatalog;
+  if(fieldLoading)return fieldLoading;
+  fieldLoading=(async()=>{
+    const out=[];
+    try{
+      const r=await fetch(FIELD_DATA,{cache:'no-store'});
+      if(r.ok){
+        const data=await r.json();
+        for(const f of data.fields||[])addField(out,f.name||f.community);
+      }
+    }catch(_){}
+    try{
+      for(const c of Object.values(db?.categories||{})){
+        for(const block of c.fixtures||[]){
+          for(const row of block?.rows||[])addField(out,row?.[7]);
+        }
+        for(const ced of c.cedulas||[])addField(out,ced?.field||ced?.campo);
+      }
+    }catch(_){}
+    [
+      'Campo 1 · Unidad Deportiva Sur','Campo 2 · Unidad Deportiva Sur','Campo 3 · Unidad Deportiva Sur',
+      'Campo 4 · Emiliano Zapata','Campo Cerrito de Gasca','Campo de Tavera','Campo San Juan de la Cruz',
+      'Unidad Deportiva Santiago de Cuenda','Campo San Antonio de Romerillo','Campo Fraccionamiento Comontuoso',
+      'Campo de Fútbol de Pozos','Campo Rincón de Centeno','Campo San José de la Montaña','Campo San Julián Tierra Blanca'
+    ].forEach(v=>addField(out,v));
+    fieldCatalog=out;
+    return out;
+  })();
+  return fieldLoading;
+}
+function venueOptions(current=''){
+  const fields=fieldCatalog||[];
+  const unit=fields.filter(v=>/^campo [123]\b/i.test(v)||/^campo 4\b/i.test(v));
+  const other=fields.filter(v=>!unit.includes(v));
+  const options=(items)=>items.map(v=>'<option value="'+esc(v)+'"'+(norm(v)===norm(current)?' selected':'')+'>'+esc(v)+'</option>').join('');
+  return '<option value="">Selecciona una cancha</option>'+
+    '<optgroup label="Unidad Deportiva Sur">'+options(unit)+'</optgroup>'+
+    '<optgroup label="Comunidades y otras sedes">'+options(other)+'</optgroup>'+
+    '<option value="__custom__">Otra sede / escribir manualmente</option>';
+}
+function syncVenueInput(root,value=''){
+  const sel=root.querySelector('[data-v129-venue]');
+  const custom=root.querySelector('[data-v129-venue-custom]');
+  if(!sel||!custom)return;
+  const v=String(value||'').trim();
+  const known=(fieldCatalog||[]).find(x=>norm(x)===norm(v));
+  if(known){sel.value=known;custom.hidden=true;custom.value='';return}
+  if(v){sel.value='__custom__';custom.hidden=false;custom.value=v;return}
+  sel.value='';custom.hidden=true;custom.value='';
 }
 
 function parseDate(raw){
@@ -117,7 +175,7 @@ function pageMarkup(){
         '<label><span>Tipo de cambio</span><select data-v129-type><option>Cambio de horario y sede</option><option>Cambio de horario</option><option>Cambio de sede</option><option>Reprogramación</option><option>Suspensión</option></select></label>'+
         '<label><span>Nueva fecha</span><input type="date" data-v129-date></label>'+
         '<label><span>Nueva hora</span><input type="time" data-v129-time></label>'+
-        '<label><span>Nueva sede / campo</span><input type="text" data-v129-venue placeholder="Ej. Campo 1 · Unidad Deportiva Sur"></label>'+
+        '<label><span>Nueva sede / campo</span><select data-v129-venue>'+venueOptions()+'</select><input type="text" data-v129-venue-custom hidden placeholder="Escribe otra sede / campo"></label>'+
       '</div>'+
       '<label><span>Motivo / aviso</span><textarea data-v129-reason placeholder="Ej. Cambio de último momento por disponibilidad del campo."></textarea></label>'+
       '<div class="v129-actions"><button class="primary" type="button" data-v129-generate>Generar aviso</button><button type="button" data-v129-save>Guardar cambio</button></div>'+
@@ -148,7 +206,9 @@ function formNotice(root){
     oldDate:m.date,oldTime:m.time,oldVenue:m.venue,oldRaw:m.rawDate,
     newDate:root.querySelector('[data-v129-date]')?.value||m.date,
     newTime:root.querySelector('[data-v129-time]')?.value||m.time,
-    newVenue:(root.querySelector('[data-v129-venue]')?.value||m.venue||'').trim(),
+    newVenue:((root.querySelector('[data-v129-venue]')?.value==='__custom__'
+      ? root.querySelector('[data-v129-venue-custom]')?.value
+      : root.querySelector('[data-v129-venue]')?.value)||m.venue||'').trim(),
     reason:(root.querySelector('[data-v129-reason]')?.value||'').trim(),
     createdAt:new Date().toISOString()
   };
@@ -182,7 +242,7 @@ function fillFromMatch(root,m){
   cur.innerHTML='<b>'+esc(m.home)+' vs '+esc(m.away)+'</b><small>Actual: '+esc(m.rawDate||'Fecha por confirmar')+' · '+esc(m.venue||'Sede por confirmar')+'</small>';
   root.querySelector('[data-v129-date]').value=m.date||'';
   root.querySelector('[data-v129-time]').value=m.time||'';
-  root.querySelector('[data-v129-venue]').value=m.venue||'';
+  syncVenueInput(root,m.venue||'');
 }
 
 function showPreview(root,n){
@@ -253,6 +313,13 @@ function bindPreview(root,n){
 function bind(root){
   root.querySelector('[data-v129-back]')?.addEventListener('click',()=>{if(window.LJR_APP_BACK)window.LJR_APP_BACK();else location.hash='#/home'});
   root.querySelector('[data-v129-match]')?.addEventListener('change',e=>{const m=matches().find(x=>x.id===e.target.value);if(m)fillFromMatch(root,m)});
+  root.querySelector('[data-v129-venue]')?.addEventListener('change',e=>{
+    const custom=root.querySelector('[data-v129-venue-custom]');
+    if(!custom)return;
+    const manual=e.target.value==='__custom__';
+    custom.hidden=!manual;
+    if(manual){custom.focus()}else custom.value='';
+  });
   root.querySelector('[data-v129-generate]')?.addEventListener('click',()=>{
     const n=formNotice(root);if(!n)return toast('Selecciona un partido');showPreview(root,n);
   });
@@ -286,6 +353,7 @@ async function render(){
   const root=document.querySelector('#screen');if(!root)return;
   if(root.querySelector('[data-v129-schedule]'))return;
   await loadData();
+  await loadFields();
   root.innerHTML=pageMarkup();
   bind(root);
   const shared=fromUrl();
