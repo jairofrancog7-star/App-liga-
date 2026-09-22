@@ -5027,11 +5027,11 @@ function v64BracketView(){
 
 function v64CredentialBuilderView(){
   const v66Player=localStorage.getItem('v66-selected-player')||'',v66Team=localStorage.getItem('v66-selected-player-team')||'';
-  return '<section class="v60-tool-page v64-page">'+v60Header('REGISTRO DE JUGADOR','Registro y credencial','Carga una foto del documento y una foto del jugador. Al detectar texto se completan automáticamente nombre, CURP, fecha de nacimiento y ciudad / municipio / comunidad; revisa los datos antes de usarlos.')+
+  return '<section class="v60-tool-page v64-page">'+v60Header('REGISTRO DE JUGADOR','Registro y credencial','Carga una foto del documento y una foto del jugador. Al detectar la INE o CURP se completan automáticamente nombre, CURP y fecha de nacimiento; revisa los datos antes de usarlos.')+
     '<div class="v64-form-grid one">'+
       '<label class="v64-upload-field"><b>Foto de CURP o INE</b><input type="file" accept="image/*" data-v64-doc><span class="v64-upload-mini v64-upload-doc" data-v64-doc-preview><span>Vista previa del documento</span></span></label>'+
       '<label class="v64-upload-field"><b>Foto del jugador</b><input type="file" accept="image/*" data-v64-photo><span class="v64-upload-mini v64-upload-player" data-v64-player-mini-preview><span>Vista previa de la foto</span></span></label>'+
-      '<div class="v60-actions"><button class="v60-btn" data-v64-ocr>Detectar texto</button><button class="v60-btn outline" data-v64-clear-ocr>Borrar documento y lectura</button></div>'+
+      '<div class="v60-actions v64-ocr-one"><button class="v60-btn" data-v64-ocr>Detectar INE / CURP</button></div>'+
       '<label><b>Texto detectado — revisa y corrige</b><textarea class="v60-textarea" data-v64-ocr-text></textarea></label>'+
       '<label><b>Nombre del jugador</b><input type="text" data-v64-cred-name placeholder="Se completa al detectar texto" value="'+v64Esc(v66Player)+'"></label>'+
       '<label><b>CURP (detección automática local)</b><input type="text" maxlength="18" data-v64-cred-curp placeholder="Se completa al detectar texto" autocomplete="off"></label>'+
@@ -6108,14 +6108,21 @@ document.querySelectorAll('[data-v64-cred-name],[data-v64-cred-curp],[data-v64-c
 document.querySelector('[data-v64-cred-team]')?.addEventListener('change',()=>{v64SyncCredentialTeamCategory();v64CredentialSync()});
 v64CredentialSync();
 document.querySelector('[data-v64-ocr]')?.addEventListener('click',async e=>{
+  const live=window.LJR_V155_LIVE_INE;
+  const internal=!!window.__LJR_V155_INTERNAL_OCR__;
+  if(!internal&&live?.active?.()){live.stop?.();return}
   const docFile=document.querySelector('[data-v64-doc]')?.files?.[0]||null;
   const photoFile=document.querySelector('[data-v64-photo]')?.files?.[0]||null;
   const file=docFile||photoFile,out=document.querySelector('[data-v64-ocr-text]');
-  if(!file||!out){toast('Selecciona una foto de CURP o INE para intentar obtener los datos');return}
+  if(!file||!out){
+    if(!internal&&live?.start){await live.start();return}
+    toast('Selecciona una foto de CURP o INE para intentar obtener los datos');
+    return
+  }
   if(!docFile&&photoFile)toast('No hay documento en el primer campo; intentaré leer la imagen disponible');
   const btn=e.currentTarget,original=btn.textContent;btn.disabled=true;btn.textContent='Buscando datos…';
   /* Cada lectura empieza limpia para no conservar basura de una prueba anterior. */
-  for(const sel of ['[data-v64-cred-name]','[data-v64-cred-curp]','[data-v100-dob]','[data-v100-age]','[data-v100-city]']){
+  for(const sel of ['[data-v64-cred-name]','[data-v64-cred-curp]','[data-v100-dob]','[data-v100-age]']){
     const el=document.querySelector(sel);if(el)el.value='';
   }
   v64CredentialSync();
@@ -6128,10 +6135,10 @@ document.querySelector('[data-v64-ocr]')?.addEventListener('click',async e=>{
       name:v64NameStrength(strong.name)>=76?strong.name:'',
       curp:(strong.curp&&v64CurpChecksumValid(strong.curp))?strong.curp:'',
       dob:strong.dob||'',
-      city:strong.city||(v64LooksLikeIne(combined)?v64KnownPlaceFromText(combined):'')
+      city:''
     };
     v64ApplyOcrIdentity(p);
-    const found=[p.name&&'nombre',p.curp&&'CURP',p.dob&&'fecha',p.city&&'municipio/comunidad'].filter(Boolean);
+    const found=[p.name&&'nombre',p.curp&&'CURP',p.dob&&'fecha'].filter(Boolean);
     toast(found.length?'Datos detectados: '+found.join(', ') : 'No encontré datos seguros todavía; conservé la lectura para intentar de nuevo o corregirla');
   }catch(err){
     toast('No se pudo leer el documento; prueba una foto más clara o captura los datos manualmente');
