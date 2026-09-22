@@ -245,3 +245,15 @@ body[data-app-route="credentialBuilder"] .v124-head p{
   .v160-fast-team-list{max-height:270px}
   .v160-fast-team-open{min-height:52px}
 }
+
+
+/* V161 — filtros avanzados del padrón y trazabilidad del registro. */
+.v161-registry-filters{margin:10px 0 12px;padding:11px;border:1px solid rgba(76,228,241,.28);border-radius:15px;background:#071365;display:grid;gap:9px}
+.v161-filter-head{display:flex;align-items:baseline;gap:8px;justify-content:space-between}.v161-filter-head b{font-size:11px}.v161-filter-head span{font-size:8px;color:#64e7f2;font-weight:850}
+.v161-filter-grid{display:grid;grid-template-columns:1fr 1fr;gap:7px}.v161-filter-grid label{display:grid;gap:4px;min-width:0}.v161-filter-grid label>span,.v161-letter-filter>span{font-size:8px;color:#b9c7e5;font-weight:850;text-transform:uppercase;letter-spacing:.05em}
+.v161-filter-grid select{width:100%;min-height:40px;border:1px solid rgba(255,255,255,.14);border-radius:10px;background:#040a54;color:#fff;padding:0 8px;font-size:9px;font-weight:750;min-width:0}
+.v161-letter-filter{display:grid;gap:5px}.v161-letter-filter>div{display:flex;gap:5px;overflow-x:auto;padding-bottom:2px;scrollbar-width:none;-webkit-overflow-scrolling:touch}.v161-letter-filter>div::-webkit-scrollbar{display:none}
+.v161-letter-filter button{flex:0 0 auto;min-width:30px;min-height:30px;padding:0 8px;border:1px solid rgba(255,255,255,.12);border-radius:999px;background:#0b176f;color:#c7d2eb;font-size:8px;font-weight:850}.v161-letter-filter button.active{background:#22d3df;border-color:#58e9f2;color:#04104f}
+.v161-record-meta{display:grid;grid-template-columns:1fr 1fr 1fr;gap:5px;margin-top:8px;padding-top:8px;border-top:1px solid rgba(255,255,255,.07)}
+.v161-record-meta span{display:grid;gap:2px;min-width:0;font-size:7.5px;color:#b8c5e3;overflow-wrap:anywhere}.v161-record-meta span b{font-size:7px;color:#5ee5f0;text-transform:uppercase;letter-spacing:.05em}
+@media(max-width:390px){.v161-filter-grid{grid-template-columns:1fr}.v161-record-meta{grid-template-columns:1fr 1fr}.v161-record-meta span:last-child{grid-column:1/-1}}
