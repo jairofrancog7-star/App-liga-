@@ -252,29 +252,59 @@ function v124Dice(a,b){
   for(const g of A){const j=B.findIndex((x,i)=>!used[i]&&x===g);if(j>=0){used[j]=true;hit++}}
   return (2*hit)/(A.length+B.length||1);
 }
-function bestOfficialFromOcr(text){
+function v124NameParts(name){
+  const p=String(name||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toUpperCase().replace(/[^A-ZÑ ]+/g,' ').split(/\s+/).filter(Boolean);
+  if(p.length<3)return null;
+  const maternal=p[p.length-1],paternal=p[p.length-2],given=p.slice(0,-2);
+  const common=new Set(['JOSE','J','MARIA','MA','MA.']);
+  const gi=(common.has(given[0])&&given[1]?given[1]:given[0])?.[0]||'X';
+  const vowel=(paternal.slice(1).match(/[AEIOU]/)||['X'])[0];
+  return {paternal,maternal,given,prefix:(paternal[0]||'X')+vowel+(maternal[0]||'X')+gi};
+}
+function v124Hamming(a,b){
+  a=String(a||'');b=String(b||'');if(a.length!==b.length)return 99;
+  let d=0;for(let i=0;i<a.length;i++)if(a[i]!==b[i])d++;return d;
+}
+function v124BadOcrName(name){
+  const n=norm(name);
+  if(!n||n.length<4||n.length>70)return true;
+  if(/instituto|electoral|credencial|votar|fecha|nacim|domicilio|curp|clave|seccion|vigencia/.test(n))return true;
+  const words=n.split(' ').filter(Boolean);
+  return words.length<2;
+}
+function bestOfficialFromOcr(text,curp='',selectedTeam=''){
   const raw=String(text||''),nraw=norm(raw);
-  const lines=raw.split(/\r?\n/).map(norm).filter(x=>x.length>=4&&x.length<=100);
-  const tokens=nraw.split(' ').filter(x=>x.length>=4);
-  if(!lines.length&&!tokens.length)return null;
-  const stop=new Set(['instituto','nacional','electoral','credencial','votar','mexico','mexicanos','domicilio','municipio','seccion','vigencia','nombre','fecha']);
-  let best=null,bestScore=0,second=0;
+  const lines=raw.split(/\r?\n/).map(norm).filter(x=>x.length>=4&&x.length<=120);
+  const tokens=nraw.split(' ').filter(x=>x.length>=3);
+  const curpPrefix=String(curp||'').toUpperCase().replace(/[^A-Z0-9]/g,'').slice(0,4);
+  const teamNorm=norm(selectedTeam);
+  if(!lines.length&&!tokens.length&&!curpPrefix)return null;
+  const stop=new Set(['instituto','nacional','electoral','credencial','votar','mexico','mexicanos','domicilio','municipio','seccion','vigencia','nombre','fecha','nacimiento']);
+  let best=null,bestScore=-1,second=-1;
   for(const p of officialPlayers()){
     const n=norm(p.name),words=n.split(' ').filter(x=>x.length>=3);
     let score=0;
-    for(const l of lines)score=Math.max(score,v124Dice(n,l));
-    let strong=0,matched=0;
+    for(const l of lines)score=Math.max(score,v124Dice(n,l)*.55);
+    let matched=0;
     for(const w of words){
       if(stop.has(w))continue;
-      const exact=tokens.includes(w);
-      const fuzzy=Math.max(0,...tokens.map(t=>v124Dice(w,t)));
-      if(exact){matched++;strong+=w.length>=5?0.22:0.13}
-      else if(fuzzy>=.78){matched++;strong+=w.length>=5?0.16:0.09}
+      const exact=tokens.includes(w),fuzzy=Math.max(0,...tokens.map(t=>v124Dice(w,t)));
+      if(exact){matched++;score+=w.length>=5?.13:.08}
+      else if(fuzzy>=.82){matched++;score+=w.length>=5?.09:.05}
     }
-    score=Math.min(1,score+strong+(matched>=2?.18:0));
+    if(matched>=2)score+=.18;
+    const np=v124NameParts(p.name);
+    if(curpPrefix&&np){
+      const dist=v124Hamming(curpPrefix,np.prefix);
+      if(dist===0)score+=.55;
+      else if(dist===1)score+=.38;
+      else if(dist===2)score+=.08;
+    }
+    if(teamNorm&&norm(p.team)===teamNorm)score+=.22;
+    else if(teamNorm)score-=.05;
     if(score>bestScore){second=bestScore;bestScore=score;best=p}else if(score>second)second=score;
   }
-  if(best&&bestScore>=.48&&(bestScore-second>=.07||bestScore>=.70))return {...best,matchScore:bestScore};
+  if(best&&bestScore>=.60&&(bestScore-second>=.10||bestScore>=.92))return {...best,matchScore:bestScore};
   return null;
 }
 function bindOcrAssist(){
@@ -283,16 +313,17 @@ function bindOcrAssist(){
     const timer=setInterval(()=>{
       if(btn.disabled)return;
       clearInterval(timer);
-      const raw=$('[data-v64-ocr-text]')?.value||'',name=$('[data-v64-cred-name]')?.value||'';
-      const exact=officialPlayers().find(p=>norm(p.name)===norm(name)),guess=exact||bestOfficialFromOcr(raw);
+      const raw=$('[data-v64-ocr-text]')?.value||'',name=$('[data-v64-cred-name]')?.value||'',curp=$('[data-v64-cred-curp]')?.value||'',team=$('[data-v64-cred-team]')?.value||'';
+      const exact=!v124BadOcrName(name)?officialPlayers().find(p=>norm(p.name)===norm(name)):null;
+      const guess=exact||bestOfficialFromOcr(raw,curp,team);
       if(guess){
-        const current=norm(name);
-        if(!current||current.length<4||v124Dice(current,guess.name)>=.52)setValue('[data-v64-cred-name]',guess.name);
-        setValue('[data-v64-cred-team]',guess.team);
+        if(v124BadOcrName(name)||v124Dice(name,guess.name)>=.45)setValue('[data-v64-cred-name]',guess.name);
+        if(!team||norm(team)===norm(guess.team))setValue('[data-v64-cred-team]',guess.team);
         setValue('[data-v64-cred-cat]',guess.category);
-        toast('Jugador reconocido: '+guess.name+' · '+guess.team);
-      }else if(!name){
-        toast('No pude identificar el nombre con seguridad; prueba una foto más recta o recorta el INE');
+        toast('Nombre completo reconocido: '+guess.name);
+      }else if(v124BadOcrName(name)){
+        setValue('[data-v64-cred-name]','');
+        toast('No pude confirmar el nombre completo; intenta otra foto más recta y cercana');
       }
       renderManager();
     },300);
