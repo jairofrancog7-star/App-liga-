@@ -19,7 +19,7 @@
     z-index:30!important;
     background:
       linear-gradient(180deg,rgba(2,5,86,.55),rgba(8,19,151,.18)),
-      url('../more-bg-v19.webp?v=20260918-v19') center -8px/100% auto no-repeat,
+      url('../public/more-bg-v19.webp?v=20260918-v19') center -8px/100% auto no-repeat,
       #080d85!important;
     border:0!important;
     border-bottom:0!important;
@@ -91,7 +91,7 @@
     border:0!important;
     border-radius:0!important;
     background-color:transparent!important;
-    background-image:url('../profile-more-reference.svg?v=parts23')!important;
+    background-image:url('../public/profile-more-reference.svg?v=parts23')!important;
     background-position:center!important;
     background-repeat:no-repeat!important;
     background-size:contain!important;
@@ -238,7 +238,7 @@
     padding-top:28px!important;
     background:
       linear-gradient(180deg,rgba(9,12,131,.00) 0%,rgba(7,17,158,.10) 30%,rgba(5,27,216,.34) 78%,rgba(6,29,229,.72) 100%),
-      url('../more-bg-v19.webp?v=20260918-v19') center -154px/100% auto no-repeat,
+      url('../public/more-bg-v19.webp?v=20260918-v19') center -154px/100% auto no-repeat,
       #090c83!important;
   }
 
@@ -334,7 +334,7 @@
 
   body[data-app-route="more"] .v19-more-page{
     background-color:#080b82!important;
-    background-image:url('../more-bg-v19.webp?v=20260918-v19')!important;
+    background-image:url('../public/more-bg-v19.webp?v=20260918-v19')!important;
     background-repeat:no-repeat!important;
     background-size:100% auto!important;
     background-position:center -118px!important;
@@ -458,7 +458,7 @@
         rgba(8,11,130,.94) 112px,
         rgba(8,11,130,.58) 165px,
         rgba(8,11,130,0) 230px),
-      url('../more-bg-v19.webp?v=20260918-v19')!important;
+      url('../public/more-bg-v19.webp?v=20260918-v19')!important;
     background-repeat:no-repeat,no-repeat!important;
     background-size:100% 230px,100% auto!important;
     background-position:center top,center -96px!important;
@@ -571,7 +571,7 @@
 
     /* Mismo arte, SIN gradiente ni velo: el diseño de la derecha queda nítido. */
     background-color:var(--v79-more-bg)!important;
-    background-image:url('../more-bg-v19.webp?v=20260918-v19')!important;
+    background-image:url('../public/more-bg-v19.webp?v=20260918-v19')!important;
     background-repeat:no-repeat!important;
     background-size:100% auto!important;
     background-position:center top!important;
@@ -635,7 +635,7 @@
     border:0!important;
     border-radius:0!important;
     background-color:transparent!important;
-    background-image:url('../profile-more-reference.svg?v=parts23')!important;
+    background-image:url('../public/profile-more-reference.svg?v=parts23')!important;
     background-repeat:no-repeat!important;
     background-position:center!important;
     background-size:contain!important;
@@ -661,7 +661,7 @@
        la página empieza después de la cabecera, por eso el offset coincide
        con la altura del header. No hay capas que difuminen el balón. */
     background-color:var(--v79-more-bg)!important;
-    background-image:url('../more-bg-v19.webp?v=20260918-v19')!important;
+    background-image:url('../public/more-bg-v19.webp?v=20260918-v19')!important;
     background-repeat:no-repeat!important;
     background-size:100% auto!important;
     background-position:center calc(-1 * var(--v79-more-header-h))!important;
