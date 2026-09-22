@@ -202,6 +202,15 @@ function revealActivePlayerFilters(screen){
 }
 async function render(force=false,focusSearch=false,revealFilters=false){
   const r=route(); if(!['players','club-store'].includes(r))return;
+  if(r==='players'&&localStorage.getItem('v66-open-all')==='1'){
+    playerCat='all';
+    playerTeam='all';
+    playerQuery='';
+    localStorage.setItem('v66-player-cat','all');
+    localStorage.setItem('v66-player-team','all');
+    localStorage.removeItem('v66-open-all');
+    force=true;
+  }
   await load(); if(!db)return;
   const screen=document.querySelector('#screen'); if(!screen)return;
   const kind=r==='club-store'?'store':'players';
