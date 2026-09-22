@@ -674,6 +674,7 @@ function v162MergeOcrTexts(parts){
   }
   return lines.join('\n');
 }
+const V188_OCR_TIMEOUT_MS=18000;
 async function v157Recognize(source,label,pass,mode,psm,totalPasses){
   const T=await v126Tesseract(),canvas=await v157PreparedCanvas(source,mode);
   const handwritten=mode==='pencil'||mode==='handwriting';
@@ -694,8 +695,32 @@ async function v157Recognize(source,label,pass,mode,psm,totalPasses){
   if(nameColumn){
     options.tessedit_char_whitelist=" ABCDEFGHIJKLMNOPQRSTUVWXYZÁÉÍÓÚÜÑabcdefghijklmnopqrstuvwxyzáéíóúüñ'-";
   }
-  const result=await T.recognize(canvas,'spa',options);
-  return {text:result?.data?.text||'',mode,confidence:Number(result?.data?.confidence||0)};
+
+  /* V188: watchdog móvil. En algunos Android Tesseract podía quedarse
+     indefinidamente en 53% durante una segunda lectura. Ya no dejamos que
+     una pasada bloquee el flujo: a los 18 s se cancela el intento lógico,
+     se devuelve vacío y el lector continúa/finaliza con lo ya detectado. */
+  let timer=0,timedOut=false;
+  const timeout=new Promise(resolve=>{
+    timer=setTimeout(()=>{
+      timedOut=true;
+      v126SetImportStatus('OCR tardó demasiado en esta pasada · omitiéndola para evitar congelamiento…');
+      resolve({__v188Timeout:true});
+    },V188_OCR_TIMEOUT_MS);
+  });
+  const result=await Promise.race([
+    T.recognize(canvas,'spa',options).catch(error=>({__v188Error:error})),
+    timeout
+  ]);
+  clearTimeout(timer);
+
+  if(result?.__v188Timeout){
+    return {text:'',mode,confidence:0,timedOut:true};
+  }
+  if(result?.__v188Error){
+    return {text:'',mode,confidence:0,error:true};
+  }
+  return {text:result?.data?.text||'',mode,confidence:Number(result?.data?.confidence||0),timedOut};
 }
 function v178MergeSweepTexts(parts){
   const lines=[],seen=[];
@@ -1282,12 +1307,12 @@ async function v187BuildPrintedRowBatches(source,layout,batchSize=5){
 async function v187ReadPrintedRowsBatched(source,label,layout){
   const batches=await v187BuildPrintedRowBatches(source,layout,5);
   if(!batches.length)return '';
-  const out=[],totalPasses=batches.length*2;
+  const out=[],totalPasses=batches.length;
   let pass=0;
 
   for(let i=0;i<batches.length;i++){
     const b=batches[i],from=b.start+1,to=b.start+b.count;
-    v126SetImportStatus('OCR por filas V187 · Jugador '+from+'–'+to+' · lectura principal');
+    v126SetImportStatus('OCR por filas V188 · Jugador '+from+'–'+to+' · bloque '+(i+1)+'/'+batches.length);
     const first=await v157Recognize(
       b.canvas,
       label+' · columna Jugador · filas '+from+'-'+to,
@@ -1295,33 +1320,38 @@ async function v187ReadPrintedRowsBatched(source,label,layout){
     );
     let list1=v180NameColumnLines(first.text),chosen=list1;
 
-    /* Segunda lectura sólo cuando el bloque no entrega exactamente sus filas.
-       Así no hacemos 50 lecturas ni congelamos Android. */
+    /* V188: NO repetir Tesseract sobre el mismo bloque.
+       El video del usuario mostró que la verificación 2/10 se quedaba en 53%.
+       Si faltan filas usamos TextDetector nativo (cuando exista), que es barato,
+       y si no, conservamos la primera lectura y seguimos al siguiente bloque. */
     if(list1.length!==b.count){
-      v126SetImportStatus('OCR por filas V187 · Jugador '+from+'–'+to+' · verificando '+list1.length+'/'+b.count);
-      const second=await v157Recognize(
-        b.canvas,
-        label+' · columna Jugador · verificación filas '+from+'-'+to,
-        ++pass,'soft',6,totalPasses
-      );
-      const list2=v180NameColumnLines(second.text);
-      chosen=v183ConsensusNameLists([list1,list2],b.count);
-      if(chosen.length<b.count){
-        /* Escoge la lectura con el conteo más cercano; nunca mezcla con Equipo. */
-        const candidates=[chosen,list1,list2].filter(x=>x.length);
-        candidates.sort((a,b2)=>Math.abs(a.length-b.count)-Math.abs(b2.length-b.count));
-        chosen=candidates[0]||[];
+      const nativeText=await v177NativeText(b.canvas);
+      const list2=v180NameColumnLines(nativeText);
+      if(list2.length){
+        chosen=v183ConsensusNameLists([list1,list2],b.count);
+        if(chosen.length<b.count){
+          const candidates=[chosen,list1,list2].filter(x=>x.length);
+          candidates.sort((a,b2)=>Math.abs(a.length-b.count)-Math.abs(b2.length-b.count));
+          chosen=candidates[0]||[];
+        }
       }
     }
 
     if(chosen.length>b.count)chosen=chosen.slice(0,b.count);
     out.push(...chosen);
-    await new Promise(resolve=>setTimeout(resolve,14));
+
+    if(first.timedOut){
+      /* No iniciar más OCR pesado si un worker ya mostró atasco.
+         Terminamos con lo detectado y dejamos que la columna completa sea
+         evitada; así el botón vuelve a responder en vez de quedarse colgado. */
+      v126SetImportStatus('OCR V188 · una lectura excedió 18 s · se detuvo de forma segura con '+out.length+' nombre(s)');
+      break;
+    }
+    await new Promise(resolve=>setTimeout(resolve,24));
   }
 
   return out.join('\n');
 }
-
 async function v180ReadPrintedNameColumn(source,label,layout){
   const target=layout.rows||0,parts=[];
 
@@ -1334,7 +1364,7 @@ async function v180ReadPrintedNameColumn(source,label,layout){
     parts.push({text:rowText,mode:'row-batches',confidence:96});
     const enough=target?rowNames.length>=Math.max(3,Math.floor(target*.84)):rowNames.length>=12;
     if(enough){
-      v126SetImportStatus('OCR por filas V187 · '+rowNames.length+(target?' de '+target:'')+' nombres · sólo columna Jugador · revisión manual');
+      v126SetImportStatus('OCR por filas V188 · '+rowNames.length+(target?' de '+target:'')+' nombres · sólo columna Jugador · revisión manual');
       return rowNames.join('\n');
     }
   }
@@ -1349,20 +1379,20 @@ async function v180ReadPrintedNameColumn(source,label,layout){
   const nativeText=await v177NativeText(crop);
   if(nativeText)parts.push({text:nativeText,mode:'native-column',confidence:94});
 
-  v126SetImportStatus('OCR V187 · columna Jugador completa · contraste');
+  v126SetImportStatus('OCR V188 · columna Jugador completa · contraste');
   parts.push(await v157Recognize(crop,label+' · columna Jugador · columna completa',1,'contrast',6,2));
 
   let bestText=v180BestNameColumnText(parts,target);
   let bestNames=v180NameColumnLines(bestText);
 
   if(target&&bestNames.length<Math.max(3,Math.floor(target*.90))){
-    v126SetImportStatus('OCR V187 · verificando columna Jugador · lectura suave');
+    v126SetImportStatus('OCR V188 · verificando columna Jugador · lectura suave');
     parts.push(await v157Recognize(crop,label+' · columna Jugador · verificación',2,'soft',6,2));
     bestText=v180BestNameColumnText(parts,target);
     bestNames=v180NameColumnLines(bestText);
   }
 
-  v126SetImportStatus('OCR Preciso V187 terminado · '+bestNames.length+(target?' de '+target:'')+' nombres · nunca leyó Equipo/G.Total · revisa ✓/✕');
+  v126SetImportStatus('OCR Preciso V188 terminado · '+bestNames.length+(target?' de '+target:'')+' nombres · nunca leyó Equipo/G.Total · revisa ✓/✕');
   return bestNames.join('\n');
 }
 async function v179TwoBandSweep(source,label,pass,total,kind){
@@ -1397,7 +1427,7 @@ async function v126OcrImage(source,label='imagen'){
       rosterExpectedRows=table.rows||0;
       const namesOnly=await v180ReadPrintedNameColumn(source,label,table);
       const count=v180NameColumnLines(namesOnly).length;
-      v126SetImportStatus('Tabla impresa detectada · OCR por filas V187 · '+count+(table.rows?' de '+table.rows:'')+' nombres · sólo Jugador · NO se registró ninguno.');
+      v126SetImportStatus('Tabla impresa detectada · OCR por filas V188 · '+count+(table.rows?' de '+table.rows:'')+' nombres · sólo Jugador · NO se registró ninguno.');
       /* Importante: una vez reconocida la cuadrícula NO regresamos al OCR de
          página completa. Ese respaldo mezclaba Jugador+Equipo+G.Total y era el
          origen de "Realcerrito", "Populares", "Osasna", "Jbarza", etc. */
