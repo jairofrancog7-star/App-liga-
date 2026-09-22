@@ -848,14 +848,16 @@ function v183CleanOcrName(value){
 }
 function v184UniqueEditOne(token,set){
   const raw=v157Upper(token).replace(/[^A-ZÑ]/g,'');
-  if(!raw||raw.length<5||set.has(raw))return token;
-  const hits=[];
+  if(!raw||raw.length<4||set.has(raw))return token;
+  let best='',bestD=99,secondD=99;
   for(const w of set){
-    if(Math.abs(w.length-raw.length)>1)continue;
-    if(v124Levenshtein(raw,w)===1)hits.push(w);
-    if(hits.length>1)break;
+    if(Math.abs(w.length-raw.length)>2)continue;
+    const d=v124Levenshtein(raw,w);
+    if(d<bestD){secondD=bestD;bestD=d;best=w}
+    else if(d<secondD)secondD=d;
   }
-  return hits.length===1?v157TitleName(hits[0]):token;
+  const allowed=(set===V157_MX_GIVEN&&raw.length>=6)?2:1;
+  return best&&bestD<=allowed&&secondD>bestD?v157TitleName(best):token;
 }
 function v184SplitJoinedToken(token){
   const raw=v157Upper(token).replace(/[^A-ZÑ]/g,'');
@@ -874,6 +876,7 @@ function v184SafeNameRepair(value){
   let s=v183CleanOcrName(value);
   if(!s)return '';
   let tokens=s.split(/\s+/).filter(Boolean);
+  while(tokens.length>=2&&v157Upper(tokens[0]).replace(/[^A-ZÑ]/g,'').length===1)tokens.shift();
 
   // "De Guadalupe Razo..." es un artefacto frecuente del borde/celda; no quita
   // conectores internos válidos como "Juan de la Cruz".
@@ -941,8 +944,10 @@ function v183KnownMatch(value,known=v126KnownPeople(),team=rosterImportTeam){
 }
 function v183VariantScore(name,variants,known){
   let score=v180NameQuality(name);
-  const hit=v183KnownMatch(name,known);
-  if(hit)score+=hit.sameTeam?2.2:1.15;
+  if(rosterDetectedKind!=='printed-table'){
+    const hit=v183KnownMatch(name,known);
+    if(hit)score+=hit.sameTeam?2.2:1.15;
+  }
   for(const other of variants){
     if(other===name)continue;
     const sim=v183NameSimilarity(name,other);
@@ -961,20 +966,20 @@ function v183ResolveVariants(variants,known=v126KnownPeople()){
   }
   if(!clean.length)return '';
 
-  /* Si dos lecturas apuntan al mismo jugador ya registrado, usa el nombre
-     oficial exacto. Evita corregir por diccionario cuando sólo existe una lectura. */
-  const knownVotes=new Map();
-  for(const n of clean){
-    const hit=v183KnownMatch(n,known);
-    if(!hit)continue;
-    const k=norm(hit.name),v=knownVotes.get(k)||{name:hit.name,count:0,best:0,sameTeam:false};
-    v.count++;v.best=Math.max(v.best,hit.score);v.sameTeam=v.sameTeam||hit.sameTeam;knownVotes.set(k,v);
+  if(rosterDetectedKind!=='printed-table'){
+    const knownVotes=new Map();
+    for(const n of clean){
+      const hit=v183KnownMatch(n,known);
+      if(!hit)continue;
+      const k=norm(hit.name),v=knownVotes.get(k)||{name:hit.name,count:0,best:0,sameTeam:false};
+      v.count++;v.best=Math.max(v.best,hit.score);v.sameTeam=v.sameTeam||hit.sameTeam;knownVotes.set(k,v);
+    }
+    const voted=[...knownVotes.values()].sort((a,b)=>(b.count-a.count)||(b.sameTeam-a.sameTeam)||(b.best-a.best))[0];
+    if(voted&&(voted.count>=2||(voted.sameTeam&&voted.best>=.91)))return voted.name;
   }
-  const voted=[...knownVotes.values()].sort((a,b)=>(b.count-a.count)||(b.sameTeam-a.sameTeam)||(b.best-a.best))[0];
-  if(voted&&(voted.count>=2||(voted.sameTeam&&voted.best>=.91)))return voted.name;
 
   clean.sort((a,b)=>v183VariantScore(b,clean,known)-v183VariantScore(a,clean,known));
-  return clean[0];
+  return v184SafeNameRepair(clean[0]);
 }
 function v183AlignNameLists(base,peer){
   const n=base.length,m=peer.length,gap=-.34;
@@ -1173,7 +1178,7 @@ async function v180ReadPrintedNameColumn(source,label,layout){
 
   bestText=v180BestNameColumnText(parts,target);
   bestNames=v180NameColumnLines(bestText);
-  v126SetImportStatus('OCR Preciso terminado · '+bestNames.length+(target?' de '+target:'')+' nombres · revisa ✓/✕ antes de aplicar');
+  v126SetImportStatus('OCR Preciso V185 terminado · '+bestNames.length+(target?' de '+target:'')+' nombres · revisa ✓/✕ antes de aplicar');
   return bestText;
 }
 async function v179TwoBandSweep(source,label,pass,total,kind){
@@ -1209,7 +1214,7 @@ async function v126OcrImage(source,label='imagen'){
       const namesOnly=await v180ReadPrintedNameColumn(source,label,table);
       const count=v180NameColumnLines(namesOnly).length;
       if(count>=Math.max(3,Math.floor((table.rows||count)*.55))){
-        v126SetImportStatus('Tabla impresa detectada · OCR Preciso de nombres · '+count+(table.rows?' de ~'+table.rows:'')+' nombres · NO se registró ninguno.');
+        v126SetImportStatus('Tabla impresa detectada · OCR Preciso V185 · '+count+(table.rows?' de ~'+table.rows:'')+' nombres · NO se registró ninguno.');
         return namesOnly;
       }
       /* Si la tabla es atípica y la columna aislada no dio suficiente texto,
@@ -1400,8 +1405,9 @@ function v182StripTeamSuffix(value){
         const tail=words.slice(-k).join(' '),compact=v182Compact(tail);
         if(!compact)continue;
         const maxLen=Math.max(compact.length,tc.length),dist=v124Levenshtein(compact,tc);
-        const fuzzy=maxLen>=6&&dist<=1;
-        if(compact===tc||fuzzy){
+        const fuzzy1=maxLen>=6&&dist<=1;
+        const fuzzy2=maxLen>=6&&compact.length>=4&&dist<=2&&(dist/maxLen)<=.34;
+        if(compact===tc||fuzzy1||fuzzy2){
           words=words.slice(0,-k);removed=true;break;
         }
       }
@@ -1614,17 +1620,7 @@ function v126BestKnown(name,team=''){
 
   if(rosterDetectedKind==='printed-table'){
     const exact=known.find(r=>norm(r.name)===n);
-    if(exact)return {record:exact,score:1};
-
-    let best=null,score=0,second=0;
-    const tokenCount=v183ContentTokens(clean).length;
-    for(const r of known){
-      if(v183ContentTokens(r.name).length!==tokenCount)continue;
-      let s=v183NameSimilarity(clean,r.name);
-      if(target&&norm(r.team)===target)s+=.025;
-      if(s>score){second=score;score=s;best=r}else if(s>second)second=s;
-    }
-    return best&&score>=.975&&(score-second)>=.07?{record:best,score}:null;
+    return exact?{record:exact,score:1}:null;
   }
 
   const hit=v183KnownMatch(clean,known,team);
@@ -1659,7 +1655,8 @@ function v126AnalyzeText(text){
       status=norm(known.team)===norm(team)?'return':'transfer';
     }
     const nameScore=known?Math.max(.85,hit?.score||0):v157MexNameScore(canonical);
-    if(status==='new'&&nameScore<.46)status='review';
+    const contentTokens=v183ContentTokens(canonical);
+    if(status==='new'&&(nameScore<.46||contentTokens.length<2))status='review';
     entries.push({name:canonical,rawName,status,source,decision:'pending',include:false,score:hit?.score||0,nameScore});
   }
   const importedNorm=new Set(entries.map(e=>norm(e.name)));
