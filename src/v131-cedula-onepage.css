@@ -419,6 +419,16 @@ body[data-app-route="cedulaBuilder"] [data-v64-cedula-preview]{
   body.v131-print-cedula .v131-stage-bar{
     display:none!important;
   }
+
+  /* Quita del flujo todo lo demás para que no se creen páginas en blanco. */
+  body.v131-print-cedula > *{display:none!important}
+  body.v131-print-cedula > #app{display:block!important}
+  body.v131-print-cedula #app > *{display:none!important}
+  body.v131-print-cedula #app > #screen{display:block!important}
+  body.v131-print-cedula #screen > *{display:none!important}
+  body.v131-print-cedula #screen > .v60-tool-page{display:block!important}
+  body.v131-print-cedula .v60-tool-page > *{display:none!important}
+  body.v131-print-cedula .v60-tool-page > [data-v64-cedula-preview]{display:block!important}
   body.v131-print-cedula #app,
   body.v131-print-cedula #screen,
   body.v131-print-cedula .v60-tool-page,
