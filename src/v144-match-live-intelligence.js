@@ -27,9 +27,16 @@ function ctx(){
   const key=String(sel.value||'match'),catId=key.split(':')[0]||'';
   return {root,key,catId,home:(sides[0].textContent||'Local').trim(),away:(sides[1].textContent||'Visitante').trim(),category:window.LJR_OFFICIAL_DATA?.categories?.[catId]?.name||''};
 }
+function urlLiveSource(){
+  try{
+    const q=new URLSearchParams(location.search),url=q.get('live')||'',name=q.get('liveName')||'';
+    return url?{url,name:name||provider(url).name}:null;
+  }catch(_){return null}
+}
 function freshState(c){
   let global={url:DEFAULT_SOURCE,name:'Facebook / transmisión externa'};
   try{global=JSON.parse(localStorage.getItem(SOURCE_KEY)||'null')||global}catch(_){}
+  const shared=urlLiveSource();if(shared)global=shared;
   return {v:144,key:c.key,home:c.home,away:c.away,source:{url:global.url||'',name:global.name||'',feedUrl:'',connected:false,lastSync:0},phase:'scheduled',firstStartedAt:0,secondStartedAt:0,finishedAt:0,events:[],suggestions:[],lastTranscript:'',updatedAt:now()};
 }
 function load(c){
@@ -38,6 +45,8 @@ function load(c){
     if(s&&s.v===144){
       s.home=c.home;s.away=c.away;
       s.source=Object.assign({url:'',name:'',feedUrl:'',connected:false,lastSync:0},s.source||{});
+      const shared=urlLiveSource();
+      if(shared){s.source.url=shared.url;s.source.name=shared.name}
       s.events=Array.isArray(s.events)?s.events:[];
       s.suggestions=Array.isArray(s.suggestions)?s.suggestions:[];
       return s;
@@ -70,16 +79,16 @@ function streamEmbedHtml(s){
   const p=provider(url);
   if(p.name==='Facebook Live'){
     const src='https://www.facebook.com/plugins/video.php?href='+encodeURIComponent(url)+'&show_text=false&width=500&autoplay=true';
-    return '<section class="v144-stream-embed"><header><span><small>TRANSMISIÓN EN VIVO</small><b>'+esc(s.source.name||p.name)+'</b></span><i>SIMULTÁNEO</i></header><div class="v144-stream-frame"><iframe src="'+esc(src)+'" title="Facebook Live" loading="lazy" allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share" allowfullscreen></iframe></div><footer><span>Si Facebook bloquea la vista incrustada, abre la transmisión directamente.</span><button type="button" data-v144-open>Facebook</button></footer></section>';
+    return '<section class="v144-stream-embed"><header><span><small>TRANSMISIÓN EN VIVO</small><b>'+esc(s.source.name||p.name)+'</b></span><i>SIMULTÁNEO</i></header><div class="v144-stream-frame"><iframe src="'+esc(src)+'" title="Facebook Live" loading="lazy" allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share" allowfullscreen></iframe></div><footer><span>Si Facebook bloquea la vista incrustada, abre la transmisión directamente.</span><div><button type="button" data-v144-open>Facebook</button><button type="button" data-v144-share>Compartir Live</button></div></footer></section>';
   }
   if(p.name==='YouTube Live'){
     const id=youtubeId(url);
     if(id){
       const src='https://www.youtube-nocookie.com/embed/'+encodeURIComponent(id)+'?autoplay=1&mute=1&playsinline=1';
-      return '<section class="v144-stream-embed"><header><span><small>TRANSMISIÓN EN VIVO</small><b>'+esc(s.source.name||p.name)+'</b></span><i>SIMULTÁNEO</i></header><div class="v144-stream-frame"><iframe src="'+esc(src)+'" title="YouTube Live" loading="lazy" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen></iframe></div><footer><span>Video y Match Center visibles al mismo tiempo.</span><button type="button" data-v144-open>YouTube</button></footer></section>';
+      return '<section class="v144-stream-embed"><header><span><small>TRANSMISIÓN EN VIVO</small><b>'+esc(s.source.name||p.name)+'</b></span><i>SIMULTÁNEO</i></header><div class="v144-stream-frame"><iframe src="'+esc(src)+'" title="YouTube Live" loading="lazy" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen></iframe></div><footer><span>Video y Match Center visibles al mismo tiempo.</span><div><button type="button" data-v144-open>YouTube</button><button type="button" data-v144-share>Compartir Live</button></div></footer></section>';
     }
   }
-  return '<section class="v144-stream-embed fallback"><header><span><small>TRANSMISIÓN VINCULADA</small><b>'+esc(s.source.name||p.name)+'</b></span><i>LIVE</i></header><div class="v144-stream-fallback"><b>Transmisión externa</b><span>Este proveedor no admite reproductor incrustado aquí.</span><button type="button" data-v144-open>Abrir transmisión</button></div></section>';
+  return '<section class="v144-stream-embed fallback"><header><span><small>TRANSMISIÓN VINCULADA</small><b>'+esc(s.source.name||p.name)+'</b></span><i>LIVE</i></header><div class="v144-stream-fallback"><b>Transmisión externa</b><span>Este proveedor no admite reproductor incrustado aquí.</span><div><button type="button" data-v144-open>Abrir transmisión</button><button type="button" data-v144-share>Compartir Live</button></div></div></section>';
 }
 function roster(c,side){
   try{
@@ -230,7 +239,13 @@ function openConfig(c,s){
   $('[data-save]',m).onclick=()=>{
     s.source.name=$('[data-name]',m).value.trim();s.source.url=$('[data-url]',m).value.trim();s.source.feedUrl=$('[data-feed]',m).value.trim();
     try{localStorage.setItem(SOURCE_KEY,JSON.stringify({url:s.source.url,name:s.source.name}))}catch(_){}
-    save(s);m.remove();schedule();startPoll();toast('Transmisión vinculada al Match Center.');
+    try{
+      const u=new URL(location.href);
+      if(s.source.url){u.searchParams.set('live',s.source.url);u.searchParams.set('liveName',s.source.name||provider(s.source.url).name)}
+      else{u.searchParams.delete('live');u.searchParams.delete('liveName')}
+      history.replaceState(null,'',u.toString());
+    }catch(_){}
+    save(s);m.remove();schedule();startPoll();toast('Transmisión publicada en este Match Center. Usa Compartir Live para abrirla en otros teléfonos.');
   };
 }
 function confirmSuggestion(c,s,id){
@@ -249,9 +264,23 @@ function rebuildPhase(s){
     if(e.type==='phase-final'){s.phase='final';s.finishedAt=e.ts}
   }
 }
+function shareLive(c,s){
+  if(!s.source.url){toast('Primero pega el enlace de la transmisión.');return}
+  const u=new URL(location.href);
+  u.searchParams.set('live',s.source.url);
+  u.searchParams.set('liveName',s.source.name||provider(s.source.url).name);
+  u.hash='#/v4-matchcenter';
+  const shareUrl=u.toString();
+  if(navigator.share){
+    navigator.share({title:'Match Center en vivo · '+c.home+' vs '+c.away,text:'Transmisión en vivo y Match Center de Liga Juventino Rosas',url:shareUrl}).catch(()=>{});
+    return;
+  }
+  navigator.clipboard?.writeText(shareUrl).then(()=>toast('Enlace del Match Center Live copiado.')).catch(()=>prompt('Copia este enlace:',shareUrl));
+}
 function bind(c,s,hub){
-  $('[data-v144-open]',hub)?.addEventListener('click',()=>{if(s.source.url)window.open(s.source.url,'_blank','noopener,noreferrer')});
-  $('[data-v144-config]',hub)?.addEventListener('click',()=>openConfig(c,s));
+  $('[data-v144-open]',hub).forEach(b=>b.addEventListener('click',()=>{if(s.source.url)window.open(s.source.url,'_blank','noopener,noreferrer')}));
+  $('[data-v144-share]',hub).forEach(b=>b.addEventListener('click',()=>shareLive(c,s)));
+  $('[data-v144-config]',hub).forEach(b=>b.addEventListener('click',()=>openConfig(c,s)));
   $('[data-v144-listen]',hub)?.addEventListener('click',()=>startSpeech(c,s));
   $$('[data-v144-phase]',hub).forEach(b=>b.onclick=()=>{addEvent(s,c,b.dataset.v144Phase);schedule()});
   $$('[data-v144-event]',hub).forEach(b=>b.onclick=()=>{const [type,side]=b.dataset.v144Event.split(':');addEvent(s,c,type,side);schedule()});
