@@ -268,13 +268,24 @@ function startPoll(){
   const c=ctx();if(!c)return;const s=load(c);if(!s.source.feedUrl)return;
   poll(c,s);pollTimer=setInterval(()=>{const cc=ctx();if(cc)poll(cc,load(cc))},12000);
 }
+function renderSig(c,s){
+  const x=counters(s);
+  return [
+    c.key,phaseLabel(s),listening?'1':'0',
+    x.home.goals,x.away.goals,x.home.subs,x.away.subs,x.home.yellow,x.away.yellow,x.home.red,x.away.red,
+    s.source.url||'',s.source.name||'',s.source.feedUrl||'',s.lastTranscript||'',
+    s.events.map(e=>e.id).join(','),s.suggestions.map(e=>e.id).join(',')
+  ].join('|');
+}
 function mount(){
   if(!ROUTES.has(route())){stopSpeech();return}
-  const c=ctx();if(!c)return;const s=load(c);
+  const c=ctx();if(!c)return;const s=load(c),sig=renderSig(c,s);
   let old=$('[data-v144-live-hub]',c.root);
-  if(old&&old.dataset.match!==c.key)old.remove();
+  if(old&&old.dataset.match!==c.key){old.remove();old=null}
+  /* Evita un bucle con MutationObserver: si nada cambió, no reemplaza DOM. */
+  if(old&&old.dataset.sig===sig)return;
   const w=document.createElement('div');w.innerHTML=hubHtml(c,s);const hub=w.firstElementChild;
-  old=$('[data-v144-live-hub]',c.root);
+  hub.dataset.sig=sig;
   if(old)old.replaceWith(hub);else{
     const meta=$('.v92-official-meta',c.root);if(meta)meta.insertAdjacentElement('afterend',hub);else c.root.appendChild(hub);
   }
