@@ -325,3 +325,258 @@ body[data-app-route="notifications"] .v46-switch-row input:checked+i::after{
     transform:translateX(22px)!important;
   }
 }
+
+
+/* V167 — Notificaciones: composición de referencia verde adaptada al sistema azul.
+   Mantiene todas las preferencias/interruptores existentes debajo del hub visual. */
+body.v46-notifications-active{
+  background:#07086d!important;
+}
+body.v46-notifications-active #screen,
+.v46-notifications.v46-notifications-blue{
+  background:#07086d!important;
+}
+.v46-notifications-blue{
+  min-height:100dvh!important;
+  padding-bottom:28px!important;
+  color:#fff!important;
+}
+.v46-notifications-blue .v46-notif-head{
+  height:144px!important;
+  min-height:144px!important;
+  display:grid!important;
+  grid-template-columns:56px minmax(0,1fr)!important;
+  align-items:center!important;
+  gap:14px!important;
+  padding:34px 28px 22px!important;
+  box-sizing:border-box!important;
+  background:
+    radial-gradient(120% 100% at 50% 0%,rgba(28,105,255,.58) 0%,rgba(15,44,172,.34) 40%,rgba(8,11,112,.04) 76%),
+    linear-gradient(180deg,#1644c7 0%,#0b1c90 100%)!important;
+  border-bottom:1px solid rgba(66,113,255,.45)!important;
+}
+.v46-notifications-blue .v46-back{
+  width:54px!important;
+  height:54px!important;
+  border:1px solid rgba(143,167,255,.30)!important;
+  border-radius:50%!important;
+  background:rgba(18,30,125,.20)!important;
+}
+.v46-notifications-blue .v46-back svg{
+  width:34px!important;
+  height:34px!important;
+  stroke-width:2.5!important;
+}
+.v46-notifications-blue .v46-notif-head h1{
+  margin:0!important;
+  font-size:32px!important;
+  line-height:1!important;
+  font-weight:750!important;
+  letter-spacing:-.025em!important;
+}
+.v46-notif-main{
+  padding:34px 28px 22px!important;
+}
+.v46-notice-hub{
+  display:grid!important;
+  gap:20px!important;
+}
+.v46-notice-card{
+  width:100%!important;
+  min-height:142px!important;
+  display:grid!important;
+  grid-template-columns:72px minmax(0,1fr) 28px!important;
+  align-items:center!important;
+  gap:18px!important;
+  padding:22px 20px!important;
+  border:1px solid rgba(89,114,255,.40)!important;
+  border-radius:28px!important;
+  background:
+    linear-gradient(180deg,rgba(34,51,154,.96),rgba(21,28,123,.98))!important;
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.025),
+    0 8px 24px rgba(2,5,58,.18)!important;
+  color:#fff!important;
+  text-align:left!important;
+}
+.v46-notice-card:active{
+  transform:scale(.992);
+}
+.v46-notice-icon{
+  width:64px!important;
+  height:64px!important;
+  display:grid!important;
+  place-items:center!important;
+  border-radius:20px!important;
+  background:linear-gradient(145deg,#0b54bf,#172590)!important;
+  color:#19d9ef!important;
+}
+.v46-notice-icon svg{
+  width:38px!important;
+  height:38px!important;
+  fill:none!important;
+  stroke:currentColor!important;
+  stroke-width:2.8!important;
+  stroke-linecap:round!important;
+  stroke-linejoin:round!important;
+}
+.v46-notice-copy{
+  min-width:0!important;
+  display:flex!important;
+  flex-direction:column!important;
+  gap:7px!important;
+}
+.v46-notice-copy small{
+  color:#25d8ed!important;
+  font-size:15px!important;
+  line-height:1!important;
+  font-weight:800!important;
+  letter-spacing:.12em!important;
+}
+.v46-notice-copy strong{
+  color:#fff!important;
+  font-size:24px!important;
+  line-height:1.05!important;
+  font-weight:800!important;
+  letter-spacing:-.025em!important;
+}
+.v46-notice-copy span{
+  color:#c2c7e8!important;
+  font-size:17px!important;
+  line-height:1.35!important;
+  font-weight:450!important;
+}
+.v46-notice-arrow{
+  justify-self:end!important;
+  color:#8f9bd6!important;
+}
+.v46-notice-arrow svg{
+  width:24px!important;
+  height:24px!important;
+  fill:none!important;
+  stroke:currentColor!important;
+  stroke-width:3.2!important;
+  stroke-linecap:round!important;
+  stroke-linejoin:round!important;
+}
+.v46-followed-cta{
+  justify-self:start!important;
+  min-height:54px!important;
+  margin-top:2px!important;
+  padding:0 18px!important;
+  border:1px solid rgba(48,166,255,.62)!important;
+  border-radius:16px!important;
+  background:#111a7a!important;
+  color:#22d9ed!important;
+  font-size:17px!important;
+  font-weight:750!important;
+}
+.v46-notif-preferences{
+  margin-top:34px!important;
+  overflow:hidden!important;
+  border:1px solid rgba(73,97,221,.33)!important;
+  border-radius:24px!important;
+  background:#0a0b66!important;
+}
+.v46-notifications-blue .v46-section{
+  border-top:1px solid rgba(71,91,198,.25)!important;
+  padding:22px 20px 14px!important;
+  background:#10116f!important;
+}
+.v46-notifications-blue .v46-section:first-child{
+  border-top:0!important;
+}
+.v46-notifications-blue .v46-section h2{
+  margin:0 0 16px!important;
+  color:#fff!important;
+  font-size:20px!important;
+  font-weight:750!important;
+}
+.v46-notifications-blue .v46-team-notif{
+  min-height:68px!important;
+}
+.v46-notifications-blue .v46-team-copy strong{
+  font-size:17px!important;
+}
+.v46-notifications-blue .v46-team-copy small{
+  font-size:12px!important;
+}
+.v46-notifications-blue .v46-switch-row{
+  min-height:62px!important;
+}
+.v46-notifications-blue .v46-switch-row>span{
+  font-size:16px!important;
+  line-height:1.18!important;
+}
+.v46-notifications-blue .v46-switch-row i{
+  width:58px!important;
+  height:36px!important;
+  border:2px solid #6069a8!important;
+  background:#4b528f!important;
+}
+.v46-notifications-blue .v46-switch-row i::after{
+  width:27px!important;
+  height:27px!important;
+  left:3px!important;
+  top:2.5px!important;
+}
+.v46-notifications-blue .v46-switch-row input:checked+i{
+  background:#16cfe6!important;
+  border-color:#16cfe6!important;
+}
+.v46-notifications-blue .v46-switch-row input:checked+i::after{
+  transform:translateX(23px)!important;
+}
+@media(max-width:390px){
+  .v46-notifications-blue .v46-notif-head{
+    height:132px!important;
+    min-height:132px!important;
+    grid-template-columns:50px minmax(0,1fr)!important;
+    padding:30px 20px 20px!important;
+  }
+  .v46-notifications-blue .v46-back{
+    width:48px!important;
+    height:48px!important;
+  }
+  .v46-notifications-blue .v46-notif-head h1{
+    font-size:28px!important;
+  }
+  .v46-notif-main{
+    padding:28px 20px 20px!important;
+  }
+  .v46-notice-hub{
+    gap:16px!important;
+  }
+  .v46-notice-card{
+    min-height:128px!important;
+    grid-template-columns:62px minmax(0,1fr) 24px!important;
+    gap:14px!important;
+    padding:18px 16px!important;
+    border-radius:24px!important;
+  }
+  .v46-notice-icon{
+    width:56px!important;
+    height:56px!important;
+    border-radius:18px!important;
+  }
+  .v46-notice-icon svg{
+    width:33px!important;
+    height:33px!important;
+  }
+  .v46-notice-copy small{
+    font-size:13px!important;
+  }
+  .v46-notice-copy strong{
+    font-size:21px!important;
+  }
+  .v46-notice-copy span{
+    font-size:15px!important;
+  }
+  .v46-followed-cta{
+    min-height:50px!important;
+    font-size:16px!important;
+  }
+  .v46-notif-preferences{
+    margin-top:28px!important;
+  }
+}
