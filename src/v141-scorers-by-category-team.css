@@ -1,50 +1,90 @@
-/* V141 — goleadores apilados por categoría y equipo */
-body.v28-scorers-active .v141-scorer-groups{margin:22px 0 4px;color:#fff}
-body.v28-scorers-active .v141-title{margin:0 0 12px;padding-top:4px}
-body.v28-scorers-active .v141-title.second{margin-top:26px}
-body.v28-scorers-active .v141-title small{display:block;color:#22e7f3;font-size:9px;font-weight:900;letter-spacing:.15em}
-body.v28-scorers-active .v141-title h2{margin:5px 0 4px;font-size:20px;line-height:1.05}
-body.v28-scorers-active .v141-title p{margin:0;color:#aeb4d2;font-size:10px;line-height:1.4}
-body.v28-scorers-active .v141-stack{display:grid;gap:10px}
-body.v28-scorers-active .v141-card{overflow:hidden;border:1px solid rgba(55,222,239,.22);border-radius:15px;background:linear-gradient(160deg,#11127a,#090967 70%,#07065b)}
-body.v28-scorers-active .v141-card-head{min-height:58px;display:grid;grid-template-columns:42px minmax(0,1fr) auto;gap:9px;align-items:center;padding:9px 11px;border-bottom:1px solid rgba(255,255,255,.09)}
-body.v28-scorers-active .v141-cat-logo{width:40px;height:40px;display:grid;place-items:center;border-radius:10px;background:#fff;overflow:hidden}
-body.v28-scorers-active .v141-cat-logo img{width:36px;height:36px;object-fit:contain}
-body.v28-scorers-active .v141-card-head small{display:block;color:#24e1ed;font-size:8px;font-weight:900;letter-spacing:.12em}
-body.v28-scorers-active .v141-card-head b{display:block;margin-top:2px;font-size:13px}
-body.v28-scorers-active .v141-card-head em{font-style:normal;color:#aeb4d2;font-size:9px}
-body.v28-scorers-active .v141-player-row{min-height:53px;display:grid;grid-template-columns:30px 38px minmax(0,1fr) 32px;gap:7px;align-items:center;padding:0 11px;border-bottom:1px solid rgba(255,255,255,.07)}
-body.v28-scorers-active .v141-player-row:last-child{border-bottom:0}
-body.v28-scorers-active .v141-rank{color:#aeb4d2;font-size:10px}
-body.v28-scorers-active .v141-team-logo{width:36px;height:36px;min-width:36px;display:grid;place-items:center;border-radius:9px;overflow:hidden;background:rgba(255,255,255,.06)}
-body.v28-scorers-active .v141-team-logo img{width:33px;height:33px;object-fit:contain}
-body.v28-scorers-active .v141-fallback{font-size:8px;font-weight:900;color:#dce3ff}
-body.v28-scorers-active .v141-player-copy{min-width:0}
-body.v28-scorers-active .v141-player-copy b{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:11px}
-body.v28-scorers-active .v141-player-copy small{display:block;margin-top:2px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:#aeb4d2;font-size:8.5px}
-body.v28-scorers-active .v141-player-row>strong{justify-self:end;color:#22e7f3;font-size:17px}
-body.v28-scorers-active .v141-empty{padding:15px 12px;color:#aeb4d2;font-size:10px;line-height:1.45}
-body.v28-scorers-active .v141-empty.standalone{border:1px solid rgba(55,222,239,.18);border-radius:14px;background:#0c0c6a}
-body.v28-scorers-active .v141-team-head{width:100%;min-height:64px;display:grid;grid-template-columns:26px 44px minmax(0,1fr) 48px;gap:7px;align-items:center;padding:8px 11px;border:0;background:transparent;color:#fff;text-align:left}
-body.v28-scorers-active .v141-team-order{color:#9ea6cf;font-size:10px}
-body.v28-scorers-active .v141-team-logo.large{width:42px;height:42px}
-body.v28-scorers-active .v141-team-logo.large img{width:39px;height:39px}
-body.v28-scorers-active .v141-team-copy b{display:block;font-size:12px}
-body.v28-scorers-active .v141-team-copy small{display:block;margin-top:3px;color:#aeb4d2;font-size:8.5px}
-body.v28-scorers-active .v141-team-total{text-align:right}
-body.v28-scorers-active .v141-team-total b{display:block;color:#22e7f3;font-size:20px;line-height:1}
-body.v28-scorers-active .v141-team-total small{display:block;margin-top:2px;color:#aeb4d2;font-size:8px}
-body.v28-scorers-active .v141-team-players{border-top:1px solid rgba(255,255,255,.08);background:rgba(0,0,35,.12)}
-body.v28-scorers-active .v141-team-players>div{min-height:38px;display:grid;grid-template-columns:24px minmax(0,1fr) 28px;gap:6px;align-items:center;padding:0 12px;border-bottom:1px solid rgba(255,255,255,.055)}
-body.v28-scorers-active .v141-team-players>div:last-child{border-bottom:0}
-body.v28-scorers-active .v141-team-players span{color:#8f98c7;font-size:8.5px}
-body.v28-scorers-active .v141-team-players b{font-size:9.5px;font-weight:650}
-body.v28-scorers-active .v141-team-players strong{justify-self:end;color:#fff;font-size:12px}
-body.v28-scorers-active .v141-note{margin:13px 2px 0;color:#8891bf;font-size:8.5px;line-height:1.4}
+/* V142 — una categoría a la vez; botones laterales/horizontales V62 arriba */
+body.v28-scorers-active .v142-by-team{
+  margin:20px 0 4px!important;
+  color:#fff!important;
+}
+body.v28-scorers-active .v142-section-head{
+  display:grid!important;
+  grid-template-columns:48px minmax(0,1fr)!important;
+  gap:10px!important;
+  align-items:center!important;
+  margin:0 0 11px!important;
+  padding:11px 12px!important;
+  border:1px solid rgba(34,227,242,.25)!important;
+  border-radius:14px!important;
+  background:linear-gradient(145deg,#10127b,#0a0969)!important;
+}
+body.v28-scorers-active .v142-cat-mark{
+  width:46px!important;height:46px!important;
+  display:grid!important;place-items:center!important;
+  border-radius:11px!important;background:#fff!important;overflow:hidden!important;
+}
+body.v28-scorers-active .v142-cat-mark img{
+  width:41px!important;height:41px!important;object-fit:contain!important;
+}
+body.v28-scorers-active .v142-section-head small{
+  display:block!important;color:#22e7f3!important;font-size:8px!important;font-weight:900!important;letter-spacing:.11em!important;
+}
+body.v28-scorers-active .v142-section-head h2{
+  margin:3px 0 2px!important;font-size:17px!important;line-height:1.05!important;color:#fff!important;
+}
+body.v28-scorers-active .v142-section-head p{
+  margin:0!important;color:#aeb4d2!important;font-size:9px!important;line-height:1.3!important;
+}
+body.v28-scorers-active .v142-team-stack{display:grid!important;gap:9px!important}
+body.v28-scorers-active .v142-team-card{
+  overflow:hidden!important;
+  border:1px solid rgba(66,224,239,.20)!important;
+  border-radius:14px!important;
+  background:linear-gradient(155deg,#101178,#080861 75%,#070657)!important;
+}
+body.v28-scorers-active .v142-team-head{
+  width:100%!important;min-height:64px!important;
+  display:grid!important;
+  grid-template-columns:27px 44px minmax(0,1fr) 48px!important;
+  gap:7px!important;align-items:center!important;
+  padding:8px 10px!important;border:0!important;background:transparent!important;color:#fff!important;text-align:left!important;
+}
+body.v28-scorers-active .v142-order{color:#9ba4cf!important;font-size:10px!important}
+body.v28-scorers-active .v142-team-logo{
+  width:38px!important;height:38px!important;min-width:38px!important;
+  display:grid!important;place-items:center!important;border-radius:9px!important;
+  background:rgba(255,255,255,.06)!important;overflow:hidden!important;
+}
+body.v28-scorers-active .v142-team-logo.large{width:42px!important;height:42px!important}
+body.v28-scorers-active .v142-team-logo img{width:35px!important;height:35px!important;object-fit:contain!important}
+body.v28-scorers-active .v142-team-logo.large img{width:39px!important;height:39px!important}
+body.v28-scorers-active .v142-fallback{color:#dce3ff!important;font-size:8px!important;font-weight:900!important}
+body.v28-scorers-active .v142-team-copy{min-width:0!important}
+body.v28-scorers-active .v142-team-copy b{
+  display:block!important;font-size:12px!important;overflow:hidden!important;text-overflow:ellipsis!important;white-space:nowrap!important;
+}
+body.v28-scorers-active .v142-team-copy small{
+  display:block!important;margin-top:3px!important;color:#aeb4d2!important;font-size:8.5px!important;
+}
+body.v28-scorers-active .v142-total{text-align:right!important}
+body.v28-scorers-active .v142-total b{display:block!important;color:#22e7f3!important;font-size:20px!important;line-height:1!important}
+body.v28-scorers-active .v142-total small{display:block!important;margin-top:2px!important;color:#aeb4d2!important;font-size:8px!important}
+body.v28-scorers-active .v142-team-players{
+  border-top:1px solid rgba(255,255,255,.08)!important;
+  background:rgba(0,0,35,.12)!important;
+}
+body.v28-scorers-active .v142-team-players>div{
+  min-height:39px!important;
+  display:grid!important;grid-template-columns:28px minmax(0,1fr) 28px!important;gap:6px!important;align-items:center!important;
+  padding:0 12px!important;border-bottom:1px solid rgba(255,255,255,.055)!important;
+}
+body.v28-scorers-active .v142-team-players>div:last-child{border-bottom:0!important}
+body.v28-scorers-active .v142-team-players span{color:#8f98c7!important;font-size:8.5px!important}
+body.v28-scorers-active .v142-team-players b{font-size:9.5px!important;font-weight:650!important}
+body.v28-scorers-active .v142-team-players strong{justify-self:end!important;color:#fff!important;font-size:12px!important}
+body.v28-scorers-active .v142-empty{
+  padding:16px 13px!important;
+  border:1px solid rgba(55,222,239,.16)!important;
+  border-radius:13px!important;background:#0c0c69!important;color:#aeb4d2!important;font-size:10px!important;line-height:1.45!important;
+}
 @media(max-width:390px){
- body.v28-scorers-active .v141-title h2{font-size:18px}
- body.v28-scorers-active .v141-player-row{grid-template-columns:27px 36px minmax(0,1fr) 28px;padding:0 9px}
- body.v28-scorers-active .v141-team-head{grid-template-columns:24px 40px minmax(0,1fr) 44px;padding:8px 9px}
- body.v28-scorers-active .v141-team-logo.large{width:39px;height:39px}
- body.v28-scorers-active .v141-team-logo.large img{width:36px;height:36px}
+ body.v28-scorers-active .v142-team-head{grid-template-columns:24px 40px minmax(0,1fr) 44px!important;padding:8px 9px!important}
+ body.v28-scorers-active .v142-team-logo.large{width:39px!important;height:39px!important}
+ body.v28-scorers-active .v142-team-logo.large img{width:36px!important;height:36px!important}
 }
