@@ -4919,3 +4919,51 @@ body[data-app-route="profile"] .v12-profile-row:nth-child(5){
     grid-template-columns:minmax(0,1fr) 18px!important;
   }
 }
+
+
+/* V132 — Todas las semanas y categorías oficiales */
+body[data-app-route="competition"] .v12-category-strip{
+  padding-top:8px!important;
+  padding-bottom:6px!important;
+  gap:8px!important;
+}
+body[data-app-route="competition"] .v12-category-strip button{
+  min-width:max-content!important;
+  padding-inline:14px!important;
+  white-space:nowrap!important;
+}
+body[data-app-route="competition"] .v12-week-strip{
+  padding-top:5px!important;
+  gap:8px!important;
+}
+body[data-app-route="competition"] .v12-week-strip button{
+  min-width:112px!important;
+  display:grid!important;
+  gap:2px!important;
+  justify-items:center!important;
+}
+body[data-app-route="competition"] .v12-week-strip button small{
+  display:block!important;
+  font-size:10px!important;
+  opacity:.72!important;
+  line-height:1.15!important;
+  font-weight:800!important;
+}
+body[data-app-route="competition"] .v12-fixture-rule{
+  margin:2px 0 8px!important;
+  color:#76dff1!important;
+  font-size:11px!important;
+  font-weight:800!important;
+  letter-spacing:.02em!important;
+}
+body[data-app-route="competition"] .v12-fixture-loading,
+body[data-app-route="competition"] .v12-fixture-empty{
+  padding:22px 14px!important;
+  color:#c7d3ff!important;
+  font-weight:700!important;
+  line-height:1.45!important;
+}
+body[data-app-route="competition"] .v12-score-time{
+  color:#4be5f4!important;
+  font-weight:900!important;
+}
