@@ -4911,12 +4911,64 @@ function credentialView(){
     '<div class="v60-cred-grid"><div><small>Equipo</small><b>'+t.name+'</b></div><div><small>Categoría</small><b>'+t.category+'</b></div><div><small>Número</small><b>'+p.number+'</b></div><div><small>Posición</small><b>'+p.position+'</b></div><div><small>Temporada</small><b>2026–2027</b></div><div><small>Liga</small><b>Juventino Rosas</b></div></div></article>'+
     '<div class="v60-actions"><button class="v60-btn" data-v60-print>Imprimir / PDF</button><button class="v60-btn outline" data-route="players">Elegir jugador</button></div></section>';
 }
+function v95BulletinText(kind){
+  const list=matches.slice(0,8);
+  const first=list[0];
+  const league='Liga Municipal de Fútbol Juventino Rosas';
+  const jornada=first?.jornada?'Jornada '+first.jornada:'Próxima jornada';
+  const category=first?.category||'';
+  const rows=list.map(m=>team(m.home).name+' vs '+team(m.away).name+' · '+m.day+' '+m.time+' · '+m.venue);
+
+  if(kind==='short'){
+    return '⚽ '+jornada+(category?' · '+category:'')+'\\n'+
+      rows.map(x=>'• '+x).join('\\n')+
+      '\\nConsulta la app de la Liga para ver detalles.';
+  }
+  if(kind==='fields'){
+    return '📍 HORARIOS Y CAMPOS · '+jornada+'\\n'+
+      list.map(m=>'• '+m.time+' · '+team(m.home).name+' vs '+team(m.away).name+' · '+m.venue).join('\\n')+
+      '\\n'+league;
+  }
+  if(kind==='featured'){
+    const m=first;
+    if(!m)return league+'\\nPróxima jornada';
+    return '🔥 PARTIDO DESTACADO\\n'+
+      team(m.home).name+' vs '+team(m.away).name+'\\n'+
+      (m.day||'')+' · '+(m.time||'')+' · '+(m.venue||'Campo por confirmar')+
+      '\\n'+(m.category||'')+' · Jornada '+(m.jornada||'')+
+      '\\n'+league;
+  }
+  if(kind==='reminder'){
+    return '📣 RECORDATORIO DE JORNADA\\n'+
+      'Mañana se juega '+jornada.toLowerCase()+(category?' de '+category:'')+'.\\n'+
+      rows.map(x=>'• '+x).join('\\n')+
+      '\\nRevisa horarios y sedes antes de salir.\\n'+league;
+  }
+  return league+'\\n'+jornada+(category?' · '+category:'')+'\\n'+rows.join('\\n');
+}
+
 function publicationsView(){
-  const rows=matches.slice(0,4).map(m=>team(m.home).name+' vs '+team(m.away).name+' · '+m.day+' '+m.time+' · '+m.venue).join('\\n');
-  const text='Liga Municipal de Fútbol Juventino Rosas\\nPróxima jornada\\n'+rows;
-  return '<section class="v60-tool-page">'+v60Header('COMUNICACIÓN','Publicaciones','Prepara el texto de jornada para compartir desde el teléfono.')+
-    '<article class="v60-share-card"><h2>Próxima jornada</h2><p>Contenido generado con los partidos cargados en la app.</p><div class="v60-share-preview" data-v60-share-text>'+text+'</div><div class="v60-actions"><button class="v60-btn" data-v60-share>Compartir</button><button class="v60-btn outline" data-v60-copy>Copiar texto</button></div></article>'+
-    '<p class="v60-note">En móvil se usa el panel de compartir del sistema, donde puedes elegir WhatsApp. No se publica ningún número telefónico en GitHub.</p></section>';
+  const selected=localStorage.getItem('v95-bulletin-kind')||'full';
+  const text=v95BulletinText(selected);
+  const options=[
+    ['full','Jornada completa'],
+    ['short','WhatsApp corto'],
+    ['fields','Horarios y campos'],
+    ['featured','Partido destacado'],
+    ['reminder','Recordatorio']
+  ];
+  return '<section class="v60-tool-page">'+v60Header('COMUNICACIÓN','Publicaciones','Genera boletines rápidos y copia el texto con un toque.')+
+    '<article class="v95-ai-bulletins">'+
+      '<div class="v95-ai-head"><span>IA RÁPIDA</span><b>Boletines automáticos</b><small>Usa los partidos cargados en la app y no inventa resultados.</small></div>'+
+      '<div class="v95-bulletin-types">'+options.map(x=>'<button type="button" class="'+(selected===x[0]?'active':'')+'" data-v95-bulletin-kind="'+x[0]+'">'+x[1]+'</button>').join('')+'</div>'+
+      '<div class="v95-quick-copy">'+
+        '<button type="button" data-v95-copy-kind="short">Copiar corto</button>'+
+        '<button type="button" data-v95-copy-kind="fields">Copiar horarios</button>'+
+        '<button type="button" data-v95-copy-kind="reminder">Copiar recordatorio</button>'+
+      '</div>'+
+    '</article>'+
+    '<article class="v60-share-card"><h2>Boletín listo</h2><p>Selecciona un estilo arriba. El texto se actualiza al instante.</p><div class="v60-share-preview" data-v60-share-text>'+v64Esc(text)+'</div><div class="v60-actions"><button class="v60-btn" data-v60-share>Compartir</button><button class="v60-btn outline" data-v60-copy>Copiar texto</button></div></article>'+
+    '<p class="v60-note">En móvil puedes compartir directo a WhatsApp. Los boletines se forman con los partidos cargados en la app para evitar datos inventados.</p></section>';
 }
 function v60Formation(){return localStorage.getItem('v60-formation')||'2-3-1'}
 function v60PitchPlayers(form){
@@ -6321,6 +6373,18 @@ document.querySelectorAll('[data-v60-cedula]').forEach(el=>el.onclick=()=>{local
 document.querySelectorAll('[data-v60-print]').forEach(el=>el.onclick=()=>window.print());
 document.querySelectorAll('[data-v60-share]').forEach(el=>el.onclick=async()=>{const txt=document.querySelector('[data-v60-share-text]')?.textContent?.trim()||'Liga Juventino Rosas';try{if(navigator.share)await navigator.share({title:'Liga Juventino Rosas',text:txt});else{await navigator.clipboard.writeText(txt);toast('Texto copiado')}}catch(e){}});
 document.querySelectorAll('[data-v60-copy]').forEach(el=>el.onclick=async()=>{const txt=document.querySelector('[data-v60-share-text]')?.textContent?.trim()||'';try{await navigator.clipboard.writeText(txt);toast('Texto copiado')}catch(e){toast('No se pudo copiar')}});
+document.querySelectorAll('[data-v95-bulletin-kind]').forEach(el=>el.onclick=()=>{
+  const kind=el.dataset.v95BulletinKind||'full';
+  localStorage.setItem('v95-bulletin-kind',kind);
+  const preview=document.querySelector('[data-v60-share-text]');
+  if(preview)preview.textContent=v95BulletinText(kind);
+  document.querySelectorAll('[data-v95-bulletin-kind]').forEach(b=>b.classList.toggle('active',b===el));
+  toast('Boletín generado');
+});
+document.querySelectorAll('[data-v95-copy-kind]').forEach(el=>el.onclick=async()=>{
+  const txt=v95BulletinText(el.dataset.v95CopyKind||'full');
+  try{await navigator.clipboard.writeText(txt);toast('Boletín copiado')}catch(e){toast('No se pudo copiar')}
+});
 document.querySelectorAll('[data-v64-share]').forEach(el=>el.onclick=async()=>{try{if(navigator.share)await navigator.share({title:'Liga Municipal de Fútbol Juventino Rosas',text:'App oficial de la Liga Municipal de Fútbol Juventino Rosas',url:V64_APP_URL});else{await navigator.clipboard.writeText(V64_APP_URL);toast('Enlace de la Liga copiado')}}catch(e){}});
 document.querySelectorAll('[data-v64-copy]').forEach(el=>el.onclick=async()=>{try{await navigator.clipboard.writeText(V64_APP_URL);toast('Enlace de la Liga copiado')}catch(e){toast('No se pudo copiar el enlace')}});
 document.querySelectorAll('[data-v60-formation]').forEach(el=>el.onclick=()=>{localStorage.setItem('v60-formation',el.dataset.v60Formation);render()});
