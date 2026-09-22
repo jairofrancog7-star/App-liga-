@@ -210,7 +210,11 @@ function v16ClosePlayer(){
 
 function v16SecondaryAction(){
   const label=(document.querySelector('[data-v16-secondary]')?.textContent||'').trim();
-  if(label==='Goleadores'){location.hash='#/scorers';return}
+  if(label==='Goleadores'){
+    try{sessionStorage.setItem('v16-open-official-scorers','1')}catch(_){}
+    location.hash='#/scorers';
+    return;
+  }
   if(label==='Momentos'||label==='Ver momentos'){location.hash='#/moments';return}
   location.hash='#/match';
 }
