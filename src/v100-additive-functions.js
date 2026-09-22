@@ -661,27 +661,48 @@ function v100MatchdayRows(){
  return rows.sort((a,b)=>a.t-b.t);
 }
 function v100MatchState(x,now=Date.now()){
- const e=(now-x.t)/60000;if(e<0)return {kind:'next',label:'Próximo',detail:''};
+ const e=(now-x.t)/60000;
+ const hg=String(x?.r?.[3]??'').trim(),ag=String(x?.r?.[5]??'').trim();
+ const hasScore=/^\d+$/.test(hg)&&/^\d+$/.test(ag);
+ if(e<0)return {kind:'next',label:'Próximo',detail:''};
+ if(hasScore)return {kind:'final',label:'FINAL',detail:hg+'–'+ag+' FINAL'};
  if(e<45)return {kind:'live',label:'EN VIVO',detail:'1T · '+Math.max(1,Math.floor(e)+1)+"'"};
  if(e<60)return {kind:'live',label:'EN VIVO',detail:'Descanso'};
  if(e<105)return {kind:'live',label:'EN VIVO',detail:'2T · '+Math.min(90,45+Math.floor(e-60)+1)+"'"};
  if(e<120)return {kind:'live',label:'EN VIVO',detail:"2T · 90+'"};
- return {kind:'final',label:'Final',detail:''};
+ return {kind:'pending',label:'Pendiente',detail:'Pendiente'};
 }
-function v100Countdown(ms){if(!Number.isFinite(ms)||ms<=0)return '00:00:00';const s=Math.floor(ms/1000),h=Math.floor(s/3600),m=Math.floor((s%3600)/60),ss=s%60;return [h,m,ss].map(x=>String(x).padStart(2,'0')).join(':')}
+function v100Countdown(ms){
+ if(!Number.isFinite(ms)||ms<=0)return '00:00:00';
+ const s=Math.floor(ms/1000),h=Math.floor(s/3600),m=Math.floor((s%3600)/60),ss=s%60;
+ return [h,m,ss].map(x=>String(x).padStart(2,'0')).join(':');
+}
+function v100FixtureTimeLabel(v){
+ const m=String(v||'').match(/\s(\d{1,2}:\d{2})/);
+ return m?m[1]:'Por confirmar';
+}
 function matchdayExtra(){
- const rows=v100MatchdayRows(),now=Date.now(),live=rows.find(x=>v100MatchState(x,now).kind==='live'),next=rows.find(x=>x.t>now),main=live||next||rows[rows.length-1];
- const bar=(live?[live]:rows.filter(x=>Math.abs(x.t-(main?.t||now))<24*3600e3).slice(0,3));
+ const rows=v100MatchdayRows(),now=Date.now();
+ const live=rows.find(x=>v100MatchState(x,now).kind==='live');
+ const next=rows.find(x=>x.t>now);
+ const main=live||next||rows[rows.length-1];
+ const future=rows.filter(x=>x.t>=now).filter(x=>!main||x.t<=(main.t+24*3600e3));
+ const bar=live?[live,...future.filter(x=>x!==live).slice(0,2)]:future.slice(0,3);
+ const mainState=main?v100MatchState(main,now):{kind:'next',label:'Próximo',detail:''};
+ const kicker=mainState.kind==='live'?'PARTIDO EN CURSO':mainState.kind==='pending'?'PENDIENTE DE RESULTADO':'PRÓXIMO GRAN PARTIDO';
+ const category=String(main?.cat||'').trim();
+ const round=String(main?.r?.[1]||'').trim();
+ const meta=[category,round?'Jornada '+round:'',main?.r?.[7]||'Campo por confirmar',main?.r?.[8]||'Fecha por confirmar'].filter(Boolean).join(' · ');
  return '<section class="v100-subblock v160-matchday-extra" id="v160-matchday-extra">'+
-  sectionTitle('SPORTS APP · TIEMPO REAL','Centro de jornada','Tiempo cronológico basado en el horario oficial, barra de partidos y acceso al Match Center.')+
   '<div class="v160-matchday-hero" data-v160-main-time="'+esc(main?.t||'')+'">'+
-    '<small>'+esc(live?'PARTIDO EN CURSO':'PRÓXIMO GRAN PARTIDO')+'</small>'+
-    '<h3>'+esc(main?.r?.[2]||'Por confirmar')+' vs '+esc(main?.r?.[6]||'Por confirmar')+'</h3>'+
-    '<strong data-v160-countdown>'+esc(live?v100MatchState(main,now).detail:v100Countdown((main?.t||now)-now))+'</strong>'+
-    '<p>'+esc(main?.r?.[7]||'Cancha por confirmar')+' · '+esc(main?.r?.[8]||'Fecha por confirmar')+'</p>'+
+    '<small data-v160-kicker>'+esc(kicker)+'</small>'+
+    '<h3>'+esc(main?.r?.[2]||'Próximo partido')+' vs '+esc(main?.r?.[6]||'Por confirmar')+'</h3>'+
+    '<strong data-v160-countdown>'+esc(mainState.kind==='live'?mainState.detail:(mainState.kind==='final'?mainState.detail:v100Countdown((main?.t||now)-now)))+'</strong>'+
+    '<p>'+esc(meta||'Esperando programación oficial')+'</p>'+
     '<button class="v100-primary" data-v100-route="v4-matchcenter">Abrir Match Center</button>'+
   '</div>'+
-  '<div class="v160-matchday-bar"><h3>Barra de jornada</h3>'+bar.map(x=>{const s=v100MatchState(x,now);return '<div><span>'+esc(x.r?.[2]||'')+' vs '+esc(x.r?.[6]||'')+'</span><b class="'+(s.kind==='live'?'live':s.kind==='final'?'final':'')+'">'+esc(s.kind==='live'?s.detail:s.label)+'</b></div>'}).join('')+
+  '<div class="v160-matchday-bar"><h3>Barra de jornada</h3>'+
+    (bar.length?bar.map(x=>{const s=v100MatchState(x,now),time=v100FixtureTimeLabel(x.r?.[8]);return '<div><span>'+esc(time)+' · '+esc(x.r?.[2]||'')+' vs '+esc(x.r?.[6]||'')+'</span><b class="'+esc(s.kind)+'">'+esc(s.kind==='live'?s.detail:(s.kind==='final'?s.detail:s.label))+'</b></div>'}).join(''):'<div><span>Esperando próximos partidos oficiales</span><b class="next">Próximo</b></div>')+
     '<button class="v100-secondary" data-v100-route="competition">Consultar partidos por categoría</button>'+
   '</div>'+
  '</section>';
@@ -689,8 +710,30 @@ function matchdayExtra(){
 let v160MatchdayTimer=0;
 function bindMatchday(root){
  bindGeneric(root);
- const tick=()=>{const host=$('.v160-matchday-hero',root),out=$('[data-v160-countdown]',root);if(!host||!out)return;const t=Number(host.dataset.v160MainTime||0),x=v100MatchdayRows().find(z=>z.t===t),s=x?v100MatchState(x):null;out.textContent=s?.kind==='live'?s.detail:v100Countdown(t-Date.now())};
- tick();clearInterval(v160MatchdayTimer);v160MatchdayTimer=setInterval(()=>{if(route()!=='matchday'){clearInterval(v160MatchdayTimer);v160MatchdayTimer=0;return}tick()},1000);
+ const tick=()=>{
+   const host=$('.v160-matchday-hero',root),out=$('[data-v160-countdown]',root),kick=$('[data-v160-kicker]',root);
+   if(!host||!out)return;
+   const t=Number(host.dataset.v160MainTime||0),x=v100MatchdayRows().find(z=>z.t===t),s=x?v100MatchState(x):null;
+   if(s?.kind==='live'){
+     out.textContent=s.detail;
+     if(kick)kick.textContent='PARTIDO EN CURSO';
+   }else if(s?.kind==='final'){
+     out.textContent=s.detail;
+     if(kick)kick.textContent='RESULTADO OFICIAL';
+   }else if(s?.kind==='pending'){
+     out.textContent='PENDIENTE';
+     if(kick)kick.textContent='PENDIENTE DE RESULTADO';
+   }else{
+     out.textContent=v100Countdown(t-Date.now());
+     if(kick)kick.textContent='PRÓXIMO GRAN PARTIDO';
+   }
+ };
+ tick();
+ clearInterval(v160MatchdayTimer);
+ v160MatchdayTimer=setInterval(()=>{
+   if(route()!=='matchday'){clearInterval(v160MatchdayTimer);v160MatchdayTimer=0;return}
+   tick();
+ },1000);
 }
 
 /* ---------- PARTIDO: recordatorio local y cédula ---------- */
@@ -826,7 +869,7 @@ function mount(){
   if(r==='credentialBuilder'&&!$('#v100-credential-extra',screen)){screen.insertAdjacentHTML('beforeend',credentialExtra());const n=$('#v100-credential-extra',screen);bindGeneric(n);bindCredential(n)}
   if(r==='tactics'&&!$('#v100-tactics-extra',screen)){screen.insertAdjacentHTML('beforeend',tacticsExtra());const n=$('#v100-tactics-extra',screen);bindGeneric(n);bindTactics(n)}
   if(r==='weatherFields'&&!$('#v100-weather-extra',screen)){screen.insertAdjacentHTML('beforeend',weatherExtra());const n=$('#v100-weather-extra',screen);bindGeneric(n);bindWeather(n)}
-  if(r==='matchday'&&!$('#v160-matchday-extra',screen)){screen.insertAdjacentHTML('beforeend',matchdayExtra());const n=$('#v160-matchday-extra',screen);bindMatchday(n)}
+  if(r==='matchday'&&!$('#v160-matchday-extra',screen)){const page=$('.v60-tool-page',screen)||screen;page.insertAdjacentHTML('afterbegin',matchdayExtra());const n=$('#v160-matchday-extra',screen);bindMatchday(n)}
   if(r==='publications'&&!$('#v100-publication-extra',screen)){screen.insertAdjacentHTML('beforeend',publicationExtra());const n=$('#v100-publication-extra',screen);bindGeneric(n);bindPublication(n)}
   if(r==='match'&&!$('#v100-match-extra',screen)){screen.insertAdjacentHTML('beforeend',matchExtra());const n=$('#v100-match-extra',screen);bindGeneric(n);bindMatch(n)}
 }

@@ -19,64 +19,228 @@
 }
 #v100-weather-extra .v100-weather-ops button:disabled{opacity:.45}
 
-/* Centro de jornada inspirado en sports-app, pero en azul */
-.v160-matchday-extra{overflow:hidden}
-.v160-matchday-hero{
-  padding:18px;
-  border:1px solid rgba(65,222,240,.25);
-  border-radius:20px;
+/* Centro de jornada: composición de la referencia verde adaptada al diseño AZUL.
+   No usa verde. El cronómetro toma el siguiente horario oficial disponible. */
+body[data-app-route="matchday"],
+body[data-app-route="matchday"] #app,
+body[data-app-route="matchday"] .app-shell,
+body[data-app-route="matchday"] #screen,
+body[data-app-route="matchday"] .v60-tool-page{
+  background:#02065f!important;
+  background-color:#02065f!important;
+}
+body[data-app-route="matchday"] .v60-tool-page{
+  padding-top:14px!important;
+  padding-bottom:calc(116px + env(safe-area-inset-bottom))!important;
+}
+body[data-app-route="matchday"] .v60-tool-head{
+  display:none!important;
+}
+body[data-app-route="matchday"] #v160-matchday-extra{
+  margin:0 0 18px!important;
+  padding:0!important;
+  border:0!important;
+  border-radius:0!important;
+  background:transparent!important;
+  box-shadow:none!important;
+  overflow:visible!important;
+}
+body[data-app-route="matchday"] .v160-matchday-hero{
+  position:relative;
+  overflow:hidden;
+  padding:22px 20px 20px;
+  border:1px solid rgba(48,113,255,.42);
+  border-radius:24px;
   background:
-    radial-gradient(circle at 80% 0,rgba(39,222,239,.12),transparent 36%),
-    linear-gradient(145deg,#0d1678,#080d5d);
+    radial-gradient(circle at 86% 6%,rgba(38,138,255,.22),transparent 34%),
+    linear-gradient(145deg,#10147b 0%,#090b62 58%,#050653 100%);
+  box-shadow:0 18px 38px rgba(0,0,48,.22);
 }
-.v160-matchday-hero>small{
-  color:#34e0ed;
-  font:900 9px/1 Inter,Roboto,Arial,sans-serif;
-  letter-spacing:.15em;
+body[data-app-route="matchday"] .v160-matchday-hero::after{
+  content:"";
+  position:absolute;
+  right:-62px;
+  bottom:-72px;
+  width:180px;
+  height:180px;
+  border:1px solid rgba(51,210,255,.12);
+  border-radius:50%;
+  pointer-events:none;
 }
-.v160-matchday-hero h3{
-  margin:8px 0 12px;
-  color:#fff;
-  font:850 22px/1.05 Inter,Roboto,Arial,sans-serif;
-  letter-spacing:-.02em;
-}
-.v160-matchday-hero>strong{
+body[data-app-route="matchday"] .v160-matchday-hero>small{
+  position:relative;
+  z-index:1;
   display:block;
-  margin:0 0 10px;
-  color:#22dcea;
-  font:900 35px/.95 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
-  letter-spacing:.02em;
+  color:#36dff4;
+  font:900 10px/1 Inter,Roboto,Arial,sans-serif;
+  letter-spacing:.16em;
+  text-transform:uppercase;
 }
-.v160-matchday-hero p{
-  margin:0 0 13px;
-  color:#a9b3d6;
-  font-size:11px;
-  line-height:1.35;
+body[data-app-route="matchday"] .v160-matchday-hero h3{
+  position:relative;
+  z-index:1;
+  margin:10px 0 17px;
+  color:#fff;
+  font:900 clamp(24px,7.4vw,34px)/1.02 Inter,Roboto,Arial,sans-serif;
+  letter-spacing:-.035em;
 }
-.v160-matchday-bar{
-  margin-top:14px;
-  padding:15px;
-  border:1px solid rgba(83,100,203,.30);
-  border-radius:19px;
-  background:#080d62;
+body[data-app-route="matchday"] .v160-matchday-hero>strong{
+  position:relative;
+  z-index:1;
+  display:block;
+  margin:0 0 14px;
+  color:#2edcf1;
+  font:950 clamp(38px,11vw,54px)/.94 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  letter-spacing:.01em;
+  text-shadow:0 0 24px rgba(46,220,241,.16);
 }
-.v160-matchday-bar h3{margin:0 0 10px;color:#fff;font-size:17px}
-.v160-matchday-bar>div{
+body[data-app-route="matchday"] .v160-matchday-hero p{
+  position:relative;
+  z-index:1;
+  margin:0 0 17px;
+  color:#aeb9dc;
+  font-size:12px;
+  line-height:1.45;
+}
+body[data-app-route="matchday"] .v160-matchday-hero>.v100-primary{
+  position:relative;
+  z-index:1;
+  min-width:220px;
+  min-height:48px;
+  border:1px solid rgba(58,221,244,.38);
+  border-radius:15px;
+  background:linear-gradient(180deg,#1834a7,#0c247f);
+  color:#fff;
+  box-shadow:0 10px 24px rgba(9,28,117,.28);
+  font-size:14px;
+}
+body[data-app-route="matchday"] .v160-matchday-bar{
+  margin-top:16px;
+  padding:18px;
+  border:1px solid rgba(54,104,228,.34);
+  border-radius:24px;
+  background:
+    radial-gradient(circle at 88% 10%,rgba(34,126,255,.12),transparent 32%),
+    linear-gradient(155deg,#0b106d,#07095b 72%,#05054f);
+  box-shadow:0 16px 34px rgba(0,0,45,.18);
+}
+body[data-app-route="matchday"] .v160-matchday-bar h3{
+  margin:0 0 12px;
+  color:#fff;
+  font-size:22px;
+  line-height:1.05;
+  letter-spacing:-.025em;
+}
+body[data-app-route="matchday"] .v160-matchday-bar>div{
   display:grid;
   grid-template-columns:minmax(0,1fr) auto;
   gap:12px;
   align-items:center;
-  min-height:48px;
-  padding:9px 10px;
-  border-top:1px solid rgba(255,255,255,.08);
+  min-height:58px;
+  margin-top:9px;
+  padding:12px 14px;
+  border:1px solid rgba(255,255,255,.08);
+  border-radius:14px;
+  background:#111166;
 }
-.v160-matchday-bar>div:first-of-type{border-top:0}
-.v160-matchday-bar span{color:#fff;font-size:11px;line-height:1.2}
-.v160-matchday-bar b{color:#aeb5d4;font-size:11px;white-space:nowrap}
-.v160-matchday-bar b.live{color:#ff6686}
-.v160-matchday-bar b.final{color:#20dca7}
-.v160-matchday-bar>.v100-secondary{width:100%;margin-top:10px}
+body[data-app-route="matchday"] .v160-matchday-bar>div:first-of-type{margin-top:0}
+body[data-app-route="matchday"] .v160-matchday-bar span{
+  color:#fff;
+  font-size:12px;
+  line-height:1.3;
+}
+body[data-app-route="matchday"] .v160-matchday-bar b{
+  color:#9aa4ce;
+  font-size:12px;
+  line-height:1;
+  white-space:nowrap;
+}
+body[data-app-route="matchday"] .v160-matchday-bar b.next{color:#38dff3}
+body[data-app-route="matchday"] .v160-matchday-bar b.live{color:#ff5e86}
+body[data-app-route="matchday"] .v160-matchday-bar b.final{color:#55c9ff}
+body[data-app-route="matchday"] .v160-matchday-bar b.pending{color:#aeb6d8}
+body[data-app-route="matchday"] .v160-matchday-bar>.v100-secondary{
+  width:100%;
+  min-height:48px;
+  margin-top:12px;
+  border-color:rgba(64,130,255,.32);
+  background:#0c146f;
+  color:#dbe5ff;
+}
 
+/* El checklist se conserva, pero ya como parte inferior del Match Day azul. */
+body[data-app-route="matchday"] .v60-tool-page>.v60-panel{
+  margin-top:0!important;
+  padding:18px!important;
+  border:1px solid rgba(57,101,218,.30)!important;
+  border-radius:22px!important;
+  background:linear-gradient(155deg,#0c116d,#07085a 72%,#050550)!important;
+  box-shadow:0 14px 30px rgba(0,0,45,.15)!important;
+}
+body[data-app-route="matchday"] .v60-tool-page>.v60-panel::before{
+  content:"Control de jornada";
+  display:block;
+  margin:0 0 12px;
+  color:#fff;
+  font-size:20px;
+  font-weight:850;
+  letter-spacing:-.02em;
+}
+body[data-app-route="matchday"] .v60-check input{
+  accent-color:#28ddec!important;
+}
+body[data-app-route="matchday"] .v60-textarea{
+  background:#08095d!important;
+  border-color:rgba(77,105,216,.36)!important;
+}
+body[data-app-route="matchday"] .v60-btn,
+body[data-app-route="matchday"] .v60-link{
+  border-color:#25ddeb!important;
+  background:#17319d!important;
+  color:#fff!important;
+}
+body[data-app-route="matchday"] .v60-btn.outline,
+body[data-app-route="matchday"] .v60-link.outline{
+  background:#090b63!important;
+  color:#34dff0!important;
+}
+body[data-app-route="matchday"] .v60-btn.ghost{
+  background:#11136e!important;
+  color:#fff!important;
+}
+
+/* La Barra de jornada ya resume partidos; se oculta la lista genérica duplicada. */
+body[data-app-route="matchday"] .v60-tool-page>.v60-tool-section:not(.v164-matchday-center){
+  display:none!important;
+}
+
+/* Evita que el bloque verde heredado se duplique debajo del Match Day. */
+body[data-app-route="matchday"] #v105-bottom,
+body[data-app-route="matchday"] [data-v105-route="matchday"]{
+  display:none!important;
+}
+
+/* Match Center inferior conserva el mismo azul. */
+body[data-app-route="matchday"] .v164-matchday-center{
+  margin-top:18px!important;
+}
+body[data-app-route="matchday"] .v164-matchday-match,
+body[data-app-route="matchday"] .v164-matchday-timeline{
+  border-color:rgba(53,104,230,.30)!important;
+  background:linear-gradient(155deg,#0b106c,#07085a 70%,#050550)!important;
+}
+body[data-app-route="matchday"] .v164-kicker,
+body[data-app-route="matchday"] .v164-timeline-head span,
+body[data-app-route="matchday"] .v164-timeline-row strong{
+  color:#35dff1!important;
+}
+
+@media(max-width:520px){
+  body[data-app-route="matchday"] .v160-matchday-hero{padding:20px 18px}
+  body[data-app-route="matchday"] .v160-matchday-hero>.v100-primary{width:100%}
+  body[data-app-route="matchday"] .v160-matchday-bar{padding:16px}
+  body[data-app-route="matchday"] .v160-matchday-bar h3{font-size:21px}
+}
 /* Modo TV — misma composición de la app verde, conservando la paleta azul */
 .v160-tv-layer{
   position:fixed;
