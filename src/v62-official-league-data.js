@@ -42,8 +42,8 @@ let fixtureFilter=localStorage.getItem('v62-fixture-filter')||'all';
 let playerTeamFilter=localStorage.getItem('v62-player-team-filter')||'all';
 let applying=false;
 
-function route(){return location.hash.replace('#/','')||'home'}
-function norm(v){
+function route(){return location.hash.replace(/^#\//,'').split('?')[0]||'home'}
+function registrationActive(){\n const r=route();\n return r==='credentialBuilder'||r.startsWith('credentialBuilder')||!!document.querySelector('#screen [data-v64-cred-team],#v124-player-registry,[data-v132-layer].open,.v126-team-panel');\n}\nfunction norm(v){
   return String(v??'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase()
     .replace(/&/g,' y ').replace(/\bfc\b/g,'fc').replace(/[^a-z0-9+]+/g,' ').trim().replace(/\s+/g,' ');
 }
