@@ -30,7 +30,9 @@ const CODE_BY_NAME={
   'populares':'POP','pachangas fc':'PAC','san juan fc':'SJU','tapatio':'TAP','dep la luz':'LAL',
   'deportivo la luz':'LAL','barza':'BAR','san jose jrs':'SJJ','san antonio fc':'SAF',
   'celticos':'CEL','celticos fc':'CEL','dep zapata':'ZAP','deportivo zapata':'ZAP',
-  'dep nopalero':'NOP','deportivo nopalero':'NOP','san julian':'SJL','juventus':'JUVS'
+  'dep nopalero':'NOP','deportivo nopalero':'NOP','san julian':'SJL','juventus':'JUVS',
+  'c de gasca':'CDG','cerrito de gasca':'CDG','psv':'PSV','a santiago':'ASG','atletico santiago':'ASG',
+  'f tavera':'FTV','franco tavera':'FTV','america':'AME','huracan':'HUR'
 };
 
 let db=null;
