@@ -260,3 +260,17 @@ body[data-app-route="tableExport"] [data-v105-route="tableExport"],
 body[data-app-route="tableExport"] [data-v73-motion-banner]{
   display:none!important;
 }
+
+
+/* V127 — LIGUILLA: una sola barra superior.
+   Quita la segunda barra azul (volver + perfil) que V66 insertaba debajo
+   de la cabecera principal. Se conserva la barra superior original. */
+body[data-app-route="bracketBuilder"] .v66-compact-top{
+  display:none!important;
+}
+body[data-app-route="bracketBuilder"].v66-compact-route .topbar{
+  display:flex!important;
+}
+body[data-app-route="bracketBuilder"].v66-compact-route #screen{
+  padding-top:0!important;
+}
