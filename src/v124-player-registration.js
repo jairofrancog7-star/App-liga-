@@ -835,6 +835,163 @@ async function v180DetectPrintedTable(source){
     return {x0,width:x1-x0,rows,columns:xs.length};
   }catch(_){return null}
 }
+function v183CleanOcrName(value){
+  let s=v157CleanNameText(v182StripTeamSuffix(value))
+    .replace(/[|¦]+/g,' ')
+    .replace(/[^A-Za-zÁÉÍÓÚÜÑáéíóúüñ'’\-\s]/g,' ')
+    .replace(/\s+/g,' ').trim();
+  if(!s)return '';
+  /* Corrige sólo confusiones OCR muy seguras; NO inventa apellidos usando
+     diccionario. La versión anterior podía convertir un apellido poco común
+     en otro parecido y por eso algunos nombres salían "bien escritos" pero mal. */
+  s=s.replace(/\b([A-Za-zÁÉÍÓÚÜÑáéíóúüñ])\s+([A-Za-zÁÉÍÓÚÜÑáéíóúüñ]{2,})\b/g,(m,a,b)=>{
+    const joined=a+b;
+    return V157_MX_GIVEN.has(v157Upper(joined))?joined:m;
+  });
+  return v157TitleName(s);
+}
+function v183ContentTokens(value){
+  return norm(value).split(' ').filter(w=>w.length>=2&&!['de','del','la','las','los','y'].includes(w));
+}
+function v183NameSimilarity(a,b){
+  const an=norm(a),bn=norm(b);if(!an||!bn)return 0;
+  const A=v183ContentTokens(a),B=v183ContentTokens(b);
+  if(!A.length||!B.length)return v124TokenSim(an,bn);
+  const overall=v124TokenSim(an,bn);
+  const first=v124TokenSim(A[0]||'',B[0]||'');
+  const last=v124TokenSim(A[A.length-1]||'',B[B.length-1]||'');
+  const forward=A.reduce((sum,w)=>sum+Math.max(0,...B.map(t=>v124TokenSim(w,t))),0)/A.length;
+  const backward=B.reduce((sum,w)=>sum+Math.max(0,...A.map(t=>v124TokenSim(w,t))),0)/B.length;
+  const token=(forward+backward)/2;
+  const exact=A.filter(w=>B.includes(w)).length;
+  return Math.min(1,overall*.40+token*.36+first*.12+last*.06+Math.min(2,exact)*.03);
+}
+function v183KnownMatch(value,known=v126KnownPeople(),team=rosterImportTeam){
+  const clean=v183CleanOcrName(value),cn=norm(clean);if(!cn)return null;
+  const target=norm(team),rows=[];
+  for(const p of (known||[])){
+    if(!p?.name)continue;
+    const sim=v183NameSimilarity(clean,p.name);
+    const ct=v183ContentTokens(clean),pt=v183ContentTokens(p.name);
+    const exact=ct.filter(w=>pt.includes(w)).length;
+    const first=ct[0]&&pt[0]?v124TokenSim(ct[0],pt[0]):0;
+    const sameTeam=!!target&&norm(p.team)===target;
+    let score=sim+(sameTeam?.075:0)+(exact>=2?.055:exact===1?.018:0)+(first>=.90?.025:0);
+    rows.push({record:p,name:p.name,score,sim,exact,first,sameTeam});
+  }
+  rows.sort((a,b)=>b.score-a.score);
+  const best=rows[0],second=rows[1];if(!best)return null;
+  const margin=best.score-(second?.score??0);
+  /* Equipo seleccionado = pista fuerte, pero sólo corrige cuando hay evidencia
+     en al menos nombre/apellido. Fuera del equipo exigimos una coincidencia alta. */
+  const safeSame=best.sameTeam&&(
+    (best.exact>=2&&best.sim>=.64&&margin>=.025)||
+    (best.exact>=1&&best.first>=.82&&best.sim>=.78&&margin>=.045)||
+    (best.sim>=.89&&margin>=.035)
+  );
+  const safeOther=!best.sameTeam&&(
+    (best.exact>=2&&best.sim>=.82&&margin>=.055)||
+    (best.sim>=.92&&margin>=.055)
+  );
+  return (safeSame||safeOther)?{...best,score:Math.min(1,best.score),raw:clean}:null;
+}
+function v183VariantScore(name,variants,known){
+  let score=v180NameQuality(name);
+  const hit=v183KnownMatch(name,known);
+  if(hit)score+=hit.sameTeam?2.2:1.15;
+  for(const other of variants){
+    if(other===name)continue;
+    const sim=v183NameSimilarity(name,other);
+    if(sim>=.88)score+=1.15;
+    else if(sim>=.72)score+=.55;
+    else if(sim>=.55)score+=.16;
+  }
+  return score;
+}
+function v183ResolveVariants(variants,known=v126KnownPeople()){
+  const clean=[];
+  for(const v of variants||[]){
+    const n=v183CleanOcrName(v);
+    if(!n||v126LooksLikeNonPlayerName(n))continue;
+    if(!clean.some(x=>norm(x)===norm(n)))clean.push(n);
+  }
+  if(!clean.length)return '';
+
+  /* Si dos lecturas apuntan al mismo jugador ya registrado, usa el nombre
+     oficial exacto. Evita corregir por diccionario cuando sólo existe una lectura. */
+  const knownVotes=new Map();
+  for(const n of clean){
+    const hit=v183KnownMatch(n,known);
+    if(!hit)continue;
+    const k=norm(hit.name),v=knownVotes.get(k)||{name:hit.name,count:0,best:0,sameTeam:false};
+    v.count++;v.best=Math.max(v.best,hit.score);v.sameTeam=v.sameTeam||hit.sameTeam;knownVotes.set(k,v);
+  }
+  const voted=[...knownVotes.values()].sort((a,b)=>(b.count-a.count)||(b.sameTeam-a.sameTeam)||(b.best-a.best))[0];
+  if(voted&&(voted.count>=2||(voted.sameTeam&&voted.best>=.91)))return voted.name;
+
+  clean.sort((a,b)=>v183VariantScore(b,clean,known)-v183VariantScore(a,clean,known));
+  return clean[0];
+}
+function v183AlignNameLists(base,peer){
+  const n=base.length,m=peer.length,gap=-.34;
+  const dp=Array.from({length:n+1},()=>Array(m+1).fill(0));
+  const dir=Array.from({length:n+1},()=>Array(m+1).fill(''));
+  for(let i=1;i<=n;i++){dp[i][0]=i*gap;dir[i][0]='u'}
+  for(let j=1;j<=m;j++){dp[0][j]=j*gap;dir[0][j]='l'}
+  for(let i=1;i<=n;i++)for(let j=1;j<=m;j++){
+    const sim=v183NameSimilarity(base[i-1],peer[j-1]);
+    const diag=dp[i-1][j-1]+(sim>=.46?sim:-.28);
+    const up=dp[i-1][j]+gap,left=dp[i][j-1]+gap;
+    if(diag>=up&&diag>=left){dp[i][j]=diag;dir[i][j]='d'}
+    else if(up>=left){dp[i][j]=up;dir[i][j]='u'}
+    else{dp[i][j]=left;dir[i][j]='l'}
+  }
+  const pairs=[];let i=n,j=m;
+  while(i>0||j>0){
+    const d=dir[i][j];
+    if(i>0&&j>0&&d==='d'){pairs.push([i-1,j-1]);i--;j--}
+    else if(i>0&&(d==='u'||j===0)){pairs.push([i-1,-1]);i--}
+    else{pairs.push([-1,j-1]);j--}
+  }
+  return pairs.reverse();
+}
+function v183ConsensusNameLists(lists,target=0){
+  const valid=(lists||[]).filter(a=>Array.isArray(a)&&a.length);
+  if(!valid.length)return [];
+  valid.sort((a,b)=>{
+    if(target){
+      const da=Math.abs(a.length-target),db=Math.abs(b.length-target);
+      if(da!==db)return da-db;
+    }
+    const qa=a.reduce((s,n)=>s+v180NameQuality(n),0)/a.length;
+    const qb=b.reduce((s,n)=>s+v180NameQuality(n),0)/b.length;
+    return qb-qa;
+  });
+  let clusters=valid[0].map(n=>[n]);
+  for(const peer of valid.slice(1,4)){
+    const base=clusters.map(v=>v183ResolveVariants(v));
+    const aligned=v183AlignNameLists(base,peer),next=[];
+    for(const [bi,pj] of aligned){
+      if(bi>=0&&pj>=0){
+        const sim=v183NameSimilarity(base[bi],peer[pj]);
+        if(sim>=.42)next.push([...clusters[bi],peer[pj]]);
+        else{next.push([...clusters[bi]]);next.push([peer[pj]])}
+      }else if(bi>=0)next.push([...clusters[bi]]);
+      else if(pj>=0)next.push([peer[pj]]);
+    }
+    clusters=next;
+  }
+  const known=v126KnownPeople(),out=[];
+  for(const cluster of clusters){
+    const n=v183ResolveVariants(cluster,known);
+    if(!n)continue;
+    if(out.some(x=>v183NameSimilarity(x,n)>.965))continue;
+    out.push(n);
+  }
+  if(target&&out.length>target)out.length=target;
+  return out;
+}
+
 function v180NameColumnLines(text){
   const out=[],known=v126KnownPeople();
   for(let line of String(text||'').split(/\r?\n/)){
@@ -845,23 +1002,15 @@ function v180NameColumnLines(text){
     const n=norm(line);
     if(!n||/^(jugador|nombre|nombres|equipo|g total|total)$/.test(n))continue;
 
-    let clean=v182RepairLexiconName(line);
-    const repaired=v182KnownNameRepair(clean,known);
-    let candidate=repaired?.name||'';
-    if(!candidate)candidate=v178PlausibleFullName(clean);
+    const clean=v183CleanOcrName(line);
+    const knownHit=v183KnownMatch(clean,known);
+    let candidate=knownHit?.name||v178PlausibleFullName(clean);
     if(!candidate){
       const best=v157BestNameWindow(clean);
-      if(best.name&&best.score>=.34)candidate=best.name;
+      if(best.name&&best.score>=.34)candidate=v183CleanOcrName(best.name);
     }
-    candidate=v182RepairLexiconName(candidate);
     if(!candidate||v126LooksLikeNonPlayerName(candidate))continue;
-    const key=norm(candidate);
-    if(!out.some(x=>{
-      const xn=norm(x),sim=v124TokenSim(xn,key);
-      const a=xn.split(' ').filter(w=>w.length>=3),b=key.split(' ').filter(w=>w.length>=3);
-      const shared=a.filter(w=>b.includes(w)).length;
-      return xn===key||sim>.94||(sim>.88&&shared>=2);
-    }))out.push(candidate);
+    if(!out.some(x=>v183NameSimilarity(x,candidate)>.965))out.push(candidate);
   }
   return out;
 }
@@ -884,50 +1033,9 @@ function v182NameSetQuality(names,target=0){
   return {avg,bad,coverage,good};
 }
 function v180BestNameColumnText(parts,target=0){
-  const known=v126KnownPeople();
-  const choices=(parts||[]).map(p=>{
-    let names=v180NameColumnLines(p?.text||'');
-    names=names.map(n=>v182KnownNameRepair(n,known)?.name||v182RepairLexiconName(n)).filter(Boolean);
-    const quality=v182NameSetQuality(names,target);
-    let score=names.reduce((s,n)=>s+v180NameQuality(n),0);
-    if(target)score-=Math.abs(names.length-target)*3.8;
-    score+=(Number(p?.confidence||0)/100)*1.5;
-    score-=quality.bad*1.4;
-    return {names,score,confidence:Number(p?.confidence||0),quality};
-  }).filter(x=>x.names.length);
-  if(!choices.length)return '';
-  choices.sort((a,b)=>b.score-a.score);
-  let best={...choices[0],names:[...choices[0].names]};
-
-  for(const peer of choices.slice(1,4)){
-    if(Math.abs(peer.names.length-best.names.length)>1)continue;
-    const limit=Math.min(best.names.length,peer.names.length);
-    for(let i=0;i<limit;i++){
-      const a=best.names[i],b=peer.names[i],sim=v124TokenSim(norm(a),norm(b));
-      if(sim>=.50){
-        const ra=v182KnownNameRepair(a,known),rb=v182KnownNameRepair(b,known);
-        if(rb&&!ra){best.names[i]=rb.name;continue}
-        if(ra&&!rb){best.names[i]=ra.name;continue}
-        const qa=v180NameQuality(a),qb=v180NameQuality(b);
-        if(qb>qa+.10)best.names[i]=b;
-      }
-    }
-  }
-
-  const dedup=[];
-  for(const n0 of best.names){
-    const n=v182KnownNameRepair(n0,known)?.name||v182RepairLexiconName(n0);
-    if(!n)continue;
-    const nn=norm(n),tokens=nn.split(' ').filter(w=>w.length>=3);
-    if(dedup.some(x=>{
-      const xn=norm(x),sim=v124TokenSim(xn,nn),xt=xn.split(' ').filter(w=>w.length>=3);
-      const shared=tokens.filter(w=>xt.includes(w)).length;
-      return xn===nn||sim>.94||(sim>.89&&shared>=2);
-    }))continue;
-    dedup.push(n);
-  }
-  if(target&&dedup.length>target)dedup.length=target;
-  return dedup.join('\n');
+  const lists=(parts||[]).map(p=>v180NameColumnLines(p?.text||'')).filter(x=>x.length);
+  const consensus=v183ConsensusNameLists(lists,target);
+  return consensus.join('\n');
 }
 async function v180ReadPrintedNameColumn(source,label,layout){
   const xPad=Math.min(.01,layout.width*.02);
@@ -939,7 +1047,7 @@ async function v180ReadPrintedNameColumn(source,label,layout){
   const nativeText=await v177NativeText(crop);
   if(nativeText)parts.push({text:nativeText,mode:'native-column',confidence:94});
 
-  v126SetImportStatus('OCR Preciso · columna “Jugador” · lectura principal');
+  v126SetImportStatus('OCR Preciso de nombres · lectura principal');
   const first=await v157Recognize(crop,label+' · columna Jugador',1,'contrast',6,3);
   parts.push(first);
 
@@ -951,7 +1059,7 @@ async function v180ReadPrintedNameColumn(source,label,layout){
 
   /* Si la cantidad parece correcta pero hay nombres deformados, no nos detenemos:
      hacemos una segunda lectura con contraste suave y elegimos por consenso. */
-  v126SetImportStatus('OCR Preciso · corrigiendo nombres dudosos · lectura 2/3');
+  v126SetImportStatus('OCR Preciso · comparando segunda lectura nombre por nombre');
   parts.push(await v157Recognize(crop,label+' · columna Jugador · verificación',2,'soft',6,3));
   await new Promise(resolve=>setTimeout(resolve,18));
   bestText=v180BestNameColumnText(parts,target);bestNames=v180NameColumnLines(bestText);quality=v182NameSetQuality(bestNames,target);
@@ -1409,20 +1517,18 @@ function v126ExtractCandidates(text){
   return out.map(x=>x.name);
 }
 function v126BestKnown(name,team=''){
-  const n=norm(name),target=norm(team),known=v126KnownPeople();
-  const repaired=v182KnownNameRepair(name,known);
-  if(repaired){
-    const sameTeam=!target||norm(repaired.record?.team)===target;
-    return {record:repaired.record,score:Math.min(1,repaired.score+(sameTeam?.025:0))};
-  }
-  let best=null,score=0;
+  const known=v126KnownPeople(),hit=v183KnownMatch(name,known,team);
+  if(hit)return {record:hit.record,score:hit.score};
+  const n=norm(v183CleanOcrName(name)),target=norm(team);
+  let best=null,score=0,second=0;
   for(const r of known){
-    let s=v124TokenSim(n,r.name);
-    if(target&&norm(r.team)===target)s+=.035;
-    if(s>score){score=s;best=r}
+    let s=v183NameSimilarity(n,r.name);
+    if(target&&norm(r.team)===target)s+=.045;
+    if(s>score){second=score;score=s;best=r}else if(s>second)second=s;
   }
-  const minScore=rosterDetectedKind==='printed-table'?.88:(rosterDetectedKind==='printed'?.86:.80);
-  return score>=minScore?{record:best,score}:null;
+  const margin=score-second;
+  const minScore=rosterDetectedKind==='printed-table'?.91:(rosterDetectedKind==='printed'?.89:.84);
+  return best&&score>=minScore&&margin>=.04?{record:best,score}:null;
 }
 function v126AutoRegisterNewEntries(){
   /* V179 safety lock: OCR only proposes names. Never writes to registry automatically. */
