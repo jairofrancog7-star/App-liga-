@@ -623,14 +623,16 @@ function tvPanel(){
  let old=document.querySelector('.v160-tv-layer');if(old)old.remove();
  const layer=document.createElement('div');layer.className='v160-tv-layer';layer.innerHTML=
   '<section class="v160-tv-board" role="dialog" aria-modal="true">'+
-   '<button class="v160-tv-close" type="button">× Salir de TV</button>'+
-   '<div class="v160-tv-live '+(live?'is-live':'')+'">'+(live?'● EN VIVO · '+esc(phase):'PRÓXIMO PARTIDO')+'</div>'+
-   '<h2>'+esc(r?.[2]||'Por confirmar')+' <span>vs</span> '+esc(r?.[6]||'Por confirmar')+'</h2>'+
-   '<div class="v160-tv-score">'+esc(score)+'</div>'+
-   '<p class="v160-tv-meta">'+esc(r?.[7]||'Cancha por confirmar')+' · Jornada '+esc(r?.[1]||'—')+' · '+esc(r?.[8]||'Fecha por confirmar')+'</p>'+
-   '<article><small>SIGUIENTE</small><b>'+(next?esc(next.r?.[2]||'')+' vs '+esc(next.r?.[6]||''):'Sin siguiente partido publicado')+'</b><span>'+(next?esc(next.r?.[8]||'')+' · '+esc(next.r?.[7]||'Cancha por confirmar'):'')+'</span></article>'+
-   '<article><small>TABLA · PRIMERA FUERZA</small>'+ (top.length?top.map((x,i)=>'<b>'+(i+1)+'. '+esc(x[1])+' · '+esc(x[9])+' pts</b>').join(''):'<b>Sin tabla publicada</b>') +'</article>'+
-   '<article><small>GOLEADOR PUBLICADO</small><b>'+(scorers[0]?esc(scorers[0].name)+' · '+esc(scorers[0].goals)+' goles':'Sin goleo publicado')+'</b><span>'+(scorers[0]?esc(scorers[0].team):'')+'</span></article>'+
+   '<article class="v160-tv-main-card">'+
+    '<div class="v160-tv-live '+(live?'is-live':'')+'">'+(live?'● EN VIVO · '+esc(phase):'PRÓXIMO PARTIDO')+'</div>'+
+    '<h2>'+esc(r?.[2]||'Por confirmar')+' <span>vs</span> '+esc(r?.[6]||'Por confirmar')+'</h2>'+
+    '<div class="v160-tv-score">'+esc(score)+'</div>'+
+    '<p class="v160-tv-meta">'+esc(r?.[7]||'Cancha por confirmar')+' · Jornada '+esc(r?.[1]||'—')+(r?.[8]?' · '+esc(r[8]):'')+'</p>'+
+    '<button class="v160-tv-close" type="button">× Salir de TV</button>'+
+   '</article>'+
+   '<article class="v160-tv-info-card v160-tv-next"><small>SIGUIENTE</small><b>'+(next?esc(next.r?.[2]||'')+' vs '+esc(next.r?.[6]||''):'Sin siguiente partido publicado')+'</b><span>'+(next?esc(next.r?.[8]||'')+' · '+esc(next.r?.[7]||'Cancha por confirmar'):'')+'</span></article>'+
+   '<article class="v160-tv-info-card v160-tv-table"><small>TABLA</small>'+ (top.length?top.map((x,i)=>'<b class="'+(i===0?'is-first':'')+'">'+(i+1)+'. '+esc(x[1])+' · '+esc(x[9])+' pts</b>').join(''):'<b>Sin tabla publicada</b>') +'</article>'+
+   '<article class="v160-tv-info-card v160-tv-scorer"><small>GOLEADOR</small><b>'+(scorers[0]?esc(scorers[0].name)+' · '+esc(scorers[0].goals)+' goles':'Sin goleo publicado')+'</b><span>'+(scorers[0]?esc(scorers[0].team):'')+'</span></article>'+
    '<div class="v160-tv-actions"><button data-tv-match>Match Center</button><button data-tv-video>Vídeos</button></div>'+
   '</section>';
  document.body.appendChild(layer);
