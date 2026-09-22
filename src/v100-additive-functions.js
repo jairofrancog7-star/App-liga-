@@ -295,6 +295,24 @@ function v100CredentialTheme(ctx,category,w,h){
   ctx.fillStyle=accent;ctx.globalAlpha=.92;ctx.font='800 28px Arial';ctx.fillText(label,78,530);ctx.globalAlpha=1;
   return {accent,label};
 }
+function v100PlayerPhotoFile(){
+  const photoInput=$('[data-v64-photo]'),docInput=$('[data-v64-doc]');
+  const file=photoInput?.files?.[0]||null,doc=docInput?.files?.[0]||null;
+  if(!file)return null;
+  const name=String(file.name||'').toLowerCase();
+  const obviousDocument=/(^|[^a-z])(ine|curp|credencial|documento|identificacion|identificación)([^a-z]|$)/i.test(name);
+  const sameAsDocument=!!doc&&file.name===doc.name&&file.size===doc.size&&file.lastModified===doc.lastModified;
+  return (obviousDocument||sameAsDocument)?null:file;
+}
+function v100DrawContainedImage(ctx,img,x,y,w,h){
+  const iw=img?.naturalWidth||img?.width||0,ih=img?.naturalHeight||img?.height||0;
+  if(!iw||!ih)return false;
+  const scale=Math.min(w/iw,h/ih),dw=Math.max(1,iw*scale),dh=Math.max(1,ih*scale);
+  const dx=x+(w-dw)/2,dy=y+(h-dh)/2;
+  ctx.drawImage(img,dx,dy,dw,dh);
+  return true;
+}
+
 async function credentialCanvas(){
   syncCredentialExtra();
   const canvas=document.createElement('canvas');canvas.width=1200;canvas.height=760;const x=canvas.getContext('2d');
@@ -310,20 +328,31 @@ async function credentialCanvas(){
   x.fillStyle='#fff';x.font='800 34px Arial';x.fillText('Liga Municipal de Futbol',62,72);
   x.font='800 29px Arial';x.fillText('Juventino Rosas, A.C.',62,108);
 
-  const photo=$('[data-v64-photo-preview] img'),px=815,py=92,pw=320,ph=370;
-  if(photo?.src){
+  const playerFile=v100PlayerPhotoFile(),px=815,py=92,pw=320,ph=320;
+  let photo=null,photoUrl='';
+  if(playerFile){
     try{
-      x.save();if(x.roundRect){x.beginPath();x.roundRect(px,py,pw,ph,22);x.clip()}x.drawImage(photo,px,py,pw,ph);x.restore();
+      photoUrl=URL.createObjectURL(playerFile);
+      photo=await v100LoadImage(photoUrl);
+    }catch(err){photo=null}
+    finally{if(photoUrl)URL.revokeObjectURL(photoUrl)}
+  }
+  x.fillStyle='rgba(4,6,35,.34)';x.fillRect(px,py,pw,ph);
+  if(photo){
+    try{
+      x.save();
+      if(x.roundRect){x.beginPath();x.roundRect(px,py,pw,ph,22);x.clip()}
+      v100DrawContainedImage(x,photo,px,py,pw,ph);
+      x.restore();
       x.strokeStyle='rgba(255,255,255,.42)';x.lineWidth=3;x.strokeRect(px,py,pw,ph);
     }catch(err){}
   }else{
-    x.fillStyle='rgba(4,6,35,.34)';x.fillRect(px,py,pw,ph);
-    x.fillStyle='rgba(255,255,255,.58)';x.font='800 30px Arial';x.fillText('FOTO',924,286);
+    x.fillStyle='rgba(255,255,255,.58)';x.font='800 30px Arial';x.fillText('FOTO',924,258);
     x.strokeStyle='rgba(255,255,255,.28)';x.lineWidth=3;x.strokeRect(px,py,pw,ph);
   }
 
-  x.fillStyle='rgba(255,255,255,.66)';x.font='800 15px Arial';x.fillText('EQUIPO',815,498);
-  x.fillStyle='#fff';x.font='800 28px Arial';x.fillText(team.slice(0,28),815,532);
+  x.fillStyle='rgba(255,255,255,.66)';x.font='800 15px Arial';x.fillText('EQUIPO',815,448);
+  x.fillStyle='#fff';x.font='800 28px Arial';x.fillText(team.slice(0,28),815,482);
 
   x.fillStyle='rgba(1,8,45,.66)';x.fillRect(0,560,1200,180);
 
@@ -344,7 +373,6 @@ async function credentialCanvas(){
   });
 
   if(e.city){x.fillStyle='rgba(255,255,255,.75)';x.font='600 15px Arial';x.fillText(String(e.city).slice(0,56),245,711)}
-  x.fillStyle='rgba(255,255,255,.62)';x.font='13px Arial';x.fillText('Credencial generada por la Liga · revisar documento y elegibilidad antes de validar.',62,724);
   return canvasBlob(canvas);
 }
 async function downloadCredentialPng(){
