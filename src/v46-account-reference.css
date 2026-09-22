@@ -325,3 +325,152 @@ body[data-app-route="notifications"] .v46-switch-row input:checked+i::after{
     transform:translateX(22px)!important;
   }
 }
+
+
+/* V169 — Notificaciones: mismo concepto visual de la referencia verde, adaptado a azul. */
+body.v46-notifications-active,
+body.v46-notifications-active #screen,
+.v46-notifications-reference-blue{
+  background:#050660!important;
+}
+.v46-notifications-reference-blue{
+  min-height:100dvh!important;
+  color:#fff!important;
+}
+.v46-notifications-reference-blue .v46-notif-head{
+  height:132px!important;
+  min-height:132px!important;
+  display:grid!important;
+  grid-template-columns:54px minmax(0,1fr)!important;
+  align-items:center!important;
+  gap:14px!important;
+  padding:28px 24px 18px!important;
+  background:
+    radial-gradient(120% 90% at 50% 0%,rgba(27,85,235,.52),transparent 70%),
+    linear-gradient(180deg,#1439b8 0%,#0b1e8d 100%)!important;
+  border-bottom:1px solid rgba(83,106,255,.34)!important;
+}
+.v46-notifications-reference-blue .v46-back{
+  width:52px!important;
+  height:52px!important;
+  border-radius:50%!important;
+  border:1px solid rgba(158,176,255,.28)!important;
+  background:rgba(5,8,87,.18)!important;
+}
+.v46-notifications-reference-blue .v46-notif-head h1{
+  margin:0!important;
+  font-size:30px!important;
+  line-height:1!important;
+  font-weight:800!important;
+}
+.v46-reference-notif-main{
+  padding:34px 24px 110px!important;
+}
+.v46-reference-title{
+  margin-bottom:26px!important;
+}
+.v46-reference-title small{
+  display:block!important;
+  margin-bottom:8px!important;
+  color:#23d9ee!important;
+  font-size:13px!important;
+  line-height:1!important;
+  font-weight:800!important;
+  letter-spacing:.14em!important;
+}
+.v46-reference-title h2{
+  margin:0!important;
+  color:#fff!important;
+  font-size:36px!important;
+  line-height:1!important;
+  font-weight:800!important;
+  letter-spacing:-.03em!important;
+}
+.v46-reference-notif-list{
+  display:grid!important;
+  gap:18px!important;
+}
+.v46-reference-notif-card{
+  width:100%!important;
+  min-height:150px!important;
+  display:grid!important;
+  grid-template-columns:56px minmax(0,1fr)!important;
+  align-items:start!important;
+  gap:16px!important;
+  padding:24px 24px!important;
+  border:1px solid rgba(38,216,237,.28)!important;
+  border-radius:28px!important;
+  background:
+    linear-gradient(180deg,rgba(14,20,107,.95),rgba(8,12,80,.98))!important;
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.025),
+    0 12px 24px rgba(0,0,50,.18)!important;
+  color:#fff!important;
+  text-align:left!important;
+  position:relative!important;
+  overflow:hidden!important;
+}
+.v46-reference-notif-card::after{
+  content:""!important;
+  position:absolute!important;
+  right:-10px!important;
+  bottom:-22px!important;
+  width:145px!important;
+  height:145px!important;
+  border-radius:50%!important;
+  background:radial-gradient(circle,rgba(34,218,239,.10),transparent 68%)!important;
+  pointer-events:none!important;
+}
+.v46-ref-emoji{
+  font-size:34px!important;
+  line-height:1!important;
+  padding-top:2px!important;
+}
+.v46-reference-notif-card>span:last-child{
+  display:flex!important;
+  flex-direction:column!important;
+  gap:14px!important;
+  min-width:0!important;
+}
+.v46-reference-notif-card strong{
+  color:#fff!important;
+  font-size:25px!important;
+  line-height:1.05!important;
+  font-weight:800!important;
+}
+.v46-reference-notif-card small{
+  color:#aeb6da!important;
+  font-size:17px!important;
+  line-height:1.4!important;
+  font-weight:450!important;
+}
+.v46-reference-notif-card:active{
+  transform:scale(.993)!important;
+}
+@media(max-width:390px){
+  .v46-notifications-reference-blue .v46-notif-head{
+    height:124px!important;
+    min-height:124px!important;
+    padding:24px 20px 16px!important;
+  }
+  .v46-reference-notif-main{
+    padding:30px 20px 104px!important;
+  }
+  .v46-reference-title h2{
+    font-size:33px!important;
+  }
+  .v46-reference-notif-card{
+    min-height:140px!important;
+    grid-template-columns:50px minmax(0,1fr)!important;
+    padding:22px 20px!important;
+  }
+  .v46-ref-emoji{
+    font-size:31px!important;
+  }
+  .v46-reference-notif-card strong{
+    font-size:23px!important;
+  }
+  .v46-reference-notif-card small{
+    font-size:16px!important;
+  }
+}
