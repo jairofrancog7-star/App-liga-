@@ -420,3 +420,15 @@ body[data-app-route="weatherFields"] #screen>.v73-weatherfields-bottom .v73-moti
 body[data-app-route="weatherFields"] #screen>.v73-weatherfields-bottom h2{
   font-size:clamp(34px,10vw,48px)!important;
 }
+
+
+/* V127 — Liguilla: "CADA CRUCE CUENTA" al final del formulario. */
+body[data-app-route="bracketBuilder"] #screen>.v73-bracket-bottom{
+  display:block!important;
+  order:99!important;
+  margin:28px 14px calc(104px + env(safe-area-inset-bottom))!important;
+  border-radius:20px!important;
+}
+body[data-app-route="bracketBuilder"] #screen>.v73-bracket-bottom .v73-motion-inner{
+  min-height:310px!important;
+}
