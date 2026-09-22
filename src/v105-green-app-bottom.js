@@ -573,6 +573,7 @@ function registerAlerts(){
     '<label><span>Categoría favorita</span><select data-r-cat>'+catOptions+'</select></label>'+
     '<label><span>Equipo favorito</span><select data-r-team></select></label>'+
    '</div><div class="v105-actions"><button class="v105-btn" data-r-save>Guardar y activar avisos</button><button class="v105-btn alt" data-r-notif>Preferencias de notificación</button></div>');
+ m.classList.add('v168-account-modal');
  const cat=$('[data-r-cat]',m),team=$('[data-r-team]',m);
  const fill=()=>{const list=v160Teams(cat.value);team.innerHTML=list.map(n=>'<option '+(norm(n)===norm(old.team)?'selected':'')+'>'+esc(n)+'</option>').join('')||'<option>Sin equipos publicados</option>'};fill();
  cat.onchange=()=>{old.team='';fill()};
