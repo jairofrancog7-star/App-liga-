@@ -6,6 +6,7 @@
 const route=()=>location.hash.replace('#/','')||'home';
 const screen=()=>document.querySelector('#screen');
 const OFFICIAL='https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/data/official-live.json';
+const ASSET_BASE='https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/';
 const HOME_IMAGE='https://d2ol7oe51mr4n9.cloudfront.net/user_3JNvttsAwr0QjxhuX5O1uaa9bvv/23f05376-ed2b-4ddb-a074-24f77221b520.png';
 let db=window.LJR_OFFICIAL_DATA||null;
 let loading=null;
@@ -108,15 +109,22 @@ function patchHome(){
     secondary.setAttribute('data-v114-upcoming-slot','');
     secondary.innerHTML=homeUpcomingMarkup();
   }
-  if(moments && moments.nextElementSibling!==secondary){
-    moments.insertAdjacentElement('afterend',secondary);
+
+  const anchor=moments||hero||storiesNow;
+  if(anchor && anchor.nextElementSibling!==secondary){
+    anchor.insertAdjacentElement('afterend',secondary);
+  }else if(!secondary.isConnected){
+    root.appendChild(secondary);
   }
 
-  /* Eliminar el antiguo Próximos partidos nativo para que sólo exista el nuevo cuadro. */
-  [...root.querySelectorAll(':scope > .section')].forEach(s=>{
-    const title=(s.querySelector(':scope > .section-head h2')?.textContent||'').trim();
-    if(/^Próximos\s+partidos$/i.test(title))s.remove();
-  });
+  /* Eliminar el antiguo Próximos partidos nativo sólo cuando el cuadro restaurado
+     ya está realmente montado. Así Home nunca se queda sin tabla. */
+  if(secondary.isConnected){
+    [...root.querySelectorAll(':scope > .section')].forEach(s=>{
+      const title=(s.querySelector(':scope > .section-head h2')?.textContent||'').trim();
+      if(/^Próximos\s+partidos$/i.test(title))s.remove();
+    });
+  }
 
   /* Eliminar copias antiguas del cuadro, conservando sólo la del nuevo hueco. */
   root.querySelectorAll('[data-v103-upcoming]').forEach(el=>{
@@ -172,10 +180,10 @@ function teamMark(name){
   /* V116 — los cuatro partidos de Home deben mostrar siempre sus escudos reales,
      incluso si el registro dinámico todavía no terminó de cargar. */
   const fixed={
-    'franco fc':BASE+'assets/official-logos/franco-fc.png',
-    'herreras fc':BASE+'assets/official-logos/herreras-fc.png',
-    'terricolas':BASE+'assets/official-logos/terricolas.png',
-    'galacticos':BASE+'assets/teams/galacticos-pozos.webp'
+    'franco fc':ASSET_BASE+'assets/official-logos/franco-fc.png',
+    'herreras fc':ASSET_BASE+'assets/official-logos/herreras-fc.png',
+    'terricolas':ASSET_BASE+'assets/official-logos/terricolas.png',
+    'galacticos':ASSET_BASE+'assets/teams/galacticos-pozos.webp'
   };
   let src=fixed[norm(name)]||'';
   if(!src){try{src=window.LJR_TEAM_LOGOS?.get?.(name)||''}catch(_){}}
