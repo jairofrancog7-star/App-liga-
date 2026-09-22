@@ -644,19 +644,140 @@ const FIELD_LABELS={
   'san jose de la montana':'Campo San José de la Montaña',
   'san julian tierra blanca':'Campo San Julián Tierra Blanca'
 };
+const FIELD_META={
+  'campo 1 unidad deportiva sur':{precision:'complex',label:'Complejo deportivo'},
+  'campo 2 unidad deportiva sur':{precision:'complex',label:'Complejo deportivo'},
+  'campo 3 unidad deportiva sur':{precision:'complex',label:'Complejo deportivo'},
+  'campo 4 emiliano zapata':{precision:'near-field',label:'Referencia del campo'},
+  'cerrito de gasca':{precision:'exact',label:'Ubicación verificada'},
+  'tavera':{precision:'exact',label:'Ubicación verificada'},
+  'san juan de la cruz':{precision:'exact',label:'Ubicación verificada'},
+  'santiago de cuenda':{precision:'locality',label:'Referencia de localidad'},
+  'san antonio de romerillo':{precision:'exact',label:'Ubicación verificada'},
+  'fraccionamiento comontuoso':{precision:'locality',label:'Referencia de localidad'},
+  'pozos':{precision:'exact',label:'Ubicación verificada'},
+  'rincon de centeno':{precision:'locality',label:'Referencia de localidad'},
+  'san jose de la montana':{precision:'exact',label:'Ubicación verificada'},
+  'san julian tierra blanca':{precision:'exact',label:'Ubicación verificada'}
+};
 function weatherFieldOptions(){
- const fromCards=$$('.v60-field-card').map(card=>{const name=$('.v60-field-top h3',card)?.textContent?.trim()||'';const community=$('.v60-field-top span',card)?.textContent?.trim()||'';const key=Object.keys(FIELD_COORDS).find(k=>norm(name+' '+community).includes(norm(k)));return key?{name,coord:FIELD_COORDS[key]}:null}).filter(Boolean);
+ const build=(key,name,coord)=>{const meta=FIELD_META[key]||{precision:'regional',label:'Referencia meteorológica'};return {key,name,coord,precision:meta.precision,precisionLabel:meta.label}};
+ const fromCards=$('.v60-field-card').map(card=>{const name=$('.v60-field-top h3',card)?.textContent?.trim()||'';const community=$('.v60-field-top span',card)?.textContent?.trim()||'';const key=Object.keys(FIELD_COORDS).find(k=>norm(name+' '+community).includes(norm(k)));return key?build(key,name,FIELD_COORDS[key]):null}).filter(Boolean);
  if(fromCards.length)return fromCards;
- return Object.entries(FIELD_COORDS).map(([key,coord])=>({name:FIELD_LABELS[key]||key,coord}));
+ return Object.entries(FIELD_COORDS).map(([key,coord])=>build(key,FIELD_LABELS[key]||key,coord));
 }
 function weatherExtra(){const opts=weatherFieldOptions();const next=new Date(Date.now()+24*3600e3);next.setMinutes(0,0,0);const local=new Date(next.getTime()-next.getTimezoneOffset()*60000).toISOString().slice(0,16);return '<section class="v100-subblock v171-weather-inline" id="v100-weather-extra">'+sectionTitle('CENTRAL OPERATIVA V38','Clima inteligente del partido','Selecciona una cancha y la hora. El análisis se muestra aquí mismo sin salir de Clima.')+
   '<div class="v100-form-grid"><label><span>Campo</span><select data-v100-weather-field>'+opts.map((o,i)=>'<option value="'+i+'">'+esc(o.name)+'</option>').join('')+'</select></label><label><span>Hora del partido</span><input type="datetime-local" data-v100-weather-time value="'+local+'"></label></div>'+
   '<div class="v100-actions"><button class="v100-primary" data-v100-weather-run>Analizar campo</button><button class="v100-secondary" data-v100-weather-fields>Revisar campos</button><button class="v100-secondary" data-v100-weather-fixtures>Ver jornada</button></div>'+
   '<div class="v100-weather-inline-panel" data-v100-weather-inline-panel hidden></div>'+
-  '<div class="v100-weather-result" data-v100-weather-result><p>Selecciona campo y hora para consultar el pronóstico.</p></div>'+
-  '<div class="v100-weather-ops"><button data-v100-weather-map>📍 Mapa</button><button data-v100-weather-directions>🧭 Cómo llegar</button><button data-v100-weather-google>☁️ Google clima</button><button data-v100-weather-pin>📌 Ajustar campo</button><button data-v100-weather-share disabled>Compartir aviso</button><button data-v100-weather-copy disabled>Copiar aviso</button></div>'+
+  '<div class="v173-weather-output">'+
+    '<div class="v100-weather-result" data-v100-weather-result><div class="v173-weather-empty">Selecciona campo y hora para consultar el pronóstico.</div></div>'+
+    '<div class="v100-weather-ops"><button data-v100-weather-map>📍 Mapa</button><button data-v100-weather-directions>🧭 Cómo llegar</button><button data-v100-weather-google>☁️ Google clima</button><button data-v100-weather-pin>📌 Ajustar pin</button><button data-v100-weather-share disabled>Compartir aviso</button><button data-v100-weather-copy disabled>Copiar aviso</button></div>'+
+    '<div class="v173-weather-official"><b>Automático ≠ oficial.</b> “SÍ/NO probable” es una recomendación meteorológica. El estado oficial Programado / Por confirmar / Retrasado / Suspendido sigue siendo decisión de la Liga tras revisar el terreno.</div>'+
+  '</div>'+
   '</section>'}
-async function runWeather(root){const opts=weatherFieldOptions();const idx=Number($('[data-v100-weather-field]',root)?.value||0),f=opts[idx],time=$('[data-v100-weather-time]',root)?.value,out=$('[data-v100-weather-result]',root),share=$('[data-v100-weather-share]',root);if(!f||!time)return toast('Selecciona un campo y la hora del partido');out.innerHTML='<p>Consultando pronóstico…</p>';share.disabled=true;try{const [lat,lon]=f.coord;const u='https://api.open-meteo.com/v1/forecast?latitude='+lat+'&longitude='+lon+'&hourly=precipitation_probability,precipitation,temperature_2m,wind_gusts_10m&forecast_days=3&timezone=America/Mexico_City';const j=await fetch(u).then(r=>{if(!r.ok)throw new Error('weather');return r.json()});const h=j.hourly||{},times=h.time||[],target=new Date(time).getTime();let ni=0,best=Infinity;times.forEach((t,i)=>{const d=Math.abs(new Date(t).getTime()-target);if(d<best){best=d;ni=i}});const now=Date.now();const next24=times.map((t,i)=>[new Date(t).getTime(),Number(h.precipitation?.[i]||0)]).filter(([t])=>t>=now&&t<=now+24*3600e3).reduce((a,x)=>a+x[1],0);const next48=times.map((t,i)=>[new Date(t).getTime(),Number(h.precipitation?.[i]||0)]).filter(([t])=>t>=now&&t<=now+48*3600e3).reduce((a,x)=>a+x[1],0);const prob=Number(h.precipitation_probability?.[ni]||0),rain=Number(h.precipitation?.[ni]||0),temp=Number(h.temperature_2m?.[ni]||0),gust=Number(h.wind_gusts_10m?.[ni]||0);let label='ALTA PROBABILIDAD DE JUGAR',level='good',reason='El pronóstico horario no muestra señales meteorológicas fuertes en los indicadores consultados.';if(prob>=60||rain>=3||gust>=60){label='RIESGO METEOROLÓGICO ALTO';level='bad';reason='Hay lluvia, probabilidad o rachas elevadas; conviene revisar terreno y comunicado oficial.'}else if(prob>=35||rain>=1||gust>=45){label='CONDICIONES A VIGILAR';level='watch';reason='Hay indicadores moderados; revisa el campo más cerca de la hora del partido.'}const text=f.name+' · '+label+' · 24 h '+next24.toFixed(1)+' mm · 48 h '+next48.toFixed(1)+' mm · '+prob+'% a la hora · '+rain.toFixed(1)+' mm/h · '+Math.round(temp)+' °C · rachas '+Math.round(gust)+' km/h. Pronóstico informativo; la decisión oficial corresponde a la Liga.';root.dataset.weatherShare=text;out.innerHTML='<div class="v100-weather-badge '+level+'">'+label+'</div><div class="v100-weather-grid"><span><b>'+next24.toFixed(1)+' mm</b><small>Lluvia 24 h</small></span><span><b>'+next48.toFixed(1)+' mm</b><small>Lluvia 48 h</small></span><span><b>'+Math.round(prob)+'%</b><small>Prob. a la hora</small></span><span><b>'+rain.toFixed(1)+' mm/h</b><small>Intensidad</small></span><span><b>'+Math.round(temp)+' °C</b><small>Temperatura</small></span><span><b>'+Math.round(gust)+' km/h</b><small>Racha</small></span></div><p>'+esc(reason)+'</p><small>Pronóstico meteorológico ≠ estado del terreno ≠ decisión oficial.</small>';share.disabled=false;const copy=$('[data-v100-weather-copy]',root);if(copy)copy.disabled=false}catch(e){out.innerHTML='<p>No se pudo consultar el pronóstico en este momento.</p>'}}
+
+function v173Clamp(n,min,max){return Math.max(min,Math.min(max,n))}
+function v173Num(v,d=0){return Number.isFinite(Number(v))?Number(v):d}
+function v173Terrain(p24,p48){
+ const a=v173Num(p24?.precipTotal),b=v173Num(p48?.precipTotal);
+ if(a>=18||b>=30)return {level:'very-wet',label:'Muy saturado probable',detail:'La lluvia acumulada de las 24–48 h previas puede dejar zonas pesadas o encharcadas.'};
+ if(a>=10||b>=18)return {level:'wet',label:'Pesado/húmedo probable',detail:'Hay acumulado suficiente para que el drenaje y la revisión física del campo sean importantes.'};
+ if(a>=4||b>=8)return {level:'damp',label:'Humedad moderada probable',detail:'Hubo o se prevé lluvia previa; conviene revisar zonas blandas antes de autorizar.'};
+ return {level:'dry',label:'Bajo impacto de lluvia previa',detail:'El acumulado de las 24–48 h previas es bajo según la referencia meteorológica.'};
+}
+function v173Verdict(probability){
+ const p=v173Clamp(Math.round(v173Num(probability)),0,100);
+ if(p>=80)return {key:'yes',label:'ALTA PROBABILIDAD DE JUGAR',short:'SÍ · MUY PROBABLE',tone:'good'};
+ if(p>=65)return {key:'likely',label:'PROBABLEMENTE SE JUEGA',short:'SÍ · PROBABLE',tone:'good'};
+ if(p>=45)return {key:'review',label:'REVISAR CAMPO · POR CONFIRMAR',short:'REVISAR',tone:'watch'};
+ return {key:'risk',label:'ALTO RIESGO DE NO JUGAR',short:'NO · ALTO RIESGO',tone:'high'};
+}
+function v173Confidence(precision,hours){
+ let x=92,p=String(precision||'regional');
+ if(p==='exact'||p==='admin-pin')x=96;
+ else if(p==='complex'||p==='near-field')x=88;
+ else if(p==='locality')x=78;
+ else if(p==='regional')x=64;
+ else if(p==='pending')x=55;
+ if(v173Num(hours?.hours)<3)x-=15;
+ return v173Clamp(Math.round(x),35,98);
+}
+function v173Score(input){
+ const m=input?.match||null,p24=input?.prior24||{},p48=input?.prior48||{},precision=input?.precision||'regional';
+ if(!m)return {probability:null,confidence:v173Confidence(precision,p48),verdict:{key:'na',label:'SIN DATOS SUFICIENTES',short:'SIN DATOS',tone:'na'},terrain:v173Terrain(p24,p48),reasons:['No hay datos meteorológicos suficientes para el horario seleccionado.']};
+ let score=96;const reasons=[];
+ const code=v173Num(m.code),gust=v173Num(m.gustMax),rainMax=v173Num(m.rainMax),precipMax=v173Num(m.precipMax),prob=v173Num(m.probMax),p24sum=v173Num(p24.precipTotal),p48sum=v173Num(p48.precipTotal);
+ if(code>=95){score-=42;reasons.push('Tormenta eléctrica prevista cerca del horario.')}else if(code>=80){score-=10;reasons.push('Tiempo inestable cerca del horario.')}
+ if(rainMax>=8){score-=35;reasons.push('Lluvia horaria fuerte prevista durante la ventana del partido.')}else if(rainMax>=2.5){score-=25;reasons.push('Lluvia moderada prevista durante la ventana del partido.')}else if(rainMax>=1){score-=13;reasons.push('Lluvia ligera prevista durante la ventana del partido.')}
+ if(prob>=85){score-=16;reasons.push('Probabilidad de precipitación muy alta a la hora del partido.')}else if(prob>=65){score-=10;reasons.push('Probabilidad de precipitación elevada a la hora del partido.')}else if(prob>=45){score-=5;reasons.push('Existe posibilidad de precipitación a la hora del partido.')}
+ if(gust>=70){score-=24;reasons.push('Rachas de viento fuertes.')}else if(gust>=50){score-=10;reasons.push('Rachas de viento a vigilar.')}
+ if(p48sum>=30){score-=31;reasons.push('Acumulado muy alto en las 48 h previas: posible saturación del terreno.')}else if(p48sum>=18){score-=23;reasons.push('Acumulado alto en las 48 h previas.')}else if(p48sum>=8){score-=13;reasons.push('Lluvia relevante en las 48 h previas.')}else if(p48sum>=3){score-=6;reasons.push('Algo de lluvia en las 48 h previas.')}
+ if(p24sum>=18){score-=18;reasons.push('Mucha lluvia en las 24 h inmediatamente previas.')}else if(p24sum>=10){score-=12;reasons.push('Lluvia importante en las 24 h previas.')}else if(p24sum>=4){score-=6;reasons.push('Lluvia moderada en las 24 h previas.')}
+ if(precipMax>=5&&rainMax<2.5){score-=6;reasons.push('Precipitación total relevante cerca del horario.')}
+ score=v173Clamp(Math.round(score),5,98);
+ if(!reasons.length)reasons.push('No se detectan señales meteorológicas fuertes ni acumulados importantes en las 48 h previas.');
+ return {probability:score,confidence:v173Confidence(precision,p48),verdict:v173Verdict(score),terrain:v173Terrain(p24,p48),reasons};
+}
+function v173Summary(h,times,start,end){
+ const ids=[];times.forEach((t,i)=>{const ms=new Date(t).getTime();if(ms>=start&&ms<=end)ids.push(i)});
+ if(!ids.length)return null;
+ const nums=(key)=>ids.map(i=>Number(h[key]?.[i])).filter(Number.isFinite);
+ const sum=arr=>arr.reduce((a,b)=>a+b,0),max=arr=>arr.length?Math.max(...arr):null,avg=arr=>arr.length?sum(arr)/arr.length:null;
+ const precip=nums('precipitation'),rain=nums('rain'),prob=nums('precipitation_probability'),temp=nums('temperature_2m'),gust=nums('wind_gusts_10m'),code=nums('weather_code');
+ return {hours:ids.length,precipTotal:sum(precip),probMax:max(prob),rainMax:max(rain.length?rain:precip),precipMax:max(precip),temp:avg(temp),gustMax:max(gust),code:max(code)};
+}
+function v173Metric(label,value,sub=''){return '<div class="v173-weather-metric"><span>'+esc(label)+'</span><strong>'+esc(value)+'</strong>'+(sub?'<small>'+esc(sub)+'</small>':'')+'</div>'}
+async function runWeather(root){
+ const opts=weatherFieldOptions(),idx=Number($('[data-v100-weather-field]',root)?.value||0),f=opts[idx],time=$('[data-v100-weather-time]',root)?.value,out=$('[data-v100-weather-result]',root),share=$('[data-v100-weather-share]',root),copy=$('[data-v100-weather-copy]',root);
+ if(!f||!time)return toast('Selecciona un campo y la hora del partido');
+ out.innerHTML='<div class="v173-weather-loading">Consultando el campo seleccionado…</div>';
+ share.disabled=true;if(copy)copy.disabled=true;
+ try{
+  const [lat,lon]=f.coord;
+  const u='https://api.open-meteo.com/v1/forecast?latitude='+lat+'&longitude='+lon+'&hourly=precipitation_probability,precipitation,rain,weather_code,temperature_2m,wind_gusts_10m&past_days=2&forecast_days=16&timezone=America/Mexico_City';
+  const j=await fetch(u).then(r=>{if(!r.ok)throw new Error('weather');return r.json()});
+  const h=j.hourly||{},times=h.time||[],target=new Date(time).getTime();
+  if(!times.length||!Number.isFinite(target))throw new Error('weather-data');
+  const around=v173Summary(h,times,target-60*60e3,target+2*60*60e3);
+  const p24=v173Summary(h,times,target-24*60*60e3,target-1);
+  const p48=v173Summary(h,times,target-48*60*60e3,target-1);
+  const result=v173Score({match:around,prior24:p24,prior48:p48,precision:f.precision});
+  const verdict=result.verdict,score=result.probability==null?'—':result.probability+'%';
+  const r24=p24?p24.precipTotal.toFixed(1)+' mm':'—',r48=p48?p48.precipTotal.toFixed(1)+' mm':'—';
+  const wxProb=around?.probMax==null?'—':Math.round(around.probMax)+'%';
+  const wxRain=around?.rainMax==null?'—':around.rainMax.toFixed(1)+' mm/h';
+  const temp=around?.temp==null?'—':around.temp.toFixed(1)+' °C';
+  const gust=around?.gustMax==null?'—':Math.round(around.gustMax)+' km/h';
+  const when=new Intl.DateTimeFormat('es-MX',{hour:'2-digit',minute:'2-digit',hour12:true}).format(new Date(target));
+  const fieldLine=f.name+(f.precisionLabel?' · '+f.precisionLabel:'');
+  const reasons=result.reasons.map(x=>'<li>'+esc(x)+'</li>').join('');
+  const text=f.name+' · '+verdict.label+' · '+score+' · 24 h previas '+r24+' · 48 h previas '+r48+' · '+wxProb+' a la hora · '+wxRain+' · '+temp+' · rachas '+gust+'. La decisión oficial corresponde a la Liga.';
+  root.dataset.weatherShare=text;
+  out.innerHTML='<article class="v173-weather-analysis '+esc(verdict.tone)+'">'+
+    '<div class="v173-weather-result-head"><div class="v173-weather-result-copy">'+
+      '<span class="v173-weather-kicker">CONSULTA DIRECTA DE CAMPO</span>'+
+      '<h3>'+esc(f.name)+'</h3>'+
+      '<p>Condición meteorológica alrededor de '+esc(when)+'</p>'+
+      '<p class="v173-weather-fieldline">'+esc(fieldLine)+'</p>'+
+    '</div>'+
+    '<div class="v173-weather-score '+esc(verdict.tone)+'"><span>Probabilidad orientativa</span><strong>'+esc(score)+'</strong><b>'+esc(verdict.short)+'</b><small>confianza '+esc(result.confidence)+'%</small></div></div>'+
+    '<div class="v173-weather-verdict '+esc(verdict.tone)+'"><span>ASISTENTE INTELIGENTE</span><strong>'+esc(verdict.label)+'</strong><p>'+esc(result.terrain.label)+'. '+esc(result.terrain.detail)+'</p></div>'+
+    '<div class="v173-weather-metrics">'+
+      v173Metric('Lluvia 24 h previas',r24,'horas pasadas/modeladas')+
+      v173Metric('Lluvia 48 h previas',r48,'horas pasadas/modeladas')+
+      v173Metric('Prob. a la hora',wxProb,'ventana -1 h / +2 h')+
+      v173Metric('Lluvia a la hora',wxRain,'máximo horario')+
+      v173Metric('Temperatura',temp)+
+      v173Metric('Racha máxima',gust)+
+    '</div>'+
+    '<details class="v173-weather-why"><summary>¿Por qué da esta probabilidad?</summary><ul>'+reasons+'</ul><p>El motor combina lluvia de las 24/48 h previas, lluvia/tormenta/viento cerca del horario y la precisión del pin. Es una estimación automática explicable, no una inspección física.</p></details>'+
+  '</article>';
+  share.disabled=false;if(copy)copy.disabled=false;
+ }catch(e){
+  out.innerHTML='<div class="v173-weather-error"><b>No se pudo actualizar el clima.</b><span>Intenta de nuevo en unos segundos.</span></div>';
+ }
+}
 function weatherFixtureRows(){
  const db=window.LJR_OFFICIAL_API?.getData?.()||window.LJR_OFFICIAL_DATA||{},rows=[];
  Object.entries(db.categories||{}).forEach(([id,cat])=>(cat.fixtures||[]).forEach(g=>(g.rows||[]).forEach(r=>{
