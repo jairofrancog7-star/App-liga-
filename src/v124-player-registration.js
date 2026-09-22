@@ -429,17 +429,67 @@ function v126SetImportStatus(msg){
   rosterImport.status=String(msg||'');
   const el=$('[data-v126-import-status]');if(el)el.textContent=rosterImport.status;
 }
-async function v126OcrImage(source,label='imagen'){
-  const T=await v126Tesseract();
-  const result=await T.recognize(source,'spa',{
+async function v157Bitmap(source){
+  if(source instanceof HTMLCanvasElement)return source;
+  if(typeof createImageBitmap==='function'){
+    try{return await createImageBitmap(source)}catch(e){}
+  }
+  return new Promise((resolve,reject)=>{
+    const img=new Image(),url=URL.createObjectURL(source);
+    img.onload=()=>{URL.revokeObjectURL(url);resolve(img)};
+    img.onerror=e=>{URL.revokeObjectURL(url);reject(e)};
+    img.src=url;
+  });
+}
+async function v157PreparedCanvas(source,mode='contrast'){
+  const bmp=await v157Bitmap(source);
+  const sw=bmp.width||bmp.videoWidth||bmp.naturalWidth||1;
+  const sh=bmp.height||bmp.videoHeight||bmp.naturalHeight||1;
+  const scale=Math.max(1,Math.min(2.2,2100/sw));
+  const w=Math.max(1,Math.round(sw*scale)),h=Math.max(1,Math.round(sh*scale));
+  const c=document.createElement('canvas');c.width=w;c.height=h;
+  const ctx=c.getContext('2d',{willReadFrequently:true,alpha:false});
+  ctx.imageSmoothingEnabled=true;ctx.imageSmoothingQuality='high';
+  ctx.fillStyle='#fff';ctx.fillRect(0,0,w,h);ctx.drawImage(bmp,0,0,w,h);
+  const img=ctx.getImageData(0,0,w,h),d=img.data;
+  for(let i=0;i<d.length;i+=4){
+    let g=.299*d[i]+.587*d[i+1]+.114*d[i+2];
+    if(mode==='threshold')g=g>170?255:(g<90?0:Math.max(0,Math.min(255,(g-90)*3.2)));
+    else g=Math.max(0,Math.min(255,(g-128)*1.58+128));
+    d[i]=d[i+1]=d[i+2]=g;
+  }
+  ctx.putImageData(img,0,0);
+  return c;
+}
+function v157OcrTextQuality(text){
+  let score=0;
+  for(const line of String(text||'').split(/\r?\n/)){
+    const letters=(line.match(/[A-Za-zÁÉÍÓÚÜÑáéíóúüñ]/g)||[]).length;
+    const digits=(line.match(/\d/g)||[]).length;
+    if(letters>=6)score+=Math.min(20,letters);
+    if(letters>=10&&digits<=5)score+=12;
+  }
+  return score;
+}
+async function v157Recognize(source,label,pass,mode){
+  const T=await v126Tesseract(),canvas=await v157PreparedCanvas(source,mode);
+  const result=await T.recognize(canvas,'spa',{
     logger:m=>{
       if(m?.status==='recognizing text'){
         const pct=Math.round((m.progress||0)*100);
-        v126SetImportStatus('Leyendo '+label+' · '+pct+'%');
-      }else if(m?.status)v126SetImportStatus('Procesando '+label+'…');
+        v126SetImportStatus('OCR inteligente '+label+' · pasada '+pass+'/2 · '+pct+'%');
+      }else if(m?.status)v126SetImportStatus('Preparando OCR inteligente '+label+'…');
     }
   });
   return result?.data?.text||'';
+}
+async function v126OcrImage(source,label='imagen'){
+  const a=await v157Recognize(source,label,1,'contrast');
+  const b=await v157Recognize(source,label,2,'threshold');
+  if(!b.trim())return a;
+  if(!a.trim())return b;
+  const first=v157OcrTextQuality(a)>=v157OcrTextQuality(b)?a:b;
+  return first+'\n'+(first===a?b:a);
 }
 async function v126ReadPdf(file){
   v126SetImportStatus('Abriendo PDF…');
@@ -462,9 +512,9 @@ async function v126ReadPdf(file){
       const renderViewport=page.getViewport({scale:1.55*scale});
       canvas.width=Math.ceil(renderViewport.width);canvas.height=Math.ceil(renderViewport.height);
       await page.render({canvasContext:ctx,viewport:renderViewport}).promise;
-      v126SetImportStatus('OCR local del PDF · página '+(i+1)+' de '+ocrPages.length);
-      const res=await T.recognize(canvas,'spa');
-      if(res?.data?.text)textParts.push(res.data.text);
+      v126SetImportStatus('OCR inteligente del PDF · página '+(i+1)+' de '+ocrPages.length);
+      const pageText=await v126OcrImage(canvas,'PDF página '+(i+1));
+      if(pageText)textParts.push(pageText);
     }
   }
   return textParts.join('\n');
@@ -509,50 +559,89 @@ function v126LooksLikeNonPlayerName(value){
   if(/\b(goles|puntos|partidos|pj|pg|pe|pp|gf|gc|dif)\b/.test(n)&&n.split(' ').length<=6)return true;
   return false;
 }
-function v126Nameish(value){
-  let s=String(value||'')
+const V157_MX_GIVEN=new Set(('JOSE JUAN JESUS LUIS CARLOS MIGUEL ANGEL FRANCISCO JAVIER JORGE ROBERTO EDUARDO DANIEL DAVID ALEJANDRO MANUEL ANTONIO FERNANDO RICARDO SERGIO ALBERTO ARTURO RAUL MARIO OSCAR HECTOR RUBEN RAMON MARTIN ENRIQUE VICTOR GERARDO GUILLERMO MARCO MARCOS ADRIAN ALFREDO ARMANDO CESAR CRISTIAN CHRISTIAN DIEGO ERICK ERIK ESTEBAN FELIPE GABRIEL GUSTAVO IGNACIO IVAN JOAQUIN JONATHAN JULIO LEONARDO MAURICIO MAXIMILIANO OMAR PABLO PEDRO RAFAEL RODRIGO SALVADOR SAMUEL SANTIAGO SEBASTIAN TOMAS ULISES ISRAEL ABRAHAM ALAN AXEL BRYAN BRANDON EMILIANO GAEL HUGO ISAAC KEVIN MATEO MATIAS ALONSO ANDRES BENJAMIN EMANUEL EMMANUEL EVERARDO GENARO GERMAN GILBERTO GONZALO GUADALUPE HORACIO ISMAEL JAIME JAIRO JERONIMO JOEL JOSUE LEONEL MARCELO NOE ORLANDO REYNALDO ROGELIO SAUL TELESFORO VALENTIN VICENTE').split(' '));
+const V157_MX_SURNAME=new Set(('AGUILAR ALVAREZ ANDRADE ARIAS AVILA BAUTISTA BECERRA BENITEZ BRAVO CABALLERO CABRERA CAMPOS CARMONA CARRILLO CASTAÑEDA CASTILLO CASTRO CERVANTES CHAVEZ CISNEROS CONTRERAS CORDOVA CORONA CORTES CRUZ DELGADO DIAZ DOMINGUEZ DUARTE ESCOBAR ESPARZA ESPINOZA FLORES FRANCO FUENTES GALINDO GALLARDO GARCIA GARDUÑO GOMEZ GONZALEZ GRANADOS GUERRERO GUTIERREZ GUZMAN HERNANDEZ HERRERA HORTELANO HUERTA IBARRA JIMENEZ JUAREZ LARA LEON LOPEZ LUNA MACIAS MALDONADO MARTINEZ MEDINA MENDOZA MIRANDA MOLINA MORALES MORENO MURILLO NAVA NAVARRO NEGRETE NIETO NUNEZ NUÑEZ OCHOA OLVERA ORTEGA ORTIZ PACHECO PADILLA PALACIOS PEREZ RAMIREZ RAMOS RANGEL REYES RIVERA RODRIGUEZ ROJAS ROMERO ROSALES ROSAS RUIZ SALAZAR SANCHEZ SANDOVAL SANTIAGO SILVA SOLIS SOTO SUAREZ TAPIA TORRES VALADEZ VALENCIA VARGAS VAZQUEZ VEGA VELAZQUEZ VILLALOBOS ZAMORA ZARATE').split(' '));
+const V157_NAME_CONNECTORS=new Set(['DE','DEL','LA','LAS','LOS','Y']);
+const V157_NAME_NOISE=new Set(('LIGA MUNICIPAL FUTBOL FÚTBOL EQUIPO PLANTILLA JUGADOR JUGADORES DELEGADO DELEGADOS TEMPORADA CATEGORIA CATEGORÍA REGISTRO NOMBRE NOMBRES APELLIDO APELLIDOS NUMERO NÚMERO TELEFONO TELÉFONO CURP EDAD FECHA FIRMA POSICION POSICIÓN DOMICILIO CLAVE SECCION SECCIÓN VIGENCIA MUNICIPIO LOCALIDAD COMUNIDAD GUANAJUATO JUVENTINO ROSAS TABLA GOLEADORES CLASIFICACION CLASIFICACIÓN PUNTOS JORNADA').split(' '));
+function v157Upper(s){return String(s||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toUpperCase()}
+function v157CleanNameText(value){
+  return String(value||'')
     .replace(/[|•·]+/g,' ')
-    .replace(/^\s*(?:NO\.?|NÚM(?:ERO)?\.?|#)?\s*\d{1,3}\s*[\)\].:\-–—]?\s*/i,'')
-    .replace(/\b(?:TEL|TELEFONO|TELÉFONO|CURP|EDAD|FECHA|FIRMA|POSICION|POSICIÓN)\b.*$/i,'')
+    .replace(/[“”"´`]+/g,' ')
+    .replace(/\b(?:TEL|TELEFONO|TELÉFONO|CURP|EDAD|FECHA|FIRMA|POSICION|POSICIÓN|CEL|CELULAR)\b.*$/i,'')
     .replace(/\b\d{1,2}[\/\-.]\d{1,2}[\/\-.]\d{2,4}\b.*$/,'')
+    .replace(/^\s*(?:NO\.?|NÚM(?:ERO)?\.?|#)?\s*\d{1,3}\s*[\)\].:\-–—]?\s*/i,'')
     .replace(/\s+/g,' ').trim();
-  const stop=/^(lista|jugadores?|plantilla|equipo|delegado|temporada|categoria|categoría|registro|nombre|nombres|apellidos?|numero|número|liga|municipal|futbol|fútbol|juventino|rosas|guanajuato|firma|credencial|telefono|teléfono|fecha|curp|tabla|goleadores?|clasificacion|clasificación|posiciones|resultados?|jornada|estadisticas?|estadísticas?)\b/i;
-  if(!s||stop.test(s)||v126LooksLikeNonPlayerName(s)||/@/.test(s)||s.length<5||s.length>80)return '';
-  const parts=s.split(/\s+/).filter(Boolean);
-  const words=[];
-  for(const p of parts){
-    if(/\d/.test(p)){if(words.length>=2)break;continue}
-    const clean=p.replace(/[^A-Za-zÁÉÍÓÚÜÑáéíóúüñ'’-]/g,'');
-    if(clean.length>=2)words.push(clean);
-    if(words.length>=6)break;
+}
+function v157MexNameScore(value){
+  const clean=v157CleanNameText(value);
+  if(!clean||clean.length<5||clean.length>80||/@/.test(clean)||v126LooksLikeNonPlayerName(clean))return 0;
+  const tokens=clean.split(/\s+/).map(x=>v157Upper(x.replace(/[^A-Za-zÁÉÍÓÚÜÑáéíóúüñ'’-]/g,''))).filter(Boolean);
+  const content=tokens.filter(t=>!V157_NAME_CONNECTORS.has(t));
+  if(content.length<2||content.length>6||content.some(t=>V157_NAME_NOISE.has(t)))return 0;
+  let score=.18;
+  const given=content.filter(t=>V157_MX_GIVEN.has(t)).length;
+  const surn=content.filter(t=>V157_MX_SURNAME.has(t)).length;
+  if(given)score+=.25+Math.min(.10,(given-1)*.05);
+  if(surn)score+=.25+Math.min(.12,(surn-1)*.06);
+  if(given&&surn)score+=.18;
+  if(content.length>=3&&content.length<=5)score+=.08;
+  if((content.join('').match(/[AEIOU]/g)||[]).length>=3)score+=.05;
+  return Math.max(0,Math.min(1,score));
+}
+function v157TitleName(value){
+  return String(value||'').toLocaleLowerCase('es-MX').replace(/(^|[\s'-])([a-záéíóúüñ])/g,(m,p,a)=>p+a.toLocaleUpperCase('es-MX'));
+}
+function v157BestNameWindow(piece){
+  const cleaned=v157CleanNameText(piece),tokens=cleaned.split(/\s+/).filter(Boolean);
+  let best='',bestScore=0;
+  for(let size=Math.min(6,tokens.length);size>=2;size--){
+    for(let i=0;i+size<=tokens.length;i++){
+      const c=tokens.slice(i,i+size).join(' ').replace(/[^A-Za-zÁÉÍÓÚÜÑáéíóúüñ'’\-\s]/g,' ').replace(/\s+/g,' ').trim();
+      const sc=v157MexNameScore(c);
+      if(sc>bestScore){best=c;bestScore=sc}
+    }
   }
-  if(words.length<2)return '';
-  const candidate=words.join(' ');
-  if(stop.test(candidate))return '';
-  return candidate.replace(/\b\w/g,m=>m.toUpperCase());
+  return {name:best?v157TitleName(best):'',score:bestScore};
+}
+
+function v126Nameish(value){
+  const cleaned=v157CleanNameText(value);
+  if(!cleaned||v126LooksLikeNonPlayerName(cleaned)||/@/.test(cleaned))return '';
+  const best=v157BestNameWindow(cleaned);
+  return best.score>=.48?best.name:'';
 }
 function v126ExtractCandidates(text){
   const known=v126KnownPeople(),found=new Map(),raw=String(text||''),flat=norm(raw);
-  // Primero reconoce nombres ya conocidos aunque estén en una tabla o renglón ruidoso.
+  const add=(name,score=0)=>{
+    if(v126LooksLikeNonPlayerName(name))return;
+    const n=norm(name);if(!n||n.length<5)return;
+    const prev=found.get(n);if(!prev||score>prev.score)found.set(n,{name,score});
+  };
   for(const p of known){
-    const n=norm(p.name);if(n.length>=5&&flat.includes(n))found.set(n,p.name);
+    const n=norm(p.name);if(n.length>=5&&flat.includes(n))add(p.name,1);
   }
-  // Después agrega nombres nuevos que aparezcan como renglones.
   for(const line of raw.split(/\r?\n/)){
-    const pieces=line.split(/\t| {2,}|;/).map(x=>x.trim()).filter(Boolean);
-    const pool=pieces.length>1?pieces:[line];
-    let best='';
-    for(const piece of pool){
-      const c=v126Nameish(piece);
-      if(c&&c.length>best.length)best=c;
+    const pieces=line.split(/\t| {2,}|;|,/).map(x=>x.trim()).filter(Boolean);
+    for(const piece of (pieces.length?pieces:[line])){
+      const best=v157BestNameWindow(piece);
+      if(best.name&&best.score>=.48)add(best.name,best.score);
+      const np=norm(piece);
+      if(np.length>=5){
+        let hit=null,score=0;
+        for(const p of known){
+          const pn=norm(p.name),sim=v124TokenSim(np,pn);
+          const tokenHits=pn.split(' ').filter(w=>w.length>=3&&np.includes(w)).length;
+          const boosted=Math.min(1,sim+(tokenHits>=2?.18:tokenHits===1?.06:0));
+          if(boosted>score){score=boosted;hit=p}
+        }
+        if(hit&&score>=.72)add(hit.name,score);
+      }
     }
-    if(!best||v126LooksLikeNonPlayerName(best))continue;
-    const n=norm(best);
-    if(!n||found.has(n))continue;
-    const near=[...found.keys()].some(k=>v124TokenSim(k,n)>.92);
-    if(!near)found.set(n,best);
   }
-  return [...found.values()];
+  const ordered=[...found.values()].sort((a,b)=>b.score-a.score),out=[];
+  for(const c of ordered)if(!out.some(o=>v124TokenSim(o.name,c.name)>.91))out.push(c);
+  return out.map(x=>x.name);
 }
 function v126BestKnown(name,team=''){
   const n=norm(name),target=norm(team),known=v126KnownPeople();
@@ -571,6 +660,7 @@ function v126AutoRegisterNewEntries(entries,team,season){
   let added=0;
   for(const e of entries){
     if(e.status!=='new'||v126LooksLikeNonPlayerName(e.name))continue;
+    if((e.nameScore||0)<.54){e.status='review';continue}
     const existing=list.find(r=>norm(r.name)===norm(e.name)&&norm(r.team)===norm(team));
     if(existing){
       e.status='keep';e.source=existing;continue;
@@ -611,7 +701,9 @@ function v126AnalyzeText(text){
       source=known;
       status=norm(known.team)===norm(team)?'return':'transfer';
     }
-    entries.push({name:canonical,rawName,status,source,include:true,score:hit?.score||0});
+    const nameScore=known?Math.max(.85,hit?.score||0):v157MexNameScore(canonical);
+    if(status==='new'&&nameScore<.54)status='review';
+    entries.push({name:canonical,rawName,status,source,include:true,score:hit?.score||0,nameScore});
   }
   const importedNorm=new Set(entries.map(e=>norm(e.name)));
   const missing=current.filter(r=>norm(r.team)===norm(team)&&!importedNorm.has(norm(r.name))).map(r=>({...r,remove:false}));
@@ -637,14 +729,15 @@ function v126CleanupNonPlayers(season=selectedSeason()){
 }
 function v126ImportSummary(){
   const e=rosterImport.entries||[],count=k=>e.filter(x=>x.status===k).length;
-  const keep=count('keep'),returning=count('return'),auto=count('autoregistered'),fresh=count('new');
-  return {total:e.length,keep,registered:keep+returning,transfer:count('transfer'),returning,auto,fresh,missing:(rosterImport.missing||[]).length};
+  const keep=count('keep'),returning=count('return'),auto=count('autoregistered'),fresh=count('new'),review=count('review');
+  return {total:e.length,keep,registered:keep+returning,transfer:count('transfer'),returning,auto,fresh,review,missing:(rosterImport.missing||[]).length};
 }
 function v126RosterStatusLabel(e){
   if(e.status==='keep')return 'Ya registrado · ya está en este equipo';
   if(e.status==='transfer')return 'Ya registrado · cambio de equipo disponible';
   if(e.status==='return')return 'Ya registrado · listo para renovar temporada';
   if(e.status==='autoregistered')return 'No estaba registrado · se registró automáticamente · falta completar datos/foto';
+  if(e.status==='review')return 'Nombre posible · revisar antes de registrar';
   return 'No registrado · se registrará automáticamente';
 }
 function v126RosterResultHtml(){
@@ -659,6 +752,7 @@ function v126RosterResultHtml(){
   return '<div class="v126-result">'+
     '<div class="v126-summary"><div><b>'+s.total+'</b><span>Detectados</span></div><div><b>'+s.registered+'</b><span>Ya registrados</span></div><div><b>'+s.transfer+'</b><span>Cambios</span></div><div><b>'+(s.auto+s.fresh)+'</b><span>Nuevos auto</span></div></div>'+
     ((s.auto||s.fresh)?'<div class="v126-auto-info"><b>Registro automático activado</b><span>Los nombres que no existían se guardan como registro provisional. Toca “Completar registro” para agregar CURP, foto y demás datos.</span></div>':'')+
+    (s.review?'<div class="v157-review-note"><b>'+s.review+' nombre(s) requieren revisión</b><span>La lectura no tuvo suficiente confianza para registrarlos automáticamente.</span></div>':'')+
     '<div class="v126-detected">'+personRows+'</div>'+
     ((rosterImport.missing||[]).length?'<div class="v126-missing"><div class="v126-missing-head"><span><b>No aparecen en la lista</b><small>No se borran automáticamente; marca solo los que realmente salen del equipo.</small></span><button type="button" data-v126-mark-missing>Marcar todos</button></div>'+
       rosterImport.missing.map((r,i)=>'<label><input type="checkbox" data-v126-remove="'+i+'" '+(r.remove?'checked':'')+'><span>'+esc(r.name)+'</span></label>').join('')+
@@ -703,7 +797,7 @@ function rosterImportHtml(){
     '<input class="v126-file-input" type="file" data-v126-file accept="image/*,.pdf,.docx,.txt,.csv,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document" tabindex="-1" aria-hidden="true">'+
     '<div class="v126-file-name">'+esc(rosterImport.fileName||'Ningún archivo seleccionado')+'</div>'+
     '<button type="button" class="v126-analyse" data-v126-analyse '+(rosterImport.busy?'disabled':'')+'>'+(rosterImport.busy?'Leyendo lista…':'Detectar y comparar jugadores')+'</button>'+
-    '<p class="v126-status" data-v126-import-status>'+esc(rosterImport.status||'OCR local: no usa Google Lens y no envía la lista a GitHub.')+'</p>'+
+    '<p class="v126-status" data-v126-import-status>'+esc(rosterImport.status||'OCR inteligente español/México: doble lectura, contraste, padrón existente y validación de nombres. No envía la lista a GitHub.')+'</p>'+
     v126RosterResultHtml()+
   '</section>';
 }
