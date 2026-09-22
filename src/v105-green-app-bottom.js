@@ -138,7 +138,7 @@ const HOME_CARDS=[
  {icon:'alert',title:'Cambios de horario y sedes',sub:'Reprograma y crea aviso para compartir',route:'scheduleChanges'},
  {icon:'calendar',title:'Junta semanal de liga',sub:'Agenda y acuerdos locales',action:'meeting'},
  {icon:'video',title:'Semifinales, finales y momentos',sub:'Galería recuperada',route:'moments'},
- {icon:'match',title:'Match Center animado',sub:'Partido, eventos y contexto',route:'match'},
+ {icon:'match',title:'Match Center real',sub:'Partido oficial, marcador y contexto',route:'v4-matchcenter'},
  {icon:'tactics',title:'Tácticas 2D / 3D',sub:'Pizarra azul interactiva',route:'tactics'},
  {icon:'trophy',title:'Copa + escenarios',sub:'Liguilla y simulación',route:'bracketBuilder'},
  {icon:'fire',title:'Pulso de afición',sub:'Reacciones locales',action:'fanzone'},
