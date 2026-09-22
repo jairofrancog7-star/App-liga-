@@ -254,3 +254,24 @@ body[data-app-route="leagueTools"] .v60-tools-all-label b{
     border-radius:13px!important;
   }
 }
+
+
+/* V157 — Fan Zone: una reacción por visitante/perfil. */
+.v100-fan-rule{
+  display:block;
+  margin-top:5px;
+  color:#9fdce5;
+  font-size:9px;
+  line-height:1.35;
+  font-style:normal;
+}
+.v100-reactions button.is-selected,
+.v100-big-reactions button.is-selected{
+  border-color:#55e6f2!important;
+  background:#102a83!important;
+  box-shadow:0 0 0 1px rgba(85,230,242,.2) inset,0 8px 18px rgba(0,0,0,.18);
+}
+.v100-reactions button[aria-pressed="true"],
+.v100-big-reactions button[aria-pressed="true"]{
+  color:#fff;
+}
