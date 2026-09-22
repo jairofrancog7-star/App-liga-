@@ -77,117 +77,157 @@
 .v160-matchday-bar b.final{color:#20dca7}
 .v160-matchday-bar>.v100-secondary{width:100%;margin-top:10px}
 
-/* Modo TV funcional: overlay propio sin alterar las pantallas normales */
+/* Modo TV — misma composición de la app verde, conservando la paleta azul */
 .v160-tv-layer{
   position:fixed;
   inset:0;
   z-index:200000;
   overflow:auto;
-  padding:18px 16px calc(24px + env(safe-area-inset-bottom));
-  background:
-    radial-gradient(circle at 50% -10%,rgba(27,76,194,.26),transparent 35%),
-    #020332;
+  padding:16px 16px calc(28px + env(safe-area-inset-bottom));
+  background:#020332;
   color:#fff;
 }
 .v160-tv-board{
-  width:min(720px,100%);
+  width:min(650px,100%);
   margin:0 auto;
-  padding:18px;
-  border:1px solid rgba(74,220,239,.22);
-  border-radius:24px;
-  background:linear-gradient(160deg,#080d63,#050744 70%,#03042f);
-  box-shadow:0 24px 70px rgba(0,0,0,.38);
 }
-.v160-tv-close{
-  display:block;
-  margin:0 0 18px auto;
-  min-height:42px;
-  padding:0 15px;
-  border:1px solid rgba(255,255,255,.15);
-  border-radius:13px;
-  background:#0b156f;
-  color:#fff;
-  font-weight:850;
+.v160-tv-main-card,
+.v160-tv-info-card{
+  border:1px solid rgba(78,99,202,.34);
+  background:linear-gradient(160deg,#0a0f63,#070945 72%,#050637);
+  box-shadow:0 16px 42px rgba(0,0,0,.24);
+}
+.v160-tv-main-card{
+  position:relative;
+  min-height:560px;
+  padding:34px 28px 30px;
+  border-radius:30px;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:flex-start;
+  text-align:center;
 }
 .v160-tv-live{
   display:inline-flex;
   align-items:center;
-  min-height:34px;
-  padding:0 12px;
+  justify-content:center;
+  min-height:40px;
+  padding:0 18px;
+  margin:0 auto 34px;
   border-radius:999px;
-  background:#111975;
-  color:#36dfea;
-  font:900 10px/1 Inter,Roboto,Arial,sans-serif;
+  background:#111a7a;
+  color:#33dfea;
+  font:900 12px/1 Inter,Roboto,Arial,sans-serif;
   letter-spacing:.08em;
+  box-shadow:0 8px 18px rgba(10,25,120,.18);
 }
-.v160-tv-live.is-live{background:#c7254b;color:#fff}
-.v160-tv-board>h2{
-  margin:18px 0 10px;
-  text-align:center;
-  font:900 31px/.98 Inter,Roboto,Arial,sans-serif;
+.v160-tv-live.is-live{
+  background:#d62c50;
+  color:#fff;
+  box-shadow:0 8px 20px rgba(214,44,80,.28);
 }
-.v160-tv-board>h2 span{color:#7d87b8;font-weight:600}
+.v160-tv-main-card h2{
+  width:100%;
+  max-width:520px;
+  margin:0;
+  color:#fff;
+  font:900 36px/1.02 Inter,Roboto,Arial,sans-serif;
+  letter-spacing:-.03em;
+  text-transform:none;
+}
+.v160-tv-main-card h2 span{
+  color:#7f87b3;
+  font-weight:700;
+}
 .v160-tv-score{
-  margin:12px 0;
-  text-align:center;
-  color:#22dce8;
-  font:950 64px/.95 Inter,Roboto,Arial,sans-serif;
-  letter-spacing:-.04em;
+  margin:34px 0 30px;
+  color:#21dce9;
+  font:950 84px/.88 Inter,Roboto,Arial,sans-serif;
+  letter-spacing:-.055em;
+  text-shadow:0 10px 24px rgba(33,220,233,.12);
 }
 .v160-tv-meta{
-  margin:0 0 18px;
-  text-align:center;
-  color:#9ca7cf;
-  font-size:12px;
+  width:100%;
+  max-width:500px;
+  margin:0;
+  color:#98a1c3;
+  font:500 19px/1.35 Inter,Roboto,Arial,sans-serif;
 }
-.v160-tv-board>article{
-  margin-top:12px;
-  padding:15px;
-  border:1px solid rgba(255,255,255,.09);
-  border-radius:17px;
-  background:#080b4e;
-}
-.v160-tv-board>article small{
-  display:block;
-  margin-bottom:8px;
-  color:#2fdde8;
-  font:900 9px/1 Inter,Roboto,Arial,sans-serif;
-  letter-spacing:.13em;
-}
-.v160-tv-board>article b{
-  display:block;
-  margin-top:4px;
+.v160-tv-close{
+  min-height:58px;
+  padding:0 28px;
+  margin-top:28px;
+  border:1px solid rgba(47,218,236,.28);
+  border-radius:20px;
+  background:linear-gradient(180deg,#1733a7,#0d1f80);
   color:#fff;
-  font-size:15px;
-  line-height:1.2;
+  font:900 18px/1 Inter,Roboto,Arial,sans-serif;
+  box-shadow:0 12px 24px rgba(10,25,115,.30);
 }
-.v160-tv-board>article span{
+.v160-tv-info-card{
+  margin-top:24px;
+  padding:28px 26px;
+  border-radius:24px;
+  text-align:left;
+}
+.v160-tv-info-card small{
   display:block;
-  margin-top:6px;
-  color:#9da6cb;
-  font-size:10px;
+  margin:0 0 14px;
+  color:#31dde9;
+  font:900 11px/1 Inter,Roboto,Arial,sans-serif;
+  letter-spacing:.16em;
+}
+.v160-tv-info-card b{
+  display:block;
+  margin:6px 0 0;
+  color:#fff;
+  font:800 21px/1.2 Inter,Roboto,Arial,sans-serif;
+}
+.v160-tv-info-card b.is-first{
+  font-size:24px;
+}
+.v160-tv-info-card span{
+  display:block;
+  margin-top:12px;
+  color:#8792b4;
+  font:500 16px/1.3 Inter,Roboto,Arial,sans-serif;
+}
+.v160-tv-table b{
+  color:#91a0bd;
+  font-weight:500;
+}
+.v160-tv-table b.is-first{
+  color:#fff;
+  font-weight:850;
 }
 .v160-tv-actions{
   display:grid;
   grid-template-columns:1fr 1fr;
-  gap:10px;
-  margin-top:15px;
+  gap:12px;
+  margin-top:24px;
 }
 .v160-tv-actions button{
-  min-height:46px;
-  border:1px solid rgba(51,223,239,.30);
-  border-radius:14px;
-  background:#0b1770;
+  min-height:58px;
+  border:1px solid rgba(45,218,236,.30);
+  border-radius:18px;
+  background:linear-gradient(180deg,#122a93,#0a176d);
   color:#fff;
-  font-weight:850;
+  font:850 16px/1 Inter,Roboto,Arial,sans-serif;
 }
-
 @media(max-width:520px){
   #v100-weather-extra .v100-weather-ops{grid-template-columns:repeat(2,minmax(0,1fr))}
   .v160-matchday-hero{padding:15px}
   .v160-matchday-hero h3{font-size:20px}
   .v160-matchday-hero>strong{font-size:31px}
-  .v160-tv-board{padding:14px;border-radius:20px}
-  .v160-tv-board>h2{font-size:27px}
-  .v160-tv-score{font-size:56px}
+  .v160-tv-main-card{min-height:500px;padding:26px 20px 24px;border-radius:26px}
+  .v160-tv-live{margin-bottom:28px;min-height:38px;padding:0 16px;font-size:11px}
+  .v160-tv-main-card h2{font-size:31px;max-width:440px}
+  .v160-tv-score{font-size:72px;margin:28px 0 26px}
+  .v160-tv-meta{font-size:17px;max-width:440px}
+  .v160-tv-close{min-height:54px;margin-top:24px;padding:0 24px;font-size:16px;border-radius:18px}
+  .v160-tv-info-card{margin-top:20px;padding:24px 20px;border-radius:22px}
+  .v160-tv-info-card b{font-size:19px}
+  .v160-tv-info-card b.is-first{font-size:22px}
+  .v160-tv-info-card span{font-size:15px}
 }
