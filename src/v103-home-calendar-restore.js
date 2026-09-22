@@ -58,54 +58,69 @@ function patchHome(){
   if(route()!=='home')return;
   const root=screen();if(!root)return;
 
-  /* El bloque con imagen vuelve inmediatamente debajo de Historias. */
-  const stories=root.querySelector(':scope > .stories');
-  if(stories&&!root.querySelector('[data-v103-home-image]')){
-    stories.insertAdjacentHTML('afterend',homeImageMarkup());
-    const img=root.querySelector('.v103-home-image');
-    if(img)img.addEventListener('error',()=>{
-      img.src='./assets/reference/predictor-v36/predictor-stadium.webp';
-    },{once:true});
-  }
+  /* V114 — mantener sólo la imagen principal original.
+     La segunda imagen repetida se sustituye por Próximos partidos. */
+  root.querySelectorAll('[data-v103-home-image]').forEach(el=>el.remove());
 
-  /* V113 — Sustituir únicamente el cuadro principal después de Historias:
-     quitar "Mira todos los goles..." y poner ahí "Próximos partidos".
-     Mantener los dos cuadros de Momentos debajo y eliminar la copia inferior repetida. */
+  /* V112 — Restaurar el Inicio anterior:
+     - el cuadro PRINCIPAL vertical con imagen va inmediatamente después de Historias;
+     - debajo quedan los dos cuadros de Momentos;
+     - más abajo queda UNA sola sección de Próximos partidos;
+     - no tocar los demás cuadros. */
   const storiesNow=root.querySelector(':scope > .stories');
   const moments=[...root.querySelectorAll(':scope > .section')].find(s=>
     /^Momentos$/i.test((s.querySelector('.section-head h2,h2')?.textContent||'').trim())
   );
-  const hero=root.querySelector(':scope > .section.hero');
-
-  /* Quitar la tarjeta independiente con imagen si quedó de una versión anterior. */
-  root.querySelectorAll('[data-v103-home-image]').forEach(el=>el.remove());
+  let hero=root.querySelector(':scope > .section.hero');
 
   if(hero){
-    hero.classList.add('v103-upcoming-host');
+    hero.classList.remove('v103-upcoming-host');
     hero.dataset.v15HomeFeature='3';
-    if(!hero.querySelector('[data-v103-upcoming]')){
-      hero.innerHTML=homeUpcomingMarkup();
+    if(!hero.querySelector('.v21-home-feature-photo')){
+      hero.innerHTML=
+        '<div class="v21-home-feature-photo" aria-hidden="true">'+
+          '<img class="v21-home-feature-photo-image" src="./assets/home-players-user.jpg?v=20260919-user-photo-public-1" alt="" loading="eager" decoding="async" draggable="false">'+
+          '<span class="v21-home-feature-photo-fade"></span>'+
+        '</div>'+
+        '<div class="v21-home-feature-copy">'+
+          '<h2>Mira todos los goles de la Jornada 1</h2>'+
+          '<p>La pasión del fútbol local en un solo lugar</p>'+
+        '</div>'+
+        '<button class="v15-home-feature-hit" type="button" aria-label="Ver todos los goles de la Jornada 1"></button>';
     }
-    /* El nuevo cuadro ocupa exactamente el lugar principal después de Historias. */
+    /* Debe quedar exactamente después de Historias, antes de Momentos. */
     if(storiesNow && storiesNow.nextElementSibling!==hero){
       storiesNow.insertAdjacentElement('afterend',hero);
     }
   }
 
-  /* Los dos cuadros de Momentos permanecen debajo del nuevo cuadro. */
+  /* Los dos cuadros de Momentos permanecen inmediatamente debajo del principal. */
   if(hero && moments && hero.nextElementSibling!==moments){
     hero.insertAdjacentElement('afterend',moments);
   }
 
-  /* Eliminar la sección nativa inferior de Próximos partidos para que exista una sola. */
+  /* Sustituir la SEGUNDA imagen repetida por el cuadro de Próximos partidos
+     de la referencia, sin tocar la imagen principal ni los cuadros de Momentos. */
+  let secondary=root.querySelector('[data-v114-upcoming-slot]');
+  if(!secondary){
+    secondary=document.createElement('section');
+    secondary.className='v114-upcoming-slot';
+    secondary.setAttribute('data-v114-upcoming-slot','');
+    secondary.innerHTML=homeUpcomingMarkup();
+  }
+  if(moments && moments.nextElementSibling!==secondary){
+    moments.insertAdjacentElement('afterend',secondary);
+  }
+
+  /* Eliminar el antiguo Próximos partidos nativo para que sólo exista el nuevo cuadro. */
   [...root.querySelectorAll(':scope > .section')].forEach(s=>{
     const title=(s.querySelector(':scope > .section-head h2')?.textContent||'').trim();
-    if(/^Próximos\s+partidos$/i.test(title) && s!==hero) s.remove();
+    if(/^Próximos\s+partidos$/i.test(title))s.remove();
   });
 
-  /* Si hubiera otra copia V103 fuera del cuadro principal, eliminarla. */
+  /* Eliminar copias antiguas del cuadro, conservando sólo la del nuevo hueco. */
   root.querySelectorAll('[data-v103-upcoming]').forEach(el=>{
-    if(!hero || !hero.contains(el)) el.remove();
+    if(!secondary.contains(el))el.remove();
   });
 
   /* Quitar el bloque grande duplicado de Datos; Datos oficiales permanece en "Más datos"
