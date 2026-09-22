@@ -128,6 +128,13 @@ function v124VeteranMinimum(category){
   if(/35/.test(c)&&/veteran/.test(c))return 35;
   return 0;
 }
+function v124EligibleCategories(age){
+  if(age===null)return ['Primera Fuerza','Intermedia','Segunda Fuerza','Veteranos 35+','Veteranos 50+'];
+  const list=['Primera Fuerza','Intermedia','Segunda Fuerza'];
+  if(age>=35)list.push('Veteranos 35+');
+  if(age>=50)list.push('Veteranos 50+');
+  return list;
+}
 function v124Eligibility(data=captureForm()){
   const min=v124VeteranMinimum(data.category),age=v124AgeFromDob(data.dob);
   if(!min)return {ok:true,min:0,age};
@@ -136,9 +143,12 @@ function v124Eligibility(data=captureForm()){
   return {ok:true,min,age,message:'Edad válida para '+data.category+': '+age+' años.'};
 }
 function v124EligibilityHtml(){
-  const e=v124Eligibility(),cls=e.ok?'ok':'blocked';
-  if(!e.min)return '<div class="v124-eligibility neutral" data-v124-eligibility><b>Edad deportiva</b><span>Esta categoría no tiene restricción de veteranos.</span></div>';
-  return '<div class="v124-eligibility '+cls+'" data-v124-eligibility><b>'+(e.ok?'✓ Elegible':'✕ No elegible')+'</b><span>'+esc(e.message||'')+'</span></div>';
+  const e=v124Eligibility(),eligible=v124EligibleCategories(e.age);
+  if(e.age===null){
+    return '<div class="v124-eligibility neutral" data-v124-eligibility><b>Edad por detectar</b><span>Cuando se detecte la fecha de nacimiento se mostrarán sólo las categorías en las que puede jugar.</span></div>';
+  }
+  const cls=e.ok?'ok':'blocked',title=e.ok?'✓ Elegible · '+e.age+' años':'✕ No elegible · '+e.age+' años';
+  return '<div class="v124-eligibility '+cls+'" data-v124-eligibility><b>'+title+'</b><span>'+(e.ok?'Puede registrarse en: ':esc(e.message||'')+' · Elegibles: ')+esc(eligible.join(' · '))+'</span></div>';
 }
 function renderEligibility(){
   if(route()!=='credentialBuilder')return;
