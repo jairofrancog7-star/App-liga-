@@ -178,7 +178,7 @@ const MORE_CARDS=[
 ];
 
 function finalVideo(){
- return '<article class="v105-final" id="v105-final-video"><video controls playsinline preload="metadata" poster="'+MEDIA+'gran-final-veteranos-35.png"><source src="'+MEDIA+'gran-final-veteranos-35.mp4" type="video/mp4"></video><div class="v105-final-copy"><small>VIDEO RECUPERADO DE LIGA_FUTBOL</small><b>Video promocional de la Gran Final</b><p>Se muestra al final de Inicio y conserva el archivo de la app verde. No sustituye ninguna tarjeta existente.</p></div></article>';
+ return '<article class="v105-final" id="v105-final-video"><video controls playsinline preload="metadata" poster="'+MEDIA+'gran-final-veteranos-35.png"><source src="'+MEDIA+'gran-final-veteranos-35.mp4" type="video/mp4"></video><div class="v105-final-copy"><small>MOMENTOS DE LA LIGA</small><b>Video promocional de la Gran Final</b><p>Revive partidos, finales y recuerdos que forman parte de la historia de la Liga Juventino Rosas.</p></div></article>';
 }
 function gallery(){
  const vids=[
@@ -191,8 +191,8 @@ function gallery(){
  return '<div class="v105-video-grid">'+vids.map(v=>'<article class="v105-video-card"><video controls playsinline preload="metadata" src="'+MEDIA+v[1]+'"></video><b>'+esc(v[0])+'</b><small>Archivo de Liga_Futbol</small></article>').join('')+'</div>';
 }
 function block(r){
- let html='',cards=[],k='FUNCIONES DE LA APP VERDE',title='',desc='',asset='v38-soccer-hero.mp4';
- if(r==='home'){title='Liga_Futbol · funciones recuperadas';desc='Cuadros adaptados al azul y colocados únicamente al final de Inicio.';cards=HOME_CARDS;asset='v38-soccer-hero.mp4';html+=finalVideo()}
+ let html='',cards=[],k='EXPLORA MÁS',title='',desc='',asset='v38-soccer-hero.mp4';
+ if(r==='home'){k='TODO EN UN SOLO LUGAR';title='VIVE LA LIGA A TU MANERA';desc='Partidos, historia, herramientas, videos y accesos para seguir todo lo que pasa en la Liga Juventino Rosas.';cards=HOME_CARDS;asset='v38-soccer-hero.mp4';html+=finalVideo()}
  else if(r==='competition'||r==='v4-calendar'||r==='calendar'||r==='monthlyCalendar'||r==='calendarMonthly'||r==='leagueData'||r==='bracketBuilder'||r==='tableExport'){title='Competición · herramientas completas';desc='Calendario, tabla, goleadores, liguilla, simulación, exportación y campos.';cards=COMP_CARDS;asset='v38-soccer-matchday.mp4'}
  else if(r==='teams'||r==='players'||r==='teamDetail'){title='Equipos y jugadores · herramientas';desc='Plantillas, alineaciones, credenciales y encargados, siempre debajo del contenido existente.';cards=TEAM_CARDS;asset='v38-soccer-teams.mp4'}
  else if(r==='match'){title='Match Center · herramientas del partido';desc='Timeline, alineaciones, acta, incidencias, clima y operación.';cards=MATCH_CARDS;asset='v38-soccer-matchday.mp4'}
