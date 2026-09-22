@@ -1,0 +1,320 @@
+/* V160 — Tácticas 3D: adaptación del diseño de referencia verde al sistema azul.
+   Conserva las funciones existentes: formaciones, tablero, simulador, arrastre,
+   guardado, PNG, JSON y cambio 2D/3D. */
+body[data-app-route="tactics"]{
+  --v160-bg:#020a48;
+  --v160-panel:#06105d;
+  --v160-panel2:#071b78;
+  --v160-line:#1fdde9;
+  --v160-blue:#0e43c7;
+  --v160-blue2:#108fe8;
+  --v160-text:#ffffff;
+  --v160-muted:#aeb8d7;
+  background:
+    radial-gradient(circle at 78% 18%,rgba(19,115,236,.18),transparent 34%),
+    linear-gradient(180deg,#02083f 0%,#02084c 42%,#02063c 100%)!important;
+}
+body[data-app-route="tactics"] #screen{
+  background:transparent!important;
+}
+body[data-app-route="tactics"] .v160-tactics-page{
+  width:min(100%,560px)!important;
+  margin:0 auto!important;
+  padding:18px 18px calc(126px + env(safe-area-inset-bottom))!important;
+  color:#fff!important;
+}
+.v160-tactics-hero{
+  position:relative;
+  padding:4px 0 0;
+}
+.v160-tactics-hero:before{
+  content:"";
+  position:absolute;
+  left:-18px;right:-18px;top:-10px;height:230px;
+  pointer-events:none;
+  background:
+    linear-gradient(135deg,transparent 0 45%,rgba(32,219,237,.08) 45% 46%,transparent 46%),
+    radial-gradient(circle at 94% 10%,rgba(48,117,255,.25),transparent 34%);
+  opacity:.7;
+}
+.v160-kicker{
+  position:relative;
+  display:block;
+  margin-bottom:8px;
+  color:#35e2ed;
+  font-size:10px;
+  line-height:1;
+  font-weight:900;
+  letter-spacing:.14em;
+}
+.v160-tactics-hero h1{
+  position:relative;
+  max-width:490px;
+  margin:0;
+  color:#fff;
+  font-size:clamp(44px,12vw,70px);
+  line-height:.91;
+  font-weight:950;
+  letter-spacing:-.055em;
+}
+.v160-tactics-hero h1 strong{
+  display:block;
+  color:#2c9cf0;
+  font:inherit;
+}
+.v160-tactics-hero p{
+  position:relative;
+  max-width:470px;
+  margin:22px 0 0;
+  color:#c3c9de;
+  font-size:16px;
+  line-height:1.75;
+  font-weight:500;
+}
+.v160-quick-actions{
+  display:grid;
+  gap:11px;
+  margin-top:26px;
+}
+.v160-quick-actions button{
+  width:100%;
+  min-height:58px;
+  padding:0 18px;
+  display:flex;
+  align-items:center;
+  justify-content:flex-start;
+  gap:9px;
+  border:1px solid rgba(49,138,243,.22);
+  border-radius:18px;
+  background:
+    linear-gradient(180deg,rgba(8,22,80,.96),rgba(3,11,55,.96));
+  color:#fff;
+  font-size:16px;
+  font-weight:850;
+  text-align:left;
+  box-shadow:
+    inset 0 0 0 1px rgba(255,255,255,.015),
+    0 8px 24px rgba(0,0,0,.18);
+}
+.v160-quick-actions button.primary{
+  border-color:rgba(36,225,236,.55);
+  box-shadow:
+    inset 0 -3px 0 #0fbcd2,
+    0 0 0 1px rgba(32,219,231,.08),
+    0 0 30px rgba(13,113,225,.15);
+}
+.v160-quick-actions button:active{transform:scale(.99)}
+.v160-motion-note{
+  margin:20px 0 0;
+  color:#7883a9;
+  font-size:11px;
+  line-height:1.4;
+}
+.v160-stage-label{
+  width:max-content;
+  max-width:100%;
+  margin:66px auto 18px;
+  padding:11px 20px;
+  display:flex;
+  align-items:center;
+  gap:10px;
+  border:1px solid rgba(47,157,255,.45);
+  border-radius:999px;
+  color:#61c7ff;
+  background:rgba(8,25,84,.86);
+  box-shadow:0 0 28px rgba(21,112,245,.17);
+  font-size:11px;
+  font-weight:900;
+  letter-spacing:.09em;
+}
+.v160-stage-label i{
+  width:10px;height:10px;border-radius:50%;
+  background:#2eb8ff;
+  box-shadow:0 0 0 7px rgba(46,184,255,.08),0 0 14px rgba(46,184,255,.8);
+}
+.v160-board-shell{
+  position:relative;
+  margin:0 -2px;
+  padding:14px 10px 24px;
+  border:1px solid rgba(44,104,224,.14);
+  border-radius:24px;
+  background:
+    radial-gradient(circle at 50% 100%,rgba(12,96,220,.24),transparent 44%),
+    linear-gradient(180deg,rgba(2,9,48,.25),rgba(3,12,64,.74));
+}
+body[data-app-route="tactics"] .v60-formations{
+  position:relative;
+  z-index:5;
+  justify-content:center;
+  gap:8px!important;
+  margin:0 0 8px!important;
+  overflow:visible!important;
+}
+body[data-app-route="tactics"] .v60-formations button{
+  min-height:38px!important;
+  padding:0 13px!important;
+  border:1px solid rgba(70,99,206,.6)!important;
+  border-radius:11px!important;
+  background:#11136d!important;
+  color:#fff!important;
+  font-size:12px!important;
+  font-weight:900!important;
+}
+body[data-app-route="tactics"] .v60-formations button.active{
+  border-color:#23e1ed!important;
+  color:#27e2ed!important;
+  background:#0a277d!important;
+  box-shadow:0 0 16px rgba(32,220,236,.13)!important;
+}
+.v160-pitch-frame{
+  position:relative;
+  width:100%;
+  min-height:270px;
+  display:grid;
+  place-items:center;
+  perspective:900px;
+  overflow:visible;
+}
+.v160-pitch-frame:after{
+  content:"";
+  position:absolute;
+  left:14%;right:14%;bottom:14px;height:26px;
+  border-radius:50%;
+  background:rgba(0,0,0,.42);
+  filter:blur(15px);
+  transform:scaleX(.92);
+}
+body[data-app-route="tactics"] .v160-pitch-frame .v60-pitch{
+  z-index:2;
+  width:min(92%,440px)!important;
+  max-width:none!important;
+  aspect-ratio:1.78/1!important;
+  margin:28px auto 42px!important;
+  border:2px solid rgba(50,219,238,.72)!important;
+  border-radius:12px!important;
+  background:
+    linear-gradient(90deg,rgba(31,221,234,.34) 0 1px,transparent 1px),
+    linear-gradient(180deg,rgba(30,220,235,.22) 0 1px,transparent 1px),
+    linear-gradient(180deg,#093b87 0%,#082d6a 100%)!important;
+  background-size:50% 100%,100% 50%,100% 100%!important;
+  transform:rotateX(58deg) translateY(6px) scale(.96)!important;
+  transform-origin:center bottom!important;
+  overflow:visible!important;
+  box-shadow:
+    0 22px 34px rgba(0,0,0,.28),
+    inset 0 0 34px rgba(39,158,255,.08)!important;
+}
+body[data-app-route="tactics"] .v160-pitch-frame .v60-pitch:before{
+  width:74px!important;height:74px!important;
+  border-color:rgba(39,221,236,.48)!important;
+}
+body[data-app-route="tactics"] .v160-pitch-frame .v60-pitch:after{
+  left:34%!important;right:34%!important;top:-2px!important;height:28%!important;
+  border-color:rgba(39,221,236,.48)!important;
+}
+body[data-app-route="tactics"] .v160-pitch-frame .v60-player-dot{
+  width:34px!important;height:34px!important;
+  margin:0!important;
+  border:2px solid rgba(255,255,255,.94)!important;
+  background:
+    radial-gradient(circle at 35% 25%,#59d9ff,#0f58cb 62%,#082e87)!important;
+  color:#fff!important;
+  font-size:10px!important;
+  box-shadow:
+    0 5px 10px rgba(0,0,0,.42),
+    0 0 13px rgba(30,194,255,.2)!important;
+  transform:translate(4px,4px) rotateX(-58deg)!important;
+}
+body[data-app-route="tactics"] .v160-pitch-frame .v60-player-dot:first-child{
+  background:radial-gradient(circle at 35% 25%,#fff,#c8ddff 60%,#6d89bd)!important;
+  color:#07105b!important;
+  border-color:#fff!important;
+}
+.v160-note{
+  margin:2px 4px 28px!important;
+  color:#8793ba!important;
+  font-size:10px!important;
+  line-height:1.5!important;
+  text-align:center;
+}
+
+/* Bloque avanzado ya existente: no se elimina, se adapta al mismo azul. */
+body[data-app-route="tactics"] #v100-tactics-extra{
+  margin-top:20px!important;
+  border:1px solid rgba(51,127,246,.24)!important;
+  background:
+    radial-gradient(circle at 82% 0%,rgba(23,129,239,.18),transparent 38%),
+    linear-gradient(180deg,#07125e,#05094b)!important;
+  box-shadow:0 14px 36px rgba(0,0,0,.18)!important;
+}
+body[data-app-route="tactics"] #v100-tactics-extra .v100-head small{
+  color:#37e1ec!important;
+}
+body[data-app-route="tactics"] #v100-tactics-extra .v100-head h2{
+  color:#fff!important;
+}
+body[data-app-route="tactics"] #v100-tactics-extra .v100-head p{
+  color:#aeb9da!important;
+}
+body[data-app-route="tactics"] .v100-tactic-controls{
+  gap:7px!important;
+}
+body[data-app-route="tactics"] .v100-tactic-controls select,
+body[data-app-route="tactics"] .v100-tactic-controls button{
+  min-height:38px!important;
+  border:1px solid rgba(80,106,209,.5)!important;
+  background:#0b1268!important;
+  color:#fff!important;
+}
+body[data-app-route="tactics"] .v100-tactic-controls button.active{
+  background:#24dfe9!important;
+  border-color:#24dfe9!important;
+  color:#07105a!important;
+}
+body[data-app-route="tactics"] .v100-pitch{
+  border:2px solid rgba(42,219,236,.8)!important;
+  border-radius:11px!important;
+  background:
+    linear-gradient(90deg,transparent 49.5%,rgba(32,220,235,.32) 49.5%,rgba(32,220,235,.32) 50.5%,transparent 50.5%),
+    linear-gradient(180deg,#0c4495 0 50%,#083476 50%)!important;
+  box-shadow:
+    inset 0 0 40px rgba(31,131,255,.12),
+    0 14px 30px rgba(0,0,0,.2)!important;
+}
+body[data-app-route="tactics"] .v100-pitch:before,
+body[data-app-route="tactics"] .v100-pitch:after{
+  border-color:rgba(57,223,239,.54)!important;
+}
+body[data-app-route="tactics"] .v100-pitch.is-3d{
+  transform:perspective(900px) rotateX(48deg) translateY(-4px) scale(.96)!important;
+  transform-origin:center bottom!important;
+  margin-top:24px!important;
+  margin-bottom:24px!important;
+}
+body[data-app-route="tactics"] .v100-player{
+  width:38px!important;height:38px!important;
+  border:2px solid #fff!important;
+  background:radial-gradient(circle at 35% 25%,#5ad9ff,#0f58cb 62%,#082e87)!important;
+  color:#fff!important;
+  box-shadow:0 4px 14px rgba(0,0,0,.34),0 0 12px rgba(43,193,255,.15)!important;
+}
+body[data-app-route="tactics"] .v100-primary{
+  background:#25dfe9!important;color:#06115b!important;
+}
+body[data-app-route="tactics"] .v100-secondary{
+  background:#0a1268!important;color:#fff!important;border-color:rgba(70,108,222,.55)!important;
+}
+@media(max-width:420px){
+  body[data-app-route="tactics"] .v160-tactics-page{padding-left:14px!important;padding-right:14px!important}
+  .v160-tactics-hero h1{font-size:50px}
+  .v160-tactics-hero p{font-size:14px;line-height:1.65}
+  .v160-quick-actions button{min-height:54px;font-size:14px}
+  .v160-stage-label{margin-top:50px}
+  .v160-board-shell{padding-left:5px;padding-right:5px}
+  .v160-pitch-frame{min-height:245px}
+  body[data-app-route="tactics"] .v160-pitch-frame .v60-pitch{width:96%!important;margin-top:34px!important}
+  body[data-app-route="tactics"] .v160-pitch-frame .v60-player-dot{width:31px!important;height:31px!important;font-size:9px!important}
+}
+@media(prefers-reduced-motion:reduce){
+  body[data-app-route="tactics"] *{scroll-behavior:auto!important;transition:none!important;animation:none!important}
+}
