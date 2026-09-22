@@ -20,3 +20,31 @@ body[data-app-route="credentialBuilder"] .v64-auto-category b{font-size:16px;col
 .v124-empty{padding:22px;text-align:center;border:1px dashed rgba(255,255,255,.18);border-radius:14px;display:grid;gap:5px}.v124-empty b{font-size:13px}.v124-empty span{font-size:10px;color:#aebbe0}
 .v124-privacy{font-size:9px;line-height:1.5;color:#91a4d3;margin:12px 2px 0}.v124-toast{position:fixed;left:50%;bottom:92px;transform:translateX(-50%);z-index:99999;background:#07104d;color:#fff;border:1px solid #4ae0ef;border-radius:999px;padding:10px 16px;font-size:11px;font-weight:800;box-shadow:0 8px 30px rgba(0,0,0,.35);max-width:88%;text-align:center}
 @media(max-width:390px){.v124-registry{margin-left:9px;margin-right:9px;padding:13px}.v124-season-bar{grid-template-columns:1fr}.v124-season-bar button{width:100%}.v124-card-actions{grid-template-columns:1fr 1fr}.v124-card-actions .danger{grid-column:1/-1}.v124-head h2{font-size:22px}}
+
+
+/* Validación automática de edad para categorías de veteranos. */
+.v124-eligibility{
+  margin:10px 28px 14px;
+  padding:13px 15px;
+  border-radius:15px;
+  border:1px solid rgba(255,255,255,.14);
+  display:grid;
+  gap:4px;
+  line-height:1.35;
+}
+.v124-eligibility b{font-size:13px}
+.v124-eligibility span{font-size:11px}
+.v124-eligibility.neutral{background:#0b176f;color:#bfc9e8}
+.v124-eligibility.ok{background:#083f39;border-color:rgba(83,241,205,.45);color:#92f4dd}
+.v124-eligibility.blocked{background:#4a1629;border-color:rgba(255,101,128,.55);color:#ffc0ca}
+.v124-primary-actions button:disabled,
+[data-v100-credential-png]:disabled,
+[data-v100-credential-share]:disabled,
+[data-v64-print-credential]:disabled{
+  opacity:.42!important;
+  filter:grayscale(.35);
+  cursor:not-allowed!important;
+}
+@media(max-width:390px){
+  .v124-eligibility{margin-left:18px;margin-right:18px}
+}
