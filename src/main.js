@@ -4674,7 +4674,7 @@ function leagueToolsView(){
       v60ToolCard('matchday','Match Day','Checklist y operación de jornada','matchday')+
       v60ToolCard('rules','Reglamento','Reglamento oficial 2026–2027','rulebook')+
       v60ToolCard('field','Dónde se juega','Campos, comunidades y Maps','venues')+
-      v60ToolCard('center','Match Center','Marcador, cronología y previa','match')+
+      v60ToolCard('center','Match Center','Partido oficial, marcador y cronología','v4-matchcenter')+
       v60ToolCard('matchday','Jornadas','Calendario y resultados','', 'data-v60-comp="fixtures"')+
       v60ToolCard('bracket','Liguilla','Cuadro de eliminatorias','', 'data-v60-comp="bracket"')+
       v60ToolCard('share','Publicaciones','Compartir jornada / WhatsApp','publications')+
