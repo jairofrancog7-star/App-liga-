@@ -5029,8 +5029,8 @@ function v64CredentialBuilderView(){
   const v66Player=localStorage.getItem('v66-selected-player')||'',v66Team=localStorage.getItem('v66-selected-player-team')||'';
   return '<section class="v60-tool-page v64-page">'+v60Header('REGISTRO DE JUGADOR','Registro y credencial','Carga una foto del documento y una foto del jugador. Al detectar texto se completan automáticamente nombre, CURP, fecha de nacimiento y ciudad / municipio / comunidad; revisa los datos antes de usarlos.')+
     '<div class="v64-form-grid one">'+
-      '<label><b>Foto de CURP o INE</b><input type="file" accept="image/*" data-v64-doc></label>'+
-      '<label><b>Foto del jugador</b><input type="file" accept="image/*" data-v64-photo></label>'+
+      '<label class="v64-upload-field"><b>Foto de CURP o INE</b><input type="file" accept="image/*" data-v64-doc><span class="v64-upload-mini v64-upload-doc" data-v64-doc-preview><span>Vista previa del documento</span></span></label>'+
+      '<label class="v64-upload-field"><b>Foto del jugador</b><input type="file" accept="image/*" data-v64-photo><span class="v64-upload-mini v64-upload-player" data-v64-player-mini-preview><span>Vista previa de la foto</span></span></label>'+
       '<div class="v60-actions"><button class="v60-btn" data-v64-ocr>Detectar texto</button><button class="v60-btn outline" data-v64-clear-ocr>Borrar documento y lectura</button></div>'+
       '<label><b>Texto detectado — revisa y corrige</b><textarea class="v60-textarea" data-v64-ocr-text></textarea></label>'+
       '<label><b>Nombre del jugador</b><input type="text" data-v64-cred-name placeholder="Se completa al detectar texto" value="'+v64Esc(v66Player)+'"></label>'+
@@ -5628,14 +5628,32 @@ document.querySelector('[data-v64-export-png]')?.addEventListener('click',async(
 document.querySelector('[data-v64-share-png]')?.addEventListener('click',async()=>{const b=await v64CanvasTable();if(!b)return;const file=new File([b],'Liga_Juventino_Tabla.png',{type:'image/png'});try{if(navigator.canShare?.({files:[file]}))await navigator.share({title:'Tabla Liga Juventino Rosas',files:[file]});else v64Download(b,file.name)}catch(e){}},{once:true});
 document.querySelector('[data-v64-export-csv]')?.addEventListener('click',()=>{const rows=v64StandingsRows(),csv='Posicion,Equipo,PJ,DG,PTS\n'+rows.map(r=>[r.pos,r.name,r.pj,r.dg,r.pts].map(v=>'"'+String(v??'').replace(/"/g,'""')+'"').join(',')).join('\n');v64Download(new Blob([csv],{type:'text/csv;charset=utf-8'}),'Liga_Juventino_Tabla.csv')},{once:true});
 document.querySelector('[data-v64-bracket-png]')?.addEventListener('click',async()=>{const b=await v64CanvasBracket();if(b)v64Download(b,'Liga_Juventino_Cuadro.png')},{once:true});
-document.querySelector('[data-v64-photo]')?.addEventListener('change',e=>{const file=e.target.files?.[0],host=document.querySelector('[data-v64-photo-preview]');if(!file||!host)return;host.innerHTML='<img alt="Foto del jugador">';host.querySelector('img').src=URL.createObjectURL(file)},{once:true});
+document.querySelector('[data-v64-doc]')?.addEventListener('change',e=>{
+  const file=e.target.files?.[0],host=document.querySelector('[data-v64-doc-preview]');
+  if(!host)return;
+  host.innerHTML=file?'<img alt="Vista previa del documento CURP o INE">':'<span>Vista previa del documento</span>';
+  if(file){const url=URL.createObjectURL(file);const img=host.querySelector('img');img.src=url;img.onload=()=>URL.revokeObjectURL(url)}
+},{once:true});
+document.querySelector('[data-v64-photo]')?.addEventListener('change',e=>{
+  const file=e.target.files?.[0],mini=document.querySelector('[data-v64-player-mini-preview]'),host=document.querySelector('[data-v64-photo-preview]');
+  if(mini){
+    mini.innerHTML=file?'<img alt="Vista previa de la foto del jugador">':'<span>Vista previa de la foto</span>';
+    if(file){const url=URL.createObjectURL(file);const img=mini.querySelector('img');img.src=url;img.onload=()=>URL.revokeObjectURL(url)}
+  }
+  if(!host)return;
+  host.innerHTML=file?'<img alt="Foto del jugador">':'<span>FOTO</span>';
+  if(file){const url=URL.createObjectURL(file);const img=host.querySelector('img');img.src=url;img.onload=()=>URL.revokeObjectURL(url)}
+},{once:true});
 document.querySelectorAll('[data-v64-cred-name],[data-v64-cred-curp],[data-v64-cred-team],[data-v64-cred-cat]').forEach(el=>{el.addEventListener('input',v64CredentialSync);el.addEventListener('change',v64CredentialSync)});
 document.querySelector('[data-v64-cred-team]')?.addEventListener('change',()=>{v64SyncCredentialTeamCategory();v64CredentialSync()});
 v64CredentialSync();
 document.querySelector('[data-v64-ocr]')?.addEventListener('click',async e=>{
-  const file=document.querySelector('[data-v64-doc]')?.files?.[0],out=document.querySelector('[data-v64-ocr-text]');
-  if(!file||!out){toast('Selecciona una foto de CURP o INE');return}
-  const btn=e.currentTarget,original=btn.textContent;btn.disabled=true;btn.textContent='Preparando…';
+  const docFile=document.querySelector('[data-v64-doc]')?.files?.[0]||null;
+  const photoFile=document.querySelector('[data-v64-photo]')?.files?.[0]||null;
+  const file=docFile||photoFile,out=document.querySelector('[data-v64-ocr-text]');
+  if(!file||!out){toast('Selecciona una foto de CURP o INE para intentar obtener los datos');return}
+  if(!docFile&&photoFile)toast('No hay documento en el primer campo; intentaré leer la imagen disponible');
+  const btn=e.currentTarget,original=btn.textContent;btn.disabled=true;btn.textContent='Buscando datos…';
   /* Cada lectura empieza limpia para no conservar basura de una prueba anterior. */
   for(const sel of ['[data-v64-cred-name]','[data-v64-cred-curp]','[data-v100-dob]','[data-v100-age]','[data-v100-city]']){
     const el=document.querySelector(sel);if(el)el.value='';
@@ -5643,11 +5661,18 @@ document.querySelector('[data-v64-ocr]')?.addEventListener('click',async e=>{
   v64CredentialSync();
   try{
     const best=await v64RecognizeDocument(file,msg=>btn.textContent=msg);
-    const txt=best.text||'';out.value=txt;
-    const p=best.parsed||v64ParseOcrIdentity(txt);
+    const txt=best.text||'',all=best.allText||'';out.value=[txt,all].filter(Boolean).join('\n');
+    const first=best.parsed||v64ParseOcrIdentity(txt);
+    const retry=all?v64ParseOcrIdentity(txt+'\n'+all):{};
+    const p={
+      name:first.name||retry.name||'',
+      curp:first.curp||retry.curp||'',
+      dob:first.dob||retry.dob||'',
+      city:first.city||retry.city||''
+    };
     v64ApplyOcrIdentity(p);
     const found=[p.name&&'nombre',p.curp&&'CURP',p.dob&&'fecha',p.city&&'municipio/comunidad'].filter(Boolean);
-    toast(found.length?'Datos detectados: '+found.join(', ') : 'La lectura no fue suficiente; intenta una foto más recta y con buena luz');
+    toast(found.length?'Datos detectados: '+found.join(', ') : 'No encontré datos seguros todavía; conservé la lectura para intentar de nuevo o corregirla');
   }catch(err){
     toast('No se pudo leer el documento; prueba una foto más clara o captura los datos manualmente');
   }finally{
@@ -5657,6 +5682,7 @@ document.querySelector('[data-v64-ocr]')?.addEventListener('click',async e=>{
 document.querySelector('[data-v64-clear-ocr]')?.addEventListener('click',()=>{
   const selectors=['[data-v64-doc]','[data-v64-ocr-text]','[data-v64-cred-name]','[data-v64-cred-curp]','[data-v100-dob]','[data-v100-age]','[data-v100-city]'];
   selectors.forEach(sel=>{const el=document.querySelector(sel);if(!el)return;if(el.type==='file')el.value='';else el.value=''});
+  const docPreview=document.querySelector('[data-v64-doc-preview]');if(docPreview)docPreview.innerHTML='<span>Vista previa del documento</span>';
   v64CredentialSync();
 });
 document.querySelector('[data-v64-download-credential-png]')?.addEventListener('click',async e=>{e.preventDefault();if(window.LJR_V100?.downloadCredentialPng){await window.LJR_V100.downloadCredentialPng();return}toast('Generador PNG cargando; inténtalo de nuevo')},{once:true});
