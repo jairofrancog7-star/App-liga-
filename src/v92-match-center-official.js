@@ -234,6 +234,13 @@ async function load(){
 }
 function syncRoute(){
   const r=route();
+  try{
+    const wanted=sessionStorage.getItem('v92-open-tab');
+    if(['Resumen','Alineaciones','Estadísticas','Cronología'].includes(wanted)){
+      activeTab=wanted;
+      sessionStorage.removeItem('v92-open-tab');
+    }
+  }catch(_){}
   /* Compatibilidad con botones antiguos que aún marcaban #/match como Match Center. */
   if(r==='match'&&sessionStorage.getItem('v69-match-center-entry')==='1'){
     sessionStorage.removeItem('v69-match-center-entry');
