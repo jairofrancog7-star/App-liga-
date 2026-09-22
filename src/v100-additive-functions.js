@@ -943,9 +943,11 @@ function mount(){
   if(r==='credentialBuilder'&&!$('#v100-credential-extra',screen)){screen.insertAdjacentHTML('beforeend',credentialExtra());const n=$('#v100-credential-extra',screen);bindGeneric(n);bindCredential(n)}
   if(r==='tactics'&&!$('#v100-tactics-extra',screen)){screen.insertAdjacentHTML('beforeend',tacticsExtra());const n=$('#v100-tactics-extra',screen);bindGeneric(n);bindTactics(n)}
   if(r==='weatherFields'&&!$('#v100-weather-extra',screen)){screen.insertAdjacentHTML('beforeend',weatherExtra());const n=$('#v100-weather-extra',screen);bindGeneric(n);bindWeather(n)}
-  if(r==='v38Weather'&&!$('#v100-weather-extra',screen)){
-    const page=$('.v163-weather-page',screen);
-    if(page){page.insertAdjacentHTML('afterend',weatherExtra());const n=$('#v100-weather-extra',screen);bindGeneric(n);bindWeather(n)}
+  /* V172: #/v38Weather usa el motor inteligente por partido/campo.
+     No inyectar aquí el bloque legado de campo+hora porque duplica controles
+     y deja "Revisar campos" dependiendo de un nodo auxiliar. */
+  if(r==='v38Weather'){
+    $('#v100-weather-extra',screen)?.remove();
   }
   if(r==='matchday'&&!$('#v160-matchday-extra',screen)){const page=$('.v60-tool-page',screen)||screen;page.insertAdjacentHTML('afterbegin',matchdayExtra());const n=$('#v160-matchday-extra',screen);bindMatchday(n)}
   if(r==='publications'&&!$('#v100-publication-extra',screen)){screen.insertAdjacentHTML('beforeend',publicationExtra());const n=$('#v100-publication-extra',screen);bindGeneric(n);bindPublication(n)}
