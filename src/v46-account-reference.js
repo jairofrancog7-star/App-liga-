@@ -242,31 +242,41 @@
   },true);
 
   function notificationsMarkup(){
-    return '<section class="v46-account-page v46-notifications v46-notifications-reference-blue" data-v46-account="notifications">'+
+    const p=notifPrefs();
+    const team=visibleTeams()[0]||DEFAULT_TEAM;
+    const enabled=[p.news,p.tickets,p.hospitality,p.fantasy,p.predictor,p.quiz,p.moreless].filter(Boolean).length;
+    function sw(key,label){
+      return '<label class="v46-switch-row"><span>'+label+'</span>'+
+        '<input type="checkbox" data-v46-notif="'+key+'" '+(p[key]?'checked':'')+'>'+
+        '<i aria-hidden="true"></i></label>';
+    }
+    return '<section class="v46-account-page v46-notifications" data-v46-account="notifications">'+
       '<header class="v46-notif-head">'+
         '<button type="button" class="v46-back" data-v46-back aria-label="Volver">'+backIcon()+'</button>'+
         '<h1>Notificaciones</h1>'+
       '</header>'+
-      '<main class="v46-reference-notif-main">'+
-        '<section class="v46-reference-title">'+
-          '<small>CENTRO DE AVISOS</small>'+
-          '<h2>Notificaciones</h2>'+
-        '</section>'+
-        '<div class="v46-reference-notif-list">'+
-          '<button type="button" class="v46-reference-notif-card" data-route="scheduleChanges">'+
-            '<span class="v46-ref-emoji">🕒</span>'+
-            '<span><strong>Próxima jornada</strong><small>Recibe aviso cuando se publique un horario nuevo.</small></span>'+
-          '</button>'+
-          '<button type="button" class="v46-reference-notif-card" data-route="venues">'+
-            '<span class="v46-ref-emoji">📍</span>'+
-            '<span><strong>Cambio de sede</strong><small>Alertas para cambios relevantes de cancha o fecha.</small></span>'+
-          '</button>'+
-          '<button type="button" class="v46-reference-notif-card" data-route="following">'+
-            '<span class="v46-ref-emoji">⚽</span>'+
-            '<span><strong>Partido favorito</strong><small>Seguimiento de equipos y encuentros destacados.</small></span>'+
-          '</button>'+
-        '</div>'+
-      '</main>'+
+      '<p class="v46-notif-intro">Elige las notificaciones que te gustaría recibir.</p>'+
+      '<div class="v46-section v46-teams-section">'+
+        '<h2>Equipos</h2>'+
+        '<button class="v46-team-notif" type="button" data-v46-open-following>'+
+          logo(team,'v46-team-logo')+
+          '<span class="v46-team-copy"><strong>'+esc(team.name)+'</strong><small>'+enabled+'/7 notificaciones elegidas</small></span>'+
+          '<span class="v46-team-chevron">'+chevron()+'</span>'+
+        '</button>'+
+      '</div>'+
+      '<div class="v46-section v46-games-section">'+
+        '<h2>Juegos</h2>'+
+        sw('fantasy','Fantasy Football')+
+        sw('predictor','Quiniela')+
+        sw('quiz','Quiz')+
+        sw('moreless','Más o Menos')+
+      '</div>'+
+      '<div class="v46-section v46-general-section">'+
+        '<h2>General</h2>'+
+        sw('news','Noticias')+
+        sw('tickets','Ofertas de entradas y patrocinadores')+
+        sw('hospitality','Hospitalidad')+
+      '</div>'+
     '</section>';
   }
   function followingMarkup(){
