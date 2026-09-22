@@ -1091,6 +1091,10 @@ function v183ResolveVariants(variants,known=v126KnownPeople()){
 
   clean.sort((a,b)=>v183VariantScore(b,clean,known)-v183VariantScore(a,clean,known));
   const picked=v184SafeNameRepair(clean[0]);
+
+  // V188: una tabla impresa manda. No agregamos apellidos desde el padrón.
+  if(rosterDetectedKind==='printed-table')return picked;
+
   const completed=v186CompleteFromKnown(picked,known,rosterImportTeam);
   return completed?.name||picked;
 }
@@ -1271,9 +1275,10 @@ async function v187BuildPrintedRowBatches(source,layout,batchSize=5){
 
   /* Recorta DENTRO de Jugador. No toca Equipo ni G.Total.
      Un margen mayor elimina la línea vertical que Tesseract confundía con letras. */
-  const xPad=Math.min(.018,Math.max(.005,layout.width*.032));
-  const sx=Math.max(0,Math.floor(sw*(layout.x0+xPad)));
-  const cw=Math.max(1,Math.min(sw-sx,Math.floor(sw*Math.max(.04,layout.width-xPad*2))));
+  const leftPad=Math.min(.016,Math.max(.004,layout.width*.024));
+  const rightPad=Math.min(.052,Math.max(.016,layout.width*.075));
+  const sx=Math.max(0,Math.floor(sw*(layout.x0+leftPad)));
+  const cw=Math.max(1,Math.min(sw-sx,Math.floor(sw*Math.max(.04,layout.width-leftPad-rightPad))));
   const scale=Math.max(1.45,Math.min(2.55,1080/Math.max(1,cw)));
   const outW=Math.max(820,Math.min(1320,Math.round(cw*scale)+44));
   const rowH=94,gap=18,top=14;
@@ -1304,50 +1309,86 @@ async function v187BuildPrintedRowBatches(source,layout,batchSize=5){
   return batches;
 }
 
+function v188SuspiciousPrintedName(value){
+  const clean=v184SafeNameRepair(value),tokens=clean.split(/\s+/).filter(Boolean);
+  const content=tokens.filter(t=>!V157_NAME_CONNECTORS.has(v157Upper(t)));
+  if(content.length<2)return true;
+  const first=v157Upper(content[0]).replace(/[^A-ZÑ]/g,'');
+  if(!V157_MX_GIVEN.has(first))return true;
+  if(tokens.some(t=>{
+    const u=v157Upper(t).replace(/[^A-ZÑ]/g,'');
+    return u.length<=2&&!V157_NAME_CONNECTORS.has(u);
+  }))return true;
+  if(tokens.some(t=>v184SplitJoinedToken(t)))return true;
+  if(v172KnownTeamAliases().some(team=>{
+    const tail=v182Compact(tokens.slice(-2).join(' '));
+    const one=v182Compact(tokens.at(-1)||'');
+    const tc=v182Compact(team);
+    return !!tc&&(tail===tc||one===tc);
+  }))return true;
+  return v180NameQuality(clean)<1.9;
+}
+function v188BatchNeedsVerification(names,expected){
+  const list=Array.isArray(names)?names:[];
+  if(list.length!==expected)return true;
+  return list.some(v188SuspiciousPrintedName);
+}
+
 async function v187ReadPrintedRowsBatched(source,label,layout){
   const batches=await v187BuildPrintedRowBatches(source,layout,5);
   if(!batches.length)return '';
-  const out=[],totalPasses=batches.length;
+  const out=[];
   let pass=0;
 
   for(let i=0;i<batches.length;i++){
     const b=batches[i],from=b.start+1,to=b.start+b.count;
-    v126SetImportStatus('OCR por filas V188 · Jugador '+from+'–'+to+' · bloque '+(i+1)+'/'+batches.length);
+    v126SetImportStatus('OCR por filas V188 · Jugador '+from+'–'+to+' · lectura 1/3');
     const first=await v157Recognize(
       b.canvas,
       label+' · columna Jugador · filas '+from+'-'+to,
-      ++pass,'contrast',6,totalPasses
+      ++pass,'contrast',6,15
     );
-    let list1=v180NameColumnLines(first.text),chosen=list1;
+    const list1=v180NameColumnLines(first.text);
 
-    /* V188: NO repetir Tesseract sobre el mismo bloque.
-       El video del usuario mostró que la verificación 2/10 se quedaba en 53%.
-       Si faltan filas usamos TextDetector nativo (cuando exista), que es barato,
-       y si no, conservamos la primera lectura y seguimos al siguiente bloque. */
-    if(list1.length!==b.count){
-      const nativeText=await v177NativeText(b.canvas);
-      const list2=v180NameColumnLines(nativeText);
-      if(list2.length){
-        chosen=v183ConsensusNameLists([list1,list2],b.count);
-        if(chosen.length<b.count){
-          const candidates=[chosen,list1,list2].filter(x=>x.length);
-          candidates.sort((a,b2)=>Math.abs(a.length-b.count)-Math.abs(b2.length-b.count));
-          chosen=candidates[0]||[];
-        }
+    // V188: aunque el conteo sea correcto, hacemos segunda lectura.
+    // El problema real era tener 5/5 filas pero con letras o apellidos equivocados.
+    v126SetImportStatus('OCR por filas V188 · Jugador '+from+'–'+to+' · verificando ortografía 2/3');
+    const second=await v157Recognize(
+      b.canvas,
+      label+' · columna Jugador · verificación filas '+from+'-'+to,
+      ++pass,'soft',6,15
+    );
+    const list2=v180NameColumnLines(second.text);
+    let chosen=v183ConsensusNameLists([list1,list2],b.count);
+
+    // Sólo bloques dudosos reciben una tercera pasada binarizada/sparse.
+    if(v188BatchNeedsVerification(chosen,b.count)){
+      v126SetImportStatus('OCR por filas V188 · Jugador '+from+'–'+to+' · rescate de letras 3/3');
+      const third=await v157Recognize(
+        b.canvas,
+        label+' · columna Jugador · rescate filas '+from+'-'+to,
+        ++pass,'otsu',11,15
+      );
+      const list3=v180NameColumnLines(third.text);
+      chosen=v183ConsensusNameLists([list1,list2,list3],b.count);
+
+      if(chosen.length!==b.count){
+        const candidates=[chosen,list1,list2,list3].filter(x=>x.length);
+        candidates.sort((a,b2)=>{
+          const da=Math.abs(a.length-b.count),db=Math.abs(b2.length-b.count);
+          if(da!==db)return da-db;
+          const qa=a.reduce((s,n)=>s+v180NameQuality(n),0)/a.length;
+          const qb=b2.reduce((s,n)=>s+v180NameQuality(n),0)/b2.length;
+          return qb-qa;
+        });
+        chosen=candidates[0]||[];
       }
     }
 
+    chosen=chosen.map(v184SafeNameRepair).filter(Boolean);
     if(chosen.length>b.count)chosen=chosen.slice(0,b.count);
     out.push(...chosen);
-
-    if(first.timedOut){
-      /* No iniciar más OCR pesado si un worker ya mostró atasco.
-         Terminamos con lo detectado y dejamos que la columna completa sea
-         evitada; así el botón vuelve a responder en vez de quedarse colgado. */
-      v126SetImportStatus('OCR V188 · una lectura excedió 18 s · se detuvo de forma segura con '+out.length+' nombre(s)');
-      break;
-    }
-    await new Promise(resolve=>setTimeout(resolve,24));
+    await new Promise(resolve=>setTimeout(resolve,18));
   }
 
   return out.join('\n');
@@ -1600,7 +1641,7 @@ function v172KnownTeamAliases(){
   const out=new Set();
   for(const t of registryTeams())if(t?.name)out.add(norm(t.name));
   [
-    'A CENTENO','CENTENO','ATL GALEANA','REAL CERRITO','OKLAHOMA','POPULARES','TAVERA',
+    'A CENTENO','CENTENO','ATL GALEANA','REAL CERRITO','CERRITO','OKLAHOMA','POPULARES','TAVERA',
     'MAZACOTES','TERRICOLAS','OSASUNA','SAN JULIAN','BARZA','POZOS','ALDAMA'
   ].forEach(x=>out.add(norm(x)));
   return [...out].filter(Boolean).sort((a,b)=>b.length-a.length);
@@ -1934,7 +1975,9 @@ function v126ImportSummary(){
   return {total:e.length,approved,rejected,pending,keep,registered:keep+returning,transfer:count('transfer'),returning,fresh,review,missing:(Array.isArray(rosterImport.missing)?rosterImport.missing:[]).length};
 }
 function v126RosterStatusLabel(e){
-  if(e.structureComplete===false)return (e.structureLabel||'Nombre incompleto')+' · regla: 1 nombre + 2 apellidos · corrige antes de aprobar';
+  if(e.structureComplete===false){
+    return 'Nombre corto en la hoja · '+(e.structureLabel||'falta un apellido')+' · revisa y aprueba sólo si así aparece';
+  }
   if(e.status==='keep')return 'Ya registrado · ya está en este equipo';
   if(e.status==='transfer')return 'Ya registrado · posible cambio de equipo · requiere aprobación';
   if(e.status==='return')return 'Ya registrado · posible renovación · requiere aprobación';
@@ -1951,7 +1994,7 @@ function v126RosterResultHtml(){
       '<span class="v172-review-state" aria-hidden="true">'+(decision==='approved'?'✓':decision==='rejected'?'✕':'?')+'</span>'+
       '<span class="v126-person-copy"><b>'+esc(e.name)+'</b><small>'+esc(v126RosterStatusLabel(e))+(e.source?.team&&e.status==='transfer'?' · antes: '+esc(e.source.team):'')+'</small><button type="button" class="v180-correct-name" data-v180-correct-name="'+i+'">✎ Corregir nombre</button></span>'+
       '<span class="v172-review-actions">'+
-        '<button type="button" class="approve '+(decision==='approved'?'active':'')+'" data-v172-approve="'+i+'" aria-label="Aprobar '+esc(e.name)+'" '+(e.structureComplete===false?'disabled title="Completa 1 nombre y 2 apellidos"':'')+'>✓ <em>Aprobar</em></button>'+
+        '<button type="button" class="approve '+(decision==='approved'?'active':'')+'" data-v172-approve="'+i+'" aria-label="Aprobar '+esc(e.name)+'">✓ <em>Aprobar</em></button>'+
         '<button type="button" class="reject '+(decision==='rejected'?'active':'')+'" data-v172-reject="'+i+'" aria-label="Rechazar '+esc(e.name)+'">✕ <em>Rechazar</em></button>'+
       '</span>'+
     '</article>';
@@ -1963,7 +2006,7 @@ function v126RosterResultHtml(){
       '<div><b data-v172-rejected>'+s.rejected+'</b><span>Rechazados ✕</span></div>'+
       '<div><b data-v172-pending>'+s.pending+'</b><span>Por revisar</span></div>'+
     '</div>'+
-    '<div class="v126-auto-info v172-manual-review"><b>Revisión manual obligatoria · 1 nombre + 2 apellidos</b><span>En tablas impresas se respeta exactamente la columna Jugador y no se usan Equipo/G.Total para completar nombres. Si la hoja sólo trae un apellido, se marca para corregir antes de ✓ Aprobar; no se sustituye por otra persona del padrón. Nada se registra, mueve ni renueva automáticamente.</span></div>'+
+    '<div class="v126-auto-info v172-manual-review"><b>Revisión manual obligatoria · objetivo: 1 nombre + 2 apellidos</b><span>La tabla manda. Si la hoja realmente trae sólo un apellido, se conserva así y se marca como nombre corto para que tú decidas ✓ Aprobar o ✕ Rechazar. Nunca se inventa otro apellido desde el padrón ni se mezcla Equipo/G.Total.</span></div>'+
     (s.total<20?'<div class="v157-review-note"><b>Se detectaron '+s.total+' nombres</b><span>Si la imagen tiene más jugadores, abre “Ver / corregir texto detectado” o vuelve a escanear con una foto recta y nítida. OCR Pro vuelve a leer la hoja por bloques superpuestos, columnas y contraste adaptativo para recuperar nombres pequeños.</span></div>':'')+
     '<div class="v126-detected">'+personRows+'</div>'+
     ((Array.isArray(rosterImport.missing)?rosterImport.missing:[]).length?'<div class="v126-missing"><div class="v126-missing-head"><span><b>No aparecen en la lista</b><small>No se borran automáticamente; marca sólo los que realmente salen del equipo.</small></span><button type="button" data-v126-mark-missing>Marcar todos</button></div>'+
@@ -2010,7 +2053,7 @@ function rosterImportHtml(){
     '<div class="v126-file-name">'+esc(rosterImport.fileName||'Ningún archivo seleccionado')+'</div>'+
     '<div class="v162-handwriting v179-auto-detect"><span class="v162-handwriting-check">AI</span><span><b>Detección automática del documento</b><small>Reconoce si parece texto impreso/Word/Arial, pluma/lápiz o mixto y usa sólo las pasadas necesarias. Máximo 5 para evitar bloqueos en Android.</small></span></div>'+
     '<button type="button" class="v126-analyse" data-v126-analyse '+(rosterImport.busy?'disabled':'')+'>'+(rosterImport.busy?'Leyendo lista…':'Detectar y comparar jugadores')+'</button>'+
-    '<p class="v126-status" data-v126-import-status>'+esc(rosterImport.status||'Autodetector activo: aísla Jugador, separa texto pegado y aplica la regla mínima 1 nombre + 2 apellidos. Si falta un apellido lo marca para corregir; no lo inventa desde la base. Nada se registra automáticamente; revisa TODOS los nombres con ✓ o ✕.')+'</p>'+
+    '<p class="v126-status" data-v126-import-status>'+esc(rosterImport.status||'Autodetector V188: lee la tabla por bloques de 5 filas con 2–3 verificaciones, aísla Jugador y no mezcla Equipo/G.Total. Busca 1 nombre + 2 apellidos, pero si la hoja trae sólo uno lo conserva para revisión; nunca inventa otro apellido. Nada se registra automáticamente.')+'</p>'+
     v126RosterResultHtml()+
   '</section>';
 }
@@ -2106,10 +2149,10 @@ function bindRosterImport(root){
     const item=entries[index];if(!item)return;
     if(decision==='approved'){
       const shape=v185NameStructure(item.name);
-      if(!shape.complete){
-        item.structureComplete=false;item.missingSurnames=shape.missingSurnames;item.structureLabel=shape.label;
-        return toast('Falta completar el nombre: se requiere mínimo 1 nombre y 2 apellidos');
-      }
+      item.structureComplete=shape.complete;
+      item.missingSurnames=shape.missingSurnames;
+      item.structureLabel=shape.label;
+      if(!shape.complete)toast('Aprobado como aparece en la hoja · nombre corto revisado manualmente');
     }
     item.decision=decision;item.include=decision==='approved';
     const row=$('[data-v172-review-row="'+index+'"]',root);
@@ -2127,10 +2170,10 @@ function bindRosterImport(root){
     if(value===null)return;
     const corrected=v184SafeNameRepair(v178PlausibleFullName(value)||v157TitleName(v157CleanNameText(value)));
     const shape=v185NameStructure(corrected);
-    if(!corrected||!shape.complete)return toast('Escribe el nombre completo: mínimo 1 nombre y 2 apellidos');
+    if(!corrected||v183ContentTokens(corrected).length<2)return toast('Escribe al menos nombre y apellido tal como aparece en la hoja');
     item.name=shape.clean;item.rawName=shape.clean;item.decision='pending';item.include=false;item.status='review';item.source=null;
-    item.structureComplete=true;item.missingSurnames=0;item.structureLabel='Estructura completa';
-    toast('Nombre corregido · estructura completa · revísalo y apruébalo');renderManager();
+    item.structureComplete=shape.complete;item.missingSurnames=shape.missingSurnames;item.structureLabel=shape.label;
+    toast(shape.complete?'Nombre corregido · revísalo y apruébalo':'Nombre corto guardado como aparece en la hoja · revísalo y apruébalo');renderManager();
   }));
   $('[data-v172-approve]',root).forEach(b=>b.addEventListener('click',e=>{e.preventDefault();e.stopPropagation();reviewDecision(Number(b.dataset.v172Approve),'approved')}));
   $$('[data-v172-reject]',root).forEach(b=>b.addEventListener('click',e=>{e.preventDefault();e.stopPropagation();reviewDecision(Number(b.dataset.v172Reject),'rejected')}));
