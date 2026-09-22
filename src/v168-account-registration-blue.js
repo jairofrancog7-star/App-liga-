@@ -121,12 +121,9 @@ function mount(){
        El registro se abre únicamente desde "Crear una cuenta". */
     $('#v168-profile-account',screen)?.remove();
   }else $('#v168-profile-account',screen)?.remove();
-  if(r==='v38Weather'){
-    if(!$('#v168-weather-account',screen)){
-      const wrap=document.createElement('div');wrap.id='v168-weather-account';wrap.innerHTML=weatherMarkup();screen.appendChild(wrap);
-      $('[data-v168-open-account]',wrap).onclick=()=>window.LJR_V105?.registerAlerts?.();
-    }
-  }else $('#v168-weather-account',screen)?.remove();
+  /* V171: Clima queda como herramienta meteorológica completa.
+     La tarjeta "Mi cuenta / Regístrate" no pertenece a esta pantalla. */
+  $('#v168-weather-account',screen)?.remove();
 }
 let timer=0;const schedule=()=>{clearTimeout(timer);timer=setTimeout(mount,90)};
 window.addEventListener('hashchange',schedule);
