@@ -670,6 +670,38 @@ async function v157Recognize(source,label,pass,mode,psm,totalPasses){
   });
   return {text:result?.data?.text||'',mode,confidence:Number(result?.data?.confidence||0)};
 }
+function v178MergeSweepTexts(parts){
+  const lines=[],seen=[];
+  for(const part of parts){
+    for(let line of String(part?.text||'').split(/\r?\n/)){
+      line=line.replace(/[|¦]+/g,' ').replace(/\s+/g,' ').trim();
+      if(!line)continue;
+      const n=norm(line);
+      if(!n)continue;
+      /* Sólo elimina duplicados casi idénticos causados por el traslape entre
+         franjas. Mantiene nombres distintos aunque compartan apellidos. */
+      if(seen.some(x=>x===n||v124TokenSim(x,n)>.975))continue;
+      seen.push(n);lines.push(line);
+    }
+  }
+  return lines.join('\n');
+}
+async function v178TopToBottomSweep(source,label,startPass,totalPasses){
+  const bands=[
+    [0.00,.18],[0.10,.18],[0.20,.18],[0.30,.18],[0.40,.18],
+    [0.50,.18],[0.60,.18],[0.70,.18],[0.80,.18],[0.88,.12]
+  ];
+  const reads=[];let pass=startPass;
+  for(let i=0;i<bands.length;i++){
+    pass++;
+    const [y,h]=bands[i],crop=await v177CropSource(source,0,y,.999,h);
+    v126SetImportStatus('OCR Pro · barrido arriba → abajo '+(i+1)+'/'+bands.length+' · buscando nombres completos');
+    /* PSM 6 conserva cada franja como bloque de filas. Alternar contraste suave
+       rescata letras finas sin perder apellidos. */
+    reads.push(await v157Recognize(crop,label+' · franja '+(i+1),pass,i%3===1?'soft':'contrast',6,totalPasses));
+  }
+  return {text:v178MergeSweepTexts(reads),pass};
+}
 async function v126OcrImage(source,label='imagen'){
   /* V177 OCR Pro.
      1) Intenta OCR nativo del dispositivo cuando el navegador lo ofrece.
@@ -699,12 +731,20 @@ async function v126OcrImage(source,label='imagen'){
   }
 
   let merged=v162MergeOcrTexts(parts);
-  let foundCount=0;
+  let foundCount=0,orderedSweep='';
   try{foundCount=v126ExtractCandidates(merged).length}catch(_){}
 
-  /* Recuperación inteligente: una hoja de 25+ jugadores suele perder filas cuando
-     toda la página se manda a OCR de una sola vez. Los recortes se traslapan para
-     no partir nombres justo en un borde. */
+  /* V178: cuando la hoja tiene una plantilla larga, hacemos un barrido REAL
+     desde la parte superior hasta la inferior. Cada franja se amplía por separado,
+     así los 20–30 nombres pequeños no compiten dentro de una sola imagen. */
+  if(foundCount<24){
+    const sweep=await v178TopToBottomSweep(source,label,pass,Math.max(maxPasses,pass+10));
+    pass=sweep.pass;orderedSweep=sweep.text;
+    merged=[orderedSweep,v162MergeOcrTexts(parts)].filter(Boolean).join('\n');
+    try{foundCount=v126ExtractCandidates(merged).length}catch(_){}
+  }
+
+  /* Recuperación adicional por zonas/columnas si todavía faltan filas. */
   if(foundCount<24){
     const zones=[
       ['superior',0,0,.999,.39],
@@ -732,14 +772,16 @@ async function v126OcrImage(source,label='imagen'){
     parts.push(await v157Recognize(source,label,pass,'handwriting',6,Math.max(maxPasses,pass)));
   }
 
-  parts.sort((a,b)=>{
+  /* El barrido va primero para conservar el orden visual de la hoja.
+     Las lecturas globales y por columnas sólo complementan nombres faltantes. */
+  const qualityParts=parts.slice().sort((a,b)=>{
     const qa=v157OcrTextQuality(a.text)+(a.confidence||0)*.35;
     const qb=v157OcrTextQuality(b.text)+(b.confidence||0)*.35;
     return qb-qa;
   });
-  merged=v162MergeOcrTexts(parts);
+  merged=[orderedSweep,v162MergeOcrTexts(qualityParts)].filter(Boolean).join('\n');
   try{foundCount=v126ExtractCandidates(merged).length}catch(_){}
-  v126SetImportStatus('OCR Pro terminado · '+foundCount+' nombre(s) candidatos · revisa uno por uno antes de registrar.');
+  v126SetImportStatus('OCR Pro terminado · '+foundCount+' nombre(s) candidatos · lectura de arriba abajo completa · revisa uno por uno antes de registrar.');
   return merged;
 }
 async function v126ReadPdf(file){
@@ -901,6 +943,50 @@ function v172BestKnownFromRow(line,known){
   }
   return best&&bestScore>=.60?{name:best.name,score:Math.min(1,bestScore)}:null;
 }
+function v178PlausibleFullName(value){
+  let clean=v172StripTableColumns(value);
+  clean=String(clean||'')
+    .replace(/^[^A-Za-zÁÉÍÓÚÜÑáéíóúüñ]+/,'')
+    .replace(/[^A-Za-zÁÉÍÓÚÜÑáéíóúüñ'’\-\s]/g,' ')
+    .replace(/\s+/g,' ').trim();
+  if(!clean||clean.length<5||clean.length>92||v126LooksLikeNonPlayerName(clean))return '';
+  const tokens=clean.split(/\s+/).filter(Boolean);
+  const content=tokens.map(v157Upper).filter(t=>!V157_NAME_CONNECTORS.has(t));
+  if(content.length<2||content.length>7)return '';
+  if(content.some(t=>V157_NAME_NOISE.has(t)))return '';
+  if(content.filter(t=>t.length>=2).length<2)return '';
+  const letters=content.join('').replace(/[^A-ZÑ]/g,'').length;
+  if(letters<6)return '';
+  /* En una lista de plantilla no todos los nombres/apellidos están en el
+     diccionario. Si la fila tiene forma humana, consérvala para revisión manual
+     en vez de descartarla y perder jugadores. */
+  return v157TitleName(clean);
+}
+function v178OrderedLineCandidates(raw,known){
+  const out=[],lines=String(raw||'').split(/\r?\n/);
+  const push=(name,score=.42)=>{if(name&&!out.some(x=>v124TokenSim(x.name,name)>.96))out.push({name,score})};
+  for(let i=0;i<lines.length;i++){
+    const original=String(lines[i]||'').trim();
+    if(!original)continue;
+    const numbered=/^\s*(?:NO\.?\s*)?[#Nº°]?\s*\d{1,3}\b/i.test(original);
+    const knownHit=v172BestKnownFromRow(original,known);
+    if(knownHit){push(knownHit.name,knownHit.score);continue}
+    const clean=v172StripTableColumns(original);
+    const best=v157BestNameWindow(clean);
+    if(best.name&&best.score>=.30){push(best.name,Math.max(numbered?.52:.44,best.score));continue}
+    const fallback=v178PlausibleFullName(clean);
+    if(fallback){push(fallback,numbered?.50:.40);continue}
+    /* Une sólo fragmentos cortos consecutivos. Esto recupera nombres completos
+       cuando el OCR parte una misma fila en dos líneas, sin pegar filas normales. */
+    const a=v157CleanNameText(clean),b=v157CleanNameText(lines[i+1]||'');
+    const at=a.split(/\s+/).filter(Boolean),bt=b.split(/\s+/).filter(Boolean);
+    if(at.length>=1&&at.length<=2&&bt.length>=1&&bt.length<=3){
+      const joined=v178PlausibleFullName(a+' '+b);
+      if(joined){push(joined,.41);i++}
+    }
+  }
+  return out;
+}
 function v172NumberedTableCandidates(raw,known){
   const out=[];
   for(const line of String(raw||'').split(/\r?\n/)){
@@ -908,17 +994,24 @@ function v172NumberedTableCandidates(raw,known){
     const knownHit=v172BestKnownFromRow(line,known);
     if(knownHit){out.push(knownHit);continue}
     const clean=v172StripTableColumns(line),best=v157BestNameWindow(clean);
-    if(best.name&&best.score>=.30)out.push({name:best.name,score:Math.max(.50,best.score)});
+    if(best.name&&best.score>=.30){out.push({name:best.name,score:Math.max(.50,best.score)});continue}
+    const fallback=v178PlausibleFullName(clean);
+    if(fallback)out.push({name:fallback,score:.50});
   }
   return out;
 }
 function v126ExtractCandidates(text){
-  const known=v126KnownPeople(),found=new Map(),raw=String(text||''),flat=norm(raw);
+  const known=v126KnownPeople(),found=new Map(),order=[],raw=String(text||''),flat=norm(raw);
   const add=(name,score=0)=>{
     if(v126LooksLikeNonPlayerName(name))return;
     const n=norm(name);if(!n||n.length<5)return;
-    const prev=found.get(n);if(!prev||score>prev.score)found.set(n,{name,score});
+    const prev=found.get(n);
+    if(!prev){found.set(n,{name,score});order.push(n)}
+    else if(score>prev.score)found.set(n,{name,score});
   };
+  /* Prioridad a la lectura real de arriba hacia abajo. No ordenamos por
+     "confianza" porque eso desacomodaba la lista y podía esconder filas. */
+  for(const row of v178OrderedLineCandidates(raw,known))add(row.name,row.score);
   for(const row of v172NumberedTableCandidates(raw,known))add(row.name,row.score);
   for(const p of known){
     const n=norm(p.name);if(n.length>=5&&flat.includes(n))add(p.name,1);
@@ -944,10 +1037,10 @@ function v126ExtractCandidates(text){
       }
     }
   }
-  const ordered=[...found.values()].sort((a,b)=>b.score-a.score),out=[];
-  for(const cand of ordered){
-    if(out.length>=60)break;
-    if(!out.some(o=>v124TokenSim(o.name,cand.name)>.95))out.push(cand);
+  const candidates=order.map(k=>found.get(k)).filter(Boolean),out=[];
+  for(const cand of candidates){
+    if(out.length>=80)break;
+    if(!out.some(o=>v124TokenSim(o.name,cand.name)>.96))out.push(cand);
   }
   return out.map(x=>x.name);
 }
