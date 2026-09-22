@@ -229,15 +229,46 @@
     let sheet=document.querySelector('[data-v131-print-sheet]');
     if(!sheet)sheet=await renderCedula(false);
     if(!sheet)return;
-    document.body.classList.add('v131-print-cedula');
+
+    /* V143: imprime una copia aislada, fuera del layout móvil de la app.
+       Así Android no hereda el ancho angosto de #screen ni crea páginas vacías. */
+    document.getElementById('v143-cedula-print-root')?.remove();
+    const printRoot=document.createElement('div');
+    printRoot.id='v143-cedula-print-root';
+    printRoot.setAttribute('aria-hidden','true');
+
+    const clone=sheet.cloneNode(true);
+    clone.removeAttribute('data-v131-print-sheet');
+    clone.setAttribute('data-v143-print-sheet','');
+    clone.querySelectorAll('[contenteditable]').forEach(n=>n.removeAttribute('contenteditable'));
+    printRoot.appendChild(clone);
+    document.body.appendChild(printRoot);
+
+    document.body.classList.add('v131-print-cedula','v143-print-cedula');
+
+    /* Espera logos/fotos para que el PDF salga completo. */
+    const imgs=[...clone.querySelectorAll('img')];
+    await Promise.all(imgs.map(img=>{
+      if(img.complete)return img.decode?.().catch(()=>{})||Promise.resolve();
+      return new Promise(resolve=>{
+        const done=()=>resolve();
+        img.addEventListener('load',done,{once:true});
+        img.addEventListener('error',done,{once:true});
+        setTimeout(done,1200);
+      });
+    }));
+
     requestAnimationFrame(()=>{
       requestAnimationFrame(()=>{
         window.print();
-        setTimeout(()=>document.body.classList.remove('v131-print-cedula'),5000);
+        setTimeout(cleanup,5000);
       });
     });
   }
-  function cleanup(){document.body.classList.remove('v131-print-cedula')}
+  function cleanup(){
+    document.body.classList.remove('v131-print-cedula','v143-print-cedula');
+    document.getElementById('v143-cedula-print-root')?.remove();
+  }
   window.addEventListener('afterprint',cleanup);
 
   document.addEventListener('click',function(e){
