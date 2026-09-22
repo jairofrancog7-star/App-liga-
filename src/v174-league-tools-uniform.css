@@ -1,0 +1,186 @@
+/* V174 — leagueTools: TODOS los accesos con el mismo botón compacto.
+   Solo afecta #/leagueTools. No cambia rutas ni funciones. */
+
+body[data-app-route="leagueTools"] .v60-tool-page{
+  --lt-card-bg:#0d0c72;
+  --lt-card-border:#25278f;
+  --lt-cyan:#18e0ec;
+}
+
+/* Los accesos principales dejan de ser tarjetas grandes.
+   Se convierten en la misma cuadrícula de 2 columnas que el resto. */
+body[data-app-route="leagueTools"] .v60-tools-featured{
+  display:grid!important;
+  grid-template-columns:repeat(2,minmax(0,1fr))!important;
+  gap:8px!important;
+  margin:0 0 12px!important;
+}
+
+/* Misma geometría para principales, normales, adicionales y WhatsApp. */
+body[data-app-route="leagueTools"] .v60-tools-featured-card,
+body[data-app-route="leagueTools"] .v60-tool-grid > .v60-tool-card,
+body[data-app-route="leagueTools"] .v60-tool-grid > .v100-inline-tool,
+body[data-app-route="leagueTools"] .v60-tool-grid > .v161-wa-tool{
+  width:100%!important;
+  min-width:0!important;
+  min-height:68px!important;
+  height:68px!important;
+  margin:0!important;
+  padding:8px 9px!important;
+  display:grid!important;
+  grid-template-columns:28px minmax(0,1fr)!important;
+  grid-template-rows:1fr!important;
+  align-items:center!important;
+  align-content:center!important;
+  gap:8px!important;
+  border:1px solid var(--lt-card-border)!important;
+  border-radius:11px!important;
+  background:var(--lt-card-bg)!important;
+  color:#fff!important;
+  text-align:left!important;
+  box-shadow:none!important;
+  overflow:hidden!important;
+}
+
+/* Todos los iconos ocupan exactamente el mismo espacio. */
+body[data-app-route="leagueTools"] .v60-tools-featured-icon,
+body[data-app-route="leagueTools"] .v60-tool-card > svg,
+body[data-app-route="leagueTools"] .v100-inline-emoji,
+body[data-app-route="leagueTools"] .v161-wa-icon{
+  width:27px!important;
+  height:27px!important;
+  min-width:27px!important;
+  min-height:27px!important;
+  margin:0!important;
+  padding:0!important;
+  display:grid!important;
+  place-items:center!important;
+  align-self:center!important;
+  border:0!important;
+  border-radius:7px!important;
+  background:transparent!important;
+  color:var(--lt-cyan)!important;
+  line-height:1!important;
+  box-shadow:none!important;
+}
+body[data-app-route="leagueTools"] .v60-tools-featured-icon svg,
+body[data-app-route="leagueTools"] .v60-tool-card > svg{
+  width:25px!important;
+  height:25px!important;
+  min-width:25px!important;
+  stroke:var(--lt-cyan)!important;
+  fill:none!important;
+  stroke-width:1.8!important;
+}
+body[data-app-route="leagueTools"] .v100-inline-emoji{
+  font-size:17px!important;
+}
+body[data-app-route="leagueTools"] .v161-wa-icon{
+  font-size:9px!important;
+  font-weight:950!important;
+  border:1px solid rgba(24,224,236,.34)!important;
+}
+
+/* Copia: misma tipografía y máximo de líneas en todos. */
+body[data-app-route="leagueTools"] .v60-tools-featured-copy,
+body[data-app-route="leagueTools"] .v60-tool-card > span:not(.v100-inline-emoji):not(.v60-tool-icon),
+body[data-app-route="leagueTools"] .v161-wa-tool .v60-tool-copy{
+  min-width:0!important;
+  display:block!important;
+}
+body[data-app-route="leagueTools"] .v60-tools-featured-copy b,
+body[data-app-route="leagueTools"] .v60-tool-card b,
+body[data-app-route="leagueTools"] .v100-inline-tool b,
+body[data-app-route="leagueTools"] .v161-wa-tool b{
+  display:-webkit-box!important;
+  max-width:100%!important;
+  margin:0!important;
+  color:#fff!important;
+  font-size:11.5px!important;
+  line-height:1.08!important;
+  font-weight:800!important;
+  white-space:normal!important;
+  overflow:hidden!important;
+  text-overflow:clip!important;
+  -webkit-box-orient:vertical!important;
+  -webkit-line-clamp:2!important;
+}
+body[data-app-route="leagueTools"] .v60-tools-featured-copy small,
+body[data-app-route="leagueTools"] .v60-tool-card small,
+body[data-app-route="leagueTools"] .v100-inline-tool small,
+body[data-app-route="leagueTools"] .v161-wa-tool small{
+  display:-webkit-box!important;
+  max-width:100%!important;
+  margin:3px 0 0!important;
+  color:#9fa9ce!important;
+  font-size:8.5px!important;
+  line-height:1.1!important;
+  white-space:normal!important;
+  overflow:hidden!important;
+  -webkit-box-orient:vertical!important;
+  -webkit-line-clamp:2!important;
+}
+
+/* Quita flechas solo porque los botones normales no las tienen:
+   así todos tienen exactamente el mismo ancho útil. */
+body[data-app-route="leagueTools"] .v60-tools-featured-card > i,
+body[data-app-route="leagueTools"] .v161-wa-tool > i{
+  display:none!important;
+}
+
+/* La cuadrícula completa conserva exactamente el mismo tamaño. */
+body[data-app-route="leagueTools"] .v60-tool-grid{
+  display:grid!important;
+  grid-template-columns:repeat(2,minmax(0,1fr))!important;
+  gap:8px!important;
+  align-items:stretch!important;
+}
+
+/* Separadores/títulos compactos para que no haya huecos grandes. */
+body[data-app-route="leagueTools"] .v60-tools-all-label{
+  margin:2px 0 8px!important;
+  gap:2px!important;
+}
+body[data-app-route="leagueTools"] .v60-tools-all-label b{
+  font-size:16px!important;
+}
+body[data-app-route="leagueTools"] .v100-inline-tools-title{
+  margin:7px 0 1px!important;
+  padding:9px 4px 6px!important;
+}
+body[data-app-route="leagueTools"] .v100-inline-tools-title strong{
+  font-size:16px!important;
+}
+body[data-app-route="leagueTools"] .v100-inline-tools-title span{
+  font-size:8.5px!important;
+}
+
+/* En pantallas más anchas siguen siendo chicos; solo caben más por fila. */
+@media(min-width:700px){
+  body[data-app-route="leagueTools"] .v60-tools-featured,
+  body[data-app-route="leagueTools"] .v60-tool-grid{
+    grid-template-columns:repeat(3,minmax(0,1fr))!important;
+  }
+}
+@media(max-width:360px){
+  body[data-app-route="leagueTools"] .v60-tools-featured,
+  body[data-app-route="leagueTools"] .v60-tool-grid{
+    gap:6px!important;
+  }
+  body[data-app-route="leagueTools"] .v60-tools-featured-card,
+  body[data-app-route="leagueTools"] .v60-tool-grid > .v60-tool-card{
+    min-height:64px!important;
+    height:64px!important;
+    padding:7px!important;
+    grid-template-columns:25px minmax(0,1fr)!important;
+    gap:6px!important;
+  }
+  body[data-app-route="leagueTools"] .v60-tools-featured-copy b,
+  body[data-app-route="leagueTools"] .v60-tool-card b{
+    font-size:10.8px!important;
+  }
+  body[data-app-route="leagueTools"] .v60-tools-featured-copy small,
+  body[data-app-route="leagueTools"] .v60-tool-card small{
+    font-size:8px!important;
+  }
+}
