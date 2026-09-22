@@ -180,3 +180,179 @@ body[data-app-route="v38Weather"].v66-compact-route .v163-weather-page{
     min-height:280px!important;
   }
 }
+
+
+/* V171 — El asistente meteorológico vive dentro de #/v38Weather, como en la referencia verde.
+   No redirige a otra pantalla y conserva la paleta azul. */
+body[data-app-route="v38Weather"] #v100-weather-extra.v171-weather-inline{
+  width:min(524px,calc(100% - 36px));
+  margin:20px auto 24px!important;
+  padding:20px!important;
+  border:1px solid rgba(37,220,233,.30)!important;
+  border-radius:24px!important;
+  background:
+    radial-gradient(circle at 88% 10%,rgba(37,220,233,.09),transparent 30%),
+    linear-gradient(160deg,#0b126d,#070a50)!important;
+  box-shadow:0 16px 36px rgba(0,0,40,.20);
+}
+body[data-app-route="v38Weather"] #v100-weather-extra .v100-head small{
+  color:#27dce8!important;
+  font-size:11px!important;
+  letter-spacing:.14em!important;
+}
+body[data-app-route="v38Weather"] #v100-weather-extra .v100-head h2{
+  margin-top:7px!important;
+  font-size:28px!important;
+  line-height:1.02!important;
+  letter-spacing:-.03em!important;
+}
+body[data-app-route="v38Weather"] #v100-weather-extra .v100-head p{
+  margin-top:10px!important;
+  color:#aeb7d3!important;
+  font-size:14px!important;
+  line-height:1.45!important;
+}
+body[data-app-route="v38Weather"] #v100-weather-extra .v100-form-grid{
+  display:grid!important;
+  grid-template-columns:1fr!important;
+  gap:12px!important;
+}
+body[data-app-route="v38Weather"] #v100-weather-extra .v100-form-grid label>span{
+  font-size:11px!important;
+  letter-spacing:.06em!important;
+  text-transform:uppercase;
+}
+body[data-app-route="v38Weather"] #v100-weather-extra .v100-form-grid select,
+body[data-app-route="v38Weather"] #v100-weather-extra .v100-form-grid input{
+  min-height:54px!important;
+  border-radius:16px!important;
+  border:1px solid rgba(79,111,221,.40)!important;
+  background:#080d60!important;
+  color:#fff!important;
+  font-size:15px!important;
+}
+body[data-app-route="v38Weather"] #v100-weather-extra .v100-actions{
+  display:grid!important;
+  grid-template-columns:1fr 1fr!important;
+  gap:10px!important;
+}
+body[data-app-route="v38Weather"] #v100-weather-extra .v100-actions .v100-primary{
+  grid-column:1/-1;
+}
+body[data-app-route="v38Weather"] #v100-weather-extra .v100-primary,
+body[data-app-route="v38Weather"] #v100-weather-extra .v100-secondary{
+  min-height:52px!important;
+  border-radius:16px!important;
+  font-size:14px!important;
+}
+body[data-app-route="v38Weather"] #v100-weather-extra .v100-primary{
+  background:linear-gradient(180deg,#1edbe8,#17bfd5)!important;
+  color:#06145e!important;
+}
+body[data-app-route="v38Weather"] #v100-weather-extra .v100-secondary{
+  background:#0b146d!important;
+  border:1px solid rgba(71,102,211,.42)!important;
+}
+body[data-app-route="v38Weather"] #v100-weather-extra .v100-weather-inline-panel{
+  margin-top:14px;
+  padding:14px;
+  border-radius:16px;
+  border:1px solid rgba(37,220,233,.22);
+  background:#070b59;
+}
+body[data-app-route="v38Weather"] #v100-weather-extra .v100-weather-inline-panel>b,
+body[data-app-route="v38Weather"] #v100-weather-extra .v100-weather-inline-panel>small{
+  display:block;
+}
+body[data-app-route="v38Weather"] #v100-weather-extra .v100-weather-inline-panel>b{
+  color:#fff;
+  font-size:16px;
+}
+body[data-app-route="v38Weather"] #v100-weather-extra .v100-weather-inline-panel>small{
+  margin-top:5px;
+  color:#9da8ca;
+  font-size:11px;
+}
+body[data-app-route="v38Weather"] #v100-weather-extra .v100-weather-inline-panel article{
+  margin-top:10px;
+  padding:11px;
+  border-radius:12px;
+  background:#0a1267;
+  border:1px solid rgba(255,255,255,.08);
+}
+body[data-app-route="v38Weather"] #v100-weather-extra .v100-weather-inline-panel article strong,
+body[data-app-route="v38Weather"] #v100-weather-extra .v100-weather-inline-panel article span,
+body[data-app-route="v38Weather"] #v100-weather-extra .v100-weather-inline-panel article em{
+  display:block;
+}
+body[data-app-route="v38Weather"] #v100-weather-extra .v100-weather-inline-panel article strong{
+  color:#fff;
+  font-size:13px;
+}
+body[data-app-route="v38Weather"] #v100-weather-extra .v100-weather-inline-panel article span{
+  margin-top:4px;
+  color:#34dce8;
+  font-size:10px;
+}
+body[data-app-route="v38Weather"] #v100-weather-extra .v100-weather-inline-panel article em{
+  margin-top:4px;
+  color:#aeb7d3;
+  font-size:10px;
+  font-style:normal;
+}
+body[data-app-route="v38Weather"] #v100-weather-extra .v100-weather-result{
+  margin-top:14px!important;
+  padding:16px!important;
+  border-radius:18px!important;
+  background:#060a54!important;
+  border:1px solid rgba(255,255,255,.08);
+}
+body[data-app-route="v38Weather"] #v100-weather-extra .v100-weather-grid{
+  grid-template-columns:repeat(2,minmax(0,1fr))!important;
+  gap:9px!important;
+}
+body[data-app-route="v38Weather"] #v100-weather-extra .v100-weather-grid span{
+  min-height:82px;
+  padding:12px!important;
+  border-radius:14px!important;
+  background:#08115f!important;
+  text-align:left!important;
+}
+body[data-app-route="v38Weather"] #v100-weather-extra .v100-weather-grid b{
+  font-size:18px!important;
+}
+body[data-app-route="v38Weather"] #v100-weather-extra .v100-weather-grid small{
+  margin-top:5px;
+  font-size:10px!important;
+}
+body[data-app-route="v38Weather"] #v100-weather-extra .v100-weather-ops{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:9px;
+  margin-top:14px;
+}
+body[data-app-route="v38Weather"] #v100-weather-extra .v100-weather-ops button{
+  min-height:50px;
+  padding:8px 10px;
+  border:1px solid rgba(112,131,205,.28);
+  border-radius:15px;
+  background:#0a0f61;
+  color:#fff;
+  font:800 12px/1.2 Inter,Roboto,Arial,sans-serif;
+}
+body[data-app-route="v38Weather"] #v100-weather-extra .v100-weather-ops button:disabled{
+  opacity:.45;
+}
+body[data-app-route="v38Weather"] #v168-weather-account{
+  display:none!important;
+}
+
+@media(max-width:390px){
+  body[data-app-route="v38Weather"] #v100-weather-extra.v171-weather-inline{
+    width:calc(100% - 30px);
+    padding:17px!important;
+  }
+  body[data-app-route="v38Weather"] #v100-weather-extra .v100-head h2{font-size:25px!important}
+  body[data-app-route="v38Weather"] #v100-weather-extra .v100-actions{grid-template-columns:1fr!important}
+  body[data-app-route="v38Weather"] #v100-weather-extra .v100-actions .v100-primary{grid-column:auto}
+}
