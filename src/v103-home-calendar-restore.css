@@ -1143,3 +1143,55 @@
     font-size:11px!important;
   }
 }
+
+
+/* V118 — evita que "Calendario" se corte por el borde derecho en Home.
+   No cambia la tabla ni los partidos; sólo corrige el encabezado. */
+@media(max-width:1023px){
+  body[data-app-route="home"] .v114-upcoming-slot .v103-upcoming-head{
+    width:calc(100% - 20px)!important;
+    max-width:100%!important;
+    margin:0 10px 13px!important;
+    padding:0 2px!important;
+    box-sizing:border-box!important;
+    overflow:visible!important;
+  }
+
+  body[data-app-route="home"] .v114-upcoming-slot .v103-upcoming-head h2{
+    min-width:0!important;
+    max-width:calc(100% - 100px)!important;
+    overflow:visible!important;
+  }
+
+  body[data-app-route="home"] .v114-upcoming-slot .v103-upcoming-head button{
+    justify-self:end!important;
+    min-width:86px!important;
+    max-width:92px!important;
+    padding:4px 0!important;
+    margin:0!important;
+    text-align:right!important;
+    overflow:visible!important;
+    white-space:nowrap!important;
+    box-sizing:border-box!important;
+  }
+}
+
+@media(max-width:430px){
+  body[data-app-route="home"] .v114-upcoming-slot .v103-upcoming-head{
+    width:calc(100% - 16px)!important;
+    margin-left:8px!important;
+    margin-right:8px!important;
+    padding-right:3px!important;
+  }
+
+  body[data-app-route="home"] .v114-upcoming-slot .v103-upcoming-head h2{
+    max-width:calc(100% - 88px)!important;
+    font-size:21px!important;
+  }
+
+  body[data-app-route="home"] .v114-upcoming-slot .v103-upcoming-head button{
+    min-width:80px!important;
+    max-width:84px!important;
+    font-size:11px!important;
+  }
+}
