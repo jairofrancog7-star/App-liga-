@@ -836,7 +836,7 @@ async function v180DetectPrintedTable(source){
   }catch(_){return null}
 }
 function v180NameColumnLines(text){
-  const out=[];
+  const out=[],known=v126KnownPeople();
   for(let line of String(text||'').split(/\r?\n/)){
     line=line.replace(/[|¦]+/g,' ').replace(/\s+/g,' ').trim();
     if(!line)continue;
@@ -844,14 +844,24 @@ function v180NameColumnLines(text){
     if(!line)continue;
     const n=norm(line);
     if(!n||/^(jugador|nombre|nombres|equipo|g total|total)$/.test(n))continue;
-    let candidate=v178PlausibleFullName(line);
+
+    let clean=v182RepairLexiconName(line);
+    const repaired=v182KnownNameRepair(clean,known);
+    let candidate=repaired?.name||'';
+    if(!candidate)candidate=v178PlausibleFullName(clean);
     if(!candidate){
-      const best=v157BestNameWindow(line);
+      const best=v157BestNameWindow(clean);
       if(best.name&&best.score>=.34)candidate=best.name;
     }
+    candidate=v182RepairLexiconName(candidate);
     if(!candidate||v126LooksLikeNonPlayerName(candidate))continue;
     const key=norm(candidate);
-    if(!out.some(x=>norm(x)===key||v124TokenSim(norm(x),key)>.975))out.push(candidate);
+    if(!out.some(x=>{
+      const xn=norm(x),sim=v124TokenSim(xn,key);
+      const a=xn.split(' ').filter(w=>w.length>=3),b=key.split(' ').filter(w=>w.length>=3);
+      const shared=a.filter(w=>b.includes(w)).length;
+      return xn===key||sim>.94||(sim>.88&&shared>=2);
+    }))out.push(candidate);
   }
   return out;
 }
@@ -864,72 +874,106 @@ function v180NameQuality(name){
   q-=up.filter(t=>/^[BCDFGHJKLMNPQRSTVWXYZ]{4,}$/.test(t)).length*.6;
   return q;
 }
+function v182NameSetQuality(names,target=0){
+  const list=Array.isArray(names)?names:[];
+  if(!list.length)return {avg:0,bad:99,coverage:0,good:false};
+  const qs=list.map(v180NameQuality),avg=qs.reduce((a,b)=>a+b,0)/qs.length,bad=qs.filter(x=>x<1.25).length;
+  const coverage=target?list.length/Math.max(1,target):1;
+  const countGood=target?list.length>=Math.max(6,Math.floor(target*.88)):list.length>=14;
+  const good=countGood&&avg>=2.05&&bad<=Math.max(1,Math.floor(list.length*.12));
+  return {avg,bad,coverage,good};
+}
 function v180BestNameColumnText(parts,target=0){
+  const known=v126KnownPeople();
   const choices=(parts||[]).map(p=>{
-    const names=v180NameColumnLines(p?.text||'');
+    let names=v180NameColumnLines(p?.text||'');
+    names=names.map(n=>v182KnownNameRepair(n,known)?.name||v182RepairLexiconName(n)).filter(Boolean);
+    const quality=v182NameSetQuality(names,target);
     let score=names.reduce((s,n)=>s+v180NameQuality(n),0);
-    if(target)score-=Math.abs(names.length-target)*3.5;
-    score+=(Number(p?.confidence||0)/100)*2;
-    return {names,score,confidence:Number(p?.confidence||0)};
+    if(target)score-=Math.abs(names.length-target)*3.8;
+    score+=(Number(p?.confidence||0)/100)*1.5;
+    score-=quality.bad*1.4;
+    return {names,score,confidence:Number(p?.confidence||0),quality};
   }).filter(x=>x.names.length);
   if(!choices.length)return '';
   choices.sort((a,b)=>b.score-a.score);
-  let best=choices[0];
+  let best={...choices[0],names:[...choices[0].names]};
 
-  /* Si dos lecturas tienen la misma cantidad de filas, elegimos por fila la
-     escritura más verosímil. Esto corrige casos como “E Jandro” vs “Alejandro”
-     sin mezclar filas ni inventar personas adicionales. */
-  const peer=choices.find(x=>x!==best&&x.names.length===best.names.length);
-  if(peer){
-    const merged=[];
-    for(let i=0;i<best.names.length;i++){
+  for(const peer of choices.slice(1,4)){
+    if(Math.abs(peer.names.length-best.names.length)>1)continue;
+    const limit=Math.min(best.names.length,peer.names.length);
+    for(let i=0;i<limit;i++){
       const a=best.names[i],b=peer.names[i],sim=v124TokenSim(norm(a),norm(b));
-      if(sim>=.52){
+      if(sim>=.50){
+        const ra=v182KnownNameRepair(a,known),rb=v182KnownNameRepair(b,known);
+        if(rb&&!ra){best.names[i]=rb.name;continue}
+        if(ra&&!rb){best.names[i]=ra.name;continue}
         const qa=v180NameQuality(a),qb=v180NameQuality(b);
-        merged.push(qb>qa+.08?b:a);
-      }else merged.push(a);
+        if(qb>qa+.10)best.names[i]=b;
+      }
     }
-    best={...best,names:merged};
   }
-  if(target&&best.names.length>target)best.names=best.names.slice(0,target);
-  return best.names.join('\n');
+
+  const dedup=[];
+  for(const n0 of best.names){
+    const n=v182KnownNameRepair(n0,known)?.name||v182RepairLexiconName(n0);
+    if(!n)continue;
+    const nn=norm(n),tokens=nn.split(' ').filter(w=>w.length>=3);
+    if(dedup.some(x=>{
+      const xn=norm(x),sim=v124TokenSim(xn,nn),xt=xn.split(' ').filter(w=>w.length>=3);
+      const shared=tokens.filter(w=>xt.includes(w)).length;
+      return xn===nn||sim>.94||(sim>.89&&shared>=2);
+    }))continue;
+    dedup.push(n);
+  }
+  if(target&&dedup.length>target)dedup.length=target;
+  return dedup.join('\n');
 }
 async function v180ReadPrintedNameColumn(source,label,layout){
   const xPad=Math.min(.01,layout.width*.02);
   const crop=await v177CropSource(source,layout.x0+xPad,.10,Math.max(.05,layout.width-xPad*2),.895);
   const target=layout.rows||0,parts=[];
 
-  v126SetImportStatus('Tabla detectada · leyendo columna “Jugador” · lectura rápida');
-  const first=await v157Recognize(crop,label+' · columna Jugador',1,'contrast',6,1);
+  /* V182: si Android/Chrome ofrece TextDetector, úsalo como segunda opinión
+     gratuita antes de gastar otra pasada Tesseract. */
+  const nativeText=await v177NativeText(crop);
+  if(nativeText)parts.push({text:nativeText,mode:'native-column',confidence:94});
+
+  v126SetImportStatus('OCR Preciso · columna “Jugador” · lectura principal');
+  const first=await v157Recognize(crop,label+' · columna Jugador',1,'contrast',6,3);
   parts.push(first);
 
-  const firstNames=v180NameColumnLines(first.text||'');
-  const enough=target
-    ? firstNames.length>=Math.max(8,Math.floor(target*.72))
-    : firstNames.length>=18;
-
-  /* Si ya recuperó la mayoría, no ejecutamos una segunda lectura completa.
-     Esa pasada 2 era la que se quedaba trabada en móviles. */
-  if(enough){
-    v126SetImportStatus('Tabla detectada · '+firstNames.length+(target?' de ~'+target:'')+' nombres · terminando…');
-    return v180BestNameColumnText(parts,target);
+  let bestText=v180BestNameColumnText(parts,target),bestNames=v180NameColumnLines(bestText),quality=v182NameSetQuality(bestNames,target);
+  if(quality.good){
+    v126SetImportStatus('OCR Preciso · '+bestNames.length+(target?' de ~'+target:'')+' nombres · calidad alta · revisión manual');
+    return bestText;
   }
 
-  /* Si faltan filas, recupera por dos mitades pequeñas y traslapadas. */
+  /* Si la cantidad parece correcta pero hay nombres deformados, no nos detenemos:
+     hacemos una segunda lectura con contraste suave y elegimos por consenso. */
+  v126SetImportStatus('OCR Preciso · corrigiendo nombres dudosos · lectura 2/3');
+  parts.push(await v157Recognize(crop,label+' · columna Jugador · verificación',2,'soft',6,3));
+  await new Promise(resolve=>setTimeout(resolve,18));
+  bestText=v180BestNameColumnText(parts,target);bestNames=v180NameColumnLines(bestText);quality=v182NameSetQuality(bestNames,target);
+  if(quality.good){
+    v126SetImportStatus('OCR Preciso · '+bestNames.length+(target?' de ~'+target:'')+' nombres · consenso verificado · revisión manual');
+    return bestText;
+  }
+
+  /* Último rescate: dos mitades pequeñas. Evita el canvas gigante que antes
+     congelaba Chrome Android y recupera apellidos o renglones tenues. */
   const halves=[['parte superior',0,.56],['parte inferior',.44,.56]];
   for(let i=0;i<halves.length;i++){
-    const [name,y,h]=halves[i];
-    const half=await v177CropSource(crop,0,y,.999,h);
-    v126SetImportStatus('Tabla detectada · recuperando '+name+' · '+(i+1)+'/2');
-    parts.push(await v157Recognize(half,label+' · columna Jugador · '+name,i+2,i?'soft':'contrast',6,3));
+    const [name,y,h]=halves[i],half=await v177CropSource(crop,0,y,.999,h);
+    v126SetImportStatus('OCR Preciso · '+name+' · rescate '+(i+1)+'/2');
+    parts.push(await v157Recognize(half,label+' · columna Jugador · '+name,3+i,i?'soft':'contrast',6,4));
     await new Promise(resolve=>setTimeout(resolve,12));
   }
 
-  const merged=v178MergeSweepTexts(parts),names=v180NameColumnLines(merged);
-  if(names.length){
-    return names.slice(0,target&&names.length>target?target:names.length).join('\n');
-  }
-  return v180BestNameColumnText(parts,target);
+  bestText=v180BestNameColumnText(parts,target);
+  bestNames=v180NameColumnLines(bestText);
+  v126SetImportStatus('OCR Preciso terminado · '+bestNames.length+(target?' de ~'+target:'')+' nombres · revisa ✓/✕ antes de aplicar');
+  return bestText;
 }
 async function v179TwoBandSweep(source,label,pass,total,kind){
   const parts=[];
@@ -945,7 +989,10 @@ async function v179TwoBandSweep(source,label,pass,total,kind){
   return {parts,pass};
 }
 async function v126OcrImage(source,label='imagen'){
-  /* V180 — primero detecta estructura. Si hay tabla impresa, NO lee toda la
+  /* V182 — precisión de nombres: detecta tabla, aísla Jugador, combina TextDetector
+     + Tesseract con consenso, corrige ruido de Equipo y contrasta contra jugadores
+     ya registrados sin registrar nada automáticamente.
+     Si hay tabla impresa, NO lee toda la
      hoja: aísla sólo la columna Jugador y hace 2 pasadas. Esto evita que Equipo,
      goles y encabezados terminen pegados al nombre y evita 25 filas -> 37 nombres. */
   const type=await v179DetectImageKind(source);
@@ -961,7 +1008,7 @@ async function v126OcrImage(source,label='imagen'){
       const namesOnly=await v180ReadPrintedNameColumn(source,label,table);
       const count=v180NameColumnLines(namesOnly).length;
       if(count>=Math.max(3,Math.floor((table.rows||count)*.55))){
-        v126SetImportStatus('Tabla impresa detectada · columna Jugador aislada · '+count+(table.rows?' de ~'+table.rows:'')+' nombres · NO se registró ninguno.');
+        v126SetImportStatus('Tabla impresa detectada · OCR Preciso de nombres · '+count+(table.rows?' de ~'+table.rows:'')+' nombres · NO se registró ninguno.');
         return namesOnly;
       }
       /* Si la tabla es atípica y la columna aislada no dio suficiente texto,
@@ -1133,30 +1180,113 @@ function v172KnownTeamAliases(){
   const out=new Set();
   for(const t of registryTeams())if(t?.name)out.add(norm(t.name));
   [
-    'A CENTENO','ATL GALEANA','REAL CERRITO','OKLAHOMA','POPULARES','TAVERA',
+    'A CENTENO','CENTENO','ATL GALEANA','REAL CERRITO','OKLAHOMA','POPULARES','TAVERA',
     'MAZACOTES','TERRICOLAS','OSASUNA','SAN JULIAN','BARZA','POZOS','ALDAMA'
   ].forEach(x=>out.add(norm(x)));
   return [...out].filter(Boolean).sort((a,b)=>b.length-a.length);
+}
+function v182Compact(value){return norm(value).replace(/\s+/g,'')}
+function v182StripTeamSuffix(value){
+  let s=String(value||'').replace(/[|¦]+/g,' ').replace(/\s+/g,' ').trim();
+  if(!s)return '';
+  let words=s.split(/\s+/).filter(Boolean);
+  const teams=v172KnownTeamAliases();
+  for(let round=0;round<2;round++){
+    let removed=false;
+    for(const team of teams){
+      const tc=v182Compact(team);if(tc.length<4)continue;
+      for(let k=Math.min(4,words.length-1);k>=1;k--){
+        const tail=words.slice(-k).join(' '),compact=v182Compact(tail);
+        if(!compact)continue;
+        const maxLen=Math.max(compact.length,tc.length),dist=v124Levenshtein(compact,tc);
+        const fuzzy=maxLen>=6&&dist<=1;
+        if(compact===tc||fuzzy){
+          words=words.slice(0,-k);removed=true;break;
+        }
+      }
+      if(removed)break;
+    }
+    if(!removed)break;
+  }
+  return words.join(' ');
+}
+function v182ClosestLexiconToken(token,set){
+  const raw=v157Upper(token).replace(/[^A-ZÑ]/g,'');
+  if(!raw||raw.length<4||set.has(raw))return token;
+  let best='',bestD=99,second=99;
+  for(const w of set){
+    if(Math.abs(w.length-raw.length)>2)continue;
+    const d=v124Levenshtein(raw,w);
+    if(d<bestD){second=bestD;bestD=d;best=w}
+    else if(d<second)second=d;
+  }
+  const allowed=raw.length>=8?2:1;
+  if(best&&bestD<=allowed&&second>bestD){
+    return v157TitleName(best);
+  }
+  return token;
+}
+function v182RepairLexiconName(value){
+  let clean=v157CleanNameText(v182StripTeamSuffix(value))
+    .replace(/^[^A-Za-zÁÉÍÓÚÜÑáéíóúüñ]+/,'')
+    .replace(/[^A-Za-zÁÉÍÓÚÜÑáéíóúüñ'’\-\s]/g,' ')
+    .replace(/\s+/g,' ').trim();
+  if(!clean)return '';
+  let tokens=clean.split(/\s+/).filter(Boolean);
+  while(tokens.length>=3&&v157Upper(tokens[0]).replace(/[^A-ZÑ]/g,'').length<=1)tokens.shift();
+  tokens=tokens.map((t,i)=>{
+    const u=v157Upper(t);
+    if(V157_NAME_CONNECTORS.has(u))return t.toLocaleLowerCase('es-MX');
+    if(i===0){
+      const g=v182ClosestLexiconToken(t,V157_MX_GIVEN);
+      if(v157Upper(g)!==u)return g;
+    }
+    return v182ClosestLexiconToken(t,V157_MX_SURNAME);
+  });
+  return v157TitleName(tokens.join(' '));
+}
+function v182KnownNameRepair(value,known=v126KnownPeople()){
+  const clean=v182RepairLexiconName(value),cn=norm(clean);
+  if(!cn)return null;
+  const ct=cn.split(' ').filter(w=>w.length>=2&&!['de','del','la','las','los','y'].includes(w));
+  const unique=new Map();
+  for(const p of (known||[])){
+    const pn=norm(p?.name);if(pn&&!unique.has(pn))unique.set(pn,p);
+  }
+  let best=null,bestScore=-1,second=-1,bestExact=0,bestSim=0;
+  for(const p of unique.values()){
+    const pn=norm(p.name),pt=pn.split(' ').filter(w=>w.length>=2&&!['de','del','la','las','los','y'].includes(w));
+    if(!pt.length)continue;
+    const sim=v124TokenSim(cn,pn);
+    const exact=ct.filter(w=>pt.includes(w)).length;
+    const fuzzy=ct.length?ct.reduce((sum,w)=>sum+Math.max(0,...pt.map(t=>v124TokenSim(w,t))),0)/ct.length:0;
+    const first=ct[0]&&pt[0]?v124TokenSim(ct[0],pt[0]):0;
+    const last=ct.at(-1)&&pt.includes(ct.at(-1))?1:0;
+    let score=sim*.58+fuzzy*.22+Math.min(3,exact)*.055+first*.06+last*.035;
+    if(exact>=2)score+=.10;
+    if(exact>=3)score+=.08;
+    if(score>bestScore){second=bestScore;bestScore=score;best=p;bestExact=exact;bestSim=sim}
+    else if(score>second)second=score;
+  }
+  if(!best)return null;
+  const margin=bestScore-second;
+  const safe=(bestExact>=3&&bestScore>=.67&&margin>=.025)||
+             (bestExact>=2&&bestScore>=.72&&margin>=.04)||
+             (bestSim>=.86&&bestScore>=.78&&margin>=.035);
+  return safe?{name:best.name,record:best,score:Math.min(1,bestScore),raw:clean}:null;
 }
 function v172StripTableColumns(line){
   let s=String(line||'').replace(/[|¦]+/g,' ').replace(/\s+/g,' ').trim();
   s=s.replace(/^\s*(?:NO\.?\s*)?[#Nº°]?\s*\d{1,3}\s*[.)\-:]?\s*/i,'');
   s=s.replace(/\s+\d{1,3}\s*$/,'');
-  const n=norm(s),teams=v172KnownTeamAliases();
-  let cut=-1;
-  for(const team of teams){
-    const at=n.lastIndexOf(team);
-    if(at>3&&(cut<0||at<cut))cut=at;
-  }
-  if(cut>0){
-    const words=s.split(/\s+/),nw=norm(s).split(/\s+/),before=n.slice(0,cut).trim().split(/\s+/).filter(Boolean).length;
-    if(before>=2)s=words.slice(0,before).join(' ');
-  }
+  s=v182StripTeamSuffix(s);
   return v157CleanNameText(s);
 }
 function v172BestKnownFromRow(line,known){
-  const body=norm(v172StripTableColumns(line)||line);
+  const clean=v172StripTableColumns(line)||line,body=norm(clean);
   if(!body)return null;
+  const repaired=v182KnownNameRepair(clean,known);
+  if(repaired)return {name:repaired.name,score:repaired.score};
   let best=null,bestScore=0;
   for(const p of known){
     const pn=norm(p.name);if(!pn)continue;
@@ -1166,7 +1296,7 @@ function v172BestKnownFromRow(line,known){
     if(body.includes(pn))score=1;
     if(score>bestScore){bestScore=score;best=p}
   }
-  const minScore=(rosterDetectedKind==='printed-table'||rosterDetectedKind==='printed')?.90:.60;
+  const minScore=(rosterDetectedKind==='printed-table'||rosterDetectedKind==='printed')?.86:.60;
   return best&&bestScore>=minScore?{name:best.name,score:Math.min(1,bestScore)}:null;
 }
 function v178PlausibleFullName(value){
@@ -1280,13 +1410,18 @@ function v126ExtractCandidates(text){
 }
 function v126BestKnown(name,team=''){
   const n=norm(name),target=norm(team),known=v126KnownPeople();
+  const repaired=v182KnownNameRepair(name,known);
+  if(repaired){
+    const sameTeam=!target||norm(repaired.record?.team)===target;
+    return {record:repaired.record,score:Math.min(1,repaired.score+(sameTeam?.025:0))};
+  }
   let best=null,score=0;
   for(const r of known){
     let s=v124TokenSim(n,r.name);
     if(target&&norm(r.team)===target)s+=.035;
     if(s>score){score=s;best=r}
   }
-  const minScore=rosterDetectedKind==='printed-table'?.93:(rosterDetectedKind==='printed'?.89:.80);
+  const minScore=rosterDetectedKind==='printed-table'?.88:(rosterDetectedKind==='printed'?.86:.80);
   return score>=minScore?{record:best,score}:null;
 }
 function v126AutoRegisterNewEntries(){
