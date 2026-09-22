@@ -275,3 +275,73 @@ body[data-app-route="credentialBuilder"] .v124-head p{
 .v161-record-meta{display:grid;grid-template-columns:1fr 1fr 1fr;gap:5px;margin-top:8px;padding-top:8px;border-top:1px solid rgba(255,255,255,.07)}
 .v161-record-meta span{display:grid;gap:2px;min-width:0;font-size:7.5px;color:#b8c5e3;overflow-wrap:anywhere}.v161-record-meta span b{font-size:7px;color:#5ee5f0;text-transform:uppercase;letter-spacing:.05em}
 @media(max-width:390px){.v161-filter-grid{grid-template-columns:1fr}.v161-record-meta{grid-template-columns:1fr 1fr}.v161-record-meta span:last-child{grid-column:1/-1}}
+
+
+/* V172 — revisión manual OCR: ningún jugador se registra hasta aprobarlo. */
+.v172-manual-review{
+  background:#073a5b!important;
+  border-color:rgba(62,225,238,.45)!important;
+}
+.v172-manual-review b{color:#65edf5!important}
+.v172-review-summary div:nth-child(2) b{color:#5cf0d8!important}
+.v172-review-summary div:nth-child(3) b{color:#ff8097!important}
+.v172-review-summary div:nth-child(4) b{color:#ffd576!important}
+.v172-review-person{
+  display:grid!important;
+  grid-template-columns:28px minmax(0,1fr)!important;
+  gap:9px!important;
+  align-items:center!important;
+  padding:12px!important;
+  border:1px solid rgba(255,255,255,.12)!important;
+  border-radius:14px!important;
+  background:#08136f!important;
+}
+.v172-review-person.approved{
+  border-color:rgba(76,235,207,.58)!important;
+  background:#08305f!important;
+}
+.v172-review-person.rejected{
+  border-color:rgba(255,103,132,.50)!important;
+  background:#261449!important;
+  opacity:.82;
+}
+.v172-review-state{
+  width:26px;height:26px;border-radius:50%;
+  display:grid;place-items:center;
+  background:#11258a;color:#9fb3e5;
+  font-size:14px;font-weight:1000;
+}
+.v172-review-person.approved .v172-review-state{background:#42dbc2;color:#032a3d}
+.v172-review-person.rejected .v172-review-state{background:#ff6f88;color:#351020}
+.v172-review-actions{
+  grid-column:2;
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:8px;
+  margin-top:2px;
+}
+.v172-review-actions button{
+  min-height:40px;
+  border-radius:11px;
+  border:1px solid rgba(255,255,255,.15);
+  background:#0c1a78;
+  color:#fff;
+  font:900 10px/1 Inter,Roboto,Arial,sans-serif;
+  touch-action:manipulation;
+}
+.v172-review-actions button em{font-style:normal}
+.v172-review-actions .approve{border-color:rgba(76,235,207,.34)}
+.v172-review-actions .reject{border-color:rgba(255,103,132,.34)}
+.v172-review-actions .approve.active{background:#27d5ba;color:#032a3d;border-color:#65f0db}
+.v172-review-actions .reject.active{background:#e85472;color:#fff;border-color:#ff8ea3}
+.v126-apply:disabled{
+  opacity:.48!important;
+  filter:saturate(.6);
+  cursor:not-allowed!important;
+}
+@media(max-width:390px){
+  .v172-review-person{grid-template-columns:24px minmax(0,1fr)!important;padding:10px!important}
+  .v172-review-state{width:23px;height:23px;font-size:12px}
+  .v172-review-actions{grid-template-columns:1fr 1fr;gap:6px}
+  .v172-review-actions button{min-height:38px;font-size:9px}
+}
