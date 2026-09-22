@@ -4,7 +4,20 @@
 'use strict';
 
 const BASE='https://raw.githubusercontent.com/jairofrancog7-star/App-liga-/main/assets/history/archive-v120/';
+const BASE132='https://raw.githubusercontent.com/jairofrancog7-star/App-liga-/main/assets/history/archive-v132/';
+const BASE119='https://raw.githubusercontent.com/jairofrancog7-star/App-liga-/main/assets/history/archive-v119/';
 const EXACT=[
+  {need:['la canchita deportes','07 jun 2026'],src:BASE132+'canchita-deportes-campeon-segunda-2026.jpg',pos:'center 45%'},
+  {need:['franco fc','24 may 2026'],src:BASE132+'franco-fc-campeon-de-campeones-2026.jpg',pos:'center 44%'},
+  {need:['la esperanza','23 may 2026'],src:BASE132+'la-esperanza-campeon-23-mayo-2026.jpg',pos:'center 44%'},
+  {need:['franco fc','10 may 2026'],src:BASE132+'franco-fc-campeon-intermedia-2026.jpg',pos:'center 45%'},
+  {need:['la esperanza','10 may 2026'],src:BASE132+'la-esperanza-subcampeon-intermedia-2026.jpg',pos:'center 45%'},
+  {need:['linces','15 mar 2026'],src:BASE132+'linces-campeon-primera-2026.jpg',pos:'center 45%'},
+  {need:['galacticos','15 mar 2026'],src:BASE132+'galacticos-subcampeon-primera-2026.jpg',pos:'center 45%'},
+  {need:['salvajes','20 dic 2025'],src:BASE132+'salvajes-campeon-copa-2025.jpg',pos:'center 42%'},
+  {need:['juventus','20 sep 2025'],src:BASE132+'juventus-campeon-liga-veteranos-35-2025.jpg',pos:'center 43%'},
+  {need:['la huerta de cuenda','29 jun 2025'],src:BASE119+'la-huerta-finalista-2025.jpg',pos:'center 43%'},
+  {need:['tavera fc','29 jun 2025'],src:BASE119+'tavera-finalista-2025.jpg',pos:'center 43%'},
   {need:['magisterio','09 jul 2016'],src:BASE+'magisterio-campeon-copa-2016.jpg',pos:'center 42%'},
   {need:['malvinas','28 feb 2016'],src:BASE+'malvinas-campeon-campeones-intermedia-2016.jpg',pos:'center 42%'},
   {need:['tecos','campe'],src:BASE+'tecos-campeon-historico.jpg',pos:'center 46%'},
@@ -13,7 +26,7 @@ const EXACT=[
   {need:['boavista','12 abr 2025'],src:BASE+'boavista-fc-campeon-2025.jpg',pos:'center 42%'},
   {need:['galacticos','08 jun 2025'],src:BASE+'galacticos-pozos-campeon-copa-2025.jpg',pos:'center 40%'},
   {need:['herreras','09 feb 2025'],src:BASE+'herreras-fc-campeon-relampago-intermedia-2025.jpg',pos:'center 42%'},
-  {need:['juventus','20 sep 2025'],src:BASE+'juventus-campeon-liga-veteranos-35-2025.jpg',pos:'center 44%'},
+  
   {need:['deportivo cg','19 sep 2026'],src:BASE+'deportivo-cg-campeon-liga-2025-2026.jpg',pos:'center 42%'},
   {need:['cerrito de gasca','19 sep 2026'],src:BASE+'deportivo-cg-campeon-liga-2025-2026.jpg',pos:'center 42%'},
   {need:['oklahoma city','campe'],src:BASE+'oklahoma-city-campeon.jpg',pos:'center 44%'}
