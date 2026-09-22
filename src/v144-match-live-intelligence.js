@@ -265,8 +265,12 @@ async function poll(c,s){
 }
 function startPoll(){
   clearInterval(pollTimer);pollTimer=0;
-  const c=ctx();if(!c)return;const s=load(c);if(!s.source.feedUrl)return;
-  poll(c,s);pollTimer=setInterval(()=>{const cc=ctx();if(cc)poll(cc,load(cc))},12000);
+  const c=ctx();if(!c)return;const s=load(c),u=String(s.source.feedUrl||'').trim();if(!u)return;
+  /* V145 maneja feeds persistentes como WebSocket/SSE. */
+  if(/^wss?:\/\//i.test(u)||/^sse\+/i.test(u)||/[?&]transport=sse(?:&|$)/i.test(u))return;
+  poll(c,s);
+  /* Las apps deportivas refrescan el feed con baja latencia; para HTTP usamos 5 s. */
+  pollTimer=setInterval(()=>{const cc=ctx();if(cc)poll(cc,load(cc))},5000);
 }
 function renderSig(c,s){
   const x=counters(s);
