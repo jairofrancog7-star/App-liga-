@@ -241,6 +241,15 @@ document.addEventListener('click',async e=>{
  if(route()==='teamDetail')return;
  if(!(e.target instanceof Element))return;
 
+ /* V145 — Registro/Credencial:
+    los nombres y escudos del selector de equipo son controles del formulario,
+    NO accesos al perfil ni a “Comparar equipos”. Este listener global V42
+    era el que interceptaba el toque antes de que V132 pudiera seleccionar. */
+ if(route()==='credentialBuilder'||
+    e.target.closest('[data-v132-layer],[data-v132-open],[data-v64-cred-team],.v132-team-picker,.v132-team-row')){
+   return;
+ }
+
  /* V107 — no interceptar controles del directorio de Jugadores.
     Los botones de categoría/equipo son filtros, no accesos a Comparar equipos.
     También dejamos que las filas de jugador conserven su acción propia. */
