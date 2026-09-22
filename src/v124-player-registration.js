@@ -835,10 +835,11 @@ function v124Hamming(a,b){
 }
 function v124BadOcrName(name){
   const n=norm(name);if(!n||n.length<4||n.length>70)return true;
-  if(/instituto|electoral|credencial|votar|fecha|nacim|domicilio|curp|clave|seccion|vigencia|municipio|dependencia|registro/.test(n))return true;
-  const words=n.split(' ').filter(Boolean),shorts=words.filter(w=>w.length<=2).length;
+  if(/instituto|nacional|electoral|credencial|votar|mexico|mexicanos|fecha|nacim|domicilio|curp|clave|seccion|vigencia|emision|expedicion|municipio|localidad|poblacion|entidad|estado|sexo|dependencia|registro|calle|colonia|codigo|postal|cero|ano/.test(n))return true;
+  const words=n.split(' ').filter(Boolean),connectors=new Set(['de','del','la','las','los','y']);
+  const content=words.filter(w=>!connectors.has(w)),shorts=content.filter(w=>w.length<=2).length;
   const vowels=(n.match(/[aeiou]/g)||[]).length;
-  if(words.length<2||words.length>6||shorts/words.length>.34||vowels<2)return true;
+  if(content.length<2||content.length>5||shorts/Math.max(1,content.length)>.25||vowels<2)return true;
   return false;
 }
 function v124Levenshtein(a,b){
@@ -919,23 +920,49 @@ function v124RawCurpCandidate(text){
   }
   return out;
 }
+function v124CurpEntityValid(curp){
+  const code=String(curp||'').slice(11,13);
+  return new Set(['AS','BC','BS','CC','CL','CM','CS','CH','DF','DG','GT','GR','HG','JC','MC','MN','MS','NT','NL','OC','PL','QT','QR','SP','SL','SR','TC','TS','TL','VZ','YN','ZS','NE']).has(code);
+}
+function v124CurpDateValid(curp){
+  const c=String(curp||'').toUpperCase().replace(/[^A-Z0-9]/g,'');
+  if(c.length!==18)return false;
+  const yy=Number(c.slice(4,6)),mm=Number(c.slice(6,8)),dd=Number(c.slice(8,10));
+  if(!Number.isFinite(yy)||mm<1||mm>12||dd<1||dd>31)return false;
+  const century=/\d/.test(c[16])?1900:2000,year=century+yy,d=new Date(Date.UTC(year,mm-1,dd));
+  return d.getUTCFullYear()===year&&d.getUTCMonth()===mm-1&&d.getUTCDate()===dd;
+}
 function v124RecoverCurp(text,name,current=''){
-  const parts=v124NameParts(name);if(!parts)return current||'';
+  const parts=v124NameParts(name);
   const candidates=[String(current||'').toUpperCase().replace(/[^A-Z0-9]/g,''),...v124RawCurpCandidate(text)];
   const digitMap={O:'0',Q:'0',D:'0',I:'1',L:'1',Z:'2',S:'5',G:'6',B:'8'};
   const letterMap={'0':'O','1':'I','2':'Z','5':'S','6':'G','8':'B'};
+  let fallback='';
   for(let raw of candidates){
+    raw=String(raw||'').toUpperCase().replace(/[^A-Z0-9]/g,'');
     if(raw.length!==18)continue;
-    let c=raw.split('');
+    let a=raw.split('');
     for(let i=0;i<18;i++){
-      if((i>=4&&i<=9)||i===17)c[i]=/\d/.test(c[i])?c[i]:(digitMap[c[i]]||c[i]);
-      else if((i<=3)||(i>=11&&i<=15))c[i]=/[A-Z]/.test(c[i])?c[i]:(letterMap[c[i]]||c[i]);
+      if((i>=4&&i<=9)||i===17)a[i]=/\d/.test(a[i])?a[i]:(digitMap[a[i]]||a[i]);
+      else if((i<=3)||(i>=11&&i<=15))a[i]=/[A-Z]/.test(a[i])?a[i]:(letterMap[a[i]]||a[i]);
+      else if(i===10&&a[i]!=='H'&&a[i]!=='M'&&a[i]==='N')a[i]='M';
     }
-    c=c.join('');
-    c=parts.prefix+c.slice(4);
-    if(v124CurpValid(c))return c;
+    let fixed=a.join('');
+    if(parts)fixed=parts.prefix+fixed.slice(4);
+    if(!/^[A-Z]{4}\d{6}[HM][A-Z]{5}[A-Z0-9]\d$/.test(fixed))continue;
+    if(!v124CurpEntityValid(fixed)||!v124CurpDateValid(fixed))continue;
+    if(v124CurpValid(fixed))return fixed;
+
+    // Si todo salvo el último dígito es coherente, corrige sólo el verificador.
+    const expected=v124CurpCheckDigit(fixed);
+    if(expected!==null){
+      const repaired=fixed.slice(0,17)+String(expected);
+      if(v124CurpValid(repaired))fallback=repaired;
+    }
   }
-  return current&&v124CurpValid(current)?current:'';
+  if(fallback)return fallback;
+  const cleanCurrent=String(current||'').toUpperCase().replace(/[^A-Z0-9]/g,'');
+  return v124CurpValid(cleanCurrent)?cleanCurrent:'';
 }
 function v124IneNameGuess(text){
   const lines=String(text||'').split(/\r?\n/).map(x=>x.replace(/[|]/g,'I').replace(/\s+/g,' ').trim()).filter(Boolean);
@@ -956,7 +983,7 @@ function v124IneNameGuess(text){
 }
 function v124RawNameGuess(text){
   const ine=v124IneNameGuess(text);if(ine&&!v124BadOcrName(ine))return ine;
-  const bad=/instituto|nacional|electoral|credencial|votar|mexico|méxico|domicilio|municipio|seccion|vigencia|curp|clave|fecha|nacimiento|sexo|entidad|localidad|dependencia|registro/i;
+  const bad=/instituto|nacional|electoral|credencial|votar|mexico|méxico|mexicanos|domicilio|municipio|seccion|vigencia|emision|emisión|expedicion|expedición|curp|clave|fecha|nacimiento|sexo|entidad|estado|localidad|poblacion|población|dependencia|registro|calle|colonia|codigo|código|postal|cero/i;
   const lines=String(text||'').split(/\r?\n/).map(x=>x
     .replace(/NOMBRE(?:S)?/ig,' ').replace(/APELLIDO(?:S)?/ig,' ')
     .replace(/[^A-Za-zÁÉÍÓÚÜÑáéíóúüñ'\-\s]/g,' ').replace(/\s+/g,' ').trim()
@@ -989,6 +1016,7 @@ function bindOcrAssist(){
         }
         toast('Nombre completo reconocido: '+guess.name);
       }else if(v124BadOcrName(name)){
+        if(name)setValue('[data-v64-cred-name]','');
         const fallback=v124RawNameGuess(raw);
         if(fallback&&!v124BadOcrName(fallback)){
           setValue('[data-v64-cred-name]',fallback);
@@ -996,8 +1024,10 @@ function bindOcrAssist(){
           if(fixedCurp)setValue('[data-v64-cred-curp]',fixedCurp);
           toast('Lectura recuperada. Revisa nombre y CURP antes de guardar');
         }else{
-          if(curp&&!v124CurpValid(curp))setValue('[data-v64-cred-curp]','');
-          toast('No encontré un nombre confiable todavía; intenta detectar de nuevo');
+          const recovered=v124RecoverCurp(raw,'',curp);
+          if(recovered)setValue('[data-v64-cred-curp]',recovered);
+          else if(curp&&!v124CurpValid(curp))setValue('[data-v64-cred-curp]','');
+          toast(recovered?'CURP recuperada; falta confirmar el nombre':'No encontré un nombre confiable todavía; intenta detectar de nuevo');
         }
       }else{
         const fixedCurp=v124RecoverCurp(raw,name,curp);
