@@ -515,9 +515,11 @@ body[data-app-route="cedulaBuilder"] [data-v64-cedula-preview]{
     font-size:5.6pt!important;
   }
   body.v131-print-cedula .v131-roster-table td:nth-child(2){
-    white-space:nowrap!important;
-    overflow:hidden!important;
-    text-overflow:ellipsis!important;
+    white-space:normal!important;
+    overflow:visible!important;
+    text-overflow:clip!important;
+    overflow-wrap:anywhere!important;
+    line-height:1!important;
   }
   body.v131-print-cedula .v131-match-notes{
     margin-top:2.6mm!important;
