@@ -612,3 +612,38 @@ body[data-app-route="v38Weather"] #v172-weather-smart .v177-data-note{
   font-size:9.5px;
   line-height:1.4;
 }
+
+
+/* V178 — campos de tierra: selector de superficie y revisión física ampliada. */
+body[data-app-route="v38Weather"] #v172-weather-smart .v178-surface-row{
+  display:grid;
+  grid-template-columns:minmax(0,320px);
+  margin:0 0 10px;
+}
+body[data-app-route="v38Weather"] #v172-weather-smart .v178-surface-row .v177-check{
+  padding:10px;
+  border:1px solid rgba(36,223,233,.2);
+  border-radius:12px;
+  background:rgba(36,223,233,.045);
+}
+body[data-app-route="v38Weather"] #v172-weather-smart .v178-surface-note{
+  margin-top:10px;
+  padding:10px 11px;
+  border:1px solid rgba(255,255,255,.08);
+  border-radius:11px;
+  background:rgba(255,255,255,.025);
+  color:#9faaca;
+  font-size:9.5px;
+  line-height:1.45;
+}
+body[data-app-route="v38Weather"] #v172-weather-smart .v178-surface-note b{
+  color:#dce7ff;
+}
+body[data-app-route="v38Weather"] #v172-weather-smart .v177-inspection[open]{
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.025);
+}
+@media(max-width:700px){
+  body[data-app-route="v38Weather"] #v172-weather-smart .v178-surface-row{
+    grid-template-columns:1fr;
+  }
+}
