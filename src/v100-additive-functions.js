@@ -99,7 +99,7 @@ function bindHome(root){
 function toolsExtra(id='v100-more-extra'){
   return '<section class="v100-block v100-tools-block" id="'+id+'">'+sectionTitle('FUNCIONES ADICIONALES','Más herramientas','Se agregan debajo de lo que ya existe; no sustituyen ninguna sección.')+
     '<div class="v100-tools-grid">'+
-      button('🪪','Credencial con OCR','Lectura tipo Lens, captura local y PNG','', 'credentialBuilder')+
+      button('🪪','Registro de jugadores','OCR, temporada, revisión y credencial','', 'credentialBuilder')+
       button('📷','Importar desde WhatsApp','Lee una imagen guardada con OCR','whatsapp-ocr')+
       button('🗓️','JR Matchday+','Checklist y operación de jornada','', 'matchday')+
       button('🧠','Simulador de jornada','Escenario local; no cambia resultados','journey-sim')+
@@ -120,7 +120,7 @@ function inlineTool(icon,title,sub,action,routeName){
 function toolsInline(){
   return '<div class="v100-inline-tools-title"><small>FUNCIONES ADICIONALES</small><strong>Más herramientas</strong><span>Estas funciones quedan dentro de “Todas las herramientas”.</span></div>'+
   [
-    inlineTool('🪪','Credencial con OCR','Lectura OCR y PNG','', 'credentialBuilder'),
+    inlineTool('🪪','Registro de jugadores','OCR, temporada y credencial','', 'credentialBuilder'),
     inlineTool('📷','Importar desde WhatsApp','Leer imagen guardada','whatsapp-ocr'),
     inlineTool('🗓️','JR Matchday+','Checklist de jornada','', 'matchday'),
     inlineTool('🧠','Simulador de jornada','Escenario local','journey-sim'),
