@@ -245,24 +245,37 @@ function renderManager(){
   }
   const root=$('#v124-player-registry',screen);if(root)bindManager(root);
 }
+function v124Dice(a,b){
+  a=norm(a);b=norm(b);if(!a||!b)return 0;if(a===b)return 1;
+  const grams=x=>{const z=' '+x+' ',m=[];for(let i=0;i<z.length-1;i++)m.push(z.slice(i,i+2));return m};
+  const A=grams(a),B=grams(b),used=new Array(B.length).fill(false);let hit=0;
+  for(const g of A){const j=B.findIndex((x,i)=>!used[i]&&x===g);if(j>=0){used[j]=true;hit++}}
+  return (2*hit)/(A.length+B.length||1);
+}
 function bestOfficialFromOcr(text){
-  const lines=String(text||'').split(/\r?\n/).map(norm).filter(x=>x.length>=6&&x.length<=90);
-  if(!lines.length)return null;
-  let best=null,bestScore=0;
-  const sim=(a,b)=>{
-    const A=new Set(a.split(' ').filter(x=>x.length>2)),B=new Set(b.split(' ').filter(x=>x.length>2));
-    const common=[...A].filter(x=>B.has(x)).length,den=Math.max(A.size,B.size,1);
-    const token=common/den;
-    const contains=a.includes(b)||b.includes(a)?1:0;
-    return Math.max(token,contains);
-  };
+  const raw=String(text||''),nraw=norm(raw);
+  const lines=raw.split(/\r?\n/).map(norm).filter(x=>x.length>=4&&x.length<=100);
+  const tokens=nraw.split(' ').filter(x=>x.length>=4);
+  if(!lines.length&&!tokens.length)return null;
+  const stop=new Set(['instituto','nacional','electoral','credencial','votar','mexico','mexicanos','domicilio','municipio','seccion','vigencia','nombre','fecha']);
+  let best=null,bestScore=0,second=0;
   for(const p of officialPlayers()){
-    const n=norm(p.name);
-    for(const l of lines){
-      const sc=sim(n,l);if(sc>bestScore){bestScore=sc;best=p}
+    const n=norm(p.name),words=n.split(' ').filter(x=>x.length>=3);
+    let score=0;
+    for(const l of lines)score=Math.max(score,v124Dice(n,l));
+    let strong=0,matched=0;
+    for(const w of words){
+      if(stop.has(w))continue;
+      const exact=tokens.includes(w);
+      const fuzzy=Math.max(0,...tokens.map(t=>v124Dice(w,t)));
+      if(exact){matched++;strong+=w.length>=5?0.22:0.13}
+      else if(fuzzy>=.78){matched++;strong+=w.length>=5?0.16:0.09}
     }
+    score=Math.min(1,score+strong+(matched>=2?.18:0));
+    if(score>bestScore){second=bestScore;bestScore=score;best=p}else if(score>second)second=score;
   }
-  return bestScore>=.76?best:null;
+  if(best&&bestScore>=.48&&(bestScore-second>=.07||bestScore>=.70))return {...best,matchScore:bestScore};
+  return null;
 }
 function bindOcrAssist(){
   const btn=$('[data-v64-ocr]');if(!btn||btn.dataset.v124Bound)return;btn.dataset.v124Bound='1';
@@ -271,12 +284,15 @@ function bindOcrAssist(){
       if(btn.disabled)return;
       clearInterval(timer);
       const raw=$('[data-v64-ocr-text]')?.value||'',name=$('[data-v64-cred-name]')?.value||'';
-      const exact=officialPlayers().find(p=>norm(p.name)===norm(name)),guess=exact||(!name?bestOfficialFromOcr(raw):null);
+      const exact=officialPlayers().find(p=>norm(p.name)===norm(name)),guess=exact||bestOfficialFromOcr(raw);
       if(guess){
-        setValue('[data-v64-cred-name]',guess.name);
+        const current=norm(name);
+        if(!current||current.length<4||v124Dice(current,guess.name)>=.52)setValue('[data-v64-cred-name]',guess.name);
         setValue('[data-v64-cred-team]',guess.team);
         setValue('[data-v64-cred-cat]',guess.category);
-        toast('Jugador existente reconocido: '+guess.name+' · '+guess.team);
+        toast('Jugador reconocido: '+guess.name+' · '+guess.team);
+      }else if(!name){
+        toast('No pude identificar el nombre con seguridad; prueba una foto más recta o recorta el INE');
       }
       renderManager();
     },300);
