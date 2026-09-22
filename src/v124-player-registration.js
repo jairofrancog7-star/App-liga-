@@ -19,6 +19,10 @@ const EDIT_KEY='v124-player-edit-id';
 const selectedIds=new Set();
 let quickTeam='';
 let quickSeason='';
+let quickTeamPickerOpen=false;
+let quickTeamQuery='';
+let quickTeamCategory='Todas';
+let quickTeamLetter='Todas';
 let rosterImportTeam='';
 let rosterTeamPickerOpen=false;
 let rosterTeamQuery='';
@@ -904,6 +908,53 @@ function bindRosterImport(root){
   $('[data-v126-apply]',root)?.addEventListener('click',v126ApplyRoster);
 }
 
+function v160FastTeamPickerHtml(){
+  const teams=registryTeams();
+  const categories=['Todas',...new Set(teams.map(t=>t.category||'Sin categoría'))];
+  const letters=['Todas',...new Set(teams.map(t=>String(t.name||'').trim().charAt(0).toUpperCase()).filter(x=>/[A-ZÁÉÍÓÚÑ]/.test(x)))].sort((a,b)=>{
+    if(a==='Todas')return -1;if(b==='Todas')return 1;return a.localeCompare(b,'es');
+  });
+  const q=norm(quickTeamQuery);
+  const visible=teams.filter(t=>{
+    if(quickTeamCategory!=='Todas'&&(t.category||'Sin categoría')!==quickTeamCategory)return false;
+    if(quickTeamLetter!=='Todas'&&!norm(t.name).startsWith(norm(quickTeamLetter)))return false;
+    if(q&&!norm(t.name+' '+(t.category||'')).includes(q))return false;
+    return true;
+  });
+  const selected=teams.find(t=>norm(t.name)===norm(quickTeam));
+  return '<div class="v160-fast-team-picker">'+
+    '<button type="button" class="v160-fast-team-open" data-v160-fast-team-open aria-expanded="'+(quickTeamPickerOpen?'true':'false')+'">'+
+      '<span><small>Equipo destino</small><b>'+esc(selected?.name||'Elige equipo destino')+'</b><em>'+esc(selected?.category||'Busca por nombre, categoría o letra')+'</em></span><i>⌄</i>'+
+    '</button>'+
+    (quickTeamPickerOpen?'<div class="v160-fast-team-panel">'+
+      '<div class="v160-fast-team-head"><b>Buscar equipo destino</b><button type="button" data-v160-fast-team-close aria-label="Cerrar">×</button></div>'+
+      '<label class="v160-fast-team-search"><span>Buscar por nombre</span><input type="search" data-v160-fast-team-search placeholder="Ej. Aldama, América, La Huerta…" value="'+esc(quickTeamQuery)+'" autocomplete="off"></label>'+
+      '<div class="v160-fast-team-filter"><span>Categoría</span><div>'+categories.map(cat=>'<button type="button" class="'+(quickTeamCategory===cat?'active':'')+'" data-v160-fast-team-category="'+esc(cat)+'">'+esc(cat)+'</button>').join('')+'</div></div>'+
+      '<div class="v160-fast-team-filter letters"><span>Letra</span><div>'+letters.map(letter=>'<button type="button" class="'+(quickTeamLetter===letter?'active':'')+'" data-v160-fast-team-letter="'+esc(letter)+'">'+esc(letter)+'</button>').join('')+'</div></div>'+
+      '<div class="v160-fast-team-count"><b>'+visible.length+'</b><span> equipos encontrados</span></div>'+
+      '<div class="v160-fast-team-list">'+
+        (visible.length?visible.map(t=>'<button type="button" class="v160-fast-team-choice '+(norm(t.name)===norm(quickTeam)?'active':'')+'" data-v160-fast-team-choice="'+esc(t.name)+'"><span><b>'+esc(t.name)+'</b><small>'+esc(t.category||'Categoría por confirmar')+'</small></span><i>✓</i></button>').join(''):'<div class="v160-fast-team-empty">No encontré equipos con esos filtros.</div>')+
+      '</div>'+
+    '</div>':'')+
+  '</div>';
+}
+
+function v160FilterFastTeams(root){
+  const q=norm(quickTeamQuery);
+  let count=0;
+  $('[data-v160-fast-team-choice]',root).forEach(b=>{
+    const name=b.dataset.v160FastTeamChoice||'';
+    const cat=b.querySelector('small')?.textContent||'';
+    const show=(quickTeamCategory==='Todas'||cat===quickTeamCategory)&&
+      (quickTeamLetter==='Todas'||norm(name).startsWith(norm(quickTeamLetter)))&&
+      (!q||norm(name+' '+cat).includes(q));
+    b.hidden=!show;if(show)count++;
+  });
+  const n=$('.v160-fast-team-count b',root);if(n)n.textContent=String(count);
+  const empty=$('.v160-fast-team-empty',root);
+  if(empty)empty.hidden=count>0;
+}
+
 function fastToolsHtml(list){
   const previous=previousSeasonWithRecords(),count=[...selectedIds].filter(id=>list.some(r=>r.id===id)).length;
   return '<section class="v124-fast">'+
@@ -915,7 +966,7 @@ function fastToolsHtml(list){
     '</div>'+
     '<div class="v124-batch">'+
       '<div class="v124-selected"><b data-v124-selected-count>'+count+'</b><span>seleccionados</span><button type="button" data-v124-clear-selected>Limpiar</button></div>'+
-      '<label><span>Cambiar de equipo</span><select data-v124-fast-team>'+teamPickerOptions()+'</select></label>'+
+      '<div class="v124-fast-team-field"><span>Cambiar de equipo</span>'+v160FastTeamPickerHtml()+'</div>'+
       '<button type="button" class="move" data-v124-move-selected>Mover seleccionados</button>'+
       '<label><span>Copiar a temporada</span><select data-v124-fast-season>'+targetSeasonOptions()+'</select></label>'+
       '<button type="button" data-v124-copy-season>Copiar seleccionados</button>'+
@@ -967,8 +1018,40 @@ function bindManager(root){
     updateSelectedUi(root);
   });
   $('[data-v124-clear-selected]',root)?.addEventListener('click',()=>{selectedIds.clear();updateSelectedUi(root)});
-  $('[data-v124-fast-team]',root)?.addEventListener('pointerdown',()=>{filePickerCooldownUntil=Date.now()+900});
-  $('[data-v124-fast-team]',root)?.addEventListener('change',e=>{quickTeam=e.target.value||'';filePickerCooldownUntil=Date.now()+900});
+  $('[data-v160-fast-team-open]',root)?.addEventListener('click',e=>{
+    e.preventDefault();e.stopPropagation();
+    quickTeamPickerOpen=!quickTeamPickerOpen;
+    filePickerCooldownUntil=Date.now()+900;
+    renderManager(true);
+  });
+  $('[data-v160-fast-team-close]',root)?.addEventListener('click',e=>{
+    e.preventDefault();e.stopPropagation();
+    quickTeamPickerOpen=false;quickTeamQuery='';quickTeamCategory='Todas';quickTeamLetter='Todas';
+    renderManager(true);
+  });
+  $('[data-v160-fast-team-search]',root)?.addEventListener('input',e=>{
+    quickTeamQuery=e.target.value||'';
+    v160FilterFastTeams(root);
+  });
+  $('[data-v160-fast-team-category]',root).forEach(b=>b.addEventListener('click',e=>{
+    e.preventDefault();e.stopPropagation();
+    quickTeamCategory=b.dataset.v160FastTeamCategory||'Todas';
+    renderManager(true);
+  }));
+  $('[data-v160-fast-team-letter]',root).forEach(b=>b.addEventListener('click',e=>{
+    e.preventDefault();e.stopPropagation();
+    quickTeamLetter=b.dataset.v160FastTeamLetter||'Todas';
+    renderManager(true);
+  }));
+  $('[data-v160-fast-team-choice]',root).forEach(b=>b.addEventListener('click',e=>{
+    e.preventDefault();e.stopPropagation();
+    quickTeam=b.dataset.v160FastTeamChoice||'';
+    quickTeamPickerOpen=false;
+    quickTeamQuery='';quickTeamCategory='Todas';quickTeamLetter='Todas';
+    filePickerCooldownUntil=Date.now()+900;
+    renderManager(true);
+    toast('Equipo destino: '+quickTeam);
+  }));
   $('[data-v124-fast-season]',root)?.addEventListener('pointerdown',()=>{filePickerCooldownUntil=Date.now()+900});
   $('[data-v124-fast-season]',root)?.addEventListener('change',e=>{quickSeason=e.target.value||'';filePickerCooldownUntil=Date.now()+900});
   $('[data-v124-move-selected]',root)?.addEventListener('click',moveSelectedTeam);
