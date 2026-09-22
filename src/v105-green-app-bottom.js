@@ -6,7 +6,7 @@
 if(window.__LJR_V105_GREEN_BOTTOM__)return;
 window.__LJR_V105_GREEN_BOTTOM__=true;
 
-const BUILD='20260922-fanzone-one-vote-v157';
+const BUILD='20260922-more-history-matchcenter-v158';
 const GREEN='https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/';
 const MOTION=GREEN+'assets/motion/';
 const MEDIA=GREEN+'media/';
@@ -194,6 +194,7 @@ const MORE_CARDS=[
  {icon:'news',title:'Avisos',sub:'Noticias y comunicados',route:'news'},
  {icon:'video',title:'Videos',sub:'Momentos y archivo',route:'moments'},
  {icon:'history',title:'Historial',sub:'Temporadas, palmarés e históricos',route:'history'},
+ {icon:'match',title:'Match Center real',sub:'Partido oficial, marcador y contexto',route:'v4-matchcenter'},
  {icon:'admin',title:'JR Control',sub:'Centro operativo',route:'jrControl'},
  {icon:'card',title:'Alta rápida',sub:'Registro y credencial de jugador',route:'credentialBuilder'},
  {icon:'history',title:'Actividad reciente',sub:'Bitácora local de herramientas',action:'audit'},
@@ -249,6 +250,28 @@ function block(r){
  else if(r==='video'){k='LIGA JUVENTINO TV';title='Videos y momentos';desc='Archivo audiovisual de la Liga.';cards=[{icon:'video',title:'Momentos',sub:'Contenido de la Liga',route:'moments'},{icon:'history',title:'Historial',sub:'Temporadas y archivo',route:'history'},{icon:'share',title:'Compartir jornada',sub:'Publicaciones',route:'publications'}];asset='v38-soccer-liguilla.mp4';html+=gallery()}
  else if(r==='history'){title='Historial · temporadas y palmarés';desc='Accesos de la app verde agrupados debajo del historial actual.';cards=[{icon:'history',title:'Temporada actual',sub:'Información vigente',route:'leagueData'},{icon:'trophy',title:'Palmarés',sub:'Campeones e historia',route:'history'},{icon:'history',title:'Históricos',sub:'Equipos y temporadas anteriores',route:'history'},{icon:'video',title:'Finales y momentos',sub:'Archivo audiovisual',route:'moments'}];asset='v38-soccer-liguilla.mp4'}
  else if(r==='tactics'){title='Táctica 3D · versión azul';desc='Tablero táctil inspirado en la función de Liga_Futbol; se agrega al final y guarda sólo en este dispositivo.';cards=[];asset='v38-fix10-tactics-motion.mp4';html+=tacticsBoard()}
+ else if(r==='more'){k='MÁS DE LA LIGA';title='Accesos que faltaban';desc='Funciones recuperadas de la otra app, añadidas al final sin reemplazar el diseño actual.';cards=[
+   {icon:'history',title:'Historial',sub:'Temporadas, palmarés e históricos',route:'history'},
+   {icon:'match',title:'Match Center real',sub:'Partido oficial, marcador y contexto',route:'v4-matchcenter'},
+   {icon:'timer',title:'Centro de jornada',sub:'Checklist y operación del día',route:'matchday'},
+   {icon:'bell',title:'Notificaciones',sub:'Avisos y preferencias',route:'notifications'},
+   {icon:'admin',title:'JR Control',sub:'Centro operativo',route:'jrControl'},
+   {icon:'tactics',title:'Tácticas 2D / 3D',sub:'Pizarra interactiva',route:'tactics'}
+ ];asset='v38-soccer-teams.mp4'}
+ else if(r==='matchday'){k='CENTRO DE JORNADA';title='Partido y operación';desc='Accesos complementarios debajo del centro de jornada, sin mover el contenido principal.';cards=[
+   {icon:'match',title:'Match Center real',sub:'Abrir partido oficial',route:'v4-matchcenter'},
+   {icon:'calendar',title:'Calendario y resultados',sub:'Jornadas oficiales',route:'competition'},
+   {icon:'field',title:'Clima y campos',sub:'Sede y condiciones',route:'weatherFields'},
+   {icon:'rule',title:'Cédulas',sub:'Acta y PDF del partido',route:'cedulas'},
+   {icon:'history',title:'Historial',sub:'Temporadas y archivo',route:'history'}
+ ];asset='v38-soccer-matchday.mp4'}
+ else if(r==='v4-matchcenter'||r==='matchCenter'||r==='match-center'){k='MATCH CENTER';title='Más herramientas del partido';desc='Complementos del Match Center colocados al final para no alterar su pantalla principal.';cards=[
+   {icon:'timer',title:'Centro de jornada',sub:'Checklist operativo',route:'matchday'},
+   {icon:'tactics',title:'Alineaciones y tácticas',sub:'Preparar formación',route:'tactics'},
+   {icon:'rule',title:'Acta arbitral digital',sub:'Cédula / PDF',route:'cedulas'},
+   {icon:'field',title:'Clima y campo',sub:'Pronóstico y sede',route:'weatherFields'},
+   {icon:'history',title:'Historial',sub:'Archivo de temporadas',route:'history'}
+ ];asset='v38-soccer-matchday.mp4'}
  else if(r==='jrControl'){title='Explora la Liga · herramientas de control';desc='Accesos operativos complementarios de JR Control.';cards=MORE_CARDS;asset='v38-soccer-teams.mp4'}
  else if(r==='news'||r==='v38Weekly'){title='Noticias, avisos y juntas';desc='Comunicación y operación semanal de la Liga.';cards=[{icon:'news',title:'Avisos',sub:'Comunicados y cambios de la Liga',route:'notices'},{icon:'calendar',title:'Junta semanal',sub:'Agenda y acuerdos locales',action:'meeting'},{icon:'alert',title:'Cambios de horario y sedes',sub:'Notificaciones',route:'notifications'},{icon:'video',title:'Semifinales, finales y momentos',sub:'Videos',route:'moments'}];asset='v38-soccer-matchday.mp4'}
  else if(r==='notifications'){title='Notificaciones y participación';desc='Preferencias, encuesta y pulso de afición.';cards=[{icon:'bell',title:'Notificaciones',sub:'Preferencias actuales',route:'notifications'},{icon:'fire',title:'Fan Zone',sub:'Reacciones locales',action:'fanzone'},{icon:'poll',title:'Encuesta',sub:'Voto local',action:'poll'}];asset='v38-soccer-hero.mp4'}
@@ -572,7 +595,7 @@ function bind(root){
  });
 }
 function supported(r){
- return ['home','more','competition','v4-calendar','calendar','monthlyCalendar','calendarMonthly','leagueData','bracketBuilder','tableExport','teams','players','teamDetail','match','stats','scorers','rankings','v38Stats','moments','video','history','tactics','jrControl','news','v38Weekly','notifications'].includes(r);
+ return ['home','more','competition','v4-calendar','calendar','monthlyCalendar','calendarMonthly','leagueData','bracketBuilder','tableExport','teams','players','teamDetail','match','v4-matchcenter','matchCenter','match-center','matchday','stats','scorers','rankings','v38Stats','moments','video','history','tactics','jrControl','news','v38Weekly','notifications'].includes(r);
 }
 let timer=0;
 function mount(){
