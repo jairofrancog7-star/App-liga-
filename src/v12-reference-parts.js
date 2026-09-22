@@ -293,14 +293,16 @@ const V12_FIXTURE_LOGOS={
   "LOBOS CDG":"assets/official-logos/lobos-cdg.png",
   "NAPOLI":"assets/official-logos/napoli.png"
 };
-const V12_FIXTURE_BUILD='20260921-all-weeks-categories-v132';
-const V12_FIXTURE_ORDER=['3','5','4','2','1'];
+const V12_FIXTURE_BUILD='20260921-all-categories-v134';
+const V12_FIXTURE_ORDER=['3','4','5','2','1'];
+const V12_FIXTURE_LABELS={'1':'Veteranos 50+','2':'Veteranos 35+','3':'Primera Fuerza','4':'Segunda Fuerza','5':'Intermedia'};
 const V12_MONTHS=['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
 const V12_MONTHS_SHORT=['ene','feb','mar','abr','may','jun','jul','ago','sep','oct','nov','dic'];
 const V12_DAYS=['domingo','lunes','martes','miércoles','jueves','viernes','sábado'];
 const V12_DAYS_SHORT=['dom','lun','mar','mié','jue','vie','sáb'];
 let V12_FIXTURE_DB=window.LJR_OFFICIAL_DATA||null;
 let V12_FIXTURE_LOADING=null;
+let V12_LEGACY_DB=null;
 
 function v12Esc(v){return String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
 function v12Norm(v){return String(v||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[^a-z0-9]+/g,' ').trim()}
@@ -328,6 +330,13 @@ async function v12LoadFixtureDb(){
         const d=await r.json();if(d?.categories)best=v12LatestDb(best,d);
       }catch(_){}
     }
+    try{
+      const lr=await fetch('./public/data/temporada-actual-2026.json?v='+V12_FIXTURE_BUILD,{cache:'no-store'});
+      if(lr.ok){
+        const ld=await lr.json();
+        if(ld?.categories)V12_LEGACY_DB=ld;
+      }
+    }catch(_){}
     if(best)V12_FIXTURE_DB=best;
     return best;
   })().finally(()=>{V12_FIXTURE_LOADING=null});
@@ -351,11 +360,54 @@ function v12DateShort(info){
 }
 function v12FixtureCategories(){
   const db=v12FixtureDb(),cats=db?.categories||{};
-  return V12_FIXTURE_ORDER.filter(id=>cats[id]).map(id=>({id,name:cats[id].name||('Categoría '+id)}));
+  return V12_FIXTURE_ORDER.map(id=>({id,name:cats[id]?.name||V12_FIXTURE_LABELS[id]||('Categoría '+id)}));
+}
+function v12LegacyCategory(catId){
+  const name=V12_FIXTURE_LABELS[String(catId)]||'';
+  return V12_LEGACY_DB?.categories?.[name]||null;
+}
+function v12LegacyRows(catId){
+  const legacy=v12LegacyCategory(catId);
+  if(!legacy)return [];
+  const rows=[];
+  let n=1;
+  const pushGame=(game,group,groupLabel,sort,current=false)=>{
+    if(!game?.home||!game?.away)return;
+    const rawTime=String(game.time||'').trim();
+    const field=String(game.field||'').trim();
+    const r=[String(n++),groupLabel,game.home,'-','vs','-',game.away,field?( /^\d+$/.test(field)?'Campo '+field:field ):'Campo por confirmar','', '---'];
+    r.__v12Group='legacy-'+String(sort).padStart(2,'0')+'-'+v12Norm(group).replace(/\s+/g,'-');
+    r.__v12GroupLabel=groupLabel;
+    r.__v12LongLabel=(/veteranos/i.test(V12_FIXTURE_LABELS[String(catId)]||'')?'sábado':'domingo')+' · '+groupLabel+' · fecha por confirmar';
+    r.__v12ShortLabel=(/veteranos/i.test(V12_FIXTURE_LABELS[String(catId)]||'')?'sáb':'dom')+' · '+groupLabel;
+    r.__v12Sort=sort;
+    r.__v12Current=!!current;
+    r.__v12Time=rawTime||'Por confirmar';
+    r.__v12Venue=r[7];
+    rows.push(r);
+  };
+  if(legacy.knockout){
+    let s=0;
+    for(const [phase,games] of Object.entries(legacy.knockout)){
+      const current=v12Norm(legacy.current_phase)===v12Norm(phase);
+      (games||[]).forEach(g=>pushGame(g,phase,phase,++s,current));
+    }
+  }else if(legacy.rounds){
+    let s=0;
+    for(const [round,games] of Object.entries(legacy.rounds)){
+      const current=v12Norm(legacy.current_phase).includes(v12Norm(round));
+      (games||[]).forEach(g=>pushGame(g,round,'Jornada '+round.replace(/^J/i,''),++s,current));
+    }
+  }
+  return rows;
 }
 function v12FixtureRows(catId){
   const db=v12FixtureDb(),cat=db?.categories?.[String(catId)];
-  return (cat?.fixtures||[]).flatMap(b=>Array.isArray(b?.rows)?b.rows:[]).filter(r=>Array.isArray(r)&&r[2]&&r[6]).sort((a,b)=>{
+  const official=(cat?.fixtures||[]).flatMap(b=>Array.isArray(b?.rows)?b.rows:[]).filter(r=>Array.isArray(r)&&r[2]&&r[6]);
+  const rows=official.length?official:v12LegacyRows(catId);
+  return rows.sort((a,b)=>{
+    const specialA=Number(a?.__v12Sort??Number.MAX_SAFE_INTEGER),specialB=Number(b?.__v12Sort??Number.MAX_SAFE_INTEGER);
+    if(specialA!==specialB)return specialA-specialB;
     const da=v12ParseFixtureDate(a[8])?.date?.getTime()||Number.MAX_SAFE_INTEGER;
     const dbb=v12ParseFixtureDate(b[8])?.date?.getTime()||Number.MAX_SAFE_INTEGER;
     return da-dbb||Number(a?.[0]||0)-Number(b?.[0]||0);
@@ -364,11 +416,26 @@ function v12FixtureRows(catId){
 function v12FixtureGroups(catId){
   const map=new Map();
   v12FixtureRows(catId).forEach(r=>{
-    const info=v12ParseFixtureDate(r[8]),key=info?.key||'sin-fecha';
-    if(!map.has(key))map.set(key,{key,info,rows:[]});
-    map.get(key).rows.push(r);
+    const info=v12ParseFixtureDate(r[8]);
+    const key=r.__v12Group||info?.key||'sin-fecha';
+    if(!map.has(key))map.set(key,{
+      key,
+      info,
+      rows:[],
+      label:r.__v12GroupLabel||'',
+      longLabel:r.__v12LongLabel||'',
+      shortLabel:r.__v12ShortLabel||'',
+      sort:Number(r.__v12Sort??Number.MAX_SAFE_INTEGER),
+      current:!!r.__v12Current
+    });
+    const g=map.get(key);
+    g.rows.push(r);
+    if(r.__v12Current)g.current=true;
   });
-  return [...map.values()].sort((a,b)=>(a.info?.date?.getTime()||Number.MAX_SAFE_INTEGER)-(b.info?.date?.getTime()||Number.MAX_SAFE_INTEGER));
+  return [...map.values()].sort((a,b)=>{
+    if(a.sort!==b.sort)return a.sort-b.sort;
+    return (a.info?.date?.getTime()||Number.MAX_SAFE_INTEGER)-(b.info?.date?.getTime()||Number.MAX_SAFE_INTEGER);
+  });
 }
 function v12StoredCat(){
   const cats=v12FixtureCategories(),saved=localStorage.getItem('v12-fixture-cat')||'3';
@@ -378,6 +445,8 @@ function v12PickGroup(catId,groups){
   if(!groups.length)return null;
   const saved=localStorage.getItem('v12-fixture-date-'+catId);
   if(saved&&groups.some(g=>g.key===saved))return groups.find(g=>g.key===saved);
+  const current=groups.find(g=>g.current);
+  if(current)return current;
   const now=Date.now();
   return groups.reduce((best,g)=>{
     const d=g.info?.date?.getTime();
@@ -414,13 +483,13 @@ function v12FixtureModel(row,catId,catName){
     id:'official-'+catId+'-'+String(row?.[0]||Math.random()),
     home:String(row?.[2]||'Local'),
     away:String(row?.[6]||'Visitante'),
-    venue:String(row?.[7]||'').trim()||'Campo por confirmar',
+    venue:String(row?.__v12Venue||row?.[7]||'').trim()||'Campo por confirmar',
     datetime:String(row?.[8]||''),
-    time:info?.time||'Por confirmar',
+    time:String(row?.__v12Time||info?.time||'Por confirmar'),
     jornada:String(row?.[1]||'—'),
     category:catName,
     catId:String(catId),
-    dateLabel:v12DateLong(info),
+    dateLabel:String(row?.__v12LongLabel||v12DateLong(info)),
     played,
     score:played?(hg+' - '+ag):''
   };
@@ -434,26 +503,30 @@ function v12UpcomingRow(m){
 }
 function v12FixturesMarkup(){
   const db=v12FixtureDb(),cats=v12FixtureCategories();
-  if(!db?.categories||!cats.length){
+  if(!cats.length){
     return '<section class="v12-fixtures-reference" data-v12-fixtures data-v12-version="'+V12_FIXTURE_BUILD+'"><div class="v12-fixture-loading">Cargando jornadas oficiales…</div></section>';
   }
   const catId=v12StoredCat(),cat=cats.find(c=>c.id===catId)||cats[0],groups=v12FixtureGroups(cat.id),selected=v12PickGroup(cat.id,groups);
-  const catStrip='<div class="v12-date-strip v12-category-strip">'+cats.map(c=>'<button class="'+(c.id===cat.id?'active':'')+'" data-v12-cat="'+v12Esc(c.id)+'">'+v12Esc(c.name)+'</button>').join('')+'</div>';
+  const catStrip='<div class="v12-category-grid">'+cats.map(c=>'<button class="'+(c.id===cat.id?'active':'')+'" data-v12-cat="'+v12Esc(c.id)+'">'+v12Esc(c.name)+'</button>').join('')+'</div>';
   if(!selected){
     return '<section class="v12-fixtures-reference" data-v12-fixtures data-v12-version="'+V12_FIXTURE_BUILD+'">'+catStrip+
       '<p class="v12-fixture-rule">'+v12Esc(v12CategoryRule(cat.name))+'</p>'+
-      '<h2>'+v12Esc(cat.name)+'</h2><section class="v12-schedule-card"><h3>Calendario oficial</h3><div class="v12-fixture-empty">Todavía no hay jornadas oficiales publicadas para esta categoría en la fuente actual.</div></section></section>';
+      '<h2>'+v12Esc(cat.name)+'</h2><section class="v12-schedule-card"><h3>Calendario oficial</h3><div class="v12-fixture-empty">Todavía no hay partidos publicados para esta categoría en la fuente actual.</div></section></section>';
   }
   const weekStrip='<div class="v12-date-strip v12-week-strip">'+groups.map(g=>{
-    const jornada=[...new Set(g.rows.map(r=>String(r?.[1]||'—')))].join('/');
-    return '<button class="'+(g.key===selected.key?'active':'')+'" data-v12-date="'+v12Esc(g.key)+'"><span>'+v12Esc(v12DateShort(g.info))+'</span><small>Jornada '+v12Esc(jornada)+'</small></button>';
+    const jornada=g.label||[...new Set(g.rows.map(r=>String(r?.[1]||'—')))].join('/');
+    const top=g.shortLabel||v12DateShort(g.info);
+    const bottom=g.label?g.label:('Jornada '+jornada);
+    return '<button class="'+(g.key===selected.key?'active':'')+'" data-v12-date="'+v12Esc(g.key)+'"><span>'+v12Esc(top)+'</span><small>'+v12Esc(bottom)+'</small></button>';
   }).join('')+'</div>';
-  const jornadas=[...new Set(selected.rows.map(r=>String(r?.[1]||'—')))].join(' / ');
+  const jornadas=selected.label||[...new Set(selected.rows.map(r=>String(r?.[1]||'—')))].join(' / ');
   const games=selected.rows.map(r=>v12FixtureModel(r,cat.id,cat.name));
+  const longDate=selected.longLabel||v12DateLong(selected.info);
+  const title=selected.label?(selected.label+' · '+cat.name):('Jornada '+jornadas+' · '+cat.name);
   return '<section class="v12-fixtures-reference" data-v12-fixtures data-v12-version="'+V12_FIXTURE_BUILD+'">'+catStrip+
     '<p class="v12-fixture-rule">'+v12Esc(v12CategoryRule(cat.name))+'</p>'+weekStrip+
-    '<h2 id="v12-day-'+v12Esc(selected.key)+'">'+v12Esc(v12DateLong(selected.info))+'</h2>'+
-    '<section class="v12-schedule-card"><h3>Jornada '+v12Esc(jornadas)+' · '+v12Esc(cat.name)+'</h3><div>'+games.map(v12UpcomingRow).join('')+'</div></section>'+
+    '<h2 id="v12-day-'+v12Esc(selected.key)+'">'+v12Esc(longDate)+'</h2>'+
+    '<section class="v12-schedule-card"><h3>'+v12Esc(title)+'</h3><div>'+games.map(v12UpcomingRow).join('')+'</div></section>'+
   '</section>';
 }
 function v12RefreshFixtures(){
