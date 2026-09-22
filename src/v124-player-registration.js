@@ -1083,7 +1083,7 @@ function listHtml(list){
     '<div class="v124-card-main"><label class="v124-pick" aria-label="Seleccionar '+esc(r.name)+'"><input type="checkbox" data-v124-select="'+esc(r.id)+'" '+(selectedIds.has(r.id)?'checked':'')+'><span></span></label><span class="v124-avatar">'+esc(String(r.name).split(/\s+/).slice(0,2).map(x=>x[0]||'').join('').toUpperCase())+'</span>'+
     '<span><b>'+esc(r.name)+'</b><small>'+esc(r.team)+' · '+esc(r.category||'Categoría por confirmar')+'</small>'+
     '<em class="'+statusClass(r)+'">'+esc(r.source==='official'?'Oficial en AdminFut':(r.officialPresent?'Coincide con AdminFut':r.status||'Pendiente'))+'</em></span></div>'+
-    '<div class="v161-record-meta"><span><b>Origen</b>'+esc(recordOrigin(r))+'</span><span><b>Registró</b>'+esc(recordRegistrar(r))+'</span><span><b>Alta</b>'+esc(fmtRecordDate(r.createdAt||r.updatedAt))+'</span></div>'+
+    '<div class="v161-record-meta"><span><b>Origen</b>'+esc(recordOrigin(r))+'</span><span><b>Registró</b>'+esc(recordRegistrar(r))+'</span><span><b>Fecha de registro</b>'+esc(fmtRecordDate(r.createdAt||r.updatedAt))+'</span></div>'+
     '<div class="v124-card-actions"><button data-v124-edit="'+esc(r.id)+'">Revisar / corregir</button><button data-v124-card="'+esc(r.id)+'">Credencial</button><button class="danger" data-v124-delete="'+esc(r.id)+'">Borrar</button></div>'+
   '</article>').join('');
 }
