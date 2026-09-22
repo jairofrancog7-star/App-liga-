@@ -69,6 +69,22 @@ function log(action){
 function go(r){
  if(!r)return;
  log('Abrir '+r);
+
+ // V128: el botón Goleadores debe llevar al ranking de jugadores, incluso
+ // cuando ya estamos dentro de #/scorers y el hash no cambia.
+ if(r==='scorers'){
+   const current=route();
+   if(current==='scorers'){
+     const target=document.querySelector('[data-v28-scorers] .v28-ranking')||
+                  document.querySelector('[data-v28-scorers]');
+     if(target){
+       target.scrollIntoView({behavior:'smooth',block:'start'});
+       return;
+     }
+   }
+   try{sessionStorage.setItem('v105-open-official-scorers','1')}catch(_){}
+ }
+
  location.hash='#/'+r;
 }
 function officialTeams(){
