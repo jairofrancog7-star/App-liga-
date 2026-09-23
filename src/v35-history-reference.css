@@ -2381,3 +2381,117 @@
 @media(max-width:360px){
   .v228-esperanza-status{grid-template-columns:1fr!important}
 }
+
+
+/* V229 — TARJETA NUEVA DESDE CERO: MANCHESTER · 26 ABR 2025
+   Mantiene el diseño azul de Historia y fuerza la fotografía exacta como fondo. */
+.v229-manchester-card{
+  position:relative!important;
+  min-height:430px!important;
+  display:flex!important;
+  align-items:flex-end!important;
+  overflow:hidden!important;
+  isolation:isolate!important;
+  margin:0!important;
+  padding:0!important;
+  border:1px solid rgba(77,224,241,.30)!important;
+  border-radius:22px!important;
+  background:#060653!important;
+  box-shadow:0 12px 28px rgba(0,0,55,.18),inset 0 1px 0 rgba(255,255,255,.05)!important;
+}
+.v229-manchester-photo{
+  position:absolute!important;
+  inset:0!important;
+  z-index:0!important;
+  width:100%!important;
+  height:100%!important;
+  display:block!important;
+  object-fit:cover!important;
+  object-position:center 46%!important;
+  margin:0!important;
+  padding:0!important;
+  border:0!important;
+  opacity:1!important;
+  filter:saturate(1.03) contrast(1.02) brightness(.96)!important;
+}
+.v229-manchester-shade{
+  position:absolute!important;
+  inset:0!important;
+  z-index:1!important;
+  pointer-events:none!important;
+  background:
+    linear-gradient(180deg,rgba(3,6,50,.02) 0%,rgba(3,6,50,.08) 30%,rgba(3,6,50,.36) 63%,rgba(3,6,50,.86) 100%),
+    linear-gradient(90deg,rgba(3,6,50,.20) 0%,rgba(3,6,50,.05) 72%,rgba(3,6,50,.01) 100%)!important;
+}
+.v229-manchester-body{
+  position:relative!important;
+  z-index:2!important;
+  width:100%!important;
+  padding:20px 18px 19px!important;
+  color:#fff!important;
+  background:transparent!important;
+}
+.v229-manchester-meta{
+  display:flex!important;
+  flex-wrap:wrap!important;
+  align-items:center!important;
+  gap:8px!important;
+  margin:0 0 11px!important;
+}
+.v229-manchester-card h3{
+  margin:0!important;
+  color:#fff!important;
+  font-size:clamp(29px,7.7vw,39px)!important;
+  line-height:1.02!important;
+  font-weight:780!important;
+  letter-spacing:-.035em!important;
+  text-shadow:0 2px 12px rgba(0,0,0,.78)!important;
+}
+.v229-manchester-card>.v229-manchester-body>strong{
+  display:block!important;
+  margin-top:7px!important;
+  color:#fff!important;
+  font-size:clamp(14px,3.8vw,18px)!important;
+  line-height:1.2!important;
+  text-shadow:0 2px 9px rgba(0,0,0,.78)!important;
+}
+.v229-manchester-status{
+  display:grid!important;
+  grid-template-columns:1fr 1fr!important;
+  gap:9px!important;
+  margin:13px 0 11px!important;
+}
+.v229-manchester-status span{
+  min-width:0!important;
+  padding:10px 11px!important;
+  border:1px solid rgba(55,231,242,.55)!important;
+  border-radius:13px!important;
+  background:rgba(3,8,58,.18)!important;
+  color:#fff!important;
+  font-size:10px!important;
+  line-height:1.25!important;
+  font-weight:760!important;
+  text-shadow:0 2px 8px rgba(0,0,0,.78)!important;
+}
+.v229-manchester-status b{
+  display:block!important;
+  margin-bottom:4px!important;
+  color:#26edf6!important;
+  font-size:7.7px!important;
+  line-height:1!important;
+  letter-spacing:.09em!important;
+  text-transform:uppercase!important;
+}
+.v229-manchester-card p{
+  margin:0!important;
+  color:#f0f2ff!important;
+  font-size:clamp(12px,3.3vw,15px)!important;
+  line-height:1.42!important;
+  text-shadow:0 2px 9px rgba(0,0,0,.86)!important;
+}
+@media(max-width:420px){
+  .v229-manchester-card{min-height:430px!important}
+}
+@media(max-width:360px){
+  .v229-manchester-status{grid-template-columns:1fr!important}
+}
