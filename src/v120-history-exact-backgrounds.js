@@ -25,7 +25,7 @@ const ESPERANZA_2025_PHOTO=window.LJR_ESPERANZA_2025_PHOTO||'https://raw.githubu
 const BASE185='https://raw.githubusercontent.com/jairofrancog7-star/App-liga-/main/assets/history/archive-v185/';
 const SAN_JULIAN_2024=window.LJR_SAN_JULIAN_PHOTO||'https://raw.githubusercontent.com/jairofrancog7-star/App-liga-/main/assets/history/archive-v218/san-julian-campeon-copa-segunda-18-feb-2024.jpg?v=20260923-san-julian-v224';
 const EXACT=[
-  {need:['manchester','09 nov 2024'],src:BASE222+'manchester-campeon-copa-v50-09-nov-2024.webp?v=20260923-manchester-copa-v222',pos:'center 50%',photoOnly:true,scale:1.08,origin:'center 50%'},
+  {need:['manchester','09 nov 2024'],src:'./assets/history/archive-v222/manchester-campeon-copa-v50-09-nov-2024.webp?v=20260923-manchester-copa-v224',pos:'center 50%',photoOnly:true,scale:1.08,origin:'center 50%'},
   {need:['manchester','26 abr 2025'],src:BASE216+'manchester-campeon-campeones-26-abr-2025.webp?v=20260923-manchester-photo-v216',pos:'center 46%',photoOnly:true,scale:1.0,origin:'center 46%'},
   {need:['san julian','18 feb 2024'],src:SAN_JULIAN_2024,pos:'center 46%',photoOnly:true,scale:1.0,origin:'center 46%'},
   {need:['lobos jrs','23 sep 2026'],src:BASE212+'lobos-jrs-campeon-segunda-23-sep-2026.jpg?v=20260923-lobos-segunda-v212',pos:'center 50%',photoOnly:true,scale:1.0,origin:'center 50%'},
@@ -189,6 +189,39 @@ function forceGalacticosCDC(){
   });
 }
 
+function forceManchester2024(){
+  const wanted='./assets/history/archive-v222/manchester-campeon-copa-v50-09-nov-2024.webp?v=20260923-manchester-copa-v224';
+  document.querySelectorAll('.v35-history-moment,.v35-champion-card,.v115-card').forEach(card=>{
+    const heading=norm(card.querySelector('h3,h4')?.textContent||'');
+    const date=norm(card.querySelector('time,.v35-history-date,.v35-champion-date,.v115-date')?.textContent||'');
+    const all=norm(card.textContent||'');
+    if(!heading.includes('manchester') || !(date.includes('09 nov 2024')||all.includes('09 nov 2024')))return;
+
+    let img=card.querySelector('.v120-exact-event-bg,.v35-history-bg-photo,.v35-champion-bg-photo');
+    if(!img){
+      img=document.createElement('img');
+      img.className='v120-exact-event-bg v120-photo-only-bg';
+      card.prepend(img);
+    }
+    img.src=wanted;
+    img.alt='Manchester · Campeón de Copa · Veteranos 50 y más · 09 nov 2024';
+    img.loading='eager';
+    img.decoding='async';
+    img.style.objectPosition='center 50%';
+    img.style.transform='scale(1)';
+    img.style.transformOrigin='center 50%';
+
+    // Fallback adicional: el mismo archivo también queda como background CSS del card.
+    card.style.backgroundImage='linear-gradient(rgba(4,8,70,.16),rgba(4,8,70,.36)),url("'+wanted+'")';
+    card.style.backgroundSize='cover';
+    card.style.backgroundPosition='center 50%';
+    card.style.backgroundRepeat='no-repeat';
+
+    card.classList.add('v120-has-exact-bg','v120-photo-only-card','v35-history-moment-photo');
+    card.dataset.v224Manchester='1';
+  });
+}
+
 function forceLobosJrs2025(){
   const wanted=BASE207+'lobos-jrs-campeon-relampago-segunda-16-feb-2025.webp?v=20260923-lobos-jrs-photo-v219';
   document.querySelectorAll('.v35-history-moment,.v35-champion-card,.v115-card').forEach(card=>{
@@ -221,6 +254,7 @@ function patch(){
   installStyle();
   document.querySelectorAll('.v35-history-moment,.v35-champion-card,.v115-card').forEach(apply);
   forceGalacticosCDC();
+  forceManchester2024();
   forceLobosJrs2025();
 }
 let raf=0;
