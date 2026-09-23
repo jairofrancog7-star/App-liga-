@@ -1150,8 +1150,9 @@ function v246TerricolasChampionCard(m){
   '</article>';
 }
 function v261UniversidadChampionCard(m){
-  const photo='./assets/history/archive-v275/universidad-2013-team-720.webp?v=20260923-universidad-first-photo-v275';
-  const raw='https://raw.githubusercontent.com/jairofrancog7-star/App-liga-/main/assets/history/archive-v275/universidad-2013-team-720.webp?v=20260923-universidad-first-photo-v275';
+  const embedded=window.__UNIVERSIDAD_2013_B64||'';
+  const photo=embedded?'data:image/webp;base64,'+embedded:'./assets/history/archive-v260/universidad-vs-dinamo-final-veteranos-09-mar-2013.webp?v=20260923-universidad-fallback-v276';
+  const raw=photo;
   return '<article class="v35-history-moment v35-history-moment-photo v264-universidad-2013" data-v264-universidad-2013 '+
     'style="position:relative!important;overflow:hidden!important;isolation:isolate!important;'+
     'background-color:#07106f!important;background-image:url(&quot;'+raw+'&quot;)!important;'+
