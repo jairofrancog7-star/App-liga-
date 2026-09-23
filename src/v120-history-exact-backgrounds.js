@@ -45,7 +45,7 @@ const EXACT=[
   {need:['la pandilla de morales','16 sep 2019'],src:'./assets/history/archive-v249/la-pandilla-morales-campeon-liga-2019.jpg?v=20260923-pandilla-linces-v249',pos:'center 46%',photoOnly:true,scale:1.0,origin:'center 46%'},
   {need:['linces jr','16 sep 2019'],src:'./assets/history/archive-v249/linces-jr-campeon-liga-2019.jpg?v=20260923-pandilla-linces-v249',pos:'center 46%',photoOnly:true,scale:1.0,origin:'center 46%'},
   {need:['psv','02 oct 2021'],src:BASE134+'psv-campeon-campeones-veteranos-2020-2021.jpg',pos:'center 68%',photoOnly:true,scale:2.00,origin:'center 67%'},
-  {need:['la esperanza','25 sep 2021'],src:BASE134+'la-esperanza-campeon-liga-veteranos-2020-2021.jpg',pos:'72% 77%',photoOnly:true,scale:2.25,origin:'72% 77%'},
+  {need:['la esperanza','25 sep 2021'],src:'./assets/history/archive-v256/la-esperanza-campeon-liga-veteranos-25-sep-2021.webp?v=20260923-esperanza-2021-user-v260',pos:'center 44%',photoOnly:true,scale:1.0,origin:'center 44%'},
   {need:['juventus','16 feb 2020'],src:BASE134+'juventus-campeon-copa-primera-2019-2020.jpg',pos:'center 48%'},
   {need:['tavera','16 feb 2020'],src:BASE134+'tavera-campeon-copa-segunda-2019-2020.jpg',pos:'center 46%'},
   {need:['el alto','19 ene 2020'],src:BASE134+'el-alto-campeon-copa-intermedia-2020.jpg',pos:'center 69%',photoOnly:true,scale:2.05,origin:'center 68%'},
