@@ -36,6 +36,7 @@ const EXACT=[
   {need:['galacticos','09 feb 2025'],src:'./assets/history/archive-v203/galacticos-campeon-campeones-09-feb-2025.jpg?v=20260923-galacticos-real-v244',pos:'center 48%',photoOnly:true,scale:1.00,origin:'center 48%'},
   {need:['linces','04 mar 2024'],src:BASE202+'linces-campeon-copa-04-mar-2024.webp',pos:'center 46%',photoOnly:true,scale:1.0,origin:'center 46%'},
   {need:['boca jrs','04 may 2024'],src:BASE202+'boca-jrs-campeon-liga-v50-04-may-2024.webp',pos:'center 48%',photoOnly:true,scale:1.0,origin:'center 48%'},
+  {need:['psv','17 nov 2019'],src:'./assets/history/archive-v248/psv-campeon-copa-veteranos-17-nov-2019.webp?v=20260923-psv-copa2019-bg-v248',pos:'center 48%',photoOnly:true,scale:1.0,origin:'center 48%'},
   {need:['psv','02 oct 2021'],src:BASE134+'psv-campeon-campeones-veteranos-2020-2021.jpg',pos:'center 68%',photoOnly:true,scale:2.00,origin:'center 67%'},
   {need:['la esperanza','25 sep 2021'],src:BASE134+'la-esperanza-campeon-liga-veteranos-2020-2021.jpg',pos:'72% 77%',photoOnly:true,scale:2.25,origin:'72% 77%'},
   {need:['juventus','16 feb 2020'],src:BASE134+'juventus-campeon-copa-primera-2019-2020.jpg',pos:'center 48%'},
