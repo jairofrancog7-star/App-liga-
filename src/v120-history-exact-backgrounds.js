@@ -29,6 +29,10 @@ const ESPERANZA_2025_PHOTO='./assets/history/archive-v224/la-esperanza-campeon-c
 const BASE185='https://raw.githubusercontent.com/jairofrancog7-star/App-liga-/main/assets/history/archive-v185/';
 const SAN_JULIAN_2024=window.LJR_SAN_JULIAN_PHOTO||'https://raw.githubusercontent.com/jairofrancog7-star/App-liga-/main/assets/history/archive-v218/san-julian-campeon-copa-segunda-18-feb-2024.jpg?v=20260923-san-julian-v224';
 const EXACT=[
+  {need:['tavera fc','11 dic 2012'],src:'./assets/history/archive-v260/tavera-campeon-copa-segunda-11-dic-2012.webp?v=20260923-old-history-v260',pos:'center 47%',photoOnly:true,scale:1.0,origin:'center 47%'},
+  {need:['universidad vs dinamo','09 mar 2013'],src:'./assets/history/archive-v260/universidad-vs-dinamo-final-veteranos-09-mar-2013.webp?v=20260923-old-history-v260',pos:'center 47%',photoOnly:true,scale:1.0,origin:'center 47%'},
+  {need:['dhp','22 feb 2014'],src:'./assets/history/archive-v260/dhp-campeon-copa-segunda-22-feb-2014.webp?v=20260923-old-history-v260',pos:'center 36%',photoOnly:true,scale:0.78,origin:'center 36%'},
+  {need:['puros cuates','22 feb 2014'],src:'./assets/history/archive-v260/puros-cuates-campeon-copa-intermedia-22-feb-2014.webp?v=20260923-old-history-v260',pos:'center 34%',photoOnly:true,scale:0.78,origin:'center 34%'},
   {need:['juventus','26 nov 2012'],src:'./assets/history/archive-v261/juventus-campeon-primera-26-nov-2012.webp?v=20260923-juventus-hardfix-v261',pos:'center 56%',photoOnly:true,scale:1.0,origin:'center 56%'},
   {need:['puros cuates','11 ene 2015'],src:'./assets/history/archive-v258/puros-cuates-campeon-intermedia-11-ene-2015.webp?v=20260923-puros-cuates-2015-bg-v258',pos:'center 44%',photoOnly:true,scale:1.0,origin:'center 44%'},
   {need:['boavista','18 ene 2015'],src:'https://raw.githubusercontent.com/jairofrancog7-star/App-liga-/main/assets/history/archive-v251/boavista-campeon-primera-11-ene-2015.jpg?v=20260923-boavista-hardfix-v257',pos:'center 48%',photoOnly:true,scale:1.0,origin:'center 48%'},
