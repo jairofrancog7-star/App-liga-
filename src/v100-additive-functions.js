@@ -219,7 +219,7 @@ function toolsExtra(id='v100-more-extra'){
       button('📣','Fan Zone','Reacciones rápidas de la afición','fanzone')+
       button('📇','Directorio de delegados','Contactos guardados solo en tu equipo','delegates')+
       button('📲','Instalar app','Instalar la PWA en este dispositivo','install-app')+
-      button('📁','Historial','Resultados y partidos anteriores','', 'historyLog')+
+      button('📁','Historia','Temporadas, campeones, finales y archivo histórico','', 'history')+
       button('📊','Match Center','Partido oficial, marcador y cronología','', 'v4-matchcenter')+
       button('🖼️','Boletín PNG','Crear imagen lista para compartir','', 'publications')+
     '</div>'+
@@ -237,7 +237,7 @@ function toolsInline(){
     inlineTool('⏱️','Centro de jornada','Tiempo cronológico y operación del día','', 'matchday'),
     inlineTool('🧩','Pizarra táctica 3D','Tablero táctil 2D/3D, JSON y PNG','', 'tactics'),
     inlineTool('📺','Modo TV','Partido, tabla y datos oficiales','tv-mode'),
-    inlineTool('📁','Historial','Resultados y partidos anteriores','', 'historyLog'),
+    inlineTool('📁','Historia','Temporadas, campeones, finales y archivo histórico','', 'history'),
     inlineTool('📊','Match Center','Partido oficial, marcador y cronología','', 'v4-matchcenter'),
     inlineTool('🔔','Registrarse y recibir avisos','Categoría y equipo favorito','register-alerts'),
     inlineTool('🗓️','Programar partido','Borrador local de fecha, hora y cancha','schedule-match'),
