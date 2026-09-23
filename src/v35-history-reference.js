@@ -1109,7 +1109,33 @@ function historyNewestFirst(list,field){
     .map(x=>x.item);
 }
 
+function v227GalacticosChampionCard(m){
+  /* V227 — tarjeta independiente desde cero para Galácticos de Pozos.
+     No depende de los parches genéricos de fondos históricos. */
+  const local='./assets/history/archive-v203/galacticos-campeon-campeones-09-feb-2025.jpg?v=20260923-galacticos-card-v227';
+  const raw='https://raw.githubusercontent.com/jairofrancog7-star/App-liga-/main/assets/history/archive-v203/galacticos-campeon-campeones-09-feb-2025.jpg?v=20260923-galacticos-card-v227';
+  return '<article class="v227-galacticos-card" data-v227-galacticos-card>'+
+    '<img class="v227-galacticos-photo" src="'+local+'" alt="" aria-hidden="true" loading="eager" decoding="async" onerror="if(!this.dataset.fallback){this.dataset.fallback=\'1\';this.src=\''+raw+'\';}else{this.remove();}">'+
+    '<span class="v227-galacticos-shade" aria-hidden="true"></span>'+
+    '<div class="v227-galacticos-body">'+
+      '<div class="v227-galacticos-meta"><span class="v35-history-kind">'+esc(m.kind)+'</span><time class="v35-history-date">'+esc(m.date)+'</time></div>'+
+      '<h3>'+esc(m.title)+'</h3>'+
+      '<strong>'+esc(m.subtitle)+'</strong>'+
+      '<div class="v227-galacticos-status">'+
+        '<span><b>Ganador</b>'+esc(m.winner||m.title)+'</span>'+
+        '<span><b>Temporada</b>'+esc(m.season||'2025')+'</span>'+
+      '</div>'+
+      '<p>'+esc(m.detail)+'</p>'+
+    '</div>'+
+  '</article>';
+}
+function v227IsGalacticosChampion(m){
+  const n=v=>String(v||'').normalize('NFD').replace(/[\\u0300-\\u036f]/g,'').toLowerCase();
+  return n(m?.title).includes('galacticos de pozos') && n(m?.date).includes('09 feb 2025');
+}
+
 function historyMomentCard(m){
+  if(v227IsGalacticosChampion(m)) return v227GalacticosChampionCard(m);
   const esperanzaBgClass=(m.title==='La Esperanza'&&m.date==='08 nov 2025')?' v225-esperanza-bg':'';
   const championBg=m.kind==='CAMPEÓN'?championBackground(m.title,m.backgroundPhoto||''):null;
   const hasBg=!!(championBg?.url||m.backgroundPhoto);
