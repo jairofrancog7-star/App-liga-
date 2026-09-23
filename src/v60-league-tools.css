@@ -835,3 +835,36 @@
     font-size:13.5px!important;
   }
 }
+
+
+/* V188 — avisos verdes adaptados al azul, sin cambiar la estructura actual */
+.v188-weekly-subhead{
+  margin:26px 2px 4px;
+  padding-top:2px;
+}
+.v188-weekly-subhead small{
+  display:block;
+  margin-bottom:5px;
+  color:#1de0eb;
+  font-size:10px;
+  line-height:1;
+  font-weight:900;
+  letter-spacing:.15em;
+}
+.v188-weekly-subhead h2{
+  margin:0;
+  color:#fff;
+  font-size:24px;
+  line-height:1.05;
+  font-weight:850;
+  letter-spacing:-.025em;
+}
+.v188-weekly-alerts{margin-top:12px}
+.v188-weekly-alerts .v63-feature-card{
+  background:linear-gradient(180deg,rgba(18,26,139,.97),rgba(10,12,103,.97));
+  border-color:rgba(37,215,238,.18);
+}
+@media(max-width:390px){
+  .v188-weekly-subhead{margin-top:22px}
+  .v188-weekly-subhead h2{font-size:22px}
+}
