@@ -8,6 +8,7 @@ const BASE132='https://raw.githubusercontent.com/jairofrancog7-star/App-liga-/ma
 const BASE133='https://raw.githubusercontent.com/jairofrancog7-star/App-liga-/main/assets/history/archive-v133/';
 const BASE134='https://raw.githubusercontent.com/jairofrancog7-star/App-liga-/main/assets/history/archive-v134/';
 const BASE119='https://raw.githubusercontent.com/jairofrancog7-star/App-liga-/main/assets/history/archive-v119/';
+const BASE195='https://raw.githubusercontent.com/jairofrancog7-star/App-liga-/main/assets/history/archive-v195/';
 const EXACT=[
   {need:['psv','02 oct 2021'],src:BASE134+'psv-campeon-campeones-veteranos-2020-2021.jpg',pos:'center 73%'},
   {need:['la esperanza','25 sep 2021'],src:BASE134+'la-esperanza-campeon-liga-veteranos-2020-2021.jpg',pos:'center 72%'},
@@ -25,8 +26,9 @@ const EXACT=[
   {need:['linces','15 mar 2026'],src:BASE132+'linces-campeon-primera-2026.jpg',pos:'center 45%'},
   {need:['galacticos','15 mar 2026'],src:BASE132+'galacticos-subcampeon-primera-2026.jpg',pos:'center 45%'},
   {need:['salvajes','20 dic 2025'],src:BASE132+'salvajes-campeon-copa-2025.jpg',pos:'center 42%'},
+  {need:['la esperanza','08 nov 2025'],src:BASE195+'la-esperanza-campeon-veteranos50-2025-2026.jpg',pos:'center 46%'},
   {need:['juventus','20 sep 2025'],src:BASE132+'juventus-campeon-liga-veteranos-35-2025.jpg',pos:'center 43%'},
-  {need:['la huerta de cuenda','29 jun 2025'],src:BASE119+'la-huerta-finalista-2025.jpg',pos:'center 43%'},
+  {need:['la huerta de cuenda','29 jun 2025'],src:BASE195+'la-huerta-cuenda-campeon-segunda-2025.jpg',pos:'center 43%'},
   {need:['tavera fc','29 jun 2025'],src:BASE119+'tavera-finalista-2025.jpg',pos:'center 43%'},
   {need:['magisterio','09 jul 2016'],src:BASE+'magisterio-campeon-copa-2016.jpg',pos:'center 42%'},
   {need:['malvinas','28 feb 2016'],src:BASE+'malvinas-campeon-campeones-intermedia-2016.jpg',pos:'center 42%'},
