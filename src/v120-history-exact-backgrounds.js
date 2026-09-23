@@ -225,6 +225,38 @@ function forceManchester2024(){
   });
 }
 
+function forceManchester2025(){
+  const wanted='./assets/history/archive-v225/manchester-campeon-campeones-26-abr-2025.webp?v=20260923-manchester-bg-v226';
+  document.querySelectorAll('.v35-history-moment,.v35-champion-card,.v115-card').forEach(card=>{
+    const heading=norm(card.querySelector('h3,h4')?.textContent||'');
+    const date=norm(card.querySelector('time,.v35-history-date,.v35-champion-date,.v115-date')?.textContent||'');
+    const all=norm(card.textContent||'');
+    if(!heading.includes('manchester') || !(date.includes('26 abr 2025')||all.includes('26 abr 2025')))return;
+
+    let img=card.querySelector('.v120-exact-event-bg,.v35-history-bg-photo,.v35-champion-bg-photo');
+    if(!img){
+      img=document.createElement('img');
+      img.className='v120-exact-event-bg v120-photo-only-bg';
+      card.prepend(img);
+    }
+    img.src=wanted;
+    img.alt='Manchester · Campeón de Campeones · Veteranos 50 y más · 26 abr 2025';
+    img.loading='eager';
+    img.decoding='async';
+    img.style.objectPosition='center 46%';
+    img.style.transform='scale(1)';
+    img.style.transformOrigin='center 46%';
+
+    card.style.backgroundImage='linear-gradient(rgba(4,8,70,.12),rgba(4,8,70,.46)),url("'+wanted+'")';
+    card.style.backgroundSize='cover';
+    card.style.backgroundPosition='center 46%';
+    card.style.backgroundRepeat='no-repeat';
+
+    card.classList.add('v120-has-exact-bg','v120-photo-only-card','v35-history-moment-photo','v35-champion-card-photo');
+    card.dataset.v226Manchester='1';
+  });
+}
+
 function forceLobosJrs2025(){
   const wanted=BASE207+'lobos-jrs-campeon-relampago-segunda-16-feb-2025.webp?v=20260923-lobos-jrs-photo-v219';
   document.querySelectorAll('.v35-history-moment,.v35-champion-card,.v115-card').forEach(card=>{
@@ -258,6 +290,7 @@ function patch(){
   document.querySelectorAll('.v35-history-moment,.v35-champion-card,.v115-card').forEach(apply);
   forceGalacticosCDC();
   forceManchester2024();
+  forceManchester2025();
   forceLobosJrs2025();
 }
 let raf=0;
