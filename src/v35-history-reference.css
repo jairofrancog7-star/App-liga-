@@ -2323,3 +2323,29 @@
   z-index:2!important;
   background:transparent!important;
 }
+
+
+/* V261 — Juventus · Campeón Primera Fuerza · 26 nov 2012. */
+.v35-history-moment.v261-juventus2012-card{
+  background-color:#07075d!important;
+  background-image:
+    linear-gradient(180deg,rgba(3,6,50,.04) 0%,rgba(3,6,50,.08) 34%,rgba(3,6,50,.30) 70%,rgba(3,6,50,.72) 100%),
+    linear-gradient(90deg,rgba(3,6,50,.20) 0%,rgba(3,6,50,.05) 74%,rgba(3,6,50,0) 100%),
+    url('../assets/history/archive-v261/juventus-campeon-primera-26-nov-2012.webp?v=20260923-juventus-hardfix-v261')!important;
+  background-size:cover!important;
+  background-position:center 56%!important;
+  background-repeat:no-repeat!important;
+}
+.v35-history-moment.v261-juventus2012-card .v35-history-bg-photo{
+  display:block!important;visibility:visible!important;opacity:1!important;
+  object-fit:cover!important;object-position:center 56%!important;
+}
+.v35-history-moment.v261-juventus2012-card .v35-history-moment-shade{
+  display:block!important;
+  background:
+    linear-gradient(180deg,rgba(2,5,45,.02) 0%,rgba(2,5,45,.06) 34%,rgba(2,5,45,.28) 70%,rgba(2,5,45,.62) 100%),
+    linear-gradient(90deg,rgba(2,5,45,.16) 0%,rgba(2,5,45,.03) 74%,rgba(2,5,45,0) 100%)!important;
+}
+.v35-history-moment.v261-juventus2012-card .v35-history-moment-content{
+  position:relative!important;z-index:2!important;background:transparent!important;
+}
