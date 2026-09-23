@@ -47,7 +47,7 @@ const EXACT=[
   {need:['real cerrito de gasca','15 dic 2013'],src:BASE+'real-cerrito-campeon-2013.jpg',pos:'center 38%'},
   {need:['la esperanza','14 jun 2014'],src:BASE+'la-esperanza-campeon-copa-veteranos-2014.jpg',pos:'center 42%'},
   {need:['boavista','12 abr 2025'],src:BASE+'boavista-fc-campeon-2025.jpg',pos:'center 42%'},
-  {need:['galacticos','08 jun 2025'],src:BASE196+'galacticos-pozos-campeon-copa-2025.jpg',pos:'center 44%'},
+  {need:['galacticos','08 jun 2025'],src:'https://raw.githubusercontent.com/jairofrancog7-star/App-liga-/main/assets/history/archive-v204/galacticos-pozos-campeon-copa-2025-entrega.webp',pos:'center 43%'},
   {need:['pozos fc','15 sep 2024'],src:BASE199+'pozos-fc-campeon-liga-veteranos35-15-sep-2024.jpg',pos:'center 47%'},
   {need:['herreras','torneo por confirmar'],src:BASE+'herreras-fc-campeon-relampago-intermedia-2025.jpg',pos:'center 44%'},
   {need:['lobos jrs','16 feb 2025'],src:BASE197+'lobos-jrs-campeon-relampago-segunda-2025.svg',pos:'center 43%'},
