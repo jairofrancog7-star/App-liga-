@@ -21,7 +21,7 @@ const BASE214='https://raw.githubusercontent.com/jairofrancog7-star/App-liga-/ma
 const BASE216='https://raw.githubusercontent.com/jairofrancog7-star/App-liga-/main/assets/history/archive-v216/';
 const BASE222='https://raw.githubusercontent.com/jairofrancog7-star/App-liga-/main/assets/history/archive-v222/';
 const BASE202='https://raw.githubusercontent.com/jairofrancog7-star/App-liga-/main/assets/history/archive-v202/';
-const ESPERANZA_2025_PHOTO='./assets/history/archive-v224/la-esperanza-campeon-copa-veteranos50-08-nov-2025.webp?v=20260923-esperanza-bg-v225';
+const ESPERANZA_2025_PHOTO=window.LJR_ESPERANZA_2025_PHOTO||'./assets/history/archive-v224/la-esperanza-campeon-copa-veteranos50-08-nov-2025.webp?v=20260923-esperanza-inline-v226';
 const BASE185='https://raw.githubusercontent.com/jairofrancog7-star/App-liga-/main/assets/history/archive-v185/';
 const SAN_JULIAN_2024=window.LJR_SAN_JULIAN_PHOTO||'https://raw.githubusercontent.com/jairofrancog7-star/App-liga-/main/assets/history/archive-v218/san-julian-campeon-copa-segunda-18-feb-2024.jpg?v=20260923-san-julian-v224';
 const EXACT=[
@@ -327,11 +327,54 @@ function forceLobosJrs2025(){
 }
 /* V219_LOBOS_JRS_FORCE */
 
+
+function forceEsperanza2025(){
+  const wanted=window.LJR_ESPERANZA_2025_PHOTO||ESPERANZA_2025_PHOTO;
+  if(!wanted)return;
+  document.querySelectorAll('.v35-history-moment,.v35-champion-card,.v115-card').forEach(card=>{
+    const heading=norm(card.querySelector('h3,h4')?.textContent||'');
+    const date=norm(card.querySelector('time,.v35-history-date,.v35-champion-date,.v115-date')?.textContent||'');
+    const all=norm(card.textContent||'');
+    if(!heading.includes('la esperanza') || !(date.includes('08 nov 2025')||all.includes('08 nov 2025')))return;
+    let img=card.querySelector('.v120-exact-event-bg,.v35-history-bg-photo,.v35-champion-bg-photo');
+    if(!img){
+      img=document.createElement('img');
+      img.className='v120-exact-event-bg v120-photo-only-bg';
+      img.alt='La Esperanza · Campeón de Copa · Veteranos 50 y más · 08 nov 2025';
+      card.prepend(img);
+    }
+    img.classList.add('v120-exact-event-bg','v120-photo-only-bg');
+    img.loading='eager';
+    img.decoding='async';
+    img.src=wanted;
+    img.style.setProperty('object-fit','cover','important');
+    img.style.setProperty('object-position','center 50%','important');
+    img.style.setProperty('width','100%','important');
+    img.style.setProperty('height','100%','important');
+    img.style.setProperty('position','absolute','important');
+    img.style.setProperty('inset','0','important');
+    img.style.setProperty('z-index','0','important');
+    img.style.setProperty('transform','scale(1)','important');
+    img.style.setProperty('transform-origin','center 50%','important');
+    card.classList.add('v120-has-exact-bg','v120-photo-only-card','v35-history-moment-photo','v225-esperanza-bg');
+    card.dataset.v226Esperanza='1';
+    let shade=card.querySelector(':scope > .v120-exact-shade');
+    if(!shade){
+      shade=document.createElement('span');
+      shade.className='v120-exact-shade';
+      shade.setAttribute('aria-hidden','true');
+      card.insertBefore(shade,img.nextSibling);
+    }
+  });
+}
+/* V226_ESPERANZA_FORCE */
+
 /* V213_GALACTICOS_CDC_FORCE */
 function patch(){
   if((location.hash||'').indexOf('history')<0 && (location.hash||'').indexOf('safe-about')<0)return;
   installStyle();
   document.querySelectorAll('.v35-history-moment,.v35-champion-card,.v115-card').forEach(apply);
+  forceEsperanza2025();
   forceGalacticosCDC();
   forceManchester2024();
   forceManchester2025();
