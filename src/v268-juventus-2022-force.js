@@ -1,7 +1,7 @@
 (()=>{
 'use strict';
-const PHOTO=location.origin+'/App-liga-/assets/history/archive-v268/juventus-campeon-liga-primera-17-abr-2022.webp?v=20260923-juventus-liga-2022-v268';
-const RAW='https://raw.githubusercontent.com/jairofrancog7-star/App-liga-/main/assets/history/archive-v268/juventus-campeon-liga-primera-17-abr-2022.webp?v=20260923-juventus-liga-2022-v268';
+const PHOTO=location.origin+'/App-liga-/assets/history/archive-v269/juventus-campeon-liga-primera-17-abr-2022.webp?v=20260923-juventus-restore-v269';
+const RAW='https://raw.githubusercontent.com/jairofrancog7-star/App-liga-/main/assets/history/archive-v269/juventus-campeon-liga-primera-17-abr-2022.webp?v=20260923-juventus-restore-v269';
 const norm=s=>String(s||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/\s+/g,' ').trim();
 function target(card){
   const h=norm(card.querySelector('h3,h4')?.textContent||'');
@@ -15,7 +15,7 @@ function apply(card){
     card.querySelectorAll('.v120-exact-event-bg,.v35-history-bg-photo,.v35-champion-bg-photo').forEach(n=>n.remove());
     img=document.createElement('img');
     img.className='v35-history-bg-photo v120-exact-event-bg v120-photo-only-bg v268-juventus-2022-bg';
-    img.alt='Juventus · Campeón de Liga · Primera Fuerza · 17 abr 2022';
+    img.alt=''; img.setAttribute('aria-hidden','true');
     img.loading='eager'; img.decoding='async';
     img.onerror=()=>{ if(img.src!==RAW) img.src=RAW; };
     card.prepend(img);
@@ -48,7 +48,13 @@ function apply(card){
     n.style.setProperty('background','transparent','important');
   });
   card.classList.add('v35-history-moment-photo','v120-has-exact-bg','v120-photo-only-card');
+  card.querySelectorAll('.v35-history-status span').forEach(n=>{
+    n.style.setProperty('background','rgba(3,8,70,.58)','important');
+    n.style.setProperty('backdrop-filter','blur(1.5px)','important');
+    n.style.setProperty('-webkit-backdrop-filter','blur(1.5px)','important');
+  });
   card.dataset.v268Juventus2022='1';
+  card.dataset.v269Juventus2022='1';
 }
 function patch(){
   if(!/history|safe-about/.test(location.hash||'')) return;
