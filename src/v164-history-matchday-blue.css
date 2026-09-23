@@ -253,6 +253,58 @@
     text-align:center;
   }
 
+  .v164-history-team{
+    min-width:0;
+    display:flex!important;
+    align-items:center;
+    gap:7px;
+    overflow:visible!important;
+    white-space:normal!important;
+  }
+
+  .v164-history-team.away{
+    flex-direction:row-reverse;
+    text-align:right!important;
+  }
+
+  .v164-history-team em{
+    min-width:0;
+    overflow:hidden;
+    color:#fff;
+    font-size:11px;
+    font-style:normal;
+    font-weight:760;
+    line-height:1.15;
+    text-overflow:ellipsis;
+    white-space:nowrap;
+  }
+
+  .v164-history-logo{
+    width:34px;
+    height:34px;
+    min-width:34px;
+    display:grid;
+    place-items:center;
+    overflow:hidden;
+    border:2px solid rgba(32,223,233,.58);
+    border-radius:50%;
+    background:#0b2e8d;
+  }
+
+  .v164-history-logo img{
+    width:29px;
+    height:29px;
+    object-fit:contain;
+    object-position:center;
+  }
+
+  .v164-history-logo.fallback b{
+    color:#78edf4;
+    font-size:8px;
+    font-weight:900;
+    letter-spacing:.02em;
+  }
+
   .v164-history-empty{
     padding:28px 18px;
     border:1px solid rgba(79,98,193,.28);
