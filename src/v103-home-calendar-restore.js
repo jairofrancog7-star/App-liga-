@@ -12,6 +12,15 @@ let db=window.LJR_OFFICIAL_DATA||null;
 let loading=null;
 let viewDate=new Date();
 let selectedIso='';
+let selectedCalendarCategory='all';
+const CALENDAR_CATEGORY_ORDER=['3','5','4','2','1'];
+const CALENDAR_CATEGORY_LABELS={
+  '3':'Primera Fuerza',
+  '5':'Intermedia',
+  '4':'Segunda Fuerza',
+  '2':'Veteranos 35+',
+  '1':'Veteranos 50+'
+};
 
 const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const norm=v=>String(v??'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[^a-z0-9]+/g,' ').trim();
@@ -171,19 +180,53 @@ function fixtureDate(value){
   };
 }
 
-function calendarGames(){
-  const rows=db?.categories?.['3']?.fixtures?.[0]?.rows||[];
-  return rows.map((r,i)=>{
-    const d=fixtureDate(r?.[8]);if(!d)return null;
-    const hs=String(r?.[3]??'').trim(),as=String(r?.[5]??'').trim();
-    const played=/^\d+$/.test(hs)||/^\d+$/.test(as);
-    return {
-      id:'official-'+i,iso:d.iso,year:d.year,month:d.month,day:d.day,time:d.time,
-      round:String(r?.[1]||''),home:String(r?.[2]||'').trim(),away:String(r?.[6]||'').trim(),
-      homeScore:/^\d+$/.test(hs)?hs:'0',awayScore:/^\d+$/.test(as)?as:'0',
-      played,venue:String(r?.[7]||'Campo por confirmar').trim()||'Campo por confirmar'
-    };
-  }).filter(Boolean);
+function calendarGames(categoryId=selectedCalendarCategory){
+  const out=[];
+  const cats=db?.categories||{};
+  CALENDAR_CATEGORY_ORDER.forEach(catId=>{
+    if(categoryId!=='all'&&String(categoryId)!==String(catId))return;
+    const cat=cats?.[catId]||{};
+    const catName=String(cat.name||CALENDAR_CATEGORY_LABELS[catId]||'Categoría').trim();
+    (cat.fixtures||[]).forEach((group,groupIndex)=>{
+      (group?.rows||[]).forEach((r,rowIndex)=>{
+        if(!r?.[2]||!r?.[6])return;
+        const d=fixtureDate(r?.[8]);if(!d)return;
+        const hs=String(r?.[3]??'').trim(),as=String(r?.[5]??'').trim();
+        const played=/^\d+$/.test(hs)&&/^\d+$/.test(as);
+        out.push({
+          id:'official-'+catId+'-'+groupIndex+'-'+rowIndex,
+          categoryId:String(catId),
+          category:catName,
+          iso:d.iso,year:d.year,month:d.month,day:d.day,time:d.time,
+          round:String(r?.[1]||''),
+          home:String(r?.[2]||'').trim(),
+          away:String(r?.[6]||'').trim(),
+          homeScore:/^\d+$/.test(hs)?hs:'',
+          awayScore:/^\d+$/.test(as)?as:'',
+          played,
+          venue:String(r?.[7]||'Campo por confirmar').trim()||'Campo por confirmar'
+        });
+      });
+    });
+  });
+  return out.sort((a,b)=>(a.iso+a.time+a.category).localeCompare(b.iso+b.time+b.category));
+}
+
+function calendarCategoryLabel(){
+  if(selectedCalendarCategory==='all')return 'Todas las categorías';
+  return db?.categories?.[selectedCalendarCategory]?.name||
+    CALENDAR_CATEGORY_LABELS[selectedCalendarCategory]||
+    'Categoría';
+}
+
+function calendarCategoryStrip(){
+  const available=CALENDAR_CATEGORY_ORDER.filter(id=>db?.categories?.[id]);
+  const items=[['all','Todas'],...available.map(id=>[id,db?.categories?.[id]?.name||CALENDAR_CATEGORY_LABELS[id]])];
+  return '<div class="v103-cal-categories" aria-label="Filtrar calendario por categoría">'+
+    items.map(([id,label])=>
+      '<button type="button" class="'+(selectedCalendarCategory===id?'active':'')+'" data-v103-category="'+esc(id)+'">'+esc(label)+'</button>'
+    ).join('')+
+  '</div>';
 }
 
 function teamMark(name){
@@ -209,10 +252,10 @@ function monthName(month){
 
 function matchList(iso){
   const games=calendarGames().filter(g=>g.iso===iso);
-  if(!games.length)return '<div class="v103-cal-empty">No hay partidos oficiales publicados para esta fecha.</div>';
+  if(!games.length)return '<div class="v103-cal-empty">No hay partidos oficiales publicados para esta fecha en '+esc(calendarCategoryLabel())+'.</div>';
   return '<div class="v103-cal-match-list">'+games.map(g=>
-    '<article class="v103-cal-match">'+
-      '<div class="v103-cal-round">Jornada '+esc(g.round||'—')+' · '+esc(g.venue)+'</div>'+
+    '<article class="v103-cal-match" data-category="'+esc(g.categoryId)+'">'+
+      '<div class="v103-cal-round"><span>'+esc(g.category)+'</span><b>Jornada '+esc(g.round||'—')+' · '+esc(g.venue)+'</b></div>'+
       '<div class="v103-cal-pair">'+
         '<div>'+teamMark(g.home)+'<b>'+esc(g.home)+'</b></div>'+
         '<strong>'+(g.played?esc(g.homeScore+'–'+g.awayScore):esc(g.time))+'</strong>'+
@@ -251,14 +294,20 @@ function renderCalendar(){
     '<section class="v70-calendar-page v103-calendar-page" data-v103-calendar>'+
       '<div class="v103-calendar-head">'+
         '<button type="button" data-v103-month="-1" aria-label="Mes anterior">‹</button>'+
-        '<div class="v70-calendar-title"><span class="v70-calendar-kicker">CALENDARIO</span><h1>'+monthName(m)+' '+y+'</h1><p>Jornadas y partidos oficiales de Primera Fuerza.</p></div>'+
+        '<div class="v70-calendar-title"><span class="v70-calendar-kicker">CALENDARIO</span><h1>'+monthName(m)+' '+y+'</h1><p>Jornadas y partidos oficiales · '+esc(calendarCategoryLabel())+'.</p></div>'+
         '<button type="button" data-v103-month="1" aria-label="Mes siguiente">›</button>'+
       '</div>'+
+      calendarCategoryStrip()+
       '<div class="v4-week">'+['L','M','X','J','V','S','D'].map(x=>'<b>'+x+'</b>').join('')+'</div>'+
       '<div class="v4-calendar">'+cells+'</div>'+
       '<div class="v103-cal-selected"><h2>Partidos del '+selectedIso.split('-').reverse().join('/')+'</h2>'+matchList(selectedIso)+'</div>'+
     '</section>';
 
+  root.querySelectorAll('[data-v103-category]').forEach(b=>b.addEventListener('click',()=>{
+    selectedCalendarCategory=b.dataset.v103Category||'all';
+    selectedIso='';
+    renderCalendar();
+  }));
   root.querySelectorAll('[data-v103-date]').forEach(b=>b.addEventListener('click',()=>{
     selectedIso=b.dataset.v103Date||selectedIso;renderCalendar();
   }));
