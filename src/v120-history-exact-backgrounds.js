@@ -5,6 +5,7 @@
 
 const BASE='https://raw.githubusercontent.com/jairofrancog7-star/App-liga-/main/assets/history/archive-v120/';
 const BASE132='https://raw.githubusercontent.com/jairofrancog7-star/App-liga-/main/assets/history/archive-v132/';
+const BASE197='https://raw.githubusercontent.com/jairofrancog7-star/App-liga-/main/assets/history/archive-v197/';
 const BASE133='https://raw.githubusercontent.com/jairofrancog7-star/App-liga-/main/assets/history/archive-v133/';
 const BASE134='https://raw.githubusercontent.com/jairofrancog7-star/App-liga-/main/assets/history/archive-v134/';
 const BASE119='https://raw.githubusercontent.com/jairofrancog7-star/App-liga-/main/assets/history/archive-v119/';
@@ -38,7 +39,8 @@ const EXACT=[
   {need:['la esperanza','14 jun 2014'],src:BASE+'la-esperanza-campeon-copa-veteranos-2014.jpg',pos:'center 42%'},
   {need:['boavista','12 abr 2025'],src:BASE+'boavista-fc-campeon-2025.jpg',pos:'center 42%'},
   {need:['galacticos','08 jun 2025'],src:BASE196+'galacticos-pozos-campeon-copa-2025.jpg',pos:'center 44%'},
-  {need:['herreras','09 feb 2025'],src:BASE+'herreras-fc-campeon-relampago-intermedia-2025.jpg',pos:'center 42%'},
+  {need:['herreras','04 feb 2025'],src:BASE+'herreras-fc-campeon-relampago-intermedia-2025.jpg',pos:'center 42%'},
+  {need:['lobos jrs','16 feb 2025'],src:BASE197+'lobos-jrs-campeon-relampago-segunda-2025.svg',pos:'center 43%'},
   
   {need:['deportivo cg','19 sep 2026'],src:BASE+'deportivo-cg-campeon-liga-2025-2026.jpg',pos:'center 42%'},
   {need:['cerrito de gasca','19 sep 2026'],src:BASE+'deportivo-cg-campeon-liga-2025-2026.jpg',pos:'center 42%'},
