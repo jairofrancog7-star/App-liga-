@@ -1109,6 +1109,33 @@ function historyNewestFirst(list,field){
     .map(x=>x.item);
 }
 
+function v229ManchesterChampionCard(m){
+  /* V229 — tarjeta independiente desde cero para Manchester · 26 abr 2025.
+     Usa la foto exacta ya guardada en el repositorio y no depende
+     del sistema genérico de fondos ni de los parches anteriores. */
+  const local='./assets/history/archive-v225/manchester-campeon-campeones-26-abr-2025.webp?v=20260923-manchester-card-v229';
+  const raw='https://raw.githubusercontent.com/jairofrancog7-star/App-liga-/main/assets/history/archive-v225/manchester-campeon-campeones-26-abr-2025.webp?v=20260923-manchester-card-v229';
+  const raw216='https://raw.githubusercontent.com/jairofrancog7-star/App-liga-/main/assets/history/archive-v216/manchester-campeon-campeones-26-abr-2025.webp?v=20260923-manchester-card-v229b';
+  return '<article class="v229-manchester-card" data-v229-manchester-card>'+
+    '<img class="v229-manchester-photo" src="'+local+'" alt="" aria-hidden="true" loading="eager" decoding="async" onerror="if(!this.dataset.f1){this.dataset.f1=\'1\';this.src=\''+raw+'\';}else if(!this.dataset.f2){this.dataset.f2=\'1\';this.src=\''+raw216+'\';}else{this.remove();}">'+
+    '<span class="v229-manchester-shade" aria-hidden="true"></span>'+
+    '<div class="v229-manchester-body">'+
+      '<div class="v229-manchester-meta"><span class="v35-history-kind">'+esc(m.kind)+'</span><time class="v35-history-date">'+esc(m.date)+'</time></div>'+
+      '<h3>'+esc(m.title)+'</h3>'+
+      '<strong>'+esc(m.subtitle)+'</strong>'+
+      '<div class="v229-manchester-status">'+
+        '<span><b>Ganador</b>'+esc(m.winner||m.title)+'</span>'+
+        '<span><b>Temporada</b>'+esc(m.season||'2025')+'</span>'+
+      '</div>'+
+      '<p>'+esc(m.detail)+'</p>'+
+    '</div>'+
+  '</article>';
+}
+function v229IsManchesterChampion(m){
+  const n=v=>String(v||'').normalize('NFD').replace(/[\\u0300-\\u036f]/g,'').toLowerCase();
+  return n(m?.title)==='manchester' && n(m?.date).includes('26 abr 2025');
+}
+
 function v228EsperanzaChampionCard(m){
   /* V228 — tarjeta independiente desde cero para La Esperanza.
      La foto se inyecta como <img> real desde el data-URL armado antes de cargar Historia.
@@ -1162,6 +1189,7 @@ function v227IsGalacticosChampion(m){
 }
 
 function historyMomentCard(m){
+  if(v229IsManchesterChampion(m)) return v229ManchesterChampionCard(m);
   if(v228IsEsperanzaChampion(m)) return v228EsperanzaChampionCard(m);
   if(v227IsGalacticosChampion(m)) return v227GalacticosChampionCard(m);
   const esperanzaBgClass=(m.title==='La Esperanza'&&m.date==='08 nov 2025')?' v225-esperanza-bg':'';
