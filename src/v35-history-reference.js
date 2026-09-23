@@ -297,7 +297,7 @@ const historyMoments=[
 {kind:'CAMPEÓN',date:'03 dic 2012',season:'2012',winner:'Valencia',title:'Valencia',subtitle:'Campeón de Copa · Categoría Intermedia',detail:'Publicación de Golazo Liga del 3 de diciembre de 2012: “Felicidades al equipo Valencia, campeón de Copa, categoría Intermedia”. Fotografía exacta aportada por el usuario.',backgroundPhoto:'./assets/history/archive-v282/valencia-campeon-copa-intermedia-03-dic-2012.webp?v=20260923-valencia-copa-2012-v282',image:''},
 {kind:'CAMPEÓN',date:'26 nov 2012',season:'2012',winner:'Juventus',title:'Juventus',subtitle:'Campeón · Primera Fuerza',detail:'¡¡FELICIDADES AL CAMPEÓN!! EQUIPO JUVENTUS · PRIMERA FUERZA.',backgroundPhoto:'./assets/history/archive-v261/juventus-campeon-primera-26-nov-2012.webp?v=20260923-juventus-restore-card-v272',image:HIST_ROOT+'assets/official-logos/juventus.png'},
 {kind:'CAMPEÓN',date:'11 dic 2012',season:'2012',winner:'Tavera FC',title:'Tavera FC',subtitle:'Campeón de Copa · Categoría Segunda',detail:'Golazo Liga felicitó al equipo Tavera como campeón de Copa de la Categoría Segunda el 11 de diciembre de 2012.',backgroundPhoto:'./assets/history/archive-v260/tavera-campeon-copa-segunda-11-dic-2012.webp?v=20260923-old-history-v260',image:HIST_ROOT+'assets/official-logos/tavera-fc.png'},
-  {kind:'FINAL',date:'22 feb 2014',season:'2014',winner:'Ganador por confirmar',title:'Abejas Pozos vs Juventus FC Jr.',subtitle:'Gran Final · Torneo de Copa 2014 · Primera Fuerza',detail:'El archivo de Golazo Liga confirma que Abejas Pozos y Juventus FC Jr. disputaron la final de Copa 2014 de Primera Fuerza. Los comentarios recuperados muestran apoyo y pronósticos para ambos equipos —incluido “Juventus ganará”, “Vamos Abejas” y una respuesta de Abejas Pozos diciendo que lucharían hasta el final por ganar—, pero no contienen una afirmación inequívoca del resultado. Por eso el ganador queda pendiente hasta localizar la publicación de campeón o un marcador final.'},
+  {kind:'FINAL',date:'22 feb 2014',season:'2014',winner:'Abejas Pozos',title:'Abejas Pozos vs Juventus FC Jr.',subtitle:'Gran Final · Torneo de Copa 2014 · Primera Fuerza',detail:'Abejas Pozos ganó la Gran Final de Copa 2014 de Primera Fuerza frente a Juventus FC Jr. el 22 de febrero de 2014.',trophy:ASSETS.trophy},
   {kind:'PENALES',date:'23 feb 2013',title:'Magisterio 4–2 Boavista',subtitle:'0–0 en tiempo reglamentario · tanda de penales',detail:'Golazo Liga registró empate 0–0 en tiempo reglamentario y victoria de Magisterio 4–2 en la tanda de penales.'},
   {kind:'CAMPEÓN',date:'15 dic 2013',season:'2013',winner:'Real Cerrito de Gasca',title:'Real Cerrito de Gasca',subtitle:'Campeón · Segunda Fuerza',detail:'Golazo Liga publicó al capitán “Nudo” recibiendo el trofeo de campeón de Segunda Fuerza. En una actualización de la final, Real Cerrito vencía 3–0 a DHP al minuto 35.',backgroundPhoto:HIST_MEDIA+'archive-v120/real-cerrito-campeon-2013.jpg',image:HIST_ROOT+'assets/teams/deportivo-cg.webp'},
   {kind:'CAMPEÓN',date:'09 mar 2013',season:'2013',winner:'Universidad',title:'Universidad',subtitle:'Campeón de Veteranos · Final vs Dinamo · Unidad Deportiva Sur · 16:00',detail:'Dato e imagen aportados por el usuario: Universidad ganó la final de Veteranos frente a Dinamo el sábado 9 de marzo de 2013 en la Unidad Deportiva Sur. La fotografía corresponde al equipo campeón con el trofeo.',backgroundPhoto:'./assets/history/archive-v275/universidad-2013-team-720.webp?v=20260923-universidad-first-photo-v275'},
@@ -1196,10 +1196,11 @@ function historyMomentCard(m){
   const esperanzaBgClass=(m.title==='La Esperanza'&&m.date==='08 nov 2025')?' v225-esperanza-bg':'';
   const manchester2024BgClass=(m.title==='Manchester'&&m.date==='09 nov 2024')?' v240-manchester-2024-bg':'';
   const psv2019BgClass=(m.title==='PSV'&&m.date==='17 nov 2019')?' v249-psv2019-card':'';
+  const abejas2014Class=(m.title==='Abejas Pozos vs Juventus FC Jr.'&&m.date==='22 feb 2014')?' v286-abejas-2014-final':'';
   const championBg=m.kind==='CAMPEÓN'?championBackground(m.title,m.backgroundPhoto||''):null;
   const hasBg=!!(championBg?.url||m.backgroundPhoto);
   const bgExact=!!championBg?.exact;
-  return '<article class="v35-history-moment '+(hasBg?'v35-history-moment-photo ':'')+((hasBg&&!bgExact)?'v35-history-moment-reference':'')+esperanzaBgClass+manchester2024BgClass+psv2019BgClass+'">'+
+  return '<article class="v35-history-moment '+(hasBg?'v35-history-moment-photo ':'')+((hasBg&&!bgExact)?'v35-history-moment-reference':'')+esperanzaBgClass+manchester2024BgClass+psv2019BgClass+abejas2014Class+'">'+
     (m.kind==='CAMPEÓN'?championBgImg(m.title,m.backgroundPhoto||'',m.season||m.date,'v35-history-bg-photo'):(m.backgroundPhoto?'<img class="v35-history-bg-photo v35-bg-exact" src="'+m.backgroundPhoto+'" alt="'+esc(m.title)+' · archivo histórico" loading="lazy" decoding="async">':''))+
     '<div class="v35-history-moment-shade" aria-hidden="true"></div>'+
     '<div class="v35-history-moment-content">'+
@@ -1208,7 +1209,7 @@ function historyMomentCard(m){
       '<h3>'+esc(m.title)+'</h3>'+
       '<strong>'+esc(m.subtitle)+'</strong>'+
       ((m.winner||m.season)?'<div class="v35-history-status">'+
-        (m.winner?'<span><b>Ganador</b>'+esc(m.winner)+'</span>':'')+
+        (m.winner?'<span class="'+(m.trophy?'v286-winner-with-trophy':'')+'">'+(m.trophy?'<img class="v286-winner-trophy" src="'+esc(m.trophy)+'" alt="" aria-hidden="true">':'')+'<b>Ganador</b>'+esc(m.winner)+'</span>':'')+
         (m.season?'<span><b>Temporada</b>'+esc(m.season)+'</span>':'')+
       '</div>':'')+
       '<p>'+esc(m.detail)+'</p>'+
