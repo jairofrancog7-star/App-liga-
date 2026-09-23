@@ -166,7 +166,7 @@ const HOME_CARDS=[
  {icon:'calendar',title:'Junta semanal de liga · martes',sub:'Todos los martes · asistencia, orden del día y acuerdos',action:'meeting'},
  {icon:'video',title:'Semifinales, finales y momentos',sub:'Galería recuperada',route:'moments'},
  {icon:'history',title:'Historia',sub:'Temporadas, campeones, finales y archivo histórico',route:'history'},
- {icon:'history',title:'Historia',sub:'Resultados y partidos anteriores',route:'historyLog'},
+ {icon:'history',title:'Historial',sub:'Resultados y partidos anteriores',route:'historyLog'},
  {icon:'match',title:'Match Center real',sub:'Partido oficial, marcador y contexto',route:'v4-matchcenter'},
  {icon:'tactics',title:'Tácticas 2D / 3D',sub:'Pizarra azul interactiva',route:'tactics'},
  {icon:'trophy',title:'Copa + escenarios',sub:'Liguilla y simulación',route:'bracketBuilder'},
@@ -217,7 +217,7 @@ const MORE_CARDS=[
  {icon:'news',title:'Avisos',sub:'Noticias y comunicados',route:'news'},
  {icon:'video',title:'Videos',sub:'Momentos y archivo',route:'moments'},
  {icon:'history',title:'Historia',sub:'Temporadas, campeones y finales',route:'history'},
- {icon:'history',title:'Historia',sub:'Resultados y partidos anteriores',route:'historyLog'},
+ {icon:'history',title:'Historial',sub:'Resultados y partidos anteriores',route:'historyLog'},
  {icon:'match',title:'Match Center real',sub:'Partido oficial, marcador y contexto',route:'v4-matchcenter'},
  {icon:'admin',title:'JR Control',sub:'Centro operativo',route:'jrControl'},
  {icon:'card',title:'Alta rápida',sub:'Registro y credencial de jugador',route:'credentialBuilder'},
@@ -270,7 +270,7 @@ function block(r){
  else if(r==='teams'||r==='players'||r==='teamDetail'){title='Equipos y jugadores · herramientas';desc='Plantillas, alineaciones, credenciales y encargados, siempre debajo del contenido existente.';cards=TEAM_CARDS;asset='v38-soccer-teams.mp4'}
  else if(r==='match'){title='Match Center · herramientas del partido';desc='Timeline, alineaciones, acta, incidencias, clima y operación.';cards=MATCH_CARDS;asset='v38-soccer-matchday.mp4'}
  else if(r==='stats'||r==='scorers'||r==='rankings'||r==='v38Stats'){title='Datos y rendimiento';desc='Tabla, goleadores, exportación y lectura de temporada.';cards=[...COMP_CARDS.filter(x=>['leagueData','stats','scorers','tableExport'].includes(x.route)),{icon:'sim',title:'Escenarios',sub:'Simulación local',route:'simulator'}];asset='v38-soccer-stats.mp4'}
- else if(r==='moments'){k='MOMENTOS DE LA LIGA';title='Videos y momentos';desc='Cuartos, semifinales, finales y archivo audiovisual de la Liga.';cards=[{icon:'video',title:'Momentos',sub:'Contenido de la Liga',route:'moments'},{icon:'history',title:'Historia',sub:'Resultados y partidos anteriores',route:'historyLog'},{icon:'share',title:'Compartir jornada',sub:'Publicaciones',route:'publications'}];asset='v38-soccer-liguilla.mp4';html+=gallery()}
+ else if(r==='moments'){k='MOMENTOS DE LA LIGA';title='Videos y momentos';desc='Cuartos, semifinales, finales y archivo audiovisual de la Liga.';cards=[{icon:'video',title:'Momentos',sub:'Contenido de la Liga',route:'moments'},{icon:'history',title:'Historial',sub:'Resultados y partidos anteriores',route:'historyLog'},{icon:'share',title:'Compartir jornada',sub:'Publicaciones',route:'publications'}];asset='v38-soccer-liguilla.mp4';html+=gallery()}
  else if(r==='video'){k='LIGA JUVENTINO TV';title='Videos y momentos';desc='Archivo audiovisual de la Liga.';cards=[{icon:'video',title:'Momentos',sub:'Contenido de la Liga',route:'moments'},{icon:'history',title:'Historia',sub:'Temporadas y archivo',route:'history'},{icon:'share',title:'Compartir jornada',sub:'Publicaciones',route:'publications'}];asset='v38-soccer-liguilla.mp4';html+=gallery()}
  else if(r==='history'){title='Historia · temporadas y palmarés';desc='Accesos de la app verde agrupados debajo del archivo histórico actual.';cards=[{icon:'history',title:'Temporada actual',sub:'Información vigente',route:'leagueData'},{icon:'trophy',title:'Palmarés',sub:'Campeones e historia',route:'history'},{icon:'history',title:'Históricos',sub:'Equipos y temporadas anteriores',route:'history'},{icon:'video',title:'Finales y momentos',sub:'Archivo audiovisual',route:'moments'}];asset='v38-soccer-liguilla.mp4'}
  else if(r==='tactics'){title='Táctica 3D · versión azul';desc='Tablero táctil inspirado en la función de Liga_Futbol; se agrega al final y guarda sólo en este dispositivo.';cards=[];asset='v38-fix10-tactics-motion.mp4';html+=tacticsBoard()}
