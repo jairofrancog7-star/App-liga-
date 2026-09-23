@@ -1155,8 +1155,7 @@ function v246TerricolasChampionCard(m){
   '</article>';
 }
 function v261UniversidadChampionCard(m){
-  const embedded=window.__UNIVERSIDAD_2013_B64||'';
-  const photo=embedded?'data:image/webp;base64,'+embedded:'data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=';
+  const photo='./assets/history/archive-v275/universidad-2013-team-720.webp?v=20260923-universidad-direct-v286';
   const raw=photo;
   return '<article class="v35-history-moment v35-history-moment-photo v264-universidad-2013" data-v264-universidad-2013 '+
     'style="position:relative!important;overflow:hidden!important;isolation:isolate!important;'+
