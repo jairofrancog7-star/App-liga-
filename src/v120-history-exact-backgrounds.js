@@ -45,7 +45,7 @@ const EXACT=[
   {need:['linces','15 mar 2026'],src:BASE132+'linces-campeon-primera-2026.jpg',pos:'center 45%'},
   {need:['galacticos','15 mar 2026'],src:BASE132+'galacticos-subcampeon-primera-2026.jpg',pos:'center 45%'},
   {need:['salvajes','20 dic 2025'],src:BASE132+'salvajes-campeon-copa-2025.jpg',pos:'center 42%'},
-  {need:['la esperanza','08 nov 2025'],src:'https://raw.githubusercontent.com/jairofrancog7-star/App-liga-/main/assets/history/archive-v213/la-esperanza-campeon-copa-veteranos50-08-nov-2025.jpg?v=20260923-esperanza-copa-v213',pos:'center 46%',photoOnly:true,scale:1.0,origin:'center 46%'},
+  {need:['la esperanza','08 nov 2025'],src:'https://raw.githubusercontent.com/jairofrancog7-star/App-liga-/main/assets/history/archive-v214/la-esperanza-campeon-copa-veteranos50-08-nov-2025.jpg?v=20260923-esperanza-copa-v214',pos:'center 46%',photoOnly:true,scale:1.0,origin:'center 46%'},
   {need:['juventus','20 sep 2025'],src:BASE132+'juventus-campeon-liga-veteranos-35-2025.jpg',pos:'center 43%'},
   {need:['la huerta de cuenda','29 jun 2025'],src:'https://raw.githubusercontent.com/jairofrancog7-star/App-liga-/main/assets/history/archive-v203/la-huerta-cuenda-campeon-segunda-29-jun-2025.jpg',pos:'center 43%'},
   {need:['tavera fc','29 jun 2025'],src:BASE119+'tavera-finalista-2025.jpg',pos:'center 43%'},
