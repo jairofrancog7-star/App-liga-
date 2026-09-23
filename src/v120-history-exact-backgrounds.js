@@ -37,7 +37,7 @@ const EXACT=[
   {need:['juventus','16 feb 2020'],src:BASE134+'juventus-campeon-copa-primera-2019-2020.jpg',pos:'center 48%'},
   {need:['tavera','16 feb 2020'],src:BASE134+'tavera-campeon-copa-segunda-2019-2020.jpg',pos:'center 46%'},
   {need:['el alto','19 ene 2020'],src:BASE134+'el-alto-campeon-copa-intermedia-2020.jpg',pos:'center 69%',photoOnly:true,scale:2.05,origin:'center 68%'},
-  {need:['juventus','21 sep 2024'],src:'https://raw.githubusercontent.com/jairofrancog7-star/App-liga-/main/assets/history/archive-v201/juventus-campeon-campeones-21-sep-2024.jpg?v=20260923-juventus-photo-v222',pos:'center 44%'},
+  {need:['juventus','21 sep 2024'],src:'./assets/history/archive-v225/juventus-campeon-campeones-21-sep-2024.webp?v=20260923-juventus-bg-v225',pos:'center 44%',photoOnly:true,scale:1.0,origin:'center 44%'},
   {need:['juventus','17 feb 2024'],src:'https://raw.githubusercontent.com/jairofrancog7-star/App-liga-/main/assets/history/archive-v202/juventus-campeon-copa-veteranos35-17-feb-2024.webp',pos:'center 45%'},
   {need:['promesas de pozos','17 nov 2024'],src:'https://raw.githubusercontent.com/jairofrancog7-star/App-liga-/main/assets/history/archive-v117/promesas-campeon-2024.webp',pos:'center 46%'},
   {need:['barza','23 jul 2023'],src:BASE133+'barza-campeon-campeones-intermedia-2022-2023.jpg',pos:'center 44%'},
@@ -255,6 +255,52 @@ function forceManchester2025(){
   });
 }
 
+function forceJuventus2024(){
+  const wanted='./assets/history/archive-v225/juventus-campeon-campeones-21-sep-2024.webp?v=20260923-juventus-bg-v225';
+  document.querySelectorAll('.v35-history-moment,.v35-champion-card,.v115-card').forEach(card=>{
+    const heading=norm(card.querySelector('h3,h4')?.textContent||'');
+    const date=norm(card.querySelector('time,.v35-history-date,.v35-champion-date,.v115-date')?.textContent||'');
+    const all=norm(card.textContent||'');
+    if(!heading.includes('juventus'))return;
+    if(!all.includes('campeon de campeones'))return;
+    if(!(date.includes('21 sep 2024')||all.includes('21 sep 2024')||all.includes('2024')))return;
+
+    card.querySelectorAll('.v35-history-bg-photo,.v35-champion-bg-photo,.v115-visual').forEach(n=>n.remove());
+    let img=card.querySelector('.v120-exact-event-bg');
+    if(!img){
+      img=document.createElement('img');
+      img.className='v120-exact-event-bg v120-photo-only-bg';
+      img.alt='Juventus · Campeón de Campeones · 21 sep 2024';
+      card.prepend(img);
+    }
+    img.loading='eager';
+    img.decoding='async';
+    img.src=wanted;
+    img.style.objectPosition='center 44%';
+    img.style.transform='scale(1)';
+    img.style.transformOrigin='center 44%';
+
+    /* Fallback real como background por si otro módulo sustituye el <img>. */
+    card.style.setProperty('background-image','linear-gradient(180deg,rgba(2,5,45,.04),rgba(2,5,45,.56)),url("'+wanted+'")','important');
+    card.style.setProperty('background-size','cover','important');
+    card.style.setProperty('background-position','center 44%','important');
+    card.style.setProperty('background-repeat','no-repeat','important');
+
+    if(!card.querySelector(':scope > .v120-exact-shade')){
+      const sh=document.createElement('span');
+      sh.className='v120-exact-shade';
+      sh.setAttribute('aria-hidden','true');
+      card.insertBefore(sh,img.nextSibling);
+    }
+    card.querySelectorAll('.v120-photo-proof').forEach(n=>n.remove());
+    [...card.querySelectorAll('span')].forEach(n=>{
+      if(String(n.textContent||'').trim().toUpperCase()==='FOTO DEL ARCHIVO')n.remove();
+    });
+    card.classList.add('v120-has-exact-bg','v120-photo-only-card','v35-champion-card-photo');
+    card.dataset.v225Juventus='1';
+  });
+}
+
 function forceLobosJrs2025(){
   const wanted=BASE207+'lobos-jrs-campeon-relampago-segunda-16-feb-2025.webp?v=20260923-lobos-jrs-photo-v219';
   document.querySelectorAll('.v35-history-moment,.v35-champion-card,.v115-card').forEach(card=>{
@@ -289,6 +335,7 @@ function patch(){
   forceGalacticosCDC();
   forceManchester2024();
   forceManchester2025();
+  forceJuventus2024();
   forceLobosJrs2025();
 }
 let raf=0;
