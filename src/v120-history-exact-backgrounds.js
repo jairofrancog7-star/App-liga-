@@ -57,7 +57,7 @@ const EXACT=[
   {need:['galacticos','08 jun 2025'],src:BASE205+'galacticos-pozos-campeon-copa-08-jun-2025.webp?v=20260923-galacticos-fix211',pos:'center 43%',photoOnly:true,scale:1.0,origin:'center 43%'},
   {need:['pozos fc','15 sep 2024'],src:BASE199+'pozos-fc-campeon-liga-veteranos35-15-sep-2024.jpg',pos:'center 47%'},
   {need:['herreras','04 feb 2025'],src:BASE207+'herreras-fc-campeon-liga-primera-04-feb-2025.webp',pos:'center 48%',photoOnly:true,scale:1.0,origin:'center 48%'},
-  {need:['herreras','09 feb 2025'],src:BASE+'herreras-fc-campeon-relampago-intermedia-2025.jpg',pos:'center 44%',photoOnly:true,scale:1.0,origin:'center 44%'},
+  {need:['herreras','09 feb 2025'],src:'https://raw.githubusercontent.com/jairofrancog7-star/App-liga-/main/assets/history/archive-v208/herreras-fc-campeon-relampago-intermedia-09-feb-2025.webp',pos:'center 44%',photoOnly:true,scale:1.0,origin:'center 44%'},
   {need:['lobos jrs','16 feb 2025'],src:BASE207+'lobos-jrs-campeon-relampago-segunda-16-feb-2025.webp',pos:'center 43%',photoOnly:true,scale:1.0,origin:'center 43%'},
   
   {need:['deportivo cg','19 sep 2026'],src:BASE+'deportivo-cg-campeon-liga-2025-2026.jpg',pos:'center 42%'},
