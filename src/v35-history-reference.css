@@ -2247,3 +2247,38 @@
   z-index:2!important;
   background:transparent!important;
 }
+
+
+/* V249 — PSV · 17 nov 2019 · Campeón de Copa Veteranos.
+   La foto exacta va directamente como fondo detrás del texto. */
+.v35-history-moment.v249-psv2019-card{
+  background-color:#07075d!important;
+  background-image:
+    linear-gradient(180deg,rgba(3,6,50,.02) 0%,rgba(3,6,50,.06) 34%,rgba(3,6,50,.28) 70%,rgba(3,6,50,.68) 100%),
+    linear-gradient(90deg,rgba(3,6,50,.15) 0%,rgba(3,6,50,.03) 74%,rgba(3,6,50,0) 100%),
+    url('../assets/history/archive-v249/psv-campeon-copa-veteranos-17-nov-2019.webp?v=20260923-psv-copa2019-real-v249')!important;
+  background-size:cover!important;
+  background-position:center 46%!important;
+  background-repeat:no-repeat!important;
+}
+.v35-history-moment.v249-psv2019-card .v35-history-bg-photo{
+  display:block!important;
+  visibility:visible!important;
+  opacity:1!important;
+  width:100%!important;
+  height:100%!important;
+  object-fit:cover!important;
+  object-position:center 46%!important;
+}
+.v35-history-moment.v249-psv2019-card .v35-history-moment-shade{
+  display:block!important;
+  background:
+    linear-gradient(180deg,rgba(2,5,45,.01) 0%,rgba(2,5,45,.05) 34%,rgba(2,5,45,.22) 70%,rgba(2,5,45,.56) 100%),
+    linear-gradient(90deg,rgba(2,5,45,.12) 0%,rgba(2,5,45,.02) 74%,rgba(2,5,45,0) 100%)!important;
+}
+.v35-history-moment.v249-psv2019-card .v35-history-moment-content{
+  position:relative!important;
+  z-index:2!important;
+  background:transparent!important;
+}
+/* END V249 PSV */
