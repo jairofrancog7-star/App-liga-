@@ -5063,12 +5063,18 @@ function v38StatsView(){
   '</section>';
 }
 function v38WeeklyView(){
-  return '<section class="v60-tool-page v63-page">'+
+  return '<section class="v60-tool-page v63-page v188-weekly-page">'+
     v60Header('LO IMPORTANTE DE LA SEMANA','Noticias y avisos','Accesos adaptados para comunicados, junta de liga y contenido multimedia.')+
     '<div class="v63-feature-list">'+
       v63FeatureCard('share','AVISO','Cambios de horario y sedes','Comunicados y novedades publicadas para equipos y afición.','notices')+
       v63FeatureCard('matchday','JUNTA','Junta semanal de liga','Checklist, acuerdos y operación de jornada en un solo espacio.','matchday')+
       v63FeatureCard('center','MULTIMEDIA','Semifinales, finales y momentos','Videos y momentos destacados dentro de la app.','moments')+
+    '</div>'+
+    '<div class="v188-weekly-subhead"><small>CENTRO DE AVISOS</small><h2>Notificaciones</h2></div>'+
+    '<div class="v63-feature-list v188-weekly-alerts">'+
+      v63FeatureCard('matchday','PRÓXIMA JORNADA','Próxima jornada','Recibe aviso cuando se publique un horario nuevo.','notifications')+
+      v63FeatureCard('field','CAMBIO DE SEDE','Cambio de sede','Alertas para cambios relevantes de cancha o fecha.','scheduleChanges')+
+      v63FeatureCard('center','PARTIDO FAVORITO','Partido favorito','Seguimiento de equipos y encuentros destacados.','following')+
     '</div>'+
   '</section>';
 }
