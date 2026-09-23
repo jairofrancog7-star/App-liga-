@@ -4,7 +4,7 @@
   if(window.__LJR_V249_TERRICOLAS_FORCE__) return;
   window.__LJR_V249_TERRICOLAS_FORCE__=true;
 
-  const PHOTO=new URL('./assets/history/archive-v248/terricolas-seder-campeon-copa-18-sep-2022.webp?v=20260923-terricolas-force-v249',document.baseURI).href;
+  const PHOTO=new URL('./assets/history/archive-v254/terricolas-seder-campeon-copa-18-sep-2022.webp?v=20260923-terricolas-user-v254',document.baseURI).href;
   const norm=v=>String(v||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/\s+/g,' ').trim();
 
   function installStyle(){
