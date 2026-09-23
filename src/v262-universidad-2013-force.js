@@ -1,7 +1,7 @@
 (function(){
 'use strict';
 
-const PHOTO='./assets/history/archive-v260/universidad-vs-dinamo-final-veteranos-09-mar-2013.webp?v=20260923-universidad-source-v265';
+const PHOTO='./assets/history/archive-v274/universidad-campeon-veteranos-09-mar-2013-equipo.webp?v=20260923-universidad-team-v274';
 
 function norm(v){
   return String(v||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/\s+/g,' ').trim();
