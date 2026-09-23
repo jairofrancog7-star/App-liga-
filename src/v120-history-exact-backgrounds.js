@@ -15,6 +15,7 @@ const BASE199='https://raw.githubusercontent.com/jairofrancog7-star/App-liga-/ma
 const BASE203='https://raw.githubusercontent.com/jairofrancog7-star/App-liga-/main/assets/history/archive-v203/';
 const BASE204='https://raw.githubusercontent.com/jairofrancog7-star/App-liga-/main/assets/history/archive-v204/';
 const BASE205='https://raw.githubusercontent.com/jairofrancog7-star/App-liga-/main/assets/history/archive-v205/';
+const BASE207='https://raw.githubusercontent.com/jairofrancog7-star/App-liga-/main/assets/history/archive-v207/';
 const BASE202='https://raw.githubusercontent.com/jairofrancog7-star/App-liga-/main/assets/history/archive-v202/';
 const BASE185='https://raw.githubusercontent.com/jairofrancog7-star/App-liga-/main/assets/history/archive-v185/';
 const EXACT=[
@@ -51,12 +52,13 @@ const EXACT=[
   {need:['real cerrito de gasca','15 dic 2013'],src:BASE+'real-cerrito-campeon-2013.jpg',pos:'center 38%'},
   {need:['la esperanza','14 jun 2014'],src:BASE+'la-esperanza-campeon-copa-veteranos-2014.jpg',pos:'center 42%'},
   {need:['juventus','01 feb 2025'],src:BASE197+'juventus-campeon-copa-01-feb-2025.jpg',pos:'center 45%'},
-  {need:['lobos cdg','15 jun 2025'],src:BASE196+'lobos-cdg-campeon-copa-intermedia-2025.webp',pos:'center 45%'},
+  {need:['lobos cdg','15 jun 2025'],src:BASE207+'lobos-cdg-campeon-copa-intermedia-15-jun-2025.webp',pos:'center 45%',photoOnly:true,scale:1.0,origin:'center 45%'},
   {need:['boavista','12 abr 2025'],src:BASE+'boavista-fc-campeon-2025.jpg',pos:'center 42%'},
   {need:['galacticos','08 jun 2025'],src:BASE205+'galacticos-pozos-campeon-copa-08-jun-2025.webp?v=20260923-galacticos-fix209',pos:'center 43%',photoOnly:true,scale:1.0,origin:'center 43%'},
   {need:['pozos fc','15 sep 2024'],src:BASE199+'pozos-fc-campeon-liga-veteranos35-15-sep-2024.jpg',pos:'center 47%'},
+  {need:['herreras','04 feb 2025'],src:BASE207+'herreras-fc-campeon-liga-primera-04-feb-2025.webp',pos:'center 48%',photoOnly:true,scale:1.0,origin:'center 48%'},
   {need:['herreras','09 feb 2025'],src:BASE+'herreras-fc-campeon-relampago-intermedia-2025.jpg',pos:'center 44%',photoOnly:true,scale:1.0,origin:'center 44%'},
-  {need:['lobos jrs','16 feb 2025'],src:BASE197+'lobos-jrs-campeon-relampago-segunda-2025.svg',pos:'center 43%'},
+  {need:['lobos jrs','16 feb 2025'],src:BASE207+'lobos-jrs-campeon-relampago-segunda-16-feb-2025.webp',pos:'center 43%',photoOnly:true,scale:1.0,origin:'center 43%'},
   
   {need:['deportivo cg','19 sep 2026'],src:BASE+'deportivo-cg-campeon-liga-2025-2026.jpg',pos:'center 42%'},
   {need:['cerrito de gasca','19 sep 2026'],src:BASE+'deportivo-cg-campeon-liga-2025-2026.jpg',pos:'center 42%'},
