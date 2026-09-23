@@ -6,7 +6,7 @@
 if(window.__LJR_V105_GREEN_BOTTOM__)return;
 window.__LJR_V105_GREEN_BOTTOM__=true;
 
-const BUILD='20260922-matchcenter-no-bottom-tools-v170';
+const BUILD='20260922-bracket-button-fix-v189';
 const GREEN='https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/';
 const MOTION=GREEN+'assets/motion/';
 const MEDIA=GREEN+'media/';
@@ -77,9 +77,30 @@ function openCompetitionFixtures(){
    target?.scrollIntoView({behavior:'smooth',block:'start'});
  },140);
 }
+function openBracketBuilder(){
+ const screen=document.querySelector('#screen');
+ if(!screen)return;
+ const host=screen.querySelector('.v60-tool-page.v64-page')||screen.querySelector('[data-v64-place]')?.closest('.v60-tool-page')||screen;
+ const first=host.querySelector('[data-v64-place]');
+ try{host.scrollIntoView({behavior:'smooth',block:'start'})}catch(_){window.scrollTo({top:0,behavior:'smooth'})}
+ setTimeout(()=>{
+   try{first?.focus({preventScroll:true})}catch(_){first?.focus?.()}
+   host.classList.add('v105-bracket-target');
+   setTimeout(()=>host.classList.remove('v105-bracket-target'),900);
+ },180);
+}
 function go(r){
  if(!r)return;
  log('Abrir '+r);
+
+ if(r==='bracketBuilder'){
+   const current=route();
+   if(current==='bracketBuilder'){
+     openBracketBuilder();
+     return;
+   }
+   try{sessionStorage.setItem('v105-open-bracket-builder','1')}catch(_){}
+ }
 
  if(r==='competition'){
    const current=route();
@@ -682,6 +703,14 @@ let timer=0;
 function mount(){
  const screen=$('#screen');if(!screen)return;
  const r=route(),existing=$('#v105-bottom',screen);
+ if(r==='bracketBuilder'){
+   let shouldOpen=false;
+   try{shouldOpen=sessionStorage.getItem('v105-open-bracket-builder')==='1'}catch(_){}
+   if(shouldOpen){
+     try{sessionStorage.removeItem('v105-open-bracket-builder')}catch(_){}
+     setTimeout(openBracketBuilder,220);
+   }
+ }
  if(r==='competition'){
    let shouldOpen=false;
    try{shouldOpen=sessionStorage.getItem('v105-open-competition-fixtures')==='1'}catch(_){}
