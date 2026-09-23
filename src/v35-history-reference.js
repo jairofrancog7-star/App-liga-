@@ -1109,6 +1109,33 @@ function historyNewestFirst(list,field){
     .map(x=>x.item);
 }
 
+function v228EsperanzaChampionCard(m){
+  /* V228 — tarjeta independiente desde cero para La Esperanza.
+     La foto se inyecta como <img> real desde el data-URL armado antes de cargar Historia.
+     No depende del sistema genérico de fondos. */
+  const inline=window.LJR_ESPERANZA_2025_PHOTO||'';
+  const local='./assets/history/archive-v224/la-esperanza-campeon-copa-veteranos50-08-nov-2025.webp?v=20260923-esperanza-card-v228';
+  const src=inline||local;
+  return '<article class="v228-esperanza-card" data-v228-esperanza-card>'+
+    '<img class="v228-esperanza-photo" src="'+src+'" alt="" aria-hidden="true" loading="eager" decoding="async" onerror="this.style.display=\'none\';">'+
+    '<span class="v228-esperanza-shade" aria-hidden="true"></span>'+
+    '<div class="v228-esperanza-body">'+
+      '<div class="v228-esperanza-meta"><span class="v35-history-kind">'+esc(m.kind)+'</span><time class="v35-history-date">'+esc(m.date)+'</time></div>'+
+      '<h3>'+esc(m.title)+'</h3>'+
+      '<strong>'+esc(m.subtitle)+'</strong>'+
+      '<div class="v228-esperanza-status">'+
+        '<span><b>Ganador</b>'+esc(m.winner||m.title)+'</span>'+
+        '<span><b>Temporada</b>'+esc(m.season||'2025')+'</span>'+
+      '</div>'+
+      '<p>'+esc(m.detail)+'</p>'+
+    '</div>'+
+  '</article>';
+}
+function v228IsEsperanzaChampion(m){
+  const n=v=>String(v||'').normalize('NFD').replace(/[\\u0300-\\u036f]/g,'').toLowerCase();
+  return n(m?.title)==='la esperanza' && n(m?.date).includes('08 nov 2025');
+}
+
 function v227GalacticosChampionCard(m){
   /* V227 — tarjeta independiente desde cero para Galácticos de Pozos.
      No depende de los parches genéricos de fondos históricos. */
@@ -1135,6 +1162,7 @@ function v227IsGalacticosChampion(m){
 }
 
 function historyMomentCard(m){
+  if(v228IsEsperanzaChampion(m)) return v228EsperanzaChampionCard(m);
   if(v227IsGalacticosChampion(m)) return v227GalacticosChampionCard(m);
   const esperanzaBgClass=(m.title==='La Esperanza'&&m.date==='08 nov 2025')?' v225-esperanza-bg':'';
   const championBg=m.kind==='CAMPEÓN'?championBackground(m.title,m.backgroundPhoto||''):null;
