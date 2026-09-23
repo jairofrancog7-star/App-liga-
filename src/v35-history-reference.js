@@ -293,7 +293,7 @@ const historyMoments=[
   {kind:'CAMPEÓN',date:'28 feb 2016',season:'2016',winner:'Malvinas',title:'Malvinas',subtitle:'Campeón de Campeones · Fuerza Intermedia',detail:'Publicación aportada por el usuario: “¡¡Felicidades!! al campeón de campeones de la categoría intermedia. Felicidades Malvinas”. El subcampeón no está identificado en el material aportado.',backgroundPhoto:HIST_MEDIA+'archive-v120/malvinas-campeon-campeones-intermedia-2016.jpg',image:HIST_ROOT+'assets/official-logos/malvinas.png'},
   {kind:'CAMPEÓN',date:'28 feb 2016',season:'2016',winner:'La Esperanza',title:'La Esperanza',subtitle:'Campeón · Veteranos',detail:'Publicación aportada por el usuario: entrega del premio en efectivo al campeón de la categoría Veteranos. “Felicidades a La Esperanza”.',backgroundPhoto:HIST_MEDIA+'archive-v246/la-esperanza-campeon-veteranos-28-feb-2016.jpg?v=20260923-missing-bg-v246',image:HIST_ROOT+'assets/official-logos/la-esperanza.png'},
   {kind:'CAMPEÓN',date:'27 mar 2016',season:'2016',winner:'San Julián',title:'San Julián',subtitle:'Campeón de Campeones · Segunda Fuerza',detail:'Archivo de Golazo Liga · 27 de marzo de 2016. En la publicación del partido inmediatamente anterior del mismo día aparece el marcador “4 - 1 favor San Julian”; a continuación se publicó la fotografía del plantel con el trofeo y el texto “Campeón de campeones, de la categoría de segunda fuerza.” Por esa secuencia documental se identifica a San Julián como campeón.',backgroundPhoto:HIST_MEDIA+'archive-v246/campeon-campeones-segunda-27-mar-2016.jpg?v=20260923-san-julian-cdc-2016-v266'},
-{kind:'CAMPEÓN',date:'26 nov 2012',season:'2012',winner:'Juventus',title:'Juventus',subtitle:'Campeón · Primera Fuerza',detail:'¡¡FELICIDADES AL CAMPEÓN!! EQUIPO JUVENTUS · PRIMERA FUERZA.',backgroundPhoto:'./assets/history/archive-v261/juventus-campeon-primera-26-nov-2012.webp?v=20260923-juventus-hardfix-v261',image:HIST_ROOT+'assets/official-logos/juventus.png'},
+{kind:'CAMPEÓN',date:'26 nov 2012',season:'2012',winner:'Juventus',title:'Juventus',subtitle:'Campeón · Primera Fuerza',detail:'¡¡FELICIDADES AL CAMPEÓN!! EQUIPO JUVENTUS · PRIMERA FUERZA.',backgroundPhoto:'https://raw.githubusercontent.com/jairofrancog7-star/App-liga-/main/assets/history/archive-v261/juventus-campeon-primera-26-nov-2012.webp?v=20260923-juventus-2012-hardcard-v270',image:HIST_ROOT+'assets/official-logos/juventus.png'},
 {kind:'CAMPEÓN',date:'11 dic 2012',season:'2012',winner:'Tavera FC',title:'Tavera FC',subtitle:'Campeón de Copa · Categoría Segunda',detail:'Golazo Liga felicitó al equipo Tavera como campeón de Copa de la Categoría Segunda el 11 de diciembre de 2012.',backgroundPhoto:'./assets/history/archive-v260/tavera-campeon-copa-segunda-11-dic-2012.webp?v=20260923-old-history-v260',image:HIST_ROOT+'assets/official-logos/tavera-fc.png'},
   {kind:'PENALES',date:'23 feb 2013',title:'Magisterio 4–2 Boavista',subtitle:'0–0 en tiempo reglamentario · tanda de penales',detail:'Golazo Liga registró empate 0–0 en tiempo reglamentario y victoria de Magisterio 4–2 en la tanda de penales.'},
   {kind:'CAMPEÓN',date:'15 dic 2013',season:'2013',winner:'Real Cerrito de Gasca',title:'Real Cerrito de Gasca',subtitle:'Campeón · Segunda Fuerza',detail:'Golazo Liga publicó al capitán “Nudo” recibiendo el trofeo de campeón de Segunda Fuerza. En una actualización de la final, Real Cerrito vencía 3–0 a DHP al minuto 35.',backgroundPhoto:HIST_MEDIA+'archive-v120/real-cerrito-campeon-2013.jpg',image:HIST_ROOT+'assets/teams/deportivo-cg.webp'},
@@ -1182,7 +1182,35 @@ function v246IsTerricolasChampion(m){
   return n(m?.title)==='terricolas seder' && n(m?.date).includes('18 sep 2022');
 }
 
+
+function v270IsJuventus2012Champion(m){
+  const n=v=>String(v||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase();
+  return n(m?.title)==='juventus' && n(m?.date).includes('26 nov 2012');
+}
+function v270Juventus2012ChampionCard(m){
+  const src='https://raw.githubusercontent.com/jairofrancog7-star/App-liga-/main/assets/history/archive-v261/juventus-campeon-primera-26-nov-2012.webp?v=20260923-juventus-2012-hardcard-v270';
+  return '<article class="v35-history-moment v35-history-moment-photo v270-juventus2012-hardcard" data-v270-juventus2012 '+
+    'style="position:relative!important;overflow:hidden!important;isolation:isolate!important;min-height:680px!important;'+
+    'background-color:#07106f!important;background-image:linear-gradient(180deg,rgba(2,7,55,.06) 0%,rgba(2,7,55,.18) 44%,rgba(2,7,55,.72) 100%),url(&quot;'+src+'&quot;)!important;'+
+    'background-size:cover!important;background-position:center 56%!important;background-repeat:no-repeat!important;">'+
+    '<img src="'+src+'" alt="Juventus · Campeón Primera Fuerza · 26 nov 2012" loading="eager" decoding="async" '+
+      'style="display:block!important;visibility:visible!important;opacity:1!important;position:absolute!important;inset:0!important;'+
+      'width:100%!important;height:100%!important;min-width:100%!important;min-height:100%!important;max-width:none!important;max-height:none!important;'+
+      'object-fit:cover!important;object-position:center 56%!important;filter:none!important;transform:none!important;z-index:0!important;border:0!important;">'+
+    '<div aria-hidden="true" style="position:absolute!important;inset:0!important;z-index:1!important;'+
+      'background:linear-gradient(180deg,rgba(2,7,55,.02) 0%,rgba(2,7,55,.08) 38%,rgba(2,7,55,.38) 70%,rgba(2,7,55,.78) 100%),'+
+      'linear-gradient(90deg,rgba(2,7,55,.20),rgba(2,7,55,.03))!important;"></div>'+
+    '<div class="v35-history-moment-content" style="position:relative!important;z-index:2!important;width:100%!important;background:transparent!important;">'+
+      '<div class="v35-history-meta"><span class="v35-history-kind">CAMPEÓN</span><time class="v35-history-date">26 nov 2012</time></div>'+
+      '<h3>Juventus</h3>'+
+      '<strong>Campeón · Primera Fuerza</strong>'+
+      '<div class="v35-history-status"><span><b>Ganador</b>Juventus</span><span><b>Temporada</b>2012</span></div>'+
+      '<p>¡¡FELICIDADES AL CAMPEÓN!! EQUIPO JUVENTUS · PRIMERA FUERZA.</p>'+
+    '</div>'+
+  '</article>';
+}
 function historyMomentCard(m){
+  if(v270IsJuventus2012Champion(m)) return v270Juventus2012ChampionCard(m);
   if(v261IsUniversidadChampion(m)) return v261UniversidadChampionCard(m);
   if(v246IsTerricolasChampion(m)) return v246TerricolasChampionCard(m);
   if(v242IsJuventusChampion(m)) return v242JuventusChampionCard(m);
