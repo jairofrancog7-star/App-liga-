@@ -1,7 +1,7 @@
 (function(){
 'use strict';
 
-const PHOTO=(window.__UNIVERSIDAD_2013_B64?'data:image/webp;base64,'+window.__UNIVERSIDAD_2013_B64:'data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=');
+const PHOTO='./assets/history/archive-v275/universidad-2013-team-720.webp?v=20260923-universidad-team-bg-v285';
 
 function norm(v){
   return String(v||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/\s+/g,' ').trim();
