@@ -1729,3 +1729,47 @@ body.v32-rankings-active .v32-controls.clubs .v32-filter{
     margin-top:-3px!important;
   }
 }
+
+
+/* V188 — Clubes igual que Categorías: Temporada + Temporada actual + filtro */
+.v32-controls.fed,
+.v32-controls.clubs{
+  display:grid!important;
+  grid-template-columns:minmax(0,1.42fr) minmax(92px,.78fr) 42px!important;
+  gap:8px!important;
+  overflow:visible!important;
+  padding:14px 16px 10px!important;
+}
+.v32-controls.clubs .v32-select,
+.v32-controls.fed .v32-select{
+  min-width:0!important;
+  width:100%!important;
+  flex:none!important;
+}
+.v32-controls.clubs .v32-filter,
+.v32-controls.fed .v32-filter{
+  width:42px!important;
+  min-width:42px!important;
+  flex:none!important;
+}
+.v32-controls.clubs .v32-selected-club{
+  grid-column:1 / -1;
+  width:100%!important;
+  max-width:none!important;
+  min-width:0!important;
+  margin-top:0;
+}
+@media(max-width:390px){
+  .v32-controls.fed,
+  .v32-controls.clubs{
+    grid-template-columns:minmax(0,1.36fr) minmax(88px,.82fr) 40px!important;
+    gap:7px!important;
+    padding-left:13px!important;
+    padding-right:13px!important;
+  }
+  .v32-controls.clubs .v32-filter,
+  .v32-controls.fed .v32-filter{
+    width:40px!important;
+    min-width:40px!important;
+  }
+}
