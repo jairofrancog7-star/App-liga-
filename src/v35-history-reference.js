@@ -1260,11 +1260,45 @@ function historyArchiveBlock(){
     verifiedHistoryBlocks()+
   '</section>';
 }
+function historyChampionKey(x){
+  const n=v=>String(v||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[^a-z0-9]+/g,' ').trim();
+  return n(x.date||x.season)+'|'+n(x.title||x.champion||x.winner);
+}
+function verifiedChampionAsMoment(x){
+  return {
+    kind:'CAMPEÓN',
+    date:x.season||'',
+    season:x.season||'',
+    winner:x.champion||'',
+    title:x.champion||'',
+    subtitle:x.competition||'Campeón',
+    detail:((x.runner&&x.runner!=='—')?'Subcampeón: '+x.runner+'. ':'')+(x.source||''),
+    backgroundPhoto:x.photo||'',
+    image:x.championLogo||''
+  };
+}
 function championsArchiveBlock(){
-  const rows=historyNewestFirst(historyMoments.filter(m=>!m.archiveOnly&&(m.kind==='CAMPEÓN'||m.kind==='FINAL'||/campe[oó]n/i.test(String(m.subtitle||'')+' '+String(m.detail||'')))),'date');
+  /* V207 — "Campeones" nace de la misma colección que Resumen.
+     Así cualquier campeón visible en Resumen aparece aquí automáticamente.
+     Luego se agregan solo campeones verificados que todavía no estén presentes. */
+  const summaryChampions=historyMoments.filter(m=>
+    !m.archiveOnly&&(
+      m.kind==='CAMPEÓN'||
+      /campe[oó]n/i.test(String(m.subtitle||'')+' '+String(m.detail||''))
+    )
+  );
+  const merged=[];
+  const seen=new Set();
+  [...summaryChampions,...verifiedChampions.map(verifiedChampionAsMoment)].forEach(m=>{
+    const key=historyChampionKey(m);
+    if(!key||seen.has(key))return;
+    seen.add(key);
+    merged.push(m);
+  });
+  const rows=historyNewestFirst(merged,'date');
   return '<section class="v35-block v35-history-archive v35-history-archive-compact">'+
-    '<div class="v35-history-archive-head"><span>PALMARÉS HISTÓRICO</span><h2>Campeones y finales documentadas</h2><p>Solo se muestran datos que aparecen en el material histórico revisado.</p></div>'+
-    '<div class="v35-history-moments">'+rows.map(historyMomentCard).join('')+'</div>'+verifiedHistoryBlocks()+
+    '<div class="v35-history-archive-head"><span>PALMARÉS HISTÓRICO</span><h2>Campeones documentados</h2><p>Los campeones que aparecen en Resumen también aparecen aquí una sola vez, con su fecha, campeonato/categoría documentados y la fotografía exacta cuando existe.</p></div>'+
+    '<div class="v35-history-moments">'+rows.map(historyMomentCard).join('')+'</div>'+
   '</section>';
 }
 function finalsArchiveBlock(){
