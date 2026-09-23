@@ -386,7 +386,6 @@ const verifiedChampions=[
   {season:'18 ene 2015',competition:'Campeón de Campeones · Primera',champion:'Boavista',runner:'—',source:'Publicación de Golazo Liga: el capitán de Boavista recibe el trofeo de Campeón de Campeones de Primera.',championLogo:HIST_ROOT+'assets/official-logos/boavista.png'},
   {season:'09 jul 2016',competition:'Torneo de Copa · categoría no visible en la publicación',champion:'Magisterio',runner:'—',source:'Publicación de Golazo Liga del 9 de julio de 2016: “Felicidades al campeón de copa. Felicidades Magisterio”.'},
   {season:'2018–2019',competition:'Torneo de Liga · Primera Fuerza',champion:'Juventus',runner:'Boavista',third:'Abejas',source:'Publicaciones históricas aportadas por el usuario del 3 nov 2019: Juventus campeón de Liga 2018–2019, Boavista subcampeón y Abejas tercer lugar de Primera Fuerza.',photo:HIST_MEDIA+'juventus-campeon-2019.jpg',championLogo:HIST_ROOT+'assets/official-logos/juventus.png',runnerLogo:HIST_ROOT+'assets/official-logos/boavista.png'},
-  {season:'Archivo fotográfico',competition:'Campeonato · categoría adulta por identificar',champion:'Tecos',runner:'—',source:'Fotografía del archivo: el plantel aparece con camisetas “CAMPEON TECOS” y trofeo.',photo:HIST_MEDIA+'tecos-campeon-historico.jpg'},
   {season:'11 dic 2012',competition:'Torneo de Copa · Categoría Segunda',champion:'Tavera FC',runner:'—',source:'Golazo Liga publicó el 11 de diciembre de 2012 una felicitación explícita al equipo Tavera como campeón de Copa de la Categoría Segunda.',championLogo:HIST_ROOT+'assets/official-logos/tavera-fc.png'},
   {season:'12 abr 2025',competition:'Torneo de Liga · Veteranos 50+',champion:'Boavista FC',runner:'Boca Jrs.',source:'El rol publicado el 9 abr 2025 programa Boca Jrs. vs Boavista a las 16:00 en Campo 1; la publicación del 12 abr presenta a Boavista F C como “CAMPEÓN 2025”.',championLogo:HIST_ROOT+'assets/official-logos/boavista.png'},
   {season:'04 mar 2024',competition:'Torneo de Copa · Primera Fuerza',champion:'Linces',runner:'Hermanos FC',source:'La Pupila publicó el 4 mar 2024 que Linces venció 3–2 a Hermanos FC y se llevó la final de Copa. El 11 abr 2024, Juventino Rosas Liga volvió a identificar a Linces como actual campeón de Copa y equipo de Primera Fuerza.',photo:HIST_MEDIA+'archive-v202/linces-campeon-copa-04-mar-2024.webp',championLogo:HIST_ROOT+'assets/official-logos/linces.png',runnerLogo:HIST_ROOT+'assets/official-logos/hermanos.png'},
@@ -1046,6 +1045,7 @@ function scheduleHistoryCollapse(){
     v35ScrollRaf=0;
     syncHistoryCollapse();
     removeObsoleteManchesterDuplicate(screen);
+    removeDuplicateTecosChampion(screen);
   });
 }
 
@@ -1512,6 +1512,20 @@ function removeObsoleteManchesterDuplicate(root=document){
     if(t.includes('manchester')&&t.includes('fecha exacta pendiente')&&t.includes('campeon de campeones')) card.remove();
   });
 }
+/* V232 — Tecos aparecía dos veces por la convivencia del registro histórico
+   y el palmarés verificado. Conservamos la primera tarjeta (la más completa)
+   y eliminamos cualquier repetición posterior del mismo campeón. */
+function removeDuplicateTecosChampion(root=document){
+  const cards=[...(root.querySelectorAll?.('.v35-history-moment,.v35-champion-card,.v115-card,.v115-fact-card')||[])];
+  let kept=false;
+  cards.forEach(card=>{
+    const title=String(card.querySelector('h3,h4')?.textContent||'').trim().normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase();
+    const text=String(card.textContent||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase();
+    if(title!=='tecos'||!text.includes('campe')) return;
+    if(!kept){kept=true;return;}
+    card.remove();
+  });
+}
 function pageHtml(){
   const back='<button class="v35-back" type="button" data-v35-back aria-label="Volver"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 11H7.83L13.42 5.41 12 4l-8 8 8 8 1.41-1.41L7.83 13H20Z"/></svg></button>';
   return '<div class="v35-history-page">'+linesSvg()+
@@ -1546,7 +1560,7 @@ function rerenderContent(){
   nav.innerHTML=tabs();
   content.innerHTML=bodyForTab();
   root.scrollIntoView({block:'start',behavior:'auto'});
-  requestAnimationFrame(()=>{syncHistoryCollapse();removeObsoleteManchesterDuplicate(root);});
+  requestAnimationFrame(()=>{syncHistoryCollapse();removeObsoleteManchesterDuplicate(root);removeDuplicateTecosChampion(root);});
 }
 function toast(msg){
   let el=document.querySelector('.v35-toast');
