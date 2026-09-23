@@ -65,7 +65,7 @@ const EXACT=[
   {need:['galacticos','08 jun 2025'],src:BASE205+'galacticos-pozos-campeon-copa-08-jun-2025.webp?v=20260923-galacticos-fix211',pos:'center 43%',photoOnly:true,scale:1.0,origin:'center 43%'},
   {need:['pozos fc','15 sep 2024'],src:BASE199+'pozos-fc-campeon-liga-veteranos35-15-sep-2024.jpg',pos:'center 47%'},
   {need:['herreras','09 feb 2025'],src:'https://raw.githubusercontent.com/jairofrancog7-star/App-liga-/main/assets/history/archive-v208/herreras-fc-campeon-relampago-intermedia-09-feb-2025.webp',pos:'center 44%',photoOnly:true,scale:1.0,origin:'center 44%'},
-  {need:['lobos jrs','16 feb 2025'],src:BASE207+'lobos-jrs-campeon-relampago-segunda-16-feb-2025.webp',pos:'center 43%',photoOnly:true,scale:1.0,origin:'center 43%'},
+  {need:['lobos jrs','16 feb 2025'],src:BASE207+'lobos-jrs-campeon-relampago-segunda-16-feb-2025.webp?v=20260923-lobos-jrs-photo-v219',pos:'center 48%',photoOnly:true,scale:1.0,origin:'center 48%'},
   
   {need:['deportivo cg','19 sep 2026'],src:BASE+'deportivo-cg-campeon-liga-2025-2026.jpg',pos:'center 42%'},
   {need:['cerrito de gasca','19 sep 2026'],src:BASE+'deportivo-cg-campeon-liga-2025-2026.jpg',pos:'center 42%'},
@@ -186,12 +186,40 @@ function forceGalacticosCDC(){
     card.dataset.v213Galacticos='1';
   });
 }
+
+function forceLobosJrs2025(){
+  const wanted=BASE207+'lobos-jrs-campeon-relampago-segunda-16-feb-2025.webp?v=20260923-lobos-jrs-photo-v219';
+  document.querySelectorAll('.v35-history-moment,.v35-champion-card,.v115-card').forEach(card=>{
+    const heading=norm(card.querySelector('h3,h4')?.textContent||'');
+    const date=norm(card.querySelector('time,.v35-history-date,.v35-champion-date,.v115-date')?.textContent||'');
+    const all=norm(card.textContent||'');
+    if(!heading.includes('lobos jrs') || !(date.includes('16 feb 2025')||all.includes('16 feb 2025')))return;
+    let img=card.querySelector('.v120-exact-event-bg');
+    if(!img){
+      img=document.createElement('img');
+      img.className='v120-exact-event-bg v120-photo-only-bg';
+      img.alt='Lobos Jrs. · Campeón Torneo Relámpago · Segunda Fuerza · 16 feb 2025';
+      card.prepend(img);
+    }
+    img.loading='eager';
+    img.decoding='async';
+    img.src=wanted;
+    img.style.objectPosition='center 48%';
+    img.style.transform='scale(1)';
+    img.style.transformOrigin='center 48%';
+    card.classList.add('v120-has-exact-bg','v120-photo-only-card');
+    card.dataset.v219LobosJrs='1';
+  });
+}
+/* V219_LOBOS_JRS_FORCE */
+
 /* V213_GALACTICOS_CDC_FORCE */
 function patch(){
   if((location.hash||'').indexOf('history')<0 && (location.hash||'').indexOf('safe-about')<0)return;
   installStyle();
   document.querySelectorAll('.v35-history-moment,.v35-champion-card,.v115-card').forEach(apply);
   forceGalacticosCDC();
+  forceLobosJrs2025();
 }
 let raf=0;
 function schedule(){cancelAnimationFrame(raf);raf=requestAnimationFrame(patch)}
