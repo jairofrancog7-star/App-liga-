@@ -6,7 +6,7 @@ const CHUNKS=[
   './assets/history/archive-v274/juventus-2022-photo-b64-01.txt?v='+VERSION,
   './assets/history/archive-v274/juventus-2022-photo-b64-02.txt?v='+VERSION,
   './assets/history/archive-v274/juventus-2022-photo-b64-03.txt?v='+VERSION,
-  './assets/history/archive-v274/juventus-2022-photo-b64-04.txt?v='+VERSION,
+  './assets/history/archive-v274/juventus-2022-photo-b64-04a.txt?v='+VERSION,\n  './assets/history/archive-v274/juventus-2022-photo-b64-04b.txt?v='+VERSION,
   './assets/history/archive-v274/juventus-2022-photo-b64-05.txt?v='+VERSION,
   './assets/history/archive-v274/juventus-2022-photo-b64-06.txt?v='+VERSION,
   './assets/history/archive-v274/juventus-2022-photo-b64-07.txt?v='+VERSION
