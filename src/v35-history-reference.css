@@ -2170,7 +2170,8 @@
   padding:0!important;
   border:1px solid rgba(77,224,241,.28)!important;
   border-radius:22px!important;
-  background:#060653!important;
+  background-color:#060653!important;
+  /* V231: no usar shorthand background aquí; anulaba el background-image inline de la foto. */
   box-shadow:0 12px 28px rgba(0,0,55,.18),inset 0 1px 0 rgba(255,255,255,.05)!important;
 }
 .v227-galacticos-photo{
