@@ -19,6 +19,25 @@ function stamp(v){
   return m?Date.UTC(+m[3],+m[2]-1,+m[1],+m[4],+m[5]):0;
 }
 function dateText(v){return String(v||'').match(/^(\d{1,2}\/\d{1,2}\/\d{4})/)?.[1]||String(v||'')}
+function norm(v){return String(v||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[^a-z0-9]+/g,' ').trim()}
+function logoUrl(name){
+  try{
+    const shared=window.LJR_OFFICIAL_API?.getLogo?.(name)||window.LJR_TEAM_LOGOS?.get?.(name);
+    if(shared)return shared;
+  }catch(_){}
+  const hit=Object.entries(db?.team_logos||{}).find(([k])=>norm(k)===norm(name))?.[1];
+  if(typeof hit==='string')return hit;
+  const p=hit?.local||hit?.source||'';
+  if(!p)return '';
+  return /^https?:/i.test(p)?p:String(p).replace(/^\.\//,'./');
+}
+function teamMark(name){
+  const src=logoUrl(name);
+  const initials=String(name||'').split(/\s+/).filter(Boolean).slice(0,2).map(x=>x[0]||'').join('').toUpperCase()||'JR';
+  return '<span class="v164-history-logo '+(src?'has-logo':'fallback')+'">'+
+    (src?'<img src="'+esc(src)+'" alt="" loading="lazy" decoding="async">':'<b>'+esc(initials)+'</b>')+
+  '</span>';
+}
 function scoreOf(r){
   const h=String(r?.[3]??''),a=String(r?.[5]??'');
   return /^\d+$/.test(h)&&/^\d+$/.test(a)?h+'–'+a:'';
@@ -52,7 +71,7 @@ function markup(){
     '<header class="v164-history-head">'+
       '<small>ARCHIVO DE PARTIDOS</small>'+
       '<h1>Historial</h1>'+
-      '<p>Resultados publicados por la Liga. Este apartado es independiente de Historia.</p>'+
+      '<p>Consulta resultados, marcadores y partidos anteriores publicados oficialmente por la Liga.</p>'+
     '</header>'+
     '<div class="v164-history-switch">'+
       '<button type="button" class="active">Historial</button>'+
@@ -64,7 +83,9 @@ function markup(){
         '<article class="v164-history-match">'+
           '<div class="v164-history-meta"><span>'+esc(x.category)+'</span><b>'+esc(dateText(x.datetime))+'</b></div>'+
           '<div class="v164-history-score">'+
-            '<span>'+esc(x.home)+'</span><strong>'+esc(x.score)+'</strong><span>'+esc(x.away)+'</span>'+
+            '<span class="v164-history-team home">'+teamMark(x.home)+'<em>'+esc(x.home)+'</em></span>'+
+            '<strong>'+esc(x.score)+'</strong>'+
+            '<span class="v164-history-team away">'+teamMark(x.away)+'<em>'+esc(x.away)+'</em></span>'+
           '</div>'+
           '<div class="v164-history-foot"><span>'+(x.round?'Jornada '+esc(x.round)+' · ':'')+esc(x.venue)+'</span></div>'+
         '</article>'
