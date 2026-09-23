@@ -25,7 +25,7 @@ const ESPERANZA_2025_PHOTO='./assets/history/archive-v224/la-esperanza-campeon-c
 const BASE185='https://raw.githubusercontent.com/jairofrancog7-star/App-liga-/main/assets/history/archive-v185/';
 const SAN_JULIAN_2024=window.LJR_SAN_JULIAN_PHOTO||'https://raw.githubusercontent.com/jairofrancog7-star/App-liga-/main/assets/history/archive-v218/san-julian-campeon-copa-segunda-18-feb-2024.jpg?v=20260923-san-julian-v224';
 const EXACT=[
-  {need:['manchester','09 nov 2024'],src:'./assets/history/archive-v222/manchester-campeon-copa-v50-09-nov-2024.webp?v=20260923-manchester-copa-v224',pos:'center 50%',photoOnly:true,scale:1.08,origin:'center 50%'},
+  {need:['manchester','09 nov 2024'],src:'./assets/history/archive-v222/manchester-campeon-copa-v50-09-nov-2024.webp?v=20260923-manchester-copa-v225',pos:'center 50%',photoOnly:true,scale:1.08,origin:'center 50%'},
   {need:['manchester','26 abr 2025'],src:'./assets/history/archive-v225/manchester-campeon-campeones-26-abr-2025.webp?v=20260923-manchester-clean-v225',pos:'center 46%',photoOnly:true,scale:1.0,origin:'center 46%'},
   {need:['san julian','18 feb 2024'],src:SAN_JULIAN_2024,pos:'center 46%',photoOnly:true,scale:1.0,origin:'center 46%'},
   {need:['lobos jrs','23 sep 2026'],src:BASE212+'lobos-jrs-campeon-segunda-23-sep-2026.jpg?v=20260923-lobos-segunda-v212',pos:'center 50%',photoOnly:true,scale:1.0,origin:'center 50%'},
@@ -193,7 +193,7 @@ function forceGalacticosCDC(){
 }
 
 function forceManchester2024(){
-  const wanted='./assets/history/archive-v222/manchester-campeon-copa-v50-09-nov-2024.webp?v=20260923-manchester-copa-v224';
+  const wanted='./assets/history/archive-v222/manchester-campeon-copa-v50-09-nov-2024.webp?v=20260923-manchester-copa-v225';
   document.querySelectorAll('.v35-history-moment,.v35-champion-card,.v115-card').forEach(card=>{
     const heading=norm(card.querySelector('h3,h4')?.textContent||'');
     const date=norm(card.querySelector('time,.v35-history-date,.v35-champion-date,.v115-date')?.textContent||'');
