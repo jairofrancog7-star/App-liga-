@@ -29,6 +29,7 @@ const ESPERANZA_2025_PHOTO='./assets/history/archive-v224/la-esperanza-campeon-c
 const BASE185='https://raw.githubusercontent.com/jairofrancog7-star/App-liga-/main/assets/history/archive-v185/';
 const SAN_JULIAN_2024=window.LJR_SAN_JULIAN_PHOTO||'https://raw.githubusercontent.com/jairofrancog7-star/App-liga-/main/assets/history/archive-v218/san-julian-campeon-copa-segunda-18-feb-2024.jpg?v=20260923-san-julian-v224';
 const EXACT=[
+  {need:['real dhp','31 dic 2017'],src:'./assets/history/archive-v271/real-dhp-campeon-copa-intermedia-31-dic-2017.webp?v=20260923-real-dhp-bg-hardfix-v271',pos:'center 48%',photoOnly:true,scale:1.0,origin:'center 48%'},
   {need:['tavera fc','11 dic 2012'],src:'./assets/history/archive-v260/tavera-campeon-copa-segunda-11-dic-2012.webp?v=20260923-old-history-v260',pos:'center 47%',photoOnly:true,scale:1.0,origin:'center 47%'},
   {need:['universidad vs dinamo','09 mar 2013'],src:'./assets/history/archive-v260/universidad-vs-dinamo-final-veteranos-09-mar-2013.webp?v=20260923-old-history-v260',pos:'center 47%',photoOnly:true,scale:1.0,origin:'center 47%'},
   {need:['dhp','22 feb 2014'],src:'./assets/history/archive-v260/dhp-campeon-copa-segunda-22-feb-2014.webp?v=20260923-old-history-v260',pos:'center 36%',photoOnly:true,scale:0.78,origin:'center 36%'},
