@@ -59,7 +59,7 @@ const EXACT=[
   {need:['tecos','campe'],src:BASE+'tecos-campeon-historico.jpg',pos:'center 46%'},
   {need:['real cerrito de gasca','15 dic 2013'],src:BASE+'real-cerrito-campeon-2013.jpg',pos:'center 38%'},
   {need:['la esperanza','14 jun 2014'],src:BASE+'la-esperanza-campeon-copa-veteranos-2014.jpg',pos:'center 42%'},
-  {need:['juventus','01 feb 2025'],src:BASE214+'juventus-campeon-copa-veteranos35-01-feb-2025.webp?v=20260923-juventus-v214',pos:'center 46%',photoOnly:true,scale:1.0,origin:'center 46%'},
+  {need:['juventus','01 feb 2025'],src:BASE214+'juventus-campeon-copa-veteranos35-01-feb-2025.webp?v=20260923-juventus-live-v217',pos:'center 50%',photoOnly:true,scale:1.0,origin:'center 50%'},
   {need:['lobos cdg','15 jun 2025'],src:BASE207+'lobos-cdg-campeon-copa-intermedia-15-jun-2025.webp?v=20260923-lobos-clean-v212',pos:'center 50%',photoOnly:true,scale:1.0,origin:'center 50%'},
   {need:['boavista','12 abr 2025'],src:BASE+'boavista-fc-campeon-2025.jpg',pos:'center 42%'},
   {need:['galacticos','08 jun 2025'],src:BASE205+'galacticos-pozos-campeon-copa-08-jun-2025.webp?v=20260923-galacticos-fix211',pos:'center 43%',photoOnly:true,scale:1.0,origin:'center 43%'},

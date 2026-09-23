@@ -21,7 +21,7 @@ const IMG={
 };
 
 const champions=[
-  {date:'01 feb 2025',team:'Juventus',title:'Campeón de Copa · Veteranos 35 y más',detail:'Juventus obtuvo el Campeonato de Copa del torneo de Veteranos 35 y más ante PSV Eindhoven el 1 de febrero de 2025.',source:'Dato e imagen exacta aportados por el usuario · 01 feb 2025',image:HIST+'archive-v214/juventus-campeon-copa-veteranos35-01-feb-2025.webp?v=20260923-juventus-v214'},
+  {date:'01 feb 2025',team:'Juventus',title:'Campeón de Copa · Veteranos 35 y más',detail:'La Liga Municipal de Fútbol “Juventino Rosas” A. C. felicitó al equipo JUVENTUS por obtener el campeonato de Copa del torneo de Veteranos 35 y más ante PSV EINDOVHEN el 1 de febrero de 2025.',source:'Dato e imagen exacta aportados por el usuario · 01 feb 2025',image:HIST+'archive-v214/juventus-campeon-copa-veteranos35-01-feb-2025.webp?v=20260923-juventus-live-v217'},
   {date:'07 jun 2026',team:'La Canchita Deportes',title:'Campeón de Liga · Segunda Fuerza',detail:'La Canchita Deportes ganó la final frente a Aldama FC; Aldama quedó subcampeón.',source:'Dato e imagen aportados por el usuario',image:HIST+'archive-v132/canchita-deportes-campeon-segunda-2026.jpg'},
   {date:'24 may 2026',team:'Franco FC',title:'Campeón de Campeones',detail:'Franco FC ganó frente a Lobos CDG.',source:'Dato e imagen aportados por el usuario',image:HIST+'archive-v132/franco-fc-campeon-de-campeones-2026.jpg'},
   {date:'23 may 2026',team:'La Esperanza',title:'Campeón · final del 23 de mayo',detail:'La Esperanza ganó la final; categoría exacta por precisar.',source:'Dato e imagen aportados por el usuario',image:HIST+'archive-v132/la-esperanza-campeon-23-mayo-2026.jpg'},
