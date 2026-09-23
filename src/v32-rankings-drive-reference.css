@@ -1773,3 +1773,132 @@ body.v32-rankings-active .v32-controls.clubs .v32-filter{
     min-width:40px!important;
   }
 }
+
+
+/* V190 — Clubes clona el diseño visual de Categorías:
+   misma tarjeta, logo, texto, altura, separadores y línea institucional. */
+body.v32-rankings-active .v190-club-card{
+  padding:13px 16px 7px!important;
+}
+
+/* Encabezado de Clubes con exactamente la misma altura/escala que Categorías. */
+body.v32-rankings-active .v190-club-head{
+  height:22px!important;
+  min-height:22px!important;
+  padding:0!important;
+  display:grid!important;
+  align-items:end!important;
+  grid-template-columns:minmax(0,1fr) 82px 58px!important;
+  gap:var(--v32-row-gap)!important;
+  color:#aeb3dd!important;
+  font-size:9px!important;
+  line-height:1!important;
+  text-transform:uppercase!important;
+}
+body.v32-rankings-active .v190-club-head span:nth-child(2),
+body.v32-rankings-active .v190-club-head span:nth-child(3){
+  text-align:center!important;
+}
+
+/* Misma línea institucional que aparece en Categorías. */
+body.v32-rankings-active .v190-club-group{
+  height:30px!important;
+  min-height:30px!important;
+  padding:0!important;
+  display:flex!important;
+  align-items:center!important;
+  box-sizing:border-box!important;
+  color:#bec2e5!important;
+  font-size:9.5px!important;
+  line-height:1!important;
+  text-transform:uppercase!important;
+  border-bottom:1px solid rgba(221,226,255,.48)!important;
+}
+
+/* Fila de Clubes = fila de Categorías en tamaño, imagen, texto y líneas. */
+body.v32-rankings-active .v190-club-row{
+  min-height:var(--v32-row-h)!important;
+  height:var(--v32-row-h)!important;
+  padding:0!important;
+  grid-template-columns:
+    var(--v32-pos-w)
+    var(--v32-logo-w)
+    minmax(0,1fr)
+    82px
+    58px!important;
+  gap:var(--v32-row-gap)!important;
+  align-items:center!important;
+  box-sizing:border-box!important;
+  border-bottom:1px solid rgba(255,255,255,.09)!important;
+}
+body.v32-rankings-active .v190-club-row .v32-logo{
+  width:var(--v32-logo-w)!important;
+  height:var(--v32-logo-w)!important;
+  min-width:var(--v32-logo-w)!important;
+  min-height:var(--v32-logo-w)!important;
+  max-width:var(--v32-logo-w)!important;
+  max-height:var(--v32-logo-w)!important;
+}
+body.v32-rankings-active .v190-club-row .v32-logo img{
+  width:100%!important;
+  height:100%!important;
+  max-width:100%!important;
+  max-height:100%!important;
+  object-fit:contain!important;
+  object-position:center!important;
+}
+body.v32-rankings-active .v190-club-row .v32-club-copy,
+body.v32-rankings-active .v190-club-row .v32-club-copy b{
+  min-width:0!important;
+}
+body.v32-rankings-active .v190-club-row .v32-club-copy b{
+  display:block!important;
+  margin:0!important;
+  color:#fff!important;
+  font-size:var(--v32-name-size)!important;
+  line-height:1.06!important;
+  font-weight:720!important;
+  letter-spacing:-.01em!important;
+  overflow:hidden!important;
+  text-overflow:ellipsis!important;
+  white-space:nowrap!important;
+}
+body.v32-rankings-active .v190-club-row .v32-club-points{
+  color:#c7cbed!important;
+  font-size:var(--v32-num-size)!important;
+  line-height:1!important;
+  font-weight:720!important;
+  text-align:center!important;
+  font-variant-numeric:tabular-nums!important;
+}
+body.v32-rankings-active .v190-club-row .v32-row-chevron{
+  width:6px!important;
+  height:6px!important;
+  justify-self:center!important;
+  border-right-width:2px!important;
+  border-bottom-width:2px!important;
+}
+body.v32-rankings-active .v190-club-item:last-child .v190-club-row{
+  border-bottom:0!important;
+}
+body.v32-rankings-active .v190-club-item .v32-club-detail{
+  margin-left:calc(var(--v32-pos-w) + var(--v32-logo-w) + (var(--v32-row-gap) * 2))!important;
+}
+
+/* Teléfonos angostos: conservar la misma proporción de Categorías. */
+@media(max-width:390px){
+  body.v32-rankings-active .v190-club-card{
+    padding:13px 14px 7px!important;
+  }
+  body.v32-rankings-active .v190-club-head{
+    grid-template-columns:minmax(0,1fr) 76px 54px!important;
+  }
+  body.v32-rankings-active .v190-club-row{
+    grid-template-columns:
+      var(--v32-pos-w)
+      var(--v32-logo-w)
+      minmax(0,1fr)
+      76px
+      54px!important;
+  }
+}
