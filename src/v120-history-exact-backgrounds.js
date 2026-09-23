@@ -23,7 +23,7 @@ const BASE222='https://raw.githubusercontent.com/jairofrancog7-star/App-liga-/ma
 const BASE202='https://raw.githubusercontent.com/jairofrancog7-star/App-liga-/main/assets/history/archive-v202/';
 const ESPERANZA_2025_PHOTO=window.LJR_ESPERANZA_2025_PHOTO||'https://raw.githubusercontent.com/jairofrancog7-star/App-liga-/main/assets/history/archive-v214/la-esperanza-campeon-copa-veteranos50-08-nov-2025.jpg?v=20260923-esperanza-copa-v214';
 const BASE185='https://raw.githubusercontent.com/jairofrancog7-star/App-liga-/main/assets/history/archive-v185/';
-const SAN_JULIAN_2024=window.LJR_SAN_JULIAN_PHOTO||'';
+const SAN_JULIAN_2024=window.LJR_SAN_JULIAN_PHOTO||'https://raw.githubusercontent.com/jairofrancog7-star/App-liga-/main/assets/history/archive-v218/san-julian-campeon-copa-segunda-18-feb-2024.jpg?v=20260923-san-julian-v224';
 const EXACT=[
   {need:['manchester','09 nov 2024'],src:BASE222+'manchester-campeon-copa-v50-09-nov-2024.webp?v=20260923-manchester-copa-v222',pos:'center 50%',photoOnly:true,scale:1.08,origin:'center 50%'},
   {need:['manchester','26 abr 2025'],src:BASE216+'manchester-campeon-campeones-26-abr-2025.webp?v=20260923-manchester-photo-v216',pos:'center 46%',photoOnly:true,scale:1.0,origin:'center 46%'},
