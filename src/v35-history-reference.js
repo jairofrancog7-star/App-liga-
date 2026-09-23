@@ -1,11 +1,10 @@
-import './v224-juventus-history-photo-data.js';
 /* V35 — Historia mobile reconstruction from the user's master references.
    Replaces only #/history on mobile/APK. Keeps the rest of the app logic intact. */
 (function(){
 'use strict';
 
 const RAW='https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/';
-const JUVENTUS_2024_PHOTO=window.__V224_JUVENTUS_2024_PHOTO||'./assets/history/archive-v225/juventus-campeon-campeones-21-sep-2024.webp?v=20260923-juventus-inline-v244';
+const JUVENTUS_2024_PHOTO='./assets/history/archive-v225/juventus-campeon-campeones-21-sep-2024.webp?v=20260923-juventus-webp-v245';
 const ASSETS={
   league:RAW+'assets/liga-logo.webp',
   america:RAW+'assets/branding/america-veteranos-35-user.png',
