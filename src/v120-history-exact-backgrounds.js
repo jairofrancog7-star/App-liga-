@@ -21,7 +21,7 @@ const BASE214='https://raw.githubusercontent.com/jairofrancog7-star/App-liga-/ma
 const BASE216='https://raw.githubusercontent.com/jairofrancog7-star/App-liga-/main/assets/history/archive-v216/';
 const BASE222='https://raw.githubusercontent.com/jairofrancog7-star/App-liga-/main/assets/history/archive-v222/';
 const BASE202='https://raw.githubusercontent.com/jairofrancog7-star/App-liga-/main/assets/history/archive-v202/';
-const ESPERANZA_2025_PHOTO=window.LJR_ESPERANZA_2025_PHOTO||'https://raw.githubusercontent.com/jairofrancog7-star/App-liga-/main/assets/history/archive-v214/la-esperanza-campeon-copa-veteranos50-08-nov-2025.jpg?v=20260923-esperanza-copa-v214';
+const ESPERANZA_2025_PHOTO='https://raw.githubusercontent.com/jairofrancog7-star/App-liga-/main/assets/history/archive-v224/la-esperanza-campeon-copa-veteranos50-08-nov-2025.webp?v=20260923-esperanza-fondo-v224';
 const BASE185='https://raw.githubusercontent.com/jairofrancog7-star/App-liga-/main/assets/history/archive-v185/';
 const SAN_JULIAN_2024=window.LJR_SAN_JULIAN_PHOTO||'https://raw.githubusercontent.com/jairofrancog7-star/App-liga-/main/assets/history/archive-v218/san-julian-campeon-copa-segunda-18-feb-2024.jpg?v=20260923-san-julian-v224';
 const EXACT=[
@@ -51,7 +51,7 @@ const EXACT=[
   {need:['linces','15 mar 2026'],src:BASE132+'linces-campeon-primera-2026.jpg',pos:'center 45%'},
   {need:['galacticos','15 mar 2026'],src:BASE132+'galacticos-subcampeon-primera-2026.jpg',pos:'center 45%'},
   {need:['salvajes','20 dic 2025'],src:BASE132+'salvajes-campeon-copa-2025.jpg',pos:'center 42%'},
-  {need:['la esperanza','08 nov 2025'],src:ESPERANZA_2025_PHOTO,pos:'center 46%',photoOnly:true,scale:1.0,origin:'center 46%'},
+  {need:['la esperanza','08 nov 2025'],src:ESPERANZA_2025_PHOTO,pos:'center 50%',photoOnly:true,scale:1.0,origin:'center 50%'},
   {need:['juventus','20 sep 2025'],src:BASE132+'juventus-campeon-liga-veteranos-35-2025.jpg',pos:'center 43%'},
   {need:['la huerta de cuenda','29 jun 2025'],src:'https://raw.githubusercontent.com/jairofrancog7-star/App-liga-/main/assets/history/archive-v203/la-huerta-cuenda-campeon-segunda-29-jun-2025.jpg',pos:'center 43%'},
   {need:['tavera fc','29 jun 2025'],src:BASE119+'tavera-finalista-2025.jpg',pos:'center 43%'},
