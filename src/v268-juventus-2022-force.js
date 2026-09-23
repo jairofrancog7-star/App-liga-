@@ -1,7 +1,7 @@
 (()=>{
 'use strict';
-const PHOTO=location.origin+'/App-liga-/assets/history/archive-v269/juventus-campeon-liga-primera-17-abr-2022.webp?v=20260923-juventus-restore-v269';
-const RAW='https://raw.githubusercontent.com/jairofrancog7-star/App-liga-/main/assets/history/archive-v269/juventus-campeon-liga-primera-17-abr-2022.webp?v=20260923-juventus-restore-v269';
+const PHOTO=location.origin+'/App-liga-/assets/history/archive-v269/juventus-campeon-liga-primera-17-abr-2022.jpg?v=20260923-juventus-photo-restored-v273';
+const RAW='https://raw.githubusercontent.com/jairofrancog7-star/App-liga-/main/assets/history/archive-v269/juventus-campeon-liga-primera-17-abr-2022.jpg?v=20260923-juventus-photo-restored-v273';
 const norm=s=>String(s||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/\s+/g,' ').trim();
 function target(card){
   const h=norm(card.querySelector('h3,h4')?.textContent||'');
@@ -24,7 +24,7 @@ function apply(card){
   [
     ['position','absolute'],['inset','0'],['width','100%'],['height','100%'],
     ['display','block'],['visibility','visible'],['opacity','1'],['z-index','0'],
-    ['object-fit','cover'],['object-position','center 46%'],['transform','scale(1)'],
+    ['object-fit','cover'],['object-position','center 42%'],['transform','scale(1)'],
     ['filter','none'],['margin','0'],['padding','0']
   ].forEach(([k,v])=>img.style.setProperty(k,v,'important'));
   card.style.setProperty('position','relative','important');
@@ -32,7 +32,7 @@ function apply(card){
   card.style.setProperty('isolation','isolate','important');
   card.style.setProperty('background-image','linear-gradient(180deg,rgba(3,5,50,.02),rgba(3,5,50,.16) 48%,rgba(3,5,50,.62) 100%),url("'+PHOTO+'")','important');
   card.style.setProperty('background-size','cover','important');
-  card.style.setProperty('background-position','center 46%','important');
+  card.style.setProperty('background-position','center 42%','important');
   card.style.setProperty('background-repeat','no-repeat','important');
   let shade=card.querySelector(':scope > .v268-juventus-2022-shade');
   if(!shade){
@@ -41,7 +41,7 @@ function apply(card){
     shade.setAttribute('aria-hidden','true');
     card.insertBefore(shade,img.nextSibling);
   }
-  shade.style.cssText='position:absolute!important;inset:0!important;z-index:1!important;pointer-events:none!important;background:linear-gradient(180deg,rgba(2,5,45,.00),rgba(2,5,45,.08) 45%,rgba(2,5,45,.62) 100%)!important;';
+  shade.style.cssText='position:absolute!important;inset:0!important;z-index:1!important;pointer-events:none!important;background:linear-gradient(180deg,rgba(2,5,45,.04) 0%,rgba(2,5,45,.14) 42%,rgba(2,5,45,.68) 100%)!important;';
   card.querySelectorAll('.v35-history-moment-content,.v35-champion-content,.v115-card-body').forEach(n=>{
     n.style.setProperty('position','relative','important');
     n.style.setProperty('z-index','2','important');
@@ -53,7 +53,7 @@ function apply(card){
     n.style.setProperty('backdrop-filter','blur(1.5px)','important');
     n.style.setProperty('-webkit-backdrop-filter','blur(1.5px)','important');
   });
-  card.dataset.v268Juventus2022='1';
+  card.dataset.v273Juventus2022='1';
   card.dataset.v269Juventus2022='1';
 }
 function patch(){
