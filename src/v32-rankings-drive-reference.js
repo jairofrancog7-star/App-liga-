@@ -191,10 +191,10 @@ function fedControls(){
 function clubsControls(){
   var selected=clubByCode(selectedClub);
   return '<div class="v32-controls clubs '+(selected?'has-club-filter':'')+'">'+
-    '<button type="button" class="v32-select v32-coefficient" data-v32-info="coefficient"><span>Clasificación de clubes</span><i class="v32-chevron"></i></button>'+
-    '<button type="button" class="v32-select v32-season-select" data-v32-season><span>'+esc(season)+'</span><i class="v32-chevron"></i></button>'+
-    (selected?'<button type="button" class="v32-selected-club" data-v32-clear-club><span>'+esc(selected[1])+'</span><i>×</i></button>':'')+
+    '<button type="button" class="v32-select" data-v32-info="season-type"><span>Temporada</span><i class="v32-chevron"></i></button>'+
+    '<button type="button" class="v32-select" data-v32-season><span>'+esc(season)+'</span><i class="v32-chevron"></i></button>'+
     '<button type="button" class="v32-filter '+(selected?'active':'')+'" data-v32-filter aria-label="Filtrar clubes">'+filterIcon()+'</button>'+
+    (selected?'<button type="button" class="v32-selected-club" data-v32-clear-club><span>'+esc(selected[1])+'</span><i>×</i></button>':'')+
   '</div>';
 }
 function filteredFederationRows(){
