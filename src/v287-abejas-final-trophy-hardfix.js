@@ -4,7 +4,7 @@
 'use strict';
 if(window.__LJR_V287_ABEJAS_FINAL__)return;
 window.__LJR_V287_ABEJAS_FINAL__=true;
-const TITLE='Abejas Pozos vs Juventus FC Jr.';
+const TITLE='Abejas Pozos';
 const TROPHY='./assets/reference/final-trophy-drive.png?v=20260923-abejas-trophy-v287';
 function route(){return (location.hash||'#/home').replace(/^#\/?/,'').split('?')[0]||'home'}
 function activeTab(){return document.querySelector('.v35-tab.active')?.textContent?.trim()||'Resumen'}
@@ -14,11 +14,11 @@ function build(){
   a.innerHTML=
     '<img class="v287-abejas-trophy" src="'+TROPHY+'" alt="Trofeo de la final de Copa 2014">'+
     '<div class="v35-history-moment-content">'+
-      '<div class="v35-history-meta"><span class="v35-history-kind">FINAL</span><time class="v35-history-date">22 feb 2014</time></div>'+
+      '<div class="v35-history-meta"><span class="v35-history-kind">CAMPEÓN</span><time class="v35-history-date">22 feb 2014</time></div>'+
       '<h3>'+TITLE+'</h3>'+
-      '<strong>Gran Final · Torneo de Copa 2014 · Primera Fuerza</strong>'+
+      '<strong>Campeón de Copa · Primera Fuerza</strong>'+
       '<div class="v35-history-status"><span><b>Ganador</b>Abejas Pozos</span><span><b>Temporada</b>2014</span></div>'+
-      '<p>Abejas Pozos ganó la Gran Final de Copa 2014 de Primera Fuerza frente a Juventus FC Jr.</p>'+
+      '<p>Abejas Pozos ganó la Gran Final del Torneo de Copa 2014 de Primera Fuerza frente a Juventus FC Jr.</p>'+
     '</div>';
   return a;
 }
@@ -35,10 +35,10 @@ function fixCard(card){
     trophy.alt='Trofeo de la final de Copa 2014';
     card.prepend(trophy);
   }
-  const kind=card.querySelector('.v35-history-kind'); if(kind)kind.textContent='FINAL';
+  const kind=card.querySelector('.v35-history-kind'); if(kind)kind.textContent='CAMPEÓN';
   const date=card.querySelector('.v35-history-date'); if(date)date.textContent='22 feb 2014';
   const h3=card.querySelector('h3'); if(h3)h3.textContent=TITLE;
-  const sub=card.querySelector('.v35-history-moment-content>strong'); if(sub)sub.textContent='Gran Final · Torneo de Copa 2014 · Primera Fuerza';
+  const sub=card.querySelector('.v35-history-moment-content>strong'); if(sub)sub.textContent='Campeón de Copa · Primera Fuerza';
   let status=card.querySelector('.v35-history-status');
   if(!status){
     status=document.createElement('div');
@@ -47,13 +47,13 @@ function fixCard(card){
   }
   status.innerHTML='<span><b>Ganador</b>Abejas Pozos</span><span><b>Temporada</b>2014</span>';
   const p=card.querySelector('.v35-history-moment-content>p');
-  if(p)p.textContent='Abejas Pozos ganó la Gran Final de Copa 2014 de Primera Fuerza frente a Juventus FC Jr.';
+  if(p)p.textContent='Abejas Pozos ganó la Gran Final del Torneo de Copa 2014 de Primera Fuerza frente a Juventus FC Jr.';
 }
 function ensure(){
   if(route()!=='history')return;
   const tab=activeTab();
-  if(tab!=='Resumen'&&tab!=='Finales')return;
-  let cards=[...document.querySelectorAll('.v35-history-moment')].filter(c=>c.textContent.includes(TITLE));
+  if(tab!=='Resumen'&&tab!=='Campeones'&&tab!=='Finales')return;
+  let cards=[...document.querySelectorAll('.v35-history-moment')].filter(c=>c.textContent.includes('Abejas Pozos')&&c.textContent.includes('22 feb 2014'));
   if(!cards.length){
     const host=document.querySelector('.v35-history-moments');
     if(host){const card=build();host.appendChild(card);cards=[card]}
