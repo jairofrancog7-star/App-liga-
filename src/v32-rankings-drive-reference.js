@@ -244,20 +244,21 @@ function clubItems(){
   return rows.map(function(row){
     var originalIndex=clubRows.findIndex(function(r){return r[0]===row[0]});
     var isOpen=expanded===originalIndex;
-    return '<div class="v32-club-item">'+
-      '<button type="button" class="v32-club-row '+(isOpen?'expanded':'')+'" data-v32-club="'+originalIndex+'">'+
+    return '<div class="v32-club-item v190-club-item">'+
+      '<button type="button" class="v32-fed-row v32-club-row v190-club-row '+(isOpen?'expanded':'')+'" data-v32-club="'+originalIndex+'">'+
         '<span class="v32-pos">'+(originalIndex+1)+'</span>'+logo(row[0],row[1])+
-        '<span class="v32-club-copy"><b>'+esc(row[1])+'</b><small>Juventino Rosas</small></span>'+
-        '<strong class="v32-club-points">'+esc(row[2])+'</strong><i class="v32-row-chevron"></i>'+
+        '<span class="v32-fed-name v32-club-copy"><b>'+esc(row[1])+'</b></span>'+
+        '<strong class="v32-fed-points v32-club-points">'+esc(row[2])+'</strong><i class="v32-row-chevron"></i>'+
       '</button>'+
-      '<div class="v32-club-detail '+(isOpen?'show':'')+'"><span>Primera Fuerza · Clasificación oficial</span><button type="button" data-v32-open-team="'+esc(row[0])+'">Ver equipo</button></div>'+
+      '<div class="v32-club-detail '+(isOpen?'show':'')+'"><span>Juventino Rosas · Primera Fuerza · Clasificación oficial</span><button type="button" data-v32-open-team="'+esc(row[0])+'">Ver equipo</button></div>'+
     '</div>';
   }).join('');
 }
 function clubsView(){
   return clubsControls()+
-    '<section class="v32-card v32-club-card">'+
-      '<div class="v32-club-head"><span>Club</span><span>Puntos</span><span></span></div>'+
+    '<section class="v32-card v32-fed-card v32-club-card v190-club-card">'+
+      '<div class="v32-fed-head v32-club-head v190-club-head"><span>Club</span><span>Puntos</span><span></span></div>'+
+      '<div class="v32-fed-group v190-club-group">Liga Municipal de Fútbol Juventino Rosas</div>'+
       clubItems()+
     '</section>';
 }
