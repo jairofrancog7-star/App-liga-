@@ -1164,12 +1164,14 @@ function v228IsEsperanzaChampion(m){
 }
 
 function v227GalacticosChampionCard(m){
-  /* V227 — tarjeta independiente desde cero para Galácticos de Pozos.
-     No depende de los parches genéricos de fondos históricos. */
-  const local='./assets/history/archive-v203/galacticos-campeon-campeones-09-feb-2025.jpg?v=20260923-galacticos-card-v227';
-  const raw='https://raw.githubusercontent.com/jairofrancog7-star/App-liga-/main/assets/history/archive-v203/galacticos-campeon-campeones-09-feb-2025.jpg?v=20260923-galacticos-card-v227';
-  return '<article class="v227-galacticos-card" data-v227-galacticos-card>'+
-    '<img class="v227-galacticos-photo" src="'+local+'" alt="" aria-hidden="true" loading="eager" decoding="async" onerror="if(!this.dataset.fallback){this.dataset.fallback=\'1\';this.src=\''+raw+'\';}else{this.remove();}">'+
+  /* V229 — fondo directo con doble URL.
+     1) GitHub Pages (misma app)
+     2) raw.githubusercontent como respaldo
+     Ya no depende de un <img> ni de que cargue una clase CSS para mostrar la foto. */
+  const local='https://jairofrancog7-star.github.io/App-liga-/assets/history/archive-v203/galacticos-campeon-campeones-09-feb-2025.jpg?v=20260923-galacticos-final-v229';
+  const raw='https://raw.githubusercontent.com/jairofrancog7-star/App-liga-/main/assets/history/archive-v203/galacticos-campeon-campeones-09-feb-2025.jpg?v=20260923-galacticos-final-v229';
+  const bg='background-color:#060653;background-image:linear-gradient(180deg,rgba(3,6,50,.03) 0%,rgba(3,6,50,.10) 30%,rgba(3,6,50,.38) 66%,rgba(3,6,50,.84) 100%),url(&quot;'+local+'&quot;),url(&quot;'+raw+'&quot;);background-size:cover,cover,cover;background-position:center,center 48%,center 48%;background-repeat:no-repeat,no-repeat,no-repeat;';
+  return '<article class="v227-galacticos-card v229-galacticos-final" data-v227-galacticos-card style="'+bg+'">'+
     '<span class="v227-galacticos-shade" aria-hidden="true"></span>'+
     '<div class="v227-galacticos-body">'+
       '<div class="v227-galacticos-meta"><span class="v35-history-kind">'+esc(m.kind)+'</span><time class="v35-history-date">'+esc(m.date)+'</time></div>'+
@@ -1183,6 +1185,7 @@ function v227GalacticosChampionCard(m){
     '</div>'+
   '</article>';
 }
+
 function v227IsGalacticosChampion(m){
   const n=v=>String(v||'').normalize('NFD').replace(/[\\u0300-\\u036f]/g,'').toLowerCase();
   return n(m?.title).includes('galacticos de pozos') && n(m?.date).includes('09 feb 2025');
