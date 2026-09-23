@@ -181,6 +181,9 @@ function injectHistory(){
   const page=document.querySelector('.v35-history-page');
   const content=page?.querySelector('[data-v35-content]');
   if(!page||!content||content.querySelector('[data-v115-history-expansion]'))return;
+  /* V207: Campeones ya se arma completo y deduplicado desde v35-history-reference.
+     No anexar otra segunda lista del archivo aquí porque repetía los mismos títulos. */
+  if(activeTab(page)==='Campeones')return;
   const box=document.createElement('section');
   box.className='v115-history-expansion';
   box.dataset.v115HistoryExpansion='1';
