@@ -295,7 +295,7 @@ const historyMoments=[
 {kind:'CAMPEÓN',date:'11 dic 2012',season:'2012',winner:'Tavera FC',title:'Tavera FC',subtitle:'Campeón de Copa · Categoría Segunda',detail:'Golazo Liga felicitó al equipo Tavera como campeón de Copa de la Categoría Segunda el 11 de diciembre de 2012.',backgroundPhoto:'./assets/history/archive-v260/tavera-campeon-copa-segunda-11-dic-2012.webp?v=20260923-old-history-v260',image:HIST_ROOT+'assets/official-logos/tavera-fc.png'},
   {kind:'PENALES',date:'23 feb 2013',title:'Magisterio 4–2 Boavista',subtitle:'0–0 en tiempo reglamentario · tanda de penales',detail:'Golazo Liga registró empate 0–0 en tiempo reglamentario y victoria de Magisterio 4–2 en la tanda de penales.'},
   {kind:'CAMPEÓN',date:'15 dic 2013',season:'2013',winner:'Real Cerrito de Gasca',title:'Real Cerrito de Gasca',subtitle:'Campeón · Segunda Fuerza',detail:'Golazo Liga publicó al capitán “Nudo” recibiendo el trofeo de campeón de Segunda Fuerza. En una actualización de la final, Real Cerrito vencía 3–0 a DHP al minuto 35.',backgroundPhoto:HIST_MEDIA+'archive-v120/real-cerrito-campeon-2013.jpg',image:HIST_ROOT+'assets/teams/deportivo-cg.webp'},
-  {kind:'CAMPEÓN',date:'09 mar 2013',season:'2013',winner:'Universidad',title:'Universidad',subtitle:'Campeón de Veteranos · Final vs Dinamo · Unidad Deportiva Sur · 16:00',detail:'Dato e imagen aportados por el usuario: Universidad ganó la final de Veteranos frente a Dinamo el sábado 9 de marzo de 2013 en la Unidad Deportiva Sur. La fotografía corresponde al equipo campeón con el trofeo.',backgroundPhoto:'./assets/history/archive-v232/universidad-campeon-veteranos-09-mar-2013.webp?v=20260923-universidad-v232'},
+  {kind:'CAMPEÓN',date:'09 mar 2013',season:'2013',winner:'Universidad',title:'Universidad',subtitle:'Campeón de Veteranos · Final vs Dinamo · Unidad Deportiva Sur · 16:00',detail:'Dato e imagen aportados por el usuario: Universidad ganó la final de Veteranos frente a Dinamo el sábado 9 de marzo de 2013 en la Unidad Deportiva Sur. La fotografía corresponde al equipo campeón con el trofeo.',backgroundPhoto:'./assets/history/archive-v264/universidad-campeon-veteranos-09-mar-2013.webp?v=20260923-universidad-exact-v264'},
   {kind:'FINAL',date:'2019 · día exacto pendiente',season:'2019',winner:'Ganador por confirmar',title:'Chelsea vs La Esperanza',subtitle:'Veteranos · Final de Copa · 17:30 · Campo 1',detail:'El rol histórico confirma el año 2019, la final, la hora y el Campo 1. El día exacto y el resultado no son legibles en el material recuperado.'},
   {kind:'ANIVERSARIO',date:'28 nov 2012 · memoria de oct 1987',title:'Boavista',subtitle:'XXV aniversario',detail:'Álbum conmemorativo del equipo Boavista.',backgroundPhoto:HIST_MEDIA+'archive-v119/boavista-xxv-2012.jpg'},
   {kind:'PENALES',date:'Archivo histórico',title:'Hermanos vs Juventus',subtitle:'Torneo de Copa',detail:'Serie de penales registrada en el archivo histórico.',imageA:HIST_ROOT+'assets/official-logos/hermanos.png',imageB:HIST_ROOT+'assets/official-logos/juventus.png'},
@@ -1148,10 +1148,19 @@ function v246TerricolasChampionCard(m){
   '</article>';
 }
 function v261UniversidadChampionCard(m){
-  const photo='./assets/history/archive-v232/universidad-campeon-veteranos-09-mar-2013.webp?v=20260923-universidad-v261';
-  return '<article class="v35-history-moment v35-history-moment-photo v261-universidad-2013" data-v261-universidad-2013 style="position:relative!important;overflow:hidden!important;isolation:isolate!important;">'+
-    '<img class="v35-history-bg-photo v35-bg-exact" src="'+photo+'" alt="" aria-hidden="true" loading="eager" decoding="async" style="position:absolute!important;inset:0!important;width:100%!important;height:100%!important;object-fit:cover!important;object-position:center 48%!important;filter:none!important;transform:none!important;opacity:1!important;z-index:0!important;">'+
-    '<div class="v35-history-moment-shade" aria-hidden="true" style="display:block!important;position:absolute!important;inset:0!important;z-index:1!important;background:linear-gradient(180deg,rgba(3,8,70,.10) 0%,rgba(3,8,70,.28) 38%,rgba(3,8,70,.82) 74%,rgba(3,8,70,.96) 100%),linear-gradient(90deg,rgba(3,8,70,.56),rgba(3,8,70,.08));"></div>'+
+  const photo='./assets/history/archive-v264/universidad-campeon-veteranos-09-mar-2013.webp?v=20260923-universidad-exact-v264';
+  const raw='https://raw.githubusercontent.com/jairofrancog7-star/App-liga-/main/assets/history/archive-v264/universidad-campeon-veteranos-09-mar-2013.webp?v=20260923-universidad-exact-v264';
+  return '<article class="v35-history-moment v35-history-moment-photo v264-universidad-2013" data-v264-universidad-2013 '+
+    'style="position:relative!important;overflow:hidden!important;isolation:isolate!important;'+
+    'background-color:#07106f!important;background-image:url(&quot;'+raw+'&quot;)!important;'+
+    'background-size:cover!important;background-position:center 46%!important;background-repeat:no-repeat!important;">'+
+    '<img class="v264-universidad-photo" src="'+photo+'" alt="Universidad · Campeón de Veteranos · 09 mar 2013" loading="eager" decoding="async" '+
+      'style="display:block!important;visibility:visible!important;opacity:1!important;position:absolute!important;inset:0!important;'+
+      'width:100%!important;height:100%!important;min-width:100%!important;min-height:100%!important;max-width:none!important;max-height:none!important;'+
+      'object-fit:cover!important;object-position:center 46%!important;filter:none!important;transform:none!important;z-index:0!important;border:0!important;">'+
+    '<div class="v264-universidad-shade" aria-hidden="true" style="position:absolute!important;inset:0!important;z-index:1!important;'+
+      'background:linear-gradient(180deg,rgba(2,7,55,.04) 0%,rgba(2,7,55,.16) 32%,rgba(2,7,55,.62) 70%,rgba(2,7,55,.88) 100%),'+
+      'linear-gradient(90deg,rgba(2,7,55,.42),rgba(2,7,55,.06))!important;"></div>'+
     '<div class="v35-history-moment-content" style="position:relative!important;z-index:2!important;width:100%!important;">'+
       '<div class="v35-history-meta"><span class="v35-history-kind">CAMPEÓN</span><time class="v35-history-date">09 mar 2013</time></div>'+
       '<h3>Universidad</h3>'+
