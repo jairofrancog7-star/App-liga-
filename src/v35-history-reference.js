@@ -223,6 +223,7 @@ function championBgImg(name,explicitPhoto,season,klass){
   return '<img class="'+klass+' v35-bg-exact '+(crop?'v35-photo-only-crop':'')+'" src="'+bg.url+'" alt="'+esc(alt)+'" loading="lazy" decoding="async" '+(crop?'style="'+crop+'"':'')+' onerror="this.remove()">';
 }
 const historyMoments=[
+  {kind:'CAMPEÓN',date:'14 jun 2014',season:'2014',winner:'La Esperanza',title:'La Esperanza',subtitle:'Campeón de Copa · Veteranos',detail:'La Esperanza fue campeón de Copa de Veteranos 2014. Registro histórico del 14 de junio de 2014. La fotografía aportada muestra al equipo campeón con el trofeo.',backgroundPhoto:'./assets/history/archive-v120/la-esperanza-campeon-copa-veteranos-2014.jpg?v=20260923-esperanza-copa2014-v267',image:HIST_ROOT+'assets/official-logos/la-esperanza.png'},
   {kind:'CAMPEÓN',date:'19 sep 2026',season:'2025–2026',winner:'Deportivo CG · Cerrito de Gasca',title:'Deportivo CG · Cerrito de Gasca',subtitle:'Campeón de Liga · Veteranos 35 y más + Campeón de Campeones',detail:'El archivo histórico aportado muestra al plantel con los trofeos y los textos CAMPEÓN TORNEO DE LIGA 2025-2026 · VETERANOS 35 Y MAS y CAMPEÓN DE CAMPEONES. La final frente a Pozos F.C. quedó documentada para el 19 de septiembre de 2026.',backgroundPhoto:HIST_MEDIA+'archive-v120/deportivo-cg-campeon-liga-2025-2026.jpg',image:HIST_ROOT+'assets/teams/deportivo-cg.webp'},
   // V132 — finales 2025–2026 aportadas por el usuario con fotografías exactas.
   {kind:'CAMPEÓN',date:'07 jun 2026',season:'2025–2026',winner:'La Canchita Deportes',title:'La Canchita Deportes',subtitle:'Campeón de Liga · Segunda Fuerza',detail:'Dato e imagen aportados por el usuario: La Canchita Deportes ganó la final de Segunda Fuerza del 7 de junio de 2026; Aldama FC quedó como subcampeón.',backgroundPhoto:HIST_MEDIA+'archive-v132/canchita-deportes-campeon-segunda-2026.jpg',image:HIST_ROOT+'assets/official-logos/la-canchita-deportes.png'},
@@ -355,6 +356,7 @@ const retroClubs=[
 const retroNames=['Universidad','Valencia','Halcones','Chelse','Olímpicos de Pozos','Romerillo'];
 
 const verifiedChampions=[
+  {season:'14 jun 2014',competition:'Torneo de Copa · Veteranos',champion:'La Esperanza',runner:'—',source:'La Esperanza fue campeón de Copa de Veteranos 2014. Registro histórico del 14 de junio de 2014; fotografía del equipo campeón con el trofeo.',photo:'./assets/history/archive-v120/la-esperanza-campeon-copa-veteranos-2014.jpg?v=20260923-esperanza-copa2014-v267',championLogo:HIST_ROOT+'assets/official-logos/la-esperanza.png'},
   // V206 — Juventus campeón de Copa · final 1 de febrero de 2025.
   {season:'01 feb 2025',competition:'Torneo de Copa · categoría por confirmar',champion:'Juventus',runner:'—',source:'Dato e imagen aportados por el usuario: Juventus campeón de Copa en la final del 1 de febrero de 2025. La categoría exacta queda pendiente porque no aparece visible en la fotografía.',photo:HIST_MEDIA+'archive-v197/juventus-campeon-copa-01-feb-2025.jpg',championLogo:HIST_ROOT+'assets/official-logos/juventus.png'},
   // V132 — palmarés 2025–2026 confirmado por el usuario y sus fotografías.
