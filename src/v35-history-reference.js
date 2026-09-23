@@ -262,7 +262,7 @@ const historyMoments=[
   {kind:'TERCER LUGAR',date:'23 nov 2013',title:'Romerillo',subtitle:'Tercer lugar · Fuerza Intermedia',detail:'Golazo Liga publicó que el portero de Romerillo fue clave para que su equipo obtuviera el tercer lugar, destacando una atajada de penal en la serie final. El nombre del portero no es visible en la captura aportada.'},
   {kind:'CAMPEÓN',date:'2014 · fecha exacta pendiente',season:'2014',winner:'DHP',title:'DHP',subtitle:'Campeón del Torneo de Copa 2014 · Segunda Fuerza',detail:'Dato histórico aportado directamente por el usuario: DHP fue campeón del Torneo de Copa 2014 de Segunda Fuerza. La publicación o fotografía original queda pendiente de adjuntar para documentar la fecha exacta.'},
   {kind:'CAMPEÓN',date:'22 feb 2014',season:'2014',winner:'Puros Cuates',title:'Puros Cuates',subtitle:'Campeón de Copa · Fuerza Intermedia',detail:'La publicación de Golazo Liga muestra el trofeo entregado al equipo campeón.',backgroundPhoto:HIST_PHOTOS.purosCuatesTrophy2014||'',image:''},
-  {kind:'CAMPEÓN',date:'18 sep 2022',season:'2022',winner:'Terrícolas SEDER',title:'Terrícolas SEDER',subtitle:'Campeón de Copa · Segunda Fuerza',detail:'Publicación histórica de Golazo Liga: Terrícolas SEDER fue identificado como campeón de Copa 2022 de Segunda Fuerza.',image:HIST_ROOT+'assets/official-logos/terricolas.png'},
+  {kind:'CAMPEÓN',date:'18 sep 2022',season:'2022',winner:'Terrícolas SEDER',title:'Terrícolas SEDER',subtitle:'Campeón de Copa · Segunda Fuerza',detail:'Terrícolas SEDER, campeón de Copa 2022, Segunda Fuerza. ¡¡Felicidades!!',backgroundPhoto:'./assets/history/archive-v246/terricolas-seder-campeon-copa-18-sep-2022.webp?v=20260923-terricolas-bg-v246',image:HIST_ROOT+'assets/official-logos/terricolas.png'},
   {kind:'CAMPEÓN',date:'10 abr 2022',season:'2022',winner:'Tavera FC',title:'Tavera FC',subtitle:'Campeón de Liga · Fuerza Intermedia',detail:'Golazo Liga publicó a Tavera FC como campeón de Liga 2022 de Fuerza Intermedia; con ese campeonato logró el ascenso a Primera Fuerza.',backgroundPhoto:HIST_MEDIA+'archive-v185/tavera-campeon-intermedia-2022.webp',image:HIST_ROOT+'assets/official-logos/tavera-fc.png'},
   {kind:'CAMPEÓN',date:'20 mar 2022',season:'2022',winner:'Galácticos FC',title:'Galácticos FC',subtitle:'Campeón de Liga · Segunda Fuerza',detail:'Publicación aportada por el usuario desde Golazo Liga: Galácticos FC fue campeón de Liga en Segunda Fuerza y con ese título logró su ascenso a Fuerza Intermedia.',backgroundPhoto:HIST_MEDIA+'archive-v185/galacticos-campeon-segunda-2022.webp',image:HIST_ROOT+'assets/teams/galacticos-pozos.webp'},
     {kind:'CAMPEÓN',date:'02 oct 2021',season:'2020–2021',winner:'PSV',title:'PSV',subtitle:'Campeón de Campeones · Veteranos · 2020–2021',detail:'Publicación de Golazo Liga del 2 de octubre de 2021: PSV fue Campeón de Campeones de la temporada 2020–2021 en la categoría Veteranos.',backgroundPhoto:HIST_MEDIA+'archive-v134/psv-campeon-campeones-veteranos-2020-2021.jpg',image:HIST_ROOT+'assets/teams/psv.webp'},
@@ -1128,7 +1128,27 @@ function v242IsJuventusChampion(m){
   return n(m?.title)==='juventus' && n(m?.date).includes('21 sep 2024');
 }
 
+function v246TerricolasChampionCard(m){
+  const src='./assets/history/archive-v246/terricolas-seder-campeon-copa-18-sep-2022.webp?v=20260923-terricolas-bg-v246';
+  return '<article class="v35-history-moment v35-history-moment-photo v246-terricolas-card" data-v246-terricolas>'+
+    '<img class="v35-history-bg-photo v35-bg-exact" src="'+src+'" alt="Terrícolas SEDER · Campeón de Copa · Segunda Fuerza · 18 sep 2022" loading="eager" decoding="async" style="object-fit:cover;object-position:center 42%;">'+
+    '<div class="v35-history-moment-shade" aria-hidden="true"></div>'+
+    '<div class="v35-history-moment-content">'+
+      '<div class="v35-history-meta"><span class="v35-history-kind">'+esc(m.kind)+'</span><time class="v35-history-date">'+esc(m.date)+'</time></div>'+
+      '<h3>'+esc(m.title)+'</h3>'+
+      '<strong>'+esc(m.subtitle)+'</strong>'+
+      '<div class="v35-history-status"><span><b>Ganador</b>'+esc(m.winner||m.title)+'</span><span><b>Temporada</b>'+esc(m.season||'2022')+'</span></div>'+
+      '<p>'+esc(m.detail)+'</p>'+
+    '</div>'+
+  '</article>';
+}
+function v246IsTerricolasChampion(m){
+  const n=v=>String(v||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase();
+  return n(m?.title)==='terricolas seder' && n(m?.date).includes('18 sep 2022');
+}
+
 function historyMomentCard(m){
+  if(v246IsTerricolasChampion(m)) return v246TerricolasChampionCard(m);
   if(v242IsJuventusChampion(m)) return v242JuventusChampionCard(m);
   const esperanzaBgClass=(m.title==='La Esperanza'&&m.date==='08 nov 2025')?' v225-esperanza-bg':'';
   const manchester2024BgClass=(m.title==='Manchester'&&m.date==='09 nov 2024')?' v240-manchester-2024-bg':'';
