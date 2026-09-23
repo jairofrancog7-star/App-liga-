@@ -33,7 +33,7 @@ const EXACT=[
   {need:['manchester','26 abr 2025'],src:MANCHESTER_2025_PHOTO,pos:'center 46%',photoOnly:true,scale:1.0,origin:'center 46%'},
   {need:['san julian','18 feb 2024'],src:SAN_JULIAN_2024,pos:'center 46%',photoOnly:true,scale:1.0,origin:'center 46%'},
   {need:['lobos jrs','23 sep 2026'],src:BASE212+'lobos-jrs-campeon-segunda-23-sep-2026.jpg?v=20260923-lobos-segunda-v212',pos:'center 50%',photoOnly:true,scale:1.0,origin:'center 50%'},
-  {need:['galacticos','09 feb 2025'],src:'./assets/history/archive-v203/galacticos-campeon-campeones-09-feb-2025.jpg?v=20260923-galacticos-real-v241',pos:'center 48%',photoOnly:true,scale:1.00,origin:'center 48%'},
+  {need:['galacticos','09 feb 2025'],src:'./assets/history/archive-v203/galacticos-campeon-campeones-09-feb-2025.jpg?v=20260923-galacticos-real-v242',pos:'center 48%',photoOnly:true,scale:1.00,origin:'center 48%'},
   {need:['linces','04 mar 2024'],src:BASE202+'linces-campeon-copa-04-mar-2024.webp',pos:'center 46%',photoOnly:true,scale:1.0,origin:'center 46%'},
   {need:['boca jrs','04 may 2024'],src:BASE202+'boca-jrs-campeon-liga-v50-04-may-2024.webp',pos:'center 48%',photoOnly:true,scale:1.0,origin:'center 48%'},
   {need:['psv','02 oct 2021'],src:BASE134+'psv-campeon-campeones-veteranos-2020-2021.jpg',pos:'center 68%',photoOnly:true,scale:2.00,origin:'center 67%'},
@@ -170,7 +170,7 @@ function apply(card){
   if(card.matches('.v35-champion-card'))card.classList.add('v35-champion-card-photo');
 }
 function forceGalacticosCDC(){
-  const wanted='./assets/history/archive-v203/galacticos-campeon-campeones-09-feb-2025.jpg?v=20260923-galacticos-real-v241';
+  const wanted='./assets/history/archive-v203/galacticos-campeon-campeones-09-feb-2025.jpg?v=20260923-galacticos-real-v242';
   document.querySelectorAll('.v35-history-moment,.v35-champion-card,.v115-card').forEach(card=>{
     const heading=norm(card.querySelector('h3,h4')?.textContent||'');
     const date=norm(card.querySelector('time,.v35-history-date,.v35-champion-date,.v115-date')?.textContent||'');
@@ -191,12 +191,12 @@ function forceGalacticosCDC(){
     img.style.objectPosition='center 48%';
     img.style.transform='scale(1)';
     img.style.transformOrigin='center 48%';
-    // V241 — la foto aportada por el usuario debe verse aunque un <img> viejo haya fallado/caché.
+    // V242 — la foto aportada por el usuario debe verse aunque un <img> viejo haya fallado/caché.
     img.onerror=()=>{
       img.onerror=null;
-      img.src='https://raw.githubusercontent.com/jairofrancog7-star/App-liga-/main/assets/history/archive-v203/galacticos-campeon-campeones-09-feb-2025.jpg?v=20260923-galacticos-real-v241';
+      img.src='https://raw.githubusercontent.com/jairofrancog7-star/App-liga-/main/assets/history/archive-v203/galacticos-campeon-campeones-09-feb-2025.jpg?v=20260923-galacticos-real-v242';
     };
-    const cssWanted='https://jairofrancog7-star.github.io/App-liga-/assets/history/archive-v203/galacticos-campeon-campeones-09-feb-2025.jpg?v=20260923-galacticos-real-v241';
+    const cssWanted='https://jairofrancog7-star.github.io/App-liga-/assets/history/archive-v203/galacticos-campeon-campeones-09-feb-2025.jpg?v=20260923-galacticos-real-v242';
     card.style.setProperty('background-image','linear-gradient(180deg,rgba(2,5,45,.08),rgba(2,5,45,.52)),url("'+cssWanted+'")','important');
     card.style.setProperty('background-size','cover','important');
     card.style.setProperty('background-position','center 48%','important');
