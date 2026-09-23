@@ -1133,9 +1133,9 @@ function v242IsJuventusChampion(m){
 }
 
 function v246TerricolasChampionCard(m){
-  const src='./assets/history/archive-v254/terricolas-seder-campeon-copa-18-sep-2022.webp?v=20260923-terricolas-user-v254';
-  return '<article class="v35-history-moment v35-history-moment-photo v246-terricolas-card" data-v246-terricolas>'+
-    '<img class="v35-history-bg-photo v35-bg-exact" src="'+src+'" alt="Terrícolas SEDER · Campeón de Copa · Segunda Fuerza · 18 sep 2022" loading="eager" decoding="async" style="object-fit:cover;object-position:center 42%;">'+
+  const src='/App-liga-/assets/history/archive-v254/terricolas-seder-campeon-copa-18-sep-2022.webp?v=20260923-terricolas-hardfix-v255';
+  return '<article class="v35-history-moment v35-history-moment-photo v246-terricolas-card" data-v246-terricolas style="background-color:#07075d!important;background-image:linear-gradient(180deg,rgba(3,6,50,.02),rgba(3,6,50,.18) 58%,rgba(3,6,50,.64)),url(&quot;'+src+'&quot;)!important;background-size:cover!important;background-position:center 42%!important;background-repeat:no-repeat!important;">'+
+    '<img class="v35-history-bg-photo v35-bg-exact" src="'+src+'" alt="Terrícolas SEDER · Campeón de Copa · Segunda Fuerza · 18 sep 2022" loading="eager" decoding="async" style="position:absolute!important;inset:0!important;width:100%!important;height:100%!important;display:block!important;visibility:visible!important;opacity:1!important;z-index:0!important;object-fit:cover!important;object-position:center 42%!important;background:transparent!important;">'+
     '<div class="v35-history-moment-shade" aria-hidden="true"></div>'+
     '<div class="v35-history-moment-content">'+
       '<div class="v35-history-meta"><span class="v35-history-kind">'+esc(m.kind)+'</span><time class="v35-history-date">'+esc(m.date)+'</time></div>'+
