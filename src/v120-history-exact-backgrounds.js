@@ -69,8 +69,20 @@ function norm(v){
   return String(v||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/\s+/g,' ').trim();
 }
 function matchExact(card){
-  const t=norm(card.textContent);
-  return EXACT.find(x=>x.need.every(n=>t.includes(norm(n))))||null;
+  const all=norm(card.textContent);
+  const heading=norm(card.querySelector('h3,h4')?.textContent||'');
+  const date=norm(card.querySelector('time,.v35-history-date,.v35-champion-date,.v115-date')?.textContent||'');
+  /* V212 — el nombre del equipo se valida contra el título de la tarjeta.
+     Antes se buscaba en todo el texto; por eso la tarjeta "La Esperanza"
+     coincidía primero con "Franco FC" al mencionar al rival en la descripción. */
+  const strict=EXACT.find(x=>{
+    const need=(x.need||[]).map(norm).filter(Boolean);
+    if(!need.length)return false;
+    if(!heading.includes(need[0]))return false;
+    return need.slice(1).every(n=>date.includes(n)||all.includes(n));
+  });
+  if(strict)return strict;
+  return EXACT.find(x=>x.need.every(n=>all.includes(norm(n))))||null;
 }
 function installStyle(){
   if(document.getElementById('v120-history-exact-style'))return;
@@ -104,9 +116,11 @@ function clearWrongReference(card){
   if(visual && /referencia de archivo/i.test(visual.textContent||'')) visual.remove();
 }
 function apply(card){
-  if(card.dataset.v120Checked==='1')return;
-  card.dataset.v120Checked='1';
   const hit=matchExact(card);
+  const nextKey=hit?.src||'none';
+  if(card.dataset.v120Checked==='1'&&card.dataset.v120Key===nextKey)return;
+  card.dataset.v120Checked='1';
+  card.dataset.v120Key=nextKey;
   if(!hit){
     if(card.matches('.v115-card'))clearWrongReference(card);
     return;
