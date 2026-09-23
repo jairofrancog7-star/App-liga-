@@ -1,27 +1,27 @@
 (function(){
 'use strict';
 
-const PHOTO='https://raw.githubusercontent.com/jairofrancog7-star/App-liga-/main/assets/history/archive-v232/universidad-campeon-veteranos-09-mar-2013.webp?v=20260923-universidad-hard-v263';
+const PHOTO='./assets/history/archive-v264/universidad-campeon-veteranos-09-mar-2013.webp?v=20260923-universidad-exact-v264';
 
 function norm(v){
   return String(v||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/\s+/g,' ').trim();
 }
 
 function addStyle(){
-  if(document.getElementById('v263-universidad-style')) return;
+  if(document.getElementById('v264-universidad-style')) return;
   const s=document.createElement('style');
-  s.id='v263-universidad-style';
+  s.id='v264-universidad-style';
   s.textContent=`
-    [data-v263-universidad]{
+    [data-v264-universidad]{
       position:relative!important;
       overflow:hidden!important;
       isolation:isolate!important;
       background:#07106f!important;
       background-image:none!important;
     }
-    [data-v263-universidad]::before,
-    [data-v263-universidad]::after{display:none!important}
-    [data-v263-universidad]>.v263-universidad-photo{
+    [data-v264-universidad]::before,
+    [data-v264-universidad]::after{display:none!important}
+    [data-v264-universidad]>.v264-universidad-photo{
       display:block!important;
       visibility:visible!important;
       opacity:1!important;
@@ -44,7 +44,7 @@ function addStyle(){
       z-index:0!important;
       pointer-events:none!important;
     }
-    [data-v263-universidad]>.v263-universidad-shade{
+    [data-v264-universidad]>.v264-universidad-shade{
       display:block!important;
       position:absolute!important;
       inset:0!important;
@@ -55,24 +55,24 @@ function addStyle(){
         linear-gradient(180deg,rgba(2,7,55,.05) 0%,rgba(2,7,55,.18) 34%,rgba(2,7,55,.70) 72%,rgba(2,7,55,.92) 100%),
         linear-gradient(90deg,rgba(2,7,55,.48),rgba(2,7,55,.06))!important;
     }
-    [data-v263-universidad]>.v35-history-bg-photo,
-    [data-v263-universidad]>.v120-exact-event-bg,
-    [data-v263-universidad]>.v35-champion-bg-photo,
-    [data-v263-universidad]>.v35-history-moment-shade,
-    [data-v263-universidad]>.v35-champion-shade{display:none!important}
-    [data-v263-universidad] .v35-history-moment-content,
-    [data-v263-universidad] .v35-champion-content,
-    [data-v263-universidad] .v115-card-body{
+    [data-v264-universidad]>.v35-history-bg-photo,
+    [data-v264-universidad]>.v120-exact-event-bg,
+    [data-v264-universidad]>.v35-champion-bg-photo,
+    [data-v264-universidad]>.v35-history-moment-shade,
+    [data-v264-universidad]>.v35-champion-shade{display:none!important}
+    [data-v264-universidad] .v35-history-moment-content,
+    [data-v264-universidad] .v35-champion-content,
+    [data-v264-universidad] .v115-card-body{
       position:relative!important;
       z-index:2!important;
       background:transparent!important;
       background-image:none!important;
     }
-    [data-v263-universidad] h3,
-    [data-v263-universidad] h4,
-    [data-v263-universidad] strong,
-    [data-v263-universidad] p,
-    [data-v263-universidad] span{
+    [data-v264-universidad] h3,
+    [data-v264-universidad] h4,
+    [data-v264-universidad] strong,
+    [data-v264-universidad] p,
+    [data-v264-universidad] span{
       position:relative;
     }
   `;
@@ -88,12 +88,12 @@ function isTarget(card){
 function patch(card){
   if(!isTarget(card)) return;
   addStyle();
-  card.setAttribute('data-v263-universidad','1');
+  card.setAttribute('data-v264-universidad','1');
 
-  card.querySelectorAll(':scope > .v263-universidad-photo,:scope > .v263-universidad-shade').forEach(n=>n.remove());
+  card.querySelectorAll(':scope > .v264-universidad-photo,:scope > .v264-universidad-shade').forEach(n=>n.remove());
 
   const img=document.createElement('img');
-  img.className='v263-universidad-photo';
+  img.className='v264-universidad-photo';
   img.src=PHOTO;
   img.alt='Universidad · Campeón de Veteranos · 09 mar 2013';
   img.loading='eager';
@@ -101,7 +101,7 @@ function patch(card){
   img.fetchPriority='high';
 
   const shade=document.createElement('span');
-  shade.className='v263-universidad-shade';
+  shade.className='v264-universidad-shade';
   shade.setAttribute('aria-hidden','true');
 
   card.prepend(shade);
