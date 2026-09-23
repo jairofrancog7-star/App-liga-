@@ -6147,7 +6147,7 @@ function moreView(){
     '<div class="v19-more-menu">'+
       v19MoreButton('search','Buscar','search')+
       v19MoreButton('trophy','Rankings de la Liga','rankings')+
-      v19MoreButton('data','Historial','historyLog')+
+      v19MoreButton('history','Historia','history')+
       v19MoreButton('bag','Tienda','club-store')+
       v19MoreButton('info','Sobre la Liga Municipal','safe-about',true)+
     '</div>'+
