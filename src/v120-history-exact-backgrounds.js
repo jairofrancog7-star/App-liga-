@@ -18,8 +18,8 @@ const BASE202='https://raw.githubusercontent.com/jairofrancog7-star/App-liga-/ma
 const BASE185='https://raw.githubusercontent.com/jairofrancog7-star/App-liga-/main/assets/history/archive-v185/';
 const EXACT=[
   {need:['galacticos','09 feb 2025'],src:'https://raw.githubusercontent.com/jairofrancog7-star/App-liga-/main/assets/history/archive-v203/galacticos-campeon-campeones-09-feb-2025.jpg',pos:'center 48%',photoOnly:true,scale:1.06,origin:'center 48%'},
-  {need:['linces','04 mar 2024'],src:BASE202+'linces-campeon-copa-04-mar-2024.webp',pos:'center 46%'},
-  {need:['boca jrs','04 may 2024'],src:BASE202+'boca-jrs-campeon-liga-v50-04-may-2024.webp',pos:'center 48%'},
+  {need:['linces','04 mar 2024'],src:BASE202+'linces-campeon-copa-04-mar-2024.webp',pos:'center 46%',photoOnly:true,scale:1.0,origin:'center 46%'},
+  {need:['boca jrs','04 may 2024'],src:BASE202+'boca-jrs-campeon-liga-v50-04-may-2024.webp',pos:'center 48%',photoOnly:true,scale:1.0,origin:'center 48%'},
   {need:['psv','02 oct 2021'],src:BASE134+'psv-campeon-campeones-veteranos-2020-2021.jpg',pos:'center 73%'},
   {need:['la esperanza','25 sep 2021'],src:BASE134+'la-esperanza-campeon-liga-veteranos-2020-2021.jpg',pos:'center 54%',photoOnly:true,scale:1.48,origin:'center 50%'},
   {need:['juventus','16 feb 2020'],src:BASE134+'juventus-campeon-copa-primera-2019-2020.jpg',pos:'center 48%'},
@@ -54,7 +54,7 @@ const EXACT=[
   {need:['boavista','12 abr 2025'],src:BASE+'boavista-fc-campeon-2025.jpg',pos:'center 42%'},
   {need:['galacticos','08 jun 2025'],src:'https://raw.githubusercontent.com/jairofrancog7-star/App-liga-/main/assets/history/archive-v204/galacticos-pozos-campeon-copa-2025-entrega.webp',pos:'center 43%'},
   {need:['pozos fc','15 sep 2024'],src:BASE199+'pozos-fc-campeon-liga-veteranos35-15-sep-2024.jpg',pos:'center 47%'},
-  {need:['herreras','09 feb 2025'],src:BASE+'herreras-fc-campeon-relampago-intermedia-2025.jpg',pos:'center 44%'},
+  {need:['herreras','09 feb 2025'],src:BASE+'herreras-fc-campeon-relampago-intermedia-2025.jpg',pos:'center 44%',photoOnly:true,scale:1.0,origin:'center 44%'},
   {need:['lobos jrs','16 feb 2025'],src:BASE197+'lobos-jrs-campeon-relampago-segunda-2025.svg',pos:'center 43%'},
   
   {need:['deportivo cg','19 sep 2026'],src:BASE+'deportivo-cg-campeon-liga-2025-2026.jpg',pos:'center 42%'},
