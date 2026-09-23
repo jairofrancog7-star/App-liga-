@@ -2155,3 +2155,29 @@
   z-index:2!important;
   background:transparent!important;
 }
+
+
+/* V240 — Manchester · 09 nov 2024.
+   Foto exacta enviada por el usuario como fondo de Historia > Campeones. */
+.v35-history-moment.v240-manchester-2024-bg{
+  background-color:#07075d!important;
+  background-image:
+    linear-gradient(180deg,rgba(3,6,50,.04) 0%,rgba(3,6,50,.10) 35%,rgba(3,6,50,.40) 74%,rgba(3,6,50,.70) 100%),
+    url('../assets/history/archive-v240/manchester-campeon-copa-v50-09-nov-2024-user.webp')!important;
+  background-size:cover!important;
+  background-position:center 50%!important;
+  background-repeat:no-repeat!important;
+}
+.v35-history-moment.v240-manchester-2024-bg .v35-history-bg-photo{
+  display:block!important;
+  visibility:visible!important;
+  opacity:1!important;
+  object-fit:cover!important;
+  object-position:center 50%!important;
+}
+.v35-history-moment.v240-manchester-2024-bg .v35-history-moment-shade{
+  display:block!important;
+  background:
+    linear-gradient(180deg,rgba(2,5,45,.02) 0%,rgba(2,5,45,.07) 35%,rgba(2,5,45,.28) 72%,rgba(2,5,45,.62) 100%),
+    linear-gradient(90deg,rgba(2,5,45,.18) 0%,rgba(2,5,45,.03) 72%,rgba(2,5,45,0) 100%)!important;
+}
