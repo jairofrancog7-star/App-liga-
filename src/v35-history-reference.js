@@ -202,11 +202,23 @@ function championBackground(name,explicitPhoto){
   if(exact) return {url:exact,exact:true};
   return {url:'',exact:false};
 }
+function historyPhotoCrop(name,season){
+  const n=String(name||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase();
+  const s=String(season||'').toLowerCase();
+  // V205 — estas tres fuentes eran capturas de publicaciones. Mostramos únicamente
+  // la zona fotográfica del partido/equipo; nunca el encabezado, texto, reacciones
+  // ni interfaz de Facebook.
+  if(n.includes('el alto') && (s.includes('2020')||s.includes('2019'))) return 'object-position:center 69%;transform:scale(2.05);transform-origin:center 68%;';
+  if(n.includes('la esperanza') && s.includes('2020') && s.includes('2021')) return 'object-position:72% 77%;transform:scale(2.25);transform-origin:72% 77%;';
+  if(n==='psv' && s.includes('2020') && s.includes('2021')) return 'object-position:center 68%;transform:scale(2.00);transform-origin:center 67%;';
+  return '';
+}
 function championBgImg(name,explicitPhoto,season,klass){
   const bg=championBackground(name,explicitPhoto);
   if(!bg.url) return '';
   const alt=String(name||'')+' · campeón · '+String(season||'');
-  return '<img class="'+klass+' v35-bg-exact" src="'+bg.url+'" alt="'+esc(alt)+'" loading="lazy" decoding="async" onerror="this.remove()">';
+  const crop=historyPhotoCrop(name,season);
+  return '<img class="'+klass+' v35-bg-exact '+(crop?'v35-photo-only-crop':'')+'" src="'+bg.url+'" alt="'+esc(alt)+'" loading="lazy" decoding="async" '+(crop?'style="'+crop+'"':'')+' onerror="this.remove()">';
 }
 const historyMoments=[
   {kind:'CAMPEÓN',date:'19 sep 2026',season:'2025–2026',winner:'Deportivo CG · Cerrito de Gasca',title:'Deportivo CG · Cerrito de Gasca',subtitle:'Campeón de Liga · Veteranos 35 y más + Campeón de Campeones',detail:'El archivo histórico aportado muestra al plantel con los trofeos y los textos CAMPEÓN TORNEO DE LIGA 2025-2026 · VETERANOS 35 Y MAS y CAMPEÓN DE CAMPEONES. La final frente a Pozos F.C. quedó documentada para el 19 de septiembre de 2026.',backgroundPhoto:HIST_MEDIA+'archive-v120/deportivo-cg-campeon-liga-2025-2026.jpg',image:HIST_ROOT+'assets/teams/deportivo-cg.webp'},
