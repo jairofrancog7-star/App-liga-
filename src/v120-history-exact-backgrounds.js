@@ -29,6 +29,7 @@ const ESPERANZA_2025_PHOTO='./assets/history/archive-v224/la-esperanza-campeon-c
 const BASE185='https://raw.githubusercontent.com/jairofrancog7-star/App-liga-/main/assets/history/archive-v185/';
 const SAN_JULIAN_2024=window.LJR_SAN_JULIAN_PHOTO||'https://raw.githubusercontent.com/jairofrancog7-star/App-liga-/main/assets/history/archive-v218/san-julian-campeon-copa-segunda-18-feb-2024.jpg?v=20260923-san-julian-v224';
 const EXACT=[
+  {need:['puros cuates','11 ene 2015'],src:'./assets/history/archive-v258/puros-cuates-campeon-intermedia-11-ene-2015.webp?v=20260923-puros-cuates-2015-bg-v258',pos:'center 44%',photoOnly:true,scale:1.0,origin:'center 44%'},
   {need:['boavista','18 ene 2015'],src:'https://raw.githubusercontent.com/jairofrancog7-star/App-liga-/main/assets/history/archive-v251/boavista-campeon-primera-11-ene-2015.jpg?v=20260923-boavista-hardfix-v257',pos:'center 48%',photoOnly:true,scale:1.0,origin:'center 48%'},
   {need:['tavera fc','10 abr 2022'],src:'./assets/history/archive-v253/tavera-campeon-liga-intermedia-10-abr-2022.webp?v=20260923-tavera-2022-v253',pos:'center 48%',photoOnly:true,scale:1.0,origin:'center 48%'},
   {need:['manchester','09 nov 2024'],src:'./assets/history/archive-v240/manchester-campeon-copa-v50-09-nov-2024-user.webp?v=20260923-manchester-user-v240',pos:'center 50%',photoOnly:true,scale:1.08,origin:'center 50%'},
