@@ -1071,6 +1071,25 @@ function historicalSourcesBlock(){
   '</section>';
 }
 
+const HISTORY_MONTH_INDEX={ene:0,feb:1,mar:2,abr:3,may:4,jun:5,jul:6,ago:7,sep:8,sept:8,oct:9,nov:10,dic:11};
+function historyDateSortValue(value){
+  const raw=String(value||'').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,' ').replace(/\s+/g,' ').trim();
+  if(!raw) return -Infinity;
+  const exact=raw.match(/\b(\d{1,2})\s+(ene|feb|mar|abr|may|jun|jul|ago|sep|sept|oct|nov|dic)\s+(19\d{2}|20\d{2})\b/);
+  if(exact){
+    const day=Number(exact[1]),month=HISTORY_MONTH_INDEX[exact[2]],year=Number(exact[3]);
+    return Date.UTC(year,month,day);
+  }
+  const years=[...raw.matchAll(/\b(19\d{2}|20\d{2})\b/g)].map(m=>Number(m[1]));
+  if(years.length) return Date.UTC(Math.max(...years),0,1);
+  return -Infinity;
+}
+function historyNewestFirst(list,field){
+  return list.map((item,index)=>({item,index,stamp:historyDateSortValue(item?.[field])}))
+    .sort((a,b)=>(b.stamp-a.stamp)||(a.index-b.index))
+    .map(x=>x.item);
+}
+
 function historyMomentCard(m){
   const championBg=m.kind==='CAMPEÓN'?championBackground(m.title,m.backgroundPhoto||''):null;
   const hasBg=!!(championBg?.url||m.backgroundPhoto);
@@ -1092,7 +1111,7 @@ function historyMomentCard(m){
   '</article>';
 }
 function historyMomentCards(){
-  const featured=historyMoments.filter(m=>!m.archiveOnly);
+  const featured=historyNewestFirst(historyMoments.filter(m=>!m.archiveOnly),'date');
   return '<div class="v35-history-moments">'+featured.map(historyMomentCard).join('')+'</div>';
 }
 function retroClubCards(){
@@ -1152,7 +1171,7 @@ function historicalTeamDirectoryHtml(){
 function verifiedHistoryBlocks(){
   return '<div class="v35-verified-history">'+
     '<div class="v35-history-subhead"><span>CAMPEONES CONFIRMADOS</span><h3>Palmarés verificado en el archivo</h3></div>'+
-    '<div class="v35-champion-list">'+verifiedChampions.map(x=>{
+    '<div class="v35-champion-list">'+historyNewestFirst(verifiedChampions,'season').map(x=>{
       const bg=championBackground(x.champion,x.photo||'');
       return '<article class="v35-champion-card v35-champion-card-photo '+(!bg.exact?'v35-champion-card-reference':'')+'">'+
         championBgImg(x.champion,x.photo||'',x.season,'v35-champion-bg-photo')+'<span class="v35-champion-shade" aria-hidden="true"></span>'+
@@ -1162,7 +1181,7 @@ function verifiedHistoryBlocks(){
         '</div></article>';
     }).join('')+'</div>'+
     '<div class="v35-history-subhead"><span>FOTOS DE CAMPEONES Y TROFEOS</span><h3>Archivo visual recuperado</h3><p>Fotografías reales conservadas en el archivo de la Liga. Se muestran debajo del palmarés sin modificar la parte superior de Historia.</p></div>'+
-    '<div class="v35-champion-list v35-photo-archive">'+historicalPhotoArchive.filter(x=>x.image).map(x=>'<article class="v35-champion-card"><img class="v35-champion-photo" src="'+x.image+'" alt="'+esc(x.title)+'" loading="lazy" decoding="async"><span>'+esc(x.date)+'</span><h4>'+esc(x.title)+'</h4><p>'+esc(x.detail)+'</p></article>').join('')+'</div>'+
+    '<div class="v35-champion-list v35-photo-archive">'+historyNewestFirst(historicalPhotoArchive.filter(x=>x.image),'date').map(x=>'<article class="v35-champion-card"><img class="v35-champion-photo" src="'+x.image+'" alt="'+esc(x.title)+'" loading="lazy" decoding="async"><span>'+esc(x.date)+'</span><h4>'+esc(x.title)+'</h4><p>'+esc(x.detail)+'</p></article>').join('')+'</div>'+
     historicalGoalsBlock()+
 
     '<div class="v35-history-subhead"><span>EQUIPOS HISTÓRICOS</span><h3>Equipos encontrados en tablas, roles, publicaciones y archivo</h3><p>Se agrupan por la época en que aparecen en el archivo. Un nombre aquí no significa que el equipo siga inscrito hoy.</p></div>'+
@@ -1237,7 +1256,7 @@ function historyArchiveBlock(){
   '</section>';
 }
 function championsArchiveBlock(){
-  const rows=historyMoments.filter(m=>(m.kind==='CAMPEÓN'||m.kind==='FINAL')&&!m.archiveOnly);
+  const rows=historyNewestFirst(historyMoments.filter(m=>(m.kind==='CAMPEÓN'||m.kind==='FINAL')&&!m.archiveOnly),'date');
   return '<section class="v35-block v35-history-archive v35-history-archive-compact">'+
     '<div class="v35-history-archive-head"><span>PALMARÉS HISTÓRICO</span><h2>Campeones y finales documentadas</h2><p>Solo se muestran datos que aparecen en el material histórico revisado.</p></div>'+
     '<div class="v35-history-moments">'+rows.map(historyMomentCard).join('')+'</div>'+verifiedHistoryBlocks()+
