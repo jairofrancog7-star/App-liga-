@@ -397,7 +397,6 @@ const verifiedChampions=[
   {season:'16 feb 2025',competition:'Torneo Relámpago · Segunda Fuerza',champion:'Lobos Jrs.',runner:'—',source:'Dato e imagen aportados por el usuario: Lobos Jrs. fue campeón del Torneo Relámpago de Segunda Fuerza.',photo:HIST_MEDIA+'archive-v207/lobos-jrs-campeon-relampago-segunda-16-feb-2025.webp'},
   {season:'09 feb 2025',competition:'Campeón de Campeones · Primera Fuerza',champion:'Galácticos de Pozos',runner:'Linces',source:'La Liga Municipal de Fútbol “JUVENTINO ROSAS” A.C. felicitó a Galácticos de Pozos por obtener el cetro de Campeón de Campeones al imponerse a Linces el 9 de febrero de 2025.',photo:HIST_MEDIA+'archive-v203/galacticos-campeon-campeones-09-feb-2025.jpg?v=20260923-galacticos-cdc-v213',championLogo:HIST_ROOT+'assets/teams/galacticos-pozos.webp'},
   {season:'09 feb 2025',competition:'Torneo Relámpago · Fuerza Intermedia',champion:'Herreras FC',runner:'Oklahoma',source:'La Liga Municipal de Fútbol “JUVENTINO ROSAS” A.C. felicitó a Herreras F.C. por obtener el campeonato del Torneo Relámpago de Fuerza Intermedia ante Oklahoma el 9 de febrero de 2025. Dato y fotografía aportados por el usuario.',photo:HIST_MEDIA+'archive-v208/herreras-fc-campeon-relampago-intermedia-09-feb-2025.webp',championLogo:HIST_ROOT+'assets/official-logos/herreras-fc.png',runnerLogo:HIST_ROOT+'assets/teams/oklahoma-city-fc.webp'},
-  {season:'26 abr 2025',competition:'Campeón de Campeones · Veteranos 50 y más',champion:'Manchester',runner:'Boavista FC',source:'Dato e imagen aportados por el usuario: Manchester fue Campeón de Campeones de Veteranos 50 y más tras vencer a Boavista FC el 26 de abril de 2025.',photo:HIST_MEDIA+'archive-v216/manchester-campeon-campeones-26-abr-2025.webp?v=20260923-manchester-photo-v216',championLogo:HIST_ROOT+'assets/official-logos/manchester.png',runnerLogo:HIST_ROOT+'assets/official-logos/boavista.png'},
   {season:'08 jun 2025',competition:'Torneo de Copa · Primera Fuerza',champion:'Galácticos (Pozos)',runner:'Herreras FC (Cuenda)',source:'La final fue Galácticos vs Herreras FC, domingo 8 de junio de 2025 a las 10:00 en Campo 1 de la Unidad Deportiva Sur. La Liga Municipal de Fútbol “Juventino Rosas” A.C. felicitó a Galácticos de Pozos por obtener el título de Campeón de Copa 2025 en Primera Fuerza tras un reñido encuentro con Herreras F.C.',photo:HIST_MEDIA+'archive-v204/galacticos-pozos-campeon-copa-2025-entrega.webp',championLogo:HIST_ROOT+'assets/teams/galacticos-pozos.webp',runnerLogo:HIST_ROOT+'assets/official-logos/herreras-fc.png'},
   {season:'15 jun 2025',competition:'Torneo de Copa · Fuerza Intermedia',champion:'Lobos CDG',runner:'Franco FC',source:'La Liga felicitó a Lobos CDG, de Cerrito de Gasca, por el título de Campeón de Copa 2025 tras vencer a Franco F.C., de San José de Manantiales. Los roles previos sitúan a ambos en las semifinales de Intermedia.',photo:HIST_MEDIA+'archive-v207/lobos-cdg-campeon-copa-intermedia-15-jun-2025.webp'}
 ];
@@ -1048,6 +1047,7 @@ function scheduleHistoryCollapse(){
   v35ScrollRaf=requestAnimationFrame(()=>{
     v35ScrollRaf=0;
     syncHistoryCollapse();
+    removeObsoleteManchesterDuplicate(screen);
   });
 }
 
@@ -1415,6 +1415,12 @@ function transparentizeTopLogo(img){
   };
   if(img.complete) run(); else img.addEventListener('load',run,{once:true});
 }
+function removeObsoleteManchesterDuplicate(root=document){
+  root.querySelectorAll?.('.v35-history-moment,.v35-champion-card,.v115-card,.v115-fact-card').forEach(card=>{
+    const t=String(card.textContent||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase();
+    if(t.includes('manchester')&&t.includes('fecha exacta pendiente')&&t.includes('campeon de campeones')) card.remove();
+  });
+}
 function pageHtml(){
   const back='<button class="v35-back" type="button" data-v35-back aria-label="Volver"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 11H7.83L13.42 5.41 12 4l-8 8 8 8 1.41-1.41L7.83 13H20Z"/></svg></button>';
   return '<div class="v35-history-page">'+linesSvg()+
@@ -1448,7 +1454,7 @@ function rerenderContent(){
   nav.innerHTML=tabs();
   content.innerHTML=bodyForTab();
   root.scrollIntoView({block:'start',behavior:'auto'});
-  requestAnimationFrame(syncHistoryCollapse);
+  requestAnimationFrame(()=>{syncHistoryCollapse();removeObsoleteManchesterDuplicate(root);});
 }
 function toast(msg){
   let el=document.querySelector('.v35-toast');
