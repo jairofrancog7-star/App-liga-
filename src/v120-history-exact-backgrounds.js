@@ -29,7 +29,7 @@ const ESPERANZA_2025_PHOTO='./assets/history/archive-v224/la-esperanza-campeon-c
 const BASE185='https://raw.githubusercontent.com/jairofrancog7-star/App-liga-/main/assets/history/archive-v185/';
 const SAN_JULIAN_2024=window.LJR_SAN_JULIAN_PHOTO||'https://raw.githubusercontent.com/jairofrancog7-star/App-liga-/main/assets/history/archive-v218/san-julian-campeon-copa-segunda-18-feb-2024.jpg?v=20260923-san-julian-v224';
 const EXACT=[
-  {need:['manchester','09 nov 2024'],src:'./assets/history/archive-v222/manchester-campeon-copa-v50-09-nov-2024.webp?v=20260923-manchester-copa-v225',pos:'center 50%',photoOnly:true,scale:1.08,origin:'center 50%'},
+  {need:['manchester','09 nov 2024'],src:'./assets/history/archive-v222/manchester-campeon-copa-v50-09-nov-2024.webp?v=20260923-manchester-bg-v236',pos:'center 50%',photoOnly:true,scale:1.08,origin:'center 50%'},
   {need:['manchester','26 abr 2025'],src:MANCHESTER_2025_INLINE,pos:'center 46%',photoOnly:true,scale:1.0,origin:'center 46%'},
   {need:['san julian','18 feb 2024'],src:SAN_JULIAN_2024,pos:'center 46%',photoOnly:true,scale:1.0,origin:'center 46%'},
   {need:['lobos jrs','23 sep 2026'],src:BASE212+'lobos-jrs-campeon-segunda-23-sep-2026.jpg?v=20260923-lobos-segunda-v212',pos:'center 50%',photoOnly:true,scale:1.0,origin:'center 50%'},
@@ -102,8 +102,8 @@ function installStyle(){
   const s=document.createElement('style');
   s.id='v120-history-exact-style';
   s.textContent=`
-    .v120-has-exact-bg{position:relative!important;overflow:hidden!important;isolation:isolate!important;background:#060653!important}
-    .v120-exact-event-bg{position:absolute!important;inset:0!important;z-index:0!important;width:100%!important;height:100%!important;margin:0!important;padding:0!important;object-fit:cover!important;border:0!important;border-radius:inherit!important;filter:saturate(1.05) contrast(1.02) brightness(.98)!important}
+    .v120-has-exact-bg{position:relative!important;overflow:hidden!important;isolation:isolate!important;background-color:#060653!important}
+    .v120-exact-event-bg{position:absolute!important;inset:0!important;z-index:0!important;width:100%!important;height:100%!important;margin:0!important;padding:0!important;object-fit:cover!important;border:0!important;border-radius:inherit!important;filter:saturate(1.05) contrast(1.02) brightness(.98)!important;opacity:1!important;visibility:visible!important;display:block!important}
     .v120-photo-only-card{overflow:hidden!important}
     .v120-photo-only-card .v120-exact-event-bg{will-change:transform!important}
     .v120-has-exact-bg>.v120-exact-shade{position:absolute;inset:0;z-index:1;pointer-events:none;background:linear-gradient(180deg,rgba(2,5,45,.00) 0%,rgba(2,5,45,.035) 34%,rgba(2,5,45,.18) 66%,rgba(2,5,45,.62) 100%),linear-gradient(90deg,rgba(2,5,45,.17) 0%,rgba(2,5,45,.035) 72%,rgba(2,5,45,0) 100%)}
@@ -197,7 +197,7 @@ function forceGalacticosCDC(){
 }
 
 function forceManchester2024(){
-  const wanted='./assets/history/archive-v222/manchester-campeon-copa-v50-09-nov-2024.webp?v=20260923-manchester-copa-v225';
+  const wanted='./assets/history/archive-v222/manchester-campeon-copa-v50-09-nov-2024.webp?v=20260923-manchester-bg-v236';
   document.querySelectorAll('.v35-history-moment,.v35-champion-card,.v115-card').forEach(card=>{
     const heading=norm(card.querySelector('h3,h4')?.textContent||'');
     const date=norm(card.querySelector('time,.v35-history-date,.v35-champion-date,.v115-date')?.textContent||'');
@@ -219,10 +219,10 @@ function forceManchester2024(){
     img.style.transformOrigin='center 50%';
 
     // Fallback adicional: el mismo archivo también queda como background CSS del card.
-    card.style.backgroundImage='linear-gradient(rgba(4,8,70,.16),rgba(4,8,70,.36)),url("'+wanted+'")';
-    card.style.backgroundSize='cover';
-    card.style.backgroundPosition='center 50%';
-    card.style.backgroundRepeat='no-repeat';
+    card.style.setProperty('background-image','linear-gradient(rgba(4,8,70,.16),rgba(4,8,70,.36)),url("'+wanted+'")','important');
+    card.style.setProperty('background-size','cover','important');
+    card.style.setProperty('background-position','center 50%','important');
+    card.style.setProperty('background-repeat','no-repeat','important');
 
     card.classList.add('v120-has-exact-bg','v120-photo-only-card','v35-history-moment-photo');
     card.dataset.v224Manchester='1';
