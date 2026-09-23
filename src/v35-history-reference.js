@@ -1147,12 +1147,32 @@ function v246TerricolasChampionCard(m){
     '</div>'+
   '</article>';
 }
+function v261UniversidadChampionCard(m){
+  const photo='./assets/history/archive-v232/universidad-campeon-veteranos-09-mar-2013.webp?v=20260923-universidad-v261';
+  return '<article class="v35-history-moment v35-history-moment-photo v261-universidad-2013" data-v261-universidad-2013 style="position:relative!important;overflow:hidden!important;isolation:isolate!important;">'+
+    '<img class="v35-history-bg-photo v35-bg-exact" src="'+photo+'" alt="" aria-hidden="true" loading="eager" decoding="async" style="position:absolute!important;inset:0!important;width:100%!important;height:100%!important;object-fit:cover!important;object-position:center 48%!important;filter:none!important;transform:none!important;opacity:1!important;z-index:0!important;">'+
+    '<div class="v35-history-moment-shade" aria-hidden="true" style="display:block!important;position:absolute!important;inset:0!important;z-index:1!important;background:linear-gradient(180deg,rgba(3,8,70,.10) 0%,rgba(3,8,70,.28) 38%,rgba(3,8,70,.82) 74%,rgba(3,8,70,.96) 100%),linear-gradient(90deg,rgba(3,8,70,.56),rgba(3,8,70,.08));"></div>'+
+    '<div class="v35-history-moment-content" style="position:relative!important;z-index:2!important;width:100%!important;">'+
+      '<div class="v35-history-meta"><span class="v35-history-kind">CAMPEÓN</span><time class="v35-history-date">09 mar 2013</time></div>'+
+      '<h3>Universidad</h3>'+
+      '<strong>Campeón de Veteranos · Final vs Dinamo · Unidad Deportiva Sur · 16:00</strong>'+
+      '<div class="v35-history-status"><span><b>Ganador</b>Universidad</span><span><b>Temporada</b>2013</span></div>'+
+      '<p>Dato e imagen aportados por el usuario: Universidad ganó la final de Veteranos frente a Dinamo el sábado 9 de marzo de 2013 en la Unidad Deportiva Sur. La fotografía corresponde al equipo campeón con el trofeo.</p>'+
+    '</div>'+
+  '</article>';
+}
+function v261IsUniversidadChampion(m){
+  const n=v=>String(v||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase();
+  return n(m?.title)==='universidad' && n(m?.date).includes('09 mar 2013');
+}
+
 function v246IsTerricolasChampion(m){
   const n=v=>String(v||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase();
   return n(m?.title)==='terricolas seder' && n(m?.date).includes('18 sep 2022');
 }
 
 function historyMomentCard(m){
+  if(v261IsUniversidadChampion(m)) return v261UniversidadChampionCard(m);
   if(v246IsTerricolasChampion(m)) return v246TerricolasChampionCard(m);
   if(v242IsJuventusChampion(m)) return v242JuventusChampionCard(m);
   const esperanzaBgClass=(m.title==='La Esperanza'&&m.date==='08 nov 2025')?' v225-esperanza-bg':'';
