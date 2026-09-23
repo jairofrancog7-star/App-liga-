@@ -38,6 +38,7 @@ const EXACT=[
   {need:['juventus','26 nov 2012'],src:'./assets/history/archive-v261/juventus-campeon-primera-26-nov-2012.webp?v=20260923-juventus-hardfix-v261',pos:'center 56%',photoOnly:true,scale:1.0,origin:'center 56%'},
   {need:['puros cuates','11 ene 2015'],src:'./assets/history/archive-v258/puros-cuates-campeon-intermedia-11-ene-2015.webp?v=20260923-puros-cuates-2015-bg-v258',pos:'center 44%',photoOnly:true,scale:1.0,origin:'center 44%'},
   {need:['boavista','18 ene 2015'],src:'./assets/history/archive-v278/boavista-campeon-de-campeones-primera-18-ene-2015.jpg?v=20260923-boavista-cdc-user-v278',pos:'center 48%',photoOnly:true,scale:1.0,origin:'center 48%'},
+  {need:['juventus','17 abr 2022'],src:'./assets/history/archive-v269/juventus-campeon-liga-primera-17-abr-2022.jpg?v=20260923-juventus-17abr2022-hard-v285',pos:'center 44%',photoOnly:true,scale:1.0,origin:'center 44%'},
   {need:['tavera fc','10 abr 2022'],src:'./assets/history/archive-v253/tavera-campeon-liga-intermedia-10-abr-2022.webp?v=20260923-tavera-2022-v253',pos:'center 48%',photoOnly:true,scale:1.0,origin:'center 48%'},
   {need:['manchester','09 nov 2024'],src:'./assets/history/archive-v240/manchester-campeon-copa-v50-09-nov-2024-user.webp?v=20260923-manchester-user-v240',pos:'center 50%',photoOnly:true,scale:1.08,origin:'center 50%'},
   {need:['manchester','26 abr 2025'],src:MANCHESTER_2025_PHOTO,pos:'center 46%',photoOnly:true,scale:1.0,origin:'center 46%'},
