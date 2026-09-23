@@ -18,10 +18,10 @@ const EXACT=[
   {need:['linces','04 mar 2024'],src:BASE202+'linces-campeon-copa-04-mar-2024.webp',pos:'center 46%'},
   {need:['boca jrs','04 may 2024'],src:BASE202+'boca-jrs-campeon-liga-v50-04-may-2024.webp',pos:'center 48%'},
   {need:['psv','02 oct 2021'],src:BASE134+'psv-campeon-campeones-veteranos-2020-2021.jpg',pos:'center 73%'},
-  {need:['la esperanza','25 sep 2021'],src:BASE134+'la-esperanza-campeon-liga-veteranos-2020-2021.jpg',pos:'center 72%'},
+  {need:['la esperanza','25 sep 2021'],src:BASE134+'la-esperanza-campeon-liga-veteranos-2020-2021.jpg',pos:'center 54%',photoOnly:true,scale:1.48,origin:'center 50%'},
   {need:['juventus','16 feb 2020'],src:BASE134+'juventus-campeon-copa-primera-2019-2020.jpg',pos:'center 48%'},
   {need:['tavera','16 feb 2020'],src:BASE134+'tavera-campeon-copa-segunda-2019-2020.jpg',pos:'center 46%'},
-  {need:['el alto','19 ene 2020'],src:BASE134+'el-alto-campeon-copa-intermedia-2020.jpg',pos:'center 72%'},
+  {need:['el alto','19 ene 2020'],src:BASE134+'el-alto-campeon-copa-intermedia-2020.jpg',pos:'center 56%',photoOnly:true,scale:1.45,origin:'center 54%'},
   {need:['juventus','21 sep 2024'],src:'https://raw.githubusercontent.com/jairofrancog7-star/App-liga-/main/assets/history/archive-v201/juventus-campeon-campeones-21-sep-2024.jpg',pos:'center 44%'},
   {need:['juventus','17 feb 2024'],src:'https://raw.githubusercontent.com/jairofrancog7-star/App-liga-/main/assets/history/archive-v202/juventus-campeon-copa-veteranos35-17-feb-2024.webp',pos:'center 45%'},
   {need:['promesas de pozos','17 nov 2024'],src:'https://raw.githubusercontent.com/jairofrancog7-star/App-liga-/main/assets/history/archive-v117/promesas-campeon-2024.webp',pos:'center 46%'},
@@ -109,12 +109,20 @@ function apply(card){
   img.loading='lazy';
   img.decoding='async';
   img.style.objectPosition=hit.pos||'center';
+  if(hit.photoOnly){
+    img.classList.add('v120-photo-only-bg');
+    img.style.transform='scale('+(hit.scale||1.42)+')';
+    img.style.transformOrigin=hit.origin||'center center';
+  }
   img.onerror=()=>{card.classList.remove('v120-has-exact-bg');img.remove();};
   card.prepend(img);
   if(!card.querySelector(':scope > .v120-exact-shade')){
     const sh=document.createElement('span'); sh.className='v120-exact-shade'; sh.setAttribute('aria-hidden','true'); card.insertBefore(sh,img.nextSibling);
   }
-  if(!card.querySelector('.v120-photo-proof')){
+  if(hit.photoOnly){
+    card.querySelectorAll('.v120-photo-proof').forEach(n=>n.remove());
+    card.classList.add('v120-photo-only-card');
+  }else if(!card.querySelector('.v120-photo-proof')){
     const proof=document.createElement('span'); proof.className='v120-photo-proof'; proof.textContent='FOTO DEL ARCHIVO'; card.appendChild(proof);
   }
   card.classList.add('v120-has-exact-bg');
