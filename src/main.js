@@ -4741,7 +4741,7 @@ function leagueToolsView(){
     '</div>'+
     '<div class="v60-tools-all-label"><span>TODAS LAS FUNCIONES</span><b>Herramientas</b></div>'+
     '<div class="v60-tool-grid">'+
-      v60ToolCard('history','Historial','Resultados y partidos anteriores','historyLog')+
+      v60ToolCard('history','Historia','Temporadas, campeones, finales y archivo histórico','history')+
       v60ToolCard('search','Buscador','Equipos, jugadores, partidos, campos y noticias','search')+
       v60ToolCard('qr','QR de la Liga','Compartir acceso directo a la app','ligaQR')+
       v60ToolCard('center','Equipos registrados','Solo equipos oficiales sincronizados','teams')+
