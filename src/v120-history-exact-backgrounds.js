@@ -21,13 +21,15 @@ const BASE214='https://raw.githubusercontent.com/jairofrancog7-star/App-liga-/ma
 const BASE216='https://raw.githubusercontent.com/jairofrancog7-star/App-liga-/main/assets/history/archive-v216/';
 const BASE222='https://raw.githubusercontent.com/jairofrancog7-star/App-liga-/main/assets/history/archive-v222/';
 const BASE202='https://raw.githubusercontent.com/jairofrancog7-star/App-liga-/main/assets/history/archive-v202/';
-const ESPERANZA_2025_PHOTO='./assets/history/archive-v224/la-esperanza-campeon-copa-veteranos50-08-nov-2025.webp?v=20260923-history-images-v230';
+const ESPERANZA_2025_PHOTO='./assets/history/archive-v224/la-esperanza-campeon-copa-veteranos50-08-nov-2025.webp?v=20260923-esperanza-bg-v225';
 const BASE185='https://raw.githubusercontent.com/jairofrancog7-star/App-liga-/main/assets/history/archive-v185/';
 const SAN_JULIAN_2024=window.LJR_SAN_JULIAN_PHOTO||'https://raw.githubusercontent.com/jairofrancog7-star/App-liga-/main/assets/history/archive-v218/san-julian-campeon-copa-segunda-18-feb-2024.jpg?v=20260923-san-julian-v224';
-const EXACT=[  {need:['manchester','26 abr 2025'],src:'./assets/history/archive-v225/manchester-campeon-campeones-26-abr-2025.webp?v=20260923-manchester-clean-v225',pos:'center 46%',photoOnly:true,scale:1.0,origin:'center 46%'},
+const EXACT=[
+  {need:['manchester','09 nov 2024'],src:'./assets/history/archive-v222/manchester-campeon-copa-v50-09-nov-2024.webp?v=20260923-manchester-copa-v225',pos:'center 50%',photoOnly:true,scale:1.08,origin:'center 50%'},
+  {need:['manchester','26 abr 2025'],src:'./assets/history/archive-v225/manchester-campeon-campeones-26-abr-2025.webp?v=20260923-manchester-clean-v225',pos:'center 46%',photoOnly:true,scale:1.0,origin:'center 46%'},
   {need:['san julian','18 feb 2024'],src:SAN_JULIAN_2024,pos:'center 46%',photoOnly:true,scale:1.0,origin:'center 46%'},
   {need:['lobos jrs','23 sep 2026'],src:BASE212+'lobos-jrs-campeon-segunda-23-sep-2026.jpg?v=20260923-lobos-segunda-v212',pos:'center 50%',photoOnly:true,scale:1.0,origin:'center 50%'},
-  {need:['galacticos','09 feb 2025'],src:'./assets/history/archive-v203/galacticos-campeon-campeones-09-feb-2025.jpg?v=20260923-galacticos-bg-v226',pos:'center 48%',photoOnly:true,scale:1.00,origin:'center 48%'},
+  {need:['galacticos','09 feb 2025'],src:'https://raw.githubusercontent.com/jairofrancog7-star/App-liga-/main/assets/history/archive-v203/galacticos-campeon-campeones-09-feb-2025.jpg?v=20260923-galacticos-cdc-v225',pos:'center 48%',photoOnly:true,scale:1.00,origin:'center 48%'},
   {need:['linces','04 mar 2024'],src:BASE202+'linces-campeon-copa-04-mar-2024.webp',pos:'center 46%',photoOnly:true,scale:1.0,origin:'center 46%'},
   {need:['boca jrs','04 may 2024'],src:BASE202+'boca-jrs-campeon-liga-v50-04-may-2024.webp',pos:'center 48%',photoOnly:true,scale:1.0,origin:'center 48%'},
   {need:['psv','02 oct 2021'],src:BASE134+'psv-campeon-campeones-veteranos-2020-2021.jpg',pos:'center 68%',photoOnly:true,scale:2.00,origin:'center 67%'},
@@ -35,7 +37,7 @@ const EXACT=[  {need:['manchester','26 abr 2025'],src:'./assets/history/archive-
   {need:['juventus','16 feb 2020'],src:BASE134+'juventus-campeon-copa-primera-2019-2020.jpg',pos:'center 48%'},
   {need:['tavera','16 feb 2020'],src:BASE134+'tavera-campeon-copa-segunda-2019-2020.jpg',pos:'center 46%'},
   {need:['el alto','19 ene 2020'],src:BASE134+'el-alto-campeon-copa-intermedia-2020.jpg',pos:'center 69%',photoOnly:true,scale:2.05,origin:'center 68%'},
-  {need:['juventus','21 sep 2024'],src:'./assets/history/archive-v225/juventus-campeon-campeones-21-sep-2024.webp?v=20260923-juventus-bg-v225',pos:'center 44%',photoOnly:true,scale:1.0,origin:'center 44%'},
+  {need:['juventus','21 sep 2024'],src:'https://raw.githubusercontent.com/jairofrancog7-star/App-liga-/main/assets/history/archive-v201/juventus-campeon-campeones-21-sep-2024.jpg?v=20260923-juventus-photo-v222',pos:'center 44%'},
   {need:['juventus','17 feb 2024'],src:'https://raw.githubusercontent.com/jairofrancog7-star/App-liga-/main/assets/history/archive-v202/juventus-campeon-copa-veteranos35-17-feb-2024.webp',pos:'center 45%'},
   {need:['promesas de pozos','17 nov 2024'],src:'https://raw.githubusercontent.com/jairofrancog7-star/App-liga-/main/assets/history/archive-v117/promesas-campeon-2024.webp',pos:'center 46%'},
   {need:['barza','23 jul 2023'],src:BASE133+'barza-campeon-campeones-intermedia-2022-2023.jpg',pos:'center 44%'},
@@ -164,34 +166,95 @@ function apply(card){
   if(card.matches('.v35-champion-card'))card.classList.add('v35-champion-card-photo');
 }
 function forceGalacticosCDC(){
-  /* V226 — Galácticos de Pozos · 09 feb 2025.
-     La foto real se aplica como background CSS detrás del contenido.
-     Se elimina el <img> de fondo para que nunca aparezca texto ALT duplicado. */
-  const wanted='./assets/history/archive-v203/galacticos-campeon-campeones-09-feb-2025.jpg?v=20260923-galacticos-bg-v226';
+  const wanted='https://raw.githubusercontent.com/jairofrancog7-star/App-liga-/main/assets/history/archive-v203/galacticos-campeon-campeones-09-feb-2025.jpg?v=20260923-galacticos-cdc-v225';
   document.querySelectorAll('.v35-history-moment,.v35-champion-card,.v115-card').forEach(card=>{
     const heading=norm(card.querySelector('h3,h4')?.textContent||'');
     const date=norm(card.querySelector('time,.v35-history-date,.v35-champion-date,.v115-date')?.textContent||'');
     if(!heading.includes('galacticos')||!date.includes('09 feb 2025'))return;
-
-    // El fondo va en CSS, no como <img>: evita icono roto y texto duplicado.
-    card.querySelectorAll('.v35-history-bg-photo,.v35-champion-bg-photo,.v120-exact-event-bg,.v115-visual').forEach(n=>n.remove());
-
-    card.style.setProperty('background-color','#060653','important');
-    card.style.setProperty('background-image','url("'+wanted+'")','important');
-    card.style.setProperty('background-size','cover','important');
-    card.style.setProperty('background-position','center 48%','important');
-    card.style.setProperty('background-repeat','no-repeat','important');
-
-    card.classList.add('v120-has-exact-bg','v120-photo-only-card','v226-galacticos-bg');
-    card.dataset.v226Galacticos='1';
+    let img=card.querySelector('.v120-exact-event-bg');
+    if(!img){
+      img=document.createElement('img');
+      img.className='v120-exact-event-bg v120-photo-only-bg';
+      img.alt='';
+      img.setAttribute('aria-hidden','true');
+      img.loading='eager';
+      img.decoding='async';
+      card.prepend(img);
+    }
+    img.alt='';
+    img.setAttribute('aria-hidden','true');
+    img.src=wanted;
+    img.style.objectPosition='center 48%';
+    img.style.transform='scale(1)';
+    img.style.transformOrigin='center 48%';
+    card.classList.add('v120-has-exact-bg','v120-photo-only-card');
+    card.dataset.v213Galacticos='1';
   });
 }
-/* V226_GALACTICOS_CSS_BACKGROUND */
 
 function forceManchester2024(){
-  /* V231: Manchester 09 nov 2024 se renderiza como tarjeta dedicada
-     con foto HQ y texto encima; no se inyectan capas adicionales. */
-  return;
+  const wanted='./assets/history/archive-v222/manchester-campeon-copa-v50-09-nov-2024.webp?v=20260923-manchester-copa-v225';
+  document.querySelectorAll('.v35-history-moment,.v35-champion-card,.v115-card').forEach(card=>{
+    const heading=norm(card.querySelector('h3,h4')?.textContent||'');
+    const date=norm(card.querySelector('time,.v35-history-date,.v35-champion-date,.v115-date')?.textContent||'');
+    const all=norm(card.textContent||'');
+    if(!heading.includes('manchester') || !(date.includes('09 nov 2024')||all.includes('09 nov 2024')))return;
+
+    let img=card.querySelector('.v120-exact-event-bg,.v35-history-bg-photo,.v35-champion-bg-photo');
+    if(!img){
+      img=document.createElement('img');
+      img.className='v120-exact-event-bg v120-photo-only-bg';
+      card.prepend(img);
+    }
+    img.src=wanted;
+    img.alt='Manchester · Campeón de Copa · Veteranos 50 y más · 09 nov 2024';
+    img.loading='eager';
+    img.decoding='async';
+    img.style.objectPosition='center 50%';
+    img.style.transform='scale(1)';
+    img.style.transformOrigin='center 50%';
+
+    // Fallback adicional: el mismo archivo también queda como background CSS del card.
+    card.style.backgroundImage='linear-gradient(rgba(4,8,70,.16),rgba(4,8,70,.36)),url("'+wanted+'")';
+    card.style.backgroundSize='cover';
+    card.style.backgroundPosition='center 50%';
+    card.style.backgroundRepeat='no-repeat';
+
+    card.classList.add('v120-has-exact-bg','v120-photo-only-card','v35-history-moment-photo');
+    card.dataset.v224Manchester='1';
+  });
+}
+
+function forceManchester2025(){
+  const wanted='./assets/history/archive-v225/manchester-campeon-campeones-26-abr-2025.webp?v=20260923-manchester-bg-v226';
+  document.querySelectorAll('.v35-history-moment,.v35-champion-card,.v115-card').forEach(card=>{
+    const heading=norm(card.querySelector('h3,h4')?.textContent||'');
+    const date=norm(card.querySelector('time,.v35-history-date,.v35-champion-date,.v115-date')?.textContent||'');
+    const all=norm(card.textContent||'');
+    if(!heading.includes('manchester') || !(date.includes('26 abr 2025')||all.includes('26 abr 2025')))return;
+
+    let img=card.querySelector('.v120-exact-event-bg,.v35-history-bg-photo,.v35-champion-bg-photo');
+    if(!img){
+      img=document.createElement('img');
+      img.className='v120-exact-event-bg v120-photo-only-bg';
+      card.prepend(img);
+    }
+    img.src=wanted;
+    img.alt='Manchester · Campeón de Campeones · Veteranos 50 y más · 26 abr 2025';
+    img.loading='eager';
+    img.decoding='async';
+    img.style.objectPosition='center 46%';
+    img.style.transform='scale(1)';
+    img.style.transformOrigin='center 46%';
+
+    card.style.backgroundImage='linear-gradient(rgba(4,8,70,.12),rgba(4,8,70,.46)),url("'+wanted+'")';
+    card.style.backgroundSize='cover';
+    card.style.backgroundPosition='center 46%';
+    card.style.backgroundRepeat='no-repeat';
+
+    card.classList.add('v120-has-exact-bg','v120-photo-only-card','v35-history-moment-photo','v35-champion-card-photo');
+    card.dataset.v226Manchester='1';
+  });
 }
 
 function forceLobosJrs2025(){
@@ -220,58 +283,14 @@ function forceLobosJrs2025(){
 }
 /* V219_LOBOS_JRS_FORCE */
 
-
-function forceEsperanza2025(){
-  const wanted=window.LJR_ESPERANZA_2025_PHOTO||ESPERANZA_2025_PHOTO;
-  if(!wanted)return;
-  document.querySelectorAll('.v35-history-moment,.v35-champion-card,.v115-card').forEach(card=>{
-    const heading=norm(card.querySelector('h3,h4')?.textContent||'');
-    const date=norm(card.querySelector('time,.v35-history-date,.v35-champion-date,.v115-date')?.textContent||'');
-    const all=norm(card.textContent||'');
-    if(!heading.includes('la esperanza') || !(date.includes('08 nov 2025')||all.includes('08 nov 2025')))return;
-    let img=card.querySelector('.v120-exact-event-bg,.v35-history-bg-photo,.v35-champion-bg-photo');
-    if(!img){
-      img=document.createElement('img');
-      img.className='v120-exact-event-bg v120-photo-only-bg';
-      img.alt='La Esperanza · Campeón de Copa · Veteranos 50 y más · 08 nov 2025';
-      card.prepend(img);
-    }
-    img.classList.add('v120-exact-event-bg','v120-photo-only-bg');
-    img.loading='eager';
-    img.decoding='async';
-    img.src=wanted;
-    img.style.setProperty('object-fit','cover','important');
-    img.style.setProperty('object-position','center 50%','important');
-    img.style.setProperty('width','100%','important');
-    img.style.setProperty('height','100%','important');
-    img.style.setProperty('position','absolute','important');
-    img.style.setProperty('inset','0','important');
-    img.style.setProperty('z-index','0','important');
-    img.style.setProperty('transform','scale(1)','important');
-    img.style.setProperty('transform-origin','center 50%','important');
-    card.classList.add('v120-has-exact-bg','v120-photo-only-card','v35-history-moment-photo','v225-esperanza-bg');
-    card.dataset.v226Esperanza='1';
-    let shade=card.querySelector(':scope > .v120-exact-shade');
-    if(!shade){
-      shade=document.createElement('span');
-      shade.className='v120-exact-shade';
-      shade.setAttribute('aria-hidden','true');
-      card.insertBefore(shade,img.nextSibling);
-    }
-  });
-}
-/* V226_ESPERANZA_FORCE */
-
 /* V213_GALACTICOS_CDC_FORCE */
 function patch(){
   if((location.hash||'').indexOf('history')<0 && (location.hash||'').indexOf('safe-about')<0)return;
   installStyle();
   document.querySelectorAll('.v35-history-moment,.v35-champion-card,.v115-card').forEach(apply);
-  forceEsperanza2025();
   forceGalacticosCDC();
   forceManchester2024();
   forceManchester2025();
-  forceJuventus2024();
   forceLobosJrs2025();
 }
 let raf=0;
