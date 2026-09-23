@@ -1114,7 +1114,7 @@ function historyMomentCard(m){
   const championBg=m.kind==='CAMPEÓN'?championBackground(m.title,m.backgroundPhoto||''):null;
   const hasBg=!!(championBg?.url||m.backgroundPhoto);
   const bgExact=!!championBg?.exact;
-  return '<article class="v35-history-moment '+(hasBg?'v35-history-moment-photo ':'')+((hasBg&&!bgExact)?'v35-history-moment-reference':'')+'">'+
+  return '<article class="v35-history-moment '+(hasBg?'v35-history-moment-photo ':'')+((hasBg&&!bgExact)?'v35-history-moment-reference':'')+esperanzaBgClass+'">'+
     (m.kind==='CAMPEÓN'?championBgImg(m.title,m.backgroundPhoto||'',m.season||m.date,'v35-history-bg-photo'):(m.backgroundPhoto?'<img class="v35-history-bg-photo v35-bg-exact" src="'+m.backgroundPhoto+'" alt="'+esc(m.title)+' · archivo histórico" loading="lazy" decoding="async">':''))+
     '<div class="v35-history-moment-shade" aria-hidden="true"></div>'+
     '<div class="v35-history-moment-content">'+
