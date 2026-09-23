@@ -1444,6 +1444,7 @@ function renderHistory(){
   requestAnimationFrame(()=>{
     window.scrollTo({top:0,left:0,behavior:'auto'});
     syncHistoryCollapse();
+    removeObsoleteManchesterDuplicate(screen);
   });
 }
 function rerenderContent(){
