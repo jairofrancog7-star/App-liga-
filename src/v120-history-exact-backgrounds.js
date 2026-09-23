@@ -37,6 +37,7 @@ const EXACT=[
   {need:['galacticos','09 feb 2025'],src:'./assets/history/archive-v203/galacticos-campeon-campeones-09-feb-2025.jpg?v=20260923-galacticos-real-v244',pos:'center 48%',photoOnly:true,scale:1.00,origin:'center 48%'},
   {need:['linces','04 mar 2024'],src:BASE202+'linces-campeon-copa-04-mar-2024.webp',pos:'center 46%',photoOnly:true,scale:1.0,origin:'center 46%'},
   {need:['boca jrs','04 may 2024'],src:BASE202+'boca-jrs-campeon-liga-v50-04-may-2024.webp',pos:'center 48%',photoOnly:true,scale:1.0,origin:'center 48%'},
+  {need:['la esperanza','22 jun 2019'],src:'./assets/history/archive-v250/la-esperanza-campeon-campeones-veteranos-22-jun-2019.webp?v=20260923-esperanza-2019-bg-v250',pos:'center 43%',photoOnly:true,scale:1.0,origin:'center 43%'},
   {need:['psv','17 nov 2019'],src:'./assets/history/archive-v249/psv-campeon-copa-veteranos-17-nov-2019.webp?v=20260923-psv-copa2019-real-v249',pos:'center 46%',photoOnly:true,scale:1.0,origin:'center 46%'},
   {need:['la pandilla de morales','16 sep 2019'],src:'./assets/history/archive-v249/la-pandilla-morales-campeon-liga-2019.jpg?v=20260923-pandilla-linces-v249',pos:'center 46%',photoOnly:true,scale:1.0,origin:'center 46%'},
   {need:['linces jr','16 sep 2019'],src:'./assets/history/archive-v249/linces-jr-campeon-liga-2019.jpg?v=20260923-pandilla-linces-v249',pos:'center 46%',photoOnly:true,scale:1.0,origin:'center 46%'},
