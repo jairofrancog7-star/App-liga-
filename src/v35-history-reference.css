@@ -2181,3 +2181,35 @@
     linear-gradient(180deg,rgba(2,5,45,.02) 0%,rgba(2,5,45,.07) 35%,rgba(2,5,45,.28) 72%,rgba(2,5,45,.62) 100%),
     linear-gradient(90deg,rgba(2,5,45,.18) 0%,rgba(2,5,45,.03) 72%,rgba(2,5,45,0) 100%)!important;
 }
+
+
+/* V243 — Juventus · Campeón de Campeones · 21 sep 2024.
+   Fondo duro directamente sobre la tarjeta: no depende del parche V120. */
+.v35-history-moment.v242-juventus-card{
+  background-color:#07075d!important;
+  background-image:
+    linear-gradient(180deg,rgba(3,6,50,.02) 0%,rgba(3,6,50,.06) 34%,rgba(3,6,50,.30) 70%,rgba(3,6,50,.72) 100%),
+    linear-gradient(90deg,rgba(3,6,50,.18) 0%,rgba(3,6,50,.03) 74%,rgba(3,6,50,0) 100%),
+    url('../assets/history/archive-v201/juventus-campeon-campeones-21-sep-2024.jpg?v=20260923-juventus-hard-bg-v243')!important;
+  background-size:cover!important;
+  background-position:center 44%!important;
+  background-repeat:no-repeat!important;
+}
+.v35-history-moment.v242-juventus-card .v35-history-bg-photo{
+  display:block!important;
+  visibility:visible!important;
+  opacity:1!important;
+  object-fit:cover!important;
+  object-position:center 44%!important;
+}
+.v35-history-moment.v242-juventus-card .v35-history-moment-shade{
+  display:block!important;
+  background:
+    linear-gradient(180deg,rgba(2,5,45,.01) 0%,rgba(2,5,45,.05) 34%,rgba(2,5,45,.24) 70%,rgba(2,5,45,.58) 100%),
+    linear-gradient(90deg,rgba(2,5,45,.14) 0%,rgba(2,5,45,.02) 74%,rgba(2,5,45,0) 100%)!important;
+}
+.v35-history-moment.v242-juventus-card .v35-history-moment-content{
+  position:relative!important;
+  z-index:2!important;
+  background:transparent!important;
+}
