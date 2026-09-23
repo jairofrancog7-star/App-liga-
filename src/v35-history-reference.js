@@ -228,6 +228,8 @@ const historyMoments=[
   {kind:'SUBCAMPEÓN',date:'20 sep 2025',season:'2025',title:'Salvajes',subtitle:'Subcampeón · Veteranos 35 y más',detail:'Salvajes quedó como subcampeón de Liga de Veteranos 35 y más frente a Juventus el 20 de septiembre de 2025.'},
   {kind:'CAMPEÓN',date:'29 jun 2025',season:'2025',winner:'La Huerta de Cuenda',title:'La Huerta de Cuenda',subtitle:'Campeón de Liga · Segunda Fuerza',detail:'Dato aportado por el usuario: La Huerta de Cuenda ganó la final de Segunda Fuerza frente a Tavera FC el 29 de junio de 2025.',backgroundPhoto:HIST_MEDIA+'archive-v195/la-huerta-cuenda-campeon-segunda-2025.jpg'},
   {kind:'SUBCAMPEÓN',date:'29 jun 2025',season:'2025',title:'Tavera FC',subtitle:'Subcampeón · Segunda Fuerza',detail:'Tavera FC quedó como subcampeón de Segunda Fuerza frente a La Huerta de Cuenda el 29 de junio de 2025.',backgroundPhoto:HIST_MEDIA+'archive-v119/tavera-finalista-2025.jpg',image:HIST_ROOT+'assets/official-logos/tavera-fc.png'},
+  // V196 — Lobos CDG · Campeón de Copa · Fuerza Intermedia 2025
+  {kind:'CAMPEÓN',date:'15 jun 2025',season:'2025',winner:'Lobos CDG',title:'Lobos CDG · Cerrito de Gasca',subtitle:'Campeón de Copa · Fuerza Intermedia',detail:'Dato e imagen aportados por el usuario: Lobos CDG, de Cerrito de Gasca, fue campeón del Torneo de Copa 2025 de Fuerza Intermedia.',backgroundPhoto:HIST_MEDIA+'archive-v196/lobos-cdg-campeon-copa-intermedia-2025.webp',image:HIST_ROOT+'assets/official-logos/lobos-cdg.png'},
   {kind:'TERCER LUGAR',date:'23 nov 2013',title:'Romerillo',subtitle:'Tercer lugar · Fuerza Intermedia',detail:'Golazo Liga publicó que el portero de Romerillo fue clave para que su equipo obtuviera el tercer lugar, destacando una atajada de penal en la serie final. El nombre del portero no es visible en la captura aportada.'},
   {kind:'CAMPEÓN',date:'2014 · fecha exacta pendiente',season:'2014',winner:'DHP',title:'DHP',subtitle:'Campeón del Torneo de Copa 2014 · Segunda Fuerza',detail:'Dato histórico aportado directamente por el usuario: DHP fue campeón del Torneo de Copa 2014 de Segunda Fuerza. La publicación o fotografía original queda pendiente de adjuntar para documentar la fecha exacta.'},
   {kind:'CAMPEÓN',date:'22 feb 2014',season:'2014',winner:'Puros Cuates',title:'Puros Cuates',subtitle:'Campeón de Copa · Fuerza Intermedia',detail:'La publicación de Golazo Liga muestra el trofeo entregado al equipo campeón.',backgroundPhoto:HIST_PHOTOS.purosCuatesTrophy2014||'',image:''},
@@ -353,7 +355,7 @@ const verifiedChampions=[
   {season:'12 abr 2025',competition:'Torneo de Liga · Veteranos 50+',champion:'Boavista FC',runner:'Boca Jrs.',source:'El rol publicado el 9 abr 2025 programa Boca Jrs. vs Boavista a las 16:00 en Campo 1; la publicación del 12 abr presenta a Boavista F C como “CAMPEÓN 2025”.',championLogo:HIST_ROOT+'assets/official-logos/boavista.png'},
   {season:'2025 · fecha exacta pendiente',competition:'Campeón de Campeones · Veteranos',champion:'Manchester',runner:'—',source:'Fotografía aportada por el usuario: Manchester aparece identificado como “CAMPEÓN DE CAMPEONES”. Se conserva el año 2025; la fecha exacta queda pendiente de documentar.',championLogo:HIST_ROOT+'assets/official-logos/manchester.png'},
   {season:'08 jun 2025',competition:'Torneo de Copa · Primera Fuerza',champion:'Galácticos (Pozos)',runner:'Herreras FC (Cuenda)',source:'La final fue Galácticos vs Herreras FC, domingo 8 de junio de 2025 a las 10:00 en Campo 1 de la Unidad Deportiva Sur. Ese mismo día la Liga publicó a Galácticos (Pozos) como “CAMPEÓN DE COPA 2025”.',championLogo:HIST_ROOT+'assets/teams/galacticos-pozos.webp',runnerLogo:HIST_ROOT+'assets/official-logos/herreras-fc.png'},
-  {season:'15 jun 2025',competition:'Torneo de Copa · Fuerza Intermedia',champion:'Lobos CDG',runner:'Franco FC',source:'La Liga felicitó a Lobos CDG, de Cerrito de Gasca, por el título de Campeón de Copa 2025 tras vencer a Franco F.C., de San José de Manantiales. Los roles previos sitúan a ambos en las semifinales de Intermedia.',photo:HIST_MEDIA+'archive-v119/lobos-cdg-campeon-copa-2025.jpg'}
+  {season:'15 jun 2025',competition:'Torneo de Copa · Fuerza Intermedia',champion:'Lobos CDG',runner:'Franco FC',source:'La Liga felicitó a Lobos CDG, de Cerrito de Gasca, por el título de Campeón de Copa 2025 tras vencer a Franco F.C., de San José de Manantiales. Los roles previos sitúan a ambos en las semifinales de Intermedia.',photo:HIST_MEDIA+'archive-v196/lobos-cdg-campeon-copa-intermedia-2025.webp'}
 ];
 
 const historicalPhotoArchive=[
@@ -376,7 +378,7 @@ const historicalPhotoArchive=[
   {date:'20 sep 2025',title:'Juventus · campeón de Liga de Veteranos 35+',detail:'Foto exacta aportada por el usuario.',image:HIST_MEDIA+'archive-v132/juventus-campeon-liga-veteranos-35-2025.jpg'},
   {date:'jun 2025',title:'La Huerta de Cuenda · Final Segunda Fuerza',detail:'Fotografía recuperada del archivo de la final de Segunda Fuerza 2025.',image:HIST_MEDIA+'archive-v119/la-huerta-finalista-2025.jpg'},
   {date:'jun 2025',title:'Tavera FC · Final Segunda Fuerza',detail:'Fotografía recuperada del archivo de la final de Segunda Fuerza 2025.',image:HIST_MEDIA+'archive-v119/tavera-finalista-2025.jpg'},
-  {date:'15 jun 2025',title:'Lobos CDG · Campeón de Copa 2025',detail:'Fotografía del plantel asociada al título de Copa de Fuerza Intermedia 2025.',image:HIST_MEDIA+'archive-v119/lobos-cdg-campeon-copa-2025.jpg'},
+  {date:'15 jun 2025',title:'Lobos CDG · Campeón de Copa 2025',detail:'Fotografía del plantel asociada al título de Copa de Fuerza Intermedia 2025.',image:HIST_MEDIA+'archive-v196/lobos-cdg-campeon-copa-intermedia-2025.webp'},
   {date:'28 nov 2012',title:'Boavista · XXV aniversario',detail:'Fotografía del álbum histórico de Boavista recuperada del archivo de 2012.',image:HIST_MEDIA+'archive-v119/boavista-xxv-2012.jpg'},
 
   {date:'22 feb 2014',title:'Puros Cuates · trofeo de campeón',detail:'Fotografía recuperada de la publicación de Golazo Liga que identifica a Puros Cuates como Campeón del Torneo de Copa 2014 de Fuerza Intermedia.',image:HIST_PHOTOS.purosCuatesTrophy2014||''},
@@ -621,7 +623,7 @@ const recordMemories=[
   {tag:'TRAYECTORIA',title:'Juan Morales Vásquez “Chacharín”',value:'50+ años',detail:'Reconocimiento del 15 jun 2025: más de 50 años en activo y más de 35 años como encargado de pintar campos.'},
   {tag:'CAMPEÓN',title:'Boavista FC',value:'Liga 2025 · V50+',detail:'Campeón de la final Boca Jrs. vs Boavista del 12 abr 2025.'},
   {tag:'CAMPEÓN',title:'Galácticos (Pozos)',value:'Copa 2025',detail:'Campeón de Primera Fuerza el 8 jun 2025 ante Herreras FC (Cuenda).'},
-  {tag:'CAMPEÓN',title:'Lobos CDG',value:'Copa 2025',detail:'Campeón tras vencer a Franco FC; publicación del 15 jun 2025.',image:HIST_MEDIA+'archive-v119/lobos-cdg-campeon-copa-2025.jpg'}
+  {tag:'CAMPEÓN',title:'Lobos CDG',value:'Copa 2025',detail:'Campeón tras vencer a Franco FC; publicación del 15 jun 2025.',image:HIST_MEDIA+'archive-v196/lobos-cdg-campeon-copa-intermedia-2025.webp'}
 ];
 
 const historicResults=[
