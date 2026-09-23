@@ -23,7 +23,7 @@ const SAN_JULIAN_2024='data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAA
 const EXACT=[
   {need:['san julian','18 feb 2024'],src:SAN_JULIAN_2024,pos:'center 46%',photoOnly:true,scale:1.0,origin:'center 46%'},
   {need:['lobos jrs','23 sep 2026'],src:BASE212+'lobos-jrs-campeon-segunda-23-sep-2026.jpg?v=20260923-lobos-segunda-v212',pos:'center 50%',photoOnly:true,scale:1.0,origin:'center 50%'},
-  {need:['galacticos','09 feb 2025'],src:'https://raw.githubusercontent.com/jairofrancog7-star/App-liga-/main/assets/history/archive-v203/galacticos-campeon-campeones-09-feb-2025.jpg',pos:'center 48%',photoOnly:true,scale:1.06,origin:'center 48%'},
+  {need:['galacticos','09 feb 2025'],src:'https://raw.githubusercontent.com/jairofrancog7-star/App-liga-/main/assets/history/archive-v203/galacticos-campeon-campeones-09-feb-2025.jpg?v=20260923-galacticos-cdc-v213',pos:'center 48%',photoOnly:true,scale:1.00,origin:'center 48%'},
   {need:['linces','04 mar 2024'],src:BASE202+'linces-campeon-copa-04-mar-2024.webp',pos:'center 46%',photoOnly:true,scale:1.0,origin:'center 46%'},
   {need:['boca jrs','04 may 2024'],src:BASE202+'boca-jrs-campeon-liga-v50-04-may-2024.webp',pos:'center 48%',photoOnly:true,scale:1.0,origin:'center 48%'},
   {need:['psv','02 oct 2021'],src:BASE134+'psv-campeon-campeones-veteranos-2020-2021.jpg',pos:'center 68%',photoOnly:true,scale:2.00,origin:'center 67%'},
@@ -160,10 +160,35 @@ function apply(card){
   if(card.matches('.v35-history-moment'))card.classList.add('v35-history-moment-photo');
   if(card.matches('.v35-champion-card'))card.classList.add('v35-champion-card-photo');
 }
+function forceGalacticosCDC(){
+  const wanted='https://raw.githubusercontent.com/jairofrancog7-star/App-liga-/main/assets/history/archive-v203/galacticos-campeon-campeones-09-feb-2025.jpg?v=20260923-galacticos-cdc-v213';
+  document.querySelectorAll('.v35-history-moment,.v35-champion-card,.v115-card').forEach(card=>{
+    const heading=norm(card.querySelector('h3,h4')?.textContent||'');
+    const date=norm(card.querySelector('time,.v35-history-date,.v35-champion-date,.v115-date')?.textContent||'');
+    if(!heading.includes('galacticos')||!date.includes('09 feb 2025'))return;
+    let img=card.querySelector('.v120-exact-event-bg');
+    if(!img){
+      img=document.createElement('img');
+      img.className='v120-exact-event-bg v120-photo-only-bg';
+      img.alt='Galácticos de Pozos · Campeón de Campeones · 09 feb 2025';
+      img.loading='eager';
+      img.decoding='async';
+      card.prepend(img);
+    }
+    img.src=wanted;
+    img.style.objectPosition='center 48%';
+    img.style.transform='scale(1)';
+    img.style.transformOrigin='center 48%';
+    card.classList.add('v120-has-exact-bg','v120-photo-only-card');
+    card.dataset.v213Galacticos='1';
+  });
+}
+/* V213_GALACTICOS_CDC_FORCE */
 function patch(){
   if((location.hash||'').indexOf('history')<0 && (location.hash||'').indexOf('safe-about')<0)return;
   installStyle();
   document.querySelectorAll('.v35-history-moment,.v35-champion-card,.v115-card').forEach(apply);
+  forceGalacticosCDC();
 }
 let raf=0;
 function schedule(){cancelAnimationFrame(raf);raf=requestAnimationFrame(patch)}
