@@ -297,6 +297,43 @@
     font-weight:900!important;
     letter-spacing:.12em!important;
   }
+
+  /* V185 — selector de categorías del calendario.
+     Conserva el mismo diseño azul y permite ver Todas o una categoría. */
+  body.v103-calendar-active .v103-cal-categories{
+    width:100%!important;
+    display:flex!important;
+    gap:7px!important;
+    margin:10px 0 4px!important;
+    padding:2px 0 5px!important;
+    overflow-x:auto!important;
+    overscroll-behavior-inline:contain!important;
+    scrollbar-width:none!important;
+    -webkit-overflow-scrolling:touch!important;
+  }
+  body.v103-calendar-active .v103-cal-categories::-webkit-scrollbar{
+    display:none!important;
+  }
+  body.v103-calendar-active .v103-cal-categories button{
+    flex:0 0 auto!important;
+    min-height:31px!important;
+    padding:0 11px!important;
+    border:1px solid rgba(86,111,216,.38)!important;
+    border-radius:999px!important;
+    background:#0b116e!important;
+    color:#b7c0df!important;
+    font-size:8.5px!important;
+    line-height:1!important;
+    font-weight:820!important;
+    white-space:nowrap!important;
+    box-shadow:none!important;
+  }
+  body.v103-calendar-active .v103-cal-categories button.active{
+    border-color:#25e0eb!important;
+    background:#12358f!important;
+    color:#fff!important;
+    box-shadow:inset 0 0 0 1px rgba(37,224,235,.20)!important;
+  }
   body.v103-calendar-active .v4-week,
   body.v103-calendar-active .v4-calendar{
     grid-template-columns:repeat(7,minmax(0,1fr))!important;
@@ -341,10 +378,32 @@
     background:#090b69!important;
   }
   body.v103-calendar-active .v103-cal-round{
+    min-width:0!important;
+    display:flex!important;
+    align-items:center!important;
+    justify-content:space-between!important;
+    gap:8px!important;
     overflow:hidden!important;
     margin-bottom:8px!important;
     color:#9da7d0!important;
     font-size:8px!important;
+    white-space:nowrap!important;
+  }
+  body.v103-calendar-active .v103-cal-round span{
+    flex:0 0 auto!important;
+    max-width:42%!important;
+    overflow:hidden!important;
+    color:#27e1ec!important;
+    font-weight:900!important;
+    text-overflow:ellipsis!important;
+    white-space:nowrap!important;
+  }
+  body.v103-calendar-active .v103-cal-round b{
+    min-width:0!important;
+    overflow:hidden!important;
+    color:#9da7d0!important;
+    font-size:8px!important;
+    font-weight:600!important;
     text-overflow:ellipsis!important;
     white-space:nowrap!important;
   }
