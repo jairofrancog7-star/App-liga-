@@ -193,7 +193,7 @@ const historicalSources=[
 // Los videos se usan únicamente como fuente de consulta; NO se incrustan dentro de Historia.
 const HIST_ROOT='https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/';
 const HIST_MEDIA='https://raw.githubusercontent.com/jairofrancog7-star/App-liga-/main/assets/history/';
-const ESPERANZA_2025_PHOTO='https://raw.githubusercontent.com/jairofrancog7-star/App-liga-/main/assets/history/archive-v224/la-esperanza-campeon-copa-veteranos50-08-nov-2025.webp?v=20260923-esperanza-fondo-v224';
+const ESPERANZA_2025_PHOTO='./assets/history/archive-v224/la-esperanza-campeon-copa-veteranos50-08-nov-2025.webp?v=20260923-esperanza-bg-v225';
 const HIST_PHOTOS=window.LJR_HISTORY_PHOTOS||{};
 const HIST_CHAMPION_REFERENCE=HIST_MEDIA+'premiacion-historica.jpg';
 function championBackground(name,explicitPhoto){
@@ -1110,6 +1110,7 @@ function historyNewestFirst(list,field){
 }
 
 function historyMomentCard(m){
+  const esperanzaBgClass=(m.title==='La Esperanza'&&m.date==='08 nov 2025')?' v225-esperanza-bg':'';
   const championBg=m.kind==='CAMPEÓN'?championBackground(m.title,m.backgroundPhoto||''):null;
   const hasBg=!!(championBg?.url||m.backgroundPhoto);
   const bgExact=!!championBg?.exact;
