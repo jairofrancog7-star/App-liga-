@@ -193,7 +193,7 @@ const historicalSources=[
 // Los videos se usan únicamente como fuente de consulta; NO se incrustan dentro de Historia.
 const HIST_ROOT='https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/';
 const HIST_MEDIA='https://raw.githubusercontent.com/jairofrancog7-star/App-liga-/main/assets/history/';
-const ESPERANZA_2025_PHOTO=window.LJR_ESPERANZA_2025_PHOTO||'./assets/history/archive-v224/la-esperanza-campeon-copa-veteranos50-08-nov-2025.webp?v=20260923-esperanza-inline-v226';
+const ESPERANZA_2025_PHOTO='./assets/history/archive-v224/la-esperanza-campeon-copa-veteranos50-08-nov-2025.webp?v=20260923-history-images-v230';
 const HIST_PHOTOS=window.LJR_HISTORY_PHOTOS||{};
 const HIST_CHAMPION_REFERENCE=HIST_MEDIA+'premiacion-historica.jpg';
 function championBackground(name,explicitPhoto){
@@ -1132,7 +1132,7 @@ function v229ManchesterChampionCard(m){
   '</article>';
 }
 function v229IsManchesterChampion(m){
-  const n=v=>String(v||'').normalize('NFD').replace(/[\\u0300-\\u036f]/g,'').toLowerCase();
+  const n=v=>String(v||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase();
   return n(m?.title)==='manchester' && n(m?.date).includes('26 abr 2025');
 }
 
@@ -1159,7 +1159,7 @@ function v228EsperanzaChampionCard(m){
   '</article>';
 }
 function v228IsEsperanzaChampion(m){
-  const n=v=>String(v||'').normalize('NFD').replace(/[\\u0300-\\u036f]/g,'').toLowerCase();
+  const n=v=>String(v||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase();
   return n(m?.title)==='la esperanza' && n(m?.date).includes('08 nov 2025');
 }
 
@@ -1187,7 +1187,7 @@ function v227GalacticosChampionCard(m){
 }
 
 function v227IsGalacticosChampion(m){
-  const n=v=>String(v||'').normalize('NFD').replace(/[\\u0300-\\u036f]/g,'').toLowerCase();
+  const n=v=>String(v||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase();
   return n(m?.title).includes('galacticos de pozos') && n(m?.date).includes('09 feb 2025');
 }
 

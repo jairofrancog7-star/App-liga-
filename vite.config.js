@@ -1,5 +1,5 @@
 import { defineConfig } from 'vite';
-import { copyFileSync, mkdirSync, existsSync, cpSync } from 'node:fs';
+import { copyFileSync, mkdirSync, existsSync, cpSync, readFileSync, writeFileSync } from 'node:fs';
 import { dirname, resolve } from 'node:path';
 
 function copyStaticReferences() {
@@ -29,6 +29,30 @@ function copyStaticReferences() {
       if (existsSync(historyFrom)) {
         mkdirSync(historyTo, { recursive: true });
         cpSync(historyFrom, historyTo, { recursive: true, force: true });
+      }
+
+      // V230 — reconstruir como archivo binario real la foto de La Esperanza.
+      // Los scripts clásicos de src no se copian a dist por Vite.
+      const esperanzaParts = [
+        'src/v214-esperanza-photo-1.js',
+        'src/v214-esperanza-photo-2.js',
+        'src/v214-esperanza-photo-3.js',
+        'src/v214-esperanza-photo-4.js',
+      ];
+      if (esperanzaParts.every(p => existsSync(resolve(p)))) {
+        const base64 = esperanzaParts.map(p => {
+          const source = readFileSync(resolve(p), 'utf8');
+          const match = source.match(/LJR_ESPERANZA_2025_PARTS\.push\('([^']+)'\)/);
+          if (!match) throw new Error('No se pudo leer el chunk de La Esperanza: ' + p);
+          return match[1];
+        }).join('');
+        const bytes = Buffer.from(base64, 'base64');
+        if (bytes.subarray(0, 4).toString('ascii') !== 'RIFF' || bytes.subarray(8, 12).toString('ascii') !== 'WEBP') {
+          throw new Error('La fotografía reconstruida de La Esperanza no es un WEBP válido');
+        }
+        const target = resolve('dist/assets/history/archive-v224/la-esperanza-campeon-copa-veteranos50-08-nov-2025.webp');
+        mkdirSync(dirname(target), { recursive: true });
+        writeFileSync(target, bytes);
       }
     },
   };
