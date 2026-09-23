@@ -2133,3 +2133,25 @@
     text-shadow:0 2px 7px rgba(0,0,0,.82);
   }
 }
+
+
+/* V225 — FIX DURO: La Esperanza 08 nov 2025.
+   La foto aportada por el usuario va DETRÁS DEL TEXTO en Historia > Campeones. */
+.v35-history-moment.v225-esperanza-bg{
+  background-color:#060653!important;
+  background-image:url('../assets/history/archive-v224/la-esperanza-campeon-copa-veteranos50-08-nov-2025.webp?v=20260923-esperanza-bg-v225')!important;
+  background-size:cover!important;
+  background-position:center 50%!important;
+  background-repeat:no-repeat!important;
+}
+.v35-history-moment.v225-esperanza-bg .v35-history-moment-shade{
+  display:block!important;
+  background:
+    linear-gradient(180deg,rgba(3,6,50,.04) 0%,rgba(3,6,50,.10) 34%,rgba(3,6,50,.36) 72%,rgba(3,6,50,.68) 100%),
+    linear-gradient(90deg,rgba(3,6,50,.30) 0%,rgba(3,6,50,.09) 70%,rgba(3,6,50,.02) 100%)!important;
+}
+.v35-history-moment.v225-esperanza-bg .v35-history-moment-content{
+  position:relative!important;
+  z-index:2!important;
+  background:transparent!important;
+}
