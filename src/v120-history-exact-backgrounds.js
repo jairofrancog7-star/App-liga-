@@ -73,6 +73,7 @@ const EXACT=[
   {need:['tavera fc','29 jun 2025'],src:BASE119+'tavera-finalista-2025.jpg',pos:'center 43%'},
   {need:['galacticos fc','20 mar 2022'],src:BASE185+'galacticos-campeon-segunda-2022.webp',pos:'center 44%'},
   {need:['boavista','11 ene 2015'],src:'./assets/history/archive-v251/boavista-campeon-primera-11-ene-2015.jpg?v=20260923-boavista-newphoto-v272',pos:'center 45%',photoOnly:true,scale:1.0,origin:'center 45%'},
+  {need:['los campeones de copa','14 abr 2015'],src:'./assets/history/archive-v279/campeones-copa-14-abr-2015.jpg?v=20260923-campeones-copa-14abr2015-v279',pos:'center 46%',photoOnly:true,scale:1.0,origin:'center 46%'},
   {need:['magisterio','09 jun 2018'],src:'./assets/history/archive-v266/magisterio-campeon-09-jun-2018.jpg?v=20260923-magisterio-hardfix-v266',pos:'center 46%',photoOnly:true,scale:1.0,origin:'center 46%'},
   {need:['magisterio','09 jul 2016'],src:BASE+'magisterio-campeon-copa-2016.jpg',pos:'center 42%'},
   {need:['malvinas','28 feb 2016'],src:BASE+'malvinas-campeon-campeones-intermedia-2016.jpg',pos:'center 42%'},
