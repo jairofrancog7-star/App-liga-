@@ -1362,7 +1362,14 @@ function historyArchiveBlock(){
 }
 function historyChampionKey(x){
   const n=v=>String(v||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[^a-z0-9]+/g,' ').trim();
-  return n(x.date||x.season)+'|'+n(x.title||x.champion||x.winner);
+  const when=n(x.date||x.season);
+  const team=n(x.title||x.champion||x.winner);
+  /* V231 — evita duplicar un mismo campeón cuando dos fuentes describen
+     la misma foto con marcadores equivalentes de fecha todavía desconocida.
+     Ejemplo: Tecos aparecía como "Fecha exacta pendiente" y también como
+     "Archivo fotográfico"; en Campeones debe mostrarse una sola tarjeta. */
+  const unknownDate=['fecha exacta pendiente','archivo fotografico','temporada por confirmar','archivo historico'].includes(when);
+  return (unknownDate?'sin fecha confirmada':when)+'|'+team;
 }
 function verifiedChampionAsMoment(x){
   return {
