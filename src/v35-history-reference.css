@@ -2155,3 +2155,117 @@
   z-index:2!important;
   background:transparent!important;
 }
+
+
+/* V227 — Galácticos 09 feb 2025: tarjeta independiente desde cero.
+   La foto es un <img> real de fondo con fallback; no la toca V120. */
+.v227-galacticos-card{
+  position:relative!important;
+  isolation:isolate!important;
+  overflow:hidden!important;
+  min-height:430px!important;
+  display:flex!important;
+  align-items:flex-end!important;
+  margin:0!important;
+  padding:0!important;
+  border:1px solid rgba(77,224,241,.28)!important;
+  border-radius:22px!important;
+  background:#060653!important;
+  box-shadow:0 12px 28px rgba(0,0,55,.18),inset 0 1px 0 rgba(255,255,255,.05)!important;
+}
+.v227-galacticos-photo{
+  position:absolute!important;
+  inset:0!important;
+  z-index:0!important;
+  width:100%!important;
+  height:100%!important;
+  display:block!important;
+  object-fit:cover!important;
+  object-position:center 48%!important;
+  margin:0!important;
+  padding:0!important;
+  border:0!important;
+  opacity:1!important;
+  filter:saturate(1.05) contrast(1.03) brightness(.94)!important;
+}
+.v227-galacticos-shade{
+  position:absolute!important;
+  inset:0!important;
+  z-index:1!important;
+  pointer-events:none!important;
+  background:
+    linear-gradient(180deg,rgba(3,6,50,.03) 0%,rgba(3,6,50,.08) 29%,rgba(3,6,50,.34) 61%,rgba(3,6,50,.83) 100%),
+    linear-gradient(90deg,rgba(3,6,50,.24) 0%,rgba(3,6,50,.06) 72%,rgba(3,6,50,.01) 100%)!important;
+}
+.v227-galacticos-body{
+  position:relative!important;
+  z-index:2!important;
+  width:100%!important;
+  padding:20px 18px 19px!important;
+  color:#fff!important;
+  background:transparent!important;
+}
+.v227-galacticos-meta{
+  display:flex!important;
+  flex-wrap:wrap!important;
+  align-items:center!important;
+  gap:8px!important;
+  margin:0 0 11px!important;
+}
+.v227-galacticos-card h3{
+  margin:0!important;
+  color:#fff!important;
+  font-size:clamp(29px,7.7vw,39px)!important;
+  line-height:1.02!important;
+  font-weight:780!important;
+  letter-spacing:-.035em!important;
+  text-shadow:0 2px 12px rgba(0,0,0,.72)!important;
+}
+.v227-galacticos-card> .v227-galacticos-body>strong{
+  display:block!important;
+  margin-top:7px!important;
+  color:#fff!important;
+  font-size:clamp(14px,3.8vw,18px)!important;
+  line-height:1.2!important;
+  text-shadow:0 2px 9px rgba(0,0,0,.72)!important;
+}
+.v227-galacticos-status{
+  display:grid!important;
+  grid-template-columns:1fr 1fr!important;
+  gap:9px!important;
+  margin:13px 0 11px!important;
+}
+.v227-galacticos-status span{
+  min-width:0!important;
+  padding:10px 11px!important;
+  border:1px solid rgba(55,231,242,.55)!important;
+  border-radius:13px!important;
+  background:rgba(3,8,58,.18)!important;
+  color:#fff!important;
+  font-size:10px!important;
+  line-height:1.25!important;
+  font-weight:760!important;
+  text-shadow:0 2px 8px rgba(0,0,0,.75)!important;
+}
+.v227-galacticos-status b{
+  display:block!important;
+  margin-bottom:4px!important;
+  color:#26edf6!important;
+  font-size:7.7px!important;
+  line-height:1!important;
+  letter-spacing:.09em!important;
+  text-transform:uppercase!important;
+}
+.v227-galacticos-card p{
+  margin:0!important;
+  color:#f0f2ff!important;
+  font-size:clamp(12px,3.3vw,15px)!important;
+  line-height:1.42!important;
+  text-shadow:0 2px 9px rgba(0,0,0,.82)!important;
+}
+@media(max-width:420px){
+  .v227-galacticos-card{min-height:405px!important}
+}
+@media(max-width:360px){
+  .v227-galacticos-status{grid-template-columns:1fr!important}
+}
