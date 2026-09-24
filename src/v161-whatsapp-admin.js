@@ -155,6 +155,18 @@
     });
     panel.querySelectorAll('[data-v161-go]').forEach(b=>b.addEventListener('click',()=>{location.hash='#/'+b.dataset.v161Go}));
   }
+  window.LJR_WHATSAPP_ADMIN={
+    async shareAsset(file,text){
+      selectedFiles=[file];
+      if(navigator.canShare?.({files:[file]})&&navigator.share){
+        await navigator.share({title:'Liga Juventino Rosas',text,files:[file]});return;
+      }
+      const url=URL.createObjectURL(file),a=document.createElement('a');
+      a.href=url;a.download=file.name;a.click();setTimeout(()=>URL.revokeObjectURL(url),10000);
+      location.hash='#/publications';
+      setTimeout(()=>{mountPublications();fileSummary();const ta=document.querySelector('[data-v161-message]');if(ta)ta.value=text;toast('PNG descargado. Adjunta el archivo en WhatsApp.');},250);
+    }
+  };
   function mount(){
     const r=route();
     if(r==='leagueTools')mountTools();

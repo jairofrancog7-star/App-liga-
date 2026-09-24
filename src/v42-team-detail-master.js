@@ -38,7 +38,7 @@ function selectedName(){
  const t=allTeams().find(x=>slug(x.name)===legacy);return t?.name||allTeams()[0]?.name||'';
 }
 function teamData(name=selectedName()){
- const found=allTeams().find(x=>norm(x.name)===norm(name))||allTeams()[0];
+ const found=allTeams().find(x=>norm(x.name)===norm(name)&&String(x.catId)===String(localStorage.getItem('v62-category')))||allTeams().find(x=>norm(x.name)===norm(name))||allTeams()[0];
  if(!found)return null;
  const c=db.categories[found.catId],row=(c.standings?.[0]?.rows||[]).find(r=>norm(r[1])===norm(found.name));
  const roster=Object.entries(c.rosters||{}).find(([n])=>norm(n)===norm(found.name))?.[1]||[];
@@ -88,7 +88,7 @@ function officialTeamFromElement(el){
 }
 function openOfficialTeamProfile(name,openCompare=false){
  if(registrationActive())return false;
- const found=allTeams().find(x=>norm(x.name)===norm(name));if(!found)return false;
+ const found=allTeams().find(x=>norm(x.name)===norm(name)&&String(x.catId)===String(localStorage.getItem('v62-category')))||allTeams().find(x=>norm(x.name)===norm(name));if(!found)return false;
  localStorage.setItem('v62-team-name',found.name);
  localStorage.setItem('v62-category',String(found.catId));
  localStorage.setItem('v27-selected-team',slug(found.name));
@@ -287,8 +287,8 @@ document.addEventListener('click',async e=>{
 },true);
 
 window.LJR_TEAM_DETAIL_API={
- openTeam:name=>openOfficialTeamProfile(name,false),
- openCompare:name=>openOfficialTeamProfile(name,true),
+ openTeam:(name,category)=>{if(category)localStorage.setItem('v62-category',String(category));return openOfficialTeamProfile(name,false)},
+ openCompare:(name,category)=>{if(category)localStorage.setItem('v62-category',String(category));return openOfficialTeamProfile(name,true)},
  resolveTeam:raw=>officialTeamByRaw(raw)
 };
 

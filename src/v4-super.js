@@ -79,7 +79,7 @@
     if(hash==='fantasy'&&!$('#v4FantasyEntry',root)){
       const box=document.createElement('section');box.className='section v4-injected';box.id='v4FantasyEntry';box.innerHTML=`<div class="v4-action-grid"><button data-v4-route="v4-challenge">Challenge</button><button data-v4-route="v4-draft">Draft</button><button data-v4-route="v4-transfers">Transferencias</button><button data-v4-route="v4-leagues">Ligas privadas</button></div>`;root.appendChild(box)
     }
-    if(hash==='competition'&&!$('#v4CompetitionEntry',root)){
+    if(hash==='competition'&&!window.CompetitionController&&!$('#v4CompetitionEntry',root)){
       const box=document.createElement('section');box.className='section v4-injected';box.id='v4CompetitionEntry';box.innerHTML=`<div class="v4-action-grid"><button data-v4-route="v4-calendar">Calendario mensual</button><button data-v4-route="v4-matchcenter">Match Center</button><button data-v4-route="v4-discipline">Disciplina</button><button data-v4-route="v4-compare">Comparar</button></div>`;root.appendChild(box)
     }
   }

@@ -57,10 +57,10 @@ function publishedScore(r){
 function allMatches(){
   const out=[];
   for(const [catId,c] of Object.entries(categories())){
-    const rows=c?.fixtures?.[0]?.rows||[];
+    const rows=(c?.fixtures||[]).flatMap(b=>b.rows||[]);
     for(const r of rows){
       const start=fixtureStamp(r?.[8]);
-      if(!r?.[2]||!r?.[6]||!Number.isFinite(start))continue;
+      if(!r?.[2]||!r?.[6])continue;
       out.push({
         key:String(catId)+':'+String(r?.[0]||out.length),
         catId:String(catId),
@@ -323,6 +323,7 @@ function syncRoute(){
   if(!timer)timer=setInterval(()=>{if(isDirectRoute())render()},30000);
 }
 window.addEventListener('hashchange',()=>requestAnimationFrame(syncRoute));
+window.LJR_MATCH_CENTER={open(key){selectedKey=String(key);db=window.CompetitionController?.raw()||window.LJR_OFFICIAL_DATA||db;location.hash='#/matchCenter';if(isDirectRoute())render()}};
 window.addEventListener('ljr:official-data',()=>{if(isDirectRoute()){db=window.LJR_OFFICIAL_DATA||db;render()}});
 const screen=document.querySelector('#screen');
 if(screen)new MutationObserver(()=>{if(isDirectRoute()&&!screen.querySelector('[data-v92-matchcenter]'))requestAnimationFrame(render)}).observe(screen,{childList:true,subtree:false});
