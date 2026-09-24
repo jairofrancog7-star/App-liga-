@@ -1404,7 +1404,36 @@ function championsArchiveBlock(){
     seen.add(key);
     merged.push(m);
   });
-  const rows=historyNewestFirst(merged.filter(m=>!m.historyBottom),'date').concat(historyNewestFirst(merged.filter(m=>m.historyBottom),'date'));
+  let rows=historyNewestFirst(merged.filter(m=>!m.historyBottom),'date').concat(historyNewestFirst(merged.filter(m=>m.historyBottom),'date'));
+
+  // V323 — posición solicitada para Lobos CDG · Súper líder · 03 may 2026.
+  // Aunque conserva su fecha real de 2026, en Campeones se muestra exactamente
+  // entre Boavista FC · 12 abr 2025 y Lobos Jrs. · 16 feb 2025.
+  const normOrder=v=>String(v||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/\s+/g,' ').trim();
+  const lobosIdx=rows.findIndex(m=>
+    normOrder(m.title)==='lobos cdg' &&
+    normOrder(m.date)==='03 may 2026' &&
+    normOrder(m.kind).includes('super lider')
+  );
+  if(lobosIdx>=0){
+    const [lobosCard]=rows.splice(lobosIdx,1);
+    const boavistaIdx=rows.findIndex(m=>
+      normOrder(m.title)==='boavista fc' &&
+      normOrder(m.date)==='12 abr 2025'
+    );
+    const lobosJrsIdx=rows.findIndex(m=>
+      normOrder(m.title)==='lobos jrs.' &&
+      normOrder(m.date)==='16 feb 2025'
+    );
+    if(boavistaIdx>=0){
+      rows.splice(boavistaIdx+1,0,lobosCard);
+    }else if(lobosJrsIdx>=0){
+      rows.splice(lobosJrsIdx,0,lobosCard);
+    }else{
+      rows.push(lobosCard);
+    }
+  }
+
   return '<section class="v35-block v35-history-archive v35-history-archive-compact">'+
     '<div class="v35-history-archive-head"><span>PALMARÉS HISTÓRICO</span><h2>Campeones documentados</h2><p>Los campeones que aparecen en Resumen también aparecen aquí una sola vez, con su fecha, campeonato/categoría documentados y la fotografía exacta cuando existe.</p></div>'+
     '<div class="v35-history-moments">'+rows.map(historyMomentCard).join('')+'</div>'+
