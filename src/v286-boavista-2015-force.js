@@ -1,6 +1,6 @@
 (()=>{
 'use strict';
-const VERSION='20260924-boavista-11ene2015-valid-v291';
+const VERSION='20260924-boavista-11ene2015-final-v292';
 const PAGE='/App-liga-/assets/history/archive-v286/boavista-campeon-primera-11-ene-2015.webp?v='+VERSION;
 const RAW='https://raw.githubusercontent.com/jairofrancog7-star/App-liga-/main/assets/history/archive-v286/boavista-campeon-primera-11-ene-2015.webp?v='+VERSION;
 const wanted=location.origin+PAGE;
@@ -23,7 +23,7 @@ function apply(card){
   img.decoding='async';
   img.src=wanted;
   img.onerror=()=>{if(img.src!==RAW) img.src=RAW;};
-  img.style.cssText='position:absolute!important;inset:0!important;width:100%!important;height:100%!important;display:block!important;visibility:visible!important;opacity:1!important;z-index:0!important;object-fit:cover!important;object-position:center 43%!important;transform:none!important;filter:none!important;margin:0!important;padding:0!important;border:0!important;';
+  img.style.cssText='position:absolute!important;inset:0!important;width:100%!important;height:100%!important;display:block!important;visibility:visible!important;opacity:1!important;z-index:0!important;object-fit:cover!important;object-position:center 44%!important;transform:none!important;filter:none!important;margin:0!important;padding:0!important;border:0!important;';
   card.prepend(img);
 
   card.style.setProperty('position','relative','important');
@@ -32,7 +32,7 @@ function apply(card){
   card.style.setProperty('background-color','#060653','important');
   card.style.setProperty('background-image','linear-gradient(180deg,rgba(2,5,45,.03) 0%,rgba(2,5,45,.10) 40%,rgba(2,5,45,.62) 100%),url("'+wanted+'")','important');
   card.style.setProperty('background-size','cover','important');
-  card.style.setProperty('background-position','center 43%','important');
+  card.style.setProperty('background-position','center 44%','important');
   card.style.setProperty('background-repeat','no-repeat','important');
 
   let shade=card.querySelector(':scope > .v286-boavista-2015-shade');
