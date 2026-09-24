@@ -2,18 +2,12 @@
    Keeps the card present after tab rerenders and uses the exact user-provided photo as background. */
 (function(){
 'use strict';
-if(window.__LJR_V315_ABEJAS_2019_RESTORE__)return;
+if(window.__LJR_V316_ABEJAS_2019_RESTORE__)return;
 window.__LJR_V314_ABEJAS_2019_RESTORE__=true;
 
 const norm=v=>String(v||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/\s+/g,' ').trim();
 function getPhoto(){
-  if(window.LJR_ABEJAS_2019_PHOTO)return window.LJR_ABEJAS_2019_PHOTO;
-  const p=window.LJR_ABEJAS_2019_V308_PARTS;
-  if(Array.isArray(p)&&p.length>=6){
-    window.LJR_ABEJAS_2019_PHOTO='data:image/webp;base64,'+p.join('');
-    return window.LJR_ABEJAS_2019_PHOTO;
-  }
-  return '';
+  return './assets/history/archive-v315/abejas-tercer-lugar-03-nov-2019.webp?v=20260924-abejas-file-v316';
 }
 function isTarget(card){
   const t=norm(card?.textContent||'');
@@ -24,7 +18,7 @@ function onChampions(){
   return !!active&&norm(active.textContent).includes('campeones');
 }
 function style(){
-  if(document.getElementById('v315-abejas-2019-style'))return;
+  if(document.getElementById('v316-abejas-2019-style'))return;
   const s=document.createElement('style');
   s.id='v314-abejas-2019-style';
   s.textContent=`
