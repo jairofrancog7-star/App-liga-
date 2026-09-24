@@ -1,6 +1,6 @@
 (()=>{
 'use strict';
-const VERSION='20260923-boavista-11ene2015-hard-v286';
+const VERSION='20260924-boavista-11ene2015-valid-v291';
 const PAGE='/App-liga-/assets/history/archive-v286/boavista-campeon-primera-11-ene-2015.webp?v='+VERSION;
 const RAW='https://raw.githubusercontent.com/jairofrancog7-star/App-liga-/main/assets/history/archive-v286/boavista-campeon-primera-11-ene-2015.webp?v='+VERSION;
 const wanted=location.origin+PAGE;
@@ -30,7 +30,10 @@ function apply(card){
   card.style.setProperty('overflow','hidden','important');
   card.style.setProperty('isolation','isolate','important');
   card.style.setProperty('background-color','#060653','important');
-  card.style.setProperty('background-image','none','important');
+  card.style.setProperty('background-image','linear-gradient(180deg,rgba(2,5,45,.03) 0%,rgba(2,5,45,.10) 40%,rgba(2,5,45,.62) 100%),url("'+wanted+'")','important');
+  card.style.setProperty('background-size','cover','important');
+  card.style.setProperty('background-position','center 43%','important');
+  card.style.setProperty('background-repeat','no-repeat','important');
 
   let shade=card.querySelector(':scope > .v286-boavista-2015-shade');
   if(!shade){
