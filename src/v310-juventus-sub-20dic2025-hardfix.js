@@ -6,7 +6,8 @@
   if(window.__LJR_V310_JUVENTUS_SUB_20DEC2025__) return;
   window.__LJR_V310_JUVENTUS_SUB_20DEC2025__=true;
 
-  function photo(){ return window.LJR_JUVENTUS_SUB_20DEC2025_PHOTO||''; }
+  const PHOTO='./assets/history/archive-v310/juventus-subcampeon-copa-20-dic-2025.webp?v=20260923-juventus-sub-photo-v310';
+  function photo(){ return PHOTO; }
   function norm(v){
     return String(v||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/\s+/g,' ').trim();
   }
