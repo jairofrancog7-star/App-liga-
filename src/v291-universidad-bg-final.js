@@ -6,7 +6,7 @@
   if(window.__LJR_V291_UNIVERSIDAD_BG__) return;
   window.__LJR_V291_UNIVERSIDAD_BG__=true;
 
-  const PHOTO='./assets/history/archive-v291/universidad-campeon-veteranos-09-mar-2013.webp?v=20260923-universidad-final-v291';
+  const PHOTO='./assets/history/archive-v260/universidad-vs-dinamo-final-veteranos-09-mar-2013.webp?v=20260923-universidad-hq-clean-v322';
 
   function norm(v){
     return String(v||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/\s+/g,' ').trim();
@@ -53,15 +53,12 @@
         pointer-events:none!important;
       }
       .v291-universidad-bg-final>.v291-universidad-overlay{
-        display:block!important;
-        position:absolute!important;
-        inset:0!important;
-        z-index:1!important;
-        pointer-events:none!important;
-        border-radius:inherit!important;
-        background:
-          linear-gradient(180deg,rgba(2,7,55,.04) 0%,rgba(2,7,55,.14) 35%,rgba(2,7,55,.56) 72%,rgba(2,7,55,.84) 100%),
-          linear-gradient(90deg,rgba(2,7,55,.30),rgba(2,7,55,.02))!important;
+        display:none!important;
+        opacity:0!important;
+        background:none!important;
+        filter:none!important;
+        backdrop-filter:none!important;
+        -webkit-backdrop-filter:none!important;
       }
       .v291-universidad-bg-final>.v264-universidad-photo,
       .v291-universidad-bg-final>.v35-history-bg-photo,
@@ -112,7 +109,7 @@
     card.style.setProperty('position','relative','important');
     card.style.setProperty('overflow','hidden','important');
     card.style.setProperty('isolation','isolate','important');
-    card.style.setProperty('background-color','#07106f','important');
+    card.style.setProperty('background-color','transparent','important');
     card.style.setProperty('background-image','url("'+PHOTO+'")','important');
     card.style.setProperty('background-size','cover','important');
     card.style.setProperty('background-position','center 46%','important');
@@ -138,11 +135,6 @@
     img.style.setProperty('object-position','center 46%','important');
     img.style.setProperty('z-index','0','important');
 
-    const overlay=document.createElement('span');
-    overlay.className='v291-universidad-overlay';
-    overlay.setAttribute('aria-hidden','true');
-
-    card.prepend(overlay);
     card.prepend(img);
 
     const content=card.querySelector('.v35-history-moment-content,.v35-champion-content,.v115-card-body');
