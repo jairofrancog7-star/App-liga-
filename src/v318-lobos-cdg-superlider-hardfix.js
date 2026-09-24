@@ -1,4 +1,4 @@
-/* V319 — Lobos CDG · SÚPER LÍDER · 03 may 2026.
+/* V321 — Lobos CDG · SÚPER LÍDER · 03 may 2026.
    Crea una sola tarjeta en Historia > Campeones y empaqueta la foto aportada por el usuario dentro del build. */
 import p1 from './v314-lobos-cdg-superlider-photo-01.b64?raw';
 import p2 from './v314-lobos-cdg-superlider-photo-02.b64?raw';
@@ -25,7 +25,13 @@ function isTarget(card){
 }
 function onChampions(){
   const active=document.querySelector('.v35-tab.active,[data-v35-tab].active');
-  return !!active && norm(active.textContent).includes('campeones');
+  if(active) return norm(active.textContent).includes('campeones');
+
+  // Fallback real de la vista actual: si el bloque "Campeones documentados"
+  // ya está renderizado, estamos en la pestaña Campeones aunque la clase active
+  // todavía no haya quedado disponible para este parche.
+  return [...document.querySelectorAll('[data-v35-content] .v35-history-archive-head h2,[data-v35-content] h2')]
+    .some(el=>norm(el.textContent).includes('campeones documentados'));
 }
 function ensureStyle(){
   if(document.getElementById('v318-lobos-superlider-style')) return;
@@ -128,8 +134,22 @@ function insertChronological(container,node){
 function pickContainer(){
   const content=document.querySelector('[data-v35-content]');
   if(!content) return null;
-  return content.querySelector('.v35-history-archive-compact .v35-history-moments') ||
-         content.querySelector('.v35-history-moments');
+
+  const direct=content.querySelector('.v35-history-archive-compact .v35-history-moments');
+  if(direct) return direct;
+
+  // Busca específicamente el bloque de PALMARÉS HISTÓRICO / Campeones documentados.
+  const sections=[...content.querySelectorAll('.v35-history-archive,.v35-block')];
+  const championsSection=sections.find(section=>{
+    const head=norm(section.querySelector('.v35-history-archive-head,h2')?.textContent||'');
+    return head.includes('campeones documentados') || head.includes('palmares historico');
+  });
+  if(championsSection){
+    const moments=championsSection.querySelector('.v35-history-moments');
+    if(moments) return moments;
+  }
+
+  return content.querySelector('.v35-history-moments');
 }
 function ensure(){
   if(!/history/i.test(location.hash||'')) return;
@@ -161,7 +181,14 @@ function schedule(ms=0){
 }
 window.addEventListener('hashchange',()=>schedule(30));
 document.addEventListener('click',e=>{
-  if(e.target.closest('[data-v35-tab],[data-history-tab],button,[data-route]')) schedule(70);
+  const tab=e.target.closest('[data-v35-tab]');
+  if(tab && norm(tab.getAttribute('data-v35-tab')||tab.textContent).includes('campeones')){
+    schedule(40);
+    setTimeout(()=>schedule(0),140);
+    setTimeout(()=>schedule(0),360);
+    return;
+  }
+  if(e.target.closest('[data-history-tab],button,[data-route]')) schedule(70);
 },true);
 const root=document.querySelector('#screen')||document.body;
 new MutationObserver(()=>schedule(45)).observe(root,{childList:true,subtree:true});
