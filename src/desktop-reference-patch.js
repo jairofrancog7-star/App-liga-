@@ -1,7 +1,7 @@
 /* Ajustes visuales/funcionales pedidos para el modo escritorio. */
 (function(){
 'use strict';
-const isDesktop=()=>document.body.classList.contains('lj-desktop')||document.documentElement.classList.contains('preview-desktop')||new URLSearchParams(location.search).get('mode')==='desktop'||innerWidth>=1024;
+const isDesktop=()=>!['mobile','apk'].includes(new URLSearchParams(location.search).get('mode'))&&(document.body.classList.contains('lj-desktop')||document.documentElement.classList.contains('preview-desktop')||new URLSearchParams(location.search).get('mode')==='desktop'||innerWidth>=1024);
 const currentRoute=()=>location.hash.replace(/^#\/?/,'')||'home';
 
 function goHome(){
