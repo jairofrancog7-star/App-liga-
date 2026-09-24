@@ -29,6 +29,7 @@ const ESPERANZA_2025_PHOTO='./assets/history/archive-v224/la-esperanza-campeon-c
 const BASE185='https://raw.githubusercontent.com/jairofrancog7-star/App-liga-/main/assets/history/archive-v185/';
 const SAN_JULIAN_2024=window.LJR_SAN_JULIAN_PHOTO||'https://raw.githubusercontent.com/jairofrancog7-star/App-liga-/main/assets/history/archive-v218/san-julian-campeon-copa-segunda-18-feb-2024.jpg?v=20260923-san-julian-v224';
 const EXACT=[
+  {need:['abejas','03 nov 2019'],src:(window.LJR_ABEJAS_2019_PHOTO||''),pos:'center 50%',photoOnly:true,scale:1.0,origin:'center 50%'},
   {need:['aldama fc','07 jun 2026'],src:'./assets/history/archive-v304/aldama-fc-subcampeon-segunda-07-jun-2026.webp?v=20260923-aldama-photo-v304',pos:'center 44%',photoOnly:true,scale:1.0,origin:'center 44%'},
   {need:['romerillo','23 nov 2013'],src:'./assets/history/archive-v293/romerillo-tercer-lugar-intermedia-23-nov-2013.jpg?v=20260923-romerillo-bg-23nov2013-v293',pos:'center 44%',photoOnly:true,scale:1.0,origin:'center 44%'},
   {need:['valencia','03 dic 2012'],src:'./assets/history/archive-v282/valencia-campeon-copa-intermedia-03-dic-2012.webp?v=20260923-valencia-copa-2012-v282',pos:'center 48%',photoOnly:true,scale:1.0,origin:'center 48%'},
