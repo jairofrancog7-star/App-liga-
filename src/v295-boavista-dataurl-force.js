@@ -40,9 +40,8 @@ function paint(card){
   if(!PHOTO || !card?.isConnected || !target(card)) return;
 
   const current=card.querySelector('.v295-boavista-data-bg');
-  if(current?.dataset.photoReady==='1'){
-    card.dataset.v295Boavista='ready';
-    return;
+  if(current){
+    current.remove();
   }
 
   card.querySelectorAll(
@@ -52,11 +51,12 @@ function paint(card){
 
   const img=document.createElement('img');
   img.className='v35-history-bg-photo v120-exact-event-bg v120-photo-only-bg v295-boavista-data-bg';
-  img.dataset.photoReady='1';
   img.alt='Boavista · Campeón · Primera Fuerza · 11 ene 2015';
   img.src=PHOTO;
   img.loading='eager';
-  img.decoding='async';
+  img.decoding='sync';
+  img.onload=()=>{img.dataset.photoReady='1';card.dataset.v295Boavista='ready';};
+  img.onerror=()=>{img.dataset.photoReady='0';card.dataset.v295Boavista='retry';};
   img.style.cssText='position:absolute!important;inset:0!important;width:100%!important;height:100%!important;display:block!important;visibility:visible!important;opacity:1!important;z-index:0!important;object-fit:cover!important;object-position:center 43%!important;transform:none!important;filter:none!important;margin:0!important;padding:0!important;border:0!important;pointer-events:none!important;';
   card.prepend(img);
 
@@ -69,7 +69,11 @@ function paint(card){
   card.style.setProperty('position','relative','important');
   card.style.setProperty('overflow','hidden','important');
   card.style.setProperty('isolation','isolate','important');
-  card.style.setProperty('background','#060653','important');
+  card.style.setProperty('background-color','#060653','important');
+  card.style.setProperty('background-image','linear-gradient(180deg,rgba(2,5,45,.05) 0%,rgba(2,5,45,.11) 38%,rgba(2,5,45,.28) 68%,rgba(2,5,45,.65) 100%),url("'+PHOTO+'")','important');
+  card.style.setProperty('background-size','cover','important');
+  card.style.setProperty('background-position','center 43%','important');
+  card.style.setProperty('background-repeat','no-repeat','important');
 
   card.querySelectorAll('.v35-history-moment-shade,.v120-exact-shade').forEach(n=>{
     n.style.setProperty('display','none','important');
@@ -85,7 +89,7 @@ function paint(card){
   });
 
   card.classList.add('v35-history-moment-photo','v120-has-exact-bg','v120-photo-only-card');
-  card.dataset.v295Boavista='ready';
+  card.dataset.v295Boavista=img.complete&&img.naturalWidth>0?'ready':'loading';
 }
 
 function patch(){
