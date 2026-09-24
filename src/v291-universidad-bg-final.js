@@ -81,6 +81,17 @@
         background:transparent!important;
         background-image:none!important;
       }
+      .v291-universidad-bg-final .v35-history-status,
+      .v291-universidad-bg-final .v35-history-status span,
+      .v291-universidad-bg-final .v35-champion-status,
+      .v291-universidad-bg-final .v35-champion-status span{
+        background:transparent!important;
+        background-color:transparent!important;
+        background-image:none!important;
+        backdrop-filter:none!important;
+        -webkit-backdrop-filter:none!important;
+        box-shadow:none!important;
+      }
     `;
     document.head.appendChild(s);
   }
@@ -135,12 +146,14 @@
     card.prepend(img);
 
     const content=card.querySelector('.v35-history-moment-content,.v35-champion-content,.v115-card-body');
-    if(content){
-      content.style.setProperty('position','relative','important');
-      content.style.setProperty('z-index','2','important');
-      content.style.setProperty('background','transparent','important');
-      content.style.setProperty('background-image','none','important');
-    }
+    card.querySelectorAll('.v35-history-status,.v35-history-status span,.v35-champion-status,.v35-champion-status span').forEach(el=>{
+      el.style.setProperty('background','transparent','important');
+      el.style.setProperty('background-color','transparent','important');
+      el.style.setProperty('background-image','none','important');
+      el.style.setProperty('backdrop-filter','none','important');
+      el.style.setProperty('-webkit-backdrop-filter','none','important');
+      el.style.setProperty('box-shadow','none','important');
+    });
     return true;
   }
 
