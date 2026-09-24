@@ -2436,3 +2436,68 @@
     height:35px;
   }
 }
+
+
+/* V315 — Abejas · Tercer lugar · 03 nov 2019.
+   Preserve the existing card; only force the exact team photo to be the visible background. */
+.v35-history-moment.v315-abejas-2019-bg{
+  position:relative!important;
+  overflow:hidden!important;
+  isolation:isolate!important;
+  display:block!important;
+  visibility:visible!important;
+  opacity:1!important;
+  min-height:360px!important;
+  background:#07075d!important;
+}
+.v35-history-moment.v315-abejas-2019-bg>.v35-history-bg-photo{
+  position:absolute!important;
+  inset:0!important;
+  z-index:0!important;
+  width:100%!important;
+  height:100%!important;
+  min-width:100%!important;
+  min-height:100%!important;
+  display:block!important;
+  visibility:visible!important;
+  opacity:1!important;
+  object-fit:cover!important;
+  object-position:center 50%!important;
+  margin:0!important;
+  padding:0!important;
+  border:0!important;
+  border-radius:inherit!important;
+  filter:saturate(1.04) contrast(1.02) brightness(.96)!important;
+}
+.v35-history-moment.v315-abejas-2019-bg>.v35-history-moment-shade{
+  position:absolute!important;
+  inset:0!important;
+  z-index:1!important;
+  opacity:1!important;
+  pointer-events:none!important;
+  background:linear-gradient(180deg,rgba(2,7,55,.02) 0%,rgba(2,7,55,.08) 38%,rgba(2,7,55,.40) 72%,rgba(2,7,55,.78) 100%)!important;
+}
+.v35-history-moment.v315-abejas-2019-bg>.v35-history-moment-content{
+  position:relative!important;
+  z-index:2!important;
+  background:transparent!important;
+  background-image:none!important;
+}
+.v35-history-moment.v315-abejas-2019-bg .v35-history-status,
+.v35-history-moment.v315-abejas-2019-bg .v35-history-meta{
+  position:relative!important;
+  z-index:2!important;
+  background:transparent!important;
+}
+.v35-history-moment.v315-abejas-2019-bg .v35-history-status>span{
+  background:rgba(2,10,67,.25)!important;
+  border-color:rgba(77,226,244,.68)!important;
+}
+.v35-history-moment.v315-abejas-2019-bg h3,
+.v35-history-moment.v315-abejas-2019-bg strong,
+.v35-history-moment.v315-abejas-2019-bg b,
+.v35-history-moment.v315-abejas-2019-bg p,
+.v35-history-moment.v315-abejas-2019-bg span,
+.v35-history-moment.v315-abejas-2019-bg time{
+  text-shadow:0 2px 8px rgba(0,0,0,.88)!important;
+}
