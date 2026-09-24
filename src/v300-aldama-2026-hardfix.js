@@ -8,7 +8,8 @@
   function norm(v){
     return String(v||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/\s+/g,' ').trim();
   }
-  function photo(){ return window.LJR_ALDAMA_2026_PHOTO||''; }
+  const PHOTO='./assets/history/archive-v304/aldama-fc-subcampeon-segunda-07-jun-2026.webp?v=20260923-aldama-photo-v304';
+  function photo(){ return PHOTO; }
 
   function installStyle(){
     if(document.getElementById('v300-aldama-2026-style')) return;
@@ -21,7 +22,7 @@
         isolation:isolate!important;
         background-color:#07075d!important;
         background-size:cover!important;
-        background-position:center 44%!important;
+        background-position:center 43%!important;
         background-repeat:no-repeat!important;
       }
       .v300-aldama-2026-card>img:not(.v300-aldama-bg){display:none!important;}
@@ -35,7 +36,7 @@
         max-width:none!important;
         max-height:none!important;
         object-fit:cover!important;
-        object-position:center 44%!important;
+        object-position:center 43%!important;
         display:block!important;
         opacity:1!important;
         visibility:visible!important;
@@ -50,7 +51,7 @@
         inset:0!important;
         z-index:1!important;
         pointer-events:none!important;
-        background:linear-gradient(180deg,rgba(4,7,45,.03) 0%,rgba(4,7,45,.12) 38%,rgba(4,7,45,.45) 72%,rgba(4,7,45,.82) 100%)!important;
+        background:linear-gradient(180deg,rgba(4,7,45,.18) 0%,rgba(4,7,45,.30) 38%,rgba(4,7,45,.52) 72%,rgba(4,7,45,.78) 100%)!important;
       }
       .v300-aldama-2026-card>.v35-history-moment-content,
       .v300-aldama-2026-card>.v35-champion-content,
@@ -103,9 +104,9 @@
     sh.setAttribute('aria-hidden','true');
     card.insertBefore(sh,img.nextSibling);
 
-    card.style.setProperty('background-image','linear-gradient(180deg,rgba(4,7,45,.03),rgba(4,7,45,.82)),url("'+src+'")','important');
+    card.style.setProperty('background-image','linear-gradient(180deg,rgba(4,7,45,.18),rgba(4,7,45,.78)),url("'+src+'")','important');
     card.style.setProperty('background-size','cover','important');
-    card.style.setProperty('background-position','center 44%','important');
+    card.style.setProperty('background-position','center 43%','important');
     card.style.setProperty('background-repeat','no-repeat','important');
     card.dataset.v300Aldama='1';
   }
