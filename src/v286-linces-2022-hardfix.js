@@ -1,11 +1,11 @@
-/* V287 — Linces · Primer lugar de tabla general 2022 · Primera Fuerza · 10 abr 2022.
+/* V308 — Linces · Primer lugar de tabla general 2022 · Primera Fuerza · 10 abr 2022.
    Card belongs only to Historia > Campeones and uses the uploaded team photo as background. */
 (function(){
   'use strict';
   if(window.__LJR_V286_LINCES_2022__) return;
   window.__LJR_V286_LINCES_2022__=true;
 
-  const PHOTO='./assets/history/archive-v286/linces-primer-lugar-tabla-general-2022-primera.jpg?v=20260923-linces-fecha-10abr2022-v287';
+  const PHOTO='./assets/history/archive-v286/linces-primer-lugar-tabla-general-2022-primera.jpg?v=20260924-linces-upload-exact-v308';
 
   const norm=v=>String(v||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/\s+/g,' ').trim();
 
@@ -95,7 +95,8 @@
     if((location.hash||'').indexOf('history')<0) return;
     ensureStyle(); patchExisting();
     if(!onChampions()) return;
-    document.querySelectorAll('.v35-history-archive-compact .v35-history-moments').forEach(container=>{
+    const containers=[...new Set(document.querySelectorAll('.v35-history-archive-compact .v35-history-moments,.v35-tab-body + .v35-history-archive .v35-history-moments,[data-v35-content] .v35-history-moments'))];
+    containers.forEach(container=>{
       if([...container.children].some(isTarget)) return;
       insertAt2022End(container,makeCard());
     });
