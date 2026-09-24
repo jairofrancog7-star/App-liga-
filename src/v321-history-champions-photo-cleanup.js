@@ -18,6 +18,58 @@ const norm=v=>String(v||'')
   .replace(/\s+/g,' ')
   .trim();
 
+function installGlobalStyle(){
+  if(document.getElementById('v322-champions-clean-style')) return;
+  const s=document.createElement('style');
+  s.id='v322-champions-clean-style';
+  s.textContent=`
+    .v321-champions-photo-clean::before,
+    .v321-champions-photo-clean::after{
+      display:none!important;
+      content:none!important;
+      background:none!important;
+      filter:none!important;
+      backdrop-filter:none!important;
+      -webkit-backdrop-filter:none!important;
+    }
+    .v321-champions-photo-clean > .v35-history-moment-shade,
+    .v321-champions-photo-clean > .v35-champion-shade,
+    .v321-champions-photo-clean > .v120-exact-shade,
+    .v321-champions-photo-clean > [class*="overlay"],
+    .v321-champions-photo-clean > [class*="shade"]{
+      display:none!important;
+      opacity:0!important;
+      background:none!important;
+      background-image:none!important;
+      filter:none!important;
+      backdrop-filter:none!important;
+      -webkit-backdrop-filter:none!important;
+    }
+    .v321-champions-photo-clean > img{
+      opacity:1!important;
+      filter:none!important;
+      transform:none!important;
+      mix-blend-mode:normal!important;
+      image-rendering:auto!important;
+    }
+    .v321-champions-photo-clean .v35-history-status,
+    .v321-champions-photo-clean .v35-history-status > span,
+    .v321-champions-photo-clean .v35-champion-status,
+    .v321-champions-photo-clean .v35-champion-status > span,
+    .v321-champions-photo-clean .v35-history-fact,
+    .v321-champions-photo-clean .v35-champion-fact{
+      background:transparent!important;
+      background-color:transparent!important;
+      background-image:none!important;
+      box-shadow:none!important;
+      filter:none!important;
+      backdrop-filter:none!important;
+      -webkit-backdrop-filter:none!important;
+    }
+  `;
+  document.head.appendChild(s);
+}
+
 function inHistory(){
   return /history|safe-about/i.test(location.hash||'');
 }
@@ -153,6 +205,7 @@ function removeArchiveBadge(card){
 
 function apply(card){
   if(!card?.isConnected || !hasPhoto(card)) return;
+  installGlobalStyle();
   card.classList.add('v321-champions-photo-clean');
   card.style.setProperty('position','relative','important');
   card.style.setProperty('overflow','hidden','important');
@@ -169,6 +222,7 @@ function apply(card){
 
 function patch(){
   if(!inHistory() || !championsActive()) return;
+  installGlobalStyle();
   document.querySelectorAll('.v35-history-moment,.v35-champion-card,.v115-card').forEach(apply);
 }
 
