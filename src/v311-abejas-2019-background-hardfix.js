@@ -99,8 +99,16 @@ function installStyle(){
 function apply(card){
   if(!isTarget(card))return;
   installStyle();
-  card.classList.add('v311-abejas-2019','v120-has-exact-bg','v120-photo-only-card');
 
+  // Idempotente: evita ciclos del MutationObserver. Solo reconstruye si otro parche quitó el fondo.
+  const currentPhoto=card.querySelector(':scope > .v311-abejas-photo');
+  const currentShade=card.querySelector(':scope > .v311-abejas-shade');
+  if(card.dataset.v311Abejas2019==='1' && currentPhoto && currentShade && currentPhoto.src===PHOTO){
+    card.classList.add('v311-abejas-2019','v120-has-exact-bg','v120-photo-only-card');
+    return;
+  }
+
+  card.classList.add('v311-abejas-2019','v120-has-exact-bg','v120-photo-only-card');
   card.querySelectorAll(':scope > .v311-abejas-photo,:scope > .v311-abejas-shade').forEach(n=>n.remove());
   card.querySelectorAll(':scope > .v120-exact-event-bg,:scope > .v35-history-bg-photo,:scope > .v35-champion-bg-photo').forEach(n=>n.remove());
 
