@@ -223,6 +223,9 @@ function championBgImg(name,explicitPhoto,season,klass){
   return '<img class="'+klass+' v35-bg-exact '+(crop?'v35-photo-only-crop':'')+'" src="'+bg.url+'" alt="'+esc(alt)+'" loading="lazy" decoding="async" '+(crop?'style="'+crop+'"':'')+' onerror="this.remove()">';
 }
 const historyMoments=[
+  // V312_LINCES_10_ABR_2022 — registro directo en Historia > Campeones.
+  {kind:'PRIMER LUGAR',date:'10 abr 2022',season:'2022',winner:'Linces',title:'Linces',subtitle:'Primer lugar de tabla general · Primera Fuerza',detail:'Linces. Primer lugar de tabla general 2022, Primera Fuerza. Registro fechado el 10 de abril de 2022.',backgroundPhoto:'./assets/history/archive-v286/linces-primer-lugar-tabla-general-2022-primera.jpg?v=20260924-linces-canonical-v312',archiveOnly:true,championsOnly:true},
+
   {kind:'CAMPEÓN',date:'14 jun 2014',season:'2014',winner:'La Esperanza',title:'La Esperanza',subtitle:'Campeón de Copa · Veteranos',detail:'La Esperanza fue campeón de Copa de Veteranos 2014. Registro histórico del 14 de junio de 2014. La fotografía aportada muestra al equipo campeón con el trofeo.',backgroundPhoto:'./assets/history/archive-v120/la-esperanza-campeon-copa-veteranos-2014.jpg?v=20260923-esperanza-copa2014-v267',image:HIST_ROOT+'assets/official-logos/la-esperanza.png'},
   {kind:'CAMPEÓN',date:'19 sep 2026',season:'2025–2026',winner:'Deportivo CG · Cerrito de Gasca',title:'Deportivo CG · Cerrito de Gasca',subtitle:'Campeón de Liga · Veteranos 35 y más + Campeón de Campeones',detail:'El archivo histórico aportado muestra al plantel con los trofeos y los textos CAMPEÓN TORNEO DE LIGA 2025-2026 · VETERANOS 35 Y MAS y CAMPEÓN DE CAMPEONES. La final frente a Pozos F.C. quedó documentada para el 19 de septiembre de 2026.',backgroundPhoto:HIST_MEDIA+'archive-v120/deportivo-cg-campeon-liga-2025-2026.jpg',image:HIST_ROOT+'assets/teams/deportivo-cg.webp'},
   // V132 — finales 2025–2026 aportadas por el usuario con fotografías exactas.
