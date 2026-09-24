@@ -1,7 +1,7 @@
 (()=>{
 'use strict';
-const VERSION='20260923-boavista-real-v316';
-const PAGE='/App-liga-/assets/history/archive-v316/boavista-campeon-primera-11-ene-2015.webp?v=20260923-boavista-real-v316';
+const VERSION='20260923-boavista-11ene2015-final-v317';
+const PAGE='/App-liga-/assets/history/archive-v316/boavista-campeon-primera-11-ene-2015.webp?v=20260923-boavista-11ene2015-final-v317';
 const RAW='https://raw.githubusercontent.com/jairofrancog7-star/App-liga-/main/assets/history/archive-v316/boavista-campeon-primera-11-ene-2015.webp?v='+VERSION;
 const wanted=location.origin+PAGE;
 const norm=s=>String(s||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/\s+/g,' ').trim();
@@ -28,7 +28,7 @@ function apply(card){
   card.style.setProperty('background-repeat','no-repeat','important');
   let shade=card.querySelector(':scope > .v316-boavista-shade');
   if(!shade){shade=document.createElement('span');shade.className='v316-boavista-shade';shade.setAttribute('aria-hidden','true');card.insertBefore(shade,img.nextSibling);}
-  shade.style.cssText='position:absolute!important;inset:0!important;z-index:1!important;pointer-events:none!important;background:linear-gradient(180deg,rgba(3,5,40,.04) 0%,rgba(3,5,40,.10) 38%,rgba(3,5,40,.34) 66%,rgba(3,5,40,.72) 100%),linear-gradient(90deg,rgba(3,5,40,.22),rgba(3,5,40,.03) 72%)!important;';
+  shade.style.cssText='position:absolute!important;inset:0!important;z-index:1!important;pointer-events:none!important;background:linear-gradient(180deg,rgba(3,5,40,.02) 0%,rgba(3,5,40,.07) 36%,rgba(3,5,40,.24) 64%,rgba(3,5,40,.62) 100%),linear-gradient(90deg,rgba(3,5,40,.15),rgba(3,5,40,.02) 72%)!important;';
   card.querySelectorAll('.v35-history-moment-content,.v35-champion-content,.v115-card-body').forEach(n=>{n.style.setProperty('position','relative','important');n.style.setProperty('z-index','2','important');n.style.setProperty('background','transparent','important');});
   card.querySelectorAll('.v35-history-status span,.v35-history-fact,.v35-champion-fact').forEach(n=>{n.style.setProperty('position','relative','important');n.style.setProperty('z-index','3','important');n.style.setProperty('background','rgba(3,8,70,.42)','important');});
   card.classList.add('v35-history-moment-photo','v120-has-exact-bg','v120-photo-only-card');

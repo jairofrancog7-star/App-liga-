@@ -79,7 +79,7 @@ const EXACT=[
   {need:['la huerta de cuenda','29 jun 2025'],src:'https://raw.githubusercontent.com/jairofrancog7-star/App-liga-/main/assets/history/archive-v203/la-huerta-cuenda-campeon-segunda-29-jun-2025.jpg',pos:'center 43%'},
   {need:['tavera fc','29 jun 2025'],src:BASE119+'tavera-finalista-2025.jpg',pos:'center 43%'},
   {need:['galacticos fc','20 mar 2022'],src:BASE185+'galacticos-campeon-segunda-2022.webp',pos:'center 44%'},
-  {need:['boavista','11 ene 2015'],src:'./assets/history/archive-v316/boavista-campeon-primera-11-ene-2015.webp?v=20260923-boavista-real-v316',pos:'center 44%',photoOnly:true,scale:1.0,origin:'center 44%'},
+  {need:['boavista','11 ene 2015'],src:'./assets/history/archive-v316/boavista-campeon-primera-11-ene-2015.webp?v=20260923-boavista-11ene2015-final-v317',pos:'center 44%',photoOnly:true,scale:1.0,origin:'center 44%'},
   {need:['los campeones de copa','14 abr 2015'],src:'./assets/history/archive-v279/campeones-copa-14-abr-2015.jpg?v=20260923-campeones-copa-14abr2015-v279',pos:'center 46%',photoOnly:true,scale:1.0,origin:'center 46%'},
   {need:['magisterio','09 jun 2018'],src:'./assets/history/archive-v266/magisterio-campeon-09-jun-2018.jpg?v=20260923-magisterio-hardfix-v266',pos:'center 46%',photoOnly:true,scale:1.0,origin:'center 46%'},
   {need:['magisterio','09 jul 2016'],src:BASE+'magisterio-campeon-copa-2016.jpg',pos:'center 42%'},
