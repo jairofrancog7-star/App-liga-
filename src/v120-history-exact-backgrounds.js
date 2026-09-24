@@ -43,22 +43,22 @@ const EXACT=[
   {need:['boavista','18 ene 2015'],src:'./assets/history/archive-v278/boavista-campeon-de-campeones-primera-18-ene-2015.jpg?v=20260923-boavista-cdc-user-v278',pos:'center 48%',photoOnly:true,scale:1.0,origin:'center 48%'},
   {need:['juventus','17 abr 2022'],src:'./assets/history/archive-v269/juventus-campeon-liga-primera-17-abr-2022.jpg?v=20260923-juventus-17abr2022-hard-v285',pos:'center 44%',photoOnly:true,scale:1.0,origin:'center 44%'},
   {need:['tavera fc','10 abr 2022'],src:'./assets/history/archive-v253/tavera-campeon-liga-intermedia-10-abr-2022.webp?v=20260923-tavera-2022-v253',pos:'center 48%',photoOnly:true,scale:1.0,origin:'center 48%'},
-  {need:['manchester','09 nov 2024'],src:'./assets/history/archive-v240/manchester-campeon-copa-v50-09-nov-2024-user.webp?v=20260923-manchester-user-v240',pos:'center 50%',photoOnly:true,scale:1.0,origin:'center 50%'},
+  {need:['manchester','09 nov 2024'],src:'./assets/history/archive-v240/manchester-campeon-copa-v50-09-nov-2024-user.webp?v=20260923-manchester-user-v240',pos:'center 50%',photoOnly:true,scale:1.08,origin:'center 50%'},
   {need:['manchester','26 abr 2025'],src:MANCHESTER_2025_PHOTO,pos:'center 46%',photoOnly:true,scale:1.0,origin:'center 46%'},
   {need:['san julian','18 feb 2024'],src:SAN_JULIAN_2024,pos:'center 46%',photoOnly:true,scale:1.0,origin:'center 46%'},
   {need:['lobos jrs','23 sep 2026'],src:BASE212+'lobos-jrs-campeon-segunda-23-sep-2026.jpg?v=20260923-lobos-segunda-v212',pos:'center 50%',photoOnly:true,scale:1.0,origin:'center 50%'},
-  {need:['galacticos','09 feb 2025'],src:'./assets/history/archive-v203/galacticos-campeon-campeones-09-feb-2025.jpg?v=20260923-galacticos-real-v244',pos:'center 48%',photoOnly:true,scale:1.0,origin:'center 48%'},
-  {need:['linces','04 mar 2024'],src:'./assets/history/archive-v202/linces-campeon-copa-04-mar-2024.webp?v=20260924-preserve-bg-v323',pos:'center 46%',photoOnly:true,scale:1.0,origin:'center 46%'},
-  {need:['boca jrs','04 may 2024'],src:'./assets/history/archive-v202/boca-jrs-campeon-liga-v50-04-may-2024.webp?v=20260924-preserve-bg-v323',pos:'center 48%',photoOnly:true,scale:1.0,origin:'center 48%'},
+  {need:['galacticos','09 feb 2025'],src:'./assets/history/archive-v203/galacticos-campeon-campeones-09-feb-2025.jpg?v=20260923-galacticos-real-v244',pos:'center 48%',photoOnly:true,scale:1.00,origin:'center 48%'},
+  {need:['linces','04 mar 2024'],src:'./assets/history/archive-v202/linces-campeon-copa-04-mar-2024.webp?v=20260924-restored-valid-v325',pos:'center 46%',photoOnly:true,scale:1.0,origin:'center 46%'},
+  {need:['boca jrs','04 may 2024'],src:'./assets/history/archive-v202/boca-jrs-campeon-liga-v50-04-may-2024.webp?v=20260924-restored-valid-v325',pos:'center 48%',photoOnly:true,scale:1.0,origin:'center 48%'},
   {need:['la esperanza','22 jun 2019'],src:'./assets/history/archive-v250/la-esperanza-campeon-campeones-veteranos-22-jun-2019.webp?v=20260923-esperanza-2019-bg-v250',pos:'center 43%',photoOnly:true,scale:1.0,origin:'center 43%'},
   {need:['psv','17 nov 2019'],src:'./assets/history/archive-v249/psv-campeon-copa-veteranos-17-nov-2019.webp?v=20260923-psv-copa2019-real-v249',pos:'center 46%',photoOnly:true,scale:1.0,origin:'center 46%'},
   {need:['la pandilla de morales','16 sep 2019'],src:'./assets/history/archive-v249/la-pandilla-morales-campeon-liga-2019.jpg?v=20260923-pandilla-linces-v249',pos:'center 46%',photoOnly:true,scale:1.0,origin:'center 46%'},
   {need:['linces jr','16 sep 2019'],src:'./assets/history/archive-v249/linces-jr-campeon-liga-2019.jpg?v=20260923-pandilla-linces-v249',pos:'center 46%',photoOnly:true,scale:1.0,origin:'center 46%'},
-  {need:['psv','02 oct 2021'],src:BASE134+'psv-campeon-campeones-veteranos-2020-2021.jpg',pos:'center 68%',photoOnly:true,scale:1.0,origin:'center 67%'},
+  {need:['psv','02 oct 2021'],src:BASE134+'psv-campeon-campeones-veteranos-2020-2021.jpg',pos:'center 68%',photoOnly:true,scale:2.00,origin:'center 67%'},
   {need:['la esperanza','25 sep 2021'],src:'./assets/history/archive-v256/la-esperanza-campeon-liga-veteranos-25-sep-2021.webp?v=20260923-esperanza-2021-user-v260',pos:'center 44%',photoOnly:true,scale:1.0,origin:'center 44%'},
   {need:['juventus','16 feb 2020'],src:BASE134+'juventus-campeon-copa-primera-2019-2020.jpg',pos:'center 48%'},
   {need:['tavera','16 feb 2020'],src:BASE134+'tavera-campeon-copa-segunda-2019-2020.jpg',pos:'center 46%'},
-  {need:['el alto','19 ene 2020'],src:'./assets/history/archive-v134/el-alto-campeon-copa-intermedia-2020.jpg?v=20260924-elalto-crop-v324',pos:'center 61%',photoOnly:true,scale:1.0,origin:'center 61%'},
+  {need:['el alto','19 ene 2020'],src:'./assets/history/archive-v134/el-alto-campeon-copa-intermedia-2020.jpg?v=20260924-elalto-crop-v325',pos:'center 61%',photoOnly:true,scale:1.0,origin:'center 61%'},
   {need:['juventus','17 feb 2024'],src:'https://raw.githubusercontent.com/jairofrancog7-star/App-liga-/main/assets/history/archive-v202/juventus-campeon-copa-veteranos35-17-feb-2024.webp',pos:'center 45%'},
   {need:['promesas de pozos','17 nov 2024'],src:'https://raw.githubusercontent.com/jairofrancog7-star/App-liga-/main/assets/history/archive-v117/promesas-campeon-2024.webp',pos:'center 46%'},
   {need:['barza','23 jul 2023'],src:BASE133+'barza-campeon-campeones-intermedia-2022-2023.jpg',pos:'center 44%'},
@@ -67,7 +67,7 @@ const EXACT=[
   {need:['la canchita deportes','07 jun 2026'],src:BASE132+'canchita-deportes-campeon-segunda-2026.jpg',pos:'center 45%'},
   {need:['franco fc','24 may 2026'],src:BASE132+'franco-fc-campeon-de-campeones-2026.jpg',pos:'center 44%'},
   {need:['la esperanza','23 may 2026'],src:BASE132+'la-esperanza-campeon-23-mayo-2026.jpg',pos:'center 44%'},
-  {need:['franco fc','10 may 2026'],src:BASE132+'franco-fc-campeon-intermedia-2026.jpg?v=20260923-franco-blue-v211',pos:'center 43%',photoOnly:true,scale:1.0,origin:'center 43%'},
+  {need:['franco fc','10 may 2026'],src:BASE132+'franco-fc-campeon-intermedia-2026.jpg?v=20260923-franco-blue-v211',pos:'center 43%',photoOnly:true,scale:1.03,origin:'center 43%'},
   {need:['la esperanza','10 may 2026'],src:BASE132+'la-esperanza-subcampeon-intermedia-2026.jpg?v=20260923-esperanza-yellow-v211',pos:'center 45%'},
   {need:['linces','15 mar 2026'],src:BASE132+'galacticos-subcampeon-primera-2026.jpg?v=20260924-swap-linces-galacticos-v292',pos:'center 45%'},
   {need:['galacticos','15 mar 2026'],src:BASE132+'linces-campeon-primera-2026.jpg?v=20260924-swap-linces-galacticos-v292',pos:'center 45%'},
@@ -76,8 +76,8 @@ const EXACT=[
   {need:['salvajes','20 dic 2025'],src:BASE132+'salvajes-campeon-copa-2025.jpg',pos:'center 42%'},
   {need:['la esperanza','08 nov 2025'],src:ESPERANZA_2025_PHOTO,pos:'center 50%',photoOnly:true,scale:1.0,origin:'center 50%'},
   {need:['juventus','20 sep 2025'],src:BASE132+'juventus-campeon-liga-veteranos-35-2025.jpg',pos:'center 43%'},
-  {need:['la huerta de cuenda','29 jun 2025'],src:'./assets/history/archive-v203/la-huerta-cuenda-campeon-segunda-29-jun-2025.jpg?v=20260924-preserve-bg-v323',pos:'center 43%'},
-  {need:['tavera fc','29 jun 2025'],src:'./assets/history/archive-v119/tavera-finalista-2025.jpg?v=20260924-preserve-bg-v323',pos:'center 43%'},
+  {need:['la huerta de cuenda','29 jun 2025'],src:'https://raw.githubusercontent.com/jairofrancog7-star/App-liga-/main/assets/history/archive-v203/la-huerta-cuenda-campeon-segunda-29-jun-2025.jpg',pos:'center 43%'},
+  {need:['tavera fc','29 jun 2025'],src:BASE119+'tavera-finalista-2025.jpg',pos:'center 43%'},
   {need:['galacticos fc','20 mar 2022'],src:BASE185+'galacticos-campeon-segunda-2022.webp',pos:'center 44%'},
   {need:['boavista','11 ene 2015'],src:'./assets/history/archive-v316/boavista-campeon-primera-11-ene-2015.webp?v=20260923-boavista-11ene2015-final-v317',pos:'center 44%',photoOnly:true,scale:1.0,origin:'center 44%'},
   {need:['los campeones de copa','14 abr 2015'],src:'./assets/history/archive-v279/campeones-copa-14-abr-2015.jpg?v=20260923-campeones-copa-14abr2015-v279',pos:'center 46%',photoOnly:true,scale:1.0,origin:'center 46%'},
@@ -125,23 +125,23 @@ function installStyle(){
   s.id='v120-history-exact-style';
   s.textContent=`
     .v120-has-exact-bg{position:relative!important;overflow:hidden!important;isolation:isolate!important;background-color:#060653!important}
-    .v120-exact-event-bg{position:absolute!important;inset:0!important;z-index:0!important;width:100%!important;height:100%!important;margin:0!important;padding:0!important;object-fit:cover!important;border:0!important;border-radius:inherit!important;filter:none!important;image-rendering:auto!important;opacity:1!important;visibility:visible!important;display:block!important}
+    .v120-exact-event-bg{position:absolute!important;inset:0!important;z-index:0!important;width:100%!important;height:100%!important;margin:0!important;padding:0!important;object-fit:cover!important;border:0!important;border-radius:inherit!important;filter:saturate(1.05) contrast(1.02) brightness(.98)!important;opacity:1!important;visibility:visible!important;display:block!important}
     .v120-photo-only-card{overflow:hidden!important}
     .v120-photo-only-card .v120-exact-event-bg{will-change:transform!important}
-    .v120-has-exact-bg>.v120-exact-shade{display:none!important;background:none!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important}
+    .v120-has-exact-bg>.v120-exact-shade{position:absolute;inset:0;z-index:1;pointer-events:none;background:linear-gradient(180deg,rgba(2,5,45,.00) 0%,rgba(2,5,45,.035) 34%,rgba(2,5,45,.18) 66%,rgba(2,5,45,.62) 100%),linear-gradient(90deg,rgba(2,5,45,.17) 0%,rgba(2,5,45,.035) 72%,rgba(2,5,45,0) 100%)}
     .v120-has-exact-bg .v35-history-moment-content,.v120-has-exact-bg .v35-champion-content,.v115-card.v120-has-exact-bg .v115-card-body{position:relative!important;z-index:2!important;background:transparent!important}
     .v35-history-moment.v120-has-exact-bg{min-height:310px!important;display:flex!important;align-items:flex-end!important;padding:0!important}
     .v35-history-moment.v120-has-exact-bg .v35-history-moment-content{width:100%!important;padding:20px 18px 18px!important}
     .v35-champion-card.v120-has-exact-bg{min-height:300px!important;display:flex!important;align-items:flex-end!important;padding:0!important}
     .v35-champion-card.v120-has-exact-bg .v35-champion-content{width:100%!important;padding:18px 16px 17px!important}
-    .v120-has-exact-bg .v35-history-status span{background:transparent!important;border:1px solid rgba(58,232,242,.62)!important;box-shadow:none!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important}
-    .v120-has-exact-bg .v35-history-date,.v120-has-exact-bg .v35-champion-date{background:rgba(0,0,0,.20)!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important}
+    .v120-has-exact-bg .v35-history-status span{background:rgba(3,8,58,.10)!important;border:1px solid rgba(58,232,242,.50)!important;box-shadow:none!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important}
+    .v120-has-exact-bg .v35-history-date,.v120-has-exact-bg .v35-champion-date{background:rgba(3,7,60,.48)!important;backdrop-filter:blur(4px)!important;-webkit-backdrop-filter:blur(4px)!important}
     .v120-has-exact-bg h3,.v120-has-exact-bg h4,.v120-has-exact-bg b,.v120-has-exact-bg strong,.v120-has-exact-bg p,.v120-has-exact-bg small{position:relative;z-index:2;text-shadow:0 2px 9px rgba(0,0,0,.78)}
     .v115-card.v120-has-exact-bg{min-height:310px!important;display:flex!important;align-items:flex-end!important;padding:0!important;border-color:rgba(92,225,245,.30)!important}
     .v115-card.v120-has-exact-bg .v115-card-body{width:100%!important;padding:18px 16px!important}
     .v115-card.v120-has-exact-bg .v115-date{background:rgba(4,8,63,.46)!important;border:1px solid rgba(80,230,242,.42)!important;border-radius:999px!important;padding:5px 9px!important;display:inline-flex!important}
     .v115-card.v120-has-exact-bg .v115-card-body p,.v115-card.v120-has-exact-bg .v115-card-body small{color:#f0f3ff!important}
-    .v120-photo-proof{display:none!important}
+    .v120-photo-proof{position:absolute;top:13px;right:13px;z-index:3;padding:5px 8px;border:1px solid rgba(255,255,255,.23);border-radius:999px;background:rgba(3,7,60,.44);color:#fff;font-size:7px;font-weight:900;letter-spacing:.08em;text-transform:uppercase;text-shadow:0 1px 4px #000}
     @media(max-width:420px){.v35-history-moment.v120-has-exact-bg,.v35-champion-card.v120-has-exact-bg,.v115-card.v120-has-exact-bg{min-height:292px!important}}
   `;
   document.head.appendChild(s);
@@ -170,7 +170,7 @@ function apply(card){
   img.style.objectPosition=hit.pos||'center';
   if(hit.photoOnly){
     img.classList.add('v120-photo-only-bg');
-    img.style.transform='scale(1)';
+    img.style.transform='scale('+(hit.scale||1.42)+')';
     img.style.transformOrigin=hit.origin||'center center';
   }
   img.onerror=()=>{card.classList.remove('v120-has-exact-bg');img.remove();};
