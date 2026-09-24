@@ -13,8 +13,10 @@ from __future__ import annotations
 
 import os
 import shutil
+import subprocess
 import sys
 import urllib.request
+from io import BytesIO
 from pathlib import Path
 
 from PIL import Image, ImageFilter, ImageOps
@@ -29,6 +31,67 @@ MODEL_URL = "https://github.com/Saafke/FSRCNN_Tensorflow/raw/master/models/FSRCN
 LOW_RES_LONG_SIDE = 1200
 TARGET_LONG_SIDE = 1800
 VALID = {".jpg", ".jpeg", ".png", ".webp"}
+
+
+def _open_bytes(data: bytes):
+    try:
+        bio = BytesIO(data)
+        im0 = Image.open(bio)
+        im0.load()
+        im = ImageOps.exif_transpose(im0)
+        return im.copy()
+    except Exception:
+        return None
+
+def best_available_source(src: Path):
+    """Return (image, raw_bytes_or_none, label) using the best valid version from Git history.
+
+    This never changes the original file. If an older revision has more real pixels than
+    the current one, the HD copy is built from that older revision.
+    """
+    rel = src.relative_to(ROOT).as_posix()
+    candidates = []
+
+    try:
+        raw = src.read_bytes()
+        im = _open_bytes(raw)
+        if im is not None:
+            candidates.append((im.width * im.height, im, raw, "current"))
+    except Exception:
+        pass
+
+    try:
+        log = subprocess.check_output(
+            ["git", "log", "--follow", "--format=%H", "--", rel],
+            cwd=ROOT,
+            text=True,
+            stderr=subprocess.DEVNULL,
+        ).splitlines()
+    except Exception:
+        log = []
+
+    # Usually only 1–3 revisions per historical image. Cap it for speed.
+    for sha in log[:20]:
+        try:
+            raw = subprocess.check_output(
+                ["git", "show", f"{sha}:{rel}"],
+                cwd=ROOT,
+                stderr=subprocess.DEVNULL,
+            )
+        except Exception:
+            continue
+        im = _open_bytes(raw)
+        if im is None:
+            continue
+        candidates.append((im.width * im.height, im, raw, sha[:10]))
+
+    if not candidates:
+        return None, None, "unreadable"
+
+    # Largest real pixel area wins; ties prefer the current file.
+    candidates.sort(key=lambda x: (x[0], x[3] == "current"), reverse=True)
+    _, im, raw, label = candidates[0]
+    return im, raw, label
 
 def load_sr():
     try:
@@ -113,33 +176,38 @@ def main():
         rel = src.relative_to(SRC)
         dst = DST / rel
         try:
-            with Image.open(src) as im0:
-                im0.load()
-                im = ImageOps.exif_transpose(im0)
-                w, h = im.size
+            im, best_raw, source_label = best_available_source(src)
+            if im is None:
+                raise ValueError("no hay una versión válida de imagen en el historial Git")
+            w, h = im.size
 
-                # Archivos suficientemente grandes: se preservan exactamente.
-                if max(w, h) >= LOW_RES_LONG_SIDE:
-                    dst.parent.mkdir(parents=True, exist_ok=True)
-                    shutil.copy2(src, dst)
-                    copied += 1
-                    print(f"COPY {rel} {w}x{h}")
-                    continue
+            # Si una versión anterior válida tenía más resolución, se usa para la copia HD.
+            restored = source_label != "current"
 
-                if sr is not None and cv2 is not None and min(w, h) >= 32:
-                    out = ai_enhance(im, cv2, sr)
-                    mode = "AI"
-                else:
-                    out = lanczos_enhance(im, TARGET_LONG_SIDE)
-                    mode = "LANCZOS"
+            # Fotos suficientemente grandes: no se recomprimen. Se conserva el mejor archivo válido.
+            if max(w, h) >= LOW_RES_LONG_SIDE and best_raw:
+                dst.parent.mkdir(parents=True, exist_ok=True)
+                dst.write_bytes(best_raw)
+                copied += 1
+                prefix = "RESTORE" if restored else "COPY"
+                print(f"{prefix} {rel} {w}x{h} source={source_label}")
+                continue
 
-                save_image(out, dst, src.suffix)
-                enhanced += 1
-                print(f"{mode} {rel} {w}x{h} -> {out.width}x{out.height}")
+            if sr is not None and cv2 is not None and min(w, h) >= 32:
+                out = ai_enhance(im, cv2, sr)
+                mode = "AI"
+            else:
+                out = lanczos_enhance(im, TARGET_LONG_SIDE)
+                mode = "LANCZOS"
+
+            save_image(out, dst, src.suffix)
+            enhanced += 1
+            restored_tag = f" restored={source_label}" if restored else ""
+            print(f"{mode} {rel} {w}x{h} -> {out.width}x{out.height}{restored_tag}")
         except Exception as exc:
             failed += 1
             print(f"[WARN] No se pudo mejorar {rel}: {exc}", file=sys.stderr)
-            # Nunca borres el fondo: si falla la mejora, copia el original.
+            # Nunca borres el fondo: si falla la mejora, copia el original tal cual.
             try:
                 dst.parent.mkdir(parents=True, exist_ok=True)
                 shutil.copy2(src, dst)

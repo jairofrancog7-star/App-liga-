@@ -43,4 +43,13 @@ jobs:
             exit 0
           fi
           git commit -m "Historia: generar fondos HD V326 sin borrar originales"
-          git push origin HEAD:main
+          for intento in 1 2 3 4 5; do
+            git pull --rebase origin main || { git rebase --abort || true; sleep 3; continue; }
+            if git push origin HEAD:main; then
+              exit 0
+            fi
+            echo "Push ocupado por otro workflow; reintentando ($intento/5)..."
+            sleep 4
+          done
+          echo "No se pudo publicar después de 5 intentos."
+          exit 1
