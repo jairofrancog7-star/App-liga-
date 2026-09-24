@@ -58,7 +58,7 @@ const EXACT=[
   {need:['la esperanza','25 sep 2021'],src:'./assets/history/archive-v256/la-esperanza-campeon-liga-veteranos-25-sep-2021.webp?v=20260923-esperanza-2021-user-v260',pos:'center 44%',photoOnly:true,scale:1.0,origin:'center 44%'},
   {need:['juventus','16 feb 2020'],src:BASE134+'juventus-campeon-copa-primera-2019-2020.jpg',pos:'center 48%'},
   {need:['tavera','16 feb 2020'],src:BASE134+'tavera-campeon-copa-segunda-2019-2020.jpg',pos:'center 46%'},
-  {need:['el alto','19 ene 2020'],src:BASE134+'el-alto-campeon-copa-intermedia-2020.jpg',pos:'center 69%',photoOnly:true,scale:1.0,origin:'center 68%'},
+  {need:['el alto','19 ene 2020'],src:'./assets/history/archive-v134/el-alto-campeon-copa-intermedia-2020.jpg?v=20260924-elalto-crop-v324',pos:'center 61%',photoOnly:true,scale:1.0,origin:'center 61%'},
   {need:['juventus','17 feb 2024'],src:'https://raw.githubusercontent.com/jairofrancog7-star/App-liga-/main/assets/history/archive-v202/juventus-campeon-copa-veteranos35-17-feb-2024.webp',pos:'center 45%'},
   {need:['promesas de pozos','17 nov 2024'],src:'https://raw.githubusercontent.com/jairofrancog7-star/App-liga-/main/assets/history/archive-v117/promesas-campeon-2024.webp',pos:'center 46%'},
   {need:['barza','23 jul 2023'],src:BASE133+'barza-campeon-campeones-intermedia-2022-2023.jpg',pos:'center 44%'},
