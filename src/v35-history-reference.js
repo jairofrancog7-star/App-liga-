@@ -1189,7 +1189,7 @@ function historyMomentCard(m){
   const manchester2024BgClass=(m.title==='Manchester'&&m.date==='09 nov 2024')?' v240-manchester-2024-bg':'';
   const psv2019BgClass=(m.title==='PSV'&&m.date==='17 nov 2019')?' v249-psv2019-card':'';
   const abejas2014Class=(m.winner==='Abejas Pozos'&&m.date==='22 feb 2014')?' v286-abejas-2014-final':'';
-  const abejas2019BgClass=(m.title==='Abejas'&&m.date==='03 nov 2019')?' v315-abejas-2019-bg':'';
+  const abejas2019BgClass='';
   const championBg=m.kind==='CAMPEÓN'?championBackground(m.title,m.backgroundPhoto||''):null;
   const hasBg=!!(championBg?.url||m.backgroundPhoto);
   const bgExact=!!championBg?.exact;
