@@ -6,17 +6,50 @@
 if(window.__LJR_V311_ABEJAS_2019_BG__)return;
 window.__LJR_V311_ABEJAS_2019_BG__=true;
 
-const PHOTO=window.LJR_ABEJAS_2019_PHOTO||'';
-if(!PHOTO)return;
+function photo(){
+  if(window.LJR_ABEJAS_2019_PHOTO)return window.LJR_ABEJAS_2019_PHOTO;
+  const parts=window.LJR_ABEJAS_2019_V308_PARTS;
+  if(Array.isArray(parts) && parts.length>=6){
+    window.LJR_ABEJAS_2019_PHOTO='data:image/webp;base64,'+parts.join('');
+    return window.LJR_ABEJAS_2019_PHOTO;
+  }
+  return '';
+}
 
 function norm(v){
   return String(v||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/\s+/g,' ').trim();
 }
 function isTarget(card){
-  const heading=norm(card.querySelector('h3,h4')?.textContent||'');
-  const date=norm(card.querySelector('time,.v35-history-date,.v35-champion-date,.v115-date')?.textContent||'');
-  const all=norm(card.textContent||'');
-  return heading.includes('abejas') && (date.includes('03 nov 2019') || all.includes('03 nov 2019'));
+  const all=norm(card?.textContent||'');
+  return all.includes('abejas') &&
+    all.includes('03 nov 2019') &&
+    all.includes('tercer lugar') &&
+    (all.includes('2018-2019') || all.includes('2018–2019'));
+}
+
+function findTargets(){
+  const found=new Set();
+  document.querySelectorAll('.v35-history-moment,.v35-champion-card,.v115-card,[data-history-card]').forEach(card=>{
+    if(isTarget(card))found.add(card);
+  });
+
+  // Fallback fuerte: localiza el texto visible de Abejas y sube hasta el cuadro
+  // aunque su clase cambie por otro parche o por el render móvil.
+  document.querySelectorAll('h1,h2,h3,h4,strong,b,span,div,p').forEach(node=>{
+    const t=norm(node.textContent||'');
+    if(t!=='abejas' && !t.startsWith('abejas '))return;
+    let p=node;
+    for(let i=0;i<9 && p;i++,p=p.parentElement){
+      if(isTarget(p)){
+        const txt=norm(p.textContent||'');
+        if(txt.length<1600){
+          found.add(p);
+          break;
+        }
+      }
+    }
+  });
+  return [...found];
 }
 function installStyle(){
   if(document.getElementById('v311-abejas-2019-style'))return;
@@ -98,6 +131,8 @@ function installStyle(){
 }
 function apply(card){
   if(!isTarget(card))return;
+  const PHOTO=photo();
+  if(!PHOTO)return false;
   installStyle();
 
   // Idempotente: evita ciclos del MutationObserver. Solo reconstruye si otro parche quitó el fondo.
@@ -136,7 +171,7 @@ function apply(card){
 }
 function patch(){
   if(!/(history|safe-about)/i.test(location.hash||''))return;
-  document.querySelectorAll('.v35-history-moment,.v35-champion-card,.v115-card').forEach(apply);
+  findTargets().forEach(apply);
 }
 let raf=0;
 function schedule(){
@@ -156,4 +191,6 @@ if(document.readyState==='loading'){
 }
 setTimeout(schedule,350);
 setTimeout(schedule,1200);
+setTimeout(schedule,2500);
+setTimeout(schedule,5000);
 })();
