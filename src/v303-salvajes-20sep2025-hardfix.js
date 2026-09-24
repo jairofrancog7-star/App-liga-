@@ -57,9 +57,6 @@ function paint(card){
     n.style.setProperty('background','transparent','important');
   });
 
-  [...card.querySelectorAll('span')].forEach(n=>{
-    if(String(n.textContent||'').trim().toUpperCase()==='FOTO DEL ARCHIVO') n.remove();
-  });
 
   card.classList.add('v35-history-moment-photo','v120-has-exact-bg','v120-photo-only-card');
   card.dataset.v303Salvajes='ready';
