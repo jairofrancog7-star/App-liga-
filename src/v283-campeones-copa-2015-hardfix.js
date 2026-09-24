@@ -1,11 +1,11 @@
-/* V283 — hard-fix Campeones · 14 abr 2015 · "Los campeones de copa".
+/* V294 — hard-fix Campeones · 14 abr 2015 · Juventus.
    Guarantees that the card is visible in Historia > Campeones even if later renderers rebuild the tab. */
 (function(){
   'use strict';
   if(window.__LJR_V283_COPA_2015__) return;
   window.__LJR_V283_COPA_2015__=true;
 
-  const PHOTO='./assets/history/archive-v279/campeones-copa-14-abr-2015.jpg?v=20260923-campeones-copa-hardfix-v283';
+  const PHOTO='./assets/history/archive-v279/campeones-copa-14-abr-2015.jpg?v=20260923-juventus-copa-14abr2015-v294';
 
   function norm(v){
     return String(v||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/\s+/g,' ').trim();
@@ -88,7 +88,7 @@
     const img=document.createElement('img');
     img.className='v283-copa-2015-photo';
     img.src=PHOTO;
-    img.alt='Los campeones de copa · 14 abr 2015';
+    img.alt='Juventus · Campeón de Copa · 14 abr 2015';
     img.loading='eager';
     img.decoding='async';
     return img;
@@ -109,10 +109,10 @@
     c.className='v35-history-moment-content';
     c.innerHTML=
       '<div class="v35-history-meta"><span class="v35-history-kind">CAMPEÓN</span><time class="v35-history-date">14 abr 2015</time></div>'+
-      '<h3>Los campeones de copa</h3>'+
+      '<h3>Juventus</h3>'+
       '<strong>Campeón de Copa</strong>'+
-      '<div class="v35-history-status"><span><b>Fecha</b>14 abr 2015</span><span><b>Temporada</b>2015</span></div>'+
-      '<p>Publicación histórica del 14 de abril de 2015: “Los campeones de copa”. La fotografía aportada corresponde al equipo campeón con el trofeo.</p>';
+      '<div class="v35-history-status"><span><b>Ganador</b>Juventus</span><span><b>Fecha</b>14 abr 2015</span><span><b>Temporada</b>2015</span></div>'+
+      '<p>Publicación histórica del 14 de abril de 2015: “Los campeones de copa”. El equipo campeón es Juventus.</p>';
     a.appendChild(c);
     return a;
   }
@@ -120,6 +120,13 @@
     document.querySelectorAll('.v35-history-moment,.v35-champion-card,.v115-card').forEach(card=>{
       if(!isTarget(card)) return;
       card.classList.add('v283-copa-2015');
+      // v294-title-fix: correct the historical team name in an already-rendered card.
+      const title=card.querySelector('h3');
+      if(title) title.textContent='Juventus';
+      card.querySelectorAll('.v35-history-status span').forEach(span=>{
+        const label=norm(span.querySelector('b')?.textContent);
+        if(label==='ganador') span.childNodes[span.childNodes.length-1].textContent='Juventus';
+      });
       card.style.setProperty('display','block','important');
       card.style.setProperty('visibility','visible','important');
       card.style.setProperty('opacity','1','important');
