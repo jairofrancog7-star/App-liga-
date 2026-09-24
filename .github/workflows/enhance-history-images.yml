@@ -1,0 +1,46 @@
+name: Mejorar fotos Historia HD
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'scripts/enhance_history_images.py'
+      - '.github/workflows/enhance-history-images.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  enhance:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Instalar super-resolución
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install pillow numpy opencv-contrib-python-headless
+
+      - name: Mejorar todas las fotos históricas sin borrar originales
+        run: python scripts/enhance_history_images.py
+
+      - name: Guardar copias HD
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add assets/history/enhanced-v326
+          if git diff --cached --quiet; then
+            echo "No hay cambios HD nuevos."
+            exit 0
+          fi
+          git commit -m "Historia: generar fondos HD V326 sin borrar originales"
+          git push origin HEAD:main
