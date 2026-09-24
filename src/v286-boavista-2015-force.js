@@ -1,6 +1,6 @@
 (()=>{
 'use strict';
-const VERSION='20260924-boavista-11ene2015-final-v292';
+const VERSION='20260924-boavista-11ene2015-valid-v294';
 const PAGE='/App-liga-/assets/history/archive-v286/boavista-campeon-primera-11-ene-2015.webp?v='+VERSION;
 const RAW='https://raw.githubusercontent.com/jairofrancog7-star/App-liga-/main/assets/history/archive-v286/boavista-campeon-primera-11-ene-2015.webp?v='+VERSION;
 const wanted=location.origin+PAGE;
