@@ -24,7 +24,7 @@
         background-position:center 44%!important;
         background-repeat:no-repeat!important;
       }
-      .v300-aldama-2026-card>.v300-aldama-bg{
+      .v300-aldama-2026-card>img:not(.v300-aldama-bg){display:none!important;}\n      .v300-aldama-2026-card>.v300-aldama-bg{
         position:absolute!important;
         inset:0!important;
         width:100%!important;
@@ -87,7 +87,7 @@
     installStyle();
 
     card.classList.add('v300-aldama-2026-card');
-    card.querySelectorAll(':scope > .v35-history-bg-photo,:scope > .v35-champion-bg-photo,:scope > .v120-exact-event-bg,:scope > .v300-aldama-bg,:scope > .v300-aldama-shade').forEach(n=>n.remove());
+    card.querySelectorAll(':scope > img,:scope > .v120-exact-event-bg,:scope > .v300-aldama-shade').forEach(n=>n.remove());
 
     const img=document.createElement('img');
     img.className='v300-aldama-bg';
