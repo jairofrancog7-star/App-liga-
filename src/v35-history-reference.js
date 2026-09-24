@@ -261,7 +261,7 @@ const historyMoments=[
   {kind:'CAMPEÓN',date:'16 feb 2025',season:'2025',winner:'Lobos Jrs.',title:'Lobos Jrs.',subtitle:'Campeón · Torneo Relámpago · Segunda Fuerza',detail:'Dato e imagen aportados por el usuario: Lobos Jrs. ganó el Torneo Relámpago de Segunda Fuerza el 16 de febrero de 2025.',backgroundPhoto:HIST_MEDIA+'archive-v207/lobos-jrs-campeon-relampago-segunda-16-feb-2025.webp'},
   // V196 — Lobos CDG · Campeón de Copa · Fuerza Intermedia 2025
   {kind:'CAMPEÓN',date:'15 jun 2025',season:'2025',winner:'Lobos CDG',title:'Lobos CDG · Cerrito de Gasca',subtitle:'Campeón de Copa · Fuerza Intermedia',detail:'La Liga Municipal de Fútbol felicita a Lobos CDG, de la comunidad de Cerrito de Gasca, por haber obtenido el título de Campeón de Copa 2025 ante Franco FC, de la comunidad de San José de Manantiales.',backgroundPhoto:HIST_MEDIA+'archive-v207/lobos-cdg-campeon-copa-intermedia-15-jun-2025.webp?v=20260923-lobos-clean-v212',image:HIST_ROOT+'assets/official-logos/lobos-cdg.png'},
-  {kind:'TERCER LUGAR',date:'23 nov 2013',title:'Romerillo',subtitle:'Tercer lugar · Fuerza Intermedia',detail:'Golazo Liga publicó que el portero de Romerillo fue clave para que su equipo obtuviera el tercer lugar, destacando una atajada de penal en la serie final. El nombre del portero no es visible en la captura aportada.'},
+  {kind:'TERCER LUGAR',date:'23 nov 2013',season:'2013',title:'Romerillo',subtitle:'Tercer lugar · Fuerza Intermedia',detail:'Golazo Liga publicó que el portero de Romerillo fue clave para que su equipo obtuviera el tercer lugar, destacando una atajada de penal en la serie final. El nombre del portero no es visible en la captura aportada.',backgroundPhoto:'./assets/history/archive-v293/romerillo-tercer-lugar-intermedia-23-nov-2013.jpg?v=20260923-romerillo-bg-23nov2013-v293',championsOnly:true},
   {kind:'CAMPEÓN',date:'22 feb 2014',season:'2014',winner:'DHP',title:'DHP',subtitle:'Campeón del Torneo de Copa 2014 · Segunda Fuerza',detail:'Golazo Liga publicó el 22 de febrero de 2014 el trofeo para el equipo DHP, campeón del Torneo de Copa 2014 de Segunda Fuerza.',backgroundPhoto:'./assets/history/archive-v260/dhp-campeon-copa-segunda-22-feb-2014.webp?v=20260923-old-history-v260'},
   {kind:'CAMPEÓN',date:'22 feb 2014',season:'2014',winner:'Puros Cuates',title:'Puros Cuates',subtitle:'Campeón de Copa · Fuerza Intermedia',detail:'La publicación de Golazo Liga muestra el trofeo entregado al equipo campeón.',backgroundPhoto:'./assets/history/archive-v260/puros-cuates-campeon-copa-intermedia-22-feb-2014.webp?v=20260923-puros-cuates-2014-live-v280',image:''},
   {kind:'PRIMER LUGAR',date:'10 abr 2022',season:'2022',title:'Linces',subtitle:'Primer lugar de tabla general · Primera Fuerza',detail:'Linces. Primer lugar de tabla general 2022, Primera Fuerza. Fecha exacta: 10 de abril de 2022.',backgroundPhoto:'./assets/history/archive-v286/linces-primer-lugar-tabla-general-2022-primera.jpg?v=20260923-linces-fecha-10abr2022-v287',archiveOnly:true,championsOnly:true},
@@ -1374,10 +1374,12 @@ function championsArchiveBlock(){
      Así cualquier campeón visible en Resumen aparece aquí automáticamente.
      Luego se agregan solo campeones verificados que todavía no estén presentes. */
   const summaryChampions=historyMoments.filter(m=>
-    (!m.archiveOnly||m.championsOnly)&&(
-      m.kind==='CAMPEÓN'||
-      m.kind==='PRIMER LUGAR'||
-      /campe[oó]n/i.test(String(m.subtitle||'')+' '+String(m.detail||''))
+    m.championsOnly||(
+      !m.archiveOnly&&(
+        m.kind==='CAMPEÓN'||
+        m.kind==='PRIMER LUGAR'||
+        /campe[oó]n/i.test(String(m.subtitle||'')+' '+String(m.detail||''))
+      )
     )
   );
   const merged=[];
