@@ -1,19 +1,20 @@
-/* V318 — Lobos CDG · SÚPER LÍDER · 03 may 2026.
-   Crea una sola tarjeta en Historia > Campeones y usa la foto aportada por el usuario como fondo. */
+/* V319 — Lobos CDG · SÚPER LÍDER · 03 may 2026.
+   Crea una sola tarjeta en Historia > Campeones y empaqueta la foto aportada por el usuario dentro del build. */
+import p1 from './v314-lobos-cdg-superlider-photo-01.b64?raw';
+import p2 from './v314-lobos-cdg-superlider-photo-02.b64?raw';
+import p3 from './v314-lobos-cdg-superlider-photo-03.b64?raw';
+import p4 from './v314-lobos-cdg-superlider-photo-04.b64?raw';
+
 (function(){
 'use strict';
 if(window.__LJR_V318_LOBOS_CDG_SUPERLIDER__) return;
 window.__LJR_V318_LOBOS_CDG_SUPERLIDER__=true;
 
-const PARTS=[
-  './src/v314-lobos-cdg-superlider-photo-01.b64?v=20260924-lobos-superlider-v318',
-  './src/v314-lobos-cdg-superlider-photo-02.b64?v=20260924-lobos-superlider-v318',
-  './src/v314-lobos-cdg-superlider-photo-03.b64?v=20260924-lobos-superlider-v318',
-  './src/v314-lobos-cdg-superlider-photo-04.b64?v=20260924-lobos-superlider-v318'
-];
 const EXPECTED_LEN=40216;
-let PHOTO='';
-let loading=null;
+const b64=[p1,p2,p3,p4].join('').replace(/\s+/g,'');
+const PHOTO=(b64.length===EXPECTED_LEN && b64.startsWith('UklGR'))
+  ? 'data:image/webp;base64,'+b64
+  : '';
 const norm=v=>String(v||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/\s+/g,' ').trim();
 
 function loadPhoto(){
@@ -172,10 +173,6 @@ let timer=0;
 function schedule(ms=0){
   clearTimeout(timer);
   timer=setTimeout(()=>{
-    if(!PHOTO){
-      loadPhoto().then(()=>{ensure();setTimeout(ensure,150);setTimeout(ensure,500);});
-      return;
-    }
     ensure();
     setTimeout(ensure,120);
     setTimeout(ensure,420);
