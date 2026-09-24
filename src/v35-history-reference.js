@@ -1,10 +1,17 @@
 /* V35 — Historia mobile reconstruction from the user's master references.
    Replaces only #/history on mobile/APK. Keeps the rest of the app logic intact. */
+import LOBOS_SUPER_P1 from './v314-lobos-cdg-superlider-photo-01.b64?raw';
+import LOBOS_SUPER_P2 from './v314-lobos-cdg-superlider-photo-02.b64?raw';
+import LOBOS_SUPER_P3 from './v314-lobos-cdg-superlider-photo-03.b64?raw';
+import LOBOS_SUPER_P4 from './v314-lobos-cdg-superlider-photo-04.b64?raw';
+
 (function(){
 'use strict';
 
 const RAW='https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/';
 const JUVENTUS_2024_PHOTO='./assets/history/archive-v225/juventus-campeon-campeones-21-sep-2024.webp?v=20260923-juventus-webp-v245';
+const LOBOS_CDG_SUPERLIDER_PHOTO='data:image/webp;base64,'+
+  [LOBOS_SUPER_P1,LOBOS_SUPER_P2,LOBOS_SUPER_P3,LOBOS_SUPER_P4].join('').replace(/\s+/g,'');
 const ASSETS={
   league:RAW+'assets/liga-logo.webp',
   america:RAW+'assets/branding/america-veteranos-35-user.png',
@@ -223,6 +230,9 @@ function championBgImg(name,explicitPhoto,season,klass){
   return '<img class="'+klass+' v35-bg-exact '+(crop?'v35-photo-only-crop':'')+'" src="'+bg.url+'" alt="'+esc(alt)+'" loading="lazy" decoding="async" '+(crop?'style="'+crop+'"':'')+' onerror="this.remove()">';
 }
 const historyMoments=[
+  // V322_LOBOS_CDG_SUPERLIDER — registro nativo en Historia > Campeones.
+  {kind:'SÚPER LÍDER',date:'03 may 2026',season:'2025–2026',winner:'Lobos CDG',title:'Lobos CDG',subtitle:'Súper líder · Temporada 2025–2026',detail:'Lobos CDG · Súper líder · 03 de mayo de 2026.',backgroundPhoto:LOBOS_CDG_SUPERLIDER_PHOTO,archiveOnly:true,championsOnly:true},
+
   // V312_LINCES_10_ABR_2022 — registro directo en Historia > Campeones.
   {kind:'PRIMER LUGAR',date:'10 abr 2022',season:'2022',winner:'Linces',title:'Linces',subtitle:'Primer lugar de tabla general · Primera Fuerza',detail:'Linces. Primer lugar de tabla general 2022, Primera Fuerza. Registro fechado el 10 de abril de 2022.',backgroundPhoto:'./assets/history/archive-v286/linces-primer-lugar-tabla-general-2022-primera.jpg?v=20260924-linces-canonical-v312',archiveOnly:true,championsOnly:true},
 
