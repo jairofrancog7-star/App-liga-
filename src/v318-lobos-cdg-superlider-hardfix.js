@@ -17,26 +17,6 @@ const PHOTO=(b64.length===EXPECTED_LEN && b64.startsWith('UklGR'))
   : '';
 const norm=v=>String(v||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/\s+/g,' ').trim();
 
-function loadPhoto(){
-  if(PHOTO) return Promise.resolve(PHOTO);
-  if(loading) return loading;
-  loading=Promise.all(PARTS.map(src=>fetch(src,{cache:'no-store'}).then(r=>{
-    if(!r.ok) throw new Error('HTTP '+r.status+' '+src);
-    return r.text();
-  }))).then(parts=>{
-    const b64=parts.join('').replace(/\s+/g,'');
-    if(b64.length!==EXPECTED_LEN || !b64.startsWith('UklGR')){
-      throw new Error('Foto Lobos CDG incompleta: '+b64.length);
-    }
-    PHOTO='data:image/webp;base64,'+b64;
-    try{ const preload=new Image(); preload.src=PHOTO; }catch(e){}
-    return PHOTO;
-  }).catch(err=>{
-    console.warn('[V318 Lobos CDG] No se pudo armar la foto',err);
-    return '';
-  });
-  return loading;
-}
 function isTarget(card){
   const t=norm(card?.textContent||'');
   return t.includes('lobos cdg') &&
