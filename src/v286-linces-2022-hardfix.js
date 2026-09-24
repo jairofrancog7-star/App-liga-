@@ -1,11 +1,11 @@
-/* V286 — Linces · Primer lugar de tabla general 2022 · Primera Fuerza.
+/* V287 — Linces · Primer lugar de tabla general 2022 · Primera Fuerza · 10 abr 2022.
    Card belongs only to Historia > Campeones and uses the uploaded team photo as background. */
 (function(){
   'use strict';
   if(window.__LJR_V286_LINCES_2022__) return;
   window.__LJR_V286_LINCES_2022__=true;
 
-  const PHOTO='./assets/history/archive-v286/linces-primer-lugar-tabla-general-2022-primera.jpg?v=20260923-linces-tabla-general-2022-v286';
+  const PHOTO='./assets/history/archive-v286/linces-primer-lugar-tabla-general-2022-primera.jpg?v=20260923-linces-fecha-10abr2022-v287';
 
   const norm=v=>String(v||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/\s+/g,' ').trim();
 
@@ -49,7 +49,7 @@
     const img=document.createElement('img');
     img.className='v286-linces-2022-photo';
     img.src=PHOTO;
-    img.alt='Linces · Primer lugar de tabla general 2022 · Primera Fuerza';
+    img.alt='Linces · Primer lugar de tabla general 2022 · Primera Fuerza · 10 abr 2022';
     img.loading='eager'; img.decoding='async';
     return img;
   }
@@ -65,17 +65,19 @@
     const c=document.createElement('div');
     c.className='v35-history-moment-content';
     c.innerHTML=
-      '<div class="v35-history-meta"><span class="v35-history-kind">PRIMER LUGAR</span><time class="v35-history-date">2022</time></div>'+
+      '<div class="v35-history-meta"><span class="v35-history-kind">PRIMER LUGAR</span><time class="v35-history-date">10 abr 2022</time></div>'+
       '<h3>Linces</h3>'+
       '<strong>Primer lugar de tabla general · Primera Fuerza</strong>'+
-      '<div class="v35-history-status"><span><b>Temporada</b>2022</span></div>'+
-      '<p>Linces. Primer lugar de tabla general 2022, Primera Fuerza.</p>';
+      '<div class="v35-history-status"><span><b>Fecha</b>10 abr 2022</span><span><b>Temporada</b>2022</span></div>'+
+      '<p>Linces. Primer lugar de tabla general 2022, Primera Fuerza. Fecha exacta: 10 de abril de 2022.</p>';
     a.appendChild(c); return a;
   }
   function patchExisting(){
     document.querySelectorAll('.v35-history-moment,.v35-champion-card,.v115-card').forEach(card=>{
       if(!isTarget(card)) return;
       card.classList.add('v286-linces-2022');
+      const dateEl=card.querySelector('.v35-history-date,.v35-champion-date,time');
+      if(dateEl) dateEl.textContent='10 abr 2022';
       if(!card.querySelector(':scope > .v286-linces-2022-photo')){
         card.querySelector(':scope > .v35-history-bg-photo,:scope > .v120-exact-event-bg')?.remove();
         card.prepend(photo());
