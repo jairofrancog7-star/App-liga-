@@ -72,6 +72,7 @@ const EXACT=[
   {need:['linces','15 mar 2026'],src:BASE132+'galacticos-subcampeon-primera-2026.jpg?v=20260924-swap-linces-galacticos-v292',pos:'center 45%'},
   {need:['galacticos','15 mar 2026'],src:BASE132+'linces-campeon-primera-2026.jpg?v=20260924-swap-linces-galacticos-v292',pos:'center 45%'},
   {need:['salvajes','20 sep 2025'],src:'./assets/history/archive-v305/salvajes-subcampeon-veteranos35-20-sep-2025.webp?v=20260923-salvajes-fixed-v307',pos:'center 45%',photoOnly:true,scale:1.0,origin:'center 45%'},
+  {need:['juventus','20 dic 2025'],src:(window.LJR_JUVENTUS_SUB_20DEC2025_PHOTO||''),pos:'center 47%',photoOnly:true,scale:1.0,origin:'center 47%'},
   {need:['salvajes','20 dic 2025'],src:BASE132+'salvajes-campeon-copa-2025.jpg',pos:'center 42%'},
   {need:['la esperanza','08 nov 2025'],src:ESPERANZA_2025_PHOTO,pos:'center 50%',photoOnly:true,scale:1.0,origin:'center 50%'},
   {need:['juventus','20 sep 2025'],src:BASE132+'juventus-campeon-liga-veteranos-35-2025.jpg',pos:'center 43%'},
