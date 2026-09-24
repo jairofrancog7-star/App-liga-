@@ -2,7 +2,7 @@
    Keeps the card present after tab rerenders and uses the exact user-provided photo as background. */
 (function(){
 'use strict';
-if(window.__LJR_V314_ABEJAS_2019_RESTORE__)return;
+if(window.__LJR_V315_ABEJAS_2019_RESTORE__)return;
 window.__LJR_V314_ABEJAS_2019_RESTORE__=true;
 
 const norm=v=>String(v||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/\s+/g,' ').trim();
@@ -24,7 +24,7 @@ function onChampions(){
   return !!active&&norm(active.textContent).includes('campeones');
 }
 function style(){
-  if(document.getElementById('v314-abejas-2019-style'))return;
+  if(document.getElementById('v315-abejas-2019-style'))return;
   const s=document.createElement('style');
   s.id='v314-abejas-2019-style';
   s.textContent=`
@@ -97,8 +97,16 @@ function patchCard(card){
   card.style.setProperty('background-size','cover','important');
   card.style.setProperty('background-position','center 50%','important');
   card.style.setProperty('background-repeat','no-repeat','important');
-  if(!card.querySelector(':scope > .v314-abejas-photo')){
-    card.querySelectorAll(':scope > .v35-history-bg-photo,:scope > .v120-exact-event-bg,:scope > .v311-abejas-photo,:scope > .v311-abejas-shade').forEach(n=>n.remove());
+  const canonical=card.querySelector(':scope > .v35-history-bg-photo');
+  if(canonical){
+    canonical.src=PHOTO;
+    canonical.loading='eager';
+    canonical.style.setProperty('display','block','important');
+    canonical.style.setProperty('visibility','visible','important');
+    canonical.style.setProperty('opacity','1','important');
+    canonical.style.setProperty('object-fit','cover','important');
+    canonical.style.setProperty('object-position','center 50%','important');
+  }else if(!card.querySelector(':scope > .v314-abejas-photo')){
     card.prepend(photo());
     card.insertBefore(shade(),card.children[1]||null);
   }
