@@ -24,7 +24,8 @@
         background-position:center 44%!important;
         background-repeat:no-repeat!important;
       }
-      .v300-aldama-2026-card>img:not(.v300-aldama-bg){display:none!important;}\n      .v300-aldama-2026-card>.v300-aldama-bg{
+      .v300-aldama-2026-card>img:not(.v300-aldama-bg){display:none!important;}
+      .v300-aldama-2026-card>.v300-aldama-bg{
         position:absolute!important;
         inset:0!important;
         width:100%!important;
