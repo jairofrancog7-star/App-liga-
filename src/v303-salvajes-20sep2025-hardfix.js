@@ -1,6 +1,6 @@
 (()=>{
 'use strict';
-const PHOTO='./assets/history/archive-v305/salvajes-subcampeon-veteranos35-20-sep-2025.webp?v=20260923-salvajes-real-v306';
+const PHOTO='./assets/history/archive-v305/salvajes-subcampeon-veteranos35-20-sep-2025.webp?v=20260923-salvajes-fixed-v307';
 const norm=s=>String(s||'').normalize('NFD').replace(/[\\u0300-\\u036f]/g,'').toLowerCase().replace(/\\s+/g,' ').trim();
 let raf=0;
 function target(card){
