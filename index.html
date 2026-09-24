@@ -196,12 +196,6 @@
   <script src="./src/v300-aldama-2026-photo-04.js?v=20260924-aldama-green-v300"></script>
   <script src="./src/v300-aldama-2026-photo-05.js?v=20260924-aldama-green-v300"></script>
 <script src="./src/v305-salvajes-20sep2025-photo.js?v=20260923-salvajes-direct-v305"></script>
-  <script src="./src/v308-abejas-2019-photo-01.js?v=20260923-abejas-2019-v308"></script>
-  <script src="./src/v308-abejas-2019-photo-02.js?v=20260923-abejas-2019-v308"></script>
-  <script src="./src/v308-abejas-2019-photo-03.js?v=20260923-abejas-2019-v308"></script>
-  <script src="./src/v308-abejas-2019-photo-04.js?v=20260923-abejas-2019-v308"></script>
-  <script src="./src/v308-abejas-2019-photo-05.js?v=20260923-abejas-2019-v308"></script>
-  <script src="./src/v308-abejas-2019-photo-06.js?v=20260923-abejas-2019-v308"></script>
 <script type="module" src="./src/v35-history-reference.js?v=20260923-boavista-11ene2015-final-v317"></script>
   <script type="module" src="./src/v115-history-archive-expansion.js?v=20260923-esperanza-photo-v220"></script>
   <script src="./src/v214-san-julian-photo.js?v=20260923-v214b"></script>
@@ -266,7 +260,85 @@
 <script src="./src/v300-aldama-2026-hardfix.js?v=20260923-aldama-photo-v304"></script>
   <script type="module" src="./src/v303-salvajes-20sep2025-hardfix.js?v=20260923-salvajes-fixed-v307"></script>
   <script src="./src/v310-juventus-sub-20dic2025-hardfix.js?v=20260923-juventus-sub-photo-v310"></script>
-  <script src="./src/v314-abejas-2019-card-restore.js?v=20260924-abejas-file-v316"></script>
   <script type="module" src="./src/v286-boavista-2015-force.js?v=20260923-boavista-11ene2015-final-v317"></script>
+
+  <script>
+  /* V317_ABEJAS_INLINE_PAGES — inline hardfix kept inside the GitHub Pages build. */
+  (function(){
+    'use strict';
+    if(window.__V317_ABEJAS_INLINE_PAGES__) return;
+    window.__V317_ABEJAS_INLINE_PAGES__=true;
+    var PHOTO='/App-liga-/assets/history/archive-v315/abejas-tercer-lugar-03-nov-2019.webp?v=20260924-abejas-inline-v317';
+    var norm=function(v){return String(v||'').normalize('NFD').replace(/[\\u0300-\\u036f]/g,'').toLowerCase().replace(/\\s+/g,' ').trim()};
+    function target(card){
+      var t=norm(card&&card.textContent);
+      return t.indexOf('abejas')>=0 && t.indexOf('03 nov 2019')>=0 && t.indexOf('tercer lugar')>=0;
+    }
+    function css(){
+      if(document.getElementById('v317-abejas-inline-style')) return;
+      var s=document.createElement('style');
+      s.id='v317-abejas-inline-style';
+      s.textContent=''
+        +'.v317-abejas-inline{position:relative!important;overflow:hidden!important;isolation:isolate!important;display:block!important;visibility:visible!important;opacity:1!important;min-height:360px!important;background-size:cover!important;background-position:center 50%!important;background-repeat:no-repeat!important}'
+        +'.v317-abejas-inline::after{display:none!important}'
+        +'.v317-abejas-inline>.v35-history-moment-content{position:relative!important;z-index:3!important;background:transparent!important;background-image:none!important}'
+        +'.v317-abejas-inline>.v35-history-moment-shade{position:absolute!important;inset:0!important;z-index:2!important;background:linear-gradient(180deg,rgba(2,7,55,.02) 0%,rgba(2,7,55,.08) 38%,rgba(2,7,55,.38) 72%,rgba(2,7,55,.74) 100%)!important;pointer-events:none!important}'
+        +'.v317-abejas-inline>.v317-abejas-inline-photo{position:absolute!important;inset:0!important;z-index:1!important;width:100%!important;height:100%!important;object-fit:cover!important;object-position:center 50%!important;display:block!important;visibility:visible!important;opacity:1!important;margin:0!important;padding:0!important;border:0!important;border-radius:inherit!important}'
+        +'.v317-abejas-inline .v35-history-status,.v317-abejas-inline .v35-history-meta{position:relative!important;z-index:3!important;background:transparent!important}'
+        +'.v317-abejas-inline .v35-history-status>span{background:rgba(2,10,67,.22)!important;border-color:rgba(77,226,244,.68)!important}'
+        +'.v317-abejas-inline h3,.v317-abejas-inline strong,.v317-abejas-inline b,.v317-abejas-inline p,.v317-abejas-inline span,.v317-abejas-inline time{text-shadow:0 2px 8px rgba(0,0,0,.92)!important}';
+      document.head.appendChild(s);
+    }
+    function apply(card){
+      if(!target(card)) return;
+      css();
+      card.classList.add('v317-abejas-inline');
+      card.style.setProperty('background','linear-gradient(180deg,rgba(2,7,55,.02),rgba(2,7,55,.48)),url("'+PHOTO+'")','important');
+      card.style.setProperty('background-size','cover','important');
+      card.style.setProperty('background-position','center 50%','important');
+      card.style.setProperty('background-repeat','no-repeat','important');
+      card.style.setProperty('display','block','important');
+      card.style.setProperty('visibility','visible','important');
+      card.style.setProperty('opacity','1','important');
+      var img=card.querySelector(':scope > .v317-abejas-inline-photo');
+      if(!img){
+        img=document.createElement('img');
+        img.className='v317-abejas-inline-photo';
+        img.alt='Abejas · tercer lugar · Primera Fuerza · 03 nov 2019';
+        img.loading='eager';
+        img.decoding='async';
+        card.prepend(img);
+      }
+      if(img.getAttribute('src')!==PHOTO) img.src=PHOTO;
+      var old=card.querySelector(':scope > .v35-history-bg-photo');
+      if(old){
+        old.src=PHOTO;
+        old.style.setProperty('display','block','important');
+        old.style.setProperty('visibility','visible','important');
+        old.style.setProperty('opacity','1','important');
+        old.style.setProperty('object-fit','cover','important');
+        old.style.setProperty('object-position','center 50%','important');
+      }
+      card.dataset.v317Abejas='1';
+    }
+    function run(){
+      if((location.hash||'').indexOf('history')<0) return;
+      document.querySelectorAll('.v35-history-moment,.v35-champion-card,.v115-card,article').forEach(apply);
+    }
+    var queued=false;
+    function schedule(){
+      if(queued) return; queued=true;
+      requestAnimationFrame(function(){queued=false;run()});
+    }
+    new Image().src=PHOTO;
+    window.addEventListener('hashchange',function(){setTimeout(schedule,20)});
+    document.addEventListener('click',function(e){if(e.target.closest('[data-v35-tab],[data-history-tab],button')) setTimeout(schedule,60)},true);
+    var root=document.querySelector('#screen')||document.body;
+    new MutationObserver(schedule).observe(root,{childList:true,subtree:true});
+    if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',function(){setTimeout(schedule,80)},{once:true});
+    else setTimeout(schedule,80);
+    setTimeout(schedule,350);setTimeout(schedule,1200);setTimeout(schedule,3000);
+  })();
+  </script>
 </body>
 </html>
