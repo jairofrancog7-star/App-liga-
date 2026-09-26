@@ -4,9 +4,6 @@
 body.v27-teams-active{
   background:#07106d;
 }
-body.v27-teams-active .topbar{
-  display:none !important;
-}
 body.v27-teams-active #screen{
   padding:0 !important;
   max-width:none !important;
