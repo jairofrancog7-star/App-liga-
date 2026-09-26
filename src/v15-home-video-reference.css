@@ -312,15 +312,6 @@ body[data-app-route="home"] .app-shell,
 body[data-app-route="home"] #screen{
   background:#02045d!important;
 }
-
-/* La imagen superior termina en el mismo azul oscuro de Historias.
-   Esta máscara tapa los arcos/fragmentos que quedaban asomándose y elimina
-   la sensación de una caja separada por una línea. */
-body[data-app-route="home"] .topbar{
-  border-bottom:0!important;
-  box-shadow:
-    inset 0 -34px 0 #02045d!important;
-}
 body[data-app-route="home"] #screen{
   padding-top:0!important;
   margin-top:-1px!important;
@@ -389,9 +380,6 @@ body[data-app-route="home"] #screen>.stories + .section.hero[data-v15-home-featu
   margin-top:0!important;
 }
 @media(max-width:380px){
-  body[data-app-route="home"] .topbar{
-    box-shadow:inset 0 -30px 0 #02045d!important;
-  }
   body[data-app-route="home"] #screen>.section.hero[data-v15-home-feature="1"]{
     width:90%!important;
     border-radius:24px!important;
@@ -406,25 +394,6 @@ body[data-app-route="home"] #screen,
 body[data-app-route="home"] #screen>.stories{
   background:#02045d!important;
   background-color:#02045d!important;
-}
-
-/* Quita la línea/corte duro entre cabecera e historias y hace una transición suave. */
-body[data-app-route="home"] .topbar{
-  border:0!important;
-  border-bottom:0!important;
-  box-shadow:none!important;
-}
-body[data-app-route="home"] .topbar::after{
-  content:""!important;
-  display:block!important;
-  position:absolute!important;
-  z-index:2!important;
-  left:0!important;
-  right:0!important;
-  bottom:0!important;
-  height:72px!important;
-  pointer-events:none!important;
-  background:linear-gradient(180deg,rgba(2,4,93,0) 0%,rgba(2,4,93,.68) 45%,#02045d 100%)!important;
 }
 body[data-app-route="home"] #screen{
   padding-top:0!important;
@@ -476,75 +445,16 @@ body[data-app-route="home"] .v15-home-feature-image{
 }
 
 @media(max-width:380px){
-  body[data-app-route="home"] .topbar::after{height:62px!important}
   body[data-app-route="home"] #screen>.section.hero[data-v15-home-feature="2"]{
     width:90%!important;
     border-radius:26px!important;
   }
-}
-
-
-/* V19 HOME ARC CLEANUP — quitar medias lunas/lineas fantasma sobre historias.
-   Solo tapa la franja inferior del header; no mueve historias ni tarjetas. */
-body[data-app-route="home"] .topbar{
-  overflow:hidden!important;
-  border-bottom:0!important;
-  box-shadow:none!important;
-}
-body[data-app-route="home"] .topbar::before{
-  content:none!important;
-  display:none!important;
-}
-body[data-app-route="home"] .topbar::after{
-  content:""!important;
-  display:block!important;
-  position:absolute!important;
-  z-index:20!important;
-  left:0!important;
-  right:0!important;
-  bottom:-1px!important;
-  height:92px!important;
-  pointer-events:none!important;
-  background:#02045d!important;
-  background-image:none!important;
-  border:0!important;
-  box-shadow:none!important;
-  opacity:1!important;
 }
 body[data-app-route="home"] #screen>.stories{
   border-top:0!important;
   box-shadow:none!important;
 }
 @media(max-width:380px){
-  body[data-app-route="home"] .topbar::after{
-    height:84px!important;
-  }
-}
-
-
-/* V20 HOME HEADER RESTORE — vuelve la parte superior original completa (referencia imagen 3).
-   No tapa la mitad inferior del arte con bloques sólidos. */
-body[data-app-route="home"] .topbar{
-  height:var(--v10-home-header-h)!important;
-  min-height:var(--v10-home-header-h)!important;
-  padding:0!important;
-  overflow:hidden!important;
-  background-color:#02065f!important;
-  background-image:url('https://d2ol7oe51mr4n9.cloudfront.net/user_3JNvttsAwr0QjxhuX5O1uaa9bvv/f2d42133-aeeb-4665-bfd1-693941efa7ee.jpg')!important;
-  background-repeat:no-repeat!important;
-  background-size:cover!important;
-  background-position:center top!important;
-  border:0!important;
-  border-bottom:0!important;
-  box-shadow:none!important;
-}
-body[data-app-route="home"] .topbar::before,
-body[data-app-route="home"] .topbar::after{
-  content:none!important;
-  display:none!important;
-  background:none!important;
-  height:0!important;
-  opacity:0!important;
 }
 
 /* Historias empiezan justo al terminar la cabecera: sin hueco artificial
@@ -727,31 +637,6 @@ body[data-app-route="home"] #screen>.stories{
   background-color:#02045d!important;
 }
 
-body[data-app-route="home"] .topbar{
-  background-color:#02045d!important;
-  border-bottom:0!important;
-  box-shadow:none!important;
-}
-
-/* Tapa únicamente la franja inferior del arte del header donde se veían
-   los medios círculos celestes; mantiene intactos los elementos superiores. */
-body[data-app-route="home"] .topbar::after{
-  content:""!important;
-  display:block!important;
-  position:absolute!important;
-  z-index:2!important;
-  left:0!important;
-  right:0!important;
-  bottom:-1px!important;
-  height:42px!important;
-  pointer-events:none!important;
-  background:#02045d!important;
-  background-image:none!important;
-  border:0!important;
-  box-shadow:none!important;
-  opacity:1!important;
-}
-
 body[data-app-route="home"] #screen{
   margin-top:-1px!important;
   padding-top:0!important;
@@ -773,9 +658,6 @@ body[data-app-route="home"] #screen>.stories::after{
 }
 
 @media(max-width:380px){
-  body[data-app-route="home"] .topbar::after{
-    height:38px!important;
-  }
 }
 
 
@@ -786,32 +668,6 @@ body[data-app-route="home"] .app-shell,
 body[data-app-route="home"] #screen,
 body[data-app-route="home"] #screen>.stories{
   background-color:#02045d!important;
-}
-
-body[data-app-route="home"] .topbar{
-  border:0!important;
-  border-bottom:0!important;
-  box-shadow:none!important;
-}
-
-/* Cubre solo la zona decorativa inferior de la cabecera donde aparecían
-   las medias circunferencias celestes. El logo y controles superiores siguen intactos. */
-body[data-app-route="home"] .topbar::after{
-  content:""!important;
-  display:block!important;
-  position:absolute!important;
-  z-index:2!important;
-  left:0!important;
-  right:0!important;
-  bottom:-2px!important;
-  height:74px!important;
-  pointer-events:none!important;
-  background:#02045d!important;
-  background-image:none!important;
-  border:0!important;
-  outline:0!important;
-  box-shadow:none!important;
-  opacity:1!important;
 }
 
 body[data-app-route="home"] #screen{
@@ -837,9 +693,6 @@ body[data-app-route="home"] #screen>.stories::after{
 }
 
 @media(max-width:380px){
-  body[data-app-route="home"] .topbar::after{
-    height:68px!important;
-  }
 }
 
 
@@ -856,32 +709,6 @@ body[data-app-route="home"] #screen>.stories,
 body[data-app-route="home"] #screen>.section,
 body[data-app-route="home"] #screen>.section.hero{
   background-color:var(--home-one-blue)!important;
-}
-
-/* La cabecera conserva su imagen/arte; solo igualamos su color base y la unión inferior. */
-body[data-app-route="home"] .topbar{
-  background-color:var(--home-one-blue)!important;
-  border-bottom:0!important;
-  outline:0!important;
-  box-shadow:none!important;
-}
-
-body[data-app-route="home"] .topbar::after{
-  content:""!important;
-  display:block!important;
-  position:absolute!important;
-  z-index:2!important;
-  left:0!important;
-  right:0!important;
-  bottom:-2px!important;
-  height:82px!important;
-  pointer-events:none!important;
-  background:var(--home-one-blue)!important;
-  background-image:none!important;
-  border:0!important;
-  outline:0!important;
-  box-shadow:none!important;
-  opacity:1!important;
 }
 
 /* Sin línea, franja ni cambio de tono entre cabecera e historias. */
@@ -912,38 +739,6 @@ body[data-app-route="home"] #screen>.section.hero[data-v15-home-feature="3"]{
 }
 
 @media(max-width:380px){
-  body[data-app-route="home"] .topbar::after{
-    height:76px!important;
-  }
-}
-
-
-/* V26 HOME SOFT FADE — bajar arte y desvanecer la unión sin tocar portada. */
-/* Solo modifica la transición entre cabecera e historias. NO cambia la imagen inferior. */
-body[data-app-route="home"] .topbar::after{
-  content:""!important;
-  display:block!important;
-  position:absolute!important;
-  z-index:2!important;
-  left:0!important;
-  right:0!important;
-  bottom:-2px!important;
-  height:72px!important;
-  pointer-events:none!important;
-  background:
-    linear-gradient(
-      180deg,
-      rgba(0,1,68,0) 0%,
-      rgba(0,1,68,.18) 18%,
-      rgba(0,1,68,.48) 36%,
-      rgba(0,1,68,.78) 55%,
-      #000144 76%,
-      #000144 100%
-    )!important;
-  border:0!important;
-  outline:0!important;
-  box-shadow:none!important;
-  opacity:1!important;
 }
 
 /* El bloque de historias arranca con el mismo azul final del degradado,
@@ -958,98 +753,13 @@ body[data-app-route="home"] #screen>.stories{
 }
 
 @media(max-width:380px){
-  body[data-app-route="home"] .topbar::after{
-    height:66px!important;
-  }
 }
 
 /* V27 HOME PROFESSIONAL LOGO — elimina visualmente el cuadro negro del logo
    superior izquierdo sin mover el resto de la portada. */
 .v15-home-clean-logo{display:none!important}
 
-body[data-app-route="home"] .topbar .v15-home-clean-logo{
-  position:absolute!important;
-  z-index:8!important;
-  left:6%!important;
-  top:47.8%!important;
-  width:23%!important;
-  height:auto!important;
-  aspect-ratio:1/1!important;
-  display:grid!important;
-  place-items:center!important;
-  margin:0!important;
-  padding:0!important;
-  border:0!important;
-  background:transparent!important;
-  pointer-events:none!important;
-  isolation:isolate!important;
-  overflow:visible!important;
-}
-
-body[data-app-route="home"] .topbar .v15-home-clean-logo::before{
-  content:""!important;
-  position:absolute!important;
-  z-index:-1!important;
-  inset:-14%!important;
-  display:block!important;
-  border:0!important;
-  border-radius:50%!important;
-  background:
-    radial-gradient(
-      ellipse at 50% 50%,
-      rgba(1,9,52,.98) 0%,
-      rgba(1,9,52,.95) 53%,
-      rgba(1,8,47,.82) 68%,
-      rgba(1,7,43,.44) 82%,
-      rgba(1,7,43,0) 100%
-    )!important;
-  -webkit-backdrop-filter:blur(14px) brightness(.88) saturate(.92)!important;
-  backdrop-filter:blur(14px) brightness(.88) saturate(.92)!important;
-  -webkit-mask-image:radial-gradient(ellipse at center,#000 0 66%,rgba(0,0,0,.95) 76%,rgba(0,0,0,.48) 89%,transparent 100%)!important;
-  mask-image:radial-gradient(ellipse at center,#000 0 66%,rgba(0,0,0,.95) 76%,rgba(0,0,0,.48) 89%,transparent 100%)!important;
-}
-
-body[data-app-route="home"] .topbar .v15-home-clean-logo-image{
-  position:relative!important;
-  z-index:1!important;
-  display:block!important;
-  width:88%!important;
-  height:88%!important;
-  max-width:88%!important;
-  max-height:88%!important;
-  margin:0!important;
-  padding:0!important;
-  border:0!important;
-  border-radius:0!important;
-  object-fit:contain!important;
-  object-position:center!important;
-  background:transparent!important;
-  box-shadow:none!important;
-  filter:
-    drop-shadow(0 4px 8px rgba(0,0,0,.50))
-    drop-shadow(0 0 5px rgba(80,215,255,.10))!important;
-}
-
-body[data-app-route="home"] .topbar .v15-home-clean-logo-image.v15-home-logo-blend-fallback{
-  mix-blend-mode:screen!important;
-}
-
 @media(max-width:380px){
-  body[data-app-route="home"] .topbar .v15-home-clean-logo{
-    left:5.8%!important;
-    top:47.5%!important;
-    width:23.5%!important;
-  }
-}
-
-
-
-/* V28 HOME LOGO BLACK-BG REMOVE — elimina el cuadro negro del logo de la Liga.
-   No mueve ni redimensiona el logo; solo hace transparente visualmente el negro. */
-body[data-app-route="home"] .topbar .v15-home-clean-logo-image{
-  background:transparent!important;
-  mix-blend-mode:screen!important;
-  isolation:auto!important;
 }
 
 /* El logo de Liga usado dentro de Historias recibe el mismo tratamiento,
@@ -1060,257 +770,11 @@ body[data-app-route="home"] #screen>.stories .v15-story-inner img[src*="liga-log
   filter:none!important;
 }
 
-/* Evita que el soporte detrás del logo vuelva a verse como un cuadro oscuro. */
-body[data-app-route="home"] .topbar .v15-home-clean-logo::before{
-  background:transparent!important;
-  -webkit-backdrop-filter:none!important;
-  backdrop-filter:none!important;
-  -webkit-mask-image:none!important;
-  mask-image:none!important;
-}
-
-
-/* HOME_LOGO_REMOVE_AND_ICON_RATIO1 */
-body[data-app-route="home"] .topbar .v15-home-clean-logo{
-  display:none!important;
-  visibility:hidden!important;
-  opacity:0!important;
-  pointer-events:none!important;
-}
-body[data-app-route="home"] .topbar{
-  background-size:cover!important;
-  background-position:center top!important;
-}
-
-
-/* V29 HOME HEADER ICON RATIO — logo de Liga + perfil sin estirar.
-   Se dibujan como cuadrados con background-size:contain para conservar proporción. */
-body[data-app-route="home"] .topbar .wordmark{
-  display:block!important;
-  visibility:visible!important;
-  opacity:1!important;
-  pointer-events:auto!important;
-  position:absolute!important;
-  left:4.2%!important;
-  top:20%!important;
-  width:22%!important;
-  height:auto!important;
-  aspect-ratio:1 / 1!important;
-  max-width:92px!important;
-  max-height:92px!important;
-  min-width:0!important;
-  min-height:0!important;
-  margin:0!important;
-  padding:0!important;
-  border:0!important;
-  border-radius:50%!important;
-  background-color:rgba(3,8,91,.94)!important;
-  background-image:var(--v12-league-white)!important;
-  background-repeat:no-repeat!important;
-  background-position:center!important;
-  background-size:contain!important;
-  color:transparent!important;
-  font-size:0!important;
-  box-shadow:0 0 0 10px rgba(3,8,91,.94)!important;
-  overflow:visible!important;
-  transform:none!important;
-  z-index:25!important;
-}
-
-body[data-app-route="home"] .topbar .wordmark::before,
-body[data-app-route="home"] .topbar .wordmark::after{
-  content:none!important;
-  display:none!important;
-}
-
-body[data-app-route="home"] .topbar .profile-button{
-  display:block!important;
-  visibility:visible!important;
-  opacity:1!important;
-  pointer-events:auto!important;
-  position:absolute!important;
-  right:4.2%!important;
-  top:22%!important;
-  width:12.5%!important;
-  height:auto!important;
-  aspect-ratio:1 / 1!important;
-  max-width:54px!important;
-  max-height:54px!important;
-  min-width:0!important;
-  min-height:0!important;
-  margin:0!important;
-  padding:0!important;
-  border:0!important;
-  border-radius:50%!important;
-  background-color:rgba(3,8,91,.94)!important;
-  background-image:var(--v12-profile-white)!important;
-  background-repeat:no-repeat!important;
-  background-position:center!important;
-  background-size:contain!important;
-  color:transparent!important;
-  box-shadow:0 0 0 8px rgba(3,8,91,.94)!important;
-  overflow:visible!important;
-  transform:none!important;
-  z-index:25!important;
-}
-
-body[data-app-route="home"] .topbar .profile-button svg{
-  display:none!important;
-}
-
-/* La imagen de fondo nunca se fuerza a un rectángulo: conserva su relación de aspecto. */
-body[data-app-route="home"] .topbar{
-  background-size:cover!important;
-  background-repeat:no-repeat!important;
-  background-position:center top!important;
+@media(max-width:380px){
 }
 
 @media(max-width:380px){
-  body[data-app-route="home"] .topbar .wordmark{
-    left:4.5%!important;
-    top:21%!important;
-    width:21%!important;
-    max-width:78px!important;
-    max-height:78px!important;
-    box-shadow:0 0 0 8px rgba(3,8,91,.94)!important;
-  }
-  body[data-app-route="home"] .topbar .profile-button{
-    right:4.5%!important;
-    top:23%!important;
-    width:12%!important;
-    max-width:46px!important;
-    max-height:46px!important;
-    box-shadow:0 0 0 6px rgba(3,8,91,.94)!important;
-  }
-}
-
-
-/* V30 HOME HEADER RESTORE WHITE ICONS — quitar overlays añadidos y usar
-   únicamente los dos iconos blancos que ya vienen dibujados en el arte original.
-   La imagen se ajusta por ancho para que ninguno quede cortado en los extremos. */
-body[data-app-route="home"] .topbar{
-  background-color:#02065f!important;
-  background-size:100% auto!important;
-  background-repeat:no-repeat!important;
-  background-position:center top!important;
-}
-
-/* Izquierda: botón invisible sobre el icono blanco original, sin logo/círculo extra. */
-body[data-app-route="home"] .topbar .wordmark{
-  display:block!important;
-  visibility:visible!important;
-  opacity:1!important;
-  position:absolute!important;
-  left:3.8%!important;
-  top:10%!important;
-  width:18%!important;
-  height:46%!important;
-  max-width:none!important;
-  max-height:none!important;
-  aspect-ratio:auto!important;
-  margin:0!important;
-  padding:0!important;
-  border:0!important;
-  border-radius:0!important;
-  background:transparent!important;
-  background-image:none!important;
-  box-shadow:none!important;
-  color:transparent!important;
-  font-size:0!important;
-  overflow:visible!important;
-  transform:none!important;
-  pointer-events:auto!important;
-  z-index:25!important;
-}
-body[data-app-route="home"] .topbar .wordmark::before,
-body[data-app-route="home"] .topbar .wordmark::after{
-  content:none!important;
-  display:none!important;
-}
-
-/* Derecha: mismo criterio, solo hit-area; el icono visible es el del fondo original. */
-body[data-app-route="home"] .topbar .profile-button{
-  display:block!important;
-  visibility:visible!important;
-  opacity:1!important;
-  position:absolute!important;
-  right:3.8%!important;
-  top:10%!important;
-  width:15%!important;
-  height:46%!important;
-  max-width:none!important;
-  max-height:none!important;
-  aspect-ratio:auto!important;
-  margin:0!important;
-  padding:0!important;
-  border:0!important;
-  border-radius:0!important;
-  background:transparent!important;
-  background-image:none!important;
-  box-shadow:none!important;
-  color:transparent!important;
-  overflow:visible!important;
-  transform:none!important;
-  pointer-events:auto!important;
-  z-index:25!important;
-}
-body[data-app-route="home"] .topbar .profile-button svg{
-  display:none!important;
 }
 
 @media(max-width:380px){
-  body[data-app-route="home"] .topbar{
-    background-size:100% auto!important;
-    background-position:center top!important;
-  }
-  body[data-app-route="home"] .topbar .wordmark{
-    left:4.2%!important;
-    top:9%!important;
-    width:18%!important;
-    height:47%!important;
-  }
-  body[data-app-route="home"] .topbar .profile-button{
-    right:4.2%!important;
-    top:9%!important;
-    width:15%!important;
-    height:47%!important;
-  }
-}
-
-
-/* V31 HOME CLEAN LOWER BAND — quitar los arcos/celeste que parecen pintados.
-   Solo limpia la franja inferior del encabezado de Inicio; no toca los iconos blancos. */
-body[data-app-route="home"] .topbar{
-  position:sticky!important;
-  overflow:hidden!important;
-  background-color:#000144!important;
-}
-
-body[data-app-route="home"] .topbar::after{
-  content:""!important;
-  display:block!important;
-  position:absolute!important;
-  z-index:12!important;
-  left:0!important;
-  right:0!important;
-  bottom:-1px!important;
-  height:38%!important;
-  pointer-events:none!important;
-  background:#000144!important;
-  background-image:none!important;
-  border:0!important;
-  box-shadow:none!important;
-  opacity:1!important;
-}
-
-/* Los dos iconos blancos originales quedan por encima de la limpieza. */
-body[data-app-route="home"] .topbar .wordmark,
-body[data-app-route="home"] .topbar .profile-button{
-  z-index:25!important;
-}
-
-@media(max-width:380px){
-  body[data-app-route="home"] .topbar::after{
-    height:40%!important;
-  }
 }
