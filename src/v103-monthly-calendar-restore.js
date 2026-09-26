@@ -133,7 +133,6 @@ function render(){
 
   document.body.classList.add('v70-calendar-active');
   document.body.classList.remove('v92-match-center-official');
-  Array.from(document.querySelectorAll('.bottom-nav .nav-item')).forEach(function(n){n.classList.remove('active')});
   Array.from(screen.querySelectorAll('[data-v103-date]')).forEach(function(btn){
     btn.onclick=function(){
       selectedDate=btn.getAttribute('data-v103-date')||selectedDate;
