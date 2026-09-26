@@ -186,7 +186,7 @@ function markup(){
    (activeTab==='general'?generalView():activeTab==='team'?teamDetailedView():playerDetailedView())+'</section>';
 }
 function toast(msg){const old=document.querySelector('.v33-toast');if(old)old.remove();const n=document.createElement('div');n.className='v33-toast';n.textContent=msg;document.body.appendChild(n);setTimeout(()=>n.remove(),1500)}
-function setBottomNav(){const nav=document.querySelector('.bottom-nav');if(nav)nav.querySelectorAll('.nav-item').forEach(i=>i.classList.toggle('active',i.dataset.route==='more'))}
+function setBottomNav(){/* Global nav active state is owned by V34. */}
 function share(){const p={title:'Estadísticas Liga Juventino',text:'Datos oficiales de la Liga Municipal de Fútbol Juventino Rosas',url:location.href};if(navigator.share)navigator.share(p).catch(()=>{});else navigator.clipboard?.writeText(location.href).then(()=>toast('Enlace copiado')).catch(()=>{})}
 function bind(){
  document.querySelectorAll('[data-v33-tab]').forEach(b=>b.onclick=()=>{activeTab=b.dataset.v33Tab;localStorage.setItem('v33-data-tab',activeTab);render();window.scrollTo(0,0)});
