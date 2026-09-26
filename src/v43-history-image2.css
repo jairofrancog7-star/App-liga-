@@ -275,20 +275,9 @@
     width:22px!important;
     height:22px!important;
   }
+  /* Bottom navigation is owned by V34. */
 
-  /* Barra inferior del mismo tamaño visual que imagen 2. */
-  body[data-app-route="history"] .bottom-nav{
-    min-height:76px!important;
-    height:76px!important;
-    background:#11116e!important;
-  }
-  body[data-app-route="history"] .bottom-nav .nav-item small{
-    font-size:11px!important;
-    text-transform:none!important;
-    letter-spacing:0!important;
-  }
-
-  @media(max-width:374px){
+@media(max-width:374px){
     .v35-history-page{--v35-pad:22px!important}
     .v35-history-head{height:155px!important;min-height:155px!important}
     .v35-history-head .v35-back{top:31px!important}
@@ -542,29 +531,9 @@
     width:20px!important;
     height:20px!important;
   }
+  /* History shell uses the single global bottom navigation. */
 
-  /* Barra inferior igual a la imagen 2: no agrandarla respecto a la barra maestra V34. */
-  body[data-app-route="history"] .bottom-nav{
-    min-height:60px!important;
-    height:60px!important;
-    padding:3px 7px max(3px,env(safe-area-inset-bottom))!important;
-  }
-  body[data-app-route="history"] .bottom-nav .nav-icon,
-  body[data-app-route="history"] .bottom-nav .nav-icon svg{
-    width:25px!important;
-    height:25px!important;
-    min-width:25px!important;
-    min-height:25px!important;
-    max-width:25px!important;
-    max-height:25px!important;
-  }
-  body[data-app-route="history"] .bottom-nav .nav-item small{
-    font-size:10px!important;
-    line-height:12px!important;
-    text-transform:none!important;
-  }
-
-  /* Cabecera compacta durante scroll conserva la misma escala. */
+/* Cabecera compacta durante scroll conserva la misma escala. */
   .v35-compact-bar{
     height:60px!important;
     padding:0 var(--v35-pad)!important;
@@ -789,23 +758,9 @@
     width:18px!important;
     height:18px!important;
   }
+  /* Bottom navigation scale is inherited from V34. */
 
-  /* Bottom navigation SVG + labels match the reference scale. */
-  body[data-app-route="history"] .bottom-nav .nav-icon,
-  body[data-app-route="history"] .bottom-nav .nav-icon svg{
-    width:23px!important;
-    height:23px!important;
-    min-width:23px!important;
-    min-height:23px!important;
-    max-width:23px!important;
-    max-height:23px!important;
-  }
-  body[data-app-route="history"] .bottom-nav .nav-item small{
-    font-size:9.5px!important;
-    line-height:11px!important;
-  }
-
-  /* Compact header while scrolling. */
+/* Compact header while scrolling. */
   .v35-compact-bar .v35-back{
     flex-basis:29px!important;
     width:29px!important;
