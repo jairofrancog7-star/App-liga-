@@ -62,11 +62,7 @@
       '</main>'+
     '</section>';
   }
-  function setNav(){
-    const nav=document.querySelector('.bottom-nav');if(!nav)return;
-    nav.style.display='grid';
-    nav.querySelectorAll('.nav-item').forEach(n=>n.classList.toggle('active',n.dataset.route==='more'));
-  }
+  function setNav(){/* Global nav is owned by V34. */}
   function bind(){
     document.querySelector('[data-v52-back]')?.addEventListener('click',()=>{if(history.length>1)history.back();else location.hash='#/moreLess'},{once:true});
     document.querySelectorAll('[data-v52-play]').forEach(b=>b.addEventListener('click',()=>{location.hash='#/moreLess'},{once:true}));
