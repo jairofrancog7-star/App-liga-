@@ -13,9 +13,6 @@ body[data-app-route="predictorSix"] .app-shell{
   margin:0 auto!important;
   background:#07065f!important;
 }
-body[data-app-route="predictorSix"] #app>.topbar{
-  display:none!important;
-}
 body[data-app-route="predictorSix"] #screen{
   width:100%!important;
   min-height:calc(100dvh - var(--v34-nav-h,60px) - env(safe-area-inset-bottom))!important;
