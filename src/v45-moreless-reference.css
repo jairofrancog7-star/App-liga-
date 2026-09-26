@@ -119,15 +119,6 @@ body[data-app-route="moreLess"] .v12-stadium{
   box-shadow:none!important;
 }
 
-/* Global nav geometry/state is owned by V34. */
-
-/* Protección adicional: si una versión cacheada llegara a insertar otra barra,
-   nunca se renderiza una segunda barra dentro del contenido de Más o Menos. */
-body[data-app-route="moreLess"] #screen .bottom-nav,
-body[data-app-route="moreLess"] .v12-moreless .bottom-nav{
-  display:none!important;
-}
-
 @media(max-height:740px){
   body[data-app-route="moreLess"] .v12-ml-title{top:7.6%!important}
   body[data-app-route="moreLess"] .v12-ml-choice{top:57.8%!important}
@@ -235,10 +226,6 @@ body[data-app-route="moreLess"] .v12-stadium::after{
   border:0!important;
   pointer-events:none!important;
 }
-
-/* Nested duplicate bars remain suppressed; #app > .bottom-nav is the single real bar. */
-body[data-app-route="moreLess"] #screen .bottom-nav,
-body[data-app-route="moreLess"] .v12-moreless .bottom-nav{display:none!important}
 
 @media(max-width:370px){
   body[data-app-route="moreLess"] .v12-ml-title{width:47vw!important;top:9.0%!important}
