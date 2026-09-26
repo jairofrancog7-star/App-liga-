@@ -296,19 +296,7 @@ function seasonPopover(){
   p.innerHTML='<b>Temporada</b><button type="button" class="active">Temporada actual</button>';
   document.body.appendChild(p);
 }
-function setBottomNav(){
-  var nav=document.querySelector('.bottom-nav');if(!nav)return;
-  var labels={home:'Inicio',competition:'Competición',video:'Video',fantasy:'Fantasy',more:'Más'};
-  nav.querySelectorAll('.nav-item').forEach(function(item){
-    item.classList.toggle('active',item.dataset.route==='more');
-    var small=item.querySelector('small');if(small&&labels[item.dataset.route])small.textContent=labels[item.dataset.route];
-  });
-  var more=nav.querySelector('[data-route="more"] .nav-icon');
-  if(more){
-    more.innerHTML='<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="5" cy="12" r="2.15" fill="currentColor"/><circle cx="12" cy="12" r="2.15" fill="currentColor"/><circle cx="19" cy="12" r="2.15" fill="currentColor"/></svg>';
-    more.dataset.v16IconState='more:on';
-  }
-}
+function setBottomNav(){/* Global nav state/labels/icons are owned by V34. */}
 function share(){
   var payload={title:'Rankings de la Liga',text:'Rankings de la Liga Municipal de Fútbol Juventino Rosas',url:location.href};
   if(navigator.share)navigator.share(payload).catch(function(){});
