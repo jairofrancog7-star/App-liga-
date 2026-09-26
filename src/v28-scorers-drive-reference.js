@@ -199,7 +199,7 @@ function pageMarkup(){
     '<div class="v28-ranking">'+ROWS.slice(2).map(rowMarkup).join('')+'</div>'+
     '<p class="v28-criteria">Datos oficiales publicados por categoría en AdminFut. No se inventan goles ni jugadores.</p></section>';
 }
-function setMoreActive(){const nav=document.querySelector('.bottom-nav');if(nav)nav.querySelectorAll('.nav-item').forEach(n=>n.classList.toggle('active',n.dataset.route==='more'))}
+function setMoreActive(){/* Global nav active state is owned by V34. */}
 function render(){
   const active=route()==='scorers';
   document.body.classList.toggle('v28-scorers-active',active);
