@@ -99,9 +99,17 @@
   html body[data-app-route="competition"] #screen>.tabs{
     position:relative!important;
     overflow:visible!important;
+    box-sizing:border-box!important;
+    width:calc(100% + 28px)!important;
+    margin:0 -14px!important;
+    padding:0 8px!important;
     height:48px!important;
     min-height:48px!important;
     max-height:48px!important;
+    display:grid!important;
+    grid-template-columns:repeat(3,minmax(0,1fr))!important;
+    align-items:stretch!important;
+    gap:0!important;
     background:#06085f!important;
     background-image:none!important;
     border:0!important;
@@ -111,14 +119,29 @@
   html body[data-app-route="competition"] #screen>.tabs .tab{
     position:relative!important;
     overflow:visible!important;
+    box-sizing:border-box!important;
+    width:100%!important;
+    min-width:0!important;
     height:48px!important;
     min-height:48px!important;
     max-height:48px!important;
-    padding-top:0!important;
-    padding-bottom:11px!important;
+    margin:0!important;
+    padding:0 3px 10px!important;
+    display:flex!important;
+    align-items:flex-end!important;
+    justify-content:center!important;
+    background:transparent!important;
     color:#d9d9e7!important;
+    font-family:Inter,Roboto,Arial,sans-serif!important;
+    font-size:12.5px!important;
+    line-height:1!important;
+    font-weight:700!important;
+    letter-spacing:-.015em!important;
+    text-align:center!important;
+    white-space:nowrap!important;
     box-shadow:none!important;
     border:0!important;
+    transform:none!important;
   }
 
   html body[data-app-route="competition"] #screen>.tabs .tab.active{
@@ -304,5 +327,13 @@
 @media (max-width:520px){
   html body[data-app-route="competition"] .v12-fixtures-reference .v12-date-strip{
     margin-top:20px!important;
+  }
+}
+
+
+@media(max-width:340px){
+  html body[data-app-route="competition"] #screen>.tabs .tab{
+    font-size:11.5px!important;
+    letter-spacing:-.02em!important;
   }
 }
