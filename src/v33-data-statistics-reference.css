@@ -4,9 +4,6 @@ body.v33-data-active{
   background:#04006d!important;
   overflow-x:hidden!important;
 }
-body.v33-data-active .topbar{
-  display:none!important;
-}
 body.v33-data-active .app-shell{
   width:100%!important;
   max-width:none!important;
