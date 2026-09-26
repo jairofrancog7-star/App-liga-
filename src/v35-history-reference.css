@@ -20,15 +20,8 @@
     overflow-x:hidden!important;
     animation:none!important;
   }
-
-  body[data-app-route="history"] .bottom-nav .nav-item{
-    color:#9aa0c5!important;
-  }
-  body[data-app-route="history"] .bottom-nav .nav-item:nth-child(5){
-    color:#10e8f7!important;
-  }
-
-  .v35-history-page{
+  /* Global nav active state and colors are owned by V34. */
+.v35-history-page{
     --v35-pad:clamp(24px,6.2vw,32px);
     --v35-cyan:#10e8f7;
     --v35-soft:#cbc9df;
