@@ -15,29 +15,7 @@ body.v32-rankings-active #screen{
   overflow:visible!important;
   background:#07065f!important;
 }
-body.v32-rankings-active .bottom-nav{
-  width:min(100%,520px)!important;
-  height:82px!important;
-  background:linear-gradient(180deg,rgba(16,24,127,.985),rgba(10,13,93,.997))!important;
-  border-top:1px solid rgba(135,149,255,.22)!important;
-  box-shadow:0 -11px 32px rgba(0,0,45,.28)!important;
-  backdrop-filter:blur(16px)!important;
-  -webkit-backdrop-filter:blur(16px)!important;
-}
-body.v32-rankings-active .bottom-nav .nav-item{
-  color:#aeb6e5!important;
-}
-body.v32-rankings-active .bottom-nav .nav-item small{
-  font-size:10px!important;
-  font-weight:500!important;
-  letter-spacing:0!important;
-  text-transform:none!important;
-}
-body.v32-rankings-active .bottom-nav .nav-item[data-route="more"],
-body.v32-rankings-active .bottom-nav .nav-item[data-route="more"] .nav-icon{
-  color:#16e5f4!important;
-}
-
+/* Global bottom navigation is owned by V34. */
 .v32-rankings{
   --v32-bg:#07065f;
   --v32-panel:#11147b;
@@ -520,12 +498,7 @@ body.v32-rankings-active .bottom-nav .nav-item[data-route="more"] .nav-icon{
     margin:0 auto;
     box-shadow:0 0 56px rgba(0,0,0,.32);
   }
-  body.v32-rankings-active .bottom-nav{
-    width:430px!important;
-    left:50%!important;
-    right:auto!important;
-    transform:translateX(-50%)!important;
-  }
+
 }
 
 /* PARTS32.2 — corrections from user video: "Coeficientes de clubes" + functional club filter screen. */
