@@ -17,9 +17,6 @@ body.v46-account-active #app{
   padding-bottom:0!important;
   background:var(--v46-bg)!important;
 }
-body.v46-account-active #app>.bottom-nav{
-  display:none!important;
-}
 body.v46-account-active #screen{
   width:min(100vw,520px)!important;
   max-width:520px!important;
