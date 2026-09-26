@@ -1,6 +1,5 @@
 /* V66 — compact content sizing. Header rendering belongs only to v7-brand. */
 body.v66-compact-route{background:var(--app-bg,#06075f)!important;overflow-x:hidden!important}
-body.v66-compact-route .topbar{display:grid!important}
 body.v66-compact-route .v66-compact-top{display:none!important}
 body.v66-compact-route #screen{
   width:100%!important;max-width:520px!important;margin:0 auto!important;padding-left:0!important;padding-right:0!important;
