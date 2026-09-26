@@ -5,49 +5,7 @@
   body.v92-match-center-official #screen{
     background:#05075f!important;
   }
-  /* Quita el arte con arcos/líneas cyan y deja una cabecera continua. */
-  body.v92-match-center-official .topbar{
-    height:92px!important;
-    min-height:92px!important;
-    margin:0!important;
-    background:#05075f!important;
-    background-image:none!important;
-    border:0!important;
-    box-shadow:none!important;
-  }
-  body.v92-match-center-official .topbar::before,
-  body.v92-match-center-official .topbar::after,
-  body.v92-match-center-official #screen::before{
-    content:none!important;
-    display:none!important;
-  }
-  body.v92-match-center-official .topbar .wordmark{
-    display:block!important;
-    visibility:visible!important;
-    position:absolute!important;
-    left:20px!important;
-    top:20px!important;
-    width:52px!important;
-    height:52px!important;
-    background:url('../assets/liga-logo.webp') center/contain no-repeat!important;
-    color:transparent!important;
-    font-size:0!important;
-    border:0!important;
-  }
-  body.v92-match-center-official .topbar .profile-button{
-    display:block!important;
-    visibility:visible!important;
-    position:absolute!important;
-    right:20px!important;
-    top:20px!important;
-    width:46px!important;
-    height:46px!important;
-    border:0!important;
-    background:transparent url('../profile-reference.svg') center/contain no-repeat!important;
-    color:transparent!important;
-  }
-  body.v92-match-center-official .topbar .profile-button::before,
-  body.v92-match-center-official .topbar .profile-button::after{content:none!important}
+  /* Header ownership moved to v7-brand.css. */
   body.v92-match-center-official #screen{
     margin-top:0!important;
     padding-top:0!important;
@@ -56,7 +14,7 @@
   }
 
   .v92-matchcenter{
-    min-height:calc(100vh - 92px);
+    min-height:calc(100vh - var(--header-expanded-h,98px));
     padding:0 18px 112px;
     color:#fff;
     background:#05075f;
