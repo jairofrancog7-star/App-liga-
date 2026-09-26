@@ -69,32 +69,11 @@
     background-image:none!important;
   }
 
-  /* BARRA INFERIOR: mismo azul exacto que la página. */
-  html body[data-app-route="competition"] .bottom-nav,
-  html body.v40-standings-master .bottom-nav,
-  html body.v40-standings-master[data-app-route="competition"] .bottom-nav{
-    background:#06075f!important;
-    background-color:#06075f!important;
-    background-image:none!important;
-    border-top:1px solid rgba(255,255,255,.10)!important;
-    box-shadow:none!important;
-  }
+  /* Bottom navigation styling is owned by V34. */
 
-  html body[data-app-route="competition"] .bottom-nav::before,
-  html body[data-app-route="competition"] .bottom-nav::after,
-  html body.v40-standings-master .bottom-nav::before,
-  html body.v40-standings-master .bottom-nav::after{
-    background:#06075f!important;
-    background-color:#06075f!important;
-    background-image:none!important;
-    box-shadow:none!important;
-  }
-
-  /* Conserva los elementos activos/cian y tarjetas; solo unifica el lienzo de fondo. */
+  /* Conserva el estado activo de las pestañas; la navegación global la pinta V34. */
   html body[data-app-route="competition"] #screen>.tabs .tab.active,
-  html body.v40-standings-master #screen>.tabs .tab.active,
-  html body[data-app-route="competition"] .bottom-nav .nav-item[data-route="competition"],
-  html body.v40-standings-master .bottom-nav .nav-item[data-route="competition"]{
+  html body.v40-standings-master #screen>.tabs .tab.active{
     color:#20e7f0!important;
   }
 }
@@ -110,8 +89,7 @@
   html body[data-app-route="competition"],
   html body[data-app-route="competition"] #app,
   html body[data-app-route="competition"] .app-shell,
-  html body[data-app-route="competition"] #screen,
-  html body[data-app-route="competition"] .bottom-nav{
+  html body[data-app-route="competition"] #screen{
     background:#06085f!important;
     background-color:#06085f!important;
     background-image:none!important;
