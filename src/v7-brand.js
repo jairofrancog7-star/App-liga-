@@ -11,7 +11,7 @@ const FULLSCREEN_HEADER_ROUTES = new Set([
   'video',
   'fantasy','fantasyTeam','fantasyLeagues','fantasyAccess',
   'history','teams','teamDetail','playerCompare','rankings','following','stats',
-  'notifications',
+  'notifications','safe-performance','safe-about',
   'predictor','predictorSix','quizArena','moreLess','moreLessHub','hospitality',
   'match'
 ]);
