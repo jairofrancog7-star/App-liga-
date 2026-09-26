@@ -606,10 +606,7 @@ function setCategory(id){
   if(route()==='scorers')patchScorers(true);
   if(route()==='leagueData')renderDataPage();
 }
-function setMoreNav(){
-  const nav=document.querySelector('.bottom-nav');if(!nav)return;
-  nav.querySelectorAll('.nav-item').forEach(n=>n.classList.toggle('active',n.dataset.route==='more'));
-}
+function setMoreNav(){/* Global nav active state is owned by V34. */}
 
 function scorerRows(){
   const rs=rows('scorers');
