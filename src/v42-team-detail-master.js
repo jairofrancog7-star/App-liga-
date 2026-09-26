@@ -223,7 +223,7 @@ function markup(){
 }
 function toast(msg){document.querySelector('.v42-toast')?.remove();const n=document.createElement('div');n.className='v42-toast';n.textContent=msg;document.body.appendChild(n);setTimeout(()=>n.remove(),1500)}
 function share(){const t=teamData();const p={title:t?.name||'Liga Juventino',text:'Liga Municipal de Fútbol Juventino Rosas · '+(t?.name||''),url:location.href};if(navigator.share)navigator.share(p).catch(()=>{});else navigator.clipboard?.writeText(location.href).then(()=>toast('Enlace copiado')).catch(()=>{})}
-function nav(){const n=document.querySelector('.bottom-nav');if(n)n.querySelectorAll('.nav-item').forEach(i=>i.classList.toggle('active',i.dataset.route==='competition'))}
+function nav(){/* Global nav active state is owned by V34. */}
 function bind(){
  document.querySelector('[data-v42-back]')?.addEventListener('click',()=>history.length>1?history.back():location.hash='#/teams',{once:true});
  document.querySelector('[data-v42-follow]')?.addEventListener('click',()=>{toggleFollow();render()},{once:true});
