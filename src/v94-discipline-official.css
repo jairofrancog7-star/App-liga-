@@ -207,73 +207,21 @@ body.v94-discipline-official #screen{
 }
 
 
-/* V124.7 — Disciplina: todo el fondo unido en #000144.
-   Mantiene la barra superior, logo y perfil; elimina arte/arcos/gradientes del fondo. */
+/* V124.7 — Disciplina: content canvas only.
+   Shared header and bottom navigation are owned by V7/V34. */
 @media(max-width:1023px){
   html:has(body.v94-discipline-official),
   body.v94-discipline-official,
   body.v94-discipline-official #app,
   body.v94-discipline-official .app-shell,
   body.v94-discipline-official #screen,
-  body.v94-discipline-official .v94-discipline-page,
-  body.v94-discipline-official .bottom-nav{
-    background:#000144!important;
+  body.v94-discipline-official .v94-discipline-page{
+    background:var(--app-bg,#06075f)!important;
     background-image:none!important;
   }
 
-  /* Barra superior conservada, pero con el MISMO color sólido de toda la página. */
-  body.v94-discipline-official .topbar,
-  body.v94-discipline-official.v69-primary-tool-header .topbar{
-    display:block!important;
-    visibility:visible!important;
-    opacity:1!important;
-    background:#000144!important;
-    background-image:none!important;
-    border:0!important;
-    border-bottom:0!important;
-    box-shadow:none!important;
-    z-index:40!important;
-  }
-
-  body.v94-discipline-official .topbar::before,
-  body.v94-discipline-official .topbar::after,
-  body.v94-discipline-official #screen::before,
-  body.v94-discipline-official #screen::after{
-    content:none!important;
-    display:none!important;
-    background:none!important;
-  }
-
-  /* Como se quitó el arte de fondo, el logo y perfil se muestran como elementos reales,
-     conservando las mismas zonas/posiciones de la barra. */
-  body.v94-discipline-official .topbar .wordmark{
-    background-color:transparent!important;
-    background-image:url('https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/assets/liga-logo.webp')!important;
-    background-repeat:no-repeat!important;
-    background-position:center!important;
-    background-size:contain!important;
-    color:transparent!important;
-    font-size:0!important;
-    z-index:4!important;
-  }
-
-  body.v94-discipline-official .topbar .profile-button{
-    background-color:transparent!important;
-    background-image:url('../profile-reference.svg')!important;
-    background-repeat:no-repeat!important;
-    background-position:center!important;
-    background-size:contain!important;
-    color:transparent!important;
-    z-index:4!important;
-  }
-  body.v94-discipline-official .topbar .profile-button svg{
-    display:none!important;
-  }
-
-  /* Sin costura entre barra y contenido. */
   body.v94-discipline-official #screen{
     position:relative!important;
-    z-index:31!important;
     margin-top:0!important;
     padding-top:0!important;
     border-top:0!important;
