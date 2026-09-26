@@ -30,33 +30,12 @@
       linear-gradient(180deg,var(--mc-bg2) 0%,var(--mc-bg) 34%,#010316 100%)!important;
   }
 
-  /* Cabecera: misma app azul, pero más cercana a la referencia oscura. */
-  body.v92-match-center-official .topbar{
-    height:86px!important;
-    min-height:86px!important;
-    background:
-      linear-gradient(180deg,#07133f 0%,#050a2d 58%,#030622 100%)!important;
-    border-bottom:1px solid rgba(64,103,220,.18)!important;
-  }
-
-  body.v92-match-center-official .topbar .wordmark{
-    top:18px!important;
-    left:18px!important;
-    width:48px!important;
-    height:48px!important;
-  }
-
-  body.v92-match-center-official .topbar .profile-button{
-    top:18px!important;
-    right:18px!important;
-    width:42px!important;
-    height:42px!important;
-  }
+  /* Shared app header is owned by v7-brand.css. */
 
   body.v92-match-center-official .v92-matchcenter{
     width:100%!important;
     max-width:560px!important;
-    min-height:calc(100dvh - 86px)!important;
+    min-height:calc(100dvh - var(--header-expanded-h,98px))!important;
     margin:0 auto!important;
     padding:18px 22px 130px!important;
     color:var(--mc-text)!important;
