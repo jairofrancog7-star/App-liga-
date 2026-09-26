@@ -102,7 +102,6 @@ function render(){
   guard=true;
   screen.innerHTML=markup();
   document.body.dataset.appRoute='historyLog';
-  document.querySelectorAll('.bottom-nav .nav-item').forEach(n=>n.classList.toggle('active',n.dataset.route==='more'));
   bind(screen);
   guard=false;
 }
