@@ -151,10 +151,6 @@ body[data-app-route="tableExport"] .v66-compact-top,
 body[data-app-route="tableExport"] [data-v73-motion-banner]{
   display:none!important;
 }
-body[data-app-route="tableExport"] .topbar{
-  display:flex!important;
-}
-
 
 /* V66.2 — TABLA COMPLETA: un solo fondo azul oscuro en toda la página.
    Quita franjas, degradados, líneas azules decorativas y superficies claras.
@@ -259,9 +255,6 @@ body[data-app-route="tableExport"] [data-v73-motion-banner]{
 body[data-app-route="bracketBuilder"] .v66-compact-top{
   display:none!important;
 }
-body[data-app-route="bracketBuilder"].v66-compact-route .topbar{
-  display:flex!important;
-}
 body[data-app-route="bracketBuilder"].v66-compact-route #screen{
   padding-top:0!important;
 }
@@ -299,37 +292,6 @@ body[data-app-route="bracketBuilder"] .v64-page::after{
   display:none!important;
 }
 
-/* Conserva el arte superior, pero tapa únicamente su franja inferior
-   con el mismo azul del formulario para borrar las medias lunas cyan. */
-body[data-app-route="bracketBuilder"] .topbar{
-  border-bottom:0!important;
-  box-shadow:none!important;
-  overflow:hidden!important;
-}
-body[data-app-route="bracketBuilder"] .topbar::after{
-  content:""!important;
-  display:block!important;
-  position:absolute!important;
-  z-index:3!important;
-  left:0!important;
-  right:0!important;
-  bottom:-1px!important;
-  height:42px!important;
-  pointer-events:none!important;
-  background:var(--app-bg,#06075f)!important;
-  background-image:none!important;
-  border:0!important;
-  box-shadow:none!important;
-  opacity:1!important;
-}
-
-/* Logo/perfil siguen por encima de la franja de unión. */
-body[data-app-route="bracketBuilder"] .topbar .wordmark,
-body[data-app-route="bracketBuilder"] .topbar .profile-button,
-body[data-app-route="bracketBuilder"] .topbar .back-button{
-  z-index:4!important;
-}
-
 /* El formulario empieza pegado al mismo fondo, sin franja distinta. */
 body[data-app-route="bracketBuilder"].v66-compact-route #screen{
   margin-top:0!important;
@@ -346,7 +308,6 @@ body[data-app-route="bracketBuilder"] .v64-page{
 body[data-app-route="bracketBuilder"],
 body[data-app-route="bracketBuilder"] #app,
 body[data-app-route="bracketBuilder"] .app-shell,
-body[data-app-route="bracketBuilder"] .topbar,
 body[data-app-route="bracketBuilder"] #screen,
 body[data-app-route="bracketBuilder"] .v60-tool-page,
 body[data-app-route="bracketBuilder"] .v64-page{
@@ -355,25 +316,6 @@ body[data-app-route="bracketBuilder"] .v64-page{
   background-image:none!important;
   box-shadow:none!important;
   border-color:transparent!important;
-}
-
-/* Anula cualquier arte superior heredado de HOME / cabeceras especiales. */
-body[data-app-route="bracketBuilder"] .topbar{
-  border:0!important;
-  border-bottom:0!important;
-  margin:0!important;
-  box-shadow:none!important;
-  backdrop-filter:none!important;
-  -webkit-backdrop-filter:none!important;
-}
-body[data-app-route="bracketBuilder"] .topbar::before,
-body[data-app-route="bracketBuilder"] .topbar::after{
-  content:none!important;
-  display:none!important;
-  background:none!important;
-  background-image:none!important;
-  border:0!important;
-  box-shadow:none!important;
 }
 
 /* El contenido comienza sobre el mismo fondo sin franja intermedia. */
@@ -411,9 +353,4 @@ body[data-app-route="credentialBuilder"] .v66-compact-top{
   margin:0!important;
   padding:0!important;
   border:0!important;
-}
-body[data-app-route="credentialBuilder"] .topbar{
-  display:grid!important;
-  visibility:visible!important;
-  opacity:1!important;
 }
