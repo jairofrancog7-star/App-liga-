@@ -263,3 +263,43 @@ body[data-app-route="home"] #screen > .stories{
 @media(prefers-reduced-motion:reduce){
   .v7-startup,.v7-startup-stage{transition:none}
 }
+
+
+/* V10 master header motion — one state controller, no per-route listeners. */
+@media (max-width:1023px){
+  body.v10-standard-header #app>.topbar,
+  body.v10-detail-header #app>.topbar{
+    transition:
+      height .18s cubic-bezier(.2,.72,.2,1),
+      min-height .18s cubic-bezier(.2,.72,.2,1),
+      padding .18s cubic-bezier(.2,.72,.2,1),
+      background-position .18s cubic-bezier(.2,.72,.2,1)!important;
+    will-change:height;
+  }
+
+  body.v10-header-collapsed.v10-standard-header:not([data-app-route="home"]):not([data-app-route="competition"]):not([data-app-route="more"]) #app>.topbar,
+  body.v10-header-collapsed.v10-detail-header:not([data-app-route="moments"]) #app>.topbar{
+    height:calc(var(--header-collapsed-h,72px) + env(safe-area-inset-top))!important;
+    min-height:calc(var(--header-collapsed-h,72px) + env(safe-area-inset-top))!important;
+    max-height:calc(var(--header-collapsed-h,72px) + env(safe-area-inset-top))!important;
+  }
+
+  body.v10-header-collapsed[data-app-route="home"] #app>.topbar{
+    height:calc(var(--header-collapsed-h,72px) + env(safe-area-inset-top))!important;
+    min-height:calc(var(--header-collapsed-h,72px) + env(safe-area-inset-top))!important;
+    max-height:calc(var(--header-collapsed-h,72px) + env(safe-area-inset-top))!important;
+    background-position:center 18%!important;
+  }
+  body.v10-header-collapsed[data-app-route="home"] #app>.topbar .wordmark,
+  body.v10-header-collapsed[data-app-route="home"] #app>.topbar .profile-button{
+    top:9%!important;
+    height:70%!important;
+  }
+}
+
+@media(prefers-reduced-motion:reduce){
+  body.v10-standard-header #app>.topbar,
+  body.v10-detail-header #app>.topbar{
+    transition:none!important;
+  }
+}
