@@ -3,110 +3,17 @@
 
 body.v70-calendar-active,
 body.v70-calendar-active .app-shell{
-  background:#03065f!important;
+  background:var(--app-bg,#06075f)!important;
 }
 
-/* Cabecera con el fondo limpio proporcionado por el usuario.
-   El arte no trae líneas/círculos cyan ni iconos incrustados. */
-body.v70-calendar-active .topbar,
-body.v70-calendar-active.v69-primary-tool-header .topbar{
-  height:var(--v10-home-header-h,clamp(138px,35.22vw,183px))!important;
-  min-height:var(--v10-home-header-h,clamp(138px,35.22vw,183px))!important;
-  max-height:none!important;
-  padding:0!important;
-  display:block!important;
-  overflow:hidden!important;
-  background-color:#06158b!important;
-  background-image:url('../public/calendar-header-reference.webp')!important;
-  background-repeat:no-repeat!important;
-  background-size:cover!important;
-  background-position:center center!important;
-  border:0!important;
-  box-shadow:none!important;
-}
-body.v70-calendar-active .topbar::before,
-body.v70-calendar-active .topbar::after{
-  content:none!important;
-  display:none!important;
-}
-
-/* Logo de la Liga e icono de perfil como elementos reales, no pintados en el fondo. */
-body.v70-calendar-active .topbar .wordmark,
-body.v70-calendar-active.v69-primary-tool-header .topbar .wordmark{
-  display:block!important;
-  visibility:visible!important;
-  position:absolute!important;
-  left:16px!important;
-  top:18px!important;
-  width:54px!important;
-  height:54px!important;
-  min-width:54px!important;
-  min-height:54px!important;
-  margin:0!important;
-  padding:0!important;
-  border:0!important;
-  border-radius:0!important;
-  background-color:transparent!important;
-  background-image:url('../assets/reference/predictor-v36/liga-crest-white.webp')!important;
-  background-size:contain!important;
-  background-repeat:no-repeat!important;
-  background-position:center!important;
-  color:transparent!important;
-  font-size:0!important;
-  box-shadow:none!important;
-  opacity:1!important;
-  pointer-events:auto!important;
-  z-index:5!important;
-}
-body.v70-calendar-active .topbar .wordmark::before,
-body.v70-calendar-active .topbar .wordmark::after{
-  content:none!important;
-  display:none!important;
-}
-body.v70-calendar-active .topbar .profile-button,
-body.v70-calendar-active.v69-primary-tool-header .topbar .profile-button{
-  display:grid!important;
-  visibility:visible!important;
-  place-items:center!important;
-  position:absolute!important;
-  right:17px!important;
-  left:auto!important;
-  top:21px!important;
-  bottom:auto!important;
-  width:43px!important;
-  height:43px!important;
-  min-width:43px!important;
-  min-height:43px!important;
-  max-width:43px!important;
-  max-height:43px!important;
-  margin:0!important;
-  padding:0!important;
-  border:0!important;
-  border-radius:50%!important;
-  background:transparent!important;
-  color:#fff!important;
-  box-shadow:none!important;
-  opacity:1!important;
-  z-index:5!important;
-}
-body.v70-calendar-active .topbar .profile-button svg,
-body.v70-calendar-active.v69-primary-tool-header .topbar .profile-button svg{
-  display:block!important;
-  width:38px!important;
-  height:38px!important;
-  fill:none!important;
-  stroke:currentColor!important;
-  stroke-width:1.9!important;
-}
-body.v70-calendar-active .topbar .back-button{display:none!important}
+/* Shared detail header is owned by v7-brand.css. */
 
 /* Fondo de la pantalla unido al tono inferior del arte superior. */
 body.v70-calendar-active #screen{
   position:relative!important;
   padding:0 18px 34px!important;
-  min-height:calc(100dvh - 138px)!important;
-  background:
-    linear-gradient(180deg,#07168a 0%,#060d73 24%,#040863 58%,#03065b 100%)!important;
+  min-height:calc(100dvh - var(--header-expanded-h,98px))!important;
+  background:var(--app-bg,#06075f)!important;
   color:#fff!important;
   overflow-x:hidden!important;
 }
