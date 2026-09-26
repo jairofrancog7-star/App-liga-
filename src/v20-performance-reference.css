@@ -6,9 +6,6 @@ body[data-app-route="safe-performance"]{
   background:#03006f!important;
   overflow-x:hidden!important;
 }
-body[data-app-route="safe-performance"] .topbar{
-  display:none!important;
-}
 body[data-app-route="safe-performance"] .app-shell{
   width:100%!important;
   max-width:none!important;
