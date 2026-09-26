@@ -27,17 +27,6 @@ body[data-app-route="safe-performance"] #screen{
   background:
     linear-gradient(180deg,#07005c 0%,#040087 38%,#04008d 100%)!important;
 }
-body[data-app-route="safe-performance"] .bottom-nav{
-  display:grid!important;
-  background:rgba(17,13,116,.97)!important;
-  border-top:1px solid rgba(255,255,255,.12)!important;
-  backdrop-filter:blur(14px)!important;
-  -webkit-backdrop-filter:blur(14px)!important;
-}
-body[data-app-route="safe-performance"] .bottom-nav .nav-item:last-child,
-body[data-app-route="safe-performance"] .bottom-nav .nav-item:last-child .nav-icon{
-  color:#13e6ef!important;
-}
 
 .v20-performance{
   width:100%;
