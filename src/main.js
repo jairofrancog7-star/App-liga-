@@ -6108,6 +6108,9 @@ function moreView(){
       v19MoreButton('video','Momentos','moments')+
       v19MoreButton('data','Datos','leagueData',true)+
       v19MoreButton('qr','QR de la Liga','ligaQR')+
+    '</div>'+
+    '<div class="v19-more-label compare">Comparar</div>'+
+    '<div class="v19-more-menu">'+
       v19MoreButton('performance','Comparar jugadores','playerCompare')+
       v19MoreButton('shield','Comparar equipos','teams')+
     '</div>'+
