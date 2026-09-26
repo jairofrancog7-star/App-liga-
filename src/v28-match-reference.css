@@ -1,19 +1,12 @@
 /* PARTS52 — Ver detalles universal / referencia del usuario */
 body.v28-match-active{background:#06075e}
-body.v28-match-active .topbar{display:none!important}
 body.v28-match-active #screen{
   padding:0!important;max-width:none!important;overflow:visible!important;background:#06075e!important;
 }
-body.v28-match-active .bottom-nav{
-  background:#15177b!important;border-top:1px solid rgba(118,128,255,.20)!important;box-shadow:none!important;
-}
-body.v28-match-active .bottom-nav .nav-item{color:#a8acd2!important}
-body.v28-match-active .bottom-nav .nav-item[data-route="competition"]{color:#12e5ef!important}
-body.v28-match-active .bottom-nav .nav-item small{text-transform:none!important;letter-spacing:0!important}
-
+/* Global bottom navigation geometry/state is owned by V34. */
 .v28-match{
   --cyan:#19e5ef;--bg:#05065a;--card:#101174;--muted:#b9bdd6;--line:#b8bdd5;
-  width:100%;min-height:100dvh;padding-bottom:calc(68px + env(safe-area-inset-bottom));
+  width:100%;min-height:100dvh;padding-bottom:calc(var(--bottom-nav-h,60px) + 8px + env(safe-area-inset-bottom));
   color:#fff;background:#05065a;
   font-family:Inter,Roboto,Arial,sans-serif;
 }
