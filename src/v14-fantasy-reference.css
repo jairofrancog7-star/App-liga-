@@ -3,7 +3,7 @@
    Las playeras/cancha/estadio usan el arte original integrado al fondo. */
 
 body[data-app-route="fantasy"]{
-  --fantasy-nav-h:82px;
+  --fantasy-nav-h:var(--bottom-nav-h,60px);
   background:#02075d!important;
   overflow:hidden!important;
 }
@@ -13,7 +13,6 @@ body[data-app-route="fantasy"] #app{
   background:#02075d!important;
 }
 
-body[data-app-route="fantasy"] #app>.topbar{display:none!important}
 
 body[data-app-route="fantasy"] #screen{
   position:relative!important;
@@ -217,39 +216,9 @@ body[data-app-route="fantasy"] .v22-shirt-hit:focus-visible{
   border-radius:14px!important;
 }
 
-/* ---------- navegación inferior ---------- */
-body[data-app-route="fantasy"] .bottom-nav{
-  position:fixed!important;
-  z-index:50!important;
-  left:50%!important;
-  bottom:0!important;
-  transform:translateX(-50%)!important;
-  width:min(100%,520px)!important;
-  height:var(--fantasy-nav-h)!important;
-  min-height:var(--fantasy-nav-h)!important;
-  padding:7px 8px max(5px,env(safe-area-inset-bottom))!important;
-  background:#141477!important;
-  border-top:1px solid rgba(255,255,255,.08)!important;
-  backdrop-filter:none!important;
-}
-
-body[data-app-route="fantasy"] .bottom-nav .nav-item{gap:4px!important}
-body[data-app-route="fantasy"] .bottom-nav .nav-icon{width:31px!important;height:31px!important}
-body[data-app-route="fantasy"] .bottom-nav .nav-icon svg{
-  width:100%!important;
-  height:100%!important;
-}
-body[data-app-route="fantasy"] .bottom-nav .nav-item small{
-  font-size:12px!important;
-  letter-spacing:0!important;
-}
-body[data-app-route="fantasy"] .bottom-nav .nav-item.active,
-body[data-app-route="fantasy"] .bottom-nav .nav-item[data-route="fantasy"]{
-  color:#18e9f2!important;
-}
+/* Bottom navigation geometry/state is owned by V34. */
 
 @media(max-width:380px){
-  body[data-app-route="fantasy"]{--fantasy-nav-h:78px}
   body[data-app-route="fantasy"] .v22-hero{top:6.7%!important;width:94vw!important}
   body[data-app-route="fantasy"] .v22-hero h1{font-size:clamp(68px,20.5vw,92px)!important}
   body[data-app-route="fantasy"] .v22-league{top:25.2%!important}
@@ -257,8 +226,7 @@ body[data-app-route="fantasy"] .bottom-nav .nav-item[data-route="fantasy"]{
 }
 
 @media(min-width:521px){
-  body[data-app-route="fantasy"] .v22-fantasy-master,
-  body[data-app-route="fantasy"] .bottom-nav{
+  body[data-app-route="fantasy"] .v22-fantasy-master{
     width:520px!important;
     left:50%!important;
     right:auto!important;
@@ -276,7 +244,7 @@ body[data-app-route="fantasy"] .bottom-nav .nav-item[data-route="fantasy"]{
 /* PARTS23 — Pantalla de acceso Fantasy basada exactamente en la referencia de Google Drive.
    No cambia la portada Fantasy existente; aparece al tocar cualquiera de las 3 playeras. */
 body[data-app-route="fantasyAccess"]{
-  --fantasy-access-nav-h:82px;
+  --fantasy-access-nav-h:var(--bottom-nav-h,60px);
   background:#070875!important;
   overflow:hidden!important;
 }
@@ -284,7 +252,6 @@ body[data-app-route="fantasyAccess"] #app{
   padding-bottom:0!important;
   background:#070875!important;
 }
-body[data-app-route="fantasyAccess"] #app>.topbar{display:none!important}
 body[data-app-route="fantasyAccess"] #screen{
   position:relative!important;
   width:100%!important;
@@ -443,33 +410,9 @@ body[data-app-route="fantasyAccess"] .v23-access-later:focus-visible{
   outline-offset:4px!important;
 }
 
-/* Mantiene la misma navegación inferior y Fantasy activo. */
-body[data-app-route="fantasyAccess"] .bottom-nav{
-  position:fixed!important;
-  z-index:50!important;
-  left:50%!important;
-  bottom:0!important;
-  transform:translateX(-50%)!important;
-  width:min(100%,520px)!important;
-  height:var(--fantasy-access-nav-h)!important;
-  min-height:var(--fantasy-access-nav-h)!important;
-  padding:7px 8px max(5px,env(safe-area-inset-bottom))!important;
-  background:#111373!important;
-  border-top:1px solid rgba(255,255,255,.10)!important;
-  backdrop-filter:none!important;
-}
-body[data-app-route="fantasyAccess"] .bottom-nav .nav-item{gap:4px!important}
-body[data-app-route="fantasyAccess"] .bottom-nav .nav-icon{width:31px!important;height:31px!important}
-body[data-app-route="fantasyAccess"] .bottom-nav .nav-item small{
-  font-size:12px!important;
-  letter-spacing:0!important;
-}
-body[data-app-route="fantasyAccess"] .bottom-nav .nav-item[data-route="fantasy"]{
-  color:#16e9f1!important;
-}
+/* Fantasy Access uses the same V34 bottom navigation. */
 
 @media(max-width:380px){
-  body[data-app-route="fantasyAccess"]{--fantasy-access-nav-h:78px}
   body[data-app-route="fantasyAccess"] .v23-access-photo{
     width:57.2%!important;
     margin-top:26px!important;
@@ -485,8 +428,7 @@ body[data-app-route="fantasyAccess"] .bottom-nav .nav-item[data-route="fantasy"]
 }
 
 @media(min-width:521px){
-  body[data-app-route="fantasyAccess"] .v23-fantasy-access,
-  body[data-app-route="fantasyAccess"] .bottom-nav{
+  body[data-app-route="fantasyAccess"] .v23-fantasy-access{
     width:520px!important;
     left:50%!important;
     right:auto!important;
