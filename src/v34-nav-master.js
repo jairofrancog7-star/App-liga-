@@ -24,12 +24,23 @@ on:'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4.9985,14.4937C6.3784,
 }
 };
 const labels={home:'INICIO',competition:'Competición',video:'Vídeo',fantasy:'Fantasy',more:'Más'};
-const moreChildren=new Set(['more','predictor','quizArena','quiz','moreLess','moreLessHub','teams','teamDetail','players','playerDetail','scorers','stats','rankings','history','news','newsDetail','transfers','favorites','search','vote','notifications','privacy','profile','venues','club-store','safe-data','safe-performance','hospitality','following','moments']);
-function route(){return location.hash.replace('#/','')||'home'}
+const moreChildren=new Set([
+  'more','predictor','predictorSix','quizArena','quiz','moreLess','moreLessHub',
+  'teams','teamDetail','players','playerDetail','playerCompare','scorers','stats','leagueData','rankings',
+  'history','historyLog','news','notices','newsDetail','scheduleChanges','transfers','favorites','search','vote',
+  'notifications','privacy','profile','venues','weatherFields','club-store','safe-data','safe-performance',
+  'hospitality','following','moments','ligaQR','leagueTools','v38Stats','v38Weekly','v38Weather','v38Alerts',
+  'tableExport','bracketBuilder','credentialBuilder','cedulaBuilder','agendaBuilder','motionHub','suspensionTool',
+  'rulebook','matchday','cedulas','cedulaDetail','credential','publications','tactics','simulator','jrControl',
+  'matchCenter','match-center','v4-matchcenter'
+]);
+const competitionChildren=new Set(['match','discipline','disciplina','disciplineTool']);
+const fantasyChildren=new Set(['fantasy','fantasyTeam','fantasyLeagues','fantasyAccess']);
+function route(){return (location.hash.replace(/^#\/?/,'')||'home').split('?')[0]}
 function activeRoute(r){
   if(moreChildren.has(r))return 'more';
-  if(r==='fantasyTeam'||r==='fantasyLeagues'||r==='fantasyAccess')return 'fantasy';
-  if(r==='match')return 'competition';
+  if(fantasyChildren.has(r))return 'fantasy';
+  if(competitionChildren.has(r))return 'competition';
   return r;
 }
 function paint(){
