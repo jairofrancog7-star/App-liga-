@@ -141,6 +141,9 @@
   html body[data-app-route="competition"] #screen>.tabs{
     position:relative!important;
     overflow:visible!important;
+    height:48px!important;
+    min-height:48px!important;
+    max-height:48px!important;
     background:#06085f!important;
     background-image:none!important;
     border:0!important;
@@ -150,6 +153,11 @@
   html body[data-app-route="competition"] #screen>.tabs .tab{
     position:relative!important;
     overflow:visible!important;
+    height:48px!important;
+    min-height:48px!important;
+    max-height:48px!important;
+    padding-top:0!important;
+    padding-bottom:11px!important;
     color:#d9d9e7!important;
     box-shadow:none!important;
     border:0!important;
@@ -171,11 +179,11 @@
     position:absolute!important;
     left:17%!important;
     right:17%!important;
-    bottom:4px!important;
+    bottom:0!important;
     width:auto!important;
-    height:4px!important;
-    min-height:4px!important;
-    max-height:4px!important;
+    height:3px!important;
+    min-height:3px!important;
+    max-height:3px!important;
     margin:0!important;
     padding:0!important;
     border:0!important;
