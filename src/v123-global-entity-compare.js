@@ -9,6 +9,7 @@ window.__LJR_V123_GLOBAL_ENTITY_COMPARE__=true;
 
 const PRIMARY_KEY='v123-compare-player';
 const SECONDARY_KEY='v123-compare-player-2';
+const LEAGUE_CREST=new URL('../assets/reference/predictor-v36/liga-crest-white.webp',import.meta.url).href;
 let api=null,loading=null,query='',pickerOpen=false,pickerSide='secondary';
 
 function route(){return String(location.hash||'').replace(/^#\\/?/,'').split('?')[0]||'home'}
