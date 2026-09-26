@@ -36,7 +36,7 @@
     min-height:0!important;
     max-height:none!important;
     margin:0!important;
-    padding:0 0 calc(84px + env(safe-area-inset-bottom))!important;
+    padding:0 0 calc(var(--bottom-nav-h,60px) + 24px + env(safe-area-inset-bottom))!important;
     overflow-x:hidden!important;
     overflow-y:visible!important;
     touch-action:pan-y!important;
@@ -107,14 +107,5 @@
   }
   body.v28-match-active #v105-bottom[data-v105-route="match"] .v105-footnote{
     margin-bottom:0!important;
-  }
-
-  /* La barra fija conserva espacio real al final para que el último cuadro sea alcanzable. */
-  body.v28-match-active .bottom-nav{
-    position:fixed!important;
-    left:0!important;
-    right:0!important;
-    bottom:0!important;
-    z-index:1000!important;
   }
 }
