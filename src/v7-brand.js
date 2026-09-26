@@ -4,16 +4,76 @@ const V10_ASSETS = {
 const STARTUP_MS = 2350;
 const STARTUP_FADE_MS = 420;
 
-const ROOT_ROUTES = new Set(['home','competition','video','fantasy','more']);
+const STANDARD_HEADER_ROUTES = new Set([
+  'home','competition','video','more'
+]);
+const FULLSCREEN_HEADER_ROUTES = new Set([
+  'fantasy','fantasyTeam','fantasyLeagues','fantasyAccess',
+  'history','teams','teamDetail','rankings','following',
+  'predictor','predictorSix','quizArena','moreLess','moreLessHub','hospitality',
+  'match'
+]);
 const HEADER_TITLES = {
   competition:'Competición',
+  video:'Vídeo',
   more:'Más',
-  profile:'Perfil'
+  moments:'Momentos',
+  players:'Jugadores',
+  playerDetail:'Jugador',
+  playerCompare:'Comparar jugadores',
+  scorers:'Máximo goleador',
+  stats:'Estadísticas',
+  profile:'Perfil',
+  notifications:'Notificaciones',
+  search:'Buscar',
+  news:'Noticias',
+  newsDetail:'Noticia',
+  transfers:'Transferencias',
+  favorites:'Favoritos',
+  vote:'MVP',
+  leagueTools:'Más herramientas',
+  rulebook:'Reglamento',
+  matchday:'Match Day',
+  matchCenter:'Match Center',
+  'match-center':'Match Center',
+  'v4-matchcenter':'Match Center',
+  weatherFields:'Clima y campos',
+  venues:'Campos y sedes',
+  discipline:'Disciplina',
+  disciplina:'Disciplina',
+  disciplineTool:'Disciplina',
+  tableExport:'Tabla completa',
+  bracketBuilder:'Liguilla',
+  credentialBuilder:'Credenciales',
+  cedulaBuilder:'Cédula',
+  cedulas:'Cédulas',
+  cedulaDetail:'Cédula',
+  credential:'Credencial',
+  agendaBuilder:'Agenda',
+  publications:'Publicaciones',
+  tactics:'Tácticas',
+  simulator:'Simulador',
+  jrControl:'JR Control',
+  ligaQR:'QR de la Liga',
+  'club-store':'Tienda',
+  v38Stats:'Estadísticas',
+  v38Weekly:'Resumen semanal',
+  v38Weather:'Clima',
+  v38Alerts:'Alertas',
+  motionHub:'Contenido',
+  suspensionTool:'Sanciones',
+  scheduleChanges:'Avisos',
+  historyLog:'Historial'
 };
 
 function routeFromLocation(){
-  const route=location.hash.replace('#/','') || 'home';
+  const route=(location.hash.replace(/^#\/?/,'') || 'home').split('?')[0];
   return route==='quiz' ? 'quizArena' : route;
+}
+function headerModeFor(route){
+  if(FULLSCREEN_HEADER_ROUTES.has(route)) return 'fullscreen';
+  if(STANDARD_HEADER_ROUTES.has(route)) return 'standard';
+  return 'detail';
 }
 
 function installBrandHeader(){
@@ -32,12 +92,18 @@ function syncRouteLayout(){
   const topbar=document.querySelector('.topbar');
   if(!screen||!topbar) return;
 
+  const mode=headerModeFor(route);
   document.body.dataset.appRoute=route;
+  document.body.dataset.headerMode=mode;
   document.body.classList.toggle('v10-home-route',route==='home');
-  document.body.classList.toggle('v10-root-route',ROOT_ROUTES.has(route));
-  document.body.classList.toggle('v10-detail-route',!ROOT_ROUTES.has(route));
+  document.body.classList.toggle('v10-root-route',mode==='standard');
+  document.body.classList.toggle('v10-detail-route',mode==='detail');
+  document.body.classList.toggle('v10-standard-header',mode==='standard');
+  document.body.classList.toggle('v10-detail-header',mode==='detail');
+  document.body.classList.toggle('v10-fullscreen-route',mode==='fullscreen');
 
   topbar.dataset.title=HEADER_TITLES[route]||'';
+  topbar.dataset.headerMode=mode;
   topbar.classList.toggle('has-route-title',Boolean(HEADER_TITLES[route]));
 
   // Home: stories begin directly below the branded banner. This is based on
@@ -47,7 +113,7 @@ function syncRouteLayout(){
 
   const back=document.querySelector('#backButton');
   if(back){
-    const showBack=!ROOT_ROUTES.has(route);
+    const showBack=mode==='detail';
     back.classList.toggle('is-hidden',!showBack);
   }
 }
