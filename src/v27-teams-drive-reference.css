@@ -10,21 +10,7 @@ body.v27-teams-active #screen{
   overflow:visible !important;
   background:#07065f;
 }
-body.v27-teams-active .bottom-nav{
-  background:linear-gradient(180deg,rgba(20,29,126,.98),rgba(11,15,96,.995)) !important;
-  border-top:1px solid rgba(111,132,255,.22) !important;
-  box-shadow:0 -10px 28px rgba(0,0,45,.28);
-}
-body.v27-teams-active .bottom-nav .nav-item small{
-  text-transform:none !important;
-  letter-spacing:0 !important;
-}
-body.v27-teams-active .bottom-nav .nav-item[data-route="more"]{
-  color:#00d9ff !important;
-}
-body.v27-teams-active .bottom-nav .nav-item[data-route="more"] svg{
-  stroke:#00d9ff !important;
-}
+/* Bottom navigation styling is owned by V34. */
 
 .v27-teams-page,
 .v27-team-detail{
@@ -581,12 +567,6 @@ body.v27-teams-active .bottom-nav .nav-item[data-route="more"] svg{
     width:430px;
     margin:0 auto;
     box-shadow:0 0 50px rgba(0,0,0,.30);
-  }
-  body.v27-teams-active .bottom-nav{
-    width:430px !important;
-    left:50% !important;
-    right:auto !important;
-    transform:translateX(-50%) !important;
   }
 }
 @media (max-width:360px){
