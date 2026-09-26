@@ -4,7 +4,6 @@ body.v42-team-active{
   background:#080766!important;
   overflow-x:hidden!important;
 }
-body.v42-team-active .topbar{display:none!important}
 body.v42-team-active #screen{
   width:100%!important;
   min-height:100dvh!important;
