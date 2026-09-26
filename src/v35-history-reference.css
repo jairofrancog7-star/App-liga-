@@ -10,10 +10,6 @@
     overflow-x:hidden!important;
   }
 
-  body[data-app-route="history"] #app>.topbar{
-    display:none!important;
-  }
-
   body[data-app-route="history"] #screen{
     padding:0!important;
     margin:0!important;
