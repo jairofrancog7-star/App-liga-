@@ -1792,14 +1792,7 @@ body[data-app-route="profile"] #screen{
   background:linear-gradient(180deg,#05075e 0%,#02044f 100%)!important;
   overflow:visible!important;
 }
-body[data-app-route="profile"] .bottom-nav{
-  display:none!important;
-  visibility:hidden!important;
-  pointer-events:none!important;
-  height:0!important;
-  min-height:0!important;
-  overflow:hidden!important;
-}
+/* Profile bottom-nav visibility is owned by V34. */
 
 body[data-app-route="profile"] .v12-profile-page{
   width:100%!important;
