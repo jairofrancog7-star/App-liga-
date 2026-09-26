@@ -180,55 +180,12 @@ body[data-app-route="moments"]{
   padding-bottom:0!important;
 }
 body[data-app-route="moments"] #screen{
-  padding-bottom:calc(86px + env(safe-area-inset-bottom))!important;
+  padding-bottom:calc(var(--bottom-nav-h,60px) + 14px)!important;
 }
-
-/* La navegación real permanece fija abajo durante todo el scroll. */
-body[data-app-route="moments"] .bottom-nav{
-  display:grid!important;
-  position:fixed!important;
-  left:50%!important;
-  right:auto!important;
-  bottom:0!important;
-  transform:translateX(-50%)!important;
-  z-index:10050!important;
-  width:min(100vw,520px)!important;
-  max-width:520px!important;
-  height:86px!important;
-  min-height:86px!important;
-  margin:0!important;
-  padding:7px 8px calc(7px + env(safe-area-inset-bottom))!important;
-  background:#11116f!important;
-  border-top:1px solid rgba(255,255,255,.14)!important;
-  box-shadow:0 -8px 22px rgba(0,0,50,.18)!important;
-}
-
-/* Quita de la propia captura la barra inferior que quedaba en medio.
-   El recorte conserva las tres filas de Momentos completas. */
-body[data-app-route="moments"] .v26-moments-panel[data-v26-panel="b"]{
-  aspect-ratio:832 / 1441!important;
-}
-body[data-app-route="moments"] .v26-moments-panel[data-v26-panel="b"] .v26-nav{
-  display:none!important;
-}
-body[data-app-route="moments"] .v26-moments-panel[data-v26-panel="b"] .v26-card-1,
-body[data-app-route="moments"] .v26-moments-panel[data-v26-panel="b"] .v26-card-2{
-  top:1.796%!important;
-  height:32.95%!important;
-}
-body[data-app-route="moments"] .v26-moments-panel[data-v26-panel="b"] .v26-card-3,
-body[data-app-route="moments"] .v26-moments-panel[data-v26-panel="b"] .v26-card-4{
-  top:36.29%!important;
-  height:32.95%!important;
-}
-body[data-app-route="moments"] .v26-moments-panel[data-v26-panel="b"] .v26-card-5,
-body[data-app-route="moments"] .v26-moments-panel[data-v26-panel="b"] .v26-card-6{
-  top:70.40%!important;
-  height:29.60%!important;
-}
+/* Navigation geometry belongs only to v34-nav-master. */
 
 /* El bloque recuperado deja de verse como otra app o como un cuadro aparte. */
-body[data-app-route="moments"] .v26-moments-original > .v105-bottom[data-v105-route="moments"]{
+body[data-app-route="moments"] #screen > .v105-bottom[data-v105-route="moments"]{
   width:100%!important;
   margin:0!important;
   padding:24px 22px 30px!important;
@@ -312,7 +269,7 @@ body[data-app-route="moments"] .v105-bottom[data-v105-route="moments"] .v105-foo
 }
 
 @media(max-width:390px){
-  body[data-app-route="moments"] .v26-moments-original > .v105-bottom[data-v105-route="moments"]{
+  body[data-app-route="moments"] #screen > .v105-bottom[data-v105-route="moments"]{
     padding-left:18px!important;
     padding-right:18px!important;
   }
