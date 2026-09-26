@@ -1,20 +1,12 @@
-/* V66 — barra compacta + normalización visual de páginas nuevas. */
-body.v66-compact-route{background:#06055f!important;overflow-x:hidden!important}
-body.v66-compact-route .topbar{display:none!important}
+/* V66 — compact content sizing. Header rendering belongs only to v7-brand. */
+body.v66-compact-route{background:var(--app-bg,#06075f)!important;overflow-x:hidden!important}
+body.v66-compact-route .topbar{display:grid!important}
+body.v66-compact-route .v66-compact-top{display:none!important}
 body.v66-compact-route #screen{
   width:100%!important;max-width:520px!important;margin:0 auto!important;padding-left:0!important;padding-right:0!important;
   background:#06055f!important;overflow-x:hidden!important;
 }
-.v66-compact-top{
-  position:relative!important;z-index:70!important;width:100%!important;height:108px!important;
-  display:flex!important;align-items:center!important;justify-content:space-between!important;
-  padding:calc(12px + env(safe-area-inset-top)) 22px 12px!important;
-  background:
-    radial-gradient(ellipse at 35% -30%,rgba(36,81,255,.34),transparent 54%),
-    linear-gradient(180deg,#0b2aa0 0%,#09177d 58%,#080d6c 100%)!important;
-  border-bottom:1px solid rgba(56,99,218,.35)!important;
-  box-sizing:border-box!important;
-}
+.v66-compact-top{display:none!important}
 .v66-compact-back,.v66-compact-profile{
   width:54px!important;height:54px!important;display:grid!important;place-items:center!important;margin:0!important;padding:0!important;
   border:1px solid rgba(255,255,255,.20)!important;border-radius:50%!important;background:rgba(5,10,93,.34)!important;
@@ -43,7 +35,7 @@ body[data-app-route="scorers"].v66-compact-route .v28-scorers-page{
 }
 body.v66-compact-route .v60-tool-page{
   width:100%!important;max-width:520px!important;margin:0 auto!important;
-  min-height:calc(100dvh - 108px)!important;padding:12px 14px calc(94px + env(safe-area-inset-bottom))!important;
+  min-height:calc(100dvh - var(--header-expanded-h,98px))!important;padding:12px 14px calc(94px + env(safe-area-inset-bottom))!important;
 }
 
 /* Herramientas en tarjetas pequeñas tipo app. */
