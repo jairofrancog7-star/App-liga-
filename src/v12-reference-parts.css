@@ -209,19 +209,9 @@ body[data-app-route="competition"] #screen>.tabs .tab.active::after{background:v
   .v12-form b{width:23px!important;height:23px!important;min-width:23px!important;font-size:10px!important}
 }
 
-body[data-app-route="profile"] .topbar{
-  height:clamp(118px,31vw,152px)!important;min-height:clamp(118px,31vw,152px)!important;
-  grid-template-columns:52px 1fr 1px!important;align-items:end!important;
-  padding:max(12px,env(safe-area-inset-top)) 18px 22px!important;
-  background:
-    linear-gradient(160deg,transparent 35%,rgba(35,91,255,.18) 35.4% 36.2%,transparent 36.7% 52%,rgba(65,92,255,.12) 52.4% 53%,transparent 53.5%),
-    linear-gradient(180deg,#1035dc 0,#07106f 84%,#05095a 100%)!important
-}
-body[data-app-route="profile"] .topbar::after{left:76px!important;right:20px!important;bottom:24px!important;font-size:clamp(29px,8vw,40px)!important;font-weight:900!important}
-body[data-app-route="profile"] .topbar .back-button{left:16px!important;bottom:16px!important;border:0!important;background:transparent!important;width:44px!important;height:44px!important}
-body[data-app-route="profile"] .topbar .back-button svg{width:34px!important;height:34px!important;stroke-width:1.8!important}
+/* Profile header ownership moved to v7-brand.css. */
 body[data-app-route="profile"] #screen{padding:0 18px 42px!important;background:linear-gradient(180deg,#080b70 0,#030557 100%)!important;min-height:calc(100dvh - 120px)}
-body[data-app-route="profile"] .bottom-nav{display:none!important}
+/* Profile nav visibility is owned by v34-nav-master.css. */
 .v12-profile-page{padding-top:18px;color:#fff}
 .v12-profile-card{position:relative;display:grid;grid-template-columns:minmax(0,1fr) 38%;column-gap:12px;padding:25px 20px 20px;border-radius:22px;background:linear-gradient(150deg,#141887 0%,#101479 55%,#0b1068 100%);box-shadow:0 18px 34px rgba(0,0,50,.18);overflow:hidden}
 .v12-profile-copy h1{margin:0;color:#fff;font-size:clamp(26px,7.3vw,37px);line-height:1.02;font-weight:900}.v12-profile-copy h2{margin:7px 0 16px;font-size:clamp(18px,4.8vw,26px);font-weight:500}.v12-profile-copy p{margin:0;font-size:clamp(14px,3.7vw,19px);line-height:1.55;color:#fff}
