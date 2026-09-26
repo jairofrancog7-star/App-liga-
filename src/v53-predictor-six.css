@@ -24,10 +24,6 @@ body[data-app-route="predictorSix"] #screen{
   overflow-x:hidden!important;
   background:#07065f!important;
 }
-body[data-app-route="predictorSix"] #app>.bottom-nav{
-  display:grid!important;
-  z-index:2147483000!important;
-}
 
 .v53-predictor-six{
   position:relative;
