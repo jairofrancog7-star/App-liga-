@@ -3,7 +3,7 @@ body.v66-compact-route{background:var(--app-bg,#06075f)!important;overflow-x:hid
 body.v66-compact-route .v66-compact-top{display:none!important}
 body.v66-compact-route #screen{
   width:100%!important;max-width:520px!important;margin:0 auto!important;padding-left:0!important;padding-right:0!important;
-  background:#06055f!important;overflow-x:hidden!important;
+  background:var(--app-bg,#06075f)!important;overflow-x:hidden!important;
 }
 .v66-compact-top{display:none!important}
 .v66-compact-back,.v66-compact-profile{
@@ -30,7 +30,7 @@ body.v66-compact-route .v60-tool-page,
 body.v66-compact-route .v64-page,
 body.v66-compact-route .v66-directory,
 body[data-app-route="scorers"].v66-compact-route .v28-scorers-page{
-  background:#06055f!important;
+  background:var(--app-bg,#06075f)!important;
 }
 body.v66-compact-route .v60-tool-page{
   width:100%!important;max-width:520px!important;margin:0 auto!important;
@@ -109,7 +109,7 @@ body.v66-compact-route textarea{min-height:82px!important}
 
 /* Máximo goleador: barra nueva arriba y contenido más pegado. */
 body[data-app-route="scorers"].v66-compact-route #screen{
-  background:#06055f!important;
+  background:var(--app-bg,#06075f)!important;
 }
 body[data-app-route="scorers"].v66-compact-route .v28-scorers-page{
   padding:12px 18px calc(88px + env(safe-area-inset-bottom))!important;
@@ -122,7 +122,7 @@ body[data-app-route="scorers"].v66-compact-route .v28-rank-row{background:transp
 
 /* Tienda: no usar el catálogo ficticio grande del layout viejo; V66 lo sustituye por equipos oficiales. */
 body[data-app-route="club-store"].v66-compact-route .section,
-body[data-app-route="club-store"].v66-compact-route .team-list{background:#06055f!important}
+body[data-app-route="club-store"].v66-compact-route .team-list{background:var(--app-bg,#06075f)!important}
 
 /* Perfil de equipo: nombres largos en una sola línea, sin bajar letra por letra. */
 body[data-app-route="teamDetail"] .v42-title h1{
@@ -282,7 +282,7 @@ body[data-app-route="bracketBuilder"] .v64-page{
 body[data-app-route="bracketBuilder"] #screen,
 body[data-app-route="bracketBuilder"] .v60-tool-page,
 body[data-app-route="bracketBuilder"] .v64-page{
-  background:#06055f!important;
+  background:var(--app-bg,#06075f)!important;
   background-image:none!important;
   border-top:0!important;
   outline:0!important;
@@ -316,7 +316,7 @@ body[data-app-route="bracketBuilder"] .topbar::after{
   bottom:-1px!important;
   height:42px!important;
   pointer-events:none!important;
-  background:#06055f!important;
+  background:var(--app-bg,#06075f)!important;
   background-image:none!important;
   border:0!important;
   box-shadow:none!important;
