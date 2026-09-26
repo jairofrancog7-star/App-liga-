@@ -11,47 +11,6 @@ body[data-app-route="competition"] #screen{
   background:linear-gradient(180deg,#070963 0%,#04065a 34%,#020451 100%)!important;
   min-height:calc(100dvh - 108px)!important;
 }
-body[data-app-route="competition"] #screen>.tabs{
-  margin:0 -14px!important;
-  padding:0 14px!important;
-  height:58px!important;
-  display:grid!important;
-  grid-template-columns:1.4fr 1fr .72fr!important;
-  align-items:stretch!important;
-  gap:0!important;
-  border-bottom:1px solid rgba(255,255,255,.16)!important;
-  background:#080861!important;
-}
-body[data-app-route="competition"] #screen>.tabs .tab{
-  position:relative!important;
-  min-width:0!important;
-  width:100%!important;
-  padding:0 4px 14px!important;
-  display:flex!important;
-  align-items:flex-end!important;
-  justify-content:center!important;
-  border:0!important;
-  background:transparent!important;
-  color:#d9d9e7!important;
-  font-size:15px!important;
-  font-weight:700!important;
-  line-height:1.1!important;
-  white-space:nowrap!important;
-  letter-spacing:-.02em!important;
-}
-body[data-app-route="competition"] #screen>.tabs .tab.active{color:var(--v12-cyan)!important}
-body[data-app-route="competition"] #screen>.tabs .tab::after{
-  content:""!important;
-  position:absolute!important;
-  left:16%!important;
-  right:16%!important;
-  bottom:0!important;
-  width:auto!important;
-  height:4px!important;
-  border-radius:10px 10px 0 0!important;
-  background:transparent!important;
-}
-body[data-app-route="competition"] #screen>.tabs .tab.active::after{background:var(--v12-cyan)!important}
 
 .v12-standings-reference{padding:12px 0 8px!important}
 .v12-segmented{
@@ -198,7 +157,6 @@ body[data-app-route="competition"] #screen>.tabs .tab.active::after{background:v
 
 /* Bottom navigation ownership moved to v34-nav-master.css. */
 @media(max-width:380px){
-  body[data-app-route="competition"] #screen>.tabs .tab{font-size:13px!important}
   .v12-stand-row{grid-template-columns:15px minmax(0,1fr) 20px 27px 30px 70px!important}
   .v12-stand-head{grid-template-columns:minmax(0,1fr) 20px 27px 30px 70px!important}
   .v12-team-cell{grid-template-columns:38px minmax(0,1fr)!important;gap:6px!important}
@@ -233,29 +191,6 @@ body[data-app-route="moreLess"] #screen{padding:0!important;margin:0!important;m
 
 @media(max-width:380px){
   .v12-stand-row{grid-template-columns:18px minmax(0,1fr) 28px 34px 38px 76px}.v12-stand-head{grid-template-columns:minmax(0,1fr) 28px 34px 38px 76px}.v12-team-cell{grid-template-columns:46px minmax(0,1fr)}.v12-team-logo{width:44px;height:44px}.v12-team-cell strong{font-size:14px}.v12-form i{width:21px;height:21px}.v12-form b{width:31px;height:31px}.v12-profile-card{grid-template-columns:minmax(0,1fr) 34%;padding-left:16px;padding-right:16px}.v12-profile-logo{height:150px}.v12-profile-actions button{font-size:17px}
-}
-
-
-/* Legacy PARTS4 Competition header retired; master header lives in V69. */
-/* tabs: misma altura/proporción que la captura */
-body[data-app-route="competition"] #screen>.tabs{
-  height:10.0vw!important;
-  min-height:43px!important;
-  max-height:46px!important;
-  margin:0 -14px!important;
-  padding:0 3.8vw!important;
-  grid-template-columns:1.38fr 1fr .72fr!important;
-  background:#07075f!important;
-}
-body[data-app-route="competition"] #screen>.tabs .tab{
-  padding:0 .8vw 2.3vw!important;
-  font-size:3.55vw!important;
-  line-height:1!important;
-}
-body[data-app-route="competition"] #screen>.tabs .tab.active::after{
-  left:17%!important;
-  right:17%!important;
-  height:3px!important;
 }
 
 /* límite para móviles anchos sin deformar */
@@ -3983,20 +3918,6 @@ body[data-app-route="competition"] .v12-segmented button{
   min-height:54px!important;
   max-height:54px!important;
   box-sizing:border-box!important;
-}
-
-/* Mantener además la franja superior Partidos / Clasificación / Cuadro como una sola línea estable. */
-body[data-app-route="competition"] #screen>.tabs{
-  align-items:stretch!important;
-}
-body[data-app-route="competition"] #screen>.tabs .tab{
-  align-self:stretch!important;
-  display:flex!important;
-  align-items:flex-end!important;
-  justify-content:center!important;
-}
-body[data-app-route="competition"] #screen>.tabs .tab::after{
-  bottom:0!important;
 }
 
 @media(max-width:380px){
