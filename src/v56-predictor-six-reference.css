@@ -236,41 +236,9 @@
     border-width:2px!important;
   }
 
-  /* Barra inferior igual a la referencia: escala pequeña, texto normal y Inicio activo. */
-  body[data-app-route="predictorSix"] .bottom-nav{
-    height:60px!important;
-    min-height:60px!important;
-    padding:3px 7px max(3px,env(safe-area-inset-bottom))!important;
-    background:#11106f!important;
-    border-top:1px solid rgba(255,255,255,.12)!important;
-  }
-  body[data-app-route="predictorSix"] .bottom-nav .nav-item{
-    color:#a8a7cb!important;
-  }
-  body[data-app-route="predictorSix"] .bottom-nav .nav-item[data-route="home"]{
-    color:#18e3f6!important;
-  }
-  body[data-app-route="predictorSix"] .bottom-nav .nav-item[data-route="more"]{
-    color:#a8a7cb!important;
-  }
-  body[data-app-route="predictorSix"] .bottom-nav .nav-icon,
-  body[data-app-route="predictorSix"] .bottom-nav .nav-icon svg{
-    width:25px!important;
-    height:25px!important;
-    min-width:25px!important;
-    min-height:25px!important;
-    max-width:25px!important;
-    max-height:25px!important;
-  }
-  body[data-app-route="predictorSix"] .bottom-nav .nav-item small{
-    font-size:10px!important;
-    line-height:12px!important;
-    font-weight:500!important;
-    text-transform:none!important;
-    letter-spacing:0!important;
-  }
+  /* Bottom navigation geometry/state is owned by V34. */
 
-  @media(max-width:390px){
+@media(max-width:390px){
     .v53-predictor-six{
       grid-template-rows:88px 54px 31% minmax(0,1fr) 124px!important;
     }
