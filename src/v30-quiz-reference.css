@@ -21,7 +21,6 @@ body[data-app-route="quiz"] .app-shell{
   background:var(--q-blue-deep)!important;
   overflow:hidden!important;
 }
-body[data-app-route="quiz"] #app>.topbar{display:none!important}
 body[data-app-route="quiz"] #screen{
   position:relative!important;
   width:100%!important;
