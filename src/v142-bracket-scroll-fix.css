@@ -35,7 +35,7 @@
     min-height:0!important;
     max-height:none!important;
     margin:0 auto!important;
-    padding-bottom:calc(96px + env(safe-area-inset-bottom))!important;
+    padding-bottom:calc(var(--bottom-nav-h,60px) + 28px + env(safe-area-inset-bottom))!important;
     overflow-x:hidden!important;
     overflow-y:visible!important;
     touch-action:pan-y!important;
@@ -74,14 +74,5 @@
 
   body[data-app-route="bracketBuilder"] #v105-bottom[data-v105-route="bracketBuilder"] .v105-footnote{
     margin-bottom:0!important;
-  }
-
-  body[data-app-route="bracketBuilder"] .bottom-nav{
-    position:fixed!important;
-    left:50%!important;
-    right:auto!important;
-    bottom:0!important;
-    transform:translateX(-50%)!important;
-    z-index:2147483000!important;
   }
 }
