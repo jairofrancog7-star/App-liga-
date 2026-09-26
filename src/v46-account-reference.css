@@ -17,7 +17,6 @@ body.v46-account-active #app{
   padding-bottom:0!important;
   background:var(--v46-bg)!important;
 }
-body.v46-account-active #app>.topbar,
 body.v46-account-active #app>.bottom-nav{
   display:none!important;
 }
