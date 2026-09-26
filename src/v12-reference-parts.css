@@ -221,12 +221,9 @@ body[data-app-route="profile"] #screen{padding:0 18px 42px!important;background:
 .v12-profile-menu{padding:26px 12px 0}.v12-profile-row{width:100%;min-height:78px;display:grid;grid-template-columns:48px 1fr 24px;align-items:center;background:transparent;border:0;color:#fff;text-align:left;font-size:21px}.v12-profile-row-icon{font-size:31px;color:#fff;opacity:.95;text-align:center}.v12-profile-row b{font-size:39px;font-weight:300;color:#7f89b4;text-align:right}.v12-profile-row+ .v12-profile-row{border-top:0}
 
 body[data-app-route="moreLess"] .topbar{display:none!important}
-body[data-app-route="moreLess"] #screen{padding:0!important;margin:0!important;min-height:calc(100dvh - 78px)!important;background:#020763!important}
-body[data-app-route="moreLess"] .bottom-nav{display:flex!important;background:#151475!important}
-body[data-app-route="moreLess"] .bottom-nav .nav-item{color:#a9add0!important}
-body[data-app-route="moreLess"] .bottom-nav .nav-item:last-child{color:var(--v12-cyan)!important}
-body[data-app-route="moreLess"] .bottom-nav .nav-item:last-child .nav-icon{color:var(--v12-cyan)!important}
-.v12-moreless{position:relative;min-height:calc(100dvh - 78px);padding:max(24px,env(safe-area-inset-top)) 20px 160px;overflow:hidden;background:radial-gradient(circle at 50% 22%,#1235d8 0,#07189e 35%,#020768 68%,#01034f 100%);color:#fff;text-align:center}
+body[data-app-route="moreLess"] #screen{padding:0!important;margin:0!important;min-height:calc(100dvh - var(--bottom-nav-h,60px))!important;background:#020763!important}
+/* More or Less uses the global V34 navigation state. */
+.v12-moreless{position:relative;min-height:calc(100dvh - var(--bottom-nav-h,60px));padding:max(24px,env(safe-area-inset-top)) 20px 160px;overflow:hidden;background:radial-gradient(circle at 50% 22%,#1235d8 0,#07189e 35%,#020768 68%,#01034f 100%);color:#fff;text-align:center}
 .v12-ml-title{position:relative;z-index:3;margin:92px auto 20px;display:grid;place-items:center;width:min(92%,420px);font-style:italic;font-weight:1000;transform:skew(-5deg);line-height:.83;text-shadow:0 3px 0 rgba(0,0,0,.18)}
 .v12-ml-title span{font-size:clamp(58px,16vw,82px)}.v12-ml-title small{position:absolute;left:23%;top:48%;font-size:33px;transform:skew(5deg)}
 .v12-ml-curves{position:absolute;z-index:2;left:50%;top:84px;width:min(92%,420px);height:310px;transform:translateX(-50%);pointer-events:none}.v12-curve-arrow{position:absolute;width:72px;height:128px}.v12-ml-curves .up .v12-curve-arrow{right:18px;top:0}.v12-ml-curves .down .v12-curve-arrow{left:8px;top:132px}.v12-curve-arrow.flip{transform:rotate(180deg)}
