@@ -6,34 +6,18 @@ body[data-app-route="moreLess"] .app-shell{
   background:#05006f!important;
   overflow-x:hidden!important;
 }
-body[data-app-route="moreLess"] .topbar{
-  display:none!important;
-}
 body[data-app-route="moreLess"] #screen{
   width:100%!important;
   max-width:none!important;
-  min-height:calc(100dvh - 78px)!important;
+  min-height:calc(100dvh - var(--bottom-nav-h,60px))!important;
   margin:0!important;
   padding:0!important;
   overflow:hidden!important;
   background:#05006f!important;
 }
-body[data-app-route="moreLess"] .bottom-nav{
-  display:flex!important;
-  background:#171475!important;
-  border-top:1px solid rgba(255,255,255,.13)!important;
-  box-shadow:0 -8px 24px rgba(0,0,40,.12)!important;
-}
-body[data-app-route="moreLess"] .bottom-nav .nav-item{
-  color:#b3b6d4!important;
-}
-body[data-app-route="moreLess"] .bottom-nav .nav-item:last-child,
-body[data-app-route="moreLess"] .bottom-nav .nav-item:last-child .nav-icon{
-  color:#19e3ef!important;
-}
-
+/* Bottom navigation is owned by V34. */
 .v12-moreless{
-  --ml-content-h:calc(100dvh - 78px);
+  --ml-content-h:calc(100dvh - var(--bottom-nav-h,60px) - env(safe-area-inset-bottom));
   position:relative!important;
   width:100%!important;
   min-height:var(--ml-content-h)!important;
