@@ -239,18 +239,7 @@
     object-fit:contain;
   }
 
-  /* La barra inferior existente se conserva; solo aseguramos el mismo azul oscuro
-     y el acento cian de la referencia. */
-  body[data-app-route="more"] .bottom-nav{
-    background:rgba(10,10,102,.96)!important;
-    border-top:1px solid rgba(255,255,255,.12)!important;
-    backdrop-filter:blur(12px)!important;
-    -webkit-backdrop-filter:blur(12px)!important;
-  }
-  body[data-app-route="more"] .bottom-nav .nav-item:last-child,
-  body[data-app-route="more"] .bottom-nav .nav-item:last-child .nav-icon{
-    color:#1fe5ef!important;
-  }
+  /* Bottom navigation styling is owned by V34. */
 
   @media(max-width:560px){
     .v19-more-page{
