@@ -20,16 +20,13 @@ body[data-app-route="following"]{
 }
 body[data-app-route="following"] #app{
   background:var(--v29-follow-bg)!important;
-  padding-bottom:60px!important;
-}
-body[data-app-route="following"] #app>.bottom-nav{
-  display:grid!important;
+  padding-bottom:var(--bottom-nav-h,60px)!important;
 }
 body[data-app-route="following"] #screen{
   position:relative!important;
   width:100%!important;
   max-width:520px!important;
-  min-height:calc(100dvh - 60px)!important;
+  min-height:calc(100dvh - var(--bottom-nav-h,60px))!important;
   height:auto!important;
   max-height:none!important;
   margin:0 auto!important;
@@ -538,22 +535,7 @@ body[data-app-route="following"] #screen{
 }
 .v28-sheet-action.selected{color:var(--v29-follow-cyan)}
 
-/* En la hoja inferior no aparece la barra inferior, como en la referencia. */
-body.v28-follow-sheet-open .bottom-nav{
-  display:none!important;
-}
-
-/* Cuando el selector está abierto, la barra inferior sigue visible y “Más” queda activo. */
-body[data-app-route="following"] .bottom-nav{
-  background:#11106f!important;
-  border-top:1px solid rgba(255,255,255,.10)!important;
-}
-body[data-app-route="following"] .bottom-nav .nav-item{
-  color:#999fc2!important;
-}
-body[data-app-route="following"] .bottom-nav .nav-item[data-route="more"]{
-  color:#20dfee!important;
-}
+/* The scoped sheet-open rule below may hide the same global nav; V34 owns its styling. */
 
 /* Ajustes para móviles estrechos */
 @media(max-width:390px){
@@ -1082,19 +1064,7 @@ body[data-app-route="following"] #screen{
   background-color:transparent!important;
 }
 
-/* Barra inferior exactamente visible en ambas referencias. */
-body[data-app-route="following"] .bottom-nav{
-  height:60px!important;
-  display:grid!important;
-  background:#11106f!important;
-  border-top:1px solid rgba(255,255,255,.11)!important;
-}
-body[data-app-route="following"] .bottom-nav .nav-item{
-  color:#9ca1c2!important;
-}
-body[data-app-route="following"] .bottom-nav .nav-item[data-route="more"]{
-  color:#20dfee!important;
-}
+/* Bottom navigation geometry and active state are owned by V34. */
 
 /* Ajuste móvil estrecho manteniendo proporciones de la referencia. */
 @media(max-width:390px){
@@ -1662,13 +1632,6 @@ body[data-app-route="following"] .v28-picker-row .v28-logo>.v28-fallback{
     font-weight:600!important;
   }
 
-  /* La referencia 1 usa etiquetas de navegación en estilo Título, no mayúsculas. */
-  body[data-app-route="following"] #app .bottom-nav .nav-item small{
-    text-transform:none!important;
-    font-size:12px!important;
-    font-weight:400!important;
-    letter-spacing:0!important;
-  }
 }
 
 @media (max-width:390px){
