@@ -34,6 +34,7 @@ const HEADER_TITLES = {
   favorites:'Favoritos',
   vote:'MVP',
   leagueTools:'Más herramientas',
+  leagueData:'Datos de la Liga',
   rulebook:'Reglamento',
   matchday:'Match Day',
   matchCenter:'Match Center',
