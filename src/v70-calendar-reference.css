@@ -317,11 +317,7 @@ body.v70-calendar-active .v70-match-card{
   font-weight:800;
 }
 
-/* La barra inferior conserva sus iconos y deja de heredar azul brillante del calendario. */
-body.v70-calendar-active .bottom-nav{
-  background:#171875!important;
-  border-top:1px solid rgba(255,255,255,.08)!important;
-}
+/* Bottom navigation styling is owned by V34. */
 
 @media(max-width:380px){
   body.v70-calendar-active #screen{padding-left:14px!important;padding-right:14px!important}
