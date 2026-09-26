@@ -16,22 +16,11 @@ body.v33-data-active #screen{
   max-width:none!important;
   min-height:100dvh!important;
   margin:0!important;
-  padding:0 0 calc(82px + env(safe-area-inset-bottom))!important;
+  padding:0 0 calc(var(--bottom-nav-h,60px) + 22px + env(safe-area-inset-bottom))!important;
   overflow-x:hidden!important;
   background:#04006d!important;
 }
-body.v33-data-active .bottom-nav{
-  display:grid!important;
-  background:#11106f!important;
-  border-top:1px solid rgba(255,255,255,.12)!important;
-  box-shadow:0 -8px 22px rgba(0,0,40,.16)!important;
-  backdrop-filter:blur(12px)!important;
-  -webkit-backdrop-filter:blur(12px)!important;
-}
-body.v33-data-active .bottom-nav .nav-item:last-child,
-body.v33-data-active .bottom-nav .nav-item:last-child .nav-icon{
-  color:#10e5ee!important;
-}
+/* Bottom navigation styling is owned by V34. */
 
 .v33-data-page{
   width:100%;
