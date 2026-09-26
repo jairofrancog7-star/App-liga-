@@ -1,5 +1,4 @@
 /* PARTS16 — VIDEO restaurado exactamente desde el build móvil de referencia del APK. */
-body[data-app-route="video"] .topbar{display:none!important}
 body[data-app-route="video"] .app-shell{background:#03105a!important}
 body[data-app-route="video"] #screen{
   padding:0 0 96px!important;
