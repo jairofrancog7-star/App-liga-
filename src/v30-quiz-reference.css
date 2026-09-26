@@ -301,67 +301,6 @@ body[data-app-route="quiz"] .v30-stadium-tint{
   background:linear-gradient(180deg,rgba(0,22,120,.12),rgba(0,7,70,.05))!important;
 }
 
-/* Navegación inferior de la referencia. */
-body[data-app-route="quiz"] .bottom-nav{
-  height:88px!important;
-  grid-template-columns:repeat(5,minmax(0,1fr))!important;
-  padding:8px 8px calc(7px + env(safe-area-inset-bottom))!important;
-  background:#17166f!important;
-  border-top:1px solid rgba(121,124,206,.33)!important;
-  box-shadow:none!important;
-  backdrop-filter:none!important;
-}
-body[data-app-route="quiz"] .bottom-nav .nav-item{
-  min-width:0!important;
-  padding:0!important;
-  color:#a8a7cb!important;
-  display:grid!important;
-  grid-template-rows:32px 18px!important;
-  place-items:center!important;
-  align-content:center!important;
-  gap:2px!important;
-}
-body[data-app-route="quiz"] .bottom-nav .nav-item.active,
-body[data-app-route="quiz"] .bottom-nav .nav-item[data-route="more"]{
-  color:var(--q-cyan)!important;
-}
-body[data-app-route="quiz"] .bottom-nav .nav-icon{
-  width:31px!important;
-  height:31px!important;
-  margin:0!important;
-  display:grid!important;
-  place-items:center!important;
-}
-body[data-app-route="quiz"] .bottom-nav .nav-icon svg{
-  width:29px!important;
-  height:29px!important;
-  fill:none!important;
-  stroke:currentColor!important;
-  stroke-width:1.65!important;
-}
-body[data-app-route="quiz"] .bottom-nav .nav-item small{
-  position:relative!important;
-  width:100%!important;
-  margin:0!important;
-  padding:0!important;
-  color:currentColor!important;
-  font-size:0!important;
-  line-height:1!important;
-  text-align:center!important;
-  text-transform:none!important;
-  white-space:nowrap!important;
-}
-body[data-app-route="quiz"] .bottom-nav .nav-item small::after{
-  font-size:clamp(10px,2.7vw,13px)!important;
-  font-weight:500!important;
-  letter-spacing:0!important;
-}
-body[data-app-route="quiz"] .bottom-nav .nav-item[data-route="home"] small::after{content:"Inicio"!important}
-body[data-app-route="quiz"] .bottom-nav .nav-item[data-route="competition"] small::after{content:"Competición"!important}
-body[data-app-route="quiz"] .bottom-nav .nav-item[data-route="video"] small::after{content:"Vídeo"!important}
-body[data-app-route="quiz"] .bottom-nav .nav-item[data-route="fantasy"] small::after{content:"Fantasy"!important}
-body[data-app-route="quiz"] .bottom-nav .nav-item[data-route="more"] small::after{content:"Más"!important}
-
 /* Competición de la referencia = pequeño tablero/campo lineal. */
 body[data-app-route="quiz"] .nav-item[data-route="competition"] .nav-icon svg{display:none!important}
 body[data-app-route="quiz"] .nav-item[data-route="competition"] .nav-icon{
@@ -416,24 +355,7 @@ body[data-app-route="quiz"] .nav-item[data-route="more"] .nav-icon::before{
   body[data-app-route="quiz"] .v30-quiz-subtitle{width:60%!important}
 }
 @media(min-width:521px){
-  body[data-app-route="quiz"] #screen,
-  body[data-app-route="quiz"] .bottom-nav{
-    width:520px!important;
-    left:50%!important;
-    transform:translateX(-50%)!important;
-  }
 }
-
-
-/* V30.1 — restaurar icono cancha y etiquetas MAYÚSCULAS en barra inferior. */
-body[data-app-route="quiz"] .bottom-nav .nav-item small{
-  text-transform:uppercase!important;
-}
-body[data-app-route="quiz"] .bottom-nav .nav-item[data-route="home"] small::after{content:"INICIO"!important}
-body[data-app-route="quiz"] .bottom-nav .nav-item[data-route="competition"] small::after{content:"COMPETICIÓN"!important}
-body[data-app-route="quiz"] .bottom-nav .nav-item[data-route="video"] small::after{content:"VÍDEO"!important}
-body[data-app-route="quiz"] .bottom-nav .nav-item[data-route="fantasy"] small::after{content:"FANTASY"!important}
-body[data-app-route="quiz"] .bottom-nav .nav-item[data-route="more"] small::after{content:"MÁS"!important}
 
 /* Mostrar el SVG real de cancha/campo en Competición. */
 body[data-app-route="quiz"] .nav-item[data-route="competition"] .nav-icon{
