@@ -17,8 +17,6 @@ html.v31-hospitality-active .app-shell{
   padding:0!important;
   background:transparent!important;
 }
-html.v31-hospitality-active .topbar,
-html.v31-hospitality-active .bottom-nav{display:none!important}
 html.v31-hospitality-active #screen.screen{
   width:100%!important;
   max-width:none!important;
