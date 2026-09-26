@@ -4596,49 +4596,27 @@ function predictorSixView(){
   </section>`;
 }
 function videoView(){return `<div class="hero video-hero"><span class="eyebrow" style="color:#fff">REVIVE LA JORNADA</span><h1>FÚTBOL QUE<br>NOS UNE</h1><p>Mira goles, atajadas, entrevistas y resúmenes completos.</p><div class="button-row"><button class="btn primary" data-video="Resumen de la Jornada">Ver ahora</button><button class="btn outline" data-match="m1">Partido de la semana</button></div></div><section class="section">${sectionHead('Selección del editor')}<div class="media-carousel"><button class="media-card" data-video="Momentos de la Liga"><span class="badge">VIDEO</span><h3>Momentos de la Liga</h3></button><button class="media-card" data-video="Resumen de la jornada"><span class="badge">08:20</span><h3>Resumen de la jornada</h3></button></div></section>`}
-function momentsView(){return `<div class="v26-moments-original" aria-label="Momentos">
-  <div class="v26-moments-sticky" aria-label="Cabecera fija de Momentos">
-    <img class="v26-moments-sticky__image" src="./assets/moments/moments-original-a.png?v=20260918-moments3" alt="" aria-hidden="true" draggable="false">
-    <button type="button" class="v26-moments-sticky-back" data-route="more" aria-label="Volver a Más"></button>
-  </div>
-  <section class="v26-moments-panel" data-v26-panel="a" aria-label="Momentos principales">
-    <img class="v26-moments-original__image" src="./assets/moments/moments-original-a.png?v=20260918-moments3" alt="Momentos de la Liga Municipal de Fútbol Juventino Rosas" draggable="false">
-
-    <button class="v26-moments-hotspot v26-back" data-route="more" aria-label="Volver a Más"></button>
-
-    <button class="v26-moments-hotspot v26-card v26-card-1" data-video="Juventino Rosas · Momento 1" aria-label="Ver momento de Juventino Rosas"></button>
-    <button class="v26-moments-hotspot v26-card v26-card-2" data-video="Juventino Rosas · Momento 2" aria-label="Ver segundo momento de Juventino Rosas"></button>
-    <button class="v26-moments-hotspot v26-card v26-card-3" data-video="La Huerta" aria-label="Ver momento de La Huerta"></button>
-    <button class="v26-moments-hotspot v26-card v26-card-4" data-video="Pozos" aria-label="Ver momento de Pozos"></button>
-    <button class="v26-moments-hotspot v26-card v26-card-5" data-video="Rincón de Centeno" aria-label="Ver momento de Rincón de Centeno"></button>
-    <button class="v26-moments-hotspot v26-card v26-card-6" data-video="Deportivo Rosas" aria-label="Ver momento de Deportivo Rosas"></button>
-
-    <button class="v26-moments-hotspot v26-nav v26-nav-home" data-route="home" aria-label="Inicio"></button>
-    <button class="v26-moments-hotspot v26-nav v26-nav-competition" data-route="competition" aria-label="Competición"></button>
-    <button class="v26-moments-hotspot v26-nav v26-nav-video" data-route="video" aria-label="Vídeo"></button>
-    <button class="v26-moments-hotspot v26-nav v26-nav-fantasy" data-route="fantasy" aria-label="Fantasy"></button>
-    <button class="v26-moments-hotspot v26-nav v26-nav-more" data-route="more" aria-label="Más"></button>
-  </section>
-
-  <section class="v26-moments-panel" data-v26-panel="b" aria-label="Más momentos">
-    <img class="v26-moments-original__image" src="./assets/moments/moments-original-b.png?v=20260918-moments3" alt="Más momentos de la Liga Municipal de Fútbol Juventino Rosas" draggable="false">
-
-    <button class="v26-moments-hotspot v26-back" data-route="more" aria-label="Volver a Más"></button>
-
-    <button class="v26-moments-hotspot v26-card v26-card-1" data-video="Club América Veteranos" aria-label="Ver momento de Club América Veteranos"></button>
-    <button class="v26-moments-hotspot v26-card v26-card-2" data-video="Juventino Rosas" aria-label="Ver momento de Juventino Rosas"></button>
-    <button class="v26-moments-hotspot v26-card v26-card-3" data-video="Atlético Galeana" aria-label="Ver momento de Atlético Galeana"></button>
-    <button class="v26-moments-hotspot v26-card v26-card-4" data-video="La Huerta" aria-label="Ver momento de La Huerta"></button>
-    <button class="v26-moments-hotspot v26-card v26-card-5" data-video="Santa Cruz" aria-label="Ver momento de Santa Cruz"></button>
-    <button class="v26-moments-hotspot v26-card v26-card-6" data-video="Pozos" aria-label="Ver momento de Pozos"></button>
-
-    <button class="v26-moments-hotspot v26-nav v26-nav-home" data-route="home" aria-label="Inicio"></button>
-    <button class="v26-moments-hotspot v26-nav v26-nav-competition" data-route="competition" aria-label="Competición"></button>
-    <button class="v26-moments-hotspot v26-nav v26-nav-video" data-route="video" aria-label="Vídeo"></button>
-    <button class="v26-moments-hotspot v26-nav v26-nav-fantasy" data-route="fantasy" aria-label="Fantasy"></button>
-    <button class="v26-moments-hotspot v26-nav v26-nav-more" data-route="more" aria-label="Más"></button>
-  </section>
-</div>`}
+function momentsView(){
+  const cards=[
+    ['a','1','Juventino Rosas · Momento 1'],
+    ['a','2','Juventino Rosas · Momento 2'],
+    ['a','3','La Huerta'],
+    ['a','4','Pozos'],
+    ['a','5','Rincón de Centeno'],
+    ['a','6','Deportivo Rosas'],
+    ['b','1','Club América Veteranos'],
+    ['b','2','Juventino Rosas'],
+    ['b','3','Atlético Galeana'],
+    ['b','4','La Huerta'],
+    ['b','5','Santa Cruz'],
+    ['b','6','Pozos']
+  ];
+  return '<section class="v26-moments-page" aria-label="Momentos de la Liga">'+
+    '<div class="v26-moments-grid">'+cards.map(([set,n,label])=>
+      '<button type="button" class="v26-moment-card v26-moment-'+set+n+(n==='5'||n==='6'?' v26-moment-short':'')+'" data-video="'+label.replace(/"/g,'&quot;')+'" aria-label="Ver '+label.replace(/"/g,'&quot;')+'"></button>'
+    ).join('')+'</div>'+
+  '</section>';
+}
 function scorersView(){return `<div class="eyebrow">ESTADÍSTICAS</div><h1 class="screen-title">Máximo goleador</h1><button class="scorer-feature" data-route="scorers"><span class="badge">#1 GOLEADOR OFICIAL PUBLICADO</span><div><small>DYNAMO · Veteranos 50+</small><h2>Hugo Armenta Buenavista</h2><b>5 <em>goles</em></b><small>Asistencias no publicadas por la fuente oficial</small></div></button><section class="section">${sectionHead('Clasificación completa')}<div class="stat-card">${players.slice().sort((a,b)=>b.goals-a.goals).slice(0,8).map((p,i)=>`<button class="rank-row" data-player="${p.id}"><b>${i+1}</b>${crest(p.team)}<span>${p.name}</span><b>${p.goals}</b></button>`).join('')}</div></section>`}
 function rankingsView(){return `<div class="eyebrow">TEMPORADA 2026</div><h1 class="screen-title">Rankings</h1><div class="segmented"><button class="segment active">Clubes</button><button class="segment">Jugadores</button><button class="segment">Forma</button></div><div class="table-wrap"><table class="table"><thead><tr><th>#</th><th>Equipo</th><th>PJ</th><th>DG</th><th>Pts</th></tr></thead><tbody>${teams.map((t,i)=>`<tr><td>${i+1}</td><td>${teamCell(t.code)}</td><td>${t.p}</td><td>${t.gd}</td><td><b>${t.pts}</b></td></tr>`).join('')}</tbody></table></div>`}
 function followingView(){const list=teams.filter(t=>state.followed.includes(t.code));if(!list.length)return `<div class="empty-state"><div class="empty-illustration"></div><h2>Sin equipos seguidos todavía</h2><p>Añade equipos para personalizar tu inicio, resultados y alertas.</p><button class="btn outline" data-route="teams">+ Añadir equipos</button></div>`;return `<div class="eyebrow">PERSONALIZADO</div><h1 class="screen-title">Siguiendo</h1><div class="team-list">${list.map(t=>`<div class="team-row"><button class="team-main" data-team="${t.code}">${crest(t.code)}<span><b>${t.name}</b><small>${t.news}</small></span></button><button class="mini-btn active" data-follow="${t.code}">Siguiendo</button></div>`).join('')}</div>`}
