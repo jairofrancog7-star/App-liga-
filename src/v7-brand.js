@@ -118,10 +118,54 @@ function syncRouteLayout(){
   }
 }
 
+let v10HeaderScrollRaf=0;
+let v10HeaderLastY=0;
+let v10HeaderCollapsed=false;
+
+function syncHeaderMotion(force=false){
+  v10HeaderScrollRaf=0;
+  const mode=document.body.dataset.headerMode||headerModeFor(routeFromLocation());
+  if(mode==='fullscreen'){
+    v10HeaderCollapsed=false;
+    document.body.classList.remove('v10-header-collapsed');
+    v10HeaderLastY=window.scrollY||document.documentElement.scrollTop||0;
+    return;
+  }
+
+  const y=Math.max(0,window.scrollY||document.documentElement.scrollTop||0);
+  const delta=y-v10HeaderLastY;
+  let next=v10HeaderCollapsed;
+
+  if(y<=18) next=false;
+  else if(force) next=y>48;
+  else if(delta>4&&y>48) next=true;
+  else if(delta<-4) next=false;
+
+  if(next!==v10HeaderCollapsed){
+    v10HeaderCollapsed=next;
+    document.body.classList.toggle('v10-header-collapsed',next);
+  }
+  v10HeaderLastY=y;
+}
+function scheduleHeaderMotion(force=false){
+  if(v10HeaderScrollRaf)return;
+  v10HeaderScrollRaf=window.requestAnimationFrame(()=>syncHeaderMotion(force));
+}
+
 function watchRouteLayout(){
   const screen=document.querySelector('#screen');
   syncRouteLayout();
-  window.addEventListener('hashchange',()=>window.requestAnimationFrame(syncRouteLayout));
+  syncHeaderMotion(true);
+  window.addEventListener('hashchange',()=>{
+    window.requestAnimationFrame(()=>{
+      syncRouteLayout();
+      v10HeaderLastY=0;
+      v10HeaderCollapsed=false;
+      document.body.classList.remove('v10-header-collapsed');
+      scheduleHeaderMotion(true);
+    });
+  });
+  window.addEventListener('scroll',()=>scheduleHeaderMotion(false),{passive:true});
   if(screen){
     const observer=new MutationObserver(()=>window.requestAnimationFrame(syncRouteLayout));
     observer.observe(screen,{childList:true,subtree:false});
