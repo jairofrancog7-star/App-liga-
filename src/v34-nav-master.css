@@ -137,7 +137,10 @@ body[data-app-route] .bottom-nav .nav-item small::after,
 /* The Hospitality master is genuinely fullscreen. It still uses the same
    application navigation component; the component is simply not shown there. */
 html.v31-hospitality-active .bottom-nav,
-body[data-app-route="playerCompare"] .bottom-nav{
+body[data-app-route="playerCompare"] .bottom-nav,
+body[data-app-route="profile"] .bottom-nav,
+body[data-app-route="notifications"] .bottom-nav,
+body[data-app-route="leagueTools"] .bottom-nav{
   display:none!important;
 }
 
