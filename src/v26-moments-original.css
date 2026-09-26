@@ -215,3 +215,27 @@ body[data-app-route="moments"] .v105-bottom[data-v105-route="moments"]{
 @media(prefers-reduced-motion:reduce){
   .v26-moment-card:active{transform:none}
 }
+
+
+/* Momentos keeps its master back/title while participating in the same header motion. */
+@media(max-width:1023px){
+  body.v10-header-collapsed[data-app-route="moments"] #app>.topbar{
+    height:calc(var(--header-collapsed-h,72px) + env(safe-area-inset-top))!important;
+    min-height:calc(var(--header-collapsed-h,72px) + env(safe-area-inset-top))!important;
+    max-height:calc(var(--header-collapsed-h,72px) + env(safe-area-inset-top))!important;
+    background-position:center 24%!important;
+  }
+  body.v10-header-collapsed[data-app-route="moments"] #app>.topbar::after{
+    left:64px!important;
+    bottom:15px!important;
+    font-size:24px!important;
+  }
+  body.v10-header-collapsed[data-app-route="moments"] #app>.topbar .back-button,
+  body.v10-header-collapsed[data-app-route="moments"] #app>.topbar .back-button.is-hidden{
+    left:12px!important;
+    bottom:7px!important;
+    width:42px!important;
+    height:42px!important;
+  }
+}
+
