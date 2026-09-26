@@ -1,12 +1,11 @@
 /* V33 — MÁS O MENOS · real component reconstruction from the user's master image.
    No full-screen screenshot. Existing buttons and game logic remain real and clickable. */
 body[data-app-route="moreLess"]{
-  --ml-nav-h:88px;
+  --ml-nav-h:var(--bottom-nav-h,60px);
   --ml-cyan:#16e6f7;
   background:#03004f!important;
   overflow:hidden!important;
 }
-body[data-app-route="moreLess"] .topbar{display:none!important}
 body[data-app-route="moreLess"] .app-shell,
 body[data-app-route="moreLess"] #screen{
   width:100%!important;
@@ -18,40 +17,7 @@ body[data-app-route="moreLess"] #screen{
   overflow:hidden!important;
   background:#03004f!important;
 }
-body[data-app-route="moreLess"] .bottom-nav{
-  display:grid!important;
-  grid-template-columns:repeat(5,minmax(0,1fr))!important;
-  height:var(--ml-nav-h)!important;
-  padding:8px 8px calc(7px + env(safe-area-inset-bottom))!important;
-  background:#17166f!important;
-  border-top:1px solid rgba(126,129,206,.30)!important;
-  box-shadow:none!important;
-  opacity:1!important;
-  z-index:50!important;
-}
-body[data-app-route="moreLess"] .bottom-nav .nav-item{
-  min-width:0!important;
-  padding:0!important;
-  display:grid!important;
-  grid-template-rows:31px 18px!important;
-  place-items:center!important;
-  align-content:center!important;
-  gap:2px!important;
-  color:#aaa9cd!important;
-  background:transparent!important;
-}
-body[data-app-route="moreLess"] .bottom-nav .nav-item[data-route="more"]{color:var(--ml-cyan)!important}
-body[data-app-route="moreLess"] .bottom-nav .nav-icon{width:30px!important;height:30px!important;margin:0!important}
-body[data-app-route="moreLess"] .bottom-nav .nav-icon svg{width:28px!important;height:28px!important;stroke-width:1.65!important}
-body[data-app-route="moreLess"] .bottom-nav .nav-item small{
-  font-size:clamp(10px,2.7vw,13px)!important;
-  line-height:1!important;
-  font-weight:500!important;
-  letter-spacing:0!important;
-  text-transform:none!important;
-  white-space:nowrap!important;
-}
-
+/* Global bottom navigation is owned by V34. */
 .v12-moreless{
   position:relative!important;
   isolation:isolate!important;
@@ -282,8 +248,7 @@ body[data-app-route="moreLess"] .bottom-nav .nav-item small{
 }
 @media(min-width:521px){
   body[data-app-route="moreLess"] #screen,
-  .v12-moreless,
-  body[data-app-route="moreLess"] .bottom-nav{
+  .v12-moreless{
     width:520px!important;
     max-width:520px!important;
     left:50%!important;
