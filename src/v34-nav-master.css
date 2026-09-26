@@ -146,10 +146,7 @@ body[data-app-route="leagueTools"] .bottom-nav{
 
 /* Fullscreen game screens reserve the same global-nav height when they show it. */
 body[data-app-route="quiz"] #screen,
-body[data-app-route="quizArena"] #screen,
-body[data-app-route="predictor"] #screen,
-body[data-app-route="predictorSix"] #screen,
-body[data-app-route="moreLess"] #screen{
+body[data-app-route="quizArena"] #screen{
   padding-bottom:max(var(--v34-nav-h),env(safe-area-inset-bottom))!important;
 }
 body[data-app-route="playerCompare"] #screen{
