@@ -9,7 +9,7 @@ const STANDARD_HEADER_ROUTES = new Set([
 ]);
 const FULLSCREEN_HEADER_ROUTES = new Set([
   'fantasy','fantasyTeam','fantasyLeagues','fantasyAccess',
-  'history','teams','teamDetail','rankings','following',
+  'history','teams','teamDetail','playerCompare','rankings','following',
   'predictor','predictorSix','quizArena','moreLess','moreLessHub','hospitality',
   'match'
 ]);
