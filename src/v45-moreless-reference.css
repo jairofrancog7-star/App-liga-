@@ -119,26 +119,7 @@ body[data-app-route="moreLess"] .v12-stadium{
   box-shadow:none!important;
 }
 
-/* Una sola barra real, con las etiquetas de la referencia y mayúscula inicial. */
-body[data-app-route="moreLess"] .bottom-nav{
-  display:grid!important;
-  height:var(--v34-nav-h,60px)!important;
-  min-height:var(--v34-nav-h,60px)!important;
-  background:#17166f!important;
-  border-top:1px solid rgba(255,255,255,.12)!important;
-  box-shadow:none!important;
-}
-body[data-app-route="moreLess"] .bottom-nav .nav-item small{
-  display:block!important;
-  text-transform:none!important;
-  font-size:10px!important;
-  line-height:12px!important;
-  font-weight:500!important;
-  white-space:nowrap!important;
-}
-body[data-app-route="moreLess"] .bottom-nav .nav-item[data-route="more"]{
-  color:#18e3f6!important;
-}
+/* Global nav geometry/state is owned by V34. */
 
 /* Protección adicional: si una versión cacheada llegara a insertar otra barra,
    nunca se renderiza una segunda barra dentro del contenido de Más o Menos. */
@@ -255,15 +236,9 @@ body[data-app-route="moreLess"] .v12-stadium::after{
   pointer-events:none!important;
 }
 
-/* Solo una barra real. */
+/* Nested duplicate bars remain suppressed; #app > .bottom-nav is the single real bar. */
 body[data-app-route="moreLess"] #screen .bottom-nav,
-body[data-app-route="moreLess"] .v12-moreless .bottom-nav{
-  display:none!important;
-}
-body[data-app-route="moreLess"] #app>.bottom-nav{
-  display:grid!important;
-  z-index:2147483000!important;
-}
+body[data-app-route="moreLess"] .v12-moreless .bottom-nav{display:none!important}
 
 @media(max-width:370px){
   body[data-app-route="moreLess"] .v12-ml-title{width:47vw!important;top:9.0%!important}
