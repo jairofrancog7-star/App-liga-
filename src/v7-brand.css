@@ -6,6 +6,15 @@
 html,body{background:var(--v10-deep)}
 body.v7-startup-lock{overflow:hidden;overscroll-behavior:none}
 
+/* Deterministic header states are assigned by v7-brand.js. */
+body.v10-fullscreen-route #app > .topbar{
+  display:none!important;
+}
+body.v10-detail-header #app > .topbar{
+  display:grid!important;
+  visibility:visible!important;
+}
+
 /* HOME ONLY: keep the branded wide artwork exactly where it belongs. */
 body[data-app-route="home"] .topbar{
   height:var(--v10-home-header-h)!important;
