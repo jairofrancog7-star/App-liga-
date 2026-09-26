@@ -3,18 +3,6 @@
 
 @media (max-width:520px){
 
-  /* Mantiene la barra Partidos / Clasificación / Cuadro con escala de referencia. */
-  body[data-app-route="competition"] #screen>.tabs{
-    height:48px!important;
-    min-height:48px!important;
-    max-height:48px!important;
-  }
-  body[data-app-route="competition"] #screen>.tabs .tab{
-    font-size:13.5px!important;
-    line-height:1!important;
-    padding-bottom:10px!important;
-  }
-
   /* ===== CLASIFICACIÓN =====
      El #screen ya aporta 14px: se cancela y se deja un margen visual real
      de 16px, igual en selector, regla y filas. */
@@ -291,15 +279,6 @@
    3) Fechas de Partidos son más bajas/compactas.
    4) Tabs principales y del Cuadro recuperan la posición horizontal de referencia. */
 @media (max-width:520px){
-
-  /* Barra Partidos / Clasificación / Cuadro: 8px laterales como la referencia. */
-  body[data-app-route="competition"] #screen>.tabs{
-    padding-left:8px!important;
-    padding-right:8px!important;
-  }
-  body[data-app-route="competition"] #screen>.tabs .tab{
-    font-size:13px!important;
-  }
 
   /* CLAVE: el host mide el ancho interior del #screen.
      El bloque anterior sólo tenía márgenes negativos pero conservaba ese ancho,
@@ -736,37 +715,6 @@
 
 /* V59 — ALTURA UNICA PARTIDOS / CLASIFICACION / CUADRO */
 @media(max-width:520px){
-  /* Las tres pestañas principales quedan en una sola línea/base.
-     Se iguala con selectores nth-child para ganar a reglas antiguas
-     que movían Partidos y Cuadro unos píxeles respecto a Clasificación. */
-  body[data-app-route="competition"] #screen>.tabs{
-    height:48px!important;
-    min-height:48px!important;
-    max-height:48px!important;
-    align-items:stretch!important;
-  }
-  body[data-app-route="competition"] #screen>.tabs .tab,
-  body[data-app-route="competition"] #screen>.tabs .tab:nth-child(1),
-  body[data-app-route="competition"] #screen>.tabs .tab:nth-child(2),
-  body[data-app-route="competition"] #screen>.tabs .tab:nth-child(3){
-    box-sizing:border-box!important;
-    height:48px!important;
-    min-height:48px!important;
-    max-height:48px!important;
-    margin:0!important;
-    padding:0 3px 10px!important;
-    display:flex!important;
-    align-items:flex-end!important;
-    justify-content:center!important;
-    transform:none!important;
-    line-height:1!important;
-  }
-  body[data-app-route="competition"] #screen>.tabs .tab::after,
-  body[data-app-route="competition"] #screen>.tabs .tab:nth-child(1)::after,
-  body[data-app-route="competition"] #screen>.tabs .tab:nth-child(2)::after,
-  body[data-app-route="competition"] #screen>.tabs .tab:nth-child(3)::after{
-    bottom:0!important;
-  }
 
   /* Al cambiar entre pestañas, el primer control de cada pantalla arranca
      a la misma altura visual que Clasificación (25px bajo la barra). */
@@ -790,21 +738,6 @@
 }
 
 @media(max-width:390px){
-  body[data-app-route="competition"] #screen>.tabs,
-  body[data-app-route="competition"] #screen>.tabs .tab,
-  body[data-app-route="competition"] #screen>.tabs .tab:nth-child(1),
-  body[data-app-route="competition"] #screen>.tabs .tab:nth-child(2),
-  body[data-app-route="competition"] #screen>.tabs .tab:nth-child(3){
-    height:48px!important;
-    min-height:48px!important;
-    max-height:48px!important;
-  }
-  body[data-app-route="competition"] #screen>.tabs .tab,
-  body[data-app-route="competition"] #screen>.tabs .tab:nth-child(1),
-  body[data-app-route="competition"] #screen>.tabs .tab:nth-child(2),
-  body[data-app-route="competition"] #screen>.tabs .tab:nth-child(3){
-    padding-bottom:10px!important;
-  }
 }
 
 
