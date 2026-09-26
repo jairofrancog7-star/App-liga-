@@ -21,7 +21,7 @@
     width:100%!important;
     max-width:none!important;
     margin:0!important;
-    padding:0 0 calc(68px + env(safe-area-inset-bottom))!important;
+    padding:0 0 calc(var(--bottom-nav-h,60px) + env(safe-area-inset-bottom))!important;
     overflow-x:hidden!important;
     background:#0715c4!important;
   }
