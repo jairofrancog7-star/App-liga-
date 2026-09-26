@@ -4,9 +4,6 @@
 body.v33-about-active{
   background:#04034f!important;
 }
-body.v33-about-active .topbar{
-  display:none!important;
-}
 body.v33-about-active #screen{
   width:100%!important;
   max-width:none!important;
