@@ -404,11 +404,6 @@ body.v70-calendar-active .v70-match-card{
   background:linear-gradient(180deg,rgba(20,38,133,.86),rgba(8,18,100,.9))!important;
   box-shadow:none!important;
 }
-body.v70-calendar-active .bottom-nav{
-  background:#171875!important;
-  border-top:1px solid rgba(255,255,255,.08)!important;
-}
-
 @media(max-width:390px){
   html body[data-app-route="competition"] .v12-fixtures-reference > h2{font-size:21px!important}
   html body[data-app-route="competition"] .v12-schedule-card .v76-upcoming-match,
