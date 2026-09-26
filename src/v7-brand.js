@@ -5,11 +5,13 @@ const STARTUP_MS = 2350;
 const STARTUP_FADE_MS = 420;
 
 const STANDARD_HEADER_ROUTES = new Set([
-  'home','competition','video','more'
+  'home','competition','more'
 ]);
 const FULLSCREEN_HEADER_ROUTES = new Set([
+  'video',
   'fantasy','fantasyTeam','fantasyLeagues','fantasyAccess',
-  'history','teams','teamDetail','playerCompare','rankings','following',
+  'history','teams','teamDetail','playerCompare','rankings','following','stats',
+  'profile','notifications',
   'predictor','predictorSix','quizArena','moreLess','moreLessHub','hospitality',
   'match'
 ]);
