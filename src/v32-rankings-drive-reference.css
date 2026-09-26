@@ -4,9 +4,6 @@
 body.v32-rankings-active{
   background:#07065f;
 }
-body.v32-rankings-active .topbar{
-  display:none!important;
-}
 body.v32-rankings-active #screen{
   width:100%!important;
   max-width:none!important;
