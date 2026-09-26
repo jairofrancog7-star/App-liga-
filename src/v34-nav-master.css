@@ -136,7 +136,8 @@ body[data-app-route] .bottom-nav .nav-item small::after,
 
 /* The Hospitality master is genuinely fullscreen. It still uses the same
    application navigation component; the component is simply not shown there. */
-html.v31-hospitality-active .bottom-nav{
+html.v31-hospitality-active .bottom-nav,
+body[data-app-route="playerCompare"] .bottom-nav{
   display:none!important;
 }
 
@@ -147,6 +148,9 @@ body[data-app-route="predictor"] #screen,
 body[data-app-route="predictorSix"] #screen,
 body[data-app-route="moreLess"] #screen{
   padding-bottom:max(var(--v34-nav-h),env(safe-area-inset-bottom))!important;
+}
+body[data-app-route="playerCompare"] #screen{
+  padding-bottom:env(safe-area-inset-bottom)!important;
 }
 
 body[data-app-route="moreLess"]{
