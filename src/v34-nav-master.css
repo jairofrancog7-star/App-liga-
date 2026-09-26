@@ -1,7 +1,7 @@
 /* V34 — Barra inferior unificada + correcciones de escala móvil.
    Cargado al final para que ninguna pantalla vuelva a deformar la navegación. */
 :root{
-  --v34-nav-h:60px;
+  --v34-nav-h:69px;
   --v34-nav-bg:#17166f;
   --v34-nav-off:#a8a7cb;
   --v34-nav-on:#18e3f6;
