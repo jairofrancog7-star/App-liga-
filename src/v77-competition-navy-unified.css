@@ -13,26 +13,7 @@
     background-image:none!important;
   }
 
-  /* CABECERA: mismo azul oscuro, sin degradado ni azul brillante. */
-  html body[data-app-route="competition"] .topbar,
-  html body.v40-standings-master .topbar,
-  html body.v40-standings-master[data-app-route="competition"] .topbar{
-    background:#06075f!important;
-    background-color:#06075f!important;
-    background-image:none!important;
-    border:0!important;
-    border-bottom:0!important;
-    box-shadow:none!important;
-  }
-
-  html body[data-app-route="competition"] .topbar::before,
-  html body.v40-standings-master .topbar::before{
-    content:none!important;
-    display:none!important;
-    background:none!important;
-    background-image:none!important;
-    opacity:0!important;
-  }
+  /* Header intentionally excluded: v69-competition-unified-header owns it. */
 
   /* CONTENIDO Y TABS PRINCIPALES: mismo color exacto. */
   html body[data-app-route="competition"] #screen,
@@ -129,7 +110,6 @@
   html body[data-app-route="competition"],
   html body[data-app-route="competition"] #app,
   html body[data-app-route="competition"] .app-shell,
-  html body[data-app-route="competition"] .topbar,
   html body[data-app-route="competition"] #screen,
   html body[data-app-route="competition"] .bottom-nav{
     background:#06085f!important;
