@@ -9,7 +9,6 @@ body[data-app-route="moreLessHub"]{
   --v52-soft:#aeb3de;
   background:var(--v52-bg)!important;
 }
-body[data-app-route="moreLessHub"] .topbar{display:none!important}
 body[data-app-route="moreLessHub"] #app,
 body[data-app-route="moreLessHub"] .app-shell{
   width:min(100%,520px)!important;
