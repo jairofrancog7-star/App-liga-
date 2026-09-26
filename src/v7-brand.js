@@ -37,6 +37,7 @@ const HEADER_TITLES = {
   leagueData:'Datos de la Liga',
   rulebook:'Reglamento',
   matchday:'Match Day',
+  'v4-calendar':'Calendario',
   matchCenter:'Match Center',
   'match-center':'Match Center',
   'v4-matchcenter':'Match Center',
