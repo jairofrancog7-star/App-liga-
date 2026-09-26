@@ -1,10 +1,13 @@
-/* V34 — Barra inferior unificada + correcciones de escala móvil.
-   Cargado al final para que ninguna pantalla vuelva a deformar la navegación. */
+/* V34 — single global bottom-navigation authority.
+   Geometry is measured from the supplied mobile masters. Route-specific files
+   may style their content, but must not resize or duplicate this component. */
 :root{
-  --v34-nav-h:69px;
+  --v34-nav-h:var(--bottom-nav-h,60px);
   --v34-nav-bg:#17166f;
   --v34-nav-off:#a8a7cb;
-  --v34-nav-on:#18e3f6;
+  --v34-nav-on:var(--accent,#20e7f0);
+  --v34-nav-icon:24px;
+  --v34-nav-label:10px;
 }
 
 .bottom-nav,
@@ -16,14 +19,18 @@ body[data-app-route] .bottom-nav{
   bottom:0!important;
   transform:translateX(-50%)!important;
   width:min(100%,520px)!important;
-  min-height:var(--v34-nav-h)!important;
   height:var(--v34-nav-h)!important;
+  min-height:var(--v34-nav-h)!important;
+  max-height:var(--v34-nav-h)!important;
   box-sizing:border-box!important;
+  margin:0!important;
   padding:3px 7px max(3px,env(safe-area-inset-bottom))!important;
   display:grid!important;
   grid-template-columns:repeat(5,minmax(0,1fr))!important;
-  align-items:center!important;
+  align-items:stretch!important;
   background:var(--v34-nav-bg)!important;
+  background-image:none!important;
+  border:0!important;
   border-top:1px solid rgba(255,255,255,.12)!important;
   box-shadow:none!important;
   opacity:1!important;
@@ -31,6 +38,7 @@ body[data-app-route] .bottom-nav{
   touch-action:manipulation!important;
   -webkit-tap-highlight-color:transparent!important;
 }
+
 .bottom-nav .nav-item,
 body[data-app-route] .bottom-nav .nav-item{
   position:relative!important;
@@ -38,13 +46,14 @@ body[data-app-route] .bottom-nav .nav-item{
   width:100%!important;
   min-width:0!important;
   height:100%!important;
+  min-height:0!important;
   margin:0!important;
-  padding:2px 0 1px!important;
+  padding:0!important;
   display:grid!important;
-  grid-template-rows:25px 14px!important;
+  grid-template-rows:var(--v34-nav-icon) 12px!important;
   place-items:center!important;
   align-content:center!important;
-  gap:1px!important;
+  gap:2px!important;
   border:0!important;
   outline:0!important;
   background:transparent!important;
@@ -53,43 +62,49 @@ body[data-app-route] .bottom-nav .nav-item{
   touch-action:manipulation!important;
   cursor:pointer!important;
 }
+
 .bottom-nav .nav-item.active,
 body[data-app-route] .bottom-nav .nav-item.active{
   color:var(--v34-nav-on)!important;
 }
+
 .bottom-nav .nav-icon,
 body[data-app-route] .bottom-nav .nav-icon{
   position:relative!important;
-  width:25px!important;
-  height:25px!important;
-  min-width:25px!important;
-  min-height:25px!important;
-  max-width:25px!important;
-  max-height:25px!important;
+  width:var(--v34-nav-icon)!important;
+  height:var(--v34-nav-icon)!important;
+  min-width:var(--v34-nav-icon)!important;
+  min-height:var(--v34-nav-icon)!important;
+  max-width:var(--v34-nav-icon)!important;
+  max-height:var(--v34-nav-icon)!important;
   margin:0!important;
   padding:0!important;
   display:grid!important;
   place-items:center!important;
   color:inherit!important;
   border:0!important;
+  border-radius:0!important;
   background:transparent!important;
   overflow:visible!important;
 }
+
 .bottom-nav .nav-icon svg,
 body[data-app-route] .bottom-nav .nav-icon svg{
   display:block!important;
-  width:25px!important;
-  height:25px!important;
-  min-width:25px!important;
-  min-height:25px!important;
-  max-width:25px!important;
-  max-height:25px!important;
+  width:100%!important;
+  height:100%!important;
+  min-width:0!important;
+  min-height:0!important;
+  max-width:none!important;
+  max-height:none!important;
+  margin:0!important;
   overflow:visible!important;
   fill:currentColor!important;
   stroke:none!important;
   stroke-width:0!important;
   transform:none!important;
 }
+
 .bottom-nav .nav-item small,
 body[data-app-route] .bottom-nav .nav-item small{
   display:block!important;
@@ -99,7 +114,7 @@ body[data-app-route] .bottom-nav .nav-item small{
   padding:0!important;
   color:inherit!important;
   font-family:Roboto,Inter,Arial,sans-serif!important;
-  font-size:10px!important;
+  font-size:var(--v34-nav-label)!important;
   line-height:12px!important;
   font-weight:500!important;
   letter-spacing:0!important;
@@ -109,480 +124,35 @@ body[data-app-route] .bottom-nav .nav-item small{
   overflow:visible!important;
 }
 
-/* Las pantallas dedicadas de referencia siguen sin barra inferior. */
-html.v31-hospitality-active .bottom-nav,
-body[data-app-route="moments"] .bottom-nav,
-body[data-app-route="following"] .bottom-nav{
-  display:none!important;
-}
-
-/* Anular pseudo-iconos antiguos que deformaban Quiz. */
-body[data-app-route="quiz"] .nav-item[data-route="competition"] .nav-icon,
-body[data-app-route="quiz"] .nav-item[data-route="more"] .nav-icon{
-  border:0!important;
-  border-radius:0!important;
-}
-body[data-app-route="quiz"] .nav-item[data-route="competition"] .nav-icon::before,
-body[data-app-route="quiz"] .nav-item[data-route="competition"] .nav-icon::after,
-body[data-app-route="quiz"] .nav-item[data-route="more"] .nav-icon::before,
-body[data-app-route="quiz"] .nav-item[data-route="more"] .nav-icon::after{
-  display:none!important;
-  content:none!important;
-}
-
-/* Quiz, Pronostica Seis y Más o Menos reservan exactamente el mismo alto de barra. */
-body[data-app-route="quiz"] #screen{
-  padding-bottom:calc(var(--v34-nav-h) + env(safe-area-inset-bottom))!important;
-}
-body[data-app-route="quiz"] .v30-quiz-page{
-  height:calc(100dvh - var(--v34-nav-h) - env(safe-area-inset-bottom))!important;
-}
-body[data-app-route="predictor"] #screen{
-  padding-bottom:calc(var(--v34-nav-h) + env(safe-area-inset-bottom))!important;
-}
-body[data-app-route="predictor"] .v29-predictor-page{
-  height:calc(100dvh - var(--v34-nav-h) - env(safe-area-inset-bottom))!important;
-  min-height:0!important;
-}
-body[data-app-route="moreLess"]{
-  --ml-nav-h:var(--v34-nav-h)!important;
-}
-body[data-app-route="moreLess"] .v12-moreless{
-  height:calc(100dvh - var(--v34-nav-h) - env(safe-area-inset-bottom))!important;
-  min-height:0!important;
-}
-
-/* Quiz: acercar la columna de respuestas al tamaño de la referencia maestra. */
-body[data-app-route="quiz"] .quiz-card{
-  width:min(41.5vw,205px)!important;
-  min-width:145px!important;
-  gap:clamp(7px,1dvh,10px)!important;
-}
-body[data-app-route="quiz"] .quiz-option{
-  height:clamp(42px,5.2dvh,58px)!important;
-  min-height:42px!important;
-  border-radius:12px!important;
-  padding-right:28px!important;
-}
-body[data-app-route="quiz"] .v30-answer-letter{
-  border-radius:12px!important;
-  font-size:clamp(24px,6.4vw,34px)!important;
-}
-body[data-app-route="quiz"] .v30-answer-text{
-  font-size:clamp(9px,2.15vw,12px)!important;
-}
-
-/* Más o Menos: liberar logo/flechas y eliminar el aspecto de bloque. */
-body[data-app-route="moreLess"] .v12-ml-logo{
-  top:34.0%!important;
-  width:min(43vw,215px)!important;
-  max-height:24%!important;
-  background:transparent!important;
-  filter:none!important;
-}
-body[data-app-route="moreLess"] .v12-ml-choice{
-  top:62.7%!important;
-  width:min(51vw,255px)!important;
-}
-body[data-app-route="moreLess"] .v12-avatar{
-  width:min(21vw,104px)!important;
-  height:min(21vw,104px)!important;
-}
-body[data-app-route="moreLess"] .v12-ml-mid .up-arrow{
-  top:-42px!important;
-}
-body[data-app-route="moreLess"] .v12-ml-mid .down-arrow{
-  bottom:-54px!important;
-}
-body[data-app-route="moreLess"] .v12-stadium{
-  height:18.8%!important;
-  background-position:center 96%!important;
-}
-
-/* Introduce tus datos: corregir los elementos que aún salían demasiado grandes. */
-html.v31-hospitality-active .v31-access-switch{
-  height:62px!important;
-  border-radius:999px!important;
-}
-html.v31-hospitality-active .v31-selected-content{
-  grid-template-columns:27px 44px minmax(0,1fr)!important;
-  gap:6px!important;
-  padding:4px 8px 4px 18px!important;
-}
-html.v31-hospitality-active .v31-check{
-  width:23px!important;
-  height:15px!important;
-  border-left-width:3px!important;
-  border-bottom-width:3px!important;
-}
-html.v31-hospitality-active .v31-league-logo{
-  width:42px!important;
-  height:42px!important;
-  object-fit:contain!important;
-  background:transparent!important;
-}
-html.v31-hospitality-active .v31-league-name{
-  font-size:10px!important;
-  line-height:1.08!important;
-  font-weight:600!important;
-  white-space:nowrap!important;
-}
-html.v31-hospitality-active .v31-vip{
-  font-size:17px!important;
-  font-weight:400!important;
-}
-html.v31-hospitality-active .v31-code-wrap{
-  height:62px!important;
-  padding:0 20px!important;
-  gap:22px!important;
-}
-html.v31-hospitality-active .v31-qr{
-  width:28px!important;
-  height:28px!important;
-  flex-basis:28px!important;
-}
-html.v31-hospitality-active .v31-code-input{
-  font-size:16px!important;
-}
-html.v31-hospitality-active .v31-code-note{
-  top:37.15%!important;
-  font-size:14px!important;
-  line-height:1.24!important;
-}
-html.v31-hospitality-active .v31-continue{
-  height:56px!important;
-  border-radius:21px!important;
-  font-size:21px!important;
-  bottom:calc(env(safe-area-inset-bottom,0px) + 46px)!important;
-}
-
-@media(max-width:420px){
-  html.v31-hospitality-active .v31-access-switch{height:58px!important}
-  html.v31-hospitality-active .v31-selected-content{
-    grid-template-columns:25px 40px minmax(0,1fr)!important;
-    gap:5px!important;
-    padding-left:13px!important;
-  }
-  html.v31-hospitality-active .v31-league-logo{width:38px!important;height:38px!important}
-  html.v31-hospitality-active .v31-league-name{font-size:9px!important}
-  html.v31-hospitality-active .v31-vip{font-size:16px!important}
-  html.v31-hospitality-active .v31-code-wrap{height:58px!important}
-  html.v31-hospitality-active .v31-code-note{font-size:13px!important}
-  html.v31-hospitality-active .v31-continue{height:54px!important;font-size:20px!important}
-}
-
-
-/* V35 — Quiz Arena + Más o Menos: fidelidad de referencia */
-/* Ninguna pantalla puede volver a duplicar los textos de la barra inferior.
-   Los nombres reales los pinta v34-nav-master.js con los iconos del ZIP. */
 .bottom-nav .nav-item small::before,
 .bottom-nav .nav-item small::after,
 body[data-app-route] .bottom-nav .nav-item small::before,
-body[data-app-route] .bottom-nav .nav-item small::after{
+body[data-app-route] .bottom-nav .nav-item small::after,
+.bottom-nav .nav-icon::before,
+.bottom-nav .nav-icon::after{
   content:none!important;
   display:none!important;
 }
 
-/* QUIZ ARENA — conserva la composición de la referencia y elimina overrides
-   antiguos que deformaban la barra y los botones. */
-body[data-app-route="quiz"] .bottom-nav .nav-item small{
-  display:block!important;
-  font-size:10px!important;
-  line-height:12px!important;
-}
-body[data-app-route="quiz"] .quiz-option{
-  box-sizing:border-box!important;
-}
-body[data-app-route="quiz"] .v30-quiz-stadium{
-  left:0!important;
-  right:0!important;
-  bottom:0!important;
-  width:100%!important;
-  max-width:none!important;
-}
-
-/* MÁS O MENOS — el escudo original tiene negro integrado en el archivo.
-   Screen hace transparente visualmente ese negro sobre el azul, como la referencia,
-   sin convertir la pantalla en una imagen plana y manteniendo todos los botones reales. */
-body[data-app-route="moreLess"] .v12-ml-logo{
-  top:35.0%!important;
-  width:min(47vw,235px)!important;
-  height:auto!important;
-  max-height:27%!important;
-  object-fit:contain!important;
-  background:transparent!important;
-  mix-blend-mode:screen!important;
-  filter:saturate(1.08) contrast(1.06) drop-shadow(0 5px 9px rgba(0,0,45,.24))!important;
-}
-body[data-app-route="moreLess"] .v12-ml-choice{
-  top:62.8%!important;
-  width:min(51vw,255px)!important;
-}
-body[data-app-route="moreLess"] .v12-avatar{
-  width:min(20.5vw,102px)!important;
-  height:min(20.5vw,102px)!important;
-}
-body[data-app-route="moreLess"] .v12-stadium{
-  left:0!important;
-  right:0!important;
-  bottom:0!important;
-  width:100%!important;
-  height:19%!important;
-  background-size:100% auto!important;
-  background-position:center 96%!important;
-}
-
-
-/* V46 — MÁS O MENOS: separar título/flechas y eliminar barra visual duplicada */
-body[data-app-route="moreLess"] .v12-ml-title{
-  top:9.4%!important;
-  width:min(45vw,222px)!important;
-  height:auto!important;
-  transform:translateX(-50%) skewX(-5deg)!important;
-  overflow:visible!important;
-}
-body[data-app-route="moreLess"] .v12-ml-title span{
-  display:block!important;
-  font-size:clamp(42px,10.8vw,56px)!important;
-  line-height:.92!important;
-  letter-spacing:-.045em!important;
-  text-transform:uppercase!important;
-}
-body[data-app-route="moreLess"] .v12-ml-title span:first-child{
-  margin:0 0 5px 0!important;
-  text-align:center!important;
-}
-body[data-app-route="moreLess"] .v12-ml-title span:last-child{
-  margin:0!important;
-  padding-left:24px!important;
-  text-align:center!important;
-}
-body[data-app-route="moreLess"] .v12-ml-title small{
-  left:1%!important;
-  top:55%!important;
-  font-size:clamp(20px,5vw,27px)!important;
-  line-height:1!important;
-  transform:skewX(5deg)!important;
-  text-transform:uppercase!important;
-}
-
-/* Flechas curvas quedan por fuera del bloque de texto: ninguna pisa MÁS / O / MENOS. */
-body[data-app-route="moreLess"] .v12-ml-curves{
-  left:50%!important;
-  top:8.0%!important;
-  width:min(72vw,340px)!important;
-  height:29%!important;
-  transform:translateX(-50%)!important;
-  overflow:visible!important;
-}
-body[data-app-route="moreLess"] .v12-curve-arrow{
-  width:clamp(40px,8.8vw,50px)!important;
-  height:clamp(88px,17vw,108px)!important;
-}
-body[data-app-route="moreLess"] .v12-ml-curves .up .v12-curve-arrow{
-  right:2%!important;
-  top:0!important;
-}
-body[data-app-route="moreLess"] .v12-ml-curves .down .v12-curve-arrow{
-  left:2%!important;
-  top:52%!important;
-}
-
-/* Sin escudo intermedio: deja el espacio limpio como la referencia. */
-body[data-app-route="moreLess"] .v12-ml-logo{
-  display:none!important;
-  visibility:hidden!important;
-  opacity:0!important;
-}
-
-/* Jugadores y flechas centrales separados del título. */
-body[data-app-route="moreLess"] .v12-ml-choice{
-  top:59.4%!important;
-  width:min(49vw,245px)!important;
-}
-body[data-app-route="moreLess"] .v12-ml-mid .up-arrow{
-  top:-54px!important;
-}
-body[data-app-route="moreLess"] .v12-ml-mid .down-arrow{
-  bottom:-55px!important;
-}
-
-/* Recorta solamente el estadio y nunca la navegación que venía dibujada en el asset. */
-body[data-app-route="moreLess"] .v12-stadium{
-  height:18.0%!important;
-  bottom:0!important;
-  background-size:100% auto!important;
-  background-position:center 87.2%!important;
-  overflow:hidden!important;
-}
-body[data-app-route="moreLess"] .v12-stadium::after{
-  content:""!important;
-  display:block!important;
-  position:absolute!important;
-  left:0!important;
-  right:0!important;
-  bottom:0!important;
-  height:8%!important;
-  background:#030052!important;
-  border:0!important;
-  pointer-events:none!important;
-}
-
-/* Solo una barra real. */
-body[data-app-route="moreLess"] #screen .bottom-nav,
-body[data-app-route="moreLess"] .v12-moreless .bottom-nav{
+/* The Hospitality master is genuinely fullscreen. It still uses the same
+   application navigation component; the component is simply not shown there. */
+html.v31-hospitality-active .bottom-nav{
   display:none!important;
 }
-body[data-app-route="moreLess"] #app>.bottom-nav{
-  display:grid!important;
-  z-index:2147483000!important;
+
+/* Fullscreen game screens reserve the same global-nav height when they show it. */
+body[data-app-route="quiz"] #screen,
+body[data-app-route="quizArena"] #screen,
+body[data-app-route="predictor"] #screen,
+body[data-app-route="predictorSix"] #screen,
+body[data-app-route="moreLess"] #screen{
+  padding-bottom:max(var(--v34-nav-h),env(safe-area-inset-bottom))!important;
 }
 
-@media(max-width:370px){
-  body[data-app-route="moreLess"] .v12-ml-title{width:47vw!important;top:9.0%!important}
-  body[data-app-route="moreLess"] .v12-ml-title span{font-size:clamp(39px,10.5vw,50px)!important}
-  body[data-app-route="moreLess"] .v12-ml-curves{width:75vw!important}
+body[data-app-route="moreLess"]{
+  --ml-nav-h:var(--v34-nav-h)!important;
 }
 
-
-/* === V50 HOSPITALITY — TEXTO SIN ENCIMAR + POSICION DE REFERENCIA === */
-/* Ajuste únicamente de #/hospitality según la referencia compartida. */
-html.v31-hospitality-active .v31-access-switch{
-  height:58px!important;
-}
-
-html.v31-hospitality-active .v31-selected-content{
-  grid-template-columns:25px 40px minmax(0,1fr)!important;
-  gap:6px!important;
-  padding:4px 8px 4px 13px!important;
-  align-items:center!important;
-}
-
-html.v31-hospitality-active .v31-league-logo{
-  width:38px!important;
-  height:38px!important;
-  object-fit:contain!important;
-  object-position:center!important;
-}
-
-html.v31-hospitality-active .v31-league-name{
-  display:block!important;
-  min-width:0!important;
-  margin:0!important;
-  padding:0!important;
-  color:#fff!important;
-  font-size:12px!important;
-  line-height:1.08!important;
-  font-weight:600!important;
-  letter-spacing:0!important;
-  white-space:normal!important;
-  overflow:visible!important;
-}
-
-html.v31-hospitality-active .v31-vip{
-  font-size:16px!important;
-  line-height:1!important;
-  font-weight:400!important;
-}
-
-/* Cuadro de código: conserva dimensiones y la línea SOLO en la parte inferior. */
-html.v31-hospitality-active .v31-code-wrap{
-  height:58px!important;
-  padding:0 20px!important;
-  gap:22px!important;
-  border-top:0!important;
-  border-left:0!important;
-  border-right:0!important;
-  border-bottom:2px solid rgba(255,255,255,.95)!important;
-  overflow:visible!important;
-}
-
-html.v31-hospitality-active .v31-code-input{
-  font-size:16px!important;
-  line-height:1!important;
-}
-
-/* El texto explicativo queda completamente FUERA del cuadro, sin pisar la línea. */
-html.v31-hospitality-active .v31-code-note{
-  top:calc(31.8% + 70px)!important;
-  left:30px!important;
-  right:20px!important;
-  margin:0!important;
-  padding:0!important;
-  font-size:14px!important;
-  line-height:1.25!important;
-  font-weight:400!important;
-  white-space:normal!important;
-}
-
-/* Botón inferior conserva la ubicación baja de la referencia. */
-html.v31-hospitality-active .v31-continue{
-  height:54px!important;
-  border-radius:21px!important;
-  font-size:20px!important;
-  bottom:calc(env(safe-area-inset-bottom,0px) + 38px)!important;
-}
-
-@media(min-width:421px){
-  html.v31-hospitality-active .v31-league-name{
-    font-size:13px!important;
-  }
-  html.v31-hospitality-active .v31-code-note{
-    top:calc(31.65% + 76px)!important;
-    left:44px!important;
-    font-size:16px!important;
-  }
-  html.v31-hospitality-active .v31-code-wrap{
-    height:62px!important;
-  }
-  html.v31-hospitality-active .v31-continue{
-    height:56px!important;
-    font-size:21px!important;
-    bottom:calc(env(safe-area-inset-bottom,0px) + 46px)!important;
-  }
-}
-
-
-/* === V51 HOSPITALITY — CENTRADO VISUAL DE CHECK / LOGO / VIP ===
-   Ajuste solicitado sobre la cápsula de acceso. No cambia tamaños ni estructura. */
-html.v31-hospitality-active .v31-access-option{
-  height:100%!important;
-  padding:0!important;
-  align-items:center!important;
-  justify-content:center!important;
-  line-height:1!important;
-}
-html.v31-hospitality-active .v31-selected-content{
-  height:100%!important;
-  align-items:center!important;
-}
-html.v31-hospitality-active .v31-check{
-  position:relative!important;
-  top:-8px!important;
-  align-self:center!important;
-  justify-self:center!important;
-}
-html.v31-hospitality-active .v31-league-logo{
-  position:relative!important;
-  top:-8px!important;
-  align-self:center!important;
-  justify-self:center!important;
-}
-html.v31-hospitality-active .v31-access-option:last-child{
-  display:flex!important;
-  align-items:center!important;
-  justify-content:center!important;
-}
-html.v31-hospitality-active .v31-vip{
-  position:relative!important;
-  top:-7px!important;
-  height:100%!important;
-  display:flex!important;
-  align-items:center!important;
-  justify-content:center!important;
-  width:100%!important;
-  margin:0!important;
-  padding:0!important;
-  text-align:center!important;
-  line-height:1!important;
+@media(max-width:340px){
+  :root{--v34-nav-label:9.5px}
 }
