@@ -126,7 +126,6 @@ async function renderCompare(){
  const screen=document.querySelector('#screen');if(!screen)return;
  document.body.classList.add('v123-player-compare-active');
  screen.innerHTML='<section class="v123-player-compare" data-v123-player-compare>'+
-  '<header class="v123-head"><button type="button" class="v123-back" aria-label="Volver"><svg viewBox="0 0 24 24"><path d="M19 12H5m7-7-7 7 7 7"/></svg></button><div><small>HERRAMIENTA DE JUGADOR</small><h1>Comparar jugadores</h1></div></header>'+
   '<div class="v123-duel">'+playerCard(primary,'primary')+'<span class="v123-vs">VS</span>'+playerCard(secondary,'secondary')+'</div>'+
   comparison(primary,secondary)+
   listMarkup(primary,secondary,list)+
