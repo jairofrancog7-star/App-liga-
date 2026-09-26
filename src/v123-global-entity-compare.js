@@ -9,18 +9,18 @@ window.__LJR_V123_GLOBAL_ENTITY_COMPARE__=true;
 
 const PRIMARY_KEY='v123-compare-player';
 const SECONDARY_KEY='v123-compare-player-2';
-let api=null,loading=null,query='';
+let api=null,loading=null,query='',pickerOpen=false,pickerSide='secondary';
 
-function route(){return String(location.hash||'').replace(/^#\/?/,'').split('?')[0]||'home'}
+function route(){return String(location.hash||'').replace(/^#\\/?/,'').split('?')[0]||'home'}
 function esc(v){return String(v??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]))}
-function norm(v){try{return String(v??'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[^a-z0-9]+/g,' ').trim()}catch{return String(v??'').toLowerCase().trim()}}
+function norm(v){try{return String(v??'').normalize('NFD').replace(/[\\u0300-\\u036f]/g,'').toLowerCase().replace(/[^a-z0-9]+/g,' ').trim()}catch{return String(v??'').toLowerCase().trim()}}
 function registrationActive(){
  const r=route();
  return !!window.__LJR_REGISTRATION_TEAM_PICKER__||
    r==='credentialBuilder'||r.startsWith('credentialBuilder')||
    !!document.querySelector('#screen [data-v64-cred-team],#v124-player-registry,[data-v132-layer].open,.v126-team-panel');
 }
-function initials(v){return String(v||'').split(/\s+/).filter(Boolean).map(x=>x[0]).join('').slice(0,2).toUpperCase()||'JG'}
+function initials(v){return String(v||'').split(/\\s+/).filter(Boolean).map(x=>x[0]).join('').slice(0,2).toUpperCase()||'JG'}
 
 async function getApi(){
  if(api?.playerList)return api;
@@ -70,10 +70,12 @@ function logo(team){
  return src?'<img src="'+esc(src)+'" alt="'+esc(team)+'" loading="eager" decoding="async">':'<span>'+esc(String(team||'').slice(0,3).toUpperCase())+'</span>';
 }
 function playerCard(p,side){
+ const sideLabel=side==='primary'?'Jugador A':'Jugador B';
  if(!p){
-  return '<button type="button" class="v123-player-card empty" data-v123-focus-search><span class="v123-avatar ghost">+</span><strong>Elige jugador</strong><small>Toca para buscar otro jugador</small></button>';
+  return '<article class="v123-player-card empty '+esc(side)+'" data-v123-card-side="'+esc(side)+'" tabindex="0" role="button" aria-label="Elegir '+sideLabel+'">'+
+   '<span class="v123-avatar ghost">+</span><strong>Elige jugador</strong><small>'+sideLabel+'</small></article>';
  }
- return '<article class="v123-player-card '+esc(side||'')+'">'+
+ return '<article class="v123-player-card '+esc(side)+'" data-v123-card-side="'+esc(side)+'" tabindex="0" role="button" aria-label="Cambiar '+esc(p.name)+'">'+
    '<div class="v123-avatar">'+esc(initials(p.name))+'</div>'+
    '<div class="v123-player-copy"><strong>'+esc(p.name)+'</strong><small>'+esc(p.category||'Jugador registrado')+'</small></div>'+
    '<button type="button" class="v123-team-chip" data-v123-team="'+esc(p.team)+'" aria-label="Comparar equipo '+esc(p.team)+'">'+
@@ -82,35 +84,45 @@ function playerCard(p,side){
  '</article>';
 }
 function comparison(primary,secondary){
- if(!secondary)return '<div class="v123-empty-note">Selecciona otro jugador para compararlo con <b>'+esc(primary.name)+'</b>.</div>';
+ if(!secondary)return '<section class="v123-choose-empty"><div class="v123-pitch-icon" aria-hidden="true"><svg viewBox="0 0 96 72"><path d="M11 25 50 5l35 20-40 23L11 25Z"/><path d="m11 25 1 15 34 21 39-23V25M31 15l38 23M27 44l39-22M48 24c8 0 14 4 14 8s-6 8-14 8-14-4-14-8 6-8 14-8Z"/></svg></div><h2>Elige jugadores para comparar</h2><div class="v123-league-mark"><img src="./assets/reference/predictor-v36/liga-crest-white.webp" alt=""><span>LIGA MUNICIPAL DE FÚTBOL<br><b>JUVENTINO ROSAS</b><br>GUANAJUATO</span></div></section>';
  const a=officialGoal(primary),b=officialGoal(secondary);
  const val=v=>v==null?'—':String(v);
  return '<section class="v123-results">'+
+  '<div class="v123-results-title"><small>DATOS PUBLICADOS</small><h2>Comparación</h2></div>'+
   '<div class="v123-results-head"><span></span><b>'+esc(primary.name)+'</b><b>'+esc(secondary.name)+'</b></div>'+
   '<div class="v123-result-row"><span>Equipo</span><b>'+esc(primary.team)+'</b><b>'+esc(secondary.team)+'</b></div>'+
   '<div class="v123-result-row"><span>Categoría</span><b>'+esc(primary.category||'—')+'</b><b>'+esc(secondary.category||'—')+'</b></div>'+
   '<div class="v123-result-row"><span>Goles oficiales</span><b>'+val(a)+'</b><b>'+val(b)+'</b></div>'+
-  '<p>Solo se comparan datos publicados oficialmente. Si un dato no está disponible aparece “—”.</p>'+
+  '<p>Solo se muestran estadísticas publicadas oficialmente. Los datos no disponibles aparecen como “—”.</p>'+
+  '<button type="button" class="v123-change-player" data-v123-open-picker="secondary">Cambiar jugador B</button>'+
  '</section>';
 }
 function listMarkup(primary,secondary,list){
+ if(!pickerOpen)return '';
+ const current=pickerSide==='primary'?primary:secondary;
+ const other=pickerSide==='primary'?secondary:primary;
  const q=norm(query);
- let candidates=list.filter(p=>playerKey(p)!==playerKey(primary));
+ let candidates=list.filter(p=>!other||playerKey(p)!==playerKey(other));
  candidates.sort((a,b)=>{
-  const sameA=String(a.cat)===String(primary.cat)?0:1,sameB=String(b.cat)===String(primary.cat)?0:1;
+  const ref=other||primary;
+  const sameA=ref&&String(a.cat)===String(ref.cat)?0:1,sameB=ref&&String(b.cat)===String(ref.cat)?0:1;
   return sameA-sameB||a.name.localeCompare(b.name,'es');
  });
  if(q)candidates=candidates.filter(p=>norm(p.name).includes(q)||norm(p.team).includes(q)||norm(p.category).includes(q));
- return '<section class="v123-picker">'+
-   '<div class="v123-picker-head"><h2>'+(secondary?'Cambiar jugador':'Elige otro jugador')+'</h2><span>'+candidates.length+' disponibles</span></div>'+
-   '<label class="v123-search"><span>⌕</span><input data-v123-search type="search" autocomplete="off" placeholder="Buscar jugador o equipo" value="'+esc(query)+'"></label>'+
-   '<div class="v123-player-list">'+candidates.slice(0,60).map(p=>
-    '<button type="button" class="v123-player-option '+(secondary&&playerKey(p)===playerKey(secondary)?'active':'')+'" data-v123-pick="'+esc(p.name)+'" data-v123-pick-team="'+esc(p.team)+'" data-v123-pick-cat="'+esc(p.cat)+'">'+
-      '<span class="v123-option-avatar">'+esc(initials(p.name))+'</span>'+
-      '<span><b>'+esc(p.name)+'</b><small>'+esc(p.team)+' · '+esc(p.category||'')+'</small></span><i>›</i>'+
-    '</button>'
-   ).join('')+'</div>'+
- '</section>';
+ return '<section class="v123-picker-overlay" role="dialog" aria-modal="true" aria-label="Elegir jugador">'+
+   '<div class="v123-picker-shell">'+
+    '<button type="button" class="v123-picker-close" data-v123-close-picker aria-label="Cerrar">×</button>'+
+    '<label class="v123-search"><span aria-hidden="true">⌕</span><input data-v123-search type="search" autocomplete="off" placeholder="Buscar jugadores" value="'+esc(query)+'"></label>'+
+    '<div class="v123-picker-head"><h2>Jugadores</h2><span>'+candidates.length+' disponibles</span></div>'+
+    '<div class="v123-player-list">'+candidates.slice(0,80).map(p=>
+      '<button type="button" class="v123-player-option '+(current&&playerKey(p)===playerKey(current)?'active':'')+'" data-v123-pick="'+esc(p.name)+'" data-v123-pick-team="'+esc(p.team)+'" data-v123-pick-cat="'+esc(p.cat)+'">'+
+        '<span class="v123-option-avatar">'+esc(initials(p.name))+'</span>'+
+        '<span class="v123-option-copy"><b>'+esc(p.name)+'</b><small><i class="v123-option-logo">'+logo(p.team)+'</i>'+esc(p.team)+(p.category?' · '+esc(p.category):'')+'</small></span>'+
+        '<i class="v123-option-radio" aria-hidden="true"></i>'+
+      '</button>'
+    ).join('')+'</div>'+
+   '</div>'+
+  '</section>';
 }
 async function renderCompare(){
  if(route()!=='playerCompare')return;
@@ -125,22 +137,41 @@ async function renderCompare(){
 
  const screen=document.querySelector('#screen');if(!screen)return;
  document.body.classList.add('v123-player-compare-active');
+ const cat=primary.category||'Categoría';
  screen.innerHTML='<section class="v123-player-compare" data-v123-player-compare>'+
-  '<div class="v123-duel">'+playerCard(primary,'primary')+'<span class="v123-vs">VS</span>'+playerCard(secondary,'secondary')+'</div>'+
+  '<section class="v123-compare-hero">'+
+   '<button type="button" class="v123-back" data-v123-back aria-label="Volver"><svg viewBox="0 0 24 24"><path d="M19 12H5m7-7-7 7 7 7"/></svg></button>'+
+   '<div class="v123-duel">'+playerCard(primary,'primary')+'<span class="v123-vs">VS</span>'+playerCard(secondary,'secondary')+'</div>'+
+   '<div class="v123-filter-row"><span>'+esc(cat)+'</span><span><i></i>Competición</span></div>'+
+  '</section>'+
   comparison(primary,secondary)+
   listMarkup(primary,secondary,list)+
  '</section>';
 
  bindCompare();
 }
+function openPicker(side){
+ pickerSide=side==='primary'?'primary':'secondary';
+ pickerOpen=true;
+ query='';
+ renderCompare();
+}
 function bindCompare(){
+ document.querySelector('[data-v123-back]')?.addEventListener('click',()=>{if(history.length>1)history.back();else location.hash='#/players'},{once:true});
+ document.querySelectorAll('[data-v123-card-side]').forEach(card=>{
+  const open=()=>openPicker(card.dataset.v123CardSide||'secondary');
+  card.addEventListener('click',e=>{if(e.target.closest('[data-v123-team]'))return;open()},{once:true});
+  card.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();open()}},{once:true});
+ });
+ document.querySelectorAll('[data-v123-open-picker]').forEach(b=>b.addEventListener('click',()=>openPicker(b.dataset.v123OpenPicker||'secondary'),{once:true}));
+ document.querySelector('[data-v123-close-picker]')?.addEventListener('click',()=>{pickerOpen=false;query='';renderCompare()},{once:true});
  const input=document.querySelector('[data-v123-search]');
- if(input)input.addEventListener('input',e=>{query=e.target.value;renderCompare()});
- document.querySelector('[data-v123-focus-search]')?.addEventListener('click',()=>document.querySelector('[data-v123-search]')?.focus(),{once:true});
+ if(input)input.addEventListener('input',e=>{query=e.target.value;renderCompare();requestAnimationFrame(()=>{const n=document.querySelector('[data-v123-search]');if(n){n.focus();n.setSelectionRange(n.value.length,n.value.length)}})});
  document.querySelectorAll('[data-v123-pick]').forEach(b=>b.addEventListener('click',e=>{
   e.preventDefault();e.stopPropagation();
-  write(SECONDARY_KEY,{name:b.dataset.v123Pick||'',team:b.dataset.v123PickTeam||'',cat:b.dataset.v123PickCat||''});
-  query='';renderCompare();
+  const value={name:b.dataset.v123Pick||'',team:b.dataset.v123PickTeam||'',cat:b.dataset.v123PickCat||''};
+  write(pickerSide==='primary'?PRIMARY_KEY:SECONDARY_KEY,value);
+  pickerOpen=false;query='';renderCompare();
  },{once:true}));
  document.querySelectorAll('[data-v123-team]').forEach(b=>b.addEventListener('click',e=>{
   e.preventDefault();e.stopPropagation();
@@ -275,7 +306,7 @@ document.addEventListener('click',e=>{
   if(!p)return;
   write(PRIMARY_KEY,p);
   localStorage.removeItem(SECONDARY_KEY);
-  query='';
+  query='';pickerOpen=false;pickerSide='secondary';
   location.hash='#/playerCompare';
  })();
 },true);
@@ -285,7 +316,7 @@ window.LJR_PLAYER_COMPARE_API={
   getApi().then(a=>{
    if(!a)return;
    const p=resolvePlayer(player,a.playerList());if(!p)return;
-   write(PRIMARY_KEY,p);localStorage.removeItem(SECONDARY_KEY);query='';location.hash='#/playerCompare';
+   write(PRIMARY_KEY,p);localStorage.removeItem(SECONDARY_KEY);query='';pickerOpen=false;pickerSide='secondary';location.hash='#/playerCompare';
   });
  },
  render:renderCompare
