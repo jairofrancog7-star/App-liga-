@@ -1,127 +1,30 @@
-/* V69 — cabecera principal reutilizada en Calendario mensual, Match Center,
-   Disciplina y Comparar. Usa exactamente el arte y hotspots del HOME. */
+/* V69 — Match Center continuity only.
+   Header geometry is owned by v7-brand and bottom-nav geometry by v34-nav-master. */
 @media (max-width:1023px){
-  body.v69-primary-tool-header .topbar{
-    height:var(--v10-home-header-h,clamp(138px,35.22vw,183px))!important;
-    min-height:var(--v10-home-header-h,clamp(138px,35.22vw,183px))!important;
-    max-height:none!important;
-    padding:0!important;
-    position:sticky!important;
-    top:0!important;
-    display:block!important;
-    overflow:hidden!important;
-    isolation:isolate!important;
-    z-index:30!important;
-    background-color:#02065f!important;
-    background-image:url('https://d2ol7oe51mr4n9.cloudfront.net/user_3JNvttsAwr0QjxhuX5O1uaa9bvv/f2d42133-aeeb-4665-bfd1-693941efa7ee.jpg')!important;
-    background-repeat:no-repeat!important;
-    background-size:cover!important;
-    background-position:center top!important;
-    border:0!important;
-    border-bottom:0!important;
-    box-shadow:none!important;
-    backdrop-filter:none!important;
+  body.v69-primary-tool-header{
+    /* Legacy class is retained only for backward compatibility. */
   }
 
-  body.v69-primary-tool-header .topbar::before,
-  body.v69-primary-tool-header .topbar::after{
-    content:none!important;
-    display:none!important;
-  }
-
-  /* El logo y el perfil ya están dibujados en el arte principal.
-     Estos botones quedan como zonas táctiles transparentes, igual que HOME. */
-  body.v69-primary-tool-header .topbar .wordmark{
-    display:block!important;
-    visibility:visible!important;
-    position:absolute!important;
-    left:2.5%!important;
-    top:13%!important;
-    width:20%!important;
-    height:42%!important;
-    min-width:0!important;
-    max-width:none!important;
-    margin:0!important;
-    padding:0!important;
-    border:0!important;
-    border-radius:0!important;
-    background:none!important;
-    color:transparent!important;
-    font-size:0!important;
-    z-index:4!important;
-    cursor:pointer!important;
-    pointer-events:auto!important;
-  }
-  body.v69-primary-tool-header .topbar .wordmark::before,
-  body.v69-primary-tool-header .topbar .wordmark::after{
-    content:none!important;
-    display:none!important;
-  }
-
-  body.v69-primary-tool-header .topbar .profile-button{
-    display:block!important;
-    visibility:visible!important;
-    position:absolute!important;
-    right:2.2%!important;
-    left:auto!important;
-    top:12%!important;
-    bottom:auto!important;
-    width:15%!important;
-    height:42%!important;
-    min-width:0!important;
-    min-height:0!important;
-    max-width:none!important;
-    max-height:none!important;
-    margin:0!important;
-    padding:0!important;
-    border:0!important;
-    border-radius:0!important;
-    background:none!important;
-    color:transparent!important;
-    box-shadow:none!important;
-    z-index:4!important;
-    cursor:pointer!important;
-    pointer-events:auto!important;
-  }
-  body.v69-primary-tool-header .topbar .profile-button svg{
-    display:none!important;
-  }
-
-  body.v69-primary-tool-header .topbar .back-button{
-    display:none!important;
-  }
-}
-
-
-/* V69.3 MATCH CENTER CONTINUOUS HEADER
-   Une el arte superior con el fondo del Match Center y centra la barra inferior. */
-@media (max-width:1023px){
-  body.v69-match-center-header{
-    background:#000144!important;
-  }
-
-  /* Evita la línea/corte entre las líneas neón del encabezado y el contenido. */
+  body.v69-match-center-header,
   body.v69-match-center-header .app-shell{
     background:#000144!important;
   }
+
   body.v69-match-center-header .topbar{
-    margin-bottom:-2px!important;
+    margin-bottom:-1px!important;
     border-bottom:0!important;
     box-shadow:none!important;
   }
+
   body.v69-match-center-header #screen{
     position:relative!important;
     margin-top:0!important;
     border-top:0!important;
     box-shadow:none!important;
     background:
-      linear-gradient(180deg,
-        #000144 0px,
-        #01034d 28px,
-        #03065f 78px,
-        #060d72 170px,
-        #050b61 100%)!important;
+      linear-gradient(180deg,#000144 0px,#01034d 28px,#03065f 78px,#060d72 170px,#050b61 100%)!important;
   }
+
   body.v69-match-center-header #screen::before{
     content:""!important;
     position:absolute!important;
@@ -129,53 +32,13 @@
     left:0!important;
     right:0!important;
     top:0!important;
-    height:42px!important;
+    height:32px!important;
     pointer-events:none!important;
-    background:linear-gradient(180deg,#000144 0%,rgba(0,1,68,.72) 45%,rgba(0,1,68,0) 100%)!important;
+    background:linear-gradient(180deg,#000144 0%,rgba(0,1,68,.6) 52%,rgba(0,1,68,0) 100%)!important;
   }
+
   body.v69-match-center-header #screen>*{
     position:relative!important;
     z-index:1!important;
-  }
-
-  /* Barra inferior: cinco iconos en el centro exacto de cada columna. */
-  body.v69-match-center-header .bottom-nav{
-    grid-template-columns:repeat(5,minmax(0,1fr))!important;
-    align-items:center!important;
-    justify-items:stretch!important;
-    padding-left:6px!important;
-    padding-right:6px!important;
-  }
-  body.v69-match-center-header .bottom-nav .nav-item{
-    width:100%!important;
-    min-width:0!important;
-    height:100%!important;
-    margin:0!important;
-    padding:0!important;
-    display:flex!important;
-    flex-direction:column!important;
-    align-items:center!important;
-    justify-content:center!important;
-    gap:4px!important;
-    text-align:center!important;
-  }
-  body.v69-match-center-header .bottom-nav .nav-item .nav-icon{
-    width:25px!important;
-    height:25px!important;
-    margin:0 auto!important;
-    display:grid!important;
-    place-items:center!important;
-  }
-  body.v69-match-center-header .bottom-nav .nav-item .nav-icon svg{
-    width:25px!important;
-    height:25px!important;
-    margin:0 auto!important;
-  }
-  body.v69-match-center-header .bottom-nav .nav-item small{
-    width:100%!important;
-    margin:0!important;
-    padding:0!important;
-    text-align:center!important;
-    line-height:1!important;
   }
 }
