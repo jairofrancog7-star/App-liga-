@@ -274,7 +274,6 @@ function render(){
   '</article>';
 
   document.body.classList.add('v92-match-center-official');
-  document.querySelectorAll('.bottom-nav .nav-item').forEach(n=>n.classList.toggle('active',n.dataset.route==='competition'));
   screen.querySelector('[data-v92-match-select]')?.addEventListener('change',e=>{selectedKey=e.target.value;activeTab='Resumen';renderGuard=false;render()});
   screen.querySelectorAll('[data-v92-tab]').forEach(b=>b.onclick=()=>{activeTab=b.dataset.v92Tab;renderGuard=false;render()});
   screen.querySelectorAll('[data-v92-open-lineups]').forEach(b=>b.onclick=()=>{activeTab='Alineaciones';renderGuard=false;render()});
