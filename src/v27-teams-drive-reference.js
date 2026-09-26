@@ -422,21 +422,7 @@
     setTimeout(function(){n.remove()},1700);
   }
 
-  function navReferenceMode(on){
-    const nav=document.querySelector('.bottom-nav');
-    if(!nav)return;
-    const labels=[
-      ['home','Inicio'],['competition','Competición'],['video','Video'],['fantasy','Fantasy'],['more','Más']
-    ];
-    labels.forEach(function(row){
-      const b=nav.querySelector('[data-route="'+row[0]+'"] small');
-      if(b)b.textContent=on?row[1]:row[1].toUpperCase();
-    });
-    nav.querySelectorAll('.nav-item').forEach(function(n){
-      n.classList.toggle('active',on?n.dataset.route==='more':n.dataset.route===route());
-    });
-  }
-
+  function navReferenceMode(){/* Global nav state/labels are owned by V34. */}
   function teamsMarkup(){
     const q=query.trim().toLocaleLowerCase('es');
     const list=FIRST_GRID.filter(function(t){return !q||t.name.toLocaleLowerCase('es').includes(q)||t.short.toLocaleLowerCase('es').includes(q)});
