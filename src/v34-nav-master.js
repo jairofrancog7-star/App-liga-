@@ -54,7 +54,7 @@ function paint(){
     btn.classList.toggle('active',on);
     btn.setAttribute('aria-current',on?'page':'false');
     const small=btn.querySelector('small');
-    if(small&&labels[r])small.textContent=labels[r];
+    if(small&&labels[r]&&small.textContent!==labels[r])small.textContent=labels[r];
     const icon=btn.querySelector('.nav-icon');
     if(icon&&I[r]){
       const desired=I[r][on?'on':'off'];
@@ -76,7 +76,7 @@ document.addEventListener('click',e=>{
 window.addEventListener('hashchange',()=>setTimeout(paint,0));
 document.addEventListener('DOMContentLoaded',paint,{once:true});
 const nav=document.querySelector('.bottom-nav');
-if(nav)new MutationObserver(paint).observe(nav,{subtree:true,attributes:true,childList:true,characterData:true,attributeFilter:['class']});
+if(nav)new MutationObserver(()=>requestAnimationFrame(paint)).observe(nav,{subtree:true,attributes:true,attributeFilter:['class']});
 setTimeout(paint,0);
 setTimeout(paint,250);
 setTimeout(paint,900);
