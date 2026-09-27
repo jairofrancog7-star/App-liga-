@@ -10,20 +10,6 @@
     background-image:none!important;
   }
 
-  /* Remove the obsolete in-content compact header at the source layer. */
-  html body[data-app-route="leagueTools"] .v66-compact-top,
-  html body[data-app-route="leagueTools"] [data-v66-compact-top]{
-    display:none!important;
-    visibility:hidden!important;
-    height:0!important;
-    min-height:0!important;
-    max-height:0!important;
-    margin:0!important;
-    padding:0!important;
-    border:0!important;
-    overflow:hidden!important;
-  }
-
   html body[data-app-route="leagueTools"] #screen{
     width:100%!important;
     max-width:520px!important;
@@ -41,19 +27,6 @@
 /* V190 — JR CONTROL content cleanup.
    Header geometry is owned by v7-brand; navigation by V34. */
 @media (max-width:1023px){
-  html body[data-app-route="jrControl"] .v66-compact-top,
-  html body[data-app-route="jrControl"] [data-v66-compact-top]{
-    display:none!important;
-    visibility:hidden!important;
-    height:0!important;
-    min-height:0!important;
-    max-height:0!important;
-    margin:0!important;
-    padding:0!important;
-    border:0!important;
-    overflow:hidden!important;
-  }
-
   html body[data-app-route="jrControl"] #screen,
   html body[data-app-route="jrControl"] .v60-tool-page{
     margin-top:0!important;
