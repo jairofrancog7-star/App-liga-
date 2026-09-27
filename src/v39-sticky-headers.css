@@ -5,14 +5,6 @@
 
 @media (max-width:1023px){
 
-  /* Barra oficial compartida: conserva el diseño propio de cada ruta. */
-  body[data-app-route] #app > .topbar{
-    position:sticky!important;
-    top:0!important;
-    z-index:120!important;
-    isolation:isolate!important;
-  }
-
   /* SIGUIENDO — cabecera propia. overflow:clip mantiene el arte recortado
      sin convertir el contenedor en un scroll-container que rompa sticky. */
   body[data-app-route="following"] #screen{
