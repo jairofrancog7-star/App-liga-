@@ -4,7 +4,7 @@
 
 @media (max-width:1023px){
   body[data-app-route="competition"]{
-    --competition-header-h:104px;
+    --competition-header-h:var(--header-expanded-h,98px);
   }
 
   body[data-app-route="competition"] .topbar{
@@ -120,9 +120,6 @@
 }
 
 @media(max-width:380px){
-  body[data-app-route="competition"]{
-    --competition-header-h:98px;
-  }
   body[data-app-route="competition"] .topbar::after{
     left:18px!important;
     right:52px!important;
