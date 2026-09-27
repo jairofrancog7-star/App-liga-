@@ -2,11 +2,11 @@
    Geometry is measured from the supplied mobile masters. Route-specific files
    may style their content, but must not resize or duplicate this component. */
 :root{
-  --v34-nav-h:var(--bottom-nav-h,60px);
+  --v34-nav-h:var(--bottom-nav-h,69px);
   --v34-nav-bg:#17166f;
   --v34-nav-off:#a8a7cb;
   --v34-nav-on:var(--accent,#20e7f0);
-  --v34-nav-icon:24px;
+  --v34-nav-icon:25px;
   --v34-nav-label:10px;
 }
 
@@ -24,7 +24,7 @@ body[data-app-route] .bottom-nav{
   max-height:var(--v34-nav-h)!important;
   box-sizing:border-box!important;
   margin:0!important;
-  padding:3px 7px max(3px,env(safe-area-inset-bottom))!important;
+  padding:5px 7px max(5px,env(safe-area-inset-bottom))!important;
   display:grid!important;
   grid-template-columns:repeat(5,minmax(0,1fr))!important;
   align-items:stretch!important;
@@ -50,7 +50,7 @@ body[data-app-route] .bottom-nav .nav-item{
   margin:0!important;
   padding:0!important;
   display:grid!important;
-  grid-template-rows:var(--v34-nav-icon) 12px!important;
+  grid-template-rows:var(--v34-nav-icon) 14px!important;
   place-items:center!important;
   align-content:center!important;
   gap:2px!important;
