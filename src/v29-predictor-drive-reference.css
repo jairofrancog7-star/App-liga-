@@ -346,3 +346,14 @@ body[data-app-route="predictor"] #screen{
 @media(prefers-reduced-motion:reduce){
   .v37-predictor-enter{transition:none!important}
 }
+
+
+/* RESTORE3_PREDICTOR_CREST — the real white crest must never become an alt-text block. */
+.v37-predictor-crest{
+  display:block!important;
+  overflow:hidden!important;
+  color:transparent!important;
+  font-size:0!important;
+  line-height:0!important;
+  background:transparent!important;
+}
