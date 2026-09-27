@@ -71,6 +71,8 @@
     const card=findLegacyCard(screen);
     if(!card)return;
 
+    const sig=[s.player,s.team,s.goals,s.assists===null?'—':s.assists].join('|');
+    if(card.dataset.v77OfficialSig===sig)return;
     card.dataset.v77OfficialPlayer='1';
 
     replaceExact(card,(n)=>n==='juan perez'||n==='juan pérez',s.player);
@@ -91,7 +93,8 @@
     replaceExact(card,(n)=>n==='3 asistencias',s.assists===null?'Asistencias no publicadas':s.assists+' asistencias');
 
     const title=card.querySelector('[data-v77-player-name]');
-    if(title)title.textContent=s.player;
+    if(title&&title.textContent!==s.player)title.textContent=s.player;
+    card.dataset.v77OfficialSig=sig;
   }
 
   let tries=0;
@@ -107,7 +110,11 @@
 
   window.addEventListener('hashchange',()=>{tries=0;schedule()});
   const screen=document.querySelector('#screen');
-  if(screen)new MutationObserver(schedule).observe(screen,{childList:true,subtree:true,characterData:true});
+  if(screen)new MutationObserver(mutations=>{
+    if(route()!=='home')return;
+    const changed=mutations.some(m=>m.addedNodes.length||m.removedNodes.length||m.type==='characterData');
+    if(changed)schedule();
+  }).observe(screen,{childList:true,subtree:true,characterData:true});
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',schedule,{once:true});
   else schedule();
 })();
