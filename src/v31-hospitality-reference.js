@@ -1,4 +1,4 @@
-const V31_HOSPITALITY_LOGO = 'https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/assets/liga-logo.webp';
+const V31_HOSPITALITY_LOGO = './assets/reference/predictor-v36/liga-crest-white.webp?v=20260927-restore-three';
 
 function v31HospitalityMarkup(){
   return `
