@@ -46,7 +46,7 @@
     content:"Competición"!important;
     display:block!important;
     position:absolute!important;
-    left:112px!important;
+    left:22px!important;
     right:58px!important;
     top:auto!important;
     bottom:22px!important;
@@ -65,35 +65,12 @@
     pointer-events:none!important;
   }
 
-  /* Real Liga crest, not a screenshot-baked logo. */
+  /* Competition master shows the route title directly on the neon artwork.
+     The Liga crest belongs to the root/logo header, not beside this title. */
   body[data-app-route="competition"] .topbar .wordmark{
-    display:block!important;
-    visibility:visible!important;
-    opacity:1!important;
-    position:absolute!important;
-    left:18px!important;
-    top:auto!important;
-    bottom:10px!important;
-    width:76px!important;
-    height:76px!important;
-    min-width:76px!important;
-    min-height:76px!important;
-    max-width:76px!important;
-    max-height:76px!important;
-    margin:0!important;
-    padding:0!important;
-    border:0!important;
-    border-radius:0!important;
-    background-color:transparent!important;
-    background-image:url('../assets/reference/predictor-v36/liga-crest-white.webp')!important;
-    background-repeat:no-repeat!important;
-    background-position:center!important;
-    background-size:contain!important;
-    color:transparent!important;
-    font-size:0!important;
-    box-shadow:none!important;
-    pointer-events:auto!important;
-    z-index:6!important;
+    display:none!important;
+    visibility:hidden!important;
+    pointer-events:none!important;
   }
   body[data-app-route="competition"] .topbar .wordmark::before,
   body[data-app-route="competition"] .topbar .wordmark::after{
@@ -147,20 +124,10 @@
     --competition-header-h:98px;
   }
   body[data-app-route="competition"] .topbar::after{
-    left:100px!important;
+    left:18px!important;
     right:52px!important;
     bottom:21px!important;
     font-size:25px!important;
-  }
-  body[data-app-route="competition"] .topbar .wordmark{
-    left:14px!important;
-    bottom:9px!important;
-    width:70px!important;
-    height:70px!important;
-    min-width:70px!important;
-    min-height:70px!important;
-    max-width:70px!important;
-    max-height:70px!important;
   }
   body[data-app-route="competition"] .topbar .profile-button{
     right:14px!important;
@@ -184,19 +151,9 @@
     background-position:center 24%!important;
   }
   body.v10-header-collapsed[data-app-route="competition"] .topbar::after{
-    left:76px!important;
+    left:18px!important;
     bottom:16px!important;
     font-size:24px!important;
-  }
-  body.v10-header-collapsed[data-app-route="competition"] .topbar .wordmark{
-    left:14px!important;
-    bottom:5px!important;
-    width:52px!important;
-    height:52px!important;
-    min-width:52px!important;
-    min-height:52px!important;
-    max-width:52px!important;
-    max-height:52px!important;
   }
   body.v10-header-collapsed[data-app-route="competition"] .topbar .profile-button{
     right:16px!important;
