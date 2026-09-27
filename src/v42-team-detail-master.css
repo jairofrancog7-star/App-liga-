@@ -775,16 +775,16 @@ body.v42-team-compare-open #screen{
 .v42-compare-card{
   position:relative!important;
   min-width:0!important;
-  height:229px!important;
+  height:clamp(178px,46vw,198px)!important;
   margin:0!important;
-  padding:17px 11px 14px!important;
+  padding:13px 10px 11px!important;
   display:flex!important;
   flex-direction:column!important;
   align-items:center!important;
   justify-content:flex-start!important;
   overflow:hidden!important;
   border:0!important;
-  border-radius:17px!important;
+  border-radius:12px!important;
   background:
     radial-gradient(120% 88% at 48% 0%,rgba(22,67,240,.46),transparent 62%),
     linear-gradient(165deg,#0826c4,#07158d 73%,#07117b)!important;
@@ -797,9 +797,9 @@ button.v42-compare-card{
   cursor:pointer!important;
 }
 .v42-compare-card.selected>img{
-  width:128px!important;
-  height:128px!important;
-  margin:3px 0 8px!important;
+  width:clamp(88px,24vw,103px)!important;
+  height:clamp(88px,24vw,103px)!important;
+  margin:2px 0 6px!important;
   object-fit:contain!important;
   object-position:center!important;
 }
@@ -814,18 +814,18 @@ button.v42-compare-card{
 .v42-compare-card-copy b{
   max-width:100%!important;
   color:#fff!important;
-  font-size:17px!important;
+  font-size:16px!important;
   line-height:1.05!important;
   font-weight:600!important;
   overflow-wrap:anywhere!important;
 }
 .v42-compare-card.empty .v42-compare-card-copy b{
   color:#13e6ee!important;
-  font-size:17px!important;
+  font-size:16px!important;
 }
 .v42-compare-card-copy small{
   color:#c2c5dd!important;
-  font-size:15px!important;
+  font-size:14px!important;
   line-height:1!important;
   font-weight:400!important;
 }
@@ -853,9 +853,9 @@ button.v42-compare-card{
   font-weight:300!important;
 }
 .v42-compare-shield{
-  width:112px!important;
-  height:132px!important;
-  margin:5px auto 8px!important;
+  width:clamp(78px,21vw,90px)!important;
+  height:auto!important;
+  margin:2px auto 7px!important;
   display:block!important;
   filter:drop-shadow(0 8px 11px rgba(0,0,60,.18))!important;
 }
@@ -869,14 +869,14 @@ button.v42-compare-card{
 .v42-compare-filters>button,
 .v42-compare-filters>div{
   min-width:0!important;
-  height:45px!important;
+  height:40px!important;
   margin:0!important;
   padding:0 14px!important;
   display:flex!important;
   align-items:center!important;
   gap:9px!important;
   border:0!important;
-  border-radius:14px!important;
+  border-radius:11px!important;
   background:#10117b!important;
   color:#fff!important;
   box-shadow:none!important;
@@ -920,8 +920,8 @@ button.v42-compare-card{
   text-align:center!important;
 }
 .v42-compare-pitch{
-  width:138px!important;
-  height:103px!important;
+  width:122px!important;
+  height:92px!important;
   margin:0 0 28px!important;
   filter:drop-shadow(0 17px 11px rgba(0,0,35,.32))!important;
 }
@@ -933,7 +933,7 @@ button.v42-compare-card{
 .v42-compare-empty-state h2{
   margin:0!important;
   color:#fff!important;
-  font-size:28px!important;
+  font-size:24px!important;
   line-height:1.06!important;
   font-weight:430!important;
   letter-spacing:-.025em!important;
