@@ -5,6 +5,32 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
   <script>
     (function () {
+      const RECOVERY_KEY='ljr-ui-recovery-v13';
+      if(!sessionStorage.getItem(RECOVERY_KEY) && ('serviceWorker' in navigator || 'caches' in window)){
+        sessionStorage.setItem(RECOVERY_KEY,'1');
+        const tasks=[];
+        if('serviceWorker' in navigator){
+          tasks.push(navigator.serviceWorker.getRegistrations()
+            .then(regs=>Promise.all(regs.map(reg=>reg.unregister())))
+            .catch(()=>{}));
+        }
+        if('caches' in window){
+          tasks.push(caches.keys()
+            .then(keys=>Promise.all(keys.filter(k=>k.startsWith('liga-juventino-')).map(k=>caches.delete(k))))
+            .catch(()=>{}));
+        }
+        if(navigator.serviceWorker?.controller){
+          Promise.all(tasks).finally(()=>{
+            const u=new URL(location.href);
+            u.searchParams.set('recovery','v13');
+            location.replace(u.toString());
+          });
+        }
+      }
+    })();
+  </script>
+  <script>
+    (function () {
       const mode = new URLSearchParams(location.search).get('mode') || '';
       const html = document.documentElement;
       if (mode === 'desktop') {
