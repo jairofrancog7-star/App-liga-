@@ -202,8 +202,9 @@ function createStartup(){
 }
 
 function bootV10Brand(){
+  document.getElementById('v7Startup')?.remove();
+  document.body.classList.remove('v7-startup-lock');
   installBrandHeader();
   watchRouteLayout();
-  createStartup();
 }
 if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',bootV10Brand,{once:true}); else bootV10Brand();
