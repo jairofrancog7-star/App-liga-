@@ -38,7 +38,6 @@ const competitionChildren=new Set(['match','discipline','disciplina','discipline
 const fantasyChildren=new Set(['fantasy','fantasyTeam','fantasyLeagues','fantasyAccess']);
 function route(){return (location.hash.replace(/^#\/?/,'')||'home').split('?')[0]}
 function activeRoute(r){
-  if(r==='teamDetail')return 'home';
   if(moreChildren.has(r))return 'more';
   if(fantasyChildren.has(r))return 'fantasy';
   if(competitionChildren.has(r))return 'competition';
