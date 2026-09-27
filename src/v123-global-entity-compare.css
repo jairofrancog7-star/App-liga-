@@ -160,6 +160,26 @@ body.v123-player-compare-active #screen{
   line-height:1;
   font-weight:300;
 }
+.v123-player-swap{
+  position:absolute;
+  top:10px;
+  right:12px;
+  width:28px;
+  height:28px;
+  display:grid;
+  place-items:center;
+  color:#fff;
+  pointer-events:none;
+}
+.v123-player-swap svg{
+  width:24px;
+  height:24px;
+  fill:none;
+  stroke:currentColor;
+  stroke-width:1.9;
+  stroke-linecap:round;
+  stroke-linejoin:round;
+}
 
 .v123-avatar{
   width:118px;
@@ -176,11 +196,16 @@ body.v123-player-compare-active #screen{
   box-shadow:inset 0 0 0 1px rgba(255,255,255,.12);
 }
 .v123-avatar.ghost{
-  color:#83a0ff;
-  font-size:48px;
-  font-weight:300;
+  color:#637ad3;
   background:linear-gradient(180deg,#17339a,#10206e);
-  opacity:.85;
+  opacity:.88;
+}
+.v123-avatar.ghost svg{
+  width:82%;
+  height:82%;
+  display:block;
+  fill:currentColor;
+  opacity:.72;
 }
 .v123-player-copy{
   min-width:0;
