@@ -4483,7 +4483,7 @@ function predictorView(){
   return `<section class="v37-predictor-reference" aria-label="Pronostica Seis">
     <div class="v37-predictor-marks" aria-hidden="true"><i></i><i></i></div>
     <h1 class="v37-predictor-title"><span>PRONOSTICA</span><span>SEIS</span></h1>
-    <img class="v37-predictor-crest" src="./assets/reference/predictor-v36/liga-crest-white.webp" alt="Liga Municipal de Fútbol Juventino Rosas">
+    <img class="v37-predictor-crest" src="./assets/reference/predictor-v36/liga-crest-white.webp?v=20260927-restore-three" alt="Liga Municipal de Fútbol Juventino Rosas">
     <button type="button" class="v37-predictor-enter" data-route="predictorSix" aria-label="Abrir Pronostica Seis">
       <span class="v37-score-panel" aria-hidden="true"><b>2</b><b>?</b><b>?</b></span>
       <img class="v37-predictor-trophy" src="./assets/reference/final-trophy-drive.png" alt="">
