@@ -140,7 +140,10 @@ html.v31-hospitality-active .bottom-nav,
 body[data-app-route="playerCompare"] .bottom-nav,
 body[data-app-route="profile"] .bottom-nav,
 body[data-app-route="notifications"] .bottom-nav,
-body[data-app-route="leagueTools"] .bottom-nav{
+body[data-app-route="leagueTools"] .bottom-nav,
+body.v42-team-compare-open .bottom-nav,
+body[data-app-route="following"].v28-follow-sheet-open .bottom-nav,
+body.v131-print-cedula .bottom-nav{
   display:none!important;
 }
 
