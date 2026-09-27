@@ -1170,6 +1170,17 @@ body[data-app-route="competition"] .v12-bracket-reference.stage-semifinal .v12-s
   }
 }
 
+
+/* V54 — Corrección solicitada con la segunda referencia:
+   - sin logo viejo/negro encima de la clasificación;
+   - selector Compacta / Completa / Criterios con letras legibles,
+     centradas y las tres zonas del mismo ancho. */
+body.v40-standings-master .topbar .wordmark{
+  background-image:none!important;
+  background-color:transparent!important;
+  box-shadow:none!important;
+}
+
 body.v40-standings-master .v40-team-logo[src*="liga-logo.webp"],
 body.v40-standings-master .v12-team-logo[src*="liga-logo.webp"],
 body.v40-standings-master .v12-criteria-logo[src*="liga-logo.webp"]{
