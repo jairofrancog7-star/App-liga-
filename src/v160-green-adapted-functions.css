@@ -400,19 +400,6 @@ body[data-app-route="matchday"] .v164-timeline-row strong{
 /* V171 — MATCH DAY content cleanup.
    Shared detail header and global navigation are owned by V7/V34. */
 @media (max-width:1023px){
-  body[data-app-route="matchday"] .v66-compact-top,
-  body[data-app-route="matchday"] [data-v66-compact-top]{
-    display:none!important;
-    visibility:hidden!important;
-    height:0!important;
-    min-height:0!important;
-    max-height:0!important;
-    margin:0!important;
-    padding:0!important;
-    border:0!important;
-    overflow:hidden!important;
-  }
-
   body[data-app-route="matchday"] #screen{
     margin-top:0!important;
     border-top:0!important;
