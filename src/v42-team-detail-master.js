@@ -267,7 +267,7 @@ function bind(){
  document.querySelector('[data-v42-follow]')?.addEventListener('click',()=>{toggleFollow();render()},{once:true});
  document.querySelector('[data-v42-bell]')?.addEventListener('click',()=>{notifyOpen=true;render()},{once:true});
  document.querySelectorAll('[data-v42-share]').forEach(b=>b.addEventListener('click',share,{once:true}));
- document.querySelectorAll('[data-v42-compare]').forEach(b=>b.addEventListener('click',e=>{e.preventDefault();e.stopPropagation();compareOpen=true;compareTarget='';comparePickerOpen=false;render()},{once:true});
+ document.querySelectorAll('[data-v42-compare]').forEach(b=>b.addEventListener('click',e=>{e.preventDefault();e.stopPropagation();compareOpen=true;compareTarget='';comparePickerOpen=false;render()},{once:true}));
  document.querySelector('[data-v42-close-notify]')?.addEventListener('click',()=>{notifyOpen=false;render()},{once:true});
  document.querySelector('[data-v42-close-compare]')?.addEventListener('click',()=>{compareOpen=false;compareTarget='';comparePickerOpen=false;render()},{once:true});
  document.querySelectorAll('[data-v42-close-overlay]').forEach(x=>x.addEventListener('click',()=>{notifyOpen=false;compareOpen=false;comparePickerOpen=false;render()},{once:true}));
