@@ -22,98 +22,14 @@ body[data-app-route="moments"] #screen{
   max-width:none!important;
   min-height:0!important;
   margin:0!important;
-  padding:0 0 calc(var(--bottom-nav-h,60px) + 14px)!important;
+  padding:0 0 calc(var(--bottom-nav-h,69px) + 14px)!important;
   overflow:visible!important;
   animation:none!important;
   background:var(--app-bg,#06075f)!important;
 }
 
-/* Detail header measured from the supplied Momentos master. */
-body[data-app-route="moments"] #app>.topbar{
-  display:block!important;
-  visibility:visible!important;
-  position:sticky!important;
-  top:0!important;
-  z-index:120!important;
-  height:calc(112px + env(safe-area-inset-top))!important;
-  min-height:calc(112px + env(safe-area-inset-top))!important;
-  max-height:calc(112px + env(safe-area-inset-top))!important;
-  margin:0!important;
-  padding:0!important;
-  overflow:hidden!important;
-  isolation:isolate!important;
-  background-color:#07106f!important;
-  background-image:url('../public/brand-neon-header.svg')!important;
-  background-repeat:no-repeat!important;
-  background-size:auto 100%!important;
-  background-position:center top!important;
-  border:0!important;
-  border-bottom:0!important;
-  box-shadow:none!important;
-  backdrop-filter:none!important;
-  -webkit-backdrop-filter:none!important;
-}
-body[data-app-route="moments"] #app>.topbar::before{
-  content:""!important;
-  display:block!important;
-  position:absolute!important;
-  inset:0!important;
-  z-index:1!important;
-  pointer-events:none!important;
-  background:linear-gradient(180deg,rgba(4,9,100,.02),rgba(3,6,75,.18) 66%,rgba(3,5,68,.48))!important;
-}
-body[data-app-route="moments"] #app>.topbar::after{
-  content:"Momentos"!important;
-  display:block!important;
-  position:absolute!important;
-  left:72px!important;
-  right:20px!important;
-  top:auto!important;
-  bottom:24px!important;
-  z-index:5!important;
-  color:#fff!important;
-  font-family:Inter,Roboto,Arial,sans-serif!important;
-  font-size:28px!important;
-  line-height:1!important;
-  font-weight:520!important;
-  letter-spacing:-.025em!important;
-  white-space:nowrap!important;
-  pointer-events:none!important;
-}
-body[data-app-route="moments"] #app>.topbar .wordmark,
-body[data-app-route="moments"] #app>.topbar .profile-button{
-  display:none!important;
-  visibility:hidden!important;
-  pointer-events:none!important;
-}
-body[data-app-route="moments"] #app>.topbar .back-button,
-body[data-app-route="moments"] #app>.topbar .back-button.is-hidden{
-  display:grid!important;
-  visibility:visible!important;
-  position:absolute!important;
-  left:18px!important;
-  top:auto!important;
-  bottom:15px!important;
-  width:44px!important;
-  height:44px!important;
-  margin:0!important;
-  padding:0!important;
-  place-items:center!important;
-  border:0!important;
-  border-radius:0!important;
-  background:transparent!important;
-  color:#fff!important;
-  z-index:6!important;
-}
-body[data-app-route="moments"] #app>.topbar .back-button svg{
-  width:30px!important;
-  height:30px!important;
-  fill:none!important;
-  stroke:currentColor!important;
-  stroke-width:2!important;
-  stroke-linecap:round!important;
-  stroke-linejoin:round!important;
-}
+/* The shared V7 DETAIL header owns Momentos.
+   Moment cards/sprites below remain route-specific and unchanged. */
 
 .v26-moments-page{
   width:100%;
@@ -215,27 +131,3 @@ body[data-app-route="moments"] .v105-bottom[data-v105-route="moments"]{
 @media(prefers-reduced-motion:reduce){
   .v26-moment-card:active{transform:none}
 }
-
-
-/* Momentos keeps its master back/title while participating in the same header motion. */
-@media(max-width:1023px){
-  body.v10-header-collapsed[data-app-route="moments"] #app>.topbar{
-    height:calc(var(--header-collapsed-h,72px) + env(safe-area-inset-top))!important;
-    min-height:calc(var(--header-collapsed-h,72px) + env(safe-area-inset-top))!important;
-    max-height:calc(var(--header-collapsed-h,72px) + env(safe-area-inset-top))!important;
-    background-position:center 24%!important;
-  }
-  body.v10-header-collapsed[data-app-route="moments"] #app>.topbar::after{
-    left:64px!important;
-    bottom:15px!important;
-    font-size:24px!important;
-  }
-  body.v10-header-collapsed[data-app-route="moments"] #app>.topbar .back-button,
-  body.v10-header-collapsed[data-app-route="moments"] #app>.topbar .back-button.is-hidden{
-    left:12px!important;
-    bottom:7px!important;
-    width:42px!important;
-    height:42px!important;
-  }
-}
-
