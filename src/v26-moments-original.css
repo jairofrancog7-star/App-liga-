@@ -101,23 +101,6 @@ body[data-app-route="moments"] .v105-bottom[data-v105-route="moments"]{
 }
 
 @media(max-width:390px){
-  body[data-app-route="moments"] #app>.topbar{
-    height:calc(104px + env(safe-area-inset-top))!important;
-    min-height:calc(104px + env(safe-area-inset-top))!important;
-    max-height:calc(104px + env(safe-area-inset-top))!important;
-  }
-  body[data-app-route="moments"] #app>.topbar::after{
-    left:66px!important;
-    bottom:22px!important;
-    font-size:26px!important;
-  }
-  body[data-app-route="moments"] #app>.topbar .back-button,
-  body[data-app-route="moments"] #app>.topbar .back-button.is-hidden{
-    left:14px!important;
-    bottom:13px!important;
-    width:42px!important;
-    height:42px!important;
-  }
   .v26-moments-page{padding:12px 14px 16px}
   .v26-moments-grid{gap:10px 8px}
   .v26-moment-card{border-radius:12px}
