@@ -31,6 +31,26 @@ function copyStaticReferences() {
         cpSync(historyFrom, historyTo, { recursive: true, force: true });
       }
 
+      // The source index still contains a small set of classic, non-module
+      // <script src="./src/..."> tags for History photo payloads/hardfixes.
+      // Vite does not bundle or copy those files automatically. Missing them in
+      // GitHub Pages leaves dozens of parser-blocking 404 requests and can make
+      // the app look permanently blank on mobile. Copy exactly the classic
+      // scripts referenced by the source index into dist/src.
+      const sourceIndex = readFileSync(resolve('index.html'), 'utf8');
+      const classicScriptRefs = [...sourceIndex.matchAll(/<script(?![^>]*type=["']module["'])[^>]*src=["']\.\/src\/([^"'?]+\.js)(?:\?[^"']*)?["'][^>]*><\/script>/g)]
+        .map(match => match[1]);
+
+      for (const relativeScript of new Set(classicScriptRefs)) {
+        const from = resolve('src', relativeScript);
+        const to = resolve('dist', 'src', relativeScript);
+        if (!existsSync(from)) {
+          throw new Error('Classic script referenced by index.html is missing: src/' + relativeScript);
+        }
+        mkdirSync(dirname(to), { recursive: true });
+        copyFileSync(from, to);
+      }
+
       // V230 — reconstruir como archivo binario real la foto de La Esperanza.
       // Los scripts clásicos de src no se copian a dist por Vite.
       const esperanzaParts = [
