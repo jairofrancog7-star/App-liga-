@@ -1,6 +1,6 @@
 :root{
   --v10-deep:#02065f;
-  --v10-home-header-h:var(--header-expanded-h,98px);
+  --v10-home-header-h:clamp(138px,35.22vw,183px);
   --v10-compact-header-h:78px;
 }
 html,body{background:var(--v10-deep)}
@@ -15,93 +15,58 @@ body.v10-detail-header #app > .topbar{
   visibility:visible!important;
 }
 
-/* HOME ROOT HEADER — real component reconstruction from the supplied football header.
-   The decorative lines are local SVG artwork; Liga crest/profile remain real controls. */
+/* HOME ONLY: keep the branded wide artwork exactly where it belongs. */
 body[data-app-route="home"] .topbar{
-  height:calc(var(--v10-home-header-h) + env(safe-area-inset-top))!important;
-  min-height:calc(var(--v10-home-header-h) + env(safe-area-inset-top))!important;
-  max-height:calc(var(--v10-home-header-h) + env(safe-area-inset-top))!important;
+  height:var(--v10-home-header-h)!important;
+  min-height:var(--v10-home-header-h)!important;
   padding:0!important;
-  position:sticky!important;
-  top:0!important;
+  position:sticky;
+  top:0;
   display:block!important;
-  overflow:hidden!important;
-  isolation:isolate!important;
-  z-index:120!important;
-  background-color:#050b61!important;
-  background-image:url('../public/brand-neon-header.svg')!important;
+  overflow:hidden;
+  isolation:isolate;
+  z-index:30;
+  background-color:var(--v10-deep)!important;
+  background-image:url('https://d2ol7oe51mr4n9.cloudfront.net/user_3JNvttsAwr0QjxhuX5O1uaa9bvv/f2d42133-aeeb-4665-bfd1-693941efa7ee.jpg')!important;
   background-repeat:no-repeat!important;
-  background-size:100% auto!important;
+  background-size:cover!important;
   background-position:center top!important;
   border:0!important;
   box-shadow:none!important;
   backdrop-filter:none!important;
-  -webkit-backdrop-filter:none!important;
 }
-body[data-app-route="home"] .topbar::before{
-  content:""!important;
-  position:absolute!important;
-  inset:0!important;
-  display:block!important;
-  pointer-events:none!important;
-  background:linear-gradient(180deg,rgba(4,10,106,.02) 0%,rgba(4,8,83,.06) 55%,rgba(2,4,69,.54) 100%)!important;
-}
+body[data-app-route="home"] .topbar::before,
 body[data-app-route="home"] .topbar::after{content:none!important;display:none!important}
-
 body[data-app-route="home"] .topbar .wordmark{
   position:absolute!important;
-  left:16px!important;
-  top:calc(env(safe-area-inset-top) + 13px)!important;
-  width:68px!important;
-  height:68px!important;
-  min-width:68px!important;
-  min-height:68px!important;
-  max-width:68px!important;
-  max-height:68px!important;
+  left:2.5%!important;
+  top:13%!important;
+  width:20%!important;
+  height:42%!important;
   margin:0!important;
   padding:0!important;
   border:0!important;
-  border-radius:0!important;
-  background-color:transparent!important;
-  background-image:url('../assets/reference/predictor-v36/liga-crest-white.webp')!important;
-  background-repeat:no-repeat!important;
-  background-position:center!important;
-  background-size:50px 50px!important;
+  background:transparent!important;
   color:transparent!important;
   font-size:0!important;
-  box-shadow:none!important;
-  z-index:4!important;
-  cursor:pointer!important;
+  z-index:4;
+  cursor:pointer;
 }
-body[data-app-route="home"] .topbar .wordmark::before,
-body[data-app-route="home"] .topbar .wordmark::after{
-  content:none!important;
-  display:none!important;
-}
-
 body[data-app-route="home"] .topbar .profile-button{
   position:absolute!important;
-  right:16px!important;
-  top:calc(env(safe-area-inset-top) + 20px)!important;
-  width:42px!important;
-  height:42px!important;
-  min-width:42px!important;
-  min-height:42px!important;
-  max-width:42px!important;
-  max-height:42px!important;
+  right:2.2%!important;
+  top:12%!important;
+  width:15%!important;
+  height:42%!important;
   margin:0!important;
   padding:0!important;
   border:0!important;
   border-radius:0!important;
-  background-color:transparent!important;
-  background-image:url('../public/profile-reference.svg')!important;
-  background-repeat:no-repeat!important;
-  background-position:center!important;
-  background-size:29px 29px!important;
+  background:transparent!important;
   color:transparent!important;
   box-shadow:none!important;
-  z-index:4!important;
-  cursor:pointer!important;
+  z-index:4;
+  cursor:pointer;
 }
 body[data-app-route="home"] .topbar .profile-button svg{display:none!important}
 body[data-app-route="home"] .topbar .back-button{display:none!important}
@@ -166,7 +131,7 @@ body:not([data-app-route="home"]) .topbar .wordmark{
   border:0!important;
   border-radius:12px!important;
   background-color:transparent!important;
-  background-image:url('../assets/reference/predictor-v36/liga-crest-white.webp')!important;
+  background-image:url('https://d2ol7oe51mr4n9.cloudfront.net/user_3JNvttsAwr0QjxhuX5O1uaa9bvv/720d1f82-1d59-4a7a-af69-9e7e8da0250a.png')!important;
   background-size:contain!important;
   background-repeat:no-repeat!important;
   background-position:center!important;
@@ -184,51 +149,41 @@ body:not([data-app-route="home"]) .topbar .profile-button{
   margin:0!important;
   padding:0!important;
   justify-self:end!important;
-  border:0!important;
-  border-radius:0!important;
-  background-color:transparent!important;
-  background-image:url('../public/profile-reference.svg')!important;
-  background-repeat:no-repeat!important;
-  background-position:center!important;
-  background-size:30px 30px!important;
-  color:transparent!important;
+  border:2px solid rgba(255,255,255,.9)!important;
+  border-radius:50%!important;
+  background:rgba(0,15,98,.28)!important;
+  color:#fff!important;
   box-shadow:none!important;
-  display:block!important;
+  display:grid!important;
+  place-items:center!important;
   z-index:3;
 }
 body:not([data-app-route="home"]) .topbar .profile-button svg{
-  display:none!important;
+  display:block!important;
+  width:24px!important;
+  height:24px!important;
+  fill:none!important;
+  stroke:currentColor!important;
+  stroke-width:1.8!important;
 }
 
 /* Back button replaces the left logo on detail/account screens. */
 body.v10-detail-route .topbar .wordmark{visibility:hidden!important;pointer-events:none!important}
 body.v10-detail-route .topbar .back-button{
   position:absolute!important;
-  left:14px!important;
-  bottom:8px!important;
+  left:16px!important;
+  bottom:10px!important;
   top:auto!important;
-  width:44px!important;
-  height:44px!important;
-  margin:0!important;
-  padding:0!important;
-  border:0!important;
-  border-radius:0!important;
-  background:transparent!important;
+  width:40px!important;
+  height:40px!important;
+  border:1px solid rgba(255,255,255,.22)!important;
+  border-radius:50%!important;
+  background:rgba(2,8,79,.46)!important;
   color:#fff!important;
-  backdrop-filter:none!important;
-  -webkit-backdrop-filter:none!important;
+  backdrop-filter:blur(8px);
   display:grid!important;
   place-items:center!important;
   z-index:5;
-}
-body.v10-detail-route .topbar .back-button svg{
-  width:29px!important;
-  height:29px!important;
-  fill:none!important;
-  stroke:currentColor!important;
-  stroke-width:2!important;
-  stroke-linecap:round!important;
-  stroke-linejoin:round!important;
 }
 body.v10-detail-route .topbar .back-button.is-hidden{display:grid!important;visibility:visible!important}
 body[data-app-route="profile"] .topbar .profile-button{visibility:hidden!important;pointer-events:none!important}
@@ -239,16 +194,15 @@ body[data-app-route="profile"] .topbar .profile-button{visibility:hidden!importa
 .topbar [aria-label*="Notific"],
 .topbar [aria-label*="notific"]{display:none!important}
 
-/* Route titles already owned by the master header are never rendered twice.
-   Scope this to direct legacy titles only; nested route-specific headings remain intact. */
+/* Route titles already shown inside the compact header should not be repeated. */
 body[data-app-route="competition"] #screen > .eyebrow:first-child,
 body[data-app-route="competition"] #screen > .screen-title,
-body.v10-detail-header #screen > .eyebrow:first-child,
-body.v10-detail-header #screen > .screen-title{
+body[data-app-route="profile"] #screen > .eyebrow:first-child,
+body[data-app-route="profile"] #screen > .screen-title{
   display:none!important;
 }
 body[data-app-route="competition"] #screen,
-body.v10-detail-header #screen{
+body[data-app-route="profile"] #screen{
   padding-top:14px!important;
 }
 body[data-app-route="competition"] #screen > .tabs{
@@ -304,7 +258,7 @@ body[data-app-route="home"] #screen > .stories{
   :root{--v10-compact-header-h:72px}
   body:not([data-app-route="home"]) .topbar{padding-left:12px!important;padding-right:12px!important}
   body:not([data-app-route="home"]) .topbar::after{left:64px;right:64px;bottom:15px;font-size:22px}
-  body.v10-detail-route .topbar .back-button{left:10px!important}
+  body.v10-detail-route .topbar .back-button{left:12px!important}
   body[data-app-route="home"] #screen{padding-top:6px!important}
 }
 @media(prefers-reduced-motion:reduce){
