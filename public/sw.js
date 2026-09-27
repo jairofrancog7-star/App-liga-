@@ -1,4 +1,4 @@
-const CACHE='liga-juventino-v11-ui-recovery-20260927';
+const CACHE='liga-juventino-v12-black-screen-loopfix-20260927';
 const CORE=['./','./index.html','./manifest.webmanifest','./brand-neon-header.svg','./profile-reference.svg'];
 
 self.addEventListener('install',event=>{
