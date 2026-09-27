@@ -8,6 +8,11 @@ html.v31-hospitality-active body{
   background:#01044d!important;
   overflow:hidden!important;
 }
+html.v31-hospitality-active #app>.topbar,
+html.v31-hospitality-active .bottom-nav{
+  display:none!important;
+}
+
 html.v31-hospitality-active .app-shell{
   width:100%!important;
   max-width:none!important;
@@ -215,7 +220,7 @@ html.v31-hospitality-active #screen.screen{
   z-index:3!important;
   left:48px!important;
   right:32px!important;
-  top:39.95%!important;
+  top:calc(31.65% + 110px)!important;
   margin:0!important;
   color:rgba(225,226,245,.58)!important;
   font-size:clamp(16px,3.3vw,22px)!important;
@@ -286,7 +291,7 @@ html.v31-hospitality-active #screen.screen{
   .v31-league-name{font-size:12px!important}
   .v31-vip{font-size:21px!important}
   .v31-code-wrap{left:20px!important;right:20px!important;top:31.8%!important;height:92px!important;padding:0 20px!important;gap:22px!important}
-  .v31-code-note{left:32px!important;right:20px!important;top:40.6%!important;font-size:16px!important}
+  .v31-code-note{left:32px!important;right:20px!important;top:calc(31.8% + 104px)!important;font-size:16px!important}
   .v31-continue{left:20px!important;right:20px!important;bottom:calc(env(safe-area-inset-bottom,0px) + 38px)!important;height:68px!important;border-radius:23px!important;font-size:27px!important}
 }
 @media(min-width:692px){
@@ -328,7 +333,7 @@ html.v31-hospitality-active .v31-status{
 }
 
 .v31-selected-content{
-  grid-template-columns:40px 74px minmax(0,1fr)!important;
+  grid-template-columns:36px 54px minmax(0,1fr)!important;
   align-items:center!important;
   justify-items:start!important;
   gap:7px!important;
@@ -348,8 +353,8 @@ html.v31-hospitality-active .v31-status{
 .v31-league-logo{
   justify-self:center!important;
   align-self:center!important;
-  width:68px!important;
-  height:68px!important;
+  width:50px!important;
+  height:50px!important;
   margin:0!important;
 }
 
@@ -405,7 +410,7 @@ html.v31-hospitality-active .v31-status{
     top:calc(env(safe-area-inset-top,0px) + 72px)!important;
   }
   .v31-selected-content{
-    grid-template-columns:31px 58px minmax(0,1fr)!important;
+    grid-template-columns:29px 48px minmax(0,1fr)!important;
     gap:5px!important;
     padding:5px 8px 5px 13px!important;
   }
@@ -414,8 +419,8 @@ html.v31-hospitality-active .v31-status{
     height:16px!important;
   }
   .v31-league-logo{
-    width:58px!important;
-    height:58px!important;
+    width:46px!important;
+    height:46px!important;
   }
   .v31-league-name{
     font-size:12px!important;
@@ -427,4 +432,25 @@ html.v31-hospitality-active .v31-status{
   .v31-continue{
     bottom:calc(env(safe-area-inset-bottom,0px) + 16px)!important;
   }
+}
+
+
+/* RESTORE3_HOSPITALITY_LOCK — preserve the supplied VIP composition.
+   One fullscreen surface, no duplicated app chrome and no overlapping copy. */
+html.v31-hospitality-active .v31-league-logo{
+  background:transparent!important;
+  mix-blend-mode:normal!important;
+  filter:none!important;
+}
+html.v31-hospitality-active .v31-code-wrap{
+  overflow:visible!important;
+}
+html.v31-hospitality-active .v31-code-note{
+  z-index:4!important;
+  white-space:normal!important;
+  overflow:visible!important;
+}
+html.v31-hospitality-active .v31-selected-content,
+html.v31-hospitality-active .v31-access-option{
+  overflow:visible!important;
 }
