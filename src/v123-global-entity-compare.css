@@ -1,6 +1,7 @@
 /* V123 — Player Compare visual master.
    Business logic/data stay in v123-global-entity-compare.js and the official directory.
-   This route is an intentional fullscreen reference; the shared bottom nav remains real. */
+   This route is an intentional fullscreen reference; V34 hides the one shared nav
+   instead of rendering a second navigation component. */
 :root{
   --v123-bg:#03045f;
   --v123-hero:#0827df;
@@ -28,13 +29,13 @@ body.v123-player-compare-active #screen{
   max-width:520px!important;
   min-height:100dvh!important;
   margin:0 auto!important;
-  padding:0 0 calc(var(--bottom-nav-h,60px) + env(safe-area-inset-bottom))!important;
+  padding:0 0 env(safe-area-inset-bottom)!important;
   overflow-x:hidden!important;
   animation:none!important;
 }
 
 .v123-player-compare{
-  min-height:calc(100dvh - var(--bottom-nav-h,60px));
+  min-height:100dvh;
   color:#fff;
   background:var(--v123-bg);
   font-family:Inter,Roboto,Arial,sans-serif;
@@ -121,14 +122,14 @@ body.v123-player-compare-active #screen{
 .v123-player-card{
   position:relative;
   min-width:0;
-  min-height:278px;
+  min-height:229px;
   margin:0;
-  padding:20px 12px 14px;
+  padding:16px 11px 12px;
   display:grid;
   grid-template-rows:auto auto 1fr;
   justify-items:center;
   align-content:start;
-  gap:9px;
+  gap:7px;
   overflow:hidden;
   border:0;
   border-radius:18px;
@@ -280,8 +281,8 @@ body.v123-player-compare-active #screen{
 }
 
 .v123-choose-empty{
-  min-height:640px;
-  padding:130px 22px 80px;
+  min-height:calc(100dvh - 411px - env(safe-area-inset-top));
+  padding:190px 22px 48px;
   display:flex;
   flex-direction:column;
   align-items:center;
@@ -307,7 +308,7 @@ body.v123-player-compare-active #screen{
   font-weight:650;
 }
 .v123-league-mark{
-  margin-top:72px;
+  margin-top:52px;
   display:grid;
   justify-items:center;
   gap:7px;
@@ -538,16 +539,16 @@ body.v123-player-compare-active #screen{
 @media(max-width:390px){
   .v123-compare-hero{padding-left:14px;padding-right:14px}
   .v123-duel{gap:10px;margin-top:44px}
-  .v123-player-card{min-height:248px;padding:16px 9px 12px;border-radius:16px}
+  .v123-player-card{min-height:209px;padding:14px 9px 11px;border-radius:16px}
   .v123-avatar{width:100px;height:100px;font-size:25px}
   .v123-player-copy strong,.v123-player-card.empty>strong{font-size:15px}
   .v123-player-copy small,.v123-player-card.empty>small{font-size:12px}
   .v123-team-logo{width:28px;height:28px}
   .v123-filter-row{gap:10px}
   .v123-filter-row>span{height:43px;padding:0 12px;font-size:12px}
-  .v123-choose-empty{min-height:560px;padding-top:105px}
+  .v123-choose-empty{min-height:calc(100dvh - 386px - env(safe-area-inset-top));padding-top:176px;padding-bottom:42px}
   .v123-choose-empty h2{font-size:22px}
-  .v123-league-mark{margin-top:58px}
+  .v123-league-mark{margin-top:48px}
   .v123-results{padding-left:14px;padding-right:14px}
   .v123-picker-shell{padding-left:14px;padding-right:14px}
   .v123-search{height:54px}
@@ -555,7 +556,7 @@ body.v123-player-compare-active #screen{
 }
 
 @media(max-width:340px){
-  .v123-player-card{min-height:226px}
+  .v123-player-card{min-height:198px}
   .v123-avatar{width:88px;height:88px}
   .v123-player-copy strong,.v123-player-card.empty>strong{font-size:14px}
   .v123-filter-row>span{font-size:11px}
