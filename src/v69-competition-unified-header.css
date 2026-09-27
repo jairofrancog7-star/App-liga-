@@ -4,7 +4,7 @@
 
 @media (max-width:1023px){
   body[data-app-route="competition"]{
-    --competition-header-h:var(--header-expanded-h,98px);
+    --competition-header-h:104px;
   }
 
   body[data-app-route="competition"] .topbar{
@@ -120,6 +120,9 @@
 }
 
 @media(max-width:380px){
+  body[data-app-route="competition"]{
+    --competition-header-h:98px;
+  }
   body[data-app-route="competition"] .topbar::after{
     left:18px!important;
     right:52px!important;
@@ -137,3 +140,30 @@
     max-height:28px!important;
   }
 }
+
+
+/* Collapsed state comes only from the global V10 scroll controller. */
+@media(max-width:1023px){
+  body.v10-header-collapsed[data-app-route="competition"] .topbar{
+    height:calc(var(--header-collapsed-h,72px) + env(safe-area-inset-top))!important;
+    min-height:calc(var(--header-collapsed-h,72px) + env(safe-area-inset-top))!important;
+    max-height:calc(var(--header-collapsed-h,72px) + env(safe-area-inset-top))!important;
+    background-position:center 24%!important;
+  }
+  body.v10-header-collapsed[data-app-route="competition"] .topbar::after{
+    left:18px!important;
+    bottom:16px!important;
+    font-size:24px!important;
+  }
+  body.v10-header-collapsed[data-app-route="competition"] .topbar .profile-button{
+    right:16px!important;
+    bottom:16px!important;
+    width:26px!important;
+    height:26px!important;
+    min-width:26px!important;
+    min-height:26px!important;
+    max-width:26px!important;
+    max-height:26px!important;
+  }
+}
+
