@@ -209,41 +209,51 @@ body:not([data-app-route="home"]) .topbar .profile-button{
   margin:0!important;
   padding:0!important;
   justify-self:end!important;
-  border:2px solid rgba(255,255,255,.9)!important;
-  border-radius:50%!important;
-  background:rgba(0,15,98,.28)!important;
-  color:#fff!important;
+  border:0!important;
+  border-radius:0!important;
+  background-color:transparent!important;
+  background-image:url('../public/profile-reference.svg')!important;
+  background-repeat:no-repeat!important;
+  background-position:center!important;
+  background-size:30px 30px!important;
+  color:transparent!important;
   box-shadow:none!important;
-  display:grid!important;
-  place-items:center!important;
+  display:block!important;
   z-index:3;
 }
 body:not([data-app-route="home"]) .topbar .profile-button svg{
-  display:block!important;
-  width:24px!important;
-  height:24px!important;
-  fill:none!important;
-  stroke:currentColor!important;
-  stroke-width:1.8!important;
+  display:none!important;
 }
 
 /* Back button replaces the left logo on detail/account screens. */
 body.v10-detail-route .topbar .wordmark{visibility:hidden!important;pointer-events:none!important}
 body.v10-detail-route .topbar .back-button{
   position:absolute!important;
-  left:16px!important;
-  bottom:10px!important;
+  left:14px!important;
+  bottom:8px!important;
   top:auto!important;
-  width:40px!important;
-  height:40px!important;
-  border:1px solid rgba(255,255,255,.22)!important;
-  border-radius:50%!important;
-  background:rgba(2,8,79,.46)!important;
+  width:44px!important;
+  height:44px!important;
+  margin:0!important;
+  padding:0!important;
+  border:0!important;
+  border-radius:0!important;
+  background:transparent!important;
   color:#fff!important;
-  backdrop-filter:blur(8px);
+  backdrop-filter:none!important;
+  -webkit-backdrop-filter:none!important;
   display:grid!important;
   place-items:center!important;
   z-index:5;
+}
+body.v10-detail-route .topbar .back-button svg{
+  width:29px!important;
+  height:29px!important;
+  fill:none!important;
+  stroke:currentColor!important;
+  stroke-width:2!important;
+  stroke-linecap:round!important;
+  stroke-linejoin:round!important;
 }
 body.v10-detail-route .topbar .back-button.is-hidden{display:grid!important;visibility:visible!important}
 body[data-app-route="profile"] .topbar .profile-button{visibility:hidden!important;pointer-events:none!important}
@@ -318,7 +328,7 @@ body[data-app-route="home"] #screen > .stories{
   :root{--v10-compact-header-h:72px}
   body:not([data-app-route="home"]) .topbar{padding-left:12px!important;padding-right:12px!important}
   body:not([data-app-route="home"]) .topbar::after{left:64px;right:64px;bottom:15px;font-size:22px}
-  body.v10-detail-route .topbar .back-button{left:12px!important}
+  body.v10-detail-route .topbar .back-button{left:10px!important}
   body[data-app-route="home"] #screen{padding-top:6px!important}
 }
 @media(prefers-reduced-motion:reduce){
