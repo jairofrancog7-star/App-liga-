@@ -86,7 +86,7 @@ function playerCard(p,side){
  '</article>';
 }
 function comparison(primary,secondary){
- if(!secondary)return '<section class="v123-choose-empty"><div class="v123-pitch-icon" aria-hidden="true"><svg viewBox="0 0 96 72"><path d="M11 25 50 5l35 20-40 23L11 25Z"/><path d="m11 25 1 15 34 21 39-23V25M31 15l38 23M27 44l39-22M48 24c8 0 14 4 14 8s-6 8-14 8-14-4-14-8 6-8 14-8Z"/></svg></div><h2>Elige jugadores para comparar</h2><div class="v123-league-mark"><img src="./assets/reference/predictor-v36/liga-crest-white.webp" alt=""><span>LIGA MUNICIPAL DE FÚTBOL<br><b>JUVENTINO ROSAS</b><br>GUANAJUATO</span></div></section>';
+ if(!secondary)return '<section class="v123-choose-empty"><div class="v123-pitch-icon" aria-hidden="true"><svg viewBox="0 0 96 72"><path d="M11 25 50 5l35 20-40 23L11 25Z"/><path d="m11 25 1 15 34 21 39-23V25M31 15l38 23M27 44l39-22M48 24c8 0 14 4 14 8s-6 8-14 8-14-4-14-8 6-8 14-8Z"/></svg></div><h2>Elige jugadores para comparar</h2><div class="v123-league-mark"><img src="'+esc(LEAGUE_CREST)+'" alt=""><span>LIGA MUNICIPAL DE FÚTBOL<br><b>JUVENTINO ROSAS</b><br>GUANAJUATO</span></div></section>';
  const a=officialGoal(primary),b=officialGoal(secondary);
  const val=v=>v==null?'—':String(v);
  return '<section class="v123-results">'+
