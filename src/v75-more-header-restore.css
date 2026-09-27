@@ -7,7 +7,7 @@
 
 @media (max-width:1023px){
   body[data-app-route="more"]{
-    --v80-more-header-h:104px;
+    --v80-more-header-h:var(--header-expanded-h,98px);
     --v80-more-bg:#080b82;
     overflow-x:hidden!important;
     overflow-y:auto!important;
@@ -178,9 +178,6 @@
 }
 
 @media(max-width:560px){
-  body[data-app-route="more"]{
-    --v80-more-header-h:100px;
-  }
   body[data-app-route="more"] .topbar::after{
     left:20px!important;
     bottom:16px!important;
@@ -206,9 +203,6 @@
 }
 
 @media(max-width:390px){
-  body[data-app-route="more"]{
-    --v80-more-header-h:96px;
-  }
   body[data-app-route="more"] .topbar::after{
     left:18px!important;
     bottom:15px!important;
