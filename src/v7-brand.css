@@ -264,15 +264,16 @@ body[data-app-route="profile"] .topbar .profile-button{visibility:hidden!importa
 .topbar [aria-label*="Notific"],
 .topbar [aria-label*="notific"]{display:none!important}
 
-/* Route titles already shown inside the compact header should not be repeated. */
+/* Route titles already owned by the master header are never rendered twice.
+   Scope this to direct legacy titles only; nested route-specific headings remain intact. */
 body[data-app-route="competition"] #screen > .eyebrow:first-child,
 body[data-app-route="competition"] #screen > .screen-title,
-body[data-app-route="profile"] #screen > .eyebrow:first-child,
-body[data-app-route="profile"] #screen > .screen-title{
+body.v10-detail-header #screen > .eyebrow:first-child,
+body.v10-detail-header #screen > .screen-title{
   display:none!important;
 }
 body[data-app-route="competition"] #screen,
-body[data-app-route="profile"] #screen{
+body.v10-detail-header #screen{
   padding-top:14px!important;
 }
 body[data-app-route="competition"] #screen > .tabs{
