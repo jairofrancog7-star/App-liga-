@@ -31,6 +31,113 @@ body[data-app-route="moments"] #screen{
 /* The shared V7 DETAIL header owns Momentos.
    Moment cards/sprites below remain route-specific and unchanged. */
 
+/* MOMENTS_REFERENCE_HEADER_LOCK */
+body[data-app-route="moments"] #app>.topbar{
+  display:block!important;
+  visibility:visible!important;
+  position:sticky!important;
+  top:0!important;
+  z-index:120!important;
+  height:calc(82px + env(safe-area-inset-top))!important;
+  min-height:calc(82px + env(safe-area-inset-top))!important;
+  max-height:calc(82px + env(safe-area-inset-top))!important;
+  margin:0!important;
+  padding:0!important;
+  overflow:hidden!important;
+  isolation:isolate!important;
+  background-color:#07106f!important;
+  background-image:url('../public/brand-neon-header.svg')!important;
+  background-repeat:no-repeat!important;
+  background-size:auto 100%!important;
+  background-position:center top!important;
+  border:0!important;
+  border-bottom:1px solid rgba(255,255,255,.08)!important;
+  box-shadow:none!important;
+}
+body[data-app-route="moments"] #app>.topbar::after{
+  content:"Momentos"!important;
+  left:68px!important;
+  right:66px!important;
+  bottom:17px!important;
+  color:#fff!important;
+  font-family:Inter,Roboto,Arial,sans-serif!important;
+  font-size:25px!important;
+  line-height:1!important;
+  font-weight:750!important;
+  letter-spacing:-.025em!important;
+  white-space:nowrap!important;
+}
+body[data-app-route="moments"] #app>.topbar .wordmark{
+  visibility:hidden!important;
+  pointer-events:none!important;
+}
+body[data-app-route="moments"] #app>.topbar .back-button,
+body[data-app-route="moments"] #app>.topbar .back-button.is-hidden{
+  display:grid!important;
+  visibility:visible!important;
+  left:14px!important;
+  bottom:10px!important;
+  width:44px!important;
+  height:44px!important;
+  border:1px solid rgba(255,255,255,.20)!important;
+  border-radius:50%!important;
+  background:rgba(4,10,91,.50)!important;
+  place-items:center!important;
+}
+body[data-app-route="moments"] #app>.topbar .back-button svg{
+  width:28px!important;
+  height:28px!important;
+}
+body[data-app-route="moments"] #app>.topbar .profile-button{
+  display:grid!important;
+  visibility:visible!important;
+  position:absolute!important;
+  right:15px!important;
+  bottom:10px!important;
+  top:auto!important;
+  width:44px!important;
+  height:44px!important;
+  min-width:44px!important;
+  min-height:44px!important;
+  max-width:44px!important;
+  max-height:44px!important;
+  padding:0!important;
+  place-items:center!important;
+  border:2px solid rgba(255,255,255,.92)!important;
+  border-radius:50%!important;
+  background:rgba(1,11,90,.24)!important;
+  color:#fff!important;
+}
+body[data-app-route="moments"] #app>.topbar .profile-button svg{
+  display:block!important;
+  width:26px!important;
+  height:26px!important;
+}
+@media(max-width:380px){
+  body[data-app-route="moments"] #app>.topbar{
+    height:calc(78px + env(safe-area-inset-top))!important;
+    min-height:calc(78px + env(safe-area-inset-top))!important;
+    max-height:calc(78px + env(safe-area-inset-top))!important;
+  }
+  body[data-app-route="moments"] #app>.topbar::after{
+    left:64px!important;
+    right:62px!important;
+    bottom:16px!important;
+    font-size:23px!important;
+  }
+  body[data-app-route="moments"] #app>.topbar .back-button,
+  body[data-app-route="moments"] #app>.topbar .back-button.is-hidden,
+  body[data-app-route="moments"] #app>.topbar .profile-button{
+    bottom:9px!important;
+    width:42px!important;
+    height:42px!important;
+    min-width:42px!important;
+    min-height:42px!important;
+    max-width:42px!important;
+    max-height:42px!important;
+  }
+}
+
 .v26-moments-page{
   width:100%;
   margin:0;
