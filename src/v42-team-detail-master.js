@@ -272,7 +272,7 @@ function bind(){
  document.querySelector('[data-v42-close-compare]')?.addEventListener('click',()=>{compareOpen=false;compareTarget='';comparePickerOpen=false;render()},{once:true});
  document.querySelectorAll('[data-v42-close-overlay]').forEach(x=>x.addEventListener('click',()=>{notifyOpen=false;compareOpen=false;comparePickerOpen=false;render()},{once:true}));
  document.querySelectorAll('[data-v42-open-compare-picker]').forEach(b=>b.addEventListener('click',e=>{e.preventDefault();e.stopPropagation();comparePickerOpen=true;render()},{once:true}));
- document.querySelector('[data-v42-close-compare-picker]')?.addEventListener('click',e=>{e.preventDefault();e.stopPropagation();comparePickerOpen=false;render()},{once:true}));
+ document.querySelector('[data-v42-close-compare-picker]')?.addEventListener('click',e=>{e.preventDefault();e.stopPropagation();comparePickerOpen=false;render()},{once:true});
  document.querySelectorAll('[data-v42-tab]').forEach(b=>b.addEventListener('click',()=>{activeTab=b.dataset.v42Tab;localStorage.setItem('v42-team-tab',activeTab);render()},{once:true}));
  document.querySelectorAll('[data-v42-select-name]').forEach(b=>b.addEventListener('click',e=>{e.preventDefault();e.stopPropagation();const n=b.dataset.v42SelectName||'';compareOpen=true;compareTarget=norm(n)===norm(selectedName())?'':n;render()},{once:true}));
  document.querySelectorAll('[data-v42-compare-name]').forEach(b=>b.addEventListener('click',e=>{e.preventDefault();e.stopPropagation();compareTarget=b.dataset.v42CompareName;comparePickerOpen=false;render()},{once:true}));
