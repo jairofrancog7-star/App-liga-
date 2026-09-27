@@ -74,7 +74,7 @@ function playerCard(p,side){
  const sideLabel=side==='primary'?'Jugador A':'Jugador B';
  if(!p){
   return '<article class="v123-player-card empty '+esc(side)+'" data-v123-card-side="'+esc(side)+'" tabindex="0" role="button" aria-label="Elegir '+sideLabel+'">'+
-   '<span class="v123-avatar ghost" aria-hidden="true"><svg viewBox="0 0 120 120"><circle cx="60" cy="38" r="24"/><path d="M18 104c4-29 21-43 42-43s38 14 42 43H18Z"/></svg></span><strong>Elige jugador</strong><small>'+sideLabel+'</small></article>';
+   '<span class="v123-avatar ghost" aria-hidden="true"><svg viewBox="0 0 120 120"><circle cx="60" cy="38" r="24"/><path d="M18 104c4-29 21-43 42-43s38 14 42 43H18Z"/></svg></span><strong>Elige jugador</strong></article>';
  }
  return '<article class="v123-player-card '+esc(side)+'" data-v123-card-side="'+esc(side)+'" tabindex="0" role="button" aria-label="Cambiar '+esc(p.name)+'">'+
    '<span class="v123-player-swap" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M19 7v5h-5M5 17v-5h5M18.2 12a6.5 6.5 0 0 0-11.1-4.6L5 9M5.8 12a6.5 6.5 0 0 0 11.1 4.6L19 15"/></svg></span>'+
@@ -143,7 +143,7 @@ async function renderCompare(){
  screen.innerHTML='<section class="v123-player-compare" data-v123-player-compare>'+
   '<section class="v123-compare-hero">'+
    '<button type="button" class="v123-back" data-v123-back aria-label="Volver"><svg viewBox="0 0 24 24"><path d="M19 12H5m7-7-7 7 7 7"/></svg></button>'+
-   '<div class="v123-duel">'+playerCard(primary,'primary')+'<span class="v123-vs">VS</span>'+playerCard(secondary,'secondary')+'</div>'+
+   '<div class="v123-duel">'+playerCard(primary,'primary')+(secondary?'<span class="v123-vs">VS</span>':'')+playerCard(secondary,'secondary')+'</div>'+
    '<div class="v123-filter-row"><span>'+esc(cat)+'</span><span><i></i>Competición</span></div>'+
   '</section>'+
   comparison(primary,secondary)+
