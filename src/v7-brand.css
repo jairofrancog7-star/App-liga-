@@ -1,6 +1,6 @@
 :root{
   --v10-deep:#02065f;
-  --v10-home-header-h:clamp(124px,35.22vw,148px);
+  --v10-home-header-h:var(--header-expanded-h,98px);
   --v10-compact-header-h:78px;
 }
 html,body{background:var(--v10-deep)}
@@ -50,14 +50,14 @@ body[data-app-route="home"] .topbar::after{content:none!important;display:none!i
 
 body[data-app-route="home"] .topbar .wordmark{
   position:absolute!important;
-  left:17px!important;
-  top:calc(env(safe-area-inset-top) + 29px)!important;
-  width:72px!important;
-  height:72px!important;
-  min-width:72px!important;
-  min-height:72px!important;
-  max-width:72px!important;
-  max-height:72px!important;
+  left:16px!important;
+  top:calc(env(safe-area-inset-top) + 13px)!important;
+  width:68px!important;
+  height:68px!important;
+  min-width:68px!important;
+  min-height:68px!important;
+  max-width:68px!important;
+  max-height:68px!important;
   margin:0!important;
   padding:0!important;
   border:0!important;
@@ -66,7 +66,7 @@ body[data-app-route="home"] .topbar .wordmark{
   background-image:url('../assets/reference/predictor-v36/liga-crest-white.webp')!important;
   background-repeat:no-repeat!important;
   background-position:center!important;
-  background-size:54px 54px!important;
+  background-size:50px 50px!important;
   color:transparent!important;
   font-size:0!important;
   box-shadow:none!important;
@@ -81,14 +81,14 @@ body[data-app-route="home"] .topbar .wordmark::after{
 
 body[data-app-route="home"] .topbar .profile-button{
   position:absolute!important;
-  right:17px!important;
-  top:calc(env(safe-area-inset-top) + 31px)!important;
-  width:44px!important;
-  height:44px!important;
-  min-width:44px!important;
-  min-height:44px!important;
-  max-width:44px!important;
-  max-height:44px!important;
+  right:16px!important;
+  top:calc(env(safe-area-inset-top) + 20px)!important;
+  width:42px!important;
+  height:42px!important;
+  min-width:42px!important;
+  min-height:42px!important;
+  max-width:42px!important;
+  max-height:42px!important;
   margin:0!important;
   padding:0!important;
   border:0!important;
@@ -97,7 +97,7 @@ body[data-app-route="home"] .topbar .profile-button{
   background-image:url('../public/profile-reference.svg')!important;
   background-repeat:no-repeat!important;
   background-position:center!important;
-  background-size:30px 30px!important;
+  background-size:29px 29px!important;
   color:transparent!important;
   box-shadow:none!important;
   z-index:4!important;
@@ -105,31 +105,6 @@ body[data-app-route="home"] .topbar .profile-button{
 }
 body[data-app-route="home"] .topbar .profile-button svg{display:none!important}
 body[data-app-route="home"] .topbar .back-button{display:none!important}
-
-@media(max-width:380px){
-  body[data-app-route="home"] .topbar .wordmark{
-    left:13px!important;
-    top:calc(env(safe-area-inset-top) + 26px)!important;
-    width:66px!important;
-    height:66px!important;
-    min-width:66px!important;
-    min-height:66px!important;
-    max-width:66px!important;
-    max-height:66px!important;
-    background-size:50px 50px!important;
-  }
-  body[data-app-route="home"] .topbar .profile-button{
-    right:13px!important;
-    top:calc(env(safe-area-inset-top) + 28px)!important;
-    width:42px!important;
-    height:42px!important;
-    min-width:42px!important;
-    min-height:42px!important;
-    max-width:42px!important;
-    max-height:42px!important;
-    background-size:29px 29px!important;
-  }
-}
 
 /* ALL OTHER ROUTES: compact native-looking app bar, never the tall home art. */
 body:not([data-app-route="home"]) .topbar{
