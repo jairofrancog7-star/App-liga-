@@ -13,6 +13,18 @@ body[data-app-route="fantasy"] #app{
   background:#02075d!important;
 }
 
+/* Fantasy already owns its complete full-screen hero.
+   Hide only the duplicated global app header on this route. */
+body[data-app-route="fantasy"] #app > .topbar,
+body[data-app-route="fantasy"] .app-shell > .topbar{
+  display:none!important;
+  height:0!important;
+  min-height:0!important;
+  padding:0!important;
+  margin:0!important;
+  border:0!important;
+  overflow:hidden!important;
+}
 
 body[data-app-route="fantasy"] #screen{
   position:relative!important;
