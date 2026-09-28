@@ -2,7 +2,7 @@
    Geometry is measured from the supplied mobile masters. Route-specific files
    may style their content, but must not resize or duplicate this component. */
 :root{
-  --v34-nav-h:var(--bottom-nav-h,69px);
+  --v34-nav-h:var(--bottom-nav-h,60px);
   --v34-nav-bg:#17166f;
   --v34-nav-off:#a8a7cb;
   --v34-nav-on:var(--accent,#20e7f0);
