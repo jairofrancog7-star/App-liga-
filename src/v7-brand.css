@@ -304,12 +304,3 @@ body[data-app-route="home"] #screen > .stories{
     transition:none!important;
   }
 }
-
-
-/* V10_DETAIL_CONTENT_TITLE_DEDUP
-   Detail routes use the master topbar as the single page-title owner.
-   Only duplicate direct screen titles are removed; nested content headings remain. */
-body.v10-detail-header #screen > .eyebrow,
-body.v10-detail-header #screen > .screen-title{
-  display:none!important;
-}
