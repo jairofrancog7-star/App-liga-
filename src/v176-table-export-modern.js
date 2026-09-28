@@ -114,7 +114,19 @@ function markup(){
  '</section>';
 }
 function download(blob,name){
- const u=URL.createObjectURL(blob),a=document.createElement('a');a.href=u;a.download=name;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(u),1200);
+ const u=URL.createObjectURL(blob);
+ const a=document.createElement('a');
+ a.href=u;
+ a.download=name;
+ a.rel='noopener';
+ a.style.display='none';
+ document.body.appendChild(a);
+ try{
+   a.dispatchEvent(new MouseEvent('click',{bubbles:true,cancelable:true,view:window}));
+ }catch(_){
+   a.click();
+ }
+ setTimeout(()=>{try{a.remove()}catch(_){};URL.revokeObjectURL(u)},4000);
 }
 function rounded(ctx,x,y,w,h,r){
  const rr=Math.min(r,w/2,h/2);ctx.beginPath();ctx.moveTo(x+rr,y);ctx.arcTo(x+w,y,x+w,y+h,rr);ctx.arcTo(x+w,y+h,x,y+h,rr);ctx.arcTo(x,y+h,x,y,rr);ctx.arcTo(x,y,x+w,y,rr);ctx.closePath();
@@ -225,12 +237,18 @@ function setCategory(id,page){
 }
 function bind(){
  const page=$('[data-v176-page]');if(!page)return;
- $('[data-v176-category]',page).onchange=e=>setCategory(e.target.value,page);
- $('[data-v176-cat]',page).forEach(b=>b.onclick=()=>setCategory(b.dataset.v176Cat,page));
- $('[data-v176-download]',page).onclick=()=>doDownload(category);
- $('[data-v176-share]',page).onclick=()=>doShare(category);
- $('[data-v176-download-all]',page).onclick=doAll;
- $('[data-v176-csv]',page).onclick=()=>csv(category);
+ const select=$('[data-v176-category]',page);
+ const downloadBtn=$('[data-v176-download]',page);
+ const shareBtn=$('[data-v176-share]',page);
+ const downloadAllBtn=$('[data-v176-download-all]',page);
+ const csvBtn=$('[data-v176-csv]',page);
+
+ if(select)select.onchange=e=>setCategory(e.target.value,page);
+ qsa('[data-v176-cat]',page).forEach(b=>b.onclick=()=>setCategory(b.dataset.v176Cat,page));
+ if(downloadBtn)downloadBtn.onclick=e=>{e.preventDefault();doDownload(category)};
+ if(shareBtn)shareBtn.onclick=e=>{e.preventDefault();doShare(category)};
+ if(downloadAllBtn)downloadAllBtn.onclick=e=>{e.preventDefault();doAll()};
+ if(csvBtn)csvBtn.onclick=e=>{e.preventDefault();csv(category)};
 }
 async function mount(){
  if(route()!=='tableExport')return;
