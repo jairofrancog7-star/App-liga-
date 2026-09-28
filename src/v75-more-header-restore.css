@@ -204,3 +204,29 @@
     height:120px!important;
   }
 }
+
+
+/* MORE_COLLAPSED_MASTER_V10 — driven only by the global V10 scroll controller. */
+@media(max-width:1023px){
+  body.v10-header-collapsed[data-app-route="more"] .topbar{
+    height:calc(var(--header-collapsed-h,72px) + env(safe-area-inset-top))!important;
+    min-height:calc(var(--header-collapsed-h,72px) + env(safe-area-inset-top))!important;
+    max-height:calc(var(--header-collapsed-h,72px) + env(safe-area-inset-top))!important;
+    background-position:center 24%!important;
+  }
+  body.v10-header-collapsed[data-app-route="more"] .topbar::after{
+    left:18px!important;
+    bottom:15px!important;
+    font-size:26px!important;
+  }
+  body.v10-header-collapsed[data-app-route="more"] .topbar .profile-button{
+    right:18px!important;
+    bottom:15px!important;
+    width:24px!important;
+    height:24px!important;
+    min-width:24px!important;
+    min-height:24px!important;
+    max-width:24px!important;
+    max-height:24px!important;
+  }
+}
