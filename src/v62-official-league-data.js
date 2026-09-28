@@ -4,7 +4,7 @@
 (function(){
 'use strict';
 
-const BUILD='20260920-scorers-official81';
+const BUILD='20260927-official-all-data-v194';
 const LOCAL_DATA='./public/data/official-live.json?v='+BUILD;
 const REMOTE_DATA='https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/data/official-live.json?v='+BUILD;
 const SRC='https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/';
@@ -349,7 +349,7 @@ function patchHomeStandings(force=false){
    nunca jugadores ni goles inventados. */
 function validScorerRows(id){
   const c=cat(id),rs=c?.scorers?.[0]?.rows||[];
-  return rs.filter(r=>Array.isArray(r)&&r.length>=4&&/^\d+$/.test(String(r[3]||''))&&String(r[1]||'').trim()&&String(r[2]||'').trim())
+  return rs.filter(r=>Array.isArray(r)&&r.length>=4&&/^\d+$/.test(String(r[3]||''))&&String(r[1]||'').trim()&&String(r[2]||'').trim()&&!/goles?\s+en\s+temporada/i.test(String(r[2]||'')))
     .map(r=>({rank:Number(r[0])||999,player:String(r[1]).trim(),team:String(r[2]).trim(),goals:Number(r[3])||0,category:c?.name||CAT_META[String(id)]?.name||'',categoryId:String(id)}));
 }
 function officialHomeScorers(){
@@ -612,7 +612,7 @@ function setMoreNav(){/* Global nav active state is owned by V34. */}
 
 function scorerRows(){
   const rs=rows('scorers');
-  return rs.filter(r=>r.length>=4&&/^\d+$/.test(String(r[3]||'')));
+  return rs.filter(r=>r.length>=4&&/^\d+$/.test(String(r[3]||''))&&!/goles?\s+en\s+temporada/i.test(String(r[2]||'')));
 }
 function scorerFeature(r,idx){
   return '<article class="v28-feature">'+
@@ -653,7 +653,7 @@ function scorerFallback(){
 }
 function scorerCategoryTable(id=categoryId){
   const current=cat(id),name=current?.name||CAT_META[String(id)]?.name||'Categoría';
-  const rs=rows('scorers',id).filter(r=>Array.isArray(r)&&r.length>=4&&String(r[1]||'').trim()&&String(r[2]||'').trim()&&/^\d+$/.test(String(r[3]||'')));
+  const rs=rows('scorers',id).filter(r=>Array.isArray(r)&&r.length>=4&&String(r[1]||'').trim()&&String(r[2]||'').trim()&&/^\d+$/.test(String(r[3]||''))&&!/goles?\s+en\s+temporada/i.test(String(r[2]||'')));
   if(rs.length){
     return '<section class="v193-scorer-table" data-v193-scorer-table data-v193-cat="'+esc(id)+'">'+
       '<div class="v193-scorer-head"><span class="v193-cat-logo"><img src="'+esc(catLogo(id))+'" alt=""></span><span><small>GOLEADORES POR CATEGORÍA</small><h2>'+esc(name)+'</h2></span></div>'+
@@ -721,7 +721,7 @@ function teamForm(ctx){
   });
 }
 function teamScorers(ctx){
-  return (ctx?.c?.scorers?.[0]?.rows||[]).filter(r=>r.length>=4&&same(r[2],ctx.name)&&/^\d+$/.test(String(r[3]||'')));
+  return (ctx?.c?.scorers?.[0]?.rows||[]).filter(r=>r.length>=4&&same(r[2],ctx.name)&&/^\d+$/.test(String(r[3]||''))&&!/goles?\s+en\s+temporada/i.test(String(r[2]||'')));
 }
 function teamCards(ctx){
   return (ctx?.c?.cards?.[0]?.rows||[]).filter(r=>r.length>=4&&same(r[2],ctx.name));
