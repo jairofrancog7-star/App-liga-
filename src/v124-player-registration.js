@@ -432,7 +432,11 @@ function registryTeams(){
   const seen=new Set();
   return out.filter(x=>{
     if(!x?.name)return false;
-    const k=norm(x.name)+'|'+String(x.cat||'');
+    const n=norm(x.name);
+    if(/^\d+\s+goles?\s+en\s+temporada$/.test(n))return false;
+    if(/^\d+\s+goles?$/.test(n))return false;
+    if(/^(goles?|goleadores?|goleo|pts|puntos|pj|pg|pe|pp|gf|gc|dif)(\b|\s)/.test(n))return false;
+    const k=n+'|'+String(x.cat||'');
     if(seen.has(k))return false;seen.add(k);return true;
   }).sort((a,b)=>(a.category||'').localeCompare(b.category||'','es')||a.name.localeCompare(b.name,'es'));
 }
