@@ -4482,14 +4482,18 @@ function profileView(){return `<div class="eyebrow">CUENTA</div><h1 class="scree
 function predictorView(){
   return `<section class="v37-predictor-reference" aria-label="Pronostica Seis">
     <div class="v37-predictor-marks" aria-hidden="true"><i></i><i></i></div>
-    <h1 class="v37-predictor-title"><span>PRONOSTICA</span><span>SEIS</span></h1>
-    <img class="v37-predictor-crest" src="./assets/reference/predictor-v36/liga-crest-white.webp?v=20260927-restore-three" alt="Liga Municipal de Fútbol Juventino Rosas">
+    <h1 class="v37-predictor-title"><span>?PRONOSTICA</span><span>SEIS</span></h1>
+    <img class="v37-predictor-crest" src="./assets/reference/predictor-v36/liga-crest-white.webp?v=20260927-pixel-master1" alt="Liga Municipal de Fútbol Juventino Rosas">
     <button type="button" class="v37-predictor-enter" data-route="predictorSix" aria-label="Abrir Pronostica Seis">
-      <span class="v37-score-panel" aria-hidden="true"><b>2</b><b>?</b><b>?</b></span>
-      <img class="v37-predictor-trophy" src="./assets/reference/final-trophy-drive.png" alt="">
-      <span class="v37-predictor-pitch" aria-hidden="true"><i></i><i></i></span>
+      <span class="v37-score-panel" aria-hidden="true">
+        <img class="v37-score-two" src="./assets/reference/predictor-v36/predictor-two.webp?v=20260927-pixel-master1" alt="">
+        <img class="v37-score-question" src="./assets/reference/predictor-v36/predictor-question.webp?v=20260927-pixel-master1" alt="">
+        <img class="v37-score-question" src="./assets/reference/predictor-v36/predictor-question.webp?v=20260927-pixel-master1" alt="">
+      </span>
+      <img class="v37-predictor-trophy" src="./assets/reference/predictor-v36/predictor-trophy.webp?v=20260927-pixel-master1" alt="">
+      <img class="v37-predictor-pitch-img" src="./assets/reference/predictor-v36/predictor-pitch.webp?v=20260927-pixel-master1" alt="" aria-hidden="true">
     </button>
-    <div class="v37-predictor-stadium" aria-hidden="true"><i></i></div>
+    <img class="v37-predictor-stadium-img" src="./assets/reference/predictor-v36/predictor-stadium.webp?v=20260927-pixel-master1" alt="" aria-hidden="true">
   </section>`;
 }
 function predictorSixView(){
@@ -4605,10 +4609,31 @@ function momentsView(){
     ['b','5','Santa Cruz'],
     ['b','6','Pozos']
   ];
+  const MEDIA='https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/media/';
+  const icon=(kind)=>{
+    const map={
+      video:'<rect x="3.5" y="5.5" width="17" height="13" rx="1.6"/><path d="m10 9.2 5 2.8-5 2.8Z"/>',
+      history:'<path d="M4 12a8 8 0 1 0 2-5.5L4 8m0-5v5h5"/><path d="M12 8v5l3 2"/>',
+      share:'<circle cx="18" cy="5" r="2"/><circle cx="6" cy="12" r="2"/><circle cx="18" cy="19" r="2"/><path d="m8 11 8-5m-8 7 8 5"/>'
+    };
+    return '<svg viewBox="0 0 24 24" aria-hidden="true">'+map[kind]+'</svg>';
+  };
+  const action=(kind,title,sub,route)=>'<button type="button" class="v26-reference-action" data-route="'+route+'"><span class="v26-reference-action-icon">'+icon(kind)+'</span><span><b>'+title+'</b><small>'+sub+'</small></span><i>›</i></button>';
   return '<section class="v26-moments-page" aria-label="Momentos de la Liga">'+
-    '<div class="v26-moments-grid">'+cards.map(([set,n,label])=>
-      '<button type="button" class="v26-moment-card v26-moment-'+set+n+(n==='5'||n==='6'?' v26-moment-short':'')+'" data-video="'+label.replace(/"/g,'&quot;')+'" aria-label="Ver '+label.replace(/"/g,'&quot;')+'"></button>'
-    ).join('')+'</div>'+
+    '<article class="v26-reference-video">'+
+      '<video controls playsinline preload="metadata" poster="'+MEDIA+'gran-final-veteranos-35.png"><source src="'+MEDIA+'gran-final-veteranos-35.mp4" type="video/mp4"></video>'+
+      '<div><b>Gran Final · Veteranos 35+</b><small>Archivo de Liga_Futbol</small></div>'+
+    '</article>'+
+    '<div class="v26-reference-actions">'+
+      action('video','Momentos','Contenido de la Liga','moments')+
+      action('history','Historial','Temporadas y archivo','historyLog')+
+      action('share','Compartir jornada','Publicaciones','publications')+
+    '</div>'+
+    '<section class="v26-moments-archive" aria-label="Archivo visual de Momentos">'+
+      '<div class="v26-moments-grid">'+cards.map(([set,n,label])=>
+        '<button type="button" class="v26-moment-card v26-moment-'+set+n+(n==='5'||n==='6'?' v26-moment-short':'')+'" data-video="'+label.replace(/"/g,'&quot;')+'" aria-label="Ver '+label.replace(/"/g,'&quot;')+'"></button>'
+      ).join('')+'</div>'+
+    '</section>'+
   '</section>';
 }
 function scorersView(){return `<div class="eyebrow">ESTADÍSTICAS</div><h1 class="screen-title">Máximo goleador</h1><button class="scorer-feature" data-route="scorers"><span class="badge">#1 GOLEADOR OFICIAL PUBLICADO</span><div><small>DYNAMO · Veteranos 50+</small><h2>Hugo Armenta Buenavista</h2><b>5 <em>goles</em></b><small>Asistencias no publicadas por la fuente oficial</small></div></button><section class="section">${sectionHead('Clasificación completa')}<div class="stat-card">${players.slice().sort((a,b)=>b.goals-a.goals).slice(0,8).map((p,i)=>`<button class="rank-row" data-player="${p.id}"><b>${i+1}</b>${crest(p.team)}<span>${p.name}</span><b>${p.goals}</b></button>`).join('')}</div></section>`}
