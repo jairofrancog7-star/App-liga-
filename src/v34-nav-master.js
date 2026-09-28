@@ -23,26 +23,13 @@ off:'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7.75,12C7.75,13.5188 
 on:'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4.9985,14.4937C6.3784,14.4937 7.4971,13.375 7.4971,11.9951C7.4971,10.6152 6.3784,9.4966 4.9985,9.4966C3.6186,9.4966 2.5,10.6152 2.5,11.9951C2.5,13.375 3.6186,14.4937 4.9985,14.4937ZM12,14.4937C13.3799,14.4937 14.4985,13.375 14.4985,11.9951C14.4985,10.6152 13.3799,9.4966 12,9.4966C10.6201,9.4966 9.5015,10.6152 9.5015,11.9951C9.5015,13.375 10.6201,14.4937 12,14.4937ZM21.5,11.9951C21.5,13.375 20.3814,14.4937 19.0015,14.4937C17.6216,14.4937 16.5029,13.375 16.5029,11.9951C16.5029,10.6152 17.6216,9.4966 19.0015,9.4966C20.3814,9.4966 21.5,10.6152 21.5,11.9951Z" fill="currentColor"/></svg>'
 }
 };
-const labels={home:'INICIO',competition:'COMPETICIÓN',video:'VÍDEO',fantasy:'FANTASY',more:'MÁS'};
-const moreChildren=new Set([
-  'more','predictor','predictorSix','quizArena','quiz','moreLess','moreLessHub',
-  'teams','teamDetail','players','playerDetail','playerCompare','scorers','stats','leagueData','rankings',
-  'history','historyLog','news','notices','newsDetail','scheduleChanges','transfers','favorites','search','vote',
-  'notifications','privacy','profile','venues','weatherFields','club-store','safe-data','safe-performance',
-  'hospitality','following','moments','ligaQR','leagueTools','v38Stats','v38Weekly','v38Weather','v38Alerts',
-  'tableExport','bracketBuilder','credentialBuilder','cedulaBuilder','agendaBuilder','motionHub','suspensionTool',
-  'rulebook','matchday','cedulas','cedulaDetail','credential','publications','tactics','simulator','jrControl',
-  'matchCenter','match-center','v4-matchcenter'
-]);
-const competitionChildren=new Set(['match','discipline','disciplina','disciplineTool']);
-const fantasyChildren=new Set(['fantasy','fantasyTeam','fantasyLeagues','fantasyAccess']);
-function route(){return (location.hash.replace(/^#\/?/,'')||'home').split('?')[0]}
+const labels={home:'INICIO',competition:'Competición',video:'Vídeo',fantasy:'Fantasy',more:'Más'};
+const moreChildren=new Set(['more','predictor','quizArena','quiz','moreLess','moreLessHub','teams','teamDetail','players','playerDetail','scorers','stats','rankings','history','news','newsDetail','transfers','favorites','search','vote','notifications','privacy','profile','venues','club-store','safe-data','safe-performance','hospitality','following','moments']);
+function route(){return location.hash.replace('#/','')||'home'}
 function activeRoute(r){
-  /* Team Detail master shows INICIO active in the supplied reference. */
-  if(r==='teamDetail')return 'home';
   if(moreChildren.has(r))return 'more';
-  if(fantasyChildren.has(r))return 'fantasy';
-  if(competitionChildren.has(r))return 'competition';
+  if(r==='fantasyTeam'||r==='fantasyLeagues'||r==='fantasyAccess')return 'fantasy';
+  if(r==='match')return 'competition';
   return r;
 }
 function paint(){
@@ -50,18 +37,16 @@ function paint(){
   if(!nav)return;
   const current=route();
   const active=activeRoute(current);
+  const upper=moreChildren.has(current);
   nav.querySelectorAll('.nav-item[data-route]').forEach(btn=>{
     const r=btn.dataset.route;
     const on=r===active;
     btn.classList.toggle('active',on);
     btn.setAttribute('aria-current',on?'page':'false');
     const small=btn.querySelector('small');
-    if(small&&labels[r]&&small.textContent!==labels[r])small.textContent=labels[r];
+    if(small&&labels[r])small.textContent=upper?labels[r].toLocaleUpperCase('es-MX'):labels[r];
     const icon=btn.querySelector('.nav-icon');
-    if(icon&&I[r]){
-      const desired=I[r][on?'on':'off'];
-      if(icon.innerHTML!==desired)icon.innerHTML=desired;
-    }
+    if(icon&&I[r])icon.innerHTML=I[r][on?'on':'off'];
     btn.style.pointerEvents='auto';
   });
   nav.style.pointerEvents='auto';
@@ -78,7 +63,7 @@ document.addEventListener('click',e=>{
 window.addEventListener('hashchange',()=>setTimeout(paint,0));
 document.addEventListener('DOMContentLoaded',paint,{once:true});
 const nav=document.querySelector('.bottom-nav');
-if(nav)new MutationObserver(()=>requestAnimationFrame(paint)).observe(nav,{subtree:true,attributes:true,childList:true,characterData:true,attributeFilter:['class']});
+if(nav)new MutationObserver(paint).observe(nav,{subtree:true,attributes:true,attributeFilter:['class']});
 setTimeout(paint,0);
 setTimeout(paint,250);
 setTimeout(paint,900);
