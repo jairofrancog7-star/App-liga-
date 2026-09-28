@@ -134,13 +134,13 @@ body[data-app-route="moments"] #app>.topbar .back-button svg{
 .v26-reference-video video{
   display:block;
   width:100%;
-  height:150px;
+  height:104px;
   object-fit:cover;
   background:#03043d;
 }
 .v26-reference-video>div{
-  min-height:57px;
-  padding:12px 14px 11px;
+  min-height:51px;
+  padding:10px 14px 9px;
   display:grid;
   align-content:center;
   gap:5px;
@@ -305,7 +305,7 @@ body[data-app-route="moments"] .v105-bottom[data-v105-route="moments"]{
   }
   .v26-moments-page{padding:0 14px 16px}
   .v26-reference-video{margin-bottom:16px}
-  .v26-reference-video video{height:138px}
+  .v26-reference-video video{height:100px}
   .v26-reference-actions{gap:10px;margin-bottom:20px}
   .v26-reference-action{min-height:88px;padding:0 12px;grid-template-columns:44px minmax(0,1fr) 18px;gap:10px}
   .v26-reference-action-icon{width:42px;height:42px}
@@ -318,7 +318,7 @@ body[data-app-route="moments"] .v105-bottom[data-v105-route="moments"]{
 
 @media(max-width:340px){
   .v26-moments-page{padding-left:12px;padding-right:12px}
-  .v26-reference-video video{height:126px}
+  .v26-reference-video video{height:94px}
   .v26-reference-action{min-height:84px}
   .v26-moments-grid{gap:8px 7px}
 }
