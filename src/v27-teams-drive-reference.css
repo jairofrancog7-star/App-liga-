@@ -577,3 +577,18 @@ body.v27-teams-active #screen{
   .v27-team-title h1{font-size:28px}
   .v27-tabs{grid-template-columns:repeat(4,92px)}
 }
+
+/* V192 — Equipos: quitar barra superior global duplicada. */
+/* Conserva la cabecera propia de Equipos, el botón volver y la barra inferior. */
+body[data-app-route="teams"] #app > .topbar,
+body[data-app-route="teams"] .app-shell > .topbar,
+body.v27-teams-active #app > .topbar,
+body.v27-teams-active .app-shell > .topbar{
+  display:none!important;
+  height:0!important;
+  min-height:0!important;
+  margin:0!important;
+  padding:0!important;
+  border:0!important;
+  overflow:hidden!important;
+}
