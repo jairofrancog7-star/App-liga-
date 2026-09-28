@@ -17,6 +17,10 @@ const read=(k,d)=>{try{const v=JSON.parse(localStorage.getItem(k));return v??d}c
 const write=(k,v)=>localStorage.setItem(k,JSON.stringify(v));
 const FAN_STORE='lj-fanzone-one-vote-v157';
 const FAN_KEYS=['fire','goal','clap','heart'];
+const V190_RECRUIT_KEY='v189-recruitment';
+const V190_RECRUIT_CAMPAIGN_KEY='v190-recruit-campaign';
+const V190_RECRUIT_WA='524121715599';
+const V190_RECRUIT_WA_LABEL='412 171 5599';
 function fanHash(v){
   let h=2166136261;
   for(const ch of String(v||'')){h^=ch.charCodeAt(0);h=Math.imul(h,16777619)}
@@ -1059,6 +1063,238 @@ function journeySim(){const teams=officialTeams();const opts=teams.map(t=>'<opti
 function shotmap(){const shots=read('v100-shotmap',[]);const m=modal(sectionTitle('ANÁLISIS LOCAL','Shot Map','Toca la cancha para registrar tiros. Se guarda solo en este dispositivo.')+'<div class="v100-shot-pitch" data-shot-pitch></div><div class="v100-actions"><button class="v100-secondary" data-shot-undo>Deshacer</button><button class="v100-secondary" data-shot-clear>Limpiar</button><button class="v100-primary" data-shot-png>PNG</button><button class="v100-secondary" data-shot-json>JSON</button></div>','v100-shot-modal');const pitch=$('[data-shot-pitch]',m);const render=()=>{pitch.innerHTML=shots.map((s,i)=>'<i style="left:'+s.x+'%;top:'+s.y+'%" title="Tiro '+(i+1)+'"></i>').join('')};render();pitch.onclick=e=>{const r=pitch.getBoundingClientRect();shots.push({x:+(((e.clientX-r.left)/r.width)*100).toFixed(1),y:+(((e.clientY-r.top)/r.height)*100).toFixed(1),at:new Date().toISOString()});write('v100-shotmap',shots);render()};$('[data-shot-undo]',m).onclick=()=>{shots.pop();write('v100-shotmap',shots);render()};$('[data-shot-clear]',m).onclick=()=>{shots.splice(0);write('v100-shotmap',shots);render()};$('[data-shot-json]',m).onclick=()=>download(new Blob([JSON.stringify(shots,null,2)],{type:'application/json'}),'Shot_Map_Liga.json');$('[data-shot-png]',m).onclick=async()=>{const c=document.createElement('canvas');c.width=900;c.height=1300;const x=c.getContext('2d');x.fillStyle='#07582e';x.fillRect(0,0,900,1300);x.strokeStyle='#fff';x.lineWidth=6;x.strokeRect(35,35,830,1230);x.beginPath();x.moveTo(35,650);x.lineTo(865,650);x.stroke();shots.forEach((s,i)=>{x.fillStyle='#ffe369';x.beginPath();x.arc(35+s.x/100*830,35+s.y/100*1230,18,0,Math.PI*2);x.fill();x.fillStyle='#07104d';x.font='700 16px Arial';x.textAlign='center';x.fillText(String(i+1),35+s.x/100*830,41+s.y/100*1230)});const b=await canvasBlob(c);download(b,'Shot_Map_Liga.png')}}
 async function installApp(){if(installPrompt){installPrompt.prompt();await installPrompt.userChoice;installPrompt=null;return}modal(sectionTitle('INSTALAR APP','Liga Juventino','Si el navegador permite instalación, usa el menú de Chrome → “Instalar aplicación” o “Agregar a pantalla de inicio”.')+'<p class="v100-note">No se muestra un botón de “APK real” porque este repositorio no contiene actualmente un archivo .apk publicado. Así evitamos ofrecer una descarga falsa.</p>')}
 
+/* ---------- V190: RECLUTAMIENTO EN MÁS HERRAMIENTAS ---------- */
+let v190RecruitPngFile=null;
+let v190RecruitPreviewUrl='';
+function v190RecruitData(){
+  const x=read(V190_RECRUIT_KEY,{teams:[],players:[]})||{};
+  return {teams:Array.isArray(x.teams)?x.teams:[],players:Array.isArray(x.players)?x.players:[]};
+}
+function v190RecruitSave(x){write(V190_RECRUIT_KEY,x)}
+function v190RecruitUid(){return 'rec-'+Date.now().toString(36)+'-'+Math.random().toString(36).slice(2,7)}
+function v190RecruitCategories(){
+  const out=[...new Set(officialTeams().map(t=>String(t.category||'').trim()).filter(Boolean))];
+  ['Primera Fuerza','Intermedia','Segunda Fuerza','Veteranos 35+','Veteranos 50+'].forEach(x=>{if(!out.includes(x))out.push(x)});
+  return out;
+}
+function v190RecruitCategoryOptions(selected=''){
+  return '<option value="">Categoría por definir</option>'+
+    v190RecruitCategories().map(c=>'<option value="'+esc(c)+'" '+(selected===c?'selected':'')+'>'+esc(c)+'</option>').join('');
+}
+function v190RecruitTeamOptions(selected=''){
+  const groups=new Map();
+  officialTeams().forEach(t=>{
+    const name=String(t?.name||'').trim();if(!name)return;
+    const cat=String(t.category||'Sin categoría').trim()||'Sin categoría';
+    if(!groups.has(cat))groups.set(cat,[]);
+    if(!groups.get(cat).some(x=>norm(x.name)===norm(name)))groups.get(cat).push({name,category:cat});
+  });
+  let html='<option value="">Sin equipo destino todavía</option>';
+  for(const [cat,items] of groups){
+    html+='<optgroup label="'+esc(cat)+'">'+items.sort((a,b)=>a.name.localeCompare(b.name,'es')).map(t=>
+      '<option value="'+esc(t.name)+'" '+(selected===t.name?'selected':'')+'>'+esc(t.name)+'</option>'
+    ).join('')+'</optgroup>';
+  }
+  return html;
+}
+function v190RecruitCampaign(){
+  const x=read(V190_RECRUIT_CAMPAIGN_KEY,{})||{};
+  return {
+    kind:x.kind||'both',
+    title:x.title||'Reclutamiento Liga Juventino Rosas',
+    message:x.message||'Abrimos espacio para equipos nuevos y jugadores que quieran integrarse a la Liga Municipal de Fútbol Juventino Rosas A.C.'
+  };
+}
+function v190RecruitKindLabel(kind){
+  if(kind==='teams')return 'NUEVOS EQUIPOS';
+  if(kind==='players')return 'NUEVOS JUGADORES';
+  return 'NUEVOS EQUIPOS · NUEVOS JUGADORES';
+}
+function v190RecruitRows(){
+  const data=v190RecruitData();
+  const teams=data.teams.slice().sort((a,b)=>Date.parse(b.createdAt||0)-Date.parse(a.createdAt||0)).map(x=>
+    '<article class="v190-recruit-row"><span class="v190-recruit-badge">EQUIPO</span><span><b>'+esc(x.name)+'</b><small>'+esc(x.category||'Categoría por definir')+(x.community?' · '+esc(x.community):'')+'</small><em>'+esc(x.contact||'Sin referencia de contacto')+'</em></span><button type="button" data-v190-delete="team:'+esc(x.id)+'">Quitar</button></article>'
+  ).join('');
+  const players=data.players.slice().sort((a,b)=>Date.parse(b.createdAt||0)-Date.parse(a.createdAt||0)).map(x=>
+    '<article class="v190-recruit-row player"><span class="v190-recruit-badge">JUGADOR</span><span><b>'+esc(x.name)+'</b><small>'+esc(x.category||'Categoría por definir')+(x.position?' · '+esc(x.position):'')+'</small><em>'+(x.targetTeam?'Destino: '+esc(x.targetTeam):'Sin equipo destino')+(x.contact?' · '+esc(x.contact):'')+'</em></span><div><button type="button" data-v190-promote="'+esc(x.id)+'">Pasar a registro</button><button type="button" class="danger" data-v190-delete="player:'+esc(x.id)+'">Quitar</button></div></article>'
+  ).join('');
+  if(!teams&&!players)return '<div class="v190-recruit-empty">Todavía no hay equipos ni jugadores prospecto guardados.</div>';
+  return '<div class="v190-recruit-list">'+teams+players+'</div>';
+}
+function v190RecruitPage(){
+  const data=v190RecruitData(),campaign=v190RecruitCampaign();
+  return '<section class="v100-block v190-recruit-page" id="v190-recruitment-page">'+
+    sectionTitle('RECLUTAMIENTO','Equipos nuevos y jugadores nuevos','Herramienta para registrar interesados, preparar una convocatoria PNG y compartirla por WhatsApp o Facebook.')+
+    '<div class="v190-recruit-summary"><span><b>'+data.teams.length+'</b><small>Equipos interesados</small></span><span><b>'+data.players.length+'</b><small>Jugadores interesados</small></span></div>'+
+    '<div class="v190-recruit-forms">'+
+      '<form class="v190-recruit-card" data-v190-team-form>'+
+        '<header><span>＋</span><div><b>Nuevo equipo</b><small>Equipo interesado en entrar a la Liga</small></div></header>'+
+        '<label><span>Nombre del equipo</span><input required data-v190-team-name placeholder="Nombre del equipo" autocomplete="off"></label>'+
+        '<label><span>Categoría</span><select data-v190-team-category>'+v190RecruitCategoryOptions()+'</select></label>'+
+        '<label><span>Comunidad / localidad</span><input data-v190-team-community placeholder="Opcional" autocomplete="off"></label>'+
+        '<label><span>Contacto / referencia</span><input data-v190-team-contact placeholder="Opcional · se guarda en este dispositivo" autocomplete="off"></label>'+
+        '<button type="submit">Guardar equipo nuevo</button>'+
+      '</form>'+
+      '<form class="v190-recruit-card" data-v190-player-form>'+
+        '<header><span>⚽</span><div><b>Nuevo jugador</b><small>Jugador que busca integrarse a un equipo</small></div></header>'+
+        '<label><span>Nombre completo</span><input required data-v190-player-name placeholder="Nombre del jugador" autocomplete="off"></label>'+
+        '<label><span>Categoría</span><select data-v190-player-category>'+v190RecruitCategoryOptions()+'</select></label>'+
+        '<label><span>Equipo destino</span><select data-v190-player-team>'+v190RecruitTeamOptions()+'</select></label>'+
+        '<label><span>Posición</span><input data-v190-player-position placeholder="Portero, defensa, medio, delantero..." autocomplete="off"></label>'+
+        '<label><span>Contacto / referencia</span><input data-v190-player-contact placeholder="Opcional · se guarda en este dispositivo" autocomplete="off"></label>'+
+        '<button type="submit">Guardar jugador nuevo</button>'+
+      '</form>'+
+    '</div>'+
+    '<section class="v190-publish-card">'+
+      '<header><small>CONVOCATORIA</small><h3>PNG para reclutamiento</h3><p>Genera una imagen vertical para redes o sube tu propio PNG. El PNG no se publica automáticamente en GitHub.</p></header>'+
+      '<div class="v190-publish-grid">'+
+        '<label><span>Convocatoria para</span><select data-v190-campaign-kind>'+
+          '<option value="both" '+(campaign.kind==='both'?'selected':'')+'>Equipos y jugadores</option>'+
+          '<option value="teams" '+(campaign.kind==='teams'?'selected':'')+'>Equipos nuevos</option>'+
+          '<option value="players" '+(campaign.kind==='players'?'selected':'')+'>Jugadores nuevos</option>'+
+        '</select></label>'+
+        '<label><span>Título</span><input data-v190-campaign-title value="'+esc(campaign.title)+'"></label>'+
+      '</div>'+
+      '<label class="v190-message"><span>Mensaje</span><textarea data-v190-campaign-message rows="4">'+esc(campaign.message)+'</textarea></label>'+
+      '<label class="v190-png-upload"><span>Subir PNG propio</span><input type="file" accept="image/png,.png" data-v190-png-file><small>Si eliges un PNG, los botones de descargar/compartir usarán esa imagen. Si no, la app genera una convocatoria automáticamente.</small></label>'+
+      '<div class="v190-png-preview '+(v190RecruitPreviewUrl?'has-image':'')+'" data-v190-preview>'+(v190RecruitPreviewUrl?'<img src="'+esc(v190RecruitPreviewUrl)+'" alt="Vista previa de convocatoria">':'<span>Vista previa del PNG</span>')+'</div>'+
+      '<div class="v190-share-actions">'+
+        '<button type="button" class="primary" data-v190-preview-png>Vista previa PNG</button>'+
+        '<button type="button" data-v190-download-png>Descargar PNG</button>'+
+        '<button type="button" data-v190-share-png>Compartir PNG</button>'+
+        '<button type="button" class="whatsapp" data-v190-whatsapp>WhatsApp '+V190_RECRUIT_WA_LABEL+'</button>'+
+        '<button type="button" class="facebook" data-v190-facebook>Facebook</button>'+
+      '</div>'+
+      '<p class="v190-share-note">WhatsApp abre el chat directo al '+V190_RECRUIT_WA_LABEL+'. Para adjuntar la imagen usa “Compartir PNG” y elige WhatsApp. En Facebook, cuando Android permite compartir archivos, se envía el PNG mediante el selector del sistema; si no, se abre Facebook y se copia el texto.</p>'+
+    '</section>'+
+    '<section class="v190-saved"><header><small>PROSPECTOS GUARDADOS</small><h3>Seguimiento de reclutamiento</h3></header>'+v190RecruitRows()+'</section>'+
+    '<p class="v100-note">Los nombres, contactos y prospectos se guardan sólo en este dispositivo. No se suben al repositorio público.</p>'+
+  '</section>';
+}
+function v190RecruitCampaignFromUi(root){
+  const data={
+    kind:$('[data-v190-campaign-kind]',root)?.value||'both',
+    title:$('[data-v190-campaign-title]',root)?.value.trim()||'Reclutamiento Liga Juventino Rosas',
+    message:$('[data-v190-campaign-message]',root)?.value.trim()||''
+  };
+  write(V190_RECRUIT_CAMPAIGN_KEY,data);
+  return data;
+}
+function v190RecruitShareText(root){
+  const c=v190RecruitCampaignFromUi(root);
+  return c.title+'\n'+v190RecruitKindLabel(c.kind)+'\n\n'+c.message+'\n\nInformes por WhatsApp: '+V190_RECRUIT_WA_LABEL+'\nLiga Municipal de Fútbol Juventino Rosas A.C.';
+}
+async function v190RecruitGeneratedBlob(root){
+  const cdata=v190RecruitCampaignFromUi(root);
+  const c=document.createElement('canvas');c.width=1080;c.height=1350;
+  const x=c.getContext('2d');
+  const g=x.createLinearGradient(0,0,1080,1350);g.addColorStop(0,'#03096a');g.addColorStop(.54,'#0a2ca0');g.addColorStop(1,'#02064d');
+  x.fillStyle=g;x.fillRect(0,0,c.width,c.height);
+  x.strokeStyle='#24dfea';x.lineWidth=5;x.strokeRect(48,48,984,1254);
+  const league=await v100LoadImage('./assets/liga-logo.webp');
+  if(league){x.save();x.globalAlpha=.98;x.drawImage(league,74,76,132,132);x.restore()}
+  x.fillStyle='#5cecf3';x.font='900 24px Arial';x.fillText('LIGA MUNICIPAL DE FÚTBOL · JUVENTINO ROSAS A.C.',235,112);
+  x.fillStyle='rgba(255,255,255,.76)';x.font='700 20px Arial';x.fillText('MÁS HERRAMIENTAS · RECLUTAMIENTO',235,150);
+  x.fillStyle='#fff';x.font='900 62px Arial';x.fillText('RECLUTAMIENTO',74,292);
+  x.fillStyle='#5cecf3';x.font='900 31px Arial';x.fillText(v190RecruitKindLabel(cdata.kind),76,344);
+  x.fillStyle='rgba(255,255,255,.08)';x.fillRect(72,390,936,430);
+  x.strokeStyle='rgba(92,236,243,.35)';x.lineWidth=2;x.strokeRect(72,390,936,430);
+  x.fillStyle='#fff';x.font='800 34px Arial';
+  wrapText(x,cdata.title,108,468,860,48,4);
+  x.fillStyle='rgba(235,241,255,.92)';x.font='600 29px Arial';
+  wrapText(x,cdata.message,108,600,860,43,6);
+  x.fillStyle='#5cecf3';x.font='900 21px Arial';x.fillText('CATEGORÍAS',78,900);
+  x.fillStyle='#fff';x.font='700 25px Arial';
+  wrapText(x,v190RecruitCategories().join(' · '),78,946,920,38,4);
+  x.fillStyle='rgba(0,0,0,.24)';x.fillRect(72,1090,936,150);
+  x.fillStyle='#5cecf3';x.font='900 24px Arial';x.fillText('INFORMES / WHATSAPP',106,1140);
+  x.fillStyle='#fff';x.font='900 48px Arial';x.fillText(V190_RECRUIT_WA_LABEL,106,1200);
+  x.fillStyle='rgba(255,255,255,.68)';x.font='20px Arial';x.fillText('Generado desde la app oficial de la Liga',76,1280);
+  return canvasBlob(c);
+}
+async function v190RecruitShareBlob(root){
+  return v190RecruitPngFile||await v190RecruitGeneratedBlob(root);
+}
+function v190RecruitSetPreview(blob,root){
+  if(v190RecruitPreviewUrl)try{URL.revokeObjectURL(v190RecruitPreviewUrl)}catch(e){}
+  v190RecruitPreviewUrl=URL.createObjectURL(blob);
+  const host=$('[data-v190-preview]',root);
+  if(host){host.classList.add('has-image');host.innerHTML='<img src="'+esc(v190RecruitPreviewUrl)+'" alt="Vista previa de convocatoria">'}
+}
+function v190RefreshRecruitPage(){
+  const old=$('#v190-recruitment-page');if(!old)return;
+  old.outerHTML=v190RecruitPage();
+  const root=$('#v190-recruitment-page');if(root){bindGeneric(root);v190BindRecruitment(root)}
+}
+function v190BindRecruitment(root){
+  $('[data-v190-team-form]',root)?.addEventListener('submit',e=>{
+    e.preventDefault();
+    const name=$('[data-v190-team-name]',root)?.value.trim()||'';
+    if(!name)return toast('Escribe el nombre del equipo');
+    const data=v190RecruitData(),now=new Date().toISOString();
+    data.teams.unshift({id:v190RecruitUid(),name,category:$('[data-v190-team-category]',root)?.value||'',community:$('[data-v190-team-community]',root)?.value.trim()||'',contact:$('[data-v190-team-contact]',root)?.value.trim()||'',createdAt:now});
+    v190RecruitSave(data);toast('Equipo agregado a reclutamiento');v190RefreshRecruitPage();
+  });
+  $('[data-v190-player-form]',root)?.addEventListener('submit',e=>{
+    e.preventDefault();
+    const name=$('[data-v190-player-name]',root)?.value.trim()||'';
+    if(!name)return toast('Escribe el nombre del jugador');
+    const data=v190RecruitData(),now=new Date().toISOString(),targetTeam=$('[data-v190-player-team]',root)?.value||'';
+    const hit=officialTeams().find(t=>norm(t.name)===norm(targetTeam));
+    data.players.unshift({id:v190RecruitUid(),name,category:hit?.category||$('[data-v190-player-category]',root)?.value||'',targetTeam,position:$('[data-v190-player-position]',root)?.value.trim()||'',contact:$('[data-v190-player-contact]',root)?.value.trim()||'',createdAt:now});
+    v190RecruitSave(data);toast('Jugador agregado a reclutamiento');v190RefreshRecruitPage();
+  });
+  $('[data-v190-delete]',root).forEach(b=>b.addEventListener('click',()=>{
+    const value=String(b.dataset.v190Delete||''),p=value.indexOf(':');
+    if(p<0)return;
+    const kind=value.slice(0,p),id=value.slice(p+1),data=v190RecruitData(),key=kind==='team'?'teams':'players';
+    data[key]=data[key].filter(x=>x.id!==id);v190RecruitSave(data);v190RefreshRecruitPage();
+  }));
+  $('[data-v190-promote]',root).forEach(b=>b.addEventListener('click',()=>{
+    const data=v190RecruitData(),p=data.players.find(x=>x.id===b.dataset.v190Promote);if(!p)return;
+    write('v190-recruit-prefill',p);
+    go('credentialBuilder');
+  }));
+  $('[data-v190-png-file]',root)?.addEventListener('change',e=>{
+    const file=e.target.files?.[0]||null;
+    if(file&&file.type!=='image/png'&&!/\.png$/i.test(file.name||'')){e.target.value='';v190RecruitPngFile=null;return toast('Selecciona una imagen PNG')}
+    v190RecruitPngFile=file;
+    if(file){v190RecruitSetPreview(file,root);toast('PNG cargado para compartir')}
+  });
+  ['[data-v190-campaign-kind]','[data-v190-campaign-title]','[data-v190-campaign-message]'].forEach(sel=>{
+    const el=$(sel,root);if(!el)return;
+    el.addEventListener('change',()=>v190RecruitCampaignFromUi(root));
+    el.addEventListener('input',()=>v190RecruitCampaignFromUi(root));
+  });
+  $('[data-v190-preview-png]',root)?.addEventListener('click',async()=>{
+    const b=await v190RecruitShareBlob(root);if(b)v190RecruitSetPreview(b,root);
+  });
+  $('[data-v190-download-png]',root)?.addEventListener('click',async()=>{
+    const b=await v190RecruitShareBlob(root);if(b)download(b,'Reclutamiento_Liga_Juventino.png');
+  });
+  $('[data-v190-share-png]',root)?.addEventListener('click',async()=>{
+    const b=await v190RecruitShareBlob(root);if(!b)return;
+    try{await fileShare(b,'Reclutamiento_Liga_Juventino.png','Reclutamiento Liga Juventino')}catch(e){}
+  });
+  $('[data-v190-whatsapp]',root)?.addEventListener('click',()=>{
+    const text=v190RecruitShareText(root);
+    window.open('https://wa.me/'+V190_RECRUIT_WA+'?text='+encodeURIComponent(text),'_blank','noopener,noreferrer');
+  });
+  $('[data-v190-facebook]',root)?.addEventListener('click',async()=>{
+    const text=v190RecruitShareText(root),b=await v190RecruitShareBlob(root);
+    try{
+      const f=new File([b],'Reclutamiento_Liga_Juventino.png',{type:'image/png'});
+      if(navigator.canShare?.({files:[f]})){
+        toast('Selecciona Facebook para publicar el PNG');
+        await navigator.share({title:'Reclutamiento Liga Juventino',text,files:[f]});
+        return;
+      }
+    }catch(e){}
+    try{await navigator.clipboard.writeText(text);toast('Texto copiado; adjunta el PNG en Facebook')}catch(e){}
+    window.open('https://www.facebook.com/sharer/sharer.php?u='+encodeURIComponent(location.origin+location.pathname+'#/recruitment'),'_blank','noopener,noreferrer');
+  });
+}
+
 function handleAction(action){if(action==='whatsapp-ocr')whatsappOcr();else if(action==='delegates')delegates();else if(action==='fanzone')fanzone();else if(action==='journey-sim')journeySim();else if(action==='shotmap')shotmap();else if(action==='install-app')installApp();else if(action==='tv-mode')window.LJR_V105?.openTv?.();else if(action==='register-alerts')window.LJR_V105?.registerAlerts?.();else if(action==='schedule-match')window.LJR_V105?.scheduleMatch?.();else if(action==='new-sanction')window.LJR_V105?.newSanction?.()}
 function bindGeneric(root){$$('[data-v100-route]',root).forEach(b=>b.onclick=()=>go(b.dataset.v100Route));$$('[data-v100-action]',root).forEach(b=>b.onclick=()=>handleAction(b.dataset.v100Action))}
 
@@ -1072,6 +1308,13 @@ function mount(){
     if(grid&&!$('[data-v100-inline-tool]',grid)){
       grid.insertAdjacentHTML('beforeend',toolsInline());
       bindGeneric(grid);
+    }
+  }
+  if(r==='recruitment'){
+    const mountNode=$('[data-v190-recruitment-mount]',screen);
+    if(mountNode){
+      mountNode.outerHTML=v190RecruitPage();
+      const n=$('#v190-recruitment-page',screen);if(n){bindGeneric(n);v190BindRecruitment(n)}
     }
   }
   if(r==='credentialBuilder'&&!$('#v100-credential-extra',screen)){screen.insertAdjacentHTML('beforeend',credentialExtra());const n=$('#v100-credential-extra',screen);bindGeneric(n);bindCredential(n)}
