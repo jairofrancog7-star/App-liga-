@@ -329,6 +329,18 @@ function setValue(sel,val,event=true){
   const el=$(sel);if(!el)return;el.value=val??'';
   if(event){el.dispatchEvent(new Event('input',{bubbles:true}));el.dispatchEvent(new Event('change',{bubbles:true}))}
 }
+function applyRecruitmentPrefill(){
+  const p=read('v190-recruit-prefill',null);if(!p)return false;
+  localStorage.removeItem('v190-recruit-prefill');
+  localStorage.removeItem(EDIT_KEY);
+  setValue('[data-v64-cred-name]',p.name||'');
+  if(p.targetTeam)setValue('[data-v64-cred-team]',p.targetTeam);
+  if(p.category)setValue('[data-v64-cred-cat]',p.category);
+  if(p.position)setValue('[data-v100-position]',p.position);
+  try{window.v64SyncCredentialTeamCategory?.()}catch(e){}
+  toast('Jugador de reclutamiento cargado. Completa sus datos y guarda.');
+  return true;
+}
 function loadRecord(rec){
   localStorage.setItem(EDIT_KEY,rec.id);
   setValue('[data-v64-cred-name]',rec.name);
@@ -2416,7 +2428,6 @@ function managerHtml(){
       '<button data-v124-new-season>Nueva temporada</button></div>'+
     '<div class="v124-summary"><div><b>'+list.length+'</b><span>Registros</span></div><div><b>'+officialCount+'</b><span>Oficial / coincide</span></div><div><b>'+pending+'</b><span>Por revisar</span></div></div>'+
     fastToolsHtml(list)+
-    recruitmentHtml()+
     '<div class="v124-primary-actions"><button class="primary" data-v124-save>Guardar / actualizar jugador</button><button data-v124-new>Nuevo registro</button><button data-v124-sync>Sincronizar con AdminFut</button></div>'+
     '<label class="v124-search"><span>Buscar en esta temporada</span><input type="search" data-v124-search placeholder="Nombre, equipo, origen o quién registró" value="'+esc(registryQuery)+'"></label>'+
     registryFilterHtml(list)+
@@ -2428,7 +2439,6 @@ function bindManager(root){
   $('[data-v124-season]',root)?.addEventListener('change',e=>{selectedIds.clear();quickTeam='';quickSeason='';registryQuery='';registryCategory='Todas';registryTeam='Todos';registryLetter='Todas';registrySource='Todos';setSeason(e.target.value);localStorage.removeItem(EDIT_KEY);renderManager()});
   $('[data-v124-new-season]',root)?.addEventListener('click',()=>{selectedIds.clear();newSeason()});
   bindRosterImport(root);
-  bindRecruitment(root);
   $('[data-v124-renew]',root)?.addEventListener('click',renewFromPrevious);
   $('[data-v124-select-visible]',root)?.addEventListener('click',()=>{
     const boxes=$$('[data-v124-select]',root),allSelected=boxes.length&&boxes.every(c=>selectedIds.has(c.dataset.v124Select));
@@ -2770,7 +2780,7 @@ function bindCredentialAutoSave(){
     },{capture:true});
   });
 }
-let t=0;function schedule(){clearTimeout(t);t=setTimeout(()=>{if(route()!=='credentialBuilder')return;v126CleanupNonPlayers();autoOfficialSync();renderManager();bindOcrAssist();bindCredentialAutoSave();bindEligibility()},140)}
+let t=0;function schedule(){clearTimeout(t);t=setTimeout(()=>{if(route()!=='credentialBuilder')return;v126CleanupNonPlayers();autoOfficialSync();renderManager();applyRecruitmentPrefill();bindOcrAssist();bindCredentialAutoSave();bindEligibility()},140)}
 window.addEventListener('hashchange',schedule);
 window.addEventListener('ljr:official-data',schedule);
 const screen=$('#screen');if(screen)new MutationObserver(schedule).observe(screen,{childList:true,subtree:false});
