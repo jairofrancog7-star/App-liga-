@@ -1,6 +1,21 @@
 /* PARTS16 — VIDEO restaurado exactamente desde el build móvil de referencia del APK. */
 body[data-app-route="video"] .app-shell{background:#03105a!important}
+
+/* Video already has its own Liga Juventino TV header inside .v17-tv-hero.
+   Remove only the duplicated global app topbar on #/video. */
+body[data-app-route="video"] #app > .topbar,
+body[data-app-route="video"] .app-shell > .topbar{
+  display:none!important;
+  height:0!important;
+  min-height:0!important;
+  padding:0!important;
+  margin:0!important;
+  border:0!important;
+  overflow:hidden!important;
+}
+
 body[data-app-route="video"] #screen{
+  margin-top:0!important;
   padding:0 0 calc(var(--bottom-nav-h,60px) + 20px + env(safe-area-inset-bottom))!important;
   margin:0!important;
   max-width:none!important;
