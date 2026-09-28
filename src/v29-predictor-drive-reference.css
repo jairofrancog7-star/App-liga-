@@ -7,6 +7,11 @@ body[data-app-route="predictor"]{
   background:var(--v37-bg)!important;
   overflow:hidden!important;
 }
+body[data-app-route="predictor"] #app>.topbar{
+  display:none!important;
+  visibility:hidden!important;
+  pointer-events:none!important;
+}
 body[data-app-route="predictor"] #app,
 body[data-app-route="predictor"] .app-shell{
   width:min(100%,520px)!important;
@@ -21,7 +26,7 @@ body[data-app-route="predictor"] #screen{
   position:relative!important;
   width:100%!important;
   max-width:520px!important;
-  height:calc(100dvh - var(--bottom-nav-h,60px) - env(safe-area-inset-bottom))!important;
+  height:calc(100dvh - var(--bottom-nav-h,69px) - env(safe-area-inset-bottom))!important;
   min-height:0!important;
   margin:0 auto!important;
   padding:0!important;
