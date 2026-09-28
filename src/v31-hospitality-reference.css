@@ -8,10 +8,7 @@ html.v31-hospitality-active body{
   background:#01044d!important;
   overflow:hidden!important;
 }
-html.v31-hospitality-active #app>.topbar,
-html.v31-hospitality-active .bottom-nav{
-  display:none!important;
-}
+/* App chrome visibility is owned by V7 (header) and V34 (global nav). */
 
 html.v31-hospitality-active .app-shell{
   width:100%!important;
