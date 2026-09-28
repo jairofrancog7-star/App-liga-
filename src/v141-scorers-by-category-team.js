@@ -108,6 +108,7 @@ function mount(){
   timer=setTimeout(()=>{
     if(route()!=='scorers'||!data())return;
     const page=document.querySelector('[data-v28-scorers]');if(!page)return;
+    if(page.querySelector('[data-v193-scorer-table]'))return;
     const id=selectedCat();
     const old=page.querySelector('[data-v142-scorers]');
     if(old&&old.dataset.v142Cat===id)return;
