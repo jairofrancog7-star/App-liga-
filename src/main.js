@@ -6103,16 +6103,16 @@ function moreView(){
       v19MoreButton('data','Datos','leagueData',true)+
       v19MoreButton('qr','QR de la Liga','ligaQR')+
     '</div>'+
-    '<div class="v19-more-label compare">Comparar</div>'+
-    '<div class="v19-more-menu">'+
-      v19MoreButton('performance','Comparar jugadores','playerCompare')+
-      v19MoreButton('shield','Comparar equipos','teams')+
-    '</div>'+
     '<div class="v19-more-label">Gaming</div>'+
     '<div class="v19-more-menu">'+
       v19MoreButton('score','Pronostica Seis','predictor')+
       v19MoreButton('quiz','Quiz Arena','quizArena')+
       v19MoreButton('arrows','Más O Menos','moreLess')+
+    '</div>'+
+    '<div class="v19-more-label compare">Comparar</div>'+
+    '<div class="v19-more-menu">'+
+      v19MoreButton('performance','Comparar jugadores','playerCompare')+
+      v19MoreButton('shield','Comparar equipos','teams')+
     '</div>'+
     '<div class="v19-more-label event">En el evento</div>'+
     '<div class="v19-more-menu">'+v19MoreButton('glasses','Hospitalidad','hospitality')+'</div>'+
