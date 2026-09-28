@@ -1,3 +1,10 @@
+/* PREDICTOR_FULLSCREEN_TOPBAR_LOCK — the supplied Pronostica Seis reference has no app topbar. */
+body[data-app-route="predictor"] #app>.topbar{
+  display:none!important;
+  visibility:hidden!important;
+  pointer-events:none!important;
+}
+
 /* V29 — PRONOSTICA SEIS · real component master.
    The supplied screenshot defines geometry only; no complete screenshot is rendered. */
 
