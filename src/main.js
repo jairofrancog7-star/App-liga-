@@ -6166,15 +6166,7 @@ function moreView(){
     '</div>'+
   '</section>';
 }
-function hospitalityView(){
-  return '<div class="eyebrow">EN EL EVENTO</div><h1 class="screen-title">Hospitalidad</h1>'+
-    '<section class="section"><div class="profile-card"><h2>Hospitalidad de la Liga</h2><p>Consulta sedes, accesos y servicios disponibles para los partidos de la Liga Municipal de Fútbol Juventino Rosas.</p><div class="button-row"><button class="btn primary" data-route="venues">Ver campos / sedes</button><button class="btn outline" data-route="competition">Ver partidos</button></div></div></section>'+
-    '<section class="section"><div class="section-head"><h2>Accesos rápidos</h2></div><div class="menu-group">'+
-      '<button class="menu-row" data-route="venues"><span>Campos y sedes<small>Ubicación y próximos partidos</small></span><span>›</span></button>'+
-      '<button class="menu-row" data-route="competition"><span>Jornada y resultados<small>Partidos programados y marcadores</small></span><span>›</span></button>'+
-      '<button class="menu-row" data-route="notices"><span>Noticias y avisos<small>Información para equipos y afición</small></span><span>›</span></button>'+
-    '</div></section>';
-}
+function hospitalityView(){return '<div data-v31-hospitality-mount></div>'}
 function storeView(){
   return '<div class="eyebrow">LIGA JUVENTINO</div><h1 class="screen-title">Tienda</h1>'+
     '<section class="section"><div class="profile-card"><h2>Tienda de clubes</h2><p>Selecciona un equipo para consultar su perfil y preparar su espacio de artículos oficiales de la Liga.</p></div></section>'+
