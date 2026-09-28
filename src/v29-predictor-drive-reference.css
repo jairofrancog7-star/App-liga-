@@ -1,17 +1,13 @@
-/* PRONOSTICA SEIS — one fullscreen visual owner.
-   Uses the isolated reference assets already stored in the repository; the
-   screen remains real UI and the large center area is still the route button. */
+/* V38 — PRONOSTICA SEIS
+   Petición actual: plasmar directamente la referencia completa de la imagen 2.
+   Se usa el master ya guardado en assets/reference/predictor-master.png.
+   No hay capas, textos, trofeos ni tarjetas reconstruidas encima. */
+
 body[data-app-route="predictor"]{
-  --v37-bg:#02045f;
-  --v37-cyan:#16dff0;
-  background:var(--v37-bg)!important;
+  background:#01034f!important;
   overflow:hidden!important;
 }
-body[data-app-route="predictor"] #app>.topbar{
-  display:none!important;
-  visibility:hidden!important;
-  pointer-events:none!important;
-}
+
 body[data-app-route="predictor"] #app,
 body[data-app-route="predictor"] .app-shell{
   width:min(100%,520px)!important;
@@ -20,279 +16,117 @@ body[data-app-route="predictor"] .app-shell{
   margin:0 auto!important;
   padding:0!important;
   overflow:hidden!important;
-  background:var(--v37-bg)!important;
+  background:#01034f!important;
 }
+
+body[data-app-route="predictor"] #app>.topbar{
+  display:none!important;
+}
+
 body[data-app-route="predictor"] #screen{
   position:relative!important;
   width:100%!important;
-  max-width:520px!important;
-  height:calc(100dvh - var(--bottom-nav-h,69px) - env(safe-area-inset-bottom))!important;
-  min-height:0!important;
-  margin:0 auto!important;
+  height:100dvh!important;
+  min-height:100dvh!important;
+  max-height:100dvh!important;
+  margin:0!important;
   padding:0!important;
   overflow:hidden!important;
-  background:
-    radial-gradient(ellipse at 52% 9%,rgba(15,76,255,.42),transparent 43%),
-    linear-gradient(180deg,#0637ee 0%,#0724cc 22%,#07139a 43%,#050875 64%,#020451 100%)!important;
+  background:#01034f!important;
   animation:none!important;
 }
 
-.v37-predictor-reference{
-  position:relative!important;
-  isolation:isolate!important;
+/* Ocultar la barra genérica: la propia referencia ya trae exactamente la barra visual correcta. */
+body[data-app-route="predictor"] .bottom-nav{
+  display:none!important;
+}
+
+body[data-app-route="predictor"] .v37-predictor-reference{
+  position:absolute!important;
+  inset:0!important;
   width:100%!important;
   height:100%!important;
-  min-height:0!important;
   margin:0!important;
   padding:0!important;
   overflow:hidden!important;
-  color:#fff!important;
-  background:transparent!important;
-  font-family:Inter,Roboto,Arial,sans-serif!important;
-}
-.v37-predictor-reference::before{
-  content:""!important;
-  position:absolute!important;
-  z-index:-2!important;
-  inset:0!important;
-  pointer-events:none!important;
-  background:
-    linear-gradient(132deg,transparent 0 20%,rgba(25,217,255,.08) 20.4% 20.8%,transparent 21.2% 100%),
-    linear-gradient(38deg,transparent 0 58%,rgba(255,55,195,.055) 58.4% 58.8%,transparent 59.2% 100%)!important;
-}
-.v37-predictor-reference::after{
-  content:""!important;
-  position:absolute!important;
-  z-index:-1!important;
-  left:-8%!important;
-  right:-8%!important;
-  bottom:0!important;
-  height:28%!important;
-  pointer-events:none!important;
-  background:linear-gradient(180deg,transparent 0%,rgba(2,5,57,.20) 36%,rgba(1,4,39,.64) 100%)!important;
+  background:#01034f!important;
 }
 
-/* Left chevrons + upper-right shield, matching the reference geometry. */
-.v37-predictor-marks{
+/* Una sola imagen. Se amplía 6% y se desplaza hacia arriba para recortar
+   únicamente la barra de estado Android de la captura, conservando la barra inferior. */
+body[data-app-route="predictor"] .v37-predictor-reference-image{
   position:absolute!important;
   z-index:1!important;
-  left:50%!important;
-  top:11.2%!important;
-  width:min(76%,395px)!important;
-  height:24%!important;
-  transform:translateX(-50%)!important;
-  pointer-events:none!important;
-}
-.v37-predictor-marks::before,
-.v37-predictor-marks::after{
-  content:""!important;
-  position:absolute!important;
-  box-sizing:border-box!important;
-}
-.v37-predictor-marks::before{
-  left:-2%!important;
-  top:42%!important;
-  width:74px!important;
-  height:74px!important;
-  border-left:3px solid rgba(22,188,255,.76)!important;
-  border-bottom:3px solid rgba(22,188,255,.76)!important;
-  transform:rotate(45deg)!important;
-  filter:drop-shadow(0 0 5px rgba(20,175,255,.18))!important;
-}
-.v37-predictor-marks::after{
-  right:1%!important;
-  top:0!important;
-  width:78px!important;
-  height:62px!important;
-  border:3px solid rgba(26,180,255,.56)!important;
-  border-bottom:0!important;
-  border-radius:50% 50% 12px 12px/36% 36% 12px 12px!important;
-  clip-path:polygon(15% 0,50% 12%,85% 0,92% 58%,50% 100%,8% 58%)!important;
-}
-.v37-predictor-marks i{
-  position:absolute!important;
+  left:0!important;
+  top:-6%!important;
   display:block!important;
-  width:62px!important;
-  height:62px!important;
-  border-left:2px solid rgba(25,177,255,.50)!important;
-  border-bottom:2px solid rgba(25,177,255,.50)!important;
-  transform:rotate(45deg)!important;
-}
-.v37-predictor-marks i:first-child{left:7%!important;top:49%!important}
-.v37-predictor-marks i:last-child{display:none!important}
-
-.v37-predictor-title{
-  position:absolute!important;
-  z-index:5!important;
-  left:50%!important;
-  top:14.8%!important;
-  width:76%!important;
+  width:100%!important;
+  height:106%!important;
+  max-width:none!important;
+  max-height:none!important;
   margin:0!important;
-  transform:translateX(-50%) skewX(-7deg)!important;
-  display:grid!important;
-  justify-items:center!important;
-  color:#fff!important;
-  font-family:Impact,Haettenschweiler,"Arial Narrow Bold","Roboto Condensed",Arial,sans-serif!important;
-  font-style:italic!important;
-  font-weight:950!important;
-  text-align:center!important;
-  text-transform:uppercase!important;
-  text-shadow:0 2px 2px rgba(0,0,55,.24)!important;
-}
-.v37-predictor-title span:first-child{
-  font-size:clamp(43px,11.9vw,61px)!important;
-  line-height:.84!important;
-  letter-spacing:-.048em!important;
-  white-space:nowrap!important;
-}
-.v37-predictor-title span:last-child{
-  font-size:clamp(49px,13.3vw,68px)!important;
-  line-height:.80!important;
-  letter-spacing:-.052em!important;
+  padding:0!important;
+  border:0!important;
+  object-fit:cover!important;
+  object-position:center center!important;
+  user-select:none!important;
+  pointer-events:none!important;
+  -webkit-user-drag:none!important;
 }
 
-.v37-predictor-crest{
-  position:absolute!important;
-  z-index:4!important;
-  left:50%!important;
-  top:30.6%!important;
-  width:min(31vw,132px)!important;
-  height:min(29vw,124px)!important;
-  transform:translateX(-50%)!important;
-  display:block!important;
-  object-fit:contain!important;
-  color:transparent!important;
-  font-size:0!important;
-  background:transparent!important;
-  filter:drop-shadow(0 0 4px rgba(255,255,255,.08))!important;
-}
-
-.v37-predictor-enter{
+/* Hotspots invisibles para que la barra dibujada en la referencia siga navegando. */
+body[data-app-route="predictor"] .v37-predictor-hotnav{
   position:absolute!important;
   z-index:5!important;
-  left:50%!important;
-  top:43.4%!important;
-  width:89%!important;
-  height:39.8%!important;
-  transform:translateX(-50%)!important;
+  left:0!important;
+  right:0!important;
+  bottom:0!important;
+  height:10.5%!important;
+  display:grid!important;
+  grid-template-columns:repeat(5,1fr)!important;
+  margin:0!important;
+  padding:0!important;
+  background:transparent!important;
+  pointer-events:auto!important;
+}
+
+body[data-app-route="predictor"] .v37-predictor-hotnav button{
+  width:100%!important;
+  height:100%!important;
   margin:0!important;
   padding:0!important;
   border:0!important;
   border-radius:0!important;
   background:transparent!important;
-  color:#fff!important;
+  color:transparent!important;
   cursor:pointer!important;
-  touch-action:manipulation!important;
   -webkit-tap-highlight-color:transparent!important;
 }
-.v37-predictor-enter:focus-visible{
-  outline:2px solid var(--v37-cyan)!important;
-  outline-offset:4px!important;
-  border-radius:18px!important;
+
+@media(min-width:521px){
+  body[data-app-route="predictor"] #screen{
+    width:520px!important;
+    left:50%!important;
+    transform:translateX(-50%)!important;
+  }
 }
 
-.v37-score-panel{
-  position:absolute!important;
-  z-index:2!important;
-  left:50%!important;
-  top:13%!important;
-  width:68%!important;
-  height:35%!important;
-  transform:translateX(-50%)!important;
-  display:grid!important;
-  grid-template-columns:repeat(3,minmax(0,1fr))!important;
-  align-items:center!important;
-  justify-items:center!important;
-  overflow:hidden!important;
-  border:1px solid rgba(36,224,248,.72)!important;
-  border-radius:17px!important;
-  background:linear-gradient(180deg,rgba(38,48,176,.91),rgba(18,15,109,.95))!important;
-  box-shadow:
-    inset 0 0 18px rgba(55,66,255,.28),
-    0 8px 22px rgba(0,0,63,.25)!important;
-}
-.v37-score-panel::before{
-  content:""!important;
-  position:absolute!important;
-  inset:0!important;
-  pointer-events:none!important;
-  border-top:1px solid rgba(255,58,198,.62)!important;
-  border-bottom:1px solid rgba(35,216,255,.50)!important;
-}
-.v37-score-panel img{
-  position:relative!important;
-  z-index:2!important;
-  display:block!important;
-  max-width:62%!important;
-  max-height:72%!important;
-  width:auto!important;
-  height:auto!important;
-  object-fit:contain!important;
-  filter:drop-shadow(0 2px 2px rgba(0,0,45,.18))!important;
-}
-.v37-score-panel img+img{
-  border-left:0!important;
-}
-.v37-score-two{transform:translateY(2%)!important}
-.v37-score-question:first-of-type{transform:translateY(-1%)!important}
 
-.v37-predictor-trophy{
+/* V39 — mantener intacta la pantalla original y abrir la segunda experiencia
+   únicamente al tocar la zona central de Pronostica Seis. */
+body[data-app-route="predictor"] .v37-predictor-enter{
   position:absolute!important;
-  z-index:5!important;
-  left:50%!important;
-  top:-1%!important;
-  width:34%!important;
-  height:66%!important;
-  transform:translateX(-50%)!important;
-  object-fit:contain!important;
-  object-position:center top!important;
-  mix-blend-mode:normal!important;
-  filter:drop-shadow(0 0 12px rgba(22,180,255,.34))!important;
-  pointer-events:none!important;
-}
-
-.v37-predictor-pitch-img{
-  position:absolute!important;
-  z-index:1!important;
-  left:50%!important;
-  bottom:0!important;
-  width:97%!important;
-  height:auto!important;
-  transform:translateX(-50%)!important;
-  display:block!important;
-  object-fit:contain!important;
-  filter:drop-shadow(0 12px 18px rgba(0,0,48,.26))!important;
-  pointer-events:none!important;
-}
-
-.v37-predictor-stadium-img{
-  position:absolute!important;
-  z-index:2!important;
-  left:50%!important;
-  bottom:-1.4%!important;
-  width:101%!important;
-  height:auto!important;
-  transform:translateX(-50%)!important;
-  display:block!important;
-  object-fit:contain!important;
-  pointer-events:none!important;
-  filter:drop-shadow(0 -2px 14px rgba(18,99,255,.16))!important;
-}
-
-@media(max-width:390px){
-  .v37-predictor-title{top:14.2%!important;width:78%!important}
-  .v37-predictor-title span:first-child{font-size:clamp(39px,11.5vw,47px)!important}
-  .v37-predictor-title span:last-child{font-size:clamp(45px,12.9vw,52px)!important}
-  .v37-predictor-crest{top:29.8%!important;width:min(31vw,116px)!important;height:min(29vw,110px)!important}
-  .v37-predictor-enter{top:42.6%!important;width:91%!important;height:40.5%!important}
-  .v37-predictor-trophy{width:36%!important;height:67%!important}
-  .v37-score-panel{width:70%!important;height:34%!important}
-  .v37-predictor-stadium-img{width:103%!important}
-}
-@media(max-width:340px){
-  .v37-predictor-title{top:13.7%!important}
-  .v37-predictor-enter{top:42%!important;height:41%!important}
-}
-@media(prefers-reduced-motion:reduce){
-  .v37-predictor-enter{transition:none!important}
+  z-index:6!important;
+  left:16%!important;
+  right:16%!important;
+  top:27%!important;
+  height:43%!important;
+  margin:0!important;
+  padding:0!important;
+  border:0!important;
+  border-radius:24px!important;
+  background:transparent!important;
+  color:transparent!important;
+  cursor:pointer!important;
+  -webkit-tap-highlight-color:transparent!important;
 }

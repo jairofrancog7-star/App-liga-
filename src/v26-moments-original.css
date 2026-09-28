@@ -1,328 +1,219 @@
-/* V26 — Momentos rebuilt as real UI.
-   The reference screenshots are used only as card artwork sprites. The app
-   header and bottom navigation are the real shared components. */
-
+/* V26 — Momentos: une las dos referencias como una sola página continua, sin repetir UI en el centro. */
 body[data-app-route="moments"]{
-  background:var(--app-bg,#06075f)!important;
+  background:#02065f!important;
   overflow-x:hidden!important;
   overflow-y:auto!important;
+  height:auto!important;
   min-height:100dvh!important;
 }
 body[data-app-route="moments"] #app,
 body[data-app-route="moments"] .app-shell{
   width:min(100%,520px)!important;
   max-width:520px!important;
+  height:auto!important;
+  max-height:none!important;
   min-height:100dvh!important;
   margin:0 auto!important;
+  padding:0!important;
   overflow:visible!important;
-  background:var(--app-bg,#06075f)!important;
+  position:relative!important;
+  background:#02065f!important;
 }
-body[data-app-route="moments"] #screen{
+body[data-app-route="moments"] .topbar,
+body[data-app-route="moments"] .bottom-nav{
+  display:none!important;
+}
+body[data-app-route="moments"] .screen{
   width:100%!important;
   max-width:none!important;
-  min-height:0!important;
+  height:auto!important;
+  max-height:none!important;
+  padding:0!important;
   margin:0!important;
-  padding:0 0 calc(var(--bottom-nav-h,60px) + 14px)!important;
-  overflow:visible!important;
+  min-height:0!important;
   animation:none!important;
-  background:var(--app-bg,#06075f)!important;
+  overflow:visible!important;
+  background:#02065f!important;
+}
+.v26-moments-original{
+  position:relative!important;
+  width:100%!important;
+  margin:0!important;
+  padding:0!important;
+  line-height:0!important;
+  background:#02065f!important;
+  overflow:visible!important;
+}
+.v26-moments-panel{
+  position:relative!important;
+  display:block!important;
+  width:100%!important;
+  margin:0!important;
+  padding:0!important;
+  line-height:0!important;
+  background:#02065f!important;
+  overflow:hidden!important;
 }
 
-/* Detail header measured from the supplied Momentos master. */
-body[data-app-route="moments"] #app>.topbar{
-  display:block!important;
-  visibility:visible!important;
-  position:sticky!important;
+/* Primera referencia: quita solo su barra inferior repetida. */
+.v26-moments-panel[data-v26-panel="a"]{
+  aspect-ratio:832 / 1677.984!important;
+}
+.v26-moments-panel[data-v26-panel="a"] .v26-moments-original__image{
+  position:absolute!important;
+  left:0!important;
   top:0!important;
-  z-index:120!important;
-  height:calc(112px + env(safe-area-inset-top))!important;
-  min-height:calc(112px + env(safe-area-inset-top))!important;
-  max-height:calc(112px + env(safe-area-inset-top))!important;
+}
+
+/* Segunda referencia: quita status/cabecera repetidos y empieza antes de las tarjetas. */
+.v26-moments-panel[data-v26-panel="b"]{
+  aspect-ratio:832 / 1611.456!important;
+}
+.v26-moments-panel[data-v26-panel="b"] .v26-moments-original__image{
+  position:absolute!important;
+  left:0!important;
+  top:0!important;
+  transform:translateY(-12.8%)!important;
+}
+
+.v26-moments-original__image{
+  display:block!important;
+  width:100%!important;
+  height:auto!important;
+  max-width:none!important;
   margin:0!important;
   padding:0!important;
-  overflow:hidden!important;
-  isolation:isolate!important;
-  background-color:#07106f!important;
-  background-image:url('../public/brand-neon-header.svg')!important;
-  background-repeat:no-repeat!important;
-  background-size:auto 100%!important;
-  background-position:center top!important;
-  border:0!important;
-  border-bottom:0!important;
-  box-shadow:none!important;
-  backdrop-filter:none!important;
-  -webkit-backdrop-filter:none!important;
+  object-fit:contain!important;
+  pointer-events:none!important;
+  user-select:none!important;
+  -webkit-user-drag:none!important;
 }
-body[data-app-route="moments"] #app>.topbar::before{
-  content:""!important;
+.v26-moments-hotspot{
+  position:absolute!important;
+  z-index:4!important;
   display:block!important;
-  position:absolute!important;
-  inset:0!important;
-  z-index:1!important;
-  pointer-events:none!important;
-  background:linear-gradient(180deg,rgba(4,9,100,.02),rgba(3,6,75,.18) 66%,rgba(3,5,68,.48))!important;
-}
-body[data-app-route="moments"] #app>.topbar::after{
-  content:"Momentos"!important;
-  display:block!important;
-  position:absolute!important;
-  left:72px!important;
-  right:20px!important;
-  top:auto!important;
-  bottom:24px!important;
-  z-index:5!important;
-  color:#fff!important;
-  font-family:Inter,Roboto,Arial,sans-serif!important;
-  font-size:28px!important;
-  line-height:1!important;
-  font-weight:520!important;
-  letter-spacing:-.025em!important;
-  white-space:nowrap!important;
-  pointer-events:none!important;
-}
-body[data-app-route="moments"] #app>.topbar .wordmark,
-body[data-app-route="moments"] #app>.topbar .profile-button{
-  display:none!important;
-  visibility:hidden!important;
-  pointer-events:none!important;
-}
-body[data-app-route="moments"] #app>.topbar .back-button,
-body[data-app-route="moments"] #app>.topbar .back-button.is-hidden{
-  display:grid!important;
-  visibility:visible!important;
-  position:absolute!important;
-  left:18px!important;
-  top:auto!important;
-  bottom:15px!important;
-  width:44px!important;
-  height:44px!important;
   margin:0!important;
   padding:0!important;
-  place-items:center!important;
   border:0!important;
   border-radius:0!important;
   background:transparent!important;
-  color:#fff!important;
-  z-index:6!important;
-}
-body[data-app-route="moments"] #app>.topbar .back-button svg{
-  width:30px!important;
-  height:30px!important;
-  fill:none!important;
-  stroke:currentColor!important;
-  stroke-width:2!important;
-  stroke-linecap:round!important;
-  stroke-linejoin:round!important;
-}
-
-.v26-moments-page{
-  width:100%;
-  margin:0;
-  padding:0 18px 18px;
-  color:#fff;
-  background:var(--app-bg,#06075f);
-}
-.v26-reference-video{
-  width:100%;
-  margin:0 0 18px;
-  overflow:hidden;
-  border:1px solid rgba(52,148,255,.38);
-  border-radius:17px;
-  background:#10117d;
-  box-shadow:none;
-}
-.v26-reference-video video{
-  display:block;
-  width:100%;
-  height:104px;
-  object-fit:cover;
-  background:#03043d;
-}
-.v26-reference-video>div{
-  min-height:51px;
-  padding:10px 14px 9px;
-  display:grid;
-  align-content:center;
-  gap:5px;
-}
-.v26-reference-video b{
-  color:#fff;
-  font-size:14px;
-  line-height:1.08;
-  font-weight:800;
-}
-.v26-reference-video small{
-  color:#b8bdd5;
-  font-size:11px;
-  line-height:1;
-}
-.v26-reference-actions{
-  display:grid;
-  gap:12px;
-  margin:0 0 22px;
-}
-.v26-reference-action{
-  width:100%;
-  min-height:94px;
-  margin:0;
-  padding:0 14px;
-  display:grid;
-  grid-template-columns:48px minmax(0,1fr) 20px;
-  gap:12px;
-  align-items:center;
-  border:1px solid rgba(40,202,235,.33);
-  border-radius:18px;
-  background:#0c0e76;
-  color:#fff;
-  text-align:left;
-  box-shadow:none;
-}
-.v26-reference-action-icon{
-  width:46px;
-  height:46px;
-  display:grid;
-  place-items:center;
-  border-radius:13px;
-  background:#0d258e;
-  color:#2be2ee;
-}
-.v26-reference-action-icon svg{
-  width:25px;
-  height:25px;
-  fill:none;
-  stroke:currentColor;
-  stroke-width:1.8;
-  stroke-linecap:round;
-  stroke-linejoin:round;
-}
-.v26-reference-action>span:nth-child(2){
-  min-width:0;
-  display:grid;
-  gap:5px;
-}
-.v26-reference-action b{
-  color:#fff;
-  font-size:14px;
-  line-height:1.05;
-  font-weight:800;
-}
-.v26-reference-action small{
-  color:#b6bdd8;
-  font-size:11px;
-  line-height:1.05;
-}
-.v26-reference-action>i{
-  color:#21ddea;
-  font-style:normal;
-  font-size:25px;
-  line-height:1;
-  text-align:center;
-}
-.v26-moments-archive{
-  margin:28px 0 0;
-  padding-top:18px;
-  border-top:1px solid rgba(255,255,255,.08);
-}
-.v26-moments-grid{
-  display:grid;
-  grid-template-columns:repeat(2,minmax(0,1fr));
-  gap:12px 10px;
-  width:100%;
-}
-.v26-moment-card{
-  position:relative;
-  width:100%;
-  aspect-ratio:368 / 538;
-  margin:0;
-  padding:0;
-  overflow:hidden;
-  border:0;
-  border-radius:14px;
-  background-color:#0b126e;
-  background-repeat:no-repeat;
-  background-size:228.533% auto;
-  box-shadow:none;
-  cursor:pointer;
-  touch-action:manipulation;
-  -webkit-tap-highlight-color:transparent;
-}
-.v26-moment-card:active{
-  transform:scale(.992);
-  filter:brightness(.94);
-}
-.v26-moment-card:focus-visible{
-  outline:2px solid var(--accent,#20e7f0);
-  outline-offset:2px;
-}
-.v26-moment-short{
-  aspect-ratio:368 / 335;
-}
-
-/* Sprite A — Liga content from the first supplied Momentos master. */
-.v26-moment-a1{background-image:url('../assets/moments/moments-original-a.png');background-position:8.3% 19.9%}
-.v26-moment-a2{background-image:url('../assets/moments/moments-original-a.png');background-position:90.4% 19.9%}
-.v26-moment-a3{background-image:url('../assets/moments/moments-original-a.png');background-position:8.3% 62.0%}
-.v26-moment-a4{background-image:url('../assets/moments/moments-original-a.png');background-position:90.4% 62.0%}
-.v26-moment-a5{background-image:url('../assets/moments/moments-original-a.png');background-position:8.3% 86.8%}
-.v26-moment-a6{background-image:url('../assets/moments/moments-original-a.png');background-position:90.4% 86.8%}
-
-/* Sprite B — Liga content from the second supplied Momentos master. */
-.v26-moment-b1{background-image:url('../assets/moments/moments-original-b.png');background-position:8.3% 19.9%}
-.v26-moment-b2{background-image:url('../assets/moments/moments-original-b.png');background-position:90.4% 19.9%}
-.v26-moment-b3{background-image:url('../assets/moments/moments-original-b.png');background-position:8.3% 62.0%}
-.v26-moment-b4{background-image:url('../assets/moments/moments-original-b.png');background-position:90.4% 62.0%}
-.v26-moment-b5{background-image:url('../assets/moments/moments-original-b.png');background-position:8.3% 86.8%}
-.v26-moment-b6{background-image:url('../assets/moments/moments-original-b.png');background-position:90.4% 86.8%}
-
-/* Extra Momentos content added by V105 remains part of the same page, never
-   another framed app inside the route. */
-body[data-app-route="moments"] .v105-bottom[data-v105-route="moments"]{
-  width:100%!important;
-  margin:18px 0 0!important;
-  border-left:0!important;
-  border-right:0!important;
-  border-radius:0!important;
+  color:transparent!important;
   box-shadow:none!important;
+  outline:0;
+  cursor:pointer!important;
+  touch-action:manipulation!important;
+  -webkit-tap-highlight-color:transparent!important;
+}
+.v26-moments-hotspot:focus-visible{
+  outline:2px solid #20dfee!important;
+  outline-offset:-2px!important;
+  border-radius:14px!important;
 }
 
-@media(max-width:390px){
-  body[data-app-route="moments"] #app>.topbar{
-    height:calc(104px + env(safe-area-inset-top))!important;
-    min-height:calc(104px + env(safe-area-inset-top))!important;
-    max-height:calc(104px + env(safe-area-inset-top))!important;
-  }
-  body[data-app-route="moments"] #app>.topbar::after{
-    left:66px!important;
-    bottom:22px!important;
-    font-size:26px!important;
-  }
-  body[data-app-route="moments"] #app>.topbar .back-button,
-  body[data-app-route="moments"] #app>.topbar .back-button.is-hidden{
-    left:14px!important;
-    bottom:13px!important;
-    width:42px!important;
-    height:42px!important;
-  }
-  .v26-moments-page{padding:0 14px 16px}
-  .v26-reference-video{margin-bottom:16px}
-  .v26-reference-video video{height:100px}
-  .v26-reference-actions{gap:10px;margin-bottom:20px}
-  .v26-reference-action{min-height:88px;padding:0 12px;grid-template-columns:44px minmax(0,1fr) 18px;gap:10px}
-  .v26-reference-action-icon{width:42px;height:42px}
-  .v26-reference-action-icon svg{width:23px;height:23px}
-  .v26-reference-action b{font-size:13px}
-  .v26-reference-action small{font-size:10px}
-  .v26-moments-grid{gap:10px 8px}
-  .v26-moment-card{border-radius:12px}
+.v26-card{width:44.2%!important;border-radius:4.1%!important}
+.v26-card-1,.v26-card-3,.v26-card-5{left:4.8%!important}
+.v26-card-2,.v26-card-4,.v26-card-6{left:51.1%!important}
+.v26-nav{bottom:0!important;width:20%!important}
+.v26-nav-home{left:0!important}
+.v26-nav-competition{left:20%!important}
+.v26-nav-video{left:40%!important}
+.v26-nav-fantasy{left:60%!important}
+.v26-nav-more{left:80%!important}
+
+/* Primera referencia reajustada al recorte inferior. */
+.v26-moments-panel[data-v26-panel="a"] .v26-back{
+  left:3.7%!important;top:6.388%!important;width:11.5%!important;height:6.388%!important
+}
+.v26-moments-panel[data-v26-panel="a"] .v26-card-1,
+.v26-moments-panel[data-v26-panel="a"] .v26-card-2{
+  top:15.639%!important;height:28.304%!important
+}
+.v26-moments-panel[data-v26-panel="a"] .v26-card-3,
+.v26-moments-panel[data-v26-panel="a"] .v26-card-4{
+  top:45.264%!important;height:28.304%!important
+}
+.v26-moments-panel[data-v26-panel="a"] .v26-card-5,
+.v26-moments-panel[data-v26-panel="a"] .v26-card-6{
+  top:74.559%!important;height:25.441%!important
+}
+.v26-moments-panel[data-v26-panel="a"] .v26-nav{
+  display:none!important;
 }
 
-@media(max-width:340px){
-  .v26-moments-page{padding-left:12px;padding-right:12px}
-  .v26-reference-video video{height:94px}
-  .v26-reference-action{min-height:84px}
-  .v26-moments-grid{gap:8px 7px}
+/* Segunda referencia reajustada al recorte superior. */
+.v26-moments-panel[data-v26-panel="b"] .v26-back{
+  display:none!important;
+}
+.v26-moments-panel[data-v26-panel="b"] .v26-card-1,
+.v26-moments-panel[data-v26-panel="b"] .v26-card-2{
+  top:1.606%!important;height:29.472%!important
+}
+.v26-moments-panel[data-v26-panel="b"] .v26-card-3,
+.v26-moments-panel[data-v26-panel="b"] .v26-card-4{
+  top:32.454%!important;height:29.472%!important
+}
+.v26-moments-panel[data-v26-panel="b"] .v26-card-5,
+.v26-moments-panel[data-v26-panel="b"] .v26-card-6{
+  top:62.959%!important;height:26.491%!important
+}
+.v26-moments-panel[data-v26-panel="b"] .v26-nav{
+  height:10.55%!important;
 }
 
-@media(prefers-reduced-motion:reduce){
-  .v26-moment-card:active{transform:none}
+
+/* V26 sticky header — comportamiento del video de referencia. */
+body[data-app-route="moments"] .v26-moments-sticky{
+  position:fixed!important;
+  top:0!important;
+  left:50%!important;
+  transform:translateX(-50%)!important;
+  z-index:50!important;
+  width:min(100vw,520px)!important;
+  height:calc(min(100vw,520px) * .3154)!important;
+  margin:0!important;
+  padding:0!important;
+  overflow:hidden!important;
+  background:#02065f!important;
+  line-height:0!important;
+  pointer-events:none!important;
+  contain:paint!important;
+}
+body[data-app-route="moments"] .v26-moments-sticky__image{
+  position:absolute!important;
+  inset:0 auto auto 0!important;
+  display:block!important;
+  width:100%!important;
+  height:auto!important;
+  max-width:none!important;
+  margin:0!important;
+  padding:0!important;
+  object-fit:contain!important;
+  pointer-events:none!important;
+  user-select:none!important;
+  -webkit-user-drag:none!important;
+}
+body[data-app-route="moments"] .v26-moments-sticky-back{
+  position:absolute!important;
+  left:3.7%!important;
+  top:40.84%!important;
+  width:11.5%!important;
+  height:40.84%!important;
+  z-index:2!important;
+  display:block!important;
+  margin:0!important;
+  padding:0!important;
+  border:0!important;
+  border-radius:0!important;
+  background:transparent!important;
+  box-shadow:none!important;
+  outline:0!important;
+  cursor:pointer!important;
+  pointer-events:auto!important;
+  touch-action:manipulation!important;
+  -webkit-tap-highlight-color:transparent!important;
+}
+body[data-app-route="moments"] .v26-moments-sticky-back:focus-visible{
+  outline:2px solid #20dfee!important;
+  outline-offset:-2px!important;
+  border-radius:14px!important;
 }

@@ -130,8 +130,9 @@ document.addEventListener('click',e=>{
   if(el.dataset.cRound){state.matchday[state.category]=el.dataset.cRound;return render()}
   if(el.dataset.cStage){state.bracketStage=el.dataset.cStage;return render()}
   if(el.dataset.cMatch){window.LJR_MATCH_CENTER?.open(el.dataset.cMatch);return}
-  if(el.dataset.cTeam){chosenTeam=el.dataset.cTeam;sheet(chosenTeam,action('teamDetail','Ver equipo')+action('compareTeam','Comparar equipo')+action('teamStats','Estadísticas')+action('team','Equipo PNG'));return}
+  if(el.dataset.cTeam){chosenTeam=el.dataset.cTeam;sheet(chosenTeam,action('teamDetail','Ver equipo')+action('compareTeam','Comparar equipo')+action('teamStats','Estadísticas')+action('team','Equipo PNG')+action('shareTeam','Compartir estadísticas del equipo'));return}
   const a=el.dataset.cAction;
+  if(a==='shareTeam')return prepare('team',{team:chosenTeam},'share');
   if(a==='statistics')return stats();if(a==='teamStats')return stats(chosenTeam);
   if(a==='teamDetail'||a==='compareTeam'){closeSheet();window.LJR_TEAM_DETAIL_API?.[a==='teamDetail'?'openTeam':'openCompare'](chosenTeam,state.category);return}
   if(a==='compareTeams'){sheet('Elige equipo',category().standings.map(t=>`<button data-c-team="${esc(t.name)}">${esc(t.name)}</button>`).join(''));return}
