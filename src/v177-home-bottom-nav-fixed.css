@@ -1,0 +1,13 @@
+/* V177 — HOME ONLY: keep the existing bottom navigation fixed to the viewport.
+   No visual redesign and no changes to Momentos, Competición, Pronostica or other routes. */
+body[data-app-route="home"] #app > .bottom-nav,
+body[data-app-route="home"] .app-shell > .bottom-nav,
+body[data-app-route="home"] #app > nav.bottom-nav{
+  position:fixed!important;
+  top:auto!important;
+  bottom:0!important;
+  left:50%!important;
+  right:auto!important;
+  transform:translateX(-50%)!important;
+  z-index:2147483000!important;
+}
