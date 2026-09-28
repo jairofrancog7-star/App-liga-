@@ -192,7 +192,10 @@ function calendarGames(categoryId=selectedCalendarCategory){
         if(!r?.[2]||!r?.[6])return;
         const d=fixtureDate(r?.[8]);if(!d)return;
         const hs=String(r?.[3]??'').trim(),as=String(r?.[5]??'').trim();
-        const played=/^\d+$/.test(hs)&&/^\d+$/.test(as);
+        const numericResult=/^\d+$/.test(hs)&&/^\d+$/.test(as);
+        const status=String(r?.[10]??'').trim();
+        const played=numericResult||/\bJUGADO\b/i.test(status);
+        const outcome=((status.match(/GANA\s+(.+)$/i)||[])[1]||'').trim();
         out.push({
           id:'official-'+catId+'-'+groupIndex+'-'+rowIndex,
           categoryId:String(catId),
@@ -203,7 +206,7 @@ function calendarGames(categoryId=selectedCalendarCategory){
           away:String(r?.[6]||'').trim(),
           homeScore:/^\d+$/.test(hs)?hs:'',
           awayScore:/^\d+$/.test(as)?as:'',
-          played,
+          numericResult,played,status,outcome,
           venue:String(r?.[7]||'Campo por confirmar').trim()||'Campo por confirmar'
         });
       });
@@ -258,10 +261,10 @@ function matchList(iso){
       '<div class="v103-cal-round"><span>'+esc(g.category)+'</span><b>Jornada '+esc(g.round||'—')+' · '+esc(g.venue)+'</b></div>'+
       '<div class="v103-cal-pair">'+
         '<div>'+teamMark(g.home)+'<b>'+esc(g.home)+'</b></div>'+
-        '<strong>'+(g.played?esc(g.homeScore+'–'+g.awayScore):esc(g.time))+'</strong>'+
+        '<strong>'+(g.numericResult?esc(g.homeScore+'–'+g.awayScore):(g.played?'JUGADO':esc(g.time)))+'</strong>'+
         '<div>'+teamMark(g.away)+'<b>'+esc(g.away)+'</b></div>'+
       '</div>'+
-      '<small>'+(g.played?'Resultado oficial':'Horario oficial')+'</small>'+
+      '<small>'+(g.numericResult?'Resultado oficial':(g.played?(g.outcome?'Gana '+esc(g.outcome):'Partido jugado · marcador pendiente'):'Horario oficial'))+'</small>'+
     '</article>'
   ).join('')+'</div>';
 }
