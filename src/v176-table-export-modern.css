@@ -12,3 +12,10 @@ body[data-app-route="tableExport"] .v176-table-page{width:min(100%,760px);margin
 .v176-toast{position:fixed;left:50%;bottom:100px;z-index:100020;transform:translateX(-50%);max-width:88vw;padding:10px 14px;border-radius:999px;background:#07105f;color:#fff;border:1px solid rgba(43,225,237,.5);font-size:10px;box-shadow:0 12px 30px rgba(0,0,0,.28)}
 @media(max-width:520px){.v176-hero{grid-template-columns:1fr}.v176-badge{justify-self:start}.v176-toolbar{grid-template-columns:1fr 1fr}.v176-toolbar label{grid-column:1/-1}.v176-all-actions{grid-template-columns:1fr}.v176-legend{align-items:flex-start;flex-direction:column}.v176-columns,.v176-row{grid-template-columns:27px minmax(0,1fr) 30px 27px 27px 27px 36px 36px;padding-left:9px;padding-right:9px}.v176-team{grid-template-columns:30px minmax(0,1fr);column-gap:6px}.v176-logo{width:28px;height:28px}.v176-logo img{width:25px;height:25px}.v176-columns{font-size:6.8px}.v176-row{font-size:8px}.v176-team b{font-size:8.5px}.v176-team small{font-size:5.8px}.v176-card footer{align-items:flex-start;flex-direction:column}}
 @media(max-width:365px){.v176-columns,.v176-row{grid-template-columns:24px minmax(0,1fr) 27px 24px 24px 24px 33px 33px;gap:2px}.v176-team{grid-template-columns:27px minmax(0,1fr)}.v176-logo{width:25px;height:25px}.v176-logo img{width:22px;height:22px}}
+
+.v176-category-rail{display:flex;gap:7px;overflow-x:auto;padding:10px 1px 3px;margin-top:3px;scrollbar-width:none}
+.v176-category-rail::-webkit-scrollbar{display:none}
+.v176-category-rail button{flex:0 0 auto;min-height:36px;padding:0 12px;border:1px solid rgba(73,104,213,.45);border-radius:999px;background:#080e69;color:#aeb9db;font-size:8.5px;font-weight:900;white-space:nowrap}
+.v176-category-rail button.active{background:#22dfea;border-color:#22dfea;color:#061258;box-shadow:0 0 18px rgba(34,223,234,.18)}
+body[data-app-route="tableExport"] .v176-logo{display:grid!important;visibility:visible!important;opacity:1!important;flex:0 0 auto!important}
+body[data-app-route="tableExport"] .v176-logo img{display:block!important;visibility:visible!important;opacity:1!important;max-width:100%!important;max-height:100%!important}

@@ -10,27 +10,76 @@
 if(window.__LJR_V176_TABLE_EXPORT__)return;
 window.__LJR_V176_TABLE_EXPORT__=true;
 
-const ORDER=()=>window.CompetitionController.categories().map(c=>c.id);
-const LABELS={};
+const CAT_ORDER=['3','5','4','2','1'];
+const LABELS={'3':'Primera Fuerza','5':'Intermedia','4':'Segunda Fuerza','2':'Veteranos 35+','1':'Veteranos 50+'};
 const STORE='v176-table-category';
+const LOCAL_DATA='./public/data/official-live.json';
+const REMOTE_DATA='https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/data/official-live.json';
 const $=(s,r=document)=>r.querySelector(s);
-const $$=(s,r=document)=>Array.from(r.querySelectorAll(s));
+const $=(s,r=document)=>Array.from(r.querySelectorAll(s));
 const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const norm=v=>String(v??'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[^a-z0-9+]+/g,' ').trim();
 const route=()=>String(location.hash||'').replace(/^#\/?/,'').split('?')[0]||'home';
-let db=null,category=localStorage.getItem('v12-fixture-cat')||localStorage.getItem(STORE)||'3',busy=false;
+let db=null,category=localStorage.getItem(STORE)||localStorage.getItem('v62-category')||localStorage.getItem('v12-fixture-cat')||'3',busy=false;
 
 function toast(msg){
  let t=$('.v176-toast');if(t)t.remove();
  t=document.createElement('div');t.className='v176-toast';t.textContent=msg;document.body.appendChild(t);
  setTimeout(()=>t.remove(),2200);
 }
-async function getDb(){ await window.CompetitionController.load();db=window.LJR_OFFICIAL_DATA;return db; }
-function cat(id){return window.CompetitionController.categories().find(c=>c.id===String(id))}
+async function fetchJson(url){
+ try{const r=await fetch(url+(url.includes('?')?'&':'?')+'ts='+Date.now(),{cache:'no-store'});if(!r.ok)throw 0;return await r.json()}catch(_){return null}
+}
+async function getDb(){
+ if(window.LJR_OFFICIAL_API?.getData?.())db=window.LJR_OFFICIAL_API.getData();
+ if(!db&&window.LJR_OFFICIAL_DATA)db=window.LJR_OFFICIAL_DATA;
+ if(!db){
+   const local=await fetchJson(LOCAL_DATA),remote=await fetchJson(REMOTE_DATA);
+   db=local&&remote?(String(remote.captured_at_utc||'')>String(local.captured_at_utc||'')?remote:local):(local||remote);
+ }
+ if(!db)throw Error('No se pudieron cargar las tablas oficiales.');
+ return db;
+}
+function ORDER(){return CAT_ORDER.filter(id=>db?.categories?.[id])}
+function rawCat(id){return db?.categories?.[String(id)]||null}
+function playedScore(v){const s=String(v??'').trim();return /^\d+$/.test(s)?Number(s):s==='-'?0:null}
+function normalizedCategory(id){
+ const c=rawCat(id);if(!c)return null;
+ const standings=(c.standings?.[0]?.rows||[]).filter(r=>Array.isArray(r)&&r[1]).map((r,i)=>({
+   pos:Number(r[0])||i+1,name:String(r[1]||'').trim(),pj:r[2]??'—',g:r[3]??'—',e:r[4]??'—',p:r[5]??'—',
+   gf:r[6]??'—',gc:r[7]??'—',dg:r[8]??'—',pts:r[9]??'—',classified:false,form:[]
+ }));
+ const matches=(c.fixtures?.[0]?.rows||[]).filter(r=>Array.isArray(r)&&r[2]&&r[6]).map((r,i)=>{
+   const hs=playedScore(r[3]),as=playedScore(r[5]),complete=hs!==null||as!==null;
+   const dt=String(r[8]||''),tm=(dt.match(/\s(\d{1,2}:\d{2})/)||[])[1]||'';
+   return {id:String(id)+'-'+i,round:String(r[1]||''),home:String(r[2]||''),away:String(r[6]||''),homeScore:hs??0,awayScore:as??0,
+     complete,status:complete?'FINAL':'PROGRAMADO',venue:String(r[7]||''),date:dt,time:tm};
+ });
+ const scorers=(c.scorers?.[0]?.rows||[]).filter(r=>Array.isArray(r)&&r.length>=4&&/^\d+$/.test(String(r[3]||''))).map((r,i)=>({
+   pos:Number(r[0])||i+1,player:String(r[1]||''),team:String(r[2]||''),goals:Number(r[3])||0
+ }));
+ return {id:String(id),name:c.name||LABELS[String(id)]||'Categoría',standings,matches,scorers,stages:[]};
+}
+function cat(id){return normalizedCategory(id)}
 function rows(id){return cat(id)?.standings||[]}
-function logo(name){return window.CompetitionController.logo(name)}
+function logo(name){
+ try{const shared=window.LJR_TEAM_LOGOS?.get?.(name);if(shared)return shared}catch(_){}
+ try{const api=window.LJR_OFFICIAL_API?.getLogo?.(name);if(api)return api}catch(_){}
+ const hit=Object.entries(db?.team_logos||{}).find(([k])=>norm(k)===norm(name))?.[1];
+ if(typeof hit==='string')return hit;
+ if(hit?.local)return String(hit.local).replace(/^\.\//,'./');
+ if(hit?.source)return hit.source;
+ const n=norm(name);
+ if(n==='galacticos')return './assets/teams/galacticos-pozos.webp';
+ return '';
+}
 function categoryOptions(){
- return ORDER().filter(id=>cat(id)).map(id=>'<option value="'+id+'" '+(id===category?'selected':'')+'>'+esc(cat(id)?.name||LABELS[id])+'</option>').join('');
+ return ORDER().map(id=>'<option value="'+id+'" '+(id===category?'selected':'')+'>'+esc(cat(id)?.name||LABELS[id])+'</option>').join('');
+}
+function categoryRail(){
+ return '<div class="v176-category-rail" role="tablist" aria-label="Clasificación por categoría">'+
+   ORDER().map(id=>'<button type="button" class="'+(id===category?'active':'')+'" data-v176-cat="'+id+'">'+esc(cat(id)?.name||LABELS[id])+'</button>').join('')+
+ '</div>';
 }
 function logoMarkup(name){
  const src=logo(name);
@@ -53,6 +102,7 @@ function markup(){
     '<button type="button" class="primary" data-v176-download>Descargar PNG</button>'+
     '<button type="button" data-v176-share>Compartir</button>'+
   '</div>'+
+  categoryRail()+
   '<div class="v176-all-actions"><button type="button" data-v176-download-all>Descargar categorías disponibles PNG</button><button type="button" data-v176-csv>CSV de esta categoría</button></div>'+
   ''+
   '<section class="v176-card">'+
@@ -168,9 +218,15 @@ function setBusy(on){
  const page=document.querySelector('[data-v176-page]');if(!page)return;
  $$('button',page).forEach(b=>b.disabled=!!on);
 }
+function setCategory(id,page){
+ category=String(id);localStorage.setItem(STORE,category);localStorage.setItem('v62-category',category);localStorage.setItem('v12-fixture-cat',category);
+ try{window.LJR_OFFICIAL_API?.setCategory?.(category)}catch(_){}
+ if(page){page.outerHTML=markup();bind()}
+}
 function bind(){
  const page=$('[data-v176-page]');if(!page)return;
- $('[data-v176-category]',page).onchange=e=>{category=e.target.value;window.CompetitionController.setCategory(category);localStorage.setItem(STORE,category);page.outerHTML=markup();bind()};
+ $('[data-v176-category]',page).onchange=e=>setCategory(e.target.value,page);
+ $('[data-v176-cat]',page).forEach(b=>b.onclick=()=>setCategory(b.dataset.v176Cat,page));
  $('[data-v176-download]',page).onclick=()=>doDownload(category);
  $('[data-v176-share]',page).onclick=()=>doShare(category);
  $('[data-v176-download-all]',page).onclick=doAll;
@@ -179,7 +235,7 @@ function bind(){
 async function mount(){
  if(route()!=='tableExport')return;
  try{await getDb()}catch(e){toast(e.message);return}
- category=window.CompetitionController.state.category;
+ category=localStorage.getItem(STORE)||localStorage.getItem('v62-category')||localStorage.getItem('v12-fixture-cat')||category||'3';
  if(!cat(category))category=ORDER().find(x=>cat(x))||'3';
  const screen=$('#screen');if(!screen)return;
  const old=screen.querySelector('.v60-tool-page.v64-page, [data-v176-page]');
@@ -253,7 +309,10 @@ async function statsPublication(context,kind){
   const logos=await Promise.all(rows.map(r=>imageFor(logo(r.team))));let y=235;
   rows.forEach((r,i)=>{x.fillStyle='#fff';x.font='800 28px Arial';x.fillText(String(r.pos??i+1),55,y+40);drawLogo(x,logos[i],110,y+8,68);x.font='700 29px Arial';linesAt(x,r.lines,205,y+32,35);x.fillStyle='#bdc8eb';x.font='500 23px Arial';linesAt(x,r.teamLines,205,y+32+r.lines.length*35,29);x.fillStyle='#25e2ed';x.font='900 38px Arial';x.fillText(String(r.goals),945,y+45);y+=r.height});return png(c);
  }
- const values=Object.entries(window.CompetitionController.statistics(category));
+ const values=Object.entries(window.CompetitionController?.statistics?.(category)||{
+      'Partidos':category.matches.length,'Equipos':category.standings.length,
+      'Goles':category.matches.filter(m=>m.complete).reduce((n,m)=>n+Number(m.homeScore||0)+Number(m.awayScore||0),0)
+    });
  if(!category.matches.length&&!category.standings.length)throw Error('No hay estadísticas oficiales para esta categoría.');
  const {c,x}=publicationCanvas('ESTADÍSTICAS',category.name,Math.max(1350,340+values.length*100));
  values.forEach(([label,value],i)=>{const y=260+i*100;x.fillStyle='#bdc8eb';x.font='600 24px Arial';x.fillText(label,50,y);x.fillStyle='#fff';x.font='800 30px Arial';x.fillText(String(value),50,y+42)});return png(c);
