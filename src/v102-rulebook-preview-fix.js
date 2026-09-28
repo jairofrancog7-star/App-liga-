@@ -37,9 +37,9 @@
 
   function apply(){
     if(route()!=='rulebook') return;
-    const wrap=document.querySelector('[data-v60-pdf-preview] .v72-preview-frame-wrap');
-    if(!wrap || wrap.querySelector('[data-v102-rulebook-doc]')) return;
-    wrap.innerHTML=previewMarkup();
+    const mount=document.querySelector('[data-v102-rulebook-mount]');
+    if(!mount || mount.querySelector('[data-v102-rulebook-doc]')) return;
+    mount.innerHTML=previewMarkup();
   }
 
   function schedule(){
