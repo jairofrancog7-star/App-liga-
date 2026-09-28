@@ -101,7 +101,7 @@
   }
   function v6ValidScorers(data,id){
     const c=data?.categories?.[String(id)],rs=c?.scorers?.[0]?.rows||[];
-    return rs.filter(r=>Array.isArray(r)&&r.length>=4&&/^\d+$/.test(String(r[3]||''))&&r[1]&&r[2])
+    return rs.filter(r=>Array.isArray(r)&&r.length>=4&&/^\d+$/.test(String(r[3]||''))&&r[1]&&r[2]&&!/goles?\s+en\s+temporada/i.test(String(r[2]||'')))
       .map(r=>({rank:Number(r[0])||999,player:String(r[1]).trim(),team:String(r[2]).trim(),goals:Number(r[3])||0,cat:String(id),category:c?.name||V6_CAT_LABEL[String(id)]||''}));
   }
   function v6RefreshArrays(data){
