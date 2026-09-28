@@ -216,59 +216,8 @@ body[data-app-route="tableExport"] [data-v73-motion-banner]{
 }
 
 
-/* V127 — LIGUILLA: una sola barra superior.
-   Quita la segunda barra azul (volver + perfil) que V66 insertaba debajo
-   de la cabecera principal. Se conserva la barra superior original. */
-body[data-app-route="bracketBuilder"].v66-compact-route #screen{
-  padding-top:0!important;
-}
-
-
-/* V129 — LIGUILLA: transición limpia entre cabecera y formulario.
-   Quita los arcos/círculos cyan de la unión y deja un solo azul oscuro continuo. */
-body[data-app-route="bracketBuilder"],
-body[data-app-route="bracketBuilder"] #app,
-body[data-app-route="bracketBuilder"] .app-shell,
-body[data-app-route="bracketBuilder"] #screen,
-body[data-app-route="bracketBuilder"] .v60-tool-page,
-body[data-app-route="bracketBuilder"] .v64-page{
-  background-color:#06055f!important;
-  box-shadow:none!important;
-}
-
-body[data-app-route="bracketBuilder"] #screen,
-body[data-app-route="bracketBuilder"] .v60-tool-page,
-body[data-app-route="bracketBuilder"] .v64-page{
-  background:var(--app-bg,#06075f)!important;
-  background-image:none!important;
-  border-top:0!important;
-  outline:0!important;
-}
-
-/* Elimina cualquier decoración circular/cyan que aparezca justo en la unión. */
-body[data-app-route="bracketBuilder"] #screen::before,
-body[data-app-route="bracketBuilder"] #screen::after,
-body[data-app-route="bracketBuilder"] .v60-tool-page::before,
-body[data-app-route="bracketBuilder"] .v60-tool-page::after,
-body[data-app-route="bracketBuilder"] .v64-page::before,
-body[data-app-route="bracketBuilder"] .v64-page::after{
-  content:none!important;
-  display:none!important;
-}
-
-/* El formulario empieza pegado al mismo fondo, sin franja distinta. */
-body[data-app-route="bracketBuilder"].v66-compact-route #screen{
-  margin-top:0!important;
-  padding-top:0!important;
-}
-body[data-app-route="bracketBuilder"] .v64-page{
-  margin-top:0!important;
-  padding-top:12px!important;
-}
-
-
-/* V130 — LIGUILLA: fondo continuo EXACTO de la referencia aportada.
-   Arriba y abajo usan el mismo azul #020346; sin arte, degradados ni cortes. */
+/* BRACKET BUILDER — consolidated shell authority.
+   Keep the existing liguilla form/cards; only remove duplicated shell patches. */
 body[data-app-route="bracketBuilder"],
 body[data-app-route="bracketBuilder"] #app,
 body[data-app-route="bracketBuilder"] .app-shell,
@@ -282,28 +231,26 @@ body[data-app-route="bracketBuilder"] .v64-page{
   border-color:transparent!important;
 }
 
-/* El contenido comienza sobre el mismo fondo sin franja intermedia. */
+body[data-app-route="bracketBuilder"].v66-compact-route #screen,
 body[data-app-route="bracketBuilder"] #screen{
   margin-top:0!important;
   padding-top:0!important;
   border-top:0!important;
   outline:0!important;
 }
+
 body[data-app-route="bracketBuilder"] .v64-page{
   margin-top:0!important;
   padding-top:12px!important;
   border-top:0!important;
 }
 
-/* También borra adornos de unión que pudieran venir de otras versiones. */
 body[data-app-route="bracketBuilder"] #screen::before,
 body[data-app-route="bracketBuilder"] #screen::after,
-body[data-app-route="bracketBuilder"] .v64-page::before,
-body[data-app-route="bracketBuilder"] .v64-page::after,
 body[data-app-route="bracketBuilder"] .v60-tool-page::before,
-body[data-app-route="bracketBuilder"] .v60-tool-page::after{
+body[data-app-route="bracketBuilder"] .v60-tool-page::after,
+body[data-app-route="bracketBuilder"] .v64-page::before,
+body[data-app-route="bracketBuilder"] .v64-page::after{
   content:none!important;
   display:none!important;
 }
-
-
