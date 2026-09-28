@@ -4,7 +4,7 @@
 
 @media (max-width:1023px){
   body[data-app-route="competition"]{
-    --competition-header-h:98px;
+    --competition-header-h:104px;
   }
 
   body[data-app-route="competition"] .topbar{
@@ -55,7 +55,7 @@
     padding:0!important;
     color:#fff!important;
     font-family:Inter,Roboto,Arial,sans-serif!important;
-    font-size:29px!important;
+    font-size:27px!important;
     line-height:1!important;
     font-weight:850!important;
     letter-spacing:-.035em!important;
@@ -83,16 +83,16 @@
     visibility:visible!important;
     opacity:1!important;
     position:absolute!important;
-    right:16px!important;
+    right:18px!important;
     left:auto!important;
     top:auto!important;
-    bottom:17px!important;
-    width:44px!important;
-    height:44px!important;
-    min-width:44px!important;
-    min-height:44px!important;
-    max-width:44px!important;
-    max-height:44px!important;
+    bottom:22px!important;
+    width:30px!important;
+    height:30px!important;
+    min-width:30px!important;
+    min-height:30px!important;
+    max-width:30px!important;
+    max-height:30px!important;
     margin:0!important;
     padding:0!important;
     border:0!important;
@@ -101,7 +101,7 @@
     background-image:url('../public/profile-reference.svg')!important;
     background-repeat:no-repeat!important;
     background-position:center!important;
-    background-size:30px 30px!important;
+    background-size:contain!important;
     color:transparent!important;
     box-shadow:none!important;
     z-index:6!important;
@@ -121,7 +121,7 @@
 
 @media(max-width:380px){
   body[data-app-route="competition"]{
-    --competition-header-h:94px;
+    --competition-header-h:98px;
   }
   body[data-app-route="competition"] .topbar::after{
     left:18px!important;
@@ -130,14 +130,14 @@
     font-size:25px!important;
   }
   body[data-app-route="competition"] .topbar .profile-button{
-    right:12px!important;
-    bottom:16px!important;
-    width:40px!important;
-    height:40px!important;
-    min-width:40px!important;
-    min-height:40px!important;
-    max-width:40px!important;
-    max-height:40px!important;
+    right:14px!important;
+    bottom:21px!important;
+    width:28px!important;
+    height:28px!important;
+    min-width:28px!important;
+    min-height:28px!important;
+    max-width:28px!important;
+    max-height:28px!important;
   }
 }
 
