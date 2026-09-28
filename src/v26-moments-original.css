@@ -19,9 +19,20 @@ body[data-app-route="moments"] .app-shell{
   position:relative!important;
   background:#02065f!important;
 }
-body[data-app-route="moments"] .topbar,
-body[data-app-route="moments"] .bottom-nav{
+body[data-app-route="moments"] .topbar{
   display:none!important;
+}
+body[data-app-route="moments"] #app > .bottom-nav,
+body[data-app-route="moments"] .app-shell > .bottom-nav{
+  display:grid!important;
+  position:fixed!important;
+  top:auto!important;
+  bottom:0!important;
+  left:50%!important;
+  right:auto!important;
+  transform:translateX(-50%)!important;
+  width:min(100%,520px)!important;
+  z-index:2147483000!important;
 }
 body[data-app-route="moments"] .screen{
   width:100%!important;
@@ -39,7 +50,7 @@ body[data-app-route="moments"] .screen{
   position:relative!important;
   width:100%!important;
   margin:0!important;
-  padding:0!important;
+  padding:0 0 calc(var(--v34-nav-h,69px) + env(safe-area-inset-bottom))!important;
   line-height:0!important;
   background:#02065f!important;
   overflow:visible!important;
@@ -67,7 +78,7 @@ body[data-app-route="moments"] .screen{
 
 /* Segunda referencia: quita status/cabecera repetidos y empieza antes de las tarjetas. */
 .v26-moments-panel[data-v26-panel="b"]{
-  aspect-ratio:832 / 1611.456!important;
+  aspect-ratio:832 / 1441.447!important;
 }
 .v26-moments-panel[data-v26-panel="b"] .v26-moments-original__image{
   position:absolute!important;
@@ -146,18 +157,18 @@ body[data-app-route="moments"] .screen{
 }
 .v26-moments-panel[data-v26-panel="b"] .v26-card-1,
 .v26-moments-panel[data-v26-panel="b"] .v26-card-2{
-  top:1.606%!important;height:29.472%!important
+  top:1.795%!important;height:32.948%!important
 }
 .v26-moments-panel[data-v26-panel="b"] .v26-card-3,
 .v26-moments-panel[data-v26-panel="b"] .v26-card-4{
-  top:32.454%!important;height:29.472%!important
+  top:36.282%!important;height:32.948%!important
 }
 .v26-moments-panel[data-v26-panel="b"] .v26-card-5,
 .v26-moments-panel[data-v26-panel="b"] .v26-card-6{
-  top:62.959%!important;height:26.491%!important
+  top:70.385%!important;height:29.615%!important
 }
 .v26-moments-panel[data-v26-panel="b"] .v26-nav{
-  height:10.55%!important;
+  display:none!important;
 }
 
 

@@ -37,7 +37,7 @@ function paint(){
   if(!nav)return;
   const current=route();
   const active=activeRoute(current);
-  const upper=moreChildren.has(current);
+  const upper=moreChildren.has(current)&&current!=='moments';
   nav.querySelectorAll('.nav-item[data-route]').forEach(btn=>{
     const r=btn.dataset.route;
     const on=r===active;
@@ -50,6 +50,20 @@ function paint(){
     btn.style.pointerEvents='auto';
   });
   nav.style.pointerEvents='auto';
+  const fixedProps=['display','position','top','bottom','left','right','transform','width','z-index'];
+  if(current==='moments'){
+    nav.style.setProperty('display','grid','important');
+    nav.style.setProperty('position','fixed','important');
+    nav.style.setProperty('top','auto','important');
+    nav.style.setProperty('bottom','0','important');
+    nav.style.setProperty('left','50%','important');
+    nav.style.setProperty('right','auto','important');
+    nav.style.setProperty('transform','translateX(-50%)','important');
+    nav.style.setProperty('width','min(100%, 520px)','important');
+    nav.style.setProperty('z-index','2147483000','important');
+  }else{
+    fixedProps.forEach(p=>nav.style.removeProperty(p));
+  }
 }
 document.addEventListener('click',e=>{
   const btn=e.target.closest('.bottom-nav .nav-item[data-route]');
