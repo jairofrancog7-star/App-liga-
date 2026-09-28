@@ -209,6 +209,7 @@ function ingest(payload){
   if(!j||typeof j!=='object')return;
   if(j.matchKey&&String(j.matchKey)!==c.key)return;
 
+  const previousPhase=s.phase;
   const ph=mapPhase(j.phase||j.period||j.status);
   if(ph)s.phase=ph;
   const rawMinute=j.minute??j.clock?.minute??j.match?.minute;
@@ -221,6 +222,7 @@ function ingest(payload){
 
   const known=new Set((s.events||[]).map(e=>String(e.externalId||e.id)));
   const events=Array.isArray(j.events)?j.events:(j.event?[j.event]:[]);
+  const newRealtimeEvents=[];
   for(const z of events){
     const id=String(z.id||z.eventId||'');
     if(id&&known.has(id))continue;
@@ -228,7 +230,7 @@ function ingest(payload){
     const type=typeMap[norm(z.type).replace(/ /g,'')]||norm(z.type)||'note';
     let side=norm(z.side||z.teamSide||'');
     if(side==='local'||side==='home')side='home';else if(side==='visitante'||side==='away')side='away';else side='';
-    s.events.push({
+    const e={
       id:'feed-'+(id||now()+Math.random().toString(36).slice(2,5)),
       externalId:id,
       type,
@@ -239,12 +241,15 @@ function ingest(payload){
       confirmed:true,
       minute:String(z.minute??s.feedMinute??'—').replace(/['′]/g,'')+(z.minute!==undefined?'′':''),
       ts:Number(z.ts||z.timestamp)||now()
-    });
+    };
+    s.events.push(e);newRealtimeEvents.push(e);
   }
 
   s.source.connected=true;
   s.source.lastSync=now();
   save(s);
+  for(const e of newRealtimeEvents)if(e.type==='goal')window.LJR_MATCH_LIVE?.notify?.('goal',e.side,e.id);
+  if(s.phase!==previousPhase&&['halftime','second','final'].includes(s.phase))window.LJR_MATCH_LIVE?.notify?.('phase-'+s.phase,'','rt-phase-'+s.phase+'-'+now());
   patchUi();
 }
 function markDisconnected(kind){

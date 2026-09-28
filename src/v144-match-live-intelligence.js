@@ -10,6 +10,8 @@ const ROUTES=new Set(['v4-matchcenter','matchCenter','match-center']);
 const DEFAULT_SOURCE='https://www.facebook.com/share/1CBUKPcTCm/';
 const KEY='ljr-match-live-v144:';
 const SOURCE_KEY='ljr-live-source-v144';
+const ALERTS_KEY='ljr-match-alerts-v1';
+const sentAlerts=new Set();
 const bc=('BroadcastChannel' in window)?new BroadcastChannel('ljr-match-live-v144'):null;
 let speech=null,listening=false,mountTimer=0,pollTimer=0,clockTimer=0;
 
@@ -58,6 +60,61 @@ function save(s,broadcast=true){
   s.updatedAt=now();
   try{localStorage.setItem(KEY+s.key,JSON.stringify(s))}catch(_){}
   if(broadcast)try{bc?.postMessage({type:'state',key:s.key,state:s})}catch(_){}
+}
+function alertsEnabled(){
+  try{return localStorage.getItem(ALERTS_KEY)==='1'}catch(_){return false}
+}
+async function requestAlerts(){
+  try{localStorage.setItem(ALERTS_KEY,'1')}catch(_){}
+  if(!('Notification' in window)){
+    toast('Avisos dentro de la app activados. Este navegador no ofrece notificaciones del sistema.');
+    schedule();return;
+  }
+  if(Notification.permission==='granted'){
+    toast('Avisos de goles, medio tiempo y final activados.');schedule();return;
+  }
+  if(Notification.permission==='denied'){
+    toast('Avisos dentro de la app activados. Activa notificaciones del navegador en Ajustes para verlas fuera de la pantalla.');schedule();return;
+  }
+  try{
+    const p=await Notification.requestPermission();
+    toast(p==='granted'?'Notificaciones del partido activadas.':'Avisos dentro de la app activados.');
+  }catch(_){toast('Avisos dentro de la app activados.')}
+  schedule();
+}
+function scoreText(s,c){
+  const x=counters(s);
+  return c.home+' '+x.home.goals+'–'+x.away.goals+' '+c.away;
+}
+function matchAlert(c,s,type,side='',eventId=''){
+  if(!alertsEnabled())return;
+  const id=eventId||type+'|'+s.phase+'|'+String(s.updatedAt||'');
+  const key=c.key+'|'+id;if(sentAlerts.has(key))return;sentAlerts.add(key);
+  let title='',body='',vibe=[180,90,180];
+  if(type==='goal'){
+    const team=side==='home'?c.home:side==='away'?c.away:'';
+    title='⚽ ¡GOL'+(team?' DE '+team.toUpperCase():'')+'!';
+    body=scoreText(s,c)+(minute(s)?' · '+minute(s)+'′':'');
+    vibe=[260,90,260,90,420];
+  }else if(type==='phase-halftime'){
+    title='⏱ MEDIO TIEMPO';
+    body=scoreText(s,c)+' · Terminó el primer tiempo.';
+  }else if(type==='phase-second'){
+    title='▶ TERMINÓ EL DESCANSO';
+    body=scoreText(s,c)+' · Comienza el segundo tiempo.';
+  }else if(type==='phase-final'){
+    title='🏁 PARTIDO TERMINADO';
+    body='Final · '+scoreText(s,c);
+    vibe=[350,120,350];
+  }else return;
+  toast(title+' · '+body);
+  try{navigator.vibrate?.(vibe)}catch(_){}
+  if('Notification' in window&&Notification.permission==='granted'){
+    try{
+      const n=new Notification(title,{body,tag:'ljr-'+c.key+'-'+type,renotify:true,vibrate:vibe,icon:'./icons/icon-192.png',badge:'./icons/icon-192.png'});
+      n.onclick=()=>{try{window.focus();location.hash='#/v4-matchcenter';n.close()}catch(_){}};
+    }catch(_){}
+  }
 }
 const LIVE_PLATFORMS={
   facebook:{key:'facebook',name:'Facebook Live',icon:'f',portal:'https://www.facebook.com/live/producer/',placeholder:'https://www.facebook.com/.../videos/...'},
@@ -172,7 +229,9 @@ function addEvent(s,c,type,side='',note='',source='operator',player=''){
   if(type==='phase-halftime'){s.phase='halftime';e.minute='MT'}
   if(type==='phase-second'){s.phase='second';s.secondStartedAt=now();e.minute='46′'}
   if(type==='phase-final'){s.phase='final';s.finishedAt=now();e.minute='Final'}
-  s.events.push(e);save(s);return e;
+  s.events.push(e);save(s);
+  if(type==='goal'||type==='phase-halftime'||type==='phase-second'||type==='phase-final')matchAlert(c,s,type,side,e.id);
+  return e;
 }
 function addSuggestion(s,o){
   o.id='s'+now()+Math.random().toString(36).slice(2,6);o.ts=now();o.minute=eventMinute(s);
@@ -244,6 +303,7 @@ function hubHtml(c,s){
     '<p class="v144-live-help">Facebook · YouTube · TikTok. Vincula el enlace oficial del LIVE. El feed JSON / WebSocket / SSE es opcional para minuto, goles y eventos en tiempo real.</p>'+
     streamEmbedHtml(s)+
     '<div class="v144-stats"><div><small>'+esc(c.home)+'</small><b>'+x.home.goals+'</b><span>'+x.home.subs+' cambios · '+x.home.yellow+' 🟨 · '+x.home.red+' 🟥</span></div><div><small>'+esc(c.away)+'</small><b>'+x.away.goals+'</b><span>'+x.away.subs+' cambios · '+x.away.yellow+' 🟨 · '+x.away.red+' 🟥</span></div></div>'+
+    '<div class="v144-alerts"><span><b>🔔 Avisos del partido</b><small>Gol · medio tiempo · regreso del descanso · final</small></span><button type="button" class="'+(alertsEnabled()?'active':'')+'" data-v144-alerts>'+(alertsEnabled()?'Avisos activos':'Activar avisos')+'</button></div>'+
     '<div class="v144-ai"><button class="'+(listening?'active':'')+'" data-v144-listen>'+(listening?'■ Detener escucha':'🎙 Detectar narración')+'</button><button data-v144-config>Fuente / IA</button><small>Detecta gol, cambio, tarjetas, medio tiempo y final. Pide confirmación antes de modificar el partido.</small></div>'+
     (s.lastTranscript?'<div class="v144-transcript"><small>ÚLTIMO AUDIO</small><span>'+esc(s.lastTranscript)+'</span></div>':'')+
     (s.suggestions.length?'<div class="v144-suggestions"><h3>Eventos por confirmar</h3>'+suggestionsHtml(s,c)+'</div>':'')+
@@ -310,6 +370,7 @@ function bind(c,s,hub){
   $('[data-v144-config]',hub).forEach(b=>b.addEventListener('click',()=>openConfig(c,s)));
   $('[data-v144-platform]',hub).forEach(b=>b.addEventListener('click',()=>openConfig(c,s,b.dataset.v144Platform)));
   $('[data-v144-listen]',hub)?.addEventListener('click',()=>startSpeech(c,s));
+  $('[data-v144-alerts]',hub)?.addEventListener('click',requestAlerts);
   $$('[data-v144-phase]',hub).forEach(b=>b.onclick=()=>{addEvent(s,c,b.dataset.v144Phase);schedule()});
   $$('[data-v144-event]',hub).forEach(b=>b.onclick=()=>{const [type,side]=b.dataset.v144Event.split(':');addEvent(s,c,type,side);schedule()});
   $$('[data-v144-confirm]',hub).forEach(b=>b.onclick=()=>confirmSuggestion(c,s,b.dataset.v144Confirm));
@@ -334,15 +395,20 @@ async function poll(c,s){
   if(!s.source.feedUrl)return;
   try{
     const r=await fetch(s.source.feedUrl,{cache:'no-store'});if(!r.ok)throw 0;const j=await r.json();
+    const previousPhase=s.phase;
     if(j.phase&&['scheduled','first','halftime','second','final'].includes(j.phase))s.phase=j.phase;
     if(j.firstStartedAt)s.firstStartedAt=Number(j.firstStartedAt)||s.firstStartedAt;
     if(j.secondStartedAt)s.secondStartedAt=Number(j.secondStartedAt)||s.secondStartedAt;
-    const known=new Set(s.events.map(e=>String(e.externalId||e.id)));
+    const known=new Set(s.events.map(e=>String(e.externalId||e.id))),newFeedEvents=[];
     for(const z of Array.isArray(j.events)?j.events:[]){
       const id=String(z.id||'');if(id&&known.has(id))continue;
-      s.events.push({id:'feed-'+(id||now()),externalId:id,type:z.type||'note',side:z.side||'',player:z.player||'',note:z.note||'',source:'feed',confirmed:true,minute:z.minute||eventMinute(s),ts:Number(z.ts)||now()});
+      const e={id:'feed-'+(id||now()),externalId:id,type:z.type||'note',side:z.side||'',player:z.player||'',note:z.note||'',source:'feed',confirmed:true,minute:z.minute||eventMinute(s),ts:Number(z.ts)||now()};
+      s.events.push(e);newFeedEvents.push(e);
     }
-    s.source.connected=true;s.source.lastSync=now();save(s);schedule();
+    s.source.connected=true;s.source.lastSync=now();save(s);
+    for(const e of newFeedEvents)if(e.type==='goal')matchAlert(c,s,'goal',e.side,e.id);
+    if(s.phase!==previousPhase&&['halftime','second','final'].includes(s.phase))matchAlert(c,s,'phase-'+s.phase,'','feed-phase-'+s.phase+'-'+now());
+    schedule();
   }catch(_){s.source.connected=false;save(s,false)}
 }
 function startPoll(){
@@ -391,6 +457,8 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
 
 window.LJR_MATCH_LIVE={
   getState(){const c=ctx();return c?load(c):null},
-  addEvent(type,side,note){const c=ctx();if(!c)return null;const s=load(c),e=addEvent(s,c,type,side||'',note||'','external');schedule();return e}
+  addEvent(type,side,note){const c=ctx();if(!c)return null;const s=load(c),e=addEvent(s,c,type,side||'',note||'','external');schedule();return e},
+  requestAlerts,
+  notify(type,side,eventId){const c=ctx();if(!c)return;const s=load(c);matchAlert(c,s,type,side||'',eventId||'external-'+now())}
 };
 })();
