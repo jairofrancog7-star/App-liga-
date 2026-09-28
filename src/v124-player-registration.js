@@ -16,6 +16,7 @@ const write=(k,v)=>localStorage.setItem(k,JSON.stringify(v));
 const KEY='v124-player-registry';
 const SEASON_KEY='v124-player-season';
 const EDIT_KEY='v124-player-edit-id';
+const RECRUIT_KEY='v189-recruitment';
 const selectedIds=new Set();
 let quickTeam='';
 let quickSeason='';
@@ -71,6 +72,29 @@ function fmtRecordDate(v){
   if(!v)return 'Sin fecha';
   const d=new Date(v);if(Number.isNaN(d.getTime()))return 'Sin fecha';
   return new Intl.DateTimeFormat('es-MX',{day:'2-digit',month:'short',year:'numeric',hour:'2-digit',minute:'2-digit'}).format(d);
+}
+function teamLogo(name){
+  if(!name)return '';
+  try{return window.LJR_OFFICIAL_API?.getLogo?.(name)||window.LJR_TEAM_LOGOS?.get?.(name)||''}catch(e){return ''}
+}
+function teamInitials(name){
+  const p=String(name||'').trim().split(/\s+/).filter(Boolean);
+  return p.slice(0,2).map(x=>(x[0]||'').toUpperCase()).join('')||'?';
+}
+function teamLogoHtml(name,cls='v189-team-logo'){
+  const logo=teamLogo(name);
+  if(logo)return '<span class="'+cls+'"><img src="'+esc(logo)+'" alt="" loading="lazy" decoding="async"></span>';
+  return '<span class="'+cls+' fallback" aria-hidden="true">'+esc(teamInitials(name))+'</span>';
+}
+function transferPreviewHtml(fromTeam,toTeam,fromCategory='',toCategory=''){
+  if(!fromTeam||!toTeam||norm(fromTeam)===norm(toTeam))return '';
+  return '<div class="v189-transfer-preview">'+
+    '<div class="v189-transfer-side from">'+teamLogoHtml(fromTeam,'v189-transfer-logo')+
+      '<span><small>VENÍA DE</small><b>'+esc(fromTeam)+'</b><em>'+esc(fromCategory||'Categoría anterior por confirmar')+'</em></span></div>'+
+    '<i class="v189-transfer-arrow">→</i>'+
+    '<div class="v189-transfer-side to">'+teamLogoHtml(toTeam,'v189-transfer-logo')+
+      '<span><small>SE CAMBIÓ A</small><b>'+esc(toTeam)+'</b><em>'+esc(toCategory||'Categoría actual por confirmar')+'</em></span></div>'+
+  '</div>';
 }
 function recordTimestamp(r){
   const t=Date.parse(r?.createdAt||r?.updatedAt||'');
@@ -353,6 +377,13 @@ function saveForm(silent=false){
     registrationOrigin:prior?.registrationOrigin||(source==='official'?'AdminFut':'Registro en la app'),
     registeredBy:prior?.registeredBy||(source==='official'?'AdminFut':registrar),
     officialPresent:!!hit,officialCheckedAt:now,createdAt:prior?.createdAt||now,updatedAt:now};
+  if(prior?.team&&norm(prior.team)!==norm(data.team)){
+    rec.previousTeam=prior.team;
+    rec.previousCategory=prior.category||'';
+    rec.transferAt=now;
+    rec.registrationOrigin='Cambio de equipo';
+    if(rec.status==='Pendiente de validación'||rec.status==='Revisado')rec.status='Cambio de equipo · por confirmar';
+  }
   if(hit){
     rec.category=hit.category;rec.catId=hit.catId;
     if(source==='official')rec.status='Oficial en AdminFut';
@@ -440,7 +471,7 @@ function renewFromPrevious(){
   const now=new Date().toISOString();let added=0,skipped=0;
   for(const r of source){
     const copy={...r,id:uid(),season:to,source:'local',registrationOrigin:'Renovación',registeredBy:currentRegistrarName(),officialPresent:false,
-      status:'Renovación · por confirmar',previousTeam:r.team||'',createdAt:now,updatedAt:now};
+      status:'Renovación · por confirmar',previousTeam:r.team||'',previousCategory:r.category||'',createdAt:now,updatedAt:now};
     if(duplicateIndex(target,copy)>=0){skipped++;continue}
     target.push(copy);added++;
   }
@@ -455,19 +486,20 @@ function moveSelectedTeam(){
   const info=teamInfo(quickTeam);
   if(!info)return toast('No se encontró la categoría oficial del equipo destino');
   const season=selectedSeason(),list=seasonRecords(season).slice(),now=new Date().toISOString();
-  let moved=0,blocked=0,duplicates=0;
+  let moved=0,blocked=0,duplicates=0,same=0;
   for(let i=0;i<list.length;i++){
     const r=list[i];if(!ids.has(r.id))continue;
+    if(norm(r.team)===norm(quickTeam)){same++;continue}
     const min=v124VeteranMinimum(info.category),age=v124AgeFromDob(r.dob);
     if(min&&(age===null||age<min)){blocked++;continue}
     const proposed={...r,team:quickTeam,category:info.category||'',catId:String(info.cat||''),season};
     if(duplicateIndex(list,proposed,r.id)>=0){duplicates++;continue}
-    list[i]={...r,previousTeam:r.team||'',team:quickTeam,category:info.category||'',catId:String(info.cat||''),
-      source:'local',officialPresent:false,status:'Cambio de equipo · por confirmar',updatedAt:now};
+    list[i]={...r,previousTeam:r.team||'',previousCategory:r.category||'',team:quickTeam,category:info.category||'',catId:String(info.cat||''),
+      source:'local',officialPresent:false,status:'Cambio de equipo · por confirmar',registrationOrigin:'Cambio de equipo',transferAt:now,updatedAt:now};
     moved++;
   }
   putSeason(season,list);selectedIds.clear();
-  toast('Cambio rápido: '+moved+' movidos'+(blocked?' · '+blocked+' bloqueados por edad/datos':'')+(duplicates?' · '+duplicates+' duplicados omitidos':''));
+  toast('Cambio rápido: '+moved+' movidos'+(same?' · '+same+' ya estaban en ese equipo':'')+(blocked?' · '+blocked+' bloqueados por edad/datos':'')+(duplicates?' · '+duplicates+' duplicados omitidos':''));
   renderManager(true);
 }
 function copySelectedToSeason(){
@@ -479,7 +511,7 @@ function copySelectedToSeason(){
   let added=0,skipped=0;
   for(const r of source){
     const copy={...r,id:uid(),season:to,source:'local',officialPresent:false,
-      status:'Renovación · por confirmar',previousTeam:r.team||'',createdAt:now,updatedAt:now};
+      status:'Renovación · por confirmar',previousTeam:r.team||'',previousCategory:r.category||'',createdAt:now,updatedAt:now};
     if(duplicateIndex(target,copy)>=0){skipped++;continue}
     target.push(copy);added++;
   }
@@ -1987,12 +2019,14 @@ function v126RosterStatusLabel(e){
 function v126RosterResultHtml(){
   const entries=Array.isArray(rosterImport.entries)?rosterImport.entries:[];
   if(!entries.length&&!rosterImport.rawText)return '';
-  const s=v126ImportSummary();
+  const s=v126ImportSummary(),targetInfo=teamInfo(rosterImportTeam)||{};
   const personRows=entries.map((e,i)=>{
     const decision=e.decision||'pending';
     return '<article class="v126-person v172-review-person '+esc(e.status)+' '+esc(decision)+'" data-v172-review-row="'+i+'">'+
       '<span class="v172-review-state" aria-hidden="true">'+(decision==='approved'?'✓':decision==='rejected'?'✕':'?')+'</span>'+
-      '<span class="v126-person-copy"><b>'+esc(e.name)+'</b><small>'+esc(v126RosterStatusLabel(e))+(e.source?.team&&e.status==='transfer'?' · antes: '+esc(e.source.team):'')+'</small><button type="button" class="v180-correct-name" data-v180-correct-name="'+i+'">✎ Corregir nombre</button></span>'+
+      '<span class="v126-person-copy"><b>'+esc(e.name)+'</b><small>'+esc(v126RosterStatusLabel(e))+(e.source?.team&&e.status==='transfer'?' · antes: '+esc(e.source.team):'')+'</small>'+
+        (e.status==='transfer'?transferPreviewHtml(e.source?.team||'',rosterImportTeam,e.source?.category||'',targetInfo.category||''):'')+
+        '<button type="button" class="v180-correct-name" data-v180-correct-name="'+i+'">✎ Corregir nombre</button></span>'+
       '<span class="v172-review-actions">'+
         '<button type="button" class="approve '+(decision==='approved'?'active':'')+'" data-v172-approve="'+i+'" aria-label="Aprobar '+esc(e.name)+'">✓ <em>Aprobar</em></button>'+
         '<button type="button" class="reject '+(decision==='rejected'?'active':'')+'" data-v172-reject="'+i+'" aria-label="Rechazar '+esc(e.name)+'">✕ <em>Rechazar</em></button>'+
@@ -2023,6 +2057,7 @@ function v126RosterTeamPickerHtml(){
   const selected=teams.find(t=>norm(t.name)===norm(rosterImportTeam));
   return '<div class="v126-team-custom">'+
     '<button type="button" class="v126-team-open" data-v126-team-open aria-expanded="'+(rosterTeamPickerOpen?'true':'false')+'">'+
+      teamLogoHtml(selected?.name||'','v189-picker-logo')+
       '<span><small>Equipo de esta lista</small><b>'+esc(selected?.name||'Selecciona el equipo de la lista')+'</b>'+
       '<em>'+esc(selected?.category||'Toca para elegir')+'</em></span><i>⌄</i>'+
     '</button>'+
@@ -2032,6 +2067,7 @@ function v126RosterTeamPickerHtml(){
       '<div class="v126-team-list">'+
         (visible.length?visible.map(t=>
           '<button type="button" class="v126-team-choice '+(norm(t.name)===norm(rosterImportTeam)?'active':'')+'" data-v126-team-choice="'+esc(t.name)+'">'+
+            teamLogoHtml(t.name,'v189-choice-logo')+
             '<span><b>'+esc(t.name)+'</b><small>'+esc(t.category||'Categoría por confirmar')+'</small></span><i>✓</i>'+
           '</button>'
         ).join(''):'<div class="v126-team-empty">No encontré equipos con esa búsqueda.</div>')+
@@ -2072,14 +2108,16 @@ function v126ApplyRoster(){
     if(existingIdx>=0){
       const r=list[existingIdx],min=v124VeteranMinimum(info.category),age=v124AgeFromDob(r.dob);
       if(min&&(age===null||age<min)){continue}
-      list[existingIdx]={...r,previousTeam:r.team||'',team:rosterImportTeam,category:info.category||r.category||'',catId:String(info.cat||r.catId||''),
-        source:'local',officialPresent:false,status:'Cambio de equipo · importado de lista',updatedAt:now};
+      list[existingIdx]={...r,previousTeam:r.team||'',previousCategory:r.category||'',team:rosterImportTeam,category:info.category||r.category||'',catId:String(info.cat||r.catId||''),
+        source:'local',officialPresent:false,status:'Cambio de equipo · importado de lista',registrationOrigin:'Cambio de equipo',transferAt:now,updatedAt:now};
       moved++;continue;
     }
     if(e.source){
       const base=e.source;
       const rec={...base,id:uid(),season,team:rosterImportTeam,category:info.category||base.category||'',catId:String(info.cat||base.catId||''),
-        previousTeam:base.team||'',source:'local',officialPresent:false,status:(e.status==='transfer'?'Cambio de equipo':'Renovación')+' · importado de lista',createdAt:now,updatedAt:now};
+        previousTeam:base.team||'',previousCategory:base.category||'',source:'local',officialPresent:false,
+        registrationOrigin:e.status==='transfer'?'Cambio de equipo':'Renovación',transferAt:e.status==='transfer'?now:(base.transferAt||''),
+        status:(e.status==='transfer'?'Cambio de equipo':'Renovación')+' · importado de lista',createdAt:now,updatedAt:now};
       delete rec._season;delete rec._kind;
       if(duplicateIndex(list,rec)<0){list.push(rec);e.status==='transfer'?moved++:renewed++}
       continue;
@@ -2162,7 +2200,7 @@ function bindRosterImport(root){
     if(a)a.textContent=String(s.approved);if(r)r.textContent=String(s.rejected);if(p)p.textContent=String(s.pending);
     if(apply){apply.disabled=!s.approved||s.pending>0;apply.textContent=s.pending?'Revisa todos antes de registrar ('+s.pending+' pendientes)':'Registrar / aplicar aprobados ('+s.approved+')'}
   };
-  $('[data-v180-correct-name]',root).forEach(b=>b.addEventListener('click',e=>{
+  $$('[data-v180-correct-name]',root).forEach(b=>b.addEventListener('click',e=>{
     e.preventDefault();e.stopPropagation();
     const i=Number(b.dataset.v180CorrectName),item=rosterImport.entries?.[i];
     if(!item)return;
@@ -2202,6 +2240,7 @@ function v160FastTeamPickerHtml(){
   const selected=teams.find(t=>norm(t.name)===norm(quickTeam));
   return '<div class="v160-fast-team-picker">'+
     '<button type="button" class="v160-fast-team-open" data-v160-fast-team-open aria-expanded="'+(quickTeamPickerOpen?'true':'false')+'">'+
+      teamLogoHtml(selected?.name||'','v189-picker-logo')+
       '<span><small>Equipo destino</small><b>'+esc(selected?.name||'Elige equipo destino')+'</b><em>'+esc(selected?.category||'Busca por nombre, categoría o letra')+'</em></span><i>⌄</i>'+
     '</button>'+
     (quickTeamPickerOpen?'<div class="v160-fast-team-panel">'+
@@ -2211,7 +2250,7 @@ function v160FastTeamPickerHtml(){
       '<div class="v160-fast-team-filter letters"><span>Letra</span><div>'+letters.map(letter=>'<button type="button" class="'+(quickTeamLetter===letter?'active':'')+'" data-v160-fast-team-letter="'+esc(letter)+'">'+esc(letter)+'</button>').join('')+'</div></div>'+
       '<div class="v160-fast-team-count"><b>'+visible.length+'</b><span> equipos encontrados</span></div>'+
       '<div class="v160-fast-team-list">'+
-        (visible.length?visible.map(t=>'<button type="button" class="v160-fast-team-choice '+(norm(t.name)===norm(quickTeam)?'active':'')+'" data-v160-fast-team-choice="'+esc(t.name)+'"><span><b>'+esc(t.name)+'</b><small>'+esc(t.category||'Categoría por confirmar')+'</small></span><i>✓</i></button>').join(''):'<div class="v160-fast-team-empty">No encontré equipos con esos filtros.</div>')+
+        (visible.length?visible.map(t=>'<button type="button" class="v160-fast-team-choice '+(norm(t.name)===norm(quickTeam)?'active':'')+'" data-v160-fast-team-choice="'+esc(t.name)+'">'+teamLogoHtml(t.name,'v189-choice-logo')+'<span><b>'+esc(t.name)+'</b><small>'+esc(t.category||'Categoría por confirmar')+'</small></span><i>✓</i></button>').join(''):'<div class="v160-fast-team-empty">No encontré equipos con esos filtros.</div>')+
       '</div>'+
     '</div>':'')+
   '</div>';
@@ -2233,6 +2272,98 @@ function v160FilterFastTeams(root){
   if(empty)empty.hidden=count>0;
 }
 
+function recruitmentData(){
+  const x=read(RECRUIT_KEY,{teams:[],players:[]})||{};
+  return {
+    teams:Array.isArray(x.teams)?x.teams:[],
+    players:Array.isArray(x.players)?x.players:[]
+  };
+}
+function saveRecruitmentData(x){write(RECRUIT_KEY,x)}
+function recruitmentCategories(){
+  const out=[...new Set(registryTeams().map(t=>t.category).filter(Boolean))];
+  ['Primera Fuerza','Intermedia','Segunda Fuerza','Veteranos 35+','Veteranos 50+'].forEach(x=>{if(!out.includes(x))out.push(x)});
+  return out;
+}
+function recruitmentCategoryOptions(selected=''){
+  return '<option value="">Categoría por definir</option>'+recruitmentCategories().map(c=>'<option value="'+esc(c)+'" '+(selected===c?'selected':'')+'>'+esc(c)+'</option>').join('');
+}
+function recruitmentTeamOptions(selected=''){
+  const groups=new Map();
+  for(const t of registryTeams()){const c=t.category||'Sin categoría';if(!groups.has(c))groups.set(c,[]);groups.get(c).push(t)}
+  let html='<option value="">Sin equipo destino todavía</option>';
+  for(const [cat,teams] of groups)html+='<optgroup label="'+esc(cat)+'">'+teams.map(t=>'<option value="'+esc(t.name)+'" '+(selected===t.name?'selected':'')+'>'+esc(t.name)+'</option>').join('')+'</optgroup>';
+  return html;
+}
+function recruitmentHtml(){
+  const data=recruitmentData();
+  const teamRows=data.teams.slice().sort((a,b)=>Date.parse(b.createdAt||0)-Date.parse(a.createdAt||0)).map(x=>
+    '<article class="v189-recruit-row"><span class="v189-recruit-kind">EQUIPO</span><span><b>'+esc(x.name)+'</b><small>'+esc(x.category||'Categoría por definir')+(x.community?' · '+esc(x.community):'')+'</small><em>'+esc(x.contact||'Sin referencia de contacto')+'</em></span><button type="button" data-v189-recruit-delete="team:'+esc(x.id)+'">Quitar</button></article>'
+  ).join('');
+  const playerRows=data.players.slice().sort((a,b)=>Date.parse(b.createdAt||0)-Date.parse(a.createdAt||0)).map(x=>
+    '<article class="v189-recruit-row player">'+teamLogoHtml(x.targetTeam||'','v189-recruit-logo')+'<span><b>'+esc(x.name)+'</b><small>'+esc(x.category||'Categoría por definir')+(x.position?' · '+esc(x.position):'')+'</small><em>'+(x.targetTeam?'Destino: '+esc(x.targetTeam):'Sin equipo destino')+(x.contact?' · '+esc(x.contact):'')+'</em></span><div class="v189-recruit-row-actions"><button type="button" data-v189-promote-player="'+esc(x.id)+'">Pasar a registro</button><button type="button" class="danger" data-v189-recruit-delete="player:'+esc(x.id)+'">Quitar</button></div></article>'
+  ).join('');
+  return '<section class="v189-recruitment">'+
+    '<header><small>RECLUTAMIENTO</small><h3>Nuevos equipos y nuevos jugadores</h3><p>Guarda prospectos sin mezclarlos con el padrón oficial. Cuando un jugador ya esté listo, puedes pasarlo al formulario de registro.</p></header>'+
+    '<div class="v189-recruit-grid">'+
+      '<form class="v189-recruit-card" data-v189-new-team>'+
+        '<div class="v189-recruit-card-head"><span>＋</span><div><b>Nuevo equipo</b><small>Equipo interesado en entrar a la liga</small></div></div>'+
+        '<label><span>Nombre del equipo</span><input required data-v189-team-name placeholder="Ej. Deportivo..." autocomplete="off"></label>'+
+        '<label><span>Categoría</span><select data-v189-team-category>'+recruitmentCategoryOptions()+'</select></label>'+
+        '<label><span>Comunidad / localidad</span><input data-v189-team-community placeholder="Opcional" autocomplete="off"></label>'+
+        '<label><span>Contacto / referencia</span><input data-v189-team-contact placeholder="Opcional · se guarda sólo aquí" autocomplete="off"></label>'+
+        '<button type="submit">Guardar equipo interesado</button>'+
+      '</form>'+
+      '<form class="v189-recruit-card" data-v189-new-player>'+
+        '<div class="v189-recruit-card-head"><span>⚽</span><div><b>Nuevo jugador</b><small>Jugador que busca integrarse</small></div></div>'+
+        '<label><span>Nombre del jugador</span><input required data-v189-player-name placeholder="Nombre completo" autocomplete="off"></label>'+
+        '<label><span>Categoría</span><select data-v189-player-category>'+recruitmentCategoryOptions()+'</select></label>'+
+        '<label><span>Equipo destino</span><select data-v189-player-team>'+recruitmentTeamOptions()+'</select></label>'+
+        '<label><span>Posición</span><input data-v189-player-position placeholder="Opcional" autocomplete="off"></label>'+
+        '<label><span>Contacto / referencia</span><input data-v189-player-contact placeholder="Opcional · se guarda sólo aquí" autocomplete="off"></label>'+
+        '<button type="submit">Guardar jugador interesado</button>'+
+      '</form>'+
+    '</div>'+
+    '<div class="v189-recruit-summary"><span><b>'+data.teams.length+'</b> equipos interesados</span><span><b>'+data.players.length+'</b> jugadores interesados</span></div>'+
+    ((teamRows||playerRows)?'<div class="v189-recruit-list">'+teamRows+playerRows+'</div>':'<div class="v189-recruit-empty">Todavía no hay prospectos guardados.</div>')+
+    '<p class="v189-recruit-privacy">Los datos de reclutamiento se guardan sólo en este dispositivo y no se suben al repositorio público.</p>'+
+  '</section>';
+}
+function bindRecruitment(root){
+  $('[data-v189-new-team]',root)?.addEventListener('submit',e=>{
+    e.preventDefault();
+    const name=$('[data-v189-team-name]',root)?.value.trim()||'';
+    if(!name)return toast('Escribe el nombre del equipo');
+    const data=recruitmentData(),now=new Date().toISOString();
+    data.teams.unshift({id:uid(),name,category:$('[data-v189-team-category]',root)?.value||'',community:$('[data-v189-team-community]',root)?.value.trim()||'',contact:$('[data-v189-team-contact]',root)?.value.trim()||'',createdAt:now});
+    saveRecruitmentData(data);toast('Equipo agregado a reclutamiento');renderManager(true);
+  });
+  $('[data-v189-new-player]',root)?.addEventListener('submit',e=>{
+    e.preventDefault();
+    const name=$('[data-v189-player-name]',root)?.value.trim()||'';
+    if(!name)return toast('Escribe el nombre del jugador');
+    const data=recruitmentData(),now=new Date().toISOString(),targetTeam=$('[data-v189-player-team]',root)?.value||'',info=teamInfo(targetTeam);
+    data.players.unshift({id:uid(),name,category:info?.category||$('[data-v189-player-category]',root)?.value||'',targetTeam,position:$('[data-v189-player-position]',root)?.value.trim()||'',contact:$('[data-v189-player-contact]',root)?.value.trim()||'',createdAt:now});
+    saveRecruitmentData(data);toast('Jugador agregado a reclutamiento');renderManager(true);
+  });
+  $$('[data-v189-recruit-delete]',root).forEach(b=>b.addEventListener('click',()=>{
+    const [kind,id]=String(b.dataset.v189RecruitDelete||'').split(':');
+    const data=recruitmentData(),key=kind==='team'?'teams':'players';
+    data[key]=data[key].filter(x=>x.id!==id);saveRecruitmentData(data);renderManager(true);
+  }));
+  $$('[data-v189-promote-player]',root).forEach(b=>b.addEventListener('click',()=>{
+    const data=recruitmentData(),p=data.players.find(x=>x.id===b.dataset.v189PromotePlayer);if(!p)return;
+    localStorage.removeItem(EDIT_KEY);
+    setValue('[data-v64-cred-name]',p.name||'');
+    if(p.targetTeam)setValue('[data-v64-cred-team]',p.targetTeam);
+    if(p.category)setValue('[data-v64-cred-cat]',p.category);
+    if(p.position)setValue('[data-v100-position]',p.position);
+    try{window.v64SyncCredentialTeamCategory?.()}catch(e){}
+    document.querySelector('.v64-page')?.scrollIntoView({behavior:'smooth',block:'start'});
+    toast('Jugador cargado en el formulario. Completa sus datos y guarda.');
+    schedule();
+  }));
+}
 function fastToolsHtml(list){
   const previous=previousSeasonWithRecords(),count=[...selectedIds].filter(id=>list.some(r=>r.id===id)).length;
   return '<section class="v124-fast">'+
@@ -2268,6 +2399,7 @@ function listHtml(list){
     '<div class="v124-card-main"><label class="v124-pick" aria-label="Seleccionar '+esc(r.name)+'"><input type="checkbox" data-v124-select="'+esc(r.id)+'" '+(selectedIds.has(r.id)?'checked':'')+'><span></span></label><span class="v124-avatar">'+esc(String(r.name).split(/\s+/).slice(0,2).map(x=>x[0]||'').join('').toUpperCase())+'</span>'+
     '<span><b>'+esc(r.name)+'</b><small>'+esc(r.team)+' · '+esc(r.category||'Categoría por confirmar')+'</small>'+
     '<em class="'+statusClass(r)+'">'+esc(r.source==='official'?'Oficial en AdminFut':(r.officialPresent?'Coincide con AdminFut':r.status||'Pendiente'))+'</em></span></div>'+
+    transferPreviewHtml(r.previousTeam||'',r.team||'',r.previousCategory||'',r.category||'')+
     '<div class="v161-record-meta"><span><b>Origen</b>'+esc(recordOrigin(r))+'</span><span><b>Registró</b>'+esc(recordRegistrar(r))+'</span><span><b>Fecha de registro</b>'+esc(fmtRecordDate(r.createdAt||r.updatedAt))+'</span></div>'+
     '<div class="v124-card-actions"><button data-v124-edit="'+esc(r.id)+'">Revisar / corregir</button><button data-v124-card="'+esc(r.id)+'">Credencial</button><button class="danger" data-v124-delete="'+esc(r.id)+'">Borrar</button></div>'+
   '</article>').join('');
@@ -2280,6 +2412,7 @@ function managerHtml(){
       '<button data-v124-new-season>Nueva temporada</button></div>'+
     '<div class="v124-summary"><div><b>'+list.length+'</b><span>Registros</span></div><div><b>'+officialCount+'</b><span>Oficial / coincide</span></div><div><b>'+pending+'</b><span>Por revisar</span></div></div>'+
     fastToolsHtml(list)+
+    recruitmentHtml()+
     '<div class="v124-primary-actions"><button class="primary" data-v124-save>Guardar / actualizar jugador</button><button data-v124-new>Nuevo registro</button><button data-v124-sync>Sincronizar con AdminFut</button></div>'+
     '<label class="v124-search"><span>Buscar en esta temporada</span><input type="search" data-v124-search placeholder="Nombre, equipo, origen o quién registró" value="'+esc(registryQuery)+'"></label>'+
     registryFilterHtml(list)+
@@ -2291,6 +2424,7 @@ function bindManager(root){
   $('[data-v124-season]',root)?.addEventListener('change',e=>{selectedIds.clear();quickTeam='';quickSeason='';registryQuery='';registryCategory='Todas';registryTeam='Todos';registryLetter='Todas';registrySource='Todos';setSeason(e.target.value);localStorage.removeItem(EDIT_KEY);renderManager()});
   $('[data-v124-new-season]',root)?.addEventListener('click',()=>{selectedIds.clear();newSeason()});
   bindRosterImport(root);
+  bindRecruitment(root);
   $('[data-v124-renew]',root)?.addEventListener('click',renewFromPrevious);
   $('[data-v124-select-visible]',root)?.addEventListener('click',()=>{
     const boxes=$$('[data-v124-select]',root),allSelected=boxes.length&&boxes.every(c=>selectedIds.has(c.dataset.v124Select));
