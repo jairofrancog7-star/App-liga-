@@ -590,3 +590,19 @@ body.v123-player-compare-active #screen{
 @media(prefers-reduced-motion:reduce){
   .v123-player-card,.v123-player-option,.v123-picker-overlay{scroll-behavior:auto!important}
 }
+
+
+/* V195 — Player Compare: quitar barra superior global duplicada. */
+/* Conserva únicamente la flecha propia de Comparar jugadores y la barra inferior. */
+body[data-app-route="playerCompare"] #app > .topbar,
+body[data-app-route="playerCompare"] .app-shell > .topbar,
+body.v123-player-compare-active #app > .topbar,
+body.v123-player-compare-active .app-shell > .topbar{
+  display:none!important;
+  height:0!important;
+  min-height:0!important;
+  margin:0!important;
+  padding:0!important;
+  border:0!important;
+  overflow:hidden!important;
+}
