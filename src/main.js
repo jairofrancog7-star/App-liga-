@@ -4828,16 +4828,9 @@ async function v60RenderRulebookPage(pageNo){
   }
 }
 function rulebookView(){
-  const viewer='https://docs.google.com/gview?embedded=1&url='+encodeURIComponent(V60_RULEBOOK_PUBLIC);
   return '<section class="v60-tool-page">'+v60Header('DOCUMENTOS','Reglamento','Consulta el Reglamento oficial de la Liga Municipal de Fútbol Juventino Rosas 2026–2027.')+
     '<div class="v60-panel"><div class="v60-actions"><a class="v60-link" href="'+V60_RULEBOOK+'" target="_blank" rel="noopener noreferrer">Abrir PDF</a><a class="v60-link outline" href="'+V60_RULEBOOK+'" download="Reglamento_Liga_Juventino_Rosas_2026_2027.pdf">Descargar</a></div><p class="v60-note">El reglamento se muestra aquí mismo con una vista previa y también puedes abrirlo o descargarlo completo.</p></div>'+
-    '<div class="v60-pdf-shell v60-pdf-reader v72-rulebook-preview" data-v60-pdf-preview>'+
-      '<div class="v72-preview-head"><span>VISTA PREVIA DEL PDF</span><strong>Reglamento oficial</strong></div>'+
-      '<div class="v72-preview-frame-wrap">'+
-        '<iframe class="v72-preview-frame" src="'+viewer+'" title="Vista previa del Reglamento oficial" loading="eager" allow="fullscreen" referrerpolicy="no-referrer-when-downgrade"></iframe>'+
-        '<div class="v72-preview-fallback"><b>Vista previa del reglamento</b><span>Si el visor tarda en cargar, usa “Abrir PDF”.</span><a class="v60-link" href="'+V60_RULEBOOK+'" target="_blank" rel="noopener noreferrer">Abrir PDF</a></div>'+
-      '</div>'+
-    '</div>'+
+    '<div class="v60-pdf-shell v60-pdf-reader v72-rulebook-preview" data-v60-pdf-preview><div data-v102-rulebook-mount></div></div>'+
     '<div class="v60-actions v63-rulebook-tools"><button class="v60-btn outline" data-route="leagueTools">Todas las funciones de la Liga</button></div></section>';
 }
 function v60MatchdayState(){try{return JSON.parse(localStorage.getItem('v60-matchday')||'{}')||{}}catch(e){return {}}}
