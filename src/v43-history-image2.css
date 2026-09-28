@@ -871,3 +871,17 @@
   .v35-history-page .v35-tabs .v35-tab{font-size:13px!important}
 }
 /* END V238 */
+
+
+/* V191 — Historia: quitar barra superior global duplicada.
+   Conserva únicamente la cabecera propia de Historia y la barra inferior. */
+body[data-app-route="history"] #app > .topbar,
+body[data-app-route="history"] .app-shell > .topbar{
+  display:none!important;
+  height:0!important;
+  min-height:0!important;
+  margin:0!important;
+  padding:0!important;
+  border:0!important;
+  overflow:hidden!important;
+}
