@@ -157,7 +157,20 @@ function officialTeams(){
     names.forEach(name=>out.push({name,category:c.name||V100_FALLBACK_TEAMS[id]?.category||'',cat:String(id)}));
   });
   for(const [id,g] of Object.entries(V100_FALLBACK_TEAMS))for(const name of g.teams)out.push({name,category:g.category,cat:id});
-  const seen=new Set();return out.filter(x=>{const k=norm(x.name)+'|'+x.cat;if(seen.has(k))return false;seen.add(k);return true});
+  const invalidTeamName=name=>{
+    const n=norm(name);
+    if(!n)return true;
+    if(/^\d+\s+goles?\s+en\s+temporada$/.test(n))return true;
+    if(/^\d+\s+goles?$/.test(n))return true;
+    if(/^(goles?|goleadores?|goleo|pts|puntos|pj|pg|pe|pp|gf|gc|dif)(\b|\s)/.test(n))return true;
+    return false;
+  };
+  const seen=new Set();return out.filter(x=>{
+    if(invalidTeamName(x?.name))return false;
+    const k=norm(x.name)+'|'+x.cat;
+    if(seen.has(k))return false;
+    seen.add(k);return true;
+  });
 }
 function teamLogo(name){
   try{return window.LJR_OFFICIAL_API?.getLogo?.(name)||window.LJR_TEAM_LOGOS?.get?.(name)||''}catch(e){return ''}
