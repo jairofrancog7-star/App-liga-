@@ -1,0 +1,118 @@
+/* V194 — Goleadores: filtros separados y tablas por jugadores/equipos. */
+body.v28-scorers-active .v28-scorers-page{
+  padding:14px 14px calc(92px + env(safe-area-inset-bottom))!important;
+  max-width:720px!important;
+}
+.v194-scorers{display:grid;gap:12px;color:#fff}
+.v194-title{display:grid;gap:4px;padding:2px 2px 4px}
+.v194-title small{font-size:9px;font-weight:950;letter-spacing:.14em;color:#5be8f2}
+.v194-title h1{margin:0;font-size:28px;line-height:1.02;font-weight:900}
+.v194-title p{margin:2px 0 0;font-size:10px;line-height:1.4;color:#acb9dc}
+
+.v194-mode-tabs{
+  display:grid;grid-template-columns:1fr 1fr;gap:6px;padding:5px;border-radius:14px;
+  border:1px solid rgba(92,230,242,.18);background:#070c62
+}
+.v194-mode-tabs button{
+  min-height:42px;border:0;border-radius:10px;background:transparent;color:#aebbe0;
+  font-size:10px;font-weight:900
+}
+.v194-mode-tabs button.active{
+  background:#1550c7;color:#fff;box-shadow:inset 0 0 0 1px rgba(91,232,242,.36)
+}
+
+.v194-filter-block{
+  display:grid;gap:7px;padding:10px;border-radius:14px;background:#080d68;
+  border:1px solid rgba(255,255,255,.08)
+}
+.v194-filter-label{display:flex;align-items:baseline;gap:7px}
+.v194-filter-label small{font-size:7px;font-weight:950;letter-spacing:.10em;color:#5ce8f2}
+.v194-filter-label b{font-size:11px}
+.v194-category-rail{
+  display:flex;gap:6px;overflow-x:auto;padding-bottom:2px;scrollbar-width:none
+}
+.v194-category-rail::-webkit-scrollbar{display:none}
+.v194-category-rail button{
+  flex:0 0 auto;min-height:36px;padding:0 11px;border-radius:999px;
+  border:1px solid rgba(255,255,255,.11);background:#111779;color:#b8c5e4;
+  font-size:8.5px;font-weight:850;white-space:nowrap
+}
+.v194-category-rail button.active{background:#1550c7;border-color:#5ce8f2;color:#fff}
+.v194-team-select{
+  width:100%;min-height:42px;border:1px solid rgba(92,230,242,.22);border-radius:10px;
+  background:#050a54;color:#fff;padding:0 10px;font-size:9.5px;font-weight:800
+}
+
+.v194-table-card{
+  overflow:hidden;border-radius:17px;border:1px solid rgba(89,229,242,.20);
+  background:linear-gradient(180deg,#10147f 0%,#08095f 100%)
+}
+.v194-table-title{display:grid;gap:3px;padding:12px 13px;border-bottom:1px solid rgba(255,255,255,.09)}
+.v194-table-title small{font-size:8px;font-weight:950;letter-spacing:.12em;color:#5be7f2}
+.v194-table-title h2{margin:0;font-size:18px;line-height:1.05}
+.v194-table-title p{margin:2px 0 0;font-size:8px;line-height:1.35;color:#aebbe0}
+.v194-table-head{
+  display:grid;grid-template-columns:34px minmax(0,1.25fr) minmax(0,.9fr) 40px;gap:7px;
+  padding:8px 10px;background:#070b61;border-bottom:1px solid rgba(255,255,255,.08);
+  color:#899ccc;font-size:7px;font-weight:950;text-transform:uppercase;letter-spacing:.04em
+}
+.v194-table-head span:last-child{text-align:right}
+.v194-player-rows{display:grid}
+.v194-player-row{
+  appearance:none;-webkit-appearance:none;width:100%;min-height:66px;padding:8px 10px;
+  display:grid;grid-template-columns:34px minmax(0,1.25fr) minmax(0,.9fr) 40px;gap:7px;align-items:center;
+  border:0;border-bottom:1px solid rgba(255,255,255,.08);background:transparent;color:#fff;text-align:left
+}
+.v194-player-row:last-child{border-bottom:0}
+.v194-pos{font-size:10px;font-weight:900;color:#aebbe0}
+.v194-player-name{min-width:0;display:grid;gap:3px}
+.v194-player-name b{font-size:11px;line-height:1.12;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.v194-player-name small{font-size:7px;color:#899ccc;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.v194-team-cell{min-width:0;display:grid;grid-template-columns:34px minmax(0,1fr);gap:6px;align-items:center}
+.v194-team-cell b{font-size:8px;line-height:1.1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.v194-player-row>strong{justify-self:end;color:#5be8f2;font-size:18px}
+.v194-logo{
+  width:32px;height:32px;border-radius:50%;overflow:hidden;display:grid;place-items:center;
+  background:#fff;border:1px solid rgba(255,255,255,.55);color:#07105f;font-size:7px;font-weight:950
+}
+.v194-logo img{width:29px;height:29px;object-fit:contain;display:block}
+.v194-logo.large{width:42px;height:42px}
+.v194-logo.large img{width:38px;height:38px}
+.v194-logo.fallback{background:#112681;color:#5be8f2}
+
+.v194-team-groups{display:grid}
+.v194-team-group{border-bottom:1px solid rgba(255,255,255,.08)}
+.v194-team-group:last-child{border-bottom:0}
+.v194-team-group-head{
+  width:100%;min-height:66px;padding:9px 10px;display:grid;
+  grid-template-columns:30px 44px minmax(0,1fr) auto;gap:8px;align-items:center;
+  border:0;background:transparent;color:#fff;text-align:left
+}
+.v194-team-group-head>span:nth-child(3){min-width:0;display:grid;gap:3px}
+.v194-team-group-head>span:nth-child(3) b{font-size:11px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.v194-team-group-head>span:nth-child(3) small{font-size:7.5px;color:#9badd4}
+.v194-team-group-head>strong{color:#5be8f2;font-size:18px;white-space:nowrap}
+.v194-team-group-head>strong small{font-size:8px;color:#9fb0d8;font-weight:700}
+.v194-team-players{padding:0 10px 8px 92px;display:grid;gap:4px}
+.v194-team-players div{
+  min-height:29px;display:grid;grid-template-columns:24px minmax(0,1fr) 28px;gap:6px;align-items:center;
+  padding:0 8px;border-radius:8px;background:rgba(255,255,255,.045)
+}
+.v194-team-players span{font-size:7.5px;color:#8195c8}
+.v194-team-players b{font-size:8.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.v194-team-players strong{text-align:right;font-size:9px;color:#5be8f2}
+.v194-empty{padding:22px 14px;text-align:center;color:#9aabd2;font-size:9px;line-height:1.45}
+.v194-source{margin:0 2px;color:#7f92c2;font-size:7.5px;line-height:1.35}
+
+@media(max-width:390px){
+  .v194-table-head,.v194-player-row{
+    grid-template-columns:28px minmax(0,1.35fr) minmax(0,.82fr) 34px;gap:5px;padding-left:8px;padding-right:8px
+  }
+  .v194-team-cell{grid-template-columns:30px minmax(0,1fr);gap:4px}
+  .v194-logo{width:28px;height:28px}.v194-logo img{width:25px;height:25px}
+  .v194-player-name b{font-size:10.5px}
+  .v194-team-cell b{font-size:7.5px}
+  .v194-team-group-head{grid-template-columns:26px 40px minmax(0,1fr) auto;gap:6px;padding-left:8px;padding-right:8px}
+  .v194-logo.large{width:38px;height:38px}.v194-logo.large img{width:34px;height:34px}
+  .v194-team-players{padding-left:80px}
+}
