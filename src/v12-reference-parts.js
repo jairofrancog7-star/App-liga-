@@ -179,6 +179,7 @@ function v12StandingsBody(){
   '</section>';
 }
 function patchStandings(){
+  if(window.CompetitionController)return;
   if(v12Route()!=='competition') return;
   const screen=document.querySelector('#screen');
   const tabs=screen?.querySelector('.tabs');
@@ -534,6 +535,7 @@ function v12FixturesMarkup(){
   '</section>';
 }
 function v12RefreshFixtures(){
+  if(window.CompetitionController)return;
   if(v12Route()!=='competition')return;
   const screen=document.querySelector('#screen'),tabs=screen?.querySelector('.tabs');
   if(!screen||!tabs)return;
@@ -545,6 +547,7 @@ function v12RefreshFixtures(){
   tabs.insertAdjacentHTML('afterend',v12FixturesMarkup());
 }
 function patchFixturesReference(){
+  if(window.CompetitionController)return;
   if(v12Route()!=='competition')return;
   const screen=document.querySelector('#screen'),tabs=screen?.querySelector('.tabs');
   if(!screen||!tabs)return;
@@ -822,6 +825,7 @@ function v12BracketMarkup(){
   '</section>';
 }
 function patchBracketReference(){
+  if(window.CompetitionController)return;
   if(v12Route()!=='competition') return;
   const screen=document.querySelector('#screen');
   const tabs=screen?.querySelector('.tabs');
