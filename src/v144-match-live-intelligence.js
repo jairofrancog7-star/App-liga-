@@ -365,17 +365,26 @@ function openConfig(c,s,preferred=''){
   };
 }
 function bind(c,s,hub){
-  $('[data-v144-open]',hub).forEach(b=>b.addEventListener('click',()=>{if(s.source.url)window.open(s.source.url,'_blank','noopener,noreferrer')}));
-  $('[data-v144-share]',hub).forEach(b=>b.addEventListener('click',()=>shareLive(c,s)));
-  $('[data-v144-config]',hub).forEach(b=>b.addEventListener('click',()=>openConfig(c,s)));
-  $('[data-v144-platform]',hub).forEach(b=>b.addEventListener('click',()=>openConfig(c,s,b.dataset.v144Platform)));
-  $('[data-v144-listen]',hub)?.addEventListener('click',()=>startSpeech(c,s));
-  $('[data-v144-alerts]',hub)?.addEventListener('click',requestAlerts);
-  $$('[data-v144-phase]',hub).forEach(b=>b.onclick=()=>{addEvent(s,c,b.dataset.v144Phase);schedule()});
-  $$('[data-v144-event]',hub).forEach(b=>b.onclick=()=>{const [type,side]=b.dataset.v144Event.split(':');addEvent(s,c,type,side);schedule()});
-  $$('[data-v144-confirm]',hub).forEach(b=>b.onclick=()=>confirmSuggestion(c,s,b.dataset.v144Confirm));
-  $$('[data-v144-dismiss]',hub).forEach(b=>b.onclick=()=>{s.suggestions=s.suggestions.filter(x=>x.id!==b.dataset.v144Dismiss);save(s);schedule()});
-  $('[data-v144-undo]',hub)?.addEventListener('click',()=>{if(!s.events.length)return;s.events.pop();rebuildPhase(s);save(s);schedule()});
+  const stop=e=>{e.preventDefault();e.stopPropagation()};
+  $('[data-v144-open]',hub).forEach(b=>b.addEventListener('click',e=>{
+    stop(e);
+    const url=safeLiveUrl(s.source.url);
+    if(url)window.open(url,'_blank','noopener,noreferrer');
+    else openConfig(c,s);
+  }));
+  $('[data-v144-share]',hub).forEach(b=>b.addEventListener('click',e=>{stop(e);shareLive(c,s)}));
+  $('[data-v144-config]',hub).forEach(b=>b.addEventListener('click',e=>{stop(e);openConfig(c,s)}));
+  $('[data-v144-platform]',hub).forEach(b=>b.addEventListener('click',e=>{
+    stop(e);
+    openConfig(c,s,b.dataset.v144Platform);
+  }));
+  $('[data-v144-listen]',hub)?.addEventListener('click',e=>{stop(e);startSpeech(c,s)});
+  $('[data-v144-alerts]',hub)?.addEventListener('click',e=>{stop(e);requestAlerts()});
+  $('[data-v144-phase]',hub).forEach(b=>b.onclick=e=>{stop(e);addEvent(s,c,b.dataset.v144Phase);schedule()});
+  $('[data-v144-event]',hub).forEach(b=>b.onclick=e=>{stop(e);const [type,side]=b.dataset.v144Event.split(':');addEvent(s,c,type,side);schedule()});
+  $('[data-v144-confirm]',hub).forEach(b=>b.onclick=e=>{stop(e);confirmSuggestion(c,s,b.dataset.v144Confirm)});
+  $('[data-v144-dismiss]',hub).forEach(b=>b.onclick=e=>{stop(e);s.suggestions=s.suggestions.filter(x=>x.id!==b.dataset.v144Dismiss);save(s);schedule()});
+  $('[data-v144-undo]',hub)?.addEventListener('click',e=>{stop(e);if(!s.events.length)return;s.events.pop();rebuildPhase(s);save(s);schedule()});
 }
 function patch(c,s){
   const x=counters(s),center=$('.v92-score-card .v92-center',c.root);
