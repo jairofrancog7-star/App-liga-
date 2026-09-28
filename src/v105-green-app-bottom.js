@@ -696,7 +696,7 @@ function bind(root){
 }
 function supported(r){
  if(r==='competition'&&window.CompetitionController)return false;
- return ['home','more','competition','v4-calendar','calendar','monthlyCalendar','calendarMonthly','leagueData','bracketBuilder','tableExport','teams','players','teamDetail','match','matchday','stats','scorers','rankings','v38Stats','moments','video','history','historyLog','tactics','jrControl','news','v38Weekly','notifications'].includes(r);
+ return ['home','more','competition','v4-calendar','calendar','monthlyCalendar','calendarMonthly','leagueData','bracketBuilder','tableExport','teams','players','teamDetail','match','matchday','stats','scorers','rankings','v38Stats','video','history','historyLog','tactics','jrControl','news','v38Weekly','notifications'].includes(r);
 }
 let timer=0;
 function mount(){
