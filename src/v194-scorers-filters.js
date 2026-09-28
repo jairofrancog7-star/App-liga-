@@ -181,21 +181,51 @@ function openTeam(name){
   localStorage.setItem('v42-team-tab','summary');
   location.hash='#/teamDetail';
 }
+function chooseMode(mode){
+  localStorage.setItem(MODE_KEY,mode==='teams'?'teams':'players');
+  render(true);
+}
+function chooseCategory(id){
+  id=CAT_ORDER.includes(String(id))?String(id):'3';
+  localStorage.setItem('v62-category',id);
+  localStorage.setItem('v12-fixture-cat',id);
+  localStorage.setItem(TEAM_KEY,'all');
+  try{window.LJR_OFFICIAL_API?.setCategory?.(id)}catch(_){}
+  render(true);
+}
 function bind(root){
-  root.querySelectorAll('[data-v194-mode]').forEach(b=>b.addEventListener('click',()=>{
-    localStorage.setItem(MODE_KEY,b.dataset.v194Mode||'players');
-    render(true);
-  }));
-  root.querySelectorAll('[data-v194-cat]').forEach(b=>b.addEventListener('click',()=>{
-    localStorage.setItem('v62-category',b.dataset.v194Cat||'3');
-    localStorage.setItem(TEAM_KEY,'all');
-    render(true);
-  }));
+  root.querySelectorAll('[data-v194-mode]').forEach(b=>b.addEventListener('click',()=>chooseMode(b.dataset.v194Mode)));
+  root.querySelectorAll('[data-v194-cat]').forEach(b=>b.addEventListener('click',()=>chooseCategory(b.dataset.v194Cat)));
   root.querySelector('[data-v194-team]')?.addEventListener('change',e=>{
     localStorage.setItem(TEAM_KEY,e.target.value||'all');
     render(true);
   });
   root.querySelectorAll('[data-v194-open-team]').forEach(b=>b.addEventListener('click',()=>openTeam(b.dataset.v194OpenTeam||'')));
+}
+function delegatedClick(e){
+  if(route()!=='scorers'||!(e.target instanceof Element))return;
+  const mode=e.target.closest('[data-v194-mode]');
+  if(mode){
+    e.preventDefault();e.stopPropagation();e.stopImmediatePropagation();
+    chooseMode(mode.dataset.v194Mode);return;
+  }
+  const cat=e.target.closest('[data-v194-cat]');
+  if(cat){
+    e.preventDefault();e.stopPropagation();e.stopImmediatePropagation();
+    chooseCategory(cat.dataset.v194Cat);return;
+  }
+  const team=e.target.closest('[data-v194-open-team]');
+  if(team){
+    e.preventDefault();e.stopPropagation();e.stopImmediatePropagation();
+    openTeam(team.dataset.v194OpenTeam||'');return;
+  }
+}
+function delegatedChange(e){
+  if(route()!=='scorers'||!(e.target instanceof Element))return;
+  if(!e.target.matches('[data-v194-team]'))return;
+  e.stopPropagation();
+  localStorage.setItem(TEAM_KEY,e.target.value||'all');
+  render(true);
 }
 function render(force=false){
   if(rendering||route()!=='scorers'||!db())return;
@@ -213,6 +243,8 @@ function render(force=false){
 function schedule(delay=80){
   clearTimeout(timer);timer=setTimeout(()=>render(false),delay);
 }
+document.addEventListener('click',delegatedClick,true);
+document.addEventListener('change',delegatedChange,true);
 window.addEventListener('hashchange',()=>schedule(30));
 window.addEventListener('ljr:official-data',()=>schedule(20));
 document.addEventListener('visibilitychange',()=>{if(!document.hidden)schedule(20)});

@@ -116,3 +116,17 @@ body.v28-scorers-active .v28-scorers-page{
   .v194-logo.large{width:38px;height:38px}.v194-logo.large img{width:34px;height:34px}
   .v194-team-players{padding-left:80px}
 }
+
+/* V195 — filtros de goleadores: controles táctiles funcionales y por encima de capas legacy. */
+body[data-app-route="scorers"] .v194-mode-tabs,
+body[data-app-route="scorers"] .v194-filter-block,
+body[data-app-route="scorers"] .v194-category-rail,
+body[data-app-route="scorers"] .v194-table-card{position:relative;z-index:3}
+body[data-app-route="scorers"] [data-v194-mode],
+body[data-app-route="scorers"] [data-v194-cat],
+body[data-app-route="scorers"] [data-v194-open-team],
+body[data-app-route="scorers"] [data-v194-team]{
+  pointer-events:auto!important;
+  touch-action:manipulation;
+  cursor:pointer;
+}

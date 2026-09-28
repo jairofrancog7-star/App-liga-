@@ -104,6 +104,7 @@ function bind(root){
 }
 let timer=0;
 function mount(){
+  if(document.querySelector('[data-v194-scorers]'))return;
   clearTimeout(timer);
   timer=setTimeout(()=>{
     if(route()!=='scorers'||!data())return;
