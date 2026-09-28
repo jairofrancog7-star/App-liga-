@@ -3,41 +3,7 @@
 
 @media (max-width:520px){
 
-  /* ===== CABECERA =====
-     Referencia: título grande a la izquierda, sin escudo de liga en la cabecera. */
-  body[data-app-route="competition"] .topbar .wordmark,
-  body.v40-standings-master .topbar .wordmark{
-    display:none!important;
-    visibility:hidden!important;
-    pointer-events:none!important;
-    background:none!important;
-  }
-  body[data-app-route="competition"] .topbar .wordmark::before,
-  body[data-app-route="competition"] .topbar .wordmark::after{
-    content:none!important;
-    display:none!important;
-  }
-  body[data-app-route="competition"] .topbar::after{
-    left:18px!important;
-    right:68px!important;
-    top:54px!important;
-    bottom:auto!important;
-    font-size:30px!important;
-    line-height:1!important;
-    font-weight:900!important;
-    letter-spacing:-.04em!important;
-    text-align:left!important;
-  }
-  body[data-app-route="competition"] .topbar .profile-button{
-    right:18px!important;
-    top:52px!important;
-    width:33px!important;
-    height:33px!important;
-    min-width:33px!important;
-    min-height:33px!important;
-    max-width:33px!important;
-    max-height:33px!important;
-  }
+  /* Cabecera de Competición delegada por completo a v69-competition-unified-header.css. */
 
   /* ===== CLASIFICACIÓN =====
      El #screen ya aporta 14px: se cancela y se deja un margen visual real
