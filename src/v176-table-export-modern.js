@@ -16,7 +16,7 @@ const STORE='v176-table-category';
 const LOCAL_DATA='./public/data/official-live.json';
 const REMOTE_DATA='https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/data/official-live.json';
 const $=(s,r=document)=>r.querySelector(s);
-const $=(s,r=document)=>Array.from(r.querySelectorAll(s));
+const qsa=(s,r=document)=>Array.from(r.querySelectorAll(s));
 const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const norm=v=>String(v??'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[^a-z0-9+]+/g,' ').trim();
 const route=()=>String(location.hash||'').replace(/^#\/?/,'').split('?')[0]||'home';
@@ -216,7 +216,7 @@ function csv(id=category){
 }
 function setBusy(on){
  const page=document.querySelector('[data-v176-page]');if(!page)return;
- $$('button',page).forEach(b=>b.disabled=!!on);
+ qsa('button',page).forEach(b=>b.disabled=!!on);
 }
 function setCategory(id,page){
  category=String(id);localStorage.setItem(STORE,category);localStorage.setItem('v62-category',category);localStorage.setItem('v12-fixture-cat',category);
