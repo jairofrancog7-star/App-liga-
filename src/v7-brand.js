@@ -11,7 +11,7 @@ const STANDARD_HEADER_ROUTES = new Set([
    sticky height while content scrolls. Bespoke fullscreen routes keep their
    own motion controllers (History/Data/etc.). */
 const STABLE_ROOT_HEADER_ROUTES = new Set([
-  'home','competition','more'
+  'home','competition','more','moments'
 ]);
 const FULLSCREEN_HEADER_ROUTES = new Set([
   'video',
