@@ -156,25 +156,9 @@ body[data-app-route="tableExport"] #screen{
   outline:0!important;
 }
 
-/* Sin bloque azul claro detrás del título. */
+/* Tabla completa keeps the shared detail header as its only page title. */
 body[data-app-route="tableExport"] .v60-tool-head{
-  display:block!important;
-  margin:0 0 20px!important;
-  padding:0!important;
-  background:transparent!important;
-  background-image:none!important;
-  border:0!important;
-  box-shadow:none!important;
-}
-
-body[data-app-route="tableExport"] .v60-tool-kicker{
-  color:#23e1ec!important;
-}
-
-body[data-app-route="tableExport"] .v60-tool-head h1,
-body[data-app-route="tableExport"] .v60-tool-head p{
-  background:transparent!important;
-  background-image:none!important;
+  display:none!important;
 }
 
 /* Tabla central: misma base azul oscuro, sin caja azul diferente ni borde azul. */
