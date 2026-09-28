@@ -13,7 +13,26 @@
     background-image:none!important;
   }
 
-  /* Header intentionally excluded: v69-competition-unified-header owns it. */
+  /* CABECERA: mismo azul oscuro, sin degradado ni azul brillante. */
+  html body[data-app-route="competition"] .topbar,
+  html body.v40-standings-master .topbar,
+  html body.v40-standings-master[data-app-route="competition"] .topbar{
+    background:#06075f!important;
+    background-color:#06075f!important;
+    background-image:none!important;
+    border:0!important;
+    border-bottom:0!important;
+    box-shadow:none!important;
+  }
+
+  html body[data-app-route="competition"] .topbar::before,
+  html body.v40-standings-master .topbar::before{
+    content:none!important;
+    display:none!important;
+    background:none!important;
+    background-image:none!important;
+    opacity:0!important;
+  }
 
   /* CONTENIDO Y TABS PRINCIPALES: mismo color exacto. */
   html body[data-app-route="competition"] #screen,
@@ -110,6 +129,7 @@
   html body[data-app-route="competition"],
   html body[data-app-route="competition"] #app,
   html body[data-app-route="competition"] .app-shell,
+  html body[data-app-route="competition"] .topbar,
   html body[data-app-route="competition"] #screen,
   html body[data-app-route="competition"] .bottom-nav{
     background:#06085f!important;
@@ -121,9 +141,6 @@
   html body[data-app-route="competition"] #screen>.tabs{
     position:relative!important;
     overflow:visible!important;
-    height:48px!important;
-    min-height:48px!important;
-    max-height:48px!important;
     background:#06085f!important;
     background-image:none!important;
     border:0!important;
@@ -133,11 +150,6 @@
   html body[data-app-route="competition"] #screen>.tabs .tab{
     position:relative!important;
     overflow:visible!important;
-    height:48px!important;
-    min-height:48px!important;
-    max-height:48px!important;
-    padding-top:0!important;
-    padding-bottom:11px!important;
     color:#d9d9e7!important;
     box-shadow:none!important;
     border:0!important;
@@ -159,11 +171,11 @@
     position:absolute!important;
     left:17%!important;
     right:17%!important;
-    bottom:0!important;
+    bottom:4px!important;
     width:auto!important;
-    height:3px!important;
-    min-height:3px!important;
-    max-height:3px!important;
+    height:4px!important;
+    min-height:4px!important;
+    max-height:4px!important;
     margin:0!important;
     padding:0!important;
     border:0!important;
@@ -336,90 +348,5 @@
     background-image:none!important;
     border-radius:10px 10px 0 0!important;
     box-shadow:none!important;
-  }
-}
-
-
-/* V89 — El deslizador de fechas usa la MISMA escala visual del deslizador de Cuadro.
-   No cambia partidos ni datos: sólo tamaño, altura, tipografía y alineación. */
-@media (max-width:520px){
-  html body[data-app-route="competition"] .v12-date-strip{
-    display:flex!important;
-    align-items:center!important;
-    gap:8px!important;
-    padding-top:11px!important;
-    padding-bottom:8px!important;
-    margin-bottom:12px!important;
-    overflow-x:auto!important;
-    overflow-y:hidden!important;
-    scrollbar-width:none!important;
-    -webkit-overflow-scrolling:touch!important;
-  }
-
-  html body[data-app-route="competition"] .v12-date-strip::-webkit-scrollbar{
-    display:none!important;
-  }
-
-  html body[data-app-route="competition"] .v12-date-strip > button[data-v12-date],
-  html body[data-app-route="competition"] .v12-date-strip > button[data-v12-date].active{
-    flex:0 0 auto!important;
-    width:auto!important;
-    min-width:0!important;
-    height:33px!important;
-    min-height:33px!important;
-    max-height:33px!important;
-    padding:0 9px!important;
-    margin:0!important;
-    border-radius:10px!important;
-    font-size:12px!important;
-    line-height:1!important;
-    font-weight:800!important;
-    white-space:nowrap!important;
-  }
-}
-
-/* En teléfonos angostos NO volver a reducir el deslizador de fechas. */
-@media (max-width:390px){
-  html body[data-app-route="competition"] .v12-date-strip > button[data-v12-date],
-  html body[data-app-route="competition"] .v12-date-strip > button[data-v12-date].active{
-    min-width:0!important;
-    height:33px!important;
-    min-height:33px!important;
-    max-height:33px!important;
-    padding:0 9px!important;
-    border-radius:10px!important;
-    font-size:12px!important;
-  }
-}
-
-
-/* V89.1 — fichas informativas del mismo deslizador: misma escala que Cuadro. */
-@media (max-width:520px){
-  html body[data-app-route="competition"] .v12-date-strip > .v89-date-chip{
-    flex:0 0 auto!important;
-    height:33px!important;
-    min-height:33px!important;
-    padding:0 9px!important;
-    display:flex!important;
-    align-items:center!important;
-    justify-content:center!important;
-    border-radius:10px!important;
-    background:#1a1b78!important;
-    color:#f2f3ff!important;
-    font-size:12px!important;
-    line-height:1!important;
-    font-weight:800!important;
-    white-space:nowrap!important;
-    box-sizing:border-box!important;
-  }
-}
-
-
-/* V90 — Separación vertical del deslizador de fechas.
-   Lo baja para que tenga el mismo aire visual que el deslizador de Cuadro,
-   sin mover las pestañas principales ni la cabecera. */
-@media (max-width:520px){
-  html body[data-app-route="competition"] .v12-fixtures-reference .v12-date-strip{
-    margin-top:20px!important;
   }
 }
