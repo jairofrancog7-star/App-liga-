@@ -20,6 +20,74 @@
   .v144-source button,.v144-ai button{min-height:34px;padding:0 10px;border:1px solid rgba(38,223,236,.32);border-radius:9px;background:#0d1473;color:#31e0ec;font-size:8px;font-weight:850}
 
 
+
+  .v144-platforms{
+    display:grid;
+    grid-template-columns:repeat(3,minmax(0,1fr));
+    gap:6px;
+    margin-top:8px;
+  }
+  .v144-platforms>button{
+    min-width:0;
+    min-height:45px;
+    display:grid;
+    grid-template-columns:26px minmax(0,1fr);
+    gap:6px;
+    align-items:center;
+    padding:6px 7px;
+    border:1px solid rgba(79,101,208,.38);
+    border-radius:10px;
+    background:#0a1067;
+    color:#fff;
+    text-align:left;
+  }
+  .v144-platforms>button.active{
+    border-color:#31dfea;
+    box-shadow:0 0 0 1px rgba(49,223,234,.18) inset;
+    background:#101a78;
+  }
+  .v144-platforms em{
+    width:26px;height:26px;display:grid;place-items:center;border-radius:8px;
+    background:#162184;color:#fff;font:900 13px/1 Inter,Arial,sans-serif;font-style:normal;
+  }
+  .v144-platforms b,.v144-platforms small{display:block}
+  .v144-platforms b{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:7.3px}
+  .v144-platforms small{margin-top:2px;color:#45e2ec;font-size:5.7px;font-weight:900;letter-spacing:.08em}
+  .v144-live-help{margin:6px 2px 0;color:#7f8bb8;font-size:6.6px;line-height:1.35}
+
+  .v144-modal-platforms{
+    display:grid;
+    grid-template-columns:repeat(3,minmax(0,1fr));
+    gap:7px;
+    margin:2px 0 10px;
+  }
+  .v144-modal-platforms button{
+    min-height:45px;
+    display:grid;
+    grid-template-columns:25px minmax(0,1fr);
+    gap:6px;
+    align-items:center;
+    padding:6px 8px;
+    border:1px solid rgba(89,109,214,.4);
+    border-radius:10px;
+    background:#080d62;
+    color:#dce2f6;
+    font-size:7.4px;
+    font-weight:850;
+    text-align:left;
+  }
+  .v144-modal-platforms button.active{border-color:#28dce8;background:#111a78;color:#fff}
+  .v144-modal-platforms em{
+    width:25px;height:25px;display:grid;place-items:center;border-radius:8px;
+    background:#182481;color:#fff;font-size:12px;font-weight:900;font-style:normal;
+  }
+  .v144-link-actions{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-top:8px}
+  .v144-link-actions button{
+    min-height:36px;border:1px solid rgba(38,223,236,.28);border-radius:9px;
+    background:#10166e;color:#38e0eb;font-size:7.5px;font-weight:900;
+  }
+  .v144-stream-embed.tiktok>header i{background:#111;color:#25f4ee}
+
   .v144-stream-embed{
     margin-top:9px;
     overflow:hidden;
