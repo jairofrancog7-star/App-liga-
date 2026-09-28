@@ -4483,17 +4483,17 @@ function predictorView(){
   return `<section class="v37-predictor-reference" aria-label="Pronostica Seis">
     <div class="v37-predictor-marks" aria-hidden="true"><i></i><i></i></div>
     <h1 class="v37-predictor-title"><span>?PRONOSTICA</span><span>SEIS</span></h1>
-    <img class="v37-predictor-crest" src="./assets/reference/predictor-v36/liga-crest-white.webp?v=20260927-pixel-master1" alt="Liga Municipal de Fútbol Juventino Rosas">
+    <img class="v37-predictor-crest" src="./assets/reference/predictor-v36/liga-crest-white.webp?v=20260928-old-design-restore3" alt="Liga Municipal de Fútbol Juventino Rosas">
     <button type="button" class="v37-predictor-enter" data-route="predictorSix" aria-label="Abrir Pronostica Seis">
       <span class="v37-score-panel" aria-hidden="true">
-        <img class="v37-score-two" src="./assets/reference/predictor-v36/predictor-two.webp?v=20260927-pixel-master1" alt="">
-        <img class="v37-score-question" src="./assets/reference/predictor-v36/predictor-question.webp?v=20260927-pixel-master1" alt="">
-        <img class="v37-score-question" src="./assets/reference/predictor-v36/predictor-question.webp?v=20260927-pixel-master1" alt="">
+        <img class="v37-score-two" src="./assets/reference/predictor-v36/predictor-two.webp?v=20260928-old-design-restore3" alt="">
+        <img class="v37-score-question" src="./assets/reference/predictor-v36/predictor-question.webp?v=20260928-old-design-restore3" alt="">
+        <img class="v37-score-question" src="./assets/reference/predictor-v36/predictor-question.webp?v=20260928-old-design-restore3" alt="">
       </span>
-      <img class="v37-predictor-trophy" src="./assets/reference/predictor-v36/predictor-trophy.webp?v=20260927-pixel-master1" alt="">
-      <img class="v37-predictor-pitch-img" src="./assets/reference/predictor-v36/predictor-pitch.webp?v=20260927-pixel-master1" alt="" aria-hidden="true">
+      <img class="v37-predictor-trophy" src="./assets/reference/predictor-v36/predictor-trophy.webp?v=20260928-old-design-restore3" alt="">
+      <img class="v37-predictor-pitch-img" src="./assets/reference/predictor-v36/predictor-pitch.webp?v=20260928-old-design-restore3" alt="" aria-hidden="true">
     </button>
-    <img class="v37-predictor-stadium-img" src="./assets/reference/predictor-v36/predictor-stadium.webp?v=20260927-pixel-master1" alt="" aria-hidden="true">
+    <img class="v37-predictor-stadium-img" src="./assets/reference/predictor-v36/predictor-stadium.webp?v=20260928-old-design-restore3" alt="" aria-hidden="true">
   </section>`;
 }
 function predictorSixView(){
