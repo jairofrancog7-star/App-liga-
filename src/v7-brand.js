@@ -7,12 +7,6 @@ const STARTUP_FADE_MS = 420;
 const STANDARD_HEADER_ROUTES = new Set([
   'home','competition','more'
 ]);
-/* The supplied behavior videos keep these three root headers at their full
-   sticky height while content scrolls. Bespoke fullscreen routes keep their
-   own motion controllers (History/Data/etc.). */
-const STABLE_ROOT_HEADER_ROUTES = new Set([
-  'home','competition','more','moments'
-]);
 const FULLSCREEN_HEADER_ROUTES = new Set([
   'video',
   'fantasy','fantasyTeam','fantasyLeagues','fantasyAccess',
@@ -136,7 +130,7 @@ function syncHeaderMotion(force=false){
   v10HeaderScrollRaf=0;
   const route=routeFromLocation();
   const mode=document.body.dataset.headerMode||headerModeFor(route);
-  if(mode==='fullscreen'||STABLE_ROOT_HEADER_ROUTES.has(route)){
+  if(mode==='fullscreen'){
     v10HeaderCollapsed=false;
     document.body.classList.remove('v10-header-collapsed');
     v10HeaderLastY=window.scrollY||document.documentElement.scrollTop||0;
