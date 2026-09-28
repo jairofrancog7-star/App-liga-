@@ -6,15 +6,6 @@
 html,body{background:var(--v10-deep)}
 body.v7-startup-lock{overflow:hidden;overscroll-behavior:none}
 
-/* Deterministic header states are assigned by v7-brand.js. */
-body.v10-fullscreen-route #app > .topbar{
-  display:none!important;
-}
-body.v10-detail-header #app > .topbar{
-  display:grid!important;
-  visibility:visible!important;
-}
-
 /* HOME ONLY: keep the branded wide artwork exactly where it belongs. */
 body[data-app-route="home"] .topbar{
   height:var(--v10-home-header-h)!important;
@@ -84,11 +75,10 @@ body:not([data-app-route="home"]) .topbar{
   overflow:hidden;
   isolation:isolate;
   z-index:30;
-  background-color:#07106f!important;
-  background-image:url('../public/brand-neon-header.svg')!important;
-  background-repeat:no-repeat!important;
-  background-size:auto 100%!important;
-  background-position:center top!important;
+  background:
+    radial-gradient(125px 92px at 8% 0,rgba(27,93,255,.42),transparent 72%),
+    radial-gradient(150px 100px at 92% 0,rgba(0,215,234,.22),transparent 75%),
+    linear-gradient(180deg,#0a22a5 0,#07127d 62%,#050b61 100%)!important;
   border:0!important;
   border-bottom:1px solid rgba(255,255,255,.08)!important;
   box-shadow:none!important;
@@ -99,8 +89,8 @@ body:not([data-app-route="home"]) .topbar::before{
   position:absolute;
   inset:0;
   pointer-events:none;
-  opacity:1;
-  background:linear-gradient(180deg,rgba(3,7,84,.02) 0%,rgba(3,7,84,.08) 56%,rgba(3,7,84,.36) 100%);
+  opacity:.3;
+  background:linear-gradient(145deg,transparent 44%,rgba(70,225,255,.26) 45% 46%,transparent 47% 56%,rgba(255,79,157,.2) 57% 58%,transparent 59%);
 }
 body:not([data-app-route="home"]) .topbar::after{
   content:attr(data-title);
@@ -263,44 +253,4 @@ body[data-app-route="home"] #screen > .stories{
 }
 @media(prefers-reduced-motion:reduce){
   .v7-startup,.v7-startup-stage{transition:none}
-}
-
-
-/* V10 master header motion — one state controller, no per-route listeners. */
-@media (max-width:1023px){
-  body.v10-standard-header #app>.topbar,
-  body.v10-detail-header #app>.topbar{
-    transition:
-      height .18s cubic-bezier(.2,.72,.2,1),
-      min-height .18s cubic-bezier(.2,.72,.2,1),
-      padding .18s cubic-bezier(.2,.72,.2,1),
-      background-position .18s cubic-bezier(.2,.72,.2,1)!important;
-    will-change:height;
-  }
-
-  body.v10-header-collapsed.v10-standard-header:not([data-app-route="home"]):not([data-app-route="competition"]):not([data-app-route="more"]) #app>.topbar,
-  body.v10-header-collapsed.v10-detail-header:not([data-app-route="moments"]) #app>.topbar{
-    height:calc(var(--header-collapsed-h,72px) + env(safe-area-inset-top))!important;
-    min-height:calc(var(--header-collapsed-h,72px) + env(safe-area-inset-top))!important;
-    max-height:calc(var(--header-collapsed-h,72px) + env(safe-area-inset-top))!important;
-  }
-
-  body.v10-header-collapsed[data-app-route="home"] #app>.topbar{
-    height:calc(var(--header-collapsed-h,72px) + env(safe-area-inset-top))!important;
-    min-height:calc(var(--header-collapsed-h,72px) + env(safe-area-inset-top))!important;
-    max-height:calc(var(--header-collapsed-h,72px) + env(safe-area-inset-top))!important;
-    background-position:center 18%!important;
-  }
-  body.v10-header-collapsed[data-app-route="home"] #app>.topbar .wordmark,
-  body.v10-header-collapsed[data-app-route="home"] #app>.topbar .profile-button{
-    top:9%!important;
-    height:70%!important;
-  }
-}
-
-@media(prefers-reduced-motion:reduce){
-  body.v10-standard-header #app>.topbar,
-  body.v10-detail-header #app>.topbar{
-    transition:none!important;
-  }
 }
