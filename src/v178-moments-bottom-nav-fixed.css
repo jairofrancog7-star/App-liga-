@@ -1,0 +1,49 @@
+/* V178 — MOMENTOS ONLY
+   Keep the existing real bottom navigation fixed at the viewport bottom.
+   The reference artwork is not redesigned: only its baked-in nav strip is cropped. */
+body[data-app-route="moments"] #app > .bottom-nav,
+body[data-app-route="moments"] .app-shell > .bottom-nav,
+body[data-app-route="moments"] #app > nav.bottom-nav{
+  display:grid!important;
+  position:fixed!important;
+  top:auto!important;
+  bottom:0!important;
+  left:50%!important;
+  right:auto!important;
+  transform:translateX(-50%)!important;
+  width:min(100%,520px)!important;
+  z-index:2147483000!important;
+}
+
+/* The second reference image already contains a painted navigation strip.
+   Crop only that final 10.55% so there is never a duplicated/floating bar. */
+body[data-app-route="moments"] .v26-moments-panel[data-v26-panel="b"]{
+  aspect-ratio:832 / 1441.447!important;
+}
+
+/* Preserve the click zones for the six cards after the crop. */
+body[data-app-route="moments"] .v26-moments-panel[data-v26-panel="b"] .v26-card-1,
+body[data-app-route="moments"] .v26-moments-panel[data-v26-panel="b"] .v26-card-2{
+  top:1.795%!important;
+  height:32.948%!important;
+}
+body[data-app-route="moments"] .v26-moments-panel[data-v26-panel="b"] .v26-card-3,
+body[data-app-route="moments"] .v26-moments-panel[data-v26-panel="b"] .v26-card-4{
+  top:36.282%!important;
+  height:32.948%!important;
+}
+body[data-app-route="moments"] .v26-moments-panel[data-v26-panel="b"] .v26-card-5,
+body[data-app-route="moments"] .v26-moments-panel[data-v26-panel="b"] .v26-card-6{
+  top:70.385%!important;
+  height:29.615%!important;
+}
+
+/* Navigation clicks are handled by the real fixed nav, not by image hotspots. */
+body[data-app-route="moments"] .v26-moments-panel[data-v26-panel="b"] .v26-nav{
+  display:none!important;
+}
+
+/* Reserve exactly the real nav height at the end, so the last cards stay visible. */
+body[data-app-route="moments"] .v26-moments-original{
+  padding-bottom:calc(var(--v34-nav-h,69px) + env(safe-area-inset-bottom))!important;
+}
