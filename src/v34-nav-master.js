@@ -38,6 +38,8 @@ const competitionChildren=new Set(['match','discipline','disciplina','discipline
 const fantasyChildren=new Set(['fantasy','fantasyTeam','fantasyLeagues','fantasyAccess']);
 function route(){return (location.hash.replace(/^#\/?/,'')||'home').split('?')[0]}
 function activeRoute(r){
+  /* Team Detail master shows INICIO active in the supplied reference. */
+  if(r==='teamDetail')return 'home';
   if(moreChildren.has(r))return 'more';
   if(fantasyChildren.has(r))return 'fantasy';
   if(competitionChildren.has(r))return 'competition';
@@ -76,7 +78,7 @@ document.addEventListener('click',e=>{
 window.addEventListener('hashchange',()=>setTimeout(paint,0));
 document.addEventListener('DOMContentLoaded',paint,{once:true});
 const nav=document.querySelector('.bottom-nav');
-if(nav)new MutationObserver(()=>requestAnimationFrame(paint)).observe(nav,{subtree:true,attributes:true,attributeFilter:['class']});
+if(nav)new MutationObserver(()=>requestAnimationFrame(paint)).observe(nav,{subtree:true,attributes:true,childList:true,characterData:true,attributeFilter:['class']});
 setTimeout(paint,0);
 setTimeout(paint,250);
 setTimeout(paint,900);
