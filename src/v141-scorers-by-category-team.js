@@ -52,7 +52,7 @@ function scorerRows(id){
   const c=data()?.categories?.[String(id)];
   const raw=c?.scorers?.[0]?.rows||[];
   return raw
-    .filter(r=>Array.isArray(r)&&r.length>=4&&r[1]&&r[2]&&/^\d+$/.test(String(r[3]||'')))
+    .filter(r=>Array.isArray(r)&&r.length>=4&&r[1]&&r[2]&&/^\d+$/.test(String(r[3]||''))&&!/goles?\s+en\s+temporada/i.test(String(r[2]||'')))
     .map(r=>({
       player:String(r[1]).trim(),
       team:String(r[2]).trim(),
