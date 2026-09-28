@@ -118,110 +118,9 @@ body[data-app-route="moments"] #app>.topbar .back-button svg{
 .v26-moments-page{
   width:100%;
   margin:0;
-  padding:0 18px 18px;
+  padding:13px 18px 18px;
   color:#fff;
   background:var(--app-bg,#06075f);
-}
-.v26-reference-video{
-  width:100%;
-  margin:0 0 18px;
-  overflow:hidden;
-  border:1px solid rgba(52,148,255,.38);
-  border-radius:17px;
-  background:#10117d;
-  box-shadow:none;
-}
-.v26-reference-video video{
-  display:block;
-  width:100%;
-  height:104px;
-  object-fit:cover;
-  background:#03043d;
-}
-.v26-reference-video>div{
-  min-height:51px;
-  padding:10px 14px 9px;
-  display:grid;
-  align-content:center;
-  gap:5px;
-}
-.v26-reference-video b{
-  color:#fff;
-  font-size:14px;
-  line-height:1.08;
-  font-weight:800;
-}
-.v26-reference-video small{
-  color:#b8bdd5;
-  font-size:11px;
-  line-height:1;
-}
-.v26-reference-actions{
-  display:grid;
-  gap:12px;
-  margin:0 0 22px;
-}
-.v26-reference-action{
-  width:100%;
-  min-height:94px;
-  margin:0;
-  padding:0 14px;
-  display:grid;
-  grid-template-columns:48px minmax(0,1fr) 20px;
-  gap:12px;
-  align-items:center;
-  border:1px solid rgba(40,202,235,.33);
-  border-radius:18px;
-  background:#0c0e76;
-  color:#fff;
-  text-align:left;
-  box-shadow:none;
-}
-.v26-reference-action-icon{
-  width:46px;
-  height:46px;
-  display:grid;
-  place-items:center;
-  border-radius:13px;
-  background:#0d258e;
-  color:#2be2ee;
-}
-.v26-reference-action-icon svg{
-  width:25px;
-  height:25px;
-  fill:none;
-  stroke:currentColor;
-  stroke-width:1.8;
-  stroke-linecap:round;
-  stroke-linejoin:round;
-}
-.v26-reference-action>span:nth-child(2){
-  min-width:0;
-  display:grid;
-  gap:5px;
-}
-.v26-reference-action b{
-  color:#fff;
-  font-size:14px;
-  line-height:1.05;
-  font-weight:800;
-}
-.v26-reference-action small{
-  color:#b6bdd8;
-  font-size:11px;
-  line-height:1.05;
-}
-.v26-reference-action>i{
-  color:#21ddea;
-  font-style:normal;
-  font-size:25px;
-  line-height:1;
-  text-align:center;
-}
-.v26-moments-archive{
-  margin:28px 0 0;
-  padding-top:18px;
-  border-top:1px solid rgba(255,255,255,.08);
 }
 .v26-moments-grid{
   display:grid;
@@ -303,49 +202,16 @@ body[data-app-route="moments"] .v105-bottom[data-v105-route="moments"]{
     width:42px!important;
     height:42px!important;
   }
-  .v26-moments-page{padding:0 14px 16px}
-  .v26-reference-video{margin-bottom:16px}
-  .v26-reference-video video{height:100px}
-  .v26-reference-actions{gap:10px;margin-bottom:20px}
-  .v26-reference-action{min-height:88px;padding:0 12px;grid-template-columns:44px minmax(0,1fr) 18px;gap:10px}
-  .v26-reference-action-icon{width:42px;height:42px}
-  .v26-reference-action-icon svg{width:23px;height:23px}
-  .v26-reference-action b{font-size:13px}
-  .v26-reference-action small{font-size:10px}
+  .v26-moments-page{padding:12px 14px 16px}
   .v26-moments-grid{gap:10px 8px}
   .v26-moment-card{border-radius:12px}
 }
 
 @media(max-width:340px){
   .v26-moments-page{padding-left:12px;padding-right:12px}
-  .v26-reference-video video{height:94px}
-  .v26-reference-action{min-height:84px}
   .v26-moments-grid{gap:8px 7px}
 }
 
 @media(prefers-reduced-motion:reduce){
   .v26-moment-card:active{transform:none}
-}
-
-
-/* MOMENTS_COLLAPSED_MASTER_V10 — same shared controller, reference back/title preserved. */
-@media(max-width:1023px){
-  body.v10-header-collapsed[data-app-route="moments"] #app>.topbar{
-    height:calc(var(--header-collapsed-h,72px) + env(safe-area-inset-top))!important;
-    min-height:calc(var(--header-collapsed-h,72px) + env(safe-area-inset-top))!important;
-    max-height:calc(var(--header-collapsed-h,72px) + env(safe-area-inset-top))!important;
-    background-position:center 24%!important;
-  }
-  body.v10-header-collapsed[data-app-route="moments"] #app>.topbar::after{
-    left:64px!important;
-    bottom:15px!important;
-    font-size:24px!important;
-  }
-  body.v10-header-collapsed[data-app-route="moments"] #app>.topbar .back-button,
-  body.v10-header-collapsed[data-app-route="moments"] #app>.topbar .back-button.is-hidden{
-    left:12px!important;
-    bottom:7px!important;
-    width:42px!important;
-    height:42px!important;
-  }
 }
