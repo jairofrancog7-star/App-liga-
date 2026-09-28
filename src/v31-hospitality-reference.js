@@ -87,9 +87,10 @@ function v31ApplyHospitality(){
   if(!isHospitality) return;
 
   const screen = document.querySelector('#screen');
-  if(!screen) return;
-  if(!screen.querySelector('.v31-hospitality-page')){
-    screen.innerHTML = v31HospitalityMarkup();
+  const mount = screen?.querySelector('[data-v31-hospitality-mount]');
+  if(!screen || !mount) return;
+  if(!mount.querySelector('.v31-hospitality-page')){
+    mount.innerHTML = v31HospitalityMarkup();
   }
   v31BindHospitality();
 }
