@@ -1,7 +1,7 @@
 {
   "schema": 1,
   "source": "https://juventinorosasliga.com/",
-  "captured_at_utc": "2026-09-22T01:49:23Z",
+  "captured_at_utc": "2026-09-28T03:42:00Z",
   "mode": "fast",
   "categories": {
     "1": {
@@ -11,8 +11,8 @@
       "dashboard": {
         "counts": {
           "Equipos": 6,
-          "Partidos Jugados": 15,
-          "Partidos Pendientes": 30,
+          "Partidos Jugados": 18,
+          "Partidos Pendientes": 27,
           "Jugadores": 109
         },
         "current_cedulas": [
@@ -111,8 +111,8 @@
       },
       "counts": {
         "Equipos": 6,
-        "Partidos Jugados": 15,
-        "Partidos Pendientes": 30,
+        "Partidos Jugados": 18,
+        "Partidos Pendientes": 27,
         "Jugadores": 109
       },
       "standings": [
@@ -535,14 +535,15 @@
             [
               "16",
               "6",
-              "BOAVISTA",
+              "LA ESPERANZA",
               "-",
               "vs",
               "-",
-              "MANCHESTER",
-              "Campo 3",
-              "26/09/2026 15:00",
-              "---"
+              "DYNAMO",
+              "Campo 1",
+              "26/09/2026 17:00",
+              "---",
+              "JUGADO"
             ],
             [
               "17",
@@ -550,23 +551,25 @@
               "BOCA JRS",
               "-",
               "vs",
-              "-",
+              "1",
               "TOROS DE CUENDA",
-              "Campo 1 (Empastado)",
-              "26/09/2026 15:30",
-              "---"
+              "",
+              "26/09/2026",
+              "---",
+              "JUGADO · GANA TOROS DE CUENDA"
             ],
             [
               "18",
               "6",
-              "LA ESPERANZA",
+              "BOAVISTA",
               "-",
               "vs",
               "-",
-              "DYNAMO",
-              "Campo 3",
-              "26/09/2026 17:00",
-              "---"
+              "MANCHESTER",
+              "Campo 1",
+              "26/09/2026 15:30",
+              "---",
+              "JUGADO"
             ],
             [
               "19",
@@ -1890,8 +1893,8 @@
       "dashboard": {
         "counts": {
           "Equipos": 11,
-          "Partidos Jugados": 20,
-          "Partidos Pendientes": 35,
+          "Partidos Jugados": 25,
+          "Partidos Pendientes": 30,
           "Jugadores": 291
         },
         "current_cedulas": [
@@ -1978,8 +1981,8 @@
       },
       "counts": {
         "Equipos": 11,
-        "Partidos Jugados": 20,
-        "Partidos Pendientes": 35,
+        "Partidos Jugados": 25,
+        "Partidos Pendientes": 30,
         "Jugadores": 291
       },
       "standings": [
@@ -2492,62 +2495,67 @@
             [
               "26",
               "6",
-              "HERMANOS",
+              "ABEJAS",
               "-",
               "vs",
               "-",
-              "ABEJAS",
-              "Campo 1 (Empastado)",
+              "NAPOLI",
+              "Campo 1",
               "27/09/2026 08:00",
-              "---"
+              "---",
+              "JUGADO"
             ],
             [
               "27",
               "6",
-              "HERRERAS FC",
+              "GALACTICOS",
               "-",
               "vs",
-              "-",
-              "LOBOS CDG",
-              "Cuenda",
-              "27/09/2026 08:00",
-              "---"
+              "1",
+              "HERMANOS",
+              "",
+              "27/09/2026",
+              "---",
+              "JUGADO · GANA HERMANOS"
             ],
             [
               "28",
               "6",
-              "TERRICOLAS",
+              "LOBOS CDG",
               "-",
               "vs",
               "-",
-              "FRANCO FC",
-              "Campo 1 (Empastado)",
+              "TERRICOLAS",
+              "Campo 1",
               "27/09/2026 10:00",
-              "---"
+              "---",
+              "JUGADO"
             ],
             [
               "29",
               "6",
-              "GALACTICOS",
+              "JUVENTUS",
               "-",
               "vs",
               "-",
-              "JUVENTUS",
-              "Pozos",
-              "27/09/2026 10:00",
-              "---"
+              "FRANCO FC",
+              "Romerillo",
+              "27/09/2026 08:00",
+              "---",
+              "JUGADO"
             ],
             [
               "30",
               "6",
-              "LINCES",
+              "SAN JOSE FC",
               "-",
               "vs",
               "-",
-              "SAN JOSE FC",
-              "Campo 1 (Empastado)",
+              "LINCES",
+              "San Jose",
               "27/09/2026 12:00",
-              "---"
+              "---",
+              "JUGADO"
             ],
             [
               "31",
@@ -4815,8 +4823,8 @@
       "dashboard": {
         "counts": {
           "Equipos": 12,
-          "Partidos Jugados": 23,
-          "Partidos Pendientes": 42,
+          "Partidos Jugados": 29,
+          "Partidos Pendientes": 36,
           "Jugadores": 322
         },
         "current_cedulas": [
@@ -4943,8 +4951,8 @@
       },
       "counts": {
         "Equipos": 12,
-        "Partidos Jugados": 23,
-        "Partidos Pendientes": 42,
+        "Partidos Jugados": 29,
+        "Partidos Pendientes": 36,
         "Jugadores": 322
       },
       "standings": [
@@ -5715,74 +5723,80 @@
             [
               "31",
               "6",
-              "CELTICOS",
-              "-",
-              "vs",
-              "-",
-              "DEP. LA LUZ",
-              "Campo 4",
-              "27/09/2026 08:00",
-              "---"
-            ],
-            [
-              "32",
-              "6",
-              "BARZA",
+              "PACHANGAS FC",
               "-",
               "vs",
               "-",
               "DEP. NOPALERO",
-              "Fraccionamiento",
+              "Campo 2",
               "27/09/2026 08:00",
-              "---"
+              "---",
+              "JUGADO"
             ],
             [
-              "33",
-              "6",
-              "SAN JULIAN",
-              "-",
-              "vs",
-              "-",
-              "PACHANGAS FC",
-              "San Julian",
-              "27/09/2026 10:00",
-              "---"
-            ],
-            [
-              "34",
+              "32",
               "6",
               "DEP. ZAPATA",
               "-",
               "vs",
               "-",
               "SAN ANTONIO FC",
+              "Campo 1",
+              "27/09/2026 12:00",
+              "---",
+              "JUGADO"
+            ],
+            [
+              "33",
+              "6",
+              "CELTICOS",
+              "-",
+              "vs",
+              "-",
+              "BARZA",
               "Campo 3",
+              "27/09/2026 12:00",
+              "---",
+              "JUGADO"
+            ],
+            [
+              "34",
+              "6",
+              "SAN JOSE JRS",
+              "-",
+              "vs",
+              "-",
+              "DEP. LA LUZ",
+              "San Jose",
               "27/09/2026 10:00",
-              "---"
+              "---",
+              "JUGADO"
             ],
             [
               "35",
               "6",
-              "SAN JUAN FC",
+              "SAN JULIAN",
               "-",
               "vs",
               "-",
-              "SAN JOSE JRS",
-              "San Juan de la Cruz",
-              "27/09/2026 12:00",
-              "---"
+              "SAN JUAN FC",
+              "San Juan",
+              "27/09/2026 08:00",
+              "---",
+              "JUGADO"
             ],
             [
               "36",
               "6",
-              "TAVERA FC",
+              "TAPATIO",
               "-",
               "vs",
               "-",
-              "TAPATIO",
+              "TAVERA FC",
               "Tavera",
               "27/09/2026 12:00",
-              "---"
+              "---",
+              "JUGADO"
             ],
             [
               "37",
@@ -8327,8 +8341,8 @@
       "dashboard": {
         "counts": {
           "Equipos": 13,
-          "Partidos Jugados": 22,
-          "Partidos Pendientes": 54,
+          "Partidos Jugados": 28,
+          "Partidos Pendientes": 48,
           "Jugadores": 336
         },
         "current_cedulas": [
@@ -8451,8 +8465,8 @@
       },
       "counts": {
         "Equipos": 13,
-        "Partidos Jugados": 22,
-        "Partidos Pendientes": 54,
+        "Partidos Jugados": 28,
+        "Partidos Pendientes": 48,
         "Jugadores": 336
       },
       "standings": [
@@ -9097,74 +9111,80 @@
             [
               "31",
               "6",
-              "ALDAMA FC",
+              "LA CUADRILLA",
               "-",
               "vs",
               "-",
-              "OSASUNA",
-              "Campo 2",
+              "ALDAMA FC",
+              "Campo 3",
               "27/09/2026 08:00",
-              "---"
+              "---",
+              "JUGADO"
             ],
             [
               "32",
               "6",
-              "POPULARES",
+              "DEP. MARAVILLAS",
               "-",
               "vs",
               "-",
-              "DEP. MARAVILLAS",
+              "LA CANCHITA DEPORTES",
               "Campo 3",
-              "27/09/2026 08:00",
-              "---"
+              "27/09/2026 10:00",
+              "---",
+              "JUGADO"
             ],
             [
               "33",
-              "6",
-              "ATL. GALEANA",
-              "-",
-              "vs",
-              "-",
-              "LA HUERTA",
-              "Campo 2",
-              "27/09/2026 10:00",
-              "---"
-            ],
-            [
-              "34",
               "6",
               "SAN ANTONIO JRS",
               "-",
               "vs",
               "-",
-              "MAZACOTES FC",
-              "Romerillo",
-              "27/09/2026 10:00",
-              "---"
+              "LA HUERTA",
+              "Campo 2",
+              "27/09/2026 12:00",
+              "---",
+              "JUGADO"
+            ],
+            [
+              "34",
+              "6",
+              "ATL. GALEANA",
+              "-",
+              "vs",
+              "-",
+              "POPULARES",
+              "Fraccionamiento",
+              "27/09/2026 08:00",
+              "---",
+              "JUGADO"
             ],
             [
               "35",
               "6",
-              "CAPIBARAS",
+              "MALVINAS",
               "-",
               "vs",
               "-",
-              "PROMESAS FC",
+              "MAZACOTES FC",
               "Campo 2",
-              "27/09/2026 12:00",
-              "---"
+              "27/09/2026 10:00",
+              "---",
+              "JUGADO"
             ],
             [
               "36",
               "6",
-              "LA CUADRILLA",
+              "PROMESAS FC",
               "-",
               "vs",
               "-",
-              "MALVINAS",
-              "Rincón de Centeno",
-              "27/09/2026 12:00",
-              "---"
+              "OSASUNA",
+              "Fraccionamiento",
+              "27/09/2026 10:00",
+              "---",
+              "JUGADO"
             ],
             [
               "37",
@@ -12147,7 +12167,8 @@
   "notes": [
     "Datos deportivos públicos; no se recopilan CURP, INE, domicilio ni documentos.",
     "La fuente oficial juventinorosasliga.com prevalece sobre este snapshot.",
-    "No se inventan goles, alineaciones, estadísticas avanzadas ni sanciones."
+    "No se inventan goles, alineaciones, estadísticas avanzadas ni sanciones.",
+    "Jornada 6 actualizada con el calendario enviado por el usuario el 27/09/2026; los partidos listados quedan marcados como jugados sin inventar marcadores no publicados."
   ],
   "missing_official_logo": [
     "BOCA JRS",
