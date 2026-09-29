@@ -1467,7 +1467,10 @@ let v348ArchiveScrollTimer=0;
 const v348ArchiveCache=Object.create(null);
 
 function v348ArchiveSentinel(kind){
-  return '<div class="v348-history-sentinel" data-v348-history-sentinel="'+esc(kind)+'" aria-hidden="true"></div>';
+  return '<section class="v348-history-sentinel" data-v348-history-sentinel="'+esc(kind)+'">'+
+    '<button type="button" data-v348-load-archive="'+esc(kind)+'">Cargar archivo histórico completo <span aria-hidden="true">›</span></button>'+
+    '<p>La información completa sigue guardada. Se carga sólo cuando la abras para evitar que Historia se congele al cambiar de sección.</p>'+
+  '</section>';
 }
 function v348ArchiveHtml(kind){
   if(v348ArchiveCache[kind]!=null)return v348ArchiveCache[kind];
@@ -1489,49 +1492,9 @@ function v348CancelArchiveLoad(){
   }
 }
 function v348ArmArchive(root){
+  // V349: no cargar el archivo automáticamente al hacer scroll o cambiar de pestaña.
+  // El archivo pesado sólo se abre mediante el botón explícito de cada sección.
   v348CancelArchiveLoad();
-  const host=root?.querySelector?.('[data-v348-history-sentinel]');
-  if(!host)return;
-  const token=v348ArchiveToken;
-  const tabAtArm=activeTab;
-  let loading=false;
-
-  const load=()=>{
-    if(loading||token!==v348ArchiveToken||route()!=='history'||activeTab!==tabAtArm||!host.isConnected)return;
-    loading=true;
-    const run=()=>{
-      if(token!==v348ArchiveToken||route()!=='history'||activeTab!==tabAtArm||!host.isConnected){loading=false;return;}
-      const kind=host.dataset.v348HistorySentinel||'';
-      const html=v348ArchiveHtml(kind);
-      if(html)host.insertAdjacentHTML('beforebegin',html);
-      host.remove();
-      if(v348ArchiveScrollHandler){
-        window.removeEventListener('scroll',v348ArchiveScrollHandler);
-        v348ArchiveScrollHandler=null;
-      }
-      requestAnimationFrame(()=>{
-        const page=document.querySelector('.v35-history-page');
-        if(page){
-          removeObsoleteManchesterDuplicate(page);
-          syncHistoryCollapse();
-        }
-      });
-    };
-    if('requestIdleCallback' in window)requestIdleCallback(run,{timeout:1100});
-    else setTimeout(run,40);
-  };
-
-  const maybeLoad=()=>{
-    clearTimeout(v348ArchiveScrollTimer);
-    v348ArchiveScrollTimer=setTimeout(()=>{
-      if(token!==v348ArchiveToken||!host.isConnected)return;
-      const rect=host.getBoundingClientRect();
-      if(rect.top < (window.innerHeight||700)+260)load();
-    },320);
-  };
-
-  v348ArchiveScrollHandler=maybeLoad;
-  window.addEventListener('scroll',maybeLoad,{passive:true});
 }
 
 function summaryBody(){
@@ -2069,24 +2032,14 @@ function rerenderContent(){
   if(!root||!content||!nav) return;
   v348CancelArchiveLoad();
   nav.innerHTML=tabs();
-  const tabAtRender=activeTab;
-  requestAnimationFrame(()=>{
-    if(route()!=='history'||activeTab!==tabAtRender||!root.isConnected)return;
-    content.innerHTML=bodyForTab();
-    root.classList.toggle('v329-videos-active',activeTab==='Videos');
-    root.classList.toggle('v341-seasons-active',activeTab==='Temporadas');
-    document.body.classList.toggle('v341-history-seasons-active',activeTab==='Temporadas');
-    window.scrollTo({top:0,left:0,behavior:'auto'});
-    syncHistoryCollapse();
-    removeObsoleteManchesterDuplicate(root);
-    v348ArmArchive(root);
-    if(activeTab==='Temporadas'){
-      const cleanSeasonLogos=()=>{if(route()==='history'&&activeTab==='Temporadas'&&root.isConnected)v341CleanSeasonLogos(root);};
-      if('requestIdleCallback' in window)requestIdleCallback(cleanSeasonLogos,{timeout:1800});
-      else setTimeout(cleanSeasonLogos,1000);
-    }
-  });
+  content.innerHTML=bodyForTab();
+  root.classList.toggle('v329-videos-active',activeTab==='Videos');
+  root.classList.toggle('v341-seasons-active',activeTab==='Temporadas');
+  document.body.classList.toggle('v341-history-seasons-active',activeTab==='Temporadas');
+  window.scrollTo({top:0,left:0,behavior:'auto'});
+  requestAnimationFrame(syncHistoryCollapse);
 }
+
 function toast(msg){
   let el=document.querySelector('.v35-toast');
   if(!el){el=document.createElement('div');el.className='v35-toast';document.body.appendChild(el);}
@@ -2104,6 +2057,23 @@ function onClick(e){
   if(route()!=='history') return;
   const back=e.target.closest('[data-v35-back]');
   if(back){e.preventDefault();e.stopPropagation();if(history.length>1)history.back();else location.hash='#/more';return;}
+  const loadArchive=e.target.closest('[data-v348-load-archive]');
+  if(loadArchive){
+    e.preventDefault();e.stopPropagation();
+    const kind=String(loadArchive.dataset.v348LoadArchive||'');
+    const host=loadArchive.closest('[data-v348-history-sentinel]');
+    if(!host)return;
+    loadArchive.disabled=true;
+    loadArchive.textContent='Cargando archivo…';
+    window.setTimeout(()=>{
+      if(!host.isConnected||route()!=='history')return;
+      const html=v348ArchiveHtml(kind);
+      if(html)host.insertAdjacentHTML('beforebegin',html);
+      host.remove();
+      requestAnimationFrame(syncHistoryCollapse);
+    },30);
+    return;
+  }
   const tab=e.target.closest('[data-v35-tab]');
   if(tab){e.preventDefault();e.stopPropagation();activeTab=tab.dataset.v35Tab||'Resumen';rerenderContent();return;}
   const jump=e.target.closest('[data-v35-tab-jump]');
