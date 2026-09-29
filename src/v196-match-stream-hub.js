@@ -1,0 +1,256 @@
+/* V196 — Centro de transmisión móvil para Match Center.
+   Integra varias fuentes, estados En vivo/Por iniciar/Finalizado,
+   reproductor adaptable, lista de fuentes y modo flotante.
+   No inventa una transmisión: solo usa enlaces vinculados por el operador. */
+(function(){
+'use strict';
+if(window.__LJR_V196_STREAM_HUB__)return;
+window.__LJR_V196_STREAM_HUB__=true;
+
+const ROUTES=new Set(['v4-matchcenter','matchCenter','match-center']);
+const LIVE_KEY='ljr-match-live-v144:';
+const GLOBAL_SOURCE_KEY='ljr-live-source-v144';
+const LIST_KEY='ljr-stream-list-v196:';
+const SETTINGS_KEY='ljr-stream-settings-v196';
+const $=(s,r=document)=>r.querySelector(s);
+const $$=(s,r=document)=>Array.from(r.querySelectorAll(s));
+const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const route=()=>String(location.hash||'').replace(/^#\/?/,'').split('?')[0]||'home';
+let timer=0,lastSig='';
+
+function ctx(){
+  const root=$('[data-v92-matchcenter]');if(!root)return null;
+  const sel=$('[data-v92-match-select]',root);
+  const sides=$$('.v92-score-card .v92-side b',root);
+  if(!sel||sides.length<2)return null;
+  return {
+    root,
+    key:String(sel.value||'match'),
+    home:(sides[0].textContent||'Local').trim(),
+    away:(sides[1].textContent||'Visitante').trim(),
+    category:($('.v92-match-head p',root)?.textContent||'').split('·')[1]?.trim()||'Liga Municipal',
+    meta:$$('.v92-official-meta span',root).map(x=>x.textContent.trim())
+  };
+}
+function liveState(c){
+  try{
+    const api=window.LJR_MATCH_LIVE?.getState?.();
+    if(api&&api.key===c.key)return api;
+  }catch(_){}
+  try{
+    const s=JSON.parse(localStorage.getItem(LIVE_KEY+c.key)||'null');
+    if(s)return s;
+  }catch(_){}
+  return {v:144,key:c.key,home:c.home,away:c.away,source:{url:'',name:'',feedUrl:'',connected:false,lastSync:0},phase:'scheduled',events:[],suggestions:[],updatedAt:Date.now()};
+}
+function settings(){
+  try{return Object.assign({floating:false,lowQuality:false,render:'auto'},JSON.parse(localStorage.getItem(SETTINGS_KEY)||'{}'))}
+  catch(_){return {floating:false,lowQuality:false,render:'auto'}}
+}
+function saveSettings(v){try{localStorage.setItem(SETTINGS_KEY,JSON.stringify(v))}catch(_){}}
+function provider(url){
+  const u=String(url||'').toLowerCase();
+  if(u.includes('youtube.com')||u.includes('youtu.be'))return {key:'youtube',name:'YouTube',icon:'▶'};
+  if(u.includes('facebook.com')||u.includes('fb.watch'))return {key:'facebook',name:'Facebook',icon:'f'};
+  if(u.includes('tiktok.com'))return {key:'tiktok',name:'TikTok',icon:'♪'};
+  if(/\.(mp4|webm|ogg)(?:[?#]|$)/i.test(u))return {key:'video',name:'Video directo',icon:'▶'};
+  return {key:'external',name:'Fuente externa',icon:'●'};
+}
+function safeUrl(v){
+  try{const u=new URL(String(v||'').trim());return /^https?:$/.test(u.protocol)?u.toString():''}catch(_){return ''}
+}
+function youtubeId(url){
+  const s=String(url||'');let m=s.match(/[?&]v=([^&#]+)/i);if(m)return m[1];
+  m=s.match(/youtu\.be\/([^?&#/]+)/i);if(m)return m[1];
+  m=s.match(/youtube\.com\/(?:live|embed)\/([^?&#/]+)/i);return m?m[1]:'';
+}
+function streamList(c,s){
+  let list=[];
+  try{list=JSON.parse(localStorage.getItem(LIST_KEY+c.key)||'[]')||[]}catch(_){}
+  list=Array.isArray(list)?list.filter(x=>safeUrl(x?.url)):[];
+  const current=safeUrl(s?.source?.url);
+  if(current&&!list.some(x=>x.url===current)){
+    list.unshift({id:'current',name:s.source.name||provider(current).name,url:current,addedAt:Date.now()});
+  }
+  return list.slice(0,12);
+}
+function saveList(c,list){
+  try{localStorage.setItem(LIST_KEY+c.key,JSON.stringify(list.slice(0,12)))}catch(_){}
+}
+function setCurrentSource(c,item){
+  const url=safeUrl(item?.url);if(!url)return;
+  const s=liveState(c);
+  s.source=Object.assign({feedUrl:'',connected:false,lastSync:0},s.source||{},{
+    url,
+    name:String(item.name||provider(url).name),
+    connected:false
+  });
+  s.updatedAt=Date.now();
+  try{
+    localStorage.setItem(LIVE_KEY+c.key,JSON.stringify(s));
+    localStorage.setItem(GLOBAL_SOURCE_KEY,JSON.stringify({url:s.source.url,name:s.source.name}));
+  }catch(_){}
+  try{window.dispatchEvent(new CustomEvent('ljr:match-live-feed',{detail:{key:c.key,source:s.source}}))}catch(_){}
+  try{window.dispatchEvent(new StorageEvent('storage',{key:LIVE_KEY+c.key,newValue:JSON.stringify(s)}))}catch(_){}
+  setTimeout(()=>window.LJR_MATCH_REALTIME?.reconnect?.(),60);
+  schedule(20);
+}
+function statusInfo(c,s){
+  const official=(( $('.v92-center small',c.root)?.textContent||'')+' '+($('.v92-kicker',c.root)?.textContent||'')).toUpperCase();
+  const phase=String(s?.phase||'scheduled');
+  if(phase==='first'||phase==='second')return {key:'live',label:'EN VIVO',sub:phase==='first'?'PRIMER TIEMPO':'SEGUNDO TIEMPO',live:true};
+  if(phase==='halftime')return {key:'live',label:'EN VIVO',sub:'MEDIO TIEMPO',live:true};
+  if(phase==='final'||/FINAL|RESULTADO OFICIAL/.test(official))return {key:'final',label:'FINALIZADO',sub:'PARTIDO TERMINADO',live:false};
+  if(/HORARIO DEL PARTIDO|EN VIVO/.test(official))return {key:'window',label:'HORARIO EN CURSO',sub:'LISTO PARA TRANSMITIR',live:false};
+  return {key:'scheduled',label:'POR INICIAR',sub:'TRANSMISIÓN PREPARABLE',live:false};
+}
+function playerHtml(c,s,st,current){
+  const url=safeUrl(current?.url||s?.source?.url),p=provider(url),cfg=settings();
+  if(!url){
+    return '<div class="v196-player-empty"><span class="v196-signal">◉</span><b>'+(st.key==='final'?'Sin repetición vinculada':'Transmisión sin configurar')+'</b><p>'+(st.key==='final'?'Puedes vincular una repetición o resumen del partido.':'Vincula YouTube, Facebook, TikTok o una fuente de video para tenerla lista cuando empiece el partido.')+'</p><button type="button" data-v196-add>+ Vincular fuente</button></div>';
+  }
+  if(p.key==='youtube'){
+    const id=youtubeId(url);
+    if(id){
+      const autoplay=st.live&&!cfg.lowQuality?'1':'0';
+      return '<div class="v196-frame"><iframe src="https://www.youtube-nocookie.com/embed/'+encodeURIComponent(id)+'?autoplay='+autoplay+'&mute=1&playsinline=1&controls=1" title="YouTube Live" loading="lazy" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen></iframe></div>';
+    }
+  }
+  if(p.key==='facebook'){
+    const src='https://www.facebook.com/plugins/video.php?href='+encodeURIComponent(url)+'&show_text=false&width=500&autoplay='+(st.live?'true':'false');
+    return '<div class="v196-frame"><iframe src="'+esc(src)+'" title="Facebook Live" loading="lazy" allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share" allowfullscreen></iframe></div>';
+  }
+  if(p.key==='video'){
+    return '<div class="v196-frame"><video src="'+esc(url)+'" '+(st.live?'autoplay ':'')+'controls playsinline '+(cfg.lowQuality?'preload="metadata"':'preload="auto"')+'></video></div>';
+  }
+  return '<div class="v196-player-empty linked"><span class="v196-provider">'+esc(p.icon)+'</span><b>'+esc(current?.name||s.source?.name||p.name)+'</b><p>'+(p.key==='tiktok'?'TikTok puede bloquear el reproductor incrustado.':'Esta fuente se abre en su reproductor original.')+'</p><button type="button" data-v196-open="'+esc(url)+'">Abrir transmisión</button></div>';
+}
+function sourceButton(item,i,current){
+  const p=provider(item.url),on=current&&current.url===item.url;
+  return '<button type="button" class="v196-source-chip '+(on?'active':'')+'" data-v196-source="'+i+'"><em>'+esc(p.icon)+'</em><span><b>'+esc(item.name||p.name)+'</b><small>FUENTE '+(i+1)+'</small></span></button>';
+}
+function hubHtml(c,s){
+  const st=statusInfo(c,s),list=streamList(c,s);
+  const current=list.find(x=>x.url===safeUrl(s?.source?.url))||list[0]||null;
+  const cfg=settings();
+  const sourceCount=list.length;
+  return '<section class="v196-stream-hub '+(cfg.floating?'is-floating-enabled':'')+'" data-v196-stream-hub data-match-key="'+esc(c.key)+'">'+
+    '<header class="v196-event-card">'+
+      '<div class="v196-event-top"><span class="v196-dot '+(st.live?'live':'')+'"></span><span><small>'+esc(st.label)+'</small><b>'+esc(c.home)+' vs '+esc(c.away)+'</b></span><em>'+esc(st.sub)+'</em></div>'+
+      '<div class="v196-event-meta"><span>'+esc(c.category)+'</span><span>'+esc(c.meta[0]||'')+'</span><span>'+esc(c.meta[1]||'')+'</span></div>'+
+    '</header>'+
+    '<div class="v196-toolbar">'+
+      '<button type="button" data-v196-sources><span>☷</span><b>Fuentes</b><small>'+sourceCount+' disponible'+(sourceCount===1?'':'s')+'</small></button>'+
+      '<button type="button" data-v196-network><span>⌁</span><b>Stream</b><small>Enlace de red</small></button>'+
+      '<button type="button" data-v196-floating class="'+(cfg.floating?'active':'')+'"><span>▣</span><b>Flotante</b><small>'+(cfg.floating?'Activo':'Desactivado')+'</small></button>'+
+      '<button type="button" data-v196-settings><span>⚙</span><b>Ajustes</b><small>Reproducción</small></button>'+
+    '</div>'+
+    (list.length>1?'<div class="v196-source-rail">'+list.map((x,i)=>sourceButton(x,i,current)).join('')+'</div>':'')+
+    '<section class="v196-player-card '+(cfg.floating?'floating-ready':'')+'" data-v196-player-card>'+
+      '<div class="v196-player-head"><span><small>'+(st.live?'REPRODUCIENDO EN VIVO':st.key==='final'?'REPETICIÓN / RESUMEN':'TRANSMISIÓN PREPARADA')+'</small><b>'+esc(current?.name||s?.source?.name||'Liga Juventino Live')+'</b></span><div><button type="button" data-v196-multi title="Múltiples transmisiones">+'+Math.max(0,sourceCount-1)+'</button><button type="button" data-v196-close-float title="Cerrar flotante">×</button></div></div>'+
+      playerHtml(c,s,st,current)+
+      '<footer><span>'+(st.live?'El partido está marcado en vivo.':st.key==='final'?'El partido ya terminó. Puedes conservar la repetición vinculada.':'La fuente queda preparada y no se marca EN VIVO hasta que el partido realmente inicie.')+'</span><div><button type="button" data-v196-add>+ Fuente</button>'+(current?'<button type="button" data-v196-open="'+esc(current.url)+'">Abrir</button>':'')+'</div></footer>'+
+    '</section>'+
+  '</section>';
+}
+function modalShell(cls,title,body){
+  $$('.v196-modal').forEach(x=>x.remove());
+  const w=document.createElement('div');w.innerHTML='<div class="v196-modal '+cls+'"><button class="v196-backdrop" data-v196-close></button><section><header><span><small>LIVE CENTER</small><b>'+esc(title)+'</b></span><button type="button" data-v196-close>×</button></header>'+body+'</section></div>';
+  const m=w.firstElementChild;document.body.appendChild(m);
+  $$('[data-v196-close]',m).forEach(b=>b.onclick=()=>m.remove());
+  return m;
+}
+function addSourceModal(c,preset=''){
+  const body='<label><span>Nombre de la fuente</span><input data-v196-name value="'+esc(preset||'')+'" placeholder="Liga Juventino TV"></label>'+
+    '<label><span>Enlace de transmisión</span><input data-v196-url inputmode="url" placeholder="https://..."></label>'+
+    '<div class="v196-modal-actions"><button type="button" data-v196-test>Probar enlace</button><button type="button" class="primary" data-v196-save-source>Guardar fuente</button></div>'+
+    '<p>Admite enlaces de YouTube, Facebook, TikTok y archivos de video web. Otras fuentes se abrirán externamente.</p>';
+  const m=modalShell('source','Vincular transmisión',body);
+  $('[data-v196-test]',m).onclick=()=>{const u=safeUrl($('[data-v196-url]',m).value);if(u)window.open(u,'_blank','noopener,noreferrer')};
+  $('[data-v196-save-source]',m).onclick=()=>{
+    const url=safeUrl($('[data-v196-url]',m).value);if(!url)return;
+    const name=$('[data-v196-name]',m).value.trim()||provider(url).name;
+    const s=liveState(c),list=streamList(c,s);
+    const old=list.find(x=>x.url===url);
+    if(old){old.name=name}else list.push({id:'s'+Date.now(),name,url,addedAt:Date.now()});
+    saveList(c,list);setCurrentSource(c,{name,url});m.remove();schedule(20);
+  };
+}
+function sourcesModal(c){
+  const s=liveState(c),list=streamList(c,s),current=safeUrl(s.source?.url);
+  const rows=list.length?list.map((x,i)=>{
+    const p=provider(x.url),on=x.url===current;
+    return '<article class="v196-source-row '+(on?'active':'')+'"><em>'+esc(p.icon)+'</em><span><b>'+esc(x.name||p.name)+'</b><small>'+esc(p.name)+(on?' · EN USO':'')+'</small></span><button type="button" data-v196-use="'+i+'">'+(on?'Activa':'Usar')+'</button><button type="button" class="trash" data-v196-delete="'+i+'">×</button></article>';
+  }).join(''):'<div class="v196-modal-empty">Todavía no hay fuentes guardadas para este partido.</div>';
+  const m=modalShell('sources','Múltiples transmisiones','<p class="v196-modal-intro">Elige la fuente que quieres usar en el Match Center.</p><div class="v196-source-list">'+rows+'</div><button type="button" class="v196-wide" data-v196-add>+ Agregar otra fuente</button>');
+  $$('[data-v196-use]',m).forEach(b=>b.onclick=()=>{const item=list[Number(b.dataset.v196Use)];if(item){setCurrentSource(c,item);m.remove()}});
+  $$('[data-v196-delete]',m).forEach(b=>b.onclick=()=>{const i=Number(b.dataset.v196Delete);const next=list.filter((_,n)=>n!==i);saveList(c,next);m.remove();sourcesModal(c);schedule(20)});
+  $('[data-v196-add]',m)?.addEventListener('click',()=>{m.remove();addSourceModal(c)});
+}
+function settingsModal(c){
+  const cfg=settings();
+  const body='<div class="v196-setting-row"><span><b>Reproductor flotante</b><small>Mantiene el video visible al desplazarte por el Match Center.</small></span><button type="button" class="v196-toggle '+(cfg.floating?'on':'')+'" data-v196-toggle-float><i></i></button></div>'+
+    '<div class="v196-setting-row"><span><b>Modo de datos reducidos</b><small>Evita autoplay y carga solo lo necesario.</small></span><button type="button" class="v196-toggle '+(cfg.lowQuality?'on':'')+'" data-v196-toggle-low><i></i></button></div>'+
+    '<label><span>Render del reproductor</span><select data-v196-render><option value="auto">Automático</option><option value="inline">Dentro del Match Center</option><option value="external">Abrir proveedor</option></select></label>'+
+    '<button type="button" class="v196-wide" data-v196-close>Guardar y cerrar</button>';
+  const m=modalShell('settings','Ajustes de reproducción',body);
+  $('[data-v196-render]',m).value=cfg.render||'auto';
+  $('[data-v196-toggle-float]',m).onclick=()=>{cfg.floating=!cfg.floating;saveSettings(cfg);m.remove();settingsModal(c);schedule(20)};
+  $('[data-v196-toggle-low]',m).onclick=()=>{cfg.lowQuality=!cfg.lowQuality;saveSettings(cfg);m.remove();settingsModal(c);schedule(20)};
+  $('[data-v196-render]',m).onchange=e=>{cfg.render=e.target.value;saveSettings(cfg);schedule(20)};
+}
+function bind(c,node){
+  const s=liveState(c),list=streamList(c,s);
+  $$('[data-v196-open]',node).forEach(b=>b.onclick=e=>{e.preventDefault();e.stopPropagation();const u=safeUrl(b.dataset.v196Open);if(u)window.open(u,'_blank','noopener,noreferrer')});
+  $$('[data-v196-add]',node).forEach(b=>b.onclick=e=>{e.preventDefault();e.stopPropagation();addSourceModal(c)});
+  $('[data-v196-sources]',node)?.addEventListener('click',()=>sourcesModal(c));
+  $('[data-v196-multi]',node)?.addEventListener('click',()=>sourcesModal(c));
+  $('[data-v196-network]',node)?.addEventListener('click',()=>addSourceModal(c,'Stream de red'));
+  $('[data-v196-settings]',node)?.addEventListener('click',()=>settingsModal(c));
+  $('[data-v196-floating]',node)?.addEventListener('click',()=>{const cfg=settings();cfg.floating=!cfg.floating;saveSettings(cfg);schedule(10)});
+  $$('[data-v196-source]',node).forEach(b=>b.onclick=()=>{const item=list[Number(b.dataset.v196Source)];if(item)setCurrentSource(c,item)});
+  $('[data-v196-close-float]',node)?.addEventListener('click',()=>{const cfg=settings();if(cfg.floating){cfg.floating=false;saveSettings(cfg);schedule(10)}});
+}
+function applyFloating(node){
+  const cfg=settings(),card=$('[data-v196-player-card]',node);
+  if(!card)return;
+  card.classList.toggle('is-floating',!!cfg.floating);
+  document.body.classList.toggle('v196-floating-player',!!cfg.floating&&ROUTES.has(route()));
+}
+function render(){
+  if(!ROUTES.has(route())){
+    document.body.classList.remove('v196-floating-player');
+    $$('.v196-modal').forEach(x=>x.remove());
+    return;
+  }
+  const c=ctx();if(!c)return;
+  const s=liveState(c),list=streamList(c,s),cfg=settings(),st=statusInfo(c,s);
+  const sig=[c.key,s.phase,s.source?.url||'',s.source?.name||'',list.map(x=>x.url).join('|'),cfg.floating,cfg.lowQuality,cfg.render,st.key].join('::');
+  let old=$('[data-v196-stream-hub]',c.root);
+  if(old&&old.dataset.matchKey!==c.key){old.remove();old=null}
+  if(old&&sig===lastSig){applyFloating(old);return}
+  lastSig=sig;
+  const w=document.createElement('div');w.innerHTML=hubHtml(c,s);const node=w.firstElementChild;
+  const anchor=$('[data-v144-live-hub]',c.root)||$('.v92-official-meta',c.root)||$('.v92-score-card',c.root);
+  if(old)old.replaceWith(node);else if(anchor)anchor.insertAdjacentElement('afterend',node);else c.root.prepend(node);
+  bind(c,node);applyFloating(node);
+}
+function schedule(ms=80){clearTimeout(timer);timer=setTimeout(render,ms)}
+
+window.addEventListener('hashchange',()=>schedule(20));
+window.addEventListener('storage',e=>{if(e.key?.startsWith(LIVE_KEY)||e.key?.startsWith(LIST_KEY)||e.key===SETTINGS_KEY)schedule(20)});
+window.addEventListener('ljr:match-live-feed',()=>schedule(20));
+document.addEventListener('change',e=>{if(e.target.matches?.('[data-v92-match-select]'))setTimeout(()=>{lastSig='';schedule(20)},80)},true);
+const screen=$('#screen');
+if(screen)new MutationObserver(()=>{if(ROUTES.has(route()))schedule(60)}).observe(screen,{childList:true,subtree:true});
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',()=>schedule(100),{once:true});else schedule(100);
+
+window.LJR_STREAM_CENTER={
+  addSource(url,name){
+    const c=ctx(),u=safeUrl(url);if(!c||!u)return false;
+    const s=liveState(c),list=streamList(c,s);list.push({id:'api'+Date.now(),name:name||provider(u).name,url:u,addedAt:Date.now()});saveList(c,list);setCurrentSource(c,list[list.length-1]);return true;
+  },
+  openSources(){const c=ctx();if(c)sourcesModal(c)},
+  getSources(){const c=ctx();return c?streamList(c,liveState(c)):[]}
+};
+})();
