@@ -1501,7 +1501,7 @@ function v348ArmArchive(root){
 function summaryBody(){
   return '<section class="v35-block v35-seasons-block"><div class="v35-section-row"><h2>Buscar por temporada</h2><button type="button" data-v35-tab-jump="Temporadas">Ver todo</button></div><div class="v35-season-carousel">'+seasonCards()+'</div></section>'+
     '<section class="v35-block v35-feature-block">'+featureCard()+'</section>'+
-    v348ArchiveSentinel('summary');
+    '<div class="v35-history-lazy" data-v35-lazy-history="summary" aria-busy="true"></div>';
 }
 function seasonsEraBlock(){
   const norm=v=>String(v||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase()
@@ -1712,11 +1712,11 @@ function v351SeasonsPreviewBlock(){
   '</section>';
 }
 function seasonsBody(){
-  return v351SeasonsPreviewBlock()+
+  return seasonsEraBlock()+
     '<section class="v35-block v35-tab-body v35-seasons-legacy"><div class="v35-section-row"><h2>Archivo histórico completo</h2></div>'+
     '<div class="v35-season-detail"><span>Archivo histórico</span><h3>Temporadas anteriores separadas de la actual</h3><p>Los equipos antiguos pueden aparecer aquí como parte de su temporada histórica, pero nunca se agregan otra vez a la lista de equipos actuales si ya no participan.</p></div>'+
     '<div class="v35-season-detail"><span>Convocatoria · 12 nov 2019</span><h3>Temporada 2019–2020</h3><p><b>Inicio:</b> domingo 8 de diciembre de 2019. <b>Fuerzas:</b> Primera, Intermedia y Segunda. <b>Inscripciones:</b> hasta el martes 26 de noviembre, 19:00, Unidad Deportiva Sur. <b>Registro:</b> digital o físico, máximo 26 jugadores. <b>Junta previa:</b> martes 3 de diciembre, 19:00. Uniformación, cuotas, arbitrajes, credenciales, reglamento, premiación y transitorios se resolverían conforme al reglamento y a los acuerdos de asamblea.</p></div></section>'+
-    v348ArchiveSentinel('seasons');
+    '<div class="v35-history-lazy" data-v35-lazy-history="seasons" aria-busy="true"></div>';
 }
 /* V340 — Historia > Campeones: ranking visual superior según referencia del usuario.
    Conserva TODO el archivo histórico anterior debajo y calcula los títulos desde
@@ -1883,20 +1883,22 @@ function championsBody(){
   return championsRankingBlock()+
     '<section class="v35-block v35-tab-body"><h2 class="v35-section-title">Campeones de otros años</h2>'+
     '<article class="v35-stat-card"><h3>Archivo histórico real</h3><p>Los campeones de temporadas anteriores se registran cuando una fuente de la Liga o de sus administradores los identifica como tales. No se exige una fotografía del trofeo. Los clubes que ya no participan permanecen únicamente en Historia.</p></article></section>'+
-    v348ArchiveSentinel('champions');
+    '<div class="v35-history-lazy" data-v35-lazy-history="champions" aria-busy="true"></div>';
 }
 function finalsBody(){
   return '<section class="v35-block v35-tab-body"><h2 class="v35-section-title">Finales</h2>'+
     '<div class="v35-season-detail"><h3>Finales históricas documentadas</h3><p>Se muestran únicamente las finales, series y clásicos que aparecen en el material histórico revisado.</p></div></section>'+
-    v348ArchiveSentinel('finals');
+    finalsArchiveBlock();
 }
 function recordsBody(){
   return '<section class="v35-block v35-tab-body v35-records-body"><h2 class="v35-section-title">Récords y recuerdos</h2>'+
-    '<article class="v35-stat-card"><h3>Archivo comprobado</h3><p>Los registros completos siguen guardados en el archivo histórico. Esta vista ligera evita congelar la aplicación.</p></article>'+
-    '<div class="v35-record-grid">'+recordMemories.slice(0,4).map(r=>'<article class="v35-record-card">'+
+    '<article class="v35-stat-card"><h3>Archivo comprobado</h3><p>Esta sección reúne marcas visibles en tablas históricas y recuerdos documentados en fotografías, álbumes y videos. Un corte de jornada no se presenta como récord absoluto de toda la Liga.</p></article>'+
+    '<div class="v35-record-grid">'+recordMemories.map(r=>'<article class="v35-record-card">'+
       (r.image?'<img src="'+r.image+'" alt="" loading="lazy" decoding="async">':'<span class="v35-record-mark">LM</span>')+
       '<div><small>'+esc(r.tag)+'</small><h3>'+esc(r.title)+'</h3><strong>'+esc(r.value)+'</strong><p>'+esc(r.detail)+'</p></div></article>').join('')+'</div>'+
-    v348ArchiveSentinel('summary')+
+    '<div class="v35-records-goals-anchor">'+historicalGoalsBlock()+'</div>'+
+    '<div class="v35-history-subhead"><span>EQUIPOS DEL ARCHIVO</span><h3>Nombres recuperados de tablas, roles y álbumes</h3></div>'+
+    '<div class="v35-retro-names">'+expandedRetroNames.concat(retroNames).filter((x,i,a)=>a.indexOf(x)===i).map(n=>'<span>'+esc(n)+'</span>').join('')+'</div>'+
   '</section>';
 }
 function videosBody(){
@@ -1940,6 +1942,40 @@ function videosBody(){
       historicalSourcesBlock()+
     '</section>'+
   '</section>';
+}
+
+function v355HydrateHistoryLazy(root){
+  const host=(root||document).querySelector?.('[data-v35-lazy-history]');
+  if(!host||host.dataset.v355Hydrating==='1')return;
+  const kind=host.dataset.v35LazyHistory||'';
+  const tabAtSchedule=activeTab;
+  host.dataset.v355Hydrating='1';
+
+  const run=()=>{
+    if(!host.isConnected||route()!=='history'||activeTab!==tabAtSchedule)return;
+    let html='';
+    if(kind==='summary')html=historyArchiveBlock()+stats();
+    else if(kind==='seasons')html=historyArchiveBlock();
+    else if(kind==='champions')html=championsArchiveBlock();
+    if(!html){host.remove();return;}
+    host.insertAdjacentHTML('afterend',html);
+    host.remove();
+    requestAnimationFrame(()=>{
+      const page=document.querySelector('.v35-history-page');
+      if(page){
+        removeObsoleteManchesterDuplicate(page);
+        syncHistoryCollapse();
+      }
+    });
+  };
+
+  // Paint the requested tab first. Then restore the old lower content while idle.
+  const delay=kind==='champions'?220:420;
+  window.setTimeout(()=>{
+    if(!host.isConnected||route()!=='history'||activeTab!==tabAtSchedule)return;
+    if('requestIdleCallback' in window)window.requestIdleCallback(run,{timeout:1200});
+    else window.setTimeout(run,50);
+  },delay);
 }
 
 function v351BodyFor(tab){
@@ -2017,6 +2053,11 @@ function removeObsoleteManchesterDuplicate(root=document){
     if(t.includes('manchester')&&t.includes('fecha exacta pendiente')&&t.includes('campeon de campeones')) card.remove();
   });
 }
+const v355DomCache=new Map();
+let v355MountedKey='';
+function v355TabKey(tab=activeTab){
+  return tab==='Campeones'?'Campeones|'+championCategory:tab;
+}
 function pageHtml(){
   const back='<button class="v35-back" type="button" data-v35-back aria-label="Volver"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 11H7.83L13.42 5.41 12 4l-8 8 8 8 1.41-1.41L7.83 13H20Z"/></svg></button>';
   return '<div class="v35-history-page '+(activeTab==='Videos'?'v329-videos-active':'')+'">'+linesSvg()+
@@ -2026,7 +2067,7 @@ function pageHtml(){
       '<h1>Historia</h1>'+
     '</header>'+
     '<nav class="v35-tabs" aria-label="Secciones de Historia">'+tabs()+'</nav>'+
-    '<main class="v35-history-content" data-v35-content>'+v351AllPanelsHtml()+'</main>'+
+    '<main class="v35-history-content" data-v35-content>'+bodyForTab()+'</main>'+
   '</div>';
 }
 function v354BindHistoryTabs(root){
@@ -2058,9 +2099,11 @@ function renderHistory(){
   document.body.classList.toggle('v341-history-seasons-active',activeTab==='Temporadas');
   const topLogo=screen.querySelector('[data-v35-top-logo]');
   if(topLogo)topLogo.classList.add('v35-top-logo-blend-fallback');
+  v355MountedKey=v355TabKey();
   requestAnimationFrame(()=>{
     syncHistoryCollapse();
-    v348ArmArchive(historyRoot);
+    v355HydrateHistoryLazy(historyRoot);
+    if(activeTab==='Finales')window.LJR_APPLY_HISTORY_FINALS_REFERENCE?.();
   });
 }
 function rerenderContent(){
@@ -2076,43 +2119,36 @@ function rerenderContent(){
     btn.setAttribute('aria-selected',selected?'true':'false');
   });
 
-  let target=[...content.querySelectorAll('[data-v351-panel]')].find(p=>p.dataset.v351Panel===activeTab);
-  if(!target){
-    target=document.createElement('section');
-    target.className='v351-history-panel';
-    target.dataset.v351Panel=activeTab;
-    target.setAttribute('aria-hidden','false');
-    // Temporadas ya usa la vista ligera V351; el archivo completo nunca se construye aquí.
-    target.innerHTML=v351BodyFor(activeTab);
-    content.appendChild(target);
+  const nextKey=v355TabKey();
+  if(v355MountedKey!==nextKey){
+    if(v355MountedKey&&content.childNodes.length){
+      const oldFrag=document.createDocumentFragment();
+      while(content.firstChild)oldFrag.appendChild(content.firstChild);
+      v355DomCache.set(v355MountedKey,oldFrag);
+    }
+    const cached=v355DomCache.get(nextKey);
+    if(cached){
+      content.appendChild(cached);
+      v355DomCache.delete(nextKey);
+    }else{
+      content.innerHTML=bodyForTab();
+    }
+    v355MountedKey=nextKey;
   }
-
-  content.querySelectorAll('[data-v351-panel]').forEach(panel=>{
-    const selected=panel===target;
-    panel.hidden=!selected;
-    panel.classList.toggle('is-active',selected);
-    panel.setAttribute('aria-hidden',selected?'false':'true');
-  });
 
   root.classList.toggle('v329-videos-active',activeTab==='Videos');
   root.classList.toggle('v341-seasons-active',activeTab==='Temporadas');
   document.body.classList.toggle('v341-history-seasons-active',activeTab==='Temporadas');
+  root.classList.toggle('v330-finals-active',false);
+
+  requestAnimationFrame(()=>{
+    syncHisfunction v351RefreshPanel(tab){
+  if(tab!=='Campeones')return;
+  const key='Campeones|'+championCategory;
+  v350TabHtmlCache.delete(key);
+  v355DomCache.delete(key);
 }
-function v351RefreshPanel(tab){
-  const root=document.querySelector('.v35-history-page');
-  const content=root?.querySelector('[data-v35-content]');
-  if(!root||!content)return;
-  let panel=[...content.querySelectorAll('[data-v351-panel]')].find(p=>p.dataset.v351Panel===tab);
-  const prefix=tab==='Campeones'?'Campeones|':'';
-  [...v350TabHtmlCache.keys()].forEach(k=>{if(k===tab||k.startsWith(prefix))v350TabHtmlCache.delete(k);});
-  if(!panel){
-    panel=document.createElement('section');
-    panel.className='v351-history-panel';
-    panel.dataset.v351Panel=tab;
-    content.appendChild(panel);
-  }
-  panel.innerHTML=v351BodyFor(tab);
-}
+
 
 window.LJR_HISTORY_FAST_TAB=function(tabName){
   if(route()!=='history')return false;
