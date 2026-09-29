@@ -21,6 +21,7 @@ const V190_RECRUIT_KEY='v189-recruitment';
 const V190_RECRUIT_CAMPAIGN_KEY='v190-recruit-campaign';
 const V190_RECRUIT_WA='524121715599';
 const V190_RECRUIT_WA_LABEL='412 171 5599';
+const V198_LEAGUE_LOGO='https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/assets/liga-logo.webp';
 function fanHash(v){
   let h=2166136261;
   for(const ch of String(v||'')){h^=ch.charCodeAt(0);h=Math.imul(h,16777619)}
@@ -589,7 +590,7 @@ async function v197DrawBlueCredential(canvas){
   else{x.fillStyle='#8392b2';x.fillRect(px,py,pw,ph);x.fillStyle='#fff';x.font='900 30px Arial';x.textAlign='center';x.fillText('FOTO',px+pw/2,py+ph/2+10);x.textAlign='left'}
   x.restore();x.strokeStyle='rgba(6,17,56,.55)';x.lineWidth=3;v196RoundRectPath(x,px,py,pw,ph,8);x.stroke();
 
-  const league=await v100LoadImage('./assets/liga-logo.webp');
+  const league=await v100LoadImage(V198_LEAGUE_LOGO);
   if(league){
     x.save();x.fillStyle='rgba(255,255,255,.96)';v196RoundRectPath(x,42,466,126,126,7);x.fill();
     v100DrawContainedImage(x,league,50,474,110,110);x.restore();
@@ -632,7 +633,7 @@ async function v196DrawClassicCredential(canvas){
 
   x.strokeStyle='rgba(11,17,24,.75)';x.lineWidth=5;v196RoundRectPath(x,8,8,W-16,H-16,31);x.stroke();
 
-  const league=await v100LoadImage('./assets/liga-logo.webp');
+  const league=await v100LoadImage(V198_LEAGUE_LOGO);
   if(league){x.save();x.shadowColor='rgba(0,0,0,.42)';x.shadowBlur=7;x.drawImage(league,25,24,160,160);x.restore()}
 
   x.textAlign='center';x.textBaseline='alphabetic';
@@ -676,17 +677,24 @@ let v196PreviewSeq=0;
 async function v196RenderCredentialPreview(){
   if((location.hash||'').replace(/^#\/?/,'').split('?')[0]!=='credentialBuilder')return;
   const canvas=$('[data-v196-preview-canvas]');if(!canvas)return;
-  const seq=++v196PreviewSeq;await v196DrawClassicCredential(canvas);if(seq!==v196PreviewSeq)return;
+  const seq=++v196PreviewSeq;
+  /* Renderiza fuera de pantalla para evitar que dos actualizaciones asíncronas
+     dibujen texto una encima de otra mientras cargan foto/logos/trofeo. */
+  const off=document.createElement('canvas');
+  await v196DrawClassicCredential(off);
+  if(seq!==v196PreviewSeq)return;
+  canvas.width=off.width;canvas.height=off.height;
+  const ctx=canvas.getContext('2d');ctx.clearRect(0,0,canvas.width,canvas.height);ctx.drawImage(off,0,0);
   const style=$('[data-v100-credential-style]')?.value||read('v100-credential-extra',{}).credentialStyle||'blue';
   const head=$('[data-v196-classic-preview] .v196-preview-head b');
   if(head)head.textContent=style==='blue'?'Vista previa · azul clásica con trofeo':'Vista previa · roja clásica con franja verde';
 }
 async function v198LeagueLogoPng(){
-  const img=await v100LoadImage('./assets/liga-logo.webp');if(!img)return null;
+  const img=await v100LoadImage(V198_LEAGUE_LOGO);if(!img)return null;
   const side=700,canvas=document.createElement('canvas');canvas.width=side;canvas.height=side;
   const x=canvas.getContext('2d');x.clearRect(0,0,side,side);
-  x.fillStyle='#fff';x.fillRect(0,0,side,side);
-  v100DrawContainedImage(x,img,35,35,side-70,side-70);
+  /* PNG limpio: sin cuadro blanco añadido por la app. */
+  v100DrawContainedImage(x,img,25,25,side-50,side-50);
   return canvasBlob(canvas);
 }
 async function credentialCanvas(){
@@ -1355,7 +1363,7 @@ async function v190RecruitGeneratedBlob(root){
   const g=x.createLinearGradient(0,0,1080,1350);g.addColorStop(0,'#03096a');g.addColorStop(.54,'#0a2ca0');g.addColorStop(1,'#02064d');
   x.fillStyle=g;x.fillRect(0,0,c.width,c.height);
   x.strokeStyle='#24dfea';x.lineWidth=5;x.strokeRect(48,48,984,1254);
-  const league=await v100LoadImage('./assets/liga-logo.webp');
+  const league=await v100LoadImage(V198_LEAGUE_LOGO);
   if(league){x.save();x.globalAlpha=.98;x.drawImage(league,74,76,132,132);x.restore()}
   x.fillStyle='#5cecf3';x.font='900 24px Arial';x.fillText('LIGA MUNICIPAL DE FÚTBOL · JUVENTINO ROSAS A.C.',235,112);
   x.fillStyle='rgba(255,255,255,.76)';x.font='700 20px Arial';x.fillText('MÁS HERRAMIENTAS · RECLUTAMIENTO',235,150);
