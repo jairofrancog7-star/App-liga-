@@ -2999,3 +2999,24 @@
   .v341-era-decade>h2{font-size:22px!important}
   .v341-era-category>h3{font-size:10.5px!important}
 }
+
+
+/* V346 — rendimiento de Historia.
+   Todo el archivo sigue en el DOM; el navegador evita pintar tarjetas fuera
+   de pantalla hasta que el usuario se acerca a ellas. */
+@media (max-width:1023px){
+  .v35-history-page .v35-history-moment,
+  .v35-history-page .v35-champion-card,
+  .v35-history-page .v115-card,
+  .v35-history-page .v35-retro-club,
+  .v35-history-page .v35-team-goal-card,
+  .v35-history-page .v35-era-team{
+    content-visibility:auto;
+    contain-intrinsic-size:auto 300px;
+  }
+  .v35-history-page .v340-champion-row,
+  .v35-history-page .v341-era-item{
+    content-visibility:auto;
+    contain-intrinsic-size:auto 96px;
+  }
+}
