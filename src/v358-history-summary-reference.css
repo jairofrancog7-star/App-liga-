@@ -1,0 +1,283 @@
+/* V358 — Historia > Resumen.
+   Referencia del usuario: cabecera con logo centrado, temporadas con escudos,
+   clásicos visibles y carrusel de Más títulos / Más goleadores / Más partidos. */
+@media (max-width:1023px){
+  body[data-app-route="history"] .v35-history-page{
+    background:
+      radial-gradient(92% 24% at 50% 0%,rgba(23,87,255,.68) 0%,rgba(10,58,225,.24) 55%,transparent 100%),
+      linear-gradient(180deg,#0735ef 0%,#0826bd 30%,#071477 58%,#05094f 100%)!important;
+  }
+
+  /* Cabecera igual a la referencia: flecha izquierda + logo Liga centrado + Historia. */
+  .v35-history-page .v35-history-head{
+    min-height:176px!important;
+    padding:0 var(--v35-pad)!important;
+  }
+  .v35-history-page .v35-logo-wrap{
+    top:14px!important;
+    width:100px!important;
+    height:100px!important;
+  }
+  .v35-history-page .v35-logo-wrap img,
+  .v35-history-page .v35-logo-wrap img.v35-top-logo-blend-fallback{
+    width:100%!important;
+    height:100%!important;
+    object-fit:contain!important;
+    mix-blend-mode:normal!important;
+    background:transparent!important;
+    filter:drop-shadow(0 5px 8px rgba(0,0,35,.24))!important;
+  }
+  .v35-history-page .v35-history-head .v35-back{
+    top:29px!important;
+  }
+  .v35-history-page .v35-history-head h1{
+    position:absolute!important;
+    left:var(--v35-pad)!important;
+    bottom:15px!important;
+    margin:0!important;
+    font-size:43px!important;
+    line-height:1!important;
+    font-weight:590!important;
+    letter-spacing:-.045em!important;
+  }
+
+  /* Tabs y bloque superior conservan las proporciones de las imágenes. */
+  .v35-history-page .v35-tabs{
+    min-height:58px!important;
+    padding-left:var(--v35-pad)!important;
+    gap:46px!important;
+    background:rgba(3,8,79,.18)!important;
+  }
+  .v35-history-page .v35-tab{
+    min-height:58px!important;
+    padding-bottom:17px!important;
+    font-size:17px!important;
+  }
+  .v35-history-page .v35-tab.active::after{
+    width:80px!important;
+    height:4px!important;
+  }
+
+  .v35-history-page .v35-seasons-block{
+    margin-top:27px!important;
+  }
+  .v35-history-page .v35-section-row h2{
+    font-size:27px!important;
+    font-weight:690!important;
+  }
+  .v35-history-page .v35-section-row button{
+    font-size:17px!important;
+  }
+  .v35-history-page .v35-season-carousel{
+    gap:10px!important;
+    margin-top:16px!important;
+  }
+  .v35-history-page .v35-season-card{
+    flex-basis:92px!important;
+    width:92px!important;
+    min-height:111px!important;
+    padding:7px 6px 9px!important;
+    border-radius:12px!important;
+    background:linear-gradient(180deg,rgba(27,43,151,.98),rgba(18,27,112,.99))!important;
+  }
+  .v35-history-page .v35-season-crest{
+    height:72px!important;
+  }
+  .v35-history-page .v35-season-crest img{
+    width:82%!important;
+    height:82%!important;
+    background:transparent!important;
+    object-fit:contain!important;
+  }
+  .v35-history-page .v35-season-label{
+    font-size:17px!important;
+  }
+
+  .v35-history-page .v35-feature-block{
+    margin-top:28px!important;
+  }
+  .v35-history-page .v35-feature-card{
+    min-height:236px!important;
+    aspect-ratio:1.69/1!important;
+    border-radius:20px!important;
+  }
+
+  .v358-summary-classics{
+    margin-top:29px!important;
+  }
+  .v358-summary-classics>.v35-section-title{
+    margin:0 var(--v35-pad) 17px 0!important;
+    font-size:28px!important;
+    line-height:1.04!important;
+    font-weight:700!important;
+  }
+
+  /* Carrusel de rankings, igual al bloque inferior de la referencia. */
+  .v358-summary-stats{
+    margin:31px 0 0 var(--v35-pad)!important;
+    padding:0!important;
+  }
+  .v358-summary-stats>h2{
+    margin:0 var(--v35-pad) 18px 0!important;
+    color:#fff!important;
+    font-size:28px!important;
+    line-height:1.03!important;
+    letter-spacing:-.034em!important;
+    font-weight:710!important;
+  }
+  .v358-stats-carousel{
+    display:flex!important;
+    gap:12px!important;
+    width:100%!important;
+    padding:0 var(--v35-pad) 5px 0!important;
+    overflow-x:auto!important;
+    overflow-y:hidden!important;
+    scrollbar-width:none!important;
+    scroll-snap-type:x proximity!important;
+    -webkit-overflow-scrolling:touch!important;
+  }
+  .v358-stats-carousel::-webkit-scrollbar{display:none!important}
+
+  .v358-stat-card{
+    flex:0 0 min(88vw,430px)!important;
+    width:min(88vw,430px)!important;
+    padding:18px 21px 12px!important;
+    border-radius:18px!important;
+    color:#fff!important;
+    background:linear-gradient(180deg,rgba(22,32,137,.98),rgba(14,21,106,.99))!important;
+    box-shadow:inset 0 1px 0 rgba(255,255,255,.045),0 7px 20px rgba(0,0,55,.14)!important;
+    scroll-snap-align:start!important;
+  }
+  .v358-stat-card h3{
+    margin:0 0 13px!important;
+    color:#fff!important;
+    font-size:21px!important;
+    line-height:1!important;
+    font-weight:590!important;
+    letter-spacing:-.025em!important;
+  }
+  .v358-stat-rule{
+    height:1px!important;
+    margin:0!important;
+    background:rgba(255,255,255,.10)!important;
+  }
+  .v358-stat-row{
+    display:grid!important;
+    grid-template-columns:54px minmax(0,1fr) 34px 25px!important;
+    gap:10px!important;
+    align-items:center!important;
+    min-height:70px!important;
+    padding:8px 0!important;
+    border-bottom:1px solid rgba(255,255,255,.10)!important;
+  }
+  .v358-stat-row:last-of-type{
+    border-bottom:0!important;
+  }
+  .v358-stat-logo{
+    position:relative!important;
+    width:50px!important;
+    height:50px!important;
+    display:grid!important;
+    place-items:center!important;
+    overflow:hidden!important;
+    border-radius:50%!important;
+    background:rgba(255,255,255,.07)!important;
+  }
+  .v358-stat-logo img{
+    width:46px!important;
+    height:46px!important;
+    display:block!important;
+    object-fit:contain!important;
+    background:transparent!important;
+  }
+  .v358-stat-logo.is-fallback b{
+    color:#dce5ff!important;
+    font-size:12px!important;
+    font-weight:800!important;
+  }
+  .v358-stat-copy{
+    min-width:0!important;
+    display:flex!important;
+    flex-direction:column!important;
+    gap:4px!important;
+  }
+  .v358-stat-copy strong{
+    min-width:0!important;
+    overflow:hidden!important;
+    text-overflow:ellipsis!important;
+    white-space:nowrap!important;
+    color:#fff!important;
+    font-size:16px!important;
+    line-height:1.06!important;
+    font-weight:560!important;
+  }
+  .v358-stat-copy small{
+    min-width:0!important;
+    overflow:hidden!important;
+    text-overflow:ellipsis!important;
+    white-space:nowrap!important;
+    color:rgba(218,224,255,.66)!important;
+    font-size:10.5px!important;
+    line-height:1.1!important;
+  }
+  .v358-stat-row>b{
+    color:#fff!important;
+    font-size:23px!important;
+    line-height:1!important;
+    font-weight:540!important;
+    text-align:right!important;
+  }
+  .v358-stat-row>i{
+    width:24px!important;
+    height:24px!important;
+    display:grid!important;
+    place-items:center!important;
+    color:#fff!important;
+    font-style:normal!important;
+  }
+  .v358-stat-row>i svg{
+    width:23px!important;
+    height:23px!important;
+    display:block!important;
+    fill:none!important;
+    stroke:currentColor!important;
+    stroke-width:1.75!important;
+    stroke-linecap:round!important;
+    stroke-linejoin:round!important;
+  }
+  .v358-stat-source{
+    margin:8px 0 1px!important;
+    color:rgba(214,221,255,.56)!important;
+    font-size:9.5px!important;
+    line-height:1.3!important;
+  }
+  .v358-stat-empty{
+    min-height:150px!important;
+    display:grid!important;
+    place-items:center!important;
+    color:rgba(221,226,255,.68)!important;
+    font-size:13px!important;
+    line-height:1.35!important;
+    text-align:center!important;
+  }
+
+  /* La nota de fuentes sigue más abajo; no duplica el encabezado de rankings. */
+  .v358-stats-source-note{
+    margin-top:30px!important;
+  }
+}
+
+@media (max-width:374px){
+  .v35-history-page .v35-logo-wrap{width:88px!important;height:88px!important}
+  .v35-history-page .v35-history-head{min-height:164px!important}
+  .v35-history-page .v35-history-head h1{font-size:39px!important}
+  .v35-history-page .v35-tabs{gap:34px!important}
+  .v35-history-page .v35-tab{font-size:15px!important}
+  .v35-history-page .v35-season-card{flex-basis:84px!important;width:84px!important}
+  .v35-history-page .v35-season-crest{height:65px!important}
+  .v358-stat-card{flex-basis:89vw!important;width:89vw!important}
+  .v358-stat-row{grid-template-columns:48px minmax(0,1fr) 30px 23px!important}
+  .v358-stat-logo{width:44px!important;height:44px!important}
+  .v358-stat-logo img{width:40px!important;height:40px!important}
+  .v358-stat-copy strong{font-size:14.5px!important}
+}
