@@ -2535,3 +2535,131 @@
   .v35-era-season{font-size:16px!important}
   .v35-era-decade h2{font-size:28px!important}
 }
+
+
+/* V334 — Historia > Temporadas: referencia visual fija por décadas.
+   Usa clases exclusivas para no chocar con el archivo histórico v115. */
+@media (max-width:1023px){
+  .v334-history-seasons-era{
+    display:block!important;
+    width:100%!important;
+    margin:0!important;
+    padding:26px var(--v35-pad) 10px!important;
+    background:transparent!important;
+    color:#fff!important;
+  }
+  .v334-era-decade{
+    display:block!important;
+    width:100%!important;
+    margin:0 0 32px!important;
+    padding:0!important;
+    background:transparent!important;
+    border:0!important;
+  }
+  .v334-era-decade:last-child{margin-bottom:20px!important}
+  .v334-era-decade>h2{
+    margin:0 0 18px!important;
+    padding:0!important;
+    color:#fff!important;
+    font-size:30px!important;
+    line-height:1!important;
+    font-weight:650!important;
+    letter-spacing:-.035em!important;
+  }
+  .v334-era-grid{
+    display:grid!important;
+    grid-template-columns:repeat(4,minmax(0,1fr))!important;
+    column-gap:12px!important;
+    row-gap:25px!important;
+    width:100%!important;
+    margin:0!important;
+    padding:0!important;
+    background:transparent!important;
+  }
+  .v334-era-item{
+    appearance:none!important;
+    -webkit-appearance:none!important;
+    min-width:0!important;
+    margin:0!important;
+    padding:0!important;
+    border:0!important;
+    outline:0!important;
+    background:transparent!important;
+    box-shadow:none!important;
+    color:#fff!important;
+    display:flex!important;
+    flex-direction:column!important;
+    align-items:center!important;
+    justify-content:flex-start!important;
+    text-align:center!important;
+    font:inherit!important;
+    cursor:pointer!important;
+    -webkit-tap-highlight-color:transparent!important;
+  }
+  .v334-era-item:active{transform:scale(.97)!important}
+  .v334-era-logo{
+    width:72px!important;
+    height:72px!important;
+    display:grid!important;
+    place-items:center!important;
+    margin:0 auto 8px!important;
+    padding:0!important;
+    border:0!important;
+    border-radius:0!important;
+    background:transparent!important;
+    overflow:visible!important;
+  }
+  .v334-era-logo img{
+    display:block!important;
+    width:68px!important;
+    height:68px!important;
+    max-width:100%!important;
+    max-height:100%!important;
+    margin:0!important;
+    padding:0!important;
+    object-fit:contain!important;
+    object-position:center!important;
+    border:0!important;
+    border-radius:0!important;
+    background:transparent!important;
+    filter:drop-shadow(0 4px 5px rgba(0,0,35,.34))!important;
+  }
+  .v334-era-logo.is-fallback{
+    width:64px!important;
+    height:64px!important;
+    margin-top:4px!important;
+    margin-bottom:12px!important;
+    border:1px solid rgba(120,224,255,.34)!important;
+    border-radius:50%!important;
+    background:rgba(19,36,137,.50)!important;
+  }
+  .v334-era-logo b{
+    color:#fff!important;
+    font-size:17px!important;
+    line-height:1!important;
+    font-weight:800!important;
+    letter-spacing:.02em!important;
+  }
+  .v334-era-season{
+    display:block!important;
+    color:#fff!important;
+    font-size:18px!important;
+    line-height:1.05!important;
+    font-weight:500!important;
+    letter-spacing:-.02em!important;
+    white-space:nowrap!important;
+  }
+  .v35-seasons-legacy{
+    margin-top:0!important;
+    padding-top:22px!important;
+    border-top:1px solid rgba(105,125,255,.20)!important;
+  }
+}
+@media (max-width:374px){
+  .v334-history-seasons-era{padding-left:18px!important;padding-right:18px!important}
+  .v334-era-grid{column-gap:8px!important;row-gap:22px!important}
+  .v334-era-logo{width:64px!important;height:64px!important}
+  .v334-era-logo img{width:60px!important;height:60px!important}
+  .v334-era-season{font-size:16px!important}
+  .v334-era-decade>h2{font-size:28px!important}
+}
