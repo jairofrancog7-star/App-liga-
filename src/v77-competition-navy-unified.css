@@ -435,3 +435,274 @@
     margin-top:20px!important;
   }
 }
+
+
+/* V331 — COMPETICIÓN HEADER · REFERENCIA IMAGEN 1 */
+@media (max-width:520px){
+  /* Oculta cualquier texto suelto directo en body sin afectar la app. */
+  html body[data-app-route="competition"]{
+    font-size:0!important;
+    background:#06085f!important;
+  }
+  html body[data-app-route="competition"] .app-shell{
+    font-size:16px!important;
+    line-height:normal!important;
+  }
+
+  /* Barra superior más baja y compacta, como la referencia. */
+  html body[data-app-route="competition"] .topbar,
+  html body.v40-standings-master[data-app-route="competition"] .topbar{
+    position:sticky!important;
+    top:0!important;
+    height:calc(88px + env(safe-area-inset-top))!important;
+    min-height:calc(88px + env(safe-area-inset-top))!important;
+    max-height:calc(88px + env(safe-area-inset-top))!important;
+    padding:0!important;
+    overflow:hidden!important;
+    isolation:isolate!important;
+    border:0!important;
+    box-shadow:none!important;
+    background:
+      radial-gradient(170px 115px at 69% 2%,rgba(28,243,255,.94) 0%,rgba(12,118,255,.62) 22%,rgba(8,54,209,.30) 45%,transparent 68%),
+      radial-gradient(225px 120px at 2% 18%,rgba(44,129,255,.62),rgba(22,56,221,.30) 46%,transparent 72%),
+      linear-gradient(180deg,#0638dc 0%,#0928bf 30%,#091792 62%,#070b69 100%)!important;
+    background-color:#07116f!important;
+  }
+
+  /* Trofeo luminoso al centro-derecha de la barra. */
+  html body[data-app-route="competition"] .topbar::before,
+  html body.v40-standings-master[data-app-route="competition"] .topbar::before{
+    content:""!important;
+    display:block!important;
+    position:absolute!important;
+    z-index:1!important;
+    pointer-events:none!important;
+    width:148px!important;
+    height:132px!important;
+    right:48px!important;
+    top:-17px!important;
+    opacity:.92!important;
+    background-image:url("./../assets/reference/final-trophy-drive.png")!important;
+    background-repeat:no-repeat!important;
+    background-position:center top!important;
+    background-size:contain!important;
+    filter:brightness(1.22) saturate(1.45) hue-rotate(150deg) drop-shadow(0 0 7px rgba(42,245,255,.95)) drop-shadow(0 0 18px rgba(0,126,255,.75))!important;
+    transform:none!important;
+    -webkit-mask-image:linear-gradient(to bottom,#000 0 72%,rgba(0,0,0,.72) 86%,transparent 100%)!important;
+    mask-image:linear-gradient(to bottom,#000 0 72%,rgba(0,0,0,.72) 86%,transparent 100%)!important;
+  }
+
+  /* Líneas neón de fondo usando el wordmark como capa decorativa. */
+  html body[data-app-route="competition"] .topbar .wordmark,
+  html body.v40-standings-master[data-app-route="competition"] .topbar .wordmark{
+    display:block!important;
+    visibility:visible!important;
+    position:absolute!important;
+    inset:0!important;
+    width:100%!important;
+    height:100%!important;
+    margin:0!important;
+    padding:0!important;
+    border:0!important;
+    border-radius:0!important;
+    color:transparent!important;
+    font-size:0!important;
+    background:none!important;
+    box-shadow:none!important;
+    pointer-events:none!important;
+    z-index:0!important;
+    overflow:hidden!important;
+  }
+  html body[data-app-route="competition"] .topbar .wordmark::before{
+    content:""!important;
+    display:block!important;
+    position:absolute!important;
+    left:-18%!important;
+    right:-18%!important;
+    top:-34%!important;
+    height:150%!important;
+    opacity:.82!important;
+    background:
+      radial-gradient(ellipse at 11% 63%,transparent 0 42%,rgba(38,226,255,.80) 42.7%,rgba(156,247,255,.92) 43.5%,transparent 44.5% 53%,rgba(18,154,255,.48) 53.8%,transparent 55%),
+      radial-gradient(ellipse at 74% 2%,transparent 0 35%,rgba(50,236,255,.55) 35.6%,transparent 37%),
+      linear-gradient(155deg,transparent 0 26%,rgba(25,216,255,.45) 26.5%,rgba(232,255,255,.78) 27%,rgba(57,230,255,.50) 27.4%,transparent 28% 100%)!important;
+    transform:rotate(-2deg)!important;
+    filter:drop-shadow(0 0 5px rgba(31,223,255,.55))!important;
+    pointer-events:none!important;
+  }
+  html body[data-app-route="competition"] .topbar .wordmark::after{
+    content:""!important;
+    display:block!important;
+    position:absolute!important;
+    left:-7%!important;
+    right:-7%!important;
+    bottom:-25px!important;
+    height:70px!important;
+    opacity:.58!important;
+    background:
+      linear-gradient(16deg,transparent 0 24%,rgba(28,225,255,.62) 24.6%,rgba(246,255,255,.78) 25.1%,transparent 25.8% 100%),
+      linear-gradient(164deg,transparent 0 44%,rgba(20,194,255,.52) 44.6%,rgba(250,255,255,.70) 45.1%,transparent 45.8% 100%)!important;
+    filter:drop-shadow(0 0 5px rgba(32,224,255,.50))!important;
+    pointer-events:none!important;
+  }
+
+  /* Título: más arriba y ligeramente más pequeño, como imagen 1. */
+  html body[data-app-route="competition"] .topbar::after,
+  html body.v40-standings-master[data-app-route="competition"] .topbar::after{
+    content:"Competición"!important;
+    position:absolute!important;
+    left:19px!important;
+    right:72px!important;
+    top:27px!important;
+    bottom:auto!important;
+    z-index:4!important;
+    color:#fff!important;
+    font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif!important;
+    font-size:26px!important;
+    line-height:1!important;
+    font-weight:900!important;
+    letter-spacing:-.038em!important;
+    white-space:nowrap!important;
+    text-align:left!important;
+    text-shadow:0 1px 1px rgba(0,0,0,.12)!important;
+  }
+
+  /* Perfil: mismo lugar de la referencia, pero ya no gigante. */
+  html body[data-app-route="competition"] .topbar .profile-button,
+  html body.v40-standings-master[data-app-route="competition"] .topbar .profile-button{
+    display:grid!important;
+    visibility:visible!important;
+    position:absolute!important;
+    right:19px!important;
+    top:28px!important;
+    bottom:auto!important;
+    width:27px!important;
+    height:27px!important;
+    min-width:27px!important;
+    min-height:27px!important;
+    max-width:27px!important;
+    max-height:27px!important;
+    margin:0!important;
+    padding:0!important;
+    place-items:center!important;
+    border:1.7px solid #fff!important;
+    border-radius:50%!important;
+    background:rgba(4,20,120,.08)!important;
+    color:#fff!important;
+    box-shadow:0 0 8px rgba(35,222,255,.16)!important;
+    z-index:5!important;
+  }
+  html body[data-app-route="competition"] .topbar .profile-button svg{
+    width:18px!important;
+    height:18px!important;
+    stroke-width:1.75!important;
+  }
+  html body[data-app-route="competition"] .topbar .back-button{
+    display:none!important;
+  }
+
+  /* Tabs superiores con la escala/posición de la imagen 1. */
+  html body[data-app-route="competition"] #screen{
+    min-height:calc(100dvh - 88px - env(safe-area-inset-top))!important;
+  }
+  html body[data-app-route="competition"] #screen>.tabs{
+    height:48px!important;
+    min-height:48px!important;
+    max-height:48px!important;
+    margin:0 -14px!important;
+    padding:0 9px!important;
+    grid-template-columns:1.4fr 1fr .72fr!important;
+    background:linear-gradient(180deg,#070b69 0%,#06085f 100%)!important;
+    border:0!important;
+    border-bottom:1px solid rgba(255,255,255,.12)!important;
+    box-shadow:none!important;
+  }
+  html body[data-app-route="competition"] #screen>.tabs .tab,
+  html body[data-app-route="competition"] #screen>.tabs .tab:nth-child(1),
+  html body[data-app-route="competition"] #screen>.tabs .tab:nth-child(2),
+  html body[data-app-route="competition"] #screen>.tabs .tab:nth-child(3){
+    height:48px!important;
+    min-height:48px!important;
+    max-height:48px!important;
+    margin:0!important;
+    padding:0 3px 10px!important;
+    display:flex!important;
+    align-items:flex-end!important;
+    justify-content:center!important;
+    font-size:13.8px!important;
+    line-height:1!important;
+    font-weight:700!important;
+    letter-spacing:-.018em!important;
+    color:#d8d8e5!important;
+    transform:none!important;
+  }
+  html body[data-app-route="competition"] #screen>.tabs .tab.active{
+    color:#20e7f0!important;
+  }
+  html body[data-app-route="competition"] #screen>.tabs .tab::after,
+  html body.v40-standings-master[data-app-route="competition"] #screen>.tabs .tab::after{
+    left:8%!important;
+    right:8%!important;
+    bottom:0!important;
+    height:4px!important;
+    min-height:4px!important;
+    max-height:4px!important;
+    border-radius:999px 999px 0 0!important;
+  }
+  html body[data-app-route="competition"] #screen>.tabs .tab .v86-tab-line{
+    left:8%!important;
+    right:8%!important;
+    bottom:0!important;
+    height:4px!important;
+    min-height:4px!important;
+    max-height:4px!important;
+    border-radius:999px 999px 0 0!important;
+  }
+
+  /* Los controles sticky respetan la nueva altura real de la barra. */
+  html body[data-app-route="competition"] .v12-date-strip{
+    top:calc(88px + env(safe-area-inset-top))!important;
+  }
+}
+
+@media (max-width:380px){
+  html body[data-app-route="competition"] .topbar,
+  html body.v40-standings-master[data-app-route="competition"] .topbar{
+    height:calc(84px + env(safe-area-inset-top))!important;
+    min-height:calc(84px + env(safe-area-inset-top))!important;
+    max-height:calc(84px + env(safe-area-inset-top))!important;
+  }
+  html body[data-app-route="competition"] .topbar::after{
+    left:17px!important;
+    top:26px!important;
+    font-size:24.5px!important;
+  }
+  html body[data-app-route="competition"] .topbar .profile-button{
+    right:17px!important;
+    top:27px!important;
+    width:26px!important;
+    height:26px!important;
+    min-width:26px!important;
+    min-height:26px!important;
+    max-width:26px!important;
+    max-height:26px!important;
+  }
+  html body[data-app-route="competition"] .topbar::before{
+    width:138px!important;
+    height:124px!important;
+    right:43px!important;
+    top:-16px!important;
+  }
+  html body[data-app-route="competition"] #screen{
+    min-height:calc(100dvh - 84px - env(safe-area-inset-top))!important;
+  }
+  html body[data-app-route="competition"] .v12-date-strip{
+    top:calc(84px + env(safe-area-inset-top))!important;
+  }
+  html body[data-app-route="competition"] #screen>.tabs .tab,
+  html body[data-app-route="competition"] #screen>.tabs .tab:nth-child(1),
+  html body[data-app-route="competition"] #screen>.tabs .tab:nth-child(2),
+  html body[data-app-route="competition"] #screen>.tabs .tab:nth-child(3){
+    font-size:12.8px!important;
+  }
+}
