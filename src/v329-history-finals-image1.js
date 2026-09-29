@@ -108,6 +108,7 @@ function activeFinals(root){
   return norm(active?.textContent)==='finales';
 }
 function patch(){
+  if(window.__LJR_V330_HISTORY_FINALS_HARDFIX__) return;
   if(route()!=='history') return;
   const root=document.querySelector('.v35-history-page');
   if(!root) return;
@@ -437,15 +438,43 @@ var DATES={
   'olímpicos de pozos vs abejas fc':'Domingo 21 de junio · año no visible',
   'olimpicos de pozos vs abejas fc':'Domingo 21 de junio · año no visible'
 };
-function meta(title){
-  var date=DATES[norm(title)]||'Archivo histórico';
-  var mm=date.match(/\b(19|20)\d{2}\b/);
-  var y=mm?Number(mm[0]):0;
-  return {date:date,group:y?String(Math.floor(y/10)*10)+'s':'Archivo',season:y?String(y-1)+'/'+String(y).slice(-2):'Archivo histórico'};
+function compactSeason(value,year){
+  var raw=String(value||'').trim();
+  var pair=raw.match(/\b(20\d{2})\D+(20\d{2})\b/);
+  if(pair)return pair[1]+'/'+pair[2].slice(-2);
+  var one=raw.match(/\b(20\d{2})\b/);
+  if(one)return one[1];
+  return year?String(year):'Archivo histórico';
 }
+var MONTHS={ene:1,feb:2,mar:3,abr:4,may:5,jun:6,jul:7,ago:8,sep:9,sept:9,oct:10,nov:11,dic:12};
+function dateRank(value,year){
+  var n=norm(value);
+  var m=n.match(/(\d{1,2})\s+(ene|feb|mar|abr|may|jun|jul|ago|sep|sept|oct|nov|dic)[a-z]*\s+(20\d{2})/);
+  if(m)return Number(m[3])*10000+(MONTHS[m[2]]||0)*100+Number(m[1]);
+  var iso=n.match(/(20\d{2})\D+(\d{1,2})\D+(\d{1,2})/);
+  if(iso)return Number(iso[1])*10000+Number(iso[2])*100+Number(iso[3]);
+  return year?year*10000:0;
+}
+function meta(title,rowDate,rowSeason){
+  var fallback=DATES[norm(title)]||'';
+  var date=String(rowDate||'').trim()||fallback||'Archivo histórico';
+  var basis=String(rowDate||'')+' '+String(rowSeason||'')+' '+String(title||'');
+  var mm=basis.match(/\b(19|20)\d{2}\b/);
+  var y=mm?Number(mm[0]):0;
+  return {
+    date:date,
+    year:y,
+    rank:dateRank(date,y),
+    group:y?String(Math.floor(y/10)*10)+'s':'Archivo',
+    season:compactSeason(rowSeason,y)
+  };
+}
+
 function parseRows(content){
-  return Array.from(content.querySelectorAll('.v35-history-archive .v35-history-moment')).map(function(row,i){
+  var rows=Array.from(content.querySelectorAll('.v35-history-archive .v35-history-moment')).map(function(row,i){
     var title=(row.querySelector('h3')&&row.querySelector('h3').textContent||'Final histórica').trim();
+    var rowDate=(row.dataset&&row.dataset.v35FinalDate)||((row.querySelector('time.v35-history-date')&&row.querySelector('time.v35-history-date').textContent)||'').trim();
+    var rowSeason=(row.dataset&&row.dataset.v35FinalSeason)||'';
     return {
       i:i,
       title:title,
@@ -453,10 +482,14 @@ function parseRows(content){
       subtitle:(row.querySelector('strong')&&row.querySelector('strong').textContent||'').trim(),
       detail:(row.querySelector('p')&&row.querySelector('p').textContent||'').trim(),
       match:split(title),
-      meta:meta(title)
+      meta:meta(title,rowDate,rowSeason)
     };
   });
+  return rows.sort(function(a,b){
+    return (b.meta.rank-a.meta.rank)||(b.meta.year-a.meta.year)||(a.i-b.i);
+  });
 }
+
 function rowHTML(r){
   var m=r.match;
   var b=m.b||r.subtitle||'Archivo de la Liga';
@@ -490,14 +523,17 @@ function finalActive(root){
 }
 function forceNav(root){
   var nav=root.querySelector('.v35-tabs');
-  if(!nav||nav.dataset.v330Exact==='1')return;
-  nav.dataset.v330Exact='1';
+  if(!nav)return;
+  var labels=Array.from(nav.querySelectorAll('.v35-tab')).map(function(x){return norm(x.textContent)});
+  var exact=labels.length===4&&labels[0]==='temporadas'&&labels[1]==='campeones'&&labels[2]==='finales'&&labels[3]==='videos';
+  if(exact&&nav.querySelector('.v35-tab.active')&&norm(nav.querySelector('.v35-tab.active').textContent)==='finales')return;
   nav.innerHTML=
     '<button type="button" class="v35-tab" data-v35-tab="Temporadas">Temporadas</button>'+
     '<button type="button" class="v35-tab" data-v35-tab="Campeones">Campeones</button>'+
     '<button type="button" class="v35-tab active" data-v35-tab="Finales">Finales</button>'+
     '<button type="button" class="v35-tab v330-video-tab" data-v330-video>Vídeos</button>';
 }
+
 var working=false;
 function apply(){
   if(working||route()!=='history')return;
@@ -512,13 +548,15 @@ function apply(){
     root.classList.add('v330-finals-active');
     forceNav(root);
     var content=root.querySelector('[data-v35-content]');
-    if(!content||content.dataset.v330Exact==='1')return;
+    if(!content)return;
+    content.querySelectorAll('.v329-finals-shell').forEach(function(x){x.remove()});
+    if(content.querySelector('.v330-finals-shell'))return;
     var rows=parseRows(content);
     if(!rows.length)return;
-    content.innerHTML=shell(rows);
-    content.dataset.v330Exact='1';
+    content.insertAdjacentHTML('afterbegin',shell(rows));
   }finally{working=false}
 }
+
 
 var st=document.createElement('style');
 st.id='v330-history-finals-hardfix-style';
@@ -529,14 +567,14 @@ st.textContent=[
 'html body .v35-history-page.v330-finals-active .v35-history-head .v35-back{left:22px!important;top:24px!important;width:34px!important;height:34px!important;}',
 'html body .v35-history-page.v330-finals-active .v35-history-head .v35-back svg{width:29px!important;height:29px!important;}',
 'html body .v35-history-page.v330-finals-active .v35-history-head h1{left:22px!important;bottom:14px!important;font-size:39px!important;line-height:1!important;font-weight:500!important;letter-spacing:-.035em!important;}',
-'html body .v35-history-page.v330-finals-active .v35-tabs{position:sticky!important;top:var(--v35-compact-h)!important;z-index:80!important;display:grid!important;grid-template-columns:repeat(4,minmax(0,1fr))!important;gap:0!important;width:100%!important;height:52px!important;min-height:52px!important;padding:0 10px!important;margin:0!important;overflow:visible!important;background:linear-gradient(180deg,#101c9a 0%,#0b126f 100%)!important;border-bottom:1px solid rgba(190,196,236,.25)!important;}',
-'html body .v35-history-page.v330-finals-active .v35-tabs .v35-tab{position:relative!important;display:flex!important;align-items:center!important;justify-content:center!important;width:100%!important;min-width:0!important;height:52px!important;min-height:52px!important;margin:0!important;padding:0 2px!important;border:0!important;background:transparent!important;color:#c7c9db!important;font:600 15.5px/1 system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif!important;white-space:nowrap!important;}',
+'html body .v35-history-page.v330-finals-active .v35-tabs{position:sticky!important;top:var(--v35-compact-h)!important;z-index:80!important;display:grid!important;grid-template-columns:repeat(4,minmax(0,1fr))!important;gap:0!important;width:100%!important;height:58px!important;min-height:58px!important;padding:0 10px!important;margin:0!important;overflow:visible!important;background:linear-gradient(180deg,#101c9a 0%,#0b126f 100%)!important;border-bottom:1px solid rgba(190,196,236,.22)!important;}',
+'html body .v35-history-page.v330-finals-active .v35-tabs .v35-tab{position:relative!important;display:flex!important;align-items:center!important;justify-content:center!important;width:100%!important;min-width:0!important;height:58px!important;min-height:58px!important;margin:0!important;padding:0 2px!important;border:0!important;background:transparent!important;color:#c7c9db!important;font:600 15.5px/1 system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif!important;white-space:nowrap!important;}',
 'html body .v35-history-page.v330-finals-active .v35-tabs .v35-tab.active{color:#12edf3!important;font-weight:650!important;}',
-'html body .v35-history-page.v330-finals-active .v35-tabs .v35-tab.active:after{content:""!important;position:absolute!important;left:50%!important;bottom:-1px!important;width:72%!important;max-width:88px!important;height:4px!important;transform:translateX(-50%)!important;border-radius:4px 4px 0 0!important;background:#14edf3!important;}',
+'html body .v35-history-page.v330-finals-active .v35-tabs .v35-tab.active:after{content:""!important;position:absolute!important;left:50%!important;bottom:-1px!important;width:46px!important;max-width:46px!important;height:3px!important;transform:translateX(-50%)!important;border-radius:999px!important;background:#13edf3!important;box-shadow:0 0 7px rgba(19,237,243,.22)!important;}',
 'html body .v35-history-page.v330-finals-active .v35-history-content{margin:0!important;padding:16px 18px 36px!important;background:transparent!important;}',
 'html body .v35-history-page.v330-finals-active .v330-finals-shell{width:100%!important;margin:0!important;padding:0!important;}',
-'html body .v35-history-page.v330-finals-active .v330-decade{width:100%!important;margin:0 0 18px!important;padding:0!important;overflow:hidden!important;border-radius:22px!important;background:linear-gradient(180deg,#141e91 0%,#10167d 100%)!important;box-shadow:inset 0 0 0 1px rgba(255,255,255,.045)!important;}',
-'html body .v35-history-page.v330-finals-active .v330-decade>h2{height:48px!important;display:flex!important;align-items:center!important;margin:0!important;padding:0 18px!important;border-bottom:1px solid rgba(182,190,234,.25)!important;color:#fff!important;font:500 20px/1 system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif!important;letter-spacing:-.015em!important;}',
+'html body .v35-history-page.v330-finals-active .v330-decade{width:100%!important;margin:0 0 18px!important;padding:0!important;overflow:hidden!important;border-radius:17px!important;background:linear-gradient(180deg,#141e91 0%,#10167d 100%)!important;box-shadow:inset 0 0 0 1px rgba(255,255,255,.045)!important;}',
+'html body .v35-history-page.v330-finals-active .v330-decade>h2{height:43px!important;display:flex!important;align-items:center!important;margin:0!important;padding:0 18px!important;border-bottom:1px solid rgba(182,190,234,.24)!important;color:#fff!important;font:500 20px/1 system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif!important;letter-spacing:-.015em!important;}',
 'html body .v35-history-page.v330-finals-active .v330-final-row{margin:0 18px!important;padding:13px 0 0!important;}',
 'html body .v35-history-page.v330-finals-active .v330-final-row+.v330-final-row{border-top:1px solid rgba(174,184,230,.20)!important;}',
 'html body .v35-history-page.v330-finals-active .v330-season{margin:0 0 9px!important;color:#bbc0dc!important;font:500 15px/1.15 system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif!important;}',
@@ -559,6 +597,7 @@ st.textContent=[
 'html body .v35-history-page.v330-finals-active .v330-detail small{margin-top:4px!important;color:#aeb5d2!important;font-size:11px!important;}',
 'html body .v35-history-page.v330-finals-active .v330-detail strong{margin-top:4px!important;color:#fff!important;font-size:13px!important;}',
 'html body .v35-history-page.v330-finals-active .v330-detail p{margin:5px 0 0!important;color:#c3c8e0!important;font-size:12.5px!important;line-height:1.38!important;}',
+'html body .v35-history-page.v330-finals-active .v115-history-expansion{display:block!important;margin-top:22px!important;}',
 '}',
 '@media(max-width:374px){html body .v35-history-page.v330-finals-active .v35-tabs .v35-tab{font-size:14px!important;}html body .v35-history-page.v330-finals-active .v330-row-main{grid-template-columns:minmax(0,1fr) 92px!important;}html body .v35-history-page.v330-finals-active .v330-team strong{font-size:14px!important;}}'
 ].join('');
