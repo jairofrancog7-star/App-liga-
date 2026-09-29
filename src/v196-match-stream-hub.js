@@ -245,12 +245,12 @@ function eventsModal(c){
   const chips='<div class="v196-event-cats"><button type="button" class="'+(initial==='all'?'active':'')+'" data-v196-event-filter="all">Todas</button>'+cats.map(x=>'<button type="button" class="'+(initial===x?'active':'')+'" data-v196-event-filter="'+esc(x)+'">'+esc(x)+'</button>').join('')+'</div>';
   const m=modalShell('events','Partidos y categorías',chips+'<div class="v196-event-list">'+rows+'</div>');
   const applyFilter=cat=>{
-    $('[data-v196-event-filter]',m).forEach(x=>x.classList.toggle('active',x.dataset.v196EventFilter===cat));
-    $('[data-v196-event-choice]',m).forEach(row=>row.hidden=cat!=='all'&&row.dataset.v196EventCat!==cat);
+    Array.from(m.querySelectorAll('[data-v196-event-filter]')).forEach(x=>x.classList.toggle('active',x.dataset.v196EventFilter===cat));
+    Array.from(m.querySelectorAll('[data-v196-event-choice]')).forEach(row=>row.hidden=cat!=='all'&&row.dataset.v196EventCat!==cat);
   };
   applyFilter(initial);
-  $('[data-v196-event-filter]',m).forEach(b=>b.onclick=()=>applyFilter(b.dataset.v196EventFilter));
-  $('[data-v196-event-choice]',m).forEach(b=>b.onclick=()=>{
+  Array.from(m.querySelectorAll('[data-v196-event-filter]')).forEach(b=>b.onclick=()=>applyFilter(b.dataset.v196EventFilter));
+  Array.from(m.querySelectorAll('[data-v196-event-choice]')).forEach(b=>b.onclick=()=>{
     const item=options[Number(b.dataset.v196EventChoice)];if(!item)return;
     select.value=item.value;
     select.dispatchEvent(new Event('change',{bubbles:true}));
@@ -339,8 +339,8 @@ function bind(c,node){
   $('[data-v196-network]',node)?.addEventListener('click',e=>{stop(e);addSourceModal(c,'Stream de red')});
   $('[data-v196-settings]',node)?.addEventListener('click',e=>{stop(e);settingsModal(c)});
   $('[data-v196-floating]',node)?.addEventListener('click',e=>{stop(e);toggleFloating(c,node)});
-  $('[data-v196-pip]',node).forEach(b=>b.addEventListener('click',e=>{stop(e);requestPiP(node)}));
-  $('[data-v196-source]',node).forEach(b=>b.onclick=()=>{const item=list[Number(b.dataset.v196Source)];if(item){setFloating(false,node);setCurrentSource(c,item)}});
+  Array.from(node.querySelectorAll('[data-v196-pip]')).forEach(b=>b.addEventListener('click',e=>{stop(e);requestPiP(node)}));
+  Array.from(node.querySelectorAll('[data-v196-source]')).forEach(b=>b.onclick=()=>{const item=list[Number(b.dataset.v196Source)];if(item){setFloating(false,node);setCurrentSource(c,item)}});
   $('[data-v196-close-float]',node)?.addEventListener('click',e=>{stop(e);disableFloating(node)});
 }
 function applyFloating(node){
