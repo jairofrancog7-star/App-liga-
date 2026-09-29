@@ -1478,15 +1478,55 @@ function recordsBody(){
     '<div class="v35-retro-names">'+expandedRetroNames.concat(retroNames).filter((x,i,a)=>a.indexOf(x)===i).map(n=>'<span>'+esc(n)+'</span>').join('')+'</div>'+
   '</section>';
 }
+
+function videosBody(){
+  return '<section class="v329-history-videos" aria-label="Videos de Historia">'+
+    '<h2 class="v329-video-heading">Destacados</h2>'+
+    '<button type="button" class="v329-video-hero" data-v35-video="0" aria-label="Revive los mejores goles de la Liga Juventino Rosas">'+
+      '<img src="'+ASSETS.videoA+'" alt="" loading="eager" decoding="async">'+
+      '<span class="v329-video-hero-shade" aria-hidden="true"></span>'+
+      '<span class="v329-video-duration">12:16</span>'+
+      '<span class="v329-video-play" aria-hidden="true">'+playSvg()+'</span>'+
+      '<strong class="v329-video-hero-title">Revive los mejores goles<br>de la Liga Juventino Rosas</strong>'+
+    '</button>'+
+    '<div class="v329-video-feature-grid">'+
+      '<button type="button" class="v329-video-tile" data-v35-video="1" aria-label="La Huerta vs Pozos: gran partido en la jornada 3">'+
+        '<span class="v329-video-thumb"><img src="'+ASSETS.videoB+'" alt="" loading="lazy" decoding="async"><span class="v329-video-duration">08:40</span><span class="v329-video-play" aria-hidden="true">'+playSvg()+'</span></span>'+
+        '<span class="v329-video-card-title">La Huerta vs Pozos:<br>gran partido en la jornada 3</span>'+
+      '</button>'+
+      '<button type="button" class="v329-video-tile" data-v35-video="2" aria-label="Los 50 goles de la Liga Juventino Rosas">'+
+        '<span class="v329-video-thumb"><img src="'+HIST_MEDIA+'archive-v132/franco-fc-campeon-de-campeones-2026.jpg" alt="" loading="lazy" decoding="async"><span class="v329-video-duration">15:07</span><span class="v329-video-play" aria-hidden="true">'+playSvg()+'</span></span>'+
+        '<span class="v329-video-card-title">Los 50 goles de la Liga<br>Juventino Rosas</span>'+
+      '</button>'+
+    '</div>'+
+    '<h2 class="v329-video-heading v329-classics-title">Clásicos</h2>'+
+    '<div class="v329-video-classics" aria-label="Clásicos">'+
+      '<button type="button" class="v329-video-classic" data-v35-video="3" aria-label="Lobos CDG vs Cuenda">'+
+        '<span class="v329-video-thumb"><img src="'+LOBOS_CDG_SUPERLIDER_PHOTO+'" alt="" loading="lazy" decoding="async"><span class="v329-video-duration">10:22</span><span class="v329-video-play" aria-hidden="true">'+playSvg()+'</span></span>'+
+        '<span class="v329-video-card-title">Lobos CDG vs Cuenda</span>'+
+      '</button>'+
+      '<button type="button" class="v329-video-classic" data-v35-video="4" aria-label="Promesas vs Atlético Galeana">'+
+        '<span class="v329-video-thumb"><img src="'+ASSETS.videoC+'" alt="" loading="lazy" decoding="async"><span class="v329-video-duration">08:55</span><span class="v329-video-play" aria-hidden="true">'+playSvg()+'</span></span>'+
+        '<span class="v329-video-card-title">Promesas vs Atlético Galeana</span>'+
+      '</button>'+
+      '<button type="button" class="v329-video-classic" data-v35-video="5" aria-label="Clásicos de la Liga">'+
+        '<span class="v329-video-thumb"><img src="'+ASSETS.videoB+'" alt="" loading="lazy" decoding="async"><span class="v329-video-duration">12:03</span><span class="v329-video-play" aria-hidden="true">'+playSvg()+'</span></span>'+
+        '<span class="v329-video-card-title">Clásicos de la Liga</span>'+
+      '</button>'+
+    '</div>'+
+  '</section>';
+}
+
 function bodyForTab(){
   if(activeTab==='Temporadas') return seasonsBody();
   if(activeTab==='Campeones') return championsBody();
   if(activeTab==='Finales') return finalsBody();
   if(activeTab==='Récords') return recordsBody();
+  if(activeTab==='Videos') return videosBody();
   return summaryBody();
 }
 function tabs(){
-  return ['Resumen','Temporadas','Campeones','Finales','Récords'].map(t=>'<button type="button" class="v35-tab '+(t===activeTab?'active':'')+'" data-v35-tab="'+esc(t)+'">'+esc(t)+'</button>').join('');
+  return ['Resumen','Temporadas','Campeones','Finales','Récords','Videos'].map(t=>'<button type="button" class="v35-tab '+(t===activeTab?'active':'')+'" data-v35-tab="'+esc(t)+'">'+esc(t)+'</button>').join('');
 }
 function transparentizeTopLogo(img){
   if(!img||img.dataset.v35TransparentReady==='1') return;
@@ -1540,7 +1580,7 @@ function removeObsoleteManchesterDuplicate(root=document){
 }
 function pageHtml(){
   const back='<button class="v35-back" type="button" data-v35-back aria-label="Volver"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 11H7.83L13.42 5.41 12 4l-8 8 8 8 1.41-1.41L7.83 13H20Z"/></svg></button>';
-  return '<div class="v35-history-page">'+linesSvg()+
+  return '<div class="v35-history-page '+(activeTab==='Videos'?'v329-videos-active':'')+'">'+linesSvg()+
     '<div class="v35-compact-bar">'+back+'<div class="v35-compact-title">Historia</div></div>'+
     '<header class="v35-history-head">'+
       back+
@@ -1571,6 +1611,7 @@ function rerenderContent(){
   if(!root||!content||!nav) return;
   nav.innerHTML=tabs();
   content.innerHTML=bodyForTab();
+  root.classList.toggle('v329-videos-active',activeTab==='Videos');
   root.scrollIntoView({block:'start',behavior:'auto'});
   requestAnimationFrame(()=>{syncHistoryCollapse();removeObsoleteManchesterDuplicate(root);});
 }
