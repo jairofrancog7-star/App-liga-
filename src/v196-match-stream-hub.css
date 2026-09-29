@@ -93,3 +93,20 @@
     padding:16px!important;
   }
 }
+
+
+/* V200 — filtros reales + estado de compatibilidad del flotante. */
+.v196-event-row[hidden]{display:none!important}
+.v196-toolbar [data-v196-floating].unsupported{
+  opacity:.62!important;
+  border-color:rgba(114,129,184,.26)!important;
+  box-shadow:none!important;
+}
+.v196-toolbar [data-v196-floating].unsupported span,
+.v196-toolbar [data-v196-floating].unsupported small{color:#8490b8!important}
+.v196-player-head [data-v196-pip]{
+  min-width:34px!important;
+  padding:0 6px!important;
+  color:#26dfea!important;
+  font-size:6.5px!important;
+}
