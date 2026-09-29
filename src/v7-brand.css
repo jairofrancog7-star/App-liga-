@@ -4,7 +4,7 @@
   --v10-compact-header-h:78px;
 }
 html,body{background:var(--v10-deep)}
-body.v7-startup-lock{overflow:hidden;overscroll-behavior:none}
+body.v7-startup-lock{overflow:auto;overscroll-behavior:auto}
 
 /* HOME ONLY: keep the branded wide artwork exactly where it belongs. */
 body[data-app-route="home"] .topbar{
@@ -223,6 +223,13 @@ body[data-app-route="home"] #screen > .stories{
   opacity:1;
   transition:opacity .42s ease;
   touch-action:none;
+}
+@keyframes v344StartupFailsafe{
+  0%,72%{opacity:1;visibility:visible;pointer-events:auto}
+  100%{opacity:0;visibility:hidden;pointer-events:none}
+}
+.v7-startup{
+  animation:v344StartupFailsafe 1.4s ease-out both;
 }
 .v7-startup.is-leaving{opacity:0;pointer-events:none}
 .v7-startup-stage{
