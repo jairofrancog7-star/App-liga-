@@ -126,6 +126,45 @@ function listMarkup(primary,secondary,list){
    '</div>'+
   '</section>';
 }
+
+/* V204 — Player Compare: cancha/isotipo de Liga y escudos en la geometría de la referencia. */
+function v204PitchSvg(){
+ return '<svg class="v204-pitch-svg" viewBox="0 0 120 88" aria-hidden="true">'+
+   '<path class="v204-pitch-shadow" d="M18 47 57 70 104 44 65 22Z"/>'+
+   '<path class="v204-pitch-left" d="M18 36 57 59 57 70 18 47Z"/>'+
+   '<path class="v204-pitch-right" d="M57 59 104 33 104 44 57 70Z"/>'+
+   '<path class="v204-pitch-top" d="M18 36 65 11 104 33 57 59Z"/>'+
+   '<path class="v204-pitch-boundary" d="M23 36 65 14 99 33 57 55 23 36Z"/>'+
+   '<path class="v204-pitch-mark" d="M44 25 79 45"/>'+
+   '<ellipse class="v204-pitch-mark" cx="61.5" cy="35" rx="8.5" ry="5.3" transform="rotate(29 61.5 35)"/>'+
+   '<path class="v204-pitch-mark" d="M24 35 33 30 43 36 34 41M98 33 89 28 79 34 88 39"/>'+
+   '<path class="v204-pitch-mark" d="M18 39 13 42 19 46M104 36 109 39 103 43"/>'+
+  '</svg>';
+}
+function v204ApplyReferenceDecor(){
+ document.querySelectorAll('.v123-team-chip').forEach(chip=>{
+  const teamName=chip.querySelector('b');
+  if(teamName)teamName.classList.add('v204-team-name-sr');
+  if(!chip.querySelector('.v204-league-mini')){
+   const badge=document.createElement('span');
+   badge.className='v204-league-mini';
+   badge.setAttribute('aria-hidden','true');
+   const img=document.createElement('img');
+   img.src=LEAGUE_CREST;
+   img.alt='';
+   img.loading='eager';
+   img.decoding='async';
+   badge.appendChild(img);
+   chip.appendChild(badge);
+  }
+ });
+ const pitch=document.querySelector('.v123-pitch-icon');
+ if(pitch&&!pitch.dataset.v204Exact){
+  pitch.dataset.v204Exact='1';
+  pitch.innerHTML=v204PitchSvg();
+ }
+}
+
 async function renderCompare(){
  if(route()!=='playerCompare')return;
  const a=await getApi();if(!a)return;
@@ -150,6 +189,7 @@ async function renderCompare(){
   listMarkup(primary,secondary,list)+
  '</section>';
 
+ v204ApplyReferenceDecor();
  bindCompare();
 }
 function openPicker(side){
@@ -324,7 +364,20 @@ window.LJR_PLAYER_COMPARE_API={
  render:renderCompare
 };
 
+function v204SyncThemeColor(){
+ const meta=document.querySelector('meta[name="theme-color"]');
+ if(!meta)return;
+ const active=route()==='playerCompare';
+ if(active){
+  if(!meta.dataset.v204Previous)meta.dataset.v204Previous=meta.getAttribute('content')||'#02065F';
+  meta.setAttribute('content','#0635f5');
+ }else if(meta.dataset.v204Previous){
+  meta.setAttribute('content',meta.dataset.v204Previous);
+  delete meta.dataset.v204Previous;
+ }
+}
 function schedule(){
+ v204SyncThemeColor();
  if(route()==='playerCompare')requestAnimationFrame(()=>requestAnimationFrame(renderCompare));
  else document.body.classList.remove('v123-player-compare-active');
 }
