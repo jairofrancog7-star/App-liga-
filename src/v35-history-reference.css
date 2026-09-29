@@ -3062,3 +3062,74 @@
   }
   .v35-tabs .v35-tab{touch-action:manipulation!important}
 }
+
+/* V351_HISTORY_SEASONS_FAST_START */
+/* Temporadas abre con una vista pequeña; el directorio completo sólo se construye
+   cuando el usuario lo solicita. Las tabs quedan siempre por encima del contenido. */
+@media (max-width:1023px){
+  .v35-history-page .v35-tabs{
+    position:relative!important;
+    z-index:80!important;
+    pointer-events:auto!important;
+    touch-action:manipulation!important;
+  }
+  .v35-history-page .v35-tabs .v35-tab{
+    position:relative!important;
+    z-index:81!important;
+    pointer-events:auto!important;
+    touch-action:manipulation!important;
+  }
+  .v35-history-page .v35-history-lines,
+  .v35-history-page::before,
+  .v35-history-page::after{
+    pointer-events:none!important;
+  }
+
+  .v351-seasons-preview{
+    padding-bottom:5px!important;
+  }
+  .v351-seasons-preview .v341-era-decade{
+    margin-bottom:10px!important;
+  }
+  .v351-season-preview-item{
+    pointer-events:none!important;
+  }
+  .v351-load-seasons{
+    width:100%!important;
+    min-height:46px!important;
+    margin:7px 0 0!important;
+    padding:0 14px!important;
+    display:flex!important;
+    align-items:center!important;
+    justify-content:space-between!important;
+    gap:10px!important;
+    border:1px solid rgba(80,226,245,.28)!important;
+    border-radius:13px!important;
+    background:rgba(7,20,118,.74)!important;
+    color:#fff!important;
+    font:700 12.5px/1.15 Inter,system-ui,sans-serif!important;
+    text-align:left!important;
+    touch-action:manipulation!important;
+    -webkit-tap-highlight-color:transparent!important;
+  }
+  .v351-load-seasons span{
+    color:#20e7f2!important;
+    font-size:23px!important;
+    line-height:1!important;
+    font-weight:400!important;
+  }
+  .v351-load-seasons:disabled{
+    opacity:.68!important;
+  }
+  .v351-seasons-full{
+    display:block!important;
+    width:100%!important;
+    contain:layout style!important;
+  }
+
+  /* Evita trabajo gráfico costoso en móviles durante el cambio de pestaña. */
+  .v35-top-logo-blend-fallback{
+    mix-blend-mode:screen!important;
+  }
+}
+/* V351_HISTORY_SEASONS_FAST_END */
