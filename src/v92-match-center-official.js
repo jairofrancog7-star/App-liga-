@@ -161,7 +161,7 @@ function standing(m,name){return standings(m).find(r=>norm(r?.[1])===norm(name))
 function matchPicker(m){
   const now=mexicoStamp();
   const list=allMatches();
-  let options=list.filter(x=>x.start>=now-1000*60*60*24*2).slice(0,30);
+  let options=list.filter(x=>x.start>=now-1000*60*60*24*2);
   if(!options.some(x=>x.key===m.key))options=[m,...options];
   const option=x=>{
     const r=x.r,s=publishedScore(r);
