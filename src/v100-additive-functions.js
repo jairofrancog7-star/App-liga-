@@ -423,7 +423,7 @@ function credentialExtra(){
     '<div class="v196-classic-preview" data-v196-classic-preview>'+
       '<div class="v196-preview-head"><span><small>DISEÑO DE CREDENCIAL FÍSICA</small><b>Vista previa exacta del formato clásico</b></span><em>85.60 × 53.98 mm</em></div>'+
       '<div class="v196-preview-frame"><canvas width="1011" height="638" data-v196-preview-canvas aria-label="Vista previa de credencial"></canvas></div>'+
-      '<p>Formato horizontal ID-1 · 1011 × 638 px a 300 ppp. El logo de la Liga, foto, equipo, categoría y CURP se colocan en las mismas zonas del diseño físico de referencia.</p>'+
+      '<p>Formato horizontal ID-1 · 1011 × 638 px a 300 ppp. Puedes cambiar entre la credencial roja clásica y la azul clásica con trofeo; ambas conservan las proporciones, foto, logos, categoría y tipografía del formato físico.</p>'+
     '</div>'+
     '<div class="v100-actions"><button class="v100-primary" data-v100-credential-png>Descargar imagen PNG</button><button class="v100-secondary" data-v100-credential-pdf>Descargar PDF · tamaño credencial</button><button class="v100-secondary" data-v100-credential-share>Compartir imagen</button></div>'+
     '<p class="v100-note">Si la CURP se detecta y valida, la fecha de nacimiento se sincroniza automáticamente.</p>'+
@@ -438,7 +438,7 @@ function syncCredentialExtra(){
     dob:dob?.value||'',age:age?.value||'',
     position:$('[data-v100-position]')?.value||'',
     season:$('[data-v100-season]')?.value||'',status:$('[data-v100-status]')?.value||'',
-    credentialStyle:$('[data-v100-credential-style]')?.value||saved.credentialStyle||'blue'
+    credentialStyle:$('[data-v100-credential-style]')?.value||read('v100-credential-extra',{}).credentialStyle||'blue'
   };
   write('v100-credential-extra',d);
 }
@@ -568,10 +568,11 @@ async function v197DrawBlueCredential(canvas){
   if(league){x.save();x.fillStyle='rgba(255,255,255,.93)';x.fillRect(45,468,122,122);x.drawImage(league,53,476,106,106);x.restore()}
 
   const teamImg=await v100LoadImage(v196CredentialTeamLogo(team));
-  if(teamImg){x.save();x.fillStyle='rgba(255,255,255,.94)';v196RoundRectPath(x,790,413,72,72,7);x.fill();v100DrawContainedImage(x,teamImg,796,419,60,60);x.restore()}
+  if(teamImg){x.save();x.fillStyle='rgba(255,255,255,.94)';v196RoundRectPath(x,690,410,68,68,7);x.fill();v100DrawContainedImage(x,696,416,56,56);x.restore()}
 
   x.font='900 37px Arial,Helvetica,sans-serif';x.textAlign='center';
-  v196OutlinedText(x,team.toUpperCase(),842,438,'#f4d553','#3655a3',5);
+  const teamLabel=team.toUpperCase(),teamFont=v196FitFont(x,teamLabel,205,37,23,900);x.font='900 '+teamFont+'px Arial,Helvetica,sans-serif';
+  v196OutlinedText(x,teamLabel,862,452,'#f4d553','#3655a3',5);
   x.textAlign='left';
 
   const nameUpper=name.toUpperCase();
