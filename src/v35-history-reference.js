@@ -1037,6 +1037,7 @@ const titleRows=[];
 let activeTab='Resumen';
 let championCategory='Todos';
 let v35ScrollRaf=0;
+const v350TabHtmlCache=new Map();
 
 function scrollTop(){
   return window.scrollY || document.documentElement.scrollTop || document.body.scrollTop || 0;
@@ -1930,12 +1931,17 @@ function videosBody(){
 }
 
 function bodyForTab(){
-  if(activeTab==='Temporadas') return seasonsBody();
-  if(activeTab==='Campeones') return championsBody();
-  if(activeTab==='Finales') return finalsBody();
-  if(activeTab==='Récords') return recordsBody();
-  if(activeTab==='Videos') return videosBody();
-  return summaryBody();
+  const key=activeTab==='Campeones'?'Campeones|'+championCategory:activeTab;
+  if(v350TabHtmlCache.has(key))return v350TabHtmlCache.get(key);
+  let html='';
+  if(activeTab==='Temporadas') html=seasonsBody();
+  else if(activeTab==='Campeones') html=championsBody();
+  else if(activeTab==='Finales') html=finalsBody();
+  else if(activeTab==='Récords') html=recordsBody();
+  else if(activeTab==='Videos') html=videosBody();
+  else html=summaryBody();
+  v350TabHtmlCache.set(key,html);
+  return html;
 }
 function tabs(){
   return ['Resumen','Temporadas','Campeones','Finales','Récords','Videos'].map(t=>'<button type="button" class="v35-tab '+(t===activeTab?'active':'')+'" data-v35-tab="'+esc(t)+'">'+esc(t)+'</button>').join('');
@@ -2014,9 +2020,7 @@ function renderHistory(){
   document.body.classList.toggle('v341-history-seasons-active',activeTab==='Temporadas');
   const topLogo=screen.querySelector('[data-v35-top-logo]');
   requestAnimationFrame(()=>{
-    window.scrollTo({top:0,left:0,behavior:'auto'});
     syncHistoryCollapse();
-    removeObsoleteManchesterDuplicate(screen);
     v348ArmArchive(historyRoot);
   });
   if(topLogo){
@@ -2031,14 +2035,34 @@ function rerenderContent(){
   const nav=root?.querySelector('.v35-tabs');
   if(!root||!content||!nav) return;
   v348CancelArchiveLoad();
-  nav.innerHTML=tabs();
-  content.innerHTML=bodyForTab();
+
+  // V350: no reconstruir la barra de tabs; sólo cambia clases/ARIA.
+  nav.querySelectorAll('[data-v35-tab]').forEach(btn=>{
+    const selected=btn.dataset.v35Tab===activeTab;
+    btn.classList.toggle('active',selected);
+    btn.setAttribute('aria-selected',selected?'true':'false');
+  });
+
+  const html=bodyForTab();
+  if(content.dataset.v350Tab!==activeTab || content.dataset.v350ChampionCategory!==(activeTab==='Campeones'?championCategory:'')){
+    content.replaceChildren();
+    content.insertAdjacentHTML('afterbegin',html);
+    content.dataset.v350Tab=activeTab;
+    content.dataset.v350ChampionCategory=activeTab==='Campeones'?championCategory:'';
+  }
+
   root.classList.toggle('v329-videos-active',activeTab==='Videos');
   root.classList.toggle('v341-seasons-active',activeTab==='Temporadas');
   document.body.classList.toggle('v341-history-seasons-active',activeTab==='Temporadas');
-  window.scrollTo({top:0,left:0,behavior:'auto'});
-  requestAnimationFrame(syncHistoryCollapse);
 }
+window.LJR_HISTORY_FAST_TAB=function(tabName){
+  if(route()!=='history')return false;
+  const allowed=['Resumen','Temporadas','Campeones','Finales','Récords','Videos'];
+  if(!allowed.includes(tabName))return false;
+  activeTab=tabName;
+  rerenderContent();
+  return true;
+};
 
 function toast(msg){
   let el=document.querySelector('.v35-toast');
@@ -2075,12 +2099,12 @@ function onClick(e){
     return;
   }
   const tab=e.target.closest('[data-v35-tab]');
-  if(tab){e.preventDefault();e.stopPropagation();activeTab=tab.dataset.v35Tab||'Resumen';rerenderContent();return;}
+  if(tab){e.preventDefault();e.stopPropagation();e.stopImmediatePropagation();activeTab=tab.dataset.v35Tab||'Resumen';rerenderContent();return;}
   const jump=e.target.closest('[data-v35-tab-jump]');
   if(jump){e.preventDefault();e.stopPropagation();activeTab=jump.dataset.v35TabJump||'Temporadas';rerenderContent();return;}
   const championCat=e.target.closest('[data-v340-champion-cat]');
   if(championCat){
-    e.preventDefault();e.stopPropagation();
+    e.preventDefault();e.stopPropagation();e.stopImmediatePropagation();
     championCategory=championCat.dataset.v340ChampionCat||'Todos';
     rerenderContent();
     return;
