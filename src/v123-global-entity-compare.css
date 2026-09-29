@@ -606,3 +606,182 @@ body.v123-player-compare-active .app-shell > .topbar{
   border:0!important;
   overflow:hidden!important;
 }
+
+/* V204_PLAYER_COMPARE_REFERENCE_LOCK_START */
+/* Referencia 691×1536: misma escala, posiciones y proporciones visuales.
+   Mantiene selección, datos, logos y comparación funcionales. */
+body[data-app-route="playerCompare"] #app > .bottom-nav,
+body[data-app-route="playerCompare"] .app-shell > .bottom-nav,
+body[data-app-route="playerCompare"] #app > nav.bottom-nav,
+body.v123-player-compare-active #app > .bottom-nav,
+body.v123-player-compare-active .app-shell > .bottom-nav{
+  display:none!important;
+  height:0!important;
+  min-height:0!important;
+  margin:0!important;
+  padding:0!important;
+  border:0!important;
+  overflow:hidden!important;
+}
+body[data-app-route="playerCompare"] #screen,
+body.v123-player-compare-active #screen{
+  padding:0!important;
+  min-height:100dvh!important;
+}
+.v123-player-compare{min-height:100dvh!important;overflow-x:hidden!important}
+.v123-compare-hero{
+  box-sizing:border-box!important;
+  padding:11px 17px 16px!important;
+  background:
+    radial-gradient(70% 56% at 18% 5%,rgba(65,141,255,.43),transparent 66%),
+    radial-gradient(58% 48% at 84% 13%,rgba(36,119,255,.34),transparent 70%),
+    linear-gradient(180deg,#063cf7 0%,#0829e0 57%,#0719b0 100%)!important;
+}
+.v123-compare-hero::before{
+  width:340px!important;height:190px!important;left:-92px!important;top:-58px!important;
+  border-color:rgba(82,154,255,.18)!important;
+}
+.v123-compare-hero::after{
+  width:310px!important;height:176px!important;right:-104px!important;top:-44px!important;
+  border-color:rgba(82,154,255,.15)!important;
+}
+.v123-back{width:34px!important;height:34px!important}
+.v123-back svg{width:29px!important;height:29px!important;stroke-width:2.1!important}
+.v123-duel{gap:8px!important;margin-top:22px!important}
+.v123-player-card{
+  box-sizing:border-box!important;
+  height:196px!important;
+  min-height:196px!important;
+  max-height:196px!important;
+  padding:17px 9px 8px!important;
+  grid-template-rows:92px 47px 32px!important;
+  gap:0!important;
+  border-radius:11px!important;
+  background:
+    radial-gradient(108% 76% at 50% -2%,rgba(44,82,246,.40),transparent 61%),
+    linear-gradient(166deg,#0926c2 0%,#07158e 66%,#071178 100%)!important;
+}
+.v123-player-card.empty{
+  align-content:start!important;
+  grid-template-rows:92px 47px 32px!important;
+  padding-top:17px!important;
+}
+.v123-player-card.empty::after{top:8px!important;right:11px!important;font-size:31px!important}
+.v123-player-swap{top:8px!important;right:9px!important;width:26px!important;height:26px!important}
+.v123-player-swap svg{width:22px!important;height:22px!important}
+.v123-avatar{
+  width:92px!important;
+  height:92px!important;
+  font-size:25px!important;
+  align-self:start!important;
+}
+.v123-avatar>img{
+  display:block!important;width:100%!important;height:100%!important;
+  border-radius:50%!important;object-fit:cover!important;
+}
+.v123-avatar.ghost svg{width:80%!important;height:80%!important}
+.v123-player-copy{
+  width:100%!important;
+  align-self:center!important;
+  align-content:center!important;
+  gap:2px!important;
+}
+.v123-player-copy strong,
+.v123-player-card.empty>strong{
+  font-size:15.5px!important;
+  line-height:1.05!important;
+  font-weight:760!important;
+  max-height:33px!important;
+  overflow:hidden!important;
+}
+.v123-player-copy small{font-size:12.5px!important;line-height:1.05!important;color:#c1c6e3!important}
+.v123-player-card.empty>strong{align-self:center!important;color:#28e7ee!important}
+.v123-team-chip{
+  box-sizing:border-box!important;
+  width:auto!important;
+  height:32px!important;
+  min-height:32px!important;
+  align-self:end!important;
+  margin:0!important;
+  padding:0!important;
+  gap:9px!important;
+}
+.v123-team-logo,
+.v204-league-mini{
+  width:31px!important;height:31px!important;flex:0 0 31px!important;
+  display:grid!important;place-items:center!important;overflow:hidden!important;border-radius:50%!important;
+}
+.v123-team-logo{background:transparent!important}
+.v123-team-logo img{width:100%!important;height:100%!important;object-fit:contain!important}
+.v204-league-mini{background:#0b197f!important;box-shadow:inset 0 0 0 1px rgba(255,255,255,.18)!important}
+.v204-league-mini img{width:82%!important;height:82%!important;object-fit:contain!important}
+.v204-team-name-sr{
+  position:absolute!important;width:1px!important;height:1px!important;padding:0!important;margin:-1px!important;
+  overflow:hidden!important;clip:rect(0,0,0,0)!important;white-space:nowrap!important;border:0!important;
+}
+.v123-filter-row{gap:8px!important;margin-top:8px!important}
+.v123-filter-row>span{
+  box-sizing:border-box!important;height:31px!important;padding:0 11px!important;border-radius:10px!important;
+  background:rgba(3,13,107,.86)!important;font-size:14px!important;line-height:1!important;font-weight:650!important;
+}
+.v123-filter-row>span:last-child{gap:10px!important}
+.v123-filter-row>span:last-child i{width:22px!important;height:22px!important;flex-basis:22px!important}
+.v123-choose-empty{
+  box-sizing:border-box!important;
+  min-height:calc(100dvh - 318px)!important;
+  padding:clamp(142px,22vh,176px) 22px 10px!important;
+  background:radial-gradient(360px 330px at 50% 44%,rgba(7,19,132,.28),transparent 70%),#03045f!important;
+}
+.v123-pitch-icon{
+  width:110px!important;height:78px!important;margin-bottom:28px!important;
+  filter:drop-shadow(0 13px 10px rgba(0,0,40,.28))!important;
+}
+.v123-pitch-icon svg{width:100%!important;height:100%!important;overflow:visible!important;fill:none!important;stroke:none!important}
+.v123-pitch-icon .v204-pitch-shadow{fill:#006f60!important;opacity:.42!important}
+.v123-pitch-icon .v204-pitch-left{fill:#00a97d!important}
+.v123-pitch-icon .v204-pitch-right{fill:#008f70!important}
+.v123-pitch-icon .v204-pitch-top{
+  fill:#04d9a3!important;stroke:#efffff!important;stroke-width:2.6!important;stroke-linejoin:round!important;
+}
+.v123-pitch-icon .v204-pitch-boundary,
+.v123-pitch-icon .v204-pitch-mark{
+  fill:none!important;stroke:#f4ffff!important;stroke-width:2.2!important;
+  stroke-linecap:round!important;stroke-linejoin:round!important;
+}
+.v123-choose-empty h2{margin:0!important;font-size:24px!important;line-height:1.08!important;font-weight:680!important}
+.v123-league-mark{margin-top:25px!important;gap:5px!important}
+.v123-league-mark img{width:62px!important;height:62px!important}
+.v123-league-mark span{font-size:7.5px!important;line-height:1.28!important;letter-spacing:.14em!important}
+.v123-league-mark b{font-size:13px!important;letter-spacing:.08em!important}
+@media(max-width:390px){
+  .v123-compare-hero{padding-left:17px!important;padding-right:17px!important}
+  .v123-duel{gap:8px!important;margin-top:22px!important}
+  .v123-player-card{
+    height:196px!important;min-height:196px!important;max-height:196px!important;
+    padding:17px 9px 8px!important;border-radius:11px!important;
+  }
+  .v123-avatar{width:92px!important;height:92px!important;font-size:25px!important}
+  .v123-player-copy strong,.v123-player-card.empty>strong{font-size:15.5px!important}
+  .v123-player-copy small{font-size:12.5px!important}
+  .v123-team-logo,.v204-league-mini{width:31px!important;height:31px!important;flex-basis:31px!important}
+  .v123-filter-row{gap:8px!important;margin-top:8px!important}
+  .v123-filter-row>span{height:31px!important;padding:0 11px!important;font-size:14px!important}
+  .v123-choose-empty{
+    min-height:calc(100dvh - 318px)!important;
+    padding-top:clamp(142px,22vh,176px)!important;
+    padding-bottom:10px!important;
+  }
+  .v123-choose-empty h2{font-size:24px!important}
+  .v123-league-mark{margin-top:25px!important}
+}
+@media(max-width:340px){
+  .v123-player-card{
+    height:188px!important;min-height:188px!important;max-height:188px!important;
+    grid-template-rows:86px 45px 31px!important;padding-top:16px!important;
+  }
+  .v123-avatar{width:86px!important;height:86px!important;font-size:23px!important}
+  .v123-player-copy strong,.v123-player-card.empty>strong{font-size:14.5px!important}
+  .v123-filter-row>span{font-size:12.5px!important}
+  .v123-choose-empty{min-height:calc(100dvh - 309px)!important}
+}
+/* V204_PLAYER_COMPARE_REFERENCE_LOCK_END */
