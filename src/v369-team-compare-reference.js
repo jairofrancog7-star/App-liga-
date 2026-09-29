@@ -309,7 +309,10 @@ document.addEventListener('click',function(e){
  }
  const row=e.target.closest('[data-v42-select-name]');
  if(row&&route()==='teamDetail'){
-  e.preventDefault();e.stopPropagation();e.stopImmediatePropagation();openCompare(row.dataset.v42SelectName||'');return;
+  e.preventDefault();e.stopPropagation();e.stopImmediatePropagation();
+  const name=row.dataset.v42SelectName||'';
+  if(name&&window.LJR_TEAM_DETAIL_API?.openTeam)window.LJR_TEAM_DETAIL_API.openTeam(name,compareState?.catId||localStorage.getItem('v62-category')||'');
+  return;
  }
  const bell=e.target.closest('[data-v42-bell]');
  if(bell&&route()==='teamDetail'){
