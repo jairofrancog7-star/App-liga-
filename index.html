@@ -5,6 +5,24 @@
   <link rel="dns-prefetch" href="//raw.githubusercontent.com">
   <link rel="preconnect" href="https://d2ol7oe51mr4n9.cloudfront.net" crossorigin>
 
+  <script>
+    (function(){
+      if(window.__LJR_HISTORY_TAB_FASTLANE_V350__) return;
+      window.__LJR_HISTORY_TAB_FASTLANE_V350__=true;
+      document.addEventListener('click',function(e){
+        const target=e.target && e.target.closest ? e.target.closest('[data-v35-tab]') : null;
+        if(!target) return;
+        const route=(location.hash.replace(/^#\/?/,'')||'home').split('?')[0];
+        if(route!=='history') return;
+        const fn=window.LJR_HISTORY_FAST_TAB;
+        if(typeof fn!=='function') return;
+        e.preventDefault();
+        e.stopPropagation();
+        e.stopImmediatePropagation();
+        fn(target.dataset.v35Tab||'Resumen');
+      },true);
+    })();
+  </script>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
   <script>
@@ -68,7 +86,7 @@
   <link rel="stylesheet" href="./src/v34-nav-master.css?v=20260919-hospitality-v51-center" />
   <link rel="stylesheet" href="./src/v45-moreless-reference.css?v=20260919-moreless-navy-redarrow2" />
   <link rel="stylesheet" href="./src/v33-about-reference.css?v=20260920-about-history-v109" />
-  <link rel="stylesheet" href="./src/v35-history-reference.css?v=20260929-history-manual-archive-v349" />
+  <link rel="stylesheet" href="./src/v35-history-reference.css?v=20260929-history-fastlane-v350" />
   <link rel="stylesheet" href="./src/v115-history-archive-expansion.css?v=20260921-history-archive-v115" />
   <link rel="stylesheet" href="./src/v39-sticky-headers.css?v=20260919-sticky-all1" />
   <link rel="stylesheet" href="./src/v42-team-detail-master.css?v=20260921-v123-teamdetail-scroll" />
@@ -186,7 +204,7 @@
   <script type="module" src="./src/v33-about-reference.js?v=20260920-referee-travel109"></script>
   <script type="module" src="./src/v111-history-photo-data.js?v=20260920-history-photos-v114"></script>
 
-<script type="module" src="./src/v35-history-reference.js?v=20260929-history-manual-archive-v349"></script>
+<script type="module" src="./src/v35-history-reference.js?v=20260929-history-fastlane-v350"></script>
   <script type="module" src="./src/v346-history-deferred-patches.js?v=20260929-history-tabs-stable-v347"></script>
 <script type="module" src="./src/v42-team-detail-master.js?v=20260924-competition-unified"></script>
   <script type="module" src="./src/v40-competition-master.js?v=20260928-preaudit-exact4"></script>
