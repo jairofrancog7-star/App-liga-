@@ -115,6 +115,48 @@ function roster(m,name){
   const hit=Object.entries(m?.cat?.rosters||{}).find(([n])=>norm(n)===norm(name));
   return Array.isArray(hit?.[1])?hit[1]:[];
 }
+function namesFrom(v){
+  if(!v)return [];
+  if(Array.isArray(v))return v.map(x=>typeof x==='string'?x:(x?.name||x?.player||x?.nombre||'')).filter(Boolean);
+  if(typeof v==='object'){
+    for(const k of ['starters','titulares','lineup','players','jugadores']){
+      const out=namesFrom(v[k]);if(out.length)return out;
+    }
+  }
+  return [];
+}
+function liveLineup(m,side){
+  try{
+    const s=JSON.parse(localStorage.getItem('ljr-match-live-v144:'+m.key)||'null');
+    const x=s?.lineups||s?.alineaciones;
+    if(!x)return null;
+    const raw=side==='home'?(x.home||x.local):(x.away||x.visitante);
+    const names=namesFrom(raw);
+    return names.length?{names,label:'Alineación recibida en tiempo real',url:''}:null;
+  }catch(_){return null}
+}
+function cedulaLineup(m,team){
+  const r=m.r,date=dateOnly(r[8]);
+  const cedulas=Array.isArray(m?.cat?.cedulas)?m.cat.cedulas:[];
+  const home=norm(r[2]),away=norm(r[6]),wanted=norm(team);
+  const hits=cedulas.filter(x=>{
+    const xl=norm(x?.local),xa=norm(x?.away);
+    const teams=(xl===home&&xa===away)||(xl===away&&xa===home);
+    const sameDate=!x?.date||String(x.date).startsWith(date);
+    return teams&&sameDate;
+  }).sort((a,b)=>Number(b.id||0)-Number(a.id||0));
+  for(const x of hits){
+    const side=norm(x.local)===wanted?'local':norm(x.away)===wanted?'away':'';
+    if(!side)continue;
+    const names=namesFrom(x[side+'_lineup']);
+    if(names.length)return {names,label:'Alineación oficial publicada',url:x.url||''};
+  }
+  return null;
+}
+function lineupFor(m,team){
+  const side=norm(team)===norm(m.r[2])?'home':'away';
+  return cedulaLineup(m,team)||liveLineup(m,side);
+}
 function standing(m,name){return standings(m).find(r=>norm(r?.[1])===norm(name))||null}
 function matchPicker(m){
   const now=mexicoStamp();
@@ -148,9 +190,12 @@ function summaryBody(m,state){
     '</div></section>';
 }
 function rosterColumn(m,team){
-  const names=roster(m,team);
-  return '<article class="v92-roster"><div class="v92-roster-title">'+teamLogo(team,'tiny')+'<span><b>'+esc(team)+'</b><small>Plantilla oficial registrada · no alineación confirmada</small></span></div>'+
-    (names.length?'<ol>'+names.map(n=>'<li>'+esc(n)+'</li>').join('')+'</ol>':'<p>No hay plantilla pública disponible.</p>')+'</article>';
+  const confirmed=lineupFor(m,team);
+  const names=confirmed?.names?.length?confirmed.names:roster(m,team);
+  const label=confirmed?.label||'Plantilla oficial registrada · alineación aún no publicada';
+  const source=confirmed?.url?'<a class="v92-lineup-source" href="'+esc(confirmed.url)+'" target="_blank" rel="noopener noreferrer">Ver cédula oficial</a>':'';
+  return '<article class="v92-roster '+(confirmed?'is-confirmed-lineup':'')+'"><div class="v92-roster-title">'+teamLogo(team,'tiny')+'<span><b>'+esc(team)+'</b><small>'+esc(label)+'</small>'+source+'</span></div>'+
+    (names.length?'<ol>'+names.map(n=>'<li>'+esc(n)+'</li>').join('')+'</ol>':'<p>No hay jugadores públicos disponibles.</p>')+'</article>';
 }
 function mvpKey(m){return 'v92-mvp-local:'+String(m?.key||'match')}
 function mvpSelection(m){
@@ -158,8 +203,10 @@ function mvpSelection(m){
 }
 function mvpPlayers(m){
   const r=m.r,home=r[2],away=r[6],out=[];
-  roster(m,home).forEach(name=>out.push({team:home,name}));
-  roster(m,away).forEach(name=>out.push({team:away,name}));
+  const hn=lineupFor(m,home)?.names||roster(m,home);
+  const an=lineupFor(m,away)?.names||roster(m,away);
+  hn.forEach(name=>out.push({team:home,name}));
+  an.forEach(name=>out.push({team:away,name}));
   return out;
 }
 function mvpCard(m){
@@ -205,10 +252,11 @@ function openMvpVote(m){
   };
 }
 function lineupsBody(m){
-  const r=m.r;
+  const r=m.r,homeLineup=lineupFor(m,r[2]),awayLineup=lineupFor(m,r[6]);
+  const hasOfficial=!!(homeLineup||awayLineup);
   return '<section class="v92-section v92-lineups-section">'+
     '<div class="v92-lineups-head"><h2>Alineaciones</h2><button type="button" data-v92-pitch>Ver cancha</button></div>'+
-    '<small class="v92-lineups-note">Las alineaciones del partido aparecerán únicamente si la Liga las publica.</small>'+
+    '<small class="v92-lineups-note">'+(hasOfficial?'Alineaciones actualizadas con la información publicada para este partido.':'Se actualizarán automáticamente cuando la Liga publique titulares en la cédula o llegue una alineación por el feed en vivo.')+'</small>'+
     '<div class="v92-roster-grid">'+rosterColumn(m,r[2])+rosterColumn(m,r[6])+'</div>'+
     mvpCard(m)+
   '</section>';
@@ -275,8 +323,8 @@ function render(){
 
   document.body.classList.add('v92-match-center-official');
   screen.querySelector('[data-v92-match-select]')?.addEventListener('change',e=>{selectedKey=e.target.value;activeTab='Resumen';renderGuard=false;render()});
-  screen.querySelectorAll('[data-v92-tab]').forEach(b=>b.onclick=()=>{activeTab=b.dataset.v92Tab;renderGuard=false;render()});
-  screen.querySelectorAll('[data-v92-open-lineups]').forEach(b=>b.onclick=()=>{activeTab='Alineaciones';renderGuard=false;render()});
+  screen.querySelectorAll('[data-v92-tab]').forEach(b=>b.onclick=()=>{activeTab=b.dataset.v92Tab;renderGuard=false;render();if(activeTab==='Alineaciones')refreshOfficialData(true)});
+  screen.querySelectorAll('[data-v92-open-lineups]').forEach(b=>b.onclick=()=>{activeTab='Alineaciones';renderGuard=false;render();refreshOfficialData(true)});
   screen.querySelectorAll('[data-v92-route]').forEach(b=>b.onclick=()=>{location.hash='#/'+b.dataset.v92Route});
   screen.querySelectorAll('[data-v92-pitch]').forEach(b=>b.onclick=()=>{
     try{sessionStorage.setItem('v92-pitch-context',JSON.stringify({match:m.key,home,away,category:m.category}))}catch(_){}
@@ -299,6 +347,26 @@ async function load(){
   })();
   return loading;
 }
+let lastOfficialRefresh=0;
+async function refreshOfficialData(force=false){
+  const now=Date.now();
+  if(!force&&now-lastOfficialRefresh<45000)return db;
+  lastOfficialRefresh=now;
+  const urls=[REMOTE.split('?')[0]+'?ts='+now,LOCAL.split('?')[0]+'?ts='+now];
+  for(const u of urls){
+    try{
+      const res=await fetch(u,{cache:'no-store'});
+      if(!res.ok)continue;
+      const fresh=await res.json();
+      if(fresh?.categories){
+        db=fresh;window.LJR_OFFICIAL_DATA=fresh;
+        if(isDirectRoute()){renderGuard=false;render()}
+        return db;
+      }
+    }catch(_){}
+  }
+  return db;
+}
 function syncRoute(){
   const r=route();
   try{
@@ -319,11 +387,12 @@ function syncRoute(){
   if(!on)return;
   render();
   load();
-  if(!timer)timer=setInterval(()=>{if(isDirectRoute())render()},30000);
+  if(!timer)timer=setInterval(()=>{if(isDirectRoute()){render();refreshOfficialData(false)}},30000);
 }
 window.addEventListener('hashchange',()=>requestAnimationFrame(syncRoute));
 window.LJR_MATCH_CENTER={open(key){selectedKey=String(key);db=window.CompetitionController?.raw()||window.LJR_OFFICIAL_DATA||db;location.hash='#/matchCenter';if(isDirectRoute())render()}};
-window.addEventListener('ljr:official-data',()=>{if(isDirectRoute()){db=window.LJR_OFFICIAL_DATA||db;render()}});
+window.addEventListener('ljr:official-data',()=>{if(isDirectRoute()){db=window.LJR_OFFICIAL_DATA||db;renderGuard=false;render()}});
+window.addEventListener('ljr:match-live-feed',()=>{if(isDirectRoute()&&activeTab==='Alineaciones'){renderGuard=false;render()}});
 const screen=document.querySelector('#screen');
 if(screen)new MutationObserver(()=>{if(isDirectRoute()&&!screen.querySelector('[data-v92-matchcenter]'))requestAnimationFrame(render)}).observe(screen,{childList:true,subtree:false});
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',syncRoute,{once:true});else syncRoute();
