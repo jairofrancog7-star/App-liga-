@@ -2441,9 +2441,9 @@ function v362LockHistoryHeader(root=document.querySelector('.v35-history-page'))
     tabs.style.setProperty('align-items','flex-end','important');
     tabs.style.setProperty('justify-content','flex-start','important');
     tabs.style.setProperty('width','100%','important');
-    tabs.style.setProperty('height','48px','important');
-    tabs.style.setProperty('min-height','48px','important');
-    tabs.style.setProperty('max-height','48px','important');
+    tabs.style.setProperty('height','54px','important');
+    tabs.style.setProperty('min-height','54px','important');
+    tabs.style.setProperty('max-height','54px','important');
     tabs.style.setProperty('margin','0','important');
     tabs.style.setProperty('padding','0 22px','important');
     tabs.style.setProperty('gap','36px','important');
@@ -2462,10 +2462,10 @@ function v362LockHistoryHeader(root=document.querySelector('.v35-history-page'))
     tab.style.setProperty('flex','0 0 auto','important');
     tab.style.setProperty('width','auto','important');
     tab.style.setProperty('min-width','max-content','important');
-    tab.style.setProperty('height','48px','important');
-    tab.style.setProperty('min-height','48px','important');
+    tab.style.setProperty('height','54px','important');
+    tab.style.setProperty('min-height','54px','important');
     tab.style.setProperty('margin','0','important');
-    tab.style.setProperty('padding','0 0 9px','important');
+    tab.style.setProperty('padding','0 0 13px','important');
     tab.style.setProperty('font-family','system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif','important');
     tab.style.setProperty('font-size','15px','important');
     tab.style.setProperty('font-style','normal','important');
