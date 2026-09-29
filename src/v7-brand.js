@@ -1,8 +1,8 @@
 const V10_ASSETS = {
   splash: 'https://d2ol7oe51mr4n9.cloudfront.net/user_3JNvttsAwr0QjxhuX5O1uaa9bvv/a2eeef18-c5f1-4870-9124-6026558b2612.png'
 };
-const STARTUP_MS = 2350;
-const STARTUP_FADE_MS = 420;
+const STARTUP_MS = 720;
+const STARTUP_FADE_MS = 180;
 
 const ROOT_ROUTES = new Set(['home','competition','video','fantasy','more']);
 const HEADER_TITLES = {
