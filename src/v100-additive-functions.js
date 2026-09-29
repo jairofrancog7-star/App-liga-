@@ -425,8 +425,8 @@ function credentialExtra(){
       '<div class="v196-preview-frame"><canvas width="1011" height="638" data-v196-preview-canvas aria-label="Vista previa de credencial"></canvas></div>'+
       '<p>Formato horizontal ID-1 · 1011 × 638 px a 300 ppp. Puedes cambiar entre la credencial roja clásica y la azul clásica con trofeo; ambas conservan las proporciones, foto, logos, categoría y tipografía del formato físico.</p>'+
     '</div>'+
-    '<div class="v100-actions"><button class="v100-primary" data-v100-credential-png>Descargar imagen PNG</button><button class="v100-secondary" data-v100-credential-pdf>Descargar PDF · tamaño credencial</button><button class="v100-secondary" data-v100-credential-share>Compartir imagen</button></div>'+
-    '<p class="v100-note">Si la CURP se detecta y valida, la fecha de nacimiento se sincroniza automáticamente.</p>'+
+    '<div class="v100-actions"><button class="v100-primary" data-v100-credential-png>Descargar imagen PNG</button><button class="v100-secondary" data-v100-credential-pdf>Descargar PDF · tamaño credencial</button><button class="v100-secondary" data-v100-credential-share>Compartir imagen</button><button class="v100-secondary" data-v198-league-logo-png>Descargar logo Liga PNG</button></div>'+
+    '<p class="v100-note">Azul clásica: logo de la Liga a la izquierda y nombre del equipo debajo de la foto, sin escudo del equipo. Roja clásica: el escudo cambia automáticamente según el equipo seleccionado. Si la CURP se detecta y valida, la fecha de nacimiento se sincroniza automáticamente.</p>'+
   '</section>';
 }
 function syncCredentialExtra(){
@@ -519,10 +519,22 @@ async function v196PlayerPhoto(){
   let url='';try{url=URL.createObjectURL(file);return await v100LoadImage(url)}catch(_){return null}finally{if(url)URL.revokeObjectURL(url)}
 }
 function v196CredentialTeamLogo(team){
-  const direct=teamLogo(team);if(direct)return direct;
+  const wanted=norm(team);if(!wanted)return '';
   try{
-    const t=officialTeams().find(x=>norm(x.name)===norm(team));return t?.logo||'';
-  }catch(_){return ''}
+    const db=window.LJR_OFFICIAL_API?.getData?.()||window.LJR_OFFICIAL_DATA||{};
+    const hit=Object.entries(db.team_logos||{}).find(([name])=>norm(name)===wanted);
+    if(hit){
+      const v=hit[1];
+      const p=typeof v==='string'?v:(v?.local||v?.source||'');
+      if(p)return /^https?:/i.test(p)?p:'./'+String(p).replace(/^\.\//,'');
+    }
+  }catch(_){}
+  try{
+    const t=officialTeams().find(x=>norm(x.name)===wanted);
+    if(t?.logo)return t.logo;
+  }catch(_){}
+  const direct=teamLogo(team);
+  return direct||'';
 }
 async function v197DrawBlueCredential(canvas){
   if(!canvas)return null;
@@ -536,16 +548,29 @@ async function v197DrawBlueCredential(canvas){
   x.clearRect(0,0,W,H);
   x.save();v196RoundRectPath(x,5,5,W-10,H-10,34);x.clip();
 
-  const bg=x.createLinearGradient(0,0,W,H);bg.addColorStop(0,'#0a4ba7');bg.addColorStop(.43,'#153f98');bg.addColorStop(1,'#071e69');x.fillStyle=bg;x.fillRect(0,0,W,H);
-  const sheen=x.createLinearGradient(0,0,W,0);sheen.addColorStop(0,'rgba(255,255,255,.02)');sheen.addColorStop(.52,'rgba(198,216,255,.20)');sheen.addColorStop(1,'rgba(255,255,255,.03)');x.fillStyle=sheen;x.fillRect(0,0,W,H);
+  const bg=x.createLinearGradient(0,0,W,H);bg.addColorStop(0,'#0751ad');bg.addColorStop(.40,'#173f97');bg.addColorStop(1,'#06195e');x.fillStyle=bg;x.fillRect(0,0,W,H);
 
-  const trophy=await v100LoadImage('./assets/reference/final-trophy-drive.png');
+  /* Fondo diseñado para que el trofeo siempre tenga profundidad y contraste. */
+  const glow=x.createRadialGradient(505,325,40,505,325,390);
+  glow.addColorStop(0,'rgba(123,183,255,.38)');glow.addColorStop(.45,'rgba(52,112,214,.20)');glow.addColorStop(1,'rgba(5,20,82,0)');
+  x.fillStyle=glow;x.fillRect(120,20,760,600);
+  x.save();x.globalAlpha=.10;x.strokeStyle='#dbe8ff';x.lineWidth=2;
+  for(let i=-180;i<1180;i+=92){x.beginPath();x.moveTo(i,0);x.lineTo(i-235,H);x.stroke()}
+  x.restore();
+  x.fillStyle='rgba(3,13,62,.18)';v196RoundRectPath(x,250,88,455,500,36);x.fill();
+  x.strokeStyle='rgba(116,171,255,.20)';x.lineWidth=2;v196RoundRectPath(x,250,88,455,500,36);x.stroke();
+
+  let trophy=await v100LoadImage('./assets/reference/final-trophy-drive.png');
+  if(!trophy)trophy=await v100LoadImage('./final-trophy-drive.png');
   if(trophy){
-    x.save();x.globalAlpha=.82;
-    v100DrawContainedImage(x,trophy,255,85,500,500);
+    x.save();x.globalAlpha=.96;x.shadowColor='rgba(13,8,64,.80)';x.shadowBlur=28;x.shadowOffsetY=12;
+    v100DrawContainedImage(x,trophy,275,88,420,505);
     x.restore();
+  }else{
+    x.save();x.globalAlpha=.28;x.fillStyle='#b9d5ff';x.font='900 82px Arial';x.textAlign='center';x.fillText('TROFEO',485,355);x.restore();x.textAlign='left';
   }
-  const blueShade=x.createLinearGradient(0,0,0,H);blueShade.addColorStop(0,'rgba(4,21,80,.08)');blueShade.addColorStop(1,'rgba(1,12,52,.34)');x.fillStyle=blueShade;x.fillRect(0,0,W,H);
+  const sheen=x.createLinearGradient(0,0,W,0);sheen.addColorStop(0,'rgba(255,255,255,.02)');sheen.addColorStop(.52,'rgba(198,216,255,.13)');sheen.addColorStop(1,'rgba(255,255,255,.02)');x.fillStyle=sheen;x.fillRect(0,0,W,H);
+  const blueShade=x.createLinearGradient(0,0,0,H);blueShade.addColorStop(0,'rgba(4,21,80,.04)');blueShade.addColorStop(1,'rgba(1,12,52,.31)');x.fillStyle=blueShade;x.fillRect(0,0,W,H);
 
   x.strokeStyle='rgba(206,222,255,.34)';x.lineWidth=4;v196RoundRectPath(x,8,8,W-16,H-16,31);x.stroke();
 
@@ -565,14 +590,15 @@ async function v197DrawBlueCredential(canvas){
   x.restore();x.strokeStyle='rgba(6,17,56,.55)';x.lineWidth=3;v196RoundRectPath(x,px,py,pw,ph,8);x.stroke();
 
   const league=await v100LoadImage('./assets/liga-logo.webp');
-  if(league){x.save();x.fillStyle='rgba(255,255,255,.93)';x.fillRect(45,468,122,122);x.drawImage(league,53,476,106,106);x.restore()}
+  if(league){
+    x.save();x.fillStyle='rgba(255,255,255,.96)';v196RoundRectPath(x,42,466,126,126,7);x.fill();
+    v100DrawContainedImage(x,league,50,474,110,110);x.restore();
+  }
 
-  const teamImg=await v100LoadImage(v196CredentialTeamLogo(team));
-  if(teamImg){x.save();x.fillStyle='rgba(255,255,255,.94)';v196RoundRectPath(x,690,410,68,68,7);x.fill();v100DrawContainedImage(x,696,416,56,56);x.restore()}
-
+  /* La credencial azul original NO lleva escudo del equipo: sólo el nombre debajo de la foto. */
   x.font='900 37px Arial,Helvetica,sans-serif';x.textAlign='center';
-  const teamLabel=team.toUpperCase(),teamFont=v196FitFont(x,teamLabel,205,37,23,900);x.font='900 '+teamFont+'px Arial,Helvetica,sans-serif';
-  v196OutlinedText(x,teamLabel,862,452,'#f4d553','#3655a3',5);
+  const teamLabel=team.toUpperCase(),teamFont=v196FitFont(x,teamLabel,255,37,22,900);x.font='900 '+teamFont+'px Arial,Helvetica,sans-serif';
+  v196OutlinedText(x,teamLabel,840,447,'#f4d553','#3655a3',5);
   x.textAlign='left';
 
   const nameUpper=name.toUpperCase();
@@ -655,6 +681,14 @@ async function v196RenderCredentialPreview(){
   const head=$('[data-v196-classic-preview] .v196-preview-head b');
   if(head)head.textContent=style==='blue'?'Vista previa · azul clásica con trofeo':'Vista previa · roja clásica con franja verde';
 }
+async function v198LeagueLogoPng(){
+  const img=await v100LoadImage('./assets/liga-logo.webp');if(!img)return null;
+  const side=700,canvas=document.createElement('canvas');canvas.width=side;canvas.height=side;
+  const x=canvas.getContext('2d');x.clearRect(0,0,side,side);
+  x.fillStyle='#fff';x.fillRect(0,0,side,side);
+  v100DrawContainedImage(x,img,35,35,side-70,side-70);
+  return canvasBlob(canvas);
+}
 async function credentialCanvas(){
   syncCredentialExtra();
   const canvas=document.createElement('canvas');
@@ -734,6 +768,7 @@ function bindCredential(root){
   $('[data-v100-credential-png]',root)?.addEventListener('click',async()=>{const b=await credentialCanvas();if(b)download(b,'Credencial_Liga_Juventino.png')});
   $('[data-v100-credential-pdf]',root)?.addEventListener('click',downloadCredentialPdf);
   $('[data-v100-credential-share]',root)?.addEventListener('click',async()=>{const b=await credentialCanvas();if(b)try{await fileShare(b,'Credencial_Liga_Juventino.png','Credencial Liga Juventino')}catch(e){}});
+  $('[data-v198-league-logo-png]',root)?.addEventListener('click',async()=>{const b=await v198LeagueLogoPng();if(b)download(b,'Logo_Liga_Municipal_Juventino_Rosas.png')});
 }
 
 /* ---------- PIZARRA TÁCTICA AVANZADA/* ---------- PIZARRA TÁCTICA AVANZADA ---------- */
