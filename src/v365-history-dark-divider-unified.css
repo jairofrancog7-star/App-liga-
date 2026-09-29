@@ -1,0 +1,35 @@
+/* V365 — Historia: separación inferior de tabs igual a la referencia 3.
+   Corrige TODAS las secciones: Resumen, Temporadas, Campeones, Finales,
+   Récords y Videos. Mantiene únicamente la línea fina bajo las pestañas y
+   elimina la franja azul brillante del contenido. */
+@media (max-width:1023px){
+  html body[data-app-route="history"] #screen,
+  html body[data-app-route="history"] .v35-history-page{
+    background:#020650!important;
+    background-image:none!important;
+  }
+
+  /* El arte superior sigue existiendo por ::before; desde el borde inferior
+     de las tabs hacia abajo todo queda azul marino oscuro, como la imagen 3. */
+  html body[data-app-route="history"] .v35-history-page .v35-history-content,
+  html body[data-app-route="history"] .v35-history-page .v351-history-panel,
+  html body[data-app-route="history"] .v35-history-page .v351-history-panel.is-active,
+  html body[data-app-route="history"] .v35-history-page .v359-deferred-shell,
+  html body[data-app-route="history"] .v35-history-page .v35-records-body,
+  html body[data-app-route="history"] .v35-history-page .v329-history-videos,
+  html body[data-app-route="history"] .v35-history-page .v358-finals-shell,
+  html body[data-app-route="history"] .v35-history-page .v340-champions-ranking,
+  html body[data-app-route="history"] .v35-history-page .v341-history-seasons-era{
+    background:#020650!important;
+    background-image:none!important;
+  }
+
+  /* Conserva sólo la división fina de la referencia, no una banda azul. */
+  html body[data-app-route="history"] .v35-history-page .v35-tabs,
+  html body[data-app-route="history"] .v35-history-page.v329-videos-active .v35-tabs,
+  html body[data-app-route="history"] .v35-history-page.v329-finals-image1 .v35-tabs,
+  html body[data-app-route="history"] .v35-history-page.v358-finals-reference .v35-tabs{
+    border-bottom:1px solid rgba(205,212,255,.23)!important;
+    box-shadow:none!important;
+  }
+}
