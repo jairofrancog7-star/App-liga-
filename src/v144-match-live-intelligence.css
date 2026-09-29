@@ -236,13 +236,13 @@
   .v144-tag{display:inline-flex!important;margin-left:5px!important;padding:2px 4px!important;border-radius:4px!important;background:#173c79!important;color:#59e8f1!important;font-size:5.5px!important;font-weight:900!important}
 
   .v144-modal{
-    position:fixed;inset:0;z-index:190000;display:grid;place-items:end center;
+    position:fixed;inset:0;z-index:2147483646!important;display:grid;place-items:end center;
     box-sizing:border-box;
     padding:16px 16px calc(104px + env(safe-area-inset-bottom,0px));
   }
-  .v144-backdrop{position:absolute;inset:0;border:0;background:rgba(0,0,30,.72);backdrop-filter:blur(4px)}
+  .v144-backdrop{position:absolute;inset:0;z-index:0;border:0;background:rgba(0,0,30,.72);backdrop-filter:blur(4px)}
   .v144-modal>section{
-    position:relative;width:min(100%,520px);
+    position:relative;z-index:1;width:min(100%,520px);
     max-height:calc(100dvh - 128px - env(safe-area-inset-bottom,0px));
     overflow-y:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch;
     scroll-padding-bottom:22px;
@@ -257,7 +257,13 @@
   .v144-modal label{display:grid;gap:5px;margin-top:9px}.v144-modal label span{color:#b8c1e0;font-size:8px;font-weight:800}
   .v144-modal input{width:100%;height:40px;padding:0 10px;border:1px solid rgba(89,109,214,.4);border-radius:10px;background:#060b5c;color:#fff;font-size:9px;box-sizing:border-box}
   .v144-modal p{color:#909bc5;font-size:7.5px;line-height:1.4}
-  .v144-save{width:100%;min-height:42px;margin:6px 0 2px;border:0;border-radius:11px;background:#25dce8;color:#06105d;font-size:9px;font-weight:900}
+  .v144-save{
+    position:sticky;bottom:0;z-index:6;
+    width:100%;min-height:46px;margin:10px 0 0;
+    border:0;border-radius:11px;background:#25dce8;color:#06105d;
+    font-size:9px;font-weight:900;
+    box-shadow:0 -10px 22px rgba(9,13,104,.94),0 8px 18px rgba(0,0,0,.28)
+  }
 
   .v144-toast{position:fixed;left:50%;bottom:95px;z-index:210000;transform:translateX(-50%);max-width:calc(100vw - 30px);padding:10px 13px;border:1px solid rgba(37,224,239,.3);border-radius:11px;background:#081063;color:#fff;font:750 9px/1.35 Inter,Arial,sans-serif;text-align:center;box-shadow:0 12px 30px rgba(0,0,0,.35)}
 }
