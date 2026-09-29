@@ -2139,16 +2139,20 @@ function rerenderContent(){
   root.classList.toggle('v329-videos-active',activeTab==='Videos');
   root.classList.toggle('v341-seasons-active',activeTab==='Temporadas');
   document.body.classList.toggle('v341-history-seasons-active',activeTab==='Temporadas');
-  root.classList.toggle('v330-finals-active',false);
+  root.classList.remove('v330-finals-active');
 
   requestAnimationFrame(()=>{
-    syncHisfunction v351RefreshPanel(tab){
+    syncHistoryCollapse();
+    v355HydrateHistoryLazy(root);
+    if(activeTab==='Finales')window.LJR_APPLY_HISTORY_FINALS_REFERENCE?.();
+  });
+}
+function v351RefreshPanel(tab){
   if(tab!=='Campeones')return;
   const key='Campeones|'+championCategory;
   v350TabHtmlCache.delete(key);
   v355DomCache.delete(key);
 }
-
 
 window.LJR_HISTORY_FAST_TAB=function(tabName){
   if(route()!=='history')return false;
