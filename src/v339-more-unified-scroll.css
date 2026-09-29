@@ -1,0 +1,105 @@
+/* V339 — MÁS: fondo continuo + arte fijo durante el scroll.
+   Referencia: el título/arte (incluido el balón derecho) permanecen quietos;
+   únicamente se desplaza el contenido del menú. */
+@media(max-width:1023px){
+  body[data-app-route="more"]{
+    --more-unified-bg:#010fe1;
+    --more-master-bg:var(--more-unified-bg);
+    --more-title-left:22px;
+    --more-title-bottom:17px;
+    --more-title-size:31px;
+    --more-profile-right:22px;
+    --more-profile-bottom:17px;
+    --more-profile-size:25px;
+    background:var(--more-unified-bg)!important;
+  }
+
+  body[data-app-route="more"] #app,
+  body[data-app-route="more"] .app-shell,
+  body[data-app-route="more"] #screen{
+    background:var(--more-unified-bg)!important;
+  }
+
+  /* El contenido no pinta un segundo azul: el mismo azul claro continúa
+     después del borde inferior de la ilustración, eliminando la franja oscura. */
+  body[data-app-route="more"] .v19-more-page{
+    position:relative!important;
+    isolation:isolate!important;
+    background-color:transparent!important;
+    background-image:none!important;
+    overflow:hidden!important;
+  }
+
+  /* Capa visual fija: conserva el balón/arte en la misma posición mientras
+     los botones y textos se desplazan, como en el video de referencia. */
+  body[data-app-route="more"] .v19-more-page::before{
+    content:""!important;
+    display:block!important;
+    position:fixed!important;
+    top:calc(var(--more-master-header-h) + env(safe-area-inset-top))!important;
+    right:0!important;
+    bottom:calc(var(--bottom-nav-h,60px) + env(safe-area-inset-bottom))!important;
+    left:0!important;
+    z-index:0!important;
+    pointer-events:none!important;
+    background-color:var(--more-unified-bg)!important;
+    background-image:url('../public/more-bg-v19.webp?v=20260929-more-unified-v339')!important;
+    background-repeat:no-repeat!important;
+    background-size:100% auto!important;
+    background-position:center calc(-1 * var(--more-master-header-h))!important;
+    transform:translateZ(0);
+  }
+
+  /* El logo/arte auxiliar también pertenece a la capa visual, no al scroll. */
+  body[data-app-route="more"] .v19-more-logo{
+    position:fixed!important;
+    top:calc(var(--more-master-header-h) + env(safe-area-inset-top) + 2px)!important;
+    z-index:2!important;
+  }
+
+  /* En MÁS no colapsar la cabecera al deslizar: la referencia mantiene
+     título, perfil y fondo en la misma posición; sólo se mueve el menú. */
+  body.v10-header-collapsed[data-app-route="more"] .topbar{
+    height:calc(var(--more-master-header-h) + env(safe-area-inset-top))!important;
+    min-height:calc(var(--more-master-header-h) + env(safe-area-inset-top))!important;
+    max-height:calc(var(--more-master-header-h) + env(safe-area-inset-top))!important;
+    background-position:center top!important;
+  }
+  body.v10-header-collapsed[data-app-route="more"] .topbar::after{
+    left:var(--more-title-left)!important;
+    bottom:var(--more-title-bottom)!important;
+    font-size:var(--more-title-size)!important;
+  }
+  body.v10-header-collapsed[data-app-route="more"] .topbar .profile-button{
+    right:var(--more-profile-right)!important;
+    bottom:var(--more-profile-bottom)!important;
+    width:var(--more-profile-size)!important;
+    height:var(--more-profile-size)!important;
+    min-width:var(--more-profile-size)!important;
+    min-height:var(--more-profile-size)!important;
+    max-width:var(--more-profile-size)!important;
+    max-height:var(--more-profile-size)!important;
+  }
+}
+
+@media(max-width:560px){
+  body[data-app-route="more"]{
+    --more-title-left:20px;
+    --more-title-bottom:16px;
+    --more-title-size:29px;
+    --more-profile-right:20px;
+    --more-profile-bottom:16px;
+    --more-profile-size:24px;
+  }
+}
+
+@media(max-width:390px){
+  body[data-app-route="more"]{
+    --more-title-left:18px;
+    --more-title-bottom:15px;
+    --more-title-size:28px;
+    --more-profile-right:18px;
+    --more-profile-bottom:15px;
+    --more-profile-size:23px;
+  }
+}
