@@ -1088,8 +1088,48 @@ function trophySvg(){
 function linesSvg(){
   return '<svg class="v35-history-lines" viewBox="0 0 430 360" preserveAspectRatio="none" aria-hidden="true"><g fill="none" stroke="currentColor"><path d="M-30 60 63 19l84 47-16 84-92 20-69-50Z"/><path d="m147 66 83-44 74 47-24 85-89 10-60-14Z"/><path d="m304 69 83-30 73 58-28 82-92 8-60-33Z"/><path d="m39 170 92-20 60 14 29 75-58 66-100-9-49-70Z"/><path d="m191 164 89-10 60 33 7 78-68 49-97-9-20-70Z"/></g></svg>';
 }
+function v358MomentSeasonLabel(m){
+  const raw=String(m?.season||'');
+  const range=raw.match(/\b(19|20)(\d{2})\D+(19|20)(\d{2})\b/);
+  if(range){
+    const a=Number(range[1]+range[2]),b=Number(range[3]+range[4]);
+    return String(a)+'/'+String(b).slice(-2);
+  }
+  const date=String(m?.date||'').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');
+  const dm=date.match(/\b(\d{1,2})\s+(ene|feb|mar|abr|may|jun|jul|ago|sep|sept|oct|nov|dic)[a-z]*\s+((?:19|20)\d{2})\b/);
+  if(dm){
+    const month=HISTORY_MONTH_INDEX[dm[2]],year=Number(dm[3]);
+    const start=month>=6?year:year-1;
+    return String(start)+'/'+String(start+1).slice(-2);
+  }
+  const ym=raw.match(/\b((?:19|20)\d{2})\b/)||date.match(/\b((?:19|20)\d{2})\b/);
+  if(!ym)return '';
+  const year=Number(ym[1]);
+  return String(year-1)+'/'+String(year).slice(-2);
+}
+function v358SeasonChampion(label){
+  try{
+    const rows=v340ChampionMoments().filter(m=>v358MomentSeasonLabel(m)===label);
+    if(!rows.length)return null;
+    const priority=m=>{
+      const c=v340ChampionCategory(m);
+      return c==='Primera'?0:c==='Intermedia'?1:c==='Segunda'?2:c==='Veteranos 35+'?3:c==='Veteranos 50+'?4:5;
+    };
+    rows.sort((a,b)=>priority(a)-priority(b)||historyDateSortValue(b.date)-historyDateSortValue(a.date));
+    const m=rows[0],team=v340CanonicalTeam(m.winner||m.title||'');
+    return {team,logo:v340ChampionLogo(team,m.image||''),label};
+  }catch(_){return null}
+}
 function seasonCards(){
-  return seasons.map((s,i)=>'<button class="v35-season-card" type="button" data-v35-season="'+i+'" aria-label="Temporada '+esc(s.label)+'"><span class="v35-season-crest"><img src="'+s.crest+'" alt="'+esc(s.alt)+'" loading="lazy" decoding="async"></span><span class="v35-season-label">'+esc(s.label)+'</span></button>').join('');
+  return seasons.map((item,i)=>{
+    const winner=v358SeasonChampion(item.label);
+    const crest=winner?.logo||item.crest;
+    const alt=winner?.team||item.alt;
+    return '<button class="v35-season-card" type="button" data-v35-season="'+i+'" aria-label="Temporada '+esc(item.label)+(winner?' · '+esc(winner.team):'')+'">'+
+      '<span class="v35-season-crest"><img src="'+crest+'" alt="'+esc(alt)+'" loading="lazy" decoding="async"></span>'+
+      '<span class="v35-season-label">'+esc(item.label)+'</span>'+
+    '</button>';
+  }).join('');
 }
 function featureCard(){
   return '<article class="v35-feature-card"><img class="v35-feature-photo" src="'+ASSETS.feature+'" alt="" loading="eager" decoding="async"><img class="v35-feature-trophy" src="'+ASSETS.trophy+'" alt="" loading="eager" decoding="async"><span class="v35-feature-shade"></span><div class="v35-feature-copy"><h2>La historia de<br>nuestra Liga</h2><p>Liga Municipal de Fútbol<br>Juventino Rosas</p></div><button class="v35-share" type="button" data-v35-share aria-label="Compartir historia">'+shareSvg()+'</button></article>';
@@ -1455,8 +1495,136 @@ function finalsArchiveBlock(){
   '</section>';
 }
 
+function v358Norm(v){
+  return String(v||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[^a-z0-9]+/g,' ').trim().replace(/\s+/g,' ');
+}
+function v358Logo(team,preferred=''){
+  if(preferred)return preferred;
+  try{
+    const api=window.LJR_OFFICIAL_API?.getLogo?.(team);
+    if(api)return api;
+  }catch(_){}
+  try{
+    const h=v340ChampionLogo(team,'');
+    if(h)return h;
+  }catch(_){}
+  return '';
+}
+function v358LogoHtml(team,preferred=''){
+  const src=v358Logo(team,preferred);
+  const initials=String(team||'JR').split(/\s+/).filter(Boolean).slice(0,2).map(x=>x[0]||'').join('').toUpperCase()||'JR';
+  return '<span class="v358-stat-logo '+(src?'':'is-fallback')+'">'+
+    (src?'<img src="'+esc(src)+'" alt="'+esc(team)+'" loading="lazy" decoding="async" onerror="this.remove();this.parentElement.classList.add(\'is-fallback\')">':'<b>'+esc(initials)+'</b>')+
+  '</span>';
+}
+function v358TopTitles(){
+  try{return v357ChampionRows('Todos').slice(0,4).map(r=>({name:r.team,team:r.team,value:r.count,logo:v340ChampionLogo(r.team,r.logo||'')}));}
+  catch(_){return []}
+}
+function v358TopScorers(){
+  const db=window.LJR_OFFICIAL_DATA;
+  const rows=[];
+  if(db?.categories){
+    Object.entries(db.categories).forEach(([id,c])=>{
+      (c?.scorers?.[0]?.rows||[]).forEach(r=>{
+        const goals=Number(r?.[3]);
+        const player=String(r?.[1]||'').trim(),team=String(r?.[2]||'').trim();
+        if(player&&team&&Number.isFinite(goals))rows.push({name:player,team,value:goals,category:c?.name||'',source:'official'});
+      });
+    });
+  }
+  if(rows.length){
+    const best=new Map();
+    rows.forEach(r=>{
+      const k=v358Norm(r.name);
+      const prev=best.get(k);
+      if(!prev||r.value>prev.value)best.set(k,r);
+    });
+    return [...best.values()].sort((a,b)=>b.value-a.value||a.name.localeCompare(b.name,'es')).slice(0,4);
+  }
+  const best=new Map();
+  historicScorers.filter(r=>Number.isFinite(Number(r.goals))).forEach(r=>{
+    const item={name:r.player,team:r.team,value:Number(r.goals),category:r.category||'',source:'history'};
+    const k=v358Norm(item.name),prev=best.get(k);
+    if(!prev||item.value>prev.value)best.set(k,item);
+  });
+  return [...best.values()].sort((a,b)=>b.value-a.value||a.name.localeCompare(b.name,'es')).slice(0,4);
+}
+function v358TopAppearances(){
+  const db=window.LJR_OFFICIAL_DATA;
+  const counts=new Map();
+  const add=(name,team,matchKey)=>{
+    name=String(name||'').trim();team=String(team||'').trim();
+    if(!name)return;
+    const key=v358Norm(name);
+    let row=counts.get(key);
+    if(!row){row={name,team,value:0,matches:new Set(),source:'lineup'};counts.set(key,row);}
+    if(team&&!row.team)row.team=team;
+    if(!row.matches.has(matchKey)){row.matches.add(matchKey);row.value++;}
+  };
+  if(db?.categories){
+    Object.values(db.categories).forEach(c=>{
+      (c?.cedulas||[]).forEach((m,idx)=>{
+        const id=String(m?.id??idx)+'|'+String(c?.id??c?.name??'');
+        const local=[...(m?.local_lineup||[]),...(m?.local_bench||[])];
+        const away=[...(m?.away_lineup||[]),...(m?.away_bench||[])];
+        [...new Set(local.map(x=>String(x||'').trim()).filter(Boolean))].forEach(p=>add(p,m?.local||'',id+'|L'));
+        [...new Set(away.map(x=>String(x||'').trim()).filter(Boolean))].forEach(p=>add(p,m?.away||'',id+'|A'));
+      });
+    });
+  }
+  let rows=[...counts.values()];
+  if(!rows.length&&db?.categories){
+    Object.values(db.categories).forEach(c=>{
+      Object.values(c?.player_usage||{}).forEach(u=>{
+        const n=Number(u?.cedulas||0);
+        if(n>0)rows.push({name:u?.name||'',team:u?.team||'',value:n,source:'cedulas'});
+      });
+    });
+  }
+  return rows.filter(r=>r.name&&r.value>0).sort((a,b)=>b.value-a.value||a.name.localeCompare(b.name,'es')).slice(0,4);
+}
+function v358StatIcon(kind){
+  if(kind==='titles')return v340TrophySvg();
+  if(kind==='goals')return '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8.5"/><path d="m9.2 8.8 2.8-2 2.8 2-1.1 3.3h-3.4L9.2 8.8Zm1.1 3.3-3.1 2.2m6.5-2.2 3.1 2.2M9 17.8l1.3-3.1h3.4l1.3 3.1"/></svg>';
+  return '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4.5h10v15H7z"/><path d="M9.5 8h5M9.5 12h5M9.5 16h3"/></svg>';
+}
+function v358StatCard(title,kind,rows,emptyText,footer){
+  return '<article class="v358-stat-card v358-stat-'+kind+'"><h3>'+esc(title)+'</h3><div class="v358-stat-rule"></div>'+
+    (rows.length?rows.map(r=>'<div class="v358-stat-row">'+v358LogoHtml(r.team,r.logo||'')+
+      '<span class="v358-stat-copy"><strong>'+esc(r.name)+'</strong><small>'+esc(r.team||r.category||'')+'</small></span>'+
+      '<b>'+esc(r.value)+'</b><i>'+v358StatIcon(kind)+'</i></div>').join('')+
+      '<p class="v358-stat-source">'+esc(footer)+'</p>':
+      '<div class="v358-stat-empty">'+esc(emptyText)+'</div>')+
+  '</article>';
+}
+function v358SummaryStats(){
+  const titles=v358TopTitles(),scorers=v358TopScorers(),apps=v358TopAppearances();
+  const scorerOfficial=scorers.some(r=>r.source==='official');
+  const appLineup=apps.some(r=>r.source==='lineup');
+  return '<section class="v358-summary-stats" data-v358-summary-stats>'+
+    '<h2>Estadísticas históricas</h2>'+
+    '<div class="v358-stats-carousel">'+
+      v358StatCard('Más títulos','titles',titles,'Sin títulos documentados todavía.','Palmarés documentado en Historia')+
+      v358StatCard('Más goleadores','goals',scorers,'Sin tabla de goleo publicada todavía.',scorerOfficial?'Goleo oficial publicado':'Mejores registros históricos recuperados')+
+      v358StatCard('Más partidos jugados','matches',apps,'Aún no hay suficientes cédulas públicas para ordenar jugadores.',appLineup?'Partidos contados desde T/C capturados en cédulas públicas':'Participaciones registradas en cédulas públicas')+
+    '</div>'+
+  '</section>';
+}
+function v358RefreshSummaryStats(){
+  if(route()!=='history'||activeTab!=='Resumen')return;
+  const host=document.querySelector('[data-v358-summary-stats]');
+  if(!host)return;
+  const fresh=document.createElement('div');
+  fresh.innerHTML=v358SummaryStats();
+  const next=fresh.firstElementChild;
+  if(next&&host.innerHTML!==next.innerHTML)host.replaceWith(next);
+}
+function v358ScheduleSummaryRefresh(){
+  [350,1100,2400].forEach(ms=>window.setTimeout(v358RefreshSummaryStats,ms));
+}
 function stats(){
-  return '<section class="v35-block v35-stats-block"><h2 class="v35-section-title">Estadísticas históricas</h2>'+
+  return '<section class="v35-block v35-stats-block v358-stats-source-note"><h2 class="v35-section-title">Fuentes de estadísticas</h2>'+
     '<article class="v35-stat-card"><h3>Archivo oficial y administrativo</h3><div class="v35-stat-rule"></div><p>Se consideran fuentes las publicaciones de la Liga, Golazo Liga, administradores de sus páginas y dirigentes cuando su cargo está documentado, además de reglamentos, roles, tablas, fotografías, álbumes y documentos públicos externos. Si una de esas fuentes identifica a un equipo como campeón, se registra como campeón aunque no exista una foto del trofeo.</p></article></section>';
 }
 /* V348 — Historia: render inmediato + archivo profundo bajo demanda.
@@ -1501,6 +1669,8 @@ function v348ArmArchive(root){
 function summaryBody(){
   return '<section class="v35-block v35-seasons-block"><div class="v35-section-row"><h2>Buscar por temporada</h2><button type="button" data-v35-tab-jump="Temporadas">Ver todo</button></div><div class="v35-season-carousel">'+seasonCards()+'</div></section>'+
     '<section class="v35-block v35-feature-block">'+featureCard()+'</section>'+
+    '<section class="v35-block v35-classics-block v358-summary-classics"><h2 class="v35-section-title">Ver partidos clásicos</h2>'+videosRow()+'</section>'+
+    v358SummaryStats()+
     '<div class="v35-history-lazy" data-v35-lazy-history="summary" aria-busy="true"></div>';
 }
 function seasonsEraBlock(){
@@ -2156,6 +2326,7 @@ function pageHtml(){
     '<div class="v35-compact-bar">'+back+'<div class="v35-compact-title">Historia</div></div>'+
     '<header class="v35-history-head">'+
       back+
+      '<span class="v35-logo-wrap" aria-hidden="true"><img data-v35-top-logo src="'+ASSETS.league+'" alt="" loading="eager" decoding="async"></span>'+
       '<h1>Historia</h1>'+
     '</header>'+
     '<nav class="v35-tabs" aria-label="Secciones de Historia">'+tabs()+'</nav>'+
@@ -2197,6 +2368,7 @@ function renderHistory(){
   requestAnimationFrame(()=>{
     syncHistoryCollapse();
     v355HydrateHistoryLazy(historyRoot);
+    if(activeTab==='Resumen')v358ScheduleSummaryRefresh();
     if(activeTab==='Finales')window.LJR_APPLY_HISTORY_FINALS_REFERENCE?.();
   });
 }
@@ -2241,6 +2413,7 @@ function rerenderContent(){
   requestAnimationFrame(()=>{
     syncHistoryCollapse();
     v355HydrateHistoryLazy(root);
+    if(activeTab==='Resumen')v358ScheduleSummaryRefresh();
     if(activeTab==='Finales')window.LJR_APPLY_HISTORY_FINALS_REFERENCE?.();
   });
 }
