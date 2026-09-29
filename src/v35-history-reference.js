@@ -1514,6 +1514,11 @@ function videosBody(){
         '<span class="v329-video-card-title">Clásicos de la Liga</span>'+
       '</button>'+
     '</div>'+
+    '<section class="v329-video-previous">'+
+      '<div class="v329-video-previous-head"><span>ARCHIVO ANTERIOR</span><h2>Más videos e información</h2><p>Se conserva debajo el contenido que ya estaba guardado en Historia, sin reemplazar el nuevo diseño de la parte superior.</p></div>'+
+      '<div class="v329-video-previous-carousel">'+videosRow()+'</div>'+
+      historicalSourcesBlock()+
+    '</section>'+
   '</section>';
 }
 
