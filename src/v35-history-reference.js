@@ -1567,8 +1567,8 @@ function seasonsEraBlock(){
     const n=norm(team);
     const mapped=PNG[n];
     if(mapped){
-      if(mapped.startsWith('../branding/'))return RAW+'assets/branding/'+mapped.replace('../branding/','');
-      return RAW+'assets/official-logos/'+mapped;
+      if(mapped.startsWith('../branding/'))return './assets/branding/'+mapped.replace('../branding/','');
+      return './assets/official-logos/'+mapped;
     }
     if(preferred&&/\.png(?:[?#]|$)/i.test(preferred))return preferred;
     try{
@@ -1643,7 +1643,7 @@ function seasonsEraBlock(){
           '<div class="v341-era-grid">'+items.map(r=>
             '<button type="button" class="v341-era-item" data-v35-era-team="'+esc(r.team)+'" data-v35-era-date="'+esc(r.date)+'" title="'+esc(r.team+' · '+r.title+' · '+r.season)+'" aria-label="'+esc(r.team+' · '+r.title+' · '+r.season)+'">'+
               '<span class="v341-era-logo '+(r.logo?'':'is-fallback')+'">'+
-                (r.logo?'<img src="'+r.logo+'" alt="'+esc(r.team)+'" crossorigin="anonymous" loading="lazy" decoding="async" onerror="this.parentElement.classList.add(\'is-fallback\');this.remove()">':'<b>'+esc(initials(r.team))+'</b>')+
+                (r.logo?'<img src="'+r.logo+'" alt="'+esc(r.team)+'" loading="lazy" decoding="async" onerror="this.parentElement.classList.add(\'is-fallback\');this.remove()">':'<b>'+esc(initials(r.team))+'</b>')+
               '</span>'+
               '<span class="v341-era-season">'+esc(r.season)+'</span>'+
             '</button>'
@@ -1697,8 +1697,22 @@ function v341CleanSeasonLogos(root){
     if(img.complete)clean();else img.addEventListener('load',clean,{once:true});
   });
 }
+function v351SeasonsPreviewBlock(){
+  const items=seasons.slice(0,6).map(s=>
+    '<span class="v341-era-item v351-season-preview-item" aria-label="Temporada '+esc(s.label)+'">'+
+      '<span class="v341-era-logo"><img src="'+s.crest+'" alt="'+esc(s.alt)+'" loading="lazy" decoding="async"></span>'+
+      '<span class="v341-era-season">'+esc(s.label)+'</span>'+
+    '</span>'
+  ).join('');
+  return '<section class="v341-history-seasons-era v351-seasons-preview" aria-label="Temporadas recientes">'+
+    '<section class="v341-era-decade"><h2>2020s</h2>'+
+      '<section class="v341-era-category"><h3>Temporadas</h3><div class="v341-era-grid">'+items+'</div></section>'+
+    '</section>'+
+    '<button type="button" class="v351-load-seasons" data-v351-load-seasons>Ver temporadas completas por categoría <span aria-hidden="true">›</span></button>'+
+  '</section>';
+}
 function seasonsBody(){
-  return seasonsEraBlock()+
+  return v351SeasonsPreviewBlock()+
     '<section class="v35-block v35-tab-body v35-seasons-legacy"><div class="v35-section-row"><h2>Archivo histórico completo</h2></div>'+
     '<div class="v35-season-detail"><span>Archivo histórico</span><h3>Temporadas anteriores separadas de la actual</h3><p>Los equipos antiguos pueden aparecer aquí como parte de su temporada histórica, pero nunca se agregan otra vez a la lista de equipos actuales si ya no participan.</p></div>'+
     '<div class="v35-season-detail"><span>Convocatoria · 12 nov 2019</span><h3>Temporada 2019–2020</h3><p><b>Inicio:</b> domingo 8 de diciembre de 2019. <b>Fuerzas:</b> Primera, Intermedia y Segunda. <b>Inscripciones:</b> hasta el martes 26 de noviembre, 19:00, Unidad Deportiva Sur. <b>Registro:</b> digital o físico, máximo 26 jugadores. <b>Junta previa:</b> martes 3 de diciembre, 19:00. Uniformación, cuotas, arbitrajes, credenciales, reglamento, premiación y transitorios se resolverían conforme al reglamento y a los acuerdos de asamblea.</p></div></section>'+
@@ -2019,41 +2033,45 @@ function renderHistory(){
   historyRoot?.classList.toggle('v341-seasons-active',activeTab==='Temporadas');
   document.body.classList.toggle('v341-history-seasons-active',activeTab==='Temporadas');
   const topLogo=screen.querySelector('[data-v35-top-logo]');
+  if(topLogo)topLogo.classList.add('v35-top-logo-blend-fallback');
   requestAnimationFrame(()=>{
     syncHistoryCollapse();
     v348ArmArchive(historyRoot);
   });
-  if(topLogo){
-    const cleanTopLogo=()=>{if(route()==='history'&&topLogo.isConnected)transparentizeTopLogo(topLogo);};
-    if('requestIdleCallback' in window)requestIdleCallback(cleanTopLogo,{timeout:1400});
-    else setTimeout(cleanTopLogo,700);
-  }
 }
+let v351TabRenderToken=0;
 function rerenderContent(){
   const root=document.querySelector('.v35-history-page');
   const content=root?.querySelector('[data-v35-content]');
   const nav=root?.querySelector('.v35-tabs');
   if(!root||!content||!nav) return;
+  const mine=++v351TabRenderToken;
   v348CancelArchiveLoad();
 
-  // V350: no reconstruir la barra de tabs; sólo cambia clases/ARIA.
   nav.querySelectorAll('[data-v35-tab]').forEach(btn=>{
     const selected=btn.dataset.v35Tab===activeTab;
     btn.classList.toggle('active',selected);
     btn.setAttribute('aria-selected',selected?'true':'false');
   });
 
-  const html=bodyForTab();
-  if(content.dataset.v350Tab!==activeTab || content.dataset.v350ChampionCategory!==(activeTab==='Campeones'?championCategory:'')){
-    content.replaceChildren();
-    content.insertAdjacentHTML('afterbegin',html);
-    content.dataset.v350Tab=activeTab;
-    content.dataset.v350ChampionCategory=activeTab==='Campeones'?championCategory:'';
-  }
-
   root.classList.toggle('v329-videos-active',activeTab==='Videos');
   root.classList.toggle('v341-seasons-active',activeTab==='Temporadas');
   document.body.classList.toggle('v341-history-seasons-active',activeTab==='Temporadas');
+
+  const tabAtRender=activeTab;
+  const championAtRender=championCategory;
+  requestAnimationFrame(()=>{
+    if(mine!==v351TabRenderToken||route()!=='history'||activeTab!==tabAtRender||!root.isConnected)return;
+    if(content.dataset.v350Tab===tabAtRender &&
+       content.dataset.v350ChampionCategory===(tabAtRender==='Campeones'?championAtRender:''))return;
+    const html=bodyForTab();
+    if(mine!==v351TabRenderToken||activeTab!==tabAtRender)return;
+    content.replaceChildren();
+    content.insertAdjacentHTML('afterbegin',html);
+    content.dataset.v350Tab=tabAtRender;
+    content.dataset.v350ChampionCategory=tabAtRender==='Campeones'?championAtRender:'';
+    requestAnimationFrame(syncHistoryCollapse);
+  });
 }
 window.LJR_HISTORY_FAST_TAB=function(tabName){
   if(route()!=='history')return false;
@@ -2081,6 +2099,23 @@ function onClick(e){
   if(route()!=='history') return;
   const back=e.target.closest('[data-v35-back]');
   if(back){e.preventDefault();e.stopPropagation();if(history.length>1)history.back();else location.hash='#/more';return;}
+  const loadSeasons=e.target.closest('[data-v351-load-seasons]');
+  if(loadSeasons){
+    e.preventDefault();e.stopPropagation();e.stopImmediatePropagation();
+    const preview=loadSeasons.closest('.v351-seasons-preview');
+    if(!preview)return;
+    loadSeasons.disabled=true;
+    loadSeasons.innerHTML='Cargando temporadas…';
+    requestAnimationFrame(()=>requestAnimationFrame(()=>{
+      if(!preview.isConnected||route()!=='history'||activeTab!=='Temporadas')return;
+      const full=document.createElement('div');
+      full.className='v351-seasons-full';
+      full.innerHTML=seasonsEraBlock();
+      preview.replaceWith(full);
+      requestAnimationFrame(syncHistoryCollapse);
+    }));
+    return;
+  }
   const loadArchive=e.target.closest('[data-v348-load-archive]');
   if(loadArchive){
     e.preventDefault();e.stopPropagation();
