@@ -1892,15 +1892,13 @@ function finalsBody(){
 }
 function recordsBody(){
   return '<section class="v35-block v35-tab-body v35-records-body"><h2 class="v35-section-title">Récords y recuerdos</h2>'+
-    '<article class="v35-stat-card"><h3>Archivo comprobado</h3><p>Esta sección reúne marcas visibles en tablas históricas y recuerdos documentados en fotografías, álbumes y videos. Un corte de jornada no se presenta como récord absoluto de toda la Liga.</p></article>'+
-    '<div class="v35-record-grid">'+recordMemories.map(r=>'<article class="v35-record-card">'+
+    '<article class="v35-stat-card"><h3>Archivo comprobado</h3><p>Los registros completos siguen guardados en el archivo histórico. Esta vista ligera evita congelar la aplicación.</p></article>'+
+    '<div class="v35-record-grid">'+recordMemories.slice(0,4).map(r=>'<article class="v35-record-card">'+
       (r.image?'<img src="'+r.image+'" alt="" loading="lazy" decoding="async">':'<span class="v35-record-mark">LM</span>')+
-      '<div><small>'+esc(r.tag)+'</small><h3>'+esc(r.title)+'</h3><strong>'+esc(r.value)+'</strong><p>'+esc(r.detail)+'</p></div></article>').join('')+'</div>'+    '<div class="v35-records-goals-anchor">'+historicalGoalsBlock()+'</div>'+
-    '<div class="v35-history-subhead"><span>EQUIPOS DEL ARCHIVO</span><h3>Nombres recuperados de tablas, roles y álbumes</h3></div>'+
-    '<div class="v35-retro-names">'+expandedRetroNames.concat(retroNames).filter((x,i,a)=>a.indexOf(x)===i).map(n=>'<span>'+esc(n)+'</span>').join('')+'</div>'+
+      '<div><small>'+esc(r.tag)+'</small><h3>'+esc(r.title)+'</h3><strong>'+esc(r.value)+'</strong><p>'+esc(r.detail)+'</p></div></article>').join('')+'</div>'+
+    v348ArchiveSentinel('summary')+
   '</section>';
 }
-
 function videosBody(){
   return '<section class="v329-history-videos" aria-label="Videos de Historia">'+
     '<h2 class="v329-video-heading">Destacados</h2>'+
@@ -1944,18 +1942,25 @@ function videosBody(){
   '</section>';
 }
 
-function bodyForTab(){
-  const key=activeTab==='Campeones'?'Campeones|'+championCategory:activeTab;
+function v351BodyFor(tab){
+  const key=tab==='Campeones'?'Campeones|'+championCategory:tab;
   if(v350TabHtmlCache.has(key))return v350TabHtmlCache.get(key);
   let html='';
-  if(activeTab==='Temporadas') html=seasonsBody();
-  else if(activeTab==='Campeones') html=championsBody();
-  else if(activeTab==='Finales') html=finalsBody();
-  else if(activeTab==='Récords') html=recordsBody();
-  else if(activeTab==='Videos') html=videosBody();
+  if(tab==='Temporadas') html=seasonsBody();
+  else if(tab==='Campeones') html=championsBody();
+  else if(tab==='Finales') html=finalsBody();
+  else if(tab==='Récords') html=recordsBody();
+  else if(tab==='Videos') html=videosBody();
   else html=summaryBody();
   v350TabHtmlCache.set(key,html);
   return html;
+}
+function bodyForTab(){ return v351BodyFor(activeTab); }
+function v351PanelHtml(tab){
+  return '<section class="v351-history-panel '+(tab===activeTab?'is-active':'')+'" data-v351-panel="'+esc(tab)+'"'+(tab===activeTab?'':' hidden')+'>'+v351BodyFor(tab)+'</section>';
+}
+function v351AllPanelsHtml(){
+  return ['Resumen','Temporadas','Campeones','Finales','Récords','Videos'].map(v351PanelHtml).join('');
 }
 function tabs(){
   return ['Resumen','Temporadas','Campeones','Finales','Récords','Videos'].map(t=>'<button type="button" class="v35-tab '+(t===activeTab?'active':'')+'" data-v35-tab="'+esc(t)+'">'+esc(t)+'</button>').join('');
@@ -2019,7 +2024,7 @@ function pageHtml(){
       '<h1>Historia</h1>'+
     '</header>'+
     '<nav class="v35-tabs" aria-label="Secciones de Historia">'+tabs()+'</nav>'+
-    '<main class="v35-history-content" data-v35-content>'+bodyForTab()+'</main>'+
+    '<main class="v35-history-content" data-v35-content>'+v351AllPanelsHtml()+'</main>'+
   '</div>';
 }
 function renderHistory(){
@@ -2042,10 +2047,8 @@ function renderHistory(){
 let v351TabRenderToken=0;
 function rerenderContent(){
   const root=document.querySelector('.v35-history-page');
-  const content=root?.querySelector('[data-v35-content]');
   const nav=root?.querySelector('.v35-tabs');
-  if(!root||!content||!nav) return;
-  const mine=++v351TabRenderToken;
+  if(!root||!nav) return;
   v348CancelArchiveLoad();
 
   nav.querySelectorAll('[data-v35-tab]').forEach(btn=>{
@@ -2054,25 +2057,26 @@ function rerenderContent(){
     btn.setAttribute('aria-selected',selected?'true':'false');
   });
 
+  root.querySelectorAll('[data-v351-panel]').forEach(panel=>{
+    const selected=panel.dataset.v351Panel===activeTab;
+    panel.hidden=!selected;
+    panel.classList.toggle('is-active',selected);
+    panel.setAttribute('aria-hidden',selected?'false':'true');
+  });
+
   root.classList.toggle('v329-videos-active',activeTab==='Videos');
   root.classList.toggle('v341-seasons-active',activeTab==='Temporadas');
   document.body.classList.toggle('v341-history-seasons-active',activeTab==='Temporadas');
-
-  const tabAtRender=activeTab;
-  const championAtRender=championCategory;
-  requestAnimationFrame(()=>{
-    if(mine!==v351TabRenderToken||route()!=='history'||activeTab!==tabAtRender||!root.isConnected)return;
-    if(content.dataset.v350Tab===tabAtRender &&
-       content.dataset.v350ChampionCategory===(tabAtRender==='Campeones'?championAtRender:''))return;
-    const html=bodyForTab();
-    if(mine!==v351TabRenderToken||activeTab!==tabAtRender)return;
-    content.replaceChildren();
-    content.insertAdjacentHTML('afterbegin',html);
-    content.dataset.v350Tab=tabAtRender;
-    content.dataset.v350ChampionCategory=tabAtRender==='Campeones'?championAtRender:'';
-    requestAnimationFrame(syncHistoryCollapse);
-  });
 }
+function v351RefreshPanel(tab){
+  const root=document.querySelector('.v35-history-page');
+  const panel=root?.querySelector('[data-v351-panel="'+CSS.escape(tab)+'"]');
+  if(!panel)return;
+  const prefix=tab==='Campeones'?'Campeones|':'';
+  [...v350TabHtmlCache.keys()].forEach(k=>{if(k===tab||k.startsWith(prefix))v350TabHtmlCache.delete(k);});
+  panel.innerHTML=v351BodyFor(tab);
+}
+
 window.LJR_HISTORY_FAST_TAB=function(tabName){
   if(route()!=='history')return false;
   const allowed=['Resumen','Temporadas','Campeones','Finales','Récords','Videos'];
@@ -2129,7 +2133,6 @@ function onClick(e){
       const html=v348ArchiveHtml(kind);
       if(html)host.insertAdjacentHTML('beforebegin',html);
       host.remove();
-      requestAnimationFrame(syncHistoryCollapse);
     },30);
     return;
   }
@@ -2141,6 +2144,7 @@ function onClick(e){
   if(championCat){
     e.preventDefault();e.stopPropagation();e.stopImmediatePropagation();
     championCategory=championCat.dataset.v340ChampionCat||'Todos';
+    v351RefreshPanel('Campeones');
     rerenderContent();
     return;
   }
