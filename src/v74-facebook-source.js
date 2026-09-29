@@ -42,9 +42,15 @@
   function mountHistory(){
     const root=document.querySelector('.v35-history-page');
     const content=root?.querySelector('[data-v35-content]');
-    if(!content||content.querySelector('[data-v74-facebook-source="history"]'))return;
-    /* Las fuentes externas van al final: primero se conserva todo el diseño nativo de Historia. */
-    content.appendChild(card('history'));
+    if(!content)return;
+
+    /* V367: la fuente de Facebook pertenece al contenido inferior de la
+       pestaña activa. Nunca debe quedar por encima de Finales/Campeones/etc. */
+    const panel=content.querySelector('.v351-history-panel.is-active:not([hidden])')||
+      content.querySelector('.v351-history-panel.is-active')||content;
+    let source=content.querySelector('[data-v74-facebook-source="history"]');
+    if(!source)source=card('history');
+    if(source.parentElement!==panel||source!==panel.lastElementChild)panel.appendChild(source);
   }
 
   function mountNews(){
