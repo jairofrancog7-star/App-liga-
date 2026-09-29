@@ -3139,3 +3139,44 @@
    Las pestañas sólo muestran/ocultan paneles; no reconstruyen #screen. */
 .v351-history-panel[hidden]{display:none!important}
 .v351-history-panel.is-active{display:block!important}
+
+
+/* V357 — Historia > Campeones oscuro + filtro instantáneo.
+   El fondo queda en azul oscuro sólido y los filtros cambian sin reconstruir
+   el archivo histórico que está debajo. */
+@media (max-width:1023px){
+  body.v357-history-champions-active,
+  body.v357-history-champions-active #app,
+  body.v357-history-champions-active .app-shell{
+    background:#02054f!important;
+  }
+
+  .v35-history-page.v357-champions-active{
+    background:#02054f!important;
+  }
+
+  .v35-history-page.v357-champions-active .v35-tabs{
+    background:#050a68!important;
+  }
+
+  .v35-history-page.v357-champions-active .v35-history-content,
+  .v35-history-page.v357-champions-active .v340-champions-ranking,
+  .v35-history-page.v357-champions-active .v340-champion-list{
+    background:#02054f!important;
+  }
+
+  .v35-history-page.v357-champions-active .v340-champions-ranking{
+    contain:layout style paint;
+  }
+
+  .v340-champion-logo img[hidden],
+  .v340-champion-logo b[hidden],
+  .v340-champion-row[hidden],
+  .v340-champion-empty[hidden]{
+    display:none!important;
+  }
+
+  .v35-history-page.v357-champions-active .v340-champion-row{
+    background:transparent!important;
+  }
+}
