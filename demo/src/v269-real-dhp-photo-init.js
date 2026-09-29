@@ -1,1 +1,0 @@
-(()=>{'use strict';const b64=window.LJR_REAL_DHP_2017_B64||'';window.LJR_REAL_DHP_2017_PHOTO=b64?'data:image/webp;base64,'+b64:'';})();
