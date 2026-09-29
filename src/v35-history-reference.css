@@ -3020,3 +3020,45 @@
     contain-intrinsic-size:auto 96px;
   }
 }
+
+
+/* V349 — archivo histórico bajo demanda */
+@media (max-width:1023px){
+  .v348-history-sentinel{
+    margin:18px var(--v35-pad) 28px!important;
+    padding:14px 0 0!important;
+    border-top:1px solid rgba(112,135,255,.20)!important;
+    background:transparent!important;
+  }
+  .v348-history-sentinel>button{
+    width:100%!important;
+    min-height:48px!important;
+    padding:0 15px!important;
+    display:flex!important;
+    align-items:center!important;
+    justify-content:space-between!important;
+    gap:12px!important;
+    border:1px solid rgba(100,228,255,.28)!important;
+    border-radius:14px!important;
+    background:rgba(5,16,104,.72)!important;
+    color:#fff!important;
+    font:700 13px/1.15 Inter,system-ui,sans-serif!important;
+    text-align:left!important;
+    touch-action:manipulation!important;
+    -webkit-tap-highlight-color:transparent!important;
+  }
+  .v348-history-sentinel>button span{
+    color:#21e7ff!important;
+    font-size:24px!important;
+    line-height:1!important;
+    font-weight:400!important;
+  }
+  .v348-history-sentinel>button:disabled{opacity:.7!important}
+  .v348-history-sentinel>p{
+    margin:8px 4px 0!important;
+    color:rgba(225,230,255,.66)!important;
+    font-size:11px!important;
+    line-height:1.35!important;
+  }
+  .v35-tabs .v35-tab{touch-action:manipulation!important}
+}
