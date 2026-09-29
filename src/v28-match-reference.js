@@ -265,6 +265,7 @@
   /* Captura el partido ANTES de que main.js cambie a #/match.
      Así incluso los IDs m1/m2 repetidos del calendario conservan sus clubes reales. */
   document.addEventListener('click',function(e){
+    if(e.target.closest?.('[data-v144-live-hub],[data-v144-platform],[data-v144-config],[data-v144-open],[data-v144-share],.v144-modal'))return;
     const hit=e.target.closest('[data-match]');
     if(!hit)return;
     e.preventDefault();
