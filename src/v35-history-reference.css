@@ -2999,3 +2999,22 @@
   .v341-era-decade>h2{font-size:22px!important}
   .v341-era-category>h3{font-size:10.5px!important}
 }
+
+
+/* V343 — rendimiento Historia:
+   la vista principal pinta primero y el archivo largo se compone después. */
+@media (max-width:1023px){
+  .v35-history-lazy{
+    width:100%!important;
+    min-height:1px!important;
+    margin:0!important;
+    padding:0!important;
+    background:transparent!important;
+  }
+  .v35-history-content .v35-history-archive,
+  .v35-history-content .v115-history-archive,
+  .v35-history-content .v115-archive-section{
+    content-visibility:auto;
+    contain-intrinsic-size:1px 900px;
+  }
+}
