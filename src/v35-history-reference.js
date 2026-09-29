@@ -2450,8 +2450,9 @@ function v362LockHistoryHeader(root=document.querySelector('.v35-history-page'))
     tabs.style.setProperty('background-image','none','important');
   }
 
-  tabs?.querySelectorAll('[data-v35-tab]').forEach(tab=>{
-    const active=tab.dataset.v35Tab===activeTab;
+  tabs?.querySelectorAll('.v35-tab, .v329-video-tab').forEach(tab=>{
+    const tabName=tab.dataset.v35Tab||((tab.textContent||'').trim());
+    const active=tabName===activeTab||tab.classList.contains('active');
     tab.style.setProperty('display','inline-flex','important');
     tab.style.setProperty('visibility','visible','important');
     tab.style.setProperty('opacity','1','important');
@@ -2528,6 +2529,7 @@ function renderHistory(){
     v359Prewarm();
     if(activeTab==='Resumen')v358ScheduleSummaryRefresh();
     if(activeTab==='Finales'&&!activePanel?.querySelector('[data-v359-deferred="finals"]'))window.LJR_APPLY_HISTORY_FINALS_REFERENCE?.();
+    v362LockHistoryHeader(historyRoot);
   });
 }
 function rerenderContent(){
@@ -2562,6 +2564,7 @@ function rerenderContent(){
     v355HydrateHistoryLazy(activePanel||root);
     if(activeTab==='Resumen')v358ScheduleSummaryRefresh();
     if(activeTab==='Finales'&&!activePanel?.querySelector('[data-v359-deferred="finals"]'))window.LJR_APPLY_HISTORY_FINALS_REFERENCE?.();
+    v362LockHistoryHeader(root);
   });
 }
 function v351RefreshPanel(tab){
