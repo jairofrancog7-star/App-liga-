@@ -502,3 +502,123 @@ body[data-app-route="credentialBuilder"] .v124-head p{
   .v189-recruit-row-actions{grid-template-columns:1fr 1fr}
   .v189-recruit-logo{width:36px;height:36px}
 }
+
+
+/* V190 — ficha visual del jugador: equipo actual, categoría y trazabilidad de cambio. */
+.v190-team-trace{
+  margin-top:9px;
+  display:grid;
+  gap:7px;
+}
+.v190-current-team{
+  min-width:0;
+  display:grid;
+  grid-template-columns:46px minmax(0,1fr);
+  gap:9px;
+  align-items:center;
+  padding:9px 10px;
+  border:1px solid rgba(81,229,242,.24);
+  border-radius:13px;
+  background:linear-gradient(135deg,rgba(13,35,132,.96),rgba(7,18,96,.98));
+}
+.v190-current-logo{
+  width:46px;
+  height:46px;
+  display:grid!important;
+  place-items:center!important;
+  overflow:hidden;
+  border-radius:12px;
+  border:1px solid rgba(102,232,243,.34);
+  background:#07105d;
+  color:#61e8f3;
+  font-size:9px;
+  font-weight:950;
+}
+.v190-current-logo img{
+  width:100%;
+  height:100%;
+  object-fit:contain;
+  display:block;
+}
+.v190-current-logo.fallback{background:#102582}
+.v190-current-team>span{
+  min-width:0;
+  display:grid;
+  gap:3px;
+}
+.v190-current-team>span>small{
+  color:#66e8f3;
+  font-size:7px;
+  line-height:1;
+  font-weight:950;
+  letter-spacing:.09em;
+  text-transform:uppercase;
+}
+.v190-current-team>span>b{
+  min-width:0;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+  color:#fff;
+  font-size:11px;
+}
+.v190-category-wrap{
+  display:flex!important;
+  align-items:center!important;
+  gap:6px!important;
+  min-width:0;
+}
+.v190-category-logo{
+  flex:0 0 auto;
+  min-width:28px;
+  height:22px;
+  padding:0 6px;
+  border-radius:999px;
+  display:grid;
+  place-items:center;
+  border:1px solid rgba(87,232,243,.32);
+  background:#082d78;
+  color:#65ecf5;
+  font-size:7px;
+  font-style:normal;
+  font-weight:950;
+  letter-spacing:.02em;
+}
+.v190-category-wrap>em{
+  min-width:0;
+  color:#bdc9e5!important;
+  font-size:8px!important;
+  font-style:normal!important;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+}
+.v190-change-head,.v190-no-change{
+  min-height:34px;
+  padding:7px 9px;
+  border-radius:10px;
+  display:flex;
+  align-items:center;
+  gap:7px;
+  border:1px solid rgba(255,255,255,.08);
+  background:#07105d;
+}
+.v190-change-head b,.v190-no-change b{
+  flex:0 0 auto;
+  color:#5ee8f2;
+  font-size:7px;
+  letter-spacing:.06em;
+}
+.v190-change-head span,.v190-no-change span{
+  min-width:0;
+  color:#aebde0;
+  font-size:7.5px;
+  overflow-wrap:anywhere;
+}
+.v190-change-head span{color:#ffdb76}
+.v190-team-trace>.v189-transfer-preview{margin-top:0}
+@media(max-width:390px){
+  .v190-current-team{grid-template-columns:40px minmax(0,1fr);padding:8px}
+  .v190-current-logo{width:40px;height:40px}
+  .v190-change-head,.v190-no-change{align-items:flex-start;flex-direction:column;gap:3px}
+}
