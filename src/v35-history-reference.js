@@ -1,13 +1,12 @@
 /* V35 — Historia mobile reconstruction from the user's master references.
    Replaces only #/history on mobile/APK. Keeps the rest of the app logic intact. */
-import LOBOS_CDG_SUPERLIDER_PHOTO from './v324-lobos-cdg-superlider-photo.js';
-
 (function(){
 'use strict';
 
 const RAW='https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/';
 const JUVENTUS_2024_PHOTO='./assets/history/archive-v225/juventus-campeon-campeones-21-sep-2024.webp?v=20260923-juventus-webp-v245';
-/* V324: foto exacta restaurada desde módulo JS válido para GitHub Pages. */
+const LOBOS_CDG_SUPERLIDER_PHOTO='./assets/history/lobos-cdg-superlider-03-may-2026.webp?v=20260928-lobos-cdg-real-asset-v326';
+/* V326: foto restaurada como archivo WebP real del repositorio. */
 const ASSETS={
   league:RAW+'assets/liga-logo.webp',
   america:RAW+'assets/branding/america-veteranos-35-user.png',
