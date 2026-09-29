@@ -1,8 +1,9 @@
 const V10_ASSETS = {
   splash: 'https://d2ol7oe51mr4n9.cloudfront.net/user_3JNvttsAwr0QjxhuX5O1uaa9bvv/a2eeef18-c5f1-4870-9124-6026558b2612.png'
 };
-const STARTUP_MS = 2350;
-const STARTUP_FADE_MS = 420;
+const STARTUP_MIN_MS = 220;
+const STARTUP_MAX_MS = 850;
+const STARTUP_FADE_MS = 160;
 
 const ROOT_ROUTES = new Set(['home','competition','video','fantasy','more']);
 const HEADER_TITLES = {
@@ -71,13 +72,35 @@ function createStartup(){
   splash.setAttribute('role','status');
   splash.setAttribute('aria-live','polite');
   splash.setAttribute('aria-label','Iniciando Liga Juventino');
-  splash.innerHTML=`<div class="v7-startup-stage is-active"><img src="${V10_ASSETS.splash}" alt="Liga Municipal de Fútbol Juventino Rosas" draggable="false"></div>`;
+  splash.innerHTML=`<div class="v7-startup-stage is-active"><img src="${V10_ASSETS.splash}" alt="Liga Municipal de Fútbol Juventino Rosas" draggable="false" fetchpriority="high" decoding="async"></div>`;
   document.body.appendChild(splash);
-  window.setTimeout(()=>{
+
+  const started=performance.now();
+  let finished=false;
+  let observer=null;
+  const finish=()=>{
+    if(finished)return;
+    const elapsed=performance.now()-started;
+    if(elapsed<STARTUP_MIN_MS){
+      window.setTimeout(finish,STARTUP_MIN_MS-elapsed);
+      return;
+    }
+    finished=true;
+    observer?.disconnect();
     splash.classList.add('is-leaving');
     document.body.classList.remove('v7-startup-lock');
-    window.setTimeout(()=>splash.remove(),STARTUP_FADE_MS+80);
-  },STARTUP_MS);
+    window.setTimeout(()=>splash.remove(),STARTUP_FADE_MS+40);
+  };
+  const screen=document.querySelector('#screen');
+  const ready=()=>Boolean(screen?.children?.length||screen?.textContent?.trim());
+  if(ready()) requestAnimationFrame(()=>requestAnimationFrame(finish));
+  else if(screen){
+    observer=new MutationObserver(()=>{
+      if(ready())requestAnimationFrame(()=>requestAnimationFrame(finish));
+    });
+    observer.observe(screen,{childList:true,subtree:false});
+  }
+  window.setTimeout(finish,STARTUP_MAX_MS);
 }
 
 function bootV10Brand(){
