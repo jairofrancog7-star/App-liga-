@@ -156,11 +156,32 @@ function apply(){
   const source=[...panel.querySelectorAll('.v35-history-archive .v35-history-moment')];
   if(!source.length)return;
   const rows=source.map(rowFromNode).sort((a,b)=>(b.rank-a.rank)||(a.i-b.i));
+
+  /* V365 — La referencia compacta va arriba; el archivo que ya existía
+     se conserva debajo, sin duplicar datos ni reconstruir Historia. */
+  const archives=[...panel.querySelectorAll('.v35-history-archive')];
+  archives.forEach((archive,index)=>{
+    archive.classList.add('v365-finals-previous');
+    if(index===0&&!archive.querySelector('.v365-finals-previous-head')){
+      archive.insertAdjacentHTML('afterbegin',
+        '<div class="v365-finals-previous-head">'+
+          '<span>ARCHIVO ANTERIOR</span>'+
+          '<h2>Más finales e información</h2>'+
+          '<p>Se conserva aquí el contenido histórico que ya estaba guardado.</p>'+
+        '</div>'
+      );
+    }
+  });
+
+  const intro=panel.querySelector('.v35-tab-body');
+  if(intro)intro.classList.add('v365-finals-intro');
+  panel.classList.add('v365-finals-panel-ready');
   panel.insertAdjacentHTML('afterbegin',shellHtml(rows));
 }
 function clear(){
   const root=document.querySelector('.v35-history-page');
   root?.classList.remove('v329-finals-image1','v358-finals-reference');
+  root?.querySelectorAll('.v365-finals-panel-ready').forEach(x=>x.classList.remove('v365-finals-panel-ready'));
 }
 
 window.LJR_APPLY_HISTORY_FINALS_REFERENCE=apply;
