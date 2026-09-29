@@ -415,6 +415,10 @@ function credentialExtra(){
       '<label><span>Posición</span><select data-v100-position>'+['Portero','Defensa','Mediocampista','Delantero','Sin definir'].map(x=>'<option '+(saved.position===x?'selected':'')+'>'+x+'</option>').join('')+'</select></label>'+
       '<label><span>Temporada</span><input type="text" data-v100-season value="'+esc(saved.season||'2026–2027')+'"></label>'+
       '<label><span>Estatus del registro</span><select data-v100-status>'+['Pendiente de validación','Revisado','Habilitado'].map(x=>'<option '+(saved.status===x?'selected':'')+'>'+x+'</option>').join('')+'</select></label>'+
+      '<label><span>Diseño de credencial</span><select data-v100-credential-style>'+
+        '<option value="blue" '+((saved.credentialStyle||'blue')==='blue'?'selected':'')+'>Azul clásica · trofeo</option>'+
+        '<option value="red" '+((saved.credentialStyle||'blue')==='red'?'selected':'')+'>Roja clásica · franja verde</option>'+
+      '</select></label>'+
     '</div>'+
     '<div class="v196-classic-preview" data-v196-classic-preview>'+
       '<div class="v196-preview-head"><span><small>DISEÑO DE CREDENCIAL FÍSICA</small><b>Vista previa exacta del formato clásico</b></span><em>85.60 × 53.98 mm</em></div>'+
@@ -433,7 +437,8 @@ function syncCredentialExtra(){
   const d={
     dob:dob?.value||'',age:age?.value||'',
     position:$('[data-v100-position]')?.value||'',
-    season:$('[data-v100-season]')?.value||'',status:$('[data-v100-status]')?.value||''
+    season:$('[data-v100-season]')?.value||'',status:$('[data-v100-status]')?.value||'',
+    credentialStyle:$('[data-v100-credential-style]')?.value||saved.credentialStyle||'blue'
   };
   write('v100-credential-extra',d);
 }
@@ -519,7 +524,69 @@ function v196CredentialTeamLogo(team){
     const t=officialTeams().find(x=>norm(x.name)===norm(team));return t?.logo||'';
   }catch(_){return ''}
 }
+async function v197DrawBlueCredential(canvas){
+  if(!canvas)return null;
+  canvas.width=1011;canvas.height=638;
+  const x=canvas.getContext('2d'),W=1011,H=638;
+  const name=($('[data-v64-cred-name]')?.value||'Jugador').trim();
+  const team=($('[data-v64-cred-team]')?.value||'Equipo').trim();
+  const cat=$('[data-v64-cred-team]')?.selectedOptions?.[0]?.dataset?.category||$('[data-v64-cred-cat]')?.value||'Categoría';
+  const curp=($('[data-v64-cred-curp]')?.value||'').toUpperCase().replace(/[^A-Z0-9]/g,'').slice(0,18);
+
+  x.clearRect(0,0,W,H);
+  x.save();v196RoundRectPath(x,5,5,W-10,H-10,34);x.clip();
+
+  const bg=x.createLinearGradient(0,0,W,H);bg.addColorStop(0,'#0a4ba7');bg.addColorStop(.43,'#153f98');bg.addColorStop(1,'#071e69');x.fillStyle=bg;x.fillRect(0,0,W,H);
+  const sheen=x.createLinearGradient(0,0,W,0);sheen.addColorStop(0,'rgba(255,255,255,.02)');sheen.addColorStop(.52,'rgba(198,216,255,.20)');sheen.addColorStop(1,'rgba(255,255,255,.03)');x.fillStyle=sheen;x.fillRect(0,0,W,H);
+
+  const trophy=await v100LoadImage('./assets/reference/final-trophy-drive.png');
+  if(trophy){
+    x.save();x.globalAlpha=.82;
+    v100DrawContainedImage(x,trophy,255,85,500,500);
+    x.restore();
+  }
+  const blueShade=x.createLinearGradient(0,0,0,H);blueShade.addColorStop(0,'rgba(4,21,80,.08)');blueShade.addColorStop(1,'rgba(1,12,52,.34)');x.fillStyle=blueShade;x.fillRect(0,0,W,H);
+
+  x.strokeStyle='rgba(206,222,255,.34)';x.lineWidth=4;v196RoundRectPath(x,8,8,W-16,H-16,31);x.stroke();
+
+  x.fillStyle='#fff';x.textAlign='left';x.textBaseline='alphabetic';
+  x.shadowColor='rgba(0,0,0,.42)';x.shadowBlur=5;
+  x.font='900 39px Arial,Helvetica,sans-serif';x.fillText('Liga Municipal De Fútbol',42,70);
+  x.font='900 37px Arial,Helvetica,sans-serif';x.fillText('“Juventino Rosas, A.C.”',42,119);
+  x.shadowBlur=0;
+
+  const catShort=String(cat||'Categoría').replace(/\s*Fuerza/ig,'').replace(/Veteranos\s*/ig,'Vet. ').trim();
+  x.fillStyle='rgba(255,255,255,.70)';x.font='800 31px Arial,Helvetica,sans-serif';x.fillText(catShort,95,356);
+
+  const player=await v196PlayerPhoto(),px=715,py=92,pw=250,ph=302;
+  x.save();v196RoundRectPath(x,px,py,pw,ph,8);x.clip();x.fillStyle='#d5d8e4';x.fillRect(px,py,pw,ph);
+  if(player)v196DrawCoverImage(x,player,px,py,pw,ph);
+  else{x.fillStyle='#8392b2';x.fillRect(px,py,pw,ph);x.fillStyle='#fff';x.font='900 30px Arial';x.textAlign='center';x.fillText('FOTO',px+pw/2,py+ph/2+10);x.textAlign='left'}
+  x.restore();x.strokeStyle='rgba(6,17,56,.55)';x.lineWidth=3;v196RoundRectPath(x,px,py,pw,ph,8);x.stroke();
+
+  const league=await v100LoadImage('./assets/liga-logo.webp');
+  if(league){x.save();x.fillStyle='rgba(255,255,255,.93)';x.fillRect(45,468,122,122);x.drawImage(league,53,476,106,106);x.restore()}
+
+  const teamImg=await v100LoadImage(v196CredentialTeamLogo(team));
+  if(teamImg){x.save();x.fillStyle='rgba(255,255,255,.94)';v196RoundRectPath(x,790,413,72,72,7);x.fill();v100DrawContainedImage(x,teamImg,796,419,60,60);x.restore()}
+
+  x.font='900 37px Arial,Helvetica,sans-serif';x.textAlign='center';
+  v196OutlinedText(x,team.toUpperCase(),842,438,'#f4d553','#3655a3',5);
+  x.textAlign='left';
+
+  const nameUpper=name.toUpperCase();
+  const nameSize=v196FitFont(x,nameUpper,690,39,25,900);x.font='900 '+nameSize+'px Arial,Helvetica,sans-serif';
+  v196OutlinedText(x,nameUpper,210,586,'#f56a55','#6b2738',6);
+
+  x.font='800 18px Arial,Helvetica,sans-serif';x.fillStyle='rgba(255,255,255,.78)';
+  x.fillText(curp?'CURP '+curp:'CURP POR CAPTURAR',690,610);
+
+  x.restore();
+  return canvas;
+}
 async function v196DrawClassicCredential(canvas){
+  const style=$('[data-v100-credential-style]')?.value||read('v100-credential-extra',{}).credentialStyle||'blue';
+  if(style==='blue')return v197DrawBlueCredential(canvas);
   if(!canvas)return null;
   canvas.width=1011;canvas.height=638;
   const x=canvas.getContext('2d'),W=1011,H=638;
@@ -583,6 +650,9 @@ async function v196RenderCredentialPreview(){
   if((location.hash||'').replace(/^#\/?/,'').split('?')[0]!=='credentialBuilder')return;
   const canvas=$('[data-v196-preview-canvas]');if(!canvas)return;
   const seq=++v196PreviewSeq;await v196DrawClassicCredential(canvas);if(seq!==v196PreviewSeq)return;
+  const style=$('[data-v100-credential-style]')?.value||read('v100-credential-extra',{}).credentialStyle||'blue';
+  const head=$('[data-v196-classic-preview] .v196-preview-head b');
+  if(head)head.textContent=style==='blue'?'Vista previa · azul clásica con trofeo':'Vista previa · roja clásica con franja verde';
 }
 async function credentialCanvas(){
   syncCredentialExtra();
