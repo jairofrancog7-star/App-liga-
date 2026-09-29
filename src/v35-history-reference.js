@@ -1063,11 +1063,9 @@ function scheduleHistoryCollapse(){
   if(v35ScrollRaf) return;
   v35ScrollRaf=requestAnimationFrame(()=>{
     v35ScrollRaf=0;
+    // V347: durante scroll/resize sólo actualizamos la barra compacta.
+    // No recorremos todas las tarjetas históricas en cada frame.
     syncHistoryCollapse();
-    const screen=document.querySelector('#screen');
-    if(screen) removeObsoleteManchesterDuplicate(screen);
-    // V342: no procesar/canvas-convertir escudos durante cada scroll/resize.
-    // La limpieza de escudos se ejecuta al renderizar la pestaña Temporadas.
   });
 }
 
@@ -1976,12 +1974,17 @@ function renderHistory(){
   const historyRoot=screen.querySelector('.v35-history-page');
   historyRoot?.classList.toggle('v341-seasons-active',activeTab==='Temporadas');
   document.body.classList.toggle('v341-history-seasons-active',activeTab==='Temporadas');
-  const topLogo=screen.querySelector('[data-v35-top-logo]'); if(topLogo) transparentizeTopLogo(topLogo);
+  const topLogo=screen.querySelector('[data-v35-top-logo]');
   requestAnimationFrame(()=>{
     window.scrollTo({top:0,left:0,behavior:'auto'});
     syncHistoryCollapse();
     removeObsoleteManchesterDuplicate(screen);
   });
+  if(topLogo){
+    const cleanTopLogo=()=>{if(route()==='history'&&topLogo.isConnected)transparentizeTopLogo(topLogo);};
+    if('requestIdleCallback' in window)requestIdleCallback(cleanTopLogo,{timeout:1400});
+    else setTimeout(cleanTopLogo,700);
+  }
 }
 function rerenderContent(){
   const root=document.querySelector('.v35-history-page');
@@ -1994,7 +1997,15 @@ function rerenderContent(){
   root.classList.toggle('v341-seasons-active',activeTab==='Temporadas');
   document.body.classList.toggle('v341-history-seasons-active',activeTab==='Temporadas');
   root.scrollIntoView({block:'start',behavior:'auto'});
-  requestAnimationFrame(()=>{syncHistoryCollapse();removeObsoleteManchesterDuplicate(root);v341CleanSeasonLogos(root);});
+  requestAnimationFrame(()=>{
+    syncHistoryCollapse();
+    removeObsoleteManchesterDuplicate(root);
+  });
+  if(activeTab==='Temporadas'){
+    const cleanSeasonLogos=()=>{if(route()==='history'&&activeTab==='Temporadas'&&root.isConnected)v341CleanSeasonLogos(root);};
+    if('requestIdleCallback' in window)requestIdleCallback(cleanSeasonLogos,{timeout:1600});
+    else setTimeout(cleanSeasonLogos,850);
+  }
 }
 function toast(msg){
   let el=document.querySelector('.v35-toast');
