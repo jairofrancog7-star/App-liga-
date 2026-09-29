@@ -1518,7 +1518,7 @@ function v358LogoHtml(team,preferred=''){
   '</span>';
 }
 function v358TopTitles(){
-  try{return v357ChampionRows('Todos').slice(0,4).map(r=>({name:r.team,team:r.team,value:r.count,logo:v340ChampionLogo(r.team,r.logo||'')}));}
+  try{return v357ChampionRows('Todos').slice(0,3).map(r=>({name:r.team,team:r.team,value:r.count,logo:v340ChampionLogo(r.team,r.logo||'')}));}
   catch(_){return []}
 }
 function v358TopScorers(){
@@ -1540,7 +1540,7 @@ function v358TopScorers(){
       const prev=best.get(k);
       if(!prev||r.value>prev.value)best.set(k,r);
     });
-    return [...best.values()].sort((a,b)=>b.value-a.value||a.name.localeCompare(b.name,'es')).slice(0,4);
+    return [...best.values()].sort((a,b)=>b.value-a.value||a.name.localeCompare(b.name,'es')).slice(0,3);
   }
   const best=new Map();
   historicScorers.filter(r=>Number.isFinite(Number(r.goals))).forEach(r=>{
@@ -1548,7 +1548,7 @@ function v358TopScorers(){
     const k=v358Norm(item.name),prev=best.get(k);
     if(!prev||item.value>prev.value)best.set(k,item);
   });
-  return [...best.values()].sort((a,b)=>b.value-a.value||a.name.localeCompare(b.name,'es')).slice(0,4);
+  return [...best.values()].sort((a,b)=>b.value-a.value||a.name.localeCompare(b.name,'es')).slice(0,3);
 }
 function v358TopAppearances(){
   const db=window.LJR_OFFICIAL_DATA;
@@ -1582,7 +1582,7 @@ function v358TopAppearances(){
       });
     });
   }
-  return rows.filter(r=>r.name&&r.value>0).sort((a,b)=>b.value-a.value||a.name.localeCompare(b.name,'es')).slice(0,4);
+  return rows.filter(r=>r.name&&r.value>0).sort((a,b)=>b.value-a.value||a.name.localeCompare(b.name,'es')).slice(0,3);
 }
 function v358StatIcon(kind){
   if(kind==='titles')return v340TrophySvg();
