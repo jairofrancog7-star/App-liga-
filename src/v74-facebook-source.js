@@ -87,6 +87,9 @@
   }
 
   window.addEventListener('hashchange',schedule);
+  document.addEventListener('click',e=>{
+    if(e.target.closest?.('[data-v35-tab]'))window.setTimeout(schedule,0);
+  },true);
   const screen=document.querySelector('#screen');
   if(screen)new MutationObserver(schedule).observe(screen,{childList:true,subtree:true});
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',schedule,{once:true});
