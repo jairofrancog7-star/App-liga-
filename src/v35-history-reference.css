@@ -3180,3 +3180,44 @@
     background:transparent!important;
   }
 }
+
+
+/* V359 — Historia: pestañas instantáneas.
+   Los paneles quedan montados y sólo se muestran/ocultan; el contenido pesado
+   de Temporadas/Finales se construye después de que la nueva pestaña ya pintó. */
+.v35-history-content>.v351-history-panel[hidden]{
+  display:none!important;
+}
+.v35-history-content>.v351-history-panel.is-active{
+  display:block!important;
+  contain:layout style;
+}
+.v359-deferred-shell{
+  width:100%;
+  min-height:88px;
+  display:grid;
+  place-items:center;
+  background:transparent;
+  pointer-events:none;
+}
+.v359-deferred-dot{
+  width:22px;
+  height:22px;
+  border-radius:50%;
+  border:2px solid rgba(255,255,255,.18);
+  border-top-color:#16e8f7;
+  animation:v359HistorySpin .72s linear infinite;
+}
+@keyframes v359HistorySpin{to{transform:rotate(360deg)}}
+@media (prefers-reduced-motion:reduce){
+  .v359-deferred-dot{animation:none}
+}
+@media (max-width:1023px){
+  .v35-history-page .v351-history-panel{
+    min-height:52vh;
+  }
+  .v35-history-page.v341-seasons-active .v359-deferred-shell,
+  .v35-history-page.v357-champions-active .v359-deferred-shell{
+    background:#02054f!important;
+  }
+}
