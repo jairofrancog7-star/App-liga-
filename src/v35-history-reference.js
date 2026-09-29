@@ -1960,9 +1960,9 @@ function v351PanelHtml(tab){
   return '<section class="v351-history-panel '+(tab===activeTab?'is-active':'')+'" data-v351-panel="'+esc(tab)+'"'+(tab===activeTab?'':' hidden')+'>'+v351BodyFor(tab)+'</section>';
 }
 function v351AllPanelsHtml(){
-  // V353: todos los paneles ligeros quedan montados desde el inicio.
-  // Cambiar de pestaña sólo alterna hidden/class; no añade ni quita nodos de #screen.
-  return ['Resumen','Temporadas','Campeones','Finales','Récords','Videos'].map(v351PanelHtml).join('');
+  // V354: al entrar sólo se monta la pestaña visible.
+  // Las demás se crean una sola vez al tocarlas; nunca se construyen todas juntas.
+  return v351PanelHtml(activeTab);
 }
 function tabs(){
   return ['Resumen','Temporadas','Campeones','Finales','Récords','Videos'].map(t=>'<button type="button" class="v35-tab '+(t===activeTab?'active':'')+'" data-v35-tab="'+esc(t)+'">'+esc(t)+'</button>').join('');
@@ -2029,6 +2029,22 @@ function pageHtml(){
     '<main class="v35-history-content" data-v35-content>'+v351AllPanelsHtml()+'</main>'+
   '</div>';
 }
+function v354BindHistoryTabs(root){
+  const nav=root?.querySelector('.v35-tabs');
+  if(!nav||nav.dataset.v354Bound==='1')return;
+  nav.dataset.v354Bound='1';
+  nav.querySelectorAll('[data-v35-tab]').forEach(btn=>{
+    btn.addEventListener('click',e=>{
+      e.preventDefault();
+      e.stopPropagation();
+      e.stopImmediatePropagation();
+      const next=btn.dataset.v35Tab||'Resumen';
+      if(next===activeTab)return;
+      activeTab=next;
+      rerenderContent();
+    },true);
+  });
+}
 function renderHistory(){
   if(route()!=='history') return;
   const screen=document.querySelector('#screen');
@@ -2037,6 +2053,7 @@ function renderHistory(){
   screen.innerHTML=pageHtml();
   document.body.classList.add('v35-history-mounted');
   const historyRoot=screen.querySelector('.v35-history-page');
+  v354BindHistoryTabs(historyRoot);
   historyRoot?.classList.toggle('v341-seasons-active',activeTab==='Temporadas');
   document.body.classList.toggle('v341-history-seasons-active',activeTab==='Temporadas');
   const topLogo=screen.querySelector('[data-v35-top-logo]');
@@ -2049,7 +2066,8 @@ function renderHistory(){
 function rerenderContent(){
   const root=document.querySelector('.v35-history-page');
   const nav=root?.querySelector('.v35-tabs');
-  if(!root||!nav) return;
+  const content=root?.querySelector('[data-v35-content]');
+  if(!root||!nav||!content) return;
   v348CancelArchiveLoad();
 
   nav.querySelectorAll('[data-v35-tab]').forEach(btn=>{
@@ -2058,8 +2076,19 @@ function rerenderContent(){
     btn.setAttribute('aria-selected',selected?'true':'false');
   });
 
-  root.querySelectorAll('[data-v351-panel]').forEach(panel=>{
-    const selected=panel.dataset.v351Panel===activeTab;
+  let target=[...content.querySelectorAll('[data-v351-panel]')].find(p=>p.dataset.v351Panel===activeTab);
+  if(!target){
+    target=document.createElement('section');
+    target.className='v351-history-panel';
+    target.dataset.v351Panel=activeTab;
+    target.setAttribute('aria-hidden','false');
+    // Temporadas ya usa la vista ligera V351; el archivo completo nunca se construye aquí.
+    target.innerHTML=v351BodyFor(activeTab);
+    content.appendChild(target);
+  }
+
+  content.querySelectorAll('[data-v351-panel]').forEach(panel=>{
+    const selected=panel===target;
     panel.hidden=!selected;
     panel.classList.toggle('is-active',selected);
     panel.setAttribute('aria-hidden',selected?'false':'true');
@@ -2069,7 +2098,6 @@ function rerenderContent(){
   root.classList.toggle('v341-seasons-active',activeTab==='Temporadas');
   document.body.classList.toggle('v341-history-seasons-active',activeTab==='Temporadas');
 }
-
 function v351RefreshPanel(tab){
   const root=document.querySelector('.v35-history-page');
   const content=root?.querySelector('[data-v35-content]');
@@ -2125,6 +2153,7 @@ function onClick(e){
       full.className='v351-seasons-full';
       full.innerHTML=seasonsEraBlock();
       preview.replaceWith(full);
+      v350TabHtmlCache.delete('Temporadas');
       requestAnimationFrame(syncHistoryCollapse);
     }));
     return;
