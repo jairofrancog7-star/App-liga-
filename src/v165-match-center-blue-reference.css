@@ -1113,3 +1113,63 @@
     height:50px!important;
   }
 }
+
+
+/* V200 — Plantillas registradas: escudo y texto con columnas separadas. */
+@media (max-width:1023px){
+  body.v92-match-center-official .v92-player-grid{
+    align-items:stretch!important;
+  }
+  body.v92-match-center-official .v92-player-card{
+    grid-template-columns:50px minmax(0,1fr)!important;
+    gap:9px!important;
+    align-items:center!important;
+    overflow:hidden!important;
+  }
+  body.v92-match-center-official .v92-player-card .v92-team-logo.small,
+  body.v92-match-center-official .v92-player-card .v92-team-logo.small img{
+    width:46px!important;
+    height:46px!important;
+  }
+  body.v92-match-center-official .v92-player-card .v92-team-logo.small{
+    padding:3px!important;
+    border-radius:12px!important;
+    box-sizing:border-box!important;
+  }
+  body.v92-match-center-official .v92-player-card>span:last-child{
+    min-width:0!important;
+    width:100%!important;
+    overflow:hidden!important;
+  }
+  body.v92-match-center-official .v92-player-card b{
+    display:block!important;
+    max-width:100%!important;
+    white-space:normal!important;
+    overflow-wrap:anywhere!important;
+    word-break:normal!important;
+    font-size:9.5px!important;
+    line-height:1.1!important;
+  }
+  body.v92-match-center-official .v92-player-card small{
+    display:block!important;
+    max-width:100%!important;
+    white-space:normal!important;
+    overflow-wrap:anywhere!important;
+    font-size:6.8px!important;
+    line-height:1.25!important;
+  }
+}
+@media (max-width:390px){
+  body.v92-match-center-official .v92-player-card{
+    grid-template-columns:44px minmax(0,1fr)!important;
+    gap:7px!important;
+    padding:10px!important;
+  }
+  body.v92-match-center-official .v92-player-card .v92-team-logo.small,
+  body.v92-match-center-official .v92-player-card .v92-team-logo.small img{
+    width:40px!important;
+    height:40px!important;
+  }
+  body.v92-match-center-official .v92-player-card b{font-size:8.8px!important}
+  body.v92-match-center-official .v92-player-card small{font-size:6.2px!important}
+}
