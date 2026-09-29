@@ -1960,7 +1960,8 @@ function v351PanelHtml(tab){
   return '<section class="v351-history-panel '+(tab===activeTab?'is-active':'')+'" data-v351-panel="'+esc(tab)+'"'+(tab===activeTab?'':' hidden')+'>'+v351BodyFor(tab)+'</section>';
 }
 function v351AllPanelsHtml(){
-  return ['Resumen','Temporadas','Campeones','Finales','Récords','Videos'].map(v351PanelHtml).join('');
+  // V352: sólo el panel activo al entrar. Los demás se crean bajo demanda.
+  return v351PanelHtml(activeTab);
 }
 function tabs(){
   return ['Resumen','Temporadas','Campeones','Finales','Récords','Videos'].map(t=>'<button type="button" class="v35-tab '+(t===activeTab?'active':'')+'" data-v35-tab="'+esc(t)+'">'+esc(t)+'</button>').join('');
@@ -2048,17 +2049,30 @@ let v351TabRenderToken=0;
 function rerenderContent(){
   const root=document.querySelector('.v35-history-page');
   const nav=root?.querySelector('.v35-tabs');
-  if(!root||!nav) return;
+  const content=root?.querySelector('[data-v35-content]');
+  if(!root||!nav||!content) return;
   v348CancelArchiveLoad();
 
+  // Primero cambia visualmente la pestaña; esto ocurre antes de construir cualquier panel nuevo.
   nav.querySelectorAll('[data-v35-tab]').forEach(btn=>{
     const selected=btn.dataset.v35Tab===activeTab;
     btn.classList.toggle('active',selected);
     btn.setAttribute('aria-selected',selected?'true':'false');
   });
 
-  root.querySelectorAll('[data-v351-panel]').forEach(panel=>{
-    const selected=panel.dataset.v351Panel===activeTab;
+  // V352: crear el panel sólo la primera vez que se abre.
+  let target=[...content.querySelectorAll('[data-v351-panel]')].find(p=>p.dataset.v351Panel===activeTab);
+  if(!target){
+    target=document.createElement('section');
+    target.className='v351-history-panel';
+    target.dataset.v351Panel=activeTab;
+    target.setAttribute('aria-hidden','false');
+    target.innerHTML=v351BodyFor(activeTab);
+    content.appendChild(target);
+  }
+
+  content.querySelectorAll('[data-v351-panel]').forEach(panel=>{
+    const selected=panel===target;
     panel.hidden=!selected;
     panel.classList.toggle('is-active',selected);
     panel.setAttribute('aria-hidden',selected?'false':'true');
@@ -2070,10 +2084,17 @@ function rerenderContent(){
 }
 function v351RefreshPanel(tab){
   const root=document.querySelector('.v35-history-page');
-  const panel=root?.querySelector('[data-v351-panel="'+CSS.escape(tab)+'"]');
-  if(!panel)return;
+  const content=root?.querySelector('[data-v35-content]');
+  if(!root||!content)return;
+  let panel=[...content.querySelectorAll('[data-v351-panel]')].find(p=>p.dataset.v351Panel===tab);
   const prefix=tab==='Campeones'?'Campeones|':'';
   [...v350TabHtmlCache.keys()].forEach(k=>{if(k===tab||k.startsWith(prefix))v350TabHtmlCache.delete(k);});
+  if(!panel){
+    panel=document.createElement('section');
+    panel.className='v351-history-panel';
+    panel.dataset.v351Panel=tab;
+    content.appendChild(panel);
+  }
   panel.innerHTML=v351BodyFor(tab);
 }
 
