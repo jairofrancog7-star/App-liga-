@@ -1435,10 +1435,20 @@ function championsArchiveBlock(){
   '</section>';
 }
 function finalsArchiveBlock(){
-  const rows=historyMoments.filter(m=>['FINAL','PENALES','CLÁSICO','ENCUENTRO'].includes(m.kind));
+  /* V331 — Finales conserva fecha/temporada como metadatos para que la vista
+     compacta pueda ordenarlas por fecha y agruparlas por década sin inventar años. */
+  const rows=historyNewestFirst(
+    historyMoments.filter(m=>['FINAL','PENALES','CLÁSICO','ENCUENTRO'].includes(m.kind)),
+    'date'
+  );
   return '<section class="v35-block v35-history-archive v35-history-archive-compact">'+
     '<div class="v35-history-archive-head"><span>PARTIDOS PARA EL RECUERDO</span><h2>Finales, penales y clásicos</h2></div>'+
-    '<div class="v35-history-moments">'+rows.map(m=>'<article class="v35-history-moment"><span class="v35-history-kind">'+esc(m.kind)+'</span><h3>'+esc(m.title)+'</h3><strong>'+esc(m.subtitle)+'</strong><p>'+esc(m.detail)+'</p></article>').join('')+'</div>'+
+    '<div class="v35-history-moments">'+rows.map(m=>
+      '<article class="v35-history-moment" data-v35-final-date="'+esc(m.date||'')+'" data-v35-final-season="'+esc(m.season||'')+'">'+
+        '<div class="v35-history-meta"><span class="v35-history-kind">'+esc(m.kind)+'</span>'+(m.date?'<time class="v35-history-date">'+esc(m.date)+'</time>':'')+'</div>'+
+        '<h3>'+esc(m.title)+'</h3><strong>'+esc(m.subtitle)+'</strong><p>'+esc(m.detail)+'</p>'+
+      '</article>'
+    ).join('')+'</div>'+
   '</section>';
 }
 
