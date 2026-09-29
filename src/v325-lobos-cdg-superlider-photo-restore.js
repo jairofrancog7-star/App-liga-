@@ -1,3 +1,5 @@
+
+import './v328-publications-team-logos.js?v=20260929-publications-team-logos-v328';
 /* V327 — Restauración final persistente: Lobos CDG · Súper líder · 03 may 2026.
    Mantiene la tarjeta existente y restaura solamente la fotografía exacta aportada por el usuario. */
 const PHOTO='/App-liga-/assets/history/lobos-cdg-superlider-03-may-2026.webp?v=20260928-lobos-cdg-force-v327';
