@@ -1882,7 +1882,7 @@ function v351SeasonsPreviewBlock(){
   '</section>';
 }
 function seasonsBody(){
-  return seasonsEraBlock()+
+  return '<div class="v359-deferred-shell" data-v359-deferred="seasons" aria-busy="true"><span class="v359-deferred-dot" aria-hidden="true"></span></div>'+
     '<section class="v35-block v35-tab-body v35-seasons-legacy"><div class="v35-section-row"><h2>Archivo histórico completo</h2></div>'+
     '<div class="v35-season-detail"><span>Archivo histórico</span><h3>Temporadas anteriores separadas de la actual</h3><p>Los equipos antiguos pueden aparecer aquí como parte de su temporada histórica, pero nunca se agregan otra vez a la lista de equipos actuales si ya no participan.</p></div>'+
     '<div class="v35-season-detail"><span>Convocatoria · 12 nov 2019</span><h3>Temporada 2019–2020</h3><p><b>Inicio:</b> domingo 8 de diciembre de 2019. <b>Fuerzas:</b> Primera, Intermedia y Segunda. <b>Inscripciones:</b> hasta el martes 26 de noviembre, 19:00, Unidad Deportiva Sur. <b>Registro:</b> digital o físico, máximo 26 jugadores. <b>Junta previa:</b> martes 3 de diciembre, 19:00. Uniformación, cuotas, arbitrajes, credenciales, reglamento, premiación y transitorios se resolverían conforme al reglamento y a los acuerdos de asamblea.</p></div></section>'+
@@ -2132,7 +2132,7 @@ function championsBody(){
 function finalsBody(){
   return '<section class="v35-block v35-tab-body"><h2 class="v35-section-title">Finales</h2>'+
     '<div class="v35-season-detail"><h3>Finales históricas documentadas</h3><p>Se muestran únicamente las finales, series y clásicos que aparecen en el material histórico revisado.</p></div></section>'+
-    finalsArchiveBlock();
+    '<div class="v359-deferred-shell" data-v359-deferred="finals" aria-busy="true"><span class="v359-deferred-dot" aria-hidden="true"></span></div>';
 }
 function recordsBody(){
   return '<section class="v35-block v35-tab-body v35-records-body"><h2 class="v35-section-title">Récords y recuerdos</h2>'+
@@ -2200,9 +2200,15 @@ function v355HydrateHistoryLazy(root){
     if(fired)return;
     fired=true;
     observer?.disconnect();
-    if(!host.isConnected||route()!=='history'||activeTab!==tabAtSchedule)return;
+    if(!host.isConnected||route()!=='history'||activeTab!==tabAtSchedule){
+      delete host.dataset.v355Hydrating;
+      return;
+    }
     const work=()=>{
-      if(!host.isConnected||route()!=='history'||activeTab!==tabAtSchedule)return;
+      if(!host.isConnected||route()!=='history'||activeTab!==tabAtSchedule){
+        delete host.dataset.v355Hydrating;
+        return;
+      }
       let html='';
       if(kind==='summary')html=historyArchiveBlock()+stats();
       else if(kind==='seasons')html=historyArchiveBlock();
@@ -2222,22 +2228,23 @@ function v355HydrateHistoryLazy(root){
     else window.setTimeout(work,70);
   };
 
-  // V356: keep the old content automatic, but do not build the long archive
-  // while the user is still tapping the top tabs. It loads as the lower area approaches.
+  // V359: el archivo pesado ya no se autoconstruye por temporizador mientras
+  // el usuario cambia pestañas. Se monta sólo cuando se acerca a esa zona.
   const arm=()=>{
-    if(!host.isConnected||route()!=='history'||activeTab!==tabAtSchedule)return;
+    if(!host.isConnected||route()!=='history'||activeTab!==tabAtSchedule){
+      delete host.dataset.v355Hydrating;
+      return;
+    }
     if('IntersectionObserver' in window){
       observer=new IntersectionObserver(entries=>{
         if(entries.some(x=>x.isIntersecting))run();
-      },{root:null,rootMargin:'220px 0px',threshold:0});
+      },{root:null,rootMargin:'96px 0px',threshold:0});
       observer.observe(host);
-      // Fallback: restore it anyway after a calm interval even if the user does not scroll.
-      window.setTimeout(()=>{if(!fired)run()},kind==='champions'?1800:2400);
     }else{
-      window.setTimeout(run,kind==='champions'?650:900);
+      window.setTimeout(run,1200);
     }
   };
-  window.setTimeout(arm,kind==='champions'?260:380);
+  window.setTimeout(arm,120);
 }
 
 function v351BodyFor(tab){
@@ -2320,6 +2327,66 @@ let v355MountedKey='';
 function v355TabKey(tab=activeTab){
   return tab==='Campeones'?'Campeones|'+championCategory:tab;
 }
+/* V359_HISTORY_INSTANT_TABS
+   Cada pestaña queda montada y sólo se oculta/muestra. No se vuelven a mover
+   cientos de nodos del archivo histórico cada vez que el usuario toca otra sección. */
+let v359DeferredJob=0;
+function v359Panel(content,tab){
+  return [...content.children].find(el=>el.matches?.('.v351-history-panel')&&el.dataset.v351Panel===tab)||null;
+}
+function v359EnsurePanel(content,tab){
+  let panel=v359Panel(content,tab);
+  if(panel)return panel;
+  content.insertAdjacentHTML('beforeend',v351PanelHtml(tab));
+  return v359Panel(content,tab);
+}
+function v359ActivatePanel(content,tab){
+  const next=v359EnsurePanel(content,tab);
+  [...content.children].forEach(panel=>{
+    if(!panel.matches?.('.v351-history-panel'))return;
+    const on=panel===next;
+    panel.hidden=!on;
+    panel.classList.toggle('is-active',on);
+    panel.setAttribute('aria-hidden',on?'false':'true');
+  });
+  return next;
+}
+function v359HydrateDeferredPanel(panel){
+  if(!panel||panel.hidden)return;
+  const shell=panel.querySelector('[data-v359-deferred]');
+  if(!shell||shell.dataset.v359Busy==='1'||shell.dataset.v359Done==='1')return;
+  const kind=shell.dataset.v359Deferred||'';
+  shell.dataset.v359Busy='1';
+  const job=++v359DeferredJob;
+  const work=()=>{
+    if(job!==v359DeferredJob||!shell.isConnected||panel.hidden||route()!=='history'){
+      delete shell.dataset.v359Busy;
+      return;
+    }
+    let html='';
+    if(kind==='seasons')html=seasonsEraBlock();
+    else if(kind==='finals')html=finalsArchiveBlock();
+    if(html)shell.insertAdjacentHTML('beforebegin',html);
+    shell.dataset.v359Done='1';
+    shell.remove();
+    requestAnimationFrame(()=>{
+      if(kind==='finals')window.LJR_APPLY_HISTORY_FINALS_REFERENCE?.();
+      syncHistoryCollapse();
+    });
+  };
+  requestAnimationFrame(()=>requestAnimationFrame(()=>{
+    if('requestIdleCallback' in window)window.requestIdleCallback(work,{timeout:280});
+    else window.setTimeout(work,24);
+  }));
+}
+function v359Prewarm(){
+  const work=()=>{
+    if(route()!=='history')return;
+    try{v357ChampionAchievements();}catch(_){}
+  };
+  if('requestIdleCallback' in window)window.requestIdleCallback(work,{timeout:900});
+  else window.setTimeout(work,180);
+}
 function pageHtml(){
   const back='<button class="v35-back" type="button" data-v35-back aria-label="Volver"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 11H7.83L13.42 5.41 12 4l-8 8 8 8 1.41-1.41L7.83 13H20Z"/></svg></button>';
   return '<div class="v35-history-page '+(activeTab==='Videos'?'v329-videos-active':'')+'">'+linesSvg()+
@@ -2330,7 +2397,7 @@ function pageHtml(){
       '<h1>Historia</h1>'+
     '</header>'+
     '<nav class="v35-tabs" aria-label="Secciones de Historia">'+tabs()+'</nav>'+
-    '<main class="v35-history-content" data-v35-content>'+bodyForTab()+'</main>'+
+    '<main class="v35-history-content" data-v35-content>'+v351PanelHtml(activeTab)+'</main>'+
   '</div>';
 }
 function v354BindHistoryTabs(root){
@@ -2367,17 +2434,21 @@ function renderHistory(){
   v355MountedKey=v355TabKey();
   requestAnimationFrame(()=>{
     syncHistoryCollapse();
-    v355HydrateHistoryLazy(historyRoot);
+    const activePanel=historyRoot?.querySelector('.v351-history-panel.is-active');
+    v359HydrateDeferredPanel(activePanel);
+    v355HydrateHistoryLazy(activePanel||historyRoot);
+    v359Prewarm();
     if(activeTab==='Resumen')v358ScheduleSummaryRefresh();
-    if(activeTab==='Finales')window.LJR_APPLY_HISTORY_FINALS_REFERENCE?.();
+    if(activeTab==='Finales'&&!activePanel?.querySelector('[data-v359-deferred="finals"]'))window.LJR_APPLY_HISTORY_FINALS_REFERENCE?.();
   });
 }
 function rerenderContent(){
   const root=document.querySelector('.v35-history-page');
   const nav=root?.querySelector('.v35-tabs');
   const content=root?.querySelector('[data-v35-content]');
-  if(!root||!nav||!content) return;
+  if(!root||!nav||!content)return;
   v348CancelArchiveLoad();
+  v359DeferredJob++;
 
   nav.querySelectorAll('[data-v35-tab]').forEach(btn=>{
     const selected=btn.dataset.v35Tab===activeTab;
@@ -2385,22 +2456,8 @@ function rerenderContent(){
     btn.setAttribute('aria-selected',selected?'true':'false');
   });
 
-  const nextKey=v355TabKey();
-  if(v355MountedKey!==nextKey){
-    if(v355MountedKey&&content.childNodes.length){
-      const oldFrag=document.createDocumentFragment();
-      while(content.firstChild)oldFrag.appendChild(content.firstChild);
-      v355DomCache.set(v355MountedKey,oldFrag);
-    }
-    const cached=v355DomCache.get(nextKey);
-    if(cached){
-      content.appendChild(cached);
-      v355DomCache.delete(nextKey);
-    }else{
-      content.innerHTML=bodyForTab();
-    }
-    v355MountedKey=nextKey;
-  }
+  const activePanel=v359ActivatePanel(content,activeTab);
+  v355MountedKey=v355TabKey();
 
   root.classList.toggle('v329-videos-active',activeTab==='Videos');
   root.classList.toggle('v341-seasons-active',activeTab==='Temporadas');
@@ -2412,9 +2469,10 @@ function rerenderContent(){
 
   requestAnimationFrame(()=>{
     syncHistoryCollapse();
-    v355HydrateHistoryLazy(root);
+    v359HydrateDeferredPanel(activePanel);
+    v355HydrateHistoryLazy(activePanel||root);
     if(activeTab==='Resumen')v358ScheduleSummaryRefresh();
-    if(activeTab==='Finales')window.LJR_APPLY_HISTORY_FINALS_REFERENCE?.();
+    if(activeTab==='Finales'&&!activePanel?.querySelector('[data-v359-deferred="finals"]'))window.LJR_APPLY_HISTORY_FINALS_REFERENCE?.();
   });
 }
 function v351RefreshPanel(tab){
