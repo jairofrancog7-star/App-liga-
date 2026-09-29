@@ -2140,6 +2140,7 @@ function rerenderContent(){
   root.classList.toggle('v341-seasons-active',activeTab==='Temporadas');
   document.body.classList.toggle('v341-history-seasons-active',activeTab==='Temporadas');
   root.classList.remove('v330-finals-active');
+  if(activeTab!=='Finales')window.LJR_CLEAR_HISTORY_FINALS_REFERENCE?.();
 
   requestAnimationFrame(()=>{
     syncHistoryCollapse();
