@@ -379,3 +379,214 @@ else schedule(30);
 setTimeout(patch,300);
 setTimeout(patch,900);
 })();
+
+/* V330 HARD FIX — Historia > Finales: exact mobile reference layer. */
+(function(){
+'use strict';
+if(window.__LJR_V330_HISTORY_FINALS_HARDFIX__)return;
+window.__LJR_V330_HISTORY_FINALS_HARDFIX__=true;
+
+function route(){return (location.hash.replace(/^#\//,'')||'home').split('?')[0]}
+function norm(v){return String(v||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/\s+/g,' ').trim()}
+function esc(v){return String(v||'').replace(/[&<>"']/g,function(m){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]})}
+function initials(v){return String(v||'JR').split(/\s+/).filter(Boolean).slice(0,2).map(function(x){return x[0]||''}).join('').toUpperCase()||'JR'}
+function alias(v){
+  var n=norm(v);
+  if(n.indexOf('abejas')>=0)return 'abejas';
+  if(n.indexOf('hermanos')>=0)return 'hermanos';
+  if(n.indexOf('juventus')>=0)return 'juventus';
+  if(n.indexOf('boavista')>=0)return 'boavista';
+  if(n.indexOf('magisterio')>=0)return 'magisterio';
+  if(n.indexOf('valencia')>=0)return 'valencia';
+  if(n.indexOf('chelse')>=0)return 'chelsea';
+  return n;
+}
+var RAW='https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/';
+var FALLBACK={
+  abejas:RAW+'assets/official-logos/abejas.png',
+  hermanos:RAW+'assets/official-logos/hermanos.png',
+  juventus:RAW+'assets/official-logos/juventus.png',
+  boavista:RAW+'assets/official-logos/boavista.png'
+};
+function logo(name){
+  var a=alias(name);
+  try{
+    var src=window.LJR_TEAM_LOGOS&&window.LJR_TEAM_LOGOS.get&&window.LJR_TEAM_LOGOS.get(a);
+    if(src)return src;
+  }catch(_){}
+  return FALLBACK[a]||'';
+}
+function crest(name){
+  var src=logo(name);
+  return '<span class="v330-crest"><b>'+esc(initials(name))+'</b>'+(src?'<img src="'+esc(src)+'" alt="" loading="lazy" decoding="async" onerror="this.remove()">':'')+'</span>';
+}
+function split(title){
+  var raw=String(title||'').trim();
+  var m=raw.match(/^(.*?)\s+(\d+)\s*[–-]\s*(\d+)\s+(.*)$/);
+  if(m)return {a:m[1].trim(),b:m[4].trim(),sa:m[2],sb:m[3]};
+  var p=raw.split(/\s+vs\.?\s+/i);
+  if(p.length===2)return {a:p[0].trim(),b:p[1].trim(),sa:'',sb:''};
+  return {a:raw,b:'',sa:'',sb:''};
+}
+var DATES={
+  'magisterio 4–2 boavista':'23 feb 2013',
+  'magisterio 4-2 boavista':'23 feb 2013',
+  'hermanos vs juventus':'Archivo histórico',
+  'valencia vs halcones':'Archivo histórico',
+  'hermanos vs chelse':'Archivo histórico',
+  'olímpicos de pozos vs abejas fc':'Domingo 21 de junio · año no visible',
+  'olimpicos de pozos vs abejas fc':'Domingo 21 de junio · año no visible'
+};
+function meta(title){
+  var date=DATES[norm(title)]||'Archivo histórico';
+  var mm=date.match(/\b(19|20)\d{2}\b/);
+  var y=mm?Number(mm[0]):0;
+  return {date:date,group:y?String(Math.floor(y/10)*10)+'s':'Archivo',season:y?String(y-1)+'/'+String(y).slice(-2):'Archivo histórico'};
+}
+function parseRows(content){
+  return Array.from(content.querySelectorAll('.v35-history-archive .v35-history-moment')).map(function(row,i){
+    var title=(row.querySelector('h3')&&row.querySelector('h3').textContent||'Final histórica').trim();
+    return {
+      i:i,
+      title:title,
+      kind:(row.querySelector('.v35-history-kind')&&row.querySelector('.v35-history-kind').textContent||'FINAL').trim(),
+      subtitle:(row.querySelector('strong')&&row.querySelector('strong').textContent||'').trim(),
+      detail:(row.querySelector('p')&&row.querySelector('p').textContent||'').trim(),
+      match:split(title),
+      meta:meta(title)
+    };
+  });
+}
+function rowHTML(r){
+  var m=r.match;
+  var b=m.b||r.subtitle||'Archivo de la Liga';
+  return '<article class="v330-final-row">'+
+    '<div class="v330-season">Temporada '+esc(r.meta.season)+'</div>'+
+    '<div class="v330-row-main">'+
+      '<div class="v330-teams">'+
+        '<div class="v330-team">'+crest(m.a)+'<strong>'+esc(m.a)+'</strong><em>'+esc(m.sa)+'</em></div>'+
+        '<div class="v330-team">'+crest(b)+'<strong>'+esc(b)+'</strong><em>'+esc(m.sb)+'</em></div>'+
+      '</div>'+
+      '<div class="v330-side"><span>Final</span><button type="button" data-v330-details="'+r.i+'" aria-expanded="false">Ver detalles</button></div>'+
+    '</div>'+
+    '<div class="v330-detail"><div><b>'+esc(r.kind)+'</b><small>'+esc(r.meta.date)+'</small>'+(r.subtitle?'<strong>'+esc(r.subtitle)+'</strong>':'')+(r.detail?'<p>'+esc(r.detail)+'</p>':'')+'</div></div>'+
+  '</article>';
+}
+function shell(rows){
+  var groups={};
+  rows.forEach(function(r){(groups[r.meta.group]||(groups[r.meta.group]=[])).push(r)});
+  var keys=Object.keys(groups).sort(function(a,b){
+    if(a==='Archivo')return 1;
+    if(b==='Archivo')return -1;
+    return parseInt(b)-parseInt(a);
+  });
+  return '<section class="v330-finals-shell">'+keys.map(function(k){
+    return '<article class="v330-decade"><h2>'+esc(k)+'</h2><div>'+groups[k].map(rowHTML).join('')+'</div></article>';
+  }).join('')+'</section>';
+}
+function finalActive(root){
+  var a=root&&root.querySelector('.v35-tabs .v35-tab.active');
+  return norm(a&&((a.dataset&&a.dataset.v35Tab)||a.textContent))==='finales';
+}
+function forceNav(root){
+  var nav=root.querySelector('.v35-tabs');
+  if(!nav||nav.dataset.v330Exact==='1')return;
+  nav.dataset.v330Exact='1';
+  nav.innerHTML=
+    '<button type="button" class="v35-tab" data-v35-tab="Temporadas">Temporadas</button>'+
+    '<button type="button" class="v35-tab" data-v35-tab="Campeones">Campeones</button>'+
+    '<button type="button" class="v35-tab active" data-v35-tab="Finales">Finales</button>'+
+    '<button type="button" class="v35-tab v330-video-tab" data-v330-video>Vídeos</button>';
+}
+var working=false;
+function apply(){
+  if(working||route()!=='history')return;
+  var root=document.querySelector('.v35-history-page');
+  if(!root)return;
+  if(!finalActive(root)){
+    root.classList.remove('v330-finals-active');
+    return;
+  }
+  working=true;
+  try{
+    root.classList.add('v330-finals-active');
+    forceNav(root);
+    var content=root.querySelector('[data-v35-content]');
+    if(!content||content.dataset.v330Exact==='1')return;
+    var rows=parseRows(content);
+    if(!rows.length)return;
+    content.innerHTML=shell(rows);
+    content.dataset.v330Exact='1';
+  }finally{working=false}
+}
+
+var st=document.createElement('style');
+st.id='v330-history-finals-hardfix-style';
+st.textContent=[
+'@media(max-width:1023px){',
+'html body .v35-history-page.v330-finals-active{--v35-pad:22px!important;--v35-compact-h:56px!important;background:linear-gradient(180deg,#071a9a 0%,#080f70 32%,#07095d 100%)!important;}',
+'html body .v35-history-page.v330-finals-active .v35-history-head{height:136px!important;min-height:136px!important;padding:0 22px!important;background:linear-gradient(180deg,rgba(12,43,218,.10),rgba(4,8,72,.30)),url("../public/history-regularscroll-header.webp") center top/cover no-repeat!important;}',
+'html body .v35-history-page.v330-finals-active .v35-history-head .v35-back{left:22px!important;top:24px!important;width:34px!important;height:34px!important;}',
+'html body .v35-history-page.v330-finals-active .v35-history-head .v35-back svg{width:29px!important;height:29px!important;}',
+'html body .v35-history-page.v330-finals-active .v35-history-head h1{left:22px!important;bottom:14px!important;font-size:39px!important;line-height:1!important;font-weight:500!important;letter-spacing:-.035em!important;}',
+'html body .v35-history-page.v330-finals-active .v35-tabs{position:sticky!important;top:var(--v35-compact-h)!important;z-index:80!important;display:grid!important;grid-template-columns:repeat(4,minmax(0,1fr))!important;gap:0!important;width:100%!important;height:52px!important;min-height:52px!important;padding:0 10px!important;margin:0!important;overflow:visible!important;background:linear-gradient(180deg,#101c9a 0%,#0b126f 100%)!important;border-bottom:1px solid rgba(190,196,236,.25)!important;}',
+'html body .v35-history-page.v330-finals-active .v35-tabs .v35-tab{position:relative!important;display:flex!important;align-items:center!important;justify-content:center!important;width:100%!important;min-width:0!important;height:52px!important;min-height:52px!important;margin:0!important;padding:0 2px!important;border:0!important;background:transparent!important;color:#c7c9db!important;font:600 15.5px/1 system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif!important;white-space:nowrap!important;}',
+'html body .v35-history-page.v330-finals-active .v35-tabs .v35-tab.active{color:#12edf3!important;font-weight:650!important;}',
+'html body .v35-history-page.v330-finals-active .v35-tabs .v35-tab.active:after{content:""!important;position:absolute!important;left:50%!important;bottom:-1px!important;width:72%!important;max-width:88px!important;height:4px!important;transform:translateX(-50%)!important;border-radius:4px 4px 0 0!important;background:#14edf3!important;}',
+'html body .v35-history-page.v330-finals-active .v35-history-content{margin:0!important;padding:16px 18px 36px!important;background:transparent!important;}',
+'html body .v35-history-page.v330-finals-active .v330-finals-shell{width:100%!important;margin:0!important;padding:0!important;}',
+'html body .v35-history-page.v330-finals-active .v330-decade{width:100%!important;margin:0 0 18px!important;padding:0!important;overflow:hidden!important;border-radius:22px!important;background:linear-gradient(180deg,#141e91 0%,#10167d 100%)!important;box-shadow:inset 0 0 0 1px rgba(255,255,255,.045)!important;}',
+'html body .v35-history-page.v330-finals-active .v330-decade>h2{height:48px!important;display:flex!important;align-items:center!important;margin:0!important;padding:0 18px!important;border-bottom:1px solid rgba(182,190,234,.25)!important;color:#fff!important;font:500 20px/1 system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif!important;letter-spacing:-.015em!important;}',
+'html body .v35-history-page.v330-finals-active .v330-final-row{margin:0 18px!important;padding:13px 0 0!important;}',
+'html body .v35-history-page.v330-finals-active .v330-final-row+.v330-final-row{border-top:1px solid rgba(174,184,230,.20)!important;}',
+'html body .v35-history-page.v330-finals-active .v330-season{margin:0 0 9px!important;color:#bbc0dc!important;font:500 15px/1.15 system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif!important;}',
+'html body .v35-history-page.v330-finals-active .v330-row-main{display:grid!important;grid-template-columns:minmax(0,1fr) 100px!important;gap:12px!important;align-items:center!important;min-height:77px!important;padding:0 0 14px!important;}',
+'html body .v35-history-page.v330-finals-active .v330-teams{min-width:0!important;display:grid!important;gap:8px!important;}',
+'html body .v35-history-page.v330-finals-active .v330-team{min-width:0!important;display:grid!important;grid-template-columns:28px minmax(0,1fr) 24px!important;gap:8px!important;align-items:center!important;}',
+'html body .v35-history-page.v330-finals-active .v330-crest{position:relative!important;width:28px!important;height:28px!important;display:grid!important;place-items:center!important;overflow:hidden!important;border-radius:8px!important;background:rgba(255,255,255,.08)!important;}',
+'html body .v35-history-page.v330-finals-active .v330-crest b{color:#dbe0ff!important;font:800 8px/1 system-ui,sans-serif!important;}',
+'html body .v35-history-page.v330-finals-active .v330-crest img{position:absolute!important;inset:0!important;width:100%!important;height:100%!important;display:block!important;object-fit:contain!important;background:transparent!important;}',
+'html body .v35-history-page.v330-finals-active .v330-team strong{min-width:0!important;overflow:hidden!important;text-overflow:ellipsis!important;white-space:nowrap!important;color:#fff!important;font:650 15.5px/1.06 system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif!important;}',
+'html body .v35-history-page.v330-finals-active .v330-team em{justify-self:end!important;color:#fff!important;font:700 17px/1 system-ui,sans-serif!important;font-style:normal!important;}',
+'html body .v35-history-page.v330-finals-active .v330-side{display:flex!important;flex-direction:column!important;justify-content:center!important;gap:9px!important;}',
+'html body .v35-history-page.v330-finals-active .v330-side>span{color:#b6bbd8!important;text-align:center!important;font:500 15px/1 system-ui,sans-serif!important;}',
+'html body .v35-history-page.v330-finals-active .v330-side button{height:37px!important;min-height:37px!important;padding:0 7px!important;border:0!important;border-radius:8px!important;background:linear-gradient(180deg,#0b4497 0%,#07337b 100%)!important;box-shadow:inset 0 0 0 1px rgba(18,237,243,.09)!important;color:#13edf3!important;font:700 14px/1 system-ui,sans-serif!important;}',
+'html body .v35-history-page.v330-finals-active .v330-detail{display:grid!important;grid-template-rows:0fr!important;opacity:0!important;overflow:hidden!important;transition:grid-template-rows .18s ease,opacity .18s ease!important;}',
+'html body .v35-history-page.v330-finals-active .v330-detail>div{min-height:0!important;overflow:hidden!important;}',
+'html body .v35-history-page.v330-finals-active .v330-final-row.is-open .v330-detail{grid-template-rows:1fr!important;opacity:1!important;padding-bottom:14px!important;}',
+'html body .v35-history-page.v330-finals-active .v330-detail b,html body .v35-history-page.v330-finals-active .v330-detail small,html body .v35-history-page.v330-finals-active .v330-detail strong{display:block!important;}',
+'html body .v35-history-page.v330-finals-active .v330-detail b{color:#14edf3!important;font-size:11px!important;letter-spacing:.08em!important;}',
+'html body .v35-history-page.v330-finals-active .v330-detail small{margin-top:4px!important;color:#aeb5d2!important;font-size:11px!important;}',
+'html body .v35-history-page.v330-finals-active .v330-detail strong{margin-top:4px!important;color:#fff!important;font-size:13px!important;}',
+'html body .v35-history-page.v330-finals-active .v330-detail p{margin:5px 0 0!important;color:#c3c8e0!important;font-size:12.5px!important;line-height:1.38!important;}',
+'}',
+'@media(max-width:374px){html body .v35-history-page.v330-finals-active .v35-tabs .v35-tab{font-size:14px!important;}html body .v35-history-page.v330-finals-active .v330-row-main{grid-template-columns:minmax(0,1fr) 92px!important;}html body .v35-history-page.v330-finals-active .v330-team strong{font-size:14px!important;}}'
+].join('');
+document.head.appendChild(st);
+
+document.addEventListener('click',function(e){
+  var v=e.target.closest&&e.target.closest('[data-v330-video]');
+  if(v){e.preventDefault();e.stopPropagation();location.hash='#/video';return}
+  var b=e.target.closest&&e.target.closest('[data-v330-details]');
+  if(!b)return;
+  e.preventDefault();e.stopPropagation();
+  var row=b.closest('.v330-final-row');
+  if(!row)return;
+  var open=!row.classList.contains('is-open');
+  row.classList.toggle('is-open',open);
+  b.setAttribute('aria-expanded',String(open));
+  b.textContent=open?'Ocultar':'Ver detalles';
+},true);
+
+var t=0;
+function schedule(ms){clearTimeout(t);t=setTimeout(function(){requestAnimationFrame(apply)},ms||0)}
+window.addEventListener('hashchange',function(){schedule(35)});
+window.addEventListener('pageshow',function(){schedule(35)});
+document.addEventListener('click',function(e){if(e.target.closest&&e.target.closest('[data-v35-tab],[data-route]'))schedule(45)},true);
+function boot(){
+  var root=document.querySelector('#screen')||document.body;
+  new MutationObserver(function(){schedule(25)}).observe(root,{childList:true,subtree:true});
+  schedule(20);setTimeout(apply,250);setTimeout(apply,800);
+}
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot,{once:true});else boot();
+})();
