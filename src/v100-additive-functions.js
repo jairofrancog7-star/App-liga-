@@ -592,8 +592,10 @@ async function v197DrawBlueCredential(canvas){
 
   const league=await v100LoadImage(V198_LEAGUE_LOGO);
   if(league){
-    x.save();x.fillStyle='rgba(255,255,255,.96)';v196RoundRectPath(x,42,466,126,126,7);x.fill();
-    v100DrawContainedImage(x,league,50,474,110,110);x.restore();
+    /* Logo de la Liga al costado del nombre, como en la credencial de referencia. */
+    x.save();x.shadowColor='rgba(0,0,0,.38)';x.shadowBlur=7;
+    v100DrawContainedImage(x,league,24,447,168,168);
+    x.restore();
   }
 
   /* La credencial azul original NO lleva escudo del equipo: sólo el nombre debajo de la foto. */
