@@ -147,13 +147,16 @@ function apply(){
 
   const content=root.querySelector('[data-v35-content]');
   if(!content)return;
-  content.querySelectorAll('.v329-finals-shell').forEach(x=>x.remove());
-  if(content.querySelector('.v358-finals-shell'))return;
+  /* V359_FINALS_PANEL_SCOPE — con pestañas persistentes, trabajar sólo dentro
+     del panel Finales activo para no recorrer archivos ocultos de Resumen/Campeones. */
+  const panel=content.querySelector('.v351-history-panel.is-active')||content;
+  panel.querySelectorAll('.v329-finals-shell').forEach(x=>x.remove());
+  if(panel.querySelector('.v358-finals-shell'))return;
 
-  const source=[...content.querySelectorAll('.v35-history-archive .v35-history-moment')];
+  const source=[...panel.querySelectorAll('.v35-history-archive .v35-history-moment')];
   if(!source.length)return;
   const rows=source.map(rowFromNode).sort((a,b)=>(b.rank-a.rank)||(a.i-b.i));
-  content.insertAdjacentHTML('afterbegin',shellHtml(rows));
+  panel.insertAdjacentHTML('afterbegin',shellHtml(rows));
 }
 function clear(){
   const root=document.querySelector('.v35-history-page');
