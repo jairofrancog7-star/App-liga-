@@ -1035,6 +1035,7 @@ const videos=[
 const titleRows=[];
 
 let activeTab='Resumen';
+let championCategory='Todos';
 let v35ScrollRaf=0;
 
 function scrollTop(){
@@ -1543,8 +1544,170 @@ function seasonsBody(){
     '<div class="v35-season-detail"><span>Convocatoria · 12 nov 2019</span><h3>Temporada 2019–2020</h3><p><b>Inicio:</b> domingo 8 de diciembre de 2019. <b>Fuerzas:</b> Primera, Intermedia y Segunda. <b>Inscripciones:</b> hasta el martes 26 de noviembre, 19:00, Unidad Deportiva Sur. <b>Registro:</b> digital o físico, máximo 26 jugadores. <b>Junta previa:</b> martes 3 de diciembre, 19:00. Uniformación, cuotas, arbitrajes, credenciales, reglamento, premiación y transitorios se resolverían conforme al reglamento y a los acuerdos de asamblea.</p></div></section>'+
     historyArchiveBlock();
 }
+/* V340 — Historia > Campeones: ranking visual superior según referencia del usuario.
+   Conserva TODO el archivo histórico anterior debajo y calcula los títulos desde
+   los campeones ya documentados en historyMoments + verifiedChampions. */
+function v340Norm(v){
+  return String(v||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase()
+    .replace(/[^a-z0-9+]+/g,' ').trim().replace(/\s+/g,' ');
+}
+function v340CanonicalTeam(name){
+  const raw=String(name||'').trim();
+  const n=v340Norm(raw);
+  const aliases={
+    'boavista':'Boavista FC','boavista fc':'Boavista FC',
+    'promesas':'Promesas FC','promesas fc':'Promesas FC','promesas de pozos':'Promesas FC','promesas fc pozos':'Promesas FC',
+    'galacticos':'Galácticos de Pozos','galacticos fc':'Galácticos de Pozos','galacticos de pozos':'Galácticos de Pozos',
+    'abejas pozos':'Abejas','abejas':'Abejas',
+    'dep hermanos':'Dep. Hermanos','deportivo hermanos':'Dep. Hermanos','hermanos':'Dep. Hermanos',
+    'tavera':'Tavera FC','tavera fc':'Tavera FC',
+    'terricolas':'Terrícolas SEDER','terricolas seder':'Terrícolas SEDER',
+    'lobos cdg cerrito de gasca':'Lobos CDG','lobos cdg':'Lobos CDG',
+    'deportivo cg cerrito de gasca':'Deportivo CG · Cerrito de Gasca',
+    'miner os f c':'Mineros F. C.','mineros f c':'Mineros F. C.','mineros fc':'Mineros F. C.'
+  };
+  return aliases[n]||raw;
+}
+function v340LogoAlias(name){
+  const n=v340Norm(name);
+  if(n==='boavista fc')return 'boavista';
+  if(n==='promesas fc')return 'promesas';
+  if(n==='galacticos de pozos')return 'galacticos';
+  if(n==='dep hermanos')return 'hermanos';
+  if(n==='terricolas seder')return 'terricolas';
+  if(n==='deportivo cg cerrito de gasca')return 'cerrito de gasca';
+  if(n==='mineros f c')return 'mineros fc';
+  return name;
+}
+function v340ChampionCategory(m){
+  const text=v340Norm((m.subtitle||'')+' '+(m.detail||''));
+  if(/veteranos\s*50/.test(text))return 'Veteranos 50+';
+  if(/veteranos\s*35/.test(text))return 'Veteranos 35+';
+  if(text.includes('primera'))return 'Primera';
+  if(text.includes('intermedia'))return 'Intermedia';
+  if(text.includes('segunda'))return 'Segunda';
+  if(text.includes('veteranos'))return 'Veteranos';
+  return 'General';
+}
+function v340ChampionYear(m){
+  const exact=String(m.date||'').match(/\b(?:19|20)\d{2}\b/);
+  if(exact)return Number(exact[0]);
+  const years=String(m.season||'').match(/\b(?:19|20)\d{2}\b/g);
+  return years?.length?Number(years[years.length-1]):0;
+}
+function v340AchievementTypes(m){
+  const sub=v340Norm(m.subtitle||'');
+  const detail=v340Norm(m.detail||'');
+  const out=[];
+  if(sub.includes('campeon de campeones'))out.push('Campeón de Campeones');
+  if(sub.includes('campeon de liga')||sub.includes('campeon del torneo de liga')||sub.includes('torneo de liga'))out.push('Liga');
+  if(sub.includes('campeon de copa')||sub.includes('campeon del torneo de copa')||sub.includes('torneo de copa'))out.push('Copa');
+  if(sub.includes('torneo relampago')||sub.includes('relampago'))out.push('Relámpago');
+  /* Caso documentado Juventus 17-abr-2022: la misma publicación confirma Liga + Campeón de Campeones.
+     No se cuenta "campeón vigente de Copa 2019" como una Copa nueva de 2022. */
+  if(detail.includes('tambien se corono como campeon de campeones')&&!out.includes('Campeón de Campeones')){
+    out.push('Campeón de Campeones');
+  }
+  return out.length?[...new Set(out)]:['Título'];
+}
+function v340ChampionMoments(){
+  const summaryChampions=historyMoments.filter(m=>
+    m.championsOnly||(
+      !m.archiveOnly&&(
+        m.kind==='CAMPEÓN'||
+        m.kind==='PRIMER LUGAR'||
+        /campe[oó]n/i.test(String(m.subtitle||'')+' '+String(m.detail||''))
+      )
+    )
+  );
+  const merged=[],seen=new Set();
+  [...summaryChampions,...verifiedChampions.map(verifiedChampionAsMoment)].forEach(m=>{
+    const key=historyChampionKey(m);
+    if(!key||seen.has(key))return;
+    seen.add(key);
+    const kind=v340Norm(m.kind||'');
+    if(kind.includes('subcampeon')||!kind.includes('campeon'))return;
+    merged.push(m);
+  });
+  return merged;
+}
+function v340ChampionAchievements(){
+  const out=[],seen=new Set();
+  v340ChampionMoments().forEach(m=>{
+    const team=v340CanonicalTeam(m.winner||m.title||'');
+    if(!team)return;
+    const category=v340ChampionCategory(m);
+    const year=v340ChampionYear(m);
+    v340AchievementTypes(m).forEach(type=>{
+      /* Evita duplicados históricos que describen el mismo título con fecha de publicación
+         y temporada distinta, sin borrar ninguno de los cuadros del archivo inferior. */
+      const key=v340Norm(team)+'|'+String(year||v340Norm(m.season||m.date||''))+'|'+v340Norm(category)+'|'+v340Norm(type);
+      if(seen.has(key))return;
+      seen.add(key);
+      out.push({team,category,type,year,logo:m.image||''});
+    });
+  });
+  return out;
+}
+function v340ChampionLogo(team,preferred){
+  if(preferred)return preferred;
+  const alias=v340LogoAlias(team);
+  try{
+    const shared=window.LJR_TEAM_LOGOS?.get?.(alias)||window.LJR_OFFICIAL_API?.getLogo?.(alias);
+    if(shared)return shared;
+  }catch(_){}
+  try{
+    const historic=historicLogo(alias);
+    if(historic)return historic;
+  }catch(_){}
+  return '';
+}
+function v340Initials(name){
+  return String(name||'JR').replace(/[^A-Za-zÁÉÍÓÚÜÑáéíóúüñ0-9 ]+/g,' ').trim()
+    .split(/\s+/).filter(Boolean).slice(0,2).map(x=>x[0]||'').join('').toUpperCase()||'JR';
+}
+function v340TrophySvg(){
+  return '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 3h8v3h3v2c0 3.1-1.7 5.2-4.5 5.8A5.1 5.1 0 0 1 13 15.5V18h3v3H8v-3h3v-2.5a5.1 5.1 0 0 1-1.5-1.7C6.7 13.2 5 11.1 5 8V6h3V3Zm0 5H7c0 1.7.6 2.9 1.8 3.5A8.6 8.6 0 0 1 8 8Zm8 0c0 1.3-.3 2.5-.8 3.5C16.4 10.9 17 9.7 17 8h-1Z"/></svg>';
+}
+function championsRankingBlock(){
+  const achievements=v340ChampionAchievements();
+  const order=['Primera','Intermedia','Segunda','Veteranos 35+','Veteranos 50+','Veteranos','General'];
+  const available=order.filter(cat=>achievements.some(a=>a.category===cat));
+  const categories=['Todos',...available];
+  if(!categories.includes(championCategory))championCategory='Todos';
+  const selected=championCategory==='Todos'?achievements:achievements.filter(a=>a.category===championCategory);
+  const clubs=new Map();
+  selected.forEach(a=>{
+    const key=v340Norm(a.team);
+    let row=clubs.get(key);
+    if(!row){row={team:a.team,count:0,logo:a.logo||''};clubs.set(key,row);}
+    row.count+=1;
+    if(!row.logo&&a.logo)row.logo=a.logo;
+  });
+  const rows=[...clubs.values()].sort((a,b)=>b.count-a.count||a.team.localeCompare(b.team,'es'));
+  const filters='<div class="v340-champion-filters" role="tablist" aria-label="Categoría del palmarés">'+
+    categories.map(cat=>'<button type="button" role="tab" aria-selected="'+(cat===championCategory?'true':'false')+'" class="'+(cat===championCategory?'active':'')+'" data-v340-champion-cat="'+esc(cat)+'">'+esc(cat)+'</button>').join('')+
+  '</div>';
+  const list=rows.length?rows.map(row=>{
+    const logo=v340ChampionLogo(row.team,row.logo);
+    return '<div class="v340-champion-row">'+
+      '<span class="v340-champion-logo '+(logo?'':'is-fallback')+'">'+
+        (logo?'<img src="'+logo+'" alt="'+esc(row.team)+'" loading="lazy" decoding="async" onerror="this.parentElement.classList.add(\'is-fallback\');this.remove()">':'<b>'+esc(v340Initials(row.team))+'</b>')+
+      '</span>'+
+      '<span class="v340-champion-name">'+esc(row.team)+'</span>'+
+      '<strong class="v340-champion-count" aria-label="'+row.count+' títulos">'+row.count+'</strong>'+
+      '<span class="v340-champion-trophy">'+v340TrophySvg()+'</span>'+
+    '</div>';
+  }).join(''):'<div class="v340-champion-empty">No hay títulos documentados en esta categoría.</div>';
+  return '<section class="v340-champions-ranking" aria-label="Equipos más ganadores">'+
+    filters+
+    '<div class="v340-champion-list">'+list+'</div>'+
+    '<div class="v340-champion-archive-label"><span>ARCHIVO HISTÓRICO COMPLETO</span><strong>Campeones de otros años</strong><p>La información que ya estaba guardada continúa completa debajo.</p></div>'+
+  '</section>';
+}
 function championsBody(){
-  return '<section class="v35-block v35-tab-body"><h2 class="v35-section-title">Campeones de otros años</h2>'+
+  return championsRankingBlock()+
+    '<section class="v35-block v35-tab-body"><h2 class="v35-section-title">Campeones de otros años</h2>'+
     '<article class="v35-stat-card"><h3>Archivo histórico real</h3><p>Los campeones de temporadas anteriores se registran cuando una fuente de la Liga o de sus administradores los identifica como tales. No se exige una fotografía del trofeo. Los clubes que ya no participan permanecen únicamente en Historia.</p></article></section>'+
     championsArchiveBlock();
 }
@@ -1726,6 +1889,13 @@ function onClick(e){
   if(tab){e.preventDefault();e.stopPropagation();activeTab=tab.dataset.v35Tab||'Resumen';rerenderContent();return;}
   const jump=e.target.closest('[data-v35-tab-jump]');
   if(jump){e.preventDefault();e.stopPropagation();activeTab=jump.dataset.v35TabJump||'Temporadas';rerenderContent();return;}
+  const championCat=e.target.closest('[data-v340-champion-cat]');
+  if(championCat){
+    e.preventDefault();e.stopPropagation();
+    championCategory=championCat.dataset.v340ChampionCat||'Todos';
+    rerenderContent();
+    return;
+  }
   const era=e.target.closest('[data-v35-era-team]');
   if(era){
     e.preventDefault();e.stopPropagation();
