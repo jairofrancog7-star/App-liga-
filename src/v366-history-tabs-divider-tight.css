@@ -1,0 +1,74 @@
+/* V366 — Historia: recorte exacto bajo las pestañas.
+   La línea fina morada/azulada queda más arriba, se elimina el pedazo de
+   separación extra y Finales comienza inmediatamente debajo. */
+@media (max-width:1023px){
+  html body[data-app-route="history"] .v35-history-page{
+    --v361-history-tabs-h:48px!important;
+    --v361-history-art-h:184px!important;
+  }
+
+  html body[data-app-route="history"] .v35-history-page .v35-tabs,
+  html body[data-app-route="history"] .v35-history-page.v329-videos-active .v35-tabs,
+  html body[data-app-route="history"] .v35-history-page.v329-finals-image1 .v35-tabs,
+  html body[data-app-route="history"] .v35-history-page.v358-finals-reference .v35-tabs{
+    height:48px!important;
+    min-height:48px!important;
+    max-height:48px!important;
+    border-top:0!important;
+    border-bottom:1px solid rgba(205,212,255,.23)!important;
+    box-shadow:none!important;
+  }
+
+  html body[data-app-route="history"] .v35-history-page .v35-tabs>.v35-tab,
+  html body[data-app-route="history"] .v35-history-page .v35-tabs>.v329-video-tab,
+  html body[data-app-route="history"] .v35-history-page.v329-videos-active .v35-tabs>.v35-tab,
+  html body[data-app-route="history"] .v35-history-page.v329-finals-image1 .v35-tabs>.v35-tab,
+  html body[data-app-route="history"] .v35-history-page.v358-finals-reference .v35-tabs>.v35-tab{
+    height:48px!important;
+    min-height:48px!important;
+    max-height:48px!important;
+    padding-bottom:9px!important;
+  }
+
+  html body[data-app-route="history"] .v35-history-page .v35-tabs>.v35-tab.active::after,
+  html body[data-app-route="history"] .v35-history-page .v35-tabs>.v329-video-tab.active::after{
+    bottom:-1px!important;
+  }
+
+  /* No dejar una segunda franja entre la línea y el contenido. */
+  html body[data-app-route="history"] .v35-history-page .v35-history-content,
+  html body[data-app-route="history"] .v35-history-page .v351-history-panel.is-active{
+    margin-top:0!important;
+    border-top:0!important;
+    box-shadow:none!important;
+  }
+
+  /* Finales: quitar el hueco/cuadrito de separación y subir la primera tarjeta. */
+  html body[data-app-route="history"] .v35-history-page.v358-finals-reference .v35-history-content{
+    padding-top:0!important;
+  }
+  html body[data-app-route="history"] .v35-history-page.v358-finals-reference .v358-finals-shell{
+    padding-top:4px!important;
+  }
+  html body[data-app-route="history"] .v35-history-page.v358-finals-reference .v358-decade:first-child{
+    margin-top:0!important;
+  }
+}
+
+@media (max-width:374px){
+  html body[data-app-route="history"] .v35-history-page{
+    --v361-history-tabs-h:46px!important;
+    --v361-history-art-h:174px!important;
+  }
+  html body[data-app-route="history"] .v35-history-page .v35-tabs,
+  html body[data-app-route="history"] .v35-history-page .v35-tabs>.v35-tab,
+  html body[data-app-route="history"] .v35-history-page .v35-tabs>.v329-video-tab{
+    height:46px!important;
+    min-height:46px!important;
+    max-height:46px!important;
+  }
+  html body[data-app-route="history"] .v35-history-page .v35-tabs>.v35-tab,
+  html body[data-app-route="history"] .v35-history-page .v35-tabs>.v329-video-tab{
+    padding-bottom:8px!important;
+  }
+}
