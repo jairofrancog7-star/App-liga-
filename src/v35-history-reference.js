@@ -1462,8 +1462,69 @@ function summaryBody(){
     historyArchiveBlock()+
     stats();
 }
+function seasonsEraBlock(){
+  const n=v=>String(v||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[^a-z0-9]+/g,' ').trim().replace(/\s+/g,' ');
+  const yearOf=m=>{
+    const a=String(m?.date||'').match(/\b(19|20)\d{2}\b/g);
+    if(a?.length)return Number(a[a.length-1]);
+    const b=String(m?.season||'').match(/\b(19|20)\d{2}\b/);
+    return b?Number(b[0]):0;
+  };
+  const seasonLabel=(m,year)=>{
+    let s=String(m?.season||year||'').trim().replace(/\s*[–—-]\s*/g,'/');
+    s=s.replace(/^(\d{4})\/(\d{4})$/,(_,a,b)=>a+'/'+b.slice(-2));
+    return s||String(year||'');
+  };
+  const alias=name=>{
+    const x=n(name);
+    if(x.includes('deportivo cg')||x.includes('cerrito de gasca'))return 'cerrito de gasca';
+    if(x==='boavista fc')return 'boavista';
+    if(x.includes('promesas de pozos'))return 'promesas';
+    if(x.includes('abejas pozos'))return 'abejas';
+    if(x==='tavera')return 'tavera fc';
+    return name;
+  };
+  const logoFor=(name,explicit)=>{
+    if(explicit)return explicit;
+    try{return window.LJR_TEAM_LOGOS?.get?.(alias(name))||window.LJR_OFFICIAL_API?.getLogo?.(alias(name))||''}catch(_){return ''}
+  };
+  const initials=name=>String(name||'JR').split(/\s+/).filter(Boolean).slice(0,2).map(x=>x[0]||'').join('').toUpperCase()||'JR';
+  const source=[...historyMoments,...verifiedChampions.map(verifiedChampionAsMoment)];
+  const seen=new Set(),rows=[];
+  source.forEach(m=>{
+    const team=String(m.winner||m.title||'').trim();
+    const kind=n(m.kind);
+    const copy=n((m.subtitle||'')+' '+(m.detail||''));
+    if(!team||kind.includes('subcampeon')||copy.includes('subcampeon'))return;
+    if(!(kind.includes('campeon')||m.championsOnly||copy.includes('campeon')||kind.includes('primer lugar')||kind.includes('super lider')))return;
+    const year=yearOf(m);
+    if(!year)return;
+    const season=seasonLabel(m,year);
+    const key=n(season)+'|'+n(team);
+    if(seen.has(key))return;
+    seen.add(key);
+    rows.push({team,date:String(m.date||''),season,year,logo:logoFor(team,m.image||'')});
+  });
+  rows.sort((a,b)=>b.year-a.year||String(b.date).localeCompare(String(a.date),'es')||a.team.localeCompare(b.team,'es'));
+  const groups=new Map();
+  rows.forEach(r=>{
+    const decade=Math.floor(r.year/10)*10;
+    if(!groups.has(decade))groups.set(decade,[]);
+    groups.get(decade).push(r);
+  });
+  const html=[...groups.entries()].sort((a,b)=>b[0]-a[0]).map(([decade,items])=>
+    '<section class="v35-era-decade"><h2>'+decade+'s</h2><div class="v35-era-grid">'+
+    items.map(r=>'<button type="button" class="v35-era-item" data-v35-era-team="'+esc(r.team)+'" data-v35-era-date="'+esc(r.date)+'" aria-label="'+esc(r.team+' · '+r.season)+'">'+
+      '<span class="v35-era-logo '+(r.logo?'':'is-fallback')+'">'+
+        (r.logo?'<img src="'+r.logo+'" alt="'+esc(r.team)+'" loading="lazy" decoding="async" onerror="this.parentElement.classList.add(\'is-fallback\');this.remove()">':'<b>'+esc(initials(r.team))+'</b>')+
+      '</span><span class="v35-era-season">'+esc(r.season)+'</span></button>').join('')+
+    '</div></section>'
+  ).join('');
+  return '<section class="v35-era-archive" aria-label="Campeones por época">'+html+'</section>';
+}
 function seasonsBody(){
-  return '<section class="v35-block v35-tab-body"><div class="v35-section-row"><h2>Temporadas</h2></div>'+
+  return seasonsEraBlock()+
+    '<section class="v35-block v35-tab-body v35-seasons-legacy"><div class="v35-section-row"><h2>Temporadas</h2></div>'+
     '<div class="v35-season-detail"><span>Archivo histórico</span><h3>Temporadas anteriores separadas de la actual</h3><p>Los equipos antiguos pueden aparecer aquí como parte de su temporada histórica, pero nunca se agregan otra vez a la lista de equipos actuales si ya no participan.</p></div>'+
     '<div class="v35-season-detail"><span>Convocatoria · 12 nov 2019</span><h3>Temporada 2019–2020</h3><p><b>Inicio:</b> domingo 8 de diciembre de 2019. <b>Fuerzas:</b> Primera, Intermedia y Segunda. <b>Inscripciones:</b> hasta el martes 26 de noviembre, 19:00, Unidad Deportiva Sur. <b>Registro:</b> digital o físico, máximo 26 jugadores. <b>Junta previa:</b> martes 3 de diciembre, 19:00. Uniformación, cuotas, arbitrajes, credenciales, reglamento, premiación y transitorios se resolverían conforme al reglamento y a los acuerdos de asamblea.</p></div></section>'+
     historyArchiveBlock();
@@ -1651,6 +1712,22 @@ function onClick(e){
   if(tab){e.preventDefault();e.stopPropagation();activeTab=tab.dataset.v35Tab||'Resumen';rerenderContent();return;}
   const jump=e.target.closest('[data-v35-tab-jump]');
   if(jump){e.preventDefault();e.stopPropagation();activeTab=jump.dataset.v35TabJump||'Temporadas';rerenderContent();return;}
+  const era=e.target.closest('[data-v35-era-team]');
+  if(era){
+    e.preventDefault();e.stopPropagation();
+    const team=String(era.dataset.v35EraTeam||'').trim();
+    const date=String(era.dataset.v35EraDate||'').trim();
+    const norm=v=>String(v||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/\s+/g,' ').trim();
+    activeTab='Campeones';rerenderContent();
+    setTimeout(()=>{
+      const cards=[...document.querySelectorAll('.v35-history-moment,.v35-champion-card,.v115-card')];
+      const t=norm(team),d=norm(date);
+      const target=cards.find(c=>norm(c.querySelector('h3,h4')?.textContent||'')===t && (!d||norm(c.textContent||'').includes(d)))||
+        cards.find(c=>norm(c.querySelector('h3,h4')?.textContent||'')===t);
+      target?.scrollIntoView({behavior:'smooth',block:'center'});
+    },180);
+    return;
+  }
   const season=e.target.closest('[data-v35-season]');
   if(season){e.preventDefault();e.stopPropagation();const idx=Number(season.dataset.v35Season||0);activeTab='Temporadas';rerenderContent();requestAnimationFrame(()=>{const cards=document.querySelectorAll('.v35-season-grid .v35-season-card');cards[idx]?.scrollIntoView({block:'center',behavior:'smooth'});});return;}
   const shareBtn=e.target.closest('[data-v35-share]');
