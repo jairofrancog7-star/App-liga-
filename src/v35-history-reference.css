@@ -2663,3 +2663,163 @@
   .v334-era-season{font-size:16px!important}
   .v334-era-decade>h2{font-size:28px!important}
 }
+
+
+/* V340 — Historia > Campeones · ranking superior estilo referencia móvil. */
+.v340-champions-ranking{
+  width:100%;
+  color:#fff;
+}
+.v340-champion-filters{
+  display:flex;
+  align-items:center;
+  gap:20px;
+  width:100%;
+  overflow-x:auto;
+  overflow-y:hidden;
+  padding:12px var(--v35-pad,28px) 9px;
+  border-bottom:1px solid rgba(198,207,255,.13);
+  scrollbar-width:none;
+  -webkit-overflow-scrolling:touch;
+}
+.v340-champion-filters::-webkit-scrollbar{display:none}
+.v340-champion-filters button{
+  flex:0 0 auto;
+  margin:0;
+  padding:5px 0 7px;
+  border:0;
+  border-bottom:2px solid transparent;
+  background:transparent;
+  color:rgba(224,228,255,.70);
+  font:inherit;
+  font-size:12px;
+  line-height:1;
+  font-weight:650;
+  white-space:nowrap;
+  cursor:pointer;
+}
+.v340-champion-filters button.active{
+  color:#16e8f7;
+  border-bottom-color:#16e8f7;
+}
+.v340-champion-list{
+  margin:0 var(--v35-pad,28px);
+}
+.v340-champion-row{
+  min-height:92px;
+  display:grid;
+  grid-template-columns:72px minmax(0,1fr) 46px 34px;
+  align-items:center;
+  column-gap:12px;
+  border-bottom:1px solid rgba(201,208,255,.16);
+}
+.v340-champion-logo{
+  width:66px;
+  height:66px;
+  display:grid;
+  place-items:center;
+  overflow:visible;
+  background:transparent;
+}
+.v340-champion-logo img{
+  width:62px;
+  height:62px;
+  display:block;
+  object-fit:contain;
+  object-position:center;
+  filter:drop-shadow(0 4px 5px rgba(0,0,38,.28));
+}
+.v340-champion-logo.is-fallback{
+  width:58px;
+  height:58px;
+  margin-left:4px;
+  border-radius:50%;
+  border:1px solid rgba(73,221,255,.30);
+  background:rgba(21,36,140,.58);
+}
+.v340-champion-logo b{
+  font-size:16px;
+  line-height:1;
+  letter-spacing:.02em;
+  color:#fff;
+}
+.v340-champion-name{
+  min-width:0;
+  color:#fff;
+  font-size:clamp(17px,4.35vw,21px);
+  line-height:1.14;
+  font-weight:610;
+  letter-spacing:-.027em;
+  overflow-wrap:anywhere;
+}
+.v340-champion-count{
+  justify-self:end;
+  color:#fff;
+  font-size:clamp(25px,6.2vw,31px);
+  line-height:1;
+  font-weight:560;
+  letter-spacing:-.035em;
+}
+.v340-champion-trophy{
+  width:30px;
+  height:30px;
+  display:grid;
+  place-items:center;
+  color:#fff;
+}
+.v340-champion-trophy svg{
+  width:30px;
+  height:30px;
+  display:block;
+  fill:currentColor;
+}
+.v340-champion-empty{
+  padding:26px 0;
+  border-bottom:1px solid rgba(201,208,255,.16);
+  color:rgba(231,235,255,.72);
+  font-size:14px;
+}
+.v340-champion-archive-label{
+  margin:24px var(--v35-pad,28px) 4px;
+  padding-top:18px;
+  border-top:1px solid rgba(201,208,255,.16);
+}
+.v340-champion-archive-label span{
+  display:block;
+  margin-bottom:5px;
+  color:#16e8f7;
+  font-size:10px;
+  line-height:1.1;
+  font-weight:800;
+  letter-spacing:.11em;
+}
+.v340-champion-archive-label strong{
+  display:block;
+  color:#fff;
+  font-size:19px;
+  line-height:1.15;
+  font-weight:700;
+}
+.v340-champion-archive-label p{
+  margin:6px 0 0;
+  color:rgba(229,233,255,.68);
+  font-size:12px;
+  line-height:1.35;
+}
+@media (max-width:1023px){
+  .v340-champions-ranking{padding-top:0!important}
+  .v340-champion-filters{padding-top:9px!important}
+  .v340-champion-list{margin-left:var(--v35-pad)!important;margin-right:var(--v35-pad)!important}
+  .v340-champion-row{min-height:96px!important}
+}
+@media (max-width:374px){
+  .v340-champion-filters{gap:17px;padding-left:18px;padding-right:18px}
+  .v340-champion-list{margin-left:18px!important;margin-right:18px!important}
+  .v340-champion-row{grid-template-columns:64px minmax(0,1fr) 40px 30px;column-gap:9px;min-height:88px!important}
+  .v340-champion-logo{width:58px;height:58px}
+  .v340-champion-logo img{width:55px;height:55px}
+  .v340-champion-name{font-size:16px}
+  .v340-champion-count{font-size:24px}
+  .v340-champion-trophy,.v340-champion-trophy svg{width:27px;height:27px}
+  .v340-champion-archive-label{margin-left:18px;margin-right:18px}
+}
