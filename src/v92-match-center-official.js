@@ -142,7 +142,7 @@ function cedulaLineup(m,team){
   const hits=cedulas.filter(x=>{
     const xl=norm(x?.local),xa=norm(x?.away);
     const teams=(xl===home&&xa===away)||(xl===away&&xa===home);
-    const sameDate=!x?.date||String(x.date).startsWith(date);
+    const sameDate=!!x?.date&&String(x.date).startsWith(date);
     return teams&&sameDate;
   }).sort((a,b)=>Number(b.id||0)-Number(a.id||0));
   for(const x of hits){
