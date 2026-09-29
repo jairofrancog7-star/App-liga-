@@ -22,6 +22,15 @@ body.v42-team-active .v42-actions.v369-has-compare .v42-share{
 }
 body.v42-team-active .v42-team-lower-actions{display:none!important}
 body.v369-compare-open{overflow:hidden!important}
+body.v369-compare-open .bottom-nav,
+body.v369-compare-open #app > .bottom-nav{
+  display:none!important;
+  visibility:hidden!important;
+  pointer-events:none!important;
+}
+body.v369-compare-open #screen{
+  padding-bottom:0!important;
+}
 
 .v369-compare-shell{
   --v369-cyan:#12e4ef;
