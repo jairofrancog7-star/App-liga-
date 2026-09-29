@@ -2130,9 +2130,12 @@ function championsBody(){
     '<div class="v35-history-lazy" data-v35-lazy-history="champions" aria-busy="true"></div>';
 }
 function finalsBody(){
-  return '<section class="v35-block v35-tab-body"><h2 class="v35-section-title">Finales</h2>'+
+  /* V367: Finales se monta completo al abrir la pestaña. Es un subconjunto
+     pequeño del archivo y evita la carrera del loader diferido que dejaba
+     visible sólo la tarjeta "Finales históricas documentadas". */
+  return '<section class="v35-block v35-tab-body v367-finals-intro"><h2 class="v35-section-title">Finales</h2>'+
     '<div class="v35-season-detail"><h3>Finales históricas documentadas</h3><p>Se muestran únicamente las finales, series y clásicos que aparecen en el material histórico revisado.</p></div></section>'+
-    '<div class="v359-deferred-shell" data-v359-deferred="finals" aria-busy="true"><span class="v359-deferred-dot" aria-hidden="true"></span></div>';
+    finalsArchiveBlock();
 }
 function recordsBody(){
   return '<section class="v35-block v35-tab-body v35-records-body"><h2 class="v35-section-title">Récords y recuerdos</h2>'+
@@ -2528,10 +2531,20 @@ function renderHistory(){
     v355HydrateHistoryLazy(activePanel||historyRoot);
     v359Prewarm();
     if(activeTab==='Resumen')v358ScheduleSummaryRefresh();
-    if(activeTab==='Finales'&&!activePanel?.querySelector('[data-v359-deferred="finals"]'))window.LJR_APPLY_HISTORY_FINALS_REFERENCE?.();
+    if(activeTab==='Finales')v367ApplyFinalsReference(root);
     v362LockHistoryHeader(historyRoot);
   });
 }
+function v367ApplyFinalsReference(root,attempt=0){
+  if(activeTab!=='Finales'||route()!=='history'||!root?.isConnected)return;
+  const fn=window.LJR_APPLY_HISTORY_FINALS_REFERENCE;
+  if(typeof fn==='function'){
+    fn();
+    return;
+  }
+  if(attempt<5)window.setTimeout(()=>v367ApplyFinalsReference(root,attempt+1),40*(attempt+1));
+}
+
 function rerenderContent(){
   const root=document.querySelector('.v35-history-page');
   const nav=root?.querySelector('.v35-tabs');
