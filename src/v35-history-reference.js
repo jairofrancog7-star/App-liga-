@@ -1831,7 +1831,7 @@ function championsBody(){
   return championsRankingBlock()+
     '<section class="v35-block v35-tab-body"><h2 class="v35-section-title">Campeones de otros años</h2>'+
     '<article class="v35-stat-card"><h3>Archivo histórico real</h3><p>Los campeones de temporadas anteriores se registran cuando una fuente de la Liga o de sus administradores los identifica como tales. No se exige una fotografía del trofeo. Los clubes que ya no participan permanecen únicamente en Historia.</p></article></section>'+
-    championsArchiveBlock();
+    '<div class="v35-history-lazy" data-v35-lazy-history="champions" aria-busy="true"></div>';
 }
 function finalsBody(){
   return '<section class="v35-block v35-tab-body"><h2 class="v35-section-title">Finales</h2>'+
@@ -1904,6 +1904,7 @@ function hydrateHistoryLazy(root){
     let html='';
     if(kind==='summary')html=historyArchiveBlock()+stats();
     else if(kind==='seasons')html=historyArchiveBlock();
+    else if(kind==='champions')html=championsArchiveBlock();
     if(!html){host.remove();return;}
     host.insertAdjacentHTML('afterend',html);
     host.remove();
@@ -1916,8 +1917,13 @@ function hydrateHistoryLazy(root){
     });
   };
 
-  if('requestIdleCallback' in window)window.requestIdleCallback(run,{timeout:650});
-  else window.setTimeout(run,90);
+  // V344: keep the initial render light until the splash has disappeared.
+  const initialDelay=document.getElementById('v7Startup')?1550:140;
+  window.setTimeout(()=>{
+    if(!host.isConnected||route()!=='history'||activeTab!==tabAtSchedule)return;
+    if('requestIdleCallback' in window)window.requestIdleCallback(run,{timeout:900});
+    else window.setTimeout(run,60);
+  },initialDelay);
 }
 
 function bodyForTab(){
