@@ -220,6 +220,22 @@ function ingest(payload){
   const as=j.score?.away??j.awayScore??j.away_score;
   if(Number.isFinite(Number(hs))&&Number.isFinite(Number(as)))s.feedScore={home:Number(hs),away:Number(as)};
 
+  const rawLineups=j.lineups||j.alineaciones||j.match?.lineups||j.match?.alineaciones;
+  if(rawLineups&&typeof rawLineups==='object'){
+    const names=v=>{
+      if(Array.isArray(v))return v.map(x=>typeof x==='string'?x:(x?.name||x?.player||x?.nombre||'')).filter(Boolean);
+      if(v&&typeof v==='object'){
+        for(const k of ['starters','titulares','lineup','players','jugadores']){
+          const out=names(v[k]);if(out.length)return out;
+        }
+      }
+      return [];
+    };
+    const home=names(rawLineups.home||rawLineups.local);
+    const away=names(rawLineups.away||rawLineups.visitante);
+    if(home.length||away.length)s.lineups={home,away,receivedAt:now(),source:'feed'};
+  }
+
   const known=new Set((s.events||[]).map(e=>String(e.externalId||e.id)));
   const events=Array.isArray(j.events)?j.events:(j.event?[j.event]:[]);
   const newRealtimeEvents=[];
