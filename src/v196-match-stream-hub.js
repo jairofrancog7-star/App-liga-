@@ -53,7 +53,7 @@ function provider(url){
   if(u.includes('youtube.com')||u.includes('youtu.be'))return {key:'youtube',name:'YouTube',icon:'▶'};
   if(u.includes('facebook.com')||u.includes('fb.watch'))return {key:'facebook',name:'Facebook',icon:'f'};
   if(u.includes('tiktok.com'))return {key:'tiktok',name:'TikTok',icon:'♪'};
-  if(/\.(mp4|webm|ogg)(?:[?#]|$)/i.test(u))return {key:'video',name:'Video directo',icon:'▶'};
+  if(/\.(mp4|webm|ogg|m3u8)(?:[?#]|$)/i.test(u))return {key:'video',name:'Video directo',icon:'▶'};
   return {key:'external',name:'Fuente externa',icon:'●'};
 }
 function safeUrl(v){
@@ -285,7 +285,7 @@ async function disableFloating(node){
   setFloating(false,node);
   await exitPiP();
 }
-function toggleFloating(c,node){
+async function toggleFloating(c,node){
   const s=liveState(c),list=streamList(c,s);
   if(!list.length){
     flash('Primero vincula una transmisión para usar el modo flotante');
@@ -296,12 +296,13 @@ function toggleFloating(c,node){
   const cap=floatingCapability(current,settings());
   if(!cap.inApp){
     flash('Esta fuente no admite flotante dentro de la app. Usa Abrir transmisión o cambia a YouTube/video directo.');
-    setFloating(false,node);
+    await disableFloating(node);
     return;
   }
   const next=!settings().floating;
-  setFloating(next,node);
-  if(next&&cap.pip)requestPiP(node);
+  if(!next){await disableFloating(node);return}
+  if(cap.pip)await requestPiP(node);
+  setFloating(true,node);
 }
 function settingsModal(c){
   const cfg=settings();
@@ -319,7 +320,8 @@ function settingsModal(c){
     if(!cap.inApp){cfg.floating=false;saveSettings(cfg);$('[data-v196-toggle-float]',m).classList.remove('on');flash('La fuente actual no permite modo flotante.');return}
     cfg.floating=!cfg.floating;saveSettings(cfg);
     $('[data-v196-toggle-float]',m).classList.toggle('on',cfg.floating);
-    setFloating(cfg.floating,$('[data-v196-stream-hub]',c.root));
+    if(cfg.floating)setFloating(true,$('[data-v196-stream-hub]',c.root));
+    else disableFloating($('[data-v196-stream-hub]',c.root));
   };
   $('[data-v196-toggle-low]',m).onclick=()=>{
     cfg.lowQuality=!cfg.lowQuality;saveSettings(cfg);
