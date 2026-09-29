@@ -1,4 +1,4 @@
-/* V328 — Historia > Temporadas
+/* V332 — Historia > Temporadas
    Reconstrucción compacta basada en la referencia móvil del usuario.
    Muestra campeones documentados por década, con escudo real y fecha exacta,
    ordenados de más reciente a más antiguo. No modifica Campeones/Finales/Récords. */
@@ -64,8 +64,9 @@ function aliasFor(team){
   return team;
 }
 function resolveLogo(team){
+  const name=aliasFor(team);
   try{
-    return window.LJR_TEAM_LOGOS?.get?.(aliasFor(team))||'';
+    return window.LJR_TEAM_LOGOS?.get?.(name)||window.LJR_OFFICIAL_API?.getLogo?.(name)||'';
   }catch(_){return ''}
 }
 function initials(team){
@@ -108,18 +109,26 @@ function cardHtml(r){
   const logoHtml=logo
     ? '<img src="'+logo+'" alt="'+escapeHtml(r.team)+'" loading="lazy" decoding="async" onerror="this.closest(\'.v328-season-logo\').classList.add(\'is-fallback\');this.remove()">'
     : '<span class="v328-season-initials">'+escapeHtml(initials(r.team))+'</span>';
-  return '<button type="button" class="v328-season-item" data-v328-team="'+escapeAttr(r.team)+'" data-v328-date="'+escapeAttr(r.date)+'" aria-label="'+escapeAttr(r.team+' · '+r.title+' · '+r.date)+'">'+
+  return '<button type="button" class="v328-season-item" data-v328-team="'+escapeAttr(r.team)+'" data-v328-date="'+escapeAttr(r.date)+'" title="'+escapeAttr(r.team+' · '+r.title)+'" aria-label="'+escapeAttr(r.team+' · '+r.title+' · '+r.date)+'">'+
     '<span class="v328-season-logo '+(logo?'':'is-fallback')+'">'+logoHtml+'</span>'+
     '<span class="v328-season-label">'+escapeHtml(r.season||String(r.year))+'</span>'+
-    '<span class="v328-season-date">'+escapeHtml(r.date)+'</span>'+
-    '<span class="v328-season-team">'+escapeHtml(r.team)+'</span>'+
   '</button>';
 }
 function escapeHtml(v){return String(v||'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
 function escapeAttr(v){return escapeHtml(v)}
+function compactRows(rows){
+  const map=new Map();
+  for(const r of rows){
+    const season=String(r.season||r.year||'').trim();
+    const key=norm(season)+'|'+norm(r.team);
+    const prev=map.get(key);
+    if(!prev||r.stamp>prev.stamp) map.set(key,r);
+  }
+  return [...map.values()].sort((a,b)=>b.stamp-a.stamp||a.team.localeCompare(b.team,'es'));
+}
 function sectionHtml(rows){
   const groups=new Map();
-  for(const r of rows){
+  for(const r of compactRows(rows)){
     const decade=Math.floor(r.year/10)*10;
     if(!groups.has(decade)) groups.set(decade,[]);
     groups.get(decade).push(r);
@@ -131,8 +140,8 @@ function sectionHtml(rows){
     '</section>'
   ).join('');
   return '<section class="v328-seasons-reference" data-v328-seasons-grid>'+
-    '<div class="v328-season-intro"><strong>Temporadas</strong><span>Campeones documentados · ordenados por fecha</span></div>'+
     blocks+
+    '<div class="v328-season-previous"><span>ARCHIVO HISTÓRICO COMPLETO</span><strong>Más información de temporadas</strong><p>Debajo se conserva toda la información que ya estaba guardada en Historia.</p></div>'+
   '</section>';
 }
 function isHistory(){return /#\/history(?:$|[?&])/i.test(location.hash||'')||location.hash==='#/history'}
