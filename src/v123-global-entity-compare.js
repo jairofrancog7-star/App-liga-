@@ -10,7 +10,7 @@ window.__LJR_V123_GLOBAL_ENTITY_COMPARE__=true;
 const PRIMARY_KEY='v123-compare-player';
 const SECONDARY_KEY='v123-compare-player-2';
 const LEAGUE_CREST=new URL('../assets/reference/predictor-v36/liga-crest-white.webp',import.meta.url).href;
-let api=null,loading=null,query='',pickerOpen=false,pickerSide='secondary';
+let api=null,loading=null,query='',pickerOpen=false,pickerSide='secondary',pickerAutoShown=false;
 
 function route(){return String(location.hash||'').replace(/^#\/?/,'').split('?')[0]||'home'}
 function esc(v){return String(v??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]))}
@@ -111,18 +111,28 @@ function listMarkup(primary,secondary,list){
   return sameA-sameB||a.name.localeCompare(b.name,'es');
  });
  if(q)candidates=candidates.filter(p=>norm(p.name).includes(q)||norm(p.team).includes(q)||norm(p.category).includes(q));
- return '<section class="v123-picker-overlay" role="dialog" aria-modal="true" aria-label="Elegir jugador">'+
-   '<div class="v123-picker-shell">'+
+
+ const sameCategory=primary?list.filter(p=>String(p.cat)===String(primary.cat)):list;
+ const sectionTitle=(candidates.some(p=>norm(p.position||p.posicion||'').includes('delanter'))?'Delanteros':'Jugadores');
+ const categoryLabel=primary?.category||'categoría actual';
+
+ return '<section class="v123-picker-overlay v205-picker" role="dialog" aria-modal="true" aria-label="Elegir jugador para comparar">'+
+   '<div class="v123-picker-shell v205-picker-shell">'+
     '<button type="button" class="v123-picker-close" data-v123-close-picker aria-label="Cerrar">×</button>'+
-    '<label class="v123-search"><span aria-hidden="true">⌕</span><input data-v123-search type="search" autocomplete="off" placeholder="Buscar jugadores" value="'+esc(query)+'"></label>'+
-    '<div class="v123-picker-head"><h2>Jugadores</h2><span>'+candidates.length+' disponibles</span></div>'+
-    '<div class="v123-player-list">'+candidates.slice(0,80).map(p=>
-      '<button type="button" class="v123-player-option '+(current&&playerKey(p)===playerKey(current)?'active':'')+'" data-v123-pick="'+esc(p.name)+'" data-v123-pick-team="'+esc(p.team)+'" data-v123-pick-cat="'+esc(p.cat)+'">'+
-        '<span class="v123-option-avatar">'+esc(initials(p.name))+'</span>'+
-        '<span class="v123-option-copy"><b>'+esc(p.name)+'</b><small><i class="v123-option-logo">'+logo(p.team)+'</i>'+esc(p.team)+(p.category?' · '+esc(p.category):'')+'</small></span>'+
-        '<i class="v123-option-radio" aria-hidden="true"></i>'+
+    '<label class="v123-search v205-search"><span aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="6.5"/><path d="m16 16 5 5"/></svg></span><input data-v123-search type="search" autocomplete="off" placeholder="Buscar jugadores" value="'+esc(query)+'"></label>'+
+    '<div class="v205-average-list" aria-label="Promedios disponibles">'+
+      '<div class="v205-average-row"><span class="v205-average-avatar">CAT</span><span class="v205-average-copy"><b>Promedio: '+esc(categoryLabel)+'</b><small>Referencia de los '+sameCategory.length+' jugadores registrados en esta categoría</small></span></div>'+
+      '<div class="v205-average-row"><span class="v205-average-avatar">AP</span><span class="v205-average-copy"><b>Promedio: todos los jugadores</b><small>Referencia general de los '+list.length+' jugadores registrados</small></span></div>'+
+    '</div>'+
+    '<div class="v205-section-head"><h2>'+esc(sectionTitle)+'</h2><span aria-hidden="true"><svg viewBox="0 0 24 24"><path d="m5 15 7-7 7 7"/></svg></span></div>'+
+    '<div class="v123-player-list v205-player-list">'+candidates.slice(0,100).map(p=>
+      '<button type="button" class="v123-player-option v205-player-option '+(current&&playerKey(p)===playerKey(current)?'active':'')+'" data-v123-pick="'+esc(p.name)+'" data-v123-pick-team="'+esc(p.team)+'" data-v123-pick-cat="'+esc(p.cat)+'">'+
+        '<span class="v123-option-avatar v205-option-avatar">'+esc(initials(p.name))+'</span>'+
+        '<span class="v123-option-copy v205-option-copy"><b>'+esc(p.name)+'</b><small><i class="v123-option-logo v205-option-logo">'+logo(p.team)+'</i><span>'+esc(p.team)+'</span></small></span>'+
+        '<i class="v123-option-radio v205-option-radio" aria-hidden="true"></i>'+
       '</button>'
     ).join('')+'</div>'+
+    (!candidates.length?'<div class="v205-empty-search">No se encontraron jugadores registrados.</div>':'')+
    '</div>'+
   '</section>';
 }
@@ -176,6 +186,13 @@ async function renderCompare(){
  let secondary=resolvePlayer(read(SECONDARY_KEY),list);
  if(secondary&&playerKey(secondary)===playerKey(primary))secondary=null;
 
+ if(!secondary&&!pickerOpen&&!pickerAutoShown){
+  pickerSide='secondary';
+  pickerOpen=true;
+  pickerAutoShown=true;
+  query='';
+ }
+
  const screen=document.querySelector('#screen');if(!screen)return;
  document.body.classList.add('v123-player-compare-active');
  const cat=primary.category||'Categoría';
@@ -206,14 +223,14 @@ function bindCompare(){
   card.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();open()}},{once:true});
  });
  document.querySelectorAll('[data-v123-open-picker]').forEach(b=>b.addEventListener('click',()=>openPicker(b.dataset.v123OpenPicker||'secondary'),{once:true}));
- document.querySelector('[data-v123-close-picker]')?.addEventListener('click',()=>{pickerOpen=false;query='';renderCompare()},{once:true});
+ document.querySelector('[data-v123-close-picker]')?.addEventListener('click',()=>{pickerOpen=false;pickerAutoShown=true;query='';renderCompare()},{once:true});
  const input=document.querySelector('[data-v123-search]');
  if(input)input.addEventListener('input',e=>{query=e.target.value;renderCompare();requestAnimationFrame(()=>{const n=document.querySelector('[data-v123-search]');if(n){n.focus();n.setSelectionRange(n.value.length,n.value.length)}})});
  document.querySelectorAll('[data-v123-pick]').forEach(b=>b.addEventListener('click',e=>{
   e.preventDefault();e.stopPropagation();
   const value={name:b.dataset.v123Pick||'',team:b.dataset.v123PickTeam||'',cat:b.dataset.v123PickCat||''};
   write(pickerSide==='primary'?PRIMARY_KEY:SECONDARY_KEY,value);
-  pickerOpen=false;query='';renderCompare();
+  pickerOpen=false;pickerAutoShown=true;query='';renderCompare();
  },{once:true}));
  document.querySelectorAll('[data-v123-team]').forEach(b=>b.addEventListener('click',e=>{
   e.preventDefault();e.stopPropagation();
@@ -348,7 +365,7 @@ document.addEventListener('click',e=>{
   if(!p)return;
   write(PRIMARY_KEY,p);
   localStorage.removeItem(SECONDARY_KEY);
-  query='';pickerOpen=false;pickerSide='secondary';
+  query='';pickerOpen=false;pickerSide='secondary';pickerAutoShown=false;
   location.hash='#/playerCompare';
  })();
 },true);
@@ -358,7 +375,7 @@ window.LJR_PLAYER_COMPARE_API={
   getApi().then(a=>{
    if(!a)return;
    const p=resolvePlayer(player,a.playerList());if(!p)return;
-   write(PRIMARY_KEY,p);localStorage.removeItem(SECONDARY_KEY);query='';pickerOpen=false;pickerSide='secondary';location.hash='#/playerCompare';
+   write(PRIMARY_KEY,p);localStorage.removeItem(SECONDARY_KEY);query='';pickerOpen=false;pickerSide='secondary';pickerAutoShown=false;location.hash='#/playerCompare';
   });
  },
  render:renderCompare
@@ -379,7 +396,12 @@ function v204SyncThemeColor(){
 function schedule(){
  v204SyncThemeColor();
  if(route()==='playerCompare')requestAnimationFrame(()=>requestAnimationFrame(renderCompare));
- else document.body.classList.remove('v123-player-compare-active');
+ else{
+  document.body.classList.remove('v123-player-compare-active');
+  pickerOpen=false;
+  pickerAutoShown=false;
+  query='';
+ }
 }
 window.addEventListener('hashchange',schedule);
 window.addEventListener('popstate',schedule);
