@@ -537,6 +537,79 @@ function v196CredentialTeamLogo(team){
   const direct=teamLogo(team);
   return direct||'';
 }
+let v200LeagueLogoCache=null;
+let v200LeagueLogoPromise=null;
+async function v200LeagueLogoTransparent(){
+  if(v200LeagueLogoCache)return v200LeagueLogoCache;
+  if(v200LeagueLogoPromise)return v200LeagueLogoPromise;
+  v200LeagueLogoPromise=(async()=>{
+    const img=await v100LoadImage(V198_LEAGUE_LOGO);if(!img)return null;
+    const iw=img.naturalWidth||img.width||1,ih=img.naturalHeight||img.height||1;
+    const max=700,scale=Math.min(1,max/Math.max(iw,ih)),w=Math.max(1,Math.round(iw*scale)),h=Math.max(1,Math.round(ih*scale));
+    const cv=document.createElement('canvas');cv.width=w;cv.height=h;
+    const q=cv.getContext('2d',{willReadFrequently:true});q.clearRect(0,0,w,h);q.drawImage(img,0,0,w,h);
+    let data;try{data=q.getImageData(0,0,w,h)}catch(_){v200LeagueLogoCache=cv;return cv}
+    const d=data.data;
+    const corners=[[0,0],[w-1,0],[0,h-1],[w-1,h-1]];
+    let br=0,bg=0,bb=0,ba=0;
+    corners.forEach(([xx,yy])=>{const k=(yy*w+xx)*4;br+=d[k];bg+=d[k+1];bb+=d[k+2];ba+=d[k+3]});
+    br/=4;bg/=4;bb/=4;ba/=4;
+    if(ba<16){v200LeagueLogoCache=cv;return cv}
+    const tol=58*58,seen=new Uint8Array(w*h),queue=new Int32Array(w*h);let head=0,tail=0;
+    const near=(idx)=>{
+      const k=idx*4,dr=d[k]-br,dg=d[k+1]-bg,db=d[k+2]-bb;
+      return dr*dr+dg*dg+db*db<=tol;
+    };
+    const push=idx=>{if(idx<0||idx>=w*h||seen[idx]||!near(idx))return;seen[idx]=1;queue[tail++]=idx};
+    for(let xx=0;xx<w;xx++){push(xx);push((h-1)*w+xx)}
+    for(let yy=0;yy<h;yy++){push(yy*w);push(yy*w+w-1)}
+    while(head<tail){
+      const idx=queue[head++],x0=idx%w,y0=(idx/w)|0;
+      if(x0>0)push(idx-1);if(x0<w-1)push(idx+1);if(y0>0)push(idx-w);if(y0<h-1)push(idx+w);
+    }
+    for(let i=0;i<w*h;i++)if(seen[i])d[i*4+3]=0;
+    q.putImageData(data,0,0);
+    v200LeagueLogoCache=cv;
+    return cv;
+  })();
+  return v200LeagueLogoPromise;
+}
+function v200DrawVideoCredentialBackground(x,W,H){
+  const bg=x.createLinearGradient(0,0,W,H);bg.addColorStop(0,'#03157c');bg.addColorStop(.48,'#0736b5');bg.addColorStop(1,'#020a4f');x.fillStyle=bg;x.fillRect(0,0,W,H);
+  const halo=x.createRadialGradient(W*.50,H*.47,40,W*.50,H*.47,H*.55);
+  halo.addColorStop(0,'rgba(0,224,255,.25)');halo.addColorStop(.45,'rgba(21,104,255,.20)');halo.addColorStop(1,'rgba(1,8,62,0)');
+  x.fillStyle=halo;x.fillRect(0,0,W,H);
+  const cx=W*.50,cy=H*.49,r=H*.43;
+  x.save();x.shadowBlur=22;x.shadowColor='#19dcff';x.lineWidth=5;x.strokeStyle='rgba(68,226,255,.90)';x.beginPath();x.arc(cx,cy,r,0,Math.PI*2);x.stroke();x.restore();
+  const arcs=[
+    [-2.87,-2.35,'#1de9ff'],[-2.35,-1.95,'#54ff9f'],[-1.95,-1.43,'#ff36d8'],[-1.43,-.74,'#30a4ff'],[-.74,-.14,'#12efff']
+  ];
+  x.save();x.lineWidth=6;x.shadowBlur=14;
+  arcs.forEach(([a,b,col])=>{x.strokeStyle=col;x.shadowColor=col;x.beginPath();x.arc(cx,cy,r,a,b);x.stroke()});x.restore();
+  const seams=[
+    [[230,265],[345,210],[470,240],[575,185]],
+    [[345,210],[395,330],[520,350],[645,280]],
+    [[470,240],[520,350],[710,365],[815,290]],
+    [[300,410],[395,330],[520,350],[595,475]],
+    [[595,475],[710,365],[825,438]],
+    [[245,510],[360,445],[300,410]],
+    [[825,438],[915,525]]
+  ];
+  const cols=['#22eaff','#5cff9b','#ff35d7','#5c9dff'];
+  x.save();x.lineCap='round';x.lineJoin='round';x.lineWidth=4;x.shadowBlur=10;
+  seams.forEach((pts,i)=>{const col=cols[i%cols.length];x.strokeStyle=col;x.shadowColor=col;x.beginPath();pts.forEach((p,j)=>j?x.lineTo(p[0],p[1]):x.moveTo(p[0],p[1]));x.stroke()});x.restore();
+  [[210,332],[790,355],[505,152],[914,480],[96,470]].forEach(([sx,sy])=>{
+    x.save();x.strokeStyle='rgba(220,255,255,.96)';x.shadowColor='#7ff6ff';x.shadowBlur=15;x.lineWidth=2;
+    x.beginPath();x.moveTo(sx-20,sy);x.lineTo(sx+20,sy);x.moveTo(sx,sy-20);x.lineTo(sx,sy+20);x.stroke();
+    x.fillStyle='#fff';x.beginPath();x.arc(sx,sy,4,0,Math.PI*2);x.fill();x.restore();
+  });
+  x.save();x.lineWidth=3;x.shadowBlur=10;x.shadowColor='#21cfff';
+  [H*.79,H*.84,H*.89].forEach((yy,i)=>{x.strokeStyle='rgba(45,188,255,'+(0.72-i*.18)+')';x.beginPath();x.ellipse(cx,yy,W*.64,H*.20,0,Math.PI,Math.PI*2);x.stroke()});
+  x.restore();
+  for(let xx=38;xx<W;xx+=40){const yy=H*.87+12*Math.sin(xx/72);x.fillStyle='rgba(195,247,255,.88)';x.fillRect(xx,yy,3,3)}
+  const floor=x.createLinearGradient(0,H*.84,0,H);floor.addColorStop(0,'rgba(0,88,255,.14)');floor.addColorStop(1,'rgba(0,10,75,.62)');x.fillStyle=floor;x.fillRect(0,H*.82,W,H*.18);
+  x.save();x.fillStyle='rgba(2,10,68,.22)';v196RoundRectPath(x,250,86,460,510,38);x.fill();x.strokeStyle='rgba(83,177,255,.18)';x.lineWidth=2;x.stroke();x.restore();
+}
 async function v197DrawBlueCredential(canvas){
   if(!canvas)return null;
   canvas.width=1011;canvas.height=638;
@@ -549,29 +622,19 @@ async function v197DrawBlueCredential(canvas){
   x.clearRect(0,0,W,H);
   x.save();v196RoundRectPath(x,5,5,W-10,H-10,34);x.clip();
 
-  const bg=x.createLinearGradient(0,0,W,H);bg.addColorStop(0,'#0751ad');bg.addColorStop(.40,'#173f97');bg.addColorStop(1,'#06195e');x.fillStyle=bg;x.fillRect(0,0,W,H);
-
-  /* Fondo diseñado para que el trofeo siempre tenga profundidad y contraste. */
-  const glow=x.createRadialGradient(505,325,40,505,325,390);
-  glow.addColorStop(0,'rgba(123,183,255,.38)');glow.addColorStop(.45,'rgba(52,112,214,.20)');glow.addColorStop(1,'rgba(5,20,82,0)');
-  x.fillStyle=glow;x.fillRect(120,20,760,600);
-  x.save();x.globalAlpha=.10;x.strokeStyle='#dbe8ff';x.lineWidth=2;
-  for(let i=-180;i<1180;i+=92){x.beginPath();x.moveTo(i,0);x.lineTo(i-235,H);x.stroke()}
-  x.restore();
-  x.fillStyle='rgba(3,13,62,.18)';v196RoundRectPath(x,250,88,455,500,36);x.fill();
-  x.strokeStyle='rgba(116,171,255,.20)';x.lineWidth=2;v196RoundRectPath(x,250,88,455,500,36);x.stroke();
+  /* V200: fondo neón basado en el video de referencia. */
+  v200DrawVideoCredentialBackground(x,W,H);
 
   let trophy=await v100LoadImage('./assets/reference/final-trophy-drive.png');
   if(!trophy)trophy=await v100LoadImage('./final-trophy-drive.png');
   if(trophy){
-    x.save();x.globalAlpha=.96;x.shadowColor='rgba(13,8,64,.80)';x.shadowBlur=28;x.shadowOffsetY=12;
+    x.save();x.globalAlpha=.98;x.shadowColor='rgba(5,4,54,.88)';x.shadowBlur=26;x.shadowOffsetY=10;
     v100DrawContainedImage(x,trophy,275,88,420,505);
     x.restore();
   }else{
     x.save();x.globalAlpha=.28;x.fillStyle='#b9d5ff';x.font='900 82px Arial';x.textAlign='center';x.fillText('TROFEO',485,355);x.restore();x.textAlign='left';
   }
-  const sheen=x.createLinearGradient(0,0,W,0);sheen.addColorStop(0,'rgba(255,255,255,.02)');sheen.addColorStop(.52,'rgba(198,216,255,.13)');sheen.addColorStop(1,'rgba(255,255,255,.02)');x.fillStyle=sheen;x.fillRect(0,0,W,H);
-  const blueShade=x.createLinearGradient(0,0,0,H);blueShade.addColorStop(0,'rgba(4,21,80,.04)');blueShade.addColorStop(1,'rgba(1,12,52,.31)');x.fillStyle=blueShade;x.fillRect(0,0,W,H);
+  const blueShade=x.createLinearGradient(0,0,0,H);blueShade.addColorStop(0,'rgba(1,11,65,.02)');blueShade.addColorStop(1,'rgba(1,7,48,.24)');x.fillStyle=blueShade;x.fillRect(0,0,W,H);
 
   x.strokeStyle='rgba(206,222,255,.34)';x.lineWidth=4;v196RoundRectPath(x,8,8,W-16,H-16,31);x.stroke();
 
@@ -590,7 +653,7 @@ async function v197DrawBlueCredential(canvas){
   else{x.fillStyle='#8392b2';x.fillRect(px,py,pw,ph);x.fillStyle='#fff';x.font='900 30px Arial';x.textAlign='center';x.fillText('FOTO',px+pw/2,py+ph/2+10);x.textAlign='left'}
   x.restore();x.strokeStyle='rgba(6,17,56,.55)';x.lineWidth=3;v196RoundRectPath(x,px,py,pw,ph,8);x.stroke();
 
-  const league=await v100LoadImage(V198_LEAGUE_LOGO);
+  const league=await v200LeagueLogoTransparent();
   if(league){
     /* Logo de la Liga al costado del nombre, como en la credencial de referencia. */
     x.save();x.shadowColor='rgba(0,0,0,.38)';x.shadowBlur=7;
@@ -635,7 +698,7 @@ async function v196DrawClassicCredential(canvas){
 
   x.strokeStyle='rgba(11,17,24,.75)';x.lineWidth=5;v196RoundRectPath(x,8,8,W-16,H-16,31);x.stroke();
 
-  const league=await v100LoadImage(V198_LEAGUE_LOGO);
+  const league=await v200LeagueLogoTransparent();
   if(league){x.save();x.shadowColor='rgba(0,0,0,.42)';x.shadowBlur=7;x.drawImage(league,25,24,160,160);x.restore()}
 
   x.textAlign='center';x.textBaseline='alphabetic';
@@ -692,10 +755,10 @@ async function v196RenderCredentialPreview(){
   if(head)head.textContent=style==='blue'?'Vista previa · azul clásica con trofeo':'Vista previa · roja clásica con franja verde';
 }
 async function v198LeagueLogoPng(){
-  const img=await v100LoadImage(V198_LEAGUE_LOGO);if(!img)return null;
+  const img=await v200LeagueLogoTransparent();if(!img)return null;
   const side=700,canvas=document.createElement('canvas');canvas.width=side;canvas.height=side;
   const x=canvas.getContext('2d');x.clearRect(0,0,side,side);
-  /* PNG limpio: sin cuadro blanco añadido por la app. */
+  /* PNG transparente real: sin fondo negro/blanco, sin SVG. */
   v100DrawContainedImage(x,img,25,25,side-50,side-50);
   return canvasBlob(canvas);
 }
@@ -1365,7 +1428,7 @@ async function v190RecruitGeneratedBlob(root){
   const g=x.createLinearGradient(0,0,1080,1350);g.addColorStop(0,'#03096a');g.addColorStop(.54,'#0a2ca0');g.addColorStop(1,'#02064d');
   x.fillStyle=g;x.fillRect(0,0,c.width,c.height);
   x.strokeStyle='#24dfea';x.lineWidth=5;x.strokeRect(48,48,984,1254);
-  const league=await v100LoadImage(V198_LEAGUE_LOGO);
+  const league=await v200LeagueLogoTransparent();
   if(league){x.save();x.globalAlpha=.98;x.drawImage(league,74,76,132,132);x.restore()}
   x.fillStyle='#5cecf3';x.font='900 24px Arial';x.fillText('LIGA MUNICIPAL DE FÚTBOL · JUVENTINO ROSAS A.C.',235,112);
   x.fillStyle='rgba(255,255,255,.76)';x.font='700 20px Arial';x.fillText('MÁS HERRAMIENTAS · RECLUTAMIENTO',235,150);
