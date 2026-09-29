@@ -1548,9 +1548,10 @@ function seasonsEraBlock(){
 
   all.forEach(m=>{
     const team=String(m.winner||m.title||'').trim();
+    const kind=norm(m.kind||'');
     const text=norm((m.kind||'')+' '+(m.subtitle||'')+' '+(m.detail||''));
-    if(!team||text.includes('subcampeon'))return;
-    const won=text.includes('campeon')||text.includes('primer lugar')||text.includes('super lider');
+    if(!team||kind.includes('subcampeon'))return;
+    const won=kind.includes('campeon')||text.includes('campeon')||text.includes('primer lugar')||text.includes('super lider');
     if(!won)return;
     const si=seasonInfo(m);
     if(!si.start)return;
