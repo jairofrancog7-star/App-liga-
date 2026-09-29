@@ -8,7 +8,7 @@ const JUVENTUS_2024_PHOTO='./assets/history/archive-v225/juventus-campeon-campeo
 const LOBOS_CDG_SUPERLIDER_PHOTO='/App-liga-/assets/history/lobos-cdg-superlider-03-may-2026.webp?v=20260928-lobos-cdg-force-v327';
 /* V326: foto restaurada como archivo WebP real del repositorio. */
 const ASSETS={
-  league:RAW+'assets/liga-logo.webp',
+  league:'./assets/liga-logo.webp',
   america:RAW+'assets/branding/america-veteranos-35-user.png',
   huerta:RAW+'assets/official-logos/la-huerta.png',
   franco:RAW+'assets/official-logos/franco-fc.png',
@@ -1458,11 +1458,86 @@ function stats(){
   return '<section class="v35-block v35-stats-block"><h2 class="v35-section-title">Estadísticas históricas</h2>'+
     '<article class="v35-stat-card"><h3>Archivo oficial y administrativo</h3><div class="v35-stat-rule"></div><p>Se consideran fuentes las publicaciones de la Liga, Golazo Liga, administradores de sus páginas y dirigentes cuando su cargo está documentado, además de reglamentos, roles, tablas, fotografías, álbumes y documentos públicos externos. Si una de esas fuentes identifica a un equipo como campeón, se registra como campeón aunque no exista una foto del trofeo.</p></article></section>';
 }
+/* V348 — Historia: render inmediato + archivo profundo bajo demanda.
+   Las pestañas pintan primero su contenido visible. El archivo largo se inserta
+   solamente al acercarse el usuario con scroll, evitando bloquear cada toque. */
+let v348ArchiveToken=0;
+let v348ArchiveScrollHandler=null;
+let v348ArchiveScrollTimer=0;
+const v348ArchiveCache=Object.create(null);
+
+function v348ArchiveSentinel(kind){
+  return '<div class="v348-history-sentinel" data-v348-history-sentinel="'+esc(kind)+'" aria-hidden="true"></div>';
+}
+function v348ArchiveHtml(kind){
+  if(v348ArchiveCache[kind]!=null)return v348ArchiveCache[kind];
+  let html='';
+  if(kind==='summary')html=historyArchiveBlock()+stats();
+  else if(kind==='seasons')html=historyArchiveBlock();
+  else if(kind==='champions')html=championsArchiveBlock();
+  else if(kind==='finals')html=finalsArchiveBlock();
+  v348ArchiveCache[kind]=html;
+  return html;
+}
+function v348CancelArchiveLoad(){
+  v348ArchiveToken++;
+  clearTimeout(v348ArchiveScrollTimer);
+  v348ArchiveScrollTimer=0;
+  if(v348ArchiveScrollHandler){
+    window.removeEventListener('scroll',v348ArchiveScrollHandler);
+    v348ArchiveScrollHandler=null;
+  }
+}
+function v348ArmArchive(root){
+  v348CancelArchiveLoad();
+  const host=root?.querySelector?.('[data-v348-history-sentinel]');
+  if(!host)return;
+  const token=v348ArchiveToken;
+  const tabAtArm=activeTab;
+  let loading=false;
+
+  const load=()=>{
+    if(loading||token!==v348ArchiveToken||route()!=='history'||activeTab!==tabAtArm||!host.isConnected)return;
+    loading=true;
+    const run=()=>{
+      if(token!==v348ArchiveToken||route()!=='history'||activeTab!==tabAtArm||!host.isConnected){loading=false;return;}
+      const kind=host.dataset.v348HistorySentinel||'';
+      const html=v348ArchiveHtml(kind);
+      if(html)host.insertAdjacentHTML('beforebegin',html);
+      host.remove();
+      if(v348ArchiveScrollHandler){
+        window.removeEventListener('scroll',v348ArchiveScrollHandler);
+        v348ArchiveScrollHandler=null;
+      }
+      requestAnimationFrame(()=>{
+        const page=document.querySelector('.v35-history-page');
+        if(page){
+          removeObsoleteManchesterDuplicate(page);
+          syncHistoryCollapse();
+        }
+      });
+    };
+    if('requestIdleCallback' in window)requestIdleCallback(run,{timeout:1100});
+    else setTimeout(run,40);
+  };
+
+  const maybeLoad=()=>{
+    clearTimeout(v348ArchiveScrollTimer);
+    v348ArchiveScrollTimer=setTimeout(()=>{
+      if(token!==v348ArchiveToken||!host.isConnected)return;
+      const rect=host.getBoundingClientRect();
+      if(rect.top < (window.innerHeight||700)+260)load();
+    },320);
+  };
+
+  v348ArchiveScrollHandler=maybeLoad;
+  window.addEventListener('scroll',maybeLoad,{passive:true});
+}
+
 function summaryBody(){
   return '<section class="v35-block v35-seasons-block"><div class="v35-section-row"><h2>Buscar por temporada</h2><button type="button" data-v35-tab-jump="Temporadas">Ver todo</button></div><div class="v35-season-carousel">'+seasonCards()+'</div></section>'+
     '<section class="v35-block v35-feature-block">'+featureCard()+'</section>'+
-    historyArchiveBlock()+
-    stats();
+    v348ArchiveSentinel('summary');
 }
 function seasonsEraBlock(){
   const norm=v=>String(v||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase()
@@ -1663,7 +1738,7 @@ function seasonsBody(){
     '<section class="v35-block v35-tab-body v35-seasons-legacy"><div class="v35-section-row"><h2>Archivo histórico completo</h2></div>'+
     '<div class="v35-season-detail"><span>Archivo histórico</span><h3>Temporadas anteriores separadas de la actual</h3><p>Los equipos antiguos pueden aparecer aquí como parte de su temporada histórica, pero nunca se agregan otra vez a la lista de equipos actuales si ya no participan.</p></div>'+
     '<div class="v35-season-detail"><span>Convocatoria · 12 nov 2019</span><h3>Temporada 2019–2020</h3><p><b>Inicio:</b> domingo 8 de diciembre de 2019. <b>Fuerzas:</b> Primera, Intermedia y Segunda. <b>Inscripciones:</b> hasta el martes 26 de noviembre, 19:00, Unidad Deportiva Sur. <b>Registro:</b> digital o físico, máximo 26 jugadores. <b>Junta previa:</b> martes 3 de diciembre, 19:00. Uniformación, cuotas, arbitrajes, credenciales, reglamento, premiación y transitorios se resolverían conforme al reglamento y a los acuerdos de asamblea.</p></div></section>'+
-    historyArchiveBlock();
+    v348ArchiveSentinel('seasons');
 }
 /* V340 — Historia > Campeones: ranking visual superior según referencia del usuario.
    Conserva TODO el archivo histórico anterior debajo y calcula los títulos desde
@@ -1830,12 +1905,12 @@ function championsBody(){
   return championsRankingBlock()+
     '<section class="v35-block v35-tab-body"><h2 class="v35-section-title">Campeones de otros años</h2>'+
     '<article class="v35-stat-card"><h3>Archivo histórico real</h3><p>Los campeones de temporadas anteriores se registran cuando una fuente de la Liga o de sus administradores los identifica como tales. No se exige una fotografía del trofeo. Los clubes que ya no participan permanecen únicamente en Historia.</p></article></section>'+
-    championsArchiveBlock();
+    v348ArchiveSentinel('champions');
 }
 function finalsBody(){
   return '<section class="v35-block v35-tab-body"><h2 class="v35-section-title">Finales</h2>'+
     '<div class="v35-season-detail"><h3>Finales históricas documentadas</h3><p>Se muestran únicamente las finales, series y clásicos que aparecen en el material histórico revisado.</p></div></section>'+
-    finalsArchiveBlock();
+    v348ArchiveSentinel('finals');
 }
 function recordsBody(){
   return '<section class="v35-block v35-tab-body v35-records-body"><h2 class="v35-section-title">Récords y recuerdos</h2>'+
@@ -1979,6 +2054,7 @@ function renderHistory(){
     window.scrollTo({top:0,left:0,behavior:'auto'});
     syncHistoryCollapse();
     removeObsoleteManchesterDuplicate(screen);
+    v348ArmArchive(historyRoot);
   });
   if(topLogo){
     const cleanTopLogo=()=>{if(route()==='history'&&topLogo.isConnected)transparentizeTopLogo(topLogo);};
@@ -1991,21 +2067,25 @@ function rerenderContent(){
   const content=root?.querySelector('[data-v35-content]');
   const nav=root?.querySelector('.v35-tabs');
   if(!root||!content||!nav) return;
+  v348CancelArchiveLoad();
   nav.innerHTML=tabs();
-  content.innerHTML=bodyForTab();
-  root.classList.toggle('v329-videos-active',activeTab==='Videos');
-  root.classList.toggle('v341-seasons-active',activeTab==='Temporadas');
-  document.body.classList.toggle('v341-history-seasons-active',activeTab==='Temporadas');
-  root.scrollIntoView({block:'start',behavior:'auto'});
+  const tabAtRender=activeTab;
   requestAnimationFrame(()=>{
+    if(route()!=='history'||activeTab!==tabAtRender||!root.isConnected)return;
+    content.innerHTML=bodyForTab();
+    root.classList.toggle('v329-videos-active',activeTab==='Videos');
+    root.classList.toggle('v341-seasons-active',activeTab==='Temporadas');
+    document.body.classList.toggle('v341-history-seasons-active',activeTab==='Temporadas');
+    window.scrollTo({top:0,left:0,behavior:'auto'});
     syncHistoryCollapse();
     removeObsoleteManchesterDuplicate(root);
+    v348ArmArchive(root);
+    if(activeTab==='Temporadas'){
+      const cleanSeasonLogos=()=>{if(route()==='history'&&activeTab==='Temporadas'&&root.isConnected)v341CleanSeasonLogos(root);};
+      if('requestIdleCallback' in window)requestIdleCallback(cleanSeasonLogos,{timeout:1800});
+      else setTimeout(cleanSeasonLogos,1000);
+    }
   });
-  if(activeTab==='Temporadas'){
-    const cleanSeasonLogos=()=>{if(route()==='history'&&activeTab==='Temporadas'&&root.isConnected)v341CleanSeasonLogos(root);};
-    if('requestIdleCallback' in window)requestIdleCallback(cleanSeasonLogos,{timeout:1600});
-    else setTimeout(cleanSeasonLogos,850);
-  }
 }
 function toast(msg){
   let el=document.querySelector('.v35-toast');
@@ -2070,6 +2150,7 @@ function onClick(e){
 }
 function cleanup(){
   if(route()!=='history'){
+    v348CancelArchiveLoad();
     document.body.classList.remove('v35-history-mounted');
     document.body.classList.remove('v341-history-seasons-active');
   }
