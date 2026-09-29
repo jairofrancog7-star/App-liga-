@@ -1,39 +1,20 @@
-/* V328 — Historia > Temporadas · referencia visual 4 columnas */
+/* V332 — Historia > Temporadas · diseño por décadas como la referencia móvil.
+   La cuadrícula nueva va arriba y TODO el contenido histórico anterior se conserva debajo. */
 @media (max-width:1023px){
-  .v35-history-content[data-v328-seasons-active="1"] > :not([data-v328-seasons-grid]){
-    display:none!important;
-  }
   .v328-seasons-reference{
     margin:0!important;
-    padding:26px var(--v35-pad) 34px!important;
+    padding:26px var(--v35-pad) 8px!important;
     background:transparent!important;
     color:#fff!important;
   }
-  .v328-season-intro{
-    display:flex!important;
-    align-items:flex-end!important;
-    justify-content:space-between!important;
-    gap:12px!important;
-    margin:0 0 18px!important;
-  }
-  .v328-season-intro strong{
-    font-size:0!important;
-    line-height:0!important;
-  }
-  .v328-season-intro span{
-    margin-left:auto!important;
-    color:rgba(220,225,255,.70)!important;
-    font-size:11px!important;
-    line-height:1.2!important;
-    font-weight:500!important;
-    text-align:right!important;
-  }
   .v328-season-decade{
-    margin:0 0 29px!important;
+    margin:0 0 31px!important;
   }
-  .v328-season-decade:last-child{margin-bottom:0!important}
+  .v328-season-decade:last-of-type{
+    margin-bottom:24px!important;
+  }
   .v328-season-decade h2{
-    margin:0 0 17px!important;
+    margin:0 0 18px!important;
     color:#fff!important;
     font-size:30px!important;
     line-height:1!important;
@@ -43,9 +24,10 @@
   .v328-season-grid{
     display:grid!important;
     grid-template-columns:repeat(4,minmax(0,1fr))!important;
-    column-gap:10px!important;
-    row-gap:24px!important;
+    column-gap:12px!important;
+    row-gap:25px!important;
     width:100%!important;
+    align-items:start!important;
   }
   .v328-season-item{
     min-width:0!important;
@@ -68,8 +50,8 @@
   }
   .v328-season-item:active{transform:scale(.97)}
   .v328-season-logo{
-    width:70px!important;
-    height:70px!important;
+    width:72px!important;
+    height:72px!important;
     display:grid!important;
     place-items:center!important;
     margin:0 auto 8px!important;
@@ -79,19 +61,19 @@
     overflow:visible!important;
   }
   .v328-season-logo img{
-    width:66px!important;
-    height:66px!important;
+    width:68px!important;
+    height:68px!important;
     max-width:100%!important;
     max-height:100%!important;
     display:block!important;
     object-fit:contain!important;
     object-position:center!important;
-    filter:drop-shadow(0 4px 5px rgba(0,0,35,.32))!important;
+    filter:drop-shadow(0 4px 5px rgba(0,0,35,.34))!important;
     background:transparent!important;
   }
   .v328-season-logo.is-fallback{
-    width:62px!important;
-    height:62px!important;
+    width:64px!important;
+    height:64px!important;
     margin-top:4px!important;
     margin-bottom:12px!important;
     border:1px solid rgba(120,224,255,.34)!important;
@@ -112,34 +94,47 @@
     letter-spacing:-.02em!important;
     white-space:nowrap!important;
   }
-  .v328-season-date{
-    margin-top:4px!important;
-    color:rgba(225,229,255,.78)!important;
-    font-size:10.5px!important;
-    line-height:1.1!important;
-    font-weight:500!important;
-    text-transform:uppercase!important;
-    white-space:nowrap!important;
+  .v328-season-date,
+  .v328-season-team,
+  .v328-season-intro{
+    display:none!important;
   }
-  .v328-season-team{
-    width:100%!important;
-    margin-top:5px!important;
-    color:rgba(246,248,255,.92)!important;
-    font-size:10.5px!important;
-    line-height:1.13!important;
-    font-weight:600!important;
-    display:-webkit-box!important;
-    -webkit-line-clamp:2!important;
-    -webkit-box-orient:vertical!important;
-    overflow:hidden!important;
-    min-height:23px!important;
+  .v328-season-previous{
+    margin:2px 0 18px!important;
+    padding:18px 0 0!important;
+    border-top:1px solid rgba(105,125,255,.22)!important;
+  }
+  .v328-season-previous span{
+    display:block!important;
+    margin:0 0 5px!important;
+    color:#20e5ff!important;
+    font-size:10px!important;
+    line-height:1.1!important;
+    font-weight:750!important;
+    letter-spacing:.10em!important;
+  }
+  .v328-season-previous strong{
+    display:block!important;
+    color:#fff!important;
+    font-size:18px!important;
+    line-height:1.15!important;
+    font-weight:700!important;
+  }
+  .v328-season-previous p{
+    margin:6px 0 0!important;
+    color:rgba(226,231,255,.72)!important;
+    font-size:12px!important;
+    line-height:1.35!important;
+  }
+  .v35-history-content[data-v328-seasons-active="1"] > [data-v328-seasons-grid] + *{
+    margin-top:0!important;
   }
 }
 @media (max-width:374px){
   .v328-seasons-reference{padding-left:18px!important;padding-right:18px!important}
-  .v328-season-grid{column-gap:7px!important;row-gap:21px!important}
-  .v328-season-logo{width:62px!important;height:62px!important}
-  .v328-season-logo img{width:58px!important;height:58px!important}
+  .v328-season-grid{column-gap:8px!important;row-gap:22px!important}
+  .v328-season-logo{width:64px!important;height:64px!important}
+  .v328-season-logo img{width:60px!important;height:60px!important}
   .v328-season-label{font-size:16px!important}
-  .v328-season-date,.v328-season-team{font-size:9.7px!important}
+  .v328-season-decade h2{font-size:28px!important}
 }
