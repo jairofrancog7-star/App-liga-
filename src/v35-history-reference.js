@@ -2387,6 +2387,93 @@ function v359Prewarm(){
   if('requestIdleCallback' in window)window.requestIdleCallback(work,{timeout:900});
   else window.setTimeout(work,180);
 }
+/* V362_HISTORY_HEADER_LOCK
+   Fija la cabecera/tipografía de Historia para que Resumen, Temporadas,
+   Campeones, Finales, Récords y Videos nunca cambien tamaño ni fuente. */
+function v362LockHistoryHeader(root=document.querySelector('.v35-history-page')){
+  if(!root)return;
+  root.style.setProperty('--v35-pad','22px','important');
+  root.style.setProperty('--v35-compact-h','56px','important');
+
+  const head=root.querySelector('.v35-history-head');
+  if(head){
+    head.style.setProperty('height','136px','important');
+    head.style.setProperty('min-height','136px','important');
+    head.style.setProperty('max-height','136px','important');
+    head.style.setProperty('padding','0 22px','important');
+    head.style.setProperty('background','transparent','important');
+    head.style.setProperty('background-image','none','important');
+  }
+
+  const back=head?.querySelector('.v35-back');
+  if(back){
+    back.style.setProperty('left','22px','important');
+    back.style.setProperty('top','24px','important');
+    back.style.setProperty('width','34px','important');
+    back.style.setProperty('height','34px','important');
+  }
+
+  const title=head?.querySelector('h1');
+  if(title){
+    title.style.setProperty('left','22px','important');
+    title.style.setProperty('right','auto','important');
+    title.style.setProperty('bottom','17px','important');
+    title.style.setProperty('margin','0','important');
+    title.style.setProperty('font-family','system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif','important');
+    title.style.setProperty('font-size','39px','important');
+    title.style.setProperty('font-weight','500','important');
+    title.style.setProperty('font-style','normal','important');
+    title.style.setProperty('line-height','1','important');
+    title.style.setProperty('letter-spacing','-.035em','important');
+    title.style.setProperty('transform','none','important');
+    title.style.setProperty('opacity','1','important');
+  }
+
+  const logo=head?.querySelector('.v35-logo-wrap');
+  if(logo)logo.style.setProperty('display','none','important');
+
+  const tabs=root.querySelector('.v35-tabs');
+  if(tabs){
+    tabs.style.setProperty('display','flex','important');
+    tabs.style.setProperty('align-items','flex-end','important');
+    tabs.style.setProperty('justify-content','flex-start','important');
+    tabs.style.setProperty('width','100%','important');
+    tabs.style.setProperty('height','54px','important');
+    tabs.style.setProperty('min-height','54px','important');
+    tabs.style.setProperty('max-height','54px','important');
+    tabs.style.setProperty('margin','0','important');
+    tabs.style.setProperty('padding','0 22px','important');
+    tabs.style.setProperty('gap','36px','important');
+    tabs.style.setProperty('overflow-x','auto','important');
+    tabs.style.setProperty('overflow-y','hidden','important');
+    tabs.style.setProperty('background','transparent','important');
+    tabs.style.setProperty('background-image','none','important');
+  }
+
+  tabs?.querySelectorAll('[data-v35-tab]').forEach(tab=>{
+    const active=tab.dataset.v35Tab===activeTab;
+    tab.style.setProperty('display','inline-flex','important');
+    tab.style.setProperty('visibility','visible','important');
+    tab.style.setProperty('opacity','1','important');
+    tab.style.setProperty('flex','0 0 auto','important');
+    tab.style.setProperty('width','auto','important');
+    tab.style.setProperty('min-width','max-content','important');
+    tab.style.setProperty('height','54px','important');
+    tab.style.setProperty('min-height','54px','important');
+    tab.style.setProperty('margin','0','important');
+    tab.style.setProperty('padding','0 0 13px','important');
+    tab.style.setProperty('font-family','system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif','important');
+    tab.style.setProperty('font-size','15px','important');
+    tab.style.setProperty('font-style','normal','important');
+    tab.style.setProperty('font-weight',active?'650':'540','important');
+    tab.style.setProperty('line-height','1','important');
+    tab.style.setProperty('letter-spacing','-.012em','important');
+    tab.style.setProperty('color',active?'#16e8f7':'#d0d2e5','important');
+    tab.style.setProperty('-webkit-text-fill-color',active?'#16e8f7':'#d0d2e5','important');
+  });
+}
+window.LJR_HISTORY_HEADER_LOCK=v362LockHistoryHeader;
+
 function pageHtml(){
   const back='<button class="v35-back" type="button" data-v35-back aria-label="Volver"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 11H7.83L13.42 5.41 12 4l-8 8 8 8 1.41-1.41L7.83 13H20Z"/></svg></button>';
   return '<div class="v35-history-page '+(activeTab==='Videos'?'v329-videos-active':'')+'">'+linesSvg()+
@@ -2431,6 +2518,7 @@ function renderHistory(){
   document.body.classList.toggle('v357-history-champions-active',activeTab==='Campeones');
   const topLogo=screen.querySelector('[data-v35-top-logo]');
   if(topLogo)topLogo.classList.add('v35-top-logo-blend-fallback');
+  v362LockHistoryHeader(historyRoot);
   v355MountedKey=v355TabKey();
   requestAnimationFrame(()=>{
     syncHistoryCollapse();
@@ -2466,6 +2554,7 @@ function rerenderContent(){
   document.body.classList.toggle('v357-history-champions-active',activeTab==='Campeones');
   root.classList.remove('v330-finals-active');
   if(activeTab!=='Finales')window.LJR_CLEAR_HISTORY_FINALS_REFERENCE?.();
+  v362LockHistoryHeader(root);
 
   requestAnimationFrame(()=>{
     syncHistoryCollapse();
