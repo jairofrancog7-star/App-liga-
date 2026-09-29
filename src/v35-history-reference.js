@@ -1843,13 +1843,18 @@ function v340Initials(name){
 function v340TrophySvg(){
   return '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 3h8v3h3v2c0 3.1-1.7 5.2-4.5 5.8A5.1 5.1 0 0 1 13 15.5V18h3v3H8v-3h3v-2.5a5.1 5.1 0 0 1-1.5-1.7C6.7 13.2 5 11.1 5 8V6h3V3Zm0 5H7c0 1.7.6 2.9 1.8 3.5A8.6 8.6 0 0 1 8 8Zm8 0c0 1.3-.3 2.5-.8 3.5C16.4 10.9 17 9.7 17 8h-1Z"/></svg>';
 }
-function championsRankingBlock(){
-  const achievements=v340ChampionAchievements();
-  const order=['Primera','Intermedia','Segunda','Veteranos 35+','Veteranos 50+','Veteranos','General'];
-  const available=order.filter(cat=>achievements.some(a=>a.category===cat));
-  const categories=['Todos',...available];
-  if(!categories.includes(championCategory))championCategory='Todos';
-  const selected=championCategory==='Todos'?achievements:achievements.filter(a=>a.category===championCategory);
+/* V357_CHAMPION_FILTER_FASTPATH
+   Mantiene una cantidad fija de filas y actualiza sólo texto/atributos.
+   Así, cambiar Primera/Intermedia/Segunda/Veteranos no reemplaza nodos,
+   no vuelve a hidratar el archivo histórico y evita disparar los observers
+   antiguos que recorren cientos de tarjetas. */
+let v357ChampionAchievementsCache=null;
+function v357ChampionAchievements(){
+  return v357ChampionAchievementsCache||(v357ChampionAchievementsCache=v340ChampionAchievements());
+}
+function v357ChampionRows(category){
+  const achievements=v357ChampionAchievements();
+  const selected=category==='Todos'?achievements:achievements.filter(a=>a.category===category);
   const clubs=new Map();
   selected.forEach(a=>{
     const key=v340Norm(a.team);
@@ -1858,26 +1863,95 @@ function championsRankingBlock(){
     row.count+=1;
     if(!row.logo&&a.logo)row.logo=a.logo;
   });
-  const rows=[...clubs.values()].sort((a,b)=>b.count-a.count||a.team.localeCompare(b.team,'es'));
+  return [...clubs.values()].sort((a,b)=>b.count-a.count||a.team.localeCompare(b.team,'es'));
+}
+function v357ChampionCategories(){
+  const achievements=v357ChampionAchievements();
+  const order=['Primera','Intermedia','Segunda','Veteranos 35+','Veteranos 50+','Veteranos','General'];
+  return ['Todos',...order.filter(cat=>achievements.some(a=>a.category===cat))];
+}
+function v357ChampionSlot(row){
+  const team=row?.team||'';
+  const logo=row?v340ChampionLogo(row.team,row.logo):'';
+  const initials=row?v340Initials(row.team):'';
+  const count=row?.count||'';
+  return '<div class="v340-champion-row" data-v357-champion-slot '+(row?'':'hidden')+'>'+
+    '<span class="v340-champion-logo '+(logo?'':'is-fallback')+'">'+
+      '<img '+(logo?'src="'+logo+'"':'')+' alt="'+esc(team)+'" loading="lazy" decoding="async" '+(logo?'':'hidden')+' onerror="this.hidden=true;this.parentElement.classList.add(\'is-fallback\');this.nextElementSibling.hidden=false">'+
+      '<b '+(logo?'hidden':'')+'>'+esc(initials||' ')+'</b>'+
+    '</span>'+
+    '<span class="v340-champion-name">'+esc(team||' ')+'</span>'+
+    '<strong class="v340-champion-count" aria-label="'+(row?row.count+' títulos':'')+'">'+esc(count||' ')+'</strong>'+
+    '<span class="v340-champion-trophy">'+v340TrophySvg()+'</span>'+
+  '</div>';
+}
+function championsRankingBlock(){
+  const categories=v357ChampionCategories();
+  if(!categories.includes(championCategory))championCategory='Todos';
+  const selectedRows=v357ChampionRows(championCategory);
+  const allRows=v357ChampionRows('Todos');
+  const slotCount=Math.max(1,allRows.length);
   const filters='<div class="v340-champion-filters" role="tablist" aria-label="Categoría del palmarés">'+
     categories.map(cat=>'<button type="button" role="tab" aria-selected="'+(cat===championCategory?'true':'false')+'" class="'+(cat===championCategory?'active':'')+'" data-v340-champion-cat="'+esc(cat)+'">'+esc(cat)+'</button>').join('')+
   '</div>';
-  const list=rows.length?rows.map(row=>{
-    const logo=v340ChampionLogo(row.team,row.logo);
-    return '<div class="v340-champion-row">'+
-      '<span class="v340-champion-logo '+(logo?'':'is-fallback')+'">'+
-        (logo?'<img src="'+logo+'" alt="'+esc(row.team)+'" loading="lazy" decoding="async" onerror="this.parentElement.classList.add(\'is-fallback\');this.remove()">':'<b>'+esc(v340Initials(row.team))+'</b>')+
-      '</span>'+
-      '<span class="v340-champion-name">'+esc(row.team)+'</span>'+
-      '<strong class="v340-champion-count" aria-label="'+row.count+' títulos">'+row.count+'</strong>'+
-      '<span class="v340-champion-trophy">'+v340TrophySvg()+'</span>'+
-    '</div>';
-  }).join(''):'<div class="v340-champion-empty">No hay títulos documentados en esta categoría.</div>';
+  const slots=Array.from({length:slotCount},(_,i)=>v357ChampionSlot(selectedRows[i]||null)).join('');
   return '<section class="v340-champions-ranking" aria-label="Equipos más ganadores">'+
     filters+
-    '<div class="v340-champion-list">'+list+'</div>'+
+    '<div class="v340-champion-list" data-v357-champion-list>'+slots+'</div>'+
+    '<div class="v340-champion-empty" data-v357-champion-empty '+(selectedRows.length?'hidden':'')+'>No hay títulos documentados en esta categoría.</div>'+
     '<div class="v340-champion-archive-label"><span>ARCHIVO HISTÓRICO COMPLETO</span><strong>Campeones de otros años</strong><p>La información que ya estaba guardada continúa completa debajo.</p></div>'+
   '</section>';
+}
+function v357SetText(el,value){
+  if(!el)return;
+  const text=String(value==null?'':value)||' ';
+  const node=el.firstChild;
+  if(node&&node.nodeType===3)node.nodeValue=text;
+}
+function v357ApplyChampionCategory(){
+  if(route()!=='history'||activeTab!=='Campeones')return false;
+  const root=document.querySelector('.v35-history-page');
+  const ranking=root?.querySelector('.v340-champions-ranking');
+  if(!root||!ranking)return false;
+
+  const rows=v357ChampionRows(championCategory);
+  const slots=[...ranking.querySelectorAll('[data-v357-champion-slot]')];
+  if(rows.length>slots.length)return false;
+
+  ranking.querySelectorAll('[data-v340-champion-cat]').forEach(btn=>{
+    const active=(btn.dataset.v340ChampionCat||'Todos')===championCategory;
+    btn.classList.toggle('active',active);
+    btn.setAttribute('aria-selected',active?'true':'false');
+  });
+
+  slots.forEach((slot,i)=>{
+    const row=rows[i]||null;
+    slot.hidden=!row;
+    if(!row)return;
+    const logoWrap=slot.querySelector('.v340-champion-logo');
+    const img=logoWrap?.querySelector('img');
+    const fallback=logoWrap?.querySelector('b');
+    const logo=v340ChampionLogo(row.team,row.logo);
+    if(logo){
+      if(img&&img.getAttribute('src')!==logo)img.setAttribute('src',logo);
+      if(img){img.alt=row.team;img.hidden=false;}
+      if(fallback)fallback.hidden=true;
+      logoWrap?.classList.remove('is-fallback');
+    }else{
+      if(img){img.removeAttribute('src');img.alt='';img.hidden=true;}
+      if(fallback){v357SetText(fallback,v340Initials(row.team));fallback.hidden=false;}
+      logoWrap?.classList.add('is-fallback');
+    }
+    v357SetText(slot.querySelector('.v340-champion-name'),row.team);
+    const count=slot.querySelector('.v340-champion-count');
+    v357SetText(count,row.count);
+    count?.setAttribute('aria-label',row.count+' títulos');
+  });
+  const empty=ranking.querySelector('[data-v357-champion-empty]');
+  if(empty)empty.hidden=rows.length>0;
+  root.classList.add('v357-champions-active');
+  document.body.classList.add('v357-history-champions-active');
+  return true;
 }
 function championsBody(){
   return championsRankingBlock()+
@@ -2114,7 +2188,9 @@ function renderHistory(){
   const historyRoot=screen.querySelector('.v35-history-page');
   v354BindHistoryTabs(historyRoot);
   historyRoot?.classList.toggle('v341-seasons-active',activeTab==='Temporadas');
+  historyRoot?.classList.toggle('v357-champions-active',activeTab==='Campeones');
   document.body.classList.toggle('v341-history-seasons-active',activeTab==='Temporadas');
+  document.body.classList.toggle('v357-history-champions-active',activeTab==='Campeones');
   const topLogo=screen.querySelector('[data-v35-top-logo]');
   if(topLogo)topLogo.classList.add('v35-top-logo-blend-fallback');
   v355MountedKey=v355TabKey();
@@ -2156,7 +2232,9 @@ function rerenderContent(){
 
   root.classList.toggle('v329-videos-active',activeTab==='Videos');
   root.classList.toggle('v341-seasons-active',activeTab==='Temporadas');
+  root.classList.toggle('v357-champions-active',activeTab==='Campeones');
   document.body.classList.toggle('v341-history-seasons-active',activeTab==='Temporadas');
+  document.body.classList.toggle('v357-history-champions-active',activeTab==='Campeones');
   root.classList.remove('v330-finals-active');
   if(activeTab!=='Finales')window.LJR_CLEAR_HISTORY_FINALS_REFERENCE?.();
 
@@ -2240,9 +2318,13 @@ function onClick(e){
   const championCat=e.target.closest('[data-v340-champion-cat]');
   if(championCat){
     e.preventDefault();e.stopPropagation();e.stopImmediatePropagation();
-    championCategory=championCat.dataset.v340ChampionCat||'Todos';
-    v351RefreshPanel('Campeones');
-    rerenderContent();
+    const nextCategory=championCat.dataset.v340ChampionCat||'Todos';
+    if(nextCategory===championCategory)return;
+    championCategory=nextCategory;
+    if(!v357ApplyChampionCategory()){
+      v351RefreshPanel('Campeones');
+      rerenderContent();
+    }
     return;
   }
   const era=e.target.closest('[data-v35-era-team]');
@@ -2285,6 +2367,7 @@ function cleanup(){
     v355MountedKey='';
     document.body.classList.remove('v35-history-mounted');
     document.body.classList.remove('v341-history-seasons-active');
+    document.body.classList.remove('v357-history-champions-active');
   }
 }
 function boot(){
