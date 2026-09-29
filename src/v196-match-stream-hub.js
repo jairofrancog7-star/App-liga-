@@ -109,6 +109,9 @@ function playerHtml(c,s,st,current){
   if(!url){
     return '<div class="v196-player-empty"><span class="v196-signal">◉</span><b>'+(st.key==='final'?'Sin repetición vinculada':'Transmisión sin configurar')+'</b><p>'+(st.key==='final'?'Puedes vincular una repetición o resumen del partido.':'Vincula YouTube, Facebook, TikTok o una fuente de video para tenerla lista cuando empiece el partido.')+'</p><button type="button" data-v196-add>+ Vincular fuente</button></div>';
   }
+  if(cfg.render==='external'){
+    return '<div class="v196-player-empty linked"><span class="v196-provider">'+esc(p.icon)+'</span><b>'+esc(current?.name||s.source?.name||p.name)+'</b><p>El modo de reproducción está configurado para abrir el proveedor original.</p><button type="button" data-v196-open="'+esc(url)+'">Abrir transmisión</button></div>';
+  }
   if(p.key==='youtube'){
     const id=youtubeId(url);
     if(id){
@@ -140,6 +143,7 @@ function hubHtml(c,s){
       '<div class="v196-event-meta"><span>'+esc(c.category)+'</span><span>'+esc(c.meta[0]||'')+'</span><span>'+esc(c.meta[1]||'')+'</span></div>'+
     '</header>'+
     '<div class="v196-toolbar">'+
+      '<button type="button" data-v196-events><span>▤</span><b>Partidos</b><small>Categorías</small></button>'+
       '<button type="button" data-v196-sources><span>☷</span><b>Fuentes</b><small>'+sourceCount+' disponible'+(sourceCount===1?'':'s')+'</small></button>'+
       '<button type="button" data-v196-network><span>⌁</span><b>Stream</b><small>Enlace de red</small></button>'+
       '<button type="button" data-v196-floating class="'+(cfg.floating?'active':'')+'"><span>▣</span><b>Flotante</b><small>'+(cfg.floating?'Activo':'Desactivado')+'</small></button>'+
@@ -176,6 +180,31 @@ function addSourceModal(c,preset=''){
     saveList(c,list);setCurrentSource(c,{name,url});m.remove();schedule(20);
   };
 }
+function eventsModal(c){
+  const select=$('[data-v92-match-select]',c.root);
+  if(!select)return;
+  const options=Array.from(select.options).map(o=>({
+    value:o.value,
+    text:o.textContent.trim(),
+    category:o.textContent.split('·')[0]?.trim()||'Liga',
+    current:o.value===select.value
+  }));
+  const cats=[...new Set(options.map(x=>x.category))];
+  const rows=options.map((x,i)=>'<button type="button" class="v196-event-row '+(x.current?'active':'')+'" data-v196-event-choice="'+i+'" data-v196-event-cat="'+esc(x.category)+'"><span><small>'+esc(x.category)+'</small><b>'+esc(x.text.replace(x.category+' · ','').replace(x.category+'·',''))+'</b></span><em>'+(x.current?'ACTUAL':'ABRIR')+'</em></button>').join('');
+  const chips='<div class="v196-event-cats"><button type="button" class="active" data-v196-event-filter="all">Todas</button>'+cats.map(x=>'<button type="button" data-v196-event-filter="'+esc(x)+'">'+esc(x)+'</button>').join('')+'</div>';
+  const m=modalShell('events','Partidos y categorías',chips+'<div class="v196-event-list">'+rows+'</div>');
+  $('[data-v196-event-filter]',m).forEach(b=>b.onclick=()=>{
+    $('[data-v196-event-filter]',m).forEach(x=>x.classList.toggle('active',x===b));
+    const cat=b.dataset.v196EventFilter;
+    $('[data-v196-event-choice]',m).forEach(row=>row.hidden=cat!=='all'&&row.dataset.v196EventCat!==cat);
+  });
+  $('[data-v196-event-choice]',m).forEach(b=>b.onclick=()=>{
+    const item=options[Number(b.dataset.v196EventChoice)];if(!item)return;
+    select.value=item.value;
+    select.dispatchEvent(new Event('change',{bubbles:true}));
+    m.remove();
+  });
+}
 function sourcesModal(c){
   const s=liveState(c),list=streamList(c,s),current=safeUrl(s.source?.url);
   const rows=list.length?list.map((x,i)=>{
@@ -203,6 +232,7 @@ function bind(c,node){
   const s=liveState(c),list=streamList(c,s);
   $$('[data-v196-open]',node).forEach(b=>b.onclick=e=>{e.preventDefault();e.stopPropagation();const u=safeUrl(b.dataset.v196Open);if(u)window.open(u,'_blank','noopener,noreferrer')});
   $$('[data-v196-add]',node).forEach(b=>b.onclick=e=>{e.preventDefault();e.stopPropagation();addSourceModal(c)});
+  $('[data-v196-events]',node)?.addEventListener('click',()=>eventsModal(c));
   $('[data-v196-sources]',node)?.addEventListener('click',()=>sourcesModal(c));
   $('[data-v196-multi]',node)?.addEventListener('click',()=>sourcesModal(c));
   $('[data-v196-network]',node)?.addEventListener('click',()=>addSourceModal(c,'Stream de red'));
