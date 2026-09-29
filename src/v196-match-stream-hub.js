@@ -208,12 +208,12 @@ function eventsModal(c){
   const rows=options.map((x,i)=>'<button type="button" class="v196-event-row '+(x.current?'active':'')+'" data-v196-event-choice="'+i+'" data-v196-event-cat="'+esc(x.category)+'"><span><small>'+esc(x.category)+'</small><b>'+esc(x.text.replace(x.category+' · ','').replace(x.category+'·',''))+'</b></span><em>'+(x.current?'ACTUAL':'ABRIR')+'</em></button>').join('');
   const chips='<div class="v196-event-cats"><button type="button" class="active" data-v196-event-filter="all">Todas</button>'+cats.map(x=>'<button type="button" data-v196-event-filter="'+esc(x)+'">'+esc(x)+'</button>').join('')+'</div>';
   const m=modalShell('events','Partidos y categorías',chips+'<div class="v196-event-list">'+rows+'</div>');
-  $('[data-v196-event-filter]',m).forEach(b=>b.onclick=()=>{
-    $('[data-v196-event-filter]',m).forEach(x=>x.classList.toggle('active',x===b));
+  $$('[data-v196-event-filter]',m).forEach(b=>b.onclick=()=>{
+    $$('[data-v196-event-filter]',m).forEach(x=>x.classList.toggle('active',x===b));
     const cat=b.dataset.v196EventFilter;
-    $('[data-v196-event-choice]',m).forEach(row=>row.hidden=cat!=='all'&&row.dataset.v196EventCat!==cat);
+    $$('[data-v196-event-choice]',m).forEach(row=>row.hidden=cat!=='all'&&row.dataset.v196EventCat!==cat);
   });
-  $('[data-v196-event-choice]',m).forEach(b=>b.onclick=()=>{
+  $$('[data-v196-event-choice]',m).forEach(b=>b.onclick=()=>{
     const item=options[Number(b.dataset.v196EventChoice)];if(!item)return;
     select.value=item.value;
     select.dispatchEvent(new Event('change',{bubbles:true}));
@@ -266,8 +266,8 @@ function settingsModal(c){
 function bind(c,node){
   const s=liveState(c),list=streamList(c,s);
   const stop=e=>{e?.preventDefault?.();e?.stopPropagation?.()};
-  $('[data-v196-open]',node).forEach(b=>b.onclick=e=>{stop(e);openExternal(b.dataset.v196Open)});
-  $('[data-v196-add]',node).forEach(b=>b.onclick=e=>{stop(e);addSourceModal(c)});
+  $$('[data-v196-open]',node).forEach(b=>b.onclick=e=>{stop(e);openExternal(b.dataset.v196Open)});
+  $$('[data-v196-add]',node).forEach(b=>b.onclick=e=>{stop(e);addSourceModal(c)});
   $('[data-v196-events]',node)?.addEventListener('click',e=>{stop(e);eventsModal(c)});
   $('[data-v196-sources]',node)?.addEventListener('click',e=>{stop(e);sourcesModal(c)});
   $('[data-v196-multi]',node)?.addEventListener('click',e=>{stop(e);sourcesModal(c)});
