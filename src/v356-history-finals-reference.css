@@ -708,3 +708,30 @@
     margin-right:15px!important;
   }
 }
+
+
+/* V367 — asegurar que el diseño compacto de Finales sea lo primero visible.
+   La tarjeta explicativa anterior y fuentes externas quedan abajo. */
+@media (max-width:1023px){
+  html body[data-app-route="history"] .v35-history-page.v358-finals-reference
+  .v351-history-panel[data-v351-panel="Finales"]>.v367-finals-intro{
+    display:none!important;
+  }
+
+  html body[data-app-route="history"] .v35-history-page.v358-finals-reference
+  .v351-history-panel[data-v351-panel="Finales"]>.v74-facebook-source{
+    order:99!important;
+    margin:24px 18px 30px!important;
+  }
+
+  html body[data-app-route="history"] .v35-history-page.v358-finals-reference
+  .v351-history-panel[data-v351-panel="Finales"]{
+    display:block!important;
+  }
+
+  html body[data-app-route="history"] .v35-history-page.v358-finals-reference
+  .v351-history-panel[data-v351-panel="Finales"]>.v358-finals-shell{
+    display:block!important;
+    margin-top:0!important;
+  }
+}
