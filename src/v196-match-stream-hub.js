@@ -79,6 +79,34 @@ function youtubeId(url){
   m=s.match(/youtu\.be\/([^?&#/]+)/i);if(m)return m[1];
   m=s.match(/youtube\.com\/(?:live|embed)\/([^?&#/]+)/i);return m?m[1]:'';
 }
+function floatingCapability(item,cfg=settings()){
+  const url=safeUrl(item?.url||''),p=provider(url);
+  if(!url)return {inApp:false,pip:false,provider:p};
+  if(p.key==='video')return {inApp:true,pip:true,provider:p};
+  if(p.key==='youtube')return {inApp:true,pip:false,provider:p};
+  if(p.key==='facebook'&&cfg.render==='inline')return {inApp:true,pip:false,provider:p};
+  return {inApp:false,pip:false,provider:p};
+}
+async function requestPiP(node){
+  const video=$('video',node);
+  if(!video){flash('Esta fuente no ofrece Picture-in-Picture directo. En YouTube usa el control PiP del reproductor cuando esté disponible.');return false}
+  if(!document.pictureInPictureEnabled||typeof video.requestPictureInPicture!=='function'){
+    flash('Picture-in-Picture no está disponible en este navegador o dispositivo.');return false;
+  }
+  try{
+    if(document.pictureInPictureElement===video)return true;
+    if(video.paused)await video.play();
+    await video.requestPictureInPicture();
+    flash('PiP activo: puedes cambiar a otra aplicación y seguir viendo el video.');
+    return true;
+  }catch(_){
+    flash('No se pudo abrir PiP. Inicia el video y vuelve a tocar PiP.');
+    return false;
+  }
+}
+async function exitPiP(){
+  try{if(document.pictureInPictureElement&&document.exitPictureInPicture)await document.exitPictureInPicture()}catch(_){}
+}
 function streamList(c,s){
   let list=[];
   try{list=JSON.parse(localStorage.getItem(LIST_KEY+c.key)||'[]')||[]}catch(_){}
@@ -154,8 +182,11 @@ function hubHtml(c,s){
   const st=statusInfo(c,s),list=streamList(c,s);
   const current=list.find(x=>x.url===safeUrl(s?.source?.url))||list[0]||null;
   const cfg=settings();
-  const sourceCount=list.length;
-  return '<section class="v196-stream-hub '+(cfg.floating?'is-floating-enabled':'')+'" data-v196-stream-hub data-match-key="'+esc(c.key)+'">'+
+  const sourceCount=list.length,cap=floatingCapability(current,cfg);
+  const floatOn=!!cfg.floating&&cap.inApp;
+  if(cfg.floating&&!cap.inApp){cfg.floating=false;saveSettings(cfg)}
+  const floatLabel=floatOn?'Activo':(current&&!cap.inApp?'No compatible':'Desactivado');
+  return '<section class="v196-stream-hub '+(floatOn?'is-floating-enabled':'')+'" data-v196-stream-hub data-match-key="'+esc(c.key)+'">'+
     '<header class="v196-event-card">'+
       '<div class="v196-event-top"><span class="v196-dot '+(st.live?'live':'')+'"></span><span><small>'+esc(st.label)+'</small><b>'+esc(c.home)+' vs '+esc(c.away)+'</b></span><em>'+esc(st.sub)+'</em></div>'+
       '<div class="v196-event-meta"><span>'+esc(c.category)+'</span><span>'+esc(c.meta[0]||'')+'</span><span>'+esc(c.meta[1]||'')+'</span></div>'+
@@ -164,14 +195,14 @@ function hubHtml(c,s){
       '<button type="button" data-v196-events><span>▤</span><b>Partidos</b><small>Categorías</small></button>'+
       '<button type="button" data-v196-sources><span>☷</span><b>Fuentes</b><small>'+sourceCount+' disponible'+(sourceCount===1?'':'s')+'</small></button>'+
       '<button type="button" data-v196-network><span>⌁</span><b>Stream</b><small>Enlace de red</small></button>'+
-      '<button type="button" data-v196-floating class="'+(cfg.floating?'active':'')+'"><span>▣</span><b>Flotante</b><small>'+(cfg.floating?'Activo':'Desactivado')+'</small></button>'+
+      '<button type="button" data-v196-floating class="'+(floatOn?'active':'')+' '+(current&&!cap.inApp?'unsupported':'')+'"><span>▣</span><b>Flotante</b><small>'+floatLabel+'</small></button>'+
       '<button type="button" data-v196-settings><span>⚙</span><b>Ajustes</b><small>Reproducción</small></button>'+
     '</div>'+
     (list.length>1?'<div class="v196-source-rail">'+list.map((x,i)=>sourceButton(x,i,current)).join('')+'</div>':'')+
-    '<section class="v196-player-card '+(cfg.floating?'floating-ready':'')+'" data-v196-player-card>'+
-      '<div class="v196-player-head"><span><small>'+(st.live?'REPRODUCIENDO EN VIVO':st.key==='final'?'REPETICIÓN / RESUMEN':'TRANSMISIÓN PREPARADA')+'</small><b>'+esc(current?.name||s?.source?.name||'Liga Juventino Live')+'</b></span><div><button type="button" data-v196-multi title="Múltiples transmisiones">+'+Math.max(0,sourceCount-1)+'</button><button type="button" data-v196-close-float title="Cerrar flotante">×</button></div></div>'+
+    '<section class="v196-player-card '+(floatOn?'floating-ready':'')+'" data-v196-player-card>'+
+      '<div class="v196-player-head"><span><small>'+(st.live?'REPRODUCIENDO EN VIVO':st.key==='final'?'REPETICIÓN / RESUMEN':'TRANSMISIÓN PREPARADA')+'</small><b>'+esc(current?.name||s?.source?.name||'Liga Juventino Live')+'</b></span><div><button type="button" data-v196-multi title="Múltiples transmisiones">+'+Math.max(0,sourceCount-1)+'</button>'+(cap.pip?'<button type="button" data-v196-pip title="Picture-in-Picture">PiP</button>':'')+'<button type="button" data-v196-close-float title="Cerrar flotante">×</button></div></div>'+
       playerHtml(c,s,st,current)+
-      '<footer><span>'+(st.live?'El partido está marcado en vivo.':st.key==='final'?'El partido ya terminó. Puedes conservar la repetición vinculada.':'La fuente queda preparada y no se marca EN VIVO hasta que el partido realmente inicie.')+'</span><div><button type="button" data-v196-add>+ Fuente</button>'+(current?'<button type="button" data-v196-open="'+esc(current.url)+'">Abrir</button>':'')+'</div></footer>'+
+      '<footer><span>'+(st.live?'El partido está marcado en vivo.':st.key==='final'?'El partido ya terminó. Puedes conservar la repetición vinculada.':'La fuente queda preparada y no se marca EN VIVO hasta que el partido realmente inicie.')+'</span><div><button type="button" data-v196-add>+ Fuente</button>'+(cap.pip?'<button type="button" data-v196-pip>PiP</button>':'')+(current?'<button type="button" data-v196-open="'+esc(current.url)+'">Abrir</button>':'')+'</div></footer>'+
     '</section>'+
   '</section>';
 }
@@ -208,15 +239,18 @@ function eventsModal(c){
     current:o.value===select.value
   }));
   const cats=[...new Set(options.map(x=>x.category))];
+  const currentOpt=options.find(x=>x.current);
+  const initial=(currentOpt?.category&&cats.includes(currentOpt.category))?currentOpt.category:(cats.includes(c.category)?c.category:'all');
   const rows=options.map((x,i)=>'<button type="button" class="v196-event-row '+(x.current?'active':'')+'" data-v196-event-choice="'+i+'" data-v196-event-cat="'+esc(x.category)+'"><span><small>'+esc(x.category)+'</small><b>'+esc(x.text.replace(x.category+' · ','').replace(x.category+'·',''))+'</b></span><em>'+(x.current?'ACTUAL':'ABRIR')+'</em></button>').join('');
-  const chips='<div class="v196-event-cats"><button type="button" class="active" data-v196-event-filter="all">Todas</button>'+cats.map(x=>'<button type="button" data-v196-event-filter="'+esc(x)+'">'+esc(x)+'</button>').join('')+'</div>';
+  const chips='<div class="v196-event-cats"><button type="button" class="'+(initial==='all'?'active':'')+'" data-v196-event-filter="all">Todas</button>'+cats.map(x=>'<button type="button" class="'+(initial===x?'active':'')+'" data-v196-event-filter="'+esc(x)+'">'+esc(x)+'</button>').join('')+'</div>';
   const m=modalShell('events','Partidos y categorías',chips+'<div class="v196-event-list">'+rows+'</div>');
-  $$('[data-v196-event-filter]',m).forEach(b=>b.onclick=()=>{
-    $$('[data-v196-event-filter]',m).forEach(x=>x.classList.toggle('active',x===b));
-    const cat=b.dataset.v196EventFilter;
-    $$('[data-v196-event-choice]',m).forEach(row=>row.hidden=cat!=='all'&&row.dataset.v196EventCat!==cat);
-  });
-  $$('[data-v196-event-choice]',m).forEach(b=>b.onclick=()=>{
+  const applyFilter=cat=>{
+    $('[data-v196-event-filter]',m).forEach(x=>x.classList.toggle('active',x.dataset.v196EventFilter===cat));
+    $('[data-v196-event-choice]',m).forEach(row=>row.hidden=cat!=='all'&&row.dataset.v196EventCat!==cat);
+  };
+  applyFilter(initial);
+  $('[data-v196-event-filter]',m).forEach(b=>b.onclick=()=>applyFilter(b.dataset.v196EventFilter));
+  $('[data-v196-event-choice]',m).forEach(b=>b.onclick=()=>{
     const item=options[Number(b.dataset.v196EventChoice)];if(!item)return;
     select.value=item.value;
     select.dispatchEvent(new Event('change',{bubbles:true}));
@@ -234,15 +268,40 @@ function sourcesModal(c){
   $$('[data-v196-delete]',m).forEach(b=>b.onclick=()=>{const i=Number(b.dataset.v196Delete);const next=list.filter((_,n)=>n!==i);saveList(c,next);m.remove();sourcesModal(c);schedule(20)});
   $('[data-v196-add]',m)?.addEventListener('click',()=>{m.remove();addSourceModal(c)});
 }
-function toggleFloating(c){
+function setFloating(enabled,node){
+  const cfg=settings();cfg.floating=!!enabled;saveSettings(cfg);
+  const hub=node||$('[data-v196-stream-hub]');
+  const card=hub&&$('[data-v196-player-card]',hub);
+  const btn=hub&&$('[data-v196-floating]',hub);
+  if(card)card.classList.toggle('is-floating',!!enabled);
+  if(btn){
+    btn.classList.toggle('active',!!enabled);
+    btn.querySelector('small')&&(btn.querySelector('small').textContent=enabled?'Activo':'Desactivado');
+  }
+  document.body.classList.toggle('v196-floating-player',!!enabled&&ROUTES.has(route()));
+  lastSig='';schedule(30);
+}
+async function disableFloating(node){
+  setFloating(false,node);
+  await exitPiP();
+}
+function toggleFloating(c,node){
   const s=liveState(c),list=streamList(c,s);
   if(!list.length){
     flash('Primero vincula una transmisión para usar el modo flotante');
     addSourceModal(c);
     return;
   }
-  const cfg=settings();cfg.floating=!cfg.floating;saveSettings(cfg);
-  lastSig='';schedule(10);
+  const current=list.find(x=>x.url===safeUrl(s?.source?.url))||list[0]||null;
+  const cap=floatingCapability(current,settings());
+  if(!cap.inApp){
+    flash('Esta fuente no admite flotante dentro de la app. Usa Abrir transmisión o cambia a YouTube/video directo.');
+    setFloating(false,node);
+    return;
+  }
+  const next=!settings().floating;
+  setFloating(next,node);
+  if(next&&cap.pip)requestPiP(node);
 }
 function settingsModal(c){
   const cfg=settings();
@@ -253,11 +312,14 @@ function settingsModal(c){
   const m=modalShell('settings','Ajustes de reproducción',body);
   $('[data-v196-render]',m).value=cfg.render||'auto';
   $('[data-v196-toggle-float]',m).onclick=()=>{
-    const list=streamList(c,liveState(c));
+    const s=liveState(c),list=streamList(c,s);
     if(!list.length){m.remove();flash('Vincula una transmisión antes de activar el modo flotante');addSourceModal(c);return}
+    const current=list.find(x=>x.url===safeUrl(s?.source?.url))||list[0]||null;
+    const cap=floatingCapability(current,cfg);
+    if(!cap.inApp){cfg.floating=false;saveSettings(cfg);$('[data-v196-toggle-float]',m).classList.remove('on');flash('La fuente actual no permite modo flotante.');return}
     cfg.floating=!cfg.floating;saveSettings(cfg);
     $('[data-v196-toggle-float]',m).classList.toggle('on',cfg.floating);
-    lastSig='';schedule(10);
+    setFloating(cfg.floating,$('[data-v196-stream-hub]',c.root));
   };
   $('[data-v196-toggle-low]',m).onclick=()=>{
     cfg.lowQuality=!cfg.lowQuality;saveSettings(cfg);
@@ -276,15 +338,21 @@ function bind(c,node){
   $('[data-v196-multi]',node)?.addEventListener('click',e=>{stop(e);sourcesModal(c)});
   $('[data-v196-network]',node)?.addEventListener('click',e=>{stop(e);addSourceModal(c,'Stream de red')});
   $('[data-v196-settings]',node)?.addEventListener('click',e=>{stop(e);settingsModal(c)});
-  $('[data-v196-floating]',node)?.addEventListener('click',e=>{stop(e);toggleFloating(c)});
-  $$('[data-v196-source]',node).forEach(b=>b.onclick=()=>{const item=list[Number(b.dataset.v196Source)];if(item)setCurrentSource(c,item)});
-  $('[data-v196-close-float]',node)?.addEventListener('click',e=>{stop(e);const cfg=settings();if(cfg.floating){cfg.floating=false;saveSettings(cfg);lastSig='';schedule(10)}});
+  $('[data-v196-floating]',node)?.addEventListener('click',e=>{stop(e);toggleFloating(c,node)});
+  $('[data-v196-pip]',node).forEach(b=>b.addEventListener('click',e=>{stop(e);requestPiP(node)}));
+  $('[data-v196-source]',node).forEach(b=>b.onclick=()=>{const item=list[Number(b.dataset.v196Source)];if(item){setFloating(false,node);setCurrentSource(c,item)}});
+  $('[data-v196-close-float]',node)?.addEventListener('click',e=>{stop(e);disableFloating(node)});
 }
 function applyFloating(node){
-  const cfg=settings(),card=$('[data-v196-player-card]',node);
+  const cfg=settings(),card=$('[data-v196-player-card]',node),c=ctx();
   if(!card)return;
-  card.classList.toggle('is-floating',!!cfg.floating);
-  document.body.classList.toggle('v196-floating-player',!!cfg.floating&&ROUTES.has(route()));
+  let enabled=!!cfg.floating;
+  if(c){
+    const s=liveState(c),list=streamList(c,s),current=list.find(x=>x.url===safeUrl(s?.source?.url))||list[0]||null;
+    if(!floatingCapability(current,cfg).inApp&&enabled){enabled=false;cfg.floating=false;saveSettings(cfg)}
+  }
+  card.classList.toggle('is-floating',enabled);
+  document.body.classList.toggle('v196-floating-player',enabled&&ROUTES.has(route()));
 }
 function render(){
   if(!ROUTES.has(route())){
