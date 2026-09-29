@@ -3221,3 +3221,18 @@
     background:#02054f!important;
   }
 }
+
+
+/* V360 — Historia > Temporadas: separación superior azul oscuro. */
+@media (max-width:1023px){
+  .v35-history-page.v341-seasons-active{
+    background:#02054f!important;
+    background-image:linear-gradient(180deg,#050b68 0%,#03075a 18%,#02054f 42%,#02054f 100%)!important;
+  }
+  .v35-history-page.v341-seasons-active .v35-tabs + .v35-history-content,
+  .v35-history-page.v341-seasons-active .v35-history-content,
+  .v35-history-page.v341-seasons-active .v351-history-panel.is-active,
+  .v35-history-page.v341-seasons-active .v359-deferred-shell{
+    background:#02054f!important;
+  }
+}
