@@ -135,8 +135,11 @@ function playerHtml(c,s,st,current){
     }
   }
   if(p.key==='facebook'){
-    const src='https://www.facebook.com/plugins/video.php?href='+encodeURIComponent(url)+'&show_text=false&width=500&autoplay='+(st.live?'true':'false');
-    return '<div class="v196-frame"><iframe src="'+esc(src)+'" title="Facebook Live" loading="lazy" allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share" allowfullscreen></iframe></div>';
+    if(cfg.render==='inline'){
+      const src='https://www.facebook.com/plugins/video.php?href='+encodeURIComponent(url)+'&show_text=false&width=500&autoplay='+(st.live?'true':'false');
+      return '<div class="v196-frame"><iframe src="'+esc(src)+'" title="Facebook Live" loading="lazy" allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share" allowfullscreen></iframe></div>';
+    }
+    return '<div class="v196-player-empty linked"><span class="v196-provider">f</span><b>'+esc(current?.name||s.source?.name||'Facebook Live')+'</b><p>Facebook puede bloquear el video incrustado. Este botón abre la transmisión real sin perder el enlace guardado en el Match Center.</p><button type="button" data-v196-open="'+esc(url)+'">Abrir Facebook Live</button></div>';
   }
   if(p.key==='video'){
     return '<div class="v196-frame"><video src="'+esc(url)+'" '+(st.live?'autoplay ':'')+'controls playsinline '+(cfg.lowQuality?'preload="metadata"':'preload="auto"')+'></video></div>';
