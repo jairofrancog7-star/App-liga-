@@ -1064,8 +1064,10 @@ function scheduleHistoryCollapse(){
   v35ScrollRaf=requestAnimationFrame(()=>{
     v35ScrollRaf=0;
     syncHistoryCollapse();
-    removeObsoleteManchesterDuplicate(screen);
-    v341CleanSeasonLogos(screen);
+    const screen=document.querySelector('#screen');
+    if(screen) removeObsoleteManchesterDuplicate(screen);
+    // V342: no procesar/canvas-convertir escudos durante cada scroll/resize.
+    // La limpieza de escudos se ejecuta al renderizar la pestaña Temporadas.
   });
 }
 
