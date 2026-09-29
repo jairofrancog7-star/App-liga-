@@ -261,8 +261,12 @@ function render(){
   if(old&&sig===lastSig){applyFloating(old);return}
   lastSig=sig;
   const w=document.createElement('div');w.innerHTML=hubHtml(c,s);const node=w.firstElementChild;
-  const anchor=$('[data-v144-live-hub]',c.root)||$('.v92-official-meta',c.root)||$('.v92-score-card',c.root);
-  if(old)old.replaceWith(node);else if(anchor)anchor.insertAdjacentElement('afterend',node);else c.root.prepend(node);
+  const liveAnchor=$('[data-v144-live-hub]',c.root);
+  const metaAnchor=$('.v92-official-meta',c.root)||$('.v92-score-card',c.root);
+  if(old)old.replaceWith(node);
+  else if(liveAnchor)liveAnchor.insertAdjacentElement('beforebegin',node);
+  else if(metaAnchor)metaAnchor.insertAdjacentElement('afterend',node);
+  else c.root.prepend(node);
   bind(c,node);applyFloating(node);
 }
 function schedule(ms=80){clearTimeout(timer);timer=setTimeout(render,ms)}
