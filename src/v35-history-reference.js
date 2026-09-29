@@ -1464,77 +1464,153 @@ function summaryBody(){
     stats();
 }
 function seasonsEraBlock(){
-  const rows=[
-    {team:'Deportivo CG · Cerrito de Gasca',date:'19 sep 2026',season:'2025/26',year:2026},
-    {team:'La Canchita Deportes',date:'07 jun 2026',season:'2025/26',year:2026},
-    {team:'Franco FC',date:'10 may 2026',season:'2025/26',year:2026},
-    {team:'Linces',date:'15 mar 2026',season:'2025/26',year:2026},
-    {team:'La Esperanza',date:'23 may 2026',season:'2025/26',year:2026},
-    {team:'Salvajes',date:'20 dic 2025',season:'2025/26',year:2025},
-    {team:'Manchester',date:'26 abr 2025',season:'2024/25',year:2025},
-    {team:'Boavista FC',date:'12 abr 2025',season:'2024/25',year:2025},
-    {team:'Juventus',date:'01 feb 2025',season:'2024/25',year:2025},
-    {team:'Promesas de Pozos',date:'17 nov 2024',season:'2024/25',year:2024},
-    {team:'Manchester',date:'09 nov 2024',season:'2024/25',year:2024},
-    {team:'Juventus',date:'21 sep 2024',season:'2024/25',year:2024},
-    {team:'Dep. Hermanos',date:'08 oct 2023',season:'2023/24',year:2023},
-    {team:'Barza',date:'23 jul 2023',season:'2022/23',year:2023},
-    {team:'Juventus',date:'02 oct 2022',season:'2022/23',year:2022},
-    {team:'Tavera FC',date:'17 abr 2022',season:'2021/22',year:2022},
-    {team:'Terrícolas',date:'2022',season:'2021/22',year:2022},
-    {team:'La Esperanza',date:'25 sep 2021',season:'2020/21',year:2021},
-    {team:'Juventus',date:'16 feb 2020',season:'2019/20',year:2020},
-    {team:'Juventus',date:'03 nov 2019',season:'2018/19',year:2019},
-    {team:'Abejas',date:'03 nov 2019',season:'2018/19',year:2019},
-    {team:'Tecos',date:'15 jun 2018',season:'2017/18',year:2018},
-    {team:'Magisterio',date:'09 jun 2018',season:'2017/18',year:2018},
-    {team:'Real DHP',date:'31 dic 2017',season:'2017/18',year:2017},
-    {team:'La Esperanza',date:'28 feb 2016',season:'2015/16',year:2016},
-    {team:'Boavista',date:'18 ene 2015',season:'2014/15',year:2015},
-    {team:'Juventus',date:'14 abr 2015',season:'2014/15',year:2015},
-    {team:'La Esperanza',date:'14 jun 2014',season:'2013/14',year:2014},
-    {team:'Abejas',date:'22 feb 2014',season:'2013/14',year:2014},
-    {team:'Real Cerrito de Gasca',date:'15 dic 2013',season:'2013/14',year:2013},
-    {team:'Tavera FC',date:'11 dic 2012',season:'2012/13',year:2012},
-    {team:'Valencia',date:'03 dic 2012',season:'2012/13',year:2012},
-    {team:'Juventus',date:'26 nov 2012',season:'2012/13',year:2012}
-  ];
-  const norm=v=>String(v||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[^a-z0-9]+/g,' ').trim().replace(/\s+/g,' ');
-  const alias=name=>{
-    const x=norm(name);
-    if(x.includes('deportivo cg')||x.includes('cerrito de gasca'))return 'cerrito de gasca';
-    if(x==='boavista fc')return 'boavista';
-    if(x.includes('promesas de pozos'))return 'promesas';
-    if(x==='dep hermanos'||x==='deportivo hermanos')return 'hermanos';
-    if(x==='terricolas')return 'terricolas';
-    if(x==='tavera')return 'tavera fc';
-    return name;
+  const norm=v=>String(v||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase()
+    .replace(/[^a-z0-9+]+/g,' ').trim().replace(/\s+/g,' ');
+
+  const categoryOrder=['Primera','Intermedia','Segunda','Veteranos 35+','Veteranos 50+','Categoría por precisar'];
+
+  function categoryFrom(m){
+    const t=norm((m.kind||'')+' '+(m.subtitle||'')+' '+(m.detail||''));
+    if(/veteranos\s*50/.test(t)||/50\s*y\s*mas/.test(t)||/50\+/.test(t))return 'Veteranos 50+';
+    if(/veteranos\s*35/.test(t)||/35\s*y\s*mas/.test(t)||/35\+/.test(t))return 'Veteranos 35+';
+    if(t.includes('primera fuerza')||/\bprimera\b/.test(t))return 'Primera';
+    if(t.includes('intermedia'))return 'Intermedia';
+    if(t.includes('segunda fuerza')||/\bsegunda\b/.test(t))return 'Segunda';
+    return '';
+  }
+
+  function seasonInfo(m){
+    const season=String(m.season||'').trim();
+    const range=season.match(/\b(19|20)(\d{2})\D+(19|20)(\d{2})\b/);
+    if(range){
+      const a=Number(range[1]+range[2]),b=Number(range[3]+range[4]);
+      return {label:String(a)+'/'+String(b).slice(-2),start:a};
+    }
+    const d=norm(m.date||m.season||'');
+    const dm=d.match(/\b(\d{1,2})\s+(ene|feb|mar|abr|may|jun|jul|ago|sep|sept|oct|nov|dic)[a-z]*\s+((?:19|20)\d{2})\b/);
+    let year=0,month=null;
+    if(dm){
+      year=Number(dm[3]);
+      month=HISTORY_MONTH_INDEX[dm[2]];
+    }else{
+      const years=[...d.matchAll(/\b(?:19|20)\d{2}\b/g)].map(x=>Number(x[0]));
+      year=years.length?years[years.length-1]:0;
+    }
+    if(!year)return {label:season||'—',start:0};
+    const startYear=month==null?year-1:(month>=6?year:year-1);
+    return {label:String(startYear)+'/'+String(startYear+1).slice(-2),start:startYear};
+  }
+
+  const PNG={
+    'abejas':'abejas.png',
+    'barza':'barza.png',
+    'boavista':'boavista.png','boavista fc':'boavista.png',
+    'franco fc':'franco-fc.png',
+    'hermanos':'hermanos.png','dep hermanos':'hermanos.png','deportivo hermanos':'hermanos.png',
+    'herreras':'herreras-fc.png','herreras fc':'herreras-fc.png',
+    'juventus':'juventus.png',
+    'la canchita deportes':'la-canchita-deportes.png',
+    'la esperanza':'la-esperanza.png','dep la esperanza':'la-esperanza.png',
+    'la huerta':'la-huerta.png','la huerta de cuenda':'la-huerta.png',
+    'linces':'linces.png','linces jr':'linces.png',
+    'lobos cdg':'lobos-cdg.png',
+    'manchester':'manchester.png',
+    'promesas':'promesas-fc.png','promesas fc':'promesas-fc.png','promesas de pozos':'promesas-fc.png',
+    'san julian':'san-julian.png',
+    'tavera':'tavera-fc.png','tavera fc':'tavera-fc.png',
+    'terricolas':'terricolas.png','terricolas seder':'terricolas.png',
+    'toros de cuenda':'toros-de-cuenda.png',
+    'america':'../branding/america-veteranos-35-user.png'
   };
-  const logo=name=>{
-    try{return window.LJR_TEAM_LOGOS?.get?.(alias(name))||window.LJR_OFFICIAL_API?.getLogo?.(alias(name))||''}catch(_){return ''}
-  };
-  const initials=name=>String(name||'JR').split(/\s+/).filter(Boolean).slice(0,2).map(x=>x[0]||'').join('').toUpperCase()||'JR';
-  const groups=new Map();
-  rows.forEach(r=>{
-    const decade=Math.floor(r.year/10)*10;
-    if(!groups.has(decade))groups.set(decade,[]);
-    groups.get(decade).push(r);
+
+  function pngLogo(team,preferred){
+    const n=norm(team);
+    const mapped=PNG[n];
+    if(mapped){
+      if(mapped.startsWith('../branding/'))return RAW+'assets/branding/'+mapped.replace('../branding/','');
+      return RAW+'assets/official-logos/'+mapped;
+    }
+    if(preferred&&/\.png(?:[?#]|$)/i.test(preferred))return preferred;
+    try{
+      const shared=window.LJR_TEAM_LOGOS?.get?.(team)||window.LJR_OFFICIAL_API?.getLogo?.(team)||'';
+      if(shared)return shared;
+    }catch(_){}
+    return preferred||'';
+  }
+
+  function initials(name){
+    return String(name||'JR').replace(/[^A-Za-zÁÉÍÓÚÜÑáéíóúüñ0-9 ]+/g,' ').trim()
+      .split(/\s+/).filter(Boolean).slice(0,2).map(x=>x[0]||'').join('').toUpperCase()||'JR';
+  }
+
+  const all=[...historyMoments,...verifiedChampions.map(verifiedChampionAsMoment)];
+  const base=[],seen=new Set();
+
+  all.forEach(m=>{
+    const team=String(m.winner||m.title||'').trim();
+    const text=norm((m.kind||'')+' '+(m.subtitle||'')+' '+(m.detail||''));
+    if(!team||text.includes('subcampeon'))return;
+    const won=text.includes('campeon')||text.includes('primer lugar')||text.includes('super lider');
+    if(!won)return;
+    const si=seasonInfo(m);
+    if(!si.start)return;
+    const key=norm(team)+'|'+norm(m.date||m.season||'')+'|'+norm(m.subtitle||m.kind||'');
+    if(seen.has(key))return;
+    seen.add(key);
+    base.push({
+      team,
+      date:String(m.date||m.season||''),
+      season:si.label,
+      start:si.start,
+      category:categoryFrom(m),
+      logo:pngLogo(team,m.image||''),
+      title:String(m.subtitle||m.kind||'Campeón')
+    });
   });
-  return '<section class="v334-history-seasons-era" aria-label="Campeones por épocas">'+
-    [...groups.entries()].sort((a,b)=>b[0]-a[0]).map(([decade,items])=>
-      '<section class="v334-era-decade">'+
-        '<h2>'+decade+'s</h2>'+
-        '<div class="v334-era-grid">'+items.map(r=>{
-          const src=logo(r.team);
-          return '<button type="button" class="v334-era-item" data-v35-era-team="'+esc(r.team)+'" data-v35-era-date="'+esc(r.date)+'" aria-label="'+esc(r.team+' · '+r.season)+'">'+
-            '<span class="v334-era-logo '+(src?'':'is-fallback')+'">'+
-              (src?'<img src="'+src+'" alt="'+esc(r.team)+'" loading="lazy" decoding="async" onerror="this.parentElement.classList.add(\'is-fallback\');this.remove()">':'<b>'+esc(initials(r.team))+'</b>')+
-            '</span>'+
-            '<span class="v334-era-season">'+esc(r.season)+'</span>'+
-          '</button>';
-        }).join('')+'</div>'+
-      '</section>'
-    ).join('')+
+
+  const inferred=new Map();
+  base.forEach(r=>{
+    if(!r.category)return;
+    const k=norm(r.team)+'|'+r.season;
+    if(!inferred.has(k))inferred.set(k,new Set());
+    inferred.get(k).add(r.category);
+  });
+  base.forEach(r=>{
+    if(r.category)return;
+    const set=inferred.get(norm(r.team)+'|'+r.season);
+    if(set&&set.size===1)r.category=[...set][0];
+    else r.category='Categoría por precisar';
+  });
+
+  base.sort((a,b)=>b.start-a.start||categoryOrder.indexOf(a.category)-categoryOrder.indexOf(b.category)||
+    historyDateSortValue(b.date)-historyDateSortValue(a.date)||a.team.localeCompare(b.team,'es'));
+
+  const decades=new Map();
+  base.forEach(r=>{
+    const decade=Math.floor(r.start/10)*10;
+    if(!decades.has(decade))decades.set(decade,[]);
+    decades.get(decade).push(r);
+  });
+
+  return '<section class="v341-history-seasons-era" aria-label="Campeones por época y categoría">'+
+    [...decades.entries()].sort((a,b)=>b[0]-a[0]).map(([decade,rows])=>{
+      const catHtml=categoryOrder.map(cat=>{
+        const items=rows.filter(r=>r.category===cat);
+        if(!items.length)return '';
+        return '<section class="v341-era-category">'+
+          '<h3>'+esc(cat==='Veteranos 35+'?'Veteranos 35 y más':cat==='Veteranos 50+'?'Veteranos 50 y más':cat)+'</h3>'+
+          '<div class="v341-era-grid">'+items.map(r=>
+            '<button type="button" class="v341-era-item" data-v35-era-team="'+esc(r.team)+'" data-v35-era-date="'+esc(r.date)+'" title="'+esc(r.team+' · '+r.title+' · '+r.season)+'" aria-label="'+esc(r.team+' · '+r.title+' · '+r.season)+'">'+
+              '<span class="v341-era-logo '+(r.logo?'':'is-fallback')+'">'+
+                (r.logo?'<img src="'+r.logo+'" alt="'+esc(r.team)+'" loading="lazy" decoding="async" onerror="this.parentElement.classList.add(\'is-fallback\');this.remove()">':'<b>'+esc(initials(r.team))+'</b>')+
+              '</span>'+
+              '<span class="v341-era-season">'+esc(r.season)+'</span>'+
+            '</button>'
+          ).join('')+'</div>'+
+        '</section>';
+      }).join('');
+      return '<section class="v341-era-decade"><h2>'+decade+'s</h2>'+catHtml+'</section>';
+    }).join('')+
   '</section>';
 }
 function seasonsBody(){
@@ -1850,6 +1926,9 @@ function renderHistory(){
   if(screen.querySelector('.v35-history-page')) return;
   screen.innerHTML=pageHtml();
   document.body.classList.add('v35-history-mounted');
+  const historyRoot=screen.querySelector('.v35-history-page');
+  historyRoot?.classList.toggle('v341-seasons-active',activeTab==='Temporadas');
+  document.body.classList.toggle('v341-history-seasons-active',activeTab==='Temporadas');
   const topLogo=screen.querySelector('[data-v35-top-logo]'); if(topLogo) transparentizeTopLogo(topLogo);
   requestAnimationFrame(()=>{
     window.scrollTo({top:0,left:0,behavior:'auto'});
@@ -1865,6 +1944,8 @@ function rerenderContent(){
   nav.innerHTML=tabs();
   content.innerHTML=bodyForTab();
   root.classList.toggle('v329-videos-active',activeTab==='Videos');
+  root.classList.toggle('v341-seasons-active',activeTab==='Temporadas');
+  document.body.classList.toggle('v341-history-seasons-active',activeTab==='Temporadas');
   root.scrollIntoView({block:'start',behavior:'auto'});
   requestAnimationFrame(()=>{syncHistoryCollapse();removeObsoleteManchesterDuplicate(root);});
 }
@@ -1930,7 +2011,10 @@ function onClick(e){
   if(team){e.preventDefault();e.stopPropagation();location.hash='#/teams';return;}
 }
 function cleanup(){
-  if(route()!=='history') document.body.classList.remove('v35-history-mounted');
+  if(route()!=='history'){
+    document.body.classList.remove('v35-history-mounted');
+    document.body.classList.remove('v341-history-seasons-active');
+  }
 }
 function boot(){
   renderHistory();
