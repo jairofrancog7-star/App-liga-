@@ -96,6 +96,63 @@ function transferPreviewHtml(fromTeam,toTeam,fromCategory='',toCategory=''){
       '<span><small>SE CAMBIÓ A</small><b>'+esc(toTeam)+'</b><em>'+esc(toCategory||'Categoría actual por confirmar')+'</em></span></div>'+
   '</div>';
 }
+function v190CategoryCode(category){
+  const n=norm(category);
+  if(n.includes('primera'))return 'PF';
+  if(n.includes('intermedia'))return 'INT';
+  if(n.includes('segunda'))return 'SF';
+  if(n.includes('50'))return 'V50';
+  if(n.includes('35'))return 'V35';
+  if(n.includes('veter'))return 'VET';
+  return 'CAT';
+}
+function v190CategoryBadgeHtml(category){
+  const label=String(category||'Categoría por confirmar');
+  return '<span class="v190-category-wrap"><i class="v190-category-logo" aria-hidden="true">'+esc(v190CategoryCode(label))+'</i><em>'+esc(label)+'</em></span>';
+}
+function v190PreviousSeasonRecord(r){
+  if(!r)return null;
+  const current=selectedSeason(),cur=seasonStart(current),x=store(),seasons=Object.keys(x.seasons||{})
+    .filter(s=>s!==current&&seasonStart(s)<cur)
+    .sort((a,b)=>seasonStart(b)-seasonStart(a));
+  const curp=String(r.curp||'').toUpperCase().replace(/[^A-Z0-9]/g,'');
+  const name=norm(r.name);
+  for(const s of seasons){
+    const rows=Array.isArray(x.seasons?.[s])?x.seasons[s]:[];
+    let hits=[];
+    if(curp)hits=rows.filter(p=>String(p.curp||'').toUpperCase().replace(/[^A-Z0-9]/g,'')===curp);
+    if(!hits.length&&name)hits=rows.filter(p=>norm(p.name)===name);
+    if(!hits.length)continue;
+    const teams=[...new Set(hits.map(p=>norm(p.team)).filter(Boolean))];
+    if(teams.length!==1)continue;
+    const hit=hits[0];
+    return {...hit,_season:s};
+  }
+  return null;
+}
+function v190MovementInfo(r){
+  if(r?.previousTeam&&norm(r.previousTeam)!==norm(r.team)){
+    return {changed:true,fromTeam:r.previousTeam,fromCategory:r.previousCategory||'',toTeam:r.team||'',toCategory:r.category||'',source:'registrado'};
+  }
+  const prior=v190PreviousSeasonRecord(r);
+  if(prior?.team&&norm(prior.team)!==norm(r?.team)){
+    return {changed:true,fromTeam:prior.team,fromCategory:prior.category||'',toTeam:r?.team||'',toCategory:r?.category||'',source:'temporada '+prior._season};
+  }
+  return {changed:false,fromTeam:'',fromCategory:'',toTeam:r?.team||'',toCategory:r?.category||'',source:''};
+}
+function v190TeamTraceHtml(r){
+  const mv=v190MovementInfo(r),team=r?.team||'Equipo por confirmar',category=r?.category||'Categoría por confirmar';
+  return '<div class="v190-team-trace">'+
+    '<div class="v190-current-team">'+
+      teamLogoHtml(team,'v190-current-logo')+
+      '<span><small>EQUIPO ACTUAL</small><b>'+esc(team)+'</b>'+v190CategoryBadgeHtml(category)+'</span>'+
+    '</div>'+
+    (mv.changed
+      ? '<div class="v190-change-head"><b>CAMBIO DE EQUIPO</b><span>'+(mv.source==='registrado'?'Cambio guardado en este registro':'Detectado por '+esc(mv.source))+'</span></div>'+
+        transferPreviewHtml(mv.fromTeam,mv.toTeam,mv.fromCategory,mv.toCategory)
+      : '<div class="v190-no-change"><b>CAMBIO DE EQUIPO</b><span>Sin cambio de equipo registrado</span></div>')+
+  '</div>';
+}
 function recordTimestamp(r){
   const t=Date.parse(r?.createdAt||r?.updatedAt||'');
   return Number.isFinite(t)?t:0;
@@ -2415,7 +2472,7 @@ function listHtml(list){
     '<div class="v124-card-main"><label class="v124-pick" aria-label="Seleccionar '+esc(r.name)+'"><input type="checkbox" data-v124-select="'+esc(r.id)+'" '+(selectedIds.has(r.id)?'checked':'')+'><span></span></label><span class="v124-avatar">'+esc(String(r.name).split(/\s+/).slice(0,2).map(x=>x[0]||'').join('').toUpperCase())+'</span>'+
     '<span><b>'+esc(r.name)+'</b><small>'+esc(r.team)+' · '+esc(r.category||'Categoría por confirmar')+'</small>'+
     '<em class="'+statusClass(r)+'">'+esc(r.source==='official'?'Oficial en AdminFut':(r.officialPresent?'Coincide con AdminFut':r.status||'Pendiente'))+'</em></span></div>'+
-    transferPreviewHtml(r.previousTeam||'',r.team||'',r.previousCategory||'',r.category||'')+
+    v190TeamTraceHtml(r)+
     '<div class="v161-record-meta"><span><b>Origen</b>'+esc(recordOrigin(r))+'</span><span><b>Registró</b>'+esc(recordRegistrar(r))+'</span><span><b>Fecha de registro</b>'+esc(fmtRecordDate(r.createdAt||r.updatedAt))+'</span></div>'+
     '<div class="v124-card-actions"><button data-v124-edit="'+esc(r.id)+'">Revisar / corregir</button><button data-v124-card="'+esc(r.id)+'">Credencial</button><button class="danger" data-v124-delete="'+esc(r.id)+'">Borrar</button></div>'+
   '</article>').join('');
