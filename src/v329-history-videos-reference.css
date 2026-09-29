@@ -222,3 +222,49 @@
   .v329-video-hero-title{font-size:23px!important}
   .v329-video-card-title{font-size:15.5px!important}
 }
+
+
+/* V330 — conservar debajo del nuevo diseño la información anterior de Historia > Videos. */
+@media (max-width:1023px){
+  .v329-video-previous{
+    margin-top:34px!important;
+    padding-top:28px!important;
+    border-top:1px solid rgba(199,210,255,.18)!important;
+  }
+  .v329-video-previous-head{
+    margin:0 0 18px!important;
+  }
+  .v329-video-previous-head>span{
+    display:block!important;
+    margin:0 0 7px!important;
+    color:var(--v35-cyan)!important;
+    font-size:11px!important;
+    line-height:1!important;
+    font-weight:850!important;
+    letter-spacing:.11em!important;
+  }
+  .v329-video-previous-head h2{
+    margin:0!important;
+    color:#fff!important;
+    font-size:27px!important;
+    line-height:1.04!important;
+    letter-spacing:-.03em!important;
+    font-weight:760!important;
+  }
+  .v329-video-previous-head p{
+    margin:9px 0 0!important;
+    color:rgba(220,225,255,.74)!important;
+    font-size:12px!important;
+    line-height:1.45!important;
+  }
+  .v329-video-previous-carousel{
+    margin:0 0 22px!important;
+  }
+  .v329-video-previous-carousel .v35-video-carousel{
+    width:calc(100% + var(--v35-pad))!important;
+    margin-right:calc(var(--v35-pad) * -1)!important;
+  }
+  .v329-video-previous .v35-history-sources{
+    margin:0!important;
+  }
+}
