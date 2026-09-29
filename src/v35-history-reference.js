@@ -1950,32 +1950,50 @@ function v355HydrateHistoryLazy(root){
   const kind=host.dataset.v35LazyHistory||'';
   const tabAtSchedule=activeTab;
   host.dataset.v355Hydrating='1';
+  let fired=false,observer=null;
 
   const run=()=>{
+    if(fired)return;
+    fired=true;
+    observer?.disconnect();
     if(!host.isConnected||route()!=='history'||activeTab!==tabAtSchedule)return;
-    let html='';
-    if(kind==='summary')html=historyArchiveBlock()+stats();
-    else if(kind==='seasons')html=historyArchiveBlock();
-    else if(kind==='champions')html=championsArchiveBlock();
-    if(!html){host.remove();return;}
-    host.insertAdjacentHTML('afterend',html);
-    host.remove();
-    requestAnimationFrame(()=>{
-      const page=document.querySelector('.v35-history-page');
-      if(page){
-        removeObsoleteManchesterDuplicate(page);
-        syncHistoryCollapse();
-      }
-    });
+    const work=()=>{
+      if(!host.isConnected||route()!=='history'||activeTab!==tabAtSchedule)return;
+      let html='';
+      if(kind==='summary')html=historyArchiveBlock()+stats();
+      else if(kind==='seasons')html=historyArchiveBlock();
+      else if(kind==='champions')html=championsArchiveBlock();
+      if(!html){host.remove();return;}
+      host.insertAdjacentHTML('afterend',html);
+      host.remove();
+      requestAnimationFrame(()=>{
+        const page=document.querySelector('.v35-history-page');
+        if(page){
+          removeObsoleteManchesterDuplicate(page);
+          syncHistoryCollapse();
+        }
+      });
+    };
+    if('requestIdleCallback' in window)window.requestIdleCallback(work,{timeout:1600});
+    else window.setTimeout(work,70);
   };
 
-  // Paint the requested tab first. Then restore the old lower content while idle.
-  const delay=kind==='champions'?220:420;
-  window.setTimeout(()=>{
+  // V356: keep the old content automatic, but do not build the long archive
+  // while the user is still tapping the top tabs. It loads as the lower area approaches.
+  const arm=()=>{
     if(!host.isConnected||route()!=='history'||activeTab!==tabAtSchedule)return;
-    if('requestIdleCallback' in window)window.requestIdleCallback(run,{timeout:1200});
-    else window.setTimeout(run,50);
-  },delay);
+    if('IntersectionObserver' in window){
+      observer=new IntersectionObserver(entries=>{
+        if(entries.some(x=>x.isIntersecting))run();
+      },{root:null,rootMargin:'220px 0px',threshold:0});
+      observer.observe(host);
+      // Fallback: restore it anyway after a calm interval even if the user does not scroll.
+      window.setTimeout(()=>{if(!fired)run()},kind==='champions'?1800:2400);
+    }else{
+      window.setTimeout(run,kind==='champions'?650:900);
+    }
+  };
+  window.setTimeout(arm,kind==='champions'?260:380);
 }
 
 function v351BodyFor(tab){
@@ -2263,6 +2281,8 @@ function onClick(e){
 function cleanup(){
   if(route()!=='history'){
     v348CancelArchiveLoad();
+    v355DomCache.clear();
+    v355MountedKey='';
     document.body.classList.remove('v35-history-mounted');
     document.body.classList.remove('v341-history-seasons-active');
   }
