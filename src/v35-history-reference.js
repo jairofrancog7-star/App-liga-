@@ -1463,68 +1463,82 @@ function summaryBody(){
     stats();
 }
 function seasonsEraBlock(){
-  const n=v=>String(v||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[^a-z0-9]+/g,' ').trim().replace(/\s+/g,' ');
-  const yearOf=m=>{
-    const a=String(m?.date||'').match(/\b(19|20)\d{2}\b/g);
-    if(a?.length)return Number(a[a.length-1]);
-    const b=String(m?.season||'').match(/\b(19|20)\d{2}\b/);
-    return b?Number(b[0]):0;
-  };
-  const seasonLabel=(m,year)=>{
-    let s=String(m?.season||year||'').trim().replace(/\s*[–—-]\s*/g,'/');
-    s=s.replace(/^(\d{4})\/(\d{4})$/,(_,a,b)=>a+'/'+b.slice(-2));
-    return s||String(year||'');
-  };
+  const rows=[
+    {team:'Deportivo CG · Cerrito de Gasca',date:'19 sep 2026',season:'2025/26',year:2026},
+    {team:'La Canchita Deportes',date:'07 jun 2026',season:'2025/26',year:2026},
+    {team:'Franco FC',date:'10 may 2026',season:'2025/26',year:2026},
+    {team:'Linces',date:'15 mar 2026',season:'2025/26',year:2026},
+    {team:'La Esperanza',date:'23 may 2026',season:'2025/26',year:2026},
+    {team:'Salvajes',date:'20 dic 2025',season:'2025/26',year:2025},
+    {team:'Manchester',date:'26 abr 2025',season:'2024/25',year:2025},
+    {team:'Boavista FC',date:'12 abr 2025',season:'2024/25',year:2025},
+    {team:'Juventus',date:'01 feb 2025',season:'2024/25',year:2025},
+    {team:'Promesas de Pozos',date:'17 nov 2024',season:'2024/25',year:2024},
+    {team:'Manchester',date:'09 nov 2024',season:'2024/25',year:2024},
+    {team:'Juventus',date:'21 sep 2024',season:'2024/25',year:2024},
+    {team:'Dep. Hermanos',date:'08 oct 2023',season:'2023/24',year:2023},
+    {team:'Barza',date:'23 jul 2023',season:'2022/23',year:2023},
+    {team:'Juventus',date:'02 oct 2022',season:'2022/23',year:2022},
+    {team:'Tavera FC',date:'17 abr 2022',season:'2021/22',year:2022},
+    {team:'Terrícolas',date:'2022',season:'2021/22',year:2022},
+    {team:'La Esperanza',date:'25 sep 2021',season:'2020/21',year:2021},
+    {team:'Juventus',date:'16 feb 2020',season:'2019/20',year:2020},
+    {team:'Juventus',date:'03 nov 2019',season:'2018/19',year:2019},
+    {team:'Abejas',date:'03 nov 2019',season:'2018/19',year:2019},
+    {team:'Tecos',date:'15 jun 2018',season:'2017/18',year:2018},
+    {team:'Magisterio',date:'09 jun 2018',season:'2017/18',year:2018},
+    {team:'Real DHP',date:'31 dic 2017',season:'2017/18',year:2017},
+    {team:'La Esperanza',date:'28 feb 2016',season:'2015/16',year:2016},
+    {team:'Boavista',date:'18 ene 2015',season:'2014/15',year:2015},
+    {team:'Juventus',date:'14 abr 2015',season:'2014/15',year:2015},
+    {team:'La Esperanza',date:'14 jun 2014',season:'2013/14',year:2014},
+    {team:'Abejas',date:'22 feb 2014',season:'2013/14',year:2014},
+    {team:'Real Cerrito de Gasca',date:'15 dic 2013',season:'2013/14',year:2013},
+    {team:'Tavera FC',date:'11 dic 2012',season:'2012/13',year:2012},
+    {team:'Valencia',date:'03 dic 2012',season:'2012/13',year:2012},
+    {team:'Juventus',date:'26 nov 2012',season:'2012/13',year:2012}
+  ];
+  const norm=v=>String(v||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[^a-z0-9]+/g,' ').trim().replace(/\s+/g,' ');
   const alias=name=>{
-    const x=n(name);
+    const x=norm(name);
     if(x.includes('deportivo cg')||x.includes('cerrito de gasca'))return 'cerrito de gasca';
     if(x==='boavista fc')return 'boavista';
     if(x.includes('promesas de pozos'))return 'promesas';
-    if(x.includes('abejas pozos'))return 'abejas';
+    if(x==='dep hermanos'||x==='deportivo hermanos')return 'hermanos';
+    if(x==='terricolas')return 'terricolas';
     if(x==='tavera')return 'tavera fc';
     return name;
   };
-  const logoFor=(name,explicit)=>{
-    if(explicit)return explicit;
+  const logo=name=>{
     try{return window.LJR_TEAM_LOGOS?.get?.(alias(name))||window.LJR_OFFICIAL_API?.getLogo?.(alias(name))||''}catch(_){return ''}
   };
   const initials=name=>String(name||'JR').split(/\s+/).filter(Boolean).slice(0,2).map(x=>x[0]||'').join('').toUpperCase()||'JR';
-  const source=[...historyMoments,...verifiedChampions.map(verifiedChampionAsMoment)];
-  const seen=new Set(),rows=[];
-  source.forEach(m=>{
-    const team=String(m.winner||m.title||'').trim();
-    const kind=n(m.kind);
-    const copy=n((m.subtitle||'')+' '+(m.detail||''));
-    if(!team||kind.includes('subcampeon')||copy.includes('subcampeon'))return;
-    if(!(kind.includes('campeon')||m.championsOnly||copy.includes('campeon')||kind.includes('primer lugar')||kind.includes('super lider')))return;
-    const year=yearOf(m);
-    if(!year)return;
-    const season=seasonLabel(m,year);
-    const key=n(season)+'|'+n(team);
-    if(seen.has(key))return;
-    seen.add(key);
-    rows.push({team,date:String(m.date||''),season,year,logo:logoFor(team,m.image||'')});
-  });
-  rows.sort((a,b)=>b.year-a.year||String(b.date).localeCompare(String(a.date),'es')||a.team.localeCompare(b.team,'es'));
   const groups=new Map();
   rows.forEach(r=>{
     const decade=Math.floor(r.year/10)*10;
     if(!groups.has(decade))groups.set(decade,[]);
     groups.get(decade).push(r);
   });
-  const html=[...groups.entries()].sort((a,b)=>b[0]-a[0]).map(([decade,items])=>
-    '<section class="v35-era-decade"><h2>'+decade+'s</h2><div class="v35-era-grid">'+
-    items.map(r=>'<button type="button" class="v35-era-item" data-v35-era-team="'+esc(r.team)+'" data-v35-era-date="'+esc(r.date)+'" aria-label="'+esc(r.team+' · '+r.season)+'">'+
-      '<span class="v35-era-logo '+(r.logo?'':'is-fallback')+'">'+
-        (r.logo?'<img src="'+r.logo+'" alt="'+esc(r.team)+'" loading="lazy" decoding="async" onerror="this.parentElement.classList.add(\'is-fallback\');this.remove()">':'<b>'+esc(initials(r.team))+'</b>')+
-      '</span><span class="v35-era-season">'+esc(r.season)+'</span></button>').join('')+
-    '</div></section>'
-  ).join('');
-  return '<section class="v35-era-archive" aria-label="Campeones por época">'+html+'</section>';
+  return '<section class="v334-history-seasons-era" aria-label="Campeones por épocas">'+
+    [...groups.entries()].sort((a,b)=>b[0]-a[0]).map(([decade,items])=>
+      '<section class="v334-era-decade">'+
+        '<h2>'+decade+'s</h2>'+
+        '<div class="v334-era-grid">'+items.map(r=>{
+          const src=logo(r.team);
+          return '<button type="button" class="v334-era-item" data-v35-era-team="'+esc(r.team)+'" data-v35-era-date="'+esc(r.date)+'" aria-label="'+esc(r.team+' · '+r.season)+'">'+
+            '<span class="v334-era-logo '+(src?'':'is-fallback')+'">'+
+              (src?'<img src="'+src+'" alt="'+esc(r.team)+'" loading="lazy" decoding="async" onerror="this.parentElement.classList.add(\'is-fallback\');this.remove()">':'<b>'+esc(initials(r.team))+'</b>')+
+            '</span>'+
+            '<span class="v334-era-season">'+esc(r.season)+'</span>'+
+          '</button>';
+        }).join('')+'</div>'+
+      '</section>'
+    ).join('')+
+  '</section>';
 }
 function seasonsBody(){
   return seasonsEraBlock()+
-    '<section class="v35-block v35-tab-body v35-seasons-legacy"><div class="v35-section-row"><h2>Temporadas</h2></div>'+
+    '<section class="v35-block v35-tab-body v35-seasons-legacy"><div class="v35-section-row"><h2>Archivo histórico completo</h2></div>'+
     '<div class="v35-season-detail"><span>Archivo histórico</span><h3>Temporadas anteriores separadas de la actual</h3><p>Los equipos antiguos pueden aparecer aquí como parte de su temporada histórica, pero nunca se agregan otra vez a la lista de equipos actuales si ya no participan.</p></div>'+
     '<div class="v35-season-detail"><span>Convocatoria · 12 nov 2019</span><h3>Temporada 2019–2020</h3><p><b>Inicio:</b> domingo 8 de diciembre de 2019. <b>Fuerzas:</b> Primera, Intermedia y Segunda. <b>Inscripciones:</b> hasta el martes 26 de noviembre, 19:00, Unidad Deportiva Sur. <b>Registro:</b> digital o físico, máximo 26 jugadores. <b>Junta previa:</b> martes 3 de diciembre, 19:00. Uniformación, cuotas, arbitrajes, credenciales, reglamento, premiación y transitorios se resolverían conforme al reglamento y a los acuerdos de asamblea.</p></div></section>'+
     historyArchiveBlock();
