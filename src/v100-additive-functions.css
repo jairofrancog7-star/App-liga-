@@ -456,3 +456,37 @@ body[data-app-route="credentialBuilder"] .v196-classic-preview>p{
   body[data-app-route="credentialBuilder"] .v196-classic-preview{padding:9px}
   body[data-app-route="credentialBuilder"] .v196-preview-head{align-items:flex-start;flex-direction:column;gap:3px}
 }
+
+
+/* V199 — credential preview text cleanup */
+body[data-app-route="credentialBuilder"] .v196-preview-head{
+  align-items:flex-start;
+}
+body[data-app-route="credentialBuilder"] .v196-preview-head>span{
+  max-width:calc(100% - 105px);
+}
+body[data-app-route="credentialBuilder"] .v196-preview-head b{
+  font-size:12px;
+  line-height:1.22;
+  overflow-wrap:anywhere;
+}
+body[data-app-route="credentialBuilder"] .v196-preview-head em{
+  padding-top:2px;
+  white-space:nowrap;
+}
+@media(max-width:430px){
+  body[data-app-route="credentialBuilder"] .v196-preview-head{
+    display:grid;
+    grid-template-columns:1fr;
+    gap:4px;
+  }
+  body[data-app-route="credentialBuilder"] .v196-preview-head>span{
+    max-width:none;
+  }
+  body[data-app-route="credentialBuilder"] .v196-preview-head b{
+    font-size:11px;
+  }
+  body[data-app-route="credentialBuilder"] .v196-preview-head em{
+    font-size:7.5px;
+  }
+}
