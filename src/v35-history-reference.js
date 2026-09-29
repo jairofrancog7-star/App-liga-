@@ -1,17 +1,13 @@
 /* V35 — Historia mobile reconstruction from the user's master references.
    Replaces only #/history on mobile/APK. Keeps the rest of the app logic intact. */
-import LOBOS_SUPER_P1 from './v314-lobos-cdg-superlider-photo-01.b64?raw';
-import LOBOS_SUPER_P2 from './v314-lobos-cdg-superlider-photo-02.b64?raw';
-import LOBOS_SUPER_P3 from './v314-lobos-cdg-superlider-photo-03.b64?raw';
-import LOBOS_SUPER_P4 from './v314-lobos-cdg-superlider-photo-04.b64?raw';
+import LOBOS_CDG_SUPERLIDER_PHOTO from './v324-lobos-cdg-superlider-photo.js';
 
 (function(){
 'use strict';
 
 const RAW='https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/';
 const JUVENTUS_2024_PHOTO='./assets/history/archive-v225/juventus-campeon-campeones-21-sep-2024.webp?v=20260923-juventus-webp-v245';
-const LOBOS_CDG_SUPERLIDER_PHOTO='data:image/webp;base64,'+
-  [LOBOS_SUPER_P1,LOBOS_SUPER_P2,LOBOS_SUPER_P3,LOBOS_SUPER_P4].join('').replace(/\s+/g,'');
+/* V324: foto exacta restaurada desde módulo JS válido para GitHub Pages. */
 const ASSETS={
   league:RAW+'assets/liga-logo.webp',
   america:RAW+'assets/branding/america-veteranos-35-user.png',
