@@ -296,7 +296,7 @@ function timelineHtml(s,c){
 }
 function hubHtml(c,s){
   const p=provider(s.source.url),x=counters(s),live=s.phase==='first'||s.phase==='second';
-  return '<section class="v144-live-hub" data-v144-live-hub data-match="'+esc(c.key)+'">'+
+  return '<section class="v144-live-hub" data-v144-live-hub data-v144-match="'+esc(c.key)+'">'+
     '<div class="v144-head"><i class="'+(live?'on':'')+'"></i><span><small>LIVE INTELLIGENCE</small><b>'+esc(phaseLabel(s))+'</b></span><strong>'+x.home.goals+'–'+x.away.goals+'</strong></div>'+
     '<div class="v144-source"><em>'+esc(p.icon)+'</em><span><b>'+esc(s.source.name||p.name)+'</b><small>'+esc(p.name)+'</small></span><button data-v144-config>Subir / vincular LIVE</button></div>'+
     livePlatformButtons(s)+
