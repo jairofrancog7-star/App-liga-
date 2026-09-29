@@ -59,6 +59,21 @@ function provider(url){
 function safeUrl(v){
   try{const u=new URL(String(v||'').trim());return /^https?:$/.test(u.protocol)?u.toString():''}catch(_){return ''}
 }
+function flash(msg){
+  document.querySelector('.v196-toast')?.remove();
+  const n=document.createElement('div');n.className='v196-toast';n.textContent=String(msg||'');
+  document.body.appendChild(n);setTimeout(()=>n.remove(),2600);
+}
+function openExternal(raw){
+  const u=safeUrl(raw);
+  if(!u){flash('Enlace no válido');return false}
+  const a=document.createElement('a');
+  a.href=u;a.target='_blank';a.rel='noopener noreferrer';a.style.display='none';
+  document.body.appendChild(a);
+  try{a.click()}catch(_){window.open(u,'_blank','noopener,noreferrer')}
+  setTimeout(()=>a.remove(),300);
+  return true;
+}
 function youtubeId(url){
   const s=String(url||'');let m=s.match(/[?&]v=([^&#]+)/i);if(m)return m[1];
   m=s.match(/youtu\.be\/([^?&#/]+)/i);if(m)return m[1];
@@ -170,9 +185,9 @@ function addSourceModal(c,preset=''){
     '<div class="v196-modal-actions"><button type="button" data-v196-test>Probar enlace</button><button type="button" class="primary" data-v196-save-source>Guardar fuente</button></div>'+
     '<p>Admite enlaces de YouTube, Facebook, TikTok y archivos de video web. Otras fuentes se abrirán externamente.</p>';
   const m=modalShell('source','Vincular transmisión',body);
-  $('[data-v196-test]',m).onclick=()=>{const u=safeUrl($('[data-v196-url]',m).value);if(u)window.open(u,'_blank','noopener,noreferrer')};
+  $('[data-v196-test]',m).onclick=()=>openExternal($('[data-v196-url]',m).value);
   $('[data-v196-save-source]',m).onclick=()=>{
-    const url=safeUrl($('[data-v196-url]',m).value);if(!url)return;
+    const url=safeUrl($('[data-v196-url]',m).value);if(!url){flash('Escribe un enlace válido https://');return}
     const name=$('[data-v196-name]',m).value.trim()||provider(url).name;
     const s=liveState(c),list=streamList(c,s);
     const old=list.find(x=>x.url===url);
@@ -216,6 +231,16 @@ function sourcesModal(c){
   $$('[data-v196-delete]',m).forEach(b=>b.onclick=()=>{const i=Number(b.dataset.v196Delete);const next=list.filter((_,n)=>n!==i);saveList(c,next);m.remove();sourcesModal(c);schedule(20)});
   $('[data-v196-add]',m)?.addEventListener('click',()=>{m.remove();addSourceModal(c)});
 }
+function toggleFloating(c){
+  const s=liveState(c),list=streamList(c,s);
+  if(!list.length){
+    flash('Primero vincula una transmisión para usar el modo flotante');
+    addSourceModal(c);
+    return;
+  }
+  const cfg=settings();cfg.floating=!cfg.floating;saveSettings(cfg);
+  lastSig='';schedule(10);
+}
 function settingsModal(c){
   const cfg=settings();
   const body='<div class="v196-setting-row"><span><b>Reproductor flotante</b><small>Mantiene el video visible al desplazarte por el Match Center.</small></span><button type="button" class="v196-toggle '+(cfg.floating?'on':'')+'" data-v196-toggle-float><i></i></button></div>'+
@@ -224,22 +249,33 @@ function settingsModal(c){
     '<button type="button" class="v196-wide" data-v196-close>Guardar y cerrar</button>';
   const m=modalShell('settings','Ajustes de reproducción',body);
   $('[data-v196-render]',m).value=cfg.render||'auto';
-  $('[data-v196-toggle-float]',m).onclick=()=>{cfg.floating=!cfg.floating;saveSettings(cfg);m.remove();settingsModal(c);schedule(20)};
-  $('[data-v196-toggle-low]',m).onclick=()=>{cfg.lowQuality=!cfg.lowQuality;saveSettings(cfg);m.remove();settingsModal(c);schedule(20)};
-  $('[data-v196-render]',m).onchange=e=>{cfg.render=e.target.value;saveSettings(cfg);schedule(20)};
+  $('[data-v196-toggle-float]',m).onclick=()=>{
+    const list=streamList(c,liveState(c));
+    if(!list.length){m.remove();flash('Vincula una transmisión antes de activar el modo flotante');addSourceModal(c);return}
+    cfg.floating=!cfg.floating;saveSettings(cfg);
+    $('[data-v196-toggle-float]',m).classList.toggle('on',cfg.floating);
+    lastSig='';schedule(10);
+  };
+  $('[data-v196-toggle-low]',m).onclick=()=>{
+    cfg.lowQuality=!cfg.lowQuality;saveSettings(cfg);
+    $('[data-v196-toggle-low]',m).classList.toggle('on',cfg.lowQuality);
+    lastSig='';schedule(10);
+  };
+  $('[data-v196-render]',m).onchange=e=>{cfg.render=e.target.value;saveSettings(cfg);lastSig='';schedule(10);flash('Ajuste de reproducción guardado')};
 }
 function bind(c,node){
   const s=liveState(c),list=streamList(c,s);
-  $$('[data-v196-open]',node).forEach(b=>b.onclick=e=>{e.preventDefault();e.stopPropagation();const u=safeUrl(b.dataset.v196Open);if(u)window.open(u,'_blank','noopener,noreferrer')});
-  $$('[data-v196-add]',node).forEach(b=>b.onclick=e=>{e.preventDefault();e.stopPropagation();addSourceModal(c)});
-  $('[data-v196-events]',node)?.addEventListener('click',()=>eventsModal(c));
-  $('[data-v196-sources]',node)?.addEventListener('click',()=>sourcesModal(c));
-  $('[data-v196-multi]',node)?.addEventListener('click',()=>sourcesModal(c));
-  $('[data-v196-network]',node)?.addEventListener('click',()=>addSourceModal(c,'Stream de red'));
-  $('[data-v196-settings]',node)?.addEventListener('click',()=>settingsModal(c));
-  $('[data-v196-floating]',node)?.addEventListener('click',()=>{const cfg=settings();cfg.floating=!cfg.floating;saveSettings(cfg);schedule(10)});
+  const stop=e=>{e?.preventDefault?.();e?.stopPropagation?.()};
+  $('[data-v196-open]',node).forEach(b=>b.onclick=e=>{stop(e);openExternal(b.dataset.v196Open)});
+  $('[data-v196-add]',node).forEach(b=>b.onclick=e=>{stop(e);addSourceModal(c)});
+  $('[data-v196-events]',node)?.addEventListener('click',e=>{stop(e);eventsModal(c)});
+  $('[data-v196-sources]',node)?.addEventListener('click',e=>{stop(e);sourcesModal(c)});
+  $('[data-v196-multi]',node)?.addEventListener('click',e=>{stop(e);sourcesModal(c)});
+  $('[data-v196-network]',node)?.addEventListener('click',e=>{stop(e);addSourceModal(c,'Stream de red')});
+  $('[data-v196-settings]',node)?.addEventListener('click',e=>{stop(e);settingsModal(c)});
+  $('[data-v196-floating]',node)?.addEventListener('click',e=>{stop(e);toggleFloating(c)});
   $$('[data-v196-source]',node).forEach(b=>b.onclick=()=>{const item=list[Number(b.dataset.v196Source)];if(item)setCurrentSource(c,item)});
-  $('[data-v196-close-float]',node)?.addEventListener('click',()=>{const cfg=settings();if(cfg.floating){cfg.floating=false;saveSettings(cfg);schedule(10)}});
+  $('[data-v196-close-float]',node)?.addEventListener('click',e=>{stop(e);const cfg=settings();if(cfg.floating){cfg.floating=false;saveSettings(cfg);lastSig='';schedule(10)}});
 }
 function applyFloating(node){
   const cfg=settings(),card=$('[data-v196-player-card]',node);
