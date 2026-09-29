@@ -53,6 +53,7 @@ const stageFixes=[
   ['v282-valencia-2012-force.js?v=20260923-valencia-copa-2012-v282','module'],
   ['v284-tecos-2018-hardfix.js?v=20260923-tecos-2018-hardfix-v284','module'],
   ['v287-abejas-final-trophy-hardfix.js?v=20260923-abejas-photo-v290','module'],
+  ['v346-abejas-2019-lazy.js?v=20260929-history-fast-v346','classic'],
   ['v291-universidad-bg-final.js?v=20260923-universidad-hq-clean-v322','module'],
   ['v286-linces-2022-hardfix.js?v=20260924-linces-canonical-v312','module'],
   ['v293-linces-galacticos-swap-hardfix.js?v=20260924-swap-final-v293','module'],
