@@ -1065,6 +1065,7 @@ function scheduleHistoryCollapse(){
     v35ScrollRaf=0;
     syncHistoryCollapse();
     removeObsoleteManchesterDuplicate(screen);
+    v341CleanSeasonLogos(screen);
   });
 }
 
@@ -1603,7 +1604,7 @@ function seasonsEraBlock(){
           '<div class="v341-era-grid">'+items.map(r=>
             '<button type="button" class="v341-era-item" data-v35-era-team="'+esc(r.team)+'" data-v35-era-date="'+esc(r.date)+'" title="'+esc(r.team+' · '+r.title+' · '+r.season)+'" aria-label="'+esc(r.team+' · '+r.title+' · '+r.season)+'">'+
               '<span class="v341-era-logo '+(r.logo?'':'is-fallback')+'">'+
-                (r.logo?'<img src="'+r.logo+'" alt="'+esc(r.team)+'" loading="lazy" decoding="async" onerror="this.parentElement.classList.add(\'is-fallback\');this.remove()">':'<b>'+esc(initials(r.team))+'</b>')+
+                (r.logo?'<img src="'+r.logo+'" alt="'+esc(r.team)+'" crossorigin="anonymous" loading="lazy" decoding="async" onerror="this.parentElement.classList.add(\'is-fallback\');this.remove()">':'<b>'+esc(initials(r.team))+'</b>')+
               '</span>'+
               '<span class="v341-era-season">'+esc(r.season)+'</span>'+
             '</button>'
@@ -1613,6 +1614,49 @@ function seasonsEraBlock(){
       return '<section class="v341-era-decade"><h2>'+decade+'s</h2>'+catHtml+'</section>';
     }).join('')+
   '</section>';
+}
+function v341CleanSeasonLogos(root){
+  const scope=root||document;
+  scope.querySelectorAll?.('.v341-era-logo img:not([data-v341-cleaned])').forEach(img=>{
+    img.dataset.v341Cleaned='1';
+    const clean=()=>{
+      try{
+        const nw=img.naturalWidth||0,nh=img.naturalHeight||0;
+        if(!nw||!nh||String(img.src||'').startsWith('data:image/png'))return;
+        const max=192,scale=Math.min(1,max/Math.max(nw,nh));
+        const w=Math.max(1,Math.round(nw*scale)),h=Math.max(1,Math.round(nh*scale));
+        const canvas=document.createElement('canvas');
+        canvas.width=w;canvas.height=h;
+        const ctx=canvas.getContext('2d',{willReadFrequently:true});
+        if(!ctx)return;
+        ctx.clearRect(0,0,w,h);
+        ctx.drawImage(img,0,0,w,h);
+        const frame=ctx.getImageData(0,0,w,h);
+        const px=frame.data;
+        const picks=[[1,1],[w-2,1],[1,h-2],[w-2,h-2]].map(([xx,yy])=>{
+          const i=(Math.max(0,yy)*w+Math.max(0,xx))*4;
+          return [px[i],px[i+1],px[i+2],px[i+3]];
+        });
+        const opaque=picks.filter(c=>c[3]>190);
+        if(opaque.length>=3){
+          const bg=[0,1,2].map(k=>Math.round(opaque.reduce((a,c)=>a+c[k],0)/opaque.length));
+          const spread=Math.max(...opaque.map(c=>Math.hypot(c[0]-bg[0],c[1]-bg[1],c[2]-bg[2])));
+          if(spread<58){
+            for(let i=0;i<px.length;i+=4){
+              const d=Math.hypot(px[i]-bg[0],px[i+1]-bg[1],px[i+2]-bg[2]);
+              if(d<42)px[i+3]=0;
+              else if(d<78)px[i+3]=Math.min(px[i+3],Math.round(255*(d-42)/36));
+            }
+            ctx.putImageData(frame,0,0);
+          }
+        }
+        img.removeAttribute('crossorigin');
+        img.src=canvas.toDataURL('image/png');
+        img.classList.add('v341-png-cleaned');
+      }catch(_){}
+    };
+    if(img.complete)clean();else img.addEventListener('load',clean,{once:true});
+  });
 }
 function seasonsBody(){
   return seasonsEraBlock()+
@@ -1948,7 +1992,7 @@ function rerenderContent(){
   root.classList.toggle('v341-seasons-active',activeTab==='Temporadas');
   document.body.classList.toggle('v341-history-seasons-active',activeTab==='Temporadas');
   root.scrollIntoView({block:'start',behavior:'auto'});
-  requestAnimationFrame(()=>{syncHistoryCollapse();removeObsoleteManchesterDuplicate(root);});
+  requestAnimationFrame(()=>{syncHistoryCollapse();removeObsoleteManchesterDuplicate(root);v341CleanSeasonLogos(root);});
 }
 function toast(msg){
   let el=document.querySelector('.v35-toast');
