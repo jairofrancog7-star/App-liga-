@@ -389,3 +389,70 @@ body[data-app-route="recruitment"] #screen{
   .v190-recruit-row>div{grid-template-columns:1fr 1fr}
   .v190-recruit-badge{min-width:44px;padding-left:4px;padding-right:4px}
 }
+
+
+/* V196 — vista previa credencial física clásica */
+body[data-app-route="credentialBuilder"] .v196-classic-preview{
+  margin:14px 0 12px;
+  padding:12px;
+  border:1px solid rgba(83,229,242,.28);
+  border-radius:17px;
+  background:linear-gradient(155deg,rgba(9,30,119,.96),rgba(5,13,76,.98));
+  display:grid;
+  gap:9px;
+}
+body[data-app-route="credentialBuilder"] .v196-preview-head{
+  display:flex;
+  align-items:flex-end;
+  justify-content:space-between;
+  gap:10px;
+}
+body[data-app-route="credentialBuilder"] .v196-preview-head>span{
+  min-width:0;
+  display:grid;
+  gap:2px;
+}
+body[data-app-route="credentialBuilder"] .v196-preview-head small{
+  color:#5ce8f3;
+  font-size:8px;
+  font-weight:950;
+  letter-spacing:.14em;
+}
+body[data-app-route="credentialBuilder"] .v196-preview-head b{
+  color:#fff;
+  font-size:13px;
+  line-height:1.15;
+}
+body[data-app-route="credentialBuilder"] .v196-preview-head em{
+  flex:0 0 auto;
+  font-style:normal;
+  color:#c3cee8;
+  font-size:8px;
+  font-weight:850;
+}
+body[data-app-route="credentialBuilder"] .v196-preview-frame{
+  width:100%;
+  aspect-ratio:1011/638;
+  overflow:hidden;
+  border-radius:14px;
+  border:1px solid rgba(255,255,255,.18);
+  background:#0a0a0a;
+  box-shadow:0 12px 30px rgba(0,0,0,.25);
+}
+body[data-app-route="credentialBuilder"] .v196-preview-frame canvas{
+  width:100%!important;
+  height:100%!important;
+  display:block!important;
+  object-fit:contain;
+  background:#d83f60;
+}
+body[data-app-route="credentialBuilder"] .v196-classic-preview>p{
+  margin:0;
+  color:#9eafd4;
+  font-size:8px;
+  line-height:1.45;
+}
+@media(max-width:390px){
+  body[data-app-route="credentialBuilder"] .v196-classic-preview{padding:9px}
+  body[data-app-route="credentialBuilder"] .v196-preview-head{align-items:flex-start;flex-direction:column;gap:3px}
+}
