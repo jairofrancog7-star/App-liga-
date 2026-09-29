@@ -1463,8 +1463,7 @@ function stats(){
 function summaryBody(){
   return '<section class="v35-block v35-seasons-block"><div class="v35-section-row"><h2>Buscar por temporada</h2><button type="button" data-v35-tab-jump="Temporadas">Ver todo</button></div><div class="v35-season-carousel">'+seasonCards()+'</div></section>'+
     '<section class="v35-block v35-feature-block">'+featureCard()+'</section>'+
-    historyArchiveBlock()+
-    stats();
+    '<div class="v35-history-lazy" data-v35-lazy-history="summary" aria-busy="true"></div>';
 }
 function seasonsEraBlock(){
   const norm=v=>String(v||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase()
@@ -1665,7 +1664,7 @@ function seasonsBody(){
     '<section class="v35-block v35-tab-body v35-seasons-legacy"><div class="v35-section-row"><h2>Archivo histórico completo</h2></div>'+
     '<div class="v35-season-detail"><span>Archivo histórico</span><h3>Temporadas anteriores separadas de la actual</h3><p>Los equipos antiguos pueden aparecer aquí como parte de su temporada histórica, pero nunca se agregan otra vez a la lista de equipos actuales si ya no participan.</p></div>'+
     '<div class="v35-season-detail"><span>Convocatoria · 12 nov 2019</span><h3>Temporada 2019–2020</h3><p><b>Inicio:</b> domingo 8 de diciembre de 2019. <b>Fuerzas:</b> Primera, Intermedia y Segunda. <b>Inscripciones:</b> hasta el martes 26 de noviembre, 19:00, Unidad Deportiva Sur. <b>Registro:</b> digital o físico, máximo 26 jugadores. <b>Junta previa:</b> martes 3 de diciembre, 19:00. Uniformación, cuotas, arbitrajes, credenciales, reglamento, premiación y transitorios se resolverían conforme al reglamento y a los acuerdos de asamblea.</p></div></section>'+
-    historyArchiveBlock();
+    '<div class="v35-history-lazy" data-v35-lazy-history="seasons" aria-busy="true"></div>';
 }
 /* V340 — Historia > Campeones: ranking visual superior según referencia del usuario.
    Conserva TODO el archivo histórico anterior debajo y calcula los títulos desde
@@ -1893,6 +1892,34 @@ function videosBody(){
   '</section>';
 }
 
+function hydrateHistoryLazy(root){
+  const host=(root||document).querySelector?.('[data-v35-lazy-history]');
+  if(!host||host.dataset.v35Hydrating==='1')return;
+  const kind=host.dataset.v35LazyHistory||'';
+  const tabAtSchedule=activeTab;
+  host.dataset.v35Hydrating='1';
+
+  const run=()=>{
+    if(!host.isConnected||route()!=='history'||activeTab!==tabAtSchedule)return;
+    let html='';
+    if(kind==='summary')html=historyArchiveBlock()+stats();
+    else if(kind==='seasons')html=historyArchiveBlock();
+    if(!html){host.remove();return;}
+    host.insertAdjacentHTML('afterend',html);
+    host.remove();
+    requestAnimationFrame(()=>{
+      const page=document.querySelector('.v35-history-page');
+      if(page){
+        removeObsoleteManchesterDuplicate(page);
+        syncHistoryCollapse();
+      }
+    });
+  };
+
+  if('requestIdleCallback' in window)window.requestIdleCallback(run,{timeout:650});
+  else window.setTimeout(run,90);
+}
+
 function bodyForTab(){
   if(activeTab==='Temporadas') return seasonsBody();
   if(activeTab==='Campeones') return championsBody();
@@ -1981,6 +2008,7 @@ function renderHistory(){
     window.scrollTo({top:0,left:0,behavior:'auto'});
     syncHistoryCollapse();
     removeObsoleteManchesterDuplicate(screen);
+    requestAnimationFrame(()=>hydrateHistoryLazy(screen));
   });
 }
 function rerenderContent(){
@@ -1994,7 +2022,11 @@ function rerenderContent(){
   root.classList.toggle('v341-seasons-active',activeTab==='Temporadas');
   document.body.classList.toggle('v341-history-seasons-active',activeTab==='Temporadas');
   root.scrollIntoView({block:'start',behavior:'auto'});
-  requestAnimationFrame(()=>{syncHistoryCollapse();removeObsoleteManchesterDuplicate(root);v341CleanSeasonLogos(root);});
+  requestAnimationFrame(()=>{
+    syncHistoryCollapse();
+    removeObsoleteManchesterDuplicate(root);
+    requestAnimationFrame(()=>hydrateHistoryLazy(root));
+  });
 }
 function toast(msg){
   let el=document.querySelector('.v35-toast');
