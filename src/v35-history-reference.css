@@ -2823,3 +2823,179 @@
   .v340-champion-trophy,.v340-champion-trophy svg{width:27px;height:27px}
   .v340-champion-archive-label{margin-left:18px;margin-right:18px}
 }
+
+
+/* V341 — Historia > Temporadas.
+   Fondo azul oscuro como referencia, escudos más pequeños, texto reducido y
+   campeones agrupados por categoría dentro de cada década. */
+@media (max-width:1023px){
+  body.v341-history-seasons-active,
+  body.v341-history-seasons-active #app,
+  body.v341-history-seasons-active .app-shell{
+    background:#02054f!important;
+  }
+  .v35-history-page.v341-seasons-active{
+    background:
+      radial-gradient(95% 24% at 50% 0%,rgba(20,69,245,.62) 0%,rgba(9,34,170,.24) 58%,transparent 100%),
+      linear-gradient(180deg,#071fc0 0%,#06147f 25%,#02065b 43%,#02054f 100%)!important;
+  }
+  .v35-history-page.v341-seasons-active .v35-tabs{
+    background:linear-gradient(180deg,#07118c 0%,#050a68 100%)!important;
+  }
+  .v35-history-page.v341-seasons-active .v35-history-content{
+    min-height:70vh!important;
+    background:#02054f!important;
+  }
+
+  .v341-history-seasons-era{
+    display:block!important;
+    width:100%!important;
+    margin:0!important;
+    padding:24px var(--v35-pad) 12px!important;
+    background:#02054f!important;
+    color:#fff!important;
+  }
+  .v341-era-decade{
+    display:block!important;
+    width:100%!important;
+    margin:0 0 27px!important;
+    padding:0!important;
+    border:0!important;
+    background:transparent!important;
+  }
+  .v341-era-decade>h2{
+    margin:0 0 15px!important;
+    padding:0!important;
+    color:#fff!important;
+    font-size:24px!important;
+    line-height:1!important;
+    font-weight:650!important;
+    letter-spacing:-.03em!important;
+  }
+  .v341-era-category{
+    display:block!important;
+    margin:0 0 22px!important;
+    padding:0!important;
+    background:transparent!important;
+    border:0!important;
+  }
+  .v341-era-category:last-child{margin-bottom:0!important}
+  .v341-era-category>h3{
+    margin:0 0 11px!important;
+    padding:0!important;
+    color:rgba(229,234,255,.78)!important;
+    font-size:11.5px!important;
+    line-height:1.1!important;
+    font-weight:750!important;
+    letter-spacing:.065em!important;
+    text-transform:uppercase!important;
+  }
+  .v341-era-grid{
+    display:grid!important;
+    grid-template-columns:repeat(4,minmax(0,1fr))!important;
+    column-gap:11px!important;
+    row-gap:17px!important;
+    width:100%!important;
+    margin:0!important;
+    padding:0!important;
+    background:transparent!important;
+  }
+  .v341-era-item{
+    appearance:none!important;
+    -webkit-appearance:none!important;
+    min-width:0!important;
+    margin:0!important;
+    padding:0!important;
+    border:0!important;
+    outline:0!important;
+    border-radius:0!important;
+    background:transparent!important;
+    box-shadow:none!important;
+    color:#fff!important;
+    display:flex!important;
+    flex-direction:column!important;
+    align-items:center!important;
+    justify-content:flex-start!important;
+    text-align:center!important;
+    font:inherit!important;
+    cursor:pointer!important;
+    -webkit-tap-highlight-color:transparent!important;
+  }
+  .v341-era-item:active{transform:scale(.97)!important}
+  .v341-era-logo{
+    width:56px!important;
+    height:56px!important;
+    margin:0 auto 6px!important;
+    padding:0!important;
+    display:grid!important;
+    place-items:center!important;
+    overflow:visible!important;
+    border:0!important;
+    border-radius:0!important;
+    background:transparent!important;
+    box-shadow:none!important;
+  }
+  .v341-era-logo img{
+    display:block!important;
+    width:52px!important;
+    height:52px!important;
+    max-width:100%!important;
+    max-height:100%!important;
+    margin:0!important;
+    padding:0!important;
+    object-fit:contain!important;
+    object-position:center!important;
+    border:0!important;
+    border-radius:0!important;
+    background:transparent!important;
+    box-shadow:none!important;
+    filter:drop-shadow(0 3px 4px rgba(0,0,35,.28))!important;
+  }
+  .v341-era-logo.is-fallback{
+    width:50px!important;
+    height:50px!important;
+    margin-top:3px!important;
+    margin-bottom:9px!important;
+    border:1px solid rgba(132,175,255,.28)!important;
+    border-radius:50%!important;
+    background:rgba(8,16,94,.62)!important;
+  }
+  .v341-era-logo b{
+    color:#fff!important;
+    font-size:14px!important;
+    line-height:1!important;
+    font-weight:800!important;
+    letter-spacing:.02em!important;
+  }
+  .v341-era-season{
+    display:block!important;
+    color:#fff!important;
+    font-size:13.5px!important;
+    line-height:1.05!important;
+    font-weight:520!important;
+    letter-spacing:-.015em!important;
+    white-space:nowrap!important;
+  }
+
+  .v35-history-page.v341-seasons-active .v35-seasons-legacy{
+    margin-top:0!important;
+    padding-top:20px!important;
+    border-top:1px solid rgba(89,113,235,.18)!important;
+    background:#02054f!important;
+  }
+  .v35-history-page.v341-seasons-active .v35-seasons-legacy .v35-section-row h2{
+    font-size:19px!important;
+  }
+}
+@media (max-width:374px){
+  .v341-history-seasons-era{
+    padding-left:18px!important;
+    padding-right:18px!important;
+  }
+  .v341-era-grid{column-gap:8px!important;row-gap:15px!important}
+  .v341-era-logo{width:52px!important;height:52px!important}
+  .v341-era-logo img{width:48px!important;height:48px!important}
+  .v341-era-season{font-size:12.5px!important}
+  .v341-era-decade>h2{font-size:22px!important}
+  .v341-era-category>h3{font-size:10.5px!important}
+}
