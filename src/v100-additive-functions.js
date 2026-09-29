@@ -416,7 +416,12 @@ function credentialExtra(){
       '<label><span>Temporada</span><input type="text" data-v100-season value="'+esc(saved.season||'2026–2027')+'"></label>'+
       '<label><span>Estatus del registro</span><select data-v100-status>'+['Pendiente de validación','Revisado','Habilitado'].map(x=>'<option '+(saved.status===x?'selected':'')+'>'+x+'</option>').join('')+'</select></label>'+
     '</div>'+
-    '<div class="v100-actions"><button class="v100-primary" data-v100-credential-png>Descargar imagen PNG</button><button class="v100-secondary" data-v100-credential-pdf>Descargar PDF · 1 hoja</button><button class="v100-secondary" data-v100-credential-share>Compartir imagen</button></div>'+
+    '<div class="v196-classic-preview" data-v196-classic-preview>'+
+      '<div class="v196-preview-head"><span><small>DISEÑO DE CREDENCIAL FÍSICA</small><b>Vista previa exacta del formato clásico</b></span><em>85.60 × 53.98 mm</em></div>'+
+      '<div class="v196-preview-frame"><canvas width="1011" height="638" data-v196-preview-canvas aria-label="Vista previa de credencial"></canvas></div>'+
+      '<p>Formato horizontal ID-1 · 1011 × 638 px a 300 ppp. El logo de la Liga, foto, equipo, categoría y CURP se colocan en las mismas zonas del diseño físico de referencia.</p>'+
+    '</div>'+
+    '<div class="v100-actions"><button class="v100-primary" data-v100-credential-png>Descargar imagen PNG</button><button class="v100-secondary" data-v100-credential-pdf>Descargar PDF · tamaño credencial</button><button class="v100-secondary" data-v100-credential-share>Compartir imagen</button></div>'+
     '<p class="v100-note">Si la CURP se detecta y valida, la fecha de nacimiento se sincroniza automáticamente.</p>'+
   '</section>';
 }
@@ -477,66 +482,112 @@ function v100DrawContainedImage(ctx,img,x,y,w,h){
   return true;
 }
 
-async function credentialCanvas(){
-  syncCredentialExtra();
-  const canvas=document.createElement('canvas');canvas.width=1200;canvas.height=760;const x=canvas.getContext('2d');
-  const name=$('[data-v64-cred-name]')?.value||'Jugador';
-  const team=$('[data-v64-cred-team]')?.value||'Equipo';
+function v196RoundRectPath(ctx,x,y,w,h,r){
+  const rr=Math.max(0,Math.min(r,Math.min(w,h)/2));
+  ctx.beginPath();ctx.moveTo(x+rr,y);ctx.arcTo(x+w,y,x+w,y+h,rr);ctx.arcTo(x+w,y+h,x,y+h,rr);ctx.arcTo(x,y+h,x,y,rr);ctx.arcTo(x,y,x+w,y,rr);ctx.closePath();
+}
+function v196DrawCoverImage(ctx,img,x,y,w,h){
+  const iw=img?.naturalWidth||img?.width||0,ih=img?.naturalHeight||img?.height||0;if(!iw||!ih)return false;
+  const scale=Math.max(w/iw,h/ih),dw=iw*scale,dh=ih*scale;
+  ctx.drawImage(img,x+(w-dw)/2,y+(h-dh)/2,dw,dh);return true;
+}
+function v196OutlinedText(ctx,text,x,y,fill='#fff',stroke='#111',width=6){
+  ctx.save();ctx.lineJoin='round';ctx.miterLimit=2;ctx.strokeStyle=stroke;ctx.lineWidth=width;ctx.strokeText(text,x,y);ctx.fillStyle=fill;ctx.fillText(text,x,y);ctx.restore();
+}
+function v196FitFont(ctx,text,maxWidth,start,min=22,weight=900){
+  let s=start;for(;s>min;s-=2){ctx.font=weight+' '+s+'px Arial,Helvetica,sans-serif';if(ctx.measureText(text).width<=maxWidth)break}return s;
+}
+function v196WrapName(ctx,name,maxWidth,maxLines=2){
+  const words=String(name||'JUGADOR').toUpperCase().trim().split(/\s+/).filter(Boolean),lines=[];let line='';
+  for(const w of words){
+    const test=line?line+' '+w:w;
+    if(ctx.measureText(test).width<=maxWidth||!line)line=test;
+    else{lines.push(line);line=w;if(lines.length===maxLines-1)break}
+  }
+  if(line&&lines.length<maxLines)lines.push(line);
+  const used=lines.join(' ').split(/\s+/).length;
+  if(used<words.length&&lines.length)lines[lines.length-1]=lines[lines.length-1].replace(/\s*…?$/,'')+'…';
+  return lines;
+}
+async function v196PlayerPhoto(){
+  const file=v100PlayerPhotoFile();if(!file)return null;
+  let url='';try{url=URL.createObjectURL(file);return await v100LoadImage(url)}catch(_){return null}finally{if(url)URL.revokeObjectURL(url)}
+}
+function v196CredentialTeamLogo(team){
+  const direct=teamLogo(team);if(direct)return direct;
+  try{
+    const t=officialTeams().find(x=>norm(x.name)===norm(team));return t?.logo||'';
+  }catch(_){return ''}
+}
+async function v196DrawClassicCredential(canvas){
+  if(!canvas)return null;
+  canvas.width=1011;canvas.height=638;
+  const x=canvas.getContext('2d'),W=1011,H=638;
+  const name=($('[data-v64-cred-name]')?.value||'Jugador').trim();
+  const team=($('[data-v64-cred-team]')?.value||'Equipo').trim();
   const cat=$('[data-v64-cred-team]')?.selectedOptions?.[0]?.dataset?.category||$('[data-v64-cred-cat]')?.value||'Categoría';
-  const curp=$('[data-v64-cred-curp]')?.value||'',e=read('v100-credential-extra',{});
-  const theme=v100CredentialTheme(x,cat,canvas.width,canvas.height);
+  const curp=($('[data-v64-cred-curp]')?.value||'').toUpperCase().replace(/[^A-Z0-9]/g,'').slice(0,18);
 
-  x.fillStyle='rgba(0,0,0,.18)';x.fillRect(0,0,1200,760);
-  x.strokeStyle='rgba(255,255,255,.34)';x.lineWidth=3;x.strokeRect(22,22,1156,716);
+  x.clearRect(0,0,W,H);
+  x.save();v196RoundRectPath(x,5,5,W-10,H-10,34);x.clip();
 
-  x.fillStyle='#fff';x.font='800 34px Arial';x.fillText('Liga Municipal de Futbol',62,72);
-  x.font='800 29px Arial';x.fillText('Juventino Rosas, A.C.',62,108);
+  const bg=x.createLinearGradient(0,0,W,H);bg.addColorStop(0,'#d94b68');bg.addColorStop(.55,'#d83f60');bg.addColorStop(1,'#c92f50');x.fillStyle=bg;x.fillRect(0,0,W,H);
+  x.fillStyle='#0a7a43';x.fillRect(0,0,W,122);
+  const band=x.createLinearGradient(0,0,W,0);band.addColorStop(0,'rgba(255,255,255,.03)');band.addColorStop(.55,'rgba(255,255,255,.14)');band.addColorStop(1,'rgba(0,0,0,.10)');x.fillStyle=band;x.fillRect(0,0,W,122);
+  x.fillStyle='rgba(255,255,255,.04)';for(let i=-200;i<1200;i+=95){x.save();x.translate(i,0);x.rotate(-.33);x.fillRect(0,0,30,H*1.45);x.restore()}
 
-  const playerFile=v100PlayerPhotoFile(),px=815,py=92,pw=320,ph=320;
-  let photo=null,photoUrl='';
-  if(playerFile){
-    try{
-      photoUrl=URL.createObjectURL(playerFile);
-      photo=await v100LoadImage(photoUrl);
-    }catch(err){photo=null}
-    finally{if(photoUrl)URL.revokeObjectURL(photoUrl)}
-  }
-  x.fillStyle='rgba(4,6,35,.34)';x.fillRect(px,py,pw,ph);
-  if(photo){
-    try{
-      x.save();
-      if(x.roundRect){x.beginPath();x.roundRect(px,py,pw,ph,22);x.clip()}
-      v100DrawContainedImage(x,photo,px,py,pw,ph);
-      x.restore();
-      x.strokeStyle='rgba(255,255,255,.42)';x.lineWidth=3;x.strokeRect(px,py,pw,ph);
-    }catch(err){}
-  }else{
-    x.fillStyle='rgba(255,255,255,.58)';x.font='800 30px Arial';x.fillText('FOTO',924,258);
-    x.strokeStyle='rgba(255,255,255,.28)';x.lineWidth=3;x.strokeRect(px,py,pw,ph);
-  }
-
-  x.fillStyle='rgba(255,255,255,.66)';x.font='800 15px Arial';x.fillText('EQUIPO',815,448);
-  x.fillStyle='#fff';x.font='800 28px Arial';x.fillText(team.slice(0,28),815,482);
-
-  x.fillStyle='rgba(1,8,45,.66)';x.fillRect(0,560,1200,180);
+  x.strokeStyle='rgba(11,17,24,.75)';x.lineWidth=5;v196RoundRectPath(x,8,8,W-16,H-16,31);x.stroke();
 
   const league=await v100LoadImage('./assets/liga-logo.webp');
-  if(league){x.save();x.globalAlpha=.96;x.drawImage(league,66,588,100,100);x.restore()}
+  if(league){x.save();x.shadowColor='rgba(0,0,0,.42)';x.shadowBlur=7;x.drawImage(league,25,24,160,160);x.restore()}
 
-  x.font='900 43px Arial';x.fillStyle=theme.accent;x.fillText(name.slice(0,32),245,625);
+  x.textAlign='center';x.textBaseline='alphabetic';
+  x.fillStyle='#fff';x.shadowColor='rgba(0,0,0,.50)';x.shadowBlur=3;
+  x.font='900 34px Arial,Helvetica,sans-serif';x.fillText('LIGA MUNICIPAL DE FUTBOL JUVENTINO',560,53);
+  x.font='900 33px Arial,Helvetica,sans-serif';x.fillText('ROSAS',560,91);
+  x.shadowBlur=0;x.textAlign='left';
 
-  const info=[
-    {label:'EDAD',value:e.age?e.age+' años':'Edad —',x:245},
-    {label:'POSICIÓN',value:e.position||'Sin definir',x:420},
-    {label:'TEMPORADA',value:e.season||'2026–2027',x:620},
-    {label:'CURP',value:curp?'•••• '+curp.slice(-4):'No capturada',x:835}
-  ];
-  info.forEach(item=>{
-    x.fillStyle='rgba(93,233,243,.84)';x.font='800 12px Arial';x.fillText(item.label,item.x,661);
-    x.fillStyle='rgba(255,255,255,.94)';x.font='700 18px Arial';x.fillText(String(item.value).slice(0,24),item.x,686);
-  });
+  const teamSrc=v196CredentialTeamLogo(team),teamImg=await v100LoadImage(teamSrc);
+  x.save();x.fillStyle='rgba(255,255,255,.94)';v196RoundRectPath(x,842,129,132,132,8);x.fill();x.strokeStyle='rgba(15,15,15,.55)';x.lineWidth=2;x.stroke();
+  if(teamImg){x.save();v196RoundRectPath(x,850,137,116,116,4);x.clip();v100DrawContainedImage(x,teamImg,850,137,116,116);x.restore()}
+  else{x.fillStyle='#111';x.font='900 23px Arial';x.textAlign='center';x.fillText(team.slice(0,8).toUpperCase(),908,205);x.textAlign='left'}x.restore();
 
-  if(e.city){x.fillStyle='rgba(255,255,255,.75)';x.font='600 15px Arial';x.fillText(String(e.city).slice(0,56),245,711)}
+  const photo=await v196PlayerPhoto(),cx=205,cy=355,r=132;
+  x.save();x.beginPath();x.arc(cx,cy,r,0,Math.PI*2);x.clip();
+  x.fillStyle='#b9cbd0';x.fillRect(cx-r,cy-r,r*2,r*2);
+  if(photo)v196DrawCoverImage(x,photo,cx-r,cy-r,r*2,r*2);
+  else{x.fillStyle='#7f92a0';x.fillRect(cx-r,cy-r,r*2,r*2);x.fillStyle='#fff';x.textAlign='center';x.font='900 28px Arial';x.fillText('FOTO',cx,cy+10);x.textAlign='left'}
+  x.restore();
+  x.beginPath();x.arc(cx,cy,r+5,0,Math.PI*2);x.strokeStyle='#075a37';x.lineWidth=9;x.stroke();
+  x.beginPath();x.arc(cx,cy,r+11,0,Math.PI*2);x.strokeStyle='rgba(20,25,24,.72)';x.lineWidth=3;x.stroke();
+
+  const textX=395,textW=420;
+  x.font='900 39px Arial,Helvetica,sans-serif';
+  const fitted=v196FitFont(x,name.toUpperCase(),textW,39,25,900);x.font='900 '+fitted+'px Arial,Helvetica,sans-serif';
+  const lines=v196WrapName(x,name,textW,2),baseY=290,lineH=fitted+7;
+  lines.forEach((line,i)=>v196OutlinedText(x,line,textX,baseY+i*lineH,'#fff','#101010',7));
+
+  x.font='900 31px Arial,Helvetica,sans-serif';
+  v196OutlinedText(x,'Categoría: '+String(cat).replace(/^Categoria:?\s*/i,''),textX,395,'#121212','#f2f2f2',5);
+  x.font='900 29px Arial,Helvetica,sans-serif';
+  v196OutlinedText(x,'CURP: '+(curp||'POR CAPTURAR'),textX,455,'#111','#f1f1f1',5);
+
+  x.font='900 45px Arial,Helvetica,sans-serif';const teamSize=v196FitFont(x,team.toUpperCase(),310,45,26,900);x.font='900 '+teamSize+'px Arial,Helvetica,sans-serif';
+  v196OutlinedText(x,team.toUpperCase(),46,590,'#fff','#111',7);
+
+  x.restore();
+  return canvas;
+}
+let v196PreviewSeq=0;
+async function v196RenderCredentialPreview(){
+  if((location.hash||'').replace(/^#\/?/,'').split('?')[0]!=='credentialBuilder')return;
+  const canvas=$('[data-v196-preview-canvas]');if(!canvas)return;
+  const seq=++v196PreviewSeq;await v196DrawClassicCredential(canvas);if(seq!==v196PreviewSeq)return;
+}
+async function credentialCanvas(){
+  syncCredentialExtra();
+  const canvas=document.createElement('canvas');
+  await v196DrawClassicCredential(canvas);
   return canvasBlob(canvas);
 }
 async function downloadCredentialPng(){
@@ -557,8 +608,8 @@ async function downloadCredentialPdf(){
   const blob=await credentialCanvas();if(!blob)return;
   try{
     const JS=await v100LoadJsPDF(),url=URL.createObjectURL(blob),img=await v100LoadImage(url);
-    const pdf=new JS({orientation:'landscape',unit:'px',format:[1200,760],hotfixes:['px_scaling']});
-    if(img)pdf.addImage(img,'PNG',0,0,1200,760,undefined,'FAST');
+    const pdf=new JS({orientation:'landscape',unit:'mm',format:[85.60,53.98]});
+    if(img)pdf.addImage(img,'PNG',0,0,85.60,53.98,undefined,'FAST');
     pdf.save('Credencial_Liga_Juventino_1_hoja.pdf');
     URL.revokeObjectURL(url);
   }catch(e){
@@ -574,7 +625,14 @@ function bindCredential(root){
     const fromCurp=curpDob(curp.value);if(dob&&fromCurp)dob.value=fromCurp;
     syncCredentialExtra();
   });
-  $$('input,select,textarea',root).forEach(el=>{el.addEventListener('input',syncCredentialExtra);el.addEventListener('change',syncCredentialExtra)});syncCredentialExtra();
+  $$('input,select,textarea',root).forEach(el=>{el.addEventListener('input',()=>{syncCredentialExtra();v196RenderCredentialPreview()});el.addEventListener('change',()=>{syncCredentialExtra();v196RenderCredentialPreview()})});
+  ['[data-v64-cred-name]','[data-v64-cred-curp]','[data-v64-cred-team]','[data-v64-cred-cat]'].forEach(sel=>{
+    const el=$(sel);if(!el||el.dataset.v196PreviewBound)return;el.dataset.v196PreviewBound='1';
+    el.addEventListener('input',v196RenderCredentialPreview);el.addEventListener('change',()=>setTimeout(v196RenderCredentialPreview,20));
+  });
+  const photoInput=$('[data-v64-photo]');
+  if(photoInput&&!photoInput.dataset.v196PreviewBound){photoInput.dataset.v196PreviewBound='1';photoInput.addEventListener('change',()=>setTimeout(v196RenderCredentialPreview,40))}
+  syncCredentialExtra();setTimeout(v196RenderCredentialPreview,60);
 
   const imported=read('v100-ocr-import',null);
   if(imported){
@@ -1335,5 +1393,5 @@ window.addEventListener('hashchange',schedule);
 window.addEventListener('ljr:official-data',schedule);
 const screen=$('#screen');if(screen)new MutationObserver(schedule).observe(screen,{childList:true,subtree:false});
 window.addEventListener('load',schedule);schedule();setTimeout(schedule,1500);setTimeout(schedule,4000);
-window.LJR_V100={build:BUILD,mount,officialTeams,credentialCanvas,downloadCredentialPng,downloadCredentialPdf};
+window.LJR_V100={build:BUILD,mount,officialTeams,credentialCanvas,downloadCredentialPng,downloadCredentialPdf,renderCredentialPreview:v196RenderCredentialPreview};
 })();
