@@ -572,3 +572,58 @@
     background-size:28px 28px!important;
   }
 }
+
+
+/* V336 — PERFIL PNG REAL DEL USUARIO */
+@media (max-width:520px){
+  /* Usa el PNG real preparado desde la imagen enviada por el usuario.
+     No SVG, no icono CSS, no pseudo-elementos. */
+  html body[data-app-route="competition"] .topbar .profile-button,
+  html body.v40-standings-master[data-app-route="competition"] .topbar .profile-button{
+    display:block!important;
+    position:absolute!important;
+    right:18px!important;
+    top:26px!important;
+    width:31px!important;
+    height:31px!important;
+    min-width:31px!important;
+    min-height:31px!important;
+    max-width:31px!important;
+    max-height:31px!important;
+    margin:0!important;
+    padding:0!important;
+    border:0!important;
+    border-radius:0!important;
+    background-color:transparent!important;
+    background-image:url("../assets/ui/profile-icon-white-v336.png?v=1")!important;
+    background-repeat:no-repeat!important;
+    background-position:center!important;
+    background-size:contain!important;
+    box-shadow:none!important;
+    overflow:visible!important;
+    color:transparent!important;
+  }
+
+  html body[data-app-route="competition"] .topbar .profile-button svg,
+  html body[data-app-route="competition"] .topbar .profile-button::before,
+  html body[data-app-route="competition"] .topbar .profile-button::after{
+    display:none!important;
+    content:none!important;
+    background:none!important;
+    border:0!important;
+  }
+}
+
+@media (max-width:380px){
+  html body[data-app-route="competition"] .topbar .profile-button{
+    right:16px!important;
+    top:25px!important;
+    width:30px!important;
+    height:30px!important;
+    min-width:30px!important;
+    min-height:30px!important;
+    max-width:30px!important;
+    max-height:30px!important;
+    background-size:contain!important;
+  }
+}
