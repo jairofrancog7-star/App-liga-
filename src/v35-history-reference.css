@@ -3133,3 +3133,9 @@
   }
 }
 /* V351_HISTORY_SEASONS_FAST_END */
+
+
+/* V351 — paneles de Historia persistentes.
+   Las pestañas sólo muestran/ocultan paneles; no reconstruyen #screen. */
+.v351-history-panel[hidden]{display:none!important}
+.v351-history-panel.is-active{display:block!important}
