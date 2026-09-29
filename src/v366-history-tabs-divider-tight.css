@@ -1,21 +1,28 @@
-/* V366 — Historia: recorte exacto bajo las pestañas.
-   La línea fina morada/azulada queda más arriba, se elimina el pedazo de
-   separación extra y Finales comienza inmediatamente debajo. */
+/* V368 — Historia: pestañas/divisor EXACTOS como imagen 1 del usuario.
+   - restaura la altura correcta de la barra
+   - elimina el bloque azul brillante de separación
+   - la línea morada/azulada queda pegada al borde inferior
+   - Finales no agrega un hueco extra debajo de esa línea */
 @media (max-width:1023px){
   html body[data-app-route="history"] .v35-history-page{
-    --v361-history-tabs-h:48px!important;
-    --v361-history-art-h:184px!important;
+    --v361-history-tabs-h:54px!important;
+    --v361-history-art-h:190px!important;
   }
 
   html body[data-app-route="history"] .v35-history-page .v35-tabs,
   html body[data-app-route="history"] .v35-history-page.v329-videos-active .v35-tabs,
   html body[data-app-route="history"] .v35-history-page.v329-finals-image1 .v35-tabs,
   html body[data-app-route="history"] .v35-history-page.v358-finals-reference .v35-tabs{
-    height:48px!important;
-    min-height:48px!important;
-    max-height:48px!important;
+    height:54px!important;
+    min-height:54px!important;
+    max-height:54px!important;
+    margin:0!important;
+    padding:0 22px!important;
+    align-items:flex-end!important;
+    background:#030445!important;
+    background-image:none!important;
     border-top:0!important;
-    border-bottom:1px solid rgba(205,212,255,.23)!important;
+    border-bottom:1px solid rgba(205,212,255,.26)!important;
     box-shadow:none!important;
   }
 
@@ -24,10 +31,11 @@
   html body[data-app-route="history"] .v35-history-page.v329-videos-active .v35-tabs>.v35-tab,
   html body[data-app-route="history"] .v35-history-page.v329-finals-image1 .v35-tabs>.v35-tab,
   html body[data-app-route="history"] .v35-history-page.v358-finals-reference .v35-tabs>.v35-tab{
-    height:48px!important;
-    min-height:48px!important;
-    max-height:48px!important;
-    padding-bottom:9px!important;
+    height:54px!important;
+    min-height:54px!important;
+    max-height:54px!important;
+    padding-bottom:13px!important;
+    background:transparent!important;
   }
 
   html body[data-app-route="history"] .v35-history-page .v35-tabs>.v35-tab.active::after,
@@ -35,17 +43,21 @@
     bottom:-1px!important;
   }
 
-  /* No dejar una segunda franja entre la línea y el contenido. */
+  /* Debajo del divisor empieza directamente el fondo oscuro. */
   html body[data-app-route="history"] .v35-history-page .v35-history-content,
+  html body[data-app-route="history"] .v35-history-page .v351-history-panel,
   html body[data-app-route="history"] .v35-history-page .v351-history-panel.is-active{
     margin-top:0!important;
     border-top:0!important;
     box-shadow:none!important;
+    background:#020650!important;
+    background-image:none!important;
   }
 
-  /* Finales: quitar el hueco/cuadrito de separación y subir la primera tarjeta. */
+  /* Finales: no permitir que los estilos legacy creen otra franja. */
   html body[data-app-route="history"] .v35-history-page.v358-finals-reference .v35-history-content{
     padding-top:0!important;
+    background:#020650!important;
   }
   html body[data-app-route="history"] .v35-history-page.v358-finals-reference .v358-finals-shell{
     padding-top:4px!important;
@@ -57,18 +69,18 @@
 
 @media (max-width:374px){
   html body[data-app-route="history"] .v35-history-page{
-    --v361-history-tabs-h:46px!important;
-    --v361-history-art-h:174px!important;
+    --v361-history-tabs-h:52px!important;
+    --v361-history-art-h:180px!important;
   }
   html body[data-app-route="history"] .v35-history-page .v35-tabs,
   html body[data-app-route="history"] .v35-history-page .v35-tabs>.v35-tab,
   html body[data-app-route="history"] .v35-history-page .v35-tabs>.v329-video-tab{
-    height:46px!important;
-    min-height:46px!important;
-    max-height:46px!important;
+    height:52px!important;
+    min-height:52px!important;
+    max-height:52px!important;
   }
   html body[data-app-route="history"] .v35-history-page .v35-tabs>.v35-tab,
   html body[data-app-route="history"] .v35-history-page .v35-tabs>.v329-video-tab{
-    padding-bottom:8px!important;
+    padding-bottom:12px!important;
   }
 }
