@@ -112,29 +112,92 @@ function listMarkup(primary,secondary,list){
  });
  if(q)candidates=candidates.filter(p=>norm(p.name).includes(q)||norm(p.team).includes(q)||norm(p.category).includes(q));
 
- const sameCategory=primary?list.filter(p=>String(p.cat)===String(primary.cat)):list;
- const sectionTitle=(candidates.some(p=>norm(p.position||p.posicion||'').includes('delanter'))?'Delanteros':'Jugadores');
  const categoryLabel=primary?.category||'categoría actual';
-
- return '<section class="v123-picker-overlay v205-picker" role="dialog" aria-modal="true" aria-label="Elegir jugador para comparar">'+
-   '<div class="v123-picker-shell v205-picker-shell">'+
-    '<button type="button" class="v123-picker-close" data-v123-close-picker aria-label="Cerrar">×</button>'+
-    '<label class="v123-search v205-search"><span aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="6.5"/><path d="m16 16 5 5"/></svg></span><input data-v123-search type="search" autocomplete="off" placeholder="Buscar jugadores" value="'+esc(query)+'"></label>'+
-    '<div class="v205-average-list" aria-label="Promedios disponibles">'+
-      '<div class="v205-average-row"><span class="v205-average-avatar">CAT</span><span class="v205-average-copy"><b>Promedio: '+esc(categoryLabel)+'</b><small>Referencia de los '+sameCategory.length+' jugadores registrados en esta categoría</small></span></div>'+
-      '<div class="v205-average-row"><span class="v205-average-avatar">AP</span><span class="v205-average-copy"><b>Promedio: todos los jugadores</b><small>Referencia general de los '+list.length+' jugadores registrados</small></span></div>'+
+ return '<section class="v123-picker-overlay v205-picker v206-picker" role="dialog" aria-modal="true" aria-label="Elegir jugador para comparar">'+
+   '<div class="v123-picker-shell v205-picker-shell v206-picker-shell">'+
+    '<button type="button" class="v123-picker-close v206-picker-close" data-v123-close-picker aria-label="Cerrar">×</button>'+
+    '<label class="v123-search v205-search v206-search"><span class="v206-search-icon" aria-hidden="true"></span><input data-v123-search type="search" autocomplete="off" placeholder="Buscar jugadores" value="'+esc(query)+'"></label>'+
+    '<div class="v205-average-list v206-average-list" aria-label="Promedios disponibles">'+
+      '<div class="v205-average-row v206-average-row"><span class="v205-average-avatar v206-average-avatar">FW</span><span class="v205-average-copy v206-average-copy"><b>Promedio: '+esc(categoryLabel)+'</b><small>Promedio de estadísticas por partido de esta categoría</small></span></div>'+
+      '<div class="v205-average-row v206-average-row"><span class="v205-average-avatar v206-average-avatar">AP</span><span class="v205-average-copy v206-average-copy"><b>Promedio: todos los jugadores</b><small>Promedio de estadísticas por partido de todos los jugadores</small></span></div>'+
     '</div>'+
-    '<div class="v205-section-head"><h2>'+esc(sectionTitle)+'</h2><span aria-hidden="true"><svg viewBox="0 0 24 24"><path d="m5 15 7-7 7 7"/></svg></span></div>'+
-    '<div class="v123-player-list v205-player-list">'+candidates.slice(0,100).map(p=>
-      '<button type="button" class="v123-player-option v205-player-option '+(current&&playerKey(p)===playerKey(current)?'active':'')+'" data-v123-pick="'+esc(p.name)+'" data-v123-pick-team="'+esc(p.team)+'" data-v123-pick-cat="'+esc(p.cat)+'">'+
-        '<span class="v123-option-avatar v205-option-avatar">'+esc(initials(p.name))+'</span>'+
-        '<span class="v123-option-copy v205-option-copy"><b>'+esc(p.name)+'</b><small><i class="v123-option-logo v205-option-logo">'+logo(p.team)+'</i><span>'+esc(p.team)+'</span></small></span>'+
-        '<i class="v123-option-radio v205-option-radio" aria-hidden="true"></i>'+
+    '<div class="v205-section-head v206-section-head"><h2>Jugadores</h2><span class="v206-chevron" aria-hidden="true"></span></div>'+
+    '<div class="v123-player-list v205-player-list v206-player-list">'+candidates.slice(0,100).map(p=>
+      '<button type="button" class="v123-player-option v205-player-option v206-player-option '+(current&&playerKey(p)===playerKey(current)?'active':'')+'" data-v123-pick="'+esc(p.name)+'" data-v123-pick-team="'+esc(p.team)+'" data-v123-pick-cat="'+esc(p.cat)+'">'+
+        '<span class="v123-option-avatar v205-option-avatar v206-option-avatar">'+esc(initials(p.name))+'</span>'+
+        '<span class="v123-option-copy v205-option-copy v206-option-copy"><b>'+esc(p.name)+'</b><small><i class="v123-option-logo v205-option-logo v206-option-logo">'+logo(p.team)+'</i><span>'+esc(p.team)+'</span></small></span>'+
+        '<i class="v123-option-radio v205-option-radio v206-option-radio" aria-hidden="true"></i>'+
       '</button>'
     ).join('')+'</div>'+
-    (!candidates.length?'<div class="v205-empty-search">No se encontraron jugadores registrados.</div>':'')+
+    (!candidates.length?'<div class="v205-empty-search v206-empty-search">No se encontraron jugadores registrados.</div>':'')+
    '</div>'+
   '</section>';
+}
+
+
+/* V206 — lock de geometría del selector previo a comparar.
+   Se inyecta al final de <head> para ganar a los CSS globales cargados después de V123. */
+function v206EnsurePickerStyle(){
+ let style=document.getElementById('v206-player-picker-exact');
+ if(!style){
+  style=document.createElement('style');
+  style.id='v206-player-picker-exact';
+  style.textContent=`
+.v206-picker{position:fixed!important;z-index:2147483500!important;inset:0!important;display:flex!important;justify-content:center!important;overflow:hidden!important;background:#05075f!important;font-family:Inter,Roboto,Arial,sans-serif!important}
+.v206-picker,.v206-picker *{box-sizing:border-box!important}
+.v206-picker-shell{position:relative!important;width:min(100vw,520px)!important;max-width:520px!important;height:100dvh!important;margin:0 auto!important;padding:0!important;overflow-y:auto!important;overflow-x:hidden!important;overscroll-behavior:contain!important;background:radial-gradient(105% 88% at 75% 54%,rgba(15,45,209,.27),transparent 62%),linear-gradient(180deg,#060a68 0%,#081080 46%,#060760 100%)!important;color:#fff!important}
+.v206-picker-close{all:unset!important;position:absolute!important;top:36px!important;right:16px!important;width:37px!important;height:37px!important;display:grid!important;place-items:center!important;border-radius:50%!important;background:#111a86!important;color:#fff!important;font:300 34px/32px Arial,sans-serif!important;text-align:center!important;cursor:pointer!important;z-index:4!important}
+.v206-search{position:absolute!important;top:88px!important;left:18px!important;right:18px!important;width:auto!important;height:43px!important;margin:0!important;padding:0 15px!important;display:grid!important;grid-template-columns:40px minmax(0,1fr)!important;align-items:center!important;gap:4px!important;border:0!important;border-radius:13px!important;background:linear-gradient(180deg,#17269d,#121d88)!important;z-index:3!important}
+.v206-search-icon{position:relative!important;width:29px!important;height:29px!important;display:block!important;color:#a8afd8!important;background:transparent!important;border:0!important;border-radius:0!important}
+.v206-search-icon:before{content:""!important;position:absolute!important;left:2px!important;top:2px!important;width:17px!important;height:17px!important;border:2px solid currentColor!important;border-radius:50%!important}
+.v206-search-icon:after{content:""!important;position:absolute!important;left:20px!important;top:20px!important;width:10px!important;height:2px!important;background:currentColor!important;border-radius:2px!important;transform:rotate(45deg)!important;transform-origin:left center!important}
+.v206-search input{all:unset!important;width:100%!important;height:43px!important;color:#fff!important;font:700 17px/43px Inter,Roboto,Arial,sans-serif!important}
+.v206-search input::placeholder{color:#aeb4d8!important;opacity:1!important}
+.v206-average-list{position:absolute!important;top:148px!important;left:0!important;right:0!important;margin:0!important;padding:0!important;display:block!important;border-top:1px solid rgba(3,6,70,.78)!important;border-bottom:1px solid rgba(3,6,70,.78)!important;background:transparent!important}
+.v206-average-row{position:relative!important;width:100%!important;height:82px!important;min-height:82px!important;margin:0!important;padding:0 20px 0 18px!important;display:grid!important;grid-template-columns:50px minmax(0,1fr)!important;gap:13px!important;align-items:center!important;background:linear-gradient(90deg,rgba(10,24,137,.70),rgba(8,20,126,.52))!important;border:0!important;border-bottom:1px solid rgba(3,6,70,.64)!important}
+.v206-average-row:last-child{border-bottom:0!important}
+.v206-average-avatar{width:49px!important;height:49px!important;display:grid!important;place-items:center!important;border-radius:50%!important;background:linear-gradient(145deg,#858ab7,#5c67aa)!important;color:#fff!important;font:500 18px/1 Inter,Roboto,Arial,sans-serif!important}
+.v206-average-copy{min-width:0!important;display:grid!important;gap:3px!important;align-content:center!important}
+.v206-average-copy b{display:block!important;margin:0!important;color:#fff!important;font:800 17px/1.08 Inter,Roboto,Arial,sans-serif!important;white-space:nowrap!important;overflow:hidden!important;text-overflow:ellipsis!important}
+.v206-average-copy small{display:block!important;margin:0!important;color:#aeb4d7!important;font:450 14px/1.18 Inter,Roboto,Arial,sans-serif!important;white-space:normal!important}
+.v206-section-head{position:absolute!important;top:312px!important;left:0!important;right:0!important;height:65px!important;margin:0!important;padding:0 21px!important;display:flex!important;align-items:center!important;justify-content:space-between!important;background:transparent!important}
+.v206-section-head h2{all:unset!important;color:#fff!important;font:800 25px/1 Inter,Roboto,Arial,sans-serif!important}
+.v206-chevron{position:relative!important;width:25px!important;height:25px!important;display:block!important;background:transparent!important}
+.v206-chevron:before{content:""!important;position:absolute!important;width:12px!important;height:12px!important;left:6px!important;top:8px!important;border-left:3px solid #fff!important;border-top:3px solid #fff!important;transform:rotate(45deg)!important;border-radius:1px!important}
+.v206-player-list{position:relative!important;margin:377px 0 0!important;padding:0 18px!important;display:block!important;background:transparent!important}
+.v206-player-option{all:unset!important;position:relative!important;width:100%!important;height:67px!important;display:grid!important;grid-template-columns:50px minmax(0,1fr) 31px!important;column-gap:13px!important;align-items:center!important;color:#fff!important;cursor:pointer!important;font-family:Inter,Roboto,Arial,sans-serif!important}
+.v206-option-avatar{width:49px!important;height:49px!important;display:grid!important;place-items:center!important;border-radius:50%!important;background:linear-gradient(145deg,#f1f4fb,#a4b3dd)!important;color:#08145f!important;font:900 13px/1 Inter,Roboto,Arial,sans-serif!important;box-shadow:none!important}
+.v206-option-copy{min-width:0!important;display:grid!important;gap:4px!important;align-content:center!important}
+.v206-option-copy>b{display:block!important;margin:0!important;color:#fff!important;font:780 17px/1.04 Inter,Roboto,Arial,sans-serif!important;white-space:nowrap!important;overflow:hidden!important;text-overflow:ellipsis!important}
+.v206-option-copy>small{display:flex!important;align-items:center!important;gap:7px!important;min-width:0!important;margin:0!important;color:#aab1d5!important;font:450 13px/1 Inter,Roboto,Arial,sans-serif!important;white-space:nowrap!important;overflow:hidden!important}
+.v206-option-copy>small>span{min-width:0!important;overflow:hidden!important;text-overflow:ellipsis!important;white-space:nowrap!important}
+.v206-option-logo{width:17px!important;height:17px!important;flex:0 0 17px!important;display:grid!important;place-items:center!important;overflow:hidden!important;border-radius:50%!important;background:transparent!important;color:#fff!important}
+.v206-option-logo img{display:block!important;width:100%!important;height:100%!important;object-fit:contain!important}
+.v206-option-radio{width:30px!important;height:30px!important;display:block!important;justify-self:end!important;border:2px solid rgba(145,155,207,.58)!important;border-radius:50%!important;background:transparent!important}
+.v206-player-option.active .v206-option-radio{border:8px solid #27e2ef!important}
+.v206-player-option.active .v206-option-avatar{box-shadow:0 0 0 2px #27e2ef!important}
+.v206-empty-search{margin:18px!important;color:#aab1d5!important;font:500 13px/1.3 Inter,Roboto,Arial,sans-serif!important;text-align:center!important}
+@media(max-width:360px){
+ .v206-picker-close{right:14px!important}
+ .v206-search{left:15px!important;right:15px!important}
+ .v206-average-row{padding-left:15px!important;padding-right:15px!important;grid-template-columns:47px minmax(0,1fr)!important;gap:11px!important}
+ .v206-average-avatar{width:46px!important;height:46px!important;font-size:17px!important}
+ .v206-average-copy b{font-size:15.5px!important}
+ .v206-average-copy small{font-size:12.5px!important}
+ .v206-section-head{padding-left:18px!important;padding-right:18px!important}
+ .v206-section-head h2{font-size:23px!important}
+ .v206-player-list{padding-left:15px!important;padding-right:15px!important}
+ .v206-player-option{grid-template-columns:48px minmax(0,1fr) 29px!important;column-gap:11px!important}
+ .v206-option-avatar{width:47px!important;height:47px!important}
+ .v206-option-copy>b{font-size:15.5px!important}
+ .v206-option-copy>small{font-size:12px!important}
+ .v206-option-radio{width:28px!important;height:28px!important}
+}
+`;
+  document.head.appendChild(style);
+ }else{
+  document.head.appendChild(style);
+ }
 }
 
 /* V204 — Player Compare: cancha/isotipo de Liga y escudos en la geometría de la referencia. */
@@ -177,6 +240,7 @@ function v204ApplyReferenceDecor(){
 
 async function renderCompare(){
  if(route()!=='playerCompare')return;
+ v206EnsurePickerStyle();
  const a=await getApi();if(!a)return;
  const list=a.playerList();
  let primary=resolvePlayer(read(PRIMARY_KEY),list);
