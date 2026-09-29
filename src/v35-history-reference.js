@@ -5,7 +5,7 @@
 
 const RAW='https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/';
 const JUVENTUS_2024_PHOTO='./assets/history/archive-v225/juventus-campeon-campeones-21-sep-2024.webp?v=20260923-juventus-webp-v245';
-const LOBOS_CDG_SUPERLIDER_PHOTO='./assets/history/lobos-cdg-superlider-03-may-2026.webp?v=20260928-lobos-cdg-real-asset-v326';
+const LOBOS_CDG_SUPERLIDER_PHOTO='/App-liga-/assets/history/lobos-cdg-superlider-03-may-2026.webp?v=20260928-lobos-cdg-force-v327';
 /* V326: foto restaurada como archivo WebP real del repositorio. */
 const ASSETS={
   league:RAW+'assets/liga-logo.webp',
