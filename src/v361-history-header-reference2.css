@@ -1,0 +1,227 @@
+/* V361 — Historia · cabecera unificada según la imagen 2 del usuario.
+   Aplica el MISMO diseño a Resumen, Temporadas, Campeones, Finales, Récords y Videos.
+   La imagen/fondo superior continúa detrás de las pestañas hasta su borde inferior. */
+@media (max-width:1023px){
+  html body[data-app-route="history"] .v35-history-page{
+    --v361-history-head-h:136px;
+    --v361-history-tabs-h:54px;
+    --v361-history-art-h:190px;
+    --v35-pad:22px!important;
+    --v35-compact-h:56px!important;
+    position:relative!important;
+    isolation:isolate!important;
+    min-height:100dvh!important;
+    overflow-x:hidden!important;
+    background:
+      radial-gradient(100% 28% at 50% 0%,rgba(28,75,255,.34),transparent 72%),
+      linear-gradient(180deg,#091a9b 0%,#080f70 30%,#07095d 54%,#02054f 100%)!important;
+    background-color:#02054f!important;
+  }
+
+  /* Una sola pieza gráfica desde arriba hasta ABAJO de las pestañas. */
+  html body[data-app-route="history"] .v35-history-page::before{
+    content:""!important;
+    position:absolute!important;
+    z-index:0!important;
+    top:0!important;
+    left:0!important;
+    right:0!important;
+    height:var(--v361-history-art-h)!important;
+    pointer-events:none!important;
+    background:
+      linear-gradient(180deg,rgba(8,43,224,.06) 0%,rgba(5,16,121,.18) 58%,rgba(4,8,78,.34) 100%),
+      url('../public/history-regularscroll-header.webp') center top/cover no-repeat!important;
+  }
+
+  html body[data-app-route="history"] .v35-history-page>.v35-history-lines{
+    z-index:1!important;
+  }
+
+  /* Cabecera compacta como la imagen 2, igual en TODAS las secciones. */
+  html body[data-app-route="history"] .v35-history-page .v35-history-head,
+  html body[data-app-route="history"] .v35-history-page.v329-videos-active .v35-history-head,
+  html body[data-app-route="history"] .v35-history-page.v329-finals-image1 .v35-history-head,
+  html body[data-app-route="history"] .v35-history-page.v358-finals-reference .v35-history-head{
+    position:relative!important;
+    z-index:2!important;
+    box-sizing:border-box!important;
+    width:100%!important;
+    height:var(--v361-history-head-h)!important;
+    min-height:var(--v361-history-head-h)!important;
+    max-height:var(--v361-history-head-h)!important;
+    margin:0!important;
+    padding:0 var(--v35-pad)!important;
+    overflow:hidden!important;
+    background:transparent!important;
+    background-image:none!important;
+    border:0!important;
+    box-shadow:none!important;
+  }
+
+  html body[data-app-route="history"] .v35-history-page .v35-logo-wrap{
+    display:none!important;
+  }
+
+  html body[data-app-route="history"] .v35-history-page .v35-history-head .v35-back,
+  html body[data-app-route="history"] .v35-history-page.v329-finals-image1 .v35-history-head .v35-back,
+  html body[data-app-route="history"] .v35-history-page.v358-finals-reference .v35-history-head .v35-back{
+    position:absolute!important;
+    left:22px!important;
+    top:24px!important;
+    width:34px!important;
+    height:34px!important;
+    margin:0!important;
+    padding:0!important;
+  }
+
+  html body[data-app-route="history"] .v35-history-page .v35-history-head .v35-back svg{
+    width:29px!important;
+    height:29px!important;
+  }
+
+  html body[data-app-route="history"] .v35-history-page .v35-history-head h1,
+  html body[data-app-route="history"] .v35-history-page.v329-finals-image1 .v35-history-head h1,
+  html body[data-app-route="history"] .v35-history-page.v358-finals-reference .v35-history-head h1{
+    position:absolute!important;
+    left:22px!important;
+    right:auto!important;
+    bottom:17px!important;
+    margin:0!important;
+    padding:0!important;
+    color:#fff!important;
+    font:500 39px/1 system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif!important;
+    letter-spacing:-.035em!important;
+    text-shadow:none!important;
+  }
+
+  /* Pestañas: mismo tamaño/posición que imagen 2 y SIN bloque azul separado. */
+  html body[data-app-route="history"] .v35-history-page .v35-tabs,
+  html body[data-app-route="history"] .v35-history-page.v329-videos-active .v35-tabs,
+  html body[data-app-route="history"] .v35-history-page.v329-finals-image1 .v35-tabs,
+  html body[data-app-route="history"] .v35-history-page.v358-finals-reference .v35-tabs{
+    position:sticky!important;
+    top:var(--v35-compact-h)!important;
+    z-index:90!important;
+    display:flex!important;
+    align-items:flex-end!important;
+    justify-content:flex-start!important;
+    box-sizing:border-box!important;
+    width:100%!important;
+    height:var(--v361-history-tabs-h)!important;
+    min-height:var(--v361-history-tabs-h)!important;
+    max-height:var(--v361-history-tabs-h)!important;
+    margin:0!important;
+    padding:0 22px!important;
+    gap:36px!important;
+    overflow-x:auto!important;
+    overflow-y:hidden!important;
+    white-space:nowrap!important;
+    background:transparent!important;
+    background-image:none!important;
+    border-top:0!important;
+    border-bottom:1px solid rgba(205,212,255,.23)!important;
+    box-shadow:none!important;
+    scrollbar-width:none!important;
+    -webkit-overflow-scrolling:touch!important;
+  }
+  html body[data-app-route="history"] .v35-history-page .v35-tabs::-webkit-scrollbar{display:none!important}
+
+  /* Ninguna sección puede ocultar/repartir distinto las pestañas. */
+  html body[data-app-route="history"] .v35-history-page .v35-tabs .v35-tab,
+  html body[data-app-route="history"] .v35-history-page.v329-videos-active .v35-tabs .v35-tab,
+  html body[data-app-route="history"] .v35-history-page.v329-finals-image1 .v35-tabs .v35-tab,
+  html body[data-app-route="history"] .v35-history-page.v358-finals-reference .v35-tabs .v35-tab{
+    position:relative!important;
+    display:inline-flex!important;
+    visibility:visible!important;
+    opacity:1!important;
+    flex:0 0 auto!important;
+    align-items:flex-end!important;
+    justify-content:center!important;
+    width:auto!important;
+    min-width:max-content!important;
+    height:var(--v361-history-tabs-h)!important;
+    min-height:var(--v361-history-tabs-h)!important;
+    margin:0!important;
+    padding:0 0 13px!important;
+    border:0!important;
+    background:transparent!important;
+    color:#d0d2e5!important;
+    -webkit-text-fill-color:#d0d2e5!important;
+    font:540 15px/1 system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif!important;
+    letter-spacing:-.012em!important;
+    white-space:nowrap!important;
+  }
+
+  html body[data-app-route="history"] .v35-history-page .v35-tabs .v35-tab.active{
+    color:#16e8f7!important;
+    -webkit-text-fill-color:#16e8f7!important;
+    font-weight:650!important;
+  }
+
+  html body[data-app-route="history"] .v35-history-page .v35-tabs .v35-tab.active::after{
+    content:""!important;
+    position:absolute!important;
+    left:50%!important;
+    bottom:-1px!important;
+    width:76px!important;
+    max-width:88%!important;
+    height:4px!important;
+    transform:translateX(-50%)!important;
+    border-radius:4px 4px 0 0!important;
+    background:#16e8f7!important;
+    box-shadow:0 0 8px rgba(22,232,247,.24)!important;
+  }
+
+  /* Al hacer scroll la barra sigue legible, pero el diseño inicial permanece continuo. */
+  html body[data-app-route="history"] .v35-history-page.is-compact .v35-tabs{
+    background:rgba(6,10,91,.97)!important;
+  }
+
+  /* Todo el resto de Historia continúa sobre azul oscuro hasta el final. */
+  html body[data-app-route="history"] .v35-history-page .v35-history-content{
+    position:relative!important;
+    z-index:1!important;
+    min-height:calc(100dvh - var(--v361-history-art-h))!important;
+    background:#02054f!important;
+  }
+
+  html body[data-app-route="history"] #screen{
+    min-height:100dvh!important;
+    background:#02054f!important;
+  }
+}
+
+@media (max-width:374px){
+  html body[data-app-route="history"] .v35-history-page{
+    --v361-history-head-h:128px;
+    --v361-history-tabs-h:52px;
+    --v361-history-art-h:180px;
+    --v35-pad:18px!important;
+  }
+  html body[data-app-route="history"] .v35-history-page .v35-history-head .v35-back{
+    left:18px!important;
+    top:22px!important;
+    width:32px!important;
+    height:32px!important;
+  }
+  html body[data-app-route="history"] .v35-history-page .v35-history-head .v35-back svg{
+    width:27px!important;
+    height:27px!important;
+  }
+  html body[data-app-route="history"] .v35-history-page .v35-history-head h1{
+    left:18px!important;
+    bottom:15px!important;
+    font-size:36px!important;
+  }
+  html body[data-app-route="history"] .v35-history-page .v35-tabs{
+    padding-inline:18px!important;
+    gap:30px!important;
+  }
+  html body[data-app-route="history"] .v35-history-page .v35-tabs .v35-tab{
+    height:52px!important;
+    min-height:52px!important;
+    font-size:14px!important;
+    padding-bottom:12px!important;
+  }
+}
