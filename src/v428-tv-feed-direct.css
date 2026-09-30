@@ -162,3 +162,42 @@ body>.v160-tv-layer .v440-tv-groups{padding-left:8px;padding-right:8px}
   .v440-tv-name{font-size:6.7px}.v440-tv-badge{width:29px;height:29px;flex-basis:29px}.v440-tv-badge img{width:24px;height:24px}
   .v440-tv-center strong{font-size:8.4px}.v440-tv-icon{width:19px;height:19px}
 }
+
+
+/* V442 — ruta dedicada TELEVISADOS y montaje visible al inicio de Video. */
+body.v440-televisados-open #app>.topbar,
+body.v440-televisados-open .app-shell>.topbar{display:none!important}
+body.v440-televisados-open #screen{
+  padding-top:0!important;margin-top:0!important;min-height:calc(100dvh - 66px)!important;
+  background:#030b3f!important
+}
+body.v440-televisados-open .v440-page-route{
+  width:100%;min-height:calc(100dvh - 66px);padding:0 0 88px;background:#030b3f;color:#fff
+}
+body.v440-televisados-open .v440-telecast{margin:0!important;border-top:0}
+body.v440-televisados-open .v440-tv-pagehead{
+  position:sticky;top:0;z-index:9;min-height:58px;padding-left:10px;padding-right:14px;
+  background:linear-gradient(180deg,#0b1e74 0%,#071456 100%);
+  box-shadow:0 4px 16px rgba(0,0,28,.18)
+}
+.v440-tv-backmark{
+  padding:0!important;border:0!important;background:transparent!important;appearance:none;
+  cursor:pointer;font-family:Arial,sans-serif
+}
+body[data-app-route="video"] .v428-tv-feed{
+  margin-top:0!important;border-top:1px solid rgba(255,255,255,.06)
+}
+body[data-app-route="video"] .v17-tv-content>.v428-tv-feed:first-child{
+  margin-left:-49px;margin-right:-49px;width:calc(100% + 98px)
+}
+.v440-page-note{
+  margin:9px 10px 0;padding:12px 13px;border:1px solid rgba(95,130,255,.18);border-radius:9px;
+  background:#09134d
+}
+.v440-page-note b{display:block;color:#fff;font-size:8px;font-weight:950}
+.v440-page-note span{display:block;margin-top:4px;color:#8f9dca;font-size:6.7px;line-height:1.35}
+@media(max-width:700px){
+  body[data-app-route="video"] .v17-tv-content>.v428-tv-feed:first-child{
+    margin-left:-16px;margin-right:-16px;width:calc(100% + 32px)
+  }
+}
