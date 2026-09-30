@@ -85,7 +85,6 @@ function miniMenuMarkup(){
  const followText=nativeFollowed()?'Dejar de seguir':'Seguir';
  return '<div class="v372-mini-menu" role="menu">'+
   '<button type="button" data-v372-follow role="menuitem"><i>'+compactMenuIcon('follow')+'</i><span>'+followText+'</span></button>'+
-  '<button type="button" data-v372-compare role="menuitem"><i>'+compactMenuIcon('compare')+'</i><span>Comparar</span></button>'+
   '<button type="button" data-v372-share role="menuitem"><i>'+compactMenuIcon('share')+'</i><span>Compartir</span></button>'+
  '</div>';
 }
