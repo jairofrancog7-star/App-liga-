@@ -1666,3 +1666,23 @@ body.v415-calendar-active #screen > [data-v415-calendar]{
     pointer-events:none!important;
   }
 }
+
+
+/* V445 — subrayado mensual alineado exactamente con el mes activo. */
+@media (max-width:1023px){
+  body.v415-calendar-active .v415-month-line{
+    position:relative!important;
+    width:100%!important;
+    overflow:visible!important;
+  }
+  body.v415-calendar-active .v415-month-line i{
+    position:absolute!important;
+    top:0!important;
+    left:calc(var(--v415-month-indicator-x,58.3333%) - 34px)!important;
+    width:68px!important;
+    height:4px!important;
+    margin:0!important;
+    transform:none!important;
+    border-radius:999px!important;
+  }
+}
