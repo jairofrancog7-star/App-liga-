@@ -178,15 +178,16 @@ function positionCode(p){
 }
 function searchPlayerRow(p){
  const s=playerStats(p),teamLogo=logo(p.team),cat=categoryCode(p.catId),pos=positionCode(p);
- return '<button type="button" class="v414-player-row" data-v412-player="'+esc(p.id)+'">'+
+ const pc=/^DEL/.test(pos)?'is-del':/^DEF/.test(pos)?'is-def':/^(MED|CEN|MC|MD|MI|MCD|MCO)/.test(pos)?'is-mid':'is-jug';
+ return '<button type="button" class="v414-player-row" data-v412-player="'+esc(p.id)+'" aria-label="'+esc(p.name)+', '+esc(p.team)+', '+s.goals+' goles, '+s.played+' partidos, '+s.points+' puntos">'+
    '<span class="v414-player-photo"><img src="'+esc(teamLogo)+'" alt="'+esc(p.team)+'"><i>'+esc(initials(p.name))+'</i></span>'+
    '<span class="v414-player-main">'+
      '<b>'+esc(p.name)+'</b>'+
-     '<span class="v414-player-meta"><span class="v414-mx-flag" title="Liga en México"><i></i></span><strong>'+esc(pos)+'</strong><em>'+esc(p.team)+'</em></span>'+
+     '<span class="v414-player-meta"><span class="v414-mx-flag" title="México"><i></i></span><strong class="'+pc+'">'+esc(pos)+'</strong><em>'+esc(p.team)+'</em></span>'+
    '</span>'+
-   '<span class="v414-num"><small>GOL</small><b>'+s.goals+'</b></span>'+
-   '<span class="v414-num v414-pj"><small>PJ</small><b>'+s.played+'</b></span>'+
-   '<span class="v414-num v414-pts"><i>▲</i><small>PTS</small><b>'+s.points+'</b></span>'+
+   '<span class="v414-num" title="Goles"><b>'+s.goals+'</b></span>'+
+   '<span class="v414-num v414-pj" title="Partidos jugados"><b>'+s.played+'</b></span>'+
+   '<span class="v414-num v414-pts" title="Puntos"><i>▲</i><b>'+s.points+'</b></span>'+
    '<span class="v414-badges"><span class="v414-league-badge"><img src="'+LEAGUE+'" alt="Liga"><small>'+esc(cat)+'</small></span><span class="v414-team-badge"><img src="'+esc(teamLogo)+'" alt="'+esc(p.team)+'"></span></span>'+
  '</button>';
 }
