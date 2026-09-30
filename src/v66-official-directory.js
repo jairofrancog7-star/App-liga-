@@ -418,12 +418,72 @@ function playerCards(roster){
  if(!roster.length)return '<div class="v431-empty">La plantilla de este equipo todavía no tiene jugadores sincronizados para esta sección.</div>';
  return '<div class="v431-player-rail">'+roster.slice(0,12).map(function(n){return '<button type="button" class="v431-player-card" data-v431-player="'+esc(n)+'"><span>'+esc(initials(n)||"JR")+'</span><b>'+esc(n)+'</b><small>Edición jugador</small></button>'}).join("")+'</div>';
 }
+function v436Product(title,sub,variant,logo,price,badge){
+ return '<article class="v436-product" data-v431-product data-search="'+esc((title+" "+sub).toLowerCase())+'">'+
+  '<div class="v436-product-art">'+shirt(logo,variant,"","","")+
+    '<button type="button" class="v436-plus" data-v436-add="'+esc(title)+'" aria-label="Añadir">＋</button>'+
+    '<button type="button" class="v436-fav" data-v431-heart aria-label="Favorito">♡</button>'+
+    (badge?'<span class="v436-badge">'+esc(badge)+'</span>':'')+
+  '</div>'+
+  '<strong>'+esc(price||"Mex$1,300.00")+'</strong><p>'+esc(title)+'</p><small>'+esc(sub)+'</small>'+
+ '</article>';
+}
+function v436CategoryPanel(team,logo){
+ return '<section class="v436-category-panel" data-v436-category-panel>'+
+   '<div class="v436-category-view" data-v436-category="new">'+
+     '<div class="v436-breadcrumb">Atrás <b>›</b> Inicio <b>›</b> Novedades</div>'+
+     '<h2>Novedades</h2><p class="v436-desc">Descubre los lanzamientos más recientes de '+esc(team)+' y encuentra lo nuevo del equipo.</p>'+
+     '<button type="button" class="v436-show-more">Ver más</button>'+
+     '<div class="v436-filter-chips"><button class="active" data-v436-chip>TODO</button></div>'+
+     '<div class="v436-sort-row"><button type="button" data-v436-sort>⌃⌄ <span>Recomendados</span></button><button type="button" data-v436-filter-toggle>☷ <span>Filtrar</span></button></div>'+
+     '<div class="v436-products">'+
+       v436Product("Camiseta edición nueva",team+" · Colección 2026","third",logo,"Mex$1,300.00","Nuevo")+
+       v436Product("Colección del club",team+" · Edición especial","special",logo,"Mex$1,450.00","Nuevo")+
+       v436Product("Entrenamiento Pro",team+" · Training","training",logo,"Mex$1,250.00","")+
+       v436Product("Portero edición club",team+" · Guardameta","keeper",logo,"Mex$1,550.00","")+
+     '</div>'+
+   '</div>'+
+   '<div class="v436-category-view" data-v436-category="kits">'+
+     '<div class="v436-promo">Hasta 40% en artículos seleccionados · <u>Ver colección</u></div>'+
+     '<div class="v436-kit-tiles">'+
+       '<button data-v436-chip><div>'+shirt(logo,"home","","","")+'</div><b>Local</b></button>'+
+       '<button data-v436-chip><div>'+shirt(logo,"away","","","")+'</div><b>Visitante</b></button>'+
+       '<button data-v436-chip><div>'+shirt(logo,"third","","","")+'</div><b>Tercera</b></button>'+
+     '</div>'+
+     '<div class="v436-breadcrumb">Atrás <b>›</b> Inicio <b>›</b> Equipaciones</div>'+
+     '<h2>Equipaciones</h2><p class="v436-desc">Lleva los colores de '+esc(team)+' con las equipaciones del club, adaptadas al estilo de la Liga.</p>'+
+     '<button type="button" class="v436-show-more">Ver más</button>'+
+     '<div class="v436-filter-chips"><button class="active" data-v436-chip>TODO</button><button data-v436-chip>LOCAL</button><button data-v436-chip>VISITANTE</button><button data-v436-chip>TERCERA</button><button data-v436-chip>PORTERO</button></div>'+
+     '<div class="v436-sort-row"><button type="button" data-v436-sort>⌃⌄ <span>Recomendados</span></button><button type="button" data-v436-filter-toggle>☷ <span>Filtrar</span></button></div>'+
+     '<div class="v436-products">'+
+       v436Product("Primera equipación",team+" · Local","home",logo,"Mex$1,300.00","Nuevo")+
+       v436Product("Segunda equipación",team+" · Visitante","away",logo,"Mex$1,300.00","")+
+       v436Product("Tercera equipación",team+" · Alternativa","third",logo,"Mex$1,350.00","")+
+       v436Product("Equipación de portero",team+" · Guardameta","keeper",logo,"Mex$1,450.00","")+
+     '</div>'+
+   '</div>'+
+   '<div class="v436-category-view" data-v436-category="training">'+
+     '<div class="v436-breadcrumb">Atrás <b>›</b> Inicio <b>›</b> Entrenamiento</div>'+
+     '<h2>Entrenamiento</h2><p class="v436-desc">Colección de entrenamiento de '+esc(team)+' para preparar cada partido con el estilo del equipo.</p>'+
+     '<button type="button" class="v436-show-more">Ver más</button>'+
+     '<div class="v436-filter-chips"><button class="active" data-v436-chip>TODO</button><button data-v436-chip>HOMBRE</button><button data-v436-chip>MUJER</button><button data-v436-chip>JUVENIL</button></div>'+
+     '<div class="v436-sort-row"><button type="button" data-v436-sort>⌃⌄ <span>Recomendados</span></button><button type="button" data-v436-filter-toggle>☷ <span>Filtrar</span></button></div>'+
+     '<div class="v436-products">'+
+       v436Product("Playera de entrenamiento",team+" · Training","training",logo,"Mex$1,300.00","Nuevo")+
+       v436Product("Conjunto prepartido",team+" · Training","special",logo,"Mex$1,700.00","")+
+       v436Product("Sudadera de entrenamiento",team+" · Training","third",logo,"Mex$1,650.00","")+
+       v436Product("Portero training",team+" · Guardameta","keeper",logo,"Mex$1,450.00","")+
+     '</div>'+
+   '</div>'+
+ '</section>';
+}
 function markup(team,cat,roster,logo){
  var first=roster[0]||"Edición del equipo";
  return '<section class="v431-store" data-v431-store data-v66-directory="store">'+
  '<header class="v431-store-head v435-store-head"><button type="button" class="v431-back v435-back" data-v431-back aria-label="Volver"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m15 5-7 7 7 7"/></svg></button>'+crest(team,logo,"v431-head-crest")+'<div class="v431-head-copy v435-store-title"><b>'+esc(team)+' <span>Store</span></b></div><div class="v435-head-actions"><button type="button" class="v431-head-icon v435-icon" data-v431-search-toggle aria-label="Buscar"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.4"/><path d="m15.3 15.3 5 5"/></svg></button><button type="button" class="v431-head-icon v435-icon v435-wishlist" data-v435-wishlist aria-label="Favoritos"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20.2 4.4 13C.7 9.5 2.2 4 6.7 4c2.3 0 4 1.3 5.3 3 1.3-1.7 3-3 5.3-3 4.5 0 6 5.5 2.3 9L12 20.2Z"/></svg></button><button type="button" class="v431-head-icon v431-cart-button v435-icon" data-v431-cart-toggle aria-label="Carrito"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 7h14l-1.1 12H6.1L5 7Z"/><path d="M9 7V5.8A3 3 0 0 1 12 3a3 3 0 0 1 3 2.8V7"/></svg><em data-v431-cart-count>0</em></button></div></header>'+
  '<div class="v431-search-panel v435-search-panel" data-v431-search-panel><span>⌕</span><input type="search" data-v431-search placeholder="Buscar en '+esc(team)+' Store"><button type="button" data-v431-search-close>×</button></div>'+
- '<nav class="v431-shop-tabs v435-shop-tabs"><button class="active" data-v431-jump="novedades">Para ti</button><button data-v431-jump="novedades">Novedades</button><button data-v431-jump="equipaciones">Equipaciones</button><button data-v431-jump="colecciones">Entrenamiento</button><button data-v431-jump="jugadores">Jugadores</button></nav>'+
+ '<nav class="v431-shop-tabs v435-shop-tabs"><button type="button" class="v436-close" data-v436-close aria-label="Cerrar categoría">×</button><button class="active" data-v436-view="home">Para ti</button><button data-v436-view="new">Novedades</button><button data-v436-view="kits">Equipaciones</button><button data-v436-view="training">Entrenamiento</button><button data-v431-jump="jugadores">Jugadores</button></nav>'+
+ v436CategoryPanel(team,logo)+
  '<section class="v431-hero" id="novedades"><div class="v431-hero-copy"><small>COLECCIÓN '+esc(team.toUpperCase())+'</small><h1>La tienda del equipo, dentro de tu Liga</h1><p>Equipaciones, personalización y colección del club en un solo diseño.</p><button type="button" data-v431-jump="equipaciones">VER COLECCIÓN</button></div><div class="v431-hero-shirt">'+shirt(logo,"home","","","")+'</div></section>'+
  '<section class="v431-block v431-player-edition"><div class="v431-section-title"><div><small>EDICIÓN JUGADOR</small><h2>'+esc(first)+'</h2></div><button data-v431-jump="jugadores">Ver jugadores ›</button></div><div class="v431-edition-card"><div class="v431-edition-art">'+shirt(logo,"special","","","")+'</div><div><small>DISEÑO DEL CLUB</small><h3>Edición jugador</h3><p>Elige un jugador de la plantilla y prepara su versión personalizada.</p><button type="button" data-v431-jump="personaliza">Personalizar</button></div></div></section>'+
  '<section class="v431-block" id="equipaciones"><div class="v431-section-title"><div><small>EN TENDENCIA</small><h2>Equipaciones</h2></div><button type="button" data-v431-jump="colecciones">Ver todo</button></div><div class="v431-products">'+productCard("Primera equipación",team+" · Local","home",logo)+productCard("Segunda equipación",team+" · Visitante","away",logo)+productCard("Tercera equipación",team+" · Alternativa","third",logo)+'</div></section>'+
@@ -447,6 +507,20 @@ function addItem(team,item,detail){var a=readCart();a.push({team:team,item:item,
 function bind(team){
  var root=document.querySelector("[data-v431-store]");if(!root)return;
  var wish=root.querySelector("[data-v435-wishlist]");if(wish)wish.onclick=function(){wish.classList.toggle("active");toast(wish.classList.contains("active")?"Equipo añadido a favoritos":"Equipo quitado de favoritos")};
+ function setV436View(view){
+   var category=view&&view!=="home";
+   root.classList.toggle("v436-category-mode",!!category);
+   root.dataset.v436View=category?view:"home";
+   root.querySelectorAll("[data-v436-category]").forEach(function(v){v.classList.toggle("active",v.dataset.v436Category===view)});
+   root.querySelectorAll("[data-v436-view]").forEach(function(b){b.classList.toggle("active",b.dataset.v436View===view)});
+   try{window.scrollTo({top:0,left:0,behavior:"instant"})}catch(_){window.scrollTo(0,0)}
+ }
+ root.querySelectorAll("[data-v436-view]").forEach(function(b){b.onclick=function(){setV436View(b.dataset.v436View||"home")}});
+ var closeCategory=root.querySelector("[data-v436-close]");if(closeCategory)closeCategory.onclick=function(){setV436View("home")};
+ root.querySelectorAll("[data-v436-chip]").forEach(function(b){b.onclick=function(){var rail=b.parentElement;if(rail)rail.querySelectorAll("[data-v436-chip]").forEach(function(x){x.classList.toggle("active",x===b)})}});
+ root.querySelectorAll("[data-v436-sort]").forEach(function(b){b.onclick=function(){var s=b.querySelector("span");if(s)s.textContent=s.textContent==="Recomendados"?"Más recientes":"Recomendados"}});
+ root.querySelectorAll("[data-v436-filter-toggle]").forEach(function(b){b.onclick=function(){var v=b.closest("[data-v436-category]");if(v)v.classList.toggle("v436-filter-open");toast(v&&v.classList.contains("v436-filter-open")?"Filtros visibles":"Filtros ocultos")}});
+ root.querySelectorAll("[data-v436-add]").forEach(function(b){b.onclick=function(){addItem(team,b.dataset.v436Add,"Catálogo del equipo")}});
  root.querySelector("[data-v431-back]").onclick=function(){sessionStorage.removeItem(OPEN_KEY);sessionStorage.removeItem(TEAM_KEY);sessionStorage.removeItem(CAT_KEY);var s=document.querySelector("#screen");if(s)s.innerHTML="";window.dispatchEvent(new Event("hashchange"))};
  root.querySelectorAll("[data-v431-jump]").forEach(function(b){b.onclick=function(){var el=document.getElementById(b.dataset.v431Jump);if(el)el.scrollIntoView({behavior:"smooth",block:"start"})}});
  var panel=root.querySelector("[data-v431-search-panel]"),input=root.querySelector("[data-v431-search]");
