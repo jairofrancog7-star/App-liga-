@@ -6250,7 +6250,37 @@ function quizArenaView(){
 }
 function moreLessView(){return '<div data-v12-moreless-mount></div>'}function venuesView(){return `<div class="eyebrow">SEDES</div><h1 class="screen-title">Campos</h1><div class="news-list">${[...new Set(teams.map(t=>t.field))].map((v,i)=>`<div class="news-row"><span class="venue-thumb"></span><span><small>Sede ${i+1}</small><b>${v}</b><p>Consulta los próximos partidos programados.</p></span></div>`).join('')}</div>`}
 const views={home:homeView,competition:competitionView,match:matchView,matchCenter:()=>'<div data-v92-direct-mount></div>','match-center':()=>'<div data-v92-direct-mount></div>',video:()=>'<div data-v16-video-mount></div>',fantasy:fantasyView,fantasyTeam:fantasyTeamView,fantasyLeagues:()=>`<div class="eyebrow">FANTASY</div><h1 class="screen-title">Ligas</h1><div class="profile-card"><h2>Compite con amigos</h2><p>Crea una liga privada o únete con un código.</p><div class="button-row"><button class="btn primary" data-action="create-league">Crear liga</button><button class="btn outline" data-action="join-league">Unirme</button></div></div>`,more:moreView,ligaQR:ligaQRView,hospitality:hospitalityView,'club-store':storeView,following:()=>'<div data-v25-following-mount></div>',teams:()=>'<div data-v27-teams-mount></div>',teamDetail:()=>'<div data-v42-team-detail-mount></div>',players:playersView,playerDetail:playerDetailView,playerCompare:()=>'<div data-v123-player-compare-mount></div>',scorers:()=>'<div data-v28-scorers-mount></div>',moments:momentsView,stats:()=>'<div data-v33-stats-mount></div>',rankings:()=>'<div data-v32-rankings-mount></div>',history:()=>'<div data-v35-history-mount></div>',historyLog:()=>'<section class="v164-history-log" data-v164-history-log><div class="v164-loading">Cargando historial oficial…</div></section>',news:newsView,notices:noticesView,scheduleChanges:scheduleChangesView,newsDetail:newsDetailView,transfers:transfersView,favorites:favoritesView,search:searchView,vote:voteView,notifications:()=>'<div data-v46-notifications-mount></div>',privacy:privacyView,profile:profileView,predictor:predictorView,predictorSix:predictorSixView,quizArena:quizArenaView,quiz:quizArenaView,moreLess:moreLessView,moreLessHub:()=>`<div data-v52-mount></div>`,venues:v60VenuesView,discipline:()=>'<div data-v94-discipline-mount></div>',disciplina:()=>'<div data-v94-discipline-mount></div>',disciplineTool:()=>'<div data-v94-discipline-mount></div>',leagueTools:leagueToolsView,recruitment:()=>'<div data-v190-recruitment-mount></div>',v38Stats:v38StatsView,v38Weekly:v38WeeklyView,v38Weather:v38WeatherView,v38Alerts:v38AlertsView,tableExport:v64ExportTableView,bracketBuilder:v64BracketView,credentialBuilder:v64CredentialBuilderView,cedulaBuilder:v64CedulaBuilderView,agendaBuilder:v64AgendaView,motionHub:v64MotionView,suspensionTool:v64SuspensionView,rulebook:rulebookView,matchday:matchdayView,weatherFields:weatherFieldsView,cedulas:cedulasView,cedulaDetail:cedulaDetailView,credential:credentialView,publications:publicationsView,tactics:tacticsView,simulator:simulatorView,jrControl:jrControlView,error:()=>`<div class="empty-state"><div class="empty-illustration error"></div><h2>No pudimos cargar la información</h2><p>Comprueba tu conexión e inténtalo nuevamente.</p><button class="btn outline" data-route="home">Reintentar</button></div>`};
-function render(){if(state.route==='quiz'){state.route='quizArena';if(location.hash!=='#/quizArena')history.replaceState(null,'','#/quizArena')}if(state.route==='theme'){setTheme(state.theme==='dark'?'light':'dark');state.route='more'}screen.innerHTML=views[state.route]?views[state.route]():views.home();bind();window.scrollTo(0,0)}
+function render(){
+  if(state.route==='quiz'){
+    state.route='quizArena';
+    if(location.hash!=='#/quizArena')history.replaceState(null,'','#/quizArena');
+  }
+  if(state.route==='theme'){
+    setTheme(state.theme==='dark'?'light':'dark');
+    state.route='more';
+  }
+
+  /* V395 — Quiz Arena no usa la barra superior global.
+     La retiramos físicamente del DOM mientras esta ruta está activa para que
+     ningún CSS posterior pueda volver a mostrarla. Al salir, se restaura en
+     su posición original antes de #screen. */
+  const app=document.querySelector('#app');
+  const liveScreen=document.querySelector('#screen');
+  if(state.route==='quizArena'){
+    const globalTopbar=app?.querySelector(':scope > .topbar');
+    if(globalTopbar){
+      window.__LJR_QUIZ_DETACHED_TOPBAR__=globalTopbar;
+      globalTopbar.remove();
+    }
+  }else if(window.__LJR_QUIZ_DETACHED_TOPBAR__ && app && liveScreen && !app.querySelector(':scope > .topbar')){
+    app.insertBefore(window.__LJR_QUIZ_DETACHED_TOPBAR__,liveScreen);
+    window.__LJR_QUIZ_DETACHED_TOPBAR__=null;
+  }
+
+  screen.innerHTML=views[state.route]?views[state.route]():views.home();
+  bind();
+  window.scrollTo(0,0);
+}
 function go(route,push=true){if(route==='quiz')route='quizArena';if(push&&state.route!==route)state.history.push(state.route);state.route=route;location.hash='#/'+route;render()}
 function bind(){document.querySelectorAll('[data-route]').forEach(el=>el.onclick=()=>go(el.dataset.route));
 function noticeDraft(){
