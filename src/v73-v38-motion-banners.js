@@ -405,36 +405,12 @@
       return;
     }
 
-    /* V106 — PERFIL DE EQUIPO:
-       La animación "IDENTIDAD DE CLUB" nunca va arriba ni en medio.
-       Primero se muestra la ficha V42 completa (escudo, acciones, tabs, datos);
-       después, al final de la pantalla, se agrega el banner animado. */
+    /* V380 — PERFIL DE EQUIPO:
+       El banner cinematográfico ya no se monta en Team Detail. En móvil
+       ocupaba cientos de píxeles y podía verse como una imagen gigante debajo
+       de las pestañas. La ficha de equipo conserva únicamente su contenido real. */
     if(r==='teamDetail'){
-      const nativeTeam=screen.querySelector('[data-v42-reference="teamDetail"]');
-      if(!nativeTeam){
-        screen.querySelectorAll(':scope > [data-v73-motion-banner]').forEach(x=>x.remove());
-        syncAll();
-        return;
-      }
-      let banner=screen.querySelector(':scope > [data-v73-motion-banner]');
-      if(!banner){
-        banner=buildBanner(cfg);
-        banner.classList.add('v73-below-native','v73-team-detail-bottom');
-        banner.dataset.v73BelowNative='team-detail';
-      }
-
-      /* V123 — PERFIL / COMPARAR EQUIPOS:
-         V73 y V105 antes intentaban ser ambos el último hijo de #screen.
-         Sus MutationObserver se alternaban moviendo los bloques y el navegador
-         regresaba el scroll al llegar al final. El orden ahora es estable:
-         ficha V42 -> banner V73 -> herramientas V105. */
-      const greenTools=screen.querySelector(':scope > #v105-bottom[data-v105-route="teamDetail"]');
-      if(greenTools){
-        if(banner.nextElementSibling!==greenTools)screen.insertBefore(banner,greenTools);
-      }else if(screen.lastElementChild!==banner){
-        screen.appendChild(banner);
-      }
-
+      screen.querySelectorAll(':scope > [data-v73-motion-banner], .v73-team-detail-bottom').forEach(x=>x.remove());
       syncAll();
       return;
     }
