@@ -4216,6 +4216,30 @@ function homeView(){
           <span class="v65-field-go">›</span>
         </button>`).join('')}
       </div>
+    </section>
+
+    <section class="section v427-home-feed" aria-label="Noticias y actualidad">
+      <div class="v427-feed-tabs">
+        <button type="button" class="v427-feed-tab active">Para ti</button>
+        <button type="button" class="v427-feed-tab" data-route="news">Top News</button>
+        <button type="button" class="v427-feed-tab" data-route="following">Mi equipo</button>
+        <button type="button" class="v427-feed-tab" data-route="transfers">Mercado</button>
+      </div>
+      <div class="v427-feed-list">
+        ${news.slice(0,3).map((n,i)=>`
+          <button type="button" class="v427-feed-card" data-news="${n.id}">
+            <span class="v427-feed-copy">
+              <strong>${n.title}</strong>
+              <span class="v427-feed-meta">
+                <img src="https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/assets/liga-logo.webp" alt="" loading="lazy" decoding="async">
+                <span><b>Liga Juventino</b><small> · ${n.date}</small></span>
+              </span>
+            </span>
+            <span class="v427-feed-thumb">
+              <img src="${homeStandings[i]?.logo||'https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/assets/liga-logo.webp'}" alt="" loading="lazy" decoding="async">
+            </span>
+          </button>`).join('')}
+      </div>
     </section>`;
 }
 function competitionBody(){if(state.competitionTab==='standings')return `<div class="segmented"><button class="segment active">Compacta</button><button class="segment">Completa</button><button class="segment">Criterios</button></div><div class="table-wrap"><table class="table"><thead><tr><th>#</th><th>Equipo</th><th>P</th><th>+/-</th><th>Pts</th><th>Forma</th></tr></thead><tbody>${teams.map((t,i)=>`<tr><td>${i+1}</td><td>${teamCell(t.code)}</td><td>${t.p}</td><td>${t.gd>0?'+':''}${t.gd}</td><td><b>${t.pts}</b></td><td>${formDots(t.form)}</td></tr>`).join('')}</tbody></table></div>`;if(state.competitionTab==='bracket')return `<div class="empty-state"><div class="empty-illustration"></div><h2>Cuadro no publicado</h2><p>No hay una liguilla oficial publicada en AdminFut para mostrar en este momento.</p></div>`;const filtered=matches.filter(m=>(state.selectedDay==='Todos'||m.day===state.selectedDay)&&(state.matchCategory==='Todas'||m.category===state.matchCategory));return `<div class="datebar">${['Ayer','Hoy','Mañana','Todos'].map(d=>`<button class="chip ${state.selectedDay===d?'active':''}" data-day="${d}">${d}</button>`).join('')}</div><div class="chips"><button class="chip ${state.matchCategory==='Todas'?'active':''}" data-category="Todas">Todas</button><button class="chip ${state.matchCategory==='Primera Fuerza'?'active':''}" data-category="Primera Fuerza">Primera Fuerza</button><button class="chip ${state.matchCategory==='Veteranos 35+'?'active':''}" data-category="Veteranos 35+">Veteranos 35+</button></div><h2 class="compact-title">${state.selectedDay==='Todos'?'Todos los partidos':state.selectedDay}</h2><div class="card match-card">${filtered.length?filtered.map(matchRow).join(''):`<div class="empty-mini">No hay partidos con estos filtros.</div>`}</div>`}
