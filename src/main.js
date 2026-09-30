@@ -5047,7 +5047,13 @@ function v63FeatureCard(icon,kicker,title,desc,route,extra=''){
     '<span class="v63-feature-arrow">›</span></button>';
 }
 function v38StatsView(){
-  return '<section class="v60-tool-page v63-page">'+
+  const table=[...teams]
+    .filter(t=>t&&t.category==='Primera Fuerza')
+    .sort((a,b)=>(Number(b.pts)||0)-(Number(a.pts)||0)||(Number(b.gd)||0)-(Number(a.gd)||0)||(Number(b.p)||0)-(Number(a.p)||0));
+  const leader=table[0]||null;
+  const preview=table.slice(0,6);
+
+  return '<section class="v60-tool-page v63-page v399-stats-page">'+
     v60Header('TABLA Y ESTADÍSTICAS','La temporada, de un vistazo','Posiciones, goleadores y rendimiento con accesos rápidos dentro del diseño actual de la app.')+
     '<div class="v63-action-grid">'+
       '<button class="v60-btn" data-v63-comp="standings">Tabla</button>'+
@@ -5055,6 +5061,30 @@ function v38StatsView(){
       '<button class="v60-btn outline" data-safe-route="safe-performance">Rendimiento</button>'+
     '</div>'+
     '<div class="v60-panel"><p class="v60-note">Estos accesos reutilizan las pantallas existentes; no sustituyen la navegación ni cambian el diseño principal.</p></div>'+
+
+    '<section class="v399-stats-summary" aria-label="Resumen de Primera Fuerza">'+
+      '<div class="v399-stats-heading"><div><small>PRIMERA FUERZA</small><h2>Tabla rápida</h2></div><button type="button" data-v63-comp="standings">Ver completa ›</button></div>'+
+      (leader?'<div class="v399-leader-card">'+
+        '<span class="v399-leader-logo"><img src="'+leader.logo+'" alt="" loading="lazy" decoding="async"></span>'+
+        '<span class="v399-leader-copy"><small>LÍDER ACTUAL</small><b>'+leader.name+'</b><em>'+leader.p+' PJ · DG '+(leader.gd>0?'+':'')+leader.gd+'</em></span>'+
+        '<strong>'+leader.pts+'<small>PTS</small></strong>'+
+      '</div>':'')+
+      '<div class="v399-mini-table" role="table" aria-label="Primeros lugares de la tabla">'+
+        '<div class="v399-mini-head" role="row"><span>#</span><span>Equipo</span><span>PJ</span><span>DG</span><span>PTS</span></div>'+
+        preview.map((t,i)=>'<button type="button" class="v399-mini-row" data-v63-comp="standings" role="row">'+
+          '<span class="v399-pos">'+(i+1)+'</span>'+
+          '<span class="v399-team"><img src="'+t.logo+'" alt="" loading="lazy" decoding="async"><b>'+t.name+'</b></span>'+
+          '<span>'+t.p+'</span>'+
+          '<span class="'+(t.gd>0?'positive':t.gd<0?'negative':'')+'">'+(t.gd>0?'+':'')+t.gd+'</span>'+
+          '<strong>'+t.pts+'</strong>'+
+        '</button>').join('')+
+      '</div>'+
+      '<div class="v399-stat-chips">'+
+        '<span><small>EQUIPOS</small><b>'+table.length+'</b></span>'+
+        '<span><small>LÍDER</small><b>'+(leader?leader.name:'—')+'</b></span>'+
+        '<span><small>PUNTOS</small><b>'+(leader?leader.pts:'—')+'</b></span>'+
+      '</div>'+
+    '</section>'+
   '</section>';
 }
 function v38WeeklyView(){
