@@ -660,6 +660,11 @@ function tvPanel(){
  const scorers=Object.values(db.categories||{}).flatMap(c=>(c.scorers?.[0]?.rows||[]).filter(x=>x?.[1]&&x?.[2]&&/^\d+$/.test(String(x?.[3]||''))).map(x=>({name:x[1],team:x[2],goals:Number(x[3])||0}))).sort((a,b)=>b.goals-a.goals);
  let old=document.querySelector('.v160-tv-layer');if(old)old.remove();
  const layer=document.createElement('div');layer.className='v160-tv-layer';layer.innerHTML=
+  '<header class="v408-tv-topbar" aria-label="Barra superior de Modo TV">'+
+    '<button class="v408-tv-back" type="button" aria-label="Regresar"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14.5 5.5 8 12l6.5 6.5M8 12h12"/></svg></button>'+
+    '<span class="v408-tv-trophy" aria-hidden="true"></span>'+
+    '<button class="v408-tv-profile" type="button" aria-label="Perfil"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9.6"/><circle cx="12" cy="8.1" r="2.85"/><path d="M5.35 19.15c1.55-3.35 3.76-4.9 6.65-4.9s5.1 1.55 6.65 4.9"/></svg></button>'+
+  '</header>'+
   '<section class="v160-tv-board" role="dialog" aria-modal="true">'+
    '<article class="v160-tv-main-card">'+
     '<div class="v160-tv-live '+(live?'is-live':'')+'">'+(live?'● EN VIVO · '+esc(phase):'PRÓXIMO PARTIDO')+'</div>'+
@@ -677,6 +682,8 @@ function tvPanel(){
  document.body.classList.add('v160-tv-open');
  const close=()=>{layer.remove();document.body.classList.remove('v160-tv-open')};
  $('.v160-tv-close',layer).onclick=close;
+ const tvBack=$('.v408-tv-back',layer);if(tvBack)tvBack.onclick=close;
+ const tvProfile=$('.v408-tv-profile',layer);if(tvProfile)tvProfile.onclick=()=>{close();go('profile')};
  $('[data-tv-match]',layer).onclick=()=>{close();go('v4-matchcenter')};
  $('[data-tv-video]',layer).onclick=()=>{close();go('video')};
  layer.addEventListener('click',e=>{if(e.target===layer)close()});
