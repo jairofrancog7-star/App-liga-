@@ -72,7 +72,11 @@
   }
   function render(){
     const active=route()==='moreLessHub';
-    document.body.classList.toggle('v52-moreless-hub-active',active);
+    document.body.classList.toggle('v52-moreless-hub-active',false);
+    if(active){
+      location.replace('#/moreLess');
+      return;
+    }
     if(!active)return;
     const screen=document.querySelector('#screen');if(!screen)return;
     if(!screen.querySelector('[data-v52-mol-hub]'))screen.innerHTML=markup();
