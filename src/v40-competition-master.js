@@ -374,12 +374,12 @@
 
   const headerTeams={
   "left": {
-    "name": "FRANCO FC",
-    "logo": "https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/assets/official-logos/franco-fc.png"
+    "name": "HERMANOS",
+    "logo": "https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/assets/official-logos/hermanos.png"
   },
   "right": {
-    "name": "HERRERAS FC",
-    "logo": "https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/assets/official-logos/herreras-fc.png"
+    "name": "LOBOS CDG",
+    "logo": "https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/assets/official-logos/lobos-cdg.png"
   }
 };
 
@@ -398,12 +398,12 @@
     return '<section class="v40-match-master" data-v40-master>'+
       '<div class="v40-actions"><button type="button" data-v40-back aria-label="Volver">'+iconBack+'</button><span></span><button type="button" data-v40-mute aria-label="Silenciar">'+iconMute+'</button><button type="button" data-v40-share aria-label="Compartir">'+iconShare+'</button></div>'+
       '<div class="v40-match-copy">'+
-        '<div class="v40-date">20 sep 2026 · '+(isVet35()?'Veteranos 35+':'Primera Fuerza')+'</div>'+
+        '<div class="v40-date">4 oct 2026 · '+(isVet35()?'Veteranos 35+':'Primera Fuerza · J7')+'</div>'+
         '<div class="v40-divider"></div>'+
-        '<div class="v40-venue">Romerillo · Juventino Rosas</div>'+
+        '<div class="v40-venue">Campo 3 · Juventino Rosas</div>'+
         '<div class="v40-match-line">'+
           '<div class="v40-side left"><strong>'+headerTeams.left.name+'</strong>'+img(headerTeams.left.logo,headerTeams.left.name,'v40-match-logo')+'</div>'+
-          '<time>08:00</time>'+
+          '<time>10:00</time>'+
           '<div class="v40-side right">'+img(headerTeams.right.logo,headerTeams.right.name,'v40-match-logo')+'<strong>'+headerTeams.right.name+'</strong></div>'+
         '</div>'+
       '</div>'+
