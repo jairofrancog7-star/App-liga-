@@ -420,7 +420,8 @@ function shirtPalette(variant){
 }
 function shirt(logo,variant,label,number,name){
  var v=variant||"home",p=shirtPalette(v),id="v441shirt"+(++V441_SHIRT_SEQ);
- return '<div class="v431-shirt v440-shirt v441-shirt v442-shirt-3d '+esc(v)+'" data-v442-tilt>'+
+ return '<div class="v431-shirt v440-shirt v441-shirt v442-shirt-3d v443-shirt-webgl '+esc(v)+'" data-v442-tilt data-v443-variant="'+esc(v)+'" data-v443-logo="'+esc(logo||"")+'">'+
+  '<img class="v443-3d-render" alt="" aria-hidden="true">'+
   '<svg class="v441-jersey-svg" viewBox="0 0 220 260" role="img" aria-label="Camiseta">'+
    '<defs>'+
     '<linearGradient id="'+id+'g" x1="0" x2="1" y1="0" y2="1"><stop offset="0" stop-color="'+p.a+'"/><stop offset=".48" stop-color="'+p.b+'"/><stop offset="1" stop-color="'+p.c+'"/></linearGradient>'+
@@ -459,6 +460,171 @@ function shirt(logo,variant,label,number,name){
   '<i class="v442-edge v442-edge-left"></i><i class="v442-edge v442-edge-right"></i>'+
   '<i class="v440-shirt-shadow"></i><i class="v442-floor-shadow"></i>'+
  '</div>';
+}
+
+var V443_THREE_PROMISE=null,V443_RENDER_CACHE=new Map();
+function v443Three(){
+ if(!V443_THREE_PROMISE){
+   V443_THREE_PROMISE=import("https://cdn.jsdelivr.net/npm/three@0.169.0/build/three.module.js").catch(function(){return null});
+ }
+ return V443_THREE_PROMISE;
+}
+function v443Hex(v){
+ var p=shirtPalette(v);
+ return {base:p.b,light:p.a,dark:p.c,ink:p.ink};
+}
+function v443LoadTexture(THREE,url){
+ return new Promise(function(resolve){
+   if(!url){resolve(null);return}
+   try{
+     var loader=new THREE.TextureLoader();
+     loader.setCrossOrigin("anonymous");
+     loader.load(url,function(tex){
+       try{tex.colorSpace=THREE.SRGBColorSpace}catch(_){}
+       tex.anisotropy=4;resolve(tex);
+     },undefined,function(){resolve(null)});
+   }catch(_){resolve(null)}
+ });
+}
+async function v443RenderVariant(variant,logo){
+ var THREE=await v443Three(); if(!THREE)return "";
+ var key=String(variant||"home")+"|"+String(logo||"");
+ if(V443_RENDER_CACHE.has(key))return V443_RENDER_CACHE.get(key);
+ var promise=(async function(){
+   var w=420,h=500,renderer;
+   try{
+     renderer=new THREE.WebGLRenderer({alpha:true,antialias:true,preserveDrawingBuffer:true,powerPreference:"high-performance"});
+     renderer.setPixelRatio(Math.min(2,window.devicePixelRatio||1));
+     renderer.setSize(w,h,false);
+     renderer.shadowMap.enabled=true;
+     renderer.shadowMap.type=THREE.PCFSoftShadowMap;
+     try{renderer.outputColorSpace=THREE.SRGBColorSpace}catch(_){}
+     renderer.toneMapping=THREE.ACESFilmicToneMapping;
+     renderer.toneMappingExposure=1.12;
+
+     var scene=new THREE.Scene();
+     var camera=new THREE.PerspectiveCamera(29,w/h,.1,100);
+     camera.position.set(6.6,4.0,11.8);
+     camera.lookAt(0,.25,0);
+
+     var hemi=new THREE.HemisphereLight(0xffffff,0x25346f,2.15); scene.add(hemi);
+     var keyLight=new THREE.DirectionalLight(0xffffff,5.2);keyLight.position.set(-5,8,9);keyLight.castShadow=true;
+     keyLight.shadow.mapSize.set(1024,1024);scene.add(keyLight);
+     var rim=new THREE.DirectionalLight(0x7b8cff,3.2);rim.position.set(6,3,-4);scene.add(rim);
+     var fill=new THREE.DirectionalLight(0xffffff,1.75);fill.position.set(4,-1,7);scene.add(fill);
+
+     // Actual extruded 3D T-shirt geometry.
+     var s=new THREE.Shape();
+     s.moveTo(-1.55,2.85);
+     s.lineTo(-2.42,2.38); s.lineTo(-3.5,1.48); s.lineTo(-2.72,.28);
+     s.lineTo(-2.02,.76); s.lineTo(-1.86,.48); s.lineTo(-1.86,-3.02);
+     s.quadraticCurveTo(-.9,-3.18,0,-3.14);
+     s.quadraticCurveTo(.9,-3.18,1.86,-3.02);
+     s.lineTo(1.86,.48); s.lineTo(2.02,.76); s.lineTo(2.72,.28);
+     s.lineTo(3.5,1.48); s.lineTo(2.42,2.38); s.lineTo(1.55,2.85);
+     s.quadraticCurveTo(.9,2.52,.62,2.38);
+     s.quadraticCurveTo(0,1.98,-.62,2.38);
+     s.quadraticCurveTo(-.9,2.52,-1.55,2.85);
+
+     var geo=new THREE.ExtrudeGeometry(s,{depth:.42,bevelEnabled:true,bevelSegments:5,steps:2,bevelSize:.11,bevelThickness:.11,curveSegments:10});
+     geo.center();
+
+     // Give the front actual cloth waves so light reacts like fabric, not a flat extrusion.
+     var pos=geo.attributes.position;
+     for(var i=0;i<pos.count;i++){
+       var x=pos.getX(i),y=pos.getY(i),z=pos.getZ(i);
+       var front=z>.05;
+       if(front){
+         var wave=Math.sin(y*2.25+x*.85)*.035 + Math.sin(x*3.15-y*.42)*.018;
+         var waist=Math.exp(-Math.pow(y+.9,2)*.7)*Math.cos(x*2.1)*.025;
+         pos.setZ(i,z+wave+waist);
+       }
+     }
+     pos.needsUpdate=true;geo.computeVertexNormals();
+
+     var pal=v443Hex(variant);
+     var mat=new THREE.MeshPhysicalMaterial({
+       color:new THREE.Color(pal.base),
+       roughness:.62,
+       metalness:.02,
+       clearcoat:.08,
+       clearcoatRoughness:.82,
+       sheen:1,
+       sheenRoughness:.72,
+       sheenColor:new THREE.Color(pal.light),
+       side:THREE.DoubleSide
+     });
+     var jersey=new THREE.Mesh(geo,mat);jersey.castShadow=true;jersey.receiveShadow=true;
+     jersey.rotation.set(-.10,.34,-.03);
+     scene.add(jersey);
+
+     // Collar ring as separate geometry for depth.
+     var collarMat=new THREE.MeshPhysicalMaterial({color:new THREE.Color(pal.light),roughness:.55,metalness:0});
+     var collar=new THREE.TorusGeometry(.63,.075,18,64,Math.PI*1.1);
+     var collarMesh=new THREE.Mesh(collar,collarMat);
+     collarMesh.position.set(0,2.10,.31); collarMesh.rotation.set(0,0,Math.PI*.95); collarMesh.scale.set(1,.62,1);
+     collarMesh.rotation.y=.34; scene.add(collarMesh);
+
+     // Sleeve seam piping.
+     var seamMat=new THREE.MeshStandardMaterial({color:new THREE.Color(pal.light),roughness:.6});
+     function seam(x,rot){
+       var g=new THREE.CylinderGeometry(.035,.035,1.65,12);
+       var m=new THREE.Mesh(g,seamMat);m.position.set(x,1.35,.34);m.rotation.set(0,.34,rot);scene.add(m);
+     }
+     seam(-2.36,-.78);seam(2.36,.78);
+
+     // Team crest as a real front plane with tiny physical separation.
+     var tex=await v443LoadTexture(THREE,logo);
+     if(tex){
+       var crestMat=new THREE.MeshBasicMaterial({map:tex,transparent:true,depthWrite:false,side:THREE.DoubleSide});
+       var crest=new THREE.Mesh(new THREE.PlaneGeometry(.74,.74),crestMat);
+       crest.position.set(.55,.83,.48); crest.rotation.y=.34; crest.rotation.x=-.10; crest.rotation.z=-.03;
+       scene.add(crest);
+     }
+
+     // Small fabric badge block adds another depth cue.
+     var badge=new THREE.Mesh(
+       new THREE.BoxGeometry(.75,.18,.08),
+       new THREE.MeshPhysicalMaterial({color:new THREE.Color(pal.dark),roughness:.5})
+     );
+     badge.position.set(-.42,-2.34,.49);badge.rotation.y=.34;badge.rotation.x=-.10;badge.rotation.z=-.03;scene.add(badge);
+
+     var floorMat=new THREE.ShadowMaterial({color:0x071035,opacity:.20});
+     var floor=new THREE.Mesh(new THREE.PlaneGeometry(16,16),floorMat);
+     floor.rotation.x=-Math.PI/2;floor.position.y=-3.55;floor.receiveShadow=true;scene.add(floor);
+
+     renderer.render(scene,camera);
+     var out=renderer.domElement.toDataURL("image/webp",.92);
+     geo.dispose();mat.dispose();collar.dispose();collarMat.dispose();seamMat.dispose();floorMat.dispose();
+     if(tex)tex.dispose();
+     renderer.dispose();
+     return out;
+   }catch(_){
+     try{renderer&&renderer.dispose()}catch(__){}
+     return "";
+   }
+ })();
+ V443_RENDER_CACHE.set(key,promise);
+ return promise;
+}
+async function initV4433D(root){
+ if(!root)return;
+ var nodes=[].slice.call(root.querySelectorAll(".v443-shirt-webgl"));
+ var seen=new Map();
+ nodes.forEach(function(el){
+   var key=(el.dataset.v443Variant||"home")+"|"+(el.dataset.v443Logo||"");
+   if(!seen.has(key))seen.set(key,[]);
+   seen.get(key).push(el);
+ });
+ for(const pair of seen){
+   var parts=pair[0].split("|"),variant=parts.shift()||"home",logo=parts.join("|");
+   var data=await v443RenderVariant(variant,logo);
+   if(!data)continue;
+   pair[1].forEach(function(el){
+     var img=el.querySelector(".v443-3d-render");
+     if(img){img.onload=function(){el.classList.add("v443-ready")};img.src=data}
+   });
+ }
 }
 function productCard(title,sub,variant,logo){
  return '<article class="v431-product v440-product-card" data-v431-product data-v437-open-product="'+esc(variant||"home")+'" data-v437-title="'+esc(title)+'" data-v437-price="Mex$1,300.00" data-search="'+esc((title+" "+sub).toLowerCase())+'"><button type="button" class="v431-heart" data-v431-heart aria-label="Favorito">♡</button><div class="v431-product-art">'+shirt(logo,variant,"","","")+'<span class="v440-photo-tag">NUEVO</span></div><h3>'+esc(title)+'</h3><p>'+esc(sub)+'</p><div class="v440-product-meta"><span>Vista de producto</span><b>★ 4.9</b></div><button type="button" class="v431-add" data-v431-add="'+esc(title)+'">Añadir</button></article>';
@@ -614,6 +780,7 @@ function toast(msg){var t=document.querySelector("[data-v431-toast]");if(!t)retu
 function addItem(team,item,detail){var a=readCart();a.push({team:team,item:item,detail:detail||""});writeCart(a);syncCart();toast("Añadido al carrito")}
 function bind(team){
  var root=document.querySelector("[data-v431-store]");if(!root)return;
+ initV4433D(root);
  root.querySelectorAll("[data-v442-tilt]").forEach(function(el){
    var reset=function(){el.style.setProperty("--v442-rx","-3deg");el.style.setProperty("--v442-ry","7deg");el.style.setProperty("--v442-z","0px")};
    reset();
