@@ -202,7 +202,7 @@ function setTeamTab(tab){
  return true;
 }
 function lowerActionsMarkup(t){
- return '<section class="v42-team-lower-actions"><button type="button" class="v42-compare-bottom" data-v42-compare><span><small>HERRAMIENTA DE EQUIPO</small><b>Comparar equipos</b></span><i>›</i></button></section>';
+ return '';
 }
 function notifySheet(t){if(!notifyOpen)return '';return '<div class="v42-overlay" data-v42-close-overlay><section class="v42-notify-sheet"><div class="v42-sheet-head"><h2>'+esc(t.name)+'</h2><button type="button" data-v42-close-notify>Hecho</button></div><p class="empty-mini">Las notificaciones se vinculan a este equipo registrado.</p></section></div>'}
 function compareSheet(t){
