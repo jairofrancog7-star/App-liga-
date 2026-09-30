@@ -277,16 +277,21 @@ function transferPlayerCards(filter='all',order='goals'){
    if(order==='team')return a.team.localeCompare(b.team,'es')||a.name.localeCompare(b.name,'es');
    return B.goals-A.goals||B.points-A.points||a.name.localeCompare(b.name,'es');
  });
- return list.slice(0,10).map(p=>{
-   const s=playerStats(p),teamLogo=logo(p.team),pos=positionCode(p),pc=/^DEL/.test(pos)?'is-del':/^DEF/.test(pos)?'is-def':/^(MED|CEN|MC|MD|MI|MCD|MCO)/.test(pos)?'is-mid':'is-jug';
-   return '<article class="v418-transfer-player-card">'+
-     '<button type="button" class="v418-transfer-player-open" data-v412-player="'+esc(p.id)+'">'+
-       '<span class="v418-transfer-photo"><img src="'+esc(teamLogo)+'" alt="'+esc(p.team)+'"><i class="'+pc+'">'+esc(pos)+'</i></span>'+
-       '<span class="v418-transfer-age">Registro oficial</span>'+
-       '<b class="v418-transfer-name">'+esc(p.name)+'</b>'+
-       '<span class="v418-current-club"><img src="'+esc(teamLogo)+'" alt=""><strong>'+esc(p.team)+'</strong></span>'+
-       '<span class="v418-transfer-status">Sin movimiento oficial publicado</span>'+
-       '<span class="v418-transfer-meta"><b>'+esc(p.category)+'</b><b>'+s.goals+' goles · '+s.played+' PJ</b></span>'+
+ return list.slice(0,12).map(p=>{
+   const s=playerStats(p),teamLogo=logo(p.team),pos=positionCode(p);
+   const pc=/^DEL/.test(pos)?'is-del':/^DEF/.test(pos)?'is-def':/^(MED|CEN|MC|MD|MI|MCD|MCO)/.test(pos)?'is-mid':'is-jug';
+   return '<article class="v419-transfer-card">'+
+     '<button type="button" class="v419-transfer-open" data-v412-player="'+esc(p.id)+'">'+
+       '<span class="v419-time">Registro oficial</span>'+
+       '<span class="v419-avatar"><img src="'+esc(teamLogo)+'" alt="'+esc(p.team)+'"><i class="'+pc+'">'+esc(pos)+'</i></span>'+
+       '<b class="v419-name">'+esc(p.name)+'</b>'+
+       '<div class="v419-route">'+
+         '<span class="v419-club"><img src="'+esc(teamLogo)+'" alt=""><b>'+esc(p.team)+'</b></span>'+
+         '<span class="v419-arrow">→</span>'+
+         '<span class="v419-destination"><span>—</span><b>Sin destino</b></span>'+
+       '</div>'+
+       '<div class="v419-statusline"><b>Sin movimiento oficial</b><span>'+esc(p.category)+'</span></div>'+
+       '<div class="v419-foot"><b>'+s.goals+' goles</b><span>'+s.played+' PJ · '+s.points+' pts</span></div>'+
      '</button>'+
    '</article>';
  }).join('')||'<div class="v412-empty">No hay jugadores registrados en este filtro.</div>';
@@ -296,15 +301,73 @@ function transferPlayersSection(){
  const order=localStorage.getItem('v418-transfer-player-order')||'goals';
  const filterLabel=filter==='all'?'Todos':(CAT_NAMES[filter]||'Categoría');
  const orderLabel=order==='goals'?'Goles':order==='team'?'Equipo':'Nombre';
- return '<section class="v418-transfer-players">'+
-   '<div class="v418-transfer-player-title"><small>TRANSFERENCIAS</small><h3>Jugadores</h3><p>Diseño de centro de fichajes adaptado al azul. Sólo muestra datos registrados; no inventa movimientos.</p></div>'+
-   '<div class="v418-transfer-player-toolbar">'+
-     '<button type="button" class="v418-transfer-all">Todos los jugadores</button>'+
-     '<button type="button" data-v418-transfer-filter>Filtro · '+esc(filterLabel)+'⌄</button>'+
-     '<button type="button" data-v418-transfer-order>Ordenar · '+esc(orderLabel)+'⌄</button>'+
+ return '<section class="v419-transfer-center">'+
+   '<div class="v419-transfer-head">'+
+     '<button type="button" data-v419-back aria-label="Volver">←</button>'+
+     '<b>Centro de fichajes</b>'+
+     '<button type="button" data-v419-notices aria-label="Avisos">♢</button>'+
    '</div>'+
-   '<div class="v418-transfer-player-list" data-v418-transfer-player-list>'+transferPlayerCards(filter,order)+'</div>'+
+   '<div class="v419-transfer-toolbar">'+
+     '<button type="button" class="v419-all" data-v419-all>Todos los fichajes</button>'+
+     '<button type="button" data-v419-filter-toggle>Filtro <span>⌄</span></button>'+
+     '<button type="button" data-v419-order-toggle>Ordenar <span>⌄</span></button>'+
+   '</div>'+
+   '<div class="v419-menu is-hidden" data-v419-filter-menu>'+
+     '<button data-v419-filter-value="all" class="'+(filter==='all'?'is-active':'')+'">Todos</button>'+
+     Object.entries(CAT_NAMES).map(([id,name])=>'<button data-v419-filter-value="'+id+'" class="'+(filter===id?'is-active':'')+'">'+esc(name)+'</button>').join('')+
+   '</div>'+
+   '<div class="v419-menu is-hidden" data-v419-order-menu>'+
+     '<button data-v419-order-value="goals" class="'+(order==='goals'?'is-active':'')+'">Goles</button>'+
+     '<button data-v419-order-value="name" class="'+(order==='name'?'is-active':'')+'">Nombre</button>'+
+     '<button data-v419-order-value="team" class="'+(order==='team'?'is-active':'')+'">Equipo</button>'+
+   '</div>'+
+   '<div class="v419-current-filter"><span>'+esc(filterLabel)+'</span><span>'+esc(orderLabel)+'</span></div>'+
+   '<div class="v419-transfer-list" data-v418-transfer-player-list>'+transferPlayerCards(filter,order)+'</div>'+
  '</section>';
+}
+function bindTransferPlayerTools(root){
+ const rerender=()=>{
+   const box=root.querySelector('[data-v418-transfer-player-list]');if(!box)return;
+   const filter=localStorage.getItem('v418-transfer-player-filter')||'all';
+   const order=localStorage.getItem('v418-transfer-player-order')||'goals';
+   box.innerHTML=transferPlayerCards(filter,order);
+   const chips=root.querySelectorAll('.v419-current-filter span');
+   if(chips[0])chips[0].textContent=filter==='all'?'Todos':(CAT_NAMES[filter]||'Categoría');
+   if(chips[1])chips[1].textContent=order==='goals'?'Goles':order==='team'?'Equipo':'Nombre';
+   root.querySelectorAll('[data-v419-filter-value]').forEach(b=>b.classList.toggle('is-active',b.dataset.v419FilterValue===filter));
+   root.querySelectorAll('[data-v419-order-value]').forEach(b=>b.classList.toggle('is-active',b.dataset.v419OrderValue===order));
+   bindCommon(box);
+ };
+ const closeMenus=()=>{
+   root.querySelector('[data-v419-filter-menu]')?.classList.add('is-hidden');
+   root.querySelector('[data-v419-order-menu]')?.classList.add('is-hidden');
+ };
+ root.querySelector('[data-v419-all]')?.addEventListener('click',()=>{
+   localStorage.setItem('v418-transfer-player-filter','all');
+   localStorage.setItem('v418-transfer-player-order','goals');
+   closeMenus();rerender();
+ });
+ root.querySelector('[data-v419-filter-toggle]')?.addEventListener('click',()=>{
+   const a=root.querySelector('[data-v419-filter-menu]'),b=root.querySelector('[data-v419-order-menu]');
+   b?.classList.add('is-hidden');a?.classList.toggle('is-hidden');
+ });
+ root.querySelector('[data-v419-order-toggle]')?.addEventListener('click',()=>{
+   const a=root.querySelector('[data-v419-order-menu]'),b=root.querySelector('[data-v419-filter-menu]');
+   b?.classList.add('is-hidden');a?.classList.toggle('is-hidden');
+ });
+ root.querySelectorAll('[data-v419-filter-value]').forEach(b=>b.addEventListener('click',()=>{
+   localStorage.setItem('v418-transfer-player-filter',b.dataset.v419FilterValue);
+   closeMenus();rerender();
+ }));
+ root.querySelectorAll('[data-v419-order-value]').forEach(b=>b.addEventListener('click',()=>{
+   localStorage.setItem('v418-transfer-player-order',b.dataset.v419OrderValue);
+   closeMenus();rerender();
+ }));
+ root.querySelector('[data-v419-back]')?.addEventListener('click',()=>{
+   root.scrollIntoView({behavior:'smooth',block:'start'});
+ });
+ root.querySelector('[data-v419-notices]')?.addEventListener('click',()=>go('notices'));
+ rerender();
 }
 function transfersMarkup(){
  const mode=localStorage.getItem('v412-transfer-mode')||'latest';
