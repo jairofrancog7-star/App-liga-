@@ -52,3 +52,90 @@
  .v444-stats-hero{grid-template-columns:minmax(0,1fr) 88px;padding:15px}.v444-stats-hero img{width:82px;height:82px}.v444-stats-hero h2{font-size:16px!important}
  .v444-stat-row{grid-template-columns:18px 39px 27px minmax(0,1fr) 24px}.v444-player-avatar{width:38px;height:38px}.v444-stat-person b{font-size:8.3px}
 }
+
+/* V445 — compactar Inicio, mostrar Partidos relevantes sin huecos y fijar Estadísticas debajo de Datos. */
+body[data-app-route="home"] #screen>[data-v444-home-ref]{
+  margin:10px 14px 18px!important;
+  width:auto!important;
+}
+body[data-app-route="home"] #screen>[data-v444-home-ref] .v444-home-card{
+  border-radius:16px!important;
+}
+body[data-app-route="home"] #screen>[data-v444-home-ref] .v444-home-brand{
+  min-height:92px!important;
+  padding:12px 14px!important;
+}
+body[data-app-route="home"] #screen>[data-v444-home-ref] .v444-home-brand img{
+  width:66px!important;height:66px!important;
+}
+body[data-app-route="home"] #screen>[data-v444-home-ref] .v444-home-brand h2{
+  font-size:17px!important;
+}
+body[data-app-route="home"] #screen>[data-v444-home-ref] .v444-home-season{
+  margin:9px 10px 6px!important;
+}
+body[data-app-route="home"] #screen>[data-v444-home-ref] .v444-home-clubs{
+  padding:6px 10px 11px!important;
+  gap:10px 6px!important;
+}
+body[data-app-route="home"] #screen>[data-v444-home-ref] .v444-home-club-logo,
+body[data-app-route="home"] #screen>[data-v444-home-ref] .v444-home-special-icon{
+  width:54px!important;height:54px!important;margin-bottom:5px!important;
+}
+body[data-app-route="home"] #screen>[data-v444-home-ref] .v444-home-club-logo img{
+  width:47px!important;height:47px!important;
+}
+body[data-app-route="home"] #screen>[data-v444-home-ref] .v444-home-results-head{
+  padding:3px 11px 7px!important;
+}
+body[data-app-route="home"] #screen>[data-v444-home-ref] .v444-home-results{
+  gap:5px!important;padding:0 8px 10px!important;
+}
+body[data-app-route="home"] #screen>[data-v444-home-ref] .v444-home-result{
+  min-height:55px!important;padding:6px 7px!important;
+}
+body[data-app-route="home"] #screen>[data-v444-home-ref] .v444-result-logo{
+  width:28px!important;height:28px!important;flex-basis:28px!important;
+}
+body[data-app-route="home"] #screen>[data-v444-home-ref] .v444-result-logo img{
+  width:24px!important;height:24px!important;
+}
+body[data-app-route="home"] #screen>[data-v444-home-ref] .v444-result-score strong{
+  font-size:13px!important;
+}
+
+body[data-app-route="leagueData"] #screen>[data-v444-stats-ref],
+body[data-app-route="safe-data"] #screen>[data-v444-stats-ref],
+body[data-app-route="stats"] #screen>[data-v444-stats-ref],
+body[data-app-route="v38Stats"] #screen>[data-v444-stats-ref]{
+  margin:12px 14px 22px!important;
+  width:auto!important;
+}
+body[data-app-route="leagueData"] #screen>[data-v444-stats-ref] .v444-stats-card,
+body[data-app-route="safe-data"] #screen>[data-v444-stats-ref] .v444-stats-card{
+  border-radius:16px!important;
+}
+body[data-app-route="leagueData"] #screen>[data-v444-stats-ref] .v444-stats-hero,
+body[data-app-route="safe-data"] #screen>[data-v444-stats-ref] .v444-stats-hero{
+  min-height:108px!important;padding:14px!important;
+}
+body[data-app-route="leagueData"] #screen>[data-v444-stats-ref] .v444-stats-hero img,
+body[data-app-route="safe-data"] #screen>[data-v444-stats-ref] .v444-stats-hero img{
+  width:78px!important;height:78px!important;
+}
+body[data-app-route="leagueData"] #screen>[data-v444-stats-ref] .v444-stats-hero h2,
+body[data-app-route="safe-data"] #screen>[data-v444-stats-ref] .v444-stats-hero h2{
+  font-size:15px!important;
+}
+body[data-app-route="leagueData"] #screen>[data-v444-stats-ref] .v444-stats-tabs,
+body[data-app-route="safe-data"] #screen>[data-v444-stats-ref] .v444-stats-tabs{
+  height:46px!important;
+}
+body[data-app-route="leagueData"] #screen>[data-v444-stats-ref] .v444-stats-tabs button,
+body[data-app-route="safe-data"] #screen>[data-v444-stats-ref] .v444-stats-tabs button{
+  height:44px!important;
+}
+body[data-app-route="leagueData"] #screen>[data-v444-stats-ref] .v444-stat-panel,
+body[data-app-route="safe-data"] #screen>[data-v444-stats-ref] .v444-stat-panel{
+  margin-bottom:8px!important;
+}
