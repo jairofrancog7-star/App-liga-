@@ -1,0 +1,214 @@
+/* V449 — diseños inferiores de referencia adaptados al azul.
+   Siempre aditivo: no reemplaza cabeceras ni módulos existentes. */
+#v449-reference-lower{
+  width:100%;
+  box-sizing:border-box;
+  margin:22px 0 116px;
+  color:#fff;
+  font-family:Inter,Roboto,Arial,sans-serif;
+}
+#v449-reference-lower *{box-sizing:border-box}
+#v449-reference-lower button{font:inherit}
+.v449-block{
+  width:calc(100% - 24px);
+  max-width:720px;
+  margin:0 auto 20px;
+  padding:14px;
+  border:1px solid rgba(82,143,235,.18);
+  border-radius:22px;
+  background:linear-gradient(180deg,#0a1e42 0%,#07152e 100%);
+  box-shadow:0 16px 38px rgba(0,7,27,.24);
+}
+.v449-kicker{
+  margin:0 0 12px;
+  color:#90b6e9;
+  font-size:9px;
+  font-weight:800;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+}
+.v449-ref-tabs,.v449-season-tabs,.v449-ranking-tabs,.v449-table-modes{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:6px;
+  padding:4px;
+  border-radius:14px;
+  background:#0b2854;
+}
+.v449-ref-tabs button,.v449-season-tabs button,.v449-ranking-tabs button,.v449-table-modes button{
+  min-height:38px;
+  padding:0 8px;
+  border:0;
+  border-radius:11px;
+  background:transparent;
+  color:#c7d5eb;
+  font-size:11px;
+  font-weight:700;
+}
+.v449-ref-tabs button.active,.v449-season-tabs button.active,.v449-ranking-tabs button.active,.v449-table-modes button.active{
+  background:#2f79f3;
+  color:#fff;
+  box-shadow:0 5px 13px rgba(35,105,228,.24);
+}
+.v449-round-row{
+  display:flex;
+  gap:8px;
+  overflow:auto;
+  margin:13px -2px 12px;
+  padding:2px;
+  scrollbar-width:none;
+}
+.v449-round-row::-webkit-scrollbar{display:none}
+.v449-round-row button{
+  flex:0 0 110px;
+  min-height:42px;
+  border:1px solid rgba(121,163,222,.28);
+  border-radius:9px;
+  background:#091a38;
+  color:#aebbd0;
+  font-size:10px;
+  font-weight:750;
+}
+.v449-round-row button.active{border-color:#3f8cff;color:#fff;background:#0b2859}
+.v449-fixture-stack{display:grid;gap:12px}
+.v449-fixture-card{
+  padding:14px 12px 12px;
+  border:1px solid rgba(83,137,218,.17);
+  border-radius:16px;
+  background:#081a38;
+}
+.v449-fixture-date{
+  margin-bottom:10px;
+  color:#dce7f6;
+  font-size:10px;
+  font-weight:800;
+  text-align:center;
+  text-transform:uppercase;
+}
+.v449-fixture-grid{display:grid;grid-template-columns:minmax(0,1fr) 80px minmax(0,1fr);gap:8px;align-items:center}
+.v449-fixture-team{display:flex;flex-direction:column;align-items:center;gap:6px;min-width:0;text-align:center}
+.v449-fixture-team b{color:#fff;font-size:9px;line-height:1.1}
+.v449-crest{width:54px;height:54px;display:grid;place-items:center;overflow:hidden;border-radius:12px;background:#0b2854}
+.v449-crest img{width:100%;height:100%;object-fit:contain}
+.v449-crest>b{font-size:10px}
+.v449-crest.small{width:31px;height:31px;border-radius:8px}
+.v449-crest.tiny{width:29px;height:29px;border-radius:8px;flex:0 0 29px}
+.v449-crest.micro{width:17px;height:17px;border-radius:5px;display:inline-grid;vertical-align:middle;margin-right:5px}
+.v449-crest.season{width:42px;height:42px;border-radius:9px}
+.v449-fixture-score{display:flex;flex-direction:column;align-items:center;gap:4px}
+.v449-fixture-score small{color:#80a6d8;font-size:7px;font-weight:800}
+.v449-fixture-score strong{color:#fff;font-size:20px;line-height:1}
+.v449-fixture-score button{border:0;background:none;color:#43a0ff;font-size:8px;font-weight:850}
+.v449-fixture-field{margin-top:10px;color:#86a2c9;font-size:8px;text-align:center}
+.v449-table-head,.v449-table-row{
+  display:grid;
+  grid-template-columns:34px minmax(118px,1.7fr) repeat(6,31px) 34px;
+  align-items:center;
+  gap:3px;
+}
+.v449-table-head{
+  margin-top:12px;
+  padding:0 4px 7px;
+  color:#7f9abd;
+  font-size:7px;
+  font-weight:750;
+}
+.v449-table-body{overflow-x:auto}
+.v449-table-row{
+  min-width:360px;
+  min-height:45px;
+  padding:4px;
+  border-top:1px solid rgba(102,145,205,.10);
+  color:#cbd8e9;
+  font-size:8.5px;
+  text-align:center;
+}
+.v449-table-row .v449-team{display:flex;align-items:center;gap:7px;min-width:0;text-align:left}
+.v449-table-row .v449-team b{overflow:hidden;color:#fff;font-size:9px;text-overflow:ellipsis;white-space:nowrap}
+.v449-table-row .v449-pos{display:flex;align-items:center;gap:5px;color:#fff;font-weight:800}
+.v449-table-row .v449-pos i{width:4px;height:28px;border-radius:4px;background:#2f7cff}
+.v449-table-row strong{color:#fff;font-size:10px}
+.v449-season{padding:0;overflow:hidden}
+.v449-season-head{
+  min-height:128px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+  padding:20px 20px 18px;
+  background:linear-gradient(125deg,#2258d8 0%,#1789ef 52%,#10b8dd 100%);
+}
+.v449-season-head small{display:block;color:#dcecff;font-size:8px;font-weight:750;letter-spacing:.08em}
+.v449-season-head h2{margin:5px 0 10px;color:#fff;font-size:25px;line-height:1}
+.v449-season-head b{color:#dcecff;font-size:13px}
+.v449-season-head img{width:112px;height:112px;object-fit:contain}
+.v449-season-tabs{margin:14px 14px 0}
+.v449-season-panel{padding:13px 14px 16px}
+.v449-season-controls{display:grid;grid-template-columns:1.25fr .8fr 1.1fr;gap:6px}
+.v449-season-controls button{
+  min-width:0;min-height:38px;padding:0 8px;border:1px solid rgba(141,181,235,.32);border-radius:10px;background:#081a38;color:#e2ebf8;font-size:8.5px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap
+}
+.v449-season-date{display:grid;grid-template-columns:40px 1fr 40px;align-items:center;gap:8px;margin:14px 0}
+.v449-season-date button{width:40px;height:40px;border:0;border-radius:50%;background:#0b2e63;color:#fff;font-size:24px}
+.v449-season-date div{text-align:center}
+.v449-season-date b{display:block;font-size:16px}
+.v449-season-date small{color:#9cb0ce;font-size:9px}
+.v449-season-match-list{display:grid;gap:2px;padding:8px;border-radius:17px;background:#071731}
+.v449-season-match{display:grid;grid-template-columns:minmax(0,1fr) 42px 52px 42px minmax(0,1fr);align-items:center;gap:5px;min-height:62px;color:#fff;font-size:8.5px;text-align:center}
+.v449-season-match>span:first-child{text-align:right}.v449-season-match>span:last-child{text-align:left}
+.v449-season-match>b{font-size:11px}
+.v449-table-modes{margin:12px 0}
+.v449-season-table{padding:10px;border-radius:17px;background:#071731}
+.v449-season-table-head,.v449-season-table-row{
+  display:grid;
+  grid-template-columns:28px minmax(130px,1fr) 30px 30px 30px 34px;
+  align-items:center;
+  gap:4px;
+}
+.v449-season-table-head{padding:0 5px 7px;color:#7f9abd;font-size:8px}
+.v449-season-table-row{min-height:45px;padding:4px 5px;border-top:1px solid rgba(109,149,205,.10);font-size:9px;text-align:center}
+.v449-season-table-row>span:nth-child(2){display:flex;align-items:center;gap:8px;min-width:0;text-align:left}
+.v449-season-table-row>span:nth-child(2) b{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.v449-season-table.is-form .v449-season-table-head,.v449-season-table.is-form .v449-season-table-row{grid-template-columns:28px minmax(145px,1fr) 112px}
+.v449-form{display:flex!important;align-items:center!important;justify-content:flex-end!important;gap:4px!important}
+.v449-form i{width:22px;height:22px;display:grid;place-items:center;border-radius:50%;font-style:normal;font-size:7px;font-weight:850}
+.v449-form .win{background:#0cbf6b;color:#041c12}.v449-form .loss{background:#ff3458;color:#fff}.v449-form .draw{background:#203a66;color:#d9e7f9}
+.v449-stat-toggle{display:grid;grid-template-columns:1fr 1fr 1.15fr;gap:7px}
+.v449-stat-toggle button,.v449-stat-heading button{
+  min-height:39px;border:0;border-radius:12px;background:#0b2854;color:#d6e4f6;font-size:9px;font-weight:750
+}
+.v449-stat-toggle button.active{background:#2d73e8;color:#fff}
+.v449-stat-heading{display:flex;align-items:end;justify-content:space-between;gap:10px;margin:17px 0 10px}
+.v449-stat-heading h3{margin:0;font-size:19px}.v449-stat-heading button{padding:0 12px}
+.v449-stat-card{padding:13px;border:1px solid rgba(78,137,220,.14);border-radius:17px;background:#071731}
+.v449-stat-card+.v449-stat-card{margin-top:10px}
+.v449-stat-card h4{margin:0 0 8px;font-size:14px}
+.v449-scorer-row{display:grid;grid-template-columns:24px 47px minmax(0,1fr) 34px;align-items:center;gap:8px;min-height:57px;border-top:1px solid rgba(111,151,205,.10)}
+.v449-scorer-row:first-of-type{border-top:0}
+.v449-scorer-row>span:first-child{color:#8ea7ca;font-size:10px;text-align:center}
+.v449-scorer-row>div b{display:block;color:#fff;font-size:10px}.v449-scorer-row>div small{display:flex;align-items:center;color:#93a7c5;font-size:8px}
+.v449-scorer-row>strong{color:#fff;font-size:17px;text-align:right}
+.v449-player-pic{width:47px;height:47px;display:grid;place-items:center;overflow:hidden;border-radius:11px;background:linear-gradient(180deg,#dcecff,#2b70ce)}
+.v449-player-pic img{width:100%;height:100%;object-fit:cover}
+.v449-player-pic.is-fallback{position:relative}.v449-player-pic.is-fallback>.v449-crest{width:28px;height:28px}.v449-player-pic.is-fallback>b{position:absolute;right:3px;bottom:2px;color:#fff;font-size:8px;text-shadow:0 1px 2px #000}
+.v449-ranking-tabs{margin-bottom:11px}
+.v449-ranking-feature{overflow:hidden;border-radius:17px;background:#071731}
+.v449-ranking-feature-top{display:grid;grid-template-columns:108px minmax(0,1fr) 58px;align-items:end;gap:10px;min-height:160px;padding:14px;background:linear-gradient(135deg,#0d3e86,#0b6bc6)}
+.v449-player-pic.feature{width:108px;height:132px;border-radius:16px}
+.v449-ranking-feature-top>div span{color:#67adff;font-size:13px;font-weight:850}
+.v449-ranking-feature-top h3{margin:3px 0 5px;color:#fff;font-size:20px;line-height:1}
+.v449-ranking-feature-top>div small{display:flex;align-items:center;color:#d3e2f6;font-size:9px}
+.v449-ranking-feature-top>strong{align-self:center;color:#fff;font-size:34px;text-align:center}
+.v449-ranking-feature-top>strong small{display:block;color:#b9d7ff;font-size:8px}
+.v449-ranking-list{padding:3px 12px 8px}
+.v449-ranking-more{width:100%;min-height:44px;margin-top:10px;border:0;border-radius:12px;background:#0b2854;color:#4fa7ff;font-size:10px;font-weight:850}
+.v449-empty{padding:28px 14px;color:#8fa7c8;text-align:center;font-size:10px}
+@media(max-width:390px){
+ .v449-block{width:calc(100% - 16px);padding:12px}
+ .v449-season{padding:0}
+ .v449-fixture-grid{grid-template-columns:minmax(0,1fr) 68px minmax(0,1fr)}
+ .v449-table-head,.v449-table-row{grid-template-columns:30px minmax(108px,1.6fr) repeat(6,28px) 31px}
+ .v449-season-head img{width:96px;height:96px}
+ .v449-ranking-feature-top{grid-template-columns:92px minmax(0,1fr) 46px}
+ .v449-player-pic.feature{width:92px;height:116px}
+}
