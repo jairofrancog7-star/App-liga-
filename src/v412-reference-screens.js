@@ -440,7 +440,7 @@ function bindTransfers(root){
    localStorage.setItem('v420-transfer-favs',localStorage.getItem('v420-transfer-favs')==='1'?'0':'1');
    const b=root.querySelector('[data-v420-favs]');b?.classList.toggle('is-active',localStorage.getItem('v420-transfer-favs')==='1');render();
  });
- root.querySelector('[data-v420-filter]')?.addEventListener('click',()=>root.querySelector('[data-v420-filter-menu]')?.classList.toggle('is-hidden'));
+ root.querySelectorAll('[data-v420-filter]').forEach(b=>b.addEventListener('click',()=>root.querySelector('[data-v420-filter-menu]')?.classList.toggle('is-hidden')));
  root.querySelectorAll('[data-v420-cat]').forEach(b=>b.onclick=()=>{
    localStorage.setItem('v420-transfer-cat',b.dataset.v420Cat);
    root.querySelectorAll('[data-v420-cat]').forEach(x=>x.classList.toggle('is-active',x===b));
@@ -452,7 +452,7 @@ function bindTransfers(root){
    render();
  });
  root.querySelector('[data-v420-menu]')?.addEventListener('click',()=>root.querySelector('[data-v420-side-menu]')?.classList.toggle('is-hidden'));
- root.querySelector('[data-v420-notices]')?.addEventListener('click',()=>go('notices'));
+ root.querySelector('[data-v420-notices]')?.addEventListener('click',()=>go('notifications'));
  render();bindTransferPlayerTools(root);bindCommon(root);
 }
 function mountTransfers(screen){
