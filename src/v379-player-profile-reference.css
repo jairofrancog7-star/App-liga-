@@ -1868,3 +1868,64 @@ body.v379-player-profile-active.v385-player-scrolled .v379-content{
   }
 }
 /* /V387_PLAYER_SCROLL_HEADER_REFERENCE */
+
+
+/* V388_PLAYER_CITY_FULL
+   Ciudad completa junto al equipo: tipografía más pequeña, sin puntos suspensivos. */
+.v386-player-meta{
+  gap:8px!important;
+  width:100%!important;
+  min-width:0!important;
+}
+.v386-player-meta .v379-teamline{
+  flex:0 1 auto!important;
+  min-width:0!important;
+}
+.v386-player-meta .v379-teamline b{
+  max-width:92px!important;
+  font-size:12px!important;
+}
+.v386-player-meta .v379-location{
+  flex:1 1 auto!important;
+  min-width:0!important;
+  max-width:none!important;
+  gap:3px!important;
+  font-size:10.5px!important;
+  letter-spacing:-.15px!important;
+}
+.v386-player-meta .v379-location span{
+  display:block!important;
+  max-width:none!important;
+  overflow:visible!important;
+  text-overflow:clip!important;
+  white-space:nowrap!important;
+  font-size:10.5px!important;
+  line-height:1!important;
+}
+@media(max-width:390px){
+  .v386-player-meta{
+    gap:6px!important;
+  }
+  .v386-player-meta .v379-teamline b{
+    max-width:84px!important;
+    font-size:11.2px!important;
+  }
+  .v386-player-meta .v379-location{
+    font-size:9.8px!important;
+  }
+  .v386-player-meta .v379-location span{
+    font-size:9.8px!important;
+    letter-spacing:-.2px!important;
+  }
+}
+@media(max-width:350px){
+  .v386-player-meta .v379-teamline b{
+    max-width:74px!important;
+    font-size:10.4px!important;
+  }
+  .v386-player-meta .v379-location,
+  .v386-player-meta .v379-location span{
+    font-size:9px!important;
+  }
+}
+/* /V388_PLAYER_CITY_FULL */
