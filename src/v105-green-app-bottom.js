@@ -658,6 +658,56 @@ function tvPanel(){
  const score=(/^\d+$/.test(String(r?.[3]||''))&&/^\d+$/.test(String(r?.[5]||'')))?String(r[3])+' – '+String(r[5]):'VS';
  const top=stand.slice(0,3);
  const scorers=Object.values(db.categories||{}).flatMap(c=>(c.scorers?.[0]?.rows||[]).filter(x=>x?.[1]&&x?.[2]&&/^\d+$/.test(String(x?.[3]||''))).map(x=>({name:x[1],team:x[2],goals:Number(x[3])||0}))).sort((a,b)=>b.goals-a.goals);
+
+ const logoFor=name=>{
+   try{const u=window.LJR_OFFICIAL_API?.getLogo?.(name)||window.LJR_TEAM_LOGOS?.get?.(name)||window.V66_OFFICIAL_DIRECTORY?.logoFor?.(name)||'';if(u)return u}catch(_){}
+   const hit=Object.entries(db.team_logos||{}).find(([k])=>norm(k)===norm(name))?.[1];
+   if(typeof hit==='string')return /^https?:/i.test(hit)?hit:GREEN+String(hit).replace(/^\.?\//,'');
+   const p=hit?.local||hit?.source||hit?.url||'';
+   return p?( /^https?:/i.test(p)?p:GREEN+String(p).replace(/^\.?\//,'') ):'';
+ };
+ const initials=name=>String(name||'JR').split(/\s+/).filter(Boolean).map(x=>x[0]).join('').slice(0,3).toUpperCase();
+ const logoHtml=name=>{const u=logoFor(name);return u?'<img src="'+esc(u)+'" alt="'+esc(name)+'" loading="lazy" decoding="async">':'<span>'+esc(initials(name))+'</span>'};
+ const all=[];
+ Object.entries(db.categories||{}).forEach(([cid,c])=>{
+   (c?.fixtures||[]).forEach(g=>(g?.rows||[]).forEach((row,ri)=>{
+     if(!row?.[2]||!row?.[6])return;
+     const hs=String(row?.[3]??'').trim(),as=String(row?.[5]??'').trim(),played=/^\d+$/.test(hs)&&/^\d+$/.test(as);
+     all.push({key:cid+':'+String(row?.[0]??ri),cat:cid,category:c?.name||'Liga Juventino',home:String(row[2]),away:String(row[6]),hs:played?hs:'',as:played?as:'',played,time:parse(row?.[8]),date:String(row?.[8]||''),field:String(row?.[7]||'Campo por confirmar')});
+   }));
+ });
+ all.sort((a,b)=>(Number.isFinite(a.time)?a.time:9e15)-(Number.isFinite(b.time)?b.time:9e15));
+ const playedAll=all.filter(x=>x.played).slice(-12).reverse();
+ const upcomingAll=all.filter(x=>!x.played&&( !Number.isFinite(x.time)||x.time>=now-2*60*60000)).slice(0,12);
+ const featured=(playedAll.length?playedAll:all).slice(0,10);
+ const teams=officialTeams().slice(0,12);
+
+ const mediaCard=(m,label,portrait=false)=>{
+   const result=m.played?m.hs+' - '+m.as:'VS';
+   return '<button class="'+(portrait?'v426-tv-portrait':'v426-tv-card')+'" type="button" data-tv-feed-match="'+esc(m.key)+'">'+
+     '<span class="'+(portrait?'v426-tv-portrait-art':'v426-tv-art')+'">'+
+       '<span class="v426-tv-logo">'+logoHtml(m.home)+'</span>'+
+       '<span class="v426-tv-logo">'+logoHtml(m.away)+'</span>'+
+       '<strong>'+esc(result)+'</strong><i>▶</i><em>'+esc(label)+'</em>'+
+     '</span>'+
+     '<span class="v426-tv-copy"><b>'+esc(m.home)+' vs '+esc(m.away)+'</b><small>'+esc(m.category)+(m.date?' · '+esc(m.date):'')+'</small></span>'+
+   '</button>';
+ };
+ const clubCard=(t,i)=>'<button class="v426-tv-card" type="button" data-tv-feed-team="'+esc(t.name)+'">'+
+   '<span class="v426-tv-art v426-tv-club-art"><span class="v426-tv-club-logo">'+logoHtml(t.name)+'</span><i>▶</i><em>CLUB</em></span>'+
+   '<span class="v426-tv-copy"><b>'+esc(t.name)+'</b><small>'+esc(t.category||'Liga Juventino Rosas')+'</small></span></button>';
+ const rail=(title,sub,body,more=true)=>'<section class="v426-tv-section"><header><span><h3>'+esc(title)+'</h3><p>'+esc(sub)+'</p></span>'+(more?'<button type="button" data-tv-feed-video>Ver más ›</button>':'')+'</header><div class="v426-tv-row">'+body+'</div></section>';
+ const fallback='<div class="v426-tv-empty">El contenido aparecerá aquí cuando haya datos oficiales disponibles.</div>';
+ const feed=
+   '<div class="v426-tv-feed" aria-label="Contenido de Liga TV">'+
+    rail('Ver en vivo en Liga Juventino','Partidos próximos y transmisiones de la Liga',(upcomingAll.length?upcomingAll.slice(0,7).map((m,i)=>mediaCard(m,'PRÓXIMO')).join(''):fallback))+
+    rail('Liga Juventino Rosas','Partidos, resultados y mejores momentos',(featured.length?featured.slice(0,7).map(m=>mediaCard(m,m.played?'MEJORES MOMENTOS':'PARTIDO')).join(''):fallback))+
+    rail('Videos oficiales de clubes','Contenido por equipo registrado',(teams.length?teams.slice(0,8).map(clubCard).join(''):fallback))+
+    rail('Liga TV Videos','Videos verticales y momentos destacados','<div class="v426-tv-portrait-row">'+(featured.length?featured.slice(0,7).map(m=>mediaCard(m,'LIGA TV',true)).join(''):fallback)+'</div>',false)+
+    rail('Lo más visto','Selección destacada de Liga TV',(featured.length?featured.slice().reverse().slice(0,7).map(m=>mediaCard(m,'DESTACADO')).join(''):fallback))+
+    rail('Resúmenes más recientes','Últimos partidos con marcador oficial',(playedAll.length?playedAll.slice(0,7).map(m=>mediaCard(m,'RESUMEN')).join(''):fallback))+
+   '</div>';
+
  let old=document.querySelector('.v160-tv-layer');if(old)old.remove();
  const layer=document.createElement('div');layer.className='v160-tv-layer';layer.innerHTML=
   '<header class="v408-tv-topbar" aria-label="Barra superior de Modo TV">'+
@@ -677,6 +727,7 @@ function tvPanel(){
    '<article class="v160-tv-info-card v160-tv-table"><small>TABLA</small>'+ (top.length?top.map((x,i)=>'<b class="'+(i===0?'is-first':'')+'">'+(i+1)+'. '+esc(x[1])+' · '+esc(x[9])+' pts</b>').join(''):'<b>Sin tabla publicada</b>') +'</article>'+
    '<article class="v160-tv-info-card v160-tv-scorer"><small>GOLEADOR</small><b>'+(scorers[0]?esc(scorers[0].name)+' · '+esc(scorers[0].goals)+' goles':'Sin goleo publicado')+'</b><span>'+(scorers[0]?esc(scorers[0].team):'')+'</span></article>'+
    '<div class="v160-tv-actions"><button data-tv-match>Match Center</button><button data-tv-video>Vídeos</button></div>'+
+   feed+
   '</section>';
  document.body.appendChild(layer);
  document.body.classList.add('v160-tv-open');
@@ -686,8 +737,16 @@ function tvPanel(){
  const tvProfile=$('.v408-tv-profile',layer);if(tvProfile)tvProfile.onclick=()=>{close();go('profile')};
  $('[data-tv-match]',layer).onclick=()=>{close();go('v4-matchcenter')};
  $('[data-tv-video]',layer).onclick=()=>{close();go('video')};
+ $$('[data-tv-feed-video]',layer).forEach(b=>b.onclick=()=>{close();go('video')});
+ $$('[data-tv-feed-match]',layer).forEach(b=>b.onclick=()=>{close();go('v4-matchcenter')});
+ $$('[data-tv-feed-team]',layer).forEach(b=>b.onclick=()=>{
+   const name=b.dataset.tvFeedTeam||'';
+   try{localStorage.setItem('v62-team-name',name);localStorage.setItem('v27-selected-team',norm(name).replace(/\s+/g,'-'))}catch(_){}
+   close();go('teamDetail');
+ });
  layer.addEventListener('click',e=>{if(e.target===layer)close()});
 }
+
 function act(a){
  if(a==='meeting')meeting();else if(a==='poll')poll();else if(a==='fanzone')fanzone();else if(a==='delegates')delegates();else if(a==='officials')officials();else if(a==='incidents')incidents();else if(a==='motm')motm();else if(a==='calendar-generator')calendarGenerator();else if(a==='csv-import')csvImport();else if(a==='backup-export')backupExport();else if(a==='audit')audit();else if(a==='sponsors')sponsors();else if(a==='shotmap')shotmap();
  else if(a==='register-alerts')registerAlerts();else if(a==='schedule-match')scheduleMatch();else if(a==='new-sanction')newSanction();else if(a==='tv-panel')tvPanel();
