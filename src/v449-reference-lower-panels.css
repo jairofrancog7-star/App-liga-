@@ -212,3 +212,68 @@
  .v449-ranking-feature-top{grid-template-columns:92px minmax(0,1fr) 46px}
  .v449-player-pic.feature{width:92px;height:116px}
 }
+
+/* V451 — montaje visible dentro de las pantallas reales; no sustituye nada superior. */
+#screen #v449-reference-lower{
+  display:block!important;
+  visibility:visible!important;
+  opacity:1!important;
+  position:relative!important;
+  z-index:2!important;
+  height:auto!important;
+  max-height:none!important;
+  overflow:visible!important;
+}
+body.v33-data-active .v33-data-page > #v449-reference-lower{
+  width:100%!important;
+  margin:18px 0 96px!important;
+  padding:0!important;
+  display:block!important;
+}
+body.v33-data-active .v33-data-page > #v449-reference-lower .v449-block{
+  width:calc(100% - 24px)!important;
+  margin-left:auto!important;
+  margin-right:auto!important;
+}
+body[data-app-route="v38Stats"] #v449-reference-lower{
+  width:100%!important;
+  margin:22px 0 96px!important;
+  display:block!important;
+}
+body[data-app-route="competition"] #v449-reference-lower{
+  width:100%!important;
+  margin-top:24px!important;
+  margin-bottom:110px!important;
+  display:block!important;
+}
+
+/* Las variantes inferiores que faltaban se apilan en el orden de las referencias. */
+#v449-reference-lower > .v449-block + .v449-season-panel,
+#v449-reference-lower > .v449-season-panel + .v449-block{
+  margin-top:16px!important;
+}
+#v449-reference-lower .v449-season-panel{
+  width:calc(100% - 24px)!important;
+  margin:0 auto 18px!important;
+  border:1px solid rgba(82,143,235,.16)!important;
+  border-radius:20px!important;
+  background:linear-gradient(180deg,#0a1e42 0%,#07152e 100%)!important;
+  box-shadow:0 14px 32px rgba(0,7,27,.22)!important;
+}
+#v449-reference-lower .v449-stat-card,
+#v449-reference-lower .v449-ranking-feature,
+#v449-reference-lower .v449-season-table,
+#v449-reference-lower .v449-season-match-list{
+  background:#071731!important;
+}
+#v449-reference-lower .v449-table-modes,
+#v449-reference-lower .v449-stat-toggle,
+#v449-reference-lower .v449-ranking-tabs{
+  background:#0b2854!important;
+}
+#v449-reference-lower .v449-table-modes button.active,
+#v449-reference-lower .v449-stat-toggle button.active,
+#v449-reference-lower .v449-ranking-tabs button.active{
+  background:#2f79f3!important;
+  color:#fff!important;
+}
