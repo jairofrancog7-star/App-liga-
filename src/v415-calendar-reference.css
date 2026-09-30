@@ -1144,3 +1144,69 @@ body.v415-calendar-active #screen > [data-v415-calendar]{
     z-index:2147483000!important;
   }
 }
+
+
+/* V430 — sólo corrección visual solicitada:
+   colores del Calendario + separación de textos, sin cambiar la estructura. */
+@media (max-width:1023px){
+  body.v415-calendar-active,
+  body.v415-calendar-active #app,
+  body.v415-calendar-active .app-shell,
+  body.v415-calendar-active #screen{
+    background:#111327!important;
+  }
+
+  /* Texto superior más limpio y sin apretarse. */
+  body.v415-calendar-active .v415-segment button{
+    padding:0 7px!important;
+    color:#d9ddeb!important;
+    font-size:11.5px!important;
+    letter-spacing:-.01em!important;
+  }
+  body.v415-calendar-active .v415-segment button.active{
+    background:#92a5f5!important;
+    color:#11172f!important;
+  }
+  body.v415-calendar-active .v415-filter{
+    color:#b9bfd2!important;
+  }
+
+  /* Evita que Septiembre / Octubre y demás meses se peguen. */
+  body.v415-calendar-active .v415-month-strip{
+    grid-template-columns:repeat(6,minmax(0,1fr))!important;
+    column-gap:2px!important;
+    padding-left:5px!important;
+    padding-right:5px!important;
+  }
+  body.v415-calendar-active .v415-month-strip button{
+    min-width:0!important;
+    overflow:visible!important;
+    padding:0 2px!important;
+    color:#d5d9e7!important;
+    font-size:clamp(9px,2.8vw,10.5px)!important;
+    line-height:28px!important;
+    letter-spacing:-.015em!important;
+    text-align:center!important;
+    white-space:nowrap!important;
+  }
+  body.v415-calendar-active .v415-month-strip button.active{
+    color:#93a6ff!important;
+    font-weight:650!important;
+  }
+
+  /* Barra inferior del Calendario: mismo azul marino oscuro de la referencia. */
+  body.v415-calendar-active .bottom-nav{
+    background:#111329!important;
+    border-top:1px solid rgba(139,153,220,.12)!important;
+    box-shadow:0 -8px 24px rgba(2,3,18,.18)!important;
+  }
+  body.v415-calendar-active .bottom-nav .nav-item{
+    color:#7f879f!important;
+  }
+  body.v415-calendar-active .bottom-nav .nav-item.active{
+    color:#f0f2ff!important;
+  }
+  body.v415-calendar-active .bottom-nav .nav-item small{
+    color:currentColor!important;
+  }
+}
