@@ -178,6 +178,36 @@
   <link rel="stylesheet" href="./src/v396-tool-topbars-competition-reference.css?v=20260930-tool-topbars-v396" />
   <link rel="stylesheet" href="./src/v397-tool-topbar-hard-lock.css?v=20260930-tool-topbar-hard-v397" />
   <link rel="stylesheet" href="./src/v397-scorers-category-controls.css?v=20260930-scorers-category-v397" />
+
+  <style id="v398QuizArenaHardLock">
+    /* V398 QUIZ ARENA DOM HARD LOCK — funciona incluso si un bundle viejo intenta pintar el landing roto. */
+    #app:has(#screen .v48-quiz-arena-page) > .topbar,
+    .app-shell:has(#screen .v48-quiz-arena-page) > .topbar{
+      display:none!important;
+      visibility:hidden!important;
+      height:0!important;
+      min-height:0!important;
+      max-height:0!important;
+      margin:0!important;
+      padding:0!important;
+      overflow:hidden!important;
+    }
+    #screen .v48-quiz-arena-page .v48-arena-landing{
+      display:none!important;
+      visibility:hidden!important;
+    }
+    #screen .v48-quiz-arena-page .v48-game{
+      display:block!important;
+      position:relative!important;
+      width:100%!important;
+      min-height:620px!important;
+      margin:0!important;
+    }
+    #screen:has(.v48-quiz-arena-page){
+      padding-top:0!important;
+      margin-top:0!important;
+    }
+  </style>
 </head>
 <body>
   <div id="app" class="app-shell">
@@ -282,5 +312,42 @@
   <script type="module" src="./src/v379-player-profile-reference.js?v=20260930-player-scroll-city-v388"></script>
   <script type="module" src="./src/v397-tool-topbar-hard-lock.js?v=20260930-tool-topbar-hard-v397"></script>
   <script type="module" src="./src/v397-scorers-category-controls.js?v=20260930-scorers-category-v397"></script>
+
+  <script>
+    (function(){
+      if(window.__LJR_QUIZ_V398_HARDLOCK__) return;
+      window.__LJR_QUIZ_V398_HARDLOCK__=true;
+      function lockQuiz(){
+        var route=(location.hash||'').replace(/^#\/?/,'').split('?')[0];
+        if(route!=='quizArena' && route!=='quiz') return;
+        document.body.dataset.appRoute='quizArena';
+        var app=document.getElementById('app');
+        var screen=document.getElementById('screen');
+        var topbar=app && app.querySelector(':scope > .topbar');
+        if(topbar){
+          topbar.style.setProperty('display','none','important');
+          topbar.style.setProperty('visibility','hidden','important');
+          topbar.style.setProperty('height','0','important');
+          topbar.style.setProperty('min-height','0','important');
+          topbar.style.setProperty('max-height','0','important');
+          topbar.style.setProperty('padding','0','important');
+          topbar.style.setProperty('margin','0','important');
+        }
+        if(!screen) return;
+        var page=screen.querySelector('.v48-quiz-arena-page');
+        if(!page) return;
+        page.classList.add('v48-playing');
+        var landing=page.querySelector('.v48-arena-landing');
+        if(landing){landing.style.setProperty('display','none','important'); landing.setAttribute('aria-hidden','true');}
+        var game=page.querySelector('.v48-game');
+        if(game){game.style.setProperty('display','block','important'); game.setAttribute('aria-hidden','false');}
+      }
+      window.addEventListener('hashchange',function(){requestAnimationFrame(lockQuiz)});
+      document.addEventListener('DOMContentLoaded',lockQuiz,{once:true});
+      var mo=new MutationObserver(function(){lockQuiz()});
+      mo.observe(document.documentElement,{subtree:true,childList:true});
+      lockQuiz();
+    })();
+  </script>
 </body>
 </html>
