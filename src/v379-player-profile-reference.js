@@ -177,9 +177,69 @@ function teamLogo(name){
 function related(p,list){
   return list.filter(x=>same(x.team,p.team)&&playerKey(x)!==playerKey(p)).slice(0,8);
 }
+function fixtureDate(v){
+  const s=String(v||'').trim();
+  const m=s.match(/(\d{1,2})[\/\-](\d{1,2})[\/\-](\d{4})(?:\s+(\d{1,2}):(\d{2}))?/);
+  if(!m)return null;
+  const d=new Date(Number(m[3]),Number(m[2])-1,Number(m[1]),Number(m[4]||0),Number(m[5]||0));
+  return Number.isNaN(d.getTime())?null:d;
+}
+const V379_DAYS=['Dom','Lun','Mar','Mié','Jue','Vie','Sáb'];
+const V379_MONTHS=['ene','feb','mar','abr','may','jun','jul','ago','sept','oct','nov','dic'];
+function fixtureDayLabel(v){
+  const d=fixtureDate(v);
+  return d?V379_DAYS[d.getDay()]+' '+d.getDate()+' '+V379_MONTHS[d.getMonth()]:String(v||'Fecha por confirmar');
+}
+function fixtureLongDate(v){
+  const d=fixtureDate(v);
+  if(!d)return String(v||'Fecha por confirmar');
+  return new Intl.DateTimeFormat('es-MX',{weekday:'long',day:'numeric',month:'long',year:'numeric'}).format(d);
+}
+function fixtureTime(v){
+  const d=fixtureDate(v);
+  return d?String(d.getHours()).padStart(2,'0')+':'+String(d.getMinutes()).padStart(2,'0'):'Por confirmar';
+}
+function fixtureScore(v){const s=String(v??'').trim();return /^-?\d+$/.test(s)?Number(s):null}
+function fixturePlayed(m){return (m.homeScore!==null&&m.awayScore!==null)||/jugado|final|gana/i.test(String(m.status||''))}
+function playerFixtures(p){
+  const raw=window.LJR_OFFICIAL_DATA||null;
+  const cat=raw?.categories?.[String(p?.cat||'')];
+  const rawRows=cat?.fixtures?.[0]?.rows||[];
+  if(rawRows.length){
+    return rawRows.filter(r=>Array.isArray(r)&&(same(r[2],p.team)||same(r[6],p.team))).map(r=>({
+      round:String(r[1]||''),
+      home:String(r[2]||'Local'),
+      homeScore:fixtureScore(r[3]),
+      awayScore:fixtureScore(r[5]),
+      away:String(r[6]||'Visitante'),
+      field:String(r[7]||'Campo por confirmar'),
+      date:String(r[8]||''),
+      status:String(r[9]||''),
+      category:String(cat?.name||p.category||'Liga Municipal')
+    }));
+  }
+  return (api?.fixtureRows?.()||[])
+    .filter(x=>same(x.home,p.team)||same(x.away,p.team))
+    .map(x=>({...x,homeScore:null,awayScore:null,status:'',category:x.category||p.category||'Liga Municipal'}));
+}
 function fixtures(p){
-  const rows=api?.fixtureRows?.()||[];
-  return rows.filter(x=>same(x.home,p.team)||same(x.away,p.team)).slice(0,12);
+  return playerFixtures(p).slice(0,24);
+}
+function matchDetailData(m,p){
+  return {
+    id:'player-'+String(m.round||'j')+'-'+norm(m.home).replace(/\s+/g,'-')+'-'+norm(m.away).replace(/\s+/g,'-'),
+    home:String(m.home||'Local'),
+    away:String(m.away||'Visitante'),
+    time:fixtureTime(m.date),
+    date:fixtureLongDate(m.date),
+    venue:String(m.field||'Campo por confirmar'),
+    category:String(m.category||p.category||'Liga Municipal'),
+    jornada:String(m.round||''),
+    from:'#/playerDetail'
+  };
+}
+function matchDetailAttr(m,p){
+  try{return encodeURIComponent(JSON.stringify(matchDetailData(m,p)))}catch{return ''}
 }
 function valueFrom(reg,keys){
   for(const k of keys){const v=reg?.[k];if(v!==undefined&&v!==null&&String(v).trim()!=='')return String(v)}
@@ -252,14 +312,18 @@ function relatedHtml(p,list){
     '</button>').join('')+'</div></section>';
 }
 function nextMatchCard(p){
-  const list=fixtures(p);
-  if(!list.length)return '<div class="v379-empty">No hay partidos sincronizados para este equipo.</div>';
-  const m=list[0],home=same(m.home,p.team),opp=home?m.away:m.home;
-  return '<button type="button" class="v379-match-card" data-v379-competition>'+
-    '<div class="v379-match-meta"><b>'+esc(m.date||'Fecha por confirmar')+'</b><span>'+esc(m.category||p.category||'')+'</span></div>'+
-    '<div class="v379-match-clubs"><span><i>'+teamLogo(p.team)+'</i><b>'+esc(p.team)+'</b></span><em>VS</em><span><i>'+teamLogo(opp)+'</i><b>'+esc(opp)+'</b></span></div>'+
-    '<div class="v379-match-foot"><span>'+esc(m.field||'Sede por confirmar')+'</span><strong>Ver competición</strong></div>'+
-  '</button>';
+  const list=playerFixtures(p).filter(m=>!fixturePlayed(m)).sort((a,b)=>(fixtureDate(a.date)?.getTime()||0)-(fixtureDate(b.date)?.getTime()||0));
+  if(!list.length)return '<div class="v379-empty">No hay próximos partidos sincronizados para este equipo.</div>';
+  const m=list[0],encoded=matchDetailAttr(m,p);
+  return '<article class="v383-next-match">'+
+    '<div class="v383-next-meta"><b>'+esc(fixtureDayLabel(m.date))+'</b><span>'+esc(m.category||p.category||'')+(m.round?' · Jornada '+esc(m.round):'')+'</span></div>'+
+    '<div class="v383-next-teams">'+
+      '<span><i>'+teamLogo(m.home)+'</i><b>'+esc(m.home)+'</b></span>'+
+      '<em>'+esc(fixtureTime(m.date))+'</em>'+
+      '<span><i>'+teamLogo(m.away)+'</i><b>'+esc(m.away)+'</b></span>'+
+    '</div>'+
+    '<div class="v383-next-foot"><small>'+esc(m.field||'Campo por confirmar')+'</small><button type="button" data-v379-match-detail="'+encoded+'">Ver detalles</button></div>'+
+  '</article>';
 }
 function newsEmpty(){
   return '<div class="v379-news-empty"><div class="v379-news-art" aria-hidden="true"></div><strong>Sin noticias oficiales del jugador</strong><p>Cuando la Liga publique una nota asociada a este jugador aparecerá aquí.</p><button type="button" data-v379-news>Ver noticias de la Liga</button></div>';
@@ -295,15 +359,41 @@ function stats(p,list){
     '<button type="button" class="v379-compare-wide" data-v379-compare>'+simulatedHeadMarkup(p,'v379-related-avatar v382-related-sim')+'<span><b>'+esc(p.name)+'</b><small>'+esc(p.team)+'</small></span><strong>Comparar</strong></button>'+
    '</section>'+relatedHtml(p,list)+'</div>';
 }
+function playerMatchCard(m,p,played){
+  const encoded=matchDetailAttr(m,p);
+  const scoreOrTime=played&&m.homeScore!==null&&m.awayScore!==null
+    ? '<b class="v383-result-score">'+esc(m.homeScore+' - '+m.awayScore)+'</b>'
+    : '<b class="v383-result-time">'+esc(fixtureTime(m.date))+'</b>';
+  return '<article class="v383-player-match '+(played?'played':'future')+'">'+
+    '<div class="v383-player-match-head">'+
+      '<b>'+esc(fixtureDayLabel(m.date))+'</b>'+
+      '<span>'+esc(m.category||p.category||'Liga Municipal')+(m.round?' · Jornada '+esc(m.round):'')+'</span>'+
+    '</div>'+
+    '<div class="v383-player-match-body">'+
+      '<div class="v383-player-match-teams">'+
+        '<span><i>'+teamLogo(m.home)+'</i><b>'+esc(m.home)+'</b>'+(played&&m.homeScore!==null?'<strong>'+esc(m.homeScore)+'</strong>':'')+'</span>'+
+        '<span><i>'+teamLogo(m.away)+'</i><b>'+esc(m.away)+'</b>'+(played&&m.awayScore!==null?'<strong>'+esc(m.awayScore)+'</strong>':'')+'</span>'+
+      '</div>'+
+      '<div class="v383-player-match-side">'+scoreOrTime+
+        '<button type="button" data-v379-match-detail="'+encoded+'">Ver detalles</button>'+
+      '</div>'+
+    '</div>'+
+    '<div class="v383-player-match-field">'+esc(m.field||'Campo por confirmar')+'</div>'+
+  '</article>';
+}
 function matchList(p){
-  const rows=fixtures(p);
+  const rows=playerFixtures(p);
   if(!rows.length)return '<div class="v379-tab-panel"><div class="v379-empty large">No hay partidos sincronizados para '+esc(p.team)+'.</div></div>';
-  return '<div class="v379-tab-panel"><section class="v379-block">'+sectionTitle('Partidos del equipo','','')+
-   '<div class="v379-match-list">'+rows.map(m=>'<button type="button" class="v379-match-row" data-v379-competition>'+
-    '<div class="v379-match-row-meta"><b>'+esc(m.date||'Fecha por confirmar')+'</b><small>'+esc((m.category||p.category||'')+(m.round?' · Jornada '+m.round:''))+'</small></div>'+
-    '<div class="v379-match-row-teams"><span><i>'+teamLogo(m.home)+'</i><b>'+esc(m.home)+'</b></span><em>VS</em><span><i>'+teamLogo(m.away)+'</i><b>'+esc(m.away)+'</b></span></div>'+
-    '<div class="v379-match-row-field"><span>'+esc(m.field||'Sede por confirmar')+'</span><strong>Ver detalles</strong></div>'+
-   '</button>').join('')+'</div></section></div>';
+  const past=rows.filter(fixturePlayed).sort((a,b)=>(fixtureDate(b.date)?.getTime()||0)-(fixtureDate(a.date)?.getTime()||0));
+  const future=rows.filter(m=>!fixturePlayed(m)).sort((a,b)=>(fixtureDate(a.date)?.getTime()||0)-(fixtureDate(b.date)?.getTime()||0));
+  return '<div class="v379-tab-panel v383-player-matches">'+
+    '<section class="v383-match-section"><h2>Partidos anteriores</h2>'+
+      (past.length?past.map(m=>playerMatchCard(m,p,true)).join(''):'<div class="v379-empty">No hay partidos anteriores publicados.</div>')+
+    '</section>'+
+    '<section class="v383-match-section upcoming"><h2>Próximos partidos</h2>'+
+      (future.length?future.map(m=>playerMatchCard(m,p,false)).join(''):'<div class="v379-empty">No hay próximos partidos publicados.</div>')+
+    '</section>'+
+  '</div>';
 }
 function newsTab(p,list){
   return '<div class="v379-tab-panel"><section class="v379-block">'+sectionTitle('Noticias de '+p.name,'','')+newsEmpty()+'</section>'+relatedHtml(p,list)+'</div>';
@@ -350,6 +440,17 @@ function bind(p,list){
   document.querySelectorAll('[data-v379-compare]').forEach(b=>b.addEventListener('click',()=>{
     if(window.LJR_PLAYER_COMPARE_API?.open){window.LJR_PLAYER_COMPARE_API.open(p);return}
     write('v123-compare-player',p);localStorage.removeItem('v123-compare-player-2');location.hash='#/playerCompare';
+  },{once:true}));
+  document.querySelectorAll('[data-v379-match-detail]').forEach(b=>b.addEventListener('click',e=>{
+    e.preventDefault();e.stopPropagation();
+    let detail=null;
+    try{detail=JSON.parse(decodeURIComponent(b.dataset.v379MatchDetail||''))}catch{}
+    if(!detail)return;
+    try{
+      sessionStorage.setItem('lj-match-detail',JSON.stringify(detail));
+      sessionStorage.removeItem('v69-match-center-entry');
+    }catch{}
+    location.hash='#/match';
   },{once:true}));
   document.querySelectorAll('[data-v379-competition]').forEach(b=>b.addEventListener('click',()=>{location.hash='#/competition'},{once:true}));
   document.querySelectorAll('[data-v379-news]').forEach(b=>b.addEventListener('click',()=>{location.hash='#/news'},{once:true}));
