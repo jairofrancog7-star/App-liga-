@@ -1910,3 +1910,87 @@ body[data-app-route="club-store"] .v437-feature-art .v442-shirt-3d{
   body[data-app-route="club-store"] .v442-edge{width:7%!important}
   body[data-app-route="club-store"] .v437-product-stage{min-height:380px!important}
 }
+
+
+/* V443 — render WebGL 3D real de las playeras */
+/* El SVG queda como fallback. Cuando termina el render WebGL se sustituye por una imagen
+   generada desde una geometría extruida real con luces, sombras, volumen y tela. */
+body[data-app-route="club-store"] .v443-shirt-webgl{
+  position:relative!important;
+  transform-style:preserve-3d!important;
+}
+body[data-app-route="club-store"] .v443-3d-render{
+  position:absolute!important;
+  z-index:12!important;
+  inset:-10%!important;
+  width:120%!important;
+  height:120%!important;
+  display:block!important;
+  object-fit:contain!important;
+  opacity:0!important;
+  transform:translateZ(26px)!important;
+  filter:
+    drop-shadow(0 10px 8px rgba(5,10,45,.13))
+    drop-shadow(0 22px 18px rgba(5,10,45,.16))!important;
+  transition:opacity .22s ease!important;
+  pointer-events:none!important;
+}
+body[data-app-route="club-store"] .v443-shirt-webgl.v443-ready .v443-3d-render{
+  opacity:1!important;
+}
+body[data-app-route="club-store"] .v443-shirt-webgl.v443-ready .v441-jersey-svg{
+  opacity:0!important;
+}
+body[data-app-route="club-store"] .v443-shirt-webgl.v443-ready .v442-edge,
+body[data-app-route="club-store"] .v443-shirt-webgl.v443-ready .v440-shirt-shadow{
+  opacity:0!important;
+}
+body[data-app-route="club-store"] .v443-shirt-webgl .v441-jersey-svg{
+  transition:opacity .18s ease!important;
+}
+
+/* En los productos grandes el render ocupa más espacio, como una prenda fotografiada. */
+body[data-app-route="club-store"] .v437-stage-shirt .v443-3d-render{
+  inset:-16%!important;
+  width:132%!important;
+  height:132%!important;
+}
+body[data-app-route="club-store"] .v437-feature-art .v443-3d-render{
+  inset:-12%!important;
+  width:124%!important;
+  height:124%!important;
+}
+body[data-app-route="club-store"] .v431-hero-shirt .v443-3d-render{
+  inset:-14%!important;
+  width:128%!important;
+  height:128%!important;
+}
+body[data-app-route="club-store"] .v436-product-art .v443-3d-render{
+  inset:-11%!important;
+  width:122%!important;
+  height:122%!important;
+}
+
+/* El fondo de catálogo ayuda a percibir el volumen del objeto real. */
+body[data-app-route="club-store"] .v431-product-art,
+body[data-app-route="club-store"] .v436-product-art,
+body[data-app-route="club-store"] .v437-product-stage{
+  background:
+    radial-gradient(circle at 38% 18%,rgba(255,255,255,1) 0 16%,transparent 33%),
+    radial-gradient(circle at 68% 42%,rgba(57,76,235,.09),transparent 31%),
+    linear-gradient(180deg,#fbfcff 0%,#eef1f8 100%)!important;
+}
+body[data-app-route="club-store"] .v431-product-art::after,
+body[data-app-route="club-store"] .v436-product-art::after{
+  left:17%!important;
+  right:17%!important;
+  bottom:1%!important;
+  height:15%!important;
+  background:radial-gradient(ellipse,rgba(6,11,48,.32),transparent 70%)!important;
+  filter:blur(10px)!important;
+}
+
+/* Si WebGL/CDN no carga, el fallback V442 sigue visible. */
+@media (prefers-reduced-motion:reduce){
+  body[data-app-route="club-store"] .v443-3d-render{transition:none!important}
+}
