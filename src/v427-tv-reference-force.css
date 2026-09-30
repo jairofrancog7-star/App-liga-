@@ -1,0 +1,45 @@
+/* V427 — Diseño de referencia forzado dentro de Ver en TV. */
+.v427-tv-feed{box-sizing:border-box;width:100%;margin-top:16px;padding:0 0 22px;color:#fff;font-family:Inter,Roboto,Arial,sans-serif}
+.v427-tv-feed *{box-sizing:border-box}
+.v427-tv-feed button{font:inherit}
+.v427-tv-title{padding:4px 2px 12px}
+.v427-tv-title small{display:block;color:#2de2f0;font-size:7px;font-weight:950;letter-spacing:.14em}
+.v427-tv-title h2{margin:3px 0 0;color:#fff;font-size:15px;line-height:1.05;font-weight:950}
+.v427-tv-title p{margin:4px 0 0;color:#8f9bc2;font-size:7px;line-height:1.3}
+.v427-tv-section{margin:0 -16px 10px;padding:12px 16px 14px;border-top:1px solid rgba(255,255,255,.05);border-bottom:1px solid rgba(255,255,255,.035);background:linear-gradient(180deg,#090d49 0%,#050735 100%)}
+.v427-tv-section>header{min-height:31px;display:flex;align-items:flex-start;justify-content:space-between;gap:10px;margin-bottom:8px}
+.v427-tv-section>header span{min-width:0}
+.v427-tv-section h3{margin:0;color:#fff;font-size:10px;line-height:1.15;font-weight:950}
+.v427-tv-section p{margin:3px 0 0;color:#8692bb;font-size:6.5px;line-height:1.25}
+.v427-tv-section>header>button{flex:0 0 auto;border:0;background:transparent;color:#dce6ff;font-size:7px;font-weight:900}
+.v427-tv-row{display:flex;gap:8px;overflow-x:auto;margin:0 -16px;padding:0 16px 2px;scroll-snap-type:x proximity;scrollbar-width:none}
+.v427-tv-row::-webkit-scrollbar,.v427-tv-portrait-row::-webkit-scrollbar{display:none}
+.v427-tv-card{width:174px;flex:0 0 174px;overflow:hidden;padding:0;border:0;border-radius:7px;background:#0b0f4c;color:#fff;text-align:left;scroll-snap-align:start;box-shadow:0 4px 12px rgba(0,0,28,.22)}
+.v427-tv-art{position:relative;height:97px;display:grid;grid-template-columns:1fr 1fr;align-items:center;padding:8px;overflow:hidden;background:linear-gradient(135deg,#1164d3 0 50%,#1246a5 50% 100%)}
+.v427-tv-card:nth-child(2n) .v427-tv-art{background:linear-gradient(135deg,#1443a9,#081451)}
+.v427-tv-card:nth-child(3n) .v427-tv-art{background:linear-gradient(135deg,#1a67d2,#0b1f72)}
+.v427-tv-logo{width:46px;height:46px;display:grid;place-items:center;justify-self:center;border-radius:50%;background:rgba(255,255,255,.96);overflow:hidden;box-shadow:0 3px 9px rgba(0,0,0,.24)}
+.v427-tv-logo img{width:40px;height:40px;object-fit:contain}
+.v427-tv-logo>span{color:#08124d;font-size:9px;font-weight:950}
+.v427-tv-art>i{position:absolute;left:50%;top:49%;width:30px;height:30px;display:grid;place-items:center;transform:translate(-50%,-50%);border-radius:50%;background:rgba(244,247,255,.96);color:#071049;font-size:10px;font-style:normal;font-weight:900;box-shadow:0 3px 10px rgba(0,0,0,.24)}
+.v427-tv-art>strong{position:absolute;left:50%;bottom:7px;transform:translateX(-50%);min-width:42px;padding:3px 5px;border-radius:4px;background:rgba(2,5,31,.84);color:#fff;font-size:9px;text-align:center;font-weight:950}
+.v427-tv-art>em{position:absolute;left:7px;top:7px;padding:3px 5px;border-radius:4px;background:rgba(3,8,44,.72);color:#e4edff;font-size:5.4px;font-style:normal;font-weight:950;letter-spacing:.05em}
+.v427-tv-copy{min-height:46px;display:block;padding:7px 8px 8px}
+.v427-tv-copy b{display:-webkit-box;overflow:hidden;-webkit-box-orient:vertical;-webkit-line-clamp:2;color:#fff;font-size:7.6px;line-height:1.24;font-weight:850}
+.v427-tv-copy small{display:block;margin-top:4px;overflow:hidden;color:#8995bd;font-size:6px;line-height:1.2;white-space:nowrap;text-overflow:ellipsis}
+.v427-tv-club-art{display:grid;place-items:center}
+.v427-tv-club-logo{width:60px;height:60px;display:grid;place-items:center;border-radius:50%;background:rgba(255,255,255,.96);box-shadow:0 4px 10px rgba(0,0,0,.24)}
+.v427-tv-club-logo img{width:52px;height:52px;object-fit:contain}
+.v427-tv-club-logo>span{color:#07124e;font-size:11px;font-weight:950}
+.v427-tv-club-art>i{left:auto;right:8px;top:auto;bottom:8px;transform:none;width:27px;height:27px}
+.v427-tv-portrait-row{display:flex;gap:8px;overflow-x:auto;scroll-snap-type:x proximity;scrollbar-width:none}
+.v427-tv-portrait{width:116px;flex:0 0 116px;overflow:hidden;padding:0;border:0;border-radius:7px;background:#0a0e49;color:#fff;text-align:left;scroll-snap-align:start}
+.v427-tv-portrait-art{position:relative;height:153px;display:grid;grid-template-columns:1fr;align-content:center;justify-items:center;gap:10px;overflow:hidden;background:linear-gradient(160deg,#155dcc,#071252)}
+.v427-tv-portrait:nth-child(2n) .v427-tv-portrait-art{background:linear-gradient(160deg,#0d3b9f,#09104e)}
+.v427-tv-portrait .v427-tv-logo{width:52px;height:52px}
+.v427-tv-portrait .v427-tv-logo img{width:45px;height:45px}
+.v427-tv-portrait-art>i{position:absolute;left:50%;top:50%;width:29px;height:29px;display:grid;place-items:center;transform:translate(-50%,-50%);border-radius:50%;background:rgba(244,247,255,.96);color:#071049;font-size:10px;font-style:normal;font-weight:900}
+.v427-tv-portrait-art>strong{position:absolute;left:7px;bottom:8px;padding:3px 5px;border-radius:4px;background:rgba(2,5,31,.84);color:#fff;font-size:8px;font-weight:950}
+.v427-tv-portrait-art>em{position:absolute;left:7px;top:7px;padding:3px 5px;border-radius:4px;background:rgba(3,8,44,.72);color:#e4edff;font-size:5.2px;font-style:normal;font-weight:950}
+.v427-tv-empty{min-width:250px;padding:14px;border:1px dashed rgba(106,139,255,.24);border-radius:8px;background:#0a0d43;color:#8d99bf;font-size:8px;line-height:1.35;text-align:center}
+@media(max-width:390px){.v427-tv-card{width:166px;flex-basis:166px}.v427-tv-art{height:94px}.v427-tv-portrait{width:112px;flex-basis:112px}.v427-tv-portrait-art{height:148px}}
