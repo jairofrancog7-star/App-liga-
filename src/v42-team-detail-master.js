@@ -182,6 +182,15 @@ function statsMarkup(t){
   '<p class="empty-mini">No se muestran posesión, pases, disparos u otras métricas que AdminFut no publique.</p></section></main>';
 }
 function body(t){if(activeTab==='matches')return matchesMarkup(t);if(activeTab==='standings')return standingsMarkup(t);if(activeTab==='squad')return squadMarkup(t);if(activeTab==='stats')return statsMarkup(t);return summaryMarkup(t)}
+function setTeamTab(tab){
+ const allowed=['summary','matches','standings','squad','stats'];
+ if(!allowed.includes(tab))return false;
+ activeTab=tab;
+ localStorage.setItem('v42-team-tab',tab);
+ notifyOpen=false;
+ render();
+ return true;
+}
 function lowerActionsMarkup(t){
  return '<section class="v42-team-lower-actions"><button type="button" class="v42-compare-bottom" data-v42-compare><span><small>HERRAMIENTA DE EQUIPO</small><b>Comparar equipos</b></span><i>›</i></button></section>';
 }
@@ -233,7 +242,7 @@ function bind(){
  document.querySelector('[data-v42-close-notify]')?.addEventListener('click',()=>{notifyOpen=false;render()},{once:true});
  document.querySelector('[data-v42-close-compare]')?.addEventListener('click',()=>{compareOpen=false;compareTarget='';render()},{once:true});
  document.querySelectorAll('[data-v42-close-overlay]').forEach(x=>x.addEventListener('click',()=>{notifyOpen=false;compareOpen=false;render()},{once:true}));
- document.querySelectorAll('[data-v42-tab]').forEach(b=>b.addEventListener('click',()=>{activeTab=b.dataset.v42Tab;localStorage.setItem('v42-team-tab',activeTab);render()},{once:true}));
+ document.querySelectorAll('[data-v42-tab]').forEach(b=>b.addEventListener('click',e=>{e.preventDefault();e.stopPropagation();setTeamTab(b.dataset.v42Tab)},{once:true}));
  document.querySelectorAll('[data-v42-select-name]').forEach(b=>b.addEventListener('click',e=>{e.preventDefault();e.stopPropagation();const n=b.dataset.v42SelectName||'';if(n&&norm(n)!==norm(selectedName()))openOfficialTeamProfile(n,false)},{once:true}));
  document.querySelectorAll('[data-v42-compare-name]').forEach(b=>b.addEventListener('click',e=>{e.preventDefault();e.stopPropagation();compareTarget=b.dataset.v42CompareName;render()},{once:true}));
  document.querySelector('[data-v42-compare-again]')?.addEventListener('click',()=>{compareTarget='';render()},{once:true});
@@ -289,7 +298,9 @@ document.addEventListener('click',async e=>{
 window.LJR_TEAM_DETAIL_API={
  openTeam:(name,category)=>{if(category)localStorage.setItem('v62-category',String(category));return openOfficialTeamProfile(name,false)},
  openCompare:(name,category)=>{if(category)localStorage.setItem('v62-category',String(category));return openOfficialTeamProfile(name,true)},
- resolveTeam:raw=>officialTeamByRaw(raw)
+ resolveTeam:raw=>officialTeamByRaw(raw),
+ openTab:tab=>setTeamTab(tab),
+ getTab:()=>activeTab
 };
 
 window.addEventListener('hashchange',schedule);
