@@ -1994,3 +1994,173 @@ body[data-app-route="club-store"] .v436-product-art::after{
 @media (prefers-reduced-motion:reduce){
   body[data-app-route="club-store"] .v443-3d-render{transition:none!important}
 }
+
+
+/* V444 — playeras 3D vivas y tamaño corregido */
+/* V443 terminaba convirtiendo el WebGL a una imagen; V444 mantiene el canvas 3D vivo.
+   También devuelve las prendas a un tamaño de catálogo normal. */
+body[data-app-route="club-store"] .v444-3d-canvas{
+  position:absolute!important;
+  z-index:20!important;
+  inset:0!important;
+  width:100%!important;
+  height:100%!important;
+  display:block!important;
+  object-fit:contain!important;
+  pointer-events:none!important;
+  background:transparent!important;
+  filter:drop-shadow(0 9px 10px rgba(5,11,48,.14))!important;
+}
+body[data-app-route="club-store"] .v443-shirt-webgl.v444-live .v443-3d-render,
+body[data-app-route="club-store"] .v443-shirt-webgl.v444-live .v441-jersey-svg,
+body[data-app-route="club-store"] .v443-shirt-webgl.v444-live .v442-edge,
+body[data-app-route="club-store"] .v443-shirt-webgl.v444-live .v440-shirt-shadow{
+  opacity:0!important;
+}
+
+/* Tamaño base bastante menor: el 3D viene del volumen, no de hacer enorme la playera. */
+body[data-app-route="club-store"] .v441-shirt,
+body[data-app-route="club-store"] .v442-shirt-3d,
+body[data-app-route="club-store"] .v443-shirt-webgl{
+  width:104px!important;
+  height:126px!important;
+  max-width:104px!important;
+  max-height:126px!important;
+}
+
+/* Tarjetas normales: producto compacto como tienda real. */
+body[data-app-route="club-store"] .v431-product-art{
+  height:118px!important;
+  min-height:118px!important;
+  padding:4px!important;
+}
+body[data-app-route="club-store"] .v431-product-art .v441-shirt,
+body[data-app-route="club-store"] .v431-product-art .v442-shirt-3d,
+body[data-app-route="club-store"] .v431-product-art .v443-shirt-webgl{
+  width:92px!important;
+  height:111px!important;
+  max-width:92px!important;
+  max-height:111px!important;
+}
+
+/* Grid de categorías: visible pero sin invadir la tarjeta. */
+body[data-app-route="club-store"] .v436-product-art{
+  height:168px!important;
+  min-height:168px!important;
+}
+body[data-app-route="club-store"] .v436-product-art .v441-shirt,
+body[data-app-route="club-store"] .v436-product-art .v442-shirt-3d,
+body[data-app-route="club-store"] .v436-product-art .v443-shirt-webgl{
+  width:122px!important;
+  height:148px!important;
+  max-width:122px!important;
+  max-height:148px!important;
+}
+
+/* Hero: playera secundaria al texto, ya no gigante. */
+body[data-app-route="club-store"] .v431-hero-shirt{
+  height:170px!important;
+}
+body[data-app-route="club-store"] .v431-hero-shirt .v441-shirt,
+body[data-app-route="club-store"] .v431-hero-shirt .v442-shirt-3d,
+body[data-app-route="club-store"] .v431-hero-shirt .v443-shirt-webgl{
+  width:124px!important;
+  height:150px!important;
+  max-width:124px!important;
+  max-height:150px!important;
+}
+
+/* Destacadas: bajar bastante el tamaño frente a V441/V443. */
+body[data-app-route="club-store"] .v437-feature-card{
+  min-height:282px!important;
+}
+body[data-app-route="club-store"] .v437-feature-art{
+  height:210px!important;
+}
+body[data-app-route="club-store"] .v437-feature-art .v441-shirt,
+body[data-app-route="club-store"] .v437-feature-art .v442-shirt-3d,
+body[data-app-route="club-store"] .v437-feature-art .v443-shirt-webgl{
+  width:138px!important;
+  height:168px!important;
+  max-width:138px!important;
+  max-height:168px!important;
+}
+
+/* Detalle: sigue siendo protagonista, pero cabe completo y deja ver opciones sin scroll enorme. */
+body[data-app-route="club-store"] .v437-product-stage{
+  min-height:315px!important;
+}
+body[data-app-route="club-store"] .v437-stage-shirt{
+  height:286px!important;
+}
+body[data-app-route="club-store"] .v437-stage-shirt .v441-shirt,
+body[data-app-route="club-store"] .v437-stage-shirt .v442-shirt-3d,
+body[data-app-route="club-store"] .v437-stage-shirt .v443-shirt-webgl{
+  width:176px!important;
+  height:214px!important;
+  max-width:176px!important;
+  max-height:214px!important;
+}
+
+/* Personalización, colección y edición jugador también más compactas. */
+body[data-app-route="club-store"] .v431-custom-preview .v441-shirt,
+body[data-app-route="club-store"] .v431-custom-preview .v442-shirt-3d,
+body[data-app-route="club-store"] .v431-custom-preview .v443-shirt-webgl{
+  width:112px!important;
+  height:136px!important;
+  max-width:112px!important;
+  max-height:136px!important;
+}
+body[data-app-route="club-store"] .v431-edition-art .v441-shirt,
+body[data-app-route="club-store"] .v431-edition-art .v442-shirt-3d,
+body[data-app-route="club-store"] .v431-edition-art .v443-shirt-webgl{
+  width:108px!important;
+  height:132px!important;
+  max-width:108px!important;
+  max-height:132px!important;
+}
+body[data-app-route="club-store"] .v431-collection-rail .v441-shirt,
+body[data-app-route="club-store"] .v431-collection-rail .v442-shirt-3d,
+body[data-app-route="club-store"] .v431-collection-rail .v443-shirt-webgl,
+body[data-app-route="club-store"] .v436-kit-tiles .v441-shirt,
+body[data-app-route="club-store"] .v436-kit-tiles .v442-shirt-3d,
+body[data-app-route="club-store"] .v436-kit-tiles .v443-shirt-webgl{
+  width:86px!important;
+  height:104px!important;
+  max-width:86px!important;
+  max-height:104px!important;
+}
+
+/* Fondo de estudio discreto; el volumen lo produce el objeto 3D real. */
+body[data-app-route="club-store"] .v431-product-art,
+body[data-app-route="club-store"] .v436-product-art,
+body[data-app-route="club-store"] .v437-product-stage{
+  background:
+    radial-gradient(circle at 35% 17%,rgba(255,255,255,.98),transparent 25%),
+    radial-gradient(circle at 64% 48%,rgba(45,65,225,.07),transparent 32%),
+    linear-gradient(180deg,#fafbfe 0%,#eef1f7 100%)!important;
+}
+body[data-app-route="club-store"] .v431-product-art::after,
+body[data-app-route="club-store"] .v436-product-art::after{
+  left:25%!important;
+  right:25%!important;
+  bottom:2%!important;
+  height:9%!important;
+  filter:blur(7px)!important;
+  opacity:.72!important;
+}
+
+/* Al tocar no se escala la prenda: evita el efecto "dibujo inflado". */
+body[data-app-route="club-store"] .v431-product:active .v443-shirt-webgl,
+body[data-app-route="club-store"] .v436-product:active .v443-shirt-webgl{
+  transform:none!important;
+}
+
+@media(max-width:380px){
+  body[data-app-route="club-store"] .v431-product-art{height:110px!important;min-height:110px!important}
+  body[data-app-route="club-store"] .v431-product-art .v443-shirt-webgl{width:86px!important;height:104px!important}
+  body[data-app-route="club-store"] .v436-product-art{height:154px!important;min-height:154px!important}
+  body[data-app-route="club-store"] .v436-product-art .v443-shirt-webgl{width:112px!important;height:136px!important}
+  body[data-app-route="club-store"] .v437-product-stage{min-height:292px!important}
+  body[data-app-route="club-store"] .v437-stage-shirt .v443-shirt-webgl{width:162px!important;height:198px!important}
+}
