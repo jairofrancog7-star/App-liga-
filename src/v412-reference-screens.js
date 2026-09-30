@@ -196,9 +196,8 @@ function searchMatchRow(m){
 }
 function searchMarkup(){
  const mode=localStorage.getItem('v412-search-mode')||'players';
- return '<section class="v412-shell v412-search-reference v414-search-reference" data-v412-screen="search">'+
+ return '<section class="v412-shell v412-search-reference v414-search-reference v415-single-search" data-v412-screen="search">'+
    '<div class="v414-search-join">'+
-     '<div class="v412-search-top"><input data-v412-search placeholder="Buscar jugadores, equipos, partidos..."></div>'+
      '<div class="v412-modebar">'+[['players','Jugadores'],['teams','Equipos'],['competitions','Competiciones'],['matches','Partidos']].map(x=>'<button class="v412-mode '+(mode===x[0]?'is-active':'')+'" data-v412-mode="'+x[0]+'">'+x[1]+'</button>').join('')+'</div>'+
    '</div>'+
    '<div class="v414-player-cover" data-v414-player-cover><span>PORTADA</span><div><small></small><small>GOL</small><small>PJ</small><small>PTS</small><small></small></div></div>'+
@@ -209,9 +208,11 @@ function searchMarkup(){
 }
 function bindSearch(root){
  let mode=localStorage.getItem('v412-search-mode')||'players';
- const input=root.querySelector('[data-v412-search]');
+ const input=document.querySelector('#globalSearch');
+ const nativeResults=document.querySelector('#searchResults');
  const render=()=>{
    const q=norm(input?.value||'');let html='',title='',allLabel='Ver todos ›',allRoute='players';
+   if(nativeResults)nativeResults.style.display=q?'none':'';
    const cover=root.querySelector('[data-v414-player-cover]');
    root.classList.toggle('is-player-mode',mode==='players');
    if(cover)cover.style.display=mode==='players'?'flex':'none';
@@ -236,7 +237,12 @@ function bindSearch(root){
    bindCommon(root);
  };
  root.querySelectorAll('[data-v412-mode]').forEach(b=>b.onclick=()=>{mode=b.dataset.v412Mode;localStorage.setItem('v412-search-mode',mode);root.querySelectorAll('[data-v412-mode]').forEach(x=>x.classList.toggle('is-active',x===b));render()});
- if(input)input.oninput=render;render();bindCommon(root);
+ if(input){
+   if(input.__v415SearchHandler)input.removeEventListener('input',input.__v415SearchHandler);
+   input.__v415SearchHandler=()=>requestAnimationFrame(render);
+   input.addEventListener('input',input.__v415SearchHandler);
+ }
+ render();bindCommon(root);
 }
 function mountSearch(screen){if(screen.querySelector('[data-v412-screen="search"]'))return;screen.insertAdjacentHTML('beforeend',searchMarkup());bindSearch(screen.querySelector('[data-v412-screen="search"]'))}
 
