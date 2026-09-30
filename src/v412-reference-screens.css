@@ -375,3 +375,26 @@
   .v414-num b{font-size:10px}
   .v414-league-badge,.v414-team-badge{width:31px;height:31px}
 }
+
+
+/* V415 — un solo buscador: usa #globalSearch de la pantalla original */
+.v415-single-search .v414-search-join{
+  margin:0 -14px;
+  padding:0 14px 12px;
+  background:transparent!important;
+  border-top:0!important;
+}
+.v415-single-search .v412-modebar{
+  margin-top:0!important;
+}
+.v415-single-search .v412-search-top,
+.v415-single-search [data-v412-search]{
+  display:none!important;
+}
+body:has(.v415-single-search) #globalSearch{
+  width:100%!important;
+}
+body:has(.v415-single-search) #searchResults[style*="display: none"]{
+  margin:0!important;
+  padding:0!important;
+}
