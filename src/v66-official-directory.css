@@ -282,3 +282,75 @@ body[data-app-route="club-store"] .v431-player-card small{font-size:6.5px!import
   body[data-app-route="club-store"] .v431-hero{min-height:238px!important}
   body[data-app-route="club-store"] .v431-hero-copy h1{font-size:17px!important}
 }
+
+
+/* V435 — cabecera de tienda tipo club retail */
+/* Referencia: escudo + "Club Store" a la izquierda, búsqueda/favoritos/carrito a la derecha
+   y categorías en pills horizontales. Adaptado al azul de la app. */
+body[data-app-route="club-store"] .v435-store-head{
+  height:62px!important;min-height:62px!important;padding:7px 12px 7px 13px!important;gap:8px!important;
+  background:#080d2d!important;border:0!important;box-shadow:none!important;
+}
+body[data-app-route="club-store"] .v435-back{display:none!important}
+body[data-app-route="club-store"] .v431-head-crest{
+  width:43px!important;height:43px!important;min-width:43px!important;flex:0 0 43px!important;
+  border:0!important;border-radius:50%!important;background:#fff!important;box-shadow:0 0 0 1px rgba(255,255,255,.22)!important;
+}
+body[data-app-route="club-store"] .v431-head-crest img{
+  width:38px!important;height:38px!important;max-width:38px!important;max-height:38px!important;object-fit:contain!important;
+}
+body[data-app-route="club-store"] .v435-store-title{min-width:0!important;flex:1 1 auto!important;display:block!important}
+body[data-app-route="club-store"] .v435-store-title small{display:none!important}
+body[data-app-route="club-store"] .v435-store-title b{
+  display:block!important;margin:0!important;color:#fff!important;font-family:Georgia,"Times New Roman",serif!important;
+  font-size:19px!important;line-height:1!important;font-weight:500!important;letter-spacing:-.02em!important;
+  white-space:nowrap!important;overflow:hidden!important;text-overflow:ellipsis!important;
+}
+body[data-app-route="club-store"] .v435-store-title b span{font-weight:400!important}
+body[data-app-route="club-store"] .v435-head-actions{flex:0 0 auto!important;display:flex!important;align-items:center!important;gap:3px!important}
+body[data-app-route="club-store"] .v435-icon{
+  position:relative!important;width:34px!important;height:34px!important;min-width:34px!important;min-height:34px!important;
+  display:grid!important;place-items:center!important;padding:6px!important;border:0!important;border-radius:0!important;
+  background:transparent!important;color:#fff!important;box-shadow:none!important;
+}
+body[data-app-route="club-store"] .v435-icon svg{
+  width:22px!important;height:22px!important;display:block!important;fill:none!important;stroke:currentColor!important;
+  stroke-width:1.8!important;stroke-linecap:round!important;stroke-linejoin:round!important;
+}
+body[data-app-route="club-store"] .v435-wishlist.active svg{fill:#fff!important}
+body[data-app-route="club-store"] .v431-cart-button em{
+  right:1px!important;top:0!important;min-width:14px!important;height:14px!important;padding:0 3px!important;
+  background:#fff!important;color:#0a145e!important;border-radius:10px!important;font-size:7px!important;line-height:14px!important;
+}
+body[data-app-route="club-store"] .v435-search-panel{
+  position:sticky!important;top:62px!important;z-index:79!important;padding:8px 12px!important;background:#080d2d!important;
+  border-top:1px solid rgba(255,255,255,.08)!important;
+}
+body[data-app-route="club-store"] .v435-search-panel input{
+  height:38px!important;border-radius:19px!important;background:#f5f6fb!important;color:#10152c!important;font-size:10px!important;
+}
+body[data-app-route="club-store"] .v435-search-panel input::placeholder{color:#777e96!important}
+body[data-app-route="club-store"] .v435-shop-tabs{
+  position:sticky!important;top:62px!important;z-index:70!important;min-height:54px!important;display:flex!important;align-items:center!important;
+  gap:8px!important;padding:8px 12px!important;overflow-x:auto!important;overflow-y:hidden!important;background:#080d2d!important;
+  border:0!important;scrollbar-width:none!important;-webkit-overflow-scrolling:touch!important;
+}
+body[data-app-route="club-store"] .v435-shop-tabs::-webkit-scrollbar{display:none!important}
+body[data-app-route="club-store"] .v435-shop-tabs button{
+  flex:0 0 auto!important;min-width:max-content!important;min-height:36px!important;height:36px!important;padding:0 17px!important;
+  border:1px solid rgba(255,255,255,.27)!important;border-radius:20px!important;background:transparent!important;color:#fff!important;
+  font-size:9.5px!important;line-height:34px!important;font-weight:650!important;white-space:nowrap!important;box-shadow:none!important;
+}
+body[data-app-route="club-store"] .v435-shop-tabs button.active,
+body[data-app-route="club-store"] .v435-shop-tabs button:first-child{
+  background:#fff!important;color:#090e2e!important;border-color:#fff!important;
+}
+body[data-app-route="club-store"] .v431-hero{margin-top:0!important}
+@media(max-width:370px){
+  body[data-app-route="club-store"] .v435-store-head{padding-left:10px!important;padding-right:8px!important;gap:6px!important}
+  body[data-app-route="club-store"] .v431-head-crest{width:39px!important;height:39px!important;min-width:39px!important;flex-basis:39px!important}
+  body[data-app-route="club-store"] .v431-head-crest img{width:34px!important;height:34px!important}
+  body[data-app-route="club-store"] .v435-store-title b{font-size:17px!important}
+  body[data-app-route="club-store"] .v435-icon{width:31px!important;height:31px!important;min-width:31px!important}
+  body[data-app-route="club-store"] .v435-icon svg{width:20px!important;height:20px!important}
+}
