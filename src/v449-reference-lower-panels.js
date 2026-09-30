@@ -7,7 +7,7 @@ if(window.__LJR_V449_REFERENCE_LOWER__)return;
 window.__LJR_V449_REFERENCE_LOWER__=true;
 
 const ID='v449-reference-lower';
-const BUILD='20260930-v449-reference-lower';
+const BUILD='20260930-v451-reference-lower-hard';
 const DATA='./public/data/official-live.json?v='+BUILD;
 const RAW='https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/';
 const CAT_ORDER=['3','5','4','2','1'];
@@ -254,19 +254,28 @@ function supported(r){return ['competition','leagueData','safe-data','stats','v3
 function markup(r,data){
  if(r==='competition'){
   const m=competitionMode();
-  if(m==='fixtures')return competitionFixtures(data);
-  if(m==='standings')return competitionStandings(data);
-  return rankingBlock(data);
+  if(m==='fixtures')return competitionFixtures(data)+seasonMatches(data);
+  if(m==='standings')return competitionStandings(data)+seasonTable(data)+rankingBlock(data);
+  return rankingBlock(data)+seasonStats(data);
  }
  if(r==='leagueData'||r==='safe-data')return seasonBlock(data);
- if(r==='stats'||r==='v38Stats')return seasonStats(data)+rankingBlock(data);
- if(r==='scorers'||r==='rankings')return rankingBlock(data);
+ if(r==='stats'||r==='v38Stats')return seasonStats(data)+seasonTable(data)+rankingBlock(data);
+ if(r==='scorers'||r==='rankings')return rankingBlock(data)+seasonStats(data);
  return '';
 }
 function host(){
  const screen=$('#screen');if(!screen)return null;
  let h=$('#'+ID,screen);if(h)return h;
  h=document.createElement('div');h.id=ID;h.className='v449-reference-lower';
+ const r=route();
+ if(r==='stats'){
+   const page=screen.querySelector('[data-v33-data]');
+   if(page){page.appendChild(h);return h}
+ }
+ if(r==='v38Stats'){
+   const page=screen.querySelector('.v399-stats-page,.v60-tool-page');
+   if(page){page.appendChild(h);return h}
+ }
  const bottom=$('#v105-bottom',screen);
  if(bottom)screen.insertBefore(h,bottom);else screen.appendChild(h);
  return h;
@@ -305,7 +314,7 @@ window.addEventListener('load',()=>schedule(220));
 document.addEventListener('DOMContentLoaded',()=>schedule(100),{once:true});
 document.addEventListener('click',e=>{if(e.target instanceof Element&&e.target.closest('[data-comp-tab]'))schedule(140)},true);
 const screen=$('#screen');
-if(screen)new MutationObserver(()=>schedule(120)).observe(screen,{childList:true,subtree:false});
+if(screen)new MutationObserver(()=>schedule(90)).observe(screen,{childList:true,subtree:true});
 schedule(150);setTimeout(()=>schedule(0),1200);setTimeout(()=>schedule(0),3000);
 window.LJR_V449={ensure,paint};
 })();
