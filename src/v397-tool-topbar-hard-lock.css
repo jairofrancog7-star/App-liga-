@@ -309,3 +309,693 @@
     background-size:25px 25px!important;
   }
 }
+
+
+/* V402 — HARD FIX REAL PARA LAS 26 PÁGINAS SEÑALADAS.
+   No depende de que JavaScript agregue una clase: usa body[data-app-route].
+   Barra ~1/4 de la altura anterior, flecha pegada a la izquierda e iconos compactos. */
+@media (max-width:1023px){
+  html body:is(
+    [data-app-route="v38Alerts"],
+    [data-app-route="v38Weather"],
+    [data-app-route="v4-matchcenter"],
+    [data-app-route="venues"],
+    [data-app-route="matchday"],
+    [data-app-route="search"],
+    [data-app-route="ligaQR"],
+    [data-app-route="players"],
+    [data-app-route="agendaBuilder"],
+    [data-app-route="simulator"],
+    [data-app-route="v38Stats"],
+    [data-app-route="bracketBuilder"],
+    [data-app-route="tableExport"],
+    [data-app-route="motionHub"],
+    [data-app-route="recruitment"],
+    [data-app-route="credentialBuilder"],
+    [data-app-route="tactics"],
+    [data-app-route="publications"],
+    [data-app-route="v38Weekly"],
+    [data-app-route="scheduleChanges"],
+    [data-app-route="weatherFields"],
+    [data-app-route="cedulas"],
+    [data-app-route="cedulaBuilder"],
+    [data-app-route="rulebook"],
+    [data-app-route="rankings"],
+    [data-app-route="leagueData"]
+  ) #app > .topbar,
+  html body:is(
+    [data-app-route="v38Alerts"],
+    [data-app-route="v38Weather"],
+    [data-app-route="v4-matchcenter"],
+    [data-app-route="venues"],
+    [data-app-route="matchday"],
+    [data-app-route="search"],
+    [data-app-route="ligaQR"],
+    [data-app-route="players"],
+    [data-app-route="agendaBuilder"],
+    [data-app-route="simulator"],
+    [data-app-route="v38Stats"],
+    [data-app-route="bracketBuilder"],
+    [data-app-route="tableExport"],
+    [data-app-route="motionHub"],
+    [data-app-route="recruitment"],
+    [data-app-route="credentialBuilder"],
+    [data-app-route="tactics"],
+    [data-app-route="publications"],
+    [data-app-route="v38Weekly"],
+    [data-app-route="scheduleChanges"],
+    [data-app-route="weatherFields"],
+    [data-app-route="cedulas"],
+    [data-app-route="cedulaBuilder"],
+    [data-app-route="rulebook"],
+    [data-app-route="rankings"],
+    [data-app-route="leagueData"]
+  ) .app-shell > .topbar{
+    position:sticky!important;
+    top:0!important;
+    z-index:2147483000!important;
+    display:block!important;
+    visibility:visible!important;
+    opacity:1!important;
+    height:42px!important;
+    min-height:42px!important;
+    max-height:42px!important;
+    margin:0!important;
+    padding:0!important;
+    overflow:hidden!important;
+    border:0!important;
+    border-bottom:1px solid rgba(86,155,255,.34)!important;
+    box-shadow:none!important;
+    background:
+      radial-gradient(108px 42px at 12% 0%,rgba(88,229,255,.48),transparent 72%),
+      radial-gradient(112px 44px at 72% -10%,rgba(195,252,255,.36),transparent 74%),
+      linear-gradient(180deg,#0b48e4 0%,#0a30bf 44%,#071777 100%)!important;
+  }
+
+  html body:is(
+    [data-app-route="v38Alerts"],
+    [data-app-route="v38Weather"],
+    [data-app-route="v4-matchcenter"],
+    [data-app-route="venues"],
+    [data-app-route="matchday"],
+    [data-app-route="search"],
+    [data-app-route="ligaQR"],
+    [data-app-route="players"],
+    [data-app-route="agendaBuilder"],
+    [data-app-route="simulator"],
+    [data-app-route="v38Stats"],
+    [data-app-route="bracketBuilder"],
+    [data-app-route="tableExport"],
+    [data-app-route="motionHub"],
+    [data-app-route="recruitment"],
+    [data-app-route="credentialBuilder"],
+    [data-app-route="tactics"],
+    [data-app-route="publications"],
+    [data-app-route="v38Weekly"],
+    [data-app-route="scheduleChanges"],
+    [data-app-route="weatherFields"],
+    [data-app-route="cedulas"],
+    [data-app-route="cedulaBuilder"],
+    [data-app-route="rulebook"],
+    [data-app-route="rankings"],
+    [data-app-route="leagueData"]
+  ) #app > .topbar::after,
+  html body:is(
+    [data-app-route="v38Alerts"],
+    [data-app-route="v38Weather"],
+    [data-app-route="v4-matchcenter"],
+    [data-app-route="venues"],
+    [data-app-route="matchday"],
+    [data-app-route="search"],
+    [data-app-route="ligaQR"],
+    [data-app-route="players"],
+    [data-app-route="agendaBuilder"],
+    [data-app-route="simulator"],
+    [data-app-route="v38Stats"],
+    [data-app-route="bracketBuilder"],
+    [data-app-route="tableExport"],
+    [data-app-route="motionHub"],
+    [data-app-route="recruitment"],
+    [data-app-route="credentialBuilder"],
+    [data-app-route="tactics"],
+    [data-app-route="publications"],
+    [data-app-route="v38Weekly"],
+    [data-app-route="scheduleChanges"],
+    [data-app-route="weatherFields"],
+    [data-app-route="cedulas"],
+    [data-app-route="cedulaBuilder"],
+    [data-app-route="rulebook"],
+    [data-app-route="rankings"],
+    [data-app-route="leagueData"]
+  ) .app-shell > .topbar::after{
+    content:none!important;
+    display:none!important;
+  }
+
+  html body:is(
+    [data-app-route="v38Alerts"],
+    [data-app-route="v38Weather"],
+    [data-app-route="v4-matchcenter"],
+    [data-app-route="venues"],
+    [data-app-route="matchday"],
+    [data-app-route="search"],
+    [data-app-route="ligaQR"],
+    [data-app-route="players"],
+    [data-app-route="agendaBuilder"],
+    [data-app-route="simulator"],
+    [data-app-route="v38Stats"],
+    [data-app-route="bracketBuilder"],
+    [data-app-route="tableExport"],
+    [data-app-route="motionHub"],
+    [data-app-route="recruitment"],
+    [data-app-route="credentialBuilder"],
+    [data-app-route="tactics"],
+    [data-app-route="publications"],
+    [data-app-route="v38Weekly"],
+    [data-app-route="scheduleChanges"],
+    [data-app-route="weatherFields"],
+    [data-app-route="cedulas"],
+    [data-app-route="cedulaBuilder"],
+    [data-app-route="rulebook"],
+    [data-app-route="rankings"],
+    [data-app-route="leagueData"]
+  ) .topbar .wordmark{
+    display:block!important;
+    visibility:visible!important;
+    position:absolute!important;
+    inset:0!important;
+    width:auto!important;
+    height:auto!important;
+    margin:0!important;
+    padding:0!important;
+    border:0!important;
+    color:transparent!important;
+    font-size:0!important;
+    line-height:0!important;
+    pointer-events:none!important;
+    background:
+      linear-gradient(153deg,transparent 0 37%,rgba(71,224,255,.20) 37.5%,rgba(238,255,255,.30) 38%,transparent 39% 100%),
+      radial-gradient(90px 34px at 70% 0%,rgba(52,224,255,.17),transparent 74%)!important;
+  }
+
+  html body:is(
+    [data-app-route="v38Alerts"],
+    [data-app-route="v38Weather"],
+    [data-app-route="v4-matchcenter"],
+    [data-app-route="venues"],
+    [data-app-route="matchday"],
+    [data-app-route="search"],
+    [data-app-route="ligaQR"],
+    [data-app-route="players"],
+    [data-app-route="agendaBuilder"],
+    [data-app-route="simulator"],
+    [data-app-route="v38Stats"],
+    [data-app-route="bracketBuilder"],
+    [data-app-route="tableExport"],
+    [data-app-route="motionHub"],
+    [data-app-route="recruitment"],
+    [data-app-route="credentialBuilder"],
+    [data-app-route="tactics"],
+    [data-app-route="publications"],
+    [data-app-route="v38Weekly"],
+    [data-app-route="scheduleChanges"],
+    [data-app-route="weatherFields"],
+    [data-app-route="cedulas"],
+    [data-app-route="cedulaBuilder"],
+    [data-app-route="rulebook"],
+    [data-app-route="rankings"],
+    [data-app-route="leagueData"]
+  ) .topbar .wordmark::before{
+    content:""!important;
+    display:block!important;
+    position:absolute!important;
+    left:25px!important;
+    top:-5px!important;
+    width:52px!important;
+    height:48px!important;
+    opacity:.34!important;
+    pointer-events:none!important;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 180 145'%3E%3Cg fill='none' stroke='%237fefff' stroke-width='3.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M53 18h74l-5 17H58zM61 35h58l-5 36c-2 18-11 28-24 34-13-6-22-16-24-34z'/%3E%3Cpath d='M58 43H42c-7 0-11 6-9 13 4 15 14 24 31 28M122 43h16c7 0 11 6 9 13-4 15-14 24-31 28'/%3E%3Cpath d='M90 105v17M72 132h36M78 122h24l6 10H72z'/%3E%3Ccircle cx='90' cy='65' r='20'/%3E%3C/g%3E%3C/svg%3E")!important;
+    background-repeat:no-repeat!important;
+    background-position:center!important;
+    background-size:contain!important;
+    filter:drop-shadow(0 0 3px rgba(42,220,255,.38))!important;
+  }
+
+  html body:is(
+    [data-app-route="v38Alerts"],
+    [data-app-route="v38Weather"],
+    [data-app-route="v4-matchcenter"],
+    [data-app-route="venues"],
+    [data-app-route="matchday"],
+    [data-app-route="search"],
+    [data-app-route="ligaQR"],
+    [data-app-route="players"],
+    [data-app-route="agendaBuilder"],
+    [data-app-route="simulator"],
+    [data-app-route="v38Stats"],
+    [data-app-route="bracketBuilder"],
+    [data-app-route="tableExport"],
+    [data-app-route="motionHub"],
+    [data-app-route="recruitment"],
+    [data-app-route="credentialBuilder"],
+    [data-app-route="tactics"],
+    [data-app-route="publications"],
+    [data-app-route="v38Weekly"],
+    [data-app-route="scheduleChanges"],
+    [data-app-route="weatherFields"],
+    [data-app-route="cedulas"],
+    [data-app-route="cedulaBuilder"],
+    [data-app-route="rulebook"],
+    [data-app-route="rankings"],
+    [data-app-route="leagueData"]
+  ) .topbar .wordmark::after{
+    content:none!important;
+    display:none!important;
+  }
+
+  html body:is(
+    [data-app-route="v38Alerts"],
+    [data-app-route="v38Weather"],
+    [data-app-route="v4-matchcenter"],
+    [data-app-route="venues"],
+    [data-app-route="matchday"],
+    [data-app-route="search"],
+    [data-app-route="ligaQR"],
+    [data-app-route="players"],
+    [data-app-route="agendaBuilder"],
+    [data-app-route="simulator"],
+    [data-app-route="v38Stats"],
+    [data-app-route="bracketBuilder"],
+    [data-app-route="tableExport"],
+    [data-app-route="motionHub"],
+    [data-app-route="recruitment"],
+    [data-app-route="credentialBuilder"],
+    [data-app-route="tactics"],
+    [data-app-route="publications"],
+    [data-app-route="v38Weekly"],
+    [data-app-route="scheduleChanges"],
+    [data-app-route="weatherFields"],
+    [data-app-route="cedulas"],
+    [data-app-route="cedulaBuilder"],
+    [data-app-route="rulebook"],
+    [data-app-route="rankings"],
+    [data-app-route="leagueData"]
+  ) .topbar .back-button{
+    display:block!important;
+    visibility:visible!important;
+    position:absolute!important;
+    left:3px!important;
+    top:10px!important;
+    width:21px!important;
+    height:21px!important;
+    min-width:21px!important;
+    min-height:21px!important;
+    max-width:21px!important;
+    max-height:21px!important;
+    margin:0!important;
+    padding:0!important;
+    border:0!important;
+    border-radius:0!important;
+    background-color:transparent!important;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M14.5 5.5 8 12l6.5 6.5M8 12h12' fill='none' stroke='%23fff' stroke-width='2.15' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E")!important;
+    background-repeat:no-repeat!important;
+    background-position:center!important;
+    background-size:21px 21px!important;
+    box-shadow:none!important;
+    filter:none!important;
+    color:transparent!important;
+    z-index:12!important;
+  }
+
+  html body:is(
+    [data-app-route="v38Alerts"],
+    [data-app-route="v38Weather"],
+    [data-app-route="v4-matchcenter"],
+    [data-app-route="venues"],
+    [data-app-route="matchday"],
+    [data-app-route="search"],
+    [data-app-route="ligaQR"],
+    [data-app-route="players"],
+    [data-app-route="agendaBuilder"],
+    [data-app-route="simulator"],
+    [data-app-route="v38Stats"],
+    [data-app-route="bracketBuilder"],
+    [data-app-route="tableExport"],
+    [data-app-route="motionHub"],
+    [data-app-route="recruitment"],
+    [data-app-route="credentialBuilder"],
+    [data-app-route="tactics"],
+    [data-app-route="publications"],
+    [data-app-route="v38Weekly"],
+    [data-app-route="scheduleChanges"],
+    [data-app-route="weatherFields"],
+    [data-app-route="cedulas"],
+    [data-app-route="cedulaBuilder"],
+    [data-app-route="rulebook"],
+    [data-app-route="rankings"],
+    [data-app-route="leagueData"]
+  ) .topbar .back-button svg,
+  html body:is(
+    [data-app-route="v38Alerts"],
+    [data-app-route="v38Weather"],
+    [data-app-route="v4-matchcenter"],
+    [data-app-route="venues"],
+    [data-app-route="matchday"],
+    [data-app-route="search"],
+    [data-app-route="ligaQR"],
+    [data-app-route="players"],
+    [data-app-route="agendaBuilder"],
+    [data-app-route="simulator"],
+    [data-app-route="v38Stats"],
+    [data-app-route="bracketBuilder"],
+    [data-app-route="tableExport"],
+    [data-app-route="motionHub"],
+    [data-app-route="recruitment"],
+    [data-app-route="credentialBuilder"],
+    [data-app-route="tactics"],
+    [data-app-route="publications"],
+    [data-app-route="v38Weekly"],
+    [data-app-route="scheduleChanges"],
+    [data-app-route="weatherFields"],
+    [data-app-route="cedulas"],
+    [data-app-route="cedulaBuilder"],
+    [data-app-route="rulebook"],
+    [data-app-route="rankings"],
+    [data-app-route="leagueData"]
+  ) .topbar .back-button::before,
+  html body:is(
+    [data-app-route="v38Alerts"],
+    [data-app-route="v38Weather"],
+    [data-app-route="v4-matchcenter"],
+    [data-app-route="venues"],
+    [data-app-route="matchday"],
+    [data-app-route="search"],
+    [data-app-route="ligaQR"],
+    [data-app-route="players"],
+    [data-app-route="agendaBuilder"],
+    [data-app-route="simulator"],
+    [data-app-route="v38Stats"],
+    [data-app-route="bracketBuilder"],
+    [data-app-route="tableExport"],
+    [data-app-route="motionHub"],
+    [data-app-route="recruitment"],
+    [data-app-route="credentialBuilder"],
+    [data-app-route="tactics"],
+    [data-app-route="publications"],
+    [data-app-route="v38Weekly"],
+    [data-app-route="scheduleChanges"],
+    [data-app-route="weatherFields"],
+    [data-app-route="cedulas"],
+    [data-app-route="cedulaBuilder"],
+    [data-app-route="rulebook"],
+    [data-app-route="rankings"],
+    [data-app-route="leagueData"]
+  ) .topbar .back-button::after{
+    display:none!important;
+    content:none!important;
+  }
+
+  html body:is(
+    [data-app-route="v38Alerts"],
+    [data-app-route="v38Weather"],
+    [data-app-route="v4-matchcenter"],
+    [data-app-route="venues"],
+    [data-app-route="matchday"],
+    [data-app-route="search"],
+    [data-app-route="ligaQR"],
+    [data-app-route="players"],
+    [data-app-route="agendaBuilder"],
+    [data-app-route="simulator"],
+    [data-app-route="v38Stats"],
+    [data-app-route="bracketBuilder"],
+    [data-app-route="tableExport"],
+    [data-app-route="motionHub"],
+    [data-app-route="recruitment"],
+    [data-app-route="credentialBuilder"],
+    [data-app-route="tactics"],
+    [data-app-route="publications"],
+    [data-app-route="v38Weekly"],
+    [data-app-route="scheduleChanges"],
+    [data-app-route="weatherFields"],
+    [data-app-route="cedulas"],
+    [data-app-route="cedulaBuilder"],
+    [data-app-route="rulebook"],
+    [data-app-route="rankings"],
+    [data-app-route="leagueData"]
+  ) .topbar .profile-button{
+    display:block!important;
+    visibility:visible!important;
+    position:absolute!important;
+    right:5px!important;
+    top:9px!important;
+    width:23px!important;
+    height:23px!important;
+    min-width:23px!important;
+    min-height:23px!important;
+    max-width:23px!important;
+    max-height:23px!important;
+    margin:0!important;
+    padding:0!important;
+    border:0!important;
+    border-radius:0!important;
+    background-color:transparent!important;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Ccircle cx='12' cy='12' r='9.6' fill='none' stroke='%23fff' stroke-width='1.85'/%3E%3Ccircle cx='12' cy='8.1' r='2.85' fill='none' stroke='%23fff' stroke-width='1.85'/%3E%3Cpath d='M5.35 19.15c1.55-3.35 3.76-4.9 6.65-4.9s5.1 1.55 6.65 4.9' fill='none' stroke='%23fff' stroke-width='1.85' stroke-linecap='round'/%3E%3C/svg%3E")!important;
+    background-repeat:no-repeat!important;
+    background-position:center!important;
+    background-size:23px 23px!important;
+    box-shadow:none!important;
+    filter:none!important;
+    color:transparent!important;
+    z-index:12!important;
+  }
+
+  html body:is(
+    [data-app-route="v38Alerts"],
+    [data-app-route="v38Weather"],
+    [data-app-route="v4-matchcenter"],
+    [data-app-route="venues"],
+    [data-app-route="matchday"],
+    [data-app-route="search"],
+    [data-app-route="ligaQR"],
+    [data-app-route="players"],
+    [data-app-route="agendaBuilder"],
+    [data-app-route="simulator"],
+    [data-app-route="v38Stats"],
+    [data-app-route="bracketBuilder"],
+    [data-app-route="tableExport"],
+    [data-app-route="motionHub"],
+    [data-app-route="recruitment"],
+    [data-app-route="credentialBuilder"],
+    [data-app-route="tactics"],
+    [data-app-route="publications"],
+    [data-app-route="v38Weekly"],
+    [data-app-route="scheduleChanges"],
+    [data-app-route="weatherFields"],
+    [data-app-route="cedulas"],
+    [data-app-route="cedulaBuilder"],
+    [data-app-route="rulebook"],
+    [data-app-route="rankings"],
+    [data-app-route="leagueData"]
+  ) .topbar .profile-button svg,
+  html body:is(
+    [data-app-route="v38Alerts"],
+    [data-app-route="v38Weather"],
+    [data-app-route="v4-matchcenter"],
+    [data-app-route="venues"],
+    [data-app-route="matchday"],
+    [data-app-route="search"],
+    [data-app-route="ligaQR"],
+    [data-app-route="players"],
+    [data-app-route="agendaBuilder"],
+    [data-app-route="simulator"],
+    [data-app-route="v38Stats"],
+    [data-app-route="bracketBuilder"],
+    [data-app-route="tableExport"],
+    [data-app-route="motionHub"],
+    [data-app-route="recruitment"],
+    [data-app-route="credentialBuilder"],
+    [data-app-route="tactics"],
+    [data-app-route="publications"],
+    [data-app-route="v38Weekly"],
+    [data-app-route="scheduleChanges"],
+    [data-app-route="weatherFields"],
+    [data-app-route="cedulas"],
+    [data-app-route="cedulaBuilder"],
+    [data-app-route="rulebook"],
+    [data-app-route="rankings"],
+    [data-app-route="leagueData"]
+  ) .topbar .profile-button::before,
+  html body:is(
+    [data-app-route="v38Alerts"],
+    [data-app-route="v38Weather"],
+    [data-app-route="v4-matchcenter"],
+    [data-app-route="venues"],
+    [data-app-route="matchday"],
+    [data-app-route="search"],
+    [data-app-route="ligaQR"],
+    [data-app-route="players"],
+    [data-app-route="agendaBuilder"],
+    [data-app-route="simulator"],
+    [data-app-route="v38Stats"],
+    [data-app-route="bracketBuilder"],
+    [data-app-route="tableExport"],
+    [data-app-route="motionHub"],
+    [data-app-route="recruitment"],
+    [data-app-route="credentialBuilder"],
+    [data-app-route="tactics"],
+    [data-app-route="publications"],
+    [data-app-route="v38Weekly"],
+    [data-app-route="scheduleChanges"],
+    [data-app-route="weatherFields"],
+    [data-app-route="cedulas"],
+    [data-app-route="cedulaBuilder"],
+    [data-app-route="rulebook"],
+    [data-app-route="rankings"],
+    [data-app-route="leagueData"]
+  ) .topbar .profile-button::after{
+    display:none!important;
+    content:none!important;
+  }
+}
+
+@media (max-width:390px){
+  html body:is(
+    [data-app-route="v38Alerts"],
+    [data-app-route="v38Weather"],
+    [data-app-route="v4-matchcenter"],
+    [data-app-route="venues"],
+    [data-app-route="matchday"],
+    [data-app-route="search"],
+    [data-app-route="ligaQR"],
+    [data-app-route="players"],
+    [data-app-route="agendaBuilder"],
+    [data-app-route="simulator"],
+    [data-app-route="v38Stats"],
+    [data-app-route="bracketBuilder"],
+    [data-app-route="tableExport"],
+    [data-app-route="motionHub"],
+    [data-app-route="recruitment"],
+    [data-app-route="credentialBuilder"],
+    [data-app-route="tactics"],
+    [data-app-route="publications"],
+    [data-app-route="v38Weekly"],
+    [data-app-route="scheduleChanges"],
+    [data-app-route="weatherFields"],
+    [data-app-route="cedulas"],
+    [data-app-route="cedulaBuilder"],
+    [data-app-route="rulebook"],
+    [data-app-route="rankings"],
+    [data-app-route="leagueData"]
+  ) #app > .topbar,
+  html body:is(
+    [data-app-route="v38Alerts"],
+    [data-app-route="v38Weather"],
+    [data-app-route="v4-matchcenter"],
+    [data-app-route="venues"],
+    [data-app-route="matchday"],
+    [data-app-route="search"],
+    [data-app-route="ligaQR"],
+    [data-app-route="players"],
+    [data-app-route="agendaBuilder"],
+    [data-app-route="simulator"],
+    [data-app-route="v38Stats"],
+    [data-app-route="bracketBuilder"],
+    [data-app-route="tableExport"],
+    [data-app-route="motionHub"],
+    [data-app-route="recruitment"],
+    [data-app-route="credentialBuilder"],
+    [data-app-route="tactics"],
+    [data-app-route="publications"],
+    [data-app-route="v38Weekly"],
+    [data-app-route="scheduleChanges"],
+    [data-app-route="weatherFields"],
+    [data-app-route="cedulas"],
+    [data-app-route="cedulaBuilder"],
+    [data-app-route="rulebook"],
+    [data-app-route="rankings"],
+    [data-app-route="leagueData"]
+  ) .app-shell > .topbar{
+    height:40px!important;
+    min-height:40px!important;
+    max-height:40px!important;
+  }
+
+  html body:is(
+    [data-app-route="v38Alerts"],
+    [data-app-route="v38Weather"],
+    [data-app-route="v4-matchcenter"],
+    [data-app-route="venues"],
+    [data-app-route="matchday"],
+    [data-app-route="search"],
+    [data-app-route="ligaQR"],
+    [data-app-route="players"],
+    [data-app-route="agendaBuilder"],
+    [data-app-route="simulator"],
+    [data-app-route="v38Stats"],
+    [data-app-route="bracketBuilder"],
+    [data-app-route="tableExport"],
+    [data-app-route="motionHub"],
+    [data-app-route="recruitment"],
+    [data-app-route="credentialBuilder"],
+    [data-app-route="tactics"],
+    [data-app-route="publications"],
+    [data-app-route="v38Weekly"],
+    [data-app-route="scheduleChanges"],
+    [data-app-route="weatherFields"],
+    [data-app-route="cedulas"],
+    [data-app-route="cedulaBuilder"],
+    [data-app-route="rulebook"],
+    [data-app-route="rankings"],
+    [data-app-route="leagueData"]
+  ) .topbar .back-button{
+    left:2px!important;
+    top:10px!important;
+    width:20px!important;
+    height:20px!important;
+    min-width:20px!important;
+    min-height:20px!important;
+    max-width:20px!important;
+    max-height:20px!important;
+    background-size:20px 20px!important;
+  }
+
+  html body:is(
+    [data-app-route="v38Alerts"],
+    [data-app-route="v38Weather"],
+    [data-app-route="v4-matchcenter"],
+    [data-app-route="venues"],
+    [data-app-route="matchday"],
+    [data-app-route="search"],
+    [data-app-route="ligaQR"],
+    [data-app-route="players"],
+    [data-app-route="agendaBuilder"],
+    [data-app-route="simulator"],
+    [data-app-route="v38Stats"],
+    [data-app-route="bracketBuilder"],
+    [data-app-route="tableExport"],
+    [data-app-route="motionHub"],
+    [data-app-route="recruitment"],
+    [data-app-route="credentialBuilder"],
+    [data-app-route="tactics"],
+    [data-app-route="publications"],
+    [data-app-route="v38Weekly"],
+    [data-app-route="scheduleChanges"],
+    [data-app-route="weatherFields"],
+    [data-app-route="cedulas"],
+    [data-app-route="cedulaBuilder"],
+    [data-app-route="rulebook"],
+    [data-app-route="rankings"],
+    [data-app-route="leagueData"]
+  ) .topbar .profile-button{
+    right:4px!important;
+    top:8px!important;
+    width:22px!important;
+    height:22px!important;
+    min-width:22px!important;
+    min-height:22px!important;
+    max-width:22px!important;
+    max-height:22px!important;
+    background-size:22px 22px!important;
+  }
+}
