@@ -28,7 +28,13 @@ function db(){
   catch(_){return window.LJR_OFFICIAL_DATA||null}
 }
 function catId(){
-  const v=String(localStorage.getItem('v62-category')||'3');
+  let fromHash='';
+  try{
+    const q=String(location.hash||'').split('?')[1]||'';
+    fromHash=new URLSearchParams(q).get('cat')||'';
+  }catch(_){}
+  const stored=String(localStorage.getItem('v62-category')||'3');
+  const v=CAT_ORDER.includes(String(fromHash))?String(fromHash):stored;
   return CAT_ORDER.includes(v)?v:'3';
 }
 function category(id=catId()){
@@ -261,8 +267,14 @@ function chooseCategory(id){
   localStorage.setItem('v62-category',id);
   localStorage.setItem('v12-fixture-cat',id);
   localStorage.setItem(TEAM_KEY,'all');
+  try{
+    const next=location.pathname+location.search+'#/scorers?cat='+encodeURIComponent(id);
+    if(location.hash!=='#/scorers?cat='+id)history.replaceState(history.state,'',next);
+  }catch(_){}
   try{window.LJR_OFFICIAL_API?.setCategory?.(id)}catch(_){}
   render(true);
+  setTimeout(()=>render(true),0);
+  setTimeout(()=>render(true),80);
 }
 function bind(root){
   root.querySelectorAll('[data-v194-mode]').forEach(b=>b.addEventListener('click',()=>chooseMode(b.dataset.v194Mode)));
