@@ -626,6 +626,196 @@ async function initV4433D(root){
    });
  }
 }
+
+var V444_OBSERVER=null;
+function v444DisposeObject(obj){
+ try{
+   obj.traverse(function(n){
+     if(n.geometry&&n.geometry.dispose)n.geometry.dispose();
+     if(n.material){
+       var ms=Array.isArray(n.material)?n.material:[n.material];
+       ms.forEach(function(m){
+         if(m.map&&m.map.dispose)m.map.dispose();
+         if(m.dispose)m.dispose();
+       });
+     }
+   });
+ }catch(_){}
+}
+function v444Unmount(el){
+ var s=el&&el.__v4443d;if(!s)return;
+ try{cancelAnimationFrame(s.raf)}catch(_){}
+ try{v444DisposeObject(s.scene)}catch(_){}
+ try{s.renderer.dispose()}catch(_){}
+ try{s.canvas.remove()}catch(_){}
+ el.classList.remove("v444-live");
+ delete el.__v4443d;
+}
+async function v444Mount(el){
+ if(!el||el.__v4443d||!el.isConnected)return;
+ var THREE=await v443Three();if(!THREE||!el.isConnected)return;
+ var box=el.getBoundingClientRect(),w=Math.max(72,Math.round(box.width||120)),h=Math.max(88,Math.round(box.height||145));
+ var renderer;
+ try{
+   renderer=new THREE.WebGLRenderer({alpha:true,antialias:true,powerPreference:"high-performance"});
+   renderer.setPixelRatio(Math.min(1.6,window.devicePixelRatio||1));
+   renderer.setSize(w,h,false);
+   renderer.shadowMap.enabled=true;
+   renderer.shadowMap.type=THREE.PCFSoftShadowMap;
+   try{renderer.outputColorSpace=THREE.SRGBColorSpace}catch(_){}
+   renderer.toneMapping=THREE.ACESFilmicToneMapping;
+   renderer.toneMappingExposure=1.03;
+ }catch(_){return}
+
+ var canvas=renderer.domElement;
+ canvas.className="v444-3d-canvas";
+ canvas.setAttribute("aria-hidden","true");
+ el.appendChild(canvas);
+
+ var scene=new THREE.Scene();
+ var camera=new THREE.PerspectiveCamera(30,w/h,.1,100);
+ camera.position.set(0,.25,12.6);
+ camera.lookAt(0,.12,0);
+
+ var variant=el.dataset.v443Variant||"home",logo=el.dataset.v443Logo||"",pal=v443Hex(variant);
+ var group=new THREE.Group();
+ group.rotation.set(-.065,.40,-.025);
+ scene.add(group);
+
+ var hemi=new THREE.HemisphereLight(0xffffff,0x182453,2.35);scene.add(hemi);
+ var key=new THREE.DirectionalLight(0xffffff,5.4);key.position.set(-5.4,7.4,8.8);key.castShadow=true;key.shadow.mapSize.set(1024,1024);scene.add(key);
+ var fill=new THREE.DirectionalLight(0x98a8ff,2.2);fill.position.set(5.8,2.8,7.2);scene.add(fill);
+ var rim=new THREE.DirectionalLight(0x5572ff,3.6);rim.position.set(5.5,4.5,-5.5);scene.add(rim);
+ var low=new THREE.PointLight(0xffffff,1.0,20);low.position.set(0,-4,6);scene.add(low);
+
+ // Volumetric jersey silhouette: thick bevels + curved cloth front/back.
+ var s=new THREE.Shape();
+ s.moveTo(-1.46,2.88);
+ s.lineTo(-2.34,2.49);s.quadraticCurveTo(-2.95,2.15,-3.58,1.54);
+ s.lineTo(-2.76,.25);s.lineTo(-2.04,.72);
+ s.quadraticCurveTo(-1.86,.80,-1.82,.46);
+ s.lineTo(-1.73,-2.82);
+ s.quadraticCurveTo(-.95,-3.08,0,-3.12);
+ s.quadraticCurveTo(.95,-3.08,1.73,-2.82);
+ s.lineTo(1.82,.46);s.quadraticCurveTo(1.86,.80,2.04,.72);
+ s.lineTo(2.76,.25);s.lineTo(3.58,1.54);
+ s.quadraticCurveTo(2.95,2.15,2.34,2.49);
+ s.lineTo(1.46,2.88);
+ s.quadraticCurveTo(.88,2.55,.62,2.36);
+ s.quadraticCurveTo(0,1.92,-.62,2.36);
+ s.quadraticCurveTo(-.88,2.55,-1.46,2.88);
+
+ var geo=new THREE.ExtrudeGeometry(s,{depth:.78,bevelEnabled:true,bevelSegments:7,steps:3,bevelSize:.13,bevelThickness:.16,curveSegments:14});
+ geo.center();
+ var pos=geo.attributes.position;
+ for(var i=0;i<pos.count;i++){
+   var x=pos.getX(i),y=pos.getY(i),z=pos.getZ(i);
+   var front=z>0,side=Math.min(1,Math.abs(x)/3.4);
+   var drape=Math.sin(y*1.85+x*.72)*.050 + Math.sin(x*2.45-y*.30)*.025;
+   var chest=Math.exp(-Math.pow(y-.65,2)*.52)*(1-side)*.10;
+   var waist=-Math.exp(-Math.pow(y+1.05,2)*.9)*(1-side)*.055;
+   var sleeve=Math.max(0,side-.58)*.16;
+   pos.setZ(i,z+(front?1:-.45)*(drape+chest+waist)+sleeve*(front?.7:-.25));
+ }
+ pos.needsUpdate=true;geo.computeVertexNormals();
+
+ var fabric=new THREE.MeshPhysicalMaterial({
+   color:new THREE.Color(pal.base),
+   roughness:.74,
+   metalness:0,
+   clearcoat:.025,
+   clearcoatRoughness:.94,
+   sheen:1,
+   sheenRoughness:.82,
+   sheenColor:new THREE.Color(pal.light),
+   side:THREE.DoubleSide
+ });
+ var jersey=new THREE.Mesh(geo,fabric);jersey.castShadow=true;jersey.receiveShadow=true;group.add(jersey);
+
+ // Side panels deepen the torso and stop it reading like cardboard.
+ var panelMat=new THREE.MeshPhysicalMaterial({color:new THREE.Color(pal.dark),roughness:.78,sheen:.4,sheenColor:new THREE.Color(pal.light)});
+ [-1,1].forEach(function(side){
+   var panel=new THREE.Mesh(new THREE.CapsuleGeometry(.13,3.8,8,18),panelMat);
+   panel.scale.set(.65,1,.58);panel.position.set(side*1.76,-.28,-.04);panel.rotation.z=side*.018;group.add(panel);
+ });
+
+ // Ribbed collar with actual depth.
+ var collarMat=new THREE.MeshPhysicalMaterial({color:new THREE.Color(pal.light),roughness:.66,sheen:.8,sheenColor:new THREE.Color(0xffffff)});
+ var collar=new THREE.Mesh(new THREE.TorusGeometry(.63,.095,20,72,Math.PI*1.14),collarMat);
+ collar.position.set(0,2.17,.43);collar.rotation.z=Math.PI*.93;collar.scale.set(1,.64,1);group.add(collar);
+
+ // Shoulder/sleeve seams.
+ var seamMat=new THREE.MeshStandardMaterial({color:new THREE.Color(pal.light),roughness:.75});
+ function seam(x,rot){
+   var m=new THREE.Mesh(new THREE.CylinderGeometry(.035,.035,1.56,14),seamMat);
+   m.position.set(x,1.34,.47);m.rotation.z=rot;group.add(m);
+ }
+ seam(-2.30,-.82);seam(2.30,.82);
+
+ // Lower woven label.
+ var badge=new THREE.Mesh(new THREE.BoxGeometry(.66,.15,.075),new THREE.MeshStandardMaterial({color:new THREE.Color(pal.dark),roughness:.68}));
+ badge.position.set(-.42,-2.42,.49);group.add(badge);
+
+ // Team crest floats slightly over cloth, like a patch.
+ var tex=await v443LoadTexture(THREE,logo);
+ if(tex&&el.isConnected){
+   var crestMat=new THREE.MeshPhysicalMaterial({map:tex,transparent:true,roughness:.7,metalness:0,depthWrite:false,side:THREE.DoubleSide});
+   var crest=new THREE.Mesh(new THREE.PlaneGeometry(.72,.72),crestMat);
+   crest.position.set(.55,.80,.53);group.add(crest);
+ }
+
+ // Ground plane gives the object a real contact shadow.
+ var floorMat=new THREE.ShadowMaterial({color:0x050b2c,opacity:.22});
+ var floor=new THREE.Mesh(new THREE.PlaneGeometry(16,16),floorMat);
+ floor.rotation.x=-Math.PI/2;floor.position.y=-3.52;floor.receiveShadow=true;scene.add(floor);
+
+ var state={renderer:renderer,canvas:canvas,scene:scene,camera:camera,group:group,raf:0,baseY:.40,targetY:.40,targetX:-.065,visible:true};
+ el.__v4443d=state;
+ el.classList.add("v444-live");
+
+ var pointer=function(e){
+   var r=el.getBoundingClientRect(),px=(e.clientX-r.left)/Math.max(1,r.width),py=(e.clientY-r.top)/Math.max(1,r.height);
+   state.targetY=(px-.5)*.82;
+   state.targetX=(.5-py)*.30-.05;
+ };
+ var leave=function(){state.targetY=.40;state.targetX=-.065};
+ el.addEventListener("pointermove",pointer,{passive:true});
+ el.addEventListener("pointerleave",leave,{passive:true});
+ state.cleanup=function(){try{el.removeEventListener("pointermove",pointer);el.removeEventListener("pointerleave",leave)}catch(_){}};
+
+ var start=performance.now();
+ function frame(now){
+   if(!el.isConnected||!el.__v4443d)return;
+   group.rotation.y+=(state.targetY-group.rotation.y)*.075;
+   group.rotation.x+=(state.targetX-group.rotation.x)*.075;
+   group.position.y=Math.sin((now-start)/1050)*.035;
+   renderer.render(scene,camera);
+   state.raf=requestAnimationFrame(frame);
+ }
+ state.raf=requestAnimationFrame(frame);
+}
+function v444UnmountSafe(el){
+ var s=el&&el.__v4443d;if(s&&s.cleanup)try{s.cleanup()}catch(_){}
+ v444Unmount(el);
+}
+function initV4443D(root){
+ if(!root)return;
+ if(V444_OBSERVER)try{V444_OBSERVER.disconnect()}catch(_){}
+ var timers=new WeakMap();
+ V444_OBSERVER=new IntersectionObserver(function(entries){
+   entries.forEach(function(entry){
+     var el=entry.target;
+     if(entry.isIntersecting){
+       var t=timers.get(el);if(t)clearTimeout(t);
+       v444Mount(el);
+     }else{
+       var timer=setTimeout(function(){v444UnmountSafe(el)},650);
+       timers.set(el,timer);
+     }
+   });
+ },{root:null,rootMargin:"120px 0px",threshold:.04});
+ root.querySelectorAll(".v443-shirt-webgl").forEach(function(el){V444_OBSERVER.observe(el)});
+}
 function productCard(title,sub,variant,logo){
  return '<article class="v431-product v440-product-card" data-v431-product data-v437-open-product="'+esc(variant||"home")+'" data-v437-title="'+esc(title)+'" data-v437-price="Mex$1,300.00" data-search="'+esc((title+" "+sub).toLowerCase())+'"><button type="button" class="v431-heart" data-v431-heart aria-label="Favorito">♡</button><div class="v431-product-art">'+shirt(logo,variant,"","","")+'<span class="v440-photo-tag">NUEVO</span></div><h3>'+esc(title)+'</h3><p>'+esc(sub)+'</p><div class="v440-product-meta"><span>Vista de producto</span><b>★ 4.9</b></div><button type="button" class="v431-add" data-v431-add="'+esc(title)+'">Añadir</button></article>';
 }
@@ -780,7 +970,7 @@ function toast(msg){var t=document.querySelector("[data-v431-toast]");if(!t)retu
 function addItem(team,item,detail){var a=readCart();a.push({team:team,item:item,detail:detail||""});writeCart(a);syncCart();toast("Añadido al carrito")}
 function bind(team){
  var root=document.querySelector("[data-v431-store]");if(!root)return;
- initV4433D(root);
+ initV4443D(root);
  root.querySelectorAll("[data-v442-tilt]").forEach(function(el){
    var reset=function(){el.style.setProperty("--v442-rx","-3deg");el.style.setProperty("--v442-ry","7deg");el.style.setProperty("--v442-z","0px")};
    reset();
