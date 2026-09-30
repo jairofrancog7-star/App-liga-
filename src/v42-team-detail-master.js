@@ -6,10 +6,18 @@ const LOCAL='./public/data/official-live.json?v=20260919-official-integrity1';
 const REMOTE='https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/data/official-live.json?v=20260919-official-integrity1';
 const SRC='https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/';
 let db=window.LJR_OFFICIAL_DATA||null,loading=null;
+const TEAM_TABS=['summary','matches','standings','squad','stats'];
 let activeTab=localStorage.getItem('v42-team-tab')||'summary';
 let notifyOpen=false,compareOpen=false,compareTarget='';
 
 function route(){return location.hash.replace(/^#\//,'').split('?')[0]||'home'}
+function tabFromHash(){
+ const raw=String(location.hash||'');
+ const q=raw.includes('?')?raw.slice(raw.indexOf('?')+1):'';
+ const t=new URLSearchParams(q).get('tab')||'';
+ return TEAM_TABS.includes(t)?t:'';
+}
+function teamHash(tab){return '#/teamDetail?tab='+(TEAM_TABS.includes(tab)?tab:'summary')}
 function esc(v){return String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
 function norm(v){return String(v??'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[^a-z0-9]+/g,' ').trim()}
 function slug(v){return 'OFF-'+String(v||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toUpperCase().replace(/[^A-Z0-9]+/g,'-').replace(/^-|-$/g,'')}
@@ -95,7 +103,8 @@ function openOfficialTeamProfile(name,openCompare=false){
  activeTab='summary';localStorage.setItem('v42-team-tab','summary');
  notifyOpen=false;compareOpen=!!openCompare;compareTarget='';
  if(openCompare)localStorage.setItem('v42-open-compare','1');else localStorage.removeItem('v42-open-compare');
- if(route()==='teamDetail')render();else location.hash='#/teamDetail';
+ const nextHash=teamHash('summary');
+ if(location.hash!==nextHash)location.hash=nextHash;else render();
  return true;
 }
 function logoUrl(name){
@@ -183,12 +192,13 @@ function statsMarkup(t){
 }
 function body(t){if(activeTab==='matches')return matchesMarkup(t);if(activeTab==='standings')return standingsMarkup(t);if(activeTab==='squad')return squadMarkup(t);if(activeTab==='stats')return statsMarkup(t);return summaryMarkup(t)}
 function setTeamTab(tab){
- const allowed=['summary','matches','standings','squad','stats'];
- if(!allowed.includes(tab))return false;
+ if(!TEAM_TABS.includes(tab))return false;
  activeTab=tab;
  localStorage.setItem('v42-team-tab',tab);
  notifyOpen=false;
- render();
+ const next=teamHash(tab);
+ if(location.hash!==next)location.hash=next;
+ else render();
  return true;
 }
 function lowerActionsMarkup(t){
@@ -242,13 +252,21 @@ function bind(){
  document.querySelector('[data-v42-close-notify]')?.addEventListener('click',()=>{notifyOpen=false;render()},{once:true});
  document.querySelector('[data-v42-close-compare]')?.addEventListener('click',()=>{compareOpen=false;compareTarget='';render()},{once:true});
  document.querySelectorAll('[data-v42-close-overlay]').forEach(x=>x.addEventListener('click',()=>{notifyOpen=false;compareOpen=false;render()},{once:true}));
+ const tabsNav=document.querySelector('.v42-tabs');
+ if(tabsNav)tabsNav.addEventListener('click',e=>{
+   const rect=tabsNav.getBoundingClientRect();
+   const x=Math.max(0,Math.min(rect.width-1,e.clientX-rect.left));
+   const index=Math.max(0,Math.min(TEAM_TABS.length-1,Math.floor((x/Math.max(1,rect.width))*TEAM_TABS.length)));
+   e.preventDefault();e.stopPropagation();e.stopImmediatePropagation();
+   setTeamTab(TEAM_TABS[index]);
+ },true);
  document.querySelectorAll('[data-v42-tab]').forEach(b=>b.addEventListener('click',e=>{e.preventDefault();e.stopPropagation();setTeamTab(b.dataset.v42Tab)},{once:true}));
  document.querySelectorAll('[data-v42-select-name]').forEach(b=>b.addEventListener('click',e=>{e.preventDefault();e.stopPropagation();const n=b.dataset.v42SelectName||'';if(n&&norm(n)!==norm(selectedName()))openOfficialTeamProfile(n,false)},{once:true}));
  document.querySelectorAll('[data-v42-compare-name]').forEach(b=>b.addEventListener('click',e=>{e.preventDefault();e.stopPropagation();compareTarget=b.dataset.v42CompareName;render()},{once:true}));
  document.querySelector('[data-v42-compare-again]')?.addEventListener('click',()=>{compareTarget='';render()},{once:true});
  document.querySelectorAll('[data-v42-player]').forEach(b=>b.addEventListener('click',e=>{e.preventDefault();e.stopPropagation();const t=teamData();localStorage.setItem('v123-compare-player',JSON.stringify({name:b.dataset.v42Player||'',team:t?.name||'',cat:String(t?.catId||'')}));location.hash='#/playerCompare'},{once:true}));
 }
-async function render(){const active=route()==='teamDetail';document.body.classList.toggle('v42-team-active',active);if(!active)return;await load();if(!db)return;if(localStorage.getItem('v42-open-compare')==='1'){compareOpen=true;localStorage.removeItem('v42-open-compare')}const screen=document.querySelector('#screen');if(!screen)return;screen.innerHTML=markup();bind();nav()}
+async function render(){const active=route()==='teamDetail';document.body.classList.toggle('v42-team-active',active);if(!active)return;const hashTab=tabFromHash();if(hashTab){activeTab=hashTab;localStorage.setItem('v42-team-tab',hashTab)}await load();if(!db)return;if(localStorage.getItem('v42-open-compare')==='1'){compareOpen=true;localStorage.removeItem('v42-open-compare')}const screen=document.querySelector('#screen');if(!screen)return;screen.innerHTML=markup();bind();nav()}
 function schedule(){requestAnimationFrame(()=>requestAnimationFrame(render))}
 
 /* V93 — desde tablas, rankings, tarjetas y nombres de equipos vuelve a abrirse
