@@ -136,6 +136,10 @@ function copyFor(active){
  if(active==='matches')return ['Comencemos','Marca tus equipos y partidos favoritos para ver rápidamente sus juegos y resultados.','Busca un equipo o partido'];
  return ['No te pierdas ni un instante','Marca a tus equipos como favoritos para no perderte la acción.','Busca un equipo'];
 }
+function refIcon(kind){
+ if(kind==='bell')return '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9"></path><path d="M10 21h4"></path></svg>';
+ return '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="4"></circle><path d="M4.5 21c.8-4.2 3.2-6.2 7.5-6.2s6.7 2 7.5 6.2"></path></svg>';
+}
 function markup(){
  const active=localStorage.getItem(TAB)||'teams',cat=localStorage.getItem(CAT)||'all',copy=copyFor(active);
  const allTeams=teamRows().filter(t=>cat==='all'||t.cat===cat);
@@ -158,11 +162,12 @@ function markup(){
    rows=allTeams.slice(0,18).map(teamRow).join('');
  }
  if(!rows)rows='<div class="v414-empty">No hay registros oficiales para este filtro.</div>';
- return '<section class="v414-favorites" id="'+ID+'" data-v414-active="'+esc(active)+'">'+tabs(active)+filters(cat)+'<div class="v414-hero"><h2>'+esc(copy[0])+'</h2><p>'+esc(copy[1])+'</p></div>'+rail+'<div class="v414-search">'+searchSvg+'<input type="search" data-v414-search placeholder="'+esc(copy[2])+'"></div><div class="v414-section-title">Recomendaciones</div><div class="v414-list" data-v414-list>'+rows+'</div></section>';
+ return '<section class="v414-favorites" id="'+ID+'" data-v414-active="'+esc(active)+'"><header class="v414-ref-head"><h1>Favoritos</h1><div><button type="button" data-v414-route="notifications" aria-label="Notificaciones">'+refIcon('bell')+'</button><button type="button" data-v414-route="profile" aria-label="Perfil">'+refIcon('profile')+'</button></div></header>'+tabs(active)+filters(cat)+'<div class="v414-hero"><h2>'+esc(copy[0])+'</h2><p>'+esc(copy[1])+'</p></div>'+rail+'<div class="v414-search">'+searchSvg+'<input type="search" data-v414-search placeholder="'+esc(copy[2])+'"></div><div class="v414-section-title">Recomendaciones</div><div class="v414-list" data-v414-list>'+rows+'</div></section>';
 }
 function bind(root){
  root.querySelectorAll('[data-v414-tab]').forEach(b=>b.onclick=()=>{localStorage.setItem(TAB,b.dataset.v414Tab);render(true)});
  root.querySelectorAll('[data-v414-cat]').forEach(b=>b.onclick=()=>{localStorage.setItem(CAT,b.dataset.v414Cat);render(true)});
+ root.querySelectorAll('[data-v414-route]').forEach(b=>b.onclick=()=>{location.hash='#/'+b.dataset.v414Route});
  bindRows(root);
  const input=root.querySelector('[data-v414-search]');
  if(input)input.addEventListener('input',()=>filterList(root,input.value));
@@ -195,7 +200,7 @@ async function render(force=false){
  await ensureData();
  if(route()!=='favorites')return;
  screen.querySelector('#'+ID)?.remove();
- screen.insertAdjacentHTML('beforeend',markup());
+ screen.insertAdjacentHTML('afterbegin',markup());
  bind(screen.querySelector('#'+ID));
 }
 function schedule(ms=70){clearTimeout(timer);timer=setTimeout(()=>render(false),ms)}
