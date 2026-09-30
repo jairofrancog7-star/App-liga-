@@ -408,12 +408,43 @@ function rosterFor(name,cat){
  return k&&Array.isArray(c.rosters[k])?c.rosters[k].map(String).filter(Boolean):[];
 }
 function crest(name,logo,cls){return '<span class="'+(cls||"v431-crest")+'">'+(logo?'<img src="'+esc(logo)+'" alt="'+esc(name)+'">':'<b>'+esc(initials(name)||"JR")+'</b>')+'</span>'}
+var V441_SHIRT_SEQ=0;
+function shirtPalette(variant){
+ var v=String(variant||"home");
+ if(v==="away")return {a:"#f7f8ff",b:"#cfd8ff",c:"#8ea2ff",ink:"#17205f",edge:"#5b6fc5"};
+ if(v==="third")return {a:"#23283d",b:"#0d1020",c:"#080a14",ink:"#f7f8ff",edge:"#65708e"};
+ if(v==="training")return {a:"#10c995",b:"#068b72",c:"#03483f",ink:"#ffffff",edge:"#72f1cf"};
+ if(v==="keeper")return {a:"#ffd95b",b:"#f2a813",c:"#8c5200",ink:"#201400",edge:"#fff1a6"};
+ if(v==="special")return {a:"#8e4cff",b:"#3f3be8",c:"#101061",ink:"#ffffff",edge:"#c8b7ff"};
+ return {a:"#3552ff",b:"#1429d5",c:"#07106c",ink:"#ffffff",edge:"#7e91ff"};
+}
 function shirt(logo,variant,label,number,name){
- return '<div class="v431-shirt v440-shirt '+esc(variant||"home")+'">'+
-   '<div class="v431-shirt-shape v440-shirt-shape"><i class="v440-collar"></i><i class="v440-seam seam-l"></i><i class="v440-seam seam-r"></i><i class="v440-hem"></i><i class="v440-fabric"></i></div>'+
-   (logo?'<img class="v431-shirt-logo" src="'+esc(logo)+'" alt="">':'')+
-   '<b class="v431-shirt-name">'+esc(name||"")+'</b><strong class="v431-shirt-number">'+esc(number||"")+'</strong><span>'+esc(label||"")+'</span>'+
-   '<i class="v440-shirt-shadow"></i></div>';
+ var v=variant||"home",p=shirtPalette(v),id="v441shirt"+(++V441_SHIRT_SEQ);
+ return '<div class="v431-shirt v440-shirt v441-shirt '+esc(v)+'">'+
+  '<svg class="v441-jersey-svg" viewBox="0 0 220 260" role="img" aria-label="Camiseta">'+
+   '<defs>'+
+    '<linearGradient id="'+id+'g" x1="0" x2="1" y1="0" y2="1"><stop offset="0" stop-color="'+p.a+'"/><stop offset=".48" stop-color="'+p.b+'"/><stop offset="1" stop-color="'+p.c+'"/></linearGradient>'+
+    '<linearGradient id="'+id+'shine" x1="0" x2="1"><stop offset="0" stop-color="#fff" stop-opacity=".32"/><stop offset=".34" stop-color="#fff" stop-opacity=".03"/><stop offset=".72" stop-color="#000" stop-opacity=".10"/><stop offset="1" stop-color="#000" stop-opacity=".22"/></linearGradient>'+
+    '<pattern id="'+id+'mesh" width="5" height="5" patternUnits="userSpaceOnUse"><path d="M0 0h1v1H0zM3 2h1v1H3z" fill="#fff" opacity=".09"/></pattern>'+
+    '<filter id="'+id+'shadow" x="-30%" y="-30%" width="160%" height="180%"><feDropShadow dx="0" dy="8" stdDeviation="7" flood-color="#06103f" flood-opacity=".28"/></filter>'+
+   '</defs>'+
+   '<g filter="url(#'+id+'shadow)">'+
+    '<path d="M62 25 86 12c8 9 15 13 24 13s16-4 24-13l24 13 41 20-19 49-28-13v158H68V81L40 94 21 45l41-20Z" fill="url(#'+id+'g)"/>'+
+    '<path d="M62 25 86 12c8 9 15 13 24 13s16-4 24-13l24 13 41 20-19 49-28-13v158H68V81L40 94 21 45l41-20Z" fill="url(#'+id+'shine)"/>'+
+    '<path d="M62 25 86 12c8 9 15 13 24 13s16-4 24-13l24 13 41 20-19 49-28-13v158H68V81L40 94 21 45l41-20Z" fill="url(#'+id+'mesh)"/>'+
+    '<path d="M87 12c3 16 12 24 23 24s20-8 23-24" fill="none" stroke="'+p.edge+'" stroke-width="6" stroke-linecap="round"/>'+
+    '<path d="M87 12c4 10 12 16 23 16s19-6 23-16" fill="none" stroke="#fff" stroke-opacity=".65" stroke-width="2"/>'+
+    '<path d="M68 81 55 70M152 81l13-11" stroke="'+p.edge+'" stroke-opacity=".75" stroke-width="3"/>'+
+    '<path d="M70 231h80" stroke="#fff" stroke-opacity=".26" stroke-width="2"/>'+
+    '<path d="M71 55c18 8 60 8 78 0" stroke="#fff" stroke-opacity=".08" stroke-width="18" stroke-linecap="round"/>'+
+   '</g>'+
+   (logo?'<image href="'+esc(logo)+'" x="96" y="66" width="28" height="28" preserveAspectRatio="xMidYMid meet"/>':'')+
+   '<text x="110" y="119" text-anchor="middle" fill="'+p.ink+'" font-size="9" font-family="Arial, sans-serif" font-weight="700" letter-spacing="1.3">'+esc(name||"")+'</text>'+
+   '<text x="110" y="151" text-anchor="middle" fill="'+p.ink+'" font-size="34" font-family="Arial, sans-serif" font-weight="800">'+esc(number||"")+'</text>'+
+   '<text x="110" y="214" text-anchor="middle" fill="'+p.ink+'" font-size="8" font-family="Arial, sans-serif" font-weight="700" letter-spacing="1">'+esc(label||"")+'</text>'+
+  '</svg>'+
+  '<i class="v440-shirt-shadow"></i>'+
+ '</div>';
 }
 function productCard(title,sub,variant,logo){
  return '<article class="v431-product v440-product-card" data-v431-product data-v437-open-product="'+esc(variant||"home")+'" data-v437-title="'+esc(title)+'" data-v437-price="Mex$1,300.00" data-search="'+esc((title+" "+sub).toLowerCase())+'"><button type="button" class="v431-heart" data-v431-heart aria-label="Favorito">♡</button><div class="v431-product-art">'+shirt(logo,variant,"","","")+'<span class="v440-photo-tag">NUEVO</span></div><h3>'+esc(title)+'</h3><p>'+esc(sub)+'</p><div class="v440-product-meta"><span>Vista de producto</span><b>★ 4.9</b></div><button type="button" class="v431-add" data-v431-add="'+esc(title)+'">Añadir</button></article>';
