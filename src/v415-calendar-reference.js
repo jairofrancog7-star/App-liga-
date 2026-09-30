@@ -5,7 +5,8 @@
 if(window.__LJR_V415_CALENDAR_REFERENCE__)return;
 window.__LJR_V415_CALENDAR_REFERENCE__=true;
 
-const ROUTE='v4-calendar';
+const ROUTES=new Set(['v4-calendar','calendar','monthlyCalendar','calendarMonthly']);
+const isCalendarRoute=()=>ROUTES.has(route());
 const OFFICIAL='https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/data/official-live.json';
 const CATEGORY_ORDER=['3','5','4','2','1'];
 const CATEGORY_FALLBACK={
@@ -281,7 +282,7 @@ function bind(root){
 }
 
 function render(){
-  if(route()!==ROUTE||rendering)return;
+  if(!isCalendarRoute()||rendering)return;
   const root=screen(); if(!root)return;
   rendering=true;
   try{
@@ -307,7 +308,7 @@ function render(){
 
 let timer=0;
 async function schedule(force=false){
-  if(route()!==ROUTE){
+  if(!isCalendarRoute()){
     document.body.classList.remove('v415-calendar-active');
     return;
   }
@@ -328,12 +329,12 @@ document.addEventListener('click',e=>{
 window.addEventListener('hashchange',()=>schedule(true));
 window.addEventListener('ljr:official-data',()=>{
   db=window.LJR_OFFICIAL_DATA||db;
-  if(route()===ROUTE)render();
+  if(isCalendarRoute())render();
 });
 
 const root=screen();
 if(root)new MutationObserver(()=>{
-  if(route()!==ROUTE)return;
+  if(!isCalendarRoute())return;
   if(root.querySelector('[data-v415-calendar]'))return;
   if(root.querySelector('[data-v103-calendar]')||root.childElementCount)schedule(true);
 }).observe(root,{childList:true,subtree:false});
