@@ -507,12 +507,6 @@
   }
   function recover(){
     var r=route();
-    if(r==='competition'&&blank()){
-      document.body.dataset.appRoute='competition';
-      try{window.LJR_MAIN_ROUTE&&window.LJR_MAIN_ROUTE.go('competition',false)}catch(_){}
-      var b=document.querySelector('.bottom-nav [data-route="competition"]');
-      if(blank()&&b&&typeof b.onclick==='function'){try{b.onclick()}catch(_){}}
-    }
     if(['v4-calendar','calendar','monthlyCalendar','calendarMonthly'].includes(r)&&blank()){
       document.body.classList.add('v415-calendar-active');
     }
