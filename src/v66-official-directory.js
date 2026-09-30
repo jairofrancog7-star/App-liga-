@@ -377,10 +377,10 @@ var CSS="\nbody[data-app-route=\"club-store\"] #screen{padding:0!important;backg
 var DB=null;
 var OPEN_KEY="v431-store-open",TEAM_KEY="v431-store-team",CAT_KEY="v431-store-cat",CART_KEY="v431-store-cart";
 var REMOTE="https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/";
-function route(){return String(location.hash||"").replace(/^#\\/?/,"").split("?")[0]||"home"}
+function route(){return String(location.hash||"").replace(/^#\/?/,"").split("?")[0]||"home"}
 function esc(v){return String(v==null?"":v).replace(/[&<>"']/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]})}
-function norm(v){return String(v||"").normalize("NFD").replace(/[\\u0300-\\u036f]/g,"").toLowerCase().replace(/\\batl\\b/g,"atletico").replace(/\\bdep\\b/g,"deportivo").replace(/[^a-z0-9]+/g," ").trim()}
-function initials(v){var a=String(v||"").trim().split(/\\s+/).filter(Boolean);return (a[0]?a[0][0]:"")+(a[1]?a[1][0]:"")}
+function norm(v){return String(v||"").normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase().replace(/\batl\b/g,"atletico").replace(/\bdep\b/g,"deportivo").replace(/[^a-z0-9]+/g," ").trim()}
+function initials(v){var a=String(v||"").trim().split(/\s+/).filter(Boolean);return (a[0]?a[0][0]:"")+(a[1]?a[1][0]:"")}
 function readCart(){try{return JSON.parse(localStorage.getItem(CART_KEY)||"[]")||[]}catch(_){return []}}
 function writeCart(x){try{localStorage.setItem(CART_KEY,JSON.stringify(x||[]))}catch(_){}}
 async function load(){
@@ -391,7 +391,7 @@ async function load(){
 function logoFor(name){
  var d=DB||window.LJR_OFFICIAL_DATA||{},entries=Object.entries(d.team_logos||{}),n=norm(name),hit=entries.find(function(kv){return norm(kv[0])===n});
  if(!hit)return ""; var v=hit[1]; if(typeof v==="string")return v;
- if(v&&v.local)return REMOTE+String(v.local).replace(/^\\.\\//,""); return v&&v.source?v.source:"";
+ if(v&&v.local)return REMOTE+String(v.local).replace(/^\.\//,""); return v&&v.source?v.source:"";
 }
 function rosterFor(name,cat){
  var d=DB||window.LJR_OFFICIAL_DATA||{},c=d.categories&&d.categories[String(cat)]; if(!c)return [];
@@ -446,8 +446,8 @@ function bind(team){
  root.querySelectorAll("[data-v431-heart]").forEach(function(b){b.onclick=function(){b.classList.toggle("active");b.textContent=b.classList.contains("active")?"♥":"♡"}});
  root.querySelectorAll("[data-v431-add]").forEach(function(b){b.onclick=function(){addItem(team,b.dataset.v431Add,"Catálogo del equipo")}});
  var nameInput=root.querySelector("[data-v431-name]"),numberInput=root.querySelector("[data-v431-number]");
- function preview(){var n=root.querySelector(".v431-custom-preview .v431-shirt-name"),num=root.querySelector(".v431-custom-preview .v431-shirt-number");if(n)n.textContent=(nameInput.value||"TU NOMBRE").toUpperCase();if(num)num.textContent=(numberInput.value||"10").replace(/\\D/g,"").slice(0,2)}
- nameInput.oninput=preview;numberInput.oninput=function(){numberInput.value=numberInput.value.replace(/\\D/g,"").slice(0,2);preview()};
+ function preview(){var n=root.querySelector(".v431-custom-preview .v431-shirt-name"),num=root.querySelector(".v431-custom-preview .v431-shirt-number");if(n)n.textContent=(nameInput.value||"TU NOMBRE").toUpperCase();if(num)num.textContent=(numberInput.value||"10").replace(/\D/g,"").slice(0,2)}
+ nameInput.oninput=preview;numberInput.oninput=function(){numberInput.value=numberInput.value.replace(/\D/g,"").slice(0,2);preview()};
  root.querySelector("[data-v431-add-custom]").onclick=function(){var name=(nameInput.value||"").trim()||"Sin nombre",num=(numberInput.value||"").trim()||"--",size=root.querySelector("[data-v431-size]").value;addItem(team,"Camiseta personalizada",name+" · #"+num+" · Talla "+size)};
  root.querySelectorAll("[data-v431-player]").forEach(function(b){b.onclick=function(){nameInput.value=b.dataset.v431Player||"";preview();document.getElementById("personaliza").scrollIntoView({behavior:"smooth",block:"start"})}});
  root.querySelectorAll("[data-v431-filter]").forEach(function(b){b.onclick=function(){var q=b.dataset.v431Filter,hit=[].slice.call(root.querySelectorAll("[data-v431-product]")).find(function(p){return norm(p.dataset.search).includes(norm(q))});if(hit)hit.scrollIntoView({behavior:"smooth",block:"center"})}});
