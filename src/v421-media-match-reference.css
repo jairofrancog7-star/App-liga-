@@ -51,18 +51,192 @@
 .v421-watch-open{width:100%;min-height:46px;display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:12px;padding:0 12px;border:1px solid rgba(114,142,229,.17);border-radius:10px;background:#101438;color:#fff;text-align:left}
 .v421-watch-open b{font-size:9px}.v421-watch-open small{display:block;margin-top:2px;color:#8f9abd;font-size:7px}.v421-watch-open span:last-child{color:#28e3ef;font-size:17px}
 
-/* Dónde verlo */
-body.v421-watch-active #app>.topbar,body.v421-watch-active .app-shell>.topbar{display:none!important;height:0!important;min-height:0!important;max-height:0!important;margin:0!important;padding:0!important}
-body.v421-watch-active #screen{padding:0!important;background:#050714!important}
-.v421-watch-page{box-sizing:border-box;width:100%;max-width:760px;min-height:calc(100dvh - 82px);margin:0 auto;padding:20px 14px 110px;background:#050714;color:#fff;font-family:Inter,Roboto,Arial,sans-serif}
-.v421-watch-head{display:flex;align-items:center;gap:12px;margin-bottom:24px}
-.v421-watch-back{width:42px;height:42px;display:grid;place-items:center;border:1px solid rgba(255,255,255,.09);border-radius:50%;background:#151722;color:#fff;font-size:21px}
-.v421-watch-head h1{margin:0;font-size:21px;font-weight:900}
-.v421-watch-card{overflow:hidden;border:1px solid rgba(255,255,255,.10);border-radius:12px;background:#11142d}
-.v421-watch-row{display:grid;grid-template-columns:56px minmax(0,1fr);gap:9px;padding:11px 12px;border-bottom:1px solid rgba(255,255,255,.07)}
+/* Dónde verlo — V422: proporciones de la referencia, sólo adaptadas al azul oscuro */
+body.v421-watch-active,
+body.v421-watch-active #app,
+body.v421-watch-active .app-shell{
+  background:#050611!important;
+  background-image:none!important;
+}
+body.v421-watch-active #app>.topbar,
+body.v421-watch-active .app-shell>.topbar{
+  display:none!important;
+  height:0!important;
+  min-height:0!important;
+  max-height:0!important;
+  margin:0!important;
+  padding:0!important;
+  border:0!important;
+}
+body.v421-watch-active #screen{
+  width:100%!important;
+  max-width:none!important;
+  margin:0!important;
+  padding:0!important;
+  border:0!important;
+  box-shadow:none!important;
+  background:#050611!important;
+}
+body.v421-watch-active #screen::before,
+body.v421-watch-active #screen::after,
+body.v421-watch-active .app-shell::before,
+body.v421-watch-active .app-shell::after{
+  display:none!important;
+  content:none!important;
+}
+.v421-watch-page{
+  box-sizing:border-box;
+  width:100%;
+  max-width:760px;
+  min-height:calc(100dvh - 82px);
+  margin:0 auto;
+  padding:25px 16px 118px;
+  overflow:hidden;
+  background:#050611;
+  color:#fff;
+  font-family:Inter,Roboto,Arial,sans-serif;
+}
+.v421-watch-page *{box-sizing:border-box}
+.v421-watch-head{
+  display:flex;
+  align-items:center;
+  gap:13px;
+  margin:0 0 30px;
+}
+.v421-watch-back{
+  width:44px;
+  height:44px;
+  display:grid;
+  place-items:center;
+  flex:0 0 44px;
+  padding:0;
+  border:1px solid rgba(255,255,255,.10);
+  border-radius:50%;
+  background:#161820;
+  color:#fff;
+  font-size:22px;
+  line-height:1;
+  box-shadow:none;
+}
+.v421-watch-head h1{
+  margin:0;
+  color:#fff;
+  font-size:22px;
+  line-height:1;
+  font-weight:850;
+  letter-spacing:-.02em;
+}
+.v421-watch-days{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  overflow-x:auto;
+  margin:0 -16px 22px;
+  padding:0 16px 2px;
+  scrollbar-width:none;
+  -webkit-overflow-scrolling:touch;
+}
+.v421-watch-days::-webkit-scrollbar{display:none}
+.v421-watch-day{
+  height:42px;
+  min-width:0;
+  flex:0 0 auto;
+  padding:0 18px;
+  border:1px solid rgba(255,255,255,.10);
+  border-radius:22px;
+  background:#161820;
+  color:#f1f2f7;
+  font-size:12px;
+  line-height:40px;
+  font-weight:750;
+  white-space:nowrap;
+  box-shadow:none;
+}
+.v421-watch-day.active{
+  border:2px solid #fff;
+  padding:0 17px;
+  background:#161820;
+  color:#fff;
+  line-height:38px;
+}
+.v421-watch-card{
+  overflow:hidden;
+  margin:0;
+  border:1px solid rgba(255,255,255,.10);
+  border-radius:12px;
+  background:#17191c;
+  box-shadow:none;
+}
+.v421-watch-row{
+  display:grid;
+  grid-template-columns:58px minmax(0,1fr);
+  gap:10px;
+  min-height:89px;
+  padding:16px 17px 14px;
+  border-bottom:1px solid rgba(255,255,255,.08);
+  background:transparent;
+}
 .v421-watch-row:last-child{border-bottom:0}
-.v421-watch-time{font-size:10px;font-weight:900}
-.v421-watch-game b{display:block;font-size:9px;line-height:1.25}.v421-watch-game small{display:block;margin-top:4px;color:#8f99b9;font-size:7px}
-.v421-provider{display:inline-flex;align-items:center;margin-top:5px;padding:4px 7px;border-radius:5px;background:#172a68;color:#63b7ff;font-size:7px;font-weight:900}
-button.v421-provider{border:0}
-@media(max-width:390px){.v421-media{width:154px;flex-basis:154px}.v421-match{grid-template-columns:minmax(0,1fr) 60px 27px}.v421-day{min-width:64px}.v421-watch-page{padding-left:12px;padding-right:12px}}
+.v421-watch-time{
+  padding-top:1px;
+  color:#f5f5f7;
+  font-size:13px;
+  line-height:1.1;
+  font-weight:850;
+}
+.v421-watch-game{min-width:0}
+.v421-watch-game b{
+  display:block;
+  overflow:hidden;
+  color:#f5f5f7;
+  font-size:12px;
+  line-height:1.25;
+  font-weight:800;
+  text-overflow:ellipsis;
+}
+.v421-provider{
+  display:inline-flex;
+  align-items:center;
+  margin-top:8px;
+  padding:0;
+  border:0;
+  border-radius:0;
+  background:transparent;
+  color:#7caaf8;
+  font-size:10px;
+  line-height:1.2;
+  font-weight:800;
+  text-decoration:underline;
+}
+.v421-provider.is-empty{
+  color:#9d9da6;
+  font-weight:600;
+  text-decoration:none;
+}
+button.v421-provider{cursor:pointer}
+.v421-watch-empty{
+  padding:24px 18px;
+  color:#9899a3;
+  font-size:10px;
+  line-height:1.4;
+  text-align:center;
+}
+@media(max-width:430px){
+  .v421-watch-page{padding:24px 16px 110px}
+  .v421-watch-head{margin-bottom:28px}
+  .v421-watch-back{width:42px;height:42px;flex-basis:42px;font-size:21px}
+  .v421-watch-head h1{font-size:21px}
+  .v421-watch-day{height:40px;padding:0 16px;border-radius:21px;font-size:11px;line-height:38px}
+  .v421-watch-day.active{padding:0 15px;line-height:36px}
+  .v421-watch-row{grid-template-columns:54px minmax(0,1fr);min-height:86px;padding:15px 15px 13px}
+  .v421-watch-time{font-size:12px}
+  .v421-watch-game b{font-size:11px}
+  .v421-provider{font-size:9px}
+}
+@media(max-width:370px){
+  .v421-watch-page{padding-left:14px;padding-right:14px}
+  .v421-watch-days{margin-left:-14px;margin-right:-14px;padding-left:14px;padding-right:14px}
+  .v421-watch-day{padding-left:14px;padding-right:14px;font-size:10px}
+  .v421-watch-day.active{padding-left:13px;padding-right:13px}
+  .v421-watch-row{grid-template-columns:50px minmax(0,1fr);gap:8px}
+}
