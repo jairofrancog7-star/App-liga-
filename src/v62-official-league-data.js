@@ -788,6 +788,7 @@ function patchTeamMatches(page,ctx){
     '<h2 class="v42-page-heading next">Próximos partidos</h2>'+ (future.length?future.map(card).join(''):'<div class="v62-empty-inline">Sin próximos partidos publicados.</div>');
 }
 function patchTeamStats(page,ctx){
+  if(window.__LJR_V374_TEAM_STATS_REFERENCE__)return;
   const host=page.querySelector('.v42-stats');if(!host)return;
   const st=teamStanding(ctx),cards=teamCards(ctx),susp=teamSuspensions(ctx),goals=teamScorers(ctx).reduce((a,r)=>a+scoreNum(r[3]),0);
   const vals=st||['','',0,0,0,0,0,0,0,0];
