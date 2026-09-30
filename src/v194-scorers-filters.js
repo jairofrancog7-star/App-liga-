@@ -18,6 +18,8 @@ const MODE_KEY='v194-scorer-mode';
 const TEAM_KEY='v194-scorer-team';
 let rendering=false;
 let timer=0;
+let categoryActionId='';
+let categoryActionAt=0;
 
 const route=()=>location.hash.replace(/^#\/?/,'').split('?')[0]||'home';
 const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -262,23 +264,61 @@ function chooseMode(mode){
   localStorage.setItem(MODE_KEY,mode==='teams'?'teams':'players');
   render(true);
 }
+function forceCategoryRender(){
+  const page=document.querySelector('[data-v28-scorers]');
+  if(!page||!db())return false;
+  rendering=true;
+  try{
+    const signature=[catId(),currentMode(),currentTeam(),db()?.captured_at_utc||''].join('|');
+    page.dataset.v194Sig=signature;
+    page.innerHTML=markup();
+    const root=page.querySelector('[data-v194-scorers]');
+    if(root)bind(root);
+    return true;
+  }finally{
+    rendering=false;
+  }
+}
 function chooseCategory(id){
   id=CAT_ORDER.includes(String(id))?String(id):'3';
+
+  const now=Date.now();
+  if(categoryActionId===id&&now-categoryActionAt<320)return false;
+  categoryActionId=id;
+  categoryActionAt=now;
+
   localStorage.setItem('v62-category',id);
   localStorage.setItem('v12-fixture-cat',id);
   localStorage.setItem(TEAM_KEY,'all');
+
   try{
     const next=location.pathname+location.search+'#/scorers?cat='+encodeURIComponent(id);
     if(location.hash!=='#/scorers?cat='+id)history.replaceState(history.state,'',next);
   }catch(_){}
+
   try{window.LJR_OFFICIAL_API?.setCategory?.(id)}catch(_){}
-  render(true);
-  setTimeout(()=>render(true),0);
-  setTimeout(()=>render(true),80);
+
+  /* Paint immediately instead of depending on any older scorer patch/event. */
+  forceCategoryRender();
+  requestAnimationFrame(()=>forceCategoryRender());
+  setTimeout(()=>forceCategoryRender(),60);
+  return false;
 }
 function bind(root){
   root.querySelectorAll('[data-v194-mode]').forEach(b=>b.addEventListener('click',()=>chooseMode(b.dataset.v194Mode)));
-  root.querySelectorAll('[data-v194-cat]').forEach(b=>b.addEventListener('click',()=>chooseCategory(b.dataset.v194Cat)));
+
+  root.querySelectorAll('[data-v194-cat]').forEach(b=>{
+    const activate=e=>{
+      e.preventDefault();
+      e.stopPropagation();
+      chooseCategory(b.dataset.v194Cat);
+    };
+    b.onclick=activate;
+    b.onpointerup=activate;
+    b.setAttribute('role','button');
+    b.setAttribute('tabindex','0');
+  });
+
   root.querySelector('[data-v194-team]')?.addEventListener('change',e=>{
     localStorage.setItem(TEAM_KEY,e.target.value||'all');
     render(true);
@@ -291,11 +331,6 @@ function delegatedClick(e){
   if(mode){
     e.preventDefault();e.stopPropagation();e.stopImmediatePropagation();
     chooseMode(mode.dataset.v194Mode);return;
-  }
-  const cat=e.target.closest('[data-v194-cat]');
-  if(cat){
-    e.preventDefault();e.stopPropagation();e.stopImmediatePropagation();
-    chooseCategory(cat.dataset.v194Cat);return;
   }
   const team=e.target.closest('[data-v194-open-team]');
   if(team){
@@ -328,9 +363,10 @@ function schedule(delay=80){
 }
 window.LJR_SCORERS_REFERENCE={
   setCategory:id=>chooseCategory(id),
-  render:()=>render(true),
+  render:()=>forceCategoryRender(),
   getCategory:()=>catId()
 };
+window.LJR_SET_SCORER_CATEGORY=id=>chooseCategory(id);
 document.addEventListener('click',delegatedClick,true);
 document.addEventListener('change',delegatedChange,true);
 window.addEventListener('hashchange',()=>schedule(30));
