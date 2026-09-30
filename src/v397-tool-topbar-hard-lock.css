@@ -999,3 +999,134 @@
     background-size:22px 22px!important;
   }
 }
+
+
+/* V403 — primera captura: tamaño y composición exactos en las 8 páginas pedidas. */
+@media (max-width:1023px){
+  html body #app > .topbar.v397-tool-topbar-exact.v403-reference-topbar,
+  html body .app-shell > .topbar.v397-tool-topbar-exact.v403-reference-topbar{
+    position:sticky!important;
+    top:0!important;
+    z-index:2147482000!important;
+    display:block!important;
+    visibility:visible!important;
+    opacity:1!important;
+    margin:0!important;
+    padding:0!important;
+    overflow:hidden!important;
+    isolation:isolate!important;
+    border:0!important;
+    border-bottom:1px solid rgba(94,158,255,.46)!important;
+    box-shadow:none!important;
+    background:
+      radial-gradient(190px 82px at 9% -4%,rgba(105,237,255,.66) 0%,rgba(25,164,255,.34) 30%,transparent 72%),
+      radial-gradient(180px 78px at 71% -10%,rgba(209,255,255,.60) 0%,rgba(27,201,255,.31) 22%,rgba(15,101,247,.20) 48%,transparent 72%),
+      linear-gradient(180deg,#0b4bea 0%,#0b35cf 31%,#0a1e9d 66%,#070d6c 100%)!important;
+  }
+
+  html body #app > .topbar.v397-tool-topbar-exact.v403-reference-topbar::after,
+  html body .app-shell > .topbar.v397-tool-topbar-exact.v403-reference-topbar::after{
+    content:none!important;
+    display:none!important;
+  }
+
+  html body #app > .topbar.v397-tool-topbar-exact.v403-reference-topbar .wordmark,
+  html body .app-shell > .topbar.v397-tool-topbar-exact.v403-reference-topbar .wordmark{
+    display:block!important;
+    visibility:visible!important;
+    position:absolute!important;
+    inset:0!important;
+    width:auto!important;
+    height:auto!important;
+    margin:0!important;
+    padding:0!important;
+    border:0!important;
+    color:transparent!important;
+    font-size:0!important;
+    line-height:0!important;
+    pointer-events:none!important;
+    z-index:0!important;
+    overflow:hidden!important;
+    background:
+      radial-gradient(185px 70px at 69% 5%,rgba(19,231,255,.22),transparent 72%),
+      linear-gradient(180deg,transparent 0 58%,rgba(3,8,89,.22) 100%)!important;
+  }
+
+  html body #app > .topbar.v397-tool-topbar-exact.v403-reference-topbar .wordmark::before,
+  html body .app-shell > .topbar.v397-tool-topbar-exact.v403-reference-topbar .wordmark::before{
+    content:""!important;
+    display:block!important;
+    position:absolute!important;
+    left:-10%!important;
+    right:-10%!important;
+    top:-58%!important;
+    bottom:-68%!important;
+    opacity:.80!important;
+    pointer-events:none!important;
+    background:
+      radial-gradient(ellipse at 8% 54%,transparent 0 40%,rgba(43,225,255,.68) 40.8%,rgba(239,255,255,.84) 41.5%,rgba(23,164,255,.50) 42.2%,transparent 43.2% 53%,rgba(34,207,255,.32) 53.8%,transparent 55%),
+      radial-gradient(ellipse at 73% 2%,transparent 0 35%,rgba(54,237,255,.50) 35.7%,rgba(230,255,255,.66) 36.3%,transparent 37.3%),
+      linear-gradient(153deg,transparent 0 29%,rgba(37,220,255,.36) 29.3%,rgba(247,255,255,.70) 29.8%,rgba(43,220,255,.47) 30.2%,transparent 30.9% 100%)!important;
+    filter:drop-shadow(0 0 4px rgba(42,225,255,.42))!important;
+    transform:rotate(-1.5deg)!important;
+  }
+
+  html body #app > .topbar.v397-tool-topbar-exact.v403-reference-topbar::before,
+  html body .app-shell > .topbar.v397-tool-topbar-exact.v403-reference-topbar::before{
+    width:74px!important;
+    height:68px!important;
+    left:56px!important;
+    top:8px!important;
+    opacity:.46!important;
+    filter:drop-shadow(0 0 3px rgba(230,255,255,.62)) drop-shadow(0 0 8px rgba(20,198,255,.42))!important;
+  }
+
+  html body #app > .topbar.v397-tool-topbar-exact.v403-reference-topbar .back-button,
+  html body .app-shell > .topbar.v397-tool-topbar-exact.v403-reference-topbar .back-button{
+    display:block!important;
+    visibility:visible!important;
+    margin:0!important;
+    padding:0!important;
+    border:0!important;
+    border-radius:0!important;
+    background-color:transparent!important;
+    background-size:25px 25px!important;
+    box-shadow:none!important;
+    filter:none!important;
+    color:transparent!important;
+    z-index:12!important;
+  }
+
+  html body #app > .topbar.v397-tool-topbar-exact.v403-reference-topbar .profile-button,
+  html body .app-shell > .topbar.v397-tool-topbar-exact.v403-reference-topbar .profile-button{
+    display:block!important;
+    visibility:visible!important;
+    margin:0!important;
+    padding:0!important;
+    border:0!important;
+    border-radius:0!important;
+    background-color:transparent!important;
+    background-size:27px 27px!important;
+    box-shadow:none!important;
+    filter:none!important;
+    color:transparent!important;
+    z-index:12!important;
+  }
+
+  html body #app > .topbar.v397-tool-topbar-exact.v403-reference-topbar .back-button svg,
+  html body .app-shell > .topbar.v397-tool-topbar-exact.v403-reference-topbar .back-button svg,
+  html body #app > .topbar.v397-tool-topbar-exact.v403-reference-topbar .profile-button svg,
+  html body .app-shell > .topbar.v397-tool-topbar-exact.v403-reference-topbar .profile-button svg{
+    display:none!important;
+  }
+}
+
+@media (max-width:370px){
+  html body #app > .topbar.v397-tool-topbar-exact.v403-reference-topbar::before,
+  html body .app-shell > .topbar.v397-tool-topbar-exact.v403-reference-topbar::before{
+    width:70px!important;
+    height:64px!important;
+    left:51px!important;
+    top:9px!important;
+  }
+}
