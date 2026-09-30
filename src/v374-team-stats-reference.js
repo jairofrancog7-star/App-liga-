@@ -40,9 +40,8 @@ function html(x){
  const st=standing(x),sc=scorers(x),ca=cards(x),su=suspensions(x);
  const yell=cardTotal(ca,'amar'),red=cardTotal(ca,'roj'),top=sc[0]||null;
  const goals=num(st[6]),against=num(st[7]),played=num(st[2]),wins=num(st[3]),draws=num(st[4]),losses=num(st[5]),diff=num(st[8]),pts=num(st[9]);
- const key='<div class="v374-key-top">'+circle(played,'Partidos disputados')+
-  '<div class="v374-wdl"><p><i></i><span>Ganados</span><b>'+wins+'</b></p><p><i></i><span>Empates</span><b>'+draws+'</b></p><p><i></i><span>Perdidos</span><b>'+losses+'</b></p></div></div>'+
-  '<div class="v374-grid">'+metric(goals,'Goles')+metric(against,'Goles en contra')+metric(diff,'Diferencia de goles')+metric(pts,'Puntos')+metric(yell,'Tarjetas amarillas')+metric(red,'Tarjetas rojas')+metric(su.length,'Jugadores castigados')+metric(sc.reduce((a,r)=>a+num(r[3]),0),'Goles en tabla de goleo')+'</div>'+
+ const key='<div class="v374-possession">'+circle('—','Posesión de balón (%)')+'<div><p><i></i><span>'+esc(x.name)+'</span><b>—</b></p><p><i></i><span>Rivales</span><b>—</b></p><p><i></i><span>Empates</span><b>'+draws+'</b></p></div></div>'+
+  '<div class="v374-grid">'+metric(goals,'Goles')+metric(against,'Goles en contra')+metric('—','Disparos totales')+metric('—','Disparos a puerta')+metric('—','Grandes ocasiones')+metric('—','Ocasiones falladas')+metric('—','Distancia recorrida (km)')+metric(yell,'Tarjetas amarillas')+metric(red,'Tarjetas rojas')+metric(played,'Partidos disputados')+metric(wins,'Ganados')+metric(losses,'Perdidos')+metric(diff,'Diferencia de goles')+metric(pts,'Puntos')+metric(su.length,'Jugadores castigados')+metric(sc.reduce((a,r)=>a+num(r[3]),0),'Goles en tabla de goleo')+'</div>'+
   '<div class="v374-unavailable-note">Posesión, disparos, distancia y ocasiones no están publicados en la fuente oficial actual.</div>';
 
  const attack='<div class="v374-grid compact">'+metric(goals,'Goles')+metric('—','Goles de penalti')+metric('—','Goles desde fuera del área')+metric('—','Grandes ocasiones')+'</div>'+
@@ -50,7 +49,7 @@ function html(x){
   '<div class="v374-duels">'+circle('—','Duelos totales')+'<div>'+line('Duelos aéreos ganados','—')+line('Duelos en el suelo ganados','—')+line('Duelos perdidos','—')+'</div></div>'+
   '<div class="v374-dribbles">'+circle('—','Regates')+'<div>'+line('Completados','—')+line('Fallidos','—')+'</div></div>'+
   unavailable('Intercepciones')+unavailable('Entradas')+unavailable('Despejes')+
-  '<div class="v374-grid compact">'+metric('—','Bloqueos de disparo')+metric('—','Paradas del portero')+metric('—','Distribuciones del portero')+metric('—','Balones recuperados')+'</div>';
+  '<div class="v374-grid compact">'+metric('—','Bloqueos de disparo')+metric('—','Paradas del portero')+metric('—','Distribuciones del portero')+metric('—','Balones recuperados')+metric('—','Faltas cometidas')+metric('—','Faltas recibidas')+'</div>'+unavailable('Alineación · Duelos ganados')+unavailable('Alineación · Duelos perdidos')+unavailable('Pases en el último tercio');
 
  const scorer=top?'<div class="v374-scorer"><span class="v374-ball">⚽</span><div><b>'+esc(top[1])+'</b><small>'+esc(x.name)+'</small></div><strong>'+esc(top[3])+'</strong></div>':'<div class="v374-empty">Sin goleador oficial publicado para este equipo.</div>';
 
@@ -60,7 +59,7 @@ function html(x){
   '<div class="v374-one-circle">'+circle('—','Centros con éxito')+'</div>'+unavailable('Centros completados')+
   '<div class="v374-grid compact">'+metric('—','Pases clave')+metric('—','Pases en campo propio')+'</div>'+unavailable('Pases en campo rival')+unavailable('Pases en largo')+unavailable('Pases laterales');
 
- const defense='<div class="v374-grid compact">'+metric(against,'Goles encajados')+metric('—','Entradas')+metric('—','Intercepciones')+metric('—','Despejes')+metric(red,'Tarjetas rojas')+metric(yell,'Tarjetas amarillas')+'</div>'+
+ const defense='<div class="v374-grid compact">'+metric(against,'Goles encajados')+metric('—','Entradas')+metric('—','Intercepciones')+metric('—','Despejes')+metric('—','Bloqueos de disparo')+metric('—','Paradas del portero')+metric(red,'Tarjetas rojas')+metric(yell,'Tarjetas amarillas')+'</div>'+
   unavailable('Bloqueos')+unavailable('Paradas')+unavailable('Duelos defensivos ganados');
 
  return '<div class="v374-stats-shell"><label class="v374-filter"><span>Todos (temporada)</span><i>⌄</i></label>'+
@@ -83,7 +82,7 @@ async function apply(){
 }
 function schedule(){requestAnimationFrame(()=>requestAnimationFrame(apply))}
 window.addEventListener('hashchange',schedule);
-document.addEventListener('click',e=>{if(e.target.closest?.('[data-v42-tab]'))setTimeout(schedule,0)},true);
+document.addEventListener('click',e=>{const tab=e.target.closest?.('[data-v42-tab]');if(tab){if(tab.dataset.v42Tab==='stats'){localStorage.setItem('v42-team-tab','stats');document.body.classList.remove('v372-team-collapsed')}setTimeout(schedule,0)}},true);
 const screen=document.querySelector('#screen');
 if(screen)new MutationObserver(()=>{if(route()==='teamDetail')schedule()}).observe(screen,{childList:true,subtree:true});
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',schedule,{once:true});else schedule();
