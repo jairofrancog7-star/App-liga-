@@ -283,7 +283,7 @@ function schedule(){requestAnimationFrame(()=>requestAnimationFrame(render))}
 /* V93 — desde tablas, rankings, tarjetas y nombres de equipos vuelve a abrirse
    la ficha completa. No captura navegación inferior ni controles internos V42. */
 document.addEventListener('click',async e=>{
- if(route()==='teamDetail')return;
+ if(route()==='teamDetail'||route()==='club-store')return;
  if(!(e.target instanceof Element))return;
 
  /* V145 — Registro/Credencial:
