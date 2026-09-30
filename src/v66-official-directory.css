@@ -1630,3 +1630,120 @@ html body[data-app-route="club-store"] .app-shell>.bottom-nav{
   body[data-app-route="club-store"] .v436-product-art{height:204px!important}
   body[data-app-route="club-store"] .v437-feature-card{border-radius:20px!important}
 }
+
+
+/* V441 — artículos/playeras realistas en SVG */
+/* Esta versión cambia únicamente la representación de las playeras/artículos:
+   silueta más anatómica, mangas separadas, cuello, mesh, costuras, brillo y sombra. */
+body[data-app-route="club-store"] .v441-shirt{
+  position:relative!important;
+  width:138px!important;
+  height:166px!important;
+  display:grid!important;
+  place-items:center!important;
+  color:#fff!important;
+  overflow:visible!important;
+  transform:none!important;
+  filter:none!important;
+}
+body[data-app-route="club-store"] .v441-jersey-svg{
+  width:100%!important;
+  height:100%!important;
+  display:block!important;
+  overflow:visible!important;
+  filter:drop-shadow(0 10px 10px rgba(8,15,70,.18))!important;
+}
+body[data-app-route="club-store"] .v441-shirt .v431-shirt-shape,
+body[data-app-route="club-store"] .v441-shirt>.v431-shirt-logo,
+body[data-app-route="club-store"] .v441-shirt>.v431-shirt-name,
+body[data-app-route="club-store"] .v441-shirt>.v431-shirt-number,
+body[data-app-route="club-store"] .v441-shirt>span{
+  display:none!important;
+}
+body[data-app-route="club-store"] .v441-shirt .v440-shirt-shadow{
+  left:20%!important;
+  right:20%!important;
+  bottom:-3%!important;
+  height:11%!important;
+  opacity:.72!important;
+}
+
+/* Cards de catálogo: prenda más grande y con proporción de producto real. */
+body[data-app-route="club-store"] .v431-product-art .v441-shirt{
+  width:122px!important;
+  height:146px!important;
+  transform:none!important;
+}
+body[data-app-route="club-store"] .v436-product-art .v441-shirt{
+  width:164px!important;
+  height:198px!important;
+  transform:none!important;
+}
+body[data-app-route="club-store"] .v437-feature-art .v441-shirt{
+  width:185px!important;
+  height:224px!important;
+  transform:none!important;
+}
+body[data-app-route="club-store"] .v437-stage-shirt .v441-shirt{
+  width:255px!important;
+  height:310px!important;
+  transform:none!important;
+}
+body[data-app-route="club-store"] .v431-hero-shirt .v441-shirt{
+  width:150px!important;
+  height:182px!important;
+  transform:rotateY(-7deg) rotateZ(-2deg)!important;
+}
+body[data-app-route="club-store"] .v431-custom-preview .v441-shirt{
+  width:142px!important;
+  height:172px!important;
+  transform:none!important;
+}
+body[data-app-route="club-store"] .v431-edition-art .v441-shirt{
+  width:132px!important;
+  height:160px!important;
+  transform:none!important;
+}
+body[data-app-route="club-store"] .v431-collection-rail .v441-shirt{
+  width:108px!important;
+  height:132px!important;
+  transform:none!important;
+}
+body[data-app-route="club-store"] .v436-kit-tiles .v441-shirt{
+  width:120px!important;
+  height:145px!important;
+  transform:none!important;
+}
+
+/* Fondo más parecido a foto de catálogo para que la prenda se sienta física. */
+body[data-app-route="club-store"] .v431-product-art,
+body[data-app-route="club-store"] .v436-product-art{
+  background:
+    radial-gradient(circle at 50% 29%,#ffffff 0 25%,#f5f7fb 56%,#e6eaf3 100%)!important;
+}
+body[data-app-route="club-store"] .v431-product-art::after,
+body[data-app-route="club-store"] .v436-product-art::after{
+  left:23%!important;
+  right:23%!important;
+  bottom:5%!important;
+  height:10%!important;
+  background:radial-gradient(ellipse,rgba(14,22,70,.24),transparent 72%)!important;
+  filter:blur(7px)!important;
+}
+
+/* Quitar sensación de dibujo plano heredada. */
+body[data-app-route="club-store"] .v441-shirt.home,
+body[data-app-route="club-store"] .v441-shirt.away,
+body[data-app-route="club-store"] .v441-shirt.third,
+body[data-app-route="club-store"] .v441-shirt.training,
+body[data-app-route="club-store"] .v441-shirt.keeper,
+body[data-app-route="club-store"] .v441-shirt.special{
+  background:none!important;
+  clip-path:none!important;
+}
+
+@media(max-width:380px){
+  body[data-app-route="club-store"] .v436-product-art .v441-shirt{width:150px!important;height:182px!important}
+  body[data-app-route="club-store"] .v437-stage-shirt .v441-shirt{width:230px!important;height:280px!important}
+  body[data-app-route="club-store"] .v437-feature-art .v441-shirt{width:170px!important;height:205px!important}
+}
