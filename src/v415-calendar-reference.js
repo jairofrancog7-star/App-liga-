@@ -5,7 +5,7 @@
 if(window.__LJR_V415_CALENDAR_REFERENCE__)return;
 window.__LJR_V415_CALENDAR_REFERENCE__=true;
 
-const ROUTES=new Set(['v4-calendar','calendar','monthlyCalendar','calendarMonthly']);
+const ROUTES=new Set(['v4-calendar']);
 const isCalendarRoute=()=>ROUTES.has(route());
 const OFFICIAL='https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/data/official-live.json';
 const CATEGORY_ORDER=['3','5','4','2','1'];
@@ -141,11 +141,20 @@ function topTabs(){
 function categoryPanel(){
   if(!filterOpen)return '';
   const available=CATEGORY_ORDER.filter(id=>db?.categories?.[id]);
-  return '<div class="v415-filter-panel" aria-label="Categorías">'+
-    [['all','Todas'],...available.map(id=>[id,categoryLabel(id)])].map(([id,label])=>
-      '<button type="button" class="'+(selectedCategory===id?'active':'')+'" data-v415-category="'+esc(id)+'">'+esc(label)+'</button>'
-    ).join('')+
-  '</div>';
+  const rows=[['all','Todas las categorías'],...available.map(id=>[id,categoryLabel(id)])];
+  return '<div class="v415-filter-backdrop" data-v415-filter-close></div>'+
+    '<aside class="v415-filter-sheet" role="dialog" aria-modal="true" aria-label="Equipos y competiciones">'+
+      '<div class="v415-filter-sheet-head"><h2>Equipos y competiciones</h2><button type="button" data-v415-filter-close aria-label="Cerrar">×</button></div>'+
+      '<h3>Fútbol</h3>'+
+      '<div class="v415-filter-sheet-list">'+
+        rows.map(([id,label])=>
+          '<button type="button" class="v415-filter-row '+(selectedCategory===id?'active':'')+'" data-v415-category="'+esc(id)+'">'+
+            '<span><b>'+esc(label)+'</b><small>'+(id==='all'?'Mostrar todos los partidos':'Todas las competiciones')+'</small></span>'+
+            '<i class="v415-switch" aria-hidden="true"><em></em></i>'+
+          '</button>'
+        ).join('')+
+      '</div>'+
+    '</aside>';
 }
 
 function monthStrip(){
@@ -261,6 +270,10 @@ function bind(root){
     filterOpen=!filterOpen;
     render();
   });
+  root.querySelectorAll('[data-v415-filter-close]').forEach(btn=>btn.addEventListener('click',()=>{
+    filterOpen=false;
+    render();
+  }));
   root.querySelectorAll('[data-v415-category]').forEach(btn=>btn.addEventListener('click',()=>{
     selectedCategory=btn.dataset.v415Category||'all';
     selectedIso='';
@@ -270,12 +283,10 @@ function bind(root){
   root.querySelectorAll('[data-v415-go]').forEach(btn=>btn.addEventListener('click',()=>{
     const dest=btn.dataset.v415Go;
     if(dest==='standings'){
-      try{localStorage.setItem('competitionTab','standings')}catch(_){}
       location.hash='#/competition';
     }else if(dest==='teams'){
       location.hash='#/teams';
     }else{
-      try{localStorage.setItem('competitionTab','fixtures')}catch(_){}
       location.hash='#/competition';
     }
   }));
