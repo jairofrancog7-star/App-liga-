@@ -1,0 +1,196 @@
+/* V397 — HARD LOCK de cabeceras solicitado por el usuario.
+   Se activa por clase desde el hash real, no depende de data-app-route. */
+@media (max-width:1023px){
+  html body #app > .topbar.v397-tool-topbar-exact,
+  html body .app-shell > .topbar.v397-tool-topbar-exact{
+    position:sticky!important;
+    top:0!important;
+    z-index:2147482000!important;
+    display:block!important;
+    visibility:visible!important;
+    opacity:1!important;
+    height:145px!important;
+    min-height:145px!important;
+    max-height:145px!important;
+    margin:0!important;
+    padding:0!important;
+    overflow:hidden!important;
+    isolation:isolate!important;
+    border:0!important;
+    border-bottom:1px solid rgba(95,158,255,.42)!important;
+    box-shadow:none!important;
+    background:
+      radial-gradient(280px 126px at 9% 2%,rgba(105,237,255,.64) 0%,rgba(25,164,255,.34) 30%,transparent 72%),
+      radial-gradient(250px 120px at 70% -8%,rgba(209,255,255,.62) 0%,rgba(27,201,255,.30) 22%,rgba(15,101,247,.20) 48%,transparent 72%),
+      linear-gradient(180deg,#0b4bea 0%,#0b35cf 31%,#0a1e9d 66%,#070d6c 100%)!important;
+  }
+
+  html body #app > .topbar.v397-tool-topbar-exact::after,
+  html body .app-shell > .topbar.v397-tool-topbar-exact::after{
+    content:none!important;
+    display:none!important;
+  }
+
+  html body #app > .topbar.v397-tool-topbar-exact .wordmark,
+  html body .app-shell > .topbar.v397-tool-topbar-exact .wordmark{
+    display:block!important;
+    visibility:visible!important;
+    position:absolute!important;
+    inset:0!important;
+    width:auto!important;
+    height:auto!important;
+    margin:0!important;
+    padding:0!important;
+    border:0!important;
+    color:transparent!important;
+    font-size:0!important;
+    line-height:0!important;
+    pointer-events:none!important;
+    z-index:0!important;
+    overflow:hidden!important;
+    background:
+      radial-gradient(280px 95px at 69% 6%,rgba(19,231,255,.20),transparent 72%),
+      linear-gradient(180deg,transparent 0 60%,rgba(3,8,89,.22) 100%)!important;
+  }
+
+  html body #app > .topbar.v397-tool-topbar-exact .wordmark::before,
+  html body .app-shell > .topbar.v397-tool-topbar-exact .wordmark::before{
+    content:""!important;
+    display:block!important;
+    position:absolute!important;
+    left:-12%!important;
+    right:-12%!important;
+    top:-43%!important;
+    bottom:-40%!important;
+    opacity:.86!important;
+    pointer-events:none!important;
+    background:
+      radial-gradient(ellipse at 8% 54%,transparent 0 40%,rgba(43,225,255,.66) 40.8%,rgba(239,255,255,.82) 41.5%,rgba(23,164,255,.48) 42.2%,transparent 43.2% 53%,rgba(34,207,255,.30) 53.8%,transparent 55%),
+      radial-gradient(ellipse at 73% 2%,transparent 0 35%,rgba(54,237,255,.48) 35.7%,rgba(230,255,255,.64) 36.3%,transparent 37.3%),
+      linear-gradient(153deg,transparent 0 29%,rgba(37,220,255,.34) 29.3%,rgba(247,255,255,.66) 29.8%,rgba(43,220,255,.44) 30.2%,transparent 30.9% 100%)!important;
+    filter:drop-shadow(0 0 6px rgba(42,225,255,.46))!important;
+    transform:rotate(-1.5deg)!important;
+  }
+
+  html body #app > .topbar.v397-tool-topbar-exact::before,
+  html body .app-shell > .topbar.v397-tool-topbar-exact::before{
+    content:""!important;
+    display:block!important;
+    position:absolute!important;
+    z-index:1!important;
+    pointer-events:none!important;
+    width:185px!important;
+    height:154px!important;
+    left:62px!important;
+    top:-14px!important;
+    opacity:.58!important;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 180 145'%3E%3Cdefs%3E%3ClinearGradient id='s' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%23fff'/%3E%3Cstop offset='.48' stop-color='%2374efff'/%3E%3Cstop offset='.78' stop-color='%231ba7ff'/%3E%3Cstop offset='1' stop-color='%23eaffff'/%3E%3C/linearGradient%3E%3C/defs%3E%3Cg fill='none' stroke='url(%23s)' stroke-width='3.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M53 18h74l-5 17H58zM61 35h58l-5 36c-2 18-11 28-24 34-13-6-22-16-24-34z'/%3E%3Cpath d='M58 43H42c-7 0-11 6-9 13 4 15 14 24 31 28M122 43h16c7 0 11 6 9 13-4 15-14 24-31 28'/%3E%3Cpath d='M90 105v17M72 132h36M78 122h24l6 10H72z'/%3E%3Ccircle cx='90' cy='65' r='20'/%3E%3Cpath d='m90 52 8 6-3 10H85l-3-10zM85 68l-9 6M95 68l9 6M82 58l-8-2M98 58l8-2M90 45v7'/%3E%3C/g%3E%3C/svg%3E")!important;
+    background-repeat:no-repeat!important;
+    background-position:center!important;
+    background-size:contain!important;
+    filter:drop-shadow(0 0 7px rgba(230,255,255,.76)) drop-shadow(0 0 15px rgba(20,198,255,.58))!important;
+  }
+
+  html body #app > .topbar.v397-tool-topbar-exact .back-button,
+  html body .app-shell > .topbar.v397-tool-topbar-exact .back-button{
+    display:block!important;
+    visibility:visible!important;
+    position:absolute!important;
+    left:32px!important;
+    top:49px!important;
+    width:38px!important;
+    height:38px!important;
+    min-width:38px!important;
+    min-height:38px!important;
+    max-width:38px!important;
+    max-height:38px!important;
+    margin:0!important;
+    padding:0!important;
+    border:0!important;
+    border-radius:0!important;
+    background-color:transparent!important;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M14.5 5.5 8 12l6.5 6.5M8 12h12' fill='none' stroke='%23fff' stroke-width='2.15' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E")!important;
+    background-repeat:no-repeat!important;
+    background-position:center!important;
+    background-size:38px 38px!important;
+    box-shadow:none!important;
+    filter:none!important;
+    color:transparent!important;
+    z-index:10!important;
+  }
+
+  html body #app > .topbar.v397-tool-topbar-exact .back-button svg,
+  html body .app-shell > .topbar.v397-tool-topbar-exact .back-button svg,
+  html body #app > .topbar.v397-tool-topbar-exact .back-button::before,
+  html body #app > .topbar.v397-tool-topbar-exact .back-button::after{
+    display:none!important;
+    content:none!important;
+  }
+
+  html body #app > .topbar.v397-tool-topbar-exact .profile-button,
+  html body .app-shell > .topbar.v397-tool-topbar-exact .profile-button{
+    display:block!important;
+    visibility:visible!important;
+    position:absolute!important;
+    right:31px!important;
+    top:44px!important;
+    width:48px!important;
+    height:48px!important;
+    min-width:48px!important;
+    min-height:48px!important;
+    max-width:48px!important;
+    max-height:48px!important;
+    margin:0!important;
+    padding:0!important;
+    border:0!important;
+    border-radius:0!important;
+    background-color:transparent!important;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Ccircle cx='12' cy='12' r='9.6' fill='none' stroke='%23fff' stroke-width='1.85'/%3E%3Ccircle cx='12' cy='8.1' r='2.85' fill='none' stroke='%23fff' stroke-width='1.85'/%3E%3Cpath d='M5.35 19.15c1.55-3.35 3.76-4.9 6.65-4.9s5.1 1.55 6.65 4.9' fill='none' stroke='%23fff' stroke-width='1.85' stroke-linecap='round'/%3E%3C/svg%3E")!important;
+    background-repeat:no-repeat!important;
+    background-position:center!important;
+    background-size:48px 48px!important;
+    box-shadow:none!important;
+    filter:none!important;
+    color:transparent!important;
+    z-index:10!important;
+  }
+
+  html body #app > .topbar.v397-tool-topbar-exact .profile-button svg,
+  html body .app-shell > .topbar.v397-tool-topbar-exact .profile-button svg,
+  html body #app > .topbar.v397-tool-topbar-exact .profile-button::before,
+  html body #app > .topbar.v397-tool-topbar-exact .profile-button::after{
+    display:none!important;
+    content:none!important;
+  }
+}
+
+@media (max-width:390px){
+  html body #app > .topbar.v397-tool-topbar-exact,
+  html body .app-shell > .topbar.v397-tool-topbar-exact{
+    height:136px!important;
+    min-height:136px!important;
+    max-height:136px!important;
+  }
+  html body #app > .topbar.v397-tool-topbar-exact .back-button{
+    left:25px!important;
+    top:46px!important;
+    width:35px!important;
+    height:35px!important;
+    min-width:35px!important;
+    min-height:35px!important;
+    max-width:35px!important;
+    max-height:35px!important;
+    background-size:35px 35px!important;
+  }
+  html body #app > .topbar.v397-tool-topbar-exact .profile-button{
+    right:25px!important;
+    top:42px!important;
+    width:44px!important;
+    height:44px!important;
+    min-width:44px!important;
+    min-height:44px!important;
+    max-width:44px!important;
+    max-height:44px!important;
+    background-size:44px 44px!important;
+  }
+}
