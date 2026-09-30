@@ -172,7 +172,7 @@ const ROWS=[
     "https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/assets/official-logos/celticos.png"
   ]
 ];
-function route(){return location.hash.replace('#/','')||'home'}
+function route(){return location.hash.replace(/^#\/?/,'').split('?')[0]||'home'}
 function esc(s){return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
 function logo(r){
   const name=r[0],src=r[4];
