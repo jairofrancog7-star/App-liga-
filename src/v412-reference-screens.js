@@ -259,161 +259,172 @@ function bindSearch(root){
 function mountSearch(screen){if(screen.querySelector('[data-v412-screen="search"]'))return;screen.insertAdjacentHTML('beforeend',searchMarkup());bindSearch(screen.querySelector('[data-v412-screen="search"]'))}
 
 /* Fichajes — referencias Últimos / Competiciones */
-function transferCompetitions(){
- const by={};
- teams().forEach(t=>{(by[t.catId]||(by[t.catId]=[])).push(t)});
- return Object.entries(CAT_NAMES).map(([cid,name])=>{
-   const list=(by[cid]||[]).slice(0,3);
-   return '<article class="v412-transfer-league"><header><span><img src="'+LEAGUE+'" alt=""><b>'+esc(name)+'</b><small>Liga Juventino Rosas</small></span><button data-v412-comp="'+cid+'">Ver más</button></header>'+
-     '<div class="v412-transfer-clubs">'+(list.length?list.map(t=>'<button data-v412-team="'+esc(t.name)+'"><span>'+logoNode(t.name,t.logo)+'</span><b>'+esc(t.name)+'</b><small>Equipo registrado</small></button>').join(''):'<div class="v412-empty">Sin equipos publicados en esta categoría.</div>')+'</div></article>';
- }).join('');
-}
-function transferPlayerCards(filter='all',order='goals'){
- let list=players().slice();
- if(filter!=='all')list=list.filter(p=>String(p.catId)===String(filter));
- list.sort((a,b)=>{
+function v420PlayerPool(){
+ return players().slice().sort((a,b)=>{
    const A=playerStats(a),B=playerStats(b);
-   if(order==='name')return a.name.localeCompare(b.name,'es');
-   if(order==='team')return a.team.localeCompare(b.team,'es')||a.name.localeCompare(b.name,'es');
    return B.goals-A.goals||B.points-A.points||a.name.localeCompare(b.name,'es');
  });
- return list.slice(0,12).map(p=>{
-   const s=playerStats(p),teamLogo=logo(p.team),pos=positionCode(p);
-   const pc=/^DEL/.test(pos)?'is-del':/^DEF/.test(pos)?'is-def':/^(MED|CEN|MC|MD|MI|MCD|MCO)/.test(pos)?'is-mid':'is-jug';
-   return '<article class="v419-transfer-card">'+
-     '<button type="button" class="v419-transfer-open" data-v412-player="'+esc(p.id)+'">'+
-       '<span class="v419-time">Registro oficial</span>'+
-       '<span class="v419-avatar"><img src="'+esc(teamLogo)+'" alt="'+esc(p.team)+'"><i class="'+pc+'">'+esc(pos)+'</i></span>'+
-       '<b class="v419-name">'+esc(p.name)+'</b>'+
-       '<div class="v419-route">'+
-         '<span class="v419-club"><img src="'+esc(teamLogo)+'" alt=""><b>'+esc(p.team)+'</b></span>'+
-         '<span class="v419-arrow">→</span>'+
-         '<span class="v419-destination"><span>—</span><b>Sin destino</b></span>'+
-       '</div>'+
-       '<div class="v419-statusline"><b>Sin movimiento oficial</b><span>'+esc(p.category)+'</span></div>'+
-       '<div class="v419-foot"><b>'+s.goals+' goles</b><span>'+s.played+' PJ · '+s.points+' pts</span></div>'+
-     '</button>'+
-   '</article>';
- }).join('')||'<div class="v412-empty">No hay jugadores registrados en este filtro.</div>';
+}
+function v420FavoriteTeamsOnly(list){
+ const only=localStorage.getItem('v420-transfer-favs')==='1';
+ if(!only)return list;
+ return list.filter(p=>fav('teams',slug(p.team)));
+}
+function v420CurrentFilter(){
+ return localStorage.getItem('v420-transfer-cat')||'all';
+}
+function v420FilterPlayers(list){
+ const cat=v420CurrentFilter();
+ return cat==='all'?list:list.filter(p=>String(p.catId)===String(cat));
+}
+function v420Flag(){
+ return '<span class="v420-mx" title="Liga en México">🇲🇽</span>';
+}
+function v420TransferRow(p){
+ const s=playerStats(p),teamLogo=logo(p.team),pos=positionCode(p);
+ const pc=/^DEL/.test(pos)?'is-del':/^DEF/.test(pos)?'is-def':/^(MED|CEN|MC|MD|MI|MCD|MCO)/.test(pos)?'is-mid':'is-jug';
+ return '<article class="v420-transfer-row">'+
+   '<button type="button" class="v420-transfer-row-main" data-v412-player="'+esc(p.id)+'">'+
+     '<span class="v420-row-avatar"><img src="'+esc(teamLogo)+'" alt="'+esc(p.team)+'"></span>'+
+     '<span class="v420-row-copy"><b>'+v420Flag()+esc(p.name)+'</b><small><i class="'+pc+'">'+esc(pos)+'</i>'+esc(p.team)+' · '+esc(p.category)+'</small></span>'+
+     '<span class="v420-row-route"><span><img src="'+esc(teamLogo)+'" alt=""></span><i>→</i><span class="v420-empty-club">—</span></span>'+
+     '<span class="v420-row-stat">'+s.goals+' G</span>'+
+   '</button>'+
+ '</article>';
+}
+function v420LatestMarkup(){
+ let list=v420FilterPlayers(v420FavoriteTeamsOnly(v420PlayerPool()));
+ const rumor=localStorage.getItem('v420-transfer-feed')==='rumor';
+ if(rumor)return '<div class="v420-empty-rumor"><b>Rumores</b><p>No se muestran rumores no verificados. Aquí sólo aparecerán movimientos publicados por la Liga.</p></div>';
+ const rows=list.slice(0,14).map(v420TransferRow).join('');
+ return '<div class="v420-latest">'+
+   '<div class="v420-group-date">PLANTILLA OFICIAL · '+esc(CAT_NAMES[v420CurrentFilter()]||'TODAS LAS CATEGORÍAS')+'</div>'+
+   (rows||'<div class="v412-empty">No hay jugadores para este filtro.</div>')+
+ '</div>';
+}
+function v420CompetitionCard(cid,name){
+ const t=teams().filter(x=>String(x.catId)===String(cid));
+ const ps=v420PlayerPool().filter(p=>String(p.catId)===String(cid)).slice(0,3);
+ return '<article class="v420-comp-card" data-v420-comp-card="'+cid+'">'+
+   '<header><span class="v420-comp-mark">'+v420Flag()+'</span><span><b>'+esc(name)+'</b><small>México · Liga Juventino Rosas</small></span><button type="button" data-v420-comp-more="'+cid+'">Ver más</button></header>'+
+   '<div class="v420-comp-mini">'+
+     (ps.length?ps.map(p=>{
+       const tl=logo(p.team);
+       return '<button type="button" data-v412-player="'+esc(p.id)+'"><span class="v420-mini-avatar"><img src="'+esc(tl)+'" alt=""></span><b>'+esc(p.name)+'</b><span class="v420-mini-route"><img src="'+esc(tl)+'" alt=""><i>→</i><span>—</span></span></button>';
+     }).join(''):'<div class="v412-empty">Sin jugadores publicados.</div>')+
+   '</div>'+
+   '<footer><span>'+t.length+' equipos registrados</span></footer>'+
+ '</article>';
+}
+function transferCompetitions(){
+ return Object.entries(CAT_NAMES).map(([cid,name])=>v420CompetitionCard(cid,name)).join('');
+}
+function v420CompetitionsMarkup(){
+ return '<div class="v420-competition-search"><span>⌕</span><input data-v420-comp-search placeholder="Buscar competición"></div>'+
+   '<div class="v420-comp-list" data-v420-comp-list>'+transferCompetitions()+'</div>';
+}
+function v420Reaction(pId){
+ try{return localStorage.getItem('v420-transfer-react-'+pId)||''}catch(_){return ''}
+}
+function v420DetailCard(p){
+ const s=playerStats(p),tl=logo(p.team),pos=positionCode(p),react=v420Reaction(p.id);
+ return '<article class="v420-detail-card">'+
+   '<div class="v420-detail-kicker">REGISTRO OFICIAL</div>'+
+   '<button class="v420-detail-main" type="button" data-v412-player="'+esc(p.id)+'">'+
+     '<span class="v420-detail-avatar"><img src="'+esc(tl)+'" alt=""></span>'+
+     '<b>'+esc(p.name)+'</b><small>'+esc(pos)+' · '+esc(p.category)+'</small>'+
+     '<span class="v420-detail-status">Sin movimiento oficial publicado</span>'+
+     '<div class="v420-detail-route"><span><b>'+esc(p.team)+'</b><img src="'+esc(tl)+'" alt=""></span><i>›</i><span><span>—</span><b>Sin destino</b></span></div>'+
+     '<div class="v420-detail-country">'+v420Flag()+'<span>México · Liga Juventino Rosas</span></div>'+
+     '<div class="v420-detail-numbers"><span>'+s.goals+' goles</span><span>'+s.played+' PJ</span><span>'+s.points+' pts</span></div>'+
+   '</button>'+
+   '<div class="v420-detail-react"><button type="button" class="'+(react==='up'?'is-on':'')+'" data-v420-react="up" data-v420-react-id="'+esc(p.id)+'">♡</button><button type="button" class="'+(react==='down'?'is-on':'')+'" data-v420-react="down" data-v420-react-id="'+esc(p.id)+'">♧</button></div>'+
+ '</article>';
 }
 function transferPlayersSection(){
- const filter=localStorage.getItem('v418-transfer-player-filter')||'all';
- const order=localStorage.getItem('v418-transfer-player-order')||'goals';
- const filterLabel=filter==='all'?'Todos':(CAT_NAMES[filter]||'Categoría');
- const orderLabel=order==='goals'?'Goles':order==='team'?'Equipo':'Nombre';
- return '<section class="v419-transfer-center">'+
-   '<div class="v419-transfer-head">'+
-     '<button type="button" data-v419-back aria-label="Volver">←</button>'+
-     '<b>Centro de fichajes</b>'+
-     '<button type="button" data-v419-notices aria-label="Avisos">♢</button>'+
-   '</div>'+
-   '<div class="v419-transfer-toolbar">'+
-     '<button type="button" class="v419-all" data-v419-all>Todos los fichajes</button>'+
-     '<button type="button" data-v419-filter-toggle>Filtro <span>⌄</span></button>'+
-     '<button type="button" data-v419-order-toggle>Ordenar <span>⌄</span></button>'+
-   '</div>'+
-   '<div class="v419-menu is-hidden" data-v419-filter-menu>'+
-     '<button data-v419-filter-value="all" class="'+(filter==='all'?'is-active':'')+'">Todos</button>'+
-     Object.entries(CAT_NAMES).map(([id,name])=>'<button data-v419-filter-value="'+id+'" class="'+(filter===id?'is-active':'')+'">'+esc(name)+'</button>').join('')+
-   '</div>'+
-   '<div class="v419-menu is-hidden" data-v419-order-menu>'+
-     '<button data-v419-order-value="goals" class="'+(order==='goals'?'is-active':'')+'">Goles</button>'+
-     '<button data-v419-order-value="name" class="'+(order==='name'?'is-active':'')+'">Nombre</button>'+
-     '<button data-v419-order-value="team" class="'+(order==='team'?'is-active':'')+'">Equipo</button>'+
-   '</div>'+
-   '<div class="v419-current-filter"><span>'+esc(filterLabel)+'</span><span>'+esc(orderLabel)+'</span></div>'+
-   '<div class="v419-transfer-list" data-v418-transfer-player-list>'+transferPlayerCards(filter,order)+'</div>'+
+ const list=v420FilterPlayers(v420PlayerPool()).slice(0,8);
+ return '<section class="v420-transfer-details">'+
+   '<div class="v420-detail-tabs"><button class="is-active" data-v420-detail-mode="all">Todo</button><button data-v420-detail-mode="confirmed">Confirmado</button><button data-v420-detail-mode="rumor">Rumores</button></div>'+
+   '<div class="v420-detail-list" data-v420-detail-list>'+list.map(v420DetailCard).join('')+'</div>'+
  '</section>';
-}
-function bindTransferPlayerTools(root){
- const rerender=()=>{
-   const box=root.querySelector('[data-v418-transfer-player-list]');if(!box)return;
-   const filter=localStorage.getItem('v418-transfer-player-filter')||'all';
-   const order=localStorage.getItem('v418-transfer-player-order')||'goals';
-   box.innerHTML=transferPlayerCards(filter,order);
-   const chips=root.querySelectorAll('.v419-current-filter span');
-   if(chips[0])chips[0].textContent=filter==='all'?'Todos':(CAT_NAMES[filter]||'Categoría');
-   if(chips[1])chips[1].textContent=order==='goals'?'Goles':order==='team'?'Equipo':'Nombre';
-   root.querySelectorAll('[data-v419-filter-value]').forEach(b=>b.classList.toggle('is-active',b.dataset.v419FilterValue===filter));
-   root.querySelectorAll('[data-v419-order-value]').forEach(b=>b.classList.toggle('is-active',b.dataset.v419OrderValue===order));
-   bindCommon(box);
- };
- const closeMenus=()=>{
-   root.querySelector('[data-v419-filter-menu]')?.classList.add('is-hidden');
-   root.querySelector('[data-v419-order-menu]')?.classList.add('is-hidden');
- };
- root.querySelector('[data-v419-all]')?.addEventListener('click',()=>{
-   localStorage.setItem('v418-transfer-player-filter','all');
-   localStorage.setItem('v418-transfer-player-order','goals');
-   closeMenus();rerender();
- });
- root.querySelector('[data-v419-filter-toggle]')?.addEventListener('click',()=>{
-   const a=root.querySelector('[data-v419-filter-menu]'),b=root.querySelector('[data-v419-order-menu]');
-   b?.classList.add('is-hidden');a?.classList.toggle('is-hidden');
- });
- root.querySelector('[data-v419-order-toggle]')?.addEventListener('click',()=>{
-   const a=root.querySelector('[data-v419-order-menu]'),b=root.querySelector('[data-v419-filter-menu]');
-   b?.classList.add('is-hidden');a?.classList.toggle('is-hidden');
- });
- root.querySelectorAll('[data-v419-filter-value]').forEach(b=>b.addEventListener('click',()=>{
-   localStorage.setItem('v418-transfer-player-filter',b.dataset.v419FilterValue);
-   closeMenus();rerender();
- }));
- root.querySelectorAll('[data-v419-order-value]').forEach(b=>b.addEventListener('click',()=>{
-   localStorage.setItem('v418-transfer-player-order',b.dataset.v419OrderValue);
-   closeMenus();rerender();
- }));
- root.querySelector('[data-v419-back]')?.addEventListener('click',()=>{
-   root.scrollIntoView({behavior:'smooth',block:'start'});
- });
- root.querySelector('[data-v419-notices]')?.addEventListener('click',()=>go('notices'));
- rerender();
 }
 function transfersMarkup(){
  const mode=localStorage.getItem('v412-transfer-mode')||'latest';
- return '<section class="v412-shell v412-transfers-reference" data-v412-screen="transfers">'+
-   '<div class="v412-transfer-brand"><span>☰</span><b>Fichajes</b></div>'+
-   '<div class="v412-transfer-tabs"><button class="'+(mode==='latest'?'is-active':'')+'" data-v412-transfer-mode="latest">ÚLTIMOS</button><button class="'+(mode==='competitions'?'is-active':'')+'" data-v412-transfer-mode="competitions">COMPETICIONES</button></div>'+
-   '<div class="v412-transfer-filters"><button>Mis categorías⌄</button><button>Filtros⌄</button></div>'+
-   '<div class="v412-transfer-switch"><button class="is-active">OFICIAL</button><button disabled>RUMOR</button></div>'+
+ const feed=localStorage.getItem('v420-transfer-feed')||'official';
+ const favs=localStorage.getItem('v420-transfer-favs')==='1';
+ const cat=v420CurrentFilter();
+ return '<section class="v412-shell v412-transfers-reference v420-transfers" data-v412-screen="transfers">'+
+   '<div class="v420-brand"><button type="button" data-v420-menu>☰</button><b>Fichajes</b><button type="button" data-v420-notices>♧</button></div>'+
+   '<div class="v420-top-tabs"><button class="'+(mode==='latest'?'is-active':'')+'" data-v412-transfer-mode="latest">ÚLTIMOS</button><button class="'+(mode==='competitions'?'is-active':'')+'" data-v412-transfer-mode="competitions">COMPETICIONES</button></div>'+
+   '<div class="v420-drop-row">'+
+     '<button type="button" class="'+(favs?'is-active':'')+'" data-v420-favs>★ MIS FAVORITOS <span>⌄</span></button>'+
+     '<button type="button" data-v420-filter>FILTROS <span>⌄</span></button>'+
+   '</div>'+
+   '<div class="v420-filter-menu is-hidden" data-v420-filter-menu><button data-v420-cat="all" class="'+(cat==='all'?'is-active':'')+'">Todas</button>'+Object.entries(CAT_NAMES).map(([id,name])=>'<button data-v420-cat="'+id+'" class="'+(cat===id?'is-active':'')+'">'+esc(name)+'</button>').join('')+'</div>'+
+   '<div class="v420-official-switch"><button class="'+(feed==='official'?'is-active':'')+'" data-v420-feed="official">OFICIAL</button><button class="'+(feed==='rumor'?'is-active':'')+'" data-v420-feed="rumor">RUMOR</button></div>'+
    '<div data-v412-transfer-body></div>'+
+   '<div class="v420-lower-title"><small>TRANSFERENCIAS</small><b>Seguimiento de jugadores</b></div>'+
    transferPlayersSection()+
+   '<div class="v420-side-menu is-hidden" data-v420-side-menu><button data-v412-go="news">Noticias</button><button data-v412-go="teams">Equipos</button><button data-v412-go="search">Buscar</button></div>'+
  '</section>';
 }
 function bindTransferPlayerTools(root){
- const rerender=()=>{
-   const box=root.querySelector('[data-v418-transfer-player-list]');if(!box)return;
-   const filter=localStorage.getItem('v418-transfer-player-filter')||'all';
-   const order=localStorage.getItem('v418-transfer-player-order')||'goals';
-   box.innerHTML=transferPlayerCards(filter,order);
-   const fb=root.querySelector('[data-v418-transfer-filter]');
-   const ob=root.querySelector('[data-v418-transfer-order]');
-   if(fb)fb.textContent='Filtro · '+(filter==='all'?'Todos':(CAT_NAMES[filter]||'Categoría'))+'⌄';
-   if(ob)ob.textContent='Ordenar · '+(order==='goals'?'Goles':order==='team'?'Equipo':'Nombre')+'⌄';
+ const renderDetails=(mode='all')=>{
+   let list=v420FilterPlayers(v420PlayerPool()).slice(0,8);
+   const box=root.querySelector('[data-v420-detail-list]');
+   if(!box)return;
+   root.querySelectorAll('[data-v420-detail-mode]').forEach(b=>b.classList.toggle('is-active',b.dataset.v420DetailMode===mode));
+   if(mode==='rumor'){
+     box.innerHTML='<div class="v420-empty-rumor"><b>Rumores</b><p>No se muestran rumores no verificados.</p></div>';
+   }else if(mode==='confirmed'){
+     box.innerHTML='<div class="v420-empty-rumor"><b>Confirmado</b><p>No hay transferencias confirmadas publicadas por la Liga.</p></div>';
+   }else box.innerHTML=list.map(v420DetailCard).join('');
    bindCommon(box);
+   box.querySelectorAll('[data-v420-react]').forEach(b=>b.onclick=()=>{
+     const id=b.dataset.v420ReactId,val=b.dataset.v420React,key='v420-transfer-react-'+id;
+     try{localStorage.setItem(key,v420Reaction(id)===val?'':val)}catch(_){}
+     renderDetails(mode);
+   });
  };
- root.querySelector('[data-v418-transfer-filter]')?.addEventListener('click',()=>{
-   const seq=['all','3','5','4','2','1'];
-   const cur=localStorage.getItem('v418-transfer-player-filter')||'all';
-   localStorage.setItem('v418-transfer-player-filter',seq[(seq.indexOf(cur)+1)%seq.length]);
-   rerender();
- });
- root.querySelector('[data-v418-transfer-order]')?.addEventListener('click',()=>{
-   const seq=['goals','name','team'];
-   const cur=localStorage.getItem('v418-transfer-player-order')||'goals';
-   localStorage.setItem('v418-transfer-player-order',seq[(seq.indexOf(cur)+1)%seq.length]);
-   rerender();
- });
+ root.querySelectorAll('[data-v420-detail-mode]').forEach(b=>b.onclick=()=>renderDetails(b.dataset.v420DetailMode));
+ renderDetails('all');
 }
 function bindTransfers(root){
+ const body=root.querySelector('[data-v412-transfer-body]');
  const render=()=>{
    const mode=localStorage.getItem('v412-transfer-mode')||'latest';
    root.querySelectorAll('[data-v412-transfer-mode]').forEach(x=>x.classList.toggle('is-active',x.dataset.v412TransferMode===mode));
-   root.querySelector('[data-v412-transfer-body]').innerHTML=mode==='competitions'?transferCompetitions():
-     '<div class="v412-transfer-empty-ref"><span>↔</span><b>Sin movimientos oficiales publicados</b><p>No mostramos rumores, altas ni cambios de equipo hasta que exista una publicación oficial de la Liga.</p><button data-v412-go="news">Ver noticias oficiales</button></div>';
-   bindCommon(root);
+   body.innerHTML=mode==='competitions'?v420CompetitionsMarkup():v420LatestMarkup();
+   const inp=body.querySelector('[data-v420-comp-search]');
+   if(inp)inp.oninput=()=>{
+     const q=norm(inp.value);
+     body.querySelectorAll('[data-v420-comp-card]').forEach(card=>card.style.display=!q||norm(card.textContent).includes(q)?'':'none');
+   };
+   body.querySelectorAll('[data-v420-comp-more]').forEach(b=>b.onclick=()=>{
+     localStorage.setItem('v420-transfer-cat',b.dataset.v420CompMore);
+     localStorage.setItem('v412-transfer-mode','latest');
+     render();
+   });
+   bindCommon(body);
  };
  root.querySelectorAll('[data-v412-transfer-mode]').forEach(b=>b.onclick=()=>{localStorage.setItem('v412-transfer-mode',b.dataset.v412TransferMode);render()});
+ root.querySelector('[data-v420-favs]')?.addEventListener('click',()=>{
+   localStorage.setItem('v420-transfer-favs',localStorage.getItem('v420-transfer-favs')==='1'?'0':'1');
+   const b=root.querySelector('[data-v420-favs]');b?.classList.toggle('is-active',localStorage.getItem('v420-transfer-favs')==='1');render();
+ });
+ root.querySelector('[data-v420-filter]')?.addEventListener('click',()=>root.querySelector('[data-v420-filter-menu]')?.classList.toggle('is-hidden'));
+ root.querySelectorAll('[data-v420-cat]').forEach(b=>b.onclick=()=>{
+   localStorage.setItem('v420-transfer-cat',b.dataset.v420Cat);
+   root.querySelectorAll('[data-v420-cat]').forEach(x=>x.classList.toggle('is-active',x===b));
+   root.querySelector('[data-v420-filter-menu]')?.classList.add('is-hidden');render();bindTransferPlayerTools(root);
+ });
+ root.querySelectorAll('[data-v420-feed]').forEach(b=>b.onclick=()=>{
+   localStorage.setItem('v420-transfer-feed',b.dataset.v420Feed);
+   root.querySelectorAll('[data-v420-feed]').forEach(x=>x.classList.toggle('is-active',x===b));
+   render();
+ });
+ root.querySelector('[data-v420-menu]')?.addEventListener('click',()=>root.querySelector('[data-v420-side-menu]')?.classList.toggle('is-hidden'));
+ root.querySelector('[data-v420-notices]')?.addEventListener('click',()=>go('notices'));
  render();bindTransferPlayerTools(root);bindCommon(root);
 }
 function mountTransfers(screen){if(screen.querySelector('[data-v412-screen="transfers"]'))return;screen.insertAdjacentHTML('beforeend',transfersMarkup());bindTransfers(screen.querySelector('[data-v412-screen="transfers"]'))}
