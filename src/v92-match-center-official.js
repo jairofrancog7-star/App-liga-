@@ -12,9 +12,10 @@ const DIRECT_ROUTES=new Set(['v4-matchcenter','matchCenter','match-center']);
 const LOCAL='./public/data/official-live.json?v=20260922-v141';
 const REMOTE='https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/data/official-live.json?v=20260922-v141';
 const BASE='https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/';
+const MATCH_MEDIA=BASE+'assets/motion/';
 
 let db=window.LJR_OFFICIAL_DATA||null;
-let activeTab='Resumen';
+let activeTab='BuildUp';
 let selectedKey='';
 let loading=null;
 let timer=null;
@@ -205,6 +206,75 @@ function previewTeam(m,team,side){
     '<div class="v416-team-copy"><b>'+esc(team)+'</b><span class="v418-form-stats">'+circles+'</span></div>'+
     (!left?teamLogo(team,'preview'):'')+
   '</div>';
+}
+
+function compactDate(v){
+  const d=dateOnly(v);if(!d)return 'Fecha por confirmar';
+  const m=d.match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})$/);if(!m)return d;
+  const months=['ene','feb','mar','abr','may','jun','jul','ago','sep','oct','nov','dic'];
+  return Number(m[1])+' '+months[Math.max(0,Math.min(11,Number(m[2])-1))]+' '+m[3];
+}
+function countdownText(m,state){
+  if(state.kind==='window')return 'EN DIRECTO';
+  if(state.kind==='final')return 'FINAL';
+  if(!Number.isFinite(m?.start))return '—';
+  const diff=m.start-mexicoStamp();
+  if(diff<=0)return state.kind==='pending'?'PENDIENTE':'00 : 00 : 00';
+  const s=Math.floor(diff/1000),h=Math.floor(s/3600),min=Math.floor((s%3600)/60),sec=s%60;
+  const pad=n=>String(n).padStart(2,'0');
+  return pad(h)+' : '+pad(min)+' : '+pad(sec);
+}
+function buildUpBody(m,state){
+  const r=m.r,home=r[2],away=r[6],score=publishedScore(r);
+  const center=score?score.text:clock(r[8]);
+  return '<section class="v420-build-up" data-v420-build-up>'+
+    '<section class="v420-hero">'+
+      '<video class="v420-hero-media" autoplay muted loop playsinline preload="metadata" src="'+esc(MATCH_MEDIA+'v38-soccer-matchday.mp4')+'"></video>'+
+      '<div class="v420-hero-shade"></div>'+
+      '<div class="v420-top-controls">'+
+        '<button type="button" data-v420-back aria-label="Volver">‹</button>'+
+        '<button type="button" data-v420-mute aria-label="Silenciar o activar audio">⌁</button>'+
+      '</div>'+
+      '<div class="v420-match-panel">'+
+        '<h2>'+esc(m.category)+'</h2>'+
+        '<p>'+esc(compactDate(r[8]))+'</p>'+
+        '<div class="v420-matchup">'+
+          '<div>'+teamLogo(home,'v420-team-logo')+'<b>'+esc(home)+'</b></div>'+
+          '<span><strong>'+esc(center)+'</strong><small>'+esc(countdownText(m,state))+'</small></span>'+
+          '<div>'+teamLogo(away,'v420-team-logo')+'<b>'+esc(away)+'</b></div>'+
+        '</div>'+
+      '</div>'+
+    '</section>'+
+    '<nav class="v420-pills" aria-label="Opciones del partido">'+
+      '<button type="button" class="active" data-v92-tab="BuildUp">Build Up</button>'+
+      '<button type="button" data-v92-tab="Predicciones">Predicciones</button>'+
+      '<button type="button" data-v92-tab="Cronología">Comentarios</button>'+
+      '<button type="button" data-v92-tab="Previa">Previa</button>'+
+    '</nav>'+
+    '<section class="v420-media-card">'+
+      '<video autoplay muted loop playsinline preload="metadata" src="'+esc(MATCH_MEDIA+'v38-soccer-teams.mp4')+'"></video>'+
+      '<div><small>PARTIDO OFICIAL</small><b>'+esc(home)+' vs '+esc(away)+'</b><span>'+esc(r[7]||'Campo por confirmar')+'</span></div>'+
+    '</section>'+
+  '</section>';
+}
+function predictionsBody(m){
+  const r=m.r,home=r[2],away=r[6],key='v420-prediction:'+m.key;
+  let saved=null;try{saved=JSON.parse(localStorage.getItem(key)||'null')}catch(_){}
+  const active=v=>saved?.pick===v?' active':'';
+  return '<section class="v420-predictions">'+
+    '<header><small>PRONÓSTICO DEL PARTIDO</small><h2>¿Quién gana?</h2><p>Tu selección se guarda solo en este dispositivo.</p></header>'+
+    '<div class="v420-prediction-teams">'+
+      '<div>'+teamLogo(home,'v420-pred-logo')+'<b>'+esc(home)+'</b></div>'+
+      '<span>VS</span>'+
+      '<div>'+teamLogo(away,'v420-pred-logo')+'<b>'+esc(away)+'</b></div>'+
+    '</div>'+
+    '<div class="v420-prediction-actions">'+
+      '<button type="button" class="'+active('1')+'" data-v420-pick="1">1 · '+esc(home)+'</button>'+
+      '<button type="button" class="'+active('X')+'" data-v420-pick="X">X · Empate</button>'+
+      '<button type="button" class="'+active('2')+'" data-v420-pick="2">2 · '+esc(away)+'</button>'+
+    '</div>'+
+    '<button type="button" class="v420-back-build" data-v92-tab="BuildUp">Volver a Build Up</button>'+
+  '</section>';
 }
 function referenceMarketBar(m,state){
   const live=state.kind==='window';
@@ -599,6 +669,8 @@ function timelineBody(m,state){
   return '<section class="v92-section"><div class="v92-section-head"><h2>Cronología oficial</h2><small>Solo información verificable.</small></div><div class="v92-timeline">'+lines+'</div></section>';
 }
 function bodyFor(tab,m,state){
+  if(tab==='BuildUp')return buildUpBody(m,state);
+  if(tab==='Predicciones')return predictionsBody(m);
   if(tab==='Previa')return previewBody(m,state);
   if(tab==='Alineaciones')return lineupsBody(m);
   if(tab==='Estadísticas')return statsBody(m);
@@ -619,6 +691,20 @@ function render(){
   }
   const r=m.r,state=stateFor(m),home=r[2],away=r[6],venue=r[7]||'Campo por confirmar';
   const center=state.primary;
+  if(activeTab==='BuildUp'){
+    screen.innerHTML='<article class="v92-matchcenter v420-build-mode" data-v92-matchcenter>'+buildUpBody(m,state)+'</article>';
+    document.body.classList.add('v92-match-center-official');
+    screen.querySelectorAll('[data-v92-tab]').forEach(b=>b.onclick=()=>{activeTab=b.dataset.v92Tab;renderGuard=false;render()});
+    screen.querySelector('[data-v420-back]')?.addEventListener('click',()=>{location.hash='#/competition'});
+    screen.querySelector('[data-v420-mute]')?.addEventListener('click',e=>{
+      const vids=[...screen.querySelectorAll('.v420-build-up video')],next=vids.some(v=>v.muted);
+      vids.forEach(v=>{v.muted=!next;if(!v.muted){try{v.play()}catch(_){}}});
+      e.currentTarget.classList.toggle('sound-on',next);
+      e.currentTarget.textContent=next?'◉':'⌁';
+    });
+    renderGuard=false;
+    return;
+  }
   screen.innerHTML='<article class="v92-matchcenter" data-v92-matchcenter>'+
     '<header class="v92-match-head"><div class="v92-kicker">'+esc(state.label)+'</div><h1>Match Center</h1><p>'+esc(home)+' vs '+esc(away)+' · '+esc(m.category)+' · Jornada '+esc(r[1]||'')+'</p></header>'+
     matchPicker(m)+
@@ -629,6 +715,7 @@ function render(){
     '</section>'+
     '<div class="v92-official-meta"><span>'+esc(dateOnly(r[8]))+' · '+esc(clock(r[8]))+'</span><span>'+esc(venue)+'</span></div>'+
     '<nav class="v92-tabs v417-reference-tabs" aria-label="Opciones del Match Center">'+[
+      ['BuildUp','BUILD UP'],
       ['Cronología','JUGADAS'],
       ['Estadísticas','CLASIFICACIÓN'],
       ['Previa','PREVIA'],
@@ -647,7 +734,7 @@ function render(){
   '</article>';
 
   document.body.classList.add('v92-match-center-official');
-  screen.querySelector('[data-v92-match-select]')?.addEventListener('change',e=>{selectedKey=e.target.value;activeTab='Resumen';profileSide='home';renderGuard=false;render()});
+  screen.querySelector('[data-v92-match-select]')?.addEventListener('change',e=>{selectedKey=e.target.value;activeTab='BuildUp';profileSide='home';renderGuard=false;render()});
   screen.querySelectorAll('[data-v92-tab]').forEach(b=>b.onclick=()=>{activeTab=b.dataset.v92Tab;renderGuard=false;render();if(activeTab==='Alineaciones')refreshOfficialData(true)});
   screen.querySelectorAll('[data-v92-open-lineups]').forEach(b=>b.onclick=()=>{activeTab='Alineaciones';renderGuard=false;render();refreshOfficialData(true)});
   screen.querySelectorAll('[data-v92-route]').forEach(b=>b.onclick=()=>{location.hash='#/'+b.dataset.v92Route});
@@ -658,6 +745,7 @@ function render(){
   screen.querySelectorAll('[data-v92-vote-mvp]').forEach(b=>b.onclick=()=>openMvpVote(m));
   screen.querySelectorAll('[data-v419-profile-side]').forEach(b=>b.onclick=()=>{profileSide=b.dataset.v419ProfileSide==='away'?'away':'home';renderGuard=false;render()});
   screen.querySelectorAll('[data-v419-open-team]').forEach(b=>b.onclick=()=>{const name=b.dataset.v419OpenTeam||'';try{localStorage.setItem('v62-team-name',name)}catch(_){};try{window.LJR_OFFICIAL_API?.openTeam?.(name)}catch(_){};if(route()===PRIMARY_ROUTE||DIRECT_ROUTES.has(route()))location.hash='#/teamDetail'});
+  screen.querySelectorAll('[data-v420-pick]').forEach(b=>b.onclick=()=>{try{localStorage.setItem('v420-prediction:'+m.key,JSON.stringify({pick:b.dataset.v420Pick,at:new Date().toISOString()}))}catch(_){};renderGuard=false;render()});
   renderGuard=false;
 }
 async function load(){
@@ -698,7 +786,7 @@ function syncRoute(){
   const r=route();
   try{
     const wanted=sessionStorage.getItem('v92-open-tab');
-    if(['Resumen','Previa','Alineaciones','Estadísticas','Cronología','Cuotas'].includes(wanted)){
+    if(['BuildUp','Predicciones','Resumen','Previa','Alineaciones','Estadísticas','Cronología','Cuotas'].includes(wanted)){
       activeTab=wanted;
       sessionStorage.removeItem('v92-open-tab');
     }
