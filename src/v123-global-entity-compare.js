@@ -10,7 +10,7 @@ window.__LJR_V123_GLOBAL_ENTITY_COMPARE__=true;
 const PRIMARY_KEY='v123-compare-player';
 const SECONDARY_KEY='v123-compare-player-2';
 const LEAGUE_CREST=new URL('../assets/reference/predictor-v36/liga-crest-white.webp',import.meta.url).href;
-let api=null,loading=null,query='',pickerOpen=false,pickerSide='secondary',pickerAutoShown=false;
+let api=null,loading=null,query='',pickerOpen=false,pickerSide='secondary',pickerAutoShown=false,pickerPosition='';
 
 function route(){return String(location.hash||'').replace(/^#\/?/,'').split('?')[0]||'home'}
 function esc(v){return String(v??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]))}
@@ -99,6 +99,52 @@ function comparison(primary,secondary){
   '<button type="button" class="v123-change-player" data-v123-open-picker="secondary">Cambiar jugador B</button>'+
  '</section>';
 }
+function playerPositionKey(p){
+ const raw=norm(p?.position||p?.pos||p?.role||p?.positionName||'');
+ if(!raw)return 'unknown';
+ if(raw.includes('portero')||raw.includes('goalkeeper')||raw==='gk')return 'goalkeepers';
+ if(raw.includes('defensa')||raw.includes('defender')||raw.includes('central')||raw.includes('lateral')||raw==='df')return 'defenders';
+ if(raw.includes('medio')||raw.includes('mediocamp')||raw.includes('centrocamp')||raw.includes('volante')||raw==='mf'||raw==='cm')return 'midfielders';
+ if(raw.includes('delanter')||raw.includes('atacante')||raw.includes('forward')||raw.includes('extremo')||raw==='fw'||raw==='st')return 'forwards';
+ return 'unknown';
+}
+const POSITION_GROUPS=[
+ ['forwards','Delanteros','FW','todos los delanteros'],
+ ['midfielders','Centrocampistas','MF','todos los centrocampistas'],
+ ['defenders','Defensas','DF','todos los defensas'],
+ ['goalkeepers','Porteros','GK','todos los porteros']
+];
+function playerOptionMarkup(p,current){
+ return '<button type="button" class="v123-player-option v205-player-option v206-player-option '+(current&&playerKey(p)===playerKey(current)?'active':'')+'" data-v123-pick="'+esc(p.name)+'" data-v123-pick-team="'+esc(p.team)+'" data-v123-pick-cat="'+esc(p.cat)+'">'+
+   '<span class="v123-option-avatar v205-option-avatar v206-option-avatar">'+esc(initials(p.name))+'</span>'+
+   '<span class="v123-option-copy v205-option-copy v206-option-copy"><b>'+esc(p.name)+'</b><small><i class="v123-option-logo v205-option-logo v206-option-logo">'+logo(p.team)+'</i><span>'+esc(p.team)+'</span></small></span>'+
+   '<i class="v123-option-radio v205-option-radio v206-option-radio" aria-hidden="true"></i>'+
+ '</button>';
+}
+function positionPickerMarkup(candidates,current){
+ const groups=POSITION_GROUPS.map(([key,label,abbr])=>{
+  const rows=candidates.filter(p=>playerPositionKey(p)===key);
+  const open=pickerPosition===key;
+  return '<section class="v208-position-group '+(open?'open':'')+'">'+
+   '<button type="button" class="v208-position-head" data-v208-position="'+key+'" aria-expanded="'+(open?'true':'false')+'">'+
+    '<span><b>'+esc(label)+'</b>'+(rows.length?'<small>'+rows.length+' jugador'+(rows.length===1?'':'es')+'</small>':'')+'</span>'+
+    '<i class="v208-position-chevron" aria-hidden="true"></i>'+
+   '</button>'+
+   (open?'<div class="v208-position-players">'+
+     (rows.length?rows.slice(0,100).map(p=>playerOptionMarkup(p,current)).join(''):'<div class="v208-position-empty">No hay jugadores con posición '+esc(label.toLowerCase())+' publicada todavía.</div>')+
+   '</div>':'')+
+  '</section>';
+ }).join('');
+ const unknown=candidates.filter(p=>playerPositionKey(p)==='unknown');
+ const unknownOpen=pickerPosition==='unknown';
+ const other=unknown.length?'<section class="v208-position-group v208-position-unknown '+(unknownOpen?'open':'')+'">'+
+  '<button type="button" class="v208-position-head" data-v208-position="unknown" aria-expanded="'+(unknownOpen?'true':'false')+'">'+
+   '<span><b>Sin posición publicada</b><small>'+unknown.length+' jugador'+(unknown.length===1?'':'es')+'</small></span><i class="v208-position-chevron" aria-hidden="true"></i>'+
+  '</button>'+
+  (unknownOpen?'<div class="v208-position-players">'+unknown.slice(0,100).map(p=>playerOptionMarkup(p,current)).join('')+'</div>':'')+
+ '</section>':'';
+ return '<div class="v208-position-list" aria-label="Jugadores clasificados por posición">'+groups+other+'</div>';
+}
 function listMarkup(primary,secondary,list){
  if(!pickerOpen)return '';
  const current=pickerSide==='primary'?primary:secondary;
@@ -110,30 +156,28 @@ function listMarkup(primary,secondary,list){
   const sameA=ref&&String(a.cat)===String(ref.cat)?0:1,sameB=ref&&String(b.cat)===String(ref.cat)?0:1;
   return sameA-sameB||a.name.localeCompare(b.name,'es');
  });
- if(q)candidates=candidates.filter(p=>norm(p.name).includes(q)||norm(p.team).includes(q)||norm(p.category).includes(q));
+ if(q)candidates=candidates.filter(p=>norm(p.name).includes(q)||norm(p.team).includes(q)||norm(p.category).includes(q)||norm(p.position||'').includes(q));
 
- const categoryLabel=primary?.category||'categoría actual';
- return '<section class="v123-picker-overlay v205-picker v206-picker" role="dialog" aria-modal="true" aria-label="Elegir jugador para comparar">'+
-   '<div class="v123-picker-shell v205-picker-shell v206-picker-shell">'+
+ const selectedPosition=POSITION_GROUPS.find(x=>x[0]===pickerPosition);
+ const categoryLabel=selectedPosition?selectedPosition[3]:(primary?.category||'categoría actual');
+ const body=q
+  ?'<div class="v208-search-results"><div class="v208-results-head"><h2>Resultados</h2><span>'+candidates.length+'</span></div>'+
+    (candidates.length?candidates.slice(0,100).map(p=>playerOptionMarkup(p,current)).join(''):'<div class="v205-empty-search v206-empty-search">No se encontraron jugadores registrados.</div>')+
+   '</div>'
+  :positionPickerMarkup(candidates,current);
+
+ return '<section class="v123-picker-overlay v205-picker v206-picker v208-picker" role="dialog" aria-modal="true" aria-label="Elegir jugador para comparar">'+
+   '<div class="v123-picker-shell v205-picker-shell v206-picker-shell v208-picker-shell">'+
     '<button type="button" class="v123-picker-close v206-picker-close" data-v123-close-picker aria-label="Cerrar">×</button>'+
     '<label class="v123-search v205-search v206-search"><span class="v206-search-icon" aria-hidden="true"></span><input data-v123-search type="search" autocomplete="off" placeholder="Buscar jugadores" value="'+esc(query)+'"></label>'+
     '<div class="v205-average-list v206-average-list" aria-label="Promedios disponibles">'+
-      '<div class="v205-average-row v206-average-row"><span class="v205-average-avatar v206-average-avatar">FW</span><span class="v205-average-copy v206-average-copy"><b>Promedio: '+esc(categoryLabel)+'</b><small>Promedio de estadísticas por partido de esta categoría</small></span></div>'+
+      '<div class="v205-average-row v206-average-row"><span class="v205-average-avatar v206-average-avatar">'+esc(selectedPosition?.[2]||'FW')+'</span><span class="v205-average-copy v206-average-copy"><b>Promedio: '+esc(categoryLabel)+'</b><small>Promedio de estadísticas por partido de '+(selectedPosition?'esta posición':'esta categoría')+'</small></span></div>'+
       '<div class="v205-average-row v206-average-row"><span class="v205-average-avatar v206-average-avatar">AP</span><span class="v205-average-copy v206-average-copy"><b>Promedio: todos los jugadores</b><small>Promedio de estadísticas por partido de todos los jugadores</small></span></div>'+
     '</div>'+
-    '<div class="v205-section-head v206-section-head"><h2>Jugadores</h2><span class="v206-chevron" aria-hidden="true"></span></div>'+
-    '<div class="v123-player-list v205-player-list v206-player-list">'+candidates.slice(0,100).map(p=>
-      '<button type="button" class="v123-player-option v205-player-option v206-player-option '+(current&&playerKey(p)===playerKey(current)?'active':'')+'" data-v123-pick="'+esc(p.name)+'" data-v123-pick-team="'+esc(p.team)+'" data-v123-pick-cat="'+esc(p.cat)+'">'+
-        '<span class="v123-option-avatar v205-option-avatar v206-option-avatar">'+esc(initials(p.name))+'</span>'+
-        '<span class="v123-option-copy v205-option-copy v206-option-copy"><b>'+esc(p.name)+'</b><small><i class="v123-option-logo v205-option-logo v206-option-logo">'+logo(p.team)+'</i><span>'+esc(p.team)+'</span></small></span>'+
-        '<i class="v123-option-radio v205-option-radio v206-option-radio" aria-hidden="true"></i>'+
-      '</button>'
-    ).join('')+'</div>'+
-    (!candidates.length?'<div class="v205-empty-search v206-empty-search">No se encontraron jugadores registrados.</div>':'')+
+    body+
    '</div>'+
   '</section>';
 }
-
 
 /* V206 — lock de geometría del selector previo a comparar.
    Se inyecta al final de <head> para ganar a los CSS globales cargados después de V123. */
@@ -276,6 +320,7 @@ async function renderCompare(){
 function openPicker(side){
  pickerSide=side==='primary'?'primary':'secondary';
  pickerOpen=true;
+ pickerPosition='';
  query='';
  renderCompare();
 }
@@ -287,7 +332,12 @@ function bindCompare(){
   card.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();open()}},{once:true});
  });
  document.querySelectorAll('[data-v123-open-picker]').forEach(b=>b.addEventListener('click',()=>openPicker(b.dataset.v123OpenPicker||'secondary'),{once:true}));
- document.querySelector('[data-v123-close-picker]')?.addEventListener('click',()=>{pickerOpen=false;pickerAutoShown=true;query='';renderCompare()},{once:true});
+ document.querySelector('[data-v123-close-picker]')?.addEventListener('click',()=>{pickerOpen=false;pickerAutoShown=true;pickerPosition='';query='';renderCompare()},{once:true});
+ document.querySelectorAll('[data-v208-position]').forEach(b=>b.addEventListener('click',()=>{
+  const next=b.dataset.v208Position||'';
+  pickerPosition=pickerPosition===next?'':next;
+  renderCompare();
+ },{once:true}));
  const input=document.querySelector('[data-v123-search]');
  if(input)input.addEventListener('input',e=>{query=e.target.value;renderCompare();requestAnimationFrame(()=>{const n=document.querySelector('[data-v123-search]');if(n){n.focus();n.setSelectionRange(n.value.length,n.value.length)}})});
  document.querySelectorAll('[data-v123-pick]').forEach(b=>b.addEventListener('click',e=>{
@@ -429,7 +479,7 @@ document.addEventListener('click',e=>{
   if(!p)return;
   write(PRIMARY_KEY,p);
   localStorage.removeItem(SECONDARY_KEY);
-  query='';pickerOpen=false;pickerSide='secondary';pickerAutoShown=false;
+  query='';pickerOpen=false;pickerSide='secondary';pickerAutoShown=false;pickerPosition='';
   location.hash='#/playerCompare';
  })();
 },true);
@@ -439,7 +489,7 @@ window.LJR_PLAYER_COMPARE_API={
   getApi().then(a=>{
    if(!a)return;
    const p=resolvePlayer(player,a.playerList());if(!p)return;
-   write(PRIMARY_KEY,p);localStorage.removeItem(SECONDARY_KEY);query='';pickerOpen=false;pickerSide='secondary';pickerAutoShown=false;location.hash='#/playerCompare';
+   write(PRIMARY_KEY,p);localStorage.removeItem(SECONDARY_KEY);query='';pickerOpen=false;pickerSide='secondary';pickerAutoShown=false;pickerPosition='';location.hash='#/playerCompare';
   });
  },
  render:renderCompare
@@ -464,6 +514,7 @@ function schedule(){
   document.body.classList.remove('v123-player-compare-active');
   pickerOpen=false;
   pickerAutoShown=false;
+  pickerPosition='';
   query='';
  }
 }
