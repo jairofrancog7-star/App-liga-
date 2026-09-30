@@ -69,15 +69,21 @@ function simulatedAvatarStyle(p){
   ];
   const hairs=['#0c1018','#241a17','#3a241a','#161616','#4a2a1b','#080808'];
   const skin=skins[h%skins.length],hair=hairs[(h>>>3)%hairs.length];
-  const eye=(h>>>7)%3===0?'#30251f':'#171719';
+  const eye=(h>>>7)%3===0?'#31251f':'#171719';
   const beard=(h>>>9)%4;
   const hairStyle=(h>>>12)%4;
   const face=(h>>>15)%3;
   const pose=(h>>>18)%3;
+  const hairH=[30,36,42,33][hairStyle];
+  const hairW=[88,94,84,91][hairStyle];
+  const faceW=[82,88,85][face];
+  const faceH=[100,106,103][face];
+  const beardOpacity=[0,.18,.4,.62][beard];
+  const shift=[-5,0,5][pose];
   return paletteStyle(p?.team||'')+
     '--v379-skin1:'+skin[0]+';--v379-skin2:'+skin[1]+';--v379-skin3:'+skin[2]+';'+
-    '--v379-hair:'+hair+';--v379-eye:'+eye+';'+
-    '--v379-beard:'+beard+';--v379-hair-style:'+hairStyle+';--v379-face:'+face+';--v379-pose:'+pose+';';
+    '--v379-hair:'+hair+';--v379-eye:'+eye+';--v379-hair-h:'+hairH+'px;--v379-hair-w:'+hairW+'px;'+
+    '--v379-face-w:'+faceW+'px;--v379-face-h:'+faceH+'px;--v379-beard-opacity:'+beardOpacity+';--v379-face-shift:'+shift+'px;';
 }
 function simulatedHeadMarkup(p,cls='v379-sim-head'){
   return '<span class="'+cls+'" style="'+simulatedAvatarStyle(p)+'" title="Avatar simulado">'+
