@@ -70,8 +70,15 @@ document.addEventListener('click',e=>{
   if(!btn)return;
   e.preventDefault();
   e.stopImmediatePropagation();
-  const next='#/'+btn.dataset.route;
-  if(location.hash!==next)location.hash=next;
+  const route=btn.dataset.route;
+  if(route==='competition')document.body.classList.remove('v70-calendar-active','v103-calendar-active','v415-calendar-active');
+  if(window.LJR_APP_ROUTER?.go && !String(route||'').startsWith('v4-')){
+    window.LJR_APP_ROUTER.go(route);
+  }else{
+    const next='#/'+route;
+    if(location.hash!==next)location.hash=next;
+    else window.dispatchEvent(new HashChangeEvent('hashchange'));
+  }
   paint();
 },true);
 window.addEventListener('hashchange',()=>setTimeout(paint,0));
