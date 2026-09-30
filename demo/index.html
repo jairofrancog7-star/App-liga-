@@ -115,8 +115,9 @@
     #screen .v400-chips span{min-width:0;min-height:50px;display:flex;flex-direction:column;justify-content:center;padding:8px 9px;border-radius:11px;background:rgba(18,44,145,.55)}
     #screen .v400-chips small{color:#7785c4;font-size:7px;font-weight:900;letter-spacing:.09em}
     #screen .v400-chips b{margin-top:4px;overflow:hidden;font-size:11px;white-space:nowrap;text-overflow:ellipsis}
-  </style>\n  <script type="module" crossorigin src="./assets/index-DD9yAn1y.js"></script>
-  <link rel="stylesheet" crossorigin href="./assets/index-DDbmxtBq.css">
+  </style>
+  <script type="module" crossorigin src="./assets/index-DboF9v5g.js"></script>
+  <link rel="stylesheet" crossorigin href="./assets/index-CiVUHFc5.css">
 </head>
 <body>
   <div id="app" class="app-shell">
@@ -297,12 +298,6 @@
   }
   function recover(){
     var r=route();
-    if(r==='competition'&&blank()){
-      document.body.dataset.appRoute='competition';
-      try{window.LJR_MAIN_ROUTE&&window.LJR_MAIN_ROUTE.go('competition',false)}catch(_){}
-      var b=document.querySelector('.bottom-nav [data-route="competition"]');
-      if(blank()&&b&&typeof b.onclick==='function'){try{b.onclick()}catch(_){}}
-    }
     if(['v4-calendar','calendar','monthlyCalendar','calendarMonthly'].includes(r)&&blank()){
       document.body.classList.add('v415-calendar-active');
     }
@@ -312,5 +307,6 @@
   document.addEventListener('DOMContentLoaded',function(){setTimeout(recover,120)},{once:true});
   setTimeout(recover,450);setTimeout(recover,1400);
 })();
-</script>\n</body>
+</script>
+</body>
 </html>
