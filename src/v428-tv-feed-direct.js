@@ -1,4 +1,4 @@
-/* V428 — Feed TV de referencia montado directamente en #/video y en Modo TV. */
+/* V428/V440 — Liga TV directo + Televisados, adaptado al diseño azul. */
 (function(){
 'use strict';
 if(window.__LJR_V428_TV_FEED_DIRECT__)return;
@@ -8,112 +8,6 @@ const ROOT='https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/mai
 const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const norm=v=>String(v||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[^a-z0-9]+/g,' ').trim();
 const route=()=>String(location.hash||'').replace(/^#\/?/,'').split('?')[0]||'home';
-
-let activeCastSheet=null;
-function castIcon(){
-  return '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 17a4 4 0 0 1 4 4"/><path d="M3 13a8 8 0 0 1 8 8"/><path d="M3 9a12 12 0 0 1 12 12"/><rect x="8" y="4" width="13" height="11" rx="2"/></svg>';
-}
-function infoIcon(){
-  return '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 10v7"/><path d="M12 7h.01"/></svg>';
-}
-function closeCastSheet(){
-  const layer=document.querySelector('[data-v439-cast-sheet]');
-  if(!layer){activeCastSheet=null;return}
-  layer.classList.remove('is-open');
-  document.body.classList.remove('v439-cast-open');
-  setTimeout(()=>layer.remove(),180);
-  activeCastSheet=null;
-}
-function sheetToast(msg){
-  const panel=document.querySelector('[data-v439-cast-sheet] .v439-cast-panel');
-  if(!panel)return;
-  panel.querySelector('.v439-cast-toast')?.remove();
-  const n=document.createElement('div');
-  n.className='v439-cast-toast';
-  n.textContent=msg;
-  panel.appendChild(n);
-  setTimeout(()=>n.remove(),2600);
-}
-async function startCast(){
-  const media=document.querySelector('video,audio');
-  try{
-    if(media?.remote&&typeof media.remote.prompt==='function'){
-      await media.remote.prompt();
-      return;
-    }
-  }catch(_){}
-  try{
-    if(typeof window.PresentationRequest==='function'){
-      const request=new window.PresentationRequest([location.href]);
-      await request.start();
-      return;
-    }
-  }catch(_){}
-  try{
-    if(navigator.share){
-      await navigator.share({
-        title:'Liga Juventino Rosas',
-        text:'Abrir Liga TV en otro dispositivo',
-        url:location.href
-      });
-      return;
-    }
-  }catch(_){}
-  try{
-    await navigator.clipboard?.writeText(location.href);
-    sheetToast('Enlace copiado para abrirlo en otro dispositivo.');
-  }catch(_){
-    sheetToast('Este navegador no tiene transmisión directa disponible.');
-  }
-}
-function openCastSheet(){
-  if(document.querySelector('[data-v439-cast-sheet]'))return;
-  const layer=document.createElement('div');
-  layer.className='v439-cast-sheet';
-  layer.setAttribute('data-v439-cast-sheet','');
-  layer.innerHTML=
-    '<button class="v439-cast-backdrop" type="button" aria-label="Cerrar"></button>'+
-    '<section class="v439-cast-panel" role="dialog" aria-modal="true" aria-label="Conectar o transmitir">'+
-      '<span class="v439-cast-handle" aria-hidden="true"></span>'+
-      '<header class="v439-cast-head"><h2>Conectar o transmitir</h2><button type="button" data-v439-close aria-label="Cerrar">×</button></header>'+
-      '<div class="v439-cast-body">'+
-        '<h3>Ver con Liga TV</h3>'+
-        '<div class="v439-streamcenter-card">'+
-          '<span><b>Ingresa para usar<br>Liga TV</b><small>Liga TV sincroniza tu teléfono y otra pantalla, además de ofrecer controles adicionales de reproducción.</small></span>'+
-          '<button type="button" data-v439-enter>Entrar</button>'+
-        '</div>'+
-        '<h3 class="v439-device-title">Transmitir a otro dispositivo</h3>'+
-        '<button class="v439-cast-row" type="button" data-v439-cast>'+
-          '<span class="v439-row-icon">'+castIcon()+'</span><b>Transmitir</b><i>›</i>'+
-        '</button>'+
-        '<button class="v439-cast-row" type="button" data-v439-learn>'+
-          '<span class="v439-row-icon">'+infoIcon()+'</span><b>Aprende más</b><i>›</i>'+
-        '</button>'+
-        '<div class="v439-cast-help" data-v439-help hidden><b>Cómo funciona</b><p>Si tu navegador detecta una TV o pantalla compatible, se abrirá el selector de dispositivos. Si no está disponible, puedes compartir el enlace de Liga TV para abrirlo en otro dispositivo.</p></div>'+
-        '<p class="v439-cast-foot">La disponibilidad de transmisión depende del navegador, la TV y de que ambos dispositivos tengan una conexión compatible.</p>'+
-      '</div>'+
-    '</section>';
-  document.body.appendChild(layer);
-  document.body.classList.add('v439-cast-open');
-  activeCastSheet=layer;
-  layer.querySelector('.v439-cast-backdrop').onclick=closeCastSheet;
-  layer.querySelector('[data-v439-close]').onclick=closeCastSheet;
-  layer.querySelector('[data-v439-enter]').onclick=()=>{
-    closeCastSheet();
-    setTimeout(()=>{if(window.LJR_V105?.openTv)window.LJR_V105.openTv();else location.hash='#/video'},120);
-  };
-  layer.querySelector('[data-v439-cast]').onclick=startCast;
-  layer.querySelector('[data-v439-learn]').onclick=()=>{
-    const help=layer.querySelector('[data-v439-help]');
-    if(!help)return;
-    help.hidden=!help.hidden;
-    if(!help.hidden)help.scrollIntoView({behavior:'smooth',block:'nearest'});
-  };
-  requestAnimationFrame(()=>layer.classList.add('is-open'));
-}
-window.__LJR_V439_CAST_SHEET__=true;
-window.LJR_V439_CAST={open:openCastSheet,close:closeCastSheet,cast:startCast};
-
 
 function db(){try{return window.LJR_OFFICIAL_API?.getData?.()||window.LJR_OFFICIAL_DATA||{}}catch(_){return window.LJR_OFFICIAL_DATA||{}}}
 function logo(name){
@@ -139,7 +33,11 @@ function fixtures(){
     (c?.fixtures||[]).forEach((g,gi)=>(g?.rows||[]).forEach((r,ri)=>{
       if(!r?.[2]||!r?.[6])return;
       const hs=String(r?.[3]??'').trim(),as=String(r?.[5]??'').trim(),played=/^\d+$/.test(hs)&&/^\d+$/.test(as);
-      out.push({key:cid+':'+gi+':'+ri,category:c?.name||'Liga Juventino Rosas',home:String(r[2]),away:String(r[6]),hs:played?hs:'',as:played?as:'',played,date:String(r?.[8]||''),time:parseDate(r?.[8])});
+      out.push({
+        key:cid+':'+gi+':'+ri,cat:cid,category:c?.name||'Liga Juventino Rosas',
+        home:String(r[2]),away:String(r[6]),hs:played?hs:'',as:played?as:'',played,
+        date:String(r?.[8]||''),time:parseDate(r?.[8]),field:String(r?.[7]||'')
+      });
     }));
   });
   return out.sort((a,b)=>(Number.isFinite(a.time)?a.time:9e15)-(Number.isFinite(b.time)?b.time:9e15));
@@ -159,7 +57,7 @@ function teams(){
 }
 function matchCard(m,label,portrait=false){
   const score=m.played?m.hs+' - '+m.as:'VS';
-  return '<button class="'+(portrait?'v428-tv-portrait':'v428-tv-card')+'" type="button" data-v428-match>'+
+  return '<button class="'+(portrait?'v428-tv-portrait':'v428-tv-card')+'" type="button" data-v428-match="'+esc(m.key)+'">'+
     '<span class="'+(portrait?'v428-tv-portrait-art':'v428-tv-art')+'">'+
       '<span class="v428-tv-logo">'+badge(m.home)+'</span><span class="v428-tv-logo">'+badge(m.away)+'</span>'+
       '<i>▶</i><strong>'+esc(score)+'</strong><em>'+esc(label)+'</em>'+
@@ -175,11 +73,133 @@ function clubCard(t){
 function rail(title,sub,body,more=true){
   return '<section class="v428-tv-section"><header><span><h3>'+esc(title)+'</h3><p>'+esc(sub)+'</p></span>'+(more?'<button type="button" data-v428-more>Ver más ›</button>':'')+'</header><div class="v428-tv-row">'+body+'</div></section>';
 }
+
+function startOfDay(ts){const d=new Date(ts);return new Date(d.getFullYear(),d.getMonth(),d.getDate()).getTime()}
+function sameDay(a,b){return Number.isFinite(a)&&startOfDay(a)===startOfDay(b)}
+function isLive(m,now=Date.now()){return Number.isFinite(m.time)&&now>=m.time&&now<m.time+120*60000}
+function clock(ts){if(!Number.isFinite(ts))return 'POR CONFIRMAR';return new Date(ts).toLocaleTimeString('es-MX',{hour:'numeric',minute:'2-digit',hour12:true}).replace(/\s/g,'').toUpperCase()}
+function shortDay(ts){return new Date(ts).toLocaleDateString('es-MX',{day:'2-digit',month:'short'}).replace('.','').toUpperCase()}
+function tabDay(ts){return new Date(ts).toLocaleDateString('es-MX',{day:'2-digit',month:'short'}).replace('.','').toUpperCase()}
+
+function telecastRow(m){
+  const live=isLive(m),center=live&&m.played?(m.hs+' - '+m.as):(m.played?(m.hs+' - '+m.as):clock(m.time));
+  const state=live?'EN VIVO':(m.played?'FINAL':'TRANSMISIÓN');
+  return '<button class="v440-tv-match'+(live?' is-live':'')+'" type="button" data-v440-match="'+esc(m.key)+'" data-v440-home="'+esc(m.home)+'" data-v440-away="'+esc(m.away)+'" data-v440-date="'+esc(m.date)+'">'+
+    '<span class="v440-tv-icon" aria-hidden="true"><b>TV</b></span>'+
+    '<span class="v440-tv-team v440-tv-home"><span class="v440-tv-name">'+esc(m.home)+'</span><span class="v440-tv-badge">'+badge(m.home)+'</span></span>'+
+    '<span class="v440-tv-center"><strong>'+esc(center)+'</strong><small>'+esc(state)+'</small></span>'+
+    '<span class="v440-tv-team v440-tv-away"><span class="v440-tv-badge">'+badge(m.away)+'</span><span class="v440-tv-name">'+esc(m.away)+'</span></span>'+
+    (live?'<span class="v440-tv-live-pill">EN VIVO</span>':'')+
+  '</button>';
+}
+function telecastGroups(list){
+  if(!list.length)return '<div class="v440-tv-empty"><b>Sin transmisiones para este filtro</b><span>Cuando haya partidos oficiales programados aparecerán aquí.</span></div>';
+  const groups=new Map();
+  list.forEach(m=>{const k=m.category||'Liga Juventino Rosas';if(!groups.has(k))groups.set(k,[]);groups.get(k).push(m)});
+  return Array.from(groups.entries()).map(([cat,items])=>
+    '<section class="v440-tv-league"><header><span class="v440-tv-cup">◆</span><strong>'+esc(cat)+'</strong></header>'+
+    '<div class="v440-tv-league-body">'+items.map(telecastRow).join('')+'</div></section>'
+  ).join('');
+}
+function telecastSelection(all,filter){
+  const now=Date.now(),today=startOfDay(now),yesterday=today-86400000,tomorrow=today+86400000,older=today-2*86400000;
+  if(filter==='live')return all.filter(m=>isLive(m,now));
+  if(filter==='today')return all.filter(m=>sameDay(m.time,today));
+  if(filter==='yesterday')return all.filter(m=>sameDay(m.time,yesterday));
+  if(filter==='tomorrow')return all.filter(m=>sameDay(m.time,tomorrow));
+  if(filter==='older')return all.filter(m=>sameDay(m.time,older));
+  return all.filter(m=>Number.isFinite(m.time)&&m.time>=now-2*60*60000).slice(0,24);
+}
+function defaultTelecastFilter(all){
+  const now=Date.now(),today=startOfDay(now),tomorrow=today+86400000;
+  if(all.some(m=>isLive(m,now)))return 'live';
+  if(all.some(m=>sameDay(m.time,today)))return 'today';
+  if(all.some(m=>sameDay(m.time,tomorrow)))return 'tomorrow';
+  return 'upcoming';
+}
+function telecastMarkup(all){
+  const now=Date.now(),today=startOfDay(now),older=today-2*86400000,liveCount=all.filter(m=>isLive(m,now)).length,selected=defaultTelecastFilter(all);
+  const tabs=[
+    ['older',tabDay(older)],['yesterday','AYER'],['today','HOY'],['live','DIRECTO ('+liveCount+')'],['tomorrow','MAÑANA'],['upcoming','PRÓXIMOS']
+  ];
+  return '<section class="v440-telecast" data-v440-telecast data-v440-filter="'+selected+'">'+
+    '<div class="v440-tv-pagehead"><span class="v440-tv-backmark" aria-hidden="true">‹</span><div><h2>Televisados</h2><p>Partidos transmitidos y cobertura de Liga TV</p></div></div>'+
+    '<div class="v440-tv-tabs" role="tablist">'+tabs.map(t=>'<button type="button" role="tab" data-v440-filter-btn="'+t[0]+'" class="'+(t[0]===selected?'is-active':'')+'">'+esc(t[1])+'</button>').join('')+'</div>'+
+    '<div class="v440-tv-groups" data-v440-groups>'+telecastGroups(telecastSelection(all,selected))+'</div>'+
+  '</section>';
+}
+function renderTelecast(root,filter){
+  const all=fixtures(),groups=root.querySelector('[data-v440-groups]');
+  if(!groups)return;
+  root.dataset.v440Filter=filter;
+  root.querySelectorAll('[data-v440-filter-btn]').forEach(b=>b.classList.toggle('is-active',b.dataset.v440FilterBtn===filter));
+  groups.innerHTML=telecastGroups(telecastSelection(all,filter));
+  bindTelecastRows(root);
+}
+function bindTelecastRows(root){
+  root.querySelectorAll('[data-v440-match]').forEach(b=>b.onclick=()=>{
+    try{
+      sessionStorage.setItem('v440-tv-match',JSON.stringify({key:b.dataset.v440Match,home:b.dataset.v440Home,away:b.dataset.v440Away,date:b.dataset.v440Date}));
+    }catch(_){}
+    location.hash='#/v4-matchcenter';
+  });
+}
+function bindTelecast(root){
+  root.querySelectorAll('[data-v440-filter-btn]').forEach(b=>b.onclick=()=>renderTelecast(root,b.dataset.v440FilterBtn||'today'));
+  bindTelecastRows(root);
+}
+
+function closeCastSheet(){
+  const sheet=document.querySelector('.v439-cast-sheet');
+  if(sheet){sheet.classList.remove('is-open');setTimeout(()=>sheet.remove(),210)}
+  document.body.classList.remove('v439-cast-open');
+}
+function castToast(sheet,msg){
+  let t=sheet.querySelector('.v439-cast-toast');
+  if(!t){t=document.createElement('div');t.className='v439-cast-toast';sheet.querySelector('.v439-cast-panel')?.appendChild(t)}
+  t.textContent=msg;
+  setTimeout(()=>t?.remove(),2300);
+}
+function openCastSheet(){
+  closeCastSheet();
+  const sheet=document.createElement('div');
+  sheet.className='v439-cast-sheet';
+  sheet.innerHTML='<button class="v439-cast-backdrop" type="button" aria-label="Cerrar"></button>'+
+    '<section class="v439-cast-panel" role="dialog" aria-modal="true" aria-label="Conectar o transmitir">'+
+      '<span class="v439-cast-handle"></span>'+
+      '<header class="v439-cast-head"><h2>Conectar o transmitir</h2><button type="button" data-v439-close>×</button></header>'+
+      '<div class="v439-cast-body">'+
+        '<h3>Liga TV</h3>'+
+        '<article class="v439-streamcenter-card"><span><b>Centro de transmisión</b><small>Abre Liga TV y comparte la cobertura del partido desde tu dispositivo.</small></span><button type="button" data-v439-open-tv>Abrir Liga TV</button></article>'+
+        '<h3 class="v439-device-title">Opciones del dispositivo</h3>'+
+        '<button class="v439-cast-row" type="button" data-v439-device="screen"><span class="v439-row-icon">▣</span><b>Compartir pantalla</b><i>›</i></button>'+
+        '<button class="v439-cast-row" type="button" data-v439-device="cast"><span class="v439-row-icon">◫</span><b>Buscar TV o dispositivo</b><i>›</i></button>'+
+        '<div class="v439-cast-help"><b>Consejo</b><p>Para enviar a una TV, usa la función Cast o Compartir pantalla de tu teléfono si está disponible.</p></div>'+
+      '</div>'+
+    '</section>';
+  document.body.appendChild(sheet);
+  document.body.classList.add('v439-cast-open');
+  requestAnimationFrame(()=>sheet.classList.add('is-open'));
+  sheet.querySelector('.v439-cast-backdrop').onclick=closeCastSheet;
+  sheet.querySelector('[data-v439-close]').onclick=closeCastSheet;
+  sheet.querySelector('[data-v439-open-tv]').onclick=()=>{closeCastSheet();location.hash='#/video'};
+  sheet.querySelectorAll('[data-v439-device]').forEach(b=>b.onclick=async()=>{
+    if(b.dataset.v439Device==='screen'&&navigator.mediaDevices?.getDisplayMedia){
+      try{
+        const stream=await navigator.mediaDevices.getDisplayMedia({video:true,audio:true});
+        castToast(sheet,'Pantalla lista para compartir');
+        setTimeout(()=>stream.getTracks().forEach(t=>t.stop()),1200);
+      }catch(_){castToast(sheet,'Usa Compartir pantalla o Cast desde tu teléfono')}
+    }else castToast(sheet,'Abre Cast / Compartir pantalla desde los controles de tu dispositivo');
+  });
+}
+
 function markup(){
   const all=fixtures(),now=Date.now(),played=all.filter(x=>x.played).slice(-12).reverse(),upcoming=all.filter(x=>!x.played&&(!Number.isFinite(x.time)||x.time>=now-7200000)).slice(0,12),featured=(played.length?played:all).slice(0,10),clubList=teams();
   const empty='<div class="v428-tv-empty">El contenido aparecerá aquí cuando haya datos oficiales disponibles.</div>';
   return '<section class="v428-tv-feed" data-v428-tv-feed>'+
     '<div class="v428-tv-title"><div><small>LIGA TV</small><h2>Ver en TV</h2><p>Contenido oficial de la Liga Juventino Rosas.</p></div><button class="v439-connect-trigger" type="button" data-v439-connect>Conectar o transmitir</button></div>'+
+    telecastMarkup(all)+
     rail('Ver en vivo en Liga Juventino','Partidos próximos y transmisiones de la Liga',upcoming.length?upcoming.slice(0,7).map(m=>matchCard(m,'PRÓXIMO')).join(''):empty)+
     rail('Liga Juventino Rosas','Partidos, resultados y mejores momentos',featured.length?featured.slice(0,7).map(m=>matchCard(m,m.played?'MEJORES MOMENTOS':'PARTIDO')).join(''):empty)+
     rail('Videos oficiales de clubes','Contenido por equipo registrado',clubList.length?clubList.slice(0,9).map(clubCard).join(''):empty)+
@@ -190,6 +210,7 @@ function markup(){
 }
 function bind(root){
   root.querySelectorAll('[data-v439-connect]').forEach(b=>b.onclick=openCastSheet);
+  const telecast=root.querySelector('[data-v440-telecast]');if(telecast)bindTelecast(telecast);
   root.querySelectorAll('[data-v428-match]').forEach(b=>b.onclick=()=>{location.hash='#/v4-matchcenter'});
   root.querySelectorAll('[data-v428-team]').forEach(b=>b.onclick=()=>{
     const name=b.dataset.v428Team||'';
