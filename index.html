@@ -208,7 +208,46 @@
       margin-top:0!important;
     }
   </style>
-  <link rel="stylesheet" href="./src/v398-scorers-category-hardlock.css?v=20260930-scorers-hardlock-v398" />\n</head>
+  <link rel="stylesheet" href="./src/v398-scorers-category-hardlock.css?v=20260930-scorers-hardlock-v398" />\n
+  <style id="v400StatsFallbackStyle">
+    /* V400 STATS FALLBACK — visible even if an older JS bundle renders v38Stats. */
+    #screen .v400-stats-fallback{
+      margin:16px 16px 120px;
+      padding:14px;
+      border:1px solid rgba(82,104,221,.34);
+      border-radius:18px;
+      background:linear-gradient(180deg,#121377,#090963);
+      color:#fff;
+      font-family:Inter,Roboto,Arial,sans-serif;
+    }
+    #screen .v400-stats-fallback *{box-sizing:border-box}
+    #screen .v400-stats-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:12px}
+    #screen .v400-stats-head small{display:block;margin-bottom:4px;color:#1de0eb;font-size:9px;font-weight:900;letter-spacing:.12em}
+    #screen .v400-stats-head h2{margin:0;font-size:20px;line-height:1}
+    #screen .v400-stats-head button{min-height:34px;padding:0 10px;border:1px solid rgba(29,224,235,.45);border-radius:10px;background:#0e3097;color:#1de0eb;font-size:10px;font-weight:850}
+    #screen .v400-leader{min-height:74px;display:grid;grid-template-columns:46px minmax(0,1fr) auto;align-items:center;gap:10px;padding:11px;border-radius:14px;background:linear-gradient(90deg,#102a9e,#10106f)}
+    #screen .v400-leader img{width:42px;height:42px;object-fit:contain}
+    #screen .v400-leader span{min-width:0}
+    #screen .v400-leader span small{display:block;color:#1de0eb;font-size:8px;font-weight:900;letter-spacing:.1em}
+    #screen .v400-leader span b{display:block;margin-top:3px;overflow:hidden;font-size:14px;white-space:nowrap;text-overflow:ellipsis}
+    #screen .v400-leader span em{display:block;margin-top:5px;color:#aeb7db;font-size:10px;font-style:normal}
+    #screen .v400-leader>strong{font-size:23px;text-align:center}
+    #screen .v400-leader>strong small{display:block;margin-top:3px;color:#1de0eb;font-size:8px}
+    #screen .v400-table{overflow:hidden;margin-top:12px;border:1px solid rgba(255,255,255,.08);border-radius:13px;background:#0b0a69}
+    #screen .v400-row{width:100%;display:grid;grid-template-columns:24px minmax(0,1fr) 30px 34px 36px;align-items:center;gap:5px;min-height:43px;padding:0 9px;border:0;border-top:1px solid rgba(255,255,255,.065);background:transparent;color:#c5cae3;font:700 10px/1 Inter,Roboto,Arial,sans-serif;text-align:center}
+    #screen .v400-row.head{min-height:30px;border-top:0;background:rgba(0,0,0,.12);color:#7883bf;font-size:8px;font-weight:900;letter-spacing:.07em;text-transform:uppercase}
+    #screen .v400-team{min-width:0;display:flex;align-items:center;gap:6px;text-align:left}
+    #screen .v400-team img{width:23px;height:23px;flex:0 0 23px;object-fit:contain}
+    #screen .v400-team b{min-width:0;overflow:hidden;color:#fff;font-size:10px;white-space:nowrap;text-overflow:ellipsis}
+    #screen .v400-row strong{color:#fff;font-size:12px}
+    #screen .v400-pos{color:#7e8ac7}
+    #screen .v400-posdg{color:#40e6b1}
+    #screen .v400-chips{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin-top:11px}
+    #screen .v400-chips span{min-width:0;min-height:50px;display:flex;flex-direction:column;justify-content:center;padding:8px 9px;border-radius:11px;background:rgba(18,44,145,.55)}
+    #screen .v400-chips small{color:#7785c4;font-size:7px;font-weight:900;letter-spacing:.09em}
+    #screen .v400-chips b{margin-top:4px;overflow:hidden;font-size:11px;white-space:nowrap;text-overflow:ellipsis}
+  </style>
+</head>
 <body>
   <div id="app" class="app-shell">
     <header class="topbar">
@@ -349,5 +388,68 @@
       lockQuiz();
     })();
   </script>
-  <script type="module" src="./src/v398-scorers-category-hardlock.js?v=20260930-scorers-clickfix-v399"></script>\n</body>
+  <script type="module" src="./src/v398-scorers-category-hardlock.js?v=20260930-scorers-clickfix-v399"></script>\n
+  <script>
+    (function(){
+      if(window.__LJR_V400_STATS_FALLBACK__) return;
+      window.__LJR_V400_STATS_FALLBACK__=true;
+
+      const rows=[
+        ['San José FC','https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/assets/official-logos/san-jose-fc.png',4,10,12],
+        ['Juventus','https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/assets/official-logos/juventus.png',4,14,9],
+        ['Hermanos','https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/assets/official-logos/hermanos.png',3,4,7],
+        ['Linces','https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/assets/official-logos/linces.png',3,3,6],
+        ['Napoli','https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/assets/official-logos/napoli.png',4,1,6],
+        ['Franco FC','https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/assets/official-logos/franco-fc.png',3,0,6]
+      ];
+
+      function route(){
+        return String(location.hash||'').replace(/^#\/?/,'').split('?')[0]||'home';
+      }
+      function goStandings(){
+        try{localStorage.setItem('competitionTab','standings')}catch(_){}
+        location.hash='#/competition';
+      }
+      function mount(){
+        if(route()!=='v38Stats') return;
+        const screen=document.getElementById('screen');
+        if(!screen) return;
+        if(screen.querySelector('.v399-stats-summary,.v400-stats-fallback')) return;
+
+        const note=[...screen.querySelectorAll('.v60-note')].find(el=>
+          (el.textContent||'').includes('Estos accesos reutilizan las pantallas existentes')
+        );
+        if(!note) return;
+
+        const host=note.closest('.v60-panel')||note;
+        const wrap=document.createElement('section');
+        wrap.className='v400-stats-fallback';
+        wrap.setAttribute('aria-label','Tabla rápida de Primera Fuerza');
+        wrap.innerHTML=
+          '<div class="v400-stats-head"><div><small>PRIMERA FUERZA</small><h2>Tabla rápida</h2></div><button type="button" data-v400-table>Ver completa ›</button></div>'+
+          '<div class="v400-leader"><img src="'+rows[0][1]+'" alt=""><span><small>LÍDER ACTUAL</small><b>'+rows[0][0]+'</b><em>'+rows[0][2]+' PJ · DG +'+rows[0][3]+'</em></span><strong>'+rows[0][4]+'<small>PTS</small></strong></div>'+
+          '<div class="v400-table"><div class="v400-row head"><span>#</span><span>Equipo</span><span>PJ</span><span>DG</span><span>PTS</span></div>'+
+          rows.map((r,i)=>'<button type="button" class="v400-row" data-v400-table><span class="v400-pos">'+(i+1)+'</span><span class="v400-team"><img src="'+r[1]+'" alt=""><b>'+r[0]+'</b></span><span>'+r[2]+'</span><span class="'+(r[3]>0?'v400-posdg':'')+'">'+(r[3]>0?'+':'')+r[3]+'</span><strong>'+r[4]+'</strong></button>').join('')+
+          '</div>'+
+          '<div class="v400-chips"><span><small>EQUIPOS</small><b>11</b></span><span><small>LÍDER</small><b>San José FC</b></span><span><small>PUNTOS</small><b>12</b></span></div>';
+        host.insertAdjacentElement('afterend',wrap);
+        wrap.querySelectorAll('[data-v400-table]').forEach(b=>b.addEventListener('click',goStandings));
+      }
+
+      let t=0;
+      function schedule(){
+        clearTimeout(t);
+        t=setTimeout(mount,40);
+      }
+      window.addEventListener('hashchange',schedule);
+      window.addEventListener('load',schedule);
+      document.addEventListener('DOMContentLoaded',schedule,{once:true});
+      const screen=document.getElementById('screen');
+      if(screen)new MutationObserver(schedule).observe(screen,{childList:true,subtree:true});
+      schedule();
+      setTimeout(mount,400);
+      setTimeout(mount,1200);
+    })();
+  </script>
+</body>
 </html>
