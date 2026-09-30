@@ -190,6 +190,16 @@ function searchPlayerRow(p){
    '<span class="v414-badges"><span class="v414-league-badge"><img src="'+LEAGUE+'" alt="Liga"><small>'+esc(cat)+'</small></span><span class="v414-team-badge"><img src="'+esc(teamLogo)+'" alt="'+esc(p.team)+'"></span></span>'+
  '</button>';
 }
+function searchTeamRow(t){
+ const on=fav('teams',slug(t.name));
+ return '<div class="v416-team-row">'+
+   '<button type="button" class="v416-team-main" data-v412-team="'+esc(t.name)+'">'+
+     '<span class="v416-team-logo">'+logoNode(t.name,t.logo)+'</span>'+
+     '<span class="v416-team-copy"><b>'+esc(t.name)+'</b><small>'+esc(t.category)+' <i></i> Fútbol</small></span>'+
+   '</button>'+
+   '<button type="button" class="v416-team-star '+(on?'is-on':'')+'" data-v412-star-team="'+esc(t.name)+'" aria-label="'+(on?'Quitar de favoritos':'Agregar a favoritos')+'">'+(on?'★':'☆')+'</button>'+
+ '</div>';
+}
 function searchMatchRow(m){
  const st=matchStatus(m);
  return '<button type="button" class="v412-search-match-row" data-v412-match="'+esc(m.key)+'"><span><img src="'+esc(logo(m.home))+'" alt=""><b>'+esc(m.home)+'</b></span><strong>'+esc(st.main)+'</strong><span><img src="'+esc(logo(m.away))+'" alt=""><b>'+esc(m.away)+'</b></span></button>';
@@ -215,6 +225,7 @@ function bindSearch(root){
    if(nativeResults)nativeResults.style.display=q?'none':'';
    const cover=root.querySelector('[data-v414-player-cover]');
    root.classList.toggle('is-player-mode',mode==='players');
+   root.classList.toggle('is-team-mode',mode==='teams');
    if(cover)cover.style.display=mode==='players'?'flex':'none';
    if(mode==='players'){
      title='Jugadores registrados';allRoute='players';
@@ -222,8 +233,8 @@ function bindSearch(root){
        .sort((a,b)=>{const A=playerStats(a),B=playerStats(b);return B.goals-A.goals||B.points-A.points||a.name.localeCompare(b.name,'es')})
        .slice(0,36).map(searchPlayerRow).join('');
    }else if(mode==='teams'){
-     title='Equipos';allRoute='teams';
-     html=teams().filter(t=>!q||norm(t.name+' '+t.category).includes(q)).slice(0,24).map(teamCard).join('');
+     title='Equipos';allRoute='teams';allLabel='›';
+     html=teams().filter(t=>!q||norm(t.name+' '+t.category+' futbol').includes(q)).slice(0,30).map(searchTeamRow).join('');
    }else if(mode==='competitions'){
      title='Competiciones';allRoute='competition';
      html=Object.entries(CAT_NAMES).filter(x=>!q||norm(x[1]).includes(q)).map(x=>compCard(x[0],x[1])).join('');
@@ -397,7 +408,7 @@ function bindCommon(root){
  root.querySelectorAll('[data-v412-tvpanel]').forEach(b=>b.onclick=()=>{if(window.LJR_V105?.openTv)window.LJR_V105.openTv();else go('video')});
  root.querySelectorAll('[data-v412-share]').forEach(b=>b.onclick=async()=>{const payload={title:'Liga Juventino Rosas',text:'Liga Municipal de Fútbol Juventino Rosas',url:location.origin+location.pathname};try{if(navigator.share)await navigator.share(payload);else await navigator.clipboard?.writeText(payload.url)}catch(_){}});
 }
-function remountCurrent(){const screen=document.querySelector('#screen');if(!screen)return;const r=route();if(r==='favorites')mountFavorites(screen,true);else if(r==='transfers'){screen.querySelector('[data-v412-screen="transfers"]')?.remove();mountTransfers(screen)}else if(r==='video'){screen.querySelector('[data-v412-screen="tv"]')?.remove();mountTv(screen)}else if(['v4-calendar','calendar','monthlyCalendar','calendarMonthly','matchday','competition'].includes(r))mountFixtures(screen,true)}
+function remountCurrent(){const screen=document.querySelector('#screen');if(!screen)return;const r=route();if(r==='favorites')mountFavorites(screen,true);else if(r==='search'){screen.querySelector('[data-v412-screen="search"]')?.remove();mountSearch(screen)}else if(r==='transfers'){screen.querySelector('[data-v412-screen="transfers"]')?.remove();mountTransfers(screen)}else if(r==='video'){screen.querySelector('[data-v412-screen="tv"]')?.remove();mountTv(screen)}else if(['v4-calendar','calendar','monthlyCalendar','calendarMonthly','matchday','competition'].includes(r))mountFixtures(screen,true)}
 function cleanOld(screen){screen.querySelectorAll('.v411-zone').forEach(x=>x.remove())}
 function mount(){
  const screen=document.querySelector('#screen');if(!screen)return;cleanOld(screen);
