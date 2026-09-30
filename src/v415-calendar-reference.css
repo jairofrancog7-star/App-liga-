@@ -513,3 +513,16 @@
     margin:0 auto;
   }
 }
+
+/* V416 CALENDAR ROUTE LOCK — en Calendario sólo se muestra el diseño de referencia.
+   Evita que módulos antiguos de calendario se monten debajo o encima. */
+body.v415-calendar-active #screen > #v413-page-design,
+body.v415-calendar-active #screen > [data-v412-screen="fixtures"],
+body.v415-calendar-active #screen > .v411-zone,
+body.v415-calendar-active #screen > #v412-lower-sections,
+body.v415-calendar-active #screen > #v411-lower-experience{
+  display:none!important;
+}
+body.v415-calendar-active #screen > [data-v415-calendar]{
+  display:block!important;
+}
