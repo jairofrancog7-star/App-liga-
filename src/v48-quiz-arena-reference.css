@@ -1039,3 +1039,23 @@ body[data-app-route="quizArena"] .v48-quiz-arena-page:not(.v48-playing) .v48-are
     font-size:5.8vw!important;
   }
 }
+
+
+/* V392 — Quiz Arena sin barra superior global. */
+body[data-app-route="quizArena"] .topbar,
+body[data-app-route="quiz"] .topbar{
+  display:none!important;
+  visibility:hidden!important;
+  height:0!important;
+  min-height:0!important;
+  max-height:0!important;
+  padding:0!important;
+  margin:0!important;
+  border:0!important;
+  overflow:hidden!important;
+}
+body[data-app-route="quizArena"] #screen,
+body[data-app-route="quiz"] #screen{
+  margin-top:0!important;
+  top:0!important;
+}
