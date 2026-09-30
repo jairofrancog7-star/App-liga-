@@ -342,22 +342,93 @@ function summary(p,d,list){
 function statRow(label,val,sub){
   return '<div class="v379-stat-row"><span><b>'+esc(label)+'</b>'+(sub?'<small>'+esc(sub)+'</small>':'')+'</span><strong>'+esc(val)+'</strong></div>';
 }
+function v385PlayerThumb(p,cls='v385-player-thumb'){
+  const photo=getPhoto(p);
+  if(photo)return '<span class="'+cls+' photo"><img src="'+esc(photo)+'" alt="'+esc(p.name)+'"></span>';
+  return simulatedHeadMarkup(p,cls+' v382-related-sim');
+}
+function v385CompactHeader(p){
+  return '<div class="v385-player-compact-head" data-v385-compact-head>'+
+    '<button type="button" class="v385-head-back" data-v379-back aria-label="Volver">'+
+      '<svg viewBox="0 0 24 24"><path d="M19 12H5m7-7-7 7 7 7"/></svg>'+
+    '</button>'+
+    '<strong>'+esc(p.name)+'</strong>'+
+    '<div class="v385-head-actions">'+
+      '<button type="button" class="v385-head-compare" data-v379-compare aria-label="Comparar jugador">'+
+        '<svg viewBox="0 0 28 24"><circle cx="9" cy="7" r="3.2"/><circle cx="19" cy="7" r="3.2"/><path d="M3 20c0-4 2.6-6.4 6-6.4s6 2.4 6 6.4M13 20c0-4 2.6-6.4 6-6.4s6 2.4 6 6.4"/></svg>'+
+      '</button>'+
+      '<button type="button" class="v385-head-share" data-v379-share aria-label="Compartir jugador">'+
+        '<svg viewBox="0 0 24 24"><circle cx="18" cy="5" r="2.2"/><circle cx="6" cy="12" r="2.2"/><circle cx="18" cy="19" r="2.2"/><path d="m8 11 8-5M8 13l8 5"/></svg>'+
+      '</button>'+
+    '</div>'+
+  '</div>';
+}
+function v385Accordion(title,rows,id){
+  return '<section class="v385-stat-accordion" data-v385-accordion="'+esc(id)+'">'+
+    '<button type="button" class="v385-accordion-head" data-v385-toggle="'+esc(id)+'">'+
+      '<span>'+esc(title)+'</span><i></i>'+
+    '</button>'+
+    '<div class="v385-accordion-body">'+rows.join('')+'</div>'+
+  '</section>';
+}
+function v385CompareStrip(p,list){
+  let rel=related(p,list);
+  if(!rel.length)rel=list.filter(x=>playerKey(x)!==playerKey(p)&&String(x.cat||'')===String(p.cat||'')).slice(0,8);
+  if(!rel.length)return '';
+  return '<section class="v385-compare-section">'+
+    '<h2>Comparar jugador</h2>'+
+    '<div class="v385-compare-strip">'+
+      rel.map(x=>'<button type="button" class="v385-compare-pair" data-v385-compare-name="'+attr(x.name)+'" data-v385-compare-team="'+attr(x.team)+'" data-v385-compare-cat="'+attr(x.cat)+'">'+
+        '<span class="v385-pair-player">'+v385PlayerThumb(p)+
+          '<b>'+esc(p.name)+'</b><small>'+esc(profileData(p).position||p.category||'Jugador')+'</small>'+
+          '<em>'+teamLogo(p.team)+'</em>'+
+        '</span>'+
+        '<span class="v385-versus">con<br>tra</span>'+
+        '<span class="v385-pair-player">'+v385PlayerThumb(x)+
+          '<b>'+esc(x.name)+'</b><small>'+esc(profileData(x).position||x.category||'Jugador')+'</small>'+
+          '<em>'+teamLogo(x.team)+'</em>'+
+        '</span>'+
+      '</button>').join('')+
+    '</div>'+
+  '</section>';
+}
 function stats(p,list){
   const goals=publishedGoal(p),discipline=officialDiscipline(p);
-  return '<div class="v379-tab-panel">'+
-   '<section class="v379-stats-card"><div class="v379-stats-head"><span>ATAQUE</span><i></i></div>'+
-    '<div class="v379-big-stat"><strong>'+(goals==null?'—':goals)+'</strong><span>Goles oficiales</span></div>'+
-    statRow('Goles dentro del área','—','No publicado')+statRow('Goles fuera del área','—','No publicado')+statRow('Con la derecha','—','No publicado')+statRow('Con la izquierda','—','No publicado')+statRow('De cabeza','—','No publicado')+
-   '</section>'+
-   '<section class="v379-stats-card"><div class="v379-stats-head"><span>DISCIPLINA</span><i></i></div>'+
-    statRow('Tarjetas amarillas',discipline.yellow,'Dato oficial')+statRow('Tarjetas rojas',discipline.red,'Dato oficial')+statRow('Castigo',discipline.suspension||'—',discipline.suspension?'Dato oficial':'No publicado')+statRow('Pendientes',discipline.pending||'—',discipline.pending?'Dato oficial':'No publicado')+
-   '</section>'+
-   '<section class="v379-stats-card"><div class="v379-stats-head"><span>DEFENSA</span><i></i></div>'+
-    statRow('Duelos','—','No publicado')+statRow('Entradas con éxito','—','No publicado')+statRow('Balones recuperados','—','No publicado')+statRow('Despejes completados','—','No publicado')+
-   '</section>'+
-   '<section class="v379-block">'+sectionTitle('Comparar jugador','','')+
-    '<button type="button" class="v379-compare-wide" data-v379-compare>'+simulatedHeadMarkup(p,'v379-related-avatar v382-related-sim')+'<span><b>'+esc(p.name)+'</b><small>'+esc(p.team)+'</small></span><strong>Comparar</strong></button>'+
-   '</section>'+relatedHtml(p,list)+'</div>';
+  const attackRows=[
+    statRow('Goles dentro del área','—','No publicado'),
+    statRow('Goles fuera del área','—','No publicado'),
+    statRow('Con la derecha','—','No publicado'),
+    statRow('Con la izquierda','—','No publicado'),
+    statRow('De cabeza','—','No publicado')
+  ];
+  const distributionRows=[
+    statRow('Pases completados','—','No publicado'),
+    statRow('Pases clave','—','No publicado'),
+    statRow('Centros completados','—','No publicado'),
+    statRow('Precisión de pase','—','No publicado')
+  ];
+  const defenseRows=[
+    statRow('Duelos','—','No publicado'),
+    statRow('Entradas con éxito','—','No publicado'),
+    statRow('Balones recuperados','—','No publicado'),
+    statRow('Despejes completados','—','No publicado')
+  ];
+  const disciplineRows=[
+    statRow('Tarjetas amarillas',discipline.yellow,'Dato oficial'),
+    statRow('Tarjetas rojas',discipline.red,'Dato oficial'),
+    statRow('Castigo',discipline.suspension||'—',discipline.suspension?'Dato oficial':'No publicado'),
+    statRow('Pendientes',discipline.pending||'—',discipline.pending?'Dato oficial':'No publicado')
+  ];
+  return '<div class="v379-tab-panel v385-stats-reference">'+
+    '<section class="v379-stats-card v385-attack-card"><div class="v379-stats-head"><span>ATAQUE</span><i></i></div>'+
+      '<div class="v379-big-stat"><strong>'+(goals==null?'—':goals)+'</strong><span>Goles oficiales</span></div>'+
+      attackRows.join('')+
+    '</section>'+
+    v385Accordion('Distribución',distributionRows,'distribution')+
+    v385Accordion('Defensa',defenseRows,'defense')+
+    v385Accordion('Información disciplinaria',disciplineRows,'discipline')+
+    v385CompareStrip(p,list)+
+  '</div>';
 }
 function playerMatchCard(m,p,played){
   const encoded=matchDetailAttr(m,p);
@@ -406,7 +477,7 @@ function content(active,p,d,list){
 }
 function markup(active,p,list){
   const d=profileData(p);
-  return '<section class="v379-profile" data-v379-profile>'+hero(p,d)+tabs(active)+'<div class="v379-content">'+content(active,p,d,list)+'</div></section>';
+  return '<section class="v379-profile" data-v379-profile>'+v385CompactHeader(p)+hero(p,d)+tabs(active)+'<div class="v379-content">'+content(active,p,d,list)+'</div></section>';
 }
 function syncPlayerBottomNav(active){
   if(!active)return;
@@ -426,11 +497,11 @@ function setTheme(active){
   }
 }
 function bind(p,list){
-  document.querySelector('[data-v379-back]')?.addEventListener('click',()=>{if(history.length>1)history.back();else location.hash='#/players'},{once:true});
-  document.querySelector('[data-v379-share]')?.addEventListener('click',async()=>{
+  document.querySelectorAll('[data-v379-back]').forEach(b=>b.addEventListener('click',()=>{if(history.length>1)history.back();else location.hash='#/players'},{once:true}));
+  document.querySelectorAll('[data-v379-share]').forEach(b=>b.addEventListener('click',async()=>{
     const payload={title:p.name+' · Liga Juventino Rosas',text:p.name+' · '+p.team+' · '+(p.category||'Jugador registrado'),url:location.href};
     try{if(navigator.share)await navigator.share(payload);else if(navigator.clipboard){await navigator.clipboard.writeText(location.href)}}catch{}
-  },{once:true});
+  },{once:true}));
   document.querySelectorAll('[data-v379-tab]').forEach(b=>b.addEventListener('click',()=>{localStorage.setItem(TAB_KEY,b.dataset.v379Tab||'Resumen');render(true)},{once:true}));
   document.querySelectorAll('[data-v379-tab-jump]').forEach(b=>b.addEventListener('click',()=>{localStorage.setItem(TAB_KEY,b.dataset.v379TabJump||'Resumen');render(true)},{once:true}));
   document.querySelectorAll('[data-v379-related]').forEach(b=>b.addEventListener('click',()=>{
@@ -440,6 +511,17 @@ function bind(p,list){
   document.querySelectorAll('[data-v379-compare]').forEach(b=>b.addEventListener('click',()=>{
     if(window.LJR_PLAYER_COMPARE_API?.open){window.LJR_PLAYER_COMPARE_API.open(p);return}
     write('v123-compare-player',p);localStorage.removeItem('v123-compare-player-2');location.hash='#/playerCompare';
+  },{once:true}));
+  document.querySelectorAll('[data-v385-toggle]').forEach(b=>b.addEventListener('click',()=>{
+    const card=b.closest('[data-v385-accordion]');
+    if(card)card.classList.toggle('open');
+  },{once:true}));
+  document.querySelectorAll('[data-v385-compare-name]').forEach(b=>b.addEventListener('click',()=>{
+    const x=resolve({name:b.dataset.v385CompareName,team:b.dataset.v385CompareTeam,cat:b.dataset.v385CompareCat},list);
+    if(!x)return;
+    write('v123-compare-player',p);
+    write('v123-compare-player-2',x);
+    location.hash='#/playerCompare';
   },{once:true}));
   document.querySelectorAll('[data-v379-match-detail]').forEach(b=>b.addEventListener('click',e=>{
     e.preventDefault();e.stopPropagation();
@@ -481,10 +563,16 @@ function open(player){
     write(KEY,p);localStorage.setItem(TAB_KEY,'Resumen');location.hash='#/playerDetail';
   });
 }
-function schedule(){requestAnimationFrame(()=>requestAnimationFrame(()=>render(false)))}
+function v385SyncScrolledHeader(){
+  const active=route()==='playerDetail';
+  const y=window.scrollY||document.documentElement.scrollTop||0;
+  document.body.classList.toggle('v385-player-scrolled',active&&y>250);
+}
+function schedule(){requestAnimationFrame(()=>requestAnimationFrame(()=>{render(false);v385SyncScrolledHeader()}))}
 window.LJR_PLAYER_PROFILE_API={open,render:()=>render(true)};
 window.addEventListener('hashchange',schedule);
 window.addEventListener('popstate',schedule);
+window.addEventListener('scroll',v385SyncScrolledHeader,{passive:true});
 const screen=document.querySelector('#screen');
 if(screen)new MutationObserver(()=>{if(route()==='playerDetail'&&!screen.querySelector('[data-v379-profile]'))schedule()}).observe(screen,{childList:true,subtree:false});
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',schedule,{once:true});else schedule();
