@@ -408,6 +408,7 @@ document.addEventListener('click',e=>{
  if(route()==='playerCompare'||route()==='club-store')return;
  if(e.defaultPrevented)return;
  if(!(e.target instanceof Element))return;
+ if(e.target.closest('[data-v66-directory="store"],[data-v431-store]'))return;
  const target=e.target;
 
  /* V144 — REGISTRO DE JUGADOR:
