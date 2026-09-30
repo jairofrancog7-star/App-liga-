@@ -67,12 +67,34 @@ function matchesMarkup(x){
 function active(){return document.querySelector('.v42-tabs [data-v42-tab].active')?.dataset?.v42Tab||'summary'}
 function label(id){return ({summary:'Resumen',matches:'Partidos',standings:'Clasificación',squad:'Plantilla',stats:'Estadísticas'})[id]||id}
 function tabs(){const a=active();return ['summary','matches','standings','squad','stats'].map(id=>'<button type="button" class="'+(a===id?'active':'')+'" data-v372-tab="'+id+'">'+label(id)+'</button>').join('')}
+function compactBellIcon(){
+ return '<svg viewBox="0 0 32 32" aria-hidden="true"><path d="M8 23h16l-2-3.5V13a6 6 0 0 0-12 0v6.5L8 23Z"/><path d="M13 26a3 3 0 0 0 6 0"/><path d="M9.5 8.5c1.1-2.3 3.4-4 6.5-4s5.4 1.7 6.5 4"/></svg>';
+}
+function compactDotsIcon(){
+ return '<svg viewBox="0 0 24 32" aria-hidden="true"><circle cx="12" cy="7" r="2.4"/><circle cx="12" cy="16" r="2.4"/><circle cx="12" cy="25" r="2.4"/></svg>';
+}
+function compactMenuIcon(kind){
+ if(kind==='follow')return '<svg viewBox="0 0 32 32" aria-hidden="true"><path d="M8 16h16"/></svg>';
+ if(kind==='compare')return '<svg viewBox="0 0 32 32" aria-hidden="true"><path d="M6 11h17l-4-4M23 11l-4 4M26 21H9l4-4M9 21l4 4"/></svg>';
+ return '<svg viewBox="0 0 32 32" aria-hidden="true"><circle cx="24" cy="7" r="3"/><circle cx="8" cy="16" r="3"/><circle cx="24" cy="25" r="3"/><path d="m11 14 10-5M11 18l10 5"/></svg>';
+}
+function nativeFollowed(){
+ return !!document.querySelector('#screen [data-v42-reference="teamDetail"] [data-v42-follow].active');
+}
+function miniMenuMarkup(){
+ const followText=nativeFollowed()?'Dejar de seguir':'Seguir';
+ return '<div class="v372-mini-menu" role="menu">'+
+  '<button type="button" data-v372-follow role="menuitem"><i>'+compactMenuIcon('follow')+'</i><span>'+followText+'</span></button>'+
+  '<button type="button" data-v372-compare role="menuitem"><i>'+compactMenuIcon('compare')+'</i><span>Comparar</span></button>'+
+  '<button type="button" data-v372-share role="menuitem"><i>'+compactMenuIcon('share')+'</i><span>Compartir</span></button>'+
+ '</div>';
+}
 function compactMarkup(x){
  return '<div class="v372-compact-head" data-v372-compact><div class="v372-compact-top">'+
   '<button type="button" data-v372-back aria-label="Volver"><span class="v372-back-icon"></span></button><h1>'+esc(x.name)+'</h1>'+
-  '<div class="v372-compact-actions"><button type="button" data-v372-plus aria-label="Seguir">+</button><button type="button" data-v372-menu aria-label="Más">⋮</button></div></div>'+
+  '<div class="v372-compact-actions"><button type="button" data-v372-notify aria-label="Notificaciones">'+compactBellIcon()+'</button><button type="button" data-v372-menu aria-label="Más opciones">'+compactDotsIcon()+'</button></div></div>'+
   '<nav class="v372-compact-tabs">'+tabs()+'</nav>'+
-  (menuOpen?'<div class="v372-mini-menu"><button data-v372-compare>Comparar equipos</button><button data-v372-notify>Notificaciones</button><button data-v372-share>Compartir</button></div>':'')+
+  (menuOpen?miniMenuMarkup():'')+
  '</div>';
 }
 function ensureCompact(x,page){
@@ -82,7 +104,7 @@ function ensureCompact(x,page){
   const h=n.querySelector('h1');if(h)h.textContent=x.name;
   const t=n.querySelector('.v372-compact-tabs');if(t)t.innerHTML=tabs();
   n.querySelector('.v372-mini-menu')?.remove();
-  if(menuOpen)n.insertAdjacentHTML('beforeend','<div class="v372-mini-menu"><button data-v372-compare>Comparar equipos</button><button data-v372-notify>Notificaciones</button><button data-v372-share>Compartir</button></div>');
+  if(menuOpen)n.insertAdjacentHTML('beforeend',miniMenuMarkup());
  }
  bindCompact(page);
 }
@@ -90,14 +112,14 @@ function bindCompact(page){
  page.querySelectorAll('[data-v372-tab]').forEach(b=>{if(b.dataset.bound)return;b.dataset.bound='1';b.onclick=e=>{e.preventDefault();e.stopPropagation();const tab=b.dataset.v372Tab||'';if(window.LJR_TEAM_DETAIL_API?.openTab)window.LJR_TEAM_DETAIL_API.openTab(tab);else document.querySelector('.v42-tabs [data-v42-tab="'+tab+'"]')?.click()}});
  const bind=(sel,fn)=>{const b=page.querySelector(sel);if(!b||b.dataset.bound)return;b.dataset.bound='1';b.onclick=fn};
  bind('[data-v372-back]',()=>document.querySelector('[data-v42-back]')?.click());
- bind('[data-v372-plus]',()=>document.querySelector('[data-v42-follow]')?.click());
- bind('[data-v372-menu]',()=>{menuOpen=!menuOpen;schedule()});
+ bind('[data-v372-menu]',e=>{e?.preventDefault?.();e?.stopPropagation?.();menuOpen=!menuOpen;schedule()});
+ bind('[data-v372-follow]',()=>{menuOpen=false;document.querySelector('[data-v42-follow]')?.click();setTimeout(schedule,0)});
  bind('[data-v372-compare]',()=>{menuOpen=false;(document.querySelector('[data-v369-open-compare]')||document.querySelector('[data-v42-compare]'))?.click()});
  bind('[data-v372-notify]',()=>{menuOpen=false;document.querySelector('[data-v42-bell]')?.click()});
  bind('[data-v372-share]',()=>{menuOpen=false;document.querySelector('[data-v42-share]')?.click()});
 }
 function sy(){const s=document.querySelector('#screen');return Math.max(window.scrollY||0,document.documentElement.scrollTop||0,s?.scrollTop||0)}
-function collapse(){const onStats=active()==='stats';document.body.classList.toggle('v372-team-collapsed',route()==='teamDetail'&&!onStats&&sy()>210)}
+function collapse(){document.body.classList.toggle('v372-team-collapsed',route()==='teamDetail'&&sy()>165)}
 function bindScroll(){
  const s=document.querySelector('#screen');
  if(s&&!s.dataset.v372Scroll){s.dataset.v372Scroll='1';s.addEventListener('scroll',()=>{cancelAnimationFrame(raf);raf=requestAnimationFrame(collapse)},{passive:true})}
@@ -127,7 +149,11 @@ async function apply(){
 }
 function schedule(){requestAnimationFrame(()=>requestAnimationFrame(apply))}
 window.addEventListener('hashchange',()=>{menuOpen=false;document.body.classList.remove('v372-team-collapsed');schedule()});
-document.addEventListener('click',e=>{if(route()==='teamDetail'&&e.target.closest?.('[data-v42-tab]')){menuOpen=false;setTimeout(schedule,0)}},true);
+document.addEventListener('click',e=>{
+ if(route()!=='teamDetail'||!(e.target instanceof Element))return;
+ if(e.target.closest('[data-v42-tab]')){menuOpen=false;setTimeout(schedule,0);return}
+ if(menuOpen&&!e.target.closest('[data-v372-menu],.v372-mini-menu')){menuOpen=false;setTimeout(schedule,0)}
+},true);
 const screen=document.querySelector('#screen');
 if(screen)new MutationObserver(()=>{if(route()==='teamDetail')schedule()}).observe(screen,{childList:true,subtree:true});
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',schedule,{once:true});else schedule();
