@@ -5,7 +5,7 @@
 'use strict';
 if(window.__LJR_V422_RESULTS_REFERENCE__)return;
 window.__LJR_V422_RESULTS_REFERENCE__=true;
-const COMPETITION_RESULTS_ENABLED=false;
+const COMPETITION_RESULTS_ENABLED=true;
 const ID='v422-results-reference',FAV_KEY='ljr-v414-favorites',MODE_KEY='v422-results-mode',CAT_KEY='v422-results-category',LIVE_KEY='v422-results-live';
 let timer=0;
 const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -42,7 +42,9 @@ function matches(){
    (c?.fixtures||[]).forEach((g,gi)=>(g?.rows||[]).forEach((r,i)=>{
      if(!Array.isArray(r)||!r[2]||!r[6])return;
      const hs=num(r[3]),as=num(r[5]),complete=hs!==null&&as!==null;
-     out.push({id:cid+'|'+gi+'|'+i,cat:String(cid),category:String(c?.name||cid),round:String(r[1]||''),home:String(r[2]||''),away:String(r[6]||''),homeScore:hs,awayScore:as,complete,field:String(r[7]||'Campo por confirmar'),date:String(r[8]||''),status:rawStatus(r,complete)});
+     const statusSource=String(r?.[10]||r?.[9]||'').trim();
+     const minuteMatch=/\b(\d{1,3})\s*['’]?\b/.exec(statusSource);
+     out.push({id:cid+'|'+gi+'|'+i,streamKey:cid+':'+gi+':'+i,cat:String(cid),category:String(c?.name||cid),round:String(r[1]||''),home:String(r[2]||''),away:String(r[6]||''),homeScore:hs,awayScore:as,complete,field:String(r[7]||'Campo por confirmar'),date:String(r[8]||''),statusSource,minute:minuteMatch?Number(minuteMatch[1]):null,status:rawStatus({status:statusSource},complete)});
    }));
  });
  return out;
@@ -70,19 +72,22 @@ function icon(name){
  return '<svg viewBox="0 0 24 24" aria-hidden="true">'+(p[name]||p.star)+'</svg>';
 }
 function statusText(m){
- if(m.status==='LIVE')return '<span class="v422-live-status"><i></i>EN VIVO</span>';
+ if(m.status==='LIVE')return '<span class="v422-live-status"><i></i>'+(Number.isFinite(m.minute)?esc(m.minute)+"'":'EN VIVO')+'</span>';
  if(m.status==='FINAL')return '<span class="v422-final">Final</span>';
  if(m.status==='SUSPENDED')return '<span class="v422-special">Suspendido</span>';
  if(m.status==='POSTPONED')return '<span class="v422-special">Aplazado</span>';
  return '<span class="v422-time">'+esc(timeFrom(m.date))+'</span>';
 }
 function scoreText(m){return m.complete?'<b>'+m.homeScore+'</b><span>–</span><b>'+m.awayScore+'</b>':'<strong>'+esc(timeFrom(m.date))+'</strong>'}
+function provider(url){const u=String(url||'').toLowerCase();if(u.includes('youtube'))return 'YouTube';if(u.includes('facebook')||u.includes('fb.watch'))return 'Facebook';if(u.includes('tiktok'))return 'TikTok';return 'Liga TV'}
+function streamFor(key){try{const a=JSON.parse(localStorage.getItem('ljr-stream-list-v196:'+key)||'[]');const x=Array.isArray(a)?a.find(v=>v?.url):null;return x?{url:String(x.url),name:String(x.name||provider(x.url))}:null}catch(_){return null}}
+function categoryIcon(id,label){if(id==='all')return '⚽';if(/veteranos/i.test(label))return '🛡';if(id==='3')return '🏆';if(id==='5')return '⚽';if(id==='4')return '🥈';return '⚽'}
 function matchRow(m){
- const fav=(favStore().matches||[]).includes(m.id);
- return '<article class="v422-match"><button class="v422-star '+(fav?'active':'')+'" type="button" data-v422-star="'+esc(m.id)+'" aria-label="'+(fav?'Quitar de favoritos':'Guardar en favoritos')+'">'+icon('star')+'</button>'+
+ const fav=(favStore().matches||[]).includes(m.id),stream=streamFor(m.streamKey);
+ return '<article class="v422-match" data-v422-open="'+esc(m.id)+'" data-v422-cat-open="'+esc(m.cat)+'"><button class="v422-star '+(fav?'active':'')+'" type="button" data-v422-star="'+esc(m.id)+'" aria-label="'+(fav?'Quitar de favoritos':'Guardar en favoritos')+'">'+icon('star')+'</button>'+
  '<div class="v422-match-status">'+statusText(m)+'</div><div class="v422-team home"><span>'+esc(m.home)+'</span>'+logo(m.home)+'</div>'+
  '<div class="v422-score">'+scoreText(m)+'<small>'+esc(dateOnly(m.date))+'</small></div><div class="v422-team away">'+logo(m.away)+'<span>'+esc(m.away)+'</span></div>'+
- '<div class="v422-venue">'+esc(m.field||'Campo por confirmar')+'</div></article>';
+ (stream?'<button type="button" class="v422-venue v422-stream" data-v422-stream="'+esc(stream.url)+'">▣ '+esc(stream.name)+' · '+esc(m.field||'Campo por confirmar')+'</button>':'<div class="v422-venue">▣ '+esc(m.field||'Campo por confirmar')+'</div>')+'</article>';
 }
 function groupCard(cat,rows){
  const first=rows[0];
@@ -108,7 +113,7 @@ function listMarkup(){
 }
 function categoryStrip(){
  const active=currentCat();
- return '<div class="v422-sports">'+categories().map(([id,label])=>'<button type="button" class="'+(active===id?'active':'')+'" data-v422-cat="'+esc(id)+'"><span>'+(id==='all'?'⚽':esc(label).slice(0,2).toUpperCase())+'</span><small>'+esc(label)+'</small></button>').join('')+'</div>';
+ return '<div class="v422-sports">'+categories().map(([id,label])=>'<button type="button" class="'+(active===id?'active':'')+'" data-v422-cat="'+esc(id)+'"><span>'+categoryIcon(id,label)+'</span><small>'+esc(label)+'</small></button>').join('')+'</div>';
 }
 function markup(){
  const mode=currentMode(),liveCount=matches().filter(m=>m.status==='LIVE').length;
@@ -125,6 +130,8 @@ function refresh(root){
 }
 function bindDynamic(root){
  root.querySelectorAll('[data-v422-star]').forEach(b=>b.onclick=e=>{e.preventDefault();e.stopPropagation();toggleMatch(b.dataset.v422Star);refresh(root)});
+ root.querySelectorAll('[data-v422-stream]').forEach(b=>b.onclick=e=>{e.preventDefault();e.stopPropagation();try{window.open(b.dataset.v422Stream,'_blank','noopener,noreferrer')}catch(_){}});
+ root.querySelectorAll('[data-v422-open]').forEach(a=>a.onclick=e=>{if(e.target?.closest?.('button'))return;try{localStorage.setItem('v62-category',a.dataset.v422CatOpen||'3')}catch(_){};location.hash='#/matchCenter'});
  root.querySelectorAll('[data-v422-standings]').forEach(b=>b.onclick=()=>{const tab=document.querySelector('[data-comp-tab="standings"]');if(tab){tab.click();setTimeout(()=>window.scrollTo({top:0,behavior:'smooth'}),80)}else location.hash='#/leagueData'});
 }
 function bind(root){
