@@ -358,12 +358,12 @@ function transferPlayersSection(){
 }
 function transfersMarkup(){
  const mode=localStorage.getItem('v412-transfer-mode')||'latest';
- const feed=localStorage.getItem('v420-transfer-feed')||'official';
+ const feed=localStorage.getItem('v420-transfer-feed')||'all';
  const favs=localStorage.getItem('v420-transfer-favs')==='1';
  const cat=v420CurrentFilter();
  const sort=localStorage.getItem('v429-transfer-sort')||'form';
  const sortLabel=sort==='name'?'Nombre':sort==='goals'?'Goles':'Ordenar';
- return '<section class="v412-shell v412-transfers-reference v420-transfers v429-transfers" data-v412-screen="transfers">'+
+ return '<section class="v412-shell v412-transfers-reference v420-transfers v429-transfers v433-transfers-unified" data-v412-screen="transfers">'+
    '<header class="v429-transfer-head v430-transfer-head">'+
      '<button type="button" class="v429-transfer-back v430-transfer-back" data-v429-back aria-label="Volver"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15.5 5.5 9 12l6.5 6.5M9.5 12H21"/></svg></button>'+
      '<b>Centro de fichajes</b>'+
@@ -380,39 +380,34 @@ function transfersMarkup(){
      '<button type="button" data-v420-filter>FILTROS <span>⌄</span></button>'+
    '</div>'+
    '<div class="v420-filter-menu is-hidden" data-v420-filter-menu><button data-v420-cat="all" class="'+(cat==='all'?'is-active':'')+'">Todas</button>'+Object.entries(CAT_NAMES).map(([id,name])=>'<button data-v420-cat="'+id+'" class="'+(cat===id?'is-active':'')+'">'+esc(name)+'</button>').join('')+'</div>'+
-   '<div class="v420-official-switch"><button class="'+(feed==='official'?'is-active':'')+'" data-v420-feed="official">OFICIAL</button><button class="'+(feed==='rumor'?'is-active':'')+'" data-v420-feed="rumor">RUMOR</button></div>'+
-   '<div data-v412-transfer-body></div>'+
-   '<div class="v420-lower-title"><small>TRANSFERENCIAS</small><b>Seguimiento de jugadores</b></div>'+
-   transferPlayersSection()+
+   '<div class="v433-transfer-status-tabs">'+
+     '<button class="'+(feed==='all'?'is-active':'')+'" data-v420-feed="all">TODO</button>'+
+     '<button class="'+(feed==='official'?'is-active':'')+'" data-v420-feed="official">CONFIRMADO</button>'+
+     '<button class="'+(feed==='rumor'?'is-active':'')+'" data-v420-feed="rumor">RUMORES</button>'+
+   '</div>'+
+   '<div class="v433-transfer-unified-body" data-v412-transfer-body></div>'+
  '</section>';
 }
-function bindTransferPlayerTools(root){
- const renderDetails=(mode='all')=>{
-   let list=v429SortPlayers(v420FilterPlayers(v420PlayerPool())).slice(0,8);
-   const box=root.querySelector('[data-v420-detail-list]');
-   if(!box)return;
-   root.querySelectorAll('[data-v420-detail-mode]').forEach(b=>b.classList.toggle('is-active',b.dataset.v420DetailMode===mode));
-   if(mode==='rumor'){
-     box.innerHTML='<div class="v420-empty-rumor"><b>Rumores</b><p>No se muestran rumores no verificados.</p></div>';
-   }else if(mode==='confirmed'){
-     box.innerHTML='<div class="v420-empty-rumor"><b>Confirmado</b><p>No hay transferencias confirmadas publicadas por la Liga.</p></div>';
-   }else box.innerHTML=list.map(v420DetailCard).join('');
-   bindCommon(box);
-   box.querySelectorAll('[data-v420-react]').forEach(b=>b.onclick=()=>{
-     const id=b.dataset.v420ReactId,val=b.dataset.v420React,key='v420-transfer-react-'+id;
-     try{localStorage.setItem(key,v420Reaction(id)===val?'':val)}catch(_){}
-     renderDetails(mode);
-   });
- };
- root.querySelectorAll('[data-v420-detail-mode]').forEach(b=>b.onclick=()=>renderDetails(b.dataset.v420DetailMode));
- renderDetails('all');
+function v433UnifiedLatestMarkup(){
+ const feed=localStorage.getItem('v420-transfer-feed')||'all';
+ if(feed==='rumor'){
+   return '<div class="v420-empty-rumor v433-empty"><b>Rumores</b><p>No se muestran rumores no verificados. Aquí sólo aparecerán movimientos publicados por la Liga.</p></div>';
+ }
+ if(feed==='official'){
+   return '<div class="v420-empty-rumor v433-empty"><b>Confirmado</b><p>No hay transferencias confirmadas publicadas por la Liga.</p></div>';
+ }
+ const list=v429SortPlayers(v420FilterPlayers(v420FavoriteTeamsOnly(v420PlayerPool()))).slice(0,10);
+ return '<div class="v433-unified-list">'+
+   '<div class="v420-group-date">ÚLTIMOS REGISTROS · '+esc(CAT_NAMES[v420CurrentFilter()]||'TODAS LAS CATEGORÍAS')+'</div>'+
+   list.map(v420DetailCard).join('')+
+ '</div>';
 }
 function bindTransfers(root){
  const body=root.querySelector('[data-v412-transfer-body]');
  const render=()=>{
    const mode=localStorage.getItem('v412-transfer-mode')||'latest';
    root.querySelectorAll('[data-v412-transfer-mode]').forEach(x=>x.classList.toggle('is-active',x.dataset.v412TransferMode===mode));
-   body.innerHTML=mode==='competitions'?v420CompetitionsMarkup():v420LatestMarkup();
+   body.innerHTML=mode==='competitions'?v420CompetitionsMarkup():v433UnifiedLatestMarkup();
    const inp=body.querySelector('[data-v420-comp-search]');
    if(inp)inp.oninput=()=>{
      const q=norm(inp.value);
@@ -427,33 +422,42 @@ function bindTransfers(root){
  };
  root.querySelectorAll('[data-v412-transfer-mode]').forEach(b=>b.onclick=()=>{localStorage.setItem('v412-transfer-mode',b.dataset.v412TransferMode);render()});
  root.querySelector('[data-v429-back]')?.addEventListener('click',()=>{try{history.back()}catch(_){go('more')}});
- root.querySelector('[data-v429-latest]')?.addEventListener('click',()=>{localStorage.setItem('v412-transfer-mode','latest');render()});
+ root.querySelector('[data-v429-latest]')?.addEventListener('click',()=>{
+   localStorage.setItem('v412-transfer-mode','latest');
+   localStorage.setItem('v420-transfer-feed','all');
+   root.querySelectorAll('[data-v420-feed]').forEach(x=>x.classList.toggle('is-active',x.dataset.v420Feed==='all'));
+   render();
+ });
  root.querySelector('[data-v429-sort]')?.addEventListener('click',()=>{
    const current=localStorage.getItem('v429-transfer-sort')||'form';
    const next=current==='form'?'name':current==='name'?'goals':'form';
    localStorage.setItem('v429-transfer-sort',next);
    const b=root.querySelector('[data-v429-sort]');
    if(b)b.innerHTML=(next==='name'?'Nombre':next==='goals'?'Goles':'Ordenar')+' <span>⌄</span>';
-   render();bindTransferPlayerTools(root);
+   render();
  });
  root.querySelector('[data-v420-favs]')?.addEventListener('click',()=>{
    localStorage.setItem('v420-transfer-favs',localStorage.getItem('v420-transfer-favs')==='1'?'0':'1');
-   const b=root.querySelector('[data-v420-favs]');b?.classList.toggle('is-active',localStorage.getItem('v420-transfer-favs')==='1');render();
+   const b=root.querySelector('[data-v420-favs]');
+   b?.classList.toggle('is-active',localStorage.getItem('v420-transfer-favs')==='1');
+   render();
  });
  root.querySelectorAll('[data-v420-filter]').forEach(b=>b.addEventListener('click',()=>root.querySelector('[data-v420-filter-menu]')?.classList.toggle('is-hidden')));
  root.querySelectorAll('[data-v420-cat]').forEach(b=>b.onclick=()=>{
    localStorage.setItem('v420-transfer-cat',b.dataset.v420Cat);
    root.querySelectorAll('[data-v420-cat]').forEach(x=>x.classList.toggle('is-active',x===b));
-   root.querySelector('[data-v420-filter-menu]')?.classList.add('is-hidden');render();bindTransferPlayerTools(root);
+   root.querySelector('[data-v420-filter-menu]')?.classList.add('is-hidden');
+   render();
  });
  root.querySelectorAll('[data-v420-feed]').forEach(b=>b.onclick=()=>{
    localStorage.setItem('v420-transfer-feed',b.dataset.v420Feed);
    root.querySelectorAll('[data-v420-feed]').forEach(x=>x.classList.toggle('is-active',x===b));
+   localStorage.setItem('v412-transfer-mode','latest');
+   root.querySelectorAll('[data-v412-transfer-mode]').forEach(x=>x.classList.toggle('is-active',x.dataset.v412TransferMode==='latest'));
    render();
  });
- root.querySelector('[data-v420-menu]')?.addEventListener('click',()=>root.querySelector('[data-v420-side-menu]')?.classList.toggle('is-hidden'));
  root.querySelector('[data-v420-notices]')?.addEventListener('click',()=>go('notifications'));
- render();bindTransferPlayerTools(root);bindCommon(root);
+ render();bindCommon(root);
 }
 function mountTransfers(screen){
  if(screen.querySelector('[data-v412-screen="transfers"]'))return;
