@@ -461,3 +461,17 @@ body.v46-notifications-active .v46-ref-head h1{
   .v46-ref-setting span strong,.v46-ref-category-head strong{font-size:15px!important}
   .v46-ref-category-head{min-height:66px!important;padding:9px 13px!important}
 }
+
+/* V421 — Notificaciones: usar solo la barra superior global; no duplicar header interno. */
+body.v46-notifications-active .v46-notif-head,
+body.v46-notifications-active .v46-ref-head{
+  display:none!important;
+  height:0!important;
+  min-height:0!important;
+  padding:0!important;
+  margin:0!important;
+  border:0!important;
+}
+body.v46-notifications-active .v46-ref-notifications-main{
+  padding-top:14px!important;
+}

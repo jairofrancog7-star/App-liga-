@@ -306,10 +306,6 @@
     const quiet=quietPrefs();
     const device=deviceNotice();
     return '<section class="v46-account-page v46-notifications v46-notifications-reference-blue" data-v46-account="notifications">'+
-      '<header class="v46-notif-head v46-ref-head">'+
-        '<button type="button" class="v46-back" data-v46-back aria-label="Volver">'+backIcon()+'</button>'+
-        '<h1>Notificaciones</h1>'+
-      '</header>'+
       '<main class="v46-ref-notifications-main">'+
         '<div class="v46-ref-device">'+
           '<span class="v46-ref-device-icon">🔕</span>'+
