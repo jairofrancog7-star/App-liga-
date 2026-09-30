@@ -4013,79 +4013,29 @@ const players = [
 ];
 const matches = [
   {
-    "id": "m1",
-    "day": "Mañana",
-    "date": "20 sep",
-    "jornada": 5,
-    "category": "Primera Fuerza",
-    "home": "FRA",
-    "away": "HFC",
-    "time": "08:00",
-    "status": "SCHEDULED",
-    "score": null,
-    "minute": null,
-    "venue": "Romerillo",
-    "referee": "Por confirmar"
+    "id":"m1","day":"Domingo","date":"4 oct","jornada":7,"category":"Primera Fuerza",
+    "home":"HER","away":"LOB","time":"10:00","status":"SCHEDULED","score":null,"minute":null,
+    "venue":"Campo 3","referee":"Por confirmar"
   },
   {
-    "id": "m2",
-    "day": "Mañana",
-    "date": "20 sep",
-    "jornada": 5,
-    "category": "Primera Fuerza",
-    "home": "TER",
-    "away": "GAC",
-    "time": "08:00",
-    "status": "SCHEDULED",
-    "score": null,
-    "minute": null,
-    "venue": "Campo por confirmar",
-    "referee": "Por confirmar"
+    "id":"m2","day":"Domingo","date":"4 oct","jornada":7,"category":"Primera Fuerza",
+    "home":"HFC","away":"ABE","time":"10:00","status":"SCHEDULED","score":null,"minute":null,
+    "venue":"Pozos","referee":"Por confirmar"
   },
   {
-    "id": "m3",
-    "day": "Mañana",
-    "date": "20 sep",
-    "jornada": 5,
-    "category": "Primera Fuerza",
-    "home": "LIN",
-    "away": "JVS",
-    "time": "08:00",
-    "status": "SCHEDULED",
-    "score": null,
-    "minute": null,
-    "venue": "Campo 3",
-    "referee": "Por confirmar"
+    "id":"m3","day":"Domingo","date":"4 oct","jornada":7,"category":"Primera Fuerza",
+    "home":"TER","away":"NAP","time":"08:00","status":"SCHEDULED","score":null,"minute":null,
+    "venue":"Campo 3","referee":"Por confirmar"
   },
   {
-    "id": "m4",
-    "day": "Mañana",
-    "date": "20 sep",
-    "jornada": 5,
-    "category": "Primera Fuerza",
-    "home": "HER",
-    "away": "SJO",
-    "time": "10:00",
-    "status": "SCHEDULED",
-    "score": null,
-    "minute": null,
-    "venue": "Campo 3",
-    "referee": "Por confirmar"
+    "id":"m4","day":"Domingo","date":"4 oct","jornada":7,"category":"Primera Fuerza",
+    "home":"FRA","away":"SJO","time":"12:00","status":"SCHEDULED","score":null,"minute":null,
+    "venue":"San José","referee":"Por confirmar"
   },
   {
-    "id": "m5",
-    "day": "Mañana",
-    "date": "20 sep",
-    "jornada": 5,
-    "category": "Primera Fuerza",
-    "home": "LOB",
-    "away": "NAP",
-    "time": "12:00",
-    "status": "SCHEDULED",
-    "score": null,
-    "minute": null,
-    "venue": "Cerrito de Gasca",
-    "referee": "Por confirmar"
+    "id":"m5","day":"Domingo","date":"4 oct","jornada":7,"category":"Primera Fuerza",
+    "home":"LIN","away":"GAC","time":"Gana Linces","status":"FINAL","score":null,"minute":null,
+    "venue":"Resolución oficial","referee":"No aplica"
   }
 ];
 const news = [
@@ -4100,10 +4050,10 @@ const news = [
   {
     "id": "n2",
     "category": "Jornada",
-    "date": "20 sep 2026",
-    "title": "Jornada 5 de Primera Fuerza",
-    "subtitle": "Cinco partidos están programados para el 20 de septiembre.",
-    "content": "Consulta horarios y sedes oficiales en Competición."
+    "date": "4 oct 2026",
+    "title": "Jornada 7 · Torneo de Copa",
+    "subtitle": "El nuevo rol oficial ya está publicado para todas las categorías.",
+    "content": "Consulta horarios, campos, descansos y resoluciones oficiales en Competición y Calendario."
   },
   {
     "id": "n3",
@@ -4155,13 +4105,13 @@ function team(code){return teams.find(t=>t.code===code)||teams[0]}function playe
 function homeView(){
   const homeStandings=HOME_OFFICIAL_STANDINGS;
   const homeFields=(typeof V60_FIELDS!=='undefined'?V60_FIELDS:[]).slice(0,4);
-  return `<div class="eyebrow">TORNEO MUNICIPAL · JORNADA 5</div>
+  return `<div class="eyebrow">TORNEO MUNICIPAL · JORNADA 7</div>
     <h1 class="screen-title">El fútbol de<br>nuestro municipio</h1>
     <div class="stories">${[['Jornada','competition'],['Resultados','competition'],['Goleadores','scorers'],['Equipos','teams'],['Momentos','moments']].map(([n,r])=>`<button class="story" data-route="${r}"><span class="story-ring"><span class="story-inner"></span></span><small>${n}</small></button>`).join('')}</div>
 
     <section class="section hero">
       <span class="eyebrow" style="color:#fff">PARTIDO DE LA SEMANA</span>
-      <h2>Franco FC vs<br>Herreras FC</h2>
+      <h2>Hermanos vs<br>Lobos CDG</h2>
       <p>Próximo partido oficial de Primera Fuerza.</p>
       <div class="button-row"><button class="btn primary" data-match="m1">Ver previa</button><button class="btn outline" data-action="cheer" data-cheer="m1">Apoyar · ${state.cheers.m1||0}</button></div>
     </section>
@@ -4174,7 +4124,7 @@ function homeView(){
     </section>
 
     <section class="section">${sectionHead('Próximos partidos','competition','Calendario')}
-      <div class="card match-card"><div class="match-meta"><span class="live">EN VIVO · Jornada 5</span><span>18:00</span></div>${matchRow(matches[0])}${matchRow(matches[1])}</div>
+      <div class="card match-card"><div class="match-meta"><span class="live">ROL OFICIAL · Jornada 7</span><span>4 OCT</span></div>${matchRow(matches[0])}${matchRow(matches[1])}</div>
     </section>
 
     <section class="section">${sectionHead('Noticias','news')}
@@ -4246,7 +4196,7 @@ function competitionBody(){if(state.competitionTab==='standings')return `<div cl
 function competitionView(){return `<div class="eyebrow">TORNEO MUNICIPAL</div><h1 class="screen-title">Competición</h1><div class="tabs"><button class="tab ${state.competitionTab==='fixtures'?'active':''}" data-comp-tab="fixtures">Partidos y resultados<span class="v86-tab-line" aria-hidden="true"></span></button><button class="tab ${state.competitionTab==='standings'?'active':''}" data-comp-tab="standings">Clasificación</button><button class="tab ${state.competitionTab==='bracket'?'active':''}" data-comp-tab="bracket">Cuadro<span class="v86-tab-line" aria-hidden="true"></span></button></div>${competitionBody()}`}
 function matchView(){const m=matches.find(x=>x.id===state.selectedMatch)||matches[0];const pred=state.predictions[m.id];return `<div class="eyebrow">${m.category} · JORNADA ${m.jornada}</div><h1 class="screen-title">${team(m.home).name}<br>vs ${team(m.away).name}</h1><div class="card match-detail"><p class="muted tiny">${m.day.toUpperCase()} · ${m.time} · ${m.venue}</p><div class="scoreboard"><div>${crest(m.home)}<b>${team(m.home).name}</b></div><strong>${m.score||'—'}</strong><div>${crest(m.away)}<b>${team(m.away).name}</b></div></div><p class="muted tiny">Árbitro: ${m.referee}</p><div class="button-row center"><button class="btn primary" data-action="cheer" data-cheer="${m.id}">Apoyar partido · ${state.cheers[m.id]||0}</button>${favButton(`match:${m.id}`,'Guardar partido')}</div></div><section class="section">${sectionHead('Tu quiniela')}<div class="card predictor-card"><div class="prediction-teams"><b>${m.home}</b><input id="predHome" type="number" min="0" max="20" value="${pred?.home??0}"><span>–</span><input id="predAway" type="number" min="0" max="20" value="${pred?.away??0}"><b>${m.away}</b></div><button class="btn primary full" data-save-prediction="${m.id}">${pred?'Actualizar pronóstico':'Guardar pronóstico'}</button>${pred?`<small class="muted">Guardado: ${pred.home}–${pred.away}</small>`:''}</div></section><section class="section">${sectionHead('Cronología')}<div class="card match-card"><div class="empty-mini">No hay cronología oficial publicada para este partido.</div></div></section>`}
 function fantasyView(){return `<div class="game-hero"><span class="eyebrow">TORNEO MUNICIPAL</span><h1 class="game-title">FANTASY<br>LIGA<br>JUVENTINO</h1><p class="muted">Arma tu 7 Ideal, suma puntos y compite con tus amigos.</p><div class="button-row"><button class="btn primary" data-route="fantasyTeam">Mi 7 Ideal</button><button class="btn outline" data-route="fantasyLeagues">Ligas</button></div><div class="pitch"></div></div>`}
-function fantasyTeamView(){const slots=[['POR',0],['DEF',1],['DEF',2],['MED',3],['MED',4],['DEL',5],['DEL',6]];const used=Object.values(state.fantasyPicks).map(x=>x.playerId);const total=Object.values(state.fantasyPicks).reduce((s,x)=>s+(player(x.playerId)?.points||0),0);return `<div class="eyebrow">FANTASY · JORNADA 5</div><h1 class="screen-title">Mi 7 Ideal</h1><div class="card fantasy-summary"><div><small>Puntos</small><b>${total}</b></div><div><small>Jugadores</small><b>${used.length}/7</b></div><div><small>Presupuesto</small><b>${(50-Object.values(state.fantasyPicks).reduce((s,x)=>s+(player(x.playerId)?.cost||0),0)).toFixed(1)}</b></div></div><div class="fantasy-field">${slots.map(([pos,slot])=>{const pick=state.fantasyPicks[slot];const p=pick&&player(pick.playerId);return `<button class="fantasy-slot ${p?'filled':''}" data-fantasy-slot="${slot}" data-position="${pos}">${p?`${crest(p.team)}<b>${p.name}</b><small>${p.points} pts</small>`:`<span>+</span><b>${pos}</b><small>Elegir jugador</small>`}</button>`}).join('')}</div><section class="section">${sectionHead('Jugadores disponibles')}<div class="player-list">${players.filter(p=>!used.includes(p.id)).map(p=>`<button class="player-row" data-add-player="${p.id}"><span>${crest(p.team)}<b>${p.name}</b><small>Jugador registrado</small></span><span>+</span></button>`).join('')}</div></section><button class="btn outline full" data-action="clear-fantasy">Vaciar equipo</button>`}
+function fantasyTeamView(){const slots=[['POR',0],['DEF',1],['DEF',2],['MED',3],['MED',4],['DEL',5],['DEL',6]];const used=Object.values(state.fantasyPicks).map(x=>x.playerId);const total=Object.values(state.fantasyPicks).reduce((s,x)=>s+(player(x.playerId)?.points||0),0);return `<div class="eyebrow">FANTASY · JORNADA 7</div><h1 class="screen-title">Mi 7 Ideal</h1><div class="card fantasy-summary"><div><small>Puntos</small><b>${total}</b></div><div><small>Jugadores</small><b>${used.length}/7</b></div><div><small>Presupuesto</small><b>${(50-Object.values(state.fantasyPicks).reduce((s,x)=>s+(player(x.playerId)?.cost||0),0)).toFixed(1)}</b></div></div><div class="fantasy-field">${slots.map(([pos,slot])=>{const pick=state.fantasyPicks[slot];const p=pick&&player(pick.playerId);return `<button class="fantasy-slot ${p?'filled':''}" data-fantasy-slot="${slot}" data-position="${pos}">${p?`${crest(p.team)}<b>${p.name}</b><small>${p.points} pts</small>`:`<span>+</span><b>${pos}</b><small>Elegir jugador</small>`}</button>`}).join('')}</div><section class="section">${sectionHead('Jugadores disponibles')}<div class="player-list">${players.filter(p=>!used.includes(p.id)).map(p=>`<button class="player-row" data-add-player="${p.id}"><span>${crest(p.team)}<b>${p.name}</b><small>Jugador registrado</small></span><span>+</span></button>`).join('')}</div></section><button class="btn outline full" data-action="clear-fantasy">Vaciar equipo</button>`}
 function teamsView(){
   /* V27_TEAMS_NATIVE_FALLBACK4 — evita mostrar el directorio genérico mientras
      el módulo V27 termina de montar el diseño anterior. */
