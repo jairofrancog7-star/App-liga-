@@ -12,7 +12,7 @@ const HEADER_TITLES = {
 };
 
 function routeFromLocation(){
-  const route=location.hash.replace('#/','') || 'home';
+  const route=(location.hash.replace('#/','').split('?')[0] || 'home');
   return route==='quiz' ? 'quizArena' : route;
 }
 
