@@ -6174,57 +6174,8 @@ function quizArenaView(){
   const correct='San José FC';
   const options=[['A','Juventus'],['B','Hermanos'],['C','San José FC'],['D','Linces']];
   return `<section class="v48-quiz-arena-page v48-playing" data-v48-arena data-v48-correct="${correct}" aria-label="Quiz Arena">
-
-    <div class="v48-arena-landing" data-v48-landing>
-      <header class="v48-arena-head">
-        <button type="button" class="v48-back-real" data-route="more" aria-label="Volver a Más">
-          <svg viewBox="0 0 32 32" aria-hidden="true"><path d="M20.5 7.5 12 16l8.5 8.5M12.5 16H27"/></svg>
-        </button>
-        <h1>Quiz Arena</h1>
-      </header>
-
-      <section class="v48-arena-card" aria-label="Entrar a Quiz Arena">
-        <div class="v48-ball-stage" aria-hidden="true">
-          <div class="v48-local-visual">
-            <img class="v48-local-league" src="https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/assets/liga-logo.webp" alt="">
-            <div class="v48-local-logos">
-              <span><img src="https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/assets/official-logos/juventus.png" alt=""></span>
-              <span><img src="https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/assets/official-logos/hermanos.png" alt=""></span>
-              <span><img src="https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/assets/official-logos/san-jose-fc.png" alt=""></span>
-              <span><img src="https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/assets/official-logos/linces.png" alt=""></span>
-            </div>
-            <strong>QUIZ ARENA</strong>
-            <small>LIGA MUNICIPAL · JUVENTINO ROSAS</small>
-          </div>
-        </div>
-        <div class="v48-arena-actions">
-          <button type="button" class="v48-primary" data-route="profile">Inicia sesión para<br>jugar</button>
-          <button type="button" class="v48-secondary" data-v48-start>Prueba como<br>invitado</button>
-        </div>
-      </section>
-
-      <div class="v48-arena-promo" aria-label="Liga Municipal de Fútbol Juventino Rosas">
-        <span class="v48-promo-mark">JR</span>
-        <span><b>LIGA JUVENTINO ROSAS</b><small>Quiz oficial · Fútbol municipal</small></span>
-        <strong>JUGAR</strong>
-      </div>
-
-      <section class="v48-challenge-card">
-        <div>
-          <h2>¡Reta a tus amigos en el Quiz!</h2>
-          <p>Demuestra cuánto sabes de nuestra liga.</p>
-          <button type="button" data-v48-start>Jugar ahora</button>
-        </div>
-        <div class="v48-mini-ball" aria-hidden="true"><i></i></div>
-      </section>
-
-      <button type="button" class="v48-ranking-link" data-route="rankings">
-        <span>Clasificaciones</span><b>›</b>
-      </button>
-    </div>
-
-    <section class="v48-game" data-v48-game aria-label="Quiz de la Liga" aria-hidden="true">
-      <button type="button" class="v48-game-back" data-v48-game-back aria-label="Volver a Quiz Arena">
+    <section class="v48-game" data-v48-game aria-label="Quiz de la Liga" aria-hidden="false">
+      <button type="button" class="v48-game-back" data-v48-game-back aria-label="Volver">
         <svg viewBox="0 0 32 32" aria-hidden="true"><path d="M20.5 7.5 12 16l8.5 8.5M12.5 16H27"/></svg>
       </button>
 
@@ -6236,7 +6187,10 @@ function quizArenaView(){
         <i class="v48-game-left" aria-hidden="true"></i>
         <i class="v48-game-right" aria-hidden="true"></i>
       </div>
-      <div class="v48-game-subtitle"><i></i><span>LIGA MUNICIPAL DE FÚTBOL<br>JUVENTINO ROSAS</span><i></i></div>
+
+      <div class="v48-game-subtitle">
+        <i></i><span>LIGA MUNICIPAL DE FÚTBOL<br>JUVENTINO ROSAS</span><i></i>
+      </div>
 
       <div class="v48-game-card">
         <p>¿Qué equipo lidera actualmente la tabla?</p>
@@ -6345,10 +6299,9 @@ document.querySelectorAll('[data-ljr-notice-copy]').forEach(el=>el.onclick=async
 document.querySelectorAll('[data-ljr-notice-delete]').forEach(el=>el.onclick=()=>{
   ljrWriteNotices(ljrReadNotices().filter(x=>x.id!==el.dataset.ljrNoticeDelete));toast('Aviso eliminado');render()
 });
-document.querySelectorAll('[data-v48-start]').forEach(el=>el.onclick=()=>{const page=el.closest('[data-v48-arena]');if(!page)return;page.classList.add('v48-playing');page.querySelector('[data-v48-game]')?.setAttribute('aria-hidden','false');window.scrollTo({top:0,behavior:'smooth'});window.setTimeout(()=>page.querySelector('[data-v48-quiz]')?.focus({preventScroll:true}),260)});
-document.querySelectorAll('[data-v48-game-back]').forEach(el=>el.onclick=()=>{const page=el.closest('[data-v48-arena]');if(!page)return;page.classList.remove('v48-playing','v48-answered');page.dataset.v48Answered='false';page.querySelector('[data-v48-game]')?.setAttribute('aria-hidden','true');page.querySelectorAll('[data-v48-quiz]').forEach(btn=>{btn.disabled=false;btn.classList.remove('is-correct','is-wrong');btn.removeAttribute('aria-pressed')});const msg=page.querySelector('.v48-game-message');if(msg)msg.textContent='';window.scrollTo({top:0,behavior:'smooth'})});
-document.querySelectorAll('[data-v48-quiz]').forEach(el=>el.onclick=()=>{const page=el.closest('[data-v48-arena]');if(!page)return;page.dataset.v48LastAnswer=el.dataset.v48Quiz||'';page.classList.remove('v48-playing','v48-answered');page.dataset.v48Answered='false';page.querySelector('[data-v48-game]')?.setAttribute('aria-hidden','true');page.querySelectorAll('[data-v48-quiz]').forEach(btn=>{btn.disabled=false;btn.classList.remove('is-correct','is-wrong');btn.removeAttribute('aria-pressed')});const msg=page.querySelector('.v48-game-message');if(msg)msg.textContent='';window.scrollTo({top:0,behavior:'smooth'});window.setTimeout(()=>page.querySelector('[data-v48-start]')?.focus({preventScroll:true}),260)});
-
+document.querySelectorAll('[data-v48-start]').forEach(el=>el.onclick=()=>{const page=el.closest('[data-v48-arena]');if(!page)return;page.classList.add('v48-playing');page.querySelector('[data-v48-game]')?.setAttribute('aria-hidden','false');window.scrollTo({top:0,behavior:'smooth'});window.setTimeout(()=>page.querySelector('[data-v48-quiz]')?.focus({preventScroll:true}),180)});
+document.querySelectorAll('[data-v48-game-back]').forEach(el=>el.onclick=()=>{go('more')});
+document.querySelectorAll('[data-v48-quiz]').forEach(el=>el.onclick=()=>{const page=el.closest('[data-v48-arena]');if(!page)return;const correct=page.dataset.v48Correct||'San José FC';const picked=el.dataset.v48Quiz||'';page.dataset.v48LastAnswer=picked;page.dataset.v48Answered='true';page.classList.add('v48-playing','v48-answered');page.querySelector('[data-v48-game]')?.setAttribute('aria-hidden','false');page.querySelectorAll('[data-v48-quiz]').forEach(btn=>{const value=btn.dataset.v48Quiz||'';btn.disabled=true;btn.classList.toggle('is-correct',value===correct);btn.classList.toggle('is-wrong',value!==correct&&value===picked);btn.setAttribute('aria-pressed',value===picked?'true':'false')});const msg=page.querySelector('.v48-game-message');if(msg)msg.textContent=picked===correct?'¡Correcto!':'Respuesta correcta: '+correct;});
 document.querySelectorAll('[data-v60-pdf-prev]').forEach(el=>el.onclick=()=>v60RenderRulebookPage(v60RulebookPage-1));
 document.querySelectorAll('[data-v60-pdf-next]').forEach(el=>el.onclick=()=>v60RenderRulebookPage(v60RulebookPage+1));
 if(state.route==='rulebook')requestAnimationFrame(()=>v60RenderRulebookPage(v60RulebookPage||1));
