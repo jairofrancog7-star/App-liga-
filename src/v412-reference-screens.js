@@ -381,17 +381,73 @@ function whereMarkup(){
 }
 function mountWhere(screen,force=false){if(!force){screen.innerHTML=''}screen.querySelectorAll('[data-v412-screen="where"]').forEach(x=>x.remove());screen.insertAdjacentHTML('beforeend',whereMarkup());const root=screen.querySelector('[data-v412-screen="where"]');root.querySelectorAll('[data-v412-watch-day]').forEach(b=>b.onclick=()=>{localStorage.setItem('v412-watch-day',b.dataset.v412WatchDay);mountWhere(screen,true)});root.querySelector('[data-v412-back]')?.addEventListener('click',()=>history.length>1?history.back():go('v4-calendar'));bindCommon(root)}
 
-/* TV — Liga TV / Televisados / Conectar o transmitir */
-function mediaCard(m,label='Partido'){
- const result=m.hs!==''?m.hs+' - '+m.as:'VS';
- return '<button class="v412-media" data-v412-match="'+esc(m.key)+'"><div class="v412-media-art"><img src="'+esc(logo(m.home))+'" alt=""><img src="'+esc(logo(m.away))+'" alt=""><span class="v412-play">▶</span></div><div class="v412-media-copy"><b>'+esc(m.home)+' '+esc(result)+' '+esc(m.away)+'</b><small>'+esc(label)+' · '+esc(m.category)+'</small></div></button>';
+/* TV — Liga TV / Televisados / Conectar o transmitir
+   V421: referencia tipo feed TV, montada únicamente en la parte inferior y adaptada al azul de la Liga. */
+function tvCardAction(m,s){
+ return s?' data-v412-url="'+esc(s.url)+'"':' data-v412-match="'+esc(m.key)+'"';
 }
-function tvSection(title,sub,list,label){return '<div class="v412-tv-section"><div class="v412-tv-section-head"><div><h3>'+esc(title)+'</h3><p>'+esc(sub)+'</p></div></div><div class="v412-media-row">'+(list.length?list.map(m=>mediaCard(m,label)).join(''):'<div class="v412-empty">Contenido disponible cuando la Liga publique material.</div>')+'</div></div>'}
+function tvWideCard(m,label='Partido',s=null,i=0){
+ const result=m.hs!==''?m.hs+' - '+m.as:'VS';
+ const meta=s?(s.provider+' · transmisión vinculada'):(m.hs!==''?'Resumen · '+m.category:timeLabel(m.stamp,m.rawDate)+' · '+m.category);
+ return '<button class="v421-tv-card" type="button"'+tvCardAction(m,s)+'>'+
+   '<span class="v421-tv-art v421-tv-tone-'+(i%4)+'">'+
+     '<span class="v421-tv-team v421-tv-team-a"><img src="'+esc(logo(m.home))+'" alt=""><i>'+esc(initials(m.home))+'</i></span>'+
+     '<span class="v421-tv-team v421-tv-team-b"><img src="'+esc(logo(m.away))+'" alt=""><i>'+esc(initials(m.away))+'</i></span>'+
+     '<strong>'+esc(result)+'</strong><em>'+esc(label)+'</em><span class="v421-tv-play">▶</span>'+
+   '</span>'+
+   '<span class="v421-tv-copy"><b>'+esc(m.home)+' vs '+esc(m.away)+'</b><small>'+esc(meta)+'</small></span>'+
+ '</button>';
+}
+function tvClubCard(t,i=0){
+ return '<button class="v421-tv-card v421-tv-club-card" type="button" data-v412-team="'+esc(t.name)+'">'+
+   '<span class="v421-tv-art v421-tv-club-art v421-tv-tone-'+(i%4)+'"><span class="v421-tv-club-logo">'+logoNode(t.name,t.logo)+'</span><span class="v421-tv-play">▶</span><em>CLUB</em></span>'+
+   '<span class="v421-tv-copy"><b>'+esc(t.name)+'</b><small>'+esc(t.category)+' · equipo registrado</small></span>'+
+ '</button>';
+}
+function tvPortraitCard(m,label='Liga TV',i=0){
+ const result=m.hs!==''?m.hs+' - '+m.as:'VS';
+ return '<button class="v421-tv-portrait" type="button" data-v412-match="'+esc(m.key)+'">'+
+   '<span class="v421-tv-portrait-art v421-tv-tone-'+(i%4)+'">'+
+     '<span class="v421-tv-portrait-logos"><img src="'+esc(logo(m.home))+'" alt=""><img src="'+esc(logo(m.away))+'" alt=""></span>'+
+     '<strong>'+esc(result)+'</strong><span class="v421-tv-play">▶</span><em>'+esc(label)+'</em>'+
+   '</span>'+
+   '<span class="v421-tv-portrait-copy"><b>'+esc(m.home)+' vs '+esc(m.away)+'</b><small>'+esc(m.category)+'</small></span>'+
+ '</button>';
+}
+function tvRail(title,sub,html,action=''){
+ return '<section class="v421-tv-rail"><header><span><h3>'+esc(title)+'</h3><p>'+esc(sub)+'</p></span>'+(action||'')+'</header><div class="v421-tv-scroll">'+html+'</div></section>';
+}
 function tvHomeMarkup(){
- const all=fixtures(),played=all.filter(m=>m.hs!=='').slice(-8).reverse(),upcoming=all.filter(m=>m.hs==='').slice(0,8);
- return '<div class="v412-tv-actions"><button data-v412-tv-mode="watch"><i>TV</i><b>Televisados</b><small>Partidos y fuentes vinculadas</small></button><button data-v412-tv-mode="cast"><i>▣</i><b>Conectar / transmitir</b><small>Modo TV y otro dispositivo</small></button></div>'+
-   tvSection('Próximos partidos','Programación oficial de la Liga',upcoming.slice(0,6),'Próximo')+
-   tvSection('Resúmenes recientes','Partidos con resultado oficial',played.slice(0,6),'Resultado');
+ const all=fixtures();
+ const played=all.filter(m=>m.hs!=='').slice(-10).reverse();
+ const upcoming=all.filter(m=>m.hs==='').slice(0,10);
+ const src=streams();
+ const liveBase=(upcoming.length?upcoming:all.slice(0,8)).slice(0,8);
+ const clubs=teams().slice(0,10);
+ const highlights=(played.length?played:all.slice(0,8)).slice(0,8);
+ const portraits=(played.length?played:all.slice(0,8)).slice(0,8);
+ const latest=(played.length?played:all.slice(-8).reverse()).slice(0,8);
+
+ const top='<div class="v421-tv-top-actions">'+
+   '<button type="button" data-v412-tv-mode="watch"><span>◉</span><b>En directo y próximos</b><small>Partidos y fuentes</small></button>'+
+   '<button type="button" data-v412-tv-mode="cast"><span>▣</span><b>Ver en TV</b><small>Conectar o transmitir</small></button>'+
+ '</div>';
+
+ const liveCards=liveBase.map((m,i)=>tvWideCard(m,src.find(x=>x.key===m.key)?'EN TV':'PRÓXIMO',src.find(x=>x.key===m.key)||null,i)).join('');
+ const leagueCards=highlights.map((m,i)=>tvWideCard(m,m.hs!==''?'MEJORES MOMENTOS':'PARTIDO',null,i+1)).join('');
+ const clubCards=clubs.map((t,i)=>tvClubCard(t,i)).join('');
+ const portraitCards=portraits.map((m,i)=>tvPortraitCard(m,'LIGA TV',i)).join('');
+ const popularCards=highlights.slice().reverse().map((m,i)=>tvWideCard(m,'DESTACADO',null,i+2)).join('');
+ const latestCards=latest.map((m,i)=>tvWideCard(m,'RESUMEN',null,i+3)).join('');
+ const more='<button type="button" data-v412-tv-mode="watch">Ver más ›</button>';
+
+ return top+
+   tvRail('Ver en TV','Partidos y transmisiones vinculadas',liveCards||'<div class="v412-empty">No hay programación disponible.</div>',more)+
+   tvRail('Liga Juventino Rosas','Partidos, resultados y mejores momentos',leagueCards||'<div class="v412-empty">Los partidos aparecerán aquí.</div>',more)+
+   tvRail('Videos oficiales de clubes','Equipos registrados de la Liga',clubCards||'<div class="v412-empty">No hay equipos disponibles.</div>','<button type="button" data-v412-go="teams">Ver más ›</button>')+
+   tvRail('Liga TV Videos','Contenido vertical y momentos destacados','<div class="v421-tv-portrait-row">'+portraitCards+'</div>')+
+   tvRail('Lo más visto','Selección destacada de Liga TV',popularCards||'<div class="v412-empty">El contenido destacado aparecerá aquí.</div>')+
+   tvRail('Resúmenes más recientes','Últimos partidos con resultado oficial',latestCards||'<div class="v412-empty">Aún no hay resúmenes disponibles.</div>',more);
 }
 function tvWatchMarkup(){
  const src=streams(),list=fixtures().slice(0,20);
