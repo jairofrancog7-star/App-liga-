@@ -5,6 +5,7 @@
 'use strict';
 if(window.__LJR_V422_RESULTS_REFERENCE__)return;
 window.__LJR_V422_RESULTS_REFERENCE__=true;
+const COMPETITION_RESULTS_ENABLED=false;
 const ID='v422-results-reference',FAV_KEY='ljr-v414-favorites',MODE_KEY='v422-results-mode',CAT_KEY='v422-results-category',LIVE_KEY='v422-results-live';
 let timer=0;
 const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -137,7 +138,7 @@ function bind(root){
 async function mount(force=false){
  const screen=document.querySelector('#screen');if(!screen)return;
  const existing=screen.querySelector('#'+ID);
- if(route()!=='competition'||!resultsTabActive()){existing?.remove();return}
+ if(!COMPETITION_RESULTS_ENABLED||route()!=='competition'||!resultsTabActive()){existing?.remove();return}
  if(existing&&!force){const v105=screen.querySelector('#v105-bottom');if(v105&&existing.nextElementSibling!==v105)screen.insertBefore(existing,v105);return}
  await ensureData();if(route()!=='competition'||!resultsTabActive())return;
  existing?.remove();const host=document.createElement('div');host.innerHTML=markup();const node=host.firstElementChild;if(!node)return;
