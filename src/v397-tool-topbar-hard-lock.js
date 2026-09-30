@@ -29,6 +29,34 @@
   function setImp(el,name,value){
     if(el)el.style.setProperty(name,value,'important');
   }
+  function clearTopbarInline(topbar){
+    if(!topbar)return;
+    ['display','visibility','opacity','pointer-events','height','min-height','max-height','margin','padding','overflow'].forEach(p=>topbar.style.removeProperty(p));
+  }
+  function ensureOverlayTopbar(overlay){
+    if(!overlay || overlay.querySelector('.v408-tv-topbar,.v410-overlay-topbar'))return;
+    const head=document.createElement('header');
+    head.className='v410-overlay-topbar';
+    head.setAttribute('aria-label','Barra superior');
+    head.innerHTML=
+      '<button class="v410-overlay-back" type="button" aria-label="Regresar">'+
+        '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14.5 5.5 8 12l6.5 6.5M8 12h12"/></svg>'+
+      '</button>'+
+      '<span class="v410-overlay-trophy" aria-hidden="true"></span>'+
+      '<button class="v410-overlay-profile" type="button" aria-label="Perfil">'+
+        '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9.6"/><circle cx="12" cy="8.1" r="2.85"/><path d="M5.35 19.15c1.55-3.35 3.76-4.9 6.65-4.9s5.1 1.55 6.65 4.9"/></svg>'+
+      '</button>';
+    overlay.prepend(head);
+    head.querySelector('.v410-overlay-back')?.addEventListener('click',()=>{
+      overlay.querySelector('.v100-modal-close,.v105-close')?.click() || overlay.remove();
+      requestAnimationFrame(sync);
+    });
+    head.querySelector('.v410-overlay-profile')?.addEventListener('click',()=>{
+      overlay.querySelector('.v100-modal-close,.v105-close')?.click() || overlay.remove();
+      location.hash='#/profile';
+      requestAnimationFrame(sync);
+    });
+  }
 
   function sync(){
     const topbar=document.querySelector('#app > .topbar, .app-shell > .topbar');
@@ -36,6 +64,21 @@
 
     const route=current();
     const bodyRoute=String(document.body?.dataset?.appRoute||'');
+
+    // V410: Competición debe mostrar su barra propia desde el primer frame,
+    // incluso si venimos de Estadísticas, donde la topbar global se oculta.
+    const competitionOwned=route==='competition'||bodyRoute==='competition';
+    if(competitionOwned){
+      document.body.dataset.appRoute='competition';
+      document.body.classList.remove('v33-data-active','v404-tool-overlay-open','v410-overlay-open');
+      topbar.classList.remove('v402-tool-topbar-compact','v397-tool-topbar-exact','v403-reference-topbar','v404-missing-pages-topbar');
+      clearTopbarInline(topbar);
+      setImp(topbar,'display','block');
+      setImp(topbar,'visibility','visible');
+      setImp(topbar,'opacity','1');
+      setImp(topbar,'pointer-events','auto');
+      return;
+    }
 
     // Estadísticas (V33) tiene su propia cabecera con flecha/título/pestañas.
     // No debe recibir la barra global superior.
@@ -54,12 +97,30 @@
       ['display','visibility'].forEach(p=>topbar.style.removeProperty(p));
     }
 
-    const overlayActive=!!document.querySelector('.v100-modal,.v105-modal,.v160-tv-layer');
-    const contentMarker=!!document.querySelector('#v190-recruitment-page,.v60-tool-page');
-    const active=ROUTES.has(route)||ROUTES.has(bodyRoute)||overlayActive||contentMarker;
-    const reference=REFERENCE_ROUTES.has(route)||REFERENCE_ROUTES.has(bodyRoute)||overlayActive||contentMarker;
+    const overlay=document.querySelector('.v100-modal,.v105-modal,.v160-tv-layer');
+    const overlayActive=!!overlay;
 
-    document.body.classList.toggle('v404-tool-overlay-open',overlayActive);
+    // Los modales/Modo TV usan ahora una cabecera propia dentro del overlay.
+    // Así no se ve contenido de "Más" por encima cuando la página estaba desplazada.
+    if(overlayActive){
+      ensureOverlayTopbar(overlay);
+      document.body.classList.remove('v404-tool-overlay-open');
+      document.body.classList.add('v410-overlay-open');
+      topbar.classList.remove('v402-tool-topbar-compact','v397-tool-topbar-exact','v403-reference-topbar','v404-missing-pages-topbar');
+      setImp(topbar,'display','none');
+      setImp(topbar,'visibility','hidden');
+      setImp(topbar,'opacity','0');
+      setImp(topbar,'pointer-events','none');
+      return;
+    }else{
+      document.body.classList.remove('v410-overlay-open','v404-tool-overlay-open');
+      clearTopbarInline(topbar);
+    }
+
+    const contentMarker=!!document.querySelector('#v190-recruitment-page,.v60-tool-page');
+    const active=ROUTES.has(route)||ROUTES.has(bodyRoute)||contentMarker;
+    const reference=REFERENCE_ROUTES.has(route)||REFERENCE_ROUTES.has(bodyRoute)||contentMarker;
+
     topbar.classList.toggle('v402-tool-topbar-compact',active);
     topbar.classList.toggle('v397-tool-topbar-exact',reference);
     topbar.classList.toggle('v403-reference-topbar',reference);
