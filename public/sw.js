@@ -1,4 +1,4 @@
-const CACHE='liga-juventino-v20-scorers-player-buttons-v404';
+const CACHE='liga-juventino-v21-scorers-native-category-v410';
 const CORE=['./','./index.html','./manifest.webmanifest','./brand-neon-header.svg','./profile-reference.svg'];
 
 self.addEventListener('install',event=>{

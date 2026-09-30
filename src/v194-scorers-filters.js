@@ -148,7 +148,7 @@ function categoryFilter(){
   const active=catId();
   return '<section class="v194-filter-block"><div class="v194-filter-label"><small>FILTRO 1</small><b>Categoría</b></div>'+
     '<div class="v194-category-rail">'+CAT_ORDER.map(id=>
-      '<button type="button" class="'+(id===active?'active':'')+'" data-v194-cat="'+id+'">'+esc(catName(id))+'</button>'
+      '<a role="button" href="#/scorers?cat='+encodeURIComponent(id)+'" class="'+(id===active?'active':'')+'" data-v194-cat="'+id+'" aria-pressed="'+(id===active?'true':'false')+'">'+esc(catName(id))+'</a>'
     ).join('')+'</div></section>';
 }
 function teamFilter(){
@@ -236,7 +236,7 @@ function categoryStrip(){
   return '<section class="v391-category-wrap" aria-label="Clasificación por categoría">'+
     '<span class="v391-category-label">CATEGORÍA</span>'+
     '<div class="v391-category-strip">'+CAT_ORDER.map(id=>
-      '<button type="button" class="'+(id===active?'active':'')+'" data-v194-cat="'+id+'" aria-pressed="'+(id===active?'true':'false')+'">'+esc(catName(id))+'</button>'
+      '<a role="button" href="#/scorers?cat='+encodeURIComponent(id)+'" class="'+(id===active?'active':'')+'" data-v194-cat="'+id+'" aria-pressed="'+(id===active?'true':'false')+'">'+esc(catName(id))+'</a>'
     ).join('')+'</div>'+
   '</section>';
 }
@@ -286,40 +286,44 @@ function forceCategoryRender(){
 function chooseCategory(id){
   id=CAT_ORDER.includes(String(id))?String(id):'3';
 
-  const now=Date.now();
-  if(scorerCategoryTapId===id&&now-scorerCategoryTapAt<350)return false;
-  scorerCategoryTapId=id;
-  scorerCategoryTapAt=now;
-
   try{
     localStorage.setItem('v62-category',id);
     localStorage.setItem('v12-fixture-cat',id);
     localStorage.setItem(TEAM_KEY,'all');
   }catch(_){}
 
-  try{
-    const next=location.pathname+location.search+'#/scorers?cat='+encodeURIComponent(id);
-    history.replaceState(history.state,'',next);
-  }catch(_){}
+  const wanted='#/scorers?cat='+encodeURIComponent(id);
+  if(String(location.hash||'')!==wanted){
+    /* Real hash navigation is intentional: it makes the category control
+       work as a native link on Android even if another script replaces
+       the scorer DOM between pointer/touch/click events. */
+    location.hash=wanted;
+  }else{
+    forceCategoryRender();
+  }
 
-  /* The ranking is individual players. Change only the active category
-     and repaint immediately from official scorer rows. */
-  forceCategoryRender();
+  try{window.dispatchEvent(new CustomEvent('ljr:scorers-category',{detail:{id}}))}catch(_){}
   requestAnimationFrame(()=>forceCategoryRender());
+  setTimeout(()=>forceCategoryRender(),40);
+  setTimeout(()=>forceCategoryRender(),160);
   return false;
 }
 function bind(root){
   if(!root)return;
 
+  /* Category controls are native hash links. Do not prevent the click:
+     the browser itself changes #/scorers?cat=... and hashchange repaints
+     the individual-player ranking for that category. */
   root.querySelectorAll('[data-v194-cat]').forEach(b=>{
-    const activate=e=>{
-      e.preventDefault();
-      e.stopPropagation();
-      chooseCategory(b.dataset.v194Cat);
-    };
-    b.onclick=activate;
-    b.onpointerup=activate;
-    b.ontouchend=activate;
+    b.addEventListener('click',()=>{
+      const id=String(b.dataset.v194Cat||'');
+      if(!CAT_ORDER.includes(id))return;
+      try{
+        localStorage.setItem('v62-category',id);
+        localStorage.setItem('v12-fixture-cat',id);
+        localStorage.setItem(TEAM_KEY,'all');
+      }catch(_){}
+    },{passive:true});
   });
 }
 function delegatedClick(e){
@@ -364,23 +368,11 @@ window.LJR_SCORERS_REFERENCE={
   getCategory:()=>catId()
 };
 window.LJR_SET_SCORER_CATEGORY=function(id){return chooseCategory(id)};
-function captureCategoryTap(e){
-  if(route()!=='scorers')return;
-  const path=typeof e.composedPath==='function'?e.composedPath():[];
-  let b=null;
-  for(const node of path){
-    if(node instanceof Element&&node.matches?.('[data-v194-cat]')){b=node;break}
-  }
-  if(!b&&e.target instanceof Element)b=e.target.closest?.('[data-v194-cat]');
-  if(!b)return;
-  e.preventDefault();
-  chooseCategory(b.dataset.v194Cat);
-}
-window.addEventListener('pointerup',captureCategoryTap,true);
-window.addEventListener('click',captureCategoryTap,true);
+/* No pointerup/touchend hard interception here.
+   Native category links are the fallback and must be allowed to navigate. */
 document.addEventListener('click',delegatedClick,true);
 document.addEventListener('change',delegatedChange,true);
-window.addEventListener('hashchange',()=>schedule(30));
+window.addEventListener('hashchange',()=>{schedule(0);setTimeout(()=>render(true),50);setTimeout(()=>render(true),180)});
 window.addEventListener('ljr:official-data',()=>schedule(20));
 document.addEventListener('visibilitychange',()=>{if(!document.hidden)schedule(20)});
 const screen=document.querySelector('#screen');
