@@ -674,7 +674,8 @@ function tvPanel(){
    '<div class="v160-tv-actions"><button data-tv-match>Match Center</button><button data-tv-video>Vídeos</button></div>'+
   '</section>';
  document.body.appendChild(layer);
- const close=()=>layer.remove();
+ document.body.classList.add('v160-tv-open');
+ const close=()=>{layer.remove();document.body.classList.remove('v160-tv-open')};
  $('.v160-tv-close',layer).onclick=close;
  $('[data-tv-match]',layer).onclick=()=>{close();go('v4-matchcenter')};
  $('[data-tv-video]',layer).onclick=()=>{close();go('video')};
