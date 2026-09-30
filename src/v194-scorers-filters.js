@@ -189,12 +189,57 @@ function teamTable(){
         '<strong>'+t.gf+'<small> GF</small></strong>'+
       '</button></article>').join(''):'<div class="v194-empty">No hay datos de goleo publicados para esta categoría.</div>')+'</div></section>';
 }
+function heroScorerCard(r,rank){
+  if(!r)return '';
+  return '<article class="v391-feature rank-'+rank+'">'+
+    '<div class="v391-feature-photo">'+
+      '<span class="v391-feature-kicker">#'+rank+' Máximo goleador</span>'+
+      '<span class="v391-feature-media"><small>00:'+(rank===1?'38':'36')+'</small><i aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M9 7.5 17 12l-8 4.5z"/></svg></i></span>'+
+      '<span class="v391-feature-watermark">'+logoHtml(r.team,'v391-watermark-logo')+'</span>'+
+    '</div>'+
+    '<div class="v391-feature-info">'+
+      '<button type="button" class="v391-feature-person" data-v194-open-team="'+esc(r.team)+'">'+
+        logoHtml(r.team,'v391-feature-logo')+
+        '<span><b>'+esc(r.team)+'</b><strong>'+esc(r.player)+'</strong></span>'+
+      '</button>'+
+      '<span class="v391-feature-goals"><b>'+r.goals+'</b><small>goles</small></span>'+
+    '</div>'+
+  '</article>';
+}
+function scorerListRows(rows){
+  return '<div class="v391-ranking">'+rows.map((r,i)=>{
+    const pos=i+3;
+    return '<button type="button" class="v391-rank-row" data-v194-open-team="'+esc(r.team)+'">'+
+      '<span class="v391-rank-pos">#'+pos+'</span>'+
+      logoHtml(r.team,'v391-rank-logo')+
+      '<span class="v391-rank-copy"><b>'+esc(r.player)+'</b><small>'+esc(r.team)+'</small></span>'+
+      '<strong>'+r.goals+'</strong>'+
+    '</button>';
+  }).join('')+'</div>';
+}
+function categoryStrip(){
+  const active=catId();
+  return '<section class="v391-category-wrap" aria-label="Categorías">'+
+    '<span class="v391-category-label">CATEGORÍA</span>'+
+    '<div class="v391-category-strip">'+CAT_ORDER.map(id=>
+      '<button type="button" class="'+(id===active?'active':'')+'" data-v194-cat="'+id+'">'+esc(catName(id))+'</button>'
+    ).join('')+'</div>'+
+  '</section>';
+}
+function referenceScorersView(){
+  const id=catId(),rows=scorerRows(id);
+  return '<div class="v391-reference" data-v391-category="'+esc(id)+'">'+
+    categoryStrip()+
+    '<div class="v391-category-title"><small>'+esc(catName(id))+'</small><span>'+rows.length+' goleador'+(rows.length===1?'':'es')+' publicado'+(rows.length===1?'':'s')+'</span></div>'+
+    (rows.length?
+      heroScorerCard(rows[0],1)+heroScorerCard(rows[1],2)+scorerListRows(rows.slice(2)):
+      '<div class="v391-empty">Todavía no hay goleadores oficiales publicados para '+esc(catName(id))+'.</div>')+
+  '</div>';
+}
 function markup(){
-  const mode=currentMode(),source=db()?.captured_at_utc||'';
+  const source=db()?.captured_at_utc||'';
   return '<div class="v194-scorers" data-v194-scorers>'+
-    topScorerFeature()+
-    modeTabs()+categoryFilter()+(mode==='players'?teamFilter():'')+
-    (mode==='players'?playerTable():teamTable())+
+    referenceScorersView()+
     '<p class="v194-source">Datos oficiales sincronizados'+(source?' · '+esc(new Date(source).toLocaleString('es-MX')):'')+'</p>'+
   '</div>';
 }
