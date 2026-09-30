@@ -412,7 +412,7 @@ function shirt(logo,variant,label,number,name){
  return '<div class="v431-shirt '+esc(variant||"home")+'"><div class="v431-shirt-shape"></div>'+(logo?'<img class="v431-shirt-logo" src="'+esc(logo)+'" alt="">':'')+'<b class="v431-shirt-name">'+esc(name||"")+'</b><strong class="v431-shirt-number">'+esc(number||"")+'</strong><span>'+esc(label||"")+'</span></div>';
 }
 function productCard(title,sub,variant,logo){
- return '<article class="v431-product" data-v431-product data-search="'+esc((title+" "+sub).toLowerCase())+'"><button type="button" class="v431-heart" data-v431-heart aria-label="Favorito">♡</button><div class="v431-product-art">'+shirt(logo,variant,"","","")+'</div><h3>'+esc(title)+'</h3><p>'+esc(sub)+'</p><button type="button" class="v431-add" data-v431-add="'+esc(title)+'">Añadir</button></article>';
+ return '<article class="v431-product" data-v431-product data-v437-open-product="'+esc(variant||"home")+'" data-v437-title="'+esc(title)+'" data-v437-price="Mex$1,300.00" data-search="'+esc((title+" "+sub).toLowerCase())+'"><button type="button" class="v431-heart" data-v431-heart aria-label="Favorito">♡</button><div class="v431-product-art">'+shirt(logo,variant,"","","")+'</div><h3>'+esc(title)+'</h3><p>'+esc(sub)+'</p><button type="button" class="v431-add" data-v431-add="'+esc(title)+'">Añadir</button></article>';
 }
 function playerCards(roster){
  if(!roster.length)return '<div class="v431-empty">La plantilla de este equipo todavía no tiene jugadores sincronizados para esta sección.</div>';
@@ -605,8 +605,8 @@ function bind(team){
  root.querySelector("[data-v431-search-toggle]").onclick=function(){panel.classList.toggle("open");if(panel.classList.contains("open"))setTimeout(function(){if(input)input.focus()},50)};
  root.querySelector("[data-v431-search-close]").onclick=function(){panel.classList.remove("open");if(input){input.value="";input.dispatchEvent(new Event("input"))}};
  if(input)input.oninput=function(){var q=norm(input.value);root.querySelectorAll("[data-v431-product]").forEach(function(p){p.classList.toggle("v431-no-match",!!q&&!norm(p.dataset.search).includes(q))})};
- root.querySelectorAll("[data-v431-heart]").forEach(function(b){b.onclick=function(){b.classList.toggle("active");b.textContent=b.classList.contains("active")?"♥":"♡"}});
- root.querySelectorAll("[data-v431-add]").forEach(function(b){b.onclick=function(){addItem(team,b.dataset.v431Add,"Catálogo del equipo")}});
+ root.querySelectorAll("[data-v431-heart]").forEach(function(b){b.onclick=function(e){e&&e.preventDefault();e&&e.stopPropagation();b.classList.toggle("active");b.textContent=b.classList.contains("active")?"♥":"♡"}});
+ root.querySelectorAll("[data-v431-add]").forEach(function(b){b.onclick=function(e){e&&e.preventDefault();e&&e.stopPropagation();addItem(team,b.dataset.v431Add,"Catálogo del equipo")}});
  var nameInput=root.querySelector("[data-v431-name]"),numberInput=root.querySelector("[data-v431-number]");
  function preview(){var n=root.querySelector(".v431-custom-preview .v431-shirt-name"),num=root.querySelector(".v431-custom-preview .v431-shirt-number");if(n)n.textContent=(nameInput.value||"TU NOMBRE").toUpperCase();if(num)num.textContent=(numberInput.value||"10").replace(/\D/g,"").slice(0,2)}
  nameInput.oninput=preview;numberInput.oninput=function(){numberInput.value=numberInput.value.replace(/\D/g,"").slice(0,2);preview()};
