@@ -107,6 +107,30 @@ function modeTabs(){
     '<button type="button" class="'+(mode==='teams'?'active':'')+'" data-v194-mode="teams">Por equipos</button>'+
   '</div>';
 }
+function topScorerFeature(){
+  const id=catId(),r=scorerRows(id)[0];
+  if(!r){
+    return '<section class="v390-scorer-hero is-empty">'+
+      '<h1 class="v390-sr-only">Máximo goleador</h1>'+
+      '<div class="v390-scorer-photo"><div class="v390-scorer-label">#1 Máximo goleador</div></div>'+
+      '<div class="v390-scorer-info"><div class="v390-scorer-empty">Sin goleadores publicados para '+esc(catName(id))+'</div></div>'+
+    '</section>';
+  }
+  return '<section class="v390-scorer-hero" aria-label="Máximo goleador de '+esc(catName(id))+'">'+
+    '<h1 class="v390-sr-only">Máximo goleador</h1>'+
+    '<div class="v390-scorer-photo">'+
+      '<div class="v390-scorer-label">#1 Máximo goleador</div>'+
+      '<div class="v390-scorer-media"><span>00:38</span><span class="v390-scorer-play" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M9 7.5 17 12l-8 4.5z"/></svg></span></div>'+
+    '</div>'+
+    '<div class="v390-scorer-info">'+
+      '<button type="button" class="v390-scorer-person" data-v194-open-team="'+esc(r.team)+'" aria-label="Ver '+esc(r.team)+'">'+
+        logoHtml(r.team,'v390-scorer-logo')+
+        '<span><b>'+esc(r.team)+'</b><strong>'+esc(r.player)+'</strong></span>'+
+      '</button>'+
+      '<div class="v390-scorer-goals"><b>'+r.goals+'</b><small>goles</small></div>'+
+    '</div>'+
+  '</section>';
+}
 function categoryFilter(){
   const active=catId();
   return '<section class="v194-filter-block"><div class="v194-filter-label"><small>FILTRO 1</small><b>Categoría</b></div>'+
@@ -168,7 +192,7 @@ function teamTable(){
 function markup(){
   const mode=currentMode(),source=db()?.captured_at_utc||'';
   return '<div class="v194-scorers" data-v194-scorers>'+
-    '<header class="v194-title"><small>MÁXIMO GOLEADOR</small><h1>Goleadores</h1><p>Consulta la tabla por jugadores o por equipos. Cada jugador lleva el logo oficial de su equipo.</p></header>'+
+    topScorerFeature()+
     modeTabs()+categoryFilter()+(mode==='players'?teamFilter():'')+
     (mode==='players'?playerTable():teamTable())+
     '<p class="v194-source">Datos oficiales sincronizados'+(source?' · '+esc(new Date(source).toLocaleString('es-MX')):'')+'</p>'+
