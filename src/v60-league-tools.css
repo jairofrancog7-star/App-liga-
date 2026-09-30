@@ -870,6 +870,16 @@
 }
 
 
+/* V402 — cuadro informativo pegado arriba de la tabla rápida. */
+.v399-stats-page .v402-stats-note{
+  margin:12px 0 0!important;
+  border-bottom-left-radius:12px!important;
+  border-bottom-right-radius:12px!important;
+}
+.v399-stats-page .v402-stats-note + .v399-stats-summary{
+  margin-top:8px!important;
+}
+
 /* V399 — contenido útil para Tabla y Estadísticas. */
 .v399-stats-summary{
   margin-top:16px;
