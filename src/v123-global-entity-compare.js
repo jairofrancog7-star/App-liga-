@@ -294,13 +294,18 @@ async function renderCompare(){
  let secondary=resolvePlayer(read(SECONDARY_KEY),list);
  if(secondary&&playerKey(secondary)===playerKey(primary))secondary=null;
 
- /* V209 — Al entrar a Comparar jugadores, mostrar SIEMPRE primero la vista principal.
-    El selector de la imagen 2 solo se abre cuando el usuario toca una tarjeta
-    de jugador o un botón explícito para cambiar/elegir jugador. */
- if(!secondary&&!pickerOpen){
+ /* V209 — Al entrar a Comparar jugadores, mostrar SIEMPRE primero la vista principal
+    de la referencia (jugador A + tarjeta vacía “Elige jugador”).
+    Incluso si quedó un jugador B guardado de una visita anterior, se limpia solo
+    al entrar a la ruta. El selector de la imagen 2 se abre únicamente por toque. */
+ if(!pickerAutoShown&&!pickerOpen){
+  secondary=null;
+  try{localStorage.removeItem(SECONDARY_KEY)}catch{}
   pickerSide='secondary';
+  pickerOpen=false;
   pickerPosition='';
   query='';
+  pickerAutoShown=true;
  }
 
  const screen=document.querySelector('#screen');if(!screen)return;
