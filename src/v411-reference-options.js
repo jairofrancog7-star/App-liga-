@@ -239,7 +239,7 @@ function bindGeneric(root){
 
 function mount(){
  const r=route(),screen=document.querySelector('#screen');if(!screen)return;
- if(r==='favorites')mountFavorites(screen);
+ if(r==='favorites'){screen.querySelectorAll('[data-v411-zone="favorites"]').forEach(x=>x.remove());return}
  else if(r==='search')mountSearch(screen);
  else if(r==='video')mountVideo(screen);
  else if(r==='news')mountNews(screen);
