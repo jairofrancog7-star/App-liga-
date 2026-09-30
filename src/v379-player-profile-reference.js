@@ -78,6 +78,21 @@ function publishedGoal(p){
   const hit=rows.find(r=>same(r.player,p.name)&&same(r.team,p.team)&&(p.cat?String(r.cat)===String(p.cat):true));
   return hit&&Number.isFinite(Number(hit.goals))?Number(hit.goals):null;
 }
+function officialDiscipline(p){
+  const raw=api?.data?.()||window.LJR_OFFICIAL_DATA||null;
+  const cat=raw?.categories?.[String(p?.cat||'')];
+  const rows=cat?.cards?.[0]?.rows||[];
+  let yellow=0,red=0;
+  for(const r of rows){
+    if(!Array.isArray(r)||r.length<4)continue;
+    if(!same(r[1],p.name)||!same(r[2],p.team))continue;
+    const total=Number(r[3])||0,type=norm(r[0]);
+    if(type.includes('amar'))yellow+=total;
+    if(type.includes('roj'))red+=total;
+  }
+  const susp=(cat?.suspensions?.[0]?.rows||[]).find(r=>Array.isArray(r)&&r.length>=4&&same(r[0],p.name)&&same(r[1],p.team));
+  return {yellow,red,suspension:susp?String(susp[2]||''):'' ,pending:susp?String(susp[3]||''):''};
+}
 function teamLogo(name){
   let src='';
   try{src=api?.logoFor?.(name)||window.LJR_TEAM_LOGOS?.get?.(name)||''}catch{}
@@ -119,11 +134,12 @@ function tabs(active){
 function hero(p,d){
   const photo=d.photo;
   const visual=photo?'<img class="v379-player-photo" src="'+esc(photo)+'" alt="'+esc(p.name)+'">':
-    '<div class="v379-player-silhouette" aria-hidden="true"><span>'+esc(initials(p.name))+'</span></div>';
+    '<div class="v379-player-avatar-card" aria-hidden="true"><span>'+esc(initials(p.name))+'</span><i class="v379-avatar-team-logo">'+teamLogo(p.team)+'</i></div>';
   return '<section class="v379-hero">'+backButton()+shareButton()+
     '<div class="v379-hero-pattern" aria-hidden="true"></div>'+visual+
     '<div class="v379-hero-copy"><h1>'+esc(p.name)+'</h1>'+
       '<div class="v379-teamline"><span class="v379-team-logo">'+teamLogo(p.team)+'</span><b>'+esc(p.team)+'</b></div>'+
+      '<div class="v379-category-pill">'+esc(p.category||'Jugador registrado')+'</div>'+
       '<div class="v379-location"><svg viewBox="0 0 24 24"><path d="M12 21s6-5.5 6-11a6 6 0 1 0-12 0c0 5.5 6 11 6 11Z"/><circle cx="12" cy="10" r="2"/></svg><span>Juventino Rosas</span></div>'+
       '<div class="v379-hero-actions"><button type="button" data-v379-compare>Comparar jugador</button></div>'+
     '</div>'+
@@ -166,26 +182,28 @@ function newsEmpty(){
   return '<div class="v379-news-empty"><div class="v379-news-art" aria-hidden="true"></div><strong>Sin noticias oficiales del jugador</strong><p>Cuando la Liga publique una nota asociada a este jugador aparecerá aquí.</p><button type="button" data-v379-news>Ver noticias de la Liga</button></div>';
 }
 function summary(p,d,list){
-  const goals=publishedGoal(p),matches=fixtures(p).length;
+  const goals=publishedGoal(p),matches=fixtures(p).length,discipline=officialDiscipline(p);
   return '<div class="v379-tab-panel">'+infoGrid(p,d)+
+   '<section class="v379-block">'+sectionTitle('Datos oficiales','','')+
+    '<div class="v379-key-grid v380-player-key-grid"><div><strong>'+(goals==null?'—':goals)+'</strong><small>Goles oficiales</small></div><div><strong>'+matches+'</strong><small>Partidos sincronizados</small></div><div><strong>'+discipline.yellow+'</strong><small>Tarjetas amarillas</small></div><div><strong>'+discipline.red+'</strong><small>Tarjetas rojas</small></div></div>'+
+    (discipline.suspension?'<div class="v380-suspension"><b>Castigo oficial</b><span>'+esc(discipline.suspension)+(discipline.pending?' · '+esc(discipline.pending)+' pendiente(s)':'')+'</span></div>':'')+
+   '</section>'+
    '<section class="v379-block">'+sectionTitle('Próximo partido','Ver todo','data-v379-tab-jump="Partidos"')+nextMatchCard(p)+'</section>'+
    '<section class="v379-block">'+sectionTitle('Noticias','Ver todo','data-v379-tab-jump="Noticias"')+newsEmpty()+'</section>'+
-   '<section class="v379-block">'+sectionTitle('Datos clave','','')+
-    '<div class="v379-key-grid"><div><strong>'+(goals==null?'—':goals)+'</strong><small>Goles oficiales</small></div><div><strong>'+matches+'</strong><small>Partidos sincronizados</small></div><div><strong>'+esc(p.category||'—')+'</strong><small>Categoría</small></div></div>'+
-   '</section>'+relatedHtml(p,list)+'</div>';
+   relatedHtml(p,list)+'</div>';
 }
 function statRow(label,val,sub){
   return '<div class="v379-stat-row"><span><b>'+esc(label)+'</b>'+(sub?'<small>'+esc(sub)+'</small>':'')+'</span><strong>'+esc(val)+'</strong></div>';
 }
 function stats(p,list){
-  const goals=publishedGoal(p);
+  const goals=publishedGoal(p),discipline=officialDiscipline(p);
   return '<div class="v379-tab-panel">'+
    '<section class="v379-stats-card"><div class="v379-stats-head"><span>ATAQUE</span><i></i></div>'+
     '<div class="v379-big-stat"><strong>'+(goals==null?'—':goals)+'</strong><span>Goles oficiales</span></div>'+
     statRow('Goles dentro del área','—','No publicado')+statRow('Goles fuera del área','—','No publicado')+statRow('Con la derecha','—','No publicado')+statRow('Con la izquierda','—','No publicado')+statRow('De cabeza','—','No publicado')+
    '</section>'+
    '<section class="v379-stats-card"><div class="v379-stats-head"><span>DISCIPLINA</span><i></i></div>'+
-    statRow('Tarjetas amarillas','—','No publicado')+statRow('Tarjetas rojas','—','No publicado')+statRow('Faltas cometidas','—','No publicado')+statRow('Faltas sufridas','—','No publicado')+
+    statRow('Tarjetas amarillas',discipline.yellow,'Dato oficial')+statRow('Tarjetas rojas',discipline.red,'Dato oficial')+statRow('Castigo',discipline.suspension||'—',discipline.suspension?'Dato oficial':'No publicado')+statRow('Pendientes',discipline.pending||'—',discipline.pending?'Dato oficial':'No publicado')+
    '</section>'+
    '<section class="v379-stats-card"><div class="v379-stats-head"><span>DEFENSA</span><i></i></div>'+
     statRow('Duelos','—','No publicado')+statRow('Entradas con éxito','—','No publicado')+statRow('Balones recuperados','—','No publicado')+statRow('Despejes completados','—','No publicado')+
