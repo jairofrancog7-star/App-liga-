@@ -1747,3 +1747,166 @@ body[data-app-route="club-store"] .v441-shirt.special{
   body[data-app-route="club-store"] .v437-stage-shirt .v441-shirt{width:230px!important;height:280px!important}
   body[data-app-route="club-store"] .v437-feature-art .v441-shirt{width:170px!important;height:205px!important}
 }
+
+
+/* V442 — objetos/playeras con volumen 3D realista */
+/* Perspectiva 3D aplicada a los artículos/playeras, no solo al fondo. */
+body[data-app-route="club-store"] .v442-shirt-3d{
+  --v442-rx:-3deg;
+  --v442-ry:7deg;
+  --v442-z:0px;
+  position:relative!important;
+  transform-style:preserve-3d!important;
+  perspective:780px!important;
+  transform:
+    perspective(780px)
+    translateZ(var(--v442-z))
+    rotateX(var(--v442-rx))
+    rotateY(var(--v442-ry))!important;
+  transform-origin:50% 58%!important;
+  transition:transform .16s ease,filter .16s ease!important;
+  will-change:transform!important;
+}
+body[data-app-route="club-store"] .v442-shirt-3d.pressed3d{
+  --v442-z:12px!important;
+  filter:brightness(1.03) saturate(1.04)!important;
+}
+body[data-app-route="club-store"] .v442-shirt-3d .v441-jersey-svg{
+  position:relative!important;
+  z-index:4!important;
+  transform:translateZ(16px)!important;
+  transform-style:preserve-3d!important;
+  overflow:visible!important;
+  filter:
+    drop-shadow(0 8px 7px rgba(7,13,57,.16))
+    drop-shadow(0 18px 18px rgba(7,13,57,.16))!important;
+}
+body[data-app-route="club-store"] .v442-shirt-3d .v442-depth-back{
+  transform:translate(2px,3px)!important;
+  filter:brightness(.62) saturate(.82)!important;
+}
+body[data-app-route="club-store"] .v442-shirt-3d .v442-jersey-face{
+  transform-origin:50% 50%!important;
+}
+
+/* Cantos laterales: crean grosor visual para que la camiseta no parezca una hoja plana. */
+body[data-app-route="club-store"] .v442-edge{
+  position:absolute!important;
+  z-index:2!important;
+  top:15%!important;
+  width:8%!important;
+  height:70%!important;
+  border-radius:50%!important;
+  pointer-events:none!important;
+  opacity:.72!important;
+  filter:blur(.3px)!important;
+}
+body[data-app-route="club-store"] .v442-edge-left{
+  left:16%!important;
+  transform:translateZ(-8px) rotateY(72deg)!important;
+  background:linear-gradient(180deg,rgba(255,255,255,.22),rgba(3,8,54,.28))!important;
+}
+body[data-app-route="club-store"] .v442-edge-right{
+  right:16%!important;
+  transform:translateZ(-8px) rotateY(-72deg)!important;
+  background:linear-gradient(180deg,rgba(255,255,255,.12),rgba(3,8,54,.38))!important;
+}
+body[data-app-route="club-store"] .v442-floor-shadow{
+  position:absolute!important;
+  z-index:-3!important;
+  left:12%!important;
+  right:12%!important;
+  bottom:-7%!important;
+  height:16%!important;
+  border-radius:50%!important;
+  background:radial-gradient(ellipse,rgba(3,7,39,.36) 0%,rgba(3,7,39,.16) 38%,transparent 72%)!important;
+  filter:blur(7px)!important;
+  transform:rotateX(72deg) translateZ(-34px)!important;
+  transform-origin:center!important;
+  pointer-events:none!important;
+}
+
+/* Mayor volumen en las tarjetas del catálogo. */
+body[data-app-route="club-store"] .v431-product-art,
+body[data-app-route="club-store"] .v436-product-art,
+body[data-app-route="club-store"] .v437-product-stage,
+body[data-app-route="club-store"] .v437-feature-art,
+body[data-app-route="club-store"] .v431-custom-preview,
+body[data-app-route="club-store"] .v431-edition-art{
+  perspective:900px!important;
+  transform-style:preserve-3d!important;
+}
+body[data-app-route="club-store"] .v431-product-art .v442-shirt-3d,
+body[data-app-route="club-store"] .v436-product-art .v442-shirt-3d{
+  --v442-rx:-4deg;
+  --v442-ry:8deg;
+}
+body[data-app-route="club-store"] .v431-product:nth-child(even) .v442-shirt-3d,
+body[data-app-route="club-store"] .v436-product:nth-child(even) .v442-shirt-3d{
+  --v442-ry:-8deg;
+}
+body[data-app-route="club-store"] .v437-feature-card.home .v442-shirt-3d{
+  --v442-rx:-5deg;
+  --v442-ry:11deg;
+}
+body[data-app-route="club-store"] .v437-feature-card.away .v442-shirt-3d{
+  --v442-rx:-4deg;
+  --v442-ry:-10deg;
+}
+body[data-app-route="club-store"] .v437-stage-shirt .v442-shirt-3d{
+  --v442-rx:-2deg;
+  --v442-ry:9deg;
+}
+
+/* Iluminación de estudio alrededor del objeto. */
+body[data-app-route="club-store"] .v431-product-art::before,
+body[data-app-route="club-store"] .v436-product-art::before,
+body[data-app-route="club-store"] .v437-product-stage::before{
+  background:
+    radial-gradient(circle at 28% 16%,rgba(255,255,255,.98),transparent 26%),
+    radial-gradient(circle at 72% 22%,rgba(81,105,255,.12),transparent 28%),
+    linear-gradient(135deg,rgba(255,255,255,.55),transparent 42%)!important;
+}
+body[data-app-route="club-store"] .v431-product-art::after,
+body[data-app-route="club-store"] .v436-product-art::after{
+  left:18%!important;
+  right:18%!important;
+  bottom:4%!important;
+  height:12%!important;
+  background:radial-gradient(ellipse,rgba(7,13,58,.32),transparent 70%)!important;
+  filter:blur(9px)!important;
+}
+
+/* Detalle: artículo grande tipo mockup 3D de ecommerce. */
+body[data-app-route="club-store"] .v437-stage-shirt .v441-jersey-svg{
+  filter:
+    drop-shadow(14px 18px 14px rgba(6,12,55,.16))
+    drop-shadow(-8px 7px 10px rgba(255,255,255,.25))!important;
+}
+body[data-app-route="club-store"] .v437-product-stage{
+  min-height:420px!important;
+  background:
+    radial-gradient(circle at 34% 18%,#fff 0 14%,transparent 32%),
+    radial-gradient(circle at 64% 46%,rgba(63,82,255,.09),transparent 28%),
+    linear-gradient(180deg,#ffffff 0%,#f5f7fc 70%,#eceff7 100%)!important;
+}
+
+/* Hero y destacados con efecto suspendido. */
+body[data-app-route="club-store"] .v431-hero-shirt .v442-shirt-3d,
+body[data-app-route="club-store"] .v437-feature-art .v442-shirt-3d{
+  animation:v442-float 4.8s ease-in-out infinite!important;
+}
+@keyframes v442-float{
+  0%,100%{transform:perspective(780px) translateY(0) rotateX(var(--v442-rx)) rotateY(var(--v442-ry))}
+  50%{transform:perspective(780px) translateY(-5px) rotateX(calc(var(--v442-rx) + 1deg)) rotateY(calc(var(--v442-ry) - 1deg))}
+}
+@media (prefers-reduced-motion:reduce){
+  body[data-app-route="club-store"] .v431-hero-shirt .v442-shirt-3d,
+  body[data-app-route="club-store"] .v437-feature-art .v442-shirt-3d{
+    animation:none!important;
+  }
+}
+@media(max-width:380px){
+  body[data-app-route="club-store"] .v442-edge{width:7%!important}
+  body[data-app-route="club-store"] .v437-product-stage{min-height:380px!important}
+}
