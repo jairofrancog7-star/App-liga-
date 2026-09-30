@@ -87,7 +87,7 @@ function ensureCompact(x,page){
  bindCompact(page);
 }
 function bindCompact(page){
- page.querySelectorAll('[data-v372-tab]').forEach(b=>{if(b.dataset.bound)return;b.dataset.bound='1';b.onclick=()=>document.querySelector('.v42-tabs [data-v42-tab="'+b.dataset.v372Tab+'"]')?.click()});
+ page.querySelectorAll('[data-v372-tab]').forEach(b=>{if(b.dataset.bound)return;b.dataset.bound='1';b.onclick=e=>{e.preventDefault();e.stopPropagation();const tab=b.dataset.v372Tab||'';if(window.LJR_TEAM_DETAIL_API?.openTab)window.LJR_TEAM_DETAIL_API.openTab(tab);else document.querySelector('.v42-tabs [data-v42-tab="'+tab+'"]')?.click()}});
  const bind=(sel,fn)=>{const b=page.querySelector(sel);if(!b||b.dataset.bound)return;b.dataset.bound='1';b.onclick=fn};
  bind('[data-v372-back]',()=>document.querySelector('[data-v42-back]')?.click());
  bind('[data-v372-plus]',()=>document.querySelector('[data-v42-follow]')?.click());
