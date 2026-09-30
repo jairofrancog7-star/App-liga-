@@ -603,7 +603,7 @@ function bindCommon(root){
  root.querySelectorAll('[data-v412-tvpanel]').forEach(b=>b.onclick=()=>{if(window.LJR_V105?.openTv)window.LJR_V105.openTv();else go('video')});
  root.querySelectorAll('[data-v412-share]').forEach(b=>b.onclick=async()=>{const payload={title:'Liga Juventino Rosas',text:'Liga Municipal de Fútbol Juventino Rosas',url:location.origin+location.pathname};try{if(navigator.share)await navigator.share(payload);else await navigator.clipboard?.writeText(payload.url)}catch(_){}});
 }
-function remountCurrent(){const screen=document.querySelector('#screen');if(!screen)return;const r=route();if(r==='favorites'){screen.querySelector('[data-v412-screen="favorites"]')?.remove();return}else if(r==='search'){screen.querySelector('[data-v412-screen="search"]')?.remove();mountSearch(screen)}else if(r==='transfers'){screen.querySelector('[data-v412-screen="transfers"]')?.remove();mountTransfers(screen)}else if(r==='video'){screen.querySelector('[data-v412-screen="tv"]')?.remove();mountTv(screen)}else if(['v4-calendar','calendar','monthlyCalendar','calendarMonthly','matchday'].includes(r))mountFixtures(screen,true)}
+function remountCurrent(){const screen=document.querySelector('#screen');if(!screen)return;const r=route();if(r==='favorites'){screen.querySelector('[data-v412-screen="favorites"]')?.remove();return}else if(r==='search'){screen.querySelector('[data-v412-screen="search"]')?.remove();mountSearch(screen)}else if(r==='transfers'){screen.querySelector('[data-v412-screen="transfers"]')?.remove();mountTransfers(screen)}else if(r==='video'){screen.querySelector('[data-v412-screen="tv"]')?.remove();mountTv(screen)}else if(['v4-calendar','calendar','monthlyCalendar','calendarMonthly','matchday','competition'].includes(r))mountFixtures(screen,true)}
 function cleanOld(screen){screen.querySelectorAll('.v411-zone').forEach(x=>x.remove())}
 function mount(){
  const screen=document.querySelector('#screen');if(!screen)return;cleanOld(screen);
@@ -616,7 +616,7 @@ function mount(){
  else if(r==='news')mountNews(screen);
  else if(r==='whereToWatch'){screen.querySelectorAll('[data-v412-screen="where"]').forEach(x=>x.remove());return}
  else if(['v4-matchcenter','matchCenter','match-center','match'].includes(r))mountMatchCenter(screen);
- else if(['v4-calendar','calendar','monthlyCalendar','calendarMonthly','matchday'].includes(r))mountFixtures(screen);
+ else if(['v4-calendar','calendar','monthlyCalendar','calendarMonthly','matchday','competition'].includes(r))mountFixtures(screen);
 }
 let timer=0;function schedule(ms=70){clearTimeout(timer);timer=setTimeout(mount,ms)}
 window.addEventListener('hashchange',()=>schedule(60));window.addEventListener('load',()=>schedule(180));document.addEventListener('DOMContentLoaded',()=>schedule(100),{once:true});
