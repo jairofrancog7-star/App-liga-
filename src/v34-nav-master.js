@@ -70,8 +70,14 @@ document.addEventListener('click',e=>{
   if(!btn)return;
   e.preventDefault();
   e.stopImmediatePropagation();
-  const next='#/'+btn.dataset.route;
-  if(location.hash!==next)location.hash=next;
+  const route=btn.dataset.route;
+  if(route==='competition'&&window.LJR_MAIN_ROUTE?.go){
+    window.LJR_MAIN_ROUTE.go('competition');
+  }else{
+    const next='#/'+route;
+    if(location.hash!==next)location.hash=next;
+    else if(window.LJR_MAIN_ROUTE?.go&&!String(route||'').startsWith('v4-'))window.LJR_MAIN_ROUTE.go(route,false);
+  }
   paint();
 },true);
 window.addEventListener('hashchange',()=>setTimeout(paint,0));
