@@ -1,6 +1,6 @@
 {
   "season": "2026",
-  "source": "Tablas e imágenes enviadas por el usuario el 9 de septiembre de 2026; Jornada 6 actualizada con calendario enviado el 27 de septiembre de 2026",
+  "source": "Tablas e imágenes enviadas por el usuario; rol oficial J7 actualizado con publicación del 30 de septiembre de 2026",
   "categories_order": [
     "Veteranos 35+",
     "Veteranos 50+",
@@ -11,7 +11,7 @@
   "categories": {
     "Veteranos 35+": {
       "scope": "Categoría por edad",
-      "current_phase": "Final",
+      "current_phase": "Amistoso",
       "teams": [
         "C. de Gasca",
         "Juventus",
@@ -195,11 +195,21 @@
             "field": "1"
           }
         ]
+      },
+      "rounds": {
+        "Amistoso 03/10/2026": [
+          {
+            "home": "Huracán",
+            "away": "F. Tavera",
+            "time": "05:00",
+            "field": "3"
+          }
+        ]
       }
     },
     "Veteranos 50+": {
       "scope": "Categoría por edad",
-      "current_phase": "Torneo de Copa J6",
+      "current_phase": "Torneo de Copa J7",
       "teams": [
         "La Esperanza",
         "Dynamo",
@@ -307,12 +317,31 @@
             "field": "1",
             "status": "Jugado"
           }
+        ],
+        "J7": [
+          {
+            "home": "Manchester",
+            "away": "Boca Jrs",
+            "note": "Gana Manchester"
+          },
+          {
+            "home": "Dynamo",
+            "away": "Boavista",
+            "time": "03:30",
+            "field": "1"
+          },
+          {
+            "home": "Toros de Cuenda",
+            "away": "La Esperanza",
+            "time": "05:00",
+            "field": "1"
+          }
         ]
       }
     },
     "Primera Fuerza": {
       "scope": "Categoría abierta por nivel",
-      "current_phase": "Torneo de Copa J6",
+      "current_phase": "Torneo de Copa J7",
       "teams": [
         "Hermanos",
         "San José FC",
@@ -501,12 +530,46 @@
           {
             "rest": "Herreras FC"
           }
+        ],
+        "J7": [
+          {
+            "home": "Hermanos",
+            "away": "Lobos CDG",
+            "time": "10:00",
+            "field": "3"
+          },
+          {
+            "home": "Herreras FC",
+            "away": "Abejas",
+            "time": "10:00",
+            "field": "Pozos"
+          },
+          {
+            "home": "Linces",
+            "away": "Galácticos",
+            "note": "Gana Linces"
+          },
+          {
+            "home": "Terrícolas",
+            "away": "Napoli",
+            "time": "08:00",
+            "field": "3"
+          },
+          {
+            "home": "Franco FC",
+            "away": "San José FC",
+            "time": "12:00",
+            "field": "San José"
+          },
+          {
+            "rest": "Juventus"
+          }
         ]
       }
     },
     "Intermedia": {
       "scope": "Categoría abierta por nivel",
-      "current_phase": "Torneo de Copa J6",
+      "current_phase": "Torneo de Copa J7",
       "teams": [
         "La Canchita Deportes",
         "Galeana",
@@ -733,12 +796,53 @@
           {
             "rest": "Capibaras"
           }
+        ],
+        "J7": [
+          {
+            "home": "Dep. Maravillas",
+            "away": "Galeana",
+            "time": "12:00",
+            "field": "3"
+          },
+          {
+            "home": "La Canchita Deportes",
+            "away": "Malvinas",
+            "time": "10:00",
+            "field": "1"
+          },
+          {
+            "home": "Capibaras",
+            "away": "San Antonio JRS",
+            "time": "10:00",
+            "field": "Romerillo"
+          },
+          {
+            "home": "La Huerta",
+            "away": "Promesas FC",
+            "time": "10:00",
+            "field": "Fraccionamiento"
+          },
+          {
+            "home": "Mazacotes FC",
+            "away": "La Cuadrilla",
+            "time": "08:00",
+            "field": "Fraccionamiento"
+          },
+          {
+            "home": "Osasuna",
+            "away": "Populares",
+            "time": "08:00",
+            "field": "1"
+          },
+          {
+            "rest": "Aldama FC"
+          }
         ]
       }
     },
     "Segunda Fuerza": {
       "scope": "Categoría abierta por nivel",
-      "current_phase": "Torneo de Copa J6",
+      "current_phase": "Torneo de Copa J7",
       "teams": [
         "Tavera FC",
         "Pachangas FC",
@@ -947,6 +1051,44 @@
             "time": "12:00",
             "field": "Tavera",
             "status": "Jugado"
+          }
+        ],
+        "J7": [
+          {
+            "home": "Tapatío",
+            "away": "Pachangas FC",
+            "time": "08:00",
+            "field": "2"
+          },
+          {
+            "home": "Tavera FC",
+            "away": "San Julián",
+            "time": "10:00",
+            "field": "San Julián"
+          },
+          {
+            "home": "San Juan FC",
+            "away": "San José JRS",
+            "time": "10:00",
+            "field": "San José"
+          },
+          {
+            "home": "Dep. La Luz",
+            "away": "Célticos",
+            "time": "12:00",
+            "field": "1"
+          },
+          {
+            "home": "Barza",
+            "away": "Dep. Zapata",
+            "time": "12:00",
+            "field": "2"
+          },
+          {
+            "home": "San Antonio FC",
+            "away": "Dep. Nopalero",
+            "time": "10:00",
+            "field": "2"
           }
         ]
       },
