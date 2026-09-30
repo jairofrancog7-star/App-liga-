@@ -251,7 +251,7 @@ function teamPicker(cat){
     '<span>'+esc(name)+'</span>'+(current?'<i>✓</i>':'')+
    '</button>';
  };
- return '<div class="v369-picker-layer" data-v369-close-picker>'+
+ return '<div class="v369-picker-layer" data-v369-picker-backdrop>'+
   '<section class="v369-picker-sheet v373-picker-page" onclick="event.stopPropagation()">'+
    '<header class="v373-picker-top"><button type="button" data-v369-close-picker aria-label="Cerrar">×</button></header>'+
    '<label class="v369-picker-search"><span>⌕</span><input type="search" data-v369-team-search placeholder="Buscar equipos" autocomplete="off"></label>'+
@@ -446,15 +446,33 @@ document.addEventListener('click',function(e){
   return;
  }
  const picker=e.target.closest('[data-v369-pick-team]');
- if(picker&&compareState){compareState.picker=picker.dataset.v369PickTeam;compareState.modeMenu='';mountCompare();return}
- if(e.target.matches('[data-v369-close-picker]')||e.target.closest('[data-v369-close-picker]')){if(compareState){compareState.picker='';mountCompare()}return}
+ if(picker&&compareState){
+  e.preventDefault();e.stopPropagation();
+  compareState.picker=picker.dataset.v369PickTeam;
+  compareState.modeMenu='';
+  mountCompare();
+  return;
+ }
  const choice=e.target.closest('[data-v369-team-choice]');
  if(choice&&compareState&&!choice.disabled){
+  e.preventDefault();e.stopPropagation();
   const side=choice.dataset.side,name=choice.dataset.v369TeamChoice;
+  if(!name)return;
   if(side==='a')compareState.teamA=name;else compareState.teamB=name;
   compareState.picker='';
+  compareState.modeMenu='';
   localStorage.setItem('v369-team-compare-rival-'+compareState.catId,compareState.teamB);
-  mountCompare();return;
+  mountCompare();
+  toast('Comparación actualizada');
+  return;
+ }
+ const closePicker=e.target.closest('[data-v369-close-picker]');
+ const backdrop=e.target.matches?.('[data-v369-picker-backdrop]');
+ if((closePicker||backdrop)&&compareState){
+  e.preventDefault();e.stopPropagation();
+  compareState.picker='';
+  mountCompare();
+  return;
  }
  const menu=e.target.closest('[data-v369-mode-menu]');
  if(menu&&compareState){
