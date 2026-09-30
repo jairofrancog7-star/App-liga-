@@ -19,342 +19,45 @@
   /* Cada modo replica la composición de su captura maestra:
      Compacta = referencia 2, Completa = referencia 1, Criterios = referencia 3. */
   const compactTeams=[
-  {
-    "name": "SAN JOSE FC",
-    "logo": "https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/assets/official-logos/san-jose-fc.png",
-    "p": 4,
-    "gd": 10,
-    "pts": 12,
-    "last": "V"
-  },
-  {
-    "name": "JUVENTUS",
-    "logo": "https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/assets/official-logos/juventus.png",
-    "p": 4,
-    "gd": 14,
-    "pts": 9,
-    "last": "D"
-  },
-  {
-    "name": "HERMANOS",
-    "logo": "https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/assets/official-logos/hermanos.png",
-    "p": 3,
-    "gd": 4,
-    "pts": 7,
-    "last": "V"
-  },
-  {
-    "name": "LINCES",
-    "logo": "https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/assets/official-logos/linces.png",
-    "p": 3,
-    "gd": 3,
-    "pts": 6,
-    "last": "V"
-  },
-  {
-    "name": "NAPOLI",
-    "logo": "https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/assets/official-logos/napoli.png",
-    "p": 4,
-    "gd": 1,
-    "pts": 6,
-    "last": "D"
-  },
-  {
-    "name": "FRANCO FC",
-    "logo": "https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/assets/official-logos/franco-fc.png",
-    "p": 3,
-    "gd": 0,
-    "pts": 6,
-    "last": "V"
-  },
-  {
-    "name": "HERRERAS FC",
-    "logo": "https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/assets/official-logos/herreras-fc.png",
-    "p": 4,
-    "gd": -3,
-    "pts": 4,
-    "last": "D"
-  },
-  {
-    "name": "ABEJAS",
-    "logo": "https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/assets/official-logos/abejas.png",
-    "p": 4,
-    "gd": 0,
-    "pts": 3,
-    "last": "D"
-  },
-  {
-    "name": "LOBOS CDG",
-    "logo": "https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/assets/official-logos/lobos-cdg.png",
-    "p": 4,
-    "gd": -15,
-    "pts": 3,
-    "last": "D"
-  },
-  {
-    "name": "TERRICOLAS",
-    "logo": "https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/assets/official-logos/terricolas.png",
-    "p": 3,
-    "gd": -10,
-    "pts": 0,
-    "last": "D"
-  },
-  {
-    "name": "GALACTICOS",
-    "logo": "https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/assets/teams/galacticos-pozos.webp",
-    "p": 4,
-    "gd": -4,
-    "pts": -12,
-    "last": "—"
-  }
+  {name:"SAN JOSE FC",logo:"https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/assets/official-logos/san-jose-fc.png",p:5,gd:12,pts:15,last:"V"},
+  {name:"JUVENTUS",logo:"https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/assets/official-logos/juventus.png",p:5,gd:11,pts:9,last:"D"},
+  {name:"LINCES",logo:"https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/assets/official-logos/linces.png",p:4,gd:6,pts:9,last:"V"},
+  {name:"NAPOLI",logo:"https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/assets/official-logos/napoli.png",p:5,gd:3,pts:9,last:"V"},
+  {name:"HERMANOS",logo:"https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/assets/official-logos/hermanos.png",p:4,gd:2,pts:7,last:"D"},
+  {name:"FRANCO FC",logo:"https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/assets/official-logos/franco-fc.png",p:3,gd:0,pts:6,last:"—"},
+  {name:"HERRERAS FC",logo:"https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/assets/official-logos/herreras-fc.png",p:4,gd:-3,pts:4,last:"—"},
+  {name:"ABEJAS",logo:"https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/assets/official-logos/abejas.png",p:4,gd:0,pts:3,last:"—"},
+  {name:"TERRICOLAS",logo:"https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/assets/official-logos/terricolas.png",p:4,gd:-9,pts:3,last:"V"},
+  {name:"LOBOS CDG",logo:"https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/assets/official-logos/lobos-cdg.png",p:5,gd:-17,pts:3,last:"D"},
+  {name:"GALACTICOS",logo:"https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/assets/teams/galacticos-pozos.webp",p:5,gd:-5,pts:-15,last:"D"}
 ];
 
   const completeTeams=[
-  {
-    "name": "SAN JOSE FC",
-    "logo": "https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/assets/official-logos/san-jose-fc.png",
-    "p": 4,
-    "w": 4,
-    "d": 0,
-    "l": 0,
-    "gf": 13,
-    "ga": 3,
-    "pts": 12
-  },
-  {
-    "name": "JUVENTUS",
-    "logo": "https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/assets/official-logos/juventus.png",
-    "p": 4,
-    "w": 3,
-    "d": 0,
-    "l": 1,
-    "gf": 20,
-    "ga": 6,
-    "pts": 9
-  },
-  {
-    "name": "HERMANOS",
-    "logo": "https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/assets/official-logos/hermanos.png",
-    "p": 3,
-    "w": 2,
-    "d": 1,
-    "l": 0,
-    "gf": 8,
-    "ga": 4,
-    "pts": 7
-  },
-  {
-    "name": "LINCES",
-    "logo": "https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/assets/official-logos/linces.png",
-    "p": 3,
-    "w": 2,
-    "d": 0,
-    "l": 1,
-    "gf": 10,
-    "ga": 7,
-    "pts": 6
-  },
-  {
-    "name": "NAPOLI",
-    "logo": "https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/assets/official-logos/napoli.png",
-    "p": 4,
-    "w": 2,
-    "d": 0,
-    "l": 2,
-    "gf": 8,
-    "ga": 7,
-    "pts": 6
-  },
-  {
-    "name": "FRANCO FC",
-    "logo": "https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/assets/official-logos/franco-fc.png",
-    "p": 3,
-    "w": 2,
-    "d": 0,
-    "l": 1,
-    "gf": 3,
-    "ga": 3,
-    "pts": 6
-  },
-  {
-    "name": "HERRERAS FC",
-    "logo": "https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/assets/official-logos/herreras-fc.png",
-    "p": 4,
-    "w": 1,
-    "d": 1,
-    "l": 2,
-    "gf": 9,
-    "ga": 12,
-    "pts": 4
-  },
-  {
-    "name": "ABEJAS",
-    "logo": "https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/assets/official-logos/abejas.png",
-    "p": 4,
-    "w": 2,
-    "d": 0,
-    "l": 2,
-    "gf": 7,
-    "ga": 7,
-    "pts": 3
-  },
-  {
-    "name": "LOBOS CDG",
-    "logo": "https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/assets/official-logos/lobos-cdg.png",
-    "p": 4,
-    "w": 1,
-    "d": 0,
-    "l": 3,
-    "gf": 2,
-    "ga": 17,
-    "pts": 3
-  },
-  {
-    "name": "TERRICOLAS",
-    "logo": "https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/assets/official-logos/terricolas.png",
-    "p": 3,
-    "w": 0,
-    "d": 0,
-    "l": 3,
-    "gf": 4,
-    "ga": 14,
-    "pts": 0
-  },
-  {
-    "name": "GALACTICOS",
-    "logo": "https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/assets/teams/galacticos-pozos.webp",
-    "p": 4,
-    "w": 0,
-    "d": 0,
-    "l": 4,
-    "gf": 0,
-    "ga": 4,
-    "pts": -12
-  }
+  {name:"SAN JOSE FC",logo:"https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/assets/official-logos/san-jose-fc.png",p:5,w:5,d:0,l:0,gf:16,ga:4,pts:15},
+  {name:"JUVENTUS",logo:"https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/assets/official-logos/juventus.png",p:5,w:3,d:0,l:2,gf:22,ga:11,pts:9},
+  {name:"LINCES",logo:"https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/assets/official-logos/linces.png",p:4,w:3,d:0,l:1,gf:15,ga:9,pts:9},
+  {name:"NAPOLI",logo:"https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/assets/official-logos/napoli.png",p:5,w:3,d:0,l:2,gf:11,ga:8,pts:9},
+  {name:"HERMANOS",logo:"https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/assets/official-logos/hermanos.png",p:4,w:2,d:1,l:1,gf:9,ga:7,pts:7},
+  {name:"FRANCO FC",logo:"https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/assets/official-logos/franco-fc.png",p:3,w:2,d:0,l:1,gf:3,ga:3,pts:6},
+  {name:"HERRERAS FC",logo:"https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/assets/official-logos/herreras-fc.png",p:4,w:1,d:1,l:2,gf:9,ga:12,pts:4},
+  {name:"ABEJAS",logo:"https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/assets/official-logos/abejas.png",p:4,w:2,d:0,l:2,gf:7,ga:7,pts:3},
+  {name:"TERRICOLAS",logo:"https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/assets/official-logos/terricolas.png",p:4,w:1,d:0,l:3,gf:5,ga:14,pts:3},
+  {name:"LOBOS CDG",logo:"https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/assets/official-logos/lobos-cdg.png",p:5,w:1,d:0,l:4,gf:3,ga:20,pts:3},
+  {name:"GALACTICOS",logo:"https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/assets/teams/galacticos-pozos.webp",p:5,w:0,d:0,l:5,gf:0,ga:5,pts:-15}
 ];
 
   const criteriaTeams=[
-  {
-    "name": "SAN JOSE FC",
-    "logo": "https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/assets/official-logos/san-jose-fc.png",
-    "pts": 12,
-    "gd": 10,
-    "gf": 13,
-    "ga": 3,
-    "w": 4,
-    "d": 0,
-    "l": 0
-  },
-  {
-    "name": "JUVENTUS",
-    "logo": "https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/assets/official-logos/juventus.png",
-    "pts": 9,
-    "gd": 14,
-    "gf": 20,
-    "ga": 6,
-    "w": 3,
-    "d": 0,
-    "l": 1
-  },
-  {
-    "name": "HERMANOS",
-    "logo": "https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/assets/official-logos/hermanos.png",
-    "pts": 7,
-    "gd": 4,
-    "gf": 8,
-    "ga": 4,
-    "w": 2,
-    "d": 1,
-    "l": 0
-  },
-  {
-    "name": "LINCES",
-    "logo": "https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/assets/official-logos/linces.png",
-    "pts": 6,
-    "gd": 3,
-    "gf": 10,
-    "ga": 7,
-    "w": 2,
-    "d": 0,
-    "l": 1
-  },
-  {
-    "name": "NAPOLI",
-    "logo": "https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/assets/official-logos/napoli.png",
-    "pts": 6,
-    "gd": 1,
-    "gf": 8,
-    "ga": 7,
-    "w": 2,
-    "d": 0,
-    "l": 2
-  },
-  {
-    "name": "FRANCO FC",
-    "logo": "https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/assets/official-logos/franco-fc.png",
-    "pts": 6,
-    "gd": 0,
-    "gf": 3,
-    "ga": 3,
-    "w": 2,
-    "d": 0,
-    "l": 1
-  },
-  {
-    "name": "HERRERAS FC",
-    "logo": "https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/assets/official-logos/herreras-fc.png",
-    "pts": 4,
-    "gd": -3,
-    "gf": 9,
-    "ga": 12,
-    "w": 1,
-    "d": 1,
-    "l": 2
-  },
-  {
-    "name": "ABEJAS",
-    "logo": "https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/assets/official-logos/abejas.png",
-    "pts": 3,
-    "gd": 0,
-    "gf": 7,
-    "ga": 7,
-    "w": 2,
-    "d": 0,
-    "l": 2
-  },
-  {
-    "name": "LOBOS CDG",
-    "logo": "https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/assets/official-logos/lobos-cdg.png",
-    "pts": 3,
-    "gd": -15,
-    "gf": 2,
-    "ga": 17,
-    "w": 1,
-    "d": 0,
-    "l": 3
-  },
-  {
-    "name": "TERRICOLAS",
-    "logo": "https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/assets/official-logos/terricolas.png",
-    "pts": 0,
-    "gd": -10,
-    "gf": 4,
-    "ga": 14,
-    "w": 0,
-    "d": 0,
-    "l": 3
-  },
-  {
-    "name": "GALACTICOS",
-    "logo": "https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/assets/teams/galacticos-pozos.webp",
-    "pts": -12,
-    "gd": -4,
-    "gf": 0,
-    "ga": 4,
-    "w": 0,
-    "d": 0,
-    "l": 4
-  }
+  {name:"SAN JOSE FC",logo:"https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/assets/official-logos/san-jose-fc.png",pts:15,gd:12,gf:16,ga:4,w:5,d:0,l:0},
+  {name:"JUVENTUS",logo:"https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/assets/official-logos/juventus.png",pts:9,gd:11,gf:22,ga:11,w:3,d:0,l:2},
+  {name:"LINCES",logo:"https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/assets/official-logos/linces.png",pts:9,gd:6,gf:15,ga:9,w:3,d:0,l:1},
+  {name:"NAPOLI",logo:"https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/assets/official-logos/napoli.png",pts:9,gd:3,gf:11,ga:8,w:3,d:0,l:2},
+  {name:"HERMANOS",logo:"https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/assets/official-logos/hermanos.png",pts:7,gd:2,gf:9,ga:7,w:2,d:1,l:1},
+  {name:"FRANCO FC",logo:"https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/assets/official-logos/franco-fc.png",pts:6,gd:0,gf:3,ga:3,w:2,d:0,l:1},
+  {name:"HERRERAS FC",logo:"https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/assets/official-logos/herreras-fc.png",pts:4,gd:-3,gf:9,ga:12,w:1,d:1,l:2},
+  {name:"ABEJAS",logo:"https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/assets/official-logos/abejas.png",pts:3,gd:0,gf:7,ga:7,w:2,d:0,l:2},
+  {name:"TERRICOLAS",logo:"https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/assets/official-logos/terricolas.png",pts:3,gd:-9,gf:5,ga:14,w:1,d:0,l:3},
+  {name:"LOBOS CDG",logo:"https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/assets/official-logos/lobos-cdg.png",pts:3,gd:-17,gf:3,ga:20,w:1,d:0,l:4},
+  {name:"GALACTICOS",logo:"https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/assets/teams/galacticos-pozos.webp",pts:-15,gd:-5,gf:0,ga:5,w:0,d:0,l:5}
 ];
 
   const v35CompleteTeams=[
