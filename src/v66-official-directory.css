@@ -632,3 +632,373 @@ body[data-app-route="club-store"] .v436-product > small{
   body[data-app-route="club-store"] .v436-category-view h2{font-size:21px!important}
   body[data-app-route="club-store"] .v436-kit-tiles button{height:118px!important}
 }
+
+
+/* V437 — producto retail completo + destacados de equipación */
+/* Tarjetas grandes de equipación en el inicio, inspiradas en la referencia y adaptadas al azul. */
+body[data-app-route="club-store"] .v437-featured-kits{
+  display:grid!important;
+  gap:18px!important;
+  padding:22px 14px 8px!important;
+  background:#fff!important;
+}
+body[data-app-route="club-store"] .v437-feature-card{
+  position:relative!important;
+  min-height:330px!important;
+  overflow:hidden!important;
+  border-radius:24px!important;
+  background:
+    radial-gradient(circle at 50% 20%,rgba(69,92,255,.38),transparent 42%),
+    linear-gradient(160deg,#0a156c 0%,#1837e2 54%,#09104e 100%)!important;
+}
+body[data-app-route="club-store"] .v437-feature-card.away{
+  background:
+    radial-gradient(circle at 50% 18%,rgba(21,226,198,.25),transparent 42%),
+    linear-gradient(160deg,#061a2a 0%,#083f59 58%,#071020 100%)!important;
+}
+body[data-app-route="club-store"] .v437-feature-art{
+  height:260px!important;
+  display:grid!important;
+  place-items:center!important;
+}
+body[data-app-route="club-store"] .v437-feature-art .v431-shirt{
+  width:176px!important;
+  height:210px!important;
+  transform:scale(1)!important;
+}
+body[data-app-route="club-store"] .v437-feature-art .v431-shirt-logo{
+  width:38px!important;
+  height:38px!important;
+  top:55px!important;
+}
+body[data-app-route="club-store"] .v437-feature-copy{
+  position:absolute!important;
+  left:9%!important;
+  right:9%!important;
+  bottom:-1px!important;
+  z-index:4!important;
+  padding:18px 16px 15px!important;
+  border-radius:28px 28px 0 0!important;
+  background:rgba(255,255,255,.94)!important;
+  backdrop-filter:blur(12px)!important;
+  text-align:center!important;
+}
+body[data-app-route="club-store"] .v437-feature-copy h3{
+  margin:0 0 12px!important;
+  color:#0b1030!important;
+  font-size:20px!important;
+  line-height:1!important;
+  font-weight:900!important;
+}
+body[data-app-route="club-store"] .v437-feature-copy button{
+  width:100%!important;
+  height:42px!important;
+  border:2px solid #3443f3!important;
+  border-radius:18px!important;
+  background:#fff!important;
+  color:#2736e8!important;
+  font-size:9px!important;
+  font-weight:900!important;
+  letter-spacing:.04em!important;
+}
+
+/* Vista de detalle de producto. */
+body[data-app-route="club-store"] .v437-product-detail{
+  display:none!important;
+  min-height:100vh!important;
+  padding:0 0 calc(90px + env(safe-area-inset-bottom))!important;
+  background:
+    radial-gradient(circle at 50% 64%,rgba(59,78,255,.09),transparent 34%),
+    #fff!important;
+  color:#17203b!important;
+}
+body[data-app-route="club-store"] .v437-detail-mode .v437-product-detail{
+  display:block!important;
+}
+body[data-app-route="club-store"] .v437-detail-mode > .v435-store-head,
+body[data-app-route="club-store"] .v437-detail-mode > .v435-search-panel,
+body[data-app-route="club-store"] .v437-detail-mode > .v435-shop-tabs,
+body[data-app-route="club-store"] .v437-detail-mode > .v436-category-panel,
+body[data-app-route="club-store"] .v437-detail-mode > .v431-hero,
+body[data-app-route="club-store"] .v437-detail-mode > .v437-featured-kits,
+body[data-app-route="club-store"] .v437-detail-mode > .v431-block,
+body[data-app-route="club-store"] .v437-detail-mode > .v431-story,
+body[data-app-route="club-store"] .v437-detail-mode > .v431-store-note{
+  display:none!important;
+}
+body[data-app-route="club-store"] .v437-member-strip{
+  position:sticky!important;
+  top:0!important;
+  z-index:90!important;
+  min-height:36px!important;
+  display:flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  padding:7px 12px!important;
+  background:linear-gradient(90deg,#1226c9,#3f43ff)!important;
+  color:#fff!important;
+  font-size:8.5px!important;
+  line-height:1.2!important;
+  font-weight:800!important;
+  text-align:center!important;
+  letter-spacing:.04em!important;
+}
+body[data-app-route="club-store"] .v437-kit-tabs{
+  position:sticky!important;
+  top:36px!important;
+  z-index:80!important;
+  display:flex!important;
+  gap:10px!important;
+  overflow-x:auto!important;
+  padding:12px 14px!important;
+  background:rgba(255,255,255,.96)!important;
+  border-bottom:1px solid #eef0f8!important;
+  scrollbar-width:none!important;
+}
+body[data-app-route="club-store"] .v437-kit-tabs::-webkit-scrollbar{display:none!important}
+body[data-app-route="club-store"] .v437-kit-tabs button{
+  flex:1 0 100px!important;
+  height:38px!important;
+  border:1px solid #dbe0ef!important;
+  border-radius:20px!important;
+  background:#fff!important;
+  color:#666d83!important;
+  font-size:9.5px!important;
+  font-weight:650!important;
+}
+body[data-app-route="club-store"] .v437-kit-tabs button.active{
+  border-color:#3342ee!important;
+  color:#2f3deb!important;
+  background:#f6f7ff!important;
+}
+body[data-app-route="club-store"] .v437-product-stage{
+  position:relative!important;
+  min-height:400px!important;
+  display:grid!important;
+  place-items:center!important;
+  overflow:hidden!important;
+  background:
+    radial-gradient(circle at 50% 44%,rgba(54,70,246,.11),transparent 42%),
+    #fff!important;
+}
+body[data-app-route="club-store"] .v437-detail-back{
+  position:absolute!important;
+  left:14px!important;
+  top:14px!important;
+  z-index:5!important;
+  width:38px!important;
+  height:38px!important;
+  display:grid!important;
+  place-items:center!important;
+  padding:0!important;
+  border:1px solid #dfe3ef!important;
+  border-radius:50%!important;
+  background:rgba(255,255,255,.94)!important;
+  color:#17203b!important;
+  font-size:28px!important;
+  line-height:1!important;
+}
+body[data-app-route="club-store"] .v437-stage-shirt{
+  width:100%!important;
+  height:365px!important;
+  display:grid!important;
+  place-items:center!important;
+}
+body[data-app-route="club-store"] .v437-stage-shirt .v431-shirt{
+  width:245px!important;
+  height:300px!important;
+}
+body[data-app-route="club-store"] .v437-stage-shirt .v431-shirt-logo{
+  top:82px!important;
+  width:52px!important;
+  height:52px!important;
+}
+body[data-app-route="club-store"] .v437-stage-shirt .v431-shirt-name{
+  top:82px!important;
+  font-size:9px!important;
+}
+body[data-app-route="club-store"] .v437-stage-shirt .v431-shirt-number{
+  top:105px!important;
+  font-size:40px!important;
+}
+body[data-app-route="club-store"] .v437-product-card{
+  position:relative!important;
+  z-index:4!important;
+  width:calc(100% - 28px)!important;
+  margin:-34px auto 0!important;
+  padding:26px 18px 22px!important;
+  border:1px solid #f0f1f8!important;
+  border-radius:28px 28px 18px 18px!important;
+  background:rgba(255,255,255,.98)!important;
+  box-shadow:0 18px 55px rgba(41,53,155,.10)!important;
+}
+body[data-app-route="club-store"] .v437-product-card h2{
+  margin:0 0 12px!important;
+  color:#1c2a4b!important;
+  font-size:20px!important;
+  line-height:1.14!important;
+  font-weight:900!important;
+  letter-spacing:-.02em!important;
+}
+body[data-app-route="club-store"] .v437-product-card > strong{
+  display:block!important;
+  margin-bottom:8px!important;
+  color:#1b2948!important;
+  font-size:15px!important;
+  line-height:1!important;
+}
+body[data-app-route="club-store"] .v437-member-price{
+  margin:0 0 16px!important;
+  color:#3845e9!important;
+  font-size:9px!important;
+  line-height:1.35!important;
+  font-weight:700!important;
+}
+body[data-app-route="club-store"] .v437-product-card hr{
+  height:1px!important;
+  margin:16px 0!important;
+  border:0!important;
+  background:#e6e9f2!important;
+}
+body[data-app-route="club-store"] .v437-option-head{
+  display:flex!important;
+  align-items:center!important;
+  justify-content:space-between!important;
+  gap:12px!important;
+  margin-bottom:10px!important;
+}
+body[data-app-route="club-store"] .v437-option-head b{
+  color:#253351!important;
+  font-size:13px!important;
+}
+body[data-app-route="club-store"] .v437-option-head button{
+  padding:0!important;
+  border:0!important;
+  background:none!important;
+  color:#3543e8!important;
+  font-size:9px!important;
+  font-weight:800!important;
+}
+body[data-app-route="club-store"] .v437-option-row{
+  display:flex!important;
+  gap:8px!important;
+  overflow-x:auto!important;
+  padding:1px 0 3px!important;
+  scrollbar-width:none!important;
+}
+body[data-app-route="club-store"] .v437-option-row::-webkit-scrollbar{display:none!important}
+body[data-app-route="club-store"] .v437-option-row button{
+  flex:0 0 auto!important;
+  min-width:72px!important;
+  height:36px!important;
+  padding:0 13px!important;
+  border:1px solid #dfe3ef!important;
+  border-radius:18px!important;
+  background:#fff!important;
+  color:#667087!important;
+  font-size:9px!important;
+  font-weight:700!important;
+}
+body[data-app-route="club-store"] .v437-option-row button.active{
+  border-color:#3342ee!important;
+  background:#f7f7ff!important;
+  color:#3342ee!important;
+}
+body[data-app-route="club-store"] .v437-name-row button:last-child{
+  min-width:160px!important;
+}
+body[data-app-route="club-store"] .v437-selected-player{
+  min-height:0!important;
+  margin-top:8px!important;
+  color:#3441df!important;
+  font-size:8.5px!important;
+  font-weight:800!important;
+}
+body[data-app-route="club-store"] .v437-add-cart{
+  width:100%!important;
+  height:48px!important;
+  margin-top:16px!important;
+  border:0!important;
+  border-radius:18px!important;
+  background:linear-gradient(90deg,#2936ef,#6545ff)!important;
+  color:#fff!important;
+  font-size:10px!important;
+  font-weight:900!important;
+  letter-spacing:.04em!important;
+  box-shadow:0 10px 22px rgba(60,64,237,.20)!important;
+}
+body[data-app-route="club-store"] .v437-detail-note{
+  margin:16px 4px 0!important;
+  color:#69738a!important;
+  font-size:8.5px!important;
+  line-height:1.45!important;
+  text-align:center!important;
+}
+body[data-app-route="club-store"] .v437-player-picker{
+  display:none!important;
+  margin-top:10px!important;
+  padding:12px!important;
+  border:1px solid #e0e4f0!important;
+  border-radius:14px!important;
+  background:#f8f9ff!important;
+}
+body[data-app-route="club-store"] .v437-player-picker.open{display:block!important}
+body[data-app-route="club-store"] .v437-player-picker>div:first-child{
+  display:flex!important;
+  align-items:center!important;
+  justify-content:space-between!important;
+  margin-bottom:9px!important;
+}
+body[data-app-route="club-store"] .v437-player-picker>div:first-child b{
+  font-size:10px!important;
+  color:#222d4b!important;
+}
+body[data-app-route="club-store"] .v437-player-picker>div:first-child button{
+  width:26px!important;
+  height:26px!important;
+  padding:0!important;
+  border:0!important;
+  border-radius:50%!important;
+  background:#fff!important;
+  color:#222d4b!important;
+  font-size:17px!important;
+}
+body[data-app-route="club-store"] .v437-player-options{
+  display:grid!important;
+  grid-template-columns:1fr 1fr!important;
+  gap:7px!important;
+  max-height:190px!important;
+  overflow:auto!important;
+}
+body[data-app-route="club-store"] .v437-player-options button{
+  min-height:34px!important;
+  padding:6px 8px!important;
+  border:1px solid #dfe3ef!important;
+  border-radius:9px!important;
+  background:#fff!important;
+  color:#293452!important;
+  font-size:7.5px!important;
+  line-height:1.2!important;
+  font-weight:700!important;
+}
+body[data-app-route="club-store"] .v437-picker-empty{
+  grid-column:1/-1!important;
+  padding:10px!important;
+  color:#7b8297!important;
+  font-size:8px!important;
+}
+
+/* El botón + y el corazón de las tarjetas conservan su acción sin abrir el detalle accidentalmente. */
+body[data-app-route="club-store"] .v436-product{cursor:pointer!important}
+body[data-app-route="club-store"] .v436-product:hover .v436-product-art{
+  outline:1px solid rgba(51,66,238,.25)!important;
+}
+
+@media(max-width:380px){
+  body[data-app-route="club-store"] .v437-feature-card{min-height:305px!important}
+  body[data-app-route="club-store"] .v437-feature-art{height:238px!important}
+  body[data-app-route="club-store"] .v437-product-stage{min-height:360px!important}
+  body[data-app-route="club-store"] .v437-stage-shirt{height:330px!important}
+  body[data-app-route="club-store"] .v437-stage-shirt .v431-shirt{width:218px!important;height:270px!important}
+  body[data-app-route="club-store"] .v437-product-card h2{font-size:18px!important}
+}
