@@ -23,51 +23,11 @@
 
 
   const MAIN_MATCHES={
-  "m1": {
-    "home": "FRANCO FC",
-    "away": "HERRERAS FC",
-    "time": "08:00",
-    "date": "20/09/2026",
-    "venue": "Romerillo",
-    "category": "Primera Fuerza",
-    "jornada": "5"
-  },
-  "m2": {
-    "home": "TERRICOLAS",
-    "away": "GALACTICOS",
-    "time": "08:00",
-    "date": "20/09/2026",
-    "venue": "Campo por confirmar",
-    "category": "Primera Fuerza",
-    "jornada": "5"
-  },
-  "m3": {
-    "home": "LINCES",
-    "away": "JUVENTUS",
-    "time": "08:00",
-    "date": "20/09/2026",
-    "venue": "Campo 3",
-    "category": "Primera Fuerza",
-    "jornada": "5"
-  },
-  "m4": {
-    "home": "HERMANOS",
-    "away": "SAN JOSE FC",
-    "time": "10:00",
-    "date": "20/09/2026",
-    "venue": "Campo 3",
-    "category": "Primera Fuerza",
-    "jornada": "5"
-  },
-  "m5": {
-    "home": "LOBOS CDG",
-    "away": "NAPOLI",
-    "time": "12:00",
-    "date": "20/09/2026",
-    "venue": "Cerrito de Gasca",
-    "category": "Primera Fuerza",
-    "jornada": "5"
-  }
+  "m1":{"home":"HERMANOS","away":"LOBOS CDG","time":"10:00","date":"04/10/2026","venue":"Campo 3","category":"Primera Fuerza","jornada":"7"},
+  "m2":{"home":"HERRERAS FC","away":"ABEJAS","time":"10:00","date":"04/10/2026","venue":"Pozos","category":"Primera Fuerza","jornada":"7"},
+  "m3":{"home":"TERRICOLAS","away":"NAPOLI","time":"08:00","date":"04/10/2026","venue":"Campo 3","category":"Primera Fuerza","jornada":"7"},
+  "m4":{"home":"FRANCO FC","away":"SAN JOSE FC","time":"12:00","date":"04/10/2026","venue":"San José","category":"Primera Fuerza","jornada":"7"},
+  "m5":{"home":"LINCES","away":"GALACTICOS","time":"Gana Linces","date":"04/10/2026","venue":"Resolución oficial","category":"Primera Fuerza","jornada":"7"}
 };
 
 
@@ -300,9 +260,7 @@
     const saved=readSaved();
     if(saved?.home&&saved?.away)return saved;
     const id=saved?.id||'m1';
-    return {id,from:saved?.from||'#/competition',...(MAIN_MATCHES[id]||{
-      home:'FRANCO FC',away:'HERRERAS FC',time:'08:00',date:'20/09/2026',venue:'Romerillo',category:'Primera Fuerza',jornada:'5'
-    })};
+    return {id,from:saved?.from||'#/competition',...(MAIN_MATCHES[id]||{ home:'HERMANOS',away:'LOBOS CDG',time:'10:00',date:'04/10/2026',venue:'Campo 3',category:'Primera Fuerza',jornada:'7' })};
   }
 
   function toast(msg){
