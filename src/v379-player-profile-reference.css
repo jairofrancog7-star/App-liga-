@@ -1702,3 +1702,169 @@ body.v379-player-profile-active.v385-player-scrolled .v379-hero{
   }
 }
 /* /V386_PLAYER_HERO_REFERENCE */
+
+
+/* V387_PLAYER_SCROLL_HEADER_REFERENCE
+   Al desplazarse: flecha, nombre, comparar, compartir y pestañas visibles como referencia. */
+body.v379-player-profile-active.v385-player-scrolled .v385-player-compact-head{
+  position:fixed!important;
+  top:0!important;
+  left:50%!important;
+  transform:translateX(-50%)!important;
+  z-index:120!important;
+  width:min(100%,520px)!important;
+  height:72px!important;
+  padding:0 22px!important;
+  display:grid!important;
+  grid-template-columns:44px minmax(0,1fr) 104px!important;
+  align-items:center!important;
+  gap:14px!important;
+  background:#05045f!important;
+  border:0!important;
+  box-shadow:none!important;
+}
+body.v379-player-profile-active.v385-player-scrolled .v385-player-compact-head>strong{
+  min-width:0!important;
+  overflow:hidden!important;
+  text-overflow:ellipsis!important;
+  white-space:nowrap!important;
+  color:#fff!important;
+  font-size:25px!important;
+  line-height:1!important;
+  font-weight:500!important;
+  letter-spacing:-.035em!important;
+}
+body.v379-player-profile-active.v385-player-scrolled .v385-head-back{
+  width:42px!important;
+  height:42px!important;
+}
+body.v379-player-profile-active.v385-player-scrolled .v385-head-back svg{
+  width:34px!important;
+  height:34px!important;
+  stroke-width:2.1!important;
+}
+body.v379-player-profile-active.v385-player-scrolled .v385-head-actions{
+  width:104px!important;
+  display:grid!important;
+  grid-template-columns:42px 42px!important;
+  justify-content:end!important;
+  align-items:center!important;
+  gap:20px!important;
+}
+body.v379-player-profile-active.v385-player-scrolled .v385-head-compare,
+body.v379-player-profile-active.v385-player-scrolled .v385-head-share{
+  width:42px!important;
+  height:42px!important;
+  display:grid!important;
+  place-items:center!important;
+}
+body.v379-player-profile-active.v385-player-scrolled .v385-head-compare svg{
+  width:34px!important;
+  height:31px!important;
+  stroke-width:1.8!important;
+}
+body.v379-player-profile-active.v385-player-scrolled .v385-head-share svg{
+  width:34px!important;
+  height:34px!important;
+  stroke-width:1.9!important;
+}
+body.v379-player-profile-active.v385-player-scrolled .v379-tabs{
+  position:fixed!important;
+  top:72px!important;
+  left:50%!important;
+  transform:translateX(-50%)!important;
+  z-index:118!important;
+  width:min(100%,520px)!important;
+  height:64px!important;
+  display:grid!important;
+  grid-template-columns:repeat(4,1fr)!important;
+  align-items:end!important;
+  background:#05045f!important;
+  border-bottom:1px solid rgba(238,238,255,.72)!important;
+  box-shadow:none!important;
+}
+body.v379-player-profile-active.v385-player-scrolled .v379-tabs button{
+  height:64px!important;
+  padding:0 5px!important;
+  display:grid!important;
+  place-items:center!important;
+  color:#b8bad4!important;
+  font-size:15px!important;
+  line-height:1!important;
+  font-weight:650!important;
+  white-space:nowrap!important;
+}
+body.v379-player-profile-active.v385-player-scrolled .v379-tabs button.active{
+  color:#11e8ef!important;
+  font-weight:750!important;
+}
+body.v379-player-profile-active.v385-player-scrolled .v379-tabs button.active:after{
+  left:20%!important;
+  right:20%!important;
+  bottom:-1px!important;
+  height:4px!important;
+  border-radius:4px 4px 0 0!important;
+  background:#11e8ef!important;
+}
+body.v379-player-profile-active.v385-player-scrolled .v379-content{
+  scroll-margin-top:136px!important;
+}
+@media(max-width:420px){
+  body.v379-player-profile-active.v385-player-scrolled .v385-player-compact-head{
+    height:68px!important;
+    padding:0 16px!important;
+    grid-template-columns:40px minmax(0,1fr) 92px!important;
+    gap:10px!important;
+  }
+  body.v379-player-profile-active.v385-player-scrolled .v385-player-compact-head>strong{
+    font-size:21px!important;
+  }
+  body.v379-player-profile-active.v385-player-scrolled .v385-head-back{
+    width:38px!important;height:38px!important;
+  }
+  body.v379-player-profile-active.v385-player-scrolled .v385-head-back svg{
+    width:31px!important;height:31px!important;
+  }
+  body.v379-player-profile-active.v385-player-scrolled .v385-head-actions{
+    width:92px!important;
+    grid-template-columns:38px 38px!important;
+    gap:16px!important;
+  }
+  body.v379-player-profile-active.v385-player-scrolled .v385-head-compare,
+  body.v379-player-profile-active.v385-player-scrolled .v385-head-share{
+    width:38px!important;height:38px!important;
+  }
+  body.v379-player-profile-active.v385-player-scrolled .v385-head-compare svg{
+    width:31px!important;height:29px!important;
+  }
+  body.v379-player-profile-active.v385-player-scrolled .v385-head-share svg{
+    width:31px!important;height:31px!important;
+  }
+  body.v379-player-profile-active.v385-player-scrolled .v379-tabs{
+    top:68px!important;
+    height:60px!important;
+  }
+  body.v379-player-profile-active.v385-player-scrolled .v379-tabs button{
+    height:60px!important;
+    font-size:13px!important;
+  }
+}
+@media(max-width:360px){
+  body.v379-player-profile-active.v385-player-scrolled .v385-player-compact-head{
+    padding-left:13px!important;
+    padding-right:13px!important;
+    grid-template-columns:38px minmax(0,1fr) 86px!important;
+  }
+  body.v379-player-profile-active.v385-player-scrolled .v385-player-compact-head>strong{
+    font-size:19px!important;
+  }
+  body.v379-player-profile-active.v385-player-scrolled .v385-head-actions{
+    width:86px!important;
+    grid-template-columns:36px 36px!important;
+    gap:14px!important;
+  }
+  body.v379-player-profile-active.v385-player-scrolled .v379-tabs button{
+    font-size:12px!important;
+  }
+}
+/* /V387_PLAYER_SCROLL_HEADER_REFERENCE */
