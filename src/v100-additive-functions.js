@@ -7,7 +7,7 @@
 if(window.__LJR_V100_ADDITIVE__) return;
 window.__LJR_V100_ADDITIVE__=true;
 
-const BUILD='20260922-fanzone-touch-fix-v158';
+const BUILD='20260930-recruit-selects-v401';
 const $=(s,r=document)=>r.querySelector(s);
 const $$=(s,r=document)=>Array.from(r.querySelectorAll(s));
 const esc=(v)=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -1334,6 +1334,49 @@ function v190RecruitTeamOptions(selected=''){
   }
   return html;
 }
+function v190RecruitCommunityOptions(selected=''){
+  const places=[
+    'Santa Cruz de Juventino Rosas',
+    'Cerrito de Gasca',
+    'Franco Tavera',
+    'Tavera',
+    'San Juan de la Cruz',
+    'Santiago de Cuenda',
+    'San Antonio de Romerillo',
+    'Fraccionamiento Comontuoso',
+    'Comontuoso',
+    'Pozos',
+    'San José de la Montaña',
+    'San Julián Tierra Blanca',
+    'Emiliano Zapata',
+    'La Huerta de Cuenda',
+    'Celaya',
+    'Villagrán',
+    'Comonfort',
+    'Cortazar',
+    'Salamanca'
+  ];
+  return '<option value="">Selecciona comunidad o ciudad</option>'+
+    places.map(x=>'<option value="'+esc(x)+'" '+(selected===x?'selected':'')+'>'+esc(x)+'</option>').join('');
+}
+function v190RecruitPositionOptions(selected=''){
+  const positions=[
+    'Portero',
+    'Defensa central',
+    'Lateral derecho',
+    'Lateral izquierdo',
+    'Medio defensivo / contención',
+    'Mediocampista',
+    'Medio ofensivo',
+    'Extremo derecho',
+    'Extremo izquierdo',
+    'Delantero centro',
+    'Segundo delantero',
+    'Polivalente / varias posiciones'
+  ];
+  return '<option value="">Selecciona posición</option>'+
+    positions.map(x=>'<option value="'+esc(x)+'" '+(selected===x?'selected':'')+'>'+esc(x)+'</option>').join('');
+}
 function v190RecruitCampaign(){
   const x=read(V190_RECRUIT_CAMPAIGN_KEY,{})||{};
   return {
@@ -1368,7 +1411,7 @@ function v190RecruitPage(){
         '<header><span>＋</span><div><b>Nuevo equipo</b><small>Equipo interesado en entrar a la Liga</small></div></header>'+
         '<label><span>Nombre del equipo</span><input required data-v190-team-name placeholder="Nombre del equipo" autocomplete="off"></label>'+
         '<label><span>Categoría</span><select data-v190-team-category>'+v190RecruitCategoryOptions()+'</select></label>'+
-        '<label><span>Comunidad / localidad</span><input data-v190-team-community placeholder="Opcional" autocomplete="off"></label>'+
+        '<label><span>Comunidad / localidad</span><select data-v190-team-community>'+v190RecruitCommunityOptions()+'</select></label>'+
         '<label><span>Contacto / referencia</span><input data-v190-team-contact placeholder="Opcional · se guarda en este dispositivo" autocomplete="off"></label>'+
         '<button type="submit">Guardar equipo nuevo</button>'+
       '</form>'+
@@ -1377,7 +1420,7 @@ function v190RecruitPage(){
         '<label><span>Nombre completo</span><input required data-v190-player-name placeholder="Nombre del jugador" autocomplete="off"></label>'+
         '<label><span>Categoría</span><select data-v190-player-category>'+v190RecruitCategoryOptions()+'</select></label>'+
         '<label><span>Equipo destino</span><select data-v190-player-team>'+v190RecruitTeamOptions()+'</select></label>'+
-        '<label><span>Posición</span><input data-v190-player-position placeholder="Portero, defensa, medio, delantero..." autocomplete="off"></label>'+
+        '<label><span>Posición</span><select data-v190-player-position>'+v190RecruitPositionOptions()+'</select></label>'+
         '<label><span>Contacto / referencia</span><input data-v190-player-contact placeholder="Opcional · se guarda en este dispositivo" autocomplete="off"></label>'+
         '<button type="submit">Guardar jugador nuevo</button>'+
       '</form>'+
