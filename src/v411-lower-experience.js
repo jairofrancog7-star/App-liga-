@@ -373,11 +373,15 @@ async function mount(){
   const r=route();
   const old=$('#'+ID,screen);
   if(!SUPPORTED.has(r)){old?.remove();return}
-  if(old&&old.dataset.v412Route===r)return;
+  const host=$('#v105-bottom',screen)||screen;
+  if(old&&old.dataset.v412Route===r){
+    if(old.parentElement!==host)host.appendChild(old);
+    return;
+  }
   old?.remove();
   const html=await build(r);
   if(route()!==r||!html)return;
-  screen.insertAdjacentHTML('beforeend','<div id="'+ID+'" data-v412-route="'+esc(r)+'">'+html+'</div>');
+  host.insertAdjacentHTML('beforeend','<div id="'+ID+'" data-v412-route="'+esc(r)+'">'+html+'</div>');
   const root=$('#'+ID,screen);if(root)bind(root);
 }
 function schedule(ms=100){clearTimeout(timer);timer=setTimeout(mount,ms)}
