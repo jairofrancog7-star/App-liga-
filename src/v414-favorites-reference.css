@@ -475,3 +475,180 @@ body.v414-favorites-active .v414-tabs{
   .v414-ref-head h1{font-size:27px!important}
   .v414-ref-head button{width:50px!important;height:50px!important}
 }
+
+
+/* V419 — ajuste fino de tamaño/posición contra la referencia móvil.
+   Reduce controles que todavía se veían grandes sin cambiar estructura ni datos. */
+body.v414-favorites-active #v414-favorites-reference{
+  padding-left:12px!important;
+  padding-right:12px!important;
+}
+.v414-ref-head{
+  min-height:108px!important;
+  padding:22px 16px 18px!important;
+}
+.v414-ref-head h1{
+  font-size:24px!important;
+  line-height:1!important;
+  font-weight:800!important;
+}
+.v414-ref-head>div{gap:8px!important}
+.v414-ref-head button{
+  width:42px!important;
+  height:42px!important;
+}
+.v414-ref-head svg{
+  width:22px!important;
+  height:22px!important;
+  stroke-width:1.65!important;
+}
+
+.v414-tabs{
+  height:48px!important;
+}
+.v414-tab{
+  min-width:98px!important;
+  height:48px!important;
+  padding:0 10px!important;
+  font-size:12px!important;
+  line-height:48px!important;
+}
+.v414-tab.active:after{
+  left:19%!important;
+  right:19%!important;
+  height:2px!important;
+}
+
+.v414-filters{
+  min-height:54px!important;
+  gap:7px!important;
+  padding-top:9px!important;
+  padding-bottom:10px!important;
+}
+.v414-filter{
+  height:34px!important;
+  padding:0 13px!important;
+  font-size:10px!important;
+  line-height:32px!important;
+}
+.v414-filter[data-v414-cat="all"]::before{
+  margin-right:6px!important;
+  font-size:10px!important;
+}
+
+.v414-hero{
+  padding:29px 8px 18px!important;
+}
+.v414-hero h2{
+  font-size:17px!important;
+  line-height:1.16!important;
+}
+.v414-hero p{
+  margin-top:7px!important;
+  font-size:10px!important;
+  line-height:1.38!important;
+}
+
+.v414-logo-rail{
+  gap:9px!important;
+  padding-bottom:12px!important;
+}
+.v414-logo-tile{
+  width:64px!important;
+  height:64px!important;
+  flex-basis:64px!important;
+  border-radius:11px!important;
+}
+.v414-logo-tile img{
+  width:46px!important;
+  height:46px!important;
+}
+.v414-logo-tile .v414-fallback{
+  width:44px!important;
+  height:44px!important;
+  font-size:10px!important;
+}
+
+.v414-search{
+  margin:12px 0 20px!important;
+}
+.v414-search input{
+  height:48px!important;
+  padding-left:45px!important;
+  border-radius:12px!important;
+  font-size:12px!important;
+}
+.v414-search svg{
+  left:15px!important;
+  width:19px!important;
+  height:19px!important;
+}
+
+.v414-section-title{
+  margin-bottom:9px!important;
+  font-size:11px!important;
+}
+.v414-list{gap:9px!important}
+.v414-row{
+  min-height:66px!important;
+  grid-template-columns:42px minmax(0,1fr) 36px!important;
+  gap:8px!important;
+  padding:8px 11px!important;
+  border-radius:13px!important;
+}
+.v414-row-logo,.v414-avatar{
+  width:36px!important;
+  height:36px!important;
+}
+.v414-row-copy b{
+  font-size:12px!important;
+}
+.v414-row-copy small{
+  margin-top:4px!important;
+  font-size:9px!important;
+}
+.v414-star{
+  width:34px!important;
+  height:34px!important;
+  font-size:23px!important;
+}
+.v414-comp-icon{
+  width:36px!important;
+  height:36px!important;
+  border-radius:10px!important;
+  font-size:14px!important;
+}
+.v414-match-logo-pair{
+  width:40px!important;
+  height:36px!important;
+}
+.v414-match-logo-pair img{
+  width:25px!important;
+  height:25px!important;
+}
+
+@media(max-width:520px){
+  .v414-ref-head{
+    margin-left:-12px!important;
+    margin-right:-12px!important;
+    padding-left:18px!important;
+    padding-right:18px!important;
+  }
+  .v414-ref-head h1{font-size:24px!important}
+  .v414-ref-head button{width:42px!important;height:42px!important}
+  .v414-tab{min-width:98px!important;font-size:12px!important}
+  .v414-filter{height:34px!important;padding:0 13px!important;font-size:10px!important}
+  .v414-logo-tile{width:64px!important;height:64px!important;flex-basis:64px!important}
+}
+@media(max-width:380px){
+  .v414-ref-head{min-height:102px!important;padding-top:20px!important;padding-bottom:16px!important}
+  .v414-ref-head h1{font-size:22px!important}
+  .v414-ref-head button{width:40px!important;height:40px!important}
+  .v414-ref-head svg{width:21px!important;height:21px!important}
+  .v414-tab{min-width:92px!important;font-size:11px!important}
+  .v414-filter{height:32px!important;line-height:30px!important;padding:0 12px!important;font-size:9.5px!important}
+  .v414-hero{padding-top:26px!important}
+  .v414-hero h2{font-size:16px!important}
+  .v414-search input{height:46px!important}
+  .v414-row{min-height:64px!important}
+}
