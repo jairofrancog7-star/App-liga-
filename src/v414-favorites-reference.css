@@ -652,3 +652,50 @@ body.v414-favorites-active #v414-favorites-reference{
   .v414-search input{height:46px!important}
   .v414-row{min-height:64px!important}
 }
+
+
+/* V420 — cabecera Favoritos: iconos superiores al tamaño/posición de la referencia. */
+.v414-ref-head{
+  padding-right:8px!important;
+}
+.v414-ref-head>div{
+  gap:6px!important;
+  margin-left:auto!important;
+}
+.v414-ref-head button{
+  width:34px!important;
+  height:34px!important;
+  flex:0 0 34px!important;
+}
+.v414-ref-head svg{
+  width:18px!important;
+  height:18px!important;
+  stroke-width:1.65!important;
+}
+@media(max-width:520px){
+  .v414-ref-head{
+    padding-right:8px!important;
+  }
+  .v414-ref-head button{
+    width:34px!important;
+    height:34px!important;
+  }
+  .v414-ref-head svg{
+    width:18px!important;
+    height:18px!important;
+  }
+}
+@media(max-width:380px){
+  .v414-ref-head{
+    padding-right:7px!important;
+  }
+  .v414-ref-head button{
+    width:33px!important;
+    height:33px!important;
+    flex-basis:33px!important;
+  }
+  .v414-ref-head svg{
+    width:17px!important;
+    height:17px!important;
+  }
+}
