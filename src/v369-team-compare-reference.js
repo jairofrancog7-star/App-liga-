@@ -401,12 +401,8 @@ function ensureTopCompare(){
  if(route()!=='teamDetail')return;
  const actions=document.querySelector('#screen [data-v42-reference="teamDetail"] .v42-actions');
  if(!actions)return;
- actions.classList.add('v369-has-compare');
- if(actions.querySelector('[data-v369-open-compare]'))return;
- const share=actions.querySelector('.v42-share,[data-v42-share]');
- const btn=document.createElement('button');
- btn.type='button';btn.className='v369-compare-top';btn.dataset.v369OpenCompare='';btn.textContent='Comparar';
- if(share)actions.insertBefore(btn,share);else actions.appendChild(btn);
+ actions.classList.remove('v369-has-compare');
+ actions.querySelectorAll('[data-v369-open-compare]').forEach(b=>b.remove());
 }
 function bridgeNative(){
  if(bridging||route()!=='teamDetail')return;
