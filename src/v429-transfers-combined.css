@@ -451,3 +451,186 @@ body[data-app-route="transfers"] .v429-transfer-head.v430-transfer-head .v430-ch
     font-size:17px!important;
   }
 }
+
+
+/* V432 — Fichajes completamente adaptado al azul de la app */
+body[data-app-route="transfers"]{
+  background:#07145f!important;
+}
+body[data-app-route="transfers"] #screen{
+  background:
+    radial-gradient(120% 72% at 50% 0%,rgba(27,107,255,.24) 0%,rgba(27,107,255,0) 52%),
+    linear-gradient(180deg,#0b258f 0%,#08196f 26%,#07145f 100%)!important;
+}
+body[data-app-route="transfers"] .v429-transfers{
+  background:transparent!important;
+}
+body[data-app-route="transfers"] .v429-transfer-head.v430-transfer-head{
+  border-bottom:1px solid rgba(68,191,255,.72)!important;
+  background:
+    radial-gradient(120% 180% at 50% -110%,rgba(104,220,255,.58) 0%,rgba(104,220,255,0) 58%),
+    linear-gradient(180deg,#1478ff 0%,#0a51dc 46%,#07309e 100%)!important;
+}
+body[data-app-route="transfers"] .v429-toolbar{
+  border-bottom:1px solid rgba(60,133,255,.24)!important;
+  background:linear-gradient(180deg,#0a237f 0%,#091b70 100%)!important;
+}
+body[data-app-route="transfers"] .v429-toolbar button{
+  color:#fff!important;
+}
+body[data-app-route="transfers"] .v429-toolbar button:not(.v429-all){
+  color:#e8f2ff!important;
+}
+body[data-app-route="transfers"] .v429-toolbar span{
+  color:#9fc7ff!important;
+}
+body[data-app-route="transfers"] .v429-mode-tabs{
+  border-bottom:1px solid rgba(55,121,255,.24)!important;
+  background:#091a70!important;
+}
+body[data-app-route="transfers"] .v429-mode-tabs button{
+  color:#aab7e3!important;
+}
+body[data-app-route="transfers"] .v429-mode-tabs button.is-active{
+  color:#fff!important;
+}
+body[data-app-route="transfers"] .v429-mode-tabs button.is-active:after{
+  background:#2be2f0!important;
+  box-shadow:0 0 8px rgba(43,226,240,.34)!important;
+}
+body[data-app-route="transfers"] .v420-drop-row button{
+  border-color:rgba(69,125,255,.34)!important;
+  background:linear-gradient(180deg,#172783 0%,#111d6c 100%)!important;
+  color:#f1f5ff!important;
+}
+body[data-app-route="transfers"] .v420-drop-row button.is-active{
+  border-color:#2ce0ec!important;
+  background:linear-gradient(180deg,#1c43a5 0%,#17358d 100%)!important;
+}
+body[data-app-route="transfers"] .v420-filter-menu{
+  border-color:rgba(68,130,255,.34)!important;
+  background:#0c1a6b!important;
+  box-shadow:0 10px 24px rgba(1,9,54,.28)!important;
+}
+body[data-app-route="transfers"] .v420-filter-menu button{
+  border-color:rgba(71,129,255,.22)!important;
+  background:#14217c!important;
+  color:#dce7ff!important;
+}
+body[data-app-route="transfers"] .v420-filter-menu button.is-active{
+  border-color:#2be0ec!important;
+  background:#1743ad!important;
+  color:#fff!important;
+}
+body[data-app-route="transfers"] .v420-official-switch{
+  border:1px solid rgba(68,125,255,.26)!important;
+  background:#101d6c!important;
+}
+body[data-app-route="transfers"] .v420-official-switch button{
+  color:#9fadd9!important;
+}
+body[data-app-route="transfers"] .v420-official-switch button.is-active{
+  background:linear-gradient(180deg,#203b9d 0%,#19317e 100%)!important;
+  color:#2ce0ed!important;
+  box-shadow:inset 0 0 0 1px rgba(71,157,255,.18)!important;
+}
+body[data-app-route="transfers"] .v420-group-date{
+  border:1px solid rgba(70,126,255,.18)!important;
+  background:linear-gradient(180deg,#17287f 0%,#13216e 100%)!important;
+  color:#fff!important;
+}
+body[data-app-route="transfers"] .v420-transfer-row{
+  border:1px solid rgba(61,118,255,.22)!important;
+  background:linear-gradient(180deg,#121f74 0%,#0d1862 100%)!important;
+  box-shadow:0 4px 12px rgba(0,7,48,.16)!important;
+}
+body[data-app-route="transfers"] .v420-row-avatar{
+  background:#183087!important;
+  border-color:rgba(86,151,255,.28)!important;
+}
+body[data-app-route="transfers"] .v420-row-copy small{
+  color:#aebce4!important;
+}
+body[data-app-route="transfers"] .v420-row-route .v420-empty-club{
+  background:#1d2e7b!important;
+  color:#aac3f1!important;
+}
+body[data-app-route="transfers"] .v420-row-stat{
+  color:#c8d6f5!important;
+}
+body[data-app-route="transfers"] .v420-competition-search{
+  border:1px solid rgba(67,129,255,.25)!important;
+  background:#142277!important;
+}
+body[data-app-route="transfers"] .v420-competition-search span{
+  color:#80aef9!important;
+}
+body[data-app-route="transfers"] .v420-comp-card{
+  border:1px solid rgba(66,124,255,.22)!important;
+  background:linear-gradient(180deg,#142277 0%,#101b67 100%)!important;
+  box-shadow:0 5px 14px rgba(0,7,48,.14)!important;
+}
+body[data-app-route="transfers"] .v420-comp-card header{
+  border-bottom-color:rgba(111,158,255,.22)!important;
+}
+body[data-app-route="transfers"] .v420-comp-card header small,
+body[data-app-route="transfers"] .v420-comp-card footer{
+  color:#aab9df!important;
+}
+body[data-app-route="transfers"] .v420-comp-card header button{
+  color:#2ce0ed!important;
+}
+body[data-app-route="transfers"] .v420-comp-mini>button{
+  border-right-color:rgba(111,158,255,.20)!important;
+}
+body[data-app-route="transfers"] .v420-mini-avatar{
+  background:#f4f8ff!important;
+}
+body[data-app-route="transfers"] .v420-lower-title small{
+  color:#2be0ec!important;
+}
+body[data-app-route="transfers"] .v420-detail-tabs{
+  border:1px solid rgba(65,123,255,.22)!important;
+  background:#111f70!important;
+}
+body[data-app-route="transfers"] .v420-detail-tabs button{
+  color:#aab7dc!important;
+}
+body[data-app-route="transfers"] .v420-detail-tabs button.is-active{
+  background:linear-gradient(180deg,#21419d 0%,#1a347f 100%)!important;
+  color:#fff!important;
+}
+body[data-app-route="transfers"] .v420-detail-card{
+  border:1px solid rgba(62,122,255,.22)!important;
+  background:linear-gradient(180deg,#132173 0%,#0e195f 100%)!important;
+  box-shadow:0 6px 14px rgba(0,7,48,.18)!important;
+}
+body[data-app-route="transfers"] .v420-detail-avatar{
+  background:#1a3186!important;
+  border-color:rgba(91,151,255,.25)!important;
+}
+body[data-app-route="transfers"] .v420-detail-main>small{
+  color:#aab8df!important;
+}
+body[data-app-route="transfers"] .v420-detail-status{
+  color:#2ce0ed!important;
+}
+body[data-app-route="transfers"] .v420-detail-route b{
+  color:#f4f7ff!important;
+}
+body[data-app-route="transfers"] .v420-detail-country,
+body[data-app-route="transfers"] .v420-detail-numbers{
+  color:#b7c5e8!important;
+}
+body[data-app-route="transfers"] .v420-empty-rumor{
+  border-color:rgba(67,125,255,.22)!important;
+  background:#101d6c!important;
+}
+body[data-app-route="transfers"] .v420-empty-rumor p{
+  color:#a9b7dc!important;
+}
+body[data-app-route="transfers"] .v412-empty{
+  border-color:rgba(66,124,255,.30)!important;
+  background:#0d1966!important;
+  color:#aebde4!important;
+}
