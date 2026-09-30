@@ -1,4 +1,4 @@
-const CACHE='liga-juventino-v422-results-reference';
+const CACHE='liga-juventino-v423-blank-recovery';
 const CORE=['./','./index.html','./manifest.webmanifest','./brand-neon-header.svg','./profile-reference.svg'];
 
 self.addEventListener('install',event=>{
