@@ -343,15 +343,26 @@ function openTeamInProfile(tab){
 
 /* Preferencias visuales de notificación del equipo, como en la referencia. */
 const NOTIF_ROWS=[
- ['goals','⚽','Goles'],
- ['penalties','▦','Tandas de penalti'],
- ['startFinal','◌','Inicio / Final'],
- ['lineups','▣','Alineaciones oficiales'],
- ['redCards','🟥','Tarjetas rojas'],
- ['subs','🔺','Cambios'],
- ['video','▻','Resumen en vídeo disponible'],
- ['news','▤','Noticias']
+ ['goals','ball','Goles'],
+ ['penalties','penalty','Tandas de penalti'],
+ ['startFinal','whistle','Inicio / Final'],
+ ['lineups','pitch','Alineaciones oficiales'],
+ ['redCards','redcard','Tarjetas rojas'],
+ ['subs','subs','Cambios'],
+ ['video','video','Resumen en vídeo disponible'],
+ ['news','news','Noticias']
 ];
+function notifyIcon(kind){
+ const common='viewBox="0 0 32 32" aria-hidden="true" focusable="false"';
+ if(kind==='ball')return '<svg '+common+'><circle cx="16" cy="16" r="11.5"/><path d="m16 10 4 3-1.5 5h-5L12 13l4-3Zm-4 3-4.5-1.2M8 19l4.5 4M20 13l4.5-1.2M24 19l-4.5 4M13.5 18l-2 5M18.5 18l2 5"/></svg>';
+ if(kind==='penalty')return '<svg '+common+'><path d="M5 20V8h22v12M8 20V11h16v9M5 12h22M10 8v4M16 8v4M22 8v4"/><circle cx="16" cy="22.5" r="4"/><path d="m16 20.5 1.5 1.1-.6 1.8h-1.8l-.6-1.8 1.5-1.1Z"/></svg>';
+ if(kind==='whistle')return '<svg '+common+'><path d="M5 19h11.5a5.5 5.5 0 1 0-5.5-5.5H5v5.5Z"/><path d="m18 9 3-4M23 12l4-1M19 16l3 3M5 14H2.5"/></svg>';
+ if(kind==='pitch')return '<svg '+common+'><rect x="7" y="4" width="18" height="24" rx="1"/><path d="M7 12h18M7 20h18M16 4v24"/><circle cx="16" cy="16" r="3"/><path d="M12 4v4h8V4M12 24v4h8v-4"/></svg>';
+ if(kind==='redcard')return '<svg '+common+' class="solid-icon"><rect x="10" y="5" width="12" height="22" rx="1"/></svg>';
+ if(kind==='subs')return '<svg '+common+' class="subs-icon"><path class="up" d="m9 22 6-10 6 10H9Z"/><path class="down" d="m17 10 6-7 6 7H17Z" transform="rotate(180 23 6.5)"/></svg>';
+ if(kind==='video')return '<svg '+common+'><rect x="4" y="7" width="24" height="17" rx="1.5"/><path d="m14 12 6 3.5-6 3.5v-7ZM10 27h12"/></svg>';
+ return '<svg '+common+'><path d="M9 4h11l4 4v20H9V4Z"/><path d="M20 4v5h5M13 14h8M13 19h8M13 24h5"/></svg>';
+}
 function notifKey(name){return 'lj-team-notifications-v369-'+norm(name).replace(/\s+/g,'-')}
 function readNotif(name){
  const defaults={goals:true,penalties:false,startFinal:true,lineups:true,redCards:true,subs:false,video:true,news:true};
@@ -368,7 +379,7 @@ function notifyMarkup(){
    '<header><h2>'+esc(notifyState.team)+'</h2><button type="button" data-v369-notify-close>Hecho</button></header>'+
    '<div class="v369-notify-master"><span>Todas las notificaciones</span>'+sw(all,'',true)+'</div>'+
    '<div class="v369-notify-list">'+NOTIF_ROWS.map(function(r){
-    return '<div class="v369-notify-row"><span class="v369-notify-icon">'+r[1]+'</span><span>'+esc(r[2])+'</span>'+sw(!!p[r[0]],r[0],false)+'</div>';
+    return '<div class="v369-notify-row"><span class="v369-notify-icon">'+notifyIcon(r[1])+'</span><span class="v369-notify-label">'+esc(r[2])+'</span>'+sw(!!p[r[0]],r[0],false)+'</div>';
    }).join('')+'</div>'+
    '<p class="v369-notify-note">Preferencias guardadas para este equipo en este dispositivo.</p>'+
   '</section>'+
@@ -376,6 +387,7 @@ function notifyMarkup(){
 }
 function mountNotify(){
  document.getElementById('v369-team-notify')?.remove();
+ document.body.classList.add('v369-notify-open');
  document.body.insertAdjacentHTML('beforeend',notifyMarkup());
 }
 function openNotify(){
@@ -383,7 +395,7 @@ function openNotify(){
  notifyState={team:team,prefs:readNotif(team)};
  mountNotify();
 }
-function closeNotify(){notifyState=null;document.getElementById('v369-team-notify')?.remove()}
+function closeNotify(){notifyState=null;document.getElementById('v369-team-notify')?.remove();document.body.classList.remove('v369-notify-open')}
 
 function ensureTopCompare(){
  if(route()!=='teamDetail')return;
