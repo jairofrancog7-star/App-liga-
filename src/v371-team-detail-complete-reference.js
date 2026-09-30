@@ -165,8 +165,17 @@ function rebuildSquad(page,ctx){
  '</section>';
 }
 function leagueMark(page){
- const hero=page.querySelector('.v42-hero');if(!hero||hero.querySelector('.v371-league-mark'))return;
- const mark=document.createElement('div');mark.className='v371-league-mark';mark.innerHTML='<img src="'+LEAGUE+'" alt="Liga Municipal de Fútbol Juventino Rosas">';
+ const hero=page.querySelector('.v42-hero');if(!hero)return;
+ const existing=hero.querySelector('.v371-league-mark');
+ if(existing){
+  existing.style.cssText='position:absolute;z-index:4;top:calc(70px + env(safe-area-inset-top));right:20px;width:74px;height:74px;display:grid;place-items:center;pointer-events:none;overflow:hidden';
+  const img=existing.querySelector('img');if(img)img.style.cssText='display:block;width:74px;height:74px;max-width:74px;max-height:74px;object-fit:contain';
+  return;
+ }
+ const mark=document.createElement('div');
+ mark.className='v371-league-mark';
+ mark.style.cssText='position:absolute;z-index:4;top:calc(70px + env(safe-area-inset-top));right:20px;width:74px;height:74px;display:grid;place-items:center;pointer-events:none;overflow:hidden';
+ mark.innerHTML='<img style="display:block;width:74px;height:74px;max-width:74px;max-height:74px;object-fit:contain" src="'+LEAGUE+'" alt="Liga Municipal de Fútbol Juventino Rosas">';
  hero.appendChild(mark);
 }
 async function apply(){
