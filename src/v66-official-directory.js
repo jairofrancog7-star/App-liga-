@@ -250,6 +250,8 @@ function scorerLogo(name){
   return '<span class="v28-team-logo">'+(src?'<img src="'+esc(src)+'" alt="'+esc(name)+'" loading="lazy" decoding="async">':'<span class="v28-team-fallback">'+esc(ab)+'</span>')+'</span>';
 }
 function patchScorers(){
+  /* V401: player-only scorer UI is owned by V194. */
+  if(window.__LJR_SCORERS_UI_OWNER__==='v194-reference'||window.__LJR_V194_SCORERS__)return;
   const page=document.querySelector('[data-v28-scorers]'); if(!page)return;
   const rows=officialScorers(); if(!rows.length)return;
   const feats=page.querySelectorAll('.v28-feature');
