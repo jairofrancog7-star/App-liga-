@@ -82,6 +82,8 @@ function allMatches(){
 function stateFor(m,now=mexicoStamp()){
   const score=publishedScore(m?.r);
   if(score)return {kind:'final',label:'RESULTADO OFICIAL',primary:score.text,secondary:'Final'};
+  const status=String(m?.r?.[10]||'').trim();
+  if(/\bGANA\b/i.test(status))return {kind:'final',label:'RESOLUCIÓN OFICIAL',primary:status,secondary:'Rol oficial'};
   const start=m?.start;
   if(!Number.isFinite(start))return {kind:'unknown',label:'PROGRAMACIÓN OFICIAL',primary:'VS',secondary:'Horario por confirmar'};
   if(now<start)return {kind:'scheduled',label:'PRÓXIMO PARTIDO OFICIAL',primary:clock(m.r[8]),secondary:dateOnly(m.r[8])};
