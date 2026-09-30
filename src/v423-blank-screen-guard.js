@@ -5,7 +5,7 @@
 if(window.__LJR_V423_BLANK_SCREEN_GUARD__)return;
 window.__LJR_V423_BLANK_SCREEN_GUARD__=true;
 
-const ROOT=new Set(['home','competition','video','fantasy','more']);
+const ROOT=new Set(['home','video','fantasy','more']);
 const STALE_ON_ROOT=[
   'v414-favorites-active','v41-teams-active','v46-account-active','v46-notifications-active',
   'v46-following-active','v33-data-active','v379-player-profile-active','v421-watch-active',
