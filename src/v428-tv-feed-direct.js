@@ -42,6 +42,16 @@ function fixtures(){
   });
   return out.sort((a,b)=>(Number.isFinite(a.time)?a.time:9e15)-(Number.isFinite(b.time)?b.time:9e15));
 }
+const V443_FALLBACK_CLUBS=[
+  {name:'Juventus',category:'Primera Fuerza'},
+  {name:'Hermanos',category:'Primera Fuerza'},
+  {name:'Linces',category:'Primera Fuerza'},
+  {name:'Franco FC',category:'Primera Fuerza'},
+  {name:'Lobos CDG',category:'Primera Fuerza'},
+  {name:'Galacticos',category:'Primera Fuerza'},
+  {name:'Manchester',category:'Veteranos 50+'},
+  {name:'Boavista',category:'Liga Juventino Rosas'}
+];
 function teams(){
   try{
     const list=window.V66_OFFICIAL_DIRECTORY?.teamList?.();
@@ -53,7 +63,7 @@ function teams(){
     (c?.standings?.[0]?.rows||[]).forEach(r=>add(r?.[1]));
     Object.keys(c?.rosters||{}).forEach(add);
   });
-  return out.slice(0,12);
+  return out.length?out.slice(0,12):V443_FALLBACK_CLUBS.slice();
 }
 function matchCard(m,label,portrait=false){
   const score=m.played?m.hs+' - '+m.as:'VS';
@@ -72,6 +82,47 @@ function clubCard(t){
 }
 function rail(title,sub,body,more=true){
   return '<section class="v428-tv-section"><header><span><h3>'+esc(title)+'</h3><p>'+esc(sub)+'</p></span>'+(more?'<button type="button" data-v428-more>Ver más ›</button>':'')+'</header><div class="v428-tv-row">'+body+'</div></section>';
+}
+function fallbackBox(icon,title,sub,routeName,tag='LIGA TV'){
+  return '<button class="v443-tv-box" type="button" data-v428-route="'+esc(routeName)+'">'+
+    '<span class="v443-tv-box-art"><span class="v443-tv-box-icon">'+icon+'</span><em>'+esc(tag)+'</em><i>›</i></span>'+
+    '<span class="v443-tv-box-copy"><b>'+esc(title)+'</b><small>'+esc(sub)+'</small></span>'+
+  '</button>';
+}
+function fallbackPortrait(icon,title,sub,routeName){
+  return '<button class="v443-tv-portrait-box" type="button" data-v428-route="'+esc(routeName)+'">'+
+    '<span class="v443-tv-portrait-art"><span>'+icon+'</span><i>▶</i><em>LIGA TV</em></span>'+
+    '<span class="v443-tv-box-copy"><b>'+esc(title)+'</b><small>'+esc(sub)+'</small></span>'+
+  '</button>';
+}
+function fallbackRail(kind){
+  if(kind==='live')return [
+    fallbackBox('📺','Televisados','Partidos transmitidos, hoy y próximos','televisados','EN TV'),
+    fallbackBox('⚽','Match Center','Marcador, minuto y datos del partido','v4-matchcenter','PARTIDO'),
+    fallbackBox('🗓','Calendario','Consulta jornadas y próximos partidos','competition','PROGRAMACIÓN')
+  ].join('');
+  if(kind==='league')return [
+    fallbackBox('🏆','Liga Juventino Rosas','Resultados, clasificación y cuadro','competition','COMPETICIÓN'),
+    fallbackBox('▶','Mejores momentos','Jugadas, finales y videos de la Liga','moments','MOMENTOS'),
+    fallbackBox('📊','Datos oficiales','Tabla, goleadores y estadísticas','stats','DATOS')
+  ].join('');
+  if(kind==='clubs')return V443_FALLBACK_CLUBS.slice(0,7).map(clubCard).join('');
+  if(kind==='vertical')return '<div class="v428-tv-portrait-row">'+[
+    fallbackPortrait('🏆','Finales','Archivo audiovisual','moments'),
+    fallbackPortrait('⚽','Jornada','Partidos y acciones','competition'),
+    fallbackPortrait('📺','Liga TV','Contenido transmitido','televisados'),
+    fallbackPortrait('📚','Historia','Campeones y temporadas','history')
+  ].join('')+'</div>';
+  if(kind==='popular')return [
+    fallbackBox('🔥','Lo más visto','Accede a momentos destacados','moments','DESTACADO'),
+    fallbackBox('👕','Equipos','Clubes y perfiles de la Liga','teams','CLUBES'),
+    fallbackBox('🥅','Goleadores','Ranking oficial de anotadores','scorers','RANKING')
+  ].join('');
+  return [
+    fallbackBox('▶','Resúmenes de partidos','Consulta acciones y resultados recientes','moments','RESUMEN'),
+    fallbackBox('📺','Televisados','Partidos con cobertura de Liga TV','televisados','TV'),
+    fallbackBox('🗓','Jornadas','Consulta el rol oficial publicado','competition','CALENDARIO')
+  ].join('');
 }
 
 function startOfDay(ts){const d=new Date(ts);return new Date(d.getFullYear(),d.getMonth(),d.getDate()).getTime()}
@@ -241,20 +292,20 @@ function bindDedicatedTelevisados(root){
 }
 function markup(){
   const all=fixtures(),now=Date.now(),played=all.filter(x=>x.played).slice(-12).reverse(),upcoming=all.filter(x=>!x.played&&(!Number.isFinite(x.time)||x.time>=now-7200000)).slice(0,12),featured=(played.length?played:all).slice(0,10),clubList=teams();
-  const empty='<div class="v428-tv-empty">El contenido aparecerá aquí cuando haya datos oficiales disponibles.</div>';
   return '<section class="v428-tv-feed" data-v428-tv-feed>'+
     '<div class="v428-tv-title"><div><small>LIGA TV</small><h2>Ver en TV</h2><p>Contenido oficial de la Liga Juventino Rosas.</p></div><button class="v439-connect-trigger" type="button" data-v439-connect>Conectar o transmitir</button></div>'+
     telecastMarkup(all)+
-    rail('Ver en vivo en Liga Juventino','Partidos próximos y transmisiones de la Liga',upcoming.length?upcoming.slice(0,7).map(m=>matchCard(m,'PRÓXIMO')).join(''):empty)+
-    rail('Liga Juventino Rosas','Partidos, resultados y mejores momentos',featured.length?featured.slice(0,7).map(m=>matchCard(m,m.played?'MEJORES MOMENTOS':'PARTIDO')).join(''):empty)+
-    rail('Videos oficiales de clubes','Contenido por equipo registrado',clubList.length?clubList.slice(0,9).map(clubCard).join(''):empty)+
-    rail('Liga TV Videos','Videos verticales y momentos destacados','<div class="v428-tv-portrait-row">'+(featured.length?featured.slice(0,7).map(m=>matchCard(m,'LIGA TV',true)).join(''):empty)+'</div>',false)+
-    rail('Lo más visto','Selección destacada de Liga TV',featured.length?featured.slice().reverse().slice(0,7).map(m=>matchCard(m,'DESTACADO')).join(''):empty)+
-    rail('Resúmenes más recientes','Últimos partidos con marcador oficial',played.length?played.slice(0,7).map(m=>matchCard(m,'RESUMEN')).join(''):empty)+
+    rail('Ver en vivo en Liga Juventino','Partidos próximos y transmisiones de la Liga',upcoming.length?upcoming.slice(0,7).map(m=>matchCard(m,'PRÓXIMO')).join(''):fallbackRail('live'))+
+    rail('Liga Juventino Rosas','Partidos, resultados y mejores momentos',featured.length?featured.slice(0,7).map(m=>matchCard(m,m.played?'MEJORES MOMENTOS':'PARTIDO')).join(''):fallbackRail('league'))+
+    rail('Videos oficiales de clubes','Contenido por equipo registrado',clubList.length?clubList.slice(0,9).map(clubCard).join(''):fallbackRail('clubs'))+
+    rail('Liga TV Videos','Videos verticales y momentos destacados',featured.length?'<div class="v428-tv-portrait-row">'+featured.slice(0,7).map(m=>matchCard(m,'LIGA TV',true)).join('')+'</div>':fallbackRail('vertical'),false)+
+    rail('Lo más visto','Selección destacada de Liga TV',featured.length?featured.slice().reverse().slice(0,7).map(m=>matchCard(m,'DESTACADO')).join(''):fallbackRail('popular'))+
+    rail('Resúmenes más recientes','Últimos partidos con marcador oficial',played.length?played.slice(0,7).map(m=>matchCard(m,'RESUMEN')).join(''):fallbackRail('recent'))+
   '</section>';
 }
 function bind(root){
   root.querySelectorAll('[data-v439-connect]').forEach(b=>b.onclick=openCastSheet);
+  root.querySelectorAll('[data-v428-route]').forEach(b=>b.onclick=()=>{location.hash='#/'+(b.dataset.v428Route||'video')});
   const telecast=root.querySelector('[data-v440-telecast]');if(telecast)bindTelecast(telecast);
   root.querySelectorAll('[data-v428-match]').forEach(b=>b.onclick=()=>{location.hash='#/v4-matchcenter'});
   root.querySelectorAll('[data-v428-team]').forEach(b=>b.onclick=()=>{
