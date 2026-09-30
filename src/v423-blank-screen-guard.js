@@ -25,7 +25,7 @@ function clearInline(el,props){
 function cleanTransient(){
   const r=route(),body=document.body;
   if(!body)return;
-  body.dataset.appRoute=r;
+  if(body.dataset.appRoute!==r)body.dataset.appRoute=r;
   if(ROOT.has(r)){
     STALE_ON_ROOT.forEach(c=>body.classList.remove(c));
     if(!document.querySelector('.v369-compare-layer,.v369-compare'))body.classList.remove('v369-compare-open');
