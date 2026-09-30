@@ -499,12 +499,12 @@ function render(){
       ['Cuotas','CUOTAS']
     ].map(x=>'<button type="button" class="'+(activeTab===x[0]?'active':'')+'" data-v92-tab="'+x[0]+'">'+x[1]+'</button>').join('')+'</nav>'+
     ((activeTab==='Previa'||activeTab==='Alineaciones'||activeTab==='Cuotas')?referenceMarketBar(m,state):'')+
+    '<main class="v92-body">'+bodyFor(activeTab,m,state)+'</main>'+
     '<div class="v92-match-actions" aria-label="Acciones del partido">'+
       '<button type="button" data-v92-open-lineups>Alineaciones</button>'+
       '<button type="button" data-v92-pitch>Ver cancha</button>'+
       '<button type="button" class="mvp" data-v92-vote-mvp>⭐ Votar MVP</button>'+
     '</div>'+
-    '<main class="v92-body">'+bodyFor(activeTab,m,state)+'</main>'+
     '<p class="v92-source">Datos deportivos públicos de la Liga · '+esc(m.category)+' · '+esc(dateOnly(r[8]))+' · '+esc(venue)+'</p>'+
   '</article>';
 
