@@ -284,6 +284,7 @@ function schedule(){requestAnimationFrame(()=>requestAnimationFrame(render))}
    la ficha completa. No captura navegación inferior ni controles internos V42. */
 document.addEventListener('click',async e=>{
  if(route()==='teamDetail'||route()==='club-store')return;
+ if(route()==='v4-calendar'&&e.target instanceof Element&&e.target.closest('[data-v415-calendar]'))return;
  if(!(e.target instanceof Element))return;
  if(e.target.closest('[data-v66-directory="store"],[data-v431-store]'))return;
 
