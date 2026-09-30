@@ -119,3 +119,166 @@ body[data-app-route="players"] .v66-category-rail button,
 body[data-app-route="players"] .v66-team-filter-rail button{
   scroll-snap-align:center!important;
 }
+
+
+/* V434 — tienda: una sola cabecera propia + retail más cercano a referencia */
+/* La tienda ya tiene su propia cabecera V431. Ocultar únicamente la topbar global
+   y conservar siempre la navegación inferior de la aplicación. */
+html body[data-app-route="club-store"] #app > header.topbar,
+html body[data-app-route="club-store"] #app > .topbar,
+html body[data-app-route="club-store"] .app-shell > header.topbar,
+html body[data-app-route="club-store"] .app-shell > .topbar,
+html body:has(#screen [data-v431-store]) #app > header.topbar,
+html body:has(#screen [data-v431-store]) #app > .topbar{
+  display:none!important;
+  visibility:hidden!important;
+  opacity:0!important;
+  pointer-events:none!important;
+  width:0!important;
+  height:0!important;
+  min-height:0!important;
+  max-height:0!important;
+  margin:0!important;
+  padding:0!important;
+  overflow:hidden!important;
+}
+html body[data-app-route="club-store"] #app > .bottom-nav,
+html body[data-app-route="club-store"] .app-shell > .bottom-nav,
+html body:has(#screen [data-v431-store]) #app > .bottom-nav{
+  display:flex!important;
+  visibility:visible!important;
+  opacity:1!important;
+  pointer-events:auto!important;
+  transform:none!important;
+  bottom:0!important;
+  z-index:2147482000!important;
+}
+body[data-app-route="club-store"] #screen{
+  padding-top:0!important;
+  background:#fff!important;
+}
+body[data-app-route="club-store"] .v431-store{
+  max-width:520px!important;
+  background:#fff!important;
+  padding-bottom:calc(84px + env(safe-area-inset-bottom))!important;
+}
+body[data-app-route="club-store"] .v431-store-head{
+  position:sticky!important;
+  top:0!important;
+  height:54px!important;
+  padding:6px 12px!important;
+  gap:7px!important;
+  background:linear-gradient(180deg,#06116f 0%,#07108c 100%)!important;
+  border-bottom:1px solid rgba(255,255,255,.10)!important;
+  box-shadow:none!important;
+}
+body[data-app-route="club-store"] .v431-back,
+body[data-app-route="club-store"] .v431-head-icon{
+  width:32px!important;
+  height:32px!important;
+  min-width:32px!important;
+  min-height:32px!important;
+  background:transparent!important;
+  border:0!important;
+  box-shadow:none!important;
+}
+body[data-app-route="club-store"] .v431-back{font-size:24px!important}
+body[data-app-route="club-store"] .v431-head-crest{
+  width:34px!important;
+  height:34px!important;
+  flex-basis:34px!important;
+  border:0!important;
+  background:#fff!important;
+}
+body[data-app-route="club-store"] .v431-head-crest img{width:30px!important;height:30px!important}
+body[data-app-route="club-store"] .v431-head-copy small{font-size:6.5px!important;letter-spacing:.13em!important}
+body[data-app-route="club-store"] .v431-head-copy b{margin-top:3px!important;font-size:11px!important;letter-spacing:.01em!important}
+body[data-app-route="club-store"] .v431-shop-tabs{
+  top:54px!important;
+  min-height:40px!important;
+  background:#fff!important;
+  border-bottom:1px solid #e9ebf4!important;
+}
+body[data-app-route="club-store"] .v431-shop-tabs button{
+  min-height:40px!important;
+  padding:0 13px!important;
+  font-size:8.5px!important;
+  font-weight:800!important;
+  color:#666d86!important;
+}
+body[data-app-route="club-store"] .v431-shop-tabs button:first-child{color:#1722a7!important;border-bottom:2px solid #1722a7!important}
+body[data-app-route="club-store"] .v431-hero{
+  min-height:255px!important;
+  grid-template-columns:1.08fr .92fr!important;
+  padding:24px 16px 20px!important;
+  background:
+    radial-gradient(circle at 82% 20%,rgba(63,93,255,.55),transparent 37%),
+    linear-gradient(135deg,#07126f 0%,#1126cf 58%,#07105e 100%)!important;
+}
+body[data-app-route="club-store"] .v431-hero:before{width:210px!important;height:210px!important;right:-72px!important;top:-55px!important}
+body[data-app-route="club-store"] .v431-hero:after{width:142px!important;height:142px!important;right:-20px!important;top:8px!important}
+body[data-app-route="club-store"] .v431-hero-copy small{font-size:6.5px!important}
+body[data-app-route="club-store"] .v431-hero-copy h1{
+  max-width:215px!important;
+  margin:7px 0 8px!important;
+  font-size:18px!important;
+  line-height:1.05!important;
+}
+body[data-app-route="club-store"] .v431-hero-copy p{
+  max-width:205px!important;
+  margin-bottom:12px!important;
+  font-size:8.5px!important;
+  line-height:1.4!important;
+}
+body[data-app-route="club-store"] .v431-hero-copy button{height:30px!important;padding:0 14px!important;font-size:7.5px!important}
+body[data-app-route="club-store"] .v431-hero-shirt{height:195px!important;transform:rotate(-5deg) scale(1.04)!important}
+body[data-app-route="club-store"] .v431-hero-shirt .v431-shirt{width:120px!important;height:144px!important}
+body[data-app-route="club-store"] .v431-block{padding:18px 12px 4px!important}
+body[data-app-route="club-store"] .v431-section-title{margin-bottom:10px!important}
+body[data-app-route="club-store"] .v431-section-title small{font-size:6.3px!important}
+body[data-app-route="club-store"] .v431-section-title h2{font-size:14px!important}
+body[data-app-route="club-store"] .v431-section-title>button{font-size:7.5px!important}
+body[data-app-route="club-store"] .v431-edition-card{min-height:158px!important;border-radius:12px!important}
+body[data-app-route="club-store"] .v431-edition-art{height:158px!important}
+body[data-app-route="club-store"] .v431-edition-card h3{font-size:15px!important}
+body[data-app-route="club-store"] .v431-edition-card p{font-size:8px!important}
+body[data-app-route="club-store"] .v431-products{gap:8px!important}
+body[data-app-route="club-store"] .v431-product{padding:7px 7px 9px!important;border-radius:10px!important;box-shadow:none!important}
+body[data-app-route="club-store"] .v431-product-art{height:125px!important;border-radius:8px!important}
+body[data-app-route="club-store"] .v431-product-art .v431-shirt{transform:scale(.67)!important}
+body[data-app-route="club-store"] .v431-product h3{margin-top:7px!important;font-size:9.5px!important}
+body[data-app-route="club-store"] .v431-product p{height:22px!important;font-size:7px!important}
+body[data-app-route="club-store"] .v431-add{height:27px!important;margin-top:6px!important;font-size:7px!important}
+body[data-app-route="club-store"] .v431-heart{right:10px!important;top:10px!important;width:23px!important;height:23px!important;font-size:12px!important}
+body[data-app-route="club-store"] .v431-custom{margin-top:12px!important;padding-top:18px!important}
+body[data-app-route="club-store"] .v431-custom-grid{gap:9px!important}
+body[data-app-route="club-store"] .v431-custom-preview{min-height:188px!important;border-radius:12px!important}
+body[data-app-route="club-store"] .v431-custom-preview .v431-shirt{transform:scale(.80)!important}
+body[data-app-route="club-store"] .v431-custom-form{gap:6px!important}
+body[data-app-route="club-store"] .v431-custom-form input,
+body[data-app-route="club-store"] .v431-custom-form select{
+  height:31px!important;
+  border-radius:7px!important;
+  font-size:9px!important;
+}
+body[data-app-route="club-store"] .v431-primary{height:32px!important;font-size:7px!important}
+body[data-app-route="club-store"] .v431-story{min-height:176px!important;margin-top:18px!important;padding:14px!important}
+body[data-app-route="club-store"] .v431-story-crest{width:90px!important;height:90px!important}
+body[data-app-route="club-store"] .v431-story-crest img{width:58px!important;height:58px!important}
+body[data-app-route="club-store"] .v431-story h2{font-size:17px!important}
+body[data-app-route="club-store"] .v431-story p{font-size:8px!important}
+body[data-app-route="club-store"] .v431-collection-rail>button{flex-basis:126px!important;border-radius:10px!important}
+body[data-app-route="club-store"] .v431-collection-rail>button>div{height:112px!important}
+body[data-app-route="club-store"] .v431-player-card{
+  flex-basis:96px!important;
+  min-height:126px!important;
+  padding:8px 6px!important;
+  border-radius:10px!important;
+}
+body[data-app-route="club-store"] .v431-player-card span{width:62px!important;height:62px!important;margin-bottom:6px!important;font-size:16px!important}
+body[data-app-route="club-store"] .v431-player-card b{font-size:8px!important}
+body[data-app-route="club-store"] .v431-player-card small{font-size:6.5px!important}
+@media(max-width:390px){
+  body[data-app-route="club-store"] .v431-hero{min-height:238px!important}
+  body[data-app-route="club-store"] .v431-hero-copy h1{font-size:17px!important}
+}
