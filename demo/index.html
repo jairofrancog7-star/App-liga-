@@ -58,6 +58,24 @@
       },true);
     })();
   </script>
+  <script>
+    (function(){
+      window.__LJR_REFRESH_CACHE_V445__=true;
+      var token=new URLSearchParams(location.search).get('refresh')||'';
+      if(!token)return;
+      try{
+        var key='ljr-refresh-token-v445';
+        if(sessionStorage.getItem(key)===token)return;
+        sessionStorage.setItem(key,token);
+      }catch(_){}
+      try{
+        if('caches' in window)caches.keys().then(function(keys){return Promise.all(keys.map(function(k){return caches.delete(k)}))}).catch(function(){});
+      }catch(_){}
+      try{
+        if('serviceWorker' in navigator)navigator.serviceWorker.getRegistrations().then(function(rs){rs.forEach(function(r){r.update().catch(function(){})})}).catch(function(){});
+      }catch(_){}
+    })();
+  </script>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
   <script>
@@ -150,9 +168,10 @@
     #screen .v400-chips span{min-width:0;min-height:50px;display:flex;flex-direction:column;justify-content:center;padding:8px 9px;border-radius:11px;background:rgba(18,44,145,.55)}
     #screen .v400-chips small{color:#7785c4;font-size:7px;font-weight:900;letter-spacing:.09em}
     #screen .v400-chips b{margin-top:4px;overflow:hidden;font-size:11px;white-space:nowrap;text-overflow:ellipsis}
-  </style>\n  <script type="module" crossorigin src="./assets/index-vKlP6L-I.js"></script>
-  <link rel="stylesheet" crossorigin href="./assets/index-CJ_HeeP6.css">
-</head>
+  </style>
+<script type="module" crossorigin src="./assets/index-DbIaB5qc.js"></script>
+<link rel="stylesheet" crossorigin href="./assets/index-DjdFcV9x.css">
+
 <body>
   <div id="app" class="app-shell">
     <header class="topbar">
@@ -319,5 +338,5 @@
   document.addEventListener('DOMContentLoaded',syncTvChrome,{once:true});
   syncTvChrome();
 })();
-</script>\n</body>
+</script>
 </html>
