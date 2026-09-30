@@ -1,4 +1,4 @@
-const CACHE='liga-juventino-v19-scorers-table-restore-v403';
+const CACHE='liga-juventino-v19-missing-tools-topbar-v404';
 const CORE=['./','./index.html','./manifest.webmanifest','./brand-neon-header.svg','./profile-reference.svg'];
 
 self.addEventListener('install',event=>{

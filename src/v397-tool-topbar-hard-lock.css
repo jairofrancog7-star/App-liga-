@@ -1130,3 +1130,34 @@
     top:9px!important;
   }
 }
+
+
+/* V404 — cabecera de referencia también en las pantallas que faltaban:
+   Herramientas de la Liga, Reclutamiento y todos los modales/Modo TV de las capturas.
+   No toca formularios, datos ni funciones; solo reserva la franja superior y mantiene
+   flecha + trofeo + perfil con el mismo acabado de las páginas ya corregidas. */
+@media (max-width:1023px){
+  body.v404-tool-overlay-open .v100-modal,
+  body.v404-tool-overlay-open .v105-modal,
+  body.v404-tool-overlay-open .v160-tv-layer{
+    top:clamp(82px,21.68vw,90px)!important;
+    bottom:0!important;
+    height:auto!important;
+  }
+
+  html body #app > .topbar.v404-missing-pages-topbar,
+  html body .app-shell > .topbar.v404-missing-pages-topbar{
+    display:block!important;
+    visibility:visible!important;
+    opacity:1!important;
+    z-index:2147483000!important;
+  }
+}
+
+@media (max-width:390px){
+  body.v404-tool-overlay-open .v100-modal,
+  body.v404-tool-overlay-open .v105-modal,
+  body.v404-tool-overlay-open .v160-tv-layer{
+    top:82px!important;
+  }
+}

@@ -11,7 +11,7 @@
   ]);
 
   const REFERENCE_ROUTES=new Set([
-    "leagueTools","search","ligaQR","players","agendaBuilder","v38Alerts","simulator","v38Stats"
+    "leagueTools","search","ligaQR","players","agendaBuilder","v38Alerts","simulator","v38Stats","recruitment"
   ]);
 
   const TOPBAR_PROPS=['height','min-height','max-height','margin','padding'];
@@ -36,12 +36,16 @@
 
     const route=current();
     const bodyRoute=String(document.body?.dataset?.appRoute||'');
-    const active=ROUTES.has(route)||ROUTES.has(bodyRoute);
-    const reference=REFERENCE_ROUTES.has(route)||REFERENCE_ROUTES.has(bodyRoute);
+    const overlayActive=!!document.querySelector('.v100-modal,.v105-modal,.v160-tv-layer');
+    const contentMarker=!!document.querySelector('#v190-recruitment-page,.v60-tool-page');
+    const active=ROUTES.has(route)||ROUTES.has(bodyRoute)||overlayActive||contentMarker;
+    const reference=REFERENCE_ROUTES.has(route)||REFERENCE_ROUTES.has(bodyRoute)||overlayActive||contentMarker;
 
+    document.body.classList.toggle('v404-tool-overlay-open',overlayActive);
     topbar.classList.toggle('v402-tool-topbar-compact',active);
     topbar.classList.toggle('v397-tool-topbar-exact',reference);
     topbar.classList.toggle('v403-reference-topbar',reference);
+    topbar.classList.toggle('v404-missing-pages-topbar',reference);
 
     const back=topbar.querySelector('.back-button');
     const profile=topbar.querySelector('.profile-button');
@@ -126,6 +130,7 @@
   window.addEventListener('resize',sync);
   document.addEventListener('DOMContentLoaded',burst,{once:true});
   new MutationObserver(sync).observe(document.body,{attributes:true,attributeFilter:['data-app-route']});
+  new MutationObserver(()=>requestAnimationFrame(sync)).observe(document.body,{childList:true,subtree:false});
   const screen=document.querySelector('#screen');
   if(screen)new MutationObserver(sync).observe(screen,{childList:true,subtree:false});
   if(document.readyState!=='loading')burst();
