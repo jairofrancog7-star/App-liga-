@@ -4089,3 +4089,238 @@
     border-radius:22px!important;
   }
 }
+
+
+/* V422 — EMBEDDED BUILD UP FIT LOCK — mobile Match Center bottom */
+@media (max-width:1023px){
+  /* El Build Up vive al final de Resumen: debe caber dentro del ancho real del Match Center. */
+  body.v92-match-center-official .v92-body .v420-build-up{
+    width:100%!important;
+    max-width:100%!important;
+    min-width:0!important;
+    margin:12px 0 0!important;
+    padding:0 0 10px!important;
+    overflow:hidden!important;
+    border-radius:10px!important;
+    background:#080c19!important;
+    box-sizing:border-box!important;
+  }
+  body.v92-match-center-official .v92-body .v420-build-up,
+  body.v92-match-center-official .v92-body .v420-build-up *{
+    box-sizing:border-box!important;
+    max-width:100%;
+  }
+
+  body.v92-match-center-official .v92-body .v420-hero{
+    width:100%!important;
+    max-width:100%!important;
+    min-width:0!important;
+    height:clamp(455px,126vw,555px)!important;
+    min-height:0!important;
+    margin:0!important;
+    border-radius:10px 10px 0 0!important;
+    overflow:hidden!important;
+  }
+  body.v92-match-center-official .v92-body .v420-hero-media{
+    width:100%!important;
+    height:100%!important;
+    max-width:none!important;
+    object-fit:cover!important;
+    object-position:center center!important;
+  }
+  body.v92-match-center-official .v92-body .v420-hero-shade{
+    border-radius:inherit!important;
+  }
+
+  body.v92-match-center-official .v92-body .v420-top-controls{
+    top:12px!important;
+    left:0!important;
+    right:0!important;
+    padding:0 12px!important;
+  }
+  body.v92-match-center-official .v92-body .v420-top-controls button{
+    width:42px!important;
+    height:42px!important;
+    min-width:42px!important;
+    min-height:42px!important;
+    font-size:25px!important;
+  }
+  body.v92-match-center-official .v92-body .v420-top-controls button:last-child{
+    font-size:18px!important;
+  }
+
+  body.v92-match-center-official .v92-body .v420-match-panel{
+    left:8px!important;
+    right:8px!important;
+    bottom:0!important;
+    width:auto!important;
+    max-width:none!important;
+    padding:34px 8px 18px!important;
+    border-radius:18px 18px 0 0!important;
+  }
+  body.v92-match-center-official .v92-body .v420-match-panel>h2{
+    max-width:100%!important;
+    overflow:hidden!important;
+    font-size:13px!important;
+    white-space:nowrap!important;
+    text-overflow:ellipsis!important;
+  }
+  body.v92-match-center-official .v92-body .v420-match-panel>p{
+    margin-top:7px!important;
+    font-size:10.5px!important;
+  }
+
+  body.v92-match-center-official .v92-body .v420-matchup{
+    width:100%!important;
+    min-width:0!important;
+    grid-template-columns:minmax(0,1fr) 86px minmax(0,1fr)!important;
+    gap:4px!important;
+    margin-top:14px!important;
+    align-items:end!important;
+  }
+  body.v92-match-center-official .v92-body .v420-matchup>div{
+    min-width:0!important;
+    gap:5px!important;
+  }
+  body.v92-match-center-official .v92-body .v420-matchup>div>b{
+    width:100%!important;
+    max-width:100%!important;
+    overflow:hidden!important;
+    font-size:8.8px!important;
+    white-space:nowrap!important;
+    text-overflow:ellipsis!important;
+  }
+  body.v92-match-center-official .v92-body .v92-team-logo.v420-team-logo,
+  body.v92-match-center-official .v92-body .v92-team-logo.v420-team-logo img{
+    width:49px!important;
+    height:49px!important;
+    max-width:49px!important;
+  }
+  body.v92-match-center-official .v92-body .v420-matchup>span{
+    min-width:0!important;
+    gap:7px!important;
+  }
+  body.v92-match-center-official .v92-body .v420-matchup>span>strong{
+    width:82px!important;
+    min-width:82px!important;
+    min-height:46px!important;
+    padding:0 5px!important;
+    border-radius:10px!important;
+    font-size:19px!important;
+    letter-spacing:.02em!important;
+  }
+  body.v92-match-center-official .v92-body .v420-matchup>span>small{
+    width:86px!important;
+    overflow:hidden!important;
+    font-size:10px!important;
+    letter-spacing:.035em!important;
+    white-space:nowrap!important;
+    text-overflow:ellipsis!important;
+  }
+
+  body.v92-match-center-official .v92-body .v420-pills{
+    width:100%!important;
+    max-width:100%!important;
+    gap:7px!important;
+    padding:12px 10px 10px!important;
+    overflow-x:auto!important;
+    overflow-y:hidden!important;
+    overscroll-behavior-x:contain!important;
+    scroll-snap-type:x proximity!important;
+  }
+  body.v92-match-center-official .v92-body .v420-pills button{
+    flex:0 0 auto!important;
+    min-width:102px!important;
+    min-height:40px!important;
+    padding:0 13px!important;
+    border-radius:22px!important;
+    font-size:9.5px!important;
+    scroll-snap-align:start!important;
+  }
+
+  body.v92-match-center-official .v92-body .v420-media-card{
+    width:calc(100% - 20px)!important;
+    max-width:calc(100% - 20px)!important;
+    height:clamp(180px,56vw,235px)!important;
+    margin:14px 10px 2px!important;
+    border-radius:18px!important;
+  }
+  body.v92-match-center-official .v92-body .v420-media-card>video{
+    width:100%!important;
+    height:100%!important;
+    max-width:none!important;
+    object-fit:cover!important;
+  }
+  body.v92-match-center-official .v92-body .v420-media-card>div{
+    left:12px!important;
+    right:12px!important;
+    bottom:11px!important;
+  }
+  body.v92-match-center-official .v92-body .v420-media-card small{
+    font-size:5.8px!important;
+  }
+  body.v92-match-center-official .v92-body .v420-media-card b{
+    font-size:9px!important;
+  }
+  body.v92-match-center-official .v92-body .v420-media-card span{
+    font-size:6.5px!important;
+  }
+
+  /* Predicciones también deben quedar dentro del ancho del contenido. */
+  body.v92-match-center-official .v92-body .v420-predictions{
+    width:100%!important;
+    max-width:100%!important;
+    min-width:0!important;
+    overflow:hidden!important;
+  }
+  body.v92-match-center-official .v92-body .v420-prediction-teams{
+    grid-template-columns:minmax(0,1fr) 34px minmax(0,1fr)!important;
+    gap:4px!important;
+    padding-left:8px!important;
+    padding-right:8px!important;
+  }
+  body.v92-match-center-official .v92-body .v420-prediction-actions{
+    grid-template-columns:repeat(3,minmax(0,1fr))!important;
+    gap:4px!important;
+    padding-left:8px!important;
+    padding-right:8px!important;
+  }
+  body.v92-match-center-official .v92-body .v420-prediction-actions button{
+    min-width:0!important;
+    padding:0 5px!important;
+    font-size:5.8px!important;
+  }
+}
+
+@media (max-width:390px){
+  body.v92-match-center-official .v92-body .v420-hero{
+    height:clamp(430px,132vw,510px)!important;
+  }
+  body.v92-match-center-official .v92-body .v420-matchup{
+    grid-template-columns:minmax(0,1fr) 78px minmax(0,1fr)!important;
+  }
+  body.v92-match-center-official .v92-body .v92-team-logo.v420-team-logo,
+  body.v92-match-center-official .v92-body .v92-team-logo.v420-team-logo img{
+    width:44px!important;
+    height:44px!important;
+    max-width:44px!important;
+  }
+  body.v92-match-center-official .v92-body .v420-matchup>span>strong{
+    width:74px!important;
+    min-width:74px!important;
+    min-height:43px!important;
+    font-size:17px!important;
+  }
+  body.v92-match-center-official .v92-body .v420-matchup>span>small{
+    width:78px!important;
+    font-size:8.8px!important;
+  }
+  body.v92-match-center-official .v92-body .v420-pills button{
+    min-width:94px!important;
+    min-height:38px!important;
+    font-size:8.7px!important;
+  }
+  body.v92-match-center-official .v92-body .v420-media-card{
+    height:190px!important;
+  }
+}
