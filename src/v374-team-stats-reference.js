@@ -82,7 +82,24 @@ async function apply(){
 }
 function schedule(){requestAnimationFrame(()=>requestAnimationFrame(apply))}
 window.addEventListener('hashchange',schedule);
-document.addEventListener('click',e=>{const tab=e.target.closest?.('[data-v42-tab]');if(tab){if(tab.dataset.v42Tab==='stats'){localStorage.setItem('v42-team-tab','stats');document.body.classList.remove('v372-team-collapsed')}setTimeout(schedule,0)}},true);
+document.addEventListener('click',e=>{
+ if(route()!=='teamDetail'||!(e.target instanceof Element))return;
+ const stats=e.target.closest('[data-v42-tab="stats"],[data-v372-tab="stats"]');
+ if(stats){
+  e.preventDefault();
+  e.stopPropagation();
+  e.stopImmediatePropagation();
+  localStorage.setItem('v42-team-tab','stats');
+  document.body.classList.remove('v372-team-collapsed');
+  setTimeout(()=>{
+   if(window.LJR_TEAM_DETAIL_API?.openTab)window.LJR_TEAM_DETAIL_API.openTab('stats');
+   else document.querySelector('.v42-tabs [data-v42-tab="stats"]')?.click();
+   setTimeout(schedule,0);
+  },0);
+  return;
+ }
+ if(e.target.closest('[data-v42-tab],[data-v372-tab]'))setTimeout(schedule,0);
+},true);
 const screen=document.querySelector('#screen');
 if(screen)new MutationObserver(()=>{if(route()==='teamDetail')schedule()}).observe(screen,{childList:true,subtree:true});
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',schedule,{once:true});else schedule();
