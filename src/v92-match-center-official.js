@@ -19,6 +19,7 @@ let selectedKey='';
 let loading=null;
 let timer=null;
 let renderGuard=false;
+let profileSide='home';
 
 function route(){return location.hash.replace('#/','').split('?')[0]||'home'}
 function isDirectRoute(){return DIRECT_ROUTES.has(route())}
@@ -338,13 +339,146 @@ function matchPicker(m){
   };
   return '<section class="v92-match-picker"><label><span>Partido oficial</span><select data-v92-match-select>'+options.map(option).join('')+'</select></label><small>Elige otro partido publicado por la Liga.</small></section>';
 }
+
+function teamFixtureRows(m,team){
+  const wanted=norm(team);
+  return allCategoryFixtureRows(m).filter(r=>norm(r?.[2])===wanted||norm(r?.[6])===wanted).map(r=>({
+    r,
+    stamp:fixtureStamp(r?.[8]),
+    score:publishedScore(r)
+  })).sort((a,b)=>(a.stamp||0)-(b.stamp||0));
+}
+function fixtureForTeam(team,item){
+  const r=item.r,home=norm(r?.[2])===norm(team),opp=home?r?.[6]:r?.[2],score=item.score;
+  let result='';
+  if(score){
+    const gf=home?Number(score.home):Number(score.away),ga=home?Number(score.away):Number(score.home);
+    result=gf>ga?'V':gf<ga?'D':'E';
+  }
+  return {r,opp,home,score,result};
+}
+function profileRecent(m,team){
+  return teamFixtureRows(m,team).filter(x=>x.score).slice(-5).reverse().map(x=>fixtureForTeam(team,x));
+}
+function profileNext(m,team){
+  const now=mexicoStamp();
+  return teamFixtureRows(m,team).filter(x=>!x.score&&Number.isFinite(x.stamp)&&x.stamp>=now-60*60000).slice(0,3).map(x=>fixtureForTeam(team,x));
+}
+function scorerRows(m,team){
+  const wanted=norm(team);
+  return (m?.cat?.scorers?.[0]?.rows||[]).filter(r=>Array.isArray(r)&&norm(r?.[2])===wanted&&String(r?.[1]||'').trim()).map(r=>({
+    pos:Number(r?.[0])||0,
+    name:String(r?.[1]||'').trim(),
+    team:String(r?.[2]||'').trim(),
+    goals:Number(r?.[3])||0
+  })).sort((a,b)=>b.goals-a.goals||a.pos-b.pos);
+}
+function standingIndex(m,team){
+  return standings(m).findIndex(r=>norm(r?.[1])===norm(team));
+}
+function standingObj(m,team){
+  const r=standing(m,team);
+  if(!r)return null;
+  return {pos:Number(r?.[0])||standingIndex(m,team)+1,name:r?.[1]||team,pj:num(r?.[2]),g:num(r?.[3]),e:num(r?.[4]),p:num(r?.[5]),gf:num(r?.[6]),gc:num(r?.[7]),dg:num(r?.[8]),pts:num(r?.[9])};
+}
+function resultChip(x){
+  const cls=x.result==='V'?'win':x.result==='E'?'draw':'loss';
+  const score=x.score?(x.home?x.score.home+' - '+x.score.away:x.score.away+' - '+x.score.home):'—';
+  return '<div class="v419-result '+cls+'"><span>'+teamLogo(x.opp,'v419-opponent')+'</span><b>'+esc(score)+'</b><small>'+esc(x.result||'—')+'</small></div>';
+}
+function nextCard(x){
+  return '<button type="button" class="v419-next-match" data-v419-match-date="'+esc(dateOnly(x.r?.[8]))+'">'+
+    teamLogo(x.opp,'v419-next-logo')+
+    '<span><b>'+esc(x.opp||'Por confirmar')+'</b><small>'+esc(dateOnly(x.r?.[8]))+' · '+esc(clock(x.r?.[8]))+'</small></span>'+
+    '<em>'+esc(x.r?.[7]||'Campo por confirmar')+'</em>'+
+  '</button>';
+}
+function miniTableRows(m,team){
+  const all=standings(m).filter(r=>Array.isArray(r)&&r?.[1]);
+  const idx=all.findIndex(r=>norm(r?.[1])===norm(team));
+  let slice=[];
+  if(idx<0)slice=all.slice(0,4);
+  else slice=all.slice(Math.max(0,idx-1),Math.min(all.length,idx+3));
+  if(slice.length<4)slice=all.slice(Math.max(0,all.length-4));
+  return slice.map(r=>'<div class="v419-table-row '+(norm(r?.[1])===norm(team)?'active':'')+'">'+
+    '<b>'+esc(r?.[0]??'—')+'</b>'+
+    '<span>'+teamLogo(r?.[1],'v419-table-logo')+'<strong>'+esc(r?.[1]||'')+'</strong></span>'+
+    '<em>'+esc(r?.[2]??'—')+'</em><em>'+esc(r?.[8]??'—')+'</em><em>'+esc(r?.[9]??'—')+'</em>'+
+  '</div>').join('');
+}
+function playerCard(name,goals,team,index){
+  const initials=playerInitials(name);
+  return '<article class="v419-player-card">'+
+    '<span class="v419-player-avatar">'+esc(initials)+'</span>'+
+    '<div><small>#'+(index+1)+'</small><b>'+esc(name)+'</b><em>'+esc(team)+'</em></div>'+
+    '<strong>'+(Number.isFinite(goals)?esc(goals):'—')+'<small> G</small></strong>'+
+  '</article>';
+}
+function profilePlayers(m,team){
+  const scorers=scorerRows(m,team).slice(0,4);
+  if(scorers.length)return scorers.map((x,i)=>playerCard(x.name,x.goals,team,i)).join('');
+  return roster(m,team).slice(0,4).map((n,i)=>playerCard(n,null,team,i)).join('')||
+    '<div class="v419-empty">No hay jugadores publicados para este equipo.</div>';
+}
+function compareTeamBlock(m,team,opp){
+  const a=standingObj(m,team),b=standingObj(m,opp);
+  const cell=(label,av,bv)=>'<div><span>'+esc(av??'—')+'</span><small>'+label+'</small><span>'+esc(bv??'—')+'</span></div>';
+  return '<section class="v419-card v419-compare">'+
+    '<header><h3>Comparación de rendimiento</h3><small>'+esc(m.category)+'</small></header>'+
+    '<div class="v419-compare-head"><span>'+teamLogo(team,'v419-compare-logo')+'<b>'+esc(team)+'</b></span><span>'+teamLogo(opp,'v419-compare-logo')+'<b>'+esc(opp)+'</b></span></div>'+
+    cell('Posición',a?.pos,b?.pos)+cell('Puntos',a?.pts,b?.pts)+cell('Goles a favor',a?.gf,b?.gf)+cell('Diferencia',a?.dg,b?.dg)+
+  '</section>';
+}
+function teamProfileDashboard(m){
+  const r=m.r,team=profileSide==='away'?r[6]:r[2],opp=profileSide==='away'?r[2]:r[6];
+  const st=standingObj(m,team),recent=profileRecent(m,team),next=profileNext(m,team);
+  const form=recent.slice(0,5);
+  const venue=r?.[7]||'Campo por confirmar';
+  return '<section class="v419-profile" data-v419-profile>'+
+    '<div class="v419-team-switch"><button type="button" class="'+(profileSide==='home'?'active':'')+'" data-v419-profile-side="home">LOCAL</button><button type="button" class="'+(profileSide==='away'?'active':'')+'" data-v419-profile-side="away">VISITANTE</button></div>'+
+    '<section class="v419-team-hero">'+
+      teamLogo(team,'v419-hero-logo')+
+      '<div><small>'+esc(m.category)+'</small><h2>'+esc(team)+'</h2><p>'+(st?'Posición '+esc(st.pos)+' · '+esc(st.pts??'—')+' pts':'Sin posición publicada')+'</p></div>'+
+      '<button type="button" data-v419-open-team="'+esc(team)+'">VER EQUIPO</button>'+
+    '</section>'+
+    '<nav class="v419-subtabs"><span class="active">Resumen</span><span>Resultados</span><span>Plantilla</span><span>Tabla</span><span>Estadísticas</span></nav>'+
+    '<section class="v419-card v419-next"><header><h3>Próximo partido</h3><small>'+esc(next[0]?dateOnly(next[0].r?.[8]):'Por confirmar')+'</small></header>'+
+      (next[0]?'<div class="v419-next-main"><span>'+teamLogo(team,'v419-main-logo')+'<b>'+esc(team)+'</b></span><strong>'+esc(clock(next[0].r?.[8]))+'</strong><span>'+teamLogo(next[0].opp,'v419-main-logo')+'<b>'+esc(next[0].opp)+'</b></span></div>':'<div class="v419-empty">No hay siguiente partido publicado.</div>')+
+    '</section>'+
+    '<section class="v419-card v419-form"><header><h3>Últimos resultados</h3><small>'+form.length+' partidos</small></header><div class="v419-form-grid">'+(form.length?form.map(resultChip).join(''):'<div class="v419-empty">Sin resultados publicados.</div>')+'</div></section>'+
+    '<section class="v419-card v419-calendar"><header><h3>Próximos del calendario</h3><small>'+esc(m.category)+'</small></header><div class="v419-next-list">'+(next.length?next.map(nextCard).join(''):'<div class="v419-empty">Sin próximos partidos publicados.</div>')+'</div></section>'+
+    '<section class="v419-card v419-lineup-preview"><header><h3>Plantilla / alineación</h3><small>'+roster(m,team).length+' jugadores</small></header>'+
+      '<div class="v419-mini-pitch">'+
+        roster(m,team).slice(0,11).map((n,i)=>'<span class="p'+i+'"><i>'+esc(playerInitials(n))+'</i><b>'+esc(n)+'</b></span>').join('')+
+      '</div>'+
+    '</section>'+
+    '<section class="v419-card v419-league"><header><h3>La liga</h3><small>'+esc(m.category)+'</small></header>'+
+      '<div class="v419-table-head"><span>#</span><span>Equipo</span><span>PJ</span><span>DG</span><span>PTS</span></div>'+
+      '<div class="v419-table-body">'+miniTableRows(m,team)+'</div>'+
+    '</section>'+
+    '<section class="v419-card v419-history"><header><h3>Posición actual</h3><small>Histórico cuando exista</small></header>'+
+      '<div class="v419-history-track"><i></i><span class="current"><b>'+esc(st?.pos??'—')+'</b><small>ACTUAL</small></span></div>'+
+      '<p>El snapshot oficial actual no incluye una serie histórica de posiciones; se muestra solamente la posición vigente.</p>'+
+    '</section>'+
+    compareTeamBlock(m,team,opp)+
+    '<section class="v419-card v419-best"><header><h3>Mejores jugadores</h3><small>Goleadores publicados</small></header><div class="v419-player-grid">'+profilePlayers(m,team)+'</div></section>'+
+    '<section class="v419-card v419-competition"><header><h3>Competiciones</h3></header>'+
+      '<div class="v419-competition-row"><span>⚽</span><div><b>Liga Municipal</b><small>'+esc(m.category)+'</small></div><em>ACTIVA</em></div>'+
+    '</section>'+
+    '<section class="v419-card v419-fixtures"><header><h3>Partidos</h3><small>Calendario oficial</small></header>'+
+      '<div class="v419-fixture-summary"><span><b>'+esc(st?.pj??'—')+'</b><small>Jugados</small></span><span><b>'+esc(st?.g??'—')+'</b><small>Ganados</small></span><span><b>'+esc(st?.e??'—')+'</b><small>Empates</small></span><span><b>'+esc(st?.p??'—')+'</b><small>Perdidos</small></span></div>'+
+    '</section>'+
+    '<section class="v419-card v419-trophies"><header><h3>Títulos</h3><small>Datos disponibles</small></header><div class="v419-empty">Los títulos históricos del equipo no están incluidos en el snapshot del Match Center.</div></section>'+
+    '<section class="v419-card v419-stadium"><header><h3>Estadio / campo</h3></header><div class="v419-stadium-row"><span>▣</span><div><b>'+esc(venue)+'</b><small>'+esc(dateOnly(r?.[8]))+' · '+esc(clock(r?.[8]))+'</small></div><em>CAMPO</em></div></section>'+
+  '</section>';
+}
 function rosterSummary(m,team){
   const names=roster(m,team);
   return '<article class="v92-player-card">'+teamLogo(team,'small')+'<span><b>'+esc(team)+'</b><small>'+names.length+' jugadores registrados · '+esc(m.category)+'</small></span></article>';
 }
 function summaryBody(m,state){
   const r=m.r,home=r[2],away=r[6],venue=r[7]||'Campo por confirmar',score=publishedScore(r);
-  const status=score?score.text:(state.kind==='scheduled'?'Programado':state.kind==='window'?'Sin marcador oficial':'Resultado pendiente');
+  const status=score?score.text:(state.kind==='scheduled'?'Programado':state.kind==='window'?'En directo':'Resultado pendiente');
   return '<div class="v92-summary-grid">'+
       '<div><b>'+esc(status)+'</b><small>'+(score?'Marcador oficial':'Estado')+'</small></div>'+
       '<div><b>'+esc(clock(r[8]))+'</b><small>Hora oficial</small></div>'+
@@ -355,7 +489,8 @@ function summaryBody(m,state){
     '</div></section>'+
     '<section class="v92-section"><div class="v92-section-head"><h2>Acciones rápidas</h2></div><div class="v92-actions">'+
       '<button data-v92-route="competition">Jornadas</button><button data-v92-route="v4-calendar">Calendario</button><button data-v92-route="leagueData">Tabla</button><button data-v92-route="venues">Campos</button>'+
-    '</div></section>';
+    '</div></section>'+
+    teamProfileDashboard(m);
 }
 function rosterColumn(m,team){
   const confirmed=lineupFor(m,team);
@@ -512,7 +647,7 @@ function render(){
   '</article>';
 
   document.body.classList.add('v92-match-center-official');
-  screen.querySelector('[data-v92-match-select]')?.addEventListener('change',e=>{selectedKey=e.target.value;activeTab='Resumen';renderGuard=false;render()});
+  screen.querySelector('[data-v92-match-select]')?.addEventListener('change',e=>{selectedKey=e.target.value;activeTab='Resumen';profileSide='home';renderGuard=false;render()});
   screen.querySelectorAll('[data-v92-tab]').forEach(b=>b.onclick=()=>{activeTab=b.dataset.v92Tab;renderGuard=false;render();if(activeTab==='Alineaciones')refreshOfficialData(true)});
   screen.querySelectorAll('[data-v92-open-lineups]').forEach(b=>b.onclick=()=>{activeTab='Alineaciones';renderGuard=false;render();refreshOfficialData(true)});
   screen.querySelectorAll('[data-v92-route]').forEach(b=>b.onclick=()=>{location.hash='#/'+b.dataset.v92Route});
@@ -521,6 +656,8 @@ function render(){
     location.hash='#/tactics';
   });
   screen.querySelectorAll('[data-v92-vote-mvp]').forEach(b=>b.onclick=()=>openMvpVote(m));
+  screen.querySelectorAll('[data-v419-profile-side]').forEach(b=>b.onclick=()=>{profileSide=b.dataset.v419ProfileSide==='away'?'away':'home';renderGuard=false;render()});
+  screen.querySelectorAll('[data-v419-open-team]').forEach(b=>b.onclick=()=>{const name=b.dataset.v419OpenTeam||'';try{localStorage.setItem('v62-team-name',name)}catch(_){};try{window.LJR_OFFICIAL_API?.openTeam?.(name)}catch(_){};if(route()===PRIMARY_ROUTE||DIRECT_ROUTES.has(route()))location.hash='#/teamDetail'});
   renderGuard=false;
 }
 async function load(){
