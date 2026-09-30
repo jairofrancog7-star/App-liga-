@@ -314,6 +314,11 @@ function render(force=false){
 function schedule(delay=80){
   clearTimeout(timer);timer=setTimeout(()=>render(false),delay);
 }
+window.LJR_SCORERS_REFERENCE={
+  setCategory:id=>chooseCategory(id),
+  render:()=>render(true),
+  getCategory:()=>catId()
+};
 document.addEventListener('click',delegatedClick,true);
 document.addEventListener('change',delegatedChange,true);
 window.addEventListener('hashchange',()=>schedule(30));

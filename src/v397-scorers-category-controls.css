@@ -1,0 +1,81 @@
+/* V397 — botones de clasificación por categoría en Máximos goleadores. */
+body[data-app-route="scorers"] .v397-category-controls,
+body[data-app-route="scorers"] .v397-enhanced-category-wrap{
+  position:relative!important;
+  z-index:40!important;
+  display:grid!important;
+  gap:7px!important;
+  width:100%!important;
+  margin:0 0 10px!important;
+  padding:0!important;
+  background:transparent!important;
+  pointer-events:auto!important;
+}
+body[data-app-route="scorers"] .v397-category-title,
+body[data-app-route="scorers"] .v397-enhanced-category-wrap>.v391-category-label{
+  display:block!important;
+  color:#9fadd9!important;
+  font-size:8px!important;
+  line-height:1!important;
+  font-weight:900!important;
+  letter-spacing:.12em!important;
+}
+body[data-app-route="scorers"] .v397-category-rail,
+body[data-app-route="scorers"] .v397-enhanced-category-wrap .v391-category-strip{
+  position:relative!important;
+  z-index:41!important;
+  display:flex!important;
+  align-items:center!important;
+  gap:6px!important;
+  width:100%!important;
+  overflow-x:auto!important;
+  overflow-y:hidden!important;
+  padding:1px 0 3px!important;
+  scrollbar-width:none!important;
+  -webkit-overflow-scrolling:touch!important;
+  pointer-events:auto!important;
+  touch-action:pan-x!important;
+}
+body[data-app-route="scorers"] .v397-category-rail::-webkit-scrollbar,
+body[data-app-route="scorers"] .v397-enhanced-category-wrap .v391-category-strip::-webkit-scrollbar{display:none!important}
+body[data-app-route="scorers"] .v397-category-rail button,
+body[data-app-route="scorers"] .v397-enhanced-category-wrap [data-v194-cat]{
+  appearance:none!important;
+  -webkit-appearance:none!important;
+  flex:0 0 auto!important;
+  min-width:max-content!important;
+  min-height:34px!important;
+  height:34px!important;
+  padding:0 12px!important;
+  border:1px solid rgba(255,255,255,.14)!important;
+  border-radius:999px!important;
+  background:#0d0d72!important;
+  color:#c0c9e8!important;
+  box-shadow:none!important;
+  font:800 8.5px/1 Inter,Roboto,Arial,sans-serif!important;
+  white-space:nowrap!important;
+  pointer-events:auto!important;
+  touch-action:manipulation!important;
+  cursor:pointer!important;
+  -webkit-tap-highlight-color:transparent!important;
+}
+body[data-app-route="scorers"] .v397-category-rail button.active,
+body[data-app-route="scorers"] .v397-enhanced-category-wrap [data-v194-cat].active{
+  border-color:#20e1ef!important;
+  background:#1744bd!important;
+  color:#fff!important;
+  box-shadow:inset 0 0 0 1px rgba(32,225,239,.17)!important;
+}
+body[data-app-route="scorers"] .v397-category-rail button:active,
+body[data-app-route="scorers"] .v397-enhanced-category-wrap [data-v194-cat]:active{
+  transform:scale(.98)!important;
+}
+@media(max-width:390px){
+  body[data-app-route="scorers"] .v397-category-rail button,
+  body[data-app-route="scorers"] .v397-enhanced-category-wrap [data-v194-cat]{
+    min-height:32px!important;
+    height:32px!important;
+    padding:0 10px!important;
+    font-size:8px!important;
+  }
+}

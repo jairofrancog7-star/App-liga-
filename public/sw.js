@@ -1,4 +1,4 @@
-const CACHE='liga-juventino-v13-scorers-owner-v394';
+const CACHE='liga-juventino-v14-scorers-category-v397';
 const CORE=['./','./index.html','./manifest.webmanifest','./brand-neon-header.svg','./profile-reference.svg'];
 
 self.addEventListener('install',event=>{
