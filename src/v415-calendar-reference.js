@@ -128,7 +128,7 @@ function logoMarkup(name,cls=''){
 function topTabs(){
   return '<div class="v415-top-row">'+
     '<div class="v415-segment" role="tablist" aria-label="Secciones">'+
-      '<button type="button" class="active" role="tab" aria-selected="true">Calendario</button>'+
+      '<button type="button" class="active" data-v415-go="calendar" role="tab" aria-selected="true">Calendario</button>'+
       '<button type="button" data-v415-go="standings" role="tab">Clasificación</button>'+
       '<button type="button" data-v415-go="teams" role="tab">Plantilla</button>'+
     '</div>'+
@@ -287,12 +287,26 @@ function bind(root){
   }));
   root.querySelectorAll('[data-v415-go]').forEach(btn=>btn.addEventListener('click',()=>{
     const dest=btn.dataset.v415Go;
+    if(dest==='calendar'){
+      filterOpen=false;
+      render();
+      return;
+    }
     if(dest==='standings'){
       location.hash='#/competition';
-    }else if(dest==='teams'){
+      setTimeout(()=>{
+        const tab=document.querySelector('[data-comp-tab="standings"]');
+        if(tab)tab.click();
+      },120);
+      return;
+    }
+    if(dest==='teams'){
       location.hash='#/teams';
-    }else{
+      return;
+    }
+    if(dest==='matches'){
       location.hash='#/competition';
+      return;
     }
   }));
 }
