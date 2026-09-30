@@ -29,7 +29,7 @@ const FALLBACK_LOGOS={
 const ROUTES=new Set([
   'v4-calendar','calendar','monthlyCalendar','calendarMonthly',
   'news','v38Weekly','transfers',
-  'favorites','following','search','matchCenter','match-center','v4-matchcenter',
+  'following','search','matchCenter','match-center','v4-matchcenter',
   'profile','more'
 ]);
 
@@ -430,7 +430,7 @@ function socialMarkup(){
 
 function contentFor(r){
   if(['v4-calendar','calendar','monthlyCalendar','calendarMonthly'].includes(r))return {html:calendarMarkup(),bind:bindCalendar};
-  if(['favorites','following'].includes(r))return {html:favoritesMarkup(),bind:bindFavorites};
+  if(r==='following')return {html:favoritesMarkup(),bind:bindFavorites};
   if(r==='transfers')return {html:transfersMarkup(),bind:bindTransfers};
   if(['news','v38Weekly'].includes(r))return {html:newsMarkup(),bind:()=>{}};
   if(r==='search')return {html:searchMarkup(),bind:bindSearch};
