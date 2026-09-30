@@ -160,7 +160,7 @@ function rebuildSquad(page,ctx){
  if(host.dataset.v371Sig===sig)return;
  host.dataset.v371Sig=sig;
  host.innerHTML='<section class="v371-roster-card"><h2>Jugadores registrados</h2><small class="v371-roster-sub">'+esc(ctx.c.name)+'</small>'+
-  (ps.length?'<div class="v371-roster-list">'+ps.map((p,i)=>'<button type="button" class="v371-player" data-v42-player="'+esc(p)+'"><span class="v371-player-avatar">'+esc(initials(p))+'</span><span><b>'+esc(p)+'</b><small>'+esc(ctx.name)+'</small></span><strong>—</strong></button>').join('')+'</div>':
+  (ps.length?'<div class="v371-roster-list">'+ps.map((p,i)=>'<button type="button" class="v371-player" data-v42-player="'+esc(p)+'" data-v66-player-team="'+esc(ctx.name)+'" data-v66-cat-id="'+esc(ctx.id)+'"><span class="v371-player-avatar">'+esc(initials(p))+'</span><span><b>'+esc(p)+'</b><small>'+esc(ctx.name)+' · Jugador registrado</small></span><strong>›</strong></button>').join('')+'</div>':
   '<div class="v371-roster-empty"><div class="v371-empty-ball">⚽</div><b>Plantilla pendiente</b><p>La fuente oficial todavía no publica nombres de jugadores para '+esc(ctx.name)+'. En cuanto se sincronicen aparecerán aquí automáticamente.</p></div>')+
  '</section>';
 }
