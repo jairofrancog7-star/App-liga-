@@ -148,10 +148,10 @@ function playerMarkup(){
     '<div class="v66-player-list">'+list.map((p,i)=>'<button type="button" class="v66-player-row" data-v66-player="'+esc(p.name)+'" data-v66-player-team="'+esc(p.team)+'" data-v66-cat-id="'+esc(p.cat)+'"><span class="v66-player-avatar">'+esc(fallback(p.name).slice(0,2))+'</span><span><b>'+esc(p.name)+'</b><small>'+esc(p.team)+' · '+esc(p.category)+'</small></span><i>›</i></button>').join('')+'</div>'+
   '</section>';
 }
-function saveTeam(name,cat){
+function saveTeam(name,cat,resetTab=true){
   localStorage.setItem('v62-team-name',name);
   localStorage.setItem('v62-category',String(cat||'3'));
-  localStorage.setItem('v42-team-tab','summary');
+  if(resetTab)localStorage.setItem('v42-team-tab','summary');
 }
 function bind(){
   document.querySelector('[data-v66-team-search]')?.addEventListener('input',e=>{teamQuery=e.target.value;render(true,true,false)});
@@ -276,7 +276,7 @@ function currentOfficialTeam(){
 function patchTeamDetail(){
   const page=document.querySelector('[data-v42-reference="teamDetail"]'); if(!page)return;
   const t=currentOfficialTeam(); if(!t)return;
-  saveTeam(t.name,t.cat);
+  saveTeam(t.name,t.cat,false);
   const h=page.querySelector('.v42-title h1'),sub=page.querySelector('.v42-title p'),crest=page.querySelector('.v42-team-crest');
   if(h)h.textContent=t.name;if(sub)sub.textContent=t.category+' · Liga Juventino Rosas';
   const src=logoFor(t.name); if(crest&&src){crest.src=src;crest.alt=t.name}
