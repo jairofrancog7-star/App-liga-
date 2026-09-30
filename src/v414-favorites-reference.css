@@ -5,7 +5,8 @@ body.v414-favorites-active #v411-lower-experience,
 body.v414-favorites-active .v411-lower,
 body.v414-favorites-active .v411-hub[data-v411-owner="favorites"],
 body.v414-favorites-active .v411-zone[data-v411-zone="favorites"],
-body.v414-favorites-active #v413-page-design[data-v413-route="favorites"]{
+body.v414-favorites-active #v413-page-design[data-v413-route="favorites"],
+body.v414-favorites-active .v412-shell[data-v412-screen="favorites"]{
   display:none!important;
 }
 
