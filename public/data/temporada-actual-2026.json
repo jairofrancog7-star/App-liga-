@@ -202,7 +202,8 @@
             "home": "Huracán",
             "away": "F. Tavera",
             "time": "05:00",
-            "field": "3"
+            "field": "3",
+            "date": "2026-10-03"
           }
         ]
       }
@@ -322,19 +323,22 @@
           {
             "home": "Manchester",
             "away": "Boca Jrs",
-            "note": "Gana Manchester"
+            "note": "Gana Manchester",
+            "date": "2026-10-03"
           },
           {
             "home": "Dynamo",
             "away": "Boavista",
             "time": "03:30",
-            "field": "1"
+            "field": "1",
+            "date": "2026-10-03"
           },
           {
             "home": "Toros de Cuenda",
             "away": "La Esperanza",
             "time": "05:00",
-            "field": "1"
+            "field": "1",
+            "date": "2026-10-03"
           }
         ]
       }
@@ -536,30 +540,35 @@
             "home": "Hermanos",
             "away": "Lobos CDG",
             "time": "10:00",
-            "field": "3"
+            "field": "3",
+            "date": "2026-10-04"
           },
           {
             "home": "Herreras FC",
             "away": "Abejas",
             "time": "10:00",
-            "field": "Pozos"
+            "field": "Pozos",
+            "date": "2026-10-04"
           },
           {
             "home": "Linces",
             "away": "Galácticos",
-            "note": "Gana Linces"
+            "note": "Gana Linces",
+            "date": "2026-10-04"
           },
           {
             "home": "Terrícolas",
             "away": "Napoli",
             "time": "08:00",
-            "field": "3"
+            "field": "3",
+            "date": "2026-10-04"
           },
           {
             "home": "Franco FC",
             "away": "San José FC",
             "time": "12:00",
-            "field": "San José"
+            "field": "San José",
+            "date": "2026-10-04"
           },
           {
             "rest": "Juventus"
@@ -802,37 +811,43 @@
             "home": "Dep. Maravillas",
             "away": "Galeana",
             "time": "12:00",
-            "field": "3"
+            "field": "3",
+            "date": "2026-10-04"
           },
           {
             "home": "La Canchita Deportes",
             "away": "Malvinas",
             "time": "10:00",
-            "field": "1"
+            "field": "1",
+            "date": "2026-10-04"
           },
           {
             "home": "Capibaras",
             "away": "San Antonio JRS",
             "time": "10:00",
-            "field": "Romerillo"
+            "field": "Romerillo",
+            "date": "2026-10-04"
           },
           {
             "home": "La Huerta",
             "away": "Promesas FC",
             "time": "10:00",
-            "field": "Fraccionamiento"
+            "field": "Fraccionamiento",
+            "date": "2026-10-04"
           },
           {
             "home": "Mazacotes FC",
             "away": "La Cuadrilla",
             "time": "08:00",
-            "field": "Fraccionamiento"
+            "field": "Fraccionamiento",
+            "date": "2026-10-04"
           },
           {
             "home": "Osasuna",
             "away": "Populares",
             "time": "08:00",
-            "field": "1"
+            "field": "1",
+            "date": "2026-10-04"
           },
           {
             "rest": "Aldama FC"
@@ -1058,37 +1073,43 @@
             "home": "Tapatío",
             "away": "Pachangas FC",
             "time": "08:00",
-            "field": "2"
+            "field": "2",
+            "date": "2026-10-04"
           },
           {
             "home": "Tavera FC",
             "away": "San Julián",
             "time": "10:00",
-            "field": "San Julián"
+            "field": "San Julián",
+            "date": "2026-10-04"
           },
           {
             "home": "San Juan FC",
             "away": "San José JRS",
             "time": "10:00",
-            "field": "San José"
+            "field": "San José",
+            "date": "2026-10-04"
           },
           {
             "home": "Dep. La Luz",
             "away": "Célticos",
             "time": "12:00",
-            "field": "1"
+            "field": "1",
+            "date": "2026-10-04"
           },
           {
             "home": "Barza",
             "away": "Dep. Zapata",
             "time": "12:00",
-            "field": "2"
+            "field": "2",
+            "date": "2026-10-04"
           },
           {
             "home": "San Antonio FC",
             "away": "Dep. Nopalero",
             "time": "10:00",
-            "field": "2"
+            "field": "2",
+            "date": "2026-10-04"
           }
         ]
       },
