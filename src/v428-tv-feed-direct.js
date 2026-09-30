@@ -158,23 +158,57 @@ function castToast(sheet,msg){
   let t=sheet.querySelector('.v439-cast-toast');
   if(!t){t=document.createElement('div');t.className='v439-cast-toast';sheet.querySelector('.v439-cast-panel')?.appendChild(t)}
   t.textContent=msg;
-  setTimeout(()=>t?.remove(),2300);
+  setTimeout(()=>t?.remove(),2600);
+}
+async function startCast(sheet){
+  const media=document.querySelector('video,audio');
+  try{
+    if(media&&media.remote&&typeof media.remote.prompt==='function'){
+      await media.remote.prompt();
+      return;
+    }
+  }catch(_){}
+  try{
+    if(typeof window.PresentationRequest==='function'){
+      const request=new window.PresentationRequest([location.href]);
+      await request.start();
+      return;
+    }
+  }catch(_){}
+  try{
+    if(navigator.share){
+      await navigator.share({
+        title:'Liga Juventino Rosas · Liga TV',
+        text:'Abrir Liga TV en otra pantalla o dispositivo',
+        url:location.href
+      });
+      return;
+    }
+  }catch(_){}
+  try{
+    await navigator.clipboard.writeText(location.href);
+    castToast(sheet,'Enlace copiado. Ábrelo en tu TV u otro dispositivo.');
+  }catch(_){
+    castToast(sheet,'Tu navegador no permite abrir el selector de TV directamente.');
+  }
 }
 function openCastSheet(){
   closeCastSheet();
   const sheet=document.createElement('div');
   sheet.className='v439-cast-sheet';
+  sheet.setAttribute('data-v439-cast-sheet','');
   sheet.innerHTML='<button class="v439-cast-backdrop" type="button" aria-label="Cerrar"></button>'+
     '<section class="v439-cast-panel" role="dialog" aria-modal="true" aria-label="Conectar o transmitir">'+
       '<span class="v439-cast-handle"></span>'+
-      '<header class="v439-cast-head"><h2>Conectar o transmitir</h2><button type="button" data-v439-close>×</button></header>'+
+      '<header class="v439-cast-head"><h2>Conectar o transmitir</h2><button type="button" data-v439-close aria-label="Cerrar">×</button></header>'+
       '<div class="v439-cast-body">'+
-        '<h3>Liga TV</h3>'+
-        '<article class="v439-streamcenter-card"><span><b>Centro de transmisión</b><small>Abre Liga TV y comparte la cobertura del partido desde tu dispositivo.</small></span><button type="button" data-v439-open-tv>Abrir Liga TV</button></article>'+
-        '<h3 class="v439-device-title">Opciones del dispositivo</h3>'+
-        '<button class="v439-cast-row" type="button" data-v439-device="screen"><span class="v439-row-icon">▣</span><b>Compartir pantalla</b><i>›</i></button>'+
-        '<button class="v439-cast-row" type="button" data-v439-device="cast"><span class="v439-row-icon">◫</span><b>Buscar TV o dispositivo</b><i>›</i></button>'+
-        '<div class="v439-cast-help"><b>Consejo</b><p>Para enviar a una TV, usa la función Cast o Compartir pantalla de tu teléfono si está disponible.</p></div>'+
+        '<h3>Ver con Liga TV</h3>'+
+        '<article class="v439-streamcenter-card"><span><b>Ingresa para usar<br>Liga TV</b><small>Abre el modo TV de la Liga y conserva los controles de reproducción.</small></span><button type="button" data-v439-enter>Entrar</button></article>'+
+        '<h3 class="v439-device-title">Transmitir a otro dispositivo</h3>'+
+        '<button class="v439-cast-row" type="button" data-v439-transmit><span class="v439-row-icon">▣</span><b>Transmitir</b><i>›</i></button>'+
+        '<button class="v439-cast-row" type="button" data-v439-learn><span class="v439-row-icon">ⓘ</span><b>Aprende más</b><i>›</i></button>'+
+        '<div class="v439-cast-help" data-v439-help hidden><b>Cómo funciona</b><p>Se intenta abrir el selector de reproducción remota o pantalla compatible. Si el navegador no lo permite, se abre el menú para compartir el enlace de Liga TV con otro dispositivo.</p></div>'+
+        '<p class="v439-cast-foot">La disponibilidad depende del navegador, la TV y las funciones de transmisión del dispositivo.</p>'+
       '</div>'+
     '</section>';
   document.body.appendChild(sheet);
@@ -182,16 +216,17 @@ function openCastSheet(){
   requestAnimationFrame(()=>sheet.classList.add('is-open'));
   sheet.querySelector('.v439-cast-backdrop').onclick=closeCastSheet;
   sheet.querySelector('[data-v439-close]').onclick=closeCastSheet;
-  sheet.querySelector('[data-v439-open-tv]').onclick=()=>{closeCastSheet();location.hash='#/video'};
-  sheet.querySelectorAll('[data-v439-device]').forEach(b=>b.onclick=async()=>{
-    if(b.dataset.v439Device==='screen'&&navigator.mediaDevices?.getDisplayMedia){
-      try{
-        const stream=await navigator.mediaDevices.getDisplayMedia({video:true,audio:true});
-        castToast(sheet,'Pantalla lista para compartir');
-        setTimeout(()=>stream.getTracks().forEach(t=>t.stop()),1200);
-      }catch(_){castToast(sheet,'Usa Compartir pantalla o Cast desde tu teléfono')}
-    }else castToast(sheet,'Abre Cast / Compartir pantalla desde los controles de tu dispositivo');
-  });
+  sheet.querySelector('[data-v439-enter]').onclick=()=>{
+    closeCastSheet();
+    setTimeout(()=>{if(window.LJR_V105&&typeof window.LJR_V105.openTv==='function')window.LJR_V105.openTv();else location.hash='#/video'},100);
+  };
+  sheet.querySelector('[data-v439-transmit]').onclick=()=>startCast(sheet);
+  sheet.querySelector('[data-v439-learn]').onclick=()=>{
+    const help=sheet.querySelector('[data-v439-help]');
+    if(!help)return;
+    help.hidden=!help.hidden;
+    if(!help.hidden)help.scrollIntoView({behavior:'smooth',block:'nearest'});
+  };
 }
 
 function markup(){
@@ -242,6 +277,7 @@ document.addEventListener('click',e=>{
   e.preventDefault();
   e.stopPropagation();
   e.stopImmediatePropagation();
+  target.setAttribute('data-v439-hard-click','1');
   openCastSheet();
 },true);
 document.addEventListener('keydown',e=>{if(e.key==='Escape')closeCastSheet()});
