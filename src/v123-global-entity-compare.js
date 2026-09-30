@@ -407,6 +407,7 @@ function exactPlayerFromTarget(target,list){
 
 document.addEventListener('click',e=>{
  if(route()==='playerCompare'||route()==='club-store')return;
+ if(route()==='v4-calendar'&&e.target instanceof Element&&e.target.closest('[data-v415-calendar]'))return;
  if(e.defaultPrevented)return;
  if(!(e.target instanceof Element))return;
  if(e.target.closest('[data-v66-directory="store"],[data-v431-store]'))return;
