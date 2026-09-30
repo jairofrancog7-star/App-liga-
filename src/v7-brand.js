@@ -40,6 +40,21 @@ function syncRouteLayout(){
   topbar.dataset.title=HEADER_TITLES[route]||'';
   topbar.classList.toggle('has-route-title',Boolean(HEADER_TITLES[route]));
 
+  // Quiz Arena owns its own header/back control. The shared global topbar must
+  // never be visible here, even if later CSS modules restore detail headers.
+  if(route==='quizArena'){
+    topbar.style.setProperty('display','none','important');
+    topbar.style.setProperty('visibility','hidden','important');
+    topbar.style.setProperty('height','0','important');
+    topbar.style.setProperty('min-height','0','important');
+    topbar.style.setProperty('max-height','0','important');
+    topbar.style.setProperty('padding','0','important');
+    topbar.style.setProperty('margin','0','important');
+    topbar.style.setProperty('overflow','hidden','important');
+  }else{
+    ['display','visibility','height','min-height','max-height','padding','margin','overflow'].forEach(p=>topbar.style.removeProperty(p));
+  }
+
   // Home: stories begin directly below the branded banner. This is based on
   // the route, not on the current rendered text, so later modules cannot make
   // the removed title flash back into view.
