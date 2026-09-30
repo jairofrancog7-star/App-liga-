@@ -6260,22 +6260,10 @@ function render(){
     state.route='more';
   }
 
-  /* V395 — Quiz Arena no usa la barra superior global.
-     La retiramos físicamente del DOM mientras esta ruta está activa para que
-     ningún CSS posterior pueda volver a mostrarla. Al salir, se restaura en
-     su posición original antes de #screen. */
-  const app=document.querySelector('#app');
-  const liveScreen=document.querySelector('#screen');
-  if(state.route==='quizArena'){
-    const globalTopbar=app?.querySelector(':scope > .topbar');
-    if(globalTopbar){
-      window.__LJR_QUIZ_DETACHED_TOPBAR__=globalTopbar;
-      globalTopbar.remove();
-    }
-  }else if(window.__LJR_QUIZ_DETACHED_TOPBAR__ && app && liveScreen && !app.querySelector(':scope > .topbar')){
-    app.insertBefore(window.__LJR_QUIZ_DETACHED_TOPBAR__,liveScreen);
-    window.__LJR_QUIZ_DETACHED_TOPBAR__=null;
-  }
+  /* V396 — conserva la topbar en el DOM para no romper el enrutado/estilos.
+     Quiz Arena la oculta por CSS/brand, pero el body siempre recibe la ruta
+     antes de pintar la vista para que se apliquen sus estilos desde el primer frame. */
+  document.body.dataset.appRoute=state.route;
 
   screen.innerHTML=views[state.route]?views[state.route]():views.home();
   bind();
