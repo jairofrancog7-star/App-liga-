@@ -439,3 +439,37 @@ body.v160-tv-open nav.bottom-nav{
   visibility:visible!important;
   opacity:1!important;
 }
+
+
+/* V406 — hard fix Modo TV: la barra inferior nunca tapa las acciones. */
+html body:has(> .v160-tv-layer) #app > .bottom-nav,
+html body:has(> .v160-tv-layer) .app-shell > .bottom-nav,
+html body:has(> .v160-tv-layer) nav.bottom-nav{
+  display:none!important;
+  visibility:hidden!important;
+  opacity:0!important;
+  pointer-events:none!important;
+}
+html body > .v160-tv-layer{
+  z-index:2147483646!important;
+  padding-bottom:calc(92px + env(safe-area-inset-bottom))!important;
+}
+html body > .v160-tv-layer .v160-tv-board{
+  padding-bottom:calc(48px + env(safe-area-inset-bottom))!important;
+}
+html body > .v160-tv-layer .v160-tv-actions{
+  display:grid!important;
+  position:relative!important;
+  z-index:20!important;
+  margin-top:24px!important;
+  margin-bottom:0!important;
+  transform:none!important;
+}
+html body > .v160-tv-layer .v160-tv-actions button{
+  display:flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  min-height:58px!important;
+  opacity:1!important;
+  visibility:visible!important;
+}
