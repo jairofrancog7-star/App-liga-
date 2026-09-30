@@ -1,4 +1,4 @@
-const CACHE='liga-juventino-v24-page-designs-v413';
+const CACHE='liga-juventino-v25-notifications-v414';
 const CORE=['./','./index.html','./manifest.webmanifest','./brand-neon-header.svg','./profile-reference.svg'];
 
 self.addEventListener('install',event=>{

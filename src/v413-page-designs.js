@@ -191,7 +191,7 @@ function bindFavorites(root){
   };
 }
 
-/* ---------- NOTIFICACIONES ---------- */
+/* ---------- NOTIFICACIONES V414 / referencia 365 adaptada ---------- */
 const NOTIFS=[
  ['goal','Goles','Aviso cuando se registre un gol'],
  ['kickoff','Inicio del partido','Aviso al comenzar'],
@@ -202,26 +202,139 @@ const NOTIFS=[
  ['venueChanges','Cambios de sede','Cambio de campo o cancha'],
  ['transfers','Transferencias','Movimientos oficiales publicados']
 ];
+const V414_CATEGORIES=[
+ ['football','Fútbol','Todos los partidos de la Liga','⚽'],
+ ['primera','Primera Fuerza','Partidos y avisos de Primera Fuerza','◉'],
+ ['intermedia','Intermedia','Partidos y avisos de Intermedia','◉'],
+ ['segunda','Segunda Fuerza','Partidos y avisos de Segunda Fuerza','◉'],
+ ['v35','Veteranos 35+','Partidos y avisos de Veteranos 35+','◉'],
+ ['v50','Veteranos 50+','Partidos y avisos de Veteranos 50+','◉']
+];
+function v414Prefs(){
+  const s=readStore(),n=Object.assign({
+    enabled:true,news:true,predictor:true,sounds:true,vibration:true,doNotDisturb:true,
+    goal:true,kickoff:true,halftime:true,final:true,scheduleChanges:true,venueChanges:true,transfers:true
+  },s.notifications||{});
+  return {store:s,n};
+}
+function v414DeviceCopy(){
+  try{
+    if(!('Notification' in window))return ['Las notificaciones del dispositivo no están disponibles en este navegador.','Revisar permisos'];
+    if(Notification.permission==='granted')return ['Las notificaciones del dispositivo están activadas para Liga Juventino Rosas.','Notificaciones activadas'];
+    if(Notification.permission==='denied')return ['Las notificaciones del dispositivo están bloqueadas. Actívalas desde los permisos del navegador o de la app.','Configuración del dispositivo'];
+    return ['Activa las notificaciones del dispositivo para recibir avisos aunque no estés viendo esta pantalla.','Activar notificaciones'];
+  }catch(_){return ['Configura los permisos de notificación del dispositivo para recibir avisos.','Configuración del dispositivo']}
+}
+function v414CategoryPrefs(){
+  const def={};
+  V414_CATEGORIES.forEach(([k])=>def[k]={enabled:true,goal:true,kickoff:true,halftime:true,final:true});
+  const got=readJson('v414-category-notifications',{});
+  V414_CATEGORIES.forEach(([k])=>got[k]=Object.assign({},def[k],got[k]||{}));
+  return got;
+}
 function notificationsMarkup(){
-  const s=readStore(),p=Object.assign({goal:true,kickoff:true,halftime:false,final:true,news:true,scheduleChanges:true,venueChanges:true,transfers:true},s.notifications||{});
-  const all=NOTIFS.every(([k])=>p[k]!==false);
-  return section('CENTRO DE AVISOS','Notificaciones','Elige qué avisos quieres recibir en la app.',
-    '<div class="v413-notice-info"><span>🔔</span><div><b>Alertas de Liga Juventino Rosas</b><small>Estas preferencias se guardan en este dispositivo.</small></div></div>'+
-    '<label class="v413-toggle master"><span><b>Permitir alertas</b><small>Activar o desactivar todas</small></span><input type="checkbox" data-v413-master '+(all?'checked':'')+'><i></i></label>'+
-    '<div class="v413-toggle-list">'+NOTIFS.map(([k,t,d])=>'<label class="v413-toggle"><span><b>'+t+'</b><small>'+d+'</small></span><input type="checkbox" data-v413-notif="'+k+'" '+(p[k]!==false?'checked':'')+'><i></i></label>').join('')+'</div>'+
-    '<div class="v413-quiet"><b>No molestar</b><small>Horario local</small><div><label>Desde <input type="time" data-v413-quiet-start value="00:00"></label><label>A <input type="time" data-v413-quiet-end value="08:00"></label></div></div>'
-  );
+  const {n}=v414Prefs(),device=v414DeviceCopy(),quiet=readJson('v413-quiet-hours',{start:'00:00',end:'08:00'});
+  const categoryPrefs=v414CategoryPrefs();
+  return '<section class="v414-notifications" id="'+ID+'">'+
+    '<header class="v414-title"><small>CENTRO DE AVISOS</small><h2>Notificaciones</h2><p>Mismo funcionamiento de la referencia, adaptado al diseño azul de la Liga.</p></header>'+
+    '<div class="v414-device-card">'+
+      '<span class="v414-bell-off">🔕</span>'+
+      '<div><p data-v414-device-copy>'+esc(device[0])+'</p><button type="button" data-v414-device>'+esc(device[1])+'</button></div>'+
+    '</div>'+
+    '<label class="v414-setting v414-master">'+
+      '<span><b>Permitir alertas</b></span>'+
+      '<input type="checkbox" data-v414-master '+(n.enabled!==false?'checked':'')+'><i></i>'+
+    '</label>'+
+    '<div class="v414-settings">'+
+      '<label class="v414-setting"><span><b>Noticias</b><small>Comunicados y publicaciones de la Liga</small></span><input type="checkbox" data-v414-pref="news" '+(n.news!==false?'checked':'')+'><i></i></label>'+
+      '<label class="v414-setting"><span><b>Pronósticos</b><small>Quiniela y recordatorios de partidos</small></span><input type="checkbox" data-v414-pref="predictor" '+(n.predictor!==false?'checked':'')+'><i></i></label>'+
+      '<label class="v414-setting"><span><b>Sonidos</b><small>Reproducir sonido al recibir un aviso</small></span><input type="checkbox" data-v414-pref="sounds" '+(n.sounds!==false?'checked':'')+'><i></i></label>'+
+      '<label class="v414-setting"><span><b>Vibración</b><small>Vibrar cuando llegue una alerta</small></span><input type="checkbox" data-v414-pref="vibration" '+(n.vibration!==false?'checked':'')+'><i></i></label>'+
+      '<div class="v414-setting v414-dnd">'+
+        '<span><b>No molestar</b><small>Silencia avisos durante este horario</small></span>'+
+        '<label class="v414-switch-only"><input type="checkbox" data-v414-pref="doNotDisturb" '+(n.doNotDisturb!==false?'checked':'')+'><i></i></label>'+
+        '<div class="v414-hours"><label>Desde <input type="time" data-v414-quiet-start value="'+esc(quiet.start||'00:00')+'"></label><span>a</span><label>Hasta <input type="time" data-v414-quiet-end value="'+esc(quiet.end||'08:00')+'"></label></div>'+
+      '</div>'+
+    '</div>'+
+    '<div class="v414-category-list">'+
+      V414_CATEGORIES.map(([k,title,desc,ico])=>{
+        const p=categoryPrefs[k]||{};
+        return '<div class="v414-category-wrap" data-v414-category-wrap="'+k+'">'+
+          '<button class="v414-category-row" type="button" data-v414-category="'+k+'">'+
+            '<span class="v414-sport-icon">'+ico+'</span><span><b>'+esc(title)+'</b><small>'+esc(desc)+'</small></span><i>›</i>'+
+          '</button>'+
+          '<div class="v414-category-panel" data-v414-category-panel="'+k+'">'+
+            '<label><span>Activar categoría</span><input type="checkbox" data-v414-cat-pref="'+k+':enabled" '+(p.enabled!==false?'checked':'')+'><i></i></label>'+
+            '<label><span>Goles</span><input type="checkbox" data-v414-cat-pref="'+k+':goal" '+(p.goal!==false?'checked':'')+'><i></i></label>'+
+            '<label><span>Inicio</span><input type="checkbox" data-v414-cat-pref="'+k+':kickoff" '+(p.kickoff!==false?'checked':'')+'><i></i></label>'+
+            '<label><span>Medio tiempo</span><input type="checkbox" data-v414-cat-pref="'+k+':halftime" '+(p.halftime!==false?'checked':'')+'><i></i></label>'+
+            '<label><span>Final</span><input type="checkbox" data-v414-cat-pref="'+k+':final" '+(p.final!==false?'checked':'')+'><i></i></label>'+
+          '</div>'+
+        '</div>';
+      }).join('')+
+    '</div>'+
+    '<div class="v414-match-types">'+
+      '<label class="v414-setting"><span><b>Goles</b><small>Avisos globales de gol</small></span><input type="checkbox" data-v414-pref="goal" '+(n.goal!==false?'checked':'')+'><i></i></label>'+
+      '<label class="v414-setting"><span><b>Inicio del partido</b><small>Cuando arranque un encuentro</small></span><input type="checkbox" data-v414-pref="kickoff" '+(n.kickoff!==false?'checked':'')+'><i></i></label>'+
+      '<label class="v414-setting"><span><b>Medio tiempo</b><small>Al terminar el primer tiempo</small></span><input type="checkbox" data-v414-pref="halftime" '+(n.halftime!==false?'checked':'')+'><i></i></label>'+
+      '<label class="v414-setting"><span><b>Final del partido</b><small>Al concluir el encuentro</small></span><input type="checkbox" data-v414-pref="final" '+(n.final!==false?'checked':'')+'><i></i></label>'+
+      '<label class="v414-setting"><span><b>Cambios de horario</b><small>Modificaciones de jornada</small></span><input type="checkbox" data-v414-pref="scheduleChanges" '+(n.scheduleChanges!==false?'checked':'')+'><i></i></label>'+
+      '<label class="v414-setting"><span><b>Cambios de sede</b><small>Cambios de campo o cancha</small></span><input type="checkbox" data-v414-pref="venueChanges" '+(n.venueChanges!==false?'checked':'')+'><i></i></label>'+
+      '<label class="v414-setting"><span><b>Transferencias</b><small>Movimientos oficiales publicados</small></span><input type="checkbox" data-v414-pref="transfers" '+(n.transfers!==false?'checked':'')+'><i></i></label>'+
+    '</div>'+
+  '</section>';
 }
 function bindNotifications(root){
-  const save=(key,value)=>{const s=readStore();s.notifications=Object.assign({},s.notifications||{},{[key]:value});writeStore(s)};
-  root.querySelectorAll('[data-v413-notif]').forEach(i=>i.onchange=()=>save(i.dataset.v413Notif,i.checked));
-  root.querySelector('[data-v413-master]')?.addEventListener('change',e=>{
-    const checked=e.target.checked;root.querySelectorAll('[data-v413-notif]').forEach(i=>{i.checked=checked;save(i.dataset.v413Notif,checked)});
+  const savePref=(key,value)=>{
+    const s=readStore();s.notifications=Object.assign({},s.notifications||{},{[key]:value});writeStore(s);
+  };
+  root.querySelectorAll('[data-v414-pref]').forEach(i=>i.onchange=()=>{
+    savePref(i.dataset.v414Pref,i.checked);
+    if(i.dataset.v414Pref==='vibration'&&i.checked){try{navigator.vibrate?.(70)}catch(_){}}
+    if(i.dataset.v414Pref==='sounds'&&i.checked){
+      try{
+        const C=window.AudioContext||window.webkitAudioContext;if(C){const c=new C(),o=c.createOscillator(),g=c.createGain();o.frequency.value=760;g.gain.value=.025;o.connect(g);g.connect(c.destination);o.start();o.stop(c.currentTime+.07)}
+      }catch(_){}
+    }
   });
-  const quiet=readJson('v413-quiet-hours',{start:'00:00',end:'08:00'});
-  const a=root.querySelector('[data-v413-quiet-start]'),b=root.querySelector('[data-v413-quiet-end]');
-  if(a)a.value=quiet.start||'00:00';if(b)b.value=quiet.end||'08:00';
-  [a,b].forEach(i=>i&&(i.onchange=()=>writeJson('v413-quiet-hours',{start:a.value,end:b.value})));
+  root.querySelector('[data-v414-master]')?.addEventListener('change',e=>{
+    const on=e.target.checked;savePref('enabled',on);
+    root.querySelectorAll('[data-v414-pref]').forEach(i=>{if(['sounds','vibration','doNotDisturb'].includes(i.dataset.v414Pref))return;i.checked=on;savePref(i.dataset.v414Pref,on)});
+  });
+  const qStart=root.querySelector('[data-v414-quiet-start]'),qEnd=root.querySelector('[data-v414-quiet-end]');
+  [qStart,qEnd].forEach(i=>i&&(i.onchange=()=>writeJson('v413-quiet-hours',{start:qStart.value||'00:00',end:qEnd.value||'08:00'})));
+  root.querySelector('[data-v414-device]')?.addEventListener('click',async e=>{
+    const btn=e.currentTarget,copy=root.querySelector('[data-v414-device-copy]');
+    try{
+      if(!('Notification' in window)){copy.textContent='Este navegador no permite notificaciones web. Revisa los permisos de la app o del navegador.';return}
+      if(Notification.permission==='default'){
+        const result=await Notification.requestPermission();
+        if(result==='granted'){copy.textContent='Las notificaciones del dispositivo están activadas para Liga Juventino Rosas.';btn.textContent='Notificaciones activadas';savePref('devicePermission',true)}
+        else if(result==='denied'){copy.textContent='Las notificaciones quedaron bloqueadas. Actívalas desde los permisos del navegador o de la app.';btn.textContent='Configuración del dispositivo'}
+      }else if(Notification.permission==='granted'){
+        copy.textContent='Las notificaciones del dispositivo están activadas para Liga Juventino Rosas.';btn.textContent='Notificaciones activadas';
+      }else{
+        copy.textContent='Las notificaciones están bloqueadas. Abre los permisos del sitio o de la app desde Android para activarlas.';
+        btn.textContent='Permiso bloqueado';
+      }
+    }catch(_){copy.textContent='No se pudo abrir el permiso automáticamente. Revisa los permisos del sitio o de la app en Android.'}
+  });
+  root.querySelectorAll('[data-v414-category]').forEach(b=>b.onclick=()=>{
+    const k=b.dataset.v414Category,wrap=root.querySelector('[data-v414-category-wrap="'+k+'"]');
+    const open=wrap?.classList.contains('open');
+    root.querySelectorAll('[data-v414-category-wrap]').forEach(x=>x.classList.remove('open'));
+    if(wrap&&!open)wrap.classList.add('open');
+  });
+  root.querySelectorAll('[data-v414-cat-pref]').forEach(i=>i.onchange=()=>{
+    const [cat,key]=String(i.dataset.v414CatPref||'').split(':');
+    const prefs=v414CategoryPrefs();prefs[cat]=Object.assign({},prefs[cat]||{},{[key]:i.checked});writeJson('v414-category-notifications',prefs);
+    if(cat==='football'&&key==='enabled'){
+      const on=i.checked;
+      V414_CATEGORIES.forEach(([k])=>{prefs[k]=Object.assign({},prefs[k]||{},{enabled:on})});
+      writeJson('v414-category-notifications',prefs);
+      root.querySelectorAll('[data-v414-cat-pref$=":enabled"]').forEach(x=>x.checked=on);
+    }
+  });
 }
 
 /* ---------- FICHAJES ---------- */

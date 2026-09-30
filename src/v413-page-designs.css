@@ -76,3 +76,43 @@ html body #screen > .v413-shell{
  html body #screen > .v413-shell{width:calc(100% - 20px)!important;padding:13px!important}
  .v413-head h2{font-size:20px}.v413-fav-tile{flex-basis:72px;width:72px}.v413-match-alerts{gap:6px}
 }
+
+/* V414 — Notificaciones tipo referencia 365Scores, adaptadas al azul de la Liga. */
+body[data-app-route="notifications"] #screen > .v414-notifications{
+  width:calc(100% - 24px)!important;max-width:690px!important;margin:20px auto 118px!important;padding:0!important;
+  color:#fff!important;background:transparent!important;border:0!important;border-radius:0!important;box-shadow:none!important;
+  font-family:Inter,Roboto,Arial,sans-serif!important
+}
+.v414-notifications *{box-sizing:border-box}
+.v414-title{padding:0 0 14px}
+.v414-title small{display:block;margin-bottom:5px;color:#28dce9;font-size:10px;font-weight:900;letter-spacing:.15em}
+.v414-title h2{margin:0;color:#fff;font-size:28px;line-height:1.05;font-weight:800}
+.v414-title p{margin:7px 0 0;color:#9facd1;font-size:13px;line-height:1.4}
+.v414-device-card{display:grid;grid-template-columns:58px minmax(0,1fr);gap:14px;align-items:start;margin-bottom:16px;padding:20px 18px;border:1px solid rgba(117,145,225,.24);border-radius:22px;background:#263766}
+.v414-bell-off{width:50px;height:50px;display:grid;place-items:center;border:2px solid #f05974;border-radius:50%;font-size:25px;background:#172452}
+.v414-device-card p{margin:0;color:#f5f7ff;font-size:15px;line-height:1.35}.v414-device-card button{margin-top:11px;padding:0;border:0;border-bottom:1px solid #fff;background:transparent;color:#fff;font-size:14px;font-weight:500}
+.v414-setting{min-height:72px;display:grid;grid-template-columns:minmax(0,1fr) 52px;gap:12px;align-items:center;padding:14px 16px;background:#0d1d57;color:#fff;position:relative}
+.v414-setting>span b{display:block;font-size:17px;line-height:1.2;font-weight:500}.v414-setting>span small{display:block;margin-top:4px;color:#93a0c7;font-size:11px;line-height:1.3}
+.v414-master{margin-bottom:16px;border:1px solid rgba(98,132,227,.25);border-radius:20px}
+.v414-settings{overflow:hidden;margin-bottom:16px;border:1px solid rgba(98,132,227,.24);border-radius:20px}
+.v414-settings>.v414-setting{border-bottom:2px solid #050a39}.v414-settings>.v414-setting:last-child{border-bottom:0}
+.v414-setting>input,.v414-switch-only>input{position:absolute;opacity:0;pointer-events:none}
+.v414-setting>i,.v414-switch-only>i{justify-self:end;width:48px;height:28px;border-radius:999px;background:#515c84;position:relative;box-shadow:inset 0 0 0 1px rgba(255,255,255,.05)}
+.v414-setting>i:after,.v414-switch-only>i:after{content:"";position:absolute;top:3px;left:3px;width:22px;height:22px;border-radius:50%;background:#f8fbff;transition:.18s}
+.v414-setting>input:checked+i,.v414-switch-only>input:checked+i{background:#2196f3}.v414-setting>input:checked+i:after,.v414-switch-only>input:checked+i:after{left:23px}
+.v414-dnd{grid-template-columns:minmax(0,1fr) 52px;grid-template-rows:auto auto;padding-bottom:16px!important}
+.v414-switch-only{position:relative;display:grid;align-items:center}.v414-hours{grid-column:1/-1;display:grid;grid-template-columns:1fr 18px 1fr;gap:8px;align-items:end;margin-top:10px}
+.v414-hours>span{padding-bottom:11px;color:#9aa6c9;text-align:center;font-size:13px}.v414-hours label{color:#9aa6c9;font-size:12px}.v414-hours input{width:100%;height:42px;margin-top:5px;padding:0 9px;border:1px solid rgba(101,134,227,.3);border-radius:10px;background:#050a38;color:#fff;font-size:15px}
+.v414-category-list{overflow:hidden;margin-bottom:16px;border:1px solid rgba(98,132,227,.24);border-radius:20px;background:#0d1d57}
+.v414-category-wrap{border-bottom:2px solid #050a39}.v414-category-wrap:last-child{border-bottom:0}
+.v414-category-row{width:100%;min-height:74px;display:grid;grid-template-columns:46px minmax(0,1fr) 24px;gap:12px;align-items:center;padding:12px 16px;border:0;background:#0d1d57;color:#fff;text-align:left}
+.v414-sport-icon{width:42px;height:42px;display:grid;place-items:center;border-radius:50%;background:#122965;color:#fff;font-size:23px}.v414-category-row b{display:block;font-size:17px;line-height:1.15;font-weight:500}.v414-category-row small{display:block;margin-top:4px;color:#91a0c8;font-size:11px}.v414-category-row>i{color:#8795bb;font-size:28px;font-style:normal;transition:.18s}.v414-category-wrap.open .v414-category-row>i{transform:rotate(90deg)}
+.v414-category-panel{display:none;padding:4px 16px 12px 74px;background:#09164d}.v414-category-wrap.open .v414-category-panel{display:grid}
+.v414-category-panel label{min-height:44px;display:grid;grid-template-columns:1fr 44px;align-items:center;border-top:1px solid rgba(255,255,255,.06);color:#dde5ff;font-size:12px;position:relative}
+.v414-category-panel input{position:absolute;opacity:0}.v414-category-panel i{justify-self:end;width:38px;height:22px;border-radius:999px;background:#515c84;position:relative}.v414-category-panel i:after{content:"";position:absolute;top:3px;left:3px;width:16px;height:16px;border-radius:50%;background:#fff}.v414-category-panel input:checked+i{background:#2196f3}.v414-category-panel input:checked+i:after{left:19px}
+.v414-match-types{overflow:hidden;border:1px solid rgba(98,132,227,.24);border-radius:20px}.v414-match-types>.v414-setting{border-bottom:2px solid #050a39}.v414-match-types>.v414-setting:last-child{border-bottom:0}
+@media(max-width:420px){
+ body[data-app-route="notifications"] #screen > .v414-notifications{width:calc(100% - 20px)!important}
+ .v414-title h2{font-size:25px}.v414-device-card{grid-template-columns:50px minmax(0,1fr);padding:17px 14px}.v414-device-card p{font-size:14px}
+ .v414-setting{min-height:68px;padding:12px 14px}.v414-setting>span b,.v414-category-row b{font-size:16px}.v414-category-row{min-height:70px;padding:11px 14px}
+}
