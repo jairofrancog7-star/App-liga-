@@ -573,7 +573,10 @@ function open(player){
 function v385SyncScrolledHeader(){
   const active=route()==='playerDetail';
   const y=window.scrollY||document.documentElement.scrollTop||0;
-  document.body.classList.toggle('v385-player-scrolled',active&&y>250);
+  const hero=document.querySelector('.v379-hero');
+  const heroBottom=hero?.getBoundingClientRect?.().bottom??9999;
+  const show=active&&(y>170||heroBottom<178);
+  document.body.classList.toggle('v385-player-scrolled',show);
 }
 function schedule(){requestAnimationFrame(()=>requestAnimationFrame(()=>{render(false);v385SyncScrolledHeader()}))}
 window.LJR_PLAYER_PROFILE_API={open,render:()=>render(true)};
