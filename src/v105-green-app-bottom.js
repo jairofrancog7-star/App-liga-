@@ -261,12 +261,6 @@ function gallery(){
  ];
  return '<div class="v105-video-grid">'+vids.map(v=>'<article class="v105-video-card"><video controls playsinline preload="metadata" src="'+MEDIA+v[1]+'"></video><b>'+esc(v[0])+'</b><small>Archivo de Liga_Futbol</small></article>').join('')+'</div>';
 }
-function v444ReferencePlaceholder(r){
- if(r==='home')return '<div class="v444-home-ref" data-v444-home-ref><div class="v444-data-empty">Cargando diseño de Inicio…</div></div>';
- if(r==='stats'||r==='v38Stats')return '<div class="v444-stats-ref" data-v444-stats-ref data-v444-view="player"><div class="v444-data-empty">Cargando estadísticas…</div></div>';
- return '';
-}
-
 function block(r){
  let html='',cards=[],k='EXPLORA MÁS',title='',desc='',asset='v38-soccer-hero.mp4';
  if(r==='home'){k='TODO EN UN SOLO LUGAR';title='VIVE LA LIGA A TU MANERA';desc='Partidos, historia, herramientas, videos y accesos para seguir todo lo que pasa en la Liga Juventino Rosas.';cards=HOME_CARDS;asset='v38-soccer-hero.mp4';html+=finalVideo()}
@@ -314,7 +308,7 @@ function block(r){
      motion(asset,'LIGA JUVENTINO · AZUL','FÚTBOL QUE SE MUEVE','Animaciones de la app verde adaptadas visualmente al diseño azul y colocadas al final.')+
    '</section>';
  }
- return '<section class="v105-bottom" id="v105-bottom" data-v105-route="'+esc(r)+'">'+head(k,title,desc)+motion(asset,'LIGA JUVENTINO · AZUL','FÚTBOL QUE SE MUEVE','Animaciones de la app verde adaptadas visualmente al diseño azul y colocadas abajo.')+html+(cards.length?'<div class="v105-grid">'+cards.map(card).join('')+'</div>':'')+v444ReferencePlaceholder(r)+'<p class="v105-footnote">Estas funciones se anexan debajo de la página. Los simuladores, notas, encuestas y directorios locales no cambian datos oficiales.</p></section>';
+ return '<section class="v105-bottom" id="v105-bottom" data-v105-route="'+esc(r)+'">'+head(k,title,desc)+motion(asset,'LIGA JUVENTINO · AZUL','FÚTBOL QUE SE MUEVE','Animaciones de la app verde adaptadas visualmente al diseño azul y colocadas abajo.')+html+(cards.length?'<div class="v105-grid">'+cards.map(card).join('')+'</div>':'')+'<p class="v105-footnote">Estas funciones se anexan debajo de la página. Los simuladores, notas, encuestas y directorios locales no cambian datos oficiales.</p></section>';
 }
 
 /* ===== Táctica 3D inferior ===== */
