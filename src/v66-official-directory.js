@@ -170,9 +170,13 @@ function bind(){
   });
   document.querySelectorAll('[data-v66-open-team]').forEach(b=>b.onclick=e=>{
     const name=b.dataset.v66OpenTeam,cat=b.dataset.v66CatId;
-    if(route()==='club-store'){
-      e?.preventDefault?.();e?.stopPropagation?.();
+    const inStore=route()==='club-store'||!!b.closest('[data-v66-directory="store"]');
+    if(inStore){
+      e?.preventDefault?.();e?.stopPropagation?.();e?.stopImmediatePropagation?.();
+      try{localStorage.removeItem('v42-open-compare')}catch(_){}
       if(window.LJR_V431_STORE_API?.open){window.LJR_V431_STORE_API.open(name,cat);return}
+      try{sessionStorage.setItem('v431-store-open','1');sessionStorage.setItem('v431-store-team',name);sessionStorage.setItem('v431-store-cat',String(cat||'3'))}catch(_){}
+      return;
     }
     saveTeam(name,cat);
     try{if(window.LJR_OFFICIAL_API?.openTeam){window.LJR_OFFICIAL_API.openTeam(name);return}}catch(e){}
