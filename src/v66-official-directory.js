@@ -409,10 +409,14 @@ function rosterFor(name,cat){
 }
 function crest(name,logo,cls){return '<span class="'+(cls||"v431-crest")+'">'+(logo?'<img src="'+esc(logo)+'" alt="'+esc(name)+'">':'<b>'+esc(initials(name)||"JR")+'</b>')+'</span>'}
 function shirt(logo,variant,label,number,name){
- return '<div class="v431-shirt '+esc(variant||"home")+'"><div class="v431-shirt-shape"></div>'+(logo?'<img class="v431-shirt-logo" src="'+esc(logo)+'" alt="">':'')+'<b class="v431-shirt-name">'+esc(name||"")+'</b><strong class="v431-shirt-number">'+esc(number||"")+'</strong><span>'+esc(label||"")+'</span></div>';
+ return '<div class="v431-shirt v440-shirt '+esc(variant||"home")+'">'+
+   '<div class="v431-shirt-shape v440-shirt-shape"><i class="v440-collar"></i><i class="v440-seam seam-l"></i><i class="v440-seam seam-r"></i><i class="v440-hem"></i><i class="v440-fabric"></i></div>'+
+   (logo?'<img class="v431-shirt-logo" src="'+esc(logo)+'" alt="">':'')+
+   '<b class="v431-shirt-name">'+esc(name||"")+'</b><strong class="v431-shirt-number">'+esc(number||"")+'</strong><span>'+esc(label||"")+'</span>'+
+   '<i class="v440-shirt-shadow"></i></div>';
 }
 function productCard(title,sub,variant,logo){
- return '<article class="v431-product" data-v431-product data-v437-open-product="'+esc(variant||"home")+'" data-v437-title="'+esc(title)+'" data-v437-price="Mex$1,300.00" data-search="'+esc((title+" "+sub).toLowerCase())+'"><button type="button" class="v431-heart" data-v431-heart aria-label="Favorito">♡</button><div class="v431-product-art">'+shirt(logo,variant,"","","")+'</div><h3>'+esc(title)+'</h3><p>'+esc(sub)+'</p><button type="button" class="v431-add" data-v431-add="'+esc(title)+'">Añadir</button></article>';
+ return '<article class="v431-product v440-product-card" data-v431-product data-v437-open-product="'+esc(variant||"home")+'" data-v437-title="'+esc(title)+'" data-v437-price="Mex$1,300.00" data-search="'+esc((title+" "+sub).toLowerCase())+'"><button type="button" class="v431-heart" data-v431-heart aria-label="Favorito">♡</button><div class="v431-product-art">'+shirt(logo,variant,"","","")+'<span class="v440-photo-tag">NUEVO</span></div><h3>'+esc(title)+'</h3><p>'+esc(sub)+'</p><div class="v440-product-meta"><span>Vista de producto</span><b>★ 4.9</b></div><button type="button" class="v431-add" data-v431-add="'+esc(title)+'">Añadir</button></article>';
 }
 function playerCards(roster){
  if(!roster.length)return '<div class="v431-empty">La plantilla de este equipo todavía no tiene jugadores sincronizados para esta sección.</div>';
@@ -426,6 +430,7 @@ function v436Product(title,sub,variant,logo,price,badge){
     (badge?'<span class="v436-badge">'+esc(badge)+'</span>':'')+
   '</div>'+
   '<strong>'+esc(price||"Mex$1,300.00")+'</strong><p>'+esc(title)+'</p><small>'+esc(sub)+'</small>'+
+  '<div class="v440-product-meta"><span>Vista de producto</span><b>★ 4.9</b></div>'+
  '</article>';
 }
 function v436CategoryPanel(team,logo){
