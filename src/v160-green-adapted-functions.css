@@ -405,3 +405,37 @@ body[data-app-route="matchday"] .v164-timeline-row strong{
     border-top:0!important;
   }
 }
+
+
+/* V405 — Modo TV: botones inferiores siempre visibles. */
+body.v160-tv-open{
+  overflow:hidden!important;
+}
+body.v160-tv-open #app > .bottom-nav,
+body.v160-tv-open .app-shell > .bottom-nav,
+body.v160-tv-open nav.bottom-nav{
+  display:none!important;
+  visibility:hidden!important;
+  pointer-events:none!important;
+}
+.v160-tv-layer{
+  z-index:2147483600!important;
+  padding-bottom:calc(28px + env(safe-area-inset-bottom))!important;
+  scroll-padding-bottom:calc(28px + env(safe-area-inset-bottom))!important;
+}
+.v160-tv-board{
+  padding-bottom:calc(24px + env(safe-area-inset-bottom))!important;
+}
+.v160-tv-actions{
+  position:relative!important;
+  z-index:3!important;
+  margin-bottom:calc(6px + env(safe-area-inset-bottom))!important;
+}
+.v160-tv-actions button{
+  display:flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  min-height:58px!important;
+  visibility:visible!important;
+  opacity:1!important;
+}
