@@ -294,10 +294,12 @@ async function renderCompare(){
  let secondary=resolvePlayer(read(SECONDARY_KEY),list);
  if(secondary&&playerKey(secondary)===playerKey(primary))secondary=null;
 
- if(!secondary&&!pickerOpen&&!pickerAutoShown){
+ /* V209 — Al entrar a Comparar jugadores, mostrar SIEMPRE primero la vista principal.
+    El selector de la imagen 2 solo se abre cuando el usuario toca una tarjeta
+    de jugador o un botón explícito para cambiar/elegir jugador. */
+ if(!secondary&&!pickerOpen){
   pickerSide='secondary';
-  pickerOpen=true;
-  pickerAutoShown=true;
+  pickerPosition='';
   query='';
  }
 
