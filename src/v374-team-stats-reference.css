@@ -11,6 +11,14 @@ body.v42-team-active .v42-stats{padding:0 0 calc(90px + env(safe-area-inset-bott
 .v374-panel-body{display:none!important;padding:15px 16px 17px!important}
 .v374-panel.open .v374-panel-body{display:block!important}
 .v374-key-top{display:grid!important;grid-template-columns:118px minmax(0,1fr)!important;gap:14px!important;align-items:center!important}
+.v374-possession{display:grid!important;grid-template-columns:118px minmax(0,1fr)!important;gap:14px!important;align-items:center!important}
+.v374-possession>div:last-child{display:grid!important;gap:10px!important}
+.v374-possession p{display:grid!important;grid-template-columns:7px minmax(0,1fr) auto!important;gap:7px!important;align-items:center!important;margin:0!important;color:#c1c5df!important;font-size:9px!important}
+.v374-possession p i{width:6px!important;height:6px!important;border-radius:50%!important;background:#10dce9!important}
+.v374-possession p:nth-child(2) i{background:#fff!important}
+.v374-possession p:nth-child(3) i{background:#ff4a9c!important}
+.v374-possession p span{min-width:0!important;overflow:hidden!important;text-overflow:ellipsis!important;white-space:nowrap!important}
+.v374-possession p b{color:#fff!important;font-size:11px!important}
 .v374-circle{width:96px!important;height:96px!important;display:grid!important;place-content:center!important;justify-items:center!important;margin:auto!important;border:2px solid transparent!important;border-radius:50%!important;background:linear-gradient(#0d0d73,#0d0d73) padding-box,linear-gradient(135deg,#10dce9,#244dff) border-box!important}
 .v374-circle strong{color:#fff!important;font-size:22px!important;line-height:1!important;font-weight:650!important}
 .v374-circle small{max-width:72px!important;margin-top:4px!important;color:#c3c7e0!important;font-size:8px!important;line-height:1.15!important;text-align:center!important}
@@ -48,7 +56,7 @@ body.v42-team-active .v42-stats{padding:0 0 calc(90px + env(safe-area-inset-bott
 .v374-source{margin:0!important;padding:13px 16px 20px!important;color:#8087b5!important;font-size:8px!important;line-height:1.35!important}
 @media(max-width:370px){
  .v374-panel-body{padding-left:13px!important;padding-right:13px!important}
- .v374-key-top{grid-template-columns:104px minmax(0,1fr)!important;gap:10px!important}
+ .v374-key-top,.v374-possession{grid-template-columns:104px minmax(0,1fr)!important;gap:10px!important}
  .v374-circle{width:86px!important;height:86px!important}
  .v374-duels,.v374-dribbles{grid-template-columns:100px minmax(0,1fr)!important;gap:10px!important}
 }
