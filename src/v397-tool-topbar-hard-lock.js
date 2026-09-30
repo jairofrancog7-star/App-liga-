@@ -7,7 +7,7 @@
     "v38Alerts","v38Weather","v4-matchcenter","venues","matchday","search","ligaQR","players",
     "agendaBuilder","simulator","v38Stats","bracketBuilder","tableExport","motionHub","recruitment",
     "credentialBuilder","tactics","publications","v38Weekly","scheduleChanges","weatherFields",
-    "cedulas","cedulaBuilder","rulebook","rankings","leagueData","leagueTools","news"
+    "cedulas","cedulaBuilder","rulebook","rankings","leagueTools","news"
   ]);
 
   const REFERENCE_ROUTES=new Set([
@@ -36,6 +36,24 @@
 
     const route=current();
     const bodyRoute=String(document.body?.dataset?.appRoute||'');
+
+    // Estadísticas (V33) tiene su propia cabecera con flecha/título/pestañas.
+    // No debe recibir la barra global superior.
+    const statsOwned=route==='safe-data'||route==='leagueData'||document.body.classList.contains('v33-data-active');
+    if(statsOwned){
+      topbar.classList.remove('v402-tool-topbar-compact','v397-tool-topbar-exact','v403-reference-topbar','v404-missing-pages-topbar');
+      topbar.style.setProperty('display','none','important');
+      topbar.style.setProperty('visibility','hidden','important');
+      topbar.style.setProperty('height','0','important');
+      topbar.style.setProperty('min-height','0','important');
+      topbar.style.setProperty('max-height','0','important');
+      topbar.style.setProperty('margin','0','important');
+      topbar.style.setProperty('padding','0','important');
+      return;
+    }else{
+      ['display','visibility'].forEach(p=>topbar.style.removeProperty(p));
+    }
+
     const overlayActive=!!document.querySelector('.v100-modal,.v105-modal,.v160-tv-layer');
     const contentMarker=!!document.querySelector('#v190-recruitment-page,.v60-tool-page');
     const active=ROUTES.has(route)||ROUTES.has(bodyRoute)||overlayActive||contentMarker;
