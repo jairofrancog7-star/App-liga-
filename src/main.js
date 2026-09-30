@@ -5060,7 +5060,7 @@ function v38StatsView(){
       '<button class="v60-btn outline" data-route="scorers">Goleadores</button>'+
       '<button class="v60-btn outline" data-safe-route="safe-performance">Rendimiento</button>'+
     '</div>'+
-    '<div class="v60-panel"><p class="v60-note">Estos accesos reutilizan las pantallas existentes; no sustituyen la navegación ni cambian el diseño principal.</p></div>'+
+    '<div class="v60-panel v402-stats-note"><p class="v60-note">Estos accesos reutilizan las pantallas existentes; no sustituyen la navegación ni cambian el diseño principal.</p></div>'+
 
     '<section class="v399-stats-summary" aria-label="Resumen de Primera Fuerza">'+
       '<div class="v399-stats-heading"><div><small>PRIMERA FUERZA</small><h2>Tabla rápida</h2></div><button type="button" data-v63-comp="standings">Ver completa ›</button></div>'+
