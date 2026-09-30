@@ -2,7 +2,7 @@
    Evita depender de body[data-app-route], que otros módulos pueden reescribir. */
 (function(){
   'use strict';
-  const routes=new Set(['v38Alerts','v38Weather','v4-matchcenter','venues','matchday']);
+  const routes=new Set(['v38Alerts','v38Weather','v4-matchcenter','venues','matchday','search','ligaQR','players','agendaBuilder','simulator','v38Stats','bracketBuilder']);
   function route(){
     return String(location.hash||'').replace(/^#\/?/,'').split('?')[0]||'home';
   }
