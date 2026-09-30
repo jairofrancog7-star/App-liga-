@@ -1059,3 +1059,41 @@ body[data-app-route="quiz"] #screen{
   margin-top:0!important;
   top:0!important;
 }
+
+
+/* V397 — Quiz Arena game-only hard restore. */
+html body[data-app-route="quizArena"] .v48-arena-landing{
+  display:none!important;
+}
+html body[data-app-route="quizArena"] .v48-quiz-arena-page,
+html body[data-app-route="quizArena"] .v48-quiz-arena-page.v48-playing{
+  position:relative!important;
+  width:100%!important;
+  min-height:calc(100dvh - var(--v48-nav-h))!important;
+  margin:0!important;
+  padding:0!important;
+  overflow:hidden!important;
+  background:transparent!important;
+}
+html body[data-app-route="quizArena"] .v48-game,
+html body[data-app-route="quizArena"] .v48-quiz-arena-page.v48-playing .v48-game{
+  position:relative!important;
+  display:block!important;
+  width:100%!important;
+  height:calc(100dvh - var(--v48-nav-h) - env(safe-area-inset-bottom))!important;
+  min-height:620px!important;
+  margin:0!important;
+  overflow:hidden!important;
+  background:
+    radial-gradient(ellipse at 50% 6%,rgba(56,99,255,.30),transparent 46%),
+    linear-gradient(180deg,#063dff 0%,#0828df 18%,#07189a 45%,#060d72 72%,#04075a 100%)!important;
+}
+html body[data-app-route="quizArena"] #screen{
+  padding-top:0!important;
+  margin-top:0!important;
+  overflow:hidden!important;
+}
+html body[data-app-route="quizArena"] #app > .topbar,
+html body[data-app-route="quizArena"] .app-shell > .topbar{
+  display:none!important;
+}
