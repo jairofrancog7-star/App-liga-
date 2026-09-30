@@ -187,9 +187,11 @@ function monthStrip(){
     const d=new Date(y,m+delta,1);
     months.push({year:d.getFullYear(),month:d.getMonth()});
   }
+  const activeIndex=Math.max(0,months.findIndex(x=>x.year===y&&x.month===m));
+  const indicatorX=((activeIndex+.5)/months.length*100).toFixed(4)+'%';
   return '<div class="v415-month-strip" role="tablist" aria-label="Meses">'+
     months.map(x=>'<button type="button" class="'+(x.year===y&&x.month===m?'active':'')+'" data-v415-month="'+x.year+'-'+x.month+'" role="tab" aria-selected="'+(x.year===y&&x.month===m?'true':'false')+'">'+monthName(x.month)+'</button>').join('')+
-  '</div><div class="v415-month-line"><i></i></div>';
+  '</div><div class="v415-month-line" style="--v415-month-indicator-x:'+indicatorX+'"><i></i></div>';
 }
 
 function rosterTeams(catId=squadCategory){
