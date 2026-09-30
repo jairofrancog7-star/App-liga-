@@ -22,6 +22,10 @@ let viewDate=new Date();
 let selectedIso='';
 let selectedCategory='all';
 let filterOpen=false;
+let activeView='calendar';
+let squadCategory='3';
+let squadTeam='';
+const enabledCategories=new Set(CATEGORY_ORDER);
 let rendering=false;
 
 const route=()=>String(location.hash||'').replace(/^#\/?/,'').split('?')[0]||'home';
@@ -66,11 +70,12 @@ function logoFor(name){
   return 'https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/'+String(path).replace(/^\.\//,'');
 }
 
-function games(categoryId=selectedCategory){
+function games(categoryId=null){
   const out=[];
   const cats=db?.categories||{};
   CATEGORY_ORDER.forEach(catId=>{
-    if(categoryId!=='all'&&String(categoryId)!==String(catId))return;
+    if(categoryId&&categoryId!=='all'&&categoryId!=='custom'&&String(categoryId)!==String(catId))return;
+    if(!categoryId&&!enabledCategories.has(String(catId)))return;
     const cat=cats[catId]||{};
     (cat.fixtures||[]).forEach((group,groupIndex)=>{
       (group?.rows||[]).forEach((r,rowIndex)=>{
@@ -102,7 +107,16 @@ function games(categoryId=selectedCategory){
 
 function categoryLabel(id=selectedCategory){
   if(id==='all')return 'Todas';
+  if(id==='custom'){
+    const n=enabledCategories.size;
+    return n===1?(db?.categories?.[[...enabledCategories][0]]?.name||CATEGORY_FALLBACK[[...enabledCategories][0]]||'Categoría'):(n+' categorías');
+  }
   return db?.categories?.[id]?.name||CATEGORY_FALLBACK[id]||'Categoría';
+}
+function syncSelectedCategory(){
+  if(enabledCategories.size===CATEGORY_ORDER.length)selectedCategory='all';
+  else if(enabledCategories.size===1)selectedCategory=[...enabledCategories][0];
+  else selectedCategory='custom';
 }
 
 function monthName(m){
@@ -128,11 +142,11 @@ function logoMarkup(name,cls=''){
 function topTabs(){
   return '<div class="v415-top-row">'+
     '<div class="v415-segment" role="tablist" aria-label="Secciones">'+
-      '<button type="button" class="active" data-v415-go="calendar" role="tab" aria-selected="true">Calendario</button>'+
+      '<button type="button" class="'+(activeView==='calendar'?'active':'')+'" data-v415-go="calendar" role="tab" aria-selected="'+(activeView==='calendar'?'true':'false')+'">Calendario</button>'+
       '<button type="button" data-v415-go="standings" role="tab">Clasificación</button>'+
-      '<button type="button" data-v415-go="teams" role="tab">Plantilla</button>'+
+      '<button type="button" class="'+(activeView==='squad'?'active':'')+'" data-v415-go="teams" role="tab" aria-selected="'+(activeView==='squad'?'true':'false')+'">Plantilla</button>'+
     '</div>'+
-    '<button type="button" class="v415-filter'+(filterOpen?' active':'')+'" data-v415-filter aria-label="Filtrar por categoría" aria-expanded="'+(filterOpen?'true':'false')+'">'+
+    '<button type="button" class="v415-filter'+(filterOpen?' active':'')+'" data-v415-filter aria-label="Equipos y competiciones" aria-expanded="'+(filterOpen?'true':'false')+'">'+
       '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h10M18 7h2M4 17h2M10 17h10"/><circle cx="16" cy="7" r="2"/><circle cx="8" cy="17" r="2"/></svg>'+
     '</button>'+
   '</div>';
@@ -141,18 +155,27 @@ function topTabs(){
 function categoryPanel(){
   if(!filterOpen)return '';
   const available=CATEGORY_ORDER.filter(id=>db?.categories?.[id]);
-  const rows=[['all','Todas las categorías'],...available.map(id=>[id,categoryLabel(id)])];
+  const allOn=available.length&&available.every(id=>enabledCategories.has(id));
+  const card=(id,label)=>{
+    const on=enabledCategories.has(id);
+    const teamCount=Object.keys(db?.categories?.[id]?.rosters||{}).length;
+    return '<div class="v415-filter-category-card '+(on?'active':'')+'">'+
+      '<button type="button" class="v415-filter-row" data-v415-category-toggle="'+esc(id)+'">'+
+        '<span><b>'+esc(label)+'</b><small>'+teamCount+' equipos registrados</small></span>'+
+        '<i class="v415-switch" aria-hidden="true"><em></em></i>'+
+      '</button>'+
+      '<button type="button" class="v415-filter-subrow" data-v415-squad-category="'+esc(id)+'"><span>Todos los equipos</span><i>⌄</i></button>'+
+    '</div>';
+  };
   return '<div class="v415-filter-backdrop" data-v415-filter-close></div>'+
     '<aside class="v415-filter-sheet" role="dialog" aria-modal="true" aria-label="Equipos y competiciones">'+
       '<div class="v415-filter-sheet-head"><h2>Equipos y competiciones</h2><button type="button" data-v415-filter-close aria-label="Cerrar">×</button></div>'+
       '<h3>Fútbol</h3>'+
       '<div class="v415-filter-sheet-list">'+
-        rows.map(([id,label])=>
-          '<button type="button" class="v415-filter-row '+(selectedCategory===id?'active':'')+'" data-v415-category="'+esc(id)+'">'+
-            '<span><b>'+esc(label)+'</b><small>'+(id==='all'?'Mostrar todos los partidos':'Todas las competiciones')+'</small></span>'+
-            '<i class="v415-switch" aria-hidden="true"><em></em></i>'+
-          '</button>'
-        ).join('')+
+        '<div class="v415-filter-category-card master '+(allOn?'active':'')+'">'+
+          '<button type="button" class="v415-filter-row" data-v415-all-categories><span><b>Todas las categorías</b><small>Mostrar todo el rol oficial</small></span><i class="v415-switch" aria-hidden="true"><em></em></i></button>'+
+        '</div>'+
+        available.map(id=>card(id,categoryLabel(id))).join('')+
       '</div>'+
     '</aside>';
 }
@@ -167,6 +190,77 @@ function monthStrip(){
   return '<div class="v415-month-strip" role="tablist" aria-label="Meses">'+
     months.map(x=>'<button type="button" class="'+(x.year===y&&x.month===m?'active':'')+'" data-v415-month="'+x.year+'-'+x.month+'" role="tab" aria-selected="'+(x.year===y&&x.month===m?'true':'false')+'">'+monthName(x.month)+'</button>').join('')+
   '</div><div class="v415-month-line"><i></i></div>';
+}
+
+function rosterTeams(catId=squadCategory){
+  const rosters=db?.categories?.[catId]?.rosters||{};
+  return Object.keys(rosters);
+}
+function ensureSquadSelection(){
+  if(!db?.categories?.[squadCategory])squadCategory=CATEGORY_ORDER.find(id=>db?.categories?.[id])||'3';
+  const teams=rosterTeams(squadCategory);
+  if(!teams.some(t=>norm(t)===norm(squadTeam)))squadTeam=teams.find(t=>(db?.categories?.[squadCategory]?.rosters?.[t]||[]).length)||teams[0]||'';
+}
+function playerUsage(name,catId=squadCategory){
+  const usage=db?.categories?.[catId]?.player_usage||{};
+  const key=Object.keys(usage).find(k=>norm(k)===norm(name));
+  return key?usage[key]:null;
+}
+function squadPlayerCard(name,index){
+  const usage=playerUsage(name);
+  const logo=logoFor(squadTeam);
+  const initials=String(name||'').split(/\s+/).filter(Boolean).slice(0,2).map(x=>x[0]).join('').toUpperCase();
+  return '<article class="v415-player-card">'+
+    '<div class="v415-player-art">'+
+      (logo?'<img class="v415-player-team-logo" src="'+esc(logo)+'" alt="" loading="lazy" decoding="async">':'')+
+      '<span class="v415-player-avatar">'+esc(initials||String(index+1))+'</span>'+
+    '</div>'+
+    '<div class="v415-player-copy"><strong>'+esc(name)+'</strong><small>'+(usage?.cedulas?esc(usage.cedulas)+' cédulas registradas':'Jugador registrado')+'</small></div>'+
+  '</article>';
+}
+function squadMarkup(){
+  ensureSquadSelection();
+  const available=CATEGORY_ORDER.filter(id=>db?.categories?.[id]);
+  const teams=rosterTeams();
+  const roster=(db?.categories?.[squadCategory]?.rosters?.[squadTeam]||[]).filter(Boolean);
+  return '<section class="v415-squad-view" data-v415-squad-view>'+
+    '<div class="v415-squad-categories">'+available.map(id=>'<button type="button" class="'+(id===squadCategory?'active':'')+'" data-v415-squad-category="'+esc(id)+'">'+esc(categoryLabel(id))+'</button>').join('')+'</div>'+
+    '<div class="v415-squad-line"><i></i></div>'+
+    '<div class="v415-team-picker-wrap"><label>Equipo</label><select data-v415-squad-team>'+teams.map(t=>'<option value="'+esc(t)+'"'+(norm(t)===norm(squadTeam)?' selected':'')+'>'+esc(t)+'</option>').join('')+'</select></div>'+
+    '<div class="v415-squad-heading"><h2>Jugadores</h2><span>'+esc(squadTeam||'Equipo')+'</span></div>'+
+    (roster.length?'<div class="v415-player-grid">'+roster.map(squadPlayerCard).join('')+'</div>':'<div class="v415-empty v415-squad-empty">No hay jugadores oficiales publicados para este equipo.</div>')+
+  '</section>';
+}
+function icsEscape(v){return String(v??'').replace(/\\/g,'\\\\').replace(/;/g,'\\;').replace(/,/g,'\\,').replace(/\n/g,'\\n')}
+function addToCalendar(g){
+  if(!g)return;
+  const date=String(g.iso||'').replace(/-/g,'');
+  const hasTime=/^\d{2}:\d{2}$/.test(g.time||'');
+  let dtStart='',dtEnd='';
+  if(hasTime){
+    const [hh,mm]=g.time.split(':').map(Number);
+    const d=new Date(g.year,g.month,g.day,hh,mm||0,0);
+    const e=new Date(d.getTime()+2*60*60*1000);
+    const fmt=x=>x.getFullYear()+pad(x.getMonth()+1)+pad(x.getDate())+'T'+pad(x.getHours())+pad(x.getMinutes())+'00';
+    dtStart='DTSTART;TZID=America/Mexico_City:'+fmt(d);
+    dtEnd='DTEND;TZID=America/Mexico_City:'+fmt(e);
+  }else{
+    dtStart='DTSTART;VALUE=DATE:'+date;
+    const e=new Date(g.year,g.month,g.day+1);
+    dtEnd='DTEND;VALUE=DATE:'+e.getFullYear()+pad(e.getMonth()+1)+pad(e.getDate());
+  }
+  const title=g.home+' vs '+g.away;
+  const body=['BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//Liga Juventino Rosas//Calendario//ES','BEGIN:VEVENT',
+    'UID:'+g.id+'@juventinorosasliga.com',dtStart,dtEnd,
+    'SUMMARY:'+icsEscape(title),'LOCATION:'+icsEscape(g.venue||''),
+    'DESCRIPTION:'+icsEscape((g.category||'')+(g.round?' · Jornada '+g.round:'')),
+    'END:VEVENT','END:VCALENDAR'].join('\r\n');
+  try{
+    const blob=new Blob([body],{type:'text/calendar;charset=utf-8'});
+    const url=URL.createObjectURL(blob);
+    const a=document.createElement('a');a.href=url;a.download='partido-'+g.iso+'.ics';document.body.appendChild(a);a.click();a.remove();
+    setTimeout(()=>URL.revokeObjectURL(url),3000);
+  }catch(_){}
 }
 
 function dayLogoStack(dayGames){
@@ -224,7 +318,7 @@ function matchCard(g){
     '<div class="v415-match-date">'+esc(shortDate(g.iso))+(g.score?'':' · '+esc(g.time))+'</div>'+
     '<div class="v415-match-main">'+
       '<div class="v415-match-team">'+logoMarkup(g.home,'large')+'<b>'+esc(g.home)+'</b></div>'+
-      '<div class="v415-match-center"><strong>'+center+'</strong><small class="'+(g.score||g.played?'done':'scheduled')+'">'+statusText(g)+'</small></div>'+
+      '<div class="v415-match-center"><strong>'+center+'</strong><button type="button" class="v415-add-calendar" data-v415-add-calendar="'+esc(g.id)+'" aria-label="Agregar partido al calendario"><span>＋</span><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="5" width="16" height="15" rx="2"/><path d="M8 3v4M16 3v4M4 9h16"/></svg></button><small class="'+(g.score||g.played?'done':'scheduled')+'">'+statusText(g)+'</small></div>'+
       '<div class="v415-match-team">'+logoMarkup(g.away,'large')+'<b>'+esc(g.away)+'</b></div>'+
     '</div>'+
     '<button type="button" class="v415-venue" data-v415-go="matches"><span>Área de partido</span><small>'+esc(g.venue)+'</small></button>'+
@@ -280,15 +374,37 @@ function bind(root){
     filterOpen=false;
     render();
   }));
-  root.querySelectorAll('[data-v415-category]').forEach(btn=>btn.addEventListener('click',()=>{
-    selectedCategory=btn.dataset.v415Category||'all';
+  root.querySelector('[data-v415-all-categories]')?.addEventListener('click',()=>{
+    const allOn=CATEGORY_ORDER.every(id=>enabledCategories.has(id));
+    enabledCategories.clear();
+    if(!allOn)CATEGORY_ORDER.forEach(id=>{if(db?.categories?.[id])enabledCategories.add(id)});
+    syncSelectedCategory();
     selectedIso='';
-    filterOpen=false;
     render();
+  });
+  root.querySelectorAll('[data-v415-category-toggle]').forEach(btn=>btn.addEventListener('click',()=>{
+    const id=btn.dataset.v415CategoryToggle||'';
+    if(!id)return;
+    if(enabledCategories.has(id)){if(enabledCategories.size>1)enabledCategories.delete(id)}
+    else enabledCategories.add(id);
+    syncSelectedCategory();
+    selectedIso='';
+    render();
+  }));
+  root.querySelectorAll('[data-v415-squad-category]').forEach(btn=>btn.addEventListener('click',()=>{
+    const id=btn.dataset.v415SquadCategory||'3';
+    squadCategory=id;squadTeam='';activeView='squad';filterOpen=false;render();
+  }));
+  root.querySelector('[data-v415-squad-team]')?.addEventListener('change',e=>{squadTeam=e.target.value||'';render()});
+  root.querySelectorAll('[data-v415-add-calendar]').forEach(btn=>btn.addEventListener('click',e=>{
+    e.preventDefault();e.stopPropagation();
+    const g=games().find(x=>x.id===btn.dataset.v415AddCalendar);
+    addToCalendar(g);
   }));
   root.querySelectorAll('[data-v415-go]').forEach(btn=>btn.addEventListener('click',()=>{
     const dest=btn.dataset.v415Go;
     if(dest==='calendar'){
+      activeView='calendar';
       filterOpen=false;
       render();
       return;
@@ -302,7 +418,9 @@ function bind(root){
       return;
     }
     if(dest==='teams'){
-      location.hash='#/teams';
+      activeView='squad';
+      filterOpen=false;
+      render();
       return;
     }
     if(dest==='matches'){
@@ -326,9 +444,7 @@ function render(){
     root.innerHTML='<section class="v103-calendar-page v415-calendar-page" data-v103-calendar data-v415-calendar>'+
       topTabs()+
       categoryPanel()+
-      monthStrip()+
-      calendarGrid(monthGames)+
-      selectedMatches(allGames)+
+      (activeView==='squad'?squadMarkup():(monthStrip()+calendarGrid(monthGames)+selectedMatches(allGames)))+
     '</section>';
     bind(root);
     try{window.LJR_TEAM_LOGOS?.refresh?.()}catch(_){}
