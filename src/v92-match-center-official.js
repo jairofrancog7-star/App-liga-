@@ -628,6 +628,67 @@ function matchCenterCalendarBlock(m){
     '<div class="v423-cards">'+(list.length?list.map(v423MatchCard).join(''):'<div class="v423-empty"><b>Sin partidos para este día</b><span>Cambia la fecha o los filtros para ver otros partidos publicados.</span></div>')+'</div>'+
   '</section>';
 }
+
+function v424H2H(m){
+  const r=m.r,home=r[2],away=r[6],h=norm(home),a=norm(away);
+  const rows=allCategoryFixtureRows(m).map(x=>({r:x,score:publishedScore(x),stamp:fixtureStamp(x?.[8])}))
+    .filter(x=>x.score&&((norm(x.r?.[2])===h&&norm(x.r?.[6])===a)||(norm(x.r?.[2])===a&&norm(x.r?.[6])===h)))
+    .sort((x,y)=>(x.stamp||0)-(y.stamp||0));
+  let wins=0,draws=0,losses=0;
+  rows.forEach(x=>{
+    const homeIsTarget=norm(x.r?.[2])===h;
+    const gf=homeIsTarget?Number(x.score.home):Number(x.score.away);
+    const ga=homeIsTarget?Number(x.score.away):Number(x.score.home);
+    if(gf>ga)wins++; else if(gf<ga)losses++; else draws++;
+  });
+  return {played:rows.length,wins,draws,losses};
+}
+function v424FormDots(m,team,limit=10){
+  const list=teamForm(m,team,limit);
+  return list.map(x=>'<i class="'+(x.result==='V'?'win':x.result==='E'?'draw':'loss')+'" title="'+esc(x.result)+'"></i>').join('')||
+    '<span class="v424-noform">Sin resultados</span>';
+}
+function v424FormCounts(m,team){
+  const list=teamForm(m,team,10);
+  return {
+    wins:list.filter(x=>x.result==='V').length,
+    draws:list.filter(x=>x.result==='E').length,
+    losses:list.filter(x=>x.result==='D').length
+  };
+}
+function v424LowerReference(m){
+  const r=m.r,home=r[2],away=r[6],h2h=v424H2H(m),hf=v424FormCounts(m,home),af=v424FormCounts(m,away);
+  return '<section class="v424-reference-lower" data-v424-reference-lower>'+
+    '<section class="v424-card v424-h2h">'+
+      '<header><h3>Head to Head</h3></header>'+
+      '<div class="v424-h2h-teams">'+
+        '<span>'+teamLogo(home,'v424-team-logo')+'<b>'+esc(home)+'</b></span>'+
+        '<em>VS</em>'+
+        '<span>'+teamLogo(away,'v424-team-logo')+'<b>'+esc(away)+'</b></span>'+
+      '</div>'+
+      '<div class="v424-h2h-grid">'+
+        '<div><small>Jugados</small><b>'+esc(h2h.played)+'</b></div>'+
+        '<div><small>Ganados</small><b>'+esc(h2h.wins)+'</b></div>'+
+        '<div><small>Perdidos</small><b>'+esc(h2h.losses)+'</b></div>'+
+        '<div><small>Empates</small><b>'+esc(h2h.draws)+'</b></div>'+
+      '</div>'+
+      '<p>Historial disponible en la categoría actual · cifras desde la perspectiva de '+esc(home)+'.</p>'+
+    '</section>'+
+    '<section class="v424-card v424-form-card">'+
+      '<header><h3>Team Form</h3><small>'+esc(m.category)+'</small></header>'+
+      '<div class="v424-form-teams">'+
+        '<span>'+teamLogo(home,'v424-form-logo')+'<b>'+esc(home)+'</b></span>'+
+        '<span>'+teamLogo(away,'v424-form-logo')+'<b>'+esc(away)+'</b></span>'+
+      '</div>'+
+      '<div class="v424-form-row"><span>'+v424FormDots(m,home,10)+'</span><span>'+v424FormDots(m,away,10)+'</span></div>'+
+      '<div class="v424-form-stats">'+
+        '<div><span><b>'+esc(hf.wins)+'</b><small>Ganados</small></span><span><small>Ganados</small><b>'+esc(af.wins)+'</b></span></div>'+
+        '<div><span><b>'+esc(hf.draws)+'</b><small>Empates</small></span><span><small>Empates</small><b>'+esc(af.draws)+'</b></span></div>'+
+        '<div><span><b>'+esc(hf.losses)+'</b><small>Perdidos</small></span><span><small>Perdidos</small><b>'+esc(af.losses)+'</b></span></div>'+
+      '</div>'+
+    '</section>'+
+  '</section>';
+}
 function rosterSummary(m,team){
   const names=roster(m,team);
   return '<article class="v92-player-card">'+teamLogo(team,'small')+'<span><b>'+esc(team)+'</b><small>'+names.length+' jugadores registrados · '+esc(m.category)+'</small></span></article>';
@@ -648,6 +709,7 @@ function summaryBody(m,state){
     '</div></section>'+
     teamProfileDashboard(m)+
     buildUpBody(m,state)+
+    v424LowerReference(m)+
     matchCenterCalendarBlock(m);
 }
 function rosterColumn(m,team){
