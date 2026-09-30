@@ -356,8 +356,9 @@ function bindCompare(){
  document.querySelectorAll('[data-v123-team]').forEach(b=>b.addEventListener('click',e=>{
   e.preventDefault();e.stopPropagation();
   const name=b.dataset.v123Team||'';
-  if(window.LJR_TEAM_DETAIL_API?.openCompare){window.LJR_TEAM_DETAIL_API.openCompare(name);return}
-  localStorage.setItem('v62-team-name',name);localStorage.setItem('v42-open-compare','1');location.hash='#/teamDetail';
+  try{localStorage.removeItem('v42-open-compare')}catch(_){}
+  if(window.LJR_TEAM_DETAIL_API?.openTeam){window.LJR_TEAM_DETAIL_API.openTeam(name);return}
+  localStorage.setItem('v62-team-name',name);location.hash='#/teamDetail';
  },{once:true}));
 }
 
@@ -430,8 +431,8 @@ document.addEventListener('click',e=>{
  const teamEl=target.closest(TEAM_SELECTOR);
  let immediatePlayer=null;
 
- // EQUIPOS: un toque directo al escudo o al nombre abre de inmediato la ficha
- // con “Comparar equipos” desplegado, y bloquea el handler viejo del contenedor
+ // EQUIPOS: un toque directo al escudo o al nombre abre de inmediato la ficha normal
+ // del equipo y bloquea el handler viejo del contenedor
  // (por ejemplo, una fila de partido completa).
  if(api?.teamList){
   const teams=api.teamList();
@@ -453,8 +454,9 @@ document.addEventListener('click',e=>{
   }
   if(teamHit){
    e.preventDefault();e.stopPropagation();e.stopImmediatePropagation();
-   if(window.LJR_TEAM_DETAIL_API?.openCompare)window.LJR_TEAM_DETAIL_API.openCompare(teamHit.name);
-   else{localStorage.setItem('v62-team-name',teamHit.name);localStorage.setItem('v42-open-compare','1');location.hash='#/teamDetail'}
+   try{localStorage.removeItem('v42-open-compare')}catch(_){}
+   if(window.LJR_TEAM_DETAIL_API?.openTeam)window.LJR_TEAM_DETAIL_API.openTeam(teamHit.name);
+   else{localStorage.setItem('v62-team-name',teamHit.name);location.hash='#/teamDetail'}
    return;
   }
   immediatePlayer=exactPlayerFromTarget(target,api.playerList());
@@ -464,8 +466,8 @@ document.addEventListener('click',e=>{
  // puedan mandar al comparador. El toque normal abre ahora la ficha individual.
  if(!row&&!immediatePlayer)return;
 
- // Dentro de una fila de jugador, tocar explícitamente el escudo del equipo sigue
- // perteneciendo al comparador de equipos.
+ // Dentro de una fila de jugador, tocar explícitamente el escudo pertenece
+ // a la ficha normal del equipo.
  if(target.matches('img')&&target.alt)return;
  if(row?.dataset?.v66PlayerTeam&&norm(target.textContent||'')===norm(row.dataset.v66PlayerTeam))return;
 
@@ -478,7 +480,8 @@ document.addEventListener('click',e=>{
   const teamHit=(target.matches('img')&&target.alt?teams.find(t=>norm(t.name)===norm(target.alt)):null)||
                 (exactTeamText?teams.find(t=>norm(t.name)===exactTeamText):null);
   if(teamHit){
-   if(window.LJR_TEAM_DETAIL_API?.openCompare)window.LJR_TEAM_DETAIL_API.openCompare(teamHit.name);
+   try{localStorage.removeItem('v42-open-compare')}catch(_){}
+   if(window.LJR_TEAM_DETAIL_API?.openTeam)window.LJR_TEAM_DETAIL_API.openTeam(teamHit.name);
    return;
   }
 
