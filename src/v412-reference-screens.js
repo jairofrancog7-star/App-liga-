@@ -153,12 +153,41 @@ function mountFavorites(screen,force=false){if(!force&&screen.querySelector('[da
 function accountMarkup(){return '<section class="v412-shell v412-account" data-v412-screen="account"><div class="v412-account-hello"><h2>¡Hola!</h2><p>Bienvenido a la Liga Municipal de Fútbol Juventino Rosas</p></div><div class="v412-auth"><button class="v412-login" data-v412-go="profile">Iniciar sesión</button><button class="v412-join" data-v412-go="profile">Únete ahora</button></div><div class="v412-menu"><button data-v412-go="notifications"><span>Notificaciones</span><span>♢</span></button><button data-v412-go="more"><span>Ajustes</span><span>⚙</span></button><button data-v412-go="rulebook"><span>Ayuda e información</span><span>?</span></button></div><div class="v412-social-title">SÍGUENOS</div><div class="v412-socials"><button class="v412-social fb" data-v412-facebook aria-label="Facebook">f</button></div><button class="v412-sharefriend" data-v412-share>♧ &nbsp; Cuéntale a un amigo</button><div class="v412-account-foot">Liga Municipal de Fútbol Juventino Rosas A.C.<br>Contenido oficial y herramientas de la Liga.<br><br>Versión V412</div></section>'}
 function mountAccount(screen){if(screen.querySelector('[data-v412-screen="account"]'))return;screen.insertAdjacentHTML('beforeend',accountMarkup());bindCommon(screen.querySelector('[data-v412-screen="account"]'))}
 
-/* Search — referencia de buscar jugadores */
+/* Search — referencia exacta adaptada a la Liga, conservando el azul */
+function playerStats(p){
+ const c=data()?.categories?.[String(p.catId)]||{};
+ const scorer=((c.scorers||[])[0]?.rows||[]).find(r=>norm(r?.[1])===norm(p.name)&&norm(r?.[2])===norm(p.team));
+ const standing=((c.standings||[])[0]?.rows||[]).find(r=>norm(r?.[1])===norm(p.team));
+ return {
+   goals:Number(scorer?.[3]||0)||0,
+   played:Number(standing?.[2]||0)||0,
+   points:Number(standing?.[9]||0)||0
+ };
+}
+function categoryCode(catId){
+ return ({'3':'1ª','5':'INT','4':'2ª','2':'V35','1':'V50'})[String(catId)]||'LJR';
+}
+function positionCode(p){
+ const raw=String(p.position||'Jugador').trim().toUpperCase();
+ if(!raw||raw==='JUGADOR')return 'JUG';
+ if(/PORT|ARQ|GK/.test(raw))return 'POR';
+ if(/DEF/.test(raw))return 'DEF';
+ if(/MED|MC|MD|MI|MCD|MCO/.test(raw))return 'MED';
+ if(/DEL|DC|EXT|EI|ED/.test(raw))return 'DEL';
+ return raw.slice(0,3);
+}
 function searchPlayerRow(p){
- return '<button type="button" class="v412-player-search-row" data-v412-player="'+esc(p.id)+'">'+
-   '<span class="v412-player-face">'+esc(initials(p.name))+'</span>'+
-   '<span class="v412-player-search-copy"><b>'+esc(p.name)+'</b><small>'+esc(p.team)+' · '+esc(p.category)+'</small></span>'+
-   '<span class="v412-player-search-team"><img src="'+esc(logo(p.team))+'" alt=""><i>›</i></span>'+
+ const s=playerStats(p),teamLogo=logo(p.team),cat=categoryCode(p.catId),pos=positionCode(p);
+ return '<button type="button" class="v414-player-row" data-v412-player="'+esc(p.id)+'">'+
+   '<span class="v414-player-photo"><img src="'+esc(teamLogo)+'" alt="'+esc(p.team)+'"><i>'+esc(initials(p.name))+'</i></span>'+
+   '<span class="v414-player-main">'+
+     '<b>'+esc(p.name)+'</b>'+
+     '<span class="v414-player-meta"><span class="v414-mx-flag" title="Liga en México"><i></i></span><strong>'+esc(pos)+'</strong><em>'+esc(p.team)+'</em></span>'+
+   '</span>'+
+   '<span class="v414-num"><small>GOL</small><b>'+s.goals+'</b></span>'+
+   '<span class="v414-num v414-pj"><small>PJ</small><b>'+s.played+'</b></span>'+
+   '<span class="v414-num v414-pts"><i>▲</i><small>PTS</small><b>'+s.points+'</b></span>'+
+   '<span class="v414-badges"><span class="v414-league-badge"><img src="'+LEAGUE+'" alt="Liga"><small>'+esc(cat)+'</small></span><span class="v414-team-badge"><img src="'+esc(teamLogo)+'" alt="'+esc(p.team)+'"></span></span>'+
  '</button>';
 }
 function searchMatchRow(m){
@@ -167,11 +196,14 @@ function searchMatchRow(m){
 }
 function searchMarkup(){
  const mode=localStorage.getItem('v412-search-mode')||'players';
- return '<section class="v412-shell v412-search-reference" data-v412-screen="search">'+
-   '<div class="v412-search-top"><input data-v412-search placeholder="Buscar jugadores, equipos, partidos..."></div>'+
-   '<div class="v412-modebar">'+[['players','Jugadores'],['teams','Equipos'],['competitions','Competiciones'],['matches','Partidos']].map(x=>'<button class="v412-mode '+(mode===x[0]?'is-active':'')+'" data-v412-mode="'+x[0]+'">'+x[1]+'</button>').join('')+'</div>'+
-   '<div class="v412-result-heading"><span></span><button data-v412-go="players">Ver todos ›</button></div>'+
-   '<div data-v412-search-results></div>'+
+ return '<section class="v412-shell v412-search-reference v414-search-reference" data-v412-screen="search">'+
+   '<div class="v414-search-join">'+
+     '<div class="v412-search-top"><input data-v412-search placeholder="Buscar jugadores, equipos, partidos..."></div>'+
+     '<div class="v412-modebar">'+[['players','Jugadores'],['teams','Equipos'],['competitions','Competiciones'],['matches','Partidos']].map(x=>'<button class="v412-mode '+(mode===x[0]?'is-active':'')+'" data-v412-mode="'+x[0]+'">'+x[1]+'</button>').join('')+'</div>'+
+   '</div>'+
+   '<div class="v414-player-cover" data-v414-player-cover><span>PORTADA</span><div><small></small><small>GOL</small><small>PJ</small><small>PTS</small><small></small></div></div>'+
+   '<div class="v412-result-heading v414-result-heading"><span></span><button data-v412-go="players">Ver todos ›</button></div>'+
+   '<div class="v414-results" data-v412-search-results></div>'+
    '<div class="v412-search-tools"><button data-v412-go="teams">Equipos</button><button data-v412-go="following">Favoritos</button><button data-v412-go="v4-calendar">Calendario</button><button data-v412-go="news">Noticias</button></div>'+
  '</section>';
 }
@@ -180,9 +212,14 @@ function bindSearch(root){
  const input=root.querySelector('[data-v412-search]');
  const render=()=>{
    const q=norm(input?.value||'');let html='',title='',allLabel='Ver todos ›',allRoute='players';
+   const cover=root.querySelector('[data-v414-player-cover]');
+   root.classList.toggle('is-player-mode',mode==='players');
+   if(cover)cover.style.display=mode==='players'?'flex':'none';
    if(mode==='players'){
      title='Jugadores registrados';allRoute='players';
-     html=players().filter(p=>!q||norm(p.name+' '+p.team+' '+p.category).includes(q)).slice(0,30).map(searchPlayerRow).join('');
+     html=players().filter(p=>!q||norm(p.name+' '+p.team+' '+p.category).includes(q))
+       .sort((a,b)=>{const A=playerStats(a),B=playerStats(b);return B.goals-A.goals||B.points-A.points||a.name.localeCompare(b.name,'es')})
+       .slice(0,36).map(searchPlayerRow).join('');
    }else if(mode==='teams'){
      title='Equipos';allRoute='teams';
      html=teams().filter(t=>!q||norm(t.name+' '+t.category).includes(q)).slice(0,24).map(teamCard).join('');
