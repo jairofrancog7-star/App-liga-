@@ -406,63 +406,42 @@ body[data-app-route="matchday"] .v164-timeline-row strong{
   }
 }
 
-
-/* V405 — Modo TV: botones inferiores siempre visibles. */
+/* V407 — Modo TV: conservar la barra inferior y dejar las acciones por encima. */
 body.v160-tv-open{
   overflow:hidden!important;
 }
+
+/* La navegación inferior NO se borra en Modo TV. */
 body.v160-tv-open #app > .bottom-nav,
 body.v160-tv-open .app-shell > .bottom-nav,
-body.v160-tv-open nav.bottom-nav{
-  display:none!important;
-  visibility:hidden!important;
-  pointer-events:none!important;
-}
-.v160-tv-layer{
-  z-index:2147483600!important;
-  padding-bottom:calc(28px + env(safe-area-inset-bottom))!important;
-  scroll-padding-bottom:calc(28px + env(safe-area-inset-bottom))!important;
-}
-.v160-tv-board{
-  padding-bottom:calc(24px + env(safe-area-inset-bottom))!important;
-}
-.v160-tv-actions{
-  position:relative!important;
-  z-index:3!important;
-  margin-bottom:calc(6px + env(safe-area-inset-bottom))!important;
-}
-.v160-tv-actions button{
-  display:flex!important;
-  align-items:center!important;
-  justify-content:center!important;
-  min-height:58px!important;
-  visibility:visible!important;
-  opacity:1!important;
-}
-
-
-/* V406 — hard fix Modo TV: la barra inferior nunca tapa las acciones. */
+body.v160-tv-open nav.bottom-nav,
 html body:has(> .v160-tv-layer) #app > .bottom-nav,
 html body:has(> .v160-tv-layer) .app-shell > .bottom-nav,
 html body:has(> .v160-tv-layer) nav.bottom-nav{
-  display:none!important;
-  visibility:hidden!important;
-  opacity:0!important;
-  pointer-events:none!important;
+  display:grid!important;
+  visibility:visible!important;
+  opacity:1!important;
+  pointer-events:auto!important;
+  z-index:2147483000!important;
 }
+
+/* El panel TV queda debajo de la barra fija y reserva espacio real para ella. */
 html body > .v160-tv-layer{
-  z-index:2147483646!important;
-  padding-bottom:calc(92px + env(safe-area-inset-bottom))!important;
+  z-index:2147482500!important;
+  padding-bottom:calc(var(--v34-nav-h,69px) + 42px + env(safe-area-inset-bottom))!important;
+  scroll-padding-bottom:calc(var(--v34-nav-h,69px) + 42px + env(safe-area-inset-bottom))!important;
 }
 html body > .v160-tv-layer .v160-tv-board{
-  padding-bottom:calc(48px + env(safe-area-inset-bottom))!important;
+  padding-bottom:18px!important;
 }
 html body > .v160-tv-layer .v160-tv-actions{
   display:grid!important;
   position:relative!important;
   z-index:20!important;
   margin-top:24px!important;
-  margin-bottom:0!important;
+  margin-bottom:10px!important;
+  visibility:visible!important;
+  opacity:1!important;
   transform:none!important;
 }
 html body > .v160-tv-layer .v160-tv-actions button{
@@ -470,6 +449,18 @@ html body > .v160-tv-layer .v160-tv-actions button{
   align-items:center!important;
   justify-content:center!important;
   min-height:58px!important;
-  opacity:1!important;
   visibility:visible!important;
+  opacity:1!important;
+}
+
+/* En móvil agrega un poco más de aire para que ambos botones se vean completos
+   antes de llegar a la barra inferior. */
+@media(max-width:520px){
+  html body > .v160-tv-layer{
+    padding-bottom:calc(var(--v34-nav-h,69px) + 54px + env(safe-area-inset-bottom))!important;
+    scroll-padding-bottom:calc(var(--v34-nav-h,69px) + 54px + env(safe-area-inset-bottom))!important;
+  }
+  html body > .v160-tv-layer .v160-tv-actions{
+    margin-bottom:14px!important;
+  }
 }
