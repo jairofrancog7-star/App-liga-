@@ -158,6 +158,96 @@ function lineupFor(m,team){
   return cedulaLineup(m,team)||liveLineup(m,side);
 }
 function standing(m,name){return standings(m).find(r=>norm(r?.[1])===norm(name))||null}
+function num(v){const n=Number(v);return Number.isFinite(n)?n:null}
+function fmt(v,d=1){return Number.isFinite(v)?v.toFixed(d).replace(/\.0$/,''):'—'}
+function allCategoryFixtureRows(m){
+  return (m?.cat?.fixtures||[]).flatMap(b=>Array.isArray(b?.rows)?b.rows:[]);
+}
+function teamForm(m,team,limit=3){
+  const wanted=norm(team);
+  return allCategoryFixtureRows(m).map(r=>{
+    const s=publishedScore(r);if(!s)return null;
+    const home=norm(r?.[2]),away=norm(r?.[6]);if(home!==wanted&&away!==wanted)return null;
+    const gf=home===wanted?Number(s.home):Number(s.away);
+    const ga=home===wanted?Number(s.away):Number(s.home);
+    const result=gf>ga?'V':gf<ga?'D':'E';
+    return {result,stamp:fixtureStamp(r?.[8])};
+  }).filter(Boolean).sort((a,b)=>(a.stamp||0)-(b.stamp||0)).slice(-limit);
+}
+function previewValueRow(label,left,right,{suffix='',decimals=1,unavailable=false}={}){
+  const l=num(left),r=num(right),has=Number.isFinite(l)||Number.isFinite(r);
+  const max=Math.max(Math.abs(l||0),Math.abs(r||0),1);
+  const lp=has?Math.max(5,Math.min(100,Math.abs(l||0)/max*100)):50;
+  const rp=has?Math.max(5,Math.min(100,Math.abs(r||0)/max*100)):50;
+  const val=v=>Number.isFinite(v)?fmt(v,decimals)+suffix:'—';
+  return '<div class="v416-compare-row '+((unavailable||!has)?'is-unavailable':'')+'">'+
+    '<div class="v416-compare-values"><b>'+esc(val(l))+'</b><span>'+esc(label)+'</span><b>'+esc(val(r))+'</b></div>'+
+    '<div class="v416-bars"><i class="home" style="--v:'+lp+'%"></i><i class="away" style="--v:'+rp+'%"></i></div>'+
+  '</div>';
+}
+function formHtml(items){
+  if(!items.length)return '<span class="v416-form-empty">—</span>';
+  return items.map(x=>'<i class="v416-form '+(x.result==='V'?'win':x.result==='E'?'draw':'loss')+'">'+x.result+'</i>').join('');
+}
+function previewTeam(m,team,side){
+  const st=standing(m,team),form=teamForm(m,team,3),pj=num(st?.[2]),gf=num(st?.[6]);
+  const gpm=Number.isFinite(pj)&&pj>0&&Number.isFinite(gf)?gf/pj:null;
+  return '<div class="v416-team '+side+'">'+
+    (side==='home'?teamLogo(team,'preview'):'')+
+    '<div class="v416-team-copy"><b>'+esc(team)+'</b><span class="v416-formline">'+formHtml(form)+'</span><small>'+(Number.isFinite(gpm)?fmt(gpm,2)+' goles/partido':'Sin promedio oficial')+'</small></div>'+
+    (side==='away'?teamLogo(team,'preview'):'')+
+  '</div>';
+}
+function previewBody(m,state){
+  const r=m.r,home=r[2],away=r[6],h=standing(m,home),a=standing(m,away);
+  const hpj=num(h?.[2]),apj=num(a?.[2]),hgf=num(h?.[6]),agf=num(a?.[6]),hgc=num(h?.[7]),agc=num(a?.[7]);
+  const havg=Number.isFinite(hpj)&&hpj>0&&Number.isFinite(hgf)?hgf/hpj:null;
+  const aavg=Number.isFinite(apj)&&apj>0&&Number.isFinite(agf)?agf/apj:null;
+  const hcavg=Number.isFinite(hpj)&&hpj>0&&Number.isFinite(hgc)?hgc/hpj:null;
+  const acavg=Number.isFinite(apj)&&apj>0&&Number.isFinite(agc)?agc/apj:null;
+  const hpts=num(h?.[9]),apts=num(a?.[9]);
+  const hperf=Number.isFinite(hpj)&&hpj>0&&Number.isFinite(hpts)?Math.max(0,Math.min(100,hpts/(hpj*3)*100)):null;
+  const aperf=Number.isFinite(apj)&&apj>0&&Number.isFinite(apts)?Math.max(0,Math.min(100,apts/(apj*3)*100)):null;
+  const live=state.kind==='window';
+  return '<section class="v416-preview">'+
+    '<div class="v416-preview-mode"><button type="button" data-v92-tab="Cronología" class="'+(live?'active':'')+'">DIRECTO</button><button type="button" class="'+(!live?'active':'')+'" aria-current="page">PRE-PARTIDO</button></div>'+
+    '<section class="v416-general-card">'+
+      '<header><h2>ESTADÍSTICAS GENERALES</h2></header>'+
+      '<div class="v416-segment"><button type="button" class="active">'+esc(m.category)+'</button><button type="button" data-v92-tab="Estadísticas">TODO</button></div>'+
+      '<div class="v416-team-form">'+previewTeam(m,home,'home')+previewTeam(m,away,'away')+'</div>'+
+      previewValueRow('Rendimiento',hperf,aperf,{suffix:'%',decimals:0})+
+      previewValueRow('Goles a favor / partido',havg,aavg,{decimals:2})+
+      previewValueRow('Goles en contra / partido',hcavg,acavg,{decimals:2})+
+      previewValueRow('Puntos',hpts,apts,{decimals:0})+
+      previewValueRow('Posesión',null,null,{suffix:'%',decimals:0,unavailable:true})+
+      previewValueRow('Tiros a puerta',null,null,{decimals:1,unavailable:true})+
+      previewValueRow('Tiros a puerta en contra',null,null,{decimals:1,unavailable:true})+
+      previewValueRow('Valor de la plantilla',null,null,{unavailable:true})+
+      '<p class="v416-data-note">Los datos no publicados por la Liga se muestran con “—”; no se inventan posesión, tiros ni valor de plantilla.</p>'+
+    '</section>'+
+  '</section>';
+}
+function pitchPlayer(name,idx,side){
+  const clean=String(name||'').trim(),initials=clean.split(/\s+/).slice(0,2).map(x=>x[0]||'').join('').toUpperCase()||'•';
+  return '<span class="v416-pitch-player '+side+' p'+idx+'"><i>'+esc(initials)+'</i><b>'+esc(clean)+'</b></span>';
+}
+function lineupPitch(m){
+  const r=m.r,home=r[2],away=r[6],hl=lineupFor(m,home)?.names||[],al=lineupFor(m,away)?.names||[];
+  if(!hl.length&&!al.length){
+    return '<section class="v416-lineup-visual empty"><div class="v416-lineup-title"><span><small>VISTA DE CANCHA</small><b>Alineaciones</b></span></div><div class="v416-pitch-empty"><b>Alineación pendiente</b><small>La cancha se llenará con jugadores reales cuando la Liga publique los titulares.</small></div></section>';
+  }
+  const hp=hl.slice(0,11),ap=al.slice(0,11);
+  return '<section class="v416-lineup-visual">'+
+    '<div class="v416-lineup-title"><span><small>VISTA DE CANCHA</small><b>Alineaciones publicadas</b></span><em>Sin inventar posiciones</em></div>'+
+    '<div class="v416-pitch">'+
+      '<div class="v416-pitch-team top">'+teamLogo(home,'pitch')+'<b>'+esc(home)+'</b></div>'+
+      hp.map((n,i)=>pitchPlayer(n,i,'home')).join('')+
+      ap.map((n,i)=>pitchPlayer(n,i,'away')).join('')+
+      '<div class="v416-pitch-team bottom"><b>'+esc(away)+'</b>'+teamLogo(away,'pitch')+'</div>'+
+    '</div>'+
+    '<p>Distribución visual para mostrar los nombres publicados; no implica posiciones tácticas oficiales.</p>'+
+  '</section>';
+}
 function matchPicker(m){
   const now=mexicoStamp();
   const list=allMatches();
@@ -257,6 +347,7 @@ function lineupsBody(m){
   return '<section class="v92-section v92-lineups-section">'+
     '<div class="v92-lineups-head"><h2>Alineaciones</h2><button type="button" data-v92-pitch>Ver cancha</button></div>'+
     '<small class="v92-lineups-note">'+(hasOfficial?'Alineaciones actualizadas con la información publicada para este partido.':'Se actualizarán automáticamente cuando la Liga publique titulares en la cédula o llegue una alineación por el feed en vivo.')+'</small>'+
+    lineupPitch(m)+
     '<div class="v92-roster-grid">'+rosterColumn(m,r[2])+rosterColumn(m,r[6])+'</div>'+
     mvpCard(m)+
   '</section>';
@@ -284,6 +375,7 @@ function timelineBody(m,state){
   return '<section class="v92-section"><div class="v92-section-head"><h2>Cronología oficial</h2><small>Solo información verificable.</small></div><div class="v92-timeline">'+lines+'</div></section>';
 }
 function bodyFor(tab,m,state){
+  if(tab==='Previa')return previewBody(m,state);
   if(tab==='Alineaciones')return lineupsBody(m);
   if(tab==='Estadísticas')return statsBody(m);
   if(tab==='Cronología')return timelineBody(m,state);
@@ -311,7 +403,7 @@ function render(){
       '<div class="v92-side">'+teamLogo(away)+'<b>'+esc(away)+'</b></div>'+
     '</section>'+
     '<div class="v92-official-meta"><span>'+esc(dateOnly(r[8]))+' · '+esc(clock(r[8]))+'</span><span>'+esc(venue)+'</span></div>'+
-    '<nav class="v92-tabs" aria-label="Opciones del Match Center">'+['Resumen','Alineaciones','Estadísticas','Cronología'].map(t=>'<button type="button" class="'+(activeTab===t?'active':'')+'" data-v92-tab="'+t+'">'+t+'</button>').join('')+'</nav>'+
+    '<nav class="v92-tabs" aria-label="Opciones del Match Center">'+['Resumen','Previa','Alineaciones','Estadísticas','Cronología'].map(t=>'<button type="button" class="'+(activeTab===t?'active':'')+'" data-v92-tab="'+t+'">'+t+'</button>').join('')+'</nav>'+
     '<div class="v92-match-actions" aria-label="Acciones del partido">'+
       '<button type="button" data-v92-open-lineups>Alineaciones</button>'+
       '<button type="button" data-v92-pitch>Ver cancha</button>'+
@@ -371,7 +463,7 @@ function syncRoute(){
   const r=route();
   try{
     const wanted=sessionStorage.getItem('v92-open-tab');
-    if(['Resumen','Alineaciones','Estadísticas','Cronología'].includes(wanted)){
+    if(['Resumen','Previa','Alineaciones','Estadísticas','Cronología'].includes(wanted)){
       activeTab=wanted;
       sessionStorage.removeItem('v92-open-tab');
     }
