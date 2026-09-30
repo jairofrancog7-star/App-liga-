@@ -1,3 +1,4 @@
+import * as THREE_LOCAL from 'three';
 /* V66 — Directorio oficial AdminFut: plantillas/tienda y datos auxiliares.
    #/teams queda bajo V27 + V62 para evitar dos renderizados consecutivos y conservar una sola pantalla estable. */
 (function(){
@@ -462,11 +463,8 @@ function shirt(logo,variant,label,number,name){
  '</div>';
 }
 
-var V443_THREE_PROMISE=null,V443_RENDER_CACHE=new Map();
+var V443_THREE_PROMISE=Promise.resolve(THREE_LOCAL),V443_RENDER_CACHE=new Map();
 function v443Three(){
- if(!V443_THREE_PROMISE){
-   V443_THREE_PROMISE=import("https://cdn.jsdelivr.net/npm/three@0.169.0/build/three.module.js").catch(function(){return null});
- }
  return V443_THREE_PROMISE;
 }
 function v443Hex(v){
@@ -671,6 +669,7 @@ async function v444Mount(el){
  canvas.className="v444-3d-canvas";
  canvas.setAttribute("aria-hidden","true");
  el.appendChild(canvas);
+ el.dataset.v445Render="live3d";
 
  var scene=new THREE.Scene();
  var camera=new THREE.PerspectiveCamera(30,w/h,.1,100);
