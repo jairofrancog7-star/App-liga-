@@ -373,3 +373,105 @@ body.v414-favorites-active .v412-shell[data-v412-screen="favorites"]{
   .v414-hero p{font-size:11px!important}
   .v414-row{min-height:74px!important}
 }
+
+
+/* V418 — Favoritos ocupa la pantalla desde arriba como la referencia.
+   Se oculta únicamente el contenido nativo de Favoritos (incluido "Sin favoritos todavía"). */
+body.v414-favorites-active{
+  background:#05071b!important;
+}
+body.v414-favorites-active #app > .topbar,
+body.v414-favorites-active .app-shell > .topbar{
+  display:none!important;
+  visibility:hidden!important;
+  height:0!important;
+  min-height:0!important;
+  max-height:0!important;
+  padding:0!important;
+  margin:0!important;
+  border:0!important;
+}
+body.v414-favorites-active #screen{
+  width:100%!important;
+  max-width:none!important;
+  margin:0!important;
+  padding:0!important;
+  background:#05071b!important;
+  overflow-x:hidden!important;
+}
+body.v414-favorites-active #screen > :not(#v414-favorites-reference){
+  display:none!important;
+}
+body.v414-favorites-active #v414-favorites-reference{
+  display:block!important;
+  width:100%!important;
+  max-width:none!important;
+  margin:0 0 118px!important;
+  padding:0 12px 30px!important;
+  min-height:calc(100dvh - 86px)!important;
+}
+.v414-ref-head{
+  min-height:132px!important;
+  display:flex!important;
+  align-items:flex-end!important;
+  justify-content:space-between!important;
+  gap:16px!important;
+  padding:32px 12px 24px!important;
+  margin:0!important;
+  background:#090a18!important;
+  border-bottom:0!important;
+}
+.v414-ref-head h1{
+  margin:0!important;
+  color:#fff!important;
+  font-size:29px!important;
+  line-height:1!important;
+  font-weight:850!important;
+  letter-spacing:-.02em!important;
+}
+.v414-ref-head>div{
+  display:flex!important;
+  align-items:center!important;
+  gap:12px!important;
+}
+.v414-ref-head button{
+  width:52px!important;
+  height:52px!important;
+  display:grid!important;
+  place-items:center!important;
+  padding:0!important;
+  border:0!important;
+  border-radius:50%!important;
+  background:#151722!important;
+  color:#fff!important;
+  box-shadow:none!important;
+}
+.v414-ref-head svg{
+  width:27px!important;
+  height:27px!important;
+  fill:none!important;
+  stroke:currentColor!important;
+  stroke-width:1.7!important;
+  stroke-linecap:round!important;
+  stroke-linejoin:round!important;
+}
+body.v414-favorites-active .v414-tabs{
+  margin-top:0!important;
+}
+@media(max-width:520px){
+  body.v414-favorites-active #v414-favorites-reference{
+    width:100%!important;
+    margin-left:0!important;
+    margin-right:0!important;
+    padding-left:12px!important;
+    padding-right:12px!important;
+  }
+  .v414-ref-head{
+    margin-left:-12px!important;
+    margin-right:-12px!important;
+    padding-left:20px!important;
+    padding-right:20px!important;
+  }
+  .v414-ref-head h1{font-size:27px!important}
+  .v414-ref-head button{width:50px!important;height:50px!important}
+}
