@@ -168,8 +168,13 @@ function bind(){
     localStorage.setItem('v66-player-team',playerTeam);
     render(true,false,true);
   });
-  document.querySelectorAll('[data-v66-open-team]').forEach(b=>b.onclick=()=>{
-    const name=b.dataset.v66OpenTeam,cat=b.dataset.v66CatId; saveTeam(name,cat);
+  document.querySelectorAll('[data-v66-open-team]').forEach(b=>b.onclick=e=>{
+    const name=b.dataset.v66OpenTeam,cat=b.dataset.v66CatId;
+    if(route()==='club-store'){
+      e?.preventDefault?.();e?.stopPropagation?.();
+      if(window.LJR_V431_STORE_API?.open){window.LJR_V431_STORE_API.open(name,cat);return}
+    }
+    saveTeam(name,cat);
     try{if(window.LJR_OFFICIAL_API?.openTeam){window.LJR_OFFICIAL_API.openTeam(name);return}}catch(e){}
     location.hash='#/teamDetail';
   });
@@ -470,6 +475,11 @@ function schedule(){
  if(sessionStorage.getItem(OPEN_KEY)!=="1")return;var team=sessionStorage.getItem(TEAM_KEY)||"",cat=sessionStorage.getItem(CAT_KEY)||"3";if(!team)return;
  requestAnimationFrame(function(){if(!document.querySelector("[data-v431-store]"))renderStore(team,cat)});
 }
+window.LJR_V431_STORE_API={open:function(team,cat){
+ if(!team)return false;
+ sessionStorage.setItem(OPEN_KEY,"1");sessionStorage.setItem(TEAM_KEY,team);sessionStorage.setItem(CAT_KEY,String(cat||"3"));
+ renderStore(team,String(cat||"3"));return true;
+}};
 window.addEventListener("hashchange",schedule);window.addEventListener("pageshow",schedule);
 var screen=document.querySelector("#screen");if(screen)new MutationObserver(schedule).observe(screen,{childList:true,subtree:false});schedule();
 })();
