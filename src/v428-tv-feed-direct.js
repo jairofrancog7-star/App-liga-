@@ -9,6 +9,112 @@ const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&
 const norm=v=>String(v||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[^a-z0-9]+/g,' ').trim();
 const route=()=>String(location.hash||'').replace(/^#\/?/,'').split('?')[0]||'home';
 
+let activeCastSheet=null;
+function castIcon(){
+  return '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 17a4 4 0 0 1 4 4"/><path d="M3 13a8 8 0 0 1 8 8"/><path d="M3 9a12 12 0 0 1 12 12"/><rect x="8" y="4" width="13" height="11" rx="2"/></svg>';
+}
+function infoIcon(){
+  return '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 10v7"/><path d="M12 7h.01"/></svg>';
+}
+function closeCastSheet(){
+  const layer=document.querySelector('[data-v439-cast-sheet]');
+  if(!layer){activeCastSheet=null;return}
+  layer.classList.remove('is-open');
+  document.body.classList.remove('v439-cast-open');
+  setTimeout(()=>layer.remove(),180);
+  activeCastSheet=null;
+}
+function sheetToast(msg){
+  const panel=document.querySelector('[data-v439-cast-sheet] .v439-cast-panel');
+  if(!panel)return;
+  panel.querySelector('.v439-cast-toast')?.remove();
+  const n=document.createElement('div');
+  n.className='v439-cast-toast';
+  n.textContent=msg;
+  panel.appendChild(n);
+  setTimeout(()=>n.remove(),2600);
+}
+async function startCast(){
+  const media=document.querySelector('video,audio');
+  try{
+    if(media?.remote&&typeof media.remote.prompt==='function'){
+      await media.remote.prompt();
+      return;
+    }
+  }catch(_){}
+  try{
+    if(typeof window.PresentationRequest==='function'){
+      const request=new window.PresentationRequest([location.href]);
+      await request.start();
+      return;
+    }
+  }catch(_){}
+  try{
+    if(navigator.share){
+      await navigator.share({
+        title:'Liga Juventino Rosas',
+        text:'Abrir Liga TV en otro dispositivo',
+        url:location.href
+      });
+      return;
+    }
+  }catch(_){}
+  try{
+    await navigator.clipboard?.writeText(location.href);
+    sheetToast('Enlace copiado para abrirlo en otro dispositivo.');
+  }catch(_){
+    sheetToast('Este navegador no tiene transmisión directa disponible.');
+  }
+}
+function openCastSheet(){
+  if(document.querySelector('[data-v439-cast-sheet]'))return;
+  const layer=document.createElement('div');
+  layer.className='v439-cast-sheet';
+  layer.setAttribute('data-v439-cast-sheet','');
+  layer.innerHTML=
+    '<button class="v439-cast-backdrop" type="button" aria-label="Cerrar"></button>'+
+    '<section class="v439-cast-panel" role="dialog" aria-modal="true" aria-label="Conectar o transmitir">'+
+      '<span class="v439-cast-handle" aria-hidden="true"></span>'+
+      '<header class="v439-cast-head"><h2>Conectar o transmitir</h2><button type="button" data-v439-close aria-label="Cerrar">×</button></header>'+
+      '<div class="v439-cast-body">'+
+        '<h3>Ver con Liga TV</h3>'+
+        '<div class="v439-streamcenter-card">'+
+          '<span><b>Ingresa para usar<br>Liga TV</b><small>Liga TV sincroniza tu teléfono y otra pantalla, además de ofrecer controles adicionales de reproducción.</small></span>'+
+          '<button type="button" data-v439-enter>Entrar</button>'+
+        '</div>'+
+        '<h3 class="v439-device-title">Transmitir a otro dispositivo</h3>'+
+        '<button class="v439-cast-row" type="button" data-v439-cast>'+
+          '<span class="v439-row-icon">'+castIcon()+'</span><b>Transmitir</b><i>›</i>'+
+        '</button>'+
+        '<button class="v439-cast-row" type="button" data-v439-learn>'+
+          '<span class="v439-row-icon">'+infoIcon()+'</span><b>Aprende más</b><i>›</i>'+
+        '</button>'+
+        '<div class="v439-cast-help" data-v439-help hidden><b>Cómo funciona</b><p>Si tu navegador detecta una TV o pantalla compatible, se abrirá el selector de dispositivos. Si no está disponible, puedes compartir el enlace de Liga TV para abrirlo en otro dispositivo.</p></div>'+
+        '<p class="v439-cast-foot">La disponibilidad de transmisión depende del navegador, la TV y de que ambos dispositivos tengan una conexión compatible.</p>'+
+      '</div>'+
+    '</section>';
+  document.body.appendChild(layer);
+  document.body.classList.add('v439-cast-open');
+  activeCastSheet=layer;
+  layer.querySelector('.v439-cast-backdrop').onclick=closeCastSheet;
+  layer.querySelector('[data-v439-close]').onclick=closeCastSheet;
+  layer.querySelector('[data-v439-enter]').onclick=()=>{
+    closeCastSheet();
+    setTimeout(()=>{if(window.LJR_V105?.openTv)window.LJR_V105.openTv();else location.hash='#/video'},120);
+  };
+  layer.querySelector('[data-v439-cast]').onclick=startCast;
+  layer.querySelector('[data-v439-learn]').onclick=()=>{
+    const help=layer.querySelector('[data-v439-help]');
+    if(!help)return;
+    help.hidden=!help.hidden;
+    if(!help.hidden)help.scrollIntoView({behavior:'smooth',block:'nearest'});
+  };
+  requestAnimationFrame(()=>layer.classList.add('is-open'));
+}
+window.__LJR_V439_CAST_SHEET__=true;
+window.LJR_V439_CAST={open:openCastSheet,close:closeCastSheet,cast:startCast};
+
+
 function db(){try{return window.LJR_OFFICIAL_API?.getData?.()||window.LJR_OFFICIAL_DATA||{}}catch(_){return window.LJR_OFFICIAL_DATA||{}}}
 function logo(name){
   try{
