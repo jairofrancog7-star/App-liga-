@@ -40,9 +40,21 @@ function ts(r){return parseDate(r?.[8])?.getTime()||0}
 function teamLine(name,score){return '<span class="v372-team-line"><img src="'+esc(logo(name))+'" alt="'+esc(name)+'"><b>'+esc(name)+'</b>'+(score!==undefined&&score!==null?'<strong>'+esc(score)+'</strong>':'')+'</span>'}
 function matchCard(r,isPlayed){
  const a=num(r[3]),b=num(r[5]),head=dlabel(r[8])+' - Liga Municipal - Jornada '+String(r[1]||'—');
+ const detail={
+  id:'team-'+String(r[1]||'j')+'-'+norm(r[2]).replace(/\s+/g,'-')+'-'+norm(r[6]).replace(/\s+/g,'-'),
+  home:String(r[2]||'Local'),
+  away:String(r[6]||'Visitante'),
+  time:tlabel(r[8]),
+  date:dlabel(r[8]),
+  venue:String(r[7]||'Campo por confirmar'),
+  category:'Liga Municipal',
+  jornada:String(r[1]||''),
+  from:'#/teamDetail'
+ };
+ const encoded=encodeURIComponent(JSON.stringify(detail));
  return '<article class="v372-match-card '+(isPlayed?'played':'future')+'"><h3>'+esc(head)+'</h3><div class="v372-match-body">'+
   '<div class="v372-match-teams">'+teamLine(r[2],isPlayed?a:null)+teamLine(r[6],isPlayed?b:null)+'</div>'+
-  (isPlayed?'<div class="v372-match-side final"><b>Final</b><small>'+esc(r[7]||'Campo por confirmar')+'</small></div>':'<div class="v372-match-side"><b>'+esc(tlabel(r[8]))+'</b><button type="button" data-v372-details>Ver detalles</button></div>')+
+  (isPlayed?'<div class="v372-match-side final"><b>Final</b><small>'+esc(r[7]||'Campo por confirmar')+'</small></div>':'<div class="v372-match-side"><b>'+esc(tlabel(r[8]))+'</b><button type="button" data-v372-details="'+encoded+'">Ver detalles</button></div>')+
  '</div></article>';
 }
 function matchesMarkup(x){
@@ -100,7 +112,17 @@ async function apply(){
   const old=page.querySelector('.v42-tab-page');
   if(old)old.outerHTML=matchesMarkup(x);
  }
- page.querySelectorAll('[data-v372-details]').forEach(b=>{if(b.dataset.bound)return;b.dataset.bound='1';b.onclick=()=>{location.hash='#/v4-matchcenter'}});
+ page.querySelectorAll('[data-v372-details]').forEach(b=>{
+  if(b.dataset.bound)return;b.dataset.bound='1';
+  b.onclick=()=>{
+   let detail=null;
+   try{detail=JSON.parse(decodeURIComponent(b.dataset.v372Details||''))}catch(e){}
+   if(detail){
+    try{sessionStorage.setItem('lj-match-detail',JSON.stringify(detail))}catch(e){}
+   }
+   location.hash='#/match';
+  };
+ });
  collapse();
 }
 function schedule(){requestAnimationFrame(()=>requestAnimationFrame(apply))}
