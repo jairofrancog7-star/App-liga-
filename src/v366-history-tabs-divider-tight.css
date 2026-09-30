@@ -1,4 +1,4 @@
-/* V368 — Historia: pestañas/divisor EXACTOS como imagen 1 del usuario.
+/* V370 — Historia: fondo superior continuo hasta abajo de las pestañas.
    - restaura la altura correcta de la barra
    - elimina el bloque azul brillante de separación
    - la línea morada/azulada queda pegada al borde inferior
@@ -19,7 +19,8 @@
     margin:0!important;
     padding:0 22px!important;
     align-items:flex-end!important;
-    background:#030445!important;
+    background:transparent!important;
+    background-color:transparent!important;
     background-image:none!important;
     border-top:0!important;
     border-bottom:1px solid rgba(205,212,255,.26)!important;
