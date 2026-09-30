@@ -1453,3 +1453,29 @@ body.v33-data-active .v33-detailed .v33-section>h2{
     font-size:12.5px!important;
   }
 }
+
+
+/* V404 — solo Estadísticas: quitar la barra superior global. */
+html body[data-app-route="stats"] #app > .topbar,
+html body[data-app-route="stats"] .app-shell > .topbar,
+html body.v33-data-active #app > .topbar,
+html body.v33-data-active .app-shell > .topbar{
+  display:none!important;
+  visibility:hidden!important;
+  opacity:0!important;
+  height:0!important;
+  min-height:0!important;
+  max-height:0!important;
+  margin:0!important;
+  padding:0!important;
+  border:0!important;
+  overflow:hidden!important;
+  pointer-events:none!important;
+}
+
+/* La cabecera propia de Estadísticas permanece intacta; sólo sube al borde superior. */
+html body[data-app-route="stats"] #screen,
+html body.v33-data-active #screen{
+  margin-top:0!important;
+  top:0!important;
+}
