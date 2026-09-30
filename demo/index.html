@@ -115,8 +115,8 @@
     #screen .v400-chips small{color:#7785c4;font-size:7px;font-weight:900;letter-spacing:.09em}
     #screen .v400-chips b{margin-top:4px;overflow:hidden;font-size:11px;white-space:nowrap;text-overflow:ellipsis}
   </style>
-  <script type="module" crossorigin src="./assets/index-BOYLy6Ut.js"></script>
-  <link rel="stylesheet" crossorigin href="./assets/index-4gxsOuTv.css">
+  <script type="module" crossorigin src="./assets/index-tKJXAwJX.js"></script>
+  <link rel="stylesheet" crossorigin href="./assets/index-D_AXrg0n.css">
 </head>
 <body>
   <div id="app" class="app-shell">
@@ -245,5 +245,52 @@
       setTimeout(mount,1200);
     })();
   </script>
+
+<script>
+(function(){
+  if(window.__LJR_V406_TV_NAV_HARD_HIDE__) return;
+  window.__LJR_V406_TV_NAV_HARD_HIDE__=true;
+
+  const NAV_PROPS=['display','visibility','opacity','pointer-events'];
+  function setImp(el,name,value){ if(el) el.style.setProperty(name,value,'important'); }
+  function clear(el){ if(!el)return; NAV_PROPS.forEach(p=>el.style.removeProperty(p)); }
+
+  function syncTvChrome(){
+    const layer=document.querySelector('body > .v160-tv-layer');
+    const navs=document.querySelectorAll('#app > .bottom-nav,.app-shell > .bottom-nav,nav.bottom-nav');
+
+    navs.forEach(nav=>{
+      if(layer){
+        setImp(nav,'display','none');
+        setImp(nav,'visibility','hidden');
+        setImp(nav,'opacity','0');
+        setImp(nav,'pointer-events','none');
+      }else{
+        clear(nav);
+      }
+    });
+
+    if(layer){
+      setImp(layer,'z-index','2147483646');
+      setImp(layer,'padding-bottom','calc(92px + env(safe-area-inset-bottom))');
+      const board=layer.querySelector('.v160-tv-board');
+      const actions=layer.querySelector('.v160-tv-actions');
+      if(board)setImp(board,'padding-bottom','calc(48px + env(safe-area-inset-bottom))');
+      if(actions){
+        setImp(actions,'display','grid');
+        setImp(actions,'visibility','visible');
+        setImp(actions,'opacity','1');
+        setImp(actions,'z-index','20');
+      }
+    }
+  }
+
+  new MutationObserver(syncTvChrome).observe(document.documentElement,{childList:true,subtree:true});
+  window.addEventListener('hashchange',syncTvChrome);
+  window.addEventListener('load',syncTvChrome);
+  document.addEventListener('DOMContentLoaded',syncTvChrome,{once:true});
+  syncTvChrome();
+})();
+</script>
 </body>
 </html>
