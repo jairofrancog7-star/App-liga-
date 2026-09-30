@@ -354,3 +354,281 @@ body[data-app-route="club-store"] .v431-hero{margin-top:0!important}
   body[data-app-route="club-store"] .v435-icon{width:31px!important;height:31px!important;min-width:31px!important}
   body[data-app-route="club-store"] .v435-icon svg{width:20px!important;height:20px!important}
 }
+
+
+/* V436 — subcategorías retail: Novedades / Equipaciones / Entrenamiento */
+body[data-app-route="club-store"] .v436-category-panel{display:none;background:#fff;color:#161616}
+body[data-app-route="club-store"] .v436-category-view{display:none}
+body[data-app-route="club-store"] .v436-category-mode .v436-category-panel{display:block}
+body[data-app-route="club-store"] .v436-category-mode .v436-category-view.active{display:block}
+body[data-app-route="club-store"] .v436-category-mode > .v431-hero,
+body[data-app-route="club-store"] .v436-category-mode > .v431-block,
+body[data-app-route="club-store"] .v436-category-mode > .v431-story,
+body[data-app-route="club-store"] .v436-category-mode > .v431-store-note{
+  display:none!important;
+}
+body[data-app-route="club-store"] .v436-close{display:none!important}
+body[data-app-route="club-store"] .v436-category-mode .v435-shop-tabs{
+  min-height:72px!important;
+  height:72px!important;
+  gap:10px!important;
+  padding:10px 12px!important;
+  align-items:center!important;
+  background:#080d2d!important;
+}
+body[data-app-route="club-store"] .v436-category-mode .v435-shop-tabs .v436-close{
+  display:grid!important;
+  place-items:center!important;
+  width:38px!important;
+  min-width:38px!important;
+  height:38px!important;
+  padding:0!important;
+  border:1px solid rgba(255,255,255,.35)!important;
+  border-radius:50%!important;
+  background:transparent!important;
+  color:#fff!important;
+  font-size:24px!important;
+  line-height:1!important;
+  font-weight:300!important;
+}
+body[data-app-route="club-store"] .v436-category-mode .v435-shop-tabs button:not(.v436-close){
+  display:none!important;
+}
+body[data-app-route="club-store"] .v436-category-mode .v435-shop-tabs button.active:not(.v436-close){
+  display:flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  height:38px!important;
+  min-height:38px!important;
+  padding:0 18px!important;
+  border-radius:20px!important;
+  background:#fff!important;
+  color:#101010!important;
+  border-color:#fff!important;
+  font-size:10px!important;
+  font-weight:800!important;
+  text-transform:uppercase!important;
+}
+body[data-app-route="club-store"] .v435-shop-tabs [data-v436-view="home"].active{
+  background:#fff!important;color:#090e2e!important;border-color:#fff!important;
+}
+body[data-app-route="club-store"] .v436-category-view{
+  padding:0 0 calc(90px + env(safe-area-inset-bottom))!important;
+  background:#fff!important;
+}
+body[data-app-route="club-store"] .v436-category-view > *:not(.v436-promo):not(.v436-kit-tiles){
+  margin-left:14px!important;
+  margin-right:14px!important;
+}
+body[data-app-route="club-store"] .v436-promo{
+  padding:14px 16px!important;
+  background:#080d2d!important;
+  color:#fff!important;
+  text-align:center!important;
+  font-size:9px!important;
+  line-height:1.3!important;
+  font-weight:800!important;
+}
+body[data-app-route="club-store"] .v436-kit-tiles{
+  display:grid!important;
+  grid-template-columns:1fr 1fr!important;
+  gap:8px!important;
+  padding:14px!important;
+  background:#fff!important;
+}
+body[data-app-route="club-store"] .v436-kit-tiles button{
+  position:relative!important;
+  min-width:0!important;
+  height:132px!important;
+  overflow:hidden!important;
+  padding:0!important;
+  border:0!important;
+  border-radius:9px!important;
+  background:linear-gradient(145deg,#dfe3ff,#f4f5ff)!important;
+  color:#fff!important;
+}
+body[data-app-route="club-store"] .v436-kit-tiles button:nth-child(3){grid-column:1/-1!important;height:130px!important}
+body[data-app-route="club-store"] .v436-kit-tiles button div{height:100%!important;display:grid!important;place-items:center!important}
+body[data-app-route="club-store"] .v436-kit-tiles .v431-shirt{transform:scale(.72)!important}
+body[data-app-route="club-store"] .v436-kit-tiles button b{
+  position:absolute!important;
+  left:14px!important;
+  bottom:12px!important;
+  z-index:5!important;
+  color:#fff!important;
+  font-family:Georgia,"Times New Roman",serif!important;
+  font-size:13px!important;
+  font-weight:500!important;
+  text-shadow:0 2px 8px rgba(0,0,0,.45)!important;
+}
+body[data-app-route="club-store"] .v436-breadcrumb{
+  margin-top:16px!important;
+  margin-bottom:12px!important;
+  color:#30343e!important;
+  font-size:9px!important;
+  line-height:1.4!important;
+}
+body[data-app-route="club-store"] .v436-breadcrumb b{padding:0 6px!important;font-size:13px!important}
+body[data-app-route="club-store"] .v436-category-view h2{
+  margin-top:0!important;
+  margin-bottom:6px!important;
+  color:#171717!important;
+  font-family:Georgia,"Times New Roman",serif!important;
+  font-size:23px!important;
+  line-height:1!important;
+  font-weight:500!important;
+  text-transform:none!important;
+}
+body[data-app-route="club-store"] .v436-desc{
+  margin-top:0!important;
+  margin-bottom:7px!important;
+  color:#686868!important;
+  font-size:10px!important;
+  line-height:1.5!important;
+  max-width:420px!important;
+}
+body[data-app-route="club-store"] .v436-show-more{
+  display:block!important;
+  margin-top:0!important;
+  margin-bottom:28px!important;
+  padding:0!important;
+  border:0!important;
+  background:none!important;
+  color:#252525!important;
+  font-size:9px!important;
+  font-weight:600!important;
+}
+body[data-app-route="club-store"] .v436-filter-chips{
+  display:flex!important;
+  gap:8px!important;
+  overflow-x:auto!important;
+  padding:0 0 8px!important;
+  margin-bottom:10px!important;
+  scrollbar-width:none!important;
+  -webkit-overflow-scrolling:touch!important;
+}
+body[data-app-route="club-store"] .v436-filter-chips::-webkit-scrollbar{display:none!important}
+body[data-app-route="club-store"] .v436-filter-chips button{
+  flex:0 0 auto!important;
+  height:38px!important;
+  min-width:72px!important;
+  padding:0 16px!important;
+  border:1px solid #e1e1e1!important;
+  border-radius:20px!important;
+  background:#fff!important;
+  color:#202020!important;
+  font-size:8.5px!important;
+  font-weight:800!important;
+}
+body[data-app-route="club-store"] .v436-filter-chips button.active{
+  background:#171717!important;
+  color:#fff!important;
+  border-color:#171717!important;
+}
+body[data-app-route="club-store"] .v436-sort-row{
+  display:grid!important;
+  grid-template-columns:1fr 1fr!important;
+  gap:8px!important;
+  margin-top:10px!important;
+  margin-bottom:16px!important;
+}
+body[data-app-route="club-store"] .v436-sort-row button{
+  height:44px!important;
+  display:flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  gap:9px!important;
+  padding:0 10px!important;
+  border:1px solid #e0e0e0!important;
+  border-radius:4px!important;
+  background:#fff!important;
+  color:#222!important;
+  font-size:10px!important;
+  font-weight:700!important;
+}
+body[data-app-route="club-store"] .v436-filter-open .v436-filter-chips{
+  outline:1px solid #d9d9d9!important;
+  outline-offset:6px!important;
+  border-radius:18px!important;
+}
+body[data-app-route="club-store"] .v436-products{
+  display:grid!important;
+  grid-template-columns:repeat(2,minmax(0,1fr))!important;
+  gap:9px!important;
+  margin-bottom:18px!important;
+}
+body[data-app-route="club-store"] .v436-product{
+  min-width:0!important;
+  margin:0!important;
+  padding:0!important;
+  background:#fff!important;
+}
+body[data-app-route="club-store"] .v436-product-art{
+  position:relative!important;
+  height:220px!important;
+  overflow:hidden!important;
+  display:grid!important;
+  place-items:center!important;
+  border-radius:9px!important;
+  background:linear-gradient(180deg,#dadce3 0%,#f2f3f6 100%)!important;
+}
+body[data-app-route="club-store"] .v436-product-art .v431-shirt{
+  transform:scale(1.05)!important;
+}
+body[data-app-route="club-store"] .v436-plus,
+body[data-app-route="club-store"] .v436-fav{
+  position:absolute!important;
+  top:10px!important;
+  width:36px!important;
+  height:36px!important;
+  display:grid!important;
+  place-items:center!important;
+  padding:0!important;
+  border:0!important;
+  border-radius:50%!important;
+  background:rgba(255,255,255,.9)!important;
+  color:#222!important;
+  z-index:5!important;
+  font-size:20px!important;
+  line-height:1!important;
+}
+body[data-app-route="club-store"] .v436-plus{left:9px!important}
+body[data-app-route="club-store"] .v436-fav{right:9px!important;font-size:18px!important}
+body[data-app-route="club-store"] .v436-fav.active{color:#151fbc!important}
+body[data-app-route="club-store"] .v436-badge{
+  position:absolute!important;
+  left:10px!important;
+  bottom:10px!important;
+  z-index:5!important;
+  padding:5px 8px!important;
+  border-radius:3px!important;
+  background:#fff!important;
+  color:#222!important;
+  font-size:8px!important;
+  font-weight:700!important;
+}
+body[data-app-route="club-store"] .v436-product > strong{
+  display:block!important;
+  margin-top:8px!important;
+  color:#171717!important;
+  font-size:10px!important;
+  line-height:1.2!important;
+}
+body[data-app-route="club-store"] .v436-product > p{
+  margin:5px 0 2px!important;
+  height:auto!important;
+  color:#333!important;
+  font-size:8.5px!important;
+  line-height:1.3!important;
+}
+body[data-app-route="club-store"] .v436-product > small{
+  display:block!important;
+  color:#8b8b8b!important;
+  font-size:7.5px!important;
+  line-height:1.25!important;
+}
+@media(max-width:380px){
+  body[data-app-route="club-store"] .v436-product-art{height:196px!important}
+  body[data-app-route="club-store"] .v436-category-view h2{font-size:21px!important}
+  body[data-app-route="club-store"] .v436-kit-tiles button{height:118px!important}
+}
