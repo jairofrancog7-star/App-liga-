@@ -512,11 +512,32 @@ function v437ProductDetail(team,logo,roster){
    '</div>'+
  '</section>';
 }
+function v439StoreMenu(team,logo,roster){
+ var players=(roster||[]).slice(0,5).map(function(n){return '<button type="button" data-v439-player="'+esc(n)+'">'+esc(n)+'</button>'}).join("");
+ return '<section class="v439-store-menu" data-v439-menu>'+
+  '<div class="v439-menu-search"><span>⌕</span><input type="search" data-v439-menu-search placeholder="Buscar en '+esc(team)+' Store"><button type="button" data-v439-menu-close>×</button></div>'+
+  '<div class="v439-menu-main" data-v439-menu-main>'+
+    '<button type="button" data-v439-submenu="kits"><span>Equipaciones</span><b>›</b></button>'+
+    '<button type="button" data-v439-go="players"><span>Comprar por jugador</span><b>›</b></button>'+
+    '<button type="button" data-v439-go="training"><span>Entrenamiento</span><b>›</b></button>'+
+    '<button type="button" data-v439-submenu="fashion"><span>Moda</span><b>›</b></button>'+
+    '<button type="button" data-v439-submenu="accessories"><span>Accesorios</span><b>›</b></button>'+
+    '<button type="button" data-v439-submenu="sale"><span>Rebajas</span><b>›</b></button>'+
+    '<div class="v439-menu-sale"><small>HASTA</small><strong>50%</strong><span>en colección seleccionada</span><button type="button" data-v439-go="sale">VER REBAJAS</button></div>'+
+  '</div>'+
+  '<div class="v439-submenu" data-v439-panel="kits"><button type="button" class="v439-sub-back" data-v439-sub-back>‹ Equipaciones</button><h3>Equipaciones 26/27</h3><button data-v439-go="homekit">Local</button><button data-v439-go="awaykit">Visitante</button><button data-v439-go="thirdkit">Tercera</button><button data-v439-go="kits">Ver todo</button></div>'+
+  '<div class="v439-submenu" data-v439-panel="fashion"><button type="button" class="v439-sub-back" data-v439-sub-back>‹ Moda</button><h3>Colecciones</h3><button data-v439-toast="Exclusivos">Exclusivos</button><button data-v439-toast="Retro">Retro</button><button data-v439-toast="Esenciales">Esenciales</button></div>'+
+  '<div class="v439-submenu" data-v439-panel="accessories"><button type="button" class="v439-sub-back" data-v439-sub-back>‹ Accesorios</button><h3>Accesorios</h3><button data-v439-toast="Gorras">Gorras</button><button data-v439-toast="Balones">Balones</button><button data-v439-toast="Coleccionables">Coleccionables</button></div>'+
+  '<div class="v439-submenu" data-v439-panel="sale"><button type="button" class="v439-sub-back" data-v439-sub-back>‹ Rebajas</button><h3>Rebajas</h3><div class="v439-sale-hero"><div>'+crest(team,logo,"v439-sale-crest")+'</div><small>HASTA</small><strong>50%</strong><span>'+esc(team)+' Store</span></div><button data-v439-go="new">Ver artículos</button></div>'+
+  '<div class="v439-submenu" data-v439-panel="players"><button type="button" class="v439-sub-back" data-v439-sub-back>‹ Jugadores</button><h3>Comprar por jugador</h3>'+(players||'<p>Plantilla pendiente de sincronizar.</p>')+'</div>'+
+ '</section>';
+}
 function markup(team,cat,roster,logo){
  var first=roster[0]||"Edición del equipo";
  return '<section class="v431-store" data-v431-store data-v66-directory="store">'+
- '<header class="v431-store-head v435-store-head"><button type="button" class="v431-back v435-back" data-v431-back aria-label="Volver"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m15 5-7 7 7 7"/></svg></button>'+crest(team,logo,"v431-head-crest")+'<div class="v431-head-copy v435-store-title"><b>'+esc(team)+' <span>Store</span></b></div><div class="v435-head-actions"><button type="button" class="v431-head-icon v435-icon" data-v431-search-toggle aria-label="Buscar"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.4"/><path d="m15.3 15.3 5 5"/></svg></button><button type="button" class="v431-head-icon v435-icon v435-wishlist" data-v435-wishlist aria-label="Favoritos"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20.2 4.4 13C.7 9.5 2.2 4 6.7 4c2.3 0 4 1.3 5.3 3 1.3-1.7 3-3 5.3-3 4.5 0 6 5.5 2.3 9L12 20.2Z"/></svg></button><button type="button" class="v431-head-icon v431-cart-button v435-icon" data-v431-cart-toggle aria-label="Carrito"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 7h14l-1.1 12H6.1L5 7Z"/><path d="M9 7V5.8A3 3 0 0 1 12 3a3 3 0 0 1 3 2.8V7"/></svg><em data-v431-cart-count>0</em></button></div></header>'+
+ '<header class="v431-store-head v435-store-head"><button type="button" class="v439-menu-toggle" data-v439-menu-toggle aria-label="Menú"><span></span><span></span><span></span></button><button type="button" class="v431-back v435-back" data-v431-back aria-label="Volver"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m15 5-7 7 7 7"/></svg></button>'+crest(team,logo,"v431-head-crest")+'<div class="v431-head-copy v435-store-title"><b>'+esc(team)+' <span>Store</span></b></div><div class="v435-head-actions"><button type="button" class="v431-head-icon v435-icon" data-v431-search-toggle aria-label="Buscar"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.4"/><path d="m15.3 15.3 5 5"/></svg></button><button type="button" class="v431-head-icon v435-icon v435-wishlist" data-v435-wishlist aria-label="Favoritos"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20.2 4.4 13C.7 9.5 2.2 4 6.7 4c2.3 0 4 1.3 5.3 3 1.3-1.7 3-3 5.3-3 4.5 0 6 5.5 2.3 9L12 20.2Z"/></svg></button><button type="button" class="v431-head-icon v431-cart-button v435-icon" data-v431-cart-toggle aria-label="Carrito"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 7h14l-1.1 12H6.1L5 7Z"/><path d="M9 7V5.8A3 3 0 0 1 12 3a3 3 0 0 1 3 2.8V7"/></svg><em data-v431-cart-count>0</em></button></div></header>'+
  '<div class="v431-search-panel v435-search-panel" data-v431-search-panel><span>⌕</span><input type="search" data-v431-search placeholder="Buscar en '+esc(team)+' Store"><button type="button" data-v431-search-close>×</button></div>'+
+ v439StoreMenu(team,logo,roster)+
  '<nav class="v431-shop-tabs v435-shop-tabs"><button type="button" class="v436-close" data-v436-close aria-label="Cerrar categoría">×</button><button class="active" data-v436-view="home">Para ti</button><button data-v436-view="new">Novedades</button><button data-v436-view="kits">Equipaciones</button><button data-v436-view="training">Entrenamiento</button><button data-v431-jump="jugadores">Jugadores</button></nav>'+
  v436CategoryPanel(team,logo)+
  '<section class="v431-hero" id="novedades"><div class="v431-hero-copy"><small>COLECCIÓN '+esc(team.toUpperCase())+'</small><h1>La tienda del equipo, dentro de tu Liga</h1><p>Equipaciones, personalización y colección del club en un solo diseño.</p><button type="button" data-v431-jump="equipaciones">VER COLECCIÓN</button></div><div class="v431-hero-shirt">'+shirt(logo,"home","","","")+'</div></section>'+
@@ -544,6 +565,22 @@ function addItem(team,item,detail){var a=readCart();a.push({team:team,item:item,
 function bind(team){
  var root=document.querySelector("[data-v431-store]");if(!root)return;
  var wish=root.querySelector("[data-v435-wishlist]");if(wish)wish.onclick=function(){wish.classList.toggle("active");toast(wish.classList.contains("active")?"Equipo añadido a favoritos":"Equipo quitado de favoritos")};
+ var storeMenu=root.querySelector("[data-v439-menu]"),menuToggle=root.querySelector("[data-v439-menu-toggle]");
+ function closeV439Menu(){if(storeMenu){storeMenu.classList.remove("open");storeMenu.querySelectorAll("[data-v439-panel]").forEach(function(p){p.classList.remove("active")});var m=storeMenu.querySelector("[data-v439-menu-main]");if(m)m.classList.remove("hidden")}if(menuToggle)menuToggle.classList.remove("open")}
+ function openV439Panel(name){if(!storeMenu)return;var main=storeMenu.querySelector("[data-v439-menu-main]");if(main)main.classList.add("hidden");storeMenu.querySelectorAll("[data-v439-panel]").forEach(function(p){p.classList.toggle("active",p.dataset.v439Panel===name)})}
+ if(menuToggle)menuToggle.onclick=function(){var on=storeMenu&&!storeMenu.classList.contains("open");closeV439Menu();if(on&&storeMenu){storeMenu.classList.add("open");menuToggle.classList.add("open")}};
+ var menuClose=root.querySelector("[data-v439-menu-close]");if(menuClose)menuClose.onclick=closeV439Menu;
+ root.querySelectorAll("[data-v439-submenu]").forEach(function(b){b.onclick=function(){openV439Panel(b.dataset.v439Submenu)}});
+ root.querySelectorAll("[data-v439-sub-back]").forEach(function(b){b.onclick=function(){if(!storeMenu)return;storeMenu.querySelectorAll("[data-v439-panel]").forEach(function(p){p.classList.remove("active")});var m=storeMenu.querySelector("[data-v439-menu-main]");if(m)m.classList.remove("hidden")}});
+ root.querySelectorAll("[data-v439-toast]").forEach(function(b){b.onclick=function(){toast(b.dataset.v439Toast+" · próximamente")}});
+ root.querySelectorAll("[data-v439-player]").forEach(function(b){b.onclick=function(){closeV439Menu();var n=root.querySelector("[data-v431-name]");if(n)n.value=b.dataset.v439Player||"";var el=document.getElementById("personaliza");if(el)el.scrollIntoView({behavior:"smooth",block:"start"})}});
+ root.querySelectorAll("[data-v439-go]").forEach(function(b){b.onclick=function(){
+   var go=b.dataset.v439Go||"";closeV439Menu();
+   if(go==="training"){setV436View("training");return}
+   if(go==="kits"||go==="homekit"||go==="awaykit"||go==="thirdkit"){setV436View("kits");return}
+   if(go==="new"||go==="sale"){setV436View("new");return}
+   if(go==="players"){var el=document.getElementById("jugadores");if(el)el.scrollIntoView({behavior:"smooth",block:"start"});return}
+ }});
  function setV436View(view){
    var category=view&&view!=="home";
    root.classList.toggle("v436-category-mode",!!category);
