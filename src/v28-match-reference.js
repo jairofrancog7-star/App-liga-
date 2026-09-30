@@ -32,127 +32,17 @@
 
 
   const TABLE=[
-  {
-    "name": "SAN JOSE FC",
-    "p": 4,
-    "w": 4,
-    "d": 0,
-    "l": 0,
-    "gf": 13,
-    "ga": 3,
-    "gd": 10,
-    "pts": 12
-  },
-  {
-    "name": "JUVENTUS",
-    "p": 4,
-    "w": 3,
-    "d": 0,
-    "l": 1,
-    "gf": 20,
-    "ga": 6,
-    "gd": 14,
-    "pts": 9
-  },
-  {
-    "name": "HERMANOS",
-    "p": 3,
-    "w": 2,
-    "d": 1,
-    "l": 0,
-    "gf": 8,
-    "ga": 4,
-    "gd": 4,
-    "pts": 7
-  },
-  {
-    "name": "LINCES",
-    "p": 3,
-    "w": 2,
-    "d": 0,
-    "l": 1,
-    "gf": 10,
-    "ga": 7,
-    "gd": 3,
-    "pts": 6
-  },
-  {
-    "name": "NAPOLI",
-    "p": 4,
-    "w": 2,
-    "d": 0,
-    "l": 2,
-    "gf": 8,
-    "ga": 7,
-    "gd": 1,
-    "pts": 6
-  },
-  {
-    "name": "FRANCO FC",
-    "p": 3,
-    "w": 2,
-    "d": 0,
-    "l": 1,
-    "gf": 3,
-    "ga": 3,
-    "gd": 0,
-    "pts": 6
-  },
-  {
-    "name": "HERRERAS FC",
-    "p": 4,
-    "w": 1,
-    "d": 1,
-    "l": 2,
-    "gf": 9,
-    "ga": 12,
-    "gd": -3,
-    "pts": 4
-  },
-  {
-    "name": "ABEJAS",
-    "p": 4,
-    "w": 2,
-    "d": 0,
-    "l": 2,
-    "gf": 7,
-    "ga": 7,
-    "gd": 0,
-    "pts": 3
-  },
-  {
-    "name": "LOBOS CDG",
-    "p": 4,
-    "w": 1,
-    "d": 0,
-    "l": 3,
-    "gf": 2,
-    "ga": 17,
-    "gd": -15,
-    "pts": 3
-  },
-  {
-    "name": "TERRICOLAS",
-    "p": 3,
-    "w": 0,
-    "d": 0,
-    "l": 3,
-    "gf": 4,
-    "ga": 14,
-    "gd": -10,
-    "pts": 0
-  },
-  {
-    "name": "GALACTICOS",
-    "p": 4,
-    "w": 0,
-    "d": 0,
-    "l": 4,
-    "gf": 0,
-    "ga": 4,
-    "gd": -4,
-    "pts": -12
-  }
+  {"name":"SAN JOSE FC","p":5,"w":5,"d":0,"l":0,"gf":16,"ga":4,"gd":12,"pts":15},
+  {"name":"JUVENTUS","p":5,"w":3,"d":0,"l":2,"gf":22,"ga":11,"gd":11,"pts":9},
+  {"name":"LINCES","p":4,"w":3,"d":0,"l":1,"gf":15,"ga":9,"gd":6,"pts":9},
+  {"name":"NAPOLI","p":5,"w":3,"d":0,"l":2,"gf":11,"ga":8,"gd":3,"pts":9},
+  {"name":"HERMANOS","p":4,"w":2,"d":1,"l":1,"gf":9,"ga":7,"gd":2,"pts":7},
+  {"name":"FRANCO FC","p":3,"w":2,"d":0,"l":1,"gf":3,"ga":3,"gd":0,"pts":6},
+  {"name":"HERRERAS FC","p":4,"w":1,"d":1,"l":2,"gf":9,"ga":12,"gd":-3,"pts":4},
+  {"name":"ABEJAS","p":4,"w":2,"d":0,"l":2,"gf":7,"ga":7,"gd":0,"pts":3},
+  {"name":"TERRICOLAS","p":4,"w":1,"d":0,"l":3,"gf":5,"ga":14,"gd":-9,"pts":3},
+  {"name":"LOBOS CDG","p":5,"w":1,"d":0,"l":4,"gf":3,"ga":20,"gd":-17,"pts":3},
+  {"name":"GALACTICOS","p":5,"w":0,"d":0,"l":5,"gf":0,"ga":5,"gd":-5,"pts":-15}
 ];
 
 
