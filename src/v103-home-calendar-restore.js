@@ -198,7 +198,7 @@ function calendarGames(categoryId=selectedCalendarCategory){
         const hs=String(r?.[3]??'').trim(),as=String(r?.[5]??'').trim();
         const numericResult=/^\d+$/.test(hs)&&/^\d+$/.test(as);
         const status=String(r?.[10]??'').trim();
-        const played=numericResult||/\bJUGADO\b/i.test(status);
+        const played=numericResult||/\bJUGADO\b|\bGANA\b/i.test(status);
         const outcome=((status.match(/GANA\s+(.+)$/i)||[])[1]||'').trim();
         out.push({
           id:'official-'+catId+'-'+groupIndex+'-'+rowIndex,
