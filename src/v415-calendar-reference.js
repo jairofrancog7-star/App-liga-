@@ -80,7 +80,7 @@ function games(categoryId=selectedCategory){
         const as=String(r?.[5]??'').trim();
         const score=/^\d+$/.test(hs)&&/^\d+$/.test(as);
         const status=String(r?.[10]??'').trim();
-        const played=score||/\bJUGADO\b|FINALIZADO|FINAL/i.test(status);
+        const played=score||/\bJUGADO\b|FINALIZADO|FINAL|\bGANA\b/i.test(status);
         out.push({
           id:'v415-'+catId+'-'+groupIndex+'-'+rowIndex,
           categoryId:String(catId),
@@ -212,6 +212,7 @@ function calendarGrid(monthGames){
 
 function statusText(g){
   if(g.score)return 'Finalizado';
+  if(/\bGANA\b/i.test(g.status||''))return g.status;
   if(g.played)return 'Jugado';
   return 'Programado';
 }
