@@ -1,0 +1,68 @@
+/* V421 — Secciones faltantes de TV / Partidos / Dónde verlo.
+   Adaptadas a azul oscuro de Liga Juventino, conservando contenido nativo de cada pantalla. */
+.v421-block{box-sizing:border-box;width:100%;max-width:760px;margin:18px auto 0;padding:0 12px 28px;color:#fff;font-family:Inter,Roboto,Arial,sans-serif}
+.v421-block *{box-sizing:border-box}
+.v421-block button{font:inherit}
+.v421-kicker{margin:0;color:#7d8ac0;font-size:8px;font-weight:900;letter-spacing:.08em;text-transform:uppercase}
+.v421-title{margin:3px 0 0;color:#fff;font-size:14px;line-height:1.15;font-weight:900}
+.v421-sub{margin:3px 0 0;color:#8f9ac0;font-size:8px;line-height:1.35}
+.v421-head{display:flex;align-items:flex-end;justify-content:space-between;gap:10px;margin-bottom:9px}
+.v421-head>button{border:0;background:transparent;color:#dce4ff;font-size:8px;font-weight:900}
+.v421-section{margin-top:18px}
+.v421-actions{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:18px}
+.v421-action{min-height:64px;display:flex;align-items:center;gap:9px;padding:10px;border:1px solid rgba(119,143,230,.14);border-radius:12px;background:#101337;color:#fff;text-align:left}
+.v421-action i{width:34px;height:34px;display:grid;place-items:center;flex:0 0 34px;border-radius:9px;background:#17245f;color:#25e1ee;font-style:normal;font-size:15px}
+.v421-action b{display:block;font-size:10px}.v421-action small{display:block;margin-top:3px;color:#8996bf;font-size:7px}
+.v421-media-row{display:flex;gap:9px;overflow-x:auto;margin:0 -12px;padding:0 12px 3px;scrollbar-width:none}
+.v421-media-row::-webkit-scrollbar,.v421-days::-webkit-scrollbar{display:none}
+.v421-media{width:164px;flex:0 0 164px;overflow:hidden;border:1px solid rgba(115,139,223,.13);border-radius:10px;background:#11143a;color:#fff;text-align:left}
+.v421-media-art{position:relative;height:91px;display:flex;align-items:center;justify-content:space-around;padding:12px;background:linear-gradient(145deg,#153889,#0d1239)}
+.v421-media-art img{width:43px;height:43px;object-fit:contain}
+.v421-play{position:absolute;left:50%;top:50%;width:34px;height:34px;display:grid;place-items:center;transform:translate(-50%,-50%);border-radius:50%;background:rgba(255,255,255,.9);color:#0b0d2c;font-size:13px}
+.v421-media-copy{padding:8px 9px 9px}
+.v421-media-copy b{display:block;font-size:9px;line-height:1.25}
+.v421-media-copy small{display:block;margin-top:4px;color:#8f9bc0;font-size:7px;line-height:1.25}
+.v421-empty{padding:16px;border:1px dashed rgba(118,142,224,.20);border-radius:11px;background:#0d1031;color:#8e9abd;font-size:8px;line-height:1.4;text-align:center}
+
+/* Partidos feed */
+.v421-matches{margin-top:24px;padding-top:12px;border-top:1px solid rgba(255,255,255,.05)}
+.v421-match-top{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.v421-match-top h2{margin:0;font-size:18px;font-weight:900}
+.v421-match-top small{color:#8f9ac0;font-size:8px}
+.v421-prob{width:100%;min-height:30px;margin:8px 0 10px;padding:0 10px;border:0;border-radius:5px;background:#1c46a8;color:#fff;font-size:8px;font-weight:950;letter-spacing:.015em}
+.v421-prob.on{background:#1f708f;color:#fff}
+.v421-days{display:flex;gap:7px;overflow-x:auto;margin:0 -12px 11px;padding:0 12px;scrollbar-width:none}
+.v421-day{height:38px;min-width:68px;padding:0 11px;border:1px solid rgba(255,255,255,.12);border-radius:8px;background:#10132f;color:#cfd5ea;font-size:8px;font-weight:850;white-space:nowrap}
+.v421-day.active{border-color:#fff;color:#fff;box-shadow:inset 0 0 0 1px #fff}
+.v421-follow-note{margin:0 -12px 13px;padding:12px;background:#121532;color:#c5cbe0;font-size:8px}
+.v421-all-title{margin:0 0 10px}
+.v421-all-title b{display:block;font-size:12px}.v421-all-title small{display:block;margin-top:3px;color:#8e9abd;font-size:8px}
+.v421-comp{overflow:hidden;margin-bottom:10px;border:1px solid rgba(255,255,255,.07);border-radius:11px;background:#11142f}
+.v421-comp-head{display:flex;align-items:center;gap:8px;padding:10px 11px;border-bottom:1px solid rgba(255,255,255,.07)}
+.v421-comp-head i{width:29px;height:29px;display:grid;place-items:center;border-radius:50%;background:#27366e;color:#b9c8ff;font-style:normal;font-size:12px}
+.v421-comp-head b{display:block;font-size:10px}.v421-comp-head small{display:block;margin-top:2px;color:#8995b9;font-size:7px}
+.v421-match{display:grid;grid-template-columns:minmax(0,1fr) 66px 30px;align-items:center;gap:6px;padding:9px 10px;border-bottom:1px solid rgba(255,255,255,.055)}
+.v421-match:last-of-type{border-bottom:0}
+.v421-team{display:flex;align-items:center;gap:6px;min-width:0;margin:3px 0}
+.v421-team img{width:22px;height:22px;object-fit:contain}.v421-team span{overflow:hidden;white-space:nowrap;text-overflow:ellipsis;font-size:8px;font-weight:750}
+.v421-score{text-align:center}.v421-score b{display:block;font-size:10px}.v421-score small{display:block;margin-top:3px;color:#919cbd;font-size:6px;line-height:1.2}
+.v421-star{border:0;background:transparent;color:#cfd7ef;font-size:17px}
+.v421-comp-foot{padding:8px;text-align:center}.v421-comp-foot button{border:0;background:transparent;color:#dce4fb;font-size:7px;font-weight:900}
+.v421-watch-open{width:100%;min-height:46px;display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:12px;padding:0 12px;border:1px solid rgba(114,142,229,.17);border-radius:10px;background:#101438;color:#fff;text-align:left}
+.v421-watch-open b{font-size:9px}.v421-watch-open small{display:block;margin-top:2px;color:#8f9abd;font-size:7px}.v421-watch-open span:last-child{color:#28e3ef;font-size:17px}
+
+/* Dónde verlo */
+body.v421-watch-active #app>.topbar,body.v421-watch-active .app-shell>.topbar{display:none!important;height:0!important;min-height:0!important;max-height:0!important;margin:0!important;padding:0!important}
+body.v421-watch-active #screen{padding:0!important;background:#050714!important}
+.v421-watch-page{box-sizing:border-box;width:100%;max-width:760px;min-height:calc(100dvh - 82px);margin:0 auto;padding:20px 14px 110px;background:#050714;color:#fff;font-family:Inter,Roboto,Arial,sans-serif}
+.v421-watch-head{display:flex;align-items:center;gap:12px;margin-bottom:24px}
+.v421-watch-back{width:42px;height:42px;display:grid;place-items:center;border:1px solid rgba(255,255,255,.09);border-radius:50%;background:#151722;color:#fff;font-size:21px}
+.v421-watch-head h1{margin:0;font-size:21px;font-weight:900}
+.v421-watch-card{overflow:hidden;border:1px solid rgba(255,255,255,.10);border-radius:12px;background:#11142d}
+.v421-watch-row{display:grid;grid-template-columns:56px minmax(0,1fr);gap:9px;padding:11px 12px;border-bottom:1px solid rgba(255,255,255,.07)}
+.v421-watch-row:last-child{border-bottom:0}
+.v421-watch-time{font-size:10px;font-weight:900}
+.v421-watch-game b{display:block;font-size:9px;line-height:1.25}.v421-watch-game small{display:block;margin-top:4px;color:#8f99b9;font-size:7px}
+.v421-provider{display:inline-flex;align-items:center;margin-top:5px;padding:4px 7px;border-radius:5px;background:#172a68;color:#63b7ff;font-size:7px;font-weight:900}
+button.v421-provider{border:0}
+@media(max-width:390px){.v421-media{width:154px;flex-basis:154px}.v421-match{grid-template-columns:minmax(0,1fr) 60px 27px}.v421-day{min-width:64px}.v421-watch-page{padding-left:12px;padding-right:12px}}
