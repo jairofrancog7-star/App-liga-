@@ -1,4 +1,4 @@
-const CACHE='liga-juventino-v17-scorers-player-only-v401';
+const CACHE='liga-juventino-v18-topbar-26pages-v402';
 const CORE=['./','./index.html','./manifest.webmanifest','./brand-neon-header.svg','./profile-reference.svg'];
 
 self.addEventListener('install',event=>{
