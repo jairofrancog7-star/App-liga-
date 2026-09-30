@@ -283,12 +283,12 @@ function patchTeamDetail(){
   const roster=rosterFor(t.name,t.cat);
   const preview=page.querySelector('.v42-preview-grid');
   if(preview&&roster.length){
-    preview.innerHTML=roster.slice(0,3).map((n,i)=>'<button type="button" data-v66-roster-player="'+esc(n)+'"><span class="v42-avatar large v66-roster-avatar">'+esc(fallback(n).slice(0,2))+'</span><strong>'+esc(n)+'</strong><small>Jugador registrado</small></button>').join('');
+    preview.innerHTML=roster.slice(0,3).map((n,i)=>'<button type="button" data-v42-player="'+esc(n)+'" data-v66-roster-player="'+esc(n)+'" data-v66-player-team="'+esc(t.name)+'" data-v66-cat-id="'+esc(t.cat)+'"><span class="v42-avatar large v66-roster-avatar">'+esc(fallback(n).slice(0,2))+'</span><strong>'+esc(n)+'</strong><small>'+esc(t.name)+' · Jugador registrado</small></button>').join('');
   }
   const squad=page.querySelector('.v42-squad');
   if(squad&&roster.length){
     squad.innerHTML='<section class="v42-roster-card v66-official-roster"><h2>Jugadores registrados · '+roster.length+'</h2><div class="v42-roster-list">'+
-      roster.map(n=>'<button type="button" class="v42-player-row" data-v66-roster-player="'+esc(n)+'"><span class="v42-avatar v66-roster-avatar">'+esc(fallback(n).slice(0,2))+'</span><span class="v42-player-copy"><strong>'+esc(n)+'</strong><small>'+esc(t.name)+'</small></span><b class="v42-number"></b></button>').join('')+
+      roster.map(n=>'<button type="button" class="v42-player-row" data-v42-player="'+esc(n)+'" data-v66-roster-player="'+esc(n)+'" data-v66-player-team="'+esc(t.name)+'" data-v66-cat-id="'+esc(t.cat)+'"><span class="v42-avatar v66-roster-avatar">'+esc(fallback(n).slice(0,2))+'</span><span class="v42-player-copy"><strong>'+esc(n)+'</strong><small>'+esc(t.name)+' · Jugador registrado</small></span><b class="v42-number">›</b></button>').join('')+
       '</div></section>';
   }
 }
