@@ -95,7 +95,7 @@ body[data-app-route="home"] .v6-teamweek{
 
 /* V427 — feed inferior Inicio, referencia adaptada al azul */
 body[data-app-route="home"] .v427-home-feed{
-  margin:18px 0 112px!important;
+  margin:14px 0 12px!important;
   padding:0 14px!important;
 }
 body[data-app-route="home"] .v427-feed-tabs{
