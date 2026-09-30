@@ -82,9 +82,9 @@ function stateFor(m,now=mexicoStamp()){
   const elapsed=(now-start)/60000;
   if(elapsed<=150)return {
     kind:'window',
-    label:'HORARIO DEL PARTIDO',
+    label:'EN DIRECTO',
     primary:'—',
-    secondary:'Sin marcador oficial publicado'
+    secondary:'En directo'
   };
   return {
     kind:'pending',
@@ -190,29 +190,36 @@ function formHtml(items){
   return items.map(x=>'<i class="v416-form '+(x.result==='V'?'win':x.result==='E'?'draw':'loss')+'">'+x.result+'</i>').join('');
 }
 function previewTeam(m,team,side){
-  const st=standing(m,team),form=teamForm(m,team,3),pj=num(st?.[2]),gf=num(st?.[6]);
-  const gpm=Number.isFinite(pj)&&pj>0&&Number.isFinite(gf)?gf/pj:null;
+  const st=standing(m,team),form=teamForm(m,team,3);
+  const wins=num(st?.[3]),draws=num(st?.[4]),losses=num(st?.[5]);
+  const left=side==='home';
+  const formOrder=left?[
+    {k:'V',v:wins,cls:'win'},{k:'E',v:draws,cls:'draw'},{k:'D',v:losses,cls:'loss'}
+  ]:[
+    {k:'D',v:losses,cls:'loss'},{k:'E',v:draws,cls:'draw'},{k:'V',v:wins,cls:'win'}
+  ];
+  const circles=formOrder.map(x=>'<span class="v418-form-stat"><i class="'+x.cls+'">'+x.k+'</i><b>'+esc(Number.isFinite(x.v)?x.v:'—')+'</b></span>').join('');
   return '<div class="v416-team '+side+'">'+
-    (side==='home'?teamLogo(team,'preview'):'')+
-    '<div class="v416-team-copy"><b>'+esc(team)+'</b><span class="v416-formline">'+formHtml(form)+'</span><small>'+(Number.isFinite(gpm)?fmt(gpm,2)+' goles/partido':'Sin promedio oficial')+'</small></div>'+
-    (side==='away'?teamLogo(team,'preview'):'')+
+    (left?teamLogo(team,'preview'):'')+
+    '<div class="v416-team-copy"><b>'+esc(team)+'</b><span class="v418-form-stats">'+circles+'</span></div>'+
+    (!left?teamLogo(team,'preview'):'')+
   '</div>';
 }
 function referenceMarketBar(m,state){
-  const r=m.r,live=state.kind==='window';
+  const live=state.kind==='window';
   return '<section class="v417-reference-tools">'+
     '<div class="v417-mode-row">'+
       '<button type="button" data-v92-tab="Cronología" class="'+(live?'active':'')+'">DIRECTO</button>'+
       '<button type="button" data-v92-tab="Previa" class="'+(!live?'active':'')+'">PRE-PARTIDO</button>'+
-      '<span>PARTIDO OFICIAL</span>'+
+      '<span>Anuncio</span>'+
     '</div>'+
     '<div class="v417-market-row" aria-label="Comparador visual 1 X 2">'+
-      '<span class="v417-market-brand">'+teamLogo(r[2],'market')+'</span>'+
+      '<span class="v417-market-brand"><b>LIGA</b></span>'+
       '<button type="button" class="v417-market-btn" aria-disabled="true"><small>1</small><b>—</b></button>'+
       '<button type="button" class="v417-market-btn" aria-disabled="true"><small>X</small><b>—</b></button>'+
       '<button type="button" class="v417-market-btn" aria-disabled="true"><small>2</small><b>—</b></button>'+
     '</div>'+
-    '<small class="v417-market-note">Sin cuotas oficiales publicadas por la Liga.</small>'+
+    '<small class="v417-market-note">Datos oficiales de la Liga · sin cuotas publicadas</small>'+
   '</section>';
 }
 function previewBody(m,state){
@@ -222,24 +229,18 @@ function previewBody(m,state){
   const aavg=Number.isFinite(apj)&&apj>0&&Number.isFinite(agf)?agf/apj:null;
   const hcavg=Number.isFinite(hpj)&&hpj>0&&Number.isFinite(hgc)?hgc/hpj:null;
   const acavg=Number.isFinite(apj)&&apj>0&&Number.isFinite(agc)?agc/apj:null;
-  const hpts=num(h?.[9]),apts=num(a?.[9]);
-  const hperf=Number.isFinite(hpj)&&hpj>0&&Number.isFinite(hpts)?Math.max(0,Math.min(100,hpts/(hpj*3)*100)):null;
-  const aperf=Number.isFinite(apj)&&apj>0&&Number.isFinite(apts)?Math.max(0,Math.min(100,apts/(apj*3)*100)):null;
-  const live=state.kind==='window';
   return '<section class="v416-preview">'+
     '<section class="v416-general-card">'+
       '<header><h2>ESTADÍSTICAS GENERALES</h2></header>'+
       '<div class="v416-segment"><button type="button" class="active">'+esc(m.category)+'</button><button type="button" data-v92-tab="Estadísticas">TODO</button></div>'+
       '<div class="v416-team-form">'+previewTeam(m,home,'home')+previewTeam(m,away,'away')+'</div>'+
-      previewValueRow('Rendimiento',hperf,aperf,{suffix:'%',decimals:0})+
-      previewValueRow('Goles a favor / partido',havg,aavg,{decimals:2})+
-      previewValueRow('Goles en contra / partido',hcavg,acavg,{decimals:2})+
-      previewValueRow('Puntos',hpts,apts,{decimals:0})+
       previewValueRow('Posesión',null,null,{suffix:'%',decimals:0,unavailable:true})+
+      previewValueRow('Goles a favor',havg,aavg,{decimals:2})+
+      previewValueRow('Goles en contra',hcavg,acavg,{decimals:2})+
       previewValueRow('Tiros a puerta',null,null,{decimals:1,unavailable:true})+
       previewValueRow('Tiros a puerta en contra',null,null,{decimals:1,unavailable:true})+
-      previewValueRow('Valor de la plantilla',null,null,{unavailable:true})+
-      '<p class="v416-data-note">Los datos no publicados por la Liga se muestran con “—”; no se inventan posesión, tiros ni valor de plantilla.</p>'+
+      previewValueRow('Valor de la plantilla (M€)',null,null,{decimals:1,unavailable:true})+
+      '<p class="v416-data-note">Cuando la Liga no publica una estadística aparece “—”. No se inventan posesión, tiros, dorsales ni valor de plantilla.</p>'+
     '</section>'+
   '</section>';
 }
@@ -249,7 +250,7 @@ function playerInitials(name){
 }
 function pitchPlayer(name,idx,side){
   const clean=String(name||'').trim(),initials=playerInitials(clean);
-  return '<span class="v416-pitch-player '+side+' p'+idx+'"><i>'+esc(initials)+'</i><b>'+esc(clean)+'</b></span>';
+  return '<span class="v416-pitch-player '+side+' p'+idx+'"><i><span>'+esc(initials)+'</span></i><b>'+esc(clean)+'</b></span>';
 }
 function matchCedula(m){
   const r=m?.r||[],date=dateOnly(r[8]),home=norm(r[2]),away=norm(r[6]);
@@ -315,8 +316,10 @@ function lineupPitch(m){
     '<div class="v417-coach-row home">'+teamLogo(home,'coach')+'<span><b>No publicado</b><small>'+esc(home)+'</small></span><em>—</em></div>'+
     '<div class="v416-pitch">'+
       '<div class="v416-pitch-team top">'+teamLogo(home,'pitch')+'<b>'+esc(home)+'</b><em>—</em></div>'+
+      '<span class="v418-formation top">—</span>'+
       hp.map((n,i)=>pitchPlayer(n,i,'home')).join('')+
       ap.map((n,i)=>pitchPlayer(n,i,'away')).join('')+
+      '<span class="v418-formation bottom">—</span>'+
       '<div class="v416-pitch-team bottom"><em>—</em><b>'+esc(away)+'</b>'+teamLogo(away,'pitch')+'</div>'+
     '</div>'+
     '<div class="v417-coach-row away"><em>—</em><span><b>No publicado</b><small>'+esc(away)+'</small></span>'+teamLogo(away,'coach')+'</div>'+
@@ -486,17 +489,17 @@ function render(){
     matchPicker(m)+
     '<section class="v92-score-card">'+
       '<div class="v92-side">'+teamLogo(home)+'<b>'+esc(home)+'</b></div>'+
-      '<div class="v92-center"><strong>'+esc(center)+'</strong><small>'+esc(state.secondary)+'</small></div>'+
+      '<div class="v92-center"><strong>'+esc(center)+'</strong><small>'+esc(state.kind==='window'?'En directo':state.secondary)+'</small><em class="v418-match-state '+esc(state.kind)+'">'+esc(state.kind==='window'?'En directo':state.kind==='final'?'Finalizado':state.kind==='scheduled'?'Pre-partido':'Pendiente')+'</em></div>'+
       '<div class="v92-side">'+teamLogo(away)+'<b>'+esc(away)+'</b></div>'+
     '</section>'+
     '<div class="v92-official-meta"><span>'+esc(dateOnly(r[8]))+' · '+esc(clock(r[8]))+'</span><span>'+esc(venue)+'</span></div>'+
     '<nav class="v92-tabs v417-reference-tabs" aria-label="Opciones del Match Center">'+[
-      ['Resumen','RESUMEN'],
       ['Cronología','JUGADAS'],
       ['Estadísticas','CLASIFICACIÓN'],
       ['Previa','PREVIA'],
       ['Alineaciones','ALINEACIONES'],
-      ['Cuotas','CUOTAS']
+      ['Cuotas','CUOTAS'],
+      ['Resumen','RESUMEN']
     ].map(x=>'<button type="button" class="'+(activeTab===x[0]?'active':'')+'" data-v92-tab="'+x[0]+'">'+x[1]+'</button>').join('')+'</nav>'+
     ((activeTab==='Previa'||activeTab==='Alineaciones'||activeTab==='Cuotas')?referenceMarketBar(m,state):'')+
     '<main class="v92-body">'+bodyFor(activeTab,m,state)+'</main>'+
