@@ -65,3 +65,46 @@ body.v372-team-reference.v372-team-collapsed .v372-compact-head{position:fixed!i
  .v372-team-line img{width:25px!important;height:25px!important}
  .v372-team-line b{font-size:12.5px!important}
 }
+
+/* V377_TEAM_TABS_HITBOX_FIX */
+body.v372-team-reference .v42-tabs{
+  overflow-x:hidden!important;
+  touch-action:manipulation!important;
+}
+body.v372-team-reference .v42-tabs button{
+  flex:1 1 20%!important;
+  width:20%!important;
+  min-width:0!important;
+  max-width:20%!important;
+  padding-left:3px!important;
+  padding-right:3px!important;
+  font-size:11px!important;
+  text-align:center!important;
+  pointer-events:auto!important;
+  touch-action:manipulation!important;
+}
+body.v372-team-reference .v42-tabs button.active::after{
+  left:7px!important;
+  right:7px!important;
+}
+body.v372-team-reference .v372-compact-tabs{
+  overflow-x:hidden!important;
+  touch-action:manipulation!important;
+}
+body.v372-team-reference .v372-compact-tabs button{
+  flex:1 1 20%!important;
+  width:20%!important;
+  min-width:0!important;
+  max-width:20%!important;
+  padding-left:3px!important;
+  padding-right:3px!important;
+  font-size:10.5px!important;
+  text-align:center!important;
+  pointer-events:auto!important;
+  touch-action:manipulation!important;
+}
+body.v372-team-reference .v372-compact-tabs button.active:after{
+  left:7px!important;
+  right:7px!important;
+}
+/* /V377_TEAM_TABS_HITBOX_FIX */
