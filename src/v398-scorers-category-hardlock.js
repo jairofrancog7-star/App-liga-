@@ -12,7 +12,7 @@ const CATS=[
   ['2','Veteranos 35+'],
   ['1','Veteranos 50+']
 ];
-let busy=false,timer=0;
+let busy=false,timer=0,lastChoice='',lastChoiceAt=0;
 
 function route(){return String(location.hash||'').replace(/^#\/?/,'').split('?')[0]||'home'}
 function selected(){
@@ -53,37 +53,65 @@ function mount(){
 }
 function choose(id){
   id=String(id||'');
-  if(!CATS.some(([x])=>x===id)||busy)return;
+  if(!CATS.some(([x])=>x===id))return;
+
+  const now=Date.now();
+  if(lastChoice===id&&now-lastChoiceAt<350)return;
+  lastChoice=id;lastChoiceAt=now;
+
+  localStorage.setItem('v62-category',id);
+  localStorage.setItem('v12-fixture-cat',id);
+  localStorage.setItem('v194-scorer-team','all');
+
+  document.querySelectorAll('[data-v398-cat]').forEach(b=>{
+    const on=String(b.dataset.v398Cat||'')===id;
+    b.classList.toggle('active',on);
+    b.setAttribute('aria-pressed',on?'true':'false');
+  });
+
   busy=true;
   try{
-    localStorage.setItem('v62-category',id);
-    localStorage.setItem('v12-fixture-cat',id);
-    localStorage.setItem('v194-scorer-team','all');
-    try{window.LJR_OFFICIAL_API?.setCategory?.(id)}catch(_){}
-    try{window.LJR_SCORERS_REFERENCE?.setCategory?.(id)}catch(_){}
-    try{window.LJR_SCORERS_REFERENCE?.render?.()}catch(_){}
+    if(window.LJR_SCORERS_REFERENCE?.setCategory){
+      window.LJR_SCORERS_REFERENCE.setCategory(id);
+    }else{
+      try{window.LJR_OFFICIAL_API?.setCategory?.(id)}catch(_){}
+      try{
+        const next=location.pathname+location.search+'#/scorers?cat='+encodeURIComponent(id);
+        history.replaceState(history.state,'',next);
+      }catch(_){}
+    }
   }finally{
     busy=false;
   }
+
   requestAnimationFrame(()=>{mount();sync()});
-  setTimeout(()=>{mount();sync();try{window.LJR_SCORERS_REFERENCE?.render?.()}catch(_){}},40);
-  setTimeout(()=>{mount();sync()},140);
+  setTimeout(()=>{try{window.LJR_SCORERS_REFERENCE?.render?.()}catch(_){}mount();sync()},30);
+  setTimeout(()=>{try{window.LJR_SCORERS_REFERENCE?.render?.()}catch(_){}mount();sync()},120);
 }
-function click(e){
-  if(route()!=='scorers'||!(e.target instanceof Element))return;
-  const b=e.target.closest('[data-v398-cat]');
+
+function categoryButtonFromEvent(e){
+  const path=typeof e.composedPath==='function'?e.composedPath():[];
+  for(const node of path){
+    if(node instanceof Element&&node.matches?.('[data-v398-cat]'))return node;
+  }
+  return e.target instanceof Element?e.target.closest?.('[data-v398-cat]'):null;
+}
+
+function activateFromEvent(e){
+  if(route()!=='scorers')return;
+  const b=categoryButtonFromEvent(e);
   if(!b)return;
-  e.preventDefault();
-  e.stopPropagation();
-  e.stopImmediatePropagation();
   choose(b.dataset.v398Cat);
 }
+
+window.addEventListener('pointerup',activateFromEvent,true);
+window.addEventListener('touchend',activateFromEvent,{capture:true,passive:true});
+window.addEventListener('click',activateFromEvent,true);
 function schedule(ms=20){
   clearTimeout(timer);
   timer=setTimeout(mount,ms);
 }
 
-document.addEventListener('click',click,true);
 window.addEventListener('hashchange',()=>schedule(15));
 window.addEventListener('ljr:official-data',()=>schedule(15));
 document.addEventListener('visibilitychange',()=>{if(!document.hidden)schedule(10)});
