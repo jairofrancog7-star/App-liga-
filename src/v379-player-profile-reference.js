@@ -17,6 +17,41 @@ function read(k,d=null){try{const v=JSON.parse(localStorage.getItem(k)||'null');
 function write(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch{}}
 function initials(v){return String(v||'').split(/\s+/).filter(Boolean).map(x=>x[0]).join('').slice(0,2).toUpperCase()||'JG'}
 function same(a,b){return norm(a)===norm(b)}
+function fallbackKit(name){
+  let h=0;for(const ch of String(name||''))h=(h*31+ch.charCodeAt(0))>>>0;
+  const hue=h%360;
+  return ['hsl('+hue+' 78% 43%)','hsl('+((hue+34)%360)+' 72% 23%)','#ffffff'];
+}
+function teamPalette(name){
+  const n=norm(name);
+  const palettes=[
+    [/franco/,['#d71920','#0a0b10','#ffffff']],
+    [/pozos/,['#22dc6e','#08110d','#eaffef']],
+    [/juventus/,['#f4f4f4','#121212','#c8c8c8']],
+    [/manchester/,['#e31d2b','#111111','#f3d24b']],
+    [/boavista/,['#111111','#e2bd22','#ffffff']],
+    [/esperanza/,['#18b76d','#08261b','#ffffff']],
+    [/lobos/,['#1458d7','#071c4f','#ffffff']],
+    [/san julian/,['#e52d36','#ffffff','#0a2348']],
+    [/tavera/,['#1c67d5','#ffffff','#0b1f4c']],
+    [/america/,['#f0d326','#173a8e','#d71d2b']],
+    [/herreras/,['#111111','#d91c28','#ffffff']],
+    [/galacticos/,['#642bd7','#17102a','#ffffff']],
+    [/promesas/,['#2468d8','#ffffff','#11224a']],
+    [/cuenda/,['#0b6a42','#efd94c','#ffffff']],
+    [/aldama/,['#d52231','#111111','#ffffff']],
+    [/linces/,['#0c2e77','#dfb72c','#ffffff']],
+    [/psv/,['#e1222c','#ffffff','#111111']],
+    [/napoli/,['#1b8bd1','#ffffff','#10325a']],
+    [/dynamo|dinamo/,['#2456c7','#ffffff','#0d1b48']]
+  ];
+  for(const [re,c] of palettes)if(re.test(n))return c;
+  return fallbackKit(name);
+}
+function paletteStyle(name){
+  const c=teamPalette(name);
+  return '--v379-kit1:'+c[0]+';--v379-kit2:'+c[1]+';--v379-kit3:'+c[2]+';';
+}
 function dash(v){return v===undefined||v===null||String(v).trim()===''?'—':String(v)}
 function attr(v){return esc(String(v??''))}
 function isDataImage(v){return /^data:image\/(?:png|jpe?g|webp);base64,/i.test(String(v||''))}
@@ -133,15 +168,19 @@ function tabs(active){
 }
 function hero(p,d){
   const photo=d.photo;
-  const visual=photo?'<img class="v379-player-photo" src="'+esc(photo)+'" alt="'+esc(p.name)+'">':
-    '<div class="v379-player-avatar-card" aria-hidden="true"><span>'+esc(initials(p.name))+'</span><i class="v379-avatar-team-logo">'+teamLogo(p.team)+'</i></div>';
-  return '<section class="v379-hero">'+backButton()+shareButton()+
+  const visual=photo
+    ? '<img class="v379-player-photo" src="'+esc(photo)+'" alt="'+esc(p.name)+'">'
+    : '<div class="v379-player-silhouette" style="'+paletteStyle(p.team)+'" aria-hidden="true">'+
+        '<span class="v379-player-body"><i class="v379-kit-logo">'+teamLogo(p.team)+'</i></span>'+
+        '<span class="v379-player-neck"></span>'+
+        '<span class="v379-player-head"></span>'+
+        '<span class="v379-player-hair"></span>'+
+      '</div>';
+  return '<section class="v379-hero" style="'+paletteStyle(p.team)+'">'+backButton()+shareButton()+
     '<div class="v379-hero-pattern" aria-hidden="true"></div>'+visual+
     '<div class="v379-hero-copy"><h1>'+esc(p.name)+'</h1>'+
       '<div class="v379-teamline"><span class="v379-team-logo">'+teamLogo(p.team)+'</span><b>'+esc(p.team)+'</b></div>'+
-      '<div class="v379-category-pill">'+esc(p.category||'Jugador registrado')+'</div>'+
       '<div class="v379-location"><svg viewBox="0 0 24 24"><path d="M12 21s6-5.5 6-11a6 6 0 1 0-12 0c0 5.5 6 11 6 11Z"/><circle cx="12" cy="10" r="2"/></svg><span>Juventino Rosas</span></div>'+
-      '<div class="v379-hero-actions"><button type="button" data-v379-compare>Comparar jugador</button></div>'+
     '</div>'+
   '</section>';
 }
@@ -235,8 +274,13 @@ function markup(active,p,list){
   const d=profileData(p);
   return '<section class="v379-profile" data-v379-profile>'+hero(p,d)+tabs(active)+'<div class="v379-content">'+content(active,p,d,list)+'</div></section>';
 }
+function syncPlayerBottomNav(active){
+  if(!active)return;
+  document.querySelectorAll('.bottom-nav .nav-item').forEach(b=>b.classList.toggle('active',b.dataset.route==='competition'));
+}
 function setTheme(active){
   document.body.classList.toggle('v379-player-profile-active',active);
+  syncPlayerBottomNav(active);
   const meta=document.querySelector('meta[name="theme-color"]');
   if(meta){
     if(active){
