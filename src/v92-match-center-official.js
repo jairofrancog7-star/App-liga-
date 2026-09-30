@@ -232,13 +232,16 @@ function pitchPlayer(name,idx,side){
   return '<span class="v416-pitch-player '+side+' p'+idx+'"><i>'+esc(initials)+'</i><b>'+esc(clean)+'</b></span>';
 }
 function lineupPitch(m){
-  const r=m.r,home=r[2],away=r[6],hl=lineupFor(m,home)?.names||[],al=lineupFor(m,away)?.names||[];
+  const r=m.r,home=r[2],away=r[6],homeOfficial=lineupFor(m,home),awayOfficial=lineupFor(m,away);
+  const hl=homeOfficial?.names?.length?homeOfficial.names:roster(m,home);
+  const al=awayOfficial?.names?.length?awayOfficial.names:roster(m,away);
+  const isOfficial=!!(homeOfficial||awayOfficial);
   if(!hl.length&&!al.length){
-    return '<section class="v416-lineup-visual empty"><div class="v416-lineup-title"><span><small>VISTA DE CANCHA</small><b>Alineaciones</b></span></div><div class="v416-pitch-empty"><b>Alineación pendiente</b><small>La cancha se llenará con jugadores reales cuando la Liga publique los titulares.</small></div></section>';
+    return '<section class="v416-lineup-visual empty"><div class="v416-lineup-title"><span><small>VISTA DE CANCHA</small><b>Alineaciones</b></span></div><div class="v416-pitch-empty"><b>Alineación pendiente</b><small>La cancha se llenará con jugadores reales cuando la Liga publique titulares o exista una plantilla registrada.</small></div></section>';
   }
   const hp=hl.slice(0,11),ap=al.slice(0,11);
   return '<section class="v416-lineup-visual">'+
-    '<div class="v416-lineup-title"><span><small>VISTA DE CANCHA</small><b>Alineaciones publicadas</b></span><em>Sin inventar posiciones</em></div>'+
+    '<div class="v416-lineup-title"><span><small>VISTA DE CANCHA</small><b>'+(isOfficial?'Alineaciones publicadas':'Plantillas registradas')+'</b></span><em>'+(isOfficial?'Sin inventar posiciones':'Vista visual · no es alineación oficial')+'</em></div>'+
     '<div class="v416-pitch">'+
       '<div class="v416-pitch-team top">'+teamLogo(home,'pitch')+'<b>'+esc(home)+'</b></div>'+
       hp.map((n,i)=>pitchPlayer(n,i,'home')).join('')+
