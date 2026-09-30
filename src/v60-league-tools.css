@@ -868,3 +868,209 @@
   .v188-weekly-subhead{margin-top:22px}
   .v188-weekly-subhead h2{font-size:22px}
 }
+
+
+/* V399 — contenido útil para Tabla y Estadísticas. */
+.v399-stats-summary{
+  margin-top:16px;
+  padding:15px;
+  border:1px solid rgba(82,104,221,.34);
+  border-radius:18px;
+  background:linear-gradient(180deg,rgba(18,19,119,.98),rgba(9,9,99,.98));
+}
+.v399-stats-heading{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  margin-bottom:12px;
+}
+.v399-stats-heading small{
+  display:block;
+  margin-bottom:4px;
+  color:#1de0eb;
+  font-size:9px;
+  font-weight:900;
+  letter-spacing:.13em;
+}
+.v399-stats-heading h2{
+  margin:0;
+  color:#fff;
+  font-size:20px;
+  line-height:1;
+  letter-spacing:-.02em;
+}
+.v399-stats-heading button{
+  flex:0 0 auto;
+  min-height:34px;
+  padding:0 10px;
+  border:1px solid rgba(29,224,235,.45);
+  border-radius:10px;
+  background:rgba(14,48,151,.65);
+  color:#1de0eb;
+  font-size:10px;
+  font-weight:850;
+}
+.v399-leader-card{
+  min-height:76px;
+  display:grid;
+  grid-template-columns:48px minmax(0,1fr) auto;
+  align-items:center;
+  gap:11px;
+  padding:11px 12px;
+  border:1px solid rgba(40,224,239,.22);
+  border-radius:14px;
+  background:linear-gradient(90deg,#102a9e,#10207f 62%,#10106f);
+}
+.v399-leader-logo{
+  width:46px;
+  height:46px;
+  display:grid;
+  place-items:center;
+  border-radius:12px;
+  background:rgba(255,255,255,.06);
+}
+.v399-leader-logo img{
+  width:38px;
+  height:38px;
+  object-fit:contain;
+}
+.v399-leader-copy{min-width:0}
+.v399-leader-copy small{
+  display:block;
+  color:#1de0eb;
+  font-size:8px;
+  font-weight:900;
+  letter-spacing:.12em;
+}
+.v399-leader-copy b{
+  display:block;
+  margin-top:3px;
+  overflow:hidden;
+  color:#fff;
+  font-size:14px;
+  line-height:1.1;
+  white-space:nowrap;
+  text-overflow:ellipsis;
+}
+.v399-leader-copy em{
+  display:block;
+  margin-top:5px;
+  color:#aeb7db;
+  font-size:10px;
+  font-style:normal;
+}
+.v399-leader-card>strong{
+  color:#fff;
+  font-size:24px;
+  line-height:.9;
+  text-align:center;
+}
+.v399-leader-card>strong small{
+  display:block;
+  margin-top:4px;
+  color:#1de0eb;
+  font-size:8px;
+  letter-spacing:.1em;
+}
+.v399-mini-table{
+  overflow:hidden;
+  margin-top:12px;
+  border:1px solid rgba(255,255,255,.07);
+  border-radius:13px;
+  background:#0b0a69;
+}
+.v399-mini-head,
+.v399-mini-row{
+  width:100%;
+  display:grid;
+  grid-template-columns:26px minmax(0,1fr) 31px 35px 38px;
+  align-items:center;
+  gap:5px;
+  min-height:44px;
+  padding:0 10px;
+}
+.v399-mini-head{
+  min-height:31px;
+  background:rgba(0,0,0,.12);
+  color:#7883bf;
+  font-size:8px;
+  font-weight:900;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+}
+.v399-mini-row{
+  border:0;
+  border-top:1px solid rgba(255,255,255,.065);
+  background:transparent;
+  color:#c5cae3;
+  font:700 10px/1 Inter,Roboto,Arial,sans-serif;
+  text-align:center;
+}
+.v399-mini-row:active{background:rgba(30,71,190,.22)}
+.v399-pos{color:#7e8ac7}
+.v399-team{
+  min-width:0;
+  display:flex;
+  align-items:center;
+  gap:7px;
+  text-align:left;
+}
+.v399-team img{
+  width:25px;
+  height:25px;
+  flex:0 0 25px;
+  object-fit:contain;
+}
+.v399-team b{
+  min-width:0;
+  overflow:hidden;
+  color:#fff;
+  font-size:11px;
+  white-space:nowrap;
+  text-overflow:ellipsis;
+}
+.v399-mini-row strong{color:#fff;font-size:12px}
+.v399-mini-row .positive{color:#40e6b1}
+.v399-mini-row .negative{color:#ff7a9e}
+.v399-stat-chips{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:8px;
+  margin-top:11px;
+}
+.v399-stat-chips span{
+  min-width:0;
+  min-height:52px;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  padding:8px 9px;
+  border-radius:11px;
+  background:rgba(18,44,145,.55);
+}
+.v399-stat-chips small{
+  color:#7785c4;
+  font-size:7px;
+  font-weight:900;
+  letter-spacing:.1em;
+}
+.v399-stat-chips b{
+  margin-top:4px;
+  overflow:hidden;
+  color:#fff;
+  font-size:11px;
+  white-space:nowrap;
+  text-overflow:ellipsis;
+}
+@media(max-width:390px){
+  .v399-stats-summary{padding:12px}
+  .v399-mini-head,.v399-mini-row{
+    grid-template-columns:23px minmax(0,1fr) 28px 32px 34px;
+    padding-left:8px;
+    padding-right:8px;
+  }
+  .v399-team{gap:5px}
+  .v399-team img{width:22px;height:22px;flex-basis:22px}
+  .v399-team b{font-size:10px}
+}
