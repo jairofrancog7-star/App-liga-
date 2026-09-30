@@ -264,7 +264,18 @@ function bind(){
  document.querySelectorAll('[data-v42-select-name]').forEach(b=>b.addEventListener('click',e=>{e.preventDefault();e.stopPropagation();const n=b.dataset.v42SelectName||'';if(n&&norm(n)!==norm(selectedName()))openOfficialTeamProfile(n,false)},{once:true}));
  document.querySelectorAll('[data-v42-compare-name]').forEach(b=>b.addEventListener('click',e=>{e.preventDefault();e.stopPropagation();compareTarget=b.dataset.v42CompareName;render()},{once:true}));
  document.querySelector('[data-v42-compare-again]')?.addEventListener('click',()=>{compareTarget='';render()},{once:true});
- document.querySelectorAll('[data-v42-player]').forEach(b=>b.addEventListener('click',e=>{e.preventDefault();e.stopPropagation();const t=teamData();localStorage.setItem('v123-compare-player',JSON.stringify({name:b.dataset.v42Player||'',team:t?.name||'',cat:String(t?.catId||'')}));location.hash='#/playerCompare'},{once:true}));
+ document.querySelectorAll('[data-v42-player]').forEach(b=>b.addEventListener('click',e=>{
+   e.preventDefault();e.stopPropagation();e.stopImmediatePropagation();
+   const t=teamData();
+   const p={name:b.dataset.v42Player||'',team:b.dataset.v66PlayerTeam||t?.name||'',cat:String(b.dataset.v66CatId||t?.catId||''),category:t?.category||''};
+   try{
+     localStorage.setItem('v379-player-profile',JSON.stringify(p));
+     localStorage.setItem('v123-compare-player',JSON.stringify(p));
+     localStorage.setItem('v379-player-profile-tab','Resumen');
+   }catch(_){}
+   if(window.LJR_PLAYER_PROFILE_API?.open){window.LJR_PLAYER_PROFILE_API.open(p);return}
+   location.hash='#/playerDetail';
+ },{once:true}));
 }
 async function render(){const active=route()==='teamDetail';document.body.classList.toggle('v42-team-active',active);if(!active)return;const hashTab=tabFromHash();if(hashTab){activeTab=hashTab;localStorage.setItem('v42-team-tab',hashTab)}await load();if(!db)return;if(localStorage.getItem('v42-open-compare')==='1'){compareOpen=true;localStorage.removeItem('v42-open-compare')}const screen=document.querySelector('#screen');if(!screen)return;screen.innerHTML=markup();bind();nav()}
 function schedule(){requestAnimationFrame(()=>requestAnimationFrame(render))}
