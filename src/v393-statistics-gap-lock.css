@@ -1,0 +1,31 @@
+/* V393 — Estadísticas: elimina definitivamente el hueco azul debajo de las pestañas.
+   La página usa exactamente la altura REAL de la cabecera fija; el contenido empieza
+   inmediatamente debajo de la línea de tabs. */
+body.v33-data-active .v33-data-page{
+  padding-top:var(--v33-actual-head-h,154px)!important;
+}
+body.v33-data-active .v33-data-content,
+body.v33-data-active .v33-general-content,
+body.v33-data-active .v33-detailed{
+  margin-top:0!important;
+  transform:none!important;
+}
+body.v33-data-active .v33-general-content,
+body.v33-data-active .v33-detailed{
+  padding-top:10px!important;
+}
+@media(max-width:699px){
+  body.v33-data-active .v33-data-page{
+    padding-top:var(--v33-actual-head-h,154px)!important;
+  }
+  body.v33-data-active .v33-general-content,
+  body.v33-data-active .v33-detailed{
+    padding-top:8px!important;
+  }
+}
+@media(max-width:390px){
+  body.v33-data-active .v33-general-content,
+  body.v33-data-active .v33-detailed{
+    padding-top:6px!important;
+  }
+}
