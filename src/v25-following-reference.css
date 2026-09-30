@@ -1934,3 +1934,16 @@ body[data-app-route="following"] .v28-picker-row .v28-logo>.v28-fallback{
     padding-right:26px!important;
   }
 }
+
+
+/* V389_FOLLOWING_EMPTY_UP
+   Sube únicamente el bloque vacío de #/following. Conserva cabecera, fondo,
+   botones, selector de equipos y barra inferior sin cambios. */
+body[data-app-route="following"] .v28-follow-page.v28-empty .v28-empty-main{
+  padding-top:42px!important;
+}
+@media(max-width:390px){
+  body[data-app-route="following"] .v28-follow-page.v28-empty .v28-empty-main{
+    padding-top:18px!important;
+  }
+}
