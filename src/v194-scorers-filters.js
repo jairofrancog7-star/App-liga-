@@ -196,7 +196,7 @@ function heroScorerCard(r,slot){
   return '<article class="v391-feature rank-'+slot+'">'+
     '<div class="v391-feature-photo">'+
       '<span class="v391-feature-kicker">#'+esc(shownRank)+' Máximo goleador</span>'+
-      '<span class="v391-feature-media"><small>00:'+(rank===1?'38':'36')+'</small><i aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M9 7.5 17 12l-8 4.5z"/></svg></i></span>'+
+      '<span class="v391-feature-media"><small>00:'+(slot===1?'38':'36')+'</small><i aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M9 7.5 17 12l-8 4.5z"/></svg></i></span>'+
       '<span class="v391-feature-watermark">'+logoHtml(r.team,'v391-watermark-logo')+'</span>'+
     '</div>'+
     '<div class="v391-feature-info">'+

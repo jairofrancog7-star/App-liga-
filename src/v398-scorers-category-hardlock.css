@@ -1,0 +1,90 @@
+/* V398 — category bar must be visibly present on scorers, regardless of prior patches. */
+.v397-category-controls{display:none!important}
+.v391-category-wrap{display:none!important}
+
+.v398-scorer-catbar{
+  position:relative!important;
+  z-index:999!important;
+  display:block!important;
+  visibility:visible!important;
+  opacity:1!important;
+  width:100%!important;
+  max-width:100%!important;
+  height:auto!important;
+  min-height:54px!important;
+  margin:0 0 12px!important;
+  padding:4px 0 6px!important;
+  overflow:visible!important;
+  background:#06065f!important;
+  pointer-events:auto!important;
+}
+.v398-scorer-cat-label{
+  display:block!important;
+  margin:0 0 7px!important;
+  color:#aeb9dd!important;
+  font:900 8px/1 Inter,Roboto,Arial,sans-serif!important;
+  letter-spacing:.13em!important;
+  text-transform:uppercase!important;
+}
+.v398-scorer-cat-scroll{
+  position:relative!important;
+  z-index:1000!important;
+  display:flex!important;
+  visibility:visible!important;
+  opacity:1!important;
+  align-items:center!important;
+  gap:7px!important;
+  width:100%!important;
+  min-height:36px!important;
+  overflow-x:auto!important;
+  overflow-y:hidden!important;
+  padding:0 1px 2px!important;
+  scrollbar-width:none!important;
+  -webkit-overflow-scrolling:touch!important;
+  touch-action:pan-x!important;
+  pointer-events:auto!important;
+}
+.v398-scorer-cat-scroll::-webkit-scrollbar{display:none!important}
+.v398-scorer-cat-scroll button{
+  appearance:none!important;
+  -webkit-appearance:none!important;
+  display:inline-flex!important;
+  visibility:visible!important;
+  opacity:1!important;
+  flex:0 0 auto!important;
+  align-items:center!important;
+  justify-content:center!important;
+  min-width:max-content!important;
+  height:36px!important;
+  min-height:36px!important;
+  padding:0 13px!important;
+  border:1px solid rgba(255,255,255,.20)!important;
+  border-radius:18px!important;
+  background:#111274!important;
+  color:#d3d9ef!important;
+  box-shadow:none!important;
+  font:800 9px/1 Inter,Roboto,Arial,sans-serif!important;
+  white-space:nowrap!important;
+  cursor:pointer!important;
+  pointer-events:auto!important;
+  touch-action:manipulation!important;
+  -webkit-tap-highlight-color:transparent!important;
+}
+.v398-scorer-cat-scroll button.active{
+  border-color:#22e4ef!important;
+  background:#1747c3!important;
+  color:#fff!important;
+  box-shadow:inset 0 0 0 1px rgba(34,228,239,.18),0 0 9px rgba(34,228,239,.10)!important;
+}
+.v398-scorer-cat-scroll button:active{transform:scale(.97)!important}
+
+@media(max-width:390px){
+  .v398-scorer-catbar{min-height:51px!important;margin-bottom:10px!important}
+  .v398-scorer-cat-scroll{gap:6px!important;min-height:34px!important}
+  .v398-scorer-cat-scroll button{
+    height:34px!important;
+    min-height:34px!important;
+    padding:0 11px!important;
+    font-size:8.5px!important;
+  }
+}
