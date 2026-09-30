@@ -65,3 +65,100 @@ body.v439-cast-open{overflow:hidden!important}
 .v439-cast-foot{margin:18px 0 0;color:#7784ad;font-size:8.3px;line-height:1.35}
 .v439-cast-toast{position:sticky;bottom:10px;width:max-content;max-width:calc(100% - 20px);margin:14px auto 0;padding:8px 12px;border-radius:999px;background:#e9efff;color:#07104a;font-size:8px;font-weight:850;box-shadow:0 5px 18px rgba(0,0,0,.28)}
 @media(max-width:380px){.v439-connect-trigger{font-size:6.2px;padding:0 7px}.v439-cast-body{padding-left:14px;padding-right:14px}.v439-streamcenter-card{grid-template-columns:minmax(0,1fr) 106px;padding-left:15px}.v439-streamcenter-card b{font-size:14px}.v439-streamcenter-card small{font-size:8.6px}}
+
+
+/* V440 — TELEVISADOS / TRANSMITIDOS. Referencia compacta tipo marcador, adaptada al azul. */
+.v440-telecast{
+  width:100%;margin:0 0 12px;overflow:hidden;
+  border-top:1px solid rgba(255,255,255,.06);
+  border-bottom:1px solid rgba(255,255,255,.06);
+  background:#050d43;color:#fff
+}
+.v440-tv-pagehead{
+  min-height:55px;display:flex;align-items:center;gap:9px;
+  padding:8px 14px 7px;background:linear-gradient(180deg,#0b1a68 0%,#071354 100%);
+  border-bottom:1px solid rgba(255,255,255,.07)
+}
+.v440-tv-backmark{
+  width:22px;height:22px;display:grid;place-items:center;flex:0 0 22px;
+  color:#fff;font-size:22px;line-height:1;font-weight:400;opacity:.92
+}
+.v440-tv-pagehead h2{margin:0!important;color:#fff!important;font-size:15px!important;line-height:1!important;font-weight:900!important}
+.v440-tv-pagehead p{margin:4px 0 0;color:#91a3dc;font-size:6.8px;line-height:1.2}
+.v440-tv-tabs{
+  display:flex;align-items:stretch;overflow-x:auto;scrollbar-width:none;
+  background:#071149;border-bottom:1px solid rgba(255,255,255,.08)
+}
+.v440-tv-tabs::-webkit-scrollbar{display:none}
+.v440-tv-tabs button{
+  position:relative;min-width:max-content;height:37px;padding:0 13px;border:0;
+  background:transparent;color:#a9b4db;font-size:6.8px;font-weight:850;letter-spacing:.025em
+}
+.v440-tv-tabs button.is-active{color:#fff}
+.v440-tv-tabs button.is-active:after{
+  content:"";position:absolute;left:9px;right:9px;bottom:0;height:2px;border-radius:3px 3px 0 0;
+  background:#27d7ec;box-shadow:0 0 9px rgba(39,215,236,.5)
+}
+.v440-tv-groups{padding:8px 8px 12px;background:#050d43}
+.v440-tv-league{
+  margin:0 0 7px;overflow:hidden;border:1px solid rgba(130,153,255,.12);
+  border-radius:8px;background:#0a1559;box-shadow:0 4px 12px rgba(0,0,28,.16)
+}
+.v440-tv-league>header{
+  height:28px;display:flex;align-items:center;gap:7px;padding:0 9px;
+  border-bottom:1px solid rgba(255,255,255,.08);background:#0c1b67
+}
+.v440-tv-cup{color:#7aa0ff;font-size:7px}
+.v440-tv-league>header strong{
+  overflow:hidden;color:#f5f7ff;font-size:7px;line-height:1;text-transform:uppercase;
+  white-space:nowrap;text-overflow:ellipsis;font-weight:950;letter-spacing:.02em
+}
+.v440-tv-league-body{display:block}
+.v440-tv-match{
+  position:relative;width:100%;min-height:62px;display:grid;
+  grid-template-columns:27px minmax(0,1fr) 58px minmax(0,1fr);
+  align-items:center;gap:5px;padding:7px 8px;border:0;border-bottom:1px solid rgba(255,255,255,.07);
+  background:#0a1559;color:#fff;text-align:left
+}
+.v440-tv-match:last-child{border-bottom:0}
+.v440-tv-match:active{background:#10206c}
+.v440-tv-icon{
+  width:21px;height:21px;display:grid;place-items:center;justify-self:start;
+  border:1px solid rgba(213,225,255,.62);border-radius:3px;color:#eaf0ff
+}
+.v440-tv-icon b{font-size:6px;line-height:1;font-weight:900}
+.v440-tv-team{min-width:0;display:flex;align-items:center;gap:5px}
+.v440-tv-home{justify-content:flex-end;text-align:right}
+.v440-tv-away{justify-content:flex-start;text-align:left}
+.v440-tv-name{
+  min-width:0;display:-webkit-box;overflow:hidden;-webkit-box-orient:vertical;-webkit-line-clamp:2;
+  color:#f7f9ff;font-size:7.2px;line-height:1.14;font-weight:700
+}
+.v440-tv-badge{
+  width:31px;height:31px;display:grid;place-items:center;flex:0 0 31px;overflow:hidden;
+  border-radius:50%;background:#f5f7ff;box-shadow:0 2px 6px rgba(0,0,0,.2)
+}
+.v440-tv-badge img{width:26px;height:26px;object-fit:contain}
+.v440-tv-badge>span{color:#081257;font-size:6.4px;font-weight:950}
+.v440-tv-center{min-width:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center}
+.v440-tv-center strong{color:#dbe5ff;font-size:9px;line-height:1.05;font-weight:900;white-space:nowrap}
+.v440-tv-center small{margin-top:4px;color:#7184c4;font-size:5.4px;line-height:1;font-weight:850;white-space:nowrap}
+.v440-tv-match.is-live .v440-tv-center strong{color:#4ddd75}
+.v440-tv-match.is-live .v440-tv-center small{color:#42cd6b}
+.v440-tv-live-pill{
+  position:absolute;right:5px;top:4px;padding:2px 5px;border-radius:4px;
+  background:#e31b32;color:#fff;font-size:5px;line-height:1;font-weight:950;letter-spacing:.02em
+}
+.v440-tv-empty{
+  min-height:96px;display:flex;flex-direction:column;align-items:center;justify-content:center;
+  padding:18px;border:1px dashed rgba(118,151,255,.24);border-radius:8px;background:#08134e;text-align:center
+}
+.v440-tv-empty b{font-size:8px}.v440-tv-empty span{max-width:260px;margin-top:5px;color:#8493c2;font-size:6.5px;line-height:1.35}
+body>.v160-tv-layer .v440-telecast{margin-left:-16px;margin-right:-16px;width:calc(100% + 32px)}
+body>.v160-tv-layer .v440-tv-groups{padding-left:8px;padding-right:8px}
+@media(max-width:380px){
+  .v440-tv-tabs button{padding-left:11px;padding-right:11px;font-size:6.4px}
+  .v440-tv-match{grid-template-columns:24px minmax(0,1fr) 52px minmax(0,1fr);gap:4px;padding-left:6px;padding-right:6px}
+  .v440-tv-name{font-size:6.7px}.v440-tv-badge{width:29px;height:29px;flex-basis:29px}.v440-tv-badge img{width:24px;height:24px}
+  .v440-tv-center strong{font-size:8.4px}.v440-tv-icon{width:19px;height:19px}
+}
