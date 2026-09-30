@@ -181,9 +181,45 @@ function generalView(){
    '</section>'+
  '</main>';
 }
+function referenceStatsBlock(){
+ const scorers=(current()?.scorers?.[0]?.rows||[]).filter(r=>r?.[1]&&r?.[2]&&/^\d+$/.test(String(r?.[3]||''))).slice(0,3);
+ const top=standings().slice(0,3);
+ const scorerRows=scorers.length?scorers.map((r,i)=>
+   '<button type="button" class="v446-stat-ref-row" data-v33-player="'+esc(r[1])+'">'+
+     '<span class="v446-stat-ref-rank">'+(i+1)+'</span>'+
+     '<span class="v446-stat-ref-avatar">'+esc(initials(r[1]).slice(0,2))+'</span>'+
+     teamLogo(r[2],'v446-stat-ref-logo')+
+     '<span class="v446-stat-ref-copy"><b>'+esc(r[1])+'</b><small>'+esc(r[2])+'</small></span>'+
+     '<strong>'+esc(r[3])+'</strong>'+
+   '</button>'
+ ).join(''):'<div class="v446-stat-ref-empty">Sin goleadores oficiales publicados.</div>';
+ const teamRows=top.length?top.map((r,i)=>
+   '<button type="button" class="v446-stat-ref-row is-team" data-v33-team="'+esc(r[1])+'">'+
+     '<span class="v446-stat-ref-rank">'+(i+1)+'</span>'+
+     teamLogo(r[1],'v446-stat-ref-mainlogo')+
+     '<span class="v446-stat-ref-copy"><b>'+esc(r[1])+'</b><small>PJ '+esc(r[2])+' · DG '+esc(r[8])+'</small></span>'+
+     '<strong>'+esc(r[9])+'</strong>'+
+   '</button>'
+ ).join(''):'<div class="v446-stat-ref-empty">Sin clasificación oficial publicada.</div>';
+ return '<section class="v446-stats-reference" data-v446-stats-reference>'+
+   '<header class="v446-stats-ref-hero"><span><small>Liga Municipal de Fútbol</small><h2>Juventino Rosas, Guanajuato</h2><b>2026/27⌄</b></span><img src="'+SRC+'assets/liga-logo.webp" alt="Liga Juventino Rosas"></header>'+
+   '<nav class="v446-stats-ref-tabs"><button type="button" data-v33-route="competition">Partidos</button><button type="button" data-v33-tab="team">Tabla</button><button type="button" class="active">Estadísticas</button></nav>'+
+   '<div class="v446-stats-ref-tools"><div><button type="button" class="active" data-v33-ref-view="player">Jugador</button><button type="button" data-v33-ref-view="team">Equipo</button></div><button type="button" class="v446-stats-ref-compare" data-v33-route="playerCompare" data-v33-ref-compare>♙ Comparar</button></div>'+
+   '<div class="v446-stats-ref-title"><span><small>PRIMERA FUERZA</small><h3>Estadísticas principales</h3></span><button type="button" data-v33-tab="general">Todas las<br>estadísticas</button></div>'+
+   '<div data-v33-ref-panel="player">'+
+     '<article class="v446-stats-ref-panel"><h4>Goles <span>›</span></h4>'+scorerRows+'</article>'+
+     '<article class="v446-stats-ref-panel"><h4>Asistencias <span>›</span></h4><div class="v446-stat-ref-note"><b>Dato no publicado</b><span>La fuente oficial no publica asistencias individuales.</span></div></article>'+
+   '</div>'+
+   '<div data-v33-ref-panel="team" hidden>'+
+     '<article class="v446-stats-ref-panel"><h4>Clasificación <span>›</span></h4>'+teamRows+'</article>'+
+     '<article class="v446-stats-ref-panel"><h4>Rendimiento <span>›</span></h4><div class="v446-stat-ref-note"><b>Datos oficiales</b><span>Partidos, diferencia de goles y puntos.</span></div></article>'+
+   '</div>'+
+ '</section>';
+}
+
 function markup(){
  return '<section class="v33-data-page" data-v33-data data-v33-mode="'+activeTab+'">'+header()+
-   (activeTab==='general'?generalView():activeTab==='team'?teamDetailedView():playerDetailedView())+'</section>';
+   (activeTab==='general'?generalView():activeTab==='team'?teamDetailedView():playerDetailedView())+referenceStatsBlock()+'</section>';
 }
 function toast(msg){const old=document.querySelector('.v33-toast');if(old)old.remove();const n=document.createElement('div');n.className='v33-toast';n.textContent=msg;document.body.appendChild(n);setTimeout(()=>n.remove(),1500)}
 function setBottomNav(){/* Global nav active state is owned by V34. */}
@@ -194,6 +230,14 @@ function bind(){
  document.querySelectorAll('[data-v33-share]').forEach(b=>b.onclick=share);
  document.querySelectorAll('[data-v33-team]').forEach(b=>b.onclick=()=>{if(window.LJR_OFFICIAL_API?.openTeam)window.LJR_OFFICIAL_API.openTeam(b.dataset.v33Team);else toast(b.dataset.v33Team)});
  document.querySelectorAll('[data-v33-player]').forEach(b=>b.onclick=()=>toast(b.dataset.v33Player+' · jugador registrado'));
+ document.querySelectorAll('[data-v33-route]').forEach(b=>b.onclick=()=>{location.hash='#/'+(b.dataset.v33Route||'leagueData')});
+ document.querySelectorAll('[data-v33-ref-view]').forEach(b=>b.onclick=()=>{
+   const mode=b.dataset.v33RefView||'player';
+   document.querySelectorAll('[data-v33-ref-view]').forEach(x=>x.classList.toggle('active',x===b));
+   document.querySelectorAll('[data-v33-ref-panel]').forEach(p=>p.hidden=p.dataset.v33RefPanel!==mode);
+   const cmp=document.querySelector('[data-v33-ref-compare]');
+   if(cmp)cmp.dataset.v33Route=mode==='team'?'teams':'playerCompare';
+ });
 }
 function isDataRoute(){const r=route();return r==='safe-data'||r==='leagueData'}
 function applyHeaderScroll(){

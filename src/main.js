@@ -3895,6 +3895,34 @@ function save(){const data={theme:state.theme,followed:state.followed,favorites:
 function toast(text){const t=document.createElement('div');t.className='toast';t.textContent=text;document.body.appendChild(t);setTimeout(()=>t.remove(),1800)}
 function setTheme(theme){state.theme=theme;document.documentElement.classList.toggle('lightmode',theme==='light');save()}setTheme(state.theme);
 function team(code){return teams.find(t=>t.code===code)||teams[0]}function player(id){return players.find(p=>p.id===id)}function crest(code){const t=team(code);const src=t?.logo||'';return src?`<span class="crest"><img src="${src}" alt="${t.name}" style="width:100%;height:100%;object-fit:contain;border-radius:50%" loading="lazy" decoding="async"></span>`:`<span class="crest">${code}</span>`}function formDots(list){return `<span class="form">${list.map(x=>`<b class="${x}">${x.toUpperCase()}</b>`).join('')}</span>`}function sectionHead(title,route,label='Ver todo'){return `<div class="section-head"><h2>${title}</h2>${route?`<button class="link-button" data-route="${route}">${label}</button>`:''}</div>`}function teamCell(code){const t=team(code);return `<span class="club-cell">${crest(code)}<span>${t.name}</span></span>`}function matchRow(m){const live=m.status==='LIVE'?`<span class="live">${m.minute}'</span>`:(m.score||m.time);return `<button class="match-row match-button" data-match="${m.id}"><span class="home">${team(m.home).name}</span>${crest(m.home)}<b class="score">${live}</b>${crest(m.away)}<span>${team(m.away).name}</span></button>`}function isFav(id){return state.favorites.includes(id)}function favButton(id,label='Favorito'){return `<button class="icon-action ${isFav(id)?'active':''}" data-favorite="${id}" aria-label="${label}">${icons.star}</button>`}function switchRow(key,label,sub=''){return `<label class="setting-row"><span><b>${label}</b>${sub?`<small>${sub}</small>`:''}</span><input type="checkbox" data-notification="${key}" ${state.notifications[key]?'checked':''}><i></i></label>`}function menuGroup(title,items){return `<div class="menu-group"><h3>${title}</h3>${items.map(([label,route,meta])=>`<button class="menu-row" data-route="${route}"><span>${label}${meta?`<small>${meta}</small>`:''}</span><span>›</span></button>`).join('')}</div>`}
+function v446HomeReference(){
+  const clubs=teams.slice(0,6).map(t=>
+    '<button type="button" class="v446-home-club" data-team="'+t.code+'">'+
+      '<span class="v446-home-club-logo">'+crest(t.code)+'</span>'+
+      '<b>'+t.name+'</b><small>'+t.category+'</small>'+
+    '</button>'
+  ).join('');
+  const extras=
+    '<button type="button" class="v446-home-club is-special" data-route="scorers"><span class="v446-home-special">⚽</span><b>Todos los goles</b><small>Goleadores oficiales</small></button>'+
+    '<button type="button" class="v446-home-club is-special" data-route="moments"><span class="v446-home-special">★</span><b>Lo mejor de la jornada</b><small>Momentos y videos</small></button>';
+  const relevant=matches.slice(0,4).map(m=>{
+    const center=m.score||(m.status==='FINAL'?(m.time||'FINAL'):(m.time||'POR CONFIRMAR'));
+    const stateLabel=m.status==='FINAL'?'FINAL':'JORNADA '+m.jornada;
+    return '<button type="button" class="v446-relevant-match" data-match="'+m.id+'">'+
+      '<span class="v446-relevant-team home">'+crest(m.home)+'<span><b>'+team(m.home).name+'</b><small>'+m.category+'</small></span></span>'+
+      '<span class="v446-relevant-center"><small>'+stateLabel+'</small><strong>'+center+'</strong><em>'+m.date+'</em></span>'+
+      '<span class="v446-relevant-team away"><span><b>'+team(m.away).name+'</b><small>'+m.venue+'</small></span>'+crest(m.away)+'</span>'+
+    '</button>';
+  }).join('');
+  return '<section class="v446-home-reference" aria-label="Liga Municipal Juventino Rosas">'+
+    '<header class="v446-home-brand"><img src="https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/assets/liga-logo.webp" alt="Liga Juventino Rosas"><span><small>LIGA MUNICIPAL DE FÚTBOL</small><h2>JUVENTINO ROSAS</h2><b>GUANAJUATO</b></span></header>'+
+    '<div class="v446-home-season"><span><b>LIGA MUNICIPAL</b><small>JUVENTINO ROSAS</small></span><i>⚽</i><span class="season"><b>TEMPORADA 2026/27</b><small>FÚTBOL QUE NOS UNE</small></span><button type="button" data-route="teams" aria-label="Equipos">⊕</button></div>'+
+    '<div class="v446-home-clubs">'+clubs+extras+'</div>'+
+    '<div class="v446-relevant-head"><h3>PARTIDOS RELEVANTES</h3><button type="button" data-route="competition">Ver todos ›</button></div>'+
+    '<div class="v446-relevant-list">'+relevant+'</div>'+
+  '</section>';
+}
+
 function homeView(){
   const homeStandings=HOME_OFFICIAL_STANDINGS;
   const homeFields=(typeof V60_FIELDS!=='undefined'?V60_FIELDS:[]).slice(0,4);
@@ -3983,7 +4011,8 @@ function homeView(){
             </span>
           </button>`).join('')}
       </div>
-    </section>`;
+    </section>
+    ${v446HomeReference()}`;
 }
 function competitionBody(){if(state.competitionTab==='standings')return `<div class="segmented"><button class="segment active">Compacta</button><button class="segment">Completa</button><button class="segment">Criterios</button></div><div class="table-wrap"><table class="table"><thead><tr><th>#</th><th>Equipo</th><th>P</th><th>+/-</th><th>Pts</th><th>Forma</th></tr></thead><tbody>${teams.map((t,i)=>`<tr><td>${i+1}</td><td>${teamCell(t.code)}</td><td>${t.p}</td><td>${t.gd>0?'+':''}${t.gd}</td><td><b>${t.pts}</b></td><td>${formDots(t.form)}</td></tr>`).join('')}</tbody></table></div>`;if(state.competitionTab==='bracket')return `<div class="empty-state"><div class="empty-illustration"></div><h2>Cuadro no publicado</h2><p>No hay una liguilla oficial publicada en AdminFut para mostrar en este momento.</p></div>`;const filtered=matches.filter(m=>(state.selectedDay==='Todos'||m.day===state.selectedDay)&&(state.matchCategory==='Todas'||m.category===state.matchCategory));return `<div class="datebar">${['Ayer','Hoy','Mañana','Todos'].map(d=>`<button class="chip ${state.selectedDay===d?'active':''}" data-day="${d}">${d}</button>`).join('')}</div><div class="chips"><button class="chip ${state.matchCategory==='Todas'?'active':''}" data-category="Todas">Todas</button><button class="chip ${state.matchCategory==='Primera Fuerza'?'active':''}" data-category="Primera Fuerza">Primera Fuerza</button><button class="chip ${state.matchCategory==='Veteranos 35+'?'active':''}" data-category="Veteranos 35+">Veteranos 35+</button></div><h2 class="compact-title">${state.selectedDay==='Todos'?'Todos los partidos':state.selectedDay}</h2><div class="card match-card">${filtered.length?filtered.map(matchRow).join(''):`<div class="empty-mini">No hay partidos con estos filtros.</div>`}</div>`}
 function competitionView(){return `<div class="eyebrow">TORNEO MUNICIPAL</div><h1 class="screen-title">Competición</h1><div class="tabs"><button class="tab ${state.competitionTab==='fixtures'?'active':''}" data-comp-tab="fixtures">Partidos y resultados<span class="v86-tab-line" aria-hidden="true"></span></button><button class="tab ${state.competitionTab==='standings'?'active':''}" data-comp-tab="standings">Clasificación</button><button class="tab ${state.competitionTab==='bracket'?'active':''}" data-comp-tab="bracket">Cuadro<span class="v86-tab-line" aria-hidden="true"></span></button></div>${competitionBody()}`}

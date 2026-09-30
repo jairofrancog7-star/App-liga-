@@ -70,28 +70,10 @@ function bind(host){
 function mount(){
   const screen=$('#screen');
   if(!screen)return;
-  if(route()!=='home'){
-    screen.querySelectorAll('.v426-home-feed').forEach(x=>x.remove());
-    return;
-  }
-
-  /* V445: Inicio ya incluye el feed nativo V427. No volver a insertar
-     el mismo bloque de Top News / Mi equipo / Mercado. */
-  if(screen.querySelector('.v427-home-feed')){
-    screen.querySelectorAll('.v426-home-feed').forEach(x=>x.remove());
-    return;
-  }
-
-  if(screen.querySelector('.v426-home-feed'))return;
-  const anchor=screen.querySelector('.v65-home-fields')||screen.querySelector('.v65-home-table')||screen.lastElementChild;
-  if(!anchor)return;
-  const items=sourceItems();
-  const wrap=document.createElement('div');
-  wrap.innerHTML=markup(items.length?items:fallbackItems());
-  const host=wrap.firstElementChild;
-  anchor.insertAdjacentElement('afterend',host);
-  bind(host);
+  screen.querySelectorAll('.v426-home-feed').forEach(x=>x.remove());
+  /* V446: Inicio conserva únicamente el feed nativo V427 para evitar duplicados. */
 }
+
 
 let timer=0;
 function schedule(){
