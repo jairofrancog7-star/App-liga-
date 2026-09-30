@@ -546,3 +546,187 @@ body:has(.v415-single-search) #searchResults[style*="display: none"]{
   .v416-team-copy small{font-size:8.5px}
   .v416-team-star{width:52px;min-width:52px;font-size:30px}
 }
+
+
+/* V417 — Buscar jugadores compacto, proporciones de la referencia */
+/* Sólo afecta el modo Jugadores dentro de Buscar. */
+.v414-search-reference.is-player-mode .v414-player-cover{
+  min-height:34px!important;
+  height:34px!important;
+  padding:0 8px!important;
+  border-radius:7px 7px 0 0!important;
+  background:#171a63!important;
+}
+.v414-search-reference.is-player-mode .v414-player-cover>span{
+  font-size:9px!important;
+  line-height:1!important;
+  font-weight:950!important;
+  letter-spacing:.02em!important;
+}
+.v414-search-reference.is-player-mode .v414-player-cover>div{
+  width:156px!important;
+  grid-template-columns:1fr 30px 30px 34px 34px!important;
+  gap:3px!important;
+}
+.v414-search-reference.is-player-mode .v414-player-cover small{
+  font-size:0!important;
+}
+.v414-search-reference.is-player-mode .v414-result-heading{
+  display:none!important;
+}
+.v414-search-reference.is-player-mode .v414-results{
+  border-top:1px solid rgba(255,255,255,.08)!important;
+  border-radius:0 0 7px 7px!important;
+}
+.v414-search-reference.is-player-mode .v414-player-row{
+  min-height:74px!important;
+  height:74px!important;
+  grid-template-columns:48px minmax(112px,1fr) 29px 29px 34px 36px!important;
+  gap:4px!important;
+  padding:6px 6px 6px 8px!important;
+  border-bottom:1px solid rgba(255,255,255,.09)!important;
+  background:#141760!important;
+}
+.v414-search-reference.is-player-mode .v414-player-row:last-child{
+  border-bottom:0!important;
+}
+.v414-search-reference.is-player-mode .v414-player-photo{
+  width:44px!important;
+  height:44px!important;
+  border-width:1.5px!important;
+  background:#202572!important;
+}
+.v414-search-reference.is-player-mode .v414-player-photo img{
+  width:39px!important;
+  height:39px!important;
+}
+.v414-search-reference.is-player-mode .v414-player-photo i{
+  min-width:18px!important;
+  height:14px!important;
+  right:-1px!important;
+  bottom:-1px!important;
+  padding:0 2px!important;
+  border-width:1.5px!important;
+  font-size:5px!important;
+}
+.v414-search-reference.is-player-mode .v414-player-main{
+  gap:5px!important;
+}
+.v414-search-reference.is-player-mode .v414-player-main>b{
+  font-size:10.5px!important;
+  line-height:1.05!important;
+  font-weight:800!important;
+}
+.v414-search-reference.is-player-mode .v414-player-meta{
+  gap:4px!important;
+}
+.v414-search-reference.is-player-mode .v414-player-meta>strong{
+  min-width:28px!important;
+  height:15px!important;
+  padding:0 4px!important;
+  border-radius:1px!important;
+  font-size:5.5px!important;
+}
+.v414-search-reference.is-player-mode .v414-player-meta>strong.is-del{
+  background:#ef2c2c!important;
+}
+.v414-search-reference.is-player-mode .v414-player-meta>strong.is-def{
+  background:#53a833!important;
+}
+.v414-search-reference.is-player-mode .v414-player-meta>strong.is-mid{
+  background:#20a8d1!important;
+}
+.v414-search-reference.is-player-mode .v414-player-meta>strong.is-jug{
+  background:#2ba6c8!important;
+}
+.v414-search-reference.is-player-mode .v414-player-meta>em{
+  max-width:68px!important;
+  font-size:5.5px!important;
+  color:#a7afd0!important;
+}
+.v414-search-reference.is-player-mode .v414-mx-flag{
+  width:21px!important;
+  height:13px!important;
+  flex-basis:21px!important;
+}
+.v414-search-reference.is-player-mode .v414-mx-flag i{
+  width:3px!important;
+  height:3px!important;
+}
+.v414-search-reference.is-player-mode .v414-num{
+  gap:0!important;
+}
+.v414-search-reference.is-player-mode .v414-num small{
+  display:none!important;
+}
+.v414-search-reference.is-player-mode .v414-num b{
+  color:#e5e8f5!important;
+  font-size:10px!important;
+  line-height:1!important;
+  font-weight:650!important;
+}
+.v414-search-reference.is-player-mode .v414-pts i{
+  top:-9px!important;
+  font-size:7px!important;
+  color:#6caf58!important;
+}
+.v414-search-reference.is-player-mode .v414-badges{
+  gap:2px!important;
+}
+.v414-search-reference.is-player-mode .v414-league-badge,
+.v414-search-reference.is-player-mode .v414-team-badge{
+  width:30px!important;
+  height:30px!important;
+  border:1px solid rgba(255,255,255,.72)!important;
+  background:#f7f7f7!important;
+}
+.v414-search-reference.is-player-mode .v414-league-badge img{
+  width:25px!important;
+  height:25px!important;
+}
+.v414-search-reference.is-player-mode .v414-team-badge img{
+  width:28px!important;
+  height:28px!important;
+}
+.v414-search-reference.is-player-mode .v414-league-badge small{
+  min-width:14px!important;
+  height:9px!important;
+  right:0!important;
+  bottom:0!important;
+  font-size:4px!important;
+}
+@media(max-width:390px){
+  .v414-search-reference.is-player-mode .v414-player-row{
+    grid-template-columns:45px minmax(96px,1fr) 27px 27px 31px 33px!important;
+    gap:3px!important;
+    padding-left:6px!important;
+    padding-right:4px!important;
+  }
+  .v414-search-reference.is-player-mode .v414-player-photo{
+    width:41px!important;
+    height:41px!important;
+  }
+  .v414-search-reference.is-player-mode .v414-player-photo img{
+    width:36px!important;
+    height:36px!important;
+  }
+  .v414-search-reference.is-player-mode .v414-player-main>b{
+    font-size:9.6px!important;
+  }
+  .v414-search-reference.is-player-mode .v414-player-meta>em{
+    display:none!important;
+  }
+  .v414-search-reference.is-player-mode .v414-league-badge,
+  .v414-search-reference.is-player-mode .v414-team-badge{
+    width:28px!important;
+    height:28px!important;
+  }
+  .v414-search-reference.is-player-mode .v414-league-badge img{
+    width:23px!important;
+    height:23px!important;
+  }
+  .v414-search-reference.is-player-mode .v414-team-badge img{
+    width:26px!important;
+    height:26px!important;
+  }
+}
