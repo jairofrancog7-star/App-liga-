@@ -177,23 +177,53 @@ function bind(root,data){
    const view=b.dataset.v444View||'player'; host.dataset.v444View=view;host.innerHTML=statsMarkup(data,view);bind(host,data);
  });
 }
+function directHost(kind){
+ const screen=document.querySelector('#screen');if(!screen)return null;
+ const attr=kind==='home'?'data-v444-home-ref':'data-v444-stats-ref';
+ const selector='['+attr+']';
+ let host=screen.querySelector(':scope > '+selector);
+ if(host)return host;
+ screen.querySelectorAll(selector).forEach(x=>x.remove());
+ host=document.createElement('div');
+ host.className=kind==='home'?'v444-home-ref':'v444-stats-ref';
+ host.setAttribute(attr,'');
+ if(kind==='stats')host.dataset.v444View='player';
+
+ const bottom=screen.querySelector(':scope > #v105-bottom');
+ if(bottom){screen.insertBefore(host,bottom);return host}
+
+ if(kind==='home'){
+   const anchor=screen.querySelector('.v427-home-feed')||screen.querySelector('.v65-home-fields')||screen.lastElementChild;
+   if(anchor&&anchor.parentElement===screen)anchor.insertAdjacentElement('afterend',host);else screen.appendChild(host);
+ }else{
+   const anchor=screen.querySelector('[data-v33-data]')||screen.lastElementChild;
+   if(anchor&&anchor.parentElement===screen)anchor.insertAdjacentElement('afterend',host);else screen.appendChild(host);
+ }
+ return host;
+}
+function cleanHomeDuplicates(){
+ const screen=document.querySelector('#screen');if(!screen)return;
+ screen.querySelectorAll('.v426-home-feed').forEach(x=>x.remove());
+}
 function paint(data){
- const h=document.querySelector('[data-v444-home-ref]');
+ const h=document.querySelector('#screen > [data-v444-home-ref]');
  if(h){h.innerHTML=homeMarkup(data||{});bind(h,data||{})}
- const s=document.querySelector('[data-v444-stats-ref]');
+ const s=document.querySelector('#screen > [data-v444-stats-ref]');
  if(s){const view=s.dataset.v444View||'player';s.innerHTML=statsMarkup(data||{},view);bind(s,data||{})}
 }
 async function ensure(){
  const r=route();
- if(r!=='home'&&r!=='stats'&&r!=='v38Stats')return;
- const exists=(r==='home'?document.querySelector('[data-v444-home-ref]'):document.querySelector('[data-v444-stats-ref]'));
- if(!exists){
-   try{window.LJR_V105?.mount?.()}catch(_){}
-   return;
- }
+ const home=r==='home';
+ const stats=r==='stats'||r==='v38Stats'||r==='leagueData'||r==='safe-data';
+ if(!home&&!stats)return;
+
+ if(home)cleanHomeDuplicates();
+ const host=directHost(home?'home':'stats');
+ if(!host)return;
+
  const data=dbNow();
  if(data)paint(data);
- const fresh=await loadData(); if(fresh)paint(fresh);
+ const fresh=await loadData();if(fresh)paint(fresh);
 }
 let timer=0;
 function schedule(ms=60){clearTimeout(timer);timer=setTimeout(ensure,ms)}
