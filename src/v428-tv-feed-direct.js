@@ -123,7 +123,7 @@ function telecastMarkup(all){
     ['older',tabDay(older)],['yesterday','AYER'],['today','HOY'],['live','DIRECTO ('+liveCount+')'],['tomorrow','MAÑANA'],['upcoming','PRÓXIMOS']
   ];
   return '<section class="v440-telecast" data-v440-telecast data-v440-filter="'+selected+'">'+
-    '<div class="v440-tv-pagehead"><span class="v440-tv-backmark" aria-hidden="true">‹</span><div><h2>Televisados</h2><p>Partidos transmitidos y cobertura de Liga TV</p></div></div>'+
+    '<div class="v440-tv-pagehead"><button class="v440-tv-backmark" type="button" data-v440-back aria-label="Regresar">‹</button><div><h2>Televisados</h2><p>Partidos transmitidos y cobertura de Liga TV</p></div></div>'+
     '<div class="v440-tv-tabs" role="tablist">'+tabs.map(t=>'<button type="button" role="tab" data-v440-filter-btn="'+t[0]+'" class="'+(t[0]===selected?'is-active':'')+'">'+esc(t[1])+'</button>').join('')+'</div>'+
     '<div class="v440-tv-groups" data-v440-groups>'+telecastGroups(telecastSelection(all,selected))+'</div>'+
   '</section>';
@@ -146,6 +146,7 @@ function bindTelecastRows(root){
 }
 function bindTelecast(root){
   root.querySelectorAll('[data-v440-filter-btn]').forEach(b=>b.onclick=()=>renderTelecast(root,b.dataset.v440FilterBtn||'today'));
+  root.querySelectorAll('[data-v440-back]').forEach(b=>b.onclick=()=>{if(route()!=='video')location.hash='#/video'});
   bindTelecastRows(root);
 }
 
@@ -229,6 +230,15 @@ function openCastSheet(){
   };
 }
 
+function dedicatedTelevisadosMarkup(){
+  return '<section class="v440-page-route" data-v440-page-route>'+telecastMarkup(fixtures())+
+    '<div class="v440-page-note"><b>LIGA JUVENTINO TV</b><span>Los partidos se toman del rol oficial cargado en la app. Al tocar un encuentro se abre Match Center.</span></div>'+
+  '</section>';
+}
+function bindDedicatedTelevisados(root){
+  const telecast=root.querySelector('[data-v440-telecast]');
+  if(telecast)bindTelecast(telecast);
+}
 function markup(){
   const all=fixtures(),now=Date.now(),played=all.filter(x=>x.played).slice(-12).reverse(),upcoming=all.filter(x=>!x.played&&(!Number.isFinite(x.time)||x.time>=now-7200000)).slice(0,12),featured=(played.length?played:all).slice(0,10),clubList=teams();
   const empty='<div class="v428-tv-empty">El contenido aparecerá aquí cuando haya datos oficiales disponibles.</div>';
@@ -261,9 +271,22 @@ function insert(host,where='beforeend'){
   if(root)bind(root);
 }
 function mount(){
-  if(route()==='video'){
+  const r=route();
+  document.body.classList.toggle('v440-televisados-open',r==='televisados');
+
+  if(r==='televisados'){
+    const screen=document.querySelector('#screen');
+    if(screen&&!screen.querySelector('[data-v440-page-route]')){
+      screen.innerHTML=dedicatedTelevisadosMarkup();
+      const page=screen.querySelector('[data-v440-page-route]');
+      if(page)bindDedicatedTelevisados(page);
+    }
+    return;
+  }
+
+  if(r==='video'){
     const content=document.querySelector('#screen .v17-tv .v17-tv-content');
-    insert(content,'beforeend');
+    insert(content,'afterbegin');
   }
   const board=document.querySelector('body > .v160-tv-layer .v160-tv-board');
   insert(board,'beforeend');
@@ -284,5 +307,6 @@ document.addEventListener('keydown',e=>{if(e.key==='Escape')closeCastSheet()});
 window.addEventListener('hashchange',()=>{closeCastSheet();schedule(40)});
 window.addEventListener('load',()=>schedule(120));
 document.addEventListener('DOMContentLoaded',()=>schedule(60),{once:true});
+window.LJR_V440_TELEVISADOS={open:()=>{location.hash='#/televisados'},mount};
 schedule(20);setTimeout(mount,500);setTimeout(mount,1500);
 })();
