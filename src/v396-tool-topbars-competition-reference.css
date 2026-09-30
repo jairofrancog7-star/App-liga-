@@ -1,0 +1,340 @@
+/* V396 — Cabeceras de herramientas con la misma referencia visual de Competición.
+   Solo afecta las cinco pantallas indicadas por el usuario:
+   v38Alerts, v38Weather, v4-matchcenter, venues y matchday.
+   Conserva la flecha Volver y el Perfil funcionales, sin añadir el texto “Competición”. */
+
+@media (max-width:1023px){
+  html body:is(
+    [data-app-route="v38Alerts"],
+    [data-app-route="v38Weather"],
+    [data-app-route="v4-matchcenter"],
+    [data-app-route="venues"],
+    [data-app-route="matchday"]
+  ) #app > .topbar,
+  html body:is(
+    [data-app-route="v38Alerts"],
+    [data-app-route="v38Weather"],
+    [data-app-route="v4-matchcenter"],
+    [data-app-route="venues"],
+    [data-app-route="matchday"]
+  ) .app-shell > .topbar{
+    position:sticky!important;
+    top:0!important;
+    z-index:120!important;
+    display:block!important;
+    height:calc(88px + env(safe-area-inset-top))!important;
+    min-height:calc(88px + env(safe-area-inset-top))!important;
+    max-height:calc(88px + env(safe-area-inset-top))!important;
+    margin:0!important;
+    padding:0!important;
+    overflow:hidden!important;
+    isolation:isolate!important;
+    border:0!important;
+    border-bottom:1px solid rgba(89,151,255,.38)!important;
+    box-shadow:none!important;
+    background:
+      radial-gradient(220px 110px at 10% -4%,rgba(93,234,255,.62) 0%,rgba(25,163,255,.34) 30%,transparent 72%),
+      radial-gradient(205px 100px at 69% -10%,rgba(192,251,255,.58) 0%,rgba(28,194,255,.30) 20%,rgba(12,100,247,.18) 48%,transparent 72%),
+      linear-gradient(180deg,#0a49e8 0%,#0b34cf 31%,#0a1d9d 66%,#070d6d 100%)!important;
+  }
+
+  /* No se muestra ningún título en estas barras. */
+  html body:is(
+    [data-app-route="v38Alerts"],
+    [data-app-route="v38Weather"],
+    [data-app-route="v4-matchcenter"],
+    [data-app-route="venues"],
+    [data-app-route="matchday"]
+  ) .topbar::after{
+    content:none!important;
+    display:none!important;
+  }
+
+  /* Capa de líneas/neón, equivalente al fondo de la cabecera de Competición. */
+  html body:is(
+    [data-app-route="v38Alerts"],
+    [data-app-route="v38Weather"],
+    [data-app-route="v4-matchcenter"],
+    [data-app-route="venues"],
+    [data-app-route="matchday"]
+  ) .topbar .wordmark{
+    display:block!important;
+    visibility:visible!important;
+    position:absolute!important;
+    inset:0!important;
+    width:auto!important;
+    height:auto!important;
+    margin:0!important;
+    padding:0!important;
+    border:0!important;
+    color:transparent!important;
+    font-size:0!important;
+    line-height:0!important;
+    pointer-events:none!important;
+    z-index:0!important;
+    overflow:hidden!important;
+    background:
+      radial-gradient(260px 90px at 70% 4%,rgba(24,228,255,.18),transparent 72%),
+      linear-gradient(180deg,transparent 0 58%,rgba(4,8,89,.20) 100%)!important;
+  }
+
+  html body:is(
+    [data-app-route="v38Alerts"],
+    [data-app-route="v38Weather"],
+    [data-app-route="v4-matchcenter"],
+    [data-app-route="venues"],
+    [data-app-route="matchday"]
+  ) .topbar .wordmark::before{
+    content:""!important;
+    display:block!important;
+    position:absolute!important;
+    left:-11%!important;
+    right:-12%!important;
+    top:-54%!important;
+    bottom:-50%!important;
+    pointer-events:none!important;
+    opacity:.80!important;
+    background:
+      radial-gradient(ellipse at 9% 58%,transparent 0 40%,rgba(45,225,255,.62) 40.8%,rgba(236,255,255,.78) 41.45%,rgba(21,163,255,.45) 42.1%,transparent 43.1% 53%,rgba(34,205,255,.28) 53.8%,transparent 55%),
+      radial-gradient(ellipse at 72% 1%,transparent 0 35%,rgba(57,234,255,.45) 35.7%,rgba(229,255,255,.60) 36.25%,transparent 37.2%),
+      linear-gradient(153deg,transparent 0 28%,rgba(37,220,255,.30) 28.35%,rgba(246,255,255,.62) 28.8%,rgba(43,220,255,.42) 29.15%,transparent 29.8% 100%),
+      linear-gradient(22deg,transparent 0 61%,rgba(22,192,255,.22) 61.35%,rgba(237,255,255,.42) 61.8%,transparent 62.5% 100%)!important;
+    filter:drop-shadow(0 0 5px rgba(42,225,255,.45))!important;
+    transform:rotate(-1.5deg)!important;
+  }
+
+  html body:is(
+    [data-app-route="v38Alerts"],
+    [data-app-route="v38Weather"],
+    [data-app-route="v4-matchcenter"],
+    [data-app-route="venues"],
+    [data-app-route="matchday"]
+  ) .topbar .wordmark::after{
+    content:""!important;
+    display:block!important;
+    position:absolute!important;
+    left:-6%!important;
+    right:-6%!important;
+    bottom:-22px!important;
+    height:70px!important;
+    pointer-events:none!important;
+    opacity:.56!important;
+    background:
+      linear-gradient(14deg,transparent 0 24%,rgba(34,213,255,.42) 24.5%,rgba(247,255,255,.58) 25%,transparent 25.8% 100%),
+      linear-gradient(165deg,transparent 0 49%,rgba(34,210,255,.32) 49.45%,rgba(240,255,255,.48) 49.9%,transparent 50.7% 100%)!important;
+    filter:drop-shadow(0 0 6px rgba(42,222,255,.36))!important;
+  }
+
+  /* Trofeo blanco/cyan de la referencia, colocado como arte de fondo a la izquierda. */
+  html body:is(
+    [data-app-route="v38Alerts"],
+    [data-app-route="v38Weather"],
+    [data-app-route="v4-matchcenter"],
+    [data-app-route="venues"],
+    [data-app-route="matchday"]
+  ) .topbar::before{
+    content:""!important;
+    display:block!important;
+    position:absolute!important;
+    z-index:1!important;
+    pointer-events:none!important;
+    width:164px!important;
+    height:136px!important;
+    left:43px!important;
+    top:-22px!important;
+    opacity:.78!important;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 180 145'%3E%3Cdefs%3E%3ClinearGradient id='s' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%23ffffff'/%3E%3Cstop offset='.45' stop-color='%236fefff'/%3E%3Cstop offset='.75' stop-color='%231aa6ff'/%3E%3Cstop offset='1' stop-color='%23eaffff'/%3E%3C/linearGradient%3E%3Cfilter id='g' x='-40%25' y='-40%25' width='180%25' height='180%25'%3E%3CfeGaussianBlur stdDeviation='2.1' result='b'/%3E%3CfeMerge%3E%3CfeMergeNode in='b'/%3E%3CfeMergeNode in='SourceGraphic'/%3E%3C/feMerge%3E%3C/filter%3E%3C/defs%3E%3Cg fill='none' stroke='url(%23s)' stroke-width='3.4' stroke-linecap='round' stroke-linejoin='round' filter='url(%23g)'%3E%3Cpath d='M53 18h74l-5 17H58zM61 35h58l-5 36c-2 18-11 28-24 34-13-6-22-16-24-34z'/%3E%3Cpath d='M58 43H42c-7 0-11 6-9 13 4 15 14 24 31 28M122 43h16c7 0 11 6 9 13-4 15-14 24-31 28'/%3E%3Cpath d='M90 105v17M72 132h36M78 122h24l6 10H72z'/%3E%3Ccircle cx='90' cy='65' r='20'/%3E%3Cpath d='m90 52 8 6-3 10H85l-3-10zM85 68l-9 6M95 68l9 6M82 58l-8-2M98 58l8-2M90 45v7'/%3E%3C/g%3E%3C/svg%3E")!important;
+    background-repeat:no-repeat!important;
+    background-position:center!important;
+    background-size:contain!important;
+    filter:drop-shadow(0 0 6px rgba(232,255,255,.76)) drop-shadow(0 0 13px rgba(22,198,255,.58))!important;
+  }
+
+  /* Flecha: blanca, transparente, sin círculo y compacta. */
+  html body:is(
+    [data-app-route="v38Alerts"],
+    [data-app-route="v38Weather"],
+    [data-app-route="v4-matchcenter"],
+    [data-app-route="venues"],
+    [data-app-route="matchday"]
+  ) .topbar .back-button{
+    display:block!important;
+    visibility:visible!important;
+    position:absolute!important;
+    left:18px!important;
+    top:29px!important;
+    width:29px!important;
+    height:29px!important;
+    min-width:29px!important;
+    min-height:29px!important;
+    max-width:29px!important;
+    max-height:29px!important;
+    margin:0!important;
+    padding:0!important;
+    border:0!important;
+    border-radius:0!important;
+    background-color:transparent!important;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M14.5 5.5 8 12l6.5 6.5M8 12h12' fill='none' stroke='%23fff' stroke-width='2.15' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E")!important;
+    background-repeat:no-repeat!important;
+    background-position:center!important;
+    background-size:29px 29px!important;
+    box-shadow:none!important;
+    filter:none!important;
+    color:transparent!important;
+    z-index:6!important;
+  }
+
+  html body:is(
+    [data-app-route="v38Alerts"],
+    [data-app-route="v38Weather"],
+    [data-app-route="v4-matchcenter"],
+    [data-app-route="venues"],
+    [data-app-route="matchday"]
+  ) .topbar .back-button svg,
+  html body:is(
+    [data-app-route="v38Alerts"],
+    [data-app-route="v38Weather"],
+    [data-app-route="v4-matchcenter"],
+    [data-app-route="venues"],
+    [data-app-route="matchday"]
+  ) .topbar .back-button::before,
+  html body:is(
+    [data-app-route="v38Alerts"],
+    [data-app-route="v38Weather"],
+    [data-app-route="v4-matchcenter"],
+    [data-app-route="venues"],
+    [data-app-route="matchday"]
+  ) .topbar .back-button::after{
+    display:none!important;
+    content:none!important;
+  }
+
+  /* Perfil: mismo aro/cabeza/hombros y misma escala compacta. */
+  html body:is(
+    [data-app-route="v38Alerts"],
+    [data-app-route="v38Weather"],
+    [data-app-route="v4-matchcenter"],
+    [data-app-route="venues"],
+    [data-app-route="matchday"]
+  ) .topbar .profile-button{
+    display:block!important;
+    visibility:visible!important;
+    position:absolute!important;
+    right:18px!important;
+    top:29px!important;
+    width:29px!important;
+    height:29px!important;
+    min-width:29px!important;
+    min-height:29px!important;
+    max-width:29px!important;
+    max-height:29px!important;
+    margin:0!important;
+    padding:0!important;
+    border:0!important;
+    border-radius:0!important;
+    background-color:transparent!important;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Ccircle cx='12' cy='12' r='9.6' fill='none' stroke='%23fff' stroke-width='2.05'/%3E%3Ccircle cx='12' cy='8.1' r='2.85' fill='none' stroke='%23fff' stroke-width='2.05'/%3E%3Cpath d='M5.35 19.15c1.55-3.35 3.76-4.9 6.65-4.9s5.1 1.55 6.65 4.9' fill='none' stroke='%23fff' stroke-width='2.05' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E")!important;
+    background-repeat:no-repeat!important;
+    background-position:center!important;
+    background-size:29px 29px!important;
+    box-shadow:none!important;
+    filter:none!important;
+    color:transparent!important;
+    z-index:6!important;
+  }
+
+  html body:is(
+    [data-app-route="v38Alerts"],
+    [data-app-route="v38Weather"],
+    [data-app-route="v4-matchcenter"],
+    [data-app-route="venues"],
+    [data-app-route="matchday"]
+  ) .topbar .profile-button svg,
+  html body:is(
+    [data-app-route="v38Alerts"],
+    [data-app-route="v38Weather"],
+    [data-app-route="v4-matchcenter"],
+    [data-app-route="venues"],
+    [data-app-route="matchday"]
+  ) .topbar .profile-button::before,
+  html body:is(
+    [data-app-route="v38Alerts"],
+    [data-app-route="v38Weather"],
+    [data-app-route="v4-matchcenter"],
+    [data-app-route="venues"],
+    [data-app-route="matchday"]
+  ) .topbar .profile-button::after{
+    display:none!important;
+    content:none!important;
+  }
+}
+
+@media (max-width:380px){
+  html body:is(
+    [data-app-route="v38Alerts"],
+    [data-app-route="v38Weather"],
+    [data-app-route="v4-matchcenter"],
+    [data-app-route="venues"],
+    [data-app-route="matchday"]
+  ) #app > .topbar,
+  html body:is(
+    [data-app-route="v38Alerts"],
+    [data-app-route="v38Weather"],
+    [data-app-route="v4-matchcenter"],
+    [data-app-route="venues"],
+    [data-app-route="matchday"]
+  ) .app-shell > .topbar{
+    height:calc(84px + env(safe-area-inset-top))!important;
+    min-height:calc(84px + env(safe-area-inset-top))!important;
+    max-height:calc(84px + env(safe-area-inset-top))!important;
+  }
+
+  html body:is(
+    [data-app-route="v38Alerts"],
+    [data-app-route="v38Weather"],
+    [data-app-route="v4-matchcenter"],
+    [data-app-route="venues"],
+    [data-app-route="matchday"]
+  ) .topbar::before{
+    width:151px!important;
+    height:128px!important;
+    left:38px!important;
+    top:-21px!important;
+  }
+
+  html body:is(
+    [data-app-route="v38Alerts"],
+    [data-app-route="v38Weather"],
+    [data-app-route="v4-matchcenter"],
+    [data-app-route="venues"],
+    [data-app-route="matchday"]
+  ) .topbar .back-button{
+    left:16px!important;
+    top:28px!important;
+    width:27px!important;
+    height:27px!important;
+    min-width:27px!important;
+    min-height:27px!important;
+    max-width:27px!important;
+    max-height:27px!important;
+    background-size:27px 27px!important;
+  }
+
+  html body:is(
+    [data-app-route="v38Alerts"],
+    [data-app-route="v38Weather"],
+    [data-app-route="v4-matchcenter"],
+    [data-app-route="venues"],
+    [data-app-route="matchday"]
+  ) .topbar .profile-button{
+    right:16px!important;
+    top:28px!important;
+    width:27px!important;
+    height:27px!important;
+    min-width:27px!important;
+    min-height:27px!important;
+    max-width:27px!important;
+    max-height:27px!important;
+    background-size:27px 27px!important;
+  }
+}
