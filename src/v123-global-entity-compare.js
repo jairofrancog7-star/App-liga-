@@ -1,6 +1,6 @@
 /* V123 — interacción global de equipos y jugadores.
    - Equipo: tocar escudo/nombre abre Team Detail directamente en Comparar equipos.
-   - Jugador: tocar nombre/fila abre Comparar jugadores con ese jugador preseleccionado.
+   - Jugador: tocar nombre/fila abre su ficha individual; comparar queda como acción explícita dentro de la ficha.
    Usa únicamente jugadores/equipos oficiales del directorio sincronizado. */
 (function(){
 'use strict';
@@ -453,7 +453,7 @@ document.addEventListener('click',e=>{
  }
 
  // Las filas de jugador conocidas se detienen ANTES de que sus handlers antiguos
- // puedan mandar a Credencial/Detalle. Así el toque siempre termina en comparar.
+ // puedan mandar al comparador. El toque normal abre ahora la ficha individual.
  if(!row&&!immediatePlayer)return;
 
  // Dentro de una fila de jugador, tocar explícitamente el escudo del equipo sigue
@@ -477,10 +477,11 @@ document.addEventListener('click',e=>{
   let p=immediatePlayer||exactPlayerFromTarget(target,players);
   if(!p&&row)p=playerFromElement(row,players);
   if(!p)return;
-  write(PRIMARY_KEY,p);
-  localStorage.removeItem(SECONDARY_KEY);
+  write('v379-player-profile',p);
+  localStorage.setItem('v379-player-profile-tab','Resumen');
   query='';pickerOpen=false;pickerSide='secondary';pickerAutoShown=false;pickerPosition='';
-  location.hash='#/playerCompare';
+  if(window.LJR_PLAYER_PROFILE_API?.open){window.LJR_PLAYER_PROFILE_API.open(p);return}
+  location.hash='#/playerDetail';
  })();
 },true);
 
