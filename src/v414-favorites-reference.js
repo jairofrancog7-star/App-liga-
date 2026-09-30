@@ -87,7 +87,7 @@ function fixtureRows(){
  return out;
 }
 function catOptions(){
- const d=db(),order=['3','5','4','2','1'],out=[['all','▣ Todo']];
+ const d=db(),order=['3','5','4','2','1'],out=[['all','Todo']];
  order.forEach(id=>{if(d?.categories?.[id])out.push([id,d.categories[id].name||id])});
  return out;
 }
@@ -166,6 +166,7 @@ function bind(root){
  bindRows(root);
  const input=root.querySelector('[data-v414-search]');
  if(input)input.addEventListener('input',()=>filterList(root,input.value));
+ requestAnimationFrame(()=>{const bar=root.querySelector('.v414-tabs'),active=root.querySelector('.v414-tab.active');if(bar&&active){const x=Math.max(0,active.offsetLeft-(bar.clientWidth-active.offsetWidth)/2);bar.scrollTo({left:x,behavior:'auto'})}});
 }
 function bindRows(root){
  root.querySelectorAll('[data-v414-team]').forEach(b=>b.onclick=()=>openTeam(b.dataset.v414Team,b.dataset.v414TeamCat));
