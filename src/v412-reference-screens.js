@@ -420,7 +420,7 @@ function mount(){
  else if(r==='more')mountAccount(screen);
  else if(r==='video')mountTv(screen);
  else if(r==='news')mountNews(screen);
- else if(r==='whereToWatch')mountWhere(screen);
+ else if(r==='whereToWatch'){screen.querySelectorAll('[data-v412-screen="where"]').forEach(x=>x.remove());return}
  else if(['v4-matchcenter','matchCenter','match-center','match'].includes(r))mountMatchCenter(screen);
  else if(['v4-calendar','calendar','monthlyCalendar','calendarMonthly','matchday','competition'].includes(r))mountFixtures(screen);
 }
