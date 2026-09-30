@@ -153,23 +153,88 @@ function mountFavorites(screen,force=false){if(!force&&screen.querySelector('[da
 function accountMarkup(){return '<section class="v412-shell v412-account" data-v412-screen="account"><div class="v412-account-hello"><h2>¡Hola!</h2><p>Bienvenido a la Liga Municipal de Fútbol Juventino Rosas</p></div><div class="v412-auth"><button class="v412-login" data-v412-go="profile">Iniciar sesión</button><button class="v412-join" data-v412-go="profile">Únete ahora</button></div><div class="v412-menu"><button data-v412-go="notifications"><span>Notificaciones</span><span>♢</span></button><button data-v412-go="more"><span>Ajustes</span><span>⚙</span></button><button data-v412-go="rulebook"><span>Ayuda e información</span><span>?</span></button></div><div class="v412-social-title">SÍGUENOS</div><div class="v412-socials"><button class="v412-social fb" data-v412-facebook aria-label="Facebook">f</button></div><button class="v412-sharefriend" data-v412-share>♧ &nbsp; Cuéntale a un amigo</button><div class="v412-account-foot">Liga Municipal de Fútbol Juventino Rosas A.C.<br>Contenido oficial y herramientas de la Liga.<br><br>Versión V412</div></section>'}
 function mountAccount(screen){if(screen.querySelector('[data-v412-screen="account"]'))return;screen.insertAdjacentHTML('beforeend',accountMarkup());bindCommon(screen.querySelector('[data-v412-screen="account"]'))}
 
-/* Search */
+/* Search — referencia de buscar jugadores */
+function searchPlayerRow(p){
+ return '<button type="button" class="v412-player-search-row" data-v412-player="'+esc(p.id)+'">'+
+   '<span class="v412-player-face">'+esc(initials(p.name))+'</span>'+
+   '<span class="v412-player-search-copy"><b>'+esc(p.name)+'</b><small>'+esc(p.team)+' · '+esc(p.category)+'</small></span>'+
+   '<span class="v412-player-search-team"><img src="'+esc(logo(p.team))+'" alt=""><i>›</i></span>'+
+ '</button>';
+}
+function searchMatchRow(m){
+ const st=matchStatus(m);
+ return '<button type="button" class="v412-search-match-row" data-v412-match="'+esc(m.key)+'"><span><img src="'+esc(logo(m.home))+'" alt=""><b>'+esc(m.home)+'</b></span><strong>'+esc(st.main)+'</strong><span><img src="'+esc(logo(m.away))+'" alt=""><b>'+esc(m.away)+'</b></span></button>';
+}
 function searchMarkup(){
- const t=teams().slice(0,12);
- return '<section class="v412-shell" data-v412-screen="search"><div class="v412-search-top"><input data-v412-search placeholder="Buscar"></div><div class="v412-modebar">'+[['all','Todo'],['teams','Equipos'],['competitions','Competiciones'],['players','Jugadores']].map((x,i)=>'<button class="v412-mode '+(i===0?'is-active':'')+'" data-v412-mode="'+x[0]+'">'+x[1]+'</button>').join('')+'</div><div class="v412-result-heading"><span>Equipos</span><button data-v412-go="teams">Ver todos ›</button></div><div class="v412-list" data-v412-search-results>'+t.map(teamCard).join('')+'</div></section>';
+ const mode=localStorage.getItem('v412-search-mode')||'players';
+ return '<section class="v412-shell v412-search-reference" data-v412-screen="search">'+
+   '<div class="v412-search-top"><input data-v412-search placeholder="Buscar jugadores, equipos, partidos..."></div>'+
+   '<div class="v412-modebar">'+[['players','Jugadores'],['teams','Equipos'],['competitions','Competiciones'],['matches','Partidos']].map(x=>'<button class="v412-mode '+(mode===x[0]?'is-active':'')+'" data-v412-mode="'+x[0]+'">'+x[1]+'</button>').join('')+'</div>'+
+   '<div class="v412-result-heading"><span></span><button data-v412-go="players">Ver todos ›</button></div>'+
+   '<div data-v412-search-results></div>'+
+   '<div class="v412-search-tools"><button data-v412-go="teams">Equipos</button><button data-v412-go="following">Favoritos</button><button data-v412-go="v4-calendar">Calendario</button><button data-v412-go="news">Noticias</button></div>'+
+ '</section>';
 }
 function bindSearch(root){
- let mode='all';const input=root.querySelector('[data-v412-search]');
- const render=()=>{const q=norm(input?.value||'');let html='',title='Resultados';
-  if(mode==='players'){title='Jugadores';html=players().filter(p=>!q||norm(p.name+' '+p.team).includes(q)).slice(0,24).map(playerCard).join('')}
-  else if(mode==='competitions'){title='Competiciones';html=Object.entries(CAT_NAMES).filter(x=>!q||norm(x[1]).includes(q)).map(x=>compCard(x[0],x[1])).join('')}
-  else {title='Equipos';html=teams().filter(t=>!q||norm(t.name+' '+t.category).includes(q)).slice(0,24).map(teamCard).join('')}
-  root.querySelector('.v412-result-heading span').textContent=title;root.querySelector('[data-v412-search-results]').innerHTML=html||'<div class="v412-empty">No hay coincidencias.</div>';bindCommon(root);
+ let mode=localStorage.getItem('v412-search-mode')||'players';
+ const input=root.querySelector('[data-v412-search]');
+ const render=()=>{
+   const q=norm(input?.value||'');let html='',title='',allLabel='Ver todos ›',allRoute='players';
+   if(mode==='players'){
+     title='Jugadores registrados';allRoute='players';
+     html=players().filter(p=>!q||norm(p.name+' '+p.team+' '+p.category).includes(q)).slice(0,30).map(searchPlayerRow).join('');
+   }else if(mode==='teams'){
+     title='Equipos';allRoute='teams';
+     html=teams().filter(t=>!q||norm(t.name+' '+t.category).includes(q)).slice(0,24).map(teamCard).join('');
+   }else if(mode==='competitions'){
+     title='Competiciones';allRoute='competition';
+     html=Object.entries(CAT_NAMES).filter(x=>!q||norm(x[1]).includes(q)).map(x=>compCard(x[0],x[1])).join('');
+   }else{
+     title='Partidos';allRoute='competition';
+     html=fixtures().filter(m=>!q||norm(m.home+' '+m.away+' '+m.category).includes(q)).slice(0,24).map(searchMatchRow).join('');
+   }
+   root.querySelector('.v412-result-heading span').textContent=title;
+   const all=root.querySelector('.v412-result-heading button');if(all){all.dataset.v412Go=allRoute;all.textContent=allLabel}
+   root.querySelector('[data-v412-search-results]').innerHTML=html||'<div class="v412-empty">No hay coincidencias.</div>';
+   bindCommon(root);
  };
- root.querySelectorAll('[data-v412-mode]').forEach(b=>b.onclick=()=>{mode=b.dataset.v412Mode;root.querySelectorAll('[data-v412-mode]').forEach(x=>x.classList.toggle('is-active',x===b));render()});
- if(input)input.oninput=render;bindCommon(root);
+ root.querySelectorAll('[data-v412-mode]').forEach(b=>b.onclick=()=>{mode=b.dataset.v412Mode;localStorage.setItem('v412-search-mode',mode);root.querySelectorAll('[data-v412-mode]').forEach(x=>x.classList.toggle('is-active',x===b));render()});
+ if(input)input.oninput=render;render();bindCommon(root);
 }
 function mountSearch(screen){if(screen.querySelector('[data-v412-screen="search"]'))return;screen.insertAdjacentHTML('beforeend',searchMarkup());bindSearch(screen.querySelector('[data-v412-screen="search"]'))}
+
+/* Fichajes — referencias Últimos / Competiciones */
+function transferCompetitions(){
+ const by={};
+ teams().forEach(t=>{(by[t.catId]||(by[t.catId]=[])).push(t)});
+ return Object.entries(CAT_NAMES).map(([cid,name])=>{
+   const list=(by[cid]||[]).slice(0,3);
+   return '<article class="v412-transfer-league"><header><span><img src="'+LEAGUE+'" alt=""><b>'+esc(name)+'</b><small>Liga Juventino Rosas</small></span><button data-v412-comp="'+cid+'">Ver más</button></header>'+
+     '<div class="v412-transfer-clubs">'+(list.length?list.map(t=>'<button data-v412-team="'+esc(t.name)+'"><span>'+logoNode(t.name,t.logo)+'</span><b>'+esc(t.name)+'</b><small>Equipo registrado</small></button>').join(''):'<div class="v412-empty">Sin equipos publicados en esta categoría.</div>')+'</div></article>';
+ }).join('');
+}
+function transfersMarkup(){
+ const mode=localStorage.getItem('v412-transfer-mode')||'latest';
+ return '<section class="v412-shell v412-transfers-reference" data-v412-screen="transfers">'+
+   '<div class="v412-transfer-brand"><span>☰</span><b>Fichajes</b></div>'+
+   '<div class="v412-transfer-tabs"><button class="'+(mode==='latest'?'is-active':'')+'" data-v412-transfer-mode="latest">ÚLTIMOS</button><button class="'+(mode==='competitions'?'is-active':'')+'" data-v412-transfer-mode="competitions">COMPETICIONES</button></div>'+
+   '<div class="v412-transfer-filters"><button>Mis categorías⌄</button><button>Filtros⌄</button></div>'+
+   '<div class="v412-transfer-switch"><button class="is-active">OFICIAL</button><button disabled>RUMOR</button></div>'+
+   '<div data-v412-transfer-body></div>'+
+ '</section>';
+}
+function bindTransfers(root){
+ const render=()=>{
+   const mode=localStorage.getItem('v412-transfer-mode')||'latest';
+   root.querySelectorAll('[data-v412-transfer-mode]').forEach(x=>x.classList.toggle('is-active',x.dataset.v412TransferMode===mode));
+   root.querySelector('[data-v412-transfer-body]').innerHTML=mode==='competitions'?transferCompetitions():
+     '<div class="v412-transfer-empty-ref"><span>↔</span><b>Sin movimientos oficiales publicados</b><p>No mostramos rumores, altas ni cambios de equipo hasta que exista una publicación oficial de la Liga.</p><button data-v412-go="news">Ver noticias oficiales</button></div>';
+   bindCommon(root);
+ };
+ root.querySelectorAll('[data-v412-transfer-mode]').forEach(b=>b.onclick=()=>{localStorage.setItem('v412-transfer-mode',b.dataset.v412TransferMode);render()});
+ render();bindCommon(root);
+}
+function mountTransfers(screen){if(screen.querySelector('[data-v412-screen="transfers"]'))return;screen.insertAdjacentHTML('beforeend',transfersMarkup());bindTransfers(screen.querySelector('[data-v412-screen="transfers"]'))}
 
 /* Partidos / calendario */
 function dateKeys(){
@@ -197,17 +262,77 @@ function whereMarkup(){
 }
 function mountWhere(screen,force=false){if(!force){screen.innerHTML=''}screen.querySelectorAll('[data-v412-screen="where"]').forEach(x=>x.remove());screen.insertAdjacentHTML('beforeend',whereMarkup());const root=screen.querySelector('[data-v412-screen="where"]');root.querySelectorAll('[data-v412-watch-day]').forEach(b=>b.onclick=()=>{localStorage.setItem('v412-watch-day',b.dataset.v412WatchDay);mountWhere(screen,true)});root.querySelector('[data-v412-back]')?.addEventListener('click',()=>history.length>1?history.back():go('v4-calendar'));bindCommon(root)}
 
-/* TV */
+/* TV — Liga TV / Televisados / Conectar o transmitir */
 function mediaCard(m,label='Partido'){
  const result=m.hs!==''?m.hs+' - '+m.as:'VS';
- return '<button class="v412-media" data-v412-go="matchCenter"><div class="v412-media-art"><img src="'+esc(logo(m.home))+'" alt=""><img src="'+esc(logo(m.away))+'" alt=""><span class="v412-play">▶</span></div><div class="v412-media-copy"><b>'+esc(m.home)+' '+esc(result)+' '+esc(m.away)+'</b><small>'+esc(label)+' · '+esc(m.category)+'</small></div></button>';
+ return '<button class="v412-media" data-v412-match="'+esc(m.key)+'"><div class="v412-media-art"><img src="'+esc(logo(m.home))+'" alt=""><img src="'+esc(logo(m.away))+'" alt=""><span class="v412-play">▶</span></div><div class="v412-media-copy"><b>'+esc(m.home)+' '+esc(result)+' '+esc(m.away)+'</b><small>'+esc(label)+' · '+esc(m.category)+'</small></div></button>';
 }
-function tvSection(title,sub,list,label){return '<div class="v412-tv-section"><div class="v412-tv-section-head"><div><h3>'+esc(title)+'</h3><p>'+esc(sub)+'</p></div><button data-v412-go="moments">Ver más ›</button></div><div class="v412-media-row">'+(list.length?list.map(m=>mediaCard(m,label)).join(''):'<div class="v412-empty">Contenido disponible cuando la Liga publique o vincule material.</div>')+'</div></div>'}
+function tvSection(title,sub,list,label){return '<div class="v412-tv-section"><div class="v412-tv-section-head"><div><h3>'+esc(title)+'</h3><p>'+esc(sub)+'</p></div></div><div class="v412-media-row">'+(list.length?list.map(m=>mediaCard(m,label)).join(''):'<div class="v412-empty">Contenido disponible cuando la Liga publique material.</div>')+'</div></div>'}
+function tvHomeMarkup(){
+ const all=fixtures(),played=all.filter(m=>m.hs!=='').slice(-8).reverse(),upcoming=all.filter(m=>m.hs==='').slice(0,8);
+ return '<div class="v412-tv-actions"><button data-v412-tv-mode="watch"><i>TV</i><b>Televisados</b><small>Partidos y fuentes vinculadas</small></button><button data-v412-tv-mode="cast"><i>▣</i><b>Conectar / transmitir</b><small>Modo TV y otro dispositivo</small></button></div>'+
+   tvSection('Próximos partidos','Programación oficial de la Liga',upcoming.slice(0,6),'Próximo')+
+   tvSection('Resúmenes recientes','Partidos con resultado oficial',played.slice(0,6),'Resultado');
+}
+function tvWatchMarkup(){
+ const src=streams(),list=fixtures().slice(0,20);
+ return '<div class="v412-tv-subhead"><button data-v412-tv-mode="home">←</button><span><b>Televisados</b><small>Fuentes vinculadas por partido</small></span></div>'+
+   '<div class="v412-watch-tabs"><button>HOY</button><button class="is-active">PARTIDOS</button><button>PRÓXIMOS</button></div>'+
+   '<div class="v412-televised-list">'+(list.length?list.map(m=>{const s=src.find(x=>x.key===m.key);return '<article class="v412-televised-card"><header><span>'+esc(m.category)+'</span><em>'+esc(timeLabel(m.stamp,m.rawDate))+'</em></header><div><span><img src="'+esc(logo(m.home))+'" alt=""><b>'+esc(m.home)+'</b></span><strong>'+esc(m.hs!==''?m.hs+' - '+m.as:'VS')+'</strong><span><img src="'+esc(logo(m.away))+'" alt=""><b>'+esc(m.away)+'</b></span></div>'+(s?'<button class="v412-provider-btn" data-v412-url="'+esc(s.url)+'">TV · '+esc(s.provider)+' · VER</button>':'<small>Sin transmisión vinculada</small>')+'</article>'}).join(''):'<div class="v412-empty">No hay partidos oficiales disponibles.</div>')+'</div>';
+}
+function tvCastMarkup(){
+ const src=streams();
+ return '<div class="v412-tv-subhead"><button data-v412-tv-mode="home">←</button><span><b>Conectar o transmitir</b><small>Herramienta externa a Match Center</small></span></div>'+
+   '<section class="v412-cast-panel"><h3>Conectar o transmitir</h3><div class="v412-cast-login"><span><b>Ver con Liga TV</b><small>Abre una vista para pantalla o TV.</small></span><button data-v412-tvpanel>Entrar</button></div>'+
+   '<div class="v412-cast-row"><span>▣</span><span><b>Transmitir a otro dispositivo</b><small>Comparte esta app o usa las opciones disponibles de tu navegador/TV.</small></span><button data-v412-share>›</button></div>'+
+   '<div class="v412-cast-row"><span>i</span><span><b>Transmisiones vinculadas</b><small>'+src.length+' fuente'+(src.length===1?'':'s')+' guardada'+(src.length===1?'':'s')+'.</small></span><button data-v412-tv-mode="watch">›</button></div></section>';
+}
 function tvMarkup(){
- const all=fixtures(),played=all.filter(m=>m.hs!=='').slice(-8).reverse(),upcoming=all.filter(m=>m.hs==='').slice(0,8),featured=(played.length?played:upcoming).slice(0,6);
- return '<section class="v412-shell" data-v412-screen="tv"><div class="v412-tv-actions"><button data-v412-tvpanel><i>▣</i><b>En directo</b><small>Modo TV y partido en vivo</small></button><button data-v412-go="favorites"><i>☆</i><b>Mis partidos</b><small>Favoritos y seguimiento</small></button></div>'+tvSection('Ver en vivo en la Liga','Partidos y transmisiones vinculadas',upcoming.slice(0,5),'Próximo')+tvSection('Mejores momentos','Resultados oficiales recientes',played.slice(0,6),'Resultado')+tvSection('Videos oficiales de clubes','Accesos a momentos y archivo',featured,'Liga TV')+tvSection('Lo más visto','Contenido destacado de la Liga',featured.slice().reverse(),'Destacado')+tvSection('Resúmenes más recientes','Partidos finalizados con marcador oficial',played.slice(0,5),'Resumen')+'</section>';
+ const mode=localStorage.getItem('v412-tv-mode')||'home';
+ return '<section class="v412-shell v412-tv-reference" data-v412-screen="tv" data-mode="'+esc(mode)+'">'+(mode==='watch'?tvWatchMarkup():mode==='cast'?tvCastMarkup():tvHomeMarkup())+'</section>';
 }
-function mountTv(screen){if(screen.querySelector('[data-v412-screen="tv"]'))return;screen.insertAdjacentHTML('beforeend',tvMarkup());bindCommon(screen.querySelector('[data-v412-screen="tv"]'))}
+function bindTv(root){
+ root.querySelectorAll('[data-v412-tv-mode]').forEach(b=>b.onclick=()=>{localStorage.setItem('v412-tv-mode',b.dataset.v412TvMode);const screen=document.querySelector('#screen');root.remove();mountTv(screen)});
+ bindCommon(root);
+}
+function mountTv(screen){if(screen.querySelector('[data-v412-screen="tv"]'))return;screen.insertAdjacentHTML('beforeend',tvMarkup());bindTv(screen.querySelector('[data-v412-screen="tv"]'))}
+
+/* Match Center — sólo información del partido */
+function currentMatch(){
+ const root=document.querySelector('[data-v92-matchcenter]');if(!root)return null;
+ const sides=[...root.querySelectorAll('.v92-score-card .v92-side')];if(sides.length<2)return null;
+ const side=s=>({name:s.querySelector('b')?.textContent?.trim()||'Equipo',logo:s.querySelector('img')?.src||''});
+ return {root,home:side(sides[0]),away:side(sides[1]),status:root.querySelector('.v92-center strong')?.textContent?.trim()||'VS',sub:root.querySelector('.v92-center small')?.textContent?.trim()||'',meta:[...root.querySelectorAll('.v92-official-meta span')].map(x=>x.textContent.trim()),category:(root.querySelector('.v92-match-head p')?.textContent||'').split('·')[1]?.trim()||''};
+}
+function standingFor(name,category){
+ const cats=Object.values(data().categories||{});let cat=cats.find(x=>category&&norm(x?.name)===norm(category));
+ if(!cat)cat=cats.find(x=>(x?.standings?.[0]?.rows||[]).some(r=>norm(r?.[1])===norm(name)));
+ return (cat?.standings?.[0]?.rows||[]).find(r=>norm(r?.[1])===norm(name))||null;
+}
+function mcLogo(t){const u=t.logo||logo(t.name);return '<span class="v412-mc-logo"><img src="'+esc(u)+'" alt=""><i>'+esc(initials(t.name))+'</i></span>'}
+function mcMetric(label,h,a){return '<div class="v412-mc-metric"><b>'+esc(h??'—')+'</b><span>'+esc(label)+'</span><b>'+esc(a??'—')+'</b></div>'}
+function mcForm(r){if(!r)return '<div class="v412-mc-formdots"><i></i><i></i><i></i><i></i><i></i></div>';const pj=+r[2]||0,w=+r[3]||0,d=+r[4]||0,l=Number.isFinite(+r[5])?+r[5]:Math.max(0,pj-w-d);let a=[...Array(Math.min(w,5)).fill('w'),...Array(Math.min(d,5)).fill('d'),...Array(Math.min(l,5)).fill('l')].slice(0,5);while(a.length<5)a.push('');return '<div class="v412-mc-formdots">'+a.map(x=>'<i class="'+x+'"></i>').join('')+'</div>'}
+function matchCenterMarkup(){
+ const m=currentMatch();if(!m)return '';
+ const h=standingFor(m.home.name,m.category),a=standingFor(m.away.name,m.category);
+ return '<section class="v412-shell v412-matchcenter-reference" data-v412-screen="matchcenter">'+
+   '<div class="v412-mc-hero"><div class="v412-mc-top"><small>'+esc(m.category||'Liga Juventino Rosas')+'</small><b>'+esc(m.meta[0]||'Partido oficial')+'</b></div><div class="v412-mc-score"><span>'+mcLogo(m.home)+'<b>'+esc(m.home.name)+'</b></span><strong>'+esc(m.status)+'</strong><span>'+mcLogo(m.away)+'<b>'+esc(m.away.name)+'</b></span></div><em>'+esc(m.sub||m.meta[1]||'')+'</em></div>'+
+   '<div class="v412-mc-tabs"><button class="is-active" data-v412-native-tab="Resumen">Build Up</button><button data-v412-go="predictor">Predicciones</button><button data-v412-commentary>Comentarios</button><button data-v412-native-tab="Alineaciones">Alineaciones</button><button data-v412-native-tab="Estadísticas">Estadísticas</button><button data-v412-native-tab="Cronología">Cronología</button></div>'+
+   '<section class="v412-mc-card"><h3>Comparación de temporada</h3><div class="v412-mc-pair"><span>'+mcLogo(m.home)+'<b>'+esc(m.home.name)+'</b></span><span>'+mcLogo(m.away)+'<b>'+esc(m.away.name)+'</b></span></div>'+mcMetric('Partidos',h?.[2],a?.[2])+mcMetric('Ganados',h?.[3],a?.[3])+mcMetric('Empates',h?.[4],a?.[4])+mcMetric('Puntos',h?.[9],a?.[9])+'</section>'+
+   '<section class="v412-mc-card"><h3>Balance de temporada</h3><div class="v412-mc-formpair"><div>'+mcLogo(m.home)+mcForm(h)+'</div><div>'+mcLogo(m.away)+mcForm(a)+'</div></div></section>'+
+   '<div class="v412-mc-actions"><button data-v412-go="matchday"><span>◷</span><b>Cronómetro</b><small>45 + descanso + 45</small></button><button data-v412-native-tab="Alineaciones"><span>▦</span><b>Alineaciones</b><small>Plantillas y formación</small></button><button data-v412-native-tab="Estadísticas"><span>▥</span><b>Estadísticas</b><small>Datos oficiales</small></button><button data-v412-native-tab="Cronología"><span>☷</span><b>Cronología</b><small>Eventos del partido</small></button></div>'+
+ '</section>';
+}
+function openCommentary(){
+ document.querySelector('.v412-comment-modal')?.remove();let note='';try{note=localStorage.getItem('v412-match-commentary')||''}catch(_){}
+ const m=document.createElement('div');m.className='v412-comment-modal';m.innerHTML='<section><button data-v412-close>×</button><h3>Comentarios del partido</h3><p>Notas locales. No cambian resultados ni datos oficiales.</p><textarea placeholder="Escribe una nota...">'+esc(note)+'</textarea><button data-v412-save>Guardar</button></section>';document.body.appendChild(m);
+ m.querySelector('[data-v412-close]').onclick=()=>m.remove();m.querySelector('[data-v412-save]').onclick=()=>{try{localStorage.setItem('v412-match-commentary',m.querySelector('textarea').value||'')}catch(_){};m.remove()};
+}
+function bindMatchCenter(root){
+ root.querySelectorAll('[data-v412-native-tab]').forEach(b=>b.onclick=()=>{const label=b.dataset.v412NativeTab;const native=[...document.querySelectorAll('[data-v92-tab]')].find(x=>norm(x.dataset.v92Tab||x.textContent)===norm(label));if(native){native.click();setTimeout(()=>native.scrollIntoView({behavior:'smooth',block:'center'}),80)}});
+ root.querySelector('[data-v412-commentary]')?.addEventListener('click',openCommentary);bindCommon(root);
+}
+function mountMatchCenter(screen){if(screen.querySelector('[data-v412-screen="matchcenter"]'))return;const html=matchCenterMarkup();if(!html)return;screen.insertAdjacentHTML('beforeend',html);bindMatchCenter(screen.querySelector('[data-v412-screen="matchcenter"]'))}
 
 /* Noticias: acceso de Facebook en formato referencia, sin tocar noticias existentes */
 function newsMarkup(){return '<section class="v412-shell" data-v412-screen="news"><div class="v412-account-hello"><h2>Mantente al día</h2><p>Avisos, favoritos y publicaciones oficiales de la Liga.</p></div><div class="v412-menu"><button data-v412-go="notifications"><span>Notificaciones</span><span>♢</span></button><button data-v412-go="favorites"><span>Favoritos</span><span>☆</span></button><button data-v412-go="scheduleChanges"><span>Cambios de horario y sede</span><span>›</span></button></div><div class="v412-social-title">SÍGUENOS</div><div class="v412-socials"><button class="v412-social fb" data-v412-facebook>f</button></div></section>'}
@@ -226,20 +351,22 @@ function bindCommon(root){
  root.querySelectorAll('[data-v412-star-match]').forEach(b=>b.onclick=()=>{toggle('matches',b.dataset.v412StarMatch);remountCurrent()});
  root.querySelectorAll('[data-v412-facebook]').forEach(b=>b.onclick=()=>openUrl(FB));
  root.querySelectorAll('[data-v412-url]').forEach(b=>b.onclick=()=>openUrl(b.dataset.v412Url));
- root.querySelectorAll('[data-v412-tvpanel]').forEach(b=>b.onclick=()=>{if(window.LJR_V105?.openTv)window.LJR_V105.openTv();else go('matchCenter')});
+ root.querySelectorAll('[data-v412-tvpanel]').forEach(b=>b.onclick=()=>{if(window.LJR_V105?.openTv)window.LJR_V105.openTv();else go('video')});
  root.querySelectorAll('[data-v412-share]').forEach(b=>b.onclick=async()=>{const payload={title:'Liga Juventino Rosas',text:'Liga Municipal de Fútbol Juventino Rosas',url:location.origin+location.pathname};try{if(navigator.share)await navigator.share(payload);else await navigator.clipboard?.writeText(payload.url)}catch(_){}});
 }
-function remountCurrent(){const screen=document.querySelector('#screen');if(!screen)return;const r=route();if(r==='favorites')mountFavorites(screen,true);else if(['v4-calendar','calendar','monthlyCalendar','calendarMonthly','matchday','competition'].includes(r))mountFixtures(screen,true)}
+function remountCurrent(){const screen=document.querySelector('#screen');if(!screen)return;const r=route();if(r==='favorites')mountFavorites(screen,true);else if(r==='transfers'){screen.querySelector('[data-v412-screen="transfers"]')?.remove();mountTransfers(screen)}else if(r==='video'){screen.querySelector('[data-v412-screen="tv"]')?.remove();mountTv(screen)}else if(['v4-calendar','calendar','monthlyCalendar','calendarMonthly','matchday','competition'].includes(r))mountFixtures(screen,true)}
 function cleanOld(screen){screen.querySelectorAll('.v411-zone').forEach(x=>x.remove())}
 function mount(){
  const screen=document.querySelector('#screen');if(!screen)return;cleanOld(screen);
  const r=route();
  if(r==='favorites')mountFavorites(screen);
  else if(r==='search')mountSearch(screen);
+ else if(r==='transfers')mountTransfers(screen);
  else if(r==='more')mountAccount(screen);
  else if(r==='video')mountTv(screen);
  else if(r==='news')mountNews(screen);
  else if(r==='whereToWatch')mountWhere(screen);
+ else if(['v4-matchcenter','matchCenter','match-center','match'].includes(r))mountMatchCenter(screen);
  else if(['v4-calendar','calendar','monthlyCalendar','calendarMonthly','matchday','competition'].includes(r))mountFixtures(screen);
 }
 let timer=0;function schedule(ms=70){clearTimeout(timer);timer=setTimeout(mount,ms)}
