@@ -803,3 +803,344 @@ body.v415-calendar-active #screen > [data-v415-calendar]{
     background:#d9e0ff!important;
   }
 }
+
+
+/* V429 — screenshot exact calendar proportions */
+@media (max-width:1023px){
+  /* The reference has no extra Liga header above the three calendar tabs. */
+  body.v415-calendar-active #app>.topbar,
+  body.v415-calendar-active .app-shell>.topbar{
+    display:none!important;
+    height:0!important;
+    min-height:0!important;
+    max-height:0!important;
+    margin:0!important;
+    padding:0!important;
+    overflow:hidden!important;
+  }
+
+  body.v415-calendar-active,
+  body.v415-calendar-active #app,
+  body.v415-calendar-active .app-shell{
+    background:#111327!important;
+  }
+
+  body.v415-calendar-active #screen{
+    min-height:100dvh!important;
+    padding:27px 0 calc(94px + env(safe-area-inset-bottom))!important;
+    background:#111327!important;
+  }
+
+  body.v415-calendar-active #screen>.v415-calendar-page{
+    max-width:520px!important;
+    padding:0 0 32px!important;
+  }
+
+  /* Calendario / Clasificación / Plantilla */
+  body.v415-calendar-active .v415-top-row{
+    display:grid!important;
+    grid-template-columns:minmax(0,1fr) 42px!important;
+    gap:12px!important;
+    align-items:center!important;
+    margin:0 27px!important;
+    padding:0!important;
+  }
+  body.v415-calendar-active .v415-segment{
+    height:40px!important;
+    border:0!important;
+    border-radius:22px!important;
+    background:#10234d!important;
+    box-shadow:none!important;
+  }
+  body.v415-calendar-active .v415-segment button{
+    height:40px!important;
+    padding:0 8px!important;
+    border-radius:22px!important;
+    color:#d4d7e4!important;
+    font:500 13px/40px Inter,Roboto,Arial,sans-serif!important;
+    letter-spacing:-.025em!important;
+  }
+  body.v415-calendar-active .v415-segment button.active{
+    background:#91a4f4!important;
+    color:#12182f!important;
+    font-weight:500!important;
+    box-shadow:none!important;
+  }
+  body.v415-calendar-active .v415-filter{
+    width:40px!important;
+    height:40px!important;
+    color:#b8bdce!important;
+  }
+  body.v415-calendar-active .v415-filter svg{
+    width:28px!important;
+    height:28px!important;
+    stroke-width:2!important;
+  }
+
+  /* Six months visible, identical spacing to the supplied reference. */
+  body.v415-calendar-active .v415-month-strip{
+    width:100%!important;
+    height:69px!important;
+    display:grid!important;
+    grid-template-columns:repeat(6,minmax(0,1fr))!important;
+    align-items:end!important;
+    margin:31px 0 0!important;
+    padding:0 6px 13px!important;
+    overflow:visible!important;
+  }
+  body.v415-calendar-active .v415-month-strip button{
+    min-width:0!important;
+    width:100%!important;
+    height:28px!important;
+    padding:0!important;
+    color:#d2d4df!important;
+    font:500 13px/28px Inter,Roboto,Arial,sans-serif!important;
+  }
+  body.v415-calendar-active .v415-month-strip button.active{
+    color:#92a5ff!important;
+    font-weight:500!important;
+  }
+  body.v415-calendar-active .v415-month-line{
+    height:4px!important;
+    background:#435473!important;
+  }
+  body.v415-calendar-active .v415-month-line i{
+    top:0!important;
+    left:calc(50% - 34px)!important;
+    width:68px!important;
+    height:4px!important;
+    border-radius:3px!important;
+    background:#91a3ff!important;
+    box-shadow:none!important;
+  }
+
+  /* Week header and calendar grid */
+  body.v415-calendar-active .v415-week{
+    margin:39px 0 3px!important;
+    padding:0 25px!important;
+  }
+  body.v415-calendar-active .v415-week b{
+    color:#f0f1f7!important;
+    font:500 9px/1 Inter,Roboto,Arial,sans-serif!important;
+  }
+  body.v415-calendar-active .v415-grid{
+    grid-template-columns:repeat(7,minmax(0,1fr))!important;
+    grid-auto-rows:64px!important;
+    row-gap:0!important;
+    padding:0 24px!important;
+  }
+  body.v415-calendar-active .v415-day{
+    width:100%!important;
+    height:64px!important;
+    min-height:64px!important;
+    padding:0!important;
+    gap:0!important;
+    border-radius:50%!important;
+  }
+  body.v415-calendar-active .v415-day-number{
+    width:32px!important;
+    min-width:32px!important;
+    height:32px!important;
+    color:#f7f7fb!important;
+    font:650 13px/32px Inter,Roboto,Arial,sans-serif!important;
+  }
+
+  /* Today's day number is the separate pale pill shown in the screenshot. */
+  body.v415-calendar-active .v415-day.today:not(.has-match) .v415-day-number{
+    border-radius:50%!important;
+    background:#c5ceff!important;
+    color:#172164!important;
+    font-weight:700!important;
+  }
+  body.v415-calendar-active .v415-today-badge{
+    position:absolute!important;
+    z-index:7!important;
+    right:-10px!important;
+    top:17px!important;
+    width:32px!important;
+    height:32px!important;
+    display:grid!important;
+    place-items:center!important;
+    border-radius:50%!important;
+    background:#c5ceff!important;
+    color:#172164!important;
+    font:700 13px/1 Inter,Roboto,Arial,sans-serif!important;
+  }
+
+  /* Match days are represented by club crests, not by a date numeral. */
+  body.v415-calendar-active .v415-day.has-match .v415-day-number{
+    display:none!important;
+  }
+  body.v415-calendar-active .v415-day-logos{
+    position:relative!important;
+    z-index:3!important;
+    width:42px!important;
+    height:42px!important;
+  }
+  body.v415-calendar-active .v415-day-logos .v415-logo{
+    left:5px!important;
+    top:5px!important;
+    width:32px!important;
+    height:32px!important;
+  }
+  body.v415-calendar-active .v415-day-logos .v415-logo.is-second{
+    left:25px!important;
+    top:24px!important;
+    width:21px!important;
+    height:21px!important;
+    padding:2px!important;
+    border:0!important;
+    background:#46516f!important;
+  }
+  body.v415-calendar-active .v415-day-dots{
+    position:absolute!important;
+    left:50%!important;
+    bottom:3px!important;
+    transform:translateX(-50%)!important;
+    gap:3px!important;
+  }
+  body.v415-calendar-active .v415-day-dots i{
+    width:5px!important;
+    height:5px!important;
+    background:#59627d!important;
+  }
+  body.v415-calendar-active .v415-day-dots i.on{
+    background:#8fa2ff!important;
+  }
+
+  /* Selected fixture: one large blue ring around the primary crest. */
+  body.v415-calendar-active .v415-day.selected:before{
+    inset:4px!important;
+    border:2px solid #8fa2ff!important;
+    border-radius:50%!important;
+    background:transparent!important;
+    box-shadow:none!important;
+  }
+  body.v415-calendar-active .v415-day.selected .v415-day-logos{
+    width:48px!important;
+    height:48px!important;
+  }
+  body.v415-calendar-active .v415-day.selected .v415-day-logos .v415-logo:first-child{
+    left:7px!important;
+    top:7px!important;
+    width:34px!important;
+    height:34px!important;
+  }
+  body.v415-calendar-active .v415-day.selected .v415-day-logos .v415-logo.is-second{
+    display:none!important;
+  }
+  body.v415-calendar-active .v415-day.selected .v415-day-dots{
+    display:none!important;
+  }
+
+  /* The large match card begins close to the calendar, with reference proportions. */
+  body.v415-calendar-active .v415-selected{
+    margin:29px 20px 0!important;
+    padding:0!important;
+    border:0!important;
+  }
+  body.v415-calendar-active .v415-selected-head{
+    display:none!important;
+  }
+  body.v415-calendar-active .v415-match-list{
+    gap:16px!important;
+  }
+  body.v415-calendar-active .v415-match-card{
+    min-height:246px!important;
+    margin:0!important;
+    padding:21px 18px 18px!important;
+    border:1px solid rgba(70,77,126,.14)!important;
+    border-radius:25px!important;
+    background:
+      radial-gradient(circle at 50% 58%,rgba(99,103,190,.13),transparent 43%),
+      linear-gradient(180deg,#101126 0%,#0e1027 100%)!important;
+    box-shadow:0 15px 32px rgba(2,3,20,.23)!important;
+  }
+  body.v415-calendar-active .v415-match-card:before{
+    background:none!important;
+  }
+  body.v415-calendar-active .v415-match-meta{
+    gap:5px!important;
+    color:#d7d8e1!important;
+    font:500 13px/1.2 Inter,Roboto,Arial,sans-serif!important;
+  }
+  body.v415-calendar-active .v415-match-meta b{
+    color:#e7e8ef!important;
+    font-weight:700!important;
+  }
+  body.v415-calendar-active .v415-match-date{
+    margin-top:9px!important;
+    color:#d5d6df!important;
+    font:500 12px/1 Inter,Roboto,Arial,sans-serif!important;
+  }
+  body.v415-calendar-active .v415-match-main{
+    grid-template-columns:minmax(0,1fr) 80px minmax(0,1fr)!important;
+    gap:8px!important;
+    margin-top:18px!important;
+  }
+  body.v415-calendar-active .v415-match-team{
+    gap:13px!important;
+  }
+  body.v415-calendar-active .v415-match-team .v415-logo.large{
+    width:66px!important;
+    height:66px!important;
+  }
+  body.v415-calendar-active .v415-match-team b{
+    min-height:25px!important;
+    color:#f7f7fb!important;
+    font:650 11px/1.2 Inter,Roboto,Arial,sans-serif!important;
+  }
+  body.v415-calendar-active .v415-match-center{
+    gap:12px!important;
+  }
+  body.v415-calendar-active .v415-match-center strong{
+    color:#fff!important;
+    font:800 25px/1 Inter,Roboto,Arial,sans-serif!important;
+    letter-spacing:-.03em!important;
+  }
+  body.v415-calendar-active .v415-match-center small{
+    min-height:31px!important;
+    padding:0 12px!important;
+    border-radius:7px!important;
+    background:#dbe0f5!important;
+    color:#4a526f!important;
+    font:500 10px/1 Inter,Roboto,Arial,sans-serif!important;
+  }
+  body.v415-calendar-active .v415-match-center small.scheduled{
+    background:#dbe0f5!important;
+    color:#4a526f!important;
+  }
+  body.v415-calendar-active .v415-venue{
+    min-height:48px!important;
+    margin-top:17px!important;
+    padding:7px 12px!important;
+    border:2px solid #8fa2ff!important;
+    border-radius:10px!important;
+    background:transparent!important;
+    color:#90a2ff!important;
+  }
+  body.v415-calendar-active .v415-venue span{
+    font:700 11px/1 Inter,Roboto,Arial,sans-serif!important;
+  }
+  body.v415-calendar-active .v415-venue small{
+    color:#8189ad!important;
+    font-size:8px!important;
+  }
+  body.v415-calendar-active .v415-empty{
+    min-height:118px!important;
+    display:grid!important;
+    place-items:center!important;
+    border-radius:24px!important;
+    background:#101126!important;
+  }
+
+  /* Filter remains functional but visually subordinate to the calendar. */
+  body.v415-calendar-active .v415-filter-sheet{
+    background:#101226!important;
+  }
+
+  /* Keep the app's existing bottom navigation fixed; the reference content scrolls behind it. */
+  body.v415-calendar-active .bottom-nav{
+    z-index:2147483000!important;
+  }
+}
