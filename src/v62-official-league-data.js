@@ -138,6 +138,7 @@ function openTeam(name){
   if(registrationActive())return false;
   saveTeam(name);
   localStorage.setItem('v42-team-tab','summary');
+  localStorage.removeItem('v42-open-compare');
   location.hash='#/teamDetail';
 }
 function teamLogoHtml(name,cls='v62-team-logo'){
