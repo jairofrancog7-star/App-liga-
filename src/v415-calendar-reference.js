@@ -316,21 +316,21 @@ function statusText(g){
 function matchCard(g){
   const roundText=g.round?'Jornada '+g.round:'Partido oficial';
   const dateLine=shortDate(g.iso)+(g.time?' · '+g.time:'');
-  const status=statusText(g);
-  return '<article class="v415-match-card">'+
-    '<div class="v415-match-meta"><b>'+esc(g.category)+'</b><span>·</span><span>'+esc(roundText)+'</span></div>'+
-    '<div class="v415-match-date">'+esc(dateLine)+'</div>'+
-    '<div class="v415-match-main">'+
-      '<div class="v415-match-team">'+logoMarkup(g.home,'large')+'<b>'+esc(g.home)+'</b></div>'+
-      '<div class="v415-match-center">'+
-        (g.score?'<strong class="v415-match-score">'+esc(g.homeScore)+' <span>–</span> '+esc(g.awayScore)+'</strong>':'')+
+  return '<article class="v415-match-card v448-reference-card">'+
+    '<header class="v448-card-head">'+
+      '<div class="v415-match-meta"><b>'+esc(g.category)+'</b><span>·</span><span>'+esc(roundText)+'</span></div>'+
+      '<div class="v415-match-date">'+esc(dateLine)+'</div>'+
+    '</header>'+
+    '<div class="v415-match-main v448-teams-row">'+
+      '<div class="v415-match-team v448-home">'+logoMarkup(g.home,'large')+'<b>'+esc(g.home)+'</b></div>'+
+      '<div class="v415-match-center v448-center-action">'+
         '<button type="button" class="v415-add-calendar" data-v415-add-calendar="'+esc(g.id)+'" aria-label="Agregar partido al calendario"><span>＋</span><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="5" width="16" height="15" rx="2"/><path d="M8 3v4M16 3v4M4 9h16"/></svg></button>'+
       '</div>'+
-      '<div class="v415-match-team">'+logoMarkup(g.away,'large')+'<b>'+esc(g.away)+'</b></div>'+
+      '<div class="v415-match-team v448-away">'+logoMarkup(g.away,'large')+'<b>'+esc(g.away)+'</b></div>'+
     '</div>'+
     '<button type="button" class="v415-primary-match-action" data-v415-open-match="'+esc(g.id)+'"><span class="v415-ticket-icon" aria-hidden="true"><i></i></span><b>Ver detalles</b></button>'+
     '<button type="button" class="v415-venue" data-v415-open-match="'+esc(g.id)+'"><span>Área de partido</span></button>'+
-    '<div class="v415-match-footer"><b>'+esc(g.category)+(g.round?' · Jornada '+esc(g.round):'')+'</b><span>'+esc(g.venue||'Campo por confirmar')+'</span><small>'+esc(status)+'</small></div>'+
+    '<footer class="v415-match-footer"><b>'+esc(g.category)+(g.round?' · Jornada '+esc(g.round):'')+'</b><span>'+esc(g.venue||'Campo por confirmar')+'</span></footer>'+
   '</article>';
 }
 
