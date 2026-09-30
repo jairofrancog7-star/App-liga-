@@ -296,9 +296,7 @@ function chooseCategory(id){
   return false;
 }
 function bind(root){
-  root.querySelectorAll('[data-v194-mode]').forEach(b=>b.addEventListener('click',()=>chooseMode(b.dataset.v194Mode)));
-
-  root.querySelectorAll('[data-v194-cat]').forEachfunction bind(root){
+  if(!root)return;
   root.querySelectorAll('[data-v194-cat]').forEach(b=>{
     b.addEventListener('click',e=>{
       e.preventDefault();
@@ -306,7 +304,9 @@ function bind(root){
       chooseCategory(b.dataset.v194Cat);
     });
   });
-  root.querySelectorAll('[data-v194-open-team]').forEach(b=>b.addEventListener('click',()=>openTeam(b.dataset.v194OpenTeam||'')));
+  root.querySelectorAll('[data-v194-open-team]').forEach(b=>{
+    b.addEventListener('click',()=>openTeam(b.dataset.v194OpenTeam||''));
+  });
 }
 function delegatedClick(e){
   if(route()!=='scorers'||!(e.target instanceof Element))return;
