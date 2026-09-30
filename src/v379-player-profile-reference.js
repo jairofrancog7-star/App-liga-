@@ -52,6 +52,41 @@ function paletteStyle(name){
   const c=teamPalette(name);
   return '--v379-kit1:'+c[0]+';--v379-kit2:'+c[1]+';--v379-kit3:'+c[2]+';';
 }
+function avatarHash(v){
+  let h=2166136261;
+  for(const ch of String(v||'')){h^=ch.charCodeAt(0);h=Math.imul(h,16777619)}
+  return h>>>0;
+}
+function simulatedAvatarStyle(p){
+  const h=avatarHash((p?.name||'')+'|'+(p?.team||''));
+  const skins=[
+    ['#f1c6a7','#d89a78','#9a5c47'],
+    ['#e8b58f','#c98564','#88503e'],
+    ['#d99b73','#b76f50','#754332'],
+    ['#c9845f','#a65d43','#693829'],
+    ['#a96749','#874932','#573022'],
+    ['#8a5038','#6d3b29','#43251b']
+  ];
+  const hairs=['#0c1018','#241a17','#3a241a','#161616','#4a2a1b','#080808'];
+  const skin=skins[h%skins.length],hair=hairs[(h>>>3)%hairs.length];
+  const eye=(h>>>7)%3===0?'#30251f':'#171719';
+  const beard=(h>>>9)%4;
+  const hairStyle=(h>>>12)%4;
+  const face=(h>>>15)%3;
+  const pose=(h>>>18)%3;
+  return paletteStyle(p?.team||'')+
+    '--v379-skin1:'+skin[0]+';--v379-skin2:'+skin[1]+';--v379-skin3:'+skin[2]+';'+
+    '--v379-hair:'+hair+';--v379-eye:'+eye+';'+
+    '--v379-beard:'+beard+';--v379-hair-style:'+hairStyle+';--v379-face:'+face+';--v379-pose:'+pose+';';
+}
+function simulatedHeadMarkup(p,cls='v379-sim-head'){
+  return '<span class="'+cls+'" style="'+simulatedAvatarStyle(p)+'" title="Avatar simulado">'+
+    '<i class="v379-sim-neck"></i><i class="v379-sim-face"></i><i class="v379-sim-hair"></i>'+
+    '<i class="v379-sim-ear left"></i><i class="v379-sim-ear right"></i>'+
+    '<i class="v379-sim-eye left"></i><i class="v379-sim-eye right"></i>'+
+    '<i class="v379-sim-nose"></i><i class="v379-sim-mouth"></i><i class="v379-sim-beard"></i>'+
+  '</span>';
+}
 function dash(v){return v===undefined||v===null||String(v).trim()===''?'—':String(v)}
 function attr(v){return esc(String(v??''))}
 function isDataImage(v){return /^data:image\/(?:png|jpe?g|webp);base64,/i.test(String(v||''))}
@@ -170,11 +205,14 @@ function hero(p,d){
   const photo=d.photo;
   const visual=photo
     ? '<img class="v379-player-photo" src="'+esc(photo)+'" alt="'+esc(p.name)+'">'
-    : '<div class="v379-player-silhouette" style="'+paletteStyle(p.team)+'" aria-hidden="true">'+
+    : '<div class="v379-player-silhouette v382-simulated-player" style="'+simulatedAvatarStyle(p)+'" aria-label="Avatar simulado de '+esc(p.name)+'">'+
         '<span class="v379-player-body"><i class="v379-kit-logo">'+teamLogo(p.team)+'</i></span>'+
         '<span class="v379-player-neck"></span>'+
         '<span class="v379-player-head"></span>'+
-        '<span class="v379-player-hair"></span>'+
+        '<span class="v379-player-ear left"></span><span class="v379-player-ear right"></span>'+
+        '<span class="v379-player-eye left"></span><span class="v379-player-eye right"></span>'+
+        '<span class="v379-player-nose"></span><span class="v379-player-mouth"></span>'+
+        '<span class="v379-player-beard"></span><span class="v379-player-hair"></span>'+
       '</div>';
   return '<section class="v379-hero" style="'+paletteStyle(p.team)+'">'+backButton()+shareButton()+
     '<div class="v379-hero-pattern" aria-hidden="true"></div>'+visual+
@@ -202,7 +240,7 @@ function relatedHtml(p,list){
   if(!rel.length)return '';
   return '<section class="v379-block">'+sectionTitle('Jugadores relacionados','','')+
     '<div class="v379-related">'+rel.map(x=>'<button type="button" class="v379-related-card" data-v379-related="'+attr(x.name)+'" data-v379-related-team="'+attr(x.team)+'" data-v379-related-cat="'+attr(x.cat)+'">'+
-      '<span class="v379-related-avatar">'+esc(initials(x.name))+'</span>'+
+      simulatedHeadMarkup(x,'v379-related-avatar v382-related-sim')+
       '<span class="v379-related-logo">'+teamLogo(x.team)+'</span>'+
       '<strong>'+esc(x.name)+'</strong><small>'+esc(x.category||x.team)+'</small>'+
     '</button>').join('')+'</div></section>';
@@ -248,7 +286,7 @@ function stats(p,list){
     statRow('Duelos','—','No publicado')+statRow('Entradas con éxito','—','No publicado')+statRow('Balones recuperados','—','No publicado')+statRow('Despejes completados','—','No publicado')+
    '</section>'+
    '<section class="v379-block">'+sectionTitle('Comparar jugador','','')+
-    '<button type="button" class="v379-compare-wide" data-v379-compare><span class="v379-related-avatar">'+esc(initials(p.name))+'</span><span><b>'+esc(p.name)+'</b><small>'+esc(p.team)+'</small></span><strong>Comparar</strong></button>'+
+    '<button type="button" class="v379-compare-wide" data-v379-compare>'+simulatedHeadMarkup(p,'v379-related-avatar v382-related-sim')+'<span><b>'+esc(p.name)+'</b><small>'+esc(p.team)+'</small></span><strong>Comparar</strong></button>'+
    '</section>'+relatedHtml(p,list)+'</div>';
 }
 function matchList(p){
