@@ -51,16 +51,24 @@
 .v421-watch-open{width:100%;min-height:46px;display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:12px;padding:0 12px;border:1px solid rgba(114,142,229,.17);border-radius:10px;background:#101438;color:#fff;text-align:left}
 .v421-watch-open b{font-size:9px}.v421-watch-open small{display:block;margin-top:2px;color:#8f9abd;font-size:7px}.v421-watch-open span:last-child{color:#28e3ef;font-size:17px}
 
-/* Dónde verlo — V422: proporciones de la referencia, sólo adaptadas al azul oscuro */
+/* Dónde verlo — V423: réplica geométrica de la captura, adaptada sólo en datos */
+html:has(body.v421-watch-active),
 body.v421-watch-active,
 body.v421-watch-active #app,
-body.v421-watch-active .app-shell{
-  background:#050611!important;
+body.v421-watch-active .app-shell,
+body.v421-watch-active #screen{
+  background:#000!important;
+  background-color:#000!important;
   background-image:none!important;
 }
 body.v421-watch-active #app>.topbar,
-body.v421-watch-active .app-shell>.topbar{
+body.v421-watch-active .app-shell>.topbar,
+body.v421-watch-active #app>.bottom-nav,
+body.v421-watch-active .app-shell>.bottom-nav,
+body.v421-watch-active #app>nav.bottom-nav,
+body.v421-watch-active nav.bottom-nav{
   display:none!important;
+  visibility:hidden!important;
   height:0!important;
   min-height:0!important;
   max-height:0!important;
@@ -71,11 +79,12 @@ body.v421-watch-active .app-shell>.topbar{
 body.v421-watch-active #screen{
   width:100%!important;
   max-width:none!important;
+  min-height:100dvh!important;
   margin:0!important;
   padding:0!important;
   border:0!important;
   box-shadow:none!important;
-  background:#050611!important;
+  overflow-x:hidden!important;
 }
 body.v421-watch-active #screen::before,
 body.v421-watch-active #screen::after,
@@ -84,159 +93,174 @@ body.v421-watch-active .app-shell::after{
   display:none!important;
   content:none!important;
 }
+
 .v421-watch-page{
-  box-sizing:border-box;
-  width:100%;
-  max-width:760px;
-  min-height:calc(100dvh - 82px);
-  margin:0 auto;
-  padding:25px 16px 118px;
-  overflow:hidden;
-  background:#050611;
-  color:#fff;
-  font-family:Inter,Roboto,Arial,sans-serif;
+  box-sizing:border-box!important;
+  width:100%!important;
+  max-width:760px!important;
+  min-height:100dvh!important;
+  margin:0 auto!important;
+  padding:16px 16px 96px!important;
+  overflow:hidden!important;
+  background:#000!important;
+  color:#fff!important;
+  font-family:Inter,Roboto,Arial,sans-serif!important;
 }
-.v421-watch-page *{box-sizing:border-box}
+.v421-watch-page *{box-sizing:border-box!important}
+
 .v421-watch-head{
-  display:flex;
-  align-items:center;
-  gap:13px;
-  margin:0 0 30px;
+  display:flex!important;
+  align-items:center!important;
+  gap:12px!important;
+  margin:0 0 33px!important;
+  padding:0!important;
 }
 .v421-watch-back{
-  width:44px;
-  height:44px;
-  display:grid;
-  place-items:center;
-  flex:0 0 44px;
-  padding:0;
-  border:1px solid rgba(255,255,255,.10);
-  border-radius:50%;
-  background:#161820;
-  color:#fff;
-  font-size:22px;
-  line-height:1;
-  box-shadow:none;
+  width:40px!important;
+  height:40px!important;
+  display:grid!important;
+  place-items:center!important;
+  flex:0 0 40px!important;
+  padding:0!important;
+  border:1px solid #2b2b2b!important;
+  border-radius:50%!important;
+  background:#1a1a1a!important;
+  color:#fff!important;
+  font-size:21px!important;
+  line-height:1!important;
+  font-weight:500!important;
+  box-shadow:none!important;
 }
 .v421-watch-head h1{
-  margin:0;
-  color:#fff;
-  font-size:22px;
-  line-height:1;
-  font-weight:850;
-  letter-spacing:-.02em;
+  margin:0!important;
+  color:#fff!important;
+  font-size:19px!important;
+  line-height:1!important;
+  font-weight:850!important;
+  letter-spacing:-.015em!important;
 }
+
 .v421-watch-days{
-  display:flex;
-  align-items:center;
-  gap:10px;
-  overflow-x:auto;
-  margin:0 -16px 22px;
-  padding:0 16px 2px;
-  scrollbar-width:none;
-  -webkit-overflow-scrolling:touch;
+  display:flex!important;
+  align-items:center!important;
+  gap:10px!important;
+  overflow-x:auto!important;
+  width:calc(100% + 32px)!important;
+  margin:0 -16px 20px!important;
+  padding:0 16px 1px!important;
+  scrollbar-width:none!important;
+  -webkit-overflow-scrolling:touch!important;
 }
-.v421-watch-days::-webkit-scrollbar{display:none}
+.v421-watch-days::-webkit-scrollbar{display:none!important}
 .v421-watch-day{
-  height:42px;
-  min-width:0;
-  flex:0 0 auto;
-  padding:0 18px;
-  border:1px solid rgba(255,255,255,.10);
-  border-radius:22px;
-  background:#161820;
-  color:#f1f2f7;
-  font-size:12px;
-  line-height:40px;
-  font-weight:750;
-  white-space:nowrap;
-  box-shadow:none;
+  height:42px!important;
+  min-width:0!important;
+  flex:0 0 auto!important;
+  padding:0 18px!important;
+  border:1px solid #2b2b2b!important;
+  border-radius:22px!important;
+  background:#1a1a1a!important;
+  color:#f5f5f5!important;
+  font-size:12px!important;
+  line-height:40px!important;
+  font-weight:750!important;
+  white-space:nowrap!important;
+  box-shadow:none!important;
 }
 .v421-watch-day.active{
-  border:2px solid #fff;
-  padding:0 17px;
-  background:#161820;
-  color:#fff;
-  line-height:38px;
+  padding:0 17px!important;
+  border:2px solid #fff!important;
+  background:#1a1a1a!important;
+  color:#fff!important;
+  line-height:38px!important;
+  box-shadow:none!important;
 }
+
 .v421-watch-card{
-  overflow:hidden;
-  margin:0;
-  border:1px solid rgba(255,255,255,.10);
-  border-radius:12px;
-  background:#17191c;
-  box-shadow:none;
+  overflow:hidden!important;
+  width:100%!important;
+  margin:0!important;
+  border:1px solid #2b2b2b!important;
+  border-radius:8px!important;
+  background:#1a1a1a!important;
+  box-shadow:none!important;
 }
 .v421-watch-row{
-  display:grid;
-  grid-template-columns:58px minmax(0,1fr);
-  gap:10px;
-  min-height:89px;
-  padding:16px 17px 14px;
-  border-bottom:1px solid rgba(255,255,255,.08);
-  background:transparent;
+  display:grid!important;
+  grid-template-columns:49px minmax(0,1fr)!important;
+  gap:0!important;
+  min-height:53px!important;
+  padding:14px 17px 13px!important;
+  border-bottom:1px solid #2b2b2b!important;
+  background:#1a1a1a!important;
 }
-.v421-watch-row:last-child{border-bottom:0}
+.v421-watch-row:last-child{border-bottom:0!important}
 .v421-watch-time{
-  padding-top:1px;
-  color:#f5f5f7;
-  font-size:13px;
-  line-height:1.1;
-  font-weight:850;
+  padding-top:1px!important;
+  color:#f5f5f5!important;
+  font-size:12px!important;
+  line-height:1.15!important;
+  font-weight:850!important;
 }
-.v421-watch-game{min-width:0}
+.v421-watch-game{
+  min-width:0!important;
+  padding:0!important;
+}
 .v421-watch-game b{
-  display:block;
-  overflow:hidden;
-  color:#f5f5f7;
-  font-size:12px;
-  line-height:1.25;
-  font-weight:800;
-  text-overflow:ellipsis;
+  display:block!important;
+  overflow:visible!important;
+  color:#f5f5f5!important;
+  font-size:12px!important;
+  line-height:1.25!important;
+  font-weight:800!important;
+  white-space:normal!important;
+  text-overflow:clip!important;
 }
 .v421-provider{
-  display:inline-flex;
-  align-items:center;
-  margin-top:8px;
-  padding:0;
-  border:0;
-  border-radius:0;
-  background:transparent;
-  color:#7caaf8;
-  font-size:10px;
-  line-height:1.2;
-  font-weight:800;
-  text-decoration:underline;
+  display:inline-flex!important;
+  align-items:center!important;
+  margin-top:8px!important;
+  padding:0!important;
+  border:0!important;
+  border-radius:0!important;
+  background:transparent!important;
+  color:#7fb0ff!important;
+  font-size:10px!important;
+  line-height:1.2!important;
+  font-weight:750!important;
+  text-decoration:underline!important;
 }
 .v421-provider.is-empty{
-  color:#9d9da6;
-  font-weight:600;
-  text-decoration:none;
+  color:#9f9f9f!important;
+  font-weight:600!important;
+  text-decoration:none!important;
 }
-button.v421-provider{cursor:pointer}
+button.v421-provider{cursor:pointer!important}
 .v421-watch-empty{
-  padding:24px 18px;
-  color:#9899a3;
-  font-size:10px;
-  line-height:1.4;
-  text-align:center;
+  min-height:84px!important;
+  display:grid!important;
+  place-items:center!important;
+  padding:20px 18px!important;
+  color:#9f9f9f!important;
+  font-size:10px!important;
+  line-height:1.4!important;
+  text-align:center!important;
 }
-@media(max-width:430px){
-  .v421-watch-page{padding:24px 16px 110px}
-  .v421-watch-head{margin-bottom:28px}
-  .v421-watch-back{width:42px;height:42px;flex-basis:42px;font-size:21px}
-  .v421-watch-head h1{font-size:21px}
-  .v421-watch-day{height:40px;padding:0 16px;border-radius:21px;font-size:11px;line-height:38px}
-  .v421-watch-day.active{padding:0 15px;line-height:36px}
-  .v421-watch-row{grid-template-columns:54px minmax(0,1fr);min-height:86px;padding:15px 15px 13px}
-  .v421-watch-time{font-size:12px}
-  .v421-watch-game b{font-size:11px}
-  .v421-provider{font-size:9px}
+
+@media(max-width:390px){
+  .v421-watch-page{padding:16px 16px 92px!important}
+  .v421-watch-head{margin-bottom:33px!important}
+  .v421-watch-back{width:40px!important;height:40px!important;flex-basis:40px!important}
+  .v421-watch-head h1{font-size:19px!important}
+  .v421-watch-day{height:42px!important;padding:0 18px!important;font-size:12px!important;line-height:40px!important}
+  .v421-watch-day.active{padding:0 17px!important;line-height:38px!important}
+  .v421-watch-row{grid-template-columns:49px minmax(0,1fr)!important;padding:14px 17px 13px!important}
+  .v421-watch-time,.v421-watch-game b{font-size:12px!important}
+  .v421-provider{font-size:10px!important}
 }
-@media(max-width:370px){
-  .v421-watch-page{padding-left:14px;padding-right:14px}
-  .v421-watch-days{margin-left:-14px;margin-right:-14px;padding-left:14px;padding-right:14px}
-  .v421-watch-day{padding-left:14px;padding-right:14px;font-size:10px}
-  .v421-watch-day.active{padding-left:13px;padding-right:13px}
-  .v421-watch-row{grid-template-columns:50px minmax(0,1fr);gap:8px}
+@media(max-width:350px){
+  .v421-watch-page{padding-left:15px!important;padding-right:15px!important}
+  .v421-watch-days{width:calc(100% + 30px)!important;margin-left:-15px!important;margin-right:-15px!important;padding-left:15px!important;padding-right:15px!important}
+  .v421-watch-day{padding-left:16px!important;padding-right:16px!important;font-size:11px!important}
+  .v421-watch-day.active{padding-left:15px!important;padding-right:15px!important}
 }
