@@ -405,7 +405,7 @@ function exactPlayerFromTarget(target,list){
 }
 
 document.addEventListener('click',e=>{
- if(route()==='playerCompare')return;
+ if(route()==='playerCompare'||route()==='club-store')return;
  if(e.defaultPrevented)return;
  if(!(e.target instanceof Element))return;
  const target=e.target;
