@@ -111,6 +111,114 @@ function compareRows(a,b){
   '</div>';
  }).join('');
 }
+
+/* V373 — detalle del comparador según referencia de video.
+   No inventa métricas: usa clasificación/resultados oficiales y marca con —
+   cualquier estadística que AdminFut no publique. */
+function playedTeamGames(cat,name,mode){
+ return fixtures(cat).filter(function(r){
+  const stage=String(r?.[1]||'');
+  const knockout=KNOCKOUT.test(stage);
+  if(mode==='final'?!knockout:knockout)return false;
+  if(norm(r?.[2])!==norm(name)&&norm(r?.[6])!==norm(name))return false;
+  return num(r?.[3])!==null&&num(r?.[5])!==null;
+ });
+}
+function advancedStats(cat,name,mode,base){
+ const games=playedTeamGames(cat,name,mode);
+ let scored=0,blank=0,clean=0,conceded=0;
+ games.forEach(function(r){
+  const home=norm(r?.[2])===norm(name),a=num(r?.[3])||0,b=num(r?.[5])||0;
+  const mine=home?a:b,other=home?b:a;
+  if(mine>0)scored++;else blank++;
+  if(other===0)clean++;else conceded++;
+ });
+ const pj=base?.pj??games.length??0,gf=base?.gf,gc=base?.gc;
+ return {
+  pj:pj,
+  gf:gf,
+  gc:gc,
+  gfPer:Number.isFinite(Number(gf))&&Number(pj)>0?(Number(gf)/Number(pj)):null,
+  gcPer:Number.isFinite(Number(gc))&&Number(pj)>0?(Number(gc)/Number(pj)):null,
+  scoredGames:games.length?scored:null,
+  blankGames:games.length?blank:null,
+  cleanSheets:games.length?clean:null,
+  concededGames:games.length?conceded:null
+ };
+}
+function formatMetric(v,digits){
+ if(v===null||v===undefined||v==='')return '—';
+ if(typeof v==='number'&&Number.isFinite(v))return digits?String(v.toFixed(digits)):String(v);
+ return String(v);
+}
+function detailedRow(label,av,bv,digits){
+ const as=formatMetric(av,digits),bs=formatMetric(bv,digits);
+ const an=Number(av),bn=Number(bv),numeric=Number.isFinite(an)&&Number.isFinite(bn);
+ const max=numeric?Math.max(Math.abs(an),Math.abs(bn),1):1;
+ const aw=numeric?Math.max(an===0?0:6,Math.round(Math.abs(an)/max*100)):0;
+ const bw=numeric?Math.max(bn===0?0:6,Math.round(Math.abs(bn)/max*100)):0;
+ return '<div class="v373-detail-row '+(!numeric?'is-unavailable':'')+'">'+
+   '<div class="v373-detail-values"><b>'+esc(as)+'</b><span>'+esc(label)+'</span><b>'+esc(bs)+'</b></div>'+
+   '<div class="v373-detail-bars"><i><em style="width:'+aw+'%"></em></i><i><em style="width:'+bw+'%"></em></i></div>'+
+  '</div>';
+}
+function detailedSection(key,title,rows,note){
+ return '<section class="v373-stat-section is-open" data-v373-section="'+esc(key)+'">'+
+  '<button type="button" class="v373-section-head" data-v373-toggle="'+esc(key)+'" aria-expanded="true"><b>'+esc(title)+'</b><span>⌃</span></button>'+
+  '<div class="v373-section-body">'+rows+(note?'<p class="v373-section-note">'+esc(note)+'</p>':'')+'</div>'+
+ '</section>';
+}
+function detailedStats(cat,a,b){
+ const aa=advancedStats(cat,compareState.teamA,compareState.modeA,a);
+ const bb=advancedStats(cat,compareState.teamB,compareState.modeB,b);
+ const keyRows=compareRows(a,b);
+
+ const attack=
+  detailedRow('Goles',a?.gf,b?.gf,0)+
+  detailedRow('Goles por partido',aa.gfPer,bb.gfPer,1)+
+  detailedRow('Partidos marcando',aa.scoredGames,bb.scoredGames,0)+
+  detailedRow('Partidos sin marcar',aa.blankGames,bb.blankGames,0)+
+  detailedRow('Disparos totales',null,null,0)+
+  detailedRow('Disparos a puerta',null,null,0)+
+  detailedRow('Saques de esquina',null,null,0);
+
+ const distribution=
+  detailedRow('Precisión de pase (%)',null,null,0)+
+  detailedRow('Posesión',null,null,0)+
+  detailedRow('Centros completados',null,null,0)+
+  detailedRow('Centros realizados',null,null,0)+
+  detailedRow('Pases a zona clave',null,null,0)+
+  detailedRow('Pases al área',null,null,0);
+
+ const defense=
+  detailedRow('Goles encajados',a?.gc,b?.gc,0)+
+  detailedRow('Goles encajados por partido',aa.gcPer,bb.gcPer,1)+
+  detailedRow('Porterías a cero',aa.cleanSheets,bb.cleanSheets,0)+
+  detailedRow('Partidos recibiendo gol',aa.concededGames,bb.concededGames,0)+
+  detailedRow('Duelos',null,null,0)+
+  detailedRow('Despejes',null,null,0)+
+  detailedRow('Disparos concedidos',null,null,0);
+
+ const goalkeeping=
+  detailedRow('Porterías a cero',aa.cleanSheets,bb.cleanSheets,0)+
+  detailedRow('Goles encajados',a?.gc,b?.gc,0)+
+  detailedRow('Paradas',null,null,0)+
+  detailedRow('Penaltis parados',null,null,0);
+
+ const note='Las filas con — no están publicadas por la fuente oficial de la Liga; no se inventan valores.';
+ return detailedSection('key','Datos clave',keyRows,'Datos oficiales de clasificación o fase final.')+
+  detailedSection('attack','Ataque',attack,note)+
+  detailedSection('distribution','Distribución',distribution,note)+
+  detailedSection('defense','Defensa',defense,note)+
+  detailedSection('goalkeeping','Portería',goalkeeping,note);
+}
+function stickyDuel(cat){
+ return '<div class="v373-sticky-duel">'+
+   '<span><img src="'+esc(logoUrl(compareState.teamA))+'" alt=""><b>'+esc(compareState.teamA)+'</b><small>'+esc(cat?.name||'Liga')+'</small></span>'+
+   '<span><b>'+esc(compareState.teamB)+'</b><small>'+esc(cat?.name||'Liga')+'</small><img src="'+esc(logoUrl(compareState.teamB))+'" alt=""></span>'+
+  '</div>';
+}
+
 function card(side,name,cat){
  const mode=side==='a'?compareState.modeA:compareState.modeB;
  const menu=compareState.modeMenu===side?
@@ -134,16 +242,22 @@ function teamPicker(cat){
  if(!compareState?.picker)return '';
  const side=compareState.picker;
  const other=side==='a'?compareState.teamB:compareState.teamA;
+ const selected=side==='a'?compareState.teamA:compareState.teamB;
+ const names=teamNames(cat);
+ const tile=function(name,compact){
+  const disabled=norm(name)===norm(other),current=norm(name)===norm(selected);
+  return '<button type="button" class="'+(current?'is-selected ':'')+(compact?'is-compact':'')+'" data-v369-team-choice="'+esc(name)+'" data-side="'+side+'" '+(disabled?'disabled':'')+' data-search="'+esc(norm(name))+'">'+
+    '<span class="v373-picker-logo"><img src="'+esc(logoUrl(name))+'" alt=""></span>'+
+    '<span>'+esc(name)+'</span>'+(current?'<i>✓</i>':'')+
+   '</button>';
+ };
  return '<div class="v369-picker-layer" data-v369-close-picker>'+
-  '<section class="v369-picker-sheet" onclick="event.stopPropagation()">'+
-   '<header><div><small>'+esc(cat?.name||'Categoría')+'</small><h2>Seleccionar equipo</h2></div><button type="button" data-v369-close-picker>Hecho</button></header>'+
-   '<label class="v369-picker-search"><span>⌕</span><input type="search" data-v369-team-search placeholder="Buscar equipo" autocomplete="off"></label>'+
-   '<div class="v369-picker-grid">'+teamNames(cat).map(function(name){
-    const disabled=norm(name)===norm(other);
-    return '<button type="button" data-v369-team-choice="'+esc(name)+'" data-side="'+side+'" '+(disabled?'disabled':'')+' data-search="'+esc(norm(name))+'">'+
-      '<img src="'+esc(logoUrl(name))+'" alt=""><span>'+esc(name)+'</span>'+
-    '</button>';
-   }).join('')+'</div>'+
+  '<section class="v369-picker-sheet v373-picker-page" onclick="event.stopPropagation()">'+
+   '<header class="v373-picker-top"><button type="button" data-v369-close-picker aria-label="Cerrar">×</button></header>'+
+   '<label class="v369-picker-search"><span>⌕</span><input type="search" data-v369-team-search placeholder="Buscar equipos" autocomplete="off"></label>'+
+   '<div class="v373-picker-average"><span>AT</span><div><b>Promedio: todos los equipos</b><small>Promedio de estadísticas por partido de todos los equipos</small></div></div>'+
+   '<section class="v373-picker-group"><h2>Tus equipos</h2><div class="v373-picker-yours">'+tile(compareState.teamA,true)+tile(compareState.teamB,true)+'</div></section>'+
+   '<section class="v373-picker-group"><h2>Equipos en la competición</h2><div class="v369-picker-grid">'+names.map(function(name){return tile(name,false)}).join('')+'</div></section>'+
   '</section>'+
  '</div>';
 }
@@ -163,9 +277,10 @@ function compareMarkup(){
    '<section class="v369-club-zone">'+
     '<div class="v369-teams-grid">'+card('a',compareState.teamA,cat)+card('b',compareState.teamB,cat)+'</div>'+
    '</section>'+
+   stickyDuel(cat)+
    '<section class="v369-stats-zone">'+
     '<div class="v369-compare-caption"><span>'+esc(modeLabel(compareState.modeA))+'<small>'+esc(noteA)+'</small></span><b>VS</b><span>'+esc(modeLabel(compareState.modeB))+'<small>'+esc(noteB)+'</small></span></div>'+
-    '<div class="v369-stat-list">'+compareRows(a,b)+'</div>'+
+    detailedStats(cat,a,b)+
    '</section>'+
    '<section class="v369-compare-actions">'+
     '<button type="button" data-v369-go="matches"><span>Partidos</span><small>Ver calendario</small></button>'+
@@ -321,6 +436,15 @@ document.addEventListener('click',function(e){
 
  if(e.target.closest('[data-v369-close]')){closeCompare();return}
  if(e.target.closest('[data-v369-share]')){shareCompare();return}
+ const sectionToggle=e.target.closest('[data-v373-toggle]');
+ if(sectionToggle){
+  const section=sectionToggle.closest('[data-v373-section]');
+  if(section){
+   const open=section.classList.toggle('is-open');
+   sectionToggle.setAttribute('aria-expanded',String(open));
+  }
+  return;
+ }
  const picker=e.target.closest('[data-v369-pick-team]');
  if(picker&&compareState){compareState.picker=picker.dataset.v369PickTeam;compareState.modeMenu='';mountCompare();return}
  if(e.target.matches('[data-v369-close-picker]')||e.target.closest('[data-v369-close-picker]')){if(compareState){compareState.picker='';mountCompare()}return}
