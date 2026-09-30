@@ -130,7 +130,7 @@
   <link rel="stylesheet" href="./src/v100-tools-header-clean.css?v=20260922-jrcontrol-singlebar-v190" />
   <link rel="stylesheet" href="./src/v103-home-calendar-restore.css?v=20260922-calendar-all-categories-v185" />
 <link rel="stylesheet" href="./src/v105-green-app-bottom.css?v=20260922-meeting-tuesday-v161" />
-  <link rel="stylesheet" href="./src/v160-green-adapted-functions.css?v=20260930-v406-tv-actions-hardfix" />
+  <link rel="stylesheet" href="./src/v160-green-adapted-functions.css?v=20260930-v407-tv-nav-visible-actions-above" />
   <link rel="stylesheet" href="./src/v163-weather-green-reference-blue.css?v=20260922-weather-blue-analysis-v173" />
   <link rel="stylesheet" href="./src/v122-teamdetail-header-clean.css?v=20260921-teamdetail-clean1" />
   <link rel="stylesheet" href="./src/v123-global-entity-compare.css?v=20260929-player-position-groups-v208" />
@@ -450,45 +450,37 @@
 
 <script>
 (function(){
-  if(window.__LJR_V406_TV_NAV_HARD_HIDE__) return;
-  window.__LJR_V406_TV_NAV_HARD_HIDE__=true;
+  if(window.__LJR_V407_TV_NAV_VISIBLE__) return;
+  window.__LJR_V407_TV_NAV_VISIBLE__=true;
 
-  const NAV_PROPS=['display','visibility','opacity','pointer-events'];
   function setImp(el,name,value){ if(el) el.style.setProperty(name,value,'important'); }
-  function clear(el){ if(!el)return; NAV_PROPS.forEach(p=>el.style.removeProperty(p)); }
-
   function syncTvChrome(){
     const layer=document.querySelector('body > .v160-tv-layer');
-    const navs=document.querySelectorAll('#app > .bottom-nav,.app-shell > .bottom-nav,nav.bottom-nav');
+    if(!layer)return;
 
-    navs.forEach(nav=>{
-      if(layer){
-        setImp(nav,'display','none');
-        setImp(nav,'visibility','hidden');
-        setImp(nav,'opacity','0');
-        setImp(nav,'pointer-events','none');
-      }else{
-        clear(nav);
-      }
+    document.querySelectorAll('#app > .bottom-nav,.app-shell > .bottom-nav,nav.bottom-nav').forEach(nav=>{
+      setImp(nav,'display','grid');
+      setImp(nav,'visibility','visible');
+      setImp(nav,'opacity','1');
+      setImp(nav,'pointer-events','auto');
+      setImp(nav,'z-index','2147483000');
     });
 
-    if(layer){
-      setImp(layer,'z-index','2147483646');
-      setImp(layer,'padding-bottom','calc(92px + env(safe-area-inset-bottom))');
-      const board=layer.querySelector('.v160-tv-board');
-      const actions=layer.querySelector('.v160-tv-actions');
-      if(board)setImp(board,'padding-bottom','calc(48px + env(safe-area-inset-bottom))');
-      if(actions){
-        setImp(actions,'display','grid');
-        setImp(actions,'visibility','visible');
-        setImp(actions,'opacity','1');
-        setImp(actions,'z-index','20');
-      }
+    setImp(layer,'z-index','2147482500');
+    setImp(layer,'padding-bottom','calc(var(--v34-nav-h,69px) + 54px + env(safe-area-inset-bottom))');
+    setImp(layer,'scroll-padding-bottom','calc(var(--v34-nav-h,69px) + 54px + env(safe-area-inset-bottom))');
+
+    const actions=layer.querySelector('.v160-tv-actions');
+    if(actions){
+      setImp(actions,'display','grid');
+      setImp(actions,'visibility','visible');
+      setImp(actions,'opacity','1');
+      setImp(actions,'z-index','20');
+      setImp(actions,'margin-bottom','14px');
     }
   }
 
   new MutationObserver(syncTvChrome).observe(document.documentElement,{childList:true,subtree:true});
-  window.addEventListener('hashchange',syncTvChrome);
   window.addEventListener('load',syncTvChrome);
   document.addEventListener('DOMContentLoaded',syncTvChrome,{once:true});
   syncTvChrome();
