@@ -1161,3 +1161,40 @@
     top:82px!important;
   }
 }
+
+
+/* V409 — Estadísticas vuelve a usar solamente su cabecera propia. */
+html body.v33-data-active #app > .topbar,
+html body.v33-data-active .app-shell > .topbar,
+html body[data-app-route="safe-data"] #app > .topbar,
+html body[data-app-route="safe-data"] .app-shell > .topbar,
+html body[data-app-route="leagueData"] #app > .topbar,
+html body[data-app-route="leagueData"] .app-shell > .topbar{
+  display:none!important;
+  visibility:hidden!important;
+  opacity:0!important;
+  height:0!important;
+  min-height:0!important;
+  max-height:0!important;
+  margin:0!important;
+  padding:0!important;
+  border:0!important;
+  overflow:hidden!important;
+  pointer-events:none!important;
+}
+
+/* La flecha y acciones propias de Estadísticas quedan en su cabecera azul,
+   como estaban antes de añadir la barra global. */
+html body.v33-data-active .v33-head-actions{
+  display:flex!important;
+  visibility:visible!important;
+  opacity:1!important;
+}
+html body.v33-data-active .v33-head-actions [data-v33-back],
+html body.v33-data-active .v33-head-actions [data-v33-share]{
+  display:grid!important;
+  visibility:visible!important;
+  opacity:1!important;
+  background:transparent!important;
+  border:0!important;
+}
