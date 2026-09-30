@@ -52,24 +52,28 @@ function localScheduleOverride(home,away){
   }catch{return null}
 }
 function homeUpcomingMarkup(){
-  const games=[
-    {home:'Franco FC',away:'Herreras FC',time:'08:00'},
-    {home:'Terricolas',away:'Galacticos',time:'08:00'}
-  ].map(g=>{
+  const all=calendarGames();
+  const today=new Date();
+  const todayIso=today.getFullYear()+'-'+String(today.getMonth()+1).padStart(2,'0')+'-'+String(today.getDate()).padStart(2,'0');
+  const upcoming=all.filter(g=>g.iso>=todayIso&&!g.played);
+  const targetDate=upcoming[0]?.iso||all.filter(g=>g.iso>=todayIso)[0]?.iso||'';
+  const games=(targetDate?all.filter(g=>g.iso===targetDate):[]).slice(0,4).map(g=>{
     const ch=localScheduleOverride(g.home,g.away);
-    return ch?{...g,time:ch.newTime||g.time,venue:ch.newVenue||'',changed:true}:g;
+    return ch?{...g,time:ch.newTime||g.time,venue:ch.newVenue||g.venue,changed:true}:g;
   });
+  const label=targetDate?targetDate.split('-').reverse().join('/'):'Por confirmar';
+  const round=games.find(g=>String(g.round||'').trim())?.round||'—';
   return '<div class="v103-upcoming-wrap" data-v103-upcoming>'+
     '<div class="v103-upcoming-head"><h2>Próximos partidos</h2><button type="button" data-safe-route="v4-calendar">Calendario</button></div>'+
     '<div class="v103-upcoming-card">'+
-      '<div class="v103-upcoming-meta"><span><i></i>EN VIVO · Jornada 5</span><b>18:00</b></div>'+
-      games.map((g,i)=>
+      '<div class="v103-upcoming-meta"><span><i></i>ROL OFICIAL · Jornada '+esc(round)+'</span><b>'+esc(label)+'</b></div>'+
+      (games.length?games.map((g,i)=>
         '<button type="button" class="v103-upcoming-match'+(i?' is-second':'')+'" data-route="competition" aria-label="'+esc(g.home)+' contra '+esc(g.away)+'">'+
           '<span class="v103-upcoming-team home"><b>'+esc(g.home)+'</b>'+teamMark(g.home)+'</span>'+
-          '<strong>'+esc(g.time)+'</strong>'+
+          '<strong>'+esc(/GANA\s+/i.test(g.status||'')?(g.status||'').replace(/^.*?(GANA\s+)/i,'$1'):g.time)+'</strong>'+
           '<span class="v103-upcoming-team away">'+teamMark(g.away)+'<b>'+esc(g.away)+'</b></span>'+
         '</button>'
-      ).join('')+
+      ).join(''):'<div class="v103-cal-empty">No hay próximos partidos oficiales publicados.</div>')+
     '</div>'+
   '</div>';
 }
