@@ -73,7 +73,7 @@ function markup(){
   const all=fixtures(),now=Date.now(),played=all.filter(x=>x.played).slice(-12).reverse(),upcoming=all.filter(x=>!x.played&&(!Number.isFinite(x.time)||x.time>=now-7200000)).slice(0,12),featured=(played.length?played:all).slice(0,10),clubList=teams();
   const empty='<div class="v428-tv-empty">El contenido aparecerá aquí cuando haya datos oficiales disponibles.</div>';
   return '<section class="v428-tv-feed" data-v428-tv-feed>'+
-    '<div class="v428-tv-title"><small>LIGA TV</small><h2>Ver en TV</h2><p>Contenido oficial de la Liga Juventino Rosas.</p></div>'+
+    '<div class="v428-tv-title"><div><small>LIGA TV</small><h2>Ver en TV</h2><p>Contenido oficial de la Liga Juventino Rosas.</p></div><button class="v439-connect-trigger" type="button" data-v439-connect>Conectar o transmitir</button></div>'+
     rail('Ver en vivo en Liga Juventino','Partidos próximos y transmisiones de la Liga',upcoming.length?upcoming.slice(0,7).map(m=>matchCard(m,'PRÓXIMO')).join(''):empty)+
     rail('Liga Juventino Rosas','Partidos, resultados y mejores momentos',featured.length?featured.slice(0,7).map(m=>matchCard(m,m.played?'MEJORES MOMENTOS':'PARTIDO')).join(''):empty)+
     rail('Videos oficiales de clubes','Contenido por equipo registrado',clubList.length?clubList.slice(0,9).map(clubCard).join(''):empty)+
@@ -83,6 +83,7 @@ function markup(){
   '</section>';
 }
 function bind(root){
+  root.querySelectorAll('[data-v439-connect]').forEach(b=>b.onclick=openCastSheet);
   root.querySelectorAll('[data-v428-match]').forEach(b=>b.onclick=()=>{location.hash='#/v4-matchcenter'});
   root.querySelectorAll('[data-v428-team]').forEach(b=>b.onclick=()=>{
     const name=b.dataset.v428Team||'';
@@ -108,7 +109,16 @@ function mount(){
 let t=0;
 function schedule(ms=30){clearTimeout(t);t=setTimeout(mount,ms)}
 new MutationObserver(()=>schedule(20)).observe(document.documentElement,{childList:true,subtree:true});
-window.addEventListener('hashchange',()=>schedule(40));
+document.addEventListener('click',e=>{
+  const target=e.target instanceof Element?e.target.closest('[data-v412-tv-mode="cast"],[data-v439-connect]'):null;
+  if(!target)return;
+  e.preventDefault();
+  e.stopPropagation();
+  e.stopImmediatePropagation();
+  openCastSheet();
+},true);
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeCastSheet()});
+window.addEventListener('hashchange',()=>{closeCastSheet();schedule(40)});
 window.addEventListener('load',()=>schedule(120));
 document.addEventListener('DOMContentLoaded',()=>schedule(60),{once:true});
 schedule(20);setTimeout(mount,500);setTimeout(mount,1500);
