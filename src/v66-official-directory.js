@@ -420,30 +420,44 @@ function shirtPalette(variant){
 }
 function shirt(logo,variant,label,number,name){
  var v=variant||"home",p=shirtPalette(v),id="v441shirt"+(++V441_SHIRT_SEQ);
- return '<div class="v431-shirt v440-shirt v441-shirt '+esc(v)+'">'+
+ return '<div class="v431-shirt v440-shirt v441-shirt v442-shirt-3d '+esc(v)+'" data-v442-tilt>'+
   '<svg class="v441-jersey-svg" viewBox="0 0 220 260" role="img" aria-label="Camiseta">'+
    '<defs>'+
     '<linearGradient id="'+id+'g" x1="0" x2="1" y1="0" y2="1"><stop offset="0" stop-color="'+p.a+'"/><stop offset=".48" stop-color="'+p.b+'"/><stop offset="1" stop-color="'+p.c+'"/></linearGradient>'+
     '<linearGradient id="'+id+'shine" x1="0" x2="1"><stop offset="0" stop-color="#fff" stop-opacity=".32"/><stop offset=".34" stop-color="#fff" stop-opacity=".03"/><stop offset=".72" stop-color="#000" stop-opacity=".10"/><stop offset="1" stop-color="#000" stop-opacity=".22"/></linearGradient>'+
     '<pattern id="'+id+'mesh" width="5" height="5" patternUnits="userSpaceOnUse"><path d="M0 0h1v1H0zM3 2h1v1H3z" fill="#fff" opacity=".09"/></pattern>'+
-    '<filter id="'+id+'shadow" x="-30%" y="-30%" width="160%" height="180%"><feDropShadow dx="0" dy="8" stdDeviation="7" flood-color="#06103f" flood-opacity=".28"/></filter>'+
+    '<filter id="'+id+'shadow" x="-40%" y="-40%" width="180%" height="210%"><feDropShadow dx="0" dy="10" stdDeviation="8" flood-color="#06103f" flood-opacity=".34"/></filter>'+
+    '<filter id="'+id+'surface" x="-20%" y="-20%" width="140%" height="140%">'+
+      '<feTurbulence type="fractalNoise" baseFrequency=".018 .12" numOctaves="2" seed="7" result="noise"/>'+
+      '<feDisplacementMap in="SourceGraphic" in2="noise" scale="1.7" xChannelSelector="R" yChannelSelector="G" result="warp"/>'+
+      '<feSpecularLighting in="noise" surfaceScale="2.4" specularConstant=".55" specularExponent="18" lighting-color="#ffffff" result="spec"><feDistantLight azimuth="225" elevation="48"/></feSpecularLighting>'+
+      '<feComposite in="spec" in2="SourceGraphic" operator="in" result="lit"/>'+
+      '<feBlend in="warp" in2="lit" mode="screen"/>'+
+    '</filter>'+
    '</defs>'+
-   '<g filter="url(#'+id+'shadow)">'+
-    '<path d="M62 25 86 12c8 9 15 13 24 13s16-4 24-13l24 13 41 20-19 49-28-13v158H68V81L40 94 21 45l41-20Z" fill="url(#'+id+'g)"/>'+
-    '<path d="M62 25 86 12c8 9 15 13 24 13s16-4 24-13l24 13 41 20-19 49-28-13v158H68V81L40 94 21 45l41-20Z" fill="url(#'+id+'shine)"/>'+
-    '<path d="M62 25 86 12c8 9 15 13 24 13s16-4 24-13l24 13 41 20-19 49-28-13v158H68V81L40 94 21 45l41-20Z" fill="url(#'+id+'mesh)"/>'+
+   '<g class="v442-depth-back" opacity=".72">'+
+    '<path d="M66 29 90 16c8 9 15 13 24 13s16-4 24-13l24 13 41 20-19 49-28-13v158H72V85L44 98 25 49l41-20Z" fill="'+p.c+'"/>'+
+   '</g>'+
+   '<g class="v442-jersey-face" filter="url(#'+id+'shadow)">'+
+    '<g filter="url(#'+id+'surface)">'+
+     '<path d="M62 25 86 12c8 9 15 13 24 13s16-4 24-13l24 13 41 20-19 49-28-13v158H68V81L40 94 21 45l41-20Z" fill="url(#'+id+'g)"/>'+
+     '<path d="M62 25 86 12c8 9 15 13 24 13s16-4 24-13l24 13 41 20-19 49-28-13v158H68V81L40 94 21 45l41-20Z" fill="url(#'+id+'shine)"/>'+
+     '<path d="M62 25 86 12c8 9 15 13 24 13s16-4 24-13l24 13 41 20-19 49-28-13v158H68V81L40 94 21 45l41-20Z" fill="url(#'+id+'mesh)"/>'+
+    '</g>'+
     '<path d="M87 12c3 16 12 24 23 24s20-8 23-24" fill="none" stroke="'+p.edge+'" stroke-width="6" stroke-linecap="round"/>'+
     '<path d="M87 12c4 10 12 16 23 16s19-6 23-16" fill="none" stroke="#fff" stroke-opacity=".65" stroke-width="2"/>'+
     '<path d="M68 81 55 70M152 81l13-11" stroke="'+p.edge+'" stroke-opacity=".75" stroke-width="3"/>'+
     '<path d="M70 231h80" stroke="#fff" stroke-opacity=".26" stroke-width="2"/>'+
     '<path d="M71 55c18 8 60 8 78 0" stroke="#fff" stroke-opacity=".08" stroke-width="18" stroke-linecap="round"/>'+
+    '<path d="M72 77c11 12 17 30 19 54M148 77c-11 12-17 30-19 54M86 157c8 10 40 10 48 0M81 190c12 8 46 8 58 0" fill="none" stroke="#fff" stroke-opacity=".12" stroke-width="2" stroke-linecap="round"/>'+
    '</g>'+
    (logo?'<image href="'+esc(logo)+'" x="96" y="66" width="28" height="28" preserveAspectRatio="xMidYMid meet"/>':'')+
    '<text x="110" y="119" text-anchor="middle" fill="'+p.ink+'" font-size="9" font-family="Arial, sans-serif" font-weight="700" letter-spacing="1.3">'+esc(name||"")+'</text>'+
    '<text x="110" y="151" text-anchor="middle" fill="'+p.ink+'" font-size="34" font-family="Arial, sans-serif" font-weight="800">'+esc(number||"")+'</text>'+
    '<text x="110" y="214" text-anchor="middle" fill="'+p.ink+'" font-size="8" font-family="Arial, sans-serif" font-weight="700" letter-spacing="1">'+esc(label||"")+'</text>'+
   '</svg>'+
-  '<i class="v440-shirt-shadow"></i>'+
+  '<i class="v442-edge v442-edge-left"></i><i class="v442-edge v442-edge-right"></i>'+
+  '<i class="v440-shirt-shadow"></i><i class="v442-floor-shadow"></i>'+
  '</div>';
 }
 function productCard(title,sub,variant,logo){
@@ -600,6 +614,21 @@ function toast(msg){var t=document.querySelector("[data-v431-toast]");if(!t)retu
 function addItem(team,item,detail){var a=readCart();a.push({team:team,item:item,detail:detail||""});writeCart(a);syncCart();toast("Añadido al carrito")}
 function bind(team){
  var root=document.querySelector("[data-v431-store]");if(!root)return;
+ root.querySelectorAll("[data-v442-tilt]").forEach(function(el){
+   var reset=function(){el.style.setProperty("--v442-rx","-3deg");el.style.setProperty("--v442-ry","7deg");el.style.setProperty("--v442-z","0px")};
+   reset();
+   el.addEventListener("pointermove",function(e){
+     if(e.pointerType==="touch")return;
+     var r=el.getBoundingClientRect(),px=(e.clientX-r.left)/Math.max(1,r.width),py=(e.clientY-r.top)/Math.max(1,r.height);
+     el.style.setProperty("--v442-ry",((px-.5)*18).toFixed(2)+"deg");
+     el.style.setProperty("--v442-rx",((.5-py)*12).toFixed(2)+"deg");
+     el.style.setProperty("--v442-z","8px");
+   });
+   el.addEventListener("pointerleave",reset);
+   el.addEventListener("pointerdown",function(){el.classList.add("pressed3d")});
+   el.addEventListener("pointerup",function(){el.classList.remove("pressed3d")});
+   el.addEventListener("pointercancel",function(){el.classList.remove("pressed3d")});
+ });
  var wish=root.querySelector("[data-v435-wishlist]");if(wish)wish.onclick=function(){wish.classList.toggle("active");toast(wish.classList.contains("active")?"Equipo añadido a favoritos":"Equipo quitado de favoritos")};
  var storeMenu=root.querySelector("[data-v439-menu]"),menuToggle=root.querySelector("[data-v439-menu-toggle]");
  function closeV439Menu(){if(storeMenu){storeMenu.classList.remove("open");storeMenu.querySelectorAll("[data-v439-panel]").forEach(function(p){p.classList.remove("active")});var m=storeMenu.querySelector("[data-v439-menu-main]");if(m)m.classList.remove("hidden")}if(menuToggle)menuToggle.classList.remove("open")}
