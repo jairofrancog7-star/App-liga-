@@ -204,9 +204,12 @@ function applyHeaderScroll(){
  const h=lerp(eh,ch,p);head.style.setProperty('--v33-collapse',p.toFixed(4));head.style.setProperty('--v33-head-h',h.toFixed(1)+'px');
  const page=document.querySelector('[data-v33-data]');
  if(page){
-   /* V392: el contenido debe seguir inmediatamente a la altura REAL de la cabecera.
-      Antes conservaba siempre el espacio de la cabecera expandida y dejaba un hueco azul enorme al colapsar. */
-   page.style.setProperty('padding-top',h.toFixed(1)+'px','important');
+   /* V393: usar la altura REAL renderizada del header, no la altura teórica.
+      V38.1 limita el header móvil a ~154/174px; usar 'h' aquí dejaba un segundo
+      bloque azul vacío debajo de las pestañas. */
+   const actualH=Math.max(0,head.getBoundingClientRect().height);
+   page.style.setProperty('--v33-actual-head-h',actualH.toFixed(1)+'px');
+   page.style.setProperty('padding-top',actualH.toFixed(1)+'px','important');
  }
  title.style.left=lerp(Math.max(20,vw*.055),Math.max(92,vw*.255),p).toFixed(1)+'px';
  title.style.top=lerp(Math.max(98,vw*.274),Math.max(24,vw*.070),p).toFixed(1)+'px';
