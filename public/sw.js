@@ -1,4 +1,4 @@
-const CACHE='liga-juventino-v423-blank-screen-guard';
+const CACHE='liga-juventino-v445-live3d-bundled';
 const CORE=['./','./index.html','./manifest.webmanifest','./brand-neon-header.svg','./profile-reference.svg'];
 
 self.addEventListener('install',event=>{
