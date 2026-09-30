@@ -86,17 +86,17 @@ function watchDayLabel(iso,index){
  if(index===0)return 'Hoy';
  if(index===1)return 'Mañana';
  const d=new Date(iso+'T12:00:00');
- return new Intl.DateTimeFormat('es-MX',{weekday:'short',day:'2-digit',month:'short'}).format(d).replace(/\./g,'');
+ const wd=['dom','lun','mar','mié','jue','vie','sáb'][d.getDay()];
+ const mo=['ene','feb','mar','abr','may','jun','jul','ago','sep','oct','nov','dic'][d.getMonth()];
+ return wd+' '+pad(d.getDate())+' '+mo;
 }
-function initialWatchDay(days,all){
- const saved=localStorage.getItem('v421-watch-day');
- if(saved&&days.includes(saved))return saved;
- const withGames=days.find(k=>all.some(m=>m.iso===k));
- return withGames||days[0];
+function initialWatchDay(days){
+ const saved=localStorage.getItem('v423-watch-day');
+ return saved&&days.includes(saved)?saved:days[0];
 }
 function whereMarkup(){
- const days=watchDays(),all=fixtures(),sel=initialWatchDay(days,all),list=all.filter(m=>m.iso===sel).slice(0,20),src=streams();
- if(localStorage.getItem('v421-watch-day')!==sel)localStorage.setItem('v421-watch-day',sel);
+ const days=watchDays(),all=fixtures(),sel=initialWatchDay(days),list=all.filter(m=>m.iso===sel).slice(0,20),src=streams();
+ if(localStorage.getItem('v423-watch-day')!==sel)localStorage.setItem('v423-watch-day',sel);
  const rows=list.map(m=>{
    const s=src.find(x=>x.key===m.key)||null;
    const providerLine=s
@@ -112,7 +112,7 @@ function whereMarkup(){
 }
 function bindWhere(root){
  root.querySelector('[data-v421-back]')?.addEventListener('click',()=>{history.length>1?history.back():location.hash='#/v4-calendar'});
- root.querySelectorAll('[data-v421-watch-day]').forEach(b=>b.onclick=()=>{localStorage.setItem('v421-watch-day',b.dataset.v421WatchDay);mountWhere(true)});
+ root.querySelectorAll('[data-v421-watch-day]').forEach(b=>b.onclick=()=>{localStorage.setItem('v423-watch-day',b.dataset.v421WatchDay);mountWhere(true)});
  root.querySelectorAll('[data-v421-url]').forEach(b=>b.onclick=()=>openUrl(b.dataset.v421Url));
 }
 function mount(){mountVideo();mountCalendar();mountWhere(false)}
