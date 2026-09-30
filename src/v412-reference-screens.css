@@ -730,3 +730,212 @@ body:has(.v415-single-search) #searchResults[style*="display: none"]{
     height:26px!important;
   }
 }
+
+
+/* V418 — sección inferior Transferencias > Jugadores */
+.v418-transfer-players{
+  margin-top:18px;
+  padding-top:16px;
+  border-top:1px solid rgba(74,218,239,.16);
+}
+.v418-transfer-player-title{
+  display:grid;
+  gap:5px;
+  margin:0 0 12px;
+}
+.v418-transfer-player-title small{
+  color:#2be0ea;
+  font-size:8px;
+  font-weight:950;
+  letter-spacing:.16em;
+}
+.v418-transfer-player-title h3{
+  margin:0;
+  color:#fff;
+  font-size:21px;
+  line-height:1;
+  font-weight:950;
+}
+.v418-transfer-player-title p{
+  margin:0;
+  color:#9da8ca;
+  font-size:9px;
+  line-height:1.4;
+}
+.v418-transfer-player-toolbar{
+  display:grid;
+  grid-template-columns:1.15fr .8fr .85fr;
+  gap:7px;
+  margin-bottom:11px;
+}
+.v418-transfer-player-toolbar button{
+  min-width:0;
+  height:36px;
+  padding:0 9px;
+  overflow:hidden;
+  border:1px solid rgba(255,255,255,.09);
+  border-radius:9px;
+  background:#0a0d4c;
+  color:#dfe5f8;
+  font-size:8px;
+  font-weight:850;
+  white-space:nowrap;
+  text-overflow:ellipsis;
+}
+.v418-transfer-player-toolbar .v418-transfer-all{
+  text-align:left;
+  color:#fff;
+}
+.v418-transfer-player-list{
+  display:grid;
+  gap:11px;
+}
+.v418-transfer-player-card{
+  position:relative;
+  overflow:hidden;
+  border:1px solid rgba(104,137,255,.15);
+  border-radius:18px;
+  background:
+    radial-gradient(circle at 50% 10%,rgba(38,220,239,.10),transparent 34%),
+    linear-gradient(180deg,#11165f 0%,#0b0e4d 100%);
+}
+.v418-transfer-player-open{
+  width:100%;
+  min-height:214px;
+  display:grid;
+  justify-items:center;
+  align-content:start;
+  gap:7px;
+  padding:16px 14px 14px;
+  border:0;
+  background:transparent;
+  color:#fff;
+  text-align:center;
+}
+.v418-transfer-age{
+  position:absolute;
+  right:12px;
+  top:11px;
+  color:#8f99bd;
+  font-size:7px;
+  font-weight:700;
+}
+.v418-transfer-photo{
+  position:relative;
+  width:64px;
+  height:64px;
+  display:grid;
+  place-items:center;
+  margin-top:2px;
+  overflow:visible;
+  border-radius:50%;
+  background:#1c216e;
+  border:2px solid rgba(255,255,255,.13);
+}
+.v418-transfer-photo img{
+  width:57px;
+  height:57px;
+  object-fit:contain;
+  border-radius:50%;
+}
+.v418-transfer-photo i{
+  position:absolute;
+  right:-5px;
+  bottom:-3px;
+  min-width:24px;
+  height:16px;
+  display:grid;
+  place-items:center;
+  padding:0 4px;
+  border-radius:999px;
+  border:2px solid #0d1054;
+  color:#fff;
+  background:#2a2e72;
+  font-size:5px;
+  line-height:1;
+  font-style:normal;
+  font-weight:950;
+}
+.v418-transfer-photo i.is-del{background:#e6323a}
+.v418-transfer-photo i.is-def{background:#5aa73d}
+.v418-transfer-photo i.is-mid{background:#1ba4cf}
+.v418-transfer-photo i.is-jug{background:#4b517f}
+.v418-transfer-name{
+  max-width:92%;
+  overflow:hidden;
+  white-space:nowrap;
+  text-overflow:ellipsis;
+  font-size:13px;
+  line-height:1.1;
+  font-weight:800;
+}
+.v418-current-club{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:8px;
+  min-height:30px;
+}
+.v418-current-club img{
+  width:28px;
+  height:28px;
+  object-fit:contain;
+}
+.v418-current-club strong{
+  max-width:210px;
+  overflow:hidden;
+  white-space:nowrap;
+  text-overflow:ellipsis;
+  color:#dfe4f5;
+  font-size:10px;
+  font-weight:700;
+}
+.v418-transfer-status{
+  display:inline-flex;
+  align-items:center;
+  min-height:26px;
+  padding:0 10px;
+  border-radius:999px;
+  background:rgba(41,224,235,.09);
+  color:#2ce0eb;
+  font-size:7px;
+  font-weight:900;
+}
+.v418-transfer-meta{
+  width:100%;
+  display:flex;
+  flex-wrap:wrap;
+  align-items:center;
+  justify-content:center;
+  gap:5px 12px;
+  margin-top:2px;
+  color:#c8d0eb;
+  font-size:7px;
+}
+.v418-transfer-meta b{
+  font-size:7px;
+  font-weight:850;
+}
+@media(max-width:390px){
+  .v418-transfer-player-toolbar{
+    grid-template-columns:1fr 1fr;
+  }
+  .v418-transfer-player-toolbar .v418-transfer-all{
+    grid-column:1/-1;
+  }
+  .v418-transfer-player-open{
+    min-height:202px;
+    padding-top:14px;
+  }
+  .v418-transfer-photo{
+    width:58px;
+    height:58px;
+  }
+  .v418-transfer-photo img{
+    width:52px;
+    height:52px;
+  }
+  .v418-transfer-name{
+    font-size:12px;
+  }
+}
