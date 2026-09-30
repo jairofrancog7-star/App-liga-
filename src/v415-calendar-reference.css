@@ -1620,3 +1620,49 @@ body.v415-calendar-active #screen > [data-v415-calendar]{
     margin-top:8px!important;
   }
 }
+
+
+/* V444 — al seleccionar un día, los partidos quedan abajo en carrusel horizontal,
+   como el video de referencia; nunca dispara ficha/comparador al tocar logos. */
+@media (max-width:1023px){
+  body.v415-calendar-active .v415-selected{
+    overflow:visible!important;
+  }
+  body.v415-calendar-active .v415-match-list{
+    display:flex!important;
+    flex-direction:row!important;
+    gap:12px!important;
+    overflow-x:auto!important;
+    overflow-y:hidden!important;
+    scroll-snap-type:x mandatory!important;
+    scroll-padding:0 20px!important;
+    padding:0 20px 8px!important;
+    margin:0 -20px!important;
+    scrollbar-width:none!important;
+    -webkit-overflow-scrolling:touch!important;
+  }
+  body.v415-calendar-active .v415-match-list::-webkit-scrollbar{
+    display:none!important;
+  }
+  body.v415-calendar-active .v415-match-list .v415-match-card{
+    flex:0 0 88%!important;
+    width:88%!important;
+    min-width:88%!important;
+    max-width:88%!important;
+    scroll-snap-align:center!important;
+  }
+  body.v415-calendar-active .v415-match-list .v415-match-card:first-child{
+    scroll-snap-align:start!important;
+  }
+  body.v415-calendar-active .v415-match-list .v415-match-card:last-child{
+    margin-right:7%!important;
+  }
+
+  /* Los escudos dentro del calendario son visuales; el botón del día controla el toque. */
+  body.v415-calendar-active .v415-day-logos,
+  body.v415-calendar-active .v415-day-logos *,
+  body.v415-calendar-active .v415-match-team .v415-logo,
+  body.v415-calendar-active .v415-match-team .v415-logo *{
+    pointer-events:none!important;
+  }
+}
