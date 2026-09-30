@@ -180,9 +180,68 @@
 
   const DEFAULT_TEAM={id:'OFF-MANCHESTER',...TEAM_MAP['OFF-MANCHESTER']};
   const NOTIF_DEFAULTS={
-    fantasy:false,predictor:false,quiz:false,moreless:false,
-    news:true,tickets:true,hospitality:false
+    enabled:true,
+    news:true,
+    predictor:true,
+    sounds:true,
+    vibration:true,
+    dnd:true,
+    goal:true,
+    kickoff:true,
+    halftime:true,
+    final:true,
+    scheduleChanges:true,
+    venueChanges:true,
+    transfers:true
   };
+
+
+  const CATEGORY_DEFAULTS=['football','primera','intermedia','segunda','v35','v50'];
+  function categoryPrefs(){
+    let p={};try{p=JSON.parse(localStorage.getItem('lj-account-category-notifications-v415')||'{}')||{}}catch{}
+    CATEGORY_DEFAULTS.forEach(k=>{
+      p[k]=Object.assign({enabled:true,goal:true,kickoff:true,halftime:true,final:true},p[k]||{});
+    });
+    return p;
+  }
+  function saveCategoryPrefs(p){localStorage.setItem('lj-account-category-notifications-v415',JSON.stringify(p))}
+  function quietPrefs(){
+    try{return Object.assign({start:'00:00',end:'08:00'},JSON.parse(localStorage.getItem('lj-account-quiet-v415')||'{}')||{})}
+    catch{return {start:'00:00',end:'08:00'}}
+  }
+  function saveQuietPrefs(p){localStorage.setItem('lj-account-quiet-v415',JSON.stringify(p))}
+  function deviceNotice(){
+    try{
+      if(!('Notification' in window))return ['Las notificaciones del dispositivo no están disponibles en este navegador.','Revisar permisos'];
+      if(Notification.permission==='granted')return ['Las notificaciones de Liga Juventino Rosas están activadas en este dispositivo.','Notificaciones activadas'];
+      if(Notification.permission==='denied')return ['Las notificaciones están desactivadas. Actívalas desde los permisos del navegador o de la app.','Configuración del dispositivo'];
+      return ['Activa las notificaciones del dispositivo para recibir avisos de la Liga.','Activar notificaciones'];
+    }catch{return ['Revisa los permisos de notificación del dispositivo.','Configuración del dispositivo']}
+  }
+  function v46Switch(key,label,sub,prefs){
+    return '<label class="v46-ref-setting">'+
+      '<span><strong>'+esc(label)+'</strong>'+(sub?'<small>'+esc(sub)+'</small>':'')+'</span>'+
+      '<input type="checkbox" data-v46-notif="'+esc(key)+'" '+(prefs[key]!==false?'checked':'')+'>'+
+      '<i aria-hidden="true"></i>'+
+    '</label>';
+  }
+  function v46CategoryRow(key,label,sub,icon,cats){
+    const p=cats[key]||{};
+    return '<section class="v46-ref-category" data-v46-cat-wrap="'+key+'">'+
+      '<button type="button" class="v46-ref-category-head" data-v46-cat-toggle="'+key+'">'+
+        '<span class="v46-ref-category-icon">'+icon+'</span>'+
+        '<span><strong>'+esc(label)+'</strong><small>'+esc(sub)+'</small></span>'+
+        '<span class="v46-ref-category-arrow">›</span>'+
+      '</button>'+
+      '<div class="v46-ref-category-panel">'+
+        '<label><span>Activar categoría</span><input type="checkbox" data-v46-cat-pref="'+key+':enabled" '+(p.enabled!==false?'checked':'')+'><i></i></label>'+
+        '<label><span>Goles</span><input type="checkbox" data-v46-cat-pref="'+key+':goal" '+(p.goal!==false?'checked':'')+'><i></i></label>'+
+        '<label><span>Inicio</span><input type="checkbox" data-v46-cat-pref="'+key+':kickoff" '+(p.kickoff!==false?'checked':'')+'><i></i></label>'+
+        '<label><span>Medio tiempo</span><input type="checkbox" data-v46-cat-pref="'+key+':halftime" '+(p.halftime!==false?'checked':'')+'><i></i></label>'+
+        '<label><span>Final</span><input type="checkbox" data-v46-cat-pref="'+key+':final" '+(p.final!==false?'checked':'')+'><i></i></label>'+
+      '</div>'+
+    '</section>';
+  }
 
   function route(){return location.hash.replace('#/','')||'home'}
   function esc(s){return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
@@ -242,29 +301,53 @@
   },true);
 
   function notificationsMarkup(){
+    const p=notifPrefs();
+    const cats=categoryPrefs();
+    const quiet=quietPrefs();
+    const device=deviceNotice();
     return '<section class="v46-account-page v46-notifications v46-notifications-reference-blue" data-v46-account="notifications">'+
-      '<header class="v46-notif-head">'+
+      '<header class="v46-notif-head v46-ref-head">'+
         '<button type="button" class="v46-back" data-v46-back aria-label="Volver">'+backIcon()+'</button>'+
         '<h1>Notificaciones</h1>'+
       '</header>'+
-      '<main class="v46-reference-notif-main">'+
-        '<section class="v46-reference-title">'+
-          '<small>CENTRO DE AVISOS</small>'+
-          '<h2>Notificaciones</h2>'+
-        '</section>'+
-        '<div class="v46-reference-notif-list">'+
-          '<button type="button" class="v46-reference-notif-card" data-route="scheduleChanges">'+
-            '<span class="v46-ref-emoji">🕒</span>'+
-            '<span><strong>Próxima jornada</strong><small>Recibe aviso cuando se publique un horario nuevo.</small></span>'+
-          '</button>'+
-          '<button type="button" class="v46-reference-notif-card" data-route="venues">'+
-            '<span class="v46-ref-emoji">📍</span>'+
-            '<span><strong>Cambio de sede</strong><small>Alertas para cambios relevantes de cancha o fecha.</small></span>'+
-          '</button>'+
-          '<button type="button" class="v46-reference-notif-card" data-route="following">'+
-            '<span class="v46-ref-emoji">⚽</span>'+
-            '<span><strong>Partido favorito</strong><small>Seguimiento de equipos y encuentros destacados.</small></span>'+
-          '</button>'+
+      '<main class="v46-ref-notifications-main">'+
+        '<div class="v46-ref-device">'+
+          '<span class="v46-ref-device-icon">🔕</span>'+
+          '<div><p data-v46-device-copy>'+esc(device[0])+'</p><button type="button" data-v46-device>'+esc(device[1])+'</button></div>'+
+        '</div>'+
+        '<div class="v46-ref-master">'+
+          v46Switch('enabled','Permitir alertas','',p)+
+        '</div>'+
+        '<div class="v46-ref-settings">'+
+          v46Switch('news','Noticias','Comunicados y publicaciones de la Liga',p)+
+          v46Switch('predictor','Pronósticos','Quiniela y recordatorios de partidos',p)+
+          v46Switch('sounds','Sonidos','Reproducir sonido al recibir un aviso',p)+
+          v46Switch('vibration','Vibración','Vibrar cuando llegue una alerta',p)+
+          '<div class="v46-ref-dnd">'+
+            v46Switch('dnd','No molestar','Silencia los avisos durante este horario',p)+
+            '<div class="v46-ref-hours">'+
+              '<label>Desde<input type="time" data-v46-quiet-start value="'+esc(quiet.start)+'"></label>'+
+              '<span>A</span>'+
+              '<label>Hasta<input type="time" data-v46-quiet-end value="'+esc(quiet.end)+'"></label>'+
+            '</div>'+
+          '</div>'+
+        '</div>'+
+        '<div class="v46-ref-categories">'+
+          v46CategoryRow('football','Fútbol','Todos los partidos de la Liga','⚽',cats)+
+          v46CategoryRow('primera','Primera Fuerza','Partidos y avisos de Primera Fuerza','PF',cats)+
+          v46CategoryRow('intermedia','Intermedia','Partidos y avisos de Intermedia','IN',cats)+
+          v46CategoryRow('segunda','Segunda Fuerza','Partidos y avisos de Segunda Fuerza','SF',cats)+
+          v46CategoryRow('v35','Veteranos 35+','Partidos y avisos de Veteranos 35+','35',cats)+
+          v46CategoryRow('v50','Veteranos 50+','Partidos y avisos de Veteranos 50+','50',cats)+
+        '</div>'+
+        '<div class="v46-ref-settings v46-ref-match-alerts">'+
+          v46Switch('goal','Goles','Aviso cuando cambie el marcador',p)+
+          v46Switch('kickoff','Inicio del partido','Aviso al comenzar un encuentro',p)+
+          v46Switch('halftime','Medio tiempo','Aviso al terminar el primer tiempo',p)+
+          v46Switch('final','Final del partido','Aviso al concluir el encuentro',p)+
+          v46Switch('scheduleChanges','Cambios de horario','Modificaciones de jornada',p)+
+          v46Switch('venueChanges','Cambios de sede','Cambio de campo o cancha',p)+
+          v46Switch('transfers','Transferencias','Movimientos oficiales publicados',p)+
         '</div>'+
       '</main>'+
     '</section>';
@@ -313,11 +396,78 @@
         const p=notifPrefs();
         p[inp.dataset.v46Notif]=inp.checked;
         saveNotifPrefs(p);
-        const small=document.querySelector('.v46-team-copy small');
-        if(small){
-          const n=[p.news,p.tickets,p.hospitality,p.fantasy,p.predictor,p.quiz,p.moreless].filter(Boolean).length;
-          small.textContent=n+'/7 notificaciones elegidas';
+        if(inp.dataset.v46Notif==='enabled'){
+          document.querySelectorAll('[data-v46-notif]').forEach(function(other){
+            if(other===inp)return;
+            if(['sounds','vibration','dnd'].includes(other.dataset.v46Notif))return;
+            other.checked=inp.checked;
+            p[other.dataset.v46Notif]=inp.checked;
+          });
+          saveNotifPrefs(p);
         }
+        if(inp.dataset.v46Notif==='vibration'&&inp.checked){
+          try{navigator.vibrate&&navigator.vibrate(70)}catch{}
+        }
+        if(inp.dataset.v46Notif==='sounds'&&inp.checked){
+          try{
+            const C=window.AudioContext||window.webkitAudioContext;
+            if(C){const c=new C(),o=c.createOscillator(),g=c.createGain();o.frequency.value=760;g.gain.value=.02;o.connect(g);g.connect(c.destination);o.start();o.stop(c.currentTime+.07)}
+          }catch{}
+        }
+      };
+    });
+    const qStart=document.querySelector('[data-v46-quiet-start]');
+    const qEnd=document.querySelector('[data-v46-quiet-end]');
+    [qStart,qEnd].forEach(function(el){
+      if(el)el.onchange=function(){saveQuietPrefs({start:qStart.value||'00:00',end:qEnd.value||'08:00'})};
+    });
+    const deviceBtn=document.querySelector('[data-v46-device]');
+    if(deviceBtn)deviceBtn.onclick=async function(){
+      const copy=document.querySelector('[data-v46-device-copy]');
+      try{
+        if(!('Notification' in window)){
+          if(copy)copy.textContent='Este navegador no permite notificaciones web. Revisa los permisos de la app o del navegador.';
+          return;
+        }
+        if(Notification.permission==='default'){
+          const result=await Notification.requestPermission();
+          if(result==='granted'){
+            if(copy)copy.textContent='Las notificaciones de Liga Juventino Rosas están activadas en este dispositivo.';
+            deviceBtn.textContent='Notificaciones activadas';
+          }else{
+            if(copy)copy.textContent='Las notificaciones quedaron bloqueadas. Actívalas desde los permisos del navegador o de la app.';
+            deviceBtn.textContent='Configuración del dispositivo';
+          }
+        }else if(Notification.permission==='granted'){
+          if(copy)copy.textContent='Las notificaciones de Liga Juventino Rosas están activadas en este dispositivo.';
+          deviceBtn.textContent='Notificaciones activadas';
+        }else{
+          if(copy)copy.textContent='Las notificaciones están bloqueadas. Actívalas desde los permisos del navegador o de la app.';
+          deviceBtn.textContent='Configuración del dispositivo';
+        }
+      }catch{
+        if(copy)copy.textContent='Revisa los permisos de notificación del navegador o de la app.';
+      }
+    };
+    document.querySelectorAll('[data-v46-cat-toggle]').forEach(function(btn){
+      btn.onclick=function(){
+        const wrap=document.querySelector('[data-v46-cat-wrap="'+btn.dataset.v46CatToggle+'"]');
+        const open=wrap&&wrap.classList.contains('open');
+        document.querySelectorAll('[data-v46-cat-wrap]').forEach(x=>x.classList.remove('open'));
+        if(wrap&&!open)wrap.classList.add('open');
+      };
+    });
+    document.querySelectorAll('[data-v46-cat-pref]').forEach(function(inp){
+      inp.onchange=function(){
+        const parts=String(inp.dataset.v46CatPref||'').split(':');
+        const cat=parts[0],key=parts[1];
+        const p=categoryPrefs();
+        p[cat]=Object.assign({},p[cat]||{},{[key]:inp.checked});
+        if(cat==='football'&&key==='enabled'){
+          CATEGORY_DEFAULTS.forEach(function(k){p[k]=Object.assign({},p[k]||{},{enabled:inp.checked})});
+          document.querySelectorAll('[data-v46-cat-pref$=":enabled"]').forEach(x=>x.checked=inp.checked);
+        }
+        saveCategoryPrefs(p);
       };
     });
     document.querySelectorAll('[data-v46-follow]').forEach(function(btn){
