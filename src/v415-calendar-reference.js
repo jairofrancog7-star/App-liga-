@@ -198,9 +198,12 @@ function calendarGrid(monthGames){
   for(let d=1;d<=daysInMonth;d++){
     const iso=y+'-'+pad(m+1)+'-'+pad(d);
     const list=byDay.get(d)||[];
-    cells+='<button type="button" class="v415-day'+(list.length?' has-match':'')+(selectedIso===iso?' selected':'')+'" data-v415-date="'+iso+'" aria-label="'+d+' de '+monthName(m)+(list.length?', '+list.length+' partido'+(list.length>1?'s':''):'')+'">'+
-      '<span class="v415-day-number">'+d+'</span>'+
-      (list.length?dayLogoStack(list):'')+
+    const now=new Date();
+    const todayIso=now.getFullYear()+'-'+pad(now.getMonth()+1)+'-'+pad(now.getDate());
+    const isToday=iso===todayIso;
+    cells+='<button type="button" class="v415-day'+(list.length?' has-match':'')+(selectedIso===iso?' selected':'')+(isToday?' today':'')+'" data-v415-date="'+iso+'" aria-label="'+d+' de '+monthName(m)+(list.length?', '+list.length+' partido'+(list.length>1?'s':''):'')+'">'+
+      (list.length?dayLogoStack(list):'<span class="v415-day-number">'+d+'</span>')+
+      (isToday&&list.length?'<span class="v415-today-badge">'+d+'</span>':'')+
     '</button>';
   }
   return '<div class="v415-week">'+['D','L','M','X','J','V','S'].map(d=>'<b>'+d+'</b>').join('')+'</div>'+
@@ -250,7 +253,9 @@ function pickSelected(allGames){
   const todayIso=now.getFullYear()+'-'+pad(now.getMonth()+1)+'-'+pad(now.getDate());
   const todayHas=inMonth.some(g=>g.iso===todayIso);
   if(todayHas){selectedIso=todayIso;return;}
-  selectedIso=inMonth[0]?.iso||prefix+'01';
+  const todayDay=now.getFullYear()===y&&now.getMonth()===m?now.getDate():1;
+  const nearest=[...inMonth].sort((a,b)=>Math.abs(a.day-todayDay)-Math.abs(b.day-todayDay)||b.day-a.day)[0];
+  selectedIso=nearest?.iso||prefix+pad(todayDay);
 }
 
 function bind(root){
