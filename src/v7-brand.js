@@ -30,9 +30,11 @@ function syncRouteLayout(){
   const route=routeFromLocation();
   const screen=document.querySelector('#screen');
   const topbar=document.querySelector('.topbar');
-  if(!screen||!topbar) return;
 
+  /* La ruta se fija aunque una pantalla o módulo oculte la topbar. */
   document.body.dataset.appRoute=route;
+  if(!screen) return;
+  if(!topbar) return;
   document.body.classList.toggle('v10-home-route',route==='home');
   document.body.classList.toggle('v10-root-route',ROOT_ROUTES.has(route));
   document.body.classList.toggle('v10-detail-route',!ROOT_ROUTES.has(route));
