@@ -33,9 +33,13 @@ function catId(){
     const q=String(location.hash||'').split('?')[1]||'';
     fromHash=new URLSearchParams(q).get('cat')||'';
   }catch(_){}
+  if(CAT_ORDER.includes(String(fromHash))){
+    const id=String(fromHash);
+    try{localStorage.setItem('v62-category',id)}catch(_){}
+    return id;
+  }
   const stored=String(localStorage.getItem('v62-category')||'3');
-  const v=CAT_ORDER.includes(String(fromHash))?String(fromHash):stored;
-  return CAT_ORDER.includes(v)?v:'3';
+  return CAT_ORDER.includes(stored)?stored:'3';
 }
 function category(id=catId()){
   return db()?.categories?.[String(id)]||null;
@@ -230,7 +234,7 @@ function categoryStrip(){
   return '<section class="v391-category-wrap" aria-label="Categorías">'+
     '<span class="v391-category-label">CATEGORÍA</span>'+
     '<div class="v391-category-strip">'+CAT_ORDER.map(id=>
-      '<button type="button" class="'+(id===active?'active':'')+'" data-v194-cat="'+id+'" aria-pressed="'+(id===active?'true':'false')+'" onclick="window.LJR_SET_SCORER_CATEGORY&&window.LJR_SET_SCORER_CATEGORY(\''+id+'\');return false;">'+esc(catName(id))+'</button>'
+      '<a class="'+(id===active?'active':'')+'" data-v194-cat="'+id+'" aria-current="'+(id===active?'page':'false')+'" href="#/scorers?cat='+encodeURIComponent(id)+'">'+esc(catName(id))+'</a>'
     ).join('')+'</div>'+
   '</section>';
 }
@@ -279,31 +283,18 @@ function forceCategoryRender(){
 }
 function chooseCategory(id){
   id=CAT_ORDER.includes(String(id))?String(id):'3';
-
-  localStorage.setItem('v62-category',id);
-  localStorage.setItem('v12-fixture-cat',id);
-  localStorage.setItem(TEAM_KEY,'all');
-
   try{
-    const next=location.pathname+location.search+'#/scorers?cat='+encodeURIComponent(id);
-    if(location.hash!=='#/scorers?cat='+id)history.replaceState(history.state,'',next);
+    localStorage.setItem('v62-category',id);
+    localStorage.setItem('v12-fixture-cat',id);
+    localStorage.setItem(TEAM_KEY,'all');
   }catch(_){}
-
-  /* V401: ranking is always by PLAYER. The category button only changes
-     which category's player rows are rendered. */
-  try{window.LJR_OFFICIAL_API?.setCategory?.(id)}catch(_){}
-  forceCategoryRender();
+  const next='#/scorers?cat='+encodeURIComponent(id);
+  if(location.hash!==next)location.hash=next;
+  else forceCategoryRender();
   return false;
 }
 function bind(root){
   if(!root)return;
-  root.querySelectorAll('[data-v194-cat]').forEach(b=>{
-    b.addEventListener('click',e=>{
-      e.preventDefault();
-      e.stopPropagation();
-      chooseCategory(b.dataset.v194Cat);
-    });
-  });
   root.querySelectorAll('[data-v194-open-team]').forEach(b=>{
     b.addEventListener('click',()=>openTeam(b.dataset.v194OpenTeam||''));
   });
