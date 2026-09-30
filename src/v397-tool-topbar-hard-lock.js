@@ -69,7 +69,7 @@
     // incluso si venimos de Estadísticas, donde la topbar global se oculta.
     const competitionOwned=route==='competition'||bodyRoute==='competition';
     if(competitionOwned){
-      if(document.body.dataset.appRoute!=='competition')document.body.dataset.appRoute='competition';
+      document.body.dataset.appRoute='competition';
       document.body.classList.remove('v33-data-active','v404-tool-overlay-open','v410-overlay-open');
       topbar.classList.remove('v402-tool-topbar-compact','v397-tool-topbar-exact','v403-reference-topbar','v404-missing-pages-topbar');
       clearTopbarInline(topbar);
