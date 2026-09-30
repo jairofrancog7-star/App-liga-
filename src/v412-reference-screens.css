@@ -939,3 +939,115 @@ body:has(.v415-single-search) #searchResults[style*="display: none"]{
     font-size:12px;
   }
 }
+
+/* V421 — TV feed referencia azul tipo OneFootball */
+.v412-tv-reference{padding-top:2px}
+.v421-tv-top-actions{
+ display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin:0 0 12px
+}
+.v421-tv-top-actions button{
+ min-height:64px;display:grid;grid-template-columns:34px minmax(0,1fr);grid-template-rows:auto auto;
+ column-gap:8px;align-items:center;padding:9px 10px;border:1px solid rgba(93,135,255,.18);
+ border-radius:9px;background:linear-gradient(145deg,#10165f,#090d48);color:#fff;text-align:left
+}
+.v421-tv-top-actions button>span{
+ grid-row:1/3;width:32px;height:32px;display:grid;place-items:center;border-radius:8px;background:#182b86;
+ color:#fff;font-size:15px;font-weight:900
+}
+.v421-tv-top-actions b{font-size:9px;line-height:1.15}
+.v421-tv-top-actions small{color:#8f9bc6;font-size:7px;line-height:1.15}
+.v421-tv-rail{
+ margin:0 -12px 10px;padding:12px 12px 13px;border-top:1px solid rgba(255,255,255,.045);
+ border-bottom:1px solid rgba(255,255,255,.035);background:linear-gradient(180deg,rgba(10,15,74,.86),rgba(5,8,55,.92))
+}
+.v421-tv-rail>header{
+ min-height:31px;display:flex;align-items:flex-start;justify-content:space-between;gap:10px;margin-bottom:9px
+}
+.v421-tv-rail>header span{min-width:0}
+.v421-tv-rail h3{margin:0;color:#fff;font-size:10px;line-height:1.15;font-weight:950}
+.v421-tv-rail p{margin:3px 0 0;color:#8d98be;font-size:6.8px;line-height:1.25}
+.v421-tv-rail>header>button{
+ flex:0 0 auto;margin-top:1px;border:0;background:transparent;color:#d9e5ff;font-size:7px;font-weight:900
+}
+.v421-tv-scroll{
+ display:flex;gap:8px;overflow-x:auto;margin:0 -12px;padding:0 12px 2px;scroll-snap-type:x proximity;
+ scrollbar-width:none
+}
+.v421-tv-scroll::-webkit-scrollbar,.v421-tv-portrait-row::-webkit-scrollbar{display:none}
+.v421-tv-card{
+ width:184px;flex:0 0 184px;overflow:hidden;padding:0;border:0;border-radius:7px;background:#0b0f4e;
+ color:#fff;text-align:left;scroll-snap-align:start;box-shadow:0 4px 12px rgba(0,0,32,.20)
+}
+.v421-tv-art{
+ position:relative;height:103px;display:grid;grid-template-columns:1fr 1fr;align-items:center;padding:9px 10px;
+ overflow:hidden;background:linear-gradient(135deg,#1037a1,#07104f)
+}
+.v421-tv-tone-0{background:linear-gradient(135deg,#0b67d6 0 50%,#1547a1 50% 100%)}
+.v421-tv-tone-1{background:linear-gradient(135deg,#123eaa,#081351)}
+.v421-tv-tone-2{background:linear-gradient(135deg,#1761cf,#0b1e6f)}
+.v421-tv-tone-3{background:linear-gradient(135deg,#0e2f8c,#07104b)}
+.v421-tv-team{
+ width:50px;height:50px;display:grid;place-items:center;justify-self:center;border-radius:50%;
+ background:rgba(255,255,255,.94);overflow:hidden;box-shadow:0 3px 9px rgba(0,0,0,.22)
+}
+.v421-tv-team img{width:43px;height:43px;object-fit:contain}
+.v421-tv-team i{display:none}
+.v421-tv-art>strong{
+ position:absolute;left:50%;bottom:8px;transform:translateX(-50%);min-width:45px;padding:3px 5px;border-radius:5px;
+ background:rgba(3,7,35,.82);color:#fff;font-size:10px;text-align:center;font-weight:950
+}
+.v421-tv-art>em{
+ position:absolute;left:7px;top:7px;padding:3px 5px;border-radius:4px;background:rgba(4,8,42,.72);
+ color:#dce9ff;font-size:5.6px;font-style:normal;font-weight:950;letter-spacing:.06em
+}
+.v421-tv-play{
+ position:absolute;left:50%;top:49%;width:31px;height:31px;display:grid;place-items:center;transform:translate(-50%,-50%);
+ border-radius:50%;background:rgba(238,243,255,.94);color:#071049;font-size:11px;box-shadow:0 3px 10px rgba(0,0,0,.24)
+}
+.v421-tv-copy{min-height:47px;display:block;padding:7px 8px 8px}
+.v421-tv-copy b{
+ display:-webkit-box;overflow:hidden;-webkit-box-orient:vertical;-webkit-line-clamp:2;color:#fff;font-size:7.8px;line-height:1.25;font-weight:850
+}
+.v421-tv-copy small{
+ display:block;margin-top:4px;overflow:hidden;color:#8e99bf;font-size:6.3px;line-height:1.2;white-space:nowrap;text-overflow:ellipsis
+}
+.v421-tv-club-art{display:grid;place-items:center}
+.v421-tv-club-logo{
+ width:62px;height:62px;display:grid;place-items:center;border-radius:50%;background:rgba(255,255,255,.94);
+ box-shadow:0 5px 12px rgba(0,0,0,.24)
+}
+.v421-tv-club-logo img{width:53px;height:53px;object-fit:contain}
+.v421-tv-club-logo .v412-initials{color:#08124d;font-size:11px;font-weight:950}
+.v421-tv-club-art>.v421-tv-play{left:auto;right:8px;top:auto;bottom:8px;transform:none;width:28px;height:28px}
+.v421-tv-club-art>em{top:7px;left:7px}
+.v421-tv-portrait-row{
+ display:flex;gap:8px;overflow-x:auto;margin:0;padding:0 0 2px;scroll-snap-type:x proximity;scrollbar-width:none
+}
+.v421-tv-portrait{
+ width:126px;flex:0 0 126px;overflow:hidden;padding:0;border:0;border-radius:7px;background:#0a0e4b;color:#fff;
+ text-align:left;scroll-snap-align:start
+}
+.v421-tv-portrait-art{position:relative;height:167px;display:grid;place-items:center;overflow:hidden}
+.v421-tv-portrait-logos{display:grid;gap:10px;justify-items:center}
+.v421-tv-portrait-logos img{
+ width:56px;height:56px;object-fit:contain;border-radius:50%;background:rgba(255,255,255,.94);padding:5px;
+ box-shadow:0 4px 10px rgba(0,0,0,.22)
+}
+.v421-tv-portrait-art>strong{
+ position:absolute;left:7px;bottom:8px;padding:3px 5px;border-radius:4px;background:rgba(3,7,35,.8);font-size:9px
+}
+.v421-tv-portrait-art>em{
+ position:absolute;left:7px;top:7px;padding:3px 5px;border-radius:4px;background:rgba(4,8,42,.72);
+ color:#dce9ff;font-size:5.5px;font-style:normal;font-weight:950
+}
+.v421-tv-portrait-copy{display:block;min-height:44px;padding:7px 7px 8px}
+.v421-tv-portrait-copy b{
+ display:-webkit-box;overflow:hidden;-webkit-box-orient:vertical;-webkit-line-clamp:2;font-size:7.4px;line-height:1.22
+}
+.v421-tv-portrait-copy small{display:block;margin-top:4px;color:#8c98be;font-size:6px}
+@media(max-width:390px){
+ .v421-tv-card{width:174px;flex-basis:174px}
+ .v421-tv-art{height:98px}
+ .v421-tv-portrait{width:120px;flex-basis:120px}
+ .v421-tv-portrait-art{height:160px}
+}
