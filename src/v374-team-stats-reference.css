@@ -1,0 +1,54 @@
+/* V374 — Team statistics reference */
+body.v42-team-active .v42-stats{padding:0 0 calc(90px + env(safe-area-inset-bottom))!important;background:#070768!important}
+.v374-stats-shell{width:100%!important;color:#fff!important;background:#070768!important;font-family:Inter,Roboto,Arial,sans-serif!important}
+.v374-filter{height:46px!important;display:flex!important;align-items:center!important;justify-content:space-between!important;margin:0!important;padding:0 16px!important;border-bottom:1px solid rgba(255,255,255,.12)!important;background:#11127b!important;color:#fff!important;font-size:12px!important}
+.v374-filter i{font-size:18px!important;font-style:normal!important;color:#b9bfdf!important}
+.v374-panel{border-bottom:8px solid #050557!important;background:#0d0d73!important}
+.v374-panel-head{width:100%!important;height:48px!important;display:flex!important;align-items:center!important;justify-content:space-between!important;margin:0!important;padding:0 16px!important;border:0!important;background:#11117a!important;color:#fff!important;font-size:13px!important;font-weight:780!important;text-align:left!important}
+.v374-panel-head i{position:relative!important;width:18px!important;height:18px!important}
+.v374-panel-head i:before{content:""!important;position:absolute!important;left:4px!important;top:4px!important;width:8px!important;height:8px!important;border-right:2px solid #fff!important;border-bottom:2px solid #fff!important;transform:rotate(45deg)!important}
+.v374-panel.open .v374-panel-head i:before{top:7px!important;transform:rotate(225deg)!important}
+.v374-panel-body{display:none!important;padding:15px 16px 17px!important}
+.v374-panel.open .v374-panel-body{display:block!important}
+.v374-key-top{display:grid!important;grid-template-columns:118px minmax(0,1fr)!important;gap:14px!important;align-items:center!important}
+.v374-circle{width:96px!important;height:96px!important;display:grid!important;place-content:center!important;justify-items:center!important;margin:auto!important;border:2px solid transparent!important;border-radius:50%!important;background:linear-gradient(#0d0d73,#0d0d73) padding-box,linear-gradient(135deg,#10dce9,#244dff) border-box!important}
+.v374-circle strong{color:#fff!important;font-size:22px!important;line-height:1!important;font-weight:650!important}
+.v374-circle small{max-width:72px!important;margin-top:4px!important;color:#c3c7e0!important;font-size:8px!important;line-height:1.15!important;text-align:center!important}
+.v374-wdl{display:grid!important;gap:11px!important}
+.v374-wdl p{display:grid!important;grid-template-columns:7px 1fr auto!important;gap:7px!important;align-items:center!important;margin:0!important;color:#c1c5df!important;font-size:10px!important}
+.v374-wdl i{width:6px!important;height:6px!important;border-radius:50%!important;background:#10dce9!important}
+.v374-wdl p:nth-child(2) i{background:#fff!important}
+.v374-wdl p:nth-child(3) i{background:#ff4a9c!important}
+.v374-wdl b{color:#fff!important;font-size:12px!important}
+.v374-grid{display:grid!important;grid-template-columns:1fr 1fr!important;gap:17px 16px!important;margin-top:17px!important}
+.v374-grid.compact{gap:13px 16px!important;margin-top:8px!important;margin-bottom:13px!important}
+.v374-metric{min-width:0!important;display:flex!important;flex-direction:column!important}
+.v374-metric b{color:#fff!important;font-size:18px!important;line-height:1!important;font-weight:560!important}
+.v374-metric span{margin-top:4px!important;color:#c0c4de!important;font-size:9px!important;line-height:1.2!important}
+.v374-line{min-height:31px!important;display:flex!important;align-items:center!important;justify-content:space-between!important;gap:12px!important;border-bottom:1px solid rgba(255,255,255,.09)!important;color:#bec3df!important;font-size:9.5px!important}
+.v374-line b{color:#fff!important;font-size:10px!important;font-weight:650!important}
+.v374-line.unavailable b{color:#7f86b6!important}
+.v374-unavailable-note{margin-top:17px!important;padding:10px 11px!important;border:1px solid rgba(255,255,255,.06)!important;border-radius:8px!important;background:#11117b!important;color:#8f96c1!important;font-size:8px!important;line-height:1.35!important}
+.v374-duels,.v374-dribbles{display:grid!important;grid-template-columns:115px minmax(0,1fr)!important;gap:14px!important;align-items:center!important;margin:16px 0!important}
+.v374-duels .v374-circle,.v374-dribbles .v374-circle{width:82px!important;height:82px!important}
+.v374-scorer{display:grid!important;grid-template-columns:35px minmax(0,1fr) 30px!important;gap:10px!important;align-items:center!important}
+.v374-ball{width:34px!important;height:34px!important;display:grid!important;place-items:center!important;border-radius:50%!important;background:#fff!important;color:#07106c!important;font-size:17px!important}
+.v374-scorer>div{min-width:0!important;display:flex!important;flex-direction:column!important}
+.v374-scorer b{color:#fff!important;font-size:11px!important;white-space:nowrap!important;overflow:hidden!important;text-overflow:ellipsis!important}
+.v374-scorer small{margin-top:3px!important;color:#aeb3d3!important;font-size:8px!important}
+.v374-scorer strong{text-align:right!important;font-size:16px!important}
+.v374-pass-total{display:flex!important;flex-direction:column!important;margin-bottom:14px!important}
+.v374-pass-total b{font-size:24px!important;line-height:1!important}
+.v374-pass-total span{margin-top:3px!important;color:#bbc0dc!important;font-size:9px!important}
+.v374-circles{display:grid!important;grid-template-columns:1fr 1fr!important;gap:16px!important;margin:10px 0 15px!important}
+.v374-circles .v374-circle{width:88px!important;height:88px!important}
+.v374-one-circle{display:flex!important;justify-content:center!important;margin:17px 0 13px!important}
+.v374-one-circle .v374-circle{width:88px!important;height:88px!important}
+.v374-empty{padding:12px!important;border-radius:8px!important;background:#11117b!important;color:#a9afd0!important;font-size:9px!important;text-align:center!important}
+.v374-source{margin:0!important;padding:13px 16px 20px!important;color:#8087b5!important;font-size:8px!important;line-height:1.35!important}
+@media(max-width:370px){
+ .v374-panel-body{padding-left:13px!important;padding-right:13px!important}
+ .v374-key-top{grid-template-columns:104px minmax(0,1fr)!important;gap:10px!important}
+ .v374-circle{width:86px!important;height:86px!important}
+ .v374-duels,.v374-dribbles{grid-template-columns:100px minmax(0,1fr)!important;gap:10px!important}
+}
