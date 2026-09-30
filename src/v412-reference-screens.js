@@ -364,10 +364,10 @@ function transfersMarkup(){
  const sort=localStorage.getItem('v429-transfer-sort')||'form';
  const sortLabel=sort==='name'?'Nombre':sort==='goals'?'Goles':'Ordenar';
  return '<section class="v412-shell v412-transfers-reference v420-transfers v429-transfers" data-v412-screen="transfers">'+
-   '<header class="v429-transfer-head">'+
-     '<button type="button" class="v429-transfer-back" data-v429-back aria-label="Volver">←</button>'+
+   '<header class="v429-transfer-head v430-transfer-head">'+
+     '<button type="button" class="v429-transfer-back v430-transfer-back" data-v429-back aria-label="Volver"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15.5 5.5 9 12l6.5 6.5M9.5 12H21"/></svg></button>'+
      '<b>Centro de fichajes</b>'+
-     '<button type="button" class="v429-transfer-bell" data-v420-notices aria-label="Notificaciones">♧</button>'+
+     '<button type="button" class="v429-transfer-bell v430-transfer-bell" data-v420-notices aria-label="Notificaciones"><svg viewBox="0 0 28 28" aria-hidden="true"><path class="v430-bell-body" d="M7.8 19.4h12.4c-1.5-1.8-2.1-3.5-2.1-6.7 0-3.1-1.6-5.5-4.1-6.2V5.4a1.6 1.6 0 0 0-3.2 0v1.1c-2.5.7-4.1 3.1-4.1 6.2 0 3.2-.6 4.9-2.1 6.7h3.2Z"/><path class="v430-bell-body" d="M10.6 21.1c.4 1.3 1.5 2.1 2.8 2.1s2.4-.8 2.8-2.1"/><circle class="v430-check-circle" cx="20.9" cy="7.2" r="4.3"/><path class="v430-check" d="m18.8 7.2 1.3 1.4 2.7-3"/></svg></button>'+
    '</header>'+
    '<div class="v429-toolbar">'+
      '<button type="button" class="v429-all" data-v429-latest>Todos los fichajes</button>'+
