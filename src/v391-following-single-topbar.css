@@ -1,0 +1,211 @@
+/* V391 — Siguiendo: una sola barra superior compacta.
+   Oculta la topbar global de la app y sube la barra interna de Siguiendo.
+   Mantiene flecha y + funcionales, con iconos/texto reducidos. */
+
+html body[data-app-route="following"] #app > header.topbar,
+html body[data-app-route="following"] #app > .topbar,
+html body[data-app-route="following"] .app-shell > header.topbar,
+html body[data-app-route="following"] .app-shell > .topbar{
+  display:none!important;
+  visibility:hidden!important;
+  opacity:0!important;
+  height:0!important;
+  min-height:0!important;
+  max-height:0!important;
+  margin:0!important;
+  padding:0!important;
+  overflow:hidden!important;
+  pointer-events:none!important;
+}
+
+html body[data-app-route="following"] #screen{
+  padding-top:0!important;
+  margin-top:0!important;
+}
+
+html body[data-app-route="following"] .v28-follow-page{
+  padding-top:0!important;
+  margin-top:0!important;
+}
+
+html body[data-app-route="following"] .v28-follow-page .v28-head,
+html body[data-app-route="following"] .v28-follow-page.v28-empty .v28-head,
+html body[data-app-route="following"] .v28-follow-page.v28-followed .v28-head{
+  position:sticky!important;
+  top:0!important;
+  z-index:120!important;
+  width:100%!important;
+  height:78px!important;
+  min-height:78px!important;
+  max-height:78px!important;
+  aspect-ratio:auto!important;
+  box-sizing:border-box!important;
+  margin:0!important;
+  padding:8px 16px 4px!important;
+  display:grid!important;
+  grid-template-columns:38px minmax(0,1fr) 38px!important;
+  align-items:center!important;
+  gap:8px!important;
+  overflow:hidden!important;
+  background:
+    radial-gradient(95% 150% at 84% -28%,rgba(38,103,255,.75),transparent 58%),
+    radial-gradient(110% 160% at 8% -35%,rgba(29,86,255,.62),transparent 63%),
+    linear-gradient(180deg,#0734e2 0%,#081d98 48%,#070a70 100%)!important;
+  border:0!important;
+  box-shadow:none!important;
+  isolation:isolate!important;
+}
+
+html body[data-app-route="following"] .v28-follow-page .v28-head::before{
+  content:""!important;
+  position:absolute!important;
+  inset:0!important;
+  z-index:-1!important;
+  opacity:.72!important;
+  pointer-events:none!important;
+  background:
+    linear-gradient(145deg,transparent 0 17%,rgba(24,229,247,.42) 17.2% 17.6%,transparent 17.8% 45%,rgba(255,76,111,.34) 45.2% 45.6%,transparent 45.8%),
+    linear-gradient(18deg,transparent 0 68%,rgba(21,227,244,.25) 68.2% 68.6%,transparent 68.8%)!important;
+}
+
+html body[data-app-route="following"] .v28-follow-page .v28-head::after{
+  content:""!important;
+  position:absolute!important;
+  left:0!important;
+  right:0!important;
+  bottom:0!important;
+  height:22px!important;
+  z-index:-1!important;
+  pointer-events:none!important;
+  background:linear-gradient(180deg,transparent,#05065f 96%)!important;
+}
+
+html body[data-app-route="following"] .v28-follow-page .v28-head h1,
+html body[data-app-route="following"] .v28-follow-page.v28-empty .v28-head h1,
+html body[data-app-route="following"] .v28-follow-page.v28-followed .v28-head h1{
+  position:static!important;
+  display:block!important;
+  align-self:center!important;
+  justify-self:start!important;
+  margin:0!important;
+  padding:0!important;
+  opacity:1!important;
+  visibility:visible!important;
+  color:#fff!important;
+  font-family:Inter,Roboto,Arial,sans-serif!important;
+  font-size:23px!important;
+  line-height:1!important;
+  font-weight:650!important;
+  letter-spacing:-.02em!important;
+  white-space:nowrap!important;
+  pointer-events:none!important;
+}
+
+html body[data-app-route="following"] .v28-follow-page .v28-head .v28-icon-btn,
+html body[data-app-route="following"] .v28-follow-page.v28-empty .v28-head .v28-icon-btn,
+html body[data-app-route="following"] .v28-follow-page.v28-followed .v28-head .v28-icon-btn{
+  position:static!important;
+  width:34px!important;
+  height:34px!important;
+  min-width:34px!important;
+  min-height:34px!important;
+  max-width:34px!important;
+  max-height:34px!important;
+  margin:0!important;
+  padding:0!important;
+  display:grid!important;
+  place-items:center!important;
+  opacity:1!important;
+  visibility:visible!important;
+  background:transparent!important;
+  border:0!important;
+  border-radius:0!important;
+  color:#fff!important;
+  box-shadow:none!important;
+  pointer-events:auto!important;
+}
+
+html body[data-app-route="following"] .v28-follow-page .v28-head .v28-icon-btn:first-child{
+  justify-self:start!important;
+}
+
+html body[data-app-route="following"] .v28-follow-page .v28-head .v28-icon-btn.plus{
+  justify-self:end!important;
+}
+
+html body[data-app-route="following"] .v28-follow-page .v28-head .v28-icon-btn svg,
+html body[data-app-route="following"] .v28-follow-page.v28-empty .v28-head .v28-icon-btn svg,
+html body[data-app-route="following"] .v28-follow-page.v28-followed .v28-head .v28-icon-btn svg{
+  width:27px!important;
+  height:27px!important;
+  opacity:1!important;
+  visibility:visible!important;
+  fill:none!important;
+  stroke:#fff!important;
+  stroke-width:2.25!important;
+  stroke-linecap:round!important;
+  stroke-linejoin:round!important;
+}
+
+/* Reduce el arte neón a la nueva altura y evita una segunda franja visual. */
+html body[data-app-route="following"] .v28-follow-page .v28-neon{
+  display:block!important;
+  position:absolute!important;
+  left:0!important;
+  right:0!important;
+  top:0!important;
+  height:78px!important;
+  z-index:0!important;
+  overflow:hidden!important;
+  pointer-events:none!important;
+  opacity:.78!important;
+}
+
+html body[data-app-route="following"] .v28-follow-page.v28-empty .v28-empty-main{
+  padding-top:14px!important;
+}
+
+@media(max-width:390px){
+  html body[data-app-route="following"] .v28-follow-page .v28-head,
+  html body[data-app-route="following"] .v28-follow-page.v28-empty .v28-head,
+  html body[data-app-route="following"] .v28-follow-page.v28-followed .v28-head{
+    height:70px!important;
+    min-height:70px!important;
+    max-height:70px!important;
+    padding:7px 14px 3px!important;
+    grid-template-columns:34px minmax(0,1fr) 34px!important;
+    gap:7px!important;
+  }
+
+  html body[data-app-route="following"] .v28-follow-page .v28-head h1,
+  html body[data-app-route="following"] .v28-follow-page.v28-empty .v28-head h1,
+  html body[data-app-route="following"] .v28-follow-page.v28-followed .v28-head h1{
+    font-size:21px!important;
+  }
+
+  html body[data-app-route="following"] .v28-follow-page .v28-head .v28-icon-btn,
+  html body[data-app-route="following"] .v28-follow-page.v28-empty .v28-head .v28-icon-btn,
+  html body[data-app-route="following"] .v28-follow-page.v28-followed .v28-head .v28-icon-btn{
+    width:31px!important;
+    height:31px!important;
+    min-width:31px!important;
+    min-height:31px!important;
+    max-width:31px!important;
+    max-height:31px!important;
+  }
+
+  html body[data-app-route="following"] .v28-follow-page .v28-head .v28-icon-btn svg,
+  html body[data-app-route="following"] .v28-follow-page.v28-empty .v28-head .v28-icon-btn svg,
+  html body[data-app-route="following"] .v28-follow-page.v28-followed .v28-head .v28-icon-btn svg{
+    width:24px!important;
+    height:24px!important;
+  }
+
+  html body[data-app-route="following"] .v28-follow-page .v28-neon{
+    height:70px!important;
+  }
+
+  html body[data-app-route="following"] .v28-follow-page.v28-empty .v28-empty-main{
+    padding-top:10px!important;
+  }
+}
