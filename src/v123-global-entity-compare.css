@@ -1436,3 +1436,131 @@ body.v123-player-compare-active #screen{
   .v123-option-radio.v205-option-radio.v206-option-radio{width:28px!important;height:28px!important}
 }
 /* V207_PLAYER_PICKER_COMPACT_REFERENCE_LOCK_END */
+
+
+/* V208_POSITION_GROUPS_START — selector de jugadores clasificado por posición */
+.v208-position-list,
+.v208-search-results{
+  position:relative!important;
+  margin:312px 0 0!important;
+  padding:0!important;
+  display:block!important;
+  background:transparent!important;
+}
+.v208-position-group{
+  border-top:1px solid rgba(3,6,70,.54)!important;
+  background:rgba(7,13,112,.20)!important;
+}
+.v208-position-group:last-child{
+  border-bottom:1px solid rgba(3,6,70,.54)!important;
+}
+.v208-position-head{
+  all:unset!important;
+  box-sizing:border-box!important;
+  width:100%!important;
+  min-height:74px!important;
+  padding:0 22px!important;
+  display:flex!important;
+  align-items:center!important;
+  justify-content:space-between!important;
+  gap:16px!important;
+  cursor:pointer!important;
+  color:#fff!important;
+  font-family:Inter,Roboto,Arial,sans-serif!important;
+}
+.v208-position-head>span{
+  min-width:0!important;
+  display:grid!important;
+  gap:3px!important;
+}
+.v208-position-head b{
+  color:#fff!important;
+  font:800 20px/1.05 Inter,Roboto,Arial,sans-serif!important;
+  white-space:nowrap!important;
+  overflow:hidden!important;
+  text-overflow:ellipsis!important;
+}
+.v208-position-head small{
+  color:#9da6d2!important;
+  font:500 10px/1.1 Inter,Roboto,Arial,sans-serif!important;
+}
+.v208-position-chevron{
+  position:relative!important;
+  width:25px!important;
+  height:25px!important;
+  flex:0 0 25px!important;
+}
+.v208-position-chevron:before{
+  content:""!important;
+  position:absolute!important;
+  left:6px!important;
+  top:6px!important;
+  width:11px!important;
+  height:11px!important;
+  border-right:3px solid #fff!important;
+  border-bottom:3px solid #fff!important;
+  border-radius:1px!important;
+  transform:rotate(45deg)!important;
+  transition:transform .16s ease!important;
+}
+.v208-position-group.open .v208-position-chevron:before{
+  top:9px!important;
+  transform:rotate(225deg)!important;
+}
+.v208-position-players{
+  padding:0 18px 6px!important;
+  background:linear-gradient(180deg,rgba(10,20,135,.52),rgba(7,12,107,.22))!important;
+}
+.v208-position-players .v123-player-option.v205-player-option.v206-player-option{
+  height:67px!important;
+  min-height:67px!important;
+}
+.v208-position-empty{
+  margin:0 18px 14px!important;
+  padding:13px 12px!important;
+  border:1px solid rgba(255,255,255,.06)!important;
+  border-radius:10px!important;
+  background:#11177f!important;
+  color:#aeb5d8!important;
+  font:500 11px/1.35 Inter,Roboto,Arial,sans-serif!important;
+  text-align:center!important;
+}
+.v208-position-unknown .v208-position-head b{
+  color:#c8cbe2!important;
+}
+.v208-search-results{
+  padding:0 18px 18px!important;
+}
+.v208-results-head{
+  height:58px!important;
+  display:flex!important;
+  align-items:center!important;
+  justify-content:space-between!important;
+  gap:12px!important;
+}
+.v208-results-head h2{
+  margin:0!important;
+  color:#fff!important;
+  font:800 21px/1 Inter,Roboto,Arial,sans-serif!important;
+}
+.v208-results-head span{
+  min-width:27px!important;
+  height:27px!important;
+  display:grid!important;
+  place-items:center!important;
+  border-radius:14px!important;
+  background:#18218d!important;
+  color:#aeb5d8!important;
+  font:700 10px/1 Inter,Roboto,Arial,sans-serif!important;
+}
+.v208-search-results .v123-player-option.v205-player-option.v206-player-option{
+  height:67px!important;
+  min-height:67px!important;
+}
+@media(max-width:360px){
+  .v208-position-head{min-height:70px!important;padding-left:18px!important;padding-right:18px!important}
+  .v208-position-head b{font-size:18px!important}
+  .v208-position-players{padding-left:15px!important;padding-right:15px!important}
+  .v208-search-results{padding-left:15px!important;padding-right:15px!important}
+}
+/* V208_POSITION_GROUPS_END */
