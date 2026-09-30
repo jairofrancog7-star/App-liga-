@@ -314,9 +314,10 @@ async function schedule(force=false){
   }
   clearTimeout(timer);
   timer=setTimeout(async()=>{
-    await loadOfficial();
     const root=screen();
     if(force||!root?.querySelector('[data-v415-calendar]'))render();
+    await loadOfficial();
+    if(isCalendarRoute())render();
   },25);
 }
 

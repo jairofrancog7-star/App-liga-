@@ -493,7 +493,34 @@
   syncTvChrome();
 })();
 </script>
-  <script type="module" src="./src/v412-reference-screens.js?v=20260930-v417-single-favorites"></script>
+<script>
+(function(){
+  if(window.__LJR_V424_BLANK_ROUTE_RESCUE__)return;
+  window.__LJR_V424_BLANK_ROUTE_RESCUE__=true;
+  function route(){return String(location.hash||'').replace(/^#\/?/,'').split('?')[0]||'home'}
+  function blank(){
+    var s=document.getElementById('screen');
+    if(!s)return false;
+    return s.childElementCount===0 && !(s.textContent||'').trim();
+  }
+  function recover(){
+    var r=route();
+    if(r==='competition'&&blank()){
+      document.body.dataset.appRoute='competition';
+      try{window.LJR_MAIN_ROUTE&&window.LJR_MAIN_ROUTE.go('competition',false)}catch(_){}
+      var b=document.querySelector('.bottom-nav [data-route="competition"]');
+      if(blank()&&b&&typeof b.onclick==='function'){try{b.onclick()}catch(_){}}
+    }
+    if(['v4-calendar','calendar','monthlyCalendar','calendarMonthly'].includes(r)&&blank()){
+      document.body.classList.add('v415-calendar-active');
+    }
+  }
+  window.addEventListener('hashchange',function(){setTimeout(recover,120);setTimeout(recover,650)});
+  window.addEventListener('load',function(){setTimeout(recover,180);setTimeout(recover,900)});
+  document.addEventListener('DOMContentLoaded',function(){setTimeout(recover,120)},{once:true});
+  setTimeout(recover,450);setTimeout(recover,1400);
+})();
+</script>\n  <script type="module" src="./src/v412-reference-screens.js?v=20260930-v417-single-favorites"></script>
   <script type="module" src="./src/v413-page-designs.js?v=20260930-v416-single-favorites"></script>
   <script type="module" src="./src/v414-favorites-reference.js?v=20260930-v420-header-icons"></script>
   <script type="module" src="./src/v415-calendar-reference.js?v=20260930-v416-calendar-route-lock"></script>
