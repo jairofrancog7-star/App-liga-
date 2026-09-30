@@ -2449,10 +2449,10 @@ function v362LockHistoryHeader(root=document.querySelector('.v35-history-page'))
     tabs.style.setProperty('gap','36px','important');
     tabs.style.setProperty('overflow-x','auto','important');
     tabs.style.setProperty('overflow-y','hidden','important');
-    // V369: no dejar transparente la barra. Al ser inline !important,
-    // este valor es el que realmente manda sobre los CSS legacy.
-    tabs.style.setProperty('background','#030445','important');
-    tabs.style.setProperty('background-color','#030445','important');
+    // V370: la pieza gráfica superior debe continuar DETRÁS de las pestañas
+    // hasta el borde inferior de Resumen/Temporadas/Campeones/etc.
+    tabs.style.setProperty('background','transparent','important');
+    tabs.style.setProperty('background-color','transparent','important');
     tabs.style.setProperty('background-image','none','important');
     tabs.style.setProperty('border-top','0','important');
     tabs.style.setProperty('border-bottom','1px solid rgba(205,212,255,.26)','important');
