@@ -4,6 +4,7 @@
 'use strict';
 if(window.__LJR_V194_SCORERS__)return;
 window.__LJR_V194_SCORERS__=true;
+window.__LJR_SCORERS_UI_OWNER__='v194-reference';
 
 const CAT_ORDER=['3','5','4','2','1'];
 const CAT_FALLBACK={

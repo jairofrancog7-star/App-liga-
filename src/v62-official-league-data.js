@@ -692,6 +692,8 @@ function scorerBottomCategorySwitch(){
   '</div></section>';
 }
 function patchScorers(force=false){
+  /* V394: V194 owns the scorers route. Never overwrite its reference UI. */
+  if(window.__LJR_SCORERS_UI_OWNER__==='v194-reference'||window.__LJR_V194_SCORERS__)return;
   if(route()!=='scorers'||!db)return;
   const page=document.querySelector('[data-v28-scorers]');if(!page)return;
   const sig='v193:'+categoryId+':'+String(db.captured_at_utc||'');
