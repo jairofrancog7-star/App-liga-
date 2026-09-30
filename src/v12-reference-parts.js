@@ -930,7 +930,12 @@ document.addEventListener('click',e=>{
   }
   const choice=e.target.closest('[data-v12-choice]');
   if(choice){
-    location.hash='#/moreLessHub';
+    e.preventDefault();
+    e.stopPropagation();
+    document.querySelectorAll('[data-v12-choice]').forEach(b=>b.classList.remove('selected'));
+    choice.classList.add('selected');
+    const value=choice.dataset.v12Choice==='more'?'MÁS':'MENOS';
+    v12Toast('Elegiste '+value);
     return;
   }
 },true);
