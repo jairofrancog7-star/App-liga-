@@ -7,11 +7,11 @@
     "v38Alerts","v38Weather","v4-matchcenter","venues","matchday","search","ligaQR","players",
     "agendaBuilder","simulator","v38Stats","bracketBuilder","tableExport","motionHub","recruitment",
     "credentialBuilder","tactics","publications","v38Weekly","scheduleChanges","weatherFields",
-    "cedulas","cedulaBuilder","rulebook","rankings","leagueData","leagueTools"
+    "cedulas","cedulaBuilder","rulebook","rankings","leagueData","leagueTools","news"
   ]);
 
   const REFERENCE_ROUTES=new Set([
-    "leagueTools","search","ligaQR","players","agendaBuilder","v38Alerts","simulator","v38Stats","recruitment"
+    "leagueTools","search","ligaQR","players","agendaBuilder","v38Alerts","simulator","v38Stats","recruitment","news"
   ]);
 
   const TOPBAR_PROPS=['height','min-height','max-height','margin','padding'];
