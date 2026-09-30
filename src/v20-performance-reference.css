@@ -302,44 +302,46 @@ body[data-app-route="safe-performance"] .topbar{
   all:unset;
   position:absolute;
   z-index:6;
-  top:calc(18px + env(safe-area-inset-top));
-  width:56px;
-  height:56px;
+  top:calc(16px + env(safe-area-inset-top));
+  width:36px;
+  height:36px;
   display:grid;
   place-items:center;
-  border-radius:50%;
-  color:#fff;
-  background:rgba(3,15,43,.46);
-  border:1px solid rgba(255,255,255,.08);
-  box-shadow:0 4px 18px rgba(0,0,0,.26);
-  -webkit-backdrop-filter:blur(8px);
-  backdrop-filter:blur(8px);
+  color:rgba(255,255,255,.88);
+  background:transparent!important;
+  border:0!important;
+  border-radius:0;
+  box-shadow:none!important;
+  -webkit-backdrop-filter:none!important;
+  backdrop-filter:none!important;
   cursor:pointer;
+  opacity:.92;
   -webkit-tap-highlight-color:transparent;
 }
-.v20-performance-back{left:18px}
-.v20-performance-share{right:18px}
+.v20-performance-back{left:15px}
+.v20-performance-share{right:15px}
 .v20-performance-topbtn svg{
-  width:31px;
-  height:31px;
+  width:25px;
+  height:25px;
   display:block;
   fill:none;
   stroke:currentColor;
-  stroke-width:2.15;
+  stroke-width:2.05;
   stroke-linecap:round;
   stroke-linejoin:round;
 }
 .v20-performance-topbtn:active{
-  transform:scale(.94);
-  background:rgba(3,15,43,.62);
+  transform:scale(.9);
+  opacity:.7;
+  background:transparent!important;
 }
 @media(max-width:430px){
   .v20-performance-topbtn{
     top:calc(14px + env(safe-area-inset-top));
-    width:52px;
-    height:52px;
+    width:34px;
+    height:34px;
   }
-  .v20-performance-back{left:14px}
-  .v20-performance-share{right:14px}
-  .v20-performance-topbtn svg{width:29px;height:29px}
+  .v20-performance-back{left:13px}
+  .v20-performance-share{right:13px}
+  .v20-performance-topbtn svg{width:23px;height:23px}
 }
