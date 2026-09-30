@@ -97,7 +97,7 @@ function bindCompact(page){
  bind('[data-v372-share]',()=>{menuOpen=false;document.querySelector('[data-v42-share]')?.click()});
 }
 function sy(){const s=document.querySelector('#screen');return Math.max(window.scrollY||0,document.documentElement.scrollTop||0,s?.scrollTop||0)}
-function collapse(){document.body.classList.toggle('v372-team-collapsed',route()==='teamDetail'&&sy()>210)}
+function collapse(){const onStats=active()==='stats';document.body.classList.toggle('v372-team-collapsed',route()==='teamDetail'&&!onStats&&sy()>210)}
 function bindScroll(){
  const s=document.querySelector('#screen');
  if(s&&!s.dataset.v372Scroll){s.dataset.v372Scroll='1';s.addEventListener('scroll',()=>{cancelAnimationFrame(raf);raf=requestAnimationFrame(collapse)},{passive:true})}
