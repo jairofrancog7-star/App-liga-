@@ -464,3 +464,106 @@ html body > .v160-tv-layer .v160-tv-actions button{
     margin-bottom:14px!important;
   }
 }
+
+
+/* V408 — barra superior de referencia en Modo TV. */
+html body > .v160-tv-layer{
+  padding-top:0!important;
+}
+.v408-tv-topbar{
+  position:sticky!important;
+  top:0!important;
+  z-index:40!important;
+  width:calc(100% + 32px)!important;
+  height:clamp(82px,21.68vw,90px)!important;
+  min-height:clamp(82px,21.68vw,90px)!important;
+  margin:0 -16px 16px!important;
+  overflow:hidden!important;
+  border-bottom:1px solid rgba(101,162,255,.52)!important;
+  background:
+    radial-gradient(190px 82px at 9% -4%,rgba(105,237,255,.66) 0%,rgba(25,164,255,.34) 30%,transparent 72%),
+    radial-gradient(180px 78px at 71% -10%,rgba(209,255,255,.60) 0%,rgba(27,201,255,.31) 22%,rgba(15,101,247,.20) 48%,transparent 72%),
+    linear-gradient(180deg,#0b4bea 0%,#0b35cf 31%,#0a1e9d 66%,#070d6c 100%)!important;
+  box-shadow:none!important;
+}
+.v408-tv-topbar::before{
+  content:""!important;
+  position:absolute!important;
+  inset:-58% -10% -68%!important;
+  opacity:.80!important;
+  pointer-events:none!important;
+  background:
+    radial-gradient(ellipse at 8% 54%,transparent 0 40%,rgba(43,225,255,.68) 40.8%,rgba(239,255,255,.84) 41.5%,rgba(23,164,255,.50) 42.2%,transparent 43.2% 53%,rgba(34,207,255,.32) 53.8%,transparent 55%),
+    radial-gradient(ellipse at 73% 2%,transparent 0 35%,rgba(54,237,255,.50) 35.7%,rgba(230,255,255,.66) 36.3%,transparent 37.3%),
+    linear-gradient(153deg,transparent 0 29%,rgba(37,220,255,.36) 29.3%,rgba(247,255,255,.70) 29.8%,rgba(43,220,255,.47) 30.2%,transparent 30.9% 100%)!important;
+  filter:drop-shadow(0 0 4px rgba(42,225,255,.42))!important;
+  transform:rotate(-1.5deg)!important;
+}
+.v408-tv-trophy{
+  position:absolute!important;
+  z-index:2!important;
+  left:56px!important;
+  top:8px!important;
+  width:74px!important;
+  height:68px!important;
+  opacity:.46!important;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 180 145'%3E%3Cdefs%3E%3ClinearGradient id='s' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%23fff'/%3E%3Cstop offset='.48' stop-color='%2374efff'/%3E%3Cstop offset='.78' stop-color='%231ba7ff'/%3E%3Cstop offset='1' stop-color='%23eaffff'/%3E%3C/linearGradient%3E%3C/defs%3E%3Cg fill='none' stroke='url(%23s)' stroke-width='3.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M53 18h74l-5 17H58zM61 35h58l-5 36c-2 18-11 28-24 34-13-6-22-16-24-34z'/%3E%3Cpath d='M58 43H42c-7 0-11 6-9 13 4 15 14 24 31 28M122 43h16c7 0 11 6 9 13-4 15-14 24-31 28'/%3E%3Cpath d='M90 105v17M72 132h36M78 122h24l6 10H72z'/%3E%3Ccircle cx='90' cy='65' r='20'/%3E%3Cpath d='m90 52 8 6-3 10H85l-3-10zM85 68l-9 6M95 68l9 6M82 58l-8-2M98 58l8-2M90 45v7'/%3E%3C/g%3E%3C/svg%3E")!important;
+  background-repeat:no-repeat!important;
+  background-position:center!important;
+  background-size:contain!important;
+  filter:drop-shadow(0 0 3px rgba(230,255,255,.62)) drop-shadow(0 0 8px rgba(20,198,255,.42))!important;
+  pointer-events:none!important;
+}
+.v408-tv-back,
+.v408-tv-profile{
+  all:unset!important;
+  position:absolute!important;
+  top:50%!important;
+  z-index:5!important;
+  display:grid!important;
+  place-items:center!important;
+  transform:translateY(-50%)!important;
+  color:#fff!important;
+  cursor:pointer!important;
+  -webkit-tap-highlight-color:transparent!important;
+}
+.v408-tv-back{
+  left:14px!important;
+  width:25px!important;
+  height:25px!important;
+}
+.v408-tv-profile{
+  right:14px!important;
+  width:27px!important;
+  height:27px!important;
+}
+.v408-tv-back svg{
+  width:25px!important;
+  height:25px!important;
+  fill:none!important;
+  stroke:currentColor!important;
+  stroke-width:2.15!important;
+  stroke-linecap:round!important;
+  stroke-linejoin:round!important;
+}
+.v408-tv-profile svg{
+  width:27px!important;
+  height:27px!important;
+  fill:none!important;
+  stroke:currentColor!important;
+  stroke-width:1.95!important;
+  stroke-linecap:round!important;
+  stroke-linejoin:round!important;
+}
+@media(max-width:370px){
+  .v408-tv-topbar{
+    height:82px!important;
+    min-height:82px!important;
+  }
+  .v408-tv-trophy{
+    left:51px!important;
+    width:70px!important;
+    height:64px!important;
+    top:9px!important;
+  }
+}
