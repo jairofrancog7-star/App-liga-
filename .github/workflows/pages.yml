@@ -13,7 +13,7 @@ permissions:
 
 concurrency:
   group: github-pages-v7
-  cancel-in-progress: true
+  cancel-in-progress: false
 
 jobs:
   build:
