@@ -280,11 +280,18 @@ function hero(p,d){
         '<span class="v379-player-nose"></span><span class="v379-player-mouth"></span>'+
         '<span class="v379-player-beard"></span><span class="v379-player-hair"></span>'+
       '</div>';
-  return '<section class="v379-hero" style="'+paletteStyle(p.team)+'">'+backButton()+shareButton()+
+  const city=d.city||'Juventino Rosas';
+  return '<section class="v379-hero v386-player-hero" style="'+paletteStyle(p.team)+'">'+backButton()+
     '<div class="v379-hero-pattern" aria-hidden="true"></div>'+visual+
     '<div class="v379-hero-copy"><h1>'+esc(p.name)+'</h1>'+
-      '<div class="v379-teamline"><span class="v379-team-logo">'+teamLogo(p.team)+'</span><b>'+esc(p.team)+'</b></div>'+
-      '<div class="v379-location"><svg viewBox="0 0 24 24"><path d="M12 21s6-5.5 6-11a6 6 0 1 0-12 0c0 5.5 6 11 6 11Z"/><circle cx="12" cy="10" r="2"/></svg><span>Juventino Rosas</span></div>'+
+      '<div class="v386-player-meta">'+
+        '<div class="v379-teamline"><span class="v379-team-logo">'+teamLogo(p.team)+'</span><b>'+esc(p.team)+'</b></div>'+
+        '<div class="v379-location"><svg viewBox="0 0 24 24"><path d="M12 21s6-5.5 6-11a6 6 0 1 0-12 0c0 5.5 6 11 6 11Z"/><circle cx="12" cy="10" r="2"/></svg><span>'+esc(city)+'</span></div>'+
+      '</div>'+
+    '</div>'+
+    '<div class="v386-hero-actions">'+
+      '<button type="button" class="v386-compare" data-v379-compare>Comparar</button>'+
+      shareButton()+
     '</div>'+
   '</section>';
 }
