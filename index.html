@@ -23,6 +23,41 @@
       },true);
     })();
   </script>
+  <script>
+    (function(){
+      if(window.__LJR_STORE_ROUTE_LOCK_V433__) return;
+      window.__LJR_STORE_ROUTE_LOCK_V433__=true;
+      document.addEventListener('click',function(e){
+        if(!(e.target instanceof Element)) return;
+        const card=e.target.closest('[data-v66-open-team]');
+        if(!card || !card.closest('[data-v66-directory="store"]')) return;
+        const team=card.dataset.v66OpenTeam||'';
+        const cat=card.dataset.v66CatId||'3';
+        if(!team) return;
+        e.preventDefault();
+        e.stopPropagation();
+        e.stopImmediatePropagation();
+        try{
+          localStorage.removeItem('v42-open-compare');
+          sessionStorage.setItem('v431-store-open','1');
+          sessionStorage.setItem('v431-store-team',team);
+          sessionStorage.setItem('v431-store-cat',String(cat));
+        }catch(_){}
+        if(window.LJR_V431_STORE_API && typeof window.LJR_V431_STORE_API.open==='function'){
+          window.LJR_V431_STORE_API.open(team,cat);
+          return;
+        }
+        let tries=0;
+        const timer=setInterval(function(){
+          tries++;
+          if(window.LJR_V431_STORE_API && typeof window.LJR_V431_STORE_API.open==='function'){
+            clearInterval(timer);
+            window.LJR_V431_STORE_API.open(team,cat);
+          }else if(tries>30){clearInterval(timer)}
+        },25);
+      },true);
+    })();
+  </script>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
   <script>
@@ -307,14 +342,14 @@
 
   
   <script type="module" src="./src/v346-history-deferred-patches.js?v=20260929-history-tabs-stable-v347"></script>
-<script type="module" src="./src/v42-team-detail-master.js?v=20260930-store-routing-v432"></script>
+<script type="module" src="./src/v42-team-detail-master.js?v=20260930-store-hardlock-v433"></script>
   <script type="module" src="./src/v40-competition-master.js?v=20260928-preaudit-exact4"></script>
   <script type="module" src="./src/v46-account-reference.js?v=20260930-v421-single-notifications-header"></script>
   <script type="module" src="./src/v51-bottom-nav-icon-lock.js?v=20260919-nav-icons-unified1"></script>
   <script type="module" src="./src/v52-moreless-hub.js?v=20260930-moreless-restore-v394"></script>
   <script type="module" src="./src/v194-scorers-filters.js?v=20260930-scorers-native-category-v410"></script>
   <script type="module" src="./src/v62-official-league-data.js?v=20260930-scorers-owner-v394"></script>
-  <script type="module" src="./src/v66-official-directory.js?v=20260930-store-routing-v432"></script>
+  <script type="module" src="./src/v66-official-directory.js?v=20260930-store-hardlock-v433"></script>
   <script type="module" src="./src/v66-compact-app-ui.js?v=20260922-single-header-v151"></script>
   <script type="module" src="./src/v69-primary-tool-header.js?v=20260921-v4-discipline-route1"></script>
   <script type="module" src="./src/v73-v38-motion-banners.js?v=20260930-team-profile-clean-v380"></script>
@@ -335,7 +370,7 @@
 <script type="module" src="./src/v105-green-app-bottom.js?v=20260930-v426-tv-lower-feed"></script>
   <script type="module" src="./src/v164-history-log.js?v=20260922-history-logos-v184"></script>
   <script type="module" src="./src/v120-navigation-history-fix.js?v=20260921-schedule-changes-v129"></script>
-  <script type="module" src="./src/v123-global-entity-compare.js?v=20260930-store-routing-v432"></script>
+  <script type="module" src="./src/v123-global-entity-compare.js?v=20260930-store-hardlock-v433"></script>
   <script type="module" src="./src/v129-schedule-changes.js?v=20260922-schedule-field-picker-v166"></script>
   <script type="module" src="./src/v131-cedula-onepage.js?v=20260922-cedula-single-letter-v143"></script>
   <script type="module" src="./src/v132-credential-team-picker.js?v=20260922-register-team-hardfix-v154"></script>
