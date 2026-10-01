@@ -35,11 +35,22 @@ function ctx(){
 function liveState(c){
   try{
     const api=window.LJR_MATCH_LIVE?.getState?.();
-    if(api&&api.key===c.key)return api;
+    if(api&&api.key===c.key){
+      if(api.source&&isOldGenericFacebook(api.source.url,api.source.name)){
+        api.source.url='';api.source.name='';api.source.feedUrl='';api.source.connected=false;api.source.lastSync=0;
+      }
+      return api;
+    }
   }catch(_){}
   try{
     const s=JSON.parse(localStorage.getItem(LIVE_KEY+c.key)||'null');
-    if(s)return s;
+    if(s){
+      if(s.source&&isOldGenericFacebook(s.source.url,s.source.name)){
+        s.source.url='';s.source.name='';s.source.feedUrl='';s.source.connected=false;s.source.lastSync=0;
+        try{localStorage.setItem(LIVE_KEY+c.key,JSON.stringify(s))}catch(_){}
+      }
+      return s;
+    }
   }catch(_){}
   return {v:144,key:c.key,home:c.home,away:c.away,source:{url:'',name:'',feedUrl:'',connected:false,lastSync:0},phase:'scheduled',events:[],suggestions:[],updatedAt:Date.now()};
 }
@@ -59,6 +70,13 @@ function provider(url){
 function isAndroidChrome(){
   const ua=navigator.userAgent||'';
   return /Android/i.test(ua)&&/(Chrome|CriOS)\//i.test(ua)&&!/EdgA\//i.test(ua)&&!/OPR\//i.test(ua);
+}
+function isOldGenericFacebook(url,name=''){
+  const u=String(url||'').toLowerCase();
+  const n=String(name||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().trim();
+  return u.includes('facebook.com/share/1cbukpctcm') ||
+    n==='facebook / transmision externa' ||
+    n==='facebook/transmision externa';
 }
 function safeUrl(v){
   try{const u=new URL(String(v||'').trim());return /^https?:$/.test(u.protocol)?u.toString():''}catch(_){return ''}
@@ -251,7 +269,7 @@ function bindFloatingDrag(portal){
 function streamList(c,s){
   let list=[];
   try{list=JSON.parse(localStorage.getItem(LIST_KEY+c.key)||'[]')||[]}catch(_){}
-  list=Array.isArray(list)?list.filter(x=>safeUrl(x?.url)):[];
+  list=Array.isArray(list)?list.filter(x=>safeUrl(x?.url)&&!isOldGenericFacebook(x?.url,x?.name)):[];
   const current=safeUrl(s?.source?.url);
   if(current&&!list.some(x=>x.url===current)){
     list.unshift({id:'current',name:s.source.name||provider(current).name,url:current,addedAt:Date.now()});
