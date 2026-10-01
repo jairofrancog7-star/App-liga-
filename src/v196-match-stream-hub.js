@@ -21,15 +21,25 @@ let timer=0,lastSig='',floatingPortal=null,floatingCardNode=null,floatingDragBou
 function ctx(){
   const root=$('[data-v92-matchcenter]');if(!root)return null;
   const sel=$('[data-v92-match-select]',root);
-  const sides=$$('.v92-score-card .v92-side b',root);
+  let sides=$('.v92-score-card .v92-side b',root);
+  if(sides.length<2)sides=$('.v420-matchup > div > b',root);
+  if(sides.length<2)sides=$('.v526-form-head > div > b',root);
   if(!sel||sides.length<2)return null;
+  const category=$('.v420-match-panel h2',root)?.textContent?.trim()||
+    ($('.v92-match-head p',root)?.textContent||'').split('·')[1]?.trim()||'Liga Municipal';
+  const meta=$('.v92-official-meta span',root).map(x=>x.textContent.trim());
+  if(!meta.length){
+    const d=$('.v420-match-panel p',root)?.textContent?.trim();
+    const v=$('.v420-media-card span',root)?.textContent?.trim();
+    if(d)meta.push(d);if(v)meta.push(v);
+  }
   return {
     root,
     key:String(sel.value||'match'),
     home:(sides[0].textContent||'Local').trim(),
     away:(sides[1].textContent||'Visitante').trim(),
-    category:($('.v92-match-head p',root)?.textContent||'').split('·')[1]?.trim()||'Liga Municipal',
-    meta:$$('.v92-official-meta span',root).map(x=>x.textContent.trim())
+    category,
+    meta
   };
 }
 function liveState(c){
@@ -601,7 +611,7 @@ function render(){
     node.querySelector('[data-v196-player-card]')?.remove();
   }
   const liveAnchor=$('[data-v144-live-hub]',c.root);
-  const metaAnchor=$('.v92-official-meta',c.root)||$('.v92-score-card',c.root);
+  const metaAnchor=$('.v92-official-meta',c.root)||$('.v92-score-card',c.root)||$('.v420-match-panel',c.root);
   if(old)old.replaceWith(node);
   else if(liveAnchor)liveAnchor.insertAdjacentElement('beforebegin',node);
   else if(metaAnchor)metaAnchor.insertAdjacentElement('afterend',node);
