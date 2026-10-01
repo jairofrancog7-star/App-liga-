@@ -4,7 +4,7 @@
 (function(){
 'use strict';
 
-const BUILD='20261001-v491-v35-all-pages';
+const BUILD='20261001-v493-official-all-categories';
 const LOCAL_DATA='./data/official-live.json?v='+BUILD;
 const REMOTE_DATA='https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/data/official-live.json?v='+BUILD;
 const SRC='https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/';
