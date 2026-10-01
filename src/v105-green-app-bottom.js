@@ -6,7 +6,7 @@
 if(window.__LJR_V105_GREEN_BOTTOM__)return;
 window.__LJR_V105_GREEN_BOTTOM__=true;
 
-const BUILD='20260922-bracket-button-fix-v189';
+const BUILD='20261001-teams-button-fix-v190';
 const GREEN='https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/';
 const MOTION=GREEN+'assets/motion/';
 const MEDIA=GREEN+'media/';
@@ -89,9 +89,36 @@ function openBracketBuilder(){
    setTimeout(()=>host.classList.remove('v105-bracket-target'),900);
  },180);
 }
+function openTeamsDirectory(){
+ const screen=document.querySelector('#screen');
+ if(!screen)return false;
+ const page=screen.querySelector('[data-v27-reference="teams"]')||
+            screen.querySelector('[data-v41-teams]')||
+            screen.querySelector('[data-v27-teams-mount]')||
+            screen;
+ try{page.scrollIntoView({behavior:'smooth',block:'start'})}
+ catch(_){try{window.scrollTo({top:0,behavior:'smooth'})}catch(__){window.scrollTo(0,0)}}
+ const search=screen.querySelector('#v27TeamSearch,#v41TeamSearch,[data-v66-team-search]');
+ if(search){
+   setTimeout(()=>{try{search.focus({preventScroll:true})}catch(_){search.focus?.()}},220);
+ }
+ return true;
+}
 function go(r){
  if(!r)return;
  log('Abrir '+r);
+
+ /* V190 — Equipos / Directorio de clubes responde también si ya estamos en #/teams. */
+ if(r==='teams'){
+   const current=route();
+   if(current==='teams'){
+     if(!openTeamsDirectory()){
+       try{window.dispatchEvent(new Event('hashchange'))}catch(_){}
+       setTimeout(openTeamsDirectory,160);
+     }
+     return;
+   }
+ }
 
  if(r==='bracketBuilder'){
    const current=route();
@@ -797,8 +824,12 @@ function act(a){
  else if(a==='register-alerts')registerAlerts();else if(a==='schedule-match')scheduleMatch();else if(a==='new-sanction')newSanction();else if(a==='tv-panel')tvPanel();
 }
 function bind(root){
- $$('[data-v105-route]',root).forEach(b=>b.onclick=()=>go(b.dataset.v105Route));
- $$('[data-v105-action]',root).forEach(b=>b.onclick=()=>{log('Herramienta '+b.dataset.v105Action);act(b.dataset.v105Action)});
+ $('[data-v105-route]',root).forEach(b=>b.onclick=e=>{
+   e?.preventDefault?.();
+   e?.stopPropagation?.();
+   go(b.dataset.v105Route);
+ });
+ $('[data-v105-action]',root).forEach(b=>b.onclick=()=>{log('Herramienta '+b.dataset.v105Action);act(b.dataset.v105Action)});
  bindTactics(root);
  root.querySelectorAll('[data-v105-motion]').forEach(v=>{
    v.muted=true;v.loop=true;v.playsInline=true;
