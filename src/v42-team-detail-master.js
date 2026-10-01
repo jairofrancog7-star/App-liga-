@@ -117,7 +117,7 @@ function logoUrl(name){
 function backIcon(){return '<svg viewBox="0 0 32 32"><path d="M20.5 7.5 12 16l8.5 8.5M12.5 16H27"/></svg>'}
 function bellIcon(){return '<svg viewBox="0 0 24 24"><path d="M6 17h12l-1.4-2.3V10a4.6 4.6 0 0 0-9.2 0v4.7L6 17Z"/><path d="M10 19a2 2 0 0 0 4 0"/></svg>'}
 function shareIcon(){return '<svg viewBox="0 0 24 24"><circle cx="18" cy="5" r="2.3"/><circle cx="6" cy="12" r="2.3"/><circle cx="18" cy="19" r="2.3"/><path d="m8 11 8-5M8 13l8 5"/></svg>'}
-function checkIcon(){return '<svg viewBox="0 0 20 20"><path d="m3.5 10.2 4 4.1 9-9"/></svg>'}
+function checkIcon(){return '<svg viewBox="0 0 20 20" aria-hidden="true"><path d="M10 3.5v13M3.5 10h13"/></svg>'}
 function dotsIcon(){return '<svg viewBox="0 0 24 24"><circle cx="12" cy="5" r="1.5"/><circle cx="12" cy="12" r="1.5"/><circle cx="12" cy="19" r="1.5"/></svg>'}
 function store(){try{return JSON.parse(localStorage.getItem('lj-store-v3')||'{}')||{}}catch(e){return {}}}
 function save(st){localStorage.setItem('lj-store-v3',JSON.stringify(st))}
@@ -236,7 +236,7 @@ function markup(){
   '<div class="v42-neon" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div>'+
   '<div class="v42-top-actions"><button type="button" class="v42-back" data-v42-back aria-label="Volver">'+backIcon()+'</button><div class="v42-top-right"><button type="button" class="v42-bell" data-v42-bell>'+bellIcon()+'</button><button type="button" class="v42-more" data-v42-share>'+shareIcon()+'</button></div></div>'+
   '<img class="v42-team-crest" src="'+esc(logoUrl(t.name))+'" alt="'+esc(t.name)+'"><div class="v42-title"><h1>'+esc(t.name)+'</h1><p>'+esc(t.category)+' · Juventino Rosas, Guanajuato</p></div>'+
-  '<div class="v42-actions"><button type="button" class="v42-follow '+(followed()?'active':'')+'" data-v42-follow>'+checkIcon()+'<span>'+(followed()?'Siguiendo':'Seguir')+'</span></button><button type="button" class="v42-share" data-v42-share aria-label="Compartir">'+shareIcon()+'</button></div>'+
+  '<div class="v42-actions"><button type="button" class="v42-follow '+(followed()?'active':'')+'" data-v42-follow>'+checkIcon()+'<span>'+(followed()?'Siguiendo':'Seguir')+'</span></button><button type="button" class="v42-compare" data-v42-compare>Comparar</button><button type="button" class="v42-share" data-v42-share aria-label="Compartir">'+shareIcon()+'</button></div>'+
   '<nav class="v42-tabs"><button class="'+(activeTab==='summary'?'active':'')+'" data-v42-tab="summary">Resumen</button><button class="'+(activeTab==='matches'?'active':'')+'" data-v42-tab="matches">Partidos</button><button class="'+(activeTab==='standings'?'active':'')+'" data-v42-tab="standings">Clasificación</button><button class="'+(activeTab==='squad'?'active':'')+'" data-v42-tab="squad">Plantilla</button><button class="'+(activeTab==='stats'?'active':'')+'" data-v42-tab="stats">Estadísticas</button></nav>'+
   '</header>'+body(t)+lowerActionsMarkup(t)+notifySheet(t)+compareSheet(t)+'</section>';
 }
