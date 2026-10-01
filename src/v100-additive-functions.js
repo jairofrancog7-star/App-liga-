@@ -1579,9 +1579,9 @@ function shotmap(){
     render();
   };
 
-  $('[data-shot-mode]',m).forEach(b=>b.onclick=()=>{
+  $$('[data-shot-mode]',m).forEach(b=>b.onclick=()=>{
     shotMode=b.dataset.shotMode||'shot';
-    $('[data-shot-mode]',m).forEach(x=>x.classList.toggle('active',x===b));
+    $$('[data-shot-mode]',m).forEach(x=>x.classList.toggle('active',x===b));
     selected=null;
     render();
   });
