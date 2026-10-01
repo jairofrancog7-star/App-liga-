@@ -7,7 +7,7 @@ if(window.__LJR_V449_REFERENCE_LOWER__)return;
 window.__LJR_V449_REFERENCE_LOWER__=true;
 
 const ID='v449-reference-lower';
-const BUILD='20261001-v457-table-filters-functional';
+const BUILD='20261001-v458-ranking-table-reference';
 const DATA='./public/data/official-live.json?v='+BUILD;
 const RAW='https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/';
 const CAT_ORDER=['3','5','4','2','1'];
@@ -247,14 +247,15 @@ function compactStandingRow(x,i,data,form=false){
   '<span class="v449-pos"><i></i>'+esc(x.pos)+'</span>'+
   '<span class="v449-team">'+crest(x.team,data,'small')+'<b>'+esc(x.team)+'</b></span>'+
   (form?'<span class="v449-form">'+formDots(data,x.team)+'</span>':
-   '<span>'+esc(x.pj)+'</span><span>'+esc(x.pg)+'</span><span>'+esc(x.pe)+'</span><span>'+esc(x.pp)+'</span><span>'+esc(x.gf)+'</span><span>'+esc(x.gc)+'</span><strong>'+esc(x.pts)+'</strong>')+
+   '<strong>'+esc(x.pts)+'</strong><span>'+esc(x.pj)+'</span><span>'+esc(x.pg)+'</span><span>'+esc(x.pe)+'</span><span>'+esc(x.pp)+'</span><span>'+esc(x.gf)+'</span><span>'+esc(x.gc)+'</span>')+
  '</div>';
 }
 function competitionStandings(data){
  const rows=standings(data).slice(0,12);
- return '<section class="v449-block v449-competition-table">'+
-  '<div class="v449-kicker">CLASIFICACIÓN OFICIAL · '+esc(catName(data))+'</div>'+navStrip('standings')+
-  '<div class="v449-table-head"><span>POS.</span><span>EQUIPO</span><span>PJ</span><span>PG</span><span>PE</span><span>PP</span><span>GF</span><span>GC</span><span>PTS</span></div>'+
+ return '<section class="v449-block v449-competition-table v458-competition-table">'+
+  navStrip('standings')+
+  '<div class="v458-table-caption"><b>CLASIFICACIÓN</b><span>'+esc(catName(data))+'</span></div>'+
+  '<div class="v449-table-head"><span>POS.</span><span>EQUIPO</span><span>PTS</span><span>PJ</span><span>PG</span><span>PE</span><span>PP</span><span>GF</span><span>GC</span></div>'+
   '<div class="v449-table-body">'+(rows.length?rows.map((x,i)=>compactStandingRow(x,i,data,false)).join(''):'<div class="v449-empty">Sin clasificación publicada.</div>')+'</div>'+
  '</section>';
 }
@@ -339,23 +340,46 @@ function seasonBlock(data){
   (seasonMode==='matches'?seasonMatches(data):seasonMode==='table'?seasonTable(data):seasonStats(data))+
  '</section>';
 }
+function rankingTeamStrip(data){
+ const teams=standings(data).slice(0,4);
+ if(!teams.length)return '';
+ return '<div class="v458-team-strip">'+teams.map(t=>
+  '<button type="button" class="v458-team-tile" data-v449-route="teams">'+crest(t.team,data,'rankteam')+'<span>'+esc(t.team)+'</span></button>'
+ ).join('')+'</div>';
+}
+function rankingPlayerRow(p,i,data){
+ return '<div class="v458-rank-row">'+
+   '<span class="v458-rank-pos">'+String(i+1)+'º</span>'+
+   playerPic(p.name,p.team,data,'rankrow')+
+   '<div class="v458-rank-person"><b>'+esc(p.name)+'</b><small>'+crest(p.team,data,'micro')+'<span>'+esc(p.team)+'</span></small></div>'+
+   '<strong>'+esc(p.goals)+'</strong>'+
+  '</div>';
+}
 function rankingBlock(data){
- const rows=scorers(data).slice(0,5),top=rows[0],available=rankingMode==='goals';
- return '<section class="v449-block v449-ranking v449-ranking-ref">'+
+ const rows=scorers(data).slice(0,6),top=rows[0],available=rankingMode==='goals';
+ const showTeams=['stats','v38Stats','scorers','rankings'].includes(route());
+ return '<section class="v449-block v449-ranking v449-ranking-ref v458-ranking">'+
+  (showTeams?rankingTeamStrip(data):'')+
   '<div class="v449-ranking-title">RANKING DE JUGADORES</div>'+
   '<div class="v449-ranking-tabs">'+
-   '<button class="'+(rankingMode==='goals'?'active':'')+'" data-v449-ranking-mode="goals">Goles</button>'+
-   '<button class="'+(rankingMode==='shots'?'active':'')+'" data-v449-ranking-mode="shots">Remates</button>'+
-   '<button class="'+(rankingMode==='passes'?'active':'')+'" data-v449-ranking-mode="passes">Pases</button>'+
+   '<button type="button" class="'+(rankingMode==='goals'?'active':'')+'" data-v449-ranking-mode="goals">Goles</button>'+
+   '<button type="button" class="'+(rankingMode==='shots'?'active':'')+'" data-v449-ranking-mode="shots">Remates</button>'+
+   '<button type="button" class="'+(rankingMode==='passes'?'active':'')+'" data-v449-ranking-mode="passes">Pases</button>'+
   '</div>'+
-  (available&&top?'<article class="v449-ranking-feature">'+
-    '<div class="v449-ranking-feature-top">'+playerPic(top.name,top.team,data,'feature')+'<div><span>1º</span><h3>'+esc(top.name)+'</h3><small>'+crest(top.team,data,'micro')+esc(top.team)+'</small></div><strong>'+top.goals+'<small>GOLES</small></strong></div>'+
-    '<div class="v449-ranking-list">'+rows.slice(1,4).map((p,i)=>scorerRow(p,i+1,data)).join('')+'</div>'+
+  (available&&top?
+   '<article class="v458-rank-card">'+
+    '<div class="v458-rank-hero">'+
+      '<div class="v458-hero-photo">'+playerPic(top.name,top.team,data,'feature')+'</div>'+
+      '<div class="v458-hero-meta"><span>1º</span><div><h3>'+esc(top.name)+'</h3><small>'+crest(top.team,data,'micro')+esc(top.team)+'</small></div><strong>'+esc(top.goals)+'<small>GOLES</small></strong></div>'+
+    '</div>'+
+    '<div class="v458-rank-head"><span>POS.</span><span>JUGADOR</span><span>GOLES</span></div>'+
+    '<div class="v458-rank-list">'+rows.slice(1,5).map((p,i)=>rankingPlayerRow(p,i+1,data)).join('')+'</div>'+
    '</article>':
    '<div class="v449-ranking-unavailable"><b>'+esc(rankingMode==='shots'?'Remates':'Pases')+'</b><span>Esta estadística no está publicada en la fuente oficial.</span></div>')+
   '<button type="button" class="v449-ranking-more" data-v449-route="scorers">VER RANKING <span>›</span></button>'+
  '</section>';
 }
+
 function competitionMode(){
  const active=$('[data-comp-tab].active');
  return active?.dataset?.compTab||'fixtures';
