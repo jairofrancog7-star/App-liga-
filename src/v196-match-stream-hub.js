@@ -16,7 +16,7 @@ const $=(s,r=document)=>r.querySelector(s);
 const $$=(s,r=document)=>Array.from(r.querySelectorAll(s));
 const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const route=()=>String(location.hash||'').replace(/^#\/?/,'').split('?')[0]||'home';
-let timer=0,lastSig='',floatingPortal=null,floatingCardNode=null,floatingDragBound=false;
+let timer=0,lastSig='',floatingPortal=null,floatingCardNode=null,floatingDragBound=false,systemPiPActive=false;
 
 function ctx(){
   const root=$('[data-v92-matchcenter]');if(!root)return null;
@@ -89,24 +89,66 @@ function floatingCapability(item,cfg=settings()){
   return {inApp:false,pip:false,docPip,provider:p};
 }
 async function requestPiP(node){
-  const video=$('video',node);
-  if(!video){flash('Esta fuente no ofrece Picture-in-Picture directo. En YouTube usa el control PiP del reproductor cuando esté disponible.');return false}
+  const video=$('video',node)||floatingCardNode?.querySelector('video')||null;
+  if(!video){
+    flash('Para salir de la app con video flotante usa una fuente de video directo. En YouTube/Facebook usa el control PiP del propio reproductor si aparece.');
+    return false;
+  }
   if(!document.pictureInPictureEnabled||typeof video.requestPictureInPicture!=='function'){
-    flash('Picture-in-Picture no está disponible en este navegador o dispositivo.');return false;
+    flash('Tu navegador no habilita Picture-in-Picture del sistema para este video.');
+    return false;
   }
   try{
-    if(document.pictureInPictureElement===video)return true;
-    if(video.paused)await video.play();
-    await video.requestPictureInPicture();
-    flash('PiP activo: puedes cambiar a otra aplicación y seguir viendo el video.');
+    video.disablePictureInPicture=false;
+    video.setAttribute('playsinline','');
+    if(video.readyState<1){
+      try{video.load()}catch(_){}
+      await new Promise(resolve=>{
+        let done=false;
+        const finish=()=>{if(done)return;done=true;resolve()};
+        video.addEventListener('loadedmetadata',finish,{once:true});
+        setTimeout(finish,1400);
+      });
+    }
+    if(video.paused){
+      video.muted=true;
+      await video.play();
+    }
+    if(document.pictureInPictureElement===video){
+      systemPiPActive=true;
+      return true;
+    }
+    const pip=await video.requestPictureInPicture();
+    systemPiPActive=!!pip||document.pictureInPictureElement===video;
+    video.addEventListener('leavepictureinpicture',()=>{
+      systemPiPActive=false;
+      if(settings().floating){
+        const hub=$('[data-v196-stream-hub]');
+        if(hub)setFloating(true,hub);
+      }
+    },{once:true});
+    try{
+      if('mediaSession' in navigator){
+        navigator.mediaSession.metadata=new MediaMetadata({
+          title:'Liga Juventino Rosas',
+          artist:'Partido en vivo',
+          album:'Match Center'
+        });
+        navigator.mediaSession.setActionHandler('play',()=>video.play());
+        navigator.mediaSession.setActionHandler('pause',()=>video.pause());
+      }
+    }catch(_){}
+    flash('Modo flotante exterior activo. Ya puedes ir a Inicio u otra app.');
     return true;
   }catch(_){
-    flash('No se pudo abrir PiP. Inicia el video y vuelve a tocar PiP.');
+    systemPiPActive=false;
+    flash('No se pudo activar el flotante exterior. Reproduce el video y toca Flotante otra vez.');
     return false;
   }
 }
 async function exitPiP(){
   try{if(document.pictureInPictureElement&&document.exitPictureInPicture)await document.exitPictureInPicture()}catch(_){}
+  systemPiPActive=false;
 }
 async function requestDocumentPiP(node){
   if(!window.documentPictureInPicture?.requestWindow)return false;
@@ -234,7 +276,7 @@ function playerHtml(c,s,st,current){
     return '<div class="v196-player-empty linked"><span class="v196-provider">f</span><b>'+esc(current?.name||s.source?.name||'Facebook Live')+'</b><p>Facebook puede bloquear el video incrustado. Este botón abre la transmisión real sin perder el enlace guardado en el Match Center.</p><button type="button" data-v196-open="'+esc(url)+'">Abrir Facebook Live</button></div>';
   }
   if(p.key==='video'){
-    return '<div class="v196-frame"><video src="'+esc(url)+'" '+(st.live?'autoplay ':'')+'controls playsinline '+(cfg.lowQuality?'preload="metadata"':'preload="auto"')+'></video></div>';
+    return '<div class="v196-frame"><video src="'+esc(url)+'" '+(st.live?'autoplay ':'')+'controls playsinline '+(cfg.lowQuality?'preload="metadata"':'preload="auto"')+' data-v196-system-pip></video></div>';
   }
   return '<div class="v196-player-empty linked"><span class="v196-provider">'+esc(p.icon)+'</span><b>'+esc(current?.name||s.source?.name||p.name)+'</b><p>'+(p.key==='tiktok'?'TikTok puede bloquear el reproductor incrustado.':'Esta fuente se abre en su reproductor original.')+'</p><button type="button" data-v196-open="'+esc(url)+'">Abrir transmisión</button></div>';
 }
@@ -249,7 +291,7 @@ function hubHtml(c,s){
   const sourceCount=list.length,cap=floatingCapability(current,cfg);
   const floatOn=!!cfg.floating&&cap.inApp;
   if(cfg.floating&&!cap.inApp){cfg.floating=false;saveSettings(cfg)}
-  const floatLabel=floatOn?'Activo':(current&&!cap.inApp?'No compatible':'Desactivado');
+  const floatLabel=(document.pictureInPictureElement||systemPiPActive)?'Fuera de la app':(floatOn?'Activo':(current&&!cap.inApp?'No compatible':'Desactivado'));
   return '<section class="v196-stream-hub '+(floatOn?'is-floating-enabled':'')+'" data-v196-stream-hub data-match-key="'+esc(c.key)+'">'+
     '<header class="v196-event-card">'+
       '<div class="v196-event-top"><span class="v196-dot '+(st.live?'live':'')+'"></span><span><small>'+esc(st.label)+'</small><b>'+esc(c.home)+' vs '+esc(c.away)+'</b></span><em>'+esc(st.sub)+'</em></div>'+
@@ -361,21 +403,44 @@ async function toggleFloating(c,node){
   }
   const current=list.find(x=>x.url===safeUrl(s?.source?.url))||list[0]||null;
   const cap=floatingCapability(current,settings());
-  if(!cap.inApp){
-    flash('Esta fuente no admite flotante dentro de la app. Usa Abrir transmisión o cambia a YouTube/video directo.');
-    await disableFloating(node);
-    return;
-  }
   const next=!settings().floating;
   if(!next){await disableFloating(node);return}
-  setFloating(true,node);
-  const activeNode=floatingCardNode||node;
+
+  /* V526: primero pide PiP del sistema mientras el toque del usuario sigue activo.
+     Reubicar el reproductor antes podía consumir la activación y Android lo rechazaba. */
   let systemFloat=false;
-  if(cap.pip)systemFloat=await requestPiP(activeNode);
-  if(!systemFloat&&cap.docPip)systemFloat=await requestDocumentPiP(activeNode);
-  if(!systemFloat){
-    flash('Modo flotante activo dentro de la app. Para verlo sobre otras apps usa PiP del reproductor si tu teléfono lo permite.');
+  if(cap.pip)systemFloat=await requestPiP(node);
+  if(!systemFloat&&cap.docPip)systemFloat=await requestDocumentPiP(node);
+
+  const cfg=settings();
+  cfg.floating=true;
+  saveSettings(cfg);
+  const btn=$('[data-v196-floating]',node);
+  if(btn){
+    btn.classList.add('active');
+    const small=btn.querySelector('small');
+    if(small)small.textContent=systemFloat?'Fuera de la app':'Activo';
   }
+
+  if(systemFloat){
+    systemPiPActive=true;
+    document.body.classList.add('v196-floating-player');
+    /* No mover el <video> mientras está en PiP: Chrome/Android puede cerrarlo al reparentar. */
+    return;
+  }
+
+  if(!cap.inApp){
+    cfg.floating=false;saveSettings(cfg);
+    if(btn){
+      btn.classList.remove('active');
+      const small=btn.querySelector('small');if(small)small.textContent='No compatible';
+    }
+    flash('Esta fuente no permite PiP exterior desde la página. En YouTube/Facebook usa el botón PiP del reproductor.');
+    return;
+  }
+
+  setFloating(true,node);
+  flash('Flotante activo dentro de la app. Para salir de la app necesitas PiP compatible de la fuente.');
 }
 function settingsModal(c){
   const cfg=settings();
@@ -422,6 +487,13 @@ function applyFloating(node){
   const cfg=settings(),card=$('[data-v196-player-card]',node),c=ctx();
   if(!card&&!floatingCardNode)return;
   let enabled=!!cfg.floating;
+
+  if(document.pictureInPictureElement||systemPiPActive){
+    systemPiPActive=true;
+    document.body.classList.add('v196-floating-player');
+    return;
+  }
+
   if(c){
     const s=liveState(c),list=streamList(c,s),current=list.find(x=>x.url===safeUrl(s?.source?.url))||list[0]||null;
     if(!floatingCapability(current,cfg).inApp&&enabled){enabled=false;cfg.floating=false;saveSettings(cfg)}
