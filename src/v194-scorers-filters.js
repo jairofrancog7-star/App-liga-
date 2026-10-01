@@ -5,7 +5,7 @@
 if(window.__LJR_V194_SCORERS__)return;
 window.__LJR_V194_SCORERS__=true;
 window.__LJR_SCORERS_UI_OWNER__='v194-reference';
-window.__LJR_SCORERS_BUILD__='v465';
+window.__LJR_SCORERS_BUILD__='v466';
 
 const CAT_ORDER=['3','5','4','2','1'];
 const CAT_FALLBACK={
@@ -20,6 +20,9 @@ const TEAM_KEY='v194-scorer-team';
 const LOWER_STAT_KEY='v462-scorer-ranking-stat';
 let rendering=false;
 let timer=0;
+let categoryFrame=0;
+let statFrame=0;
+let pendingCategory='';
 let scorerCategoryTapAt=0;
 let scorerCategoryTapId='';
 
@@ -332,6 +335,10 @@ function chooseCategory(id){
     localStorage.setItem('v62-category',id);
     localStorage.setItem('v12-fixture-cat',id);
     localStorage.setItem(TEAM_KEY,'all');
+    /* catId() prioritizes ?cat= in the hash. Keep it synchronized without
+       firing hashchange so one tap produces exactly one scorer repaint. */
+    const next=location.pathname+location.search+'#/scorers?cat='+encodeURIComponent(id);
+    history.replaceState(history.state,'',next);
   }catch(_){}
 
   pendingCategory=id;
@@ -341,8 +348,6 @@ function chooseCategory(id){
     const selected=pendingCategory||id;
     pendingCategory='';
     forceCategoryRender();
-    /* Sync the shared official-data controller only after the DOM repaint
-       has completed. It no longer participates in the tap itself. */
     setTimeout(()=>{
       try{window.LJR_OFFICIAL_API?.setCategory?.(selected)}catch(_){}
     },0);
