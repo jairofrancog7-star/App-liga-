@@ -5075,3 +5075,57 @@ body.v92-match-center-official [data-v92-pitch]:active,
 body.v92-match-center-official [data-v92-vote-mvp]:active{
   transform:scale(.985)!important;
 }
+
+
+/* V516 — Match Center lower reference block */
+@media (max-width:1023px){
+  body.v92-match-center-official .v516-matchcenter-lower{
+    width:100%;
+    box-sizing:border-box;
+    margin:16px 0 4px;
+    padding:12px 0 0;
+    border-top:1px solid rgba(78,112,231,.20);
+  }
+  body.v92-match-center-official .v516-matchcenter-lower .v417-reference-tools{
+    width:100%!important;
+    margin:0 0 10px!important;
+    padding:10px!important;
+    border:1px solid rgba(64,105,230,.24)!important;
+    border-radius:12px!important;
+    background:linear-gradient(180deg,#0d1747,#091036)!important;
+  }
+  body.v92-match-center-official .v516-matchcenter-lower .v416-general-card{
+    border-color:rgba(62,106,232,.26)!important;
+    background:linear-gradient(180deg,#0e1745,#0a1033 72%)!important;
+  }
+  body.v92-match-center-official .v516-matchcenter-shortcuts{
+    display:flex;
+    gap:7px;
+    width:100%;
+    margin:10px 0 0;
+    padding:0 0 3px;
+    overflow-x:auto;
+    scrollbar-width:none;
+    -webkit-overflow-scrolling:touch;
+  }
+  body.v92-match-center-official .v516-matchcenter-shortcuts::-webkit-scrollbar{display:none}
+  body.v92-match-center-official .v516-matchcenter-shortcuts button{
+    flex:0 0 auto;
+    min-height:38px;
+    padding:0 13px;
+    border:1px solid rgba(70,111,235,.30);
+    border-radius:9px;
+    background:linear-gradient(180deg,#111c52,#0a123b);
+    color:#b8c4eb;
+    font-size:7.5px;
+    line-height:1;
+    font-weight:900;
+    letter-spacing:.02em;
+    white-space:nowrap;
+  }
+  body.v92-match-center-official .v516-matchcenter-shortcuts button:active{
+    transform:scale(.98);
+    border-color:rgba(37,224,239,.56);
+    color:#fff;
+  }
+}
