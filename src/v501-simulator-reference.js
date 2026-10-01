@@ -3,6 +3,7 @@
 'use strict';
 if(window.__LJR_V501_SIMULATOR__)return;
 window.__LJR_V501_SIMULATOR__=true;
+window.LJR_SIMULATOR_V502={version:'502'};
 
 const CAT_NAMES={'3':'Primera Fuerza','5':'Intermedia','4':'Segunda Fuerza','2':'Veteranos 35+','1':'Veteranos 50+'};
 const VIEW_KEY='v501-simulator-view';
@@ -107,16 +108,26 @@ function scoreOf(f,s){
  return {home:Number(x.home),away:Number(x.away)};
 }
 function alterScore(id,side,delta){
- const s=simState(),x=s[id]||{home:0,away:0};
+ const s=simState(),existing=s[id];
+ if(!existing&&delta<0)return;
+ const x=existing||{home:0,away:0};
  x.home=Math.max(0,Number(x.home)||0);x.away=Math.max(0,Number(x.away)||0);
- x[side]=Math.max(0,x[side]+delta);s[id]=x;saveSim(s);render();
+ x[side]=Math.max(0,x[side]+delta);
+ s[id]=x;saveSim(s);render(true);
+}
+function resetMatch(id){
+ const s=simState();delete s[id];saveSim(s);render(true);
+}
+function clearSimulation(){
+ localStorage.removeItem(simKey());render(true);
 }
 function simulatedStandings(){
- const base=standings().map(x=>({...x})),by=new Map(base.map(x=>[norm(x.name),x]));
+ const official=standings();
+ const base=official.map(x=>({...x,officialPos:Number(x.pos)||0})),by=new Map(base.map(x=>[norm(x.name),x]));
  const s=simState();
  for(const f of simFixtures()){
    const sc=scoreOf(f,s);if(!sc)continue;
-   for(const n of [f.home,f.away])if(!by.has(norm(n))){const x={pos:base.length+1,name:n,pj:0,pg:0,pe:0,pp:0,gf:0,gc:0,dg:0,pts:0};base.push(x);by.set(norm(n),x)}
+   for(const n of [f.home,f.away])if(!by.has(norm(n))){const x={pos:base.length+1,officialPos:base.length+1,name:n,pj:0,pg:0,pe:0,pp:0,gf:0,gc:0,dg:0,pts:0};base.push(x);by.set(norm(n),x)}
    const h=by.get(norm(f.home)),a=by.get(norm(f.away));
    h.pj++;a.pj++;h.gf+=sc.home;h.gc+=sc.away;a.gf+=sc.away;a.gc+=sc.home;
    if(sc.home>sc.away){h.pg++;a.pp++;h.pts+=3}
@@ -145,18 +156,37 @@ function top(){
    '<button type="button" class="v501-icon" data-v501-share aria-label="Compartir">'+svgShare()+'</button>'+
  '</header>';
 }
+function trendFor(row){
+ const before=Number(row.officialPos)||Number(row.pos)||0,now=Number(row.pos)||0;
+ if(now<before)return '<i class="v501-trend up">▲</i>';
+ if(now>before)return '<i class="v501-trend down">▼</i>';
+ return '<i class="v501-trend same">—</i>';
+}
+function tableRow(r){
+ return '<div class="v501-table-row">'+
+   '<span class="v501-pos">'+r.pos+trendFor(r)+'</span>'+
+   '<span class="v501-table-team">'+crest(r.name,'stand')+'<b>'+esc(r.name)+'</b></span>'+
+   '<strong>'+r.pts+'</strong><span>'+r.dg+'</span><span class="pill">'+r.gf+'</span><span>'+r.gc+'</span><span>'+r.pg+'</span><span>'+r.pj+'</span>'+
+ '</div>';
+}
 function tableView(){
- const rows=simulatedStandings().slice(0,12);
+ const rows=simulatedStandings(),n=rows.length;
+ const groups=[];
+ if(n<=8){
+   groups.push({from:1,to:n,label:'DIRECTOS A OCTAVOS'});
+ }else{
+   groups.push({from:1,to:Math.min(8,n),label:'DIRECTOS A OCTAVOS'});
+   if(n>8)groups.push({from:9,to:Math.min(24,n),label:'PLAY-OFFS ELIMINATORIOS (NO CABEZA DE SERIE)'});
+   if(n>24)groups.push({from:25,to:n,label:'PLAZAS DE ELIMINACIÓN'});
+ }
  return '<section class="v501-board v501-standings">'+
-   '<div class="v501-table-label">DIRECTOS A OCTAVOS</div>'+
    '<div class="v501-table-head"><span></span><span></span><b>PTOS</b><b>+/-</b><b>GF</b><b>GC</b><b>V</b><b>PJ</b></div>'+
-   '<div class="v501-table-body">'+rows.map((r,i)=>
-     '<div class="v501-table-row">'+
-       '<span class="v501-pos">'+(i+1)+'</span>'+
-       '<span class="v501-table-team">'+crest(r.name,'table')+'<b>'+esc(r.name)+'</b></span>'+
-       '<strong>'+r.pts+'</strong><span>'+r.dg+'</span><span class="pill">'+r.gf+'</span><span>'+r.gc+'</span><span>'+r.pg+'</span><span>'+r.pj+'</span>'+
-     '</div>').join('')+
-   '</div>'+
+   '<div class="v501-table-body">'+groups.map(g=>
+     '<div class="v501-table-group">'+
+       '<div class="v501-table-label">'+esc(g.label)+'</div>'+
+       rows.filter(r=>r.pos>=g.from&&r.pos<=g.to).map(tableRow).join('')+
+     '</div>'
+   ).join('')+'</div>'+
  '</section>';
 }
 function bracketTeam(t){
@@ -181,29 +211,44 @@ function bracketView(){
    '</div>'+
  '</section>';
 }
-function scoreControl(f,side,score){
- const val=score?score[side]:'–';
+function scoreControl(f,side){
  return '<div class="v501-score-control">'+
    '<button type="button" data-v501-score="'+esc(f.id)+'" data-side="'+side+'" data-delta="1" aria-label="Sumar gol">+</button>'+
-   '<strong>'+val+'</strong>'+
    '<button type="button" data-v501-score="'+esc(f.id)+'" data-side="'+side+'" data-delta="-1" aria-label="Restar gol">−</button>'+
  '</div>';
 }
+function scoreCenter(f,score){
+ return '<div class="v501-score-center">'+
+   '<strong>'+(score?esc(score.home)+' - '+esc(score.away):'−')+'</strong>'+
+   (score?'<button type="button" data-v501-reset="'+esc(f.id)+'" aria-label="Borrar resultado de este partido">↻</button>':'')+
+ '</div>';
+}
+function seedTrend(current,official){
+ const c=Number(current)||0,o=Number(official)||0;
+ if(c<o)return '<i class="up">▲</i>';
+ if(c>o)return '<i class="down">▼</i>';
+ return '<i>=</i>';
+}
 function simulatorSheet(){
  const list=journeyList(),idx=journeyIndex(),group=list[idx]||{label:'—',rows:[]},s=simState(),total=simFixtures().length,count=simulatedCount();
+ const rank=simulatedStandings(),official=standings();
+ const posNow=name=>rank.find(x=>norm(x.name)===norm(name))?.pos||'–';
+ const posBefore=name=>official.find(x=>norm(x.name)===norm(name))?.pos||posNow(name);
  return '<section class="v501-sheet">'+
    '<div class="v501-grabber"></div>'+
-   '<div class="v501-sheet-head"><h2>Simulador de resultados</h2><p>'+count+'/'+total+' partidos simulados</p></div>'+
+   '<div class="v501-sheet-head"><div><h2>Simulador de resultados</h2><p>'+count+'/'+total+' partidos simulados</p></div>'+
+     (count?'<button type="button" data-v501-clear>Borrar todo</button>':'')+
+   '</div>'+
    '<div class="v501-match-list">'+group.rows.map(f=>{
-     const sc=scoreOf(f,s),rank=simulatedStandings(),hp=rank.find(x=>norm(x.name)===norm(f.home))?.pos||'–',ap=rank.find(x=>norm(x.name)===norm(f.away))?.pos||'–';
+     const sc=scoreOf(f,s),hp=posNow(f.home),ap=posNow(f.away),hb=posBefore(f.home),ab=posBefore(f.away);
      return '<div class="v501-sim-match">'+
-       '<span class="v501-seed">#<b>'+hp+'</b><i>=</i></span>'+
+       '<span class="v501-seed">#<b>'+hp+'</b>'+seedTrend(hp,hb)+'</span>'+
        '<div class="v501-sim-team home">'+crest(f.home,'sim')+'<b>'+esc(shortName(f.home))+'</b></div>'+
-       scoreControl(f,'home',sc)+
-       '<span class="v501-dash">-</span>'+
-       scoreControl(f,'away',sc)+
+       scoreControl(f,'home')+
+       scoreCenter(f,sc)+
+       scoreControl(f,'away')+
        '<div class="v501-sim-team away">'+crest(f.away,'sim')+'<b>'+esc(shortName(f.away))+'</b></div>'+
-       '<span class="v501-seed right">#<b>'+ap+'</b><i>=</i></span>'+
+       '<span class="v501-seed right">#<b>'+ap+'</b>'+seedTrend(ap,ab)+'</span>'+
      '</div>';
    }).join('')+'</div>'+
    (list.length?'<div class="v501-journey"><button type="button" data-v501-journey="-1" aria-label="Jornada anterior">‹</button><b>Jornada '+esc(group.label.replace(/^jornada\s*/i,''))+'</b><button type="button" data-v501-journey="1" aria-label="Jornada siguiente">›</button></div>':'')+
@@ -230,7 +275,11 @@ function mount(){
    const root=screen.querySelector('[data-v501-simulator]');if(root)root.dataset.sig=sig;
  }finally{rendering=false}
 }
-function render(){mount()}
+function render(preserve=false){
+ const y=preserve?window.scrollY:null;
+ mount();
+ if(y!==null)requestAnimationFrame(()=>window.scrollTo({top:y,left:0,behavior:'auto'}));
+}
 function schedule(ms=20){clearTimeout(timer);timer=setTimeout(mount,ms)}
 async function share(){
  const rows=simulatedStandings().slice(0,5);
@@ -243,7 +292,9 @@ async function share(){
 function click(e){
  if(route()!=='simulator'||!(e.target instanceof Element))return;
  const v=e.target.closest('[data-v501-view]');if(v){e.preventDefault();setView(v.dataset.v501View);return}
- const score=e.target.closest('[data-v501-score]');if(score){e.preventDefault();alterScore(score.dataset.v501Score,score.dataset.side,Number(score.dataset.delta||0));return}
+ const score=e.target.closest('[data-v501-score]');if(score){e.preventDefault();e.stopPropagation();alterScore(score.dataset.v501Score,score.dataset.side,Number(score.dataset.delta||0));return}
+ const reset=e.target.closest('[data-v501-reset]');if(reset){e.preventDefault();e.stopPropagation();resetMatch(reset.dataset.v501Reset);return}
+ if(e.target.closest('[data-v501-clear]')){e.preventDefault();e.stopPropagation();clearSimulation();return}
  const j=e.target.closest('[data-v501-journey]');if(j){e.preventDefault();setJourney(journeyIndex()+Number(j.dataset.v501Journey||0));return}
  if(e.target.closest('[data-v501-back]')){e.preventDefault();location.hash='#/more';return}
  if(e.target.closest('[data-v501-share]')){e.preventDefault();share();return}
