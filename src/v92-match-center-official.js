@@ -231,10 +231,61 @@ function countdownText(m,state){
   const pad=n=>String(n).padStart(2,'0');
   return pad(h)+' : '+pad(min)+' : '+pad(sec);
 }
+function v522SeasonMetric(label,left,right){
+  return '<div class="v522-season-row"><b>'+esc(left??'—')+'</b><span>'+esc(label)+'</span><b>'+esc(right??'—')+'</b></div>';
+}
+function v522BalanceDots(m,team){
+  const form=teamForm(m,team,5);
+  if(!form.length)return '<div class="v522-balance-dots is-empty"><span>Sin resultados</span></div>';
+  return '<div class="v522-balance-dots">'+form.map(x=>'<i class="'+(x.result==='V'?'win':x.result==='E'?'draw':'loss')+'"></i>').join('')+'</div>';
+}
+function v522BlackInfo(m,state){
+  const r=m.r,home=r[2],away=r[6],h=standing(m,home),a=standing(m,away);
+  const h2h=v424H2H(m),hf=v424FormCounts(m,home),af=v424FormCounts(m,away);
+  return '<section class="v522-black-info">'+
+    '<section class="v522-info-block v522-season">'+
+      '<h3>Comparación de temporada</h3>'+
+      '<div class="v522-team-pair"><span>'+teamLogo(home,'v522-info-logo')+'<b>'+esc(home)+'</b></span><span>'+teamLogo(away,'v522-info-logo')+'<b>'+esc(away)+'</b></span></div>'+
+      v522SeasonMetric('Partidos',h?.[2],a?.[2])+
+      v522SeasonMetric('Ganados',h?.[3],a?.[3])+
+      v522SeasonMetric('Empates',h?.[4],a?.[4])+
+      v522SeasonMetric('Puntos',h?.[9],a?.[9])+
+    '</section>'+
+    '<section class="v522-info-block v522-balance">'+
+      '<h3>Balance de temporada</h3>'+
+      '<div class="v522-balance-pair"><span>'+teamLogo(home,'v522-info-logo')+v522BalanceDots(m,home)+'</span><span>'+teamLogo(away,'v522-info-logo')+v522BalanceDots(m,away)+'</span></div>'+
+    '</section>'+
+    '<section class="v522-info-block v522-h2h">'+
+      '<h3>Historial directo</h3>'+
+      '<div class="v522-h2h-pair"><span>'+teamLogo(home,'v522-info-logo')+'<b>'+esc(home)+'</b></span><em>VS</em><span>'+teamLogo(away,'v522-info-logo')+'<b>'+esc(away)+'</b></span></div>'+
+      '<div class="v522-h2h-grid">'+
+        '<div><small>Jugados</small><b>'+esc(h2h.played)+'</b></div>'+
+        '<div><small>Ganó '+esc(home)+'</small><b>'+esc(h2h.wins)+'</b></div>'+
+        '<div><small>Empates</small><b>'+esc(h2h.draws)+'</b></div>'+
+        '<div><small>Ganó '+esc(away)+'</small><b>'+esc(h2h.losses)+'</b></div>'+
+      '</div>'+
+    '</section>'+
+    '<section class="v522-info-block v522-form">'+
+      '<h3>Estado de forma</h3><small class="v522-cat">'+esc(m.category)+'</small>'+
+      '<div class="v522-form-teams"><span>'+teamLogo(home,'v522-info-logo')+'<b>'+esc(home)+'</b><i>'+v424FormDots(m,home,5)+'</i></span><span>'+teamLogo(away,'v522-info-logo')+'<b>'+esc(away)+'</b><i>'+v424FormDots(m,away,5)+'</i></span></div>'+
+      '<div class="v522-form-stats">'+
+        '<div><span>Ganados</span><b>'+esc(hf.wins)+'</b><b>'+esc(af.wins)+'</b></div>'+
+        '<div><span>Empates</span><b>'+esc(hf.draws)+'</b><b>'+esc(af.draws)+'</b></div>'+
+        '<div><span>Perdidos</span><b>'+esc(hf.losses)+'</b><b>'+esc(af.losses)+'</b></div>'+
+      '</div>'+
+    '</section>'+
+    '<div class="v522-black-actions">'+
+      '<button type="button" data-v522-clock><span>◷</span><b>Cronómetro</b><small>45 + descanso + 45</small></button>'+
+      '<button type="button" data-v92-tab="Alineaciones"><span>▦</span><b>Alineaciones</b><small>Plantillas y formación</small></button>'+
+      '<button type="button" data-v92-tab="Estadísticas"><span>▥</span><b>Estadísticas</b><small>Datos oficiales</small></button>'+
+      '<button type="button" data-v92-tab="Cronología"><span>☷</span><b>Cronología</b><small>Eventos del partido</small></button>'+
+    '</div>'+
+  '</section>';
+}
 function buildUpBody(m,state){
   const r=m.r,home=r[2],away=r[6],score=publishedScore(r);
   const center=score?score.text:clock(r[8]);
-  return '<section class="v420-build-up" data-v420-build-up>'+
+  return '<section class="v420-build-up v522-single-match-card" data-v420-build-up>'+
     '<section class="v420-hero">'+
       '<video class="v420-hero-media" autoplay muted loop playsinline preload="metadata" src="'+esc(MATCH_MEDIA+'v38-soccer-matchday.mp4')+'"></video>'+
       '<div class="v420-hero-shade"></div>'+
@@ -253,17 +304,19 @@ function buildUpBody(m,state){
       '</div>'+
     '</section>'+
     '<nav class="v420-pills" aria-label="Opciones del partido">'+
-      '<button type="button" class="active" aria-current="page" data-v92-tab="BuildUp">Previa</button>'+
+      '<button type="button" class="active" aria-current="page" data-v92-tab="Resumen">Build Up</button>'+
       '<button type="button" data-v92-tab="Predicciones">Predicciones</button>'+
       '<button type="button" data-v92-tab="Cronología">Comentarios</button>'+
-      '<button type="button" data-v92-tab="Previa">Previa</button>'+
+      '<button type="button" data-v92-tab="Alineaciones">Alineaciones</button>'+
     '</nav>'+
     '<section class="v420-media-card">'+
       '<video autoplay muted loop playsinline preload="metadata" src="'+esc(MATCH_MEDIA+'v38-soccer-teams.mp4')+'"></video>'+
       '<div><small>PARTIDO OFICIAL</small><b>'+esc(home)+' vs '+esc(away)+'</b><span>'+esc(r[7]||'Campo por confirmar')+'</span></div>'+
     '</section>'+
+    v522BlackInfo(m,state)+
   '</section>';
 }
+
 function updateLiveClock(){
   if(!isDirectRoute())return;
   const now=mexicoStamp();
@@ -759,24 +812,7 @@ function rosterSummary(m,team){
   const names=roster(m,team);
   return '<article class="v92-player-card">'+teamLogo(team,'small')+'<span><b>'+esc(team)+'</b><small>'+names.length+' jugadores registrados · '+esc(m.category)+'</small></span></article>';
 }
-function summaryBody(m,state){
-  const r=m.r,home=r[2],away=r[6],venue=r[7]||'Campo por confirmar',score=publishedScore(r);
-  const status=score?score.text:(state.kind==='scheduled'?'Programado':state.kind==='window'?'En directo':'Resultado pendiente');
-  return '<div class="v92-summary-grid">'+
-      '<div><b>'+esc(status)+'</b><small>'+(score?'Marcador oficial':'Estado')+'</small></div>'+
-      '<div><b>'+esc(clock(r[8]))+'</b><small>Hora oficial</small></div>'+
-      '<div><b>'+esc(venue)+'</b><small>Sede</small></div>'+
-    '</div>'+
-    '<section class="v92-section"><div class="v92-section-head"><h2>Plantillas registradas</h2><small>No se presentan como alineaciones hasta que la Liga las confirme.</small></div><div class="v92-player-grid">'+
-      rosterSummary(m,home)+rosterSummary(m,away)+
-    '</div></section>'+
-    '<section class="v92-section"><div class="v92-section-head"><h2>Acciones rápidas</h2></div><div class="v92-actions">'+
-      '<button data-v92-route="competition">Jornadas</button><button data-v92-route="v4-calendar">Calendario</button><button data-v92-route="leagueData">Tabla</button><button data-v92-route="venues">Campos</button>'+
-    '</div></section>'+
-    teamProfileDashboard(m)+
-    buildUpBody(m,state)+
-    matchCenterCalendarBlock(m);
-}
+function summaryBody(m,state){return buildUpBody(m,state);}
 function rosterColumn(m,team){
   const confirmed=lineupFor(m,team);
   const names=confirmed?.names?.length?confirmed.names:roster(m,team);
@@ -908,35 +944,15 @@ function render(){
     screen.innerHTML=emptyMarkup();renderGuard=false;return;
   }
   const r=m.r,state=stateFor(m),home=r[2],away=r[6],venue=r[7]||'Campo por confirmar';
-  const center=state.primary;
-  screen.innerHTML='<article class="v92-matchcenter" data-v92-matchcenter>'+
+  const mainView=activeTab==='Resumen'||activeTab==='BuildUp';
+  screen.innerHTML='<article class="v92-matchcenter v522-matchcenter" data-v92-matchcenter>'+
     '<header class="v92-match-head"><div class="v92-kicker">'+esc(state.label)+'</div><h1>Match Center</h1><p>'+esc(home)+' vs '+esc(away)+' · '+esc(m.category)+' · Jornada '+esc(r[1]||'')+'</p></header>'+
     matchPicker(m)+
-    '<section class="v518-matchcenter-unified" data-v518-unified>'+
-    '<section class="v92-score-card">'+
-      '<div class="v92-side">'+teamLogo(home)+'<b>'+esc(home)+'</b></div>'+
-      '<div class="v92-center"><strong>'+esc(center)+'</strong><small>'+esc(state.kind==='window'?'En directo':state.secondary)+'</small><em class="v418-match-state '+esc(state.kind)+'">'+esc(state.kind==='window'?'En directo':state.kind==='final'?'Finalizado':state.kind==='scheduled'?'Pre-partido':'Pendiente')+'</em></div>'+
-      '<div class="v92-side">'+teamLogo(away)+'<b>'+esc(away)+'</b></div>'+
-    '</section>'+
-    '<div class="v92-official-meta"><span>'+esc(dateOnly(r[8]))+' · '+esc(clock(r[8]))+'</span><span>'+esc(venue)+'</span></div>'+
-    '<nav class="v92-tabs v417-reference-tabs" aria-label="Opciones del Match Center">'+[
-      ['Cronología','JUGADAS'],
-      ['Estadísticas','CLASIFICACIÓN'],
-      ['Previa','PREVIA'],
-      ['Alineaciones','ALINEACIONES'],
-      ['Cuotas','CUOTAS'],
-      ['Resumen','RESUMEN']
-    ].map(x=>'<button type="button" class="'+(activeTab===x[0]?'active':'')+'" data-v92-tab="'+x[0]+'">'+x[1]+'</button>').join('')+'</nav>'+
-    ((activeTab==='Previa'||activeTab==='Alineaciones'||activeTab==='Cuotas')?referenceMarketBar(m,state):'')+
-    '<main class="v92-body">'+bodyFor(activeTab,m,state)+'</main>'+
-    '<div class="v92-match-actions" aria-label="Acciones del partido">'+
-      '<button type="button" data-v92-open-lineups>Alineaciones</button>'+
-      '<button type="button" data-v92-pitch>Ver cancha</button>'+
-      '<button type="button" class="mvp" data-v92-vote-mvp>⭐ Votar MVP</button>'+
-    '</div>'+
-    (activeTab==='Previa'?'':referenceLowerPanel(m,state,{showMode:!['Alineaciones','Cuotas'].includes(activeTab)}))+
-    '<p class="v92-source">Datos deportivos públicos de la Liga · '+esc(m.category)+' · '+esc(dateOnly(r[8]))+' · '+esc(venue)+'</p>'+
-    '<div class="v518-matchcenter-extras" data-v518-extras></div>'+
+    '<section class="v522-matchcenter-host '+(mainView?'is-main':'is-detail')+'">'+
+      (mainView?'':'<div class="v522-detail-bar"><button type="button" data-v92-tab="Resumen">‹ Partido</button><b>'+esc(activeTab)+'</b></div>')+
+      '<main class="v92-body">'+(mainView?buildUpBody(m,state):bodyFor(activeTab,m,state))+'</main>'+
+      '<p class="v92-source">Datos deportivos públicos de la Liga · '+esc(m.category)+' · '+esc(dateOnly(r[8]))+' · '+esc(venue)+'</p>'+
+      '<div class="v518-matchcenter-extras" data-v518-extras></div>'+
     '</section>'+
   '</article>';
 
@@ -952,6 +968,10 @@ function render(){
     b.classList.toggle('active',currentlyMuted);
     b.setAttribute('aria-pressed',String(currentlyMuted));
     b.setAttribute('aria-label',currentlyMuted?'Silenciar audio':'Activar audio');
+  });
+  screen.querySelector('[data-v522-clock]')?.addEventListener('click',()=>{
+    const target=screen.querySelector('[data-v420-countdown]');
+    try{target?.scrollIntoView({behavior:'smooth',block:'center'})}catch(_){target?.scrollIntoView?.()}
   });
   screen.querySelectorAll('[data-v417-market-pick]').forEach(b=>b.onclick=()=>{
     const pick=b.dataset.v417MarketPick||'';
@@ -995,6 +1015,7 @@ function render(){
   updateLiveClock();
   renderGuard=false;
 }
+
 async function load(){
   if(loading)return loading;
   loading=(async()=>{
