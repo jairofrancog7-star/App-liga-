@@ -165,7 +165,7 @@ body[data-app-route="simulator"] .v501-crest.fallback{
   font-size:8px;
   font-weight:900;
 }
-body[data-app-route="simulator"] .v501-crest.table{
+body[data-app-route="simulator"] .v501-crest.stand{
   width:43px;
   height:43px;
 }
@@ -432,7 +432,7 @@ body[data-app-route="simulator"] .bottom-nav{
   body[data-app-route="simulator"] .v501-table-row{min-height:59px;font-size:13px}
   body[data-app-route="simulator"] .v501-table-team{gap:7px}
   body[data-app-route="simulator"] .v501-table-team b{font-size:14px}
-  body[data-app-route="simulator"] .v501-crest.table{width:35px;height:35px}
+  body[data-app-route="simulator"] .v501-crest.stand{width:35px;height:35px}
   body[data-app-route="simulator"] .v501-br-note{font-size:13px}
   body[data-app-route="simulator"] .v501-br-head{gap:18px;font-size:10px}
   body[data-app-route="simulator"] .v501-br-grid{
@@ -483,4 +483,527 @@ body[data-app-route="simulator"] .bottom-nav{
   body[data-app-route="simulator"] .v501-score-control,
   body[data-app-route="simulator"] .v501-score-control button,
   body[data-app-route="simulator"] .v501-score-control strong{width:43px}
+}
+
+
+/* V502 — réplica funcional del simulador mostrado en el video.
+   Aísla escudos, compacta tabla/cuadro y reproduce los controles +/- centrales. */
+body[data-app-route="simulator"]{
+  --v502-blue:#123df4;
+  --v502-sheet:#0b0964;
+  --v502-card:#2a277f;
+  --v502-line:rgba(169,204,255,.24);
+}
+body[data-app-route="simulator"] #screen{
+  margin-top:-88px!important;
+  padding:0!important;
+  background:var(--v502-blue)!important;
+}
+body[data-app-route="simulator"] .v501-simulator{
+  max-width:690px!important;
+  overflow:hidden!important;
+  background:linear-gradient(180deg,#123ff7 0%,#123df4 72%,#1139ed 100%)!important;
+}
+body[data-app-route="simulator"] .v501-top{
+  min-height:104px!important;
+  grid-template-columns:52px minmax(0,1fr) 52px!important;
+  gap:12px!important;
+  padding:20px 32px 12px!important;
+  background:#123ff7!important;
+}
+body[data-app-route="simulator"] .v501-icon{
+  width:46px!important;
+  height:46px!important;
+}
+body[data-app-route="simulator"] .v501-icon svg{
+  width:36px!important;
+  height:36px!important;
+  stroke-width:2.15!important;
+}
+body[data-app-route="simulator"] .v501-tabs{
+  width:100%!important;
+  max-width:480px!important;
+  height:66px!important;
+  border:2px solid rgba(255,255,255,.24)!important;
+  border-radius:34px!important;
+}
+body[data-app-route="simulator"] .v501-tabs button{
+  min-height:62px!important;
+  border-radius:0!important;
+  font-size:20px!important;
+  font-weight:800!important;
+}
+body[data-app-route="simulator"] .v501-tabs button.active{
+  background:#fff!important;
+  color:#111126!important;
+}
+body[data-app-route="simulator"] .v501-category{
+  display:none!important;
+}
+
+/* Clasificación */
+body[data-app-route="simulator"] .v501-board.v501-standings{
+  padding:8px 32px 24px!important;
+}
+body[data-app-route="simulator"] .v501-table-head{
+  min-height:34px!important;
+  display:grid!important;
+  grid-template-columns:44px minmax(220px,1fr) repeat(6,42px)!important;
+  align-items:end!important;
+  gap:3px!important;
+  padding:0 0 8px!important;
+  color:#c4d3ff!important;
+  font-size:11px!important;
+  font-weight:700!important;
+  text-align:center!important;
+}
+body[data-app-route="simulator"] .v501-table-group{
+  display:block!important;
+}
+body[data-app-route="simulator"] .v501-table-label{
+  min-height:56px!important;
+  display:flex!important;
+  align-items:flex-end!important;
+  margin:0!important;
+  padding:0 0 18px!important;
+  border-bottom:3px solid rgba(211,225,255,.58)!important;
+  color:#c9d5fb!important;
+  font-size:13px!important;
+  font-weight:750!important;
+  line-height:1.15!important;
+}
+body[data-app-route="simulator"] .v501-table-row{
+  min-height:72px!important;
+  display:grid!important;
+  grid-template-columns:44px minmax(220px,1fr) repeat(6,42px)!important;
+  align-items:center!important;
+  gap:3px!important;
+  border-bottom:1px solid rgba(176,205,255,.15)!important;
+  color:#fff!important;
+  font-size:16px!important;
+}
+body[data-app-route="simulator"] .v501-pos{
+  display:flex!important;
+  align-items:center!important;
+  gap:6px!important;
+  color:#c8d5fb!important;
+  font-size:14px!important;
+}
+body[data-app-route="simulator"] .v501-trend{
+  width:10px!important;
+  font-size:10px!important;
+  font-style:normal!important;
+  text-align:center!important;
+}
+body[data-app-route="simulator"] .v501-trend.up,
+body[data-app-route="simulator"] .v501-seed i.up{
+  color:#18dc74!important;
+}
+body[data-app-route="simulator"] .v501-trend.down,
+body[data-app-route="simulator"] .v501-seed i.down{
+  color:#ff424c!important;
+}
+body[data-app-route="simulator"] .v501-trend.same,
+body[data-app-route="simulator"] .v501-seed i{
+  color:#c2c9e4!important;
+}
+body[data-app-route="simulator"] .v501-table-team{
+  min-width:0!important;
+  width:auto!important;
+  display:flex!important;
+  align-items:center!important;
+  gap:12px!important;
+  overflow:hidden!important;
+}
+body[data-app-route="simulator"] .v501-table-team b{
+  min-width:0!important;
+  overflow:hidden!important;
+  text-overflow:ellipsis!important;
+  white-space:nowrap!important;
+  color:#fff!important;
+  font-size:18px!important;
+  font-weight:800!important;
+}
+body[data-app-route="simulator"] .v501-crest.stand{
+  width:44px!important;
+  min-width:44px!important;
+  max-width:44px!important;
+  height:44px!important;
+  min-height:44px!important;
+  max-height:44px!important;
+  flex:0 0 44px!important;
+  display:grid!important;
+  place-items:center!important;
+  overflow:hidden!important;
+  border-radius:0!important;
+  background:transparent!important;
+}
+body[data-app-route="simulator"] .v501-crest.stand img{
+  width:44px!important;
+  min-width:0!important;
+  max-width:44px!important;
+  height:44px!important;
+  min-height:0!important;
+  max-height:44px!important;
+  object-fit:contain!important;
+  object-position:center!important;
+}
+body[data-app-route="simulator"] .v501-table-row>strong,
+body[data-app-route="simulator"] .v501-table-row>span:not(.v501-pos):not(.v501-table-team){
+  font-size:16px!important;
+  text-align:center!important;
+}
+body[data-app-route="simulator"] .v501-table-row .pill{
+  min-width:36px!important;
+  padding:7px 0!important;
+  border-radius:8px!important;
+  background:rgba(255,255,255,.20)!important;
+}
+
+/* Cuadro */
+body[data-app-route="simulator"] .v501-board.v501-bracket{
+  padding:12px 32px 24px!important;
+}
+body[data-app-route="simulator"] .v501-br-note{
+  margin:8px 0 20px!important;
+  color:#c1cdf2!important;
+  font-size:15px!important;
+}
+body[data-app-route="simulator"] .v501-br-grid{
+  gap:26px!important;
+}
+body[data-app-route="simulator"] .v501-br-left,
+body[data-app-route="simulator"] .v501-br-right{
+  gap:18px!important;
+}
+body[data-app-route="simulator"] .v501-br-team{
+  min-height:72px!important;
+  border-radius:13px!important;
+  background:rgba(70,101,245,.78)!important;
+}
+body[data-app-route="simulator"] .v501-winner{
+  min-height:72px!important;
+  border-radius:13px!important;
+  background:rgba(76,104,238,.90)!important;
+}
+body[data-app-route="simulator"] .v501-crest.bracket{
+  width:27px!important;
+  min-width:27px!important;
+  max-width:27px!important;
+  height:27px!important;
+  max-height:27px!important;
+}
+body[data-app-route="simulator"] .v501-crest.bracket img{
+  width:100%!important;
+  height:100%!important;
+  object-fit:contain!important;
+}
+
+/* Hoja del simulador */
+body[data-app-route="simulator"] .v501-sheet{
+  position:relative!important;
+  z-index:8!important;
+  margin-top:0!important;
+  padding:12px 32px calc(90px + env(safe-area-inset-bottom))!important;
+  border-radius:30px 30px 0 0!important;
+  background:var(--v502-sheet)!important;
+  box-shadow:0 -8px 26px rgba(2,2,61,.22)!important;
+}
+body[data-app-route="simulator"] .v501-grabber{
+  width:104px!important;
+  height:5px!important;
+  margin:0 auto 26px!important;
+  background:rgba(202,212,255,.30)!important;
+}
+body[data-app-route="simulator"] .v501-sheet-head{
+  min-height:88px!important;
+  display:flex!important;
+  align-items:flex-start!important;
+  justify-content:space-between!important;
+  gap:18px!important;
+  padding:0 0 20px!important;
+  border-bottom:1px solid rgba(255,255,255,.14)!important;
+}
+body[data-app-route="simulator"] .v501-sheet-head h2{
+  margin:0 0 3px!important;
+  color:#fff!important;
+  font-size:27px!important;
+  font-weight:850!important;
+  letter-spacing:-.02em!important;
+}
+body[data-app-route="simulator"] .v501-sheet-head p{
+  margin:0!important;
+  color:#9ca9d5!important;
+  font-size:18px!important;
+}
+body[data-app-route="simulator"] .v501-sheet-head>button{
+  min-width:154px!important;
+  height:54px!important;
+  margin-top:3px!important;
+  padding:0 18px!important;
+  border:2px solid rgba(170,193,255,.38)!important;
+  border-radius:16px!important;
+  background:transparent!important;
+  color:#fff!important;
+  font-size:18px!important;
+  font-weight:800!important;
+}
+body[data-app-route="simulator"] .v501-sim-match{
+  min-height:176px!important;
+  display:grid!important;
+  grid-template-columns:34px minmax(86px,1fr) 58px 86px 58px minmax(86px,1fr) 34px!important;
+  align-items:center!important;
+  gap:7px!important;
+  border-bottom:1px solid rgba(255,255,255,.14)!important;
+}
+body[data-app-route="simulator"] .v501-seed{
+  min-width:0!important;
+  display:flex!important;
+  flex-direction:column!important;
+  align-items:center!important;
+  gap:2px!important;
+  color:#b7c4ea!important;
+  font-size:10px!important;
+}
+body[data-app-route="simulator"] .v501-seed b{
+  color:#fff!important;
+  font-size:12px!important;
+}
+body[data-app-route="simulator"] .v501-sim-team{
+  min-width:0!important;
+  display:flex!important;
+  flex-direction:column!important;
+  align-items:center!important;
+  gap:8px!important;
+  text-align:center!important;
+}
+body[data-app-route="simulator"] .v501-sim-team b{
+  min-height:32px!important;
+  max-width:100%!important;
+  color:#fff!important;
+  font-size:15px!important;
+  font-weight:650!important;
+  line-height:1.08!important;
+}
+body[data-app-route="simulator"] .v501-crest.sim{
+  width:62px!important;
+  min-width:62px!important;
+  max-width:62px!important;
+  height:62px!important;
+  max-height:62px!important;
+}
+body[data-app-route="simulator"] .v501-crest.sim img{
+  width:100%!important;
+  height:100%!important;
+  object-fit:contain!important;
+}
+body[data-app-route="simulator"] .v501-score-control{
+  width:58px!important;
+  height:100px!important;
+  display:grid!important;
+  grid-template-rows:1fr 1fr!important;
+  overflow:hidden!important;
+  border-radius:17px!important;
+  background:#292580!important;
+}
+body[data-app-route="simulator"] .v501-score-control button{
+  width:58px!important;
+  height:50px!important;
+  min-height:0!important;
+  display:grid!important;
+  place-items:center!important;
+  padding:0!important;
+  border:0!important;
+  border-radius:0!important;
+  background:transparent!important;
+  color:#fff!important;
+  font-size:25px!important;
+  font-weight:400!important;
+  touch-action:manipulation!important;
+}
+body[data-app-route="simulator"] .v501-score-control button+button{
+  border-top:1px solid rgba(255,255,255,.12)!important;
+}
+body[data-app-route="simulator"] .v501-score-control button:active{
+  background:rgba(88,143,255,.38)!important;
+}
+body[data-app-route="simulator"] .v501-score-center{
+  min-width:0!important;
+  display:flex!important;
+  flex-direction:column!important;
+  align-items:center!important;
+  justify-content:center!important;
+  gap:10px!important;
+}
+body[data-app-route="simulator"] .v501-score-center strong{
+  color:#fff!important;
+  font-size:27px!important;
+  font-weight:650!important;
+  line-height:1!important;
+  white-space:nowrap!important;
+}
+body[data-app-route="simulator"] .v501-score-center button{
+  width:42px!important;
+  height:42px!important;
+  display:grid!important;
+  place-items:center!important;
+  padding:0!important;
+  border:0!important;
+  border-radius:50%!important;
+  background:#34308f!important;
+  color:#fff!important;
+  font-size:28px!important;
+  line-height:1!important;
+  touch-action:manipulation!important;
+}
+body[data-app-route="simulator"] .v501-journey{
+  min-height:76px!important;
+  grid-template-columns:60px 1fr 60px!important;
+  padding:18px 0 0!important;
+}
+body[data-app-route="simulator"] .v501-journey button{
+  width:60px!important;
+  height:56px!important;
+  padding:0!important;
+  font-size:48px!important;
+  touch-action:manipulation!important;
+}
+body[data-app-route="simulator"] .v501-journey b{
+  color:#fff!important;
+  font-size:17px!important;
+  font-weight:500!important;
+}
+body[data-app-route="simulator"] .bottom-nav{
+  position:fixed!important;
+  z-index:2147483700!important;
+}
+
+@media(max-width:620px){
+  body[data-app-route="simulator"] #screen{margin-top:-84px!important}
+  body[data-app-route="simulator"] .v501-top{
+    min-height:92px!important;
+    grid-template-columns:42px minmax(0,1fr) 42px!important;
+    gap:8px!important;
+    padding:14px 20px 8px!important;
+  }
+  body[data-app-route="simulator"] .v501-icon{
+    width:38px!important;height:38px!important;
+  }
+  body[data-app-route="simulator"] .v501-icon svg{
+    width:31px!important;height:31px!important;
+  }
+  body[data-app-route="simulator"] .v501-tabs{
+    height:58px!important;
+  }
+  body[data-app-route="simulator"] .v501-tabs button{
+    min-height:54px!important;
+    font-size:17px!important;
+  }
+  body[data-app-route="simulator"] .v501-board.v501-standings,
+  body[data-app-route="simulator"] .v501-board.v501-bracket{
+    padding-left:18px!important;
+    padding-right:18px!important;
+  }
+  body[data-app-route="simulator"] .v501-table-head,
+  body[data-app-route="simulator"] .v501-table-row{
+    grid-template-columns:35px minmax(130px,1fr) repeat(6,31px)!important;
+    gap:2px!important;
+  }
+  body[data-app-route="simulator"] .v501-table-head{
+    min-height:28px!important;
+    font-size:8.5px!important;
+  }
+  body[data-app-route="simulator"] .v501-table-label{
+    min-height:48px!important;
+    padding-bottom:14px!important;
+    font-size:11px!important;
+  }
+  body[data-app-route="simulator"] .v501-table-row{
+    min-height:62px!important;
+    font-size:12px!important;
+  }
+  body[data-app-route="simulator"] .v501-table-team{
+    gap:8px!important;
+  }
+  body[data-app-route="simulator"] .v501-table-team b{
+    font-size:13px!important;
+  }
+  body[data-app-route="simulator"] .v501-crest.stand{
+    width:36px!important;min-width:36px!important;max-width:36px!important;
+    height:36px!important;min-height:36px!important;max-height:36px!important;flex-basis:36px!important;
+  }
+  body[data-app-route="simulator"] .v501-crest.stand img{
+    width:36px!important;max-width:36px!important;height:36px!important;max-height:36px!important;
+  }
+  body[data-app-route="simulator"] .v501-table-row>strong,
+  body[data-app-route="simulator"] .v501-table-row>span:not(.v501-pos):not(.v501-table-team){
+    font-size:12px!important;
+  }
+  body[data-app-route="simulator"] .v501-sheet{
+    padding:10px 18px calc(86px + env(safe-area-inset-bottom))!important;
+    border-radius:25px 25px 0 0!important;
+  }
+  body[data-app-route="simulator"] .v501-grabber{
+    width:86px!important;
+    margin-bottom:20px!important;
+  }
+  body[data-app-route="simulator"] .v501-sheet-head{
+    min-height:75px!important;
+    gap:10px!important;
+    padding-bottom:16px!important;
+  }
+  body[data-app-route="simulator"] .v501-sheet-head h2{
+    font-size:22px!important;
+  }
+  body[data-app-route="simulator"] .v501-sheet-head p{
+    font-size:15px!important;
+  }
+  body[data-app-route="simulator"] .v501-sheet-head>button{
+    min-width:116px!important;
+    height:46px!important;
+    padding:0 12px!important;
+    border-radius:14px!important;
+    font-size:14px!important;
+  }
+  body[data-app-route="simulator"] .v501-sim-match{
+    min-height:154px!important;
+    grid-template-columns:25px minmax(62px,1fr) 46px 64px 46px minmax(62px,1fr) 25px!important;
+    gap:4px!important;
+  }
+  body[data-app-route="simulator"] .v501-crest.sim{
+    width:48px!important;min-width:48px!important;max-width:48px!important;
+    height:48px!important;max-height:48px!important;
+  }
+  body[data-app-route="simulator"] .v501-sim-team b{
+    font-size:11px!important;
+  }
+  body[data-app-route="simulator"] .v501-score-control{
+    width:46px!important;
+    height:86px!important;
+    border-radius:14px!important;
+  }
+  body[data-app-route="simulator"] .v501-score-control button{
+    width:46px!important;
+    height:43px!important;
+    font-size:22px!important;
+  }
+  body[data-app-route="simulator"] .v501-score-center strong{
+    font-size:21px!important;
+  }
+  body[data-app-route="simulator"] .v501-score-center button{
+    width:36px!important;height:36px!important;font-size:23px!important;
+  }
+}
+
+@media(max-width:390px){
+  body[data-app-route="simulator"] .v501-table-head,
+  body[data-app-route="simulator"] .v501-table-row{
+    grid-template-columns:31px minmax(112px,1fr) repeat(6,27px)!important;
+  }
+  body[data-app-route="simulator"] .v501-table-team b{font-size:12px!important}
+  body[data-app-route="simulator"] .v501-sim-match{
+    grid-template-columns:22px minmax(56px,1fr) 43px 58px 43px minmax(56px,1fr) 22px!important;
+  }
+  body[data-app-route="simulator"] .v501-score-control{width:43px!important}
+  body[data-app-route="simulator"] .v501-score-control button{width:43px!important}
 }
