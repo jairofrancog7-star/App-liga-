@@ -239,3 +239,263 @@ body[data-app-route="home"] .v446-relevant-team>span:not(.crest){min-width:0}bod
 body[data-app-route="home"] .v446-relevant-team small{display:block;margin-top:2px;overflow:hidden;color:#8294c7;font-size:5.1px;white-space:nowrap;text-overflow:ellipsis}
 body[data-app-route="home"] .v446-relevant-center{text-align:center}body[data-app-route="home"] .v446-relevant-center small,body[data-app-route="home"] .v446-relevant-center em{display:block;color:#8394c5;font-size:4.8px;font-style:normal;font-weight:800}
 body[data-app-route="home"] .v446-relevant-center strong{display:block;margin:2px 0;color:#fff;font-size:10px;font-weight:1000;white-space:nowrap}
+
+
+/* V447 — Inicio: cuadro más legible + Herreras circular 3D + cabecera superior */
+body[data-app-route="home"] .v446-home-reference{
+  margin:10px 8px 20px!important;
+  border-radius:20px!important;
+  border:1px solid rgba(86,138,255,.30)!important;
+  box-shadow:0 16px 34px rgba(0,0,42,.24),inset 0 1px 0 rgba(255,255,255,.04)!important;
+}
+
+/* Cabecera superior un poco más grande y con profundidad. */
+body[data-app-route="home"] .v446-home-brand{
+  position:relative!important;
+  min-height:108px!important;
+  gap:14px!important;
+  padding:14px 16px!important;
+  overflow:hidden!important;
+  background:
+    radial-gradient(circle at 84% 18%,rgba(87,225,255,.42),transparent 26%),
+    linear-gradient(120deg,#0b1f77 0%,#0c4ab6 60%,#08aecd 100%)!important;
+  box-shadow:inset 0 -1px 0 rgba(255,255,255,.15),inset 0 10px 24px rgba(255,255,255,.035)!important;
+}
+body[data-app-route="home"] .v446-home-brand::after{
+  content:""!important;
+  position:absolute!important;
+  inset:0!important;
+  pointer-events:none!important;
+  background:linear-gradient(112deg,rgba(255,255,255,.11),transparent 28% 66%,rgba(255,255,255,.08))!important;
+}
+body[data-app-route="home"] .v447-league-logo-orb{
+  position:relative!important;
+  z-index:2!important;
+  flex:0 0 78px!important;
+  width:78px!important;
+  height:78px!important;
+  display:grid!important;
+  place-items:center!important;
+  border-radius:50%!important;
+  background:
+    radial-gradient(circle at 34% 25%,#ffffff 0 14%,#e8f1ff 38%,#93b6ff 74%,#3154ba 100%)!important;
+  border:2px solid rgba(255,255,255,.92)!important;
+  box-shadow:
+    0 8px 18px rgba(0,0,50,.34),
+    inset 0 3px 8px rgba(255,255,255,.92),
+    inset 0 -8px 14px rgba(20,57,150,.27),
+    0 0 0 4px rgba(68,121,255,.16)!important;
+}
+body[data-app-route="home"] .v447-league-logo-orb::after{
+  content:""!important;
+  position:absolute!important;
+  top:7px!important;
+  left:12px!important;
+  width:39px!important;
+  height:16px!important;
+  border-radius:50%!important;
+  background:linear-gradient(180deg,rgba(255,255,255,.72),rgba(255,255,255,0))!important;
+  transform:rotate(-16deg)!important;
+  pointer-events:none!important;
+}
+body[data-app-route="home"] .v447-league-logo-orb img{
+  width:66px!important;
+  height:66px!important;
+  max-width:66px!important;
+  max-height:66px!important;
+  object-fit:contain!important;
+  border-radius:50%!important;
+  clip-path:circle(50%)!important;
+  filter:drop-shadow(0 4px 6px rgba(0,0,0,.20))!important;
+}
+body[data-app-route="home"] .v447-brand-copy{
+  position:relative!important;
+  z-index:2!important;
+  min-width:0!important;
+}
+body[data-app-route="home"] .v446-home-brand small{
+  font-size:7.8px!important;
+  letter-spacing:.095em!important;
+}
+body[data-app-route="home"] .v446-home-brand h2{
+  margin:4px 0 0!important;
+  font-size:20px!important;
+  line-height:1!important;
+  letter-spacing:.01em!important;
+}
+body[data-app-route="home"] .v446-home-brand b{
+  margin-top:5px!important;
+  font-size:8.8px!important;
+  letter-spacing:.18em!important;
+}
+
+/* Barra Liga Municipal / Juventino Rosas más grande y legible. */
+body[data-app-route="home"] .v446-home-season{
+  grid-template-columns:1.05fr auto 1.25fr 38px!important;
+  gap:9px!important;
+  margin:10px 10px 7px!important;
+  padding:9px 10px!important;
+  min-height:58px!important;
+  border-radius:20px!important;
+  border:1px solid rgba(103,139,255,.23)!important;
+  background:linear-gradient(180deg,#0c1a60 0%,#0a1552 100%)!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.04),0 5px 14px rgba(0,0,40,.14)!important;
+}
+body[data-app-route="home"] .v446-home-season b{
+  font-size:7.5px!important;
+  line-height:1.1!important;
+}
+body[data-app-route="home"] .v446-home-season small{
+  margin-top:3px!important;
+  font-size:5.9px!important;
+}
+body[data-app-route="home"] .v446-home-season i{
+  font-size:19px!important;
+  filter:drop-shadow(0 3px 5px rgba(0,0,0,.25))!important;
+}
+body[data-app-route="home"] .v446-home-season .season{
+  padding:9px 10px!important;
+  border-radius:17px!important;
+  background:
+    radial-gradient(circle at 80% 18%,rgba(255,255,255,.20),transparent 30%),
+    linear-gradient(135deg,#1777ed 0%,#0bbfd8 100%)!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.24),0 4px 11px rgba(6,82,194,.22)!important;
+}
+body[data-app-route="home"] .v446-home-season>button{
+  width:35px!important;
+  height:35px!important;
+  font-size:18px!important;
+  box-shadow:inset 0 2px 4px rgba(255,255,255,.08),0 4px 10px rgba(0,0,35,.18)!important;
+}
+
+/* Iconos superiores algo mayores para que los nombres no queden diminutos. */
+body[data-app-route="home"] .v446-home-clubs{
+  gap:12px 6px!important;
+  padding:7px 10px 13px!important;
+}
+body[data-app-route="home"] .v446-home-club-logo,
+body[data-app-route="home"] .v446-home-special{
+  width:58px!important;
+  height:58px!important;
+  margin-bottom:6px!important;
+}
+body[data-app-route="home"] .v446-home-club-logo .crest{
+  width:52px!important;
+  height:52px!important;
+}
+body[data-app-route="home"] .v446-home-club b{
+  font-size:7.4px!important;
+  line-height:1.16!important;
+}
+body[data-app-route="home"] .v446-home-club small{
+  margin-top:3px!important;
+  font-size:5.6px!important;
+}
+
+/* Partidos relevantes: cuadro un poco más alto y tipografía legible. */
+body[data-app-route="home"] .v446-relevant-head{
+  padding:6px 11px 9px!important;
+}
+body[data-app-route="home"] .v446-relevant-head h3{
+  font-size:14px!important;
+}
+body[data-app-route="home"] .v446-relevant-head button{
+  font-size:7.2px!important;
+}
+body[data-app-route="home"] .v446-relevant-list{
+  gap:7px!important;
+  padding:0 9px 12px!important;
+}
+body[data-app-route="home"] .v446-relevant-match{
+  min-height:66px!important;
+  grid-template-columns:minmax(0,1fr) 64px minmax(0,1fr)!important;
+  gap:7px!important;
+  padding:7px 9px!important;
+  border-radius:13px!important;
+  border:1px solid rgba(102,132,255,.14)!important;
+  background:linear-gradient(180deg,#0c195d 0%,#0a1552 100%)!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.025),0 3px 10px rgba(0,0,35,.10)!important;
+}
+body[data-app-route="home"] .v446-relevant-team{
+  gap:7px!important;
+}
+body[data-app-route="home"] .v446-relevant-team .crest{
+  width:34px!important;
+  height:34px!important;
+  min-width:34px!important;
+  border-radius:50%!important;
+  border:1px solid rgba(255,255,255,.82)!important;
+  background:#fff!important;
+  box-shadow:0 4px 9px rgba(0,0,35,.24)!important;
+}
+body[data-app-route="home"] .v446-relevant-team .crest img{
+  border-radius:50%!important;
+  object-fit:contain!important;
+}
+body[data-app-route="home"] .v446-relevant-team b{
+  font-size:7.7px!important;
+}
+body[data-app-route="home"] .v446-relevant-team small{
+  margin-top:3px!important;
+  font-size:5.8px!important;
+}
+body[data-app-route="home"] .v446-relevant-center small,
+body[data-app-route="home"] .v446-relevant-center em{
+  font-size:5.4px!important;
+}
+body[data-app-route="home"] .v446-relevant-center strong{
+  margin:3px 0!important;
+  font-size:11.5px!important;
+}
+
+/* Herreras FC: logo estrictamente circular con efecto tridimensional. */
+body[data-app-route="home"] .v446-relevant-team[data-team-code="HFC"] .crest{
+  position:relative!important;
+  width:38px!important;
+  height:38px!important;
+  min-width:38px!important;
+  padding:3px!important;
+  overflow:hidden!important;
+  border:2px solid rgba(255,255,255,.96)!important;
+  border-radius:50%!important;
+  background:
+    radial-gradient(circle at 34% 24%,#ffffff 0 18%,#eef4ff 44%,#b6caff 72%,#5579d8 100%)!important;
+  box-shadow:
+    0 6px 12px rgba(0,0,45,.34),
+    inset 0 3px 6px rgba(255,255,255,.94),
+    inset 0 -6px 10px rgba(38,74,171,.22),
+    0 0 0 3px rgba(49,103,255,.14)!important;
+}
+body[data-app-route="home"] .v446-relevant-team[data-team-code="HFC"] .crest::after{
+  content:""!important;
+  position:absolute!important;
+  z-index:3!important;
+  top:4px!important;
+  left:7px!important;
+  width:20px!important;
+  height:8px!important;
+  border-radius:50%!important;
+  background:linear-gradient(180deg,rgba(255,255,255,.78),rgba(255,255,255,0))!important;
+  transform:rotate(-15deg)!important;
+  pointer-events:none!important;
+}
+body[data-app-route="home"] .v446-relevant-team[data-team-code="HFC"] .crest img{
+  position:relative!important;
+  z-index:2!important;
+  width:100%!important;
+  height:100%!important;
+  padding:1px!important;
+  border-radius:50%!important;
+  clip-path:circle(50%)!important;
+  background:#fff!important;
+  object-fit:contain!important;
+  filter:drop-shadow(0 2px 3px rgba(0,0,0,.22))!important;
+}
+
+@media(max-width:380px){
+  body[data-app-route="home"] .v446-home-reference{margin-left:6px!important;margin-right:6px!important}
+  body[data-app-route="home"] .v447-league-logo-orb{width:72px!important;height:72px!important;flex-basis:72px!important}
+  body[data-app-route="home"] .v447-league-logo-orb img{width:60px!important;height:60px!important}
+  body[data-app-route="home"] .v446-home-brand h2{font-size:18.5px!important}
+  body[data-app-route="home"] .v446-relevant-match{min-height:64px!important}
+}
