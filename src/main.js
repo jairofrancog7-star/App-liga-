@@ -6062,6 +6062,7 @@ document.addEventListener('click',event=>{
   event.preventDefault();go(button.dataset.route);
 });
 function bind(){
+document.querySelector('[data-v446-notices-back]')?.addEventListener('click',()=>{if(history.length>1)history.back();else go('more')});
 function noticeDraft(){
   const pick=s=>document.querySelector(s);
   const matchId=pick('[data-ljr-notice-match]')?.value||'';
