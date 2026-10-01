@@ -45,59 +45,73 @@
     "abbr": "BJ"
   },
   {
-    "id": "OFF-C-DE-GASCA-V35",
-    "name": "C. DE GASCA",
-    "logo": "assets/teams/deportivo-cg.webp",
-    "abbr": "CDG",
+    "id": "OFF-BOAVISTA-V35",
+    "name": "BOAVISTA",
+    "logo": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/Boavista_wioj7b",
+    "abbr": "BOA",
+    "category": "Veteranos 35+"
+  },
+  {
+    "id": "OFF-FRANCO-TAVERA-JR-V35",
+    "name": "FRANCO-TAVERA-JR",
+    "logo": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/FrancoTaveraVeteranos_qwrqrc",
+    "abbr": "FTJ",
+    "category": "Veteranos 35+"
+  },
+  {
+    "id": "OFF-HURACAN-V35",
+    "name": "HURACAN",
+    "logo": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/Huracan_pfndn5",
+    "abbr": "HUR",
     "category": "Veteranos 35+"
   },
   {
     "id": "OFF-CUENDA-V35",
     "name": "CUENDA",
-    "logo": "assets/teams/tc-cuenda.webp",
+    "logo": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/SantiagoCuenda_fvaq9e",
     "abbr": "CUE",
     "category": "Veteranos 35+"
   },
   {
-    "id": "OFF-POZOS-FC-V35",
-    "name": "POZOS FC",
-    "logo": "assets/teams/veteranos-pozos-fc.webp",
-    "abbr": "POZ",
+    "id": "OFF-AMERICA-V35",
+    "name": "AMERICA",
+    "logo": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/America_wbi53g",
+    "abbr": "AME",
+    "category": "Veteranos 35+"
+  },
+  {
+    "id": "OFF-AGUILARES-V35",
+    "name": "AGUILARES",
+    "logo": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/aguilares_ifdgll",
+    "abbr": "AGU",
+    "category": "Veteranos 35+"
+  },
+  {
+    "id": "OFF-JUVENTUS-V35",
+    "name": "JUVENTUS",
+    "logo": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/Juventus_fpshqs",
+    "abbr": "JUV",
+    "category": "Veteranos 35+"
+  },
+  {
+    "id": "OFF-LEYENDAS-FC-V35",
+    "name": "LEYENDAS FC",
+    "logo": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/LEYENDAS_jwcnlu",
+    "abbr": "LEY",
     "category": "Veteranos 35+"
   },
   {
     "id": "OFF-PSV-V35",
     "name": "PSV",
-    "logo": "assets/teams/psv.webp",
+    "logo": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/PSV_ru3tft",
     "abbr": "PSV",
     "category": "Veteranos 35+"
   },
   {
-    "id": "OFF-A-SANTIAGO-V35",
-    "name": "A. SANTIAGO",
-    "logo": "assets/teams/atletico-santiago.webp",
-    "abbr": "AS",
-    "category": "Veteranos 35+"
-  },
-  {
-    "id": "OFF-F-TAVERA-V35",
-    "name": "F. TAVERA",
-    "logo": "assets/teams/franco-tavera-jr-veteranos.webp",
-    "abbr": "FT",
-    "category": "Veteranos 35+"
-  },
-  {
-    "id": "OFF-AMERICA-V35",
-    "name": "AMÉRICA",
-    "logo": "assets/branding/america-veteranos-35-user.png",
-    "abbr": "AME",
-    "category": "Veteranos 35+"
-  },
-  {
-    "id": "OFF-HURACAN-V35",
-    "name": "HURACÁN",
-    "logo": "assets/teams/huracan.webp",
-    "abbr": "HUR",
+    "id": "OFF-LA-TRINIDAD-V35",
+    "name": "LA TRINIDAD",
+    "logo": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/La_trinidad_a32pbk",
+    "abbr": "TRI",
     "category": "Veteranos 35+"
   },
   {
@@ -373,8 +387,10 @@
 
   function logo(t,extra=''){
     const cls='v28-logo '+extra;
-    if(t.logo){
-      return '<span class="'+cls+'"><img src="'+BASE+t.logo+'" alt="'+esc(t.name)+'" loading="lazy" decoding="async" onerror="this.style.display=\'none\';this.nextElementSibling.style.display=\'grid\'"><span class="v28-fallback" style="display:none">'+esc(t.abbr)+'</span></span>';
+    const globalLogo=window.LJR_TEAM_LOGOS?.get?.(t.name)||'';
+    const src=globalLogo||(t.logo?(/^https?:\/\//i.test(t.logo)?t.logo:BASE+t.logo):'');
+    if(src){
+      return '<span class="'+cls+'"><img src="'+src+'" alt="'+esc(t.name)+'" loading="lazy" decoding="async" onerror="this.style.display=\'none\';this.nextElementSibling.style.display=\'grid\'"><span class="v28-fallback" style="display:none">'+esc(t.abbr)+'</span></span>';
     }
     return '<span class="'+cls+'"><span class="v28-fallback">'+esc(t.abbr)+'</span></span>';
   }

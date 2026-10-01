@@ -18,7 +18,7 @@ const FALLBACK={
  '3':{name:'Primera Fuerza',teams:['Hermanos','San José FC','Linces','Juventus','Napoli','Lobos CDG','Terrícolas','Galácticos','Franco FC','Herreras FC','Abejas']},
  '5':{name:'Intermedia',teams:['La Canchita Deportes','Galeana','Aldama FC','Malvinas','Capibaras','La Cuadrilla','Mazacotes FC','Dep. Maravillas','Osasuna','San Antonio JRS','Populares','Promesas FC','La Huerta']},
  '4':{name:'Segunda Fuerza',teams:['Tavera FC','Pachangas FC','San Juan FC','Tapatío','Dep. La Luz','San Julián','Barza','San José JRS','San Antonio FC','Célticos FC','Dep. Nopalero','Dep. Zapata']},
- '2':{name:'Veteranos 35+',teams:['C. de Gasca','Juventus','Cuenda','Pozos FC','Boavista','PSV','A. Santiago','F. Tavera','América','Huracán']},
+ '2':{name:'Veteranos 35+',teams:['Boavista','Franco-Tavera-JR','Huracán','Cuenda','América','Aguilares','Juventus','Leyendas FC','PSV','La Trinidad']},
  '1':{name:'Veteranos 50+',teams:['La Esperanza','Dynamo','Boca JRS','Toros de Cuenda','Boavista','Manchester']}
 };
 function categories(){
