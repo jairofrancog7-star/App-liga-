@@ -707,16 +707,71 @@ function standingFor(name,category){
 }
 function mcLogo(t){const u=t.logo||logo(t.name);return '<span class="v412-mc-logo"><img src="'+esc(u)+'" alt=""><i>'+esc(initials(t.name))+'</i></span>'}
 function mcMetric(label,h,a){return '<div class="v412-mc-metric"><b>'+esc(h??'—')+'</b><span>'+esc(label)+'</span><b>'+esc(a??'—')+'</b></div>'}
-function mcForm(r){if(!r)return '<div class="v412-mc-formdots"><i></i><i></i><i></i><i></i><i></i></div>';const pj=+r[2]||0,w=+r[3]||0,d=+r[4]||0,l=Number.isFinite(+r[5])?+r[5]:Math.max(0,pj-w-d);let a=[...Array(Math.min(w,5)).fill('w'),...Array(Math.min(d,5)).fill('d'),...Array(Math.min(l,5)).fill('l')].slice(0,5);while(a.length<5)a.push('');return '<div class="v412-mc-formdots">'+a.map(x=>'<i class="'+x+'"></i>').join('')+'</div>'}
+function mcForm(r){
+ if(!r)return '<div class="v412-mc-formdots"><i></i><i></i><i></i><i></i><i></i></div>';
+ const pj=+r[2]||0,w=+r[3]||0,d=+r[4]||0,l=Number.isFinite(+r[5])?+r[5]:Math.max(0,pj-w-d);
+ let a=[...Array(Math.min(w,5)).fill('w'),...Array(Math.min(d,5)).fill('d'),...Array(Math.min(l,5)).fill('l')].slice(0,5);
+ while(a.length<5)a.push('');
+ return '<div class="v412-mc-formdots">'+a.map(x=>'<i class="'+x+'"></i>').join('')+'</div>'
+}
+function mcCategoryFixtures(m){
+ return fixtures().filter(x=>norm(x.category)===norm(m.category));
+}
+function mcFinishedRows(m){
+ return mcCategoryFixtures(m).filter(x=>x.hs!==''&&x.as!=='');
+}
+function mcHeadToHead(m){
+ const home=norm(m.home.name),away=norm(m.away.name);
+ const rows=mcFinishedRows(m).filter(x=>{
+   const h=norm(x.home),a=norm(x.away);
+   return (h===home&&a===away)||(h===away&&a===home);
+ });
+ let homeWins=0,awayWins=0,draws=0;
+ rows.forEach(x=>{
+   const homeIsLeft=norm(x.home)===home;
+   const gf=Number(homeIsLeft?x.hs:x.as),ga=Number(homeIsLeft?x.as:x.hs);
+   if(gf>ga)homeWins++;else if(gf<ga)awayWins++;else draws++;
+ });
+ return {played:rows.length,homeWins,awayWins,draws};
+}
+function mcRecentForm(m,team){
+ const wanted=norm(team);
+ const rows=mcFinishedRows(m)
+   .filter(x=>norm(x.home)===wanted||norm(x.away)===wanted)
+   .sort((a,b)=>(b.stamp||0)-(a.stamp||0))
+   .slice(0,5);
+ const results=rows.map(x=>{
+   const isHome=norm(x.home)===wanted,gf=Number(isHome?x.hs:x.as),ga=Number(isHome?x.as:x.hs);
+   return gf>ga?'w':gf<ga?'l':'d';
+ });
+ return {
+   results,
+   wins:results.filter(x=>x==='w').length,
+   draws:results.filter(x=>x==='d').length,
+   losses:results.filter(x=>x==='l').length
+ };
+}
+function mcRecentDots(x){
+ if(!x?.results?.length)return '<div class="v412-mc-recent-dots is-empty"><span>Sin resultados</span></div>';
+ return '<div class="v412-mc-recent-dots">'+x.results.map(r=>'<i class="'+r+'"></i>').join('')+'</div>';
+}
+function mcMiniStat(label,value){
+ return '<div class="v412-mc-mini-stat"><small>'+esc(label)+'</small><b>'+esc(value)+'</b></div>';
+}
 function matchCenterMarkup(){
  const m=currentMatch();if(!m)return '';
  const h=standingFor(m.home.name,m.category),a=standingFor(m.away.name,m.category);
+ const h2h=mcHeadToHead(m),hf=mcRecentForm(m,m.home.name),af=mcRecentForm(m,m.away.name);
  return '<section class="v412-shell v412-matchcenter-reference" data-v412-screen="matchcenter">'+
    '<div class="v412-mc-hero"><div class="v412-mc-top"><small>'+esc(m.category||'Liga Juventino Rosas')+'</small><b>'+esc(m.meta[0]||'Partido oficial')+'</b></div><div class="v412-mc-score"><span>'+mcLogo(m.home)+'<b>'+esc(m.home.name)+'</b></span><strong>'+esc(m.status)+'</strong><span>'+mcLogo(m.away)+'<b>'+esc(m.away.name)+'</b></span></div><em>'+esc(m.sub||m.meta[1]||'')+'</em></div>'+
-   '<div class="v412-mc-tabs"><button class="is-active" data-v412-native-tab="BuildUp">Build Up</button><button data-v412-native-tab="Predicciones">Predicciones</button><button data-v412-commentary>Comentarios</button><button data-v412-native-tab="Alineaciones">Alineaciones</button><button data-v412-native-tab="Estadísticas">Estadísticas</button><button data-v412-native-tab="Cronología">Cronología</button></div>'+
-   '<section class="v412-mc-card"><h3>Comparación de temporada</h3><div class="v412-mc-pair"><span>'+mcLogo(m.home)+'<b>'+esc(m.home.name)+'</b></span><span>'+mcLogo(m.away)+'<b>'+esc(m.away.name)+'</b></span></div>'+mcMetric('Partidos',h?.[2],a?.[2])+mcMetric('Ganados',h?.[3],a?.[3])+mcMetric('Empates',h?.[4],a?.[4])+mcMetric('Puntos',h?.[9],a?.[9])+'</section>'+
-   '<section class="v412-mc-card"><h3>Balance de temporada</h3><div class="v412-mc-formpair"><div>'+mcLogo(m.home)+mcForm(h)+'</div><div>'+mcLogo(m.away)+mcForm(a)+'</div></div></section>'+
-   '<div class="v412-mc-actions"><button data-v412-native-tab="BuildUp"><span>◷</span><b>Cronómetro</b><small>Cuenta regresiva · 45 + descanso + 45</small></button><button data-v412-native-tab="Alineaciones"><span>▦</span><b>Alineaciones</b><small>Plantillas y formación</small></button><button data-v412-native-tab="Estadísticas"><span>▥</span><b>Estadísticas</b><small>Datos oficiales</small></button><button data-v412-native-tab="Cronología"><span>☷</span><b>Cronología</b><small>Eventos del partido</small></button></div>'+
+   '<div class="v412-mc-tabs"><button class="is-active" data-v412-native-tab="BuildUp">Previa</button><button data-v412-native-tab="Predicciones">Predicciones</button><button data-v412-commentary>Comentarios</button><button data-v412-native-tab="Alineaciones">Alineaciones</button><button data-v412-native-tab="Estadísticas">Estadísticas</button><button data-v412-native-tab="Cronología">Cronología</button></div>'+
+   '<section class="v412-mc-combined">'+
+     '<section class="v412-mc-block v412-mc-season"><h3>Comparación de temporada</h3><div class="v412-mc-pair"><span>'+mcLogo(m.home)+'<b>'+esc(m.home.name)+'</b></span><span>'+mcLogo(m.away)+'<b>'+esc(m.away.name)+'</b></span></div>'+mcMetric('Partidos',h?.[2],a?.[2])+mcMetric('Ganados',h?.[3],a?.[3])+mcMetric('Empates',h?.[4],a?.[4])+mcMetric('Puntos',h?.[9],a?.[9])+'</section>'+
+     '<section class="v412-mc-block v412-mc-balance"><h3>Balance de temporada</h3><div class="v412-mc-formpair"><div>'+mcLogo(m.home)+mcForm(h)+'</div><div>'+mcLogo(m.away)+mcForm(a)+'</div></div></section>'+
+     '<section class="v412-mc-block v412-mc-h2h"><h3>Historial directo</h3><div class="v412-mc-h2h-teams"><span>'+mcLogo(m.home)+'<b>'+esc(m.home.name)+'</b></span><em>VS</em><span>'+mcLogo(m.away)+'<b>'+esc(m.away.name)+'</b></span></div><div class="v412-mc-h2h-grid">'+mcMiniStat('Jugados',h2h.played)+mcMiniStat('Ganó '+m.home.name,h2h.homeWins)+mcMiniStat('Empates',h2h.draws)+mcMiniStat('Ganó '+m.away.name,h2h.awayWins)+'</div></section>'+
+     '<section class="v412-mc-block v412-mc-form-block"><h3>Estado de forma</h3><small class="v412-mc-category-label">'+esc(m.category)+'</small><div class="v412-mc-form-teams"><span>'+mcLogo(m.home)+'<b>'+esc(m.home.name)+'</b>'+mcRecentDots(hf)+'</span><span>'+mcLogo(m.away)+'<b>'+esc(m.away.name)+'</b>'+mcRecentDots(af)+'</span></div><div class="v412-mc-form-counts"><div><small>Ganados</small><b>'+esc(hf.wins)+'</b><b>'+esc(af.wins)+'</b></div><div><small>Empates</small><b>'+esc(hf.draws)+'</b><b>'+esc(af.draws)+'</b></div><div><small>Perdidos</small><b>'+esc(hf.losses)+'</b><b>'+esc(af.losses)+'</b></div></div></section>'+
+     '<div class="v412-mc-actions"><button data-v412-native-tab="BuildUp"><span>◷</span><b>Cronómetro</b><small>45 + descanso + 45</small></button><button data-v412-native-tab="Alineaciones"><span>▦</span><b>Alineaciones</b><small>Plantillas y formación</small></button><button data-v412-native-tab="Estadísticas"><span>▥</span><b>Estadísticas</b><small>Datos oficiales</small></button><button data-v412-native-tab="Cronología"><span>☷</span><b>Cronología</b><small>Eventos del partido</small></button></div>'+
+   '</section>'+
  '</section>';
 }
 function openCommentary(){
