@@ -7,6 +7,7 @@ function copyStaticReferences() {
     name: 'copy-static-references',
     closeBundle() {
       const files = [
+        ['assets/liga-logo-original.webp', 'dist/assets/liga-logo-original.webp'],
         ['assets/reference/final-trophy-drive.png', 'dist/assets/reference/final-trophy-drive.png'],
         ['assets/reference/predictor-v36/liga-crest-white.webp', 'dist/assets/reference/predictor-v36/liga-crest-white.webp'],
         ['assets/moments/moments-original-a.png', 'dist/assets/moments/moments-original-a.png'],

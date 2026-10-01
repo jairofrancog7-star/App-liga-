@@ -6,8 +6,8 @@
 if(window.__LJR_V480_CREDENTIAL__)return;
 window.__LJR_V480_CREDENTIAL__=true;
 
-const BUILD='20261001-v485-logo-visible-witch-solid';
-const LEAGUE_LOGO='./assets/liga-logo-original.webp';
+const BUILD='20261001-v486-logo-asset-packaged';
+const LEAGUE_LOGO='./assets/liga-logo-original.webp?v=20261001-v486-logo';
 const $=(s,r=document)=>r.querySelector(s);
 const norm=v=>String(v||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[^a-z0-9]+/g,' ').trim();
 const route=()=>String(location.hash||'').replace(/^#\/?/,'').split('?')[0]||'home';
