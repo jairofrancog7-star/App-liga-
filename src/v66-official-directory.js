@@ -124,7 +124,7 @@ function teamMarkup(store=false){
   const q=norm(teamQuery);
   const list=teamList().filter(t=>!q||norm(t.name).includes(q)||norm(t.category).includes(q));
   return '<section class="v66-directory" data-v66-directory="'+(store?'store':'teams')+'">'+
-    (store?'<header class="v447-store-head v449-store-global-style"><button type="button" data-v447-store-back aria-label="Volver">←</button><span class="v449-store-crest" aria-hidden="true"></span><button type="button" data-route="profile" class="v449-store-profile" aria-label="Perfil"></button></header>':'')+
+    (store?'<header class="v510-store-head"><button type="button" data-v447-store-back aria-label="Volver"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 12H5M11 18l-6-6 6-6"/></svg></button><span class="v510-store-crest" aria-hidden="true"></span><button type="button" data-route="profile" class="v510-store-profile" aria-label="Perfil"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="3.5"/><path d="M5.5 19c.7-3.4 3-5.5 6.5-5.5s5.8 2.1 6.5 5.5"/></svg></button></header>':'')+
     '<div class="v66-search"><span>⌕</span><input data-v66-team-search type="search" autocomplete="off" placeholder="Buscar equipo registrado" value="'+esc(teamQuery)+'"></div>'+
     '<p class="v66-source-note">'+list.length+' equipos registrados · datos oficiales sincronizados</p>'+
     '<div class="v66-team-grid">'+list.map(t=>'<button type="button" class="v66-team-card" data-v66-open-team="'+esc(t.name)+'" data-v66-cat-id="'+esc(t.cat)+'">'+teamLogo(t)+'<span><b>'+esc(t.name)+'</b><small>'+esc(t.category)+(store?' · Tienda':'')+'</small></span><i>›</i></button>').join('')+'</div>'+
