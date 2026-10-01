@@ -2094,7 +2094,7 @@
       "dashboard": {
         "counts": {
           "Equipos": 11,
-          "Partidos Jugados": 25,
+          "Partidos Jugados": 24,
           "Partidos Pendientes": 30,
           "Jugadores": 290
         },
@@ -2222,7 +2222,7 @@
       },
       "counts": {
         "Equipos": 11,
-        "Partidos Jugados": 25,
+        "Partidos Jugados": 24,
         "Partidos Pendientes": 30,
         "Jugadores": 290
       },
@@ -2735,7 +2735,7 @@
               "vs",
               "3",
               "SAN JOSE FC",
-              "San Jose  de la Montaña",
+              "San Jose de la Montaña",
               "30/08/2026 10:00",
               "---"
             ],
@@ -2795,7 +2795,7 @@
               "vs",
               "1",
               "TERRICOLAS",
-              "San Jose  de la Montaña",
+              "San Jose de la Montaña",
               "06/09/2026 10:00",
               "---"
             ],
@@ -2943,7 +2943,7 @@
               "vs",
               "-",
               "SAN JOSE FC",
-              "San Jose  de la Montaña",
+              "San Jose de la Montaña",
               "27/09/2026 12:00",
               "---",
               "JUGADO"
@@ -3004,7 +3004,7 @@
               "vs",
               "-",
               "FRANCO FC",
-              "San Jose  de la Montaña",
+              "San Jose de la Montaña",
               "04/10/2026 12:00",
               "---"
             ],
@@ -3100,7 +3100,7 @@
               "vs",
               "-",
               "HERRERAS FC",
-              "San Jose  de la Montaña",
+              "San Jose de la Montaña",
               "18/10/2026 10:00",
               "---"
             ],
@@ -13562,5 +13562,8 @@
     "primera_roster_unique": 291,
     "team_logos_known": 54,
     "categories": 5
-  }
+  },
+  "verified_source": "https://www.juventinorosasliga.com/",
+  "verified_date": "2026-10-01",
+  "verified_weekly_report": "https://www.juventinorosasliga.com/reporte-semanal/"
 }
