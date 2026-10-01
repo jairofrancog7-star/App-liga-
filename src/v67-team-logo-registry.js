@@ -159,7 +159,7 @@
   }
   async function loadDynamic(){
     try{
-      const r=await fetch(BASE+'data/official-live.json?v=20261001-v486-vet35-final-sync',{cache:'no-store'});
+      const r=await fetch(BASE+'data/official-live.json?v=20261001-v487-vet35-all-pages',{cache:'no-store'});
       if(!r.ok)return;
       const d=await r.json();
       for(const [name,v] of Object.entries(d.team_logos||{})){
