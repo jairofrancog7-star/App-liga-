@@ -5397,10 +5397,14 @@ body.v92-match-center-official [data-v92-vote-mvp]:active{
 /* V522 — ÚNICO MATCH CENTER: conservar el cuadro negro de la referencia
    y meter dentro toda la información que antes estaba duplicada abajo. */
 @media (max-width:1023px){
-  body.v92-match-center-official .v412-matchcenter-reference,
+  /* V523: sólo se oculta el bloque inferior realmente repetido.
+     Los diseños V412 (balance, historial, forma y accesos) vuelven a mostrarse. */
   body.v92-match-center-official .v424-reference-lower,
   body.v92-match-center-official .v518-matchcenter-unified{
     display:none!important;
+  }
+  body.v92-match-center-official .v412-matchcenter-reference{
+    display:block!important;
   }
 
   body.v92-match-center-official .v522-matchcenter-host{
@@ -5784,5 +5788,22 @@ body.v92-match-center-official [data-v92-vote-mvp]:active{
     width:calc(100% - 28px)!important;
     margin-left:14px!important;
     margin-right:14px!important;
+  }
+}
+
+
+/* V523 — restauración selectiva del Match Center.
+   Conserva un solo bloque repetido oculto y deja visibles los demás diseños. */
+@media (max-width:1023px){
+  body.v92-match-center-official [data-v518-extras] > .v412-matchcenter-reference{
+    display:block!important;
+    visibility:visible!important;
+    opacity:1!important;
+    width:100%!important;
+    margin-top:12px!important;
+    margin-bottom:14px!important;
+  }
+  body.v92-match-center-official .v424-reference-lower{
+    display:none!important;
   }
 }
