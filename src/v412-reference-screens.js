@@ -87,7 +87,16 @@ function fixtures(){
 }
 function stamp(v){const m=String(v||'').match(/(\d{1,2})\/(\d{1,2})\/(\d{4})\s+(\d{1,2}):(\d{2})/);return m?new Date(+m[3],+m[2]-1,+m[1],+m[4],+m[5]).getTime():NaN}
 function dayKey(t){if(!Number.isFinite(t))return'';const d=new Date(t);return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')}
-function dayLabel(t){if(!Number.isFinite(t))return'Fecha';const d=new Date(t),today=new Date();const k=dayKey(t),tk=dayKey(today.getTime()),tom=dayKey(new Date(today.getFullYear(),today.getMonth(),today.getDate()+1).getTime());if(k===tk)return'Hoy';if(k===tom)return'Mañana';return new Intl.DateTimeFormat('es-MX',{weekday:'short',day:'2-digit',month:'short'}).format(d).replace('.','')}
+function dayLabel(t){
+  if(!Number.isFinite(t))return'Fecha';
+  const d=new Date(t),today=new Date();
+  const k=dayKey(t),tk=dayKey(today.getTime()),tom=dayKey(new Date(today.getFullYear(),today.getMonth(),today.getDate()+1).getTime());
+  if(k===tk)return'Hoy';
+  if(k===tom)return'Mañana';
+  const dias=['dom','lun','mar','mié','jue','vie','sáb'];
+  const meses=['ene','feb','mar','abr','may','jun','jul','ago','sep','oct','nov','dic'];
+  return dias[d.getDay()]+' '+String(d.getDate()).padStart(2,'0')+' '+meses[d.getMonth()];
+}
 function timeLabel(t,raw=''){if(Number.isFinite(t))return new Intl.DateTimeFormat('es-MX',{hour:'2-digit',minute:'2-digit',hourCycle:'h23'}).format(new Date(t));return (String(raw).match(/\s(\d{1,2}:\d{2})/)||[])[1]||'—'}
 function favoriteStore(){const s=read(STORE,{teams:[],players:[],competitions:[],matches:[]});return {...{teams:[],players:[],competitions:[],matches:[]},...s}}
 function fav(type,key){return (favoriteStore()[type]||[]).includes(String(key))}
