@@ -2292,3 +2292,31 @@ body.v415-calendar-active #screen > [data-v415-calendar]{
     display:none!important;
   }
 }
+
+
+/* V518_CALENDAR_REFERENCE_TOPBAR */
+/* Partidos / Calendario vuelve a usar la misma barra azul de referencia:
+   flecha izquierda + trofeo translúcido + perfil. */
+@media (max-width:1023px){
+  body.v415-calendar-active #app>.topbar,
+  body.v415-calendar-active .app-shell>.topbar{
+    display:block!important;
+    visibility:visible!important;
+    opacity:1!important;
+    pointer-events:auto!important;
+    overflow:hidden!important;
+    margin:0!important;
+    padding:0!important;
+  }
+
+  /* La barra ocupa su propio espacio; el calendario empieza justo debajo. */
+  body.v415-calendar-active #screen{
+    padding-top:14px!important;
+  }
+}
+
+@media (max-width:390px){
+  body.v415-calendar-active #screen{
+    padding-top:12px!important;
+  }
+}
