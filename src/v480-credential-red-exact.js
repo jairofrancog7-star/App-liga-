@@ -6,7 +6,7 @@
 if(window.__LJR_V480_CREDENTIAL__)return;
 window.__LJR_V480_CREDENTIAL__=true;
 
-const BUILD='20261001-v482-league-logo-no-black-bg';
+const BUILD='20261001-v483-preserve-witch-transparent-bg';
 const LEAGUE_LOGO='https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/assets/liga-logo.webp';
 const $=(s,r=document)=>r.querySelector(s);
 const norm=v=>String(v||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[^a-z0-9]+/g,' ').trim();
@@ -27,6 +27,7 @@ let leagueLogoCache=null;
 async function transparentLeagueLogo(src){
   if(leagueLogoCache)return leagueLogoCache;
   const im=await loadImage(src);if(!im)return null;
+
   const iw=im.naturalWidth||im.width||1,ih=im.naturalHeight||im.height||1;
   const cv=document.createElement('canvas');cv.width=iw;cv.height=ih;
   const q=cv.getContext('2d',{willReadFrequently:true});
@@ -36,38 +37,60 @@ async function transparentLeagueLogo(src){
   try{id=q.getImageData(0,0,iw,ih)}
   catch(_){return im}
 
-  const d=id.data,seen=new Uint8Array(iw*ih),queue=new Int32Array(iw*ih);
+  const d=id.data,n=iw*ih;
+  const dist=new Uint8Array(n);
+  dist.fill(255);
+  const queue=new Int32Array(n);
   let head=0,tail=0;
 
-  /* SOLO se elimina negro/casi negro conectado al borde.
-     El interior del escudo, textos, luna, bruja y colores no se alteran. */
-  const isBlackBg=i=>{
+  /* V483:
+     Fondo negro -> transparente.
+     La bruja, luna, escoba, letras y contornos negros SE CONSERVAN.
+     En vez de borrar negro conectado al borde, conservamos todo negro que
+     forma parte del dibujo por proximidad a píxeles de color/luz del logo. */
+  for(let i=0;i<n;i++){
     const k=i*4,r=d[k],g=d[k+1],b=d[k+2],a=d[k+3];
-    if(a===0)return true;
+    if(a===0)continue;
     const mx=Math.max(r,g,b),mn=Math.min(r,g,b);
-    return mx<=64 && (mx-mn)<=24;
-  };
-  const push=i=>{
-    if(i<0||i>=iw*ih||seen[i]||!isBlackBg(i))return;
-    seen[i]=1;queue[tail++]=i;
-  };
-
-  for(let xx=0;xx<iw;xx++){push(xx);push((ih-1)*iw+xx)}
-  for(let yy=0;yy<ih;yy++){push(yy*iw);push(yy*iw+iw-1)}
-
-  while(head<tail){
-    const i=queue[head++],xx=i%iw,yy=(i/iw)|0;
-    if(xx>0)push(i-1);
-    if(xx<iw-1)push(i+1);
-    if(yy>0)push(i-iw);
-    if(yy<ih-1)push(i+iw);
+    const foreground = mx>58 || (mx-mn)>26;
+    if(foreground){
+      dist[i]=0;
+      queue[tail++]=i;
+    }
   }
 
-  for(let i=0;i<iw*ih;i++)if(seen[i])d[i*4+3]=0;
+  /* El radio escala con la resolución. A 700 px equivale a ~14 px,
+     suficiente para conservar los trazos negros originales de la bruja. */
+  const radius=Math.max(10,Math.min(34,Math.round(iw*0.02)));
+
+  while(head<tail){
+    const p=queue[head++],dd=dist[p];
+    if(dd>=radius)continue;
+    const x0=p%iw,y0=(p/iw)|0,nd=dd+1;
+    const visit=(v)=>{
+      if(v<0||v>=n||dist[v]<=nd)return;
+      dist[v]=nd;queue[tail++]=v;
+    };
+    if(x0>0)visit(p-1);
+    if(x0<iw-1)visit(p+1);
+    if(y0>0)visit(p-iw);
+    if(y0<ih-1)visit(p+iw);
+    if(x0>0&&y0>0)visit(p-iw-1);
+    if(x0<iw-1&&y0>0)visit(p-iw+1);
+    if(x0>0&&y0<ih-1)visit(p+iw-1);
+    if(x0<iw-1&&y0<ih-1)visit(p+iw+1);
+  }
+
+  for(let i=0;i<n;i++){
+    const k=i*4;
+    if(dist[i]===255)d[k+3]=0;
+  }
   q.putImageData(id,0,0);
+
   leagueLogoCache=cv;
   return cv;
 }
+
 function roundRect(x,a,b,w,h,r){
   r=Math.min(r,w/2,h/2);
   x.beginPath();
