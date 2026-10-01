@@ -90,8 +90,6 @@
     return '';
   }
   function logoFor(db,name){
-    const local=TEAM_LOGOS[norm(name)];
-    if(local)return ROOT+local;
     const direct=Object.entries(db?.team_logos||{}).find(([n])=>same(n,name));
     if(direct){
       const src=logoValue(direct[1]);
@@ -106,9 +104,11 @@
       });
       if(hit?.source)return hit.source;
     }
+    const local=TEAM_LOGOS[norm(name)];
+    if(local)return /^https?:\/\//i.test(local)?local:ROOT+local;
     try{
       const shared=window.LJR_TEAM_LOGOS?.get?.(name)||'';
-      if(/raw\.githubusercontent\.com\/jairofrancog7-star\/Liga_Futbol|res\.cloudinary\.com\/rdk7ndhb/i.test(shared))return shared;
+      if(shared)return shared;
     }catch(_){}
     return '';
   }

@@ -32,7 +32,7 @@ const CODE_BY_NAME={
   'celticos':'CEL','celticos fc':'CEL','dep zapata':'ZAP','deportivo zapata':'ZAP',
   'dep nopalero':'NOP','deportivo nopalero':'NOP','san julian':'SJL','juventus':'JUVS',
   'c de gasca':'CDG','cerrito de gasca':'CDG','psv':'PSV','a santiago':'ASG','atletico santiago':'ASG',
-  'f tavera':'FTV','franco tavera':'FTV','america':'AME','huracan':'HUR'
+  'f tavera':'FTV','franco tavera':'FTV','franco tavera jr':'FTV','franco-tavera-jr':'FTV','america':'AME','huracan':'HUR','aguilares':'AGU','leyendas':'LEY','leyendas fc':'LEY','la trinidad':'TRI','trinidad':'TRI'
 };
 
 let db=null;

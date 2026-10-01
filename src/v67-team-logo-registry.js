@@ -109,7 +109,23 @@
     'atlas':'https://commons.wikimedia.org/wiki/Special:Redirect/file/F%C3%BAtbol_Club_Atlas.svg',
     'boca jrs':'https://commons.wikimedia.org/wiki/Special:Redirect/file/Escudo_del_Club_Atl%C3%A9tico_Boca_Juniors_2012.svg',
     'boca juniors':'https://commons.wikimedia.org/wiki/Special:Redirect/file/Escudo_del_Club_Atl%C3%A9tico_Boca_Juniors_2012.svg',
-    'huracan':'assets/teams/huracan.webp',
+    'huracan':'https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/Huracan_pfndn5',
+    'boavista':'https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/Boavista_wioj7b',
+    'franco tavera':'https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/FrancoTaveraVeteranos_qwrqrc',
+    'franco-tavera':'https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/FrancoTaveraVeteranos_qwrqrc',
+    'franco tavera jr':'https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/FrancoTaveraVeteranos_qwrqrc',
+    'franco-tavera-jr':'https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/FrancoTaveraVeteranos_qwrqrc',
+    'f tavera':'https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/FrancoTaveraVeteranos_qwrqrc',
+    'cuenda':'https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/SantiagoCuenda_fvaq9e',
+    'america':'https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/America_wbi53g',
+    'america veteranos':'https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/America_wbi53g',
+    'aguilares':'https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/aguilares_ifdgll',
+    'juventus':'https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/Juventus_fpshqs',
+    'leyendas':'https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/LEYENDAS_jwcnlu',
+    'leyendas fc':'https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/LEYENDAS_jwcnlu',
+    'psv':'https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/PSV_ru3tft',
+    'la trinidad':'https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/La_trinidad_a32pbk',
+    'trinidad':'https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/La_trinidad_a32pbk',
     'a santiago':'assets/teams/atletico-santiago.webp',
     'f tavera':'assets/teams/franco-tavera-jr-veteranos.webp',
     'promesas':'assets/official-logos/promesas-fc.png'
@@ -144,6 +160,12 @@
         else if(v?.local)src=BASE+String(v.local).replace(/^\.\//,'');
         else if(v?.source)src=v.source;
         if(src)DYNAMIC[norm(name)]=src;
+      }
+      for(const cat of Object.values(d.categories||{})){
+        for(const item of (cat?.dashboard?.logo_candidates||[])){
+          const name=String(item?.near_text||'').trim(),src=String(item?.source||'').trim();
+          if(name&&src)DYNAMIC[norm(name)]=src;
+        }
       }
       patchNode(document);
     }catch(_){}

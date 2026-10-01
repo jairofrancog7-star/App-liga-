@@ -61,19 +61,24 @@
 ];
 
   const v35CompleteTeams=[
-    {name:'C. DE GASCA',logo:ASSET+'teams/deportivo-cg.webp',p:17,w:13,d:1,l:3,gf:54,ga:17,pts:40},
-    {name:'JUVENTUS',logo:ASSET+'official-logos/juventus.png',p:17,w:10,d:4,l:3,gf:47,ga:27,pts:34},
-    {name:'CUENDA',logo:ASSET+'teams/tc-cuenda.webp',p:17,w:11,d:0,l:6,gf:41,ga:22,pts:33},
-    {name:'POZOS FC',logo:ASSET+'teams/veteranos-pozos-fc.webp',p:17,w:10,d:2,l:5,gf:48,ga:36,pts:32},
-    {name:'BOAVISTA',logo:ASSET+'official-logos/boavista.png',p:17,w:8,d:3,l:6,gf:38,ga:27,pts:27},
-    {name:'PSV',logo:ASSET+'teams/psv.webp',p:17,w:9,d:0,l:8,gf:49,ga:40,pts:27},
-    {name:'A. SANTIAGO',logo:ASSET+'teams/atletico-santiago.webp',p:17,w:7,d:1,l:9,gf:36,ga:57,pts:22},
-    {name:'F. TAVERA',logo:ASSET+'teams/franco-tavera-jr-veteranos.webp',p:17,w:4,d:2,l:11,gf:27,ga:50,pts:14},
-    {name:'AMÉRICA',logo:ASSET+'branding/america-veteranos-35-user.png',p:17,w:4,d:1,l:12,gf:22,ga:48,pts:13},
-    {name:'HURACÁN',logo:ASSET+'teams/huracan.webp',p:17,w:2,d:0,l:15,gf:19,ga:69,pts:6}
+    {name:'BOAVISTA',logo:'https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/Boavista_wioj7b',p:0,w:0,d:0,l:0,gf:0,ga:0,pts:0},
+    {name:'FRANCO-TAVERA-JR',logo:'https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/FrancoTaveraVeteranos_qwrqrc',p:0,w:0,d:0,l:0,gf:0,ga:0,pts:0},
+    {name:'HURACAN',logo:'https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/Huracan_pfndn5',p:0,w:0,d:0,l:0,gf:0,ga:0,pts:0},
+    {name:'CUENDA',logo:'https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/SantiagoCuenda_fvaq9e',p:0,w:0,d:0,l:0,gf:0,ga:0,pts:0},
+    {name:'AMERICA',logo:'https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/America_wbi53g',p:0,w:0,d:0,l:0,gf:0,ga:0,pts:0},
+    {name:'AGUILARES',logo:'https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/aguilares_ifdgll',p:0,w:0,d:0,l:0,gf:0,ga:0,pts:0},
+    {name:'JUVENTUS',logo:'https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/Juventus_fpshqs',p:0,w:0,d:0,l:0,gf:0,ga:0,pts:0},
+    {name:'LEYENDAS FC',logo:'https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/LEYENDAS_jwcnlu',p:0,w:0,d:0,l:0,gf:0,ga:0,pts:0},
+    {name:'PSV',logo:'https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/PSV_ru3tft',p:0,w:0,d:0,l:0,gf:0,ga:0,pts:0},
+    {name:'LA TRINIDAD',logo:'https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/La_trinidad_a32pbk',p:0,w:0,d:0,l:0,gf:0,ga:0,pts:0}
   ];
   const v35CompactTeams=v35CompleteTeams.map(t=>({...t,gd:t.gf-t.ga,last:'—'}));
   const v35CriteriaTeams=v35CompleteTeams.map(t=>({...t,gd:t.gf-t.ga}));
+
+  const v35HeaderTeams={
+  "left": {"name":"BOAVISTA","logo":"https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/Boavista_wioj7b"},
+  "right": {"name":"FRANCO-TAVERA-JR","logo":"https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/FrancoTaveraVeteranos_qwrqrc"}
+};
 
   const headerTeams={
   "left": {
@@ -98,16 +103,18 @@
   function img(src,alt,cls=''){if(!src)return '';return '<img class="'+cls+'" src="'+src+'" alt="'+alt+'" loading="eager" decoding="async">'}
   function isVet35(){return String(localStorage.getItem('v12-fixture-cat')||localStorage.getItem('v62-category')||'3')==='2'}
   function header(){
+    const activeHeader=isVet35()?v35HeaderTeams:headerTeams;
+    const activeTime=isVet35()?'00:00':'10:00';
     return '<section class="v40-match-master" data-v40-master>'+
       '<div class="v40-actions"><button type="button" data-v40-back aria-label="Volver">'+iconBack+'</button><span></span><button type="button" data-v40-mute aria-label="Silenciar">'+iconMute+'</button><button type="button" data-v40-share aria-label="Compartir">'+iconShare+'</button></div>'+
       '<div class="v40-match-copy">'+
-        '<div class="v40-date">4 oct 2026 · '+(isVet35()?'Veteranos 35+':'Primera Fuerza · J7')+'</div>'+
+        '<div class="v40-date">'+(isVet35()?'10 oct 2026 · Veteranos 35+ · J1':'4 oct 2026 · Primera Fuerza · J7')+'</div>'+
         '<div class="v40-divider"></div>'+
-        '<div class="v40-venue">Campo 3 · Juventino Rosas</div>'+
+        '<div class="v40-venue">'+(isVet35()?'Campo 1 (Empastado) · Juventino Rosas':'Campo 3 · Juventino Rosas')+'</div>'+
         '<div class="v40-match-line">'+
-          '<div class="v40-side left"><strong>'+headerTeams.left.name+'</strong>'+img(headerTeams.left.logo,headerTeams.left.name,'v40-match-logo')+'</div>'+
-          '<time>10:00</time>'+
-          '<div class="v40-side right">'+img(headerTeams.right.logo,headerTeams.right.name,'v40-match-logo')+'<strong>'+headerTeams.right.name+'</strong></div>'+
+          '<div class="v40-side left"><strong>'+activeHeader.left.name+'</strong>'+img(activeHeader.left.logo,activeHeader.left.name,'v40-match-logo')+'</div>'+
+          '<time>'+activeTime+'</time>'+
+          '<div class="v40-side right">'+img(activeHeader.right.logo,activeHeader.right.name,'v40-match-logo')+'<strong>'+activeHeader.right.name+'</strong></div>'+
         '</div>'+
       '</div>'+
       '<div class="v40-subtabs" role="tablist" aria-label="Partido">'+
