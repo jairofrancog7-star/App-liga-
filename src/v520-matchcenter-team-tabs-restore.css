@@ -1,0 +1,115 @@
+/* V520 — Restaurar diseño de pestañas del perfil dentro de Match Center.
+   Mantiene los botones funcionales de V519, pero recupera el aspecto compacto
+   azul de antes, con un área táctil un poco más grande. */
+@media (max-width:1023px){
+  body[data-app-route="v4-matchcenter"] #screen [data-v419-profile] .v419-subtabs,
+  body[data-app-route="matchCenter"] #screen [data-v419-profile] .v419-subtabs,
+  body[data-app-route="match-center"] #screen [data-v419-profile] .v419-subtabs,
+  body.v92-match-center-official #screen [data-v419-profile] .v419-subtabs{
+    width:100%!important;
+    min-height:46px!important;
+    display:flex!important;
+    align-items:stretch!important;
+    gap:0!important;
+    padding:0!important;
+    margin:0!important;
+    overflow-x:auto!important;
+    overflow-y:hidden!important;
+    border:0!important;
+    border-radius:8px!important;
+    background:#141a32!important;
+    box-shadow:none!important;
+    scrollbar-width:none!important;
+    -webkit-overflow-scrolling:touch!important;
+  }
+
+  body[data-app-route="v4-matchcenter"] #screen [data-v419-profile] .v419-subtabs::-webkit-scrollbar,
+  body[data-app-route="matchCenter"] #screen [data-v419-profile] .v419-subtabs::-webkit-scrollbar,
+  body[data-app-route="match-center"] #screen [data-v419-profile] .v419-subtabs::-webkit-scrollbar,
+  body.v92-match-center-official #screen [data-v419-profile] .v419-subtabs::-webkit-scrollbar{
+    display:none!important;
+  }
+
+  body[data-app-route="v4-matchcenter"] #screen [data-v419-profile] .v419-subtabs > button,
+  body[data-app-route="matchCenter"] #screen [data-v419-profile] .v419-subtabs > button,
+  body[data-app-route="match-center"] #screen [data-v419-profile] .v419-subtabs > button,
+  body.v92-match-center-official #screen [data-v419-profile] .v419-subtabs > button{
+    -webkit-appearance:none!important;
+    appearance:none!important;
+    position:relative!important;
+    flex:0 0 auto!important;
+    width:auto!important;
+    min-width:92px!important;
+    max-width:none!important;
+    height:46px!important;
+    min-height:46px!important;
+    max-height:46px!important;
+    display:grid!important;
+    place-items:center!important;
+    margin:0!important;
+    padding:0 14px!important;
+    overflow:visible!important;
+    border:0!important;
+    border-radius:0!important;
+    outline:0!important;
+    background:transparent!important;
+    background-image:none!important;
+    box-shadow:none!important;
+    color:#7f88a4!important;
+    font-family:Inter,Roboto,Arial,sans-serif!important;
+    font-size:10px!important;
+    line-height:1!important;
+    font-style:normal!important;
+    font-weight:800!important;
+    letter-spacing:0!important;
+    text-align:center!important;
+    text-transform:none!important;
+    text-shadow:none!important;
+    white-space:nowrap!important;
+    opacity:1!important;
+    transform:none!important;
+    -webkit-tap-highlight-color:transparent!important;
+  }
+
+  body[data-app-route="v4-matchcenter"] #screen [data-v419-profile] .v419-subtabs > button.active,
+  body[data-app-route="matchCenter"] #screen [data-v419-profile] .v419-subtabs > button.active,
+  body[data-app-route="match-center"] #screen [data-v419-profile] .v419-subtabs > button.active,
+  body.v92-match-center-official #screen [data-v419-profile] .v419-subtabs > button.active{
+    background:rgba(41,55,103,.42)!important;
+    color:#fff!important;
+  }
+
+  body[data-app-route="v4-matchcenter"] #screen [data-v419-profile] .v419-subtabs > button.active::after,
+  body[data-app-route="matchCenter"] #screen [data-v419-profile] .v419-subtabs > button.active::after,
+  body[data-app-route="match-center"] #screen [data-v419-profile] .v419-subtabs > button.active::after,
+  body.v92-match-center-official #screen [data-v419-profile] .v419-subtabs > button.active::after{
+    content:""!important;
+    position:absolute!important;
+    left:18px!important;
+    right:18px!important;
+    bottom:0!important;
+    height:3px!important;
+    border-radius:3px 3px 0 0!important;
+    background:#28dfea!important;
+    box-shadow:0 0 8px rgba(40,223,234,.26)!important;
+  }
+
+  body[data-app-route="v4-matchcenter"] #screen [data-v419-profile] .v419-subtabs > button:active,
+  body[data-app-route="matchCenter"] #screen [data-v419-profile] .v419-subtabs > button:active,
+  body[data-app-route="match-center"] #screen [data-v419-profile] .v419-subtabs > button:active,
+  body.v92-match-center-official #screen [data-v419-profile] .v419-subtabs > button:active{
+    background:rgba(41,55,103,.58)!important;
+    transform:none!important;
+  }
+}
+
+@media (max-width:390px){
+  body[data-app-route="v4-matchcenter"] #screen [data-v419-profile] .v419-subtabs > button,
+  body[data-app-route="matchCenter"] #screen [data-v419-profile] .v419-subtabs > button,
+  body[data-app-route="match-center"] #screen [data-v419-profile] .v419-subtabs > button,
+  body.v92-match-center-official #screen [data-v419-profile] .v419-subtabs > button{
+    min-width:86px!important;
+    padding:0 11px!important;
+    font-size:9.5px!important;
+  }
+}
