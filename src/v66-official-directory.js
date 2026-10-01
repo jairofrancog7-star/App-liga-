@@ -155,6 +155,8 @@ function saveTeam(name,cat,resetTab=true){
   if(resetTab)localStorage.setItem('v42-team-tab','summary');
 }
 function bind(){
+  document.querySelector('[data-v447-store-back]')?.addEventListener('click',()=>{if(history.length>1)history.back();else location.hash='#/more'});
+
   document.querySelector('[data-v66-team-search]')?.addEventListener('input',e=>{teamQuery=e.target.value;render(true,true,false)});
   document.querySelector('[data-v66-player-search]')?.addEventListener('input',e=>{playerQuery=e.target.value;render(true,true,false)});
   document.querySelectorAll('[data-v66-player-cat]').forEach(b=>b.onclick=()=>{
