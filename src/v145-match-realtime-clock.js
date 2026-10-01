@@ -31,7 +31,10 @@ let shownGoalId='';
 
 function ctx(){
   const root=$('[data-v92-matchcenter]');if(!root)return null;
-  const sel=$('[data-v92-match-select]',root),sides=$$('.v92-score-card .v92-side b',root);
+  const sel=$('[data-v92-match-select]',root);
+  let sides=$('.v92-score-card .v92-side b',root);
+  if(sides.length<2)sides=$('.v420-matchup > div > b',root);
+  if(sides.length<2)sides=$('.v526-form-head > div > b',root);
   if(!sel||sides.length<2)return null;
   return {
     root,
@@ -177,7 +180,7 @@ function patchUi(){
     const dot=$('.v145-status i',card);dot?.classList.toggle('on',freshFeed(s));
   }
 
-  const center=$('.v92-score-card .v92-center',c.root);
+  const center=$('.v92-score-card .v92-center',c.root)||$('.v420-matchup > span',c.root);
   if(center&&(s.phase!=='scheduled'||confirmed(s).length||freshFeed(s))){
     const strong=$('strong',center),small=$('small',center);
     if(strong)strong.textContent=sc.home+'–'+sc.away;
