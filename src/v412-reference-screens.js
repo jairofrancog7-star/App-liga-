@@ -15,7 +15,7 @@ const FALLBACK=[
  ['Linces','3','assets/official-logos/linces.png'],['Napoli','3','assets/official-logos/napoli.png'],['Franco FC','3','assets/official-logos/franco-fc.png'],
  ['Herreras FC','3','assets/official-logos/herreras-fc.png'],['Abejas','3','assets/official-logos/abejas.png'],['Lobos CDG','3','assets/official-logos/lobos-cdg.png'],
  ['Terricolas','3','assets/official-logos/terricolas.png'],['Galacticos','3','assets/teams/galacticos-pozos.webp'],['Manchester','1','assets/official-logos/manchester.png'],
- ['Boavista','3','assets/official-logos/boavista.png'],['La Esperanza','5','assets/official-logos/la-esperanza.png'],['Tavera FC','5','assets/official-logos/tavera-fc.png'],
+ ['Boavista','2','https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/Boavista_wioj7b'],['La Esperanza','5','assets/official-logos/la-esperanza.png'],['Tavera FC','5','assets/official-logos/tavera-fc.png'],
  ['San Julián','4','assets/official-logos/san-julian.png'],
  ['BOAVISTA','2','https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/Boavista_wioj7b'],
  ['FRANCO-TAVERA-JR','2','https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/FrancoTaveraVeteranos_qwrqrc'],
