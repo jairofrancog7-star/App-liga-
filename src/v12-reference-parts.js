@@ -293,7 +293,7 @@ const V12_FIXTURE_LOGOS={
   "LOBOS CDG":"assets/official-logos/lobos-cdg.png",
   "NAPOLI":"assets/official-logos/napoli.png"
 };
-const V12_FIXTURE_BUILD='20261001-v491-v35-all-pages';
+const V12_FIXTURE_BUILD='20261001-v493-official-all-categories';
 const V12_FIXTURE_ORDER=['3','4','5','2','1'];
 const V12_FIXTURE_LABELS={'1':'Veteranos 50+','2':'Veteranos 35+','3':'Primera Fuerza','4':'Segunda Fuerza','5':'Intermedia'};
 const V12_MONTHS=['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
