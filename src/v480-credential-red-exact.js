@@ -6,14 +6,8 @@
 if(window.__LJR_V480_CREDENTIAL__)return;
 window.__LJR_V480_CREDENTIAL__=true;
 
-const BUILD='20261001-v495-face-landmark-center';
-const LEAGUE_LOGO_PARTS=[
-  './assets/credential-logo-v491-0.txt',
-  './assets/credential-logo-v491-1.txt',
-  './assets/credential-logo-v491-2.txt',
-  './assets/credential-logo-v491-3.txt',
-  './assets/credential-logo-v491-4.txt'
-];
+const BUILD='20261001-v495-exact-card-reference';
+const LEAGUE_LOGO='./assets/credential-logo-exact-v495.png?v=20261001-v495';
 const $=(s,r=document)=>r.querySelector(s);
 const norm=v=>String(v||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[^a-z0-9]+/g,' ').trim();
 const route=()=>String(location.hash||'').replace(/^#\/?/,'').split('?')[0]||'home';
@@ -33,17 +27,11 @@ let leagueLogoPromise=null;
 async function transparentLeagueLogo(){
   if(leagueLogoCache)return leagueLogoCache;
   if(leagueLogoPromise)return leagueLogoPromise;
-  leagueLogoPromise=(async()=>{
-    const parts=await Promise.all(LEAGUE_LOGO_PARTS.map(async url=>{
-      const r=await fetch(url,{cache:'no-store'});
-      if(!r.ok)throw new Error('league logo part '+r.status);
-      return (await r.text()).trim();
-    }));
-    const img=await loadImage('data:image/webp;base64,'+parts.join(''));
+  leagueLogoPromise=loadImage(LEAGUE_LOGO).then(img=>{
     leagueLogoCache=img||null;
     return leagueLogoCache;
-  })().catch(err=>{
-    console.warn('[V491 credential logo]',err);
+  }).catch(err=>{
+    console.warn('[V495 credential logo]',err);
     leagueLogoPromise=null;
     return null;
   });
