@@ -167,7 +167,7 @@ function pageMarkup(){
   const all=matches();
   const saved=read();
   return '<section class="v129-page" data-v129-schedule>'+
-    '<header class="v129-top"><button type="button" aria-label="Volver" data-v129-back>‹</button><div><small>OPERACIÓN DE JORNADA</small><h1>Cambios de horario y sedes</h1><p>Genera un aviso de último momento con imagen, enlace directo y QR.</p></div></header>'+
+    '<header class="v129-top"><div><small>OPERACIÓN DE JORNADA</small><h1>Cambios de horario y sedes</h1><p>Genera un aviso de último momento con imagen, enlace directo y QR.</p></div></header>'+
     '<section class="v129-card v129-editor">'+
       '<label><span>Partido oficial</span><select data-v129-match><option value="">Selecciona un partido</option>'+all.map(m=>'<option value="'+esc(m.id)+'">'+currentOption(m)+'</option>').join('')+'</select></label>'+
       '<div class="v129-current" data-v129-current><b>Selecciona un partido</b><small>Se mostrarán aquí el horario y la sede actuales.</small></div>'+
@@ -311,7 +311,6 @@ function bindPreview(root,n){
 }
 
 function bind(root){
-  root.querySelector('[data-v129-back]')?.addEventListener('click',()=>{if(window.LJR_APP_BACK)window.LJR_APP_BACK();else location.hash='#/home'});
   root.querySelector('[data-v129-match]')?.addEventListener('change',e=>{const m=matches().find(x=>x.id===e.target.value);if(m)fillFromMatch(root,m)});
   root.querySelector('[data-v129-venue]')?.addEventListener('change',e=>{
     const custom=root.querySelector('[data-v129-venue-custom]');
