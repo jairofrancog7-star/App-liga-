@@ -345,3 +345,69 @@ body.v372-team-reference.v372-team-collapsed .v372-mini-menu button span{
   }
 }
 /* /V389_TEAM_SCROLL_HEADER_REFERENCE */
+
+
+/* V501_TEAM_TABS_RAISED_REFERENCE */
+/* Tabs del perfil más arriba y compactos, ajustados a la segunda referencia:
+   menos espacio vacío entre los botones superiores, las etiquetas y las líneas. */
+body.v372-team-reference .v42-hero{
+  min-height:342px!important;
+}
+
+body.v372-team-reference .v42-tabs{
+  height:52px!important;
+  align-items:flex-end!important;
+  border-bottom:1px solid rgba(255,255,255,.78)!important;
+}
+
+body.v372-team-reference .v42-tabs button{
+  height:52px!important;
+  padding-top:0!important;
+  padding-bottom:10px!important;
+  font-size:11px!important;
+  line-height:1!important;
+  display:flex!important;
+  align-items:flex-end!important;
+  justify-content:center!important;
+}
+
+body.v372-team-reference .v42-tabs button.active::after{
+  bottom:0!important;
+  left:7px!important;
+  right:7px!important;
+  height:3px!important;
+}
+
+/* También mantener la cabecera compacta al hacer scroll con la misma distancia. */
+body.v372-team-reference .v372-compact-tabs{
+  height:50px!important;
+  border-bottom:1px solid rgba(255,255,255,.78)!important;
+}
+
+body.v372-team-reference .v372-compact-tabs button{
+  height:50px!important;
+  padding-top:0!important;
+  padding-bottom:9px!important;
+  display:flex!important;
+  align-items:flex-end!important;
+  justify-content:center!important;
+}
+
+body.v372-team-reference .v372-compact-tabs button.active:after{
+  bottom:0!important;
+  height:3px!important;
+}
+
+@media(max-width:370px){
+  body.v372-team-reference .v42-hero{
+    min-height:334px!important;
+  }
+  body.v372-team-reference .v42-tabs{
+    height:50px!important;
+  }
+  body.v372-team-reference .v42-tabs button{
+    height:50px!important;
+    padding-bottom:9px!important;
+    font-size:10.5px!important;
+  }
+}
