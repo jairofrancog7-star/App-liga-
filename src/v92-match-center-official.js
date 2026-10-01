@@ -19,6 +19,7 @@ let activeTab='Resumen';
 let selectedKey='';
 let loading=null;
 let timer=null;
+let liveClockTimer=null;
 let renderGuard=false;
 let profileSide='home';
 let v423Date='';
@@ -246,7 +247,7 @@ function buildUpBody(m,state){
         '<p>'+esc(compactDate(r[8]))+'</p>'+
         '<div class="v420-matchup">'+
           '<div>'+teamLogo(home,'v420-team-logo')+'<b>'+esc(home)+'</b></div>'+
-          '<span><strong>'+esc(center)+'</strong><small>'+esc(countdownText(m,state))+'</small></span>'+
+          '<span><strong>'+esc(center)+'</strong><small data-v420-countdown data-v420-start="'+esc(Number.isFinite(m?.start)?m.start:'')+'" title="Cronometraje local del partido">'+esc(countdownText(m,state))+'</small></span>'+
           '<div>'+teamLogo(away,'v420-team-logo')+'<b>'+esc(away)+'</b></div>'+
         '</div>'+
       '</div>'+
@@ -262,6 +263,43 @@ function buildUpBody(m,state){
       '<div><small>PARTIDO OFICIAL</small><b>'+esc(home)+' vs '+esc(away)+'</b><span>'+esc(r[7]||'Campo por confirmar')+'</span></div>'+
     '</section>'+
   '</section>';
+}
+function updateLiveClock(){
+  if(!isDirectRoute())return;
+  const now=mexicoStamp();
+  document.querySelectorAll('[data-v420-countdown]').forEach(el=>{
+    const start=Number(el.dataset.v420Start);
+    if(!Number.isFinite(start))return;
+    const diff=Math.floor((start-now)/1000);
+    const pad=n=>String(Math.max(0,n)).padStart(2,'0');
+    if(diff>0){
+      const h=Math.floor(diff/3600),m=Math.floor((diff%3600)/60),s=diff%60;
+      el.textContent=pad(h)+' : '+pad(m)+' : '+pad(s);
+      el.dataset.phase='countdown';
+      return;
+    }
+    const elapsed=Math.max(0,Math.floor((now-start)/1000));
+    if(elapsed<45*60){
+      const mm=Math.floor(elapsed/60),ss=elapsed%60;
+      el.textContent='1T · '+pad(mm)+' : '+pad(ss);
+      el.dataset.phase='first';
+      return;
+    }
+    if(elapsed<60*60){
+      const rest=60*60-elapsed;
+      el.textContent='DESCANSO · '+pad(Math.floor(rest/60))+' : '+pad(rest%60);
+      el.dataset.phase='half';
+      return;
+    }
+    if(elapsed<105*60){
+      const play=45*60+(elapsed-60*60),mm=Math.floor(play/60),ss=play%60;
+      el.textContent='2T · '+pad(mm)+' : '+pad(ss);
+      el.dataset.phase='second';
+      return;
+    }
+    el.textContent='90 : 00 +';
+    el.dataset.phase='after';
+  });
 }
 function predictionsBody(m){
   const r=m.r,home=r[2],away=r[6],key='v420-prediction:'+m.key;
@@ -519,7 +557,7 @@ function profilePlayers(m,team){
 function compareTeamBlock(m,team,opp){
   const a=standingObj(m,team),b=standingObj(m,opp);
   const cell=(label,av,bv)=>'<div><span>'+esc(av??'—')+'</span><small>'+label+'</small><span>'+esc(bv??'—')+'</span></div>';
-  return '<section class="v419-card v419-compare">'+
+  return '<section class="v419-card v419-compare" data-v419-profile-section="estadisticas">'+
     '<header><h3>Comparación de rendimiento</h3><small>'+esc(m.category)+'</small></header>'+
     '<div class="v419-compare-head"><span>'+teamLogo(team,'v419-compare-logo')+'<b>'+esc(team)+'</b></span><span>'+teamLogo(opp,'v419-compare-logo')+'<b>'+esc(opp)+'</b></span></div>'+
     cell('Posición',a?.pos,b?.pos)+cell('Puntos',a?.pts,b?.pts)+cell('Goles a favor',a?.gf,b?.gf)+cell('Diferencia',a?.dg,b?.dg)+
@@ -537,18 +575,24 @@ function teamProfileDashboard(m){
       '<div><small>'+esc(m.category)+'</small><h2>'+esc(team)+'</h2><p>'+(st?'Posición '+esc(st.pos)+' · '+esc(st.pts??'—')+' pts':'Sin posición publicada')+'</p></div>'+
       '<button type="button" data-v419-open-team="'+esc(team)+'">VER EQUIPO</button>'+
     '</section>'+
-    '<nav class="v419-subtabs"><span class="active">Resumen</span><span>Resultados</span><span>Plantilla</span><span>Tabla</span><span>Estadísticas</span></nav>'+
-    '<section class="v419-card v419-next"><header><h3>Próximo partido</h3><small>'+esc(next[0]?dateOnly(next[0].r?.[8]):'Por confirmar')+'</small></header>'+
+    '<nav class="v419-subtabs" aria-label="Secciones del equipo">'+
+      '<button type="button" class="active" data-v419-profile-scroll="resumen">Resumen</button>'+
+      '<button type="button" data-v419-profile-scroll="resultados">Resultados</button>'+
+      '<button type="button" data-v419-profile-scroll="plantilla">Plantilla</button>'+
+      '<button type="button" data-v419-profile-scroll="tabla">Tabla</button>'+
+      '<button type="button" data-v419-profile-scroll="estadisticas">Estadísticas</button>'+
+    '</nav>'+
+    '<section class="v419-card v419-next" data-v419-profile-section="resumen"><header><h3>Próximo partido</h3><small>'+esc(next[0]?dateOnly(next[0].r?.[8]):'Por confirmar')+'</small></header>'+
       (next[0]?'<div class="v419-next-main"><span>'+teamLogo(team,'v419-main-logo')+'<b>'+esc(team)+'</b></span><strong>'+esc(clock(next[0].r?.[8]))+'</strong><span>'+teamLogo(next[0].opp,'v419-main-logo')+'<b>'+esc(next[0].opp)+'</b></span></div>':'<div class="v419-empty">No hay siguiente partido publicado.</div>')+
     '</section>'+
-    '<section class="v419-card v419-form"><header><h3>Últimos resultados</h3><small>'+form.length+' partidos</small></header><div class="v419-form-grid">'+(form.length?form.map(resultChip).join(''):'<div class="v419-empty">Sin resultados publicados.</div>')+'</div></section>'+
+    '<section class="v419-card v419-form" data-v419-profile-section="resultados"><header><h3>Últimos resultados</h3><small>'+form.length+' partidos</small></header><div class="v419-form-grid">'+(form.length?form.map(resultChip).join(''):'<div class="v419-empty">Sin resultados publicados.</div>')+'</div></section>'+
     '<section class="v419-card v419-calendar"><header><h3>Próximos del calendario</h3><small>'+esc(m.category)+'</small></header><div class="v419-next-list">'+(next.length?next.map(nextCard).join(''):'<div class="v419-empty">Sin próximos partidos publicados.</div>')+'</div></section>'+
-    '<section class="v419-card v419-lineup-preview"><header><h3>Plantilla / alineación</h3><small>'+roster(m,team).length+' jugadores</small></header>'+
+    '<section class="v419-card v419-lineup-preview" data-v419-profile-section="plantilla"><header><h3>Plantilla / alineación</h3><small>'+roster(m,team).length+' jugadores</small></header>'+
       '<div class="v419-mini-pitch">'+
         roster(m,team).slice(0,11).map((n,i)=>'<span class="p'+i+'"><i>'+esc(playerInitials(n))+'</i><b>'+esc(n)+'</b></span>').join('')+
       '</div>'+
     '</section>'+
-    '<section class="v419-card v419-league"><header><h3>La liga</h3><small>'+esc(m.category)+'</small></header>'+
+    '<section class="v419-card v419-league" data-v419-profile-section="tabla"><header><h3>La liga</h3><small>'+esc(m.category)+'</small></header>'+
       '<div class="v419-table-head"><span>#</span><span>Equipo</span><span>PJ</span><span>DG</span><span>PTS</span></div>'+
       '<div class="v419-table-body">'+miniTableRows(m,team)+'</div>'+
     '</section>'+
@@ -930,6 +974,14 @@ function render(){
     location.hash='#/tactics';
   });
   screen.querySelectorAll('[data-v92-vote-mvp]').forEach(b=>b.onclick=()=>openMvpVote(m));
+  screen.querySelectorAll('[data-v419-profile-scroll]').forEach(b=>b.onclick=()=>{
+    const profile=b.closest('[data-v419-profile]'),key=b.dataset.v419ProfileScroll||'resumen';
+    profile?.querySelectorAll('[data-v419-profile-scroll]').forEach(x=>x.classList.toggle('active',x===b));
+    const target=profile?.querySelector('[data-v419-profile-section="'+key+'"]');
+    if(target){
+      try{target.scrollIntoView({behavior:'smooth',block:'start'})}catch(_){target.scrollIntoView()}
+    }
+  });
   screen.querySelectorAll('[data-v419-profile-side]').forEach(b=>b.onclick=()=>{profileSide=b.dataset.v419ProfileSide==='away'?'away':'home';renderGuard=false;render()});
   screen.querySelectorAll('[data-v419-open-team]').forEach(b=>b.onclick=()=>{const name=b.dataset.v419OpenTeam||'';try{localStorage.setItem('v62-team-name',name)}catch(_){};try{window.LJR_OFFICIAL_API?.openTeam?.(name)}catch(_){};if(route()===PRIMARY_ROUTE||DIRECT_ROUTES.has(route()))location.hash='#/teamDetail'});
   screen.querySelectorAll('[data-v420-pick]').forEach(b=>b.onclick=()=>{try{localStorage.setItem('v420-prediction:'+m.key,JSON.stringify({pick:b.dataset.v420Pick,at:new Date().toISOString()}))}catch(_){};renderGuard=false;render()});
@@ -941,6 +993,7 @@ function render(){
   screen.querySelector('[data-v423-calendar-open]')?.addEventListener('click',()=>{location.hash='#/v4-calendar'});
   screen.querySelectorAll('[data-v423-match]').forEach(b=>b.onclick=()=>{selectedKey=b.dataset.v423Match||selectedKey;activeTab='Resumen';renderGuard=false;render();try{document.querySelector('[data-v92-matchcenter]')?.scrollIntoView({behavior:'smooth',block:'start'})}catch(_){}});
   screen.querySelectorAll('[data-v423-fav]').forEach(b=>b.onclick=()=>{let a=[];try{a=JSON.parse(localStorage.getItem('v423-match-favs')||'[]')}catch(_){};const k=String(b.dataset.v423Fav||'');a=a.includes(k)?a.filter(x=>x!==k):[...a,k];try{localStorage.setItem('v423-match-favs',JSON.stringify(a))}catch(_){};renderGuard=false;render()});
+  updateLiveClock();
   renderGuard=false;
 }
 async function load(){
@@ -998,6 +1051,8 @@ function syncRoute(){
   render();
   load();
   if(!timer)timer=setInterval(()=>{if(isDirectRoute()){render();refreshOfficialData(false)}},30000);
+  if(!liveClockTimer)liveClockTimer=setInterval(updateLiveClock,1000);
+  updateLiveClock();
 }
 window.addEventListener('hashchange',()=>requestAnimationFrame(syncRoute));
 window.LJR_MATCH_CENTER={open(key){selectedKey=String(key);db=window.CompetitionController?.raw()||window.LJR_OFFICIAL_DATA||db;location.hash='#/matchCenter';if(isDirectRoute())render()}};
