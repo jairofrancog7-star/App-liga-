@@ -7,7 +7,7 @@
 if(window.__LJR_V100_ADDITIVE__) return;
 window.__LJR_V100_ADDITIVE__=true;
 
-const BUILD='20261001-v480-exact-league-logo-official-red';
+const BUILD='20261001-v481-logo-sin-fondo-negro';
 const $=(s,r=document)=>r.querySelector(s);
 const $$=(s,r=document)=>Array.from(r.querySelectorAll(s));
 const esc=(v)=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -580,11 +580,59 @@ async function v200LeagueLogoTransparent(){
   if(v200LeagueLogoCache)return v200LeagueLogoCache;
   if(v200LeagueLogoPromise)return v200LeagueLogoPromise;
   v200LeagueLogoPromise=(async()=>{
-    /* V480: usar el logo ORIGINAL de la Liga sin modificar un solo píxel.
-       Sin quitar fondo, sin recortar, sin recolorear y sin reconstruirlo. */
-    const img=await v100LoadImage(V198_LEAGUE_LOGO);
-    v200LeagueLogoCache=img||null;
-    return v200LeagueLogoCache;
+    const img=await v100LoadImage(V198_LEAGUE_LOGO);if(!img)return null;
+
+    /* V481: conservar el logo EXACTO y quitar SOLAMENTE el fondo negro.
+       No recorta, no recolorea, no deforma, no cambia brillo/contraste.
+       Solo vuelve transparentes los negros conectados al borde exterior. */
+    const iw=img.naturalWidth||img.width||1;
+    const ih=img.naturalHeight||img.height||1;
+    const cv=document.createElement('canvas');
+    cv.width=iw;cv.height=ih;
+    const q=cv.getContext('2d',{willReadFrequently:true});
+    q.clearRect(0,0,iw,ih);
+    q.drawImage(img,0,0,iw,ih);
+
+    let data;
+    try{data=q.getImageData(0,0,iw,ih)}
+    catch(_){v200LeagueLogoCache=img;return img}
+
+    const d=data.data;
+    const seen=new Uint8Array(iw*ih);
+    const queue=new Int32Array(iw*ih);
+    let head=0,tail=0;
+
+    /* El fondo original es negro. Se acepta solo negro/casi negro y,
+       además, tiene que estar conectado físicamente a un borde. */
+    const isBg=(idx)=>{
+      const k=idx*4,r=d[k],g=d[k+1],b=d[k+2],a=d[k+3];
+      if(a===0)return true;
+      const max=Math.max(r,g,b),min=Math.min(r,g,b);
+      return max<=42 && (max-min)<=18;
+    };
+    const push=(idx)=>{
+      if(idx<0||idx>=iw*ih||seen[idx]||!isBg(idx))return;
+      seen[idx]=1;queue[tail++]=idx;
+    };
+
+    for(let x0=0;x0<iw;x0++){push(x0);push((ih-1)*iw+x0)}
+    for(let y0=0;y0<ih;y0++){push(y0*iw);push(y0*iw+iw-1)}
+
+    while(head<tail){
+      const p=queue[head++],x0=p%iw,y0=(p/iw)|0;
+      if(x0>0)push(p-1);
+      if(x0<iw-1)push(p+1);
+      if(y0>0)push(p-iw);
+      if(y0<ih-1)push(p+iw);
+    }
+
+    for(let i=0;i<iw*ih;i++){
+      if(seen[i])d[i*4+3]=0;
+    }
+    q.putImageData(data,0,0);
+
+    v200LeagueLogoCache=cv;
+    return cv;
   })();
   return v200LeagueLogoPromise;
 }
