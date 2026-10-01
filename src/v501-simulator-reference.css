@@ -1350,3 +1350,32 @@ body[data-app-route="simulator"] .v501-journey b{
   body[data-app-route="simulator"] .v501-score-control button{width:31px!important;height:29px!important;font-size:15px!important}
   body[data-app-route="simulator"] .v501-score-center strong{font-size:12px!important}
 }
+
+
+/* V507 — bloqueo definitivo de barra inferior en Simulador */
+html body .bottom-nav.v507-simulator-nav-hidden,
+html body #app > .bottom-nav.v507-simulator-nav-hidden,
+html body .app-shell > .bottom-nav.v507-simulator-nav-hidden,
+html body nav.bottom-nav.v507-simulator-nav-hidden,
+html body[data-app-route="simulator"] .bottom-nav{
+  display:none!important;
+  visibility:hidden!important;
+  opacity:0!important;
+  pointer-events:none!important;
+  position:absolute!important;
+  left:-99999px!important;
+  right:auto!important;
+  bottom:auto!important;
+  width:0!important;
+  height:0!important;
+  min-height:0!important;
+  max-height:0!important;
+  margin:0!important;
+  padding:0!important;
+  overflow:hidden!important;
+  transform:none!important;
+}
+html body[data-app-route="simulator"] #screen{
+  padding-bottom:0!important;
+  margin-bottom:0!important;
+}
