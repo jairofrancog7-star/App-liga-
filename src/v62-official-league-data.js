@@ -104,11 +104,33 @@ function isPlayedFixture(r){return hasPublishedScore(r)}
 function categoryTeams(c){
   if(!c)return [];
   const out=[];
-  const add=n=>{n=String(n||'').trim();if(n&&!out.some(x=>same(x,n)))out.push(n)};
+
+  /* V497 — Equipos reales solamente.
+     El snapshot actual trae en scorers filas resumen como:
+       ["1","JUVENTUS","22 goles en temporada","22"]
+     La tercera celda NO es un equipo. Antes se agregaba como si lo fuera y
+     por eso aparecían tarjetas "22 goles en temporada", "16 goles...", etc.
+     La lista de equipos se obtiene únicamente de fuentes estructurales:
+     plantillas, clasificación y partidos. */
+  const validTeamName=n=>{
+    n=String(n||'').trim();
+    if(!n)return false;
+    if(/^\d+\s*(?:ge|goles?)$/i.test(n))return false;
+    if(/^\d+\s+goles?\s+en\s+temporada$/i.test(n))return false;
+    if(/goles?\s+en\s+temporada/i.test(n))return false;
+    return true;
+  };
+  const add=n=>{
+    n=String(n||'').trim();
+    if(validTeamName(n)&&!out.some(x=>same(x,n)))out.push(n);
+  };
+
   Object.keys(c.rosters||{}).forEach(add);
-  (c.standings?.[0]?.rows||[]).forEach(r=>add(r[1]));
-  (c.fixtures?.[0]?.rows||[]).forEach(r=>{add(r[2]);add(r[6])});
-  (c.scorers?.[0]?.rows||[]).forEach(r=>{if(r.length>2)add(r[2])});
+  (c.standings?.[0]?.rows||[]).forEach(r=>add(r?.[1]));
+  (c.fixtures?.[0]?.rows||[]).forEach(r=>{add(r?.[2]);add(r?.[6])});
+
+  /* No derivar equipos desde scorers: ese bloque puede ser una tabla de
+     goleadores, un resumen por club o estadísticas agregadas según la fuente. */
   return out;
 }
 function teamContext(name){
