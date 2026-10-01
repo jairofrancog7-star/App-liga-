@@ -228,7 +228,7 @@ function searchMarkup(){
  const mode=localStorage.getItem('v412-search-mode')||'players';
  return '<section class="v412-shell v412-search-reference v414-search-reference v415-single-search" data-v412-screen="search">'+
    '<div class="v414-search-join">'+
-     '<div class="v412-modebar">'+[['players','Jugadores'],['teams','Equipos'],['competitions','Competiciones'],['matches','Partidos']].map(x=>'<button class="v412-mode '+(mode===x[0]?'is-active':'')+'" data-v412-mode="'+x[0]+'">'+x[1]+'</button>').join('')+'</div>'+
+     '<div class="v412-modebar">'+[['teams','Equipos'],['players','Jugadores'],['competitions','Competiciones'],['matches','Partidos']].map(x=>'<button class="v412-mode '+(mode===x[0]?'is-active':'')+'" data-v412-mode="'+x[0]+'">'+x[1]+'</button>').join('')+'</div>'+
    '</div>'+
    '<div class="v414-player-cover" data-v414-player-cover><span>PORTADA</span><div><small></small><small>GOL</small><small>PJ</small><small>PTS</small><small></small></div></div>'+
    '<div class="v412-result-heading v414-result-heading"><span></span><button data-v412-go="players">Ver todos ›</button></div>'+
