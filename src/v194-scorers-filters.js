@@ -5,7 +5,7 @@
 if(window.__LJR_V194_SCORERS__)return;
 window.__LJR_V194_SCORERS__=true;
 window.__LJR_SCORERS_UI_OWNER__='v194-reference';
-window.__LJR_SCORERS_BUILD__='v466';
+window.__LJR_SCORERS_BUILD__='v467';
 
 const CAT_ORDER=['3','5','4','2','1'];
 const CAT_FALLBACK={
@@ -20,11 +20,9 @@ const TEAM_KEY='v194-scorer-team';
 const LOWER_STAT_KEY='v462-scorer-ranking-stat';
 let rendering=false;
 let timer=0;
-let categoryFrame=0;
+let categoryTimer=0;
 let statFrame=0;
-let pendingCategory='';
-let scorerCategoryTapAt=0;
-let scorerCategoryTapId='';
+let categoryBusy=false;
 
 const route=()=>location.hash.replace(/^#\/?/,'').split('?')[0]||'home';
 const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -278,7 +276,7 @@ function chooseLowerStat(mode){
 function categoryStrip(){
   const active=catId();
   return '<section class="v391-category-wrap" aria-label="Clasificación por categoría">'+
-    '<span class="v391-category-label">CATEGORÍA</span>'+
+    '<span class="v391-category-label">CLASIFICAR POR CATEGORÍA</span>'+
     '<div class="v391-category-strip">'+CAT_ORDER.map(id=>
       '<button type="button" class="'+(id===active?'active':'')+'" data-v194-cat="'+id+'" aria-pressed="'+(id===active?'true':'false')+'">'+esc(catName(id))+'</button>'
     ).join('')+'</div>'+
@@ -329,29 +327,26 @@ function forceCategoryRender(){
 }
 function chooseCategory(id){
   id=CAT_ORDER.includes(String(id))?String(id):'3';
+  if(categoryBusy)return false;
   if(id===catId()&&pageHasCategory(id))return false;
 
   try{
     localStorage.setItem('v62-category',id);
     localStorage.setItem('v12-fixture-cat',id);
     localStorage.setItem(TEAM_KEY,'all');
-    /* catId() prioritizes ?cat= in the hash. Keep it synchronized without
-       firing hashchange so one tap produces exactly one scorer repaint. */
     const next=location.pathname+location.search+'#/scorers?cat='+encodeURIComponent(id);
     history.replaceState(history.state,'',next);
   }catch(_){}
 
-  pendingCategory=id;
-  if(categoryFrame)cancelAnimationFrame(categoryFrame);
-  categoryFrame=requestAnimationFrame(()=>{
-    categoryFrame=0;
-    const selected=pendingCategory||id;
-    pendingCategory='';
-    forceCategoryRender();
-    setTimeout(()=>{
-      try{window.LJR_OFFICIAL_API?.setCategory?.(selected)}catch(_){}
-    },0);
-  });
+  /* One tap = one render. Do not call the global V62 category setter here:
+     V194 already reads the shared official dataset directly and the extra
+     setter caused a second scorer paint on Android/WebView. */
+  clearTimeout(categoryTimer);
+  categoryBusy=true;
+  categoryTimer=setTimeout(()=>{
+    try{forceCategoryRender()}
+    finally{categoryBusy=false}
+  },0);
   return false;
 }
 function pageHasCategory(id){
@@ -368,10 +363,16 @@ function bind(root){
 }
 function delegatedClick(e){
   if(route()!=='scorers'||!(e.target instanceof Element))return;
-  /* Category + ranking-stat buttons are owned by the single window fastlane
-     in index.html. Keeping them out of this document handler prevents a
-     second render on Android/WebView. */
-  if(e.target.closest('[data-v194-cat],[data-v462-stat]'))return;
+  const cat=e.target.closest('[data-v194-cat]');
+  if(cat){
+    e.preventDefault();e.stopPropagation();e.stopImmediatePropagation();
+    chooseCategory(cat.dataset.v194Cat||'3');return;
+  }
+  const stat=e.target.closest('[data-v462-stat]');
+  if(stat){
+    e.preventDefault();e.stopPropagation();e.stopImmediatePropagation();
+    chooseLowerStat(stat.dataset.v462Stat||'goals');return;
+  }
   const mode=e.target.closest('[data-v194-mode]');
   if(mode){
     e.preventDefault();e.stopPropagation();e.stopImmediatePropagation();
