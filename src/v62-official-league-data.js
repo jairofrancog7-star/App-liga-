@@ -274,6 +274,7 @@ async function refreshOfficialData(){
   if(!db||freshStamp>currentStamp){
     db=fresh;
     window.LJR_OFFICIAL_DATA=db;
+    try{window.dispatchEvent(new CustomEvent('ljr:official-data',{detail:{source:'refresh',stamp:freshStamp}}))}catch(_){}
     patchHomeCalendarResults(true);
     patchHomeStandings(true);
     patchHomeScorers(true);
@@ -424,6 +425,7 @@ async function load(){
   window.LJR_OFFICIAL_DATA=db;
   window.LJR_OFFICIAL_API={getData:()=>db,getCategory:id=>cat(id),getTeam:teamContext,getLogo:logoFor,setCategory:setCategory,setDataTab:(id)=>{dataTab=String(id||'summary');localStorage.setItem('v62-data-tab',dataTab);if(route()==='leagueData')renderDataPage()},openTeam};
   if(!cat(categoryId))categoryId='3';
+  try{window.dispatchEvent(new CustomEvent('ljr:official-data',{detail:{source:'initial',stamp:String(db?.captured_at_utc||'')}}))}catch(_){}
   startOfficialRefreshTimer();
   schedule();
 }
