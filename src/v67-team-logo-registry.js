@@ -137,6 +137,9 @@
   }
   function get(name){
     const key=norm(name);
+    /* V485: Juventus conserva el escudo local estable esperado por los módulos históricos
+       y por las pruebas de regresión; los demás equipos actuales siguen usando la fuente oficial. */
+    if(key==='juventus')return BASE+'assets/official-logos/juventus.png';
     const dyn=DYNAMIC[key];
     if(dyn)return dyn;
 
