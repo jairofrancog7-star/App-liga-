@@ -40,12 +40,23 @@ function ctx(){
     away:(sides[1].textContent||'Visitante').trim()
   };
 }
+function isOldGenericFacebook(url,name=''){
+  const u=String(url||'').toLowerCase();
+  const n=String(name||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().trim();
+  return u.includes('facebook.com/share/1cbukpctcm') ||
+    n==='facebook / transmision externa' ||
+    n==='facebook/transmision externa';
+}
 function load(c){
   try{
     const s=JSON.parse(localStorage.getItem(KEY+c.key)||'null');
     if(s&&s.v===144){
       s.events=Array.isArray(s.events)?s.events:[];
       s.source=Object.assign({url:'',name:'',feedUrl:'',connected:false,lastSync:0,transport:''},s.source||{});
+      if(isOldGenericFacebook(s.source.url,s.source.name)){
+        s.source.url='';s.source.name='';s.source.feedUrl='';s.source.connected=false;s.source.lastSync=0;s.source.transport='';
+        try{localStorage.setItem(KEY+c.key,JSON.stringify(s))}catch(_){}
+      }
       return s;
     }
   }catch(_){}
