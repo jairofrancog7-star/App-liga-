@@ -5,7 +5,7 @@
 if(window.__LJR_V194_SCORERS__)return;
 window.__LJR_V194_SCORERS__=true;
 window.__LJR_SCORERS_UI_OWNER__='v194-reference';
-window.__LJR_SCORERS_BUILD__='v472';
+window.__LJR_SCORERS_BUILD__='v473';
 
 const CAT_ORDER=['3','5','4','2','1'];
 const CAT_FALLBACK={
@@ -16,6 +16,7 @@ const CAT_FALLBACK={
   '1':'Veteranos 50+'
 };
 const MODE_KEY='v194-scorer-mode';
+try{localStorage.setItem(MODE_KEY,'players')}catch(_){}
 const TEAM_KEY='v194-scorer-team';
 const LOWER_STAT_KEY='v462-scorer-ranking-stat';
 let rendering=false;
@@ -121,8 +122,8 @@ function groupByTeam(id=catId()){
   return out.sort((a,b)=>b.total-a.total||a.team.localeCompare(b.team,'es',{sensitivity:'base'}));
 }
 function currentMode(){
-  const m=localStorage.getItem(MODE_KEY);
-  return m==='teams'?'teams':'players';
+  try{localStorage.setItem(MODE_KEY,'players')}catch(_){}
+  return 'players';
 }
 function currentTeam(){
   const v=localStorage.getItem(TEAM_KEY)||'all';
@@ -252,10 +253,10 @@ function lowerStat(){
   return ['goals','shots','passes'].includes(v)?v:'goals';
 }
 function lowerRankingRow(r,i){
-  return '<button type="button" class="v462-rank-row" data-v194-player="'+esc(r.player)+'">'+
+  return '<button type="button" class="v462-rank-row" data-v194-player="'+esc(r.player)+'" data-v462-ranking-kind="player">'+
     '<span class="v462-rank-pos">'+String(i+1)+'º</span>'+
     logoHtml(r.team,'v462-rank-logo')+
-    '<span class="v462-rank-copy"><b>'+esc(r.player)+'</b><small>'+esc(r.team)+'</small></span>'+
+    '<span class="v462-rank-copy"><b>'+esc(r.player)+'</b><small>Equipo · '+esc(r.team)+'</small></span>'+
     '<strong>'+esc(r.goals)+'</strong>'+
   '</button>';
 }
@@ -335,8 +336,8 @@ function openTeam(name){
   localStorage.setItem('v42-team-tab','summary');
   location.hash='#/teamDetail';
 }
-function chooseMode(mode){
-  localStorage.setItem(MODE_KEY,mode==='teams'?'teams':'players');
+function chooseMode(){
+  try{localStorage.setItem(MODE_KEY,'players')}catch(_){}
   render(true);
 }
 function forceCategoryRender(){
