@@ -5,7 +5,7 @@
 if(window.__LJR_V194_SCORERS__)return;
 window.__LJR_V194_SCORERS__=true;
 window.__LJR_SCORERS_UI_OWNER__='v194-reference';
-window.__LJR_SCORERS_BUILD__='v475';
+window.__LJR_SCORERS_BUILD__='v504-player-ranking';
 
 const CAT_ORDER=['3','5','4','2','1'];
 const CAT_FALLBACK={
@@ -18,7 +18,7 @@ const CAT_FALLBACK={
 const MODE_KEY='v194-scorer-mode';
 try{localStorage.setItem(MODE_KEY,'players')}catch(_){}
 const TEAM_KEY='v194-scorer-team';
-const LOWER_STAT_KEY='v462-scorer-ranking-stat';
+const LOWER_STAT_KEY='v504-scorer-ranking-stat';
 let rendering=false;
 let timer=0;
 let categoryTimer=0;
@@ -27,6 +27,8 @@ let categoryBusy=false;
 let selectedCategory='';
 let dataWaitTimer=0;
 let dataWaitAttempts=0;
+let freshScorerData=null;
+let freshScorerLoading=false;
 const logoCache=new Map();
 
 const route=()=>location.hash.replace(/^#\/?/,'').split('?')[0]||'home';
@@ -84,14 +86,19 @@ function logoHtml(team,cls='v194-logo'){
   return '<span class="'+cls+' fallback">'+esc(ab)+'</span>';
 }
 function scorerRows(id=catId()){
-  const raw=category(id)?.scorers?.[0]?.rows||[];
-  return raw.filter(r=>Array.isArray(r)&&r.length>=4&&String(r[1]||'').trim()&&String(r[2]||'').trim()&&/^\d+$/.test(String(r[3]||'')))
+  const cid=String(id);
+  const fresh=freshScorerData?.categories?.[cid]?.scorers?.[0]?.rows;
+  const raw=Array.isArray(fresh)&&fresh.length?fresh:(category(cid)?.scorers?.[0]?.rows||[]);
+  return raw
+    .filter(r=>Array.isArray(r)&&r.length>=4&&String(r[1]||'').trim()&&String(r[2]||'').trim()&&/^\d+$/.test(String(r[3]||'')))
+    .filter(r=>!/goles?\s+en\s+temporada/i.test(String(r[2]||'')))
     .map((r,i)=>({
       rank:String(r[0]||i+1),
       player:String(r[1]).trim(),
       team:String(r[2]).trim(),
       goals:Number(r[3])||0
     }))
+    .filter(r=>r.player&&r.team&&!/goles?\s+en\s+temporada/i.test(r.team))
     .sort((a,b)=>b.goals-a.goals||a.player.localeCompare(b.player,'es',{sensitivity:'base'}));
 }
 function standingTeams(id=catId()){
@@ -464,6 +471,21 @@ function render(force=false){
 function schedule(delay=80){
   clearTimeout(timer);timer=setTimeout(()=>render(false),delay);
 }
+async function refreshCanonicalScorers(){
+  if(freshScorerLoading)return;
+  freshScorerLoading=true;
+  try{
+    const res=await fetch('./data/official-live.json?v=20261001-v504-player-ranking',{cache:'no-store'});
+    if(!res.ok)return;
+    const next=await res.json();
+    if(next?.categories){
+      freshScorerData=next;
+      logoCache.clear();
+      if(route()==='scorers')render(true);
+    }
+  }catch(_){}
+  finally{freshScorerLoading=false}
+}
 function waitForOfficialData(reset=false){
   if(reset)dataWaitAttempts=0;
   clearTimeout(dataWaitTimer);
@@ -492,6 +514,7 @@ document.addEventListener('change',delegatedChange,true);
 window.addEventListener('hashchange',()=>{
   selectedCategory='';
   waitForOfficialData(true);
+  if(route()==='scorers')refreshCanonicalScorers();
 });
 window.addEventListener('ljr:official-data',()=>{
   logoCache.clear();
@@ -504,8 +527,9 @@ document.addEventListener('visibilitychange',()=>{
 });
 /* No subtree MutationObserver: it caused self-triggered repaint cycles. */
 if(document.readyState==='loading'){
-  document.addEventListener('DOMContentLoaded',()=>waitForOfficialData(true),{once:true});
+  document.addEventListener('DOMContentLoaded',()=>{waitForOfficialData(true);refreshCanonicalScorers()},{once:true});
 }else{
   waitForOfficialData(true);
+  refreshCanonicalScorers();
 }
 })();
