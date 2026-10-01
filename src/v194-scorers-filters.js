@@ -5,7 +5,7 @@
 if(window.__LJR_V194_SCORERS__)return;
 window.__LJR_V194_SCORERS__=true;
 window.__LJR_SCORERS_UI_OWNER__='v194-reference';
-window.__LJR_SCORERS_BUILD__='v467';
+window.__LJR_SCORERS_BUILD__='v468';
 
 const CAT_ORDER=['3','5','4','2','1'];
 const CAT_FALLBACK={
@@ -23,6 +23,7 @@ let timer=0;
 let categoryTimer=0;
 let statFrame=0;
 let categoryBusy=false;
+let selectedCategory='';
 
 const route=()=>location.hash.replace(/^#\/?/,'').split('?')[0]||'home';
 const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -33,18 +34,19 @@ function db(){
   catch(_){return window.LJR_OFFICIAL_DATA||null}
 }
 function catId(){
+  if(CAT_ORDER.includes(String(selectedCategory)))return String(selectedCategory);
   let fromHash='';
   try{
     const q=String(location.hash||'').split('?')[1]||'';
     fromHash=new URLSearchParams(q).get('cat')||'';
   }catch(_){}
-  if(CAT_ORDER.includes(String(fromHash))){
-    const id=String(fromHash);
-    try{localStorage.setItem('v62-category',id)}catch(_){}
-    return id;
-  }
   const stored=String(localStorage.getItem('v62-category')||'3');
-  return CAT_ORDER.includes(stored)?stored:'3';
+  const id=CAT_ORDER.includes(String(fromHash))
+    ?String(fromHash)
+    :(CAT_ORDER.includes(stored)?stored:'3');
+  selectedCategory=id;
+  try{localStorage.setItem('v62-category',id)}catch(_){}
+  return id;
 }
 function category(id=catId()){
   return db()?.categories?.[String(id)]||null;
@@ -330,23 +332,25 @@ function chooseCategory(id){
   if(categoryBusy)return false;
   if(id===catId()&&pageHasCategory(id))return false;
 
+  categoryBusy=true;
   try{
+    selectedCategory=id;
     localStorage.setItem('v62-category',id);
     localStorage.setItem('v12-fixture-cat',id);
     localStorage.setItem(TEAM_KEY,'all');
-    const next=location.pathname+location.search+'#/scorers?cat='+encodeURIComponent(id);
-    history.replaceState(history.state,'',next);
-  }catch(_){}
 
-  /* One tap = one render. Do not call the global V62 category setter here:
-     V194 already reads the shared official dataset directly and the extra
-     setter caused a second scorer paint on Android/WebView. */
-  clearTimeout(categoryTimer);
-  categoryBusy=true;
-  categoryTimer=setTimeout(()=>{
-    try{forceCategoryRender()}
-    finally{categoryBusy=false}
-  },0);
+    /* Update the visible pressed state immediately, then perform exactly
+       one scorer repaint. No hash navigation, no global category setter,
+       no delayed self-render loops. */
+    document.querySelectorAll('[data-v194-cat]').forEach(b=>{
+      const on=String(b.dataset.v194Cat||'')===id;
+      b.classList.toggle('active',on);
+      b.setAttribute('aria-pressed',on?'true':'false');
+    });
+    forceCategoryRender();
+  }finally{
+    categoryBusy=false;
+  }
   return false;
 }
 function pageHasCategory(id){
@@ -355,11 +359,13 @@ function pageHasCategory(id){
   return !!ref&&String(ref.dataset.v391Category||'')===String(id);
 }
 function bind(root){
-  if(!root)return;
+  if(!root||root.dataset.v194Bound==='1')return;
+  root.dataset.v194Bound='1';
   root.querySelectorAll('[data-v194-cat],[data-v462-stat],[data-v194-mode],[data-v194-open-team]').forEach(b=>{
     b.style.pointerEvents='auto';
     b.style.touchAction='manipulation';
   });
+  root.addEventListener('click',delegatedClick,false);
 }
 function delegatedClick(e){
   if(route()!=='scorers'||!(e.target instanceof Element))return;
@@ -417,9 +423,8 @@ window.LJR_SCORERS_REFERENCE={
 window.LJR_SET_SCORER_CATEGORY=function(id){return chooseCategory(id)};
 /* No pointerup/touchend hard interception here.
    Native category links are the fallback and must be allowed to navigate. */
-document.addEventListener('click',delegatedClick,true);
 document.addEventListener('change',delegatedChange,true);
-window.addEventListener('hashchange',()=>schedule(0));
+window.addEventListener('hashchange',()=>{selectedCategory='';schedule(0)});
 window.addEventListener('ljr:official-data',()=>schedule(40));
 document.addEventListener('visibilitychange',()=>{if(!document.hidden)schedule(40)});
 /* No subtree MutationObserver here: it observed our own page.innerHTML and
