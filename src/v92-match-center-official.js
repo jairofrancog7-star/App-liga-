@@ -9,8 +9,8 @@ window.__LJR_V141_MATCH_CENTER__=true;
 
 const PRIMARY_ROUTE='v4-matchcenter';
 const DIRECT_ROUTES=new Set(['v4-matchcenter','matchCenter','match-center']);
-const LOCAL='./data/official-live.json?v=20260922-v141';
-const REMOTE='https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/data/official-live.json?v=20260922-v141';
+const LOCAL='./data/official-live.json?v=20261001-v487-vet35-all-pages';
+const REMOTE='https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/data/official-live.json?v=20261001-v487-vet35-all-pages';
 const BASE='https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/';
 const MATCH_MEDIA=BASE+'assets/motion/';
 
