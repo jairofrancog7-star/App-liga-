@@ -451,3 +451,21 @@ html.v31-hospitality-active .v31-selected-content,
 html.v31-hospitality-active .v31-access-option{
   overflow:visible!important;
 }
+
+
+/* V449 — Hospitalidad: quitar la barra superior global y conservar solo la cabecera propia de Introduce tus datos. */
+body[data-app-route="hospitality"] #app>.topbar,
+body[data-app-route="hospitality"] .app-shell>.topbar{
+  display:none!important;
+  visibility:hidden!important;
+  height:0!important;
+  min-height:0!important;
+  max-height:0!important;
+  margin:0!important;
+  padding:0!important;
+  overflow:hidden!important;
+}
+body[data-app-route="hospitality"] #screen{
+  padding-top:0!important;
+  margin-top:0!important;
+}
