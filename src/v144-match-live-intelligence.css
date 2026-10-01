@@ -272,3 +272,73 @@
   .v144-source{grid-template-columns:31px minmax(0,1fr) auto}.v144-source em{width:30px;height:30px}
   .v144-stats span{font-size:6.2px}
 }
+
+/* V515 — operador del partido: fila completa táctil y estado persistente */
+@media(max-width:1023px){
+  body.v92-match-center-official .v144-operator{
+    position:relative!important;
+    z-index:20!important;
+    margin-top:12px!important;
+    padding-top:0!important;
+    border-top:1px solid rgba(255,255,255,.10)!important;
+    border-bottom:1px solid rgba(255,255,255,.08)!important;
+  }
+  body.v92-match-center-official .v144-operator summary{
+    position:relative!important;
+    z-index:21!important;
+    width:100%!important;
+    min-height:58px!important;
+    display:flex!important;
+    align-items:center!important;
+    box-sizing:border-box!important;
+    padding:0 44px 0 14px!important;
+    margin:0!important;
+    cursor:pointer!important;
+    pointer-events:auto!important;
+    touch-action:manipulation!important;
+    user-select:none!important;
+    list-style:none!important;
+    color:#eef2ff!important;
+    background:transparent!important;
+    font-size:13px!important;
+    line-height:1.15!important;
+    font-weight:900!important;
+    -webkit-tap-highlight-color:transparent!important;
+  }
+  body.v92-match-center-official .v144-operator summary::-webkit-details-marker{display:none!important}
+  body.v92-match-center-official .v144-operator summary::before{
+    content:"▶"!important;
+    display:inline-block!important;
+    margin-right:8px!important;
+    color:#dce5ff!important;
+    font-size:12px!important;
+    transform-origin:center!important;
+    transition:transform .15s ease!important;
+  }
+  body.v92-match-center-official .v144-operator[open] summary::before{
+    transform:rotate(90deg)!important;
+  }
+  body.v92-match-center-official .v144-operator summary::after{
+    content:"TOCAR PARA ABRIR"!important;
+    position:absolute!important;
+    right:14px!important;
+    color:#7283bd!important;
+    font-size:6.5px!important;
+    font-weight:900!important;
+    letter-spacing:.04em!important;
+  }
+  body.v92-match-center-official .v144-operator[open] summary::after{
+    content:"CERRAR"!important;
+    color:#2be2ee!important;
+  }
+  body.v92-match-center-official .v144-operator[open]{
+    padding-bottom:10px!important;
+  }
+  body.v92-match-center-official .v144-operator[open] .v144-phases,
+  body.v92-match-center-official .v144-operator[open] .v144-events,
+  body.v92-match-center-official .v144-operator[open] .v144-undo{
+    position:relative!important;
+    z-index:21!important;
+    pointer-events:auto!important;
+  }
+}
