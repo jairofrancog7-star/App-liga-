@@ -1328,3 +1328,104 @@ body.v42-follow-sheet-open nav.bottom-nav{
     padding-top:28px!important;
   }
 }
+
+
+/* V500_FOLLOW_SHEET_COMPACT_REFERENCE */
+/* Ajuste exacto de la hoja inferior de "Siguiendo" a la referencia:
+   misma composición, pero todo más compacto: hoja, escudo, iconos y textos. */
+body.v42-follow-sheet-open .v42-follow-sheet{
+  width:min(100%,520px)!important;
+  min-height:228px!important;
+  height:auto!important;
+  padding:18px 28px calc(16px + env(safe-area-inset-bottom))!important;
+  border-radius:28px 28px 0 0!important;
+}
+
+body.v42-follow-sheet-open .v42-follow-sheet .v28-sheet-team{
+  min-height:58px!important;
+  grid-template-columns:48px minmax(0,1fr)!important;
+  gap:14px!important;
+}
+
+body.v42-follow-sheet-open .v42-follow-sheet .v28-sheet-team .v28-logo.big{
+  width:46px!important;
+  height:46px!important;
+}
+
+body.v42-follow-sheet-open .v42-follow-sheet .v28-sheet-team .v28-logo.big img{
+  width:44px!important;
+  height:44px!important;
+}
+
+body.v42-follow-sheet-open .v42-follow-sheet .v28-sheet-team strong{
+  font-size:18px!important;
+  line-height:1.08!important;
+  font-weight:650!important;
+}
+
+body.v42-follow-sheet-open .v42-follow-sheet .v28-divider{
+  margin:4px 0 7px!important;
+}
+
+body.v42-follow-sheet-open .v42-follow-sheet .v28-sheet-action{
+  min-height:56px!important;
+  grid-template-columns:48px minmax(0,1fr)!important;
+  gap:8px!important;
+}
+
+body.v42-follow-sheet-open .v42-follow-sheet .v28-sheet-action svg{
+  width:28px!important;
+  height:28px!important;
+  margin-left:2px!important;
+  stroke-width:2.1!important;
+}
+
+body.v42-follow-sheet-open .v42-follow-sheet .v28-sheet-action b{
+  margin-left:5px!important;
+  font-size:27px!important;
+  line-height:1!important;
+  font-weight:300!important;
+}
+
+body.v42-follow-sheet-open .v42-follow-sheet .v28-sheet-action span{
+  font-size:18px!important;
+  line-height:1!important;
+  font-weight:450!important;
+}
+
+@media(max-width:390px){
+  body.v42-follow-sheet-open .v42-follow-sheet{
+    min-height:220px!important;
+    padding:16px 24px calc(14px + env(safe-area-inset-bottom))!important;
+  }
+  body.v42-follow-sheet-open .v42-follow-sheet .v28-sheet-team{
+    min-height:54px!important;
+    grid-template-columns:44px minmax(0,1fr)!important;
+    gap:12px!important;
+  }
+  body.v42-follow-sheet-open .v42-follow-sheet .v28-sheet-team .v28-logo.big{
+    width:42px!important;
+    height:42px!important;
+  }
+  body.v42-follow-sheet-open .v42-follow-sheet .v28-sheet-team .v28-logo.big img{
+    width:40px!important;
+    height:40px!important;
+  }
+  body.v42-follow-sheet-open .v42-follow-sheet .v28-sheet-team strong{
+    font-size:17px!important;
+  }
+  body.v42-follow-sheet-open .v42-follow-sheet .v28-sheet-action{
+    min-height:53px!important;
+    grid-template-columns:44px minmax(0,1fr)!important;
+  }
+  body.v42-follow-sheet-open .v42-follow-sheet .v28-sheet-action svg{
+    width:26px!important;
+    height:26px!important;
+  }
+  body.v42-follow-sheet-open .v42-follow-sheet .v28-sheet-action b{
+    font-size:25px!important;
+  }
+  body.v42-follow-sheet-open .v42-follow-sheet .v28-sheet-action span{
+    font-size:17px!important;
+  }
+}
