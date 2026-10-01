@@ -1481,8 +1481,10 @@ function shotmap(){
   const render=()=>{
     layer.innerHTML=shots.map((s,i)=>{
       const type=s.type==='goal'?'goal':s.type==='target'?'target':'shot';
-      return '<button type="button" class="v100-shot-marker '+type+'" data-shot-marker="'+i+'" style="left:'+s.x+'%;top:'+s.y+'%" title="Tiro '+(i+1)+'">'+
-        '<span>⚽</span><b>'+(i+1)+'</b>'+
+      const sx=Number.isFinite(Number(s.x))?Math.max(1,Math.min(99,Number(s.x))):50;
+      const sy=Number.isFinite(Number(s.y))?Math.max(1,Math.min(99,Number(s.y))):50;
+      return '<button type="button" class="v100-shot-marker '+type+'" data-shot-marker="'+i+'" style="--shot-x:'+sx+'%;--shot-y:'+sy+'%" title="Tiro '+(i+1)+'">'+
+        '<span aria-hidden="true"></span><b>'+(i+1)+'</b>'+
       '</button>';
     }).join('');
     const total=shots.length;
