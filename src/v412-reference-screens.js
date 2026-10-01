@@ -703,10 +703,10 @@ function matchCenterMarkup(){
  const h=standingFor(m.home.name,m.category),a=standingFor(m.away.name,m.category);
  return '<section class="v412-shell v412-matchcenter-reference" data-v412-screen="matchcenter">'+
    '<div class="v412-mc-hero"><div class="v412-mc-top"><small>'+esc(m.category||'Liga Juventino Rosas')+'</small><b>'+esc(m.meta[0]||'Partido oficial')+'</b></div><div class="v412-mc-score"><span>'+mcLogo(m.home)+'<b>'+esc(m.home.name)+'</b></span><strong>'+esc(m.status)+'</strong><span>'+mcLogo(m.away)+'<b>'+esc(m.away.name)+'</b></span></div><em>'+esc(m.sub||m.meta[1]||'')+'</em></div>'+
-   '<div class="v412-mc-tabs"><button class="is-active" data-v412-native-tab="Resumen">Build Up</button><button data-v412-go="predictor">Predicciones</button><button data-v412-commentary>Comentarios</button><button data-v412-native-tab="Alineaciones">Alineaciones</button><button data-v412-native-tab="Estadísticas">Estadísticas</button><button data-v412-native-tab="Cronología">Cronología</button></div>'+
+   '<div class="v412-mc-tabs"><button class="is-active" data-v412-native-tab="BuildUp">Build Up</button><button data-v412-native-tab="Predicciones">Predicciones</button><button data-v412-commentary>Comentarios</button><button data-v412-native-tab="Alineaciones">Alineaciones</button><button data-v412-native-tab="Estadísticas">Estadísticas</button><button data-v412-native-tab="Cronología">Cronología</button></div>'+
    '<section class="v412-mc-card"><h3>Comparación de temporada</h3><div class="v412-mc-pair"><span>'+mcLogo(m.home)+'<b>'+esc(m.home.name)+'</b></span><span>'+mcLogo(m.away)+'<b>'+esc(m.away.name)+'</b></span></div>'+mcMetric('Partidos',h?.[2],a?.[2])+mcMetric('Ganados',h?.[3],a?.[3])+mcMetric('Empates',h?.[4],a?.[4])+mcMetric('Puntos',h?.[9],a?.[9])+'</section>'+
    '<section class="v412-mc-card"><h3>Balance de temporada</h3><div class="v412-mc-formpair"><div>'+mcLogo(m.home)+mcForm(h)+'</div><div>'+mcLogo(m.away)+mcForm(a)+'</div></div></section>'+
-   '<div class="v412-mc-actions"><button data-v412-go="matchday"><span>◷</span><b>Cronómetro</b><small>45 + descanso + 45</small></button><button data-v412-native-tab="Alineaciones"><span>▦</span><b>Alineaciones</b><small>Plantillas y formación</small></button><button data-v412-native-tab="Estadísticas"><span>▥</span><b>Estadísticas</b><small>Datos oficiales</small></button><button data-v412-native-tab="Cronología"><span>☷</span><b>Cronología</b><small>Eventos del partido</small></button></div>'+
+   '<div class="v412-mc-actions"><button data-v412-native-tab="BuildUp"><span>◷</span><b>Cronómetro</b><small>Cuenta regresiva · 45 + descanso + 45</small></button><button data-v412-native-tab="Alineaciones"><span>▦</span><b>Alineaciones</b><small>Plantillas y formación</small></button><button data-v412-native-tab="Estadísticas"><span>▥</span><b>Estadísticas</b><small>Datos oficiales</small></button><button data-v412-native-tab="Cronología"><span>☷</span><b>Cronología</b><small>Eventos del partido</small></button></div>'+
  '</section>';
 }
 function openCommentary(){
@@ -715,7 +715,19 @@ function openCommentary(){
  m.querySelector('[data-v412-close]').onclick=()=>m.remove();m.querySelector('[data-v412-save]').onclick=()=>{try{localStorage.setItem('v412-match-commentary',m.querySelector('textarea').value||'')}catch(_){};m.remove()};
 }
 function bindMatchCenter(root){
- root.querySelectorAll('[data-v412-native-tab]').forEach(b=>b.onclick=()=>{const label=b.dataset.v412NativeTab;const native=[...document.querySelectorAll('[data-v92-tab]')].find(x=>norm(x.dataset.v92Tab||x.textContent)===norm(label));if(native){native.click();setTimeout(()=>native.scrollIntoView({behavior:'smooth',block:'center'}),80)}});
+ root.querySelectorAll('[data-v412-native-tab]').forEach(b=>b.onclick=()=>{
+   const label=b.dataset.v412NativeTab;
+   const native=[...document.querySelectorAll('[data-v92-tab]')].find(x=>norm(x.dataset.v92Tab||x.textContent)===norm(label));
+   if(native){
+     native.click();
+     setTimeout(()=>{
+       const target=label==='BuildUp'
+         ? document.querySelector('[data-v420-countdown]')||document.querySelector('[data-v420-build-up]')
+         : document.querySelector('.v92-body');
+       try{target?.scrollIntoView({behavior:'smooth',block:'center'})}catch(_){target?.scrollIntoView?.()}
+     },90);
+   }
+ });
  root.querySelector('[data-v412-commentary]')?.addEventListener('click',openCommentary);bindCommon(root);
 }
 function mountMatchCenter(screen){
