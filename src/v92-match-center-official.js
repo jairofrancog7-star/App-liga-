@@ -324,6 +324,23 @@ function previewBody(m,state){
     '</section>'+
   '</section>';
 }
+
+/* V516 — bloque inferior permanente tipo referencia.
+   Se agrega debajo del contenido existente del Match Center; no reemplaza
+   ninguna pestaña ni dato oficial. Reutiliza logos y estadísticas reales. */
+function referenceLowerPanel(m,state,{showMode=true}={}){
+  return '<section class="v516-matchcenter-lower" aria-label="Pre-partido y estadísticas generales">'+
+    (showMode?referenceMarketBar(m,state):'')+
+    previewBody(m,state)+
+    '<nav class="v516-matchcenter-shortcuts" aria-label="Más opciones del partido">'+
+      '<button type="button" data-v92-tab="BuildUp">BUILD UP</button>'+
+      '<button type="button" data-v92-tab="Predicciones">PREDICCIONES</button>'+
+      '<button type="button" data-v92-tab="Cronología">COMENTARIOS</button>'+
+      '<button type="button" data-v92-tab="Previa">PRE-PARTIDO</button>'+
+      '<button type="button" data-v92-tab="Alineaciones">ALINEACIONES</button>'+
+    '</nav>'+
+  '</section>';
+}
 function playerInitials(name){
   const clean=String(name||'').trim();
   return clean.split(/\s+/).slice(0,2).map(x=>x[0]||'').join('').toUpperCase()||'•';
@@ -873,6 +890,7 @@ function render(){
       '<button type="button" data-v92-pitch>Ver cancha</button>'+
       '<button type="button" class="mvp" data-v92-vote-mvp>⭐ Votar MVP</button>'+
     '</div>'+
+    (activeTab==='Previa'?'':referenceLowerPanel(m,state,{showMode:!['Alineaciones','Cuotas'].includes(activeTab)}))+
     '<p class="v92-source">Datos deportivos públicos de la Liga · '+esc(m.category)+' · '+esc(dateOnly(r[8]))+' · '+esc(venue)+'</p>'+
   '</article>';
 
