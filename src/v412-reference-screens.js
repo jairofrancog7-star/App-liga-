@@ -187,13 +187,14 @@ function categoryCode(catId){
  return ({'3':'1ª','5':'INT','4':'2ª','2':'V35','1':'V50'})[String(catId)]||'LJR';
 }
 function categoryLogo(catId){
- return ({
-   '3':'./assets/branding/primera-fuerza-hd.png',
-   '5':'./assets/categories/intermedia.webp',
-   '4':'./assets/categories/segunda-fuerza.webp',
-   '2':'./assets/categories/veteranos-35-user.png',
-   '1':'./assets/categories/veteranos-50.webp'
- })[String(catId)]||LEAGUE;
+ const path=({
+   '3':'assets/branding/primera-fuerza-hd.png',
+   '5':'assets/categories/intermedia.webp',
+   '4':'assets/categories/segunda-fuerza.webp',
+   '2':'assets/categories/veteranos-35-user.png',
+   '1':'assets/categories/veteranos-50.webp'
+ })[String(catId)];
+ return path?BASE+path:LEAGUE;
 }
 function positionCode(p){
  const raw=String(p.position||'Jugador').trim().toUpperCase();
