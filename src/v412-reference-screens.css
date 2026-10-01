@@ -2186,3 +2186,63 @@ body[data-app-route="search"] .v415-single-search .v412-mode.is-active{
 body[data-app-route="search"] .v415-single-search .v412-mode.is-active:after{
   display:none!important;
 }
+
+
+/* V499 — Buscar: tablas y cuadros a todo el ancho horizontal */
+@media (max-width:699px){
+  body[data-app-route="search"] .v414-search-reference.v415-single-search{
+    width:calc(100% + 34px)!important;
+    max-width:none!important;
+    margin-left:-17px!important;
+    margin-right:-17px!important;
+    padding-left:0!important;
+    padding-right:0!important;
+    overflow:visible!important;
+  }
+
+  /* Los botones superiores conservan el mismo margen visual de Accesos rápidos. */
+  body[data-app-route="search"] .v415-single-search .v414-search-join{
+    width:100%!important;
+    margin:0!important;
+    padding:0 17px 12px!important;
+  }
+
+  /* Portada, encabezado y tabla ocupan de lado a lado. */
+  body[data-app-route="search"] .v415-single-search .v414-player-cover,
+  body[data-app-route="search"] .v415-single-search .v414-result-heading,
+  body[data-app-route="search"] .v415-single-search .v414-results{
+    width:100%!important;
+    max-width:none!important;
+    margin-left:0!important;
+    margin-right:0!important;
+  }
+
+  body[data-app-route="search"] .v415-single-search .v414-player-cover{
+    border-left:0!important;
+    border-right:0!important;
+    border-radius:0!important;
+    padding-left:17px!important;
+    padding-right:17px!important;
+  }
+
+  body[data-app-route="search"] .v415-single-search .v414-result-heading{
+    border-left:0!important;
+    border-right:0!important;
+    padding-left:17px!important;
+    padding-right:17px!important;
+  }
+
+  body[data-app-route="search"] .v415-single-search .v414-results{
+    border-left:0!important;
+    border-right:0!important;
+    border-radius:0!important;
+  }
+
+  body[data-app-route="search"] .v415-single-search .v414-player-row{
+    width:100%!important;
+    max-width:none!important;
+    margin:0!important;
+    padding-left:17px!important;
+    padding-right:12px!important;
+  }
+}
