@@ -869,6 +869,7 @@ function render(){
   screen.innerHTML='<article class="v92-matchcenter" data-v92-matchcenter>'+
     '<header class="v92-match-head"><div class="v92-kicker">'+esc(state.label)+'</div><h1>Match Center</h1><p>'+esc(home)+' vs '+esc(away)+' · '+esc(m.category)+' · Jornada '+esc(r[1]||'')+'</p></header>'+
     matchPicker(m)+
+    '<section class="v518-matchcenter-unified" data-v518-unified>'+
     '<section class="v92-score-card">'+
       '<div class="v92-side">'+teamLogo(home)+'<b>'+esc(home)+'</b></div>'+
       '<div class="v92-center"><strong>'+esc(center)+'</strong><small>'+esc(state.kind==='window'?'En directo':state.secondary)+'</small><em class="v418-match-state '+esc(state.kind)+'">'+esc(state.kind==='window'?'En directo':state.kind==='final'?'Finalizado':state.kind==='scheduled'?'Pre-partido':'Pendiente')+'</em></div>'+
@@ -892,6 +893,8 @@ function render(){
     '</div>'+
     (activeTab==='Previa'?'':referenceLowerPanel(m,state,{showMode:!['Alineaciones','Cuotas'].includes(activeTab)}))+
     '<p class="v92-source">Datos deportivos públicos de la Liga · '+esc(m.category)+' · '+esc(dateOnly(r[8]))+' · '+esc(venue)+'</p>'+
+    '<div class="v518-matchcenter-extras" data-v518-extras></div>'+
+    '</section>'+
   '</article>';
 
   document.body.classList.add('v92-match-center-official');
