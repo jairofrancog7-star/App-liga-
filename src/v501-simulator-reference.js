@@ -3,7 +3,7 @@
 'use strict';
 if(window.__LJR_V501_SIMULATOR__)return;
 window.__LJR_V501_SIMULATOR__=true;
-window.LJR_SIMULATOR_V502={version:'510'};
+window.LJR_SIMULATOR_V502={version:'511'};
 
 const CAT_NAMES={'3':'Primera Fuerza','5':'Intermedia','4':'Segunda Fuerza','2':'Veteranos 35+','1':'Veteranos 50+'};
 const VIEW_KEY='v501-simulator-view';
@@ -141,6 +141,15 @@ function simulatedStandings(){
 }
 function view(){const v=localStorage.getItem(VIEW_KEY)||'standings';return v==='bracket'?'bracket':'standings'}
 function setView(v){localStorage.setItem(VIEW_KEY,v==='bracket'?'bracket':'standings');render()}
+const STAGE_KEY='v511-simulator-stage';
+function bracketStage(){
+ const s=localStorage.getItem(STAGE_KEY)||'playoff';
+ return ['playoff','octavos','cuartos','semifinal','final'].includes(s)?s:'playoff';
+}
+function setBracketStage(s){
+ localStorage.setItem(STAGE_KEY,['playoff','octavos','cuartos','semifinal','final'].includes(s)?s:'playoff');
+ render();
+}
 function simulatedCount(){const s=simState();return simFixtures().filter(f=>scoreOf(f,s)).length}
 
 function svgBack(){return '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5 8 12l7 7M8 12h12"/></svg>'}
@@ -189,26 +198,73 @@ function tableView(){
    ).join('')+'</div>'+
  '</section>';
 }
-function bracketTeam(t){
- if(!t)return '<div class="v501-br-team empty"><span>—</span></div>';
- return '<div class="v501-br-team"><small>'+t.pos+'</small>'+crest(t.name,'bracket')+'<b>'+esc(shortName(t.name))+'</b><i>○</i></div>';
+function bracketTeam(t,mini=false){
+ if(!t)return '<div class="v511-bracket-team '+(mini?'mini ':'')+'empty"><strong>—</strong></div>';
+ return '<div class="v511-bracket-team '+(mini?'mini':'')+'">'+
+   '<small class="v511-seed">'+t.pos+'</small>'+
+   crest(t.name,'v511')+
+   '<strong>'+esc(shortName(t.name))+'</strong>'+
+   '<i class="v511-dot">o</i>'+
+ '</div>';
+}
+function v511Pair(a,b){
+ return '<div class="v511-pair">'+bracketTeam(a)+bracketTeam(b)+'<span class="v511-pair-connector" aria-hidden="true"></span></div>';
+}
+function v511Winner(seedTeam){
+ return '<div class="v511-winner-block">'+
+   '<div class="v511-winner"><span class="v511-shield">⬢</span><strong>Ganador del play-off</strong></div>'+
+   bracketTeam(seedTeam,true)+
+ '</div>';
+}
+function v511Routes(rows){
+ const get=n=>rows[n-1]||null,n=rows.length;
+ const raw=[[5,Math.min(12,n)],[6,Math.min(11,n)],[7,Math.min(10,n)],[8,Math.min(9,n)]];
+ const seen=new Set(),pairs=[];
+ raw.forEach(p=>{
+   const a=get(p[0]),b=get(p[1]);
+   if(!a||!b||a===b)return;
+   const k=[a.name,b.name].sort().join('|');
+   if(seen.has(k))return;seen.add(k);pairs.push([a,b]);
+ });
+ if(!pairs.length&&n>=6)pairs.push([get(5),get(6)]);
+ return {
+   silverPairs:pairs.filter((_,i)=>i%2===0),
+   bluePairs:pairs.filter((_,i)=>i%2===1),
+   silverSeeds:[get(1),get(2)].filter(Boolean),
+   blueSeeds:[get(3),get(4)].filter(Boolean)
+ };
+}
+function v511Route(label,tone,pairs,seeds){
+ return '<section class="v511-route '+tone+'">'+
+   '<div class="v511-route-rail"><span>'+label+'</span></div>'+
+   '<div class="v511-pairs">'+(pairs.length?pairs.map(p=>v511Pair(p[0],p[1])).join(''):'<div class="v511-empty-route">Esperando posiciones de play-off</div>')+'</div>'+
+   '<div class="v511-route-connect" aria-hidden="true"></div>'+
+   '<div class="v511-winners">'+seeds.map(v511Winner).join('')+'</div>'+
+ '</section>';
+}
+function v511FinalPreview(rows){
+ const leader=rows[0]||null;
+ return '<section class="v511-final-preview">'+
+   '<div class="v511-final-copy"><small>FINAL · SIMULACIÓN</small><strong>'+(leader?esc(leader.name):'Por definir')+'</strong><span>Proyección según tus resultados</span></div>'+
+   '<div class="v511-trophy" aria-label="Trofeo de la final"><img src="./final-trophy-drive.png?v=v511" alt="" aria-hidden="true"></div>'+
+ '</section>';
 }
 function bracketView(){
- const rows=simulatedStandings(),get=n=>rows[n-1]||null;
- const pairs=[[5,12],[6,11],[7,10],[8,9]];
- const direct=[1,2,3,4];
- return '<section class="v501-board v501-bracket">'+
-   '<p class="v501-br-note">Cruces hipotéticos según la clasificación simulada</p>'+
-   '<div class="v501-br-rule"></div>'+
-   '<div class="v501-br-head"><span>PLAY-OFF</span><span>OCTAVOS DE FINAL</span></div>'+
-   '<div class="v501-br-grid">'+
-     '<div class="v501-br-left">'+pairs.map((p,i)=>
-       '<div class="v501-br-pair">'+bracketTeam(get(p[0]))+bracketTeam(get(p[1]))+'<span class="v501-connector"></span></div>'
-     ).join('')+'</div>'+
-     '<div class="v501-br-right">'+direct.map((seed,i)=>
-       '<div class="v501-br-octavo"><div class="v501-winner"><span>⬡</span><b>Ganador del play-off</b></div>'+bracketTeam(get(seed))+'<span class="v501-nextline"></span></div>'
-     ).join('')+'</div>'+
+ const rows=simulatedStandings(),stage=bracketStage(),routes=v511Routes(rows);
+ return '<section class="v501-board v501-bracket v511-competition-bracket stage-'+stage+'">'+
+   '<div class="v511-stage-tabs" role="tablist" aria-label="Etapas del cuadro">'+
+     [['playoff','Play-off'],['octavos','Octavos de final'],['cuartos','Cuartos de final'],['semifinal','Semifinales'],['final','Final']].map(x=>
+       '<button type="button" class="'+(stage===x[0]?'active':'')+'" data-v511-stage="'+x[0]+'">'+x[1]+'</button>'
+     ).join('')+
    '</div>'+
+   '<p class="v511-note">Cruces hipotéticos según la clasificación simulada</p>'+
+   '<div class="v511-dates"><span>16-19 &amp; 24-25 feb</span><span>9-12 &amp; 17-18 mar</span></div>'+
+   '<div class="v511-head"><span>PLAY-OFF</span><span>OCTAVOS DE FINAL</span></div>'+
+   '<div class="v511-board">'+
+     v511Route('RUTA PLATEADA','silver',routes.silverPairs,routes.silverSeeds)+
+     v511Route('RUTA AZUL','blue',routes.bluePairs,routes.blueSeeds)+
+   '</div>'+
+   v511FinalPreview(rows)+
  '</section>';
 }
 function scoreControl(f,side){
@@ -265,7 +321,7 @@ function page(){
 function mount(){
  if(rendering||route()!=='simulator')return;
  const screen=document.getElementById('screen');if(!screen)return;
- const sig=[catId(),view(),localStorage.getItem('v501-sim-journey:'+catId())||'',localStorage.getItem(simKey())||'',db()?.captured_at_utc||''].join('|');
+ const sig=[catId(),view(),bracketStage(),localStorage.getItem('v501-sim-journey:'+catId())||'',localStorage.getItem(simKey())||'',db()?.captured_at_utc||''].join('|');
  const current=screen.querySelector('[data-v501-simulator]');
  if(current&&current.dataset.sig===sig)return;
  rendering=true;
@@ -292,6 +348,7 @@ async function share(){
 function click(e){
  if(route()!=='simulator'||!(e.target instanceof Element))return;
  const v=e.target.closest('[data-v501-view]');if(v){e.preventDefault();setView(v.dataset.v501View);return}
+ const st=e.target.closest('[data-v511-stage]');if(st){e.preventDefault();e.stopPropagation();setBracketStage(st.dataset.v511Stage);return}
  const score=e.target.closest('[data-v501-score]');if(score){e.preventDefault();e.stopPropagation();alterScore(score.dataset.v501Score,score.dataset.side,Number(score.dataset.delta||0));return}
  const reset=e.target.closest('[data-v501-reset]');if(reset){e.preventDefault();e.stopPropagation();resetMatch(reset.dataset.v501Reset);return}
  if(e.target.closest('[data-v501-clear]')){e.preventDefault();e.stopPropagation();clearSimulation();return}
