@@ -477,21 +477,30 @@ body.v46-notifications-active .v46-ref-notifications-main{
 }
 
 
-/* V446 — Avisos: cabecera compacta tipo referencia de registro, sin barra global duplicada. */
-body[data-app-route="notices"] #app>.topbar,
-body[data-app-route="notices"] .app-shell>.topbar{
+/* V518 — Avisos usa la barra superior de referencia:
+   flecha blanca + trofeo tenue + perfil. Se elimina la cabecera interna
+   anterior y también la barra inferior de navegación únicamente en Avisos. */
+body[data-app-route="notices"] #screen{
+  padding-top:0!important;
+  padding-bottom:24px!important;
+  margin-top:0!important;
+}
+body[data-app-route="notices"] .v446-notices-head{
+  display:none!important;
+}
+body[data-app-route="notices"] #app>.bottom-nav,
+body[data-app-route="notices"] .app-shell>.bottom-nav,
+body[data-app-route="notices"] nav.bottom-nav{
   display:none!important;
   visibility:hidden!important;
+  opacity:0!important;
+  pointer-events:none!important;
   height:0!important;
   min-height:0!important;
   max-height:0!important;
   margin:0!important;
   padding:0!important;
   overflow:hidden!important;
-}
-body[data-app-route="notices"] #screen{
-  padding-top:0!important;
-  margin-top:0!important;
 }
 body[data-app-route="notices"] .v446-notices-head{
   min-height:128px!important;
