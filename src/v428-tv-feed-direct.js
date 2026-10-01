@@ -201,6 +201,25 @@ function bindTelecast(root){
   bindTelecastRows(root);
 }
 
+function isAndroidChromeV531(){
+  const ua=navigator.userAgent||'';
+  return /Android/i.test(ua)&&/(Chrome|CriOS)\//i.test(ua)&&!/EdgA\//i.test(ua)&&!/OPR\//i.test(ua);
+}
+function openAndroidCastSettings(sheet){
+  try{
+    const a=document.createElement('a');
+    a.href='intent:#Intent;action=android.settings.CAST_SETTINGS;end';
+    a.style.display='none';
+    document.body.appendChild(a);
+    a.click();
+    setTimeout(()=>a.remove(),500);
+    castToast(sheet,'Selecciona tu TV en Enviar / Transmitir pantalla.');
+    return true;
+  }catch(_){
+    castToast(sheet,'Abre “Enviar” o “Transmitir pantalla” desde los ajustes rápidos de Android.');
+    return false;
+  }
+}
 function closeCastSheet(){
   const sheet=document.querySelector('.v439-cast-sheet');
   if(sheet){sheet.classList.remove('is-open');setTimeout(()=>sheet.remove(),210)}
@@ -213,7 +232,23 @@ function castToast(sheet,msg){
   setTimeout(()=>t?.remove(),2600);
 }
 async function startCast(sheet,urlOverride=''){
+  const target=urlOverride||location.href;
   const media=document.querySelector('video,audio');
+
+  /* V531: Chrome Android no abre un selector Cast estándar para páginas web
+     como sí lo hacen apps nativas. Para Facebook/TikTok/enlaces de página,
+     abrimos directamente los ajustes de Enviar/Transmitir pantalla del sistema. */
+  if(isAndroidChromeV531()){
+    try{
+      if(media&&media.remote&&typeof media.remote.prompt==='function'){
+        await media.remote.prompt();
+        return;
+      }
+    }catch(_){}
+    openAndroidCastSettings(sheet);
+    return;
+  }
+
   try{
     if(media&&media.remote&&typeof media.remote.prompt==='function'){
       await media.remote.prompt();
@@ -222,7 +257,7 @@ async function startCast(sheet,urlOverride=''){
   }catch(_){}
   try{
     if(typeof window.PresentationRequest==='function'){
-      const request=new window.PresentationRequest([urlOverride||location.href]);
+      const request=new window.PresentationRequest([target]);
       await request.start();
       return;
     }
@@ -232,13 +267,13 @@ async function startCast(sheet,urlOverride=''){
       await navigator.share({
         title:'Liga Juventino Rosas · Liga TV',
         text:'Abrir Liga TV en otra pantalla o dispositivo',
-        url:urlOverride||location.href
+        url:target
       });
       return;
     }
   }catch(_){}
   try{
-    await navigator.clipboard.writeText(urlOverride||location.href);
+    await navigator.clipboard.writeText(target);
     castToast(sheet,'Enlace copiado. Ábrelo en tu TV u otro dispositivo.');
   }catch(_){
     castToast(sheet,'Tu navegador no permite abrir el selector de TV directamente.');
@@ -259,7 +294,7 @@ function openCastSheet(urlOverride=''){
         '<h3 class="v439-device-title">Transmitir a otro dispositivo</h3>'+
         '<button class="v439-cast-row" type="button" data-v439-transmit><span class="v439-row-icon">▣</span><b>Transmitir</b><i>›</i></button>'+
         '<button class="v439-cast-row" type="button" data-v439-learn><span class="v439-row-icon">ⓘ</span><b>Aprende más</b><i>›</i></button>'+
-        '<div class="v439-cast-help" data-v439-help hidden><b>Cómo funciona</b><p>Se intenta abrir el selector de reproducción remota o pantalla compatible. Si el navegador no lo permite, se abre el menú para compartir el enlace de Liga TV con otro dispositivo.</p></div>'+
+        '<div class="v439-cast-help" data-v439-help hidden><b>Cómo funciona</b><p>En Chrome Android, Transmitir abre Enviar / Transmitir pantalla del sistema para elegir la TV. En navegadores con reproducción remota se usa el selector compatible.</p></div>'+
         '<p class="v439-cast-foot">La disponibilidad depende del navegador, la TV y las funciones de transmisión del dispositivo.</p>'+
       '</div>'+
     '</section>';
