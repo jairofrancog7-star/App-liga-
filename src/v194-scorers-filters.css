@@ -793,3 +793,166 @@ body[data-app-route="scorers"] .v391-category-strip a.active{
   color:#fff!important;
   box-shadow:inset 0 0 0 1px rgba(24,223,240,.16)!important;
 }
+
+
+/* V462 — ranking inferior agregado SIN reemplazar el diseño original de goleadores. */
+body[data-app-route="scorers"] .v462-lower-ranking{
+  width:100%!important;
+  margin:14px 0 16px!important;
+  padding:0!important;
+  background:transparent!important;
+}
+body[data-app-route="scorers"] .v462-ranking-title{
+  margin:0 0 9px!important;
+  color:#fff!important;
+  font-size:17px!important;
+  line-height:1!important;
+  font-weight:950!important;
+  letter-spacing:-.025em!important;
+}
+body[data-app-route="scorers"] .v462-stat-tabs{
+  display:grid!important;
+  grid-template-columns:repeat(3,minmax(0,1fr))!important;
+  gap:6px!important;
+  margin:0 0 10px!important;
+}
+body[data-app-route="scorers"] .v462-stat-tabs button{
+  min-width:0!important;
+  height:40px!important;
+  min-height:40px!important;
+  padding:0!important;
+  border:1px solid rgba(130,168,222,.30)!important;
+  border-radius:8px!important;
+  background:#081b3c!important;
+  color:#9eafc8!important;
+  font:800 9.5px/1 Inter,Roboto,Arial,sans-serif!important;
+  pointer-events:auto!important;
+  touch-action:manipulation!important;
+}
+body[data-app-route="scorers"] .v462-stat-tabs button.active{
+  border-color:#3c91ff!important;
+  background:#0c3577!important;
+  color:#fff!important;
+  box-shadow:inset 0 0 0 1px rgba(60,145,255,.18)!important;
+}
+body[data-app-route="scorers"] .v462-rank-card{
+  overflow:hidden!important;
+  border-radius:15px!important;
+  background:linear-gradient(180deg,#0a2148 0%,#071a37 100%)!important;
+  box-shadow:inset 0 0 0 1px rgba(102,158,232,.10)!important;
+}
+body[data-app-route="scorers"] .v462-rank-head{
+  min-height:30px!important;
+  display:grid!important;
+  grid-template-columns:40px minmax(0,1fr) 42px!important;
+  align-items:center!important;
+  padding:0 11px!important;
+  border-bottom:1px solid rgba(130,168,222,.14)!important;
+  color:#8fa4c1!important;
+  font-size:7px!important;
+  font-weight:850!important;
+}
+body[data-app-route="scorers"] .v462-rank-head span:last-child{
+  text-align:right!important;
+}
+body[data-app-route="scorers"] .v462-rank-list{
+  padding:0 11px 4px!important;
+}
+body[data-app-route="scorers"] .v462-rank-row{
+  width:100%!important;
+  min-height:60px!important;
+  display:grid!important;
+  grid-template-columns:32px 48px minmax(0,1fr) 34px!important;
+  align-items:center!important;
+  gap:7px!important;
+  padding:4px 0!important;
+  border:0!important;
+  border-bottom:1px solid rgba(130,168,222,.10)!important;
+  background:transparent!important;
+  color:#fff!important;
+  text-align:left!important;
+  pointer-events:auto!important;
+  touch-action:manipulation!important;
+}
+body[data-app-route="scorers"] .v462-rank-row:last-child{
+  border-bottom:0!important;
+}
+body[data-app-route="scorers"] .v462-rank-pos{
+  color:#91a6c4!important;
+  font-size:10px!important;
+  font-weight:850!important;
+}
+body[data-app-route="scorers"] .v462-rank-logo{
+  width:46px!important;
+  height:46px!important;
+  display:grid!important;
+  place-items:center!important;
+  overflow:hidden!important;
+  border-radius:9px!important;
+  background:rgba(255,255,255,.03)!important;
+}
+body[data-app-route="scorers"] .v462-rank-logo img{
+  width:100%!important;
+  height:100%!important;
+  object-fit:contain!important;
+}
+body[data-app-route="scorers"] .v462-rank-copy{
+  min-width:0!important;
+}
+body[data-app-route="scorers"] .v462-rank-copy b{
+  display:block!important;
+  margin-bottom:4px!important;
+  overflow:hidden!important;
+  color:#fff!important;
+  font-size:11px!important;
+  font-weight:850!important;
+  line-height:1.05!important;
+  text-overflow:ellipsis!important;
+  white-space:nowrap!important;
+}
+body[data-app-route="scorers"] .v462-rank-copy small{
+  display:block!important;
+  overflow:hidden!important;
+  color:#9dafc8!important;
+  font-size:7.5px!important;
+  text-overflow:ellipsis!important;
+  white-space:nowrap!important;
+}
+body[data-app-route="scorers"] .v462-rank-row>strong{
+  color:#58aaff!important;
+  font-size:20px!important;
+  font-weight:950!important;
+  text-align:right!important;
+}
+body[data-app-route="scorers"] .v462-stat-empty{
+  min-height:118px!important;
+  display:flex!important;
+  flex-direction:column!important;
+  align-items:center!important;
+  justify-content:center!important;
+  gap:6px!important;
+  padding:18px!important;
+  border-radius:15px!important;
+  background:#081a39!important;
+  text-align:center!important;
+}
+body[data-app-route="scorers"] .v462-stat-empty b{
+  color:#fff!important;
+  font-size:15px!important;
+}
+body[data-app-route="scorers"] .v462-stat-empty span{
+  max-width:280px!important;
+  color:#91a6c4!important;
+  font-size:8.5px!important;
+  line-height:1.35!important;
+}
+
+/* Los botones de categoría originales quedan por encima de cualquier capa flotante. */
+body[data-app-route="scorers"] .v391-category-wrap,
+body[data-app-route="scorers"] .v391-category-strip,
+body[data-app-route="scorers"] [data-v194-cat]{
+  position:relative!important;
+  z-index:120!important;
+  pointer-events:auto!important;
+  touch-action:manipulation!important;
+}
