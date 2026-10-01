@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="es-MX">
 <head>
-  <meta name="app-build" content="v526-matchcenter-restored-black">
+  <meta name="app-build" content="v529-facebook-reset">
 
 
 
@@ -133,6 +133,34 @@
       window.__LJR_REFRESH_CACHE_V445__=true;
       var token=new URLSearchParams(location.search).get('refresh')||'';
       if(!token)return;
+      if(/v529-facebook-reset/i.test(token)){
+        window.__LJR_FACEBOOK_LEGACY_RESET_V529__=true;
+        try{
+          var legacy='1cbukpctcm';
+          for(var j=localStorage.length-1;j>=0;j--){
+            var lk=localStorage.key(j);
+            if(!lk)continue;
+            try{
+              var raw=localStorage.getItem(lk)||'';
+              if(lk==='ljr-live-source-v144'){
+                var g=JSON.parse(raw||'null');
+                if(g&&String(g.url||'').toLowerCase().indexOf(legacy)>=0)localStorage.removeItem(lk);
+              }else if(lk.indexOf('ljr-match-live-v144:')===0){
+                var st=JSON.parse(raw||'null');
+                if(st&&st.source&&String(st.source.url||'').toLowerCase().indexOf(legacy)>=0){
+                  st.source.url='';st.source.name='';st.source.feedUrl='';st.source.connected=false;st.source.lastSync=0;
+                  localStorage.setItem(lk,JSON.stringify(st));
+                }
+              }
+            }catch(_){}
+          }
+          var clean=new URL(location.href);
+          if(String(clean.searchParams.get('live')||'').toLowerCase().indexOf(legacy)>=0){
+            clean.searchParams.delete('live');clean.searchParams.delete('liveName');
+            history.replaceState(null,'',clean.toString());
+          }
+        }catch(_){}
+      }
       try{
         var key='ljr-refresh-token-v445';
         if(sessionStorage.getItem(key)===token)return;
@@ -239,7 +267,7 @@
     #screen .v400-chips small{color:#7785c4;font-size:7px;font-weight:900;letter-spacing:.09em}
     #screen .v400-chips b{margin-top:4px;overflow:hidden;font-size:11px;white-space:nowrap;text-overflow:ellipsis}
   </style>
-  <script type="module" crossorigin src="./assets/index-CmXtKGnt.js"></script>
+  <script type="module" crossorigin src="./assets/index-BvthwWHX.js"></script>
   <link rel="stylesheet" crossorigin href="./assets/index-DdyUe-Eo.css">
 </head>
 <body>
