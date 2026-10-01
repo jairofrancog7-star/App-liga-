@@ -116,12 +116,6 @@ function moreHub(){
       card('player','Jugadores','Plantillas y jugadores registrados','players')+
     '</div>'+
     teamStrip()+
-    sectionTitle('CUENTA Y COMUNIDAD','Tu perfil y redes')+
-    '<div class="v411-grid">'+
-      card('user','Crear cuenta / Perfil','Preferencias y avisos personalizados','profile')+
-      '<button type="button" class="v411-card v411-facebook" data-v411-external="'+FB+'">'+icon('facebook')+
-        '<span><b>Facebook oficial</b><small>Liga Municipal de Fútbol Juventino Rosas</small></span><i>↗</i></button>'+
-    '</div>'+
   '</section>';
 }
 function searchTeams(){
