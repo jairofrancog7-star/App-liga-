@@ -936,3 +936,34 @@ body[data-app-route="competition"] #v449-reference-lower{
   #v449-reference-lower .v449-ranking-feature-top{grid-template-columns:108px minmax(0,1fr) 48px!important}
   #v449-reference-lower .v449-player-pic.feature{width:108px!important;height:132px!important}
 }
+
+
+/* V453 — controles táctiles siempre por encima y clicables en Android/WebView. */
+#v449-reference-lower{
+  pointer-events:auto!important;
+  touch-action:pan-y!important;
+}
+#v449-reference-lower button,
+#v449-reference-lower select,
+#v449-reference-lower label{
+  position:relative!important;
+  z-index:4!important;
+  pointer-events:auto!important;
+}
+#v449-reference-lower button{
+  touch-action:manipulation!important;
+  -webkit-tap-highlight-color:transparent!important;
+}
+#v449-reference-lower select{
+  touch-action:manipulation!important;
+}
+#v449-reference-lower .v449-season-tabs,
+#v449-reference-lower .v449-season-controls,
+#v449-reference-lower .v449-season-date,
+#v449-reference-lower .v449-table-modes,
+#v449-reference-lower .v449-stat-toggle,
+#v449-reference-lower .v449-ranking-tabs{
+  position:relative!important;
+  z-index:5!important;
+  pointer-events:auto!important;
+}
