@@ -31,6 +31,42 @@
     })();
   </script>
 
+  <script>
+    (function(){
+      if(window.__LJR_V33_STATS_FASTLANE_V456__) return;
+      window.__LJR_V33_STATS_FASTLANE_V456__=true;
+      window.addEventListener('click',function(e){
+        if(!(e.target instanceof Element)) return;
+        var target=e.target.closest('[data-v33-tab],[data-v33-back],[data-v33-share],[data-v33-route],[data-v33-ref-view]');
+        if(!target) return;
+        var api=window.LJR_V33_STATS;
+        if(!api) return;
+
+        if(target.hasAttribute('data-v33-tab') && typeof api.setTab==='function'){
+          e.preventDefault();e.stopPropagation();e.stopImmediatePropagation();
+          api.setTab(target.dataset.v33Tab||'general');return;
+        }
+        if(target.hasAttribute('data-v33-back') && typeof api.goRoute==='function'){
+          e.preventDefault();e.stopPropagation();e.stopImmediatePropagation();
+          api.goRoute('more');return;
+        }
+        if(target.hasAttribute('data-v33-share') && typeof api.share==='function'){
+          e.preventDefault();e.stopPropagation();e.stopImmediatePropagation();
+          api.share();return;
+        }
+        if(target.hasAttribute('data-v33-route') && typeof api.goRoute==='function'){
+          e.preventDefault();e.stopPropagation();e.stopImmediatePropagation();
+          api.goRoute(target.dataset.v33Route||'leagueData');return;
+        }
+        if(target.hasAttribute('data-v33-ref-view') && typeof api.setRefView==='function'){
+          e.preventDefault();e.stopPropagation();e.stopImmediatePropagation();
+          api.setRefView(target.dataset.v33RefView||'player');
+        }
+      },true);
+    })();
+  </script>
+
+
   <link rel="preconnect" href="https://raw.githubusercontent.com" crossorigin>
   <link rel="dns-prefetch" href="//raw.githubusercontent.com">
   <link rel="preconnect" href="https://d2ol7oe51mr4n9.cloudfront.net" crossorigin>
@@ -381,7 +417,7 @@
   <script type="module" src="./src/v28-scorers-drive-reference.js?v=20260930-scorers-table-restore-v403"></script>
   <script type="module" src="./src/v31-hospitality-reference.js?v=20260918-master2"></script>
   <script type="module" src="./src/v32-rankings-drive-reference.js?v=20260922-clubs-clone-categories-v190"></script>
-  <script type="module" src="./src/v33-data-statistics-reference.js?v=20260930-v446-data-stats-direct"></script>
+  <script type="module" src="./src/v33-data-statistics-reference.js?v=20261001-v456-stats-buttons-hardfix"></script>
   <script type="module" src="./src/v34-nav-master.js?v=20260930-v440-competition-open-fix"></script>
   <script type="module" src="./src/v33-about-reference.js?v=20260920-referee-travel109"></script>
   <script type="module" src="./src/v111-history-photo-data.js?v=20260920-history-photos-v114"></script>
