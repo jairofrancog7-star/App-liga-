@@ -7,7 +7,7 @@
 if(window.__LJR_V100_ADDITIVE__) return;
 window.__LJR_V100_ADDITIVE__=true;
 
-const BUILD='20261001-v505-nopalero-black-bg-only';
+const BUILD='20261001-v506-nopalero-logo-visible';
 const $=(s,r=document)=>r.querySelector(s);
 const $$=(s,r=document)=>Array.from(r.querySelectorAll(s));
 const esc=(v)=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -460,26 +460,22 @@ async function v476TransparentTeamLogo(src){
   const img=await v100LoadImage(src);
   if(!img){v476TeamLogoCache.set(src,null);return null}
   if(/^data:image\/webp;base64,/i.test(String(src))){
-    /* V505: escudo exacto de Deportivo Nopalero, limpiar únicamente el negro
-       exterior conectado al borde y conservar los detalles oscuros internos. */
+    /* V506: conservar visible el escudo exacto de Deportivo Nopalero.
+       Solo convertir a transparente el negro puro/neutro del fondo. */
     const iw=img.naturalWidth||img.width||1,ih=img.naturalHeight||img.height||1;
     const max=420,sc=Math.min(1,max/Math.max(iw,ih)),w=Math.max(1,Math.round(iw*sc)),h=Math.max(1,Math.round(ih*sc));
     const cv=document.createElement('canvas');cv.width=w;cv.height=h;
     const q=cv.getContext('2d',{willReadFrequently:true});
     q.clearRect(0,0,w,h);q.drawImage(img,0,0,w,h);
     let data;try{data=q.getImageData(0,0,w,h)}catch(_){v476TeamLogoCache.set(src,img);return img}
-    const d=data.data,n=w*h,seen=new Uint8Array(n),queue=new Int32Array(n);let head=0,tail=0;
-    const near=i=>{const k=i*4;return d[k+3]===0||Math.max(d[k],d[k+1],d[k+2])<=30};
-    const push=i=>{if(i<0||i>=n||seen[i]||!near(i))return;seen[i]=1;queue[tail++]=i};
-    for(let xx=0;xx<w;xx++){push(xx);push((h-1)*w+xx)}
-    for(let yy=0;yy<h;yy++){push(yy*w);push(yy*w+w-1)}
-    while(head<tail){
-      const i=queue[head++],xx=i%w,yy=(i/w)|0;
-      if(xx>0)push(i-1);if(xx<w-1)push(i+1);if(yy>0)push(i-w);if(yy<h-1)push(i+w);
-      if(xx>0&&yy>0)push(i-w-1);if(xx<w-1&&yy>0)push(i-w+1);
-      if(xx>0&&yy<h-1)push(i+w-1);if(xx<w-1&&yy<h-1)push(i+w+1);
+    const d=data.data,n=w*h;let visible=0;
+    for(let p=0;p<n;p++){
+      const k=p*4,r=d[k],g=d[k+1],b=d[k+2];
+      const hi=Math.max(r,g,b),lo=Math.min(r,g,b);
+      if(hi<=18 && hi-lo<=8)d[k+3]=0;
+      else if(d[k+3]>8)visible++;
     }
-    for(let i=0;i<n;i++)if(seen[i])d[i*4+3]=0;
+    if(visible<n*.08){v476TeamLogoCache.set(src,img);return img}
     q.putImageData(data,0,0);
     v476TeamLogoCache.set(src,cv);
     return cv;
