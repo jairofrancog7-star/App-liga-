@@ -452,17 +452,30 @@ function mount(){
       screen.appendChild(node);
     }
   };
+  /* V515 — orden estable con V105.
+     V413 y V105 se estaban moviendo mutuamente al último hijo del #screen.
+     Eso provocaba el salto vertical que se ve en Android al desplazarse por
+     Noticias / Lo importante de la semana. Cuando existe V105, V413 queda
+     inmediatamente antes y deja a V105 como el bloque final. */
+  const placeStandard=(node)=>{
+    const v105=screen.querySelector(':scope > #v105-bottom');
+    if(v105){
+      if(node.nextElementSibling!==v105)screen.insertBefore(node,v105);
+    }else if(screen.lastElementChild!==node){
+      screen.appendChild(node);
+    }
+  };
 
   if(old&&old.dataset.v413Route===r&&old.parentElement===screen){
     if(isMatchCenter)placeMatchAlerts(old);
-    else if(screen.lastElementChild!==old)screen.appendChild(old);
+    else placeStandard(old);
     return;
   }
   old?.remove();
   const wrap=document.createElement('div');wrap.innerHTML=cfg.html;
   const node=wrap.firstElementChild;if(!node)return;
   node.dataset.v413Route=r;
-  if(isMatchCenter)placeMatchAlerts(node);else screen.appendChild(node);
+  if(isMatchCenter)placeMatchAlerts(node);else placeStandard(node);
   cfg.bind(node);
 }
 function remount(){const screen=$('#screen');screen?.querySelector('#'+ID)?.remove();mount()}
