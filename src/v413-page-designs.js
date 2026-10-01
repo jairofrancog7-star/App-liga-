@@ -444,6 +444,8 @@ function mount(){
   const cfg=contentFor(r);if(!cfg){old?.remove();return}
 
   const isMatchCenter=['matchCenter','match-center','v4-matchcenter'].includes(r);
+  const isWeekly=['news','v38Weekly'].includes(r);
+
   const placeMatchAlerts=(node)=>{
     const banner=screen.querySelector(':scope > .v73-matchcenter-bottom[data-v73-motion-banner]');
     if(banner){
@@ -452,11 +454,26 @@ function mount(){
       screen.appendChild(node);
     }
   };
-  /* V515 — orden estable con V105.
-     V413 y V105 se estaban moviendo mutuamente al último hijo del #screen.
-     Eso provocaba el salto vertical que se ve en Android al desplazarse por
-     Noticias / Lo importante de la semana. Cuando existe V105, V413 queda
-     inmediatamente antes y deja a V105 como el bloque final. */
+
+  /* V517 — bloqueo de posición para Noticias / Lo importante de la semana.
+     En estas rutas el bloque NO se vuelve a mover cada vez que otro módulo
+     modifica #screen. Así se elimina el ping-pong V413 ↔ V105 que provocaba
+     que Android saltara de "Para ti" a "Noticias, avisos y juntas". */
+  const placeWeeklyOnce=(node)=>{
+    const v105=screen.querySelector(':scope > #v105-bottom');
+    if(v105){
+      screen.insertBefore(node,v105);
+      return;
+    }
+    const native=screen.querySelector(':scope > .v60-tool-page.v63-page.v188-weekly-page')||
+                 screen.querySelector(':scope > .v60-tool-page');
+    if(native&&native.parentElement===screen){
+      native.insertAdjacentElement('afterend',node);
+    }else{
+      screen.appendChild(node);
+    }
+  };
+
   const placeStandard=(node)=>{
     const v105=screen.querySelector(':scope > #v105-bottom');
     if(v105){
@@ -467,15 +484,21 @@ function mount(){
   };
 
   if(old&&old.dataset.v413Route===r&&old.parentElement===screen){
+    if(isWeekly)return; // posición congelada: no reordenar durante scroll/mutations
     if(isMatchCenter)placeMatchAlerts(old);
     else placeStandard(old);
     return;
   }
+
   old?.remove();
   const wrap=document.createElement('div');wrap.innerHTML=cfg.html;
   const node=wrap.firstElementChild;if(!node)return;
   node.dataset.v413Route=r;
-  if(isMatchCenter)placeMatchAlerts(node);else placeStandard(node);
+
+  if(isWeekly)placeWeeklyOnce(node);
+  else if(isMatchCenter)placeMatchAlerts(node);
+  else placeStandard(node);
+
   cfg.bind(node);
 }
 function remount(){const screen=$('#screen');screen?.querySelector('#'+ID)?.remove();mount()}
