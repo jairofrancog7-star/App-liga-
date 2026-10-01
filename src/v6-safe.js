@@ -14,14 +14,16 @@
   /* V91 — Inicio ya no usa equipos/jugadores demo.
      Fallback inicial = datos oficiales vigentes; después se refresca desde
      Liga_Futbol/data/official-live.json sin inventar nombres, puntos o goles. */
-  const V6_OFFICIAL_URL='https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/data/official-live.json';
+  const V6_OFFICIAL_URL='https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/data/official-live.json?v=20261001-v487-vet35-all-pages';
   const V6_LOGO_BASE='https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/';
   const V6_CAT_LABEL={'1':'Veteranos 50+','2':'Veteranos 35+','3':'Primera Fuerza','4':'Segunda Fuerza','5':'Intermedia'};
   const V6_CODE_BY_NAME={
     'SAN JOSE FC':'SJO','JUVENTUS':'JVS','HERMANOS':'HER','LINCES':'LIN','NAPOLI':'NAP','FRANCO FC':'FRA',
     'HERRERAS FC':'HFC','ABEJAS':'ABE','LOBOS CDG':'LOB','TERRICOLAS':'TER','GALACTICOS':'GAC',
     'DYNAMO':'DYN','MANCHESTER':'MAN','LA ESPERANZA':'ESP','DEP. NOPALERO':'NOP','DEP. ZAPATA':'ZAP',
-    'CELTICOS':'CEL','ATL. GALEANA':'GAL','PROMESAS FC':'PRO','TOROS DE CUENDA':'TCU','BOAVISTA':'BOA'
+    'CELTICOS':'CEL','ATL. GALEANA':'GAL','PROMESAS FC':'PRO','TOROS DE CUENDA':'TCU','BOAVISTA':'BOA',
+    'FRANCO-TAVERA-JR':'FTJ','FRANCO TAVERA JR':'FTJ','HURACAN':'HUR','CUENDA':'CUE','AMERICA':'AME',
+    'AGUILARES':'AGU','LEYENDAS FC':'LEY','PSV':'PSV','LA TRINIDAD':'TRI'
   };
   const V6_PRETTY_TEAM={
     'SAN JOSE FC':'San José FC','JUVENTUS':'Juventus','HERMANOS':'Hermanos','LINCES':'Linces','NAPOLI':'Napoli',
@@ -29,7 +31,9 @@
     'TERRICOLAS':'Terrícolas','GALACTICOS':'Galácticos','DYNAMO':'Dynamo','MANCHESTER':'Manchester',
     'LA ESPERANZA':'La Esperanza','DEP. NOPALERO':'Dep. Nopalero','DEP. ZAPATA':'Dep. Zapata',
     'CELTICOS':'Célticos','ATL. GALEANA':'Atlético Galeana','PROMESAS FC':'Promesas FC',
-    'TOROS DE CUENDA':'Toros de Cuenda','BOAVISTA':'Boavista'
+    'TOROS DE CUENDA':'Toros de Cuenda','BOAVISTA':'Boavista','FRANCO-TAVERA-JR':'Franco-Tavera-JR',
+    'HURACAN':'Huracán','CUENDA':'Cuenda','AMERICA':'América','AGUILARES':'Aguilares',
+    'LEYENDAS FC':'Leyendas FC','PSV':'PSV','LA TRINIDAD':'La Trinidad'
   };
 
   /* [código, nombre visible, puntos, PJ, DG, nombre oficial, GF] */
@@ -64,7 +68,16 @@
     DYN:V6_LOGO_BASE+'assets/official-logos/dynamo.png',
     MAN:V6_LOGO_BASE+'assets/official-logos/manchester.png',
     ESP:V6_LOGO_BASE+'assets/official-logos/la-esperanza.png',
-    NOP:V6_LOGO_BASE+'assets/official-logos/dep-nopalero.png'
+    NOP:V6_LOGO_BASE+'assets/official-logos/dep-nopalero.png',
+    BOA:'https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/Boavista_wioj7b',
+    FTJ:'https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/FrancoTaveraVeteranos_qwrqrc',
+    HUR:'https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/Huracan_pfndn5',
+    CUE:'https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/SantiagoCuenda_fvaq9e',
+    AME:'https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/America_wbi53g',
+    AGU:'https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/aguilares_ifdgll',
+    LEY:'https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/LEYENDAS_jwcnlu',
+    PSV:'https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/PSV_ru3tft',
+    TRI:'https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/La_trinidad_a32pbk'
   };
   let v6OfficialDb=null;
 
