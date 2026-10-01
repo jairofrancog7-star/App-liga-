@@ -4,7 +4,7 @@
 'use strict';
 if(window.__LJR_V487_V35_GLOBAL__)return;
 window.__LJR_V487_V35_GLOBAL__=true;
-const BUILD='20261001-v491-v35-all-pages';
+const BUILD='20261001-v492-v35-all-pages-final';
 const DATA='./data/official-live.json?v='+BUILD;
 const TEAMS=['BOAVISTA','FRANCO-TAVERA-JR','HURACAN','CUENDA','AMERICA','AGUILARES','JUVENTUS','LEYENDAS FC','PSV','LA TRINIDAD'];
 const LOGOS={"BOAVISTA":"https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/Boavista_wioj7b","FRANCO-TAVERA-JR":"https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/FrancoTaveraVeteranos_qwrqrc","HURACAN":"https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/Huracan_pfndn5","CUENDA":"https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/SantiagoCuenda_fvaq9e","AMERICA":"https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/America_wbi53g","AGUILARES":"https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/aguilares_ifdgll","JUVENTUS":"https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/Juventus_fpshqs","LEYENDAS FC":"https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/LEYENDAS_jwcnlu","PSV":"https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/PSV_ru3tft","LA TRINIDAD":"https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/La_trinidad_a32pbk"};
