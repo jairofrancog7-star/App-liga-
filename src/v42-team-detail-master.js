@@ -9,7 +9,7 @@ let db=window.LJR_OFFICIAL_DATA||null,loading=null;
 const TEAM_TABS=['summary','matches','standings','squad','stats'];
 let activeTab=localStorage.getItem('v42-team-tab')||'summary';
 let notifyOpen=false,compareOpen=false,compareTarget='';
-let followSheetOpen=false,lastFollowTap=0;
+let followSheetOpen=false,lastFollowTap=0,followTapTimer=0;
 
 function route(){return location.hash.replace(/^#\//,'').split('?')[0]||'home'}
 function tabFromHash(){
@@ -274,26 +274,46 @@ function bind(){
  const followButton=document.querySelector('[data-v42-follow]');
  if(followButton)followButton.addEventListener('click',e=>{
    e.preventDefault();e.stopPropagation();
+
+   /* Si todavía no sigue al equipo, un toque = seguir inmediatamente. */
    if(!followed()){
+     if(followTapTimer){clearTimeout(followTapTimer);followTapTimer=0}
      setFollow(true);
      followSheetOpen=false;
      lastFollowTap=0;
      render();
      return;
    }
+
+   /* Si ya está en "Siguiendo":
+      - un toque = dejar de seguir y volver al botón blanco + Seguir;
+      - doble toque rápido = abrir la hoja inferior sin dejar de seguir.
+      Se espera sólo 330 ms para distinguir un segundo toque. */
    const now=Date.now();
-   if(lastFollowTap&&now-lastFollowTap<=430){
+   if(lastFollowTap&&now-lastFollowTap<=330){
+     if(followTapTimer){clearTimeout(followTapTimer);followTapTimer=0}
      lastFollowTap=0;
      followSheetOpen=true;
      render();
-   }else{
-     lastFollowTap=now;
-     setTimeout(()=>{if(Date.now()-lastFollowTap>=430)lastFollowTap=0},460);
+     return;
    }
+
+   lastFollowTap=now;
+   if(followTapTimer)clearTimeout(followTapTimer);
+   followTapTimer=setTimeout(()=>{
+     followTapTimer=0;
+     if(lastFollowTap!==now)return;
+     lastFollowTap=0;
+     if(followed()){
+       setFollow(false);
+       followSheetOpen=false;
+       render();
+     }
+   },330);
  });
- document.querySelector('[data-v42-close-follow-sheet]')?.addEventListener('click',e=>{e.preventDefault();followSheetOpen=false;render()},{once:true});
+ document.querySelector('[data-v42-close-follow-sheet]')?.addEventListener('click',e=>{e.preventDefault();if(followTapTimer){clearTimeout(followTapTimer);followTapTimer=0}lastFollowTap=0;followSheetOpen=false;render()},{once:true});
  document.querySelector('[data-v42-favorite-team]')?.addEventListener('click',e=>{e.preventDefault();e.stopPropagation();toggleFavorite();render()},{once:true});
- document.querySelector('[data-v42-unfollow-team]')?.addEventListener('click',e=>{e.preventDefault();e.stopPropagation();setFollow(false);followSheetOpen=false;lastFollowTap=0;render()},{once:true});
+ document.querySelector('[data-v42-unfollow-team]')?.addEventListener('click',e=>{e.preventDefault();e.stopPropagation();if(followTapTimer){clearTimeout(followTapTimer);followTapTimer=0}setFollow(false);followSheetOpen=false;lastFollowTap=0;render()},{once:true});
  document.querySelector('[data-v42-bell]')?.addEventListener('click',()=>{notifyOpen=true;followSheetOpen=false;render()},{once:true});
  document.querySelectorAll('[data-v42-share]').forEach(b=>b.addEventListener('click',share,{once:true}));
  document.querySelectorAll('[data-v42-compare]').forEach(b=>b.addEventListener('click',e=>{e.preventDefault();e.stopPropagation();followSheetOpen=false;compareOpen=true;compareTarget='';render()},{once:true}));
