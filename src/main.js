@@ -4115,8 +4115,7 @@ function scheduleChangesView(){
 }
 function noticesView(){
   const local=ljrNoticeRows();
-  return `<div class="eyebrow">AVISOS OFICIALES</div>
-    <h1 class="screen-title">Avisos de la Liga</h1>
+  return `<div class="v446-notices-head"><button type="button" class="v446-notices-back" data-v446-notices-back aria-label="Volver">←</button><div><div class="eyebrow">AVISOS OFICIALES</div><h1 class="screen-title">Avisos de la Liga</h1></div></div>
     <section class="section">
       <div class="profile-card">
         <h2>Cambios, horarios y sedes</h2>
