@@ -5037,3 +5037,41 @@
     flex-basis:12px!important;
   }
 }
+
+
+/* V514 — Match Center: todos los controles visibles son interactivos */
+body.v92-match-center-official .v92-matchcenter button:not(:disabled){
+  touch-action:manipulation!important;
+  cursor:pointer!important;
+}
+body.v92-match-center-official .v417-market-btn.active{
+  border-color:#22ddea!important;
+  background:linear-gradient(180deg,#153f9f,#102b76)!important;
+  color:#fff!important;
+  box-shadow:0 0 0 1px rgba(34,221,234,.18),0 0 14px rgba(34,221,234,.12)!important;
+}
+body.v92-match-center-official .v417-market-btn.active small,
+body.v92-match-center-official .v417-market-btn.active b{
+  color:#29e5ef!important;
+}
+body.v92-match-center-official .v417-odds-grid button.active{
+  border-color:#22ddea!important;
+  background:linear-gradient(180deg,#173e9b,#10296f)!important;
+  box-shadow:0 0 0 1px rgba(34,221,234,.16)!important;
+}
+body.v92-match-center-official .v417-odds-grid button.active span,
+body.v92-match-center-official .v417-odds-grid button.active b{
+  color:#29e5ef!important;
+}
+body.v92-match-center-official [data-v420-mute].active{
+  border-color:rgba(34,221,234,.62)!important;
+  color:#29e5ef!important;
+  box-shadow:0 0 0 1px rgba(34,221,234,.14)!important;
+}
+body.v92-match-center-official [data-v92-refresh]:active,
+body.v92-match-center-official [data-v419-match-date]:active,
+body.v92-match-center-official [data-v92-tab]:active,
+body.v92-match-center-official [data-v92-pitch]:active,
+body.v92-match-center-official [data-v92-vote-mvp]:active{
+  transform:scale(.985)!important;
+}
