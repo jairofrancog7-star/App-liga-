@@ -251,11 +251,12 @@ function navStrip(active){
  '</div>';
 }
 function fixtureCard(x,data){
+ const score=scoreText(x),statusLike=/\b(?:JUGADO|GANA|FINAL|SUSPENDIDO|APLAZADO)\b/i.test(score);
  return '<article class="v449-fixture-card">'+
   '<div class="v449-fixture-date">'+esc(shortDate(x.date))+'</div>'+
   '<div class="v449-fixture-grid">'+
    '<div class="v449-fixture-team">'+crest(x.home,data)+'<b>'+esc(x.home)+'</b></div>'+
-   '<div class="v449-fixture-score"><small>'+(/\bGANA\b/i.test(x.status)?'OFICIAL':'PARTIDO')+'</small><strong>'+esc(scoreText(x))+'</strong><button type="button" data-v449-route="competition">RESUMEN</button></div>'+
+   '<div class="v449-fixture-score"><small>'+(/\bGANA\b/i.test(x.status)?'OFICIAL':'PARTIDO')+'</small><strong class="'+(statusLike?'is-status':'')+'">'+esc(score)+'</strong><button type="button" data-v449-route="competition">RESUMEN</button></div>'+
    '<div class="v449-fixture-team">'+crest(x.away,data)+'<b>'+esc(x.away)+'</b></div>'+
   '</div>'+
   '<div class="v449-fixture-field">'+esc(x.field||'Campo por confirmar')+'</div>'+
