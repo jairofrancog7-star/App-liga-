@@ -425,3 +425,52 @@ body[data-app-route="bracketBuilder"] #screen>.v73-bracket-bottom{
 body[data-app-route="bracketBuilder"] #screen>.v73-bracket-bottom .v73-motion-inner{
   min-height:310px!important;
 }
+
+
+/* V509 — tabla oficial integrada dentro del cuadro “La temporada, de un vistazo”. */
+.v73-motion-banner.v509-stats-integrated{
+  height:auto;
+  min-height:430px;
+  padding-bottom:14px;
+}
+.v73-motion-banner.v509-stats-integrated .v73-motion-inner{
+  min-height:430px;
+}
+.v73-motion-banner.v509-stats-integrated .v399-stats-summary{
+  position:relative;
+  z-index:4;
+  width:auto;
+  margin:0 14px 0!important;
+  padding:13px!important;
+  border-color:rgba(42,222,239,.24)!important;
+  border-radius:16px!important;
+  background:linear-gradient(180deg,rgba(10,25,108,.94),rgba(7,8,83,.97))!important;
+  box-shadow:0 12px 28px rgba(0,0,45,.24);
+  backdrop-filter:blur(10px);
+  -webkit-backdrop-filter:blur(10px);
+}
+.v73-motion-banner.v509-stats-integrated .v399-stats-heading h2{
+  max-width:none;
+  margin:0;
+  font-family:Inter,Roboto,Arial,sans-serif;
+  font-size:19px;
+  line-height:1;
+  letter-spacing:-.02em;
+  text-transform:none;
+  text-wrap:wrap;
+}
+.v73-motion-banner.v509-stats-integrated .v399-stats-heading button{
+  height:auto;
+}
+.v73-motion-banner.v509-stats-integrated .v399-mini-table{
+  max-height:none;
+}
+body[data-app-route="v38Stats"] .v399-stats-page>.v63-action-grid,
+body[data-app-route="v38Stats"] .v399-stats-page>.v402-stats-note{
+  display:none!important;
+}
+@media(max-width:390px){
+  .v73-motion-banner.v509-stats-integrated{padding-bottom:12px}
+  .v73-motion-banner.v509-stats-integrated .v399-stats-summary{margin:0 10px!important;padding:10px!important}
+  .v73-motion-banner.v509-stats-integrated .v399-stats-heading h2{font-size:18px}
+}

@@ -370,6 +370,29 @@
     return true;
   }
 
+  function mountStatsInsideCardV509(screen,cfg){
+    const native=screen.querySelector('.v399-stats-page');
+    if(!native)return false;
+
+    let banner=screen.querySelector(':scope > [data-v73-motion-banner]');
+    if(!banner){
+      banner=buildBanner(cfg);
+      screen.insertBefore(banner,screen.firstChild);
+    }
+    banner.classList.add('v509-stats-integrated');
+
+    /* El resumen/tabla oficial se integra dentro del mismo cuadro,
+       en la parte inferior, para no dejar dos secciones duplicadas. */
+    const summary=native.querySelector('.v399-stats-summary')||banner.querySelector('.v399-stats-summary');
+    if(summary && summary.parentElement!==banner){
+      banner.appendChild(summary);
+    }
+
+    native.querySelectorAll('.v63-action-grid,.v402-stats-note').forEach(el=>el.remove());
+    syncAll();
+    return true;
+  }
+
   function mount(){
     const screen=document.querySelector('#screen');
     if(!screen)return;
@@ -399,6 +422,11 @@
       return;
     }
 
+
+    if(r==='v38Stats'){
+      mountStatsInsideCardV509(screen,cfg);
+      return;
+    }
 
     if(r==='teams'||r==='scorers'||r==='players'){
       mountBelowNative(screen,r,cfg);

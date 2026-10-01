@@ -4846,19 +4846,14 @@ function v38StatsView(){
     .filter(t=>t&&t.category==='Primera Fuerza')
     .sort((a,b)=>(Number(b.pts)||0)-(Number(a.pts)||0)||(Number(b.gd)||0)-(Number(a.gd)||0)||(Number(b.p)||0)-(Number(a.p)||0));
   const leader=table[0]||null;
-  const preview=table.slice(0,6);
+  const preview=table;
 
   return '<section class="v60-tool-page v63-page v399-stats-page">'+
     v60Header('TABLA Y ESTADÍSTICAS','La temporada, de un vistazo','Posiciones, goleadores y rendimiento con accesos rápidos dentro del diseño actual de la app.')+
-    '<div class="v63-action-grid">'+
-      '<button class="v60-btn" data-v63-comp="standings">Tabla</button>'+
-      '<button class="v60-btn outline" data-route="scorers">Goleadores</button>'+
-      '<button class="v60-btn outline" data-safe-route="safe-performance">Rendimiento</button>'+
-    '</div>'+
-    '<div class="v60-panel v402-stats-note"><p class="v60-note">Estos accesos reutilizan las pantallas existentes; no sustituyen la navegación ni cambian el diseño principal.</p></div>'+
+
 
     '<section class="v399-stats-summary" aria-label="Resumen de Primera Fuerza">'+
-      '<div class="v399-stats-heading"><div><small>PRIMERA FUERZA</small><h2>Tabla rápida</h2></div><button type="button" data-v63-comp="standings">Ver completa ›</button></div>'+
+      '<div class="v399-stats-heading"><div><small>PRIMERA FUERZA</small><h2>Tabla completa</h2></div><button type="button" data-v63-comp="standings">Ver completa ›</button></div>'+
       (leader?'<div class="v399-leader-card">'+
         '<span class="v399-leader-logo"><img src="'+leader.logo+'" alt="" loading="lazy" decoding="async"></span>'+
         '<span class="v399-leader-copy"><small>LÍDER ACTUAL</small><b>'+leader.name+'</b><em>'+leader.p+' PJ · DG '+(leader.gd>0?'+':'')+leader.gd+'</em></span>'+
