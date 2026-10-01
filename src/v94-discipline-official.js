@@ -6,7 +6,8 @@
   if(window.__LJR_V94_DISCIPLINE__)return;
   window.__LJR_V94_DISCIPLINE__=true;
 
-  const DATA_URLS=['./data/official-live.json?v=20261001-v491-v35-all-pages','https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/data/official-live.json?v=20261001-v491-v35-all-pages'];
+  const BUILD='20261001-v493-official-all-categories';
+  const DATA_URLS=['./data/official-live.json','https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/data/official-live.json'];
 
   function route(){
     return (location.hash.replace(/^#\/?/,'')||'home').split('?')[0];
@@ -70,7 +71,7 @@
         for(const row of rows){
           const player=row[iPlayer]||'';
           const team=row[iTeam]||'';
-          if(!player||!team||!teams.has(norm(team))||!rosterHas(cat,team,player))continue;
+          if(!player||!team)continue;
           const key=catId+'|'+norm(team)+'|'+norm(player);
           const cur=map.get(key)||{
             catId,category:cat.name||('Categoría '+catId),player,team,
@@ -96,7 +97,7 @@
         for(const row of rows){
           const player=row[iPlayer]||'';
           const team=row[iTeam]||'';
-          if(!player||!team||!teams.has(norm(team))||!rosterHas(cat,team,player))continue;
+          if(!player||!team)continue;
           const key=catId+'|'+norm(team)+'|'+norm(player);
           const cur=map.get(key)||{
             catId,category:cat.name||('Categoría '+catId),player,team,
@@ -155,7 +156,7 @@
       '<section class="v94-discipline-page">'+
         '<div class="v94-kicker">COMPETICIÓN</div>'+
         '<h1>Disciplina</h1>'+
-        '<p class="v94-lead">Tarjetas y castigos publicados oficialmente. Solo aparecen jugadores registrados en equipos vigentes.</p>'+
+        '<p class="v94-lead">Tarjetas amarillas, tarjetas rojas y castigos publicados oficialmente para todas las categorías.</p>'+
         '<div class="v94-source"><span>Datos oficiales</span><small>Actualizado '+esc((data.captured_at_utc||'').replace('T',' ').replace('Z',' UTC'))+'</small></div>'+
         (items.length
           ? '<div class="v94-discipline-list">'+items.map((x,i)=>rowHtml(data,x,i)).join('')+'</div>'
@@ -181,7 +182,7 @@
       let lastError=null;
       for(const url of DATA_URLS){
         try{
-          const r=await fetch(url+'?v=20260921-discipline-restore1',{cache:'no-store'});
+          const r=await fetch(url+'?v='+BUILD+'&ts='+Date.now(),{cache:'no-store'});
           if(!r.ok)throw new Error('official-live '+r.status);
           const data=await r.json();
           if(data&&data.categories)return data;
