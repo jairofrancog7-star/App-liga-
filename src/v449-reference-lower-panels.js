@@ -7,7 +7,7 @@ if(window.__LJR_V449_REFERENCE_LOWER__)return;
 window.__LJR_V449_REFERENCE_LOWER__=true;
 
 const ID='v449-reference-lower';
-const BUILD='20260930-v453-controls-hard-fix-b';
+const BUILD='20260930-v455-controls-fastlane';
 const DATA='./public/data/official-live.json?v='+BUILD;
 const RAW='https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/';
 const CAT_ORDER=['3','5','4','2','1'];
@@ -354,106 +354,76 @@ function host(){
  if(bottom)screen.insertBefore(h,bottom);else screen.appendChild(h);
  return h;
 }
+function handleButton(t,data=dbNow()||cached||{}){
+ if(!(t instanceof Element))return false;
+ const rerender=()=>paint(data,true);
+
+ if(t.dataset.v449Route){
+   const r=t.dataset.v449Route;
+   if(window.LJR_APP_ROUTER?.go)window.LJR_APP_ROUTER.go(r);else location.hash='#/'+r;
+   return true;
+ }
+ if(t.dataset.v449Jump){
+   const tab=document.querySelector('[data-comp-tab="'+t.dataset.v449Jump+'"]');
+   if(tab){tab.click();return true}
+   if(window.LJR_APP_ROUTER?.go)window.LJR_APP_ROUTER.go('competition');else location.hash='#/competition';
+   return true;
+ }
+ if(t.dataset.v449Season){
+   seasonMode=t.dataset.v449Season||'matches';rerender();return true;
+ }
+ if(t.dataset.v449TableMode){
+   tableMode=t.dataset.v449TableMode||'compact';rerender();return true;
+ }
+ if(t.dataset.v449StatsView){
+   statsView=t.dataset.v449StatsView||'players';rerender();return true;
+ }
+ if(t.dataset.v449RankingMode){
+   rankingMode=t.dataset.v449RankingMode||'goals';rerender();return true;
+ }
+ if(t.dataset.v449RoundDir){
+   const rounds=roundList(data);if(!rounds.length)return true;
+   roundOffset=Math.max(-(rounds.length-1),Math.min(0,roundOffset+Number(t.dataset.v449RoundDir||0)));
+   rerender();return true;
+ }
+ if(t.hasAttribute('data-v449-reset')){
+   tableMode='compact';roundOffset=0;teamFilter='all';rerender();return true;
+ }
+ if(t.dataset.v449Noop==='venue'){
+   const next=t.dataset.v449VenueState==='all'?'combined':'all';
+   t.dataset.v449VenueState=next;
+   t.textContent=next==='all'?'Todos los partidos⌄':'Local y visitante⌄';
+   return true;
+ }
+ return false;
+}
+function handleSelect(s,data=dbNow()||cached||{}){
+ if(!(s instanceof HTMLSelectElement))return false;
+ if(s.hasAttribute('data-v449-round-select')){
+   const rounds=roundList(data),i=rounds.indexOf(Number(s.value));
+   if(i>=0){roundOffset=i-(rounds.length-1);paint(data,true)}
+   return true;
+ }
+ if(s.hasAttribute('data-v449-category')){
+   const id=String(s.value||'3');
+   if(CAT_ORDER.includes(id)){localStorage.setItem('v62-category',id);roundOffset=0;teamFilter='all';paint(data,true)}
+   return true;
+ }
+ if(s.hasAttribute('data-v449-team-filter')){
+   teamFilter=s.value||'all';paint(data,true);return true;
+ }
+ return false;
+}
 function bind(root,data){
  root.onclick=e=>{
    const t=e.target instanceof Element?e.target.closest('button,[data-v449-route],[data-v449-jump]'):null;
    if(!t||!root.contains(t))return;
-
-   const routeTarget=t.dataset.v449Route;
-   if(routeTarget){
-     e.preventDefault();e.stopPropagation();
-     if(window.LJR_APP_ROUTER?.go)window.LJR_APP_ROUTER.go(routeTarget);
-     else location.hash='#/'+routeTarget;
-     return;
-   }
-
-   if(t.dataset.v449Jump){
-     e.preventDefault();e.stopPropagation();
-     const mode=t.dataset.v449Jump;
-     const tab=document.querySelector('[data-comp-tab="'+mode+'"]');
-     if(tab){tab.click();return}
-     if(window.LJR_APP_ROUTER?.go)window.LJR_APP_ROUTER.go('competition');
-     else location.hash='#/competition';
-     return;
-   }
-
-   if(t.dataset.v449Season){
-     e.preventDefault();e.stopPropagation();
-     seasonMode=t.dataset.v449Season||'matches';
-     paint(data,true);
-     return;
-   }
-
-   if(t.dataset.v449TableMode){
-     e.preventDefault();e.stopPropagation();
-     tableMode=t.dataset.v449TableMode||'compact';
-     paint(data,true);
-     return;
-   }
-
-   if(t.dataset.v449StatsView){
-     e.preventDefault();e.stopPropagation();
-     statsView=t.dataset.v449StatsView||'players';
-     paint(data,true);
-     return;
-   }
-
-   if(t.dataset.v449RankingMode){
-     e.preventDefault();e.stopPropagation();
-     rankingMode=t.dataset.v449RankingMode||'goals';
-     paint(data,true);
-     return;
-   }
-
-   if(t.dataset.v449RoundDir){
-     e.preventDefault();e.stopPropagation();
-     const rounds=roundList(data);if(!rounds.length)return;
-     roundOffset=Math.max(-(rounds.length-1),Math.min(0,roundOffset+Number(t.dataset.v449RoundDir||0)));
-     paint(data,true);
-     return;
-   }
-
-   if(t.hasAttribute('data-v449-reset')){
-     e.preventDefault();e.stopPropagation();
-     tableMode='compact';roundOffset=0;teamFilter='all';
-     paint(data,true);
-     return;
-   }
-
-   if(t.dataset.v449Noop==='venue'){
-     e.preventDefault();e.stopPropagation();
-     const labels=['Local y visitante⌄','Todos los partidos⌄'];
-     const next=t.dataset.v449VenueState==='all'?'combined':'all';
-     t.dataset.v449VenueState=next;
-     t.textContent=next==='all'?labels[1]:labels[0];
-     return;
-   }
+   if(handleButton(t,data)){e.preventDefault();e.stopPropagation()}
  };
-
  root.onchange=e=>{
    const s=e.target;
    if(!(s instanceof HTMLSelectElement)||!root.contains(s))return;
-
-   if(s.hasAttribute('data-v449-round-select')){
-     const rounds=roundList(data),i=rounds.indexOf(Number(s.value));
-     if(i>=0){roundOffset=i-(rounds.length-1);paint(data,true)}
-     return;
-   }
-
-   if(s.hasAttribute('data-v449-category')){
-     const id=String(s.value||'3');
-     if(CAT_ORDER.includes(id)){
-       localStorage.setItem('v62-category',id);
-       roundOffset=0;teamFilter='all';
-       paint(data,true);
-     }
-     return;
-   }
-
-   if(s.hasAttribute('data-v449-team-filter')){
-     teamFilter=s.value||'all';
-     paint(data,true);
-   }
+   if(handleSelect(s,data)){e.stopPropagation()}
  };
 }
 function paint(data,force=false){
@@ -479,80 +449,21 @@ window.addEventListener('load',()=>schedule(220));
 document.addEventListener('DOMContentLoaded',()=>schedule(100),{once:true});
 document.addEventListener('click',e=>{if(e.target instanceof Element&&e.target.closest('[data-comp-tab]'))schedule(140)},true);
 
-/* V453 hard-control layer: runs in capture phase so older global click handlers
-   cannot steal taps from the new Temporada/Estadísticas controls. */
+/* V455 fallback control layer. The index fastlane is registered before all modules;
+   this remains as a secondary path if the page is embedded differently. */
 window.addEventListener('click',e=>{
  const t=e.target instanceof Element?e.target.closest('#v449-reference-lower button'):null;
  if(!t)return;
- const root=t.closest('#v449-reference-lower');if(!root)return;
- const data=dbNow()||cached||{};
- const rerender=()=>paint(data,true);
-
- if(t.dataset.v449Route){
-   e.preventDefault();e.stopImmediatePropagation();
-   const r=t.dataset.v449Route;
-   if(window.LJR_APP_ROUTER?.go)window.LJR_APP_ROUTER.go(r);else location.hash='#/'+r;
-   return;
- }
- if(t.dataset.v449Jump){
-   e.preventDefault();e.stopImmediatePropagation();
-   const tab=document.querySelector('[data-comp-tab="'+t.dataset.v449Jump+'"]');
-   if(tab){tab.click();return}
-   if(window.LJR_APP_ROUTER?.go)window.LJR_APP_ROUTER.go('competition');else location.hash='#/competition';
-   return;
- }
- if(t.dataset.v449Season){
-   e.preventDefault();e.stopImmediatePropagation();seasonMode=t.dataset.v449Season||'matches';rerender();return;
- }
- if(t.dataset.v449TableMode){
-   e.preventDefault();e.stopImmediatePropagation();tableMode=t.dataset.v449TableMode||'compact';rerender();return;
- }
- if(t.dataset.v449StatsView){
-   e.preventDefault();e.stopImmediatePropagation();statsView=t.dataset.v449StatsView||'players';rerender();return;
- }
- if(t.dataset.v449RankingMode){
-   e.preventDefault();e.stopImmediatePropagation();rankingMode=t.dataset.v449RankingMode||'goals';rerender();return;
- }
- if(t.dataset.v449RoundDir){
-   e.preventDefault();e.stopImmediatePropagation();
-   const rounds=roundList(data);if(!rounds.length)return;
-   roundOffset=Math.max(-(rounds.length-1),Math.min(0,roundOffset+Number(t.dataset.v449RoundDir||0)));
-   rerender();return;
- }
- if(t.hasAttribute('data-v449-reset')){
-   e.preventDefault();e.stopImmediatePropagation();tableMode='compact';roundOffset=0;teamFilter='all';rerender();return;
- }
- if(t.dataset.v449Noop==='venue'){
-   e.preventDefault();e.stopImmediatePropagation();
-   const next=t.dataset.v449VenueState==='all'?'combined':'all';
-   t.dataset.v449VenueState=next;
-   t.textContent=next==='all'?'Todos los partidos⌄':'Local y visitante⌄';
- }
+ if(handleButton(t)){e.preventDefault();e.stopPropagation()}
 },true);
-
 window.addEventListener('change',e=>{
  const s=e.target;
  if(!(s instanceof HTMLSelectElement)||!s.closest('#v449-reference-lower'))return;
- const data=dbNow()||cached||{};
- if(s.hasAttribute('data-v449-round-select')){
-   e.stopImmediatePropagation();
-   const rounds=roundList(data),i=rounds.indexOf(Number(s.value));
-   if(i>=0){roundOffset=i-(rounds.length-1);paint(data,true)}
-   return;
- }
- if(s.hasAttribute('data-v449-category')){
-   e.stopImmediatePropagation();
-   const id=String(s.value||'3');
-   if(CAT_ORDER.includes(id)){localStorage.setItem('v62-category',id);roundOffset=0;teamFilter='all';paint(data,true)}
-   return;
- }
- if(s.hasAttribute('data-v449-team-filter')){
-   e.stopImmediatePropagation();teamFilter=s.value||'all';paint(data,true);
- }
+ if(handleSelect(s))e.stopPropagation();
 },true);
 
 const screen=$('#screen');
 if(screen)new MutationObserver(()=>schedule(90)).observe(screen,{childList:true,subtree:true});
 schedule(150);setTimeout(()=>schedule(0),1200);setTimeout(()=>schedule(0),3000);
-window.LJR_V449={ensure,paint};
+window.LJR_V449={ensure,paint,handleButton,handleSelect};
 })();
