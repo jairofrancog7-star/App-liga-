@@ -477,6 +477,28 @@ function openConfig(c,s,preferred=''){
     save(s);m.remove();schedule();startPoll();toast((detected.name||chosen.name)+' vinculado. El enlace ya funciona en este Match Center.');
   };
 }
+async function shareLive(c,s){
+  const url=safeLiveUrl(s?.source?.url);
+  if(!url){toast('Primero vincula un LIVE válido.');return}
+  const title='Liga Juventino Rosas · LIVE';
+  const text=(c?.home&&c?.away)?(c.home+' vs '+c.away+' · Match Center'):'Transmisión en vivo · Match Center';
+  try{
+    if(navigator.share){
+      await navigator.share({title,text,url});
+      return;
+    }
+  }catch(e){
+    if(e?.name==='AbortError')return;
+  }
+  try{
+    await navigator.clipboard.writeText(url);
+    toast('Enlace del LIVE copiado.');
+  }catch(_){
+    const a=document.createElement('a');
+    a.href=url;a.target='_blank';a.rel='noopener noreferrer';
+    document.body.appendChild(a);a.click();a.remove();
+  }
+}
 function bind(c,s,hub){
   const stop=e=>{e.preventDefault();e.stopPropagation()};
   const operator=$('[data-v144-operator]',hub),operatorToggle=$('[data-v144-operator-toggle]',hub),operatorKey='ljr-v144-operator-open:'+c.key;
@@ -500,8 +522,8 @@ function bind(c,s,hub){
     if(url)window.open(url,'_blank','noopener,noreferrer');
     else openConfig(c,s);
   }));
-  $('[data-v144-share]',hub).forEach(b=>b.addEventListener('click',e=>{stop(e);shareLive(c,s)}));
-  $('[data-v144-tv-source]',hub).forEach(b=>b.addEventListener('click',e=>{stop(e);openTvCast(c,s)}));
+  $$('[data-v144-share]',hub).forEach(b=>b.addEventListener('click',e=>{stop(e);shareLive(c,s)}));
+  $$('[data-v144-tv-source]',hub).forEach(b=>b.addEventListener('click',e=>{stop(e);openTvCast(c,s)}));
   $('[data-v144-config]',hub).forEach(b=>b.addEventListener('click',e=>{stop(e);openConfig(c,s)}));
   $$('[data-v144-platform]',hub).forEach(b=>b.addEventListener('click',e=>{
     stop(e);
