@@ -423,9 +423,8 @@ function credentialExtra(){
       '<label><span>Posición</span><select data-v100-position>'+['Portero','Defensa','Mediocampista','Delantero','Sin definir'].map(x=>'<option '+(saved.position===x?'selected':'')+'>'+x+'</option>').join('')+'</select></label>'+
       '<label><span>Temporada</span><input type="text" data-v100-season value="'+esc(saved.season||'2026–2027')+'"></label>'+
       '<label><span>Estatus del registro</span><select data-v100-status>'+['Pendiente de validación','Revisado','Habilitado'].map(x=>'<option '+(saved.status===x?'selected':'')+'>'+x+'</option>').join('')+'</select></label>'+
-      '<label><span>Diseño de credencial</span><select data-v100-credential-style>'+
-        '<option value="red" '+((saved.credentialStyle||'red')==='red'?'selected':'')+'>Roja clásica · credencial oficial</option>'+
-        '<option value="blue" '+((saved.credentialStyle||'red')==='blue'?'selected':'')+'>Azul clásica · trofeo</option>'+
+      '<label><span>Diseño de credencial</span><select data-v100-credential-style disabled aria-label="Diseño oficial de credencial">'+
+        '<option value="red" selected>Roja clásica · credencial oficial</option>'+
       '</select></label>'+
     '</div>'+
     '<div class="v196-classic-preview" data-v196-classic-preview>'+
@@ -446,7 +445,7 @@ function syncCredentialExtra(){
     dob:dob?.value||'',age:age?.value||'',
     position:$('[data-v100-position]')?.value||'',
     season:$('[data-v100-season]')?.value||'',status:$('[data-v100-status]')?.value||'',
-    credentialStyle:$('[data-v100-credential-style]')?.value||read('v100-credential-extra',{}).credentialStyle||'red'
+    credentialStyle:'red'
   };
   write('v100-credential-extra',d);
 }
@@ -739,8 +738,7 @@ async function v197DrawBlueCredential(canvas){
   return canvas;
 }
 async function v196DrawClassicCredential(canvas){
-  const style=$('[data-v100-credential-style]')?.value||read('v100-credential-extra',{}).credentialStyle||'red';
-  if(style==='blue')return v197DrawBlueCredential(canvas);
+  const style='red';
   if(!canvas)return null;
   canvas.width=1011;canvas.height=638;
   const x=canvas.getContext('2d'),W=1011,H=638;
@@ -753,21 +751,13 @@ async function v196DrawClassicCredential(canvas){
   x.save();v196RoundRectPath(x,5,5,W-10,H-10,34);x.clip();
 
   /* Credencial física roja de referencia: cuerpo magenta y franja verde. */
-  const bg=x.createLinearGradient(0,0,W,H);
-  bg.addColorStop(0,'#df4968');bg.addColorStop(.52,'#dd3e60');bg.addColorStop(1,'#c92e4f');
-  x.fillStyle=bg;x.fillRect(0,0,W,H);
-  const green=x.createLinearGradient(0,0,W,0);
-  green.addColorStop(0,'#07834c');green.addColorStop(.55,'#0b8a50');green.addColorStop(1,'#087744');
-  x.fillStyle=green;x.fillRect(0,0,W,126);
-
-  /* Rayas diagonales sutiles como la tarjeta física. */
-  x.save();x.globalAlpha=.055;x.fillStyle='#fff';
-  for(let i=-220;i<1250;i+=92){x.save();x.translate(i,0);x.rotate(-.31);x.fillRect(0,0,27,H*1.55);x.restore()}
-  x.restore();
+  /* Fondo físico limpio: sin rayas blancas ni adornos diagonales. */
+  x.fillStyle='#d83f60';x.fillRect(0,0,W,H);
+  x.fillStyle='#0a8049';x.fillRect(0,0,W,126);
 
   /* Borde doble oscuro/rojizo del plástico. */
-  x.strokeStyle='rgba(20,21,25,.86)';x.lineWidth=5;v196RoundRectPath(x,8,8,W-16,H-16,31);x.stroke();
-  x.strokeStyle='rgba(114,18,43,.78)';x.lineWidth=3;v196RoundRectPath(x,17,17,W-34,H-34,26);x.stroke();
+  x.strokeStyle='#17191d';x.lineWidth=5;v196RoundRectPath(x,8,8,W-16,H-16,31);x.stroke();
+  x.strokeStyle='#8f2340';x.lineWidth=3;v196RoundRectPath(x,17,17,W-34,H-34,26);x.stroke();
 
   /* Logo de la Liga: transparente, sin cuadro. */
   const league=await v200LeagueLogoTransparent();
@@ -838,9 +828,8 @@ async function v196RenderCredentialPreview(){
   if(seq!==v196PreviewSeq)return;
   canvas.width=off.width;canvas.height=off.height;
   const ctx=canvas.getContext('2d');ctx.clearRect(0,0,canvas.width,canvas.height);ctx.drawImage(off,0,0);
-  const style=$('[data-v100-credential-style]')?.value||read('v100-credential-extra',{}).credentialStyle||'red';
   const head=$('[data-v196-classic-preview] .v196-preview-head b');
-  if(head)head.textContent=style==='blue'?'Vista previa · azul clásica con trofeo':'Vista previa · roja clásica · diseño físico de Liga';
+  if(head)head.textContent='Vista previa · credencial oficial roja de la Liga';
 }
 async function v198LeagueLogoPng(){
   const img=await v200LeagueLogoTransparent();if(!img)return null;
