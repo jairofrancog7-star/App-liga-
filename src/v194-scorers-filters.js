@@ -255,6 +255,7 @@ function markup(){
   return '<div class="v194-scorers" data-v194-scorers>'+
     referenceScorersView()+
     '<p class="v194-source">Datos oficiales sincronizados'+(source?' · '+esc(new Date(source).toLocaleString('es-MX')):'')+'</p>'+
+    '<div id="v449-reference-lower" class="v449-reference-lower" data-v460-ranking-below-original></div>'+
   '</div>';
 }
 function openTeam(name){
