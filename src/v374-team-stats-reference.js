@@ -5,8 +5,8 @@
 if(window.__LJR_V374_TEAM_STATS_REFERENCE__)return;
 window.__LJR_V374_TEAM_STATS_REFERENCE__=true;
 
-const LOCAL='./data/official-live.json?v=20261001-v487-vet35-all-pages';
-const REMOTE='https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/data/official-live.json?v=20261001-v487-vet35-all-pages';
+const LOCAL='./data/official-live.json?v=20261001-v490-vet35-all-pages';
+const REMOTE='https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/data/official-live.json?v=20261001-v490-vet35-all-pages';
 let db=window.LJR_OFFICIAL_DATA||null,loading=null,applying=false;
 
 function route(){return String(location.hash||'').replace(/^#\/?/,'').split('?')[0]||'home'}
