@@ -16,7 +16,7 @@ const $=(s,r=document)=>r.querySelector(s);
 const $$=(s,r=document)=>Array.from(r.querySelectorAll(s));
 const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const route=()=>String(location.hash||'').replace(/^#\/?/,'').split('?')[0]||'home';
-let timer=0,lastSig='',floatingPortal=null,floatingCardNode=null,floatingDragBound=false,systemPiPActive=false;
+let timer=0,lastSig='',floatingPortal=null,floatingCardNode=null,floatingDragBound=false,systemPiPActive=false,androidFullscreenHandoff=false;
 
 function ctx(){
   const root=$('[data-v92-matchcenter]');if(!root)return null;
@@ -56,6 +56,10 @@ function provider(url){
   if(/\.(mp4|webm|ogg|m3u8)(?:[?#]|$)/i.test(u))return {key:'video',name:'Video directo',icon:'▶'};
   return {key:'external',name:'Fuente externa',icon:'●'};
 }
+function isAndroidChrome(){
+  const ua=navigator.userAgent||'';
+  return /Android/i.test(ua)&&/(Chrome|CriOS)\//i.test(ua)&&!/EdgA\//i.test(ua)&&!/OPR\//i.test(ua);
+}
 function safeUrl(v){
   try{const u=new URL(String(v||'').trim());return /^https?:$/.test(u.protocol)?u.toString():''}catch(_){return ''}
 }
@@ -91,41 +95,35 @@ function floatingCapability(item,cfg=settings()){
 async function requestPiP(node){
   const video=$('video',node)||floatingCardNode?.querySelector('video')||null;
   if(!video){
-    flash('Para salir de la app con video flotante usa una fuente de video directo. En YouTube/Facebook usa el control PiP del propio reproductor si aparece.');
+    flash('Esta fuente no expone un video directo para PiP.');
     return false;
   }
   if(!document.pictureInPictureEnabled||typeof video.requestPictureInPicture!=='function'){
-    flash('Tu navegador no habilita Picture-in-Picture del sistema para este video.');
+    return false;
+  }
+  if(video.readyState===0){
     return false;
   }
   try{
     video.disablePictureInPicture=false;
     video.setAttribute('playsinline','');
-    if(video.readyState<1){
-      try{video.load()}catch(_){}
-      await new Promise(resolve=>{
-        let done=false;
-        const finish=()=>{if(done)return;done=true;resolve()};
-        video.addEventListener('loadedmetadata',finish,{once:true});
-        setTimeout(finish,1400);
-      });
-    }
-    if(video.paused){
-      video.muted=true;
-      await video.play();
-    }
-    if(document.pictureInPictureElement===video){
-      systemPiPActive=true;
-      return true;
-    }
-    const pip=await video.requestPictureInPicture();
+    /* No esperar play(): Chrome exige que requestPictureInPicture ocurra
+       dentro del mismo gesto del usuario. */
+    if(video.paused)video.play().catch(()=>{});
+    const pipPromise=video.requestPictureInPicture();
+    const pip=await pipPromise;
     systemPiPActive=!!pip||document.pictureInPictureElement===video;
+    androidFullscreenHandoff=false;
+    video.addEventListener('enterpictureinpicture',()=>{
+      systemPiPActive=true;
+      androidFullscreenHandoff=false;
+      const b=document.querySelector('[data-v196-floating] small');
+      if(b)b.textContent='Fuera de la app';
+    });
     video.addEventListener('leavepictureinpicture',()=>{
       systemPiPActive=false;
-      if(settings().floating){
-        const hub=$('[data-v196-stream-hub]');
-        if(hub)setFloating(true,hub);
-      }
+      const hub=$('[data-v196-stream-hub]');
+      if(settings().floating&&hub)setFloating(true,hub);
     },{once:true});
     try{
       if('mediaSession' in navigator){
@@ -136,16 +134,19 @@ async function requestPiP(node){
         });
         navigator.mediaSession.setActionHandler('play',()=>video.play());
         navigator.mediaSession.setActionHandler('pause',()=>video.pause());
+        try{
+          navigator.mediaSession.setActionHandler('enterpictureinpicture',()=>video.requestPictureInPicture());
+        }catch(_){}
       }
     }catch(_){}
-    flash('Modo flotante exterior activo. Ya puedes ir a Inicio u otra app.');
+    flash('PiP activo. Ya puedes cambiar a otra aplicación.');
     return true;
   }catch(_){
     systemPiPActive=false;
-    flash('No se pudo activar el flotante exterior. Reproduce el video y toca Flotante otra vez.');
     return false;
   }
 }
+
 async function exitPiP(){
   try{if(document.pictureInPictureElement&&document.exitPictureInPicture)await document.exitPictureInPicture()}catch(_){}
   systemPiPActive=false;
@@ -169,19 +170,40 @@ async function requestDocumentPiP(node){
     return false;
   }
 }
-async function requestProviderFullscreen(node){
-  const frame=$('iframe',node)||floatingCardNode?.querySelector('iframe')||null;
-  if(!frame)return false;
-  const fn=frame.requestFullscreen||frame.webkitRequestFullscreen||frame.mozRequestFullScreen||frame.msRequestFullscreen;
+async function requestAndroidChromeFullscreen(node){
+  const video=$('video',node)||floatingCardNode?.querySelector('video')||null;
+  const iframe=$('iframe',node)||floatingCardNode?.querySelector('iframe')||null;
+  const target=video||iframe||$('.v196-frame',node)||null;
+  if(!target)return false;
+
+  if(video){
+    try{
+      video.disablePictureInPicture=false;
+      video.controls=true;
+      video.setAttribute('playsinline','');
+      if(video.paused)video.play().catch(()=>{});
+    }catch(_){}
+  }
+
+  const fn=target.requestFullscreen||target.webkitRequestFullscreen||target.mozRequestFullScreen||target.msRequestFullscreen;
   if(typeof fn!=='function')return false;
+
   try{
-    await fn.call(frame);
-    flash('Video en pantalla completa. Ahora pulsa Inicio: Android usará PiP si el proveedor lo permite.');
+    /* Chrome Android: la ruta más fiable es video en pantalla completa
+       y después pulsar Inicio; Android lo convierte a PiP. */
+    androidFullscreenHandoff=true;
+    flash('Abriendo modo flotante de Android… después pulsa Inicio.');
+    const p=fn.call(target);
+    if(p&&typeof p.catch==='function')await p;
+    const b=document.querySelector('[data-v196-floating] small');
+    if(b)b.textContent='Pulsa Inicio';
     return true;
   }catch(_){
+    androidFullscreenHandoff=false;
     return false;
   }
 }
+
 function ensureFloatingPortal(node){
   const card=node&&$('[data-v196-player-card]',node);
   if(!card)return null;
@@ -304,7 +326,7 @@ function hubHtml(c,s){
   const sourceCount=list.length,cap=floatingCapability(current,cfg);
   const floatOn=!!cfg.floating&&cap.inApp;
   if(cfg.floating&&!cap.inApp){cfg.floating=false;saveSettings(cfg)}
-  const floatLabel=(document.pictureInPictureElement||systemPiPActive)?'Fuera de la app':(floatOn?'Activo':(current&&!cap.inApp?'No compatible':'Desactivado'));
+  const floatLabel=(document.pictureInPictureElement||systemPiPActive)?'Fuera de la app':(androidFullscreenHandoff?'Pulsa Inicio':(floatOn?'Activo':(current&&!cap.inApp?'No compatible':'Desactivado')));
   return '<section class="v196-stream-hub '+(floatOn?'is-floating-enabled':'')+'" data-v196-stream-hub data-match-key="'+esc(c.key)+'">'+
     '<header class="v196-event-card">'+
       '<div class="v196-event-top"><span class="v196-dot '+(st.live?'live':'')+'"></span><span><small>'+esc(st.label)+'</small><b>'+esc(c.home)+' vs '+esc(c.away)+'</b></span><em>'+esc(st.sub)+'</em></div>'+
@@ -419,29 +441,35 @@ async function toggleFloating(c,node){
   const next=!settings().floating;
   if(!next){await disableFloating(node);return}
 
-  /* V526: primero pide PiP del sistema mientras el toque del usuario sigue activo.
-     Reubicar el reproductor antes podía consumir la activación y Android lo rechazaba. */
-  let systemFloat=false;
-  if(cap.pip)systemFloat=await requestPiP(node);
-  if(!systemFloat&&cap.docPip)systemFloat=await requestDocumentPiP(node);
-  if(!systemFloat&&(cap.provider.key==='youtube'||cap.provider.key==='facebook')){
-    systemFloat=await requestProviderFullscreen(node);
-  }
-
   const cfg=settings();
   cfg.floating=true;
   saveSettings(cfg);
+
   const btn=$('[data-v196-floating]',node);
   if(btn){
     btn.classList.add('active');
     const small=btn.querySelector('small');
-    if(small)small.textContent=systemFloat?'Listo para salir':'Activo';
+    if(small)small.textContent='Activando…';
   }
+
+  /* V527: Chrome Android usa su flujo nativo más estable:
+     pantalla completa -> botón Inicio -> Picture-in-Picture de Android. */
+  if(isAndroidChrome()){
+    const handoff=await requestAndroidChromeFullscreen(node);
+    if(handoff){
+      document.body.classList.add('v196-floating-player');
+      return;
+    }
+  }
+
+  let systemFloat=false;
+  if(cap.pip)systemFloat=await requestPiP(node);
+  if(!systemFloat&&cap.docPip&&!isAndroidChrome())systemFloat=await requestDocumentPiP(node);
 
   if(systemFloat){
     systemPiPActive=true;
     document.body.classList.add('v196-floating-player');
-    /* No mover el <video> mientras está en PiP: Chrome/Android puede cerrarlo al reparentar. */
+    if(btn?.querySelector('small'))btn.querySelector('small').textContent='Fuera de la app';
     return;
   }
 
@@ -451,12 +479,12 @@ async function toggleFloating(c,node){
       btn.classList.remove('active');
       const small=btn.querySelector('small');if(small)small.textContent='No compatible';
     }
-    flash('Esta fuente no permite PiP exterior desde la página. En YouTube/Facebook usa el botón PiP del reproductor.');
+    flash('Esta fuente no permite PiP desde Chrome. Usa una fuente de video directo o el PiP del proveedor.');
     return;
   }
 
   setFloating(true,node);
-  flash('Flotante activo dentro de la app. Para salir de la app necesitas PiP compatible de la fuente.');
+  flash('Flotante activo dentro de la página.');
 }
 function settingsModal(c){
   const cfg=settings();
@@ -500,7 +528,7 @@ function bind(c,node){
   $('[data-v196-network]',node)?.addEventListener('click',e=>{stop(e);addSourceModal(c,'Stream de red')});
   $('[data-v196-settings]',node)?.addEventListener('click',e=>{stop(e);settingsModal(c)});
   $('[data-v196-floating]',node)?.addEventListener('click',e=>{stop(e);toggleFloating(c,node)});
-  Array.from(node.querySelectorAll('[data-v196-pip]')).forEach(b=>b.addEventListener('click',e=>{stop(e);requestPiP(node)}));
+  Array.from(node.querySelectorAll('[data-v196-pip]')).forEach(b=>b.addEventListener('click',e=>{stop(e);if(isAndroidChrome())requestAndroidChromeFullscreen(node);else requestPiP(node)}));
   Array.from(node.querySelectorAll('[data-v196-source]')).forEach(b=>b.onclick=()=>{const item=list[Number(b.dataset.v196Source)];if(item){setFloating(false,node);setCurrentSource(c,item)}});
   $('[data-v196-close-float]',node)?.addEventListener('click',e=>{stop(e);disableFloating(node)});
 }
@@ -568,6 +596,36 @@ function render(){
 }
 function schedule(ms=80){clearTimeout(timer);timer=setTimeout(render,ms)}
 
+/* V527 Android Chrome lifecycle: no reconstruir el reproductor durante
+   la transición fullscreen -> Inicio -> PiP. */
+document.addEventListener('enterpictureinpicture',()=>{
+  systemPiPActive=true;
+  androidFullscreenHandoff=false;
+  const b=document.querySelector('[data-v196-floating] small');
+  if(b)b.textContent='Fuera de la app';
+},true);
+document.addEventListener('leavepictureinpicture',()=>{
+  systemPiPActive=false;
+},true);
+document.addEventListener('fullscreenchange',()=>{
+  if(document.fullscreenElement)return;
+  if(document.visibilityState==='hidden'&&androidFullscreenHandoff)return;
+  if(!document.pictureInPictureElement){
+    androidFullscreenHandoff=false;
+    const b=document.querySelector('[data-v196-floating] small');
+    if(b&&settings().floating)b.textContent='Activo';
+  }
+});
+document.addEventListener('visibilitychange',()=>{
+  if(document.visibilityState==='hidden'&&androidFullscreenHandoff){
+    /* Chrome Android se encarga de convertir el video fullscreen a PiP. */
+    return;
+  }
+  if(document.visibilityState==='visible'&&document.pictureInPictureElement){
+    systemPiPActive=true;
+    androidFullscreenHandoff=false;
+  }
+});
 window.addEventListener('hashchange',()=>schedule(20));
 window.addEventListener('storage',e=>{if(e.key?.startsWith(LIVE_KEY)||e.key?.startsWith(LIST_KEY)||e.key===SETTINGS_KEY)schedule(20)});
 window.addEventListener('ljr:match-live-feed',()=>schedule(20));
