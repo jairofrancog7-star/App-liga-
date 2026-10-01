@@ -25,10 +25,16 @@ const now=()=>Date.now();
 
 function ctx(){
   const root=$('[data-v92-matchcenter]');if(!root)return null;
-  const sel=$('[data-v92-match-select]',root),sides=$$('.v92-score-card .v92-side b',root);
+  const sel=$('[data-v92-match-select]',root);
+  let sides=$('.v92-score-card .v92-side b',root);
+  if(sides.length<2)sides=$('.v420-matchup > div > b',root);
+  if(sides.length<2)sides=$('.v526-form-head > div > b',root);
   if(!sel||sides.length<2)return null;
   const key=String(sel.value||'match'),catId=key.split(':')[0]||'';
-  return {root,key,catId,home:(sides[0].textContent||'Local').trim(),away:(sides[1].textContent||'Visitante').trim(),category:window.LJR_OFFICIAL_DATA?.categories?.[catId]?.name||''};
+  const category=window.LJR_OFFICIAL_DATA?.categories?.[catId]?.name||
+    $('.v420-match-panel h2',root)?.textContent?.trim()||
+    ($('.v92-match-head p',root)?.textContent||'').split('·')[1]?.trim()||'';
+  return {root,key,catId,home:(sides[0].textContent||'Local').trim(),away:(sides[1].textContent||'Visitante').trim(),category};
 }
 function isLegacyFacebookPlaceholder(url,name=''){
   const u=String(url||'').toLowerCase();
@@ -511,9 +517,9 @@ function bind(c,s,hub){
   $('[data-v144-undo]',hub)?.addEventListener('click',e=>{stop(e);if(!s.events.length)return;s.events.pop();rebuildPhase(s);save(s);schedule()});
 }
 function patch(c,s){
-  const x=counters(s),center=$('.v92-score-card .v92-center',c.root);
+  const x=counters(s),center=$('.v92-score-card .v92-center',c.root)||$('.v420-matchup > span',c.root);
   if(center&&(s.phase!=='scheduled'||confirmed(s).length)){
-    $('strong',center).textContent=x.home.goals+'–'+x.away.goals;
+    const strong=$('strong',center);if(strong)strong.textContent=x.home.goals+'–'+x.away.goals;
     const sm=$('small',center);if(sm){sm.textContent=phaseLabel(s);sm.classList.add('v144-live-label')}
     const k=$('.v92-kicker',c.root);if(k)k.textContent=s.phase==='final'?'PARTIDO FINALIZADO · MATCH CENTER':'EN VIVO · MATCH CENTER';
   }
