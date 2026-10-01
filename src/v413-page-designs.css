@@ -6,6 +6,18 @@ html body #screen > .v413-shell{
   background:linear-gradient(180deg,#0d1488 0%,#090965 100%)!important;color:#fff!important;
   font-family:Inter,Roboto,Arial,sans-serif!important;box-shadow:0 14px 34px rgba(1,4,55,.24)!important
 }
+
+/* V515 — evita el hueco enorme entre "Para ti" y "Noticias, avisos y juntas".
+   El espacio de seguridad del bottom-nav queda únicamente al final de V105. */
+body[data-app-route="news"] #screen > #v413-page-design,
+body[data-app-route="v38Weekly"] #screen > #v413-page-design{
+  margin:22px auto 10px!important;
+}
+body[data-app-route="news"] #screen > #v105-bottom,
+body[data-app-route="v38Weekly"] #screen > #v105-bottom{
+  margin-top:0!important;
+  margin-bottom:112px!important;
+}
 .v413-shell *{box-sizing:border-box}.v413-head{display:grid;gap:5px;margin-bottom:14px}.v413-head small{color:#2adfe9;font-size:9px;font-weight:900;letter-spacing:.16em}
 .v413-head h2{margin:0;color:#fff;font-size:22px;line-height:1.08;font-weight:900}.v413-head p{margin:0;color:#aab5da;font-size:10.5px;line-height:1.42}
 
