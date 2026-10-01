@@ -253,7 +253,7 @@ function buildUpBody(m,state){
       '</div>'+
     '</section>'+
     '<nav class="v420-pills" aria-label="Opciones del partido">'+
-      '<button type="button" class="active" aria-current="page" data-v92-tab="BuildUp">Build Up</button>'+
+      '<button type="button" class="active" aria-current="page" data-v92-tab="BuildUp">Previa</button>'+
       '<button type="button" data-v92-tab="Predicciones">Predicciones</button>'+
       '<button type="button" data-v92-tab="Cronología">Comentarios</button>'+
       '<button type="button" data-v92-tab="Previa">Previa</button>'+
@@ -371,7 +371,7 @@ function referenceLowerPanel(m,state,{showMode=true}={}){
     (showMode?referenceMarketBar(m,state):'')+
     previewBody(m,state)+
     '<nav class="v516-matchcenter-shortcuts" aria-label="Más opciones del partido">'+
-      '<button type="button" data-v92-tab="BuildUp">BUILD UP</button>'+
+      '<button type="button" data-v92-tab="BuildUp">PREVIA</button>'+
       '<button type="button" data-v92-tab="Predicciones">PREDICCIONES</button>'+
       '<button type="button" data-v92-tab="Cronología">COMENTARIOS</button>'+
       '<button type="button" data-v92-tab="Previa">PRE-PARTIDO</button>'+
@@ -775,7 +775,6 @@ function summaryBody(m,state){
     '</div></section>'+
     teamProfileDashboard(m)+
     buildUpBody(m,state)+
-    v424LowerReference(m)+
     matchCenterCalendarBlock(m);
 }
 function rosterColumn(m,team){
