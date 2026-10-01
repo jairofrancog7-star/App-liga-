@@ -1437,7 +1437,22 @@ function fanzone(){
 function journeySim(){const teams=officialTeams();const opts=teams.map(t=>'<option>'+esc(t.name)+'</option>').join('');const m=modal(sectionTitle('ESCENARIO LOCAL','Simulador de jornada','Prueba un marcador hipotético. No modifica resultados ni tablas oficiales.')+'<div class="v100-form-grid"><label><span>Local</span><select data-js-home>'+opts+'</select></label><label><span>Visitante</span><select data-js-away>'+opts+'</select></label><label><span>Goles local</span><input type="number" min="0" max="30" value="0" data-js-hg></label><label><span>Goles visitante</span><input type="number" min="0" max="30" value="0" data-js-ag></label></div><div class="v100-actions"><button class="v100-primary" data-js-save>Guardar escenario</button></div><div data-js-list></div>');const render=()=>{const list=read('v100-journey-sim',[]),h=$('[data-js-list]',m);h.innerHTML=list.length?'<div class="v100-sim-list">'+list.map((x,i)=>'<article><span><b>'+esc(x.home)+' '+x.hg+'–'+x.ag+' '+esc(x.away)+'</b><small>Escenario hipotético</small></span><button data-js-del="'+i+'">Quitar</button></article>').join('')+'</div>':'<p class="v100-note">Sin escenarios guardados.</p>';$$('[data-js-del]',h).forEach(b=>b.onclick=()=>{list.splice(Number(b.dataset.jsDel),1);write('v100-journey-sim',list);render()})};render();$('[data-js-save]',m).onclick=()=>{const x={home:$('[data-js-home]',m).value,away:$('[data-js-away]',m).value,hg:Number($('[data-js-hg]',m).value||0),ag:Number($('[data-js-ag]',m).value||0)};if(x.home===x.away)return toast('Elige dos equipos distintos');const list=read('v100-journey-sim',[]);list.push(x);write('v100-journey-sim',list);render()}}
 function shotmap(){
   const shots=read('v100-shotmap',[]);
+  const arrows=read('v100-shotmap-arrows',[]);
   let shotMode='shot';
+  let selected=null;
+  let active=null;
+  let draftArrow=null;
+
+  const clamp=(v,min=1,max=99)=>Math.max(min,Math.min(max,Number(v)||0));
+  const pointFromEvent=e=>{
+    const r=pitch.getBoundingClientRect();
+    return {
+      x:+clamp(((e.clientX-r.left)/r.width)*100).toFixed(2),
+      y:+clamp(((e.clientY-r.top)/r.height)*100).toFixed(2)
+    };
+  };
+  const dist=(a,b)=>Math.hypot((a.x-b.x),(a.y-b.y));
+
   const pitchLines=
     '<div class="v100-shot-lines" aria-hidden="true">'+
       '<span class="v100-shot-goal top"></span><span class="v100-shot-goal bottom"></span>'+
@@ -1450,6 +1465,17 @@ function shotmap(){
       '<span class="v100-shot-corner bl"></span><span class="v100-shot-corner br"></span>'+
       '<span class="v100-shot-direction top">ATAQUE</span><span class="v100-shot-direction bottom">DEFENSA</span>'+
     '</div>';
+
+  const tacticsSvg=
+    '<svg class="v100-tactics-layer" data-tactics-layer viewBox="0 0 100 100" preserveAspectRatio="none" aria-label="Flechas tácticas">'+
+      '<defs>'+
+        '<marker id="v100-arrowhead" markerWidth="5" markerHeight="5" refX="4.2" refY="2.5" orient="auto" markerUnits="strokeWidth">'+
+          '<path d="M0,0 L5,2.5 L0,5 Z" fill="currentColor"></path>'+
+        '</marker>'+
+      '</defs>'+
+      '<g data-arrow-group></g>'+
+    '</svg>';
+
   const board=
     '<div class="v100-shot-board">'+
       '<div class="v100-shot-summary">'+
@@ -1457,16 +1483,24 @@ function shotmap(){
         '<span><small>A PUERTA</small><b data-shot-target>0</b></span>'+
         '<span><small>GOLES</small><b data-shot-goals>0</b></span>'+
       '</div>'+
-      '<div class="v100-shot-mode" role="group" aria-label="Tipo de tiro">'+
+      '<div class="v100-shot-mode" role="group" aria-label="Herramienta del tablero">'+
         '<button type="button" class="active" data-shot-mode="shot"><i></i>Tiro</button>'+
         '<button type="button" data-shot-mode="target"><i></i>A puerta</button>'+
         '<button type="button" data-shot-mode="goal"><i></i>Gol</button>'+
+        '<button type="button" class="arrow-mode" data-shot-mode="arrow"><i></i>Flecha</button>'+
       '</div>'+
-      '<div class="v100-shot-pitch" data-shot-pitch>'+pitchLines+'<div class="v100-shot-layer" data-shot-layer></div></div>'+
-      '<div class="v100-shot-legend"><span><i class="shot"></i>Tiro</span><span><i class="target"></i>A puerta</span><span><i class="goal"></i>Gol</span><em>Toca la cancha para colocar el balón</em></div>'+
+      '<div class="v100-shot-pitch" data-shot-pitch>'+pitchLines+tacticsSvg+'<div class="v100-shot-layer" data-shot-layer></div></div>'+
+      '<div class="v100-shot-legend">'+
+        '<span><i class="shot"></i>Tiro</span><span><i class="target"></i>A puerta</span><span><i class="goal"></i>Gol</span><span><i class="arrow"></i>Flecha</span>'+
+      '</div>'+
+      '<div class="v100-shot-edit">'+
+        '<span data-shot-help>Arrastra cualquier círculo para moverlo.</span>'+
+        '<button type="button" data-shot-delete disabled>Borrar seleccionado</button>'+
+      '</div>'+
     '</div>';
+
   const m=modal(
-    sectionTitle('ANÁLISIS LOCAL','Shot Map','Toca la cancha para registrar tiros. Se guarda solo en este dispositivo.')+
+    sectionTitle('ANÁLISIS LOCAL','Shot Map','Mueve los círculos con el dedo y usa Flecha para dibujar movimientos tácticos.')+
     board+
     '<div class="v100-actions v100-shot-actions">'+
       '<button class="v100-secondary" data-shot-undo>Deshacer</button>'+
@@ -1476,40 +1510,237 @@ function shotmap(){
     '</div>',
     'v100-shot-modal'
   );
+
   const pitch=$('[data-shot-pitch]',m);
   const layer=$('[data-shot-layer]',m);
+  const arrowGroup=$('[data-arrow-group]',m);
+  const deleteBtn=$('[data-shot-delete]',m);
+  const help=$('[data-shot-help]',m);
+
+  const save=()=>{
+    write('v100-shotmap',shots);
+    write('v100-shotmap-arrows',arrows);
+  };
+
+  const renderArrows=()=>{
+    const all=arrows.map((a,i)=>({a,i,draft:false}));
+    if(draftArrow)all.push({a:draftArrow,i:-1,draft:true});
+    arrowGroup.innerHTML=all.map(({a,i,draft})=>{
+      const isSel=!draft&&selected?.kind==='arrow'&&selected.index===i;
+      const x1=clamp(a.x1),y1=clamp(a.y1),x2=clamp(a.x2),y2=clamp(a.y2);
+      const cls='v100-tactic-arrow'+(isSel?' selected':'')+(draft?' draft':'');
+      const attrs=draft?'':' data-arrow="'+i+'"';
+      return '<line class="v100-tactic-hit" x1="'+x1+'" y1="'+y1+'" x2="'+x2+'" y2="'+y2+'"'+attrs+'></line>'+
+        '<line class="'+cls+'" x1="'+x1+'" y1="'+y1+'" x2="'+x2+'" y2="'+y2+'" marker-end="url(#v100-arrowhead)"'+attrs+'></line>'+
+        (isSel?
+          '<circle class="v100-arrow-handle start" cx="'+x1+'" cy="'+y1+'" r="2.25" data-arrow-handle="start" data-arrow="'+i+'"></circle>'+
+          '<circle class="v100-arrow-handle end" cx="'+x2+'" cy="'+y2+'" r="2.25" data-arrow-handle="end" data-arrow="'+i+'"></circle>'
+        :'');
+    }).join('');
+  };
+
   const render=()=>{
     layer.innerHTML=shots.map((s,i)=>{
       const type=s.type==='goal'?'goal':s.type==='target'?'target':'shot';
-      const sx=Number.isFinite(Number(s.x))?Math.max(1,Math.min(99,Number(s.x))):50;
-      const sy=Number.isFinite(Number(s.y))?Math.max(1,Math.min(99,Number(s.y))):50;
-      return '<button type="button" class="v100-shot-marker '+type+'" data-shot-marker="'+i+'" style="--shot-x:'+sx+'%;--shot-y:'+sy+'%" title="Tiro '+(i+1)+'">'+
+      const sx=clamp(s.x),sy=clamp(s.y);
+      const isSel=selected?.kind==='shot'&&selected.index===i;
+      return '<button type="button" class="v100-shot-marker '+type+(isSel?' selected':'')+'" data-shot-marker="'+i+'" style="--shot-x:'+sx+'%;--shot-y:'+sy+'%" title="Tiro '+(i+1)+'">'+
         '<span aria-hidden="true"></span><b>'+(i+1)+'</b>'+
       '</button>';
     }).join('');
+    renderArrows();
+
     const total=shots.length;
     const target=shots.filter(s=>s.type==='target'||s.type==='goal').length;
     const goals=shots.filter(s=>s.type==='goal').length;
     const t=$('[data-shot-total]',m),a=$('[data-shot-target]',m),g=$('[data-shot-goals]',m);
     if(t)t.textContent=total;if(a)a.textContent=target;if(g)g.textContent=goals;
+
+    deleteBtn.disabled=!selected;
+    deleteBtn.classList.toggle('active',!!selected);
+    if(help){
+      help.textContent=selected?.kind==='shot'
+        ? 'Círculo seleccionado: arrástralo o bórralo.'
+        : selected?.kind==='arrow'
+          ? 'Flecha seleccionada: arrastra la línea o sus extremos.'
+          : shotMode==='arrow'
+            ? 'Arrastra sobre la cancha para dibujar una flecha.'
+            : 'Arrastra cualquier círculo para moverlo.';
+    }
   };
-  render();
-  $$('[data-shot-mode]',m).forEach(b=>b.onclick=()=>{
-    shotMode=b.dataset.shotMode||'shot';
-    $$('[data-shot-mode]',m).forEach(x=>x.classList.toggle('active',x===b));
-  });
-  pitch.onclick=e=>{
-    if(e.target.closest('[data-shot-marker]'))return;
-    const r=pitch.getBoundingClientRect();
-    const x=Math.max(1,Math.min(99,+(((e.clientX-r.left)/r.width)*100).toFixed(1)));
-    const y=Math.max(1,Math.min(99,+(((e.clientY-r.top)/r.height)*100).toFixed(1)));
-    shots.push({x,y,type:shotMode,at:new Date().toISOString()});
-    write('v100-shotmap',shots);
+
+  const select=(kind,index)=>{
+    selected={kind,index};
     render();
   };
-  $('[data-shot-undo]',m).onclick=()=>{shots.pop();write('v100-shotmap',shots);render()};
-  $('[data-shot-clear]',m).onclick=()=>{shots.splice(0);write('v100-shotmap',shots);render()};
-  $('[data-shot-json]',m).onclick=()=>download(new Blob([JSON.stringify(shots,null,2)],{type:'application/json'}),'Shot_Map_Liga.json');
+
+  const clearSelection=()=>{
+    selected=null;
+    render();
+  };
+
+  $('[data-shot-mode]',m).forEach(b=>b.onclick=()=>{
+    shotMode=b.dataset.shotMode||'shot';
+    $('[data-shot-mode]',m).forEach(x=>x.classList.toggle('active',x===b));
+    selected=null;
+    render();
+  });
+
+  pitch.addEventListener('pointerdown',e=>{
+    const marker=e.target.closest('[data-shot-marker]');
+    const handle=e.target.closest('[data-arrow-handle]');
+    const arrow=e.target.closest('[data-arrow]');
+    const p=pointFromEvent(e);
+
+    if(marker){
+      const index=Number(marker.dataset.shotMarker);
+      selected={kind:'shot',index};
+      active={kind:'shot',index,pointerId:e.pointerId,start:p,moved:false};
+      pitch.setPointerCapture?.(e.pointerId);
+      e.preventDefault();
+      render();
+      return;
+    }
+
+    if(handle){
+      const index=Number(handle.dataset.arrow);
+      selected={kind:'arrow',index};
+      active={kind:'arrow-handle',index,which:handle.dataset.arrowHandle,pointerId:e.pointerId,start:p,moved:false};
+      pitch.setPointerCapture?.(e.pointerId);
+      e.preventDefault();
+      render();
+      return;
+    }
+
+    if(arrow){
+      const index=Number(arrow.dataset.arrow);
+      const a=arrows[index];
+      if(!a)return;
+      selected={kind:'arrow',index};
+      active={kind:'arrow-move',index,pointerId:e.pointerId,start:p,orig:{...a},moved:false};
+      pitch.setPointerCapture?.(e.pointerId);
+      e.preventDefault();
+      render();
+      return;
+    }
+
+    selected=null;
+    if(shotMode==='arrow'){
+      draftArrow={x1:p.x,y1:p.y,x2:p.x,y2:p.y};
+      active={kind:'arrow-create',pointerId:e.pointerId,start:p,moved:false};
+      pitch.setPointerCapture?.(e.pointerId);
+      e.preventDefault();
+      render();
+      return;
+    }
+
+    active={kind:'place-shot',pointerId:e.pointerId,start:p,moved:false};
+    pitch.setPointerCapture?.(e.pointerId);
+  });
+
+  pitch.addEventListener('pointermove',e=>{
+    if(!active||active.pointerId!==e.pointerId)return;
+    const p=pointFromEvent(e);
+    if(dist(active.start,p)>.7)active.moved=true;
+
+    if(active.kind==='shot'){
+      const s=shots[active.index];
+      if(!s)return;
+      s.x=p.x;s.y=p.y;
+      const el=layer.querySelector('[data-shot-marker="'+active.index+'"]');
+      if(el){el.style.setProperty('--shot-x',p.x+'%');el.style.setProperty('--shot-y',p.y+'%')}
+      e.preventDefault();
+      return;
+    }
+
+    if(active.kind==='arrow-create'&&draftArrow){
+      draftArrow.x2=p.x;draftArrow.y2=p.y;
+      renderArrows();
+      e.preventDefault();
+      return;
+    }
+
+    if(active.kind==='arrow-handle'){
+      const a=arrows[active.index];
+      if(!a)return;
+      if(active.which==='start'){a.x1=p.x;a.y1=p.y}else{a.x2=p.x;a.y2=p.y}
+      renderArrows();
+      e.preventDefault();
+      return;
+    }
+
+    if(active.kind==='arrow-move'){
+      const a=arrows[active.index];
+      if(!a)return;
+      const dx=p.x-active.start.x,dy=p.y-active.start.y;
+      const ox1=active.orig.x1,oy1=active.orig.y1,ox2=active.orig.x2,oy2=active.orig.y2;
+      let ndx=dx,ndy=dy;
+      ndx=Math.max(1-Math.min(ox1,ox2),Math.min(99-Math.max(ox1,ox2),ndx));
+      ndy=Math.max(1-Math.min(oy1,oy2),Math.min(99-Math.max(oy1,oy2),ndy));
+      a.x1=ox1+ndx;a.y1=oy1+ndy;a.x2=ox2+ndx;a.y2=oy2+ndy;
+      renderArrows();
+      e.preventDefault();
+    }
+  },{passive:false});
+
+  const finishPointer=e=>{
+    if(!active||active.pointerId!==e.pointerId)return;
+    const p=pointFromEvent(e);
+
+    if(active.kind==='place-shot'){
+      if(!active.moved){
+        shots.push({x:p.x,y:p.y,type:shotMode,at:new Date().toISOString()});
+        selected={kind:'shot',index:shots.length-1};
+        save();
+      }
+    }else if(active.kind==='shot'){
+      save();
+    }else if(active.kind==='arrow-create'){
+      if(draftArrow&&dist({x:draftArrow.x1,y:draftArrow.y1},{x:draftArrow.x2,y:draftArrow.y2})>3){
+        arrows.push({...draftArrow,at:new Date().toISOString()});
+        selected={kind:'arrow',index:arrows.length-1};
+        save();
+      }
+      draftArrow=null;
+    }else if(active.kind==='arrow-handle'||active.kind==='arrow-move'){
+      save();
+    }
+
+    try{pitch.releasePointerCapture?.(e.pointerId)}catch(_){}
+    active=null;
+    render();
+  };
+  pitch.addEventListener('pointerup',finishPointer);
+  pitch.addEventListener('pointercancel',e=>{draftArrow=null;active=null;render()});
+
+  deleteBtn.onclick=()=>{
+    if(!selected)return;
+    if(selected.kind==='shot'&&shots[selected.index]){
+      shots.splice(selected.index,1);
+    }else if(selected.kind==='arrow'&&arrows[selected.index]){
+      arrows.splice(selected.index,1);
+    }
+    selected=null;
+    save();
+    render();
+  };
+
+  $('[data-shot-undo]',m).onclick=()=>{
+    if(selected?.kind==='arrow'&&arrows.length)arrows.pop();
+    else if(shotMode==='arrow'&&arrows.length)arrows.pop();
+    else if(shots.length)shots.pop();
+    selected=null;save();render();
+  };
+
+  $('[data-shot-clear]',m).onclick=()=>{
+    shots.splice(0);arrows.splice(0);selected=null;save();render();
+  };
+
+  $('[data-shot-json]',m).onclick=()=>download(
+    new Blob([JSON.stringify({shots,arrows},null,2)],{type:'application/json'}),
+    'Shot_Map_Liga.json'
+  );
+
   $('[data-shot-png]',m).onclick=async()=>{
     const c=document.createElement('canvas');c.width=900;c.height=1300;
     const x=c.getContext('2d'),L=45,T=45,W=810,H=1210;
@@ -1532,23 +1763,41 @@ function shotmap(){
       x.strokeRect(L+W*.42,gy,W*.16,18);
     };
     drawBox(true);drawBox(false);
+
+    const drawCanvasArrow=a=>{
+      const x1=L+clamp(a.x1)/100*W,y1=T+clamp(a.y1)/100*H;
+      const x2=L+clamp(a.x2)/100*W,y2=T+clamp(a.y2)/100*H;
+      const ang=Math.atan2(y2-y1,x2-x1),head=24;
+      x.strokeStyle='#32e2f2';x.fillStyle='#32e2f2';x.lineWidth=8;x.lineCap='round';
+      x.beginPath();x.moveTo(x1,y1);x.lineTo(x2,y2);x.stroke();
+      x.beginPath();
+      x.moveTo(x2,y2);
+      x.lineTo(x2-head*Math.cos(ang-Math.PI/6),y2-head*Math.sin(ang-Math.PI/6));
+      x.lineTo(x2-head*Math.cos(ang+Math.PI/6),y2-head*Math.sin(ang+Math.PI/6));
+      x.closePath();x.fill();
+    };
+    arrows.forEach(drawCanvasArrow);
+
     shots.forEach((s,i)=>{
-      const px=L+s.x/100*W,py=T+s.y/100*H;
+      const px=L+clamp(s.x)/100*W,py=T+clamp(s.y)/100*H;
       const type=s.type==='goal'?'goal':s.type==='target'?'target':'shot';
       const fill=type==='goal'?'#29e67d':type==='target'?'#38dff1':'#ffd75f';
       x.fillStyle=fill;x.strokeStyle='#07104d';x.lineWidth=5;
       x.beginPath();x.arc(px,py,19,0,Math.PI*2);x.fill();x.stroke();
       x.fillStyle='#07104d';
       x.beginPath();
-      for(let k=0;k<5;k++){const a=-Math.PI/2+k*Math.PI*2/5;const rr=7;x.lineTo(px+Math.cos(a)*rr,py+Math.sin(a)*rr)}
+      for(let k=0;k<5;k++){const a=-Math.PI/2+k*Math.PI*2/5,rr=7;x.lineTo(px+Math.cos(a)*rr,py+Math.sin(a)*rr)}
       x.closePath();x.fill();
       x.fillStyle='#fff';x.font='700 15px Arial';x.textAlign='center';x.fillText(String(i+1),px,py+35);
     });
+
     x.fillStyle='rgba(4,13,91,.92)';x.fillRect(0,0,900,36);x.fillRect(0,1264,900,36);
     x.fillStyle='#fff';x.font='700 18px Arial';x.textAlign='left';x.fillText('SHOT MAP · LIGA JUVENTINO ROSAS',35,25);
-    x.textAlign='right';x.fillText('Tiros '+shots.length+' · A puerta '+shots.filter(s=>s.type==='target'||s.type==='goal').length+' · Goles '+shots.filter(s=>s.type==='goal').length,865,1288);
+    x.textAlign='right';x.fillText('Tiros '+shots.length+' · A puerta '+shots.filter(s=>s.type==='target'||s.type==='goal').length+' · Goles '+shots.filter(s=>s.type==='goal').length+' · Flechas '+arrows.length,865,1288);
     const b=await canvasBlob(c);download(b,'Shot_Map_Liga.png');
   };
+
+  render();
 }
 window.LJR_V100_SHOTMAP_OPEN=shotmap;
 async function installApp(){if(installPrompt){installPrompt.prompt();await installPrompt.userChoice;installPrompt=null;return}modal(sectionTitle('INSTALAR APP','Liga Juventino','Si el navegador permite instalación, usa el menú de Chrome → “Instalar aplicación” o “Agregar a pantalla de inicio”.')+'<p class="v100-note">No se muestra un botón de “APK real” porque este repositorio no contiene actualmente un archivo .apk publicado. Así evitamos ofrecer una descarga falsa.</p>')}
