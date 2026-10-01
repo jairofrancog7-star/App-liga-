@@ -5,7 +5,7 @@
 if(window.__LJR_V194_SCORERS__)return;
 window.__LJR_V194_SCORERS__=true;
 window.__LJR_SCORERS_UI_OWNER__='v194-reference';
-window.__LJR_SCORERS_BUILD__='v468';
+window.__LJR_SCORERS_BUILD__='v469';
 
 const CAT_ORDER=['3','5','4','2','1'];
 const CAT_FALLBACK={
@@ -24,6 +24,8 @@ let categoryTimer=0;
 let statFrame=0;
 let categoryBusy=false;
 let selectedCategory='';
+let dataWaitTimer=0;
+let dataWaitAttempts=0;
 
 const route=()=>location.hash.replace(/^#\/?/,'').split('?')[0]||'home';
 const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -413,6 +415,21 @@ function render(force=false){
 function schedule(delay=80){
   clearTimeout(timer);timer=setTimeout(()=>render(false),delay);
 }
+function waitForOfficialData(reset=false){
+  if(reset)dataWaitAttempts=0;
+  clearTimeout(dataWaitTimer);
+  if(route()!=='scorers'){dataWaitAttempts=0;return}
+  if(db()){
+    dataWaitAttempts=0;
+    render(false);
+    return;
+  }
+  /* V469: V194 loads before V62. Wait only until official data exists,
+     then stop. This replaces the old timing race without a DOM/render loop. */
+  if(dataWaitAttempts>=96)return;
+  dataWaitAttempts++;
+  dataWaitTimer=setTimeout(()=>waitForOfficialData(false),125);
+}
 window.LJR_SCORERS_REFERENCE={
   setCategory:id=>chooseCategory(id),
   setStat:mode=>chooseLowerStat(mode),
@@ -421,14 +438,23 @@ window.LJR_SCORERS_REFERENCE={
   getStat:()=>lowerStat()
 };
 window.LJR_SET_SCORER_CATEGORY=function(id){return chooseCategory(id)};
-/* No pointerup/touchend hard interception here.
-   Native category links are the fallback and must be allowed to navigate. */
 document.addEventListener('change',delegatedChange,true);
-window.addEventListener('hashchange',()=>{selectedCategory='';schedule(0)});
-window.addEventListener('ljr:official-data',()=>schedule(40));
-document.addEventListener('visibilitychange',()=>{if(!document.hidden)schedule(40)});
-/* No subtree MutationObserver here: it observed our own page.innerHTML and
-   repeatedly scheduled renders while the user touched category buttons. */
-if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',()=>schedule(20),{once:true});else schedule(20);
-setTimeout(()=>render(false),320);
+window.addEventListener('hashchange',()=>{
+  selectedCategory='';
+  waitForOfficialData(true);
+});
+window.addEventListener('ljr:official-data',()=>{
+  clearTimeout(dataWaitTimer);
+  dataWaitAttempts=0;
+  if(route()==='scorers')render(true);
+});
+document.addEventListener('visibilitychange',()=>{
+  if(!document.hidden&&route()==='scorers')waitForOfficialData(true);
+});
+/* No subtree MutationObserver: it caused self-triggered repaint cycles. */
+if(document.readyState==='loading'){
+  document.addEventListener('DOMContentLoaded',()=>waitForOfficialData(true),{once:true});
+}else{
+  waitForOfficialData(true);
+}
 })();
