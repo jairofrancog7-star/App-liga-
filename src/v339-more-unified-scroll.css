@@ -170,3 +170,36 @@
     content:none!important;
   }
 }
+
+
+/* V519 — MÁS: el balón/arte derecho pertenece al contenido y debe bajar con el scroll. */
+@media(max-width:1023px){
+  body[data-app-route="more"] .v19-more-page{
+    position:relative!important;
+    background-image:none!important;
+  }
+  body[data-app-route="more"] .v19-more-page::after{
+    content:""!important;
+    position:absolute!important;
+    z-index:1!important;
+    top:0!important;
+    right:0!important;
+    width:100%!important;
+    height:100%!important;
+    pointer-events:none!important;
+    background-image:url('../public/more-bg-v19.webp?v=20260918-v19')!important;
+    background-repeat:no-repeat!important;
+    background-size:100% auto!important;
+    background-position:center -154px!important;
+  }
+  body[data-app-route="more"] .v19-more-page>*{
+    position:relative!important;
+    z-index:3!important;
+  }
+}
+@media(max-width:560px){
+  body[data-app-route="more"] .v19-more-page::after{background-position:center -138px!important}
+}
+@media(max-width:390px){
+  body[data-app-route="more"] .v19-more-page::after{background-position:center -118px!important}
+}
