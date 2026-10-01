@@ -6,8 +6,8 @@
 if(window.__LJR_V369_TEAM_COMPARE__)return;
 window.__LJR_V369_TEAM_COMPARE__=true;
 
-const LOCAL='./data/official-live.json?v=20261001-v490-v35-all-pages';
-const REMOTE='https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/data/official-live.json?v=20261001-v490-v35-all-pages';
+const LOCAL='./data/official-live.json?v=20261001-v491-v35-all-pages';
+const REMOTE='https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/data/official-live.json?v=20261001-v491-v35-all-pages';
 const KNOCKOUT=/play.?off|octavos|cuartos|semifinal|^final\b/i;
 let db=window.LJR_OFFICIAL_DATA||null;
 let loading=null;
