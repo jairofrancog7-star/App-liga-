@@ -2,8 +2,8 @@
    #/teams queda bajo V27 + V62 para evitar dos renderizados consecutivos y conservar una sola pantalla estable. */
 (function(){
 'use strict';
-const LOCAL='./data/official-live.json?v=20261001-v490-v35-all-pages';
-const REMOTE='https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/data/official-live.json?v=20261001-v490-v35-all-pages';
+const LOCAL='./data/official-live.json?v=20261001-v491-v35-all-pages';
+const REMOTE='https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/data/official-live.json?v=20261001-v491-v35-all-pages';
 const SRC='https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/';
 const CAT_ORDER=['3','5','4','2','1'];
 const CAT_LABEL={'1':'Veteranos 50+','2':'Veteranos 35+','3':'Primera Fuerza','4':'Segunda Fuerza','5':'Intermedia'};
@@ -394,7 +394,7 @@ function readCart(){try{return JSON.parse(localStorage.getItem(CART_KEY)||"[]")|
 function writeCart(x){try{localStorage.setItem(CART_KEY,JSON.stringify(x||[]))}catch(_){}}
 async function load(){
  if(DB)return DB; DB=window.LJR_OFFICIAL_DATA||null; if(DB)return DB;
- try{var r=await fetch("./data/official-live.json?v=20261001-v490-v35-all-pages",{cache:"no-store"});if(r.ok)DB=await r.json()}catch(_){}
+ try{var r=await fetch("./data/official-live.json?v=20261001-v491-v35-all-pages",{cache:"no-store"});if(r.ok)DB=await r.json()}catch(_){}
  return DB;
 }
 function logoFor(name){
