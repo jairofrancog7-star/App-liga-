@@ -4409,6 +4409,10 @@ function momentsView(){
     ['b','6','Pozos']
   ];
   return '<section class="v26-moments-page" aria-label="Momentos de la Liga">'+
+    '<div class="v26-moments-sticky" aria-label="Cabecera fija de Momentos">'+
+      '<img class="v26-moments-sticky__image" src="./assets/moments/moments-original-a.png?v=20260918-moments3" alt="" aria-hidden="true" draggable="false">'+
+      '<button type="button" class="v26-moments-sticky-back" data-route="more" aria-label="Volver a Más"></button>'+
+    '</div>'+
     '<div class="v26-moments-grid">'+cards.map(([set,n,label])=>
       '<button type="button" class="v26-moment-card v26-moment-'+set+n+(n==='5'||n==='6'?' v26-moment-short':'')+'" data-video="'+label.replace(/"/g,'&quot;')+'" aria-label="Ver '+label.replace(/"/g,'&quot;')+'"></button>'
     ).join('')+'</div>'+
