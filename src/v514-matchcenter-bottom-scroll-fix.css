@@ -1,0 +1,113 @@
+/* V514 — Match Center: restaurar scroll vertical completo hasta el último bloque.
+   Corrige el corte inferior observado en móvil sin cambiar el diseño ni el contenido. */
+@media (max-width:1023px){
+  html{
+    min-height:100%!important;
+  }
+
+  body.v92-match-center-official,
+  body.v69-match-center-header,
+  body[data-app-route="v4-matchcenter"],
+  body[data-app-route="matchCenter"],
+  body[data-app-route="match-center"]{
+    position:relative!important;
+    height:auto!important;
+    min-height:100dvh!important;
+    max-height:none!important;
+    overflow-x:hidden!important;
+    overflow-y:auto!important;
+    overscroll-behavior-y:auto!important;
+    touch-action:pan-y!important;
+    -webkit-overflow-scrolling:touch!important;
+  }
+
+  body.v92-match-center-official #app,
+  body.v92-match-center-official .app-shell,
+  body.v69-match-center-header #app,
+  body.v69-match-center-header .app-shell,
+  body[data-app-route="v4-matchcenter"] #app,
+  body[data-app-route="v4-matchcenter"] .app-shell,
+  body[data-app-route="matchCenter"] #app,
+  body[data-app-route="matchCenter"] .app-shell,
+  body[data-app-route="match-center"] #app,
+  body[data-app-route="match-center"] .app-shell{
+    position:relative!important;
+    height:auto!important;
+    min-height:100dvh!important;
+    max-height:none!important;
+    overflow:visible!important;
+  }
+
+  body.v92-match-center-official #screen,
+  body.v69-match-center-header #screen,
+  body[data-app-route="v4-matchcenter"] #screen,
+  body[data-app-route="matchCenter"] #screen,
+  body[data-app-route="match-center"] #screen{
+    position:relative!important;
+    display:block!important;
+    height:auto!important;
+    min-height:calc(100dvh - var(--bottom-nav-h,60px))!important;
+    max-height:none!important;
+    overflow-x:hidden!important;
+    overflow-y:visible!important;
+    overscroll-behavior-y:auto!important;
+    touch-action:pan-y!important;
+    -webkit-overflow-scrolling:touch!important;
+    padding-bottom:calc(150px + env(safe-area-inset-bottom))!important;
+    scroll-padding-bottom:calc(150px + env(safe-area-inset-bottom))!important;
+  }
+
+  body.v92-match-center-official .v92-matchcenter,
+  body.v69-match-center-header .v92-matchcenter,
+  body[data-app-route="v4-matchcenter"] .v92-matchcenter,
+  body[data-app-route="matchCenter"] .v92-matchcenter,
+  body[data-app-route="match-center"] .v92-matchcenter{
+    position:relative!important;
+    height:auto!important;
+    min-height:0!important;
+    max-height:none!important;
+    overflow:visible!important;
+    padding-bottom:calc(132px + env(safe-area-inset-bottom))!important;
+  }
+
+  /* Los módulos añadidos debajo del Match Center también forman parte del flujo.
+     Ninguno puede recortar el final de la página. */
+  body.v92-match-center-official #screen > #v413-page-design,
+  body.v92-match-center-official #screen > .v73-motion-banner,
+  body.v92-match-center-official #screen > #v449-reference-lower,
+  body.v92-match-center-official #screen > [data-v449-reference-lower],
+  body[data-app-route="v4-matchcenter"] #screen > #v413-page-design,
+  body[data-app-route="v4-matchcenter"] #screen > .v73-motion-banner,
+  body[data-app-route="v4-matchcenter"] #screen > #v449-reference-lower,
+  body[data-app-route="v4-matchcenter"] #screen > [data-v449-reference-lower],
+  body[data-app-route="matchCenter"] #screen > #v413-page-design,
+  body[data-app-route="matchCenter"] #screen > .v73-motion-banner,
+  body[data-app-route="matchCenter"] #screen > #v449-reference-lower,
+  body[data-app-route="matchCenter"] #screen > [data-v449-reference-lower],
+  body[data-app-route="match-center"] #screen > #v413-page-design,
+  body[data-app-route="match-center"] #screen > .v73-motion-banner,
+  body[data-app-route="match-center"] #screen > #v449-reference-lower,
+  body[data-app-route="match-center"] #screen > [data-v449-reference-lower]{
+    position:relative!important;
+    height:auto!important;
+    max-height:none!important;
+    overflow:visible!important;
+    flex:none!important;
+  }
+
+  body.v92-match-center-official #screen > :last-child,
+  body.v69-match-center-header #screen > :last-child,
+  body[data-app-route="v4-matchcenter"] #screen > :last-child,
+  body[data-app-route="matchCenter"] #screen > :last-child,
+  body[data-app-route="match-center"] #screen > :last-child{
+    margin-bottom:calc(112px + env(safe-area-inset-bottom))!important;
+  }
+
+  /* La barra inferior sigue fija, pero ya no cubre el último contenido. */
+  body.v92-match-center-official .bottom-nav,
+  body[data-app-route="v4-matchcenter"] .bottom-nav,
+  body[data-app-route="matchCenter"] .bottom-nav,
+  body[data-app-route="match-center"] .bottom-nav{
+    z-index:2147482000!important;
+  }
+}
