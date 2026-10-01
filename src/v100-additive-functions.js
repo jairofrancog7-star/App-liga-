@@ -1492,9 +1492,9 @@ function shotmap(){
     if(t)t.textContent=total;if(a)a.textContent=target;if(g)g.textContent=goals;
   };
   render();
-  $('[data-shot-mode]',m).forEach(b=>b.onclick=()=>{
+  $$('[data-shot-mode]',m).forEach(b=>b.onclick=()=>{
     shotMode=b.dataset.shotMode||'shot';
-    $('[data-shot-mode]',m).forEach(x=>x.classList.toggle('active',x===b));
+    $$('[data-shot-mode]',m).forEach(x=>x.classList.toggle('active',x===b));
   });
   pitch.onclick=e=>{
     if(e.target.closest('[data-shot-marker]'))return;
