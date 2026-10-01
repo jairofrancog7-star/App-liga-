@@ -154,3 +154,19 @@
     background-position:center -118px!important;
   }
 }
+
+
+/* V518 — MÁS: el arte/estrellas de la derecha vuelve a desplazarse junto con el contenido. */
+@media(max-width:1023px){
+  body[data-app-route="more"] .v19-more-page{
+    background-attachment:scroll!important;
+  }
+  body[data-app-route="more"] .v19-more-logo{
+    position:absolute!important;
+    top:2px!important;
+  }
+  body[data-app-route="more"] .v19-more-page::before{
+    display:none!important;
+    content:none!important;
+  }
+}
