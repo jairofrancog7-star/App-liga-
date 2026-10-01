@@ -169,6 +169,19 @@ async function requestDocumentPiP(node){
     return false;
   }
 }
+async function requestProviderFullscreen(node){
+  const frame=$('iframe',node)||floatingCardNode?.querySelector('iframe')||null;
+  if(!frame)return false;
+  const fn=frame.requestFullscreen||frame.webkitRequestFullscreen||frame.mozRequestFullScreen||frame.msRequestFullscreen;
+  if(typeof fn!=='function')return false;
+  try{
+    await fn.call(frame);
+    flash('Video en pantalla completa. Ahora pulsa Inicio: Android usará PiP si el proveedor lo permite.');
+    return true;
+  }catch(_){
+    return false;
+  }
+}
 function ensureFloatingPortal(node){
   const card=node&&$('[data-v196-player-card]',node);
   if(!card)return null;
@@ -265,13 +278,13 @@ function playerHtml(c,s,st,current){
     const id=youtubeId(url);
     if(id){
       const autoplay=st.live&&!cfg.lowQuality?'1':'0';
-      return '<div class="v196-frame"><iframe src="https://www.youtube-nocookie.com/embed/'+encodeURIComponent(id)+'?autoplay='+autoplay+'&mute=1&playsinline=1&controls=1" title="YouTube Live" loading="lazy" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen></iframe></div>';
+      return '<div class="v196-frame"><iframe src="https://www.youtube-nocookie.com/embed/'+encodeURIComponent(id)+'?autoplay='+autoplay+'&mute=1&playsinline=1&controls=1" title="YouTube Live" loading="lazy" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen></iframe></div>';
     }
   }
   if(p.key==='facebook'){
     if(cfg.render==='inline'||cfg.floating){
       const src='https://www.facebook.com/plugins/video.php?href='+encodeURIComponent(url)+'&show_text=false&width=500&autoplay='+(st.live?'true':'false');
-      return '<div class="v196-frame"><iframe src="'+esc(src)+'" title="Facebook Live" loading="lazy" allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share" allowfullscreen></iframe></div>';
+      return '<div class="v196-frame"><iframe src="'+esc(src)+'" title="Facebook Live" loading="lazy" allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; fullscreen; web-share" allowfullscreen></iframe></div>';
     }
     return '<div class="v196-player-empty linked"><span class="v196-provider">f</span><b>'+esc(current?.name||s.source?.name||'Facebook Live')+'</b><p>Facebook puede bloquear el video incrustado. Este botón abre la transmisión real sin perder el enlace guardado en el Match Center.</p><button type="button" data-v196-open="'+esc(url)+'">Abrir Facebook Live</button></div>';
   }
@@ -411,6 +424,9 @@ async function toggleFloating(c,node){
   let systemFloat=false;
   if(cap.pip)systemFloat=await requestPiP(node);
   if(!systemFloat&&cap.docPip)systemFloat=await requestDocumentPiP(node);
+  if(!systemFloat&&(cap.provider.key==='youtube'||cap.provider.key==='facebook')){
+    systemFloat=await requestProviderFullscreen(node);
+  }
 
   const cfg=settings();
   cfg.floating=true;
@@ -419,7 +435,7 @@ async function toggleFloating(c,node){
   if(btn){
     btn.classList.add('active');
     const small=btn.querySelector('small');
-    if(small)small.textContent=systemFloat?'Fuera de la app':'Activo';
+    if(small)small.textContent=systemFloat?'Listo para salir':'Activo';
   }
 
   if(systemFloat){
