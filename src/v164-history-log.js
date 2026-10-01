@@ -6,8 +6,8 @@
 if(window.__LJR_V164_HISTORY_LOG__)return;
 window.__LJR_V164_HISTORY_LOG__=true;
 
-const LOCAL='./data/official-live.json?v=20260922-v164';
-const REMOTE='https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/data/official-live.json?v=20260922-v164';
+const LOCAL='./data/official-live.json?v=20261001-v487-vet35-all-pages';
+const REMOTE='https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/data/official-live.json?v=20261001-v487-vet35-all-pages';
 let db=window.LJR_OFFICIAL_DATA||null;
 let loading=null;
 let guard=false;
