@@ -2267,3 +2267,206 @@ body[data-app-route="search"] .v414-category-badge small{
     height:31px!important;
   }
 }
+
+
+/* V521 — Match Center: una sola tarjeta combinada, oscura y en español. */
+@media (max-width:1023px){
+  body.v92-match-center-official .v412-matchcenter-reference{
+    background:transparent!important;
+  }
+  body.v92-match-center-official .v412-mc-combined{
+    overflow:hidden!important;
+    margin-top:12px!important;
+    border:1px solid rgba(86,118,230,.24)!important;
+    border-radius:20px!important;
+    background:
+      radial-gradient(360px 180px at 50% 0,rgba(38,84,225,.10),transparent 72%),
+      linear-gradient(180deg,#080b18 0%,#060817 100%)!important;
+    box-shadow:0 12px 30px rgba(0,0,0,.20)!important;
+  }
+  body.v92-match-center-official .v412-mc-block{
+    margin:0!important;
+    padding:16px 15px!important;
+    border:0!important;
+    border-top:1px solid rgba(255,255,255,.055)!important;
+    border-radius:0!important;
+    background:transparent!important;
+  }
+  body.v92-match-center-official .v412-mc-block:first-child{
+    border-top:0!important;
+  }
+  body.v92-match-center-official .v412-mc-block h3{
+    margin:0 0 13px!important;
+    color:#fff!important;
+    font-size:15px!important;
+    line-height:1.05!important;
+    font-weight:900!important;
+    letter-spacing:-.02em!important;
+  }
+  body.v92-match-center-official .v412-mc-pair,
+  body.v92-match-center-official .v412-mc-formpair{
+    margin-bottom:10px!important;
+  }
+  body.v92-match-center-official .v412-mc-metric{
+    border-top-color:rgba(255,255,255,.065)!important;
+  }
+  body.v92-match-center-official .v412-mc-metric span{
+    color:#9aa5c3!important;
+  }
+  body.v92-match-center-official .v412-mc-h2h-teams{
+    display:grid!important;
+    grid-template-columns:minmax(0,1fr) 34px minmax(0,1fr)!important;
+    align-items:center!important;
+    gap:8px!important;
+    margin-bottom:12px!important;
+  }
+  body.v92-match-center-official .v412-mc-h2h-teams>span{
+    min-width:0!important;
+    display:grid!important;
+    justify-items:center!important;
+    gap:6px!important;
+    text-align:center!important;
+  }
+  body.v92-match-center-official .v412-mc-h2h-teams b{
+    max-width:100%!important;
+    overflow:hidden!important;
+    color:#fff!important;
+    font-size:8.5px!important;
+    line-height:1.12!important;
+    white-space:nowrap!important;
+    text-overflow:ellipsis!important;
+  }
+  body.v92-match-center-official .v412-mc-h2h-teams em{
+    color:#7984a6!important;
+    font-size:8px!important;
+    font-style:normal!important;
+    font-weight:900!important;
+    text-align:center!important;
+  }
+  body.v92-match-center-official .v412-mc-h2h-grid{
+    display:grid!important;
+    grid-template-columns:repeat(2,minmax(0,1fr))!important;
+    gap:8px!important;
+  }
+  body.v92-match-center-official .v412-mc-mini-stat{
+    min-height:76px!important;
+    display:flex!important;
+    flex-direction:column!important;
+    justify-content:center!important;
+    gap:8px!important;
+    padding:12px!important;
+    border:1px solid rgba(79,105,207,.16)!important;
+    border-radius:13px!important;
+    background:linear-gradient(180deg,#0b1025,#080c1e)!important;
+  }
+  body.v92-match-center-official .v412-mc-mini-stat small{
+    overflow:hidden!important;
+    color:#a7b0ca!important;
+    font-size:7.2px!important;
+    line-height:1.2!important;
+    font-weight:800!important;
+    white-space:nowrap!important;
+    text-overflow:ellipsis!important;
+  }
+  body.v92-match-center-official .v412-mc-mini-stat b{
+    color:#2bdde8!important;
+    font-size:25px!important;
+    line-height:1!important;
+    font-weight:600!important;
+  }
+  body.v92-match-center-official .v412-mc-category-label{
+    display:block!important;
+    margin:-7px 0 12px!important;
+    color:#8994b6!important;
+    font-size:7.5px!important;
+    font-weight:800!important;
+  }
+  body.v92-match-center-official .v412-mc-form-teams{
+    display:grid!important;
+    grid-template-columns:1fr 1fr!important;
+    gap:16px!important;
+  }
+  body.v92-match-center-official .v412-mc-form-teams>span{
+    min-width:0!important;
+    display:grid!important;
+    justify-items:center!important;
+    gap:7px!important;
+    text-align:center!important;
+  }
+  body.v92-match-center-official .v412-mc-form-teams b{
+    max-width:100%!important;
+    overflow:hidden!important;
+    color:#fff!important;
+    font-size:8.5px!important;
+    white-space:nowrap!important;
+    text-overflow:ellipsis!important;
+  }
+  body.v92-match-center-official .v412-mc-recent-dots{
+    min-height:15px!important;
+    display:flex!important;
+    align-items:center!important;
+    justify-content:center!important;
+    gap:5px!important;
+  }
+  body.v92-match-center-official .v412-mc-recent-dots i{
+    width:12px!important;
+    height:12px!important;
+    border-radius:50%!important;
+    background:#68708e!important;
+  }
+  body.v92-match-center-official .v412-mc-recent-dots i.w{background:#0abc78!important}
+  body.v92-match-center-official .v412-mc-recent-dots i.d{background:#dda72f!important}
+  body.v92-match-center-official .v412-mc-recent-dots i.l{background:#e7435e!important}
+  body.v92-match-center-official .v412-mc-recent-dots.is-empty span{
+    color:#697493!important;
+    font-size:6.5px!important;
+  }
+  body.v92-match-center-official .v412-mc-form-counts{
+    margin-top:12px!important;
+    border-top:1px solid rgba(255,255,255,.06)!important;
+  }
+  body.v92-match-center-official .v412-mc-form-counts>div{
+    min-height:34px!important;
+    display:grid!important;
+    grid-template-columns:1fr 42px 42px!important;
+    align-items:center!important;
+    gap:8px!important;
+    border-top:1px solid rgba(255,255,255,.045)!important;
+  }
+  body.v92-match-center-official .v412-mc-form-counts>div:first-child{
+    border-top:0!important;
+  }
+  body.v92-match-center-official .v412-mc-form-counts small{
+    color:#9ca7c5!important;
+    font-size:7.5px!important;
+    font-weight:800!important;
+  }
+  body.v92-match-center-official .v412-mc-form-counts b{
+    color:#fff!important;
+    font-size:10px!important;
+    text-align:center!important;
+  }
+  body.v92-match-center-official .v412-mc-actions{
+    margin:0!important;
+    padding:14px!important;
+    border-top:1px solid rgba(255,255,255,.055)!important;
+    background:rgba(255,255,255,.01)!important;
+  }
+  body.v92-match-center-official .v412-mc-actions button{
+    min-height:72px!important;
+    border-color:rgba(81,109,214,.20)!important;
+    background:linear-gradient(180deg,#0c1128,#090d21)!important;
+    box-shadow:inset 0 0 0 1px rgba(255,255,255,.015)!important;
+  }
+  body.v92-match-center-official .v412-mc-actions button:active{
+    background:#101733!important;
+    transform:scale(.99)!important;
+  }
+}
+@media (max-width:390px){
+  body.v92-match-center-official .v412-mc-h2h-grid{gap:6px!important}
+  body.v92-match-center-official .v412-mc-mini-stat{min-height:70px!important;padding:10px!important}
+  body.v92-match-center-official .v412-mc-mini-stat b{font-size:23px!important}
+  body.v92-match-center-official .v412-mc-actions{gap:7px!important;padding:12px!important}
+  body.v92-match-center-official .v412-mc-actions button{min-height:68px!important;padding:9px!important}
+}
