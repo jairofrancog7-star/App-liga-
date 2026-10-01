@@ -212,7 +212,7 @@ function castToast(sheet,msg){
   t.textContent=msg;
   setTimeout(()=>t?.remove(),2600);
 }
-async function startCast(sheet){
+async function startCast(sheet,urlOverride=''){
   const media=document.querySelector('video,audio');
   try{
     if(media&&media.remote&&typeof media.remote.prompt==='function'){
@@ -222,7 +222,7 @@ async function startCast(sheet){
   }catch(_){}
   try{
     if(typeof window.PresentationRequest==='function'){
-      const request=new window.PresentationRequest([location.href]);
+      const request=new window.PresentationRequest([urlOverride||location.href]);
       await request.start();
       return;
     }
@@ -232,19 +232,19 @@ async function startCast(sheet){
       await navigator.share({
         title:'Liga Juventino Rosas · Liga TV',
         text:'Abrir Liga TV en otra pantalla o dispositivo',
-        url:location.href
+        url:urlOverride||location.href
       });
       return;
     }
   }catch(_){}
   try{
-    await navigator.clipboard.writeText(location.href);
+    await navigator.clipboard.writeText(urlOverride||location.href);
     castToast(sheet,'Enlace copiado. Ábrelo en tu TV u otro dispositivo.');
   }catch(_){
     castToast(sheet,'Tu navegador no permite abrir el selector de TV directamente.');
   }
 }
-function openCastSheet(){
+function openCastSheet(urlOverride=''){
   closeCastSheet();
   const sheet=document.createElement('div');
   sheet.className='v439-cast-sheet';
@@ -272,7 +272,7 @@ function openCastSheet(){
     closeCastSheet();
     setTimeout(()=>{if(window.LJR_V105&&typeof window.LJR_V105.openTv==='function')window.LJR_V105.openTv();else location.hash='#/video'},100);
   };
-  sheet.querySelector('[data-v439-transmit]').onclick=()=>startCast(sheet);
+  sheet.querySelector('[data-v439-transmit]').onclick=()=>startCast(sheet,urlOverride);
   sheet.querySelector('[data-v439-learn]').onclick=()=>{
     const help=sheet.querySelector('[data-v439-help]');
     if(!help)return;
@@ -358,6 +358,6 @@ document.addEventListener('keydown',e=>{if(e.key==='Escape')closeCastSheet()});
 window.addEventListener('hashchange',()=>{closeCastSheet();schedule(40)});
 window.addEventListener('load',()=>schedule(120));
 document.addEventListener('DOMContentLoaded',()=>schedule(60),{once:true});
-window.LJR_V440_TELEVISADOS={open:()=>{location.hash='#/televisados'},mount};
+window.LJR_V440_TELEVISADOS={open:()=>{location.hash='#/televisados'},mount,openCast:(url='')=>openCastSheet(url)};
 schedule(20);setTimeout(mount,500);setTimeout(mount,1500);
 })();
