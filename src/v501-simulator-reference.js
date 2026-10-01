@@ -3,7 +3,7 @@
 'use strict';
 if(window.__LJR_V501_SIMULATOR__)return;
 window.__LJR_V501_SIMULATOR__=true;
-window.LJR_SIMULATOR_V502={version:'507'};
+window.LJR_SIMULATOR_V502={version:'508'};
 
 const CAT_NAMES={'3':'Primera Fuerza','5':'Intermedia','4':'Segunda Fuerza','2':'Veteranos 35+','1':'Veteranos 50+'};
 const VIEW_KEY='v501-simulator-view';
@@ -209,25 +209,46 @@ function tableView(){
    ).join('')+'</div>'+
  '</section>';
 }
-function bracketTeam(t){
- if(!t)return '<div class="v501-br-team empty"><span>—</span></div>';
- return '<div class="v501-br-team"><small>'+t.pos+'</small>'+crest(t.name,'bracket')+'<b>'+esc(shortName(t.name))+'</b><i>○</i></div>';
+function bracketTeam(t,mini=false){
+ if(!t)return '';
+ return '<div class="v501-br-team v508-team'+(mini?' mini':'')+'"><small>'+t.pos+'</small>'+crest(t.name,'bracket')+'<b>'+esc(shortName(t.name))+'</b><i>○</i></div>';
+}
+function v508Pairs(rows){
+ const n=rows.length,from=5,to=n,out=[];
+ let a=from,b=to;
+ while(a<b){out.push([a,b]);a++;b--}
+ return out;
+}
+function v508Lane(pair,directTeam,tone){
+ const a=pair?.[0]||null,b=pair?.[1]||null;
+ return '<div class="v508-route '+tone+'">'+
+   '<span class="v508-route-rail" aria-hidden="true"></span>'+
+   '<div class="v508-playoff-side">'+
+     (a&&b?'<div class="v508-pair">'+bracketTeam(a)+bracketTeam(b)+'<span class="v508-pair-line" aria-hidden="true"></span></div>':'')+
+   '</div>'+
+   '<div class="v508-octavo-side">'+
+     (a&&b?'<div class="v508-winner"><span class="v508-shield">⬢</span><b>Ganador del play-off</b></div>':'')+
+     (directTeam?bracketTeam(directTeam,true):'')+
+     '<span class="v508-next-line" aria-hidden="true"></span>'+
+   '</div>'+
+ '</div>';
 }
 function bracketView(){
- const rows=simulatedStandings(),get=n=>rows[n-1]||null;
- const pairs=[[5,12],[6,11],[7,10],[8,9]];
- const direct=[1,2,3,4];
- return '<section class="v501-board v501-bracket">'+
-   '<p class="v501-br-note">Cruces hipotéticos según la clasificación simulada</p>'+
-   '<div class="v501-br-rule"></div>'+
-   '<div class="v501-br-head"><span>PLAY-OFF</span><span>OCTAVOS DE FINAL</span></div>'+
-   '<div class="v501-br-grid">'+
-     '<div class="v501-br-left">'+pairs.map((p,i)=>
-       '<div class="v501-br-pair">'+bracketTeam(get(p[0]))+bracketTeam(get(p[1]))+'<span class="v501-connector"></span></div>'
-     ).join('')+'</div>'+
-     '<div class="v501-br-right">'+direct.map((seed,i)=>
-       '<div class="v501-br-octavo"><div class="v501-winner"><span>⬡</span><b>Ganador del play-off</b></div>'+bracketTeam(get(seed))+'<span class="v501-nextline"></span></div>'
-     ).join('')+'</div>'+
+ const rows=simulatedStandings();
+ const pairs=v508Pairs(rows).map(([a,b])=>[rows[a-1]||null,rows[b-1]||null]);
+ const direct=rows.slice(0,Math.min(4,rows.length));
+ const lanes=Math.max(pairs.length,direct.length,1);
+ return '<section class="v501-board v501-bracket v508-competition-bracket">'+
+   '<div class="v508-stage-tabs" role="tablist" aria-label="Etapas del cuadro">'+
+     '<button type="button" class="active">Play-off</button>'+
+     '<button type="button">Octavos de final</button>'+
+     '<button type="button">Cuartos de final</button>'+
+   '</div>'+
+   '<p class="v501-br-note v508-note">Cruces hipotéticos según la clasificación simulada</p>'+
+   '<div class="v508-dates"><span><i></i>16-19 &amp; 24-25 feb</span><span><i></i>9-12 &amp; 17-18 mar</span></div>'+
+   '<div class="v508-head"><b>PLAY-OFF</b><b>OCTAVOS DE FINAL</b></div>'+
+   '<div class="v508-routes">'+
+     Array.from({length:lanes},(_,i)=>v508Lane(pairs[i]||null,direct[i]||null,i<Math.ceil(lanes/2)?'route-silver':'route-cyan')).join('')+
    '</div>'+
  '</section>';
 }
