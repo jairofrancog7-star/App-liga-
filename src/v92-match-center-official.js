@@ -313,7 +313,6 @@ function buildUpBody(m,state){
       '<video autoplay muted loop playsinline preload="metadata" src="'+esc(MATCH_MEDIA+'v38-soccer-teams.mp4')+'"></video>'+
       '<div><small>PARTIDO OFICIAL</small><b>'+esc(home)+' vs '+esc(away)+'</b><span>'+esc(r[7]||'Campo por confirmar')+'</span></div>'+
     '</section>'+
-    v522BlackInfo(m,state)+
   '</section>';
 }
 
