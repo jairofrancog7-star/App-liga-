@@ -911,12 +911,13 @@ function intercept(){
 }
 function schedule(){
   if(applying)return;
+  /* V194 is the sole owner of #/scorers. Do not schedule V62's global
+     DOM patch cycle for mutations created by the scorer renderer. */
+  if(route()==='scorers'&&(window.__LJR_SCORERS_UI_OWNER__==='v194-reference'||window.__LJR_V194_SCORERS__))return;
   requestAnimationFrame(()=>requestAnimationFrame(()=>{
     if(applying)return;applying=true;
     try{
       const r=route();
-      /* leagueData vuelve a usar el diseño histórico V33. V62 conserva
-         la fuente/API oficial, pero ya no sustituye visualmente esa ruta. */
       document.body.classList.remove('v62-data-active');
       if(r!=='leagueData'){
         patchHomeCalendarResults();
