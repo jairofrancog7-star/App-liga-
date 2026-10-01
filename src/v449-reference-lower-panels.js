@@ -7,7 +7,7 @@ if(window.__LJR_V449_REFERENCE_LOWER__)return;
 window.__LJR_V449_REFERENCE_LOWER__=true;
 
 const ID='v449-reference-lower';
-const BUILD='20261001-v461-scorers-ranking-below';
+const BUILD='20261001-v462-scorers-direct-ranking';
 const DATA='./public/data/official-live.json?v='+BUILD;
 const RAW='https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/';
 const CAT_ORDER=['3','5','4','2','1'];
@@ -390,7 +390,7 @@ function signature(data){
  if(['leagueData','safe-data'].includes(r))return r+'|'+seasonMode+'|'+tableMode+'|'+statsView+'|'+rankingMode+'|'+c+'|'+roundOffset+'|'+teamFilter+'|'+venueFilter;
  return r+'|'+c+'|'+tableMode+'|'+statsView+'|'+rankingMode+'|'+roundOffset+'|'+teamFilter+'|'+venueFilter;
 }
-function supported(r){return ['competition','leagueData','safe-data','stats','v38Stats','scorers','rankings'].includes(r)}
+function supported(r){return ['competition','leagueData','safe-data','stats','v38Stats','rankings'].includes(r)}
 function markup(r,data){
  if(r==='competition'){
   const m=competitionMode();
@@ -400,7 +400,6 @@ function markup(r,data){
  }
  if(r==='leagueData'||r==='safe-data')return seasonBlock(data);
  if(r==='stats'||r==='v38Stats')return seasonStats(data)+seasonTable(data)+rankingBlock(data);
- if(r==='scorers')return rankingBlock(data);
  if(r==='rankings')return rankingBlock(data)+seasonStats(data);
  return '';
 }
