@@ -1274,3 +1274,57 @@ body[data-app-route="teamDetail"] .v42-actions .v42-share svg{
     min-width:44px!important;
   }
 }
+
+
+/* V499_FOLLOWED_ACTION_SHEET */
+/* Unfollowed = white + plus. Followed = translucent + check, like reference. */
+body.v42-team-active .v42-actions .v42-follow.active,
+body[data-app-route="teamDetail"] .v42-actions .v42-follow.active{
+  background:rgba(255,255,255,.15)!important;
+  color:#fff!important;
+  border:1px solid rgba(255,255,255,.04)!important;
+  box-shadow:none!important;
+}
+body.v42-team-active .v42-actions .v42-follow.active svg,
+body[data-app-route="teamDetail"] .v42-actions .v42-follow.active svg{
+  opacity:.9!important;
+}
+
+/* The options sheet must sit above the shared bottom navigation. */
+.v42-follow-sheet-layer{
+  z-index:2147483650!important;
+}
+body.v42-follow-sheet-open .app-shell > .bottom-nav,
+body.v42-follow-sheet-open #app > .bottom-nav,
+body.v42-follow-sheet-open nav.bottom-nav{
+  visibility:hidden!important;
+  opacity:0!important;
+  pointer-events:none!important;
+}
+.v42-follow-sheet{
+  min-height:350px!important;
+  padding-bottom:calc(28px + env(safe-area-inset-bottom))!important;
+}
+.v42-follow-sheet .v28-sheet-team .v28-logo.big{
+  background:transparent!important;
+  border:0!important;
+  box-shadow:none!important;
+}
+.v42-follow-sheet .v28-sheet-team .v28-logo.big img{
+  width:68px!important;
+  height:68px!important;
+  object-fit:contain!important;
+  background:transparent!important;
+  border:0!important;
+  border-radius:0!important;
+  filter:drop-shadow(0 2px 4px rgba(0,0,0,.28))!important;
+}
+.v42-follow-sheet .v28-sheet-action.selected{
+  color:#19e5ef!important;
+}
+@media(max-width:390px){
+  .v42-follow-sheet{
+    min-height:330px!important;
+    padding-top:28px!important;
+  }
+}
