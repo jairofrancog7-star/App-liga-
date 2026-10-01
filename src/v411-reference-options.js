@@ -17,9 +17,13 @@ const FALLBACK=[
  ['Herreras FC','Primera Fuerza','assets/official-logos/herreras-fc.png'],['Abejas','Primera Fuerza','assets/official-logos/abejas.png'],
  ['Lobos CDG','Primera Fuerza','assets/official-logos/lobos-cdg.png'],['Terricolas','Primera Fuerza','assets/official-logos/terricolas.png'],
  ['Galacticos','Primera Fuerza','assets/teams/galacticos-pozos.webp'],['Manchester','Veteranos 50+','assets/official-logos/manchester.png'],
- ['Boavista','Primera Fuerza','assets/official-logos/boavista.png'],['La Esperanza','Intermedia','assets/official-logos/la-esperanza.png'],
+ ['Boavista','Veteranos 35+','https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/Boavista_wioj7b'],['La Esperanza','Intermedia','assets/official-logos/la-esperanza.png'],
  ['Tavera FC','Intermedia','assets/official-logos/tavera-fc.png'],['San Julián','Segunda Fuerza','assets/official-logos/san-julian.png'],
- ['América','Veteranos 35+','assets/branding/america-veteranos-35-user.png']
+ ['Franco-Tavera-JR','Veteranos 35+','https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/FrancoTaveraVeteranos_qwrqrc'],
+ ['Huracán','Veteranos 35+','https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/Huracan_pfndn5'],['Cuenda','Veteranos 35+','https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/SantiagoCuenda_fvaq9e'],
+ ['América','Veteranos 35+','https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/America_wbi53g'],['Aguilares','Veteranos 35+','https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/aguilares_ifdgll'],
+ ['Juventus','Veteranos 35+','https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/Juventus_fpshqs'],['Leyendas FC','Veteranos 35+','https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/LEYENDAS_jwcnlu'],
+ ['PSV','Veteranos 35+','https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/PSV_ru3tft'],['La Trinidad','Veteranos 35+','https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/La_trinidad_a32pbk']
 ];
 const BASE='https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/';
 const esc=v=>String(v==null?'':v).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
