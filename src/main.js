@@ -5093,12 +5093,176 @@ function v64MotionView(){
     '<div class="v60-actions"><button class="v60-btn" data-v64-motion-toggle>Pausar movimiento</button><button class="v60-btn outline" data-v63-official="fixtures">Ver jornada</button></div></section>';
 }
 
+function v64SuspensionCategories(){
+  const db=window.LJR_OFFICIAL_DATA;
+  const out=Object.entries(db?.categories||{}).map(([id,cat])=>({id:String(id),name:String(cat?.name||'').trim(),cat})).filter(x=>x.name);
+  if(out.length)return out;
+  return [
+    {id:'1',name:'Veteranos 50+',cat:null},
+    {id:'2',name:'Veteranos 35+',cat:null},
+    {id:'3',name:'Primera Fuerza',cat:null},
+    {id:'4',name:'Intermedia',cat:null},
+    {id:'5',name:'Segunda Fuerza',cat:null}
+  ];
+}
+function v64SuspensionCat(name){
+  const wanted=String(name||'').trim().toUpperCase();
+  return v64SuspensionCategories().find(x=>x.name.toUpperCase()===wanted)||v64SuspensionCategories()[0]||null;
+}
+function v64SuspensionRows(category){
+  const cat=v64SuspensionCat(category)?.cat;
+  return (cat?.fixtures||[]).flatMap(b=>Array.isArray(b?.rows)?b.rows:[]).filter(r=>Array.isArray(r)&&r?.[2]&&r?.[6]);
+}
+function v64SuspensionRounds(category){
+  const rows=v64SuspensionRows(category),seen=new Set(),out=[];
+  rows.forEach(r=>{const v=String(r?.[1]??'').trim();if(v&&!seen.has(v)){seen.add(v);out.push(v)}});
+  return out.sort((a,b)=>(Number(a)||999)-(Number(b)||999)||a.localeCompare(b,'es'));
+}
+function v64SuspensionMatches(category,jornada){
+  return v64SuspensionRows(category).filter(r=>String(r?.[1]??'').trim()===String(jornada??'').trim());
+}
+function v64SuspensionFields(category,jornada){
+  const seen=new Set(),out=[];
+  v64SuspensionMatches(category,jornada).forEach(r=>{const v=String(r?.[7]||'').trim();if(v&&!seen.has(v.toUpperCase())){seen.add(v.toUpperCase());out.push(v)}});
+  return out;
+}
+function v64SuspensionRead(){
+  const val=s=>document.querySelector(s)?.value||'';
+  return {
+    category:val('[data-v64-susp-cat]'),
+    jornada:val('[data-v64-susp-round]'),
+    type:val('[data-v64-susp-type]'),
+    scope:val('[data-v64-susp-scope]'),
+    match:val('[data-v64-susp-match]'),
+    venue:val('[data-v64-susp-venue]'),
+    reason:val('[data-v64-susp-reason]'),
+    date:val('[data-v64-susp-date]'),
+    time:val('[data-v64-susp-time]'),
+    priority:val('[data-v64-susp-priority]'),
+    channel:val('[data-v64-susp-channel]'),
+    message:val('[data-v64-susp-message]')
+  };
+}
+function v64SuspensionText(s){
+  const title=s.type||'Aviso de jornada';
+  const scope=s.scope||'Toda la jornada';
+  const parts=[
+    'LIGA MUNICIPAL DE FÚTBOL JUVENTINO ROSAS A.C.',
+    title.toUpperCase(),
+    '',
+    'Categoría: '+(s.category||'Por seleccionar'),
+    'Jornada: '+(s.jornada||'Por seleccionar'),
+    'Alcance: '+scope
+  ];
+  if(s.match&&s.match!=='Todos los partidos')parts.push('Partido: '+s.match);
+  if(s.venue&&s.venue!=='Todos los campos')parts.push('Campo / sede: '+s.venue);
+  if(s.reason)parts.push('Motivo: '+s.reason);
+  if(s.date)parts.push('Fecha efectiva: '+s.date+(s.time?' · '+s.time:''));
+  if(s.priority)parts.push('Prioridad: '+s.priority);
+  parts.push('',s.message||'Se informará cualquier actualización por los canales oficiales de la Liga.');
+  return parts.join('\n');
+}
+function v64RefreshSuspensionSelectors(preserve=true){
+  const catSel=document.querySelector('[data-v64-susp-cat]');
+  const roundSel=document.querySelector('[data-v64-susp-round]');
+  const matchSel=document.querySelector('[data-v64-susp-match]');
+  const venueSel=document.querySelector('[data-v64-susp-venue]');
+  if(!catSel||!roundSel)return;
+  const oldRound=preserve?roundSel.value:'';
+  const oldMatch=preserve?matchSel?.value:'';
+  const oldVenue=preserve?venueSel?.value:'';
+  const rounds=v64SuspensionRounds(catSel.value);
+  const fallbackRounds=rounds.length?rounds:Array.from({length:20},(_,i)=>String(i+1));
+  roundSel.innerHTML=fallbackRounds.map(v=>'<option value="'+v+'" '+(v===oldRound?'selected':'')+'>Jornada '+v+'</option>').join('');
+  if(oldRound&&!fallbackRounds.includes(oldRound))roundSel.value=fallbackRounds[0]||'1';
+  const jornada=roundSel.value;
+  const matches=v64SuspensionMatches(catSel.value,jornada);
+  if(matchSel){
+    const opts=['<option>Todos los partidos</option>'].concat(matches.map(r=>{
+      const label=String(r?.[2]||'')+' vs '+String(r?.[6]||'');
+      const meta=[r?.[8],r?.[7]].filter(Boolean).join(' · ');
+      return '<option value="'+v64Esc(label)+'" '+(label===oldMatch?'selected':'')+'>'+v64Esc(label+(meta?' · '+meta:''))+'</option>';
+    }));
+    matchSel.innerHTML=opts.join('');
+    if(oldMatch&&[...matchSel.options].some(o=>o.value===oldMatch))matchSel.value=oldMatch;
+  }
+  if(venueSel){
+    const fields=v64SuspensionFields(catSel.value,jornada);
+    venueSel.innerHTML=['<option>Todos los campos</option>'].concat(fields.map(v=>'<option value="'+v64Esc(v)+'" '+(v===oldVenue?'selected':'')+'>'+v64Esc(v)+'</option>')).join('');
+    if(oldVenue&&[...venueSel.options].some(o=>o.value===oldVenue))venueSel.value=oldVenue;
+  }
+  const count=document.querySelector('[data-v64-susp-count]');
+  if(count)count.textContent=String(matches.length);
+  const selected=document.querySelector('[data-v64-susp-selected]');
+  if(selected)selected.textContent=catSel.value+' · Jornada '+jornada;
+}
 function v64SuspensionView(){
   let s={};try{s=JSON.parse(localStorage.getItem('v64-suspension-draft')||'{}')}catch(e){}
-  return '<section class="v60-tool-page v64-page">'+v60Header('AVISO OFICIAL','Suspensión de jornada','Prepara un aviso local antes de publicarlo. No cambia automáticamente el estado oficial de los partidos.')+
-    '<div class="v64-form-grid one"><label><b>Categoría</b><select data-v64-susp-cat><option '+(s.category==='Veteranos 50+'?'selected':'')+'>Veteranos 50+</option><option '+(s.category==='Veteranos 35+'?'selected':'')+'>Veteranos 35+</option><option '+(s.category==='Primera Fuerza'?'selected':'')+'>Primera Fuerza</option><option>Intermedia</option><option>Segunda Fuerza</option></select></label>'+
-    '<label><b>Jornada</b><input type="number" min="1" value="'+v64Esc(s.jornada||6)+'" data-v64-susp-round></label></div>'+
-    '<div class="v60-actions"><button class="v60-btn" data-v64-susp-preview>Vista previa del aviso</button><button class="v60-btn outline" data-v64-susp-save>Guardar borrador local</button></div>'+
+  const cats=v64SuspensionCategories();
+  const selectedCategory=s.category&&cats.some(x=>x.name===s.category)?s.category:(cats[0]?.name||'Veteranos 50+');
+  const rounds=v64SuspensionRounds(selectedCategory);
+  const selectedRound=String(s.jornada||rounds[0]||6);
+  const roundOptions=(rounds.length?rounds:Array.from({length:20},(_,i)=>String(i+1))).map(v=>'<option value="'+v+'" '+(v===selectedRound?'selected':'')+'>Jornada '+v+'</option>').join('');
+  const matchRows=v64SuspensionMatches(selectedCategory,selectedRound);
+  const matchOptions=['<option>Todos los partidos</option>'].concat(matchRows.map(r=>{
+    const label=String(r?.[2]||'')+' vs '+String(r?.[6]||'');
+    const meta=[r?.[8],r?.[7]].filter(Boolean).join(' · ');
+    return '<option value="'+v64Esc(label)+'" '+(label===s.match?'selected':'')+'>'+v64Esc(label+(meta?' · '+meta:''))+'</option>';
+  })).join('');
+  const fields=v64SuspensionFields(selectedCategory,selectedRound);
+  const fieldOptions=['<option>Todos los campos</option>'].concat(fields.map(v=>'<option value="'+v64Esc(v)+'" '+(v===s.venue?'selected':'')+'>'+v64Esc(v)+'</option>')).join('');
+  const selected=(value,current)=>String(value)===String(current)?' selected':'';
+  const today=new Date().toISOString().slice(0,10);
+  return '<section class="v60-tool-page v64-page v425-suspension">'+v60Header('AVISO OFICIAL','Centro avanzado de jornada','Configura categoría, jornada, alcance, partido, sede, motivo y canales antes de generar el aviso.')+
+    '<div class="v425-status-grid">'+
+      '<article><small>CATEGORÍA / JORNADA</small><b data-v64-susp-selected>'+v64Esc(selectedCategory)+' · Jornada '+v64Esc(selectedRound)+'</b></article>'+
+      '<article><small>PARTIDOS EN ESA JORNADA</small><b data-v64-susp-count>'+matchRows.length+'</b></article>'+
+      '<article><small>ESTADO</small><b class="cyan">BORRADOR LOCAL</b></article>'+
+    '</div>'+
+    '<section class="v425-panel"><header><span><small>01</small><div><b>Selección principal</b><em>Elige exactamente qué parte de la jornada afecta el aviso.</em></div></span></header>'+
+      '<div class="v64-form-grid">'+
+        '<label><b>Categoría</b><select data-v64-susp-cat>'+cats.map(x=>'<option value="'+v64Esc(x.name)+'" '+(x.name===selectedCategory?'selected':'')+'>'+v64Esc(x.name)+'</option>').join('')+'</select></label>'+
+        '<label><b>Jornada</b><select data-v64-susp-round>'+roundOptions+'</select></label>'+
+        '<label><b>Tipo de aviso</b><select data-v64-susp-type>'+
+          ['Suspensión total','Suspensión parcial','Cambio de horario','Cambio de sede','Reprogramación','Aviso informativo'].map(v=>'<option'+selected(v,s.type||'Suspensión total')+'>'+v+'</option>').join('')+
+        '</select></label>'+
+        '<label><b>Alcance</b><select data-v64-susp-scope>'+
+          ['Toda la jornada','Un partido','Uno o varios campos','Una categoría completa'].map(v=>'<option'+selected(v,s.scope||'Toda la jornada')+'>'+v+'</option>').join('')+
+        '</select></label>'+
+      '</div>'+
+    '</section>'+
+    '<section class="v425-panel"><header><span><small>02</small><div><b>Partido y sede</b><em>Los selectores se alimentan con la jornada publicada cuando hay datos disponibles.</em></div></span></header>'+
+      '<div class="v64-form-grid">'+
+        '<label><b>Partido afectado</b><select data-v64-susp-match>'+matchOptions+'</select></label>'+
+        '<label><b>Campo / sede</b><select data-v64-susp-venue>'+fieldOptions+'</select></label>'+
+        '<label><b>Motivo</b><select data-v64-susp-reason>'+
+          ['Condiciones del campo / lluvia','Fuerza mayor','Seguridad','Arbitraje','Acuerdo de la Liga','Solicitud de equipos','Otro'].map(v=>'<option'+selected(v,s.reason||'Condiciones del campo / lluvia')+'>'+v+'</option>').join('')+
+        '</select></label>'+
+        '<label><b>Prioridad</b><select data-v64-susp-priority>'+
+          ['Alta · urgente','Media · importante','Informativa'].map(v=>'<option'+selected(v,s.priority||'Alta · urgente')+'>'+v+'</option>').join('')+
+        '</select></label>'+
+      '</div>'+
+    '</section>'+
+    '<section class="v425-panel"><header><span><small>03</small><div><b>Publicación</b><em>Define fecha, hora, canal y mensaje que verá la gente.</em></div></span></header>'+
+      '<div class="v64-form-grid">'+
+        '<label><b>Fecha efectiva</b><input type="date" value="'+v64Esc(s.date||today)+'" data-v64-susp-date></label>'+
+        '<label><b>Hora</b><input type="time" value="'+v64Esc(s.time||'08:00')+'" data-v64-susp-time></label>'+
+        '<label class="wide"><b>Canal</b><select data-v64-susp-channel>'+
+          ['App + WhatsApp','Solo App','Solo WhatsApp','App + WhatsApp + redes'].map(v=>'<option'+selected(v,s.channel||'App + WhatsApp')+'>'+v+'</option>').join('')+
+        '</select></label>'+
+        '<label class="wide"><b>Mensaje adicional</b><textarea rows="4" data-v64-susp-message placeholder="Ej. Por condiciones del terreno de juego, la Liga informará la nueva fecha...">'+v64Esc(s.message||'')+'</textarea></label>'+
+      '</div>'+
+    '</section>'+
+    '<section class="v425-summary">'+
+      '<div><small>IMPORTANTE</small><b>Este módulo prepara el aviso; no modifica resultados ni suspende partidos automáticamente.</b></div>'+
+      '<span>Revisa categoría, jornada, partido y campo antes de compartir.</span>'+
+    '</section>'+
+    '<div class="v425-actions">'+
+      '<button class="v60-btn" data-v64-susp-preview>Vista previa avanzada</button>'+
+      '<button class="v60-btn outline" data-v64-susp-save>Guardar borrador</button>'+
+      '<button class="v60-btn outline" data-v64-susp-copy>Copiar texto</button>'+
+      '<button class="v60-btn outline" data-v64-susp-whatsapp>WhatsApp</button>'+
+    '</div>'+
     '<div data-v64-susp-modal></div></section>';
 }
 
@@ -6229,8 +6393,45 @@ document.querySelector('[data-v64-ag-json]')?.addEventListener('click',()=>{let 
 document.querySelector('[data-v64-ag-clear]')?.addEventListener('click',()=>{localStorage.removeItem('v64-agenda');v64RenderAgenda();toast('Agenda local limpiada')},{once:true});
 v64RenderAgenda();
 document.querySelector('[data-v64-motion-toggle]')?.addEventListener('click',e=>{const stage=document.querySelector('[data-v64-orbit]');stage?.classList.toggle('paused');e.currentTarget.textContent=stage?.classList.contains('paused')?'Reanudar movimiento':'Pausar movimiento'},{once:true});
-document.querySelector('[data-v64-susp-save]')?.addEventListener('click',()=>{const category=document.querySelector('[data-v64-susp-cat]')?.value||'',jornada=document.querySelector('[data-v64-susp-round]')?.value||'';localStorage.setItem('v64-suspension-draft',JSON.stringify({category,jornada}));toast('Borrador guardado solo en este dispositivo')},{once:true});
-document.querySelector('[data-v64-susp-preview]')?.addEventListener('click',()=>{const category=document.querySelector('[data-v64-susp-cat]')?.value||'',jornada=document.querySelector('[data-v64-susp-round]')?.value||'',host=document.querySelector('[data-v64-susp-modal]');if(host)host.innerHTML='<div class="v64-susp-modal"><div><b>⚠ Jornada suspendida hoy</b><button type="button" data-v64-susp-close>×</button></div><p>Se suspende la jornada de la categoría seleccionada que tenía juego programado para hoy.</p><strong>'+v64Esc(category)+'</strong><span>Jornada: '+v64Esc(jornada)+'</span><em>Vista previa · no publicada</em><button class="v60-btn" data-v64-susp-ok>Entendido</button></div>';const close=()=>{if(host)host.innerHTML=''};host?.querySelector('[data-v64-susp-close]')?.addEventListener('click',close);host?.querySelector('[data-v64-susp-ok]')?.addEventListener('click',close)},{once:true});
+document.querySelector('[data-v64-susp-cat]')?.addEventListener('change',()=>v64RefreshSuspensionSelectors(false));
+document.querySelector('[data-v64-susp-round]')?.addEventListener('change',()=>v64RefreshSuspensionSelectors(true));
+document.querySelector('[data-v64-susp-save]')?.addEventListener('click',()=>{
+  const data=v64SuspensionRead();
+  localStorage.setItem('v64-suspension-draft',JSON.stringify(data));
+  toast('Borrador avanzado guardado en este dispositivo');
+},{once:true});
+document.querySelector('[data-v64-susp-copy]')?.addEventListener('click',async()=>{
+  const txt=v64SuspensionText(v64SuspensionRead());
+  try{await navigator.clipboard.writeText(txt);toast('Aviso copiado')}catch(e){toast('No se pudo copiar')}
+},{once:true});
+document.querySelector('[data-v64-susp-whatsapp]')?.addEventListener('click',()=>{
+  const txt=v64SuspensionText(v64SuspensionRead());
+  window.open('https://wa.me/?text='+encodeURIComponent(txt),'_blank','noopener,noreferrer');
+},{once:true});
+document.querySelector('[data-v64-susp-preview]')?.addEventListener('click',()=>{
+  const data=v64SuspensionRead(),host=document.querySelector('[data-v64-susp-modal]');
+  if(!host)return;
+  const txt=v64SuspensionText(data);
+  host.innerHTML='<div class="v64-susp-modal v425-preview">'+
+    '<div><span><small>'+v64Esc(data.priority||'Aviso')+'</small><b>'+v64Esc(data.type||'Aviso de jornada')+'</b></span><button type="button" data-v64-susp-close>×</button></div>'+
+    '<section class="v425-preview-grid">'+
+      '<p><small>Categoría</small><b>'+v64Esc(data.category||'—')+'</b></p>'+
+      '<p><small>Jornada</small><b>'+v64Esc(data.jornada||'—')+'</b></p>'+
+      '<p><small>Alcance</small><b>'+v64Esc(data.scope||'—')+'</b></p>'+
+      '<p><small>Motivo</small><b>'+v64Esc(data.reason||'—')+'</b></p>'+
+      '<p class="wide"><small>Partido</small><b>'+v64Esc(data.match||'Todos los partidos')+'</b></p>'+
+      '<p class="wide"><small>Campo / sede</small><b>'+v64Esc(data.venue||'Todos los campos')+'</b></p>'+
+      '<p><small>Fecha</small><b>'+v64Esc(data.date||'—')+'</b></p>'+
+      '<p><small>Hora</small><b>'+v64Esc(data.time||'—')+'</b></p>'+
+    '</section>'+
+    '<pre>'+v64Esc(txt)+'</pre>'+
+    '<em>Vista previa · no publicada · '+v64Esc(data.channel||'')+'</em>'+
+    '<button class="v60-btn" data-v64-susp-ok>Entendido</button>'+
+  '</div>';
+  const close=()=>{host.innerHTML=''};
+  host.querySelector('[data-v64-susp-close]')?.addEventListener('click',close);
+  host.querySelector('[data-v64-susp-ok]')?.addEventListener('click',close);
+},{once:true});
 const v60note=document.querySelector('[data-v60-matchday-note]');if(v60note)v60note.oninput=()=>{const s=v60MatchdayState();s.note=v60note.value;localStorage.setItem('v60-matchday',JSON.stringify(s))};
 document.querySelectorAll('[data-v60-weather]').forEach(el=>el.onclick=async()=>{const f=v60Field(el.dataset.v60Weather),out=document.querySelector('[data-v60-weather-result="'+f.id+'"]');if(!out||!f.weather)return;const lat=Number.isFinite(f.lat)?f.lat:f.weatherLat,lon=Number.isFinite(f.lon)?f.lon:f.weatherLon;if(!Number.isFinite(lat)||!Number.isFinite(lon))return;out.hidden=false;out.classList.remove('is-error');out.textContent='Consultando clima…';el.disabled=true;try{const u='https://api.open-meteo.com/v1/forecast?latitude='+encodeURIComponent(lat)+'&longitude='+encodeURIComponent(lon)+'&current=temperature_2m,precipitation,weather_code,wind_speed_10m&timezone=America%2FMexico_City';const r=await fetch(u);if(!r.ok)throw new Error('weather');const j=await r.json(),w=j.current||{};out.innerHTML='<b>'+Math.round(w.temperature_2m??0)+' °C</b><div class="v60-weather-grid"><span><b>'+Number(w.precipitation??0).toFixed(1)+' mm</b><small>Precipitación</small></span><span><b>'+Math.round(w.wind_speed_10m??0)+' km/h</b><small>Viento</small></span><span><b>'+String(w.weather_code??'—')+'</b><small>Código clima</small></span></div><small>Actualización: '+String(w.time||'ahora')+'</small>'}catch(e){out.classList.add('is-error');out.textContent='No se pudo consultar el clima en este momento.'}finally{el.disabled=false}});
 document.querySelectorAll('[data-v60-cedula]').forEach(el=>el.onclick=()=>{localStorage.removeItem('v66-cedula-source');state.selectedMatch=el.dataset.v60Cedula;save();go('cedulaDetail')});
