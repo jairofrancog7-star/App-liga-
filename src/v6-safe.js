@@ -14,8 +14,8 @@
   /* V91 — Inicio ya no usa equipos/jugadores demo.
      Fallback inicial = datos oficiales vigentes; después se refresca desde
      Liga_Futbol/data/official-live.json sin inventar nombres, puntos o goles. */
-  const V6_LOCAL_URL='./data/official-live.json?v=20261001-v490-v35-all-pages';
-  const V6_OFFICIAL_URL='https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/data/official-live.json?v=20261001-v490-v35-all-pages';
+  const V6_LOCAL_URL='./data/official-live.json?v=20261001-v491-v35-all-pages';
+  const V6_OFFICIAL_URL='./data/official-live.json?v=20261001-v491-v35-all-pages';
   const V6_LOGO_BASE='https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/';
   const V6_CAT_LABEL={'1':'Veteranos 50+','2':'Veteranos 35+','3':'Primera Fuerza','4':'Segunda Fuerza','5':'Intermedia'};
   const V6_CODE_BY_NAME={
