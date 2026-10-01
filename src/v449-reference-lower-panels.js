@@ -7,7 +7,7 @@ if(window.__LJR_V449_REFERENCE_LOWER__)return;
 window.__LJR_V449_REFERENCE_LOWER__=true;
 
 const ID='v449-reference-lower';
-const BUILD='20261001-v471-season-controls-hardfix';
+const BUILD='20261001-v474-stats-table-controls';
 const DATA='./public/data/official-live.json?v='+BUILD;
 const RAW='https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/';
 const CAT_ORDER=['3','5','4','2','1'];
@@ -43,6 +43,11 @@ const LOGO_PATHS={
 };
 
 let cached=null,loading=null,timer=0,seasonMode='matches',tableMode='compact',statsView='players',rankingMode='goals',roundOffset=0,teamFilter='all',venueFilter='all';
+try{
+ const savedSeason=localStorage.getItem('v449-season-mode');
+ if(['matches','table','stats'].includes(savedSeason))seasonMode=savedSeason;
+ teamFilter=localStorage.getItem('v449-team-filter')||'all';
+}catch(_){}
 
 function dbNow(){
  try{return window.LJR_OFFICIAL_API?.getData?.()||window.LJR_OFFICIAL_DATA||cached||null}catch(_){return cached||null}
@@ -299,9 +304,9 @@ function seasonMatches(data){
  const teams=teamsForCat(data);
  return '<div class="v449-season-panel v449-season-matches-ref">'+
   '<div class="v449-season-controls">'+
-    '<label><select data-v449-category>'+categoryOptions(data)+'</select></label>'+
-    '<label><select data-v449-round-select>'+roundList(data).map(r=>'<option value="'+r+'" '+(Number(r)===Number(round)?'selected':'')+'>Fecha '+r+'</option>').join('')+'</select></label>'+
-    '<label><select data-v449-team-filter><option value="all">Todos los equipos</option>'+teams.map(t=>'<option value="'+esc(t)+'" '+(teamFilter===t?'selected':'')+'>'+esc(t)+'</option>').join('')+'</select></label>'+
+    '<label aria-label="Categoría"><select data-v449-category title="'+esc(catName(data))+'">'+categoryOptions(data)+'</select></label>'+
+    '<label aria-label="Fecha"><select data-v449-round-select title="Fecha '+esc(round??'—')+'">'+roundList(data).map(r=>'<option value="'+r+'" '+(Number(r)===Number(round)?'selected':'')+'>Fecha '+r+'</option>').join('')+'</select></label>'+
+    '<label aria-label="Equipo"><select data-v449-team-filter title="'+esc(teamFilter==='all'?'Todos los equipos':teamFilter)+'"><option value="all">Todos los equipos</option>'+teams.map(t=>'<option value="'+esc(t)+'" '+(teamFilter===t?'selected':'')+'>'+esc(t)+'</option>').join('')+'</select></label>'+
   '</div>'+
   '<div class="v449-season-date"><button type="button" '+(prev!=null?'data-v449-round-dir="-1"':'disabled aria-disabled="true"')+'>‹</button><div><b>Fecha '+esc(round??'—')+'</b><small>Rol oficial de '+esc(catName(data))+'</small></div><button type="button" '+(next!=null?'data-v449-round-dir="1"':'disabled aria-disabled="true"')+'>›</button></div>'+
   '<div class="v449-season-match-list">'+(rows.length?rows.map(x=>
@@ -457,7 +462,8 @@ function host(){
 }
 function handleButton(t,data=dbNow()||cached||{}){
  if(!(t instanceof Element))return false;
- const rerender=()=>paint(data,true);
+ const latest=()=>dbNow()||data||cached||{};
+ const rerender=()=>paint(latest(),true);
 
  if(t.dataset.v449Route){
    const r=t.dataset.v449Route;
@@ -471,7 +477,9 @@ function handleButton(t,data=dbNow()||cached||{}){
    return true;
  }
  if(t.dataset.v449Season){
-   seasonMode=t.dataset.v449Season||'matches';rerender();return true;
+   seasonMode=t.dataset.v449Season||'matches';
+   try{localStorage.setItem('v449-season-mode',seasonMode)}catch(_){}
+   rerender();return true;
  }
  if(t.dataset.v449TableMode){
    tableMode=t.dataset.v449TableMode||'compact';rerender();return true;
@@ -483,7 +491,7 @@ function handleButton(t,data=dbNow()||cached||{}){
    rankingMode=t.dataset.v449RankingMode||'goals';rerender();return true;
  }
  if(t.dataset.v449RoundDir){
-   moveRound(data,Number(t.dataset.v449RoundDir||0));
+   moveRound(latest(),Number(t.dataset.v449RoundDir||0));
    rerender();return true;
  }
  if(t.dataset.v449OpenMatch){
@@ -499,7 +507,7 @@ function handleButton(t,data=dbNow()||cached||{}){
    return true;
  }
  if(t.hasAttribute('data-v449-category-cycle')){
-   cycleCategory(data);rerender();return true;
+   cycleCategory(latest());rerender();return true;
  }
  if(t.hasAttribute('data-v449-venue-cycle')){
    cycleVenue();rerender();return true;
@@ -513,8 +521,10 @@ function handleButton(t,data=dbNow()||cached||{}){
 }
 function handleSelect(s,data=dbNow()||cached||{}){
  if(!s||String(s.tagName||'').toUpperCase()!=='SELECT')return false;
+ const latest=()=>dbNow()||data||cached||{};
  if(s.hasAttribute('data-v449-round-select')){
-   if(setSelectedRound(data,Number(s.value)))paint(data,true);
+   const d=latest();
+   if(setSelectedRound(d,Number(s.value)))paint(d,true);
    return true;
  }
  if(s.hasAttribute('data-v449-category')){
@@ -527,14 +537,15 @@ function handleSelect(s,data=dbNow()||cached||{}){
      localStorage.setItem('v422-results-category',id);
      localStorage.removeItem(roundStoreKey(id));
     }catch(_){}
-    roundOffset=0;teamFilter='all';paint(data,true);
+    roundOffset=0;teamFilter='all';venueFilter='all';
+    paint(latest(),true);
    }
    return true;
  }
  if(s.hasAttribute('data-v449-team-filter')){
    teamFilter=String(s.value||'all');
    try{localStorage.setItem('v449-team-filter',teamFilter)}catch(_){}
-   paint(data,true);return true;
+   paint(latest(),true);return true;
  }
  return false;
 }
