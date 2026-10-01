@@ -2246,3 +2246,24 @@ body[data-app-route="search"] .v415-single-search .v412-mode.is-active:after{
     padding-right:12px!important;
   }
 }
+
+
+/* V500 — logo de categoría arriba del logo de equipo */
+body[data-app-route="search"] .v414-category-badge{
+  background:#f6f7fb!important;
+}
+body[data-app-route="search"] .v414-category-badge img{
+  width:35px!important;
+  height:35px!important;
+  object-fit:contain!important;
+  object-position:center!important;
+}
+body[data-app-route="search"] .v414-category-badge small{
+  display:none!important;
+}
+@media(max-width:430px){
+  body[data-app-route="search"] .v414-category-badge img{
+    width:31px!important;
+    height:31px!important;
+  }
+}
