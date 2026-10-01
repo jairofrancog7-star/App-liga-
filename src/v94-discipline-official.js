@@ -6,7 +6,7 @@
   if(window.__LJR_V94_DISCIPLINE__)return;
   window.__LJR_V94_DISCIPLINE__=true;
 
-  const DATA_URLS=['./data/official-live.json?v=20261001-v490-v35-all-pages','https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/data/official-live.json?v=20261001-v490-v35-all-pages'];
+  const DATA_URLS=['./data/official-live.json?v=20261001-v491-v35-all-pages','https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/data/official-live.json?v=20261001-v491-v35-all-pages'];
 
   function route(){
     return (location.hash.replace(/^#\/?/,'')||'home').split('?')[0];
