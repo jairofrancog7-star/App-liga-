@@ -6,11 +6,14 @@
 if(window.__LJR_V480_CREDENTIAL__)return;
 window.__LJR_V480_CREDENTIAL__=true;
 
-const BUILD='20261001-v495-exact-card-reference';
+const BUILD='20261001-v496-photo-cache-fast-face';
 const LEAGUE_LOGO='./assets/credential-logo-exact-v495.png?v=20261001-v495';
 const $=(s,r=document)=>r.querySelector(s);
 const norm=v=>String(v||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[^a-z0-9]+/g,' ').trim();
 const route=()=>String(location.hash||'').replace(/^#\/?/,'').split('?')[0]||'home';
+/* V496: conserva en memoria la foto elegida aunque otros módulos reconstruyan
+   el formulario después de seleccionar el archivo. */
+let selectedPlayerFile=null;
 
 function loadImage(src){
   if(!src)return Promise.resolve(null);
@@ -191,6 +194,25 @@ async function playerFaceProfile(img,file){
   faceCache.set(key,job);
   return await job;
 }
+async function playerFaceProfileFast(img,file){
+  if(!img||!file)return null;
+  const job=playerFaceProfile(img,file);
+  let timer=0;
+  const quick=await Promise.race([
+    job,
+    new Promise(resolve=>{timer=setTimeout(()=>resolve(null),420)})
+  ]);
+  if(timer)clearTimeout(timer);
+  if(!quick){
+    /* No dejamos el círculo en FOTO mientras MediaPipe termina de cargar.
+       Mostramos la fotografía de inmediato y, cuando llega la detección,
+       volvemos a encuadrarla automáticamente. */
+    job.then(profile=>{
+      if(profile&&route()==='credentialBuilder')schedule();
+    }).catch(()=>{});
+  }
+  return quick;
+}
 function faceCrop(img,destW,destH,profile){
   const {w:iw,h:ih}=imageSize(img),aspect=destW/destH||1;
   let sw,sh,sx,sy;
@@ -261,11 +283,11 @@ function wrap(x,text,maxW,maxLines=2){
   return lines.length?lines:['JUGADOR'];
 }
 function playerFile(){
-  const p=$('[data-v64-photo]')?.files?.[0]||null;
-  if(!p)return null;
-  /* El campo "Foto del jugador" es explícito: siempre se respeta el archivo
-     elegido ahí. No se descarta por el nombre del archivo ni por reglas OCR. */
-  return p;
+  const live=$('[data-v64-photo]')?.files?.[0]||null;
+  if(live)selectedPlayerFile=live;
+  /* Si el formulario fue repintado, input.files puede quedar vacío. En ese
+     caso usamos la File que el usuario ya eligió en esta misma sesión. */
+  return live||selectedPlayerFile||null;
 }
 async function playerImage(file=playerFile()){
   const f=file;if(!f)return null;
@@ -372,7 +394,7 @@ async function makeCanvas(){
   if(tlogo)contained(x,tlogo,830,128,150,150);
 
   const photoFile=playerFile();
-  const photo=await playerImage(photoFile),face=photo?await playerFaceProfile(photo,photoFile):null,cx=205,cy=365,r=131;
+  const photo=await playerImage(photoFile),face=photo?await playerFaceProfileFast(photo,photoFile):null,cx=205,cy=365,r=131;
   x.save();x.beginPath();x.arc(cx,cy,r,0,Math.PI*2);x.clip();
   x.fillStyle='#93a4ad';x.fillRect(cx-r,cy-r,r*2,r*2);
   if(photo)drawFaceCenteredCover(x,photo,cx-r,cy-r,r*2,r*2,face);
@@ -410,7 +432,7 @@ async function render(){
   q.drawImage(cv,0,0);
   const photoFile=playerFile();
   const photo=photoFile?await playerImage(photoFile):null;
-  const detected=photo?await playerFaceProfile(photo,photoFile):null;
+  const detected=photo?await playerFaceProfileFast(photo,photoFile):null;
   target.dataset.faceDetected=detected?'1':'0';
   target.dataset.faceDetector=detected?.source||'fallback';
   const h=$('[data-v196-classic-preview] .v196-preview-head b');
@@ -465,6 +487,13 @@ function schedule(){
   schedule.t=setTimeout(render,80);
   setTimeout(render,280);
 }
+document.addEventListener('change',e=>{
+  if(!(e.target instanceof Element)||!e.target.matches('[data-v64-photo]'))return;
+  selectedPlayerFile=e.target.files?.[0]||null;
+  e.target.dataset.v496PhotoCache=selectedPlayerFile?'1':'0';
+  try{faceCache.clear()}catch(_){}
+  schedule();
+},true);
 document.addEventListener('input',e=>{
   if(route()==='credentialBuilder'&&e.target instanceof Element&&e.target.closest('#screen'))schedule();
 },false);
