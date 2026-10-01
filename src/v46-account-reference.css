@@ -475,3 +475,84 @@ body.v46-notifications-active .v46-ref-head{
 body.v46-notifications-active .v46-ref-notifications-main{
   padding-top:14px!important;
 }
+
+
+/* V446 — Avisos: cabecera compacta tipo referencia de registro, sin barra global duplicada. */
+body[data-app-route="notices"] #app>.topbar,
+body[data-app-route="notices"] .app-shell>.topbar{
+  display:none!important;
+  visibility:hidden!important;
+  height:0!important;
+  min-height:0!important;
+  max-height:0!important;
+  margin:0!important;
+  padding:0!important;
+  overflow:hidden!important;
+}
+body[data-app-route="notices"] #screen{
+  padding-top:0!important;
+  margin-top:0!important;
+}
+body[data-app-route="notices"] .v446-notices-head{
+  min-height:128px!important;
+  display:grid!important;
+  grid-template-columns:52px minmax(0,1fr)!important;
+  align-items:center!important;
+  gap:14px!important;
+  margin:0 -16px 18px!important;
+  padding:18px 18px 14px!important;
+  box-sizing:border-box!important;
+  border-bottom:1px solid rgba(64,136,255,.72)!important;
+  background:
+    linear-gradient(180deg,rgba(21,117,246,.92) 0%,rgba(7,42,157,.96) 72%,rgba(5,13,104,.98) 100%),
+    url('../public/brand-neon-header.svg') center/cover no-repeat!important;
+}
+body[data-app-route="notices"] .v446-notices-back{
+  width:42px!important;
+  height:42px!important;
+  display:grid!important;
+  place-items:center!important;
+  border:0!important;
+  background:transparent!important;
+  color:#fff!important;
+  font-size:29px!important;
+  line-height:1!important;
+  padding:0!important;
+}
+body[data-app-route="notices"] .v446-notices-head .eyebrow{
+  margin:0 0 7px!important;
+  color:#56e7f0!important;
+  font-size:11px!important;
+  line-height:1!important;
+  font-weight:900!important;
+  letter-spacing:.14em!important;
+}
+body[data-app-route="notices"] .v446-notices-head .screen-title{
+  margin:0!important;
+  color:#fff!important;
+  font-size:31px!important;
+  line-height:1!important;
+  font-weight:800!important;
+  letter-spacing:-.03em!important;
+}
+@media(max-width:390px){
+  body[data-app-route="notices"] .v446-notices-head{
+    min-height:116px!important;
+    grid-template-columns:46px minmax(0,1fr)!important;
+    gap:10px!important;
+    margin-inline:-12px!important;
+    padding:14px 12px 12px!important;
+  }
+  body[data-app-route="notices"] .v446-notices-back{
+    width:38px!important;
+    height:38px!important;
+    font-size:26px!important;
+  }
+  body[data-app-route="notices"] .v446-notices-head .eyebrow{
+    font-size:9px!important;
+    margin-bottom:6px!important;
+  }
+  body[data-app-route="notices"] .v446-notices-head .screen-title{
+    font-size:27px!important;
+  }
+}
