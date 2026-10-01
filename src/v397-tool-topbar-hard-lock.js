@@ -4,14 +4,14 @@
   'use strict';
 
   const ROUTES=new Set([
-    "v38Alerts","v38Weather","v4-matchcenter","v4-calendar","venues","matchday","search","ligaQR","players",
+    "v38Alerts","v38Weather","v4-matchcenter","venues","matchday","search","ligaQR","players",
     "agendaBuilder","simulator","v38Stats","bracketBuilder","tableExport","motionHub","recruitment",
     "credentialBuilder","tactics","publications","v38Weekly","scheduleChanges","weatherFields",
     "cedulas","cedulaBuilder","rulebook","rankings","leagueTools","news","notices"
   ]);
 
   const REFERENCE_ROUTES=new Set([
-    "leagueTools","search","ligaQR","players","agendaBuilder","v38Alerts","v4-calendar","simulator","v38Stats","recruitment","news","notices"
+    "leagueTools","search","ligaQR","players","agendaBuilder","v38Alerts","simulator","v38Stats","recruitment","news","notices"
   ]);
 
   const TOPBAR_PROPS=['height','min-height','max-height','margin','padding'];
@@ -64,6 +64,23 @@
 
     const route=current();
     const bodyRoute=String(document.body?.dataset?.appRoute||'');
+
+    // V520: Calendario/Partidos usa su barra interna V519.
+    // La topbar global debe permanecer totalmente oculta para evitar duplicado.
+    const calendarOwned=route==='v4-calendar'||bodyRoute==='v4-calendar'||document.body.classList.contains('v415-calendar-active');
+    if(calendarOwned){
+      topbar.classList.remove('v402-tool-topbar-compact','v397-tool-topbar-exact','v403-reference-topbar','v404-missing-pages-topbar');
+      setImp(topbar,'display','none');
+      setImp(topbar,'visibility','hidden');
+      setImp(topbar,'opacity','0');
+      setImp(topbar,'pointer-events','none');
+      setImp(topbar,'height','0');
+      setImp(topbar,'min-height','0');
+      setImp(topbar,'max-height','0');
+      setImp(topbar,'margin','0');
+      setImp(topbar,'padding','0');
+      return;
+    }
 
     // V410: Competición debe mostrar su barra propia desde el primer frame,
     // incluso si venimos de Estadísticas, donde la topbar global se oculta.
