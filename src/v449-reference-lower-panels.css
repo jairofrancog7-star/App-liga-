@@ -1940,3 +1940,106 @@ body.v33-data-active #v449-reference-lower .v449-season-date small{
     font-size:10px!important;
   }
 }
+
+
+/* V497 — calendario inferior: que el scroll llegue al final y que cada cuadro contenga completo el nombre de ambos equipos. */
+body[data-app-route="competition"] #screen{
+  padding-bottom:calc(150px + env(safe-area-inset-bottom))!important;
+  scroll-padding-bottom:calc(150px + env(safe-area-inset-bottom))!important;
+  overflow-y:auto!important;
+}
+body[data-app-route="competition"] #v449-reference-lower{
+  margin-bottom:calc(175px + env(safe-area-inset-bottom))!important;
+  padding-bottom:18px!important;
+}
+#v449-reference-lower .v449-season-panel{
+  width:calc(100% - 14px)!important;
+}
+#v449-reference-lower .v449-season-match-list{
+  width:100%!important;
+  padding:7px!important;
+  gap:7px!important;
+  overflow:hidden!important;
+  border-radius:18px!important;
+}
+#v449-reference-lower .v449-season-match{
+  width:100%!important;
+  min-width:0!important;
+  min-height:68px!important;
+  grid-template-columns:minmax(0,1fr) 36px 44px 36px minmax(0,1fr)!important;
+  gap:4px!important;
+  padding:7px 7px!important;
+  overflow:hidden!important;
+  border:1px solid rgba(93,143,218,.12)!important;
+  border-radius:13px!important;
+  background:#081a38!important;
+  color:#fff!important;
+  font-size:8.7px!important;
+  line-height:1.08!important;
+}
+#v449-reference-lower .v449-season-match>span{
+  min-width:0!important;
+  max-width:100%!important;
+  display:block!important;
+  overflow-wrap:anywhere!important;
+  word-break:normal!important;
+  white-space:normal!important;
+  text-overflow:clip!important;
+  font-size:8.7px!important;
+  font-weight:700!important;
+  line-height:1.08!important;
+}
+#v449-reference-lower .v449-season-match>span:first-child{
+  text-align:right!important;
+}
+#v449-reference-lower .v449-season-match>span:last-child{
+  text-align:left!important;
+}
+#v449-reference-lower .v449-crest.season{
+  width:36px!important;
+  height:36px!important;
+  min-width:36px!important;
+  border-radius:8px!important;
+}
+#v449-reference-lower .v449-season-match>b{
+  min-width:0!important;
+  font-size:11px!important;
+  line-height:1!important;
+  white-space:nowrap!important;
+  text-align:center!important;
+}
+@media(max-width:390px){
+  body[data-app-route="competition"] #screen{
+    padding-bottom:calc(165px + env(safe-area-inset-bottom))!important;
+    scroll-padding-bottom:calc(165px + env(safe-area-inset-bottom))!important;
+  }
+  body[data-app-route="competition"] #v449-reference-lower{
+    margin-bottom:calc(185px + env(safe-area-inset-bottom))!important;
+  }
+  #v449-reference-lower .v449-season-panel{
+    width:calc(100% - 8px)!important;
+    padding-left:8px!important;
+    padding-right:8px!important;
+  }
+  #v449-reference-lower .v449-season-match-list{
+    padding:6px!important;
+  }
+  #v449-reference-lower .v449-season-match{
+    grid-template-columns:minmax(0,1fr) 32px 40px 32px minmax(0,1fr)!important;
+    gap:3px!important;
+    min-height:64px!important;
+    padding:6px 5px!important;
+    font-size:8.2px!important;
+  }
+  #v449-reference-lower .v449-season-match>span{
+    font-size:8.2px!important;
+  }
+  #v449-reference-lower .v449-crest.season{
+    width:32px!important;
+    height:32px!important;
+    min-width:32px!important;
+  }
+  #v449-reference-lower .v449-season-match>b{
+    font-size:10.5px!important;
+  }
+}
