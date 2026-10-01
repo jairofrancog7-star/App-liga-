@@ -548,7 +548,17 @@
         banner.classList.add('v73-below-native','v73-matchcenter-bottom');
         banner.dataset.v73BelowNative='match-center';
       }
-      if(screen.lastElementChild!==banner)screen.appendChild(banner);
+
+      /* V514 — orden estable para que el scroll no se pelee:
+         contenido V92 -> Avisos V413 -> banner cinematográfico V73.
+         Antes V413 y V73 intentaban ser simultáneamente el último hijo de #screen,
+         reordenando el DOM durante el gesto y haciendo imposible llegar al final. */
+      const alerts=screen.querySelector(':scope > #v413-page-design[data-v413-route="v4-matchcenter"],:scope > #v413-page-design[data-v413-route="matchCenter"],:scope > #v413-page-design[data-v413-route="match-center"]');
+      if(alerts){
+        if(alerts.nextElementSibling!==banner)alerts.insertAdjacentElement('afterend',banner);
+      }else if(screen.lastElementChild!==banner){
+        screen.appendChild(banner);
+      }
       syncAll();
       return;
     }
