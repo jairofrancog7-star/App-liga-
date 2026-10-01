@@ -567,3 +567,65 @@ body.v28-scorers-active .v28-scorers-page{
   .v193-scorer-row>strong{font-size:18px}
   .v193-category-buttons{grid-template-columns:1fr}
 }
+
+
+/* V470 — categoría fallback siempre visible y táctil en #/scorers. */
+body.v28-scorers-active .v28-fallback-category{
+  display:grid!important;
+  gap:8px!important;
+  margin:0 0 14px!important;
+  padding:0!important;
+}
+body.v28-scorers-active .v28-fallback-category>span{
+  color:#b8c5ef!important;
+  font-size:10px!important;
+  line-height:1!important;
+  font-weight:800!important;
+  letter-spacing:.08em!important;
+}
+body.v28-scorers-active .v28-fallback-category>div{
+  display:flex!important;
+  gap:7px!important;
+  overflow-x:auto!important;
+  overscroll-behavior-x:contain!important;
+  scrollbar-width:none!important;
+  padding:1px 0 4px!important;
+  -webkit-overflow-scrolling:touch!important;
+}
+body.v28-scorers-active .v28-fallback-category>div::-webkit-scrollbar{display:none!important}
+body.v28-scorers-active .v28-fallback-category button{
+  appearance:none!important;
+  -webkit-appearance:none!important;
+  flex:0 0 auto!important;
+  min-height:34px!important;
+  padding:0 12px!important;
+  border:1px solid rgba(142,164,235,.38)!important;
+  border-radius:10px!important;
+  background:#111477!important;
+  color:#d8def5!important;
+  font-size:11px!important;
+  line-height:1!important;
+  font-weight:800!important;
+  white-space:nowrap!important;
+  touch-action:manipulation!important;
+  pointer-events:auto!important;
+}
+body.v28-scorers-active .v28-fallback-category button.active{
+  border-color:#27dff0!important;
+  background:#17339b!important;
+  color:#fff!important;
+  box-shadow:inset 0 -2px 0 #27dff0!important;
+}
+body.v28-scorers-active .v28-category-empty{
+  min-height:150px!important;
+  display:grid!important;
+  place-items:center!important;
+  align-content:center!important;
+  gap:6px!important;
+  padding:20px!important;
+  border-radius:16px!important;
+  background:#101176!important;
+  color:#fff!important;
+  text-align:center!important;
+}
+body.v28-scorers-active .v28-category-empty span{color:#b7c1e3!important;font-size:12px!important}
