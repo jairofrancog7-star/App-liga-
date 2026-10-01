@@ -2,8 +2,8 @@
    Mantiene la estructura visual V42 y elimina plantillas/estadísticas ficticias. */
 (function(){
 'use strict';
-const LOCAL='./data/official-live.json?v=20260919-official-integrity1';
-const REMOTE='https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/data/official-live.json?v=20260919-official-integrity1';
+const LOCAL='./data/official-live.json?v=20261001-v487-vet35-all-pages';
+const REMOTE='https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/data/official-live.json?v=20261001-v487-vet35-all-pages';
 const SRC='https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/';
 let db=window.LJR_OFFICIAL_DATA||null,loading=null;
 const TEAM_TABS=['summary','matches','standings','squad','stats'];
