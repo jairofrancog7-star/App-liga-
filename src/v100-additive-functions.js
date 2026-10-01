@@ -1548,6 +1548,7 @@ function shotmap(){
     const b=await canvasBlob(c);download(b,'Shot_Map_Liga.png');
   };
 }
+window.LJR_V100_SHOTMAP_OPEN=shotmap;
 async function installApp(){if(installPrompt){installPrompt.prompt();await installPrompt.userChoice;installPrompt=null;return}modal(sectionTitle('INSTALAR APP','Liga Juventino','Si el navegador permite instalación, usa el menú de Chrome → “Instalar aplicación” o “Agregar a pantalla de inicio”.')+'<p class="v100-note">No se muestra un botón de “APK real” porque este repositorio no contiene actualmente un archivo .apk publicado. Así evitamos ofrecer una descarga falsa.</p>')}
 
 /* ---------- V190: RECLUTAMIENTO EN MÁS HERRAMIENTAS ---------- */
