@@ -7,7 +7,8 @@ if(window.__LJR_V144_LIVE__)return;
 window.__LJR_V144_LIVE__=true;
 
 const ROUTES=new Set(['v4-matchcenter','matchCenter','match-center']);
-const DEFAULT_SOURCE='https://www.facebook.com/share/1CBUKPcTCm/';
+const LEGACY_DEFAULT_SOURCE='https://www.facebook.com/share/1CBUKPcTCm/';
+const DEFAULT_SOURCE='';
 const KEY='ljr-match-live-v144:';
 const SOURCE_KEY='ljr-live-source-v144';
 const ALERTS_KEY='ljr-match-alerts-v1';
@@ -36,8 +37,9 @@ function urlLiveSource(){
   }catch(_){return null}
 }
 function freshState(c){
-  let global={url:DEFAULT_SOURCE,name:'Facebook / transmisión externa'};
+  let global={url:DEFAULT_SOURCE,name:''};
   try{global=JSON.parse(localStorage.getItem(SOURCE_KEY)||'null')||global}catch(_){}
+  if(String(global?.url||'')===LEGACY_DEFAULT_SOURCE)global={url:'',name:''};
   const shared=urlLiveSource();if(shared)global=shared;
   return {v:144,key:c.key,home:c.home,away:c.away,source:{url:global.url||'',name:global.name||'',feedUrl:'',connected:false,lastSync:0},phase:'scheduled',firstStartedAt:0,secondStartedAt:0,finishedAt:0,events:[],suggestions:[],lastTranscript:'',updatedAt:now()};
 }
@@ -47,6 +49,11 @@ function load(c){
     if(s&&s.v===144){
       s.home=c.home;s.away=c.away;
       s.source=Object.assign({url:'',name:'',feedUrl:'',connected:false,lastSync:0},s.source||{});
+      if(String(s.source.url||'')===LEGACY_DEFAULT_SOURCE){
+        s.source.url='';s.source.name='';
+        try{localStorage.removeItem(SOURCE_KEY)}catch(_){}
+        save(s,false);
+      }
       const shared=urlLiveSource();
       if(shared){s.source.url=shared.url;s.source.name=shared.name}
       s.events=Array.isArray(s.events)?s.events:[];
@@ -153,8 +160,7 @@ function streamEmbedHtml(s){
   if(!url)return '';
   const p=provider(url);
   if(p.name==='Facebook Live'){
-    const src='https://www.facebook.com/plugins/video.php?href='+encodeURIComponent(url)+'&show_text=false&width=500&autoplay=true';
-    return '<section class="v144-stream-embed"><header><span><small>TRANSMISIÓN EN VIVO</small><b>'+esc(s.source.name||p.name)+'</b></span><i>SIMULTÁNEO</i></header><div class="v144-stream-frame"><iframe src="'+esc(src)+'" title="Facebook Live" loading="lazy" allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share" allowfullscreen></iframe></div><footer><span>Si Facebook bloquea la vista incrustada, abre la transmisión directamente.</span><div><button type="button" data-v144-open>Facebook</button><button type="button" data-v144-share>Compartir Live</button></div></footer></section>';
+    return '<section class="v144-stream-embed fallback facebook"><header><span><small>FACEBOOK LIVE VINCULADO</small><b>'+esc(s.source.name||p.name)+'</b></span><i>EN VIVO</i></header><div class="v144-stream-fallback"><b>Facebook Live</b><span>Chrome Android no puede controlar de forma fiable el video de Facebook dentro de un iframe. Se evita la pantalla negra y se conserva el enlace real del LIVE.</span><div><button type="button" data-v144-open>Abrir Facebook Live</button><button type="button" data-v144-tv-source>Transmitir en TV</button><button type="button" data-v144-share>Compartir Live</button></div></div></section>';
   }
   if(p.name==='YouTube Live'){
     const id=youtubeId(url);
@@ -326,13 +332,32 @@ function modalHtml(s,preferred=''){
     '<button class="v144-save" data-save>Publicar transmisión en Match Center</button></section></div>';
 }
 async function openTvCast(c,s,urlOverride=''){
-  const target=safeLiveUrl(urlOverride||s?.source?.url)||location.href;
+  const source=safeLiveUrl(urlOverride||s?.source?.url);
+  const p=provider(source);
+  let target=source||location.href;
+
+  /* V528: Facebook/TikTok no se mandan como URL cruda a la TV.
+     Muchos televisores/Chrome abren el plugin vacío o una pantalla negra.
+     En su lugar se manda el receptor de Liga TV conservando el LIVE vinculado. */
+  if(source&&(p.key==='facebook'||p.key==='tiktok')){
+    try{
+      const u=new URL(location.href);
+      u.searchParams.set('mode','tv');
+      u.searchParams.set('live',source);
+      u.searchParams.set('liveName',s?.source?.name||p.name);
+      u.searchParams.set('cast','1');
+      u.hash='#/v4-matchcenter';
+      target=u.toString();
+    }catch(_){target=location.href}
+  }
+
   try{
     if(window.LJR_V440_TELEVISADOS&&typeof window.LJR_V440_TELEVISADOS.openCast==='function'){
       window.LJR_V440_TELEVISADOS.openCast(target);
       return;
     }
   }catch(_){}
+
   const media=document.querySelector('.v144-live-hub video,video,audio');
   try{
     if(media&&media.remote&&typeof media.remote.prompt==='function'){
@@ -355,9 +380,9 @@ async function openTvCast(c,s,urlOverride=''){
   }catch(_){}
   try{
     await navigator.clipboard.writeText(target);
-    toast('Enlace copiado. Ábrelo en tu TV o pantalla compatible.');
+    toast('Enlace de Liga TV copiado. Ábrelo en tu TV o pantalla compatible.');
   }catch(_){
-    toast('Tu navegador no permite abrir el selector de TV directamente.');
+    toast('Chrome no puede abrir el selector de TV directamente. Usa Transmitir pantalla del teléfono.');
   }
 }
 function openConfig(c,s,preferred=''){
@@ -427,8 +452,9 @@ function bind(c,s,hub){
     if(url)window.open(url,'_blank','noopener,noreferrer');
     else openConfig(c,s);
   }));
-  $$('[data-v144-share]',hub).forEach(b=>b.addEventListener('click',e=>{stop(e);shareLive(c,s)}));
-  $$('[data-v144-config]',hub).forEach(b=>b.addEventListener('click',e=>{stop(e);openConfig(c,s)}));
+  $('[data-v144-share]',hub).forEach(b=>b.addEventListener('click',e=>{stop(e);shareLive(c,s)}));
+  $('[data-v144-tv-source]',hub).forEach(b=>b.addEventListener('click',e=>{stop(e);openTvCast(c,s)}));
+  $('[data-v144-config]',hub).forEach(b=>b.addEventListener('click',e=>{stop(e);openConfig(c,s)}));
   $$('[data-v144-platform]',hub).forEach(b=>b.addEventListener('click',e=>{
     stop(e);
     openConfig(c,s,b.dataset.v144Platform);
