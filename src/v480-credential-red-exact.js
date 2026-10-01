@@ -6,7 +6,7 @@
 if(window.__LJR_V480_CREDENTIAL__)return;
 window.__LJR_V480_CREDENTIAL__=true;
 
-const BUILD='20261001-v486-logo-asset-packaged';
+const BUILD='20261001-v489-exact-image2-logo-mask';
 const LEAGUE_LOGO='./assets/liga-logo-original.webp?v=20261001-v486-logo';
 const $=(s,r=document)=>r.querySelector(s);
 const norm=v=>String(v||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[^a-z0-9]+/g,' ').trim();
@@ -21,71 +21,34 @@ function loadImage(src){
     im.onerror=()=>resolve(null);
     im.src=src;
   });
-}
-
 let leagueLogoCache=null;
+const LEAGUE_MASK_B64='AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAf4AAAAAAAAAAAAAAAAAPOYAAAAAAAAfwAAAAAAAAAAAAAAAA8///AAAAAAAA/AAAAAAAAAAAAAAAA///+/hgAAAAAA/AAAAAAAAAAAAAAAD///+/ngAAAAAA+AAAAAAAAAAAAAAA7/fwu/njgAAAAA8AAAAAAAAAAAAAAH7/fwO/nzwAAAAA4AAAAAAAAAAAAAAf//f7+//z4AAAAA4AAAAAAAAAAAAAB/9/f///fz4AAAAAwAAAAAAAAAAAAAH/d/f//8/3gAAAAAwAAAAAAAAAAAAAHvc/+//4/3gHAAAAgAAAAAAAAAAAAD/39/MAAw//gPwAAAgAAAAAAAAAAAAD/397AAAA7/4PwAAAAAAAAAAAAAAAAD/78gAAAAB/4P4AAAAAAAAAAAAAAAAB/94AAAAAAH4+/gAAAAAAAAAAAAAAAB/8AAAAAAABw8/wAAAAAAAAAAAAAAAAf4AAAAAAAAB//4AAAAAAAAAAAAAAMAf4AAAAAAAAB//8AAAAAAAAAAAAAAfgfAAAAAAAAAA//+AAAAAAAAAAAAAAfgeAAAD//wAAAf/+AAAAAAAAAAAAAAf8AAAP////8AAC/8AAAAAAAAAAAAAAP+AAA//////AAA/8AAAAAAAAAAAAAGP+AAP/////+AAA/wMAAAAAAAAAAAAPv+AA//////4AAAfwMAAAAAAAAAAAA//4AH//////gAAAHgfAAAAAAAAAAAA//gAP/////+AAAADA/AAAAAAAAAAAA9/gA//////gAAAAAB/gAAAAAAAAAAA9+AB//////AAAAAAD/gAAAAAAAAAAH/8AH/////4AAAAAAP/4AAAAAAAAAAP/4AP/////4AAAAAAH/4AAAAAAAAAAP/4Af/////gAAAAAADo+AAAAAAAAAAP/wB//////gAAAAAADD+AAAAAAAAAAD+AD/////+AAAAAAAAH/AAAAAAAAAAB+AH/////8AAAAAAAAH/AAAAAAAAABw+AP/////wAAAAAAAAH/AAAAAAAAADx+Af/////wAAAAAAAAPfAAAAAAAAAD98A//////AAAAAAAAAP/AAAAAAAAAD/4B//////AAAAAAAAAH7AAAAAAAAAA/wD/////+AAAAAAAAADhAAAAAAAAAAPwH/////8AAAAAAAAAADAAAAAAAAAAHgH/////4AAA4AAAAAAXAAAAAAAAAADAP/////wAAAeAAAAAAfAAAAAAAAAAACf/////wAAAfAAAAAAfAAAAAAAAAAA///////gAAAP4AAAAAeAAAAAAAAAAD///////gAAAP4AAAAAcAAAAAAAAAA////////AAAAH+AAAAAAAAAAAAAAAD////////AAAAD/AAAAADAAAAAAAAA////////+AAAAB//8AAAHAAAAAAAAD////////8AAAAB//8AAAHAAAAAAAA/////////8AAAAB//wAAADAAAAAAAD/////////8AAAAD//gAAADAAAAAAAf/////////8AAACH//AAAABAAAAAAB//////////4AAAf///gAAABAAAAAAf//////////4AAB////gAAAAAAAAAD///////////4APH////gAAAAAAAAAf///////////wAf/////gAAAAAAAAB//////v/////wAP/////wAAAAAAAAf//////f/////wAP/////wAAAAAAAB/////////////wAP/////gAAAAAAAH//////+//////wAf////8AAAAAAAAP//////w//////gA/////4AAAAAAAA////8AAA//////gA/////4AAwAAAAB///AAAAA//////gA/////wADwAAAAAAAAAAAAA//////gAP////4APwAAAAAAAAAAAAI//////gAB////+B/AAAAAAAAAAAAA8//////gAD//////8AAAAAAAAAAAA////////gAD//////wAAAAAAAAAAAP////////gAA//////AAAAAAAAAAAH/////////gAA/////8AAAAAAAAAAAf/////////gAA/////8AAAAAAAAAAP//////////gB//////4AAAAAAAAAH///////////gP//////AAAAAAAAAB////////////j//////8AAAAAAAAAH///////////////////gAAAAAAAAH///////////////////+AAAAAAAAA////////////////////+AAAAAAAAf////////////////////8AAAAAAAA/////////////////////8AAAAAAAD///////////////+/////4AAAAAAAP///////////////wf////4AAAAAAAP////////9//////wf////4AAAAAAAAAd//////9//////wB////4AAAAAAAAAAAAAAAAA//////4Af///wAAAAAAAAAAAAAAAAA//////4Af///wAAAAAAAAAAAAAAAAA//////8AP///gAAAAAAAAAAAAAAAAA//////8Af///gAAAAAAAAAAAAAAAAA//////8f///9gAAAAAAAAAAAAAAAADf////////4A8AAAAAAAAAAAAAAAAH/f////////4AYAAAAAAAAAAAAAAA///P//////+PwAAAAAAAAAAAAAAAAP///v//////+PwAAAAAAAAAAAAAAD////////////8fgAAAAAAAAAAAAAA/////////////8PgAAAAAAAAAAAAAH/////////////4PAAAAAAAAAAAAAAP//////3//////4fAAAAAAAAAAAAAAD//////7//////8eAAAAAAAAAAAAAAAP/////7//////+eAAAAAAAAAAAAAAAAAB///////////cAAAAAAAAAAAAAAAAAAAf/9///////8AAAAAAAAAAAAAAAAAAAAAB///////wAAAAAAAAAAAAAAAAAAAAAB///////wAAAAAAAAAAAAAAAAAAAAAB///////8AAAAAAAAAAAAAAAAAAAAAB///////+YgAAAAAAAA///////////////////////////////////////vg/////////////////8/AAAAAAAAAAAAH///////4AAAAAAAAAAAAAAAAAAAAAH///////8AAAAAAAAAAAAAAAAAAAAAD////////gAAAAAAAAAAAAAAAAAAAAB////////gAAAAAAAAAAAAAAAAAAAAA////////+AAAAAAAAAAAAAAAAAAEMA/////////gAAAAAAAAAAAAAAAAAeeAf////////+AAAAAAAAAAAAAAAAAf+AH////////////gAIAAAAAAAAAAAf/AH////////////wA8AAAAAAAAAAA//gB////////////wD+cAAAAAAAAAAf/wB////////////gD88AAAAAAAAAAPP4Af//////////+ADx4AAAAAAAAAAEP8Af//////////8ADz4AAAAAAAAAAA++AH//////////wAD/wAAAAAAAAAAA//AD//////////wAD/gAAAAAAAAAAA//gA//////////AAB/gAAAAAAAAAAA//gAf////////8AAA/AAAAAAAAAAAAfv8AH////////4AAAAAAAAAAAAAAAAff+AD////////gAIAAAAAAAAAAAAAAAf/gAf//////+AA/CAAAAAAAAAAAAAAf/wAP//////4AA/jAAAAAAAAAAAAAAf/8AB//////AAAf/AAAAAAAAAAAAAAf/+AAf////8AAAf/AAAAAAAAAAAAAAef/gAB////AAB8f8AAAAAAAAAAAAAAA//wAAP//4AAD8f8AAAAAAAAAAAAAAB///AAAAAAAAD8PwAAAAAAAAAAAAAAB///gAAAAAAB3+PgAAAAAAAAAAAAAAA///8AAAAAAB//PAAAAAAAAAAAAAAAAf///AAAAAB5//HAAAAAAAAAAAAAAAAH/7/8AAAAH9//AAAAAAAAAAAAAAAAAD/7//wAAD////AAAAAAAAAAAAAAAAAB/n///w/v/9//AAAAAAAAAAAAAAAAAAHPv//8/////8AAAAAAAAAAAAAAAAAACPv//8/////wAAAA';
 async function transparentLeagueLogo(src){
   if(leagueLogoCache)return leagueLogoCache;
   const im=await loadImage(src);if(!im)return null;
 
-  const iw=im.naturalWidth||im.width||1, ih=im.naturalHeight||im.height||1;
-  const cv=document.createElement('canvas');cv.width=iw;cv.height=ih;
+  /* V489 — máscara sacada exactamente de la IMAGEN 2 del usuario.
+     Mantiene bruja, luna, escoba, letras y contornos como esa referencia.
+     Todo el negro exterior que no aparece en imagen 2 queda transparente. */
+  const W=180,H=150;
+  const cv=document.createElement('canvas');cv.width=W;cv.height=H;
   const q=cv.getContext('2d',{willReadFrequently:true});
-  q.clearRect(0,0,iw,ih);q.drawImage(im,0,0,iw,ih);
+  q.clearRect(0,0,W,H);
+  contained(q,im,0,0,W,H);
 
   let id;
-  try{id=q.getImageData(0,0,iw,ih)}catch(_){return im}
-  const d=id.data,n=iw*ih;
-
-  // Semillas = cualquier píxel que claramente forma parte del dibujo/color del logo.
-  const dist=new Uint16Array(n);
-  dist.fill(65535);
-  const queue=new Int32Array(n);
-  let head=0,tail=0;
-
-  for(let i=0;i<n;i++){
-    const k=i*4,r=d[k],g=d[k+1],b=d[k+2],a=d[k+3];
-    if(a===0)continue;
-    const mx=Math.max(r,g,b),mn=Math.min(r,g,b);
-    if(mx>58 || (mx-mn)>26){
-      dist[i]=0;
-      queue[tail++]=i;
-    }
-  }
-
-  // Contorno negro normal del logo: conservar un radio pequeño.
-  const baseRadius=Math.max(3,Math.round(iw*0.0065));
-  // Zona de la bruja: conservar un radio amplio para que su ropa/sombrero negros no desaparezcan.
-  const witchRadius=Math.max(18,Math.round(iw*0.059));
-  const cx=iw*0.671, cy=ih*0.453, rx=iw*0.254, ry=ih*0.274;
-
-  while(head<tail){
-    const p=queue[head++],dd=dist[p];
-    const x0=p%iw,y0=(p/iw)|0;
-    const nx=(x0-cx)/rx, ny=(y0-cy)/ry;
-    const insideWitch=(nx*nx+ny*ny)<=1;
-    const limit=insideWitch?witchRadius:baseRadius;
-    if(dd>=limit)continue;
-    const nd=dd+1;
-    const visit=v=>{if(v<0||v>=n||dist[v]<=nd)return;dist[v]=nd;queue[tail++]=v};
-    if(x0>0)visit(p-1);
-    if(x0<iw-1)visit(p+1);
-    if(y0>0)visit(p-iw);
-    if(y0<ih-1)visit(p+iw);
-    if(x0>0&&y0>0)visit(p-iw-1);
-    if(x0<iw-1&&y0>0)visit(p-iw+1);
-    if(x0>0&&y0<ih-1)visit(p+iw-1);
-    if(x0<iw-1&&y0<ih-1)visit(p+iw+1);
-  }
-
-  // Fondo negro = todo negro que quedó lejos del dibujo.
-  for(let i=0;i<n;i++){
-    if(dist[i]===65535)d[i*4+3]=0;
+  try{id=q.getImageData(0,0,W,H)}catch(_){return cv}
+  const d=id.data;
+  const raw=atob(LEAGUE_MASK_B64);
+  for(let i=0;i<W*H;i++){
+    const keep=(raw.charCodeAt(i>>3)>>(7-(i&7)))&1;
+    if(!keep)d[i*4+3]=0;
   }
   q.putImageData(id,0,0);
-
   leagueLogoCache=cv;
   return cv;
+}
+
 }
 
 function roundRect(x,a,b,w,h,r){
@@ -215,7 +178,7 @@ async function makeCanvas(){
 
   /* V484: imagen suministrada por el usuario, usada directamente. Sin procesamiento. */
   const league=await transparentLeagueLogo(LEAGUE_LOGO);
-  if(league)contained(x,league,20,12,180,150);
+  if(league)x.drawImage(league,20,12,180,150);
 
   x.textAlign='center';x.textBaseline='alphabetic';
   x.fillStyle='#fff';x.font='900 31px Arial,Helvetica,sans-serif';
