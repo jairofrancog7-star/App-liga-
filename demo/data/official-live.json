@@ -13565,5 +13565,11 @@
   },
   "verified_source": "https://www.juventinorosasliga.com/",
   "verified_date": "2026-10-01",
-  "verified_weekly_report": "https://www.juventinorosasliga.com/reporte-semanal/"
+  "verified_weekly_report": "https://www.juventinorosasliga.com/reporte-semanal/",
+  "verified_at_utc": "2026-10-01T18:40:00Z",
+  "verified_sources": [
+    "https://www.juventinorosasliga.com/",
+    "https://www.juventinorosasliga.com/reporte-semanal/"
+  ],
+  "verified_scope": "Todas las categorías: equipos, posiciones, jornadas, resultados, goleadores, tarjetas/sanciones disponibles, jugadores y logos publicados."
 }
