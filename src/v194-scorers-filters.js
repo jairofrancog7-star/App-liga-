@@ -16,6 +16,7 @@ const CAT_FALLBACK={
 };
 const MODE_KEY='v194-scorer-mode';
 const TEAM_KEY='v194-scorer-team';
+const LOWER_STAT_KEY='v462-scorer-ranking-stat';
 let rendering=false;
 let timer=0;
 let scorerCategoryTapAt=0;
@@ -231,6 +232,39 @@ function scorerListRows(rows){
     '</div>';
   }).join('')+'</div>';
 }
+function lowerStat(){
+  const v=String(localStorage.getItem(LOWER_STAT_KEY)||'goals');
+  return ['goals','shots','passes'].includes(v)?v:'goals';
+}
+function lowerRankingRow(r,i){
+  return '<button type="button" class="v462-rank-row" data-v194-player="'+esc(r.player)+'">'+
+    '<span class="v462-rank-pos">'+String(i+1)+'º</span>'+
+    logoHtml(r.team,'v462-rank-logo')+
+    '<span class="v462-rank-copy"><b>'+esc(r.player)+'</b><small>'+esc(r.team)+'</small></span>'+
+    '<strong>'+esc(r.goals)+'</strong>'+
+  '</button>';
+}
+function lowerRanking(rows){
+  const stat=lowerStat();
+  return '<section class="v462-lower-ranking" data-v462-ranking-below>'+
+    '<div class="v462-ranking-title">RANKING DE JUGADORES</div>'+
+    '<div class="v462-stat-tabs">'+
+      '<button type="button" class="'+(stat==='goals'?'active':'')+'" data-v462-stat="goals">Goles</button>'+
+      '<button type="button" class="'+(stat==='shots'?'active':'')+'" data-v462-stat="shots">Remates</button>'+
+      '<button type="button" class="'+(stat==='passes'?'active':'')+'" data-v462-stat="passes">Pases</button>'+
+    '</div>'+
+    (stat==='goals'
+      ?'<div class="v462-rank-card"><div class="v462-rank-head"><span>POS.</span><span>JUGADOR</span><span>GOLES</span></div>'+
+        '<div class="v462-rank-list">'+rows.slice(0,10).map((r,i)=>lowerRankingRow(r,i)).join('')+'</div></div>'
+      :'<div class="v462-stat-empty"><b>'+esc(stat==='shots'?'Remates':'Pases')+'</b><span>Esta estadística individual todavía no está publicada en los datos oficiales.</span></div>')+
+  '</section>';
+}
+function chooseLowerStat(mode){
+  const v=['goals','shots','passes'].includes(String(mode))?String(mode):'goals';
+  localStorage.setItem(LOWER_STAT_KEY,v);
+  render(true);
+}
+
 function categoryStrip(){
   const active=catId();
   return '<section class="v391-category-wrap" aria-label="Clasificación por categoría">'+
@@ -246,7 +280,7 @@ function referenceScorersView(){
     categoryStrip()+
     '<div class="v391-category-title"><small>'+esc(catName(id))+'</small><span>'+rows.length+' goleador'+(rows.length===1?'':'es')+' publicado'+(rows.length===1?'':'s')+'</span></div>'+
     (rows.length?
-      heroScorerCard(rows[0],1)+heroScorerCard(rows[1],2)+scorerListRows(rows.slice(2)):
+      heroScorerCard(rows[0],1)+heroScorerCard(rows[1],2)+lowerRanking(rows)+scorerListRows(rows.slice(2)):
       '<div class="v391-empty">Todavía no hay goleadores oficiales publicados para '+esc(catName(id))+'.</div>')+
   '</div>';
 }
@@ -255,7 +289,6 @@ function markup(){
   return '<div class="v194-scorers" data-v194-scorers>'+
     referenceScorersView()+
     '<p class="v194-source">Datos oficiales sincronizados'+(source?' · '+esc(new Date(source).toLocaleString('es-MX')):'')+'</p>'+
-    '<div id="v449-reference-lower" class="v449-reference-lower" data-v460-ranking-below-original></div>'+
   '</div>';
 }
 function openTeam(name){
@@ -274,7 +307,7 @@ function forceCategoryRender(){
   if(!page||!db())return false;
   rendering=true;
   try{
-    const signature=[catId(),currentMode(),currentTeam(),db()?.captured_at_utc||''].join('|');
+    const signature=[catId(),currentMode(),currentTeam(),lowerStat(),db()?.captured_at_utc||''].join('|');
     page.dataset.v194Sig=signature;
     page.innerHTML=markup();
     const root=page.querySelector('[data-v194-scorers]');
@@ -329,6 +362,16 @@ function bind(root){
 }
 function delegatedClick(e){
   if(route()!=='scorers'||!(e.target instanceof Element))return;
+  const cat=e.target.closest('[data-v194-cat]');
+  if(cat){
+    e.preventDefault();e.stopPropagation();e.stopImmediatePropagation();
+    chooseCategory(cat.dataset.v194Cat||'3');return;
+  }
+  const stat=e.target.closest('[data-v462-stat]');
+  if(stat){
+    e.preventDefault();e.stopPropagation();e.stopImmediatePropagation();
+    chooseLowerStat(stat.dataset.v462Stat||'goals');return;
+  }
   const mode=e.target.closest('[data-v194-mode]');
   if(mode){
     e.preventDefault();e.stopPropagation();e.stopImmediatePropagation();
@@ -351,7 +394,7 @@ function render(force=false){
   if(rendering||route()!=='scorers'||!db())return;
   const page=document.querySelector('[data-v28-scorers]');
   if(!page)return;
-  const signature=[catId(),currentMode(),currentTeam(),db()?.captured_at_utc||''].join('|');
+  const signature=[catId(),currentMode(),currentTeam(),lowerStat(),db()?.captured_at_utc||''].join('|');
   if(!force&&page.dataset.v194Sig===signature&&page.querySelector('[data-v194-scorers]'))return;
   rendering=true;
   try{
@@ -365,8 +408,10 @@ function schedule(delay=80){
 }
 window.LJR_SCORERS_REFERENCE={
   setCategory:id=>chooseCategory(id),
+  setStat:mode=>chooseLowerStat(mode),
   render:()=>forceCategoryRender(),
-  getCategory:()=>catId()
+  getCategory:()=>catId(),
+  getStat:()=>lowerStat()
 };
 window.LJR_SET_SCORER_CATEGORY=function(id){return chooseCategory(id)};
 /* No pointerup/touchend hard interception here.
