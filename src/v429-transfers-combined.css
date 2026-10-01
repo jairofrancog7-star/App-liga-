@@ -727,3 +727,27 @@ html body[data-app-route="transfers"] .v420-competition-search,
 html body[data-app-route="transfers"] .v420-group-date{
   filter:none!important;
 }
+
+
+/* V495 — controles táctiles estables en Centro de fichajes */
+body[data-app-route="transfers"] .v429-transfers,
+body[data-app-route="transfers"] .v433-transfer-unified-body{
+  overflow-anchor:none!important;
+}
+body[data-app-route="transfers"] .v429-transfers button,
+body[data-app-route="transfers"] .v429-transfers [role="button"]{
+  touch-action:manipulation!important;
+  -webkit-tap-highlight-color:transparent!important;
+  user-select:none!important;
+  -webkit-user-select:none!important;
+}
+body[data-app-route="transfers"] .v429-transfers button:focus{
+  outline:none!important;
+}
+body[data-app-route="transfers"] .v429-transfers button:active{
+  transform:none!important;
+}
+body[data-app-route="transfers"] .v420-filter-menu{
+  position:relative!important;
+  z-index:45!important;
+}
