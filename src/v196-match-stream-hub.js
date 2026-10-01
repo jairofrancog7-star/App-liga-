@@ -581,7 +581,7 @@ function applyFloating(node){
 }
 function render(){
   if(!ROUTES.has(route())){
-    $$$('.v196-modal').forEach(x=>x.remove());
+    $$('.v196-modal').forEach(x=>x.remove());
     if(document.pictureInPictureElement||systemPiPActive){
       document.body.classList.add('v196-floating-player');
       return;
