@@ -299,6 +299,42 @@
               "Jose Manuel Vargas Palacios",
               "TOROS DE CUENDA",
               "1"
+            ],
+            [
+              "1",
+              "MANCHESTER",
+              "14 goles en temporada",
+              "14"
+            ],
+            [
+              "2",
+              "DYNAMO",
+              "9 goles en temporada",
+              "9"
+            ],
+            [
+              "3",
+              "LA ESPERANZA",
+              "6 goles en temporada",
+              "6"
+            ],
+            [
+              "4",
+              "TOROS DE CUENDA",
+              "6 goles en temporada",
+              "6"
+            ],
+            [
+              "5",
+              "BOAVISTA",
+              "5 goles en temporada",
+              "5"
+            ],
+            [
+              "6",
+              "BOCA JRS",
+              "0 goles en temporada",
+              "0"
             ]
           ]
         }
@@ -540,7 +576,7 @@
               "BOCA JRS",
               "-",
               "vs",
-              "1",
+              "-",
               "TOROS DE CUENDA",
               "Campo 1 (Empastado)",
               "26/09/2026 13:30",
@@ -1698,27 +1734,42 @@
         },
         {
           "id": 13,
-          "url": "https://www.juventinorosasliga.com/cedula-arbitral/13/",
+          "url": "https://juventinorosasliga.com/cedula-arbitral/13/",
           "title": "Cédula Arbitral - TOROS DE CUENDA (Veteranos 50+) vs BOAVISTA (Veteranos 50+)",
           "local": "TOROS DE CUENDA",
           "away": "BOAVISTA",
-          "category": "Veteranos 50+"
+          "category": "Veteranos 50+",
+          "date": "05/09/2026 15:30",
+          "local_lineup": [],
+          "away_lineup": [],
+          "local_bench": [],
+          "away_bench": []
         },
         {
           "id": 14,
-          "url": "https://www.juventinorosasliga.com/cedula-arbitral/14/",
+          "url": "https://juventinorosasliga.com/cedula-arbitral/14/",
           "title": "Cédula Arbitral - MANCHESTER (Veteranos 50+) vs DYNAMO (Veteranos 50+)",
           "local": "MANCHESTER",
           "away": "DYNAMO",
-          "category": "Veteranos 50+"
+          "category": "Veteranos 50+",
+          "date": "05/09/2026 17:00",
+          "local_lineup": [],
+          "away_lineup": [],
+          "local_bench": [],
+          "away_bench": []
         },
         {
           "id": 15,
-          "url": "https://www.juventinorosasliga.com/cedula-arbitral/15/",
+          "url": "https://juventinorosasliga.com/cedula-arbitral/15/",
           "title": "Cédula Arbitral - BOCA JRS (Veteranos 50+) vs LA ESPERANZA (Veteranos 50+)",
           "local": "BOCA JRS",
           "away": "LA ESPERANZA",
-          "category": "Veteranos 50+"
+          "category": "Veteranos 50+",
+          "date": "05/09/2026 15:30",
+          "local_lineup": [],
+          "away_lineup": [],
+          "local_bench": [],
+          "away_bench": []
         }
       ],
       "cedulas_scanned": [
@@ -1752,7 +1803,48 @@
           "Jugadores": 0
         },
         "current_cedulas": [],
-        "logo_candidates": []
+        "logo_candidates": [
+          {
+            "source": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/Huracan_pfndn5",
+            "near_text": "HURACAN"
+          },
+          {
+            "source": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/SantiagoCuenda_fvaq9e",
+            "near_text": "CUENDA"
+          },
+          {
+            "source": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/America_wbi53g",
+            "near_text": "AMERICA"
+          },
+          {
+            "source": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/aguilares_ifdgll",
+            "near_text": "AGUILARES"
+          },
+          {
+            "source": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/Juventus_fpshqs",
+            "near_text": "JUVENTUS"
+          },
+          {
+            "source": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/LEYENDAS_jwcnlu",
+            "near_text": "LEYENDAS FC"
+          },
+          {
+            "source": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/Boavista_wioj7b",
+            "near_text": "BOAVISTA"
+          },
+          {
+            "source": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/FrancoTaveraVeteranos_qwrqrc",
+            "near_text": "FRANCO-TAVERA-JR"
+          },
+          {
+            "source": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/PSV_ru3tft",
+            "near_text": "PSV"
+          },
+          {
+            "source": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/La_trinidad_a32pbk",
+            "near_text": "LA TRINIDAD"
+          }
+        ]
       },
       "counts": {
         "Equipos": 10,
@@ -1957,7 +2049,7 @@
           "Equipos": 11,
           "Partidos Jugados": 25,
           "Partidos Pendientes": 30,
-          "Jugadores": 291
+          "Jugadores": 290
         },
         "current_cedulas": [
           96,
@@ -2085,7 +2177,7 @@
         "Equipos": 11,
         "Partidos Jugados": 25,
         "Partidos Pendientes": 30,
-        "Jugadores": 291
+        "Jugadores": 290
       },
       "standings": [
         {
@@ -2329,6 +2421,72 @@
               "Juan Esteban Montecillo Solache",
               "NAPOLI",
               "1"
+            ],
+            [
+              "1",
+              "JUVENTUS",
+              "22 goles en temporada",
+              "22"
+            ],
+            [
+              "2",
+              "SAN JOSE FC",
+              "16 goles en temporada",
+              "16"
+            ],
+            [
+              "3",
+              "LINCES",
+              "15 goles en temporada",
+              "15"
+            ],
+            [
+              "4",
+              "NAPOLI",
+              "11 goles en temporada",
+              "11"
+            ],
+            [
+              "5",
+              "HERMANOS",
+              "9 goles en temporada",
+              "9"
+            ],
+            [
+              "6",
+              "HERRERAS FC",
+              "9 goles en temporada",
+              "9"
+            ],
+            [
+              "7",
+              "ABEJAS",
+              "7 goles en temporada",
+              "7"
+            ],
+            [
+              "8",
+              "TERRICOLAS",
+              "5 goles en temporada",
+              "5"
+            ],
+            [
+              "9",
+              "FRANCO FC",
+              "3 goles en temporada",
+              "3"
+            ],
+            [
+              "10",
+              "LOBOS CDG",
+              "3 goles en temporada",
+              "3"
+            ],
+            [
+              "11",
+              "GALACTICOS",
+              "0 goles en temporada",
+              "0"
             ]
           ]
         }
@@ -2695,7 +2853,7 @@
               "27",
               "6",
               "HERMANOS",
-              "1",
+              "-",
               "vs",
               "-",
               "GALACTICOS",
@@ -4980,35 +5138,55 @@
         },
         {
           "id": 96,
-          "url": "https://www.juventinorosasliga.com/cedula-arbitral/96/",
+          "url": "https://juventinorosasliga.com/cedula-arbitral/96/",
           "title": "Cédula Arbitral - HERMANOS (Primera Fuerza) vs SAN JOSE FC (Primera Fuerza)",
           "local": "HERMANOS",
           "away": "SAN JOSE FC",
-          "category": "Primera Fuerza"
+          "category": "Primera Fuerza",
+          "date": "20/09/2026 10:00",
+          "local_lineup": [],
+          "away_lineup": [],
+          "local_bench": [],
+          "away_bench": []
         },
         {
           "id": 97,
-          "url": "https://www.juventinorosasliga.com/cedula-arbitral/97/",
+          "url": "https://juventinorosasliga.com/cedula-arbitral/97/",
           "title": "Cédula Arbitral - LINCES (Primera Fuerza) vs JUVENTUS (Primera Fuerza)",
           "local": "LINCES",
           "away": "JUVENTUS",
-          "category": "Primera Fuerza"
+          "category": "Primera Fuerza",
+          "date": "20/09/2026 08:00",
+          "local_lineup": [],
+          "away_lineup": [],
+          "local_bench": [],
+          "away_bench": []
         },
         {
           "id": 98,
-          "url": "https://www.juventinorosasliga.com/cedula-arbitral/98/",
+          "url": "https://juventinorosasliga.com/cedula-arbitral/98/",
           "title": "Cédula Arbitral - LOBOS CDG (Primera Fuerza) vs NAPOLI (Primera Fuerza)",
           "local": "LOBOS CDG",
           "away": "NAPOLI",
-          "category": "Primera Fuerza"
+          "category": "Primera Fuerza",
+          "date": "20/09/2026 12:00",
+          "local_lineup": [],
+          "away_lineup": [],
+          "local_bench": [],
+          "away_bench": []
         },
         {
           "id": 99,
-          "url": "https://www.juventinorosasliga.com/cedula-arbitral/99/",
+          "url": "https://juventinorosasliga.com/cedula-arbitral/99/",
           "title": "Cédula Arbitral - TERRICOLAS (Primera Fuerza) vs GALACTICOS (Primera Fuerza)",
           "local": "TERRICOLAS",
           "away": "GALACTICOS",
-          "category": "Primera Fuerza"
+          "category": "Primera Fuerza",
+          "date": "20/09/2026 08:00",
+          "local_lineup": [],
+          "away_lineup": [],
+          "local_bench": [],
+          "away_bench": []
         }
       ],
       "cedulas_scanned": [
@@ -5498,15 +5676,87 @@
             ],
             [
               "20",
+              "Honorio Ochoa Aguilar",
+              "TAVERA FC",
+              "1"
+            ],
+            [
+              "21",
               "Kevin Gustavo Ojeda Ortega",
               "CELTICOS",
               "1"
             ],
             [
-              "21",
-              "Honorio Ochoa Aguilar",
+              "1",
+              "SAN JUAN FC",
+              "18 goles en temporada",
+              "18"
+            ],
+            [
+              "2",
+              "SAN JULIAN",
+              "16 goles en temporada",
+              "16"
+            ],
+            [
+              "3",
+              "CELTICOS",
+              "14 goles en temporada",
+              "14"
+            ],
+            [
+              "4",
+              "SAN ANTONIO FC",
+              "13 goles en temporada",
+              "13"
+            ],
+            [
+              "5",
+              "SAN JOSE JRS",
+              "12 goles en temporada",
+              "12"
+            ],
+            [
+              "6",
+              "BARZA",
+              "11 goles en temporada",
+              "11"
+            ],
+            [
+              "7",
               "TAVERA FC",
-              "1"
+              "10 goles en temporada",
+              "10"
+            ],
+            [
+              "8",
+              "DEP. NOPALERO",
+              "9 goles en temporada",
+              "9"
+            ],
+            [
+              "9",
+              "DEP. LA LUZ",
+              "7 goles en temporada",
+              "7"
+            ],
+            [
+              "10",
+              "DEP. ZAPATA",
+              "7 goles en temporada",
+              "7"
+            ],
+            [
+              "11",
+              "PACHANGAS FC",
+              "6 goles en temporada",
+              "6"
+            ],
+            [
+              "12",
+              "TAPATIO",
+              "5 goles en temporada",
+              "5"
             ]
           ]
         }
@@ -8732,51 +8982,81 @@
         },
         {
           "id": 389,
-          "url": "https://www.juventinorosasliga.com/cedula-arbitral/389/",
+          "url": "https://juventinorosasliga.com/cedula-arbitral/389/",
           "title": "Cédula Arbitral - TAVERA FC (Segunda Fuerza) vs PACHANGAS FC (Segunda Fuerza)",
           "local": "TAVERA FC",
           "away": "PACHANGAS FC",
-          "category": "Segunda Fuerza"
+          "category": "Segunda Fuerza",
+          "date": "20/09/2026 12:00",
+          "local_lineup": [],
+          "away_lineup": [],
+          "local_bench": [],
+          "away_bench": []
         },
         {
           "id": 390,
-          "url": "https://www.juventinorosasliga.com/cedula-arbitral/390/",
+          "url": "https://juventinorosasliga.com/cedula-arbitral/390/",
           "title": "Cédula Arbitral - SAN JUAN FC (Segunda Fuerza) vs TAPATIO (Segunda Fuerza)",
           "local": "SAN JUAN FC",
           "away": "TAPATIO",
-          "category": "Segunda Fuerza"
+          "category": "Segunda Fuerza",
+          "date": "20/09/2026 08:00",
+          "local_lineup": [],
+          "away_lineup": [],
+          "local_bench": [],
+          "away_bench": []
         },
         {
           "id": 391,
-          "url": "https://www.juventinorosasliga.com/cedula-arbitral/391/",
+          "url": "https://juventinorosasliga.com/cedula-arbitral/391/",
           "title": "Cédula Arbitral - SAN JULIAN (Segunda Fuerza) vs DEP. LA LUZ (Segunda Fuerza)",
           "local": "SAN JULIAN",
           "away": "DEP. LA LUZ",
-          "category": "Segunda Fuerza"
+          "category": "Segunda Fuerza",
+          "date": "20/09/2026 10:00",
+          "local_lineup": [],
+          "away_lineup": [],
+          "local_bench": [],
+          "away_bench": []
         },
         {
           "id": 392,
-          "url": "https://www.juventinorosasliga.com/cedula-arbitral/392/",
+          "url": "https://juventinorosasliga.com/cedula-arbitral/392/",
           "title": "Cédula Arbitral - SAN JOSE JRS (Segunda Fuerza) vs BARZA (Segunda Fuerza)",
           "local": "SAN JOSE JRS",
           "away": "BARZA",
-          "category": "Segunda Fuerza"
+          "category": "Segunda Fuerza",
+          "date": "20/09/2026 12:00",
+          "local_lineup": [],
+          "away_lineup": [],
+          "local_bench": [],
+          "away_bench": []
         },
         {
           "id": 393,
-          "url": "https://www.juventinorosasliga.com/cedula-arbitral/393/",
+          "url": "https://juventinorosasliga.com/cedula-arbitral/393/",
           "title": "Cédula Arbitral - SAN ANTONIO FC (Segunda Fuerza) vs CELTICOS (Segunda Fuerza)",
           "local": "SAN ANTONIO FC",
           "away": "CELTICOS",
-          "category": "Segunda Fuerza"
+          "category": "Segunda Fuerza",
+          "date": "20/09/2026 10:00",
+          "local_lineup": [],
+          "away_lineup": [],
+          "local_bench": [],
+          "away_bench": []
         },
         {
           "id": 394,
-          "url": "https://www.juventinorosasliga.com/cedula-arbitral/394/",
+          "url": "https://juventinorosasliga.com/cedula-arbitral/394/",
           "title": "Cédula Arbitral - DEP. NOPALERO (Segunda Fuerza) vs DEP. ZAPATA (Segunda Fuerza)",
           "local": "DEP. NOPALERO",
           "away": "DEP. ZAPATA",
-          "category": "Segunda Fuerza"
+          "category": "Segunda Fuerza",
+          "date": "20/09/2026 08:00",
+          "local_lineup": [],
+          "away_lineup": [],
+          "local_bench": [],
+          "away_bench": []
         }
       ],
       "cedulas_scanned": [
@@ -8821,7 +9101,7 @@
           "Equipos": 13,
           "Partidos Jugados": 28,
           "Partidos Pendientes": 48,
-          "Jugadores": 339
+          "Jugadores": 340
         },
         "current_cedulas": [
           215,
@@ -9002,7 +9282,7 @@
         "Equipos": 13,
         "Partidos Jugados": 28,
         "Partidos Pendientes": 48,
-        "Jugadores": 339
+        "Jugadores": 340
       },
       "standings": [
         {
@@ -9195,217 +9475,217 @@
             ],
             [
               "2",
-              "Luis Gerardo Gonzalez Ruiz",
-              "ATL. GALEANA",
-              "2"
-            ],
-            [
-              "3",
-              "Nestor Huitzache Alvarado",
-              "PROMESAS FC",
-              "2"
-            ],
-            [
-              "4",
               "Juan Pablo Rangel Toledo",
               "ATL. GALEANA",
               "2"
             ],
             [
+              "3",
+              "Luis Gerardo Gonzalez Ruiz",
+              "ATL. GALEANA",
+              "2"
+            ],
+            [
+              "4",
+              "Nestor Huitzache Alvarado",
+              "PROMESAS FC",
+              "2"
+            ],
+            [
               "5",
-              "Emiliano Centeno Gamez",
-              "PROMESAS FC",
-              "1"
-            ],
-            [
-              "6",
-              "Cristian Eduardo Mares Ramirez",
-              "POPULARES",
-              "1"
-            ],
-            [
-              "7",
-              "Oswaldo Gabriel Torres Solorzano",
-              "OSASUNA",
-              "1"
-            ],
-            [
-              "8",
-              "Daniel Yañez Rangel",
-              "ALDAMA FC",
-              "1"
-            ],
-            [
-              "9",
-              "Gustavo Ramirez Nuñez",
-              "MAZACOTES FC",
-              "1"
-            ],
-            [
-              "10",
-              "Giovanni Emanuel Flores Guerrero",
-              "OSASUNA",
-              "1"
-            ],
-            [
-              "11",
-              "ISRAEL HORTELANO CERRITO",
-              "SAN ANTONIO JRS",
-              "1"
-            ],
-            [
-              "12",
-              "Brandon Antwan Guerrero Lopez",
-              "LA CANCHITA DEPORTES",
-              "1"
-            ],
-            [
-              "13",
-              "Jose Emiliano Berdin Guerrero",
-              "POPULARES",
-              "1"
-            ],
-            [
-              "14",
-              "Iker Rodrigo Avecilla Lopez",
-              "MAZACOTES FC",
-              "1"
-            ],
-            [
-              "15",
-              "Javier Ivan Guerrero Jimenez",
-              "ALDAMA FC",
-              "1"
-            ],
-            [
-              "16",
-              "Juan Leonardo Rico Ramos",
-              "LA CUADRILLA",
-              "1"
-            ],
-            [
-              "17",
-              "Juan Carlos Barron Cano",
-              "ALDAMA FC",
-              "1"
-            ],
-            [
-              "18",
-              "Matias Armenta Lara",
-              "PROMESAS FC",
-              "1"
-            ],
-            [
-              "19",
-              "Martin Ramirez Subias",
-              "LA CUADRILLA",
-              "1"
-            ],
-            [
-              "20",
-              "Alessandro Ortega Belman",
-              "ALDAMA FC",
-              "1"
-            ],
-            [
-              "21",
-              "Diego Eduardo Arce Sanchez",
-              "CAPIBARAS",
-              "1"
-            ],
-            [
-              "22",
-              "Eric Fernando Dongu Guerrero",
-              "MALVINAS",
-              "1"
-            ],
-            [
-              "23",
-              "Vladimir Hernandez Luna",
-              "OSASUNA",
-              "1"
-            ],
-            [
-              "24",
-              "JUAN DIEGO CASTILLO CUEVAS",
-              "SAN ANTONIO JRS",
-              "1"
-            ],
-            [
-              "25",
               "Carlos Daniel Tierrablanca Salinas",
               "CAPIBARAS",
               "1"
             ],
             [
-              "26",
+              "6",
+              "Juan Manuel Arcia Calero",
+              "SAN ANTONIO JRS",
+              "1"
+            ],
+            [
+              "7",
+              "Edgar Manuel Landin Ibarra",
+              "ALDAMA FC",
+              "1"
+            ],
+            [
+              "8",
+              "Juan Ignacio Servin Linaldi",
+              "POPULARES",
+              "1"
+            ],
+            [
+              "9",
+              "Emiliano Centeno Gamez",
+              "PROMESAS FC",
+              "1"
+            ],
+            [
+              "10",
               "Jose Luis Zuñiga Gonzalez",
               "ALDAMA FC",
               "1"
             ],
             [
-              "27",
+              "11",
+              "Cristian Eduardo Mares Ramirez",
+              "POPULARES",
+              "1"
+            ],
+            [
+              "12",
+              "Oswaldo Gabriel Torres Solorzano",
+              "OSASUNA",
+              "1"
+            ],
+            [
+              "13",
               "Serafin Galindo De La Cruz",
               "MAZACOTES FC",
               "1"
             ],
             [
-              "28",
+              "14",
               "Marco Antonio Gonzalez Arriaga",
               "CAPIBARAS",
               "1"
             ],
             [
-              "29",
+              "15",
               "Adolfo Linares Alvarez",
               "LA CANCHITA DEPORTES",
               "1"
             ],
             [
-              "30",
+              "16",
+              "Daniel Yañez Rangel",
+              "ALDAMA FC",
+              "1"
+            ],
+            [
+              "17",
               "Diego Tadeo Ramirez Coyote",
               "PROMESAS FC",
               "1"
             ],
             [
-              "31",
+              "18",
               "Ismael Hortelano Cerrito",
               "SAN ANTONIO JRS",
               "1"
             ],
             [
-              "32",
+              "19",
+              "Gustavo Ramirez Nuñez",
+              "MAZACOTES FC",
+              "1"
+            ],
+            [
+              "20",
+              "Giovanni Emanuel Flores Guerrero",
+              "OSASUNA",
+              "1"
+            ],
+            [
+              "21",
               "Jesus Gomez Valadez",
               "ALDAMA FC",
               "1"
             ],
             [
-              "33",
+              "22",
               "Adolfo Celedon Galvan",
               "CAPIBARAS",
               "1"
             ],
             [
-              "34",
+              "23",
               "Manuel Romero Gallardo",
               "MAZACOTES FC",
               "1"
             ],
             [
-              "35",
+              "24",
+              "ISRAEL HORTELANO CERRITO",
+              "SAN ANTONIO JRS",
+              "1"
+            ],
+            [
+              "25",
+              "Brandon Antwan Guerrero Lopez",
+              "LA CANCHITA DEPORTES",
+              "1"
+            ],
+            [
+              "26",
+              "Jose Emiliano Berdin Guerrero",
+              "POPULARES",
+              "1"
+            ],
+            [
+              "27",
+              "Iker Rodrigo Avecilla Lopez",
+              "MAZACOTES FC",
+              "1"
+            ],
+            [
+              "28",
+              "Javier Ivan Guerrero Jimenez",
+              "ALDAMA FC",
+              "1"
+            ],
+            [
+              "29",
+              "Juan Leonardo Rico Ramos",
+              "LA CUADRILLA",
+              "1"
+            ],
+            [
+              "30",
               "Adolfo Angel Alvarez Olvera",
               "LA CANCHITA DEPORTES",
               "1"
             ],
             [
-              "36",
+              "31",
+              "Juan Carlos Barron Cano",
+              "ALDAMA FC",
+              "1"
+            ],
+            [
+              "32",
+              "Matias Armenta Lara",
+              "PROMESAS FC",
+              "1"
+            ],
+            [
+              "33",
+              "Martin Ramirez Subias",
+              "LA CUADRILLA",
+              "1"
+            ],
+            [
+              "34",
+              "Alessandro Ortega Belman",
+              "ALDAMA FC",
+              "1"
+            ],
+            [
+              "35",
               "Pedro Emanuel Figueroa Galvan",
               "LA CUADRILLA",
               "1"
             ],
             [
-              "37",
+              "36",
               "Ivan Franco Montoya",
+              "CAPIBARAS",
+              "1"
+            ],
+            [
+              "37",
+              "Diego Eduardo Arce Sanchez",
               "CAPIBARAS",
               "1"
             ],
@@ -9423,8 +9703,8 @@
             ],
             [
               "40",
-              "Jesus Abraham Gamez Rivera",
-              "PROMESAS FC",
+              "Eric Fernando Dongu Guerrero",
+              "MALVINAS",
               "1"
             ],
             [
@@ -9435,20 +9715,98 @@
             ],
             [
               "42",
-              "Juan Manuel Arcia Calero",
-              "SAN ANTONIO JRS",
+              "Jesus Abraham Gamez Rivera",
+              "PROMESAS FC",
               "1"
             ],
             [
               "43",
-              "Edgar Manuel Landin Ibarra",
-              "ALDAMA FC",
+              "Vladimir Hernandez Luna",
+              "OSASUNA",
               "1"
             ],
             [
               "44",
-              "Juan Ignacio Servin Linaldi",
+              "JUAN DIEGO CASTILLO CUEVAS",
+              "SAN ANTONIO JRS",
+              "1"
+            ],
+            [
+              "1",
+              "LA CANCHITA DEPORTES",
+              "22 goles en temporada",
+              "22"
+            ],
+            [
+              "2",
+              "CAPIBARAS",
+              "18 goles en temporada",
+              "18"
+            ],
+            [
+              "3",
+              "LA CUADRILLA",
+              "15 goles en temporada",
+              "15"
+            ],
+            [
+              "4",
+              "ALDAMA FC",
+              "12 goles en temporada",
+              "12"
+            ],
+            [
+              "5",
+              "ATL. GALEANA",
+              "12 goles en temporada",
+              "12"
+            ],
+            [
+              "6",
+              "PROMESAS FC",
+              "11 goles en temporada",
+              "11"
+            ],
+            [
+              "7",
+              "SAN ANTONIO JRS",
+              "11 goles en temporada",
+              "11"
+            ],
+            [
+              "8",
+              "MALVINAS",
+              "10 goles en temporada",
+              "10"
+            ],
+            [
+              "9",
+              "MAZACOTES FC",
+              "8 goles en temporada",
+              "8"
+            ],
+            [
+              "10",
               "POPULARES",
+              "7 goles en temporada",
+              "7"
+            ],
+            [
+              "11",
+              "OSASUNA",
+              "6 goles en temporada",
+              "6"
+            ],
+            [
+              "12",
+              "LA HUERTA",
+              "5 goles en temporada",
+              "5"
+            ],
+            [
+              "13",
+              "DEP. MARAVILLAS",
+              "1 goles en temporada",
               "1"
             ]
           ]
@@ -12795,51 +13153,81 @@
         },
         {
           "id": 215,
-          "url": "https://www.juventinorosasliga.com/cedula-arbitral/215/",
+          "url": "https://juventinorosasliga.com/cedula-arbitral/215/",
           "title": "Cédula Arbitral - LA CANCHITA DEPORTES (Intermedia) vs ATL. GALEANA (Intermedia)",
           "local": "LA CANCHITA DEPORTES",
           "away": "ATL. GALEANA",
-          "category": "Intermedia"
+          "category": "Intermedia",
+          "date": "20/09/2026 10:00",
+          "local_lineup": [],
+          "away_lineup": [],
+          "local_bench": [],
+          "away_bench": []
         },
         {
           "id": 216,
-          "url": "https://www.juventinorosasliga.com/cedula-arbitral/216/",
+          "url": "https://juventinorosasliga.com/cedula-arbitral/216/",
           "title": "Cédula Arbitral - ALDAMA FC (Intermedia) vs MALVINAS (Intermedia)",
           "local": "ALDAMA FC",
           "away": "MALVINAS",
-          "category": "Intermedia"
+          "category": "Intermedia",
+          "date": "20/09/2026 10:00",
+          "local_lineup": [],
+          "away_lineup": [],
+          "local_bench": [],
+          "away_bench": []
         },
         {
           "id": 217,
-          "url": "https://www.juventinorosasliga.com/cedula-arbitral/217/",
+          "url": "https://juventinorosasliga.com/cedula-arbitral/217/",
           "title": "Cédula Arbitral - CAPIBARAS (Intermedia) vs LA CUADRILLA (Intermedia)",
           "local": "CAPIBARAS",
           "away": "LA CUADRILLA",
-          "category": "Intermedia"
+          "category": "Intermedia",
+          "date": "20/09/2026 10:00",
+          "local_lineup": [],
+          "away_lineup": [],
+          "local_bench": [],
+          "away_bench": []
         },
         {
           "id": 218,
-          "url": "https://www.juventinorosasliga.com/cedula-arbitral/218/",
+          "url": "https://juventinorosasliga.com/cedula-arbitral/218/",
           "title": "Cédula Arbitral - MAZACOTES FC (Intermedia) vs DEP. MARAVILLAS (Intermedia)",
           "local": "MAZACOTES FC",
           "away": "DEP. MARAVILLAS",
-          "category": "Intermedia"
+          "category": "Intermedia",
+          "date": "20/09/2026 08:00",
+          "local_lineup": [],
+          "away_lineup": [],
+          "local_bench": [],
+          "away_bench": []
         },
         {
           "id": 219,
-          "url": "https://www.juventinorosasliga.com/cedula-arbitral/219/",
+          "url": "https://juventinorosasliga.com/cedula-arbitral/219/",
           "title": "Cédula Arbitral - POPULARES (Intermedia) vs PROMESAS FC (Intermedia)",
           "local": "POPULARES",
           "away": "PROMESAS FC",
-          "category": "Intermedia"
+          "category": "Intermedia",
+          "date": "20/09/2026 08:00",
+          "local_lineup": [],
+          "away_lineup": [],
+          "local_bench": [],
+          "away_bench": []
         },
         {
           "id": 220,
-          "url": "https://www.juventinorosasliga.com/cedula-arbitral/220/",
+          "url": "https://juventinorosasliga.com/cedula-arbitral/220/",
           "title": "Cédula Arbitral - OSASUNA (Intermedia) vs SAN ANTONIO JRS (Intermedia)",
           "local": "OSASUNA",
           "away": "SAN ANTONIO JRS",
-          "category": "Intermedia"
+          "category": "Intermedia",
+          "date": "20/09/2026 12:00",
+          "local_lineup": [],
+          "away_lineup": [],
+          "local_bench": [],
+          "away_bench": []
         }
       ],
       "cedulas_scanned": [
@@ -13081,8 +13469,6 @@
     "Datos deportivos públicos; no se recopilan CURP, INE, domicilio ni documentos.",
     "La fuente oficial juventinorosasliga.com prevalece sobre este snapshot.",
     "No se inventan goles, alineaciones, estadísticas avanzadas ni sanciones.",
-    "Jornada 6: se conservan marcas de partidos jugados ya confirmadas en la app azul; los marcadores solo se conservan cuando ya estaban documentados.",
-    "Veteranos 35+: se conserva la última tabla documentada existente porque AdminFut no expone una temporada pública activa para esta categoría en el sincronizador actual.",
     "Rol actualizado desde publicación oficial: Veteranos 35+ amistoso y Torneo de Copa J7 para 3–4 octubre 2026."
   ],
   "missing_official_logo": [
@@ -13090,7 +13476,7 @@
     "GALACTICOS"
   ],
   "checks": {
-    "primera_dashboard_players": 291,
+    "primera_dashboard_players": 290,
     "primera_roster_unique": 291,
     "team_logos_known": 41,
     "categories": 5
