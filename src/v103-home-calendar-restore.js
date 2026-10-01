@@ -95,6 +95,15 @@ function homeGroupKind(games){
   if(cats.length&&cats.every(x=>/veteranos/i.test(x)))return 'VETERANOS';
   return 'PRIMERA · INTERMEDIA · SEGUNDA';
 }
+function homeCategoryShort(name){
+  const n=norm(name);
+  if(n.includes('veteranos 50'))return 'Vet. 50+';
+  if(n.includes('veteranos 35'))return 'Vet. 35+';
+  if(n.includes('primera'))return 'Primera';
+  if(n.includes('intermedia'))return 'Intermedia';
+  if(n.includes('segunda'))return 'Segunda';
+  return String(name||'');
+}
 function homeUpcomingMarkup(){
   const all=calendarGames();
   const today=new Date();
@@ -120,11 +129,10 @@ function homeUpcomingMarkup(){
       group.games.map((g,i)=>
         '<button type="button" class="v103-upcoming-match'+(i?' is-second':'')+'" data-route="competition" aria-label="'+esc(g.home)+' contra '+esc(g.away)+'">'+
           '<span class="v103-upcoming-team home"><b>'+esc(g.home)+'</b>'+teamMark(g.home)+'</span>'+
-          '<span class="v103-upcoming-center"><strong>'+esc(/GANA\s+/i.test(g.status||'')?(g.status||'').replace(/^.*?(GANA\s+)/i,'$1'):g.time)+'</strong><small>'+esc(g.category)+'</small></span>'+
+          '<span class="v103-upcoming-center"><strong>'+esc(/GANA\s+/i.test(g.status||'')?(g.status||'').replace(/^.*?(GANA\s+)/i,'$1'):g.time)+'</strong><small>'+esc(homeCategoryShort(g.category))+'</small></span>'+
           '<span class="v103-upcoming-team away">'+teamMark(g.away)+'<b>'+esc(g.away)+'</b></span>'+
         '</button>'
       ).join('')+
-      (group.all.length>group.games.length?'<button type="button" class="v103-upcoming-more" data-safe-route="v4-calendar">+'+(group.all.length-group.games.length)+' partidos · Ver calendario</button>':'')+
     '</div>'
   ).join(''):'<div class="v103-cal-empty">Cargando próximos partidos oficiales…</div>';
   return '<div class="v103-upcoming-wrap" data-v103-upcoming>'+
