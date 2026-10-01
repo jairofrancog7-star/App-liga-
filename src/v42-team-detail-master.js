@@ -9,6 +9,7 @@ let db=window.LJR_OFFICIAL_DATA||null,loading=null;
 const TEAM_TABS=['summary','matches','standings','squad','stats'];
 let activeTab=localStorage.getItem('v42-team-tab')||'summary';
 let notifyOpen=false,compareOpen=false,compareTarget='';
+let followSheetOpen=false,lastFollowTap=0;
 
 function route(){return location.hash.replace(/^#\//,'').split('?')[0]||'home'}
 function tabFromHash(){
@@ -101,7 +102,7 @@ function openOfficialTeamProfile(name,openCompare=false){
  localStorage.setItem('v62-category',String(found.catId));
  localStorage.setItem('v27-selected-team',slug(found.name));
  activeTab='summary';localStorage.setItem('v42-team-tab','summary');
- notifyOpen=false;compareOpen=!!openCompare;compareTarget='';
+ notifyOpen=false;compareOpen=!!openCompare;compareTarget='';followSheetOpen=false;lastFollowTap=0;
  if(openCompare)localStorage.setItem('v42-open-compare','1');else localStorage.removeItem('v42-open-compare');
  const nextHash=teamHash('summary');
  if(location.hash!==nextHash)location.hash=nextHash;else render();
@@ -117,13 +118,25 @@ function logoUrl(name){
 function backIcon(){return '<svg viewBox="0 0 32 32"><path d="M20.5 7.5 12 16l8.5 8.5M12.5 16H27"/></svg>'}
 function bellIcon(){return '<svg viewBox="0 0 24 24"><path d="M6 17h12l-1.4-2.3V10a4.6 4.6 0 0 0-9.2 0v4.7L6 17Z"/><path d="M10 19a2 2 0 0 0 4 0"/></svg>'}
 function shareIcon(){return '<svg viewBox="0 0 24 24"><circle cx="18" cy="5" r="2.3"/><circle cx="6" cy="12" r="2.3"/><circle cx="18" cy="19" r="2.3"/><path d="m8 11 8-5M8 13l8 5"/></svg>'}
-function checkIcon(){return '<svg viewBox="0 0 20 20" aria-hidden="true"><path d="M10 3.5v13M3.5 10h13"/></svg>'}
+function plusIcon(){return '<svg viewBox="0 0 20 20" aria-hidden="true"><path d="M10 3.5v13M3.5 10h13"/></svg>'}
+function checkIcon(){return '<svg viewBox="0 0 20 20" aria-hidden="true"><path d="m3.5 10.2 4 4.1 9-9"/></svg>'}
+function starIcon(){return '<svg viewBox="0 0 40 40" aria-hidden="true"><path d="m20 5 4.5 9.1 10 1.5-7.2 7 1.7 10-9-4.7-9 4.7 1.7-10-7.2-7 10-1.5Z"/></svg>'}
 function dotsIcon(){return '<svg viewBox="0 0 24 24"><circle cx="12" cy="5" r="1.5"/><circle cx="12" cy="12" r="1.5"/><circle cx="12" cy="19" r="1.5"/></svg>'}
 function store(){try{return JSON.parse(localStorage.getItem('lj-store-v3')||'{}')||{}}catch(e){return {}}}
 function save(st){localStorage.setItem('lj-store-v3',JSON.stringify(st))}
 function followId(){return slug(selectedName())}
 function followed(){return (store().followed||[]).includes(followId())}
-function toggleFollow(){const st=store(),a=Array.isArray(st.followed)?st.followed.slice():[],id=followId(),i=a.indexOf(id);if(i>=0)a.splice(i,1);else a.push(id);st.followed=a;save(st)}
+function isFavorite(){return (store().favorites||[]).includes('team:'+followId())}
+function setFollow(on){
+ const st=store(),a=Array.isArray(st.followed)?st.followed.slice():[],id=followId();
+ st.followed=on?[...new Set([...a,id])]:a.filter(x=>x!==id);
+ save(st);
+}
+function toggleFavorite(){
+ const st=store(),a=Array.isArray(st.favorites)?st.favorites.slice():[],key='team:'+followId();
+ st.favorites=a.includes(key)?a.filter(x=>x!==key):[...new Set([...a,key])];
+ save(st);
+}
 function mini(name){return '<span class="v42-mini-team"><img src="'+esc(logoUrl(name))+'" alt="" loading="lazy"><b>'+esc(name)+'</b></span>'}
 function dateParts(v){const m=String(v||'').match(/(\d{1,2})\/(\d{1,2})\/(\d{4})\s+(\d{1,2}:\d{2})/);return m?{date:m[1]+'/'+m[2]+'/'+m[3],time:m[4]}:{date:String(v||''),time:''}}
 function scoreFor(r,name){
@@ -230,28 +243,63 @@ function compareSheet(t){
    '<div class="v42-compare-grid">'+peers.map(r=>'<button type="button" data-v42-compare-name="'+esc(r[1])+'"><img src="'+esc(logoUrl(r[1]))+'" alt="'+esc(r[1])+'"><span>'+esc(r[1])+'</span></button>').join('')+'</div>'+
  '</section></div>';
 }
+function followActionSheet(t){
+ if(!followSheetOpen||!followed())return '';
+ const fav=isFavorite();
+ return '<div class="v28-sheet-layer v42-follow-sheet-layer" data-v42-follow-sheet>'+
+   '<button type="button" class="v28-sheet-backdrop" data-v42-close-follow-sheet aria-label="Cerrar"></button>'+
+   '<section class="v28-sheet v42-follow-sheet" role="dialog" aria-modal="true" aria-label="Opciones de '+esc(t.name)+'" onclick="event.stopPropagation()">'+
+     '<div class="v28-sheet-team"><span class="v28-logo big"><img src="'+esc(logoUrl(t.name))+'" alt="'+esc(t.name)+'"></span><strong>'+esc(t.name)+'</strong></div>'+
+     '<div class="v28-divider"></div>'+
+     '<button type="button" class="v28-sheet-action '+(fav?'selected':'')+'" data-v42-favorite-team>'+starIcon()+'<span>Equipo favorito</span></button>'+
+     '<button type="button" class="v28-sheet-action" data-v42-unfollow-team><b>−</b><span>Dejar de seguir</span></button>'+
+   '</section>'+
+  '</div>';
+}
 function markup(){
  const t=teamData();if(!t)return '<div class="empty-mini">Equipo no disponible.</div>';
  return '<section class="v42-team-page" data-v42-reference="teamDetail"><header class="v42-hero">'+
   '<div class="v42-neon" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div>'+
   '<div class="v42-top-actions"><button type="button" class="v42-back" data-v42-back aria-label="Volver">'+backIcon()+'</button><div class="v42-top-right"><button type="button" class="v42-bell" data-v42-bell>'+bellIcon()+'</button><button type="button" class="v42-more" data-v42-share>'+shareIcon()+'</button></div></div>'+
   '<img class="v42-team-crest" src="'+esc(logoUrl(t.name))+'" alt="'+esc(t.name)+'"><div class="v42-title"><h1>'+esc(t.name)+'</h1><p>'+esc(t.category)+' · Juventino Rosas, Guanajuato</p></div>'+
-  '<div class="v42-actions"><button type="button" class="v42-follow '+(followed()?'active':'')+'" data-v42-follow>'+checkIcon()+'<span>'+(followed()?'Siguiendo':'Seguir')+'</span></button><button type="button" class="v42-compare" data-v42-compare>Comparar</button><button type="button" class="v42-share" data-v42-share aria-label="Compartir">'+shareIcon()+'</button></div>'+
+  '<div class="v42-actions"><button type="button" class="v42-follow '+(followed()?'active':'')+'" data-v42-follow aria-pressed="'+(followed()?'true':'false')+'">'+(followed()?checkIcon():plusIcon())+'<span>'+(followed()?'Siguiendo':'Seguir')+'</span></button><button type="button" class="v42-compare" data-v42-compare>Comparar</button><button type="button" class="v42-share" data-v42-share aria-label="Compartir">'+shareIcon()+'</button></div>'+
   '<nav class="v42-tabs"><button class="'+(activeTab==='summary'?'active':'')+'" data-v42-tab="summary">Resumen</button><button class="'+(activeTab==='matches'?'active':'')+'" data-v42-tab="matches">Partidos</button><button class="'+(activeTab==='standings'?'active':'')+'" data-v42-tab="standings">Clasificación</button><button class="'+(activeTab==='squad'?'active':'')+'" data-v42-tab="squad">Plantilla</button><button class="'+(activeTab==='stats'?'active':'')+'" data-v42-tab="stats">Estadísticas</button></nav>'+
-  '</header>'+body(t)+lowerActionsMarkup(t)+notifySheet(t)+compareSheet(t)+'</section>';
+  '</header>'+body(t)+lowerActionsMarkup(t)+notifySheet(t)+compareSheet(t)+followActionSheet(t)+'</section>';
 }
 function toast(msg){document.querySelector('.v42-toast')?.remove();const n=document.createElement('div');n.className='v42-toast';n.textContent=msg;document.body.appendChild(n);setTimeout(()=>n.remove(),1500)}
 function share(){const t=teamData();const p={title:t?.name||'Liga Juventino',text:'Liga Municipal de Fútbol Juventino Rosas · '+(t?.name||''),url:location.href};if(navigator.share)navigator.share(p).catch(()=>{});else navigator.clipboard?.writeText(location.href).then(()=>toast('Enlace copiado')).catch(()=>{})}
 function nav(){/* Global nav active state is owned by V34. */}
 function bind(){
  document.querySelector('[data-v42-back]')?.addEventListener('click',()=>history.length>1?history.back():location.hash='#/teams',{once:true});
- document.querySelector('[data-v42-follow]')?.addEventListener('click',()=>{toggleFollow();render()},{once:true});
- document.querySelector('[data-v42-bell]')?.addEventListener('click',()=>{notifyOpen=true;render()},{once:true});
+ const followButton=document.querySelector('[data-v42-follow]');
+ if(followButton)followButton.addEventListener('click',e=>{
+   e.preventDefault();e.stopPropagation();
+   if(!followed()){
+     setFollow(true);
+     followSheetOpen=false;
+     lastFollowTap=0;
+     render();
+     return;
+   }
+   const now=Date.now();
+   if(lastFollowTap&&now-lastFollowTap<=430){
+     lastFollowTap=0;
+     followSheetOpen=true;
+     render();
+   }else{
+     lastFollowTap=now;
+     setTimeout(()=>{if(Date.now()-lastFollowTap>=430)lastFollowTap=0},460);
+   }
+ });
+ document.querySelector('[data-v42-close-follow-sheet]')?.addEventListener('click',e=>{e.preventDefault();followSheetOpen=false;render()},{once:true});
+ document.querySelector('[data-v42-favorite-team]')?.addEventListener('click',e=>{e.preventDefault();e.stopPropagation();toggleFavorite();render()},{once:true});
+ document.querySelector('[data-v42-unfollow-team]')?.addEventListener('click',e=>{e.preventDefault();e.stopPropagation();setFollow(false);followSheetOpen=false;lastFollowTap=0;render()},{once:true});
+ document.querySelector('[data-v42-bell]')?.addEventListener('click',()=>{notifyOpen=true;followSheetOpen=false;render()},{once:true});
  document.querySelectorAll('[data-v42-share]').forEach(b=>b.addEventListener('click',share,{once:true}));
- document.querySelectorAll('[data-v42-compare]').forEach(b=>b.addEventListener('click',e=>{e.preventDefault();e.stopPropagation();compareOpen=true;compareTarget='';render()},{once:true}));
+ document.querySelectorAll('[data-v42-compare]').forEach(b=>b.addEventListener('click',e=>{e.preventDefault();e.stopPropagation();followSheetOpen=false;compareOpen=true;compareTarget='';render()},{once:true}));
  document.querySelector('[data-v42-close-notify]')?.addEventListener('click',()=>{notifyOpen=false;render()},{once:true});
  document.querySelector('[data-v42-close-compare]')?.addEventListener('click',()=>{compareOpen=false;compareTarget='';render()},{once:true});
- document.querySelectorAll('[data-v42-close-overlay]').forEach(x=>x.addEventListener('click',()=>{notifyOpen=false;compareOpen=false;render()},{once:true}));
+ document.querySelectorAll('[data-v42-close-overlay]').forEach(x=>x.addEventListener('click',()=>{notifyOpen=false;compareOpen=false;followSheetOpen=false;render()},{once:true}));
  const tabsNav=document.querySelector('.v42-tabs');
  if(tabsNav)tabsNav.addEventListener('click',e=>{
    const rect=tabsNav.getBoundingClientRect();
@@ -277,7 +325,7 @@ function bind(){
    location.hash='#/playerDetail';
  },{once:true}));
 }
-async function render(){const active=route()==='teamDetail';document.body.classList.toggle('v42-team-active',active);if(!active)return;const hashTab=tabFromHash();if(hashTab){activeTab=hashTab;localStorage.setItem('v42-team-tab',hashTab)}await load();if(!db||route()!=='teamDetail')return;if(localStorage.getItem('v42-open-compare')==='1'){compareOpen=true;localStorage.removeItem('v42-open-compare')}const screen=document.querySelector('#screen');if(!screen)return;screen.innerHTML=markup();bind();nav()}
+async function render(){const active=route()==='teamDetail';document.body.classList.toggle('v42-team-active',active);document.body.classList.toggle('v42-follow-sheet-open',active&&followSheetOpen);if(!active){followSheetOpen=false;lastFollowTap=0;return;}const hashTab=tabFromHash();if(hashTab){activeTab=hashTab;localStorage.setItem('v42-team-tab',hashTab)}await load();if(!db||route()!=='teamDetail')return;if(localStorage.getItem('v42-open-compare')==='1'){compareOpen=true;localStorage.removeItem('v42-open-compare')}const screen=document.querySelector('#screen');if(!screen)return;screen.innerHTML=markup();bind();nav()}
 function schedule(){requestAnimationFrame(()=>requestAnimationFrame(render))}
 
 /* V93 — desde tablas, rankings, tarjetas y nombres de equipos vuelve a abrirse
