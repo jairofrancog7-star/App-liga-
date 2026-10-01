@@ -6,7 +6,7 @@
 if(window.__LJR_V480_CREDENTIAL__)return;
 window.__LJR_V480_CREDENTIAL__=true;
 
-const BUILD='20261001-v494-face-auto-center';
+const BUILD='20261001-v495-face-landmark-center';
 const LEAGUE_LOGO_PARTS=[
   './assets/credential-logo-v491-0.txt',
   './assets/credential-logo-v491-1.txt',
@@ -96,22 +96,46 @@ function detectorCanvas(img){
   q.drawImage(img,0,0,cw,ch);
   return {cv,scaleX:w/cw,scaleY:h/ch};
 }
-function largestBox(list){
-  return (list||[]).filter(Boolean).sort((a,b)=>(b.width*b.height)-(a.width*a.height))[0]||null;
+function faceArea(b){return Math.max(0,Number(b?.width||0))*Math.max(0,Number(b?.height||0))}
+function pickFace(candidates,iw,ih){
+  const list=(candidates||[]).filter(x=>x?.box&&faceArea(x.box)>64);
+  if(!list.length)return null;
+  const cx=iw/2,cy=ih*.42,diag=Math.hypot(iw,ih)||1;
+  list.sort((a,b)=>{
+    const acx=a.box.x+a.box.width/2,acy=a.box.y+a.box.height/2;
+    const bcx=b.box.x+b.box.width/2,bcy=b.box.y+b.box.height/2;
+    const ad=Math.hypot(acx-cx,acy-cy)/diag,bd=Math.hypot(bcx-cx,bcy-cy)/diag;
+    const as=(a.score||.5)*1.4+(faceArea(a.box)/(iw*ih))*3-ad*.35;
+    const bs=(b.score||.5)*1.4+(faceArea(b.box)/(iw*ih))*3-bd*.35;
+    return bs-as;
+  });
+  return list[0];
 }
-async function nativeFaceBox(img){
+function avgPoint(points){
+  const p=(points||[]).filter(v=>Number.isFinite(v?.x)&&Number.isFinite(v?.y));
+  if(!p.length)return null;
+  return {x:p.reduce((s,v)=>s+v.x,0)/p.length,y:p.reduce((s,v)=>s+v.y,0)/p.length};
+}
+async function nativeFaceProfile(img){
   if(typeof window.FaceDetector!=='function')return null;
   try{
+    const {w:iw,h:ih}=imageSize(img);
     const {cv,scaleX,scaleY}=detectorCanvas(img);
-    const detector=new window.FaceDetector({fastMode:true,maxDetectedFaces:3});
+    const detector=new window.FaceDetector({fastMode:false,maxDetectedFaces:5});
     const faces=await detector.detect(cv);
-    const b=largestBox(faces.map(f=>f?.boundingBox&&({
-      x:f.boundingBox.x*scaleX,
-      y:f.boundingBox.y*scaleY,
-      width:f.boundingBox.width*scaleX,
-      height:f.boundingBox.height*scaleY
-    })));
-    return b;
+    const profiles=(faces||[]).map(f=>{
+      const z=f?.boundingBox;if(!z)return null;
+      const box={x:z.x*scaleX,y:z.y*scaleY,width:z.width*scaleX,height:z.height*scaleY};
+      const eyePts=[];
+      for(const lm of (f.landmarks||[])){
+        const type=String(lm?.type||'').toLowerCase();
+        if(type.includes('eye')){
+          for(const p of (lm.locations||[])) eyePts.push({x:p.x*scaleX,y:p.y*scaleY});
+        }
+      }
+      return {box,eyes:avgPoint(eyePts),score:1,source:'native'};
+    });
+    return pickFace(profiles,iw,ih);
   }catch(_){return null}
 }
 async function mediaPipeFaceDetector(){
@@ -126,76 +150,102 @@ async function mediaPipeFaceDetector(){
         modelAssetPath:'https://storage.googleapis.com/mediapipe-models/face_detector/blaze_face_short_range/float16/latest/blaze_face_short_range.tflite'
       },
       runningMode:'IMAGE',
-      minDetectionConfidence:.48
+      minDetectionConfidence:.35,
+      minSuppressionThreshold:.30
     });
-  })().catch(()=>null);
+  })().catch(err=>{
+    console.warn('[V495 face detector]',err);
+    return null;
+  });
   return mediaPipeFacePromise;
 }
-async function mediaPipeFaceBox(img){
+async function mediaPipeFaceProfile(img){
   try{
     const detector=await mediaPipeFaceDetector();if(!detector)return null;
+    const {w:iw,h:ih}=imageSize(img);
     const {cv,scaleX,scaleY}=detectorCanvas(img);
     const result=detector.detect(cv);
-    const b=largestBox((result?.detections||[]).map(d=>{
+    const profiles=(result?.detections||[]).map(d=>{
       const z=d?.boundingBox;if(!z)return null;
-      return {
+      const box={
         x:Number(z.originX||0)*scaleX,
         y:Number(z.originY||0)*scaleY,
         width:Number(z.width||0)*scaleX,
         height:Number(z.height||0)*scaleY
       };
-    }));
-    return b;
-  }catch(_){return null}
+      const kp=(d.keypoints||[]).map(p=>({
+        x:Number(p.x||0)*cv.width*scaleX,
+        y:Number(p.y||0)*cv.height*scaleY
+      }));
+      /* BlazeFace: los dos primeros puntos son los ojos. */
+      const eyes=kp.length>=2?avgPoint([kp[0],kp[1]]):null;
+      const score=Number(d.categories?.[0]?.score||d.score||.5);
+      return {box,eyes,keypoints:kp,score,source:'mediapipe'};
+    });
+    return pickFace(profiles,iw,ih);
+  }catch(err){
+    console.warn('[V495 face detection]',err);
+    return null;
+  }
 }
-async function playerFaceBox(img,file){
+async function playerFaceProfile(img,file){
   if(!img||!file)return null;
   const key=[file.name,file.size,file.lastModified].join('|');
   if(faceCache.has(key))return await faceCache.get(key);
   const job=(async()=>{
-    let b=await nativeFaceBox(img);
-    if(!b)b=await mediaPipeFaceBox(img);
-    return b||null;
+    /* Primero el detector nativo si existe. Si no entrega ojos, MediaPipe
+       aporta puntos faciales para centrar con mayor precisión. */
+    const native=await nativeFaceProfile(img);
+    if(native?.eyes)return native;
+    const mp=await mediaPipeFaceProfile(img);
+    return mp||native||null;
   })();
   faceCache.set(key,job);
   return await job;
 }
-function faceCrop(img,destW,destH,face){
+function faceCrop(img,destW,destH,profile){
   const {w:iw,h:ih}=imageSize(img),aspect=destW/destH||1;
   let sw,sh,sx,sy;
 
-  if(face&&face.width>8&&face.height>8){
-    /* 2.55× la cara: mantiene rostro grande, cabello completo y parte de hombros. */
-    const faceSize=Math.max(face.width,face.height);
-    sw=Math.min(iw,faceSize*2.55);
+  if(profile?.box&&profile.box.width>8&&profile.box.height>8){
+    const b=profile.box;
+    /* Encuadre tipo credencial: el rostro ocupa aprox. 44–48% del diámetro,
+       dejando cabello y hombros dentro del círculo. */
+    const side=Math.max(b.width*2.12,b.height*2.03);
+    sw=Math.min(iw,side);
     sh=sw/aspect;
     if(sh>ih){sh=ih;sw=sh*aspect}
     if(sw>iw){sw=iw;sh=sw/aspect}
 
-    const fx=face.x+face.width*.50;
-    /* Un poco más arriba del centro facial para dejar aire al cabello. */
-    const fy=face.y+face.height*.43;
-    sx=fx-sw*.50;
-    sy=fy-sh*.43;
+    const anchorX=profile.eyes?.x ?? (b.x+b.width*.50);
+    const anchorY=profile.eyes?.y ?? (b.y+b.height*.39);
+
+    /* En una foto de identificación los ojos deben quedar alrededor del 40%
+       de la altura del recorte y centrados horizontalmente. */
+    sx=anchorX-sw*.50;
+    sy=anchorY-sh*.40;
+
+    /* Evita que la frente/cabello queden pegados al borde superior. */
+    const desiredTop=b.y-b.height*.34;
+    if(sy>desiredTop)sy=desiredTop;
   }else{
-    /* Respaldo inteligente para retratos: centra X y da prioridad a la parte
-       superior, donde normalmente está la cara, sin deformar la fotografía. */
+    /* Respaldo para retratos cuando ningún detector está disponible. */
     if(iw/ih>aspect){
       sh=ih;sw=sh*aspect;sx=(iw-sw)/2;sy=0;
     }else{
       sw=iw;sh=sw/aspect;sx=0;
       const spare=Math.max(0,ih-sh);
-      sy=spare*(ih>iw*1.08?.22:.50);
+      sy=spare*(ih>iw*1.08?.15:.45);
     }
   }
 
-  sx=Math.max(0,Math.min(iw-sw,sx||0));
-  sy=Math.max(0,Math.min(ih-sh,sy||0));
+  sx=Math.max(0,Math.min(Math.max(0,iw-sw),Number.isFinite(sx)?sx:0));
+  sy=Math.max(0,Math.min(Math.max(0,ih-sh),Number.isFinite(sy)?sy:0));
   return {sx,sy,sw,sh};
 }
-function drawFaceCenteredCover(ctx,img,x,y,w,h,face){
+function drawFaceCenteredCover(ctx,img,x,y,w,h,profile){
   if(!img)return;
-  const c=faceCrop(img,w,h,face);
+  const c=faceCrop(img,w,h,profile);
   ctx.drawImage(img,c.sx,c.sy,c.sw,c.sh,x,y,w,h);
 }
 function outlined(x,text,a,b,fill='#111',stroke='#fff',lw=5){
@@ -334,7 +384,7 @@ async function makeCanvas(){
   if(tlogo)contained(x,tlogo,830,128,150,150);
 
   const photoFile=playerFile();
-  const photo=await playerImage(photoFile),face=photo?await playerFaceBox(photo,photoFile):null,cx=205,cy=365,r=131;
+  const photo=await playerImage(photoFile),face=photo?await playerFaceProfile(photo,photoFile):null,cx=205,cy=365,r=131;
   x.save();x.beginPath();x.arc(cx,cy,r,0,Math.PI*2);x.clip();
   x.fillStyle='#93a4ad';x.fillRect(cx-r,cy-r,r*2,r*2);
   if(photo)drawFaceCenteredCover(x,photo,cx-r,cy-r,r*2,r*2,face);
@@ -370,6 +420,11 @@ async function render(){
   const q=target.getContext('2d');
   q.clearRect(0,0,target.width,target.height);
   q.drawImage(cv,0,0);
+  const photoFile=playerFile();
+  const photo=photoFile?await playerImage(photoFile):null;
+  const detected=photo?await playerFaceProfile(photo,photoFile):null;
+  target.dataset.faceDetected=detected?'1':'0';
+  target.dataset.faceDetector=detected?.source||'fallback';
   const h=$('[data-v196-classic-preview] .v196-preview-head b');
   if(h)h.textContent='Vista previa · credencial roja oficial de la Liga';
   const s=$('[data-v100-credential-style]');
