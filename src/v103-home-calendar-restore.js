@@ -5,7 +5,7 @@
 
 const route=()=>location.hash.replace('#/','')||'home';
 const screen=()=>document.querySelector('#screen');
-const OFFICIAL='./data/official-live.json?v=20261001-v490-v35-all-pages';
+const OFFICIAL='./data/official-live.json?v=20261001-v491-v35-all-pages';
 const ASSET_BASE='https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/';
 const HOME_IMAGE='https://d2ol7oe51mr4n9.cloudfront.net/user_3JNvttsAwr0QjxhuX5O1uaa9bvv/23f05376-ed2b-4ddb-a074-24f77221b520.png';
 let db=window.LJR_OFFICIAL_DATA||null;
