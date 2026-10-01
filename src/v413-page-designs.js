@@ -447,11 +447,14 @@ function mount(){
   const isWeekly=['news','v38Weekly'].includes(r);
 
   const placeMatchAlerts=(node)=>{
-    const banner=screen.querySelector(':scope > .v73-matchcenter-bottom[data-v73-motion-banner]');
+    const target=screen.querySelector('[data-v518-extras]')||screen;
+    const banner=target.querySelector(':scope > .v73-matchcenter-bottom[data-v73-motion-banner]')||
+                 screen.querySelector(':scope > .v73-matchcenter-bottom[data-v73-motion-banner]');
     if(banner){
-      if(node.nextElementSibling!==banner)screen.insertBefore(node,banner);
-    }else if(screen.lastElementChild!==node){
-      screen.appendChild(node);
+      if(banner.parentElement!==target)target.appendChild(banner);
+      if(node.parentElement!==target||node.nextElementSibling!==banner)target.insertBefore(node,banner);
+    }else if(node.parentElement!==target||target.lastElementChild!==node){
+      target.appendChild(node);
     }
   };
 
@@ -483,7 +486,7 @@ function mount(){
     }
   };
 
-  if(old&&old.dataset.v413Route===r&&old.parentElement===screen){
+  if(old&&old.dataset.v413Route===r){
     if(isWeekly)return; // posición congelada: no reordenar durante scroll/mutations
     if(isMatchCenter)placeMatchAlerts(old);
     else placeStandard(old);
