@@ -5,7 +5,7 @@
 if(window.__LJR_V194_SCORERS__)return;
 window.__LJR_V194_SCORERS__=true;
 window.__LJR_SCORERS_UI_OWNER__='v194-reference';
-window.__LJR_SCORERS_BUILD__='v469';
+window.__LJR_SCORERS_BUILD__='v470';
 
 const CAT_ORDER=['3','5','4','2','1'];
 const CAT_FALLBACK={
@@ -272,7 +272,7 @@ function chooseLowerStat(mode){
   if(statFrame)cancelAnimationFrame(statFrame);
   statFrame=requestAnimationFrame(()=>{
     statFrame=0;
-    render(true);
+    renderCategoryOnly();
   });
   return false;
 }
@@ -292,7 +292,7 @@ function referenceScorersView(){
     categoryStrip()+
     '<div class="v391-category-title"><small>'+esc(catName(id))+'</small><span>'+rows.length+' goleador'+(rows.length===1?'':'es')+' publicado'+(rows.length===1?'':'s')+'</span></div>'+
     (rows.length?
-      heroScorerCard(rows[0],1)+heroScorerCard(rows[1],2)+scorerListRows(rows.slice(2))+lowerRanking(rows):
+      heroScorerCard(rows[0],1)+heroScorerCard(rows[1],2)+lowerRanking(rows)+scorerListRows(rows.slice(2)):
       '<div class="v391-empty">Todavía no hay goleadores oficiales publicados para '+esc(catName(id))+'.</div>')+
   '</div>';
 }
@@ -335,30 +335,57 @@ function chooseCategory(id){
   if(id===catId()&&pageHasCategory(id))return false;
 
   categoryBusy=true;
+  selectedCategory=id;
   try{
-    selectedCategory=id;
     localStorage.setItem('v62-category',id);
     localStorage.setItem('v12-fixture-cat',id);
     localStorage.setItem(TEAM_KEY,'all');
+  }catch(_){}
 
-    /* Update the visible pressed state immediately, then perform exactly
-       one scorer repaint. No hash navigation, no global category setter,
-       no delayed self-render loops. */
-    document.querySelectorAll('[data-v194-cat]').forEach(b=>{
-      const on=String(b.dataset.v194Cat||'')===id;
-      b.classList.toggle('active',on);
-      b.setAttribute('aria-pressed',on?'true':'false');
-    });
-    forceCategoryRender();
-  }finally{
-    categoryBusy=false;
-  }
+  /* Change the pressed state instantly, but defer DOM replacement until
+     the tap/click has fully finished. This prevents the Android WebView
+     from losing the event target and locking the screen. */
+  document.querySelectorAll('[data-v194-cat]').forEach(b=>{
+    const on=String(b.dataset.v194Cat||'')===id;
+    b.classList.toggle('active',on);
+    b.setAttribute('aria-pressed',on?'true':'false');
+  });
+
+  requestAnimationFrame(()=>{
+    try{renderCategoryOnly()}
+    finally{categoryBusy=false}
+  });
   return false;
 }
 function pageHasCategory(id){
   const page=document.querySelector('[data-v28-scorers]');
   const ref=page?.querySelector('[data-v391-category]');
   return !!ref&&String(ref.dataset.v391Category||'')===String(id);
+}
+function renderCategoryOnly(){
+  if(route()!=='scorers'||!db())return false;
+  const page=document.querySelector('[data-v28-scorers]');
+  const root=page?.querySelector('[data-v194-scorers]');
+  const ref=root?.querySelector('[data-v391-category]');
+  if(!page||!root||!ref)return forceCategoryRender();
+
+  const signature=[catId(),currentMode(),currentTeam(),lowerStat(),db()?.captured_at_utc||''].join('|');
+  page.dataset.v194Sig=signature;
+
+  /* Keep the stable v194 root/event listener alive. Replacing the entire
+     page on every tap was what made Android appear frozen. */
+  const tpl=document.createElement('template');
+  tpl.innerHTML=referenceScorersView();
+  const next=tpl.content.firstElementChild;
+  if(!next)return false;
+  ref.replaceWith(next);
+
+  const source=root.querySelector('.v194-source');
+  if(source){
+    const stamp=db()?.captured_at_utc||'';
+    source.textContent='Datos oficiales sincronizados'+(stamp?' · '+new Date(stamp).toLocaleString('es-MX'):'');
+  }
+  return true;
 }
 function bind(root){
   if(!root||root.dataset.v194Bound==='1')return;
@@ -373,22 +400,22 @@ function delegatedClick(e){
   if(route()!=='scorers'||!(e.target instanceof Element))return;
   const cat=e.target.closest('[data-v194-cat]');
   if(cat){
-    e.preventDefault();e.stopPropagation();e.stopImmediatePropagation();
+    e.preventDefault();e.stopPropagation();
     chooseCategory(cat.dataset.v194Cat||'3');return;
   }
   const stat=e.target.closest('[data-v462-stat]');
   if(stat){
-    e.preventDefault();e.stopPropagation();e.stopImmediatePropagation();
+    e.preventDefault();e.stopPropagation();
     chooseLowerStat(stat.dataset.v462Stat||'goals');return;
   }
   const mode=e.target.closest('[data-v194-mode]');
   if(mode){
-    e.preventDefault();e.stopPropagation();e.stopImmediatePropagation();
+    e.preventDefault();e.stopPropagation();
     chooseMode(mode.dataset.v194Mode);return;
   }
   const team=e.target.closest('[data-v194-open-team]');
   if(team){
-    e.preventDefault();e.stopPropagation();e.stopImmediatePropagation();
+    e.preventDefault();e.stopPropagation();
     openTeam(team.dataset.v194OpenTeam||'');return;
   }
 }
