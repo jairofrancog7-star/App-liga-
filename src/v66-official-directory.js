@@ -2,8 +2,8 @@
    #/teams queda bajo V27 + V62 para evitar dos renderizados consecutivos y conservar una sola pantalla estable. */
 (function(){
 'use strict';
-const LOCAL='./data/official-live.json?v=20261001-v491-v35-all-pages';
-const REMOTE='https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/data/official-live.json?v=20261001-v491-v35-all-pages';
+const LOCAL='./data/official-live.json?v=20261001-v493-official-all-categories';
+const REMOTE='https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/data/official-live.json?v=20261001-v493-official-all-categories';
 const SRC='https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/';
 const CAT_ORDER=['3','5','4','2','1'];
 const CAT_LABEL={'1':'Veteranos 50+','2':'Veteranos 35+','3':'Primera Fuerza','4':'Segunda Fuerza','5':'Intermedia'};
@@ -42,17 +42,31 @@ function logoFor(name){
 }
 function teamList(){
   const out=[],seen=[];
+  /* V513 — Tienda/equipos: solo clubes reales.
+     La tabla de goleadores puede traer filas resumen como
+     ["1","JUVENTUS","22 goles en temporada","22"]; esa tercera celda
+     es una estadística, no el nombre de un equipo. */
+  const validTeamName=name=>{
+    name=String(name||'').trim();
+    if(!name)return false;
+    if(/^\d+\s*(?:ge|goles?)$/i.test(name))return false;
+    if(/^\d+\s+goles?\s+en\s+temporada$/i.test(name))return false;
+    if(/goles?\s+en\s+temporada/i.test(name))return false;
+    return true;
+  };
   const add=(name,id)=>{
-    name=String(name||'').trim(); if(!name)return;
+    name=String(name||'').trim();
+    if(!validTeamName(name))return;
     if(seen.some(x=>same(x,name)))return;
-    seen.push(name); out.push({name,cat:String(id),category:db?.categories?.[String(id)]?.name||CAT_LABEL[String(id)]||'Liga Municipal'});
+    seen.push(name);
+    out.push({name,cat:String(id),category:db?.categories?.[String(id)]?.name||CAT_LABEL[String(id)]||'Liga Municipal'});
   };
   for(const id of CAT_ORDER){
     const c=db?.categories?.[id]; if(!c)continue;
     Object.keys(c.rosters||{}).forEach(n=>add(n,id));
-    ((c.standings||[])[0]?.rows||[]).forEach(r=>add(r[1],id));
-    ((c.fixtures||[])[0]?.rows||[]).forEach(r=>{add(r[2],id);add(r[6],id)});
-    ((c.scorers||[])[0]?.rows||[]).forEach(r=>add(r[2],id));
+    ((c.standings||[])[0]?.rows||[]).forEach(r=>add(r?.[1],id));
+    ((c.fixtures||[])[0]?.rows||[]).forEach(r=>{add(r?.[2],id);add(r?.[6],id)});
+    /* No derivar clubes desde scorers: puede contener resúmenes de goles. */
   }
   return out;
 }
