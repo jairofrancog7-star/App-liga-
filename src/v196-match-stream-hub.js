@@ -372,7 +372,7 @@ function hubHtml(c,s){
   '</section>';
 }
 function modalShell(cls,title,body){
-  $$('.v196-modal').forEach(x=>x.remove());
+  $$$('.v196-modal').forEach(x=>x.remove());
   const w=document.createElement('div');w.innerHTML='<div class="v196-modal '+cls+'"><button class="v196-backdrop" data-v196-close></button><section><header><span><small>LIVE CENTER</small><b>'+esc(title)+'</b></span><button type="button" data-v196-close>×</button></header>'+body+'</section></div>';
   const m=w.firstElementChild;document.body.appendChild(m);
   $$('[data-v196-close]',m).forEach(b=>b.onclick=()=>m.remove());
@@ -581,7 +581,7 @@ function applyFloating(node){
 }
 function render(){
   if(!ROUTES.has(route())){
-    $('.v196-modal').forEach(x=>x.remove());
+    $$('.v196-modal').forEach(x=>x.remove());
     if(document.pictureInPictureElement||systemPiPActive){
       document.body.classList.add('v196-floating-player');
       return;
