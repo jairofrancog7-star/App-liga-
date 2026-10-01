@@ -138,7 +138,8 @@ function livePlatformButtons(s){
   const active=provider(s?.source?.url).key;
   return '<div class="v144-platforms" aria-label="Plataformas de transmisión">'+
     Object.values(LIVE_PLATFORMS).map(p=>'<button type="button" class="'+(active===p.key?'active':'')+'" data-v144-platform="'+p.key+'"><em>'+esc(p.icon)+'</em><span><b>'+esc(p.name.replace(' Live',''))+'</b><small>LIVE</small></span></button>').join('')+
-  '</div>';
+  '</div>'+
+  '<button type="button" class="v144-tv-cast" data-v144-tv-cast><span class="v144-tv-cast-icon">▣</span><span><b>Transmitir en televisión</b><small>Conectar TV o pantalla compatible</small></span><i>›</i></button>';
 }
 function youtubeId(url){
   const s=String(url||'');
@@ -319,10 +320,45 @@ function modalHtml(s,preferred=''){
     '<div class="v144-modal-platforms">'+picks+'</div>'+
     '<label><span>Nombre del medio / página</span><input data-name value="'+esc(s.source.name||meta.name)+'" placeholder="Liga Juventino TV"></label>'+
     '<label><span>Enlace del Facebook / YouTube / TikTok LIVE</span><input data-url inputmode="url" value="'+esc(s.source.url||'')+'" placeholder="'+esc(meta.placeholder)+'"></label>'+
-    '<div class="v144-link-actions"><button type="button" data-portal>Abrir '+esc(meta.name)+'</button><button type="button" data-test>Probar enlace</button></div>'+
+    '<div class="v144-link-actions"><button type="button" data-portal>Abrir '+esc(meta.name)+'</button><button type="button" data-test>Probar enlace</button><button type="button" data-tv>Transmitir en TV</button></div>'+
     '<label><span>Feed en tiempo real (opcional · JSON / WebSocket / SSE)</span><input data-feed value="'+esc(s.source.feedUrl||'')+'" placeholder="https://.../live.json o wss://..."></label>'+
     '<p>El video usa el enlace oficial de la plataforma. YouTube puede reproducirse dentro del Match Center cuando el enlace incluye el ID del directo. Facebook y TikTok pueden bloquear la vista incrustada; en ese caso queda un botón funcional para abrir el LIVE real. El feed de datos es opcional y sincroniza minuto, goles y eventos.</p>'+
     '<button class="v144-save" data-save>Publicar transmisión en Match Center</button></section></div>';
+}
+async function openTvCast(c,s,urlOverride=''){
+  const target=safeLiveUrl(urlOverride||s?.source?.url)||location.href;
+  try{
+    if(window.LJR_V440_TELEVISADOS&&typeof window.LJR_V440_TELEVISADOS.openCast==='function'){
+      window.LJR_V440_TELEVISADOS.openCast(target);
+      return;
+    }
+  }catch(_){}
+  const media=document.querySelector('.v144-live-hub video,video,audio');
+  try{
+    if(media&&media.remote&&typeof media.remote.prompt==='function'){
+      await media.remote.prompt();
+      return;
+    }
+  }catch(_){}
+  try{
+    if(typeof window.PresentationRequest==='function'){
+      const request=new window.PresentationRequest([target]);
+      await request.start();
+      return;
+    }
+  }catch(_){}
+  try{
+    if(navigator.share){
+      await navigator.share({title:'Liga Juventino Rosas · LIVE',text:'Abrir transmisión en otra pantalla o TV',url:target});
+      return;
+    }
+  }catch(_){}
+  try{
+    await navigator.clipboard.writeText(target);
+    toast('Enlace copiado. Ábrelo en tu TV o pantalla compatible.');
+  }catch(_){
+    toast('Tu navegador no permite abrir el selector de TV directamente.');
+  }
 }
 function openConfig(c,s,preferred=''){
   $$('.v144-modal').forEach(x=>x.remove());
@@ -346,6 +382,10 @@ function openConfig(c,s,preferred=''){
     const url=safeLiveUrl(urlInput?.value);
     if(!url){toast('Pega primero un enlace válido https:// del LIVE.');return}
     window.open(url,'_blank','noopener,noreferrer');
+  };
+  $('[data-tv]',m).onclick=()=>{
+    const url=safeLiveUrl(urlInput?.value)||safeLiveUrl(s.source.url);
+    openTvCast(c,s,url);
   };
   $('[data-save]',m).onclick=()=>{
     const url=safeLiveUrl(urlInput?.value),feed=$('[data-feed]',m).value.trim();
@@ -389,10 +429,11 @@ function bind(c,s,hub){
   }));
   $$('[data-v144-share]',hub).forEach(b=>b.addEventListener('click',e=>{stop(e);shareLive(c,s)}));
   $$('[data-v144-config]',hub).forEach(b=>b.addEventListener('click',e=>{stop(e);openConfig(c,s)}));
-  $$('[data-v144-platform]',hub).forEach(b=>b.addEventListener('click',e=>{
+  $('[data-v144-platform]',hub).forEach(b=>b.addEventListener('click',e=>{
     stop(e);
     openConfig(c,s,b.dataset.v144Platform);
   }));
+  $('[data-v144-tv-cast]',hub)?.addEventListener('click',e=>{stop(e);openTvCast(c,s)});
   $('[data-v144-listen]',hub)?.addEventListener('click',e=>{stop(e);startSpeech(c,s)});
   $('[data-v144-alerts]',hub)?.addEventListener('click',e=>{stop(e);requestAlerts()});
   $$('[data-v144-phase]',hub).forEach(b=>b.onclick=e=>{stop(e);addEvent(s,c,b.dataset.v144Phase);schedule()});
