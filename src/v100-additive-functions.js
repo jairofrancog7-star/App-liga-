@@ -7,7 +7,7 @@
 if(window.__LJR_V100_ADDITIVE__) return;
 window.__LJR_V100_ADDITIVE__=true;
 
-const BUILD='20261001-v498-team-logo-clean-png';
+const BUILD='20261001-v499-exact-nopalero-right-logo';
 const $=(s,r=document)=>r.querySelector(s);
 const $$=(s,r=document)=>Array.from(r.querySelectorAll(s));
 const esc=(v)=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -593,6 +593,7 @@ async function v196PlayerPhoto(){
 }
 function v196CredentialTeamLogo(team){
   const wanted=norm(team);if(!wanted)return '';
+  if(wanted==='dep nopalero'||wanted==='deportivo nopalero')return 'https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/assets/teams/deportivo-nopalero.webp';
   try{
     const db=window.LJR_OFFICIAL_API?.getData?.()||window.LJR_OFFICIAL_DATA||{};
     const hit=Object.entries(db.team_logos||{}).find(([name])=>norm(name)===wanted);
@@ -766,9 +767,7 @@ async function v196DrawClassicCredential(canvas){
   /* Escudo del equipo PNG SIN fondo y sin recuadro blanco. */
   const teamSrc=v196CredentialTeamLogo(team),teamImg=await v476TransparentTeamLogo(teamSrc);
   if(teamImg){
-    x.save();x.shadowColor='rgba(0,0,0,.24)';x.shadowBlur=4;
-    v100DrawContainedImage(x,teamImg,832,128,145,145);
-    x.restore();
+    v100DrawContainedImage(x,teamImg,826,116,165,165);
   }else{
     x.save();x.fillStyle='rgba(255,255,255,.18)';v196RoundRectPath(x,846,142,118,118,10);x.fill();
     x.fillStyle='#fff';x.font='900 20px Arial';x.textAlign='center';x.fillText('EQUIPO',905,210);x.restore();x.textAlign='left';
