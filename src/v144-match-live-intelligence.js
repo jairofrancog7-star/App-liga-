@@ -299,16 +299,13 @@ function confirmSuggestion(c,s,id){
   schedule();
 }
 function rebuildPhase(s){
-  s.phase='scheduled';
-  s.firstStartedAt=0;
-  s.secondStartedAt=0;
-  s.finishedAt=0;
+  s.phase='scheduled';s.firstStartedAt=0;s.secondStartedAt=0;s.finishedAt=0;
   const phases=confirmed(s).filter(e=>/^phase-/.test(e.type||'')).slice().sort((a,b)=>(a.ts||0)-(b.ts||0));
   for(const e of phases){
-    if(e.type==='phase-first'){s.phase='first';s.firstStartedAt=Number(e.ts)||s.firstStartedAt}
+    if(e.type==='phase-first'){s.phase='first';s.firstStartedAt=Number(e.ts)||0}
     else if(e.type==='phase-halftime'){s.phase='halftime'}
-    else if(e.type==='phase-second'){s.phase='second';s.secondStartedAt=Number(e.ts)||s.secondStartedAt}
-    else if(e.type==='phase-final'){s.phase='final';s.finishedAt=Number(e.ts)||s.finishedAt}
+    else if(e.type==='phase-second'){s.phase='second';s.secondStartedAt=Number(e.ts)||0}
+    else if(e.type==='phase-final'){s.phase='final';s.finishedAt=Number(e.ts)||0}
   }
 }
 function analyze(text,c,s){
@@ -503,21 +500,10 @@ async function shareLive(c,s){
   const title='Liga Juventino Rosas · LIVE';
   const text=(c?.home&&c?.away)?(c.home+' vs '+c.away+' · Match Center'):'Transmisión en vivo · Match Center';
   try{
-    if(navigator.share){
-      await navigator.share({title,text,url});
-      return;
-    }
-  }catch(e){
-    if(e?.name==='AbortError')return;
-  }
-  try{
-    await navigator.clipboard.writeText(url);
-    toast('Enlace del LIVE copiado.');
-  }catch(_){
-    const a=document.createElement('a');
-    a.href=url;a.target='_blank';a.rel='noopener noreferrer';
-    document.body.appendChild(a);a.click();a.remove();
-  }
+    if(navigator.share){await navigator.share({title,text,url});return}
+  }catch(e){if(e?.name==='AbortError')return}
+  try{await navigator.clipboard.writeText(url);toast('Enlace del LIVE copiado.')}
+  catch(_){window.open(url,'_blank','noopener,noreferrer')}
 }
 function bind(c,s,hub){
   const stop=e=>{e.preventDefault();e.stopPropagation()};
