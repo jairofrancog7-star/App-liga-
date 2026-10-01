@@ -2470,3 +2470,44 @@ body[data-app-route="search"] .v414-category-badge small{
   body.v92-match-center-official .v412-mc-actions{gap:7px!important;padding:12px!important}
   body.v92-match-center-official .v412-mc-actions button{min-height:68px!important;padding:9px!important}
 }
+
+
+/* V502 — cuadros de categoría/equipo ajustados al tamaño completo del logo */
+body[data-app-route="search"] .v414-badges{
+  width:44px!important;
+  justify-items:stretch!important;
+  gap:4px!important;
+}
+body[data-app-route="search"] .v414-league-badge,
+body[data-app-route="search"] .v414-team-badge{
+  width:44px!important;
+  height:44px!important;
+  padding:0!important;
+  overflow:hidden!important;
+  display:grid!important;
+  place-items:center!important;
+  box-sizing:border-box!important;
+}
+body[data-app-route="search"] .v414-category-badge img,
+body[data-app-route="search"] .v414-team-badge img{
+  width:100%!important;
+  height:100%!important;
+  max-width:100%!important;
+  max-height:100%!important;
+  margin:0!important;
+  padding:1px!important;
+  display:block!important;
+  box-sizing:border-box!important;
+  object-fit:contain!important;
+  object-position:center!important;
+}
+@media(max-width:430px){
+  body[data-app-route="search"] .v414-player-row{
+    grid-template-columns:52px minmax(105px,1fr) 36px 36px 40px 44px!important;
+  }
+  body[data-app-route="search"] .v414-league-badge,
+  body[data-app-route="search"] .v414-team-badge{
+    width:44px!important;
+    height:44px!important;
+  }
+}
