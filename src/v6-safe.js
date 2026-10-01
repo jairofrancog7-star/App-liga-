@@ -14,7 +14,8 @@
   /* V91 — Inicio ya no usa equipos/jugadores demo.
      Fallback inicial = datos oficiales vigentes; después se refresca desde
      Liga_Futbol/data/official-live.json sin inventar nombres, puntos o goles. */
-  const V6_OFFICIAL_URL='https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/data/official-live.json?v=20261001-v487-vet35-all-pages';
+  const V6_LOCAL_URL='./data/official-live.json?v=20261001-v490-v35-all-pages';
+  const V6_OFFICIAL_URL='https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/data/official-live.json?v=20261001-v490-v35-all-pages';
   const V6_LOGO_BASE='https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/';
   const V6_CAT_LABEL={'1':'Veteranos 50+','2':'Veteranos 35+','3':'Primera Fuerza','4':'Segunda Fuerza','5':'Intermedia'};
   const V6_CODE_BY_NAME={
@@ -141,17 +142,20 @@
     }
   }
   async function v6LoadOfficial(){
-    try{
-      const res=await fetch(V6_OFFICIAL_URL+'?v='+Date.now(),{cache:'no-store'});
-      if(!res.ok)return;
-      const data=await res.json();
-      v6OfficialDb=data;
-      v6RefreshArrays(data);
-      if(route()==='home'){
-        const old=document.querySelector('#safeHomeExtra');
-        if(old)old.outerHTML=homeExtra();
-      }
-    }catch(_){}
+    for(const url of [V6_LOCAL_URL,V6_OFFICIAL_URL]){
+      try{
+        const res=await fetch(url+(url.includes('?')?'&':'?')+'t='+Date.now(),{cache:'no-store'});
+        if(!res.ok)continue;
+        const data=await res.json();
+        v6OfficialDb=data;
+        v6RefreshArrays(data);
+        if(route()==='home'){
+          const old=document.querySelector('#safeHomeExtra');
+          if(old)old.outerHTML=homeExtra();
+        }
+        return;
+      }catch(_){}
+    }
   }
   const actionCard=(ico,title,sub,to)=>`<button class="v6-action-card" data-safe-route="${to}"><span class="v6-action-icon">${svg(ico)}</span><span><b>${title}</b><small>${sub}</small></span><span class="v6-arrow">›</span></button>`;
   function v6FeaturedScorer(){
