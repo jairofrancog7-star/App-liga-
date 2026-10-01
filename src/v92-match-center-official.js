@@ -1111,7 +1111,7 @@ function syncRoute(){
   if(!on)return;
   render();
   load();
-  if(!timer)timer=setInterval(()=>{if(isDirectRoute()){render();refreshOfficialData(false)}},30000);
+  if(!timer)timer=setInterval(()=>{if(isDirectRoute())refreshOfficialData(false)},30000);
   if(!liveClockTimer)liveClockTimer=setInterval(updateLiveClock,1000);
   updateLiveClock();
 }
