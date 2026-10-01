@@ -4115,8 +4115,9 @@ function scheduleChangesView(){
 }
 function noticesView(){
   const local=ljrNoticeRows();
-  return `<div class="v446-notices-head"><button type="button" class="v446-notices-back" data-v446-notices-back aria-label="Volver">←</button><div><div class="eyebrow">AVISOS OFICIALES</div><h1 class="screen-title">Avisos de la Liga</h1></div></div>
-    <section class="section">
+  /* V520 — Avisos usa únicamente la barra superior global de referencia.
+     Se elimina por completo la segunda cabecera interna para evitar doble barra. */
+  return `<section class="section">
       <div class="profile-card">
         <h2>Cambios, horarios y sedes</h2>
         <p>Consulta aquí los comunicados y accesos relacionados con la jornada. Los estados oficiales de partidos se revisan en Competición.</p>
