@@ -1254,3 +1254,120 @@
     font-size:11px!important;
   }
 }
+
+
+/* V449 — Próximos partidos oficiales: sábado veteranos + domingo libre */
+/* Mantener el diseño restaurado, pero con dos días de jornada cuando corresponda. */
+body[data-app-route="home"] .v103-upcoming-day{
+  position:relative!important;
+  padding-top:2px!important;
+}
+body[data-app-route="home"] .v103-upcoming-day + .v103-upcoming-day{
+  margin-top:10px!important;
+  padding-top:12px!important;
+  border-top:1px solid rgba(255,255,255,.14)!important;
+}
+body[data-app-route="home"] .v103-upcoming-day-head{
+  display:flex!important;
+  align-items:center!important;
+  justify-content:space-between!important;
+  gap:10px!important;
+  min-height:24px!important;
+  margin:0 0 4px!important;
+  padding:0 2px!important;
+}
+body[data-app-route="home"] .v103-upcoming-day-head span{
+  color:#9fbcff!important;
+  font-size:clamp(8px,2.4vw,11px)!important;
+  line-height:1!important;
+  font-weight:900!important;
+  letter-spacing:.07em!important;
+}
+body[data-app-route="home"] .v103-upcoming-day-head b{
+  color:#fff!important;
+  font-size:clamp(9px,2.6vw,12px)!important;
+  line-height:1!important;
+  font-weight:850!important;
+}
+body[data-app-route="home"] .v103-upcoming-center{
+  min-width:72px!important;
+  display:grid!important;
+  place-items:center!important;
+  text-align:center!important;
+}
+body[data-app-route="home"] .v103-upcoming-center strong{
+  display:block!important;
+  color:#fff!important;
+  font-size:clamp(20px,5.5vw,29px)!important;
+  line-height:1!important;
+  font-weight:950!important;
+  white-space:nowrap!important;
+}
+body[data-app-route="home"] .v103-upcoming-center small{
+  display:block!important;
+  max-width:78px!important;
+  margin-top:4px!important;
+  overflow:hidden!important;
+  color:#92a6dc!important;
+  font-size:clamp(5.5px,1.8vw,8px)!important;
+  line-height:1.05!important;
+  font-weight:800!important;
+  white-space:nowrap!important;
+  text-overflow:ellipsis!important;
+}
+body[data-app-route="home"] .v103-upcoming-more{
+  width:100%!important;
+  min-height:28px!important;
+  margin-top:4px!important;
+  padding:4px 8px!important;
+  border:1px solid rgba(104,147,255,.20)!important;
+  border-radius:10px!important;
+  background:rgba(11,25,96,.46)!important;
+  color:#54e6f1!important;
+  font-size:clamp(7px,2vw,9px)!important;
+  font-weight:850!important;
+}
+
+/* Punto rojo vivo, suave y continuo: indica que sí existen partidos oficiales pendientes. */
+body[data-app-route="home"] .v103-upcoming-meta i{
+  position:relative!important;
+  animation:v449-live-dot 1.55s ease-in-out infinite!important;
+}
+body[data-app-route="home"] .v103-upcoming-meta i::after{
+  content:""!important;
+  position:absolute!important;
+  inset:-5px!important;
+  border:1px solid rgba(255,77,117,.54)!important;
+  border-radius:50%!important;
+  animation:v449-live-ring 1.55s ease-out infinite!important;
+}
+@keyframes v449-live-dot{
+  0%,100%{transform:scale(1);box-shadow:0 0 0 6px rgba(255,77,117,.14),0 0 10px rgba(255,77,117,.22)}
+  50%{transform:scale(1.16);box-shadow:0 0 0 9px rgba(255,77,117,.08),0 0 16px rgba(255,77,117,.44)}
+}
+@keyframes v449-live-ring{
+  0%{transform:scale(.72);opacity:.76}
+  70%,100%{transform:scale(1.55);opacity:0}
+}
+
+/* No repetir borde entre filas al comenzar un nuevo bloque de día. */
+body[data-app-route="home"] .v103-upcoming-day .v103-upcoming-match:first-of-type{
+  border-top:0!important;
+}
+body[data-app-route="home"] .v103-upcoming-day .v103-upcoming-match.is-second{
+  border-top:1px solid rgba(255,255,255,.10)!important;
+}
+
+@media(max-width:380px){
+  body[data-app-route="home"] .v103-upcoming-day-head span{font-size:7.6px!important}
+  body[data-app-route="home"] .v103-upcoming-center{min-width:58px!important}
+  body[data-app-route="home"] .v103-upcoming-center strong{font-size:20px!important}
+  body[data-app-route="home"] .v103-upcoming-center small{max-width:62px!important;font-size:5.5px!important}
+}
+
+@media(prefers-reduced-motion:reduce){
+  body[data-app-route="home"] .v103-upcoming-meta i,
+  body[data-app-route="home"] .v103-upcoming-meta i::after{
+    animation:none!important;
+  }
+}
