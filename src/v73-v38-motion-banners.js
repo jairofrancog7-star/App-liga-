@@ -590,22 +590,24 @@
         return;
       }
 
-      let banner=screen.querySelector(':scope > [data-v73-motion-banner]');
+      const target=screen.querySelector('[data-v518-extras]')||screen;
+      let banner=target.querySelector(':scope > [data-v73-motion-banner]')||
+                 screen.querySelector(':scope > [data-v73-motion-banner]');
       if(!banner){
         banner=buildBanner(cfg);
         banner.classList.add('v73-below-native','v73-matchcenter-bottom');
         banner.dataset.v73BelowNative='match-center';
       }
+      if(banner.parentElement!==target)target.appendChild(banner);
 
-      /* V514 — orden estable para que el scroll no se pelee:
-         contenido V92 -> Avisos V413 -> banner cinematográfico V73.
-         Antes V413 y V73 intentaban ser simultáneamente el último hijo de #screen,
-         reordenando el DOM durante el gesto y haciendo imposible llegar al final. */
-      const alerts=screen.querySelector(':scope > #v413-page-design[data-v413-route="v4-matchcenter"],:scope > #v413-page-design[data-v413-route="matchCenter"],:scope > #v413-page-design[data-v413-route="match-center"]');
+      /* V518 — Match Center queda en un solo cuadro:
+         V92 + extras V412 + avisos V413 + banner V73 viven dentro del
+         contenedor [data-v518-extras], sin tarjetas sueltas fuera. */
+      const alerts=target.querySelector(':scope > #v413-page-design[data-v413-route="v4-matchcenter"],:scope > #v413-page-design[data-v413-route="matchCenter"],:scope > #v413-page-design[data-v413-route="match-center"]');
       if(alerts){
         if(alerts.nextElementSibling!==banner)alerts.insertAdjacentElement('afterend',banner);
-      }else if(screen.lastElementChild!==banner){
-        screen.appendChild(banner);
+      }else if(target.lastElementChild!==banner){
+        target.appendChild(banner);
       }
       syncAll();
       return;
