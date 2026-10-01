@@ -592,21 +592,44 @@ async function v200LeagueLogoTransparent(){
     let br=0,bg=0,bb=0,ba=0;
     corners.forEach(([xx,yy])=>{const k=(yy*w+xx)*4;br+=d[k];bg+=d[k+1];bb+=d[k+2];ba+=d[k+3]});
     br/=4;bg/=4;bb/=4;ba/=4;
-    if(ba<16){v200LeagueLogoCache=cv;return cv}
-    const tol=58*58,seen=new Uint8Array(w*h),queue=new Int32Array(w*h);let head=0,tail=0;
-    const near=(idx)=>{
-      const k=idx*4,dr=d[k]-br,dg=d[k+1]-bg,db=d[k+2]-bb;
-      return dr*dr+dg*dg+db*db<=tol;
-    };
-    const push=idx=>{if(idx<0||idx>=w*h||seen[idx]||!near(idx))return;seen[idx]=1;queue[tail++]=idx};
-    for(let xx=0;xx<w;xx++){push(xx);push((h-1)*w+xx)}
-    for(let yy=0;yy<h;yy++){push(yy*w);push(yy*w+w-1)}
-    while(head<tail){
-      const idx=queue[head++],x0=idx%w,y0=(idx/w)|0;
-      if(x0>0)push(idx-1);if(x0<w-1)push(idx+1);if(y0>0)push(idx-w);if(y0<h-1)push(idx+w);
+    if(ba>=16){
+      const tol=58*58,seen=new Uint8Array(w*h),queue=new Int32Array(w*h);let head=0,tail=0;
+      const near=(idx)=>{
+        const k=idx*4,dr=d[k]-br,dg=d[k+1]-bg,db=d[k+2]-bb;
+        return dr*dr+dg*dg+db*db<=tol;
+      };
+      const push=idx=>{if(idx<0||idx>=w*h||seen[idx]||!near(idx))return;seen[idx]=1;queue[tail++]=idx};
+      for(let xx=0;xx<w;xx++){push(xx);push((h-1)*w+xx)}
+      for(let yy=0;yy<h;yy++){push(yy*w);push(yy*w+w-1)}
+      while(head<tail){
+        const idx=queue[head++],x0=idx%w,y0=(idx/w)|0;
+        if(x0>0)push(idx-1);if(x0<w-1)push(idx+1);if(y0>0)push(idx-w);if(y0<h-1)push(idx+w);
+      }
+      for(let i=0;i<w*h;i++)if(seen[i])d[i*4+3]=0;
+      q.putImageData(data,0,0);
     }
-    for(let i=0;i<w*h;i++)if(seen[i])d[i*4+3]=0;
-    q.putImageData(data,0,0);
+
+    /* Recorta los márgenes transparentes para que el logo de la Liga sí llene
+       el espacio de la credencial y no se vea diminuto. */
+    let minX=w,minY=h,maxX=-1,maxY=-1;
+    const croppedData=q.getImageData(0,0,w,h).data;
+    for(let yy=0;yy<h;yy++){
+      for(let xx=0;xx<w;xx++){
+        const a=croppedData[(yy*w+xx)*4+3];
+        if(a>18){
+          if(xx<minX)minX=xx;if(xx>maxX)maxX=xx;
+          if(yy<minY)minY=yy;if(yy>maxY)maxY=yy;
+        }
+      }
+    }
+    if(maxX>=minX&&maxY>=minY){
+      const pad=4,sx=Math.max(0,minX-pad),sy=Math.max(0,minY-pad);
+      const sw=Math.min(w-sx,(maxX-minX+1)+pad*2),sh=Math.min(h-sy,(maxY-minY+1)+pad*2);
+      const out=document.createElement('canvas');out.width=sw;out.height=sh;
+      out.getContext('2d').drawImage(cv,sx,sy,sw,sh,0,0,sw,sh);
+      v200LeagueLogoCache=out;
+      return out;
+    }
     v200LeagueLogoCache=cv;
     return cv;
   })();
@@ -750,7 +773,7 @@ async function v196DrawClassicCredential(canvas){
   const league=await v200LeagueLogoTransparent();
   if(league){
     x.save();x.shadowColor='rgba(0,0,0,.28)';x.shadowBlur=5;
-    v100DrawContainedImage(x,league,22,18,174,150);
+    v100DrawContainedImage(x,league,16,12,196,154);
     x.restore();
   }
 
