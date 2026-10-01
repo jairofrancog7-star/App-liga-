@@ -109,6 +109,7 @@
     }
   }
   window.addEventListener('hashchange',()=>requestAnimationFrame(render));
+  window.addEventListener('ljr:official-data',()=>{if(route()==='teams'){const s=document.querySelector('#screen');if(s){s.innerHTML=markup();bind()}}});
   const screen=document.querySelector('#screen');
   if(screen)new MutationObserver(()=>{if(route()==='teams'&&!screen.querySelector('[data-v41-reference]'))requestAnimationFrame(render)}).observe(screen,{childList:true,subtree:false});
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',()=>requestAnimationFrame(render),{once:true});else requestAnimationFrame(render);
