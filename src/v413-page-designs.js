@@ -442,15 +442,27 @@ function mount(){
   const r=route(),old=$('#'+ID,screen);
   if(!ROUTES.has(r)){old?.remove();return}
   const cfg=contentFor(r);if(!cfg){old?.remove();return}
+
+  const isMatchCenter=['matchCenter','match-center','v4-matchcenter'].includes(r);
+  const placeMatchAlerts=(node)=>{
+    const banner=screen.querySelector(':scope > .v73-matchcenter-bottom[data-v73-motion-banner]');
+    if(banner){
+      if(node.nextElementSibling!==banner)screen.insertBefore(node,banner);
+    }else if(screen.lastElementChild!==node){
+      screen.appendChild(node);
+    }
+  };
+
   if(old&&old.dataset.v413Route===r&&old.parentElement===screen){
-    if(screen.lastElementChild!==old)screen.appendChild(old);
+    if(isMatchCenter)placeMatchAlerts(old);
+    else if(screen.lastElementChild!==old)screen.appendChild(old);
     return;
   }
   old?.remove();
   const wrap=document.createElement('div');wrap.innerHTML=cfg.html;
   const node=wrap.firstElementChild;if(!node)return;
   node.dataset.v413Route=r;
-  screen.appendChild(node);
+  if(isMatchCenter)placeMatchAlerts(node);else screen.appendChild(node);
   cfg.bind(node);
 }
 function remount(){const screen=$('#screen');screen?.querySelector('#'+ID)?.remove();mount()}
