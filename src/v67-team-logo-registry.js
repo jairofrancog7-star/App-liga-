@@ -139,19 +139,24 @@
     const key=norm(name);
     const dyn=DYNAMIC[key];
     if(dyn)return dyn;
-    const path=MAP[key];
-    if(path)return /^https?:\/\//i.test(path)?path:BASE+path;
-    // Read the data, not getLogo(): that API falls back to this registry.
-    // Calling back into it recursively freezes History for unknown/old teams.
+
+    // V484: los datos oficiales actuales mandan sobre los logos históricos/locales.
     const data=window.LJR_OFFICIAL_API?.getData?.()||window.LJR_OFFICIAL_DATA;
     const entry=Object.entries(data?.team_logos||{}).find(([team])=>norm(team)===key)?.[1];
-    const source=typeof entry==='string'?entry:(entry?.local||entry?.source||'');
-    return source ? (/^https?:\/\//i.test(source)?source:BASE+String(source).replace(/^\.\//,'')) : '';
+    let source=typeof entry==='string'?entry:(entry?.source||entry?.local||'');
+    if(source)return /^https?:\/\//i.test(source)?source:BASE+String(source).replace(/^\.\//,'');
 
+    for(const cat of Object.values(data?.categories||{})){
+      const hit=(cat?.dashboard?.logo_candidates||[]).find(x=>norm(x?.near_text||'')===key);
+      if(hit?.source)return hit.source;
+    }
+
+    const path=MAP[key];
+    return path ? (/^https?:\/\//i.test(path)?path:BASE+path) : '';
   }
   async function loadDynamic(){
     try{
-      const r=await fetch(BASE+'data/official-live.json?v=20261001-v483-vet35-logo-final',{cache:'no-store'});
+      const r=await fetch(BASE+'data/official-live.json?v=20261001-v484-vet35-logos-history',{cache:'no-store'});
       if(!r.ok)return;
       const d=await r.json();
       for(const [name,v] of Object.entries(d.team_logos||{})){
