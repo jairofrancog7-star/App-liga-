@@ -31,6 +31,42 @@
     })();
   </script>
 
+  <script>
+    (function(){
+      if(window.__LJR_V33_STATS_FASTLANE_V456__) return;
+      window.__LJR_V33_STATS_FASTLANE_V456__=true;
+      window.addEventListener('click',function(e){
+        if(!(e.target instanceof Element)) return;
+        var target=e.target.closest('[data-v33-tab],[data-v33-back],[data-v33-share],[data-v33-route],[data-v33-ref-view]');
+        if(!target) return;
+        var api=window.LJR_V33_STATS;
+        if(!api) return;
+
+        if(target.hasAttribute('data-v33-tab') && typeof api.setTab==='function'){
+          e.preventDefault();e.stopPropagation();e.stopImmediatePropagation();
+          api.setTab(target.dataset.v33Tab||'general');return;
+        }
+        if(target.hasAttribute('data-v33-back') && typeof api.goRoute==='function'){
+          e.preventDefault();e.stopPropagation();e.stopImmediatePropagation();
+          api.goRoute('more');return;
+        }
+        if(target.hasAttribute('data-v33-share') && typeof api.share==='function'){
+          e.preventDefault();e.stopPropagation();e.stopImmediatePropagation();
+          api.share();return;
+        }
+        if(target.hasAttribute('data-v33-route') && typeof api.goRoute==='function'){
+          e.preventDefault();e.stopPropagation();e.stopImmediatePropagation();
+          api.goRoute(target.dataset.v33Route||'leagueData');return;
+        }
+        if(target.hasAttribute('data-v33-ref-view') && typeof api.setRefView==='function'){
+          e.preventDefault();e.stopPropagation();e.stopImmediatePropagation();
+          api.setRefView(target.dataset.v33RefView||'player');
+        }
+      },true);
+    })();
+  </script>
+
+
   <link rel="preconnect" href="https://raw.githubusercontent.com" crossorigin>
   <link rel="dns-prefetch" href="//raw.githubusercontent.com">
   <link rel="preconnect" href="https://d2ol7oe51mr4n9.cloudfront.net" crossorigin>
@@ -199,7 +235,7 @@
     #screen .v400-chips small{color:#7785c4;font-size:7px;font-weight:900;letter-spacing:.09em}
     #screen .v400-chips b{margin-top:4px;overflow:hidden;font-size:11px;white-space:nowrap;text-overflow:ellipsis}
   </style>
-  <script type="module" crossorigin src="./assets/index-BkuNbn0S.js"></script>
+  <script type="module" crossorigin src="./assets/index-D11g7tEQ.js"></script>
   <link rel="stylesheet" crossorigin href="./assets/index-DyTsD1AB.css">
 </head>
 <body>
