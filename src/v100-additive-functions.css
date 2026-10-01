@@ -888,3 +888,160 @@ body[data-app-route="credentialBuilder"] .v196-preview-head em{
   .v100-shot-legend{gap:6px!important}
   .v100-shot-legend em{display:none!important}
 }
+
+
+/* V521 — Shot Map táctico editable:
+   círculos arrastrables, flechas tácticas, selección y borrado. */
+.v100-shot-mode{
+  grid-template-columns:repeat(4,minmax(0,1fr))!important;
+}
+.v100-shot-mode button.arrow-mode i{
+  width:13px!important;
+  height:2px!important;
+  border-radius:2px!important;
+  background:#32e2f2!important;
+  position:relative!important;
+  box-shadow:none!important;
+}
+.v100-shot-mode button.arrow-mode i::after{
+  content:""!important;
+  position:absolute!important;
+  right:-1px!important;
+  top:50%!important;
+  width:6px!important;
+  height:6px!important;
+  border-top:2px solid #32e2f2!important;
+  border-right:2px solid #32e2f2!important;
+  transform:translateY(-50%) rotate(45deg)!important;
+}
+
+.v100-shot-pitch{
+  touch-action:none!important;
+  user-select:none!important;
+  -webkit-user-select:none!important;
+}
+
+.v100-shot-marker{
+  cursor:grab!important;
+  touch-action:none!important;
+  transition:box-shadow .12s ease,transform .12s ease!important;
+}
+.v100-shot-marker:active{cursor:grabbing!important}
+.v100-shot-marker.selected{
+  transform:translate(-50%,-50%) scale(1.08)!important;
+  box-shadow:
+    0 0 0 3px #fff,
+    0 0 0 6px #32e2f2,
+    0 4px 12px rgba(0,0,0,.38)!important;
+}
+
+.v100-tactics-layer{
+  position:absolute!important;
+  inset:0!important;
+  width:100%!important;
+  height:100%!important;
+  z-index:4!important;
+  overflow:visible!important;
+  pointer-events:none!important;
+}
+.v100-tactic-hit{
+  stroke:rgba(0,0,0,0)!important;
+  stroke-width:7!important;
+  stroke-linecap:round!important;
+  pointer-events:stroke!important;
+}
+.v100-tactic-arrow{
+  color:#32e2f2!important;
+  stroke:currentColor!important;
+  stroke-width:1.5!important;
+  stroke-linecap:round!important;
+  vector-effect:non-scaling-stroke!important;
+  pointer-events:stroke!important;
+  filter:drop-shadow(0 0 1.8px rgba(50,226,242,.85))!important;
+}
+.v100-tactic-arrow.draft{
+  opacity:.72!important;
+  stroke-dasharray:4 3!important;
+}
+.v100-tactic-arrow.selected{
+  color:#ffe46b!important;
+  stroke-width:2.1!important;
+  filter:drop-shadow(0 0 2.5px rgba(255,228,107,.9))!important;
+}
+.v100-arrow-handle{
+  fill:#fff!important;
+  stroke:#07104d!important;
+  stroke-width:.8!important;
+  vector-effect:non-scaling-stroke!important;
+  pointer-events:all!important;
+  cursor:grab!important;
+}
+.v100-arrow-handle.end{fill:#32e2f2!important}
+
+.v100-shot-legend{
+  flex-wrap:wrap!important;
+  overflow:visible!important;
+}
+.v100-shot-legend>span i.arrow{
+  width:13px!important;
+  height:2px!important;
+  border-radius:2px!important;
+  background:#32e2f2!important;
+}
+
+.v100-shot-edit{
+  min-height:34px!important;
+  display:flex!important;
+  align-items:center!important;
+  justify-content:space-between!important;
+  gap:8px!important;
+  padding:7px 8px!important;
+  border:1px solid rgba(80,219,238,.15)!important;
+  border-radius:9px!important;
+  background:#08106a!important;
+}
+.v100-shot-edit>span{
+  min-width:0!important;
+  flex:1!important;
+  color:#8fa2d7!important;
+  font-size:7.7px!important;
+  line-height:1.25!important;
+}
+.v100-shot-edit>button{
+  min-width:104px!important;
+  height:27px!important;
+  padding:0 9px!important;
+  border:1px solid rgba(255,255,255,.16)!important;
+  border-radius:8px!important;
+  background:#0a1476!important;
+  color:#7f8db9!important;
+  font-size:7.5px!important;
+  font-weight:850!important;
+  white-space:nowrap!important;
+}
+.v100-shot-edit>button.active{
+  border-color:rgba(255,92,111,.5)!important;
+  background:rgba(117,15,42,.48)!important;
+  color:#fff!important;
+}
+.v100-shot-edit>button:disabled{
+  opacity:.45!important;
+}
+
+@media(max-width:520px){
+  .v100-shot-mode button{
+    padding:0 4px!important;
+    gap:4px!important;
+    font-size:7.6px!important;
+  }
+  .v100-shot-edit{
+    align-items:flex-start!important;
+  }
+  .v100-shot-edit>span{
+    font-size:7px!important;
+  }
+  .v100-shot-edit>button{
+    min-width:96px!important;
+    font-size:7px!important;
+  }
+}
