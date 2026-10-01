@@ -154,3 +154,59 @@ body[data-app-route="v38Weather"] #v168-weather-account{padding:12px 18px calc(1
     border-radius:14px 0 0 14px!important;
   }
 }
+
+
+/* V519_ACCOUNT_MODAL_FULL_VIEW_START */
+/* Registro / notificaciones: el panel debe verse completo por encima de
+   la barra superior e inferior y conservar scroll hasta el último botón. */
+.v105-modal.v168-account-modal{
+  position:fixed!important;
+  inset:0!important;
+  z-index:2147483647!important;
+  width:100vw!important;
+  height:100dvh!important;
+  min-height:100dvh!important;
+  overflow:hidden!important;
+  padding:0!important;
+  place-items:stretch end!important;
+}
+.v105-modal.v168-account-modal .v105-dialog{
+  box-sizing:border-box!important;
+  height:100dvh!important;
+  min-height:100dvh!important;
+  max-height:100dvh!important;
+  overflow-y:auto!important;
+  overflow-x:hidden!important;
+  overscroll-behavior-y:contain!important;
+  -webkit-overflow-scrolling:touch!important;
+  padding-bottom:calc(42px + env(safe-area-inset-bottom))!important;
+  scroll-padding-top:24px!important;
+  scroll-padding-bottom:calc(72px + env(safe-area-inset-bottom))!important;
+}
+.v105-modal.v168-account-modal .v105-form,
+.v105-modal.v168-account-modal .v105-actions,
+.v105-modal.v168-account-modal .v168-inline-notifications{
+  position:relative!important;
+  z-index:1!important;
+}
+.v105-modal.v168-account-modal .v105-actions{
+  padding-bottom:6px!important;
+}
+body:has(> .v105-modal.v168-account-modal) .app-shell > .topbar,
+body:has(> .v105-modal.v168-account-modal) .app-shell > .bottom-nav,
+body:has(> .v105-modal.v168-account-modal) #app > .topbar,
+body:has(> .v105-modal.v168-account-modal) #app > .bottom-nav{
+  visibility:hidden!important;
+  pointer-events:none!important;
+}
+@media(max-width:430px){
+  .v105-modal.v168-account-modal .v105-dialog{
+    width:100vw!important;
+    max-width:100vw!important;
+    border-left:0!important;
+    border-radius:0!important;
+    padding-left:22px!important;
+    padding-right:22px!important;
+  }
+}
+/* V519_ACCOUNT_MODAL_FULL_VIEW_END */
