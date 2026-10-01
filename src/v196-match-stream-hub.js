@@ -456,10 +456,15 @@ function settingsModal(c){
     const current=list.find(x=>x.url===safeUrl(s?.source?.url))||list[0]||null;
     const cap=floatingCapability(current,cfg);
     if(!cap.inApp){cfg.floating=false;saveSettings(cfg);$('[data-v196-toggle-float]',m).classList.remove('on');flash('La fuente actual no permite modo flotante.');return}
-    cfg.floating=!cfg.floating;saveSettings(cfg);
-    $('[data-v196-toggle-float]',m).classList.toggle('on',cfg.floating);
-    if(cfg.floating)setFloating(true,$('[data-v196-stream-hub]',c.root));
-    else disableFloating($('[data-v196-stream-hub]',c.root));
+    const hub=$('[data-v196-stream-hub]',c.root);
+    if(cfg.floating){
+      cfg.floating=false;saveSettings(cfg);
+      $('[data-v196-toggle-float]',m).classList.remove('on');
+      disableFloating(hub);
+    }else{
+      m.remove();
+      toggleFloating(c,hub);
+    }
   };
   $('[data-v196-toggle-low]',m).onclick=()=>{
     cfg.lowQuality=!cfg.lowQuality;saveSettings(cfg);
@@ -509,6 +514,10 @@ function applyFloating(node){
 function render(){
   if(!ROUTES.has(route())){
     $('.v196-modal').forEach(x=>x.remove());
+    if(document.pictureInPictureElement||systemPiPActive){
+      document.body.classList.add('v196-floating-player');
+      return;
+    }
     if(settings().floating&&floatingPortal?.isConnected){
       document.body.classList.add('v196-floating-player');
       return;
@@ -518,6 +527,11 @@ function render(){
     return;
   }
   const c=ctx();if(!c)return;
+  const existing=$('[data-v196-stream-hub]',c.root);
+  if((document.pictureInPictureElement||systemPiPActive)&&existing){
+    applyFloating(existing);
+    return;
+  }
   const s=liveState(c),list=streamList(c,s),cfg=settings(),st=statusInfo(c,s);
   const sig=[c.key,s.phase,s.source?.url||'',s.source?.name||'',list.map(x=>x.url).join('|'),cfg.floating,cfg.lowQuality,cfg.render,st.key].join('::');
   let old=$('[data-v196-stream-hub]',c.root);
