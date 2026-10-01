@@ -5,7 +5,7 @@
 if(window.__LJR_V194_SCORERS__)return;
 window.__LJR_V194_SCORERS__=true;
 window.__LJR_SCORERS_UI_OWNER__='v194-reference';
-window.__LJR_SCORERS_BUILD__='v463';
+window.__LJR_SCORERS_BUILD__='v464-freeze-fix';
 
 const CAT_ORDER=['3','5','4','2','1'];
 const CAT_FALLBACK={
@@ -320,11 +320,11 @@ function forceCategoryRender(){
 }
 function chooseCategory(id){
   id=CAT_ORDER.includes(String(id))?String(id):'3';
+  if(id===catId())return false;
   try{
     localStorage.setItem('v62-category',id);
     localStorage.setItem('v12-fixture-cat',id);
     localStorage.setItem(TEAM_KEY,'all');
-    window.LJR_OFFICIAL_API?.setCategory?.(id);
   }catch(_){}
   try{
     const wanted='#/scorers?cat='+encodeURIComponent(id);
@@ -332,11 +332,9 @@ function chooseCategory(id){
       history.replaceState(history.state,'',location.pathname+location.search+wanted);
     }
   }catch(_){}
+  /* One synchronous repaint only. The old version repainted 4 times and
+     dispatched another category event, which was freezing Android/WebView. */
   forceCategoryRender();
-  try{window.dispatchEvent(new CustomEvent('ljr:scorers-category',{detail:{id}}))}catch(_){}
-  requestAnimationFrame(()=>forceCategoryRender());
-  setTimeout(()=>forceCategoryRender(),30);
-  setTimeout(()=>forceCategoryRender(),120);
   return false;
 }
 function bind(root){
@@ -404,13 +402,11 @@ window.LJR_SET_SCORER_CATEGORY=function(id){return chooseCategory(id)};
    Native category links are the fallback and must be allowed to navigate. */
 document.addEventListener('click',delegatedClick,true);
 document.addEventListener('change',delegatedChange,true);
-window.addEventListener('hashchange',()=>{schedule(0);setTimeout(()=>render(true),50);setTimeout(()=>render(true),180)});
-window.addEventListener('ljr:official-data',()=>schedule(20));
-document.addEventListener('visibilitychange',()=>{if(!document.hidden)schedule(20)});
-const screen=document.querySelector('#screen');
-if(screen)new MutationObserver(()=>{if(!rendering&&route()==='scorers')schedule(45)}).observe(screen,{childList:true,subtree:true});
+window.addEventListener('hashchange',()=>schedule(0));
+window.addEventListener('ljr:official-data',()=>schedule(40));
+document.addEventListener('visibilitychange',()=>{if(!document.hidden)schedule(40)});
+/* No subtree MutationObserver here: it observed our own page.innerHTML and
+   repeatedly scheduled renders while the user touched category buttons. */
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',()=>schedule(20),{once:true});else schedule(20);
-setTimeout(()=>render(true),300);
-setTimeout(()=>render(true),900);
-setTimeout(()=>render(true),1800);
+setTimeout(()=>render(false),320);
 })();
