@@ -219,25 +219,27 @@ function v508Pairs(rows){
  while(a<b){out.push([a,b]);a++;b--}
  return out;
 }
-function v508Lane(pair,directTeam,tone){
- const a=pair?.[0]||null,b=pair?.[1]||null;
+function v508Lane(pairGroup,directPair,tone){
+ const pairs=(pairGroup||[]).filter(Boolean),direct=(directPair||[]).filter(Boolean);
  return '<div class="v508-route '+tone+'">'+
    '<span class="v508-route-rail" aria-hidden="true"></span>'+
    '<div class="v508-playoff-side">'+
-     (a&&b?'<div class="v508-pair">'+bracketTeam(a)+bracketTeam(b)+'<span class="v508-pair-line" aria-hidden="true"></span></div>':'')+
+     pairs.map(p=>'<div class="v508-pair">'+bracketTeam(p[0])+bracketTeam(p[1])+'<span class="v508-pair-line" aria-hidden="true"></span></div>').join('')+
    '</div>'+
    '<div class="v508-octavo-side">'+
-     (a&&b?'<div class="v508-winner"><span class="v508-shield">⬢</span><b>Ganador del play-off</b></div>':'')+
-     (directTeam?bracketTeam(directTeam,true):'')+
+     (pairs.length?'<div class="v508-winner"><span class="v508-shield">⬢</span><b>Ganador del play-off</b></div>':'')+
+     (direct.length?'<div class="v508-seeded">'+direct.map(t=>bracketTeam(t,true)).join('<i class="v508-seeded-vs">o</i>')+'</div>':'')+
      '<span class="v508-next-line" aria-hidden="true"></span>'+
    '</div>'+
  '</div>';
 }
 function bracketView(){
  const rows=simulatedStandings();
- const pairs=v508Pairs(rows).map(([a,b])=>[rows[a-1]||null,rows[b-1]||null]);
+ const pairs=v508Pairs(rows).map(([a,b])=>[rows[a-1]||null,rows[b-1]||null]).filter(p=>p[0]&&p[1]);
  const direct=rows.slice(0,Math.min(4,rows.length));
- const lanes=Math.max(pairs.length,direct.length,1);
+ const pairGroups=[];for(let i=0;i<pairs.length;i+=2)pairGroups.push(pairs.slice(i,i+2));
+ const directGroups=[];for(let i=0;i<direct.length;i+=2)directGroups.push(direct.slice(i,i+2));
+ const lanes=Math.max(pairGroups.length,directGroups.length,1);
  return '<section class="v501-board v501-bracket v508-competition-bracket">'+
    '<div class="v508-stage-tabs" role="tablist" aria-label="Etapas del cuadro">'+
      '<button type="button" class="active">Play-off</button>'+
@@ -248,7 +250,7 @@ function bracketView(){
    '<div class="v508-dates"><span><i></i>16-19 &amp; 24-25 feb</span><span><i></i>9-12 &amp; 17-18 mar</span></div>'+
    '<div class="v508-head"><b>PLAY-OFF</b><b>OCTAVOS DE FINAL</b></div>'+
    '<div class="v508-routes">'+
-     Array.from({length:lanes},(_,i)=>v508Lane(pairs[i]||null,direct[i]||null,i<Math.ceil(lanes/2)?'route-silver':'route-cyan')).join('')+
+     Array.from({length:lanes},(_,i)=>v508Lane(pairGroups[i]||[],directGroups[i]||[],i===0?'route-silver':'route-cyan')).join('')+
    '</div>'+
  '</section>';
 }
