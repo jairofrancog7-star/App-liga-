@@ -5,7 +5,7 @@
 
 const route=()=>location.hash.replace('#/','')||'home';
 const screen=()=>document.querySelector('#screen');
-const OFFICIAL='./data/official-live.json?v=20261001-v491-v35-all-pages';
+const OFFICIAL='./data/official-live.json';
 const ASSET_BASE='https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/';
 const HOME_IMAGE='https://d2ol7oe51mr4n9.cloudfront.net/user_3JNvttsAwr0QjxhuX5O1uaa9bvv/23f05376-ed2b-4ddb-a074-24f77221b520.png';
 let db=window.LJR_OFFICIAL_DATA||null;
@@ -25,13 +25,39 @@ const CALENDAR_CATEGORY_LABELS={
 const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const norm=v=>String(v??'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[^a-z0-9]+/g,' ').trim();
 
+function fixtureCount(x){
+  let n=0;
+  try{
+    Object.values(x?.categories||{}).forEach(cat=>{
+      (cat?.fixtures||[]).forEach(group=>{n+=(group?.rows||[]).length});
+    });
+  }catch(_){}
+  return n;
+}
+function chooseOfficial(a,b){
+  if(!a)return b||null;if(!b)return a;
+  const ta=Date.parse(a.captured_at_utc||'')||0;
+  const tb=Date.parse(b.captured_at_utc||'')||0;
+  if(tb!==ta)return tb>ta?b:a;
+  return fixtureCount(b)>fixtureCount(a)?b:a;
+}
 async function loadOfficial(){
-  if(db)return db;
   if(loading)return loading;
-  loading=fetch(OFFICIAL+'?v='+Date.now(),{cache:'no-store'})
-    .then(r=>r.ok?r.json():null)
-    .then(x=>{if(x){db=x;window.LJR_OFFICIAL_DATA=x}return db})
-    .catch(()=>null);
+  loading=(async()=>{
+    let best=chooseOfficial(db,window.LJR_OFFICIAL_DATA||null);
+    try{
+      const r=await fetch(OFFICIAL+'?v='+Date.now(),{cache:'no-store'});
+      if(r.ok){
+        const fresh=await r.json();
+        best=chooseOfficial(best,fresh);
+      }
+    }catch(_){}
+    if(best){
+      db=best;
+      window.LJR_OFFICIAL_DATA=best;
+    }
+    return db;
+  })().finally(()=>{loading=null});
   return loading;
 }
 
@@ -51,29 +77,61 @@ function localScheduleOverride(home,away){
     return n||null;
   }catch{return null}
 }
+function homeDateShort(iso){
+  if(!iso)return 'Por confirmar';
+  const p=iso.split('-').map(Number);
+  const d=new Date(p[0],p[1]-1,p[2]);
+  const mon=['ENE','FEB','MAR','ABR','MAY','JUN','JUL','AGO','SEP','OCT','NOV','DIC'][d.getMonth()]||'';
+  return d.getDate()+' '+mon;
+}
+function homeDayName(iso){
+  if(!iso)return '';
+  const p=iso.split('-').map(Number);
+  const d=new Date(p[0],p[1]-1,p[2]);
+  return ['DOMINGO','LUNES','MARTES','MIÉRCOLES','JUEVES','VIERNES','SÁBADO'][d.getDay()]||'';
+}
+function homeGroupKind(games){
+  const cats=[...new Set(games.map(g=>g.category).filter(Boolean))];
+  if(cats.length&&cats.every(x=>/veteranos/i.test(x)))return 'VETERANOS';
+  return 'PRIMERA · INTERMEDIA · SEGUNDA';
+}
 function homeUpcomingMarkup(){
   const all=calendarGames();
   const today=new Date();
   const todayIso=today.getFullYear()+'-'+String(today.getMonth()+1).padStart(2,'0')+'-'+String(today.getDate()).padStart(2,'0');
   const upcoming=all.filter(g=>g.iso>=todayIso&&!g.played);
-  const targetDate=upcoming[0]?.iso||all.filter(g=>g.iso>=todayIso)[0]?.iso||'';
-  const games=(targetDate?all.filter(g=>g.iso===targetDate):[]).slice(0,4).map(g=>{
-    const ch=localScheduleOverride(g.home,g.away);
-    return ch?{...g,time:ch.newTime||g.time,venue:ch.newVenue||g.venue,changed:true}:g;
-  });
-  const label=targetDate?targetDate.split('-').reverse().join('/'):'Por confirmar';
-  const round=games.find(g=>String(g.round||'').trim())?.round||'—';
+  const dates=[...new Set(upcoming.map(g=>g.iso))].slice(0,2);
+  const groups=dates.map(iso=>{
+    const rows=upcoming.filter(g=>g.iso===iso).map(g=>{
+      const ch=localScheduleOverride(g.home,g.away);
+      return ch?{...g,time:ch.newTime||g.time,venue:ch.newVenue||g.venue,changed:true}:g;
+    });
+    return {iso,all:rows,games:rows.slice(0,3)};
+  }).filter(x=>x.games.length);
+  const flat=groups.flatMap(x=>x.games);
+  const rounds=[...new Set(flat.map(g=>String(g.round||'').trim()).filter(Boolean))];
+  const round=rounds.length===1?rounds[0]:(rounds[0]||'—');
+  const topLabel=groups.length>1
+    ?homeDateShort(groups[0].iso)+' – '+homeDateShort(groups[groups.length-1].iso)
+    :(groups[0]?homeDateShort(groups[0].iso):'Por confirmar');
+  const body=groups.length?groups.map(group=>
+    '<div class="v103-upcoming-day" data-day="'+esc(homeDayName(group.iso))+'">'+
+      '<div class="v103-upcoming-day-head"><span>'+esc(homeDayName(group.iso))+' · '+esc(homeGroupKind(group.all))+'</span><b>'+esc(homeDateShort(group.iso))+'</b></div>'+
+      group.games.map((g,i)=>
+        '<button type="button" class="v103-upcoming-match'+(i?' is-second':'')+'" data-route="competition" aria-label="'+esc(g.home)+' contra '+esc(g.away)+'">'+
+          '<span class="v103-upcoming-team home"><b>'+esc(g.home)+'</b>'+teamMark(g.home)+'</span>'+
+          '<span class="v103-upcoming-center"><strong>'+esc(/GANA\s+/i.test(g.status||'')?(g.status||'').replace(/^.*?(GANA\s+)/i,'$1'):g.time)+'</strong><small>'+esc(g.category)+'</small></span>'+
+          '<span class="v103-upcoming-team away">'+teamMark(g.away)+'<b>'+esc(g.away)+'</b></span>'+
+        '</button>'
+      ).join('')+
+      (group.all.length>group.games.length?'<button type="button" class="v103-upcoming-more" data-safe-route="v4-calendar">+'+(group.all.length-group.games.length)+' partidos · Ver calendario</button>':'')+
+    '</div>'
+  ).join(''):'<div class="v103-cal-empty">Cargando próximos partidos oficiales…</div>';
   return '<div class="v103-upcoming-wrap" data-v103-upcoming>'+
     '<div class="v103-upcoming-head"><h2>Próximos partidos</h2><button type="button" data-safe-route="v4-calendar">Calendario</button></div>'+
     '<div class="v103-upcoming-card">'+
-      '<div class="v103-upcoming-meta"><span><i></i>ROL OFICIAL · Jornada '+esc(round)+'</span><b>'+esc(label)+'</b></div>'+
-      (games.length?games.map((g,i)=>
-        '<button type="button" class="v103-upcoming-match'+(i?' is-second':'')+'" data-route="competition" aria-label="'+esc(g.home)+' contra '+esc(g.away)+'">'+
-          '<span class="v103-upcoming-team home"><b>'+esc(g.home)+'</b>'+teamMark(g.home)+'</span>'+
-          '<strong>'+esc(/GANA\s+/i.test(g.status||'')?(g.status||'').replace(/^.*?(GANA\s+)/i,'$1'):g.time)+'</strong>'+
-          '<span class="v103-upcoming-team away">'+teamMark(g.away)+'<b>'+esc(g.away)+'</b></span>'+
-        '</button>'
-      ).join(''):'<div class="v103-cal-empty">No hay próximos partidos oficiales publicados.</div>')+
+      '<div class="v103-upcoming-meta"><span><i aria-hidden="true"></i>ROL OFICIAL · Jornada '+esc(round)+'</span><b>'+esc(topLabel)+'</b></div>'+
+      body+
     '</div>'+
   '</div>';
 }
@@ -367,5 +425,8 @@ if(root)new MutationObserver(()=>{
      evita que quede guardado el antiguo demo de octubre. */
   viewDate=new Date();
   queuePatch();
+  /* V449: asegurar que Home se reconstruya con el snapshot oficial fresco y no con
+     un LJR_OFFICIAL_DATA anterior que todavía no traía las jornadas sabatina/dominical. */
+  if(route()==='home')setTimeout(()=>{const slot=document.querySelector('[data-v114-upcoming-slot]');if(slot)slot.innerHTML=homeUpcomingMarkup()},80);
 })();
 })();
