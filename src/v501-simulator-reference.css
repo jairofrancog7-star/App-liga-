@@ -2970,3 +2970,146 @@ html body[data-app-route="simulator"] .bottom-nav{
   max-height:0!important;
   overflow:hidden!important;
 }
+
+
+/* V515 — hoja del simulador deslizable + fondo sólido + trofeo visible */
+body[data-app-route="simulator"] .v501-sheet{
+  position:fixed!important;
+  left:0!important;
+  right:0!important;
+  top:0!important;
+  bottom:auto!important;
+  z-index:2147482600!important;
+  width:100%!important;
+  height:100dvh!important;
+  max-height:none!important;
+  margin:0!important;
+  padding:9px 16px 18px!important;
+  overflow:hidden!important;
+  border-radius:22px 22px 0 0!important;
+  background:#080761!important;
+  box-shadow:0 -7px 22px rgba(0,0,50,.26)!important;
+  transform:translate3d(0,var(--v515-sheet-y,calc(100dvh - 116px)),0)!important;
+  transition:transform .28s cubic-bezier(.22,.82,.3,1)!important;
+  will-change:transform!important;
+  box-sizing:border-box!important;
+}
+body[data-app-route="simulator"] .v501-sheet.v515-dragging{
+  transition:none!important;
+}
+body[data-app-route="simulator"] .v501-grabber{
+  width:74px!important;
+  height:5px!important;
+  margin:0 auto 12px!important;
+  border-radius:999px!important;
+  background:#6f76b8!important;
+  touch-action:none!important;
+  cursor:grab!important;
+}
+body[data-app-route="simulator"] .v501-sheet.v515-dragging .v501-grabber{
+  cursor:grabbing!important;
+  background:#96a1e0!important;
+}
+body[data-app-route="simulator"] .v501-sheet-head{
+  touch-action:none!important;
+  user-select:none!important;
+  -webkit-user-select:none!important;
+}
+body[data-app-route="simulator"] .v501-sheet-head>button{
+  touch-action:manipulation!important;
+}
+body[data-app-route="simulator"] .v501-match-list{
+  overflow-y:auto!important;
+  overflow-x:hidden!important;
+  max-height:calc(100dvh - 176px)!important;
+  padding-bottom:150px!important;
+  overscroll-behavior:contain!important;
+  -webkit-overflow-scrolling:touch!important;
+}
+body.v515-sheet-dragging{
+  user-select:none!important;
+  -webkit-user-select:none!important;
+  overscroll-behavior:none!important;
+}
+
+/* La banda de etapas se desliza horizontalmente con el dedo, igual que la referencia. */
+body[data-app-route="simulator"] .v12-bracket-stage-tabs{
+  overflow-x:auto!important;
+  overflow-y:hidden!important;
+  -webkit-overflow-scrolling:touch!important;
+  touch-action:pan-x!important;
+  scroll-snap-type:x proximity!important;
+  scrollbar-width:none!important;
+}
+body[data-app-route="simulator"] .v12-bracket-stage-tabs::-webkit-scrollbar{
+  display:none!important;
+}
+body[data-app-route="simulator"] .v12-bracket-stage-tabs>button{
+  scroll-snap-align:center!important;
+}
+
+/* Fondo único azul claro, sin degradados. */
+body[data-app-route="simulator"] [data-v512-bracket].v12-bracket-reference,
+body[data-app-route="simulator"] [data-v512-bracket].v12-bracket-reference.stage-playoff,
+body[data-app-route="simulator"] [data-v512-bracket].v12-bracket-reference.stage-octavos,
+body[data-app-route="simulator"] [data-v512-bracket].v12-bracket-reference.stage-cuartos,
+body[data-app-route="simulator"] [data-v512-bracket].v12-bracket-reference.stage-semifinal,
+body[data-app-route="simulator"] [data-v512-bracket].v12-bracket-reference.stage-final,
+body[data-app-route="simulator"] [data-v512-bracket] .v12-final-reference{
+  background:#174dff!important;
+}
+
+/* Final: trofeo siempre visible y con movimiento suave. */
+body[data-app-route="simulator"] [data-v512-bracket].stage-final .v12-final-reference{
+  display:block!important;
+  visibility:visible!important;
+  opacity:1!important;
+}
+body[data-app-route="simulator"] [data-v512-bracket].stage-final .v12-final-trophy-wrap{
+  display:grid!important;
+  visibility:visible!important;
+  opacity:1!important;
+  pointer-events:none!important;
+  animation:v515TrophyWrapIn .30s ease-out both!important;
+}
+body[data-app-route="simulator"] [data-v512-bracket].stage-final .v12-final-trophy-new,
+body[data-app-route="simulator"] [data-v512-bracket].stage-final .v12-final-trophy-new img{
+  display:block!important;
+  visibility:visible!important;
+  opacity:1!important;
+}
+body[data-app-route="simulator"] [data-v512-bracket].stage-final .v12-final-trophy-new img{
+  animation:v515TrophyFloat 2.7s ease-in-out infinite!important;
+  transform-origin:center bottom!important;
+}
+@keyframes v515TrophyWrapIn{
+  from{opacity:0;transform:translateX(14px)}
+  to{opacity:1;transform:translateX(0)}
+}
+@keyframes v515TrophyFloat{
+  0%,100%{transform:translateY(0)}
+  50%{transform:translateY(-7px)}
+}
+
+@media(max-width:390px){
+  body[data-app-route="simulator"] .v501-sheet{
+    padding:8px 12px 15px!important;
+    border-radius:20px 20px 0 0!important;
+  }
+  body[data-app-route="simulator"] .v501-grabber{
+    width:68px!important;
+    margin-bottom:10px!important;
+  }
+  body[data-app-route="simulator"] .v501-match-list{
+    max-height:calc(100dvh - 164px)!important;
+    padding-bottom:130px!important;
+  }
+}
+@media(prefers-reduced-motion:reduce){
+  body[data-app-route="simulator"] .v501-sheet,
+  body[data-app-route="simulator"] [data-v512-bracket].stage-final .v12-final-trophy-wrap,
+  body[data-app-route="simulator"] [data-v512-bracket].stage-final .v12-final-trophy-new img{
+    transition:none!important;
+    animation:none!important;
+  }
+}
