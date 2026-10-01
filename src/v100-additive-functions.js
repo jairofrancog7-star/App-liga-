@@ -7,7 +7,7 @@
 if(window.__LJR_V100_ADDITIVE__) return;
 window.__LJR_V100_ADDITIVE__=true;
 
-const BUILD='20261001-v506-nopalero-logo-visible';
+const BUILD='20261001-v510-nopalero-edge-bg-only';
 const $=(s,r=document)=>r.querySelector(s);
 const $$=(s,r=document)=>Array.from(r.querySelectorAll(s));
 const esc=(v)=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -460,27 +460,41 @@ async function v476TransparentTeamLogo(src){
   const img=await v100LoadImage(src);
   if(!img){v476TeamLogoCache.set(src,null);return null}
   if(/^data:image\/webp;base64,/i.test(String(src))){
-    /* V506: conservar visible el escudo exacto de Deportivo Nopalero.
-       Solo convertir a transparente el negro puro/neutro del fondo. */
+    /* V510: conserva el escudo exacto de Deportivo Nopalero.
+       SOLO se elimina el fondo negro conectado al borde. El centro del escudo,
+       balón, nopales, letras, banderas y contornos internos NO se modifican. */
     const iw=img.naturalWidth||img.width||1,ih=img.naturalHeight||img.height||1;
-    const max=420,sc=Math.min(1,max/Math.max(iw,ih)),w=Math.max(1,Math.round(iw*sc)),h=Math.max(1,Math.round(ih*sc));
+    const max=520,sc=Math.min(1,max/Math.max(iw,ih)),w=Math.max(1,Math.round(iw*sc)),h=Math.max(1,Math.round(ih*sc));
     const cv=document.createElement('canvas');cv.width=w;cv.height=h;
     const q=cv.getContext('2d',{willReadFrequently:true});
     q.clearRect(0,0,w,h);q.drawImage(img,0,0,w,h);
+
     let data;try{data=q.getImageData(0,0,w,h)}catch(_){v476TeamLogoCache.set(src,img);return img}
-    const d=data.data,n=w*h;let visible=0;
-    for(let p=0;p<n;p++){
-      const k=p*4,r=d[k],g=d[k+1],b=d[k+2];
-      const hi=Math.max(r,g,b),lo=Math.min(r,g,b);
-      if(hi<=18 && hi-lo<=8)d[k+3]=0;
-      else if(d[k+3]>8)visible++;
+    const d=data.data,n=w*h,seen=new Uint8Array(n),queue=new Int32Array(n);let head=0,tail=0;
+
+    const isBg=i=>{
+      const k=i*4;
+      if(d[k+3]===0)return true;
+      const r=d[k],g=d[k+1],b=d[k+2],hi=Math.max(r,g,b),lo=Math.min(r,g,b);
+      return hi<=48 && (hi-lo)<=20;
+    };
+    const push=i=>{if(i<0||i>=n||seen[i]||!isBg(i))return;seen[i]=1;queue[tail++]=i};
+
+    for(let x=0;x<w;x++){push(x);push((h-1)*w+x)}
+    for(let y=0;y<h;y++){push(y*w);push(y*w+w-1)}
+
+    while(head<tail){
+      const p=queue[head++],x=p%w,y=(p/w)|0;
+      if(x>0)push(p-1);if(x<w-1)push(p+1);if(y>0)push(p-w);if(y<h-1)push(p+w);
+      if(x>0&&y>0)push(p-w-1);if(x<w-1&&y>0)push(p-w+1);
+      if(x>0&&y<h-1)push(p+w-1);if(x<w-1&&y<h-1)push(p+w+1);
     }
-    if(visible<n*.08){v476TeamLogoCache.set(src,img);return img}
+
+    for(let p=0;p<n;p++)if(seen[p])d[p*4+3]=0;
     q.putImageData(data,0,0);
     v476TeamLogoCache.set(src,cv);
     return cv;
   }
-
   const iw=img.naturalWidth||img.width||1,ih=img.naturalHeight||img.height||1;
   const max=420,scale=Math.min(1,max/Math.max(iw,ih)),w=Math.max(1,Math.round(iw*scale)),h=Math.max(1,Math.round(ih*scale));
   const cv=document.createElement('canvas');cv.width=w;cv.height=h;
