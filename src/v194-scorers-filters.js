@@ -16,6 +16,7 @@ const CAT_FALLBACK={
 };
 const MODE_KEY='v194-scorer-mode';
 const TEAM_KEY='v194-scorer-team';
+const STAT_KEY='v194-scorer-stat';
 let rendering=false;
 let timer=0;
 let scorerCategoryTapAt=0;
@@ -66,6 +67,33 @@ function logoHtml(team,cls='v194-logo'){
   const ab=String(team||'').split(/\s+/).filter(Boolean).map(x=>x[0]).join('').slice(0,3).toUpperCase()||'⚽';
   return '<span class="'+cls+' fallback">'+esc(ab)+'</span>';
 }
+function playerPhoto(name,team){
+  try{
+    const pub=window.LJR_PLAYER_PHOTOS;
+    if(pub){
+      if(typeof pub.get==='function'){const x=pub.get(name,team);if(x)return String(x)}
+      const x=pub[norm(name)+'|'+norm(team)]||pub[norm(name)]||pub[name];
+      if(x)return String(x);
+    }
+  }catch(_){}
+  return '';
+}
+function playerVisual(name,team,cls=''){
+  const photo=playerPhoto(name,team);
+  if(photo)return '<span class="v459-player-photo '+cls+'"><img src="'+esc(photo)+'" alt="'+esc(name)+'" loading="lazy" decoding="async"></span>';
+  const initials=String(name||'J').split(/\s+/).filter(Boolean).slice(0,2).map(x=>x[0]).join('').toUpperCase();
+  return '<span class="v459-player-photo '+cls+' is-fallback">'+logoHtml(team,'v459-player-team-logo')+'<b>'+esc(initials)+'</b></span>';
+}
+function currentStat(){
+  const v=localStorage.getItem(STAT_KEY)||'goals';
+  return ['goals','shots','passes'].includes(v)?v:'goals';
+}
+function chooseStat(mode){
+  const v=['goals','shots','passes'].includes(mode)?mode:'goals';
+  localStorage.setItem(STAT_KEY,v);
+  render(true);
+}
+
 function scorerRows(id=catId()){
   const raw=category(id)?.scorers?.[0]?.rows||[];
   return raw.filter(r=>Array.isArray(r)&&r.length>=4&&String(r[1]||'').trim()&&String(r[2]||'').trim()&&/^\d+$/.test(String(r[3]||'')))
@@ -202,34 +230,29 @@ function teamTable(){
         '<strong>'+t.gf+'<small> GF</small></strong>'+
       '</button></article>').join(''):'<div class="v194-empty">No hay datos de goleo publicados para esta categoría.</div>')+'</div></section>';
 }
-function heroScorerCard(r,slot){
-  if(!r)return '';
-  const shownRank=String(r.rank||slot);
-  return '<article class="v391-feature rank-'+slot+'">'+
-    '<div class="v391-feature-photo">'+
-      '<span class="v391-feature-kicker">#'+esc(shownRank)+' Máximo goleador</span>'+
-      '<span class="v391-feature-media"><small>00:'+(slot===1?'38':'36')+'</small><i aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M9 7.5 17 12l-8 4.5z"/></svg></i></span>'+
-      '<span class="v391-feature-watermark">'+logoHtml(r.team,'v391-watermark-logo')+'</span>'+
-    '</div>'+
-    '<div class="v391-feature-info">'+
-      '<div class="v391-feature-person" data-v194-player="'+esc(r.player)+'">'+
-        logoHtml(r.team,'v391-feature-logo')+
-        '<span><strong>'+esc(r.player)+'</strong><b>'+esc(r.team)+'</b></span>'+
-      '</div>'+
-      '<span class="v391-feature-goals"><b>'+r.goals+'</b><small>goles</small></span>'+
-    '</div>'+
-  '</article>';
+function scorerTeamsStrip(rows){
+  const map=new Map();
+  for(const r of rows){
+    const k=norm(r.team);
+    if(!map.has(k))map.set(k,{team:r.team,goals:0});
+    map.get(k).goals+=Number(r.goals)||0;
+  }
+  const teams=[...map.values()].sort((a,b)=>b.goals-a.goals||a.team.localeCompare(b.team,'es')).slice(0,4);
+  if(!teams.length)return '';
+  return '<div class="v459-team-strip">'+teams.map(t=>
+    '<button type="button" class="v459-team-tile" data-v194-open-team="'+esc(t.team)+'">'+
+      logoHtml(t.team,'v459-team-logo')+
+      '<span>'+esc(t.team)+'</span>'+
+    '</button>'
+  ).join('')+'</div>';
 }
-function scorerListRows(rows){
-  return '<div class="v391-ranking">'+rows.map((r,i)=>{
-    const pos=String(r.rank||i+3);
-    return '<div class="v391-rank-row" data-v194-player="'+esc(r.player)+'">'+
-      '<span class="v391-rank-pos">#'+esc(pos)+'</span>'+
-      logoHtml(r.team,'v391-rank-logo')+
-      '<span class="v391-rank-copy"><b>'+esc(r.player)+'</b><small>'+esc(r.team)+'</small></span>'+
-      '<strong>'+r.goals+'</strong>'+
-    '</div>';
-  }).join('')+'</div>';
+function scorerRankRow(r,i){
+  return '<button type="button" class="v459-rank-row" data-v194-player="'+esc(r.player)+'">'+
+    '<span class="v459-rank-pos">'+String(i+1)+'º</span>'+
+    playerVisual(r.player,r.team,'row')+
+    '<span class="v459-rank-copy"><b>'+esc(r.player)+'</b><small>'+logoHtml(r.team,'v459-inline-logo')+'<span>'+esc(r.team)+'</span></small></span>'+
+    '<strong>'+esc(r.goals)+'</strong>'+
+  '</button>';
 }
 function categoryStrip(){
   const active=catId();
@@ -241,12 +264,35 @@ function categoryStrip(){
   '</section>';
 }
 function referenceScorersView(){
-  const id=catId(),rows=scorerRows(id);
-  return '<div class="v391-reference" data-v391-category="'+esc(id)+'">'+
+  const id=catId(),rows=scorerRows(id),top=rows[0],stat=currentStat();
+  return '<div class="v391-reference v459-reference" data-v391-category="'+esc(id)+'">'+
     categoryStrip()+
     '<div class="v391-category-title"><small>'+esc(catName(id))+'</small><span>'+rows.length+' goleador'+(rows.length===1?'':'es')+' publicado'+(rows.length===1?'':'s')+'</span></div>'+
-    (rows.length?
-      heroScorerCard(rows[0],1)+heroScorerCard(rows[1],2)+scorerListRows(rows.slice(2)):
+    scorerTeamsStrip(rows)+
+    '<div class="v459-ranking-title">RANKING DE JUGADORES</div>'+
+    '<div class="v459-stat-tabs">'+
+      '<button type="button" class="'+(stat==='goals'?'active':'')+'" data-v194-stat="goals">Goles</button>'+
+      '<button type="button" class="'+(stat==='shots'?'active':'')+'" data-v194-stat="shots">Remates</button>'+
+      '<button type="button" class="'+(stat==='passes'?'active':'')+'" data-v194-stat="passes">Pases</button>'+
+    '</div>'+
+    (stat!=='goals'?
+      '<div class="v459-unavailable"><b>'+esc(stat==='shots'?'Remates':'Pases')+'</b><span>La fuente oficial actual no publica esta estadística individual.</span></div>':
+      rows.length?
+      '<section class="v459-ranking-card">'+
+        '<div class="v459-hero">'+
+          '<div class="v459-hero-art">'+
+            playerVisual(top.player,top.team,'hero')+
+            '<span class="v459-hero-crest">'+logoHtml(top.team,'v459-hero-logo')+'</span>'+
+          '</div>'+
+          '<div class="v459-hero-meta">'+
+            '<span>1º</span>'+
+            '<div><h2>'+esc(top.player)+'</h2><small>'+logoHtml(top.team,'v459-inline-logo')+esc(top.team)+'</small></div>'+
+            '<strong>'+esc(top.goals)+'<small>GOLES</small></strong>'+
+          '</div>'+
+        '</div>'+
+        '<div class="v459-list-head"><span>POS.</span><span>JUGADOR</span><span>GOLES</span></div>'+
+        '<div class="v459-rank-list">'+rows.slice(1,10).map((r,i)=>scorerRankRow(r,i+1)).join('')+'</div>'+
+      '</section>':
       '<div class="v391-empty">Todavía no hay goleadores oficiales publicados para '+esc(catName(id))+'.</div>')+
   '</div>';
 }
@@ -273,7 +319,7 @@ function forceCategoryRender(){
   if(!page||!db())return false;
   rendering=true;
   try{
-    const signature=[catId(),currentMode(),currentTeam(),db()?.captured_at_utc||''].join('|');
+    const signature=[catId(),currentMode(),currentTeam(),currentStat(),db()?.captured_at_utc||''].join('|');
     page.dataset.v194Sig=signature;
     page.innerHTML=markup();
     const root=page.querySelector('[data-v194-scorers]');
@@ -333,6 +379,11 @@ function delegatedClick(e){
     e.preventDefault();e.stopPropagation();e.stopImmediatePropagation();
     chooseMode(mode.dataset.v194Mode);return;
   }
+  const stat=e.target.closest('[data-v194-stat]');
+  if(stat){
+    e.preventDefault();e.stopPropagation();e.stopImmediatePropagation();
+    chooseStat(stat.dataset.v194Stat||'goals');return;
+  }
   const team=e.target.closest('[data-v194-open-team]');
   if(team){
     e.preventDefault();e.stopPropagation();e.stopImmediatePropagation();
@@ -350,7 +401,7 @@ function render(force=false){
   if(rendering||route()!=='scorers'||!db())return;
   const page=document.querySelector('[data-v28-scorers]');
   if(!page)return;
-  const signature=[catId(),currentMode(),currentTeam(),db()?.captured_at_utc||''].join('|');
+  const signature=[catId(),currentMode(),currentTeam(),currentStat(),db()?.captured_at_utc||''].join('|');
   if(!force&&page.dataset.v194Sig===signature&&page.querySelector('[data-v194-scorers]'))return;
   rendering=true;
   try{
