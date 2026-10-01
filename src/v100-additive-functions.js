@@ -1435,7 +1435,119 @@ function fanzone(){
   fanRenderButtons(m,'[data-r]','r');
 }
 function journeySim(){const teams=officialTeams();const opts=teams.map(t=>'<option>'+esc(t.name)+'</option>').join('');const m=modal(sectionTitle('ESCENARIO LOCAL','Simulador de jornada','Prueba un marcador hipotético. No modifica resultados ni tablas oficiales.')+'<div class="v100-form-grid"><label><span>Local</span><select data-js-home>'+opts+'</select></label><label><span>Visitante</span><select data-js-away>'+opts+'</select></label><label><span>Goles local</span><input type="number" min="0" max="30" value="0" data-js-hg></label><label><span>Goles visitante</span><input type="number" min="0" max="30" value="0" data-js-ag></label></div><div class="v100-actions"><button class="v100-primary" data-js-save>Guardar escenario</button></div><div data-js-list></div>');const render=()=>{const list=read('v100-journey-sim',[]),h=$('[data-js-list]',m);h.innerHTML=list.length?'<div class="v100-sim-list">'+list.map((x,i)=>'<article><span><b>'+esc(x.home)+' '+x.hg+'–'+x.ag+' '+esc(x.away)+'</b><small>Escenario hipotético</small></span><button data-js-del="'+i+'">Quitar</button></article>').join('')+'</div>':'<p class="v100-note">Sin escenarios guardados.</p>';$$('[data-js-del]',h).forEach(b=>b.onclick=()=>{list.splice(Number(b.dataset.jsDel),1);write('v100-journey-sim',list);render()})};render();$('[data-js-save]',m).onclick=()=>{const x={home:$('[data-js-home]',m).value,away:$('[data-js-away]',m).value,hg:Number($('[data-js-hg]',m).value||0),ag:Number($('[data-js-ag]',m).value||0)};if(x.home===x.away)return toast('Elige dos equipos distintos');const list=read('v100-journey-sim',[]);list.push(x);write('v100-journey-sim',list);render()}}
-function shotmap(){const shots=read('v100-shotmap',[]);const m=modal(sectionTitle('ANÁLISIS LOCAL','Shot Map','Toca la cancha para registrar tiros. Se guarda solo en este dispositivo.')+'<div class="v100-shot-pitch" data-shot-pitch></div><div class="v100-actions"><button class="v100-secondary" data-shot-undo>Deshacer</button><button class="v100-secondary" data-shot-clear>Limpiar</button><button class="v100-primary" data-shot-png>PNG</button><button class="v100-secondary" data-shot-json>JSON</button></div>','v100-shot-modal');const pitch=$('[data-shot-pitch]',m);const render=()=>{pitch.innerHTML=shots.map((s,i)=>'<i style="left:'+s.x+'%;top:'+s.y+'%" title="Tiro '+(i+1)+'"></i>').join('')};render();pitch.onclick=e=>{const r=pitch.getBoundingClientRect();shots.push({x:+(((e.clientX-r.left)/r.width)*100).toFixed(1),y:+(((e.clientY-r.top)/r.height)*100).toFixed(1),at:new Date().toISOString()});write('v100-shotmap',shots);render()};$('[data-shot-undo]',m).onclick=()=>{shots.pop();write('v100-shotmap',shots);render()};$('[data-shot-clear]',m).onclick=()=>{shots.splice(0);write('v100-shotmap',shots);render()};$('[data-shot-json]',m).onclick=()=>download(new Blob([JSON.stringify(shots,null,2)],{type:'application/json'}),'Shot_Map_Liga.json');$('[data-shot-png]',m).onclick=async()=>{const c=document.createElement('canvas');c.width=900;c.height=1300;const x=c.getContext('2d');x.fillStyle='#07582e';x.fillRect(0,0,900,1300);x.strokeStyle='#fff';x.lineWidth=6;x.strokeRect(35,35,830,1230);x.beginPath();x.moveTo(35,650);x.lineTo(865,650);x.stroke();shots.forEach((s,i)=>{x.fillStyle='#ffe369';x.beginPath();x.arc(35+s.x/100*830,35+s.y/100*1230,18,0,Math.PI*2);x.fill();x.fillStyle='#07104d';x.font='700 16px Arial';x.textAlign='center';x.fillText(String(i+1),35+s.x/100*830,41+s.y/100*1230)});const b=await canvasBlob(c);download(b,'Shot_Map_Liga.png')}}
+function shotmap(){
+  const shots=read('v100-shotmap',[]);
+  let shotMode='shot';
+  const pitchLines=
+    '<div class="v100-shot-lines" aria-hidden="true">'+
+      '<span class="v100-shot-goal top"></span><span class="v100-shot-goal bottom"></span>'+
+      '<span class="v100-shot-box big top"></span><span class="v100-shot-box big bottom"></span>'+
+      '<span class="v100-shot-box small top"></span><span class="v100-shot-box small bottom"></span>'+
+      '<span class="v100-shot-penalty top"></span><span class="v100-shot-penalty bottom"></span>'+
+      '<span class="v100-shot-arc top"></span><span class="v100-shot-arc bottom"></span>'+
+      '<span class="v100-shot-half"></span><span class="v100-shot-center-circle"></span><span class="v100-shot-center-dot"></span>'+
+      '<span class="v100-shot-corner tl"></span><span class="v100-shot-corner tr"></span>'+
+      '<span class="v100-shot-corner bl"></span><span class="v100-shot-corner br"></span>'+
+      '<span class="v100-shot-direction top">ATAQUE</span><span class="v100-shot-direction bottom">DEFENSA</span>'+
+    '</div>';
+  const board=
+    '<div class="v100-shot-board">'+
+      '<div class="v100-shot-summary">'+
+        '<span><small>TIROS</small><b data-shot-total>0</b></span>'+
+        '<span><small>A PUERTA</small><b data-shot-target>0</b></span>'+
+        '<span><small>GOLES</small><b data-shot-goals>0</b></span>'+
+      '</div>'+
+      '<div class="v100-shot-mode" role="group" aria-label="Tipo de tiro">'+
+        '<button type="button" class="active" data-shot-mode="shot"><i></i>Tiro</button>'+
+        '<button type="button" data-shot-mode="target"><i></i>A puerta</button>'+
+        '<button type="button" data-shot-mode="goal"><i></i>Gol</button>'+
+      '</div>'+
+      '<div class="v100-shot-pitch" data-shot-pitch>'+pitchLines+'<div class="v100-shot-layer" data-shot-layer></div></div>'+
+      '<div class="v100-shot-legend"><span><i class="shot"></i>Tiro</span><span><i class="target"></i>A puerta</span><span><i class="goal"></i>Gol</span><em>Toca la cancha para colocar el balón</em></div>'+
+    '</div>';
+  const m=modal(
+    sectionTitle('ANÁLISIS LOCAL','Shot Map','Toca la cancha para registrar tiros. Se guarda solo en este dispositivo.')+
+    board+
+    '<div class="v100-actions v100-shot-actions">'+
+      '<button class="v100-secondary" data-shot-undo>Deshacer</button>'+
+      '<button class="v100-secondary" data-shot-clear>Limpiar</button>'+
+      '<button class="v100-primary" data-shot-png>PNG</button>'+
+      '<button class="v100-secondary" data-shot-json>JSON</button>'+
+    '</div>',
+    'v100-shot-modal'
+  );
+  const pitch=$('[data-shot-pitch]',m);
+  const layer=$('[data-shot-layer]',m);
+  const render=()=>{
+    layer.innerHTML=shots.map((s,i)=>{
+      const type=s.type==='goal'?'goal':s.type==='target'?'target':'shot';
+      return '<button type="button" class="v100-shot-marker '+type+'" data-shot-marker="'+i+'" style="left:'+s.x+'%;top:'+s.y+'%" title="Tiro '+(i+1)+'">'+
+        '<span>⚽</span><b>'+(i+1)+'</b>'+
+      '</button>';
+    }).join('');
+    const total=shots.length;
+    const target=shots.filter(s=>s.type==='target'||s.type==='goal').length;
+    const goals=shots.filter(s=>s.type==='goal').length;
+    const t=$('[data-shot-total]',m),a=$('[data-shot-target]',m),g=$('[data-shot-goals]',m);
+    if(t)t.textContent=total;if(a)a.textContent=target;if(g)g.textContent=goals;
+  };
+  render();
+  $('[data-shot-mode]',m).forEach(b=>b.onclick=()=>{
+    shotMode=b.dataset.shotMode||'shot';
+    $('[data-shot-mode]',m).forEach(x=>x.classList.toggle('active',x===b));
+  });
+  pitch.onclick=e=>{
+    if(e.target.closest('[data-shot-marker]'))return;
+    const r=pitch.getBoundingClientRect();
+    const x=Math.max(1,Math.min(99,+(((e.clientX-r.left)/r.width)*100).toFixed(1)));
+    const y=Math.max(1,Math.min(99,+(((e.clientY-r.top)/r.height)*100).toFixed(1)));
+    shots.push({x,y,type:shotMode,at:new Date().toISOString()});
+    write('v100-shotmap',shots);
+    render();
+  };
+  $('[data-shot-undo]',m).onclick=()=>{shots.pop();write('v100-shotmap',shots);render()};
+  $('[data-shot-clear]',m).onclick=()=>{shots.splice(0);write('v100-shotmap',shots);render()};
+  $('[data-shot-json]',m).onclick=()=>download(new Blob([JSON.stringify(shots,null,2)],{type:'application/json'}),'Shot_Map_Liga.json');
+  $('[data-shot-png]',m).onclick=async()=>{
+    const c=document.createElement('canvas');c.width=900;c.height=1300;
+    const x=c.getContext('2d'),L=45,T=45,W=810,H=1210;
+    const stripeH=H/10;
+    for(let i=0;i<10;i++){x.fillStyle=i%2?'#0a6a3b':'#075d34';x.fillRect(L,T+i*stripeH,W,stripeH)}
+    x.strokeStyle='rgba(255,255,255,.96)';x.fillStyle='rgba(255,255,255,.96)';x.lineWidth=6;
+    x.strokeRect(L,T,W,H);
+    x.beginPath();x.moveTo(L,T+H/2);x.lineTo(L+W,T+H/2);x.stroke();
+    x.beginPath();x.arc(L+W/2,T+H/2,96,0,Math.PI*2);x.stroke();
+    x.beginPath();x.arc(L+W/2,T+H/2,7,0,Math.PI*2);x.fill();
+    const drawBox=(top)=>{
+      const y=top?T:T+H-205;
+      x.strokeRect(L+W*.22,y,W*.56,205);
+      const sy=top?T:T+H-82;
+      x.strokeRect(L+W*.36,sy,W*.28,82);
+      const py=top?T+145:T+H-145;
+      x.beginPath();x.arc(L+W/2,py,7,0,Math.PI*2);x.fill();
+      x.beginPath();x.arc(L+W/2,py,95,top?0:Math.PI,top?Math.PI:Math.PI*2);x.stroke();
+      const gy=top?T-18:T+H;
+      x.strokeRect(L+W*.42,gy,W*.16,18);
+    };
+    drawBox(true);drawBox(false);
+    shots.forEach((s,i)=>{
+      const px=L+s.x/100*W,py=T+s.y/100*H;
+      const type=s.type==='goal'?'goal':s.type==='target'?'target':'shot';
+      const fill=type==='goal'?'#29e67d':type==='target'?'#38dff1':'#ffd75f';
+      x.fillStyle=fill;x.strokeStyle='#07104d';x.lineWidth=5;
+      x.beginPath();x.arc(px,py,19,0,Math.PI*2);x.fill();x.stroke();
+      x.fillStyle='#07104d';
+      x.beginPath();
+      for(let k=0;k<5;k++){const a=-Math.PI/2+k*Math.PI*2/5;const rr=7;x.lineTo(px+Math.cos(a)*rr,py+Math.sin(a)*rr)}
+      x.closePath();x.fill();
+      x.fillStyle='#fff';x.font='700 15px Arial';x.textAlign='center';x.fillText(String(i+1),px,py+35);
+    });
+    x.fillStyle='rgba(4,13,91,.92)';x.fillRect(0,0,900,36);x.fillRect(0,1264,900,36);
+    x.fillStyle='#fff';x.font='700 18px Arial';x.textAlign='left';x.fillText('SHOT MAP · LIGA JUVENTINO ROSAS',35,25);
+    x.textAlign='right';x.fillText('Tiros '+shots.length+' · A puerta '+shots.filter(s=>s.type==='target'||s.type==='goal').length+' · Goles '+shots.filter(s=>s.type==='goal').length,865,1288);
+    const b=await canvasBlob(c);download(b,'Shot_Map_Liga.png');
+  };
+}
 async function installApp(){if(installPrompt){installPrompt.prompt();await installPrompt.userChoice;installPrompt=null;return}modal(sectionTitle('INSTALAR APP','Liga Juventino','Si el navegador permite instalación, usa el menú de Chrome → “Instalar aplicación” o “Agregar a pantalla de inicio”.')+'<p class="v100-note">No se muestra un botón de “APK real” porque este repositorio no contiene actualmente un archivo .apk publicado. Así evitamos ofrecer una descarga falsa.</p>')}
 
 /* ---------- V190: RECLUTAMIENTO EN MÁS HERRAMIENTAS ---------- */
