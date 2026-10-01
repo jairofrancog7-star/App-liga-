@@ -1,9 +1,9 @@
-/* V493 — sincronización oficial global de TODAS las categorías. */
+/* V494 — sincronización oficial global de TODAS las categorías. */
 (function(){
 'use strict';
-if(window.__LJR_V493_OFFICIAL_ALL__)return;
-window.__LJR_V493_OFFICIAL_ALL__=true;
-const BUILD='20261001-v493-official-all-categories';
+if(window.__LJR_V494_OFFICIAL_ALL__)return;
+window.__LJR_V494_OFFICIAL_ALL__=true;
+const BUILD='20261001-v494-official-site-all-pages';
 const DATA='./data/official-live.json?v='+BUILD;
 let latest=null,loading=null;
 const norm=v=>String(v||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toUpperCase().replace(/[^A-Z0-9]+/g,' ').trim();
@@ -24,18 +24,18 @@ function newer(a,b){
 }
 function patchApi(){
  const api=window.LJR_OFFICIAL_API;
- if(api&&!api.__v493_all){
+ if(api&&!api.__v494_all){
   const oldLogo=api.getLogo?.bind(api);
   api.getData=()=>latest||window.LJR_OFFICIAL_DATA||{};
   api.getCategory=id=>api.getData()?.categories?.[String(id)]||null;
   api.getLogo=name=>logoFor(api.getData(),name)||(oldLogo?oldLogo(name):'');
-  api.__v493_all=true;
+  api.__v494_all=true;
  }
  const reg=window.LJR_TEAM_LOGOS;
- if(reg&&!reg.__v493_all){
+ if(reg&&!reg.__v494_all){
   const old=reg.get?.bind(reg);
   reg.get=name=>logoFor(latest||window.LJR_OFFICIAL_DATA,name)||(old?old(name):'');
-  reg.__v493_all=true;
+  reg.__v494_all=true;
  }
 }
 function apply(data){
@@ -64,6 +64,7 @@ function start(){
  [450,1300,3200].forEach(ms=>setTimeout(()=>{patchApi();refresh()},ms));
  window.addEventListener('hashchange',()=>setTimeout(()=>apply(latest||window.LJR_OFFICIAL_DATA),50));
 }
-window.LJR_V493_OFFICIAL={refresh,getData:()=>latest||window.LJR_OFFICIAL_DATA||null,build:BUILD};
+window.LJR_V494_OFFICIAL={refresh,getData:()=>latest||window.LJR_OFFICIAL_DATA||null,build:BUILD};
+window.LJR_V493_OFFICIAL=window.LJR_V494_OFFICIAL;
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',start,{once:true});else start();
 })();
