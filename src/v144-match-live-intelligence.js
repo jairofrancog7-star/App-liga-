@@ -307,7 +307,7 @@ function hubHtml(c,s){
     '<div class="v144-ai"><button class="'+(listening?'active':'')+'" data-v144-listen>'+(listening?'■ Detener escucha':'🎙 Detectar narración')+'</button><button data-v144-config>Fuente / IA</button><small>Detecta gol, cambio, tarjetas, medio tiempo y final. Pide confirmación antes de modificar el partido.</small></div>'+
     (s.lastTranscript?'<div class="v144-transcript"><small>ÚLTIMO AUDIO</small><span>'+esc(s.lastTranscript)+'</span></div>':'')+
     (s.suggestions.length?'<div class="v144-suggestions"><h3>Eventos por confirmar</h3>'+suggestionsHtml(s,c)+'</div>':'')+
-    '<details class="v144-operator"><summary>Operador del partido</summary><div class="v144-phases"><button data-v144-phase="phase-first">Iniciar 1T</button><button data-v144-phase="phase-halftime">Medio tiempo</button><button data-v144-phase="phase-second">Iniciar 2T</button><button data-v144-phase="phase-final">Final</button></div><div class="v144-events"><button data-v144-event="goal:home">⚽ Gol '+esc(c.home)+'</button><button data-v144-event="goal:away">⚽ Gol '+esc(c.away)+'</button><button data-v144-event="sub:home">↔ Cambio '+esc(c.home)+'</button><button data-v144-event="sub:away">↔ Cambio '+esc(c.away)+'</button><button data-v144-event="yellow:home">🟨 '+esc(c.home)+'</button><button data-v144-event="yellow:away">🟨 '+esc(c.away)+'</button><button data-v144-event="red:home">🟥 '+esc(c.home)+'</button><button data-v144-event="red:away">🟥 '+esc(c.away)+'</button></div><button class="v144-undo" data-v144-undo>↶ Deshacer último evento</button></details>'+
+    '<details class="v144-operator" data-v144-operator><summary data-v144-operator-toggle role="button" tabindex="0" aria-expanded="false">Operador del partido</summary><div class="v144-phases"><button data-v144-phase="phase-first">Iniciar 1T</button><button data-v144-phase="phase-halftime">Medio tiempo</button><button data-v144-phase="phase-second">Iniciar 2T</button><button data-v144-phase="phase-final">Final</button></div><div class="v144-events"><button data-v144-event="goal:home">⚽ Gol '+esc(c.home)+'</button><button data-v144-event="goal:away">⚽ Gol '+esc(c.away)+'</button><button data-v144-event="sub:home">↔ Cambio '+esc(c.home)+'</button><button data-v144-event="sub:away">↔ Cambio '+esc(c.away)+'</button><button data-v144-event="yellow:home">🟨 '+esc(c.home)+'</button><button data-v144-event="yellow:away">🟨 '+esc(c.away)+'</button><button data-v144-event="red:home">🟥 '+esc(c.home)+'</button><button data-v144-event="red:away">🟥 '+esc(c.away)+'</button></div><button class="v144-undo" data-v144-undo>↶ Deshacer último evento</button></details>'+
     '<div class="v144-timeline"><header><b>Cronología en vivo</b><small>Confirmada en Match Center</small></header>'+timelineHtml(s,c)+'</div>'+
   '</section>';
 }
@@ -366,7 +366,22 @@ function openConfig(c,s,preferred=''){
 }
 function bind(c,s,hub){
   const stop=e=>{e.preventDefault();e.stopPropagation()};
-  $$('[data-v144-open]',hub).forEach(b=>b.addEventListener('click',e=>{
+  const operator=$('[data-v144-operator]',hub),operatorToggle=$('[data-v144-operator-toggle]',hub),operatorKey='ljr-v144-operator-open:'+c.key;
+  if(operator&&operatorToggle){
+    let wanted=false;try{wanted=sessionStorage.getItem(operatorKey)==='1'}catch(_){}
+    operator.open=wanted;operatorToggle.setAttribute('aria-expanded',String(wanted));
+    const toggleOperator=e=>{
+      e.preventDefault();e.stopPropagation();
+      operator.open=!operator.open;
+      operatorToggle.setAttribute('aria-expanded',String(operator.open));
+      try{sessionStorage.setItem(operatorKey,operator.open?'1':'0')}catch(_){}
+    };
+    operatorToggle.addEventListener('click',toggleOperator);
+    operatorToggle.addEventListener('keydown',e=>{
+      if(e.key==='Enter'||e.key===' '){toggleOperator(e)}
+    });
+  }
+  $('[data-v144-open]',hub).forEach(b=>b.addEventListener('click',e=>{
     stop(e);
     const url=safeLiveUrl(s.source.url);
     if(url)window.open(url,'_blank','noopener,noreferrer');
