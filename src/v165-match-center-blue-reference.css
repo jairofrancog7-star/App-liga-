@@ -5807,3 +5807,20 @@ body.v92-match-center-official [data-v92-vote-mvp]:active{
     display:none!important;
   }
 }
+
+
+/* V525 — Match Center restore definitivo:
+   los paneles viven una sola vez dentro de V522 y el duplicado auxiliar queda fuera. */
+@media (max-width:1023px){
+  body.v92-match-center-official .v412-matchcenter-reference{
+    display:none!important;
+  }
+  body.v92-match-center-official .v424-reference-lower{
+    display:none!important;
+  }
+  body.v92-match-center-official .v522-black-info{
+    display:block!important;
+    visibility:visible!important;
+    opacity:1!important;
+  }
+}
