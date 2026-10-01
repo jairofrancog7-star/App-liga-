@@ -5,6 +5,7 @@
 if(window.__LJR_V194_SCORERS__)return;
 window.__LJR_V194_SCORERS__=true;
 window.__LJR_SCORERS_UI_OWNER__='v194-reference';
+window.__LJR_SCORERS_BUILD__='v463';
 
 const CAT_ORDER=['3','5','4','2','1'];
 const CAT_FALLBACK={
@@ -149,7 +150,7 @@ function categoryFilter(){
   const active=catId();
   return '<section class="v194-filter-block"><div class="v194-filter-label"><small>FILTRO 1</small><b>Categoría</b></div>'+
     '<div class="v194-category-rail">'+CAT_ORDER.map(id=>
-      '<a role="button" href="#/scorers?cat='+encodeURIComponent(id)+'" class="'+(id===active?'active':'')+'" data-v194-cat="'+id+'" aria-pressed="'+(id===active?'true':'false')+'">'+esc(catName(id))+'</a>'
+      '<button type="button" class="'+(id===active?'active':'')+'" data-v194-cat="'+id+'" aria-pressed="'+(id===active?'true':'false')+'">'+esc(catName(id))+'</button>'
     ).join('')+'</div></section>';
 }
 function teamFilter(){
@@ -270,7 +271,7 @@ function categoryStrip(){
   return '<section class="v391-category-wrap" aria-label="Clasificación por categoría">'+
     '<span class="v391-category-label">CATEGORÍA</span>'+
     '<div class="v391-category-strip">'+CAT_ORDER.map(id=>
-      '<a role="button" href="#/scorers?cat='+encodeURIComponent(id)+'" class="'+(id===active?'active':'')+'" data-v194-cat="'+id+'" aria-pressed="'+(id===active?'true':'false')+'">'+esc(catName(id))+'</a>'
+      '<button type="button" class="'+(id===active?'active':'')+'" data-v194-cat="'+id+'" aria-pressed="'+(id===active?'true':'false')+'">'+esc(catName(id))+'</button>'
     ).join('')+'</div>'+
   '</section>';
 }
@@ -280,7 +281,7 @@ function referenceScorersView(){
     categoryStrip()+
     '<div class="v391-category-title"><small>'+esc(catName(id))+'</small><span>'+rows.length+' goleador'+(rows.length===1?'':'es')+' publicado'+(rows.length===1?'':'s')+'</span></div>'+
     (rows.length?
-      heroScorerCard(rows[0],1)+heroScorerCard(rows[1],2)+lowerRanking(rows)+scorerListRows(rows.slice(2)):
+      heroScorerCard(rows[0],1)+heroScorerCard(rows[1],2)+scorerListRows(rows.slice(2))+lowerRanking(rows):
       '<div class="v391-empty">Todavía no hay goleadores oficiales publicados para '+esc(catName(id))+'.</div>')+
   '</div>';
 }
@@ -319,45 +320,30 @@ function forceCategoryRender(){
 }
 function chooseCategory(id){
   id=CAT_ORDER.includes(String(id))?String(id):'3';
-
   try{
     localStorage.setItem('v62-category',id);
     localStorage.setItem('v12-fixture-cat',id);
     localStorage.setItem(TEAM_KEY,'all');
+    window.LJR_OFFICIAL_API?.setCategory?.(id);
   }catch(_){}
-
-  const wanted='#/scorers?cat='+encodeURIComponent(id);
-  if(String(location.hash||'')!==wanted){
-    /* Real hash navigation is intentional: it makes the category control
-       work as a native link on Android even if another script replaces
-       the scorer DOM between pointer/touch/click events. */
-    location.hash=wanted;
-  }else{
-    forceCategoryRender();
-  }
-
+  try{
+    const wanted='#/scorers?cat='+encodeURIComponent(id);
+    if(String(location.hash||'')!==wanted){
+      history.replaceState(history.state,'',location.pathname+location.search+wanted);
+    }
+  }catch(_){}
+  forceCategoryRender();
   try{window.dispatchEvent(new CustomEvent('ljr:scorers-category',{detail:{id}}))}catch(_){}
   requestAnimationFrame(()=>forceCategoryRender());
-  setTimeout(()=>forceCategoryRender(),40);
-  setTimeout(()=>forceCategoryRender(),160);
+  setTimeout(()=>forceCategoryRender(),30);
+  setTimeout(()=>forceCategoryRender(),120);
   return false;
 }
 function bind(root){
   if(!root)return;
-
-  /* Category controls are native hash links. Do not prevent the click:
-     the browser itself changes #/scorers?cat=... and hashchange repaints
-     the individual-player ranking for that category. */
-  root.querySelectorAll('[data-v194-cat]').forEach(b=>{
-    b.addEventListener('click',()=>{
-      const id=String(b.dataset.v194Cat||'');
-      if(!CAT_ORDER.includes(id))return;
-      try{
-        localStorage.setItem('v62-category',id);
-        localStorage.setItem('v12-fixture-cat',id);
-        localStorage.setItem(TEAM_KEY,'all');
-      }catch(_){}
-    },{passive:true});
+  root.querySelectorAll('[data-v194-cat],[data-v462-stat],[data-v194-mode],[data-v194-open-team]').forEach(b=>{
+    b.style.pointerEvents='auto';
+    b.style.touchAction='manipulation';
   });
 }
 function delegatedClick(e){
