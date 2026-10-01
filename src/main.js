@@ -4842,6 +4842,20 @@ function v63FeatureCard(icon,kicker,title,desc,route,extra=''){
     '<span class="v63-feature-copy"><small>'+kicker+'</small><b>'+title+'</b><em>'+desc+'</em></span>'+
     '<span class="v63-feature-arrow">›</span></button>';
 }
+function v520StatsTopbar(){
+  return '<header class="v520-stats-topbar" aria-label="Cabecera de estadísticas">'+
+    '<button type="button" class="v520-stats-back" data-route="more" aria-label="Volver">'+
+      '<svg viewBox="0 0 32 32" aria-hidden="true"><path d="M21 7 12 16l9 9M12.5 16H27"/></svg>'+
+    '</button>'+
+    '<span class="v520-stats-trophy" aria-hidden="true">'+
+      '<svg viewBox="0 0 96 96"><path d="M32 14h32l-3 18c-2 12-8 20-13 23v10h11v8H37v-8h11V55c-5-3-11-11-13-23l-3-18Z"/><path d="M32 22H19c0 16 7 25 20 26M64 22h13c0 16-7 25-20 26"/><circle cx="48" cy="35" r="10"/><path d="m48 27 3 6 7 1-5 5 1 7-6-3-6 3 1-7-5-5 7-1 3-6Z"/></svg>'+
+    '</span>'+
+    '<button type="button" class="v520-stats-profile" data-route="profile" aria-label="Perfil">'+
+      '<svg viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="12"/><circle cx="16" cy="12" r="4"/><path d="M9.5 24c1.2-4 3.6-6 6.5-6s5.3 2 6.5 6"/></svg>'+
+    '</button>'+
+  '</header>';
+}
+
 function v38StatsView(){
   const table=[...teams]
     .filter(t=>t&&t.category==='Primera Fuerza')
@@ -4850,7 +4864,7 @@ function v38StatsView(){
   const preview=table;
 
   return '<section class="v60-tool-page v63-page v399-stats-page">'+
-    v60Header('TABLA Y ESTADÍSTICAS','La temporada, de un vistazo','Posiciones, goleadores y rendimiento con accesos rápidos dentro del diseño actual de la app.')+
+    v520StatsTopbar()+
 
 
     '<section class="v399-stats-summary" aria-label="Resumen de Primera Fuerza">'+
