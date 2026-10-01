@@ -7,7 +7,7 @@ if(window.__LJR_V104_PLAYERS__)return;
 window.__LJR_V104_PLAYERS__=true;
 
 const BASE='https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/';
-const DATA='./data/official-live.json?v=20261001-v490-v35-all-pages';
+const DATA='./data/official-live.json?v=20261001-v491-v35-all-pages';
 const ORDER=['all','3','5','4','2','1'];
 const NAMES={'all':'Todas las categorías','3':'Primera Fuerza','5':'Intermedia','4':'Segunda Fuerza','2':'Veteranos 35+','1':'Veteranos 50+'};
 let db=null,loading=null,active=localStorage.getItem('v104-player-category')||'all',selectedTeam=localStorage.getItem('v104-player-team')||'all',query='';
