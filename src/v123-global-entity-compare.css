@@ -1564,3 +1564,29 @@ body.v123-player-compare-active #screen{
   .v208-search-results{padding-left:15px!important;padding-right:15px!important}
 }
 /* V208_POSITION_GROUPS_END */
+
+
+/* V494 — Comparador: todos los jugadores, aun sin posición publicada. */
+body[data-app-route="playerCompare"] .v208-position-all{
+  border-top:1px solid rgba(255,255,255,.08)!important;
+}
+body[data-app-route="playerCompare"] .v208-position-all .v208-position-head b{
+  color:#fff!important;
+}
+body[data-app-route="playerCompare"] .v208-position-all .v208-position-head small{
+  color:#aeb7dc!important;
+}
+body[data-app-route="playerCompare"] .v208-load-more{
+  width:calc(100% - 24px)!important;
+  min-height:42px!important;
+  margin:10px 12px 14px!important;
+  padding:0 14px!important;
+  border:1px solid rgba(124,160,255,.38)!important;
+  border-radius:12px!important;
+  background:#101c86!important;
+  color:#fff!important;
+  font:800 13px/1 Inter,Roboto,Arial,sans-serif!important;
+  text-align:center!important;
+  cursor:pointer!important;
+  touch-action:manipulation!important;
+}
