@@ -4,7 +4,7 @@
 (function(){
 'use strict';
 
-const BUILD='20260927-official-all-data-v194';
+const BUILD='20261001-v475-official-sync-all';
 const LOCAL_DATA='./data/official-live.json?v='+BUILD;
 const REMOTE_DATA='https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/data/official-live.json?v='+BUILD;
 const SRC='https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/';
@@ -271,10 +271,9 @@ async function refreshOfficialData(){
   const fresh=await fetchJson(REMOTE_DATA+'&ts='+Date.now());
   if(!fresh)return;
   const currentStamp=String(db?.captured_at_utc||''),freshStamp=String(fresh?.captured_at_utc||'');
-  if(!db||freshStamp>currentStamp){
-    db=fresh;
-    window.LJR_OFFICIAL_DATA=db;
-    try{window.dispatchEvent(new CustomEvent('ljr:official-data',{detail:{source:'refresh',stamp:freshStamp}}))}catch(_){}
+  const changed=!db||freshStamp>currentStamp||dataFingerprint(fresh)!==dataFingerprint(db);
+  if(changed){
+    publishData(chooseNewer(db,fresh));
     patchHomeCalendarResults(true);
     patchHomeStandings(true);
     patchHomeScorers(true);
@@ -410,9 +409,36 @@ function patchHomeScorers(force=false){
   section.appendChild(card);
   card.querySelectorAll('[data-v62-team]').forEach(b=>b.addEventListener('click',e=>{e.preventDefault();openTeam(b.dataset.v62Team)},{once:true}));
 }
+function dataFingerprint(x){
+  if(!x?.categories)return '';
+  const parts=[String(x.captured_at_utc||'')];
+  for(const id of CAT_ORDER){
+    const c=x.categories?.[id]||{};
+    const count=k=>(c[k]||[]).reduce((n,b)=>n+(Array.isArray(b?.rows)?b.rows.length:0),0);
+    const players=Object.values(c.rosters||{}).reduce((n,v)=>n+(Array.isArray(v)?v.length:(v?.players?.length||v?.rows?.length||0)),0);
+    parts.push([id,count('standings'),count('fixtures'),count('scorers'),count('cards'),count('suspensions'),Object.keys(c.rosters||{}).length,players].join(':'));
+  }
+  return parts.join('|');
+}
+function dataRichness(x){
+  if(!x?.categories)return 0;
+  let total=0;
+  for(const id of CAT_ORDER){
+    const c=x.categories?.[id]||{};
+    for(const k of ['standings','fixtures','scorers','cards','suspensions']){
+      total+=(c[k]||[]).reduce((n,b)=>n+(Array.isArray(b?.rows)?b.rows.length:0),0);
+    }
+    total+=Object.values(c.rosters||{}).reduce((n,v)=>n+(Array.isArray(v)?v.length:(v?.players?.length||v?.rows?.length||0)),0);
+  }
+  return total;
+}
 function chooseNewer(a,b){
   if(!a)return b;if(!b)return a;
-  return String(b.captured_at_utc||'')>String(a.captured_at_utc||'')?b:a;
+  const ta=String(a.captured_at_utc||''),tb=String(b.captured_at_utc||'');
+  if(tb>ta)return b;
+  if(ta>tb)return a;
+  if(dataFingerprint(a)===dataFingerprint(b))return a;
+  return dataRichness(b)>=dataRichness(a)?b:a;
 }
 async function fetchJson(url){
   try{const r=await fetch(url,{cache:'no-store',signal:AbortSignal.timeout(8000)});if(!r.ok)throw new Error(String(r.status));return await r.json()}catch{return null}
@@ -427,10 +453,11 @@ function publishData(next){
   window.dispatchEvent(new CustomEvent('ljr:official-data'));
 }
 async function load(){
-  // Make bundled data usable immediately. Remote freshness must not block controls.
-  publishData(await fetchJson(LOCAL_DATA));
+  // Use the bundled snapshot immediately, then reconcile with the live mirror.
+  const local=await fetchJson(LOCAL_DATA);
+  publishData(local);
   startOfficialRefreshTimer();
-  const remote=await fetchJson(REMOTE_DATA);
+  const remote=await fetchJson(REMOTE_DATA+'&ts='+Date.now());
   publishData(chooseNewer(db,remote));
 }
 
