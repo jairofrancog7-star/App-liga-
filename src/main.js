@@ -6132,17 +6132,6 @@ function moreView(){
       v19MoreButton('bag','Tienda','club-store')+
       v19MoreButton('info','Sobre la Liga Municipal','safe-about',true)+
     '</div>'+
-    '<div class="v19-more-bottom">'+
-      '<p class="v19-sponsor-title">Patrocinadores oficiales de la Liga</p>'+
-      '<div class="v19-sponsors">'+
-        '<div class="v19-sponsor s1"><div><span class="town-mark">♜</span><b>JUVENTINO<br>ROSAS</b></div></div>'+
-        '<div class="v19-sponsor s2"><div>Pasión<br><b>Local</b></div></div>'+
-        '<div class="v19-sponsor s3"><div><b>NUESTRO<br>FÚTBOL</b><span class="ball-mini">⚽</span></div></div>'+
-        '<div class="v19-sponsor s4"><div><span class="people-mark">●●●</span><b>COMUNIDAD<br>EN ACCIÓN</b></div></div>'+
-        '<div class="v19-sponsor s5"><div><b>DEPORTE<br>UNE</b><i></i></div></div>'+
-      '</div>'+
-      '<div class="v19-official">App oficial de la Liga<img src="'+V19_MORE_LOGO+'" alt="Liga Municipal de Fútbol Juventino Rosas" loading="lazy" decoding="async"></div>'+
-    '</div>'+
   '</section>';
 }
 function hospitalityView(){return '<div data-v31-hospitality-mount></div>'}
