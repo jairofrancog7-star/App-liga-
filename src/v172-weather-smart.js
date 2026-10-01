@@ -180,15 +180,19 @@ async function ensureData(){
       cfg=FALLBACK_FIELD_CONFIG;
     }
     if(!cfg||!Array.isArray(cfg.fields)||!cfg.fields.length)cfg=FALLBACK_FIELD_CONFIG;
-    let season=null;
-    try{
-      season=await loadJsonAny([
-        './data/temporada-actual-2026.json',
-        'https://raw.githubusercontent.com/jairofrancog7-star/App-liga-/main/public/data/temporada-actual-2026.json'
-      ]);
-    }catch(_){}
-    fixtures=season?buildSeasonFixtures(season):buildOfficialFixtures();
-    if(!fixtures.length)fixtures=buildOfficialFixtures();
+    /* V475: official-live is the primary fixture source across the app.
+       temporada-actual remains only as a fallback when the official mirror has no dated fixtures. */
+    fixtures=buildOfficialFixtures();
+    if(!fixtures.length){
+      let season=null;
+      try{
+        season=await loadJsonAny([
+          './data/temporada-actual-2026.json',
+          'https://raw.githubusercontent.com/jairofrancog7-star/App-liga-/main/public/data/temporada-actual-2026.json'
+        ]);
+      }catch(_){}
+      fixtures=season?buildSeasonFixtures(season):[];
+    }
   })().finally(()=>loadingPromise=null);
   return loadingPromise;
 }
