@@ -89,7 +89,7 @@ function floatingCapability(item,cfg=settings()){
   const docPip=!!window.documentPictureInPicture?.requestWindow;
   if(p.key==='video')return {inApp:true,pip:true,docPip,provider:p};
   if(p.key==='youtube')return {inApp:true,pip:false,docPip,provider:p};
-  if(p.key==='facebook')return {inApp:true,pip:false,docPip,provider:p};
+  if(p.key==='facebook')return {inApp:false,pip:false,docPip:false,provider:p};
   return {inApp:false,pip:false,docPip,provider:p};
 }
 async function requestPiP(node){
@@ -304,11 +304,7 @@ function playerHtml(c,s,st,current){
     }
   }
   if(p.key==='facebook'){
-    if(cfg.render==='inline'||cfg.floating){
-      const src='https://www.facebook.com/plugins/video.php?href='+encodeURIComponent(url)+'&show_text=false&width=500&autoplay='+(st.live?'true':'false');
-      return '<div class="v196-frame"><iframe src="'+esc(src)+'" title="Facebook Live" loading="lazy" allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; fullscreen; web-share" allowfullscreen></iframe></div>';
-    }
-    return '<div class="v196-player-empty linked"><span class="v196-provider">f</span><b>'+esc(current?.name||s.source?.name||'Facebook Live')+'</b><p>Facebook puede bloquear el video incrustado. Este botón abre la transmisión real sin perder el enlace guardado en el Match Center.</p><button type="button" data-v196-open="'+esc(url)+'">Abrir Facebook Live</button></div>';
+    return '<div class="v196-player-empty linked facebook"><span class="v196-provider">f</span><b>'+esc(current?.name||s.source?.name||'Facebook Live')+'</b><p>Se desactivó el iframe de Facebook en Chrome Android porque puede quedar negro o cambiar de bloque. El enlace real sigue guardado y se abre directamente en Facebook.</p><button type="button" data-v196-open="'+esc(url)+'">Abrir Facebook Live</button></div>';
   }
   if(p.key==='video'){
     return '<div class="v196-frame"><video src="'+esc(url)+'" '+(st.live?'autoplay ':'')+'controls playsinline '+(cfg.lowQuality?'preload="metadata"':'preload="auto"')+' data-v196-system-pip></video></div>';
