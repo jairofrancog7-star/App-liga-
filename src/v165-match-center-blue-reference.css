@@ -3004,7 +3004,7 @@
     scrollbar-width:none!important;
   }
   body.v92-match-center-official .v419-subtabs::-webkit-scrollbar{display:none!important}
-  body.v92-match-center-official .v419-subtabs span{
+  body.v92-match-center-official .v419-subtabs button{
     position:relative!important;
     flex:0 0 auto!important;
     min-width:70px!important;
@@ -3016,10 +3016,10 @@
     line-height:1!important;
     font-weight:800!important;
   }
-  body.v92-match-center-official .v419-subtabs span.active{
+  body.v92-match-center-official .v419-subtabs button.active{
     color:#fff!important;
   }
-  body.v92-match-center-official .v419-subtabs span.active::after{
+  body.v92-match-center-official .v419-subtabs button.active::after{
     content:""!important;
     position:absolute!important;
     left:16px!important;
@@ -3671,7 +3671,7 @@
   body.v92-match-center-official .v419-next-match{grid-template-columns:25px minmax(0,1fr) 72px!important}
   body.v92-match-center-official .v419-mini-pitch{height:265px!important}
   body.v92-match-center-official .v419-player-grid{grid-template-columns:1fr!important}
-  body.v92-match-center-official .v419-subtabs span{min-width:64px!important}
+  body.v92-match-center-official .v419-subtabs button{min-width:64px!important}
 }
 
 
@@ -5245,5 +5245,60 @@ body.v92-match-center-official [data-v92-vote-mvp]:active{
 
   body.v92-match-center-official .v518-matchcenter-extras > .v73-matchcenter-bottom{
     overflow:hidden!important;
+  }
+}
+
+
+/* V519 — functional team tabs and live chronometer */
+@media (max-width:1023px){
+  body.v92-match-center-official .v419-subtabs button{
+    position:relative!important;
+    flex:0 0 auto!important;
+    min-width:70px!important;
+    min-height:30px!important;
+    display:grid!important;
+    place-items:center!important;
+    padding:0 8px!important;
+    border:0!important;
+    border-radius:0!important;
+    background:transparent!important;
+    color:#7f88a4!important;
+    font-size:5.8px!important;
+    line-height:1!important;
+    font-weight:800!important;
+    box-shadow:none!important;
+    -webkit-tap-highlight-color:transparent;
+  }
+  body.v92-match-center-official .v419-subtabs button.active{
+    color:#fff!important;
+  }
+  body.v92-match-center-official .v419-subtabs button.active::after{
+    content:""!important;
+    position:absolute!important;
+    left:16px!important;
+    right:16px!important;
+    bottom:0!important;
+    height:2px!important;
+    border-radius:3px 3px 0 0!important;
+    background:#23dce4!important;
+  }
+  body.v92-match-center-official [data-v419-profile-section]{
+    scroll-margin-top:92px!important;
+  }
+  body.v92-match-center-official [data-v420-countdown]{
+    min-width:128px!important;
+    display:inline-block!important;
+    font-variant-numeric:tabular-nums!important;
+    text-align:center!important;
+  }
+  body.v92-match-center-official [data-v420-countdown][data-phase="countdown"]{
+    color:#fff!important;
+  }
+  body.v92-match-center-official [data-v420-countdown][data-phase="first"],
+  body.v92-match-center-official [data-v420-countdown][data-phase="second"]{
+    color:#35e6ed!important;
+  }
+  body.v92-match-center-official [data-v420-countdown][data-phase="half"]{
+    color:#f3c95f!important;
   }
 }
