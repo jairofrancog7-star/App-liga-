@@ -291,6 +291,26 @@ function addSuggestion(s,o){
   if(s.suggestions.some(x=>x.sig===sig&&now()-x.ts<90000))return;
   o.sig=sig;s.suggestions.unshift(o);s.suggestions=s.suggestions.slice(0,8);save(s);
 }
+function confirmSuggestion(c,s,id){
+  const item=(s.suggestions||[]).find(x=>x.id===id);
+  if(!item)return;
+  s.suggestions=(s.suggestions||[]).filter(x=>x.id!==id);
+  addEvent(s,c,item.type,item.side||'',item.text||'','voice',item.player||'');
+  schedule();
+}
+function rebuildPhase(s){
+  s.phase='scheduled';
+  s.firstStartedAt=0;
+  s.secondStartedAt=0;
+  s.finishedAt=0;
+  const phases=confirmed(s).filter(e=>/^phase-/.test(e.type||'')).slice().sort((a,b)=>(a.ts||0)-(b.ts||0));
+  for(const e of phases){
+    if(e.type==='phase-first'){s.phase='first';s.firstStartedAt=Number(e.ts)||s.firstStartedAt}
+    else if(e.type==='phase-halftime'){s.phase='halftime'}
+    else if(e.type==='phase-second'){s.phase='second';s.secondStartedAt=Number(e.ts)||s.secondStartedAt}
+    else if(e.type==='phase-final'){s.phase='final';s.finishedAt=Number(e.ts)||s.finishedAt}
+  }
+}
 function analyze(text,c,s){
   const t=norm(text);if(!t)return;s.lastTranscript=text;
   let o=null;
@@ -524,7 +544,7 @@ function bind(c,s,hub){
   }));
   $$('[data-v144-share]',hub).forEach(b=>b.addEventListener('click',e=>{stop(e);shareLive(c,s)}));
   $$('[data-v144-tv-source]',hub).forEach(b=>b.addEventListener('click',e=>{stop(e);openTvCast(c,s)}));
-  $('[data-v144-config]',hub).forEach(b=>b.addEventListener('click',e=>{stop(e);openConfig(c,s)}));
+  $$('[data-v144-config]',hub).forEach(b=>b.addEventListener('click',e=>{stop(e);openConfig(c,s)}));
   $$('[data-v144-platform]',hub).forEach(b=>b.addEventListener('click',e=>{
     stop(e);
     openConfig(c,s,b.dataset.v144Platform);
