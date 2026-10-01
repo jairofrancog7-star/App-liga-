@@ -130,14 +130,20 @@ function searchTeams(){
   '</section>';
 }
 function socialFooter(owner){
-  return '<section class="v411-hub v411-social-footer" data-v411-owner="'+esc(owner)+'">'+
-    sectionTitle('SÍGUENOS','Liga Juventino Rosas')+
-    '<div class="v411-grid">'+
-      '<button type="button" class="v411-card v411-facebook" data-v411-external="'+FB+'">'+icon('facebook')+
-        '<span><b>Facebook oficial</b><small>Tablas, calendarios, avisos y publicaciones</small></span><i>↗</i></button>'+
-      card('search','Buscar equipos','Encuentra y sigue otro equipo','teams')+
-    '</div>'+
-  '</section>';
+  const account=owner==='profile'
+    ? sectionTitle('CUENTA Y COMUNIDAD','Tu perfil y redes')+
+      '<div class="v411-grid">'+
+        card('user','Crear cuenta / Perfil','Preferencias y avisos personalizados','profile')+
+        '<button type="button" class="v411-card v411-facebook" data-v411-external="'+FB+'">'+icon('facebook')+
+          '<span><b>Facebook oficial</b><small>Liga Municipal de Fútbol Juventino Rosas</small></span><i>↗</i></button>'+
+      '</div>'
+    : sectionTitle('SÍGUENOS','Liga Juventino Rosas')+
+      '<div class="v411-grid">'+
+        '<button type="button" class="v411-card v411-facebook" data-v411-external="'+FB+'">'+icon('facebook')+
+          '<span><b>Facebook oficial</b><small>Tablas, calendarios, avisos y publicaciones</small></span><i>↗</i></button>'+
+        card('search','Buscar equipos','Encuentra y sigue otro equipo','teams')+
+      '</div>';
+  return '<section class="v411-hub v411-social-footer" data-v411-owner="'+esc(owner)+'">'+account+'</section>';
 }
 function calendarFooter(){
   return '<section class="v411-hub v411-route-footer" data-v411-owner="v4-calendar">'+
