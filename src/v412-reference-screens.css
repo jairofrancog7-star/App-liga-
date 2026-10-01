@@ -2511,3 +2511,27 @@ body[data-app-route="search"] .v414-team-badge img{
     height:44px!important;
   }
 }
+
+
+/* V503 — logos llenan por completo el cuadro, sin fondo blanco visible */
+body[data-app-route="search"] .v414-league-badge,
+body[data-app-route="search"] .v414-team-badge{
+  background:#11145e!important;
+  border:1px solid rgba(255,255,255,.12)!important;
+}
+body[data-app-route="search"] .v414-category-badge img,
+body[data-app-route="search"] .v414-team-badge img{
+  width:100%!important;
+  height:100%!important;
+  max-width:none!important;
+  max-height:none!important;
+  margin:0!important;
+  padding:0!important;
+  object-fit:cover!important;
+  object-position:center!important;
+  transform:scale(1.14)!important;
+  transform-origin:center!important;
+}
+body[data-app-route="search"] .v414-category-badge img{
+  transform:scale(1.18)!important;
+}
