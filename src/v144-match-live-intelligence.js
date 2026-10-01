@@ -421,7 +421,7 @@ function bind(c,s,hub){
       if(e.key==='Enter'||e.key===' '){toggleOperator(e)}
     });
   }
-  $('[data-v144-open]',hub).forEach(b=>b.addEventListener('click',e=>{
+  $$('[data-v144-open]',hub).forEach(b=>b.addEventListener('click',e=>{
     stop(e);
     const url=safeLiveUrl(s.source.url);
     if(url)window.open(url,'_blank','noopener,noreferrer');
@@ -429,7 +429,7 @@ function bind(c,s,hub){
   }));
   $$('[data-v144-share]',hub).forEach(b=>b.addEventListener('click',e=>{stop(e);shareLive(c,s)}));
   $$('[data-v144-config]',hub).forEach(b=>b.addEventListener('click',e=>{stop(e);openConfig(c,s)}));
-  $('[data-v144-platform]',hub).forEach(b=>b.addEventListener('click',e=>{
+  $$('[data-v144-platform]',hub).forEach(b=>b.addEventListener('click',e=>{
     stop(e);
     openConfig(c,s,b.dataset.v144Platform);
   }));
