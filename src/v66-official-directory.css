@@ -2166,7 +2166,7 @@ body[data-app-route="club-store"] .v436-product:active .v443-shirt-webgl{
 }
 
 
-/* V510 — Tienda: misma barra superior azul de referencia, solo flecha + escudo + perfil. */
+/* V511 — Tienda: barra 2 de referencia, más compacta en vertical. */
 body[data-app-route="club-store"] #app>.topbar,
 body[data-app-route="club-store"] .app-shell>.topbar{
   display:none!important;
@@ -2186,22 +2186,23 @@ body[data-app-route="club-store"] .v66-directory[data-v66-directory="store"]{
   padding-top:0!important;
 }
 body[data-app-route="club-store"] .v510-store-head{
-  min-height:154px!important;
+  min-height:112px!important;
+  height:112px!important;
   display:grid!important;
-  grid-template-columns:54px minmax(0,1fr) 54px!important;
+  grid-template-columns:48px minmax(0,1fr) 48px!important;
   align-items:center!important;
-  gap:10px!important;
-  margin:0 -14px 18px!important;
-  padding:16px 20px 14px!important;
+  gap:8px!important;
+  margin:0 -14px 14px!important;
+  padding:8px 16px 6px!important;
   box-sizing:border-box!important;
   border-bottom:1px solid rgba(74,147,255,.78)!important;
   background:
-    linear-gradient(180deg,#1681f7 0%,#0d45c8 30%,#08228f 67%,#07106f 100%),
+    linear-gradient(180deg,#1681f7 0%,#0d45c8 30%,#08228f 68%,#07106f 100%),
     url('../public/brand-neon-header.svg') center/cover no-repeat!important;
 }
 body[data-app-route="club-store"] .v510-store-head>button{
-  width:46px!important;
-  height:46px!important;
+  width:40px!important;
+  height:40px!important;
   display:grid!important;
   place-items:center!important;
   border:0!important;
@@ -2210,8 +2211,8 @@ body[data-app-route="club-store"] .v510-store-head>button{
   padding:0!important;
 }
 body[data-app-route="club-store"] .v510-store-head>button svg{
-  width:34px!important;
-  height:34px!important;
+  width:29px!important;
+  height:29px!important;
   fill:none!important;
   stroke:currentColor!important;
   stroke-width:2.1!important;
@@ -2223,8 +2224,8 @@ body[data-app-route="club-store"] .v510-store-head [data-v447-store-back]{
 }
 body[data-app-route="club-store"] .v510-store-crest{
   justify-self:center!important;
-  width:88px!important;
-  height:88px!important;
+  width:62px!important;
+  height:62px!important;
   opacity:.22!important;
   background:url('../public/brand-neon-header.svg') center/contain no-repeat!important;
 }
@@ -2232,30 +2233,31 @@ body[data-app-route="club-store"] .v510-store-profile{
   justify-self:end!important;
 }
 body[data-app-route="club-store"] .v510-store-profile svg{
-  width:42px!important;
-  height:42px!important;
+  width:34px!important;
+  height:34px!important;
   stroke-width:2!important;
 }
 @media(max-width:390px){
   body[data-app-route="club-store"] .v510-store-head{
-    min-height:142px!important;
-    grid-template-columns:48px minmax(0,1fr) 48px!important;
-    padding:14px 14px 12px!important;
+    min-height:104px!important;
+    height:104px!important;
+    grid-template-columns:44px minmax(0,1fr) 44px!important;
+    padding:6px 12px 5px!important;
   }
   body[data-app-route="club-store"] .v510-store-head>button{
-    width:40px!important;
-    height:40px!important;
-  }
-  body[data-app-route="club-store"] .v510-store-head>button svg{
-    width:30px!important;
-    height:30px!important;
-  }
-  body[data-app-route="club-store"] .v510-store-crest{
-    width:76px!important;
-    height:76px!important;
-  }
-  body[data-app-route="club-store"] .v510-store-profile svg{
     width:36px!important;
     height:36px!important;
+  }
+  body[data-app-route="club-store"] .v510-store-head>button svg{
+    width:27px!important;
+    height:27px!important;
+  }
+  body[data-app-route="club-store"] .v510-store-crest{
+    width:56px!important;
+    height:56px!important;
+  }
+  body[data-app-route="club-store"] .v510-store-profile svg{
+    width:31px!important;
+    height:31px!important;
   }
 }
