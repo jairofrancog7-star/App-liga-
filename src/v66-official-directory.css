@@ -2166,7 +2166,7 @@ body[data-app-route="club-store"] .v436-product:active .v443-shirt-webgl{
 }
 
 
-/* V511 — Tienda: barra 2 de referencia, más compacta en vertical. */
+/* V512 — Tienda: reemplazo de la barra superior por la referencia 2, compacta en vertical. */
 body[data-app-route="club-store"] #app>.topbar,
 body[data-app-route="club-store"] .app-shell>.topbar{
   display:none!important;
@@ -2186,36 +2186,59 @@ body[data-app-route="club-store"] .v66-directory[data-v66-directory="store"]{
   padding-top:0!important;
 }
 body[data-app-route="club-store"] .v510-store-head{
-  min-height:112px!important;
-  height:112px!important;
+  position:relative!important;
+  min-height:86px!important;
+  height:86px!important;
   display:grid!important;
-  grid-template-columns:48px minmax(0,1fr) 48px!important;
+  grid-template-columns:42px minmax(0,1fr) 42px!important;
   align-items:center!important;
   gap:8px!important;
-  margin:0 -14px 14px!important;
-  padding:8px 16px 6px!important;
+  margin:0 -14px 12px!important;
+  padding:0 14px!important;
   box-sizing:border-box!important;
-  border-bottom:1px solid rgba(74,147,255,.78)!important;
+  overflow:hidden!important;
+  border:0!important;
+  border-bottom:1px solid rgba(90,174,255,.78)!important;
+  box-shadow:none!important;
   background:
-    linear-gradient(180deg,#1681f7 0%,#0d45c8 30%,#08228f 68%,#07106f 100%),
-    url('../public/brand-neon-header.svg') center/cover no-repeat!important;
+    radial-gradient(210px 68px at 46% -10%,rgba(143,247,255,.52) 0%,rgba(33,179,255,.28) 34%,transparent 73%),
+    radial-gradient(170px 70px at 7% 0%,rgba(72,222,255,.30) 0%,transparent 72%),
+    linear-gradient(180deg,#1686f4 0%,#0e59dc 24%,#0b36b7 47%,#081f91 70%,#070d69 100%)!important;
+}
+body[data-app-route="club-store"] .v510-store-head::after{
+  content:""!important;
+  position:absolute!important;
+  left:0!important;
+  right:0!important;
+  bottom:0!important;
+  height:1px!important;
+  background:rgba(102,186,255,.48)!important;
+  pointer-events:none!important;
 }
 body[data-app-route="club-store"] .v510-store-head>button{
-  width:40px!important;
-  height:40px!important;
+  position:relative!important;
+  z-index:2!important;
+  width:34px!important;
+  height:34px!important;
+  min-width:34px!important;
+  min-height:34px!important;
   display:grid!important;
   place-items:center!important;
-  border:0!important;
-  background:transparent!important;
-  color:#fff!important;
+  margin:0!important;
   padding:0!important;
+  border:0!important;
+  border-radius:0!important;
+  background:transparent!important;
+  box-shadow:none!important;
+  color:#fff!important;
 }
 body[data-app-route="club-store"] .v510-store-head>button svg{
+  display:block!important;
   width:29px!important;
   height:29px!important;
   fill:none!important;
   stroke:currentColor!important;
-  stroke-width:2.1!important;
+  stroke-width:2.15!important;
   stroke-linecap:round!important;
   stroke-linejoin:round!important;
 }
@@ -2223,41 +2246,62 @@ body[data-app-route="club-store"] .v510-store-head [data-v447-store-back]{
   justify-self:start!important;
 }
 body[data-app-route="club-store"] .v510-store-crest{
+  position:relative!important;
+  z-index:1!important;
   justify-self:center!important;
-  width:62px!important;
-  height:62px!important;
-  opacity:.22!important;
-  background:url('../public/brand-neon-header.svg') center/contain no-repeat!important;
+  width:88px!important;
+  height:70px!important;
+  opacity:.27!important;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 180 145'%3E%3Cg fill='none' stroke='%23bfeaff' stroke-width='3.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M53 18h74l-5 17H58zM61 35h58l-5 36c-2 18-11 28-24 34-13-6-22-16-24-34z'/%3E%3Cpath d='M58 43H42c-7 0-11 6-9 13 4 15 14 24 31 28M122 43h16c7 0 11 6 9 13-4 15-14 24-31 28'/%3E%3Cpath d='M90 105v17M72 132h36M78 122h24l6 10H72z'/%3E%3Ccircle cx='90' cy='65' r='20'/%3E%3Cpath d='m90 52 8 6-3 10H85l-3-10zM85 68l-9 6M95 68l9 6M82 58l-8-2M98 58l8-2M90 45v7'/%3E%3C/g%3E%3C/svg%3E")!important;
+  background-repeat:no-repeat!important;
+  background-position:center!important;
+  background-size:contain!important;
+  filter:drop-shadow(0 0 3px rgba(115,224,255,.42))!important;
 }
 body[data-app-route="club-store"] .v510-store-profile{
   justify-self:end!important;
+  width:36px!important;
+  height:36px!important;
+  min-width:36px!important;
+  min-height:36px!important;
+  border:2px solid #fff!important;
+  border-radius:50%!important;
 }
 body[data-app-route="club-store"] .v510-store-profile svg{
-  width:34px!important;
-  height:34px!important;
-  stroke-width:2!important;
+  width:23px!important;
+  height:23px!important;
+  stroke-width:1.75!important;
 }
 @media(max-width:390px){
   body[data-app-route="club-store"] .v510-store-head{
-    min-height:104px!important;
-    height:104px!important;
-    grid-template-columns:44px minmax(0,1fr) 44px!important;
-    padding:6px 12px 5px!important;
+    min-height:80px!important;
+    height:80px!important;
+    grid-template-columns:38px minmax(0,1fr) 38px!important;
+    margin-bottom:10px!important;
+    padding:0 12px!important;
   }
   body[data-app-route="club-store"] .v510-store-head>button{
-    width:36px!important;
-    height:36px!important;
+    width:32px!important;
+    height:32px!important;
+    min-width:32px!important;
+    min-height:32px!important;
   }
   body[data-app-route="club-store"] .v510-store-head>button svg{
     width:27px!important;
     height:27px!important;
   }
   body[data-app-route="club-store"] .v510-store-crest{
-    width:56px!important;
-    height:56px!important;
+    width:80px!important;
+    height:64px!important;
+  }
+  body[data-app-route="club-store"] .v510-store-profile{
+    width:34px!important;
+    height:34px!important;
+    min-width:34px!important;
+    min-height:34px!important;
   }
   body[data-app-route="club-store"] .v510-store-profile svg{
-    width:31px!important;
-    height:31px!important;
+    width:21px!important;
+    height:21px!important;
   }
 }
