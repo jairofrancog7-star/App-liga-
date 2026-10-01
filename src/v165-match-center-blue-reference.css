@@ -5302,3 +5302,93 @@ body.v92-match-center-official [data-v92-vote-mvp]:active{
     color:#f3c95f!important;
   }
 }
+
+
+/* V521 — Match Center: quitar duplicado inferior y centrar marcador/cronómetro. */
+@media (max-width:1023px){
+  body.v92-match-center-official .v424-reference-lower{
+    display:none!important;
+  }
+
+  body.v92-match-center-official .v518-matchcenter-unified{
+    background:
+      radial-gradient(520px 240px at 50% 0,rgba(38,84,225,.09),transparent 72%),
+      linear-gradient(180deg,#080b19 0%,#050716 100%)!important;
+    border-color:rgba(72,111,236,.27)!important;
+  }
+
+  body.v92-match-center-official .v420-matchup{
+    grid-template-columns:minmax(0,1fr) 136px minmax(0,1fr)!important;
+    align-items:center!important;
+    gap:8px!important;
+  }
+  body.v92-match-center-official .v420-matchup>div{
+    align-self:center!important;
+  }
+  body.v92-match-center-official .v420-matchup>span{
+    width:136px!important;
+    min-width:136px!important;
+    max-width:136px!important;
+    justify-self:center!important;
+    align-self:center!important;
+    justify-items:center!important;
+    text-align:center!important;
+  }
+  body.v92-match-center-official .v420-matchup>span>strong{
+    width:116px!important;
+    min-width:116px!important;
+    max-width:116px!important;
+    margin:0 auto!important;
+    padding:0 8px!important;
+    text-align:center!important;
+  }
+  body.v92-match-center-official .v420-matchup>span>small,
+  body.v92-match-center-official [data-v420-countdown]{
+    width:136px!important;
+    min-width:0!important;
+    max-width:136px!important;
+    display:block!important;
+    margin:0 auto!important;
+    padding:0!important;
+    color:#fff!important;
+    font-size:13px!important;
+    line-height:1.1!important;
+    font-weight:850!important;
+    letter-spacing:.015em!important;
+    text-align:center!important;
+    white-space:nowrap!important;
+    font-variant-numeric:tabular-nums!important;
+  }
+  body.v92-match-center-official .v420-matchup>div>b{
+    max-width:118px!important;
+    text-align:center!important;
+  }
+}
+@media (max-width:390px){
+  body.v92-match-center-official .v420-matchup{
+    grid-template-columns:minmax(0,1fr) 108px minmax(0,1fr)!important;
+    gap:5px!important;
+  }
+  body.v92-match-center-official .v420-matchup>span{
+    width:108px!important;
+    min-width:108px!important;
+    max-width:108px!important;
+  }
+  body.v92-match-center-official .v420-matchup>span>strong{
+    width:102px!important;
+    min-width:102px!important;
+    max-width:102px!important;
+    font-size:24px!important;
+  }
+  body.v92-match-center-official .v420-matchup>span>small,
+  body.v92-match-center-official [data-v420-countdown]{
+    width:108px!important;
+    max-width:108px!important;
+    font-size:10.8px!important;
+    letter-spacing:0!important;
+  }
+  body.v92-match-center-official .v420-matchup>div>b{
+    max-width:94px!important;
+    font-size:11px!important;
+  }
+}
