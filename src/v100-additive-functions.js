@@ -7,7 +7,7 @@
 if(window.__LJR_V100_ADDITIVE__) return;
 window.__LJR_V100_ADDITIVE__=true;
 
-const BUILD='20261001-v499-exact-nopalero-right-logo';
+const BUILD='20261001-v500-photo-persist-team-transparent';
 const $=(s,r=document)=>r.querySelector(s);
 const $$=(s,r=document)=>Array.from(r.querySelectorAll(s));
 const esc=(v)=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -459,6 +459,7 @@ async function v476TransparentTeamLogo(src){
   if(v476TeamLogoCache.has(src))return v476TeamLogoCache.get(src);
   const img=await v100LoadImage(src);
   if(!img){v476TeamLogoCache.set(src,null);return null}
+  if(/nopalero-credential-v500\.webp/i.test(String(src))){v476TeamLogoCache.set(src,img);return img}
 
   const iw=img.naturalWidth||img.width||1,ih=img.naturalHeight||img.height||1;
   const max=420,scale=Math.min(1,max/Math.max(iw,ih)),w=Math.max(1,Math.round(iw*scale)),h=Math.max(1,Math.round(ih*scale));
@@ -588,12 +589,18 @@ function v196WrapName(ctx,name,maxWidth,maxLines=2){
   return lines;
 }
 async function v196PlayerPhoto(){
-  const file=v100PlayerPhotoFile();if(!file)return null;
+  const file=v100PlayerPhotoFile();
+  if(!file){
+    try{
+      const cached=sessionStorage.getItem('ljr-credential-photo-v500')||'';
+      return cached?await v100LoadImage(cached):null;
+    }catch(_){return null}
+  }
   let url='';try{url=URL.createObjectURL(file);return await v100LoadImage(url)}catch(_){return null}finally{if(url)URL.revokeObjectURL(url)}
 }
 function v196CredentialTeamLogo(team){
   const wanted=norm(team);if(!wanted)return '';
-  if(wanted==='dep nopalero'||wanted==='deportivo nopalero')return 'https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/assets/teams/deportivo-nopalero.webp';
+  if(wanted==='dep nopalero'||wanted==='deportivo nopalero')return './assets/nopalero-credential-v500.webp?v=20261001-v500';
   try{
     const db=window.LJR_OFFICIAL_API?.getData?.()||window.LJR_OFFICIAL_DATA||{};
     const hit=Object.entries(db.team_logos||{}).find(([name])=>norm(name)===wanted);
