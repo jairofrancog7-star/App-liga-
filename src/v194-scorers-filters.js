@@ -5,7 +5,7 @@
 if(window.__LJR_V194_SCORERS__)return;
 window.__LJR_V194_SCORERS__=true;
 window.__LJR_SCORERS_UI_OWNER__='v194-reference';
-window.__LJR_SCORERS_BUILD__='v471';
+window.__LJR_SCORERS_BUILD__='v472';
 
 const CAT_ORDER=['3','5','4','2','1'];
 const CAT_FALLBACK={
@@ -26,6 +26,7 @@ let categoryBusy=false;
 let selectedCategory='';
 let dataWaitTimer=0;
 let dataWaitAttempts=0;
+const logoCache=new Map();
 
 const route=()=>location.hash.replace(/^#\/?/,'').split('?')[0]||'home';
 const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -57,16 +58,24 @@ function catName(id=catId()){
   return category(id)?.name||CAT_FALLBACK[String(id)]||('Categoría '+id);
 }
 function exactLogo(team){
+  const key=norm(team);
+  if(logoCache.has(key))return logoCache.get(key);
   const d=db();
   const entries=Object.entries(d?.team_logos||{});
-  const exact=entries.find(([k])=>norm(k)===norm(team));
+  const exact=entries.find(([k])=>norm(k)===key);
   const v=exact?.[1];
-  if(typeof v==='string')return v;
-  if(v?.local)return './'+String(v.local).replace(/^\.\//,'');
-  if(v?.source)return v.source;
-  try{return window.LJR_OFFICIAL_API?.getLogo?.(team)||window.LJR_TEAM_LOGOS?.get?.(team)||''}
-  catch(_){return ''}
+  let out='';
+  if(typeof v==='string')out=v;
+  else if(v?.local)out='./'+String(v.local).replace(/^\.\//,'');
+  else if(v?.source)out=v.source;
+  else{
+    try{out=window.LJR_OFFICIAL_API?.getLogo?.(team)||window.LJR_TEAM_LOGOS?.get?.(team)||''}
+    catch(_){out=''}
+  }
+  logoCache.set(key,out);
+  return out;
 }
+
 function logoHtml(team,cls='v194-logo'){
   const src=exactLogo(team);
   if(src)return '<span class="'+cls+'"><img src="'+esc(src)+'" alt="'+esc(team)+'" loading="lazy" decoding="async"></span>';
@@ -252,50 +261,66 @@ function lowerRankingRow(r,i){
 }
 function lowerRanking(rows){
   const stat=lowerStat();
+  const label=stat==='goals'?'GOLES':stat==='shots'?'REMATES':'PASES';
   return '<section class="v462-lower-ranking" data-v462-ranking-below>'+
     '<div class="v462-ranking-title">RANKING DE JUGADORES</div>'+
-    '<div class="v462-stat-tabs">'+
-      '<button type="button" class="'+(stat==='goals'?'active':'')+'" data-v462-stat="goals">Goles</button>'+
-      '<button type="button" class="'+(stat==='shots'?'active':'')+'" data-v462-stat="shots">Remates</button>'+
-      '<button type="button" class="'+(stat==='passes'?'active':'')+'" data-v462-stat="passes">Pases</button>'+
-    '</div>'+
     (stat==='goals'
-      ?'<div class="v462-rank-card"><div class="v462-rank-head"><span>POS.</span><span>JUGADOR</span><span>GOLES</span></div>'+
-        '<div class="v462-rank-list">'+rows.slice(0,10).map((r,i)=>lowerRankingRow(r,i)).join('')+'</div></div>'
+      ?'<div class="v462-rank-card"><div class="v462-rank-head"><span>POS.</span><span>JUGADOR</span><span>'+label+'</span></div>'+
+        '<div class="v462-rank-list">'+rows.map((r,i)=>lowerRankingRow(r,i)).join('')+'</div></div>'
       :'<div class="v462-stat-empty"><b>'+esc(stat==='shots'?'Remates':'Pases')+'</b><span>Esta estadística individual todavía no está publicada en los datos oficiales.</span></div>')+
   '</section>';
 }
+
 function chooseLowerStat(mode){
   const v=['goals','shots','passes'].includes(String(mode))?String(mode):'goals';
   if(v===lowerStat())return false;
-  localStorage.setItem(LOWER_STAT_KEY,v);
-  if(statFrame)cancelAnimationFrame(statFrame);
-  statFrame=requestAnimationFrame(()=>{
-    statFrame=0;
-    renderCategoryOnly();
-  });
+  try{localStorage.setItem(LOWER_STAT_KEY,v)}catch(_){}
+  syncControlState();
+  renderCategoryOnly();
   return false;
 }
 
 function categoryStrip(){
-  const active=catId();
-  return '<section class="v391-category-wrap" aria-label="Clasificación por categoría">'+
+  const active=catId(),stat=lowerStat();
+  return '<section class="v391-category-wrap v472-unified-controls" aria-label="Filtros del ranking">'+
     '<span class="v391-category-label">CLASIFICAR POR CATEGORÍA</span>'+
     '<div class="v391-category-strip">'+CAT_ORDER.map(id=>
       '<button type="button" class="'+(id===active?'active':'')+'" data-v194-cat="'+id+'" aria-pressed="'+(id===active?'true':'false')+'">'+esc(catName(id))+'</button>'
     ).join('')+'</div>'+
+    '<div class="v391-stat-strip" aria-label="Estadística del ranking">'+
+      '<button type="button" class="'+(stat==='goals'?'active':'')+'" data-v462-stat="goals" aria-pressed="'+(stat==='goals'?'true':'false')+'">Goles</button>'+
+      '<button type="button" class="'+(stat==='shots'?'active':'')+'" data-v462-stat="shots" aria-pressed="'+(stat==='shots'?'true':'false')+'">Remates</button>'+
+      '<button type="button" class="'+(stat==='passes'?'active':'')+'" data-v462-stat="passes" aria-pressed="'+(stat==='passes'?'true':'false')+'">Pases</button>'+
+    '</div>'+
   '</section>';
 }
-function referenceScorersView(){
+function categoryBody(){
   const id=catId(),rows=scorerRows(id);
-  return '<div class="v391-reference" data-v391-category="'+esc(id)+'">'+
-    categoryStrip()+
+  return '<div class="v391-category-body" data-v391-category-body data-v391-category="'+esc(id)+'">'+
     '<div class="v391-category-title"><small>'+esc(catName(id))+'</small><span>'+rows.length+' goleador'+(rows.length===1?'':'es')+' publicado'+(rows.length===1?'':'s')+'</span></div>'+
-    (rows.length?
-      heroScorerCard(rows[0],1)+heroScorerCard(rows[1],2)+lowerRanking(rows)+scorerListRows(rows.slice(2)):
-      '<div class="v391-empty">Todavía no hay goleadores oficiales publicados para '+esc(catName(id))+'.</div>')+
+    (rows.length
+      ?heroScorerCard(rows[0],1)+heroScorerCard(rows[1],2)+lowerRanking(rows)
+      :'<div class="v391-empty">Todavía no hay goleadores oficiales publicados para '+esc(catName(id))+'.</div>')+
   '</div>';
 }
+function syncControlState(){
+  const id=catId(),stat=lowerStat();
+  document.querySelectorAll('[data-v194-cat]').forEach(b=>{
+    const on=String(b.dataset.v194Cat||'')===id;
+    b.classList.toggle('active',on);
+    b.setAttribute('aria-pressed',on?'true':'false');
+  });
+  document.querySelectorAll('[data-v462-stat]').forEach(b=>{
+    const on=String(b.dataset.v462Stat||'')===stat;
+    b.classList.toggle('active',on);
+    b.setAttribute('aria-pressed',on?'true':'false');
+  });
+}
+
+function referenceScorersView(){
+  return '<div class="v391-reference">'+categoryStrip()+categoryBody()+'</div>';
+}
+
 function markup(){
   const source=db()?.captured_at_utc||'';
   return '<div class="v194-scorers" data-v194-scorers>'+
@@ -333,60 +358,43 @@ function chooseCategory(id){
   id=CAT_ORDER.includes(String(id))?String(id):'3';
   if(categoryBusy)return false;
   if(id===catId()&&pageHasCategory(id))return false;
-
   categoryBusy=true;
-  selectedCategory=id;
   try{
+    selectedCategory=id;
     localStorage.setItem('v62-category',id);
     localStorage.setItem('v12-fixture-cat',id);
     localStorage.setItem(TEAM_KEY,'all');
+    syncControlState();
+    renderCategoryOnly();
   }catch(_){}
-
-  /* Change the pressed state instantly, but defer DOM replacement until
-     the tap/click has fully finished. This prevents the Android WebView
-     from losing the event target and locking the screen. */
-  document.querySelectorAll('[data-v194-cat]').forEach(b=>{
-    const on=String(b.dataset.v194Cat||'')===id;
-    b.classList.toggle('active',on);
-    b.setAttribute('aria-pressed',on?'true':'false');
-  });
-
-  requestAnimationFrame(()=>{
-    try{renderCategoryOnly()}
-    finally{categoryBusy=false}
-  });
+  finally{categoryBusy=false}
   return false;
 }
+
 function pageHasCategory(id){
-  const page=document.querySelector('[data-v28-scorers]');
-  const ref=page?.querySelector('[data-v391-category]');
-  return !!ref&&String(ref.dataset.v391Category||'')===String(id);
+  const body=document.querySelector('[data-v28-scorers] [data-v391-category-body]');
+  return !!body&&String(body.dataset.v391Category||'')===String(id);
 }
+
 function renderCategoryOnly(){
   if(route()!=='scorers'||!db())return false;
   const page=document.querySelector('[data-v28-scorers]');
   const root=page?.querySelector('[data-v194-scorers]');
-  const ref=root?.querySelector('[data-v391-category]');
-  if(!page||!root||!ref)return forceCategoryRender();
+  const body=root?.querySelector('[data-v391-category-body]');
+  if(!page||!root||!body)return forceCategoryRender();
 
   const signature=[catId(),currentMode(),currentTeam(),lowerStat(),db()?.captured_at_utc||''].join('|');
   page.dataset.v194Sig=signature;
 
-  /* Keep the stable v194 root/event listener alive. Replacing the entire
-     page on every tap was what made Android appear frozen. */
   const tpl=document.createElement('template');
-  tpl.innerHTML=referenceScorersView();
+  tpl.innerHTML=categoryBody();
   const next=tpl.content.firstElementChild;
   if(!next)return false;
-  ref.replaceWith(next);
-
-  const source=root.querySelector('.v194-source');
-  if(source){
-    const stamp=db()?.captured_at_utc||'';
-    source.textContent='Datos oficiales sincronizados'+(stamp?' · '+new Date(stamp).toLocaleString('es-MX'):'');
-  }
+  body.replaceWith(next);
+  syncControlState();
   return true;
 }
+
 function bind(root){
   if(!root||root.dataset.v194Bound==='1')return;
   root.dataset.v194Bound='1';
@@ -471,6 +479,7 @@ window.addEventListener('hashchange',()=>{
   waitForOfficialData(true);
 });
 window.addEventListener('ljr:official-data',()=>{
+  logoCache.clear();
   clearTimeout(dataWaitTimer);
   dataWaitAttempts=0;
   if(route()==='scorers')render(true);
