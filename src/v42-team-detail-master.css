@@ -1186,3 +1186,91 @@ body[data-app-route="teamDetail"] #screen > .v73-team-detail-bottom,
 body[data-app-route="teamDetail"] #screen > #v105-bottom{
   position:relative!important;
 }
+
+
+/* V498_TEAM_ACTIONS_REFERENCE */
+/* Team profile actions aligned to the supplied reference:
+   compact white Follow + separate Compare + square Share. */
+body.v42-team-active .v42-actions,
+body[data-app-route="teamDetail"] .v42-actions{
+  display:grid!important;
+  grid-template-columns:minmax(0,1fr) minmax(0,1fr) 48px!important;
+  align-items:center!important;
+  gap:10px!important;
+  margin-top:14px!important;
+}
+body.v42-team-active .v42-actions .v42-follow,
+body[data-app-route="teamDetail"] .v42-actions .v42-follow{
+  height:42px!important;
+  min-width:0!important;
+  padding:0 14px!important;
+  display:flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  gap:7px!important;
+  border:0!important;
+  border-radius:12px!important;
+  background:#fff!important;
+  color:#0b0a63!important;
+  font-size:13px!important;
+  font-weight:800!important;
+  box-shadow:none!important;
+}
+body.v42-team-active .v42-actions .v42-follow.active,
+body[data-app-route="teamDetail"] .v42-actions .v42-follow.active{
+  background:#fff!important;
+  color:#0b0a63!important;
+}
+body.v42-team-active .v42-actions .v42-follow svg,
+body[data-app-route="teamDetail"] .v42-actions .v42-follow svg{
+  width:17px!important;
+  height:17px!important;
+  fill:none!important;
+  stroke:currentColor!important;
+  stroke-width:2!important;
+  stroke-linecap:round!important;
+  stroke-linejoin:round!important;
+}
+body.v42-team-active .v42-actions .v42-compare,
+body[data-app-route="teamDetail"] .v42-actions .v42-compare{
+  height:42px!important;
+  min-width:0!important;
+  padding:0 12px!important;
+  border:0!important;
+  border-radius:12px!important;
+  background:rgba(255,255,255,.20)!important;
+  color:#fff!important;
+  font-size:13px!important;
+  font-weight:750!important;
+  text-align:center!important;
+}
+body.v42-team-active .v42-actions .v42-share,
+body[data-app-route="teamDetail"] .v42-actions .v42-share{
+  width:48px!important;
+  min-width:48px!important;
+  height:42px!important;
+  padding:0!important;
+  display:grid!important;
+  place-items:center!important;
+  border:0!important;
+  border-radius:12px!important;
+  background:rgba(255,255,255,.20)!important;
+  color:#fff!important;
+}
+body.v42-team-active .v42-actions .v42-share svg,
+body[data-app-route="teamDetail"] .v42-actions .v42-share svg{
+  width:21px!important;
+  height:21px!important;
+}
+@media(max-width:380px){
+  body.v42-team-active .v42-actions,
+  body[data-app-route="teamDetail"] .v42-actions{
+    grid-template-columns:minmax(0,1fr) minmax(0,1fr) 44px!important;
+    gap:7px!important;
+  }
+  body.v42-team-active .v42-actions .v42-share,
+  body[data-app-route="teamDetail"] .v42-actions .v42-share{
+    width:44px!important;
+    min-width:44px!important;
+  }
+}
