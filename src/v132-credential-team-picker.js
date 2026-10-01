@@ -7,7 +7,7 @@
 if(window.__LJR_V132_CREDENTIAL_TEAM_PICKER__)return;
 window.__LJR_V132_CREDENTIAL_TEAM_PICKER__=true;
 
-const DATA_URL='./data/official-live.json?v=20261001-v490-v35-all-pages';
+const DATA_URL='./data/official-live.json?v=20261001-v491-v35-all-pages';
 const $=(s,r=document)=>r.querySelector(s);
 const $$=(s,r=document)=>Array.from(r.querySelectorAll(s));
 const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
