@@ -796,9 +796,19 @@ function bindMatchCenter(root){
  root.querySelector('[data-v412-commentary]')?.addEventListener('click',openCommentary);bindCommon(root);
 }
 function mountMatchCenter(screen){
-  /* V522: el Match Center usa únicamente la tarjeta negra nativa V420.
-     Se elimina por completo el bloque duplicado V412 que aparecía abajo. */
-  screen.querySelector('[data-v412-screen="matchcenter"]')?.remove();
+  /* V523: restaura los módulos complementarios del Match Center.
+     El duplicado inferior V424 permanece eliminado; V412 conserva
+     comparación, balance, historial, forma y accesos funcionales. */
+  const target=screen.querySelector('[data-v518-extras]')||screen;
+  let node=screen.querySelector('[data-v412-screen="matchcenter"]');
+  if(node){
+    if(node.parentElement!==target)target.appendChild(node);
+    return;
+  }
+  const html=matchCenterMarkup();if(!html)return;
+  target.insertAdjacentHTML('beforeend',html);
+  node=screen.querySelector('[data-v412-screen="matchcenter"]');
+  bindMatchCenter(node);
 }
 
 
