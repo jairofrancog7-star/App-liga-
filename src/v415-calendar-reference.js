@@ -363,6 +363,12 @@ function pickSelected(allGames){
 }
 
 function bind(root){
+  root.querySelector('[data-v415-top-back]')?.addEventListener('click',()=>{
+    if(history.length>1)history.back();else location.hash='#/more';
+  });
+  root.querySelector('[data-v415-top-profile]')?.addEventListener('click',()=>{
+    location.hash='#/profile';
+  });
   root.querySelectorAll('[data-v415-month]').forEach(btn=>btn.addEventListener('click',()=>{
     const [y,m]=String(btn.dataset.v415Month||'').split('-').map(Number);
     if(Number.isFinite(y)&&Number.isFinite(m)){
@@ -459,6 +465,18 @@ function bind(root){
   }));
 }
 
+function calendarTopbar(){
+  return '<header class="v415-reference-topbar" data-v415-reference-topbar aria-label="Barra superior">'+
+    '<button type="button" class="v415-reference-back" data-v415-top-back aria-label="Regresar">'+
+      '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14.5 5.5 8 12l6.5 6.5M8 12h12"/></svg>'+
+    '</button>'+
+    '<span class="v415-reference-trophy" aria-hidden="true"></span>'+
+    '<button type="button" class="v415-reference-profile" data-v415-top-profile aria-label="Perfil">'+
+      '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9.6"/><circle cx="12" cy="8.1" r="2.85"/><path d="M5.35 19.15c1.55-3.35 3.76-4.9 6.65-4.9s5.1 1.55 6.65 4.9"/></svg>'+
+    '</button>'+
+  '</header>';
+}
+
 function render(){
   if(!isCalendarRoute()||rendering)return;
   const root=screen(); if(!root)return;
@@ -471,6 +489,7 @@ function render(){
     const monthGames=allGames.filter(g=>g.year===y&&g.month===m);
 
     root.innerHTML='<section class="v103-calendar-page v415-calendar-page" data-v103-calendar data-v415-calendar>'+
+      calendarTopbar()+
       topTabs()+
       categoryPanel()+
       (activeView==='squad'?squadMarkup():(monthStrip()+calendarGrid(monthGames)+selectedMatches(allGames)))+
