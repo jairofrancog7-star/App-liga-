@@ -7,7 +7,7 @@ if(window.__LJR_V449_REFERENCE_LOWER__)return;
 window.__LJR_V449_REFERENCE_LOWER__=true;
 
 const ID='v449-reference-lower';
-const BUILD='20260930-v451-reference-lower-hard';
+const BUILD='20260930-v452-exact-reference-functional';
 const DATA='./public/data/official-live.json?v='+BUILD;
 const RAW='https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/';
 const CAT_ORDER=['3','5','4','2','1'];
@@ -42,7 +42,7 @@ const LOGO_PATHS={
  'dep nopalero':'assets/official-logos/dep-nopalero.png'
 };
 
-let cached=null,loading=null,timer=0,seasonMode='matches',tableMode='compact';
+let cached=null,loading=null,timer=0,seasonMode='matches',tableMode='compact',statsView='players',rankingMode='goals',roundOffset=0,teamFilter='all';
 
 function dbNow(){
  try{return window.LJR_OFFICIAL_API?.getData?.()||window.LJR_OFFICIAL_DATA||cached||null}catch(_){return cached||null}
@@ -133,9 +133,40 @@ function shortDate(v){
  const month=['ene','feb','mar','abr','may','jun','jul','ago','sep','oct','nov','dic'][Math.max(0,Number(m[2])-1)]||'';
  return Number(m[1])+' '+month;
 }
-function formDots(i){
- const patterns=[['V','V','V','V'],['V','D','V','V'],['V','V','P','V'],['V','P','D','V'],['P','D','V','P']];
- return (patterns[i%patterns.length]||patterns[0]).map(x=>'<i class="'+(x==='V'?'win':x==='P'?'loss':'draw')+'">'+x+'</i>').join('');
+function fixtureStamp(v){
+ const m=String(v||'').match(/(\d{1,2})\/(\d{1,2})\/(\d{4})(?:\s+(\d{1,2}):(\d{2}))?/);
+ if(!m)return 0;
+ return new Date(Number(m[3]),Number(m[2])-1,Number(m[1]),Number(m[4]||0),Number(m[5]||0)).getTime();
+}
+function teamForm(data,team,id=catId()){
+ const games=fixtures(data,id).filter(x=>{
+  if(!(norm(x.home)===norm(team)||norm(x.away)===norm(team)))return false;
+  return /^\d+$/.test(x.hg)&&/^\d+$/.test(x.ag);
+ }).sort((a,b)=>fixtureStamp(b.date)-fixtureStamp(a.date)).slice(0,4);
+ return games.map(x=>{
+  const home=norm(x.home)===norm(team),gf=Number(home?x.hg:x.ag),ga=Number(home?x.ag:x.hg);
+  return gf>ga?'V':gf<ga?'P':'E';
+ });
+}
+function formDots(data,team){
+ const f=teamForm(data,team);
+ if(!f.length)return '<span class="v449-no-form">—</span>';
+ return f.map(x=>'<i class="'+(x==='V'?'win':x==='P'?'loss':'draw')+'">'+x+'</i>').join('');
+}
+function categoryOptions(data){
+ return CAT_ORDER.filter(id=>data?.categories?.[id]).map(id=>'<option value="'+id+'" '+(id===catId()?'selected':'')+'>'+esc(catName(data,id))+'</option>').join('');
+}
+function teamsForCat(data,id=catId()){
+ return standings(data,id).map(x=>x.team);
+}
+function roundList(data,id=catId()){
+ return [...new Set(fixtures(data,id).map(x=>Number(x.round)).filter(Number.isFinite))].sort((a,b)=>a-b);
+}
+function selectedRound(data,id=catId()){
+ const rounds=roundList(data,id);
+ if(!rounds.length)return null;
+ const ix=Math.max(0,Math.min(rounds.length-1,(rounds.length-1)+roundOffset));
+ return rounds[ix];
 }
 function navStrip(active){
  return '<div class="v449-ref-tabs">'+
@@ -156,18 +187,24 @@ function fixtureCard(x,data){
  '</article>';
 }
 function competitionFixtures(data){
- const rows=rowsForCurrentRound(data),round=roundValue(fixtures(data));
+ const all=fixtures(data),round=selectedRound(data),rows=(round==null?all:all.filter(x=>Number(x.round)===round)).slice(0,4);
+ const rounds=roundList(data),ix=round==null?-1:rounds.indexOf(round);
+ const prev=ix>0?rounds[ix-1]:null,next=ix>=0&&ix<rounds.length-1?rounds[ix+1]:null;
  return '<section class="v449-block v449-competition-fixtures">'+
-  '<div class="v449-kicker">DISEÑO DE COMPETICIÓN · PARTE INFERIOR</div>'+navStrip('fixtures')+
-  '<div class="v449-round-row"><button type="button">Jornada '+esc(String(Math.max(1,Number(round)-1)||'—'))+'</button><button class="active" type="button">Jornada '+esc(round)+'</button><button type="button">Jornada '+esc(String((Number(round)||0)+1))+'</button></div>'+
-  '<div class="v449-fixture-stack">'+(rows.length?rows.slice(0,4).map(x=>fixtureCard(x,data)).join(''):'<div class="v449-empty">No hay partidos oficiales publicados.</div>')+'</div>'+
+  navStrip('fixtures')+
+  '<div class="v449-round-row">'+
+    '<button type="button" '+(prev!=null?'data-v449-round-dir="-1"':'disabled')+'>'+(prev!=null?'Jornada '+esc(prev):'—')+'</button>'+
+    '<button class="active" type="button">Jornada '+esc(round??'—')+'</button>'+
+    '<button type="button" '+(next!=null?'data-v449-round-dir="1"':'disabled')+'>'+(next!=null?'Jornada '+esc(next):'—')+'</button>'+
+  '</div>'+
+  '<div class="v449-fixture-stack">'+(rows.length?rows.map(x=>fixtureCard(x,data)).join(''):'<div class="v449-empty">No hay partidos oficiales publicados en esta jornada.</div>')+'</div>'+
  '</section>';
 }
 function compactStandingRow(x,i,data,form=false){
  return '<div class="v449-table-row">'+
   '<span class="v449-pos"><i></i>'+esc(x.pos)+'</span>'+
   '<span class="v449-team">'+crest(x.team,data,'small')+'<b>'+esc(x.team)+'</b></span>'+
-  (form?'<span class="v449-form">'+formDots(i)+'</span>':
+  (form?'<span class="v449-form">'+formDots(data,x.team)+'</span>':
    '<span>'+esc(x.pj)+'</span><span>'+esc(x.pg)+'</span><span>'+esc(x.pe)+'</span><span>'+esc(x.pp)+'</span><span>'+esc(x.gf)+'</span><span>'+esc(x.gc)+'</span><strong>'+esc(x.pts)+'</strong>')+
  '</div>';
 }
@@ -180,24 +217,45 @@ function competitionStandings(data){
  '</section>';
 }
 function seasonMatches(data){
- const rows=rowsForCurrentRound(data).slice(0,5),round=roundValue(fixtures(data));
- return '<div class="v449-season-panel">'+
-  '<div class="v449-season-controls"><button>'+esc(catName(data))+'⌄</button><button>Fecha '+esc(round)+'⌄</button><button>Todos los equipos⌄</button></div>'+
-  '<div class="v449-season-date"><button>‹</button><div><b>Fecha '+esc(round)+'</b><small>Rol oficial vigente</small></div><button>›</button></div>'+
-  '<div class="v449-season-match-list">'+rows.map(x=>
+ const round=selectedRound(data);
+ const all=fixtures(data);
+ let rows=(round==null?all:all.filter(x=>Number(x.round)===round));
+ if(teamFilter!=='all')rows=rows.filter(x=>norm(x.home)===norm(teamFilter)||norm(x.away)===norm(teamFilter));
+ rows=rows.slice(0,6);
+ const teams=teamsForCat(data);
+ return '<div class="v449-season-panel v449-season-matches-ref">'+
+  '<div class="v449-season-controls">'+
+    '<label><select data-v449-category>'+categoryOptions(data)+'</select></label>'+
+    '<label><select data-v449-round-select>'+roundList(data).map(r=>'<option value="'+r+'" '+(Number(r)===Number(round)?'selected':'')+'>Fecha '+r+'</option>').join('')+'</select></label>'+
+    '<label><select data-v449-team-filter><option value="all">Todos los equipos</option>'+teams.map(t=>'<option value="'+esc(t)+'" '+(teamFilter===t?'selected':'')+'>'+esc(t)+'</option>').join('')+'</select></label>'+
+  '</div>'+
+  '<div class="v449-season-date"><button type="button" data-v449-round-dir="-1">‹</button><div><b>Fecha '+esc(round??'—')+'</b><small>Rol oficial de '+esc(catName(data))+'</small></div><button type="button" data-v449-round-dir="1">›</button></div>'+
+  '<div class="v449-season-match-list">'+(rows.length?rows.map(x=>
    '<div class="v449-season-match"><span>'+esc(x.home)+'</span>'+crest(x.home,data,'season')+'<b>'+esc(scoreText(x))+'</b>'+crest(x.away,data,'season')+'<span>'+esc(x.away)+'</span></div>'
-  ).join('')+'</div>'+
+  ).join(''):'<div class="v449-empty">Sin partidos para este filtro.</div>')+'</div>'+
  '</div>';
 }
 function seasonTable(data){
- const rows=standings(data).slice(0,10),form=tableMode==='form';
- return '<div class="v449-season-panel">'+
-  '<div class="v449-season-controls"><button>Todas las fechas⌄</button><button>Local y visitante⌄</button><button>Restablecer</button></div>'+
-  '<div class="v449-table-modes"><button class="'+(!form?'active':'')+'" data-v449-table-mode="compact">Compacto</button><button>Terminado</button><button class="'+(form?'active':'')+'" data-v449-table-mode="form">Forma</button></div>'+
-  '<div class="v449-season-table '+(form?'is-form':'')+'">'+
-   '<div class="v449-season-table-head"><span>Pos</span><span>Equipo</span>'+(form?'<span>Forma</span>':'<span>PJ</span><span>V</span><span>DG</span><span>Pts</span>')+'</div>'+
-   rows.map((x,i)=>form?
-    '<div class="v449-season-table-row"><span>'+esc(x.pos)+'</span><span>'+crest(x.team,data,'tiny')+'<b>'+esc(x.team)+'</b></span><span class="v449-form">'+formDots(i)+'</span></div>':
+ const rows=standings(data).slice(0,12),form=tableMode==='form',finished=tableMode==='finished';
+ return '<div class="v449-season-panel v449-season-table-ref">'+
+  '<div class="v449-season-controls v449-table-filters">'+
+    '<label><select data-v449-category>'+categoryOptions(data)+'</select></label>'+
+    '<button type="button" data-v449-noop="venue">Local y visitante⌄</button>'+
+    '<button type="button" data-v449-reset>Restablecer</button>'+
+  '</div>'+
+  '<div class="v449-table-modes">'+
+    '<button class="'+(tableMode==='compact'?'active':'')+'" data-v449-table-mode="compact">Compacto</button>'+
+    '<button class="'+(finished?'active':'')+'" data-v449-table-mode="finished">Terminado</button>'+
+    '<button class="'+(form?'active':'')+'" data-v449-table-mode="form">Forma</button>'+
+  '</div>'+
+  '<div class="v449-season-table '+(form?'is-form':finished?'is-finished':'')+'">'+
+   '<div class="v449-season-table-head"><span>Pos</span><span>Equipo</span>'+
+     (form?'<span>Forma</span>':finished?'<span>PJ</span><span>V</span><span>E</span><span>D</span><span>Pts</span>':'<span>PJ</span><span>V</span><span>DG</span><span>Pts</span>')+
+   '</div>'+
+   rows.map(x=>form?
+    '<div class="v449-season-table-row"><span>'+esc(x.pos)+'</span><span>'+crest(x.team,data,'tiny')+'<b>'+esc(x.team)+'</b></span><span class="v449-form">'+formDots(data,x.team)+'</span></div>':
+    finished?
+    '<div class="v449-season-table-row"><span>'+esc(x.pos)+'</span><span>'+crest(x.team,data,'tiny')+'<b>'+esc(x.team)+'</b></span><span>'+esc(x.pj)+'</span><span>'+esc(x.pg)+'</span><span>'+esc(x.pe)+'</span><span>'+esc(x.pp)+'</span><strong>'+esc(x.pts)+'</strong></div>':
     '<div class="v449-season-table-row"><span>'+esc(x.pos)+'</span><span>'+crest(x.team,data,'tiny')+'<b>'+esc(x.team)+'</b></span><span>'+esc(x.pj)+'</span><span>'+esc(x.pg)+'</span><span>'+esc(x.dg)+'</span><strong>'+esc(x.pts)+'</strong></div>'
    ).join('')+
   '</div>'+
@@ -208,12 +266,24 @@ function scorerRow(p,i,data){
   '<div><b>'+esc(p.name)+'</b><small>'+crest(p.team,data,'micro')+esc(p.team)+'</small></div><strong>'+esc(p.goals)+'</strong></div>';
 }
 function seasonStats(data){
- const rows=scorers(data).slice(0,5);
- return '<div class="v449-season-panel">'+
-  '<div class="v449-stat-toggle"><button class="active">Jugadores</button><button>Equipo</button><button type="button" data-v449-route="playerCompare">Comparar</button></div>'+
-  '<div class="v449-stat-heading"><h3>Estadísticas principales</h3><button type="button" data-v449-route="scorers">Todas las estadísticas</button></div>'+
-  '<article class="v449-stat-card"><h4>Goles ›</h4>'+rows.slice(0,3).map((p,i)=>scorerRow(p,i,data)).join('')+'</article>'+
-  '<article class="v449-stat-card small"><h4>Ranking de jugadores ›</h4>'+rows.slice(3,5).map((p,i)=>scorerRow(p,i+3,data)).join('')+'</article>'+
+ const rows=scorers(data).slice(0,6);
+ const teams=standings(data).slice(0,6);
+ const playerPanel='<article class="v449-stat-card"><h4>Goles <span>›</span></h4>'+(
+   rows.length?rows.slice(0,3).map((p,i)=>scorerRow(p,i,data)).join(''):'<div class="v449-empty">Sin goleadores oficiales publicados.</div>'
+  )+'</article>'+
+  '<article class="v449-stat-card small"><h4>Asistencias <span>›</span></h4><div class="v449-stat-unavailable"><b>Dato no publicado</b><small>La fuente oficial de la Liga no publica asistencias individuales.</small></div></article>';
+ const teamPanel='<article class="v449-stat-card"><h4>Goles a favor <span>›</span></h4>'+
+  teams.slice().sort((a,b)=>Number(b.gf)-Number(a.gf)).slice(0,3).map((t,i)=>
+   '<div class="v449-team-stat-row"><span>'+String(i+1)+'</span>'+crest(t.team,data,'statteam')+'<div><b>'+esc(t.team)+'</b><small>'+esc(catName(data))+'</small></div><strong>'+esc(t.gf)+'</strong></div>'
+  ).join('')+'</article>'+
+  '<article class="v449-stat-card small"><h4>Goles recibidos <span>›</span></h4>'+
+  teams.slice().sort((a,b)=>Number(a.gc)-Number(b.gc)).slice(0,3).map((t,i)=>
+   '<div class="v449-team-stat-row"><span>'+String(i+1)+'</span>'+crest(t.team,data,'statteam')+'<div><b>'+esc(t.team)+'</b><small>'+esc(catName(data))+'</small></div><strong>'+esc(t.gc)+'</strong></div>'
+  ).join('')+'</article>';
+ return '<div class="v449-season-panel v449-season-stats-ref">'+
+  '<div class="v449-stat-toggle"><div><button class="'+(statsView==='players'?'active':'')+'" data-v449-stats-view="players">Jugadores</button><button class="'+(statsView==='teams'?'active':'')+'" data-v449-stats-view="teams">Equipo</button></div><button type="button" class="v449-compare-btn" data-v449-route="playerCompare"><span>♙</span>Comparar</button></div>'+
+  '<div class="v449-stat-heading"><h3>Estadísticas principales</h3><button type="button" data-v449-route="scorers">Todas las<br>estadísticas</button></div>'+
+  (statsView==='players'?playerPanel:teamPanel)+
  '</div>';
 }
 function seasonBlock(data){
@@ -228,16 +298,20 @@ function seasonBlock(data){
  '</section>';
 }
 function rankingBlock(data){
- const rows=scorers(data).slice(0,5);
- const top=rows[0];
- return '<section class="v449-block v449-ranking">'+
-  '<div class="v449-kicker">RANKING DE JUGADORES · '+esc(catName(data))+'</div>'+
-  '<div class="v449-ranking-tabs"><button class="active">Goles</button><button>Remates</button><button>Pases</button></div>'+
-  (top?'<article class="v449-ranking-feature">'+
+ const rows=scorers(data).slice(0,5),top=rows[0],available=rankingMode==='goals';
+ return '<section class="v449-block v449-ranking v449-ranking-ref">'+
+  '<div class="v449-ranking-title">RANKING DE JUGADORES</div>'+
+  '<div class="v449-ranking-tabs">'+
+   '<button class="'+(rankingMode==='goals'?'active':'')+'" data-v449-ranking-mode="goals">Goles</button>'+
+   '<button class="'+(rankingMode==='shots'?'active':'')+'" data-v449-ranking-mode="shots">Remates</button>'+
+   '<button class="'+(rankingMode==='passes'?'active':'')+'" data-v449-ranking-mode="passes">Pases</button>'+
+  '</div>'+
+  (available&&top?'<article class="v449-ranking-feature">'+
     '<div class="v449-ranking-feature-top">'+playerPic(top.name,top.team,data,'feature')+'<div><span>1º</span><h3>'+esc(top.name)+'</h3><small>'+crest(top.team,data,'micro')+esc(top.team)+'</small></div><strong>'+top.goals+'<small>GOLES</small></strong></div>'+
     '<div class="v449-ranking-list">'+rows.slice(1,4).map((p,i)=>scorerRow(p,i+1,data)).join('')+'</div>'+
-   '</article>':'<div class="v449-empty">Sin goleadores oficiales publicados.</div>')+
-  '<button type="button" class="v449-ranking-more" data-v449-route="scorers">VER RANKING ›</button>'+
+   '</article>':
+   '<div class="v449-ranking-unavailable"><b>'+esc(rankingMode==='shots'?'Remates':'Pases')+'</b><span>Esta estadística no está publicada en la fuente oficial.</span></div>')+
+  '<button type="button" class="v449-ranking-more" data-v449-route="scorers">VER RANKING <span>›</span></button>'+
  '</section>';
 }
 function competitionMode(){
@@ -246,9 +320,9 @@ function competitionMode(){
 }
 function signature(data){
  const r=route(),c=catId();
- if(r==='competition')return r+'|'+competitionMode()+'|'+c;
- if(['leagueData','safe-data'].includes(r))return r+'|'+seasonMode+'|'+tableMode+'|'+c;
- return r+'|'+c;
+ if(r==='competition')return r+'|'+competitionMode()+'|'+c+'|'+tableMode+'|'+statsView+'|'+rankingMode+'|'+roundOffset+'|'+teamFilter;
+ if(['leagueData','safe-data'].includes(r))return r+'|'+seasonMode+'|'+tableMode+'|'+statsView+'|'+rankingMode+'|'+c+'|'+roundOffset+'|'+teamFilter;
+ return r+'|'+c+'|'+tableMode+'|'+statsView+'|'+rankingMode+'|'+roundOffset+'|'+teamFilter;
 }
 function supported(r){return ['competition','leagueData','safe-data','stats','v38Stats','scorers','rankings'].includes(r)}
 function markup(r,data){
@@ -290,6 +364,23 @@ function bind(root,data){
  });
  $$('[data-v449-season]',root).forEach(b=>b.onclick=()=>{seasonMode=b.dataset.v449Season||'matches';paint(data,true)});
  $$('[data-v449-table-mode]',root).forEach(b=>b.onclick=()=>{tableMode=b.dataset.v449TableMode||'compact';paint(data,true)});
+ $$('[data-v449-stats-view]',root).forEach(b=>b.onclick=()=>{statsView=b.dataset.v449StatsView||'players';paint(data,true)});
+ $$('[data-v449-ranking-mode]',root).forEach(b=>b.onclick=()=>{rankingMode=b.dataset.v449RankingMode||'goals';paint(data,true)});
+ $$('[data-v449-round-dir]',root).forEach(b=>b.onclick=()=>{
+   const rounds=roundList(data);if(!rounds.length)return;
+   roundOffset=Math.max(-(rounds.length-1),Math.min(0,roundOffset+Number(b.dataset.v449RoundDir||0)));
+   paint(data,true);
+ });
+ $$('[data-v449-round-select]',root).forEach(s=>s.onchange=()=>{
+   const rounds=roundList(data),i=rounds.indexOf(Number(s.value));
+   if(i>=0){roundOffset=i-(rounds.length-1);paint(data,true)}
+ });
+ $$('[data-v449-category]',root).forEach(s=>s.onchange=()=>{
+   const id=String(s.value||'3');if(CAT_ORDER.includes(id)){localStorage.setItem('v62-category',id);roundOffset=0;teamFilter='all';paint(data,true)}
+ });
+ $$('[data-v449-team-filter]',root).forEach(s=>s.onchange=()=>{teamFilter=s.value||'all';paint(data,true)});
+ $$('[data-v449-reset]',root).forEach(b=>b.onclick=()=>{tableMode='compact';roundOffset=0;teamFilter='all';paint(data,true)});
+ $$('[data-v449-noop]',root).forEach(b=>b.onclick=()=>{b.classList.toggle('active')});
 }
 function paint(data,force=false){
  const r=route(),screen=$('#screen');if(!screen)return;
