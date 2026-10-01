@@ -183,7 +183,8 @@ function generalView(){
 }
 function referenceStatsBlock(){
  const scorers=(current()?.scorers?.[0]?.rows||[]).filter(r=>r?.[1]&&r?.[2]&&/^\d+$/.test(String(r?.[3]||''))).slice(0,3);
- const top=standings().slice(0,3);
+ const table=standings().slice(0,12);
+ const top=table.slice(0,3);
  const scorerRows=scorers.length?scorers.map((r,i)=>
    '<button type="button" class="v446-stat-ref-row" data-v33-player="'+esc(r[1])+'">'+
      '<span class="v446-stat-ref-rank">'+(i+1)+'</span>'+
@@ -201,18 +202,34 @@ function referenceStatsBlock(){
      '<strong>'+esc(r[9])+'</strong>'+
    '</button>'
  ).join(''):'<div class="v446-stat-ref-empty">Sin clasificación oficial publicada.</div>';
- return '<section class="v446-stats-reference" data-v446-stats-reference>'+
-   '<header class="v446-stats-ref-hero"><span><small>Liga Municipal de Fútbol</small><h2>Juventino Rosas, Guanajuato</h2><b>2026/27⌄</b></span><img src="'+SRC+'assets/liga-logo.webp" alt="Liga Juventino Rosas"></header>'+
-   '<nav class="v446-stats-ref-tabs"><button type="button" data-v33-route="competition">Partidos</button><button type="button" data-v33-tab="team">Tabla</button><button type="button" class="active">Estadísticas</button></nav>'+
-   '<div class="v446-stats-ref-tools"><div><button type="button" class="active" data-v33-ref-view="player">Jugador</button><button type="button" data-v33-ref-view="team">Equipo</button></div><button type="button" class="v446-stats-ref-compare" data-v33-route="playerCompare" data-v33-ref-compare>♙ Comparar</button></div>'+
-   '<div class="v446-stats-ref-title"><span><small>PRIMERA FUERZA</small><h3>Estadísticas principales</h3></span><button type="button" data-v33-tab="general">Todas las<br>estadísticas</button></div>'+
-   '<div data-v33-ref-panel="player">'+
-     '<article class="v446-stats-ref-panel"><h4>Goles <span>›</span></h4>'+scorerRows+'</article>'+
-     '<article class="v446-stats-ref-panel"><h4>Asistencias <span>›</span></h4><div class="v446-stat-ref-note"><b>Dato no publicado</b><span>La fuente oficial no publica asistencias individuales.</span></div></article>'+
-   '</div>'+
-   '<div data-v33-ref-panel="team" hidden>'+
-     '<article class="v446-stats-ref-panel"><h4>Clasificación <span>›</span></h4>'+teamRows+'</article>'+
-     '<article class="v446-stats-ref-panel"><h4>Rendimiento <span>›</span></h4><div class="v446-stat-ref-note"><b>Datos oficiales</b><span>Partidos, diferencia de goles y puntos.</span></div></article>'+
+ const standingsRows=table.length?table.map((r,i)=>
+   '<button type="button" class="v509-unified-row" data-v33-team="'+esc(r[1])+'">'+
+     '<span class="v509-unified-pos">'+(i+1)+'</span>'+
+     '<span class="v509-unified-team">'+teamLogo(r[1],'v509-unified-logo')+'<b>'+esc(r[1])+'</b></span>'+
+     '<span>'+esc(r[2])+'</span>'+
+     '<span class="'+(num(r[8])>0?'is-positive':num(r[8])<0?'is-negative':'')+'">'+esc(metricLabel(8,r[8]))+'</span>'+
+     '<strong>'+esc(r[9])+'</strong>'+
+   '</button>'
+ ).join(''):'<div class="v446-stat-ref-empty">Sin tabla oficial publicada.</div>';
+ return '<section class="v446-stats-reference v509-unified-stats" data-v446-stats-reference>'+
+   '<header class="v446-stats-ref-hero v509-unified-hero"><span><small>LIGA MUNICIPAL DE FÚTBOL</small><h2>Temporada 2026/27</h2><b>Primera Fuerza · datos oficiales</b></span><img src="'+SRC+'assets/liga-logo.webp" alt="Liga Juventino Rosas"></header>'+
+   '<nav class="v446-stats-ref-tabs v509-unified-tabs"><button type="button" data-v33-route="competition">Partidos</button><button type="button" data-v33-jump-table>Tabla</button><button type="button" class="active">Estadísticas</button></nav>'+
+   '<div class="v509-unified-body">'+
+     '<div class="v446-stats-ref-tools"><div><button type="button" class="active" data-v33-ref-view="player">Jugador</button><button type="button" data-v33-ref-view="team">Equipo</button></div><button type="button" class="v446-stats-ref-compare" data-v33-route="playerCompare" data-v33-ref-compare>♙ Comparar</button></div>'+
+     '<div class="v446-stats-ref-title"><span><small>PRIMERA FUERZA</small><h3>Estadísticas principales</h3></span><button type="button" data-v33-tab="general">Todas las<br>estadísticas</button></div>'+
+     '<div data-v33-ref-panel="player">'+
+       '<article class="v446-stats-ref-panel"><h4>Goles <span>›</span></h4>'+scorerRows+'</article>'+
+       '<article class="v446-stats-ref-panel"><h4>Asistencias <span>›</span></h4><div class="v446-stat-ref-note"><b>Dato no publicado</b><span>La fuente oficial no publica asistencias individuales.</span></div></article>'+
+     '</div>'+
+     '<div data-v33-ref-panel="team" hidden>'+
+       '<article class="v446-stats-ref-panel"><h4>Clasificación <span>›</span></h4>'+teamRows+'</article>'+
+       '<article class="v446-stats-ref-panel"><h4>Rendimiento <span>›</span></h4><div class="v446-stat-ref-note"><b>Datos oficiales</b><span>Partidos, diferencia de goles y puntos.</span></div></article>'+
+     '</div>'+
+     '<section class="v509-unified-table" data-v33-unified-table>'+
+       '<div class="v509-unified-table-title"><span><small>TABLA OFICIAL</small><h3>Clasificación</h3></span><b>2026/27</b></div>'+
+       '<div class="v509-unified-head"><span>#</span><span>Equipo</span><span>PJ</span><span>DG</span><span>PTS</span></div>'+
+       '<div class="v509-unified-list">'+standingsRows+'</div>'+
+     '</section>'+
    '</div>'+
  '</section>';
 }
@@ -256,6 +273,7 @@ function bind(){
  document.querySelectorAll('[data-v33-player]').forEach(b=>b.onclick=()=>toast(b.dataset.v33Player+' · jugador registrado'));
  document.querySelectorAll('[data-v33-route]').forEach(b=>b.onclick=e=>{e.preventDefault();goRoute(b.dataset.v33Route||'leagueData')});
  document.querySelectorAll('[data-v33-ref-view]').forEach(b=>b.onclick=e=>{e.preventDefault();setRefView(b.dataset.v33RefView||'player')});
+ document.querySelectorAll('[data-v33-jump-table]').forEach(b=>b.onclick=e=>{e.preventDefault();document.querySelector('[data-v33-unified-table]')?.scrollIntoView({behavior:'smooth',block:'start'})});
 }
 function isDataRoute(){const r=route();return r==='safe-data'||r==='leagueData'}
 function applyHeaderScroll(){
