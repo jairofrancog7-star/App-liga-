@@ -7,7 +7,7 @@ if(window.__LJR_V449_REFERENCE_LOWER__)return;
 window.__LJR_V449_REFERENCE_LOWER__=true;
 
 const ID='v449-reference-lower';
-const BUILD='20261001-v460-scorers-lower-only';
+const BUILD='20261001-v461-scorers-ranking-below';
 const DATA='./public/data/official-live.json?v='+BUILD;
 const RAW='https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/';
 const CAT_ORDER=['3','5','4','2','1'];
@@ -400,7 +400,8 @@ function markup(r,data){
  }
  if(r==='leagueData'||r==='safe-data')return seasonBlock(data);
  if(r==='stats'||r==='v38Stats')return seasonStats(data)+seasonTable(data)+rankingBlock(data);
- if(r==='scorers'||r==='rankings')return rankingBlock(data)+seasonStats(data);
+ if(r==='scorers')return rankingBlock(data);
+ if(r==='rankings')return rankingBlock(data)+seasonStats(data);
  return '';
 }
 function host(){
@@ -414,6 +415,10 @@ function host(){
  }
  if(r==='v38Stats'){
    const page=screen.querySelector('.v399-stats-page,.v60-tool-page');
+   if(page){page.appendChild(h);return h}
+ }
+ if(r==='scorers'){
+   const page=screen.querySelector('[data-v28-scorers]');
    if(page){page.appendChild(h);return h}
  }
  const bottom=$('#v105-bottom',screen);
