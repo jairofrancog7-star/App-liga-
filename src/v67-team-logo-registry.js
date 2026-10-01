@@ -127,7 +127,7 @@
     'la trinidad':'https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/La_trinidad_a32pbk',
     'trinidad':'https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/La_trinidad_a32pbk',
     'a santiago':'assets/teams/atletico-santiago.webp',
-    'f tavera':'assets/teams/franco-tavera-jr-veteranos.webp',
+    'f tavera':'https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/FrancoTaveraVeteranos_qwrqrc',
     'promesas':'assets/official-logos/promesas-fc.png'
   };
 
@@ -151,7 +151,7 @@
   }
   async function loadDynamic(){
     try{
-      const r=await fetch(BASE+'data/official-live.json?v=20260920-logo-all',{cache:'no-store'});
+      const r=await fetch(BASE+'data/official-live.json?v=20261001-v483-vet35-logo-final',{cache:'no-store'});
       if(!r.ok)return;
       const d=await r.json();
       for(const [name,v] of Object.entries(d.team_logos||{})){
