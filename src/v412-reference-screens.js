@@ -696,9 +696,35 @@ function mountTv(screen){if(screen.querySelector('[data-v412-screen="tv"]'))retu
 /* Match Center — sólo información del partido */
 function currentMatch(){
  const root=document.querySelector('[data-v92-matchcenter]');if(!root)return null;
- const sides=[...root.querySelectorAll('.v92-score-card .v92-side')];if(sides.length<2)return null;
- const side=s=>({name:s.querySelector('b')?.textContent?.trim()||'Equipo',logo:s.querySelector('img')?.src||''});
- return {root,home:side(sides[0]),away:side(sides[1]),status:root.querySelector('.v92-center strong')?.textContent?.trim()||'VS',sub:root.querySelector('.v92-center small')?.textContent?.trim()||'',meta:[...root.querySelectorAll('.v92-official-meta span')].map(x=>x.textContent.trim()),category:(root.querySelector('.v92-match-head p')?.textContent||'').split('·')[1]?.trim()||''};
+
+ /* V524: el Match Center V522 ya no usa .v92-score-card.
+    Primero intenta la estructura antigua y después la tarjeta negra V420. */
+ let sides=[...root.querySelectorAll('.v92-score-card .v92-side')];
+ let status='',sub='',meta=[];
+ if(sides.length>=2){
+   const side=s=>({name:s.querySelector('b')?.textContent?.trim()||'Equipo',logo:s.querySelector('img')?.src||''});
+   status=root.querySelector('.v92-center strong')?.textContent?.trim()||'VS';
+   sub=root.querySelector('.v92-center small')?.textContent?.trim()||'';
+   meta=[...root.querySelectorAll('.v92-official-meta span')].map(x=>x.textContent.trim());
+   return {root,home:side(sides[0]),away:side(sides[1]),status,sub,meta,category:(root.querySelector('.v92-match-head p')?.textContent||'').split('·')[1]?.trim()||''};
+ }
+
+ const matchup=root.querySelector('.v420-matchup');
+ const teamNodes=matchup?[...matchup.querySelectorAll(':scope > div')]:[];
+ if(teamNodes.length<2)return null;
+ const side=s=>({
+   name:s.querySelector('b')?.textContent?.trim()||'Equipo',
+   logo:s.querySelector('img')?.src||''
+ });
+ const center=matchup.querySelector(':scope > span');
+ status=center?.querySelector('strong')?.textContent?.trim()||'VS';
+ sub=center?.querySelector('small')?.textContent?.trim()||'';
+ const headParts=(root.querySelector('.v92-match-head p')?.textContent||'').split('·').map(x=>x.trim()).filter(Boolean);
+ const category=headParts[1]||root.querySelector('.v420-match-panel h2')?.textContent?.trim()||'';
+ const date=root.querySelector('.v420-match-panel p')?.textContent?.trim()||'';
+ const field=root.querySelector('.v420-media-card span')?.textContent?.trim()||'';
+ meta=[date,field].filter(Boolean);
+ return {root,home:side(teamNodes[0]),away:side(teamNodes[1]),status,sub,meta,category};
 }
 function standingFor(name,category){
  const cats=Object.values(data().categories||{});let cat=cats.find(x=>category&&norm(x?.name)===norm(category));
