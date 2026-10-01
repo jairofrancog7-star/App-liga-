@@ -7,7 +7,7 @@ if(window.__LJR_V449_REFERENCE_LOWER__)return;
 window.__LJR_V449_REFERENCE_LOWER__=true;
 
 const ID='v449-reference-lower';
-const BUILD='20260930-v452-exact-reference-functional';
+const BUILD='20260930-v453-controls-hard-fix';
 const DATA='./public/data/official-live.json?v='+BUILD;
 const RAW='https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/';
 const CAT_ORDER=['3','5','4','2','1'];
@@ -290,9 +290,9 @@ function seasonBlock(data){
  return '<section class="v449-block v449-season">'+
   '<header class="v449-season-head"><div><small>LIGA MUNICIPAL DE FÚTBOL</small><h2>Temporada</h2><b>2026/27</b></div><img src="'+RAW+'assets/liga-logo.webp" alt="Liga Juventino Rosas"></header>'+
   '<nav class="v449-season-tabs">'+
-   '<button class="'+(seasonMode==='matches'?'active':'')+'" data-v449-season="matches">Partidos</button>'+
-   '<button class="'+(seasonMode==='table'?'active':'')+'" data-v449-season="table">Tabla</button>'+
-   '<button class="'+(seasonMode==='stats'?'active':'')+'" data-v449-season="stats">Estadísticas</button>'+
+   '<button type="button" class="'+(seasonMode==='matches'?'active':'')+'" data-v449-season="matches">Partidos</button>'+
+   '<button type="button" class="'+(seasonMode==='table'?'active':'')+'" data-v449-season="table">Tabla</button>'+
+   '<button type="button" class="'+(seasonMode==='stats'?'active':'')+'" data-v449-season="stats">Estadísticas</button>'+
   '</nav>'+
   (seasonMode==='matches'?seasonMatches(data):seasonMode==='table'?seasonTable(data):seasonStats(data))+
  '</section>';
@@ -355,32 +355,106 @@ function host(){
  return h;
 }
 function bind(root,data){
- $$('[data-v449-route]',root).forEach(b=>b.onclick=()=>{location.hash='#/'+b.dataset.v449Route});
- $$('[data-v449-jump]',root).forEach(b=>b.onclick=()=>{
-  const mode=b.dataset.v449Jump;
-  const tab=$('[data-comp-tab="'+mode+'"]');
-  if(tab){tab.click();return}
-  location.hash='#/competition';
- });
- $$('[data-v449-season]',root).forEach(b=>b.onclick=()=>{seasonMode=b.dataset.v449Season||'matches';paint(data,true)});
- $$('[data-v449-table-mode]',root).forEach(b=>b.onclick=()=>{tableMode=b.dataset.v449TableMode||'compact';paint(data,true)});
- $$('[data-v449-stats-view]',root).forEach(b=>b.onclick=()=>{statsView=b.dataset.v449StatsView||'players';paint(data,true)});
- $$('[data-v449-ranking-mode]',root).forEach(b=>b.onclick=()=>{rankingMode=b.dataset.v449RankingMode||'goals';paint(data,true)});
- $$('[data-v449-round-dir]',root).forEach(b=>b.onclick=()=>{
-   const rounds=roundList(data);if(!rounds.length)return;
-   roundOffset=Math.max(-(rounds.length-1),Math.min(0,roundOffset+Number(b.dataset.v449RoundDir||0)));
-   paint(data,true);
- });
- $$('[data-v449-round-select]',root).forEach(s=>s.onchange=()=>{
-   const rounds=roundList(data),i=rounds.indexOf(Number(s.value));
-   if(i>=0){roundOffset=i-(rounds.length-1);paint(data,true)}
- });
- $$('[data-v449-category]',root).forEach(s=>s.onchange=()=>{
-   const id=String(s.value||'3');if(CAT_ORDER.includes(id)){localStorage.setItem('v62-category',id);roundOffset=0;teamFilter='all';paint(data,true)}
- });
- $$('[data-v449-team-filter]',root).forEach(s=>s.onchange=()=>{teamFilter=s.value||'all';paint(data,true)});
- $$('[data-v449-reset]',root).forEach(b=>b.onclick=()=>{tableMode='compact';roundOffset=0;teamFilter='all';paint(data,true)});
- $$('[data-v449-noop]',root).forEach(b=>b.onclick=()=>{b.classList.toggle('active')});
+ root.onclick=e=>{
+   const t=e.target instanceof Element?e.target.closest('button,[data-v449-route],[data-v449-jump]'):null;
+   if(!t||!root.contains(t))return;
+
+   const routeTarget=t.dataset.v449Route;
+   if(routeTarget){
+     e.preventDefault();e.stopPropagation();
+     if(window.LJR_APP_ROUTER?.go)window.LJR_APP_ROUTER.go(routeTarget);
+     else location.hash='#/'+routeTarget;
+     return;
+   }
+
+   if(t.dataset.v449Jump){
+     e.preventDefault();e.stopPropagation();
+     const mode=t.dataset.v449Jump;
+     const tab=document.querySelector('[data-comp-tab="'+mode+'"]');
+     if(tab){tab.click();return}
+     if(window.LJR_APP_ROUTER?.go)window.LJR_APP_ROUTER.go('competition');
+     else location.hash='#/competition';
+     return;
+   }
+
+   if(t.dataset.v449Season){
+     e.preventDefault();e.stopPropagation();
+     seasonMode=t.dataset.v449Season||'matches';
+     paint(data,true);
+     return;
+   }
+
+   if(t.dataset.v449TableMode){
+     e.preventDefault();e.stopPropagation();
+     tableMode=t.dataset.v449TableMode||'compact';
+     paint(data,true);
+     return;
+   }
+
+   if(t.dataset.v449StatsView){
+     e.preventDefault();e.stopPropagation();
+     statsView=t.dataset.v449StatsView||'players';
+     paint(data,true);
+     return;
+   }
+
+   if(t.dataset.v449RankingMode){
+     e.preventDefault();e.stopPropagation();
+     rankingMode=t.dataset.v449RankingMode||'goals';
+     paint(data,true);
+     return;
+   }
+
+   if(t.dataset.v449RoundDir){
+     e.preventDefault();e.stopPropagation();
+     const rounds=roundList(data);if(!rounds.length)return;
+     roundOffset=Math.max(-(rounds.length-1),Math.min(0,roundOffset+Number(t.dataset.v449RoundDir||0)));
+     paint(data,true);
+     return;
+   }
+
+   if(t.hasAttribute('data-v449-reset')){
+     e.preventDefault();e.stopPropagation();
+     tableMode='compact';roundOffset=0;teamFilter='all';
+     paint(data,true);
+     return;
+   }
+
+   if(t.dataset.v449Noop==='venue'){
+     e.preventDefault();e.stopPropagation();
+     const labels=['Local y visitante⌄','Todos los partidos⌄'];
+     const next=t.dataset.v449VenueState==='all'?'combined':'all';
+     t.dataset.v449VenueState=next;
+     t.textContent=next==='all'?labels[1]:labels[0];
+     return;
+   }
+ };
+
+ root.onchange=e=>{
+   const s=e.target;
+   if(!(s instanceof HTMLSelectElement)||!root.contains(s))return;
+
+   if(s.hasAttribute('data-v449-round-select')){
+     const rounds=roundList(data),i=rounds.indexOf(Number(s.value));
+     if(i>=0){roundOffset=i-(rounds.length-1);paint(data,true)}
+     return;
+   }
+
+   if(s.hasAttribute('data-v449-category')){
+     const id=String(s.value||'3');
+     if(CAT_ORDER.includes(id)){
+       localStorage.setItem('v62-category',id);
+       roundOffset=0;teamFilter='all';
+       paint(data,true);
+     }
+     return;
+   }
+
+   if(s.hasAttribute('data-v449-team-filter')){
+     teamFilter=s.value||'all';
+     paint(data,true);
+   }
+ };
 }
 function paint(data,force=false){
  const r=route(),screen=$('#screen');if(!screen)return;
