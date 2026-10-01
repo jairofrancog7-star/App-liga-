@@ -5,7 +5,7 @@
 if(window.__LJR_V194_SCORERS__)return;
 window.__LJR_V194_SCORERS__=true;
 window.__LJR_SCORERS_UI_OWNER__='v194-reference';
-window.__LJR_SCORERS_BUILD__='v464-freeze-fix';
+window.__LJR_SCORERS_BUILD__='v465';
 
 const CAT_ORDER=['3','5','4','2','1'];
 const CAT_FALLBACK={
@@ -262,8 +262,14 @@ function lowerRanking(rows){
 }
 function chooseLowerStat(mode){
   const v=['goals','shots','passes'].includes(String(mode))?String(mode):'goals';
+  if(v===lowerStat())return false;
   localStorage.setItem(LOWER_STAT_KEY,v);
-  render(true);
+  if(statFrame)cancelAnimationFrame(statFrame);
+  statFrame=requestAnimationFrame(()=>{
+    statFrame=0;
+    render(true);
+  });
+  return false;
 }
 
 function categoryStrip(){
@@ -320,22 +326,33 @@ function forceCategoryRender(){
 }
 function chooseCategory(id){
   id=CAT_ORDER.includes(String(id))?String(id):'3';
-  if(id===catId())return false;
+  if(id===catId()&&pageHasCategory(id))return false;
+
   try{
     localStorage.setItem('v62-category',id);
     localStorage.setItem('v12-fixture-cat',id);
     localStorage.setItem(TEAM_KEY,'all');
   }catch(_){}
-  try{
-    const wanted='#/scorers?cat='+encodeURIComponent(id);
-    if(String(location.hash||'')!==wanted){
-      history.replaceState(history.state,'',location.pathname+location.search+wanted);
-    }
-  }catch(_){}
-  /* One synchronous repaint only. The old version repainted 4 times and
-     dispatched another category event, which was freezing Android/WebView. */
-  forceCategoryRender();
+
+  pendingCategory=id;
+  if(categoryFrame)cancelAnimationFrame(categoryFrame);
+  categoryFrame=requestAnimationFrame(()=>{
+    categoryFrame=0;
+    const selected=pendingCategory||id;
+    pendingCategory='';
+    forceCategoryRender();
+    /* Sync the shared official-data controller only after the DOM repaint
+       has completed. It no longer participates in the tap itself. */
+    setTimeout(()=>{
+      try{window.LJR_OFFICIAL_API?.setCategory?.(selected)}catch(_){}
+    },0);
+  });
   return false;
+}
+function pageHasCategory(id){
+  const page=document.querySelector('[data-v28-scorers]');
+  const ref=page?.querySelector('[data-v391-category]');
+  return !!ref&&String(ref.dataset.v391Category||'')===String(id);
 }
 function bind(root){
   if(!root)return;
@@ -346,16 +363,10 @@ function bind(root){
 }
 function delegatedClick(e){
   if(route()!=='scorers'||!(e.target instanceof Element))return;
-  const cat=e.target.closest('[data-v194-cat]');
-  if(cat){
-    e.preventDefault();e.stopPropagation();e.stopImmediatePropagation();
-    chooseCategory(cat.dataset.v194Cat||'3');return;
-  }
-  const stat=e.target.closest('[data-v462-stat]');
-  if(stat){
-    e.preventDefault();e.stopPropagation();e.stopImmediatePropagation();
-    chooseLowerStat(stat.dataset.v462Stat||'goals');return;
-  }
+  /* Category + ranking-stat buttons are owned by the single window fastlane
+     in index.html. Keeping them out of this document handler prevents a
+     second render on Android/WebView. */
+  if(e.target.closest('[data-v194-cat],[data-v462-stat]'))return;
   const mode=e.target.closest('[data-v194-mode]');
   if(mode){
     e.preventDefault();e.stopPropagation();e.stopImmediatePropagation();
