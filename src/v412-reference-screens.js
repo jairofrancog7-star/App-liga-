@@ -414,60 +414,141 @@ function v433UnifiedLatestMarkup(){
 }
 function bindTransfers(root){
  const body=root.querySelector('[data-v412-transfer-body]');
- const render=()=>{
+ if(!body)return;
+ let painting=false,lastTap='',lastTapAt=0;
+
+ const restoreScroll=(y)=>{
+   requestAnimationFrame(()=>{
+     try{window.scrollTo({top:y,left:0,behavior:'auto'})}catch(_){window.scrollTo(0,y)}
+   });
+ };
+ const syncControls=()=>{
    const mode=localStorage.getItem('v412-transfer-mode')||'latest';
+   const feed=localStorage.getItem('v420-transfer-feed')||'all';
+   const favs=localStorage.getItem('v420-transfer-favs')==='1';
+   const cat=v420CurrentFilter();
    root.querySelectorAll('[data-v412-transfer-mode]').forEach(x=>x.classList.toggle('is-active',x.dataset.v412TransferMode===mode));
-   body.innerHTML=mode==='competitions'?v420CompetitionsMarkup():v433UnifiedLatestMarkup();
+   root.querySelectorAll('[data-v420-feed]').forEach(x=>x.classList.toggle('is-active',x.dataset.v420Feed===feed));
+   root.querySelector('[data-v420-favs]')?.classList.toggle('is-active',favs);
+   root.querySelectorAll('[data-v420-cat]').forEach(x=>x.classList.toggle('is-active',x.dataset.v420Cat===cat));
+   const sort=localStorage.getItem('v429-transfer-sort')||'form';
+   const sortBtn=root.querySelector('[data-v429-sort]');
+   if(sortBtn)sortBtn.innerHTML=(sort==='name'?'Nombre':sort==='goals'?'Goles':'Ordenar')+' <span>⌄</span>';
+ };
+ const bindDynamic=()=>{
    const inp=body.querySelector('[data-v420-comp-search]');
    if(inp)inp.oninput=()=>{
      const q=norm(inp.value);
      body.querySelectorAll('[data-v420-comp-card]').forEach(card=>card.style.display=!q||norm(card.textContent).includes(q)?'':'none');
    };
-   body.querySelectorAll('[data-v420-comp-more]').forEach(b=>b.onclick=()=>{
-     localStorage.setItem('v420-transfer-cat',b.dataset.v420CompMore);
-     localStorage.setItem('v412-transfer-mode','latest');
-     render();
-   });
    bindCommon(body);
  };
- root.querySelectorAll('[data-v412-transfer-mode]').forEach(b=>b.onclick=()=>{localStorage.setItem('v412-transfer-mode',b.dataset.v412TransferMode);render()});
- root.querySelector('[data-v429-back]')?.addEventListener('click',()=>{try{history.back()}catch(_){go('more')}});
- root.querySelector('[data-v429-latest]')?.addEventListener('click',()=>{
-   localStorage.setItem('v412-transfer-mode','latest');
-   localStorage.setItem('v420-transfer-feed','all');
-   root.querySelectorAll('[data-v420-feed]').forEach(x=>x.classList.toggle('is-active',x.dataset.v420Feed==='all'));
-   render();
- });
- root.querySelector('[data-v429-sort]')?.addEventListener('click',()=>{
-   const current=localStorage.getItem('v429-transfer-sort')||'form';
-   const next=current==='form'?'name':current==='name'?'goals':'form';
-   localStorage.setItem('v429-transfer-sort',next);
-   const b=root.querySelector('[data-v429-sort]');
-   if(b)b.innerHTML=(next==='name'?'Nombre':next==='goals'?'Goles':'Ordenar')+' <span>⌄</span>';
-   render();
- });
- root.querySelector('[data-v420-favs]')?.addEventListener('click',()=>{
-   localStorage.setItem('v420-transfer-favs',localStorage.getItem('v420-transfer-favs')==='1'?'0':'1');
-   const b=root.querySelector('[data-v420-favs]');
-   b?.classList.toggle('is-active',localStorage.getItem('v420-transfer-favs')==='1');
-   render();
- });
- root.querySelectorAll('[data-v420-filter]').forEach(b=>b.addEventListener('click',()=>root.querySelector('[data-v420-filter-menu]')?.classList.toggle('is-hidden')));
- root.querySelectorAll('[data-v420-cat]').forEach(b=>b.onclick=()=>{
-   localStorage.setItem('v420-transfer-cat',b.dataset.v420Cat);
-   root.querySelectorAll('[data-v420-cat]').forEach(x=>x.classList.toggle('is-active',x===b));
-   root.querySelector('[data-v420-filter-menu]')?.classList.add('is-hidden');
-   render();
- });
- root.querySelectorAll('[data-v420-feed]').forEach(b=>b.onclick=()=>{
-   localStorage.setItem('v420-transfer-feed',b.dataset.v420Feed);
-   root.querySelectorAll('[data-v420-feed]').forEach(x=>x.classList.toggle('is-active',x===b));
-   localStorage.setItem('v412-transfer-mode','latest');
-   root.querySelectorAll('[data-v412-transfer-mode]').forEach(x=>x.classList.toggle('is-active',x.dataset.v412TransferMode==='latest'));
-   render();
- });
- root.querySelector('[data-v420-notices]')?.addEventListener('click',()=>go('notifications'));
- render();bindCommon(root);
+ const render=(preserve=true)=>{
+   if(painting)return;
+   painting=true;
+   const y=window.scrollY||document.documentElement.scrollTop||0;
+   try{
+     const mode=localStorage.getItem('v412-transfer-mode')||'latest';
+     body.innerHTML=mode==='competitions'?v420CompetitionsMarkup():v433UnifiedLatestMarkup();
+     syncControls();
+     bindDynamic();
+   }finally{
+     painting=false;
+     if(preserve)restoreScroll(y);
+   }
+ };
+ const handle=(e)=>{
+   if(!(e.target instanceof Element)||painting)return;
+   const target=e.target.closest(
+     '[data-v429-back],[data-v420-notices],[data-v429-latest],[data-v429-sort],'+
+     '[data-v412-transfer-mode],[data-v420-favs],[data-v420-filter],[data-v420-cat],'+
+     '[data-v420-feed],[data-v420-comp-more],[data-v420-react]'
+   );
+   if(!target||!root.contains(target))return;
+   const key=
+     target.hasAttribute('data-v429-back')?'back':
+     target.hasAttribute('data-v420-notices')?'notices':
+     target.hasAttribute('data-v429-latest')?'latest':
+     target.hasAttribute('data-v429-sort')?'sort':
+     target.hasAttribute('data-v412-transfer-mode')?'mode:'+target.dataset.v412TransferMode:
+     target.hasAttribute('data-v420-favs')?'favs':
+     target.hasAttribute('data-v420-filter')?'filter':
+     target.hasAttribute('data-v420-cat')?'cat:'+target.dataset.v420Cat:
+     target.hasAttribute('data-v420-feed')?'feed:'+target.dataset.v420Feed:
+     target.hasAttribute('data-v420-comp-more')?'more:'+target.dataset.v420CompMore:
+     target.hasAttribute('data-v420-react')?'react:'+target.dataset.v420React+':'+target.dataset.v420ReactId:'';
+   const now=Date.now();
+   if(e.type==='click'&&key&&key===lastTap&&now-lastTapAt<650){
+     e.preventDefault();e.stopPropagation();e.stopImmediatePropagation();return;
+   }
+   lastTap=key;lastTapAt=now;
+   e.preventDefault();e.stopPropagation();e.stopImmediatePropagation();
+
+   if(target.hasAttribute('data-v429-back')){
+     try{if(history.length>1)history.back();else go('more')}catch(_){go('more')}
+     return;
+   }
+   if(target.hasAttribute('data-v420-notices')){go('notifications');return;}
+   if(target.hasAttribute('data-v429-latest')){
+     localStorage.setItem('v412-transfer-mode','latest');
+     localStorage.setItem('v420-transfer-feed','all');
+     localStorage.setItem('v420-transfer-cat','all');
+     localStorage.setItem('v420-transfer-favs','0');
+     root.querySelector('[data-v420-filter-menu]')?.classList.add('is-hidden');
+     render(true);return;
+   }
+   if(target.hasAttribute('data-v429-sort')){
+     const current=localStorage.getItem('v429-transfer-sort')||'form';
+     localStorage.setItem('v429-transfer-sort',current==='form'?'name':current==='name'?'goals':'form');
+     render(true);return;
+   }
+   if(target.hasAttribute('data-v412-transfer-mode')){
+     localStorage.setItem('v412-transfer-mode',target.dataset.v412TransferMode||'latest');
+     render(true);return;
+   }
+   if(target.hasAttribute('data-v420-favs')){
+     localStorage.setItem('v420-transfer-favs',localStorage.getItem('v420-transfer-favs')==='1'?'0':'1');
+     render(true);return;
+   }
+   if(target.hasAttribute('data-v420-filter')){
+     const menu=root.querySelector('[data-v420-filter-menu]');
+     if(menu){
+       const opening=menu.classList.contains('is-hidden');
+       menu.classList.toggle('is-hidden',!opening);
+       root.querySelectorAll('[data-v420-filter]').forEach(b=>b.setAttribute('aria-expanded',opening?'true':'false'));
+     }
+     return;
+   }
+   if(target.hasAttribute('data-v420-cat')){
+     localStorage.setItem('v420-transfer-cat',target.dataset.v420Cat||'all');
+     root.querySelector('[data-v420-filter-menu]')?.classList.add('is-hidden');
+     render(true);return;
+   }
+   if(target.hasAttribute('data-v420-feed')){
+     localStorage.setItem('v420-transfer-feed',target.dataset.v420Feed||'all');
+     localStorage.setItem('v412-transfer-mode','latest');
+     render(true);return;
+   }
+   if(target.hasAttribute('data-v420-comp-more')){
+     localStorage.setItem('v420-transfer-cat',target.dataset.v420CompMore||'all');
+     localStorage.setItem('v412-transfer-mode','latest');
+     localStorage.setItem('v420-transfer-feed','all');
+     render(true);return;
+   }
+   if(target.hasAttribute('data-v420-react')){
+     const id=target.dataset.v420ReactId||'',reaction=target.dataset.v420React||'';
+     if(id){
+       const key='v420-transfer-react-'+id;
+       const current=localStorage.getItem(key)||'';
+       localStorage.setItem(key,current===reaction?'':reaction);
+       render(true);
+     }
+   }
+ };
+ root.addEventListener('pointerup',handle,true);
+ root.addEventListener('click',handle,true);
+ root.querySelectorAll('button').forEach(b=>{b.style.touchAction='manipulation'});
+ render(false);
 }
 function mountTransfers(screen){
  if(screen.querySelector('[data-v412-screen="transfers"]'))return;
