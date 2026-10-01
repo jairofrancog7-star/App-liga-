@@ -878,7 +878,7 @@ const historicalTeamEras=[
   {period:'2025',category:'Fuerza Intermedia · Final de Copa',teams:['Lobos CDG','Franco FC']},
   {period:'2025',category:'Veteranos 35+ · Final de Copa',teams:['Salvajes','Juventus']},
   {period:'2025–2026',category:'Finales, Copa y Veteranos conservados',teams:['Boca Jrs.','Boavista','Manchester United','B.F.C.','Galácticos (Pozos)','Herreras FC','Lobos CDG','Franco FC','Salvajes','Juventus','San Antonio Jrs.','Real de Roque','La Esperanza','La Canchita Deportes','Aldama FC']},
-  {period:'2026 · temporada actual',category:'Veteranos 35+',teams:['C. de Gasca','Juventus','Cuenda','Pozos FC','Boavista','PSV','A. Santiago','F. Tavera','América','Huracán']},
+  {period:'2026 · temporada actual',category:'Veteranos 35+',teams:['Boavista','Franco-Tavera-JR','Huracán','Cuenda','América','Aguilares','Juventus','Leyendas FC','PSV','La Trinidad']},
   {period:'2026 · temporada actual',category:'Veteranos 50+',teams:['La Esperanza','Dynamo','Boca JRS','Toros de Cuenda','Boavista','Manchester']},
   {period:'2026 · temporada actual',category:'Primera Fuerza',teams:['Franco FC','Hermanos','Napoli','Herreras FC','Linces','Abejas','Lobos CDG','Juventus','San José FC','Terrícolas','Galácticos']},
   {period:'2026 · temporada actual',category:'Intermedia',teams:['Capibaras','Mazacotes FC','La Huerta','La Canchita Deportes','Populares','Malvinas','Promesas FC','La Cuadrilla','Dep. Maravillas','Atl. Galeana','San Antonio JRS','Osasuna','Aldama FC']},
