@@ -4,6 +4,32 @@
 
   <script>
     (function(){
+      if(window.__LJR_SCORERS_FASTLANE_V462__) return;
+      window.__LJR_SCORERS_FASTLANE_V462__=true;
+      window.addEventListener('click',function(e){
+        if(!(e.target instanceof Element)) return;
+        var target=e.target.closest('[data-v194-cat],[data-v462-stat]');
+        if(!target) return;
+        var route=(location.hash.replace(/^#\/?/,'')||'home').split('?')[0];
+        if(route!=='scorers') return;
+        var api=window.LJR_SCORERS_REFERENCE;
+        if(!api) return;
+        if(target.hasAttribute('data-v194-cat') && typeof api.setCategory==='function'){
+          e.preventDefault();e.stopPropagation();e.stopImmediatePropagation();
+          api.setCategory(target.dataset.v194Cat||'3');
+          return;
+        }
+        if(target.hasAttribute('data-v462-stat') && typeof api.setStat==='function'){
+          e.preventDefault();e.stopPropagation();e.stopImmediatePropagation();
+          api.setStat(target.dataset.v462Stat||'goals');
+        }
+      },true);
+    })();
+  </script>
+
+
+  <script>
+    (function(){
       if(window.__LJR_V449_CONTROL_FASTLANE_V455__) return;
       window.__LJR_V449_CONTROL_FASTLANE_V455__=true;
 
@@ -235,8 +261,8 @@
     #screen .v400-chips small{color:#7785c4;font-size:7px;font-weight:900;letter-spacing:.09em}
     #screen .v400-chips b{margin-top:4px;overflow:hidden;font-size:11px;white-space:nowrap;text-overflow:ellipsis}
   </style>
-  <script type="module" crossorigin src="./assets/index-Biub83hi.js"></script>
-  <link rel="stylesheet" crossorigin href="./assets/index-CXCpWUp1.css">
+  <script type="module" crossorigin src="./assets/index-Ba5fBNbt.js"></script>
+  <link rel="stylesheet" crossorigin href="./assets/index-DXZhqGbU.css">
 </head>
 <body>
   <div id="app" class="app-shell">
