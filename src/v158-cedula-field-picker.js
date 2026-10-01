@@ -4,7 +4,7 @@
   'use strict';
 
   const FIELD_DATA='./data/fields-v38-22.json?v=20260922-cedula-field-picker-v158';
-  const OFFICIAL_DATA='./data/official-live.json?v=20261001-v487-vet35-all-pages';
+  const OFFICIAL_DATA='./data/official-live.json?v=20261001-v490-vet35-all-pages';
 
   const FRIENDLY_BY_ID={
     'sur-1':'Campo 1',
