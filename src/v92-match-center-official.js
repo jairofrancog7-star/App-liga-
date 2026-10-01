@@ -940,6 +940,11 @@ function bodyFor(tab,m,state){
   if(tab==='Cuotas')return oddsBody(m);
   return summaryBody(m,state);
 }
+function fixtureSnapshotSig(m){
+  if(!m)return '';
+  try{return JSON.stringify([m.key||'',m.category||'',m.r||[]])}
+  catch(_){return String(m.key||'')+'|'+String(m.category||'')}
+}
 function emptyMarkup(){
   return '<article class="v92-matchcenter" data-v92-matchcenter><header class="v92-match-head"><div class="v92-kicker">PROGRAMACIÓN OFICIAL</div><h1>Match Center</h1><p>No hay partidos publicados en el snapshot oficial actual.</p></header></article>';
 }
@@ -1050,10 +1055,16 @@ async function load(){
     for(const u of [LOCAL,REMOTE]){
       try{
         const res=await fetch(u,{cache:'no-store'});
-        if(res.ok){db=await res.json();window.LJR_OFFICIAL_DATA=db;break}
+        if(res.ok){
+          const before=fixtureSnapshotSig(selectedFixture());
+          const next=await res.json();
+          db=next;window.LJR_OFFICIAL_DATA=next;
+          const after=fixtureSnapshotSig(selectedFixture());
+          if(isDirectRoute()&&before!==after){renderGuard=false;render()}
+          break;
+        }
       }catch(_){}
     }
-    if(isDirectRoute())render();
     return db;
   })();
   return loading;
@@ -1070,8 +1081,10 @@ async function refreshOfficialData(force=false){
       if(!res.ok)continue;
       const fresh=await res.json();
       if(fresh?.categories){
+        const before=fixtureSnapshotSig(selectedFixture());
         db=fresh;window.LJR_OFFICIAL_DATA=fresh;
-        if(isDirectRoute()){renderGuard=false;render()}
+        const after=fixtureSnapshotSig(selectedFixture());
+        if(isDirectRoute()&&before!==after){renderGuard=false;render()}
         return db;
       }
     }catch(_){}
@@ -1104,7 +1117,15 @@ function syncRoute(){
 }
 window.addEventListener('hashchange',()=>requestAnimationFrame(syncRoute));
 window.LJR_MATCH_CENTER={open(key){selectedKey=String(key);db=window.CompetitionController?.raw()||window.LJR_OFFICIAL_DATA||db;location.hash='#/matchCenter';if(isDirectRoute())render()}};
-window.addEventListener('ljr:official-data',()=>{if(isDirectRoute()){db=window.LJR_OFFICIAL_DATA||db;renderGuard=false;render()}});
+window.addEventListener('ljr:official-data',()=>{
+  if(!isDirectRoute())return;
+  const before=fixtureSnapshotSig(selectedFixture());
+  db=window.LJR_OFFICIAL_DATA||db;
+  const after=fixtureSnapshotSig(selectedFixture());
+  /* Las ráfagas de sincronización pueden llegar varias veces con el mismo snapshot.
+     No reconstruir #screen si el partido visible no cambió: preserva toques, modales y LIVE. */
+  if(before!==after){renderGuard=false;render()}
+});
 window.addEventListener('ljr:match-live-feed',()=>{if(isDirectRoute()&&activeTab==='Alineaciones'){renderGuard=false;render()}});
 const screen=document.querySelector('#screen');
 if(screen)new MutationObserver(()=>{if(isDirectRoute()&&!screen.querySelector('[data-v92-matchcenter]'))requestAnimationFrame(render)}).observe(screen,{childList:true,subtree:false});
