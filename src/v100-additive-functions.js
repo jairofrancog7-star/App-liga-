@@ -429,11 +429,11 @@ function credentialExtra(){
       '</select></label>'+
     '</div>'+
     '<div class="v196-classic-preview" data-v196-classic-preview>'+
-      '<div class="v196-preview-head"><span><small>DISEÑO DE CREDENCIAL FÍSICA</small><b>Vista previa exacta del formato clásico</b></span><em>85.60 × 53.98 mm</em></div>'+
+      '<div class="v196-preview-head"><span><small>DISEÑO DE CREDENCIAL FÍSICA</small><b>Vista previa exacta del formato clásico</b></span><em>85.60 × 53.98 mm · tamaño INE</em></div>'+
       '<div class="v196-preview-frame"><canvas width="1011" height="638" data-v196-preview-canvas aria-label="Vista previa de credencial"></canvas></div>'+
-      '<p>Formato horizontal ID-1 · 1011 × 638 px a 300 ppp. El diseño rojo reproduce la credencial física de referencia: franja verde, foto circular, logo PNG de la Liga y escudo PNG del equipo sin fondo.</p>'+
+      '<p>Formato horizontal ID-1, con las mismas dimensiones físicas de una credencial INE: 85.60 × 53.98 mm. Para impresión a 300 ppp se genera en 1011 × 638 px. El diseño rojo conserva franja verde, foto circular, logo PNG de la Liga y escudo PNG del equipo sin fondo.</p>'+
     '</div>'+
-    '<div class="v100-actions"><button class="v100-primary" data-v100-credential-png>Descargar imagen PNG</button><button class="v100-secondary" data-v100-credential-pdf>Descargar PDF · tamaño credencial</button><button class="v100-secondary" data-v100-credential-share>Compartir imagen</button><button class="v100-secondary" data-v198-league-logo-png>Descargar logo Liga PNG</button></div>'+
+    '<div class="v100-actions"><button class="v100-primary" data-v100-credential-png>Descargar imagen PNG</button><button class="v100-secondary" data-v100-credential-pdf>Descargar PDF · tamaño INE</button><button class="v100-secondary" data-v100-credential-share>Compartir imagen</button><button class="v100-secondary" data-v198-league-logo-png>Descargar logo Liga PNG</button></div>'+
     '<p class="v100-note">Roja clásica: logo de la Liga en PNG transparente arriba a la izquierda y escudo del equipo en PNG sin fondo arriba a la derecha. El escudo cambia automáticamente según el equipo seleccionado. Si la CURP se detecta y valida, la fecha de nacimiento se sincroniza automáticamente.</p>'+
   '</section>';
 }
