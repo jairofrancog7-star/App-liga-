@@ -813,6 +813,8 @@ let timer=0;
 function mount(){
  const screen=$('#screen');if(!screen)return;
  const r=route(),existing=$('#v105-bottom',screen);
+ const isWeekly=(r==='news'||r==='v38Weekly');
+
  if(r==='bracketBuilder'){
    let shouldOpen=false;
    try{shouldOpen=sessionStorage.getItem('v105-open-bracket-builder')==='1'}catch(_){}
@@ -832,6 +834,7 @@ function mount(){
  if(!supported(r)){if(existing)existing.remove();return}
  if(existing&&existing.dataset.v105Route!==r)existing.remove();
  let sec=$('#v105-bottom',screen);
+
  if(r==='moments'){
    const host=$('.v26-moments-original',screen);
    if(!host)return;
@@ -843,9 +846,39 @@ function mount(){
    }
    return;
  }
+
+ /* V517 — en news/v38Weekly se coloca UNA SOLA VEZ.
+    Antes V105 exigía ser siempre el último hijo de #screen; al mismo tiempo
+    V413 intentaba ponerse antes de V105. Sus MutationObservers se activaban
+    mutuamente y el contenido cambiaba de sitio durante el desplazamiento. */
+ const placeWeeklyOnce=(node)=>{
+   const v413=screen.querySelector(':scope > #v413-page-design[data-v413-route="'+r+'"]')||
+              screen.querySelector(':scope > #v413-page-design');
+   if(v413&&v413.parentElement===screen){
+     v413.insertAdjacentElement('afterend',node);
+     return;
+   }
+   const native=screen.querySelector(':scope > .v60-tool-page.v63-page.v188-weekly-page')||
+                screen.querySelector(':scope > .v60-tool-page');
+   if(native&&native.parentElement===screen){
+     native.insertAdjacentElement('afterend',node);
+   }else{
+     screen.appendChild(node);
+   }
+ };
+
  if(!sec){
    const html=block(r);if(!html)return;
-   screen.insertAdjacentHTML('beforeend',html);sec=$('#v105-bottom',screen);bind(sec);
+   if(isWeekly){
+     const wrap=document.createElement('div');wrap.innerHTML=html;
+     sec=wrap.firstElementChild;if(!sec)return;
+     placeWeeklyOnce(sec);
+     bind(sec);
+   }else{
+     screen.insertAdjacentHTML('beforeend',html);sec=$('#v105-bottom',screen);bind(sec);
+   }
+ }else if(isWeekly){
+   return; // congelar posición; no appendChild durante scroll/mutations
  }else if(screen.lastElementChild!==sec){
    screen.appendChild(sec);
  }
