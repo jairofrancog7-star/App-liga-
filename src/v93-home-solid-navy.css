@@ -499,3 +499,24 @@ body[data-app-route="home"] .v446-relevant-team[data-team-code="HFC"] .crest img
   body[data-app-route="home"] .v446-home-brand h2{font-size:18.5px!important}
   body[data-app-route="home"] .v446-relevant-match{min-height:64px!important}
 }
+
+
+/* V448 — centrar logo Herreras FC */
+body[data-app-route="home"] .v446-relevant-team[data-team-code="HFC"] .crest{
+  display:grid!important;
+  place-items:center!important;
+}
+body[data-app-route="home"] .v446-relevant-team[data-team-code="HFC"] .crest img{
+  position:absolute!important;
+  inset:50% auto auto 50%!important;
+  width:31px!important;
+  height:31px!important;
+  max-width:31px!important;
+  max-height:31px!important;
+  padding:0!important;
+  margin:0!important;
+  object-fit:contain!important;
+  object-position:50% 50%!important;
+  transform:translate(-50%,-50%) scale(1.08)!important;
+  transform-origin:50% 50%!important;
+}
