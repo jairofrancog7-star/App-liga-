@@ -3,7 +3,7 @@
 'use strict';
 if(window.__LJR_V501_SIMULATOR__)return;
 window.__LJR_V501_SIMULATOR__=true;
-window.LJR_SIMULATOR_V502={version:'516'};
+window.LJR_SIMULATOR_V502={version:'517'};
 
 const CAT_NAMES={'3':'Primera Fuerza','5':'Intermedia','4':'Segunda Fuerza','2':'Veteranos 35+','1':'Veteranos 50+'};
 const VIEW_KEY='v501-simulator-view';
@@ -357,34 +357,45 @@ function v512ProgressWinner(pair){
    '</div>'+
  '</div>';
 }
+function v517StageTeam(t){
+ if(!t)return '<div class="v517-ko-team empty"><span class="shield"><svg viewBox="0 0 24 24"><path d="M12 2.7 20 5.6v5.7c0 5.1-3.3 8.6-8 10-4.7-1.4-8-4.9-8-10V5.6L12 2.7Z" fill="currentColor"/></svg></span><b>¿?</b></div>';
+ return '<div class="v517-ko-team">'+v512Logo(t.name)+'<b>'+esc(shortName(t.name))+'</b></div>';
+}
+function v517KnockoutMatch(a,b,dateText){
+ return '<div class="v517-ko-match">'+
+   '<time>'+dateText+'</time>'+
+   v517StageTeam(a)+
+   v517StageTeam(b)+
+ '</div>';
+}
+function v517Pairs(rows,count){
+ const order=[1,16,8,9,4,13,5,12,2,15,7,10,3,14,6,11];
+ const out=[];
+ for(let i=0;i<count;i++){
+   const a=rows[order[i*2]-1]||null;
+   const b=rows[order[i*2+1]-1]||null;
+   out.push([a,b]);
+ }
+ return out;
+}
+function v517StageSection(stage,title,dateText,pairs){
+ const half=Math.ceil(pairs.length/2);
+ return '<section class="v12-stage-panel v12-stage-panel-'+stage+' v517-stage-panel" data-v517-stage-count="'+pairs.length+'">'+
+   '<div class="v517-stage-title"><span>'+title+'</span><b>'+pairs.length+' cruces</b></div>'+
+   '<div class="v517-stage-grid">'+
+     '<div class="v517-stage-route route-silver"><i class="v517-route-line"></i>'+pairs.slice(0,half).map(p=>v517KnockoutMatch(p[0],p[1],dateText)).join('')+'</div>'+
+     '<div class="v517-stage-route route-blue"><i class="v517-route-line"></i>'+pairs.slice(half).map(p=>v517KnockoutMatch(p[0],p[1],dateText)).join('')+'</div>'+
+   '</div>'+
+ '</section>';
+}
 function v512StagePanels(rows){
- const get=n=>rows[n-1]||null;
- const silver=[[get(1),get(2)],[get(3),get(4)]];
- const blue=[[get(3),get(4)],[get(1),get(2)]];
- return '<div class="v12-stage-panels">'+
-   '<section class="v12-stage-panel v12-stage-panel-octavos">'+
-     '<div class="v12-progress-dates"><span>9-12 &amp; 17-18 mar</span><span>6-7 &amp; 14-15 abr</span></div>'+
-     '<div class="v12-progress-board">'+
-       '<section class="v12-progress-route route-silver"><div class="v12-progress-rail"><span>RUTA PLATEADA</span></div><div class="v12-progress-left">'+silver.map(v512ProgressWinner).join('')+'</div><div class="v12-progress-connector" aria-hidden="true"><i></i></div><div class="v12-progress-right">'+v512UnknownMatch('6 - 7 abr')+'</div></section>'+
-       '<section class="v12-progress-route route-blue"><div class="v12-progress-rail"><span>RUTA AZUL</span></div><div class="v12-progress-left">'+blue.map(v512ProgressWinner).join('')+'</div><div class="v12-progress-connector" aria-hidden="true"><i></i></div><div class="v12-progress-right">'+v512UnknownMatch('6 - 7 abr')+'</div></section>'+
-     '</div>'+
-   '</section>'+
-   '<section class="v12-stage-panel v12-stage-panel-cuartos">'+
-     '<div class="v12-progress-dates"><span>6-7 &amp; 14-15 abr</span><span>27-28 abr &amp; 5-6 may</span></div>'+
-     '<div class="v12-progress-board">'+
-       '<section class="v12-progress-route route-silver"><div class="v12-progress-rail"><span>RUTA PLATEADA</span></div><div class="v12-progress-left v12-progress-left-matches">'+v512UnknownMatch('6 - 7 abr')+v512UnknownMatch('6 - 7 abr')+'</div><div class="v12-progress-connector" aria-hidden="true"><i></i></div><div class="v12-progress-right">'+v512UnknownMatch('27 - 28 abr')+'</div></section>'+
-       '<section class="v12-progress-route route-blue"><div class="v12-progress-rail"><span>RUTA AZUL</span></div><div class="v12-progress-left v12-progress-left-matches">'+v512UnknownMatch('6 - 7 abr')+v512UnknownMatch('6 - 7 abr')+'</div><div class="v12-progress-connector" aria-hidden="true"><i></i></div><div class="v12-progress-right">'+v512UnknownMatch('27 - 28 abr')+'</div></section>'+
-     '</div>'+
-   '</section>'+
-   '<section class="v12-stage-panel v12-stage-panel-semifinal">'+
-     '<div class="v12-progress-dates"><span>27-28 abr &amp; 5-6 may</span><span>5 jun</span></div>'+
-     '<div class="v12-semifinal-flow">'+
-       '<div class="v12-semifinal-source silver"><div class="v12-progress-rail"><span>RUTA PLATEADA</span></div>'+v512UnknownMatch('27 - 28 abr')+'</div>'+
-       '<div class="v12-semifinal-source blue"><div class="v12-progress-rail"><span>RUTA AZUL</span></div>'+v512UnknownMatch('27 - 28 abr')+'</div>'+
-       '<div class="v12-semifinal-join" aria-hidden="true"></div>'+
-       '<div class="v12-semifinal-target">'+v512UnknownMatch('5 jun','')+'</div>'+
-     '</div>'+
-   '</section>'+
+ const octavos=v517Pairs(rows,8);
+ const cuartos=v517Pairs(rows,4);
+ const semifinales=v517Pairs(rows,2);
+ return '<div class="v12-stage-panels v517-stage-panels">'+
+   v517StageSection('octavos','OCTAVOS DE FINAL','9-12 & 17-18 mar',octavos)+
+   v517StageSection('cuartos','CUARTOS DE FINAL','6-7 & 14-15 abr',cuartos)+
+   v517StageSection('semifinal','SEMIFINALES','27-28 abr & 5-6 may',semifinales)+
  '</div>';
 }
 function v512FinalCard(rows){
