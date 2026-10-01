@@ -7,8 +7,8 @@
 if(window.__LJR_V371_TEAM_DETAIL_COMPLETE__)return;
 window.__LJR_V371_TEAM_DETAIL_COMPLETE__=true;
 
-const LOCAL='./data/official-live.json?v=20261001-v487-vet35-all-pages';
-const REMOTE='https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/data/official-live.json?v=20261001-v487-vet35-all-pages';
+const LOCAL='./data/official-live.json?v=20261001-v490-vet35-all-pages';
+const REMOTE='https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/data/official-live.json?v=20261001-v490-vet35-all-pages';
 const ROOT='https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/';
 const LEAGUE='./assets/reference/predictor-v36/liga-crest-white.webp';
 let db=window.LJR_OFFICIAL_DATA||null,loading=null,busy=false;
