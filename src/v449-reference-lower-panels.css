@@ -1810,3 +1810,57 @@ body[data-app-route="competition"] #v449-reference-lower{
   }
   #v449-reference-lower .v458-hero-meta h3{font-size:16px!important}
 }
+
+
+/* V471 — controles de jornada realmente interactivos en Android/WebView. */
+#v449-reference-lower .v449-season-controls select{
+  width:100%!important;
+  min-width:0!important;
+  min-height:38px!important;
+  padding:0 28px 0 9px!important;
+  border:1px solid rgba(141,181,235,.32)!important;
+  border-radius:10px!important;
+  background-color:#081a38!important;
+  color:#e2ebf8!important;
+  font-size:8.5px!important;
+  font-weight:750!important;
+  pointer-events:auto!important;
+  touch-action:manipulation!important;
+  -webkit-appearance:auto!important;
+  appearance:auto!important;
+}
+#v449-reference-lower .v449-season-date button:disabled{
+  opacity:.32!important;
+  filter:saturate(.45)!important;
+  cursor:default!important;
+}
+#v449-reference-lower button.v449-season-match{
+  width:100%!important;
+  margin:0!important;
+  padding:0!important;
+  border:0!important;
+  background:transparent!important;
+  font:inherit!important;
+  cursor:pointer!important;
+  -webkit-appearance:none!important;
+  appearance:none!important;
+  touch-action:manipulation!important;
+}
+#v449-reference-lower button.v449-season-match:active{
+  background:rgba(32,91,181,.16)!important;
+  border-radius:10px!important;
+}
+#v449-reference-lower .v449-season-match-list,
+#v449-reference-lower .v449-season-controls,
+#v449-reference-lower .v449-season-date{
+  isolation:isolate!important;
+}
+@media(max-width:520px){
+  #v449-reference-lower .v449-season-controls select{
+    height:34px!important;
+    min-height:34px!important;
+    padding:0 18px 0 7px!important;
+    border-radius:8px!important;
+    font-size:7.8px!important;
+  }
+}

@@ -7,7 +7,7 @@ if(window.__LJR_V449_REFERENCE_LOWER__)return;
 window.__LJR_V449_REFERENCE_LOWER__=true;
 
 const ID='v449-reference-lower';
-const BUILD='20261001-v463-scorers-direct-lower';
+const BUILD='20261001-v471-season-controls-hardfix';
 const DATA='./public/data/official-live.json?v='+BUILD;
 const RAW='https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/';
 const CAT_ORDER=['3','5','4','2','1'];
@@ -151,8 +151,19 @@ function fixtures(data,id=catId()){
  const out=[];
  (cat(data,id)?.fixtures||[]).forEach((g,gi)=>(g?.rows||[]).forEach((r,ri)=>{
   if(!r?.[2]||!r?.[6])return;
-  out.push({key:id+':'+gi+':'+ri,round:String(r?.[1]||''),home:String(r?.[2]||''),hg:String(r?.[3]||''),
-   away:String(r?.[6]||''),ag:String(r?.[5]||''),field:String(r?.[7]||''),date:String(r?.[8]||''),status:String(r?.[10]||'')});
+  out.push({
+   key:id+':'+gi+':'+ri,
+   matchCenterKey:id+':'+String(r?.[0]||ri),
+   catId:String(id),
+   round:String(r?.[1]||''),
+   home:String(r?.[2]||''),
+   hg:String(r?.[3]||''),
+   away:String(r?.[6]||''),
+   ag:String(r?.[5]||''),
+   field:String(r?.[7]||''),
+   date:String(r?.[8]||''),
+   status:String(r?.[10]||'')
+  });
  }));
  return out;
 }
@@ -204,11 +215,28 @@ function teamsForCat(data,id=catId()){
 function roundList(data,id=catId()){
  return [...new Set(fixtures(data,id).map(x=>Number(x.round)).filter(Number.isFinite))].sort((a,b)=>a-b);
 }
+function roundStoreKey(id=catId()){return 'v449-selected-round:'+String(id)}
 function selectedRound(data,id=catId()){
  const rounds=roundList(data,id);
  if(!rounds.length)return null;
- const ix=Math.max(0,Math.min(rounds.length-1,(rounds.length-1)+roundOffset));
- return rounds[ix];
+ let stored=null;
+ try{stored=Number(localStorage.getItem(roundStoreKey(id)))}catch(_){}
+ if(Number.isFinite(stored)&&rounds.includes(stored))return stored;
+ return rounds[rounds.length-1];
+}
+function setSelectedRound(data,value,id=catId()){
+ const rounds=roundList(data,id),n=Number(value);
+ if(!rounds.includes(n))return false;
+ try{localStorage.setItem(roundStoreKey(id),String(n))}catch(_){}
+ roundOffset=n-(rounds[rounds.length-1]||n);
+ return true;
+}
+function moveRound(data,dir,id=catId()){
+ const rounds=roundList(data,id);if(!rounds.length)return false;
+ const cur=selectedRound(data,id),ix=Math.max(0,rounds.indexOf(cur));
+ const next=Math.max(0,Math.min(rounds.length-1,ix+Number(dir||0)));
+ if(next===ix)return false;
+ return setSelectedRound(data,rounds[next],id);
 }
 function navStrip(active){
  return '<div class="v449-ref-tabs">'+
@@ -261,6 +289,9 @@ function competitionStandings(data){
 }
 function seasonMatches(data){
  const round=selectedRound(data);
+ const rounds=roundList(data),roundIndex=round==null?-1:rounds.indexOf(round);
+ const prev=roundIndex>0?rounds[roundIndex-1]:null;
+ const next=roundIndex>=0&&roundIndex<rounds.length-1?rounds[roundIndex+1]:null;
  const all=fixtures(data);
  let rows=(round==null?all:all.filter(x=>Number(x.round)===round));
  if(teamFilter!=='all')rows=rows.filter(x=>norm(x.home)===norm(teamFilter)||norm(x.away)===norm(teamFilter));
@@ -272,9 +303,9 @@ function seasonMatches(data){
     '<label><select data-v449-round-select>'+roundList(data).map(r=>'<option value="'+r+'" '+(Number(r)===Number(round)?'selected':'')+'>Fecha '+r+'</option>').join('')+'</select></label>'+
     '<label><select data-v449-team-filter><option value="all">Todos los equipos</option>'+teams.map(t=>'<option value="'+esc(t)+'" '+(teamFilter===t?'selected':'')+'>'+esc(t)+'</option>').join('')+'</select></label>'+
   '</div>'+
-  '<div class="v449-season-date"><button type="button" data-v449-round-dir="-1">‹</button><div><b>Fecha '+esc(round??'—')+'</b><small>Rol oficial de '+esc(catName(data))+'</small></div><button type="button" data-v449-round-dir="1">›</button></div>'+
+  '<div class="v449-season-date"><button type="button" '+(prev!=null?'data-v449-round-dir="-1"':'disabled aria-disabled="true"')+'>‹</button><div><b>Fecha '+esc(round??'—')+'</b><small>Rol oficial de '+esc(catName(data))+'</small></div><button type="button" '+(next!=null?'data-v449-round-dir="1"':'disabled aria-disabled="true"')+'>›</button></div>'+
   '<div class="v449-season-match-list">'+(rows.length?rows.map(x=>
-   '<div class="v449-season-match"><span>'+esc(x.home)+'</span>'+crest(x.home,data,'season')+'<b>'+esc(scoreText(x))+'</b>'+crest(x.away,data,'season')+'<span>'+esc(x.away)+'</span></div>'
+   '<button type="button" class="v449-season-match" data-v449-open-match="'+esc(x.matchCenterKey||x.key)+'" data-v449-match-cat="'+esc(x.catId||catId())+'" data-v449-match-home="'+esc(x.home)+'" data-v449-match-away="'+esc(x.away)+'" aria-label="Abrir '+esc(x.home)+' vs '+esc(x.away)+' en Match Center"><span>'+esc(x.home)+'</span>'+crest(x.home,data,'season')+'<b>'+esc(scoreText(x))+'</b>'+crest(x.away,data,'season')+'<span>'+esc(x.away)+'</span></button>'
   ).join(''):'<div class="v449-empty">Sin partidos para este filtro.</div>')+'</div>'+
  '</div>';
 }
@@ -452,9 +483,20 @@ function handleButton(t,data=dbNow()||cached||{}){
    rankingMode=t.dataset.v449RankingMode||'goals';rerender();return true;
  }
  if(t.dataset.v449RoundDir){
-   const rounds=roundList(data);if(!rounds.length)return true;
-   roundOffset=Math.max(-(rounds.length-1),Math.min(0,roundOffset+Number(t.dataset.v449RoundDir||0)));
+   moveRound(data,Number(t.dataset.v449RoundDir||0));
    rerender();return true;
+ }
+ if(t.dataset.v449OpenMatch){
+   const key=String(t.dataset.v449OpenMatch||'');
+   const cid=String(t.dataset.v449MatchCat||catId());
+   try{
+    localStorage.setItem('v62-category',cid);
+    localStorage.setItem('v12-fixture-cat',cid);
+    sessionStorage.setItem('v449-last-match',JSON.stringify({key,home:t.dataset.v449MatchHome||'',away:t.dataset.v449MatchAway||'',cat:cid}));
+   }catch(_){}
+   if(window.LJR_MATCH_CENTER?.open)window.LJR_MATCH_CENTER.open(key);
+   else location.hash='#/v4-matchcenter';
+   return true;
  }
  if(t.hasAttribute('data-v449-category-cycle')){
    cycleCategory(data);rerender();return true;
@@ -470,19 +512,29 @@ function handleButton(t,data=dbNow()||cached||{}){
  return false;
 }
 function handleSelect(s,data=dbNow()||cached||{}){
- if(!(s instanceof HTMLSelectElement))return false;
+ if(!s||String(s.tagName||'').toUpperCase()!=='SELECT')return false;
  if(s.hasAttribute('data-v449-round-select')){
-   const rounds=roundList(data),i=rounds.indexOf(Number(s.value));
-   if(i>=0){roundOffset=i-(rounds.length-1);paint(data,true)}
+   if(setSelectedRound(data,Number(s.value)))paint(data,true);
    return true;
  }
  if(s.hasAttribute('data-v449-category')){
    const id=String(s.value||'3');
-   if(CAT_ORDER.includes(id)){localStorage.setItem('v62-category',id);roundOffset=0;teamFilter='all';paint(data,true)}
+   if(CAT_ORDER.includes(id)){
+    try{
+     localStorage.setItem('v62-category',id);
+     localStorage.setItem('v12-fixture-cat',id);
+     localStorage.setItem('v176-table-category',id);
+     localStorage.setItem('v422-results-category',id);
+     localStorage.removeItem(roundStoreKey(id));
+    }catch(_){}
+    roundOffset=0;teamFilter='all';paint(data,true);
+   }
    return true;
  }
  if(s.hasAttribute('data-v449-team-filter')){
-   teamFilter=s.value||'all';paint(data,true);return true;
+   teamFilter=String(s.value||'all');
+   try{localStorage.setItem('v449-team-filter',teamFilter)}catch(_){}
+   paint(data,true);return true;
  }
  return false;
 }
@@ -494,8 +546,8 @@ function bind(root,data){
  };
  root.onchange=e=>{
    const s=e.target;
-   if(!(s instanceof HTMLSelectElement)||!root.contains(s))return;
-   if(handleSelect(s,data)){e.stopPropagation()}
+   if(!s||String(s.tagName||'').toUpperCase()!=='SELECT'||!root.contains(s))return;
+   if(handleSelect(s,data)){e.preventDefault();e.stopPropagation()}
  };
 }
 function paint(data,force=false){
@@ -537,5 +589,12 @@ window.addEventListener('change',e=>{
 const screen=$('#screen');
 if(screen)new MutationObserver(()=>schedule(90)).observe(screen,{childList:true,subtree:true});
 schedule(150);setTimeout(()=>schedule(0),1200);setTimeout(()=>schedule(0),3000);
-window.LJR_V449={ensure,paint,handleButton,handleSelect};
+window.LJR_V449={
+ ensure,paint,handleButton,handleSelect,
+ nextRound(dir){const data=dbNow()||cached||{};moveRound(data,Number(dir||0));paint(data,true)},
+ setRound(value){const data=dbNow()||cached||{};if(setSelectedRound(data,value))paint(data,true)},
+ setCategory(id){const data=dbNow()||cached||{};const fake={tagName:'SELECT',value:String(id),hasAttribute:n=>n==='data-v449-category'};handleSelect(fake,data)},
+ setTeam(name){teamFilter=String(name||'all');paint(dbNow()||cached||{},true)},
+ openMatch(key){if(window.LJR_MATCH_CENTER?.open)window.LJR_MATCH_CENTER.open(String(key||''));else location.hash='#/v4-matchcenter'}
+};
 })();
