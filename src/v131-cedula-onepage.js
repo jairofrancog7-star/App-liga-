@@ -4,7 +4,7 @@
 
   const ROOT='https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/';
   const LEAGUE_LOGO=ROOT+'assets/liga-logo.webp';
-  const LOCAL_DATA='./public/data/official-live.json?v=20260921-cedula-onepage-v131';
+  const LOCAL_DATA='./data/official-live.json?v=20260921-cedula-onepage-v131';
   const CAT_LOGOS={
     'primera fuerza':ROOT+'assets/branding/primera-fuerza-hd.png',
     'intermedia':ROOT+'assets/categories/intermedia.webp',

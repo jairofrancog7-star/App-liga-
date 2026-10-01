@@ -16,7 +16,8 @@ test('category statistics use only complete category results',()=>{
  for(const c of categories){const complete=c.matches.filter(m=>m.complete);assert.equal(statistics(c)['Resultados completos'],complete.length);if(complete.length)assert.equal(statistics(c)['Goles (resultados completos)'],complete.reduce((a,m)=>a+m.homeScore+m.awayScore,0))}
 });
 test('unpublished scorers and stages remain empty; no fabricated form',()=>{
- assert.equal(categories.find(c=>c.id==='3').scorers.length,0);
+ const empty=normalizeCompetition({categories:{'3':{scorers:[],fixtures:[],standings:[]}}})[0];
+ assert.deepEqual(empty.scorers,[]);assert.deepEqual(empty.stages,[]);
  for(const c of categories){assert.equal(c.stages.length,0);for(const t of c.standings)if(!c.matches.length)assert.deepEqual(t.form,[])}
 });
 test('multiple fixture blocks deduplicate official match IDs without crossing category',()=>{

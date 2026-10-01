@@ -8,7 +8,7 @@ if(window.__LJR_V129_SCHEDULE_CHANGES__)return;
 window.__LJR_V129_SCHEDULE_CHANGES__=true;
 
 const DATA_URL='https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/data/official-live.json';
-const FIELD_DATA='./public/data/fields-v38-22.json?v=20260922-schedule-field-picker-v166';
+const FIELD_DATA='./data/fields-v38-22.json?v=20260922-schedule-field-picker-v166';
 const ASSET_BASE='https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/';
 const STORE_KEY='ljr-schedule-changes-v1';
 const route=()=>String(location.hash||'').replace(/^#\/?/,'').split('?')[0]||'home';

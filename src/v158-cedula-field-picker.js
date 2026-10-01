@@ -3,8 +3,8 @@
 (function(){
   'use strict';
 
-  const FIELD_DATA='./public/data/fields-v38-22.json?v=20260922-cedula-field-picker-v158';
-  const OFFICIAL_DATA='./public/data/official-live.json?v=20260922-cedula-field-picker-v158';
+  const FIELD_DATA='./data/fields-v38-22.json?v=20260922-cedula-field-picker-v158';
+  const OFFICIAL_DATA='./data/official-live.json?v=20260922-cedula-field-picker-v158';
 
   const FRIENDLY_BY_ID={
     'sur-1':'Campo 1',

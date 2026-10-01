@@ -33,8 +33,7 @@ function isCompareScreen(){
   const root=document.querySelector('#screen');
   if(!root)return false;
   if(ROUTES.has(route()))return true;
-  const txt=(root.innerText||root.textContent||'').replace(/\s+/g,' ').trim();
-  return /\bComparador\b/i.test(txt)&&/Compara estad/i.test(txt);
+  return route()==='v4-compare';
 }
 function esc(v){return String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
 function abbr(team){

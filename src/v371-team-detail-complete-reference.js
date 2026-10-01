@@ -7,7 +7,7 @@
 if(window.__LJR_V371_TEAM_DETAIL_COMPLETE__)return;
 window.__LJR_V371_TEAM_DETAIL_COMPLETE__=true;
 
-const LOCAL='./public/data/official-live.json?v=20260929-teamdetail-v371';
+const LOCAL='./data/official-live.json?v=20260929-teamdetail-v371';
 const REMOTE='https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/data/official-live.json?v=20260929-teamdetail-v371';
 const ROOT='https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/';
 const LEAGUE='./assets/reference/predictor-v36/liga-crest-white.webp';

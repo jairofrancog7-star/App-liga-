@@ -5,7 +5,7 @@
 if(window.__LJR_V374_TEAM_STATS_REFERENCE__)return;
 window.__LJR_V374_TEAM_STATS_REFERENCE__=true;
 
-const LOCAL='./public/data/official-live.json?v=20260929-team-stats-v374';
+const LOCAL='./data/official-live.json?v=20260929-team-stats-v374';
 const REMOTE='https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/data/official-live.json?v=20260929-team-stats-v374';
 let db=window.LJR_OFFICIAL_DATA||null,loading=null,applying=false;
 

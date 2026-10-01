@@ -5,7 +5,7 @@ if(window.__LJR_V444_HOME_STATS_REFERENCE__)return;
 window.__LJR_V444_HOME_STATS_REFERENCE__=true;
 
 const BUILD='20260930-v444-home-stats-reference';
-const DATA='./public/data/official-live.json?v='+BUILD;
+const DATA='./data/official-live.json?v='+BUILD;
 const RAW='https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/';
 const CAT_ORDER=['3','5','4','2','1'];
 const CAT_NAMES={'3':'Primera Fuerza','5':'Intermedia','4':'Segunda Fuerza','2':'Veteranos 35+','1':'Veteranos 50+'};

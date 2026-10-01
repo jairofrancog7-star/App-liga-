@@ -63,7 +63,7 @@ function teamList(){
 async function fields(){
   if(fieldCache)return fieldCache;
   try{
-    const r=await fetch('./public/data/fields-v38-22.json?v=20260922-agenda-v159',{cache:'no-store'});
+    const r=await fetch('./data/fields-v38-22.json?v=20260922-agenda-v159',{cache:'no-store'});
     if(r.ok){
       const j=await r.json(),arr=Array.isArray(j)?j:(j.fields||[]);
       if(arr.length){fieldCache=arr.map(x=>({id:x.id||'',name:x.name||'',community:x.community||'',address:x.address||''}));return fieldCache}

@@ -5,7 +5,7 @@
 'use strict';
 if(window.__LJR_V372_TEAM_PROFILE_REFERENCE__)return;
 window.__LJR_V372_TEAM_PROFILE_REFERENCE__=true;
-const LOCAL='./public/data/official-live.json?v=20260929-team-profile-v372';
+const LOCAL='./data/official-live.json?v=20260929-team-profile-v372';
 const REMOTE='https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/data/official-live.json?v=20260929-team-profile-v372';
 const SRC='https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/';
 let db=window.LJR_OFFICIAL_DATA||null,loading=null,menuOpen=false,raf=0;

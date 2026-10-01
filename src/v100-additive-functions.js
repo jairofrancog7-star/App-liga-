@@ -527,7 +527,7 @@ function v196CredentialTeamLogo(team){
     if(hit){
       const v=hit[1];
       const p=typeof v==='string'?v:(v?.local||v?.source||'');
-      if(p)return /^https?:/i.test(p)?p:'./'+String(p).replace(/^\.\//,'');
+      if(p)return /^https?:/i.test(p)?p:'https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/'+String(p).replace(/^\.\//,'');
     }
   }catch(_){}
   try{
@@ -916,7 +916,7 @@ const FIELD_META={
 };
 function weatherFieldOptions(){
  const build=(key,name,coord)=>{const meta=FIELD_META[key]||{precision:'regional',label:'Referencia meteorológica'};return {key,name,coord,precision:meta.precision,precisionLabel:meta.label}};
- const fromCards=$('.v60-field-card').map(card=>{const name=$('.v60-field-top h3',card)?.textContent?.trim()||'';const community=$('.v60-field-top span',card)?.textContent?.trim()||'';const key=Object.keys(FIELD_COORDS).find(k=>norm(name+' '+community).includes(norm(k)));return key?build(key,name,FIELD_COORDS[key]):null}).filter(Boolean);
+ const fromCards=$$('.v60-field-card').map(card=>{const name=$('.v60-field-top h3',card)?.textContent?.trim()||'';const community=$('.v60-field-top span',card)?.textContent?.trim()||'';const key=Object.keys(FIELD_COORDS).find(k=>norm(name+' '+community).includes(norm(k)));return key?build(key,name,FIELD_COORDS[key]):null}).filter(Boolean);
  if(fromCards.length)return fromCards;
  return Object.entries(FIELD_COORDS).map(([key,coord])=>build(key,FIELD_LABELS[key]||key,coord));
 }
@@ -1524,13 +1524,13 @@ function v190BindRecruitment(root){
     data.players.unshift({id:v190RecruitUid(),name,category:hit?.category||$('[data-v190-player-category]',root)?.value||'',targetTeam,position:$('[data-v190-player-position]',root)?.value.trim()||'',contact:$('[data-v190-player-contact]',root)?.value.trim()||'',createdAt:now});
     v190RecruitSave(data);toast('Jugador agregado a reclutamiento');v190RefreshRecruitPage();
   });
-  $('[data-v190-delete]',root).forEach(b=>b.addEventListener('click',()=>{
+  $$('[data-v190-delete]',root).forEach(b=>b.addEventListener('click',()=>{
     const value=String(b.dataset.v190Delete||''),p=value.indexOf(':');
     if(p<0)return;
     const kind=value.slice(0,p),id=value.slice(p+1),data=v190RecruitData(),key=kind==='team'?'teams':'players';
     data[key]=data[key].filter(x=>x.id!==id);v190RecruitSave(data);v190RefreshRecruitPage();
   }));
-  $('[data-v190-promote]',root).forEach(b=>b.addEventListener('click',()=>{
+  $$('[data-v190-promote]',root).forEach(b=>b.addEventListener('click',()=>{
     const data=v190RecruitData(),p=data.players.find(x=>x.id===b.dataset.v190Promote);if(!p)return;
     write('v190-recruit-prefill',p);
     go('credentialBuilder');

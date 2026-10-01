@@ -490,7 +490,7 @@ function whereMarkup(){
  const rows=list.map(m=>{const s=src.find(x=>x.key===m.key);return '<div class="v412-watchrow"><div class="v412-watchtime">'+esc(timeLabel(m.stamp,m.rawDate))+'</div><div class="v412-watchgame"><b>'+esc(m.home)+' vs '+esc(m.away)+'</b><small>'+esc(m.category)+' · '+esc(m.field)+'</small>'+(s?'<button class="v412-provider" data-v412-url="'+esc(s.url)+'">'+esc(s.provider)+' · VER</button>':'<span class="v412-provider">Sin transmisión vinculada</span>')+'</div></div>'}).join('');
  return '<section class="v412-shell" data-v412-screen="where"><div class="v412-watch-title"><button data-v412-back>←</button><h2>Dónde verlo</h2></div><div class="v412-daystrip"><button class="v412-day '+(sel==='all'?'is-active':'')+'" data-v412-watch-day="all">Todos</button>'+keys.map(k=>'<button class="v412-day '+(sel===k?'is-active':'')+'" data-v412-watch-day="'+k+'">'+esc(dayLabel(new Date(k+'T12:00:00').getTime()))+'</button>').join('')+'</div><div class="v412-watch-card">'+(rows||'<div class="v412-empty">No hay programación oficial para este filtro.</div>')+'</div></section>';
 }
-function mountWhere(screen,force=false){if(!force){screen.innerHTML=''}screen.querySelectorAll('[data-v412-screen="where"]').forEach(x=>x.remove());screen.insertAdjacentHTML('beforeend',whereMarkup());const root=screen.querySelector('[data-v412-screen="where"]');root.querySelectorAll('[data-v412-watch-day]').forEach(b=>b.onclick=()=>{localStorage.setItem('v412-watch-day',b.dataset.v412WatchDay);mountWhere(screen,true)});root.querySelector('[data-v412-back]')?.addEventListener('click',()=>history.length>1?history.back():go('v4-calendar'));bindCommon(root)}
+function mountWhere(screen,force=false){if(!force&&screen.querySelector('[data-v412-screen="where"]'))return;if(!force){screen.innerHTML=''}screen.querySelectorAll('[data-v412-screen="where"]').forEach(x=>x.remove());screen.insertAdjacentHTML('beforeend',whereMarkup());const root=screen.querySelector('[data-v412-screen="where"]');root.querySelectorAll('[data-v412-watch-day]').forEach(b=>b.onclick=()=>{localStorage.setItem('v412-watch-day',b.dataset.v412WatchDay);mountWhere(screen,true)});root.querySelector('[data-v412-back]')?.addEventListener('click',()=>history.length>1?history.back():go('v4-calendar'));bindCommon(root)}
 
 /* TV — Liga TV / Televisados / Conectar o transmitir
    V421: referencia tipo feed TV, montada únicamente en la parte inferior y adaptada al azul de la Liga. */
@@ -651,7 +651,7 @@ function mount(){
  else if(r==='more')mountAccount(screen);
  else if(r==='video')mountTv(screen);
  else if(r==='news')mountNews(screen);
- else if(r==='whereToWatch'){screen.querySelectorAll('[data-v412-screen="where"]').forEach(x=>x.remove());return}
+ else if(r==='whereToWatch')mountWhere(screen);
  else if(['v4-matchcenter','matchCenter','match-center','match'].includes(r))mountMatchCenter(screen);
  else if(['v4-calendar','calendar','monthlyCalendar','calendarMonthly','matchday'].includes(r))mountFixtures(screen);
 }

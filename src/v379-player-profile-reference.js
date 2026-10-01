@@ -551,7 +551,7 @@ async function render(force=false){
   if(!active)return;
   rendering=true;
   try{
-    const a=await getApi();if(!a)return;
+    const a=await getApi();if(!a||route()!=='playerDetail')return;
     const list=a.playerList?.()||[];if(!list.length)return;
     const p=currentPlayer(list);if(!p)return;
     write(KEY,p);

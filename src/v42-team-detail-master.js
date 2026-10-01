@@ -2,7 +2,7 @@
    Mantiene la estructura visual V42 y elimina plantillas/estadísticas ficticias. */
 (function(){
 'use strict';
-const LOCAL='./public/data/official-live.json?v=20260919-official-integrity1';
+const LOCAL='./data/official-live.json?v=20260919-official-integrity1';
 const REMOTE='https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/data/official-live.json?v=20260919-official-integrity1';
 const SRC='https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/';
 let db=window.LJR_OFFICIAL_DATA||null,loading=null;
@@ -277,7 +277,7 @@ function bind(){
    location.hash='#/playerDetail';
  },{once:true}));
 }
-async function render(){const active=route()==='teamDetail';document.body.classList.toggle('v42-team-active',active);if(!active)return;const hashTab=tabFromHash();if(hashTab){activeTab=hashTab;localStorage.setItem('v42-team-tab',hashTab)}await load();if(!db)return;if(localStorage.getItem('v42-open-compare')==='1'){compareOpen=true;localStorage.removeItem('v42-open-compare')}const screen=document.querySelector('#screen');if(!screen)return;screen.innerHTML=markup();bind();nav()}
+async function render(){const active=route()==='teamDetail';document.body.classList.toggle('v42-team-active',active);if(!active)return;const hashTab=tabFromHash();if(hashTab){activeTab=hashTab;localStorage.setItem('v42-team-tab',hashTab)}await load();if(!db||route()!=='teamDetail')return;if(localStorage.getItem('v42-open-compare')==='1'){compareOpen=true;localStorage.removeItem('v42-open-compare')}const screen=document.querySelector('#screen');if(!screen)return;screen.innerHTML=markup();bind();nav()}
 function schedule(){requestAnimationFrame(()=>requestAnimationFrame(render))}
 
 /* V93 — desde tablas, rankings, tarjetas y nombres de equipos vuelve a abrirse

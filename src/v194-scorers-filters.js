@@ -5,7 +5,7 @@
 if(window.__LJR_V194_SCORERS__)return;
 window.__LJR_V194_SCORERS__=true;
 window.__LJR_SCORERS_UI_OWNER__='v194-reference';
-window.__LJR_SCORERS_BUILD__='v473';
+window.__LJR_SCORERS_BUILD__='v475';
 
 const CAT_ORDER=['3','5','4','2','1'];
 const CAT_FALLBACK={
@@ -67,7 +67,7 @@ function exactLogo(team){
   const v=exact?.[1];
   let out='';
   if(typeof v==='string')out=v;
-  else if(v?.local)out='./'+String(v.local).replace(/^\.\//,'');
+  else if(v?.local)out='https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/'+String(v.local).replace(/^\.\//,'');
   else if(v?.source)out=v.source;
   else{
     try{out=window.LJR_OFFICIAL_API?.getLogo?.(team)||window.LJR_TEAM_LOGOS?.get?.(team)||''}
@@ -362,6 +362,7 @@ function chooseCategory(id){
   categoryBusy=true;
   try{
     selectedCategory=id;
+    history.replaceState(history.state,'',location.pathname+location.search+'#/scorers?cat='+encodeURIComponent(id));
     localStorage.setItem('v62-category',id);
     localStorage.setItem('v12-fixture-cat',id);
     localStorage.setItem(TEAM_KEY,'all');
@@ -392,13 +393,17 @@ function renderCategoryOnly(){
   const next=tpl.content.firstElementChild;
   if(!next)return false;
   body.replaceWith(next);
+  bind(next);
   syncControlState();
   return true;
 }
 
 function bind(root){
-  if(!root||root.dataset.v194Bound==='1')return;
-  root.dataset.v194Bound='1';
+  if(!root)return;
+  root.querySelectorAll('[data-v194-player]:not(button)').forEach(el=>{
+    el.setAttribute('role','button');el.tabIndex=0;
+    el.onkeydown=e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();el.click()}};
+  });
   root.querySelectorAll('[data-v194-cat],[data-v462-stat],[data-v194-mode],[data-v194-open-team]').forEach(b=>{
     b.style.pointerEvents='auto';
     b.style.touchAction='manipulation';
@@ -410,6 +415,15 @@ function delegatedClick(e){
   if(cat){
     e.preventDefault();e.stopPropagation();
     chooseCategory(cat.dataset.v194Cat||'3');return;
+  }
+  const player=e.target.closest('[data-v194-player]');
+  if(player){
+    const row=scorerRows().find(r=>norm(r.player)===norm(player.dataset.v194Player));
+    if(row){
+      e.preventDefault();e.stopPropagation();e.stopImmediatePropagation();
+      window.LJR_PLAYER_PROFILE_API?.open({name:row.player,team:row.team,cat:catId()});
+    }
+    return;
   }
   const stat=e.target.closest('[data-v462-stat]');
   if(stat){

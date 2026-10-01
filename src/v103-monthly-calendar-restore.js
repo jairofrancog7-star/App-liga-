@@ -148,7 +148,7 @@ async function load(){
   if(loading)return loading;
   loading=(async function(){
     var urls=[
-      './public/data/official-live.json?v='+BUILD,
+      './data/official-live.json?v='+BUILD,
       './data/official-live.json?v='+BUILD,
       'https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/data/official-live.json?v='+BUILD
     ];

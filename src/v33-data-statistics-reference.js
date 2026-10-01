@@ -2,7 +2,7 @@
    Conserva el diseño V33 y elimina métricas/nombres ficticios. */
 (function(){
 'use strict';
-const LOCAL='./public/data/official-live.json?v=20260919-official-integrity1';
+const LOCAL='./data/official-live.json?v=20260919-official-integrity1';
 const REMOTE='https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/data/official-live.json?v=20260919-official-integrity1';
 const SRC='https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/';
 let db=window.LJR_OFFICIAL_DATA||null;
@@ -282,7 +282,7 @@ let tick=0;function onScroll(){if(tick)return;tick=requestAnimationFrame(()=>{ti
 window.addEventListener('scroll',onScroll,{passive:true});
 async function render(){
  const active=isDataRoute();document.body.classList.toggle('v33-data-active',active);if(!active)return;
- await load();if(!db)return;
+ await load();if(!db||!isDataRoute())return;
  const screen=document.querySelector('#screen');if(!screen)return;screen.innerHTML=markup();setBottomNav();bind();applyHeaderScroll();
 }
 function schedule(){requestAnimationFrame(()=>requestAnimationFrame(render))}

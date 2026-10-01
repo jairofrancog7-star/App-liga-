@@ -6049,8 +6049,20 @@ function render(){
   bind();
   window.scrollTo(0,0);
 }
-function go(route,push=true){if(route==='quiz')route='quizArena';if(push&&state.route!==route)state.history.push(state.route);state.route=route;location.hash='#/'+route;render()}
-function bind(){document.querySelectorAll('[data-route]').forEach(el=>el.onclick=()=>go(el.dataset.route));
+function go(route,push=true){
+  if(route==='quiz')route='quizArena';
+  const page=String(route).split('?')[0];
+  if(push&&state.route!==page)state.history.push(state.route);
+  state.route=page;location.hash='#/'+route;render();
+}
+// Delegation also covers navigation buttons appended after the initial render.
+document.addEventListener('click',event=>{
+  if(event.defaultPrevented||!(event.target instanceof Element))return;
+  const button=event.target.closest('[data-route]');
+  if(!button||button.disabled)return;
+  event.preventDefault();go(button.dataset.route);
+});
+function bind(){
 function noticeDraft(){
   const pick=s=>document.querySelector(s);
   const matchId=pick('[data-ljr-notice-match]')?.value||'';

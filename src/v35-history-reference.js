@@ -8,7 +8,7 @@ const JUVENTUS_2024_PHOTO='./assets/history/archive-v225/juventus-campeon-campeo
 const LOBOS_CDG_SUPERLIDER_PHOTO='/App-liga-/assets/history/lobos-cdg-superlider-03-may-2026.webp?v=20260928-lobos-cdg-force-v327';
 /* V326: foto restaurada como archivo WebP real del repositorio. */
 const ASSETS={
-  league:'./assets/liga-logo.webp',
+  league:'./assets/reference/predictor-v36/liga-crest-white.webp',
   america:RAW+'assets/branding/america-veteranos-35-user.png',
   huerta:RAW+'assets/official-logos/la-huerta.png',
   franco:RAW+'assets/official-logos/franco-fc.png',
@@ -16,8 +16,8 @@ const ASSETS={
   galeana:RAW+'assets/teams/atletico-galeana.webp',
   trophy:'./assets/reference/final-trophy-drive.png',
   feature:RAW+'media/gran-final-veteranos-35.png',
-  videoA:'./public/video-hero-reference.webp',
-  videoB:'./public/home-feature-reference.webp',
+  videoA:'./video-hero-reference.webp',
+  videoB:'./home-feature-reference.webp',
   videoC:RAW+'assets/motion/v38-fix10-field.jpg'
 };
 
@@ -1514,7 +1514,7 @@ function v358LogoHtml(team,preferred=''){
   const src=v358Logo(team,preferred);
   const initials=String(team||'JR').split(/\s+/).filter(Boolean).slice(0,2).map(x=>x[0]||'').join('').toUpperCase()||'JR';
   return '<span class="v358-stat-logo '+(src?'':'is-fallback')+'">'+
-    (src?'<img src="'+esc(src)+'" alt="'+esc(team)+'" loading="lazy" decoding="async" onerror="this.remove();this.parentElement.classList.add(\'is-fallback\')">':'<b>'+esc(initials)+'</b>')+
+    (src?'<img src="'+esc(src)+'" alt="'+esc(team)+'" loading="lazy" decoding="async" onerror="this.parentElement?.classList.add(\'is-fallback\');this.remove()">':'<b>'+esc(initials)+'</b>')+
   '</span>';
 }
 function v358TopTitles(){
@@ -1737,8 +1737,8 @@ function seasonsEraBlock(){
     const n=norm(team);
     const mapped=PNG[n];
     if(mapped){
-      if(mapped.startsWith('../branding/'))return './assets/branding/'+mapped.replace('../branding/','');
-      return './assets/official-logos/'+mapped;
+      if(mapped.startsWith('../branding/'))return HIST_ROOT+'assets/branding/'+mapped.replace('../branding/','');
+      return HIST_ROOT+'assets/official-logos/'+mapped;
     }
     if(preferred&&/\.png(?:[?#]|$)/i.test(preferred))return preferred;
     try{

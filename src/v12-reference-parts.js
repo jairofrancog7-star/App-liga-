@@ -321,7 +321,7 @@ async function v12LoadFixtureDb(){
   V12_FIXTURE_LOADING=(async()=>{
     let best=v12FixtureDb();
     const urls=[
-      './public/data/official-live.json?v='+V12_FIXTURE_BUILD,
+      './data/official-live.json?v='+V12_FIXTURE_BUILD,
       'https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/data/official-live.json?v='+V12_FIXTURE_BUILD
     ];
     for(const url of urls){
@@ -331,7 +331,7 @@ async function v12LoadFixtureDb(){
       }catch(_){}
     }
     try{
-      const lr=await fetch('./public/data/temporada-actual-2026.json?v='+V12_FIXTURE_BUILD,{cache:'no-store'});
+      const lr=await fetch('./data/temporada-actual-2026.json?v='+V12_FIXTURE_BUILD,{cache:'no-store'});
       if(lr.ok){
         const ld=await lr.json();
         if(ld?.categories)V12_LEGACY_DB=ld;

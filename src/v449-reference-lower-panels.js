@@ -8,7 +8,7 @@ window.__LJR_V449_REFERENCE_LOWER__=true;
 
 const ID='v449-reference-lower';
 const BUILD='20261001-v474-stats-table-controls';
-const DATA='./public/data/official-live.json?v='+BUILD;
+const DATA='./data/official-live.json?v='+BUILD;
 const RAW='https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/';
 const CAT_ORDER=['3','5','4','2','1'];
 const CAT_NAMES={'3':'Primera Fuerza','5':'Intermedia','4':'Segunda Fuerza','2':'Veteranos 35+','1':'Veteranos 50+'};
@@ -566,7 +566,7 @@ function paint(data,force=false){
  const old=$('#'+ID,screen);
  if(!supported(r)){old?.remove();return}
  const h=host();if(!h)return;
- const sig=signature(data);
+ const sig=signature(data)+'|'+String(data?.captured_at_utc||'');
  if(!force&&h.dataset.signature===sig&&h.children.length)return;
  h.dataset.signature=sig;
  h.innerHTML=markup(r,data||{});
@@ -576,7 +576,7 @@ async function ensure(){
  const r=route(),screen=$('#screen');if(!screen)return;
  if(!supported(r)){screen.querySelector('#'+ID)?.remove();return}
  const d=dbNow();if(d)paint(d);
- const fresh=await loadData();if(fresh&&route()===r)paint(fresh,true);
+ const fresh=await loadData();if(fresh&&route()===r)paint(fresh);
 }
 function schedule(ms=90){clearTimeout(timer);timer=setTimeout(ensure,ms)}
 window.addEventListener('hashchange',()=>schedule(110));
@@ -598,7 +598,8 @@ window.addEventListener('change',e=>{
 },true);
 
 const screen=$('#screen');
-if(screen)new MutationObserver(()=>schedule(90)).observe(screen,{childList:true,subtree:true});
+if(screen)new MutationObserver(()=>{if(supported(route()))schedule(90)}).observe(screen,{childList:true,subtree:true});
+window.addEventListener('ljr:official-data',()=>schedule(0));
 schedule(150);setTimeout(()=>schedule(0),1200);setTimeout(()=>schedule(0),3000);
 window.LJR_V449={
  ensure,paint,handleButton,handleSelect,

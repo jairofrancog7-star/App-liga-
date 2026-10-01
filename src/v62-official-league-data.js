@@ -5,7 +5,7 @@
 'use strict';
 
 const BUILD='20260927-official-all-data-v194';
-const LOCAL_DATA='./public/data/official-live.json?v='+BUILD;
+const LOCAL_DATA='./data/official-live.json?v='+BUILD;
 const REMOTE_DATA='https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/data/official-live.json?v='+BUILD;
 const SRC='https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/';
 const RULEBOOK='https://github.com/jairofrancog7-star/Liga_Futbol/blob/main/docs/Reglamento_Liga_Juventino_Rosas_2026_2027.pdf';
@@ -415,19 +415,23 @@ function chooseNewer(a,b){
   return String(b.captured_at_utc||'')>String(a.captured_at_utc||'')?b:a;
 }
 async function fetchJson(url){
-  try{const r=await fetch(url,{cache:'no-store'});if(!r.ok)throw new Error(String(r.status));return await r.json()}catch{return null}
+  try{const r=await fetch(url,{cache:'no-store',signal:AbortSignal.timeout(8000)});if(!r.ok)throw new Error(String(r.status));return await r.json()}catch{return null}
 }
-async function load(){
-  const local=await fetchJson(LOCAL_DATA);
-  const remote=await fetchJson(REMOTE_DATA);
-  db=chooseNewer(local,remote)||local||remote;
-  if(!db)return;
+function publishData(next){
+  if(!next||next===db)return;
+  db=next;
   window.LJR_OFFICIAL_DATA=db;
   window.LJR_OFFICIAL_API={getData:()=>db,getCategory:id=>cat(id),getTeam:teamContext,getLogo:logoFor,setCategory:setCategory,setDataTab:(id)=>{dataTab=String(id||'summary');localStorage.setItem('v62-data-tab',dataTab);if(route()==='leagueData')renderDataPage()},openTeam};
   if(!cat(categoryId))categoryId='3';
-  try{window.dispatchEvent(new CustomEvent('ljr:official-data',{detail:{source:'initial',stamp:String(db?.captured_at_utc||'')}}))}catch(_){}
-  startOfficialRefreshTimer();
   schedule();
+  window.dispatchEvent(new CustomEvent('ljr:official-data'));
+}
+async function load(){
+  // Make bundled data usable immediately. Remote freshness must not block controls.
+  publishData(await fetchJson(LOCAL_DATA));
+  startOfficialRefreshTimer();
+  const remote=await fetchJson(REMOTE_DATA);
+  publishData(chooseNewer(db,remote));
 }
 
 function categoryRail(){

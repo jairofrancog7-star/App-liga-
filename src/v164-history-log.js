@@ -6,7 +6,7 @@
 if(window.__LJR_V164_HISTORY_LOG__)return;
 window.__LJR_V164_HISTORY_LOG__=true;
 
-const LOCAL='./public/data/official-live.json?v=20260922-v164';
+const LOCAL='./data/official-live.json?v=20260922-v164';
 const REMOTE='https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/data/official-live.json?v=20260922-v164';
 let db=window.LJR_OFFICIAL_DATA||null;
 let loading=null;
@@ -29,7 +29,7 @@ function logoUrl(name){
   if(typeof hit==='string')return hit;
   const p=hit?.local||hit?.source||'';
   if(!p)return '';
-  return /^https?:/i.test(p)?p:String(p).replace(/^\.\//,'./');
+  return /^https?:/i.test(p)?p:'https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/'+String(p).replace(/^\.\//,'');
 }
 function teamMark(name){
   const src=logoUrl(name);

@@ -188,7 +188,7 @@ function renderSheet(){
   $$('[data-v132-letter]',sheet).forEach(b=>b.onclick=()=>{
     activeLetter=b.dataset.v132Letter||'all';renderSheet();
   });
-  $('[data-v132-team]',sheet).forEach(b=>b.onclick=e=>{
+  $$('[data-v132-team]',sheet).forEach(b=>b.onclick=e=>{
     e?.preventDefault?.();e?.stopPropagation?.();
     triggerSelect(b.dataset.v132Team||'',b.dataset.v132Category||'');
     closeSheet();

@@ -13,7 +13,7 @@ window.__LJR_V176_TABLE_EXPORT__=true;
 const CAT_ORDER=['3','5','4','2','1'];
 const LABELS={'3':'Primera Fuerza','5':'Intermedia','4':'Segunda Fuerza','2':'Veteranos 35+','1':'Veteranos 50+'};
 const STORE='v176-table-category';
-const LOCAL_DATA='./public/data/official-live.json';
+const LOCAL_DATA='./data/official-live.json';
 const REMOTE_DATA='https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/data/official-live.json';
 const $=(s,r=document)=>r.querySelector(s);
 const qsa=(s,r=document)=>Array.from(r.querySelectorAll(s));

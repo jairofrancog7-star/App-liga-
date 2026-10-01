@@ -320,7 +320,8 @@ function tacticsBoard(){
  return '<div class="v105-tactics" data-v105-tactics><div class="v105-tac-toolbar"><button class="'+(s.view3d?'active':'')+'" data-v105-3d>Vista 3D</button><button data-v105-tac-save>Guardar</button><button data-v105-tac-reset>Reiniciar</button><button data-v105-tac-json>JSON</button></div><div class="v105-pitch '+(s.view3d?'is3d':'')+'" data-v105-pitch><i class="v105-ball"></i>'+tokens.map(t=>'<button class="v105-player '+t.side+'" style="left:'+t.p[0]+'%;top:'+t.p[1]+'%" data-side="'+t.side+'" data-i="'+t.i+'">'+(t.i+1)+'</button>').join('')+'</div></div>';
 }
 function bindTactics(root){
- const host=$('[data-v105-tactics]',root),pitch=$('[data-v105-pitch]',host);if(!host||!pitch)return;
+ const host=$('[data-v105-tactics]',root);if(!host)return;
+ const pitch=$('[data-v105-pitch]',host);if(!pitch)return;
  $$('[data-i]',pitch).forEach(p=>p.addEventListener('pointerdown',e=>{e.preventDefault();p.setPointerCapture?.(e.pointerId);const move=ev=>{const r=pitch.getBoundingClientRect();let x=(ev.clientX-r.left)/r.width*100,y=(ev.clientY-r.top)/r.height*100;p.style.left=Math.max(4,Math.min(96,x))+'%';p.style.top=Math.max(4,Math.min(96,y))+'%'};const up=()=>{p.removeEventListener('pointermove',move);saveTac(host)};p.addEventListener('pointermove',move);p.addEventListener('pointerup',up,{once:true});p.addEventListener('pointercancel',up,{once:true})}));
  $('[data-v105-3d]',host).onclick=e=>{pitch.classList.toggle('is3d');e.currentTarget.classList.toggle('active',pitch.classList.contains('is3d'));saveTac(host)};
  $('[data-v105-tac-save]',host).onclick=()=>{saveTac(host);toast('Táctica guardada localmente')};
@@ -610,7 +611,7 @@ function registerAlerts(){
    ];
    notifBox.innerHTML='<div class="v168-inline-head"><b>Avisos dentro de esta página</b><span>No te manda a otra sección.</span></div>'+
      rows.map(r=>'<label class="v168-notif-row"><span><b>'+esc(r[1])+'</b><small>'+esc(r[2])+'</small></span><input type="checkbox" data-r-pref="'+r[0]+'" '+(p[r[0]]?'checked':'')+'><i></i></label>').join('');
-   $('[data-r-pref]',notifBox).forEach(x=>x.onchange=()=>{saveNotif({[x.dataset.rPref]:x.checked});toast('Preferencia guardada')});
+   $$('[data-r-pref]',notifBox).forEach(x=>x.onchange=()=>{saveNotif({[x.dataset.rPref]:x.checked});toast('Preferencia guardada')});
  };
  $('[data-r-notif]',m).onclick=()=>{
    if(notifBox.hidden){renderNotif();notifBox.hidden=false;$('[data-r-notif]',m).textContent='Ocultar preferencias';notifBox.scrollIntoView({behavior:'smooth',block:'nearest'})}

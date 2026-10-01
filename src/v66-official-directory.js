@@ -1,9 +1,8 @@
-import * as THREE_LOCAL from 'three';
 /* V66 — Directorio oficial AdminFut: plantillas/tienda y datos auxiliares.
    #/teams queda bajo V27 + V62 para evitar dos renderizados consecutivos y conservar una sola pantalla estable. */
 (function(){
 'use strict';
-const LOCAL='./public/data/official-live.json?v=20260919-official-integrity1';
+const LOCAL='./data/official-live.json?v=20260919-official-integrity1';
 const REMOTE='https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/data/official-live.json?v=20260919-official-integrity1';
 const SRC='https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/';
 const CAT_ORDER=['3','5','4','2','1'];
@@ -221,7 +220,7 @@ async function render(force=false,focusSearch=false,revealFilters=false){
     localStorage.removeItem('v66-open-all');
     force=true;
   }
-  await load(); if(!db)return;
+  await load(); if(!db||route()!==r)return;
   const screen=document.querySelector('#screen'); if(!screen)return;
   const kind=r==='club-store'?'store':'players';
   if(!force&&screen.querySelector('[data-v66-directory="'+kind+'"]'))return;
@@ -360,7 +359,7 @@ document.addEventListener('click',function(e){
 },true);
 async function renderExtras(){
   const r=route(); if(!['scorers','teamDetail','cedulas'].includes(r))return;
-  await load(); if(!db)return;
+  await load(); if(!db||route()!==r)return;
   if(r==='scorers'){patchScorers();return}
   if(r==='teamDetail'){patchTeamDetail();return}
   if(r==='cedulas'){
@@ -395,7 +394,7 @@ function readCart(){try{return JSON.parse(localStorage.getItem(CART_KEY)||"[]")|
 function writeCart(x){try{localStorage.setItem(CART_KEY,JSON.stringify(x||[]))}catch(_){}}
 async function load(){
  if(DB)return DB; DB=window.LJR_OFFICIAL_DATA||null; if(DB)return DB;
- try{var r=await fetch("./public/data/official-live.json?v=20260930-v431",{cache:"no-store"});if(r.ok)DB=await r.json()}catch(_){}
+ try{var r=await fetch("./data/official-live.json?v=20260930-v431",{cache:"no-store"});if(r.ok)DB=await r.json()}catch(_){}
  return DB;
 }
 function logoFor(name){
@@ -463,8 +462,10 @@ function shirt(logo,variant,label,number,name){
  '</div>';
 }
 
-var V443_THREE_PROMISE=Promise.resolve(THREE_LOCAL),V443_RENDER_CACHE=new Map();
+var V443_THREE_PROMISE=null,V443_RENDER_CACHE=new Map();
 function v443Three(){
+ // Download/parse the 3D engine only when a shop item actually needs it.
+ if(!V443_THREE_PROMISE)V443_THREE_PROMISE=import('three').catch(()=>{V443_THREE_PROMISE=null;return null});
  return V443_THREE_PROMISE;
 }
 function v443Hex(v){

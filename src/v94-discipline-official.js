@@ -6,7 +6,7 @@
   if(window.__LJR_V94_DISCIPLINE__)return;
   window.__LJR_V94_DISCIPLINE__=true;
 
-  const DATA_URLS=['./public/data/official-live.json','https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/data/official-live.json'];
+  const DATA_URLS=['./data/official-live.json','https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/data/official-live.json'];
 
   function route(){
     return (location.hash.replace(/^#\/?/,'')||'home').split('?')[0];
@@ -14,9 +14,8 @@
   function isDiscipline(){
     const r=route();
     if(/^(v4-discipline|discipline|disciplina|disciplineTool)$/i.test(r)||/discip/i.test(r))return true;
-    const s=document.querySelector('#screen');
-    const txt=(s?.innerText||'').replace(/\s+/g,' ').trim();
-    return /^COMPETICIÓN\s+Disciplina\b/i.test(txt)||/Seguimiento informativo de tarjetas/i.test(txt);
+    // Never read innerText across another page on every DOM mutation: it forces layout.
+    return false;
   }
   function norm(v){
     return String(v||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').trim().toUpperCase().replace(/\s+/g,' ');
@@ -32,8 +31,7 @@
     const rawLocal=local
       ? 'https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/'+local.replace(/^\.\//,'')
       : '';
-    const localInApp=local?local.replace(/^\.\//,''):'';
-    const src=localInApp||rec?.source||rawLocal;
+    const src=rawLocal||rec?.source||'';
     if(src){
       const fallback=rec?.source&&rec.source!==src?rec.source:(rawLocal&&rawLocal!==src?rawLocal:'');
       return '<img class="v94-discipline-logo" src="'+esc(src)+'"'+

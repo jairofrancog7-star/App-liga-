@@ -6,7 +6,7 @@
 if(window.__LJR_V369_TEAM_COMPARE__)return;
 window.__LJR_V369_TEAM_COMPARE__=true;
 
-const LOCAL='./public/data/official-live.json?v=20260929-team-compare-v369';
+const LOCAL='./data/official-live.json?v=20260929-team-compare-v369';
 const REMOTE='https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/data/official-live.json?v=20260929-team-compare-v369';
 const KNOCKOUT=/play.?off|octavos|cuartos|semifinal|^final\b/i;
 let db=window.LJR_OFFICIAL_DATA||null;

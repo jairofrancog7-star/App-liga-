@@ -125,8 +125,13 @@
     if(dyn)return dyn;
     const path=MAP[key];
     if(path)return /^https?:\/\//i.test(path)?path:BASE+path;
-    const official=window.LJR_OFFICIAL_API?.getLogo?.(name);
-    return official||'';
+    // Read the data, not getLogo(): that API falls back to this registry.
+    // Calling back into it recursively freezes History for unknown/old teams.
+    const data=window.LJR_OFFICIAL_API?.getData?.()||window.LJR_OFFICIAL_DATA;
+    const entry=Object.entries(data?.team_logos||{}).find(([team])=>norm(team)===key)?.[1];
+    const source=typeof entry==='string'?entry:(entry?.local||entry?.source||'');
+    return source ? (/^https?:\/\//i.test(source)?source:BASE+String(source).replace(/^\.\//,'')) : '';
+
   }
   async function loadDynamic(){
     try{

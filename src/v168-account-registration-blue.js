@@ -99,7 +99,7 @@ function bindProfile(root){
     ];
     prefPanel.innerHTML='<div class="v168-pref-title"><b>Avisos dentro de la página</b><span>Activa o desactiva sin salir de Cuenta.</span></div>'+
       rows.map(r=>'<label class="v168-pref-row"><span><b>'+esc(r[1])+'</b><small>'+esc(r[2])+'</small></span><input type="checkbox" data-v168-pref="'+r[0]+'" '+(p[r[0]]?'checked':'')+'><i></i></label>').join('');
-    $('[data-v168-pref]',prefPanel).forEach(x=>x.onchange=()=>{writePref(x.dataset.v168Pref,x.checked);toast('Preferencia guardada')});
+    $$('[data-v168-pref]',prefPanel).forEach(x=>x.onchange=()=>{writePref(x.dataset.v168Pref,x.checked);toast('Preferencia guardada')});
   };
   $('[data-v168-notifications]',host).onclick=()=>{
     if(prefPanel.hidden){renderPrefs();prefPanel.hidden=false;$('[data-v168-notifications]',host).textContent='Ocultar preferencias';prefPanel.scrollIntoView({behavior:'smooth',block:'nearest'})}

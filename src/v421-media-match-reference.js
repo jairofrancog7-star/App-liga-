@@ -75,47 +75,8 @@ function mountCalendar(){
  const r=route();if(!['v4-calendar','calendar','monthlyCalendar','calendarMonthly'].includes(r))return;const host=document.querySelector('[data-v415-calendar]');if(!host||host.querySelector('#'+IDC))return;host.insertAdjacentHTML('beforeend',calendarMarkup());bindCalendar(host.querySelector('#'+IDC));
 }
 
-function localIso(d){return d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate())}
-function watchDays(){
- const base=new Date(),out=[];
- base.setHours(12,0,0,0);
- for(let i=0;i<5;i++){const d=new Date(base);d.setDate(base.getDate()+i);out.push(localIso(d))}
- return out;
-}
-function watchDayLabel(iso,index){
- if(index===0)return 'Hoy';
- if(index===1)return 'Mañana';
- const d=new Date(iso+'T12:00:00');
- const wd=['dom','lun','mar','mié','jue','vie','sáb'][d.getDay()];
- const mo=['ene','feb','mar','abr','may','jun','jul','ago','sep','oct','nov','dic'][d.getMonth()];
- return wd+' '+pad(d.getDate())+' '+mo;
-}
-function initialWatchDay(days){
- const saved=localStorage.getItem('v423-watch-day');
- return saved&&days.includes(saved)?saved:days[0];
-}
-function whereMarkup(){
- const days=watchDays(),all=fixtures(),sel=initialWatchDay(days),list=all.filter(m=>m.iso===sel).slice(0,20),src=streams();
- if(localStorage.getItem('v423-watch-day')!==sel)localStorage.setItem('v423-watch-day',sel);
- const rows=list.map(m=>{
-   const s=src.find(x=>x.key===m.key)||null;
-   const providerLine=s
-    ? '<button class="v421-provider" data-v421-url="'+esc(s.url)+'">'+esc(s.provider)+'</button>'
-    : '<span class="v421-provider is-empty">Sin transmisión vinculada</span>';
-   return '<div class="v421-watch-row"><div class="v421-watch-time">'+esc(m.time)+'</div><div class="v421-watch-game"><b>'+esc(m.home)+' vs '+esc(m.away)+'</b>'+providerLine+'</div></div>';
- }).join('');
- return '<section class="v421-watch-page" id="'+IDW+'">'+
-   '<div class="v421-watch-head"><button class="v421-watch-back" data-v421-back aria-label="Volver">←</button><h1>Dónde verlo</h1></div>'+
-   '<div class="v421-watch-days">'+days.map((k,i)=>'<button class="v421-watch-day '+(sel===k?'active':'')+'" data-v421-watch-day="'+k+'">'+esc(watchDayLabel(k,i))+'</button>').join('')+'</div>'+
-   '<div class="v421-watch-card">'+(rows||'<div class="v421-watch-empty">No hay partidos programados para esta fecha.</div>')+'</div>'+
- '</section>';
-}
-function bindWhere(root){
- root.querySelector('[data-v421-back]')?.addEventListener('click',()=>{history.length>1?history.back():location.hash='#/v4-calendar'});
- root.querySelectorAll('[data-v421-watch-day]').forEach(b=>b.onclick=()=>{localStorage.setItem('v423-watch-day',b.dataset.v421WatchDay);mountWhere(true)});
- root.querySelectorAll('[data-v421-url]').forEach(b=>b.onclick=()=>openUrl(b.dataset.v421Url));
-}
-function mount(){mountVideo();mountCalendar();mountWhere(false)}
+// Dónde verlo is owned by v412; do not call the removed legacy renderer.
+function mount(){mountVideo();mountCalendar()}
 let timer=0;function schedule(ms=90){clearTimeout(timer);timer=setTimeout(mount,ms)}
 window.addEventListener('hashchange',()=>schedule(70));window.addEventListener('load',()=>schedule(180));document.addEventListener('DOMContentLoaded',()=>schedule(100),{once:true});
 const screen=document.querySelector('#screen');if(screen)new MutationObserver(()=>schedule(100)).observe(screen,{childList:true,subtree:true});
