@@ -3,7 +3,7 @@
 'use strict';
 if(window.__LJR_V501_SIMULATOR__)return;
 window.__LJR_V501_SIMULATOR__=true;
-window.LJR_SIMULATOR_V502={version:'517'};
+window.LJR_SIMULATOR_V502={version:'518'};
 
 const CAT_NAMES={'3':'Primera Fuerza','5':'Intermedia','4':'Segunda Fuerza','2':'Veteranos 35+','1':'Veteranos 50+'};
 const VIEW_KEY='v501-simulator-view';
