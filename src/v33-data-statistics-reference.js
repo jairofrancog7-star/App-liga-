@@ -224,20 +224,38 @@ function markup(){
 function toast(msg){const old=document.querySelector('.v33-toast');if(old)old.remove();const n=document.createElement('div');n.className='v33-toast';n.textContent=msg;document.body.appendChild(n);setTimeout(()=>n.remove(),1500)}
 function setBottomNav(){/* Global nav active state is owned by V34. */}
 function share(){const p={title:'Estadísticas Liga Juventino',text:'Datos oficiales de la Liga Municipal de Fútbol Juventino Rosas',url:location.href};if(navigator.share)navigator.share(p).catch(()=>{});else navigator.clipboard?.writeText(location.href).then(()=>toast('Enlace copiado')).catch(()=>{})}
+function setTab(tab){
+ const next=['general','team','player'].includes(tab)?tab:'general';
+ if(activeTab===next){
+   window.scrollTo({top:0,behavior:'auto'});
+   return render();
+ }
+ activeTab=next;
+ localStorage.setItem('v33-data-tab',activeTab);
+ const out=render();
+ window.scrollTo({top:0,behavior:'auto'});
+ return out;
+}
+function setRefView(mode){
+ const next=mode==='team'?'team':'player';
+ document.querySelectorAll('[data-v33-ref-view]').forEach(x=>x.classList.toggle('active',(x.dataset.v33RefView||'player')===next));
+ document.querySelectorAll('[data-v33-ref-panel]').forEach(p=>p.hidden=p.dataset.v33RefPanel!==next);
+ const cmp=document.querySelector('[data-v33-ref-compare]');
+ if(cmp)cmp.dataset.v33Route=next==='team'?'teams':'playerCompare';
+}
+function goRoute(r){
+ const next=r||'leagueData';
+ if(window.LJR_APP_ROUTER?.go)window.LJR_APP_ROUTER.go(next);
+ else location.hash='#/'+next;
+}
 function bind(){
- document.querySelectorAll('[data-v33-tab]').forEach(b=>b.onclick=()=>{activeTab=b.dataset.v33Tab;localStorage.setItem('v33-data-tab',activeTab);render();window.scrollTo(0,0)});
- document.querySelectorAll('[data-v33-back]').forEach(b=>b.onclick=()=>location.hash='#/more');
- document.querySelectorAll('[data-v33-share]').forEach(b=>b.onclick=share);
+ document.querySelectorAll('[data-v33-tab]').forEach(b=>b.onclick=e=>{e.preventDefault();setTab(b.dataset.v33Tab)});
+ document.querySelectorAll('[data-v33-back]').forEach(b=>b.onclick=e=>{e.preventDefault();goRoute('more')});
+ document.querySelectorAll('[data-v33-share]').forEach(b=>b.onclick=e=>{e.preventDefault();share()});
  document.querySelectorAll('[data-v33-team]').forEach(b=>b.onclick=()=>{if(window.LJR_OFFICIAL_API?.openTeam)window.LJR_OFFICIAL_API.openTeam(b.dataset.v33Team);else toast(b.dataset.v33Team)});
  document.querySelectorAll('[data-v33-player]').forEach(b=>b.onclick=()=>toast(b.dataset.v33Player+' · jugador registrado'));
- document.querySelectorAll('[data-v33-route]').forEach(b=>b.onclick=()=>{location.hash='#/'+(b.dataset.v33Route||'leagueData')});
- document.querySelectorAll('[data-v33-ref-view]').forEach(b=>b.onclick=()=>{
-   const mode=b.dataset.v33RefView||'player';
-   document.querySelectorAll('[data-v33-ref-view]').forEach(x=>x.classList.toggle('active',x===b));
-   document.querySelectorAll('[data-v33-ref-panel]').forEach(p=>p.hidden=p.dataset.v33RefPanel!==mode);
-   const cmp=document.querySelector('[data-v33-ref-compare]');
-   if(cmp)cmp.dataset.v33Route=mode==='team'?'teams':'playerCompare';
- });
+ document.querySelectorAll('[data-v33-route]').forEach(b=>b.onclick=e=>{e.preventDefault();goRoute(b.dataset.v33Route||'leagueData')});
+ document.querySelectorAll('[data-v33-ref-view]').forEach(b=>b.onclick=e=>{e.preventDefault();setRefView(b.dataset.v33RefView||'player')});
 }
 function isDataRoute(){const r=route();return r==='safe-data'||r==='leagueData'}
 function applyHeaderScroll(){
@@ -271,4 +289,5 @@ function schedule(){requestAnimationFrame(()=>requestAnimationFrame(render))}
 window.addEventListener('hashchange',schedule);
 const target=document.querySelector('#screen');if(target)new MutationObserver(()=>{if(isDataRoute()&&!target.querySelector('[data-v33-data]'))schedule()}).observe(target,{childList:true,subtree:false});
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',schedule,{once:true});else schedule();
+window.LJR_V33_STATS={setTab,setRefView,goRoute,share,render};
 })();
