@@ -824,12 +824,12 @@ function act(a){
  else if(a==='register-alerts')registerAlerts();else if(a==='schedule-match')scheduleMatch();else if(a==='new-sanction')newSanction();else if(a==='tv-panel')tvPanel();
 }
 function bind(root){
- $('[data-v105-route]',root).forEach(b=>b.onclick=e=>{
+ $$('[data-v105-route]',root).forEach(b=>b.onclick=e=>{
    e?.preventDefault?.();
    e?.stopPropagation?.();
    go(b.dataset.v105Route);
  });
- $('[data-v105-action]',root).forEach(b=>b.onclick=()=>{log('Herramienta '+b.dataset.v105Action);act(b.dataset.v105Action)});
+ $$('[data-v105-action]',root).forEach(b=>b.onclick=()=>{log('Herramienta '+b.dataset.v105Action);act(b.dataset.v105Action)});
  bindTactics(root);
  root.querySelectorAll('[data-v105-motion]').forEach(v=>{
    v.muted=true;v.loop=true;v.playsInline=true;
