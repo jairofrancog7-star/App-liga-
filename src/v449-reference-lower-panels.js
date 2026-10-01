@@ -426,7 +426,7 @@ function signature(data){
  if(['leagueData','safe-data'].includes(r))return r+'|'+seasonMode+'|'+tableMode+'|'+statsView+'|'+rankingMode+'|'+c+'|'+roundOffset+'|'+teamFilter+'|'+venueFilter;
  return r+'|'+c+'|'+tableMode+'|'+statsView+'|'+rankingMode+'|'+roundOffset+'|'+teamFilter+'|'+venueFilter;
 }
-function supported(r){return ['competition','leagueData','safe-data','stats','v38Stats','rankings'].includes(r)}
+function supported(r){return ['competition','stats','v38Stats','rankings'].includes(r)}
 function markup(r,data){
  if(r==='competition'){
   const m=competitionMode();
@@ -434,7 +434,7 @@ function markup(r,data){
   if(m==='standings')return competitionStandings(data)+seasonTable(data)+rankingBlock(data);
   return rankingBlock(data)+seasonStats(data);
  }
- if(r==='leagueData'||r==='safe-data')return seasonBlock(data);
+ if(r==='leagueData'||r==='safe-data')return '';
  if(r==='stats'||r==='v38Stats')return seasonStats(data)+seasonTable(data)+rankingBlock(data);
  if(r==='rankings')return rankingBlock(data)+seasonStats(data);
  return '';
