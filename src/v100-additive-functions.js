@@ -7,7 +7,7 @@
 if(window.__LJR_V100_ADDITIVE__) return;
 window.__LJR_V100_ADDITIVE__=true;
 
-const BUILD='20261001-v497-logo-embedded-always-visible';
+const BUILD='20261001-v498-team-logo-clean-png';
 const $=(s,r=document)=>r.querySelector(s);
 const $$=(s,r=document)=>Array.from(r.querySelectorAll(s));
 const esc=(v)=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -459,26 +459,61 @@ async function v476TransparentTeamLogo(src){
   if(v476TeamLogoCache.has(src))return v476TeamLogoCache.get(src);
   const img=await v100LoadImage(src);
   if(!img){v476TeamLogoCache.set(src,null);return null}
+
   const iw=img.naturalWidth||img.width||1,ih=img.naturalHeight||img.height||1;
-  const max=360,scale=Math.min(1,max/Math.max(iw,ih)),w=Math.max(1,Math.round(iw*scale)),h=Math.max(1,Math.round(ih*scale));
+  const max=420,scale=Math.min(1,max/Math.max(iw,ih)),w=Math.max(1,Math.round(iw*scale)),h=Math.max(1,Math.round(ih*scale));
   const cv=document.createElement('canvas');cv.width=w;cv.height=h;
-  const q=cv.getContext('2d',{willReadFrequently:true});q.clearRect(0,0,w,h);q.drawImage(img,0,0,w,h);
+  const q=cv.getContext('2d',{willReadFrequently:true});
+  q.clearRect(0,0,w,h);q.drawImage(img,0,0,w,h);
+
   let data;try{data=q.getImageData(0,0,w,h)}catch(_){v476TeamLogoCache.set(src,img);return img}
-  const d=data.data,corners=[[0,0],[w-1,0],[0,h-1],[w-1,h-1]];
-  let br=0,bg=0,bb=0,ba=0;
-  corners.forEach(([xx,yy])=>{const k=(yy*w+xx)*4;br+=d[k];bg+=d[k+1];bb+=d[k+2];ba+=d[k+3]});
-  br/=4;bg/=4;bb/=4;ba/=4;
-  if(ba<24){v476TeamLogoCache.set(src,cv);return cv}
-  const tol=52*52,seen=new Uint8Array(w*h),queue=new Int32Array(w*h);let head=0,tail=0;
-  const near=idx=>{const k=idx*4,dr=d[k]-br,dg=d[k+1]-bg,db=d[k+2]-bb;return d[k+3]>0&&dr*dr+dg*dg+db*db<=tol};
-  const push=idx=>{if(idx<0||idx>=w*h||seen[idx]||!near(idx))return;seen[idx]=1;queue[tail++]=idx};
+  const d=data.data,n=w*h,samples=[];
+  const take=(xx,yy)=>{const k=(yy*w+xx)*4;if(d[k+3]>20)samples.push([d[k],d[k+1],d[k+2]])};
+  const step=Math.max(1,Math.floor(Math.min(w,h)/90));
+  for(let xx=0;xx<w;xx+=step){take(xx,0);take(xx,h-1)}
+  for(let yy=0;yy<h;yy+=step){take(0,yy);take(w-1,yy)}
+  if(!samples.length){v476TeamLogoCache.set(src,cv);return cv}
+
+  const median=arr=>{const a=arr.slice().sort((x,y)=>x-y);return a[(a.length/2)|0]};
+  const br=median(samples.map(p=>p[0])),bg=median(samples.map(p=>p[1])),bb=median(samples.map(p=>p[2]));
+  const spread=Math.sqrt(samples.reduce((sum,p)=>{
+    const dr=p[0]-br,dg=p[1]-bg,db=p[2]-bb;return sum+dr*dr+dg*dg+db*db;
+  },0)/samples.length);
+  const special=/nopalero/i.test(String(src));
+  const tol=Math.max(special?118:72,Math.min(special?150:118,58+spread*3.25)),tol2=tol*tol;
+  const lumBg=.2126*br+.7152*bg+.0722*bb;
+
+  const seen=new Uint8Array(n),queue=new Int32Array(n);let head=0,tail=0;
+  const near=i=>{
+    const k=i*4;if(d[k+3]===0)return true;
+    const r=d[k],g=d[k+1],b=d[k+2],dr=r-br,dg=g-bg,db=b-bb;
+    const lum=.2126*r+.7152*g+.0722*b;
+    return dr*dr+dg*dg+db*db<=tol2 && lum<=Math.max(178,lumBg+108);
+  };
+  const push=i=>{if(i<0||i>=n||seen[i]||!near(i))return;seen[i]=1;queue[tail++]=i};
   for(let xx=0;xx<w;xx++){push(xx);push((h-1)*w+xx)}
   for(let yy=0;yy<h;yy++){push(yy*w);push(yy*w+w-1)}
   while(head<tail){
-    const idx=queue[head++],x0=idx%w,y0=(idx/w)|0;
-    if(x0>0)push(idx-1);if(x0<w-1)push(idx+1);if(y0>0)push(idx-w);if(y0<h-1)push(idx+w);
+    const i=queue[head++],xx=i%w,yy=(i/w)|0;
+    if(xx>0)push(i-1);if(xx<w-1)push(i+1);if(yy>0)push(i-w);if(yy<h-1)push(i+w);
+    if(xx>0&&yy>0)push(i-w-1);if(xx<w-1&&yy>0)push(i-w+1);
+    if(xx>0&&yy<h-1)push(i+w-1);if(xx<w-1&&yy<h-1)push(i+w+1);
   }
-  for(let i=0;i<w*h;i++)if(seen[i])d[i*4+3]=0;
+  for(let i=0;i<n;i++)if(seen[i])d[i*4+3]=0;
+
+  const copy=new Uint8Array(seen),fringeTol=tol*1.20,fringeTol2=fringeTol*fringeTol;
+  for(let i=0;i<n;i++){
+    if(copy[i])continue;
+    const xx=i%w,yy=(i/w)|0;let touches=false;
+    for(let oy=-1;oy<=1&&!touches;oy++)for(let ox=-1;ox<=1;ox++){
+      if(!ox&&!oy)continue;const nx=xx+ox,ny=yy+oy;
+      if(nx>=0&&nx<w&&ny>=0&&ny<h&&copy[ny*w+nx]){touches=true;break}
+    }
+    if(!touches)continue;
+    const k=i*4,dr=d[k]-br,dg=d[k+1]-bg,db=d[k+2]-bb,dist=dr*dr+dg*dg+db*db;
+    if(dist<=fringeTol2)d[k+3]=Math.min(d[k+3],dist<=tol2?18:92);
+  }
+
   q.putImageData(data,0,0);
   v476TeamLogoCache.set(src,cv);
   return cv;
