@@ -1,6 +1,36 @@
 <!doctype html>
 <html lang="es-MX">
 <head>
+
+  <script>
+    (function(){
+      if(window.__LJR_V449_CONTROL_FASTLANE_V455__) return;
+      window.__LJR_V449_CONTROL_FASTLANE_V455__=true;
+
+      window.addEventListener('click',function(e){
+        if(!(e.target instanceof Element)) return;
+        var btn=e.target.closest('#v449-reference-lower button');
+        if(!btn) return;
+        var api=window.LJR_V449;
+        if(!api || typeof api.handleButton!=='function') return;
+        e.preventDefault();
+        e.stopPropagation();
+        e.stopImmediatePropagation();
+        api.handleButton(btn);
+      },true);
+
+      window.addEventListener('change',function(e){
+        var el=e.target;
+        if(!(el instanceof HTMLSelectElement) || !el.closest('#v449-reference-lower')) return;
+        var api=window.LJR_V449;
+        if(!api || typeof api.handleSelect!=='function') return;
+        e.stopPropagation();
+        e.stopImmediatePropagation();
+        api.handleSelect(el);
+      },true);
+    })();
+  </script>
+
   <link rel="preconnect" href="https://raw.githubusercontent.com" crossorigin>
   <link rel="dns-prefetch" href="//raw.githubusercontent.com">
   <link rel="preconnect" href="https://d2ol7oe51mr4n9.cloudfront.net" crossorigin>
@@ -169,7 +199,7 @@
     #screen .v400-chips small{color:#7785c4;font-size:7px;font-weight:900;letter-spacing:.09em}
     #screen .v400-chips b{margin-top:4px;overflow:hidden;font-size:11px;white-space:nowrap;text-overflow:ellipsis}
   </style>
-  <script type="module" crossorigin src="./assets/index-BVC0RS9T.js"></script>
+  <script type="module" crossorigin src="./assets/index-BkuNbn0S.js"></script>
   <link rel="stylesheet" crossorigin href="./assets/index-DyTsD1AB.css">
 </head>
 <body>
