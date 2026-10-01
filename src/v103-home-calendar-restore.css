@@ -1371,3 +1371,180 @@ body[data-app-route="home"] .v103-upcoming-day .v103-upcoming-match.is-second{
     animation:none!important;
   }
 }
+
+
+/* V450 — Próximos partidos: compacto, sin solapes, logos llenos y punto animado */
+body[data-app-route="home"] .v103-upcoming-card{
+  padding:13px 13px 12px!important;
+  border-radius:22px!important;
+}
+body[data-app-route="home"] .v103-upcoming-meta{
+  gap:8px!important;
+  margin-bottom:9px!important;
+  font-size:11px!important;
+  line-height:1!important;
+}
+body[data-app-route="home"] .v103-upcoming-meta span{
+  min-width:0!important;
+  gap:6px!important;
+  white-space:nowrap!important;
+}
+body[data-app-route="home"] .v103-upcoming-meta b{
+  flex:0 0 auto!important;
+  font-size:11px!important;
+  white-space:nowrap!important;
+}
+body[data-app-route="home"] .v103-upcoming-meta i{
+  width:9px!important;
+  height:9px!important;
+  min-width:9px!important;
+  flex-basis:9px!important;
+  box-shadow:0 0 0 4px rgba(255,77,117,.14)!important;
+  animation:v450-red-dot 1.25s ease-in-out infinite!important;
+}
+body[data-app-route="home"] .v103-upcoming-meta i::after{
+  content:""!important;
+  position:absolute!important;
+  inset:-4px!important;
+  border:1px solid rgba(255,77,117,.62)!important;
+  border-radius:50%!important;
+  animation:v450-red-ring 1.25s ease-out infinite!important;
+}
+@keyframes v450-red-dot{
+  0%,100%{transform:translateX(0) scale(1);opacity:1}
+  50%{transform:translateX(3px) scale(1.18);opacity:.9}
+}
+@keyframes v450-red-ring{
+  0%{transform:scale(.75);opacity:.78}
+  75%,100%{transform:scale(1.7);opacity:0}
+}
+body[data-app-route="home"] .v103-upcoming-day-head{
+  display:grid!important;
+  grid-template-columns:minmax(0,1fr) auto!important;
+  align-items:center!important;
+  gap:7px!important;
+  min-height:19px!important;
+  margin:0 0 3px!important;
+  padding:0 1px!important;
+}
+body[data-app-route="home"] .v103-upcoming-day-head span{
+  min-width:0!important;
+  overflow:hidden!important;
+  font-size:8px!important;
+  line-height:1!important;
+  letter-spacing:.045em!important;
+  white-space:nowrap!important;
+  text-overflow:ellipsis!important;
+}
+body[data-app-route="home"] .v103-upcoming-day-head b{
+  font-size:8px!important;
+  line-height:1!important;
+  white-space:nowrap!important;
+}
+body[data-app-route="home"] .v103-upcoming-match{
+  min-height:56px!important;
+  grid-template-columns:minmax(0,1fr) 54px minmax(0,1fr)!important;
+  gap:4px!important;
+  padding:7px 0!important;
+}
+body[data-app-route="home"] .v103-upcoming-team{
+  min-width:0!important;
+  gap:5px!important;
+  overflow:hidden!important;
+}
+body[data-app-route="home"] .v103-upcoming-team b{
+  min-width:0!important;
+  max-width:78px!important;
+  margin:0!important;
+  overflow:hidden!important;
+  color:#fff!important;
+  font-size:9px!important;
+  line-height:1.08!important;
+  font-weight:800!important;
+  white-space:normal!important;
+  text-overflow:ellipsis!important;
+}
+body[data-app-route="home"] .v103-upcoming-center{
+  width:54px!important;
+  min-width:54px!important;
+  max-width:54px!important;
+  display:grid!important;
+  place-items:center!important;
+  align-content:center!important;
+  overflow:hidden!important;
+}
+body[data-app-route="home"] .v103-upcoming-center strong{
+  font-size:16px!important;
+  line-height:1!important;
+  letter-spacing:-.025em!important;
+}
+body[data-app-route="home"] .v103-upcoming-center small{
+  width:52px!important;
+  max-width:52px!important;
+  margin-top:3px!important;
+  overflow:hidden!important;
+  color:#9ca9d0!important;
+  font-size:6px!important;
+  line-height:1!important;
+  font-weight:800!important;
+  white-space:nowrap!important;
+  text-overflow:ellipsis!important;
+}
+body[data-app-route="home"] .v103-upcoming-team .v103-cal-logo{
+  position:relative!important;
+  width:38px!important;
+  height:38px!important;
+  min-width:38px!important;
+  max-width:38px!important;
+  min-height:38px!important;
+  max-height:38px!important;
+  flex:0 0 38px!important;
+  padding:0!important;
+  overflow:hidden!important;
+  border:2px solid #45d9ff!important;
+  border-radius:50%!important;
+  background:radial-gradient(circle at 35% 28%,#61dbff 0 18%,#2194dc 48%,#1552ac 100%)!important;
+  box-shadow:0 3px 8px rgba(0,0,45,.22),inset 0 2px 5px rgba(255,255,255,.34)!important;
+}
+body[data-app-route="home"] .v103-upcoming-team .v103-cal-logo img{
+  position:absolute!important;
+  inset:50% auto auto 50%!important;
+  width:100%!important;
+  height:100%!important;
+  max-width:none!important;
+  max-height:none!important;
+  padding:0!important;
+  margin:0!important;
+  border-radius:50%!important;
+  object-fit:cover!important;
+  object-position:center!important;
+  transform:translate(-50%,-50%) scale(1.16)!important;
+  transform-origin:center!important;
+}
+body[data-app-route="home"] .v103-upcoming-more{
+  display:none!important;
+}
+body[data-app-route="home"] .v103-upcoming-day + .v103-upcoming-day{
+  margin-top:7px!important;
+  padding-top:8px!important;
+}
+@media(max-width:380px){
+  body[data-app-route="home"] .v103-upcoming-card{padding:11px 10px 10px!important}
+  body[data-app-route="home"] .v103-upcoming-meta{font-size:9.5px!important}
+  body[data-app-route="home"] .v103-upcoming-meta b{font-size:9.5px!important}
+  body[data-app-route="home"] .v103-upcoming-match{
+    grid-template-columns:minmax(0,1fr) 48px minmax(0,1fr)!important;
+    min-height:52px!important;
+    gap:3px!important;
+  }
+  body[data-app-route="home"] .v103-upcoming-center{width:48px!important;min-width:48px!important;max-width:48px!important}
+  body[data-app-route="home"] .v103-upcoming-center strong{font-size:14px!important}
+  body[data-app-route="home"] .v103-upcoming-center small{width:46px!important;max-width:46px!important;font-size:5.5px!important}
+  body[data-app-route="home"] .v103-upcoming-team b{max-width:67px!important;font-size:8px!important}
+  body[data-app-route="home"] .v103-upcoming-team .v103-cal-logo{
+    width:34px!important;height:34px!important;min-width:34px!important;max-width:34px!important;
+    min-height:34px!important;max-height:34px!important;flex-basis:34px!important
+  }
+  body[data-app-route="home"] .v103-upcoming-day-head span,
+  body[data-app-route="home"] .v103-upcoming-day-head b{font-size:7px!important}
+}
