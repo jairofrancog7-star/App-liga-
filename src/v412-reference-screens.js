@@ -796,17 +796,11 @@ function bindMatchCenter(root){
  root.querySelector('[data-v412-commentary]')?.addEventListener('click',openCommentary);bindCommon(root);
 }
 function mountMatchCenter(screen){
- const target=screen.querySelector('[data-v518-extras]')||screen;
- let node=screen.querySelector('[data-v412-screen="matchcenter"]');
- if(node){
-   if(node.parentElement!==target)target.appendChild(node);
-   return;
- }
- const html=matchCenterMarkup();if(!html)return;
- target.insertAdjacentHTML('beforeend',html);
- node=screen.querySelector('[data-v412-screen="matchcenter"]');
- bindMatchCenter(node);
+  /* V522: el Match Center usa únicamente la tarjeta negra nativa V420.
+     Se elimina por completo el bloque duplicado V412 que aparecía abajo. */
+  screen.querySelector('[data-v412-screen="matchcenter"]')?.remove();
 }
+
 
 /* Noticias: acceso de Facebook en formato referencia, sin tocar noticias existentes */
 function newsMarkup(){return '<section class="v412-shell" data-v412-screen="news"><div class="v412-account-hello"><h2>Mantente al día</h2><p>Avisos, favoritos y publicaciones oficiales de la Liga.</p></div><div class="v412-menu"><button data-v412-go="notifications"><span>Notificaciones</span><span>♢</span></button><button data-v412-go="favorites"><span>Favoritos</span><span>☆</span></button><button data-v412-go="scheduleChanges"><span>Cambios de horario y sede</span><span>›</span></button></div><div class="v412-social-title">SÍGUENOS</div><div class="v412-socials"><button class="v412-social fb" data-v412-facebook>f</button></div></section>'}
