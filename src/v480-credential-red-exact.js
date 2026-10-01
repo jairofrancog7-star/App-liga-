@@ -6,7 +6,7 @@
 if(window.__LJR_V480_CREDENTIAL__)return;
 window.__LJR_V480_CREDENTIAL__=true;
 
-const BUILD='20261001-v491-exact-reference-logo';
+const BUILD='20261001-v493-player-photo-fix';
 const LEAGUE_LOGO_PARTS=[
   './assets/credential-logo-v491-0.txt',
   './assets/credential-logo-v491-1.txt',
@@ -22,11 +22,12 @@ function loadImage(src){
   if(!src)return Promise.resolve(null);
   return new Promise(resolve=>{
     const im=new Image();
-    im.crossOrigin='anonymous';
+    if(/^https?:/i.test(src)) im.crossOrigin='anonymous';
     im.onload=()=>resolve(im);
     im.onerror=()=>resolve(null);
     im.src=src;
   });
+}
 let leagueLogoCache=null;
 let leagueLogoPromise=null;
 async function transparentLeagueLogo(){
@@ -97,17 +98,33 @@ function wrap(x,text,maxW,maxLines=2){
 }
 function playerFile(){
   const p=$('[data-v64-photo]')?.files?.[0]||null;
-  const d=$('[data-v64-doc]')?.files?.[0]||null;
   if(!p)return null;
-  const n=String(p.name||'').toLowerCase();
-  const bad=/(^|[^a-z])(ine|curp|credencial|documento|identificacion|identificación)([^a-z]|$)/i.test(n);
-  const same=!!d&&p.name===d.name&&p.size===d.size&&p.lastModified===d.lastModified;
-  return bad||same?null:p;
+  /* El campo "Foto del jugador" es explícito: siempre se respeta el archivo
+     elegido ahí. No se descarta por el nombre del archivo ni por reglas OCR. */
+  return p;
 }
 async function playerImage(){
   const f=playerFile();if(!f)return null;
-  const u=URL.createObjectURL(f);
-  try{return await loadImage(u)}finally{URL.revokeObjectURL(u)}
+
+  /* En Android algunos navegadores pueden perder el recurso al revocar un
+     blob URL antes de que canvas termine de pintarlo. createImageBitmap carga
+     el archivo directamente y evita ese problema. */
+  try{
+    if(typeof createImageBitmap==='function')return await createImageBitmap(f);
+  }catch(_){}
+
+  /* Fallback estable sin blob URL: FileReader -> data URL -> Image. */
+  try{
+    const data=await new Promise((resolve,reject)=>{
+      const r=new FileReader();
+      r.onload=()=>resolve(String(r.result||''));
+      r.onerror=()=>reject(r.error||new Error('No se pudo leer la foto'));
+      r.readAsDataURL(f);
+    });
+    return await loadImage(data);
+  }catch(_){
+    return null;
+  }
 }
 function teamLogoUrl(team){
   try{
