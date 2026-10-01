@@ -1168,3 +1168,124 @@
   .v425-summary>span{max-width:none;text-align:left}
   .v425-actions{grid-template-columns:1fr 1fr}
 }
+
+
+/* V520 — barra superior de Estadísticas según referencia */
+body[data-app-route="v38Stats"] .v399-stats-page{
+  padding-top:18px!important;
+}
+body[data-app-route="v38Stats"] .v520-stats-topbar{
+  position:relative!important;
+  width:calc(100% + 32px)!important;
+  height:138px!important;
+  margin:-18px -16px 18px!important;
+  overflow:hidden!important;
+  display:block!important;
+  border:0!important;
+  border-bottom:2px solid rgba(76,173,255,.82)!important;
+  border-radius:0!important;
+  background:
+    radial-gradient(160px 90px at 44% 8%,rgba(45,160,255,.32),transparent 74%),
+    linear-gradient(180deg,#158dff 0%,#0758e5 24%,#0734bd 55%,#09056e 100%)!important;
+  box-shadow:inset 0 -14px 28px rgba(0,0,65,.18)!important;
+  z-index:4!important;
+}
+body[data-app-route="v38Stats"] .v520-stats-topbar button{
+  position:absolute!important;
+  top:50%!important;
+  transform:translateY(-50%)!important;
+  margin:0!important;
+  padding:0!important;
+  border:0!important;
+  background:transparent!important;
+  color:#fff!important;
+  display:grid!important;
+  place-items:center!important;
+  z-index:3!important;
+  -webkit-tap-highlight-color:transparent!important;
+}
+body[data-app-route="v38Stats"] .v520-stats-back{
+  left:24px!important;
+  width:48px!important;
+  height:48px!important;
+}
+body[data-app-route="v38Stats"] .v520-stats-back svg{
+  width:34px!important;
+  height:34px!important;
+  fill:none!important;
+  stroke:currentColor!important;
+  stroke-width:2.5!important;
+  stroke-linecap:round!important;
+  stroke-linejoin:round!important;
+}
+body[data-app-route="v38Stats"] .v520-stats-profile{
+  right:22px!important;
+  width:54px!important;
+  height:54px!important;
+}
+body[data-app-route="v38Stats"] .v520-stats-profile svg{
+  width:48px!important;
+  height:48px!important;
+  fill:none!important;
+  stroke:currentColor!important;
+  stroke-width:2.05!important;
+}
+body[data-app-route="v38Stats"] .v520-stats-trophy{
+  position:absolute!important;
+  left:43%!important;
+  top:50%!important;
+  width:92px!important;
+  height:92px!important;
+  transform:translate(-50%,-50%)!important;
+  display:grid!important;
+  place-items:center!important;
+  color:#b7d6ff!important;
+  opacity:.23!important;
+  pointer-events:none!important;
+}
+body[data-app-route="v38Stats"] .v520-stats-trophy svg{
+  width:100%!important;
+  height:100%!important;
+  fill:none!important;
+  stroke:currentColor!important;
+  stroke-width:3.2!important;
+  stroke-linecap:round!important;
+  stroke-linejoin:round!important;
+}
+body[data-app-route="v38Stats"] .v520-stats-trophy svg circle,
+body[data-app-route="v38Stats"] .v520-stats-trophy svg path:last-child{
+  opacity:.8!important;
+}
+body[data-app-route="v38Stats"] .v520-stats-topbar button:active{
+  opacity:.68!important;
+  transform:translateY(-50%) scale(.96)!important;
+}
+@media(max-width:390px){
+  body[data-app-route="v38Stats"] .v520-stats-topbar{
+    height:126px!important;
+    margin-bottom:15px!important;
+  }
+  body[data-app-route="v38Stats"] .v520-stats-back{
+    left:18px!important;
+    width:44px!important;
+    height:44px!important;
+  }
+  body[data-app-route="v38Stats"] .v520-stats-back svg{
+    width:31px!important;
+    height:31px!important;
+  }
+  body[data-app-route="v38Stats"] .v520-stats-profile{
+    right:17px!important;
+    width:48px!important;
+    height:48px!important;
+  }
+  body[data-app-route="v38Stats"] .v520-stats-profile svg{
+    width:43px!important;
+    height:43px!important;
+  }
+  body[data-app-route="v38Stats"] .v520-stats-trophy{
+    left:42%!important;
+    width:82px!important;
+    height:82px!important;
+  }
+}
