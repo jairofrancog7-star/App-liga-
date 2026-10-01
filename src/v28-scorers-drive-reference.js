@@ -2,6 +2,13 @@
    No inventa jugadores ni goles. */
 (function(){
 'use strict';
+const CATS=[
+  ['3','Primera Fuerza'],
+  ['5','Intermedia'],
+  ['4','Segunda Fuerza'],
+  ['2','Veteranos 35+'],
+  ['1','Veteranos 50+']
+];
 const ROWS=[
   [
     "DYNAMO",
@@ -173,6 +180,29 @@ const ROWS=[
   ]
 ];
 function route(){return location.hash.replace(/^#\/?/,'').split('?')[0]||'home'}
+function currentCat(){
+  let fromHash='';
+  try{
+    const q=String(location.hash||'').split('?')[1]||'';
+    fromHash=new URLSearchParams(q).get('cat')||'';
+  }catch(_){}
+  const stored=String(localStorage.getItem('v62-category')||'3');
+  const id=CATS.some(x=>x[0]===String(fromHash))?String(fromHash):(CATS.some(x=>x[0]===stored)?stored:'3');
+  try{localStorage.setItem('v62-category',id)}catch(_){}
+  return id;
+}
+function catName(id=currentCat()){return CATS.find(x=>x[0]===String(id))?.[1]||'Primera Fuerza'}
+function rowsForCat(id=currentCat()){
+  const wanted=catName(id);
+  return ROWS.filter(r=>String(r[3]||'')===wanted).sort((a,b)=>(Number(b[2])||0)-(Number(a[2])||0));
+}
+function categoryMarkup(){
+  const active=currentCat();
+  return '<section class="v28-fallback-category" data-v28-category-controls aria-label="Clasificar por categoría">'+
+    '<span>CLASIFICAR POR CATEGORÍA</span>'+
+    '<div>'+CATS.map(([id,label])=>'<button type="button" data-v28-cat="'+id+'" class="'+(id===active?'active':'')+'" aria-pressed="'+(id===active?'true':'false')+'">'+label+'</button>').join('')+'</div>'+
+  '</section>';
+}
 function esc(s){return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
 function logo(r){
   const name=r[0],src=r[4];
@@ -194,9 +224,11 @@ function feature(r,cls){
     '<div class="v28-feature-goals"><b>'+r[2]+'</b><small>goles</small></div></div></article>';
 }
 function pageMarkup(){
-  if(!ROWS.length)return '<section class="v28-scorers-page" data-v28-scorers><div class="empty-state"><h2>Sin goles oficiales publicados</h2><p>AdminFut no muestra una tabla de goleo activa.</p></div></section>';
-  return '<section class="v28-scorers-page" data-v28-scorers>'+feature(ROWS[0],'one')+feature(ROWS[1],'two')+
-    '<div class="v28-ranking">'+ROWS.slice(2).map(rowMarkup).join('')+'</div>'+
+  const id=currentCat(),rows=rowsForCat(id);
+  const shell='<section class="v28-scorers-page" data-v28-scorers data-v28-fallback="1" data-v28-cat-current="'+id+'">'+categoryMarkup();
+  if(!rows.length)return shell+'<div class="v28-category-empty"><b>'+catName(id)+'</b><span>Sin goleadores publicados para esta categoría.</span></div></section>';
+  return shell+feature(rows[0],'one')+feature(rows[1],'two')+
+    (rows.length>2?'<div class="v28-ranking">'+rows.slice(2).map(rowMarkup).join('')+'</div>':'')+
     '<p class="v28-criteria">Datos oficiales publicados por categoría en AdminFut. No se inventan goles ni jugadores.</p></section>';
 }
 function setMoreActive(){/* Global nav active state is owned by V34. */}
@@ -206,7 +238,12 @@ function render(){
   if(!active)return;
   const screen=document.querySelector('#screen');
   if(!screen)return;
-  if(!screen.querySelector('[data-v28-scorers]'))screen.innerHTML=pageMarkup();
+  const existing=screen.querySelector('[data-v28-scorers]');
+  if(!existing){
+    screen.innerHTML=pageMarkup();
+  }else if(existing.dataset.v28Fallback==='1'&&String(existing.dataset.v28CatCurrent||'')!==currentCat()){
+    existing.outerHTML=pageMarkup();
+  }
   setMoreActive();
   let direct=false;
   try{
@@ -231,6 +268,23 @@ function render(){
   }
 }
 function schedule(){requestAnimationFrame(()=>requestAnimationFrame(render))}
+document.addEventListener('click',function(e){
+  if(route()!=='scorers'||!(e.target instanceof Element))return;
+  const b=e.target.closest('[data-v28-cat]');
+  if(!b)return;
+  const id=String(b.dataset.v28Cat||'');
+  if(!CATS.some(x=>x[0]===id))return;
+  e.preventDefault();
+  e.stopPropagation();
+  e.stopImmediatePropagation();
+  try{
+    localStorage.setItem('v62-category',id);
+    localStorage.setItem('v12-fixture-cat',id);
+    localStorage.setItem('v194-scorer-team','all');
+  }catch(_){}
+  render();
+  try{window.LJR_SCORERS_REFERENCE?.setCategory?.(id)}catch(_){}
+},true);
 window.addEventListener('hashchange',schedule);
 const target=document.querySelector('#screen');
 if(target)new MutationObserver(()=>{if(route()==='scorers'&&!target.querySelector('[data-v28-scorers]'))schedule()}).observe(target,{childList:true,subtree:false});
