@@ -1,12 +1,12 @@
-/* V480 — credencial roja oficial hard override.
-   El logo de la Liga se usa EXACTAMENTE como el archivo original:
-   sin quitar fondo, sin recortar, sin recolorear y sin reconstruir. */
+/* V482 — credencial roja oficial hard override.
+   El logo de la Liga conserva su diseño original; únicamente
+   el fondo negro exterior se vuelve transparente. */
 (function(){
 'use strict';
 if(window.__LJR_V480_CREDENTIAL__)return;
 window.__LJR_V480_CREDENTIAL__=true;
 
-const BUILD='20261001-v480-exact-red-credential';
+const BUILD='20261001-v482-league-logo-no-black-bg';
 const LEAGUE_LOGO='https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/assets/liga-logo.webp';
 const $=(s,r=document)=>r.querySelector(s);
 const norm=v=>String(v||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[^a-z0-9]+/g,' ').trim();
@@ -21,6 +21,52 @@ function loadImage(src){
     im.onerror=()=>resolve(null);
     im.src=src;
   });
+}
+
+let leagueLogoCache=null;
+async function transparentLeagueLogo(src){
+  if(leagueLogoCache)return leagueLogoCache;
+  const im=await loadImage(src);if(!im)return null;
+  const iw=im.naturalWidth||im.width||1,ih=im.naturalHeight||im.height||1;
+  const cv=document.createElement('canvas');cv.width=iw;cv.height=ih;
+  const q=cv.getContext('2d',{willReadFrequently:true});
+  q.clearRect(0,0,iw,ih);q.drawImage(im,0,0,iw,ih);
+
+  let id;
+  try{id=q.getImageData(0,0,iw,ih)}
+  catch(_){return im}
+
+  const d=id.data,seen=new Uint8Array(iw*ih),queue=new Int32Array(iw*ih);
+  let head=0,tail=0;
+
+  /* SOLO se elimina negro/casi negro conectado al borde.
+     El interior del escudo, textos, luna, bruja y colores no se alteran. */
+  const isBlackBg=i=>{
+    const k=i*4,r=d[k],g=d[k+1],b=d[k+2],a=d[k+3];
+    if(a===0)return true;
+    const mx=Math.max(r,g,b),mn=Math.min(r,g,b);
+    return mx<=64 && (mx-mn)<=24;
+  };
+  const push=i=>{
+    if(i<0||i>=iw*ih||seen[i]||!isBlackBg(i))return;
+    seen[i]=1;queue[tail++]=i;
+  };
+
+  for(let xx=0;xx<iw;xx++){push(xx);push((ih-1)*iw+xx)}
+  for(let yy=0;yy<ih;yy++){push(yy*iw);push(yy*iw+iw-1)}
+
+  while(head<tail){
+    const i=queue[head++],xx=i%iw,yy=(i/iw)|0;
+    if(xx>0)push(i-1);
+    if(xx<iw-1)push(i+1);
+    if(yy>0)push(i-iw);
+    if(yy<ih-1)push(i+iw);
+  }
+
+  for(let i=0;i<iw*ih;i++)if(seen[i])d[i*4+3]=0;
+  q.putImageData(id,0,0);
+  leagueLogoCache=cv;
+  return cv;
 }
 function roundRect(x,a,b,w,h,r){
   r=Math.min(r,w/2,h/2);
@@ -147,8 +193,8 @@ async function makeCanvas(){
   x.strokeStyle='#15171b';x.lineWidth=5;roundRect(x,8,8,W-16,H-16,31);x.stroke();
   x.strokeStyle='#8b203d';x.lineWidth=3;roundRect(x,17,17,W-34,H-34,26);x.stroke();
 
-  /* Logo de la Liga ORIGINAL, sin procesamiento. */
-  const league=await loadImage(LEAGUE_LOGO);
+  /* Mismo logo de la Liga; únicamente sin el fondo negro rectangular. */
+  const league=await transparentLeagueLogo(LEAGUE_LOGO);
   if(league)contained(x,league,20,12,180,150);
 
   x.textAlign='center';x.textBaseline='alphabetic';
