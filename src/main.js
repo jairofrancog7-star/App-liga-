@@ -3908,14 +3908,14 @@ function v446HomeReference(){
   const relevant=matches.slice(0,4).map(m=>{
     const center=m.score||(m.status==='FINAL'?(m.time||'FINAL'):(m.time||'POR CONFIRMAR'));
     const stateLabel=m.status==='FINAL'?'FINAL':'JORNADA '+m.jornada;
-    return '<button type="button" class="v446-relevant-match" data-match="'+m.id+'">'+
-      '<span class="v446-relevant-team home">'+crest(m.home)+'<span><b>'+team(m.home).name+'</b><small>'+m.category+'</small></span></span>'+
+    return '<button type="button" class="v446-relevant-match" data-match="'+m.id+'" data-home-team="'+m.home+'" data-away-team="'+m.away+'">'+
+      '<span class="v446-relevant-team home" data-team-code="'+m.home+'">'+crest(m.home)+'<span><b>'+team(m.home).name+'</b><small>'+m.category+'</small></span></span>'+
       '<span class="v446-relevant-center"><small>'+stateLabel+'</small><strong>'+center+'</strong><em>'+m.date+'</em></span>'+
-      '<span class="v446-relevant-team away"><span><b>'+team(m.away).name+'</b><small>'+m.venue+'</small></span>'+crest(m.away)+'</span>'+
+      '<span class="v446-relevant-team away" data-team-code="'+m.away+'"><span><b>'+team(m.away).name+'</b><small>'+m.venue+'</small></span>'+crest(m.away)+'</span>'+
     '</button>';
   }).join('');
   return '<section class="v446-home-reference" aria-label="Liga Municipal Juventino Rosas">'+
-    '<header class="v446-home-brand"><img src="https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/assets/liga-logo.webp" alt="Liga Juventino Rosas"><span><small>LIGA MUNICIPAL DE FÚTBOL</small><h2>JUVENTINO ROSAS</h2><b>GUANAJUATO</b></span></header>'+
+    '<header class="v446-home-brand"><span class="v447-league-logo-orb"><img src="https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/assets/liga-logo.webp" alt="Liga Juventino Rosas"></span><span class="v447-brand-copy"><small>LIGA MUNICIPAL DE FÚTBOL</small><h2>JUVENTINO ROSAS</h2><b>GUANAJUATO</b></span></header>'+
     '<div class="v446-home-season"><span><b>LIGA MUNICIPAL</b><small>JUVENTINO ROSAS</small></span><i>⚽</i><span class="season"><b>TEMPORADA 2026/27</b><small>FÚTBOL QUE NOS UNE</small></span><button type="button" data-route="teams" aria-label="Equipos">⊕</button></div>'+
     '<div class="v446-home-clubs">'+clubs+extras+'</div>'+
     '<div class="v446-relevant-head"><h3>PARTIDOS RELEVANTES</h3><button type="button" data-route="competition">Ver todos ›</button></div>'+
