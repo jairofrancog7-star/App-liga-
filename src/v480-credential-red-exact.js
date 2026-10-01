@@ -6,7 +6,7 @@
 if(window.__LJR_V480_CREDENTIAL__)return;
 window.__LJR_V480_CREDENTIAL__=true;
 
-const BUILD='20261001-v493-player-photo-fix';
+const BUILD='20261001-v494-face-auto-center';
 const LEAGUE_LOGO_PARTS=[
   './assets/credential-logo-v491-0.txt',
   './assets/credential-logo-v491-1.txt',
@@ -72,6 +72,132 @@ function cover(x,img,a,b,w,h){
   const s=Math.max(w/iw,h/ih),sw=w/s,sh=h/s,sx=(iw-sw)/2,sy=(ih-sh)/2;
   x.drawImage(img,sx,sy,sw,sh,a,b,w,h);
 }
+
+/* V494 — encuadre facial automático para la foto de la credencial.
+   1) usa FaceDetector nativo cuando Chrome/Android lo ofrece;
+   2) si no existe, intenta MediaPipe Face Detector en el dispositivo;
+   3) si ambos fallan, aplica un recorte de retrato con sesgo superior.
+   La foto no se sube a ningún servidor: la detección y el recorte ocurren
+   localmente en el navegador. */
+const faceCache=new Map();
+let mediaPipeFacePromise=null;
+
+function imageSize(img){
+  return {
+    w:Number(img?.naturalWidth||img?.videoWidth||img?.width||1),
+    h:Number(img?.naturalHeight||img?.videoHeight||img?.height||1)
+  };
+}
+function detectorCanvas(img){
+  const {w,h}=imageSize(img),maxSide=640,scale=Math.min(1,maxSide/Math.max(w,h));
+  const cw=Math.max(1,Math.round(w*scale)),ch=Math.max(1,Math.round(h*scale));
+  const cv=document.createElement('canvas');cv.width=cw;cv.height=ch;
+  const q=cv.getContext('2d',{alpha:false});
+  q.drawImage(img,0,0,cw,ch);
+  return {cv,scaleX:w/cw,scaleY:h/ch};
+}
+function largestBox(list){
+  return (list||[]).filter(Boolean).sort((a,b)=>(b.width*b.height)-(a.width*a.height))[0]||null;
+}
+async function nativeFaceBox(img){
+  if(typeof window.FaceDetector!=='function')return null;
+  try{
+    const {cv,scaleX,scaleY}=detectorCanvas(img);
+    const detector=new window.FaceDetector({fastMode:true,maxDetectedFaces:3});
+    const faces=await detector.detect(cv);
+    const b=largestBox(faces.map(f=>f?.boundingBox&&({
+      x:f.boundingBox.x*scaleX,
+      y:f.boundingBox.y*scaleY,
+      width:f.boundingBox.width*scaleX,
+      height:f.boundingBox.height*scaleY
+    })));
+    return b;
+  }catch(_){return null}
+}
+async function mediaPipeFaceDetector(){
+  if(mediaPipeFacePromise)return mediaPipeFacePromise;
+  mediaPipeFacePromise=(async()=>{
+    const mod=await import('https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.22/+esm');
+    const vision=await mod.FilesetResolver.forVisionTasks(
+      'https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.22/wasm'
+    );
+    return await mod.FaceDetector.createFromOptions(vision,{
+      baseOptions:{
+        modelAssetPath:'https://storage.googleapis.com/mediapipe-models/face_detector/blaze_face_short_range/float16/latest/blaze_face_short_range.tflite'
+      },
+      runningMode:'IMAGE',
+      minDetectionConfidence:.48
+    });
+  })().catch(()=>null);
+  return mediaPipeFacePromise;
+}
+async function mediaPipeFaceBox(img){
+  try{
+    const detector=await mediaPipeFaceDetector();if(!detector)return null;
+    const {cv,scaleX,scaleY}=detectorCanvas(img);
+    const result=detector.detect(cv);
+    const b=largestBox((result?.detections||[]).map(d=>{
+      const z=d?.boundingBox;if(!z)return null;
+      return {
+        x:Number(z.originX||0)*scaleX,
+        y:Number(z.originY||0)*scaleY,
+        width:Number(z.width||0)*scaleX,
+        height:Number(z.height||0)*scaleY
+      };
+    }));
+    return b;
+  }catch(_){return null}
+}
+async function playerFaceBox(img,file){
+  if(!img||!file)return null;
+  const key=[file.name,file.size,file.lastModified].join('|');
+  if(faceCache.has(key))return await faceCache.get(key);
+  const job=(async()=>{
+    let b=await nativeFaceBox(img);
+    if(!b)b=await mediaPipeFaceBox(img);
+    return b||null;
+  })();
+  faceCache.set(key,job);
+  return await job;
+}
+function faceCrop(img,destW,destH,face){
+  const {w:iw,h:ih}=imageSize(img),aspect=destW/destH||1;
+  let sw,sh,sx,sy;
+
+  if(face&&face.width>8&&face.height>8){
+    /* 2.55× la cara: mantiene rostro grande, cabello completo y parte de hombros. */
+    const faceSize=Math.max(face.width,face.height);
+    sw=Math.min(iw,faceSize*2.55);
+    sh=sw/aspect;
+    if(sh>ih){sh=ih;sw=sh*aspect}
+    if(sw>iw){sw=iw;sh=sw/aspect}
+
+    const fx=face.x+face.width*.50;
+    /* Un poco más arriba del centro facial para dejar aire al cabello. */
+    const fy=face.y+face.height*.43;
+    sx=fx-sw*.50;
+    sy=fy-sh*.43;
+  }else{
+    /* Respaldo inteligente para retratos: centra X y da prioridad a la parte
+       superior, donde normalmente está la cara, sin deformar la fotografía. */
+    if(iw/ih>aspect){
+      sh=ih;sw=sh*aspect;sx=(iw-sw)/2;sy=0;
+    }else{
+      sw=iw;sh=sw/aspect;sx=0;
+      const spare=Math.max(0,ih-sh);
+      sy=spare*(ih>iw*1.08?.22:.50);
+    }
+  }
+
+  sx=Math.max(0,Math.min(iw-sw,sx||0));
+  sy=Math.max(0,Math.min(ih-sh,sy||0));
+  return {sx,sy,sw,sh};
+}
+function drawFaceCenteredCover(ctx,img,x,y,w,h,face){
+  if(!img)return;
+  const c=faceCrop(img,w,h,face);
+  ctx.drawImage(img,c.sx,c.sy,c.sw,c.sh,x,y,w,h);
+}
 function outlined(x,text,a,b,fill='#111',stroke='#fff',lw=5){
   x.lineJoin='round';x.miterLimit=2;x.lineWidth=lw;x.strokeStyle=stroke;x.strokeText(text,a,b);x.fillStyle=fill;x.fillText(text,a,b);
 }
@@ -103,14 +229,17 @@ function playerFile(){
      elegido ahí. No se descarta por el nombre del archivo ni por reglas OCR. */
   return p;
 }
-async function playerImage(){
-  const f=playerFile();if(!f)return null;
+async function playerImage(file=playerFile()){
+  const f=file;if(!f)return null;
 
   /* En Android algunos navegadores pueden perder el recurso al revocar un
      blob URL antes de que canvas termine de pintarlo. createImageBitmap carga
-     el archivo directamente y evita ese problema. */
+     el archivo directamente y además respeta la orientación EXIF cuando puede. */
   try{
-    if(typeof createImageBitmap==='function')return await createImageBitmap(f);
+    if(typeof createImageBitmap==='function'){
+      try{return await createImageBitmap(f,{imageOrientation:'from-image'})}
+      catch(_){return await createImageBitmap(f)}
+    }
   }catch(_){}
 
   /* Fallback estable sin blob URL: FileReader -> data URL -> Image. */
@@ -204,10 +333,11 @@ async function makeCanvas(){
   const tlogo=await transparentTeam(teamLogoUrl(team));
   if(tlogo)contained(x,tlogo,830,128,150,150);
 
-  const photo=await playerImage(),cx=205,cy=365,r=131;
+  const photoFile=playerFile();
+  const photo=await playerImage(photoFile),face=photo?await playerFaceBox(photo,photoFile):null,cx=205,cy=365,r=131;
   x.save();x.beginPath();x.arc(cx,cy,r,0,Math.PI*2);x.clip();
   x.fillStyle='#93a4ad';x.fillRect(cx-r,cy-r,r*2,r*2);
-  if(photo)cover(x,photo,cx-r,cy-r,r*2,r*2);
+  if(photo)drawFaceCenteredCover(x,photo,cx-r,cy-r,r*2,r*2,face);
   else{x.fillStyle='#fff';x.textAlign='center';x.font='900 28px Arial';x.fillText('FOTO',cx,cy+10)}
   x.restore();x.textAlign='left';
   x.beginPath();x.arc(cx,cy,r+5,0,Math.PI*2);x.strokeStyle='#075a37';x.lineWidth=9;x.stroke();
