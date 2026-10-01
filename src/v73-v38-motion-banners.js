@@ -374,18 +374,38 @@
     const native=screen.querySelector('.v399-stats-page');
     if(!native)return false;
 
-    let banner=screen.querySelector(':scope > [data-v73-motion-banner]');
+    /* V510 — ESTADÍSTICAS:
+       Primero se muestran TODAS las tablas reales (resumen, estadísticas,
+       tabla completa y ranking de jugadores). El cuadro animado queda al final.
+       No se integra ninguna tabla dentro de la animación. */
+    let banner=screen.querySelector(':scope > [data-v73-motion-banner]')||
+      native.querySelector(':scope > [data-v73-motion-banner]');
+
     if(!banner){
       banner=buildBanner(cfg);
-      screen.insertBefore(banner,screen.firstChild);
     }
-    banner.classList.add('v509-stats-integrated');
 
-    /* El resumen/tabla oficial se integra dentro del mismo cuadro,
-       en la parte inferior, para no dejar dos secciones duplicadas. */
-    const summary=native.querySelector('.v399-stats-summary')||banner.querySelector('.v399-stats-summary');
-    if(summary && summary.parentElement!==banner){
-      banner.appendChild(summary);
+    banner.classList.remove('v509-stats-integrated');
+    banner.classList.add('v73-below-native','v510-stats-motion-bottom');
+    banner.dataset.v73BelowNative='v38-stats';
+
+    /* Si una versión anterior metió el resumen dentro del banner, restáuralo
+       a la página nativa antes de ordenar el contenido. */
+    const trappedSummary=banner.querySelector('.v399-stats-summary');
+    if(trappedSummary){
+      const lower=native.querySelector(':scope > #v449-reference-lower');
+      if(lower)native.insertBefore(trappedSummary,lower);
+      else native.insertBefore(trappedSummary,native.firstElementChild?.nextSibling||null);
+    }
+
+    /* V449 contiene las tablas inferiores. El cuadro animado SIEMPRE se coloca
+       después de ese bloque; si todavía no existe, queda al final y el observer
+       lo vuelve a bajar cuando V449 termine de montar. */
+    const tables=native.querySelector(':scope > #v449-reference-lower');
+    if(tables){
+      if(tables.nextElementSibling!==banner)tables.insertAdjacentElement('afterend',banner);
+    }else if(native.lastElementChild!==banner){
+      native.appendChild(banner);
     }
 
     native.querySelectorAll('.v63-action-grid,.v402-stats-note').forEach(el=>el.remove());
