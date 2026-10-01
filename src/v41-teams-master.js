@@ -4,7 +4,7 @@
   'use strict';
   const BASE='https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/';
   const LEAGUE_LOGO=BASE+'assets/liga-logo.webp';
-  const TEAMS=[
+  const FALLBACK_TEAMS=[
     {id:'AME',name:'América Veteranos',logo:'assets/branding/america-veteranos-35-user.png',abbr:'AME'},
     {id:'HUE',name:'La Huerta',logo:'assets/official-logos/la-huerta.png',abbr:'HUE'},
     {id:'PRO',name:'Promesas FC',logo:'assets/official-logos/promesas-fc.png',abbr:'PRO'},
@@ -28,22 +28,43 @@
   ];
   let query='';
 
+  function norm(v){return String(v||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[^a-z0-9]+/g,' ').trim()}
+  function abbr(name){return String(name||'').split(/\s+/).filter(Boolean).map(x=>x[0]).join('').slice(0,3).toUpperCase()||'EQ'}
+  function currentTeams(){
+    const db=window.LJR_OFFICIAL_API?.getData?.()||window.LJR_OFFICIAL_DATA;
+    if(!db?.categories)return FALLBACK_TEAMS;
+    const out=[],seen=new Set();
+    const add=(name,cat)=>{
+      name=String(name||'').trim();const k=norm(name);if(!name||seen.has(k))return;
+      seen.add(k);
+      let logo='';try{logo=window.LJR_TEAM_LOGOS?.get?.(name)||window.LJR_OFFICIAL_API?.getLogo?.(name)||''}catch(_){}
+      out.push({id:k.replace(/\s+/g,'-').toUpperCase(),name,logo,abbr:abbr(name),cat:String(cat||'3')});
+    };
+    for(const [cid,c] of Object.entries(db.categories||{})){
+      Object.keys(c?.rosters||{}).forEach(n=>add(n,cid));
+      (c?.standings?.[0]?.rows||[]).forEach(r=>add(r?.[1],cid));
+      (c?.fixtures||[]).forEach(g=>(g?.rows||[]).forEach(r=>{add(r?.[2],cid);add(r?.[6],cid)}));
+    }
+    return out.length?out:FALLBACK_TEAMS;
+  }
+
   function route(){return location.hash.replace('#/','')||'home'}
   function esc(s){return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
   function searchIcon(){return '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.2"/><path d="m15.2 15.2 5.1 5.1"/></svg>'}
   function closeIcon(){return '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg>'}
   function teamLogo(t){
     if(t.logo){
-      return '<span class="v41-team-logo"><img src="'+BASE+t.logo+'" alt="'+esc(t.name)+'" loading="lazy" decoding="async" onerror="this.style.display=\'none\';this.nextElementSibling.style.display=\'grid\'"><span class="v41-fallback" style="display:none">'+esc(t.abbr)+'</span></span>';
+      const src=/^https?:\/\//i.test(t.logo)?t.logo:BASE+t.logo;
+      return '<span class="v41-team-logo"><img src="'+src+'" alt="'+esc(t.name)+'" loading="lazy" decoding="async" onerror="this.style.display=\'none\';this.nextElementSibling.style.display=\'grid\'"><span class="v41-fallback" style="display:none">'+esc(t.abbr)+'</span></span>';
     }
     return '<span class="v41-team-logo"><span class="v41-fallback">'+esc(t.abbr)+'</span></span>';
   }
   function tile(t){
-    return '<button type="button" class="v41-team-tile" data-v41-team="'+t.id+'">'+teamLogo(t)+'<span class="v41-team-name">'+esc(t.name)+'</span></button>';
+    return '<button type="button" class="v41-team-tile" data-v41-team="'+esc(t.id)+'" data-v41-name="'+esc(t.name)+'" data-v41-cat="'+esc(t.cat||'')+'">'+teamLogo(t)+'<span class="v41-team-name">'+esc(t.name)+'</span></button>';
   }
   function markup(){
     const q=query.trim().toLocaleLowerCase('es');
-    const list=TEAMS.filter(t=>!q||t.name.toLocaleLowerCase('es').includes(q));
+    const list=currentTeams().filter(t=>!q||t.name.toLocaleLowerCase('es').includes(q));
     return '<section class="v41-teams-page" data-v27-reference="teams" data-v41-reference="teams">'+
       '<header class="v41-head">'+
         '<button type="button" class="v41-close" data-v41-close aria-label="Cerrar">'+closeIcon()+'</button>'+
@@ -74,6 +95,8 @@
     document.querySelector('[data-v41-average]')?.addEventListener('click',()=>{location.hash='#/safe-data'},{once:true});
     document.querySelectorAll('[data-v41-team]').forEach(b=>b.addEventListener('click',()=>{
       localStorage.setItem('v27-selected-team',b.dataset.v41Team);
+      localStorage.setItem('v62-team-name',b.dataset.v41Name||'');
+      if(b.dataset.v41Cat){localStorage.setItem('v62-category',b.dataset.v41Cat);localStorage.setItem('v12-fixture-cat',b.dataset.v41Cat)}
       location.hash='#/teamDetail';
     },{once:true}));
     const input=document.querySelector('#v41TeamSearch');
