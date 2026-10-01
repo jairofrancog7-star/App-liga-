@@ -3,7 +3,7 @@
 'use strict';
 if(window.__LJR_V501_SIMULATOR__)return;
 window.__LJR_V501_SIMULATOR__=true;
-window.LJR_SIMULATOR_V502={version:'511'};
+window.LJR_SIMULATOR_V502={version:'512'};
 
 const CAT_NAMES={'3':'Primera Fuerza','5':'Intermedia','4':'Segunda Fuerza','2':'Veteranos 35+','1':'Veteranos 50+'};
 const VIEW_KEY='v501-simulator-view';
@@ -147,8 +147,24 @@ function bracketStage(){
  return ['playoff','octavos','cuartos','semifinal','final'].includes(s)?s:'playoff';
 }
 function setBracketStage(s){
- localStorage.setItem(STAGE_KEY,['playoff','octavos','cuartos','semifinal','final'].includes(s)?s:'playoff');
- render();
+ const stage=['playoff','octavos','cuartos','semifinal','final'].includes(s)?s:'playoff';
+ localStorage.setItem(STAGE_KEY,stage);
+ const box=document.querySelector('[data-v512-bracket]');
+ if(!box){render();return}
+ box.querySelectorAll('[data-v512-stage]').forEach(b=>b.classList.toggle('active',b.dataset.v512Stage===stage));
+ box.classList.remove('stage-playoff','stage-octavos','stage-cuartos','stage-semifinal','stage-final','is-stage-changing','is-stage-ready');
+ box.classList.add('stage-'+stage,'is-stage-changing');
+ requestAnimationFrame(()=>{
+   box.classList.remove('is-stage-changing');
+   box.classList.add('is-stage-ready');
+   const active=box.querySelector('[data-v512-stage].active');
+   const strip=active?.parentElement;
+   if(active&&strip){
+     const target=Math.max(0,active.offsetLeft-(strip.clientWidth-active.offsetWidth)/2);
+     strip.scrollTo({left:target,behavior:'smooth'});
+   }
+ });
+ setTimeout(()=>box.classList.remove('is-stage-ready'),430);
 }
 function simulatedCount(){const s=simState();return simFixtures().filter(f=>scoreOf(f,s)).length}
 
@@ -198,73 +214,155 @@ function tableView(){
    ).join('')+'</div>'+
  '</section>';
 }
+function v512Logo(name){
+ const src=logoFor(name);
+ return src
+   ?'<img src="'+esc(src)+'" alt="'+esc(name)+'" loading="eager" decoding="async">'
+   :'<span class="v12-bracket-fallback">'+esc(initials(name))+'</span>';
+}
 function bracketTeam(t,mini=false){
- if(!t)return '<div class="v511-bracket-team '+(mini?'mini ':'')+'empty"><strong>—</strong></div>';
- return '<div class="v511-bracket-team '+(mini?'mini':'')+'">'+
-   '<small class="v511-seed">'+t.pos+'</small>'+
-   crest(t.name,'v511')+
-   '<strong>'+esc(shortName(t.name))+'</strong>'+
-   '<i class="v511-dot">o</i>'+
+ if(!t){
+   return '<div class="v12-bracket-team '+(mini?'mini ':'')+'empty">'+
+     '<small class="v12-bracket-seed"></small><span class="v12-bracket-fallback">—</span><strong>—</strong>'+
+   '</div>';
+ }
+ return '<div class="v12-bracket-team '+(mini?'mini':'')+'">'+
+   '<small class="v12-bracket-seed">'+esc(t.pos)+'</small>'+
+   v512Logo(t.name)+
+   '<strong>'+esc(t.name)+'</strong>'+
  '</div>';
 }
-function v511Pair(a,b){
- return '<div class="v511-pair">'+bracketTeam(a)+bracketTeam(b)+'<span class="v511-pair-connector" aria-hidden="true"></span></div>';
-}
-function v511Winner(seedTeam){
- return '<div class="v511-winner-block">'+
-   '<div class="v511-winner"><span class="v511-shield">⬢</span><strong>Ganador del play-off</strong></div>'+
-   bracketTeam(seedTeam,true)+
+function v512Pair(a,b){
+ return '<div class="v12-bracket-pair">'+
+   bracketTeam(a)+
+   '<i class="v12-bracket-vs">o</i>'+
+   bracketTeam(b)+
  '</div>';
 }
-function v511Routes(rows){
+function v512SeedPair(a,b){
+ return '<div class="v12-bracket-seeded">'+
+   bracketTeam(a,true)+
+   '<i class="v12-bracket-vs">o</i>'+
+   bracketTeam(b,true)+
+ '</div>';
+}
+function v512WinnerBlock(a,b){
+ return '<div class="v12-bracket-winner-block">'+
+   '<div class="v12-bracket-winner"><span class="shield"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.7 20 5.6v5.7c0 5.1-3.3 8.6-8 10-4.7-1.4-8-4.9-8-10V5.6L12 2.7Z" fill="currentColor"/></svg></span><strong>Ganador del play-off</strong></div>'+
+   v512SeedPair(a,b)+
+ '</div>';
+}
+function v512BuildRoutes(rows){
  const get=n=>rows[n-1]||null,n=rows.length;
- const raw=[[5,Math.min(12,n)],[6,Math.min(11,n)],[7,Math.min(10,n)],[8,Math.min(9,n)]];
- const seen=new Set(),pairs=[];
- raw.forEach(p=>{
-   const a=get(p[0]),b=get(p[1]);
-   if(!a||!b||a===b)return;
-   const k=[a.name,b.name].sort().join('|');
-   if(seen.has(k))return;seen.add(k);pairs.push([a,b]);
- });
- if(!pairs.length&&n>=6)pairs.push([get(5),get(6)]);
+ const pairSeeds=[];
+ if(n>=12) pairSeeds.push([5,12],[6,11],[7,10],[8,9]);
+ else{
+   let a=5,b=n;
+   while(a<b){pairSeeds.push([a,b]);a++;b--}
+   if(!pairSeeds.length&&n>=6)pairSeeds.push([5,6]);
+ }
+ const pairs=pairSeeds.map(p=>[get(p[0]),get(p[1])]).filter(p=>p[0]&&p[1]);
+ const leftPairs=[],rightPairs=[];
+ pairs.forEach((p,i)=>(i%2?rightPairs:leftPairs).push(p));
+ while(leftPairs.length<2&&pairs.length){leftPairs.push(null)}
+ while(rightPairs.length<2&&pairs.length>1){rightPairs.push(null)}
  return {
-   silverPairs:pairs.filter((_,i)=>i%2===0),
-   bluePairs:pairs.filter((_,i)=>i%2===1),
-   silverSeeds:[get(1),get(2)].filter(Boolean),
-   blueSeeds:[get(3),get(4)].filter(Boolean)
+   left:{label:'RUTA PLATEADA',pairs:leftPairs,winners:[[get(1),get(2)],[get(3),get(4)]].filter(p=>p[0]||p[1])},
+   right:{label:'RUTA AZUL',pairs:rightPairs,winners:[[get(3),get(4)],[get(1),get(2)]].filter(p=>p[0]||p[1])}
  };
 }
-function v511Route(label,tone,pairs,seeds){
- return '<section class="v511-route '+tone+'">'+
-   '<div class="v511-route-rail"><span>'+label+'</span></div>'+
-   '<div class="v511-pairs">'+(pairs.length?pairs.map(p=>v511Pair(p[0],p[1])).join(''):'<div class="v511-empty-route">Esperando posiciones de play-off</div>')+'</div>'+
-   '<div class="v511-route-connect" aria-hidden="true"></div>'+
-   '<div class="v511-winners">'+seeds.map(v511Winner).join('')+'</div>'+
+function v512BracketRoute(route){
+ const safePairs=(route.pairs||[]).length?route.pairs:[null,null];
+ const winners=(route.winners||[]).length?route.winners:[[null,null],[null,null]];
+ return '<section class="v12-bracket-route">'+
+   '<div class="v12-bracket-side-label"><span>'+route.label+'</span></div>'+
+   '<div class="v12-bracket-pairs">'+
+     safePairs.map(p=>p?v512Pair(p[0],p[1]):v512Pair(null,null)).join('')+
+   '</div>'+
+   '<div class="v12-bracket-connectors" aria-hidden="true">'+
+     '<span class="c c1"></span><span class="c c2"></span><span class="c c3"></span><span class="c c4"></span>'+
+   '</div>'+
+   '<div class="v12-bracket-winners">'+
+     winners.slice(0,2).map(w=>v512WinnerBlock(w[0]||null,w[1]||null)).join('')+
+   '</div>'+
  '</section>';
 }
-function v511FinalPreview(rows){
+function v512UnknownMatch(dateText,legText='Ida'){
+ return '<div class="v12-progress-match">'+
+   '<time>'+dateText+'</time>'+
+   '<small>'+legText+'</small>'+
+   '<div class="v12-progress-opponent"><span class="shield"><svg viewBox="0 0 24 24"><path d="M12 2.7 20 5.6v5.7c0 5.1-3.3 8.6-8 10-4.7-1.4-8-4.9-8-10V5.6L12 2.7Z" fill="currentColor"/></svg></span><b>¿?</b></div>'+
+   '<div class="v12-progress-opponent"><span class="shield"><svg viewBox="0 0 24 24"><path d="M12 2.7 20 5.6v5.7c0 5.1-3.3 8.6-8 10-4.7-1.4-8-4.9-8-10V5.6L12 2.7Z" fill="currentColor"/></svg></span><b>¿?</b></div>'+
+ '</div>';
+}
+function v512ProgressWinner(pair){
+ return '<div class="v12-progress-winner-block">'+
+   '<div class="v12-progress-winner"><span class="shield"><svg viewBox="0 0 24 24"><path d="M12 2.7 20 5.6v5.7c0 5.1-3.3 8.6-8 10-4.7-1.4-8-4.9-8-10V5.6L12 2.7Z" fill="currentColor"/></svg></span><strong>Ganador del play-off</strong></div>'+
+   '<div class="v12-progress-seeded">'+
+     bracketTeam(pair?.[0]||null,true)+
+     '<i class="v12-progress-vs">o</i>'+
+     bracketTeam(pair?.[1]||null,true)+
+   '</div>'+
+ '</div>';
+}
+function v512StagePanels(rows){
+ const get=n=>rows[n-1]||null;
+ const silver=[[get(1),get(2)],[get(3),get(4)]];
+ const blue=[[get(3),get(4)],[get(1),get(2)]];
+ return '<div class="v12-stage-panels">'+
+   '<section class="v12-stage-panel v12-stage-panel-octavos">'+
+     '<div class="v12-progress-dates"><span>9-12 &amp; 17-18 mar</span><span>6-7 &amp; 14-15 abr</span></div>'+
+     '<div class="v12-progress-board">'+
+       '<section class="v12-progress-route route-silver"><div class="v12-progress-rail"><span>RUTA PLATEADA</span></div><div class="v12-progress-left">'+silver.map(v512ProgressWinner).join('')+'</div><div class="v12-progress-connector" aria-hidden="true"><i></i></div><div class="v12-progress-right">'+v512UnknownMatch('6 - 7 abr')+'</div></section>'+
+       '<section class="v12-progress-route route-blue"><div class="v12-progress-rail"><span>RUTA AZUL</span></div><div class="v12-progress-left">'+blue.map(v512ProgressWinner).join('')+'</div><div class="v12-progress-connector" aria-hidden="true"><i></i></div><div class="v12-progress-right">'+v512UnknownMatch('6 - 7 abr')+'</div></section>'+
+     '</div>'+
+   '</section>'+
+   '<section class="v12-stage-panel v12-stage-panel-cuartos">'+
+     '<div class="v12-progress-dates"><span>6-7 &amp; 14-15 abr</span><span>27-28 abr &amp; 5-6 may</span></div>'+
+     '<div class="v12-progress-board">'+
+       '<section class="v12-progress-route route-silver"><div class="v12-progress-rail"><span>RUTA PLATEADA</span></div><div class="v12-progress-left v12-progress-left-matches">'+v512UnknownMatch('6 - 7 abr')+v512UnknownMatch('6 - 7 abr')+'</div><div class="v12-progress-connector" aria-hidden="true"><i></i></div><div class="v12-progress-right">'+v512UnknownMatch('27 - 28 abr')+'</div></section>'+
+       '<section class="v12-progress-route route-blue"><div class="v12-progress-rail"><span>RUTA AZUL</span></div><div class="v12-progress-left v12-progress-left-matches">'+v512UnknownMatch('6 - 7 abr')+v512UnknownMatch('6 - 7 abr')+'</div><div class="v12-progress-connector" aria-hidden="true"><i></i></div><div class="v12-progress-right">'+v512UnknownMatch('27 - 28 abr')+'</div></section>'+
+     '</div>'+
+   '</section>'+
+   '<section class="v12-stage-panel v12-stage-panel-semifinal">'+
+     '<div class="v12-progress-dates"><span>27-28 abr &amp; 5-6 may</span><span>5 jun</span></div>'+
+     '<div class="v12-semifinal-flow">'+
+       '<div class="v12-semifinal-source silver"><div class="v12-progress-rail"><span>RUTA PLATEADA</span></div>'+v512UnknownMatch('27 - 28 abr')+'</div>'+
+       '<div class="v12-semifinal-source blue"><div class="v12-progress-rail"><span>RUTA AZUL</span></div>'+v512UnknownMatch('27 - 28 abr')+'</div>'+
+       '<div class="v12-semifinal-join" aria-hidden="true"></div>'+
+       '<div class="v12-semifinal-target">'+v512UnknownMatch('5 jun','')+'</div>'+
+     '</div>'+
+   '</section>'+
+ '</div>';
+}
+function v512FinalCard(rows){
  const leader=rows[0]||null;
- return '<section class="v511-final-preview">'+
-   '<div class="v511-final-copy"><small>FINAL · SIMULACIÓN</small><strong>'+(leader?esc(leader.name):'Por definir')+'</strong><span>Proyección según tus resultados</span></div>'+
-   '<div class="v511-trophy" aria-label="Trofeo de la final"><img src="./final-trophy-drive.png?v=v511" alt="" aria-hidden="true"></div>'+
+ return '<section class="v12-final-reference" data-v512-final>'+
+   '<div class="v12-final-top-date"><span></span><b>5 jun</b></div>'+
+   '<div class="v12-final-side-mark" aria-hidden="true"></div>'+
+   '<div class="v12-final-match-card">'+
+     '<time>5 jun</time>'+
+     '<div class="v12-final-opponent"><span class="v12-final-shield"><svg viewBox="0 0 24 24"><path d="M12 2.7 20 5.6v5.7c0 5.1-3.3 8.6-8 10-4.7-1.4-8-4.9-8-10V5.6L12 2.7Z" fill="currentColor"/></svg></span><b>'+esc(leader?shortName(leader.name):'¿?')+'</b></div>'+
+     '<div class="v12-final-opponent"><span class="v12-final-shield"><svg viewBox="0 0 24 24"><path d="M12 2.7 20 5.6v5.7c0 5.1-3.3 8.6-8 10-4.7-1.4-8-4.9-8-10V5.6L12 2.7Z" fill="currentColor"/></svg></span><b>¿?</b></div>'+
+   '</div>'+
+   '<div class="v12-final-trophy-wrap"><div class="v12-final-trophy-new" aria-label="Trofeo de la final"><img src="./final-trophy-drive.png?v=v512" alt="" aria-hidden="true"></div></div>'+
  '</section>';
 }
 function bracketView(){
- const rows=simulatedStandings(),stage=bracketStage(),routes=v511Routes(rows);
- return '<section class="v501-board v501-bracket v511-competition-bracket stage-'+stage+'">'+
-   '<div class="v511-stage-tabs" role="tablist" aria-label="Etapas del cuadro">'+
+ const rows=simulatedStandings(),stage=bracketStage(),routes=v512BuildRoutes(rows);
+ return '<section class="v501-board v501-bracket v12-bracket-reference stage-'+stage+'" data-v512-bracket>'+
+   '<div class="v12-bracket-stage-tabs" role="tablist" aria-label="Etapas del cuadro">'+
      [['playoff','Play-off'],['octavos','Octavos de final'],['cuartos','Cuartos de final'],['semifinal','Semifinales'],['final','Final']].map(x=>
-       '<button type="button" class="'+(stage===x[0]?'active':'')+'" data-v511-stage="'+x[0]+'">'+x[1]+'</button>'
+       '<button type="button" class="'+(stage===x[0]?'active':'')+'" data-v512-stage="'+x[0]+'">'+x[1]+'</button>'
      ).join('')+
    '</div>'+
-   '<p class="v511-note">Cruces hipotéticos según la clasificación simulada</p>'+
-   '<div class="v511-dates"><span>16-19 &amp; 24-25 feb</span><span>9-12 &amp; 17-18 mar</span></div>'+
-   '<div class="v511-head"><span>PLAY-OFF</span><span>OCTAVOS DE FINAL</span></div>'+
-   '<div class="v511-board">'+
-     v511Route('RUTA PLATEADA','silver',routes.silverPairs,routes.silverSeeds)+
-     v511Route('RUTA AZUL','blue',routes.bluePairs,routes.blueSeeds)+
+   '<div class="v12-bracket-dates"><span>16-19 &amp; 24-25 feb</span><span>9-12 &amp; 17-18 mar</span></div>'+
+   '<div class="v12-bracket-board">'+
+     v512BracketRoute(routes.left)+
+     v512BracketRoute(routes.right)+
    '</div>'+
-   v511FinalPreview(rows)+
+   v512StagePanels(rows)+
+   v512FinalCard(rows)+
  '</section>';
 }
 function scoreControl(f,side){
@@ -348,7 +446,7 @@ async function share(){
 function click(e){
  if(route()!=='simulator'||!(e.target instanceof Element))return;
  const v=e.target.closest('[data-v501-view]');if(v){e.preventDefault();setView(v.dataset.v501View);return}
- const st=e.target.closest('[data-v511-stage]');if(st){e.preventDefault();e.stopPropagation();setBracketStage(st.dataset.v511Stage);return}
+ const st=e.target.closest('[data-v512-stage]');if(st){e.preventDefault();e.stopPropagation();setBracketStage(st.dataset.v512Stage);return}
  const score=e.target.closest('[data-v501-score]');if(score){e.preventDefault();e.stopPropagation();alterScore(score.dataset.v501Score,score.dataset.side,Number(score.dataset.delta||0));return}
  const reset=e.target.closest('[data-v501-reset]');if(reset){e.preventDefault();e.stopPropagation();resetMatch(reset.dataset.v501Reset);return}
  if(e.target.closest('[data-v501-clear]')){e.preventDefault();e.stopPropagation();clearSimulation();return}
