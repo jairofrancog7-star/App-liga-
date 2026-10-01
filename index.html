@@ -2,53 +2,7 @@
 <html lang="es-MX">
 <head>
 
-  <script>
-    (function(){
-      if(window.__LJR_SCORERS_FASTLANE_V465__) return;
-      window.__LJR_SCORERS_FASTLANE_V465__=true;
-      var lastKey='',lastAt=0;
 
-      function route(){
-        return (location.hash.replace(/^#\/?/,'')||'home').split('?')[0];
-      }
-      function keyFor(target){
-        if(target.hasAttribute('data-v194-cat')) return 'cat:'+String(target.dataset.v194Cat||'3');
-        if(target.hasAttribute('data-v462-stat')) return 'stat:'+String(target.dataset.v462Stat||'goals');
-        return '';
-      }
-      function run(target){
-        var api=window.LJR_SCORERS_REFERENCE;
-        if(!api) return false;
-        if(target.hasAttribute('data-v194-cat') && typeof api.setCategory==='function'){
-          api.setCategory(target.dataset.v194Cat||'3');
-          return true;
-        }
-        if(target.hasAttribute('data-v462-stat') && typeof api.setStat==='function'){
-          api.setStat(target.dataset.v462Stat||'goals');
-          return true;
-        }
-        return false;
-      }
-      function handle(e){
-        if(!(e.target instanceof Element) || route()!=='scorers') return;
-        var target=e.target.closest('[data-v194-cat],[data-v462-stat]');
-        if(!target) return;
-        var key=keyFor(target),now=Date.now();
-        if(e.type==='click' && key && key===lastKey && now-lastAt<700){
-          e.preventDefault();e.stopPropagation();e.stopImmediatePropagation();
-          return;
-        }
-        if(run(target)){
-          lastKey=key;lastAt=now;
-          e.preventDefault();e.stopPropagation();e.stopImmediatePropagation();
-        }
-      }
-
-      /* One event only. pointerup + click caused the category action to enter
-         twice on some Android browsers before the DOM settled. */
-      window.addEventListener('click',handle,true);
-    })();
-  </script>
 
 
   <script>
@@ -273,7 +227,7 @@
   <link rel="stylesheet" href="./src/v65-home-weather-dashboard.css?v=20260921-field-streetview1" />
   <link rel="stylesheet" href="./src/v66-notifications-compact.css?v=20260919-notif-image2-exact2" />
   <link rel="stylesheet" href="./src/v66-official-directory.css?v=20260930-live3d-bundled-v445" />
-  <link rel="stylesheet" href="./src/v194-scorers-filters.css?v=20261001-v465-no-freeze-single-render" />
+  <link rel="stylesheet" href="./src/v194-scorers-filters.css?v=20261001-v467-category-buttons-single-owner" />
   <link rel="stylesheet" href="./src/v66-compact-app-ui.css?v=20260922-single-header-v151" />
   <link rel="stylesheet" href="./src/v68-match-notifications.css?v=20260919-match-notifications1" />
   <link rel="stylesheet" href="./src/v69-primary-tool-header.css?v=20260919-matchcenter-seam-nav2" />
@@ -482,7 +436,7 @@
   <script type="module" src="./src/v46-account-reference.js?v=20260930-v421-single-notifications-header"></script>
   <script type="module" src="./src/v51-bottom-nav-icon-lock.js?v=20260919-nav-icons-unified1"></script>
   <script type="module" src="./src/v52-moreless-hub.js?v=20260930-moreless-restore-v394"></script>
-  <script type="module" src="./src/v194-scorers-filters.js?v=20261001-v466-category-frame-hash-fix"></script>
+  <script type="module" src="./src/v194-scorers-filters.js?v=20261001-v467-category-buttons-single-owner"></script>
   <script type="module" src="./src/v62-official-league-data.js?v=20261001-v465-scorers-no-global-cycle"></script>
   <script type="module" src="./src/v66-official-directory.js?v=20260930-live3d-bundled-v445"></script>
   <script type="module" src="./src/v66-compact-app-ui.js?v=20260922-single-header-v151"></script>
