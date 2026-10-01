@@ -5129,3 +5129,121 @@ body.v92-match-center-official [data-v92-vote-mvp]:active{
     color:#fff;
   }
 }
+
+
+/* V518 — UN SOLO CUADRO MATCH CENTER */
+@media (max-width:1023px){
+  body.v92-match-center-official .v518-matchcenter-unified{
+    width:100%;
+    box-sizing:border-box;
+    overflow:hidden;
+    margin:12px 0 18px;
+    border:1px solid rgba(72,111,236,.34);
+    border-radius:18px;
+    background:
+      radial-gradient(520px 240px at 50% 0,rgba(38,84,225,.12),transparent 72%),
+      linear-gradient(180deg,#0c143d 0%,#091131 100%);
+    box-shadow:0 14px 34px rgba(0,0,0,.22);
+  }
+
+  body.v92-match-center-official .v518-matchcenter-unified > *,
+  body.v92-match-center-official .v518-matchcenter-extras > *{
+    box-sizing:border-box!important;
+    max-width:100%!important;
+  }
+
+  body.v92-match-center-official .v518-matchcenter-unified .v92-score-card,
+  body.v92-match-center-official .v518-matchcenter-unified .v92-official-meta,
+  body.v92-match-center-official .v518-matchcenter-unified .v92-tabs,
+  body.v92-match-center-official .v518-matchcenter-unified > .v417-reference-tools,
+  body.v92-match-center-official .v518-matchcenter-unified > .v92-body,
+  body.v92-match-center-official .v518-matchcenter-unified > .v92-match-actions,
+  body.v92-match-center-official .v518-matchcenter-unified > .v516-matchcenter-lower,
+  body.v92-match-center-official .v518-matchcenter-unified > .v92-source,
+  body.v92-match-center-official .v518-matchcenter-extras{
+    width:100%!important;
+    margin-left:0!important;
+    margin-right:0!important;
+    border-left:0!important;
+    border-right:0!important;
+    border-radius:0!important;
+    box-shadow:none!important;
+  }
+
+  body.v92-match-center-official .v518-matchcenter-unified .v92-score-card{
+    margin-top:0!important;
+    border-top:0!important;
+    background:transparent!important;
+  }
+  body.v92-match-center-official .v518-matchcenter-unified .v92-official-meta,
+  body.v92-match-center-official .v518-matchcenter-unified .v92-tabs,
+  body.v92-match-center-official .v518-matchcenter-unified > .v417-reference-tools,
+  body.v92-match-center-official .v518-matchcenter-unified > .v92-body,
+  body.v92-match-center-official .v518-matchcenter-unified > .v92-match-actions,
+  body.v92-match-center-official .v518-matchcenter-unified > .v516-matchcenter-lower,
+  body.v92-match-center-official .v518-matchcenter-unified > .v92-source,
+  body.v92-match-center-official .v518-matchcenter-extras > *{
+    border-top:1px solid rgba(255,255,255,.055)!important;
+  }
+
+  body.v92-match-center-official .v518-matchcenter-unified > .v92-body{
+    padding-left:12px!important;
+    padding-right:12px!important;
+    padding-bottom:12px!important;
+    background:transparent!important;
+  }
+
+  body.v92-match-center-official .v518-matchcenter-unified > .v92-match-actions{
+    padding:12px!important;
+    margin:0!important;
+    background:rgba(255,255,255,.012)!important;
+  }
+
+  body.v92-match-center-official .v518-matchcenter-unified > .v516-matchcenter-lower{
+    margin:0!important;
+    padding:12px!important;
+    background:transparent!important;
+  }
+
+  body.v92-match-center-official .v518-matchcenter-unified .v516-matchcenter-lower .v417-reference-tools,
+  body.v92-match-center-official .v518-matchcenter-unified .v516-matchcenter-lower .v416-general-card{
+    margin:0!important;
+    border-radius:10px!important;
+    box-shadow:none!important;
+  }
+
+  body.v92-match-center-official .v518-matchcenter-unified .v516-matchcenter-lower .v416-general-card{
+    margin-top:10px!important;
+  }
+
+  body.v92-match-center-official .v518-matchcenter-unified > .v92-source{
+    margin:0!important;
+    padding:12px 14px!important;
+    background:rgba(255,255,255,.012)!important;
+  }
+
+  body.v92-match-center-official .v518-matchcenter-extras{
+    padding:0!important;
+    background:transparent!important;
+  }
+
+  body.v92-match-center-official .v518-matchcenter-extras > .v412-shell,
+  body.v92-match-center-official .v518-matchcenter-extras > #v413-page-design,
+  body.v92-match-center-official .v518-matchcenter-extras > .v73-matchcenter-bottom{
+    width:100%!important;
+    margin:0!important;
+    border:0!important;
+    border-radius:0!important;
+    box-shadow:none!important;
+    background:transparent!important;
+  }
+
+  body.v92-match-center-official .v518-matchcenter-extras > .v412-shell,
+  body.v92-match-center-official .v518-matchcenter-extras > #v413-page-design{
+    padding:12px!important;
+  }
+
+  body.v92-match-center-official .v518-matchcenter-extras > .v73-matchcenter-bottom{
+    overflow:hidden!important;
+  }
+}
