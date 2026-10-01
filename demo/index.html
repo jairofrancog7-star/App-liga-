@@ -4,26 +4,48 @@
 
   <script>
     (function(){
-      if(window.__LJR_SCORERS_FASTLANE_V462__) return;
-      window.__LJR_SCORERS_FASTLANE_V462__=true;
-      window.addEventListener('click',function(e){
-        if(!(e.target instanceof Element)) return;
-        var target=e.target.closest('[data-v194-cat],[data-v462-stat]');
-        if(!target) return;
-        var route=(location.hash.replace(/^#\/?/,'')||'home').split('?')[0];
-        if(route!=='scorers') return;
+      if(window.__LJR_SCORERS_FASTLANE_V463__) return;
+      window.__LJR_SCORERS_FASTLANE_V463__=true;
+      var lastKey='',lastAt=0;
+
+      function route(){
+        return (location.hash.replace(/^#\/?/,'')||'home').split('?')[0];
+      }
+      function keyFor(target){
+        if(target.hasAttribute('data-v194-cat')) return 'cat:'+String(target.dataset.v194Cat||'3');
+        if(target.hasAttribute('data-v462-stat')) return 'stat:'+String(target.dataset.v462Stat||'goals');
+        return '';
+      }
+      function run(target){
         var api=window.LJR_SCORERS_REFERENCE;
-        if(!api) return;
+        if(!api) return false;
         if(target.hasAttribute('data-v194-cat') && typeof api.setCategory==='function'){
-          e.preventDefault();e.stopPropagation();e.stopImmediatePropagation();
           api.setCategory(target.dataset.v194Cat||'3');
-          return;
+          return true;
         }
         if(target.hasAttribute('data-v462-stat') && typeof api.setStat==='function'){
-          e.preventDefault();e.stopPropagation();e.stopImmediatePropagation();
           api.setStat(target.dataset.v462Stat||'goals');
+          return true;
         }
-      },true);
+        return false;
+      }
+      function handle(e){
+        if(!(e.target instanceof Element) || route()!=='scorers') return;
+        var target=e.target.closest('[data-v194-cat],[data-v462-stat]');
+        if(!target) return;
+        var key=keyFor(target),now=Date.now();
+        if(e.type==='click' && key && key===lastKey && now-lastAt<700){
+          e.preventDefault();e.stopPropagation();e.stopImmediatePropagation();
+          return;
+        }
+        if(run(target)){
+          lastKey=key;lastAt=now;
+          e.preventDefault();e.stopPropagation();e.stopImmediatePropagation();
+        }
+      }
+
+      window.addEventListener('pointerup',handle,true);
+      window.addEventListener('click',handle,true);
     })();
   </script>
 
@@ -261,8 +283,8 @@
     #screen .v400-chips small{color:#7785c4;font-size:7px;font-weight:900;letter-spacing:.09em}
     #screen .v400-chips b{margin-top:4px;overflow:hidden;font-size:11px;white-space:nowrap;text-overflow:ellipsis}
   </style>
-  <script type="module" crossorigin src="./assets/index-Ba5fBNbt.js"></script>
-  <link rel="stylesheet" crossorigin href="./assets/index-DXZhqGbU.css">
+  <script type="module" crossorigin src="./assets/index-CB1C-pNN.js"></script>
+  <link rel="stylesheet" crossorigin href="./assets/index-B32oK-ji.css">
 </head>
 <body>
   <div id="app" class="app-shell">
