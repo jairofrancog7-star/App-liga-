@@ -158,25 +158,28 @@
     return path ? (/^https?:\/\//i.test(path)?path:BASE+path) : '';
   }
   async function loadDynamic(){
-    try{
-      const r=await fetch(BASE+'data/official-live.json?v=20261001-v487-vet35-all-pages',{cache:'no-store'});
-      if(!r.ok)return;
-      const d=await r.json();
-      for(const [name,v] of Object.entries(d.team_logos||{})){
-        let src='';
-        if(typeof v==='string')src=v;
-        else if(v?.local)src=BASE+String(v.local).replace(/^\.\//,'');
-        else if(v?.source)src=v.source;
-        if(src)DYNAMIC[norm(name)]=src;
-      }
-      for(const cat of Object.values(d.categories||{})){
-        for(const item of (cat?.dashboard?.logo_candidates||[])){
-          const name=String(item?.near_text||'').trim(),src=String(item?.source||'').trim();
-          if(name&&src)DYNAMIC[norm(name)]=src;
+    for(const url of ['./data/official-live.json?v=20261001-v490-v35-all-pages',BASE+'data/official-live.json?v=20261001-v490-v35-all-pages']){
+      try{
+        const r=await fetch(url,{cache:'no-store'});
+        if(!r.ok)continue;
+        const d=await r.json();
+        for(const [name,v] of Object.entries(d.team_logos||{})){
+          let src='';
+          if(typeof v==='string')src=v;
+          else if(v?.local)src=BASE+String(v.local).replace(/^\.\//,'');
+          else if(v?.source)src=v.source;
+          if(src)DYNAMIC[norm(name)]=src;
         }
-      }
-      patchNode(document);
-    }catch(_){}
+        for(const cat of Object.values(d.categories||{})){
+          for(const item of (cat?.dashboard?.logo_candidates||[])){
+            const name=String(item?.near_text||'').trim(),src=String(item?.source||'').trim();
+            if(name&&src)DYNAMIC[norm(name)]=src;
+          }
+        }
+        patchNode(document);
+        return;
+      }catch(_){}
+    }
   }
   function teamNameFrom(el){
     if(!(el instanceof Element))return '';
