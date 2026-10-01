@@ -5,7 +5,7 @@
 if(window.__LJR_V194_SCORERS__)return;
 window.__LJR_V194_SCORERS__=true;
 window.__LJR_SCORERS_UI_OWNER__='v194-reference';
-window.__LJR_SCORERS_BUILD__='v504-player-ranking';
+window.__LJR_SCORERS_BUILD__='v505-android-no-freeze';
 
 const CAT_ORDER=['3','5','4','2','1'];
 const CAT_FALLBACK={
@@ -284,7 +284,11 @@ function chooseLowerStat(mode){
   if(v===lowerStat())return false;
   try{localStorage.setItem(LOWER_STAT_KEY,v)}catch(_){}
   syncControlState();
-  renderCategoryOnly();
+  if(statFrame)cancelAnimationFrame(statFrame);
+  statFrame=requestAnimationFrame(()=>{
+    statFrame=0;
+    renderCategoryOnly();
+  });
   return false;
 }
 
@@ -366,17 +370,24 @@ function chooseCategory(id){
   id=CAT_ORDER.includes(String(id))?String(id):'3';
   if(categoryBusy)return false;
   if(id===catId()&&pageHasCategory(id))return false;
+
   categoryBusy=true;
+  selectedCategory=id;
   try{
-    selectedCategory=id;
-    history.replaceState(history.state,'',location.pathname+location.search+'#/scorers?cat='+encodeURIComponent(id));
     localStorage.setItem('v62-category',id);
     localStorage.setItem('v12-fixture-cat',id);
     localStorage.setItem(TEAM_KEY,'all');
-    syncControlState();
-    renderCategoryOnly();
   }catch(_){}
-  finally{categoryBusy=false}
+
+  /* Android/WebView: do not mutate the URL or replace scorer DOM while
+     the tap event is still dispatching. That was the freeze trigger. */
+  syncControlState();
+  if(categoryTimer)cancelAnimationFrame(categoryTimer);
+  categoryTimer=requestAnimationFrame(()=>{
+    categoryTimer=0;
+    try{renderCategoryOnly()}
+    finally{categoryBusy=false}
+  });
   return false;
 }
 
