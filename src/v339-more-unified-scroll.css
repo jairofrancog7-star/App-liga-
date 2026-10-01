@@ -103,3 +103,28 @@
     --more-profile-size:23px;
   }
 }
+
+
+/* V515 — MÁS: permitir que aparezcan las tablas/módulos inferiores; el arte sigue fijo detrás. */
+@media(max-width:1023px){
+  body[data-app-route="more"] #screen{
+    overflow-y:visible!important;
+    min-height:auto!important;
+    height:auto!important;
+  }
+  body[data-app-route="more"] .v19-more-page{
+    overflow:visible!important;
+    min-height:auto!important;
+    height:auto!important;
+    padding-bottom:18px!important;
+  }
+  body[data-app-route="more"] .v411-hub[data-v411-owner="more"]{
+    position:relative!important;
+    z-index:8!important;
+    display:block!important;
+    visibility:visible!important;
+    opacity:1!important;
+    margin-top:26px!important;
+    margin-bottom:calc(110px + env(safe-area-inset-bottom))!important;
+  }
+}
