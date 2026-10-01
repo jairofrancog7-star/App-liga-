@@ -30,6 +30,42 @@ function ctx(){
   const key=String(sel.value||'match'),catId=key.split(':')[0]||'';
   return {root,key,catId,home:(sides[0].textContent||'Local').trim(),away:(sides[1].textContent||'Visitante').trim(),category:window.LJR_OFFICIAL_DATA?.categories?.[catId]?.name||''};
 }
+function isLegacyFacebookPlaceholder(url,name=''){
+  const u=String(url||'').toLowerCase();
+  const n=String(name||'').toLowerCase();
+  return u.includes('facebook.com/share/1cbukpctcm') ||
+    (n==='facebook / transmisión externa' && u.includes('facebook.com/share/1cbukpctcm'));
+}
+function migrateLegacyFacebookPlaceholder(){
+  try{
+    const g=JSON.parse(localStorage.getItem(SOURCE_KEY)||'null');
+    if(g&&isLegacyFacebookPlaceholder(g.url,g.name))localStorage.removeItem(SOURCE_KEY);
+  }catch(_){}
+  try{
+    for(let i=localStorage.length-1;i>=0;i--){
+      const k=localStorage.key(i);
+      if(!k||!k.startsWith(KEY))continue;
+      try{
+        const s=JSON.parse(localStorage.getItem(k)||'null');
+        if(s?.source&&isLegacyFacebookPlaceholder(s.source.url,s.source.name)){
+          s.source.url='';s.source.name='';s.source.feedUrl='';s.source.connected=false;s.source.lastSync=0;
+          localStorage.setItem(k,JSON.stringify(s));
+        }
+      }catch(_){}
+    }
+  }catch(_){}
+  try{
+    const u=new URL(location.href);
+    const live=u.searchParams.get('live')||'';
+    const liveName=u.searchParams.get('liveName')||'';
+    if(isLegacyFacebookPlaceholder(live,liveName)){
+      u.searchParams.delete('live');
+      u.searchParams.delete('liveName');
+      history.replaceState(null,'',u.toString());
+    }
+  }catch(_){}
+}
+migrateLegacyFacebookPlaceholder();
 function urlLiveSource(){
   try{
     const q=new URLSearchParams(location.search),url=q.get('live')||'',name=q.get('liveName')||'';
@@ -39,7 +75,7 @@ function urlLiveSource(){
 function freshState(c){
   let global={url:DEFAULT_SOURCE,name:''};
   try{global=JSON.parse(localStorage.getItem(SOURCE_KEY)||'null')||global}catch(_){}
-  if(String(global?.url||'')===LEGACY_DEFAULT_SOURCE)global={url:'',name:''};
+  if(isLegacyFacebookPlaceholder(global?.url,global?.name))global={url:'',name:''};
   const shared=urlLiveSource();if(shared)global=shared;
   return {v:144,key:c.key,home:c.home,away:c.away,source:{url:global.url||'',name:global.name||'',feedUrl:'',connected:false,lastSync:0},phase:'scheduled',firstStartedAt:0,secondStartedAt:0,finishedAt:0,events:[],suggestions:[],lastTranscript:'',updatedAt:now()};
 }
@@ -49,8 +85,8 @@ function load(c){
     if(s&&s.v===144){
       s.home=c.home;s.away=c.away;
       s.source=Object.assign({url:'',name:'',feedUrl:'',connected:false,lastSync:0},s.source||{});
-      if(String(s.source.url||'')===LEGACY_DEFAULT_SOURCE){
-        s.source.url='';s.source.name='';
+      if(isLegacyFacebookPlaceholder(s.source.url,s.source.name)){
+        s.source.url='';s.source.name='';s.source.feedUrl='';s.source.connected=false;s.source.lastSync=0;
         try{localStorage.removeItem(SOURCE_KEY)}catch(_){}
         save(s,false);
       }
