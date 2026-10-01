@@ -277,3 +277,662 @@ body[data-app-route="competition"] #v449-reference-lower{
   background:#2f79f3!important;
   color:#fff!important;
 }
+
+
+/* V452 — réplica geométrica de las referencias, sólo adaptada al azul de la Liga. */
+#v449-reference-lower{
+  --v452-bg:#07132c;
+  --v452-panel:#0a1b3e;
+  --v452-panel-2:#0b234d;
+  --v452-line:rgba(134,177,236,.26);
+  --v452-text:#ffffff;
+  --v452-muted:#93a8c8;
+  --v452-blue:#2f7cff;
+  --v452-blue2:#164fc7;
+}
+#v449-reference-lower .v449-season-panel{
+  width:calc(100% - 24px)!important;
+  max-width:520px!important;
+  margin:0 auto 18px!important;
+  padding:12px 12px 16px!important;
+  border:0!important;
+  border-radius:0!important;
+  background:transparent!important;
+  box-shadow:none!important;
+}
+
+/* ========== ESTADÍSTICAS: misma composición de la referencia ========== */
+#v449-reference-lower .v449-season-stats-ref{
+  padding-top:4px!important;
+}
+#v449-reference-lower .v449-stat-toggle{
+  display:flex!important;
+  align-items:center!important;
+  justify-content:space-between!important;
+  gap:14px!important;
+  padding:0!important;
+  background:transparent!important;
+}
+#v449-reference-lower .v449-stat-toggle>div{
+  display:grid!important;
+  grid-template-columns:1fr 1fr!important;
+  width:144px!important;
+  height:48px!important;
+  padding:3px!important;
+  border-radius:10px!important;
+  background:#0a2857!important;
+}
+#v449-reference-lower .v449-stat-toggle>div button{
+  min-width:0!important;
+  min-height:0!important;
+  height:42px!important;
+  padding:0 10px!important;
+  border:0!important;
+  border-radius:8px!important;
+  background:transparent!important;
+  color:#d8e4f6!important;
+  font-size:12px!important;
+  font-weight:500!important;
+  line-height:1!important;
+}
+#v449-reference-lower .v449-stat-toggle>div button.active{
+  background:#0d3b82!important;
+  color:#fff!important;
+  box-shadow:inset 0 0 0 1px rgba(107,160,255,.25)!important;
+}
+#v449-reference-lower .v449-compare-btn{
+  width:124px!important;
+  height:48px!important;
+  min-height:48px!important;
+  display:flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  gap:7px!important;
+  padding:0!important;
+  border:0!important;
+  border-radius:24px!important;
+  background:linear-gradient(180deg,#0e3c82,#092b61)!important;
+  color:#fff!important;
+  font-size:12px!important;
+  font-weight:700!important;
+}
+#v449-reference-lower .v449-compare-btn span{
+  font-size:17px!important;
+}
+#v449-reference-lower .v449-stat-heading{
+  display:flex!important;
+  align-items:center!important;
+  justify-content:space-between!important;
+  gap:10px!important;
+  margin:18px 0 10px!important;
+}
+#v449-reference-lower .v449-stat-heading h3{
+  margin:0!important;
+  color:#fff!important;
+  font-size:22px!important;
+  font-weight:850!important;
+  line-height:1.03!important;
+  letter-spacing:-.035em!important;
+}
+#v449-reference-lower .v449-stat-heading button{
+  width:126px!important;
+  min-width:126px!important;
+  height:48px!important;
+  min-height:48px!important;
+  padding:0 10px!important;
+  border:0!important;
+  border-radius:24px!important;
+  background:#0b2c61!important;
+  color:#dfeaff!important;
+  font-size:11px!important;
+  font-weight:600!important;
+  line-height:1.05!important;
+}
+#v449-reference-lower .v449-stat-card{
+  margin:0!important;
+  padding:13px 14px 12px!important;
+  border:0!important;
+  border-radius:18px!important;
+  background:linear-gradient(180deg,#0a2149,#081936)!important;
+  box-shadow:inset 0 0 0 1px rgba(87,142,222,.08)!important;
+}
+#v449-reference-lower .v449-stat-card+.v449-stat-card{
+  margin-top:10px!important;
+}
+#v449-reference-lower .v449-stat-card h4{
+  margin:0 0 7px!important;
+  color:#fff!important;
+  font-size:17px!important;
+  font-weight:800!important;
+  line-height:1!important;
+}
+#v449-reference-lower .v449-stat-card h4 span{
+  color:#d8e6ff!important;
+  font-size:24px!important;
+  font-weight:300!important;
+  vertical-align:-2px!important;
+}
+#v449-reference-lower .v449-scorer-row,
+#v449-reference-lower .v449-team-stat-row{
+  width:100%!important;
+  min-height:67px!important;
+  display:grid!important;
+  grid-template-columns:26px 58px minmax(0,1fr) 38px!important;
+  align-items:center!important;
+  gap:8px!important;
+  padding:3px 0!important;
+  border:0!important;
+  background:transparent!important;
+}
+#v449-reference-lower .v449-scorer-row>span:first-child,
+#v449-reference-lower .v449-team-stat-row>span:first-child{
+  color:#f5f8ff!important;
+  font-size:18px!important;
+  font-weight:400!important;
+  text-align:center!important;
+}
+#v449-reference-lower .v449-player-pic{
+  width:58px!important;
+  height:58px!important;
+  border-radius:15px!important;
+}
+#v449-reference-lower .v449-player-pic.is-fallback{
+  background:linear-gradient(180deg,#0b3b81,#081f49)!important;
+}
+#v449-reference-lower .v449-player-pic.is-fallback>.v449-crest{
+  width:42px!important;
+  height:42px!important;
+  background:transparent!important;
+}
+#v449-reference-lower .v449-player-pic.is-fallback>b{
+  display:none!important;
+}
+#v449-reference-lower .v449-scorer-row>div b,
+#v449-reference-lower .v449-team-stat-row>div b{
+  display:block!important;
+  margin:0 0 4px!important;
+  color:#fff!important;
+  font-size:13.5px!important;
+  font-weight:800!important;
+  line-height:1.05!important;
+}
+#v449-reference-lower .v449-scorer-row>div small,
+#v449-reference-lower .v449-team-stat-row>div small{
+  display:flex!important;
+  align-items:center!important;
+  min-width:0!important;
+  color:#93a8c8!important;
+  font-size:10px!important;
+  line-height:1.05!important;
+}
+#v449-reference-lower .v449-scorer-row>strong,
+#v449-reference-lower .v449-team-stat-row>strong{
+  color:#fff!important;
+  font-size:18px!important;
+  font-weight:850!important;
+  text-align:right!important;
+}
+#v449-reference-lower .v449-crest.micro{
+  width:24px!important;
+  height:24px!important;
+  flex:0 0 24px!important;
+  margin-right:5px!important;
+  border-radius:6px!important;
+  background:transparent!important;
+}
+#v449-reference-lower .v449-crest.statteam{
+  width:58px!important;
+  height:58px!important;
+  border-radius:14px!important;
+  background:transparent!important;
+}
+#v449-reference-lower .v449-stat-unavailable{
+  min-height:68px!important;
+  display:flex!important;
+  align-items:center!important;
+  justify-content:space-between!important;
+  gap:14px!important;
+  padding:8px 2px!important;
+}
+#v449-reference-lower .v449-stat-unavailable b{
+  color:#fff!important;
+  font-size:12px!important;
+}
+#v449-reference-lower .v449-stat-unavailable small{
+  max-width:62%!important;
+  color:#91a4c2!important;
+  font-size:9px!important;
+  line-height:1.25!important;
+  text-align:right!important;
+}
+
+/* ========== TABLA: filtros, selector y tabla con las proporciones de la referencia ========== */
+#v449-reference-lower .v449-season-table-ref{
+  padding-top:2px!important;
+}
+#v449-reference-lower .v449-season-controls{
+  display:grid!important;
+  grid-template-columns:1.25fr 1.25fr .9fr!important;
+  gap:7px!important;
+}
+#v449-reference-lower .v449-season-controls label,
+#v449-reference-lower .v449-season-controls button{
+  min-width:0!important;
+}
+#v449-reference-lower .v449-season-controls select,
+#v449-reference-lower .v449-season-controls button{
+  width:100%!important;
+  height:42px!important;
+  min-height:42px!important;
+  padding:0 28px 0 10px!important;
+  border:1.5px solid rgba(172,197,234,.55)!important;
+  border-radius:10px!important;
+  outline:0!important;
+  background:#071833!important;
+  color:#f2f6ff!important;
+  font-size:9.5px!important;
+  font-weight:500!important;
+}
+#v449-reference-lower .v449-season-controls select{
+  appearance:auto!important;
+}
+#v449-reference-lower .v449-season-controls button.active{
+  border-color:#3e87ff!important;
+  background:#0a2c61!important;
+}
+#v449-reference-lower .v449-table-modes{
+  height:46px!important;
+  display:grid!important;
+  grid-template-columns:repeat(3,1fr)!important;
+  gap:0!important;
+  margin:12px 0 10px!important;
+  padding:4px!important;
+  border-radius:12px!important;
+  background:#092653!important;
+}
+#v449-reference-lower .v449-table-modes button{
+  height:38px!important;
+  min-height:38px!important;
+  border:0!important;
+  border-radius:9px!important;
+  background:transparent!important;
+  color:#d5e0f1!important;
+  font-size:11px!important;
+  font-weight:500!important;
+}
+#v449-reference-lower .v449-table-modes button.active{
+  background:#0b387b!important;
+  color:#fff!important;
+}
+#v449-reference-lower .v449-season-table{
+  padding:11px 12px 12px!important;
+  border-radius:18px!important;
+  background:linear-gradient(180deg,#0a2149,#081936)!important;
+}
+#v449-reference-lower .v449-season-table-head,
+#v449-reference-lower .v449-season-table-row{
+  display:grid!important;
+  grid-template-columns:32px minmax(145px,1fr) 30px 30px 34px 34px!important;
+  align-items:center!important;
+  gap:4px!important;
+}
+#v449-reference-lower .v449-season-table.is-finished .v449-season-table-head,
+#v449-reference-lower .v449-season-table.is-finished .v449-season-table-row{
+  grid-template-columns:32px minmax(135px,1fr) 28px 28px 28px 28px 34px!important;
+}
+#v449-reference-lower .v449-season-table.is-form .v449-season-table-head,
+#v449-reference-lower .v449-season-table.is-form .v449-season-table-row{
+  grid-template-columns:32px minmax(150px,1fr) 122px!important;
+}
+#v449-reference-lower .v449-season-table-head{
+  min-height:30px!important;
+  padding:0 3px 6px!important;
+  color:#8da2c0!important;
+  font-size:8.5px!important;
+}
+#v449-reference-lower .v449-season-table-row{
+  min-height:53px!important;
+  padding:4px 3px!important;
+  border:0!important;
+  color:#eaf1fb!important;
+  font-size:9px!important;
+  text-align:center!important;
+}
+#v449-reference-lower .v449-season-table-row>span:nth-child(2){
+  display:flex!important;
+  align-items:center!important;
+  gap:8px!important;
+  min-width:0!important;
+  text-align:left!important;
+}
+#v449-reference-lower .v449-season-table-row>span:nth-child(2) b{
+  color:#fff!important;
+  font-size:11px!important;
+  font-weight:700!important;
+  line-height:1.05!important;
+  white-space:normal!important;
+  overflow:visible!important;
+}
+#v449-reference-lower .v449-crest.tiny{
+  width:40px!important;
+  height:40px!important;
+  flex:0 0 40px!important;
+  border-radius:9px!important;
+  background:transparent!important;
+}
+#v449-reference-lower .v449-season-table-row>strong{
+  color:#fff!important;
+  font-size:11px!important;
+}
+#v449-reference-lower .v449-form{
+  justify-content:flex-start!important;
+  gap:5px!important;
+}
+#v449-reference-lower .v449-form i{
+  width:27px!important;
+  height:27px!important;
+  font-size:8px!important;
+  font-weight:850!important;
+}
+#v449-reference-lower .v449-form .win{background:#13c878!important;color:#03180f!important}
+#v449-reference-lower .v449-form .loss{background:#ff3158!important;color:#fff!important}
+#v449-reference-lower .v449-form .draw{background:#123469!important;color:#e9f1ff!important}
+#v449-reference-lower .v449-no-form{
+  color:#7187a7!important;
+  font-size:12px!important;
+}
+
+/* ========== PARTIDOS: misma disposición de la captura de temporada ========== */
+#v449-reference-lower .v449-season-matches-ref{
+  padding-top:2px!important;
+}
+#v449-reference-lower .v449-season-date{
+  display:grid!important;
+  grid-template-columns:44px 1fr 44px!important;
+  align-items:center!important;
+  gap:10px!important;
+  margin:14px 0 10px!important;
+}
+#v449-reference-lower .v449-season-date button{
+  width:44px!important;
+  height:44px!important;
+  border:0!important;
+  border-radius:50%!important;
+  background:#0b3270!important;
+  color:#fff!important;
+  font-size:27px!important;
+  font-weight:300!important;
+}
+#v449-reference-lower .v449-season-date b{
+  display:block!important;
+  color:#fff!important;
+  font-size:18px!important;
+  font-weight:800!important;
+}
+#v449-reference-lower .v449-season-date small{
+  display:block!important;
+  margin-top:5px!important;
+  color:#9db0ca!important;
+  font-size:9px!important;
+}
+#v449-reference-lower .v449-season-match-list{
+  padding:9px 10px!important;
+  border-radius:18px!important;
+  background:linear-gradient(180deg,#0a2149,#081936)!important;
+}
+#v449-reference-lower .v449-season-match{
+  min-height:70px!important;
+  grid-template-columns:minmax(0,1fr) 48px 58px 48px minmax(0,1fr)!important;
+  gap:6px!important;
+  color:#fff!important;
+  font-size:10px!important;
+}
+#v449-reference-lower .v449-crest.season{
+  width:48px!important;
+  height:48px!important;
+  border-radius:10px!important;
+  background:transparent!important;
+}
+#v449-reference-lower .v449-season-match>b{
+  font-size:14px!important;
+}
+
+/* ========== COMPETICIÓN / CLASIFICACIÓN: misma densidad visual ========== */
+#v449-reference-lower .v449-block{
+  width:calc(100% - 24px)!important;
+  max-width:520px!important;
+  padding:12px!important;
+  border:0!important;
+  border-radius:20px!important;
+  background:linear-gradient(180deg,#091d40,#07152e)!important;
+  box-shadow:none!important;
+}
+#v449-reference-lower .v449-ref-tabs{
+  height:52px!important;
+  display:grid!important;
+  grid-template-columns:repeat(3,1fr)!important;
+  gap:0!important;
+  padding:4px!important;
+  border-radius:26px!important;
+  background:#0b2a5a!important;
+}
+#v449-reference-lower .v449-ref-tabs button{
+  height:44px!important;
+  min-height:44px!important;
+  border-radius:22px!important;
+  color:#d8e3f4!important;
+  font-size:12px!important;
+  font-weight:700!important;
+}
+#v449-reference-lower .v449-ref-tabs button.active{
+  background:#2f7cff!important;
+  color:#fff!important;
+  box-shadow:none!important;
+}
+#v449-reference-lower .v449-round-row{
+  gap:9px!important;
+  margin:14px -2px 12px!important;
+}
+#v449-reference-lower .v449-round-row button{
+  flex:1 0 112px!important;
+  min-height:48px!important;
+  border:1.5px solid rgba(138,172,219,.35)!important;
+  border-radius:8px!important;
+  background:#071833!important;
+  color:#d0dbec!important;
+  font-size:11px!important;
+}
+#v449-reference-lower .v449-round-row button.active{
+  border-color:#3885ff!important;
+  background:#0a2d62!important;
+}
+#v449-reference-lower .v449-fixture-card{
+  padding:14px 12px 13px!important;
+  border:0!important;
+  border-radius:16px!important;
+  background:#081a38!important;
+}
+#v449-reference-lower .v449-fixture-date{
+  font-size:10px!important;
+  font-weight:850!important;
+}
+#v449-reference-lower .v449-fixture-grid{
+  grid-template-columns:minmax(0,1fr) 84px minmax(0,1fr)!important;
+}
+#v449-reference-lower .v449-crest{
+  background:transparent!important;
+}
+#v449-reference-lower .v449-fixture-team .v449-crest{
+  width:70px!important;
+  height:70px!important;
+}
+#v449-reference-lower .v449-fixture-team b{
+  font-size:10px!important;
+  line-height:1.05!important;
+}
+#v449-reference-lower .v449-fixture-score strong{
+  font-size:26px!important;
+}
+#v449-reference-lower .v449-fixture-score button{
+  color:#4a9cff!important;
+  font-size:9px!important;
+}
+#v449-reference-lower .v449-table-head,
+#v449-reference-lower .v449-table-row{
+  grid-template-columns:38px minmax(135px,1.65fr) repeat(6,30px) 34px!important;
+}
+#v449-reference-lower .v449-table-head{
+  margin-top:12px!important;
+  min-width:390px!important;
+  font-size:7.5px!important;
+}
+#v449-reference-lower .v449-table-row{
+  min-width:390px!important;
+  min-height:50px!important;
+  font-size:8.5px!important;
+}
+#v449-reference-lower .v449-table-row .v449-team b{
+  font-size:10px!important;
+}
+#v449-reference-lower .v449-table-row .v449-crest.small{
+  width:38px!important;
+  height:38px!important;
+  flex:0 0 38px!important;
+}
+#v449-reference-lower .v449-table-row .v449-pos i{
+  width:5px!important;
+  height:35px!important;
+  background:#2f7cff!important;
+}
+
+/* ========== RANKING: misma tarjeta destacada y lista inferior ========== */
+#v449-reference-lower .v449-ranking-ref{
+  padding:12px!important;
+}
+#v449-reference-lower .v449-ranking-title{
+  margin:2px 0 11px!important;
+  color:#fff!important;
+  font-size:20px!important;
+  font-weight:900!important;
+  letter-spacing:-.03em!important;
+}
+#v449-reference-lower .v449-ranking-tabs{
+  height:48px!important;
+  margin-bottom:11px!important;
+  padding:4px!important;
+  border-radius:11px!important;
+  background:#0a2857!important;
+}
+#v449-reference-lower .v449-ranking-tabs button{
+  height:40px!important;
+  min-height:40px!important;
+  border-radius:8px!important;
+  font-size:11px!important;
+  color:#aab9ce!important;
+}
+#v449-reference-lower .v449-ranking-tabs button.active{
+  background:#0b3a80!important;
+  color:#fff!important;
+  box-shadow:inset 0 0 0 1px rgba(75,135,231,.25)!important;
+}
+#v449-reference-lower .v449-ranking-feature{
+  overflow:hidden!important;
+  border-radius:17px!important;
+  background:#081936!important;
+}
+#v449-reference-lower .v449-ranking-feature-top{
+  min-height:185px!important;
+  display:grid!important;
+  grid-template-columns:132px minmax(0,1fr) 60px!important;
+  gap:10px!important;
+  align-items:end!important;
+  padding:16px 14px!important;
+  background:linear-gradient(135deg,#0c3473 0%,#0b5eb7 100%)!important;
+}
+#v449-reference-lower .v449-player-pic.feature{
+  width:132px!important;
+  height:150px!important;
+  border-radius:18px!important;
+}
+#v449-reference-lower .v449-ranking-feature-top>div span{
+  color:#70b5ff!important;
+  font-size:15px!important;
+  font-weight:900!important;
+}
+#v449-reference-lower .v449-ranking-feature-top h3{
+  margin:4px 0 7px!important;
+  color:#fff!important;
+  font-size:22px!important;
+  font-weight:900!important;
+  line-height:.95!important;
+}
+#v449-reference-lower .v449-ranking-feature-top>div small{
+  color:#dbe7f8!important;
+  font-size:9px!important;
+}
+#v449-reference-lower .v449-ranking-feature-top>strong{
+  align-self:center!important;
+  color:#fff!important;
+  font-size:38px!important;
+  line-height:.9!important;
+}
+#v449-reference-lower .v449-ranking-feature-top>strong small{
+  margin-top:5px!important;
+  color:#b8d7ff!important;
+  font-size:8px!important;
+}
+#v449-reference-lower .v449-ranking-list{
+  padding:4px 13px 8px!important;
+}
+#v449-reference-lower .v449-ranking-more{
+  height:46px!important;
+  min-height:46px!important;
+  margin-top:10px!important;
+  border:0!important;
+  border-radius:12px!important;
+  background:#0a2857!important;
+  color:#58aaff!important;
+  font-size:11px!important;
+  font-weight:850!important;
+  text-align:left!important;
+  padding:0 16px!important;
+}
+#v449-reference-lower .v449-ranking-more span{
+  float:right!important;
+  font-size:18px!important;
+}
+#v449-reference-lower .v449-ranking-unavailable{
+  min-height:160px!important;
+  display:flex!important;
+  flex-direction:column!important;
+  align-items:center!important;
+  justify-content:center!important;
+  gap:8px!important;
+  border-radius:17px!important;
+  background:#081936!important;
+  text-align:center!important;
+}
+#v449-reference-lower .v449-ranking-unavailable b{
+  color:#fff!important;
+  font-size:18px!important;
+}
+#v449-reference-lower .v449-ranking-unavailable span{
+  max-width:260px!important;
+  color:#91a6c5!important;
+  font-size:10px!important;
+  line-height:1.3!important;
+}
+
+@media(max-width:390px){
+  #v449-reference-lower .v449-stat-heading h3{font-size:19px!important}
+  #v449-reference-lower .v449-stat-heading button{width:116px!important;min-width:116px!important}
+  #v449-reference-lower .v449-season-controls{grid-template-columns:1.2fr 1fr .9fr!important}
+  #v449-reference-lower .v449-season-table-head,
+  #v449-reference-lower .v449-season-table-row{grid-template-columns:29px minmax(125px,1fr) 28px 28px 31px 31px!important}
+  #v449-reference-lower .v449-season-table.is-finished .v449-season-table-head,
+  #v449-reference-lower .v449-season-table.is-finished .v449-season-table-row{grid-template-columns:29px minmax(115px,1fr) 25px 25px 25px 25px 30px!important}
+  #v449-reference-lower .v449-season-table.is-form .v449-season-table-head,
+  #v449-reference-lower .v449-season-table.is-form .v449-season-table-row{grid-template-columns:29px minmax(130px,1fr) 108px!important}
+  #v449-reference-lower .v449-ranking-feature-top{grid-template-columns:108px minmax(0,1fr) 48px!important}
+  #v449-reference-lower .v449-player-pic.feature{width:108px!important;height:132px!important}
+}
