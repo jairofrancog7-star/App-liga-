@@ -186,6 +186,15 @@ function playerStats(p){
 function categoryCode(catId){
  return ({'3':'1ª','5':'INT','4':'2ª','2':'V35','1':'V50'})[String(catId)]||'LJR';
 }
+function categoryLogo(catId){
+ return ({
+   '3':'./assets/branding/primera-fuerza-hd.png',
+   '5':'./assets/categories/intermedia.webp',
+   '4':'./assets/categories/segunda-fuerza.webp',
+   '2':'./assets/categories/veteranos-35-user.png',
+   '1':'./assets/categories/veteranos-50.webp'
+ })[String(catId)]||LEAGUE;
+}
 function positionCode(p){
  const raw=String(p.position||'Jugador').trim().toUpperCase();
  if(!raw||raw==='JUGADOR')return 'JUG';
@@ -196,7 +205,7 @@ function positionCode(p){
  return raw.slice(0,3);
 }
 function searchPlayerRow(p){
- const s=playerStats(p),teamLogo=logo(p.team),cat=categoryCode(p.catId),pos=positionCode(p);
+ const s=playerStats(p),teamLogo=logo(p.team),cat=categoryCode(p.catId),catLogo=categoryLogo(p.catId),pos=positionCode(p);
  const pc=/^DEL/.test(pos)?'is-del':/^DEF/.test(pos)?'is-def':/^(MED|CEN|MC|MD|MI|MCD|MCO)/.test(pos)?'is-mid':'is-jug';
  return '<button type="button" class="v414-player-row" data-v412-player="'+esc(p.id)+'" aria-label="'+esc(p.name)+', '+esc(p.team)+', '+s.goals+' goles, '+s.played+' partidos, '+s.points+' puntos">'+
    '<span class="v414-player-photo"><img src="'+esc(teamLogo)+'" alt="'+esc(p.team)+'"><i>'+esc(initials(p.name))+'</i></span>'+
@@ -207,7 +216,7 @@ function searchPlayerRow(p){
    '<span class="v414-num" title="Goles"><b>'+s.goals+'</b></span>'+
    '<span class="v414-num v414-pj" title="Partidos jugados"><b>'+s.played+'</b></span>'+
    '<span class="v414-num v414-pts" title="Puntos"><i>▲</i><b>'+s.points+'</b></span>'+
-   '<span class="v414-badges"><span class="v414-league-badge"><img src="'+LEAGUE+'" alt="Liga"><small>'+esc(cat)+'</small></span><span class="v414-team-badge"><img src="'+esc(teamLogo)+'" alt="'+esc(p.team)+'"></span></span>'+
+   '<span class="v414-badges"><span class="v414-league-badge v414-category-badge" title="'+esc(p.category||cat)+'"><img src="'+esc(catLogo)+'" alt="'+esc(p.category||cat)+'"></span><span class="v414-team-badge"><img src="'+esc(teamLogo)+'" alt="'+esc(p.team)+'"></span></span>'+
  '</button>';
 }
 function searchTeamRow(t){
