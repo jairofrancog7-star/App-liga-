@@ -32,9 +32,12 @@ function ctx(){
 }
 function isLegacyFacebookPlaceholder(url,name=''){
   const u=String(url||'').toLowerCase();
-  const n=String(name||'').toLowerCase();
+  const n=String(name||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().trim();
+  /* V530: cualquier estado viejo con el nombre genérico "Facebook / transmisión externa"
+     fue creado automáticamente por versiones anteriores; no es un LIVE publicado por el operador. */
   return u.includes('facebook.com/share/1cbukpctcm') ||
-    (n==='facebook / transmisión externa' && u.includes('facebook.com/share/1cbukpctcm'));
+    n==='facebook / transmision externa' ||
+    n==='facebook/transmision externa';
 }
 function migrateLegacyFacebookPlaceholder(){
   try{
@@ -338,10 +341,13 @@ function timelineHtml(s,c){
   return list.length?list.map(e=>'<div class="v144-live-event"><b>'+esc(e.minute||'—')+'</b><span>'+esc(eventText(e,c))+'<small>'+(e.source==='voice'?'Narración detectada y confirmada':'Operador Match Center')+'</small></span></div>').join(''):'<p class="v144-empty">Todavía no hay eventos confirmados.</p>';
 }
 function hubHtml(c,s){
-  const p=provider(s.source.url),x=counters(s),live=s.phase==='first'||s.phase==='second';
+  const hasSource=!!safeLiveUrl(s?.source?.url),p=provider(s.source.url),x=counters(s),live=s.phase==='first'||s.phase==='second';
+  const sourceTitle=hasSource?(s.source.name||p.name):'Sin LIVE vinculado';
+  const sourceType=hasSource?p.name:'Agrega Facebook, YouTube, TikTok o video';
+  const sourceIcon=hasSource?p.icon:'＋';
   return '<section class="v144-live-hub" data-v144-live-hub data-v144-match="'+esc(c.key)+'">'+
     '<div class="v144-head"><i class="'+(live?'on':'')+'"></i><span><small>LIVE INTELLIGENCE</small><b>'+esc(phaseLabel(s))+'</b></span><strong>'+x.home.goals+'–'+x.away.goals+'</strong></div>'+
-    '<div class="v144-source"><em>'+esc(p.icon)+'</em><span><b>'+esc(s.source.name||p.name)+'</b><small>'+esc(p.name)+'</small></span><button data-v144-config>Subir / vincular LIVE</button></div>'+
+    '<div class="v144-source"><em>'+esc(sourceIcon)+'</em><span><b>'+esc(sourceTitle)+'</b><small>'+esc(sourceType)+'</small></span><button data-v144-config>Subir / vincular LIVE</button></div>'+
     livePlatformButtons(s)+
     '<p class="v144-live-help">Facebook · YouTube · TikTok. Vincula el enlace oficial del LIVE. El feed JSON / WebSocket / SSE es opcional para minuto, goles y eventos en tiempo real.</p>'+
     streamEmbedHtml(s)+
