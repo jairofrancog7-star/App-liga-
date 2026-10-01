@@ -21,13 +21,13 @@ let timer=0,lastSig='',floatingPortal=null,floatingCardNode=null,floatingDragBou
 function ctx(){
   const root=$('[data-v92-matchcenter]');if(!root)return null;
   const sel=$('[data-v92-match-select]',root);
-  let sides=$('.v92-score-card .v92-side b',root);
-  if(sides.length<2)sides=$('.v420-matchup > div > b',root);
-  if(sides.length<2)sides=$('.v526-form-head > div > b',root);
+  let sides=$$('.v92-score-card .v92-side b',root);
+  if(sides.length<2)sides=$$('.v420-matchup > div > b',root);
+  if(sides.length<2)sides=$$('.v526-form-head > div > b',root);
   if(!sel||sides.length<2)return null;
   const category=$('.v420-match-panel h2',root)?.textContent?.trim()||
     ($('.v92-match-head p',root)?.textContent||'').split('·')[1]?.trim()||'Liga Municipal';
-  const meta=$('.v92-official-meta span',root).map(x=>x.textContent.trim());
+  const meta=$$('.v92-official-meta span',root).map(x=>x.textContent.trim());
   if(!meta.length){
     const d=$('.v420-match-panel p',root)?.textContent?.trim();
     const v=$('.v420-media-card span',root)?.textContent?.trim();
@@ -372,7 +372,7 @@ function hubHtml(c,s){
   '</section>';
 }
 function modalShell(cls,title,body){
-  $('.v196-modal').forEach(x=>x.remove());
+  $$('.v196-modal').forEach(x=>x.remove());
   const w=document.createElement('div');w.innerHTML='<div class="v196-modal '+cls+'"><button class="v196-backdrop" data-v196-close></button><section><header><span><small>LIVE CENTER</small><b>'+esc(title)+'</b></span><button type="button" data-v196-close>×</button></header>'+body+'</section></div>';
   const m=w.firstElementChild;document.body.appendChild(m);
   $$('[data-v196-close]',m).forEach(b=>b.onclick=()=>m.remove());
@@ -581,7 +581,7 @@ function applyFloating(node){
 }
 function render(){
   if(!ROUTES.has(route())){
-    $$('.v196-modal').forEach(x=>x.remove());
+    $$$('.v196-modal').forEach(x=>x.remove());
     if(document.pictureInPictureElement||systemPiPActive){
       document.body.classList.add('v196-floating-player');
       return;
