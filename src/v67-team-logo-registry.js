@@ -158,7 +158,7 @@
     return path ? (/^https?:\/\//i.test(path)?path:BASE+path) : '';
   }
   async function loadDynamic(){
-    for(const url of ['./data/official-live.json?v=20261001-v490-v35-all-pages',BASE+'data/official-live.json?v=20261001-v490-v35-all-pages']){
+    for(const url of ['./data/official-live.json?v=20261001-v491-v35-all-pages',BASE+'data/official-live.json?v=20261001-v491-v35-all-pages']){
       try{
         const r=await fetch(url,{cache:'no-store'});
         if(!r.ok)continue;
