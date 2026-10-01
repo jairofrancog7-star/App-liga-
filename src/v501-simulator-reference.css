@@ -3113,3 +3113,226 @@ body[data-app-route="simulator"] [data-v512-bracket].stage-final .v12-final-trop
     animation:none!important;
   }
 }
+
+
+/* V516 — corrección final/semifinal del cuadro del simulador */
+/* Nunca dejar la Final montada sobre otras etapas. */
+body[data-app-route="simulator"] [data-v512-bracket].stage-playoff .v12-final-reference,
+body[data-app-route="simulator"] [data-v512-bracket].stage-octavos .v12-final-reference,
+body[data-app-route="simulator"] [data-v512-bracket].stage-cuartos .v12-final-reference,
+body[data-app-route="simulator"] [data-v512-bracket].stage-semifinal .v12-final-reference{
+  display:none!important;
+  visibility:hidden!important;
+  opacity:0!important;
+}
+
+/* Semifinal compacta: las dos rutas convergen sin dejar huecos enormes. */
+body[data-app-route="simulator"] [data-v512-bracket].stage-semifinal .v12-stage-panel-semifinal{
+  display:block!important;
+  margin:0!important;
+  padding:0 8px 14px!important;
+  box-sizing:border-box!important;
+}
+body[data-app-route="simulator"] [data-v512-bracket].stage-semifinal .v12-progress-dates{
+  gap:22px!important;
+  padding:0 8px!important;
+  margin:0 0 10px!important;
+}
+body[data-app-route="simulator"] [data-v512-bracket].stage-semifinal .v12-semifinal-flow{
+  grid-template-columns:minmax(0,1fr) 28px minmax(0,1fr)!important;
+  grid-template-rows:1fr 1fr!important;
+  gap:48px 5px!important;
+  min-height:clamp(390px,110vw,470px)!important;
+  max-height:470px!important;
+  padding:0 3px 10px!important;
+}
+body[data-app-route="simulator"] [data-v512-bracket].stage-semifinal .v12-progress-match{
+  width:100%!important;
+  max-width:none!important;
+  aspect-ratio:1.42 / 1!important;
+  min-height:0!important;
+  padding:12px!important;
+  border-radius:13px!important;
+  box-sizing:border-box!important;
+}
+body[data-app-route="simulator"] [data-v512-bracket].stage-semifinal .v12-progress-match time,
+body[data-app-route="simulator"] [data-v512-bracket].stage-semifinal .v12-progress-match small{
+  font-size:11px!important;
+}
+body[data-app-route="simulator"] [data-v512-bracket].stage-semifinal .v12-progress-opponent{
+  min-height:27px!important;
+  margin-top:7px!important;
+  gap:6px!important;
+}
+body[data-app-route="simulator"] [data-v512-bracket].stage-semifinal .v12-progress-opponent .shield{
+  width:24px!important;
+  height:24px!important;
+}
+body[data-app-route="simulator"] [data-v512-bracket].stage-semifinal .v12-progress-opponent b{
+  font-size:15px!important;
+}
+body[data-app-route="simulator"] [data-v512-bracket].stage-semifinal .v12-semifinal-source::after{
+  right:-21px!important;
+  width:21px!important;
+  border-top-width:2px!important;
+}
+body[data-app-route="simulator"] [data-v512-bracket].stage-semifinal .v12-semifinal-join{
+  left:calc(50% - 14px)!important;
+  width:28px!important;
+  border-right-width:2px!important;
+}
+body[data-app-route="simulator"] [data-v512-bracket].stage-semifinal .v12-semifinal-join::after{
+  right:-16px!important;
+  width:16px!important;
+  border-top-width:2px!important;
+}
+
+/* FINAL: mismo lenguaje de Competición, pero bien encajado en el simulador. */
+body[data-app-route="simulator"] [data-v512-bracket].stage-final{
+  padding-bottom:0!important;
+  overflow:hidden!important;
+  background:#174dff!important;
+}
+body[data-app-route="simulator"] [data-v512-bracket].stage-final>.v12-bracket-dates,
+body[data-app-route="simulator"] [data-v512-bracket].stage-final>.v12-bracket-board,
+body[data-app-route="simulator"] [data-v512-bracket].stage-final>.v12-stage-panels{
+  display:none!important;
+}
+body[data-app-route="simulator"] [data-v512-bracket].stage-final .v12-final-reference{
+  display:block!important;
+  visibility:visible!important;
+  opacity:1!important;
+  position:relative!important;
+  width:100%!important;
+  height:calc(100dvh - 215px)!important;
+  min-height:500px!important;
+  max-height:650px!important;
+  margin:0!important;
+  overflow:hidden!important;
+  background:#174dff!important;
+}
+body[data-app-route="simulator"] [data-v512-bracket].stage-final .v12-final-reference::before{
+  content:"FINAL"!important;
+  position:absolute!important;
+  left:14px!important;
+  top:12px!important;
+  z-index:4!important;
+  color:#dce5ff!important;
+  font:800 9px/1 Inter,Roboto,Arial,sans-serif!important;
+  letter-spacing:.02em!important;
+}
+body[data-app-route="simulator"] [data-v512-bracket].stage-final .v12-final-top-date{
+  top:34px!important;
+  left:14px!important;
+  width:46%!important;
+  color:#d2dcff!important;
+}
+body[data-app-route="simulator"] [data-v512-bracket].stage-final .v12-final-top-date span{
+  height:1px!important;
+  margin-bottom:11px!important;
+  background:rgba(208,221,255,.20)!important;
+}
+body[data-app-route="simulator"] [data-v512-bracket].stage-final .v12-final-top-date b{
+  color:#d2dcff!important;
+  font-size:12px!important;
+  font-weight:500!important;
+}
+body[data-app-route="simulator"] [data-v512-bracket].stage-final .v12-final-side-mark{
+  display:none!important;
+}
+body[data-app-route="simulator"] [data-v512-bracket].stage-final .v12-final-match-card{
+  left:14px!important;
+  bottom:50px!important;
+  width:44%!important;
+  max-width:205px!important;
+  height:auto!important;
+  aspect-ratio:1.38 / 1!important;
+  padding:13px!important;
+  border-radius:14px!important;
+  background:linear-gradient(145deg,#122a94 0%,#0a176a 100%)!important;
+  box-shadow:inset 0 0 0 1px rgba(106,138,255,.18),0 10px 20px rgba(0,0,60,.18)!important;
+}
+body[data-app-route="simulator"] [data-v512-bracket].stage-final .v12-final-match-card time{
+  margin-bottom:11px!important;
+  color:#c4cff1!important;
+  font-size:12px!important;
+}
+body[data-app-route="simulator"] [data-v512-bracket].stage-final .v12-final-opponent{
+  min-height:29px!important;
+  gap:7px!important;
+}
+body[data-app-route="simulator"] [data-v512-bracket].stage-final .v12-final-shield{
+  width:24px!important;
+  height:24px!important;
+}
+body[data-app-route="simulator"] [data-v512-bracket].stage-final .v12-final-shield svg{
+  width:24px!important;
+  height:24px!important;
+}
+body[data-app-route="simulator"] [data-v512-bracket].stage-final .v12-final-opponent b{
+  font-size:15px!important;
+  line-height:1!important;
+}
+body[data-app-route="simulator"] [data-v512-bracket].stage-final .v12-final-trophy-wrap{
+  position:absolute!important;
+  right:3%!important;
+  bottom:24px!important;
+  width:46%!important;
+  max-width:220px!important;
+  height:330px!important;
+  aspect-ratio:auto!important;
+  display:grid!important;
+  place-items:end center!important;
+  overflow:visible!important;
+  z-index:5!important;
+}
+body[data-app-route="simulator"] [data-v512-bracket].stage-final .v12-final-trophy-new{
+  position:static!important;
+  width:100%!important;
+  height:100%!important;
+  display:grid!important;
+  place-items:end center!important;
+}
+body[data-app-route="simulator"] [data-v512-bracket].stage-final .v12-final-trophy-new img{
+  width:100%!important;
+  height:100%!important;
+  max-width:100%!important;
+  object-fit:contain!important;
+  object-position:center bottom!important;
+  transform-origin:center bottom!important;
+  animation:v516TrophyFloat 2.8s ease-in-out infinite!important;
+}
+@keyframes v516TrophyFloat{
+  0%,100%{transform:translateY(0) rotate(-.35deg)}
+  50%{transform:translateY(-6px) rotate(.35deg)}
+}
+
+/* El panel deslizable nunca debe tapar visualmente la tarjeta/trofeo cuando está cerrado. */
+body[data-app-route="simulator"] [data-v512-bracket].stage-final{
+  padding-bottom:24px!important;
+}
+
+@media(max-width:390px){
+  body[data-app-route="simulator"] [data-v512-bracket].stage-final .v12-final-reference{
+    height:calc(100dvh - 205px)!important;
+    min-height:470px!important;
+    max-height:590px!important;
+  }
+  body[data-app-route="simulator"] [data-v512-bracket].stage-final .v12-final-match-card{
+    left:10px!important;
+    bottom:42px!important;
+    width:45%!important;
+    padding:11px!important;
+  }
+  body[data-app-route="simulator"] [data-v512-bracket].stage-final .v12-final-trophy-wrap{
+    right:1%!important;
+    bottom:18px!important;
+    width:48%!important;
+    height:300px!important;
+  }
+  body[data-app-route="simulator"] [data-v512-bracket].stage-semifinal .v12-semifinal-flow{
+    min-height:380px!important;
+    max-height:430px!important;
+    gap:40px 4px!important;
+  }
+}
