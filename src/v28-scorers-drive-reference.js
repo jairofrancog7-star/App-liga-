@@ -10,6 +10,21 @@ const CATS=[
   ['1','Veteranos 50+']
 ];
 const ROWS=[
+  /* V488 CAT3 SCORERS */
+  ["LINCES","ERNESTO BALTAZAR SOSA ARREDONDO",2,"Primera Fuerza","https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/Linces_l1lc7c"],
+  ["LINCES","JORGE LUIS ALMAGUER RUIZ",1,"Primera Fuerza","https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/Linces_l1lc7c"],
+  ["SAN JOSE FC","Marco Cesar Saavedra Escoto",1,"Primera Fuerza","https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/SanJoseMonta%C3%B1a_ilen4d"],
+  ["LOBOS CDG","Emiliano Rubi Campos",1,"Primera Fuerza","https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/Lobos_efloib"],
+  ["SAN JOSE FC","Mario Eduardo Cardenas Ayala",1,"Primera Fuerza","https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/SanJoseMonta%C3%B1a_ilen4d"],
+  ["HERMANOS","Alejandro Moreno Banda",1,"Primera Fuerza","https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/Hermanos_kbfrmh"],
+  ["NAPOLI","Juan Pablo Muñoz Guerrero",1,"Primera Fuerza","https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/Napoli_cp25dv"],
+  ["LINCES","ISRAEL SOLORZANO LINARES",1,"Primera Fuerza","https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/Linces_l1lc7c"],
+  ["LINCES","ANDRES AGUILLON TIERRABLANCA",1,"Primera Fuerza","https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/Linces_l1lc7c"],
+  ["JUVENTUS","Jose Ramon Negrete Ruiz",1,"Primera Fuerza","https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/Juventus_fpshqs"],
+  ["JUVENTUS","Jorge Luis Ramirez Conejo",1,"Primera Fuerza","https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/Juventus_fpshqs"],
+  ["NAPOLI","Juan Pablo Mendoza Macias",1,"Primera Fuerza","https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/Napoli_cp25dv"],
+  ["SAN JOSE FC","Jose Rosas Cardenas",1,"Primera Fuerza","https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/SanJoseMonta%C3%B1a_ilen4d"],
+  ["NAPOLI","Juan Esteban Montecillo Solache",1,"Primera Fuerza","https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/Napoli_cp25dv"],
   [
     "DYNAMO",
     "Hugo Armenta Buenavista",

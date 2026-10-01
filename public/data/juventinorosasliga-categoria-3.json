@@ -1,0 +1,1137 @@
+{
+  "source_page": "https://www.juventinorosasliga.com/?categoria=3",
+  "captured_at_utc": "2026-10-01T15:25:00Z",
+  "category_id": 3,
+  "category": "Primera Fuerza",
+  "season_id": 3,
+  "counts": {
+    "Equipos": 11,
+    "Partidos Jugados": 25,
+    "Partidos Pendientes": 30,
+    "Jugadores": 290
+  },
+  "teams": [
+    {
+      "name": "SAN JOSE FC",
+      "logo": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/SanJoseMonta%C3%B1a_ilen4d"
+    },
+    {
+      "name": "JUVENTUS",
+      "logo": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/Juventus_fpshqs"
+    },
+    {
+      "name": "LINCES",
+      "logo": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/Linces_l1lc7c"
+    },
+    {
+      "name": "NAPOLI",
+      "logo": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/Napoli_cp25dv"
+    },
+    {
+      "name": "HERMANOS",
+      "logo": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/Hermanos_kbfrmh"
+    },
+    {
+      "name": "FRANCO FC",
+      "logo": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/FrancoFC_vtd8d7"
+    },
+    {
+      "name": "HERRERAS FC",
+      "logo": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/HerreraFC_mnmlsd"
+    },
+    {
+      "name": "ABEJAS",
+      "logo": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/Abejas_lxn6l9"
+    },
+    {
+      "name": "TERRICOLAS",
+      "logo": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/Terricolas_ltbrzy"
+    },
+    {
+      "name": "LOBOS CDG",
+      "logo": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/Lobos_efloib"
+    },
+    {
+      "name": "GALACTICOS",
+      "logo": "https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/assets/teams/galacticos-pozos.webp"
+    }
+  ],
+  "standings": [
+    {
+      "headers": [
+        "#",
+        "Equipo",
+        "PJ",
+        "PG",
+        "PE",
+        "PP",
+        "GF",
+        "GC",
+        "DIF",
+        "PTS"
+      ],
+      "rows": [
+        [
+          "1",
+          "SAN JOSE FC",
+          "5",
+          "5",
+          "0",
+          "0",
+          "16",
+          "4",
+          "+12",
+          "15"
+        ],
+        [
+          "2",
+          "JUVENTUS",
+          "5",
+          "3",
+          "0",
+          "2",
+          "22",
+          "11",
+          "+11",
+          "9"
+        ],
+        [
+          "3",
+          "LINCES",
+          "4",
+          "3",
+          "0",
+          "1",
+          "15",
+          "9",
+          "+6",
+          "9"
+        ],
+        [
+          "4",
+          "NAPOLI",
+          "5",
+          "3",
+          "0",
+          "2",
+          "11",
+          "8",
+          "+3",
+          "9"
+        ],
+        [
+          "5",
+          "HERMANOS",
+          "4",
+          "2",
+          "1",
+          "1",
+          "9",
+          "7",
+          "+2",
+          "7"
+        ],
+        [
+          "6",
+          "FRANCO FC",
+          "3",
+          "2",
+          "0",
+          "1",
+          "3",
+          "3",
+          "0",
+          "6"
+        ],
+        [
+          "7",
+          "HERRERAS FC",
+          "4",
+          "1",
+          "1",
+          "2",
+          "9",
+          "12",
+          "-3",
+          "4"
+        ],
+        [
+          "8",
+          "ABEJAS",
+          "4",
+          "2",
+          "0",
+          "2",
+          "7",
+          "7",
+          "0",
+          "3"
+        ],
+        [
+          "9",
+          "TERRICOLAS",
+          "4",
+          "1",
+          "0",
+          "3",
+          "5",
+          "14",
+          "-9",
+          "3"
+        ],
+        [
+          "10",
+          "LOBOS CDG",
+          "5",
+          "1",
+          "0",
+          "4",
+          "3",
+          "20",
+          "-17",
+          "3"
+        ],
+        [
+          "11",
+          "GALACTICOS",
+          "5",
+          "0",
+          "0",
+          "5",
+          "0",
+          "5",
+          "-5",
+          "-15"
+        ]
+      ]
+    }
+  ],
+  "scorers": [
+    {
+      "headers": [
+        "#",
+        "Jugador",
+        "Equipo",
+        "Goles"
+      ],
+      "rows": [
+        [
+          "1",
+          "ERNESTO BALTAZAR SOSA ARREDONDO",
+          "LINCES",
+          "2"
+        ],
+        [
+          "2",
+          "JORGE LUIS ALMAGUER RUIZ",
+          "LINCES",
+          "1"
+        ],
+        [
+          "3",
+          "Marco Cesar Saavedra Escoto",
+          "SAN JOSE FC",
+          "1"
+        ],
+        [
+          "4",
+          "Emiliano Rubi Campos",
+          "LOBOS CDG",
+          "1"
+        ],
+        [
+          "5",
+          "Mario Eduardo Cardenas Ayala",
+          "SAN JOSE FC",
+          "1"
+        ],
+        [
+          "6",
+          "Alejandro Moreno Banda",
+          "HERMANOS",
+          "1"
+        ],
+        [
+          "7",
+          "Juan Pablo Muñoz Guerrero",
+          "NAPOLI",
+          "1"
+        ],
+        [
+          "8",
+          "ISRAEL SOLORZANO LINARES",
+          "LINCES",
+          "1"
+        ],
+        [
+          "9",
+          "ANDRES AGUILLON TIERRABLANCA",
+          "LINCES",
+          "1"
+        ],
+        [
+          "10",
+          "Jose Ramon Negrete Ruiz",
+          "JUVENTUS",
+          "1"
+        ],
+        [
+          "11",
+          "Jorge Luis Ramirez Conejo",
+          "JUVENTUS",
+          "1"
+        ],
+        [
+          "12",
+          "Juan Pablo Mendoza Macias",
+          "NAPOLI",
+          "1"
+        ],
+        [
+          "13",
+          "Jose Rosas Cardenas",
+          "SAN JOSE FC",
+          "1"
+        ],
+        [
+          "14",
+          "Juan Esteban Montecillo Solache",
+          "NAPOLI",
+          "1"
+        ]
+      ]
+    }
+  ],
+  "team_goal_totals": [
+    {
+      "rank": 2,
+      "team": "JUVENTUS",
+      "goals": 22
+    },
+    {
+      "rank": 1,
+      "team": "SAN JOSE FC",
+      "goals": 16
+    },
+    {
+      "rank": 3,
+      "team": "LINCES",
+      "goals": 15
+    },
+    {
+      "rank": 4,
+      "team": "NAPOLI",
+      "goals": 11
+    },
+    {
+      "rank": 5,
+      "team": "HERMANOS",
+      "goals": 9
+    },
+    {
+      "rank": 7,
+      "team": "HERRERAS FC",
+      "goals": 9
+    },
+    {
+      "rank": 8,
+      "team": "ABEJAS",
+      "goals": 7
+    },
+    {
+      "rank": 9,
+      "team": "TERRICOLAS",
+      "goals": 5
+    },
+    {
+      "rank": 6,
+      "team": "FRANCO FC",
+      "goals": 3
+    },
+    {
+      "rank": 10,
+      "team": "LOBOS CDG",
+      "goals": 3
+    },
+    {
+      "rank": 11,
+      "team": "GALACTICOS",
+      "goals": 0
+    }
+  ],
+  "cards": [
+    {
+      "headers": [
+        "Tipo",
+        "Estado"
+      ],
+      "rows": [
+        [
+          "Amarillas",
+          "Sin tarjetas amarillas."
+        ],
+        [
+          "Rojas",
+          "Sin tarjetas rojas."
+        ]
+      ]
+    }
+  ],
+  "suspensions": [
+    {
+      "headers": [
+        "Estado"
+      ],
+      "rows": [
+        [
+          "No hay jugadores castigados."
+        ]
+      ]
+    }
+  ],
+  "fixtures": [
+    {
+      "headers": [
+        "#",
+        "Jornada",
+        "Local",
+        "Goles",
+        "vs",
+        "Goles",
+        "Visitante",
+        "Campo",
+        "Fecha/Hora",
+        "Árbitro"
+      ],
+      "rows": [
+        [
+          "1",
+          "1",
+          "LOBOS CDG",
+          "1",
+          "vs",
+          "11",
+          "JUVENTUS",
+          "Campo 1 (Empastado)",
+          "26/07/2026 08:00",
+          "---"
+        ],
+        [
+          "2",
+          "1",
+          "FRANCO FC",
+          "-",
+          "vs",
+          "2",
+          "HERMANOS",
+          "",
+          "26/07/2026 08:00",
+          "---"
+        ],
+        [
+          "3",
+          "1",
+          "GALACTICOS",
+          "-",
+          "vs",
+          "1",
+          "SAN JOSE FC",
+          "",
+          "26/07/2026 10:00",
+          "---"
+        ],
+        [
+          "4",
+          "1",
+          "NAPOLI",
+          "3",
+          "vs",
+          "-",
+          "HERRERAS FC",
+          "Campo 2",
+          "26/07/2026 10:00",
+          "---"
+        ],
+        [
+          "5",
+          "1",
+          "LINCES",
+          "6",
+          "vs",
+          "4",
+          "ABEJAS",
+          "Fraccionamiento",
+          "26/07/2026 12:00",
+          "---"
+        ],
+        [
+          "6",
+          "2",
+          "JUVENTUS",
+          "4",
+          "vs",
+          "2",
+          "NAPOLI",
+          "Fraccionamiento",
+          "09/08/2026 08:00",
+          "---"
+        ],
+        [
+          "7",
+          "2",
+          "LOBOS CDG",
+          "-",
+          "vs",
+          "4",
+          "SAN JOSE FC",
+          "Cerrito de Gasca",
+          "09/08/2026 08:00",
+          "---"
+        ],
+        [
+          "8",
+          "2",
+          "ABEJAS",
+          "1",
+          "vs",
+          "-",
+          "GALACTICOS",
+          "",
+          "09/08/2026 10:00",
+          "---"
+        ],
+        [
+          "9",
+          "2",
+          "HERRERAS FC",
+          "5",
+          "vs",
+          "3",
+          "TERRICOLAS",
+          "",
+          "09/08/2026 10:00",
+          "---"
+        ],
+        [
+          "10",
+          "2",
+          "FRANCO FC",
+          "2",
+          "vs",
+          "1",
+          "LINCES",
+          "",
+          "09/08/2026 12:00",
+          "---"
+        ],
+        [
+          "11",
+          "3",
+          "HERMANOS",
+          "3",
+          "vs",
+          "3",
+          "HERRERAS FC",
+          "Campo 1 (Empastado)",
+          "30/08/2026 08:00",
+          "---"
+        ],
+        [
+          "12",
+          "3",
+          "TERRICOLAS",
+          "-",
+          "vs",
+          "4",
+          "JUVENTUS",
+          "Campo 2",
+          "30/08/2026 08:00",
+          "---"
+        ],
+        [
+          "13",
+          "3",
+          "NAPOLI",
+          "2",
+          "vs",
+          "3",
+          "SAN JOSE FC",
+          "San Jose  de la Montaña",
+          "30/08/2026 10:00",
+          "---"
+        ],
+        [
+          "14",
+          "3",
+          "LOBOS CDG",
+          "1",
+          "vs",
+          "-",
+          "GALACTICOS",
+          "",
+          "30/08/2026 10:00",
+          "---"
+        ],
+        [
+          "15",
+          "3",
+          "ABEJAS",
+          "-",
+          "vs",
+          "1",
+          "FRANCO FC",
+          "Pozos",
+          "30/08/2026 12:00",
+          "---"
+        ],
+        [
+          "16",
+          "4",
+          "ABEJAS",
+          "2",
+          "vs",
+          "-",
+          "LOBOS CDG",
+          "Pozos",
+          "06/09/2026 08:00",
+          "---"
+        ],
+        [
+          "17",
+          "4",
+          "JUVENTUS",
+          "1",
+          "vs",
+          "3",
+          "HERMANOS",
+          "Romerillo",
+          "06/09/2026 08:00",
+          "---"
+        ],
+        [
+          "18",
+          "4",
+          "SAN JOSE FC",
+          "5",
+          "vs",
+          "1",
+          "TERRICOLAS",
+          "San Jose  de la Montaña",
+          "06/09/2026 10:00",
+          "---"
+        ],
+        [
+          "19",
+          "4",
+          "GALACTICOS",
+          "-",
+          "vs",
+          "1",
+          "NAPOLI",
+          "",
+          "06/09/2026 10:00",
+          "---"
+        ],
+        [
+          "20",
+          "4",
+          "HERRERAS FC",
+          "1",
+          "vs",
+          "3",
+          "LINCES",
+          "Campo 1 (Empastado)",
+          "06/09/2026 12:00",
+          "---"
+        ],
+        [
+          "21",
+          "5",
+          "TERRICOLAS",
+          "1",
+          "vs",
+          "-",
+          "GALACTICOS",
+          "",
+          "20/09/2026 08:00",
+          "---"
+        ],
+        [
+          "22",
+          "5",
+          "LINCES",
+          "5",
+          "vs",
+          "2",
+          "JUVENTUS",
+          "Campo 3",
+          "20/09/2026 08:00",
+          "FCO. ARMANDO ELIZALDE REYES"
+        ],
+        [
+          "23",
+          "5",
+          "FRANCO FC",
+          "-",
+          "vs",
+          "-",
+          "HERRERAS FC",
+          "Romerillo",
+          "20/09/2026 08:00",
+          "---"
+        ],
+        [
+          "24",
+          "5",
+          "HERMANOS",
+          "1",
+          "vs",
+          "3",
+          "SAN JOSE FC",
+          "Campo 3",
+          "20/09/2026 10:00",
+          "ANTONIO HUICHAPAN LOPEZ"
+        ],
+        [
+          "25",
+          "5",
+          "LOBOS CDG",
+          "1",
+          "vs",
+          "3",
+          "NAPOLI",
+          "Cerrito de Gasca",
+          "20/09/2026 12:00",
+          "MARTINIANO GARCIA RAMIREZ"
+        ],
+        [
+          "26",
+          "6",
+          "NAPOLI",
+          "-",
+          "vs",
+          "-",
+          "ABEJAS",
+          "Campo 1 (Empastado)",
+          "27/09/2026 08:00",
+          "---",
+          "JUGADO"
+        ],
+        [
+          "27",
+          "6",
+          "HERMANOS",
+          "-",
+          "vs",
+          "-",
+          "GALACTICOS",
+          "Campo 1 (Empastado)",
+          "27/09/2026 08:00",
+          "---",
+          "JUGADO · GANA HERMANOS"
+        ],
+        [
+          "28",
+          "6",
+          "FRANCO FC",
+          "-",
+          "vs",
+          "-",
+          "JUVENTUS",
+          "Romerillo",
+          "27/09/2026 08:00",
+          "---",
+          "JUGADO"
+        ],
+        [
+          "29",
+          "6",
+          "TERRICOLAS",
+          "-",
+          "vs",
+          "-",
+          "LOBOS CDG",
+          "Campo 1 (Empastado)",
+          "27/09/2026 10:00",
+          "---",
+          "JUGADO"
+        ],
+        [
+          "30",
+          "6",
+          "LINCES",
+          "-",
+          "vs",
+          "-",
+          "SAN JOSE FC",
+          "San Jose  de la Montaña",
+          "27/09/2026 12:00",
+          "---",
+          "JUGADO"
+        ],
+        [
+          "31",
+          "7",
+          "HERMANOS",
+          "-",
+          "vs",
+          "-",
+          "LOBOS CDG",
+          "Campo 3",
+          "04/10/2026 10:00",
+          "---"
+        ],
+        [
+          "32",
+          "7",
+          "HERRERAS FC",
+          "-",
+          "vs",
+          "-",
+          "ABEJAS",
+          "Pozos",
+          "04/10/2026 10:00",
+          "---"
+        ],
+        [
+          "33",
+          "7",
+          "LINCES",
+          "-",
+          "vs",
+          "-",
+          "GALACTICOS",
+          "",
+          "04/10/2026",
+          "---",
+          "GANA LINCES"
+        ],
+        [
+          "34",
+          "7",
+          "TERRICOLAS",
+          "-",
+          "vs",
+          "-",
+          "NAPOLI",
+          "Campo 3",
+          "04/10/2026 08:00",
+          "---"
+        ],
+        [
+          "35",
+          "7",
+          "FRANCO FC",
+          "-",
+          "vs",
+          "-",
+          "SAN JOSE FC",
+          "San Jose de la Montaña",
+          "04/10/2026 12:00",
+          "---"
+        ],
+        [
+          "36",
+          "8",
+          "TERRICOLAS",
+          "-",
+          "vs",
+          "-",
+          "LINCES",
+          "Campo 3",
+          "11/10/2026 08:00",
+          "---"
+        ],
+        [
+          "37",
+          "8",
+          "GALACTICOS",
+          "-",
+          "vs",
+          "-",
+          "FRANCO FC",
+          "Pozos",
+          "11/10/2026 08:00",
+          "---"
+        ],
+        [
+          "38",
+          "8",
+          "HERMANOS",
+          "-",
+          "vs",
+          "-",
+          "LOBOS CDG",
+          "Campo 3",
+          "11/10/2026 10:00",
+          "---"
+        ],
+        [
+          "39",
+          "8",
+          "JUVENTUS",
+          "-",
+          "vs",
+          "-",
+          "HERRERAS FC",
+          "Campo 1 (Empastado)",
+          "11/10/2026 10:00",
+          "---"
+        ],
+        [
+          "40",
+          "8",
+          "NAPOLI",
+          "-",
+          "vs",
+          "-",
+          "ABEJAS",
+          "Campo 3",
+          "11/10/2026 12:00",
+          "---"
+        ],
+        [
+          "41",
+          "9",
+          "LOBOS CDG",
+          "-",
+          "vs",
+          "-",
+          "FRANCO FC",
+          "Cerrito de Gasca",
+          "18/10/2026 08:00",
+          "---"
+        ],
+        [
+          "42",
+          "9",
+          "HERMANOS",
+          "-",
+          "vs",
+          "-",
+          "TERRICOLAS",
+          "Campo 4",
+          "18/10/2026 08:00",
+          "---"
+        ],
+        [
+          "43",
+          "9",
+          "ABEJAS",
+          "-",
+          "vs",
+          "-",
+          "JUVENTUS",
+          "Pozos",
+          "18/10/2026 10:00",
+          "---"
+        ],
+        [
+          "44",
+          "9",
+          "SAN JOSE FC",
+          "-",
+          "vs",
+          "-",
+          "HERRERAS FC",
+          "San Jose  de la Montaña",
+          "18/10/2026 10:00",
+          "---"
+        ],
+        [
+          "45",
+          "9",
+          "NAPOLI",
+          "-",
+          "vs",
+          "-",
+          "LINCES",
+          "Campo 4",
+          "18/10/2026 12:00",
+          "---"
+        ],
+        [
+          "46",
+          "10",
+          "GALACTICOS",
+          "-",
+          "vs",
+          "-",
+          "LINCES",
+          "Pozos",
+          "25/10/2026 08:00",
+          "---"
+        ],
+        [
+          "47",
+          "10",
+          "ABEJAS",
+          "-",
+          "vs",
+          "-",
+          "SAN JOSE FC",
+          "Campo 4",
+          "25/10/2026 08:00",
+          "---"
+        ],
+        [
+          "48",
+          "10",
+          "FRANCO FC",
+          "-",
+          "vs",
+          "-",
+          "JUVENTUS",
+          "Tavera",
+          "25/10/2026 10:00",
+          "---"
+        ],
+        [
+          "49",
+          "10",
+          "HERMANOS",
+          "-",
+          "vs",
+          "-",
+          "NAPOLI",
+          "Fraccionamiento",
+          "25/10/2026 10:00",
+          "---"
+        ],
+        [
+          "50",
+          "10",
+          "LOBOS CDG",
+          "-",
+          "vs",
+          "-",
+          "TERRICOLAS",
+          "Cerrito de Gasca",
+          "25/10/2026 12:00",
+          "---"
+        ],
+        [
+          "51",
+          "11",
+          "NAPOLI",
+          "-",
+          "vs",
+          "-",
+          "TERRICOLAS",
+          "Campo 1 (Empastado)",
+          "01/11/2026 08:00",
+          "---"
+        ],
+        [
+          "52",
+          "11",
+          "FRANCO FC",
+          "-",
+          "vs",
+          "-",
+          "SAN JOSE FC",
+          "Tavera",
+          "01/11/2026 08:00",
+          "---"
+        ],
+        [
+          "53",
+          "11",
+          "LOBOS CDG",
+          "-",
+          "vs",
+          "-",
+          "LINCES",
+          "Cerrito de Gasca",
+          "01/11/2026 10:00",
+          "---"
+        ],
+        [
+          "54",
+          "11",
+          "GALACTICOS",
+          "-",
+          "vs",
+          "-",
+          "HERMANOS",
+          "Pozos",
+          "01/11/2026 10:00",
+          "---"
+        ],
+        [
+          "55",
+          "11",
+          "ABEJAS",
+          "-",
+          "vs",
+          "-",
+          "HERRERAS FC",
+          "Pozos",
+          "01/11/2026 12:00",
+          "---"
+        ]
+      ]
+    }
+  ],
+  "dashboard": {
+    "counts": {
+      "Equipos": 11,
+      "Partidos Jugados": 25,
+      "Partidos Pendientes": 30,
+      "Jugadores": 290
+    },
+    "current_cedulas": [
+      96,
+      97,
+      98,
+      99,
+      100
+    ],
+    "logo_candidates": [
+      {
+        "source": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/SanJoseMonta%C3%B1a_ilen4d",
+        "near_text": "SAN JOSE FC"
+      },
+      {
+        "source": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/Juventus_fpshqs",
+        "near_text": "JUVENTUS"
+      },
+      {
+        "source": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/Linces_l1lc7c",
+        "near_text": "LINCES"
+      },
+      {
+        "source": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/Napoli_cp25dv",
+        "near_text": "NAPOLI"
+      },
+      {
+        "source": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/Hermanos_kbfrmh",
+        "near_text": "HERMANOS"
+      },
+      {
+        "source": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/FrancoFC_vtd8d7",
+        "near_text": "FRANCO FC"
+      },
+      {
+        "source": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/HerreraFC_mnmlsd",
+        "near_text": "HERRERAS FC"
+      },
+      {
+        "source": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/Abejas_lxn6l9",
+        "near_text": "ABEJAS"
+      },
+      {
+        "source": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/Terricolas_ltbrzy",
+        "near_text": "TERRICOLAS"
+      },
+      {
+        "source": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/Lobos_efloib",
+        "near_text": "LOBOS CDG"
+      },
+      {
+        "source": "https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/assets/teams/galacticos-pozos.webp",
+        "near_text": "GALACTICOS"
+      }
+    ]
+  }
+}
