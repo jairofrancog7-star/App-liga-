@@ -1881,3 +1881,76 @@ body[data-app-route="transfers"] .v430-transfer-bell .v430-check{
     height:25px!important;
   }
 }
+
+
+/* V496 — Partidos: botones y texto móvil compactos, legibles y sin recortes. */
+[data-v412-screen="fixtures"] .v412-match-head{margin-bottom:8px;padding:0 2px}
+[data-v412-screen="fixtures"] .v412-match-head h2{font-size:18px;line-height:1.05;font-weight:900}
+[data-v412-screen="fixtures"] .v412-match-head p{margin-top:5px;font-size:9.2px;line-height:1.25}
+[data-v412-screen="fixtures"] .v412-match-head .v412-star{width:34px;height:34px;font-size:22px;flex:0 0 34px}
+[data-v412-screen="fixtures"] .v412-daystrip{
+  gap:7px;
+  margin:0 -12px;
+  padding:5px 12px 11px;
+  scroll-snap-type:x proximity;
+  scroll-padding-inline:12px
+}
+[data-v412-screen="fixtures"] .v412-day{
+  width:auto;
+  min-width:94px;
+  max-width:none;
+  height:40px;
+  flex:0 0 auto;
+  padding:0 12px;
+  overflow:visible;
+  border-radius:10px;
+  font-size:9.2px;
+  line-height:1;
+  font-weight:850;
+  letter-spacing:0;
+  text-overflow:clip;
+  white-space:nowrap;
+  scroll-snap-align:start
+}
+[data-v412-screen="fixtures"] .v412-day[data-v412-day="all"]{min-width:76px}
+[data-v412-screen="fixtures"] .v412-day.is-active{
+  border-color:#fff;
+  box-shadow:inset 0 0 0 1px #fff;
+  color:#fff
+}
+[data-v412-screen="fixtures"] .v412-follow-note{
+  margin:7px -12px 13px;
+  padding:13px 12px;
+  font-size:9.4px;
+  line-height:1.35
+}
+[data-v412-screen="fixtures"] .v412-section-title{margin-bottom:9px;font-size:10.5px}
+[data-v412-screen="fixtures"] .v412-competition-card{border-radius:14px}
+[data-v412-screen="fixtures"] .v412-comp-title{gap:8px;padding:11px 12px}
+[data-v412-screen="fixtures"] .v412-comp-title i{width:32px;height:32px;font-size:11px}
+[data-v412-screen="fixtures"] .v412-comp-title b{font-size:11px;line-height:1.15}
+[data-v412-screen="fixtures"] .v412-comp-title small{font-size:8px}
+[data-v412-screen="fixtures"] .v412-matchrow{
+  grid-template-columns:minmax(0,1fr) 58px 30px;
+  gap:7px;
+  padding:10px 12px
+}
+[data-v412-screen="fixtures"] .v412-teamline{gap:7px;margin:2px 0}
+[data-v412-screen="fixtures"] .v412-teamline img{width:22px;height:22px;flex:0 0 22px}
+[data-v412-screen="fixtures"] .v412-teamline span{font-size:9.2px;line-height:1.1}
+[data-v412-screen="fixtures"] .v412-scorebox b{font-size:11px}
+[data-v412-screen="fixtures"] .v412-scorebox small{margin-top:3px;font-size:7.4px;line-height:1.2}
+[data-v412-screen="fixtures"] .v412-mini-star{font-size:18px;padding:4px}
+[data-v412-screen="fixtures"] .v412-comp-foot{padding:9px}
+[data-v412-screen="fixtures"] .v412-comp-foot button{font-size:8.5px}
+[data-v412-screen="fixtures"] .v412-grid{gap:8px;margin-top:10px}
+[data-v412-screen="fixtures"] .v412-shortcut{min-height:66px;gap:8px;padding:9px 10px;border-radius:13px}
+[data-v412-screen="fixtures"] .v412-shortcut i{width:34px;height:34px;flex-basis:34px;border-radius:10px;font-size:15px}
+[data-v412-screen="fixtures"] .v412-shortcut b{font-size:10px;line-height:1.15}
+[data-v412-screen="fixtures"] .v412-shortcut small{margin-top:3px;font-size:7.5px;line-height:1.25}
+@media(max-width:390px){
+  [data-v412-screen="fixtures"] .v412-day{min-width:90px;height:39px;padding-inline:10px;font-size:8.9px}
+  [data-v412-screen="fixtures"] .v412-day[data-v412-day="all"]{min-width:72px}
+  [data-v412-screen="fixtures"] .v412-matchrow{grid-template-columns:minmax(0,1fr) 55px 28px;padding-inline:10px}
+  [data-v412-screen="fixtures"] .v412-teamline span{font-size:8.8px}
+}
