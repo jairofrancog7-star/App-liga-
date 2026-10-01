@@ -839,7 +839,7 @@ function bind(root){
 }
 function supported(r){
  if(r==='competition'&&window.CompetitionController)return false;
- return ['home','more','competition','v4-calendar','calendar','monthlyCalendar','calendarMonthly','leagueData','bracketBuilder','tableExport','teams','players','teamDetail','match','matchday','stats','scorers','rankings','v38Stats','video','history','historyLog','tactics','jrControl','news','v38Weekly','notifications'].includes(r);
+ return ['home','more','competition','v4-calendar','calendar','monthlyCalendar','calendarMonthly','leagueData','bracketBuilder','tableExport','teams','players','teamDetail','match','matchday','stats','scorers','rankings','v38Stats','video','moments','history','historyLog','tactics','jrControl','news','v38Weekly','notifications'].includes(r);
 }
 let timer=0;
 function mount(){
@@ -868,13 +868,16 @@ function mount(){
  let sec=$('#v105-bottom',screen);
 
  if(r==='moments'){
-   const host=$('.v26-moments-original',screen);
+   const host=$('.v26-moments-page',screen)||$('.v26-moments-original',screen);
    if(!host)return;
    if(!sec){
      const html=block(r);if(!html)return;
-     host.insertAdjacentHTML('beforeend',html);sec=$('#v105-bottom',host);bind(sec);
-   }else if(sec.parentElement!==host||host.lastElementChild!==sec){
-     host.appendChild(sec);
+     const wrap=document.createElement('div');wrap.innerHTML=html;
+     sec=wrap.firstElementChild;if(!sec)return;
+     host.insertAdjacentElement('afterend',sec);
+     bind(sec);
+   }else if(sec.parentElement!==screen||sec.previousElementSibling!==host){
+     host.insertAdjacentElement('afterend',sec);
    }
    return;
  }
