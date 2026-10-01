@@ -2,53 +2,7 @@
 <html lang="es-MX">
 <head>
 
-  <script>
-    (function(){
-      if(window.__LJR_SCORERS_FASTLANE_V465__) return;
-      window.__LJR_SCORERS_FASTLANE_V465__=true;
-      var lastKey='',lastAt=0;
 
-      function route(){
-        return (location.hash.replace(/^#\/?/,'')||'home').split('?')[0];
-      }
-      function keyFor(target){
-        if(target.hasAttribute('data-v194-cat')) return 'cat:'+String(target.dataset.v194Cat||'3');
-        if(target.hasAttribute('data-v462-stat')) return 'stat:'+String(target.dataset.v462Stat||'goals');
-        return '';
-      }
-      function run(target){
-        var api=window.LJR_SCORERS_REFERENCE;
-        if(!api) return false;
-        if(target.hasAttribute('data-v194-cat') && typeof api.setCategory==='function'){
-          api.setCategory(target.dataset.v194Cat||'3');
-          return true;
-        }
-        if(target.hasAttribute('data-v462-stat') && typeof api.setStat==='function'){
-          api.setStat(target.dataset.v462Stat||'goals');
-          return true;
-        }
-        return false;
-      }
-      function handle(e){
-        if(!(e.target instanceof Element) || route()!=='scorers') return;
-        var target=e.target.closest('[data-v194-cat],[data-v462-stat]');
-        if(!target) return;
-        var key=keyFor(target),now=Date.now();
-        if(e.type==='click' && key && key===lastKey && now-lastAt<700){
-          e.preventDefault();e.stopPropagation();e.stopImmediatePropagation();
-          return;
-        }
-        if(run(target)){
-          lastKey=key;lastAt=now;
-          e.preventDefault();e.stopPropagation();e.stopImmediatePropagation();
-        }
-      }
-
-      /* One event only. pointerup + click caused the category action to enter
-         twice on some Android browsers before the DOM settled. */
-      window.addEventListener('click',handle,true);
-    })();
-  </script>
 
 
   <script>
@@ -284,7 +238,7 @@
     #screen .v400-chips small{color:#7785c4;font-size:7px;font-weight:900;letter-spacing:.09em}
     #screen .v400-chips b{margin-top:4px;overflow:hidden;font-size:11px;white-space:nowrap;text-overflow:ellipsis}
   </style>
-  <script type="module" crossorigin src="./assets/index-GrrIEaFv.js"></script>
+  <script type="module" crossorigin src="./assets/index-B5iFH857.js"></script>
   <link rel="stylesheet" crossorigin href="./assets/index-B32oK-ji.css">
 </head>
 <body>
