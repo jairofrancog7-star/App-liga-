@@ -394,7 +394,6 @@ function bind(root){
     b.style.pointerEvents='auto';
     b.style.touchAction='manipulation';
   });
-  root.addEventListener('click',delegatedClick,false);
 }
 function delegatedClick(e){
   if(route()!=='scorers'||!(e.target instanceof Element))return;
@@ -465,6 +464,7 @@ window.LJR_SCORERS_REFERENCE={
   getStat:()=>lowerStat()
 };
 window.LJR_SET_SCORER_CATEGORY=function(id){return chooseCategory(id)};
+document.addEventListener('click',delegatedClick,true);
 document.addEventListener('change',delegatedChange,true);
 window.addEventListener('hashchange',()=>{
   selectedCategory='';
