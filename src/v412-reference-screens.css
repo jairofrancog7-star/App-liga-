@@ -2148,3 +2148,41 @@ body[data-app-route="whereToWatch"] .v412-provider{
     font-size:7.5px!important;
   }
 }
+
+
+/* V498 — botones de búsqueda del mismo tamaño que Accesos rápidos */
+body[data-app-route="search"] .v415-single-search .v412-modebar{
+  display:grid!important;
+  grid-template-columns:repeat(2,minmax(0,1fr))!important;
+  gap:9px!important;
+  width:100%!important;
+  margin:0!important;
+  padding:0 0 12px!important;
+  overflow:visible!important;
+}
+body[data-app-route="search"] .v415-single-search .v412-mode{
+  width:100%!important;
+  min-width:0!important;
+  min-height:74px!important;
+  height:74px!important;
+  padding:0 10px!important;
+  border:1px solid var(--line)!important;
+  border-radius:16px!important;
+  background:#0b156b!important;
+  color:#fff!important;
+  font-size:12px!important;
+  font-weight:850!important;
+  line-height:1.1!important;
+  white-space:normal!important;
+  overflow:visible!important;
+  text-overflow:clip!important;
+}
+body[data-app-route="search"] .v415-single-search .v412-mode.is-active{
+  background:#0b156b!important;
+  color:#fff!important;
+  border-color:#22dff0!important;
+  box-shadow:inset 0 -3px 0 #22dff0,0 0 0 1px rgba(34,223,240,.18)!important;
+}
+body[data-app-route="search"] .v415-single-search .v412-mode.is-active:after{
+  display:none!important;
+}
