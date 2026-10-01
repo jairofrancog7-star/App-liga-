@@ -252,7 +252,7 @@ function buildUpBody(m,state){
       '</div>'+
     '</section>'+
     '<nav class="v420-pills" aria-label="Opciones del partido">'+
-      '<button type="button" class="active" aria-current="page">Build Up</button>'+
+      '<button type="button" class="active" aria-current="page" data-v92-tab="BuildUp">Build Up</button>'+
       '<button type="button" data-v92-tab="Predicciones">Predicciones</button>'+
       '<button type="button" data-v92-tab="Cronología">Comentarios</button>'+
       '<button type="button" data-v92-tab="Previa">Previa</button>'+
@@ -284,19 +284,22 @@ function predictionsBody(m){
 }
 function referenceMarketBar(m,state){
   const live=state.kind==='window';
+  let saved=null;try{saved=JSON.parse(localStorage.getItem('v420-prediction:'+m.key)||'null')}catch(_){}
+  const picked=String(saved?.pick||'');
+  const cls=v=>picked===v?' active':'';
   return '<section class="v417-reference-tools">'+
     '<div class="v417-mode-row">'+
       '<button type="button" data-v92-tab="Cronología" class="'+(live?'active':'')+'">DIRECTO</button>'+
       '<button type="button" data-v92-tab="Previa" class="'+(!live?'active':'')+'">PRE-PARTIDO</button>'+
       '<span>Anuncio</span>'+
     '</div>'+
-    '<div class="v417-market-row" aria-label="Comparador visual 1 X 2">'+
+    '<div class="v417-market-row" aria-label="Pronóstico local 1 X 2">'+
       '<span class="v417-market-brand"><b>LIGA</b></span>'+
-      '<button type="button" class="v417-market-btn" aria-disabled="true"><small>1</small><b>—</b></button>'+
-      '<button type="button" class="v417-market-btn" aria-disabled="true"><small>X</small><b>—</b></button>'+
-      '<button type="button" class="v417-market-btn" aria-disabled="true"><small>2</small><b>—</b></button>'+
+      '<button type="button" class="v417-market-btn'+cls('1')+'" data-v417-market-pick="1" aria-pressed="'+(picked==='1')+'"><small>1</small><b>—</b></button>'+
+      '<button type="button" class="v417-market-btn'+cls('X')+'" data-v417-market-pick="X" aria-pressed="'+(picked==='X')+'"><small>X</small><b>—</b></button>'+
+      '<button type="button" class="v417-market-btn'+cls('2')+'" data-v417-market-pick="2" aria-pressed="'+(picked==='2')+'"><small>2</small><b>—</b></button>'+
     '</div>'+
-    '<small class="v417-market-note">Datos oficiales de la Liga · sin cuotas publicadas</small>'+
+    '<small class="v417-market-note">Pronóstico guardado en este dispositivo · la Liga no publica cuotas</small>'+
   '</section>';
 }
 function previewBody(m,state){
@@ -309,7 +312,7 @@ function previewBody(m,state){
   return '<section class="v416-preview">'+
     '<section class="v416-general-card">'+
       '<header><h2>ESTADÍSTICAS GENERALES</h2></header>'+
-      '<div class="v416-segment"><button type="button" class="active">'+esc(m.category)+'</button><button type="button" data-v92-tab="Estadísticas">TODO</button></div>'+
+      '<div class="v416-segment"><button type="button" class="active" data-v92-refresh title="Actualizar datos oficiales">'+esc(m.category)+'</button><button type="button" data-v92-tab="Estadísticas">TODO</button></div>'+
       '<div class="v416-team-form">'+previewTeam(m,home,'home')+previewTeam(m,away,'away')+'</div>'+
       previewValueRow('Posesión',null,null,{suffix:'%',decimals:0,unavailable:true})+
       previewValueRow('Goles a favor',havg,aavg,{decimals:2})+
@@ -789,12 +792,15 @@ function lineupsBody(m){
 }
 function oddsBody(m){
   const r=m.r;
+  let saved=null;try{saved=JSON.parse(localStorage.getItem('v420-prediction:'+m.key)||'null')}catch(_){}
+  const picked=String(saved?.pick||'');
+  const cls=v=>picked===v?' active':'';
   return '<section class="v417-odds-page">'+
-    '<header><small>CUOTAS</small><h2>Mercado 1 X 2</h2><p>Diseño disponible para conservar la misma navegación de la referencia. La Liga no publica cuotas oficiales.</p></header>'+
+    '<header><small>PRONÓSTICO</small><h2>1 X 2</h2><p>Selecciona local, empate o visitante. Se guarda sólo en este dispositivo; no son cuotas de apuesta.</p></header>'+
     '<div class="v417-odds-grid">'+
-      '<button type="button" aria-disabled="true"><span>1</span><b>—</b><small>'+esc(r[2])+'</small></button>'+
-      '<button type="button" aria-disabled="true"><span>X</span><b>—</b><small>Empate</small></button>'+
-      '<button type="button" aria-disabled="true"><span>2</span><b>—</b><small>'+esc(r[6])+'</small></button>'+
+      '<button type="button" class="'+cls('1')+'" data-v417-market-pick="1" aria-pressed="'+(picked==='1')+'"><span>1</span><b>—</b><small>'+esc(r[2])+'</small></button>'+
+      '<button type="button" class="'+cls('X')+'" data-v417-market-pick="X" aria-pressed="'+(picked==='X')+'"><span>X</span><b>—</b><small>Empate</small></button>'+
+      '<button type="button" class="'+cls('2')+'" data-v417-market-pick="2" aria-pressed="'+(picked==='2')+'"><span>2</span><b>—</b><small>'+esc(r[6])+'</small></button>'+
     '</div>'+
   '</section>';
 }
@@ -873,6 +879,29 @@ function render(){
   document.body.classList.add('v92-match-center-official');
   screen.querySelector('[data-v92-match-select]')?.addEventListener('change',e=>{selectedKey=e.target.value;activeTab='Resumen';profileSide='home';renderGuard=false;render()});
   screen.querySelectorAll('[data-v92-tab]').forEach(b=>b.onclick=()=>{activeTab=b.dataset.v92Tab;renderGuard=false;render();if(activeTab==='Alineaciones')refreshOfficialData(true)});
+  screen.querySelector('[data-v420-back]')?.addEventListener('click',()=>{activeTab='Resumen';renderGuard=false;render()});
+  screen.querySelector('[data-v420-mute]')?.addEventListener('click',e=>{
+    const b=e.currentTarget,host=screen.querySelector('[data-v420-build-up]'),videos=[...(host?.querySelectorAll('video')||[])];
+    if(!videos.length)return;
+    const currentlyMuted=videos.every(v=>v.muted);
+    videos.forEach(v=>{v.muted=!currentlyMuted;if(currentlyMuted){try{v.play?.()}catch(_){}}});
+    b.classList.toggle('active',currentlyMuted);
+    b.setAttribute('aria-pressed',String(currentlyMuted));
+    b.setAttribute('aria-label',currentlyMuted?'Silenciar audio':'Activar audio');
+  });
+  screen.querySelectorAll('[data-v417-market-pick]').forEach(b=>b.onclick=()=>{
+    const pick=b.dataset.v417MarketPick||'';
+    try{localStorage.setItem('v420-prediction:'+m.key,JSON.stringify({pick,at:new Date().toISOString()}))}catch(_){}
+    renderGuard=false;render();
+  });
+  screen.querySelectorAll('[data-v92-refresh]').forEach(b=>b.onclick=()=>{b.setAttribute('aria-busy','true');refreshOfficialData(true)});
+  screen.querySelectorAll('[data-v419-match-date]').forEach(b=>b.onclick=()=>{
+    const date=b.dataset.v419MatchDate||'';
+    const team=profileSide==='away'?away:home;
+    const next=allMatches().find(x=>dateOnly(x.r?.[8])===date&&(norm(x.r?.[2])===norm(team)||norm(x.r?.[6])===norm(team)));
+    if(!next)return;
+    selectedKey=next.key;activeTab='Resumen';profileSide='home';renderGuard=false;render();
+  });
   screen.querySelectorAll('[data-v92-open-lineups]').forEach(b=>b.onclick=()=>{activeTab='Alineaciones';renderGuard=false;render();refreshOfficialData(true)});
   screen.querySelectorAll('[data-v92-route]').forEach(b=>b.onclick=()=>{location.hash='#/'+b.dataset.v92Route});
   screen.querySelectorAll('[data-v92-pitch]').forEach(b=>b.onclick=()=>{
