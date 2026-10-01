@@ -1,7 +1,7 @@
 {
   "schema": 1,
   "source": "https://juventinorosasliga.com/",
-  "captured_at_utc": "2026-09-30T21:44:00Z",
+  "captured_at_utc": "2026-10-01T15:25:00Z",
   "mode": "fast",
   "categories": {
     "1": {
@@ -1799,11 +1799,19 @@
         "counts": {
           "Equipos": 10,
           "Partidos Jugados": 0,
-          "Partidos Pendientes": 0,
+          "Partidos Pendientes": 5,
           "Jugadores": 0
         },
         "current_cedulas": [],
         "logo_candidates": [
+          {
+            "source": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/Boavista_wioj7b",
+            "near_text": "BOAVISTA"
+          },
+          {
+            "source": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/FrancoTaveraVeteranos_qwrqrc",
+            "near_text": "FRANCO-TAVERA-JR"
+          },
           {
             "source": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/Huracan_pfndn5",
             "near_text": "HURACAN"
@@ -1829,14 +1837,6 @@
             "near_text": "LEYENDAS FC"
           },
           {
-            "source": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/Boavista_wioj7b",
-            "near_text": "BOAVISTA"
-          },
-          {
-            "source": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/FrancoTaveraVeteranos_qwrqrc",
-            "near_text": "FRANCO-TAVERA-JR"
-          },
-          {
             "source": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/PSV_ru3tft",
             "near_text": "PSV"
           },
@@ -1849,7 +1849,7 @@
       "counts": {
         "Equipos": 10,
         "Partidos Jugados": 0,
-        "Partidos Pendientes": 0,
+        "Partidos Pendientes": 5,
         "Jugadores": 0
       },
       "standings": [
@@ -1869,123 +1869,123 @@
           "rows": [
             [
               "1",
-              "C. de Gasca",
-              "17",
-              "13",
-              "1",
-              "3",
-              "54",
-              "17",
-              "+37",
-              "40"
-            ],
-            [
-              "2",
-              "Juventus",
-              "17",
-              "10",
-              "4",
-              "3",
-              "47",
-              "27",
-              "+20",
-              "34"
-            ],
-            [
-              "3",
-              "Cuenda",
-              "17",
-              "11",
+              "BOAVISTA",
               "0",
-              "6",
-              "41",
-              "22",
-              "+19",
-              "33"
+              "0",
+              "0",
+              "0",
+              "0",
+              "0",
+              "0",
+              "0"
+            ],
+            [
+              "2",
+              "FRANCO-TAVERA-JR",
+              "0",
+              "0",
+              "0",
+              "0",
+              "0",
+              "0",
+              "0",
+              "0"
+            ],
+            [
+              "3",
+              "HURACAN",
+              "0",
+              "0",
+              "0",
+              "0",
+              "0",
+              "0",
+              "0",
+              "0"
             ],
             [
               "4",
-              "Pozos FC",
-              "17",
-              "10",
-              "2",
-              "5",
-              "48",
-              "36",
-              "+12",
-              "32"
+              "CUENDA",
+              "0",
+              "0",
+              "0",
+              "0",
+              "0",
+              "0",
+              "0",
+              "0"
             ],
             [
               "5",
-              "Boavista",
-              "17",
+              "AMERICA",
+              "0",
+              "0",
+              "0",
+              "0",
+              "0",
+              "0",
+              "0",
+              "0"
+            ],
+            [
+              "6",
+              "AGUILARES",
+              "0",
+              "0",
+              "0",
+              "0",
+              "0",
+              "0",
+              "0",
+              "0"
+            ],
+            [
+              "7",
+              "JUVENTUS",
+              "0",
+              "0",
+              "0",
+              "0",
+              "0",
+              "0",
+              "0",
+              "0"
+            ],
+            [
               "8",
-              "3",
-              "6",
-              "38",
-              "27",
-              "+11",
-              "27"
+              "LEYENDAS FC",
+              "0",
+              "0",
+              "0",
+              "0",
+              "0",
+              "0",
+              "0",
+              "0"
             ],
             [
-              "6",
+              "9",
               "PSV",
-              "17",
-              "9",
               "0",
-              "8",
-              "49",
-              "40",
-              "+9",
-              "27"
-            ],
-            [
-              "7",
-              "A. Santiago",
-              "17",
-              "7",
-              "1",
-              "9",
-              "36",
-              "57",
-              "-21",
-              "22"
-            ],
-            [
-              "8",
-              "F. Tavera",
-              "17",
-              "4",
-              "2",
-              "11",
-              "27",
-              "50",
-              "-23",
-              "14"
-            ],
-            [
-              "9",
-              "América",
-              "17",
-              "4",
-              "1",
-              "12",
-              "22",
-              "48",
-              "-26",
-              "13"
+              "0",
+              "0",
+              "0",
+              "0",
+              "0",
+              "0",
+              "0"
             ],
             [
               "10",
-              "Huracán",
-              "17",
-              "2",
+              "LA TRINIDAD",
               "0",
-              "15",
-              "19",
-              "69",
-              "-50",
-              "6"
+              "0",
+              "0",
+              "0",
+              "0",
+              "0",
+              "0",
+              "0"
             ]
           ]
         }
@@ -2010,30 +2010,78 @@
           "rows": [
             [
               "1",
-              "AMISTOSO",
-              "Huracán",
+              "1",
+              "BOAVISTA",
               "-",
               "vs",
               "-",
-              "F. Tavera",
+              "FRANCO-TAVERA-JR",
+              "Campo 1 (Empastado)",
+              "10/10/2026 00:00",
+              "---"
+            ],
+            [
+              "2",
+              "1",
+              "HURACAN",
+              "-",
+              "vs",
+              "-",
+              "CUENDA",
+              "Campo 4",
+              "10/10/2026 15:30",
+              "---"
+            ],
+            [
+              "3",
+              "1",
+              "AMERICA",
+              "-",
+              "vs",
+              "-",
+              "AGUILARES",
+              "Fraccionamiento",
+              "10/10/2026 15:30",
+              "---"
+            ],
+            [
+              "4",
+              "1",
+              "JUVENTUS",
+              "-",
+              "vs",
+              "-",
+              "LEYENDAS FC",
               "Campo 3",
-              "03/10/2026 17:00",
+              "10/10/2026 15:30",
+              "---"
+            ],
+            [
+              "5",
+              "1",
+              "PSV",
+              "-",
+              "vs",
+              "-",
+              "LA TRINIDAD",
+              "Campo 4",
+              "10/10/2026 17:00",
               "---"
             ]
           ]
         }
       ],
       "rosters": {
-        "C. de Gasca": [],
-        "Juventus": [],
-        "Cuenda": [],
-        "Pozos FC": [],
-        "Boavista": [],
+        "BOAVISTA": [],
+        "FRANCO-TAVERA-JR": [],
+        "HURACAN": [],
+        "CUENDA": [],
+        "AMERICA": [],
+        "AGUILARES": [],
+        "JUVENTUS": [],
+        "LEYENDAS FC": [],
         "PSV": [],
-        "A. Santiago": [],
-        "F. Tavera": [],
-        "América": [],
-        "Huracán": []
+        "LA TRINIDAD": []
       },
       "player_usage": {},
       "cedulas": [],
@@ -13281,8 +13329,7 @@
       "source": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/Barcelona_amoaiq"
     },
     "BOAVISTA": {
-      "local": "./assets/official-logos/boavista.png",
-      "source": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/Boavista_qiq0dy"
+      "source": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/Boavista_wioj7b"
     },
     "CAPIBARAS": {
       "local": "./assets/official-logos/capibaras.png",
@@ -13329,8 +13376,7 @@
       "source": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/HerreraFC_mnmlsd"
     },
     "JUVENTUS": {
-      "local": "./assets/official-logos/juventus.png",
-      "source": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/Juventus_ntqr0b"
+      "source": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/Juventus_fpshqs"
     },
     "LA CANCHITA DEPORTES": {
       "local": "./assets/official-logos/la-canchita-deportes.png",
@@ -13427,6 +13473,45 @@
     "TOROS DE CUENDA": {
       "local": "./assets/official-logos/toros-de-cuenda.png",
       "source": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/TorosCuenda_od8vcf"
+    },
+    "FRANCO-TAVERA-JR": {
+      "source": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/FrancoTaveraVeteranos_qwrqrc"
+    },
+    "HURACAN": {
+      "source": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/Huracan_pfndn5"
+    },
+    "CUENDA": {
+      "source": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/SantiagoCuenda_fvaq9e"
+    },
+    "AMERICA": {
+      "source": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/America_wbi53g"
+    },
+    "AGUILARES": {
+      "source": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/aguilares_ifdgll"
+    },
+    "LEYENDAS FC": {
+      "source": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/LEYENDAS_jwcnlu"
+    },
+    "PSV": {
+      "source": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/PSV_ru3tft"
+    },
+    "LA TRINIDAD": {
+      "source": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/La_trinidad_a32pbk"
+    },
+    "FRANCO TAVERA": {
+      "source": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/FrancoTaveraVeteranos_qwrqrc"
+    },
+    "FRANCO-TAVERA": {
+      "source": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/FrancoTaveraVeteranos_qwrqrc"
+    },
+    "F. TAVERA": {
+      "source": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/FrancoTaveraVeteranos_qwrqrc"
+    },
+    "HURACÁN": {
+      "source": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/Huracan_pfndn5"
+    },
+    "AMÉRICA": {
+      "source": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/America_wbi53g"
     }
   },
   "cedula_audit": {
@@ -13480,5 +13565,6 @@
     "primera_roster_unique": 291,
     "team_logos_known": 41,
     "categories": 5
-  }
+  },
+  "source_page_veteranos_35": "https://www.juventinorosasliga.com/?categoria=2"
 }

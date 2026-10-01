@@ -8,48 +8,92 @@
   "category_logo": "https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/assets/categories/veteranos-35-user.png",
   "teams": [
     {
-      "name": "C. de Gasca",
-      "logo": "https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/assets/teams/deportivo-cg.webp"
+      "name": "BOAVISTA",
+      "logo": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/Boavista_wioj7b"
     },
     {
-      "name": "Juventus",
-      "logo": "https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/assets/official-logos/juventus.png"
+      "name": "FRANCO-TAVERA-JR",
+      "logo": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/FrancoTaveraVeteranos_qwrqrc"
     },
     {
-      "name": "Cuenda",
-      "logo": "https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/assets/teams/tc-cuenda.webp"
+      "name": "HURACAN",
+      "logo": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/Huracan_pfndn5"
     },
     {
-      "name": "Pozos FC",
-      "logo": "https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/assets/teams/veteranos-pozos-fc.webp"
+      "name": "CUENDA",
+      "logo": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/SantiagoCuenda_fvaq9e"
     },
     {
-      "name": "Boavista",
-      "logo": "https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/assets/official-logos/boavista.png"
+      "name": "AMERICA",
+      "logo": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/America_wbi53g"
+    },
+    {
+      "name": "AGUILARES",
+      "logo": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/aguilares_ifdgll"
+    },
+    {
+      "name": "JUVENTUS",
+      "logo": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/Juventus_fpshqs"
+    },
+    {
+      "name": "LEYENDAS FC",
+      "logo": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/LEYENDAS_jwcnlu"
     },
     {
       "name": "PSV",
-      "logo": "https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/assets/teams/psv.webp"
+      "logo": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/PSV_ru3tft"
     },
     {
-      "name": "A. Santiago",
-      "logo": "https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/assets/teams/atletico-santiago.webp"
-    },
-    {
-      "name": "F. Tavera",
-      "logo": "https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/assets/teams/franco-tavera-jr-veteranos.webp"
-    },
-    {
-      "name": "América",
-      "logo": "https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/assets/branding/america-veteranos-35-user.png"
-    },
-    {
-      "name": "Huracán",
-      "logo": "https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/assets/teams/huracan.webp"
+      "name": "LA TRINIDAD",
+      "logo": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/La_trinidad_a32pbk"
     }
   ],
   "notes": [
-    "Datos públicos de categoría y equipos integrados sin modificar el diseño de App-liga-.",
-    "Veteranos 35+ usa los escudos locales disponibles en Liga_Futbol, incluido Huracán."
+    "Equipos y Jornada 1 actualizados con la página oficial de Veteranos 35+.",
+    "Los cinco partidos corresponden al 10/10/2026.",
+    "La tabla actual inicia en cero; no se mezclan posiciones de la temporada anterior."
+  ],
+  "updated_at_utc": "2026-10-01T15:25:00Z",
+  "upcoming": [
+    {
+      "home": "BOAVISTA",
+      "away": "FRANCO-TAVERA-JR",
+      "time": "00:00",
+      "field": "Campo 1 (Empastado)",
+      "date": "2026-10-10",
+      "round": 1
+    },
+    {
+      "home": "HURACAN",
+      "away": "CUENDA",
+      "time": "15:30",
+      "field": "Campo 4",
+      "date": "2026-10-10",
+      "round": 1
+    },
+    {
+      "home": "AMERICA",
+      "away": "AGUILARES",
+      "time": "15:30",
+      "field": "Fraccionamiento",
+      "date": "2026-10-10",
+      "round": 1
+    },
+    {
+      "home": "JUVENTUS",
+      "away": "LEYENDAS FC",
+      "time": "15:30",
+      "field": "Campo 3",
+      "date": "2026-10-10",
+      "round": 1
+    },
+    {
+      "home": "PSV",
+      "away": "LA TRINIDAD",
+      "time": "17:00",
+      "field": "Campo 4",
+      "date": "2026-10-10",
+      "round": 1
+    }
   ]
 }

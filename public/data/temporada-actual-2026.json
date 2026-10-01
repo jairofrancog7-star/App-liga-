@@ -11,202 +11,183 @@
   "categories": {
     "Veteranos 35+": {
       "scope": "Categoría por edad",
-      "current_phase": "Amistoso",
+      "current_phase": "Jornada 1 · 10/10/2026",
       "teams": [
-        "C. de Gasca",
-        "Juventus",
-        "Cuenda",
-        "Pozos FC",
-        "Boavista",
+        "BOAVISTA",
+        "FRANCO-TAVERA-JR",
+        "HURACAN",
+        "CUENDA",
+        "AMERICA",
+        "AGUILARES",
+        "JUVENTUS",
+        "LEYENDAS FC",
         "PSV",
-        "A. Santiago",
-        "F. Tavera",
-        "América",
-        "Huracán"
+        "LA TRINIDAD"
       ],
       "standings": [
         {
           "pos": 1,
-          "team": "C. de Gasca",
-          "jj": 17,
-          "g": 13,
-          "e": 1,
-          "p": 3,
-          "gf": 54,
-          "gc": 17,
-          "dg": 37,
-          "pts": 40
+          "team": "BOAVISTA",
+          "jj": 0,
+          "g": 0,
+          "e": 0,
+          "p": 0,
+          "gf": 0,
+          "gc": 0,
+          "dg": 0,
+          "pts": 0
         },
         {
           "pos": 2,
-          "team": "Juventus",
-          "jj": 17,
-          "g": 10,
-          "e": 4,
-          "p": 3,
-          "gf": 47,
-          "gc": 27,
-          "dg": 20,
-          "pts": 34
+          "team": "FRANCO-TAVERA-JR",
+          "jj": 0,
+          "g": 0,
+          "e": 0,
+          "p": 0,
+          "gf": 0,
+          "gc": 0,
+          "dg": 0,
+          "pts": 0
         },
         {
           "pos": 3,
-          "team": "Cuenda",
-          "jj": 17,
-          "g": 11,
+          "team": "HURACAN",
+          "jj": 0,
+          "g": 0,
           "e": 0,
-          "p": 6,
-          "gf": 41,
-          "gc": 22,
-          "dg": 19,
-          "pts": 33
+          "p": 0,
+          "gf": 0,
+          "gc": 0,
+          "dg": 0,
+          "pts": 0
         },
         {
           "pos": 4,
-          "team": "Pozos FC",
-          "jj": 17,
-          "g": 10,
-          "e": 2,
-          "p": 5,
-          "gf": 48,
-          "gc": 36,
-          "dg": 12,
-          "pts": 32
+          "team": "CUENDA",
+          "jj": 0,
+          "g": 0,
+          "e": 0,
+          "p": 0,
+          "gf": 0,
+          "gc": 0,
+          "dg": 0,
+          "pts": 0
         },
         {
           "pos": 5,
-          "team": "Boavista",
-          "jj": 17,
-          "g": 8,
-          "e": 3,
-          "p": 6,
-          "gf": 38,
-          "gc": 27,
-          "dg": 11,
-          "pts": 27
+          "team": "AMERICA",
+          "jj": 0,
+          "g": 0,
+          "e": 0,
+          "p": 0,
+          "gf": 0,
+          "gc": 0,
+          "dg": 0,
+          "pts": 0
         },
         {
           "pos": 6,
-          "team": "PSV",
-          "jj": 17,
-          "g": 9,
+          "team": "AGUILARES",
+          "jj": 0,
+          "g": 0,
           "e": 0,
-          "p": 8,
-          "gf": 49,
-          "gc": 40,
-          "dg": 9,
-          "pts": 27
+          "p": 0,
+          "gf": 0,
+          "gc": 0,
+          "dg": 0,
+          "pts": 0
         },
         {
           "pos": 7,
-          "team": "A. Santiago",
-          "jj": 17,
-          "g": 7,
-          "e": 1,
-          "p": 9,
-          "gf": 36,
-          "gc": 57,
-          "dg": -21,
-          "pts": 22
+          "team": "JUVENTUS",
+          "jj": 0,
+          "g": 0,
+          "e": 0,
+          "p": 0,
+          "gf": 0,
+          "gc": 0,
+          "dg": 0,
+          "pts": 0
         },
         {
           "pos": 8,
-          "team": "F. Tavera",
-          "jj": 17,
-          "g": 4,
-          "e": 2,
-          "p": 11,
-          "gf": 27,
-          "gc": 50,
-          "dg": -23,
-          "pts": 14
+          "team": "LEYENDAS FC",
+          "jj": 0,
+          "g": 0,
+          "e": 0,
+          "p": 0,
+          "gf": 0,
+          "gc": 0,
+          "dg": 0,
+          "pts": 0
         },
         {
           "pos": 9,
-          "team": "América",
-          "jj": 17,
-          "g": 4,
-          "e": 1,
-          "p": 12,
-          "gf": 22,
-          "gc": 48,
-          "dg": -26,
-          "pts": 13
+          "team": "PSV",
+          "jj": 0,
+          "g": 0,
+          "e": 0,
+          "p": 0,
+          "gf": 0,
+          "gc": 0,
+          "dg": 0,
+          "pts": 0
         },
         {
           "pos": 10,
-          "team": "Huracán",
-          "jj": 17,
-          "g": 2,
+          "team": "LA TRINIDAD",
+          "jj": 0,
+          "g": 0,
           "e": 0,
-          "p": 15,
-          "gf": 19,
-          "gc": 69,
-          "dg": -50,
-          "pts": 6
+          "p": 0,
+          "gf": 0,
+          "gc": 0,
+          "dg": 0,
+          "pts": 0
         }
       ],
-      "knockout": {
-        "Cuartos de final": [
+      "knockout": {},
+      "rounds": {
+        "J1": [
           {
-            "home": "C. de Gasca",
-            "away": "F. Tavera",
-            "time": "03:30",
-            "field": "1"
+            "home": "BOAVISTA",
+            "away": "FRANCO-TAVERA-JR",
+            "time": "00:00",
+            "field": "Campo 1 (Empastado)",
+            "date": "2026-10-10"
           },
           {
-            "home": "Juventus",
-            "away": "A. Santiago",
-            "time": "05:00",
-            "field": "2"
+            "home": "HURACAN",
+            "away": "CUENDA",
+            "time": "15:30",
+            "field": "Campo 4",
+            "date": "2026-10-10"
           },
           {
-            "home": "Pozos FC",
-            "away": "PSV",
-            "time": "05:00",
-            "field": "3"
+            "home": "AMERICA",
+            "away": "AGUILARES",
+            "time": "15:30",
+            "field": "Fraccionamiento",
+            "date": "2026-10-10"
           },
           {
-            "home": "Cuenda",
-            "away": "Boavista",
-            "time": "05:00",
-            "field": "1"
-          }
-        ],
-        "Semifinal": [
-          {
-            "home": "C. de Gasca",
-            "away": "Boavista",
-            "time": "03:00",
-            "field": "1"
+            "home": "JUVENTUS",
+            "away": "LEYENDAS FC",
+            "time": "15:30",
+            "field": "Campo 3",
+            "date": "2026-10-10"
           },
           {
-            "home": "Juventus",
-            "away": "Pozos FC",
-            "time": "05:00",
-            "field": "1"
-          }
-        ],
-        "Final": [
-          {
-            "home": "C. de Gasca",
-            "away": "Pozos FC",
-            "time": "04:00",
-            "field": "1"
+            "home": "PSV",
+            "away": "LA TRINIDAD",
+            "time": "17:00",
+            "field": "Campo 4",
+            "date": "2026-10-10"
           }
         ]
       },
-      "rounds": {
-        "Amistoso 03/10/2026": [
-          {
-            "home": "Huracán",
-            "away": "F. Tavera",
-            "time": "05:00",
-            "field": "3",
-            "date": "2026-10-03"
-          }
-        ]
-      }
+      "source_page": "https://www.juventinorosasliga.com/?categoria=2",
+      "updated_at_utc": "2026-10-01T15:25:00Z"
     },
     "Veteranos 50+": {
       "scope": "Categoría por edad",
