@@ -631,9 +631,52 @@ function scheduleMatch(){
    '<label><span>Cancha</span><select data-s-field>'+v160FieldOptions(old.field)+'</select></label>'+
   '</div><div class="v105-actions"><button class="v105-btn" data-s-save>Programar borrador</button><button class="v105-btn alt" data-s-agenda>Abrir agenda</button></div>');
  const cat=$('[data-s-cat]',m),home=$('[data-s-home]',m),away=$('[data-s-away]',m);
- const fill=()=>{const list=v160Teams(cat.value),opts=(sel)=>list.map(n=>'<option '+(norm(n)===norm(sel)?'selected':'')+'>'+esc(n)+'</option>').join('');home.innerHTML=opts(old.home);away.innerHTML=opts(old.away)};fill();
- cat.onchange=()=>{old.home='';old.away='';fill()};
- $('[data-s-save]',m).onclick=()=>{if(home.value===away.value)return toast('Elige equipos diferentes');const v={cat:cat.value,home:home.value,away:away.value,date:$('[data-s-date]',m).value,time:$('[data-s-time]',m).value,field:$('[data-s-field]',m).value,status:'Borrador local',updatedAt:new Date().toISOString()};write('v160-scheduled-match',v);log('Programar partido local '+v.home+' vs '+v.away);toast('Borrador de partido guardado')};
+
+ const teamList=()=>{
+   const seen=new Set();
+   return v160Teams(cat.value).map(n=>String(n||'').trim()).filter(n=>{
+     const k=norm(n);if(!k||seen.has(k))return false;seen.add(k);return true;
+   });
+ };
+ const optionHtml=(list,selected)=>list.map(n=>'<option value="'+esc(n)+'" '+(norm(n)===norm(selected)?'selected':'')+'>'+esc(n)+'</option>').join('');
+ const syncTeams=(changed='init')=>{
+   const list=teamList();
+   if(!list.length){
+     home.innerHTML='<option value="">Sin equipos disponibles</option>';
+     away.innerHTML='<option value="">Sin equipos disponibles</option>';
+     home.disabled=true;away.disabled=true;return;
+   }
+   home.disabled=false;away.disabled=list.length<2;
+
+   let hv=home.value||old.home||list[0];
+   if(!list.some(n=>norm(n)===norm(hv)))hv=list[0];
+
+   let av=away.value||old.away||'';
+   let awayList=list.filter(n=>norm(n)!==norm(hv));
+   if(!awayList.some(n=>norm(n)===norm(av)))av=awayList[0]||'';
+
+   let homeList=list.filter(n=>!av||norm(n)!==norm(av));
+   if(!homeList.some(n=>norm(n)===norm(hv)))hv=homeList[0]||'';
+
+   awayList=list.filter(n=>norm(n)!==norm(hv));
+   if(!awayList.some(n=>norm(n)===norm(av)))av=awayList[0]||'';
+   homeList=list.filter(n=>!av||norm(n)!==norm(av));
+
+   home.innerHTML=optionHtml(homeList,hv);
+   away.innerHTML=awayList.length?optionHtml(awayList,av):'<option value="">Sin rival disponible</option>';
+ };
+ syncTeams();
+
+ cat.onchange=()=>{old.home='';old.away='';home.value='';away.value='';syncTeams('category')};
+ home.onchange=()=>syncTeams('home');
+ away.onchange=()=>syncTeams('away');
+
+ $('[data-s-save]',m).onclick=()=>{
+   if(!home.value||!away.value)return toast('Selecciona dos equipos');
+   if(norm(home.value)===norm(away.value))return toast('Elige equipos diferentes');
+   const v={cat:cat.value,home:home.value,away:away.value,date:$('[data-s-date]',m).value,time:$('[data-s-time]',m).value,field:$('[data-s-field]',m).value,status:'Borrador local',updatedAt:new Date().toISOString()};
+   write('v160-scheduled-match',v);log('Programar partido local '+v.home+' vs '+v.away);toast('Borrador de partido guardado')
+ };
  $('[data-s-agenda]',m).onclick=()=>{m.remove();go('agendaBuilder')};
 }
 function newSanction(){
