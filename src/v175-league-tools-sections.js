@@ -34,6 +34,32 @@
       norm(btn.textContent||'')
     ].join('|');
   }
+  function mergeTacticsDuplicates(grid){
+    const cards=[...grid.children].filter(el=>el.matches?.('button.v60-tool-card'));
+    const tactics=cards.filter(btn=>{
+      const route=(btn.getAttribute('data-route')||btn.getAttribute('data-v100-route')||'').trim();
+      const k=cardKey(btn);
+      return route==='tactics' || /(^|\|)tactics(\||$)|pizarra tactica 3d|pizarra 2d y formaciones/.test(k);
+    });
+    if(tactics.length<2)return;
+
+    /* V329 — "Tácticas" y "Pizarra táctica 3D" abrían el mismo módulo.
+       Se conserva una sola tarjeta y dentro se describen todas las funciones
+       2D/3D, formaciones, JSON y PNG. Shot Map permanece como herramienta aparte. */
+    const keep=tactics.find(btn=>btn.getAttribute('data-route')==='tactics')||tactics[0];
+    keep.setAttribute('data-route','tactics');
+    keep.removeAttribute('data-v100-route');
+    keep.removeAttribute('data-v100-action');
+    keep.dataset.v329TacticsMerged='1';
+
+    const title=keep.querySelector('b');
+    const sub=keep.querySelector('small');
+    if(title)title.textContent='Tácticas y pizarra 3D';
+    if(sub)sub.textContent='Pizarra 2D/3D, formaciones, JSON y PNG';
+
+    tactics.forEach(btn=>{if(btn!==keep)btn.remove();});
+  }
+
   function classify(btn){
     const k=cardKey(btn);
 
@@ -87,6 +113,8 @@
     if(featured&&!page.querySelector('[data-v175-featured-bar]')){
       featured.insertAdjacentElement('beforebegin',featuredBar());
     }
+
+    mergeTacticsDuplicates(grid);
 
     const cards=[...grid.children].filter(el=>el.matches?.('button.v60-tool-card'));
     if(!cards.length)return;
