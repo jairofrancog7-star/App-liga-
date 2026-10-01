@@ -1084,3 +1084,87 @@
   .v399-team img{width:22px;height:22px;flex-basis:22px}
   .v399-team b{font-size:10px}
 }
+
+
+/* V425 — suspensión avanzada */
+.v425-suspension{padding-bottom:calc(132px + env(safe-area-inset-bottom))!important}
+.v425-status-grid{
+  display:grid;grid-template-columns:1.4fr .7fr .9fr;gap:9px;margin:8px 0 14px
+}
+.v425-status-grid article{
+  min-width:0;min-height:72px;padding:12px;border:1px solid rgba(76,104,218,.35);border-radius:14px;
+  background:linear-gradient(180deg,#11177f,#0c0d69)
+}
+.v425-status-grid small{display:block;color:#8894d6;font-size:8px;font-weight:900;letter-spacing:.08em}
+.v425-status-grid b{
+  display:block;margin-top:7px;min-width:0;overflow:hidden;color:#fff;font-size:13px;line-height:1.15;font-weight:850;
+  white-space:nowrap;text-overflow:ellipsis
+}
+.v425-status-grid b.cyan{color:#1de0eb}
+
+.v425-panel{
+  margin-top:12px;padding:14px;border:1px solid rgba(76,104,218,.34);border-radius:18px;
+  background:linear-gradient(180deg,rgba(16,18,124,.98),rgba(9,10,101,.98));box-shadow:0 12px 24px rgba(0,0,50,.13)
+}
+.v425-panel>header{margin-bottom:13px}
+.v425-panel>header>span{display:grid;grid-template-columns:34px minmax(0,1fr);gap:10px;align-items:center}
+.v425-panel>header small{
+  width:34px;height:34px;display:grid;place-items:center;border:1px solid rgba(29,224,235,.32);border-radius:10px;
+  background:rgba(29,224,235,.08);color:#1de0eb;font-size:10px;font-weight:950
+}
+.v425-panel>header div{min-width:0}
+.v425-panel>header b{display:block;color:#fff;font-size:14px;font-weight:900}
+.v425-panel>header em{display:block;margin-top:4px;color:#aeb6d9;font-size:10px;line-height:1.3;font-style:normal;font-weight:550}
+.v425-panel .v64-form-grid{gap:10px}
+.v425-panel .v64-form-grid .wide{grid-column:1/-1}
+.v425-panel .v64-form-grid label>b{font-size:10px;color:#e8ecff}
+.v425-panel .v64-form-grid input,
+.v425-panel .v64-form-grid select,
+.v425-panel .v64-form-grid textarea{
+  min-height:48px;border-radius:13px;background:#0a0c68;border-color:rgba(108,132,235,.42);font-size:12px
+}
+.v425-panel .v64-form-grid textarea{min-height:104px}
+
+.v425-summary{
+  margin-top:12px;padding:13px 14px;display:grid;grid-template-columns:minmax(0,1fr) auto;gap:10px;align-items:center;
+  border:1px solid rgba(29,224,235,.28);border-radius:14px;background:rgba(29,224,235,.06)
+}
+.v425-summary small{display:block;color:#1de0eb;font-size:8px;font-weight:950;letter-spacing:.12em}
+.v425-summary b{display:block;margin-top:4px;color:#fff;font-size:10px;line-height:1.35}
+.v425-summary>span{max-width:180px;color:#aab2d5;font-size:9px;line-height:1.35;text-align:right}
+
+.v425-actions{
+  display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px;margin-top:14px
+}
+.v425-actions .v60-btn{
+  width:100%;min-width:0;min-height:48px;padding:0 10px;font-size:11px;border-radius:12px
+}
+
+.v425-preview>div>span{min-width:0}
+.v425-preview>div>span small{display:block;color:#ffd9de;font-size:8px;font-weight:900;letter-spacing:.08em}
+.v425-preview>div>span b{display:block;margin-top:3px;font-size:15px}
+.v425-preview-grid{
+  display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px;padding:14px 14px 4px
+}
+.v425-preview-grid p{
+  min-width:0;margin:0;padding:9px 10px;border:1px solid #e5e7ef;border-radius:9px;background:#f8f9fc
+}
+.v425-preview-grid p.wide{grid-column:1/-1}
+.v425-preview-grid small{display:block;color:#7b8197;font-size:7px;font-weight:850}
+.v425-preview-grid b{
+  display:block;margin-top:4px;min-width:0;overflow:hidden;color:#15182b;font-size:10px;line-height:1.2;
+  white-space:nowrap;text-overflow:ellipsis
+}
+.v425-preview pre{
+  margin:12px 14px 0;padding:12px;border-radius:10px;background:#f1f3f8;color:#20243a;font:600 9px/1.5 Inter,Roboto,Arial,sans-serif;
+  white-space:pre-wrap;word-break:break-word
+}
+
+@media(max-width:390px){
+  .v425-status-grid{grid-template-columns:1fr 1fr}
+  .v425-status-grid article:first-child{grid-column:1/-1}
+  .v425-panel{padding:12px}
+  .v425-summary{grid-template-columns:1fr}
+  .v425-summary>span{max-width:none;text-align:left}
+  .v425-actions{grid-template-columns:1fr 1fr}
+}
