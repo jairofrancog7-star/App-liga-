@@ -267,7 +267,7 @@ function v522BlackInfo(m,state){
     '</section>'+
     '<section class="v522-info-block v522-form">'+
       '<h3>Estado de forma</h3><small class="v522-cat">'+esc(m.category)+'</small>'+
-      '<div class="v522-form-teams"><span>'+teamLogo(home,'v522-info-logo')+'<b>'+esc(home)+'</b><i>'+v424FormDots(m,home,5)+'</i></span><span>'+teamLogo(away,'v522-info-logo')+'<b>'+esc(away)+'</b><i>'+v424FormDots(m,away,5)+'</i></span></div>'+
+      '<div class="v522-form-teams"><span>'+teamLogo(home,'v522-info-logo')+'<b>'+esc(home)+'</b><div class="v522-form-dots">'+v424FormDots(m,home,5)+'</div></span><span>'+teamLogo(away,'v522-info-logo')+'<b>'+esc(away)+'</b><div class="v522-form-dots">'+v424FormDots(m,away,5)+'</div></span></div>'+
       '<div class="v522-form-stats">'+
         '<div><span>Ganados</span><b>'+esc(hf.wins)+'</b><b>'+esc(af.wins)+'</b></div>'+
         '<div><span>Empates</span><b>'+esc(hf.draws)+'</b><b>'+esc(af.draws)+'</b></div>'+
