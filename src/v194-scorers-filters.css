@@ -767,7 +767,7 @@ body[data-app-route="scorers"] .v391-category-strip{
   z-index:2147483000!important;
   pointer-events:auto!important;
 }
-body[data-app-route="scorers"] .v391-category-strip a{
+body[data-app-route="scorers"] .v391-category-strip [data-v194-cat]{
   display:inline-flex!important;
   align-items:center!important;
   justify-content:center!important;
@@ -787,7 +787,7 @@ body[data-app-route="scorers"] .v391-category-strip a{
   touch-action:manipulation!important;
   -webkit-tap-highlight-color:transparent!important;
 }
-body[data-app-route="scorers"] .v391-category-strip a.active{
+body[data-app-route="scorers"] .v391-category-strip [data-v194-cat].active{
   border-color:#18dff0!important;
   background:#1739b4!important;
   color:#fff!important;
@@ -955,4 +955,25 @@ body[data-app-route="scorers"] [data-v194-cat]{
   z-index:120!important;
   pointer-events:auto!important;
   touch-action:manipulation!important;
+}
+
+
+/* V463 — category controls are real buttons; preserve the original appearance. */
+body[data-app-route="scorers"] .v391-category-strip [data-v194-cat],
+body[data-app-route="scorers"] .v194-category-rail [data-v194-cat]{
+  appearance:none!important;
+  -webkit-appearance:none!important;
+  font-family:inherit!important;
+  cursor:pointer!important;
+  pointer-events:auto!important;
+  touch-action:manipulation!important;
+  -webkit-tap-highlight-color:transparent!important;
+}
+body[data-app-route="scorers"] .v462-lower-ranking{
+  clear:both!important;
+  position:relative!important;
+  z-index:4!important;
+  display:block!important;
+  visibility:visible!important;
+  opacity:1!important;
 }
