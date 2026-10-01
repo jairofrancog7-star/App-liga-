@@ -264,3 +264,157 @@ button.v421-provider{cursor:pointer!important}
   .v421-watch-day{padding-left:16px!important;padding-right:16px!important;font-size:11px!important}
   .v421-watch-day.active{padding-left:15px!important;padding-right:15px!important}
 }
+
+
+/* V517_PARTIDOS_COMPACT_CONTROLS */
+/* Partidos: controles compactos y modernos, sin texto fuera del cuadro. */
+.v421-matches .v421-prob{
+  width:100%!important;
+  min-height:44px!important;
+  height:44px!important;
+  margin:8px 0 10px!important;
+  padding:0 10px 0 12px!important;
+  display:flex!important;
+  align-items:center!important;
+  justify-content:space-between!important;
+  gap:10px!important;
+  overflow:hidden!important;
+  border:1px solid rgba(92,129,255,.28)!important;
+  border-radius:12px!important;
+  background:linear-gradient(135deg,rgba(28,70,168,.96),rgba(17,42,118,.96))!important;
+  color:#fff!important;
+  text-align:left!important;
+  box-shadow:0 5px 14px rgba(0,7,54,.20)!important;
+}
+.v421-matches .v421-prob.on{
+  border-color:rgba(32,226,239,.42)!important;
+  background:linear-gradient(135deg,rgba(19,104,139,.98),rgba(15,73,112,.98))!important;
+}
+.v421-matches .v421-prob-copy{
+  min-width:0!important;
+  flex:1 1 auto!important;
+  display:block!important;
+  overflow:hidden!important;
+}
+.v421-matches .v421-prob-copy b{
+  display:block!important;
+  overflow:hidden!important;
+  color:#fff!important;
+  font-size:10px!important;
+  line-height:1.05!important;
+  font-weight:900!important;
+  white-space:nowrap!important;
+  text-overflow:ellipsis!important;
+}
+.v421-matches .v421-prob-copy small{
+  display:block!important;
+  margin-top:3px!important;
+  overflow:hidden!important;
+  color:rgba(229,235,255,.76)!important;
+  font-size:7.2px!important;
+  line-height:1!important;
+  font-weight:650!important;
+  white-space:nowrap!important;
+  text-overflow:ellipsis!important;
+}
+.v421-matches .v421-prob-state{
+  flex:0 0 auto!important;
+  min-width:78px!important;
+  height:24px!important;
+  padding:0 8px!important;
+  display:grid!important;
+  place-items:center!important;
+  border:1px solid rgba(255,255,255,.17)!important;
+  border-radius:999px!important;
+  background:rgba(2,8,61,.30)!important;
+  color:#fff!important;
+  font-size:7px!important;
+  line-height:1!important;
+  font-weight:950!important;
+  letter-spacing:.035em!important;
+  white-space:nowrap!important;
+}
+.v421-matches .v421-prob.on .v421-prob-state{
+  border-color:rgba(36,229,239,.36)!important;
+  background:rgba(19,229,239,.14)!important;
+  color:#7ff7ff!important;
+}
+
+/* Fechas: mismas cajas, menos altas, radios modernos y texto siempre dentro. */
+.v421-matches .v421-days{
+  display:flex!important;
+  align-items:center!important;
+  gap:7px!important;
+  overflow-x:auto!important;
+  margin:0 -12px 10px!important;
+  padding:0 12px 2px!important;
+  scrollbar-width:none!important;
+  -webkit-overflow-scrolling:touch!important;
+}
+.v421-matches .v421-days::-webkit-scrollbar{display:none!important}
+.v421-matches .v421-day{
+  width:auto!important;
+  min-width:88px!important;
+  max-width:108px!important;
+  height:34px!important;
+  flex:0 0 auto!important;
+  padding:0 10px!important;
+  overflow:hidden!important;
+  border:1px solid rgba(126,148,226,.22)!important;
+  border-radius:11px!important;
+  background:linear-gradient(180deg,#12163d,#0e1233)!important;
+  color:#cbd2e9!important;
+  font-size:8.3px!important;
+  line-height:32px!important;
+  font-weight:850!important;
+  letter-spacing:0!important;
+  text-align:center!important;
+  white-space:nowrap!important;
+  text-overflow:ellipsis!important;
+  box-shadow:none!important;
+}
+.v421-matches .v421-day[data-v421-day="all"]{
+  min-width:64px!important;
+  max-width:72px!important;
+}
+.v421-matches .v421-day.active{
+  border-color:#28ddea!important;
+  background:rgba(28,199,217,.13)!important;
+  color:#fff!important;
+  box-shadow:inset 0 0 0 1px rgba(40,221,234,.38),0 0 10px rgba(40,221,234,.10)!important;
+}
+.v421-matches .v421-follow-note{
+  margin:0 -12px 12px!important;
+  padding:10px 12px!important;
+  font-size:8px!important;
+  line-height:1.3!important;
+}
+
+@media(max-width:390px){
+  .v421-matches .v421-prob{
+    min-height:42px!important;
+    height:42px!important;
+    padding-left:10px!important;
+    gap:8px!important;
+  }
+  .v421-matches .v421-prob-copy b{font-size:9.4px!important}
+  .v421-matches .v421-prob-copy small{font-size:6.8px!important}
+  .v421-matches .v421-prob-state{
+    min-width:72px!important;
+    height:22px!important;
+    padding-inline:7px!important;
+    font-size:6.5px!important;
+  }
+  .v421-matches .v421-day{
+    min-width:84px!important;
+    max-width:102px!important;
+    height:33px!important;
+    padding-inline:9px!important;
+    font-size:8px!important;
+    line-height:31px!important;
+  }
+  .v421-matches .v421-day[data-v421-day="all"]{
+    min-width:62px!important;
+    max-width:68px!important;
+  }
+}
