@@ -16,7 +16,17 @@ const FALLBACK=[
  ['Herreras FC','3','assets/official-logos/herreras-fc.png'],['Abejas','3','assets/official-logos/abejas.png'],['Lobos CDG','3','assets/official-logos/lobos-cdg.png'],
  ['Terricolas','3','assets/official-logos/terricolas.png'],['Galacticos','3','assets/teams/galacticos-pozos.webp'],['Manchester','1','assets/official-logos/manchester.png'],
  ['Boavista','3','assets/official-logos/boavista.png'],['La Esperanza','5','assets/official-logos/la-esperanza.png'],['Tavera FC','5','assets/official-logos/tavera-fc.png'],
- ['San Julián','4','assets/official-logos/san-julian.png'],['América','2','assets/branding/america-veteranos-35-user.png']
+ ['San Julián','4','assets/official-logos/san-julian.png'],
+ ['BOAVISTA','2','https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/Boavista_wioj7b'],
+ ['FRANCO-TAVERA-JR','2','https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/FrancoTaveraVeteranos_qwrqrc'],
+ ['HURACAN','2','https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/Huracan_pfndn5'],
+ ['CUENDA','2','https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/SantiagoCuenda_fvaq9e'],
+ ['AMERICA','2','https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/America_wbi53g'],
+ ['AGUILARES','2','https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/aguilares_ifdgll'],
+ ['JUVENTUS','2','https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/Juventus_fpshqs'],
+ ['LEYENDAS FC','2','https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/LEYENDAS_jwcnlu'],
+ ['PSV','2','https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/PSV_ru3tft'],
+ ['LA TRINIDAD','2','https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/La_trinidad_a32pbk']
 ];
 const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const norm=v=>String(v||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().trim();
