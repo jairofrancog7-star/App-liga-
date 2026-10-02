@@ -110,19 +110,30 @@ function removeOldTop(){
     row.querySelector(':scope > .v523-match-card')?.remove();
   });
 }
+function placeBottom(root,kind,html){
+  if(!root)return;
+  document.querySelectorAll('.v566-comp-lower').forEach(x=>{
+    if(x.dataset.v566Bottom!==kind)x.remove();
+  });
+  let panel=document.querySelector('.v566-comp-lower[data-v566-bottom="'+kind+'"]');
+  if(!panel){
+    const wrap=document.createElement('div');
+    wrap.innerHTML=html.trim();
+    panel=wrap.firstElementChild;
+  }
+  if(!panel)return;
+  if(root.nextElementSibling!==panel)root.insertAdjacentElement('afterend',panel);
+}
 function mount(){
   if(route()!=='competition')return;
   removeOldTop();
   const kind=activeKind();
   if(kind==='fixtures'){
-    const root=document.querySelector('[data-v12-fixtures]');
-    if(root&&!root.querySelector('[data-v566-bottom="fixtures"]'))root.insertAdjacentHTML('beforeend',fixturesPanel());
+    placeBottom(document.querySelector('[data-v12-fixtures]'),'fixtures',fixturesPanel());
   }else if(kind==='standings'){
-    const root=document.querySelector('[data-v40-standings],[data-v12-standings]');
-    if(root&&!root.querySelector('[data-v566-bottom="standings"]'))root.insertAdjacentHTML('beforeend',standingsPanel());
+    placeBottom(document.querySelector('[data-v40-standings],[data-v12-standings]'),'standings',standingsPanel());
   }else{
-    const root=document.querySelector('[data-v12-bracket]');
-    if(root&&!root.querySelector('[data-v566-bottom="bracket"]'))root.insertAdjacentHTML('beforeend',bracketPanel());
+    placeBottom(document.querySelector('[data-v12-bracket]'),'bracket',bracketPanel());
   }
 }
 function schedule(){cancelAnimationFrame(raf);raf=requestAnimationFrame(()=>requestAnimationFrame(mount))}
