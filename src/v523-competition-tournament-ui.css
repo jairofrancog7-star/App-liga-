@@ -365,3 +365,69 @@ body[data-app-route="competition"] .v567-cat-strip>button.active small{
     height:25px!important;
   }
 }
+
+
+/* V568_COMPETITION_TOP_BACK — restaurar flecha superior de Competición.
+   Flecha blanca simple, sin círculo, manteniendo el diseño original del hero. */
+@media (max-width:1023px){
+  html body[data-app-route="competition"] .topbar .back-button,
+  html body.v40-standings-master[data-app-route="competition"] .topbar .back-button,
+  html body[data-app-route="competition"] .topbar .back-button.is-hidden{
+    display:block!important;
+    visibility:visible!important;
+    opacity:1!important;
+    pointer-events:auto!important;
+    position:absolute!important;
+    left:14px!important;
+    top:26px!important;
+    bottom:auto!important;
+    width:30px!important;
+    height:30px!important;
+    min-width:30px!important;
+    min-height:30px!important;
+    max-width:30px!important;
+    max-height:30px!important;
+    margin:0!important;
+    padding:0!important;
+    border:0!important;
+    border-radius:0!important;
+    background-color:transparent!important;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M15.5 5.5 9 12l6.5 6.5M9 12h10' fill='none' stroke='%23fff' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E")!important;
+    background-repeat:no-repeat!important;
+    background-position:center!important;
+    background-size:25px 25px!important;
+    box-shadow:none!important;
+    transform:none!important;
+    z-index:12!important;
+  }
+  html body[data-app-route="competition"] .topbar .back-button::before,
+  html body[data-app-route="competition"] .topbar .back-button::after{
+    content:none!important;
+    display:none!important;
+  }
+
+  /* Deja espacio real entre la flecha y el título. */
+  html body[data-app-route="competition"] .topbar::after,
+  html body.v40-standings-master[data-app-route="competition"] .topbar::after{
+    left:52px!important;
+  }
+}
+@media (max-width:380px){
+  html body[data-app-route="competition"] .topbar .back-button,
+  html body.v40-standings-master[data-app-route="competition"] .topbar .back-button,
+  html body[data-app-route="competition"] .topbar .back-button.is-hidden{
+    left:12px!important;
+    top:25px!important;
+    width:28px!important;
+    height:28px!important;
+    min-width:28px!important;
+    min-height:28px!important;
+    max-width:28px!important;
+    max-height:28px!important;
+    background-size:23px 23px!important;
+  }
+  html body[data-app-route="competition"] .topbar::after,
+  html body.v40-standings-master[data-app-route="competition"] .topbar::after{
+    left:47px!important;
+  }
+}
