@@ -405,3 +405,78 @@ body[data-app-route="video"] .v428-tv-section .v428-tv-row:has(.v443-tv-portrait
     padding-right:8px!important;
   }
 }
+
+
+/* V546 — Video: corregir específicamente títulos/subtítulos cortados en el borde izquierdo. */
+@media(max-width:600px){
+  body[data-app-route="video"] .v428-tv-feed{
+    width:100%!important;
+    margin-left:0!important;
+    margin-right:0!important;
+    padding-left:16px!important;
+    padding-right:16px!important;
+    box-sizing:border-box!important;
+    overflow:visible!important;
+  }
+
+  body[data-app-route="video"] .v17-tv-content>.v428-tv-feed:first-child{
+    width:100%!important;
+    margin-left:0!important;
+    margin-right:0!important;
+  }
+
+  body[data-app-route="video"] .v428-tv-section{
+    width:100%!important;
+    margin-left:0!important;
+    margin-right:0!important;
+    padding-left:0!important;
+    padding-right:0!important;
+    box-sizing:border-box!important;
+  }
+
+  body[data-app-route="video"] .v428-tv-section>header{
+    width:100%!important;
+    padding-left:0!important;
+    padding-right:0!important;
+    box-sizing:border-box!important;
+  }
+
+  body[data-app-route="video"] .v428-tv-section>header span{
+    min-width:0!important;
+  }
+
+  body[data-app-route="video"] .v428-tv-section>header h3,
+  body[data-app-route="video"] .v428-tv-section>header p{
+    margin-left:0!important;
+    padding-left:0!important;
+    max-width:calc(100vw - 80px)!important;
+    overflow:visible!important;
+  }
+
+  body[data-app-route="video"] .v428-tv-section>header h3{
+    font-size:16px!important;
+    line-height:1.15!important;
+  }
+
+  body[data-app-route="video"] .v428-tv-section>header p{
+    font-size:10px!important;
+    line-height:1.25!important;
+  }
+
+  body[data-app-route="video"] .v428-tv-section>header button{
+    flex:0 0 auto!important;
+    margin-right:0!important;
+    padding-right:0!important;
+  }
+
+  body[data-app-route="video"] .v440-telecast{
+    width:100%!important;
+    margin-left:0!important;
+    margin-right:0!important;
+  }
+
+  body[data-app-route="video"] .v440-tv-pagehead{
+    padding-left:16px!important;
+    padding-right:16px!important;
+  }
+}
