@@ -320,3 +320,15 @@ const screen=document.querySelector('#screen');
 if(screen)new MutationObserver(schedule).observe(screen,{childList:true,subtree:true,attributes:true,attributeFilter:['class']});
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',schedule,{once:true});else schedule();
 })();
+
+/* V606 loader — mantiene el hub de Control/Registro como módulo aditivo. */
+(function(){
+  if(window.__LJR_V606_CONTROL_REGISTRO_LOADER__)return;
+  window.__LJR_V606_CONTROL_REGISTRO_LOADER__=true;
+  if(!document.querySelector('link[data-v606-control-registro]')){
+    const l=document.createElement('link');l.rel='stylesheet';l.href='./src/v606-control-registro-tools.css?v=20261002-v606-control-registro-tools';l.dataset.v606ControlRegistro='1';document.head.appendChild(l);
+  }
+  if(!document.querySelector('script[data-v606-control-registro]')){
+    const s=document.createElement('script');s.src='./src/v606-control-registro-tools.js?v=20261002-v606-control-registro-tools';s.dataset.v606ControlRegistro='1';document.body.appendChild(s);
+  }
+})();
