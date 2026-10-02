@@ -3300,3 +3300,45 @@ body[data-app-route="profile"] [data-v12-profile-lower-slot] .v412-sharefriend::
 body[data-app-route="profile"] [data-v12-profile-lower-slot] .v412-account-foot{
   display:none!important;
 }
+
+
+/* V534 — Perfil: reducir filas inferiores para que coincidan visualmente con Configuración marcada en rojo. */
+body[data-app-route="profile"] [data-v12-profile-lower-slot] .v412-menu button,
+body[data-app-route="profile"] [data-v12-profile-lower-slot] .v412-social.fb,
+body[data-app-route="profile"] [data-v12-profile-lower-slot] .v412-sharefriend{
+  min-height:66px!important;
+  height:66px!important;
+  grid-template-columns:0 minmax(0,1fr) 20px!important;
+  padding:0 4px!important;
+  border-top:0!important;
+  border-bottom:1px solid rgba(94,111,196,.26)!important;
+}
+body[data-app-route="profile"] [data-v12-profile-lower-slot] .v412-menu button:first-child{
+  border-top:1px solid rgba(94,111,196,.26)!important;
+}
+body[data-app-route="profile"] [data-v12-profile-lower-slot] .v412-menu button span:first-child,
+body[data-app-route="profile"] [data-v12-profile-lower-slot] .v412-social.fb::before,
+body[data-app-route="profile"] [data-v12-profile-lower-slot] .v412-sharefriend::before{
+  grid-column:2!important;
+  font-size:16px!important;
+  line-height:1.15!important;
+  font-weight:400!important;
+  white-space:nowrap!important;
+  overflow:hidden!important;
+  text-overflow:ellipsis!important;
+}
+body[data-app-route="profile"] [data-v12-profile-lower-slot] .v412-menu button span:last-child,
+body[data-app-route="profile"] [data-v12-profile-lower-slot] .v412-social.fb::after,
+body[data-app-route="profile"] [data-v12-profile-lower-slot] .v412-sharefriend span{
+  grid-column:3!important;
+  font-size:20px!important;
+  line-height:1!important;
+  justify-self:end!important;
+  color:#fff!important;
+}
+body[data-app-route="profile"] [data-v12-profile-lower-slot] .v412-sharefriend{
+  font-size:0!important;
+}
+body[data-app-route="profile"] [data-v12-profile-lower-slot] .v412-sharefriend::before{
+  content:"Cuéntale a un amigo"!important;
+}
