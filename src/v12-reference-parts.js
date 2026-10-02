@@ -244,9 +244,8 @@ function patchProfile(){
       '<div class="v12-profile-actions"><button class="outline" data-v12-action="login">Iniciar sesión</button><button class="solid" data-v12-action="create">Crear una cuenta</button></div>'+
     '</div>'+
     '<div class="v12-profile-menu">'+
-      profileMenuRow('following','Siguiendo','following',null,true)+
-      profileMenuRow('notifications','Notificaciones','notifications',null,true)+
-      profileMenuRow('language','Tu idioma preferido',null,'language',false)+
+      '<div class="v12-profile-section-title">CONFIGURACIÓN</div>'+
+      profileMenuRow('language','Idioma preferido',null,'language',false)+
       profileMenuRow('feedback','Ayúdanos a mejorar',null,'feedback',false)+
       profileMenuRow(null,'Ajustes de privacidad',null,'privacy',true)+
       profileMenuRow(null,'Términos y condiciones',null,'terms',true)+
