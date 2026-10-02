@@ -3799,3 +3799,104 @@ body .v543-moreless-portal .v551-more-reference-game .v531-exit-modal>.no{
   body .v543-moreless-portal .v551-more-reference-game .v531-exit-modal>.no{height:62px!important;border-radius:11px!important;font-size:15px!important}
   body .v543-moreless-portal .v551-more-reference-game .v531-exit-modal>.no{margin-top:16px!important;border-width:2px!important}
 }
+
+
+/* V583 — retos adicionales con el MISMO diseño visual de Más o Menos */
+body .v543-moreless-portal .v583-more-challenges,
+body[data-app-route="moreLessGallery"] .v583-more-challenges{
+  margin:28px 0 10px!important;
+}
+body .v543-moreless-portal .v583-more-challenges>h2,
+body[data-app-route="moreLessGallery"] .v583-more-challenges>h2{
+  margin:0 0 14px!important;
+  color:#fff!important;
+  font-size:22px!important;
+  line-height:1.15!important;
+  font-weight:850!important;
+}
+body .v543-moreless-portal .v583-more-challenge,
+body[data-app-route="moreLessGallery"] .v583-more-challenge{
+  overflow:hidden!important;
+  margin:0 0 18px!important;
+  border-radius:18px!important;
+  background:#10117f!important;
+  box-shadow:0 12px 26px rgba(0,0,45,.24)!important;
+}
+body .v543-moreless-portal .v583-challenge-art,
+body[data-app-route="moreLessGallery"] .v583-challenge-art{
+  position:relative!important;
+  display:grid!important;
+  grid-template-columns:1fr 1fr!important;
+  align-items:end!important;
+  height:220px!important;
+  overflow:hidden!important;
+  background:
+    linear-gradient(90deg,rgba(17,239,237,.62) 0 1%,transparent 1.1% 49%,transparent 51% 99%,rgba(246,45,143,.72) 99.1% 100%),
+    repeating-linear-gradient(90deg,transparent 0 26px,rgba(24,96,255,.20) 27px 29px),
+    repeating-linear-gradient(18deg,transparent 0 34px,rgba(48,240,255,.14) 35px 38px,transparent 39px 70px),
+    linear-gradient(180deg,#143ec7,#101174)!important;
+}
+body .v543-moreless-portal .v583-challenge-art .v538-person,
+body[data-app-route="moreLessGallery"] .v583-challenge-art .v538-person{
+  width:100%!important;
+  height:100%!important;
+  display:grid!important;
+  place-items:end center!important;
+}
+body .v543-moreless-portal .v583-challenge-art .v538-person img,
+body[data-app-route="moreLessGallery"] .v583-challenge-art .v538-person img{
+  width:100%!important;
+  height:100%!important;
+  object-fit:cover!important;
+  object-position:center top!important;
+}
+body .v543-moreless-portal .v583-challenge-copy,
+body[data-app-route="moreLessGallery"] .v583-challenge-copy{
+  padding:18px 22px 22px!important;
+}
+body .v543-moreless-portal .v583-challenge-copy h3,
+body[data-app-route="moreLessGallery"] .v583-challenge-copy h3{
+  margin:0 0 6px!important;
+  color:#fff!important;
+  font-size:24px!important;
+  line-height:1!important;
+  font-weight:850!important;
+}
+body .v543-moreless-portal .v583-challenge-copy p,
+body[data-app-route="moreLessGallery"] .v583-challenge-copy p{
+  margin:0 0 15px!important;
+  color:#c9cce8!important;
+  font-size:14px!important;
+}
+body .v543-moreless-portal .v583-challenge-copy button,
+body[data-app-route="moreLessGallery"] .v583-challenge-copy button{
+  min-width:180px!important;
+  min-height:52px!important;
+  padding:10px 18px!important;
+  border:0!important;
+  border-radius:14px!important;
+  background:#18e3ec!important;
+  color:#050b63!important;
+  font-size:15px!important;
+  font-weight:850!important;
+}
+@media(max-width:560px){
+  body .v543-moreless-portal .v583-more-challenges,
+  body[data-app-route="moreLessGallery"] .v583-more-challenges{margin-top:20px!important}
+  body .v543-moreless-portal .v583-more-challenges>h2,
+  body[data-app-route="moreLessGallery"] .v583-more-challenges>h2{font-size:17px!important}
+  body .v543-moreless-portal .v583-more-challenge,
+  body[data-app-route="moreLessGallery"] .v583-more-challenge{margin-bottom:14px!important;border-radius:14px!important}
+  body .v543-moreless-portal .v583-challenge-art,
+  body[data-app-route="moreLessGallery"] .v583-challenge-art{height:165px!important}
+  body .v543-moreless-portal .v583-challenge-copy,
+  body[data-app-route="moreLessGallery"] .v583-challenge-copy{padding:14px 16px 16px!important}
+  body .v543-moreless-portal .v583-challenge-copy h3,
+  body[data-app-route="moreLessGallery"] .v583-challenge-copy h3{font-size:19px!important}
+  body .v543-moreless-portal .v583-challenge-copy p,
+  body[data-app-route="moreLessGallery"] .v583-challenge-copy p{font-size:11px!important}
+  body .v543-moreless-portal .v583-challenge-copy button,
+  body[data-app-route="moreLessGallery"] .v583-challenge-copy button{
+    min-width:145px!important;min-height:46px!important;border-radius:11px!important;font-size:12px!important
+  }
+}
