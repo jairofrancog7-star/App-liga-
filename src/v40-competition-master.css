@@ -2206,3 +2206,141 @@ body.v40-standings-master .v578-scroll::-webkit-scrollbar-thumb{
 body.v40-standings-master .v578-scroll::-webkit-scrollbar-track{
   background:rgba(255,255,255,.07)!important;
 }
+
+
+/* V581 — Compacta y Criterios usan el mismo diseño deslizable de Completa. */
+body.v40-standings-master .v40-content{
+  min-width:0!important;
+  overflow:visible!important;
+}
+body.v40-standings-master .v578-table-section{
+  width:100%!important;
+  min-width:0!important;
+}
+body.v40-standings-master .v578-scroll{
+  width:100%!important;
+  max-width:100%!important;
+  overflow-x:auto!important;
+  overflow-y:hidden!important;
+  -webkit-overflow-scrolling:touch!important;
+  touch-action:pan-x pan-y!important;
+  padding-bottom:7px!important;
+}
+body.v40-standings-master .v579-compact-table{
+  width:610px!important;
+  min-width:610px!important;
+  max-width:none!important;
+}
+body.v40-standings-master .v579-compact-table th:nth-child(3),
+body.v40-standings-master .v579-compact-table td:nth-child(3){width:54px!important}
+body.v40-standings-master .v579-compact-table th:nth-child(4),
+body.v40-standings-master .v579-compact-table td:nth-child(4){width:64px!important}
+body.v40-standings-master .v579-compact-table th:nth-child(5),
+body.v40-standings-master .v579-compact-table td:nth-child(5){width:68px!important}
+body.v40-standings-master .v579-compact-table th:nth-child(6),
+body.v40-standings-master .v579-compact-table td:nth-child(6){width:154px!important}
+
+body.v40-standings-master .v578-criteria-table{
+  width:790px!important;
+  min-width:790px!important;
+  max-width:none!important;
+}
+body.v40-standings-master .v578-criteria-table th:nth-child(3),
+body.v40-standings-master .v578-criteria-table td:nth-child(3){width:66px!important}
+body.v40-standings-master .v578-criteria-table th:nth-child(4),
+body.v40-standings-master .v578-criteria-table td:nth-child(4){width:66px!important}
+body.v40-standings-master .v578-criteria-table th:nth-child(5),
+body.v40-standings-master .v578-criteria-table td:nth-child(5),
+body.v40-standings-master .v578-criteria-table th:nth-child(6),
+body.v40-standings-master .v578-criteria-table td:nth-child(6),
+body.v40-standings-master .v578-criteria-table th:nth-child(7),
+body.v40-standings-master .v578-criteria-table td:nth-child(7),
+body.v40-standings-master .v578-criteria-table th:nth-child(8),
+body.v40-standings-master .v578-criteria-table td:nth-child(8),
+body.v40-standings-master .v578-criteria-table th:nth-child(9),
+body.v40-standings-master .v578-criteria-table td:nth-child(9){width:58px!important}
+
+body.v40-standings-master .v578-table thead th{
+  height:40px!important;
+  color:#d4d5e2!important;
+  background:#05065f!important;
+  font-size:10px!important;
+  font-weight:800!important;
+  text-align:center!important;
+}
+body.v40-standings-master .v578-table tbody td{
+  height:60px!important;
+  background:#05065f!important;
+  color:#fff!important;
+  font-size:13px!important;
+  border-bottom:1px solid rgba(255,255,255,.10)!important;
+}
+body.v40-standings-master .v578-table th.team,
+body.v40-standings-master .v578-table td.team{
+  width:190px!important;
+  min-width:190px!important;
+  max-width:190px!important;
+  text-align:left!important;
+}
+body.v40-standings-master .v578-table th.rank,
+body.v40-standings-master .v578-table td.rank{
+  width:34px!important;
+  min-width:34px!important;
+  max-width:34px!important;
+}
+body.v40-standings-master .v578-team{
+  grid-template-columns:32px minmax(0,1fr)!important;
+  gap:8px!important;
+}
+body.v40-standings-master .v578-logo{
+  width:30px!important;height:30px!important;
+  min-width:30px!important;max-width:30px!important;
+}
+body.v40-standings-master .v578-team strong{
+  font-size:13px!important;
+  white-space:nowrap!important;
+  overflow:hidden!important;
+  text-overflow:ellipsis!important;
+}
+body.v40-standings-master .v578-table .v40-form{
+  min-width:132px!important;
+  gap:5px!important;
+}
+body.v40-standings-master .v578-table .v40-form i{
+  width:20px!important;height:20px!important;
+}
+body.v40-standings-master .v578-table .v40-form b{
+  width:23px!important;height:23px!important;
+}
+body.v40-standings-master .v580-section-row td{
+  height:auto!important;
+  padding:8px 0 0!important;
+  text-align:left!important;
+  border:0!important;
+}
+body.v40-standings-master .v580-section-row .v578-direct{
+  padding:0 0 14px!important;
+  font-size:10px!important;
+  color:#d8d9e7!important;
+}
+body.v40-standings-master .v580-section-row .v578-rule{
+  height:2px!important;
+  background:rgba(255,255,255,.62)!important;
+}
+
+@media(max-width:520px){
+  body.v40-standings-master .v579-compact-table{
+    width:590px!important;
+    min-width:590px!important;
+  }
+  body.v40-standings-master .v578-criteria-table{
+    width:760px!important;
+    min-width:760px!important;
+  }
+  body.v40-standings-master .v578-table th.team,
+  body.v40-standings-master .v578-table td.team{
+    width:172px!important;
+    min-width:172px!important;
+    max-width:172px!important;
+  }
+}
