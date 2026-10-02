@@ -4995,7 +4995,8 @@ function bindV553Weekly(){
       const badge=g.querySelector('.v553-week-title b')?.textContent||'';
       const rows=[...g.querySelectorAll('tbody tr')].filter(tr=>tr.style.display!=='none').map(tr=>{
         const t=[...tr.children].map(td=>td.textContent.trim());
-        return '<tr>'+t.map(v=>'<td>'+v+'</td>').join('')+'</tr>';
+        const jornada=t[6]||'Jornada 7';
+        return '<tr><td>'+t[0]+'</td><td>'+t[1]+'</td><td>'+t[2]+'</td><td>'+t[3]+'</td><td>'+t[4]+'</td><td>'+t[5]+'</td><td>'+jornada+'</td></tr>';
       }).join('');
       return '<section class="v559-pdf-group"><div class="v559-pdf-grouphead"><h2>🏆 '+title+'</h2><span>'+badge+'</span></div><table><thead><tr><th>Fecha</th><th>Hora</th><th>Local</th><th>vs</th><th>Visitante</th><th>Campo</th><th>Jornada</th></tr></thead><tbody>'+rows+'</tbody></table></section>';
     }).join('');
