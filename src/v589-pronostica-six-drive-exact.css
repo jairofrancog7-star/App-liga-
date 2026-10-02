@@ -313,3 +313,121 @@
   .v589-page{max-width:520px;margin:0 auto;min-height:820px}
   .v589-switch{max-width:340px}
 }
+
+
+/* V590 — cuadros uniformes.
+   Petición: ajustar únicamente el tamaño de los cuadros; NO cambiar tamaños de iconos/logos. */
+@media(max-width:1023px){
+  /* Seis cuadros de la introducción: exactamente iguales. */
+  .v589-intro-icons{
+    grid-auto-rows:58px!important;
+    align-items:stretch!important;
+  }
+  .v589-intro-icons span{
+    box-sizing:border-box!important;
+    width:100%!important;
+    height:58px!important;
+    min-height:58px!important;
+    max-height:58px!important;
+    padding:0!important;
+  }
+
+  /* Tarjetas de partidos: mismo alto exterior aunque cambie el nombre del equipo. */
+  .v589-match-card{
+    box-sizing:border-box!important;
+    min-height:286px!important;
+  }
+  .v589-card-head{
+    height:45px!important;
+    min-height:45px!important;
+    max-height:45px!important;
+  }
+  .v589-teams{
+    min-height:98px!important;
+    align-items:start!important;
+  }
+  .v589-team{
+    min-height:88px!important;
+    justify-content:flex-start!important;
+  }
+  .v589-team b{
+    min-height:29px!important;
+    display:flex!important;
+    align-items:flex-start!important;
+    justify-content:center!important;
+  }
+
+  /* Cuadros donde se escribe el marcador: idénticos entre sí. */
+  .v589-score-pair{
+    grid-template-columns:56px 56px!important;
+    justify-content:center!important;
+  }
+  .v589-score-pair span{
+    box-sizing:border-box!important;
+    width:56px!important;
+    min-width:56px!important;
+    max-width:56px!important;
+    height:56px!important;
+    min-height:56px!important;
+    max-height:56px!important;
+  }
+
+  /* Selector Pronósticos / Ligas: dos cuadros del mismo tamaño. */
+  .v589-switch{
+    grid-template-columns:1fr 1fr!important;
+  }
+  .v589-switch button{
+    box-sizing:border-box!important;
+    width:100%!important;
+    height:48px!important;
+    min-height:48px!important;
+    max-height:48px!important;
+  }
+
+  /* Modal de marcador: ambos cuadros exactamente iguales. */
+  .v589-sheet-score{
+    align-items:start!important;
+  }
+  .v589-big-score{
+    box-sizing:border-box!important;
+    width:100%!important;
+    height:72px!important;
+    min-height:72px!important;
+    max-height:72px!important;
+  }
+
+  /* Botones grandes inferiores: misma medida. */
+  .v589-primary,
+  .v589-secondary{
+    box-sizing:border-box!important;
+    height:46px!important;
+    min-height:46px!important;
+    max-height:46px!important;
+  }
+}
+
+@media(max-width:390px){
+  .v589-intro-icons{grid-auto-rows:54px!important}
+  .v589-intro-icons span{
+    height:54px!important;
+    min-height:54px!important;
+    max-height:54px!important;
+  }
+  .v589-match-card{min-height:276px!important}
+  .v589-score-pair{
+    grid-template-columns:52px 52px!important;
+  }
+  .v589-score-pair span{
+    width:52px!important;
+    min-width:52px!important;
+    max-width:52px!important;
+    height:52px!important;
+    min-height:52px!important;
+    max-height:52px!important;
+  }
+  .v589-big-score{
+    height:66px!important;
+    min-height:66px!important;
+    max-height:66px!important;
+  }
+}
