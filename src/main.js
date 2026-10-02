@@ -4518,6 +4518,20 @@ function leagueToolsView(){
       '<button type="button" class="v60-tools-featured-card" data-route="bracketBuilder"><span class="v60-tools-featured-icon">'+v60Icon('bracket')+'</span><span class="v60-tools-featured-copy"><b>Liguilla</b><small>Cuadro eliminatorio</small></span><i>›</i></button>'+
       '<button type="button" class="v60-tools-featured-card" data-route="news"><span class="v60-tools-featured-icon">'+v60Icon('share')+'</span><span class="v60-tools-featured-copy"><b>Avisos</b><small>Noticias y comunicados</small></span><i>›</i></button>'+
     '</div>'+
+    '<div class="v60-tools-all-label"><span>ADMINFUT / GESTIÓN DE LIGA</span><b>Administración y jornada</b></div>'+
+    '<div class="v60-tool-grid">'+
+      v60ToolCard('admin','Panel de Liga','Resumen de tabla, equipos y actividad','v38Stats')+
+      v60ToolCard('center','Posiciones','Clasificación oficial por categoría','', 'data-v60-comp="standings"')+
+      v60ToolCard('center','Goleo','Máximos goleadores por jugador y categoría','scorers')+
+      v60ToolCard('center','Tarjetas y castigados','Disciplina, rojas, amarillas y sanciones','discipline')+
+      v60ToolCard('center','Registro','Altas de equipos y jugadores','recruitment')+
+      v60ToolCard('admin','Gestión','Centro operativo JR Control','jrControl')+
+      v60ToolCard('cedula','Modo árbitro offline','Mis partidos, borradores y cola de cédulas','refereeOffline')+
+      v60ToolCard('cedula','Cédulas arbitrales','Consulta, captura y plantillas','cedulas')+
+      v60ToolCard('share','Reportes','Juegos de la semana, avisos y reportes','v38Weekly')+
+      v60ToolCard('sim','Quiniela','Pronósticos de los partidos de la Liga','quiniela')+
+      v60ToolCard('qr','Descargar / instalar app','QR y acceso directo a la Liga','ligaQR')+
+    '</div>'+
     '<div class="v60-tools-all-label"><span>TODAS LAS FUNCIONES</span><b>Herramientas</b></div>'+
     '<div class="v60-tool-grid">'+
       v60ToolCard('history','Historia','Temporadas, campeones, finales y archivo histórico','history')+
@@ -4529,6 +4543,7 @@ function leagueToolsView(){
       v60ToolCard('cedula','Generar cédula','Cédula y plantillas del partido','cedulaBuilder')+
       v60ToolCard('card','Generar credencial','Foto, OCR y credencial del jugador','credentialBuilder')+
       v60ToolCard('center','Reclutamiento','Equipos nuevos, jugadores nuevos, PNG y compartir','recruitment')+
+      v60ToolCard('cedula','Modo árbitro offline','Mis partidos, borradores y cola de cédulas','refereeOffline')+
       v60ToolCard('matchday','Match Day','Checklist y operación de jornada','matchday')+
       v60ToolCard('rules','Reglamento','Reglamento oficial 2026–2027','rulebook')+
       v60ToolCard('field','Dónde se juega','Campos, comunidades y Maps','venues')+
