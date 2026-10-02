@@ -7,6 +7,7 @@ window.__LJR_V531_GAMES__=true;
 window.__LJR_V533_PRIMARY_GAMES__=true;
 window.__LJR_V536_MONITO_FLOW__=true;
 window.__LJR_V537_SECONDARY_OVERLAY__=true;
+window.__LJR_V538_MORELESS_VIDEO_FLOW__=true;
 
 const RAW='https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/';
 const DATA_LOCAL='./data/official-live.json?v=20261001-v531-games';
@@ -32,7 +33,9 @@ const FALLBACK_LOGOS={
 let db=window.LJR_OFFICIAL_DATA||null;
 let loading=null;
 const quiz={mode:'legacy',answered:false,selected:'',points:0,step:1,exit:false};
-const more={mode:'legacy',answered:false,selected:'',points:0,attempts:2,exit:false};
+const more={mode:'legacy',answered:false,selected:'',points:0,attempts:2,exit:false,phase:'intro',countdown:15,roundToken:0};
+let v538MoreTimers=[];
+let v538MoreInterval=null;
 
 function route(){return String(location.hash||'').replace(/^#\/?/,'').split('?')[0]||'home'}
 function esc(v){return String(v??'').replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})}
@@ -168,19 +171,42 @@ function quizResult(data){
     '<button type="button" class="v531-next-btn" data-v531-quiz-next>Siguiente pregunta</button>'+
   '</section>';
 }
+function v538PlayerPhoto(name,team){
+  try{
+    const pub=window.LJR_PLAYER_PHOTOS;
+    if(pub){
+      if(typeof pub.get==='function'){const x=pub.get(name,team);if(x)return String(x)}
+      const x=pub[norm(name)+'|'+norm(team)]||pub[norm(name)]||pub[name];
+      if(x)return String(x);
+    }
+  }catch(_){}
+  return '';
+}
+function v538Person(p,data,cls){
+  const photo=v538PlayerPhoto(p.name,p.team);
+  if(photo)return '<span class="v538-person '+esc(cls||'')+'"><img src="'+esc(photo)+'" alt="'+esc(p.name)+'" loading="eager" decoding="async"></span>';
+  return '<span class="v538-person '+esc(cls||'')+' is-fallback">'+crest(p.team,data,'v538-person-crest')+'<b>'+esc(initials(p.name))+'</b></span>';
+}
 function moreHub(data){
   const pair=morePair(data),ranks=rankRows(data);
-  const heroPeople='<div class="v531-more-people">'+crest(pair.a.team,data,'person')+'<i>↕</i>'+crest(pair.b.team,data,'person')+'</div>';
-  function gameCard(n){
-    return '<article class="v531-more-card"><div class="v531-more-card-art"><div class="v531-starball">✦</div></div><div><h2>Más o menos</h2><p>Compara las estadísticas de dos jugadores y elige si el siguiente dato es mayor o menor.</p><div class="v531-dual-actions compact"><button type="button" class="primary" data-v531-more-start>Inicia sesión para<br>jugar</button><button type="button" data-v531-more-start>Prueba como<br>invitado</button></div></div></article>';
+  function gameCard(i){
+    const accent=i===1?'cyan':i===2?'blue':'violet';
+    return '<article class="v538-hub-game-card '+accent+'" data-v531-more-start>'+
+      '<div class="v538-hub-game-art"><div class="v538-kick-silhouette">⚽</div><span></span><i></i></div>'+
+      '<div class="v538-hub-game-copy"><h2>Más o menos</h2><p>Compara las estadísticas de dos jugadores y colócalas en el orden correcto para sumar puntos.</p>'+
+      '<button type="button" data-v531-more-start>Inicia sesión para jugar</button></div>'+
+    '</article>';
   }
-  return '<section class="v531-page v531-more" data-v531-more data-v531-view="hub">'+
-    '<header class="v531-mini-head"><button type="button" data-v531-more-back aria-label="Volver">'+backSvg()+'</button><strong>More or Less</strong><button type="button" data-v531-share aria-label="Compartir">'+shareSvg()+'</button></header>'+
-    '<main class="v531-hub-body">'+
-      '<article class="v531-more-splash"><div class="v531-more-title"><span>MÁS</span><small>O</small><span>MENOS</span><i class="red">↘</i><i class="green">↗</i></div>'+heroPeople+'<div class="v531-stadium" aria-hidden="true"><i></i><b></b></div></article>'+
-      '<article class="v531-more-feature"><div class="v531-more-feature-players">'+crest(pair.a.team,data,'feature')+crest(pair.b.team,data,'feature')+'</div><div><h2>Más o menos</h2><p>Compara a '+esc(pair.a.name)+' y '+esc(pair.b.name)+' con datos publicados por la Liga.</p><div class="v531-dual-actions compact"><button type="button" class="primary" data-v531-more-start>Inicia sesión para<br>jugar</button><button type="button" data-v531-more-start>Prueba como<br>invitado</button></div></div></article>'+
-      '<div class="v531-discover"><span>↕</span><b>PLAY GAMES</b><em>LIGA JUVENTINO</em></div>'+
-      '<article class="v531-friend-card"><div><h2>¡Reta a tus amigos!</h2><button type="button" data-v531-share>Invita a amigos</button></div><div class="v531-friend-avatar">'+crest(pair.a.team,data,'friend')+'</div></article>'+
+  return '<section class="v531-page v531-more v538-more-hub" data-v531-more data-v531-view="hub">'+
+    '<header class="v531-mini-head v538-more-head"><button type="button" data-v531-more-back aria-label="Volver">'+backSvg()+'</button><strong>More or Less</strong><span></span></header>'+
+    '<main class="v538-hub-body">'+
+      '<article class="v538-hub-feature">'+
+        '<div class="v538-hub-feature-art">'+v538Person(pair.a,data,'left')+v538Person(pair.b,data,'right')+'<span class="v538-vs">VS</span></div>'+
+        '<div class="v538-hub-feature-copy"><h2>Más o menos</h2><p>Compara las estadísticas de dos jugadores y ordénalas para acertar.</p>'+
+          '<div class="v538-hub-actions"><button type="button" class="primary" data-v531-more-start>Inicia sesión para<br>jugar</button><button type="button" data-v531-more-start>Prueba como<br>invitado</button></div>'+
+        '</div>'+
+      '</article>'+
+      '<article class="v538-friend-card"><div><h3>¡Reta a tus amigos en Más o menos!</h3><button type="button" data-v531-share>Invita a amigos</button></div><div class="v538-friend-bubble">'+v538Person(pair.a,data,'friend')+'</div></article>'+
       gameCard(1)+gameCard(2)+gameCard(3)+
       '<h2 class="v531-section-title">Clasificaciones</h2>'+
       '<article class="v531-rank-card"><h3>Más o menos</h3>'+ranks.map(function(r){return '<div class="v531-rank-row"><span>'+r.pos+'º</span>'+crest(r.name,data,'rank')+'<b>'+esc(r.name)+'</b><strong>'+esc(r.pts)+' pts</strong></div>'}).join('')+'<button type="button" data-v531-rankings>Ver clasificaciones</button></article>'+
@@ -214,23 +240,57 @@ function moreLegacyExtras(data){
     '<article class="v531-rank-card"><h3>Más o menos</h3>'+ranks.map(function(r){return '<div class="v531-rank-row"><span>'+r.pos+'º</span>'+crest(r.name,data,'rank')+'<b>'+esc(r.name)+'</b><strong>'+esc(r.pts)+' pts</strong></div>'}).join('')+'<button type="button" data-v531-rankings>Ver clasificaciones</button></article>'+
   '</section>';
 }
-function playerCard(p,data,known){
-  return '<article class="v531-player-card">'+crest(p.team,data,'player')+'<div class="v531-player-info"><b>'+esc(p.name)+'</b><small>'+esc(p.team)+'</small></div><div class="v531-player-stat"><small>Goles</small><strong>'+(known?esc(p.goals):'—')+'</strong></div></article>';
+function playerCard(p,data,known,side){
+  return '<article class="v538-player-card '+esc(side||'')+'">'+
+    '<div class="v538-player-image">'+v538Person(p,data,'game')+'</div>'+
+    '<div class="v538-player-name"><b>'+esc(p.name)+'</b><small>'+esc(p.team)+'</small></div>'+
+    '<div class="v538-player-stat"><small>Goles</small><strong>'+(known?esc(p.goals):'—')+'</strong></div>'+
+  '</article>';
+}
+function v538ClearTimers(){
+  v538MoreTimers.forEach(function(t){clearTimeout(t)});v538MoreTimers=[];
+  if(v538MoreInterval){clearInterval(v538MoreInterval);v538MoreInterval=null}
+}
+function v538StartMoreRound(){
+  v538ClearTimers();
+  more.roundToken++;
+  const token=more.roundToken;
+  more.mode='game';more.phase='intro';more.answered=false;more.exit=false;more.countdown=15;
+  render(true);
+  v538MoreInterval=setInterval(function(){
+    if(token!==more.roundToken||more.mode!=='game'){v538ClearTimers();return}
+    more.countdown=Math.max(0,more.countdown-1);
+    document.querySelectorAll('.v538-countdown').forEach(function(el){el.textContent=String(more.countdown)});
+    if(more.countdown<=0&&v538MoreInterval){clearInterval(v538MoreInterval);v538MoreInterval=null}
+  },1000);
+  v538MoreTimers.push(setTimeout(function(){if(token!==more.roundToken)return;more.phase='first';render(false)},850));
+  v538MoreTimers.push(setTimeout(function(){if(token!==more.roundToken)return;more.phase='both';render(false)},1750));
+  v538MoreTimers.push(setTimeout(function(){if(token!==more.roundToken)return;more.phase='ready';render(false)},2550));
 }
 function moreGame(data){
   const pair=morePair(data);
   const question=pair.kind==='player'
     ?'¿Ha marcado '+esc(pair.b.name)+' más o menos goles que '+esc(pair.a.name)+'?'
     :'¿Tiene '+esc(pair.b.name)+' más o menos goles a favor que '+esc(pair.a.name)+'?';
-  return '<section class="v531-page v531-more v531-more-game" data-v531-more data-v531-view="game">'+
-    '<header class="v531-game-head"><strong>Más o menos</strong><button type="button" data-v531-more-close aria-label="Cerrar">'+closeSvg()+'</button></header>'+
-    '<main class="v531-more-game-body">'+
-      '<div class="v531-player-pair">'+playerCard(pair.a,data,true)+playerCard(pair.b,data,more.answered)+'</div>'+
-      '<div class="v531-more-score"><span><small>Attempts</small><b>⚽ ⚽</b></span><strong>'+more.attempts+'</strong><span><small>Puntuación</small><b>'+more.points+' pts</b></span></div>'+
-      '<h2 class="v531-more-question">'+question+'</h2>'+
-      '<div class="v531-more-buttons"><button type="button" class="less" data-v531-more-choice="less" aria-label="Menos">▼</button><span>OR</span><button type="button" class="more" data-v531-more-choice="more" aria-label="Más">▲</button></div>'+
-      (more.answered?'<div class="v531-more-answer">'+(more.selected==='correct'?'¡Correcto!':'Respuesta registrada')+' · '+esc(pair.b.name)+' tiene '+esc(pair.b.goals)+'</div>':'')+
-      '<div class="v531-promo more"><b>FÚTBOL QUE NOS UNE</b><em>LIGA JUVENTINO ROSAS</em></div>'+
+  const intro=more.phase==='intro';
+  const first=more.phase==='first';
+  const both=more.phase==='both'||more.phase==='ready';
+  const ready=more.phase==='ready';
+  return '<section class="v531-page v531-more v538-more-game" data-v531-more data-v531-view="game">'+
+    '<header class="v531-game-head v538-game-head"><strong>Más o menos</strong><button type="button" data-v531-more-close aria-label="Cerrar">'+closeSvg()+'</button></header>'+
+    '<main class="v538-game-body">'+
+      '<div class="v538-game-stage '+esc(more.phase)+'">'+
+        '<div class="v538-loading-question">Total de goles en la<br>Liga Juventino Rosas</div>'+
+        (intro?'<div class="v538-stage-placeholder"><span></span><i></i></div>':'')+
+        (!intro?'<div class="v538-player-pair">'+playerCard(pair.a,data,true,'left')+(both?playerCard(pair.b,data,more.answered,'right'):'<div class="v538-player-card ghost right"><div class="v538-ghost-avatar"></div></div>')+'</div>':'')+
+      '</div>'+
+      '<div class="v538-score-strip"><span><small>Attempts</small><b>⚽ ⚽</b></span><strong class="v538-countdown">'+more.countdown+'</strong><span><small>Puntuación</small><b>'+more.points+' pts</b></span></div>'+
+      '<div class="v538-question-zone '+(ready?'show':'')+'">'+
+        '<h2>'+question+'</h2>'+
+        '<div class="v531-more-buttons"><button type="button" class="less" data-v531-more-choice="less" aria-label="Menos">▼</button><span>OR</span><button type="button" class="more" data-v531-more-choice="more" aria-label="Más">▲</button></div>'+
+        (more.answered?'<div class="v531-more-answer">'+(more.selected==='correct'?'¡Correcto!':'Respuesta registrada')+' · '+esc(pair.b.name)+' tiene '+esc(pair.b.goals)+'</div>':'')+
+      '</div>'+
+      '<div class="v538-video-banner"><b>VIVE LOS</b><em>MEJORES MOMENTOS</em></div>'+
     '</main>'+
     (more.exit?exitModal('more'):'')+
   '</section>';
@@ -375,7 +435,7 @@ document.addEventListener('click',function(e){
   const moreMonito=e.target.closest('[data-v531-more-open]');
   if(route()==='moreLess'&&moreMonito){
     e.preventDefault();e.stopPropagation();e.stopImmediatePropagation();
-    more.mode='hub';more.answered=false;more.exit=false;
+    v538ClearTimers();more.mode='hub';more.phase='intro';more.answered=false;more.exit=false;
     render(true);
     return;
   }
@@ -435,8 +495,8 @@ document.addEventListener('click',function(e){
     quiz.mode='result';render(true);return;
   }
   if(t.matches('[data-v531-quiz-next]')){quiz.step=Math.min(12,quiz.step+1);quiz.selected='';quiz.answered=false;quiz.mode='game';render(true);return}
-  if(t.matches('[data-v531-more-start]')){more.mode='game';more.answered=false;more.exit=false;render(true);return}
-  if(t.matches('[data-v531-more-close]')){more.exit=true;render(true);return}
+  if(t.matches('[data-v531-more-start]')){v538StartMoreRound();return}
+  if(t.matches('[data-v531-more-close]')){v538ClearTimers();more.exit=true;render(true);return}
   if(t.matches('[data-v531-more-choice]')){
     if(more.answered)return;
     const data=db||window.LJR_OFFICIAL_DATA||{},pair=morePair(data);
@@ -450,7 +510,7 @@ document.addEventListener('click',function(e){
   if(t.matches('[data-v531-exit-confirm]')){
     const kind=t.dataset.v531ExitConfirm;
     if(kind==='quiz'){quiz.mode='legacy';quiz.exit=false;quiz.answered=false}
-    else{more.mode='legacy';more.exit=false;more.answered=false}
+    else{v538ClearTimers();more.mode='legacy';more.exit=false;more.answered=false;more.phase='intro'}
     render(false);return;
   }
   if(t.matches('[data-v531-exit-cancel]')){
