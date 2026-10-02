@@ -77,7 +77,10 @@ function builderMarkup(){
  '<header class="v576-builder-head"><button type="button" data-v576-back aria-label="Volver">‹</button><h1>Elige tu equipo</h1><button type="button" data-v576-menu aria-label="Menú">⋮</button></header>'+
  '<div class="v576-builder-summary"><div><small>Jugadores</small><b>'+count+'/15</b></div><div><small>Restante <i>?</i></small><b>'+money(left)+'</b></div><button type="button" data-v576-auto>✣ Autocompletar</button></div>'+
  '<div class="v576-sponsor-strip"><span>FANTASY</span><img src="./assets/liga-logo.webp" alt=""><b>LIGA JUVENTINO ROSAS</b></div>'+
-
+ '<div class="v576-field">'+
+   fieldRow('DEL',map)+fieldRow('CEN',map)+fieldRow('DEF',map)+fieldRow('POR',map)+
+   (count===0?'<div class="v576-first-hint">Elige tu primer jugador</div>':'')+
+ '</div>'+
  '<div class="v576-builder-actions"><button type="button" data-v576-search class="'+(count===15?'ready':'')+'">'+(count===15?'Continuar':'Buscar jugadores')+'</button></div>'+
  '<footer>CONSEJO: Autocompleta tu plantilla y afínala antes del primer partido</footer></section>';
 }
@@ -114,7 +117,7 @@ function guest(){
  layer('<section class="v576-login-sheet"><button class="v576-x" type="button" data-v576-close>×</button><h2>¿Sigues sin iniciar sesión?</h2><p>Una vez que crees tu equipo, iniciar sesión te permite:</p><ul><li>⚽ <span>Actualizar tu equipo desde cualquier dispositivo</span></li><li>⚽ <span>Volver a unirte a tus ligas favoritas</span></li><li>⚽ <span>Recibir notificaciones personalizadas</span></li></ul><button class="primary" type="button" data-v576-login>Inicia sesión para jugar</button><button class="later" type="button" data-v576-later>Entraré luego</button></section>','login');
 }
 function menu(){
- layer('<section class="v576-menu-sheet"><header><b>Fantasy</b><button type="button" data-v576-close>×</button></header><button type="button" data-v576-reset>Reiniciar equipo</button><button type="button" data-v576-matches>Partidos</button><button type="button" data-v576-help="points">Cómo conseguir puntos</button><button type="button" data-v576-help="rules">Reglas</button></section>','menu');
+ layer('<section class="v576-menu-sheet"><button type="button" data-v576-reset>Reiniciar equipo</button><button type="button" data-v576-matches>Partidos</button><button type="button" data-v576-help="points">Cómo conseguir puntos</button><button type="button" data-v576-help="rules">Reglas</button></section>','menu');
 }
 function help(kind){
  const points=kind==='points';
