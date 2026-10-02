@@ -112,7 +112,7 @@ function fieldRow(position,map){
 }
 function builderMarkup(){
  const squad=readSquad(),map=new Map(squad.map(x=>[Number(x.slot),x])),count=map.size,left=Math.max(0,BUDGET-total());
- return'<section class="v576-builder v587-builder" data-v576-builder>'+
+ return'<section class="v576-builder v587-builder" data-v576-builder data-v590-count="'+count+'" style="--v590-progress:'+Math.round((count/15)*100)+'%">'+
  '<header class="v576-builder-head"><button type="button" data-v576-back aria-label="Volver">‹</button><h1>Elige tu equipo</h1><button type="button" data-v576-menu aria-label="Menú">⋮</button></header>'+
  '<div class="v576-builder-summary"><div><small>Jugadores</small><b>'+count+'/15</b></div><div><small>Restante <i>?</i></small><b>'+money(left)+'</b></div><button type="button" data-v576-auto><span>✣</span> Autocompletar</button></div>'+
 
