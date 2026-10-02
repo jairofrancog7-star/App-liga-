@@ -5,7 +5,7 @@
 if(window.__LJR_V576_FANTASY_GAME__)return;
 window.__LJR_V576_FANTASY_GAME__=true;
 
-const KEY='v576-fantasy-squad',BUDGET=100;
+const KEY='v576-fantasy-squad',BUDGET=100,AUTH_RETURN_KEY='ljr-auth-return-v569';
 const SLOTS=[
 {id:0,pos:'DEL'},{id:1,pos:'DEL'},{id:2,pos:'DEL'},
 {id:3,pos:'CEN'},{id:4,pos:'CEN'},{id:5,pos:'CEN'},{id:6,pos:'CEN'},{id:7,pos:'CEN'},
@@ -18,6 +18,8 @@ const norm=v=>String(v??'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLo
 const route=()=>String(location.hash||'').replace(/^#\/?/,'').split('?')[0]||'home';
 const db=()=>{try{return window.LJR_OFFICIAL_API?.getData?.()||window.LJR_OFFICIAL_DATA||{}}catch(_){return window.LJR_OFFICIAL_DATA||{}}};
 const teamLogo=name=>{try{return window.LJR_OFFICIAL_API?.getLogo?.(name)||window.LJR_TEAM_LOGOS?.get?.(name)||'./assets/liga-logo.webp'}catch(_){return './assets/liga-logo.webp'}};
+const fantasyLoggedIn=()=>{try{const s=JSON.parse(localStorage.getItem('lj-store-v3')||'{}');if(s?.user)return true;const a=JSON.parse(localStorage.getItem('ljr-auth-v569')||'{}');return !!a?.currentId}catch(_){return false}};
+const goFantasyLogin=()=>{try{localStorage.setItem(AUTH_RETURN_KEY,'fantasyTeam')}catch(_){};location.hash='#/accountLogin'};
 
 function readSquad(){try{const x=JSON.parse(localStorage.getItem(KEY)||'[]');return Array.isArray(x)?x.filter(Boolean).slice(0,15):[]}catch(_){return []}}
 function writeSquad(x){localStorage.setItem(KEY,JSON.stringify((x||[]).filter(Boolean).slice(0,15)))}
@@ -160,9 +162,9 @@ function schedule(){cancelAnimationFrame(raf);raf=requestAnimationFrame(()=>requ
 document.addEventListener('click',e=>{
  const el=e.target instanceof Element?e.target:null;if(!el)return;
  if(el.closest('[data-v576-close]')){e.preventDefault();closeLayer();return}
- if(el.closest('[data-v576-login]')){e.preventDefault();closeLayer();location.hash='#/profile';return}
+ if(el.closest('[data-v576-login]')){e.preventDefault();closeLayer();if(fantasyLoggedIn())location.hash='#/fantasyTeam';else goFantasyLogin();return}
  if(el.closest('[data-v576-guest]')){e.preventDefault();guest();return}
- if(el.closest('[data-v576-open-team]')){e.preventDefault();location.hash='#/fantasyTeam';return}
+ if(el.closest('[data-v576-open-team]')){e.preventDefault();if(fantasyLoggedIn())location.hash='#/fantasyTeam';else guest();return}
  if(el.closest('[data-v576-later]')){e.preventDefault();closeLayer();location.hash='#/fantasyTeam';return}
  if(el.closest('[data-v576-back]')){e.preventDefault();location.hash='#/fantasyAccess';return}
  if(el.closest('[data-v576-menu]')){e.preventDefault();menu();return}
