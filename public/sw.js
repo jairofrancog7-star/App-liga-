@@ -1,4 +1,4 @@
-const CACHE='liga-juventino-v572-account-registration-biometric';
+const CACHE='liga-juventino-v573-competition-browser-extras';
 const CORE=['./','./index.html','./manifest.webmanifest','./brand-neon-header.svg','./profile-reference.svg'];
 
 self.addEventListener('install',event=>{
