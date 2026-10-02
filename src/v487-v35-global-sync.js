@@ -9,8 +9,9 @@ let latest=null,loading=null;
 const norm=v=>String(v||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toUpperCase().replace(/[^A-Z0-9]+/g,' ').trim();
 function logoValue(v){
  if(typeof v==='string')return v;
- if(v?.source)return v.source;
  if(v?.app)return v.app;
+ if(v?.source)return v.source;
+
     if(v?.local)return 'https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/'+String(v.local).replace(/^\.\//,'');
  return '';
 }

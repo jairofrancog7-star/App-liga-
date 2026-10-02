@@ -62,15 +62,27 @@
     window.__ljrV120ScrollTimer=setTimeout(()=>writeJson(SCROLL_KEY,scrolls),80);
   },{passive:true});
 
+  let restoreId=0,transitionId=0,pageAnimation;
   const restoreScroll=(route)=>{
-    const y=Number(scrolls[route]||0);
+    const id=++restoreId,y=Number(scrolls[route]||0);
     restoring=true;
-    const apply=()=>window.scrollTo(0,Math.max(0,y));
-    requestAnimationFrame(()=>requestAnimationFrame(apply));
-    setTimeout(apply,60);
-    setTimeout(apply,160);
-    setTimeout(()=>{restoring=false;lastScrollY=Math.max(0,window.scrollY||0);},220);
+    const apply=()=>{if(id===restoreId&&normRoute()===route)window.scrollTo(0,Math.max(0,y))};
+    const cancel=()=>{if(id===restoreId){restoreId++;restoring=false}};
+    window.addEventListener('pointerdown',cancel,{once:true,passive:true});
+    window.addEventListener('wheel',cancel,{once:true,passive:true});
+    [0,80,180,360,650].forEach(ms=>setTimeout(apply,ms));
+    setTimeout(()=>{window.removeEventListener('pointerdown',cancel);window.removeEventListener('wheel',cancel);if(id===restoreId){restoring=false;lastScrollY=Math.max(0,window.scrollY||0)}},700);
   };
+  function animatePage(back){
+    const id=++transitionId;
+    pageAnimation?.cancel();
+    if(matchMedia('(prefers-reduced-motion: reduce)').matches)return;
+    setTimeout(()=>requestAnimationFrame(()=>{
+      if(id!==transitionId)return;
+      const screen=document.querySelector('#screen');
+      pageAnimation=screen?.animate([{transform:'translateX('+(back?'-20%':'100%')+')',opacity:.6},{transform:'translateX(0)',opacity:1}],{duration:220,easing:'cubic-bezier(.22,.8,.3,1)'});
+    }),60);
+  }
 
   const sameOriginReferrer=()=>{
     try{return !!document.referrer && new URL(document.referrer).origin===location.origin;}catch{return false;}
@@ -141,7 +153,7 @@
   const pageBackSelector=[
     '#backButton',
     'button[aria-label="Volver"]',
-    'a[aria-label="Volver"]',
+    'a[aria-label="Volver"],button[aria-label="Regresar"],button[aria-label="Atrás"]',
     '[data-v41-close],[data-v501-back],[data-v440-back]',
     '.v66-compact-back',
     '[data-v20-back],[data-v46-back],[data-v52-back],[data-v62-back],[data-v27-back],[data-v28-back],[data-v31-back],[data-v32-back],[data-v33-back],[data-v33-about-back],[data-v35-back],[data-v40-back],[data-v42-back],[data-v123-back],[data-v129-back],[data-v372-back],[data-v379-back],[data-v412-back],[data-v429-back]',
@@ -183,6 +195,8 @@
     current=next;
     writeJson(STACK_KEY,stack);
 
+    ++restoreId;
+    animatePage(isBack);
     if(isBack) restoreScroll(next);
     else {
       restoring=false;

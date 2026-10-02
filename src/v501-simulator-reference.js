@@ -75,11 +75,14 @@ function cat(){return db()?.categories?.[catId()]||{}}
 function catName(){return cat()?.name||CAT_NAMES[catId()]||'Liga Municipal'}
 function logoValue(v){
  if(typeof v==='string')return v;
+ if(v?.app)return v.app;
  if(v?.source)return v.source;
  if(v?.local)return 'https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/'+String(v.local).replace(/^\.?\//,'');
  return '';
 }
 function logoFor(name){
+ const cached=Object.entries(window.LJR_OFFICIAL_DATA?.team_logos||{}).find(([k])=>norm(k)===norm(name))?.[1]?.app;
+ if(cached)return cached;
  try{const x=window.LJR_OFFICIAL_API?.getLogo?.(name)||window.LJR_TEAM_LOGOS?.get?.(name)||window.V66_OFFICIAL_DIRECTORY?.logoFor?.(name)||'';if(x)return x}catch(_){}
  const hit=Object.entries(db()?.team_logos||{}).find(([k])=>norm(k)===norm(name));
  return hit?logoValue(hit[1]):'';

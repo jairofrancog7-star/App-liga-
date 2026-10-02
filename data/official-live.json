@@ -13964,81 +13964,99 @@
     },
     "ALDAMA FC": {
       "local": "./assets/official-logos/aldama-fc.png",
-      "source": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/Aldama_mqm3r1"
+      "source": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/Aldama_mqm3r1",
+      "app": "./assets/official-cache/72216bc36e75884e.jpg"
     },
     "ATL. GALEANA": {
       "local": "./assets/official-logos/atl-galeana.png",
-      "source": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/Galeana_kujrh0"
+      "source": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/Galeana_kujrh0",
+      "app": "./assets/official-cache/171d44d0d9bd6712.jpg"
     },
     "BARZA": {
       "local": "./assets/official-logos/barza.png",
       "source": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/Barcelona_amoaiq"
     },
     "BOAVISTA": {
-      "source": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/Boavista_wioj7b"
+      "source": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/Boavista_wioj7b",
+      "app": "./assets/official-cache/6315fd6873a88f94.jpg"
     },
     "CAPIBARAS": {
       "local": "./assets/official-logos/capibaras.png",
-      "source": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/Capibara_vocmbl"
+      "source": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/Capibara_vocmbl",
+      "app": "./assets/official-cache/67a8396389c4a77d.jpg"
     },
     "CELTICOS": {
       "local": "./assets/official-logos/celticos.png",
-      "source": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/CelticosFC_nv4ukd"
+      "source": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/CelticosFC_nv4ukd",
+      "app": "./assets/official-cache/4d5ccb898e0bd6f8.jpg"
     },
     "DEP. LA LUZ": {
       "local": "./assets/official-logos/dep-la-luz.png",
-      "source": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/DepLaLuz_wibidf"
+      "source": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/DepLaLuz_wibidf",
+      "app": "./assets/official-cache/6d41f7d6b9a496c4.jpg"
     },
     "DEP. MARAVILLAS": {
       "local": "./assets/official-logos/dep-maravillas.png",
-      "source": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/MAravillasFC_mnmhwx"
+      "source": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/MAravillasFC_mnmhwx",
+      "app": "./assets/official-cache/30f13f74021e22c5.jpg"
     },
     "DEP. NOPALERO": {
       "local": "./assets/official-logos/dep-nopalero.png",
-      "source": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/Nopalero_skdsij"
+      "source": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/Nopalero_skdsij",
+      "app": "./assets/official-cache/2d3b329f23c05e5f.jpg"
     },
     "DEP. ZAPATA": {
       "local": "./assets/official-logos/dep-zapata.png",
-      "source": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/Dep.Zapata_a5dsaz"
+      "source": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/Dep.Zapata_a5dsaz",
+      "app": "./assets/official-cache/494e014680ad7d14.jpg"
     },
     "DYNAMO": {
       "local": "./assets/official-logos/dynamo.png",
-      "source": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/Dinamo_rgamvy"
+      "source": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/Dinamo_rgamvy",
+      "app": "./assets/official-cache/6177075db2e4d295.png"
     },
     "FRANCO FC": {
       "local": "./assets/official-logos/franco-fc.png",
-      "source": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/FrancoFC_vtd8d7"
+      "source": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/FrancoFC_vtd8d7",
+      "app": "./assets/official-cache/08923d5077ac1f82.jpg"
     },
     "GALEANA": {
       "local": "./assets/official-logos/galeana.png",
-      "source": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/Galeana_kujrh0"
+      "source": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/Galeana_kujrh0",
+      "app": "./assets/official-cache/171d44d0d9bd6712.jpg"
     },
     "HERMANOS": {
       "local": "./assets/official-logos/hermanos.png",
-      "source": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/Hermanos_kbfrmh"
+      "source": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/Hermanos_kbfrmh",
+      "app": "./assets/official-cache/567b683cb46027af.jpg"
     },
     "HERRERAS FC": {
       "local": "./assets/official-logos/herreras-fc.png",
       "source": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/HerreraFC_mnmlsd"
     },
     "JUVENTUS": {
-      "source": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/Juventus_fpshqs"
+      "source": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/Juventus_fpshqs",
+      "app": "./assets/official-cache/b537acba7ba92bb9.jpg"
     },
     "LA CANCHITA DEPORTES": {
       "local": "./assets/official-logos/la-canchita-deportes.png",
-      "source": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/LaCanchita_enf6ca"
+      "source": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/LaCanchita_enf6ca",
+      "app": "./assets/official-cache/d0206164ec77619f.jpg"
     },
     "LA CUADRILLA": {
       "local": "./assets/official-logos/la-cuadrilla.png",
-      "source": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/CuadrillaFC_vpfbtr"
+      "source": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/CuadrillaFC_vpfbtr",
+      "app": "./assets/official-cache/b17fe695b6f547e8.jpg"
     },
     "LA ESPERANZA": {
       "local": "./assets/official-logos/la-esperanza.png",
-      "source": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/LaEsperanzaFC_vazya7"
+      "source": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/LaEsperanzaFC_vazya7",
+      "app": "./assets/official-cache/9379a3a95ac73eaf.jpg"
     },
     "LA HUERTA": {
       "local": "./assets/official-logos/la-huerta.png",
-      "source": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/LaHuertaCuenda_bm4fxj"
+      "source": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/LaHuertaCuenda_bm4fxj",
+      "app": "./assets/official-cache/d6a77f1972ad6235.jpg"
     },
     "LINCES": {
       "local": "./assets/official-logos/linces.png",
@@ -14046,7 +14064,8 @@
     },
     "LOBOS CDG": {
       "local": "./assets/official-logos/lobos-cdg.png",
-      "source": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/Lobos_efloib"
+      "source": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/Lobos_efloib",
+      "app": "./assets/official-cache/b2e98c9113899cd8.jpg"
     },
     "MALVINAS": {
       "local": "./assets/official-logos/malvinas.png",
@@ -14062,55 +14081,68 @@
     },
     "NAPOLI": {
       "local": "./assets/official-logos/napoli.png",
-      "source": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/Napoli_cp25dv"
+      "source": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/Napoli_cp25dv",
+      "app": "./assets/official-cache/162f6d2d457acf8e.jpg"
     },
     "OSASUNA": {
       "local": "./assets/official-logos/osasuna.png",
-      "source": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/Osasuna_lv6rsa"
+      "source": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/Osasuna_lv6rsa",
+      "app": "./assets/official-cache/6fbfb72e58792905.png"
     },
     "PACHANGAS FC": {
       "local": "./assets/official-logos/pachangas-fc.png",
-      "source": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/Pachangas_upqelg"
+      "source": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/Pachangas_upqelg",
+      "app": "./assets/official-cache/e5bdfff88534cd09.png"
     },
     "POPULARES": {
       "local": "./assets/official-logos/populares.png",
-      "source": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/PopularesFC_onellt"
+      "source": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/PopularesFC_onellt",
+      "app": "./assets/official-cache/0a8b4f1ffa7fb607.jpg"
     },
     "PROMESAS FC": {
       "local": "./assets/official-logos/promesas-fc.png",
-      "source": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/PromesasFC_w4lwk8"
+      "source": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/PromesasFC_w4lwk8",
+      "app": "./assets/official-cache/b53bb39d43595de6.jpg"
     },
     "SAN ANTONIO FC": {
       "local": "./assets/official-logos/san-antonio-fc.png",
-      "source": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/SanAntonioFC_tw7bi1"
+      "source": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/SanAntonioFC_tw7bi1",
+      "app": "./assets/official-cache/c4b2be44e9e5d902.jpg"
     },
     "SAN ANTONIO JRS": {
       "local": "./assets/official-logos/san-antonio-jrs.png",
-      "source": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/SanAntonioJR_jzmfka"
+      "source": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/SanAntonioJR_jzmfka",
+      "app": "./assets/official-cache/21e015b0a5063330.jpg"
     },
     "SAN JOSE FC": {
       "local": "./assets/official-logos/san-jose-fc.png",
-      "source": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/SanJoseMonta%C3%B1a_ilen4d"
+      "source": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/SanJoseMonta%C3%B1a_ilen4d",
+      "app": "./assets/official-cache/ef5014b916c726b2.jpg"
     },
     "SAN JOSE JRS": {
       "local": "./assets/official-logos/san-jose-jrs.png",
-      "source": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/SanJoseJR_dio2dt"
+      "source": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/SanJoseJR_dio2dt",
+      "app": "./assets/official-cache/09ba69c10802fbda.jpg"
     },
     "SAN JUAN FC": {
       "local": "./assets/official-logos/san-juan-fc.png",
-      "source": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/SanJuanFC_jhprtf"
+      "source": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/SanJuanFC_jhprtf",
+      "app": "./assets/official-cache/27c5129307ae00f5.jpg"
     },
     "SAN JULIAN": {
       "local": "./assets/official-logos/san-julian.png",
-      "source": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/SanJulianFC_wetv0z"
+      "source": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/SanJulianFC_wetv0z",
+      "app": "./assets/official-cache/3442affde18d6b71.jpg"
     },
     "TAPATIO": {
       "local": "./assets/official-logos/tapatio.png",
-      "source": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/tapatio_svt6lz"
+      "source": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/tapatio_svt6lz",
+      "app": "./assets/official-cache/d032d5a02e27088a.jpg"
     },
     "TAVERA FC": {
       "local": "./assets/official-logos/tavera-fc.png",
-      "source": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/TaveraFC_gpdbhg"
+      "source": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/TaveraFC_gpdbhg",
+      "app": "./assets/official-cache/2f5e6fe980e1bf54.jpg"
     },
     "TERRICOLAS": {
       "local": "./assets/official-logos/terricolas.png",
@@ -14121,22 +14153,27 @@
       "source": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/TorosCuenda_od8vcf"
     },
     "FRANCO-TAVERA-JR": {
-      "source": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/FrancoTaveraVeteranos_qwrqrc"
+      "source": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/FrancoTaveraVeteranos_qwrqrc",
+      "app": "./assets/official-cache/8d453d21da407fb1.jpg"
     },
     "HURACAN": {
-      "source": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/Huracan_pfndn5"
+      "source": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/Huracan_pfndn5",
+      "app": "./assets/official-cache/bfb697089edb57f2.jpg"
     },
     "CUENDA": {
-      "source": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/SantiagoCuenda_fvaq9e"
+      "source": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/SantiagoCuenda_fvaq9e",
+      "app": "./assets/official-cache/3ee86cec43002395.jpg"
     },
     "AMERICA": {
-      "source": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/America_wbi53g"
+      "source": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/America_wbi53g",
+      "app": "./assets/official-cache/262f41b6ea16b3f1.jpg"
     },
     "AGUILARES": {
       "source": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/aguilares_ifdgll"
     },
     "LEYENDAS FC": {
-      "source": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/LEYENDAS_jwcnlu"
+      "source": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/LEYENDAS_jwcnlu",
+      "app": "./assets/official-cache/5ed2029b2ec343d3.jpg"
     },
     "PSV": {
       "source": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/PSV_ru3tft"
@@ -14145,19 +14182,24 @@
       "source": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/La_trinidad_a32pbk"
     },
     "FRANCO TAVERA": {
-      "source": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/FrancoTaveraVeteranos_qwrqrc"
+      "source": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/FrancoTaveraVeteranos_qwrqrc",
+      "app": "./assets/official-cache/8d453d21da407fb1.jpg"
     },
     "FRANCO-TAVERA": {
-      "source": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/FrancoTaveraVeteranos_qwrqrc"
+      "source": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/FrancoTaveraVeteranos_qwrqrc",
+      "app": "./assets/official-cache/8d453d21da407fb1.jpg"
     },
     "F. TAVERA": {
-      "source": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/FrancoTaveraVeteranos_qwrqrc"
+      "source": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/FrancoTaveraVeteranos_qwrqrc",
+      "app": "./assets/official-cache/8d453d21da407fb1.jpg"
     },
     "HURACÁN": {
-      "source": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/Huracan_pfndn5"
+      "source": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/Huracan_pfndn5",
+      "app": "./assets/official-cache/bfb697089edb57f2.jpg"
     },
     "AMÉRICA": {
-      "source": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/America_wbi53g"
+      "source": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/America_wbi53g",
+      "app": "./assets/official-cache/262f41b6ea16b3f1.jpg"
     }
   },
   "cedula_audit": {

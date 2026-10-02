@@ -137,6 +137,8 @@
   }
   function get(name){
     const key=norm(name);
+    const cached=Object.entries(window.LJR_OFFICIAL_DATA?.team_logos||{}).find(([team])=>norm(team)===key)?.[1]?.app;
+    if(cached)return cached;
     /* V485: Juventus conserva el escudo local estable esperado por los módulos históricos
        y por las pruebas de regresión; los demás equipos actuales siguen usando la fuente oficial. */
     if(key==='juventus')return BASE+'assets/official-logos/juventus.png';
@@ -213,7 +215,7 @@
     const src=get(name);
     if(!src)return;
     const current=String(img.src||'');
-    if(current!==src)img.src=src;
+    if(current!==new URL(src,document.baseURI).href)img.src=src;
     img.style.objectFit='contain';
     img.style.objectPosition='center';
   }
