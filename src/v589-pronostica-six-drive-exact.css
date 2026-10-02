@@ -567,3 +567,23 @@
     min-height:60px!important;
   }
 }
+
+
+/* V592 — feedback de botones funcionales. */
+.v589-toast{
+  position:fixed;
+  z-index:2147483646;
+  left:50%;
+  bottom:calc(78px + env(safe-area-inset-bottom));
+  transform:translateX(-50%);
+  max-width:calc(100vw - 34px);
+  padding:10px 15px;
+  border-radius:999px;
+  background:#f2f6ff;
+  color:#07104a;
+  box-shadow:0 8px 28px rgba(0,0,35,.35);
+  font-size:12px;
+  line-height:1.2;
+  font-weight:850;
+  text-align:center;
+}
