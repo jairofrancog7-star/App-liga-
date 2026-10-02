@@ -8,6 +8,8 @@ window.__LJR_V589_PRONOSTICA_SIX__=true;
 
 const ROUTE='predictorSix';
 const STORE='ljr-v589-pronostica-six';
+const AUTH_RETURN='ljr-auth-return-v569';
+const AFTER_AUTH='ljr-v589-after-auth';
 const BASE='https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/';
 const LEAGUE='./assets/reference/predictor-v36/liga-crest-white.webp';
 const $=(s,r=document)=>r.querySelector(s);
@@ -34,9 +36,46 @@ function read(){
 function write(v){try{localStorage.setItem(STORE,JSON.stringify(v))}catch(_){}}
 function isLogged(){
   try{
+    if(window.LJR_V569_AUTH?.currentAccount?.())return true;
     const s=JSON.parse(localStorage.getItem('lj-store-v3')||'{}');
     return !!s.user;
   }catch(_){return false}
+}
+function toast(msg){
+  let t=document.querySelector('.v589-toast');
+  if(t)t.remove();
+  t=document.createElement('div');
+  t.className='v589-toast';
+  t.textContent=msg;
+  document.body.appendChild(t);
+  setTimeout(()=>t.remove(),2200);
+}
+function openLogin(returnView='predictions'){
+  try{
+    localStorage.setItem(AUTH_RETURN,'predictorSix');
+    sessionStorage.setItem(AFTER_AUTH,returnView);
+  }catch(_){}
+  if(window.LJR_V569_AUTH?.openLogin){
+    window.LJR_V569_AUTH.openLogin();
+    return;
+  }
+  if(window.LJR_MAIN_ROUTE?.go){
+    window.LJR_MAIN_ROUTE.go('accountLogin');
+    return;
+  }
+  location.hash='#/accountLogin';
+}
+function consumeAfterAuth(){
+  try{
+    const next=sessionStorage.getItem(AFTER_AUTH)||'';
+    if(!next)return false;
+    sessionStorage.removeItem(AFTER_AUTH);
+    if(isLogged()){
+      ui.view=next==='leagues'?'leagues':'predictions';
+      return true;
+    }
+  }catch(_){}
+  return false;
 }
 function logo(path,name){return '<img src="'+BASE+path+'" alt="'+esc(name)+'" loading="lazy" decoding="async">'}
 function sponsor(){
@@ -167,8 +206,13 @@ function openPoints(){
 function closeOverlay(){const o=$('[data-v589-overlay]');if(o)o.remove()}
 function savePrediction(){
   if(!ui.game)return;
-  const s=read();s.predictions[ui.game]={home:ui.tempHome,away:ui.tempAway,updatedAt:Date.now()};write(s);
-  closeOverlay();ui.game=null;render();
+  const s=read();
+  s.predictions[ui.game]={home:ui.tempHome,away:ui.tempAway,updatedAt:Date.now()};
+  write(s);
+  closeOverlay();
+  ui.game=null;
+  render();
+  toast('Pronóstico guardado');
 }
 function goMain(asGuest=false){
   const s=read();if(asGuest){s.guest=true;write(s)}
@@ -178,35 +222,66 @@ function handleClick(e){
   if(route()!==ROUTE)return;
   const t=e.target instanceof Element?e.target.closest('button,[data-v589-card]'):null;if(!t)return;
   if(t.matches('[data-v589-back]')){
-    e.preventDefault();
+    e.preventDefault();e.stopPropagation();
     if(ui.view==='rules'){ui.view='predictions';render();return}
+    if(ui.view==='leagues'){ui.view='predictions';render();return}
     location.hash='#/more';return;
   }
-  if(t.matches('[data-v589-menu]')){ui.menu=!ui.menu;render();return}
-  if(t.matches('[data-v589-login]')){
-    if(isLogged()){goMain(false);return}
-    try{sessionStorage.setItem('v589-return','predictorSix')}catch(_){}
-    location.hash='#/account';return;
+  if(t.matches('[data-v589-menu]')){
+    e.preventDefault();e.stopPropagation();
+    ui.menu=!ui.menu;render();return
   }
-  if(t.matches('[data-v589-guest]')){goMain(true);return}
+  if(t.matches('[data-v589-login]')){
+    e.preventDefault();e.stopPropagation();
+    if(isLogged()){
+      if(ui.view==='leagues'){toast('Sesión activa');return}
+      goMain(false);return;
+    }
+    openLogin(ui.view==='leagues'?'leagues':'predictions');
+    return;
+  }
+  if(t.matches('[data-v589-guest]')){
+    e.preventDefault();e.stopPropagation();
+    goMain(true);toast('Entraste como invitado');return
+  }
   const view=t.getAttribute('data-v589-view');
-  if(view){ui.view=view;ui.menu=false;render();return}
+  if(view){
+    e.preventDefault();e.stopPropagation();
+    ui.view=view;ui.menu=false;render();return
+  }
   const j=t.getAttribute('data-v589-journey');
-  if(j){ui.journey=Number(j)||2;render();return}
+  if(j){
+    e.preventDefault();e.stopPropagation();
+    ui.journey=Number(j)||2;render();return
+  }
   const open=t.getAttribute('data-v589-open')||t.closest('[data-v589-card]')?.getAttribute('data-v589-card');
-  if(open&&!t.matches('[data-v589-info]')){openPrediction(open);return}
-  if(t.matches('[data-v589-info],[data-v589-points]')){e.stopPropagation();ui.menu=false;openPoints();return}
-  if(t.matches('[data-v589-close]')){closeOverlay();return}
+  if(open&&!t.matches('[data-v589-info]')){
+    e.preventDefault();e.stopPropagation();openPrediction(open);return
+  }
+  if(t.matches('[data-v589-info],[data-v589-points]')){
+    e.preventDefault();e.stopPropagation();ui.menu=false;openPoints();return
+  }
+  if(t.matches('[data-v589-close]')){
+    e.preventDefault();e.stopPropagation();closeOverlay();return
+  }
   if(t.matches('[data-v589-inc]')){
-    const side=t.getAttribute('data-v589-inc');ui[side==='home'?'tempHome':'tempAway']=Math.min(9,ui[side==='home'?'tempHome':'tempAway']+1);
+    e.preventDefault();e.stopPropagation();
+    const side=t.getAttribute('data-v589-inc');
+    ui[side==='home'?'tempHome':'tempAway']=Math.min(9,ui[side==='home'?'tempHome':'tempAway']+1);
     const b=t.querySelector('b');if(b)b.textContent=ui[side==='home'?'tempHome':'tempAway'];return;
   }
   if(t.matches('[data-v589-dec]')){
-    const side=t.getAttribute('data-v589-dec');ui[side==='home'?'tempHome':'tempAway']=Math.max(0,ui[side==='home'?'tempHome':'tempAway']-1);
+    e.preventDefault();e.stopPropagation();
+    const side=t.getAttribute('data-v589-dec');
+    ui[side==='home'?'tempHome':'tempAway']=Math.max(0,ui[side==='home'?'tempHome':'tempAway']-1);
     const b=$('[data-v589-inc="'+side+'"] b');if(b)b.textContent=ui[side==='home'?'tempHome':'tempAway'];return;
   }
-  if(t.matches('[data-v589-save]')){savePrediction();return}
-  if(t.matches('[data-v589-rules]')){closeOverlay();ui.view='rules';ui.menu=false;render();return}
+  if(t.matches('[data-v589-save]')){
+    e.preventDefault();e.stopPropagation();savePrediction();return
+  }
+  if(t.matches('[data-v589-rules]')){
+    e.preventDefault();e.stopPropagation();closeOverlay();ui.view='rules';ui.menu=false;render();return
+  }
 }
 function mount(){
   const r=route();
@@ -217,13 +292,18 @@ function mount(){
   }
   clearTimeout(splashTimer);
   if(r!==ROUTE){document.body.removeAttribute('data-v589-predictor');return}
+  consumeAfterAuth();
   const screen=$('#screen');if(!screen)return;
   if(!screen.querySelector('[data-v589-root]'))render();
 }
 function schedule(ms=40){clearTimeout(mountTimer);mountTimer=setTimeout(mount,ms)}
 
 document.addEventListener('click',handleClick,true);
-window.addEventListener('hashchange',()=>{ui={view:'intro',journey:2,game:null,tempHome:0,tempAway:0,menu:false};schedule(20)});
+window.addEventListener('hashchange',()=>{
+  const returning=route()===ROUTE&&consumeAfterAuth();
+  ui={view:returning?(ui.view||'predictions'):'intro',journey:2,game:null,tempHome:0,tempAway:0,menu:false};
+  schedule(20)
+});
 new MutationObserver(()=>{if(route()===ROUTE)schedule(30)}).observe(document.documentElement,{childList:true,subtree:true});
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',()=>schedule(40),{once:true});else schedule(20);
 setTimeout(mount,400);
