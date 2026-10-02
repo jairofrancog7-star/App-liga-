@@ -1,7 +1,7 @@
 {
   "schema": 1,
   "source": "https://juventinorosasliga.com/",
-  "captured_at_utc": "2026-10-01T17:12:30Z",
+  "captured_at_utc": "2026-10-01T19:45:00Z",
   "mode": "fast",
   "categories": {
     "1": {
@@ -1793,7 +1793,7 @@
     "2": {
       "id": 2,
       "name": "Veteranos 35+",
-      "season_id": null,
+      "season_id": "6",
       "dashboard": {
         "counts": {
           "Equipos": 10,
@@ -1846,10 +1846,10 @@
         ]
       },
       "counts": {
-        "Equipos": 10,
+        "Equipos": 11,
         "Partidos Jugados": 0,
-        "Partidos Pendientes": 5,
-        "Jugadores": 0
+        "Partidos Pendientes": 55,
+        "Jugadores": 14
       },
       "standings": [
         {
@@ -1985,6 +1985,18 @@
               "0",
               "0",
               "0"
+            ],
+            [
+              "11",
+              "POZOS FC",
+              "0",
+              "0",
+              "0",
+              "0",
+              "0",
+              "0",
+              "0",
+              "0"
             ]
           ]
         }
@@ -2022,6 +2034,18 @@
             [
               "2",
               "1",
+              "JUVENTUS",
+              "-",
+              "vs",
+              "-",
+              "LEYENDAS FC",
+              "Campo 3",
+              "10/10/2026 15:30",
+              "---"
+            ],
+            [
+              "3",
+              "1",
               "HURACAN",
               "-",
               "vs",
@@ -2032,7 +2056,7 @@
               "---"
             ],
             [
-              "3",
+              "4",
               "1",
               "AMERICA",
               "-",
@@ -2040,18 +2064,6 @@
               "-",
               "AGUILARES",
               "Fraccionamiento",
-              "10/10/2026 15:30",
-              "---"
-            ],
-            [
-              "4",
-              "1",
-              "JUVENTUS",
-              "-",
-              "vs",
-              "-",
-              "LEYENDAS FC",
-              "Campo 3",
               "10/10/2026 15:30",
               "---"
             ],
@@ -2066,26 +2078,662 @@
               "Campo 4",
               "10/10/2026 17:00",
               "---"
+            ],
+            [
+              "6",
+              "2",
+              "LEYENDAS FC",
+              "-",
+              "vs",
+              "-",
+              "POZOS FC",
+              "San Jose de la Montaña",
+              "17/10/2026 15:30",
+              "---"
+            ],
+            [
+              "7",
+              "2",
+              "FRANCO-TAVERA-JR",
+              "-",
+              "vs",
+              "-",
+              "PSV",
+              "Campo 2",
+              "17/10/2026 15:30",
+              "---"
+            ],
+            [
+              "8",
+              "2",
+              "HURACAN",
+              "-",
+              "vs",
+              "-",
+              "BOAVISTA",
+              "Fraccionamiento",
+              "17/10/2026 15:30",
+              "---"
+            ],
+            [
+              "9",
+              "2",
+              "AGUILARES",
+              "-",
+              "vs",
+              "-",
+              "JUVENTUS",
+              "AGUILARES",
+              "17/10/2026 17:00",
+              "---"
+            ],
+            [
+              "10",
+              "2",
+              "CUENDA",
+              "-",
+              "vs",
+              "-",
+              "AMERICA",
+              "Cuenda",
+              "17/10/2026 17:00",
+              "---"
+            ],
+            [
+              "11",
+              "3",
+              "AMERICA",
+              "-",
+              "vs",
+              "-",
+              "BOAVISTA",
+              "Campo 3",
+              "24/10/2026 15:30",
+              "---"
+            ],
+            [
+              "12",
+              "3",
+              "POZOS FC",
+              "-",
+              "vs",
+              "-",
+              "LA TRINIDAD",
+              "Pozos",
+              "24/10/2026 15:30",
+              "---"
+            ],
+            [
+              "13",
+              "3",
+              "JUVENTUS",
+              "-",
+              "vs",
+              "-",
+              "CUENDA",
+              "Campo 2",
+              "24/10/2026 15:30",
+              "---"
+            ],
+            [
+              "14",
+              "3",
+              "PSV",
+              "-",
+              "vs",
+              "-",
+              "HURACAN",
+              "Campo 1 (Empastado)",
+              "24/10/2026 17:00",
+              "---"
+            ],
+            [
+              "15",
+              "3",
+              "LEYENDAS FC",
+              "-",
+              "vs",
+              "-",
+              "AGUILARES",
+              "San Jose de la Montaña",
+              "24/10/2026 17:00",
+              "---"
+            ],
+            [
+              "16",
+              "4",
+              "AMERICA",
+              "-",
+              "vs",
+              "-",
+              "PSV",
+              "Campo 2",
+              "31/10/2026 15:30",
+              "---"
+            ],
+            [
+              "17",
+              "4",
+              "AGUILARES",
+              "-",
+              "vs",
+              "-",
+              "POZOS FC",
+              "AGUILARES",
+              "31/10/2026 15:30",
+              "---"
+            ],
+            [
+              "18",
+              "4",
+              "CUENDA",
+              "-",
+              "vs",
+              "-",
+              "LEYENDAS FC",
+              "Cuenda",
+              "31/10/2026 15:30",
+              "---"
+            ],
+            [
+              "19",
+              "4",
+              "BOAVISTA",
+              "-",
+              "vs",
+              "-",
+              "JUVENTUS",
+              "Campo 4",
+              "31/10/2026 17:00",
+              "---"
+            ],
+            [
+              "20",
+              "4",
+              "FRANCO-TAVERA-JR",
+              "-",
+              "vs",
+              "-",
+              "LA TRINIDAD",
+              "Campo 3",
+              "31/10/2026 17:00",
+              "---"
+            ],
+            [
+              "21",
+              "5",
+              "LA TRINIDAD",
+              "-",
+              "vs",
+              "-",
+              "HURACAN",
+              "La Trinidad",
+              "07/11/2026 15:30",
+              "---"
+            ],
+            [
+              "22",
+              "5",
+              "POZOS FC",
+              "-",
+              "vs",
+              "-",
+              "FRANCO-TAVERA-JR",
+              "Pozos",
+              "07/11/2026 15:30",
+              "---"
+            ],
+            [
+              "23",
+              "5",
+              "JUVENTUS",
+              "-",
+              "vs",
+              "-",
+              "PSV",
+              "Fraccionamiento",
+              "07/11/2026 15:30",
+              "---"
+            ],
+            [
+              "24",
+              "5",
+              "LEYENDAS FC",
+              "-",
+              "vs",
+              "-",
+              "BOAVISTA",
+              "San Jose de la Montaña",
+              "07/11/2026 17:00",
+              "---"
+            ],
+            [
+              "25",
+              "5",
+              "AGUILARES",
+              "-",
+              "vs",
+              "-",
+              "CUENDA",
+              "AGUILARES",
+              "07/11/2026 17:00",
+              "---"
+            ],
+            [
+              "26",
+              "6",
+              "PSV",
+              "-",
+              "vs",
+              "-",
+              "LEYENDAS FC",
+              "Fraccionamiento",
+              "14/11/2026 15:30",
+              "---"
+            ],
+            [
+              "27",
+              "6",
+              "CUENDA",
+              "-",
+              "vs",
+              "-",
+              "POZOS FC",
+              "Cuenda",
+              "14/11/2026 15:30",
+              "---"
+            ],
+            [
+              "28",
+              "6",
+              "BOAVISTA",
+              "-",
+              "vs",
+              "-",
+              "AGUILARES",
+              "Campo 4",
+              "14/11/2026 15:30",
+              "---"
+            ],
+            [
+              "29",
+              "6",
+              "AMERICA",
+              "-",
+              "vs",
+              "-",
+              "LA TRINIDAD",
+              "Campo 1 (Empastado)",
+              "14/11/2026 17:00",
+              "---"
+            ],
+            [
+              "30",
+              "6",
+              "HURACAN",
+              "-",
+              "vs",
+              "-",
+              "FRANCO-TAVERA-JR",
+              "Campo 3",
+              "14/11/2026 17:00",
+              "---"
+            ],
+            [
+              "31",
+              "7",
+              "LA TRINIDAD",
+              "-",
+              "vs",
+              "-",
+              "JUVENTUS",
+              "La Trinidad",
+              "21/11/2026 15:30",
+              "---"
+            ],
+            [
+              "32",
+              "7",
+              "POZOS FC",
+              "-",
+              "vs",
+              "-",
+              "HURACAN",
+              "Pozos",
+              "21/11/2026 15:30",
+              "---"
+            ],
+            [
+              "33",
+              "7",
+              "FRANCO-TAVERA-JR",
+              "-",
+              "vs",
+              "-",
+              "AMERICA",
+              "Campo 4",
+              "21/11/2026 15:30",
+              "---"
+            ],
+            [
+              "34",
+              "7",
+              "AGUILARES",
+              "-",
+              "vs",
+              "-",
+              "PSV",
+              "AGUILARES",
+              "21/11/2026 17:00",
+              "---"
+            ],
+            [
+              "35",
+              "7",
+              "CUENDA",
+              "-",
+              "vs",
+              "-",
+              "BOAVISTA",
+              "Cuenda",
+              "21/11/2026 17:00",
+              "---"
+            ],
+            [
+              "36",
+              "8",
+              "LEYENDAS FC",
+              "-",
+              "vs",
+              "-",
+              "LA TRINIDAD",
+              "San Jose de la Montaña",
+              "28/11/2026 15:30",
+              "---"
+            ],
+            [
+              "37",
+              "8",
+              "BOAVISTA",
+              "-",
+              "vs",
+              "-",
+              "POZOS FC",
+              "Campo 2",
+              "28/11/2026 15:30",
+              "---"
+            ],
+            [
+              "38",
+              "8",
+              "PSV",
+              "-",
+              "vs",
+              "-",
+              "CUENDA",
+              "Campo 1 (Empastado)",
+              "28/11/2026 15:30",
+              "---"
+            ],
+            [
+              "39",
+              "8",
+              "JUVENTUS",
+              "-",
+              "vs",
+              "-",
+              "FRANCO-TAVERA-JR",
+              "Campo 4",
+              "28/11/2026 17:00",
+              "---"
+            ],
+            [
+              "40",
+              "8",
+              "AMERICA",
+              "-",
+              "vs",
+              "-",
+              "HURACAN",
+              "Campo 3",
+              "28/11/2026 17:00",
+              "---"
+            ],
+            [
+              "41",
+              "9",
+              "AGUILARES",
+              "-",
+              "vs",
+              "-",
+              "LA TRINIDAD",
+              "AGUILARES",
+              "05/12/2026 15:30",
+              "---"
+            ],
+            [
+              "42",
+              "9",
+              "POZOS FC",
+              "-",
+              "vs",
+              "-",
+              "AMERICA",
+              "Pozos",
+              "05/12/2026 15:30",
+              "---"
+            ],
+            [
+              "43",
+              "9",
+              "HURACAN",
+              "-",
+              "vs",
+              "-",
+              "JUVENTUS",
+              "Fraccionamiento",
+              "05/12/2026 15:30",
+              "---"
+            ],
+            [
+              "44",
+              "9",
+              "FRANCO-TAVERA-JR",
+              "-",
+              "vs",
+              "-",
+              "LEYENDAS FC",
+              "Campo 1 (Empastado)",
+              "05/12/2026 17:00",
+              "---"
+            ],
+            [
+              "45",
+              "9",
+              "BOAVISTA",
+              "-",
+              "vs",
+              "-",
+              "PSV",
+              "Campo 2",
+              "05/12/2026 17:00",
+              "---"
+            ],
+            [
+              "46",
+              "10",
+              "AGUILARES",
+              "-",
+              "vs",
+              "-",
+              "FRANCO-TAVERA-JR",
+              "AGUILARES",
+              "12/12/2026 15:30",
+              "---"
+            ],
+            [
+              "47",
+              "10",
+              "PSV",
+              "-",
+              "vs",
+              "-",
+              "POZOS FC",
+              "Campo 3",
+              "12/12/2026 15:30",
+              "---"
+            ],
+            [
+              "48",
+              "10",
+              "LEYENDAS FC",
+              "-",
+              "vs",
+              "-",
+              "HURACAN",
+              "San Jose de la Montaña",
+              "12/12/2026 15:30",
+              "---"
+            ],
+            [
+              "49",
+              "10",
+              "LA TRINIDAD",
+              "-",
+              "vs",
+              "-",
+              "CUENDA",
+              "La Trinidad",
+              "12/12/2026 17:00",
+              "---"
+            ],
+            [
+              "50",
+              "10",
+              "JUVENTUS",
+              "-",
+              "vs",
+              "-",
+              "AMERICA",
+              "Campo 2",
+              "12/12/2026 17:00",
+              "---"
+            ],
+            [
+              "51",
+              "11",
+              "BOAVISTA",
+              "-",
+              "vs",
+              "-",
+              "LA TRINIDAD",
+              "Campo 3",
+              "19/12/2026 15:30",
+              "---"
+            ],
+            [
+              "52",
+              "11",
+              "POZOS FC",
+              "-",
+              "vs",
+              "-",
+              "JUVENTUS",
+              "Pozos",
+              "19/12/2026 15:30",
+              "---"
+            ],
+            [
+              "53",
+              "11",
+              "CUENDA",
+              "-",
+              "vs",
+              "-",
+              "FRANCO-TAVERA-JR",
+              "Cuenda",
+              "19/12/2026 15:30",
+              "---"
+            ],
+            [
+              "54",
+              "11",
+              "HURACAN",
+              "-",
+              "vs",
+              "-",
+              "AGUILARES",
+              "Campo 2",
+              "19/12/2026 17:00",
+              "---"
+            ],
+            [
+              "55",
+              "11",
+              "AMERICA",
+              "-",
+              "vs",
+              "-",
+              "LEYENDAS FC",
+              "Campo 4",
+              "19/12/2026 17:00",
+              "---"
             ]
           ]
         }
       ],
       "rosters": {
-        "BOAVISTA": [],
-        "FRANCO-TAVERA-JR": [],
-        "HURACAN": [],
-        "CUENDA": [],
-        "AMERICA": [],
         "AGUILARES": [],
+        "AMERICA": [
+          "LUIS JONATHAN AGUILAR GERVACIO",
+          "Sammare Horacio Calderon Martinez",
+          "Eric Fernando Dongu Guerrero",
+          "DAVID GARCIA AGUIRRE",
+          "PATRICIO GASCA VILLAFUERTE",
+          "REYES JOEL GAYTAN LEON",
+          "GIOVANNI GUERRERO HERNANDEZ",
+          "EDGAR HERNANDEZ AUSTRIA",
+          "Asuncion Hernandez Hernandez",
+          "JORGE GABRIEL JUAREZ CASTRO",
+          "EDUARDO LOPEZ GARCIA",
+          "Gerardo Lopez Guerrero",
+          "Jose Alfredo Lopez Perez",
+          "Jorge Eduardo Martinez Moreno",
+          "Alvaro Alberto Mata Garcia",
+          "MANUEL PATIÑO VILLALPANDO",
+          "JUAN ENRIQUE RICO GONZALEZ",
+          "MANUEL RICO MANCERA",
+          "JUAN ANTONIO ROSALES CABELLO",
+          "MAURICIO IGNACIO ROSALES OCHOA",
+          "Sergio Arturo Sanchez Huizache",
+          "FRANCISCO JAVIER VALDEZ CORRALES",
+          "J. REFUGIO ZARAZUA AGOSTADERO"
+        ],
+        "BOAVISTA": [],
+        "CUENDA": [],
+        "FRANCO-TAVERA-JR": [],
+        "HURACAN": [
+          "Martin Hortelano Luna"
+        ],
         "JUVENTUS": [],
+        "LA TRINIDAD": [],
         "LEYENDAS FC": [],
-        "PSV": [],
-        "LA TRINIDAD": []
+        "POZOS FC": [],
+        "PSV": [
+          "FRANCISCO JESUS AGUIRRE CANO",
+          "Giovanni Emanuel Flores Guerrero",
+          "OMAR GUERRERO DAMIAN",
+          "Cristian Jesus Gasca Rodriguez",
+          "Jose Antonio Juarez Landin",
+          "OSCAR LOPEZ DAMIAN",
+          "Francisco Javier Solache Franco"
+        ]
       },
       "player_usage": {},
       "cedulas": [],
       "cedulas_scanned": [],
-      "public_player_count_scraped": 0
+      "public_player_count_scraped": 31,
+      "verified_at_utc": "2026-10-01T19:45:00Z"
     },
     "3": {
       "id": 3,
@@ -13551,7 +14199,8 @@
   "notes": [
     "Datos deportivos públicos; no se recopilan CURP, INE, domicilio ni documentos.",
     "La fuente oficial juventinorosasliga.com prevalece sobre este snapshot.",
-    "No se inventan goles, alineaciones, estadísticas avanzadas ni sanciones."
+    "No se inventan goles, alineaciones, estadísticas avanzadas ni sanciones.",
+    "V514: Veteranos 35+ verificado en la fuente oficial: 11 equipos, 55 partidos pendientes y 14 jugadores; temporada 6. Sin resultados finalizados. Orden provisional de equipos, no clasificación deportiva."
   ],
   "missing_official_logo": [
     "BOCA JRS",

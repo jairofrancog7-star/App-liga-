@@ -1,4 +1,4 @@
-const CACHE='liga-juventino-v509-unified-stats-table';
+const CACHE='liga-juventino-v535-mobile-print-stream';
 const CORE=['./','./index.html','./manifest.webmanifest','./brand-neon-header.svg','./profile-reference.svg'];
 
 self.addEventListener('install',event=>{
