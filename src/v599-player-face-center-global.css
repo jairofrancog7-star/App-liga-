@@ -1,52 +1,16 @@
-/* V603 — MISMO ENCUADRE FACIAL DE CREDENCIALES, APLICADO GLOBALMENTE.
-   El JS calcula el mismo recorte de faceCrop() que usa la credencial:
-   ojos ~40% de la altura, margen para cabello/frente y espacio bajo el mentón.
-   El recorte se reproduce con CSS dentro de cada círculo, sin deformar la foto. */
+/* V606 — ENCUADRE FACIAL SOLO EN FOTOS CIRCULARES
+   IMPORTANTE: NO toca fotos cuadradas ni rectangulares.
+   JS marca únicamente los marcos que YA son círculos visuales con
+   .ljr-face-circle-v606 y entonces aplica el recorte facial de credenciales. */
 
-:is(
-  .v576-player-avatar,
-  .v66-player-avatar.v576-has-photo,
-  .v42-avatar.v576-has-photo,
-  .v419-player-avatar.v576-has-photo,
-  .v446-stat-ref-avatar.v576-has-photo,
-  .v414-avatar.v576-has-photo,
-  .v123-avatar.v576-has-photo,
-  .v123-option-avatar.v576-has-photo,
-  .v379-related-avatar.v576-has-photo,
-  .v576-table-photo,
-  .v124-avatar.v576-has-inline-photo,
-  .v562-avatar.v576-has-photo,
-  .v12-avatar.v576-face-photo,
-  .v538-person.has-photo,
-  .v33-player-team-logo.v576-player-avatar
-){
+.ljr-face-circle-v606{
   position:relative!important;
-  aspect-ratio:1/1!important;
-  border-radius:50%!important;
   overflow:hidden!important;
   box-sizing:border-box!important;
-  background:#101b88!important;
 }
 
-/* La imagen ya no usa object-fit:cover. V603 coloca y escala la foto usando
-   exactamente el rectángulo sx/sy/sw/sh calculado por el motor de credenciales. */
-:is(
-  .v576-player-avatar,
-  .v66-player-avatar.v576-has-photo,
-  .v42-avatar.v576-has-photo,
-  .v419-player-avatar.v576-has-photo,
-  .v446-stat-ref-avatar.v576-has-photo,
-  .v414-avatar.v576-has-photo,
-  .v123-avatar.v576-has-photo,
-  .v123-option-avatar.v576-has-photo,
-  .v379-related-avatar.v576-has-photo,
-  .v576-table-photo,
-  .v124-avatar.v576-has-inline-photo,
-  .v562-avatar.v576-has-photo,
-  .v12-avatar.v576-face-photo,
-  .v538-person.has-photo,
-  .v33-player-team-logo.v576-player-avatar
-)>img[data-ljr-credential-face-crop="1"]{
+/* Solo imágenes dentro de un marco circular detectado. */
+.ljr-face-circle-v606 > img[data-ljr-credential-face-crop="1"]{
   position:absolute!important;
   z-index:2!important;
   left:var(--ljr-face-left,0%)!important;
@@ -70,9 +34,9 @@
   box-sizing:border-box!important;
 }
 
-/* Más o Menos tenía reglas antiguas center top/cover: V603 manda sobre ellas. */
-body .v543-moreless-portal .v583-challenge-art .v538-person.has-photo>img[data-ljr-credential-face-crop="1"],
-body[data-app-route="moreLessGallery"] .v583-challenge-art .v538-person.has-photo>img[data-ljr-credential-face-crop="1"]{
+/* Más o Menos: solo si el marco fue confirmado como círculo. */
+body .v543-moreless-portal .v583-challenge-art .ljr-face-circle-v606 > img[data-ljr-credential-face-crop="1"],
+body[data-app-route="moreLessGallery"] .v583-challenge-art .ljr-face-circle-v606 > img[data-ljr-credential-face-crop="1"]{
   position:absolute!important;
   left:var(--ljr-face-left,0%)!important;
   top:var(--ljr-face-top,0%)!important;
@@ -84,26 +48,8 @@ body[data-app-route="moreLessGallery"] .v583-challenge-art .v538-person.has-phot
   transform:none!important;
 }
 
-/* Evita que reglas anteriores vuelvan el marco ovalado. */
-:is(
-  .v576-player-avatar,
-  .v66-player-avatar.v576-has-photo,
-  .v42-avatar.v576-has-photo,
-  .v419-player-avatar.v576-has-photo,
-  .v446-stat-ref-avatar.v576-has-photo,
-  .v414-avatar.v576-has-photo,
-  .v123-avatar.v576-has-photo,
-  .v123-option-avatar.v576-has-photo,
-  .v379-related-avatar.v576-has-photo,
-  .v576-table-photo,
-  .v124-avatar.v576-has-inline-photo,
-  .v562-avatar.v576-has-photo,
-  .v538-person.has-photo
-){
-  min-width:0!important;
-  min-height:0!important;
-}
-
+/* V606 no cambia border-radius, aspect-ratio, tamaño ni forma de cuadros.
+   La forma original de cada componente queda intacta. */
 
 /* V604 — SCORERS: una sola imagen visible por jugador. */
 .v391-rank-copy > img,
@@ -143,3 +89,4 @@ body[data-app-route="moreLessGallery"] .v583-challenge-art .v538-person.has-phot
   display:none!important;
   visibility:hidden!important;
 }
+
