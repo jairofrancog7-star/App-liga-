@@ -113,14 +113,14 @@ function fieldRow(position,map){
 function builderMarkup(){
  const squad=readSquad(),map=new Map(squad.map(x=>[Number(x.slot),x])),count=map.size,left=Math.max(0,BUDGET-total());
  return'<section class="v576-builder v587-builder" data-v576-builder data-v590-count="'+count+'" style="--v590-progress:'+Math.round((count/15)*100)+'%">'+
- '<header class="v576-builder-head"><button type="button" data-v576-back aria-label="Volver">‹</button><h1>Elige tu equipo</h1><button type="button" data-v576-menu aria-label="Menú">⋮</button></header>'+
- '<div class="v576-builder-summary"><div><small>Jugadores</small><b>'+count+'/15</b></div><div><small>Restante <i>?</i></small><b>'+money(left)+'</b></div><button type="button" data-v576-auto><span>✣</span> Autocompletar</button></div>'+
+ '<header class="v576-builder-head"><button type="button" data-v576-back aria-label="Volver">←</button><h1>Elige tu equipo</h1><button type="button" data-v576-menu aria-label="Menú">⋮</button></header>'+
+ '<div class="v576-builder-summary"><div><small>Jugadores</small><b>'+count+'/15</b></div><div><small>Restante <i>?</i></small><b>'+money(left)+'</b></div><button type="button" data-v576-auto><span class="v590-wand" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 20 14.7 9.3M13.8 4.4l.8-2.2.8 2.2 2.2.8-2.2.8-.8 2.2-.8-2.2-2.2-.8 2.2-.8.8-2.2ZM18.2 10.7l.6-1.6.6 1.6 1.6.6-1.6.6-.6 1.6-.6-1.6-1.6-.6 1.6-.6Z"/></svg></span> Autocompletar</button></div>'+
 
  '<div class="v576-field">'+
    '<div class="v587-pitch-lines" aria-hidden="true"><i class="v587-half"></i><i class="v587-center"></i><i class="v587-box v587-box-top"></i><i class="v587-box v587-box-bottom"></i></div>'+
    fieldRow('DEL',map)+fieldRow('CEN',map)+fieldRow('DEF',map)+fieldRow('POR',map)+
    (count===0?'<div class="v576-first-hint">Elige tu primer jugador</div>':'')+
-   '<button type="button" class="v587-filter-pill" data-v576-search aria-label="Buscar y filtrar jugadores"><span>☰</span><i></i><b>$</b></button>'+
+   '<button type="button" class="v587-filter-pill" data-v576-search aria-label="Buscar y filtrar jugadores"><span class="v590-filter-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 6h14M8 12h8M10 18h4"/></svg></span><i></i><b>$</b></button>'+
    '<div class="v576-builder-actions"><button type="button" data-v576-search class="'+(count===15?'ready':'')+'">'+(count===15?'Continuar':'Buscar jugadores')+'</button></div>'+
  '</div>'+
  '<footer>CONSEJO: Autocompleta tu plantilla y afínala antes del primer partido</footer></section>';
