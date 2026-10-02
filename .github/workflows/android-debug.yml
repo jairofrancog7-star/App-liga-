@@ -46,6 +46,9 @@ jobs:
       - name: Sync Capacitor
         run: npx cap sync android
 
+      - name: Enable native video Picture-in-Picture
+        run: node native/android/configure.mjs
+
       - name: Build debug APK
         run: |
           chmod +x android/gradlew

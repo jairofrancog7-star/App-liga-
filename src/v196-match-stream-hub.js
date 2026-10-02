@@ -1,3 +1,5 @@
+import { Capacitor, registerPlugin } from '@capacitor/core';
+const nativePiP=registerPlugin('LigaPiP');
 /* V196 — Centro de transmisión móvil para Match Center.
    Integra varias fuentes, estados En vivo/Por iniciar/Finalizado,
    reproductor adaptable, lista de fuentes y modo flotante.
@@ -482,6 +484,14 @@ async function toggleFloating(c,node){
     if(small)small.textContent='Activando…';
   }
 
+  if(Capacitor.isNativePlatform()&&Capacitor.getPlatform()==='android'){
+    if(!cap.inApp){cfg.floating=false;saveSettings(cfg);flash('Vincula un video que se reproduzca dentro de la app.');return}
+    setFloating(true,node);
+    document.body.classList.add('v558-native-pip');
+    try{await nativePiP.enter();systemPiPActive=true;return}
+    catch(error){document.body.classList.remove('v558-native-pip');flash(error.message||'Este APK necesita actualizarse para usar PiP.');return}
+  }
+
   /* V527: Chrome Android usa su flujo nativo más estable:
      pantalla completa -> botón Inicio -> Picture-in-Picture de Android. */
   if(isAndroidChrome()&&!cap.pip){
@@ -664,6 +674,7 @@ const screen=$('#screen');
 if(screen)new MutationObserver(()=>{if(ROUTES.has(route()))schedule(60)}).observe(screen,{childList:true,subtree:true});
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',()=>schedule(100),{once:true});else schedule(100);
 
+window.addEventListener('liga:native-pip',e=>{systemPiPActive=!!e.detail?.active;if(!systemPiPActive){document.body.classList.remove('v558-native-pip');disableFloating($('[data-v196-stream-hub]'))}});
 window.LJR_STREAM_CENTER={
   addSource(url,name){
     const c=ctx(),u=safeUrl(url);if(!c||!u)return false;

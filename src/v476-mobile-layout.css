@@ -101,3 +101,9 @@ html body #screen > :is(.v27-teams-page,.v41-teams-page,.v413-shell,.v412-shell)
 }
 html body #screen .v73-below-native{margin-bottom:16px!important}
 html body .v196-frame:has(iframe){min-height:200px}
+/* Android activity PiP shows only the existing player, keeping its connection. */
+body.v558-native-pip > :not(.v196-floating-portal){visibility:hidden!important}
+body.v558-native-pip .v196-floating-portal{position:fixed!important;inset:0!important;width:100vw!important;height:100dvh!important;max-width:none!important;margin:0!important;border:0!important;border-radius:0!important;background:#000!important}
+body.v558-native-pip .v196-player-card{width:100%!important;height:100%!important;border:0!important;border-radius:0!important}
+body.v558-native-pip .v196-player-card > :not(.v196-frame){display:none!important}
+body.v558-native-pip .v196-frame{width:100%!important;height:100%!important;min-height:0!important;aspect-ratio:auto!important}
