@@ -405,8 +405,8 @@ async function registerFromPage(root){
   if(!$('[data-v569-terms]',root)?.checked)return toast('Acepta guardar la cuenta en este dispositivo');
   let alias=cleanAlias($('[data-v569-alias]',root)?.value||'');
   if(alias&&alias.length<3)return toast('El alias debe tener al menos 3 caracteres');
-  alias=alias?uniqueAlias(alias):generateAlias(name,phone,email);
-  if(aliasExists(alias))return toast('Ese alias ya está ocupado en este dispositivo');
+  if(alias&&aliasExists(alias))return toast('Ese alias ya está ocupado. Toca “Otro” o escribe uno diferente');
+  alias=alias||generateAlias(name,phone,email);
   if(contactExists(email,phone))return toast('Ese teléfono o correo ya está registrado');
   const rec={id:randomId(),name,alias,phone:method==='phone'?phone:'',email:method==='email'?email:'',createdAt:nowIso(),updatedAt:nowIso(),lastLoginAt:nowIso(),password:await newPasswordRecord(pass),biometric:null,devices:[{id:'local',name:deviceName(),verified:false,lastSeenAt:nowIso()}]};
   const auth=authState();auth.accounts.push(rec);auth.currentId=rec.id;saveAuth(auth);setAppUser(rec);
