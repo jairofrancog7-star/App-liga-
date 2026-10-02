@@ -2,6 +2,8 @@ const V24_FANTASY_LOGO='./fantasy-logo-user-black.webp?v=20260918-user-logo2';
 const V24_ACCESS_REF='./fantasy-access-reference.png?v=parts24';
 let v23FantasyBgPromise=null;
 let v24FantasyTransparentLogoPromise=null;
+let v588AccessSlide=0;
+let v588SwipeStartX=null;
 
 function v23Route(){return location.hash.replace('#/','')||'home'}
 
@@ -93,23 +95,74 @@ function v23LandingMarkup(){
   '</section>';
 }
 
+function v588Card(name,pts,klass){
+  return '<article class="v588-fantasy-card '+klass+'">'+
+    '<div class="v588-card-face"><span class="v588-player-silhouette"></span></div>'+
+    '<b>'+name+'</b><small>'+pts+' pts</small>'+
+  '</article>';
+}
+
 function v23AccessMarkup(){
-  return '<section class="v23-fantasy-access" data-v23-access>'+
+  return '<section class="v23-fantasy-access v588-fantasy-access" data-v23-access data-v588-slide="'+v588AccessSlide+'">'+
     '<div class="v23-ref-crop v23-access-header" aria-hidden="true"><img src="'+V24_ACCESS_REF+'" alt=""></div>'+
-    '<div class="v23-access-sponsor" aria-label="Patrocinado por Liga Municipal de Fútbol Juventino Rosas">'+
-      '<span>Patrocinado por</span>'+
-      '<img data-v24-fantasy-logo src="'+V24_FANTASY_LOGO+'" alt="Liga Municipal de Fútbol Juventino Rosas">'+
+    '<div class="v23-access-sponsor v588-ps5-strip" aria-label="Patrocinado por PS5">'+
+      '<span>Patrocinado por</span><strong class="v588-ps5-mark">◢ PS5</strong>'+
     '</div>'+
-    '<div class="v23-ref-crop v23-access-photo" role="img" aria-label="Jugadores celebrando"><img src="'+V24_ACCESS_REF+'" alt=""></div>'+
-    '<div class="v23-access-copy">'+
-      '<h1>Inicia sesión para jugar al<br>Fantasy</h1>'+
-      '<p>Inicia sesión para guardar tu equipo, unirte a<br>ligas y recibir alertas importantes sobre plazos.</p>'+
-    '</div>'+
-    '<div class="v23-access-actions">'+
-      '<button class="v23-access-login" type="button">Inicia sesión para jugar</button>'+
-      '<button class="v23-access-later" type="button">Iniciaré sesión después</button>'+
+    '<div class="v588-access-viewport">'+
+      '<section class="v588-access-slide v588-slide-login" data-v588-slide-panel="0">'+
+        '<button class="v588-side-arrow prev" type="button" data-v588-prev aria-label="Anterior">‹</button>'+
+        '<div class="v23-ref-crop v23-access-photo" role="img" aria-label="Jugadores"><img src="'+V24_ACCESS_REF+'" alt=""></div>'+
+        '<div class="v23-access-copy"><h1>Inicia sesión para jugar al<br>Fantasy</h1>'+
+          '<p>Inicia sesión para guardar tu equipo, unirte a<br>ligas y recibir alertas importantes sobre plazos.</p></div>'+
+        '<div class="v23-access-actions">'+
+          '<button class="v23-access-login" type="button" data-v588-login>Inicia sesión para jugar</button>'+
+          '<button class="v23-access-later" type="button" data-v588-next>Iniciaré sesión después</button>'+
+        '</div>'+
+        '<button class="v588-side-arrow next" type="button" data-v588-next aria-label="Siguiente">›</button>'+
+      '</section>'+
+      '<section class="v588-access-slide v588-slide-team" data-v588-slide-panel="1">'+
+        '<button class="v588-side-arrow prev" type="button" data-v588-prev aria-label="Anterior">‹</button>'+
+        '<div class="v588-card-stage" aria-label="Ejemplo de equipo Fantasy">'+
+          v588Card('L. Yamal','9','left')+v588Card('K. Mbappé','12','main')+v588Card('Olise','8','right')+
+        '</div>'+
+        '<div class="v588-team-copy"><h1>Elige tu equipo</h1>'+
+          '<p>Gasta 100 m€ en 15 jugadores y suma puntos según su rendimiento real. ¿Quiénes forman tu equipo ideal de la Champions League?</p>'+
+          '<div class="v588-dots"><i></i><i class="active"></i></div></div>'+
+        '<div class="v23-access-actions v588-team-actions">'+
+          '<button class="v23-access-login" type="button" data-v588-login>Inicia sesión para jugar</button>'+
+          '<button class="v23-access-later" type="button" data-v588-guest>Prueba como invitado</button>'+
+        '</div>'+
+        '<button class="v588-side-arrow next" type="button" data-v588-next aria-label="Siguiente">›</button>'+
+      '</section>'+
     '</div>'+
   '</section>';
+}
+
+function v588SetSlide(n){
+  v588AccessSlide=Math.max(0,Math.min(1,Number(n)||0));
+  const root=document.querySelector('[data-v23-access]');
+  if(!root)return;
+  root.dataset.v588Slide=String(v588AccessSlide);
+  root.querySelectorAll('[data-v588-slide-panel]').forEach(p=>{
+    p.classList.toggle('is-active',Number(p.dataset.v588SlidePanel)===v588AccessSlide);
+  });
+}
+function v588LoggedIn(){
+  try{
+    const s=JSON.parse(localStorage.getItem('lj-store-v3')||'{}');
+    const a=JSON.parse(localStorage.getItem('ljr-auth-v569')||'{}');
+    return !!(s?.user||a?.currentId);
+  }catch(_){return false}
+}
+function v588Login(){
+  if(v588LoggedIn()){location.hash='#/fantasyTeam';return}
+  try{localStorage.setItem('ljr-auth-return-v569','fantasyTeam')}catch(_){}
+  location.hash='#/accountLogin';
+}
+function v588Guest(){
+  if(v588LoggedIn()){location.hash='#/fantasyTeam';return}
+  if(window.LJR_V576_FANTASY?.guest){window.LJR_V576_FANTASY.guest();return}
+  window.dispatchEvent(new CustomEvent('ljr:fantasy-guest'));
 }
 
 async function patchV23Fantasy(){
@@ -123,13 +176,22 @@ async function patchV23Fantasy(){
   if(route==='fantasyAccess'){
     if(!screen.querySelector('[data-v23-access]')) screen.innerHTML=v23AccessMarkup();
     v24ApplyTransparentFantasyLogo(screen);
-    const login=screen.querySelector('.v23-access-login');
-    const later=screen.querySelector('.v23-access-later');
-    if(login) login.onclick=(e)=>{e.preventDefault();e.stopPropagation();let logged=false;try{const s=JSON.parse(localStorage.getItem('lj-store-v3')||'{}');const a=JSON.parse(localStorage.getItem('ljr-auth-v569')||'{}');logged=!!(s?.user||a?.currentId)}catch(_){}
-      if(logged) location.hash='#/fantasyTeam';
-      else {try{localStorage.setItem('ljr-auth-return-v569','fantasyTeam')}catch(_){};location.hash='#/accountLogin'}
-    };
-    if(later) later.onclick=(e)=>{e.preventDefault();e.stopPropagation();location.hash='#/fantasyTeam'};
+    v588SetSlide(v588AccessSlide);
+    screen.querySelectorAll('[data-v588-login]').forEach(b=>b.onclick=e=>{e.preventDefault();e.stopPropagation();v588Login()});
+    screen.querySelectorAll('[data-v588-next]').forEach(b=>b.onclick=e=>{e.preventDefault();e.stopPropagation();v588SetSlide(Math.min(1,v588AccessSlide+1))});
+    screen.querySelectorAll('[data-v588-prev]').forEach(b=>b.onclick=e=>{e.preventDefault();e.stopPropagation();v588SetSlide(Math.max(0,v588AccessSlide-1))});
+    screen.querySelectorAll('[data-v588-guest]').forEach(b=>b.onclick=e=>{e.preventDefault();e.stopPropagation();v588Guest()});
+    const viewport=screen.querySelector('.v588-access-viewport');
+    if(viewport&&!viewport.dataset.v588Swipe){
+      viewport.dataset.v588Swipe='1';
+      viewport.addEventListener('pointerdown',e=>{v588SwipeStartX=e.clientX},{passive:true});
+      viewport.addEventListener('pointerup',e=>{
+        if(v588SwipeStartX===null)return;
+        const dx=e.clientX-v588SwipeStartX;v588SwipeStartX=null;
+        if(Math.abs(dx)<45)return;
+        v588SetSlide(v588AccessSlide+(dx<0?1:-1));
+      },{passive:true});
+    }
     return;
   }
 
