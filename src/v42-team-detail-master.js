@@ -138,6 +138,19 @@ function toggleFavorite(){
  save(st);
 }
 function mini(name){return '<span class="v42-mini-team"><img src="'+esc(logoUrl(name))+'" alt="" loading="lazy"><b>'+esc(name)+'</b></span>'}
+function playerProfile(t,name){
+ const entry=Object.entries(t?.c?.player_profiles||{}).find(([team])=>norm(team)===norm(t?.name));
+ const rows=Array.isArray(entry?.[1])?entry[1]:[];
+ return rows.find(p=>norm(p?.name)===norm(name))||null;
+}
+function playerPhotoMarkup(t,name,large=false){
+ const p=playerProfile(t,name)||{};
+ const src=String(p.photo||window.LJR_PLAYER_MEDIA?.photo?.(name,t?.name,t?.catId)||'');
+ const cls='v42-avatar'+(large?' large':'')+(src?' v576-has-photo':'');
+ if(src)return '<span class="'+cls+'" aria-hidden="true"><img src="'+esc(src)+'" alt="" loading="lazy" decoding="async" referrerpolicy="no-referrer"></span>';
+ const ini=String(name||'J').split(/\s+/).filter(Boolean).slice(0,2).map(x=>x[0]||'').join('').toUpperCase();
+ return '<span class="'+cls+'" aria-hidden="true">'+esc(ini)+'</span>';
+}
 function dateParts(v){const m=String(v||'').match(/(\d{1,2})\/(\d{1,2})\/(\d{4})\s+(\d{1,2}:\d{2})/);return m?{date:m[1]+'/'+m[2]+'/'+m[3],time:m[4]}:{date:String(v||''),time:''}}
 function scoreFor(r,name){
  const a=Number(r[3]),b=Number(r[5]),home=norm(r[2])===norm(name);if(!Number.isFinite(a)||!Number.isFinite(b))return '';
@@ -148,7 +161,13 @@ function nextFixture(t){return t.fixtures.find(r=>String(r[3])==='-'&&String(r[5
 function played(t){return t.fixtures.filter(r=>/^\d+$/.test(String(r[3]))&&/^\d+$/.test(String(r[5])))}
 function rosterRows(t){
  if(!t.roster.length)return '<div class="empty-mini">No hay plantilla pública disponible para este equipo.</div>';
- return t.roster.map((n,i)=>'<button type="button" class="v42-player-row" data-v42-player="'+esc(n)+'"><span class="v42-avatar" aria-hidden="true">⚽</span><span class="v42-player-copy"><strong>'+esc(n)+'</strong><small>'+esc(t.name)+' · Jugador registrado</small></span><b class="v42-number">—</b></button>').join('');
+ return t.roster.map((n,i)=>{
+   const p=playerProfile(t,n)||{};
+   return '<button type="button" class="v42-player-row" data-v42-player="'+esc(n)+'" data-v66-player-team="'+esc(t.name)+'" data-v66-cat-id="'+esc(t.catId)+'">'+
+    playerPhotoMarkup(t,n,false)+
+    '<span class="v42-player-copy"><strong>'+esc(n)+'</strong><small>'+esc(p.position||'Jugador registrado')+' · '+esc(t.name)+'</small></span>'+
+    '<b class="v42-number">'+esc(p.dorsal?'#'+p.dorsal:'—')+'</b></button>';
+ }).join('');
 }
 function summaryDataMarkup(t){
  const r=t.row;
@@ -173,7 +192,7 @@ function summaryMarkup(t){
    (next?'<article class="v42-next-card"><h3>Jornada '+esc(next[1])+' · '+esc(t.category)+'</h3><div class="v42-next-body"><div>'+mini(t.name)+mini(opponent(next,t.name))+'</div><div class="v42-next-time"><b>'+esc(dateParts(next[8]).time||'Por confirmar')+'</b><small>'+esc(next[7]||'Campo por confirmar')+'</small></div></div></article>':'<div class="empty-mini">No hay próximo partido oficial publicado.</div>')+
   '</section>'+
   '<section class="v42-section v42-squad-preview"><div class="v42-section-head"><h2>Plantilla</h2><button type="button" data-v42-tab="squad">Ver todo</button></div><div class="v42-preview-grid">'+
-   t.roster.slice(0,3).map(n=>'<button type="button" data-v42-tab="squad"><span class="v42-avatar large">⚽</span><strong>'+esc(n)+'</strong><small>Jugador registrado</small></button>').join('')+
+   t.roster.slice(0,3).map(n=>{const p=playerProfile(t,n)||{};return '<button type="button" data-v42-tab="squad">'+playerPhotoMarkup(t,n,true)+'<strong>'+esc(n)+'</strong><small>'+esc(p.position||'Jugador registrado')+'</small></button>'}).join('')+
   '</div></section>'+
   summaryDataMarkup(t)+
  '</main>';
