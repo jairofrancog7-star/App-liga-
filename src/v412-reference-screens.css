@@ -2935,3 +2935,126 @@ body[data-app-route="profile"] [data-v412-screen="account"] .v412-account-foot{
     padding-right:32px!important;
   }
 }
+
+
+/* V530 — Perfil: filas inferiores dentro del mismo bloque v12, sin apariencia de sección aparte. */
+body[data-app-route="profile"] [data-v12-profile-lower-slot]{
+  display:block!important;
+  margin:0!important;
+  padding:0!important;
+}
+body[data-app-route="profile"] [data-v12-profile-lower-slot] > [data-v412-screen="account"]{
+  width:100%!important;
+  max-width:none!important;
+  margin:0!important;
+  padding:0!important;
+  background:transparent!important;
+  border:0!important;
+  border-radius:0!important;
+  box-shadow:none!important;
+}
+body[data-app-route="profile"] [data-v12-profile-lower-slot] .v412-menu,
+body[data-app-route="profile"] [data-v12-profile-lower-slot] .v412-socials{
+  display:block!important;
+  margin:0!important;
+  padding:0!important;
+}
+body[data-app-route="profile"] [data-v12-profile-lower-slot] .v412-menu button,
+body[data-app-route="profile"] [data-v12-profile-lower-slot] .v412-social.fb,
+body[data-app-route="profile"] [data-v12-profile-lower-slot] .v412-sharefriend{
+  width:100%!important;
+  min-height:78px!important;
+  height:78px!important;
+  display:grid!important;
+  grid-template-columns:48px minmax(0,1fr) 24px!important;
+  align-items:center!important;
+  margin:0!important;
+  padding:0!important;
+  border:0!important;
+  border-top:1px solid rgba(255,255,255,.06)!important;
+  border-radius:0!important;
+  background:transparent!important;
+  color:#fff!important;
+  box-shadow:none!important;
+  font-family:Inter,Roboto,Arial,sans-serif!important;
+  font-size:21px!important;
+  font-weight:400!important;
+  text-align:left!important;
+}
+body[data-app-route="profile"] [data-v12-profile-lower-slot] .v412-menu button span:first-child{
+  grid-column:2!important;
+  font-size:21px!important;
+  font-weight:400!important;
+}
+body[data-app-route="profile"] [data-v12-profile-lower-slot] .v412-menu button span:last-child{
+  grid-column:3!important;
+  justify-self:end!important;
+  font-size:24px!important;
+  color:#fff!important;
+}
+body[data-app-route="profile"] [data-v12-profile-lower-slot] .v412-social-title{
+  min-height:54px!important;
+  display:flex!important;
+  align-items:center!important;
+  margin:0!important;
+  padding:0 0 0 48px!important;
+  border-top:1px solid rgba(255,255,255,.06)!important;
+  border-bottom:0!important;
+  color:#9299bb!important;
+  font-size:11px!important;
+  font-weight:800!important;
+  letter-spacing:.14em!important;
+}
+body[data-app-route="profile"] [data-v12-profile-lower-slot] .v412-social-title::before,
+body[data-app-route="profile"] [data-v12-profile-lower-slot] .v412-social-title::after{
+  display:none!important;
+}
+body[data-app-route="profile"] [data-v12-profile-lower-slot] .v412-social.fb{
+  font-size:0!important;
+}
+body[data-app-route="profile"] [data-v12-profile-lower-slot] .v412-social.fb::before{
+  content:""!important;
+  grid-column:1!important;
+  width:0!important;
+}
+body[data-app-route="profile"] [data-v12-profile-lower-slot] .v412-social.fb::after{
+  content:"›"!important;
+  grid-column:3!important;
+  justify-self:end!important;
+  font-size:24px!important;
+  color:#fff!important;
+}
+body[data-app-route="profile"] [data-v12-profile-lower-slot] .v412-social.fb{
+  position:relative!important;
+}
+body[data-app-route="profile"] [data-v12-profile-lower-slot] .v412-social.fb::first-line{font-size:0!important}
+body[data-app-route="profile"] [data-v12-profile-lower-slot] .v412-social.fb{
+  text-indent:-9999px!important;
+}
+body[data-app-route="profile"] [data-v12-profile-lower-slot] .v412-social.fb::before{
+  content:"Facebook · Liga Juventino"!important;
+  width:auto!important;
+  text-indent:0!important;
+  grid-column:2!important;
+  font-size:21px!important;
+  font-weight:400!important;
+  color:#fff!important;
+}
+body[data-app-route="profile"] [data-v12-profile-lower-slot] .v412-sharefriend{
+  grid-template-columns:48px minmax(0,1fr) 24px!important;
+  font-size:21px!important;
+  font-weight:400!important;
+}
+body[data-app-route="profile"] [data-v12-profile-lower-slot] .v412-sharefriend{
+  padding-left:48px!important;
+}
+body[data-app-route="profile"] [data-v12-profile-lower-slot] .v412-sharefriend span{
+  justify-self:end!important;
+  font-size:24px!important;
+}
+body[data-app-route="profile"] [data-v12-profile-lower-slot] .v412-account-foot{
+  padding:26px 0 0!important;
+  font-size:11px!important;
+  color:#98a1c6!important;
+  text-align:center!important;
+}
