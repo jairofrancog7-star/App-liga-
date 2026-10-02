@@ -281,8 +281,8 @@
     #screen .v400-chips small{color:#7785c4;font-size:7px;font-weight:900;letter-spacing:.09em}
     #screen .v400-chips b{margin-top:4px;overflow:hidden;font-size:11px;white-space:nowrap;text-overflow:ellipsis}
   </style>
-  <script type="module" crossorigin src="./assets/index-Chw52bmH.js"></script>
-  <link rel="stylesheet" crossorigin href="./assets/index-DtrRfMPl.css">
+  <script type="module" crossorigin src="./assets/index-B618fDFs.js"></script>
+  <link rel="stylesheet" crossorigin href="./assets/index-Byt3KCId.css">
 </head>
 <body>
   <div id="app" class="app-shell">
@@ -303,6 +303,44 @@
     </nav>
   </div>
 
+  <script>
+  (function(){
+    if(window.__LJR_V541_MONITO_CAPTURE__)return;
+    window.__LJR_V541_MONITO_CAPTURE__=true;
+    function currentRoute(){
+      return String(location.hash||'').replace(/^#\/?/,'').split('?')[0]||'home';
+    }
+    function openMore(){
+      if(window.LJR_V541_GAMES_API&&typeof window.LJR_V541_GAMES_API.openMorePages==='function'){
+        window.LJR_V541_GAMES_API.openMorePages();
+        return;
+      }
+      window.__LJR_V541_PENDING_MORE__=true;
+      var tries=0;
+      var timer=setInterval(function(){
+        tries++;
+        if(window.LJR_V541_GAMES_API&&typeof window.LJR_V541_GAMES_API.openMorePages==='function'){
+          clearInterval(timer);
+          window.__LJR_V541_PENDING_MORE__=false;
+          window.LJR_V541_GAMES_API.openMorePages();
+        }else if(tries>40){
+          clearInterval(timer);
+        }
+      },50);
+    }
+    document.addEventListener('click',function(e){
+      if(currentRoute()!=='moreLess'||!(e.target instanceof Element))return;
+      var primary=e.target.closest('#screen [data-v12-moreless]');
+      if(!primary)return;
+      var avatar=e.target.closest('.v12-ml-choice > button, .v12-avatar');
+      if(!avatar||!primary.contains(avatar))return;
+      e.preventDefault();
+      e.stopPropagation();
+      e.stopImmediatePropagation();
+      openMore();
+    },true);
+  })();
+  </script>
   <script src="./src/v488-cat3-global-sync.js?v=20261001-v508-official-all-pages"></script>
 
 
