@@ -95,19 +95,32 @@ function v23LandingMarkup(){
   '</section>';
 }
 
-function v588Card(name,pts,klass){
+function v588Samples(){
+  const rows=window.LJR_V576_FANTASY?.samplePlayers?.()||[];
+  const fallback=[
+    {name:'Jugador 1',team:'Liga Juventino Rosas',photo:''},
+    {name:'Jugador 2',team:'Liga Juventino Rosas',photo:''},
+    {name:'Jugador 3',team:'Liga Juventino Rosas',photo:''}
+  ];
+  return [0,1,2].map(i=>rows[i]||fallback[i]);
+}
+function v588Card(player,pts,klass){
+  const p=player||{};
+  const logo=window.LJR_V576_FANTASY?.teamLogo?.(p.team)||'https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/assets/liga-logo.webp';
+  const photo=String(p.photo||'').trim();
   return '<article class="v588-fantasy-card '+klass+'">'+
-    '<div class="v588-card-face"><span class="v588-player-silhouette"></span></div>'+
-    '<b>'+name+'</b><small>'+pts+' pts</small>'+
+    '<div class="v588-card-face">'+
+      (photo?'<img class="v588-card-player" src="'+photo+'" alt="" loading="lazy">':'<img class="v588-card-player fallback" src="'+logo+'" alt="" loading="lazy">')+
+      '<span class="v588-card-glow"></span>'+
+      '<img class="v588-card-crest" src="'+logo+'" alt="" loading="lazy">'+
+    '</div>'+
+    '<b>'+String(p.name||'Jugador')+'</b><small>'+pts+' pts</small>'+
   '</article>';
 }
-
 function v23AccessMarkup(){
   return '<section class="v23-fantasy-access v588-fantasy-access" data-v23-access data-v588-slide="'+v588AccessSlide+'">'+
     '<div class="v23-ref-crop v23-access-header" aria-hidden="true"><img src="'+V24_ACCESS_REF+'" alt=""></div>'+
-    '<div class="v23-access-sponsor v588-ps5-strip" aria-label="Patrocinado por PS5">'+
-      '<span>Patrocinado por</span><strong class="v588-ps5-mark">◢ PS5</strong>'+
-    '</div>'+
+
     '<div class="v588-access-viewport">'+
       '<section class="v588-access-slide v588-slide-login" data-v588-slide-panel="0">'+
         '<button class="v588-side-arrow prev" type="button" data-v588-prev aria-label="Anterior">‹</button>'+
@@ -123,7 +136,7 @@ function v23AccessMarkup(){
       '<section class="v588-access-slide v588-slide-team" data-v588-slide-panel="1">'+
         '<button class="v588-side-arrow prev" type="button" data-v588-prev aria-label="Anterior">‹</button>'+
         '<div class="v588-card-stage" aria-label="Ejemplo de equipo Fantasy">'+
-          v588Card('L. Yamal','9','left')+v588Card('K. Mbappé','12','main')+v588Card('Olise','8','right')+
+          (()=>{const p=v588Samples();return v588Card(p[0],'9','left')+v588Card(p[1],'12','main')+v588Card(p[2],'8','right')})()+
         '</div>'+
         '<div class="v588-team-copy"><h1>Elige tu equipo</h1>'+
           '<p>Gasta 100 m€ en 15 jugadores y suma puntos según su rendimiento real. ¿Quiénes forman tu equipo ideal de la Champions League?</p>'+
@@ -216,6 +229,12 @@ function scheduleV23Fantasy(){
 }
 
 window.addEventListener('hashchange',scheduleV23Fantasy);
+function v588OfficialRefresh(){
+  if(v23Route()!=='fantasyAccess')return;
+  document.querySelector('[data-v23-access]')?.remove();
+  scheduleV23Fantasy();
+}
+window.addEventListener('ljr:official-data',v588OfficialRefresh);
 const v23Target=document.querySelector('#screen');
 if(v23Target) new MutationObserver(scheduleV23Fantasy).observe(v23Target,{childList:true,subtree:false});
 if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',scheduleV23Fantasy,{once:true}); else scheduleV23Fantasy();
