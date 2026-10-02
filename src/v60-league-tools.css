@@ -1626,3 +1626,171 @@ body[data-app-route="v38Stats"] .v520-stats-topbar button:active{
   body.v553-printing .v553-week-scroll th:nth-child(7){width:11%!important}
   body.v553-printing .v553-pending{display:none!important}
 }
+
+
+/* V557 — hoja independiente de impresión, réplica visual del PDF AdminFut. */
+body.v553-printing{
+  margin:0!important;
+  background:#fff!important;
+  color:#111!important;
+  font-family:Arial,Helvetica,sans-serif!important;
+}
+body.v553-printing .v553-print-sheet{
+  width:100%!important;
+  max-width:190mm!important;
+  margin:0 auto!important;
+  padding:0!important;
+  background:#fff!important;
+}
+body.v553-printing .v553-print-sheet .v60-header,
+body.v553-printing .v553-print-sheet .v553-pending,
+body.v553-printing .v553-print-sheet .bottom-nav,
+body.v553-printing .v553-print-sheet .topbar{
+  display:none!important;
+}
+body.v553-printing .v553-print-sheet .v553-weekly-report{
+  margin:0!important;
+  padding:0!important;
+  background:#fff!important;
+  color:#111!important;
+}
+body.v553-printing .v553-print-sheet .v553-week-filter{
+  display:block!important;
+  margin:0 0 7mm!important;
+  padding:0 9mm 6mm!important;
+  border:1px solid #e1e1db!important;
+  border-radius:3mm!important;
+  box-shadow:0 1.5mm 4mm rgba(0,0,0,.14)!important;
+  background:#fff!important;
+}
+body.v553-printing .v553-print-sheet .v553-week-range{
+  margin:0 -9mm 4mm!important;
+  padding:5mm 5mm 3mm!important;
+  background:#fff!important;
+  color:#9a9a9a!important;
+  border:0!important;
+  border-bottom:1px solid #ddd!important;
+  border-radius:3mm 3mm 0 0!important;
+  font-size:11pt!important;
+  font-weight:700!important;
+}
+body.v553-printing .v553-print-sheet .v553-week-range::before{
+  content:"AdminFut\A";
+  white-space:pre!important;
+  display:block!important;
+  margin-bottom:3mm!important;
+  padding-bottom:3mm!important;
+  border-bottom:2px solid #e2d000!important;
+  color:#aaa!important;
+  font-size:8pt!important;
+  font-weight:400!important;
+}
+body.v553-printing .v553-print-sheet .v553-week-filter label{
+  display:block!important;
+  margin:0 0 3mm!important;
+  color:#173d1b!important;
+  font-size:8pt!important;
+  font-weight:700!important;
+}
+body.v553-printing .v553-print-sheet .v553-week-filter select,
+body.v553-printing .v553-print-sheet .v553-week-filter input{
+  display:block!important;
+  width:100%!important;
+  height:7mm!important;
+  margin:1.5mm 0 0!important;
+  padding:0 2mm!important;
+  box-sizing:border-box!important;
+  border:1px solid #d6d6d6!important;
+  border-radius:1.5mm!important;
+  background:#fff!important;
+  color:#333!important;
+  font-size:7pt!important;
+  appearance:none!important;
+}
+body.v553-printing .v553-print-sheet .v553-week-actions{
+  display:flex!important;
+  align-items:center!important;
+  margin-top:2mm!important;
+  gap:2mm!important;
+}
+body.v553-printing .v553-print-sheet .v553-week-actions button{
+  min-height:6mm!important;
+  padding:0 2.5mm!important;
+  border:1px solid #bbb!important;
+  border-radius:1.5mm!important;
+  background:#fff!important;
+  color:#aaa!important;
+  font-size:7pt!important;
+  box-shadow:none!important;
+}
+body.v553-printing .v553-print-sheet .v553-week-actions button:first-child{border:0!important;padding-left:0!important}
+body.v553-printing .v553-print-sheet .v553-week-actions button:last-child{margin-left:auto!important}
+body.v553-printing .v553-print-sheet .v553-week-group{
+  margin:0 0 6mm!important;
+  padding:0!important;
+  border:0!important;
+  break-inside:auto!important;
+  page-break-inside:auto!important;
+}
+body.v553-printing .v553-print-sheet .v553-week-title{
+  display:flex!important;
+  justify-content:space-between!important;
+  align-items:center!important;
+  min-height:7mm!important;
+  margin:0 0 1.5mm!important;
+  padding:0 0 1.5mm!important;
+  border-bottom:1px solid #ddd!important;
+  background:#fff!important;
+}
+body.v553-printing .v553-print-sheet .v553-week-title span{
+  color:#178c56!important;
+  font-size:11pt!important;
+  font-weight:700!important;
+}
+body.v553-printing .v553-print-sheet .v553-week-title b{
+  padding:0!important;
+  background:transparent!important;
+  color:#999!important;
+  font-size:7pt!important;
+  font-weight:600!important;
+}
+body.v553-printing .v553-print-sheet .v553-week-scroll{
+  overflow:visible!important;
+  padding:0!important;
+}
+body.v553-printing .v553-print-sheet table{
+  width:100%!important;
+  min-width:0!important;
+  table-layout:auto!important;
+  border-collapse:collapse!important;
+  background:#fff!important;
+}
+body.v553-printing .v553-print-sheet thead{display:table-header-group!important}
+body.v553-printing .v553-print-sheet tr{break-inside:avoid!important;page-break-inside:avoid!important}
+body.v553-printing .v553-print-sheet th,
+body.v553-printing .v553-print-sheet td{
+  height:5.3mm!important;
+  padding:1.2mm 1.6mm!important;
+  border:1px solid #dedede!important;
+  background:#fff!important;
+  color:#111!important;
+  font-size:6.5pt!important;
+  font-weight:400!important;
+  line-height:1.15!important;
+  white-space:normal!important;
+}
+body.v553-printing .v553-print-sheet th{
+  color:#999!important;
+  font-weight:600!important;
+  text-align:left!important;
+}
+body.v553-printing .v553-print-sheet th:nth-child(4),
+body.v553-printing .v553-print-sheet td:nth-child(4){text-align:center!important;width:5%!important}
+body.v553-printing .v553-print-sheet th:first-child{width:13%!important}
+body.v553-printing .v553-print-sheet th:nth-child(2){width:8%!important}
+body.v553-printing .v553-print-sheet th:nth-child(6){width:23%!important}
+body.v553-printing .v553-print-sheet th:nth-child(7){width:11%!important}
+@media print{
+  @page{size:A4 portrait;margin:10mm}
+  body.v553-printing .v553-print-sheet{max-width:none!important}
+}
