@@ -78,10 +78,7 @@ function builderMarkup(){
  return'<section class="v576-builder v587-builder" data-v576-builder>'+
  '<header class="v576-builder-head"><button type="button" data-v576-back aria-label="Volver">‹</button><h1>Elige tu equipo</h1><button type="button" data-v576-menu aria-label="Menú">⋮</button></header>'+
  '<div class="v576-builder-summary"><div><small>Jugadores</small><b>'+count+'/15</b></div><div><small>Restante <i>?</i></small><b>'+money(left)+'</b></div><button type="button" data-v576-auto><span>✣</span> Autocompletar</button></div>'+
- '<div class="v576-sponsor-strip">'+
-   '<span class="v587-sponsor-unit"><img src="'+LEAGUE_LOGO+'" alt=""><b>LIGA JR</b></span>'+
-   '<span class="v587-sponsor-unit"><img src="'+LEAGUE_LOGO+'" alt=""><b>LIGA JR</b></span>'+
- '</div>'+
+ '<div class="v576-sponsor-strip v588-team-ps5"><strong>◢ PS5</strong><strong>◢ PS5</strong></div>'+
  '<div class="v576-field">'+
    '<div class="v587-pitch-lines" aria-hidden="true"><i class="v587-half"></i><i class="v587-center"></i><i class="v587-box v587-box-top"></i><i class="v587-box v587-box-bottom"></i></div>'+
    fieldRow('DEL',map)+fieldRow('CEN',map)+fieldRow('DEF',map)+fieldRow('POR',map)+
@@ -169,8 +166,7 @@ function render(){
    else nav.style.removeProperty('display');
  }
  if(r==='fantasyAccess'){
-   const base=screen.querySelector('[data-v23-access]');
-   if(base&&!screen.querySelector('[data-v576-access-more]')) screen.insertAdjacentHTML('beforeend',accessMarkup());
+   screen.querySelectorAll('[data-v576-access-more]').forEach(x=>x.remove());
  }
  if(teamOpen)screen.innerHTML=builderMarkup();
 }
@@ -196,6 +192,8 @@ document.addEventListener('click',e=>{
 },true);
 document.addEventListener('input',e=>{if(e.target?.matches?.('[data-v576-query]')){query=e.target.value||'';renderPicker()}},true);
 
+window.LJR_V576_FANTASY={guest,openGuest:guest,openTeam:()=>{location.hash='#/fantasyTeam'},readSquad};
+window.addEventListener('ljr:fantasy-guest',guest);
 window.addEventListener('hashchange',()=>{closeLayer();schedule()});
 window.addEventListener('ljr:official-data',schedule);
 const screen=document.querySelector('#screen');if(screen)new MutationObserver(schedule).observe(screen,{childList:true,subtree:false});
