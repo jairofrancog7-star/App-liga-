@@ -1956,3 +1956,31 @@ body.v553-printing .v553-week-scroll th:nth-child(7){width:11%!important}
   @page{size:A4 portrait;margin:10mm}
   body.v553-printing .v553-print-sheet{max-width:none!important}
 }
+
+
+/* V567 — tablas semanales modernas, compactas y con Jornada como última columna. */
+.v567-week-cat{display:flex;align-items:center;gap:7px;min-width:0}
+.v567-week-cat img{width:20px;height:20px;object-fit:contain;flex:0 0 20px}
+.v567-week-team{display:flex;align-items:center;gap:5px;min-width:0}
+.v567-week-team img{
+  width:18px;height:18px;object-fit:contain;flex:0 0 18px;
+  border-radius:50%;background:#fff;padding:1px;box-sizing:border-box
+}
+.v567-week-team span,.v567-week-cat span{min-width:0}
+.v553-week-scroll table{border-collapse:separate!important;border-spacing:0!important;border-radius:10px!important;overflow:hidden!important}
+.v553-week-scroll th{
+  background:linear-gradient(180deg,#1a4f9d,#123b7f)!important;
+  color:#fff!important;
+  font-weight:800!important
+}
+.v553-week-scroll td{
+  vertical-align:middle!important;
+  border-color:rgba(124,153,214,.18)!important
+}
+.v553-week-scroll tbody tr:nth-child(even) td{background:rgba(255,255,255,.018)!important}
+.v553-week-scroll th:nth-child(6),
+.v553-week-scroll td:nth-child(6){min-width:88px!important}
+@media(max-width:480px){
+  .v567-week-cat img{width:18px;height:18px;flex-basis:18px}
+  .v567-week-team img{width:16px;height:16px;flex-basis:16px}
+}
