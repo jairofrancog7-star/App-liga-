@@ -1929,3 +1929,78 @@ body.v379-player-profile-active.v385-player-scrolled .v379-content{
   }
 }
 /* /V388_PLAYER_CITY_FULL */
+
+
+/* V580 — hero del jugador: foto real grande; fallback 3D si no existe foto. */
+body.v379-player-profile-active .v379-hero{
+  isolation:isolate!important;
+}
+body.v379-player-profile-active .v580-hero-shade{
+  position:absolute!important;
+  inset:0!important;
+  z-index:2!important;
+  pointer-events:none!important;
+  background:
+    linear-gradient(90deg,rgba(3,7,77,.94) 0%,rgba(3,7,77,.72) 34%,rgba(3,7,77,.22) 62%,rgba(3,7,77,.08) 100%),
+    linear-gradient(0deg,rgba(3,6,78,.78) 0%,transparent 42%)!important;
+}
+body.v379-player-profile-active .v580-has-photo .v379-hero-pattern{
+  opacity:.12!important;
+}
+body.v379-player-profile-active .v580-has-photo .v580-player-hero-photo{
+  position:absolute!important;
+  z-index:1!important;
+  top:0!important;
+  right:0!important;
+  bottom:0!important;
+  width:72%!important;
+  height:100%!important;
+  max-width:none!important;
+  max-height:none!important;
+  object-fit:cover!important;
+  object-position:50% 18%!important;
+  border-radius:0!important;
+  filter:saturate(1.03) contrast(1.02) drop-shadow(-12px 14px 24px rgba(0,0,0,.25))!important;
+  transform:none!important;
+}
+body.v379-player-profile-active .v580-has-photo .v580-fallback-3d{
+  opacity:0!important;
+  visibility:hidden!important;
+}
+body.v379-player-profile-active .v580-no-photo .v580-fallback-3d{
+  right:-2%!important;
+  top:42px!important;
+  width:64%!important;
+  height:350px!important;
+  opacity:1!important;
+  filter:drop-shadow(-14px 22px 22px rgba(0,0,0,.34)) saturate(1.06)!important;
+  transform:perspective(800px) rotateY(-4deg)!important;
+  transform-origin:50% 70%!important;
+}
+body.v379-player-profile-active .v580-no-photo .v379-player-body{
+  box-shadow:
+    inset 18px 16px 28px rgba(255,255,255,.10),
+    inset -28px -34px 50px rgba(0,0,0,.30),
+    0 28px 40px rgba(0,0,0,.28)!important;
+}
+body.v379-player-profile-active .v580-no-photo .v379-player-head{
+  box-shadow:
+    inset 10px 8px 16px rgba(255,255,255,.08),
+    inset -12px -14px 20px rgba(55,25,20,.18),
+    0 12px 24px rgba(0,0,0,.20)!important;
+}
+body.v379-player-profile-active .v379-hero-copy,
+body.v379-player-profile-active .v386-hero-actions,
+body.v379-player-profile-active .v379-back{
+  z-index:5!important;
+}
+@media(max-width:420px){
+  body.v379-player-profile-active .v580-has-photo .v580-player-hero-photo{
+    width:76%!important;
+    object-position:52% 16%!important;
+  }
+  body.v379-player-profile-active .v580-no-photo .v580-fallback-3d{
+    width:66%!important;
+    right:-6%!important;
+  }
+}
