@@ -1,4 +1,4 @@
-const CACHE='liga-juventino-v592-fantasy-partidos-sheet';
+const CACHE='liga-juventino-v593-create-account-arrow';
 const CORE=['./','./index.html','./manifest.webmanifest','./brand-neon-header.svg','./profile-reference.svg'];
 
 self.addEventListener('install',event=>{
