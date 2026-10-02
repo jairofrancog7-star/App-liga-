@@ -263,7 +263,7 @@ function moreHub(data){
         '</div>'+
       '</article>'+
       '<div class="v551-discover-banner"><span>◉</span><b>DESCUBRE MÁS</b><em>LIGA JUVENTINO</em></div>'+
-      '<article class="v538-friend-card"><div><h3>¡Reta a tus amigos en el Quiz Arena!</h3><button type="button" data-v531-share>Invita a amigos</button></div><div class="v538-friend-bubble">'+v538Person(pair.a,data,'friend')+'</div></article>'+
+      '<article class="v538-friend-card"><div><h3>¡Reta a tus amigos en el Quiz Arena!</h3><button type="button" data-v531-share>Invita a amigos</button></div><div class="v538-friend-bubble v585-friend-image"><img src="'+esc(LEAGUE)+'" alt="Liga Municipal de Fútbol Juventino Rosas" loading="eager" decoding="async"></div></article>'+
       extraChallenges+
       '<h2 class="v531-section-title v551-ranking-title">Clasificaciones</h2>'+
       '<article class="v531-rank-card v551-more-ranking"><h3>Más o menos</h3>'+ranks.map(function(r){return '<div class="v531-rank-row"><span>'+r.pos+'º</span>'+crest(r.name,data,'rank')+'<b>'+esc(r.name)+'</b><strong>'+esc(r.pts)+' pts</strong></div>'}).join('')+'<button type="button" data-v531-rankings>Ver clasificaciones</button></article>'+
