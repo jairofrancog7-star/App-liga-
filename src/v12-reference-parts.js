@@ -245,10 +245,6 @@ function patchProfile(){
     '</div>'+
     '<div class="v12-profile-menu">'+
       '<div class="v12-profile-section-title">CONFIGURACIÓN</div>'+
-      profileMenuRow('language','Idioma preferido',null,'language',false)+
-      profileMenuRow('feedback','Ayúdanos a mejorar',null,'feedback',false)+
-      profileMenuRow(null,'Ajustes de privacidad',null,'privacy',true)+
-      profileMenuRow(null,'Términos y condiciones',null,'terms',true)+
       '<div class="v12-profile-lower-slot" data-v12-profile-lower-slot></div>'+
     '</div>'+
   '</section>';
