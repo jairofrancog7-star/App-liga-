@@ -431,3 +431,49 @@ body[data-app-route="competition"] .v567-cat-strip>button.active small{
     left:47px!important;
   }
 }
+
+
+/* V570 — selector de categoría: mantener TODAS las categorías visibles arriba de la barra inferior.
+   Corrige específicamente la fila Veteranos 50+ / 50 y más que quedaba tapada. */
+.v566-sheet-layer{
+  z-index:2147483000!important;
+  padding-bottom:calc(72px + env(safe-area-inset-bottom))!important;
+  box-sizing:border-box!important;
+}
+.v566-sheet{
+  max-height:min(76dvh,650px)!important;
+  margin-bottom:0!important;
+}
+.v566-sheet-list{
+  padding:6px 10px 14px!important;
+  scrollbar-width:thin!important;
+}
+.v566-option.cat{
+  min-height:54px!important;
+}
+.v566-option.cat[data-v566-category="1"]{
+  border-bottom:0!important;
+  background:linear-gradient(90deg,rgba(34,220,232,.055),transparent)!important;
+}
+.v566-option.cat[data-v566-category="1"] b{
+  color:#fff!important;
+}
+.v566-option.cat[data-v566-category="1"] small{
+  color:#35dce8!important;
+}
+@media(max-width:520px){
+  .v566-sheet-layer{
+    padding-bottom:calc(68px + env(safe-area-inset-bottom))!important;
+  }
+  .v566-sheet{
+    max-height:min(78dvh,620px)!important;
+  }
+  .v566-sheet-list{
+    padding-bottom:12px!important;
+  }
+  .v566-option.cat{
+    min-height:50px!important;
+    padding-top:6px!important;
+    padding-bottom:6px!important;
+  }
+}
