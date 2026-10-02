@@ -4928,7 +4928,7 @@ function v38WeeklyView(){
     '<div class="v553-week-filter">'+
       '<div class="v553-week-range" data-v553-range>Semana del 28/09/2026 al 04/10/2026</div>'+
       '<label>Categoría<select data-v553-category><option value="all">Todas</option><option value="primera">Primera Fuerza</option><option value="intermedia">Intermedia</option><option value="segunda">Segunda Fuerza</option><option value="veteranos">Veteranos 50+</option></select></label>'+
-      '<label>Temporada<select data-v553-season><option value="copa-2026">TORNEO DE COPA 2026</option></select></label>'+
+      '<label>Temporada<select data-v553-season><option value="all">Todas</option><option value="35">TORNEO DE COPA 2026 35+</option><option value="50">TORNEO DE COPA 2026 50+</option><option value="intermedia">TORNEO DE COPA 2026 INTERMEDIA</option><option value="primera">TORNEO DE COPA 2026 PRIMERA</option><option value="segunda">TORNEO DE COPA 2026 SEGUNDA</option></select></label>'+
       '<label>Fecha inicio<input data-v553-start type="date" value="2026-09-28"></label>'+
       '<label>Fecha fin<input data-v553-end type="date" value="2026-10-04"></label>'+
       '<div class="v553-week-actions"><button type="button" data-v553-consult>Consultar</button><button type="button" data-v553-clear>Limpiar</button><button type="button" data-v553-print>Descargar PDF</button></div>'+
@@ -4953,20 +4953,23 @@ function bindV553Weekly(){
   const fmt=s=>{if(!s)return '';const [y,m,d]=s.split('-');return d+'/'+m+'/'+y};
   const apply=()=>{
     const category=cat?.value||'all';
+    const season=root.querySelector('[data-v553-season]')?.value||'all';
     const from=start?.value||'';
     const to=end?.value||'';
     groups.forEach(g=>{
+      const seasonMap={primera:'primera',intermedia:'intermedia',segunda:'segunda',veteranos:'50'};
+      const showSeason=season==='all'||seasonMap[g.dataset.weekGroup]===season;
       const showCat=category==='all'||g.dataset.weekGroup===category;
       let visible=0;
       g.querySelectorAll('tbody tr').forEach(tr=>{
         const [d,m,y]=(tr.dataset.weekDate||'').split('/');
         const iso=y&&m&&d?y+'-'+m+'-'+d:'';
         const showDate=(!from||iso>=from)&&(!to||iso<=to);
-        const show=showCat&&showDate;
+        const show=showCat&&showSeason&&showDate;
         tr.style.display=show?'':'none';
         if(show)visible++;
       });
-      g.style.display=showCat&&visible?'':'none';
+      g.style.display=showCat&&showSeason&&visible?'':'none';
       const badge=g.querySelector('.v553-week-title b');
       if(badge)badge.textContent=visible+' partido(s)';
     });
@@ -4975,6 +4978,7 @@ function bindV553Weekly(){
   root.querySelector('[data-v553-consult]')?.addEventListener('click',apply);
   root.querySelector('[data-v553-clear]')?.addEventListener('click',()=>{
     if(cat)cat.value='all';
+    const season=root.querySelector('[data-v553-season]'); if(season)season.value='all';
     if(start)start.value='2026-09-28';
     if(end)end.value='2026-10-04';
     apply();
