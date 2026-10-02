@@ -4981,11 +4981,34 @@ function bindV553Weekly(){
   });
   root.querySelector('[data-v553-print]')?.addEventListener('click',()=>{
     apply();
-    const report=root.cloneNode(true);
-    report.querySelector('.v60-header')?.remove();
-    report.querySelector('.v553-pending')?.remove();
-    report.querySelector('[data-v553-print]')?.remove();
-    const html='<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Reporte Semanal - AdminFut</title><link rel="stylesheet" href="./src/v60-league-tools.css?v=20261002-v558-adminfut-exact-pdf"></head><body class="v553-printing"><main class="v553-print-sheet"><div class="v558-admin-brand">🏆 AdminFut</div><div class="v558-yellow-line"></div><div class="v558-report-title">🗓 Juegos de la Semana</div>'+report.outerHTML+'</main><script>window.addEventListener("load",()=>setTimeout(()=>window.print(),240));<\/script></body></html>';
+    const catText=root.querySelector('[data-v553-category]')?.selectedOptions?.[0]?.textContent||'Todas';
+    const seasonText=root.querySelector('[data-v553-season]')?.selectedOptions?.[0]?.textContent||'TORNEO DE COPA 2026';
+    const from=start?.value||'2026-09-28';
+    const to=end?.value||'2026-10-04';
+    const visibleGroups=[...root.querySelectorAll('[data-week-group]')].filter(g=>g.style.display!=='none');
+    const groupsHtml=visibleGroups.map(g=>{
+      const title=g.querySelector('.v553-week-title span')?.textContent?.replace('🏆 ','')||'';
+      const badge=g.querySelector('.v553-week-title b')?.textContent||'';
+      const rows=[...g.querySelectorAll('tbody tr')].filter(tr=>tr.style.display!=='none').map(tr=>{
+        const t=[...tr.children].map(td=>td.textContent.trim());
+        return '<tr>'+t.map(v=>'<td>'+v+'</td>').join('')+'</tr>';
+      }).join('');
+      return '<section class="v559-pdf-group"><div class="v559-pdf-grouphead"><h2>🏆 '+title+'</h2><span>'+badge+'</span></div><table><thead><tr><th>Fecha</th><th>Hora</th><th>Local</th><th>vs</th><th>Visitante</th><th>Campo</th><th>Jornada</th></tr></thead><tbody>'+rows+'</tbody></table></section>';
+    }).join('');
+    const html='<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Reporte Semanal - Liga Juventino</title><style>'+
+      'html,body{margin:0;padding:0;background:#fff;color:#111;font-family:Arial,Helvetica,sans-serif}'+
+      '@page{size:letter portrait;margin:10mm}'+
+      '.v559-sheet{width:100%;box-sizing:border-box}'+
+      '.v559-brand{font-size:8pt;color:#a0a0a0;margin:0 0 3mm}.v559-line{height:1mm;background:#e7d300;margin-bottom:4mm}.v559-title{font-size:10pt;font-weight:700;color:#555;margin:0 0 4mm}'+
+      '.v559-card{border:1px solid #dfdfd8;border-radius:3mm;box-shadow:0 1.5mm 4mm rgba(0,0,0,.12);overflow:hidden;margin-bottom:6mm}'+
+      '.v559-range{padding:3.2mm 4mm;background:#fff;color:#9a9a9a;font-size:11pt;font-weight:700;border-bottom:1px solid #ddd}'+
+      '.v559-fields{padding:3mm 4mm 4mm}'+
+      '.v559-field{margin-bottom:2.5mm}.v559-field b{display:block;color:#173d1b;font-size:8pt;margin-bottom:1mm}.v559-box{height:7mm;border:1px solid #d4d4d4;border-radius:1.5mm;display:flex;align-items:center;padding:0 2mm;font-size:7pt;color:#333;box-sizing:border-box}'+
+      '.v559-actions{display:flex;gap:2mm;align-items:center;margin-top:1mm}.v559-btn{border:1px solid #bbb;border-radius:1.4mm;padding:1.2mm 2.4mm;font-size:7pt;color:#999}.v559-btn:first-child{border:0;padding-left:0}.v559-btn:last-child{margin-left:auto}'+
+      '.v559-pdf-group{margin:0 0 6mm;page-break-inside:auto}.v559-pdf-grouphead{display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #ddd;padding-bottom:1.5mm;margin-bottom:1.5mm}'+
+      '.v559-pdf-grouphead h2{margin:0;color:#178c56;font-size:11pt}.v559-pdf-grouphead span{color:#999;font-size:7pt;font-weight:600}'+
+      'table{width:100%;border-collapse:collapse;table-layout:auto}thead{display:table-header-group}tr{page-break-inside:avoid}th,td{border:1px solid #dedede;padding:1.15mm 1.5mm;font-size:6.4pt;line-height:1.15;background:#fff;color:#111}th{color:#999;font-weight:600;text-align:left}th:nth-child(4),td:nth-child(4){text-align:center;width:5%}th:first-child{width:13%}th:nth-child(2){width:8%}th:nth-child(6){width:23%}th:nth-child(7){width:11%}'+
+      '</style></head><body><main class="v559-sheet"><div class="v559-brand">🏆 Liga Municipal de Fútbol Juventino Rosas A.C.</div><div class="v559-line"></div><div class="v559-title">🗓 Juegos de la Semana</div><section class="v559-card"><div class="v559-range">Semana del '+fmt(from)+' al '+fmt(to)+'</div><div class="v559-fields"><div class="v559-field"><b>Categoría</b><div class="v559-box">'+catText+'</div></div><div class="v559-field"><b>Temporada</b><div class="v559-box">'+seasonText+'</div></div><div class="v559-field"><b>Fecha inicio</b><div class="v559-box">'+fmt(from)+'</div></div><div class="v559-field"><b>Fecha fin</b><div class="v559-box">'+fmt(to)+'</div></div><div class="v559-actions"><span class="v559-btn">Consultar</span><span class="v559-btn">Limpiar</span><span class="v559-btn">Imprimir</span></div></div></section>'+groupsHtml+'</main><script>window.addEventListener("load",()=>setTimeout(()=>window.print(),200));<\/script></body></html>';
     const w=window.open('','_blank');
     if(!w){alert('Permite ventanas emergentes para generar el PDF.');return;}
     w.document.open();w.document.write(html);w.document.close();
