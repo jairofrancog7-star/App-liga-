@@ -213,3 +213,48 @@ body[data-app-route="fantasy"] .v576-fantasy-cards{
 
 /* V584 — permanently hide the three obsolete promo cards above the Fantasy content. */
 .v576-fantasy-cards{display:none!important;height:0!important;min-height:0!important;margin:0!important;padding:0!important;overflow:hidden!important}
+
+
+/* V584 — Fantasy post-login flow from the supplied reference screens. */
+.v576-first-hint{
+  position:absolute;z-index:4;left:18px;top:178px;
+  min-width:205px;max-width:66%;padding:14px 18px;box-sizing:border-box;
+  border-radius:14px;background:#fff;color:#28343d;
+  font:500 13px/1.25 Inter,Roboto,Arial,sans-serif;
+  box-shadow:0 8px 22px rgba(0,0,60,.16);pointer-events:none
+}
+.v576-first-hint:before{
+  content:"";position:absolute;left:104px;top:-10px;
+  width:20px;height:20px;background:#fff;transform:rotate(45deg)
+}
+.v576-layer.menu{
+  align-items:flex-start;justify-content:flex-end;
+  padding:96px 18px 0;box-sizing:border-box
+}
+.v576-layer.menu .v576-backdrop{background:transparent}
+.v576-layer.menu .v576-menu-sheet{
+  width:min(310px,78vw);margin:0;padding:8px 0;border-radius:8px;
+  box-shadow:0 12px 30px rgba(0,0,0,.22);overflow:hidden
+}
+.v576-layer.menu .v576-menu-sheet>button{
+  min-height:54px;padding:0 24px;border:0;background:#fff;
+  color:#29353d;font-size:14px;text-align:left
+}
+.v576-layer.menu .v576-menu-sheet>button:active{background:#f4f6fb}
+body[data-app-route="fantasyTeam"] #screen{
+  padding-bottom:0!important;overflow:auto!important
+}
+body[data-app-route="fantasyTeam"] .v576-builder{
+  min-height:100dvh!important
+}
+@media(max-width:390px){
+  .v576-builder-summary{
+    grid-template-columns:92px 104px minmax(0,1fr)
+  }
+  .v576-builder-summary>button{padding:0 10px;font-size:9px}
+  .v576-field{min-height:590px}
+  .v576-field-row.del,.v576-field-row.cen,.v576-field-row.def{height:124px}
+  .v576-field-row.por{height:118px}
+  .v576-shirt{width:52px;height:60px}
+  .v576-first-hint{top:168px;min-width:190px;font-size:12px}
+}
