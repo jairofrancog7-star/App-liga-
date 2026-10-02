@@ -3900,3 +3900,127 @@ body[data-app-route="moreLessGallery"] .v583-challenge-copy button{
     min-width:145px!important;min-height:46px!important;border-radius:11px!important;font-size:12px!important
   }
 }
+
+
+/* V584 — Más o Menos: barra inferior fija y centrada en la ruta dedicada. */
+html body[data-app-route="moreLessGallery"] #app>.bottom-nav,
+html body[data-app-route="moreLessGallery"] .app-shell>.bottom-nav,
+html body[data-app-route="moreLessGallery"] nav.bottom-nav{
+  position:fixed!important;
+  left:50%!important;
+  right:auto!important;
+  top:auto!important;
+  bottom:0!important;
+  transform:translateX(-50%)!important;
+  width:min(100vw,520px)!important;
+  max-width:520px!important;
+  min-width:0!important;
+  height:var(--v34-nav-h,69px)!important;
+  min-height:var(--v34-nav-h,69px)!important;
+  margin:0!important;
+  padding:3px 7px max(3px,env(safe-area-inset-bottom))!important;
+  display:grid!important;
+  grid-template-columns:repeat(5,minmax(0,1fr))!important;
+  align-items:center!important;
+  overflow:hidden!important;
+  box-sizing:border-box!important;
+  background:#17166f!important;
+  border-top:1px solid rgba(255,255,255,.12)!important;
+  z-index:2147483640!important;
+}
+html body[data-app-route="moreLessGallery"] .bottom-nav .nav-item{
+  width:100%!important;
+  min-width:0!important;
+  max-width:none!important;
+  margin:0!important;
+  padding:2px 0 1px!important;
+  display:grid!important;
+  grid-template-rows:25px 14px!important;
+  place-items:center!important;
+  overflow:visible!important;
+}
+html body[data-app-route="moreLessGallery"] .bottom-nav .nav-item small{
+  max-width:100%!important;
+  overflow:hidden!important;
+  text-overflow:ellipsis!important;
+  white-space:nowrap!important;
+  font-size:10px!important;
+}
+html body[data-app-route="moreLessGallery"] .v546-inline-gallery{
+  left:50%!important;
+  right:auto!important;
+  transform:translateX(-50%)!important;
+  width:min(100vw,520px)!important;
+  max-width:520px!important;
+  bottom:calc(var(--v34-nav-h,69px) + env(safe-area-inset-bottom))!important;
+}
+html body[data-app-route="moreLessGallery"] #screen{
+  padding-bottom:calc(var(--v34-nav-h,69px) + env(safe-area-inset-bottom))!important;
+}
+
+/* V584 — fotografías/logos reales dentro de los círculos de los retos. */
+body .v543-moreless-portal .v583-challenge-art,
+body[data-app-route="moreLessGallery"] .v583-challenge-art{
+  align-items:center!important;
+  justify-items:center!important;
+}
+body .v543-moreless-portal .v583-challenge-art .v538-person,
+body[data-app-route="moreLessGallery"] .v583-challenge-art .v538-person{
+  width:min(34vw,150px)!important;
+  height:min(34vw,150px)!important;
+  aspect-ratio:1!important;
+  align-self:center!important;
+  justify-self:center!important;
+  display:grid!important;
+  place-items:center!important;
+  overflow:hidden!important;
+  border-radius:50%!important;
+  background:#f4f5f8!important;
+  border:2px solid rgba(255,255,255,.72)!important;
+  box-shadow:0 4px 14px rgba(0,0,45,.28)!important;
+}
+body .v543-moreless-portal .v583-challenge-art .v538-person.has-photo>img,
+body[data-app-route="moreLessGallery"] .v583-challenge-art .v538-person.has-photo>img{
+  width:100%!important;
+  height:100%!important;
+  object-fit:cover!important;
+  object-position:center top!important;
+  border-radius:50%!important;
+}
+body .v543-moreless-portal .v583-challenge-art .v538-person.has-team-logo,
+body[data-app-route="moreLessGallery"] .v583-challenge-art .v538-person.has-team-logo{
+  padding:15px!important;
+}
+body .v543-moreless-portal .v583-challenge-art .v584-circle-photo,
+body[data-app-route="moreLessGallery"] .v583-challenge-art .v584-circle-photo{
+  width:100%!important;
+  height:100%!important;
+  display:grid!important;
+  place-items:center!important;
+  border-radius:50%!important;
+  overflow:hidden!important;
+  background:#fff!important;
+}
+body .v543-moreless-portal .v583-challenge-art .v584-circle-photo img,
+body[data-app-route="moreLessGallery"] .v583-challenge-art .v584-circle-photo img{
+  width:100%!important;
+  height:100%!important;
+  object-fit:contain!important;
+  padding:8px!important;
+}
+body .v543-moreless-portal .v583-challenge-art .v538-person.is-fallback>.v12-avatar,
+body[data-app-route="moreLessGallery"] .v583-challenge-art .v538-person.is-fallback>.v12-avatar{
+  width:100%!important;
+  height:100%!important;
+  margin:0!important;
+  border:0!important;
+  box-shadow:none!important;
+  background:#f4f5f8!important;
+}
+@media(max-width:390px){
+  body .v543-moreless-portal .v583-challenge-art .v538-person,
+  body[data-app-route="moreLessGallery"] .v583-challenge-art .v538-person{
+    width:min(36vw,132px)!important;
+    height:min(36vw,132px)!important;
+  }
+}
