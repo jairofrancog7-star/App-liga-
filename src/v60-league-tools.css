@@ -1486,3 +1486,143 @@ body[data-app-route="v38Stats"] .v520-stats-topbar button:active{
   }
   body.v553-printing .v553-week-scroll th{background:#153d7f!important;color:#fff!important}
 }
+
+
+/* V556 — PDF semanal igual a la referencia AdminFut: blanco, compacto, 2 páginas. */
+@media print{
+  @page{size:A4 portrait;margin:10mm}
+  body.v553-printing .v553-weekly-report{
+    font-family:Arial,Helvetica,sans-serif!important;
+    color:#111!important;
+  }
+  body.v553-printing .v553-week-filter{
+    display:block!important;
+    border:1px solid #e5e5df!important;
+    border-radius:9px!important;
+    box-shadow:0 2px 9px rgba(0,0,0,.13)!important;
+    padding:0 10px 10px!important;
+    margin:0 0 8mm!important;
+    background:#fff!important;
+  }
+  body.v553-printing .v553-week-range{
+    display:block!important;
+    margin:0 -10px 8px!important;
+    padding:7px 10px!important;
+    border:0!important;
+    border-bottom:1px solid #ddd!important;
+    border-radius:9px 9px 0 0!important;
+    background:#fff!important;
+    color:#9a9a9a!important;
+    font-size:11pt!important;
+    font-weight:700!important;
+  }
+  body.v553-printing .v553-week-range::before{
+    content:"AdminFut\A";
+    white-space:pre!important;
+    display:block!important;
+    color:#aaa!important;
+    font-size:8pt!important;
+    font-weight:400!important;
+    padding-bottom:5mm!important;
+    border-bottom:2px solid #e2d000!important;
+    margin-bottom:4mm!important;
+  }
+  body.v553-printing .v553-week-filter label{
+    display:block!important;
+    color:#183c1d!important;
+    font-size:8pt!important;
+    font-weight:700!important;
+    margin:0 0 6px!important;
+  }
+  body.v553-printing .v553-week-filter select,
+  body.v553-printing .v553-week-filter input{
+    display:block!important;
+    width:100%!important;
+    box-sizing:border-box!important;
+    height:24px!important;
+    margin:3px 0 7px!important;
+    padding:2px 6px!important;
+    border:1px solid #d7d7d7!important;
+    border-radius:4px!important;
+    background:#fff!important;
+    color:#333!important;
+    font-size:7pt!important;
+    appearance:none!important;
+  }
+  body.v553-printing .v553-week-actions{
+    display:flex!important;
+    justify-content:space-between!important;
+    align-items:center!important;
+    margin:2px 0 0!important;
+  }
+  body.v553-printing .v553-week-actions button{
+    display:inline-block!important;
+    min-height:22px!important;
+    padding:3px 8px!important;
+    border:1px solid #bbb!important;
+    border-radius:4px!important;
+    background:#fff!important;
+    color:#aaa!important;
+    font-size:7pt!important;
+    box-shadow:none!important;
+  }
+  body.v553-printing .v553-week-actions button:first-child{border:0!important;padding-left:4px!important}
+  body.v553-printing .v553-week-actions button:nth-child(2){margin-right:auto!important;margin-left:5px!important}
+  body.v553-printing .v553-week-group{
+    margin:0 0 7mm!important;
+    break-inside:auto!important;
+    page-break-inside:auto!important;
+  }
+  body.v553-printing .v553-week-title{
+    display:flex!important;
+    align-items:center!important;
+    justify-content:space-between!important;
+    min-height:24px!important;
+    padding:0 0 4px!important;
+    margin:0 0 4px!important;
+    border-bottom:1px solid #ddd!important;
+    background:#fff!important;
+  }
+  body.v553-printing .v553-week-title span{
+    color:#178c56!important;
+    font-size:11pt!important;
+    font-weight:700!important;
+  }
+  body.v553-printing .v553-week-title b{
+    color:#999!important;
+    font-size:7pt!important;
+    font-weight:600!important;
+  }
+  body.v553-printing .v553-week-scroll table{
+    width:100%!important;
+    table-layout:auto!important;
+    border-collapse:collapse!important;
+  }
+  body.v553-printing .v553-week-scroll thead{display:table-header-group!important}
+  body.v553-printing .v553-week-scroll tr{break-inside:avoid!important;page-break-inside:avoid!important}
+  body.v553-printing .v553-week-scroll th,
+  body.v553-printing .v553-week-scroll td{
+    padding:3px 5px!important;
+    height:16px!important;
+    border:1px solid #dedede!important;
+    background:#fff!important;
+    color:#111!important;
+    font-size:6.5pt!important;
+    font-weight:400!important;
+    line-height:1.15!important;
+    white-space:normal!important;
+    word-break:normal!important;
+  }
+  body.v553-printing .v553-week-scroll th{
+    color:#999!important;
+    font-weight:600!important;
+    text-align:left!important;
+  }
+  body.v553-printing .v553-week-scroll th:nth-child(4),
+  body.v553-printing .v553-week-scroll td:nth-child(4){text-align:center!important;width:5%!important}
+  body.v553-printing .v553-week-scroll th:first-child{width:13%!important}
+  body.v553-printing .v553-week-scroll th:nth-child(2){width:8%!important}
+  body.v553-printing .v553-week-scroll th:nth-child(6){width:23%!important}
+  body.v553-printing .v553-week-scroll th:nth-child(7){width:11%!important}
+  body.v553-printing .v553-pending{display:none!important}
+}
