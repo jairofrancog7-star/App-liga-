@@ -11,6 +11,7 @@ window.__LJR_V538_MORELESS_VIDEO_FLOW__=true;
 window.__LJR_V541_MONITO_PAGES__=true;
 window.__LJR_V543_MORELESS_PORTAL__=true;
 window.__LJR_V544_GAME_FLOW__=true;
+window.__LJR_V545_MORELESS_ALL_SCREENS__=true;
 
 const RAW='https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/';
 const DATA_LOCAL='./data/official-live.json?v=20261001-v531-games';
@@ -200,6 +201,33 @@ function v538Person(p,data,cls){
   if(photo)return '<span class="v538-person '+esc(cls||'')+'"><img src="'+esc(photo)+'" alt="'+esc(p.name)+'" loading="eager" decoding="async"></span>';
   return '<span class="v538-person '+esc(cls||'')+' is-fallback">'+crest(p.team,data,'v538-person-crest')+'<b>'+esc(initials(p.name))+'</b></span>';
 }
+function v545MoreScreenCards(pair,data){
+  return '<section class="v545-more-screens" aria-label="Otros diseños de Más o menos">'+
+    '<h2>Más diseños de Más o menos</h2>'+
+    '<article class="v545-more-screen-card reveal" data-v545-more-screen="reveal">'+
+      '<div class="v545-preview-top"><span>Más o menos</span><b>×</b></div>'+
+      '<div class="v545-preview-players one">'+
+        '<div class="v545-mini-player">'+v538Person(pair.a,data,'mini')+'<b>'+esc(pair.a.name)+'</b><small>'+esc(pair.a.team)+'</small><strong>'+esc(pair.a.goals)+'</strong></div>'+
+        '<div class="v545-mini-player ghost"><i>✦</i></div>'+
+      '</div>'+
+      '<div class="v545-preview-score"><span>⚽ ⚽</span><b>15</b><em>0 pts</em></div>'+
+      '<p>Primero aparece un jugador y después entra el segundo.</p>'+
+    '</article>'+
+    '<article class="v545-more-screen-card choice" data-v545-more-screen="choice">'+
+      '<div class="v545-preview-top"><span>Más o menos</span><b>×</b></div>'+
+      '<div class="v545-preview-players">'+
+        '<div class="v545-mini-player">'+v538Person(pair.a,data,'mini')+'<b>'+esc(pair.a.name)+'</b><strong>'+esc(pair.a.goals)+'</strong></div>'+
+        '<div class="v545-mini-player">'+v538Person(pair.b,data,'mini')+'<b>'+esc(pair.b.name)+'</b><strong>—</strong></div>'+
+      '</div>'+
+      '<div class="v545-preview-question">¿Ha marcado '+esc(pair.b.name)+' más o menos?</div>'+
+      '<div class="v545-preview-arrows"><i>▼</i><small>OR</small><i>▲</i></div>'+
+    '</article>'+
+    '<article class="v545-more-screen-card exit" data-v545-more-screen="exit">'+
+      '<div class="v545-preview-top"><span>Más o menos</span><b>×</b></div>'+
+      '<div class="v545-preview-modal"><h3>¿Salir del quiz?</h3><p>Tus cambios no se guardarán.</p><span>Sí, salir</span><em>No, continuar</em></div>'+
+    '</article>'+
+  '</section>';
+}
 function moreHub(data){
   const pair=morePair(data),ranks=rankRows(data);
   function gameCard(i){
@@ -220,6 +248,7 @@ function moreHub(data){
         '</div>'+
       '</article>'+
       '<article class="v538-friend-card"><div><h3>¡Reta a tus amigos en Más o menos!</h3><button type="button" data-v531-share>Invita a amigos</button></div><div class="v538-friend-bubble">'+v538Person(pair.a,data,'friend')+'</div></article>'+
+      v545MoreScreenCards(pair,data)+
       gameCard(1)+gameCard(2)+gameCard(3)+
       '<h2 class="v531-section-title">Clasificaciones</h2>'+
       '<article class="v531-rank-card"><h3>Más o menos</h3>'+ranks.map(function(r){return '<div class="v531-rank-row"><span>'+r.pos+'º</span>'+crest(r.name,data,'rank')+'<b>'+esc(r.name)+'</b><strong>'+esc(r.pts)+' pts</strong></div>'}).join('')+'<button type="button" data-v531-rankings>Ver clasificaciones</button></article>'+
@@ -585,7 +614,7 @@ document.addEventListener('click',function(e){
     return;
   }
 
-  const t=e.target.closest('[data-v531-more-open],[data-v48-quiz],[data-v12-choice],[data-v531-quiz-back],[data-v531-more-back],[data-v531-share],[data-v531-rankings],[data-v531-quiz-start],[data-v531-quiz-close],[data-v531-q-answer],[data-v531-quiz-next],[data-v531-result-back],[data-v531-more-start],[data-v531-more-close],[data-v531-more-choice],[data-v539-more-next],[data-v531-exit-confirm],[data-v531-exit-cancel]');
+  const t=e.target.closest('[data-v545-more-screen],[data-v531-more-open],[data-v48-quiz],[data-v12-choice],[data-v531-quiz-back],[data-v531-more-back],[data-v531-share],[data-v531-rankings],[data-v531-quiz-start],[data-v531-quiz-close],[data-v531-q-answer],[data-v531-quiz-next],[data-v531-result-back],[data-v531-more-start],[data-v531-more-close],[data-v531-more-choice],[data-v539-more-next],[data-v531-exit-confirm],[data-v531-exit-cancel]');
   if(!t)return;
   // Controles del diseño principal anterior: no los bloqueamos.
   // Dejamos que su funcionamiento original ocurra y luego abrimos el diseño secundario debajo.
@@ -607,6 +636,28 @@ document.addEventListener('click',function(e){
   }
 
   e.preventDefault();e.stopPropagation();
+
+  if(t.matches('[data-v545-more-screen]')){
+    v538ClearTimers();
+    more.mode='game';
+    more.answered=false;
+    more.selected='';
+    more.countdown=15;
+    const screen=t.dataset.v545MoreScreen||'choice';
+    if(screen==='reveal'){
+      more.phase='first';
+      more.exit=false;
+    }else if(screen==='exit'){
+      more.phase='ready';
+      more.exit=true;
+    }else{
+      more.phase='ready';
+      more.exit=false;
+    }
+    document.body.classList.add('v543-more-portal-open');
+    v543RenderMorePortal();
+    return;
+  }
 
   if(t.matches('[data-v531-quiz-back]')){quiz.mode='legacy';quiz.exit=false;render(false);return}
   if(t.matches('[data-v531-more-back]')){v543CloseMorePortal();return}
