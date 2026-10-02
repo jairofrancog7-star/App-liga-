@@ -271,9 +271,9 @@ function patchMoreLess(){
     '<div class="v12-ml-title"><span>MÁS</span><small>O</small><span>MENOS</span></div>'+
     '<div class="v12-ml-curves"><div class="down">'+curveArrow('#ff003c',true)+'</div><div class="up">'+curveArrow('#18ef72',false)+'</div></div>'+
     '<div class="v12-ml-choice">'+
-      '<button data-v12-choice="more" aria-label="Elegir más">'+avatarSvg('#c776e8')+'</button>'+
+      '<button type="button" data-v12-choice="more" data-route="moreLessGallery" data-v577-more-gallery aria-label="Abrir Más o Menos">'+avatarSvg('#c776e8')+'</button>'+
       '<div class="v12-ml-mid"><button data-v12-choice="more" class="up-arrow" aria-label="Más">▲</button><button data-v12-choice="less" class="down-arrow" aria-label="Menos">▼</button></div>'+
-      '<button data-v12-choice="less" aria-label="Elegir menos">'+avatarSvg('#77f1ea')+'</button>'+
+      '<button type="button" data-v12-choice="less" data-route="moreLessGallery" data-v577-more-gallery aria-label="Abrir Más o Menos">'+avatarSvg('#77f1ea')+'</button>'+
     '</div>'+
     v12Logo(V12_LOGO,'Liga Municipal de Fútbol Juventino Rosas','v12-ml-logo')+
     '<div class="v12-stadium" aria-hidden="true"><i></i><b></b></div>'+
