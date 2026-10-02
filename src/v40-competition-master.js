@@ -132,10 +132,10 @@
     return '<section class="v578-table-section">'+
       '<div class="v578-scroll" data-v580-scroll="compact">'+
         '<table class="v578-table v579-compact-table">'+
-          '<thead><tr><th class="rank"></th><th class="team"></th><th>P</th><th>+/-</th><th>PTOS</th><th>FORMA</th></tr></thead>'+
+          '<thead><tr><th class="rank"></th><th class="logo"></th><th class="teamname"></th><th>P</th><th>+/-</th><th>PTOS</th><th>FORMA</th></tr></thead>'+
           '<tbody>'+
-            '<tr class="v580-section-row"><td colspan="6"><div class="v578-direct">CLASIFICACIÓN ACTUAL</div><div class="v578-rule"></div></td></tr>'+
-            list.map((t,i)=>'<tr><td class="rank">'+(i+1)+'</td><td class="team"><span class="v578-team">'+img(t.logo,t.name,'v578-logo')+'<strong>'+t.name+'</strong></span></td><td>'+t.p+'</td><td>'+t.gd+'</td><td class="pts">'+t.pts+'</td><td class="formcell">'+form(t.last)+'</td></tr>').join('')+
+            '<tr class="v580-section-row"><td colspan="7"><div class="v578-direct">CLASIFICACIÓN ACTUAL</div><div class="v578-rule"></div></td></tr>'+
+            list.map((t,i)=>'<tr><td class="rank">'+(i+1)+'</td><td class="logo">'+img(t.logo,t.name,'v578-logo')+'</td><td class="teamname"><strong>'+t.name+'</strong></td><td>'+t.p+'</td><td>'+t.gd+'</td><td class="pts">'+t.pts+'</td><td class="formcell">'+form(t.last)+'</td></tr>').join('')+
           '</tbody>'+
         '</table>'+
       '</div>'+
@@ -148,10 +148,10 @@
     return '<section class="v578-table-section">'+
       '<div class="v578-scroll" data-v580-scroll="complete">'+
         '<table class="v578-table v578-complete-table">'+
-          '<thead><tr><th class="rank"></th><th class="team"></th><th>P</th><th>V</th><th>E</th><th>D</th><th>+/-</th><th>GF</th><th>GC</th><th>FORMA</th><th>PTOS</th></tr></thead>'+
+          '<thead><tr><th class="rank"></th><th class="logo"></th><th class="teamname"></th><th>P</th><th>V</th><th>E</th><th>D</th><th>+/-</th><th>GF</th><th>GC</th><th>FORMA</th><th>PTOS</th></tr></thead>'+
           '<tbody>'+
-            '<tr class="v580-section-row"><td colspan="11"><div class="v578-direct">DIRECTOS A OCTAVOS</div><div class="v578-rule"></div></td></tr>'+
-            list.map((t,i)=>'<tr><td class="rank">'+(i+1)+'</td><td class="team"><span class="v578-team">'+img(t.logo,t.name,'v578-logo')+'<strong>'+t.name+'</strong></span></td><td>'+t.p+'</td><td>'+t.w+'</td><td>'+t.d+'</td><td>'+t.l+'</td><td>'+(t.gf-t.ga)+'</td><td>'+t.gf+'</td><td>'+t.ga+'</td><td class="formcell"><span class="v40-form"><i></i><i></i><i></i><i></i><b class="'+(lastFor(t.name)==='V'?'win':lastFor(t.name)==='E'?'draw':lastFor(t.name)==='D'?'loss':'draw')+'">'+lastFor(t.name)+'</b></span></td><td class="pts">'+t.pts+'</td></tr>').join('')+
+            '<tr class="v580-section-row"><td colspan="12"><div class="v578-direct">DIRECTOS A OCTAVOS</div><div class="v578-rule"></div></td></tr>'+
+            list.map((t,i)=>'<tr><td class="rank">'+(i+1)+'</td><td class="logo">'+img(t.logo,t.name,'v578-logo')+'</td><td class="teamname"><strong>'+t.name+'</strong></td><td>'+t.p+'</td><td>'+t.w+'</td><td>'+t.d+'</td><td>'+t.l+'</td><td>'+(t.gf-t.ga)+'</td><td>'+t.gf+'</td><td>'+t.ga+'</td><td class="formcell"><span class="v40-form"><i></i><i></i><i></i><i></i><b class="'+(lastFor(t.name)==='V'?'win':lastFor(t.name)==='E'?'draw':lastFor(t.name)==='D'?'loss':'draw')+'">'+lastFor(t.name)+'</b></span></td><td class="pts">'+t.pts+'</td></tr>').join('')+
           '</tbody>'+
         '</table>'+
       '</div>'+
@@ -162,10 +162,10 @@
     return '<section class="v578-table-section">'+
       '<div class="v578-scroll" data-v580-scroll="criteria">'+
         '<table class="v578-table v578-criteria-table">'+
-          '<thead><tr><th class="rank"></th><th class="team"></th><th>PTOS</th><th>+/-</th><th>GF</th><th>GC</th><th>V</th><th>E</th><th>P</th></tr></thead>'+
+          '<thead><tr><th class="rank"></th><th class="logo"></th><th class="teamname"></th><th>PTOS</th><th>+/-</th><th>GF</th><th>GC</th><th>V</th><th>E</th><th>P</th></tr></thead>'+
           '<tbody>'+
-            '<tr class="v580-section-row"><td colspan="9"><div class="v578-direct">DIRECTOS A OCTAVOS</div><div class="v578-rule"></div></td></tr>'+
-            list.map((t,i)=>'<tr><td class="rank">'+(i+1)+'</td><td class="team"><span class="v578-team">'+img(t.logo,t.name,'v578-logo')+'<strong>'+t.name+'</strong></span></td><td class="pts">'+t.pts+'</td><td>'+t.gd+'</td><td>'+t.gf+'</td><td>'+t.ga+'</td><td>'+t.w+'</td><td>'+t.d+'</td><td>'+t.l+'</td></tr>').join('')+
+            '<tr class="v580-section-row"><td colspan="10"><div class="v578-direct">DIRECTOS A OCTAVOS</div><div class="v578-rule"></div></td></tr>'+
+            list.map((t,i)=>'<tr><td class="rank">'+(i+1)+'</td><td class="logo">'+img(t.logo,t.name,'v578-logo')+'</td><td class="teamname"><strong>'+t.name+'</strong></td><td class="pts">'+t.pts+'</td><td>'+t.gd+'</td><td>'+t.gf+'</td><td>'+t.ga+'</td><td>'+t.w+'</td><td>'+t.d+'</td><td>'+t.l+'</td></tr>').join('')+
           '</tbody>'+
         '</table>'+
       '</div>'+
