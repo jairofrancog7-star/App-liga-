@@ -879,3 +879,63 @@ body[data-app-route="quizArena"] [data-v531-mount="quiz"] > .v531-page,
 body[data-app-route="moreLess"] [data-v531-mount="more"] > .v531-page{
   margin:0!important;
 }
+
+
+/* V533 — restaurar diseños anteriores como portadas principales */
+/* El diseño original queda completo arriba; las referencias de Drive continúan debajo. */
+body[data-app-route="quizArena"] #screen>[data-v48-arena][data-v533-primary="true"],
+body[data-app-route="moreLess"] #screen>[data-v12-moreless][data-v533-primary="true"]{
+  position:relative!important;
+  z-index:2!important;
+  display:block!important;
+  visibility:visible!important;
+  opacity:1!important;
+  width:100%!important;
+  margin:0!important;
+  flex:none!important;
+}
+body[data-app-route="quizArena"] #screen>[data-v48-arena][data-v533-primary="true"]{
+  min-height:calc(100dvh - var(--bottom-nav-h,60px))!important;
+}
+body[data-app-route="moreLess"] #screen>[data-v12-moreless][data-v533-primary="true"]{
+  min-height:calc(100dvh - var(--bottom-nav-h,60px))!important;
+}
+body[data-app-route="quizArena"] .v533-below-primary,
+body[data-app-route="moreLess"] .v533-below-primary{
+  position:relative!important;
+  z-index:3!important;
+  display:block!important;
+  width:100%!important;
+  margin:0!important;
+  padding:0!important;
+  background:#05065f!important;
+  border-top:1px solid rgba(68,98,222,.30)!important;
+}
+body[data-app-route="quizArena"] .v533-below-primary:before,
+body[data-app-route="moreLess"] .v533-below-primary:before{
+  content:"MÁS DEL JUEGO"!important;
+  display:block!important;
+  padding:14px 13px 8px!important;
+  color:#8ea4e5!important;
+  background:#05065f!important;
+  font:800 9px/1 Inter,Roboto,Arial,sans-serif!important;
+  letter-spacing:.13em!important;
+}
+body[data-app-route="quizArena"] .v533-below-primary .v531-mini-head,
+body[data-app-route="moreLess"] .v533-below-primary .v531-mini-head{
+  position:relative!important;
+  top:auto!important;
+}
+
+/* La portada original conserva exactamente su interacción visual; solo el toque abre
+   la pantalla nueva debajo, sin borrarla ni sustituirla. */
+body[data-app-route="quizArena"] [data-v533-primary="true"] [data-v48-quiz],
+body[data-app-route="moreLess"] [data-v533-primary="true"] [data-v12-choice]{
+  cursor:pointer!important;
+}
+
+/* Evita que el bloque nuevo se superponga a la navegación inferior. */
+body[data-app-route="quizArena"] .v533-below-primary,
+body[data-app-route="moreLess"] .v533-below-primary{
+  padding-bottom:calc(68px + env(safe-area-inset-bottom))!important;
+}
