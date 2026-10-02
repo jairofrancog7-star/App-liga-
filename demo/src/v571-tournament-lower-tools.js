@@ -155,7 +155,7 @@ function rankingBlock(){
 function panel(){
   const s=leagueStats(),rows=filteredRows(),filterLabel=filter==='all'?'Todas las categorías':catName(filter);
   return '<section class="v571-lower" data-v571-lower>'+
-    '<header><span><small>RESUMEN DE LA LIGA</small><h3>Competición y agenda</h3><p>Funciones adicionales al final, con datos oficiales de Juventino Rosas.</p></span><img src="./assets/liga-logo.webp" alt=""></header>'+
+    '<header><span><small>RESUMEN DE LA LIGA</small><h3>Competición y agenda</h3><p>Funciones adicionales al final, con datos oficiales de Juventino Rosas.</p></span></header>'+
     '<div class="v571-stats">'+
       '<button type="button" data-v571-route="teams"><small>EQUIPOS</small><b>'+s.teams+'</b></button>'+
       '<button type="button" data-v571-route="players"><small>REGISTROS</small><b>'+s.players+'</b></button>'+
