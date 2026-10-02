@@ -1,0 +1,236 @@
+/* V587 — Fantasy second stage rebuilt to match the four mobile references.
+   Scoped to the post-login #/fantasyTeam builder only. */
+html body.v587-fantasy-team-open,
+html body.v587-fantasy-team-open #app,
+html body.v587-fantasy-team-open .app-shell,
+html body.v587-fantasy-team-open #screen{
+  margin:0!important;padding:0!important;width:100%!important;max-width:none!important;
+  min-height:100%!important;background:#06106f!important;overflow-x:hidden!important
+}
+html body.v587-fantasy-team-open #app>.topbar,
+html body.v587-fantasy-team-open .app-shell>.topbar,
+html body.v587-fantasy-team-open nav.bottom-nav,
+html body.v587-fantasy-team-open .bottom-nav{display:none!important}
+
+html body.v587-fantasy-team-open .v587-builder{
+  width:100%!important;min-height:100dvh!important;padding:0!important;margin:0!important;
+  color:#fff!important;background:#07106e!important;font-family:Roboto,Inter,Arial,sans-serif!important
+}
+html body.v587-fantasy-team-open .v576-builder-head{
+  position:relative!important;z-index:20!important;height:112px!important;
+  display:grid!important;grid-template-columns:64px minmax(0,1fr) 64px!important;align-items:end!important;
+  padding:0 20px 25px!important;box-sizing:border-box!important;
+  background:linear-gradient(180deg,#0b3ef2 0%,#0b2ccf 70%,#0a1ea8 100%)!important;
+  border-bottom:0!important
+}
+html body.v587-fantasy-team-open .v576-builder-head:after{
+  content:""!important;position:absolute!important;left:32px!important;right:32px!important;bottom:0!important;
+  height:3px!important;border-radius:3px!important;background:rgba(100,137,255,.52)!important
+}
+html body.v587-fantasy-team-open .v576-builder-head h1{
+  margin:0!important;text-align:center!important;color:#fff!important;font-size:22px!important;
+  font-weight:800!important;line-height:1.05!important
+}
+html body.v587-fantasy-team-open .v576-builder-head button{
+  width:48px!important;height:48px!important;padding:0!important;border:0!important;background:transparent!important;
+  color:#fff!important;display:grid!important;place-items:center!important;font-size:44px!important;line-height:1!important
+}
+html body.v587-fantasy-team-open .v576-builder-head button:first-child{justify-self:start!important;font-family:Arial,sans-serif!important}
+html body.v587-fantasy-team-open .v576-builder-head button:last-child{justify-self:end!important;font-size:35px!important}
+
+html body.v587-fantasy-team-open .v576-builder-summary{
+  height:156px!important;padding:31px 32px 25px!important;box-sizing:border-box!important;
+  display:grid!important;grid-template-columns:1fr 1fr auto!important;align-items:center!important;gap:14px!important;
+  background:linear-gradient(180deg,#091b9f 0%,#07096c 100%)!important;border:0!important
+}
+html body.v587-fantasy-team-open .v576-builder-summary>div{display:grid!important;gap:5px!important}
+html body.v587-fantasy-team-open .v576-builder-summary small{color:#c6cae2!important;font-size:15px!important;line-height:1!important}
+html body.v587-fantasy-team-open .v576-builder-summary small i{
+  width:22px!important;height:22px!important;margin-left:5px!important;border:2px solid #aab1d4!important;border-radius:50%!important;
+  display:inline-grid!important;place-items:center!important;font-style:normal!important;font-size:14px!important
+}
+html body.v587-fantasy-team-open .v576-builder-summary b{
+  color:#fff!important;font-size:31px!important;font-weight:400!important;line-height:1!important
+}
+html body.v587-fantasy-team-open .v576-builder-summary>button{
+  justify-self:end!important;min-width:150px!important;height:58px!important;padding:0 19px!important;
+  border:2px solid #23e6f0!important;border-radius:18px!important;background:rgba(1,54,134,.48)!important;
+  box-shadow:0 0 12px rgba(35,230,240,.08)!important;color:#23e6f0!important;
+  font-size:13px!important;font-weight:800!important;letter-spacing:.02em!important
+}
+html body.v587-fantasy-team-open .v576-builder-summary>button span{font-size:18px!important;margin-right:5px!important}
+
+html body.v587-fantasy-team-open .v576-sponsor-strip{
+  height:58px!important;padding:0 12%!important;box-sizing:border-box!important;
+  display:flex!important;align-items:center!important;justify-content:space-between!important;gap:18px!important;
+  background:#0a61c3!important;border:0!important
+}
+html body.v587-fantasy-team-open .v587-sponsor-unit{
+  display:flex!important;align-items:center!important;justify-content:center!important;gap:9px!important;color:#fff!important;
+  min-width:118px!important
+}
+html body.v587-fantasy-team-open .v587-sponsor-unit img{
+  width:42px!important;height:42px!important;object-fit:contain!important;filter:drop-shadow(0 1px 0 rgba(0,0,0,.08))!important
+}
+html body.v587-fantasy-team-open .v587-sponsor-unit b{
+  color:#fff!important;font-size:14px!important;font-weight:900!important;font-style:italic!important;letter-spacing:.04em!important
+}
+
+html body.v587-fantasy-team-open .v576-field{
+  position:relative!important;min-height:670px!important;padding:22px 10px 126px!important;box-sizing:border-box!important;overflow:hidden!important;
+  background:linear-gradient(180deg,#22cbb8 0%,#19bba8 100%)!important
+}
+html body.v587-fantasy-team-open .v576-field:before{
+  content:""!important;position:absolute!important;z-index:0!important;left:26px!important;right:26px!important;top:16px!important;bottom:106px!important;
+  border:2px solid rgba(255,255,255,.42)!important;border-radius:2px!important;pointer-events:none!important
+}
+html body.v587-fantasy-team-open .v576-field:after{content:none!important}
+html body.v587-fantasy-team-open .v587-pitch-lines{position:absolute!important;z-index:0!important;inset:16px 26px 106px!important;pointer-events:none!important}
+html body.v587-fantasy-team-open .v587-half{
+  position:absolute!important;left:-2px!important;right:-2px!important;top:50%!important;height:2px!important;
+  background:rgba(255,255,255,.42)!important;transform:translateY(-1px)!important
+}
+html body.v587-fantasy-team-open .v587-center{
+  position:absolute!important;left:50%!important;top:50%!important;width:124px!important;height:124px!important;
+  border:2px solid rgba(255,255,255,.42)!important;border-radius:50%!important;transform:translate(-50%,-50%)!important
+}
+html body.v587-fantasy-team-open .v587-center:after{
+  content:""!important;position:absolute!important;left:50%!important;top:50%!important;width:6px!important;height:6px!important;
+  background:rgba(255,255,255,.48)!important;border-radius:50%!important;transform:translate(-50%,-50%)!important
+}
+html body.v587-fantasy-team-open .v587-box{
+  position:absolute!important;left:50%!important;width:220px!important;height:86px!important;
+  border:2px solid rgba(255,255,255,.42)!important;transform:translateX(-50%)!important
+}
+html body.v587-fantasy-team-open .v587-box-top{top:-2px!important;border-top:0!important}
+html body.v587-fantasy-team-open .v587-box-bottom{bottom:-2px!important;border-bottom:0!important}
+
+html body.v587-fantasy-team-open .v576-field-row{
+  position:relative!important;z-index:3!important;width:100%!important;display:flex!important;align-items:flex-start!important;
+  justify-content:space-around!important;gap:2px!important;margin:0!important;padding:0!important
+}
+html body.v587-fantasy-team-open .v576-field-row.del{height:126px!important}
+html body.v587-fantasy-team-open .v576-field-row.cen{height:136px!important}
+html body.v587-fantasy-team-open .v576-field-row.def{height:136px!important}
+html body.v587-fantasy-team-open .v576-field-row.por{height:106px!important;padding:0 24%!important;box-sizing:border-box!important}
+
+html body.v587-fantasy-team-open .v576-slot{
+  width:18.4%!important;min-width:0!important;margin:0!important;padding:0!important;border:0!important;background:transparent!important;
+  color:#fff!important;display:grid!important;justify-items:center!important;align-content:start!important;gap:0!important;overflow:visible!important
+}
+html body.v587-fantasy-team-open .v576-field-row.del .v576-slot{width:27.5%!important}
+html body.v587-fantasy-team-open .v576-field-row.por .v576-slot{width:43%!important}
+html body.v587-fantasy-team-open .v576-shirt{
+  position:relative!important;width:62px!important;height:70px!important;display:grid!important;place-items:center!important;
+  background:#156d80!important;overflow:visible!important;
+  clip-path:polygon(20% 0,37% 0,44% 8%,56% 8%,63% 0,80% 0,100% 17%,86% 37%,76% 31%,76% 100%,24% 100%,24% 31%,14% 37%,0 17%)!important
+}
+html body.v587-fantasy-team-open .v576-shirt>i:not(.remove){font-style:normal!important;font-size:30px!important;font-weight:500!important;color:rgba(255,255,255,.44)!important}
+html body.v587-fantasy-team-open .v576-shirt.chosen{
+  background:linear-gradient(155deg,#f7f8fb,#c7d3ee)!important
+}
+html body.v587-fantasy-team-open .v576-player-photo,
+html body.v587-fantasy-team-open .v576-player-crest{
+  width:52px!important;height:52px!important;border-radius:0!important;object-fit:contain!important
+}
+html body.v587-fantasy-team-open .v576-player-photo{object-fit:cover!important;clip-path:circle(46% at 50% 50%)!important}
+html body.v587-fantasy-team-open .v576-shirt .remove{
+  position:absolute!important;z-index:8!important;right:-7px!important;top:-8px!important;width:22px!important;height:22px!important;
+  display:grid!important;place-items:center!important;border-radius:50%!important;background:#fff!important;color:#e34152!important;
+  font-style:normal!important;font-size:20px!important;font-weight:900!important;line-height:1!important;clip-path:none!important
+}
+html body.v587-fantasy-team-open .v576-slot>b{
+  width:100%!important;min-height:29px!important;margin-top:-1px!important;padding:7px 3px 5px!important;box-sizing:border-box!important;
+  border-radius:2px!important;background:#071779!important;color:#fff!important;font-size:10px!important;font-weight:900!important;
+  line-height:1.05!important;overflow:hidden!important;text-overflow:ellipsis!important;white-space:nowrap!important
+}
+html body.v587-fantasy-team-open .v576-slot>small{
+  width:100%!important;min-height:23px!important;padding:5px 2px!important;box-sizing:border-box!important;
+  background:#070855!important;color:#fff!important;font-size:9px!important;text-align:center!important
+}
+
+html body.v587-fantasy-team-open .v576-first-hint{
+  position:absolute!important;z-index:10!important;left:22px!important;top:198px!important;
+  min-width:218px!important;max-width:72%!important;padding:19px 22px!important;box-sizing:border-box!important;
+  border-radius:17px!important;background:#fff!important;color:#26343d!important;box-shadow:0 8px 24px rgba(0,36,67,.13)!important;
+  font-size:17px!important;font-weight:500!important;line-height:1.2!important;pointer-events:none!important
+}
+html body.v587-fantasy-team-open .v576-first-hint:before{
+  content:""!important;position:absolute!important;left:144px!important;top:-11px!important;width:22px!important;height:22px!important;
+  background:#fff!important;transform:rotate(45deg)!important;border-radius:2px!important
+}
+html body.v587-fantasy-team-open .v587-filter-pill{
+  position:absolute!important;z-index:8!important;left:32px!important;bottom:154px!important;width:128px!important;height:64px!important;
+  padding:0 17px!important;border:0!important;border-radius:36px!important;background:#0a6e85!important;color:#fff!important;
+  display:grid!important;grid-template-columns:1fr 1px 1fr!important;align-items:center!important;gap:13px!important;
+  box-shadow:0 8px 24px rgba(0,70,80,.18)!important
+}
+html body.v587-fantasy-team-open .v587-filter-pill span{font-size:24px!important;transform:rotate(90deg)!important}
+html body.v587-fantasy-team-open .v587-filter-pill i{width:1px!important;height:34px!important;background:rgba(255,255,255,.38)!important}
+html body.v587-fantasy-team-open .v587-filter-pill b{font-size:25px!important;font-weight:400!important}
+
+html body.v587-fantasy-team-open .v576-builder-actions{
+  position:absolute!important;z-index:7!important;left:40px!important;right:40px!important;bottom:28px!important;
+  padding:0!important;margin:0!important;background:transparent!important
+}
+html body.v587-fantasy-team-open .v576-builder-actions button{
+  width:100%!important;height:72px!important;min-height:72px!important;border:0!important;border-radius:20px!important;
+  background:#113cff!important;color:#fff!important;font-size:18px!important;font-weight:500!important;
+  box-shadow:none!important
+}
+html body.v587-fantasy-team-open .v576-builder>footer{
+  min-height:96px!important;margin:0!important;padding:27px 36px 24px!important;box-sizing:border-box!important;
+  background:#0a657a!important;color:#d7dee2!important;text-align:center!important;font-size:14px!important;line-height:1.35!important;
+  letter-spacing:.01em!important
+}
+
+/* Menu at the top-right, as in the reference with the completed 15/15 squad. */
+html body.v587-fantasy-team-open .v576-layer.menu{
+  align-items:flex-start!important;justify-content:flex-end!important;padding:160px 30px 0 0!important;box-sizing:border-box!important
+}
+html body.v587-fantasy-team-open .v576-layer.menu .v576-backdrop{background:rgba(0,8,50,.24)!important}
+html body.v587-fantasy-team-open .v576-layer.menu .v576-menu-sheet{
+  width:min(310px,calc(100vw - 44px))!important;margin:0!important;padding:0!important;border-radius:9px!important;
+  background:#fff!important;color:#28343c!important;overflow:hidden!important;box-shadow:0 14px 36px rgba(0,7,49,.28)!important
+}
+html body.v587-fantasy-team-open .v576-layer.menu .v576-menu-sheet>button{
+  width:100%!important;min-height:66px!important;padding:0 28px!important;border:0!important;border-top:0!important;
+  background:#fff!important;color:#28343c!important;text-align:left!important;font-size:16px!important;font-weight:500!important
+}
+html body.v587-fantasy-team-open .v576-layer.menu .v576-menu-sheet>button+button{border-top:1px solid #f0f1f4!important}
+
+/* Keep the player chooser visually consistent with the same blue/teal screen. */
+html body.v587-fantasy-team-open .v576-picker{border-radius:18px 18px 0 0!important;background:#07106c!important}
+html body.v587-fantasy-team-open .v576-picker>header{background:#0d3df0!important}
+
+@media(max-width:430px){
+  html body.v587-fantasy-team-open .v576-builder-head{height:102px!important;padding:0 14px 22px!important}
+  html body.v587-fantasy-team-open .v576-builder-head h1{font-size:20px!important}
+  html body.v587-fantasy-team-open .v576-builder-summary{height:136px!important;padding:24px 18px 22px!important;grid-template-columns:1fr 1fr auto!important}
+  html body.v587-fantasy-team-open .v576-builder-summary small{font-size:13px!important}
+  html body.v587-fantasy-team-open .v576-builder-summary b{font-size:27px!important}
+  html body.v587-fantasy-team-open .v576-builder-summary>button{min-width:132px!important;height:54px!important;padding:0 12px!important;font-size:11px!important}
+  html body.v587-fantasy-team-open .v576-sponsor-strip{height:56px!important;padding:0 10%!important}
+  html body.v587-fantasy-team-open .v587-sponsor-unit{min-width:96px!important;gap:6px!important}
+  html body.v587-fantasy-team-open .v587-sponsor-unit img{width:36px!important;height:36px!important}
+  html body.v587-fantasy-team-open .v587-sponsor-unit b{font-size:12px!important}
+  html body.v587-fantasy-team-open .v576-field{min-height:620px!important;padding:18px 7px 116px!important}
+  html body.v587-fantasy-team-open .v576-field:before{left:20px!important;right:20px!important;top:12px!important;bottom:96px!important}
+  html body.v587-fantasy-team-open .v587-pitch-lines{inset:12px 20px 96px!important}
+  html body.v587-fantasy-team-open .v576-field-row.del{height:114px!important}
+  html body.v587-fantasy-team-open .v576-field-row.cen{height:124px!important}
+  html body.v587-fantasy-team-open .v576-field-row.def{height:124px!important}
+  html body.v587-fantasy-team-open .v576-field-row.por{height:100px!important}
+  html body.v587-fantasy-team-open .v576-shirt{width:54px!important;height:62px!important}
+  html body.v587-fantasy-team-open .v576-player-photo,
+  html body.v587-fantasy-team-open .v576-player-crest{width:45px!important;height:45px!important}
+  html body.v587-fantasy-team-open .v576-slot>b{font-size:8px!important;min-height:27px!important;padding:6px 2px 5px!important}
+  html body.v587-fantasy-team-open .v576-slot>small{font-size:8px!important}
+  html body.v587-fantasy-team-open .v576-first-hint{left:18px!important;top:176px!important;min-width:202px!important;padding:17px 18px!important;font-size:15px!important}
+  html body.v587-fantasy-team-open .v576-first-hint:before{left:132px!important}
+  html body.v587-fantasy-team-open .v587-filter-pill{left:24px!important;bottom:140px!important;width:116px!important;height:58px!important}
+  html body.v587-fantasy-team-open .v576-builder-actions{left:26px!important;right:26px!important;bottom:24px!important}
+  html body.v587-fantasy-team-open .v576-builder-actions button{height:64px!important;min-height:64px!important;font-size:16px!important}
+  html body.v587-fantasy-team-open .v576-builder>footer{min-height:88px!important;padding:24px 26px 21px!important;font-size:13px!important}
+  html body.v587-fantasy-team-open .v576-layer.menu{padding:144px 18px 0 0!important}
+}
