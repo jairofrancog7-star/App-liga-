@@ -3387,3 +3387,103 @@ body.v40-standings-master .v580-section-row .v578-rule{
     background:rgba(255,255,255,.62)!important;
   }
 }
+
+
+/* V587 — tabla larga realmente deslizable en horizontal, sin perder columnas. */
+@media(max-width:760px){
+  body.v40-standings-master .v40-content,
+  body.v40-standings-master .v578-table-section{
+    width:100%!important;
+    min-width:0!important;
+    max-width:100%!important;
+    overflow:visible!important;
+  }
+
+  body.v40-standings-master .v578-scroll,
+  body.v40-standings-master [data-v580-scroll]{
+    position:relative!important;
+    display:block!important;
+    width:100%!important;
+    max-width:100%!important;
+    min-width:0!important;
+    overflow-x:scroll!important;
+    overflow-y:hidden!important;
+    -webkit-overflow-scrolling:touch!important;
+    touch-action:pan-x pan-y!important;
+    overscroll-behavior-x:contain!important;
+    scroll-behavior:smooth!important;
+    scrollbar-gutter:stable!important;
+  }
+
+  /* Completa conserva TODAS las columnas en una sola línea. */
+  body.v40-standings-master .v578-complete-table{
+    width:940px!important;
+    min-width:940px!important;
+    max-width:none!important;
+  }
+  body.v40-standings-master .v578-complete-table th,
+  body.v40-standings-master .v578-complete-table td{
+    white-space:nowrap!important;
+    overflow:visible!important;
+  }
+  body.v40-standings-master .v578-complete-table .teamname{
+    width:150px!important;
+    min-width:150px!important;
+    max-width:150px!important;
+  }
+  body.v40-standings-master .v578-complete-table th:nth-child(n+4):nth-child(-n+10),
+  body.v40-standings-master .v578-complete-table td:nth-child(n+4):nth-child(-n+10){
+    width:52px!important;
+    min-width:52px!important;
+    max-width:52px!important;
+  }
+  body.v40-standings-master .v578-complete-table th:nth-child(11),
+  body.v40-standings-master .v578-complete-table td:nth-child(11){
+    width:145px!important;
+    min-width:145px!important;
+    max-width:145px!important;
+  }
+  body.v40-standings-master .v578-complete-table th:nth-child(12),
+  body.v40-standings-master .v578-complete-table td:nth-child(12){
+    width:62px!important;
+    min-width:62px!important;
+    max-width:62px!important;
+  }
+
+  /* Criterios también se desplaza lateralmente con todos sus datos. */
+  body.v40-standings-master .v578-criteria-table{
+    width:760px!important;
+    min-width:760px!important;
+    max-width:none!important;
+  }
+  body.v40-standings-master .v578-criteria-table th,
+  body.v40-standings-master .v578-criteria-table td{
+    white-space:nowrap!important;
+    overflow:visible!important;
+  }
+  body.v40-standings-master .v578-criteria-table .teamname{
+    width:150px!important;
+    min-width:150px!important;
+    max-width:150px!important;
+  }
+  body.v40-standings-master .v578-criteria-table th:nth-child(n+4),
+  body.v40-standings-master .v578-criteria-table td:nth-child(n+4){
+    width:58px!important;
+    min-width:58px!important;
+    max-width:58px!important;
+  }
+
+  /* Barra visible para dejar claro que se puede deslizar a la derecha. */
+  body.v40-standings-master .v578-scroll::-webkit-scrollbar{
+    display:block!important;
+    height:5px!important;
+  }
+  body.v40-standings-master .v578-scroll::-webkit-scrollbar-track{
+    background:rgba(255,255,255,.07)!important;
+    border-radius:999px!important;
+  }
+  body.v40-standings-master .v578-scroll::-webkit-scrollbar-thumb{
+    background:rgba(36,231,241,.62)!important;
+    border-radius:999px!important;
+  }
+}
