@@ -1,4 +1,4 @@
-const CACHE='liga-juventino-v576-player-photos-everywhere';
+const CACHE='liga-juventino-v577-player-thumbnails-compare';
 const CORE=['./','./index.html','./manifest.webmanifest','./brand-neon-header.svg','./profile-reference.svg'];
 
 self.addEventListener('install',event=>{
