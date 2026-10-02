@@ -302,7 +302,7 @@ function moreGame(data){
         (more.answered?'<div class="v531-more-answer">'+(more.selected==='correct'?'¡Correcto!':'Respuesta registrada')+' · '+esc(pair.b.name)+' tiene '+esc(pair.b.goals)+'</div>':'')+
       '</div>'+
       (result?'<section class="v539-more-result '+(more.selected==='correct'?'ok':'bad')+'"><span class="v539-result-mark">'+(more.selected==='correct'?'✓':'×')+'</span><div><small>RESULTADO</small><h3>'+(more.selected==='correct'?'¡Acertaste!':'Siguiente intento')+'</h3><p>'+esc(pair.a.name)+' · '+esc(pair.a.goals)+' / '+esc(pair.b.name)+' · '+esc(pair.b.goals)+'</p></div><button type="button" data-v539-more-next>Siguiente comparación</button></section>':'')+
-      '<div class="v538-video-banner"><b>VIVE LOS</b><em>MEJORES MOMENTOS</em></div>'+
+      '<div class="v538-video-banner"><b>VER</b><em>MEJORES MOMENTOS</em><span>⚽</span></div>'+
     '</main>'+
     (more.exit?exitModal('more'):'')+
   '</section>';
@@ -447,7 +447,9 @@ document.addEventListener('click',function(e){
   const moreMonito=e.target.closest('[data-v531-more-open]');
   if(route()==='moreLess'&&moreMonito){
     e.preventDefault();e.stopPropagation();e.stopImmediatePropagation();
-    v538StartMoreRound();
+    v538ClearTimers();
+    more.mode='hub';more.phase='intro';more.answered=false;more.selected='';more.exit=false;
+    render(true);
     return;
   }
 
@@ -466,8 +468,10 @@ document.addEventListener('click',function(e){
   const oldMore=e.target.closest('[data-v12-choice]');
   if(route()==='moreLess'&&oldMore){
     e.preventDefault();e.stopPropagation();e.stopImmediatePropagation();
-    /* V539: cualquier control principal entra directo al flujo de pantallas. */
-    v538StartMoreRound();
+    /* V540: el principal abre primero el HUB; desde ahí se entra al juego. */
+    v538ClearTimers();
+    more.mode='hub';more.phase='intro';more.answered=false;more.selected='';more.exit=false;
+    render(true);
     return;
   }
 
@@ -484,7 +488,11 @@ document.addEventListener('click',function(e){
     return;
   }
   if(t.matches('[data-v531-more-open],[data-v12-choice]')){
-    setTimeout(function(){v538StartMoreRound()},0);
+    setTimeout(function(){
+      v538ClearTimers();
+      more.mode='hub';more.phase='intro';more.answered=false;more.selected='';more.exit=false;
+      render(true);
+    },0);
     return;
   }
 
