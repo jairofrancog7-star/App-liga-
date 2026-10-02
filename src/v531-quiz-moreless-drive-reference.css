@@ -853,3 +853,29 @@ body[data-app-route="moreLess"] .bottom-nav{
   .v531-crest.player{width:100px;height:100px}
   .v531-player-card{min-height:202px}
 }
+
+
+/* V533 — conservar diseños anteriores arriba; referencias Drive debajo */
+body[data-app-route="quizArena"] [data-v531-mount="quiz"],
+body[data-app-route="moreLess"] [data-v531-mount="more"]{
+  position:relative!important;
+  width:100%!important;
+  max-width:520px!important;
+  margin:0 auto!important;
+  padding:18px 0 0!important;
+  clear:both!important;
+  background:#05065f!important;
+}
+body[data-app-route="quizArena"] [data-v531-mount="quiz"]::before,
+body[data-app-route="moreLess"] [data-v531-mount="more"]::before{
+  content:""!important;
+  display:block!important;
+  width:calc(100% - 22px)!important;
+  height:1px!important;
+  margin:0 auto 18px!important;
+  background:linear-gradient(90deg,transparent,rgba(48,203,255,.48),transparent)!important;
+}
+body[data-app-route="quizArena"] [data-v531-mount="quiz"] > .v531-page,
+body[data-app-route="moreLess"] [data-v531-mount="more"] > .v531-page{
+  margin:0!important;
+}
