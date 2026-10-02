@@ -3269,3 +3269,76 @@ body.v543-more-portal-open .v543-moreless-portal{
   body[data-app-route="moreLess"] .v545-preview-players,
   body .v543-moreless-portal .v545-preview-players{padding-left:10px!important;padding-right:10px!important}
 }
+
+
+/* V546 — ruta dedicada para abrir los otros diseños desde cualquier monito */
+body[data-app-route="moreLessGallery"]{
+  background:#05065f!important;
+  overflow:hidden!important;
+}
+body[data-app-route="moreLessGallery"] #app,
+body[data-app-route="moreLessGallery"] .app-shell{
+  width:min(100%,520px)!important;
+  max-width:520px!important;
+  min-height:100dvh!important;
+  margin:0 auto!important;
+  padding:0!important;
+  background:#05065f!important;
+}
+html body[data-app-route="moreLessGallery"] #app>header.topbar,
+html body[data-app-route="moreLessGallery"] #app>.topbar,
+html body[data-app-route="moreLessGallery"] .app-shell>header.topbar,
+html body[data-app-route="moreLessGallery"] .app-shell>.topbar{
+  display:none!important;
+  visibility:hidden!important;
+  opacity:0!important;
+  height:0!important;
+  min-height:0!important;
+  max-height:0!important;
+  margin:0!important;
+  padding:0!important;
+  overflow:hidden!important;
+  pointer-events:none!important;
+}
+body[data-app-route="moreLessGallery"] #screen{
+  width:100%!important;
+  max-width:520px!important;
+  height:calc(100dvh - var(--bottom-nav-h,60px) - env(safe-area-inset-bottom))!important;
+  min-height:0!important;
+  margin:0!important;
+  padding:0!important;
+  overflow:hidden!important;
+  background:#05065f!important;
+}
+body[data-app-route="moreLessGallery"] .v546-inline-gallery{
+  position:fixed!important;
+  inset:0 0 calc(var(--bottom-nav-h,60px) + env(safe-area-inset-bottom)) 0!important;
+  z-index:2147481500!important;
+  display:block!important;
+  visibility:visible!important;
+  opacity:1!important;
+  pointer-events:auto!important;
+  width:min(100%,520px)!important;
+  max-width:520px!important;
+  height:auto!important;
+  min-height:0!important;
+  margin:0 auto!important;
+  padding:0!important;
+  overflow-y:auto!important;
+  overflow-x:hidden!important;
+  -webkit-overflow-scrolling:touch!important;
+  overscroll-behavior:contain!important;
+  background:#05065f!important;
+}
+body[data-app-route="moreLessGallery"] .bottom-nav{
+  display:flex!important;
+  visibility:visible!important;
+  opacity:1!important;
+  pointer-events:auto!important;
+  z-index:2147482000!important;
+  transform:none!important;
+  bottom:0!important;
+}
+body[data-app-route="moreLessGallery"] .v546-inline-gallery>.v538-more-hub{
+  min-height:100%!important;
+}
