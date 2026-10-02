@@ -4981,7 +4981,11 @@ function bindV553Weekly(){
   });
   root.querySelector('[data-v553-print]')?.addEventListener('click',()=>{
     apply();
-    const html='<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Reporte Semanal - AdminFut</title><link rel="stylesheet" href="./src/v60-league-tools.css?v=20261002-v557-adminfut-print-page"></head><body class="v553-printing"><main class="v553-print-sheet">'+root.outerHTML+'</main><script>window.addEventListener("load",()=>setTimeout(()=>window.print(),180));<\/script></body></html>';
+    const report=root.cloneNode(true);
+    report.querySelector('.v60-header')?.remove();
+    report.querySelector('.v553-pending')?.remove();
+    report.querySelector('[data-v553-print]')?.remove();
+    const html='<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Reporte Semanal - AdminFut</title><link rel="stylesheet" href="./src/v60-league-tools.css?v=20261002-v558-adminfut-exact-pdf"></head><body class="v553-printing"><main class="v553-print-sheet"><div class="v558-admin-brand">🏆 AdminFut</div><div class="v558-yellow-line"></div><div class="v558-report-title">🗓 Juegos de la Semana</div>'+report.outerHTML+'</main><script>window.addEventListener("load",()=>setTimeout(()=>window.print(),240));<\/script></body></html>';
     const w=window.open('','_blank');
     if(!w){alert('Permite ventanas emergentes para generar el PDF.');return;}
     w.document.open();w.document.write(html);w.document.close();
