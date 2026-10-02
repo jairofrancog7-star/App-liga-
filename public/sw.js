@@ -1,4 +1,4 @@
-const CACHE='liga-juventino-v576-single-back-arrow';
+const CACHE='liga-juventino-v589-fantasy-compact-real-images';
 const CORE=['./','./index.html','./manifest.webmanifest','./brand-neon-header.svg','./profile-reference.svg'];
 
 self.addEventListener('install',event=>{
