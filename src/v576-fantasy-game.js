@@ -13,7 +13,7 @@ const SLOTS=[
 {id:3,pos:'CEN'},{id:4,pos:'CEN'},{id:5,pos:'CEN'},{id:6,pos:'CEN'},{id:7,pos:'CEN'},
 {id:8,pos:'DEF'},{id:9,pos:'DEF'},{id:10,pos:'DEF'},{id:11,pos:'DEF'},{id:12,pos:'DEF'},
 {id:13,pos:'POR'},{id:14,pos:'POR'}];
-let raf=0,targetSlot=0,query='';
+let raf=0,targetSlot=0,query='',matchesRound='';
 
 const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const norm=v=>String(v??'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[^a-z0-9]+/g,' ').trim();
@@ -151,7 +151,62 @@ function guest(){
  layer('<section class="v576-login-sheet"><button class="v576-x" type="button" data-v576-close>×</button><h2>¿Sigues sin iniciar sesión?</h2><p>Una vez que crees tu equipo, iniciar sesión te permite:</p><ul><li>⚽ <span>Actualizar tu equipo desde cualquier dispositivo</span></li><li>⚽ <span>Volver a unirte a tus ligas favoritas</span></li><li>⚽ <span>Recibir notificaciones personalizadas</span></li></ul><button class="primary" type="button" data-v576-login>Inicia sesión para jugar</button><button class="later" type="button" data-v576-later>Entraré luego</button></section>','login');
 }
 function menu(){
- layer('<section class="v576-menu-sheet"><button type="button" data-v576-reset>Reiniciar equipo</button><button type="button" data-v576-matches>Partidos</button><button type="button" data-v576-help="points">Cómo conseguir puntos</button><button type="button" data-v576-help="rules">Reglas</button></section>','menu');
+ layer('<section class="v576-menu-sheet"><button type="button" data-v576-reset>Reiniciar equipo</button><button type="button" data-v576-help="points">Cómo conseguir puntos</button><button type="button" data-v576-help="rules">Reglas</button><button type="button" data-v576-matches>Partidos</button></section>','menu');
+}
+
+function fantasyCategory(){
+ const d=db(),wanted=String(localStorage.getItem('v62-category')||'3');
+ if(d?.categories?.[wanted])return [wanted,d.categories[wanted]];
+ const hit=Object.entries(d?.categories||{}).find(([,cat])=>(cat?.fixtures||[]).some(b=>(b?.rows||[]).some(r=>Array.isArray(r)&&r[2]&&r[6])));
+ return hit||['',null];
+}
+function fantasyFixtures(){
+ const [cid,cat]=fantasyCategory(),out=[];
+ (cat?.fixtures||[]).forEach((block,bi)=>(block?.rows||[]).forEach((r,ri)=>{
+  if(!Array.isArray(r)||!r[2]||!r[6])return;
+  out.push({cid,category:String(cat?.name||''),round:String(r[1]||bi+1),home:String(r[2]||''),away:String(r[6]||''),date:String(r[8]||''),field:String(r[7]||''),scoreHome:String(r[3]??''),scoreAway:String(r[5]??'')});
+ }));
+ return out;
+}
+function fantasyDateParts(raw){
+ const s=String(raw||'').trim();
+ const tm=s.match(/(?:^|\s)(\d{1,2}:\d{2})(?:\s|$)/);
+ const time=tm?.[1]||'Por confirmar';
+ let date=s.replace(tm?.[0]||'',' ').replace(/\s+/g,' ').trim();
+ if(!date)date='Fecha por confirmar';
+ const dm=s.match(/(\d{1,2})[\/\-](\d{1,2})(?:[\/\-](\d{2,4}))?/);
+ if(dm){
+  const months=['ene','feb','mar','abr','may','jun','jul','ago','sep','oct','nov','dic'];
+  date=Number(dm[1])+' '+months[Math.max(0,Math.min(11,Number(dm[2])-1))];
+ }
+ return {date,time};
+}
+function matchesMarkup(){
+ const rows=fantasyFixtures(),rounds=[...new Set(rows.map(x=>x.round).filter(Boolean))];
+ if(!matchesRound||!rounds.includes(matchesRound))matchesRound=rounds[0]||'1';
+ const active=rows.filter(x=>x.round===matchesRound),first=active[0],dp=fantasyDateParts(first?.date||'');
+ const deadline=first?('Fichajes ilimitados hasta '+dp.date+(dp.time!=='Por confirmar'?', '+dp.time:'')):'Fichajes ilimitados hasta el primer partido';
+ return '<section class="v592-matches-sheet">'+
+   '<button type="button" class="v592-close" data-v576-close aria-label="Cerrar">×</button>'+
+   '<h2>Partidos</h2>'+
+   '<div class="v592-round-tabs">'+rounds.map(r=>'<button type="button" class="'+(r===matchesRound?'active':'')+'" data-v592-round="'+esc(r)+'">Jornada '+esc(r)+'</button>').join('')+'</div>'+
+   '<div class="v592-deadline"><b>↔</b><span>'+esc(deadline)+'</span></div>'+
+   '<div class="v592-date">'+esc(dp.date)+'</div>'+
+   '<div class="v592-match-list">'+
+     (active.length?active.map(m=>{
+       const p=fantasyDateParts(m.date),played=/^\d+$/.test(m.scoreHome)&&/^\d+$/.test(m.scoreAway);
+       const center=played?esc(m.scoreHome+' - '+m.scoreAway):esc(p.time);
+       return '<article class="v592-match-row">'+
+         '<span class="v592-team home"><b>'+esc(m.home)+'</b><img src="'+esc(teamLogo(m.home))+'" alt="" loading="lazy"></span>'+
+         '<strong>'+center+'</strong>'+
+         '<span class="v592-team away"><img src="'+esc(teamLogo(m.away))+'" alt="" loading="lazy"><b>'+esc(m.away)+'</b></span>'+
+       '</article>';
+     }).join(''):'<div class="v592-empty">No hay partidos publicados para esta jornada.</div>')+
+   '</div>'+
+ '</section>';
+}
+function matches(){
+ layer(matchesMarkup(),'matches');
 }
 function help(kind){
  const points=kind==='points';
@@ -212,7 +267,8 @@ document.addEventListener('click',e=>{
  if(el.closest('[data-v576-back]')){e.preventDefault();location.hash='#/fantasyAccess';return}
  if(el.closest('[data-v576-menu]')){e.preventDefault();menu();return}
  if(el.closest('[data-v576-reset]')){e.preventDefault();writeSquad([]);closeLayer();render();toast('Equipo reiniciado');return}
- if(el.closest('[data-v576-matches]')){e.preventDefault();closeLayer();location.hash='#/competition';return}
+ if(el.closest('[data-v576-matches]')){e.preventDefault();matches();return}
+ const rd=el.closest('[data-v592-round]');if(rd){e.preventDefault();matchesRound=rd.dataset.v592Round||matchesRound;const sheet=document.querySelector('.v592-matches-sheet');if(sheet)sheet.outerHTML=matchesMarkup();return}
  const h=el.closest('[data-v576-help]');if(h){e.preventDefault();help(h.dataset.v576Help);return}
  const rm=el.closest('[data-v576-remove]');if(rm){e.preventDefault();e.stopPropagation();writeSquad(readSquad().filter(x=>Number(x.slot)!==Number(rm.dataset.v576Remove)));render();return}
  const sl=el.closest('[data-v576-slot]');if(sl){e.preventDefault();picker(sl.dataset.v576Slot);return}
