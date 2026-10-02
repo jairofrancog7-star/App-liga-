@@ -82,18 +82,46 @@ function kitPalette(name){
 }
 function kitSvg(p,empty=false){
  const logo=empty?'':teamLogo(p?.team||'');
- const [a,b,accent]=empty?['#166f82','#166f82','#68b8c0']:kitPalette(p?.team||p?.name||'');
- const id='v591kit'+Math.abs((norm((p?.team||'')+(p?.name||'')).split('').reduce((n,ch)=>(n*31+ch.charCodeAt(0))>>>0,7))).toString(36);
- return '<svg class="v590-kit-svg v591-reference-shirt" viewBox="0 0 120 126" aria-hidden="true">'+
+ const [a,b,accent]=empty?['#1a7788','#0d6374','#6fc3cc']:kitPalette(p?.team||p?.name||'');
+ const id='v593kit'+Math.abs((norm((p?.team||'')+(p?.name||'')).split('').reduce((n,ch)=>(n*31+ch.charCodeAt(0))>>>0,7))).toString(36);
+ const glow=empty?'.16':'.34';
+ return '<svg class="v590-kit-svg v593-3d-shirt" viewBox="0 0 120 132" aria-hidden="true">'+
   '<defs>'+
-   '<linearGradient id="'+id+'g" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="'+a+'"/><stop offset="1" stop-color="'+b+'"/></linearGradient>'+
-   '<filter id="'+id+'s" x="-30%" y="-30%" width="160%" height="180%"><feDropShadow dx="0" dy="3" stdDeviation="2.2" flood-color="#075b68" flood-opacity="'+(empty?'.14':'.28')+'"/></filter>'+
+   '<linearGradient id="'+id+'body" x1="0" y1="0" x2="1" y2="1">'+
+    '<stop offset="0" stop-color="'+a+'"/><stop offset=".42" stop-color="'+b+'"/><stop offset="1" stop-color="'+b+'"/>'+
+   '</linearGradient>'+
+   '<linearGradient id="'+id+'shine" x1="0" y1="0" x2="1" y2="0">'+
+    '<stop offset="0" stop-color="#fff" stop-opacity=".34"/><stop offset=".24" stop-color="#fff" stop-opacity=".05"/><stop offset=".72" stop-color="#000" stop-opacity=".03"/><stop offset="1" stop-color="#000" stop-opacity=".30"/>'+
+   '</linearGradient>'+
+   '<linearGradient id="'+id+'sleeve" x1="0" y1="0" x2="0" y2="1">'+
+    '<stop offset="0" stop-color="'+a+'"/><stop offset="1" stop-color="'+b+'"/>'+
+   '</linearGradient>'+
+   '<pattern id="'+id+'mesh" width="4" height="4" patternUnits="userSpaceOnUse">'+
+    '<path d="M0 0h1v1H0zM2 2h1v1H2z" fill="#fff" opacity="'+(empty?'.03':'.08')+'"/>'+
+   '</pattern>'+
+   '<filter id="'+id+'shadow" x="-45%" y="-45%" width="190%" height="220%">'+
+    '<feDropShadow dx="0" dy="5" stdDeviation="4" flood-color="#032b3c" flood-opacity="'+glow+'"/>'+
+   '</filter>'+
+   '<filter id="'+id+'soft" x="-25%" y="-25%" width="150%" height="150%">'+
+    '<feGaussianBlur stdDeviation=".55"/>'+
+   '</filter>'+
   '</defs>'+
-  '<g filter="url(#'+id+'s)">'+
-   '<path d="M38 17 48 11c4 5 8 7 12 7s8-2 12-7l10 6 21 11-8 24-14-5v66H39V47l-14 5-8-24 21-11Z" fill="'+(empty?a:'url(#'+id+'g)')+'"/>'+
-   '<path d="M49 12c2.4 6.5 6.2 9 11 9s8.6-2.5 11-9" fill="none" stroke="'+accent+'" stroke-opacity="'+(empty?'.28':'.62')+'" stroke-width="2.3" stroke-linecap="round"/>'+
+  '<g class="v593-shirt-back" opacity="'+(empty?'.22':'.58')+'" transform="translate(3 4)">'+
+   '<path d="M36 17 48 10c4 6 8 8 12 8s8-2 12-8l12 7 23 12-10 27-14-6v69H37V50l-14 6-10-27 23-12Z" fill="'+b+'"/>'+
   '</g>'+
-  (logo?'<image href="'+esc(logo)+'" x="51" y="38" width="18" height="18" preserveAspectRatio="xMidYMid meet"/>':'')+
+  '<g filter="url(#'+id+'shadow)">'+
+   '<path d="M35 14 48 7c4 6 8 8 12 8s8-2 12-8l13 7 23 13-10 28-15-6v70H37V49l-15 6-10-28 23-13Z" fill="url(#'+id+'body)"/>'+
+   '<path d="M35 14 48 7c4 6 8 8 12 8s8-2 12-8l13 7 23 13-10 28-15-6v70H37V49l-15 6-10-28 23-13Z" fill="url(#'+id+'shine)"/>'+
+   '<path d="M35 14 48 7c4 6 8 8 12 8s8-2 12-8l13 7 23 13-10 28-15-6v70H37V49l-15 6-10-28 23-13Z" fill="url(#'+id+'mesh)"/>'+
+   '<path d="M48 8c2.3 8 6.4 12 12 12s9.7-4 12-12" fill="none" stroke="'+accent+'" stroke-width="3.6" stroke-linecap="round" stroke-opacity="'+(empty?'.35':'.88')+'"/>'+
+   '<path d="M49 8c2.5 5.5 6.2 8 11 8s8.5-2.5 11-8" fill="none" stroke="#fff" stroke-width="1.15" stroke-linecap="round" stroke-opacity="'+(empty?'.14':'.52')+'"/>'+
+   '<path d="M37 49 26 44M83 49l11-5" stroke="'+accent+'" stroke-width="2.3" stroke-opacity="'+(empty?'.28':'.58')+'"/>'+
+   '<path d="M42 38c10 5 26 5 36 0" fill="none" stroke="#fff" stroke-width="8" stroke-linecap="round" stroke-opacity="'+(empty?'.025':'.08')+'"/>'+
+   '<path d="M43 62c7 10 9 22 10 39M77 62c-7 10-9 22-10 39M48 92c6 6 18 6 24 0" fill="none" stroke="#fff" stroke-width="1.35" stroke-linecap="round" stroke-opacity="'+(empty?'.03':'.12')+'"/>'+
+   '<path d="M39 116h42" stroke="#fff" stroke-width="1.4" stroke-opacity="'+(empty?'.08':'.26')+'"/>'+
+  '</g>'+
+  (logo?'<image href="'+esc(logo)+'" x="50" y="39" width="20" height="20" preserveAspectRatio="xMidYMid meet"/>':'')+
+  '<ellipse cx="61" cy="126" rx="28" ry="4.5" fill="#073b4a" opacity="'+(empty?'.08':'.22')+'" filter="url(#'+id+'soft)"/>'+
  '</svg>';
 }
 function slotHtml(s,p){
