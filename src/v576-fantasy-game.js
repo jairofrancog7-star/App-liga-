@@ -82,23 +82,16 @@ function kitPalette(name){
 }
 function kitSvg(p,empty=false){
  const logo=empty?'':teamLogo(p?.team||'');
- const [a,b,accent]=empty?['#177487','#0f6678','#7fc7cf']:kitPalette(p?.team||p?.name||'');
- const id='v590kit'+Math.abs((norm((p?.team||'')+(p?.name||'')).split('').reduce((n,ch)=>(n*31+ch.charCodeAt(0))>>>0,7))).toString(36);
- const mode=(norm(p?.team||'').length+String(p?.name||'').length)%3;
- const motif=empty?'':(mode===0
-   ?'<path d="M52 20h16v92H52z" fill="'+accent+'" opacity=".22"/>'
-   :mode===1
-    ?'<path d="M27 73 88 26l11 17-61 47z" fill="'+accent+'" opacity=".18"/>'
-    :'<path d="M28 48h64M25 69h70" stroke="'+accent+'" stroke-width="8" opacity=".15"/>');
- return '<svg class="v590-kit-svg" viewBox="0 0 120 126" aria-hidden="true">'+
-  '<defs><linearGradient id="'+id+'g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="'+a+'"/><stop offset="1" stop-color="'+b+'"/></linearGradient>'+
-  '<filter id="'+id+'s" x="-30%" y="-30%" width="160%" height="180%"><feDropShadow dx="0" dy="4" stdDeviation="3" flood-color="#003746" flood-opacity=".24"/></filter></defs>'+
+ const [a,b,accent]=empty?['#166f82','#166f82','#68b8c0']:kitPalette(p?.team||p?.name||'');
+ const id='v591kit'+Math.abs((norm((p?.team||'')+(p?.name||'')).split('').reduce((n,ch)=>(n*31+ch.charCodeAt(0))>>>0,7))).toString(36);
+ return '<svg class="v590-kit-svg v591-reference-shirt" viewBox="0 0 120 126" aria-hidden="true">'+
+  '<defs>'+
+   '<linearGradient id="'+id+'g" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="'+a+'"/><stop offset="1" stop-color="'+b+'"/></linearGradient>'+
+   '<filter id="'+id+'s" x="-30%" y="-30%" width="160%" height="180%"><feDropShadow dx="0" dy="3" stdDeviation="2.2" flood-color="#075b68" flood-opacity="'+(empty?'.14':'.28')+'"/></filter>'+
+  '</defs>'+
   '<g filter="url(#'+id+'s)">'+
-   '<path d="M34 15 47 8c4 5 8 7 13 7s9-2 13-7l13 7 25 14-12 27-15-7v65H36V49l-15 7L9 29l25-14Z" fill="url(#'+id+'g)"/>'+
-   motif+
-   '<path d="M47 8c2 8 7 12 13 12s11-4 13-12" fill="none" stroke="'+accent+'" stroke-opacity=".72" stroke-width="3.5" stroke-linecap="round"/>'+
-   '<path d="M36 49 27 43M84 49l9-6" stroke="'+accent+'" stroke-opacity=".45" stroke-width="2"/>'+
-   '<path d="M38 109h44" stroke="#fff" stroke-opacity=".22" stroke-width="1.4"/>'+
+   '<path d="M38 17 48 11c4 5 8 7 12 7s8-2 12-7l10 6 21 11-8 24-14-5v66H39V47l-14 5-8-24 21-11Z" fill="'+(empty?a:'url(#'+id+'g)')+'"/>'+
+   '<path d="M49 12c2.4 6.5 6.2 9 11 9s8.6-2.5 11-9" fill="none" stroke="'+accent+'" stroke-opacity="'+(empty?'.28':'.62')+'" stroke-width="2.3" stroke-linecap="round"/>'+
   '</g>'+
   (logo?'<image href="'+esc(logo)+'" x="51" y="38" width="18" height="18" preserveAspectRatio="xMidYMid meet"/>':'')+
  '</svg>';
