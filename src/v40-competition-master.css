@@ -3123,3 +3123,267 @@ body.v40-standings-master .v580-section-row .v578-rule{
     height:2px!important;
   }
 }
+
+
+/* V586 — restaura proporciones de referencia y swipe horizontal real.
+   Mismo tamaño de números/letras en Compacta, Completa y Criterios. */
+@media(max-width:520px){
+  /* Selector superior como estaba en las capturas maestras. */
+  body.v40-standings-master .v40-standings{
+    padding-left:18px!important;
+    padding-right:18px!important;
+    padding-top:25px!important;
+  }
+  body.v40-standings-master .v40-segmented{
+    width:100%!important;
+    height:52px!important;
+    min-height:52px!important;
+    max-height:52px!important;
+    display:grid!important;
+    grid-template-columns:1fr 1fr 1.10fr!important;
+    margin:0!important;
+    padding:0!important;
+    overflow:hidden!important;
+    border:1px solid #66689a!important;
+    border-radius:28px!important;
+    background:#171863!important;
+  }
+  body.v40-standings-master .v40-segmented button{
+    height:52px!important;
+    min-height:52px!important;
+    max-height:52px!important;
+    margin:0!important;
+    padding:0 5px!important;
+    border:0!important;
+    border-left:1px solid #7375a5!important;
+    border-radius:0!important;
+    background:transparent!important;
+    color:#fff!important;
+    font:700 13px/1.05 Inter,Roboto,Arial,sans-serif!important;
+    letter-spacing:-.015em!important;
+    white-space:normal!important;
+  }
+  body.v40-standings-master .v40-segmented button:first-child{border-left:0!important}
+  body.v40-standings-master .v40-segmented button.active{
+    background:#4d4f7f!important;
+    color:#fff!important;
+  }
+
+  body.v40-standings-master .v40-content{
+    margin-top:29px!important;
+    min-width:0!important;
+    overflow:visible!important;
+  }
+  body.v40-standings-master .v578-table-section{
+    width:100%!important;
+    max-width:100%!important;
+    min-width:0!important;
+    overflow:visible!important;
+  }
+  body.v40-standings-master .v578-scroll,
+  body.v40-standings-master [data-v580-scroll]{
+    display:block!important;
+    width:100%!important;
+    max-width:100%!important;
+    min-width:0!important;
+    margin:0!important;
+    padding:0 0 7px!important;
+    overflow-x:auto!important;
+    overflow-y:hidden!important;
+    -webkit-overflow-scrolling:touch!important;
+    touch-action:pan-x pan-y!important;
+    overscroll-behavior-x:contain!important;
+    scrollbar-width:thin!important;
+    scrollbar-color:rgba(255,255,255,.30) rgba(255,255,255,.06)!important;
+  }
+  body.v40-standings-master .v578-scroll::-webkit-scrollbar{
+    display:block!important;
+    height:4px!important;
+  }
+  body.v40-standings-master .v578-scroll::-webkit-scrollbar-thumb{
+    background:rgba(255,255,255,.30)!important;
+    border-radius:999px!important;
+  }
+  body.v40-standings-master .v578-scroll::-webkit-scrollbar-track{
+    background:rgba(255,255,255,.06)!important;
+  }
+
+  /* Una sola escala visual para las tres tablas. */
+  body.v40-standings-master .v578-table{
+    max-width:none!important;
+    table-layout:fixed!important;
+    border-collapse:separate!important;
+    border-spacing:0!important;
+    margin:0!important;
+    background:#05065f!important;
+  }
+  body.v40-standings-master .v578-table thead th{
+    height:38px!important;
+    min-height:38px!important;
+    padding:0 4px!important;
+    border:0!important;
+    background:#05065f!important;
+    color:#cfd0dc!important;
+    font:800 10px/1 Inter,Roboto,Arial,sans-serif!important;
+    text-align:center!important;
+    white-space:nowrap!important;
+    overflow:visible!important;
+  }
+  body.v40-standings-master .v578-table tbody td{
+    height:58px!important;
+    min-height:58px!important;
+    padding:0 4px!important;
+    border:0!important;
+    border-bottom:1px solid rgba(255,255,255,.10)!important;
+    background:#05065f!important;
+    color:#fff!important;
+    font:500 13px/1.05 Inter,Roboto,Arial,sans-serif!important;
+    text-align:center!important;
+    vertical-align:middle!important;
+    white-space:nowrap!important;
+    overflow:visible!important;
+  }
+  body.v40-standings-master .v578-table .rank{
+    width:28px!important;
+    min-width:28px!important;
+    max-width:28px!important;
+    padding:0!important;
+    color:#d7d8e2!important;
+  }
+  body.v40-standings-master .v578-table .logo{
+    width:42px!important;
+    min-width:42px!important;
+    max-width:42px!important;
+    padding:0 4px!important;
+  }
+  body.v40-standings-master .v578-table .teamname{
+    width:126px!important;
+    min-width:126px!important;
+    max-width:126px!important;
+    padding:0 5px!important;
+    text-align:left!important;
+  }
+  body.v40-standings-master .v578-table .teamname strong{
+    display:block!important;
+    max-width:100%!important;
+    overflow:hidden!important;
+    text-overflow:ellipsis!important;
+    white-space:nowrap!important;
+    color:#fff!important;
+    font:750 13px/1.05 Inter,Roboto,Arial,sans-serif!important;
+  }
+  body.v40-standings-master .v578-logo{
+    display:block!important;
+    width:30px!important;
+    height:30px!important;
+    min-width:30px!important;
+    max-width:30px!important;
+    min-height:30px!important;
+    max-height:30px!important;
+    margin:auto!important;
+    object-fit:contain!important;
+  }
+  body.v40-standings-master .v578-table .pts{font-weight:800!important}
+
+  /* Compacta mantiene la referencia y no se encoge. */
+  body.v40-standings-master .v579-compact-table{
+    width:500px!important;
+    min-width:500px!important;
+    max-width:none!important;
+  }
+  body.v40-standings-master .v579-compact-table th:nth-child(4),
+  body.v40-standings-master .v579-compact-table td:nth-child(4){width:42px!important}
+  body.v40-standings-master .v579-compact-table th:nth-child(5),
+  body.v40-standings-master .v579-compact-table td:nth-child(5){width:48px!important}
+  body.v40-standings-master .v579-compact-table th:nth-child(6),
+  body.v40-standings-master .v579-compact-table td:nth-child(6){width:52px!important}
+  body.v40-standings-master .v579-compact-table th:nth-child(7),
+  body.v40-standings-master .v579-compact-table td:nth-child(7){width:132px!important}
+
+  /* Completa: todas las columnas en una fila larga y deslizable. */
+  body.v40-standings-master .v578-complete-table{
+    width:790px!important;
+    min-width:790px!important;
+    max-width:none!important;
+  }
+  body.v40-standings-master .v578-complete-table th:nth-child(n+4):nth-child(-n+10),
+  body.v40-standings-master .v578-complete-table td:nth-child(n+4):nth-child(-n+10){
+    width:46px!important;
+    min-width:46px!important;
+    max-width:46px!important;
+  }
+  body.v40-standings-master .v578-complete-table th:nth-child(11),
+  body.v40-standings-master .v578-complete-table td:nth-child(11){
+    width:132px!important;
+    min-width:132px!important;
+    max-width:132px!important;
+  }
+  body.v40-standings-master .v578-complete-table th:nth-child(12),
+  body.v40-standings-master .v578-complete-table td:nth-child(12){
+    width:54px!important;
+    min-width:54px!important;
+    max-width:54px!important;
+  }
+
+  /* Criterios: misma letra/números y desplazamiento horizontal. */
+  body.v40-standings-master .v578-criteria-table{
+    width:620px!important;
+    min-width:620px!important;
+    max-width:none!important;
+  }
+  body.v40-standings-master .v578-criteria-table th:nth-child(n+4),
+  body.v40-standings-master .v578-criteria-table td:nth-child(n+4){
+    width:54px!important;
+    min-width:54px!important;
+    max-width:54px!important;
+  }
+
+  /* Forma vuelve al tamaño de referencia, no miniatura. */
+  body.v40-standings-master .v578-table .v40-form{
+    display:flex!important;
+    align-items:center!important;
+    justify-content:center!important;
+    gap:4px!important;
+    padding:0!important;
+    min-width:0!important;
+  }
+  body.v40-standings-master .v578-table .v40-form i{
+    width:18px!important;
+    height:18px!important;
+    min-width:18px!important;
+    max-width:18px!important;
+    flex:0 0 18px!important;
+  }
+  body.v40-standings-master .v578-table .v40-form b{
+    width:22px!important;
+    height:22px!important;
+    min-width:22px!important;
+    max-width:22px!important;
+    flex:0 0 22px!important;
+    font-size:9px!important;
+  }
+  body.v40-standings-master .v578-table .v40-form b::after{
+    left:3px!important;
+    right:3px!important;
+    bottom:-5px!important;
+    height:2px!important;
+  }
+
+  body.v40-standings-master .v580-section-row td{
+    height:auto!important;
+    min-height:0!important;
+    padding:7px 0 0!important;
+    border:0!important;
+  }
+  body.v40-standings-master .v580-section-row .v578-direct{
+    padding:0 0 12px!important;
+    color:#d8d9e7!important;
+    font:700 10px/1 Inter,Roboto,Arial,sans-serif!important;
+    text-align:left!important;
+  }
+  body.v40-standings-master .v580-section-row .v578-rule{
+    width:100%!important;
+    height:2px!important;
+    background:rgba(255,255,255,.62)!important;
+  }
+}
