@@ -2532,3 +2532,57 @@ body[data-app-route="moreLess"]:not(.v537-more-secondary-open) #screen>[data-v12
   body[data-app-route="moreLess"] .v538-video-banner b{font-size:20px!important}
   body[data-app-route="moreLess"] .v538-video-banner em{font-size:18px!important}
 }
+
+
+/* V541 — toque de monitos abre páginas secundarias reales */
+body[data-app-route="moreLess"] [data-v531-mount="more"][data-v541-open="true"]{
+  position:fixed!important;
+  inset:0 0 calc(var(--bottom-nav-h,60px) + env(safe-area-inset-bottom)) 0!important;
+  z-index:2147481500!important;
+  display:block!important;
+  visibility:visible!important;
+  opacity:1!important;
+  pointer-events:auto!important;
+  width:100%!important;
+  max-width:520px!important;
+  height:auto!important;
+  min-height:0!important;
+  max-height:none!important;
+  margin:0 auto!important;
+  padding:0!important;
+  overflow-y:auto!important;
+  overflow-x:hidden!important;
+  -webkit-overflow-scrolling:touch!important;
+  overscroll-behavior:contain!important;
+  background:#05065f!important;
+  border:0!important;
+}
+body[data-app-route="moreLess"] [data-v531-mount="more"][data-v541-open="true"]>.v531-page{
+  display:block!important;
+  visibility:visible!important;
+  opacity:1!important;
+  width:100%!important;
+  min-height:100%!important;
+  margin:0!important;
+}
+body.v541-more-pages-open[data-app-route="moreLess"]{
+  overflow:hidden!important;
+}
+body.v541-more-pages-open[data-app-route="moreLess"] .bottom-nav{
+  display:flex!important;
+  visibility:visible!important;
+  opacity:1!important;
+  pointer-events:auto!important;
+  z-index:2147482000!important;
+}
+body[data-app-route="moreLess"] [data-v535-primary="true"] .v12-ml-choice>button,
+body[data-app-route="moreLess"] [data-v535-primary="true"] .v12-avatar{
+  pointer-events:auto!important;
+  touch-action:manipulation!important;
+  cursor:pointer!important;
+  -webkit-tap-highlight-color:transparent!important;
+}
+body[data-app-route="moreLess"] [data-v535-primary="true"] .v12-ml-choice>button{
+  position:relative!important;
+  z-index:50!important;
+}
