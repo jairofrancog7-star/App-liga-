@@ -1975,3 +1975,144 @@ body[data-app-route="moreLess"] .v538-video-banner em{
   body[data-app-route="moreLess"] .v538-player-card{min-height:214px!important}
   body[data-app-route="moreLess"] .v538-player-image{height:130px!important}
 }
+
+
+/* V539 — flujo completo al tocar cualquier monito/opción principal */
+/* Al abrir desde el diseño principal se entra directo a las pantallas secundarias. */
+body.v537-more-secondary-open [data-v531-mount="more"]>.v538-more-game,
+body.v537-quiz-secondary-open [data-v531-mount="quiz"]>.v531-game-screen,
+body.v537-quiz-secondary-open [data-v531-mount="quiz"]>.v531-result-screen{
+  animation:v539ScreenIn .24s ease-out both!important;
+}
+@keyframes v539ScreenIn{
+  from{opacity:.2;transform:translateY(10px)}
+  to{opacity:1;transform:translateY(0)}
+}
+
+/* Más o Menos: cada fase se siente como una pantalla distinta, sin salir del flujo. */
+body[data-app-route="moreLess"] .v538-game-stage.intro .v538-stage-placeholder{
+  animation:v539PulseStage 1.05s ease-in-out infinite alternate!important;
+}
+body[data-app-route="moreLess"] .v538-game-stage.first .v538-player-card.left{
+  animation:v539PlayerInLeft .30s ease-out both!important;
+}
+body[data-app-route="moreLess"] .v538-game-stage.both .v538-player-card.right,
+body[data-app-route="moreLess"] .v538-game-stage.ready .v538-player-card.right{
+  animation:v539PlayerInRight .30s ease-out both!important;
+}
+body[data-app-route="moreLess"] .v538-game-stage.result .v538-player-card{
+  animation:none!important;
+}
+@keyframes v539PulseStage{
+  from{opacity:.08;transform:scale(.985)}
+  to{opacity:.18;transform:scale(1)}
+}
+@keyframes v539PlayerInLeft{
+  from{opacity:0;transform:translateX(-18px)}
+  to{opacity:1;transform:translateX(0)}
+}
+@keyframes v539PlayerInRight{
+  from{opacity:0;transform:translateX(18px)}
+  to{opacity:1;transform:translateX(0)}
+}
+
+/* Pantalla de resultado que faltaba después de elegir Más/Menos. */
+body[data-app-route="moreLess"] .v539-more-result{
+  width:calc(100% - 24px)!important;
+  min-height:106px!important;
+  margin:14px auto 4px!important;
+  display:grid!important;
+  grid-template-columns:44px minmax(0,1fr) auto!important;
+  align-items:center!important;
+  gap:10px!important;
+  padding:12px!important;
+  border-radius:12px!important;
+  background:linear-gradient(145deg,#11138b,#0d0d72)!important;
+  border:1px solid rgba(80,104,235,.28)!important;
+  box-shadow:0 10px 22px rgba(0,0,52,.18)!important;
+  animation:v539ResultIn .24s ease-out both!important;
+}
+body[data-app-route="moreLess"] .v539-more-result.ok{
+  border-color:rgba(43,224,121,.48)!important;
+}
+body[data-app-route="moreLess"] .v539-more-result.bad{
+  border-color:rgba(255,65,142,.46)!important;
+}
+body[data-app-route="moreLess"] .v539-result-mark{
+  width:42px!important;
+  height:42px!important;
+  display:grid!important;
+  place-items:center!important;
+  border-radius:50%!important;
+  background:#0d3fce!important;
+  color:#fff!important;
+  font-size:24px!important;
+  font-weight:900!important;
+}
+body[data-app-route="moreLess"] .v539-more-result.ok .v539-result-mark{
+  background:#21b85b!important;
+}
+body[data-app-route="moreLess"] .v539-more-result.bad .v539-result-mark{
+  background:#dd2f78!important;
+}
+body[data-app-route="moreLess"] .v539-more-result small{
+  display:block!important;
+  color:#8f99d0!important;
+  font-size:7.5px!important;
+  font-weight:800!important;
+  letter-spacing:.08em!important;
+}
+body[data-app-route="moreLess"] .v539-more-result h3{
+  margin:2px 0 3px!important;
+  color:#fff!important;
+  font-size:14px!important;
+}
+body[data-app-route="moreLess"] .v539-more-result p{
+  margin:0!important;
+  color:#bfc5e8!important;
+  font-size:8px!important;
+  line-height:1.25!important;
+}
+body[data-app-route="moreLess"] .v539-more-result button{
+  min-height:38px!important;
+  padding:8px 10px!important;
+  border:1px solid #20dfea!important;
+  border-radius:8px!important;
+  background:#11137c!important;
+  color:#20e2ee!important;
+  font-size:8px!important;
+  font-weight:850!important;
+  white-space:nowrap!important;
+}
+@keyframes v539ResultIn{
+  from{opacity:0;transform:translateY(8px) scale(.985)}
+  to{opacity:1;transform:translateY(0) scale(1)}
+}
+
+/* En resultado bloqueamos los botones de la pregunta anterior para que la siguiente
+   pantalla sea la tarjeta de resultado + "Siguiente comparación". */
+body[data-app-route="moreLess"] .v538-game-stage.result~.v538-score-strip + .v538-question-zone .v531-more-buttons{
+  opacity:.42!important;
+  pointer-events:none!important;
+}
+
+/* Quiz Arena: al tocar cualquier opción del diseño principal abre directamente
+   la pregunta y luego la pantalla de resultado; se conserva el diseño principal detrás. */
+body.v537-quiz-secondary-open [data-v531-mount="quiz"]{
+  scroll-behavior:smooth!important;
+}
+body[data-app-route="quizArena"] .v531-game-screen .v531-q-answer:active,
+body[data-app-route="moreLess"] .v531-more-buttons button:active,
+body[data-app-route="moreLess"] .v539-more-result button:active{
+  transform:scale(.97)!important;
+}
+
+@media(max-width:390px){
+  body[data-app-route="moreLess"] .v539-more-result{
+    grid-template-columns:40px minmax(0,1fr)!important;
+  }
+  body[data-app-route="moreLess"] .v539-more-result button{
+    grid-column:1 / -1!important;
+    width:100%!important;
+  }
+}
