@@ -263,3 +263,10 @@ body[data-app-route="profile"] #screen > .v413-shell .v413-head{
     font-size:15px!important;
   }
 }
+
+
+/* V553 — Comunidad: tarjeta Facebook transparente para dejar visible el cuadro de fondo. */
+body:not([data-app-route="profile"]) #screen > .v413-shell .v413-facebook.v523-social-card{
+  background:transparent!important;
+  box-shadow:none!important;
+}
