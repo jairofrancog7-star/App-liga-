@@ -25,12 +25,22 @@
     {
       "name": "Posiciones",
       "short_name": "Posiciones",
-      "url": "./?mode=apk#/competition"
+      "url": "./?mode=apk#/positions"
     },
     {
       "name": "Goleo",
       "short_name": "Goleo",
       "url": "./?mode=apk#/scorers"
+    },
+    {
+      "name": "Tarjetas",
+      "short_name": "Tarjetas",
+      "url": "./?mode=apk#/cards"
+    },
+    {
+      "name": "Castigados",
+      "short_name": "Castigados",
+      "url": "./?mode=apk#/suspensions"
     },
     {
       "name": "Registro de jugadores",
