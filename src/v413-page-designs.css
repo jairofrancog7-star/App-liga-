@@ -283,3 +283,15 @@ html body[data-app-route="more"] #screen > .v413-shell#v413-page-design{
   background-image:none!important;
   box-shadow:none!important;
 }
+
+
+/* V556 — Comunidad/Síguenos: el panel exterior completo debe ser transparente.
+   Selector independiente de data-app-route para evitar que un estado tardío vuelva a pintarlo azul. */
+html body #screen > .v413-shell.v556-social-transparent{
+  background:transparent!important;
+  background-color:transparent!important;
+  background-image:none!important;
+  box-shadow:none!important;
+  backdrop-filter:none!important;
+  -webkit-backdrop-filter:none!important;
+}
