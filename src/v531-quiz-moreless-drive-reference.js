@@ -4,6 +4,7 @@
 'use strict';
 if(window.__LJR_V531_GAMES__)return;
 window.__LJR_V531_GAMES__=true;
+window.__LJR_V533_PRIMARY_GAMES__=true;
 
 const RAW='https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/';
 const DATA_LOCAL='./data/official-live.json?v=20261001-v531-games';
@@ -221,18 +222,28 @@ function setGamesNav(){
     item.setAttribute('aria-current',on?'page':'false');
   });
 }
+function primaryRoot(r){
+  if(r==='quizArena')return document.querySelector('#screen [data-v48-arena]');
+  if(r==='moreLess')return document.querySelector('#screen [data-v12-moreless]');
+  return null;
+}
 function render(focusAdded=false){
   const r=route();
   if(r!=='quizArena'&&r!=='moreLess')return;
   const screen=document.querySelector('#screen');if(!screen)return;
+  const primary=primaryRoot(r);
+  if(!primary)return;
+  primary.dataset.v533Primary='true';
   const data=db||window.LJR_OFFICIAL_DATA||{};
   const kind=r==='quizArena'?'quiz':'more';
   let mount=screen.querySelector('[data-v531-mount="'+kind+'"]');
   if(!mount){
     mount=document.createElement('div');
-    mount.className='v531-added-block';
+    mount.className='v531-added-block v533-below-primary';
     mount.dataset.v531Mount=kind;
-    screen.appendChild(mount);
+    primary.insertAdjacentElement('afterend',mount);
+  }else if(primary.nextElementSibling!==mount){
+    primary.insertAdjacentElement('afterend',mount);
   }
   if(r==='quizArena'){
     mount.innerHTML=quiz.mode==='game'?quizGame(data):quiz.mode==='result'?quizResult(data):quizHub(data);
@@ -252,12 +263,40 @@ function share(){
 function schedule(){
   requestAnimationFrame(function(){requestAnimationFrame(function(){
     const r=route();
-    if(r==='quizArena'&&!document.querySelector('[data-v531-mount="quiz"]'))render(false);
-    if(r==='moreLess'&&!document.querySelector('[data-v531-mount="more"]'))render(false);
+    if(r!=='quizArena'&&r!=='moreLess')return;
+    const primary=primaryRoot(r);
+    if(!primary){
+      window.setTimeout(schedule,70);
+      return;
+    }
+    const kind=r==='quizArena'?'quiz':'more';
+    if(!document.querySelector('[data-v531-mount="'+kind+'"]'))render(false);
   })});
 }
 document.addEventListener('click',function(e){
   if(!(e.target instanceof Element))return;
+
+  /* V533: los diseños anteriores son la portada principal.
+     Al tocarlos, abren debajo las pantallas nuevas de las referencias Drive. */
+  const oldQuiz=e.target.closest('[data-v48-quiz]');
+  if(route()==='quizArena'&&oldQuiz){
+    e.preventDefault();e.stopPropagation();e.stopImmediatePropagation();
+    const data=db||window.LJR_OFFICIAL_DATA||{},q=quizData(data);
+    quiz.selected=oldQuiz.dataset.v48Quiz||oldQuiz.textContent||'';
+    quiz.answered=true;
+    if(norm(quiz.selected)===norm(q.correct))quiz.points+=10;
+    quiz.mode='result';quiz.exit=false;
+    render(true);
+    return;
+  }
+  const oldMore=e.target.closest('[data-v12-choice]');
+  if(route()==='moreLess'&&oldMore){
+    e.preventDefault();e.stopPropagation();e.stopImmediatePropagation();
+    more.mode='game';more.answered=false;more.exit=false;
+    render(true);
+    return;
+  }
+
   const t=e.target.closest('[data-v531-quiz-back],[data-v531-more-back],[data-v531-share],[data-v531-rankings],[data-v531-quiz-start],[data-v531-quiz-close],[data-v531-q-answer],[data-v531-quiz-next],[data-v531-result-back],[data-v531-more-start],[data-v531-more-close],[data-v531-more-choice],[data-v531-exit-confirm],[data-v531-exit-cancel]');
   if(!t)return;
   e.preventDefault();e.stopPropagation();
