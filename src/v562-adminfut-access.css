@@ -1,4 +1,6 @@
-/* V562 — AdminFut / Registro dentro de la app azul. */
+/* V563 — Liga Control y APK propia dentro de la app azul. */
+body[data-app-route="ligaControl"] #screen,
+body[data-app-route="appInstall"] #screen,
 body[data-app-route="adminFut"] #screen{background:#06065f!important}
 .v562-page{width:min(100%,720px);margin:0 auto;padding:14px 14px calc(112px + env(safe-area-inset-bottom));color:#fff;font-family:Inter,Roboto,Arial,sans-serif}
 .v562-page *{box-sizing:border-box}
