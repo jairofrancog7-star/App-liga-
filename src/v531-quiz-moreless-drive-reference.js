@@ -33,7 +33,7 @@ const FALLBACK_LOGOS={
 let db=window.LJR_OFFICIAL_DATA||null;
 let loading=null;
 const quiz={mode:'legacy',answered:false,selected:'',points:0,step:1,exit:false};
-const more={mode:'legacy',answered:false,selected:'',points:0,attempts:2,exit:false,phase:'intro',countdown:15,roundToken:0};
+const more={mode:'legacy',answered:false,selected:'',points:0,attempts:2,exit:false,phase:'intro',countdown:15,roundToken:0,round:0};
 let v538MoreTimers=[];
 let v538MoreInterval=null;
 
@@ -101,14 +101,24 @@ function quizData(data){
 }
 function morePair(data){
   const list=scorers(data);
+  const pairs=[];
   for(let i=0;i<list.length;i++){
     for(let j=i+1;j<list.length;j++){
-      if(list[i].goals!==list[j].goals)return {a:list[i],b:list[j],kind:'player'};
+      if(list[i].goals!==list[j].goals)pairs.push({a:list[i],b:list[j],kind:'player'});
+      if(pairs.length>=12)break;
     }
+    if(pairs.length>=12)break;
   }
+  if(pairs.length)return pairs[Math.abs(Number(more.round)||0)%pairs.length];
   const rows=standings(data);
-  const a={name:String(rows[0]?.[1]||'SAN JOSE FC'),team:String(rows[0]?.[1]||'SAN JOSE FC'),goals:Number(rows[0]?.[6])||0};
-  const b={name:String(rows[1]?.[1]||'JUVENTUS'),team:String(rows[1]?.[1]||'JUVENTUS'),goals:Number(rows[1]?.[6])||0};
+  const pool=rows.slice(0,6).map(function(r){return {name:String(r?.[1]||'EQUIPO'),team:String(r?.[1]||'EQUIPO'),goals:Number(r?.[6])||0}});
+  if(pool.length>=2){
+    const i=Math.abs(Number(more.round)||0)%pool.length;
+    const j=(i+1)%pool.length;
+    return {a:pool[i],b:pool[j],kind:'team'};
+  }
+  const a={name:'SAN JOSE FC',team:'SAN JOSE FC',goals:0};
+  const b={name:'JUVENTUS',team:'JUVENTUS',goals:0};
   return {a:a,b:b,kind:'team'};
 }
 function rankRows(data){
@@ -255,7 +265,7 @@ function v538StartMoreRound(){
   v538ClearTimers();
   more.roundToken++;
   const token=more.roundToken;
-  more.mode='game';more.phase='intro';more.answered=false;more.exit=false;more.countdown=15;
+  more.round=Math.max(0,Number(more.round)||0)+1;more.mode='game';more.phase='intro';more.answered=false;more.selected='';more.exit=false;more.countdown=15;
   render(true);
   v538MoreInterval=setInterval(function(){
     if(token!==more.roundToken||more.mode!=='game'){v538ClearTimers();return}
@@ -274,8 +284,9 @@ function moreGame(data){
     :'¿Tiene '+esc(pair.b.name)+' más o menos goles a favor que '+esc(pair.a.name)+'?';
   const intro=more.phase==='intro';
   const first=more.phase==='first';
-  const both=more.phase==='both'||more.phase==='ready';
-  const ready=more.phase==='ready';
+  const both=more.phase==='both'||more.phase==='ready'||more.phase==='result';
+  const ready=more.phase==='ready'||more.phase==='result';
+  const result=more.phase==='result';
   return '<section class="v531-page v531-more v538-more-game" data-v531-more data-v531-view="game">'+
     '<header class="v531-game-head v538-game-head"><strong>Más o menos</strong><button type="button" data-v531-more-close aria-label="Cerrar">'+closeSvg()+'</button></header>'+
     '<main class="v538-game-body">'+
@@ -290,6 +301,7 @@ function moreGame(data){
         '<div class="v531-more-buttons"><button type="button" class="less" data-v531-more-choice="less" aria-label="Menos">▼</button><span>OR</span><button type="button" class="more" data-v531-more-choice="more" aria-label="Más">▲</button></div>'+
         (more.answered?'<div class="v531-more-answer">'+(more.selected==='correct'?'¡Correcto!':'Respuesta registrada')+' · '+esc(pair.b.name)+' tiene '+esc(pair.b.goals)+'</div>':'')+
       '</div>'+
+      (result?'<section class="v539-more-result '+(more.selected==='correct'?'ok':'bad')+'"><span class="v539-result-mark">'+(more.selected==='correct'?'✓':'×')+'</span><div><small>RESULTADO</small><h3>'+(more.selected==='correct'?'¡Acertaste!':'Siguiente intento')+'</h3><p>'+esc(pair.a.name)+' · '+esc(pair.a.goals)+' / '+esc(pair.b.name)+' · '+esc(pair.b.goals)+'</p></div><button type="button" data-v539-more-next>Siguiente comparación</button></section>':'')+
       '<div class="v538-video-banner"><b>VIVE LOS</b><em>MEJORES MOMENTOS</em></div>'+
     '</main>'+
     (more.exit?exitModal('more'):'')+
@@ -435,8 +447,7 @@ document.addEventListener('click',function(e){
   const moreMonito=e.target.closest('[data-v531-more-open]');
   if(route()==='moreLess'&&moreMonito){
     e.preventDefault();e.stopPropagation();e.stopImmediatePropagation();
-    v538ClearTimers();more.mode='hub';more.phase='intro';more.answered=false;more.exit=false;
-    render(true);
+    v538StartMoreRound();
     return;
   }
 
@@ -447,7 +458,7 @@ document.addEventListener('click',function(e){
     e.preventDefault();e.stopPropagation();e.stopImmediatePropagation();
     quiz.selected='';
     quiz.answered=false;
-    quiz.mode='hub';
+    quiz.mode='game';
     quiz.exit=false;
     render(true);
     return;
@@ -455,27 +466,25 @@ document.addEventListener('click',function(e){
   const oldMore=e.target.closest('[data-v12-choice]');
   if(route()==='moreLess'&&oldMore){
     e.preventDefault();e.stopPropagation();e.stopImmediatePropagation();
-    /* Las flechas también pueden abrir el flujo; los monitos ya entran por V536. */
-    more.mode='hub';more.answered=false;more.exit=false;
-    render(true);
+    /* V539: cualquier control principal entra directo al flujo de pantallas. */
+    v538StartMoreRound();
     return;
   }
 
-  const t=e.target.closest('[data-v531-more-open],[data-v48-quiz],[data-v12-choice],[data-v531-quiz-back],[data-v531-more-back],[data-v531-share],[data-v531-rankings],[data-v531-quiz-start],[data-v531-quiz-close],[data-v531-q-answer],[data-v531-quiz-next],[data-v531-result-back],[data-v531-more-start],[data-v531-more-close],[data-v531-more-choice],[data-v531-exit-confirm],[data-v531-exit-cancel]');
+  const t=e.target.closest('[data-v531-more-open],[data-v48-quiz],[data-v12-choice],[data-v531-quiz-back],[data-v531-more-back],[data-v531-share],[data-v531-rankings],[data-v531-quiz-start],[data-v531-quiz-close],[data-v531-q-answer],[data-v531-quiz-next],[data-v531-result-back],[data-v531-more-start],[data-v531-more-close],[data-v531-more-choice],[data-v539-more-next],[data-v531-exit-confirm],[data-v531-exit-cancel]');
   if(!t)return;
   // Controles del diseño principal anterior: no los bloqueamos.
   // Dejamos que su funcionamiento original ocurra y luego abrimos el diseño secundario debajo.
   if(t.matches('[data-v48-quiz]')){
     quiz.selected='';
     quiz.answered=false;
-    quiz.mode='hub';
+    quiz.mode='game';
     quiz.exit=false;
     setTimeout(function(){render(true)},0);
     return;
   }
   if(t.matches('[data-v531-more-open],[data-v12-choice]')){
-    more.mode='hub';more.answered=false;more.exit=false;
-    setTimeout(function(){render(true)},0);
+    setTimeout(function(){v538StartMoreRound()},0);
     return;
   }
 
@@ -503,14 +512,15 @@ document.addEventListener('click',function(e){
     const actual=pair.b.goals>pair.a.goals?'more':'less';
     const picked=t.dataset.v531MoreChoice||'less';
     more.selected=picked===actual?'correct':'wrong';
-    more.answered=true;
+    more.answered=true;more.phase='result';
     if(picked===actual)more.points+=10;else more.attempts=Math.max(0,more.attempts-1);
-    render(true);return;
+    v538ClearTimers();render(true);return;
   }
+  if(t.matches('[data-v539-more-next]')){v538StartMoreRound();return}
   if(t.matches('[data-v531-exit-confirm]')){
     const kind=t.dataset.v531ExitConfirm;
     if(kind==='quiz'){quiz.mode='legacy';quiz.exit=false;quiz.answered=false}
-    else{v538ClearTimers();more.mode='legacy';more.exit=false;more.answered=false;more.phase='intro'}
+    else{v538ClearTimers();more.mode='legacy';more.exit=false;more.answered=false;more.phase='intro';more.round=0}
     render(false);return;
   }
   if(t.matches('[data-v531-exit-cancel]')){
