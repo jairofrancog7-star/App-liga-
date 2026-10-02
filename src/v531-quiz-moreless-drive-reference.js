@@ -5,6 +5,7 @@
 if(window.__LJR_V531_GAMES__)return;
 window.__LJR_V531_GAMES__=true;
 window.__LJR_V533_PRIMARY_GAMES__=true;
+window.__LJR_V536_MONITO_FLOW__=true;
 
 const RAW='https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/';
 const DATA_LOCAL='./data/official-live.json?v=20261001-v531-games';
@@ -273,6 +274,11 @@ function v535EnsureMorePrimary(){
   if(primary){
     primary.dataset.v533Primary='true';
     primary.dataset.v535Primary='true';
+    /* V536: solo los dos monitos exteriores abren los otros diseños. */
+    primary.querySelectorAll('.v12-ml-choice > button').forEach(function(btn){
+      btn.dataset.v531MoreOpen='true';
+      btn.setAttribute('aria-label','Abrir otros diseños de Más o Menos');
+    });
   }
   return primary;
 }
@@ -303,15 +309,25 @@ function render(focusAdded=false){
   }
 
   if(r==='quizArena'){
-    if(quiz.mode==='legacy') mount.innerHTML=quizLegacyExtras(data);
-    else mount.innerHTML=quiz.mode==='game'?quizGame(data):quizResult(data);
+    if(quiz.mode==='legacy'){
+      mount.innerHTML='';
+      mount.hidden=true;
+    }else{
+      mount.hidden=false;
+      mount.innerHTML=quiz.mode==='hub'?quizHub(data):quiz.mode==='game'?quizGame(data):quizResult(data);
+    }
   }else{
-    if(more.mode==='legacy') mount.innerHTML=moreLegacyExtras(data);
-    else mount.innerHTML=moreGame(data);
+    if(more.mode==='legacy'){
+      mount.innerHTML='';
+      mount.hidden=true;
+    }else{
+      mount.hidden=false;
+      mount.innerHTML=more.mode==='hub'?moreHub(data):moreGame(data);
+    }
   }
 
   setGamesNav();
-  if(focusAdded)requestAnimationFrame(function(){
+  if(focusAdded&&!mount.hidden)requestAnimationFrame(function(){
     mount.scrollIntoView({behavior:'smooth',block:'start'});
   });
 }
@@ -344,6 +360,16 @@ function schedule(){
 document.addEventListener('click',function(e){
   if(!(e.target instanceof Element))return;
 
+  /* V536: al tocar cualquiera de los dos monitos del cuadro principal
+     de Más o Menos se abren los otros diseños de las referencias Drive. */
+  const moreMonito=e.target.closest('[data-v531-more-open]');
+  if(route()==='moreLess'&&moreMonito){
+    e.preventDefault();e.stopPropagation();e.stopImmediatePropagation();
+    more.mode='hub';more.answered=false;more.exit=false;
+    render(true);
+    return;
+  }
+
   /* V533: los diseños anteriores son la portada principal.
      Al tocarlos, abren debajo las pantallas nuevas de las referencias Drive. */
   const oldQuiz=e.target.closest('[data-v48-quiz]');
@@ -360,12 +386,13 @@ document.addEventListener('click',function(e){
   const oldMore=e.target.closest('[data-v12-choice]');
   if(route()==='moreLess'&&oldMore){
     e.preventDefault();e.stopPropagation();e.stopImmediatePropagation();
-    more.mode='game';more.answered=false;more.exit=false;
+    /* Las flechas también pueden abrir el flujo; los monitos ya entran por V536. */
+    more.mode='hub';more.answered=false;more.exit=false;
     render(true);
     return;
   }
 
-  const t=e.target.closest('[data-v48-quiz],[data-v12-choice],[data-v531-quiz-back],[data-v531-more-back],[data-v531-share],[data-v531-rankings],[data-v531-quiz-start],[data-v531-quiz-close],[data-v531-q-answer],[data-v531-quiz-next],[data-v531-result-back],[data-v531-more-start],[data-v531-more-close],[data-v531-more-choice],[data-v531-exit-confirm],[data-v531-exit-cancel]');
+  const t=e.target.closest('[data-v531-more-open],[data-v48-quiz],[data-v12-choice],[data-v531-quiz-back],[data-v531-more-back],[data-v531-share],[data-v531-rankings],[data-v531-quiz-start],[data-v531-quiz-close],[data-v531-q-answer],[data-v531-quiz-next],[data-v531-result-back],[data-v531-more-start],[data-v531-more-close],[data-v531-more-choice],[data-v531-exit-confirm],[data-v531-exit-cancel]');
   if(!t)return;
   // Controles del diseño principal anterior: no los bloqueamos.
   // Dejamos que su funcionamiento original ocurra y luego abrimos el diseño secundario debajo.
@@ -378,8 +405,8 @@ document.addEventListener('click',function(e){
     setTimeout(function(){render(true)},0);
     return;
   }
-  if(t.matches('[data-v12-choice]')){
-    more.mode='game';more.answered=false;more.exit=false;
+  if(t.matches('[data-v531-more-open],[data-v12-choice]')){
+    more.mode='hub';more.answered=false;more.exit=false;
     setTimeout(function(){render(true)},0);
     return;
   }
