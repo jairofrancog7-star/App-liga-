@@ -339,7 +339,7 @@
   <link rel="stylesheet" href="./src/v393-global-topbar-icons.css?v=20261001-v493-official-all-categories" />
   <link rel="stylesheet" href="./src/v393-statistics-gap-lock.css?v=20261001-v493-official-all-categories" />
   <link rel="stylesheet" href="./src/v394-moreless-restore.css?v=20261001-v493-official-all-categories" />
-  <link rel="stylesheet" href="./src/v531-quiz-moreless-drive-reference.css?v=20261002-v540-moreless-reference" />
+  <link rel="stylesheet" href="./src/v531-quiz-moreless-drive-reference.css?v=20261002-v541-monito-pages" />
   <link rel="stylesheet" href="./src/v396-tool-topbars-competition-reference.css?v=20261001-v493-official-all-categories" />
   <link rel="stylesheet" href="./src/v397-tool-topbar-hard-lock.css?v=20261001-v493-official-all-categories" />
   
@@ -447,6 +447,44 @@
     </nav>
   </div>
 
+  <script>
+  (function(){
+    if(window.__LJR_V541_MONITO_CAPTURE__)return;
+    window.__LJR_V541_MONITO_CAPTURE__=true;
+    function currentRoute(){
+      return String(location.hash||'').replace(/^#\/?/,'').split('?')[0]||'home';
+    }
+    function openMore(){
+      if(window.LJR_V541_GAMES_API&&typeof window.LJR_V541_GAMES_API.openMorePages==='function'){
+        window.LJR_V541_GAMES_API.openMorePages();
+        return;
+      }
+      window.__LJR_V541_PENDING_MORE__=true;
+      var tries=0;
+      var timer=setInterval(function(){
+        tries++;
+        if(window.LJR_V541_GAMES_API&&typeof window.LJR_V541_GAMES_API.openMorePages==='function'){
+          clearInterval(timer);
+          window.__LJR_V541_PENDING_MORE__=false;
+          window.LJR_V541_GAMES_API.openMorePages();
+        }else if(tries>40){
+          clearInterval(timer);
+        }
+      },50);
+    }
+    document.addEventListener('click',function(e){
+      if(currentRoute()!=='moreLess'||!(e.target instanceof Element))return;
+      var primary=e.target.closest('#screen [data-v12-moreless]');
+      if(!primary)return;
+      var avatar=e.target.closest('.v12-ml-choice > button, .v12-avatar');
+      if(!avatar||!primary.contains(avatar))return;
+      e.preventDefault();
+      e.stopPropagation();
+      e.stopImmediatePropagation();
+      openMore();
+    },true);
+  })();
+  </script>
   <script src="./src/v488-cat3-global-sync.js?v=20261001-v508-official-all-pages"></script>
   <script type="module" src="./src/main.js?v=20261001-v530-more-cleanup"></script>
   <script type="module" src="./src/runtime-fixes.js?v=20261001-v493-official-all-categories"></script>
@@ -485,7 +523,7 @@
   <script type="module" src="./src/v46-account-reference.js?v=20261001-v493-official-all-categories"></script>
   <script type="module" src="./src/v51-bottom-nav-icon-lock.js?v=20261001-v493-official-all-categories"></script>
   <script type="module" src="./src/v52-moreless-hub.js?v=20261001-v493-official-all-categories"></script>
-  <script type="module" src="./src/v531-quiz-moreless-drive-reference.js?v=20261002-v540-moreless-reference"></script>
+  <script type="module" src="./src/v531-quiz-moreless-drive-reference.js?v=20261002-v541-monito-pages"></script>
   <script type="module" src="./src/v194-scorers-filters.js?v=20261001-v508-official-all-pages"></script>
   <script type="module" src="./src/v62-official-league-data.js?v=20261001-v508-official-all-pages"></script>
   <script type="module" src="./src/v66-official-directory.js?v=20261001-v512-store-header-reload"></script>
