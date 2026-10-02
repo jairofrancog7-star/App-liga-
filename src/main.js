@@ -4890,20 +4890,6 @@ function v38StatsView(){
     '</section>'+
   '</section>';
 }
-const V561_WEEK_LIGA_LOGO='https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/assets/liga-logo.webp';
-function v561WeekLogo(name){
-  const label=String(name||'').trim();
-  return window.LJR_TEAM_LOGOS?.get?.(label)||window.V66_OFFICIAL_DIRECTORY?.logoFor?.(label)||'';
-}
-function v561WeekCatLogo(key){
-  const map={
-    primera:'https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/assets/liga-logo.webp',
-    intermedia:'https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/assets/liga-logo.webp',
-    segunda:'https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/assets/liga-logo.webp',
-    veteranos:'https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/assets/liga-logo.webp'
-  };
-  return map[key]||V561_WEEK_LIGA_LOGO;
-}
 function v38WeeklyView(){
   const rows={
     primera:[
@@ -4936,8 +4922,8 @@ function v38WeeklyView(){
     ]
   };
   const titles={primera:'Primera Fuerza',intermedia:'Intermedia',segunda:'Segunda Fuerza',veteranos:'Veteranos 50+'};
-  const group=(title,list,key)=>'<section class="v553-week-group" data-week-group="'+key+'"><div class="v553-week-title"><span class="v561-week-cat"><img src="'+v561WeekCatLogo(key)+'" alt="" loading="lazy" decoding="async"><span>'+title+'</span></span><b>'+list.length+' partido(s)</b></div><div class="v553-week-scroll"><table><thead><tr><th>Fecha</th><th>Hora</th><th>Local</th><th>vs</th><th>Visitante</th><th>Campo</th><th>Jornada</th></tr></thead><tbody>'+list.map(r=>{const home=v561WeekLogo(r[2]);const away=v561WeekLogo(r[3]);return '<tr data-week-date="'+r[0]+'"><td>'+r[0]+'</td><td>'+r[1]+'</td><td><span class="v561-week-team">'+(home?'<img src="'+home+'" alt="" loading="lazy" decoding="async">':'')+'<span>'+r[2]+'</span></span></td><td>vs</td><td><span class="v561-week-team">'+(away?'<img src="'+away+'" alt="" loading="lazy" decoding="async">':'')+'<span>'+r[3]+'</span></span></td><td>'+r[4]+'</td><td>'+r[5]+'</td></tr>'}).join('')+'</tbody></table></div></section>';
-  return '<section class="v60-tool-page v63-page v188-weekly-page v553-weekly-report v561-weekly-modern" data-v553-weekly><div class="v561-weekly-brand"><img src="'+V561_WEEK_LIGA_LOGO+'" alt="Liga Juventino Rosas"><div><small>LIGA MUNICIPAL</small><strong>Juegos de la Semana</strong><span>TORNEO DE COPA 2026</span></div></div>'+
+  const group=(title,list,key)=>'<section class="v553-week-group" data-week-group="'+key+'"><div class="v553-week-title"><span>🏆 '+title+'</span><b>'+list.length+' partido(s)</b></div><div class="v553-week-scroll"><table><thead><tr><th>Fecha</th><th>Hora</th><th>Local</th><th>vs</th><th>Visitante</th><th>Campo</th><th>Jornada</th></tr></thead><tbody>'+list.map(r=>'<tr data-week-date="'+r[0]+'">'+r.map((v,i)=>'<td>'+((i===3)?'vs':v)+'</td>').join('')+'</tr>').join('')+'</tbody></table></div></section>';
+  return '<section class="v60-tool-page v63-page v188-weekly-page v553-weekly-report" data-v553-weekly>'+
     v60Header('JUEGOS DE LA SEMANA','TORNEO DE COPA 2026','Consulta partidos por categoría, temporada y rango de fechas.')+
     '<div class="v553-week-filter">'+
       '<div class="v553-week-range" data-v553-range>Semana del 28/09/2026 al 04/10/2026</div>'+
