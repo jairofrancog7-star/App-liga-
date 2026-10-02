@@ -51,3 +51,29 @@
   .v576-discipline-photo,.v576-discipline-photo>.v576-player-avatar{width:38px;height:38px}
   .v194-player-row.v576-with-photo{grid-template-columns:27px 34px minmax(0,1fr) 65px 31px!important}
 }
+
+/* V576b — tablas genéricas, estadísticas y badges de equipo junto a la cara. */
+.v576-table-player{display:inline-flex;align-items:center;gap:7px;min-width:0}
+.v576-table-photo{
+  width:32px;height:32px;min-width:32px;display:grid;place-items:center;overflow:hidden;
+  border-radius:50%;background:#172a9d;color:#fff;font-size:8px;font-weight:950
+}
+.v576-table-photo>img{width:100%!important;height:100%!important;object-fit:cover!important;object-position:center 30%!important}
+.v576-table-player>strong{min-width:0;line-height:1.15}
+.v33-player-team-logo.v576-player-avatar{width:34px!important;height:34px!important;min-width:34px!important;border-radius:50%!important}
+.v33-inline-team-logo{display:inline-grid!important;width:15px!important;height:15px!important;vertical-align:middle;margin-right:4px}
+.v33-inline-team-logo img{width:14px!important;height:14px!important;object-fit:contain!important}
+.v391-feature-person.v576-with-photo .v576-player-avatar{width:40px;height:40px}
+.v391-feature-person.v576-with-photo b .v391-feature-logo{display:inline-grid!important;width:17px!important;height:17px!important;margin-right:4px;vertical-align:middle}
+.v391-rank-copy small .v391-rank-logo,
+.v462-rank-copy small .v462-rank-logo{display:inline-grid!important;width:15px!important;height:15px!important;margin-right:4px;vertical-align:middle}
+.v391-rank-copy small .v391-rank-logo img,
+.v462-rank-copy small .v462-rank-logo img{width:14px!important;height:14px!important;object-fit:contain!important}
+.v414-row-main[data-v414-player] .v414-avatar{border-radius:50%!important;overflow:hidden!important}
+.v414-logo-tile .v576-player-avatar>img{width:100%!important;height:100%!important;object-fit:cover!important}
+.v94-logo-wrap.v576-player-main{display:grid!important;place-items:center!important}
+.v94-logo-wrap.v576-player-main .v94-discipline-logo{width:100%!important;height:100%!important;object-fit:contain!important}
+.v66-player-avatar.v576-has-photo,.v42-avatar.v576-has-photo,.v419-player-avatar.v576-has-photo,.v446-stat-ref-avatar.v576-has-photo{border-radius:50%!important}
+@media(max-width:390px){
+  .v576-table-photo{width:28px;height:28px;min-width:28px}
+}
