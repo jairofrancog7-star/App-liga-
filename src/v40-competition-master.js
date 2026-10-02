@@ -129,12 +129,18 @@
   }
   function compact(){
     const list=isVet35()?v35CompactTeams:compactTeams;
-    return '<div class="v40-table-wrap compact">'+
-      '<div class="v40-table-head"><span></span><span></span><b>P</b><b>+/-</b><b>PTOS</b><b>FORMA</b></div>'+
-      '<div class="v40-direct">CLASIFICACIÓN ACTUAL</div><div class="v40-rule"></div>'+
-      '<div class="v40-table-body">'+list.map((t,i)=>
-        '<div class="v40-row"><span class="v40-rank">'+(i+1)+'</span><span class="v40-team">'+img(t.logo,t.name,'v40-team-logo')+'<strong>'+t.name+'</strong></span><span>'+t.p+'</span><span>'+t.gd+'</span><span>'+t.pts+'</span>'+form(t.last)+'</div>'
-      ).join('')+'</div>'+
+    return '<div class="v578-table-section">'+
+      '<div class="v578-direct">CLASIFICACIÓN ACTUAL</div><div class="v578-rule"></div>'+
+      '<div class="v578-scroll v579-compact-scroll" data-v578-scroll>'+
+        '<table class="v578-table v579-compact-table">'+
+          '<thead><tr><th class="rank"></th><th class="team"></th><th>P</th><th>+/-</th><th>PTOS</th><th>FORMA</th></tr></thead>'+
+          '<tbody>'+list.map((t,i)=>'<tr>'+
+            '<td class="rank">'+(i+1)+'</td>'+
+            '<td class="team"><span class="v578-team">'+img(t.logo,t.name,'v578-logo')+'<strong>'+t.name+'</strong></span></td>'+
+            '<td>'+t.p+'</td><td>'+t.gd+'</td><td class="pts">'+t.pts+'</td><td class="form">'+form(t.last)+'</td>'+
+          '</tr>').join('')+'</tbody>'+
+        '</table>'+
+      '</div>'+
     '</div>';
   }
   function complete(){
