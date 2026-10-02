@@ -4896,12 +4896,12 @@ function v567WeekLogo(name){
   return window.LJR_TEAM_LOGOS?.get?.(label)||window.V66_OFFICIAL_DIRECTORY?.logoFor?.(label)||'';
 }
 function v567WeekCategoryLogo(key){
-  const base='https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/';
+  const base='https://jairofrancog7-star.github.io/Liga_Futbol/';
   const map={
-    primera:base+'assets/branding/primera-fuerza-hd.png',
-    intermedia:base+'assets/categories/intermedia.webp',
-    segunda:base+'assets/categories/segunda-fuerza.webp',
-    veteranos:base+'assets/categories/veteranos-50.webp'
+    primera:base+'assets/branding/primera-fuerza-hd.png?v=20261002-v570',
+    intermedia:base+'assets/categories/intermedia.webp?v=20261002-v570',
+    segunda:base+'assets/categories/segunda-fuerza.webp?v=20261002-v570',
+    veteranos:base+'assets/categories/veteranos-50.webp?v=20261002-v570'
   };
   return map[key]||V567_WEEK_LIGA_LOGO;
 }
