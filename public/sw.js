@@ -1,4 +1,4 @@
-const CACHE='liga-juventino-v597-fantasy-multi-real-kits';
+const CACHE='liga-juventino-v598-fantasy-ultra-real-kits';
 const CORE=['./','./index.html','./manifest.webmanifest','./brand-neon-header.svg','./profile-reference.svg'];
 
 self.addEventListener('install',event=>{
