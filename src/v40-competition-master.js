@@ -186,6 +186,14 @@
       '<div class="v40-content" data-v40-content>'+modeContent(mode)+'</div>'+
     '</section>';
   }
+  function v588ScrollKey(mode){return 'v40-scroll-left-'+String(mode||activeStandingsMode||'compact')}
+  function v588RestoreScroll(root,mode){
+    const scroller=root?.querySelector?.('[data-v580-scroll]');
+    if(!scroller)return;
+    let left=0;
+    try{left=Number(sessionStorage.getItem(v588ScrollKey(mode)))||0}catch(_){}
+    requestAnimationFrame(()=>{scroller.scrollLeft=left});
+  }
   function renderMode(box,mode){
     if(!box)return;
     activeStandingsMode=['compact','complete','criteria'].includes(mode)?mode:'compact';
@@ -193,13 +201,65 @@
     box.dataset.v40CurrentMode=activeStandingsMode;
     box.querySelectorAll('[data-v40-mode]').forEach(b=>b.classList.toggle('active',b.dataset.v40Mode===activeStandingsMode));
     const content=box.querySelector('[data-v40-content]');
-    if(content) content.innerHTML=modeContent(activeStandingsMode);
+    if(content){
+      content.innerHTML=modeContent(activeStandingsMode);
+      v588RestoreScroll(content,activeStandingsMode);
+    }
   }
   function forceMode(mode){
     const box=document.querySelector('[data-v40-standings]');
     if(box) renderMode(box,mode);
   }
   window.LJR_V575_STANDINGS_MODE=forceMode;
+
+  /* V588 — arrastre horizontal real en Android.
+     Evita que la tabla vuelva al inicio al soltar el dedo y conserva la posición. */
+  const v588Drag={el:null,startX:0,startY:0,startLeft:0,horizontal:false,mode:'compact'};
+  document.addEventListener('touchstart',e=>{
+    const el=e.target instanceof Element?e.target.closest('[data-v580-scroll]'):null;
+    if(!el||!e.touches?.length)return;
+    const t=e.touches[0];
+    v588Drag.el=el;
+    v588Drag.startX=t.clientX;
+    v588Drag.startY=t.clientY;
+    v588Drag.startLeft=el.scrollLeft;
+    v588Drag.horizontal=false;
+    v588Drag.mode=el.dataset.v580Scroll||activeStandingsMode||'compact';
+  },{capture:true,passive:true});
+  document.addEventListener('touchmove',e=>{
+    const el=v588Drag.el;
+    if(!el||!e.touches?.length)return;
+    const t=e.touches[0];
+    const dx=t.clientX-v588Drag.startX;
+    const dy=t.clientY-v588Drag.startY;
+    if(!v588Drag.horizontal){
+      if(Math.abs(dx)<=6)return;
+      if(Math.abs(dx)<=Math.abs(dy))return;
+      v588Drag.horizontal=true;
+    }
+    if(v588Drag.horizontal){
+      e.preventDefault();
+      el.scrollLeft=v588Drag.startLeft-dx;
+      try{sessionStorage.setItem(v588ScrollKey(v588Drag.mode),String(el.scrollLeft))}catch(_){}
+    }
+  },{capture:true,passive:false});
+  const v588End=()=>{
+    const el=v588Drag.el;
+    if(el){
+      try{sessionStorage.setItem(v588ScrollKey(v588Drag.mode),String(el.scrollLeft))}catch(_){}
+    }
+    v588Drag.el=null;
+    v588Drag.horizontal=false;
+  };
+  document.addEventListener('touchend',v588End,true);
+  document.addEventListener('touchcancel',v588End,true);
+  document.addEventListener('scroll',e=>{
+    const el=e.target instanceof Element?e.target.closest?.('[data-v580-scroll]'):null;
+    if(!el)return;
+    const mode=el.dataset.v580Scroll||activeStandingsMode||'compact';
+    try{sessionStorage.setItem(v588ScrollKey(mode),String(el.scrollLeft))}catch(_){}
+  },true);
+
   function patch(){
     const screen=document.querySelector('#screen');
     if(!screen) return;
@@ -220,6 +280,7 @@
     }else if(!screen.querySelector('[data-v40-host]')){
       tabs.insertAdjacentHTML('afterend','<div class="v40-standings-host" data-v40-host>'+standings()+'</div>');
     }
+    v588RestoreScroll(screen,activeStandingsMode);
   }
   /* V575 hardfix: intercepta el toque desde window antes que cualquier parche
      legado y conserva la vista elegida aunque otro observer vuelva a ejecutar patch(). */
