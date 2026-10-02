@@ -419,3 +419,37 @@ body[data-app-route="video"] .v428-tv-section .v428-tv-row:has(.v443-tv-portrait
     text-align:left!important;
   }
 }
+
+
+/* V551 — Video: centrar de verdad el texto y el botón azul dentro de la cabecera. */
+@media(max-width:600px){
+  body[data-app-route="video"] .v439-streamcenter-card{
+    width:100%!important;
+    display:grid!important;
+    grid-template-columns:minmax(0,1fr) minmax(142px,190px)!important;
+    align-items:center!important;
+    gap:12px!important;
+    padding-left:20px!important;
+    padding-right:20px!important;
+    box-sizing:border-box!important;
+  }
+  body[data-app-route="video"] .v439-streamcenter-card>div:first-child{
+    padding:0!important;
+    margin:0!important;
+    min-width:0!important;
+  }
+  body[data-app-route="video"] .v439-streamcenter-card .eyebrow,
+  body[data-app-route="video"] .v439-streamcenter-card h2,
+  body[data-app-route="video"] .v439-streamcenter-card p{
+    margin-left:0!important;
+    padding-left:0!important;
+    text-align:left!important;
+  }
+  body[data-app-route="video"] .v439-streamcenter-card .v439-connect-trigger{
+    width:100%!important;
+    max-width:190px!important;
+    justify-self:center!important;
+    margin:0!important;
+    text-align:center!important;
+  }
+}
