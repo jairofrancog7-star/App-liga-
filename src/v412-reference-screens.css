@@ -3342,3 +3342,15 @@ body[data-app-route="profile"] [data-v12-profile-lower-slot] .v412-sharefriend{
 body[data-app-route="profile"] [data-v12-profile-lower-slot] .v412-sharefriend::before{
   content:"Cuéntale a un amigo"!important;
 }
+
+
+/* V539 — Perfil: ocultar cualquier fila duplicada antigua que aún aparezca fuera de CONFIGURACIÓN. */
+body[data-app-route="profile"] #screen > [data-v412-screen="account"]{
+  display:none!important;
+}
+body[data-app-route="profile"] [data-v12-profile-lower-slot] > [data-v412-screen="account"]{
+  display:block!important;
+}
+body[data-app-route="profile"] .v12-profile-page > .v12-profile-menu ~ [data-v412-screen="account"]{
+  display:none!important;
+}
