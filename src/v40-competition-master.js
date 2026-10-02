@@ -134,7 +134,7 @@
         '<table class="v578-table v579-compact-table">'+
           '<thead><tr><th class="rank"></th><th class="logo"></th><th class="teamname"></th><th>P</th><th>+/-</th><th>PTOS</th><th>FORMA</th></tr></thead>'+
           '<tbody>'+
-            '<tr class="v580-section-row"><td colspan="7"><div class="v578-direct">CLASIFICACIÓN ACTUAL</div><div class="v578-rule"></div></td></tr>'+
+            '<tr class="v580-section-row"><td colspan="7"><div class="v578-direct">DIRECTOS A OCTAVOS</div><div class="v578-rule"></div></td></tr>'+
             list.map((t,i)=>'<tr><td class="rank">'+(i+1)+'</td><td class="logo">'+img(t.logo,t.name,'v578-logo')+'</td><td class="teamname"><strong>'+t.name+'</strong></td><td>'+t.p+'</td><td>'+t.gd+'</td><td class="pts">'+t.pts+'</td><td class="formcell">'+form(t.last)+'</td></tr>').join('')+
           '</tbody>'+
         '</table>'+
