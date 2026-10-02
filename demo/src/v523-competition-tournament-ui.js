@@ -172,12 +172,18 @@ function openJourneys(){
     sheet('Calendario completo',['<div class="v566-empty">No hay jornadas oficiales publicadas para esta categoría.</div>']);
     return;
   }
-  sheet('Calendario completo',buttons.map((b,i)=>{
+  const seen=new Set(),items=[];
+  buttons.forEach((b,i)=>{
     const top=(b.querySelector('span')?.textContent||'').trim();
     const small=(b.querySelector('small')?.textContent||('Jornada '+(i+1))).trim();
-    return '<button type="button" class="v566-option '+(b.classList.contains('active')?'active':'')+'" data-v566-journey="'+esc(b.dataset.v12Date||'')+'">'+
-      '<span><b>'+esc(small)+'</b><small>'+esc(top)+'</small></span><i></i></button>';
-  }));
+    const key=b.dataset.v12Date||'';
+    const uniq=[key,top,small].join('|');
+    if(seen.has(uniq))return;
+    seen.add(uniq);
+    items.push('<button type="button" class="v566-option '+(b.classList.contains('active')?'active':'')+'" data-v566-journey="'+esc(key)+'">'+
+      '<span><b>'+esc(small)+'</b><small>'+esc(top)+'</small></span><i></i></button>');
+  });
+  sheet('Calendario completo',items);
 }
 function openCategories(){
   const current=catId();
