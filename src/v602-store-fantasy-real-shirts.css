@@ -1,0 +1,191 @@
+/* V602 — Apply the same realistic Fantasy jersey treatment to Más > Tienda de equipos.
+   Real raster cloth base, per-variant colors/patterns, and crest integrated into the fabric. */
+
+body[data-app-route="club-store"] .v602-store-real-shirt{
+  position:relative!important;
+  display:block!important;
+  overflow:visible!important;
+  background:none!important;
+  clip-path:none!important;
+  border:0!important;
+  outline:0!important;
+  box-shadow:none!important;
+  isolation:isolate!important;
+}
+
+/* Real photographed shirt is the base, so sleeves/folds/volume are not a flat drawing. */
+body[data-app-route="club-store"] .v602-shirt-base{
+  position:absolute!important;
+  inset:0!important;
+  z-index:1!important;
+  display:block!important;
+  background:
+    url("../assets/fantasy-jersey-real-3d.png?v=20261002-v602")
+    center center/contain no-repeat!important;
+  filter:grayscale(1) contrast(1.14) brightness(1.04)!important;
+  pointer-events:none!important;
+}
+
+/* Recolour the photographic cloth while preserving its real highlights and creases. */
+body[data-app-route="club-store"] .v602-shirt-tint{
+  position:absolute!important;
+  inset:0!important;
+  z-index:2!important;
+  display:block!important;
+  background:
+    linear-gradient(100deg,
+      color-mix(in srgb,var(--v602-a) 76%,white 24%) 0%,
+      var(--v602-a) 24%,
+      var(--v602-b) 57%,
+      color-mix(in srgb,var(--v602-c) 82%,black 18%) 100%)!important;
+  opacity:.90!important;
+  mix-blend-mode:multiply!important;
+  -webkit-mask:url("../assets/fantasy-jersey-real-3d.png?v=20261002-v602") center/contain no-repeat!important;
+  mask:url("../assets/fantasy-jersey-real-3d.png?v=20261002-v602") center/contain no-repeat!important;
+  pointer-events:none!important;
+}
+
+/* Fabric/specular pass to make the shirt read as physical cloth. */
+body[data-app-route="club-store"] .v602-shirt-light{
+  position:absolute!important;
+  inset:0!important;
+  z-index:4!important;
+  display:block!important;
+  background:
+    radial-gradient(ellipse at 43% 15%,rgba(255,255,255,.42) 0 7%,transparent 22%),
+    radial-gradient(ellipse at 26% 38%,rgba(255,255,255,.19) 0 7%,transparent 28%),
+    radial-gradient(ellipse at 74% 42%,rgba(0,0,0,.14) 0 10%,transparent 32%),
+    linear-gradient(91deg,rgba(255,255,255,.23),transparent 21% 72%,rgba(0,0,0,.24)),
+    repeating-linear-gradient(90deg,rgba(255,255,255,.035) 0 1px,transparent 1px 4px)!important;
+  mix-blend-mode:soft-light!important;
+  -webkit-mask:url("../assets/fantasy-jersey-real-3d.png?v=20261002-v602") center/contain no-repeat!important;
+  mask:url("../assets/fantasy-jersey-real-3d.png?v=20261002-v602") center/contain no-repeat!important;
+  pointer-events:none!important;
+}
+
+/* Pattern is also masked to the real shirt so it looks printed into the fabric. */
+body[data-app-route="club-store"] .v602-shirt-pattern{
+  position:absolute!important;
+  inset:0!important;
+  z-index:3!important;
+  display:block!important;
+  mix-blend-mode:multiply!important;
+  -webkit-mask:url("../assets/fantasy-jersey-real-3d.png?v=20261002-v602") center/contain no-repeat!important;
+  mask:url("../assets/fantasy-jersey-real-3d.png?v=20261002-v602") center/contain no-repeat!important;
+  pointer-events:none!important;
+}
+body[data-app-route="club-store"] .v602-store-real-shirt.plain .v602-shirt-pattern{
+  opacity:.34!important;
+  background:linear-gradient(105deg,transparent 0 28%,rgba(255,255,255,.19) 40%,transparent 52% 100%)!important;
+}
+body[data-app-route="club-store"] .v602-store-real-shirt.bands .v602-shirt-pattern{
+  opacity:.56!important;
+  background:
+    linear-gradient(180deg,
+      transparent 0 31%,
+      var(--v602-edge) 31% 38%,
+      transparent 38% 54%,
+      var(--v602-edge) 54% 61%,
+      transparent 61% 100%)!important;
+}
+body[data-app-route="club-store"] .v602-store-real-shirt.diag .v602-shirt-pattern{
+  opacity:.68!important;
+  background:
+    linear-gradient(132deg,
+      transparent 0 34%,
+      var(--v602-edge) 34% 46%,
+      transparent 46% 100%)!important;
+}
+body[data-app-route="club-store"] .v602-store-real-shirt.shoulders .v602-shirt-pattern{
+  opacity:.72!important;
+  background:
+    linear-gradient(180deg,var(--v602-edge) 0 21%,transparent 21% 100%)!important;
+}
+body[data-app-route="club-store"] .v602-store-real-shirt.stripes .v602-shirt-pattern{
+  opacity:.70!important;
+  background:
+    repeating-linear-gradient(90deg,
+      transparent 0 12%,
+      var(--v602-edge) 12% 20%,
+      transparent 20% 32%)!important;
+}
+
+/* Crest directly on the chest: no white/circular backing, visually printed/embroidered in cloth. */
+body[data-app-route="club-store"] .v602-shirt-logo{
+  position:absolute!important;
+  z-index:6!important;
+  left:53%!important;
+  top:30%!important;
+  width:14%!important;
+  height:14%!important;
+  max-width:none!important;
+  max-height:none!important;
+  transform:translate(-50%,-50%) rotate(-1deg)!important;
+  object-fit:contain!important;
+  background:transparent!important;
+  border:0!important;
+  outline:0!important;
+  border-radius:0!important;
+  box-shadow:none!important;
+  mix-blend-mode:multiply!important;
+  opacity:.96!important;
+  filter:
+    saturate(1.18)
+    contrast(1.08)
+    drop-shadow(0 .7px .45px rgba(0,0,0,.22))!important;
+  pointer-events:none!important;
+}
+
+/* Personalised name/number stay printed on the same physical shirt. */
+body[data-app-route="club-store"] .v602-shirt-name,
+body[data-app-route="club-store"] .v602-shirt-number,
+body[data-app-route="club-store"] .v602-shirt-label{
+  position:absolute!important;
+  z-index:7!important;
+  left:50%!important;
+  transform:translateX(-50%)!important;
+  width:58%!important;
+  text-align:center!important;
+  color:var(--v602-ink)!important;
+  font-family:Arial,sans-serif!important;
+  font-weight:800!important;
+  line-height:1!important;
+  white-space:nowrap!important;
+  overflow:hidden!important;
+  text-overflow:ellipsis!important;
+  text-shadow:0 1px 1px rgba(0,0,0,.18)!important;
+  mix-blend-mode:multiply!important;
+  pointer-events:none!important;
+}
+body[data-app-route="club-store"] .v602-shirt-name{top:44%!important;font-size:6.5%!important;letter-spacing:.08em!important}
+body[data-app-route="club-store"] .v602-shirt-number{top:51%!important;font-size:24%!important}
+body[data-app-route="club-store"] .v602-shirt-label{top:80%!important;font-size:5.5%!important;letter-spacing:.06em!important}
+
+/* Preserve the store's existing 3D tilt but add realistic depth around the physical shirt. */
+body[data-app-route="club-store"] .v602-store-real-shirt{
+  filter:
+    drop-shadow(0 5px 3px rgba(4,14,50,.15))
+    drop-shadow(0 14px 13px rgba(4,14,50,.22))!important;
+}
+body[data-app-route="club-store"] .v602-store-real-shirt.pressed3d{
+  filter:
+    brightness(1.025)
+    saturate(1.04)
+    drop-shadow(0 6px 4px rgba(4,14,50,.16))
+    drop-shadow(0 17px 15px rgba(4,14,50,.26))!important;
+}
+
+/* Do not reserve WebGL/SVG layers: V602 is the final shirt surface in Store. */
+body[data-app-route="club-store"] .v602-store-real-shirt .v443-3d-render,
+body[data-app-route="club-store"] .v602-store-real-shirt .v441-jersey-svg,
+body[data-app-route="club-store"] .v602-store-real-shirt .v444-3d-canvas{
+  display:none!important;
+}
+
+/* Keep product tiles compact while making the shirts visually richer. */
+body[data-app-route="club-store"] .v431-product-art .v602-store-real-shirt,
+body[data-app-route="club-store"] .v436-product-art .v602-store-real-shirt{
+  filter:
+    drop-shadow(0 4px 3px rgba(4,14,50,.15))
+    drop-shadow(0 10px 9px rgba(4,14,50,.20))!important;
+}
