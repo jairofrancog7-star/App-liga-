@@ -1,11 +1,11 @@
-/* V606 — MOTOR FACIAL DE CREDENCIALES SOLO EN CÍRCULOS.
+/* V607 — MOTOR FACIAL DE CREDENCIALES SOLO EN CÍRCULOS.
    Conserva FaceDetector + MediaPipe + faceCrop de credenciales,
    pero únicamente actúa cuando el contenedor de la foto YA es circular.
    Fotos cuadradas o rectangulares se dejan completamente intactas. */
 (function(){
 'use strict';
-if(window.__LJR_V606_CREDENTIAL_FACE_CIRCLES_ONLY__)return;
-window.__LJR_V606_CREDENTIAL_FACE_CIRCLES_ONLY__=true;
+if(window.__LJR_V607_CREDENTIAL_FACE_CIRCLES_ONLY__)return;
+window.__LJR_V607_CREDENTIAL_FACE_CIRCLES_ONLY__=true;
 
 const FACE_IMAGES=[
   '.v576-player-photo',
@@ -116,7 +116,7 @@ async function mediaPipeFaceDetector(){
       minSuppressionThreshold:.30
     });
   })().catch(err=>{
-    console.warn('[V606 circle face detector]',err);
+    console.warn('[V607 circle face detector]',err);
     return null;
   });
   return mediaPipeFacePromise;
@@ -145,7 +145,7 @@ async function mediaPipeFaceProfile(img){
     });
     return pickFace(profiles,iw,ih);
   }catch(err){
-    console.warn('[V606 circle face detection]',err);
+    console.warn('[V607 circle face detection]',err);
     return null;
   }
 }
@@ -176,27 +176,48 @@ function faceCrop(img,destW,destH,profile){
 
   if(profile?.box&&profile.box.width>8&&profile.box.height>8){
     const b=profile.box;
-    const side=Math.max(b.width*2.12,b.height*2.03);
+
+    /* V607: más alejado que la credencial.
+       En un círculo las esquinas de la foto quedan ocultas, por eso damos
+       bastante más aire alrededor del detector facial. Así caben cabello,
+       frente, orejas, boca y mentón completos. */
+    const side=Math.max(b.width*2.85,b.height*2.70);
     sw=Math.min(iw,side);
     sh=sw/aspect;
     if(sh>ih){sh=ih;sw=sh*aspect}
     if(sw>iw){sw=iw;sh=sw/aspect}
 
     const anchorX=profile.eyes?.x ?? (b.x+b.width*.50);
-    const anchorY=profile.eyes?.y ?? (b.y+b.height*.39);
+    const anchorY=profile.eyes?.y ?? (b.y+b.height*.38);
 
+    /* Ojos aproximadamente al 38% de la altura: deja más espacio abajo
+       que antes para que nunca desaparezcan boca o mentón. */
     sx=anchorX-sw*.50;
-    sy=anchorY-sh*.40;
+    sy=anchorY-sh*.38;
 
-    const desiredTop=b.y-b.height*.34;
-    if(sy>desiredTop)sy=desiredTop;
+    /* Seguridad de cabeza completa: obliga a incluir margen por encima del
+       detector y también bastante margen por debajo del mentón. */
+    const wantedLeft=b.x-b.width*.55;
+    const wantedRight=b.x+b.width*1.55;
+    const wantedTop=b.y-b.height*.62;
+    const wantedBottom=b.y+b.height*1.48;
+
+    const minSx=wantedRight-sw;
+    const maxSx=wantedLeft;
+    if(minSx<=maxSx)sx=Math.max(minSx,Math.min(maxSx,sx));
+
+    const minSy=wantedBottom-sh;
+    const maxSy=wantedTop;
+    if(minSy<=maxSy)sy=Math.max(minSy,Math.min(maxSy,sy));
   }else{
+    /* Sin detector NO hacemos un recorte agresivo. Este bloque solo queda
+       como respaldo matemático; la vista V607 usa object-fit:contain hasta
+       que exista una detección facial real. */
     if(iw/ih>aspect){
       sh=ih;sw=sh*aspect;sx=(iw-sw)/2;sy=0;
     }else{
       sw=iw;sh=sw/aspect;sx=0;
-      const spare=Math.max(0,ih-sh);
-      sy=spare*(ih>iw*1.08?.15:.45);
+      sy=Math.max(0,(ih-sh)/2);
     }
   }
 
@@ -249,10 +270,27 @@ function visualCircleFrame(img){
   }
   return parentCircle||imageCircle;
 }
+function cssImageUrl(src){
+  return 'url("'+String(src||'').replace(/["\\]/g,'\\function clearFaceCrop(img){')+'")';
+}
+function prepareCircleFallback(img){
+  const p=img?.parentElement;
+  if(!p)return false;
+  p.classList.add('ljr-face-circle-v606');
+  const src=img.currentSrc||img.src||'';
+  if(src)p.style.setProperty('--ljr-circle-face-bg',cssImageUrl(src));
+  delete img.dataset.ljrCredentialFaceCrop;
+  delete img.dataset.ljrFaceDetector;
+  for(const prop of ['--ljr-face-width','--ljr-face-height','--ljr-face-left','--ljr-face-top']){
+    img.style.removeProperty(prop);
+  }
+  return true;
+}
 function clearFaceCrop(img){
   if(!(img instanceof HTMLImageElement))return;
   const p=img.parentElement;
   p?.classList.remove('ljr-face-circle-v606');
+  p?.style.removeProperty('--ljr-circle-face-bg');
   delete img.dataset.ljrCredentialFaceCrop;
   delete img.dataset.ljrFaceDetector;
   for(const prop of ['--ljr-face-width','--ljr-face-height','--ljr-face-left','--ljr-face-top']){
@@ -280,7 +318,8 @@ function applyCrop(img,profile){
     return false;
   }
 
-  parent.classList.add('ljr-face-circle-v606');
+  prepareCircleFallback(img);
+  if(!profile?.box)return false;
 
   const {w:dw,h:dh}=frameSize(img);
   const c=faceCrop(img,dw,dh,profile);
@@ -320,7 +359,7 @@ async function process(img){
     return;
   }
 
-  applyCrop(img,null);
+  prepareCircleFallback(img);
   const profile=await playerFaceProfile(img);
   if(profile)applyCrop(img,profile);
 }
@@ -334,7 +373,7 @@ async function pump(){
   while(queue.length){
     const img=queue.shift();
     queued.delete(img);
-    try{await process(img)}catch(err){console.warn('[V606 circle face crop]',err)}
+    try{await process(img)}catch(err){console.warn('[V607 circle face crop]',err)}
     await new Promise(r=>setTimeout(r,0));
   }
   running=false;
@@ -387,7 +426,7 @@ setTimeout(()=>scan(document),500);
 setTimeout(()=>scan(document),1800);
 
 window.LJR_FACE_FRAME={
-  engine:'credential-v494-v495-circles-only',
+  engine:'credential-v494-v495-circles-only-v607-full-face',
   scan:()=>scan(document),
   faceCrop,
   profile:playerFaceProfile,
