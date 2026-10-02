@@ -2562,3 +2562,13 @@ body[data-app-route="search"] .v414-category-badge img{
     display:none!important;
   }
 }
+
+
+/* V525 — Cuenta/Perfil: quitar el diseño superior de “SÍGUENOS” y dejar solo el contenido limpio. */
+body[data-app-route="profile"] .v412-social-title,
+body[data-app-route="profile"] .v412-socials{
+  display:none!important;
+}
+body[data-app-route="profile"] .v412-sharefriend{
+  margin-top:18px!important;
+}
