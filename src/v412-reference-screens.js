@@ -170,7 +170,21 @@ function mountFavorites(screen,force=false){if(!force&&screen.querySelector('[da
 
 /* Cuenta / Más */
 function accountMarkup(){return '<section class="v412-shell v412-account" data-v412-screen="account"><div class="v412-account-hello"><h2>¡Hola!</h2><p>Bienvenido a la Liga Municipal de Fútbol Juventino Rosas</p></div><div class="v412-auth"><button class="v412-login" data-v412-go="profile">Iniciar sesión</button><button class="v412-join" data-v412-go="profile">Únete ahora</button></div><div class="v412-menu"><button data-v412-go="more"><span>Ajustes</span><span>›</span></button><button data-v412-go="rulebook"><span>Ayuda e información</span><span>›</span></button></div><div class="v412-social-title">SÍGUENOS</div><div class="v412-socials"><button class="v412-social fb" data-v412-facebook aria-label="Facebook">f</button></div><button class="v412-sharefriend" data-v412-share>Cuéntale a un amigo <span>›</span></button><div class="v412-account-foot">Liga Municipal de Fútbol Juventino Rosas A.C.<br>Contenido oficial y herramientas de la Liga.<br><br>Versión V412</div></section>'}
-function mountAccount(screen){if(screen.querySelector('[data-v412-screen="account"]'))return;const template=document.createElement('template');template.innerHTML=accountMarkup();template.content.querySelector('.v412-account-hello')?.remove();template.content.querySelector('.v412-auth')?.remove();screen.append(template.content);bindCommon(screen.querySelector('[data-v412-screen="account"]'))}
+function mountAccount(screen){
+  if(screen.querySelector('[data-v412-screen="account"]'))return;
+  const template=document.createElement('template');
+  template.innerHTML=accountMarkup();
+  template.content.querySelector('.v412-account-hello')?.remove();
+  template.content.querySelector('.v412-auth')?.remove();
+  const account=template.content.querySelector('[data-v412-screen="account"]');
+  const slot=screen.querySelector('[data-v12-profile-lower-slot]');
+  if(slot){
+    slot.append(account);
+  }else{
+    screen.append(template.content);
+  }
+  bindCommon(account);
+}
 
 /* Search — referencia exacta adaptada a la Liga, conservando el azul */
 function playerStats(p){
