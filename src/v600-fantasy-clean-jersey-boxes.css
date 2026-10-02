@@ -1,0 +1,83 @@
+/* V600 — remove the unwanted image boxes/broken-image glyphs around Fantasy jerseys.
+   Only the shirt itself, team crest, labels and remove button remain visible. */
+
+html body.v587-fantasy-team-open .v576-shirt,
+html body.v587-fantasy-team-open .v576-shirt.chosen,
+html body.v587-fantasy-team-open .v590-kit-wrap,
+html body.v587-fantasy-team-open .v597-real-kit{
+  border:0!important;
+  outline:0!important;
+  box-shadow:none!important;
+  background:none!important;
+}
+
+html body.v587-fantasy-team-open .v597-shirt-photo{
+  display:none!important;
+  visibility:hidden!important;
+  width:0!important;
+  height:0!important;
+}
+
+/* Use the real jersey photo as a CSS layer instead of an <img>, so the browser
+   can never show the little broken-photo icon or its rectangular image box. */
+html body.v587-fantasy-team-open .v600-shirt-base{
+  position:absolute!important;
+  inset:0!important;
+  z-index:1!important;
+  display:block!important;
+  width:100%!important;
+  height:100%!important;
+  border:0!important;
+  outline:0!important;
+  box-shadow:none!important;
+  background:
+    url("../assets/fantasy-jersey-real-3d.png?v=20261002-v600")
+    center center / contain no-repeat!important;
+  pointer-events:none!important;
+}
+
+html body.v587-fantasy-team-open .v597-shirt-tint{
+  z-index:2!important;
+}
+html body.v587-fantasy-team-open .v597-shirt-pattern{
+  z-index:5!important;
+}
+html body.v587-fantasy-team-open .v597-logo-patch{
+  z-index:7!important;
+}
+html body.v587-fantasy-team-open .v597-team-logo{
+  z-index:8!important;
+}
+
+/* Ensure no child layer draws a rectangular frame around the shirt. */
+html body.v587-fantasy-team-open .v597-real-kit,
+html body.v587-fantasy-team-open .v597-real-kit > span,
+html body.v587-fantasy-team-open .v597-real-kit > img{
+  border:0!important;
+  outline:0!important;
+  box-shadow:none!important;
+}
+
+/* Keep the intended 3D depth on the shirt only. */
+html body.v587-fantasy-team-open .v597-real-kit{
+  filter:
+    drop-shadow(0 4px 2px rgba(0,28,40,.18))
+    drop-shadow(0 10px 9px rgba(0,31,43,.30))!important;
+}
+html body.v587-fantasy-team-open .v576-slot.empty .v597-real-kit{
+  filter:
+    grayscale(.12)
+    saturate(.62)
+    brightness(.72)
+    drop-shadow(0 6px 5px rgba(0,40,52,.18))!important;
+}
+
+/* Also remove any accidental image-box styling inherited from older Fantasy versions. */
+html body.v587-fantasy-team-open .v576-slot{
+  border:0!important;
+  outline:0!important;
+  box-shadow:none!important;
+}
+html body.v587-fantasy-team-open .v576-slot:not(:focus-visible){
+  outline:none!important;
+}
