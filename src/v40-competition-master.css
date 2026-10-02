@@ -1875,3 +1875,151 @@ body.v40-standings-master .v578-table .v40-form b::after{
   }
   body.v40-standings-master .v578-team strong{font-size:12px!important}
 }
+
+
+/* V579 — las 3 tablas usan el mismo diseño y scroll horizontal natural.
+   Sin columnas sticky para que ningún dato tape otro al deslizar. */
+body.v40-standings-master .v578-scroll{
+  position:relative!important;
+  width:100%!important;
+  max-width:100%!important;
+  overflow-x:auto!important;
+  overflow-y:hidden!important;
+  -webkit-overflow-scrolling:touch!important;
+  touch-action:pan-x pan-y!important;
+  overscroll-behavior-x:contain!important;
+  padding-bottom:6px!important;
+  box-sizing:border-box!important;
+}
+body.v40-standings-master .v578-table{
+  table-layout:fixed!important;
+  border-collapse:separate!important;
+  border-spacing:0!important;
+  max-width:none!important;
+}
+body.v40-standings-master .v578-table th.rank,
+body.v40-standings-master .v578-table td.rank,
+body.v40-standings-master .v578-table th.team,
+body.v40-standings-master .v578-table td.team{
+  position:static!important;
+  left:auto!important;
+  right:auto!important;
+  z-index:auto!important;
+  box-shadow:none!important;
+  background:#05065f!important;
+}
+body.v40-standings-master .v578-table th.rank,
+body.v40-standings-master .v578-table td.rank{
+  width:34px!important;
+  min-width:34px!important;
+  max-width:34px!important;
+}
+body.v40-standings-master .v578-table th.team,
+body.v40-standings-master .v578-table td.team{
+  width:190px!important;
+  min-width:190px!important;
+  max-width:190px!important;
+  text-align:left!important;
+}
+body.v40-standings-master .v579-compact-table{
+  width:610px!important;
+  min-width:610px!important;
+}
+body.v40-standings-master .v579-compact-table th:nth-child(3),
+body.v40-standings-master .v579-compact-table td:nth-child(3){width:54px!important}
+body.v40-standings-master .v579-compact-table th:nth-child(4),
+body.v40-standings-master .v579-compact-table td:nth-child(4){width:64px!important}
+body.v40-standings-master .v579-compact-table th:nth-child(5),
+body.v40-standings-master .v579-compact-table td:nth-child(5){width:64px!important}
+body.v40-standings-master .v579-compact-table th:nth-child(6),
+body.v40-standings-master .v579-compact-table td:nth-child(6){width:150px!important}
+
+body.v40-standings-master .v578-complete-table{
+  width:920px!important;
+  min-width:920px!important;
+}
+body.v40-standings-master .v578-criteria-table{
+  width:790px!important;
+  min-width:790px!important;
+}
+
+body.v40-standings-master .v578-table thead th{
+  height:40px!important;
+  padding:0 5px!important;
+  color:#cfd0dc!important;
+  background:#05065f!important;
+  font-size:10px!important;
+  font-weight:700!important;
+  white-space:nowrap!important;
+}
+body.v40-standings-master .v578-table tbody td{
+  height:58px!important;
+  padding:0 5px!important;
+  background:#05065f!important;
+  border-bottom:1px solid rgba(255,255,255,.10)!important;
+  white-space:nowrap!important;
+  overflow:hidden!important;
+  text-overflow:ellipsis!important;
+}
+body.v40-standings-master .v578-table td.team{
+  overflow:visible!important;
+}
+body.v40-standings-master .v578-team{
+  display:grid!important;
+  grid-template-columns:31px minmax(0,1fr)!important;
+  gap:8px!important;
+  align-items:center!important;
+  min-width:0!important;
+}
+body.v40-standings-master .v578-team strong{
+  display:block!important;
+  min-width:0!important;
+  overflow:hidden!important;
+  text-overflow:ellipsis!important;
+  white-space:nowrap!important;
+}
+body.v40-standings-master .v578-logo{
+  width:29px!important;
+  height:29px!important;
+  min-width:29px!important;
+  max-width:29px!important;
+  object-fit:contain!important;
+}
+
+@media(max-width:520px){
+  body.v40-standings-master .v578-scroll{
+    width:100%!important;
+    max-width:100%!important;
+    margin:0!important;
+  }
+  body.v40-standings-master .v578-table th.team,
+  body.v40-standings-master .v578-table td.team{
+    width:168px!important;
+    min-width:168px!important;
+    max-width:168px!important;
+  }
+  body.v40-standings-master .v579-compact-table{
+    width:575px!important;
+    min-width:575px!important;
+  }
+  body.v40-standings-master .v578-complete-table{
+    width:875px!important;
+    min-width:875px!important;
+  }
+  body.v40-standings-master .v578-criteria-table{
+    width:750px!important;
+    min-width:750px!important;
+  }
+}
+
+/* Scroll visible pero discreto para indicar que la tabla se puede mover. */
+body.v40-standings-master .v578-scroll::-webkit-scrollbar{
+  height:4px!important;
+}
+body.v40-standings-master .v578-scroll::-webkit-scrollbar-thumb{
+  background:rgba(255,255,255,.32)!important;
+  border-radius:999px!important;
+}
+body.v40-standings-master .v578-scroll::-webkit-scrollbar-track{
+  background:rgba(255,255,255,.07)!important;
+}
