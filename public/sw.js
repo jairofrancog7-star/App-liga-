@@ -1,4 +1,4 @@
-const CACHE='liga-juventino-v573-competition-browser-extras';
+const CACHE='liga-juventino-v573-inline-account-profile';
 const CORE=['./','./index.html','./manifest.webmanifest','./brand-neon-header.svg','./profile-reference.svg'];
 
 self.addEventListener('install',event=>{
