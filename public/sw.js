@@ -1,4 +1,4 @@
-const CACHE='liga-juventino-v577-fantasy-flicker-fix';
+const CACHE='liga-juventino-v577-player-thumbnails-compare';
 const CORE=['./','./index.html','./manifest.webmanifest','./brand-neon-header.svg','./profile-reference.svg'];
 
 self.addEventListener('install',event=>{
