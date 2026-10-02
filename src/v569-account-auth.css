@@ -362,3 +362,13 @@ body[data-app-route="profile"] .v569-link{
   body[data-app-route="profile"] .v569-inline{grid-template-columns:minmax(0,1fr) 82px!important}
   body[data-app-route="profile"] .v569-inline>button{min-width:82px!important;padding:0 6px!important}
 }
+
+
+/* V576_SINGLE_BACK_ARROW — en Perfil se conserva únicamente la flecha de la barra superior. */
+body[data-app-route="profile"] .v569-inline-back{
+  display:none!important;
+}
+body[data-app-route="profile"] .v569-inline-head{
+  grid-template-columns:minmax(0,1fr)!important;
+  gap:0!important;
+}
