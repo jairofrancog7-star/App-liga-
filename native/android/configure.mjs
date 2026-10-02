@@ -6,4 +6,7 @@ for(const name of ['MainActivity.java','LigaPiPPlugin.java']) fs.copyFileSync(pa
 const manifest='android/app/src/main/AndroidManifest.xml';
 let xml=fs.readFileSync(manifest,'utf8');
 xml=xml.replace(/<activity\b[^>]*android:name="\.MainActivity"[^>]*>/,tag=>tag.includes('android:supportsPictureInPicture')?tag:tag.replace('<activity','<activity android:supportsPictureInPicture="true" android:resizeableActivity="true"'));
+for(const permission of ['CAMERA','RECORD_AUDIO','MODIFY_AUDIO_SETTINGS']){
+ if(!xml.includes('android.permission.'+permission))xml=xml.replace('</manifest>','    <uses-permission android:name="android.permission.'+permission+'" />\n</manifest>');
+}
 fs.writeFileSync(manifest,xml);
