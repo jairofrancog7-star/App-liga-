@@ -1,0 +1,11 @@
+/* V563 — fotos reales guardadas por registro. */
+.v124-avatar{overflow:hidden}
+.v124-avatar.has-photo{background:#07105d!important;color:transparent!important}
+.v124-avatar.has-photo img{width:100%;height:100%;display:block;object-fit:cover;object-position:center 35%}
+.v563-photo-note{display:block;margin-top:6px;color:#93a7d8;font-size:9px;line-height:1.35}
+.v562-app-badge{display:flex;align-items:center;gap:12px;padding:13px;border:1px solid rgba(65,223,236,.25);border-radius:15px;background:#0b106b}
+.v562-app-badge>span{width:48px;height:48px;display:grid;place-items:center;border-radius:14px;background:#1734a3;font-size:24px}
+.v562-app-badge b{display:block;font-size:14px}.v562-app-badge small{display:block;margin-top:4px;color:#a7b4db;font-size:9px}
+body[data-app-route="ligaControl"] #screen,
+body[data-app-route="appInstall"] #screen,
+body[data-app-route="adminFut"] #screen{background:#06065f!important}
