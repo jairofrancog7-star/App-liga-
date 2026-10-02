@@ -565,6 +565,10 @@ function share(){
 function v546RenderGallery(){
   if(route()!=='moreLessGallery')return;
   const screen=document.querySelector('#screen');if(!screen)return;
+  if(screen.querySelector('[data-v546-gallery]')){
+    setGamesNav();
+    return;
+  }
   const data=db||window.LJR_OFFICIAL_DATA||{};
   v538ClearTimers();
   more.mode='hub';
