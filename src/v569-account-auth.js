@@ -315,7 +315,7 @@ function profileRegisterMarkup(){
       '<label class="v569-check"><input type="checkbox" data-v569-bio checked><i></i><span><b>Registrar huella / biometría</b><small>En la APK Android usa la seguridad biométrica disponible en el teléfono.</small></span></label>'+'<label class="v569-check v577-remember-device"><input type="checkbox" data-v569-remember-device checked><i></i><span><b>Recordar este dispositivo</b><small>Vincula esta instalación con tu perfil para reconocerla en próximos accesos.</small></span></label>'+
       '<label class="v569-check"><input type="checkbox" data-v569-terms checked><i></i><span><b>Guardar esta cuenta en este dispositivo</b><small>Tu contraseña se protege con derivación criptográfica; la app no guarda tu huella.</small></span></label>'+
     '</div>'+
-    '<button class="v569-primary v575-create-account" type="button" data-v569-register><span>Crear mi cuenta</span><i>→</i></button>'+
+    '<button class="v569-primary v575-create-account" type="button" data-v569-register><span>Crear mi cuenta</span><i aria-hidden="true">➜</i></button>'+
     '<button class="v569-link" type="button" data-v569-profile-mode="login">Ya tengo cuenta · Iniciar sesión</button>'+
   '</section>';
 }
