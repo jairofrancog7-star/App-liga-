@@ -44,6 +44,18 @@ function teamLogo(name,cls=''){
   const src=logoFor(name);
   return '<span class="v33-team-logo '+cls+'">'+(src?'<img src="'+esc(src)+'" alt="'+esc(name)+'" loading="lazy" decoding="async">':'<span class="v33-fallback">'+esc(initials(name))+'</span>')+'</span>';
 }
+function playerAvatar(name,team,cls='v33-player-avatar'){
+  let src='';
+  try{src=window.LJR_PLAYER_MEDIA?.photo?.(name,team,'3')||window.LJR_PLAYER_PHOTOS?.get?.(name,team,'3')||''}catch(_){}
+  if(!src){
+    const entry=Object.entries(current()?.player_profiles||{}).find(([t])=>same(t,team));
+    const p=(Array.isArray(entry?.[1])?entry[1]:[]).find(x=>same(x?.name,name));
+    src=String(p?.photo||'');
+  }
+  return src
+    ?'<span class="'+cls+' v576-has-photo"><img src="'+esc(src)+'" alt="'+esc(name)+'" loading="lazy" decoding="async" referrerpolicy="no-referrer"></span>'
+    :'<span class="'+cls+' v576-photo-fallback">'+esc(initials(name).slice(0,2))+'</span>';
+}
 function backIcon(){return '<svg viewBox="0 0 32 32" aria-hidden="true"><path d="M20.5 7.5 12 16l8.5 8.5M12.5 16H27"/></svg>'}
 function shareIcon(){return '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="18" cy="5" r="2.25"/><circle cx="6" cy="12" r="2.25"/><circle cx="18" cy="19" r="2.25"/><path d="m8.1 10.9 7.6-4.5M8.1 13.1l7.6 4.5"/></svg>'}
 function tabs(){
@@ -100,9 +112,9 @@ function rosterEntries(){
  return out;
 }
 function playerRow(p,index){
- return '<button type="button" class="v33-stat-row player" data-v33-player="'+esc(p.name)+'">'+
-   '<span class="v33-rank">'+(index+1)+'</span>'+teamLogo(p.team,'v33-player-team-logo')+
-   '<span class="v33-row-copy"><b>'+esc(p.name)+'</b><small>'+esc(p.team)+' · Jugador registrado</small></span>'+
+ return '<button type="button" class="v33-stat-row player" data-v33-player="'+esc(p.name)+'" data-v33-player-team="'+esc(p.team)+'">'+
+   '<span class="v33-rank">'+(index+1)+'</span>'+playerAvatar(p.name,p.team,'v33-player-team-logo v576-player-avatar')+
+   '<span class="v33-row-copy"><b>'+esc(p.name)+'</b><small>'+teamLogo(p.team,'v33-inline-team-logo')+esc(p.team)+' · Jugador registrado</small></span>'+
    '<strong>✓</strong>'+
  '</button>';
 }
@@ -195,7 +207,7 @@ function referenceStatsBlock(){
  const scorerRows=scorers.length?scorers.map((r,i)=>
    '<button type="button" class="v446-stat-ref-row" data-v33-player="'+esc(r[1])+'">'+
      '<span class="v446-stat-ref-rank">'+(i+1)+'</span>'+
-     '<span class="v446-stat-ref-avatar">'+esc(initials(r[1]).slice(0,2))+'</span>'+
+     playerAvatar(r[1],r[2],'v446-stat-ref-avatar')+
      teamLogo(r[2],'v446-stat-ref-logo')+
      '<span class="v446-stat-ref-copy"><b>'+esc(r[1])+'</b><small>'+esc(r[2])+'</small></span>'+
      '<strong>'+esc(r[3])+'</strong>'+
