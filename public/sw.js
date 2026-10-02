@@ -1,4 +1,4 @@
-const CACHE='liga-juventino-v563-own-app';
+const CACHE='liga-juventino-v564-own-app-complete';
 const CORE=['./','./index.html','./manifest.webmanifest','./brand-neon-header.svg','./profile-reference.svg'];
 
 self.addEventListener('install',event=>{
