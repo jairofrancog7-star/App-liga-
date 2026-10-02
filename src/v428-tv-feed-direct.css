@@ -331,3 +331,46 @@ body[data-app-route="video"] .v428-tv-section .v428-tv-row:has(.v443-tv-portrait
     box-sizing:border-box!important;
   }
 }
+
+
+/* V548 — Video: mover SOLO textos hacia adentro, sin tocar cuadros ni imágenes. */
+@media(max-width:600px){
+  body[data-app-route="video"] .v428-tv-section>header,
+  body[data-app-route="video"] .v440-tv-pagehead{
+    box-sizing:border-box!important;
+  }
+
+  body[data-app-route="video"] .v428-tv-section>header{
+    padding-left:18px!important;
+    padding-right:18px!important;
+  }
+
+  body[data-app-route="video"] .v428-tv-section>header h3,
+  body[data-app-route="video"] .v428-tv-section>header p{
+    margin-left:0!important;
+    padding-left:0!important;
+  }
+
+  body[data-app-route="video"] .v428-tv-section>header button{
+    margin-right:0!important;
+  }
+
+  body[data-app-route="video"] .v440-tv-pagehead{
+    padding-left:18px!important;
+    padding-right:18px!important;
+  }
+
+  body[data-app-route="video"] .v440-tv-pagehead>div{
+    min-width:0!important;
+  }
+
+  body[data-app-route="video"] .v440-tv-pagehead h2,
+  body[data-app-route="video"] .v440-tv-pagehead p{
+    margin-left:0!important;
+    padding-left:0!important;
+  }
+
+  body[data-app-route="video"] .v440-tv-backmark{
+    margin-left:0!important;
+  }
+}
