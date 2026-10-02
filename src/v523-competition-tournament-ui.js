@@ -71,6 +71,16 @@ function icon(name){
 function lowerTitle(kicker,title,sub){
   return '<header class="v566-head"><span><small>'+esc(kicker)+'</small><b>'+esc(title)+'</b><em>'+esc(sub)+'</em></span><img src="'+esc(catLogo())+'" alt=""></header>';
 }
+function categoryStrip(){
+  const current=catId();
+  return '<div class="v567-cat-strip" aria-label="Categorías de Liga Juventino Rosas">'+
+    availableCategories().map(c=>
+      '<button type="button" class="'+(c.id===current?'active':'')+'" data-v566-category-direct="'+esc(c.id)+'">'+
+        '<img src="'+esc(c.logo)+'" alt=""><span><b>'+esc(c.name)+'</b><small>'+(c.id==='1'?'50 y más':'Categoría oficial')+'</small></span>'+
+      '</button>'
+    ).join('')+
+  '</div>';
+}
 function fixturesPanel(){
   const j=currentJourney();
   const knockout=hasOfficialKnockout();
@@ -82,6 +92,8 @@ function fixturesPanel(){
       '<button type="button" data-v566-tab="standings">'+icon('table')+'<span><b>Tabla de posiciones</b><small>Clasificación oficial</small></span><i>›</i></button>'+
       '<button type="button" data-v566-tab="bracket" '+(knockout?'':'disabled')+'>'+icon('trophy')+'<span><b>Cuadro / Liguilla</b><small>'+(knockout?'Cruces oficiales publicados':'Sin cruces oficiales publicados')+'</small></span><i>›</i></button>'+
     '</div>'+
+    '<div class="v567-cat-head"><span>CATEGORÍAS</span><b>Acceso rápido</b></div>'+
+    categoryStrip()+
   '</section>';
 }
 function standingsPanel(){
@@ -199,6 +211,18 @@ document.addEventListener('click',e=>{
     const btn=journeyButtons().find(b=>(b.dataset.v12Date||'')===key);
     closeSheet();
     btn?.click();
+    schedule();
+    return;
+  }
+  const direct=e.target.closest('[data-v566-category-direct]');
+  if(direct){
+    e.preventDefault();
+    const id=direct.dataset.v566CategoryDirect;
+    localStorage.setItem('v62-category',id);
+    localStorage.setItem('v12-fixture-cat',id);
+    const native=document.querySelector('[data-v12-fixtures] [data-v12-cat="'+CSS.escape(id)+'"]');
+    if(native)native.click();
+    else window.dispatchEvent(new Event('hashchange'));
     schedule();
     return;
   }
