@@ -9,6 +9,7 @@ window.__LJR_V536_MONITO_FLOW__=true;
 window.__LJR_V537_SECONDARY_OVERLAY__=true;
 window.__LJR_V538_MORELESS_VIDEO_FLOW__=true;
 window.__LJR_V541_MONITO_PAGES__=true;
+window.__LJR_V543_MORELESS_PORTAL__=true;
 
 const RAW='https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/';
 const DATA_LOCAL='./data/official-live.json?v=20261001-v531-games';
@@ -266,17 +267,17 @@ function v538StartMoreRound(){
   v538ClearTimers();
   more.roundToken++;
   const token=more.roundToken;
-  more.round=Math.max(0,Number(more.round)||0)+1;more.mode='game';more.phase='intro';more.answered=false;more.selected='';more.exit=false;more.countdown=15;
-  render(true);
+  more.round=Math.max(0,Number(more.round)||0)+1;more.mode='game';more.phase='first';more.answered=false;more.selected='';more.exit=false;more.countdown=15;
+  document.body.classList.add('v543-more-portal-open');
+  v543RenderMorePortal();
   v538MoreInterval=setInterval(function(){
     if(token!==more.roundToken||more.mode!=='game'){v538ClearTimers();return}
     more.countdown=Math.max(0,more.countdown-1);
     document.querySelectorAll('.v538-countdown').forEach(function(el){el.textContent=String(more.countdown)});
     if(more.countdown<=0&&v538MoreInterval){clearInterval(v538MoreInterval);v538MoreInterval=null}
   },1000);
-  v538MoreTimers.push(setTimeout(function(){if(token!==more.roundToken)return;more.phase='first';render(false)},850));
-  v538MoreTimers.push(setTimeout(function(){if(token!==more.roundToken)return;more.phase='both';render(false)},1750));
-  v538MoreTimers.push(setTimeout(function(){if(token!==more.roundToken)return;more.phase='ready';render(false)},2550));
+  v538MoreTimers.push(setTimeout(function(){if(token!==more.roundToken)return;more.phase='both';v543RenderMorePortal()},700));
+  v538MoreTimers.push(setTimeout(function(){if(token!==more.roundToken)return;more.phase='ready';v543RenderMorePortal()},1450));
 }
 function moreGame(data){
   const pair=morePair(data);
@@ -418,6 +419,43 @@ function render(focusAdded=false){
     window.scrollTo({top:0,left:0,behavior:'auto'});
   });
 }
+function v543EnsureMorePortal(){
+  let portal=document.querySelector('#v543-moreless-portal');
+  if(!portal){
+    portal=document.createElement('div');
+    portal.id='v543-moreless-portal';
+    portal.className='v543-moreless-portal';
+    portal.hidden=true;
+    document.body.appendChild(portal);
+  }
+  return portal;
+}
+function v543RenderMorePortal(){
+  if(route()!=='moreLess')return;
+  const portal=v543EnsureMorePortal();
+  const data=db||window.LJR_OFFICIAL_DATA||{};
+  portal.hidden=false;
+  portal.style.display='block';
+  portal.innerHTML=more.mode==='hub'?moreHub(data):moreGame(data);
+  document.body.classList.add('v543-more-portal-open');
+  setGamesNav();
+  requestAnimationFrame(function(){portal.scrollTop=0});
+}
+function v543CloseMorePortal(){
+  v538ClearTimers();
+  more.mode='legacy';
+  more.phase='intro';
+  more.answered=false;
+  more.selected='';
+  more.exit=false;
+  document.body.classList.remove('v543-more-portal-open');
+  const portal=document.querySelector('#v543-moreless-portal');
+  if(portal){portal.innerHTML='';portal.hidden=true;portal.style.display='none'}
+  const mount=document.querySelector('[data-v531-mount="more"]');
+  if(mount){mount.innerHTML='';mount.hidden=true;delete mount.dataset.v541Open}
+  document.body.classList.remove('v537-more-secondary-open','v541-more-pages-open');
+  setGamesNav();
+}
 function v541OpenMorePages(){
   v538ClearTimers();
   more.mode='hub';
@@ -425,15 +463,8 @@ function v541OpenMorePages(){
   more.answered=false;
   more.selected='';
   more.exit=false;
-  render(false);
-  const mount=document.querySelector('[data-v531-mount="more"]');
-  if(mount){
-    mount.hidden=false;
-    mount.dataset.v541Open='true';
-    mount.style.display='block';
-    mount.scrollTop=0;
-  }
-  document.body.classList.add('v537-more-secondary-open','v541-more-pages-open');
+  document.body.classList.add('v537-more-secondary-open','v541-more-pages-open','v543-more-portal-open');
+  v543RenderMorePortal();
 }
 function v541OpenQuizPages(){
   quiz.mode='hub';
@@ -470,6 +501,7 @@ function schedule(){
     const r=route();
     if(r!=='quizArena'&&r!=='moreLess'){
       v534LastRoute=r;
+      if(document.body.classList.contains('v543-more-portal-open'))v543CloseMorePortal();
       return;
     }
     const primary=primaryRoot(r);
@@ -540,7 +572,7 @@ document.addEventListener('click',function(e){
   e.preventDefault();e.stopPropagation();
 
   if(t.matches('[data-v531-quiz-back]')){quiz.mode='legacy';quiz.exit=false;render(false);return}
-  if(t.matches('[data-v531-more-back]')){more.mode='legacy';more.exit=false;render(false);return}
+  if(t.matches('[data-v531-more-back]')){v543CloseMorePortal();return}
   if(t.matches('[data-v531-share]')){share();return}
   if(t.matches('[data-v531-rankings]')){go('rankings');return}
   if(t.matches('[data-v531-quiz-start]')){quiz.mode='game';quiz.answered=false;quiz.exit=false;render(true);return}
@@ -554,7 +586,7 @@ document.addEventListener('click',function(e){
   }
   if(t.matches('[data-v531-quiz-next]')){quiz.step=Math.min(12,quiz.step+1);quiz.selected='';quiz.answered=false;quiz.mode='game';render(true);return}
   if(t.matches('[data-v531-more-start]')){v538StartMoreRound();return}
-  if(t.matches('[data-v531-more-close]')){v538ClearTimers();more.exit=true;render(true);return}
+  if(t.matches('[data-v531-more-close]')){v538ClearTimers();more.exit=true;v543RenderMorePortal();return}
   if(t.matches('[data-v531-more-choice]')){
     if(more.answered)return;
     const data=db||window.LJR_OFFICIAL_DATA||{},pair=morePair(data);
@@ -563,19 +595,19 @@ document.addEventListener('click',function(e){
     more.selected=picked===actual?'correct':'wrong';
     more.answered=true;more.phase='result';
     if(picked===actual)more.points+=10;else more.attempts=Math.max(0,more.attempts-1);
-    v538ClearTimers();render(true);return;
+    v538ClearTimers();v543RenderMorePortal();return;
   }
   if(t.matches('[data-v539-more-next]')){v538StartMoreRound();return}
   if(t.matches('[data-v531-exit-confirm]')){
     const kind=t.dataset.v531ExitConfirm;
     if(kind==='quiz'){quiz.mode='legacy';quiz.exit=false;quiz.answered=false}
-    else{v538ClearTimers();more.mode='legacy';more.exit=false;more.answered=false;more.phase='intro';more.round=0}
+    else{v543CloseMorePortal();return}
     render(false);return;
   }
   if(t.matches('[data-v531-exit-cancel]')){
     const kind=t.dataset.v531ExitCancel;
-    if(kind==='quiz')quiz.exit=false;else more.exit=false;
-    render(true);return;
+    if(kind==='quiz'){quiz.exit=false;render(true);return}
+    more.exit=false;v543RenderMorePortal();return;
   }
 },true);
 
