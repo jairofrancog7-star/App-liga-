@@ -8,6 +8,7 @@ window.__LJR_V533_PRIMARY_GAMES__=true;
 window.__LJR_V536_MONITO_FLOW__=true;
 window.__LJR_V537_SECONDARY_OVERLAY__=true;
 window.__LJR_V538_MORELESS_VIDEO_FLOW__=true;
+window.__LJR_V541_MONITO_PAGES__=true;
 
 const RAW='https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/';
 const DATA_LOCAL='./data/official-live.json?v=20261001-v531-games';
@@ -385,6 +386,7 @@ function render(focusAdded=false){
     const open=quiz.mode!=='legacy';
     document.body.classList.toggle('v537-quiz-secondary-open',open);
     document.body.classList.remove('v537-more-secondary-open');
+    document.body.classList.remove('v541-more-pages-open');
     if(!open){
       mount.innerHTML='';
       mount.hidden=true;
@@ -396,12 +398,15 @@ function render(focusAdded=false){
   }else{
     const open=more.mode!=='legacy';
     document.body.classList.toggle('v537-more-secondary-open',open);
+    document.body.classList.toggle('v541-more-pages-open',open);
     document.body.classList.remove('v537-quiz-secondary-open');
     if(!open){
       mount.innerHTML='';
       mount.hidden=true;
+      delete mount.dataset.v541Open;
     }else{
       mount.hidden=false;
+      mount.dataset.v541Open='true';
       mount.style.display='block';
       mount.innerHTML=more.mode==='hub'?moreHub(data):moreGame(data);
     }
@@ -413,6 +418,47 @@ function render(focusAdded=false){
     window.scrollTo({top:0,left:0,behavior:'auto'});
   });
 }
+function v541OpenMorePages(){
+  v538ClearTimers();
+  more.mode='hub';
+  more.phase='intro';
+  more.answered=false;
+  more.selected='';
+  more.exit=false;
+  render(false);
+  const mount=document.querySelector('[data-v531-mount="more"]');
+  if(mount){
+    mount.hidden=false;
+    mount.dataset.v541Open='true';
+    mount.style.display='block';
+    mount.scrollTop=0;
+  }
+  document.body.classList.add('v537-more-secondary-open','v541-more-pages-open');
+}
+function v541OpenQuizPages(){
+  quiz.mode='hub';
+  quiz.answered=false;
+  quiz.selected='';
+  quiz.exit=false;
+  render(false);
+  const mount=document.querySelector('[data-v531-mount="quiz"]');
+  if(mount){
+    mount.hidden=false;
+    mount.dataset.v541Open='true';
+    mount.style.display='block';
+    mount.scrollTop=0;
+  }
+  document.body.classList.add('v537-quiz-secondary-open');
+}
+window.LJR_V541_GAMES_API={
+  openMorePages:v541OpenMorePages,
+  openQuizPages:v541OpenQuizPages,
+  closeMorePages:function(){v538ClearTimers();more.mode='legacy';more.exit=false;render(false)},
+  closeQuizPages:function(){quiz.mode='legacy';quiz.exit=false;render(false)}
+};
+if(window.__LJR_V541_PENDING_MORE__){window.__LJR_V541_PENDING_MORE__=false;requestAnimationFrame(v541OpenMorePages)}
+if(window.__LJR_V541_PENDING_QUIZ__){window.__LJR_V541_PENDING_QUIZ__=false;requestAnimationFrame(v541OpenQuizPages)}
+
 function share(){
   const p={title:'Liga Juventino Rosas',text:'Juega Quiz Arena y Más o Menos en la app de la Liga.',url:location.href};
   if(navigator.share)navigator.share(p).catch(function(){});
@@ -444,12 +490,10 @@ document.addEventListener('click',function(e){
 
   /* V536: al tocar cualquiera de los dos monitos del cuadro principal
      de Más o Menos se abren los otros diseños de las referencias Drive. */
-  const moreMonito=e.target.closest('[data-v531-more-open]');
-  if(route()==='moreLess'&&moreMonito){
+  const moreMonito=e.target.closest('[data-v531-more-open], .v12-ml-choice > button, .v12-avatar');
+  if(route()==='moreLess'&&moreMonito&&moreMonito.closest('[data-v12-moreless]')){
     e.preventDefault();e.stopPropagation();e.stopImmediatePropagation();
-    v538ClearTimers();
-    more.mode='hub';more.phase='intro';more.answered=false;more.selected='';more.exit=false;
-    render(true);
+    v541OpenMorePages();
     return;
   }
 
@@ -468,10 +512,7 @@ document.addEventListener('click',function(e){
   const oldMore=e.target.closest('[data-v12-choice]');
   if(route()==='moreLess'&&oldMore){
     e.preventDefault();e.stopPropagation();e.stopImmediatePropagation();
-    /* V540: el principal abre primero el HUB; desde ahí se entra al juego. */
-    v538ClearTimers();
-    more.mode='hub';more.phase='intro';more.answered=false;more.selected='';more.exit=false;
-    render(true);
+    v541OpenMorePages();
     return;
   }
 
