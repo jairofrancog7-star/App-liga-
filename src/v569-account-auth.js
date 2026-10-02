@@ -337,7 +337,7 @@ function profileSuccessMarkup(account){
   return '<section class="v569-inline-auth v569-inline-success" data-v569-page="success">'+
     '<div class="v569-success-mark">✓</div><small>CUENTA CREADA</small><h2>'+esc(account.name||account.alias)+'</h2>'+
     '<p>Tu cuenta quedó lista y permanece dentro de la sección Perfil.</p>'+
-    '<div class="v569-success-data"><span><small>ALIAS</small><b>@'+esc(account.alias)+'</b></span><span><small>CONTACTO</small><b>'+esc(contactText(account))+'</b></span><span><small>SEGURIDAD</small><b>'+(biometricEnabled(account)?'Huella / biometría activada':'Contraseña activa')+'</b></span></div>'+
+    '<div class="v569-success-data"><span><small>ALIAS</small><b>@'+esc(account.alias)+'</b></span><span><small>CONTACTO</small><b>'+esc(contactText(account))+'</b></span><span><small>SEGURIDAD</small><b>'+(biometricEnabled(account)?'Huella / biometría activada':'Contraseña activa')+'</b></span><span><small>DISPOSITIVO</small><b>'+(isRememberedDevice(account)?'✓ Este dispositivo quedó recordado':'No recordado')+'</b></span></div>'+
     '<button class="v569-primary" type="button" data-v569-profile-finish>Ver mi perfil</button>'+
     '<button class="v569-secondary" type="button" data-v569-copy-alias>Copiar alias</button>'+
   '</section>';
