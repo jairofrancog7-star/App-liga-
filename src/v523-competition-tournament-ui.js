@@ -103,11 +103,11 @@ function bracketPanel(){
   '</section>';
 }
 function removeOldTop(){
-  document.querySelectorAll('[data-v523-shell],[data-v523-standings],.v523-tournament-hero,.v523-standings-switch').forEach(x=>x.remove());
-  document.querySelectorAll('.v12-schedule-match.v523-enhanced').forEach(row=>{
+  document.querySelectorAll('[data-v523-shell],[data-v523-standings],.v523-tournament-hero,.v523-standings-switch,.v523-match-card').forEach(x=>x.remove());
+  document.querySelectorAll('.v12-schedule-match.v523-enhanced,.v12-schedule-match[data-v523-enhanced]').forEach(row=>{
     row.classList.remove('v523-enhanced');
     row.removeAttribute('data-v523-enhanced');
-    row.querySelector(':scope > .v523-match-card')?.remove();
+    row.querySelectorAll(':scope > .v523-match-card').forEach(x=>x.remove());
   });
 }
 function placeBottom(root,kind,html){
