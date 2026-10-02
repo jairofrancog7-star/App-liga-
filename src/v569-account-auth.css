@@ -88,3 +88,97 @@ body[data-app-route="profile"] .v12-profile-card[data-v569-owned] .v569-profile-
   .v569-page-head h1{font-size:25px}.v569-card{padding:14px}.v569-inline>button{min-width:68px;padding:0 7px}
   .v569-profile-hero{grid-template-columns:52px minmax(0,1fr);padding:13px}.v569-profile-avatar{width:50px;height:50px}.v569-profile-bio{grid-column:1/-1;justify-self:start;margin-top:0}
 }
+
+
+/* V573 — registro completo dentro del cuadro Más de la Liga */
+body[data-app-route="profile"] .v12-profile-page.v569-auth-inline-active{
+  padding-top:18px!important;
+}
+body[data-app-route="profile"] .v12-profile-page.v569-auth-inline-active>.v12-profile-menu,
+body[data-app-route="profile"] .v12-profile-page.v569-auth-inline-active>[data-v569-account-menu]{
+  display:none!important;
+}
+body[data-app-route="profile"] .v12-profile-card[data-v569-inline]{
+  display:block!important;
+  width:100%!important;
+  min-height:0!important;
+  padding:18px!important;
+  border:1px solid rgba(57,220,235,.28)!important;
+  border-radius:22px!important;
+  background:
+    radial-gradient(circle at 100% 0%,rgba(33,115,245,.20),transparent 32%),
+    linear-gradient(155deg,#111783 0%,#0d126f 58%,#080c5e 100%)!important;
+  overflow:visible!important;
+}
+body[data-app-route="profile"] .v12-profile-card[data-v569-inline] .v569-inline-auth{
+  width:100%;display:block;color:#fff;
+}
+body[data-app-route="profile"] .v569-inline-head{
+  display:grid;grid-template-columns:38px minmax(0,1fr);gap:10px;align-items:start;margin-bottom:14px;
+}
+body[data-app-route="profile"] .v569-inline-back{
+  width:36px;height:36px;border:1px solid rgba(55,224,235,.42);border-radius:11px;
+  background:#0a1168;color:#35e2ec;font-size:28px;line-height:1;font-weight:400;
+}
+body[data-app-route="profile"] .v569-inline-head small{
+  display:block;color:#37e2ec;font-size:8px;font-weight:900;letter-spacing:.13em;
+}
+body[data-app-route="profile"] .v569-inline-head h2{
+  margin:4px 0 5px!important;color:#fff!important;font-size:23px!important;line-height:1.04!important;font-weight:900!important;
+}
+body[data-app-route="profile"] .v569-inline-head p{
+  margin:0!important;color:#9fadd1!important;font-size:9px!important;line-height:1.42!important;
+}
+body[data-app-route="profile"] .v12-profile-card[data-v569-inline] .v569-methods{
+  margin:0 0 13px!important;
+}
+body[data-app-route="profile"] .v12-profile-card[data-v569-inline] .v569-form{
+  display:grid!important;gap:10px!important;
+}
+body[data-app-route="profile"] .v12-profile-card[data-v569-inline] .v569-field{
+  min-width:0!important;
+}
+body[data-app-route="profile"] .v12-profile-card[data-v569-inline] .v569-field input{
+  height:47px!important;min-height:47px!important;font-size:12px!important;border-radius:12px!important;
+}
+body[data-app-route="profile"] .v12-profile-card[data-v569-inline] .v569-inline>button{
+  min-width:72px!important;font-size:8px!important;
+}
+body[data-app-route="profile"] .v12-profile-card[data-v569-inline] .v569-primary,
+body[data-app-route="profile"] .v12-profile-card[data-v569-inline] .v569-secondary,
+body[data-app-route="profile"] .v12-profile-card[data-v569-inline] .v569-link{
+  min-height:46px!important;margin-top:11px!important;border-radius:12px!important;font-size:10px!important;
+}
+body[data-app-route="profile"] .v569-inline-success{
+  text-align:center;padding:8px 0 3px;
+}
+body[data-app-route="profile"] .v569-success-mark{
+  width:62px;height:62px;margin:0 auto 11px;display:grid;place-items:center;border-radius:50%;
+  border:2px solid #35e3ec;background:rgba(24,210,225,.10);color:#3de5ed;font-size:29px;font-weight:900;
+}
+body[data-app-route="profile"] .v569-inline-success>small{
+  display:block;color:#34e2ec;font-size:8px;font-weight:900;letter-spacing:.14em;
+}
+body[data-app-route="profile"] .v569-inline-success>h2{
+  margin:5px 0 4px!important;color:#fff!important;font-size:23px!important;
+}
+body[data-app-route="profile"] .v569-inline-success>p{
+  margin:0 auto 14px!important;max-width:310px;color:#9eacd0!important;font-size:9px!important;line-height:1.45!important;
+}
+body[data-app-route="profile"] .v569-success-data{
+  display:grid;gap:7px;text-align:left;margin:0 0 4px;
+}
+body[data-app-route="profile"] .v569-success-data>span{
+  display:block;padding:10px 11px;border:1px solid rgba(78,109,207,.26);border-radius:11px;background:#080c5d;
+}
+body[data-app-route="profile"] .v569-success-data small,
+body[data-app-route="profile"] .v569-success-data b{display:block}
+body[data-app-route="profile"] .v569-success-data small{color:#7f8db8;font-size:7px;font-weight:900;letter-spacing:.08em}
+body[data-app-route="profile"] .v569-success-data b{margin-top:3px;color:#fff;font-size:11px;overflow-wrap:anywhere}
+@media(max-width:390px){
+  body[data-app-route="profile"] .v12-profile-card[data-v569-inline]{padding:14px!important;border-radius:18px!important}
+  body[data-app-route="profile"] .v569-inline-head{grid-template-columns:34px minmax(0,1fr);gap:8px}
+  body[data-app-route="profile"] .v569-inline-back{width:32px;height:32px;font-size:24px}
+  body[data-app-route="profile"] .v569-inline-head h2{font-size:20px!important}
+  body[data-app-route="profile"] .v12-profile-card[data-v569-inline] .v569-field input{height:44px!important;min-height:44px!important}
+}
