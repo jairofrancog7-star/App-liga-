@@ -82,7 +82,7 @@ function recentFixtures(){
 }
 function capState(){
   const p=window.Capacitor?.Plugins||{};
-  return {native:!!window.Capacitor,prefs:!!p.Preferences,push:!!p.PushNotifications,biometric:!!p.NativeBiometric};
+  return {native:!!window.Capacitor,prefs:!!p.Preferences,push:!!p.PushNotifications,biometric:!!(p.LigaBiometric||p.NativeBiometric)};
 }
 function dataSummary(){
   const d=data(),c=d?.categories?.['3']||{},counts=c.counts||c.dashboard?.counts||{};
