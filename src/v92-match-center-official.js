@@ -427,9 +427,16 @@ function playerInitials(name){
   const clean=String(name||'').trim();
   return clean.split(/\s+/).slice(0,2).map(x=>x[0]||'').join('').toUpperCase()||'•';
 }
-function pitchPlayer(name,idx,side){
-  const clean=String(name||'').trim(),initials=playerInitials(clean);
-  return '<span class="v416-pitch-player '+side+' p'+idx+'"><i><span>'+esc(initials)+'</span></i><b>'+esc(clean)+'</b></span>';
+function playerImage(name,team,cls,tag='span'){
+  let src='';
+  try{src=window.LJR_PLAYER_MEDIA?.photo?.(name,team)||window.LJR_PLAYER_PHOTOS?.get?.(name,team)||''}catch(_){}
+  const safeTag=tag==='i'?'i':'span';
+  if(src)return '<'+safeTag+' class="'+cls+' v576-has-photo"><img src="'+esc(src)+'" alt="'+esc(name)+'" loading="lazy" decoding="async" referrerpolicy="no-referrer"></'+safeTag+'>';
+  return '<'+safeTag+' class="'+cls+'">'+esc(playerInitials(name))+'</'+safeTag+'>';
+}
+function pitchPlayer(name,idx,side,team){
+  const clean=String(name||'').trim();
+  return '<span class="v416-pitch-player '+side+' p'+idx+'">'+playerImage(clean,team,'v576-pitch-photo','i')+'<b>'+esc(clean)+'</b></span>';
 }
 function matchCedula(m){
   const r=m?.r||[],date=dateOnly(r[8]),home=norm(r[2]),away=norm(r[6]);
@@ -458,16 +465,16 @@ function benchFor(m,team,starters){
   const rest=all.filter(n=>!used.has(norm(n)));
   return rest.length?rest:all.slice(11);
 }
-function benchPlayer(name){
+function benchPlayer(name,team){
   const clean=String(name||'').trim();
-  return '<span class="v417-bench-player"><i>'+esc(playerInitials(clean))+'</i><b>'+esc(clean)+'</b></span>';
+  return '<span class="v417-bench-player">'+playerImage(clean,team,'v576-bench-photo','i')+'<b>'+esc(clean)+'</b></span>';
 }
 function changesBlock(m,homeStarters,awayStarters){
   const r=m.r,homeBench=benchFor(m,r[2],homeStarters).slice(0,10),awayBench=benchFor(m,r[6],awayStarters).slice(0,10);
   const max=Math.max(homeBench.length,awayBench.length);
   const rows=max?Array.from({length:max},(_,i)=>'<div class="v417-change-row">'+
-    (homeBench[i]?benchPlayer(homeBench[i]):'<span></span>')+
-    (awayBench[i]?benchPlayer(awayBench[i]):'<span></span>')+
+    (homeBench[i]?benchPlayer(homeBench[i],r[2]):'<span></span>')+
+    (awayBench[i]?benchPlayer(awayBench[i],r[6]):'<span></span>')+
   '</div>').join(''):'<p class="v417-empty-line">Sin suplentes publicados para este partido.</p>';
   return '<section class="v417-changes"><header><h3>CAMBIOS</h3></header>'+
     '<div class="v417-change-head"><span>'+esc(r[2])+'</span><span>'+esc(r[6])+'</span></div>'+
@@ -496,8 +503,8 @@ function lineupPitch(m){
     '<div class="v416-pitch">'+
       '<div class="v416-pitch-team top">'+teamLogo(home,'pitch')+'<b>'+esc(home)+'</b><em>—</em></div>'+
       '<span class="v418-formation top">—</span>'+
-      hp.map((n,i)=>pitchPlayer(n,i,'home')).join('')+
-      ap.map((n,i)=>pitchPlayer(n,i,'away')).join('')+
+      hp.map((n,i)=>pitchPlayer(n,i,'home',home)).join('')+
+      ap.map((n,i)=>pitchPlayer(n,i,'away',away)).join('')+
       '<span class="v418-formation bottom">—</span>'+
       '<div class="v416-pitch-team bottom"><em>—</em><b>'+esc(away)+'</b>'+teamLogo(away,'pitch')+'</div>'+
     '</div>'+
@@ -585,9 +592,8 @@ function miniTableRows(m,team){
   '</div>').join('');
 }
 function playerCard(name,goals,team,index){
-  const initials=playerInitials(name);
   return '<article class="v419-player-card">'+
-    '<span class="v419-player-avatar">'+esc(initials)+'</span>'+
+    playerImage(name,team,'v419-player-avatar')+
     '<div><small>#'+(index+1)+'</small><b>'+esc(name)+'</b><em>'+esc(team)+'</em></div>'+
     '<strong>'+(Number.isFinite(goals)?esc(goals):'—')+'<small> G</small></strong>'+
   '</article>';
@@ -633,7 +639,7 @@ function teamProfileDashboard(m){
     '<section class="v419-card v419-calendar"><header><h3>Próximos del calendario</h3><small>'+esc(m.category)+'</small></header><div class="v419-next-list">'+(next.length?next.map(nextCard).join(''):'<div class="v419-empty">Sin próximos partidos publicados.</div>')+'</div></section>'+
     '<section class="v419-card v419-lineup-preview" data-v419-profile-section="plantilla"><header><h3>Plantilla / alineación</h3><small>'+roster(m,team).length+' jugadores</small></header>'+
       '<div class="v419-mini-pitch">'+
-        roster(m,team).slice(0,11).map((n,i)=>'<span class="p'+i+'"><i>'+esc(playerInitials(n))+'</i><b>'+esc(n)+'</b></span>').join('')+
+        roster(m,team).slice(0,11).map((n,i)=>'<span class="p'+i+'">'+playerImage(n,team,'v576-mini-photo','i')+'<b>'+esc(n)+'</b></span>').join('')+
       '</div>'+
     '</section>'+
     '<section class="v419-card v419-league" data-v419-profile-section="tabla"><header><h3>La liga</h3><small>'+esc(m.category)+'</small></header>'+
