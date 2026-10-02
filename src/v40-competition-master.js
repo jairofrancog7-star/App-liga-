@@ -153,21 +153,35 @@
       list.map((t,i)=>'<div class="v40-wide-row criteria-row"><span>'+(i+1)+'</span><span class="v40-team">'+img(t.logo,t.name,'v40-team-logo')+'<strong>'+t.name+'</strong></span><span>'+t.pts+'</span><span>'+t.gd+'</span><span>'+t.gf+'</span><span>'+t.ga+'</span><span>'+t.w+'</span><span>'+t.d+'</span><span>'+t.l+'</span></div>').join('')+
     '</div></div>';
   }
+  let activeStandingsMode='compact';
+  try{activeStandingsMode=sessionStorage.getItem('v40-standings-mode')||'compact'}catch(_){}
+  if(!['compact','complete','criteria'].includes(activeStandingsMode)) activeStandingsMode='compact';
+  function modeContent(mode){return mode==='complete'?complete():mode==='criteria'?criteria():compact()}
   function standings(){
-    return '<section class="v40-standings" data-v40-standings>'+
+    const mode=activeStandingsMode;
+    return '<section class="v40-standings" data-v40-standings data-v40-current-mode="'+mode+'">'+
       '<div class="v40-segmented" role="tablist" aria-label="Vista de clasificación">'+
-        '<button type="button" class="active" data-v40-mode="compact">Compacta</button>'+
-        '<button type="button" data-v40-mode="complete">Completa</button>'+
-        '<button type="button" data-v40-mode="criteria">Criterios de<br>desempate</button>'+
+        '<button type="button" class="'+(mode==='compact'?'active':'')+'" data-v40-mode="compact">Compacta</button>'+
+        '<button type="button" class="'+(mode==='complete'?'active':'')+'" data-v40-mode="complete">Completa</button>'+
+        '<button type="button" class="'+(mode==='criteria'?'active':'')+'" data-v40-mode="criteria">Criterios de<br>desempate</button>'+
       '</div>'+
-      '<div class="v40-content" data-v40-content>'+compact()+'</div>'+
+      '<div class="v40-content" data-v40-content>'+modeContent(mode)+'</div>'+
     '</section>';
   }
   function renderMode(box,mode){
-    box.querySelectorAll('[data-v40-mode]').forEach(b=>b.classList.toggle('active',b.dataset.v40Mode===mode));
-    const c=box.querySelector('[data-v40-content]');
-    c.innerHTML=mode==='complete'?complete():mode==='criteria'?criteria():compact();
+    if(!box)return;
+    activeStandingsMode=['compact','complete','criteria'].includes(mode)?mode:'compact';
+    try{sessionStorage.setItem('v40-standings-mode',activeStandingsMode)}catch(_){}
+    box.dataset.v40CurrentMode=activeStandingsMode;
+    box.querySelectorAll('[data-v40-mode]').forEach(b=>b.classList.toggle('active',b.dataset.v40Mode===activeStandingsMode));
+    const content=box.querySelector('[data-v40-content]');
+    if(content) content.innerHTML=modeContent(activeStandingsMode);
   }
+  function forceMode(mode){
+    const box=document.querySelector('[data-v40-standings]');
+    if(box) renderMode(box,mode);
+  }
+  window.LJR_V575_STANDINGS_MODE=forceMode;
   function patch(){
     const screen=document.querySelector('#screen');
     if(!screen) return;
@@ -189,17 +203,25 @@
       tabs.insertAdjacentHTML('afterend','<div class="v40-standings-host" data-v40-host>'+standings()+'</div>');
     }
   }
+  /* V575 hardfix: intercepta el toque desde window antes que cualquier parche
+     legado y conserva la vista elegida aunque otro observer vuelva a ejecutar patch(). */
+  const v575ModeEvent=e=>{
+    const el=e.target instanceof Element?e.target.closest('[data-v40-mode]'):null;
+    if(!el)return;
+    const box=el.closest('[data-v40-standings]');
+    if(!box)return;
+    renderMode(box,el.dataset.v40Mode||'compact');
+  };
+  window.addEventListener('pointerup',v575ModeEvent,true);
+  window.addEventListener('touchend',v575ModeEvent,{capture:true,passive:true});
+  window.addEventListener('click',v575ModeEvent,true);
+
   document.addEventListener('click',e=>{
     const mode=e.target.closest('[data-v40-mode]');
     if(mode){
       e.preventDefault();
-      e.stopPropagation();
       const box=mode.closest('[data-v40-standings]');
-      if(box){
-        const selected=mode.dataset.v40Mode||'compact';
-        renderMode(box,selected);
-        box.dataset.v40CurrentMode=selected;
-      }
+      renderMode(box,mode.dataset.v40Mode||'compact');
       return;
     }
     const nav=e.target.closest('[data-v40-nav]');
