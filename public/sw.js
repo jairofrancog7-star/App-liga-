@@ -1,4 +1,4 @@
-const CACHE='liga-juventino-v594-fantasy-deep-3d-shirts';
+const CACHE='liga-juventino-v595-fantasy-photoreal-3d-jerseys';
 const CORE=['./','./index.html','./manifest.webmanifest','./brand-neon-header.svg','./profile-reference.svg'];
 
 self.addEventListener('install',event=>{
