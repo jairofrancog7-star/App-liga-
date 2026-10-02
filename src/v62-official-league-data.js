@@ -502,16 +502,19 @@ function dataTabs(){
   ];
   return '<div class="v62-data-tabs">'+tabs.map(([id,label])=>'<button type="button" class="'+(dataTab===id?'active':'')+'" data-v62-tab="'+id+'">'+label+'</button>').join('')+'</div>';
 }
+function v576Profile(name,team){
+  const current=cat();
+  const entry=Object.entries(current?.player_profiles||{}).find(([t])=>same(t,team));
+  const rows=Array.isArray(entry?.[1])?entry[1]:[];
+  return rows.find(x=>same(x?.name,name))||null;
+}
 function v576TablePlayer(name,team){
   const clean=String(name||'').trim();
   if(!clean)return '<strong></strong>';
   let src='';
   try{src=window.LJR_PLAYER_MEDIA?.photo?.(clean,team,categoryId)||window.LJR_PLAYER_PHOTOS?.get?.(clean,team,categoryId)||''}catch(_){}
   if(!src){
-    const current=cat();
-    const entry=Object.entries(current?.player_profiles||{}).find(([t])=>same(t,team));
-    const p=(Array.isArray(entry?.[1])?entry[1]:[]).find(x=>same(x?.name,clean));
-    src=String(p?.photo||'');
+    src=String(v576Profile(clean,team)?.photo||'');
   }
   const ini=clean.split(/\s+/).filter(Boolean).slice(0,2).map(x=>x[0]||'').join('').toUpperCase();
   return '<span class="v576-table-player">'+
@@ -530,6 +533,8 @@ function genericTable(kind){
       }
       if(i===playerIndex){
         const team=Number.isInteger(teamIndex)?String(r?.[teamIndex]||''):'';
+        const text=String(v||'');
+        if(!team||/^(no hay|sin jugadores|sin tarjetas|sin castigos|estado)/i.test(text.trim()))return '<td><strong>'+esc(v)+'</strong></td>';
         return '<td>'+v576TablePlayer(v,team)+'</td>';
       }
       return '<td>'+esc(v)+'</td>';
@@ -637,7 +642,7 @@ function playersView(){
       entries.map(([team])=>'<option value="'+esc(team)+'" '+(same(team,playerTeamFilter)?'selected':'')+'>'+esc(team)+'</option>').join('')+
     '</select><div class="v62-player-search"><input type="search" data-v62-player-search placeholder="Buscar jugador o equipo" autocomplete="off"></div></div>'+
     '<div data-v62-player-list>'+entries.map(([team,players])=>'<section class="v62-roster-group" data-v62-team-name="'+esc(team)+'" data-v62-search="'+esc(norm(team+' '+players.join(' ')))+'"><button type="button" class="v62-roster-title" data-v62-team="'+esc(team)+'">'+teamLogoHtml(team,'v62-inline-logo')+'<b>'+esc(team)+'</b><span>'+players.length+' jugadores</span></button>'+
-      '<div>'+players.map(p=>'<p><span class="v62-player-dot"></span><b>'+esc(p)+'</b></p>').join('')+'</div></section>').join('')+'</div>';
+      '<div>'+players.map(name=>{const p=v576Profile(name,team)||{};return '<p class="v576-roster-player">'+v576TablePlayer(name,team)+'<small>'+esc(p.position||'Posición no publicada')+(p.dorsal?' · #'+esc(p.dorsal):'')+'</small></p>'}).join('')+'</div></section>').join('')+'</div>';
 }
 function rulesView(){
   return '<article class="v62-rules-card"><div class="v62-rules-icon">▤</div><div><small>REGLAMENTO OFICIAL</small><h2>Liga Municipal de Fútbol Juventino Rosas A. C.</h2><p>Reglamento 2026–2027 disponible desde el repositorio oficial de la Liga.</p></div>'+
@@ -691,15 +696,16 @@ function scorerRows(){
   return rs.filter(r=>r.length>=4&&/^\d+$/.test(String(r[3]||''))&&!/goles?\s+en\s+temporada/i.test(String(r[2]||'')));
 }
 function scorerFeature(r,idx){
+  const p=v576Profile(r[1],r[2])||{},photo=String(p.photo||window.LJR_PLAYER_MEDIA?.photo?.(r[1],r[2],categoryId)||'');
   return '<article class="v28-feature">'+
-    '<div class="v28-feature-photo '+(idx===0?'one':'two')+'"><button type="button" class="v28-feature-play" data-v62-team="'+esc(r[2])+'" aria-label="Ver equipo '+esc(r[2])+'"></button></div>'+
-    '<div class="v28-feature-info"><div class="v28-feature-person"><span class="v28-ball">⚽</span><span><b>'+esc(r[2])+'</b><small>'+esc(r[1])+'</small></span></div><div class="v28-feature-goals"><b>'+esc(r[3])+'</b><small>goles</small></div></div>'+
+    '<div class="v28-feature-photo '+(idx===0?'one':'two')+'">'+(photo?'<img class="v576-v28-feature-photo" src="'+esc(photo)+'" alt="'+esc(r[1])+'" loading="lazy" decoding="async" referrerpolicy="no-referrer">':'')+'<button type="button" class="v28-feature-play" data-v62-team="'+esc(r[2])+'" aria-label="Ver equipo '+esc(r[2])+'"></button></div>'+
+    '<div class="v28-feature-info"><div class="v28-feature-person">'+v576TablePlayer(r[1],r[2])+'<span><b>'+teamLogoHtml(r[2],'v62-inline-logo')+esc(r[2])+'</b><small>'+esc(r[1])+'</small></span></div><div class="v28-feature-goals"><b>'+esc(r[3])+'</b><small>goles</small></div></div>'+
   '</article>';
 }
 function scorerRow(r,i){
-  return '<button type="button" class="v28-rank-row" data-v62-team="'+esc(r[2])+'">'+
-    '<span class="v28-rank-number">#'+esc(r[0]||i+1)+'</span>'+teamLogoHtml(r[2],'v28-team-logo')+
-    '<span class="v28-rank-copy"><b>'+esc(r[2])+'</b><small>'+esc(r[1])+'</small></span><strong class="v28-rank-goals">'+esc(r[3])+'</strong></button>';
+  return '<button type="button" class="v28-rank-row v576-v28-player" data-v62-team="'+esc(r[2])+'">'+
+    '<span class="v28-rank-number">#'+esc(r[0]||i+1)+'</span>'+v576TablePlayer(r[1],r[2])+
+    '<span class="v28-rank-copy"><b>'+teamLogoHtml(r[2],'v62-inline-logo')+esc(r[2])+'</b><small>'+esc(r[1])+'</small></span><strong class="v28-rank-goals">'+esc(r[3])+'</strong></button>';
 }
 function teamGoalRows(){
   const rs=rows('standings');
