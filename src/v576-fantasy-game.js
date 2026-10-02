@@ -292,6 +292,6 @@ window.LJR_V576_FANTASY={guest,openGuest:guest,openTeam:()=>{location.hash='#/fa
 window.addEventListener('ljr:fantasy-guest',guest);
 window.addEventListener('hashchange',()=>{closeLayer();schedule()});
 window.addEventListener('ljr:official-data',schedule);
-const screen=document.querySelector('#screen');if(screen)new MutationObserver(schedule).observe(screen,{childList:true,subtree:false});
+/* V599: no observar #screen aquí. render() reemplaza su HTML y el observer lo volvía a disparar en bucle, haciendo parpadear las playeras e imágenes. */
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',schedule,{once:true});else schedule();
 })();
