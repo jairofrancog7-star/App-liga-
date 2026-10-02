@@ -120,3 +120,35 @@ body[data-app-route="moreLessGallery"] .v583-challenge-art .ljr-face-circle-v606
   transform:none!important;
   border-radius:inherit!important;
 }
+
+
+/* V608 — HARDLOCK ORIGINAL COMPLETA EN CÍRCULOS
+   No recorta la foto: la imagen original entra completa dentro del círculo.
+   Estas reglas tienen mayor especificidad que los antiguos object-fit:cover. */
+html body .v543-moreless-portal .v583-challenge-art .ljr-face-circle-v606 > img,
+html body[data-app-route="moreLessGallery"] .v583-challenge-art .ljr-face-circle-v606 > img,
+html body .v543-moreless-portal .v538-hub-feature-art .ljr-face-circle-v606 > img,
+html body[data-app-route="moreLessGallery"] .v538-hub-feature-art .ljr-face-circle-v606 > img,
+html body .ljr-face-circle-v606 > img[data-ljr-circle-full-face="1"]{
+  position:relative!important;
+  inset:auto!important;
+  left:auto!important;
+  right:auto!important;
+  top:auto!important;
+  bottom:auto!important;
+  width:100%!important;
+  height:100%!important;
+  min-width:0!important;
+  min-height:0!important;
+  max-width:100%!important;
+  max-height:100%!important;
+  margin:0!important;
+  padding:0!important;
+  display:block!important;
+  object-fit:contain!important;
+  object-position:center center!important;
+  transform:none!important;
+  clip-path:none!important;
+  border-radius:inherit!important;
+  box-sizing:border-box!important;
+}
