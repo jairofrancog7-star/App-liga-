@@ -3487,3 +3487,37 @@ body.v40-standings-master .v580-section-row .v578-rule{
     border-radius:999px!important;
   }
 }
+
+
+/* V588 — el scroll horizontal se queda donde lo deja el dedo. */
+@media(max-width:760px){
+  body.v40-standings-master .v578-scroll,
+  body.v40-standings-master [data-v580-scroll]{
+    overflow-x:auto!important;
+    overflow-y:hidden!important;
+    -webkit-overflow-scrolling:touch!important;
+    scroll-behavior:auto!important;
+    scroll-snap-type:none!important;
+    overscroll-behavior-x:contain!important;
+    touch-action:pan-y pinch-zoom!important;
+    cursor:grab!important;
+  }
+  body.v40-standings-master .v578-scroll:active,
+  body.v40-standings-master [data-v580-scroll]:active{
+    cursor:grabbing!important;
+  }
+  body.v40-standings-master .v578-complete-table{
+    width:940px!important;
+    min-width:940px!important;
+    max-width:none!important;
+  }
+  body.v40-standings-master .v578-criteria-table{
+    width:760px!important;
+    min-width:760px!important;
+    max-width:none!important;
+  }
+  body.v40-standings-master .v578-table th,
+  body.v40-standings-master .v578-table td{
+    white-space:nowrap!important;
+  }
+}
