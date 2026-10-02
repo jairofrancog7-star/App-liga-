@@ -2744,7 +2744,7 @@
           "Equipos": 11,
           "Partidos Jugados": 24,
           "Partidos Pendientes": 30,
-          "Jugadores": 290
+          "Jugadores": 292
         },
         "current_cedulas": [
           96,
@@ -2872,7 +2872,7 @@
         "Equipos": 11,
         "Partidos Jugados": 24,
         "Partidos Pendientes": 30,
-        "Jugadores": 290
+        "Jugadores": 292
       },
       "standings": [
         {
@@ -14242,14 +14242,15 @@
     "Datos deportivos públicos; no se recopilan CURP, INE, domicilio ni documentos.",
     "La fuente oficial juventinorosasliga.com prevalece sobre este snapshot.",
     "No se inventan goles, alineaciones, estadísticas avanzadas ni sanciones.",
-    "V514: Veteranos 35+ verificado en la fuente oficial: 11 equipos, 55 partidos pendientes y 14 jugadores; temporada 6. Sin resultados finalizados. Orden provisional de equipos, no clasificación deportiva."
+    "V514: Veteranos 35+ verificado en la fuente oficial: 11 equipos, 55 partidos pendientes y 14 jugadores; temporada 6. Sin resultados finalizados. Orden provisional de equipos, no clasificación deportiva.",
+    "V562 · 02-oct-2026: Primera Fuerza verificada en el resumen público: 11 equipos, 24 partidos jugados, 30 pendientes y 292 jugadores. Tabla de posiciones sin cambios respecto al snapshot."
   ],
   "missing_official_logo": [
     "BOCA JRS",
     "GALACTICOS"
   ],
   "checks": {
-    "primera_dashboard_players": 290,
+    "primera_dashboard_players": 292,
     "primera_roster_unique": 291,
     "team_logos_known": 54,
     "categories": 5
@@ -14262,5 +14263,17 @@
     "https://www.juventinorosasliga.com/",
     "https://www.juventinorosasliga.com/reporte-semanal/"
   ],
-  "verified_scope": "Todas las categorías: equipos, posiciones, jornadas, resultados, goleadores, tarjetas/sanciones disponibles, jugadores y logos publicados."
+  "verified_scope": "Todas las categorías: equipos, posiciones, jornadas, resultados, goleadores, tarjetas/sanciones disponibles, jugadores y logos publicados.",
+  "public_live_check": {
+    "checked_at_utc": "2026-10-02T17:19:00Z",
+    "scope": "Primera Fuerza · resumen público y tabla de posiciones",
+    "source": "https://juventinorosasliga.com/",
+    "counts": {
+      "Equipos": 11,
+      "Partidos Jugados": 24,
+      "Partidos Pendientes": 30,
+      "Jugadores": 292
+    },
+    "note": "La cifra pública de jugadores fue verificada el 2 de octubre de 2026. El resto del snapshot conserva su fecha de captura original."
+  }
 }
