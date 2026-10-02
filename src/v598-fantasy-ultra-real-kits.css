@@ -1,0 +1,192 @@
+/* V598 — stronger photo-real 3D treatment for the existing different team kits.
+   Only the jersey rendering changes; Fantasy layout/logic remains untouched. */
+
+html body.v587-fantasy-team-open .v597-real-kit{
+  perspective:1200px!important;
+  transform-style:preserve-3d!important;
+  transform:rotateY(-8deg) rotateX(2deg) translateZ(7px)!important;
+  filter:
+    drop-shadow(0 4px 2px rgba(0,28,40,.18))
+    drop-shadow(0 10px 9px rgba(0,31,43,.30))!important;
+}
+html body.v587-fantasy-team-open .v576-slot:nth-child(even) .v597-real-kit{
+  transform:rotateY(8deg) rotateX(2deg) translateZ(7px)!important;
+}
+html body.v587-fantasy-team-open .v576-slot:nth-child(3n) .v597-real-kit{
+  transform:rotateY(-4deg) rotateX(1deg) translateZ(8px)!important;
+}
+
+/* Keep the photographed wrinkles/shadows from the real source, neutralize its original colors,
+   then recolor them with the current team palette. */
+html body.v587-fantasy-team-open .v597-shirt-photo{
+  z-index:1!important;
+  filter:grayscale(1) contrast(1.18) brightness(1.08) saturate(.18)!important;
+  transform:translateZ(2px)!important;
+}
+html body.v587-fantasy-team-open .v597-shirt-tint{
+  z-index:2!important;
+  opacity:.88!important;
+  mix-blend-mode:multiply!important;
+  background:
+    linear-gradient(100deg,
+      color-mix(in srgb,var(--v597-primary) 72%,white 28%) 0%,
+      var(--v597-primary) 27%,
+      color-mix(in srgb,var(--v597-primary) 84%,black 16%) 68%,
+      color-mix(in srgb,var(--v597-primary) 65%,black 35%) 100%)!important;
+}
+
+/* Realistic light/shadow pass, masked to the photographed jersey silhouette. */
+html body.v587-fantasy-team-open .v597-real-kit::before{
+  content:""!important;
+  position:absolute!important;
+  inset:0!important;
+  z-index:3!important;
+  pointer-events:none!important;
+  background:
+    radial-gradient(ellipse at 49% 16%,rgba(255,255,255,.42) 0 8%,transparent 22%),
+    radial-gradient(ellipse at 30% 34%,rgba(255,255,255,.20) 0 6%,transparent 27%),
+    radial-gradient(ellipse at 71% 38%,rgba(0,0,0,.13) 0 10%,transparent 31%),
+    linear-gradient(92deg,rgba(255,255,255,.24),transparent 18% 72%,rgba(0,0,0,.24)),
+    linear-gradient(180deg,rgba(255,255,255,.08),transparent 41%,rgba(0,0,0,.18) 100%)!important;
+  mix-blend-mode:soft-light!important;
+  -webkit-mask:url("../assets/fantasy-jersey-real-3d.png?v=20261002-v598") center/contain no-repeat!important;
+  mask:url("../assets/fantasy-jersey-real-3d.png?v=20261002-v598") center/contain no-repeat!important;
+}
+
+/* Fine fabric grain, vertical knit and seam-like darkening. */
+html body.v587-fantasy-team-open .v597-real-kit::after{
+  content:""!important;
+  position:absolute!important;
+  inset:0!important;
+  z-index:4!important;
+  pointer-events:none!important;
+  background:
+    repeating-linear-gradient(90deg,rgba(255,255,255,.035) 0 1px,rgba(0,0,0,.018) 1px 2px,transparent 2px 4px),
+    repeating-linear-gradient(0deg,rgba(255,255,255,.022) 0 1px,transparent 1px 3px),
+    radial-gradient(ellipse at 50% 72%,transparent 0 48%,rgba(0,0,0,.18) 92%)!important;
+  opacity:.86!important;
+  mix-blend-mode:overlay!important;
+  -webkit-mask:url("../assets/fantasy-jersey-real-3d.png?v=20261002-v598") center/contain no-repeat!important;
+  mask:url("../assets/fantasy-jersey-real-3d.png?v=20261002-v598") center/contain no-repeat!important;
+}
+
+/* Patterns now sit inside the cloth instead of looking painted on top. */
+html body.v587-fantasy-team-open .v597-shirt-pattern{
+  z-index:5!important;
+  mix-blend-mode:multiply!important;
+  opacity:.78!important;
+}
+html body.v587-fantasy-team-open .v597-real-kit.plain .v597-shirt-pattern{
+  background:
+    linear-gradient(102deg,transparent 0 26%,rgba(255,255,255,.13) 39%,transparent 51% 100%),
+    linear-gradient(180deg,transparent 0 72%,var(--v597-accent) 72% 75%,transparent 75%)!important;
+  opacity:.42!important;
+}
+html body.v587-fantasy-team-open .v597-real-kit.stripes .v597-shirt-pattern{
+  background:
+    repeating-linear-gradient(90deg,
+      transparent 0 10px,
+      color-mix(in srgb,var(--v597-accent) 86%,black 14%) 10px 16px,
+      transparent 16px 26px),
+    linear-gradient(180deg,rgba(255,255,255,.08),transparent 45%,rgba(0,0,0,.08))!important;
+  opacity:.74!important;
+}
+html body.v587-fantasy-team-open .v597-real-kit.bands .v597-shirt-pattern{
+  background:
+    linear-gradient(180deg,
+      transparent 0 30%,
+      color-mix(in srgb,var(--v597-accent) 86%,black 14%) 30% 37%,
+      transparent 37% 53%,
+      color-mix(in srgb,var(--v597-accent) 74%,black 26%) 53% 60%,
+      transparent 60% 100%),
+    linear-gradient(92deg,rgba(255,255,255,.08),transparent 24% 76%,rgba(0,0,0,.08))!important;
+  opacity:.64!important;
+}
+html body.v587-fantasy-team-open .v597-real-kit.diag .v597-shirt-pattern{
+  background:
+    linear-gradient(132deg,
+      transparent 0 34%,
+      color-mix(in srgb,var(--v597-accent) 84%,black 16%) 34% 46%,
+      transparent 46% 100%),
+    linear-gradient(180deg,transparent 0 76%,rgba(255,255,255,.09) 76% 78%,transparent 78%)!important;
+  opacity:.72!important;
+}
+html body.v587-fantasy-team-open .v597-real-kit.shoulders .v597-shirt-pattern{
+  background:
+    linear-gradient(180deg,
+      color-mix(in srgb,var(--v597-accent) 82%,black 18%) 0 20%,
+      transparent 20% 100%),
+    linear-gradient(110deg,transparent 0 18%,rgba(255,255,255,.12) 33%,transparent 48% 100%)!important;
+  opacity:.80!important;
+}
+
+/* Stronger collar/sleeve trim and embroidery depth. */
+html body.v587-fantasy-team-open .v597-logo-patch{
+  z-index:7!important;
+  left:53%!important;
+  top:29%!important;
+  width:17px!important;
+  height:17px!important;
+  background:
+    radial-gradient(circle at 38% 32%,
+      color-mix(in srgb,var(--v597-primary) 55%,white 45%) 0 18%,
+      color-mix(in srgb,var(--v597-primary) 90%,black 10%) 60% 100%)!important;
+  box-shadow:
+    inset 0 0 0 1px rgba(255,255,255,.26),
+    inset 0 -2px 3px rgba(0,0,0,.15),
+    0 1px 2px rgba(0,0,0,.28)!important;
+}
+html body.v587-fantasy-team-open .v597-team-logo{
+  z-index:8!important;
+  left:53%!important;
+  top:29%!important;
+  width:14px!important;
+  height:14px!important;
+  filter:
+    drop-shadow(0 1px 0 rgba(255,255,255,.28))
+    drop-shadow(0 1px 2px rgba(0,0,0,.34))!important;
+}
+
+/* More dimensional response when pressed, without changing any game behavior. */
+html body.v587-fantasy-team-open .v576-slot:active .v597-real-kit,
+html body.v587-fantasy-team-open .v576-slot:focus-visible .v597-real-kit{
+  transform:rotateY(0deg) rotateX(0deg) translateZ(13px) scale(1.065)!important;
+  filter:
+    drop-shadow(0 5px 3px rgba(0,28,40,.18))
+    drop-shadow(0 14px 12px rgba(0,31,43,.38))!important;
+}
+
+/* Empty slots keep the same real shirt model, but visibly subdued. */
+html body.v587-fantasy-team-open .v576-slot.empty .v597-real-kit{
+  opacity:.48!important;
+  filter:
+    grayscale(.12)
+    saturate(.62)
+    brightness(.72)
+    drop-shadow(0 6px 5px rgba(0,40,52,.18))!important;
+}
+html body.v587-fantasy-team-open .v576-slot.empty .v597-logo-patch,
+html body.v587-fantasy-team-open .v576-slot.empty .v597-team-logo{
+  display:none!important;
+}
+
+/* Keep exactly the same size/formation as V597. */
+html body.v587-fantasy-team-open .v576-shirt,
+html body.v587-fantasy-team-open .v576-shirt.chosen,
+html body.v587-fantasy-team-open .v590-kit-wrap{
+  width:68px!important;
+  height:80px!important;
+}
+html body.v587-fantasy-team-open .v576-slot.filled .v597-real-kit{
+  width:74px!important;
+  height:87px!important;
+}
+
+@media(max-width:390px){
+  html body.v587-fantasy-team-open .v597-real-kit{
+    transform:rotateY(-6deg) rotateX(1deg) translateZ(6px)!important;
+  }
+  html body.v587-fantasy-team-open .v576-slot:nth-child(even) .v597-real-kit{
+    transform:rotateY(6deg) rotateX(1deg) translateZ(6px)!important;
+  }
+}
