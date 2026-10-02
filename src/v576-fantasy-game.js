@@ -6,6 +6,8 @@ if(window.__LJR_V576_FANTASY_GAME__)return;
 window.__LJR_V576_FANTASY_GAME__=true;
 
 const KEY='v576-fantasy-squad',BUDGET=100,AUTH_RETURN_KEY='ljr-auth-return-v569';
+const RAW='https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/';
+const LEAGUE_LOGO=RAW+'assets/liga-logo.webp';
 const SLOTS=[
 {id:0,pos:'DEL'},{id:1,pos:'DEL'},{id:2,pos:'DEL'},
 {id:3,pos:'CEN'},{id:4,pos:'CEN'},{id:5,pos:'CEN'},{id:6,pos:'CEN'},{id:7,pos:'CEN'},
@@ -17,7 +19,7 @@ const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&
 const norm=v=>String(v??'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[^a-z0-9]+/g,' ').trim();
 const route=()=>String(location.hash||'').replace(/^#\/?/,'').split('?')[0]||'home';
 const db=()=>{try{return window.LJR_OFFICIAL_API?.getData?.()||window.LJR_OFFICIAL_DATA||{}}catch(_){return window.LJR_OFFICIAL_DATA||{}}};
-const teamLogo=name=>{try{return window.LJR_OFFICIAL_API?.getLogo?.(name)||window.LJR_TEAM_LOGOS?.get?.(name)||'./assets/liga-logo.webp'}catch(_){return './assets/liga-logo.webp'}};
+const teamLogo=name=>{try{const v=window.LJR_OFFICIAL_API?.getLogo?.(name)||window.LJR_TEAM_LOGOS?.get?.(name)||LEAGUE_LOGO;return /^https?:/i.test(String(v))?String(v):RAW+String(v).replace(/^\.\//,'')}catch(_){return LEAGUE_LOGO}};
 const fantasyLoggedIn=()=>{try{const s=JSON.parse(localStorage.getItem('lj-store-v3')||'{}');if(s?.user)return true;const a=JSON.parse(localStorage.getItem('ljr-auth-v569')||'{}');return !!a?.currentId}catch(_){return false}};
 const goFantasyLogin=()=>{try{localStorage.setItem(AUTH_RETURN_KEY,'fantasyTeam')}catch(_){};location.hash='#/accountLogin'};
 
@@ -73,15 +75,20 @@ function fieldRow(position,map){
 }
 function builderMarkup(){
  const squad=readSquad(),map=new Map(squad.map(x=>[Number(x.slot),x])),count=map.size,left=Math.max(0,BUDGET-total());
- return'<section class="v576-builder" data-v576-builder>'+
+ return'<section class="v576-builder v587-builder" data-v576-builder>'+
  '<header class="v576-builder-head"><button type="button" data-v576-back aria-label="Volver">‹</button><h1>Elige tu equipo</h1><button type="button" data-v576-menu aria-label="Menú">⋮</button></header>'+
- '<div class="v576-builder-summary"><div><small>Jugadores</small><b>'+count+'/15</b></div><div><small>Restante <i>?</i></small><b>'+money(left)+'</b></div><button type="button" data-v576-auto>✣ Autocompletar</button></div>'+
- '<div class="v576-sponsor-strip"><span>FANTASY</span><img src="./assets/liga-logo.webp" alt=""><b>LIGA JUVENTINO ROSAS</b></div>'+
+ '<div class="v576-builder-summary"><div><small>Jugadores</small><b>'+count+'/15</b></div><div><small>Restante <i>?</i></small><b>'+money(left)+'</b></div><button type="button" data-v576-auto><span>✣</span> Autocompletar</button></div>'+
+ '<div class="v576-sponsor-strip">'+
+   '<span class="v587-sponsor-unit"><img src="'+LEAGUE_LOGO+'" alt=""><b>LIGA JR</b></span>'+
+   '<span class="v587-sponsor-unit"><img src="'+LEAGUE_LOGO+'" alt=""><b>LIGA JR</b></span>'+
+ '</div>'+
  '<div class="v576-field">'+
+   '<div class="v587-pitch-lines" aria-hidden="true"><i class="v587-half"></i><i class="v587-center"></i><i class="v587-box v587-box-top"></i><i class="v587-box v587-box-bottom"></i></div>'+
    fieldRow('DEL',map)+fieldRow('CEN',map)+fieldRow('DEF',map)+fieldRow('POR',map)+
    (count===0?'<div class="v576-first-hint">Elige tu primer jugador</div>':'')+
+   '<button type="button" class="v587-filter-pill" data-v576-search aria-label="Buscar y filtrar jugadores"><span>☰</span><i></i><b>€</b></button>'+
+   '<div class="v576-builder-actions"><button type="button" data-v576-search class="'+(count===15?'ready':'')+'">'+(count===15?'Continuar':'Buscar jugadores')+'</button></div>'+
  '</div>'+
- '<div class="v576-builder-actions"><button type="button" data-v576-search class="'+(count===15?'ready':'')+'">'+(count===15?'Continuar':'Buscar jugadores')+'</button></div>'+
  '<footer>CONSEJO: Autocompleta tu plantilla y afínala antes del primer partido</footer></section>';
 }
 function accessTeams(){
@@ -154,11 +161,18 @@ function summary(){
 function toast(msg){document.querySelector('.v576-toast')?.remove();const d=document.createElement('div');d.className='v576-toast';d.textContent=msg;document.body.appendChild(d);requestAnimationFrame(()=>d.classList.add('show'));setTimeout(()=>d.remove(),2200)}
 function render(){
  const r=route(),screen=document.querySelector('#screen');if(!screen)return;
+ const teamOpen=r==='fantasyTeam';
+ document.body.classList.toggle('v587-fantasy-team-open',teamOpen);
+ const nav=document.querySelector('.bottom-nav');
+ if(nav){
+   if(teamOpen)nav.style.setProperty('display','none','important');
+   else nav.style.removeProperty('display');
+ }
  if(r==='fantasyAccess'){
    const base=screen.querySelector('[data-v23-access]');
    if(base&&!screen.querySelector('[data-v576-access-more]')) screen.insertAdjacentHTML('beforeend',accessMarkup());
  }
- if(r==='fantasyTeam')screen.innerHTML=builderMarkup();
+ if(teamOpen)screen.innerHTML=builderMarkup();
 }
 function schedule(){cancelAnimationFrame(raf);raf=requestAnimationFrame(()=>requestAnimationFrame(render))}
 
