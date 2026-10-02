@@ -84,7 +84,6 @@ function accessTeams(){
  while(a.length<3)a.push('Liga Juventino Rosas');return a;
 }
 function accessMarkup(){
- const teams=accessTeams();
  return'<section class="v576-access-more" data-v576-access-more>'+
  '<div class="v576-more-kicker">JUEGA FANTASY</div>'+
 
