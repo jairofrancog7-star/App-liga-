@@ -109,6 +109,12 @@ function playerList(){
 function fallback(name){
   return String(name||'').split(/\s+/).filter(Boolean).map(x=>x[0]).join('').slice(0,3).toUpperCase()||'⚽';
 }
+function playerAvatar(p,cls='v66-player-avatar'){
+  const src=String(p?.photo||window.LJR_PLAYER_MEDIA?.photo?.(p?.name,p?.team,p?.cat)||'');
+  return src
+    ?'<span class="'+cls+' v576-has-photo"><img src="'+esc(src)+'" alt="'+esc(p?.name||'Jugador')+'" loading="lazy" decoding="async" referrerpolicy="no-referrer"></span>'
+    :'<span class="'+cls+'">'+esc(fallback(p?.name).slice(0,2))+'</span>';
+}
 function teamLogo(t,cls='v66-team-logo'){
   const src=logoFor(t.name);
   return '<span class="'+cls+'">'+(src?'<img src="'+esc(src)+'" alt="'+esc(t.name)+'" loading="lazy" decoding="async">':'<b>'+esc(fallback(t.name))+'</b>')+'</span>';
@@ -177,7 +183,7 @@ function playerMarkup(){
     playerTeamRail()+
     '<div class="v66-search"><span>⌕</span><input data-v66-player-search type="search" autocomplete="off" placeholder="Buscar jugador por nombre" value="'+esc(playerQuery)+'"></div>'+
     '<p class="v66-source-note">'+list.length+' jugadores registrados'+(playerCat==='all'?'':' · '+esc(CAT_LABEL[playerCat]||''))+(playerTeam==='all'?'':' · '+esc(playerTeam))+'</p>'+
-    '<div class="v66-player-list">'+list.map((p,i)=>'<button type="button" class="v66-player-row" data-v66-player="'+esc(p.name)+'" data-v66-player-team="'+esc(p.team)+'" data-v66-cat-id="'+esc(p.cat)+'"><span class="v66-player-avatar">'+esc(fallback(p.name).slice(0,2))+'</span><span><b>'+esc(p.name)+'</b><small>'+esc(p.team)+' · '+esc(p.category)+'</small></span><i>›</i></button>').join('')+'</div>'+
+    '<div class="v66-player-list">'+list.map((p,i)=>'<button type="button" class="v66-player-row" data-v66-player="'+esc(p.name)+'" data-v66-player-team="'+esc(p.team)+'" data-v66-cat-id="'+esc(p.cat)+'">'+playerAvatar(p)+'<span><b>'+esc(p.name)+'</b><small>'+esc(p.team)+' · '+esc(p.position||p.category)+'</small></span><i>›</i></button>').join('')+'</div>'+
   '</section>';
 }
 function saveTeam(name,cat,resetTab=true){
