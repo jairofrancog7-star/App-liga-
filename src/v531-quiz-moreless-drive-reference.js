@@ -213,6 +213,14 @@ function moreGame(data){
 function exitModal(kind){
   return '<div class="v531-exit-backdrop"><section class="v531-exit-modal" role="dialog" aria-modal="true"><button type="button" class="v531-exit-x" data-v531-exit-cancel="'+kind+'" aria-label="Cerrar">'+closeSvg()+'</button><h2>¿Salir del quiz?</h2><p>Tus cambios no se guardarán.</p><button type="button" class="yes" data-v531-exit-confirm="'+kind+'">Sí, salir</button><button type="button" class="no" data-v531-exit-cancel="'+kind+'">No, continuar</button></section></div>';
 }
+function setGamesNav(){
+  const nav=document.querySelector('.bottom-nav');if(!nav)return;
+  nav.querySelectorAll('.nav-item').forEach(function(item){
+    const on=item.dataset.route==='more';
+    item.classList.toggle('active',on);
+    item.setAttribute('aria-current',on?'page':'false');
+  });
+}
 function render(){
   const r=route();
   if(r!=='quizArena'&&r!=='moreLess')return;
@@ -224,6 +232,7 @@ function render(){
   }else{
     screen.innerHTML=more.mode==='game'?moreGame(data):moreHub(data);
   }
+  setGamesNav();
   window.scrollTo({top:0,behavior:'auto'});
 }
 function share(){
