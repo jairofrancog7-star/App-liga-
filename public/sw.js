@@ -1,4 +1,4 @@
-const CACHE='liga-juventino-v575-modern-account-ui';
+const CACHE='liga-juventino-v576-single-back-arrow';
 const CORE=['./','./index.html','./manifest.webmanifest','./brand-neon-header.svg','./profile-reference.svg'];
 
 self.addEventListener('install',event=>{
