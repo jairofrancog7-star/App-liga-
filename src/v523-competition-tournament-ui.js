@@ -181,9 +181,14 @@ function openJourneys(){
 }
 function openCategories(){
   const current=catId();
-  sheet('Selecciona categoría',availableCategories().map(c=>
+  const cats=availableCategories();
+  /* La categoría 1 debe aparecer siempre al final como 50 y más. */
+  if(!cats.some(c=>c.id==='1')){
+    cats.push({id:'1',name:'Veteranos 50+',logo:catLogo('1')});
+  }
+  sheet('Selecciona categoría',cats.map(c=>
     '<button type="button" class="v566-option cat '+(c.id===current?'active':'')+'" data-v566-category="'+esc(c.id)+'">'+
-      '<img src="'+esc(c.logo)+'" alt=""><span><b>'+esc(c.name)+'</b><small>Liga Juventino Rosas</small></span><i></i></button>'
+      '<img src="'+esc(c.logo)+'" alt=""><span><b>'+esc(c.name)+'</b><small>'+(c.id==='1'?'50 y más · Liga Juventino Rosas':'Liga Juventino Rosas')+'</small></span><i></i></button>'
   ));
 }
 
