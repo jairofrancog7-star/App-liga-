@@ -29,8 +29,8 @@ const FALLBACK_LOGOS={
 };
 let db=window.LJR_OFFICIAL_DATA||null;
 let loading=null;
-const quiz={mode:'hub',answered:false,selected:'',points:0,step:1,exit:false};
-const more={mode:'hub',answered:false,selected:'',points:0,attempts:2,exit:false};
+const quiz={mode:'legacy',answered:false,selected:'',points:0,step:1,exit:false};
+const more={mode:'legacy',answered:false,selected:'',points:0,attempts:2,exit:false};
 
 function route(){return String(location.hash||'').replace(/^#\/?/,'').split('?')[0]||'home'}
 function esc(v){return String(v??'').replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})}
@@ -190,6 +190,33 @@ function moreHub(data){
     '</main>'+
   '</section>';
 }
+function quizLegacyExtras(data){
+  const ranks=rankRows(data),q=quizData(data);
+  return '<section class="v531-legacy-extras v531-quiz-extras" data-v531-extras="quiz">'+
+    '<div class="v531-extras-head"><span>Quiz Arena</span><b>Más juegos y modos</b></div>'+
+    '<article class="v531-quiz-random-card">'+
+      '<div class="v531-random-photo"><img src="'+esc(FEATURE)+'" alt="" loading="lazy" decoding="async"><span>'+crest(q.correct,data,'random')+'</span></div>'+
+      '<div class="v531-random-copy"><h2>Quiz Aleatorio</h2><p>Abre los otros diseños que me mandaste y juega con datos de la Liga.</p><div class="v531-dual-actions compact"><button type="button" class="primary" data-v531-quiz-start>Abrir Quiz Arena</button><button type="button" data-v531-share>Compartir</button></div></div>'+
+    '</article>'+
+    '<article class="v531-friend-card"><div><h2>¡Reta a tus amigos en el Quiz Arena!</h2><button type="button" data-v531-share>Invita a amigos</button></div><div class="v531-friend-avatar">'+crest(q.correct,data,'friend')+'</div></article>'+
+    '<h2 class="v531-section-title">Clasificaciones</h2>'+
+    '<article class="v531-rank-card"><h3>Quiz Aleatorio</h3>'+ranks.map(function(r){return '<div class="v531-rank-row"><span>'+r.pos+'º</span>'+crest(r.name,data,'rank')+'<b>'+esc(r.name)+'</b><strong>'+esc(r.pts)+' pts</strong></div>'}).join('')+'<button type="button" data-v531-rankings>Ver clasificaciones</button></article>'+
+  '</section>';
+}
+function moreLegacyExtras(data){
+  const pair=morePair(data),ranks=rankRows(data);
+  function gameCard(){
+    return '<article class="v531-more-card"><div class="v531-more-card-art"><div class="v531-starball">✦</div></div><div><h2>Más o menos</h2><p>Abre los otros diseños del juego sin quitar la pantalla principal que ya tenías.</p><div class="v531-dual-actions compact"><button type="button" class="primary" data-v531-more-start>Abrir juego</button><button type="button" data-v531-share>Compartir</button></div></div></article>';
+  }
+  return '<section class="v531-legacy-extras v531-more-extras" data-v531-extras="more">'+
+    '<div class="v531-extras-head"><span>Más o menos</span><b>Más modos del juego</b></div>'+
+    '<article class="v531-more-feature"><div class="v531-more-feature-players">'+crest(pair.a.team,data,'feature')+crest(pair.b.team,data,'feature')+'</div><div><h2>Comparación</h2><p>Compara a '+esc(pair.a.name)+' y '+esc(pair.b.name)+' con datos publicados por la Liga.</p><div class="v531-dual-actions compact"><button type="button" class="primary" data-v531-more-start>Entrar al juego</button><button type="button" data-v531-share>Compartir</button></div></div></article>'+
+    '<div class="v531-discover"><span>↕</span><b>PLAY GAMES</b><em>LIGA JUVENTINO</em></div>'+
+    gameCard()+gameCard()+
+    '<h2 class="v531-section-title">Clasificaciones</h2>'+
+    '<article class="v531-rank-card"><h3>Más o menos</h3>'+ranks.map(function(r){return '<div class="v531-rank-row"><span>'+r.pos+'º</span>'+crest(r.name,data,'rank')+'<b>'+esc(r.name)+'</b><strong>'+esc(r.pts)+' pts</strong></div>'}).join('')+'<button type="button" data-v531-rankings>Ver clasificaciones</button></article>'+
+  '</section>';
+}
 function playerCard(p,data,known){
   return '<article class="v531-player-card">'+crest(p.team,data,'player')+'<div class="v531-player-info"><b>'+esc(p.name)+'</b><small>'+esc(p.team)+'</small></div><div class="v531-player-stat"><small>Goles</small><strong>'+(known?esc(p.goals):'—')+'</strong></div></article>';
 }
@@ -231,25 +258,27 @@ function render(focusAdded=false){
   const r=route();
   if(r!=='quizArena'&&r!=='moreLess')return;
   const screen=document.querySelector('#screen');if(!screen)return;
-  const primary=primaryRoot(r);
-  if(!primary)return;
-  primary.dataset.v533Primary='true';
   const data=db||window.LJR_OFFICIAL_DATA||{};
   const kind=r==='quizArena'?'quiz':'more';
+
+  // Mantener siempre el diseño principal anterior arriba.
+  // Solo agregamos los diseños nuevos debajo o los usamos como pantalla secundaria.
   let mount=screen.querySelector('[data-v531-mount="'+kind+'"]');
   if(!mount){
     mount=document.createElement('div');
-    mount.className='v531-added-block v533-below-primary';
+    mount.className='v531-added-block';
     mount.dataset.v531Mount=kind;
-    primary.insertAdjacentElement('afterend',mount);
-  }else if(primary.nextElementSibling!==mount){
-    primary.insertAdjacentElement('afterend',mount);
+    screen.appendChild(mount);
   }
+
   if(r==='quizArena'){
-    mount.innerHTML=quiz.mode==='game'?quizGame(data):quiz.mode==='result'?quizResult(data):quizHub(data);
+    if(quiz.mode==='legacy') mount.innerHTML=quizLegacyExtras(data);
+    else mount.innerHTML=quiz.mode==='game'?quizGame(data):quizResult(data);
   }else{
-    mount.innerHTML=more.mode==='game'?moreGame(data):moreHub(data);
+    if(more.mode==='legacy') mount.innerHTML=moreLegacyExtras(data);
+    else mount.innerHTML=moreGame(data);
   }
+
   setGamesNav();
   if(focusAdded)requestAnimationFrame(function(){
     mount.scrollIntoView({behavior:'smooth',block:'start'});
@@ -297,8 +326,25 @@ document.addEventListener('click',function(e){
     return;
   }
 
-  const t=e.target.closest('[data-v531-quiz-back],[data-v531-more-back],[data-v531-share],[data-v531-rankings],[data-v531-quiz-start],[data-v531-quiz-close],[data-v531-q-answer],[data-v531-quiz-next],[data-v531-result-back],[data-v531-more-start],[data-v531-more-close],[data-v531-more-choice],[data-v531-exit-confirm],[data-v531-exit-cancel]');
+  const t=e.target.closest('[data-v48-quiz],[data-v12-choice],[data-v531-quiz-back],[data-v531-more-back],[data-v531-share],[data-v531-rankings],[data-v531-quiz-start],[data-v531-quiz-close],[data-v531-q-answer],[data-v531-quiz-next],[data-v531-result-back],[data-v531-more-start],[data-v531-more-close],[data-v531-more-choice],[data-v531-exit-confirm],[data-v531-exit-cancel]');
   if(!t)return;
+  // Controles del diseño principal anterior: no los bloqueamos.
+  // Dejamos que su funcionamiento original ocurra y luego abrimos el diseño secundario debajo.
+  if(t.matches('[data-v48-quiz]')){
+    const picked=t.dataset.v48Quiz||'';
+    const data=db||window.LJR_OFFICIAL_DATA||{},q=quizData(data);
+    quiz.selected=picked;quiz.answered=true;
+    if(norm(picked)===norm(q.correct))quiz.points+=10;
+    quiz.mode='result';
+    setTimeout(function(){render(true)},0);
+    return;
+  }
+  if(t.matches('[data-v12-choice]')){
+    more.mode='game';more.answered=false;more.exit=false;
+    setTimeout(function(){render(true)},0);
+    return;
+  }
+
   e.preventDefault();e.stopPropagation();
 
   if(t.matches('[data-v531-quiz-back],[data-v531-more-back]')){go('more');return}
@@ -306,7 +352,7 @@ document.addEventListener('click',function(e){
   if(t.matches('[data-v531-rankings]')){go('rankings');return}
   if(t.matches('[data-v531-quiz-start]')){quiz.mode='game';quiz.answered=false;quiz.exit=false;render(true);return}
   if(t.matches('[data-v531-quiz-close]')){quiz.exit=true;render(true);return}
-  if(t.matches('[data-v531-result-back]')){quiz.mode='hub';quiz.exit=false;render(true);return}
+  if(t.matches('[data-v531-result-back]')){quiz.mode='legacy';quiz.exit=false;render(true);return}
   if(t.matches('[data-v531-q-answer]')){
     const data=db||window.LJR_OFFICIAL_DATA||{},q=quizData(data),pick=t.dataset.v531QAnswer||'';
     quiz.selected=pick;quiz.answered=true;
@@ -328,8 +374,8 @@ document.addEventListener('click',function(e){
   }
   if(t.matches('[data-v531-exit-confirm]')){
     const kind=t.dataset.v531ExitConfirm;
-    if(kind==='quiz'){quiz.mode='hub';quiz.exit=false;quiz.answered=false}
-    else{more.mode='hub';more.exit=false;more.answered=false}
+    if(kind==='quiz'){quiz.mode='legacy';quiz.exit=false;quiz.answered=false}
+    else{more.mode='legacy';more.exit=false;more.answered=false}
     render(true);return;
   }
   if(t.matches('[data-v531-exit-cancel]')){
