@@ -1399,3 +1399,90 @@ body[data-app-route="v38Stats"] .v520-stats-topbar button:active{
     color:#fff!important;
   }
 }
+
+
+/* V555 — reporte semanal: PDF robusto y lista de pendientes. */
+.v553-pending-list{display:grid;gap:8px;margin-top:12px}
+.v553-pending-item{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:4px 8px;align-items:center;padding:10px 12px;border:1px solid rgba(120,151,255,.2);border-radius:10px;background:#09134d}
+.v553-pending-item b{color:#fff;font-size:11px}.v553-pending-item small{grid-column:1;color:#9baad6;font-size:9px}
+.v553-pending-item button{grid-column:2;grid-row:1/3;min-height:30px;padding:0 9px;border:0;border-radius:8px;background:#7b2440;color:#fff;font-size:9px;font-weight:800}
+
+@media print{
+  @page{size:letter portrait;margin:8mm}
+  html,body{background:#fff!important}
+  body.v553-printing{background:#fff!important;color:#111!important}
+  body.v553-printing #app,
+  body.v553-printing .app-shell,
+  body.v553-printing #screen{
+    background:#fff!important;
+    overflow:visible!important;
+    height:auto!important;
+    min-height:0!important;
+  }
+  body.v553-printing #app>.topbar,
+  body.v553-printing .app-shell>.topbar,
+  body.v553-printing .bottom-nav,
+  body.v553-printing .v553-week-actions,
+  body.v553-printing .v553-pending,
+  body.v553-printing .v60-tool-page>.v60-header,
+  body.v553-printing .v553-week-filter label{
+    display:none!important
+  }
+  body.v553-printing .v553-weekly-report{
+    display:block!important;
+    position:static!important;
+    width:100%!important;
+    max-width:none!important;
+    margin:0!important;
+    padding:0!important;
+    background:#fff!important;
+    color:#111!important;
+    overflow:visible!important
+  }
+  body.v553-printing .v553-week-filter{
+    display:block!important;
+    margin:0 0 6mm!important;
+    padding:0!important;
+    background:#fff!important;
+    border:0!important;
+    box-shadow:none!important
+  }
+  body.v553-printing .v553-week-range{
+    margin:0!important;
+    padding:0 0 3mm!important;
+    border:0!important;
+    border-bottom:2px solid #153d7f!important;
+    border-radius:0!important;
+    background:#fff!important;
+    color:#153d7f!important;
+    font-size:14pt!important
+  }
+  body.v553-printing .v553-week-range::before{content:"TORNEO DE COPA 2026 · "}
+  body.v553-printing .v553-week-group{
+    display:block!important;
+    margin:0 0 6mm!important;
+    padding:0!important;
+    border:0!important;
+    break-inside:avoid-page!important;
+    page-break-inside:avoid!important
+  }
+  body.v553-printing .v553-week-scroll{overflow:visible!important;padding:0!important}
+  body.v553-printing .v553-week-scroll table{
+    width:100%!important;
+    min-width:0!important;
+    table-layout:fixed!important;
+    border-collapse:collapse!important;
+    background:#fff!important;
+    color:#111!important
+  }
+  body.v553-printing .v553-week-scroll th,
+  body.v553-printing .v553-week-scroll td{
+    padding:4px 5px!important;
+    border:1px solid #cfd5df!important;
+    color:#111!important;
+    font-size:7pt!important;
+    line-height:1.2!important;
+    word-break:break-word!important
+  }
+  body.v553-printing .v553-week-scroll th{background:#153d7f!important;color:#fff!important}
+}
