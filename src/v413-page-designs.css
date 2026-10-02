@@ -128,3 +128,79 @@ body[data-app-route="notifications"] #screen > .v414-notifications{
  .v414-title h2{font-size:25px}.v414-device-card{grid-template-columns:50px minmax(0,1fr);padding:17px 14px}.v414-device-card p{font-size:14px}
  .v414-setting{min-height:68px;padding:12px 14px}.v414-setting>span b,.v414-category-row b{font-size:16px}.v414-category-row{min-height:70px;padding:11px 14px}
 }
+
+
+/* V523 — tarjeta social Liga Juventino, moderna y adaptada al azul de la app. */
+.v413-facebook.v523-social-card{
+  min-height:96px!important;
+  grid-template-columns:58px minmax(0,1fr) 20px!important;
+  gap:13px!important;
+  padding:16px!important;
+  border:1px solid rgba(69,213,255,.44)!important;
+  border-radius:20px!important;
+  background:
+    radial-gradient(circle at 12% 20%,rgba(42,156,255,.28),transparent 34%),
+    linear-gradient(145deg,#1434b8 0%,#101b83 52%,#0b1267 100%)!important;
+  box-shadow:inset 0 0 0 1px rgba(255,255,255,.025),0 10px 28px rgba(0,0,60,.18)!important;
+}
+.v413-facebook.v523-social-card .v523-social-icon{
+  width:54px!important;
+  height:54px!important;
+  border-radius:17px!important;
+  background:linear-gradient(180deg,#278cff 0%,#1877f2 100%)!important;
+  font-size:32px!important;
+  font-weight:950!important;
+  box-shadow:0 8px 18px rgba(24,119,242,.28)!important;
+}
+.v413-facebook.v523-social-card .v523-social-copy{
+  min-width:0!important;
+  display:grid!important;
+  gap:3px!important;
+}
+.v413-facebook.v523-social-card .v523-social-copy small{
+  margin:0!important;
+  color:#24e2ef!important;
+  font-size:8px!important;
+  line-height:1.1!important;
+  font-weight:900!important;
+  letter-spacing:.13em!important;
+}
+.v413-facebook.v523-social-card .v523-social-copy b{
+  display:block!important;
+  color:#fff!important;
+  font-size:15px!important;
+  line-height:1.15!important;
+  font-weight:850!important;
+  letter-spacing:-.01em!important;
+}
+.v413-facebook.v523-social-card .v523-social-copy em{
+  display:block!important;
+  color:#b9c5ea!important;
+  font-size:9px!important;
+  line-height:1.28!important;
+  font-style:normal!important;
+  font-weight:600!important;
+}
+.v413-facebook.v523-social-card>i{
+  justify-self:end!important;
+  color:#27e3ef!important;
+  font-size:22px!important;
+  font-style:normal!important;
+  font-weight:500!important;
+}
+@media(max-width:390px){
+  .v413-facebook.v523-social-card{
+    min-height:88px!important;
+    grid-template-columns:52px minmax(0,1fr) 18px!important;
+    padding:13px!important;
+    border-radius:18px!important;
+  }
+  .v413-facebook.v523-social-card .v523-social-icon{
+    width:48px!important;
+    height:48px!important;
+    border-radius:15px!important;
+    font-size:29px!important;
+  }
+  .v413-facebook.v523-social-card .v523-social-copy b{font-size:14px!important}
+  .v413-facebook.v523-social-card .v523-social-copy em{font-size:8.3px!important}
+}
