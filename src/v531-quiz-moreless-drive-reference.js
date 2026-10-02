@@ -118,7 +118,7 @@ function quizLogo(){
 function quizHub(data){
   const ranks=rankRows(data);
   const q=quizData(data);
-  return '<section class="v48-quiz-arena-page v531-page v531-quiz" data-v531-quiz data-v531-view="hub">'+
+  return '<section class="v531-page v531-quiz" data-v531-quiz data-v531-view="hub">'+
     '<header class="v531-mini-head"><button type="button" data-v531-quiz-back aria-label="Volver">'+backSvg()+'</button><strong>Quiz Arena</strong><button type="button" data-v531-share aria-label="Compartir">'+shareSvg()+'</button></header>'+
     '<main class="v531-hub-body">'+
       '<article class="v531-quiz-hero">'+
@@ -145,7 +145,7 @@ function quizGame(data){
     const letter=String.fromCharCode(65+i);
     return '<button type="button" class="v531-q-answer" data-v531-q-answer="'+esc(name)+'"><span>'+letter+'</span><b>'+esc(name)+'</b></button>';
   }).join('');
-  return '<section class="v48-quiz-arena-page v531-page v531-quiz v531-game-screen" data-v531-quiz data-v531-view="game">'+
+  return '<section class="v531-page v531-quiz v531-game-screen" data-v531-quiz data-v531-view="game">'+
     '<header class="v531-game-head"><strong>Quiz Aleatorio</strong><button type="button" data-v531-quiz-close aria-label="Cerrar">'+closeSvg()+'</button></header>'+
     '<div class="v531-scorebar"><span class="v531-progress-number">'+progress+'</span><div class="v531-progress-dots">'+dots+'</div><span class="v531-score-total"><small>Total</small><b>'+quiz.points+' pts</b></span></div>'+
     '<main class="v531-q-main">'+
@@ -158,7 +158,7 @@ function quizGame(data){
 }
 function quizResult(data){
   const q=quizData(data);
-  return '<section class="v48-quiz-arena-page v531-page v531-quiz v531-result-screen" data-v531-quiz data-v531-view="result">'+
+  return '<section class="v531-page v531-quiz v531-result-screen" data-v531-quiz data-v531-view="result">'+
     '<header class="v531-result-head"><button type="button" data-v531-result-back aria-label="Volver">'+backSvg()+'</button></header>'+
     quizLogo()+
     '<div class="v531-result-options">'+q.options.map(function(name,i){
@@ -176,7 +176,7 @@ function moreHub(data){
   function gameCard(n){
     return '<article class="v531-more-card"><div class="v531-more-card-art"><div class="v531-starball">✦</div></div><div><h2>Más o menos</h2><p>Compara las estadísticas de dos jugadores y elige si el siguiente dato es mayor o menor.</p><div class="v531-dual-actions compact"><button type="button" class="primary" data-v531-more-start>Inicia sesión para<br>jugar</button><button type="button" data-v531-more-start>Prueba como<br>invitado</button></div></div></article>';
   }
-  return '<section class="v12-moreless v531-page v531-more" data-v12-moreless data-v531-more data-v531-view="hub">'+
+  return '<section class="v531-page v531-more" data-v531-more data-v531-view="hub">'+
     '<header class="v531-mini-head"><button type="button" data-v531-more-back aria-label="Volver">'+backSvg()+'</button><strong>More or Less</strong><button type="button" data-v531-share aria-label="Compartir">'+shareSvg()+'</button></header>'+
     '<main class="v531-hub-body">'+
       '<article class="v531-more-splash"><div class="v531-more-title"><span>MÁS</span><small>O</small><span>MENOS</span><i class="red">↘</i><i class="green">↗</i></div>'+heroPeople+'<div class="v531-stadium" aria-hidden="true"><i></i><b></b></div></article>'+
@@ -197,7 +197,7 @@ function moreGame(data){
   const question=pair.kind==='player'
     ?'¿Ha marcado '+esc(pair.b.name)+' más o menos goles que '+esc(pair.a.name)+'?'
     :'¿Tiene '+esc(pair.b.name)+' más o menos goles a favor que '+esc(pair.a.name)+'?';
-  return '<section class="v12-moreless v531-page v531-more v531-more-game" data-v12-moreless data-v531-more data-v531-view="game">'+
+  return '<section class="v531-page v531-more v531-more-game" data-v531-more data-v531-view="game">'+
     '<header class="v531-game-head"><strong>Más o menos</strong><button type="button" data-v531-more-close aria-label="Cerrar">'+closeSvg()+'</button></header>'+
     '<main class="v531-more-game-body">'+
       '<div class="v531-player-pair">'+playerCard(pair.a,data,true)+playerCard(pair.b,data,more.answered)+'</div>'+
@@ -221,19 +221,28 @@ function setGamesNav(){
     item.setAttribute('aria-current',on?'page':'false');
   });
 }
-function render(){
+function render(focusAdded=false){
   const r=route();
   if(r!=='quizArena'&&r!=='moreLess')return;
   const screen=document.querySelector('#screen');if(!screen)return;
   const data=db||window.LJR_OFFICIAL_DATA||{};
+  const kind=r==='quizArena'?'quiz':'more';
+  let mount=screen.querySelector('[data-v531-mount="'+kind+'"]');
+  if(!mount){
+    mount=document.createElement('div');
+    mount.className='v531-added-block';
+    mount.dataset.v531Mount=kind;
+    screen.appendChild(mount);
+  }
   if(r==='quizArena'){
-    const html=quiz.mode==='game'?quizGame(data):quiz.mode==='result'?quizResult(data):quizHub(data);
-    screen.innerHTML=html;
+    mount.innerHTML=quiz.mode==='game'?quizGame(data):quiz.mode==='result'?quizResult(data):quizHub(data);
   }else{
-    screen.innerHTML=more.mode==='game'?moreGame(data):moreHub(data);
+    mount.innerHTML=more.mode==='game'?moreGame(data):moreHub(data);
   }
   setGamesNav();
-  window.scrollTo({top:0,behavior:'auto'});
+  if(focusAdded)requestAnimationFrame(function(){
+    mount.scrollIntoView({behavior:'smooth',block:'start'});
+  });
 }
 function share(){
   const p={title:'Liga Juventino Rosas',text:'Juega Quiz Arena y Más o Menos en la app de la Liga.',url:location.href};
@@ -243,8 +252,8 @@ function share(){
 function schedule(){
   requestAnimationFrame(function(){requestAnimationFrame(function(){
     const r=route();
-    if(r==='quizArena'&&!document.querySelector('[data-v531-quiz]'))render();
-    if(r==='moreLess'&&!document.querySelector('[data-v531-more]'))render();
+    if(r==='quizArena'&&!document.querySelector('[data-v531-mount="quiz"]'))render(false);
+    if(r==='moreLess'&&!document.querySelector('[data-v531-mount="more"]'))render(false);
   })});
 }
 document.addEventListener('click',function(e){
@@ -256,18 +265,18 @@ document.addEventListener('click',function(e){
   if(t.matches('[data-v531-quiz-back],[data-v531-more-back]')){go('more');return}
   if(t.matches('[data-v531-share]')){share();return}
   if(t.matches('[data-v531-rankings]')){go('rankings');return}
-  if(t.matches('[data-v531-quiz-start]')){quiz.mode='game';quiz.answered=false;quiz.exit=false;render();return}
-  if(t.matches('[data-v531-quiz-close]')){quiz.exit=true;render();return}
-  if(t.matches('[data-v531-result-back]')){quiz.mode='hub';quiz.exit=false;render();return}
+  if(t.matches('[data-v531-quiz-start]')){quiz.mode='game';quiz.answered=false;quiz.exit=false;render(true);return}
+  if(t.matches('[data-v531-quiz-close]')){quiz.exit=true;render(true);return}
+  if(t.matches('[data-v531-result-back]')){quiz.mode='hub';quiz.exit=false;render(true);return}
   if(t.matches('[data-v531-q-answer]')){
     const data=db||window.LJR_OFFICIAL_DATA||{},q=quizData(data),pick=t.dataset.v531QAnswer||'';
     quiz.selected=pick;quiz.answered=true;
     if(norm(pick)===norm(q.correct))quiz.points+=10;
-    quiz.mode='result';render();return;
+    quiz.mode='result';render(true);return;
   }
-  if(t.matches('[data-v531-quiz-next]')){quiz.step=Math.min(12,quiz.step+1);quiz.selected='';quiz.answered=false;quiz.mode='game';render();return}
-  if(t.matches('[data-v531-more-start]')){more.mode='game';more.answered=false;more.exit=false;render();return}
-  if(t.matches('[data-v531-more-close]')){more.exit=true;render();return}
+  if(t.matches('[data-v531-quiz-next]')){quiz.step=Math.min(12,quiz.step+1);quiz.selected='';quiz.answered=false;quiz.mode='game';render(true);return}
+  if(t.matches('[data-v531-more-start]')){more.mode='game';more.answered=false;more.exit=false;render(true);return}
+  if(t.matches('[data-v531-more-close]')){more.exit=true;render(true);return}
   if(t.matches('[data-v531-more-choice]')){
     if(more.answered)return;
     const data=db||window.LJR_OFFICIAL_DATA||{},pair=morePair(data);
@@ -276,18 +285,18 @@ document.addEventListener('click',function(e){
     more.selected=picked===actual?'correct':'wrong';
     more.answered=true;
     if(picked===actual)more.points+=10;else more.attempts=Math.max(0,more.attempts-1);
-    render();return;
+    render(true);return;
   }
   if(t.matches('[data-v531-exit-confirm]')){
     const kind=t.dataset.v531ExitConfirm;
     if(kind==='quiz'){quiz.mode='hub';quiz.exit=false;quiz.answered=false}
     else{more.mode='hub';more.exit=false;more.answered=false}
-    render();return;
+    render(true);return;
   }
   if(t.matches('[data-v531-exit-cancel]')){
     const kind=t.dataset.v531ExitCancel;
     if(kind==='quiz')quiz.exit=false;else more.exit=false;
-    render();return;
+    render(true);return;
   }
 },true);
 
