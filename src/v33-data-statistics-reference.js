@@ -46,14 +46,16 @@ function teamLogo(name,cls=''){
 }
 function playerAvatar(name,team,cls='v33-player-avatar'){
   let src='';
-  try{src=window.LJR_PLAYER_MEDIA?.photo?.(name,team,'3')||window.LJR_PLAYER_PHOTOS?.get?.(name,team,'3')||''}catch(_){}
+  /* V579: la foto oficial del registro manda sobre cualquier caché local.
+     Evita que un escudo guardado por error sustituya la cara del jugador. */
+  const entry=Object.entries(current()?.player_profiles||{}).find(([t])=>same(t,team));
+  const p=(Array.isArray(entry?.[1])?entry[1]:[]).find(x=>same(x?.name,name));
+  src=String(p?.photo||'').trim();
   if(!src){
-    const entry=Object.entries(current()?.player_profiles||{}).find(([t])=>same(t,team));
-    const p=(Array.isArray(entry?.[1])?entry[1]:[]).find(x=>same(x?.name,name));
-    src=String(p?.photo||'');
+    try{src=window.LJR_PLAYER_MEDIA?.photo?.(name,team,'3')||window.LJR_PLAYER_PHOTOS?.get?.(name,team,'3')||''}catch(_){}
   }
   return src
-    ?'<span class="'+cls+' v576-has-photo"><img src="'+esc(src)+'" alt="'+esc(name)+'" loading="lazy" decoding="async" referrerpolicy="no-referrer"></span>'
+    ?'<span class="'+cls+' v576-has-photo" data-v579-player-photo><img src="'+esc(src)+'" alt="'+esc(name)+'" loading="lazy" decoding="async" referrerpolicy="no-referrer"></span>'
     :'<span class="'+cls+' v576-photo-fallback">'+esc(initials(name).slice(0,2))+'</span>';
 }
 function backIcon(){return '<svg viewBox="0 0 32 32" aria-hidden="true"><path d="M20.5 7.5 12 16l8.5 8.5M12.5 16H27"/></svg>'}
