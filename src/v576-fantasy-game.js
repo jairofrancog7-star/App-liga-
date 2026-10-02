@@ -85,18 +85,12 @@ function accessTeams(){
 }
 function accessMarkup(){
  const teams=accessTeams();
- const shirts=(n,pos)=>'<div class="v581-preview-row '+pos.toLowerCase()+'>'+Array.from({length:n},()=>'<button type="button" class="v581-preview-shirt" data-v576-open-team aria-label="Elegir '+pos+'"><span>+</span><b>'+pos+'</b></button>').join('')+'</div>';
  return'<section class="v576-access-more" data-v576-access-more>'+
  '<div class="v576-more-kicker">JUEGA FANTASY</div>'+
 
  '<div class="v576-access-copy"><h2>Elige tu equipo</h2><p>Arma tu plantilla con 15 jugadores registrados de la Liga Juventino Rosas. Tienes €100m de presupuesto Fantasy.</p></div>'+
  '<div class="v576-feature-grid"><article><b>15</b><span>Jugadores</span></article><article><b>€100m</b><span>Presupuesto</span></article><article><b>4</b><span>Posiciones</span></article></div>'+
  '<div class="v576-access-actions"><button type="button" data-v576-guest>Prueba como invitado</button><button type="button" data-v576-open-team>Elige tu equipo</button></div>'+
- '<section class="v581-squad-preview" aria-label="Vista previa de plantilla Fantasy">'+
-   '<div class="v581-preview-head"><div><span>TU PLANTILLA</span><h3>Arma tu 15</h3></div><button type="button" data-v576-open-team>Empezar</button></div>'+
-   '<p>Toca cualquier playera para abrir el constructor y elegir jugadores de la Liga.</p>'+
-   '<div class="v581-mini-pitch">'+shirts(3,'DEL')+shirts(5,'CEN')+shirts(5,'DEF')+shirts(2,'POR')+'</div>'+
- '</section>'+
  '<section class="v581-fantasy-tools" aria-label="Herramientas Fantasy">'+
    '<h3>Más Fantasy</h3>'+
    '<div class="v581-tool-grid">'+
