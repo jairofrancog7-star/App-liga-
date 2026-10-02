@@ -186,3 +186,76 @@ body.v379-player-profile-active .v379-player-photo{
   object-fit:cover!important;
   object-position:center 18%!important;
 }
+
+
+/* V600 — una sola miniatura y encuadre facial consistente en toda la app. */
+.v576-has-photo>img,
+.v576-player-avatar>img,
+.v66-player-avatar>img,
+.v42-avatar>img,
+.v419-player-avatar>img,
+.v446-stat-ref-avatar>img,
+.v414-avatar>img,
+.v123-avatar>img,
+.v123-option-avatar>img,
+.v379-related-avatar>img,
+.v576-table-photo>img,
+.v416-pitch-player i.v576-pitch-photo img,
+.v417-bench-player i.v576-bench-photo img,
+.v419-mini-pitch i.v576-mini-photo img{
+  object-fit:cover!important;
+  object-position:50% 38%!important;
+}
+.v576-player-avatar,
+.v66-player-avatar,
+.v42-avatar,
+.v419-player-avatar,
+.v446-stat-ref-avatar,
+.v414-avatar,
+.v123-avatar,
+.v123-option-avatar,
+.v379-related-avatar,
+.v576-table-photo{
+  aspect-ratio:1/1!important;
+  border-radius:50%!important;
+  overflow:hidden!important;
+}
+.v576-player-avatar>img,
+.v66-player-avatar>img,
+.v42-avatar>img,
+.v419-player-avatar>img,
+.v446-stat-ref-avatar>img,
+.v414-avatar>img,
+.v123-avatar>img,
+.v123-option-avatar>img,
+.v379-related-avatar>img,
+.v576-table-photo>img{
+  border-radius:50%!important;
+  clip-path:circle(50%)!important;
+}
+.v576-team-fallback{
+  border-radius:50%!important;
+  overflow:hidden!important;
+  background:#0b176e!important;
+}
+.v576-team-fallback>img{
+  width:100%!important;
+  height:100%!important;
+  box-sizing:border-box!important;
+  padding:3px!important;
+  object-fit:contain!important;
+  object-position:center!important;
+  border-radius:0!important;
+  clip-path:none!important;
+}
+body[data-app-route="scorers"] .v391-rank-copy>.v576-inline-player-photo,
+body[data-app-route="scorers"] .v462-rank-copy>.v576-inline-player-photo,
+body[data-app-route="scorers"] .v194-player-name>.v576-inline-player-photo{
+  display:none!important;
+}
+body[data-app-route="scorers"] .v391-rank-copy.v576-has-inline-photo,
+body[data-app-route="scorers"] .v462-rank-copy.v576-has-inline-photo,
+body[data-app-route="scorers"] .v194-player-name.v576-has-inline-photo{
+  padding-left:0!important;
+  min-height:0!important;
+}
