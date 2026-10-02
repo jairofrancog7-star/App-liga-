@@ -192,8 +192,14 @@
   document.addEventListener('click',e=>{
     const mode=e.target.closest('[data-v40-mode]');
     if(mode){
+      e.preventDefault();
+      e.stopPropagation();
       const box=mode.closest('[data-v40-standings]');
-      if(box) renderMode(box,mode.dataset.v40Mode);
+      if(box){
+        const selected=mode.dataset.v40Mode||'compact';
+        renderMode(box,selected);
+        box.dataset.v40CurrentMode=selected;
+      }
       return;
     }
     const nav=e.target.closest('[data-v40-nav]');
