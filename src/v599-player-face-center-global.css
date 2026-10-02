@@ -1,11 +1,17 @@
-/* V599 — CARAS CENTRADAS GLOBALMENTE
-   Unifica las fotos de personas en círculos/listas sin tocar escudos de equipos.
-   La posición vertical usa --ljr-face-y, calculada por v599-player-face-center-global.js
-   según la proporción real de cada fotografía. */
+/* V600 — ROSTRO COMPLETO Y CENTRADO EN TODOS LOS CÍRCULOS DE PERSONAS
+   - Mantiene círculos perfectos.
+   - Usa variables calculadas por JS para centrar el rostro.
+   - Si una foto necesita alejarse, cambia a contain para no cortar frente/mentón.
+   - Si el rostro viene pequeño y hay espacio seguro, lo acerca sin recortarlo. */
 
-:root{--ljr-face-y:42%}
+:root{
+  --ljr-face-x:50%;
+  --ljr-face-y:44%;
+  --ljr-face-fit:cover;
+  --ljr-face-zoom:1;
+}
 
-/* Contenedores que representan PERSONAS: siempre círculo real, nunca óvalo. */
+/* Solo contenedores de PERSONAS; los escudos de equipo quedan intactos. */
 :is(
   .v576-player-avatar,
   .v66-player-avatar.v576-has-photo,
@@ -19,16 +25,17 @@
   .v576-table-photo,
   .v124-avatar.v576-has-inline-photo,
   .v562-avatar.v576-has-photo,
-  .v12-avatar:has(>img),
+  .v12-avatar.v576-face-photo,
   .v538-person.has-photo,
   .v33-player-team-logo.v576-player-avatar
 ){
   aspect-ratio:1/1!important;
   border-radius:50%!important;
   overflow:hidden!important;
+  background:#101b88!important;
 }
 
-/* Foto de jugador: ocupa el círculo y centra la cara. */
+/* Todas las fotos de personas usan el mismo encuadre seguro. */
 :is(
   .v576-player-photo,
   .v576-player-avatar>img,
@@ -47,29 +54,50 @@
   .v33-player-team-logo.v576-player-avatar>img,
   .v416-pitch-player i.v576-pitch-photo>img,
   .v417-bench-player i.v576-bench-photo>img,
-  .v419-mini-pitch i.v576-mini-photo>img
+  .v419-mini-pitch i.v576-mini-photo>img,
+  .v538-person.has-photo>img
 ){
   width:100%!important;
   height:100%!important;
+  min-width:100%!important;
+  min-height:100%!important;
+  max-width:100%!important;
+  max-height:100%!important;
   display:block!important;
-  object-fit:cover!important;
-  object-position:center var(--ljr-face-y,42%)!important;
+  box-sizing:border-box!important;
+  object-fit:var(--ljr-face-fit,cover)!important;
+  object-position:var(--ljr-face-x,50%) var(--ljr-face-y,44%)!important;
   border-radius:inherit!important;
-  transform:none!important;
+  transform:scale(var(--ljr-face-zoom,1))!important;
+  transform-origin:50% 50%!important;
 }
 
-/* Más o Menos: corrige específicamente el recorte "center top" que cortaba nariz/boca. */
+/* Cuando hay que alejar la foto para mostrar cabeza/rostro completos. */
+img[data-ljr-face-fit="contain"]{
+  object-fit:contain!important;
+  object-position:center!important;
+  transform:none!important;
+  padding:2px!important;
+  background:#101b88!important;
+}
+
+/* Más o Menos: elimina definitivamente el viejo center top que cortaba caras. */
 body .v543-moreless-portal .v583-challenge-art .v538-person.has-photo>img,
 body[data-app-route="moreLessGallery"] .v583-challenge-art .v538-person.has-photo>img{
-  width:100%!important;
-  height:100%!important;
-  object-fit:cover!important;
-  object-position:center var(--ljr-face-y,46%)!important;
-  border-radius:50%!important;
+  object-fit:var(--ljr-face-fit,cover)!important;
+  object-position:var(--ljr-face-x,50%) var(--ljr-face-y,44%)!important;
+  transform:scale(var(--ljr-face-zoom,1))!important;
+  padding:0!important;
+}
+body .v543-moreless-portal .v583-challenge-art .v538-person.has-photo>img[data-ljr-face-fit="contain"],
+body[data-app-route="moreLessGallery"] .v583-challenge-art .v538-person.has-photo>img[data-ljr-face-fit="contain"]{
+  object-fit:contain!important;
+  object-position:center!important;
   transform:none!important;
+  padding:2px!important;
 }
 
-/* Goleadores / tarjetas grandes de persona: misma lógica, con un poco más de aire arriba. */
+/* Fotos grandes de persona: respetan el mismo punto facial, sin deformarse. */
 :is(
   .v576-inline-player-photo,
   .v576-hero-player-photo,
@@ -77,29 +105,39 @@ body[data-app-route="moreLessGallery"] .v583-challenge-art .v538-person.has-phot
   .v576-v28-feature-photo,
   body.v379-player-profile-active .v379-player-photo
 ){
-  object-fit:cover!important;
-  object-position:center var(--ljr-face-y,38%)!important;
+  object-fit:var(--ljr-face-fit,cover)!important;
+  object-position:var(--ljr-face-x,50%) var(--ljr-face-y,40%)!important;
+  transform:scale(var(--ljr-face-zoom,1))!important;
+  transform-origin:50% 50%!important;
+}
+:is(
+  .v576-inline-player-photo,
+  .v576-hero-player-photo,
+  .v576-scorer-hero-photo,
+  .v576-v28-feature-photo,
+  body.v379-player-profile-active .v379-player-photo
+)[data-ljr-face-fit="contain"]{
+  object-fit:contain!important;
+  object-position:center!important;
+  transform:none!important;
 }
 
-/* Si una foto está dentro de un círculo, la imagen nunca puede estirarse a óvalo. */
+/* El círculo jamás se convierte en óvalo por reglas antiguas. */
 :is(
   .v576-player-avatar,
-  .v66-player-avatar,
-  .v42-avatar,
-  .v419-player-avatar,
-  .v446-stat-ref-avatar,
-  .v414-avatar,
-  .v123-avatar,
-  .v123-option-avatar,
-  .v379-related-avatar,
+  .v66-player-avatar.v576-has-photo,
+  .v42-avatar.v576-has-photo,
+  .v419-player-avatar.v576-has-photo,
+  .v446-stat-ref-avatar.v576-has-photo,
+  .v414-avatar.v576-has-photo,
+  .v123-avatar.v576-has-photo,
+  .v123-option-avatar.v576-has-photo,
+  .v379-related-avatar.v576-has-photo,
   .v576-table-photo,
-  .v124-avatar,
-  .v562-avatar,
-  .v12-avatar,
+  .v124-avatar.v576-has-inline-photo,
+  .v562-avatar.v576-has-photo,
   .v538-person.has-photo
-)>img{
-  min-width:100%!important;
-  min-height:100%!important;
-  max-width:100%!important;
-  max-height:100%!important;
+){
+  min-width:0!important;
+  min-height:0!important;
 }
