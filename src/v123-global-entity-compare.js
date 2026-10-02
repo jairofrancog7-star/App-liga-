@@ -34,7 +34,10 @@ function playerPhotoUrl(p){
 }
 function avatarMarkup(p,cls){
  const src=playerPhotoUrl(p);
- return src?'<span class="'+cls+' has-photo"><img src="'+esc(src)+'" alt="'+esc(p?.name||'Jugador')+'" loading="lazy" decoding="async" referrerpolicy="no-referrer"></span>':'<span class="'+cls+'">'+esc(initials(p?.name))+'</span>';
+ const picker=String(cls||'').includes('v206-option-avatar');
+ const frameStyle=picker?' style="width:44px!important;height:44px!important;min-width:44px!important;min-height:44px!important;max-width:44px!important;max-height:44px!important;aspect-ratio:1/1!important;display:grid!important;place-items:center!important;overflow:hidden!important;border-radius:50%!important;box-sizing:border-box!important;flex:0 0 44px!important;padding:0!important;margin:0!important;"':'';
+ const imgStyle=picker?' style="position:static!important;display:block!important;width:44px!important;height:44px!important;min-width:44px!important;min-height:44px!important;max-width:44px!important;max-height:44px!important;aspect-ratio:1/1!important;object-fit:cover!important;object-position:center 22%!important;border-radius:50%!important;clip-path:circle(50%)!important;box-sizing:border-box!important;margin:0!important;padding:0!important;transform:none!important;"':'';
+ return src?'<span class="'+cls+' has-photo"'+frameStyle+'><img src="'+esc(src)+'" alt="'+esc(p?.name||'Jugador')+'" loading="lazy" decoding="async" referrerpolicy="no-referrer"'+imgStyle+'></span>':'<span class="'+cls+'"'+frameStyle+'>'+esc(initials(p?.name))+'</span>';
 }
 
 async function getApi(){
