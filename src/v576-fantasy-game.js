@@ -75,7 +75,7 @@ function builderMarkup(){
  '<header class="v576-builder-head"><button type="button" data-v576-back aria-label="Volver">‹</button><h1>Elige tu equipo</h1><button type="button" data-v576-menu aria-label="Menú">⋮</button></header>'+
  '<div class="v576-builder-summary"><div><small>Jugadores</small><b>'+count+'/15</b></div><div><small>Restante <i>?</i></small><b>'+money(left)+'</b></div><button type="button" data-v576-auto>✣ Autocompletar</button></div>'+
  '<div class="v576-sponsor-strip"><span>FANTASY</span><img src="./assets/liga-logo.webp" alt=""><b>LIGA JUVENTINO ROSAS</b></div>'+
- '<div class="v576-field">'+fieldRow('DEL',map)+fieldRow('CEN',map)+fieldRow('DEF',map)+fieldRow('POR',map)+'</div>'+
+
  '<div class="v576-builder-actions"><button type="button" data-v576-search class="'+(count===15?'ready':'')+'">'+(count===15?'Continuar':'Buscar jugadores')+'</button></div>'+
  '<footer>CONSEJO: Autocompleta tu plantilla y afínala antes del primer partido</footer></section>';
 }
