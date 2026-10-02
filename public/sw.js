@@ -1,4 +1,4 @@
-const CACHE='liga-juventino-v586-fantasy-reference-flow';
+const CACHE='liga-juventino-v587-fantasy-exact-reference';
 const CORE=['./','./index.html','./manifest.webmanifest','./brand-neon-header.svg','./profile-reference.svg'];
 
 self.addEventListener('install',event=>{
