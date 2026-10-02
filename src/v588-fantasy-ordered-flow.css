@@ -1,0 +1,159 @@
+/* V588 — ordered Fantasy flow from the user's Champions League reference:
+   cover -> sign-in slide -> choose-team slide -> guest sheet -> 15-player builder. */
+
+body[data-app-route="fantasyAccess"] #screen{overflow:hidden!important}
+body[data-app-route="fantasyAccess"] .v576-access-more{display:none!important}
+body[data-app-route="fantasyAccess"] .v588-fantasy-access{
+  overflow:hidden!important;padding:0!important;justify-content:flex-start!important
+}
+body[data-app-route="fantasyAccess"] .v588-ps5-strip{
+  width:100%!important;height:96px!important;min-height:96px!important;padding:0!important;
+  display:flex!important;align-items:center!important;justify-content:center!important;gap:28px!important;
+  background:#0a56ba!important;color:#fff!important
+}
+body[data-app-route="fantasyAccess"] .v588-ps5-strip>span{
+  margin:0!important;color:#fff!important;font-size:16px!important;font-weight:400!important
+}
+body[data-app-route="fantasyAccess"] .v588-ps5-mark{
+  color:#fff!important;font:900 italic 31px/1 Arial,sans-serif!important;letter-spacing:-2px!important
+}
+body[data-app-route="fantasyAccess"] .v588-access-viewport{
+  position:relative!important;width:100%!important;flex:1 1 auto!important;min-height:0!important;
+  overflow:hidden!important;background:#08086d!important;touch-action:pan-y!important
+}
+body[data-app-route="fantasyAccess"] .v588-access-slide{
+  position:absolute!important;inset:0!important;display:flex!important;flex-direction:column!important;
+  align-items:center!important;overflow-y:auto!important;overflow-x:hidden!important;opacity:0!important;
+  transform:translateX(100%)!important;pointer-events:none!important;transition:transform .28s ease,opacity .22s ease!important;
+  scrollbar-width:none!important
+}
+body[data-app-route="fantasyAccess"] .v588-access-slide::-webkit-scrollbar{display:none!important}
+body[data-app-route="fantasyAccess"] .v588-access-slide.is-active{opacity:1!important;transform:translateX(0)!important;pointer-events:auto!important}
+body[data-app-route="fantasyAccess"] [data-v588-slide="1"] .v588-slide-login{transform:translateX(-100%)!important}
+body[data-app-route="fantasyAccess"] .v588-side-arrow{
+  position:absolute!important;z-index:8!important;top:38%!important;width:48px!important;height:70px!important;
+  border:0!important;background:transparent!important;color:#fff!important;font:300 55px/1 Arial,sans-serif!important;
+  opacity:.95!important
+}
+body[data-app-route="fantasyAccess"] .v588-side-arrow.prev{left:0!important}
+body[data-app-route="fantasyAccess"] .v588-side-arrow.next{right:0!important}
+body[data-app-route="fantasyAccess"] .v588-slide-login .v23-access-photo{
+  width:58%!important;max-width:300px!important;margin-top:38px!important;border-radius:20px!important
+}
+body[data-app-route="fantasyAccess"] .v588-slide-login .v23-access-copy{
+  margin-top:86px!important;width:91%!important
+}
+body[data-app-route="fantasyAccess"] .v588-slide-login .v23-access-copy h1{
+  font-size:clamp(27px,6vw,37px)!important;line-height:1.16!important
+}
+body[data-app-route="fantasyAccess"] .v588-slide-login .v23-access-copy p{
+  margin-top:32px!important;font-size:clamp(16px,3.35vw,21px)!important;line-height:1.7!important
+}
+body[data-app-route="fantasyAccess"] .v588-slide-login .v23-access-actions{
+  margin-top:52px!important;padding-bottom:28px!important
+}
+
+/* Second design: three Fantasy cards, matching the user's image before the game. */
+body[data-app-route="fantasyAccess"] .v588-card-stage{
+  position:relative!important;width:min(88%,470px)!important;height:335px!important;margin-top:48px!important;flex:0 0 auto!important
+}
+body[data-app-route="fantasyAccess"] .v588-fantasy-card{
+  position:absolute!important;top:38px!important;width:142px!important;height:226px!important;
+  padding:9px 8px 10px!important;box-sizing:border-box!important;display:grid!important;grid-template-rows:1fr 31px 31px!important;
+  align-items:end!important;text-align:center!important;color:#fff!important;
+  background:linear-gradient(155deg,#1327d2,#071476 72%)!important;
+  border:3px solid #ee913a!important;
+  clip-path:polygon(15% 0,85% 0,100% 13%,93% 89%,50% 100%,7% 89%,0 13%)!important;
+  box-shadow:0 10px 24px rgba(0,0,35,.28)!important
+}
+body[data-app-route="fantasyAccess"] .v588-fantasy-card.left{left:4%!important;transform:rotate(-7deg) scale(.91)!important}
+body[data-app-route="fantasyAccess"] .v588-fantasy-card.right{right:4%!important;transform:rotate(7deg) scale(.91)!important}
+body[data-app-route="fantasyAccess"] .v588-fantasy-card.main{
+  z-index:4!important;left:50%!important;top:15px!important;width:170px!important;height:270px!important;
+  transform:translateX(-50%)!important;border-color:#18dff0!important
+}
+body[data-app-route="fantasyAccess"] .v588-card-face{
+  position:relative!important;align-self:stretch!important;overflow:hidden!important;
+  background:radial-gradient(circle at 50% 38%,#263b85 0 32%,#08106f 70%)!important
+}
+body[data-app-route="fantasyAccess"] .v588-player-silhouette{
+  position:absolute!important;left:50%!important;bottom:-5px!important;width:88px!important;height:124px!important;
+  transform:translateX(-50%)!important;border-radius:46% 46% 10% 10%!important;
+  background:linear-gradient(180deg,#d4a578 0 34%,#eceff4 35% 100%)!important;
+  box-shadow:0 -18px 0 -2px #2b1d18 inset!important
+}
+body[data-app-route="fantasyAccess"] .v588-fantasy-card.left .v588-player-silhouette{background:linear-gradient(180deg,#b98665 0 34%,#9c1630 35% 100%)!important}
+body[data-app-route="fantasyAccess"] .v588-fantasy-card.right .v588-player-silhouette{background:linear-gradient(180deg,#8d604a 0 34%,#b72121 35% 100%)!important}
+body[data-app-route="fantasyAccess"] .v588-fantasy-card>b{
+  margin:0 -8px!important;padding:7px 3px!important;background:#084be9!important;font-size:13px!important;line-height:1!important;
+  overflow:hidden!important;text-overflow:ellipsis!important;white-space:nowrap!important
+}
+body[data-app-route="fantasyAccess"] .v588-fantasy-card>small{
+  margin:0 -8px -10px!important;padding:7px 3px!important;background:#16e0e9!important;color:#07105f!important;
+  font-size:13px!important;font-weight:900!important
+}
+body[data-app-route="fantasyAccess"] .v588-fantasy-card:not(.main)>small{background:#f1a532!important}
+body[data-app-route="fantasyAccess"] .v588-team-copy{
+  width:90%!important;max-width:500px!important;margin-top:0!important;text-align:center!important
+}
+body[data-app-route="fantasyAccess"] .v588-team-copy h1{
+  margin:0!important;color:#fff!important;font-size:clamp(28px,6vw,38px)!important;font-weight:400!important
+}
+body[data-app-route="fantasyAccess"] .v588-team-copy p{
+  margin:28px 0 0!important;color:#c5c6de!important;font-size:clamp(16px,3.45vw,21px)!important;line-height:1.65!important
+}
+body[data-app-route="fantasyAccess"] .v588-dots{display:flex!important;justify-content:center!important;gap:12px!important;margin-top:18px!important}
+body[data-app-route="fantasyAccess"] .v588-dots i{
+  width:15px!important;height:15px!important;border-radius:50%!important;background:#5e5c9c!important
+}
+body[data-app-route="fantasyAccess"] .v588-dots i.active{background:#fff!important}
+body[data-app-route="fantasyAccess"] .v588-team-actions{margin-top:34px!important;padding-bottom:28px!important}
+body[data-app-route="fantasyAccess"] .v23-access-login{
+  width:82.5%!important;max-width:430px!important;min-height:64px!important;border-radius:25px!important;
+  background:#16e1ea!important;color:#07115f!important;font-size:18px!important
+}
+body[data-app-route="fantasyAccess"] .v23-access-later{
+  margin-top:30px!important;color:#18dfe9!important;font-size:18px!important
+}
+
+/* Exact guest confirmation sheet shown before the lineup. */
+.v576-layer.login{align-items:flex-end!important}
+.v576-layer.login .v576-backdrop{background:rgba(0,3,40,.64)!important}
+.v576-layer.login .v576-login-sheet{
+  width:min(100%,560px)!important;min-height:520px!important;padding:28px 28px 34px!important;
+  border-radius:28px 28px 0 0!important;background:#fff!important;color:#24323a!important
+}
+.v576-layer.login .v576-login-sheet h2{margin:14px 0 28px!important;font-size:25px!important;font-weight:800!important}
+.v576-layer.login .v576-login-sheet p{font-size:16px!important;line-height:1.55!important;color:#50616a!important}
+.v576-layer.login .v576-login-sheet ul{gap:20px!important;margin:28px 0!important}
+.v576-layer.login .v576-login-sheet li{
+  grid-template-columns:40px 1fr!important;gap:10px!important;color:#53666f!important;font-size:16px!important;line-height:1.4!important
+}
+.v576-layer.login .v576-login-sheet .primary{
+  min-height:66px!important;border-radius:14px!important;background:#113df7!important;font-size:16px!important
+}
+.v576-layer.login .v576-login-sheet .later{margin-top:23px!important;font-size:16px!important;color:#0b35cf!important}
+.v576-layer.login .v576-login-sheet .v576-x{right:24px!important;top:22px!important;font-size:34px!important;color:#a7aab4!important}
+
+/* Team builder: sponsor strip and proportions from the final reference. */
+body.v587-fantasy-team-open .v588-team-ps5{
+  height:58px!important;padding:0 19%!important;display:flex!important;justify-content:space-between!important;
+  align-items:center!important;background:#0b62c5!important
+}
+body.v587-fantasy-team-open .v588-team-ps5 strong{
+  color:#fff!important;font:900 italic 23px/1 Arial,sans-serif!important;letter-spacing:-1.5px!important
+}
+body.v587-fantasy-team-open .v576-builder-summary>button{color:#24e4ef!important}
+body.v587-fantasy-team-open .v576-first-hint{display:block!important}
+body.v587-fantasy-team-open .v576-builder-actions button.ready{background:#113cff!important}
+
+@media(max-width:390px){
+  body[data-app-route="fantasyAccess"] .v588-ps5-strip{height:82px!important;min-height:82px!important}
+  body[data-app-route="fantasyAccess"] .v588-ps5-mark{font-size:27px!important}
+  body[data-app-route="fantasyAccess"] .v588-card-stage{height:300px!important;margin-top:32px!important}
+  body[data-app-route="fantasyAccess"] .v588-fantasy-card{width:124px!important;height:204px!important}
+  body[data-app-route="fantasyAccess"] .v588-fantasy-card.main{width:150px!important;height:244px!important}
+  body[data-app-route="fantasyAccess"] .v588-team-copy p{margin-top:20px!important}
+  body[data-app-route="fantasyAccess"] .v588-team-actions{margin-top:24px!important}
+  .v576-layer.login .v576-login-sheet{min-height:500px!important;padding:24px 22px 28px!important}
+}
