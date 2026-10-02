@@ -1,0 +1,183 @@
+/* V597 — different realistic raster jerseys for each official Liga team.
+   Uses the user's real 3D jersey photo as the base so folds/shadows stay photographic. */
+
+html body.v587-fantasy-team-open .v576-shirt,
+html body.v587-fantasy-team-open .v576-shirt.chosen,
+html body.v587-fantasy-team-open .v590-kit-wrap{
+  position:relative!important;
+  width:68px!important;
+  height:80px!important;
+  display:grid!important;
+  place-items:center!important;
+  background:none!important;
+  clip-path:none!important;
+  overflow:visible!important;
+  filter:none!important;
+  transform:none!important;
+}
+
+html body.v587-fantasy-team-open .v597-real-kit{
+  position:relative!important;
+  width:68px!important;
+  height:80px!important;
+  display:block!important;
+  perspective:1000px!important;
+  transform-style:preserve-3d!important;
+  transform:rotateY(-5deg) rotateX(1deg)!important;
+  transform-origin:50% 55%!important;
+  transition:transform .16s ease,filter .16s ease!important;
+  filter:drop-shadow(0 8px 7px rgba(0,40,52,.28))!important;
+}
+html body.v587-fantasy-team-open .v576-slot:nth-child(even) .v597-real-kit{
+  transform:rotateY(5deg) rotateX(1deg)!important;
+}
+html body.v587-fantasy-team-open .v576-slot:active .v597-real-kit,
+html body.v587-fantasy-team-open .v576-slot:focus-visible .v597-real-kit{
+  transform:rotateY(0) rotateX(0) scale(1.05)!important;
+  filter:drop-shadow(0 11px 10px rgba(0,40,52,.36))!important;
+}
+
+html body.v587-fantasy-team-open .v597-shirt-photo,
+html body.v587-fantasy-team-open .v597-shirt-tint,
+html body.v587-fantasy-team-open .v597-shirt-pattern{
+  position:absolute!important;
+  inset:0!important;
+  width:100%!important;
+  height:100%!important;
+}
+html body.v587-fantasy-team-open .v597-shirt-photo{
+  object-fit:contain!important;
+  z-index:1!important;
+}
+html body.v587-fantasy-team-open .v597-shirt-tint{
+  z-index:2!important;
+  background:var(--v597-primary)!important;
+  opacity:.72!important;
+  mix-blend-mode:multiply!important;
+  -webkit-mask:url("../assets/fantasy-jersey-real-3d.png?v=20261002-v597") center/contain no-repeat!important;
+  mask:url("../assets/fantasy-jersey-real-3d.png?v=20261002-v597") center/contain no-repeat!important;
+}
+html body.v587-fantasy-team-open .v597-shirt-pattern{
+  z-index:3!important;
+  pointer-events:none!important;
+  -webkit-mask:url("../assets/fantasy-jersey-real-3d.png?v=20261002-v597") center/contain no-repeat!important;
+  mask:url("../assets/fantasy-jersey-real-3d.png?v=20261002-v597") center/contain no-repeat!important;
+  opacity:.88!important;
+}
+
+/* Team-specific realistic kit patterns. */
+html body.v587-fantasy-team-open .v597-real-kit.plain .v597-shirt-pattern{
+  background:
+    linear-gradient(90deg,transparent 0 15%,rgba(255,255,255,.18) 30%,transparent 48% 100%)!important;
+  opacity:.34!important;
+}
+html body.v587-fantasy-team-open .v597-real-kit.stripes .v597-shirt-pattern{
+  background:
+    repeating-linear-gradient(90deg,
+      transparent 0 9px,
+      var(--v597-accent) 9px 15px,
+      transparent 15px 24px)!important;
+  opacity:.64!important;
+}
+html body.v587-fantasy-team-open .v597-real-kit.bands .v597-shirt-pattern{
+  background:
+    linear-gradient(180deg,
+      transparent 0 28%,
+      var(--v597-accent) 28% 36%,
+      transparent 36% 54%,
+      var(--v597-accent) 54% 61%,
+      transparent 61% 100%)!important;
+  opacity:.46!important;
+}
+html body.v587-fantasy-team-open .v597-real-kit.diag .v597-shirt-pattern{
+  background:
+    linear-gradient(128deg,
+      transparent 0 35%,
+      var(--v597-accent) 35% 48%,
+      transparent 48% 100%)!important;
+  opacity:.62!important;
+}
+html body.v587-fantasy-team-open .v597-real-kit.shoulders .v597-shirt-pattern{
+  background:
+    linear-gradient(180deg,var(--v597-accent) 0 21%,transparent 21% 100%)!important;
+  opacity:.72!important;
+}
+
+/* Cover the original Real Madrid crest from the source photo and place the Liga team crest. */
+html body.v587-fantasy-team-open .v597-logo-patch{
+  position:absolute!important;
+  z-index:4!important;
+  left:52%!important;
+  top:28%!important;
+  width:16px!important;
+  height:16px!important;
+  transform:translate(-50%,-50%)!important;
+  border-radius:50%!important;
+  background:color-mix(in srgb,var(--v597-primary) 82%,white 18%)!important;
+  box-shadow:0 0 0 1px rgba(255,255,255,.18)!important;
+}
+html body.v587-fantasy-team-open .v597-team-logo{
+  position:absolute!important;
+  z-index:5!important;
+  left:52%!important;
+  top:28%!important;
+  width:13px!important;
+  height:13px!important;
+  transform:translate(-50%,-50%)!important;
+  object-fit:contain!important;
+  filter:drop-shadow(0 1px 2px rgba(0,0,0,.35))!important;
+}
+
+/* Filled shirts stand out more than empty slots. */
+html body.v587-fantasy-team-open .v576-slot.filled .v597-real-kit{
+  width:74px!important;
+  height:87px!important;
+}
+html body.v587-fantasy-team-open .v576-slot.empty .v597-real-kit{
+  opacity:.52!important;
+  filter:saturate(.55) brightness(.75) drop-shadow(0 6px 5px rgba(0,40,52,.18))!important;
+}
+html body.v587-fantasy-team-open .v590-kit-wrap.empty-kit>i:not(.remove){
+  z-index:9!important;
+  left:50%!important;
+  top:49%!important;
+  transform:translate(-50%,-50%)!important;
+  color:#fff!important;
+  font-size:24px!important;
+  font-weight:700!important;
+  text-shadow:0 2px 4px rgba(0,0,0,.35)!important;
+}
+html body.v587-fantasy-team-open .v576-shirt .remove{
+  z-index:12!important;
+  right:-5px!important;
+  top:-4px!important;
+}
+
+/* Keep current 3-5-5-2 geometry with enough room for the larger realistic shirts. */
+html body.v587-fantasy-team-open .v576-field-row.del{height:124px!important}
+html body.v587-fantasy-team-open .v576-field-row.cen,
+html body.v587-fantasy-team-open .v576-field-row.def{height:121px!important}
+html body.v587-fantasy-team-open .v576-field-row.por{height:106px!important}
+
+@media(max-width:390px){
+  html body.v587-fantasy-team-open .v576-shirt,
+  html body.v587-fantasy-team-open .v576-shirt.chosen,
+  html body.v587-fantasy-team-open .v590-kit-wrap{
+    width:62px!important;
+    height:73px!important;
+  }
+  html body.v587-fantasy-team-open .v597-real-kit{
+    width:62px!important;
+    height:73px!important;
+  }
+  html body.v587-fantasy-team-open .v576-slot.filled .v597-real-kit{
+    width:68px!important;
+    height:80px!important;
+  }
+  html body.v587-fantasy-team-open .v597-logo-patch{
+    width:15px!important;height:15px!important;
+  }
+  html body.v587-fantasy-team-open .v597-team-logo{
+    width:12px!important;height:12px!important;
+  }
+}
