@@ -1,4 +1,4 @@
-const CACHE='liga-juventino-v579-player-faces-stats-profile';
+const CACHE='liga-juventino-v574-name-alias-signup';
 const CORE=['./','./index.html','./manifest.webmanifest','./brand-neon-header.svg','./profile-reference.svg'];
 
 self.addEventListener('install',event=>{
