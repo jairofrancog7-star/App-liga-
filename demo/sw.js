@@ -1,4 +1,4 @@
-const CACHE='liga-juventino-v584-remove-preview';
+const CACHE='liga-juventino-v584-fantasy-no-promo-cards';
 const CORE=['./','./index.html','./manifest.webmanifest','./brand-neon-header.svg','./profile-reference.svg'];
 
 self.addEventListener('install',event=>{
