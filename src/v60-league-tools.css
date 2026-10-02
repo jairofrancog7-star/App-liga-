@@ -1984,3 +1984,48 @@ body.v553-printing .v553-week-scroll th:nth-child(7){width:11%!important}
   .v567-week-cat img{width:18px;height:18px;flex-basis:18px}
   .v567-week-team img{width:16px;height:16px;flex-basis:16px}
 }
+
+
+/* V568 — evita que logos remotos sin dimensiones rompan la tabla semanal. */
+[data-v553-weekly] .v553-week-group,
+[data-v553-weekly] .v553-week-title,
+[data-v553-weekly] .v553-week-scroll,
+[data-v553-weekly] .v553-week-scroll table,
+[data-v553-weekly] .v553-week-scroll tbody,
+[data-v553-weekly] .v553-week-scroll tr,
+[data-v553-weekly] .v553-week-scroll td,
+[data-v553-weekly] .v553-week-scroll th{
+  max-width:100%!important;
+}
+[data-v553-weekly] .v553-week-scroll{overflow-x:auto!important;overflow-y:hidden!important}
+[data-v553-weekly] .v553-week-scroll table{
+  width:100%!important;
+  min-width:760px!important;
+  table-layout:fixed!important;
+}
+[data-v553-weekly] .v553-week-scroll th:nth-child(1),
+[data-v553-weekly] .v553-week-scroll td:nth-child(1){width:110px!important}
+[data-v553-weekly] .v553-week-scroll th:nth-child(2),
+[data-v553-weekly] .v553-week-scroll td:nth-child(2){width:72px!important}
+[data-v553-weekly] .v553-week-scroll th:nth-child(3),
+[data-v553-weekly] .v553-week-scroll td:nth-child(3){width:180px!important}
+[data-v553-weekly] .v553-week-scroll th:nth-child(4),
+[data-v553-weekly] .v553-week-scroll td:nth-child(4){width:48px!important;text-align:center!important}
+[data-v553-weekly] .v553-week-scroll th:nth-child(5),
+[data-v553-weekly] .v553-week-scroll td:nth-child(5){width:180px!important}
+[data-v553-weekly] .v553-week-scroll th:nth-child(6),
+[data-v553-weekly] .v553-week-scroll td:nth-child(6){width:120px!important;min-width:120px!important}
+[data-v553-weekly] .v567-week-cat,
+[data-v553-weekly] .v567-week-team{display:flex!important;align-items:center!important;min-width:0!important;max-width:100%!important}
+[data-v553-weekly] .v567-week-cat img{
+  display:block!important;width:18px!important;height:18px!important;min-width:18px!important;max-width:18px!important;min-height:18px!important;max-height:18px!important;
+  object-fit:contain!important;flex:0 0 18px!important;background:transparent!important
+}
+[data-v553-weekly] .v567-week-team img{
+  display:block!important;width:16px!important;height:16px!important;min-width:16px!important;max-width:16px!important;min-height:16px!important;max-height:16px!important;
+  object-fit:contain!important;flex:0 0 16px!important;border-radius:50%!important;background:#fff!important;padding:1px!important;box-sizing:border-box!important
+}
+[data-v553-weekly] .v567-week-cat span,
+[data-v553-weekly] .v567-week-team span{
+  min-width:0!important;overflow:hidden!important;text-overflow:ellipsis!important
+}
