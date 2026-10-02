@@ -92,3 +92,47 @@ body.v123-player-compare-active .v123-option-radio.v205-option-radio.v206-option
   width:27px!important;
   height:27px!important;
 }
+
+
+/* V578 — CÍRCULO PERFECTO en selector de Comparar jugadores */
+body[data-app-route="playerCompare"] .v208-position-players .v123-option-avatar,
+body[data-app-route="playerCompare"] .v208-search-results .v123-option-avatar,
+body.v123-player-compare-active .v208-position-players .v123-option-avatar,
+body.v123-player-compare-active .v208-search-results .v123-option-avatar{
+  width:44px!important;
+  height:44px!important;
+  min-width:44px!important;
+  min-height:44px!important;
+  max-width:44px!important;
+  max-height:44px!important;
+  aspect-ratio:1/1!important;
+  border-radius:999px!important;
+  overflow:hidden!important;
+  box-sizing:border-box!important;
+  align-self:center!important;
+  justify-self:start!important;
+  padding:0!important;
+  margin:0!important;
+}
+body[data-app-route="playerCompare"] .v208-position-players .v123-option-avatar>img,
+body[data-app-route="playerCompare"] .v208-search-results .v123-option-avatar>img,
+body.v123-player-compare-active .v208-position-players .v123-option-avatar>img,
+body.v123-player-compare-active .v208-search-results .v123-option-avatar>img{
+  width:44px!important;
+  height:44px!important;
+  min-width:44px!important;
+  min-height:44px!important;
+  max-width:44px!important;
+  max-height:44px!important;
+  aspect-ratio:1/1!important;
+  object-fit:cover!important;
+  object-position:center 22%!important;
+  border-radius:999px!important;
+  clip-path:circle(50%)!important;
+  transform:none!important;
+}
+body[data-app-route="playerCompare"] .v208-position-players .v123-player-option,
+body[data-app-route="playerCompare"] .v208-search-results .v123-player-option{
+  grid-template-columns:44px minmax(0,1fr) 30px!important;
+  column-gap:12px!important;
+}
