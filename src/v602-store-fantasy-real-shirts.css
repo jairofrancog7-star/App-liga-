@@ -189,3 +189,16 @@ body[data-app-route="club-store"] .v436-product-art .v602-store-real-shirt{
     drop-shadow(0 4px 3px rgba(4,14,50,.15))
     drop-shadow(0 10px 9px rgba(4,14,50,.20))!important;
 }
+
+/* V603 — unhide the new shirt layers from legacy .v441-shirt>span rules. */
+body[data-app-route="club-store"] .v441-shirt > .v602-shirt-base,
+body[data-app-route="club-store"] .v441-shirt > .v602-shirt-tint,
+body[data-app-route="club-store"] .v441-shirt > .v602-shirt-pattern,
+body[data-app-route="club-store"] .v441-shirt > .v602-shirt-light{
+  display:block!important;
+}
+body[data-app-route="club-store"] .v441-shirt > .v602-shirt-name,
+body[data-app-route="club-store"] .v441-shirt > .v602-shirt-number,
+body[data-app-route="club-store"] .v441-shirt > .v602-shirt-label{
+  display:block!important;
+}
