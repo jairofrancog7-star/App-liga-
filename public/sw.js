@@ -1,4 +1,4 @@
-const CACHE='liga-juventino-v565-competition-restored-bottom';
+const CACHE='liga-juventino-v567-competition-native-restored';
 const CORE=['./','./index.html','./manifest.webmanifest','./brand-neon-header.svg','./profile-reference.svg'];
 
 self.addEventListener('install',event=>{
