@@ -159,15 +159,10 @@ function quizGame(data){
 }
 function quizResult(data){
   const q=quizData(data);
-  return '<section class="v531-page v531-quiz v531-result-screen" data-v531-quiz data-v531-view="result">'+
+  return '<section class="v531-page v531-quiz v531-result-screen v534-result-clean" data-v531-quiz data-v531-view="result">'+
     '<header class="v531-result-head"><button type="button" data-v531-result-back aria-label="Volver">'+backSvg()+'</button></header>'+
     quizLogo()+
-    '<div class="v531-result-options">'+q.options.map(function(name,i){
-      const ok=norm(name)===norm(q.correct);
-      const picked=norm(name)===norm(quiz.selected);
-      return '<div class="v531-result-option '+(ok?'correct':picked?'wrong':'')+'"><span>'+String.fromCharCode(65+i)+'</span><i></i>'+(ok?'<b>✓</b>':'')+'</div>';
-    }).join('')+'</div>'+
-    '<div class="v531-correct-pill">Respuesta correcta: '+esc(q.correct)+'</div>'+
+    '<div class="v534-result-status"><span>✓</span><b>Respuesta correcta</b><strong>'+esc(q.correct)+'</strong></div>'+
     '<button type="button" class="v531-next-btn" data-v531-quiz-next>Siguiente pregunta</button>'+
   '</section>';
 }
@@ -209,7 +204,7 @@ function moreLegacyExtras(data){
     return '<article class="v531-more-card"><div class="v531-more-card-art"><div class="v531-starball">✦</div></div><div><h2>Más o menos</h2><p>Abre los otros diseños del juego sin quitar la pantalla principal que ya tenías.</p><div class="v531-dual-actions compact"><button type="button" class="primary" data-v531-more-start>Abrir juego</button><button type="button" data-v531-share>Compartir</button></div></div></article>';
   }
   return '<section class="v531-legacy-extras v531-more-extras" data-v531-extras="more">'+
-    '<div class="v531-extras-head"><span>Más o menos</span><b>Más modos del juego</b></div>'+
+    '<div class="v531-extras-head"><span>Más modos del juego</span><b>DEBAJO DEL PRINCIPAL</b></div>'+
     '<article class="v531-more-feature"><div class="v531-more-feature-players">'+crest(pair.a.team,data,'feature')+crest(pair.b.team,data,'feature')+'</div><div><h2>Comparación</h2><p>Compara a '+esc(pair.a.name)+' y '+esc(pair.b.name)+' con datos publicados por la Liga.</p><div class="v531-dual-actions compact"><button type="button" class="primary" data-v531-more-start>Entrar al juego</button><button type="button" data-v531-share>Compartir</button></div></div></article>'+
     '<div class="v531-discover"><span>↕</span><b>PLAY GAMES</b><em>LIGA JUVENTINO</em></div>'+
     gameCard()+gameCard()+
@@ -289,10 +284,14 @@ function share(){
   if(navigator.share)navigator.share(p).catch(function(){});
   else navigator.clipboard?.writeText(location.href).catch(function(){});
 }
+let v534LastRoute='';
 function schedule(){
   requestAnimationFrame(function(){requestAnimationFrame(function(){
     const r=route();
-    if(r!=='quizArena'&&r!=='moreLess')return;
+    if(r!=='quizArena'&&r!=='moreLess'){
+      v534LastRoute=r;
+      return;
+    }
     const primary=primaryRoot(r);
     if(!primary){
       window.setTimeout(schedule,70);
@@ -300,6 +299,10 @@ function schedule(){
     }
     const kind=r==='quizArena'?'quiz':'more';
     if(!document.querySelector('[data-v531-mount="'+kind+'"]'))render(false);
+    if(v534LastRoute!==r){
+      v534LastRoute=r;
+      requestAnimationFrame(function(){window.scrollTo({top:0,left:0,behavior:'auto'})});
+    }
   })});
 }
 document.addEventListener('click',function(e){
