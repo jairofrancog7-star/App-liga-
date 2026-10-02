@@ -139,16 +139,18 @@
   }
   function complete(){
     const list=isVet35()?v35CompleteTeams:completeTeams;
+    const compactList=isVet35()?v35CompactTeams:compactTeams;
+    const lastFor=name=>compactList.find(x=>x.name===name)?.last||'—';
     return '<div class="v40-scroll-shell"><div class="v40-wide complete">'+
-      '<div class="v40-wide-head complete-head"><span></span><span></span><b>P</b><b>V</b><b>E</b><b>D</b><b></b><b></b><b class="v40-pluspts">+ PTS</b></div>'+
+      '<div class="v40-wide-head complete-head"><span></span><span></span><b>P</b><b>V</b><b>E</b><b>D</b><b>+/-</b><b>GF</b><b>GC</b><b>FORMA</b><b>PTOS</b></div>'+
       '<div class="v40-direct">CLASIFICACIÓN ACTUAL</div><div class="v40-rule"></div>'+
-      list.map((t,i)=>'<div class="v40-wide-row complete-row"><span>'+(i+1)+'</span><span class="v40-team">'+img(t.logo,t.name,'v40-team-logo')+'<strong>'+t.name+'</strong></span><span>'+t.p+'</span><span>'+t.w+'</span><span>'+t.d+'</span><span>'+t.l+'</span><span>'+t.gf+'</span><span class="v40-muted-number">'+t.ga+'</span><b>'+t.pts+'</b></div>').join('')+
+      list.map((t,i)=>'<div class="v40-wide-row complete-row"><span>'+(i+1)+'</span><span class="v40-team">'+img(t.logo,t.name,'v40-team-logo')+'<strong>'+t.name+'</strong></span><span>'+t.p+'</span><span>'+t.w+'</span><span>'+t.d+'</span><span>'+t.l+'</span><span>'+(t.gf-t.ga)+'</span><span>'+t.gf+'</span><span class="v40-muted-number">'+t.ga+'</span>'+form(lastFor(t.name))+'<b>'+t.pts+'</b></div>').join('')+
     '</div></div>';
   }
   function criteria(){
     const list=isVet35()?v35CriteriaTeams:criteriaTeams;
     return '<div class="v40-scroll-shell"><div class="v40-wide criteria">'+
-      '<div class="v40-wide-head criteria-head"><span></span><span></span><b>PTOS</b><b>+/-</b><b>GF</b><b>GA</b><b>V</b><b>E</b><b>P</b></div>'+
+      '<div class="v40-wide-head criteria-head"><span></span><span></span><b>PTOS</b><b>+/-</b><b>GF</b><b>GC</b><b>V</b><b>E</b><b>P</b></div>'+
       '<div class="v40-direct">CLASIFICACIÓN ACTUAL</div><div class="v40-rule"></div>'+
       list.map((t,i)=>'<div class="v40-wide-row criteria-row"><span>'+(i+1)+'</span><span class="v40-team">'+img(t.logo,t.name,'v40-team-logo')+'<strong>'+t.name+'</strong></span><span>'+t.pts+'</span><span>'+t.gd+'</span><span>'+t.gf+'</span><span>'+t.ga+'</span><span>'+t.w+'</span><span>'+t.d+'</span><span>'+t.l+'</span></div>').join('')+
     '</div></div>';
