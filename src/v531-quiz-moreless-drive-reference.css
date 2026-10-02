@@ -1332,3 +1332,44 @@ body[data-app-route="moreLess"] .v531-more-extras .v531-extras-head{
     height:18.8%!important;
   }
 }
+
+
+/* V535 — MoreLess principal restaurado primero, extras después */
+body[data-app-route="moreLess"] #screen{
+  display:block!important;
+}
+body[data-app-route="moreLess"] #screen>[data-v535-restored-primary],
+body[data-app-route="moreLess"] #screen>[data-v12-moreless][data-v535-primary="true"]{
+  display:block!important;
+  visibility:visible!important;
+  opacity:1!important;
+  position:relative!important;
+  z-index:30!important;
+  width:100%!important;
+  max-width:520px!important;
+  margin:0 auto!important;
+  float:none!important;
+}
+body[data-app-route="moreLess"] #screen>[data-v12-moreless][data-v535-primary="true"] + [data-v531-mount="more"]{
+  display:block!important;
+  position:relative!important;
+  z-index:10!important;
+  width:100%!important;
+  margin:0!important;
+  clear:both!important;
+}
+body[data-app-route="moreLess"] [data-v531-mount="more"]{
+  order:2!important;
+}
+body[data-app-route="moreLess"] [data-v12-moreless][data-v535-primary="true"]{
+  order:1!important;
+}
+/* La portada vieja ocupa la primera pantalla completa; nada nuevo aparece encima. */
+body[data-app-route="moreLess"] [data-v12-moreless][data-v535-primary="true"]{
+  min-height:calc(100dvh - var(--bottom-nav-h,60px) - env(safe-area-inset-bottom))!important;
+}
+/* Evitar encabezados sueltos del bloque secundario pegados al principal. */
+body[data-app-route="moreLess"] [data-v531-mount="more"]{
+  border-top:1px solid rgba(61,86,210,.28)!important;
+  background:#05065f!important;
+}
