@@ -205,7 +205,7 @@ function streamEmbedHtml(s){
   if(!url)return '';
   const p=provider(url);
   if(p.name==='Facebook Live'){
-    return '<section class="v144-stream-embed fallback facebook"><header><span><small>FACEBOOK LIVE VINCULADO</small><b>'+esc(s.source.name||p.name)+'</b></span><i>EN VIVO</i></header><div class="v144-stream-fallback"><b>Facebook Live</b><span>Chrome Android no puede controlar de forma fiable el video de Facebook dentro de un iframe. Se evita la pantalla negra y se conserva el enlace real del LIVE.</span><div><button type="button" data-v144-open>Abrir Facebook Live</button><button type="button" data-v144-tv-source>Transmitir en TV</button><button type="button" data-v144-share>Compartir Live</button></div></div></section>';
+    return '<section class="v144-stream-embed fallback facebook"><header><span><small>FACEBOOK LIVE VINCULADO</small><b>'+esc(s.source.name||p.name)+'</b></span><i>ENLACE GUARDADO</i></header><div class="v144-stream-fallback"><b>Facebook</b><span>Chrome Android no puede controlar de forma fiable el video de Facebook dentro de un iframe. Se evita la pantalla negra y se conserva el enlace real del LIVE.</span><div><button type="button" data-v144-open>Abrir Facebook Live</button><button type="button" data-v144-tv-source>Transmitir en TV</button><button type="button" data-v144-share>Compartir Live</button></div></div></section>';
   }
   if(p.name==='YouTube Live'){
     const id=youtubeId(url);
@@ -401,20 +401,6 @@ async function openTvCast(c,s,urlOverride=''){
   const p=provider(source);
   let target=source||location.href;
 
-  /* V528: Facebook/TikTok no se mandan como URL cruda a la TV.
-     Muchos televisores/Chrome abren el plugin vacío o una pantalla negra.
-     En su lugar se manda el receptor de Liga TV conservando el LIVE vinculado. */
-  if(source&&(p.key==='facebook'||p.key==='tiktok')){
-    try{
-      const u=new URL(location.href);
-      u.searchParams.set('mode','tv');
-      u.searchParams.set('live',source);
-      u.searchParams.set('liveName',s?.source?.name||p.name);
-      u.searchParams.set('cast','1');
-      u.hash='#/v4-matchcenter';
-      target=u.toString();
-    }catch(_){target=location.href}
-  }
 
   try{
     if(window.LJR_V440_TELEVISADOS&&typeof window.LJR_V440_TELEVISADOS.openCast==='function'){

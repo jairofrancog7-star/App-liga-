@@ -10,7 +10,8 @@ const norm=v=>String(v||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toUp
 function logoValue(v){
  if(typeof v==='string')return v;
  if(v?.source)return v.source;
- if(v?.local)return 'https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/'+String(v.local).replace(/^\.\//,'');
+ if(v?.app)return v.app;
+    if(v?.local)return 'https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/'+String(v.local).replace(/^\.\//,'');
  return '';
 }
 function logoFor(data,name){

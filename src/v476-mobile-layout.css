@@ -1,0 +1,88 @@
+/* V476 — readable mobile cards, continuous sections and bounded icons. */
+@media(max-width:1023px){
+ html body #screen{padding-bottom:calc(84px + env(safe-area-inset-bottom))!important}
+ html body #screen > :is(.v413-shell,.v449-reference-lower,#v422-results-reference,.v105-bottom,.v412-shell){margin-top:16px!important;margin-bottom:16px!important}
+ html body #screen > .v73-below-native{margin-top:16px!important;margin-bottom:16px!important}
+ html body[data-app-route="more"] #screen > :is(.v412-account,.v413-shell){position:relative!important;z-index:1!important}
+ html body #screen :is(h2,h3,.section-head){max-width:100%;overflow-wrap:anywhere}
+ html body #v449-reference-lower button.v449-season-match{font-size:12px!important;line-height:1.3!important;min-height:58px!important;grid-template-columns:minmax(0,1fr) 28px 42px 28px minmax(0,1fr)!important;gap:4px!important}
+ html body #v449-reference-lower .v449-season-match>span{min-width:0!important;white-space:normal!important;overflow-wrap:anywhere!important}
+ html body #v449-reference-lower .v449-crest.season{width:28px!important;height:28px!important}
+ html body #v449-reference-lower .v449-season-controls{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:7px!important}
+ html body #v449-reference-lower .v449-season-controls select{width:100%!important;min-width:0!important;height:40px!important;font-size:11px!important;padding:0 22px 0 8px!important}
+ html body #v449-reference-lower .v449-season-controls select:last-child{grid-column:1/-1!important}
+ html body #screen .v33-head-actions button{width:44px!important;height:44px!important;min-width:44px!important;padding:10px!important}
+ html body #screen .v33-head-actions button svg{width:24px!important;height:24px!important;max-width:24px!important;max-height:24px!important}
+ html body #screen :is(.v33-carousel,.v33-stat-grid){display:grid!important;grid-template-columns:minmax(0,1fr)!important;overflow:visible!important;padding:0!important;gap:12px!important}
+ html body #screen :is(.v33-carousel,.v33-stat-grid) .v33-stat-card{width:100%!important;max-width:none!important;min-width:0!important;margin:0!important}
+ html body #screen :is(.v33-carousel,.v33-stat-grid) .v33-stat-card>h3{font-size:18px!important;min-height:44px!important;padding:12px!important}
+ html body #screen :is(.v33-carousel,.v33-stat-grid) .v33-stat-list{padding:0 12px!important}
+ html body #screen :is(.v33-carousel,.v33-stat-grid) .v33-stat-row{grid-template-columns:20px 32px minmax(0,1fr) 36px!important;min-height:54px!important;gap:8px!important}
+ html body #screen :is(.v33-carousel,.v33-stat-grid) :is(.v33-team-logo,.v33-player-avatar){width:32px!important;height:32px!important}
+ html body #screen :is(.v33-carousel,.v33-stat-grid) .v33-row-copy b{font-size:13px!important;line-height:1.3!important}
+ html body #screen :is(.v33-carousel,.v33-stat-grid) .v33-row-copy small{font-size:10px!important}
+ html body #screen :is(.v33-carousel,.v33-stat-grid) .v33-stat-row>strong{font-size:18px!important;text-align:right!important}
+ html body #screen .v33-row-copy b{white-space:normal!important;overflow:visible!important;overflow-wrap:anywhere!important}
+ html body #screen .v33-tabs button{min-width:0!important;padding:8px 5px!important;white-space:normal!important;font-size:11px!important;line-height:1.3!important}
+ html body #screen .v33-detailed{padding-top:16px!important}
+ html body #screen .v414-tab{width:auto!important;min-width:max-content!important;flex:0 0 auto!important;padding:0 14px!important;overflow:visible!important;white-space:nowrap!important}
+ html body #screen .v114-upcoming-slot{width:100%!important;margin-left:0!important;margin-right:0!important}
+ html body #screen .v114-upcoming-slot .v103-upcoming-head{gap:8px!important;padding:0 4px!important}
+ html body #screen .v114-upcoming-slot .v103-upcoming-head h2{font-size:20px!important;line-height:1.2!important}
+ html body #screen .v114-upcoming-slot .v103-upcoming-match{display:grid!important;grid-template-columns:minmax(0,1fr) 50px minmax(0,1fr)!important;gap:6px!important;padding:12px 8px!important;min-height:80px!important}
+ html body #screen .v114-upcoming-slot .v103-upcoming-team{display:flex!important;flex-direction:column!important;min-width:0!important;gap:5px!important;text-align:center!important}
+ html body #screen .v114-upcoming-slot .v103-upcoming-team b{font-size:12px!important;line-height:1.3!important;white-space:normal!important;overflow:visible!important;max-width:100%!important;overflow-wrap:anywhere!important;text-align:center!important;order:2!important}
+ html body #screen .v114-upcoming-slot .v103-upcoming-match>strong{font-size:17px!important;white-space:normal!important;width:50px!important;min-width:0!important}
+ html body #screen .v476-match-result{grid-column:1/-1;color:#5ce5f2;font-size:12px;line-height:1.3;text-align:center;white-space:normal}
+ html body #screen :is(.v415-match-team b,.v415-selected-head span,.v415-venue small,.v70-team-name,.v103-cal-team b,.v440-tv-team b,.v428-tv-copy small,.v176-team b){white-space:normal!important;overflow:visible!important;text-overflow:clip!important;overflow-wrap:anywhere!important;height:auto!important;max-height:none!important;line-height:1.3!important}
+ html body #screen .v415-match-team b{font-size:12px!important}
+ html body #screen .v428-tv-section{padding-left:12px!important;padding-right:12px!important;box-sizing:border-box!important}
+ html body #screen .v428-tv-rail{scroll-padding-inline:0!important}
+ html body #screen .v92-player-card b{white-space:normal!important;overflow-wrap:anywhere!important}
+ html body #screen .v176-columns,html body #screen .v176-row{grid-template-columns:20px minmax(0,1fr) repeat(4,22px) 25px 27px!important;gap:3px!important;padding-left:7px!important;padding-right:7px!important;font-size:10px!important}
+ html body #screen .v176-team{grid-template-columns:24px minmax(0,1fr)!important;column-gap:4px!important}
+ html body #screen .v176-team b{font-size:10px!important}
+ html body #screen .v176-logo{width:24px!important;height:24px!important}
+ html body #screen .v176-logo img{width:21px!important;height:21px!important}
+}
+@media(max-width:1023px){
+ html body[data-app-route="competition"] .v12-schedule-card .v12-result-team b,
+ html body[data-app-route="competition"] .v12-criteria-team strong,
+ html body.v103-calendar-active .v103-cal-pair b,
+ html body #screen .v440-tv-name,
+ html body #screen .v428-tv-copy b{
+   white-space:normal!important;overflow:visible!important;text-overflow:clip!important;
+   -webkit-line-clamp:unset!important;overflow-wrap:anywhere!important;line-height:1.3!important;
+ }
+ html body #screen .v428-tv-row{margin:0!important;padding:0 0 8px!important}
+ html body[data-app-route="competition"] .v12-schedule-card .v12-result-team{min-width:0!important}
+ html body[data-app-route="competition"] .v12-schedule-card .v12-result-team b{font-size:12px!important}
+}
+
+@media(max-width:1023px){
+ html body[data-app-route="competition"] .v12-schedule-clubs b{white-space:normal!important;overflow:visible!important;text-overflow:clip!important;overflow-wrap:anywhere!important;font-size:12px!important;line-height:1.3!important}
+}
+
+@media(max-width:1023px){
+ html body #screen .v103-upcoming-center{min-width:0!important;width:50px!important;text-align:center!important}
+ html body #screen .v103-upcoming-center strong{font-size:16px!important;white-space:normal!important;line-height:1.2!important}
+ html body #screen .v103-upcoming-center small{display:block;font-size:9px!important;white-space:normal!important}
+ html body[data-app-route="simulator"] #screen{padding-bottom:0!important}
+ html body #screen .v501-simulator{padding-bottom:132px!important}
+ html body #screen .v501-board{min-height:0!important;padding-bottom:20px!important}
+ html body #screen .v501-sheet{height:calc(100dvh - var(--v515-sheet-y,calc(100dvh - 116px)))!important;min-height:116px!important;display:flex!important;flex-direction:column!important}
+
+ html body #screen .v501-grabber{flex:none!important;margin:0 auto 10px!important;width:64px!important}
+ html body #screen .v501-sheet-head{flex:none!important;min-height:54px!important;padding:0 0 10px!important;align-items:center!important}
+ html body #screen .v501-sheet-head h2{font-size:19px!important;line-height:1.2!important}
+ html body #screen .v501-sheet-head p{font-size:12px!important}
+ html body #screen .v501-sheet-head>button{min-width:64px!important;height:36px!important;padding:4px 8px!important;font-size:11px!important}
+ html body #screen .v501-match-list{overflow-y:auto!important;overscroll-behavior:contain!important;min-height:0!important;flex:1!important;padding-bottom:8px!important}
+ html body #screen .v501-journey{flex:none!important;min-height:44px!important;padding:0!important}
+ html body #screen .v501-sim-match{min-height:110px!important}
+ html body #screen .v501-sim-team b{font-size:11px!important;white-space:normal!important;overflow-wrap:anywhere!important}
+ html body #screen .v501-crest.sim{width:34px!important;height:34px!important}
+ html body #screen .v501-score-control{width:36px!important;min-width:36px!important}
+ html body #screen .v501-score-control button{height:34px!important;font-size:20px!important}
+ html body #screen .v501-bracket .v12-bracket-team b{font-size:9px!important;white-space:normal!important;overflow-wrap:anywhere!important}
+}

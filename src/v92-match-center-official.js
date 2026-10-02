@@ -953,7 +953,7 @@ function render(){
   }
   const r=m.r,state=stateFor(m),home=r[2],away=r[6],venue=r[7]||'Campo por confirmar';
   const center=state.primary;
-  screen.innerHTML='<article class="v92-matchcenter" data-v92-matchcenter>'+
+  const markup='<article class="v92-matchcenter" data-v92-matchcenter>'+
     '<header class="v92-match-head"><div class="v92-kicker">'+esc(state.label)+'</div><h1>Match Center</h1><p>'+esc(home)+' vs '+esc(away)+' · '+esc(m.category)+' · Jornada '+esc(r[1]||'')+'</p></header>'+
     matchPicker(m)+
     '<section class="v518-matchcenter-unified" data-v518-unified>'+
@@ -983,6 +983,24 @@ function render(){
     '<div class="v518-matchcenter-extras" data-v518-extras></div>'+
     '</section>'+
   '</article>';
+  const existing=screen.querySelector('[data-v92-matchcenter]');
+  // Keep extension panels and scroll position; unchanged refreshes do no DOM work.
+  if(existing?.__markup===markup){renderGuard=false;return;}
+  const scrollY=window.scrollY;
+  if(existing)existing.outerHTML=markup;
+  else screen.innerHTML=markup;
+  screen.querySelector('[data-v92-matchcenter]').__markup=markup;
+  if(existing){
+    window.scrollTo(0,scrollY);
+    // Live widgets remount asynchronously. Restore after their layout settles,
+    // unless the reader has already started another gesture.
+    let cancelled=false;
+    const cancel=()=>{cancelled=true};
+    window.addEventListener('pointerdown',cancel,{once:true});
+    window.addEventListener('wheel',cancel,{once:true,passive:true});
+    setTimeout(()=>{if(!cancelled&&isDirectRoute())window.scrollTo(0,scrollY);window.removeEventListener('pointerdown',cancel);window.removeEventListener('wheel',cancel)},240);
+  }
+
 
   document.body.classList.add('v92-match-center-official');
   screen.querySelector('[data-v92-match-select]')?.addEventListener('change',e=>{selectedKey=e.target.value;activeTab='Resumen';profileSide='home';renderGuard=false;render()});
@@ -1045,11 +1063,12 @@ function render(){
   renderGuard=false;
 }
 async function load(){
+  if(window.LJR_OFFICIAL_DATA?.categories){db=window.LJR_OFFICIAL_DATA;if(isDirectRoute())render();return db;}
   if(loading)return loading;
   loading=(async()=>{
     for(const u of [LOCAL,REMOTE]){
       try{
-        const res=await fetch(u,{cache:'no-store'});
+        const res=await fetch(u,{cache:'no-store',signal:AbortSignal.timeout(8000)});
         if(res.ok){db=await res.json();window.LJR_OFFICIAL_DATA=db;break}
       }catch(_){}
     }
@@ -1066,7 +1085,7 @@ async function refreshOfficialData(force=false){
   const urls=[REMOTE.split('?')[0]+'?ts='+now,LOCAL.split('?')[0]+'?ts='+now];
   for(const u of urls){
     try{
-      const res=await fetch(u,{cache:'no-store'});
+      const res=await fetch(u,{cache:'no-store',signal:AbortSignal.timeout(8000)});
       if(!res.ok)continue;
       const fresh=await res.json();
       if(fresh?.categories){
@@ -1098,13 +1117,13 @@ function syncRoute(){
   if(!on)return;
   render();
   load();
-  if(!timer)timer=setInterval(()=>{if(isDirectRoute()){render();refreshOfficialData(false)}},30000);
+  if(!timer)timer=setInterval(()=>{if(isDirectRoute()&&!document.hidden){refreshOfficialData(false)}},30000);
   if(!liveClockTimer)liveClockTimer=setInterval(updateLiveClock,1000);
   updateLiveClock();
 }
 window.addEventListener('hashchange',()=>requestAnimationFrame(syncRoute));
 window.LJR_MATCH_CENTER={open(key){selectedKey=String(key);db=window.CompetitionController?.raw()||window.LJR_OFFICIAL_DATA||db;location.hash='#/matchCenter';if(isDirectRoute())render()}};
-window.addEventListener('ljr:official-data',()=>{if(isDirectRoute()){db=window.LJR_OFFICIAL_DATA||db;renderGuard=false;render()}});
+window.addEventListener('ljr:official-data',()=>{if(isDirectRoute()){const next=window.LJR_OFFICIAL_DATA||db;const changed=JSON.stringify(next)!==JSON.stringify(db);db=next;if(changed||!document.querySelector('[data-v92-matchcenter]')){renderGuard=false;render()}}});
 window.addEventListener('ljr:match-live-feed',()=>{if(isDirectRoute()&&activeTab==='Alineaciones'){renderGuard=false;render()}});
 const screen=document.querySelector('#screen');
 if(screen)new MutationObserver(()=>{if(isDirectRoute()&&!screen.querySelector('[data-v92-matchcenter]'))requestAnimationFrame(render)}).observe(screen,{childList:true,subtree:false});

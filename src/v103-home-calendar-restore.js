@@ -46,7 +46,7 @@ async function loadOfficial(){
   loading=(async()=>{
     let best=chooseOfficial(db,window.LJR_OFFICIAL_DATA||null);
     try{
-      const r=await fetch(OFFICIAL+'?v='+Date.now(),{cache:'no-store'});
+      const r=await fetch('./data/official-live.json',{cache:'default',signal:AbortSignal.timeout(8000)});
       if(r.ok){
         const fresh=await r.json();
         best=chooseOfficial(best,fresh);
@@ -129,8 +129,9 @@ function homeUpcomingMarkup(){
       group.games.map((g,i)=>
         '<button type="button" class="v103-upcoming-match'+(i?' is-second':'')+'" data-route="competition" aria-label="'+esc(g.home)+' contra '+esc(g.away)+'">'+
           '<span class="v103-upcoming-team home"><b>'+esc(g.home)+'</b>'+teamMark(g.home)+'</span>'+
-          '<span class="v103-upcoming-center"><strong>'+esc(/GANA\s+/i.test(g.status||'')?(g.status||'').replace(/^.*?(GANA\s+)/i,'$1'):g.time)+'</strong><small>'+esc(homeCategoryShort(g.category))+'</small></span>'+
+          '<span class="v103-upcoming-center"><strong>'+esc(g.time)+'</strong><small>'+esc(homeCategoryShort(g.category))+'</small></span>'+
           '<span class="v103-upcoming-team away">'+teamMark(g.away)+'<b>'+esc(g.away)+'</b></span>'+
+          (/GANA\s+/i.test(g.status||'')?'<small class="v476-match-result">'+esc((g.status||'').replace(/^.*?(GANA\s+)/i,'$1'))+'</small>':'')+
         '</button>'
       ).join('')+
     '</div>'
@@ -199,6 +200,8 @@ function patchHome(){
     secondary.innerHTML=homeUpcomingMarkup();
   }
 
+  const upcoming=homeUpcomingMarkup();
+  if(secondary.__markup!==upcoming){secondary.innerHTML=upcoming;secondary.__markup=upcoming;}
   const anchor=moments||hero||storiesNow;
   if(anchor && anchor.nextElementSibling!==secondary){
     anchor.insertAdjacentElement('afterend',secondary);
@@ -427,6 +430,7 @@ if(root)new MutationObserver(()=>{
   queuePatch();
 }).observe(root,{childList:true,subtree:false});
 
+window.addEventListener('ljr:official-data',()=>{db=window.LJR_OFFICIAL_DATA||db;queuePatch()});
 (async()=>{
   await loadOfficial();
   /* El calendario debe abrir en el mes actual del dispositivo; en septiembre 2026

@@ -1840,7 +1840,8 @@ body[data-app-route="competition"] #v449-reference-lower{
   padding:0!important;
   border:0!important;
   background:transparent!important;
-  font:inherit!important;
+  font-family:inherit!important;
+  font-size:12px!important;
   cursor:pointer!important;
   -webkit-appearance:none!important;
   appearance:none!important;

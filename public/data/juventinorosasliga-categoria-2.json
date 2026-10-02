@@ -4,7 +4,7 @@
   "category_id": 2,
   "category": "Veteranos 35+",
   "scope": "Categoría por edad",
-  "team_count": 10,
+  "team_count": 11,
   "category_logo": "https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/assets/categories/veteranos-35-user.png",
   "teams": [
     {
@@ -46,6 +46,10 @@
     {
       "name": "LA TRINIDAD",
       "logo": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/La_trinidad_a32pbk"
+    },
+    {
+      "name": "POZOS FC",
+      "logo": ""
     }
   ],
   "notes": [
@@ -53,7 +57,7 @@
     "Los cinco partidos corresponden al 10/10/2026.",
     "La tabla actual inicia en cero; no se mezclan posiciones de la temporada anterior."
   ],
-  "updated_at_utc": "2026-10-01T15:25:00Z",
+  "updated_at_utc": "2026-10-01T19:45:00Z",
   "upcoming": [
     {
       "home": "BOAVISTA",

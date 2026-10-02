@@ -127,11 +127,10 @@
   function appBack(){
     saveScroll();
     if(stack.length>1){
-      history.back();
-      return;
-    }
-    if(sameOriginReferrer() && history.length>1){
-      history.back();
+      const previous=stack[stack.length-2];
+      const old=location.href;
+      history.replaceState(history.state,'',location.pathname+location.search+'#/'+previous);
+      window.dispatchEvent(new HashChangeEvent('hashchange',{oldURL:old,newURL:location.href}));
       return;
     }
     fallbackRoute();
@@ -143,18 +142,20 @@
     '#backButton',
     'button[aria-label="Volver"]',
     'a[aria-label="Volver"]',
-    '[data-v41-close]',
-    '.v66-compact-back'
+    '[data-v41-close],[data-v501-back],[data-v440-back]',
+    '.v66-compact-back',
+    '[data-v20-back],[data-v46-back],[data-v52-back],[data-v62-back],[data-v27-back],[data-v28-back],[data-v31-back],[data-v32-back],[data-v33-back],[data-v33-about-back],[data-v35-back],[data-v40-back],[data-v42-back],[data-v123-back],[data-v129-back],[data-v372-back],[data-v379-back],[data-v412-back],[data-v429-back]',
+    '.v26-back,.v26-moments-sticky-back,.v27-back,.v53-p6-back,.v440-tv-backmark'
   ].join(',');
 
-  document.addEventListener('click',function(e){
+  window.addEventListener('click',function(e){
     const target=e.target.closest?.(pageBackSelector);
     if(!target) return;
 
     /* Estos controles son internos de overlays/juegos y no representan
        una navegación de página. */
     if(target.closest('.modal,.v105-modal,.v16-player-modal,.v28-sheet-layer')) return;
-    if(target.matches('[data-v48-game-back],[data-v28-close-sheet],[data-v28-close-picker],[data-v16-close]')) return;
+    if(target.matches('[data-v437-detail-back],[data-v369-picker-back],[data-v439-sub-back],[data-v48-game-back],[data-v28-close-sheet],[data-v28-close-picker],[data-v16-close]')) return;
 
     e.preventDefault();
     e.stopPropagation();

@@ -83,7 +83,7 @@ function teamStatCard(title,metricIndex,order='desc',limit=5){
  const rs=metricRows(metricIndex,order,limit);
  return '<article class="v33-stat-card"><h3>'+esc(title)+'</h3><div class="v33-stat-list">'+
    rs.map((r,i)=>teamMetricRow(r,i,metricIndex)).join('')+
-   '</div><button type="button" class="v33-see-all" data-v33-tab="team">Ver todos los equipos <span>›</span></button></article>';
+   '</div><button type="button" class="v33-see-all" data-v33-expand-team="'+metricIndex+'" data-v33-order="'+order+'" aria-expanded="false">Ver todos los equipos <span>›</span></button></article>';
 }
 function rosterEntries(){
  const out=[];
@@ -102,7 +102,7 @@ function playerRow(p,index){
 function playerStatCard(title,players){
  return '<article class="v33-stat-card"><h3>'+esc(title)+'</h3><div class="v33-stat-list">'+
    players.slice(0,5).map((p,i)=>playerRow(p,i)).join('')+
-   '</div><button type="button" class="v33-see-all" data-v33-tab="player">Ver todos los jugadores <span>›</span></button></article>';
+   '</div><button type="button" class="v33-see-all" data-v33-expand-player="'+esc(title)+'" aria-expanded="false">Ver todos los jugadores <span>›</span></button></article>';
 }
 function teamSections(){
  return [
@@ -266,11 +266,27 @@ function goRoute(r){
  else location.hash='#/'+next;
 }
 function bind(){
+ document.querySelectorAll('[data-v33-expand-team],[data-v33-expand-player]').forEach(b=>b.onclick=()=>{
+   const expanded=b.getAttribute('aria-expanded')!=='true';
+   const list=b.closest('.v33-stat-card').querySelector('.v33-stat-list');
+   if(b.hasAttribute('data-v33-expand-team')){
+     const metric=Number(b.dataset.v33ExpandTeam);
+     list.innerHTML=metricRows(metric,b.dataset.v33Order,expanded?Infinity:5).map((r,i)=>teamMetricRow(r,i,metric)).join('');
+   }else{
+     const title=b.dataset.v33ExpandPlayer;
+     const players=rosterEntries().filter(p=>!current()?.rosters?.[title]||p.team===title);
+     list.innerHTML=players.slice(0,expanded?Infinity:5).map(playerRow).join('');
+   }
+   b.setAttribute('aria-expanded',String(expanded));
+   b.textContent=expanded?'Ver menos':'Ver todos';
+   bind();
+ });
+
  document.querySelectorAll('[data-v33-tab]').forEach(b=>b.onclick=e=>{e.preventDefault();setTab(b.dataset.v33Tab)});
- document.querySelectorAll('[data-v33-back]').forEach(b=>b.onclick=e=>{e.preventDefault();goRoute('more')});
+ document.querySelectorAll('[data-v33-back]').forEach(b=>b.onclick=e=>{e.preventDefault();if(window.LJR_APP_BACK)window.LJR_APP_BACK();else goRoute('more')});
  document.querySelectorAll('[data-v33-share]').forEach(b=>b.onclick=e=>{e.preventDefault();share()});
  document.querySelectorAll('[data-v33-team]').forEach(b=>b.onclick=()=>{if(window.LJR_OFFICIAL_API?.openTeam)window.LJR_OFFICIAL_API.openTeam(b.dataset.v33Team);else toast(b.dataset.v33Team)});
- document.querySelectorAll('[data-v33-player]').forEach(b=>b.onclick=()=>toast(b.dataset.v33Player+' · jugador registrado'));
+ document.querySelectorAll('[data-v33-player]').forEach(b=>b.onclick=()=>{if(window.LJR_PLAYER_PROFILE_API?.open)window.LJR_PLAYER_PROFILE_API.open({name:b.dataset.v33Player,cat:'3'});else goRoute('players')});
  document.querySelectorAll('[data-v33-route]').forEach(b=>b.onclick=e=>{e.preventDefault();goRoute(b.dataset.v33Route||'leagueData')});
  document.querySelectorAll('[data-v33-ref-view]').forEach(b=>b.onclick=e=>{e.preventDefault();setRefView(b.dataset.v33RefView||'player')});
  document.querySelectorAll('[data-v33-jump-table]').forEach(b=>b.onclick=e=>{e.preventDefault();document.querySelector('[data-v33-unified-table]')?.scrollIntoView({behavior:'smooth',block:'start'})});

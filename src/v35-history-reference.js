@@ -2537,7 +2537,7 @@ function renderHistory(){
     v355HydrateHistoryLazy(activePanel||historyRoot);
     v359Prewarm();
     if(activeTab==='Resumen')v358ScheduleSummaryRefresh();
-    if(activeTab==='Finales')v367ApplyFinalsReference(root);
+    if(activeTab==='Finales')v367ApplyFinalsReference(historyRoot);
     v362LockHistoryHeader(historyRoot);
   });
 }

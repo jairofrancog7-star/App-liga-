@@ -77,6 +77,7 @@ function logoFor(name){
     const hit=exact||entries.find(([k])=>same(k,name));
     const v=hit?.[1];
     if(typeof v==='string')return v;
+    if(v?.app)return v.app;
     if(v?.local)return SRC+String(v.local).replace(/^\.\//,'');
     if(v?.source)return v.source;
   }

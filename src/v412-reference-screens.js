@@ -170,7 +170,7 @@ function mountFavorites(screen,force=false){if(!force&&screen.querySelector('[da
 
 /* Cuenta / Más */
 function accountMarkup(){return '<section class="v412-shell v412-account" data-v412-screen="account"><div class="v412-account-hello"><h2>¡Hola!</h2><p>Bienvenido a la Liga Municipal de Fútbol Juventino Rosas</p></div><div class="v412-auth"><button class="v412-login" data-v412-go="profile">Iniciar sesión</button><button class="v412-join" data-v412-go="profile">Únete ahora</button></div><div class="v412-menu"><button data-v412-go="notifications"><span>Notificaciones</span><span>♢</span></button><button data-v412-go="more"><span>Ajustes</span><span>⚙</span></button><button data-v412-go="rulebook"><span>Ayuda e información</span><span>?</span></button></div><div class="v412-social-title">SÍGUENOS</div><div class="v412-socials"><button class="v412-social fb" data-v412-facebook aria-label="Facebook">f</button></div><button class="v412-sharefriend" data-v412-share>♧ &nbsp; Cuéntale a un amigo</button><div class="v412-account-foot">Liga Municipal de Fútbol Juventino Rosas A.C.<br>Contenido oficial y herramientas de la Liga.<br><br>Versión V412</div></section>'}
-function mountAccount(screen){if(screen.querySelector('[data-v412-screen="account"]'))return;screen.insertAdjacentHTML('beforeend',accountMarkup());bindCommon(screen.querySelector('[data-v412-screen="account"]'))}
+function mountAccount(screen){if(screen.querySelector('[data-v412-screen="account"]'))return;const template=document.createElement('template');template.innerHTML=accountMarkup();template.content.querySelector('.v412-account-hello')?.remove();template.content.querySelector('.v412-auth')?.remove();screen.append(template.content);bindCommon(screen.querySelector('[data-v412-screen="account"]'))}
 
 /* Search — referencia exacta adaptada a la Liga, conservando el azul */
 function playerStats(p){
@@ -855,7 +855,7 @@ function mount(){
  if(r==='favorites'){screen.querySelectorAll('[data-v412-screen="favorites"]').forEach(x=>x.remove());return}
  else if(r==='search')mountSearch(screen);
  else if(r==='transfers')mountTransfers(screen);
- else if(r==='more')mountAccount(screen);
+ else if(r==='profile')mountAccount(screen);
  else if(r==='video')mountTv(screen);
  else if(r==='news')mountNews(screen);
  else if(r==='whereToWatch')mountWhere(screen);

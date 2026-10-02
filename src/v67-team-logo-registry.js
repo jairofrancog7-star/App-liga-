@@ -146,6 +146,7 @@
     // V484: los datos oficiales actuales mandan sobre los logos históricos/locales.
     const data=window.LJR_OFFICIAL_API?.getData?.()||window.LJR_OFFICIAL_DATA;
     const entry=Object.entries(data?.team_logos||{}).find(([team])=>norm(team)===key)?.[1];
+    if(entry?.app)return entry.app;
     let source=typeof entry==='string'?entry:(entry?.source||entry?.local||'');
     if(source)return /^https?:\/\//i.test(source)?source:BASE+String(source).replace(/^\.\//,'');
 
@@ -166,6 +167,7 @@
         for(const [name,v] of Object.entries(d.team_logos||{})){
           let src='';
           if(typeof v==='string')src=v;
+          else if(v?.app)src=v.app;
           else if(v?.local)src=BASE+String(v.local).replace(/^\.\//,'');
           else if(v?.source)src=v.source;
           if(src)DYNAMIC[norm(name)]=src;

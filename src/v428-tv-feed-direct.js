@@ -235,19 +235,6 @@ async function startCast(sheet,urlOverride=''){
   const target=urlOverride||location.href;
   const media=document.querySelector('video,audio');
 
-  /* V531: Chrome Android no abre un selector Cast estándar para páginas web
-     como sí lo hacen apps nativas. Para Facebook/TikTok/enlaces de página,
-     abrimos directamente los ajustes de Enviar/Transmitir pantalla del sistema. */
-  if(isAndroidChromeV531()){
-    try{
-      if(media&&media.remote&&typeof media.remote.prompt==='function'){
-        await media.remote.prompt();
-        return;
-      }
-    }catch(_){}
-    openAndroidCastSettings(sheet);
-    return;
-  }
 
   try{
     if(media&&media.remote&&typeof media.remote.prompt==='function'){
@@ -255,29 +242,10 @@ async function startCast(sheet,urlOverride=''){
       return;
     }
   }catch(_){}
-  try{
-    if(typeof window.PresentationRequest==='function'){
-      const request=new window.PresentationRequest([target]);
-      await request.start();
-      return;
-    }
-  }catch(_){}
-  try{
-    if(navigator.share){
-      await navigator.share({
-        title:'Liga Juventino Rosas · Liga TV',
-        text:'Abrir Liga TV en otra pantalla o dispositivo',
-        url:target
-      });
-      return;
-    }
-  }catch(_){}
-  try{
-    await navigator.clipboard.writeText(target);
-    castToast(sheet,'Enlace copiado. Ábrelo en tu TV u otro dispositivo.');
-  }catch(_){
-    castToast(sheet,'Tu navegador no permite abrir el selector de TV directamente.');
-  }
+  const help=sheet.querySelector('[data-v439-help]');
+  if(help)help.hidden=false;
+  castToast(sheet,'Este video se reproduce en Facebook. Abre el video y usa la opción de TV disponible en tu dispositivo.');
+
 }
 function openCastSheet(urlOverride=''){
   closeCastSheet();
@@ -292,9 +260,11 @@ function openCastSheet(urlOverride=''){
         '<h3>Ver con Liga TV</h3>'+
         '<article class="v439-streamcenter-card"><span><b>Ingresa para usar<br>Liga TV</b><small>Abre el modo TV de la Liga y conserva los controles de reproducción.</small></span><button type="button" data-v439-enter>Entrar</button></article>'+
         '<h3 class="v439-device-title">Transmitir a otro dispositivo</h3>'+
-        '<button class="v439-cast-row" type="button" data-v439-transmit><span class="v439-row-icon">▣</span><b>Transmitir</b><i>›</i></button>'+
+        '<button class="v439-cast-row" type="button" data-v439-transmit><span class="v439-row-icon">▣</span><b>Seleccionar pantalla</b><i>›</i></button>'+
+        '<button class="v439-cast-row" type="button" data-v439-open-source><span class="v439-row-icon">▶</span><b>Abrir video original</b><i>›</i></button>'+
+        (isAndroidChromeV531()?'<button class="v439-cast-row" type="button" data-v439-system><span class="v439-row-icon">▣</span><b>Abrir ajustes de pantalla</b><i>›</i></button>':'')+
         '<button class="v439-cast-row" type="button" data-v439-learn><span class="v439-row-icon">ⓘ</span><b>Aprende más</b><i>›</i></button>'+
-        '<div class="v439-cast-help" data-v439-help hidden><b>Cómo funciona</b><p>En Chrome Android, Transmitir abre Enviar / Transmitir pantalla del sistema para elegir la TV. En navegadores con reproducción remota se usa el selector compatible.</p></div>'+
+        '<div class="v439-cast-help" data-v439-help hidden><b>Cómo funciona</b><p>Seleccionar pantalla usa la reproducción remota cuando el video y el navegador la admiten. Para Facebook, abre el video original. Si no aparece el icono de TV, puedes abrir los ajustes de pantalla de Android y elegir un dispositivo compatible. La página no enciende ni apaga esa conexión.</p></div>'+
         '<p class="v439-cast-foot">La disponibilidad depende del navegador, la TV y las funciones de transmisión del dispositivo.</p>'+
       '</div>'+
     '</section>';
@@ -307,6 +277,8 @@ function openCastSheet(urlOverride=''){
     closeCastSheet();
     setTimeout(()=>{if(window.LJR_V105&&typeof window.LJR_V105.openTv==='function')window.LJR_V105.openTv();else location.hash='#/video'},100);
   };
+  sheet.querySelector('[data-v439-system]')?.addEventListener('click',()=>openAndroidCastSettings(sheet));
+  sheet.querySelector('[data-v439-open-source]').onclick=()=>window.open(urlOverride||location.href,'_blank','noopener,noreferrer');
   sheet.querySelector('[data-v439-transmit]').onclick=()=>startCast(sheet,urlOverride);
   sheet.querySelector('[data-v439-learn]').onclick=()=>{
     const help=sheet.querySelector('[data-v439-help]');
