@@ -52,7 +52,7 @@ await page.waitForTimeout(1000);assert.equal(await fb.count(),1);
  await page.evaluate(()=>window.LJR_STREAM_CENTER.addSource('https://www.tiktok.com/@scout2015/video/6718335390845095173','TikTok prueba'));await page.waitForTimeout(400);
  assert.ok((await page.locator('[data-v196-stream-hub] iframe').getAttribute('src')).includes('/player/v1/6718335390845095173'));
  await page.locator('[data-v196-stream-hub] [data-action="zoom"]').click();assert.equal(await page.locator('[data-v196-stream-hub] iframe').evaluate(e=>e.style.transform),'scale(1.25)');
- await page.locator('[data-v196-stream-hub] [data-action="settings"]').click();assert.equal(await page.locator('.v196-modal').isVisible(),true);await page.locator('.v196-modal [data-v196-close]').last().click();
+ await page.locator('[data-v196-stream-hub] [data-action="settings"]').click();assert.equal(await page.locator('.v561-dialog').isVisible(),true);await page.locator('.v561-dialog [aria-label="Cerrar"]').click();
  await page.locator('[data-v196-stream-hub] [data-action="fullscreen"]').click();await page.waitForFunction(()=>!!document.fullscreenElement||!!document.querySelector('.v560-expanded'));await page.evaluate(()=>document.fullscreenElement&&document.exitFullscreen());
  console.log('Final credential preview, enlargement, TikTok embed, zoom, settings and fullscreen passed');
  console.log('Facebook/YouTube embeds and native video PiP invocation passed (provider playback needs network/device verification).');

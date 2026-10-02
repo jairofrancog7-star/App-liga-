@@ -1,3 +1,4 @@
+import {patchKeepingPlayer,enableDirectStream,playbackSettings,openPhoneCamera} from './v561-media-tools.js';
 import { normalizeStreamUrl, tiktokVideoId, attachPlayerControls } from './v560-stream-player-controls.js';
 /* V144 — Match Center Live Intelligence.
    Facebook/YouTube/Talacha link + live clock + smart narration detection.
@@ -187,7 +188,7 @@ function livePlatformButtons(s){
   const active=provider(s?.source?.url).key;
   return '<div class="v144-platforms" aria-label="Plataformas de transmisión">'+
     Object.values(LIVE_PLATFORMS).map(p=>'<button type="button" class="'+(active===p.key?'active':'')+'" data-v144-platform="'+p.key+'"><em>'+esc(p.icon)+'</em><span><b>'+esc(p.name.replace(' Live',''))+'</b><small>LIVE</small></span></button>').join('')+
-  '</div>'+
+  '<button type="button" data-v561-camera-open><em>▣</em><span><b>Cámara</b><small>TELÉFONO</small></span></button></div>'+
   '<button type="button" class="v144-tv-cast" data-v144-tv-cast><span class="v144-tv-cast-icon">▣</span><span><b>Transmitir en televisión</b><small>Conectar TV o pantalla compatible</small></span><i>›</i></button>';
 }
 function youtubeId(url){
@@ -201,6 +202,7 @@ function streamEmbedHtml(s){
   const url=normalizeStreamUrl(s?.source?.url);
   if(!url)return '';
   const p=provider(url);
+  if(/\.(mp4|webm|ogg|m3u8)(?:[?#]|$)/i.test(url))return '<section class="v144-stream-embed"><header><b>Video directo</b></header><div class="v144-stream-frame v196-frame"><video src="'+esc(url)+'" controls playsinline preload="metadata"></video></div></section>';
   if(p.name==='Facebook Live'){
     const src='https://www.facebook.com/plugins/video.php?href='+encodeURIComponent(url)+'&show_text=false&width=560&autoplay=false';
     return '<section class="v144-stream-embed"><header><span><small>VIDEO VINCULADO</small><b>'+esc(s.source.name||p.name)+'</b></span><i>FACEBOOK</i></header><div class="v144-stream-frame"><iframe src="'+esc(src)+'" title="Facebook video" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen></iframe></div><footer><span>Reproduce el video aquí. Debe ser público y permitir inserción.</span><div><button type="button" data-v144-share>Compartir</button></div></footer></section>';
@@ -470,7 +472,8 @@ function openConfig(c,s,preferred=''){
     const url=safeLiveUrl(urlInput?.value),feed=$('[data-feed]',m).value.trim();
     if(!url){toast('Falta un enlace válido del LIVE (Facebook, YouTube o TikTok).');return}
     const detected=provider(url),chosen=selectedMeta();
-    s.source.name=nameInput.value.trim()||detected.name||chosen.name;
+    s.source.name=Object.values(LIVE_PLATFORMS).some(p=>p.name===nameInput.value.trim())?detected.name:(nameInput.value.trim()||detected.name||chosen.name);
+    try{const q=new URL(location.href);q.searchParams.delete('live');q.searchParams.delete('liveName');history.replaceState(history.state,'',q.href)}catch(_){}
     s.source.url=url;
     s.source.feedUrl=feed;
     try{localStorage.setItem(SOURCE_KEY,JSON.stringify({url:s.source.url,name:s.source.name}))}catch(_){}
@@ -495,9 +498,11 @@ async function shareLive(c,s){
   catch(_){window.open(url,'_blank','noopener,noreferrer')}
 }
 function bind(c,s,hub){
-  hub.querySelectorAll('.v144-stream-embed:has(iframe)').forEach(card=>{
+  hub.querySelector('[data-v561-camera-open]')?.addEventListener('click',openPhoneCamera);
+  hub.querySelectorAll('video').forEach(enableDirectStream);
+  hub.querySelectorAll('.v144-stream-embed:has(iframe),.v144-stream-embed:has(video)').forEach(card=>{
     card.classList.add('v196-player-card');card.setAttribute('data-v196-player-card','');card.querySelector('.v144-stream-frame')?.classList.add('v196-frame');
-    attachPlayerControls(card,{pip:()=>window.LJR_STREAM_CENTER?.openPiP?.(hub),settings:()=>openConfig(c,s),cast:()=>openTvCast(c,s),notify:toast});
+    attachPlayerControls(card,{pip:()=>window.LJR_STREAM_CENTER?.openPiP?.(hub),settings:()=>playbackSettings(card),cast:()=>openTvCast(c,s),notify:toast});
   });
   const stop=e=>{e.preventDefault();e.stopPropagation()};
   const operator=$('[data-v144-operator]',hub),operatorToggle=$('[data-v144-operator-toggle]',hub),operatorKey='ljr-v144-operator-open:'+c.key;
@@ -521,7 +526,7 @@ function bind(c,s,hub){
     if(url)window.open(url,'_blank','noopener,noreferrer');
     else openConfig(c,s);
   }));
-  $$('[data-v144-share]',hub).forEach(b=>b.addEventListener('click',e=>{stop(e);shareLive(c,s)}));
+  $$('[data-v144-share]',hub).forEach(b=>b.onclick=e=>{stop(e);shareLive(c,s)});
   $$('[data-v144-tv-source]',hub).forEach(b=>b.addEventListener('click',e=>{stop(e);openTvCast(c,s)}));
   $$('[data-v144-config]',hub).forEach(b=>b.addEventListener('click',e=>{stop(e);openConfig(c,s)}));
   $$('[data-v144-platform]',hub).forEach(b=>b.addEventListener('click',e=>{
@@ -593,11 +598,12 @@ function mount(){
   if(!ROUTES.has(route())){stopSpeech();return}
   const c=ctx();if(!c)return;const s=load(c),sig=renderSig(c,s);
   let old=$('[data-v144-live-hub]',c.root);
-  if(old&&old.dataset.match!==c.key){old.remove();old=null}
+  if(old&&old.dataset.v144Match!==c.key){old.remove();old=null}
   /* Evita un bucle con MutationObserver: si nada cambió, no reemplaza DOM. */
   if(old&&old.dataset.sig===sig)return;
   const w=document.createElement('div');w.innerHTML=hubHtml(c,s);const hub=w.firstElementChild;
-  hub.dataset.sig=sig;
+  hub.dataset.sig=sig;hub.dataset.source=s.source.url||'';
+  if(old&&old.dataset.source===hub.dataset.source&&patchKeepingPlayer(old,hub,':scope > .v144-stream-embed')){bind(c,s,old);patch(c,s);return}
   if(old)old.replaceWith(hub);else{
     const meta=$('.v92-official-meta',c.root);if(meta)meta.insertAdjacentElement('afterend',hub);else c.root.appendChild(hub);
   }

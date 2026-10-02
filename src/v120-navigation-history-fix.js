@@ -76,7 +76,7 @@
   function animatePage(back){
     const id=++transitionId;
     pageAnimation?.cancel();
-    if(matchMedia('(prefers-reduced-motion: reduce)').matches)return;
+    if(['matchCenter','match','video'].includes(normRoute().split('?')[0])||matchMedia('(prefers-reduced-motion: reduce)').matches)return;
     setTimeout(()=>requestAnimationFrame(()=>{
       if(id!==transitionId)return;
       const screen=document.querySelector('#screen');

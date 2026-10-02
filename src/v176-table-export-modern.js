@@ -1,3 +1,4 @@
+import {normalizeCompetition} from './competition-data.js';
 /* V176 — Exportador compartido de publicaciones oficiales por categoría.
    - 5 categorías oficiales
    - escudos reales desde LJR_TEAM_LOGOS / official-live
@@ -43,23 +44,7 @@ async function getDb(){
 function ORDER(){return CAT_ORDER.filter(id=>db?.categories?.[id])}
 function rawCat(id){return db?.categories?.[String(id)]||null}
 function playedScore(v){const s=String(v??'').trim();return /^\d+$/.test(s)?Number(s):s==='-'?0:null}
-function normalizedCategory(id){
- const c=rawCat(id);if(!c)return null;
- const standings=(c.standings?.[0]?.rows||[]).filter(r=>Array.isArray(r)&&r[1]).map((r,i)=>({
-   pos:Number(r[0])||i+1,name:String(r[1]||'').trim(),pj:r[2]??'—',g:r[3]??'—',e:r[4]??'—',p:r[5]??'—',
-   gf:r[6]??'—',gc:r[7]??'—',dg:r[8]??'—',pts:r[9]??'—',classified:false,form:[]
- }));
- const matches=(c.fixtures?.[0]?.rows||[]).filter(r=>Array.isArray(r)&&r[2]&&r[6]).map((r,i)=>{
-   const hs=playedScore(r[3]),as=playedScore(r[5]),complete=hs!==null||as!==null;
-   const dt=String(r[8]||''),tm=(dt.match(/\s(\d{1,2}:\d{2})/)||[])[1]||'';
-   return {id:String(id)+'-'+i,round:String(r[1]||''),home:String(r[2]||''),away:String(r[6]||''),homeScore:hs??0,awayScore:as??0,
-     complete,status:complete?'FINAL':'PROGRAMADO',venue:String(r[7]||''),date:dt,time:tm};
- });
- const scorers=(c.scorers?.[0]?.rows||[]).filter(r=>Array.isArray(r)&&r.length>=4&&/^\d+$/.test(String(r[3]||''))).map((r,i)=>({
-   pos:Number(r[0])||i+1,player:String(r[1]||''),team:String(r[2]||''),goals:Number(r[3])||0
- }));
- return {id:String(id),name:c.name||LABELS[String(id)]||'Categoría',standings,matches,scorers,stages:[]};
-}
+function normalizedCategory(id){return normalizeCompetition(db).find(c=>c.id===String(id))||null}
 function cat(id){return normalizedCategory(id)}
 function rows(id){return cat(id)?.standings||[]}
 function logo(name){
@@ -195,7 +180,8 @@ async function canvasFor(id){
  x.fillStyle='#dce4fb';x.font='800 18px Arial';x.fillText('Generada: '+new Date().toLocaleDateString('es-MX'),88,fy+6);
  x.fillStyle='#7f8fb8';x.font='500 17px Arial';x.fillText('Tabla generada desde los datos oficiales disponibles en la app.',68,fy+48);
 
- return new Promise((resolve,reject)=>c.toBlob(b=>b?resolve(b):reject(Error('No se pudo crear el PNG.')),'image/png'));
+ const b=await new Promise((resolve,reject)=>c.toBlob(b=>b?resolve(b):reject(Error('No se pudo crear el PNG.')),'image/png'));
+ return window.LJR_PUBLICATIONS?.brandPng?window.LJR_PUBLICATIONS.brandPng(b,id):b;
 }
 function filename(id){return 'Tabla_'+String(cat(id)?.name||LABELS[id]).replace(/[^a-z0-9+]+/gi,'_')+'_Liga_Juventino.png'}
 async function doDownload(id){

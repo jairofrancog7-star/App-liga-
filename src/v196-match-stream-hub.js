@@ -1,3 +1,4 @@
+import {patchKeepingPlayer,enableDirectStream,playbackSettings,openPhoneCamera} from './v561-media-tools.js';
 import { normalizeStreamUrl, tiktokVideoId, attachPlayerControls } from './v560-stream-player-controls.js';
 import { Capacitor, registerPlugin } from '@capacitor/core';
 const nativePiP=registerPlugin('LigaPiP');
@@ -298,6 +299,7 @@ function saveList(c,list){
 }
 function setCurrentSource(c,item){
   const url=safeUrl(item?.url);if(!url)return;
+  try{const q=new URL(location.href);q.searchParams.delete('live');q.searchParams.delete('liveName');history.replaceState(history.state,'',q.href)}catch(_){}
   const s=liveState(c);
   s.source=Object.assign({feedUrl:'',connected:false,lastSync:0},s.source||{},{
     url,
@@ -578,7 +580,8 @@ function settingsModal(c){
 function bind(c,node){
   const s=liveState(c),list=streamList(c,s);
   const card=$('[data-v196-player-card]',node);
-  if(card)attachPlayerControls(card,{pip:()=>openSystemPiP(c,node),settings:()=>settingsModal(c),cast:()=>window.LJR_V440_TELEVISADOS?.openCast?.(s.source?.url),notify:flash});
+  if(card?.querySelector('video'))enableDirectStream(card.querySelector('video'));
+  if(card)attachPlayerControls(card,{pip:()=>openSystemPiP(c,node),settings:()=>playbackSettings(card),cast:()=>window.LJR_V440_TELEVISADOS?.openCast?.(s.source?.url),notify:flash});
   const stop=e=>{e?.preventDefault?.();e?.stopPropagation?.()};
   $$('[data-v196-open]',node).forEach(b=>b.onclick=e=>{stop(e);openExternal(b.dataset.v196Open)});
   $$('[data-v196-add]',node).forEach(b=>b.onclick=e=>{stop(e);addSourceModal(c)});
@@ -588,9 +591,9 @@ function bind(c,node){
   $('[data-v196-network]',node)?.addEventListener('click',e=>{stop(e);addSourceModal(c,'Stream de red')});
   $('[data-v196-settings]',node)?.addEventListener('click',e=>{stop(e);settingsModal(c)});
   $('[data-v196-floating]',node)?.addEventListener('click',e=>{stop(e);toggleFloating(c,node)});
-  Array.from(node.querySelectorAll('[data-v196-pip]')).forEach(b=>b.addEventListener('click',e=>{stop(e);openSystemPiP(c,node)}));
+  Array.from(node.querySelectorAll('[data-v196-pip]')).forEach(b=>b.onclick=e=>{stop(e);openSystemPiP(c,node)});
   Array.from(node.querySelectorAll('[data-v196-source]')).forEach(b=>b.onclick=()=>{const item=list[Number(b.dataset.v196Source)];if(item){setFloating(false,node);setCurrentSource(c,item)}});
-  $('[data-v196-close-float]',node)?.addEventListener('click',e=>{stop(e);disableFloating(node)});
+  const closeFloat=$('[data-v196-close-float]',node);if(closeFloat)closeFloat.onclick=e=>{stop(e);disableFloating(node)};
 }
 function applyFloating(node){
   const cfg=settings(),card=$('[data-v196-player-card]',node),c=ctx();
@@ -648,6 +651,9 @@ function render(){
   }
   const liveAnchor=$('[data-v144-live-hub]',c.root);
   const metaAnchor=$('.v92-official-meta',c.root)||$('.v92-score-card',c.root)||$('.v420-match-panel',c.root);
+  const sameSource=old?.dataset.source===s.source?.url&&old?.dataset.renderMode===cfg.render;
+  node.dataset.source=s.source?.url||'';node.dataset.renderMode=cfg.render;
+  if(old&&sameSource&&patchKeepingPlayer(old,node,':scope > [data-v196-player-card]')){bind(c,old);applyFloating(old);return}
   if(old)old.replaceWith(node);
   else if(liveAnchor)liveAnchor.insertAdjacentElement('beforebegin',node);
   else if(metaAnchor)metaAnchor.insertAdjacentElement('afterend',node);
