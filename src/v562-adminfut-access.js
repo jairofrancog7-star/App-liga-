@@ -68,14 +68,11 @@ function installMarkup(){
   '</div></section>'+
  '</section>';
 }
-function openPositions(){
- go('competition');
- setTimeout(()=>document.querySelector('[data-comp-tab="standings"]')?.click(),180);
+function clickCompetitionTab(tab){
+ [120,320,700].forEach(ms=>setTimeout(()=>document.querySelector('[data-comp-tab="'+tab+'"]')?.click(),ms));
 }
-function openFixtures(){
- go('competition');
- setTimeout(()=>document.querySelector('[data-comp-tab="fixtures"]')?.click(),180);
-}
+function openPositions(){go('competition');clickCompetitionTab('standings')}
+function openFixtures(){go('competition');clickCompetitionTab('fixtures')}
 function openDiscipline(kind){
  try{localStorage.setItem('v563-discipline-view',kind)}catch(_){}
  go('discipline');
@@ -98,7 +95,11 @@ function bind(root){
  $('[data-v563-appmode]',root)?.addEventListener('click',()=>{location.href=location.origin+location.pathname+'?mode=apk#/home'});
 }
 function mount(){
- const r=route();if(!['ligaControl','adminFut','appInstall'].includes(r))return;
+ const r=route();
+ if(r==='positions'){openPositions();return}
+ if(r==='cards'){openDiscipline('cards');return}
+ if(r==='suspensions'){openDiscipline('suspensions');return}
+ if(!['ligaControl','adminFut','appInstall'].includes(r))return;
  const screen=$('#screen');if(!screen)return;
  const placeholder=$('[data-v562-adminfut-mount],[data-v563-control-mount],[data-v563-app-install-mount]',screen);
  if(placeholder)placeholder.outerHTML=r==='appInstall'?installMarkup():controlMarkup();
