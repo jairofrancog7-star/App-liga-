@@ -1,11 +1,11 @@
-/* V607 — MOTOR FACIAL DE CREDENCIALES SOLO EN CÍRCULOS.
+/* V608 — FOTO COMPLETA SOLO EN CÍRCULOS.
    Conserva FaceDetector + MediaPipe + faceCrop de credenciales,
    pero únicamente actúa cuando el contenedor de la foto YA es circular.
    Fotos cuadradas o rectangulares se dejan completamente intactas. */
 (function(){
 'use strict';
-if(window.__LJR_V607_CREDENTIAL_FACE_CIRCLES_ONLY__)return;
-window.__LJR_V607_CREDENTIAL_FACE_CIRCLES_ONLY__=true;
+if(window.__LJR_V608_CIRCLE_FULL_FACE_HARDLOCK__)return;
+window.__LJR_V608_CIRCLE_FULL_FACE_HARDLOCK__=true;
 
 const FACE_IMAGES=[
   '.v576-player-photo',
@@ -116,7 +116,7 @@ async function mediaPipeFaceDetector(){
       minSuppressionThreshold:.30
     });
   })().catch(err=>{
-    console.warn('[V607 circle face detector]',err);
+    console.warn('[V608 circle face detector]',err);
     return null;
   });
   return mediaPipeFacePromise;
@@ -145,7 +145,7 @@ async function mediaPipeFaceProfile(img){
     });
     return pickFace(profiles,iw,ih);
   }catch(err){
-    console.warn('[V607 circle face detection]',err);
+    console.warn('[V608 circle face detection]',err);
     return null;
   }
 }
@@ -279,11 +279,28 @@ function prepareCircleFallback(img){
   p.classList.add('ljr-face-circle-v606');
   const src=img.currentSrc||img.src||'';
   if(src)p.style.setProperty('--ljr-circle-face-bg',cssImageUrl(src));
+
+  /* V608: HARDLOCK inline !important.
+     La foto ORIGINAL entra completa en el círculo. No se vuelve a recortar
+     después de detectar la cara; así nunca desaparecen boca, mentón o cabello. */
   delete img.dataset.ljrCredentialFaceCrop;
   delete img.dataset.ljrFaceDetector;
+  img.dataset.ljrCircleFullFace='1';
+
   for(const prop of ['--ljr-face-width','--ljr-face-height','--ljr-face-left','--ljr-face-top']){
     img.style.removeProperty(prop);
   }
+  const important={
+    'position':'relative',
+    'left':'auto','right':'auto','top':'auto','bottom':'auto',
+    'width':'100%','height':'100%',
+    'min-width':'0','min-height':'0','max-width':'100%','max-height':'100%',
+    'margin':'0','padding':'0','display':'block',
+    'object-fit':'contain','object-position':'center center',
+    'transform':'none','clip-path':'none',
+    'border-radius':'inherit','box-sizing':'border-box'
+  };
+  for(const [k,v] of Object.entries(important))img.style.setProperty(k,v,'important');
   return true;
 }
 function clearFaceCrop(img){
@@ -293,7 +310,13 @@ function clearFaceCrop(img){
   p?.style.removeProperty('--ljr-circle-face-bg');
   delete img.dataset.ljrCredentialFaceCrop;
   delete img.dataset.ljrFaceDetector;
-  for(const prop of ['--ljr-face-width','--ljr-face-height','--ljr-face-left','--ljr-face-top']){
+  delete img.dataset.ljrCircleFullFace;
+  for(const prop of [
+    '--ljr-face-width','--ljr-face-height','--ljr-face-left','--ljr-face-top',
+    'position','left','right','top','bottom','width','height','min-width','min-height',
+    'max-width','max-height','margin','padding','display','object-fit','object-position',
+    'transform','clip-path','border-radius','box-sizing'
+  ]){
     img.style.removeProperty(prop);
   }
 }
@@ -360,8 +383,7 @@ async function process(img){
   }
 
   prepareCircleFallback(img);
-  const profile=await playerFaceProfile(img);
-  if(profile)applyCrop(img,profile);
+  /* No aplicar crop después: la prioridad es conservar el rostro completo. */
 }
 function enqueue(img){
   if(!(img instanceof HTMLImageElement)||!img.matches(FACE_IMAGES)||queued.has(img))return;
@@ -373,7 +395,7 @@ async function pump(){
   while(queue.length){
     const img=queue.shift();
     queued.delete(img);
-    try{await process(img)}catch(err){console.warn('[V607 circle face crop]',err)}
+    try{await process(img)}catch(err){console.warn('[V608 circle full face]',err)}
     await new Promise(r=>setTimeout(r,0));
   }
   running=false;
@@ -426,7 +448,7 @@ setTimeout(()=>scan(document),500);
 setTimeout(()=>scan(document),1800);
 
 window.LJR_FACE_FRAME={
-  engine:'credential-v494-v495-circles-only-v607-full-face',
+  engine:'circle-original-contain-v608-hardlock',
   scan:()=>scan(document),
   faceCrop,
   profile:playerFaceProfile,
