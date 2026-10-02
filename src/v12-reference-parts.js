@@ -933,6 +933,16 @@ document.addEventListener('click',e=>{
   if(choice){
     e.preventDefault();
     e.stopPropagation();
+    /* V546 — los dos monitos exteriores del diseño principal abren
+       una ruta real con todos los diseños secundarios, para evitar
+       que otro parche o caché vuelva a bloquear el toque en Android. */
+    if(v12Route()==='moreLess' &&
+       choice.closest('.v12-ml-choice') &&
+       !choice.classList.contains('up-arrow') &&
+       !choice.classList.contains('down-arrow')){
+      location.hash='#/moreLessGallery';
+      return;
+    }
     document.querySelectorAll('[data-v12-choice]').forEach(b=>b.classList.remove('selected'));
     choice.classList.add('selected');
     const value=choice.dataset.v12Choice==='more'?'MÁS':'MENOS';
