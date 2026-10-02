@@ -1,4 +1,4 @@
-const CACHE='liga-juventino-v559-native-pip-inapp-video';
+const CACHE='liga-juventino-v560-player-controls-final-preview';
 const CORE=['./','./index.html','./manifest.webmanifest','./brand-neon-header.svg','./profile-reference.svg'];
 
 self.addEventListener('install',event=>{
