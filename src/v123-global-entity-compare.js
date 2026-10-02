@@ -22,6 +22,17 @@ function registrationActive(){
    !!document.querySelector('#screen [data-v64-cred-team],#v124-player-registry,[data-v132-layer].open,.v126-team-panel');
 }
 function initials(v){return String(v||'').split(/\s+/).filter(Boolean).map(x=>x[0]).join('').slice(0,2).toUpperCase()||'JG'}
+function playerPhotoUrl(p){
+ const direct=String(p?.photo||'').trim();if(direct)return direct;
+ try{
+  const pub=window.LJR_PLAYER_PHOTOS||{};
+  return String(pub[norm(p?.name)+'|'+norm(p?.team)]||pub[norm(p?.name)]||'');
+ }catch(_){return ''}
+}
+function avatarMarkup(p,cls){
+ const src=playerPhotoUrl(p);
+ return src?'<span class="'+cls+' has-photo"><img src="'+esc(src)+'" alt="'+esc(p?.name||'Jugador')+'" loading="lazy" decoding="async" referrerpolicy="no-referrer"></span>':'<span class="'+cls+'">'+esc(initials(p?.name))+'</span>';
+}
 
 async function getApi(){
  if(api?.playerList)return api;
@@ -78,7 +89,7 @@ function playerCard(p,side){
  }
  return '<article class="v123-player-card '+esc(side)+'" data-v123-card-side="'+esc(side)+'" tabindex="0" role="button" aria-label="Cambiar '+esc(p.name)+'">'+
    '<span class="v123-player-swap" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M19 7v5h-5M5 17v-5h5M18.2 12a6.5 6.5 0 0 0-11.1-4.6L5 9M5.8 12a6.5 6.5 0 0 0 11.1 4.6L19 15"/></svg></span>'+
-   '<div class="v123-avatar">'+esc(initials(p.name))+'</div>'+
+   avatarMarkup(p,'v123-avatar')+
    '<div class="v123-player-copy"><strong>'+esc(p.name)+'</strong><small>'+esc(p.category||'Jugador registrado')+'</small></div>'+
    '<button type="button" class="v123-team-chip" data-v123-team="'+esc(p.team)+'" aria-label="Comparar equipo '+esc(p.team)+'">'+
      '<span class="v123-team-logo">'+logo(p.team)+'</span><b>'+esc(p.team)+'</b>'+
@@ -116,7 +127,7 @@ const POSITION_GROUPS=[
 ];
 function playerOptionMarkup(p,current){
  return '<button type="button" class="v123-player-option v205-player-option v206-player-option '+(current&&playerKey(p)===playerKey(current)?'active':'')+'" data-v123-pick="'+esc(p.name)+'" data-v123-pick-team="'+esc(p.team)+'" data-v123-pick-cat="'+esc(p.cat)+'">'+
-   '<span class="v123-option-avatar v205-option-avatar v206-option-avatar">'+esc(initials(p.name))+'</span>'+
+   avatarMarkup(p,'v123-option-avatar v205-option-avatar v206-option-avatar')+
    '<span class="v123-option-copy v205-option-copy v206-option-copy"><b>'+esc(p.name)+'</b><small><i class="v123-option-logo v205-option-logo v206-option-logo">'+logo(p.team)+'</i><span>'+esc(p.team)+'</span></small></span>'+
    '<i class="v123-option-radio v205-option-radio v206-option-radio" aria-hidden="true"></i>'+
  '</button>';
