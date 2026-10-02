@@ -111,9 +111,9 @@ function morePair(data){
   for(let i=0;i<list.length;i++){
     for(let j=i+1;j<list.length;j++){
       if(list[i].goals!==list[j].goals)pairs.push({a:list[i],b:list[j],kind:'player'});
-      if(pairs.length>=12)break;
+      if(pairs.length>=36)break;
     }
-    if(pairs.length>=12)break;
+    if(pairs.length>=36)break;
   }
   if(pairs.length)return pairs[Math.abs(Number(more.round)||0)%pairs.length];
   const rows=standings(data);
@@ -130,6 +130,13 @@ function morePair(data){
 function rankRows(data){
   const rows=standings(data).slice(0,3);
   return rows.map(function(r,i){return {pos:i+1,name:String(r[1]),pts:String(r[9]??'—'),pj:String(r[2]??'—')}});
+}
+function v583PairAt(data,offset){
+  const saved=more.round;
+  more.round=Math.max(0,Number(offset)||0);
+  const pair=morePair(data);
+  more.round=saved;
+  return pair;
 }
 function backSvg(){return '<svg viewBox="0 0 28 28" aria-hidden="true"><path d="M18 6 10 14l8 8M10.5 14H24"/></svg>'}
 function closeSvg(){return '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18"/></svg>'}
@@ -232,6 +239,14 @@ function v545MoreScreenCards(pair,data){
 }
 function moreHub(data){
   const pair=morePair(data),ranks=rankRows(data);
+  const extraPairs=[1,2,3].map(function(n){return v583PairAt(data,n)});
+  const extraChallenges='<section class="v583-more-challenges"><h2>Más retos de Más o menos</h2>'+
+    extraPairs.map(function(p,i){return '<article class="v583-more-challenge">'+
+      '<div class="v583-challenge-art">'+v538Person(p.a,data,'left')+v538Person(p.b,data,'right')+'</div>'+
+      '<div class="v583-challenge-copy"><h3>Más o menos</h3><p>'+esc(p.a.name)+' vs '+esc(p.b.name)+'</p>'+
+      '<button type="button" data-v583-more-round="'+(i+1)+'">Jugar este reto</button></div>'+
+    '</article>'}).join('')+
+  '</section>';
   return '<section class="v531-page v531-more v538-more-hub v551-more-reference" data-v531-more data-v531-view="hub">'+
     '<header class="v531-mini-head v538-more-head"><button type="button" data-v531-more-back aria-label="Volver">'+backSvg()+'</button><strong>More or Less</strong><span></span></header>'+
     '<main class="v538-hub-body">'+
@@ -243,6 +258,7 @@ function moreHub(data){
       '</article>'+
       '<div class="v551-discover-banner"><span>◉</span><b>DESCUBRE MÁS</b><em>LIGA JUVENTINO</em></div>'+
       '<article class="v538-friend-card"><div><h3>¡Reta a tus amigos en el Quiz Arena!</h3><button type="button" data-v531-share>Invita a amigos</button></div><div class="v538-friend-bubble">'+v538Person(pair.a,data,'friend')+'</div></article>'+
+      extraChallenges+
       '<h2 class="v531-section-title v551-ranking-title">Clasificaciones</h2>'+
       '<article class="v531-rank-card v551-more-ranking"><h3>Más o menos</h3>'+ranks.map(function(r){return '<div class="v531-rank-row"><span>'+r.pos+'º</span>'+crest(r.name,data,'rank')+'<b>'+esc(r.name)+'</b><strong>'+esc(r.pts)+' pts</strong></div>'}).join('')+'<button type="button" data-v531-rankings>Ver clasificaciones</button></article>'+
     '</main>'+
@@ -639,7 +655,7 @@ document.addEventListener('click',function(e){
     return;
   }
 
-  const t=e.target.closest('[data-v545-more-screen],[data-v531-more-open],[data-v48-quiz],[data-v12-choice],[data-v531-quiz-back],[data-v531-more-back],[data-v531-share],[data-v531-rankings],[data-v531-quiz-start],[data-v531-quiz-close],[data-v531-q-answer],[data-v531-quiz-next],[data-v531-result-back],[data-v531-more-start],[data-v531-more-close],[data-v531-more-choice],[data-v539-more-next],[data-v531-exit-confirm],[data-v531-exit-cancel]');
+  const t=e.target.closest('[data-v545-more-screen],[data-v583-more-round],[data-v531-more-open],[data-v48-quiz],[data-v12-choice],[data-v531-quiz-back],[data-v531-more-back],[data-v531-share],[data-v531-rankings],[data-v531-quiz-start],[data-v531-quiz-close],[data-v531-q-answer],[data-v531-quiz-next],[data-v531-result-back],[data-v531-more-start],[data-v531-more-close],[data-v531-more-choice],[data-v539-more-next],[data-v531-exit-confirm],[data-v531-exit-cancel]');
   if(!t)return;
   // Controles del diseño principal anterior: no los bloqueamos.
   // Dejamos que su funcionamiento original ocurra y luego abrimos el diseño secundario debajo.
@@ -661,6 +677,20 @@ document.addEventListener('click',function(e){
   }
 
   e.preventDefault();e.stopPropagation();
+
+  if(t.matches('[data-v583-more-round]')){
+    more.round=Math.max(0,Number(t.dataset.v583MoreRound)||0);
+    more.points=0;
+    more.attempts=2;
+    more.mode='game';
+    more.phase='intro';
+    more.answered=false;
+    more.selected='';
+    more.exit=false;
+    more.countdown=15;
+    v538StartMoreRound();
+    return;
+  }
 
   if(t.matches('[data-v545-more-screen]')){
     v538ClearTimers();
@@ -713,7 +743,16 @@ document.addEventListener('click',function(e){
     if(picked===actual)more.points+=10;else more.attempts=Math.max(0,more.attempts-1);
     v538ClearTimers();v543RenderMorePortal();return;
   }
-  if(t.matches('[data-v539-more-next]')){v538StartMoreRound();return}
+  if(t.matches('[data-v539-more-next]')){
+    more.mode='game';
+    more.phase='intro';
+    more.answered=false;
+    more.selected='';
+    more.exit=false;
+    more.countdown=15;
+    v538StartMoreRound();
+    return
+  }
   if(t.matches('[data-v531-exit-confirm]')){
     const kind=t.dataset.v531ExitConfirm;
     if(kind==='quiz'){quiz.mode='legacy';quiz.exit=false;quiz.answered=false}
