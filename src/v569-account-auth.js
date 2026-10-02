@@ -232,19 +232,19 @@ function guestProfileCardMarkup(){
 }
 function profileRegisterMarkup(){
   return '<section class="v569-inline-auth" data-v569-page="register" data-method="phone">'+
-    '<div class="v569-inline-head"><button type="button" class="v569-inline-back" data-v569-profile-close aria-label="Volver">‹</button><div><small>CUENTA LIGA JUVENTINO</small><h2>Crear una cuenta</h2><p>Todo el registro se hace aquí mismo, sin salir de Perfil.</p></div></div>'+
-    '<div class="v569-methods"><button type="button" class="active" data-v569-method="phone">Teléfono</button><button type="button" data-v569-method="email">Gmail / correo</button></div>'+
+    '<div class="v569-inline-head"><button type="button" class="v569-inline-back" data-v569-profile-close aria-label="Volver">‹</button><div><div class="v575-auth-badge">SEGURO · LIGA JUVENTINO</div><h2>Crear una cuenta</h2><p>Configura tu perfil en segundos. Tu alias se propone con tu nombre y puedes cambiarlo cuando quieras.</p></div></div>'+
+    '<div class="v569-methods"><button type="button" class="active" data-v569-method="phone"><span>📱</span> Teléfono</button><button type="button" data-v569-method="email"><span>✉</span> Gmail / correo</button></div>'+
     '<div class="v569-form">'+
       field('NOMBRE',input('text','data-v569-name','Tu nombre','','autocomplete="name"'))+
-      field('ALIAS DEL PERFIL','<div class="v569-inline">'+input('text','data-v569-alias','Se crea con tu nombre')+'<button type="button" data-v569-generate-alias>Otro</button></div><small>La app te propone un alias usando tu nombre. Si no te gusta, toca “Otro” o escribe el que quieras.</small>')+
+      field('ALIAS DEL PERFIL','<div class="v569-inline">'+input('text','data-v569-alias','Se crea con tu nombre')+'<button type="button" data-v569-generate-alias><span>↻</span> Otro</button></div><small>La app te propone un alias usando tu nombre. Si no te gusta, toca “Otro” o escribe el que quieras.</small>')+
       '<div data-v569-phone-wrap>'+field('NÚMERO TELEFÓNICO',input('tel','data-v569-phone','Ej. 461 123 4567','','inputmode="tel" autocomplete="tel"'))+'</div>'+
       '<div data-v569-email-wrap hidden>'+field('GMAIL / CORREO',input('email','data-v569-email','nombre@gmail.com','','autocomplete="email"'))+'</div>'+
-      field('CONTRASEÑA','<div class="v569-inline">'+input('password','data-v569-password','Mínimo 8 caracteres','','autocomplete="new-password"')+'<button type="button" data-v569-generate-password>Generar</button></div>')+
+      field('CONTRASEÑA','<div class="v569-inline">'+input('password','data-v569-password','Mínimo 8 caracteres','','autocomplete="new-password"')+'<button type="button" data-v569-generate-password><span>✦</span> Generar</button></div>')+
       field('CONFIRMAR CONTRASEÑA',input('password','data-v569-confirm','Repite la contraseña','','autocomplete="new-password"'))+
       '<label class="v569-check"><input type="checkbox" data-v569-bio checked><i></i><span><b>Registrar huella / biometría</b><small>En la APK Android usa la seguridad biométrica disponible en el teléfono.</small></span></label>'+
       '<label class="v569-check"><input type="checkbox" data-v569-terms checked><i></i><span><b>Guardar esta cuenta en este dispositivo</b><small>Tu contraseña se protege con derivación criptográfica; la app no guarda tu huella.</small></span></label>'+
     '</div>'+
-    '<button class="v569-primary" type="button" data-v569-register>Crear mi cuenta</button>'+
+    '<button class="v569-primary v575-create-account" type="button" data-v569-register><span>Crear mi cuenta</span><i>→</i></button>'+
     '<button class="v569-link" type="button" data-v569-profile-mode="login">Ya tengo cuenta · Iniciar sesión</button>'+
   '</section>';
 }
@@ -319,13 +319,13 @@ function authShell(kind){
     return '<section class="v569-page" data-v569-page="register">'+
       header('CUENTA LIGA JUVENTINO','Crear una cuenta','Regístrate con número telefónico o Gmail/correo y elige tu alias de perfil.')+
       '<section class="v569-card">'+
-        '<div class="v569-methods"><button type="button" class="active" data-v569-method="phone">Teléfono</button><button type="button" data-v569-method="email">Gmail / correo</button></div>'+
+        '<div class="v569-methods"><button type="button" class="active" data-v569-method="phone"><span>📱</span> Teléfono</button><button type="button" data-v569-method="email"><span>✉</span> Gmail / correo</button></div>'+
         '<div class="v569-form">'+
           field('NOMBRE',input('text','data-v569-name','Tu nombre','','autocomplete="name"'))+
-          field('ALIAS DEL PERFIL','<div class="v569-inline">'+input('text','data-v569-alias','Se crea con tu nombre')+'<button type="button" data-v569-generate-alias>Otro</button></div><small>La app te propone un alias usando tu nombre. Si no te gusta, toca “Otro” o escribe el que quieras.</small>')+
+          field('ALIAS DEL PERFIL','<div class="v569-inline">'+input('text','data-v569-alias','Se crea con tu nombre')+'<button type="button" data-v569-generate-alias><span>↻</span> Otro</button></div><small>La app te propone un alias usando tu nombre. Si no te gusta, toca “Otro” o escribe el que quieras.</small>')+
           '<div data-v569-phone-wrap>'+field('NÚMERO TELEFÓNICO',input('tel','data-v569-phone','Ej. 461 123 4567','','inputmode="tel" autocomplete="tel"'))+'</div>'+
           '<div data-v569-email-wrap hidden>'+field('GMAIL / CORREO',input('email','data-v569-email','nombre@gmail.com','','autocomplete="email"'))+'</div>'+
-          field('CONTRASEÑA','<div class="v569-inline">'+input('password','data-v569-password','Mínimo 8 caracteres','','autocomplete="new-password"')+'<button type="button" data-v569-generate-password>Generar</button></div>')+
+          field('CONTRASEÑA','<div class="v569-inline">'+input('password','data-v569-password','Mínimo 8 caracteres','','autocomplete="new-password"')+'<button type="button" data-v569-generate-password><span>✦</span> Generar</button></div>')+
           field('CONFIRMAR CONTRASEÑA',input('password','data-v569-confirm','Repite la contraseña','','autocomplete="new-password"'))+
           '<label class="v569-check"><input type="checkbox" data-v569-bio checked><i></i><span><b>Activar acceso biométrico</b><small>En Android puede usar huella, rostro o PIN del dispositivo.</small></span></label>'+
           '<label class="v569-check"><input type="checkbox" data-v569-terms checked><i></i><span><b>Acepto guardar esta cuenta en este dispositivo</b><small>Los datos de acceso se almacenan localmente en la app.</small></span></label>'+
