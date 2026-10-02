@@ -431,3 +431,139 @@
     max-height:66px!important;
   }
 }
+
+
+/* V591 — barra superior y alineación.
+   Hace más grandes únicamente la flecha y los tres puntos; además alinea
+   texto, línea activa e iconos del resto de controles sin cambiar sus gráficos. */
+@media(max-width:1023px){
+  /* Barra superior: flecha y tres puntos más grandes y mejor centrados. */
+  .v589-top{
+    grid-template-columns:54px minmax(0,1fr) 54px!important;
+    align-items:center!important;
+  }
+  .v589-top.big{
+    align-items:center!important;
+    padding-bottom:0!important;
+  }
+  .v589-back,
+  .v589-more{
+    box-sizing:border-box!important;
+    width:52px!important;
+    height:52px!important;
+    min-width:52px!important;
+    min-height:52px!important;
+    display:flex!important;
+    align-items:center!important;
+    justify-content:center!important;
+    margin:0!important;
+    padding:0!important;
+  }
+  .v589-back{
+    font-size:54px!important;
+    line-height:.82!important;
+    transform:translateY(-1px)!important;
+  }
+  .v589-more{
+    font-size:38px!important;
+    line-height:1!important;
+    letter-spacing:2px!important;
+  }
+  .v589-top h1{
+    align-self:center!important;
+    justify-self:start!important;
+    display:flex!important;
+    align-items:center!important;
+    min-height:52px!important;
+    margin:0!important;
+    padding:0!important;
+    line-height:1!important;
+  }
+
+  /* Jornadas: texto y línea exactamente centrados entre sí. */
+  .v589-journeys{
+    align-items:stretch!important;
+  }
+  .v589-journeys button{
+    box-sizing:border-box!important;
+    height:66px!important;
+    min-height:66px!important;
+    display:flex!important;
+    align-items:center!important;
+    justify-content:center!important;
+    padding:0 12px 5px!important;
+    line-height:1!important;
+  }
+  .v589-journeys button.active::after{
+    left:50%!important;
+    right:auto!important;
+    bottom:0!important;
+    width:72%!important;
+    height:4px!important;
+    transform:translateX(-50%)!important;
+  }
+
+  /* Selector Pronósticos / Ligas: icono + texto en una sola línea centrada. */
+  .v589-switch button{
+    display:grid!important;
+    grid-template-columns:auto auto!important;
+    align-items:center!important;
+    justify-content:center!important;
+    align-content:center!important;
+    column-gap:8px!important;
+    padding:0 10px!important;
+    line-height:1!important;
+  }
+  .v589-switch button span,
+  .v589-switch button b{
+    display:flex!important;
+    align-items:center!important;
+    justify-content:center!important;
+    margin:0!important;
+    line-height:1!important;
+  }
+
+  /* Cabeceras de tarjetas: icono, texto y botón derecho alineados al mismo eje. */
+  .v589-card-head{
+    align-items:center!important;
+  }
+  .v589-card-head button,
+  .v589-card-head b,
+  .v589-card-head span{
+    align-self:center!important;
+    margin:0!important;
+    line-height:1!important;
+  }
+  .v589-card-head button{
+    display:flex!important;
+    align-items:center!important;
+    justify-content:flex-start!important;
+    height:100%!important;
+  }
+  .v589-card-head span{
+    display:flex!important;
+    align-items:center!important;
+    justify-content:flex-end!important;
+    height:100%!important;
+  }
+}
+
+@media(max-width:390px){
+  .v589-top{
+    grid-template-columns:50px minmax(0,1fr) 50px!important;
+  }
+  .v589-back,
+  .v589-more{
+    width:48px!important;
+    height:48px!important;
+    min-width:48px!important;
+    min-height:48px!important;
+  }
+  .v589-back{font-size:50px!important}
+  .v589-more{font-size:35px!important}
+  .v589-top h1{min-height:48px!important}
+  .v589-journeys button{
+    height:60px!important;
+    min-height:60px!important;
+  }
+}
