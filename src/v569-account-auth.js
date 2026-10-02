@@ -189,6 +189,90 @@ function field(label,input){return '<label class="v569-field"><span>'+esc(label)
 function input(type,attr,placeholder,value='',extra=''){
   return '<input type="'+esc(type)+'" '+attr+' placeholder="'+esc(placeholder)+'" value="'+esc(value)+'" '+extra+'>';
 }
+
+function guestProfileCardMarkup(){
+  return '<div class="v12-profile-copy"><h1>Más de la Liga</h1><p>Crea tu cuenta y disfruta de un acceso inigualable a resultados, estadísticas, calendarios, equipos de la liga y mucho más.</p></div>'+
+    '<div class="v12-profile-actions"><button class="outline" data-v12-action="login">Iniciar sesión</button><button class="solid" data-v12-action="create">Crear una cuenta</button></div>';
+}
+function profileRegisterMarkup(){
+  return '<section class="v569-inline-auth" data-v569-page="register" data-method="phone">'+
+    '<div class="v569-inline-head"><button type="button" class="v569-inline-back" data-v569-profile-close aria-label="Volver">‹</button><div><small>CUENTA LIGA JUVENTINO</small><h2>Crear una cuenta</h2><p>Todo el registro se hace aquí mismo, sin salir de Perfil.</p></div></div>'+
+    '<div class="v569-methods"><button type="button" class="active" data-v569-method="phone">Teléfono</button><button type="button" data-v569-method="email">Gmail / correo</button></div>'+
+    '<div class="v569-form">'+
+      field('NOMBRE',input('text','data-v569-name','Tu nombre','','autocomplete="name"'))+
+      field('ALIAS DEL PERFIL','<div class="v569-inline">'+input('text','data-v569-alias','Elige uno o déjalo vacío')+'<button type="button" data-v569-generate-alias>Generar</button></div><small>Puedes elegir tu alias o dejarlo vacío para generarlo automáticamente.</small>')+
+      '<div data-v569-phone-wrap>'+field('NÚMERO TELEFÓNICO',input('tel','data-v569-phone','Ej. 461 123 4567','','inputmode="tel" autocomplete="tel"'))+'</div>'+
+      '<div data-v569-email-wrap hidden>'+field('GMAIL / CORREO',input('email','data-v569-email','nombre@gmail.com','','autocomplete="email"'))+'</div>'+
+      field('CONTRASEÑA','<div class="v569-inline">'+input('password','data-v569-password','Mínimo 8 caracteres','','autocomplete="new-password"')+'<button type="button" data-v569-generate-password>Generar</button></div>')+
+      field('CONFIRMAR CONTRASEÑA',input('password','data-v569-confirm','Repite la contraseña','','autocomplete="new-password"'))+
+      '<label class="v569-check"><input type="checkbox" data-v569-bio checked><i></i><span><b>Registrar huella / biometría</b><small>En la APK Android usa la seguridad biométrica disponible en el teléfono.</small></span></label>'+
+      '<label class="v569-check"><input type="checkbox" data-v569-terms checked><i></i><span><b>Guardar esta cuenta en este dispositivo</b><small>Tu contraseña se protege con derivación criptográfica; la app no guarda tu huella.</small></span></label>'+
+    '</div>'+
+    '<button class="v569-primary" type="button" data-v569-register>Crear mi cuenta</button>'+
+    '<button class="v569-link" type="button" data-v569-profile-mode="login">Ya tengo cuenta · Iniciar sesión</button>'+
+  '</section>';
+}
+function profileLoginMarkup(){
+  const bio=allAccounts().some(biometricEnabled);
+  return '<section class="v569-inline-auth" data-v569-page="login">'+
+    '<div class="v569-inline-head"><button type="button" class="v569-inline-back" data-v569-profile-close aria-label="Volver">‹</button><div><small>CUENTA LIGA JUVENTINO</small><h2>Iniciar sesión</h2><p>Entra aquí mismo con alias, teléfono o Gmail/correo.</p></div></div>'+
+    '<div class="v569-form">'+
+      field('ALIAS, TELÉFONO O GMAIL',input('text','data-v569-login-id','@alias, teléfono o correo','','autocomplete="username"'))+
+      field('CONTRASEÑA',input('password','data-v569-login-password','Tu contraseña','','autocomplete="current-password"'))+
+    '</div>'+
+    '<button class="v569-primary" type="button" data-v569-login>Entrar</button>'+
+    (bio?'<button class="v569-secondary bio" type="button" data-v569-login-bio>◉ Entrar con huella / biometría</button>':'')+
+    '<button class="v569-link" type="button" data-v569-profile-mode="register">Crear una cuenta</button>'+
+  '</section>';
+}
+function profileSuccessMarkup(account){
+  return '<section class="v569-inline-auth v569-inline-success" data-v569-page="success">'+
+    '<div class="v569-success-mark">✓</div><small>CUENTA CREADA</small><h2>'+esc(account.name||account.alias)+'</h2>'+
+    '<p>Tu cuenta quedó lista y permanece dentro de la sección Perfil.</p>'+
+    '<div class="v569-success-data"><span><small>ALIAS</small><b>@'+esc(account.alias)+'</b></span><span><small>CONTACTO</small><b>'+esc(contactText(account))+'</b></span><span><small>SEGURIDAD</small><b>'+(biometricEnabled(account)?'Huella / biometría activada':'Contraseña activa')+'</b></span></div>'+
+    '<button class="v569-primary" type="button" data-v569-profile-finish>Ver mi perfil</button>'+
+    '<button class="v569-secondary" type="button" data-v569-copy-alias>Copiar alias</button>'+
+  '</section>';
+}
+function profileRoot(){return route()==='profile'?$('[data-v12-profile]'):null}
+function openProfileMode(mode){
+  const root=profileRoot(),card=root?.querySelector('.v12-profile-card');
+  if(!root||!card)return false;
+  root.classList.add('v569-auth-inline-active');
+  card.removeAttribute('data-v569-owned');
+  card.dataset.v569Inline=mode;
+  card.innerHTML=mode==='login'?profileLoginMarkup():profileRegisterMarkup();
+  const page=$('[data-v569-page]',card);
+  if(page&&mode==='register')page.dataset.method='phone';
+  card.scrollIntoView({behavior:'smooth',block:'start'});
+  return true;
+}
+function restoreGuestProfile(){
+  const root=profileRoot(),card=root?.querySelector('.v12-profile-card');
+  if(!root||!card)return;
+  root.classList.remove('v569-auth-inline-active');
+  card.removeAttribute('data-v569-inline');
+  card.removeAttribute('data-v569-owned');
+  card.innerHTML=guestProfileCardMarkup();
+}
+function renderLoggedProfile(account=currentAccount()){
+  const root=profileRoot(),card=root?.querySelector('.v12-profile-card');
+  if(!root||!card||!account)return false;
+  root.classList.remove('v569-auth-inline-active');
+  card.removeAttribute('data-v569-inline');
+  card.dataset.v569Owned='1';
+  card.innerHTML=loggedProfileMarkup(account);
+  enhanceProfile();
+  return true;
+}
+function openRegister(){
+  if(route()==='profile'&&openProfileMode('register'))return;
+  go('accountRegister');
+}
+function openLogin(){
+  if(route()==='profile'&&openProfileMode('login'))return;
+  go('accountLogin');
+}
 function authShell(kind){
   const a=currentAccount();
   if(kind==='accountRegister'){
@@ -294,6 +378,17 @@ async function registerFromPage(root){
   showCredentials(currentAccount()||rec);
 }
 function showCredentials(account){
+  if(route()==='profile'){
+    const root=profileRoot(),card=root?.querySelector('.v12-profile-card');
+    if(card){
+      root.classList.add('v569-auth-inline-active');
+      card.removeAttribute('data-v569-owned');
+      card.dataset.v569Inline='success';
+      card.innerHTML=profileSuccessMarkup(account);
+      card.scrollIntoView({behavior:'smooth',block:'start'});
+      return;
+    }
+  }
   $('.v569-credentials')?.remove();
   const el=document.createElement('div');el.className='v569-credentials';
   el.innerHTML='<section><header><span>🔑</span><h2>Cuenta creada</h2><button type="button" data-v569-close-creds>×</button></header><div class="v569-cred-body"><p>Guarda tu alias. Puedes iniciar sesión con el alias, teléfono o Gmail/correo registrado.</p><div><small>ALIAS</small><b>@'+esc(account.alias)+'</b></div><div><small>CONTACTO</small><b>'+esc(contactText(account))+'</b></div></div><footer><button type="button" data-v569-copy-alias>Copiar alias</button><button class="primary" type="button" data-v569-finish>Ir a mi perfil</button></footer></section>';
@@ -309,14 +404,14 @@ async function loginFromPage(root){
   try{
     if(!(await passwordOk(account,pass))){closeOverlay();return toast('Contraseña incorrecta')}
     const auth=authState(),idx=auth.accounts.findIndex(a=>a.id===account.id);auth.accounts[idx].lastLoginAt=nowIso();saveAuth(auth);setAppUser(auth.accounts[idx]);
-    overlay('Bienvenido','Sesión iniciada correctamente.','ok');closeOverlay();setTimeout(()=>go('profile'),300);
+    overlay('Bienvenido','Sesión iniciada correctamente.','ok');closeOverlay();setTimeout(()=>{if(route()==='profile')renderLoggedProfile(auth.accounts[idx]);else go('profile')},300);
   }catch(e){closeOverlay();toast(e.message||'No se pudo iniciar sesión')}
 }
 async function biometricLogin(root){
   const id=$('[data-v569-login-id]',root)?.value||'';
   let account=id?findAccount(id):allAccounts().filter(biometricEnabled)[0];
   if(!biometricEnabled(account))return toast('Escribe el alias de una cuenta con biometría');
-  try{await verifyBiometric(account);setTimeout(()=>go('profile'),300)}catch(e){closeOverlay();toast(e?.name==='NotAllowedError'?'Verificación cancelada':(e?.message||'No se pudo verificar'))}
+  try{const verified=await verifyBiometric(account);setTimeout(()=>{if(route()==='profile')renderLoggedProfile(verified);else go('profile')},300)}catch(e){closeOverlay();toast(e?.name==='NotAllowedError'?'Verificación cancelada':(e?.message||'No se pudo verificar'))}
 }
 async function saveProfile(root){
   const a=currentAccount();if(!a)return go('accountLogin');
@@ -373,8 +468,8 @@ function enhanceProfile(){
     const card=$('.v12-profile-card',root);
     if(card){
       const login=$('[data-v12-action="login"]',card),create=$('[data-v12-action="create"]',card);
-      if(login){login.textContent='Iniciar sesión';login.dataset.v569Route='accountLogin'}
-      if(create){create.textContent='Crear una cuenta';create.dataset.v569Route='accountRegister'}
+      if(login){login.textContent='Iniciar sesión';delete login.dataset.v569Route}
+      if(create){create.textContent='Crear una cuenta';delete create.dataset.v569Route}
     }
     $('[data-v569-account-menu]',root)?.remove();
   }
@@ -391,6 +486,14 @@ function mountPage(){
 function schedule(){setTimeout(()=>{mountPage();enhanceProfile()},60)}
 document.addEventListener('click',async e=>{
   if(!(e.target instanceof Element))return;
+  const profileClose=e.target.closest('[data-v569-profile-close]');
+  if(profileClose){e.preventDefault();e.stopPropagation();restoreGuestProfile();return}
+  const profileMode=e.target.closest('[data-v569-profile-mode]');
+  if(profileMode){e.preventDefault();e.stopPropagation();openProfileMode(profileMode.dataset.v569ProfileMode);return}
+  const profileFinish=e.target.closest('[data-v569-profile-finish]');
+  if(profileFinish){e.preventDefault();e.stopPropagation();renderLoggedProfile();return}
+  const inlineCopy=e.target.closest('.v569-inline-success [data-v569-copy-alias]');
+  if(inlineCopy){e.preventDefault();const a=currentAccount();try{await navigator.clipboard.writeText(a?.alias||'');toast('Alias copiado')}catch(_){toast('@'+(a?.alias||''))}return}
   const routeBtn=e.target.closest('[data-v569-route]');
   if(routeBtn){e.preventDefault();e.stopPropagation();go(routeBtn.dataset.v569Route);return}
   const method=e.target.closest('[data-v569-method]');
@@ -414,8 +517,10 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
 setTimeout(schedule,800);
 
 window.LJR_V569_AUTH={
-  openRegister:()=>go('accountRegister'),
-  openLogin:()=>go('accountLogin'),
+  openRegister,
+  openLogin,
+  openProfileRegister:()=>openProfileMode('register'),
+  openProfileLogin:()=>openProfileMode('login'),
   logout,
   currentAccount,
   profileMarkup:loggedProfileMarkup,
