@@ -5,7 +5,7 @@
 if(window.__LJR_V194_SCORERS__)return;
 window.__LJR_V194_SCORERS__=true;
 window.__LJR_SCORERS_UI_OWNER__='v194-reference';
-window.__LJR_SCORERS_BUILD__='v600-single-player-avatar-team-fallback';
+window.__LJR_SCORERS_BUILD__='v601-clean-feature-cards';
 
 const CAT_ORDER=['3','5','4','2','1'];
 const CAT_FALLBACK={
@@ -110,7 +110,13 @@ function playerAvatar(name,team,id=catId(),cls='v576-player-avatar v576-scorer-a
 }
 function heroPlayerPhoto(name,team,id=catId()){
   const src=playerPhoto(name,team,id);
-  return src?'<img class="v576-scorer-hero-photo" src="'+esc(src)+'" alt="'+esc(name)+'" loading="eager" decoding="async" referrerpolicy="no-referrer">':'';
+  if(!src)return '';
+  const teamLogo=exactLogo(team);
+  const clean=v=>String(v||'').trim().replace(/[?#].*$/,'').replace(/^https?:\/\/raw\.githubusercontent\.com\//i,'').replace(/^https?:\/\/github\.com\//i,'').toLowerCase();
+  /* Si el registro del jugador trae por error el mismo archivo que el escudo,
+     no lo usamos como foto gigante del jugador. El escudo ya aparece abajo. */
+  if(teamLogo&&clean(src)===clean(teamLogo))return '';
+  return '<img class="v576-scorer-hero-photo" src="'+esc(src)+'" alt="'+esc(name)+'" loading="eager" decoding="async" referrerpolicy="no-referrer">';
 }
 function scorerRows(id=catId()){
   const cid=String(id);
