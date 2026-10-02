@@ -25,7 +25,10 @@ function initials(v){return String(v||'').split(/\s+/).filter(Boolean).map(x=>x[
 function playerPhotoUrl(p){
  const direct=String(p?.photo||'').trim();if(direct)return direct;
  try{
+  const media=window.LJR_PLAYER_MEDIA?.photo?.(p?.name,p?.team,p?.cat);
+  if(media)return String(media);
   const pub=window.LJR_PLAYER_PHOTOS||{};
+  if(typeof pub.get==='function'){const x=pub.get(p?.name,p?.team,p?.cat);if(x)return String(x)}
   return String(pub[norm(p?.name)+'|'+norm(p?.team)]||pub[norm(p?.name)]||'');
  }catch(_){return ''}
 }
