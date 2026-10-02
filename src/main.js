@@ -4921,23 +4921,83 @@ function v38WeeklyView(){
       ['03/10/2026','17:00','TOROS DE CUENDA','LA ESPERANZA','Campo 1 (Empastado)','Jornada 7']
     ]
   };
-  const group=(title,list)=>'<section class="v553-week-group"><div class="v553-week-title"><span>🏆 '+title+'</span><b>'+list.length+' partido(s)</b></div><div class="v553-week-scroll"><table><thead><tr><th>Fecha</th><th>Hora</th><th>Local</th><th>vs</th><th>Visitante</th><th>Campo</th><th>Jornada</th></tr></thead><tbody>'+list.map(r=>'<tr>'+r.map((v,i)=>'<td>'+((i===3)?'vs':v)+'</td>').join('')+'</tr>').join('')+'</tbody></table></div></section>';
-  return '<section class="v60-tool-page v63-page v188-weekly-page v553-weekly-report">'+
+  const titles={primera:'Primera Fuerza',intermedia:'Intermedia',segunda:'Segunda Fuerza',veteranos:'Veteranos 50+'};
+  const group=(title,list,key)=>'<section class="v553-week-group" data-week-group="'+key+'"><div class="v553-week-title"><span>🏆 '+title+'</span><b>'+list.length+' partido(s)</b></div><div class="v553-week-scroll"><table><thead><tr><th>Fecha</th><th>Hora</th><th>Local</th><th>vs</th><th>Visitante</th><th>Campo</th><th>Jornada</th></tr></thead><tbody>'+list.map(r=>'<tr data-week-date="'+r[0]+'">'+r.map((v,i)=>'<td>'+((i===3)?'vs':v)+'</td>').join('')+'</tr>').join('')+'</tbody></table></div></section>';
+  return '<section class="v60-tool-page v63-page v188-weekly-page v553-weekly-report" data-v553-weekly>'+
     v60Header('JUEGOS DE LA SEMANA','TORNEO DE COPA 2026','Consulta partidos por categoría, temporada y rango de fechas.')+
     '<div class="v553-week-filter">'+
-      '<div class="v553-week-range">Semana del 28/09/2026 al 04/10/2026</div>'+
-      '<label>Categoría<select><option>Todas</option><option>Primera Fuerza</option><option>Intermedia</option><option>Segunda Fuerza</option><option>Veteranos 50+</option></select></label>'+
-      '<label>Temporada<select><option>TORNEO DE COPA 2026</option></select></label>'+
-      '<label>Fecha inicio<input type="date" value="2026-09-28"></label>'+
-      '<label>Fecha fin<input type="date" value="2026-10-04"></label>'+
-      '<div class="v553-week-actions"><button type="button">Consultar</button><button type="button">Limpiar</button><button type="button" data-v553-print>Descargar PDF</button></div>'+
+      '<div class="v553-week-range" data-v553-range>Semana del 28/09/2026 al 04/10/2026</div>'+
+      '<label>Categoría<select data-v553-category><option value="all">Todas</option><option value="primera">Primera Fuerza</option><option value="intermedia">Intermedia</option><option value="segunda">Segunda Fuerza</option><option value="veteranos">Veteranos 50+</option></select></label>'+
+      '<label>Temporada<select data-v553-season><option value="copa-2026">TORNEO DE COPA 2026</option></select></label>'+
+      '<label>Fecha inicio<input data-v553-start type="date" value="2026-09-28"></label>'+
+      '<label>Fecha fin<input data-v553-end type="date" value="2026-10-04"></label>'+
+      '<div class="v553-week-actions"><button type="button" data-v553-consult>Consultar</button><button type="button" data-v553-clear>Limpiar</button><button type="button" data-v553-print>Descargar PDF</button></div>'+
     '</div>'+
-    group('Primera Fuerza',rows.primera)+
-    group('Intermedia',rows.intermedia)+
-    group('Segunda Fuerza',rows.segunda)+
-    group('Veteranos 50+',rows.veteranos)+
-    '<section class="v553-pending"><div><small>PARTIDOS PENDIENTES</small><h3>Agregar partido pendiente</h3><p>Registra encuentros sin fecha definitiva para tenerlos visibles en el reporte semanal.</p></div><form onsubmit="event.preventDefault(); this.reset(); alert(\'Partido pendiente agregado\')"><input required placeholder="Local"><input required placeholder="Visitante"><input placeholder="Categoría"><input placeholder="Campo / sede"><input type="date"><button type="submit">+ Agregar pendiente</button></form></section>'+
+    group(titles.primera,rows.primera,'primera')+
+    group(titles.intermedia,rows.intermedia,'intermedia')+
+    group(titles.segunda,rows.segunda,'segunda')+
+    group(titles.veteranos,rows.veteranos,'veteranos')+
+    '<section class="v553-pending"><div><small>PARTIDOS PENDIENTES</small><h3>Agregar partido pendiente</h3><p>Registra encuentros sin fecha definitiva para tenerlos visibles en el reporte semanal.</p></div><form data-v553-pending-form><input required name="home" placeholder="Local"><input required name="away" placeholder="Visitante"><select name="category"><option value="primera">Primera Fuerza</option><option value="intermedia">Intermedia</option><option value="segunda">Segunda Fuerza</option><option value="veteranos">Veteranos 50+</option></select><input name="field" placeholder="Campo / sede"><input name="date" type="date"><button type="submit">+ Agregar pendiente</button></form><div class="v553-pending-list" data-v553-pending-list></div></section>'+
   '</section>';
+}
+
+function bindV553Weekly(){
+  const root=document.querySelector('[data-v553-weekly]');
+  if(!root||root.dataset.bound==='1')return;
+  root.dataset.bound='1';
+  const cat=root.querySelector('[data-v553-category]');
+  const start=root.querySelector('[data-v553-start]');
+  const end=root.querySelector('[data-v553-end]');
+  const range=root.querySelector('[data-v553-range]');
+  const groups=[...root.querySelectorAll('[data-week-group]')];
+  const fmt=s=>{if(!s)return '';const [y,m,d]=s.split('-');return d+'/'+m+'/'+y};
+  const apply=()=>{
+    const category=cat?.value||'all';
+    const from=start?.value||'';
+    const to=end?.value||'';
+    groups.forEach(g=>{
+      const showCat=category==='all'||g.dataset.weekGroup===category;
+      let visible=0;
+      g.querySelectorAll('tbody tr').forEach(tr=>{
+        const [d,m,y]=(tr.dataset.weekDate||'').split('/');
+        const iso=y&&m&&d?y+'-'+m+'-'+d:'';
+        const showDate=(!from||iso>=from)&&(!to||iso<=to);
+        const show=showCat&&showDate;
+        tr.style.display=show?'':'none';
+        if(show)visible++;
+      });
+      g.style.display=showCat&&visible?'':'none';
+      const badge=g.querySelector('.v553-week-title b');
+      if(badge)badge.textContent=visible+' partido(s)';
+    });
+    if(range)range.textContent='Semana del '+fmt(from)+' al '+fmt(to);
+  };
+  root.querySelector('[data-v553-consult]')?.addEventListener('click',apply);
+  root.querySelector('[data-v553-clear]')?.addEventListener('click',()=>{
+    if(cat)cat.value='all';
+    if(start)start.value='2026-09-28';
+    if(end)end.value='2026-10-04';
+    apply();
+  });
+  root.querySelector('[data-v553-print]')?.addEventListener('click',()=>{
+    apply();
+    document.body.classList.add('v553-printing');
+    requestAnimationFrame(()=>setTimeout(()=>window.print(),120));
+  });
+  window.addEventListener('afterprint',()=>document.body.classList.remove('v553-printing'));
+  const form=root.querySelector('[data-v553-pending-form]');
+  const list=root.querySelector('[data-v553-pending-list]');
+  form?.addEventListener('submit',e=>{
+    e.preventDefault();
+    const fd=new FormData(form);
+    const item=document.createElement('div');
+    item.className='v553-pending-item';
+    item.innerHTML='<b>'+String(fd.get('home')||'')+' vs '+String(fd.get('away')||'')+'</b><small>'+String(fd.get('category')||'')+' · '+String(fd.get('field')||'Campo pendiente')+' · '+String(fd.get('date')||'Fecha pendiente')+'</small><button type="button">Eliminar</button>';
+    item.querySelector('button')?.addEventListener('click',()=>item.remove());
+    list?.prepend(item);
+    form.reset();
+  });
+  apply();
 }
 function v38WeatherView(){
   return '<section class="v60-tool-page v63-page v163-weather-page">'+
@@ -6252,6 +6312,7 @@ function render(){
   screen.innerHTML=views[state.route]?views[state.route]():views.home();
   bind();
   window.scrollTo(0,0);
+  setTimeout(bindV553Weekly,0);
 }
 function go(route,push=true){
   if(route==='quiz')route='quizArena';
