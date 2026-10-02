@@ -146,12 +146,17 @@ function teamSections(){
  ];
 }
 function teamDetailedView(){
- return '<main class="v33-data-content v33-detailed">'+teamSections().map(section=>
-   '<section class="v33-section"><h2>'+esc(section[0])+'</h2><div class="v33-stat-grid">'+
-     teamStatCard(section[1][0][0],section[1][0][1],section[1][0][2])+
-     teamStatCard(section[1][1][0],section[1][1][1],section[1][1][2])+
-   '</div></section>'
- ).join('')+'</main>';
+ /* V593: Estadísticas de equipo usa el mismo carrusel horizontal de General.
+    Todas las tablas quedan a un costado, no apiladas hacia abajo. */
+ const cards=teamSections().flatMap(section=>section[1]).map(item=>
+   teamStatCard(item[0],item[1],item[2])
+ ).join('');
+ return '<main class="v33-data-content v33-detailed v593-detail-horizontal">'+
+   '<section class="v33-general-section v593-detail-section">'+
+     '<div class="v33-general-title"><h2>Datos clave</h2></div>'+
+     '<div class="v33-carousel v593-detail-carousel">'+cards+'</div>'+
+   '</section>'+
+ '</main>';
 }
 function playerSections(){
  const groups=Object.entries(current()?.rosters||{}).map(([team,names])=>({
@@ -169,15 +174,22 @@ function playerSections(){
  return sections;
 }
 function playerDetailedView(){
- const sections=playerSections();
- if(!sections.length){
-   return '<main class="v33-data-content v33-detailed"><section class="v33-section"><h2>Jugadores registrados</h2><div class="v33-stat-grid"><article class="v33-stat-card"><div class="v33-stat-list"><div class="v33-stat-row"><span class="v33-row-copy"><b>No hay jugadores publicados</b><small>AdminFut no expone una plantilla pública para esta categoría.</small></span></div></div></article></div></section></main>';
+ const groups=Object.entries(current()?.rosters||{}).map(([team,names])=>({
+   team,
+   players:(Array.isArray(names)?names:[]).map(name=>({team,name}))
+ })).filter(g=>g.players.length);
+ if(!groups.length){
+   return '<main class="v33-data-content v33-detailed v593-detail-horizontal"><section class="v33-general-section v593-detail-section"><div class="v33-general-title"><h2>Jugadores registrados</h2></div><div class="v33-carousel v593-detail-carousel"><article class="v33-stat-card"><div class="v33-stat-list"><div class="v33-stat-row"><span class="v33-row-copy"><b>No hay jugadores publicados</b><small>AdminFut no expone una plantilla pública para esta categoría.</small></span></div></div></article></div></section></main>';
  }
- return '<main class="v33-data-content v33-detailed">'+sections.map(section=>
-   '<section class="v33-section"><h2>'+esc(section[0])+'</h2><div class="v33-stat-grid">'+
-     section[1].map(g=>playerStatCard(g.team,g.players)).join('')+
-   '</div></section>'
- ).join('')+'</main>';
+ /* V593: las plantillas también comparten el mismo carrusel/tamaño de General. */
+ return '<main class="v33-data-content v33-detailed v593-detail-horizontal">'+
+   '<section class="v33-general-section v593-detail-section">'+
+     '<div class="v33-general-title"><h2>Jugadores registrados</h2></div>'+
+     '<div class="v33-carousel v593-detail-carousel">'+
+       groups.map(g=>playerStatCard(g.team,g.players)).join('')+
+     '</div>'+
+   '</section>'+
+ '</main>';
 }
 function generalView(){
  const entries=rosterEntries();
