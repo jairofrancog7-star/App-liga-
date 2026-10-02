@@ -2935,3 +2935,191 @@ body.v40-standings-master .v580-section-row .v578-rule{
   body.v40-standings-master .v578-complete-table{width:574px!important;min-width:574px!important}
   body.v40-standings-master .v578-criteria-table{width:440px!important;min-width:440px!important}
 }
+
+
+/* V585 — las 3 tablas usan la misma caja, misma posición y caben completas en móvil. */
+@media(max-width:520px){
+  body.v40-standings-master .v40-standings{
+    padding-left:12px!important;
+    padding-right:12px!important;
+  }
+  body.v40-standings-master .v578-table-section,
+  body.v40-standings-master .v578-scroll{
+    width:100%!important;
+    max-width:100%!important;
+    min-width:0!important;
+    margin:0!important;
+    padding:0!important;
+  }
+  body.v40-standings-master .v578-scroll{
+    overflow-x:hidden!important;
+    overflow-y:visible!important;
+    touch-action:pan-y!important;
+    overscroll-behavior-x:none!important;
+    scrollbar-width:none!important;
+  }
+  body.v40-standings-master .v578-scroll::-webkit-scrollbar{display:none!important}
+
+  body.v40-standings-master .v578-table,
+  body.v40-standings-master .v579-compact-table,
+  body.v40-standings-master .v578-complete-table,
+  body.v40-standings-master .v578-criteria-table{
+    width:100%!important;
+    min-width:0!important;
+    max-width:100%!important;
+    table-layout:fixed!important;
+    border-collapse:separate!important;
+    border-spacing:0!important;
+    margin:0!important;
+  }
+
+  /* Misma columna de posición, logo y equipo en las tres vistas. */
+  body.v40-standings-master .v578-table .rank{
+    width:16px!important;
+    min-width:16px!important;
+    max-width:16px!important;
+    padding:0 1px!important;
+  }
+  body.v40-standings-master .v578-table .logo{
+    width:22px!important;
+    min-width:22px!important;
+    max-width:22px!important;
+    padding:0 1px!important;
+  }
+  body.v40-standings-master .v578-table .teamname{
+    width:84px!important;
+    min-width:84px!important;
+    max-width:84px!important;
+    padding:0 3px!important;
+    text-align:left!important;
+  }
+
+  body.v40-standings-master .v578-table thead th{
+    height:26px!important;
+    min-height:26px!important;
+    padding:0 1px!important;
+    font-size:7.4px!important;
+    line-height:1!important;
+    letter-spacing:-.02em!important;
+    white-space:nowrap!important;
+    overflow:visible!important;
+  }
+  body.v40-standings-master .v578-table tbody td{
+    height:46px!important;
+    min-height:46px!important;
+    padding:0 1px!important;
+    font-size:9.2px!important;
+    line-height:1.05!important;
+    white-space:nowrap!important;
+    overflow:hidden!important;
+    text-overflow:clip!important;
+  }
+
+  body.v40-standings-master .v578-table .teamname strong{
+    display:-webkit-box!important;
+    -webkit-box-orient:vertical!important;
+    -webkit-line-clamp:2!important;
+    white-space:normal!important;
+    overflow:hidden!important;
+    text-overflow:clip!important;
+    font-size:9.5px!important;
+    line-height:1.03!important;
+    font-weight:750!important;
+  }
+  body.v40-standings-master .v578-logo{
+    width:20px!important;
+    height:20px!important;
+    min-width:20px!important;
+    max-width:20px!important;
+    min-height:20px!important;
+    max-height:20px!important;
+  }
+
+  /* Compacta: misma altura y arranque que las otras dos. */
+  body.v40-standings-master .v579-compact-table th:nth-child(4),
+  body.v40-standings-master .v579-compact-table td:nth-child(4){width:24px!important}
+  body.v40-standings-master .v579-compact-table th:nth-child(5),
+  body.v40-standings-master .v579-compact-table td:nth-child(5){width:30px!important}
+  body.v40-standings-master .v579-compact-table th:nth-child(6),
+  body.v40-standings-master .v579-compact-table td:nth-child(6){width:34px!important}
+  body.v40-standings-master .v579-compact-table th:nth-child(7),
+  body.v40-standings-master .v579-compact-table td:nth-child(7){width:64px!important}
+
+  /* Completa: P V E D +/- GF GC FORMA PTOS, todo visible sin scroll. */
+  body.v40-standings-master .v578-complete-table th:nth-child(4),
+  body.v40-standings-master .v578-complete-table td:nth-child(4),
+  body.v40-standings-master .v578-complete-table th:nth-child(5),
+  body.v40-standings-master .v578-complete-table td:nth-child(5),
+  body.v40-standings-master .v578-complete-table th:nth-child(6),
+  body.v40-standings-master .v578-complete-table td:nth-child(6),
+  body.v40-standings-master .v578-complete-table th:nth-child(7),
+  body.v40-standings-master .v578-complete-table td:nth-child(7),
+  body.v40-standings-master .v578-complete-table th:nth-child(9),
+  body.v40-standings-master .v578-complete-table td:nth-child(9),
+  body.v40-standings-master .v578-complete-table th:nth-child(10),
+  body.v40-standings-master .v578-complete-table td:nth-child(10){
+    width:18px!important;min-width:18px!important;max-width:18px!important
+  }
+  body.v40-standings-master .v578-complete-table th:nth-child(8),
+  body.v40-standings-master .v578-complete-table td:nth-child(8){
+    width:24px!important;min-width:24px!important;max-width:24px!important
+  }
+  body.v40-standings-master .v578-complete-table th:nth-child(11),
+  body.v40-standings-master .v578-complete-table td:nth-child(11){
+    width:44px!important;min-width:44px!important;max-width:44px!important
+  }
+  body.v40-standings-master .v578-complete-table th:nth-child(12),
+  body.v40-standings-master .v578-complete-table td:nth-child(12){
+    width:25px!important;min-width:25px!important;max-width:25px!important
+  }
+
+  /* Criterios: todos los datos dentro del mismo ancho visual. */
+  body.v40-standings-master .v578-criteria-table th:nth-child(4),
+  body.v40-standings-master .v578-criteria-table td:nth-child(4){
+    width:27px!important;min-width:27px!important;max-width:27px!important
+  }
+  body.v40-standings-master .v578-criteria-table th:nth-child(n+5),
+  body.v40-standings-master .v578-criteria-table td:nth-child(n+5){
+    width:22px!important;min-width:22px!important;max-width:22px!important
+  }
+
+  /* Forma reducida para no empujar las estadísticas. */
+  body.v40-standings-master .v578-table .v40-form{
+    gap:1px!important;
+    padding:0!important;
+    justify-content:center!important;
+  }
+  body.v40-standings-master .v578-table .v40-form i{
+    width:7px!important;
+    height:7px!important;
+    min-width:7px!important;
+    max-width:7px!important;
+    flex:0 0 7px!important;
+  }
+  body.v40-standings-master .v578-table .v40-form b{
+    width:13px!important;
+    height:13px!important;
+    min-width:13px!important;
+    max-width:13px!important;
+    flex:0 0 13px!important;
+    font-size:6.5px!important;
+  }
+  body.v40-standings-master .v578-table .v40-form b::after{
+    left:2px!important;right:2px!important;bottom:-3px!important;height:1.5px!important;
+  }
+
+  body.v40-standings-master .v580-section-row td{
+    height:auto!important;
+    min-height:0!important;
+    padding:6px 0 0!important;
+  }
+  body.v40-standings-master .v580-section-row .v578-direct{
+    padding:0 0 8px!important;
+    font-size:9px!important;
+    line-height:1!important;
+  }
+  body.v40-standings-master .v580-section-row .v578-rule{
+    width:100%!important;
+    height:2px!important;
+  }
+}
