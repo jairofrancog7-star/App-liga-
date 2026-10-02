@@ -2344,3 +2344,83 @@ body.v40-standings-master .v580-section-row .v578-rule{
     max-width:172px!important;
   }
 }
+
+
+/* V582 — Completa y Criterios: una sola fila larga con desplazamiento horizontal real. */
+body.v40-standings-master [data-v580-scroll="complete"],
+body.v40-standings-master [data-v580-scroll="criteria"]{
+  display:block!important;
+  width:100%!important;
+  max-width:100%!important;
+  min-width:0!important;
+  overflow-x:scroll!important;
+  overflow-y:hidden!important;
+  -webkit-overflow-scrolling:touch!important;
+  touch-action:pan-x pan-y!important;
+  overscroll-behavior-x:contain!important;
+  scrollbar-width:thin!important;
+  padding-bottom:8px!important;
+}
+body.v40-standings-master [data-v580-scroll="complete"] .v578-complete-table{
+  width:980px!important;
+  min-width:980px!important;
+  max-width:none!important;
+  table-layout:fixed!important;
+}
+body.v40-standings-master [data-v580-scroll="criteria"] .v578-criteria-table{
+  width:820px!important;
+  min-width:820px!important;
+  max-width:none!important;
+  table-layout:fixed!important;
+}
+body.v40-standings-master .v578-complete-table thead,
+body.v40-standings-master .v578-complete-table tbody,
+body.v40-standings-master .v578-complete-table tr,
+body.v40-standings-master .v578-criteria-table thead,
+body.v40-standings-master .v578-criteria-table tbody,
+body.v40-standings-master .v578-criteria-table tr{
+  width:auto!important;
+  max-width:none!important;
+}
+body.v40-standings-master .v578-complete-table tr,
+body.v40-standings-master .v578-criteria-table tr{
+  display:table-row!important;
+}
+body.v40-standings-master .v578-complete-table th,
+body.v40-standings-master .v578-complete-table td,
+body.v40-standings-master .v578-criteria-table th,
+body.v40-standings-master .v578-criteria-table td{
+  display:table-cell!important;
+  white-space:nowrap!important;
+  vertical-align:middle!important;
+}
+body.v40-standings-master .v578-complete-table th.team,
+body.v40-standings-master .v578-complete-table td.team{
+  width:190px!important;
+  min-width:190px!important;
+  max-width:190px!important;
+}
+body.v40-standings-master .v578-complete-table th:nth-child(10),
+body.v40-standings-master .v578-complete-table td:nth-child(10){
+  width:150px!important;
+  min-width:150px!important;
+}
+body.v40-standings-master .v578-complete-table th:nth-child(11),
+body.v40-standings-master .v578-complete-table td:nth-child(11){
+  width:70px!important;
+  min-width:70px!important;
+}
+body.v40-standings-master .v578-complete-table .formcell .v40-form{
+  min-width:135px!important;
+  flex-wrap:nowrap!important;
+}
+@media(max-width:520px){
+  body.v40-standings-master [data-v580-scroll="complete"] .v578-complete-table{
+    width:950px!important;
+    min-width:950px!important;
+  }
+  body.v40-standings-master [data-v580-scroll="criteria"] .v578-criteria-table{
+    width:800px!important;
+    min-width:800px!important;
+  }
+}
