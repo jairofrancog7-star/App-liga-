@@ -1,4 +1,4 @@
-const CACHE='liga-juventino-v600-fantasy-clean-jersey-boxes';
+const CACHE='liga-juventino-v601-fantasy-logo-integrated';
 const CORE=['./','./index.html','./manifest.webmanifest','./brand-neon-header.svg','./profile-reference.svg'];
 
 self.addEventListener('install',event=>{
