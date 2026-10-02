@@ -13216,7 +13216,8 @@
     "Datos deportivos públicos; no se recopilan CURP, INE, domicilio ni documentos.",
     "El reporte de registro aporta nombre, posición, dorsal y foto pública de adultos cuando la fuente la expone.",
     "La fuente oficial juventinorosasliga.com prevalece sobre este snapshot.",
-    "No se inventan goles, alineaciones, estadísticas avanzadas ni sanciones."
+    "No se inventan goles, alineaciones, estadísticas avanzadas ni sanciones.",
+    "V562 · 02-oct-2026: Primera Fuerza verificada en el resumen público: 11 equipos, 24 partidos jugados, 30 pendientes y 292 jugadores. Tabla de posiciones sin cambios respecto al snapshot."
   ],
   "missing_official_logo": [
     "BOCA JRS",
@@ -13227,5 +13228,17 @@
     "primera_roster_unique": 292,
     "team_logos_known": 41,
     "categories": 5
+  },
+  "public_live_check": {
+    "checked_at_utc": "2026-10-02T17:19:00Z",
+    "scope": "Primera Fuerza · resumen público y tabla de posiciones",
+    "source": "https://juventinorosasliga.com/",
+    "counts": {
+      "Equipos": 11,
+      "Partidos Jugados": 24,
+      "Partidos Pendientes": 30,
+      "Jugadores": 292
+    },
+    "note": "La cifra pública de jugadores fue verificada el 2 de octubre de 2026. El resto del snapshot conserva su fecha de captura original."
   }
 }
