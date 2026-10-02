@@ -12,6 +12,7 @@ window.__LJR_V541_MONITO_PAGES__=true;
 window.__LJR_V543_MORELESS_PORTAL__=true;
 window.__LJR_V544_GAME_FLOW__=true;
 window.__LJR_V545_MORELESS_ALL_SCREENS__=true;
+window.__LJR_V546_DIRECT_GALLERY__=true;
 
 const RAW='https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/';
 const DATA_LOCAL='./data/official-live.json?v=20261001-v531-games';
@@ -461,7 +462,7 @@ function v543EnsureMorePortal(){
   return portal;
 }
 function v543RenderMorePortal(){
-  if(route()!=='moreLess')return;
+  if(route()!=='moreLess'&&route()!=='moreLessGallery')return;
   const portal=v543EnsureMorePortal();
   const data=db||window.LJR_OFFICIAL_DATA||{};
   portal.hidden=false;
@@ -535,7 +536,7 @@ function v544PrimaryPointerOpen(e){
       v544LastPrimaryOpen=now;
       e.preventDefault();
       e.stopPropagation();
-      v541OpenMorePages();
+      location.hash='#/moreLessGallery';
       return;
     }
   }
@@ -561,10 +562,32 @@ function share(){
   if(navigator.share)navigator.share(p).catch(function(){});
   else navigator.clipboard?.writeText(location.href).catch(function(){});
 }
+function v546RenderGallery(){
+  if(route()!=='moreLessGallery')return;
+  const screen=document.querySelector('#screen');if(!screen)return;
+  const data=db||window.LJR_OFFICIAL_DATA||{};
+  v538ClearTimers();
+  more.mode='hub';
+  more.phase='intro';
+  more.answered=false;
+  more.selected='';
+  more.exit=false;
+  document.body.classList.remove('v537-more-secondary-open','v541-more-pages-open','v543-more-portal-open');
+  const oldPortal=document.querySelector('#v543-moreless-portal');
+  if(oldPortal){oldPortal.innerHTML='';oldPortal.hidden=true;oldPortal.style.display='none'}
+  screen.innerHTML='<div class="v543-moreless-portal v546-inline-gallery" data-v546-gallery>'+moreHub(data)+'</div>';
+  setGamesNav();
+  requestAnimationFrame(function(){window.scrollTo({top:0,left:0,behavior:'auto'})});
+}
 let v534LastRoute='';
 function schedule(){
   requestAnimationFrame(function(){requestAnimationFrame(function(){
     const r=route();
+    if(r==='moreLessGallery'){
+      v534LastRoute=r;
+      v546RenderGallery();
+      return;
+    }
     if(r!=='quizArena'&&r!=='moreLess'){
       v534LastRoute=r;
       if(document.body.classList.contains('v543-more-portal-open'))v543CloseMorePortal();
@@ -591,7 +614,7 @@ document.addEventListener('click',function(e){
   const moreMonito=e.target.closest('[data-v531-more-open], .v12-ml-choice > button, .v12-avatar');
   if(route()==='moreLess'&&moreMonito&&moreMonito.closest('[data-v12-moreless]')){
     e.preventDefault();e.stopPropagation();e.stopImmediatePropagation();
-    v541OpenMorePages();
+    location.hash='#/moreLessGallery';
     return;
   }
 
@@ -660,7 +683,10 @@ document.addEventListener('click',function(e){
   }
 
   if(t.matches('[data-v531-quiz-back]')){quiz.mode='legacy';quiz.exit=false;render(false);return}
-  if(t.matches('[data-v531-more-back]')){v543CloseMorePortal();return}
+  if(t.matches('[data-v531-more-back]')){
+    if(route()==='moreLessGallery'){location.hash='#/moreLess';return}
+    v543CloseMorePortal();return
+  }
   if(t.matches('[data-v531-share]')){share();return}
   if(t.matches('[data-v531-rankings]')){go('rankings');return}
   if(t.matches('[data-v531-quiz-start]')){quiz.mode='game';quiz.answered=false;quiz.exit=false;render(true);return}
