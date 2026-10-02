@@ -4981,10 +4981,11 @@ function bindV553Weekly(){
   });
   root.querySelector('[data-v553-print]')?.addEventListener('click',()=>{
     apply();
-    document.body.classList.add('v553-printing');
-    requestAnimationFrame(()=>setTimeout(()=>window.print(),120));
+    const html='<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Reporte Semanal - AdminFut</title><link rel="stylesheet" href="./src/v60-league-tools.css?v=20261002-v557-adminfut-print-page"></head><body class="v553-printing"><main class="v553-print-sheet">'+root.outerHTML+'</main><script>window.addEventListener("load",()=>setTimeout(()=>window.print(),180));<\/script></body></html>';
+    const w=window.open('','_blank');
+    if(!w){alert('Permite ventanas emergentes para generar el PDF.');return;}
+    w.document.open();w.document.write(html);w.document.close();
   });
-  window.addEventListener('afterprint',()=>document.body.classList.remove('v553-printing'));
   const form=root.querySelector('[data-v553-pending-form]');
   const list=root.querySelector('[data-v553-pending-list]');
   form?.addEventListener('submit',e=>{
