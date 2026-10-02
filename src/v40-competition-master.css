@@ -2023,3 +2023,186 @@ body.v40-standings-master .v578-scroll::-webkit-scrollbar-thumb{
 body.v40-standings-master .v578-scroll::-webkit-scrollbar-track{
   background:rgba(255,255,255,.07)!important;
 }
+
+
+/* V580 — referencia Drive: Completa/Criterios se deslizan horizontalmente y conservan todos los datos. */
+body.v40-standings-master .v578-table-section{
+  width:100%!important;
+  min-width:0!important;
+  overflow:visible!important;
+}
+body.v40-standings-master .v578-scroll{
+  display:block!important;
+  width:100%!important;
+  max-width:100%!important;
+  overflow-x:auto!important;
+  overflow-y:hidden!important;
+  -webkit-overflow-scrolling:touch!important;
+  touch-action:pan-x pan-y!important;
+  overscroll-behavior-x:contain!important;
+  scroll-behavior:smooth!important;
+  scrollbar-gutter:stable!important;
+  padding:0 0 6px!important;
+}
+body.v40-standings-master .v578-complete-table{
+  width:930px!important;
+  min-width:930px!important;
+  max-width:none!important;
+}
+body.v40-standings-master .v578-criteria-table{
+  width:780px!important;
+  min-width:780px!important;
+  max-width:none!important;
+}
+body.v40-standings-master .v578-table{
+  border-collapse:separate!important;
+  border-spacing:0!important;
+  table-layout:fixed!important;
+  background:transparent!important;
+}
+body.v40-standings-master .v578-table thead th{
+  height:38px!important;
+  padding:0 5px!important;
+  border:0!important;
+  background:#05065f!important;
+  color:#cfd0dc!important;
+  font:700 10px/1 Inter,Roboto,Arial,sans-serif!important;
+  text-align:center!important;
+  white-space:nowrap!important;
+}
+body.v40-standings-master .v578-table tbody td{
+  height:58px!important;
+  padding:0 5px!important;
+  border:0!important;
+  border-bottom:1px solid rgba(255,255,255,.10)!important;
+  background:#05065f!important;
+  color:#fff!important;
+  font:500 13px/1 Inter,Roboto,Arial,sans-serif!important;
+  text-align:center!important;
+  vertical-align:middle!important;
+  white-space:nowrap!important;
+}
+body.v40-standings-master .v578-table th.rank,
+body.v40-standings-master .v578-table td.rank{
+  width:34px!important;
+}
+body.v40-standings-master .v578-table th.team,
+body.v40-standings-master .v578-table td.team{
+  width:188px!important;
+  text-align:left!important;
+}
+body.v40-standings-master .v578-complete-table th:nth-child(3),
+body.v40-standings-master .v578-complete-table td:nth-child(3),
+body.v40-standings-master .v578-complete-table th:nth-child(4),
+body.v40-standings-master .v578-complete-table td:nth-child(4),
+body.v40-standings-master .v578-complete-table th:nth-child(5),
+body.v40-standings-master .v578-complete-table td:nth-child(5),
+body.v40-standings-master .v578-complete-table th:nth-child(6),
+body.v40-standings-master .v578-complete-table td:nth-child(6){width:48px!important}
+body.v40-standings-master .v578-complete-table th:nth-child(7),
+body.v40-standings-master .v578-complete-table td:nth-child(7){width:58px!important}
+body.v40-standings-master .v578-complete-table th:nth-child(8),
+body.v40-standings-master .v578-complete-table td:nth-child(8),
+body.v40-standings-master .v578-complete-table th:nth-child(9),
+body.v40-standings-master .v578-complete-table td:nth-child(9){width:52px!important}
+body.v40-standings-master .v578-complete-table th:nth-child(10),
+body.v40-standings-master .v578-complete-table td:nth-child(10){width:150px!important}
+body.v40-standings-master .v578-complete-table th:nth-child(11),
+body.v40-standings-master .v578-complete-table td:nth-child(11){width:62px!important}
+body.v40-standings-master .v578-criteria-table th:nth-child(n+3),
+body.v40-standings-master .v578-criteria-table td:nth-child(n+3){width:72px!important}
+
+body.v40-standings-master .v580-section-row td{
+  height:auto!important;
+  padding:8px 0 0!important;
+  border:0!important;
+  background:#05065f!important;
+  text-align:left!important;
+}
+body.v40-standings-master .v580-section-row .v578-direct{
+  margin:0!important;
+  padding:0 0 15px!important;
+  color:#d8d9e7!important;
+  font:700 10px/1 Inter,Roboto,Arial,sans-serif!important;
+}
+body.v40-standings-master .v580-section-row .v578-rule{
+  width:100%!important;
+  height:2px!important;
+  margin:0!important;
+  background:rgba(255,255,255,.62)!important;
+}
+body.v40-standings-master .v578-team{
+  display:grid!important;
+  grid-template-columns:31px minmax(0,1fr)!important;
+  gap:8px!important;
+  align-items:center!important;
+  min-width:0!important;
+}
+body.v40-standings-master .v578-logo{
+  display:block!important;
+  width:29px!important;
+  height:29px!important;
+  min-width:29px!important;
+  max-width:29px!important;
+  object-fit:contain!important;
+}
+body.v40-standings-master .v578-team strong{
+  min-width:0!important;
+  overflow:hidden!important;
+  text-overflow:ellipsis!important;
+  white-space:nowrap!important;
+  color:#fff!important;
+  font-size:13px!important;
+  font-weight:700!important;
+}
+body.v40-standings-master .v578-table .formcell{
+  overflow:visible!important;
+}
+body.v40-standings-master .v578-table .v40-form{
+  display:flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  gap:5px!important;
+  padding:0!important;
+}
+body.v40-standings-master .v578-table .v40-form i{
+  width:20px!important;height:20px!important;min-width:20px!important;max-width:20px!important;
+}
+body.v40-standings-master .v578-table .v40-form b{
+  width:23px!important;height:23px!important;min-width:23px!important;max-width:23px!important;
+  font-size:9px!important;
+}
+body.v40-standings-master .v578-table .pts{font-weight:800!important}
+
+@media(max-width:520px){
+  body.v40-standings-master .v578-scroll{
+    width:100%!important;
+    max-width:100%!important;
+    margin:0!important;
+  }
+  body.v40-standings-master .v578-table th.team,
+  body.v40-standings-master .v578-table td.team{
+    width:170px!important;
+  }
+  body.v40-standings-master .v578-complete-table{
+    width:890px!important;
+    min-width:890px!important;
+  }
+  body.v40-standings-master .v578-criteria-table{
+    width:755px!important;
+    min-width:755px!important;
+  }
+}
+
+/* Barra fina como pista de que la tabla se puede deslizar. */
+body.v40-standings-master .v578-scroll::-webkit-scrollbar{
+  display:block!important;
+  height:4px!important;
+}
+body.v40-standings-master .v578-scroll::-webkit-scrollbar-thumb{
+  background:rgba(255,255,255,.32)!important;
+  border-radius:999px!important;
+}
+body.v40-standings-master .v578-scroll::-webkit-scrollbar-track{
+  background:rgba(255,255,255,.07)!important;
+}
