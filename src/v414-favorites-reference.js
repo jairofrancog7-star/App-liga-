@@ -77,7 +77,7 @@ function teamRows(){
 function playerRows(){
  try{
    const list=api()?.playerList?.()||[];
-   if(list.length)return list.map((p,i)=>({id:String(p.cat)+'|'+p.team+'|'+p.name+'|'+i,name:p.name,team:p.team,cat:String(p.cat||''),category:p.category||'Liga Municipal'}));
+   if(list.length)return list.map((p,i)=>({id:String(p.cat)+'|'+p.team+'|'+p.name+'|'+i,name:p.name,team:p.team,cat:String(p.cat||''),category:p.category||'Liga Municipal',position:String(p.position||''),dorsal:String(p.dorsal||''),photo:String(p.photo||'')}));
  }catch(_){}
  return [];
 }
