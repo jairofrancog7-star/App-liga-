@@ -1,15 +1,16 @@
-/* V602 — AUTOENCUADRE INTELIGENTE DE CARAS
-   1) En círculos/miniaturas: siempre muestra la foto completa (contain).
-   2) Usa la misma foto como fondo de relleno para que no aparezcan barras.
-   3) En fotos grandes, FaceDetector (si existe) centra el rostro y decide
-      cuándo debe alejarse para no cortar frente/mentón.
-   4) Sin FaceDetector usa un modo conservador que prioriza rostro completo. */
+/* V603 — MOTOR FACIAL DE CREDENCIALES EN TODA LA APP.
+   Copia el método usado por v480-credential-red-exact.js:
+   FaceDetector nativo -> MediaPipe BlazeFace -> fallback de retrato.
+   Después aplica el mismo faceCrop() a cada foto circular de jugador.
+
+   Objetivo: que se vea la CARA COMPLETA (cabello/frente, ojos, nariz,
+   boca y mentón), aunque para lograrlo haya que alejar la fotografía. */
 (function(){
 'use strict';
-if(window.__LJR_V602_FACE_FULL_FRAME__)return;
-window.__LJR_V602_FACE_FULL_FRAME__=true;
+if(window.__LJR_V603_CREDENTIAL_FACE_GLOBAL__)return;
+window.__LJR_V603_CREDENTIAL_FACE_GLOBAL__=true;
 
-const MINI_SELECTORS=[
+const FACE_IMAGES=[
   '.v576-player-photo',
   '.v576-player-avatar>img',
   '.v66-player-avatar>img',
@@ -25,153 +26,263 @@ const MINI_SELECTORS=[
   '.v562-avatar>img',
   '.v12-avatar>img',
   '.v33-player-team-logo.v576-player-avatar>img',
-  '.v416-pitch-player i.v576-pitch-photo>img',
-  '.v417-bench-player i.v576-bench-photo>img',
-  '.v419-mini-pitch i.v576-mini-photo>img',
   '.v538-person.has-photo>img'
 ].join(',');
 
-const LARGE_SELECTORS=[
-  '.v576-inline-player-photo',
-  '.v576-hero-player-photo',
-  '.v576-scorer-hero-photo',
-  '.v576-v28-feature-photo',
-  'body.v379-player-profile-active .v379-player-photo'
-].join(',');
+const profileCache=new Map();
+const queued=new WeakSet();
+const queue=[];
+let running=false;
+let mediaPipeFacePromise=null;
 
-const ALL=MINI_SELECTORS+','+LARGE_SELECTORS;
-const cache=new Map();
-let detector=null;
-try{
-  if('FaceDetector' in window)detector=new FaceDetector({fastMode:true,maxDetectedFaces:3});
-}catch(_){detector=null}
+function imageSize(img){
+  return {
+    w:Number(img?.naturalWidth||img?.videoWidth||img?.width||1),
+    h:Number(img?.naturalHeight||img?.videoHeight||img?.height||1)
+  };
+}
+function detectorCanvas(img){
+  const {w,h}=imageSize(img),maxSide=640,scale=Math.min(1,maxSide/Math.max(w,h));
+  const cw=Math.max(1,Math.round(w*scale)),ch=Math.max(1,Math.round(h*scale));
+  const cv=document.createElement('canvas');cv.width=cw;cv.height=ch;
+  const q=cv.getContext('2d',{alpha:false});
+  q.drawImage(img,0,0,cw,ch);
+  return {cv,scaleX:w/cw,scaleY:h/ch};
+}
+function faceArea(b){
+  return Math.max(0,Number(b?.width||0))*Math.max(0,Number(b?.height||0));
+}
+function pickFace(candidates,iw,ih){
+  const list=(candidates||[]).filter(x=>x?.box&&faceArea(x.box)>64);
+  if(!list.length)return null;
+  const cx=iw/2,cy=ih*.42,diag=Math.hypot(iw,ih)||1;
+  list.sort((a,b)=>{
+    const acx=a.box.x+a.box.width/2,acy=a.box.y+a.box.height/2;
+    const bcx=b.box.x+b.box.width/2,bcy=b.box.y+b.box.height/2;
+    const ad=Math.hypot(acx-cx,acy-cy)/diag,bd=Math.hypot(bcx-cx,bcy-cy)/diag;
+    const as=(a.score||.5)*1.4+(faceArea(a.box)/(iw*ih))*3-ad*.35;
+    const bs=(b.score||.5)*1.4+(faceArea(b.box)/(iw*ih))*3-bd*.35;
+    return bs-as;
+  });
+  return list[0];
+}
+function avgPoint(points){
+  const p=(points||[]).filter(v=>Number.isFinite(v?.x)&&Number.isFinite(v?.y));
+  if(!p.length)return null;
+  return {
+    x:p.reduce((s,v)=>s+v.x,0)/p.length,
+    y:p.reduce((s,v)=>s+v.y,0)/p.length
+  };
+}
+async function nativeFaceProfile(img){
+  if(typeof window.FaceDetector!=='function')return null;
+  try{
+    const {w:iw,h:ih}=imageSize(img);
+    const {cv,scaleX,scaleY}=detectorCanvas(img);
+    const detector=new window.FaceDetector({fastMode:false,maxDetectedFaces:5});
+    const faces=await detector.detect(cv);
+    const profiles=(faces||[]).map(f=>{
+      const z=f?.boundingBox;if(!z)return null;
+      const box={
+        x:z.x*scaleX,y:z.y*scaleY,
+        width:z.width*scaleX,height:z.height*scaleY
+      };
+      const eyePts=[];
+      for(const lm of (f.landmarks||[])){
+        const type=String(lm?.type||'').toLowerCase();
+        if(type.includes('eye')){
+          for(const p of (lm.locations||[])){
+            eyePts.push({x:p.x*scaleX,y:p.y*scaleY});
+          }
+        }
+      }
+      return {box,eyes:avgPoint(eyePts),score:1,source:'native'};
+    });
+    return pickFace(profiles,iw,ih);
+  }catch(_){
+    return null;
+  }
+}
+async function mediaPipeFaceDetector(){
+  if(mediaPipeFacePromise)return mediaPipeFacePromise;
+  mediaPipeFacePromise=(async()=>{
+    const mod=await import('https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.22/+esm');
+    const vision=await mod.FilesetResolver.forVisionTasks(
+      'https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.22/wasm'
+    );
+    return await mod.FaceDetector.createFromOptions(vision,{
+      baseOptions:{
+        modelAssetPath:'https://storage.googleapis.com/mediapipe-models/face_detector/blaze_face_short_range/float16/latest/blaze_face_short_range.tflite'
+      },
+      runningMode:'IMAGE',
+      minDetectionConfidence:.35,
+      minSuppressionThreshold:.30
+    });
+  })().catch(err=>{
+    console.warn('[V603 global face detector]',err);
+    return null;
+  });
+  return mediaPipeFacePromise;
+}
+async function mediaPipeFaceProfile(img){
+  try{
+    const detector=await mediaPipeFaceDetector();if(!detector)return null;
+    const {w:iw,h:ih}=imageSize(img);
+    const {cv,scaleX,scaleY}=detectorCanvas(img);
+    const result=detector.detect(cv);
+    const profiles=(result?.detections||[]).map(d=>{
+      const z=d?.boundingBox;if(!z)return null;
+      const box={
+        x:Number(z.originX||0)*scaleX,
+        y:Number(z.originY||0)*scaleY,
+        width:Number(z.width||0)*scaleX,
+        height:Number(z.height||0)*scaleY
+      };
+      const kp=(d.keypoints||[]).map(p=>({
+        x:Number(p.x||0)*cv.width*scaleX,
+        y:Number(p.y||0)*cv.height*scaleY
+      }));
+      const eyes=kp.length>=2?avgPoint([kp[0],kp[1]]):null;
+      const score=Number(d.categories?.[0]?.score||d.score||.5);
+      return {box,eyes,keypoints:kp,score,source:'mediapipe'};
+    });
+    return pickFace(profiles,iw,ih);
+  }catch(err){
+    console.warn('[V603 global face detection]',err);
+    return null;
+  }
+}
+function sourceKey(img){
+  const {w,h}=imageSize(img);
+  return String(img.currentSrc||img.src||'')+'|'+w+'x'+h;
+}
+async function playerFaceProfile(img){
+  if(!img)return null;
+  const key=sourceKey(img);
+  if(profileCache.has(key))return await profileCache.get(key);
+  const job=(async()=>{
+    const native=await nativeFaceProfile(img);
+    if(native?.eyes)return native;
+    const mp=await mediaPipeFaceProfile(img);
+    return mp||native||null;
+  })();
+  profileCache.set(key,job);
+  return await job;
+}
 
-const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
-const cssUrl=src=>'url("'+String(src||'').replace(/["\\]/g,'\\$&')+'")';
+/* MISMA FUNCIÓN faceCrop DE CREDENCIALES.
+   El margen 2.12 / 2.03 hace que la cara no llene todo el círculo y deja
+   espacio para cabello/frente y para que boca/mentón no queden cortados. */
+function faceCrop(img,destW,destH,profile){
+  const {w:iw,h:ih}=imageSize(img),aspect=destW/destH||1;
+  let sw,sh,sx,sy;
 
-function markMini(img){
-  const parent=img.parentElement;
-  if(!parent)return;
+  if(profile?.box&&profile.box.width>8&&profile.box.height>8){
+    const b=profile.box;
+    const side=Math.max(b.width*2.12,b.height*2.03);
+    sw=Math.min(iw,side);
+    sh=sw/aspect;
+    if(sh>ih){sh=ih;sw=sh*aspect}
+    if(sw>iw){sw=iw;sh=sw/aspect}
+
+    const anchorX=profile.eyes?.x ?? (b.x+b.width*.50);
+    const anchorY=profile.eyes?.y ?? (b.y+b.height*.39);
+
+    sx=anchorX-sw*.50;
+    sy=anchorY-sh*.40;
+
+    const desiredTop=b.y-b.height*.34;
+    if(sy>desiredTop)sy=desiredTop;
+  }else{
+    if(iw/ih>aspect){
+      sh=ih;sw=sh*aspect;sx=(iw-sw)/2;sy=0;
+    }else{
+      sw=iw;sh=sw/aspect;sx=0;
+      const spare=Math.max(0,ih-sh);
+      sy=spare*(ih>iw*1.08?.15:.45);
+    }
+  }
+
+  sx=Math.max(0,Math.min(Math.max(0,iw-sw),Number.isFinite(sx)?sx:0));
+  sy=Math.max(0,Math.min(Math.max(0,ih-sh),Number.isFinite(sy)?sy:0));
+  return {sx,sy,sw,sh};
+}
+
+function frameElement(img){
+  return img?.parentElement||null;
+}
+function frameSize(img){
+  const p=frameElement(img);
+  const r=p?.getBoundingClientRect?.();
+  const w=Math.max(1,Number(r?.width)||Number(p?.clientWidth)||1);
+  const h=Math.max(1,Number(r?.height)||Number(p?.clientHeight)||w);
+  return {w,h};
+}
+function applyCrop(img,profile){
+  if(!(img instanceof HTMLImageElement)||!img.matches(FACE_IMAGES))return;
+  const parent=frameElement(img);if(!parent)return;
+
   if(parent.classList.contains('v12-avatar'))parent.classList.add('v576-face-photo');
-  const src=img.currentSrc||img.src||'';
-  if(src)parent.style.setProperty('--ljr-face-bg',cssUrl(src));
-  parent.dataset.ljrFaceContainer='1';
-  img.dataset.ljrFaceFit='contain';
-  img.style.setProperty('--ljr-face-fit','contain');
-  img.style.setProperty('--ljr-face-x','50%');
-  img.style.setProperty('--ljr-face-y','50%');
+
+  const {w:dw,h:dh}=frameSize(img);
+  const c=faceCrop(img,dw,dh,profile);
+  const {w:iw,h:ih}=imageSize(img);
+  if(!(c.sw>0&&c.sh>0&&iw>0&&ih>0))return;
+
+  /* Emula ctx.drawImage(img,sx,sy,sw,sh,0,0,dw,dh) con CSS.
+     Así el resultado visual es el mismo que en la credencial. */
+  const widthPct=(iw/c.sw)*100;
+  const heightPct=(ih/c.sh)*100;
+  const leftPct=-(c.sx/c.sw)*100;
+  const topPct=-(c.sy/c.sh)*100;
+
+  img.dataset.ljrCredentialFaceCrop='1';
+  img.dataset.ljrFaceDetector=profile?.source||'fallback';
+  img.style.setProperty('--ljr-face-width',widthPct.toFixed(4)+'%');
+  img.style.setProperty('--ljr-face-height',heightPct.toFixed(4)+'%');
+  img.style.setProperty('--ljr-face-left',leftPct.toFixed(4)+'%');
+  img.style.setProperty('--ljr-face-top',topPct.toFixed(4)+'%');
 }
-
-function fallbackLarge(img){
-  const w=Number(img.naturalWidth)||1,h=Number(img.naturalHeight)||1;
-  const ratio=h/w;
-  /* Retratos altos: alejarlos. Cuadrados/horizontales: cover moderado. */
-  if(ratio>=1.35)return {fit:'contain',x:50,y:50};
-  if(ratio<=0.70)return {fit:'contain',x:50,y:50};
-  return {fit:'cover',x:50,y:44};
-}
-
-function largestFace(faces){
-  let best=null,area=-1;
-  for(const f of (faces||[])){
-    const b=f&&f.boundingBox;
-    if(!b)continue;
-    const a=(Number(b.width)||0)*(Number(b.height)||0);
-    if(a>area){area=a;best=b}
-  }
-  return best;
-}
-
-function frameFromFace(img,b){
-  const w=img.naturalWidth,h=img.naturalHeight;
-  const bw=Number(b.width)||0,bh=Number(b.height)||0;
-  const bx=Number(b.x)||0,by=Number(b.y)||0;
-  if(!bw||!bh)return fallbackLarge(img);
-
-  const cx=bx+bw/2,cy=by+bh/2;
-  const faceShare=Math.max(bw/w,bh/h);
-
-  /* Si la cara ocupa demasiado o está cerca de un borde, aleja la imagen. */
-  const marginX=Math.min(bx,w-(bx+bw))/w;
-  const marginY=Math.min(by,h-(by+bh))/h;
-  if(faceShare>=0.58 || marginX<0.045 || marginY<0.045){
-    return {fit:'contain',x:50,y:50};
-  }
-
-  let x=50,y=50;
-  if(w>h){
-    const movable=w-h;
-    if(movable>1)x=clamp(((cx-h/2)/movable)*100,0,100);
-  }else if(h>w){
-    const movable=h-w;
-    if(movable>1)y=clamp(((cy-w/2)/movable)*100,0,100);
-  }
-  return {fit:'cover',x,y};
-}
-
-function applyLarge(img,frame){
-  const fit=frame.fit==='contain'?'contain':'cover';
-  img.dataset.ljrFaceFit=fit;
-  img.style.setProperty('--ljr-face-fit',fit);
-  img.style.setProperty('--ljr-face-x',(Number(frame.x)||50).toFixed(2)+'%');
-  img.style.setProperty('--ljr-face-y',(Number(frame.y)||44).toFixed(2)+'%');
-  const src=img.currentSrc||img.src||'';
-  if(src)img.style.setProperty('--ljr-face-bg',cssUrl(src));
-}
-
 async function process(img){
-  if(!(img instanceof HTMLImageElement)||!img.matches(ALL))return;
+  if(!(img instanceof HTMLImageElement)||!img.matches(FACE_IMAGES))return;
   if(!img.complete||!img.naturalWidth||!img.naturalHeight){
-    if(img.dataset.ljrFaceLoadBound!=='1'){
-      img.dataset.ljrFaceLoadBound='1';
-      img.addEventListener('load',()=>process(img),{once:true});
+    if(img.dataset.ljrV603Load!=='1'){
+      img.dataset.ljrV603Load='1';
+      img.addEventListener('load',()=>enqueue(img),{once:true});
     }
     return;
   }
 
-  if(img.matches(MINI_SELECTORS)){
-    markMini(img);
-    return;
-  }
+  /* Igual que la credencial: foto visible de inmediato con fallback. */
+  applyCrop(img,null);
 
-  const key=(img.currentSrc||img.src||'')+'|'+img.naturalWidth+'x'+img.naturalHeight;
-  if(cache.has(key)){applyLarge(img,cache.get(key));return}
-
-  let frame=fallbackLarge(img);
-  if(detector){
-    try{
-      const faces=await detector.detect(img);
-      const face=largestFace(faces);
-      if(face)frame=frameFromFace(img,face);
-    }catch(_){}
-  }
-  cache.set(key,frame);
-  applyLarge(img,frame);
+  /* Después detector real; cuando termina, recoloca automáticamente la cara. */
+  const profile=await playerFaceProfile(img);
+  if(profile)applyCrop(img,profile);
 }
-
-function dedupeScorerRows(root=document){
-  const scope=(root instanceof Element||root instanceof Document)?root:document;
-  scope.querySelectorAll?.('.v391-rank-copy,.v462-rank-copy,.v194-player-name,.v28-rank-copy').forEach(copy=>{
-    copy.querySelectorAll(':scope > img').forEach(img=>img.remove());
-    copy.classList.remove('v576-has-inline-photo');
-    copy.style.removeProperty('padding-left');
-    copy.style.removeProperty('min-height');
-  });
-  scope.querySelectorAll?.('.v391-rank-row,.v462-rank-row,.v194-player-row').forEach(row=>{
-    const avatars=[...row.querySelectorAll(':scope > .v576-player-avatar')];
-    avatars.slice(1).forEach(el=>el.remove());
-  });
+function enqueue(img){
+  if(!(img instanceof HTMLImageElement)||!img.matches(FACE_IMAGES)||queued.has(img))return;
+  queued.add(img);queue.push(img);pump();
 }
-
+async function pump(){
+  if(running)return;
+  running=true;
+  while(queue.length){
+    const img=queue.shift();
+    queued.delete(img);
+    try{await process(img)}catch(err){console.warn('[V603 face crop]',err)}
+    await new Promise(r=>setTimeout(r,0));
+  }
+  running=false;
+}
 function scan(root=document){
-  dedupeScorerRows(root);
-  if(root instanceof HTMLImageElement)process(root);
-  root.querySelectorAll?.(ALL).forEach(process);
+  if(root instanceof HTMLImageElement)enqueue(root);
+  root.querySelectorAll?.(FACE_IMAGES).forEach(enqueue);
 }
-let timer=0;
+let scanTimer=0;
 function schedule(root=document){
-  clearTimeout(timer);
-  timer=setTimeout(()=>scan(root),35);
+  clearTimeout(scanTimer);
+  scanTimer=setTimeout(()=>scan(root),45);
 }
 
 document.addEventListener('DOMContentLoaded',()=>scan(document),{once:true});
@@ -182,20 +293,31 @@ window.addEventListener('ljr:official-data',()=>schedule(document));
 const host=document.querySelector('#screen')||document.documentElement;
 new MutationObserver(mutations=>{
   for(const m of mutations){
-    if(m.type==='attributes'&&m.target instanceof HTMLImageElement){process(m.target);continue}
+    if(m.type==='attributes'&&m.target instanceof HTMLImageElement){
+      enqueue(m.target);continue;
+    }
     m.addedNodes.forEach(n=>{
-      if(n instanceof HTMLImageElement)process(n);
+      if(n instanceof HTMLImageElement)enqueue(n);
       else if(n instanceof Element)schedule(n);
     });
   }
 }).observe(host,{subtree:true,childList:true,attributes:true,attributeFilter:['src']});
 
 scan(document);
-setTimeout(()=>scan(document),450);
-setTimeout(()=>scan(document),1500);
+setTimeout(()=>scan(document),500);
+setTimeout(()=>scan(document),1800);
 
 window.LJR_FACE_FRAME={
+  engine:'credential-v494-v495',
   scan:()=>scan(document),
-  reset(){cache.clear();scan(document)}
+  faceCrop,
+  profile:playerFaceProfile,
+  reset(){
+    profileCache.clear();
+    document.querySelectorAll(FACE_IMAGES).forEach(img=>{
+      delete img.dataset.ljrCredentialFaceCrop;
+      enqueue(img);
+    });
+  }
 };
 })();
