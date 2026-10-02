@@ -4895,7 +4895,16 @@ function v567WeekLogo(name){
   const label=String(name||'').trim();
   return window.LJR_TEAM_LOGOS?.get?.(label)||window.V66_OFFICIAL_DIRECTORY?.logoFor?.(label)||'';
 }
-function v567WeekCategoryLogo(){ return V567_WEEK_LIGA_LOGO; }
+function v567WeekCategoryLogo(key){
+  const base='https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/';
+  const map={
+    primera:base+'assets/branding/primera-fuerza-hd.png',
+    intermedia:base+'assets/categories/intermedia.webp',
+    segunda:base+'assets/categories/segunda-fuerza.webp',
+    veteranos:base+'assets/categories/veteranos-50.webp'
+  };
+  return map[key]||V567_WEEK_LIGA_LOGO;
+}
 function v38WeeklyView(){
   const rows={
     primera:[
@@ -4928,7 +4937,7 @@ function v38WeeklyView(){
     ]
   };
   const titles={primera:'Primera Fuerza',intermedia:'Intermedia',segunda:'Segunda Fuerza',veteranos:'Veteranos 50+'};
-  const group=(title,list,key)=>'<section class="v553-week-group" data-week-group="'+key+'"><div class="v553-week-title"><span class="v567-week-cat"><img src="'+v567WeekCategoryLogo()+'" alt="" loading="lazy" decoding="async"><span>'+title+'</span></span><b>'+list.length+' partido(s)</b></div><div class="v553-week-scroll"><table><thead><tr><th>Fecha</th><th>Hora</th><th>Local</th><th>vs</th><th>Visitante</th><th>Jornada</th></tr></thead><tbody>'+list.map(r=>{const home=v567WeekLogo(r[2]);const away=v567WeekLogo(r[3]);return '<tr data-week-date="'+r[0]+'"><td>'+r[0]+'</td><td>'+r[1]+'</td><td><span class="v567-week-team">'+(home?'<img src="'+home+'" alt="" loading="lazy" decoding="async">':'')+'<span>'+r[2]+'</span></span></td><td>vs</td><td><span class="v567-week-team">'+(away?'<img src="'+away+'" alt="" loading="lazy" decoding="async">':'')+'<span>'+r[3]+'</span></span></td><td>Jornada 7</td></tr>'}).join('')+'</tbody></table></div></section>';
+  const group=(title,list,key)=>'<section class="v553-week-group" data-week-group="'+key+'"><div class="v553-week-title"><span class="v567-week-cat"><img src="'+v567WeekCategoryLogo(key)+'" alt="" loading="lazy" decoding="async"><span>'+title+'</span></span><b>'+list.length+' partido(s)</b></div><div class="v553-week-scroll"><table><thead><tr><th>Fecha</th><th>Hora</th><th>Local</th><th>vs</th><th>Visitante</th><th>Jornada</th></tr></thead><tbody>'+list.map(r=>{const home=v567WeekLogo(r[2]);const away=v567WeekLogo(r[3]);return '<tr data-week-date="'+r[0]+'"><td>'+r[0]+'</td><td>'+r[1]+'</td><td><span class="v567-week-team">'+(home?'<img src="'+home+'" alt="" loading="lazy" decoding="async">':'')+'<span>'+r[2]+'</span></span></td><td>vs</td><td><span class="v567-week-team">'+(away?'<img src="'+away+'" alt="" loading="lazy" decoding="async">':'')+'<span>'+r[3]+'</span></span></td><td>Jornada 7</td></tr>'}).join('')+'</tbody></table></div></section>';
   return '<section class="v60-tool-page v63-page v188-weekly-page v553-weekly-report" data-v553-weekly>'+
     v60Header('JUEGOS DE LA SEMANA','TORNEO DE COPA 2026','Consulta partidos por categoría, temporada y rango de fechas.')+
     '<div class="v553-week-filter">'+
@@ -5005,7 +5014,7 @@ function bindV553Weekly(){
         const away=v567WeekLogo(t[4]);
         return '<tr><td>'+t[0]+'</td><td>'+t[1]+'</td><td><span class="v567-pdf-team">'+(home?'<img src="'+home+'" alt="">':'')+'<span>'+t[2]+'</span></span></td><td>'+t[3]+'</td><td><span class="v567-pdf-team">'+(away?'<img src="'+away+'" alt="">':'')+'<span>'+t[4]+'</span></span></td><td>Jornada 7</td></tr>';
       }).join('');
-      return '<section class="v559-pdf-group"><div class="v559-pdf-grouphead"><h2><img class="v567-pdf-cat" src="'+V567_WEEK_LIGA_LOGO+'" alt="">'+title+'</h2><span>'+badge+'</span></div><table><thead><tr><th>Fecha</th><th>Hora</th><th>Local</th><th>vs</th><th>Visitante</th><th>Jornada</th></tr></thead><tbody>'+rows+'</tbody></table></section>';
+      return '<section class="v559-pdf-group"><div class="v559-pdf-grouphead"><h2><img class="v567-pdf-cat" src="'+v567WeekCategoryLogo(g.dataset.weekGroup||'')+'" alt="">'+title+'</h2><span>'+badge+'</span></div><table><thead><tr><th>Fecha</th><th>Hora</th><th>Local</th><th>vs</th><th>Visitante</th><th>Jornada</th></tr></thead><tbody>'+rows+'</tbody></table></section>';
     }).join('');
     const html='<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Reporte Semanal - Liga Juventino</title><style>'+
       'html,body{margin:0;padding:0;background:#fff;color:#111;font-family:Arial,Helvetica,sans-serif}'+
