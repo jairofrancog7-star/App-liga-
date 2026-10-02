@@ -1,14 +1,11 @@
-/* V603 — MOTOR FACIAL DE CREDENCIALES EN TODA LA APP.
-   Copia el método usado por v480-credential-red-exact.js:
-   FaceDetector nativo -> MediaPipe BlazeFace -> fallback de retrato.
-   Después aplica el mismo faceCrop() a cada foto circular de jugador.
-
-   Objetivo: que se vea la CARA COMPLETA (cabello/frente, ojos, nariz,
-   boca y mentón), aunque para lograrlo haya que alejar la fotografía. */
+/* V606 — MOTOR FACIAL DE CREDENCIALES SOLO EN CÍRCULOS.
+   Conserva FaceDetector + MediaPipe + faceCrop de credenciales,
+   pero únicamente actúa cuando el contenedor de la foto YA es circular.
+   Fotos cuadradas o rectangulares se dejan completamente intactas. */
 (function(){
 'use strict';
-if(window.__LJR_V603_CREDENTIAL_FACE_GLOBAL__)return;
-window.__LJR_V603_CREDENTIAL_FACE_GLOBAL__=true;
+if(window.__LJR_V606_CREDENTIAL_FACE_CIRCLES_ONLY__)return;
+window.__LJR_V606_CREDENTIAL_FACE_CIRCLES_ONLY__=true;
 
 const FACE_IMAGES=[
   '.v576-player-photo',
@@ -119,7 +116,7 @@ async function mediaPipeFaceDetector(){
       minSuppressionThreshold:.30
     });
   })().catch(err=>{
-    console.warn('[V603 global face detector]',err);
+    console.warn('[V606 circle face detector]',err);
     return null;
   });
   return mediaPipeFacePromise;
@@ -148,7 +145,7 @@ async function mediaPipeFaceProfile(img){
     });
     return pickFace(profiles,iw,ih);
   }catch(err){
-    console.warn('[V603 global face detection]',err);
+    console.warn('[V606 circle face detection]',err);
     return null;
   }
 }
@@ -208,6 +205,61 @@ function faceCrop(img,destW,destH,profile){
   return {sx,sy,sw,sh};
 }
 
+function radiusPx(value,size){
+  const v=String(value||'').trim();
+  if(!v)return 0;
+  if(v.includes('%'))return (parseFloat(v)||0)*size/100;
+  return parseFloat(v)||0;
+}
+function visualCircleFrame(img){
+  const p=img?.parentElement;
+  if(!p)return null;
+  const pr=p.getBoundingClientRect?.();
+  const ir=img.getBoundingClientRect?.();
+  const pw=Number(pr?.width)||0,ph=Number(pr?.height)||0;
+  const iw=Number(ir?.width)||0,ih=Number(ir?.height)||0;
+  if(pw<8||ph<8)return null;
+
+  const ratio=pw/ph;
+  if(ratio<.94||ratio>1.06)return false;
+
+  const pcs=getComputedStyle(p);
+  const min=Math.min(pw,ph);
+  const radii=[
+    radiusPx(pcs.borderTopLeftRadius,min),
+    radiusPx(pcs.borderTopRightRadius,min),
+    radiusPx(pcs.borderBottomRightRadius,min),
+    radiusPx(pcs.borderBottomLeftRadius,min)
+  ];
+  const clip=String(pcs.clipPath||pcs.webkitClipPath||'');
+  const parentCircle=clip.includes('circle(')||Math.min(...radii)>=min*.47;
+
+  let imageCircle=false;
+  if(iw>=8&&ih>=8&&Math.abs(iw/ih-1)<=.06){
+    const ics=getComputedStyle(img);
+    const imin=Math.min(iw,ih);
+    const irads=[
+      radiusPx(ics.borderTopLeftRadius,imin),
+      radiusPx(ics.borderTopRightRadius,imin),
+      radiusPx(ics.borderBottomRightRadius,imin),
+      radiusPx(ics.borderBottomLeftRadius,imin)
+    ];
+    const iclip=String(ics.clipPath||ics.webkitClipPath||'');
+    imageCircle=iclip.includes('circle(')||Math.min(...irads)>=imin*.47;
+  }
+  return parentCircle||imageCircle;
+}
+function clearFaceCrop(img){
+  if(!(img instanceof HTMLImageElement))return;
+  const p=img.parentElement;
+  p?.classList.remove('ljr-face-circle-v606');
+  delete img.dataset.ljrCredentialFaceCrop;
+  delete img.dataset.ljrFaceDetector;
+  for(const prop of ['--ljr-face-width','--ljr-face-height','--ljr-face-left','--ljr-face-top']){
+    img.style.removeProperty(prop);
+  }
+}
+
 function frameElement(img){
   return img?.parentElement||null;
 }
@@ -219,18 +271,22 @@ function frameSize(img){
   return {w,h};
 }
 function applyCrop(img,profile){
-  if(!(img instanceof HTMLImageElement)||!img.matches(FACE_IMAGES))return;
-  const parent=frameElement(img);if(!parent)return;
+  if(!(img instanceof HTMLImageElement)||!img.matches(FACE_IMAGES))return false;
+  const parent=frameElement(img);if(!parent)return false;
 
-  if(parent.classList.contains('v12-avatar'))parent.classList.add('v576-face-photo');
+  const circle=visualCircleFrame(img);
+  if(circle!==true){
+    clearFaceCrop(img);
+    return false;
+  }
+
+  parent.classList.add('ljr-face-circle-v606');
 
   const {w:dw,h:dh}=frameSize(img);
   const c=faceCrop(img,dw,dh,profile);
   const {w:iw,h:ih}=imageSize(img);
-  if(!(c.sw>0&&c.sh>0&&iw>0&&ih>0))return;
+  if(!(c.sw>0&&c.sh>0&&iw>0&&ih>0))return false;
 
-  /* Emula ctx.drawImage(img,sx,sy,sw,sh,0,0,dw,dh) con CSS.
-     Así el resultado visual es el mismo que en la credencial. */
   const widthPct=(iw/c.sw)*100;
   const heightPct=(ih/c.sh)*100;
   const leftPct=-(c.sx/c.sw)*100;
@@ -242,21 +298,29 @@ function applyCrop(img,profile){
   img.style.setProperty('--ljr-face-height',heightPct.toFixed(4)+'%');
   img.style.setProperty('--ljr-face-left',leftPct.toFixed(4)+'%');
   img.style.setProperty('--ljr-face-top',topPct.toFixed(4)+'%');
+  return true;
 }
 async function process(img){
   if(!(img instanceof HTMLImageElement)||!img.matches(FACE_IMAGES))return;
   if(!img.complete||!img.naturalWidth||!img.naturalHeight){
-    if(img.dataset.ljrV603Load!=='1'){
-      img.dataset.ljrV603Load='1';
+    if(img.dataset.ljrV606Load!=='1'){
+      img.dataset.ljrV606Load='1';
       img.addEventListener('load',()=>enqueue(img),{once:true});
     }
     return;
   }
 
-  /* Igual que la credencial: foto visible de inmediato con fallback. */
-  applyCrop(img,null);
+  const circle=visualCircleFrame(img);
+  if(circle===null){
+    setTimeout(()=>enqueue(img),90);
+    return;
+  }
+  if(circle!==true){
+    clearFaceCrop(img);
+    return;
+  }
 
-  /* Después detector real; cuando termina, recoloca automáticamente la cara. */
+  applyCrop(img,null);
   const profile=await playerFaceProfile(img);
   if(profile)applyCrop(img,profile);
 }
@@ -270,7 +334,7 @@ async function pump(){
   while(queue.length){
     const img=queue.shift();
     queued.delete(img);
-    try{await process(img)}catch(err){console.warn('[V603 face crop]',err)}
+    try{await process(img)}catch(err){console.warn('[V606 circle face crop]',err)}
     await new Promise(r=>setTimeout(r,0));
   }
   running=false;
@@ -323,14 +387,14 @@ setTimeout(()=>scan(document),500);
 setTimeout(()=>scan(document),1800);
 
 window.LJR_FACE_FRAME={
-  engine:'credential-v494-v495',
+  engine:'credential-v494-v495-circles-only',
   scan:()=>scan(document),
   faceCrop,
   profile:playerFaceProfile,
   reset(){
     profileCache.clear();
     document.querySelectorAll(FACE_IMAGES).forEach(img=>{
-      delete img.dataset.ljrCredentialFaceCrop;
+      clearFaceCrop(img);
       enqueue(img);
     });
   }
