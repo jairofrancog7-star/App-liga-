@@ -6138,7 +6138,8 @@ function moreView(){
       v19MoreButton('medal','Máximo goleador','scorers')+
       v19MoreButton('video','Momentos','moments')+
       v19MoreButton('data','Datos','leagueData',true)+
-      v19MoreButton('qr','QR de la Liga','ligaQR')+\n      v19MoreButton('shield','AdminFut / Registro','adminFut')+
+      v19MoreButton('qr','QR de la Liga','ligaQR')+
+      v19MoreButton('shield','AdminFut / Registro','adminFut')+
     '</div>'+
     '<div class="v19-more-label">Gaming</div>'+
     '<div class="v19-more-menu">'+
