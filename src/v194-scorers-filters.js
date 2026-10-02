@@ -5,7 +5,7 @@
 if(window.__LJR_V194_SCORERS__)return;
 window.__LJR_V194_SCORERS__=true;
 window.__LJR_SCORERS_UI_OWNER__='v194-reference';
-window.__LJR_SCORERS_BUILD__='v506-direct-button-handlers';
+window.__LJR_SCORERS_BUILD__='v600-single-player-avatar-team-fallback';
 
 const CAT_ORDER=['3','5','4','2','1'];
 const CAT_FALLBACK={
@@ -98,10 +98,15 @@ function playerPhoto(name,team,id=catId()){
 }
 function playerAvatar(name,team,id=catId(),cls='v576-player-avatar v576-scorer-avatar'){
   const src=playerPhoto(name,team,id);
+  if(src){
+    return '<span class="'+cls+' v576-has-photo"><img src="'+esc(src)+'" alt="'+esc(name)+'" loading="lazy" decoding="async" referrerpolicy="no-referrer"></span>';
+  }
+  const teamSrc=exactLogo(team);
+  if(teamSrc){
+    return '<span class="'+cls+' v576-team-fallback" data-v576-team-fallback="1"><img src="'+esc(teamSrc)+'" alt="'+esc(team)+'" loading="lazy" decoding="async"></span>';
+  }
   const ini=String(name||'J').split(/\s+/).filter(Boolean).slice(0,2).map(x=>x[0]).join('').toUpperCase();
-  return src
-    ?'<span class="'+cls+' v576-has-photo"><img src="'+esc(src)+'" alt="'+esc(name)+'" loading="lazy" decoding="async" referrerpolicy="no-referrer"></span>'
-    :'<span class="'+cls+' v576-photo-fallback">'+esc(ini)+'</span>';
+  return '<span class="'+cls+' v576-photo-fallback">'+esc(ini)+'</span>';
 }
 function heroPlayerPhoto(name,team,id=catId()){
   const src=playerPhoto(name,team,id);
@@ -252,6 +257,7 @@ function teamTable(){
 function heroScorerCard(r,slot){
   if(!r)return '';
   const shownRank=String(r.rank||slot);
+  const hasPlayerPhoto=!!playerPhoto(r.player,r.team,catId());
   return '<article class="v391-feature rank-'+slot+'">'+
     '<div class="v391-feature-photo">'+heroPlayerPhoto(r.player,r.team,catId())+
       '<span class="v391-feature-kicker">#'+esc(shownRank)+' Máximo goleador</span>'+
@@ -261,7 +267,7 @@ function heroScorerCard(r,slot){
     '<div class="v391-feature-info">'+
       '<div class="v391-feature-person v576-with-photo" data-v194-player="'+esc(r.player)+'" data-v194-team="'+esc(r.team)+'">'+
         playerAvatar(r.player,r.team,catId(),'v576-player-avatar')+
-        '<span><strong>'+esc(r.player)+'</strong><b>'+logoHtml(r.team,'v391-feature-logo')+esc(r.team)+'</b></span>'+
+        '<span><strong>'+esc(r.player)+'</strong><b>'+(hasPlayerPhoto?logoHtml(r.team,'v391-feature-logo'):'')+esc(r.team)+'</b></span>'+
       '</div>'+
       '<span class="v391-feature-goals"><b>'+r.goals+'</b><small>goles</small></span>'+
     '</div>'+
@@ -283,10 +289,11 @@ function lowerStat(){
   return ['goals','shots','passes'].includes(v)?v:'goals';
 }
 function lowerRankingRow(r,i){
+  const hasPlayerPhoto=!!playerPhoto(r.player,r.team,catId());
   return '<button type="button" class="v462-rank-row v576-with-photo" data-v194-player="'+esc(r.player)+'" data-v194-team="'+esc(r.team)+'" data-v462-ranking-kind="player">'+
     '<span class="v462-rank-pos">'+String(i+1)+'º</span>'+
     playerAvatar(r.player,r.team,catId())+
-    '<span class="v462-rank-copy"><b>'+esc(r.player)+'</b><small>'+logoHtml(r.team,'v462-rank-logo')+'Equipo · '+esc(r.team)+'</small></span>'+
+    '<span class="v462-rank-copy"><b>'+esc(r.player)+'</b><small>'+(hasPlayerPhoto?logoHtml(r.team,'v462-rank-logo'):'')+'Equipo · '+esc(r.team)+'</small></span>'+
     '<strong>'+esc(r.goals)+'</strong>'+
   '</button>';
 }
