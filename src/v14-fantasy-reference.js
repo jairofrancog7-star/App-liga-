@@ -139,7 +139,7 @@ function v23AccessMarkup(){
           (()=>{const p=v588Samples();return v588Card(p[0],'9','left')+v588Card(p[1],'12','main')+v588Card(p[2],'8','right')})()+
         '</div>'+
         '<div class="v588-team-copy"><h1>Elige tu equipo</h1>'+
-          '<p>Gasta 100 m€ en 15 jugadores y suma puntos según su rendimiento real. ¿Quiénes forman tu equipo ideal de la Champions League?</p>'+
+          '<p>Gasta $100 M MXN en 15 jugadores y suma puntos según su rendimiento real. ¿Quiénes forman tu equipo ideal de la Liga Juventino Rosas?</p>'+
           '<div class="v588-dots"><i class="active"></i><i></i></div></div>'+
         '<div class="v23-access-actions v588-team-actions">'+
           '<button class="v23-access-login" type="button" data-v588-login>Inicia sesión para jugar</button>'+
