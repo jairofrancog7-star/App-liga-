@@ -13,6 +13,7 @@ window.__LJR_V543_MORELESS_PORTAL__=true;
 window.__LJR_V544_GAME_FLOW__=true;
 window.__LJR_V545_MORELESS_ALL_SCREENS__=true;
 window.__LJR_V546_DIRECT_GALLERY__=true;
+window.__LJR_V551_MORELESS_REFERENCE__=true;
 
 const RAW='https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/';
 const DATA_LOCAL='./data/official-live.json?v=20261001-v531-games';
@@ -200,7 +201,7 @@ function v538PlayerPhoto(name,team){
 function v538Person(p,data,cls){
   const photo=v538PlayerPhoto(p.name,p.team);
   if(photo)return '<span class="v538-person '+esc(cls||'')+'"><img src="'+esc(photo)+'" alt="'+esc(p.name)+'" loading="eager" decoding="async"></span>';
-  return '<span class="v538-person '+esc(cls||'')+' is-fallback">'+crest(p.team,data,'v538-person-crest')+'<b>'+esc(initials(p.name))+'</b></span>';
+  return '<span class="v538-person '+esc(cls||'')+' is-fallback">'+v535AvatarSvg('#b9b9b9')+'</span>';
 }
 function v545MoreScreenCards(pair,data){
   return '<section class="v545-more-screens" aria-label="Otros diseños de Más o menos">'+
@@ -231,28 +232,19 @@ function v545MoreScreenCards(pair,data){
 }
 function moreHub(data){
   const pair=morePair(data),ranks=rankRows(data);
-  function gameCard(i){
-    const accent=i===1?'cyan':i===2?'blue':'violet';
-    return '<article class="v538-hub-game-card '+accent+'" data-v531-more-start>'+
-      '<div class="v538-hub-game-art"><div class="v538-kick-silhouette">⚽</div><span></span><i></i></div>'+
-      '<div class="v538-hub-game-copy"><h2>Más o menos</h2><p>Compara las estadísticas de dos jugadores y colócalas en el orden correcto para sumar puntos.</p>'+
-      '<button type="button" data-v531-more-start>Inicia sesión para jugar</button></div>'+
-    '</article>';
-  }
-  return '<section class="v531-page v531-more v538-more-hub" data-v531-more data-v531-view="hub">'+
+  return '<section class="v531-page v531-more v538-more-hub v551-more-reference" data-v531-more data-v531-view="hub">'+
     '<header class="v531-mini-head v538-more-head"><button type="button" data-v531-more-back aria-label="Volver">'+backSvg()+'</button><strong>More or Less</strong><span></span></header>'+
     '<main class="v538-hub-body">'+
       '<article class="v538-hub-feature">'+
-        '<div class="v538-hub-feature-art">'+v538Person(pair.a,data,'left')+v538Person(pair.b,data,'right')+'<span class="v538-vs">VS</span></div>'+
-        '<div class="v538-hub-feature-copy"><h2>Más o menos</h2><p>Compara las estadísticas de dos jugadores y ordénalas para acertar.</p>'+
-          '<div class="v538-hub-actions"><button type="button" class="primary" data-v531-more-start>Inicia sesión para<br>jugar</button><button type="button" data-v531-more-start>Prueba como<br>invitado</button></div>'+
+        '<div class="v538-hub-feature-art">'+v538Person(pair.a,data,'left')+v538Person(pair.b,data,'right')+'</div>'+
+        '<div class="v538-hub-feature-copy"><h2>Más o menos</h2><p>Compara las estadísticas de dos jugadores y ¡ponlas en el orden correcto para ganar puntos!</p>'+
+          '<div class="v538-hub-actions"><button type="button" class="primary" data-v531-more-start>Inicia sesión para<br>jugar</button></div>'+
         '</div>'+
       '</article>'+
-      '<article class="v538-friend-card"><div><h3>¡Reta a tus amigos en Más o menos!</h3><button type="button" data-v531-share>Invita a amigos</button></div><div class="v538-friend-bubble">'+v538Person(pair.a,data,'friend')+'</div></article>'+
-      v545MoreScreenCards(pair,data)+
-      gameCard(1)+gameCard(2)+gameCard(3)+
-      '<h2 class="v531-section-title">Clasificaciones</h2>'+
-      '<article class="v531-rank-card"><h3>Más o menos</h3>'+ranks.map(function(r){return '<div class="v531-rank-row"><span>'+r.pos+'º</span>'+crest(r.name,data,'rank')+'<b>'+esc(r.name)+'</b><strong>'+esc(r.pts)+' pts</strong></div>'}).join('')+'<button type="button" data-v531-rankings>Ver clasificaciones</button></article>'+
+      '<div class="v551-discover-banner"><span>◉</span><b>DESCUBRE MÁS</b><em>LIGA JUVENTINO</em></div>'+
+      '<article class="v538-friend-card"><div><h3>¡Reta a tus amigos en el Quiz Arena!</h3><button type="button" data-v531-share>Invita a amigos</button></div><div class="v538-friend-bubble">'+v538Person(pair.a,data,'friend')+'</div></article>'+
+      '<h2 class="v531-section-title v551-ranking-title">Clasificaciones</h2>'+
+      '<article class="v531-rank-card v551-more-ranking"><h3>Más o menos</h3>'+ranks.map(function(r){return '<div class="v531-rank-row"><span>'+r.pos+'º</span>'+crest(r.name,data,'rank')+'<b>'+esc(r.name)+'</b><strong>'+esc(r.pts)+' pts</strong></div>'}).join('')+'<button type="button" data-v531-rankings>Ver clasificaciones</button></article>'+
     '</main>'+
   '</section>';
 }
@@ -298,7 +290,8 @@ function v538StartMoreRound(){
   v538ClearTimers();
   more.roundToken++;
   const token=more.roundToken;
-  more.round=Math.max(0,Number(more.round)||0)+1;more.mode='game';more.phase='first';more.answered=false;more.selected='';more.exit=false;more.countdown=15;
+  more.round=Math.max(0,Number(more.round)||0)+1;
+  more.mode='game';more.phase='intro';more.answered=false;more.selected='';more.exit=false;more.countdown=15;
   document.body.classList.add('v543-more-portal-open');
   v543RenderMorePortal();
   v538MoreInterval=setInterval(function(){
@@ -307,8 +300,9 @@ function v538StartMoreRound(){
     document.querySelectorAll('.v538-countdown').forEach(function(el){el.textContent=String(more.countdown)});
     if(more.countdown<=0&&v538MoreInterval){clearInterval(v538MoreInterval);v538MoreInterval=null}
   },1000);
-  v538MoreTimers.push(setTimeout(function(){if(token!==more.roundToken)return;more.phase='both';v543RenderMorePortal()},700));
-  v538MoreTimers.push(setTimeout(function(){if(token!==more.roundToken)return;more.phase='ready';v543RenderMorePortal()},1450));
+  v538MoreTimers.push(setTimeout(function(){if(token!==more.roundToken)return;more.phase='first';v543RenderMorePortal()},650));
+  v538MoreTimers.push(setTimeout(function(){if(token!==more.roundToken)return;more.phase='both';v543RenderMorePortal()},1350));
+  v538MoreTimers.push(setTimeout(function(){if(token!==more.roundToken)return;more.phase='ready';v543RenderMorePortal()},2100));
 }
 function moreGame(data){
   const pair=morePair(data);
@@ -320,7 +314,7 @@ function moreGame(data){
   const both=more.phase==='both'||more.phase==='ready'||more.phase==='result';
   const ready=more.phase==='ready'||more.phase==='result';
   const result=more.phase==='result';
-  return '<section class="v531-page v531-more v538-more-game" data-v531-more data-v531-view="game">'+
+  return '<section class="v531-page v531-more v538-more-game v551-more-reference-game" data-v531-more data-v531-view="game">'+
     '<header class="v531-game-head v538-game-head"><strong>Más o menos</strong><button type="button" data-v531-more-close aria-label="Cerrar">'+closeSvg()+'</button></header>'+
     '<main class="v538-game-body">'+
       '<div class="v538-game-stage '+esc(more.phase)+'">'+
@@ -328,7 +322,7 @@ function moreGame(data){
         (intro?'<div class="v538-stage-placeholder"><span></span><i></i></div>':'')+
         (!intro?'<div class="v538-player-pair">'+playerCard(pair.a,data,true,'left')+(both?playerCard(pair.b,data,more.answered,'right'):'<div class="v538-player-card ghost right"><div class="v538-ghost-avatar"></div></div>')+'</div>':'')+
       '</div>'+
-      '<div class="v538-score-strip"><span><small>Attempts</small><b>⚽ ⚽</b></span><strong class="v538-countdown">'+more.countdown+'</strong><span><small>Puntuación</small><b>'+more.points+' pts</b></span></div>'+
+      '<div class="v538-score-strip"><span><small>Attempts</small><b>'+Array.from({length:Math.max(0,more.attempts)},function(){return '⚽'}).join(' ')+'</b></span><strong class="v538-countdown">'+more.countdown+'</strong><span><small>Puntuación</small><b>'+more.points+' pts</b></span></div>'+
       '<div class="v538-question-zone '+(ready?'show':'')+'">'+
         '<h2>'+question+'</h2>'+
         '<div class="v531-more-buttons"><button type="button" class="less" data-v531-more-choice="less" aria-label="Menos">▼</button><span>OR</span><button type="button" class="more" data-v531-more-choice="more" aria-label="Más">▲</button></div>'+
