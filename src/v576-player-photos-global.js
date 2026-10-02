@@ -72,10 +72,14 @@ function resolve(name,team='',cat=''){
 }
 function hasPhoto(rec){return !!String(rec?.photo||'').trim()}
 function setAvatar(el,rec){
- if(!el||!hasPhoto(rec)||el.dataset.v576Photo==='1')return false;
+ if(!el||!hasPhoto(rec))return false;
+ const isTeamFallback=el.dataset.v576TeamFallback==='1'||el.classList.contains('v576-team-fallback');
+ if(el.dataset.v576Photo==='1'&&!isTeamFallback)return false;
  const existing=el.querySelector?.('img');
- if(existing&&existing.getAttribute('src')){el.dataset.v576Photo='1';return false}
+ if(existing&&existing.getAttribute('src')&&!isTeamFallback){el.dataset.v576Photo='1';return false}
  el.innerHTML='<img class="v576-player-photo" src="'+esc(rec.photo)+'" alt="'+esc(rec.name)+'" loading="lazy" decoding="async" referrerpolicy="no-referrer">';
+ el.classList.remove('v576-team-fallback','v576-photo-fallback');
+ el.removeAttribute('data-v576-team-fallback');
  el.classList.add('v576-has-photo');el.dataset.v576Photo='1';
  return true;
 }
@@ -87,8 +91,15 @@ function addInline(container,rec,cls=''){
  container.prepend(img);container.classList.add('v576-has-inline-photo');
  return true;
 }
+function clearInline(container){
+ if(!container)return false;
+ let changed=false;
+ container.querySelectorAll(':scope > .v576-inline-player-photo').forEach(img=>{img.remove();changed=true});
+ container.classList.remove('v576-has-inline-photo');
+ return changed;
+}
 function addHero(container,rec){
- if(!container||!hasPhoto(rec)||container.querySelector(':scope > .v576-hero-player-photo'))return false;
+ if(!container||!hasPhoto(rec)||container.querySelector(':scope > .v576-hero-player-photo, :scope > .v576-scorer-hero-photo'))return false;
  const img=document.createElement('img');
  img.className='v576-hero-player-photo';img.src=rec.photo;img.alt=rec.name;img.loading='eager';img.decoding='async';img.referrerPolicy='no-referrer';
  container.prepend(img);container.classList.add('v576-has-hero-photo');
@@ -148,14 +159,21 @@ function hydrate(){
    addHero(card.querySelector('.v391-feature-photo'),resolve(txt(person,'strong'),txt(person,'b'),catStored()));
  });
  document.querySelectorAll('.v391-rank-row[data-v194-player]').forEach(row=>{
-   addInline(row.querySelector('.v391-rank-copy'),resolve(attr(row,'data-v194-player'),txt(row,'.v391-rank-copy small'),catStored()),'ranking');
+   const copy=row.querySelector('.v391-rank-copy');
+   const team=txt(row,'.v391-rank-copy small');
+   clearInline(copy);
+   setAvatar(row.querySelector('.v576-player-avatar'),resolve(attr(row,'data-v194-player'),team,catStored()));
  });
  document.querySelectorAll('.v462-rank-row[data-v194-player]').forEach(row=>{
+   const copy=row.querySelector('.v462-rank-copy');
    const team=txt(row,'.v462-rank-copy small').replace(/^Equipo\s*·\s*/i,'');
-   addInline(row.querySelector('.v462-rank-copy'),resolve(attr(row,'data-v194-player'),team,catStored()),'ranking');
+   clearInline(copy);
+   setAvatar(row.querySelector('.v576-player-avatar'),resolve(attr(row,'data-v194-player'),team,catStored()));
  });
  document.querySelectorAll('.v194-player-row').forEach(row=>{
-   addInline(row.querySelector('.v194-player-name'),resolve(txt(row,'.v194-player-name b'),txt(row,'.v194-team-cell b'),catStored()),'ranking');
+   const copy=row.querySelector('.v194-player-name');
+   clearInline(copy);
+   setAvatar(row.querySelector('.v576-player-avatar'),resolve(txt(row,'.v194-player-name b'),txt(row,'.v194-team-cell b'),catStored()));
  });
  document.querySelectorAll('.v28-rank-row').forEach(row=>{
    const name=attr(row,'data-v66-scorer')||txt(row,'.v28-rank-copy small');
