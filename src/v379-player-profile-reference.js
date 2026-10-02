@@ -286,11 +286,20 @@ function tabs(active){
     ['Resumen','Estadísticas','Partidos','Noticias'].map(t=>'<button type="button" data-v379-tab="'+esc(t)+'" class="'+(active===t?'active':'')+'">'+esc(t)+'</button>').join('')+
   '</nav>';
 }
+function v580HeroPhoto(p,d){
+  const src=String(d?.photo||'').trim();
+  if(!src)return '';
+  let teamSrc='';
+  try{teamSrc=String(api?.logoFor?.(p?.team)||window.LJR_TEAM_LOGOS?.get?.(p?.team)||'').trim()}catch{}
+  const clean=v=>String(v||'').split('?')[0].replace(/^https?:/i,'').toLowerCase();
+  if(teamSrc&&clean(src)===clean(teamSrc))return '';
+  if(/\/(?:official-logos|teams|categories)\/[^/?]+\.(?:png|webp|jpe?g)(?:\?|$)/i.test(src))return '';
+  if(/(?:liga-logo|category|categoria|escudo|badge|crest)/i.test(src))return '';
+  return src;
+}
 function hero(p,d){
-  const photo=d.photo;
-  const visual=photo
-    ? '<img class="v379-player-photo" src="'+esc(photo)+'" alt="'+esc(p.name)+'">'
-    : '<div class="v379-player-silhouette v382-simulated-player" style="'+simulatedAvatarStyle(p)+'" aria-label="Avatar simulado de '+esc(p.name)+'">'+
+  const photo=v580HeroPhoto(p,d);
+  const fallback='<div class="v379-player-silhouette v382-simulated-player v580-fallback-3d" style="'+simulatedAvatarStyle(p)+'" aria-label="Representación 3D genérica de '+esc(p.name)+'">'+
         '<span class="v379-player-body"><i class="v379-kit-logo">'+teamLogo(p.team)+'</i></span>'+
         '<span class="v379-player-neck"></span>'+
         '<span class="v379-player-head"></span>'+
@@ -299,9 +308,11 @@ function hero(p,d){
         '<span class="v379-player-nose"></span><span class="v379-player-mouth"></span>'+
         '<span class="v379-player-beard"></span><span class="v379-player-hair"></span>'+
       '</div>';
+  const visual=fallback+(photo?'<img class="v379-player-photo v580-player-hero-photo" src="'+esc(photo)+'" alt="'+esc(p.name)+'" onerror="this.closest(\'.v379-hero\')?.classList.remove(\'v580-has-photo\');this.remove()">':'');
   const city=d.city||'Juventino Rosas';
-  return '<section class="v379-hero v386-player-hero" style="'+paletteStyle(p.team)+'">'+backButton()+
+  return '<section class="v379-hero v386-player-hero '+(photo?'v580-has-photo':'v580-no-photo')+'" style="'+paletteStyle(p.team)+'">'+backButton()+
     '<div class="v379-hero-pattern" aria-hidden="true"></div>'+visual+
+    '<div class="v580-hero-shade" aria-hidden="true"></div>'+
     '<div class="v379-hero-copy"><h1>'+esc(p.name)+'</h1>'+
       '<div class="v386-player-meta">'+
         '<div class="v379-teamline"><span class="v379-team-logo">'+teamLogo(p.team)+'</span><b>'+esc(p.team)+'</b></div>'+
