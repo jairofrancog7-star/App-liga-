@@ -4024,3 +4024,28 @@ body[data-app-route="moreLessGallery"] .v583-challenge-art .v538-person.is-fallb
     height:min(36vw,132px)!important;
   }
 }
+
+
+/* V585 — imagen nítida en “Invita a amigos”. */
+body .v543-moreless-portal .v538-friend-bubble.v585-friend-image,
+body[data-app-route="moreLessGallery"] .v538-friend-bubble.v585-friend-image{
+  display:grid!important;
+  place-items:center!important;
+  overflow:hidden!important;
+  padding:8px!important;
+  background:linear-gradient(145deg,#174ef3,#2029a9)!important;
+  border-radius:50%!important;
+}
+body .v543-moreless-portal .v538-friend-bubble.v585-friend-image>img,
+body[data-app-route="moreLessGallery"] .v538-friend-bubble.v585-friend-image>img{
+  display:block!important;
+  width:100%!important;
+  height:100%!important;
+  object-fit:contain!important;
+  object-position:center!important;
+  border-radius:50%!important;
+  background:#fff!important;
+  padding:7px!important;
+  filter:none!important;
+  opacity:1!important;
+}
