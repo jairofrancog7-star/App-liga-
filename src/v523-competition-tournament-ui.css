@@ -98,14 +98,14 @@ body[data-app-route="competition"] .v523-select-stack em{
   color:#8f9dcc!important;font-size:8px!important;line-height:1.1!important;font-style:normal!important;
 }
 
-/* Los nuevos selectores reemplazan los chips duplicados, pero los controles nativos
-   permanecen en el DOM para seguir usando el mismo dato y los mismos eventos. */
+/* V565 — restauración: los filtros y selectores originales vuelven a verse
+   en su posición normal. V523 queda solamente como bloque extra al final. */
 body[data-app-route="competition"] [data-v12-fixtures]>.v12-week-strip,
 body[data-app-route="competition"] [data-v12-fixtures]>.v12-category-grid{
-  position:absolute!important;
-  width:1px!important;height:1px!important;overflow:hidden!important;
-  clip:rect(0 0 0 0)!important;clip-path:inset(50%)!important;
-  margin:0!important;padding:0!important;border:0!important;
+  position:relative!important;
+  width:auto!important;height:auto!important;overflow:visible!important;
+  clip:auto!important;clip-path:none!important;
+  margin:revert!important;padding:revert!important;border:revert!important;
 }
 body[data-app-route="competition"] [data-v12-fixtures]>.v12-fixture-rule{
   margin:12px 2px 0!important;color:#7787bd!important;font-size:9px!important;
@@ -197,11 +197,10 @@ body[data-app-route="competition"] .v523-mini-cat span{display:grid!important;ga
 body[data-app-route="competition"] .v523-mini-cat small{font-size:7px!important;color:#7485bd!important}
 body[data-app-route="competition"] .v523-mini-cat b{font-size:11px!important;color:#fff!important;overflow:hidden!important;text-overflow:ellipsis!important;white-space:nowrap!important}
 
-/* En Cuadro, la etapa se maneja desde el selector vertical nuevo; las pestañas viejas
-   siguen activas en DOM y son las que realmente cambian el cuadro. */
+/* V565 — restaurar también las pestañas nativas del Cuadro. */
 body[data-app-route="competition"] [data-v12-bracket]>.v12-bracket-stage-tabs{
-  position:absolute!important;width:1px!important;height:1px!important;overflow:hidden!important;
-  clip:rect(0 0 0 0)!important;clip-path:inset(50%)!important;
+  position:relative!important;width:auto!important;height:auto!important;overflow:visible!important;
+  clip:auto!important;clip-path:none!important;
 }
 
 /* Bottom sheet estilo app móvil. */
@@ -266,4 +265,37 @@ body[data-app-route="competition"] [data-v12-bracket]>.v12-bracket-stage-tabs{
   body[data-app-route="competition"] .v523-match-team b{font-size:9px!important}
   body[data-app-route="competition"] .v523-match-score strong{min-width:52px!important;font-size:12px!important}
   body[data-app-route="competition"] .v523-match-foot{grid-template-columns:minmax(0,1fr) minmax(0,1fr) auto!important}
+}
+
+
+/* V565_BOTTOM_EXTRA
+   El módulo V523 ya no reemplaza el diseño principal de Competición.
+   Se conserva como herramienta adicional debajo del contenido original. */
+body[data-app-route="competition"] .v523-bottom-extra{
+  display:block!important;
+  width:100%!important;
+  margin:22px 0 8px!important;
+  padding-top:14px!important;
+  border-top:1px solid rgba(70,216,235,.18)!important;
+  order:999!important;
+}
+body[data-app-route="competition"] .v523-bottom-extra::before{
+  content:"Más opciones del torneo";
+  display:block!important;
+  margin:0 2px 10px!important;
+  color:#7f91c9!important;
+  font-size:9px!important;
+  line-height:1!important;
+  font-weight:900!important;
+  letter-spacing:.12em!important;
+  text-transform:uppercase!important;
+}
+body[data-app-route="competition"] .v12-schedule-match>.v12-schedule-clubs,
+body[data-app-route="competition"] .v12-schedule-match>.v12-schedule-meta{
+  position:relative!important;
+  width:auto!important;height:auto!important;overflow:visible!important;
+  clip:auto!important;clip-path:none!important;pointer-events:auto!important;
+}
+body[data-app-route="competition"] .v523-match-card{
+  display:none!important;
 }
