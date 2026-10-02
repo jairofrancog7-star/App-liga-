@@ -204,3 +204,62 @@ body[data-app-route="notifications"] #screen > .v414-notifications{
   .v413-facebook.v523-social-card .v523-social-copy b{font-size:14px!important}
   .v413-facebook.v523-social-card .v523-social-copy em{font-size:8.3px!important}
 }
+
+
+/* V524 — Perfil: adaptar botones sociales al mismo lenguaje visual de los botones superiores. */
+body[data-app-route="profile"] #screen > .v413-shell .v413-facebook.v523-social-card{
+  min-height:72px!important;
+  grid-template-columns:46px minmax(0,1fr) 22px!important;
+  gap:12px!important;
+  padding:0 18px!important;
+  border:1px solid rgba(118,133,222,.26)!important;
+  border-radius:17px!important;
+  background:#151773!important;
+  box-shadow:none!important;
+}
+body[data-app-route="profile"] #screen > .v413-shell .v413-facebook.v523-social-card .v523-social-icon{
+  width:38px!important;
+  height:38px!important;
+  border-radius:50%!important;
+  background:transparent!important;
+  color:#fff!important;
+  font-size:25px!important;
+  box-shadow:none!important;
+}
+body[data-app-route="profile"] #screen > .v413-shell .v413-facebook.v523-social-card .v523-social-copy{
+  display:block!important;
+}
+body[data-app-route="profile"] #screen > .v413-shell .v413-facebook.v523-social-card .v523-social-copy small{
+  display:none!important;
+}
+body[data-app-route="profile"] #screen > .v413-shell .v413-facebook.v523-social-card .v523-social-copy b{
+  color:#fff!important;
+  font-size:16px!important;
+  line-height:1.2!important;
+  font-weight:500!important;
+}
+body[data-app-route="profile"] #screen > .v413-shell .v413-facebook.v523-social-card .v523-social-copy em{
+  display:none!important;
+}
+body[data-app-route="profile"] #screen > .v413-shell .v413-facebook.v523-social-card>i{
+  color:#fff!important;
+  font-size:24px!important;
+  font-weight:400!important;
+}
+body[data-app-route="profile"] #screen > .v413-shell{
+  border-top:1px solid rgba(255,255,255,.08)!important;
+}
+body[data-app-route="profile"] #screen > .v413-shell .v413-head{
+  padding-top:14px!important;
+  border-top:1px solid rgba(92,111,207,.26)!important;
+}
+@media(max-width:390px){
+  body[data-app-route="profile"] #screen > .v413-shell .v413-facebook.v523-social-card{
+    min-height:68px!important;
+    padding:0 15px!important;
+    border-radius:16px!important;
+  }
+  body[data-app-route="profile"] #screen > .v413-shell .v413-facebook.v523-social-card .v523-social-copy b{
+    font-size:15px!important;
+  }
+}
