@@ -1,0 +1,102 @@
+/* V592 — Partidos bottom sheet opened from the Fantasy three-dot menu. */
+.v576-layer.matches{
+  align-items:flex-end!important;justify-content:center!important;
+  background:transparent!important
+}
+.v576-layer.matches .v576-backdrop{
+  background:rgba(0,8,55,.62)!important
+}
+.v592-matches-sheet{
+  position:relative!important;z-index:2!important;
+  width:min(100%,560px)!important;max-height:82dvh!important;
+  overflow:auto!important;padding:30px 0 28px!important;
+  border-radius:28px 28px 0 0!important;background:#f5f6fa!important;
+  color:#20313a!important;box-shadow:0 -12px 35px rgba(0,15,60,.18)!important;
+  font-family:Roboto,Inter,Arial,sans-serif!important
+}
+.v592-matches-sheet:before{
+  content:""!important;position:absolute!important;inset:0!important;pointer-events:none!important;opacity:.055!important;
+  background:
+    linear-gradient(35deg,transparent 42%,#7b8796 43% 45%,transparent 46%) 0 0/220px 180px,
+    linear-gradient(-28deg,transparent 45%,#7b8796 46% 48%,transparent 49%) 80px 40px/260px 210px!important
+}
+.v592-matches-sheet>*{position:relative!important;z-index:1!important}
+.v592-close{
+  position:absolute!important;right:22px!important;top:20px!important;
+  width:42px!important;height:42px!important;border:0!important;border-radius:50%!important;
+  background:#fff!important;color:#9aa0aa!important;font-size:32px!important;line-height:1!important;
+  display:grid!important;place-items:center!important;box-shadow:0 2px 8px rgba(25,35,50,.05)!important
+}
+.v592-matches-sheet h2{
+  margin:6px 34px 34px!important;font-size:30px!important;font-weight:400!important;line-height:1!important;color:#20313a!important
+}
+.v592-round-tabs{
+  display:flex!important;gap:0!important;overflow-x:auto!important;padding:0 18px!important;
+  border-bottom:1px solid #d7dbe1!important;scrollbar-width:none!important
+}
+.v592-round-tabs::-webkit-scrollbar{display:none!important}
+.v592-round-tabs button{
+  position:relative!important;flex:0 0 auto!important;min-width:116px!important;height:58px!important;
+  padding:0 10px!important;border:0!important;background:transparent!important;color:#20313a!important;
+  font-size:18px!important;font-weight:400!important;white-space:nowrap!important
+}
+.v592-round-tabs button.active{font-weight:700!important}
+.v592-round-tabs button.active:after{
+  content:""!important;position:absolute!important;left:8px!important;right:8px!important;bottom:-1px!important;
+  height:3px!important;background:#1647ff!important
+}
+.v592-deadline{
+  margin:16px 22px 22px!important;padding:17px 20px!important;min-height:72px!important;
+  border-radius:14px!important;background:#e3e8ed!important;color:#20313a!important;
+  display:flex!important;align-items:center!important;justify-content:center!important;gap:10px!important;
+  text-align:center!important
+}
+.v592-deadline b{
+  font-size:20px!important;font-weight:700!important
+}
+.v592-deadline span{
+  font-size:16px!important;line-height:1.3!important
+}
+.v592-date{
+  margin:0 0 12px!important;text-align:center!important;
+  font-size:17px!important;color:#20313a!important
+}
+.v592-match-list{
+  padding:0 22px!important
+}
+.v592-match-row{
+  min-height:78px!important;display:grid!important;
+  grid-template-columns:minmax(0,1fr) 64px minmax(0,1fr)!important;
+  align-items:center!important;gap:8px!important;border-bottom:1px solid #d9dde2!important
+}
+.v592-team{
+  min-width:0!important;display:flex!important;align-items:center!important;gap:10px!important
+}
+.v592-team.home{justify-content:flex-end!important;text-align:right!important}
+.v592-team.away{justify-content:flex-start!important;text-align:left!important}
+.v592-team b{
+  min-width:0!important;max-width:125px!important;
+  font-size:16px!important;font-weight:400!important;line-height:1.15!important;
+  overflow:hidden!important;text-overflow:ellipsis!important
+}
+.v592-team img{
+  width:36px!important;height:36px!important;flex:0 0 36px!important;object-fit:contain!important
+}
+.v592-match-row>strong{
+  text-align:center!important;color:#20313a!important;font-size:16px!important;font-weight:400!important;white-space:nowrap!important
+}
+.v592-empty{
+  padding:42px 18px!important;text-align:center!important;color:#6d7780!important;font-size:15px!important
+}
+@media(max-width:390px){
+  .v592-matches-sheet{max-height:84dvh!important;padding-top:26px!important}
+  .v592-matches-sheet h2{margin-left:28px!important;margin-bottom:28px!important;font-size:27px!important}
+  .v592-round-tabs{padding:0 10px!important}
+  .v592-round-tabs button{min-width:108px!important;height:54px!important;font-size:16px!important}
+  .v592-deadline{margin:14px 18px 18px!important;padding:15px 16px!important}
+  .v592-match-list{padding:0 18px!important}
+  .v592-match-row{min-height:74px!important;grid-template-columns:minmax(0,1fr) 58px minmax(0,1fr)!important}
+  .v592-team b{font-size:15px!important;max-width:110px!important}
+  .v592-team img{width:33px!important;height:33px!important;flex-basis:33px!important}
+  .v592-match-row>strong{font-size:15px!important}
+}
