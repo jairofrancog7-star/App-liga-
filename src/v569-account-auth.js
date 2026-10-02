@@ -232,7 +232,7 @@ function guestProfileCardMarkup(){
 }
 function profileRegisterMarkup(){
   return '<section class="v569-inline-auth" data-v569-page="register" data-method="phone">'+
-    '<div class="v569-inline-head"><button type="button" class="v569-inline-back" data-v569-profile-close aria-label="Volver">‹</button><div><div class="v575-auth-badge">SEGURO · LIGA JUVENTINO</div><h2>Crear una cuenta</h2><p>Configura tu perfil en segundos. Tu alias se propone con tu nombre y puedes cambiarlo cuando quieras.</p></div></div>'+
+    '<div class="v569-inline-head"><div><div class="v575-auth-badge">SEGURO · LIGA JUVENTINO</div><h2>Crear una cuenta</h2><p>Configura tu perfil en segundos. Tu alias se propone con tu nombre y puedes cambiarlo cuando quieras.</p></div></div>'+
     '<div class="v569-methods"><button type="button" class="active" data-v569-method="phone"><span>📱</span> Teléfono</button><button type="button" data-v569-method="email"><span>✉</span> Gmail / correo</button></div>'+
     '<div class="v569-form">'+
       field('NOMBRE',input('text','data-v569-name','Tu nombre','','autocomplete="name"'))+
@@ -251,7 +251,7 @@ function profileRegisterMarkup(){
 function profileLoginMarkup(){
   const bio=allAccounts().some(biometricEnabled);
   return '<section class="v569-inline-auth" data-v569-page="login">'+
-    '<div class="v569-inline-head"><button type="button" class="v569-inline-back" data-v569-profile-close aria-label="Volver">‹</button><div><small>CUENTA LIGA JUVENTINO</small><h2>Iniciar sesión</h2><p>Entra aquí mismo con alias, teléfono o Gmail/correo.</p></div></div>'+
+    '<div class="v569-inline-head"><div><small>CUENTA LIGA JUVENTINO</small><h2>Iniciar sesión</h2><p>Entra aquí mismo con alias, teléfono o Gmail/correo.</p></div></div>'+
     '<div class="v569-form">'+
       field('ALIAS, TELÉFONO O GMAIL',input('text','data-v569-login-id','@alias, teléfono o correo','','autocomplete="username"'))+
       field('CONTRASEÑA',input('password','data-v569-login-password','Tu contraseña','','autocomplete="current-password"'))+
