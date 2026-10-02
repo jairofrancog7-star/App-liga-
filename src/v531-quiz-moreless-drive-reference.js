@@ -196,6 +196,10 @@ function quizResult(data){
 }
 function v538PlayerPhoto(name,team){
   try{
+    if(window.LJR_PLAYER_MEDIA&&typeof window.LJR_PLAYER_MEDIA.photo==='function'){
+      const x=window.LJR_PLAYER_MEDIA.photo(name,team);
+      if(x)return String(x);
+    }
     const pub=window.LJR_PLAYER_PHOTOS;
     if(pub){
       if(typeof pub.get==='function'){const x=pub.get(name,team);if(x)return String(x)}
@@ -207,7 +211,9 @@ function v538PlayerPhoto(name,team){
 }
 function v538Person(p,data,cls){
   const photo=v538PlayerPhoto(p.name,p.team);
-  if(photo)return '<span class="v538-person '+esc(cls||'')+'"><img src="'+esc(photo)+'" alt="'+esc(p.name)+'" loading="eager" decoding="async"></span>';
+  if(photo)return '<span class="v538-person '+esc(cls||'')+' has-photo"><img src="'+esc(photo)+'" alt="'+esc(p.name)+'" loading="eager" decoding="async" referrerpolicy="no-referrer"></span>';
+  const teamLogo=logo(p.team||p.name,data);
+  if(teamLogo)return '<span class="v538-person '+esc(cls||'')+' has-team-logo"><span class="v584-circle-photo"><img src="'+esc(teamLogo)+'" alt="'+esc(p.team||p.name)+'" loading="eager" decoding="async"></span></span>';
   return '<span class="v538-person '+esc(cls||'')+' is-fallback">'+v535AvatarSvg('#b9b9b9')+'</span>';
 }
 function v545MoreScreenCards(pair,data){
@@ -579,11 +585,13 @@ function share(){
 function v546RenderGallery(){
   if(route()!=='moreLessGallery')return;
   const screen=document.querySelector('#screen');if(!screen)return;
-  if(screen.querySelector('[data-v546-gallery]')){
+  const data=window.LJR_OFFICIAL_DATA||db||{};
+  const stamp=String(data?.captured_at_utc||data?.updated_at||Object.keys(data?.categories||{}).length||'empty');
+  const existing=screen.querySelector('[data-v546-gallery]');
+  if(existing&&existing.dataset.v546Stamp===stamp){
     setGamesNav();
     return;
   }
-  const data=db||window.LJR_OFFICIAL_DATA||{};
   v538ClearTimers();
   more.mode='hub';
   more.phase='intro';
@@ -593,7 +601,8 @@ function v546RenderGallery(){
   document.body.classList.remove('v537-more-secondary-open','v541-more-pages-open','v543-more-portal-open');
   const oldPortal=document.querySelector('#v543-moreless-portal');
   if(oldPortal){oldPortal.innerHTML='';oldPortal.hidden=true;oldPortal.style.display='none'}
-  screen.innerHTML='<div class="v543-moreless-portal v546-inline-gallery" data-v546-gallery>'+moreHub(data)+'</div>';
+  screen.innerHTML='<div class="v543-moreless-portal v546-inline-gallery" data-v546-gallery data-v546-stamp="'+esc(stamp)+'">'+moreHub(data)+'</div>';
+  try{window.LJR_PLAYER_MEDIA?.enhance?.(screen)}catch(_){}
   setGamesNav();
   requestAnimationFrame(function(){window.scrollTo({top:0,left:0,behavior:'auto'})});
 }
@@ -768,6 +777,7 @@ document.addEventListener('click',function(e){
 
 window.addEventListener('hashchange',schedule);
 window.addEventListener('ljr:official-data',function(){db=window.LJR_OFFICIAL_DATA||db;schedule()});
+window.addEventListener('load',function(){setTimeout(function(){if(route()==='moreLessGallery'){const g=document.querySelector('[data-v546-gallery]');if(g)delete g.dataset.v546Stamp;v546RenderGallery()}},900)});
 const target=document.querySelector('#screen');
 if(target)new MutationObserver(schedule).observe(target,{childList:true,subtree:false});
 load().then(schedule);
