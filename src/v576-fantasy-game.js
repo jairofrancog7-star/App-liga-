@@ -106,6 +106,11 @@ function accessMarkup(){
      '<button type="button" data-v576-help="rules"><i>ⓘ</i><span><b>Reglas</b><small>Presupuesto y posiciones</small></span><strong>›</strong></button>'+
    '</div>'+
  '</section>'+
+ '<section class="v583-quick-build" aria-label="Acciones rápidas Fantasy">'+
+   '<div><span>PLANTILLA RÁPIDA</span><h3>Empieza a jugar</h3><p>Puedes autocompletar los 15 lugares o buscar jugador por jugador.</p></div>'+
+   '<div class="v583-quick-actions"><button type="button" data-v576-auto>✣ Autocompletar</button><button type="button" data-v576-search>Buscar jugadores</button></div>'+
+   '<ol><li><b>1</b><span>Elige jugadores registrados</span></li><li><b>2</b><span>Respeta los €100m de presupuesto</span></li><li><b>3</b><span>Guarda y ajusta tu equipo</span></li></ol>'+
+ '</section>'+
  '</section>';
 }
 function closeLayer(){document.querySelectorAll('[data-v576-layer]').forEach(x=>x.remove())}
