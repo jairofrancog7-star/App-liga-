@@ -1672,3 +1672,76 @@ body.v33-data-active .v33-general-content .v33-carousel .v33-see-all{
     font-size:14px!important;
   }
 }
+
+
+/* V544 — Compactar solo contenido interno de las tarjetas, sin cambiar layout. */
+body.v33-data-active .v33-general-content .v33-carousel .v33-stat-card>h3{
+  font-size:18px!important;
+}
+body.v33-data-active .v33-general-content .v33-carousel .v33-rank{
+  font-size:12px!important;
+}
+body.v33-data-active .v33-general-content .v33-carousel .v33-team-logo,
+body.v33-data-active .v33-general-content .v33-carousel .v33-player-avatar{
+  width:34px!important;
+  height:34px!important;
+  min-width:34px!important;
+  min-height:34px!important;
+  max-width:34px!important;
+  max-height:34px!important;
+  flex:0 0 34px!important;
+}
+body.v33-data-active .v33-general-content .v33-carousel .v33-stat-row{
+  grid-template-columns:18px 36px minmax(0,1fr) auto!important;
+  gap:7px!important;
+  min-height:54px!important;
+}
+body.v33-data-active .v33-general-content .v33-carousel .v33-row-copy b{
+  font-size:13px!important;
+  line-height:1.12!important;
+}
+body.v33-data-active .v33-general-content .v33-carousel .v33-row-copy small{
+  font-size:9px!important;
+  line-height:1.08!important;
+}
+body.v33-data-active .v33-general-content .v33-carousel .v33-stat-row>strong{
+  font-size:16px!important;
+}
+body.v33-data-active .v33-general-content .v33-carousel .v33-see-all{
+  font-size:12px!important;
+}
+@media(max-width:430px){
+  body.v33-data-active .v33-general-content .v33-carousel .v33-stat-card>h3{
+    font-size:17px!important;
+  }
+  body.v33-data-active .v33-general-content .v33-carousel .v33-rank{
+    font-size:11px!important;
+  }
+  body.v33-data-active .v33-general-content .v33-carousel .v33-team-logo,
+  body.v33-data-active .v33-general-content .v33-carousel .v33-player-avatar{
+    width:32px!important;
+    height:32px!important;
+    min-width:32px!important;
+    min-height:32px!important;
+    max-width:32px!important;
+    max-height:32px!important;
+    flex:0 0 32px!important;
+  }
+  body.v33-data-active .v33-general-content .v33-carousel .v33-stat-row{
+    grid-template-columns:18px 34px minmax(0,1fr) auto!important;
+    gap:7px!important;
+    min-height:52px!important;
+  }
+  body.v33-data-active .v33-general-content .v33-carousel .v33-row-copy b{
+    font-size:12px!important;
+  }
+  body.v33-data-active .v33-general-content .v33-carousel .v33-row-copy small{
+    font-size:8.5px!important;
+  }
+  body.v33-data-active .v33-general-content .v33-carousel .v33-stat-row>strong{
+    font-size:15px!important;
+  }
+  body.v33-data-active .v33-general-content .v33-carousel .v33-see-all{
+    font-size:12px!important;
+  }
+}
