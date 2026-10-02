@@ -268,3 +268,100 @@ body[data-app-route="competition"] .v566-grid>button:disabled>i{
   body[data-app-route="competition"] .v566-grid>button b{font-size:8.5px!important}
   body[data-app-route="competition"] .v566-grid>button small{font-size:6.8px!important}
 }
+
+
+/* V567 — acceso rápido de categorías al FINAL de Competición.
+   Incluye explícitamente Veteranos 50+ / 50 y más sin tocar el diseño principal. */
+body[data-app-route="competition"] .v567-cat-head{
+  margin:12px 2px 7px!important;
+  display:flex!important;
+  align-items:end!important;
+  justify-content:space-between!important;
+  gap:8px!important;
+}
+body[data-app-route="competition"] .v567-cat-head span{
+  color:#27dce8!important;
+  font-size:7px!important;
+  line-height:1!important;
+  font-weight:900!important;
+  letter-spacing:.12em!important;
+}
+body[data-app-route="competition"] .v567-cat-head b{
+  color:#8998c7!important;
+  font-size:7px!important;
+  line-height:1!important;
+  font-weight:750!important;
+}
+body[data-app-route="competition"] .v567-cat-strip{
+  display:grid!important;
+  grid-template-columns:repeat(5,minmax(0,1fr))!important;
+  gap:6px!important;
+}
+body[data-app-route="competition"] .v567-cat-strip>button{
+  min-width:0!important;
+  min-height:72px!important;
+  padding:7px 5px!important;
+  display:grid!important;
+  justify-items:center!important;
+  align-content:center!important;
+  gap:5px!important;
+  border:1px solid rgba(255,255,255,.08)!important;
+  border-radius:10px!important;
+  background:#07105f!important;
+  color:#fff!important;
+  text-align:center!important;
+  box-sizing:border-box!important;
+}
+body[data-app-route="competition"] .v567-cat-strip>button.active{
+  border-color:#27dce8!important;
+  background:linear-gradient(180deg,#0d1b8d,#08106a)!important;
+  box-shadow:inset 0 0 0 1px rgba(39,220,232,.12)!important;
+}
+body[data-app-route="competition"] .v567-cat-strip img{
+  width:28px!important;
+  height:28px!important;
+  object-fit:contain!important;
+  padding:2px!important;
+  box-sizing:border-box!important;
+  border-radius:7px!important;
+  background:#fff!important;
+}
+body[data-app-route="competition"] .v567-cat-strip span{
+  min-width:0!important;
+  display:grid!important;
+  gap:2px!important;
+}
+body[data-app-route="competition"] .v567-cat-strip b{
+  min-width:0!important;
+  color:#fff!important;
+  font-size:6.9px!important;
+  line-height:1.08!important;
+  font-weight:820!important;
+  overflow:hidden!important;
+  text-overflow:ellipsis!important;
+  display:-webkit-box!important;
+  -webkit-box-orient:vertical!important;
+  -webkit-line-clamp:2!important;
+}
+body[data-app-route="competition"] .v567-cat-strip small{
+  color:#7e8dbd!important;
+  font-size:5.8px!important;
+  line-height:1!important;
+}
+body[data-app-route="competition"] .v567-cat-strip>button.active b,
+body[data-app-route="competition"] .v567-cat-strip>button.active small{
+  color:#35e1eb!important;
+}
+
+@media(max-width:420px){
+  body[data-app-route="competition"] .v567-cat-strip{
+    grid-template-columns:repeat(3,minmax(0,1fr))!important;
+  }
+  body[data-app-route="competition"] .v567-cat-strip>button{
+    min-height:64px!important;
+  }
+  body[data-app-route="competition"] .v567-cat-strip img{
+    width:25px!important;
+    height:25px!important;
+  }
+}
