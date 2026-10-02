@@ -41,6 +41,26 @@
     }
     return '<span class="v94-discipline-logo-fallback">⚽</span>';
   }
+  function playerPhoto(data,item){
+    try{
+      const x=window.LJR_PLAYER_MEDIA?.photo?.(item?.player,item?.team,item?.catId);
+      if(x)return String(x);
+      const pub=window.LJR_PLAYER_PHOTOS;
+      if(pub&&typeof pub.get==='function'){const y=pub.get(item?.player,item?.team,item?.catId);if(y)return String(y)}
+    }catch(_){}
+    const cat=data?.categories?.[String(item?.catId||'')];
+    const entry=Object.entries(cat?.player_profiles||{}).find(([team])=>norm(team)===norm(item?.team));
+    const p=(Array.isArray(entry?.[1])?entry[1]:[]).find(x=>norm(x?.name)===norm(item?.player));
+    return String(p?.photo||'');
+  }
+  function disciplineAvatar(data,item){
+    const src=playerPhoto(data,item);
+    const ini=String(item?.player||'J').split(/\s+/).filter(Boolean).slice(0,2).map(x=>x[0]||'').join('').toUpperCase();
+    return '<span class="v576-discipline-photo">'+
+      (src?'<span class="v576-player-avatar v576-has-photo"><img src="'+esc(src)+'" alt="'+esc(item.player)+'" loading="lazy" decoding="async" referrerpolicy="no-referrer"></span>':'<span class="v576-player-avatar v576-photo-fallback">'+esc(ini)+'</span>')+
+      '<span class="v576-discipline-team">'+teamLogo(data,item.team)+'</span>'+
+    '</span>';
+  }
   function rosterHas(cat,team,player){
     const rosters=cat.rosters||{};
     const key=Object.keys(rosters).find(k=>norm(k)===norm(team));
@@ -130,7 +150,7 @@
 
     return '<article class="v94-discipline-row">'+
       '<span class="v94-rank">'+(index+1)+'</span>'+
-      '<span class="v94-logo-wrap">'+teamLogo(data,item.team)+'</span>'+
+      '<span class="v94-logo-wrap v576-player-main">'+disciplineAvatar(data,item)+'</span>'+
       '<span class="v94-person"><b>'+esc(item.player)+'</b><small>'+esc(item.team)+' · '+esc(item.category)+'</small><span class="v94-tags">'+tags.join('')+'</span></span>'+
       '<span class="v94-total">'+
         (item.suspension?.pending?'<b>'+esc(item.suspension.pending)+'</b><small>pend.</small>':'<b>'+esc(total||'—')+'</b><small>tarj.</small>')+
