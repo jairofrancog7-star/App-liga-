@@ -1289,3 +1289,23 @@ body[data-app-route="v38Stats"] .v520-stats-topbar button:active{
     height:82px!important;
   }
 }
+
+
+/* V553 — Reporte semanal estilo AdminFut adaptado al azul de la app. */
+.v553-weekly-report{padding-bottom:110px!important}
+.v553-week-filter,.v553-pending{margin:14px 0;padding:14px;border:1px solid rgba(79,139,255,.22);border-radius:16px;background:linear-gradient(180deg,#0e1a68,#0a1250);box-shadow:0 8px 22px rgba(0,0,40,.18)}
+.v553-week-range{margin:-14px -14px 14px;padding:14px 16px;border-radius:16px 16px 0 0;background:linear-gradient(90deg,#1a5fd2,#0b3a9b);color:#fff;font-size:15px;font-weight:900}
+.v553-week-filter label{display:block;margin:0 0 12px;color:#dfe8ff;font-size:11px;font-weight:800}
+.v553-week-filter select,.v553-week-filter input,.v553-pending input{width:100%;height:44px;margin-top:6px;padding:0 12px;box-sizing:border-box;border:1px solid rgba(136,165,255,.25);border-radius:11px;background:#09134d;color:#fff;font-size:12px}
+.v553-week-actions{display:flex;gap:8px;flex-wrap:wrap}
+.v553-week-actions button,.v553-pending button{min-height:40px;padding:0 14px;border:0;border-radius:10px;background:#1469c9;color:#fff;font-size:11px;font-weight:850}
+.v553-week-actions button:nth-child(2){background:#56627d}.v553-week-actions button:nth-child(3){margin-left:auto;background:#0e174f;border:1px solid rgba(255,255,255,.22)}
+.v553-week-group{margin:16px 0 22px;padding:0 0 8px;border-bottom:1px solid rgba(255,255,255,.08)}
+.v553-week-title{min-height:46px;display:flex;align-items:center;justify-content:space-between;gap:10px;color:#2ee0ef;font-size:14px;font-weight:900}
+.v553-week-title b{padding:7px 10px;border-radius:10px;background:#27365f;color:#fff;font-size:10px;white-space:nowrap}
+.v553-week-scroll{overflow-x:auto;padding-bottom:6px}.v553-week-scroll table{width:100%;min-width:720px;border-collapse:collapse;background:#08134e;color:#fff}
+.v553-week-scroll th,.v553-week-scroll td{padding:10px 9px;border:1px solid rgba(255,255,255,.07);font-size:9px;line-height:1.25;text-align:left}
+.v553-week-scroll th{background:#123a82;color:#fff;font-weight:900}.v553-week-scroll td:nth-child(4),.v553-week-scroll th:nth-child(4){text-align:center;width:34px}
+.v553-pending small{color:#27ddea;font-size:9px;font-weight:900;letter-spacing:.12em}.v553-pending h3{margin:4px 0 5px;color:#fff;font-size:16px}
+.v553-pending p{margin:0 0 12px;color:#9eadd9;font-size:10px;line-height:1.4}.v553-pending form{display:grid;grid-template-columns:1fr 1fr;gap:8px}.v553-pending form button{grid-column:1/-1}
+@media(max-width:480px){.v553-week-filter,.v553-pending{margin-left:0;margin-right:0;padding:12px}.v553-week-range{margin:-12px -12px 12px;padding:12px 14px;font-size:14px}.v553-pending form{grid-template-columns:1fr}.v553-pending form button{grid-column:auto}}
