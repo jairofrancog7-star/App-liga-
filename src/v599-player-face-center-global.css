@@ -152,3 +152,37 @@ html body .ljr-face-circle-v606 > img[data-ljr-circle-full-face="1"]{
   border-radius:inherit!important;
   box-sizing:border-box!important;
 }
+
+
+/* V609 — AVATARES CIRCULARES CON FOTO COMPLETA.
+   SOLO clases de avatar circular conocidas; no afecta fotos cuadradas/rectangulares. */
+html body #screen :is(
+  .v576-player-avatar,
+  .v66-player-avatar.v576-has-photo,
+  .v42-avatar.v576-has-photo,
+  .v419-player-avatar.v576-has-photo,
+  .v446-stat-ref-avatar.v576-has-photo,
+  .v414-avatar.v576-has-photo,
+  .v123-avatar.v576-has-photo,
+  .v123-option-avatar.v576-has-photo,
+  .v379-related-avatar.v576-has-photo,
+  .v576-table-photo,
+  .v124-avatar.v576-has-inline-photo,
+  .v562-avatar.v576-has-photo
+)>img{
+  position:static!important;
+  inset:auto!important;
+  width:100%!important;
+  height:100%!important;
+  min-width:0!important;
+  min-height:0!important;
+  max-width:100%!important;
+  max-height:100%!important;
+  margin:0!important;
+  padding:0!important;
+  display:block!important;
+  object-fit:contain!important;
+  object-position:center center!important;
+  transform:none!important;
+  clip-path:none!important;
+}
