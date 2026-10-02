@@ -118,42 +118,62 @@ function enhanceMatch(row){
 function enhanceFixtures(){
   const root=document.querySelector('[data-v12-fixtures]');
   if(!root)return;
-  if(!root.querySelector('[data-v523-shell]')){
-    const shell=document.createElement('div');
+
+  /* V565 — el diseño nativo de Competición vuelve a ser el principal.
+     Este bloque inspirado en navegación de torneos queda COMO EXTRA AL FINAL,
+     sin reemplazar tarjetas, filtros, jornadas ni resultados originales. */
+  let shell=root.querySelector('[data-v523-shell]');
+  if(!shell){
+    shell=document.createElement('div');
     shell.dataset.v523Shell='fixtures';
+    shell.className='v523-bottom-extra';
     shell.innerHTML=tournamentHero('fixtures');
-    root.prepend(shell);
-  }else{
-    const current=root.querySelector('[data-v523-shell]');
-    const j=selectedJourney();
-    const b=current?.querySelector('[data-v523-open="journey"] b');
-    const em=current?.querySelector('[data-v523-open="journey"] em');
-    if(b)b.textContent=j.title;
-    if(em)em.textContent=j.sub||'';
+    root.append(shell);
+  }else if(shell!==root.lastElementChild){
+    root.append(shell);
   }
-  root.querySelectorAll('.v12-schedule-match').forEach(enhanceMatch);
+
+  const j=selectedJourney();
+  const b=shell?.querySelector('[data-v523-open="journey"] b');
+  const em=shell?.querySelector('[data-v523-open="journey"] em');
+  if(b)b.textContent=j.title;
+  if(em)em.textContent=j.sub||'';
+
+  /* No se crean tarjetas duplicadas V523: se conserva el diseño original. */
+  root.querySelectorAll('.v523-match-card').forEach(x=>x.remove());
+  root.querySelectorAll('.v12-schedule-match[data-v523-enhanced]').forEach(x=>{
+    x.removeAttribute('data-v523-enhanced');
+  });
 }
 function enhanceBracket(){
   const root=document.querySelector('[data-v12-bracket]');
   if(!root)return;
-  if(!root.querySelector('[data-v523-shell]')){
-    const shell=document.createElement('div');
+  let shell=root.querySelector('[data-v523-shell]');
+  if(!shell){
+    shell=document.createElement('div');
     shell.dataset.v523Shell='bracket';
+    shell.className='v523-bottom-extra';
     shell.innerHTML=tournamentHero('bracket');
-    root.prepend(shell);
+    root.append(shell);
+  }else if(shell!==root.lastElementChild){
+    root.append(shell);
   }
   const active=root.querySelector('[data-v12-bracket-stage].active');
-  const label=root.querySelector('[data-v523-stage-label]');
+  const label=shell?.querySelector('[data-v523-stage-label]');
   if(label&&active)label.textContent=(active.textContent||'Cuadro eliminatorio').trim();
 }
 function enhanceStandings(){
   const root=document.querySelector('[data-v40-standings],[data-v12-standings]');
   if(!root)return;
-  if(!root.querySelector('[data-v523-standings]')){
-    const box=document.createElement('div');
+  let box=root.querySelector('[data-v523-standings]');
+  if(!box){
+    box=document.createElement('div');
     box.dataset.v523Standings='';
+    box.className='v523-bottom-extra';
     box.innerHTML=standingsSwitch();
-    root.prepend(box);
+    root.append(box);
+  }else if(box!==root.lastElementChild){
+    root.append(box);
   }
 }
 function enhance(){
