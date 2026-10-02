@@ -11,6 +11,7 @@ window.__LJR_V569_ACCOUNT_AUTH__=true;
 
 const AUTH_KEY='ljr-auth-v569';
 const STORE_KEY='lj-store-v3';
+const RETURN_KEY='ljr-auth-return-v569';
 const ROUTES=new Set(['accountRegister','accountLogin','accountEdit','accountSecurity','accountPassword','accountDevices']);
 const $=(s,r=document)=>r.querySelector(s);
 const $$=(s,r=document)=>Array.from(r.querySelectorAll(s));
@@ -36,6 +37,7 @@ const isNative=()=>{try{return !!Capacitor?.isNativePlatform?.()}catch(_){return
 const biometricEnabled=a=>!!(a?.biometric?.native||a?.biometric?.credentialId);
 const contactText=a=>a?.email||a?.phone||'Sin contacto';
 const go=r=>{if(window.LJR_MAIN_ROUTE?.go)window.LJR_MAIN_ROUTE.go(r);else location.hash='#/'+r};
+const takeReturnRoute=()=>{try{const r=String(localStorage.getItem(RETURN_KEY)||'').trim();localStorage.removeItem(RETURN_KEY);return /^[-a-zA-Z0-9_]+$/.test(r)?r:''}catch(_){return''}};
 
 function toast(msg){
   let t=$('.v569-toast');if(t)t.remove();
@@ -442,14 +444,15 @@ async function loginFromPage(root){
   try{
     if(!(await passwordOk(account,pass))){closeOverlay();return toast('Contraseña incorrecta')}
     const auth=authState(),idx=auth.accounts.findIndex(a=>a.id===account.id);auth.accounts[idx].lastLoginAt=nowIso();saveAuth(auth);setAppUser(auth.accounts[idx]);
-    overlay('Bienvenido','Sesión iniciada correctamente.','ok');closeOverlay();setTimeout(()=>{if(route()==='profile')renderLoggedProfile(auth.accounts[idx]);else go('profile')},300);
+    const next=takeReturnRoute();
+    overlay('Bienvenido','Sesión iniciada correctamente.','ok');closeOverlay();setTimeout(()=>{if(next)go(next);else if(route()==='profile')renderLoggedProfile(auth.accounts[idx]);else go('profile')},300);
   }catch(e){closeOverlay();toast(e.message||'No se pudo iniciar sesión')}
 }
 async function biometricLogin(root){
   const id=$('[data-v569-login-id]',root)?.value||'';
   let account=id?findAccount(id):allAccounts().filter(biometricEnabled)[0];
   if(!biometricEnabled(account))return toast('Escribe el alias de una cuenta con biometría');
-  try{const verified=await verifyBiometric(account);setTimeout(()=>{if(route()==='profile')renderLoggedProfile(verified);else go('profile')},300)}catch(e){closeOverlay();toast(e?.name==='NotAllowedError'?'Verificación cancelada':(e?.message||'No se pudo verificar'))}
+  try{const verified=await verifyBiometric(account),next=takeReturnRoute();setTimeout(()=>{if(next)go(next);else if(route()==='profile')renderLoggedProfile(verified);else go('profile')},300)}catch(e){closeOverlay();toast(e?.name==='NotAllowedError'?'Verificación cancelada':(e?.message||'No se pudo verificar'))}
 }
 async function saveProfile(root){
   const a=currentAccount();if(!a)return go('accountLogin');
