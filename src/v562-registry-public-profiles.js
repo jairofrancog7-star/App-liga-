@@ -53,11 +53,13 @@ function profilesFor(c,teamName){
  for(const name of names){
    const k=norm(name);if(!k||seen.has(k))continue;seen.add(k);
    const p=map.get(k)||{};
-   out.push({name:String(name),position:String(p.position||''),dorsal:String(p.dorsal||''),photo:String(p.photo||''),spriteIndex:Number.isFinite(p.spriteIndex)?p.spriteIndex:null});
+   const si=Number(p.spriteIndex??p.sprite_index);
+   out.push({name:String(name),position:String(p.position||''),dorsal:String(p.dorsal||''),photo:String(p.photo||''),spriteIndex:Number.isFinite(si)?si:null});
  }
  for(const p of map.values()){
    const k=norm(p?.name);if(!k||seen.has(k))continue;seen.add(k);
-   out.push({name:String(p.name||''),position:String(p.position||''),dorsal:String(p.dorsal||''),photo:String(p.photo||''),spriteIndex:Number.isFinite(p.spriteIndex)?p.spriteIndex:null});
+   const si=Number(p.spriteIndex??p.sprite_index);
+   out.push({name:String(p.name||''),position:String(p.position||''),dorsal:String(p.dorsal||''),photo:String(p.photo||''),spriteIndex:Number.isFinite(si)?si:null});
  }
  return out.sort((a,b)=>a.name.localeCompare(b.name,'es',{sensitivity:'base'}));
 }
