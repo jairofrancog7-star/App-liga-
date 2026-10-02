@@ -392,3 +392,30 @@ body[data-app-route="video"] .v428-tv-section .v428-tv-row:has(.v443-tv-portrait
     padding-left:0!important;
   }
 }
+
+
+/* V550 — Video: centrar bloque de texto y acercar el botón azul sin tocar imágenes/cuadros. */
+@media(max-width:600px){
+  body[data-app-route="video"] .v439-streamcenter-card{
+    display:grid!important;
+    grid-template-columns:minmax(0,1fr) auto!important;
+    align-items:center!important;
+    column-gap:10px!important;
+  }
+  body[data-app-route="video"] .v439-streamcenter-card>div:first-child{
+    padding-left:28px!important;
+    padding-right:6px!important;
+    min-width:0!important;
+  }
+  body[data-app-route="video"] .v439-streamcenter-card .v439-connect-trigger{
+    justify-self:end!important;
+    margin-right:14px!important;
+    max-width:190px!important;
+    white-space:nowrap!important;
+  }
+  body[data-app-route="video"] .v439-streamcenter-card h2,
+  body[data-app-route="video"] .v439-streamcenter-card p,
+  body[data-app-route="video"] .v439-streamcenter-card .eyebrow{
+    text-align:left!important;
+  }
+}
