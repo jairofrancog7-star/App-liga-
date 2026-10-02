@@ -127,7 +127,7 @@ function v23AccessMarkup(){
         '</div>'+
         '<div class="v588-team-copy"><h1>Elige tu equipo</h1>'+
           '<p>Gasta 100 m€ en 15 jugadores y suma puntos según su rendimiento real. ¿Quiénes forman tu equipo ideal de la Champions League?</p>'+
-          '<div class="v588-dots"><i></i><i class="active"></i></div></div>'+
+          '<div class="v588-dots"><i class="active"></i><i></i></div></div>'+
         '<div class="v23-access-actions v588-team-actions">'+
           '<button class="v23-access-login" type="button" data-v588-login>Inicia sesión para jugar</button>'+
           '<button class="v23-access-later" type="button" data-v588-guest>Prueba como invitado</button>'+
@@ -205,6 +205,7 @@ async function patchV23Fantasy(){
     btn.onclick=(e)=>{
       e.preventDefault();
       e.stopPropagation();
+      v588AccessSlide=0;
       location.hash='#/fantasyAccess';
     };
   });
