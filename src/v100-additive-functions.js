@@ -2117,5 +2117,5 @@ window.addEventListener('hashchange',schedule);
 window.addEventListener('ljr:official-data',schedule);
 const screen=$('#screen');if(screen)new MutationObserver(schedule).observe(screen,{childList:true,subtree:false});
 window.addEventListener('load',schedule);schedule();setTimeout(schedule,1500);setTimeout(schedule,4000);
-window.LJR_V100={build:BUILD,mount,officialTeams,credentialCanvas,downloadCredentialPng,downloadCredentialPdf,renderCredentialPreview:v196RenderCredentialPreview};
+window.LJR_V100={build:BUILD,mount,officialTeams,credentialCanvas,downloadCredentialPng,downloadCredentialPdf,renderCredentialPreview:v196RenderCredentialPreview,installApp};
 })();
