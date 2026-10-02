@@ -129,54 +129,29 @@
   }
   function compact(){
     const list=isVet35()?v35CompactTeams:compactTeams;
-    return '<div class="v578-table-section">'+
-      '<div class="v578-direct">CLASIFICACIÓN ACTUAL</div><div class="v578-rule"></div>'+
-      '<div class="v578-scroll v579-compact-scroll" data-v578-scroll>'+
-        '<table class="v578-table v579-compact-table">'+
-          '<thead><tr><th class="rank"></th><th class="team"></th><th>P</th><th>+/-</th><th>PTOS</th><th>FORMA</th></tr></thead>'+
-          '<tbody>'+list.map((t,i)=>'<tr>'+
-            '<td class="rank">'+(i+1)+'</td>'+
-            '<td class="team"><span class="v578-team">'+img(t.logo,t.name,'v578-logo')+'<strong>'+t.name+'</strong></span></td>'+
-            '<td>'+t.p+'</td><td>'+t.gd+'</td><td class="pts">'+t.pts+'</td><td class="form">'+form(t.last)+'</td>'+
-          '</tr>').join('')+'</tbody>'+
-        '</table>'+
-      '</div>'+
+    return '<div class="v40-table-wrap compact">'+
+      '<div class="v40-table-head"><span></span><span></span><b>P</b><b>+/-</b><b>PTOS</b><b>FORMA</b></div>'+
+      '<div class="v40-direct">CLASIFICACIÓN ACTUAL</div><div class="v40-rule"></div>'+
+      '<div class="v40-table-body">'+list.map((t,i)=>
+        '<div class="v40-row"><span class="v40-rank">'+(i+1)+'</span><span class="v40-team">'+img(t.logo,t.name,'v40-team-logo')+'<strong>'+t.name+'</strong></span><span>'+t.p+'</span><span>'+t.gd+'</span><span>'+t.pts+'</span>'+form(t.last)+'</div>'
+      ).join('')+'</div>'+
     '</div>';
   }
   function complete(){
     const list=isVet35()?v35CompleteTeams:completeTeams;
-    const compactList=isVet35()?v35CompactTeams:compactTeams;
-    const lastFor=name=>compactList.find(x=>x.name===name)?.last||'—';
-    return '<div class="v578-table-section">'+
-      '<div class="v578-direct">CLASIFICACIÓN ACTUAL</div><div class="v578-rule"></div>'+
-      '<div class="v578-scroll" data-v578-scroll>'+
-        '<table class="v578-table v578-complete-table">'+
-          '<thead><tr><th class="rank"></th><th class="team"></th><th>P</th><th>V</th><th>E</th><th>D</th><th>+/-</th><th>GF</th><th>GC</th><th>FORMA</th><th>PTOS</th></tr></thead>'+
-          '<tbody>'+list.map((t,i)=>'<tr>'+
-            '<td class="rank">'+(i+1)+'</td>'+
-            '<td class="team"><span class="v578-team">'+img(t.logo,t.name,'v578-logo')+'<strong>'+t.name+'</strong></span></td>'+
-            '<td>'+t.p+'</td><td>'+t.w+'</td><td>'+t.d+'</td><td>'+t.l+'</td><td>'+(t.gf-t.ga)+'</td><td>'+t.gf+'</td><td>'+t.ga+'</td>'+
-            '<td class="form">'+form(lastFor(t.name))+'</td><td class="pts">'+t.pts+'</td>'+
-          '</tr>').join('')+'</tbody>'+
-        '</table>'+
-      '</div>'+
-    '</div>';
+    return '<div class="v40-scroll-shell"><div class="v40-wide complete">'+
+      '<div class="v40-wide-head complete-head"><span></span><span></span><b>P</b><b>V</b><b>E</b><b>D</b><b></b><b></b><b class="v40-pluspts">+ PTS</b></div>'+
+      '<div class="v40-direct">CLASIFICACIÓN ACTUAL</div><div class="v40-rule"></div>'+
+      list.map((t,i)=>'<div class="v40-wide-row complete-row"><span>'+(i+1)+'</span><span class="v40-team">'+img(t.logo,t.name,'v40-team-logo')+'<strong>'+t.name+'</strong></span><span>'+t.p+'</span><span>'+t.w+'</span><span>'+t.d+'</span><span>'+t.l+'</span><span>'+t.gf+'</span><span class="v40-muted-number">'+t.ga+'</span><b>'+t.pts+'</b></div>').join('')+
+    '</div></div>';
   }
   function criteria(){
     const list=isVet35()?v35CriteriaTeams:criteriaTeams;
-    return '<div class="v578-table-section">'+
-      '<div class="v578-direct">CLASIFICACIÓN ACTUAL</div><div class="v578-rule"></div>'+
-      '<div class="v578-scroll" data-v578-scroll>'+
-        '<table class="v578-table v578-criteria-table">'+
-          '<thead><tr><th class="rank"></th><th class="team"></th><th>PTOS</th><th>+/-</th><th>GF</th><th>GC</th><th>V</th><th>E</th><th>P</th></tr></thead>'+
-          '<tbody>'+list.map((t,i)=>'<tr>'+
-            '<td class="rank">'+(i+1)+'</td>'+
-            '<td class="team"><span class="v578-team">'+img(t.logo,t.name,'v578-logo')+'<strong>'+t.name+'</strong></span></td>'+
-            '<td class="pts">'+t.pts+'</td><td>'+t.gd+'</td><td>'+t.gf+'</td><td>'+t.ga+'</td><td>'+t.w+'</td><td>'+t.d+'</td><td>'+t.l+'</td>'+
-          '</tr>').join('')+'</tbody>'+
-        '</table>'+
-      '</div>'+
-    '</div>';
+    return '<div class="v40-scroll-shell"><div class="v40-wide criteria">'+
+      '<div class="v40-wide-head criteria-head"><span></span><span></span><b>PTOS</b><b>+/-</b><b>GF</b><b>GA</b><b>V</b><b>E</b><b>P</b></div>'+
+      '<div class="v40-direct">CLASIFICACIÓN ACTUAL</div><div class="v40-rule"></div>'+
+      list.map((t,i)=>'<div class="v40-wide-row criteria-row"><span>'+(i+1)+'</span><span class="v40-team">'+img(t.logo,t.name,'v40-team-logo')+'<strong>'+t.name+'</strong></span><span>'+t.pts+'</span><span>'+t.gd+'</span><span>'+t.gf+'</span><span>'+t.ga+'</span><span>'+t.w+'</span><span>'+t.d+'</span><span>'+t.l+'</span></div>').join('')+
+    '</div></div>';
   }
   let activeStandingsMode='compact';
   try{activeStandingsMode=sessionStorage.getItem('v40-standings-mode')||'compact'}catch(_){}
