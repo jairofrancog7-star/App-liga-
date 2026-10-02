@@ -453,3 +453,80 @@ body[data-app-route="video"] .v428-tv-section .v428-tv-row:has(.v443-tv-portrait
     text-align:center!important;
   }
 }
+
+
+/* V552 — Video: centrar cabecera Ver en TV dentro de los bordes visibles. */
+@media(max-width:600px){
+  body[data-app-route="video"] .v428-tv-title,
+  body>.v160-tv-layer .v428-tv-title{
+    width:100%!important;
+    padding-left:34px!important;
+    padding-right:34px!important;
+    box-sizing:border-box!important;
+    align-items:center!important;
+    gap:10px!important;
+  }
+
+  body[data-app-route="video"] .v428-tv-title>div,
+  body>.v160-tv-layer .v428-tv-title>div{
+    min-width:0!important;
+    max-width:calc(100% - 132px)!important;
+  }
+
+  body[data-app-route="video"] .v428-tv-title small,
+  body[data-app-route="video"] .v428-tv-title h2,
+  body[data-app-route="video"] .v428-tv-title p,
+  body>.v160-tv-layer .v428-tv-title small,
+  body>.v160-tv-layer .v428-tv-title h2,
+  body>.v160-tv-layer .v428-tv-title p{
+    margin-left:0!important;
+    padding-left:0!important;
+    overflow-wrap:anywhere!important;
+  }
+
+  body[data-app-route="video"] .v439-connect-trigger,
+  body>.v160-tv-layer .v439-connect-trigger{
+    flex:0 0 auto!important;
+    max-width:122px!important;
+    min-width:112px!important;
+    padding-left:10px!important;
+    padding-right:10px!important;
+    margin:0!important;
+    white-space:normal!important;
+    text-align:center!important;
+    line-height:1.15!important;
+    overflow-wrap:anywhere!important;
+    box-sizing:border-box!important;
+  }
+
+  .v439-cast-head{
+    padding-left:18px!important;
+    padding-right:18px!important;
+    box-sizing:border-box!important;
+  }
+  .v439-cast-head h2{
+    min-width:0!important;
+    text-align:center!important;
+    overflow-wrap:anywhere!important;
+  }
+}
+
+@media(max-width:380px){
+  body[data-app-route="video"] .v428-tv-title,
+  body>.v160-tv-layer .v428-tv-title{
+    padding-left:30px!important;
+    padding-right:30px!important;
+    gap:8px!important;
+  }
+  body[data-app-route="video"] .v428-tv-title>div,
+  body>.v160-tv-layer .v428-tv-title>div{
+    max-width:calc(100% - 116px)!important;
+  }
+  body[data-app-route="video"] .v439-connect-trigger,
+  body>.v160-tv-layer .v439-connect-trigger{
+    min-width:104px!important;
+    max-width:108px!important;
+    padding-left:7px!important;
+    padding-right:7px!important;
+  }
+}
