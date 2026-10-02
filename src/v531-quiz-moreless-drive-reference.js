@@ -6,6 +6,7 @@ if(window.__LJR_V531_GAMES__)return;
 window.__LJR_V531_GAMES__=true;
 window.__LJR_V533_PRIMARY_GAMES__=true;
 window.__LJR_V536_MONITO_FLOW__=true;
+window.__LJR_V537_SECONDARY_OVERLAY__=true;
 
 const RAW='https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/';
 const DATA_LOCAL='./data/official-live.json?v=20261001-v531-games';
@@ -309,26 +310,35 @@ function render(focusAdded=false){
   }
 
   if(r==='quizArena'){
-    if(quiz.mode==='legacy'){
+    const open=quiz.mode!=='legacy';
+    document.body.classList.toggle('v537-quiz-secondary-open',open);
+    document.body.classList.remove('v537-more-secondary-open');
+    if(!open){
       mount.innerHTML='';
       mount.hidden=true;
     }else{
       mount.hidden=false;
+      mount.style.display='block';
       mount.innerHTML=quiz.mode==='hub'?quizHub(data):quiz.mode==='game'?quizGame(data):quizResult(data);
     }
   }else{
-    if(more.mode==='legacy'){
+    const open=more.mode!=='legacy';
+    document.body.classList.toggle('v537-more-secondary-open',open);
+    document.body.classList.remove('v537-quiz-secondary-open');
+    if(!open){
       mount.innerHTML='';
       mount.hidden=true;
     }else{
       mount.hidden=false;
+      mount.style.display='block';
       mount.innerHTML=more.mode==='hub'?moreHub(data):moreGame(data);
     }
   }
 
   setGamesNav();
   if(focusAdded&&!mount.hidden)requestAnimationFrame(function(){
-    mount.scrollIntoView({behavior:'smooth',block:'start'});
+    mount.scrollTop=0;
+    window.scrollTo({top:0,left:0,behavior:'auto'});
   });
 }
 function share(){
@@ -375,11 +385,10 @@ document.addEventListener('click',function(e){
   const oldQuiz=e.target.closest('[data-v48-quiz]');
   if(route()==='quizArena'&&oldQuiz){
     e.preventDefault();e.stopPropagation();e.stopImmediatePropagation();
-    const data=db||window.LJR_OFFICIAL_DATA||{},q=quizData(data);
-    quiz.selected=oldQuiz.dataset.v48Quiz||oldQuiz.textContent||'';
-    quiz.answered=true;
-    if(norm(quiz.selected)===norm(q.correct))quiz.points+=10;
-    quiz.mode='result';quiz.exit=false;
+    quiz.selected='';
+    quiz.answered=false;
+    quiz.mode='hub';
+    quiz.exit=false;
     render(true);
     return;
   }
@@ -397,11 +406,10 @@ document.addEventListener('click',function(e){
   // Controles del diseño principal anterior: no los bloqueamos.
   // Dejamos que su funcionamiento original ocurra y luego abrimos el diseño secundario debajo.
   if(t.matches('[data-v48-quiz]')){
-    const picked=t.dataset.v48Quiz||'';
-    const data=db||window.LJR_OFFICIAL_DATA||{},q=quizData(data);
-    quiz.selected=picked;quiz.answered=true;
-    if(norm(picked)===norm(q.correct))quiz.points+=10;
-    quiz.mode='result';
+    quiz.selected='';
+    quiz.answered=false;
+    quiz.mode='hub';
+    quiz.exit=false;
     setTimeout(function(){render(true)},0);
     return;
   }
@@ -413,12 +421,13 @@ document.addEventListener('click',function(e){
 
   e.preventDefault();e.stopPropagation();
 
-  if(t.matches('[data-v531-quiz-back],[data-v531-more-back]')){go('more');return}
+  if(t.matches('[data-v531-quiz-back]')){quiz.mode='legacy';quiz.exit=false;render(false);return}
+  if(t.matches('[data-v531-more-back]')){more.mode='legacy';more.exit=false;render(false);return}
   if(t.matches('[data-v531-share]')){share();return}
   if(t.matches('[data-v531-rankings]')){go('rankings');return}
   if(t.matches('[data-v531-quiz-start]')){quiz.mode='game';quiz.answered=false;quiz.exit=false;render(true);return}
   if(t.matches('[data-v531-quiz-close]')){quiz.exit=true;render(true);return}
-  if(t.matches('[data-v531-result-back]')){quiz.mode='legacy';quiz.exit=false;render(true);return}
+  if(t.matches('[data-v531-result-back]')){quiz.mode='legacy';quiz.exit=false;render(false);return}
   if(t.matches('[data-v531-q-answer]')){
     const data=db||window.LJR_OFFICIAL_DATA||{},q=quizData(data),pick=t.dataset.v531QAnswer||'';
     quiz.selected=pick;quiz.answered=true;
@@ -442,7 +451,7 @@ document.addEventListener('click',function(e){
     const kind=t.dataset.v531ExitConfirm;
     if(kind==='quiz'){quiz.mode='legacy';quiz.exit=false;quiz.answered=false}
     else{more.mode='legacy';more.exit=false;more.answered=false}
-    render(true);return;
+    render(false);return;
   }
   if(t.matches('[data-v531-exit-cancel]')){
     const kind=t.dataset.v531ExitCancel;
