@@ -1,4 +1,4 @@
-/* V606 — ENCUADRE FACIAL SOLO EN FOTOS CIRCULARES
+/* V607 — ROSTRO COMPLETO SOLO EN FOTOS CIRCULARES
    IMPORTANTE: NO toca fotos cuadradas ni rectangulares.
    JS marca únicamente los marcos que YA son círculos visuales con
    .ljr-face-circle-v606 y entonces aplica el recorte facial de credenciales. */
@@ -90,3 +90,33 @@ body[data-app-route="moreLessGallery"] .v583-challenge-art .ljr-face-circle-v606
   visibility:hidden!important;
 }
 
+
+
+/* V607 — fallback completo dentro del círculo.
+   Mientras termina la detección, o si no hay detector disponible, se ve la
+   fotografía ENTERA y centrada; nunca se corta boca, mentón ni cabello. */
+.ljr-face-circle-v606{
+  background:
+    linear-gradient(rgba(7,16,93,.28),rgba(7,16,93,.28)),
+    var(--ljr-circle-face-bg,none) center/cover no-repeat,
+    #101b88!important;
+}
+.ljr-face-circle-v606 > img:not([data-ljr-credential-face-crop="1"]){
+  position:relative!important;
+  z-index:2!important;
+  left:auto!important;
+  top:auto!important;
+  width:100%!important;
+  height:100%!important;
+  min-width:100%!important;
+  min-height:100%!important;
+  max-width:100%!important;
+  max-height:100%!important;
+  display:block!important;
+  object-fit:contain!important;
+  object-position:center!important;
+  margin:0!important;
+  padding:0!important;
+  transform:none!important;
+  border-radius:inherit!important;
+}
