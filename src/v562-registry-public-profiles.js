@@ -39,17 +39,25 @@ function profilesFor(c,teamName){
  const hit=Object.entries(c?.player_profiles||{}).find(([k])=>norm(k)===norm(teamName));
  const arr=Array.isArray(hit?.[1])?hit[1]:[];
  const map=new Map(arr.map(x=>[norm(x?.name),x]));
+ const brothers=norm(teamName)==='hermanos'?window.LJR_V562_HERMANOS:null;
+ if(brothers?.players){
+   Object.values(brothers.players).forEach(p=>{
+     const k=norm(p?.name);if(!k)return;
+     const live=map.get(k)||{};
+     map.set(k,{...p,...live,spriteIndex:Number(p.i)});
+   });
+ }
  const rosterHit=Object.entries(c?.rosters||{}).find(([k])=>norm(k)===norm(teamName));
  const names=Array.isArray(rosterHit?.[1])?rosterHit[1]:[];
  const out=[];const seen=new Set();
  for(const name of names){
    const k=norm(name);if(!k||seen.has(k))continue;seen.add(k);
    const p=map.get(k)||{};
-   out.push({name:String(name),position:String(p.position||''),dorsal:String(p.dorsal||''),photo:String(p.photo||'')});
+   out.push({name:String(name),position:String(p.position||''),dorsal:String(p.dorsal||''),photo:String(p.photo||''),spriteIndex:Number.isFinite(p.spriteIndex)?p.spriteIndex:null});
  }
- for(const p of arr){
+ for(const p of map.values()){
    const k=norm(p?.name);if(!k||seen.has(k))continue;seen.add(k);
-   out.push({name:String(p.name||''),position:String(p.position||''),dorsal:String(p.dorsal||''),photo:String(p.photo||'')});
+   out.push({name:String(p.name||''),position:String(p.position||''),dorsal:String(p.dorsal||''),photo:String(p.photo||''),spriteIndex:Number.isFinite(p.spriteIndex)?p.spriteIndex:null});
  }
  return out.sort((a,b)=>a.name.localeCompare(b.name,'es',{sensitivity:'base'}));
 }
@@ -74,8 +82,15 @@ function logo(name){
  if(v?.local)return 'https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/'+String(v.local).replace(/^\.\//,'');
  return v?.source||'';
 }
+function spriteHtml(p){
+ const pack=window.LJR_V562_HERMANOS;
+ if(!pack||!Number.isFinite(p.spriteIndex))return '';
+ const i=p.spriteIndex,x=(i%pack.cols)*pack.w,y=Math.floor(i/pack.cols)*pack.h;
+ return '<span class="v562-avatar sprite"><i style="background-position:-'+x+'px -'+y+'px"></i></span>';
+}
 function avatar(p){
  if(p.photo)return '<span class="v562-avatar photo"><img src="'+esc(p.photo)+'" alt="" loading="lazy" decoding="async" referrerpolicy="no-referrer"></span>';
+ const sp=spriteHtml(p);if(sp)return sp;
  const ini=p.name.split(/\s+/).slice(0,2).map(x=>x[0]||'').join('').toUpperCase();
  return '<span class="v562-avatar">'+esc(ini)+'</span>';
 }
@@ -105,6 +120,9 @@ function render(){
   }).join(''):'<div class="v562-empty">No hay registros públicos para este filtro.</div>')+'</div>'+
   '<p class="v562-note">Se muestran únicamente datos deportivos publicados por la Liga. CURP, INE, domicilio y documentos quedan fuera de esta vista.</p>'+
  '</section>';
+ const reg=host.querySelector('[data-v562-registry]');
+ const sprite=window.LJR_V562_HERMANOS?.img;
+ if(reg&&sprite)reg.style.setProperty('--v562-hermanos-sprite','url("'+sprite+'")');
  host.querySelector('[data-v562-cat]')?.addEventListener('change',e=>{active=e.target.value||'3';team='all';localStorage.setItem('v562-reg-cat',active);localStorage.setItem('v562-reg-team','all');render()});
  host.querySelector('[data-v562-team]')?.addEventListener('change',e=>{team=e.target.value||'all';localStorage.setItem('v562-reg-team',team);render()});
  host.querySelector('[data-v562-search]')?.addEventListener('input',e=>{query=e.target.value||'';render()});
@@ -120,7 +138,13 @@ function enhanceTeamRoster(){
  const map=new Map(profilesFor(c,tm).map(p=>[norm(p.name),p]));
  page.querySelectorAll('.v42-player-row').forEach(row=>{
    const name=row.querySelector('.v42-player-copy strong')?.textContent||'';const p=map.get(norm(name));if(!p)return;
-   const av=row.querySelector('.v42-avatar');if(av&&p.photo&&!av.querySelector('img')){av.innerHTML='<img src="'+esc(p.photo)+'" alt="" loading="lazy" decoding="async" referrerpolicy="no-referrer">';av.classList.add('v562-team-photo')}
+   const av=row.querySelector('.v42-avatar');
+   if(av&&p.photo&&!av.querySelector('img')){av.innerHTML='<img src="'+esc(p.photo)+'" alt="" loading="lazy" decoding="async" referrerpolicy="no-referrer">';av.classList.add('v562-team-photo')}
+   else if(av&&!p.photo&&Number.isFinite(p.spriteIndex)&&window.LJR_V562_HERMANOS){
+     const pack=window.LJR_V562_HERMANOS,i=p.spriteIndex,x=(i%pack.cols)*pack.w,y=Math.floor(i/pack.cols)*pack.h;
+     page.style.setProperty('--v562-hermanos-sprite','url("'+pack.img+'")');
+     av.innerHTML='<i class="v562-team-sprite" style="background-position:-'+x+'px -'+y+'px"></i>';av.classList.add('v562-team-photo');
+   }
    const small=row.querySelector('.v42-player-copy small');if(small&&p.position)small.textContent=p.position+' · '+tm;
    const num=row.querySelector('.v42-number');if(num&&p.dorsal)num.textContent='#'+p.dorsal;
  });
