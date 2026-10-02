@@ -1,7 +1,9 @@
 {
-  "name": "Torneo Municipal Liga Juventino",
+  "name": "Liga Municipal de Fútbol Juventino Rosas",
   "short_name": "Liga Juventino",
-  "start_url": "./",
+  "id": "./?mode=apk",
+  "start_url": "./?mode=apk#/home",
+  "scope": "./",
   "display": "standalone",
   "background_color": "#02065F",
   "theme_color": "#02065F",
@@ -12,6 +14,38 @@
       "sizes": "1024x1024",
       "type": "image/png",
       "purpose": "any maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Liga Control",
+      "short_name": "Control",
+      "url": "./?mode=apk#/ligaControl"
+    },
+    {
+      "name": "Posiciones",
+      "short_name": "Posiciones",
+      "url": "./?mode=apk#/competition"
+    },
+    {
+      "name": "Goleo",
+      "short_name": "Goleo",
+      "url": "./?mode=apk#/scorers"
+    },
+    {
+      "name": "Registro de jugadores",
+      "short_name": "Registro",
+      "url": "./?mode=apk#/credentialBuilder"
+    },
+    {
+      "name": "Reportes",
+      "short_name": "Reportes",
+      "url": "./?mode=apk#/v38Weekly"
+    },
+    {
+      "name": "Quiniela",
+      "short_name": "Quiniela",
+      "url": "./?mode=apk#/quiniela"
     }
   ]
 }
