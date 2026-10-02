@@ -265,8 +265,12 @@ body[data-app-route="profile"] #screen > .v413-shell .v413-head{
 }
 
 
-/* V553 — Comunidad: tarjeta Facebook transparente para dejar visible el cuadro de fondo. */
-body:not([data-app-route="profile"]) #screen > .v413-shell .v413-facebook.v523-social-card{
+/* V554 — Comunidad: tarjeta Facebook realmente transparente en Más y Perfil. */
+html body #screen > .v413-shell .v413-facebook.v523-social-card,
+html body[data-app-route="more"] #screen > .v413-shell .v413-facebook.v523-social-card,
+html body[data-app-route="profile"] #screen > .v413-shell .v413-facebook.v523-social-card{
   background:transparent!important;
+  background-color:transparent!important;
+  background-image:none!important;
   box-shadow:none!important;
 }
