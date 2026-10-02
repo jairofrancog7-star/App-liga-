@@ -18,6 +18,16 @@
   ],
   "shortcuts": [
     {
+      "name": "Mi cuenta",
+      "short_name": "Cuenta",
+      "url": "./?mode=apk#/profile"
+    },
+    {
+      "name": "Crear cuenta",
+      "short_name": "Registro",
+      "url": "./?mode=apk#/accountRegister"
+    },
+    {
       "name": "Liga Control",
       "short_name": "Control",
       "url": "./?mode=apk#/ligaControl"
