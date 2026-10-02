@@ -425,7 +425,7 @@ function bindMatchAlerts(root){
 function socialMarkup(){
   return section('COMUNIDAD','Síguenos','Conecta con la Liga Juventino y consulta publicaciones, jornadas, fotografías y avisos oficiales.',
     '<button type="button" class="v413-facebook v523-social-card" data-v413-facebook><span class="v523-social-icon">f</span><div class="v523-social-copy"><small>FACEBOOK OFICIAL</small><b>Liga Juventino</b><em>Publicaciones · Jornadas · Fotografías · Avisos</em></div><i>↗</i></button>'
-  );
+  ).replace('class="v413-shell"','class="v413-shell v556-social-transparent"');
 }
 
 function contentFor(r){
