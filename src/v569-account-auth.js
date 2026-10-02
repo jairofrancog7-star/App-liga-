@@ -240,7 +240,7 @@ async function enrollBiometric(account){
     saveAuth(auth);
     const trusted=rememberDevice(auth.accounts[idx],{verified:true,method:'biometric'});setAppUser(trusted);
     overlay('Identidad confirmada','La biometría quedó activada para esta cuenta.','ok');closeOverlay();
-    return auth.accounts[idx];
+    return trusted;
   }
 
   const challenge=randomBytes(32),userId=account.biometric?.userHandle?b64ToBytes(account.biometric.userHandle):randomBytes(32);
@@ -261,7 +261,7 @@ async function enrollBiometric(account){
   saveAuth(auth);
   const trusted=rememberDevice(auth.accounts[idx],{verified:true,method:'biometric'});setAppUser(trusted);
   overlay('Identidad confirmada','La biometría quedó activada para esta cuenta.','ok');closeOverlay();
-  return auth.accounts[idx];
+  return trusted;
 }
 async function verifyBiometric(account){
   if(!biometricEnabled(account))throw new Error('Esta cuenta no tiene biometría activada');
@@ -284,9 +284,10 @@ async function verifyBiometric(account){
   }
 
   const auth=authState(),idx=auth.accounts.findIndex(a=>a.id===account.id);
-  if(idx>=0){auth.accounts[idx].lastLoginAt=nowIso();saveAuth(auth);const trusted=rememberDevice(auth.accounts[idx],{verified:true,method:'biometric'});setAppUser(trusted)}
+  let active=account;
+  if(idx>=0){auth.accounts[idx].lastLoginAt=nowIso();saveAuth(auth);active=rememberDevice(auth.accounts[idx],{verified:true,method:'biometric'});setAppUser(active)}
   overlay('Identidad confirmada','Acceso correcto.','ok');closeOverlay();
-  return idx>=0?auth.accounts[idx]:account;
+  return active;
 }
 function header(kicker,title,sub){
   return '<header class="v569-page-head"><small>'+esc(kicker)+'</small><h1>'+esc(title)+'</h1><p>'+esc(sub)+'</p></header>';
