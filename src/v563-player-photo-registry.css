@@ -9,3 +9,7 @@
 body[data-app-route="ligaControl"] #screen,
 body[data-app-route="appInstall"] #screen,
 body[data-app-route="adminFut"] #screen{background:#06065f!important}
+.v563-discipline-tabs{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin:10px 0 14px;padding:4px;border:1px solid rgba(60,222,236,.24);border-radius:14px;background:#090d63}
+.v563-discipline-tabs button{min-height:38px;border:0;border-radius:10px;background:transparent;color:#aab6da;font-size:10px;font-weight:900}
+.v563-discipline-tabs button.active{background:#1a4ed4;color:#fff;box-shadow:0 5px 18px rgba(0,30,120,.3)}
+.v563-discipline-empty{margin-top:12px;padding:16px;border:1px dashed rgba(89,132,230,.35);border-radius:14px;color:#aab6da;text-align:center;font-size:11px}
