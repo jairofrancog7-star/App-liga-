@@ -1,0 +1,388 @@
+/* V569 — Cuenta propia de Liga Juventino.
+   Registro local por teléfono o Gmail/correo, alias elegido o generado,
+   contraseña con hash PBKDF2 y acceso biométrico del dispositivo mediante WebAuthn.
+   No envía credenciales a AdminFut ni a servicios externos. */
+(function(){
+'use strict';
+if(window.__LJR_V569_ACCOUNT_AUTH__)return;
+window.__LJR_V569_ACCOUNT_AUTH__=true;
+
+const AUTH_KEY='ljr-auth-v569';
+const STORE_KEY='lj-store-v3';
+const ROUTES=new Set(['accountRegister','accountLogin','accountEdit','accountSecurity','accountPassword','accountDevices']);
+const $=(s,r=document)=>r.querySelector(s);
+const $$=(s,r=document)=>Array.from(r.querySelectorAll(s));
+const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const route=()=>String(location.hash||'').replace(/^#\/?/,'').split('?')[0]||'home';
+const nowIso=()=>new Date().toISOString();
+const normalizeEmail=v=>String(v||'').trim().toLowerCase();
+const normalizePhone=v=>String(v||'').replace(/\D/g,'').replace(/^52(?=\d{10}$)/,'');
+const cleanAlias=v=>String(v||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[^a-z0-9._-]+/g,'').slice(0,24);
+const readJson=(key,def)=>{try{return JSON.parse(localStorage.getItem(key)||'null')??def}catch(_){return def}};
+const writeJson=(key,val)=>localStorage.setItem(key,JSON.stringify(val));
+const bytesToB64=bytes=>{let s='';new Uint8Array(bytes).forEach(b=>s+=String.fromCharCode(b));return btoa(s).replace(/\+/g,'-').replace(/\//g,'_').replace(/=+$/,'')};
+const b64ToBytes=s=>{s=String(s||'').replace(/-/g,'+').replace(/_/g,'/');while(s.length%4)s+='=';const raw=atob(s),out=new Uint8Array(raw.length);for(let i=0;i<raw.length;i++)out[i]=raw.charCodeAt(i);return out};
+const randomBytes=n=>{const a=new Uint8Array(n);crypto.getRandomValues(a);return a};
+const randomId=()=>bytesToB64(randomBytes(18));
+const authState=()=>{const v=readJson(AUTH_KEY,{version:1,accounts:[],currentId:null});if(!Array.isArray(v.accounts))v.accounts=[];return v};
+const saveAuth=v=>writeJson(AUTH_KEY,v);
+const currentAccount=()=>{const a=authState();return a.accounts.find(x=>x.id===a.currentId)||null};
+const allAccounts=()=>authState().accounts||[];
+const fmtDate=v=>{try{return new Date(v).toLocaleString('es-MX',{dateStyle:'medium',timeStyle:'short'})}catch(_){return ''}};
+const deviceName=()=>{const ua=navigator.userAgent||'';if(/Android/i.test(ua))return 'Android';if(/iPhone|iPad|iPod/i.test(ua))return 'iPhone/iPad';return 'Este dispositivo'};
+const contactText=a=>a?.email||a?.phone||'Sin contacto';
+const go=r=>{if(window.LJR_MAIN_ROUTE?.go)window.LJR_MAIN_ROUTE.go(r);else location.hash='#/'+r};
+
+function toast(msg){
+  let t=$('.v569-toast');if(t)t.remove();
+  t=document.createElement('div');t.className='v569-toast';t.textContent=msg;document.body.appendChild(t);
+  setTimeout(()=>t.remove(),2400);
+}
+function overlay(title,body,mode='loading'){
+  $('.v569-overlay')?.remove();
+  const el=document.createElement('div');el.className='v569-overlay';
+  el.innerHTML='<div class="v569-overlay-card"><span class="v569-overlay-icon '+esc(mode)+'">'+(mode==='ok'?'✓':mode==='bio'?'◉':'')+'</span><h2>'+esc(title)+'</h2><p>'+esc(body)+'</p></div>';
+  document.body.appendChild(el);return el;
+}
+function closeOverlay(){setTimeout(()=>$('.v569-overlay')?.remove(),260)}
+function readAppStore(){return readJson(STORE_KEY,{})||{}}
+function setAppUser(account){
+  const st=readAppStore();
+  st.user={
+    id:account.id,uid:account.id,name:account.name,alias:account.alias,
+    email:account.email||'',phone:account.phone||'',authProvider:'liga-local',
+    biometric:!!account.biometric?.credentialId
+  };
+  writeJson(STORE_KEY,st);
+  if(window.LJR_MAIN_ROUTE?.state)window.LJR_MAIN_ROUTE.state.user=st.user;
+  const auth=authState();auth.currentId=account.id;saveAuth(auth);
+}
+function clearAppUser(){
+  const st=readAppStore();st.user=null;writeJson(STORE_KEY,st);
+  if(window.LJR_MAIN_ROUTE?.state)window.LJR_MAIN_ROUTE.state.user=null;
+  const auth=authState();auth.currentId=null;saveAuth(auth);
+}
+async function pbkdf2(password,salt){
+  if(!crypto?.subtle)throw new Error('WebCrypto no disponible');
+  const material=await crypto.subtle.importKey('raw',new TextEncoder().encode(password),'PBKDF2',false,['deriveBits']);
+  const bits=await crypto.subtle.deriveBits({name:'PBKDF2',hash:'SHA-256',salt:b64ToBytes(salt),iterations:125000},material,256);
+  return bytesToB64(bits);
+}
+async function newPasswordRecord(password){
+  const salt=bytesToB64(randomBytes(16));
+  return {salt,hash:await pbkdf2(password,salt),iterations:125000};
+}
+async function passwordOk(account,password){
+  if(!account?.password?.salt||!account?.password?.hash)return false;
+  return (await pbkdf2(password,account.password.salt))===account.password.hash;
+}
+function aliasExists(alias,exceptId=''){
+  const key=cleanAlias(alias);
+  return allAccounts().some(a=>a.id!==exceptId&&cleanAlias(a.alias)===key);
+}
+function contactExists(email,phone,exceptId=''){
+  const e=normalizeEmail(email),p=normalizePhone(phone);
+  return allAccounts().some(a=>a.id!==exceptId&&((e&&normalizeEmail(a.email)===e)||(p&&normalizePhone(a.phone)===p)));
+}
+function uniqueAlias(base,exceptId=''){
+  let a=cleanAlias(base)||'aficionado';
+  if(a.length<3)a=(a+'liga').slice(0,12);
+  if(!aliasExists(a,exceptId))return a;
+  for(let i=0;i<60;i++){const next=(a.slice(0,19)+(Math.floor(1000+Math.random()*9000))).slice(0,24);if(!aliasExists(next,exceptId))return next}
+  return (a.slice(0,15)+Date.now().toString().slice(-6)).slice(0,24);
+}
+function generateAlias(name,phone,email,exceptId=''){
+  const namePart=String(name||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[^a-z0-9]+/g,'').slice(0,14)||normalizeEmail(email).split('@')[0].replace(/[^a-z0-9]/g,'').slice(0,14)||'aficionado';
+  const p=normalizePhone(phone),suffix=p.slice(-4)||(Math.floor(1000+Math.random()*9000)+'');
+  return uniqueAlias((namePart+suffix).slice(0,24),exceptId);
+}
+function findAccount(identifier){
+  const raw=String(identifier||'').trim(),alias=cleanAlias(raw),email=normalizeEmail(raw),phone=normalizePhone(raw);
+  return allAccounts().find(a=>cleanAlias(a.alias)===alias||(email&&normalizeEmail(a.email)===email)||(phone&&normalizePhone(a.phone)===phone))||null;
+}
+function generatedPassword(){
+  const chars='ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz23456789!@#$';
+  let out='';const a=randomBytes(12);for(let i=0;i<12;i++)out+=chars[a[i]%chars.length];return out;
+}
+async function platformAuthAvailable(){
+  try{return !!(window.PublicKeyCredential&&navigator.credentials&&await PublicKeyCredential.isUserVerifyingPlatformAuthenticatorAvailable())}catch(_){return false}
+}
+async function enrollBiometric(account){
+  if(!(await platformAuthAvailable()))throw new Error('Este dispositivo no ofrece biometría compatible');
+  overlay('Verificando dispositivo…','Confirma en el teléfono con huella, rostro o bloqueo de pantalla.','bio');
+  const challenge=randomBytes(32),userId=account.biometric?.userHandle?b64ToBytes(account.biometric.userHandle):randomBytes(32);
+  const cred=await navigator.credentials.create({publicKey:{
+    challenge,
+    rp:{name:'Liga Juventino'},
+    user:{id:userId,name:account.alias,displayName:account.name||account.alias},
+    pubKeyCredParams:[{type:'public-key',alg:-7},{type:'public-key',alg:-257}],
+    timeout:60000,
+    authenticatorSelection:{authenticatorAttachment:'platform',residentKey:'preferred',userVerification:'required'},
+    attestation:'none',
+    excludeCredentials:account.biometric?.credentialId?[{type:'public-key',id:b64ToBytes(account.biometric.credentialId),transports:['internal']}]:[]
+  }});
+  if(!cred)throw new Error('No se creó la credencial biométrica');
+  const auth=authState(),idx=auth.accounts.findIndex(a=>a.id===account.id);
+  if(idx<0)throw new Error('Cuenta no encontrada');
+  auth.accounts[idx].biometric={credentialId:bytesToB64(cred.rawId),userHandle:bytesToB64(userId),enabledAt:nowIso(),device:deviceName()};
+  auth.accounts[idx].devices=[{id:'local-'+account.id,name:deviceName(),verified:true,lastSeenAt:nowIso()}];
+  saveAuth(auth);
+  setAppUser(auth.accounts[idx]);
+  overlay('Identidad confirmada','La biometría quedó activada para esta cuenta.','ok');closeOverlay();
+  return auth.accounts[idx];
+}
+async function verifyBiometric(account){
+  if(!account?.biometric?.credentialId)throw new Error('Esta cuenta no tiene biometría activada');
+  overlay('Confirma tu identidad','Usa la seguridad biométrica del teléfono para verificar que eres tú.','bio');
+  const result=await navigator.credentials.get({publicKey:{
+    challenge:randomBytes(32),
+    allowCredentials:[{type:'public-key',id:b64ToBytes(account.biometric.credentialId),transports:['internal']}],
+    timeout:60000,userVerification:'required'
+  }});
+  if(!result)throw new Error('No se pudo verificar el dispositivo');
+  const auth=authState(),idx=auth.accounts.findIndex(a=>a.id===account.id);
+  if(idx>=0){auth.accounts[idx].lastLoginAt=nowIso();auth.accounts[idx].devices=[{id:'local-'+account.id,name:deviceName(),verified:true,lastSeenAt:nowIso()}];saveAuth(auth);setAppUser(auth.accounts[idx])}
+  overlay('Identidad confirmada','Acceso correcto.','ok');closeOverlay();
+  return idx>=0?auth.accounts[idx]:account;
+}
+function header(kicker,title,sub){
+  return '<header class="v569-page-head"><small>'+esc(kicker)+'</small><h1>'+esc(title)+'</h1><p>'+esc(sub)+'</p></header>';
+}
+function field(label,input){return '<label class="v569-field"><span>'+esc(label)+'</span>'+input+'</label>'}
+function input(type,attr,placeholder,value='',extra=''){
+  return '<input type="'+esc(type)+'" '+attr+' placeholder="'+esc(placeholder)+'" value="'+esc(value)+'" '+extra+'>';
+}
+function authShell(kind){
+  const a=currentAccount();
+  if(kind==='accountRegister'){
+    return '<section class="v569-page" data-v569-page="register">'+
+      header('CUENTA LIGA JUVENTINO','Crear una cuenta','Regístrate con número telefónico o Gmail/correo y elige tu alias de perfil.')+
+      '<section class="v569-card">'+
+        '<div class="v569-methods"><button type="button" class="active" data-v569-method="phone">Teléfono</button><button type="button" data-v569-method="email">Gmail / correo</button></div>'+
+        '<div class="v569-form">'+
+          field('NOMBRE',input('text','data-v569-name','Tu nombre','','autocomplete="name"'))+
+          field('ALIAS DEL PERFIL','<div class="v569-inline">'+input('text','data-v569-alias','Elige uno o déjalo vacío')+'<button type="button" data-v569-generate-alias>Generar</button></div><small>Si lo dejas vacío, la app genera uno automáticamente.</small>')+
+          '<div data-v569-phone-wrap>'+field('NÚMERO TELEFÓNICO',input('tel','data-v569-phone','Ej. 461 123 4567','','inputmode="tel" autocomplete="tel"'))+'</div>'+
+          '<div data-v569-email-wrap hidden>'+field('GMAIL / CORREO',input('email','data-v569-email','nombre@gmail.com','','autocomplete="email"'))+'</div>'+
+          field('CONTRASEÑA','<div class="v569-inline">'+input('password','data-v569-password','Mínimo 8 caracteres','','autocomplete="new-password"')+'<button type="button" data-v569-generate-password>Generar</button></div>')+
+          field('CONFIRMAR CONTRASEÑA',input('password','data-v569-confirm','Repite la contraseña','','autocomplete="new-password"'))+
+          '<label class="v569-check"><input type="checkbox" data-v569-bio checked><i></i><span><b>Activar acceso biométrico</b><small>En Android puede usar huella, rostro o PIN del dispositivo.</small></span></label>'+
+          '<label class="v569-check"><input type="checkbox" data-v569-terms checked><i></i><span><b>Acepto guardar esta cuenta en este dispositivo</b><small>Los datos de acceso se almacenan localmente en la app.</small></span></label>'+
+        '</div>'+
+        '<button class="v569-primary" type="button" data-v569-register>Crear cuenta</button>'+
+        '<button class="v569-link" type="button" data-v569-route="accountLogin">Ya tengo cuenta · Iniciar sesión</button>'+
+      '</section>'+
+    '</section>';
+  }
+  if(kind==='accountLogin'){
+    const bio=allAccounts().some(x=>x.biometric?.credentialId);
+    return '<section class="v569-page" data-v569-page="login">'+
+      header('CUENTA LIGA JUVENTINO','Iniciar sesión','Entra con tu alias, número telefónico o Gmail/correo.')+
+      '<section class="v569-card"><div class="v569-form">'+
+        field('ALIAS, TELÉFONO O GMAIL',input('text','data-v569-login-id','@alias, teléfono o correo','','autocomplete="username"'))+
+        field('CONTRASEÑA',input('password','data-v569-login-password','Tu contraseña','','autocomplete="current-password"'))+
+      '</div>'+
+      '<button class="v569-primary" type="button" data-v569-login>Entrar</button>'+
+      (bio?'<button class="v569-secondary bio" type="button" data-v569-login-bio>◉ Entrar con huella / biometría</button>':'')+
+      '<button class="v569-link" type="button" data-v569-route="accountRegister">Crear una cuenta</button>'+
+      '</section></section>';
+  }
+  if(kind==='accountEdit'){
+    if(!a)return authShell('accountLogin');
+    return '<section class="v569-page" data-v569-page="edit">'+
+      header('MI PERFIL','Editar perfil','Cambia tu nombre, alias o datos de contacto.')+
+      '<section class="v569-card"><div class="v569-form">'+
+        field('NOMBRE',input('text','data-v569-edit-name','Tu nombre',a.name||'','autocomplete="name"'))+
+        field('ALIAS',input('text','data-v569-edit-alias','Alias',a.alias||''))+
+        field('TELÉFONO',input('tel','data-v569-edit-phone','Número telefónico',a.phone||'','inputmode="tel" autocomplete="tel"'))+
+        field('GMAIL / CORREO',input('email','data-v569-edit-email','nombre@gmail.com',a.email||'','autocomplete="email"'))+
+      '</div><button class="v569-primary" type="button" data-v569-save-profile>Guardar cambios</button></section></section>';
+  }
+  if(kind==='accountSecurity'){
+    if(!a)return authShell('accountLogin');
+    const enabled=!!a.biometric?.credentialId;
+    return '<section class="v569-page" data-v569-page="security">'+
+      header('SEGURIDAD','Huella y biometría','Protege el acceso usando el sistema biométrico o bloqueo seguro del teléfono.')+
+      '<section class="v569-card"><div class="v569-security-state '+(enabled?'on':'off')+'"><span>◉</span><div><b>'+(enabled?'Biometría activada':'Biometría no activada')+'</b><small>'+(enabled?esc(a.biometric.device||deviceName())+' · '+esc(fmtDate(a.biometric.enabledAt)):'Puedes activarla en este dispositivo.')+'</small></div></div>'+
+      (enabled?'<button class="v569-primary" type="button" data-v569-verify-bio>Verificar mi identidad</button><button class="v569-danger" type="button" data-v569-disable-bio>Desactivar biometría</button>':'<button class="v569-primary" type="button" data-v569-enable-bio>Activar huella / biometría</button>')+
+      '<p class="v569-note">La app no puede leer ni guardar tu huella. Android/Chrome muestra el método seguro disponible: huella, rostro o PIN.</p></section></section>';
+  }
+  if(kind==='accountPassword'){
+    if(!a)return authShell('accountLogin');
+    return '<section class="v569-page" data-v569-page="password">'+
+      header('SEGURIDAD','Cambiar contraseña','Confirma tu contraseña actual antes de crear una nueva.')+
+      '<section class="v569-card"><div class="v569-form">'+
+        field('CONTRASEÑA ACTUAL',input('password','data-v569-old-pass','Contraseña actual','','autocomplete="current-password"'))+
+        field('NUEVA CONTRASEÑA',input('password','data-v569-new-pass','Mínimo 8 caracteres','','autocomplete="new-password"'))+
+        field('CONFIRMAR NUEVA CONTRASEÑA',input('password','data-v569-new-confirm','Repite la nueva contraseña','','autocomplete="new-password"'))+
+      '</div><button class="v569-primary" type="button" data-v569-change-pass>✓ Cambiar contraseña</button></section></section>';
+  }
+  if(kind==='accountDevices'){
+    if(!a)return authShell('accountLogin');
+    const devices=a.devices?.length?a.devices:[{id:'local',name:deviceName(),verified:!!a.biometric?.credentialId,lastSeenAt:a.lastLoginAt||a.updatedAt||a.createdAt}];
+    return '<section class="v569-page" data-v569-page="devices">'+
+      header('MI CUENTA','Dispositivos','Consulta el dispositivo registrado en esta instalación de la app.')+
+      '<section class="v569-card"><div class="v569-devices">'+devices.map(d=>'<article><span>📱</span><div><b>'+esc(d.name||'Dispositivo')+'</b><small>'+(d.verified?'Verificado':'Sesión local')+(d.lastSeenAt?' · '+esc(fmtDate(d.lastSeenAt)):'')+'</small></div><i>'+(d.verified?'✓':'')+'</i></article>').join('')+'</div></section></section>';
+  }
+  return '';
+}
+function updateMainStoreAccount(updated){
+  const st=readAppStore();if(st.user&&st.user.id===updated.id){
+    st.user={...st.user,name:updated.name,alias:updated.alias,email:updated.email||'',phone:updated.phone||'',biometric:!!updated.biometric?.credentialId};
+    writeJson(STORE_KEY,st);if(window.LJR_MAIN_ROUTE?.state)window.LJR_MAIN_ROUTE.state.user=st.user;
+  }
+}
+async function registerFromPage(root){
+  const name=$('[data-v569-name]',root)?.value.trim()||'';
+  const phone=normalizePhone($('[data-v569-phone]',root)?.value||'');
+  const email=normalizeEmail($('[data-v569-email]',root)?.value||'');
+  const method=root.dataset.method||'phone';
+  const pass=$('[data-v569-password]',root)?.value||'',confirm=$('[data-v569-confirm]',root)?.value||'';
+  if(name.length<2)return toast('Escribe tu nombre');
+  if(method==='phone'&&phone.length<10)return toast('Escribe un número telefónico válido');
+  if(method==='email'&&!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email))return toast('Escribe un Gmail o correo válido');
+  if(pass.length<8)return toast('La contraseña debe tener al menos 8 caracteres');
+  if(pass!==confirm)return toast('Las contraseñas no coinciden');
+  if(!$('[data-v569-terms]',root)?.checked)return toast('Acepta guardar la cuenta en este dispositivo');
+  let alias=cleanAlias($('[data-v569-alias]',root)?.value||'');
+  if(alias&&alias.length<3)return toast('El alias debe tener al menos 3 caracteres');
+  alias=alias?uniqueAlias(alias):generateAlias(name,phone,email);
+  if(aliasExists(alias))return toast('Ese alias ya está ocupado en este dispositivo');
+  if(contactExists(email,phone))return toast('Ese teléfono o correo ya está registrado');
+  const rec={id:randomId(),name,alias,phone:method==='phone'?phone:'',email:method==='email'?email:'',createdAt:nowIso(),updatedAt:nowIso(),lastLoginAt:nowIso(),password:await newPasswordRecord(pass),biometric:null,devices:[{id:'local',name:deviceName(),verified:false,lastSeenAt:nowIso()}]};
+  const auth=authState();auth.accounts.push(rec);auth.currentId=rec.id;saveAuth(auth);setAppUser(rec);
+  if($('[data-v569-bio]',root)?.checked){
+    try{await enrollBiometric(rec)}catch(e){closeOverlay();toast(e?.name==='NotAllowedError'?'Cuenta creada · biometría cancelada':'Cuenta creada · '+(e?.message||'no se pudo activar biometría'))}
+  }
+  showCredentials(currentAccount()||rec);
+}
+function showCredentials(account){
+  $('.v569-credentials')?.remove();
+  const el=document.createElement('div');el.className='v569-credentials';
+  el.innerHTML='<section><header><span>🔑</span><h2>Cuenta creada</h2><button type="button" data-v569-close-creds>×</button></header><div class="v569-cred-body"><p>Guarda tu alias. Puedes iniciar sesión con el alias, teléfono o Gmail/correo registrado.</p><div><small>ALIAS</small><b>@'+esc(account.alias)+'</b></div><div><small>CONTACTO</small><b>'+esc(contactText(account))+'</b></div></div><footer><button type="button" data-v569-copy-alias>Copiar alias</button><button class="primary" type="button" data-v569-finish>Ir a mi perfil</button></footer></section>';
+  document.body.appendChild(el);
+  $('[data-v569-close-creds]',el).onclick=()=>{el.remove();go('profile')};
+  $('[data-v569-finish]',el).onclick=()=>{el.remove();go('profile')};
+  $('[data-v569-copy-alias]',el).onclick=async()=>{try{await navigator.clipboard.writeText(account.alias);toast('Alias copiado')}catch(_){toast('@'+account.alias)}};
+}
+async function loginFromPage(root){
+  const id=$('[data-v569-login-id]',root)?.value||'',pass=$('[data-v569-login-password]',root)?.value||'';
+  const account=findAccount(id);if(!account)return toast('No encontramos esa cuenta en este dispositivo');
+  overlay('Verificando cuenta…','Comprobando tus datos de acceso.');
+  try{
+    if(!(await passwordOk(account,pass))){closeOverlay();return toast('Contraseña incorrecta')}
+    const auth=authState(),idx=auth.accounts.findIndex(a=>a.id===account.id);auth.accounts[idx].lastLoginAt=nowIso();saveAuth(auth);setAppUser(auth.accounts[idx]);
+    overlay('Bienvenido','Sesión iniciada correctamente.','ok');closeOverlay();setTimeout(()=>go('profile'),300);
+  }catch(e){closeOverlay();toast(e.message||'No se pudo iniciar sesión')}
+}
+async function biometricLogin(root){
+  const id=$('[data-v569-login-id]',root)?.value||'';
+  let account=id?findAccount(id):allAccounts().filter(a=>a.biometric?.credentialId)[0];
+  if(!account?.biometric?.credentialId)return toast('Escribe el alias de una cuenta con biometría');
+  try{await verifyBiometric(account);setTimeout(()=>go('profile'),300)}catch(e){closeOverlay();toast(e?.name==='NotAllowedError'?'Verificación cancelada':(e?.message||'No se pudo verificar'))}
+}
+async function saveProfile(root){
+  const a=currentAccount();if(!a)return go('accountLogin');
+  const name=$('[data-v569-edit-name]',root)?.value.trim()||'',email=normalizeEmail($('[data-v569-edit-email]',root)?.value||''),phone=normalizePhone($('[data-v569-edit-phone]',root)?.value||'');
+  let alias=cleanAlias($('[data-v569-edit-alias]',root)?.value||'');
+  if(name.length<2)return toast('Escribe tu nombre');
+  if(alias.length<3)return toast('El alias debe tener al menos 3 caracteres');
+  if(aliasExists(alias,a.id))return toast('Ese alias ya está ocupado');
+  if(email&&!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email))return toast('Correo no válido');
+  if(phone&&phone.length<10)return toast('Teléfono no válido');
+  if(contactExists(email,phone,a.id))return toast('Ese teléfono o correo ya está registrado');
+  const auth=authState(),idx=auth.accounts.findIndex(x=>x.id===a.id);
+  auth.accounts[idx]={...auth.accounts[idx],name,alias,email,phone,updatedAt:nowIso()};saveAuth(auth);updateMainStoreAccount(auth.accounts[idx]);toast('Perfil actualizado');setTimeout(()=>go('profile'),250);
+}
+async function changePassword(root){
+  const a=currentAccount();if(!a)return go('accountLogin');
+  const old=$('[data-v569-old-pass]',root)?.value||'',next=$('[data-v569-new-pass]',root)?.value||'',confirm=$('[data-v569-new-confirm]',root)?.value||'';
+  if(!(await passwordOk(a,old)))return toast('La contraseña actual no es correcta');
+  if(next.length<8)return toast('La nueva contraseña debe tener al menos 8 caracteres');
+  if(next!==confirm)return toast('Las contraseñas nuevas no coinciden');
+  const auth=authState(),idx=auth.accounts.findIndex(x=>x.id===a.id);auth.accounts[idx].password=await newPasswordRecord(next);auth.accounts[idx].updatedAt=nowIso();saveAuth(auth);
+  toast('Contraseña actualizada');setTimeout(()=>go('profile'),300);
+}
+function logout(){
+  overlay('Cerrando sesión…','Serás redirigido en un momento.');
+  clearAppUser();setTimeout(()=>{closeOverlay();go('profile')},550);
+}
+function loggedProfileMarkup(a){
+  const initial=esc((a.name||a.alias||'L').trim().charAt(0).toUpperCase());
+  return '<div class="v569-profile-hero" data-v569-profile-hero>'+
+    '<div class="v569-profile-avatar">'+initial+'</div>'+
+    '<div class="v569-profile-copy"><small>MI CUENTA</small><h1>'+esc(a.name||a.alias)+'</h1><b>@'+esc(a.alias)+'</b><p>'+esc(contactText(a))+'</p></div>'+
+    '<span class="v569-profile-bio '+(a.biometric?.credentialId?'on':'')+'">'+(a.biometric?.credentialId?'◉ Protegida':'○ Sin biometría')+'</span>'+
+    '<div class="v569-profile-buttons"><button type="button" data-v569-route="accountEdit">Editar perfil</button><button type="button" data-v569-route="accountSecurity">Seguridad</button></div>'+
+  '</div>';
+}
+function enhanceProfile(){
+  if(route()!=='profile')return;
+  const root=$('[data-v12-profile]');if(!root)return;
+  const a=currentAccount();
+  if(a){
+    const card=$('.v12-profile-card',root);
+    if(card&&!card.matches('[data-v569-owned]')){card.dataset.v569Owned='1';card.innerHTML=loggedProfileMarkup(a)}
+    let menu=$('.v12-profile-menu',root);
+    if(menu&&!$('[data-v569-account-menu]',root)){
+      const box=document.createElement('div');box.dataset.v569AccountMenu='';box.className='v569-profile-account-menu';
+      box.innerHTML='<button type="button" data-v569-route="accountPassword"><span>🔑</span><b>Cambiar contraseña</b><i>›</i></button>'+
+        '<button type="button" data-v569-route="accountDevices"><span>📱</span><b>Dispositivos</b><i>›</i></button>'+
+        '<button type="button" data-v569-route="accountSecurity"><span>◉</span><b>Huella / biometría</b><i>›</i></button>'+
+        '<button type="button" class="logout" data-v569-logout><span>↪</span><b>Cerrar sesión</b><i>›</i></button>';
+      menu.insertAdjacentElement('beforebegin',box);
+    }
+  }else{
+    const card=$('.v12-profile-card',root);
+    if(card){
+      const login=$('[data-v12-action="login"]',card),create=$('[data-v12-action="create"]',card);
+      if(login){login.textContent='Iniciar sesión';login.dataset.v569Route='accountLogin'}
+      if(create){create.textContent='Crear una cuenta';create.dataset.v569Route='accountRegister'}
+    }
+    $('[data-v569-account-menu]',root)?.remove();
+  }
+}
+function mountPage(){
+  const r=route();if(!ROUTES.has(r))return;
+  const screen=$('#screen');if(!screen)return;
+  const placeholder=$('[data-v569-auth-mount]',screen);
+  if(placeholder||!$('[data-v569-page]',screen))screen.innerHTML=authShell(r);
+  const root=$('[data-v569-page]',screen);if(!root||root.dataset.bound)return;
+  root.dataset.bound='1';
+  if(root.dataset.v569Page==='register'){root.dataset.method='phone'}
+}
+function schedule(){setTimeout(()=>{mountPage();enhanceProfile()},60)}
+document.addEventListener('click',async e=>{
+  if(!(e.target instanceof Element))return;
+  const routeBtn=e.target.closest('[data-v569-route]');
+  if(routeBtn){e.preventDefault();e.stopPropagation();go(routeBtn.dataset.v569Route);return}
+  const method=e.target.closest('[data-v569-method]');
+  if(method){e.preventDefault();const root=method.closest('[data-v569-page]');root.dataset.method=method.dataset.v569Method;$$('[data-v569-method]',root).forEach(b=>b.classList.toggle('active',b===method));$('[data-v569-phone-wrap]',root).hidden=method.dataset.v569Method!=='phone';$('[data-v569-email-wrap]',root).hidden=method.dataset.v569Method!=='email';return}
+  if(e.target.closest('[data-v569-generate-alias]')){const root=e.target.closest('[data-v569-page]'),value=generateAlias($('[data-v569-name]',root)?.value,$('[data-v569-phone]',root)?.value,$('[data-v569-email]',root)?.value);$('[data-v569-alias]',root).value=value;return}
+  if(e.target.closest('[data-v569-generate-password]')){const root=e.target.closest('[data-v569-page]'),p=generatedPassword();$('[data-v569-password]',root).value=p;$('[data-v569-confirm]',root).value=p;toast('Contraseña segura generada');return}
+  if(e.target.closest('[data-v569-register]')){e.preventDefault();await registerFromPage(e.target.closest('[data-v569-page]'));return}
+  if(e.target.closest('[data-v569-login]')){e.preventDefault();await loginFromPage(e.target.closest('[data-v569-page]'));return}
+  if(e.target.closest('[data-v569-login-bio]')){e.preventDefault();await biometricLogin(e.target.closest('[data-v569-page]'));return}
+  if(e.target.closest('[data-v569-save-profile]')){e.preventDefault();await saveProfile(e.target.closest('[data-v569-page]'));return}
+  if(e.target.closest('[data-v569-change-pass]')){e.preventDefault();await changePassword(e.target.closest('[data-v569-page]'));return}
+  if(e.target.closest('[data-v569-enable-bio]')){e.preventDefault();try{await enrollBiometric(currentAccount());schedule()}catch(err){closeOverlay();toast(err?.name==='NotAllowedError'?'Activación cancelada':(err?.message||'No se pudo activar'))}return}
+  if(e.target.closest('[data-v569-verify-bio]')){e.preventDefault();try{await verifyBiometric(currentAccount())}catch(err){closeOverlay();toast(err?.name==='NotAllowedError'?'Verificación cancelada':(err?.message||'No se pudo verificar'))}return}
+  if(e.target.closest('[data-v569-disable-bio]')){e.preventDefault();const a=currentAccount(),auth=authState(),idx=auth.accounts.findIndex(x=>x.id===a?.id);if(idx>=0){auth.accounts[idx].biometric=null;auth.accounts[idx].devices=(auth.accounts[idx].devices||[]).map(d=>({...d,verified:false}));saveAuth(auth);updateMainStoreAccount(auth.accounts[idx]);toast('Biometría desactivada');schedule()}return}
+  if(e.target.closest('[data-v569-logout]')){e.preventDefault();logout();return}
+},false);
+
+window.addEventListener('hashchange',schedule);
+const screen=$('#screen');if(screen)new MutationObserver(schedule).observe(screen,{childList:true,subtree:false});
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',schedule,{once:true});else schedule();
+setTimeout(schedule,800);
+
+window.LJR_V569_AUTH={
+  openRegister:()=>go('accountRegister'),
+  openLogin:()=>go('accountLogin'),
+  logout,
+  currentAccount,
+  profileMarkup:loggedProfileMarkup,
+  enrollBiometric:()=>enrollBiometric(currentAccount()),
+  verifyBiometric:()=>verifyBiometric(currentAccount())
+};
+})();
