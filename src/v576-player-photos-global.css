@@ -10,3 +10,85 @@
 .v391-feature-photo.v576-has-hero-photo>.v391-feature-kicker,.v391-feature-photo.v576-has-hero-photo>.v391-feature-media,.v391-feature-photo.v576-has-hero-photo>.v391-feature-watermark{position:relative;z-index:2}
 .v124-avatar .v576-inline-player-photo{position:static!important;transform:none!important;width:100%!important;height:100%!important;border:0!important;border-radius:inherit!important}
 .v124-avatar.v576-has-inline-photo{padding:0!important}
+
+
+/* V577 — Comparar jugadores: las fotos son miniaturas circulares al costado.
+   Evita que cualquier foto oficial se expanda como fondo de toda la fila. */
+body[data-app-route="playerCompare"] .v123-player-option.v205-player-option.v206-player-option,
+body.v123-player-compare-active .v123-player-option.v205-player-option.v206-player-option{
+  height:60px!important;
+  min-height:60px!important;
+  grid-template-columns:44px minmax(0,1fr) 30px!important;
+  column-gap:11px!important;
+  padding:5px 0!important;
+  overflow:hidden!important;
+  background:transparent!important;
+  background-image:none!important;
+}
+body[data-app-route="playerCompare"] .v123-option-avatar.v205-option-avatar.v206-option-avatar,
+body.v123-player-compare-active .v123-option-avatar.v205-option-avatar.v206-option-avatar{
+  position:relative!important;
+  z-index:2!important;
+  width:42px!important;
+  height:42px!important;
+  min-width:42px!important;
+  min-height:42px!important;
+  max-width:42px!important;
+  max-height:42px!important;
+  overflow:hidden!important;
+  border-radius:50%!important;
+  justify-self:start!important;
+  align-self:center!important;
+  padding:0!important;
+  margin:0!important;
+  background:linear-gradient(145deg,#f1f4fb,#a4b3dd)!important;
+}
+body[data-app-route="playerCompare"] .v123-option-avatar.v205-option-avatar.v206-option-avatar > img,
+body.v123-player-compare-active .v123-option-avatar.v205-option-avatar.v206-option-avatar > img,
+body[data-app-route="playerCompare"] .v123-option-avatar .v576-player-photo,
+body.v123-player-compare-active .v123-option-avatar .v576-player-photo{
+  position:static!important;
+  inset:auto!important;
+  display:block!important;
+  width:42px!important;
+  height:42px!important;
+  min-width:42px!important;
+  min-height:42px!important;
+  max-width:42px!important;
+  max-height:42px!important;
+  margin:0!important;
+  padding:0!important;
+  transform:none!important;
+  object-fit:cover!important;
+  object-position:center 22%!important;
+  border:0!important;
+  border-radius:50%!important;
+  box-shadow:none!important;
+}
+body[data-app-route="playerCompare"] .v123-option-copy.v205-option-copy.v206-option-copy,
+body.v123-player-compare-active .v123-option-copy.v205-option-copy.v206-option-copy{
+  position:relative!important;
+  z-index:3!important;
+  min-width:0!important;
+  background:transparent!important;
+}
+body[data-app-route="playerCompare"] .v123-option-copy.v205-option-copy.v206-option-copy>b,
+body.v123-player-compare-active .v123-option-copy.v205-option-copy.v206-option-copy>b{
+  font-size:15px!important;
+  line-height:1.05!important;
+}
+body[data-app-route="playerCompare"] .v123-option-copy.v205-option-copy.v206-option-copy>small,
+body.v123-player-compare-active .v123-option-copy.v205-option-copy.v206-option-copy>small{
+  font-size:11px!important;
+}
+body[data-app-route="playerCompare"] .v123-option-logo.v205-option-logo.v206-option-logo,
+body.v123-player-compare-active .v123-option-logo.v205-option-logo.v206-option-logo{
+  width:20px!important;
+  height:20px!important;
+  flex:0 0 20px!important;
+}
+body[data-app-route="playerCompare"] .v123-option-radio.v205-option-radio.v206-option-radio,
+body.v123-player-compare-active .v123-option-radio.v205-option-radio.v206-option-radio{
+  width:27px!important;
+  height:27px!important;
+}
