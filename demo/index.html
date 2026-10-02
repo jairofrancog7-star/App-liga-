@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="es-MX">
 <head>
-  <meta name="app-build" content="v575-registry-positions-photos">
+  <meta name="app-build" content="v577-player-thumbnails-compare">
 
 
 
@@ -280,9 +280,8 @@
     #screen .v400-chips span{min-width:0;min-height:50px;display:flex;flex-direction:column;justify-content:center;padding:8px 9px;border-radius:11px;background:rgba(18,44,145,.55)}
     #screen .v400-chips small{color:#7785c4;font-size:7px;font-weight:900;letter-spacing:.09em}
     #screen .v400-chips b{margin-top:4px;overflow:hidden;font-size:11px;white-space:nowrap;text-overflow:ellipsis}
-  </style>  
-  <script type="module" crossorigin src="./assets/index-Du4VmTQ7.js"></script>
-  <link rel="stylesheet" crossorigin href="./assets/index-BzuFX0vM.css">
+  </style>  \n  <script type="module" crossorigin src="./assets/index-BaNljR-R.js"></script>
+  <link rel="stylesheet" crossorigin href="./assets/index-DzTuScNo.css">
 </head>
 <body>
   <div id="app" class="app-shell">
@@ -305,40 +304,53 @@
 
   <script>
   (function(){
-    if(window.__LJR_V541_MONITO_CAPTURE__)return;
-    window.__LJR_V541_MONITO_CAPTURE__=true;
+    if(window.__LJR_V577_MONITO_HARD_OPEN__)return;
+    window.__LJR_V577_MONITO_HARD_OPEN__=true;
+    var lastOpen=0;
     function currentRoute(){
       return String(location.hash||'').replace(/^#\/?/,'').split('?')[0]||'home';
     }
-    function openMore(){
-      if(window.LJR_V541_GAMES_API&&typeof window.LJR_V541_GAMES_API.openMorePages==='function'){
-        window.LJR_V541_GAMES_API.openMorePages();
-        return;
-      }
-      window.__LJR_V541_PENDING_MORE__=true;
-      var tries=0;
-      var timer=setInterval(function(){
-        tries++;
-        if(window.LJR_V541_GAMES_API&&typeof window.LJR_V541_GAMES_API.openMorePages==='function'){
-          clearInterval(timer);
-          window.__LJR_V541_PENDING_MORE__=false;
-          window.LJR_V541_GAMES_API.openMorePages();
-        }else if(tries>40){
-          clearInterval(timer);
+    function openGallery(){
+      var now=Date.now();
+      if(now-lastOpen<350)return;
+      lastOpen=now;
+      try{
+        if(window.LJR_APP_ROUTER&&typeof window.LJR_APP_ROUTER.go==='function'){
+          window.LJR_APP_ROUTER.go('moreLessGallery');
+        }else{
+          location.hash='#/moreLessGallery';
         }
-      },50);
+      }catch(_){
+        location.hash='#/moreLessGallery';
+      }
+      /* Respaldo para navegadores Android donde otro listener reescribe el hash. */
+      setTimeout(function(){
+        if(currentRoute()!=='moreLessGallery')location.hash='#/moreLessGallery';
+      },40);
     }
-    document.addEventListener('click',function(e){
-      if(currentRoute()!=='moreLess'||!(e.target instanceof Element))return;
+    function isMonito(e){
+      if(currentRoute()!=='moreLess'||!(e.target instanceof Element))return false;
       var primary=e.target.closest('#screen [data-v12-moreless]');
-      if(!primary)return;
-      var avatar=e.target.closest('.v12-ml-choice > button, .v12-avatar');
-      if(!avatar||!primary.contains(avatar))return;
+      if(!primary)return false;
+      var hit=e.target.closest(
+        '.v12-ml-choice > button:not(.up-arrow):not(.down-arrow), .v12-ml-choice > button:not(.up-arrow):not(.down-arrow) .v12-avatar, .v12-avatar'
+      );
+      if(!hit||!primary.contains(hit))return false;
+      var btn=hit.closest('button');
+      if(btn&&(btn.classList.contains('up-arrow')||btn.classList.contains('down-arrow')))return false;
+      return true;
+    }
+    function handle(e){
+      if(!isMonito(e))return;
       e.preventDefault();
       e.stopPropagation();
-      e.stopImmediatePropagation();
-      openMore();
-    },true);
+      if(typeof e.stopImmediatePropagation==='function')e.stopImmediatePropagation();
+      openGallery();
+    }
+    /* Captura antes que los handlers viejos: funciona con toque Android, mouse y click. */
+    document.addEventListener('pointerup',handle,true);
+    document.addEventListener('touchend',handle,{capture:true,passive:false});
+    document.addEventListener('click',handle,true);
   })();
   </script>
   <script src="./src/v488-cat3-global-sync.js?v=20261001-v508-official-all-pages"></script>
