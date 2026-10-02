@@ -356,9 +356,9 @@ function v535MorePrimaryMarkup(){
     '<div class="v12-ml-title"><span>MÁS</span><small>O</small><span>MENOS</span></div>'+
     '<div class="v12-ml-curves"><div class="down">'+v535CurveArrow('#ff003c',true)+'</div><div class="up">'+v535CurveArrow('#18ef72',false)+'</div></div>'+
     '<div class="v12-ml-choice">'+
-      '<button type="button" data-v12-choice="more" aria-label="Elegir más">'+v535AvatarSvg('#c776e8')+'</button>'+
+      '<button type="button" data-v12-choice="more" data-route="moreLessGallery" data-v577-more-gallery aria-label="Abrir Más o Menos">'+v535AvatarSvg('#c776e8')+'</button>'+
       '<div class="v12-ml-mid"><button type="button" data-v12-choice="more" class="up-arrow" aria-label="Más">▲</button><button type="button" data-v12-choice="less" class="down-arrow" aria-label="Menos">▼</button></div>'+
-      '<button type="button" data-v12-choice="less" aria-label="Elegir menos">'+v535AvatarSvg('#77f1ea')+'</button>'+
+      '<button type="button" data-v12-choice="less" data-route="moreLessGallery" data-v577-more-gallery aria-label="Abrir Más o Menos">'+v535AvatarSvg('#77f1ea')+'</button>'+
     '</div>'+
     '<img class="v12-ml-logo" src="'+LEAGUE+'" alt="Liga Municipal de Fútbol Juventino Rosas" loading="eager" decoding="async">'+
     '<div class="v12-stadium" aria-hidden="true"><i></i><b></b></div>'+
@@ -530,7 +530,11 @@ function v544PrimaryPointerOpen(e){
       v544LastPrimaryOpen=now;
       e.preventDefault();
       e.stopPropagation();
-      location.hash='#/moreLessGallery';
+      if(typeof e.stopImmediatePropagation==='function')e.stopImmediatePropagation();
+      try{
+        if(window.LJR_APP_ROUTER&&typeof window.LJR_APP_ROUTER.go==='function')window.LJR_APP_ROUTER.go('moreLessGallery');
+        else location.hash='#/moreLessGallery';
+      }catch(_){location.hash='#/moreLessGallery'}
       return;
     }
   }
