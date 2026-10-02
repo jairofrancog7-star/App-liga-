@@ -183,6 +183,10 @@ function patchStandings(){
   const screen=document.querySelector('#screen');
   const tabs=screen?.querySelector('.tabs');
   if(!screen||!tabs) return;
+  /* V574: cuando V40 ya tomó la clasificación, V12 no debe volver a
+     reconstruirla. Esto evita el ciclo que reemplazaba Completa/Criterios
+     justo después del toque en Android. */
+  if(screen.querySelector('[data-v40-host],[data-v40-standings]')) return;
   const active=tabs.querySelector('.tab.active');
   if(!active||!/Clasificaci/i.test(active.textContent||'')) return;
 
