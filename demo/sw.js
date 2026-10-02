@@ -1,4 +1,4 @@
-const CACHE='liga-juventino-v560-player-controls-final-preview';
+const CACHE='liga-juventino-v561-camera-quiniela-png';
 const CORE=['./','./index.html','./manifest.webmanifest','./brand-neon-header.svg','./profile-reference.svg'];
 
 self.addEventListener('install',event=>{
