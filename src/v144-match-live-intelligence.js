@@ -1,3 +1,4 @@
+import { normalizeStreamUrl, tiktokVideoId, attachPlayerControls } from './v560-stream-player-controls.js';
 /* V144 — Match Center Live Intelligence.
    Facebook/YouTube/Talacha link + live clock + smart narration detection.
    Speech detections are suggestions until an operator confirms them. */
@@ -180,12 +181,8 @@ function provider(url){
   if(u.includes('tiktok.com'))return LIVE_PLATFORMS.tiktok;
   return {key:'external',name:'Transmisión externa',icon:'●',portal:'',placeholder:'https://...'};
 }
-function safeLiveUrl(value){
-  try{
-    const u=new URL(String(value||'').trim());
-    return (u.protocol==='https:'||u.protocol==='http:')?u.toString():'';
-  }catch(_){return ''}
-}
+function safeLiveUrl(value){return normalizeStreamUrl(value)}
+
 function livePlatformButtons(s){
   const active=provider(s?.source?.url).key;
   return '<div class="v144-platforms" aria-label="Plataformas de transmisión">'+
@@ -201,7 +198,7 @@ function youtubeId(url){
   return '';
 }
 function streamEmbedHtml(s){
-  const url=String(s?.source?.url||'').trim();
+  const url=normalizeStreamUrl(s?.source?.url);
   if(!url)return '';
   const p=provider(url);
   if(p.name==='Facebook Live'){
@@ -212,12 +209,15 @@ function streamEmbedHtml(s){
   if(p.name==='YouTube Live'){
     const id=youtubeId(url);
     if(id){
-      const src='https://www.youtube-nocookie.com/embed/'+encodeURIComponent(id)+'?autoplay=1&mute=1&playsinline=1';
+      const src='https://www.youtube-nocookie.com/embed/'+encodeURIComponent(id)+'?autoplay=0&playsinline=1&enablejsapi=1&origin='+encodeURIComponent(location.origin)+'';
       return '<section class="v144-stream-embed"><header><span><small>TRANSMISIÓN EN VIVO</small><b>'+esc(s.source.name||p.name)+'</b></span><i>SIMULTÁNEO</i></header><div class="v144-stream-frame"><iframe src="'+esc(src)+'" title="YouTube Live" referrerpolicy="strict-origin-when-cross-origin" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen></iframe></div><footer><span>Video y Match Center visibles al mismo tiempo.</span><div><button type="button" data-v144-open>YouTube</button><button type="button" data-v144-share>Compartir Live</button></div></footer></section>';
     }
   }
+  if(p.key==='tiktok'&&tiktokVideoId(url)){
+    return '<section class="v144-stream-embed"><header><b>TikTok</b></header><div class="v144-stream-frame"><iframe src="https://www.tiktok.com/player/v1/'+tiktokVideoId(url)+'?controls=1&fullscreen_button=1" title="TikTok video" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe></div></section>';
+  }
   if(p.key==='tiktok'){
-    return '<section class="v144-stream-embed fallback tiktok"><header><span><small>TIKTOK LIVE VINCULADO</small><b>'+esc(s.source.name||p.name)+'</b></span><i>EN VIVO</i></header><div class="v144-stream-fallback"><b>TikTok LIVE</b><span>TikTok no permite incrustar todos los directos. El enlace abre el LIVE real en TikTok y el Match Center sigue mostrando marcador, minuto y cronología.</span><div><button type="button" data-v144-open>Abrir TikTok LIVE</button><button type="button" data-v144-share>Compartir Live</button></div></div></section>';
+    return '<section class="v144-stream-embed fallback tiktok"><header><span><small>TIKTOK LIVE VINCULADO</small><b>'+esc(s.source.name||p.name)+'</b></span><i>ENLACE GUARDADO</i></header><div class="v144-stream-fallback"><b>TikTok LIVE</b><span>TikTok no permite incrustar todos los directos. El enlace abre el LIVE real en TikTok y el Match Center sigue mostrando marcador, minuto y cronología.</span><div><button type="button" data-v144-open>Abrir TikTok LIVE</button><button type="button" data-v144-share>Compartir Live</button></div></div></section>';
   }
   return '<section class="v144-stream-embed fallback"><header><span><small>TRANSMISIÓN VINCULADA</small><b>'+esc(s.source.name||p.name)+'</b></span><i>LIVE</i></header><div class="v144-stream-fallback"><b>Transmisión externa</b><span>Este proveedor no admite reproductor incrustado aquí.</span><div><button type="button" data-v144-open>Abrir transmisión</button><button type="button" data-v144-share>Compartir Live</button></div></div></section>';
 }
@@ -393,7 +393,7 @@ function modalHtml(s,preferred=''){
     '<div class="v144-modal-platforms">'+picks+'</div>'+
     '<label><span>Nombre del medio / página</span><input data-name value="'+esc(s.source.name||meta.name)+'" placeholder="Liga Juventino TV"></label>'+
     '<label><span>Enlace del Facebook / YouTube / TikTok LIVE</span><input data-url inputmode="url" value="'+esc(s.source.url||'')+'" placeholder="'+esc(meta.placeholder)+'"></label>'+
-    '<div class="v144-link-actions"><button type="button" data-portal>Abrir '+esc(meta.name)+'</button><button type="button" data-test>Probar enlace</button><button type="button" data-tv>Transmitir en TV</button></div>'+
+    '<div class="v144-link-actions"><button type="button" data-portal>Abrir '+esc(meta.name)+'</button><button type="button" data-test>Probar aquí</button><button type="button" data-tv>Transmitir en TV</button></div>'+
     '<label><span>Feed en tiempo real (opcional · JSON / WebSocket / SSE)</span><input data-feed value="'+esc(s.source.feedUrl||'')+'" placeholder="https://.../live.json o wss://..."></label>'+
     '<p>El video usa el enlace oficial de la plataforma. YouTube puede reproducirse dentro del Match Center cuando el enlace incluye el ID del directo. Facebook y TikTok pueden bloquear la vista incrustada; en ese caso queda un botón funcional para abrir el LIVE real. El feed de datos es opcional y sincroniza minuto, goles y eventos.</p>'+
     '<button class="v144-save" data-save>Publicar transmisión en Match Center</button></section></div>';
@@ -459,9 +459,10 @@ function openConfig(c,s,preferred=''){
   $('[data-test]',m).onclick=()=>{
     const url=safeLiveUrl(urlInput?.value);
     if(!url){toast('Pega primero un enlace válido https:// del LIVE.');return}
-    window.open(url,'_blank','noopener,noreferrer');
+    let preview=m.querySelector('[data-v560-probe]');if(!preview){preview=document.createElement('div');preview.dataset.v560Probe='';m.querySelector('section').append(preview)}
+    preview.innerHTML=streamEmbedHtml({source:{url,name:selectedMeta().name}});
   };
-  $('[data-tv]',m).onclick=()=>{
+  $('[data-tv]' ,m).onclick=()=>{
     const url=safeLiveUrl(urlInput?.value)||safeLiveUrl(s.source.url);
     openTvCast(c,s,url);
   };
@@ -494,6 +495,10 @@ async function shareLive(c,s){
   catch(_){window.open(url,'_blank','noopener,noreferrer')}
 }
 function bind(c,s,hub){
+  hub.querySelectorAll('.v144-stream-embed:has(iframe)').forEach(card=>{
+    card.classList.add('v196-player-card');card.setAttribute('data-v196-player-card','');card.querySelector('.v144-stream-frame')?.classList.add('v196-frame');
+    attachPlayerControls(card,{pip:()=>window.LJR_STREAM_CENTER?.openPiP?.(hub),settings:()=>openConfig(c,s),cast:()=>openTvCast(c,s),notify:toast});
+  });
   const stop=e=>{e.preventDefault();e.stopPropagation()};
   const operator=$('[data-v144-operator]',hub),operatorToggle=$('[data-v144-operator-toggle]',hub),operatorKey='ljr-v144-operator-open:'+c.key;
   if(operator&&operatorToggle){

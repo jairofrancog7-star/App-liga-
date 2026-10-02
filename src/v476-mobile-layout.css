@@ -107,3 +107,21 @@ body.v558-native-pip .v196-floating-portal{position:fixed!important;inset:0!impo
 body.v558-native-pip .v196-player-card{width:100%!important;height:100%!important;border:0!important;border-radius:0!important}
 body.v558-native-pip .v196-player-card > :not(.v196-frame){display:none!important}
 body.v558-native-pip .v196-frame{width:100%!important;height:100%!important;min-height:0!important;aspect-ratio:auto!important}
+/* V560: compact playback controls and final credential proof. */
+.v560-player-controls{display:flex;align-items:center;justify-content:center;gap:6px;flex-wrap:wrap;padding:10px;background:#050925}
+.v560-player-controls button{min-width:36px;min-height:36px;border:1px solid #365b9b;border-radius:10px;background:#0c1853;color:#fff;font-size:14px;cursor:pointer}
+.v560-play-status{display:block;padding:0 12px;color:#9edbe5;background:#050925;line-height:1.4}
+.v560-play-status:empty{display:none}
+.v196-frame{overflow:hidden}
+.v196-frame iframe,.v196-frame video{transform-origin:center;transition:transform .2s}
+.v196-player-card:fullscreen,.v196-player-card.v560-expanded{background:#000!important;display:flex!important;flex-direction:column!important;width:100vw!important;height:100dvh!important;max-width:none!important;border-radius:0!important}
+.v196-player-card.v560-expanded{position:fixed!important;inset:0!important;z-index:1000000!important}
+.v196-player-card:is(:fullscreen,.v560-expanded) .v196-frame{flex:1!important;height:auto!important;min-height:0!important;aspect-ratio:auto!important}
+.v196-player-card:is(:fullscreen,.v560-expanded)>footer{display:none!important}
+.v560-credential-preview{display:grid;gap:10px;padding:12px;margin:8px 0;border:1px solid #365b9b;border-radius:16px;background:#080b43}
+.v560-credential-preview header{display:flex;align-items:center;justify-content:space-between;gap:8px;font-size:14px}
+.v560-credential-preview button,.v560-credential-dialog button{min-height:36px;padding:8px 12px;border:1px solid #365b9b;border-radius:9px;background:#12327d;color:white}
+.v560-credential-preview canvas{display:block;width:100%;height:auto;border-radius:10px}
+.v560-credential-dialog{max-width:96vw;width:950px;padding:16px;border:1px solid #365b9b;border-radius:16px;background:#080b43;color:#fff}
+.v560-credential-dialog::backdrop{background:#000c}
+.v560-credential-dialog canvas{display:block;width:100%;height:auto;margin-top:12px}

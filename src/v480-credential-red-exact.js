@@ -566,6 +566,8 @@ async function render(){
   const h=$('[data-v196-classic-preview] .v196-preview-head b');
   if(h&&h.textContent!=='Vista previa · credencial roja oficial de la Liga')h.textContent='Vista previa · credencial roja oficial de la Liga';
   exportControls();
+  const finalPreview=$('[data-v560-final-credential]');
+  if(finalPreview){finalPreview.width=cv.width;finalPreview.height=cv.height;finalPreview.getContext('2d').drawImage(cv,0,0)}
   const s=$('[data-v100-credential-style]');
   if(s){s.value='red';s.disabled=true}
 }
@@ -623,6 +625,17 @@ function exportControls(){
       field.appendChild(input);controls.appendChild(field);
     }
     const note=document.createElement('small');note.textContent='PNG HD: 3033 × 1914 px. SVG: texto y formas vectoriales. Los logos cargados conservan sus colores y transparencia original.';controls.appendChild(note);pngButton.parentElement.after(controls);
+  }
+  const logoControls=$('[data-v514-logo-inputs]');
+  if(logoControls&&!$('[data-v560-final-preview]')){
+    const preview=document.createElement('section');preview.dataset.v560FinalPreview='';preview.className='v560-credential-preview';
+    preview.innerHTML='<header><b>Vista previa final</b><button type="button" data-v560-enlarge>Ampliar ⛶</button></header><canvas data-v560-final-credential aria-label="Vista previa de la credencial final"></canvas>';
+    logoControls.append(preview);
+    preview.querySelector('button').onclick=async()=>{
+      const cv=await makeCanvas(2),dialog=document.createElement('dialog');dialog.className='v560-credential-dialog';
+      const close=document.createElement('button');close.type='button';close.textContent='Cerrar ×';close.onclick=()=>dialog.close();
+      dialog.append(close,cv);document.body.append(dialog);dialog.addEventListener('close',()=>dialog.remove(),{once:true});dialog.showModal();
+    };
   }
   if(!$('[data-v514-credential-svg]')){
     const button=pngButton.cloneNode(false);button.removeAttribute('data-v100-credential-png');button.removeAttribute('data-v64-download-credential-png');
