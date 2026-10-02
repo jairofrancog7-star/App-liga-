@@ -1,3 +1,5 @@
+import { Capacitor, registerPlugin } from '@capacitor/core';
+const nativeBiometric=registerPlugin('LigaBiometric');
 /* V569 — Cuenta propia de Liga Juventino.
    Registro local por teléfono o Gmail/correo, alias elegido o generado,
    contraseña con hash PBKDF2 y acceso biométrico del dispositivo mediante WebAuthn.
@@ -30,6 +32,8 @@ const currentAccount=()=>{const a=authState();return a.accounts.find(x=>x.id===a
 const allAccounts=()=>authState().accounts||[];
 const fmtDate=v=>{try{return new Date(v).toLocaleString('es-MX',{dateStyle:'medium',timeStyle:'short'})}catch(_){return ''}};
 const deviceName=()=>{const ua=navigator.userAgent||'';if(/Android/i.test(ua))return 'Android';if(/iPhone|iPad|iPod/i.test(ua))return 'iPhone/iPad';return 'Este dispositivo'};
+const isNative=()=>{try{return !!Capacitor?.isNativePlatform?.()}catch(_){return false}};
+const biometricEnabled=a=>!!(a?.biometric?.native||a?.biometric?.credentialId);
 const contactText=a=>a?.email||a?.phone||'Sin contacto';
 const go=r=>{if(window.LJR_MAIN_ROUTE?.go)window.LJR_MAIN_ROUTE.go(r);else location.hash='#/'+r};
 
@@ -51,7 +55,7 @@ function setAppUser(account){
   st.user={
     id:account.id,uid:account.id,name:account.name,alias:account.alias,
     email:account.email||'',phone:account.phone||'',authProvider:'liga-local',
-    biometric:!!account.biometric?.credentialId
+    biometric:biometricEnabled(account)
   };
   writeJson(STORE_KEY,st);
   if(window.LJR_MAIN_ROUTE?.state)window.LJR_MAIN_ROUTE.state.user=st.user;
@@ -105,11 +109,34 @@ function generatedPassword(){
   let out='';const a=randomBytes(12);for(let i=0;i<12;i++)out+=chars[a[i]%chars.length];return out;
 }
 async function platformAuthAvailable(){
-  try{return !!(window.PublicKeyCredential&&navigator.credentials&&await PublicKeyCredential.isUserVerifyingPlatformAuthenticatorAvailable())}catch(_){return false}
+  try{
+    if(isNative()){
+      const r=await nativeBiometric.isAvailable();
+      return !!r?.available;
+    }
+    return !!(window.PublicKeyCredential&&navigator.credentials&&await PublicKeyCredential.isUserVerifyingPlatformAuthenticatorAvailable());
+  }catch(_){return false}
 }
 async function enrollBiometric(account){
   if(!(await platformAuthAvailable()))throw new Error('Este dispositivo no ofrece biometría compatible');
-  overlay('Verificando dispositivo…','Confirma en el teléfono con huella, rostro o bloqueo de pantalla.','bio');
+  overlay('Verificando dispositivo…','Confirma en el teléfono con huella, rostro o bloqueo seguro.','bio');
+
+  if(isNative()){
+    const result=await nativeBiometric.verify({
+      title:'Liga Juventino',
+      subtitle:'Confirma tu identidad',
+      description:'Usa la biometría del teléfono para activar el acceso.'
+    });
+    if(!result?.verified)throw new Error('No se pudo verificar la biometría');
+    const auth=authState(),idx=auth.accounts.findIndex(a=>a.id===account.id);
+    if(idx<0)throw new Error('Cuenta no encontrada');
+    auth.accounts[idx].biometric={native:true,enabledAt:nowIso(),device:deviceName()};
+    auth.accounts[idx].devices=[{id:'local-'+account.id,name:deviceName(),verified:true,lastSeenAt:nowIso()}];
+    saveAuth(auth);setAppUser(auth.accounts[idx]);
+    overlay('Identidad confirmada','La biometría quedó activada para esta cuenta.','ok');closeOverlay();
+    return auth.accounts[idx];
+  }
+
   const challenge=randomBytes(32),userId=account.biometric?.userHandle?b64ToBytes(account.biometric.userHandle):randomBytes(32);
   const cred=await navigator.credentials.create({publicKey:{
     challenge,
@@ -126,20 +153,30 @@ async function enrollBiometric(account){
   if(idx<0)throw new Error('Cuenta no encontrada');
   auth.accounts[idx].biometric={credentialId:bytesToB64(cred.rawId),userHandle:bytesToB64(userId),enabledAt:nowIso(),device:deviceName()};
   auth.accounts[idx].devices=[{id:'local-'+account.id,name:deviceName(),verified:true,lastSeenAt:nowIso()}];
-  saveAuth(auth);
-  setAppUser(auth.accounts[idx]);
+  saveAuth(auth);setAppUser(auth.accounts[idx]);
   overlay('Identidad confirmada','La biometría quedó activada para esta cuenta.','ok');closeOverlay();
   return auth.accounts[idx];
 }
 async function verifyBiometric(account){
-  if(!account?.biometric?.credentialId)throw new Error('Esta cuenta no tiene biometría activada');
+  if(!biometricEnabled(account))throw new Error('Esta cuenta no tiene biometría activada');
   overlay('Confirma tu identidad','Usa la seguridad biométrica del teléfono para verificar que eres tú.','bio');
-  const result=await navigator.credentials.get({publicKey:{
-    challenge:randomBytes(32),
-    allowCredentials:[{type:'public-key',id:b64ToBytes(account.biometric.credentialId),transports:['internal']}],
-    timeout:60000,userVerification:'required'
-  }});
-  if(!result)throw new Error('No se pudo verificar el dispositivo');
+
+  if(account.biometric?.native&&isNative()){
+    const result=await nativeBiometric.verify({
+      title:'Liga Juventino',
+      subtitle:'Confirma tu identidad',
+      description:'Accede a tu cuenta con la biometría del dispositivo.'
+    });
+    if(!result?.verified)throw new Error('No se pudo verificar el dispositivo');
+  }else{
+    const result=await navigator.credentials.get({publicKey:{
+      challenge:randomBytes(32),
+      allowCredentials:[{type:'public-key',id:b64ToBytes(account.biometric.credentialId),transports:['internal']}],
+      timeout:60000,userVerification:'required'
+    }});
+    if(!result)throw new Error('No se pudo verificar el dispositivo');
+  }
+
   const auth=authState(),idx=auth.accounts.findIndex(a=>a.id===account.id);
   if(idx>=0){auth.accounts[idx].lastLoginAt=nowIso();auth.accounts[idx].devices=[{id:'local-'+account.id,name:deviceName(),verified:true,lastSeenAt:nowIso()}];saveAuth(auth);setAppUser(auth.accounts[idx])}
   overlay('Identidad confirmada','Acceso correcto.','ok');closeOverlay();
@@ -175,7 +212,7 @@ function authShell(kind){
     '</section>';
   }
   if(kind==='accountLogin'){
-    const bio=allAccounts().some(x=>x.biometric?.credentialId);
+    const bio=allAccounts().some(biometricEnabled);
     return '<section class="v569-page" data-v569-page="login">'+
       header('CUENTA LIGA JUVENTINO','Iniciar sesión','Entra con tu alias, número telefónico o Gmail/correo.')+
       '<section class="v569-card"><div class="v569-form">'+
@@ -200,7 +237,7 @@ function authShell(kind){
   }
   if(kind==='accountSecurity'){
     if(!a)return authShell('accountLogin');
-    const enabled=!!a.biometric?.credentialId;
+    const enabled=biometricEnabled(a);
     return '<section class="v569-page" data-v569-page="security">'+
       header('SEGURIDAD','Huella y biometría','Protege el acceso usando el sistema biométrico o bloqueo seguro del teléfono.')+
       '<section class="v569-card"><div class="v569-security-state '+(enabled?'on':'off')+'"><span>◉</span><div><b>'+(enabled?'Biometría activada':'Biometría no activada')+'</b><small>'+(enabled?esc(a.biometric.device||deviceName())+' · '+esc(fmtDate(a.biometric.enabledAt)):'Puedes activarla en este dispositivo.')+'</small></div></div>'+
@@ -228,7 +265,7 @@ function authShell(kind){
 }
 function updateMainStoreAccount(updated){
   const st=readAppStore();if(st.user&&st.user.id===updated.id){
-    st.user={...st.user,name:updated.name,alias:updated.alias,email:updated.email||'',phone:updated.phone||'',biometric:!!updated.biometric?.credentialId};
+    st.user={...st.user,name:updated.name,alias:updated.alias,email:updated.email||'',phone:updated.phone||'',biometric:biometricEnabled(updated)};
     writeJson(STORE_KEY,st);if(window.LJR_MAIN_ROUTE?.state)window.LJR_MAIN_ROUTE.state.user=st.user;
   }
 }
@@ -277,8 +314,8 @@ async function loginFromPage(root){
 }
 async function biometricLogin(root){
   const id=$('[data-v569-login-id]',root)?.value||'';
-  let account=id?findAccount(id):allAccounts().filter(a=>a.biometric?.credentialId)[0];
-  if(!account?.biometric?.credentialId)return toast('Escribe el alias de una cuenta con biometría');
+  let account=id?findAccount(id):allAccounts().filter(biometricEnabled)[0];
+  if(!biometricEnabled(account))return toast('Escribe el alias de una cuenta con biometría');
   try{await verifyBiometric(account);setTimeout(()=>go('profile'),300)}catch(e){closeOverlay();toast(e?.name==='NotAllowedError'?'Verificación cancelada':(e?.message||'No se pudo verificar'))}
 }
 async function saveProfile(root){
@@ -312,7 +349,7 @@ function loggedProfileMarkup(a){
   return '<div class="v569-profile-hero" data-v569-profile-hero>'+
     '<div class="v569-profile-avatar">'+initial+'</div>'+
     '<div class="v569-profile-copy"><small>MI CUENTA</small><h1>'+esc(a.name||a.alias)+'</h1><b>@'+esc(a.alias)+'</b><p>'+esc(contactText(a))+'</p></div>'+
-    '<span class="v569-profile-bio '+(a.biometric?.credentialId?'on':'')+'">'+(a.biometric?.credentialId?'◉ Protegida':'○ Sin biometría')+'</span>'+
+    '<span class="v569-profile-bio '+(biometricEnabled(a)?'on':'')+'">'+(biometricEnabled(a)?'◉ Protegida':'○ Sin biometría')+'</span>'+
     '<div class="v569-profile-buttons"><button type="button" data-v569-route="accountEdit">Editar perfil</button><button type="button" data-v569-route="accountSecurity">Seguridad</button></div>'+
   '</div>';
 }
