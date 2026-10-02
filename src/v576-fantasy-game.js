@@ -85,7 +85,7 @@ function accessTeams(){
 }
 function accessMarkup(){
  const teams=accessTeams();
- return'<section class="v576-access" data-v576-access><header><h1>Fantasy Football</h1></header>'+
+ return'<section class="v576-access" data-v576-access data-v23-access><header><h1>Fantasy Football</h1></header>'+
  '<div class="v576-access-sponsor"><span>Patrocinado por</span><img src="./assets/liga-logo.webp" alt="Liga Juventino Rosas"></div>'+
  '<div class="v576-fantasy-cards">'+teams.map((t,i)=>'<article class="'+(i===1?'main':'')+'"><div><img src="'+esc(teamLogo(t))+'" alt=""></div><b>'+esc(t)+'</b><small>'+(i===1?'12 pts':'9 pts')+'</small></article>').join('')+'</div>'+
  '<div class="v576-access-copy"><h2>Elige tu equipo</h2><p>Gasta 100 m en 15 jugadores registrados de la Liga Juventino Rosas y arma tu plantilla ideal.</p></div>'+
