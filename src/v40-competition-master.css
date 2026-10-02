@@ -3521,3 +3521,80 @@ body.v40-standings-master .v580-section-row .v578-rule{
     white-space:nowrap!important;
   }
 }
+
+
+/* V580 — Completa/Criterios: conservar todos los datos y deslizar horizontalmente. */
+body.v40-standings-master .v40-scroll-shell{
+  position:relative!important;
+  display:block!important;
+  width:100%!important;
+  max-width:100%!important;
+  margin:0!important;
+  padding:0!important;
+  overflow-x:auto!important;
+  overflow-y:hidden!important;
+  touch-action:pan-x pan-y!important;
+  overscroll-behavior-x:contain!important;
+  -webkit-overflow-scrolling:touch!important;
+  scrollbar-width:none!important;
+}
+body.v40-standings-master .v40-scroll-shell::-webkit-scrollbar{display:none!important}
+body.v40-standings-master .v40-wide.complete{
+  display:block!important;
+  width:1000px!important;
+  min-width:1000px!important;
+  max-width:none!important;
+  padding:0 18px 0 0!important;
+  box-sizing:border-box!important;
+}
+body.v40-standings-master .v40-wide.complete .v40-wide-head,
+body.v40-standings-master .v40-wide.complete .v40-wide-row{
+  width:982px!important;
+  min-width:982px!important;
+  grid-template-columns:34px 220px 50px 50px 50px 50px 62px 56px 56px 156px 66px!important;
+  column-gap:0!important;
+  box-sizing:border-box!important;
+}
+body.v40-standings-master .v40-wide.complete .v40-form{
+  justify-content:center!important;
+  padding:0!important;
+  min-width:0!important;
+}
+body.v40-standings-master .v40-wide.complete .v40-team{
+  grid-template-columns:38px minmax(0,1fr)!important;
+  min-width:0!important;
+}
+body.v40-standings-master .v40-wide.criteria{
+  display:block!important;
+  width:850px!important;
+  min-width:850px!important;
+  max-width:none!important;
+  padding:0 18px 0 0!important;
+  box-sizing:border-box!important;
+}
+body.v40-standings-master .v40-wide.criteria .v40-wide-head,
+body.v40-standings-master .v40-wide.criteria .v40-wide-row{
+  width:832px!important;
+  min-width:832px!important;
+  grid-template-columns:34px 220px 72px 64px 60px 60px 60px 60px 60px!important;
+  column-gap:0!important;
+  box-sizing:border-box!important;
+}
+body.v40-standings-master .v40-scroll-shell::after{
+  content:"DESLIZA →"!important;
+  position:sticky!important;
+  right:4px!important;
+  bottom:4px!important;
+  float:right!important;
+  width:max-content!important;
+  margin-top:-24px!important;
+  padding:4px 7px!important;
+  border-radius:999px!important;
+  background:rgba(12,17,112,.84)!important;
+  color:#21e7ef!important;
+  font-size:9px!important;
+  font-weight:850!important;
+  letter-spacing:.04em!important;
+  pointer-events:none!important;
+  opacity:.88!important;
+}
