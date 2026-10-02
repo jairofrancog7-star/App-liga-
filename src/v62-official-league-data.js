@@ -502,6 +502,22 @@ function dataTabs(){
   ];
   return '<div class="v62-data-tabs">'+tabs.map(([id,label])=>'<button type="button" class="'+(dataTab===id?'active':'')+'" data-v62-tab="'+id+'">'+label+'</button>').join('')+'</div>';
 }
+function v576TablePlayer(name,team){
+  const clean=String(name||'').trim();
+  if(!clean)return '<strong></strong>';
+  let src='';
+  try{src=window.LJR_PLAYER_MEDIA?.photo?.(clean,team,categoryId)||window.LJR_PLAYER_PHOTOS?.get?.(clean,team,categoryId)||''}catch(_){}
+  if(!src){
+    const current=cat();
+    const entry=Object.entries(current?.player_profiles||{}).find(([t])=>same(t,team));
+    const p=(Array.isArray(entry?.[1])?entry[1]:[]).find(x=>same(x?.name,clean));
+    src=String(p?.photo||'');
+  }
+  const ini=clean.split(/\s+/).filter(Boolean).slice(0,2).map(x=>x[0]||'').join('').toUpperCase();
+  return '<span class="v576-table-player">'+
+    (src?'<span class="v576-table-photo v576-has-photo"><img src="'+esc(src)+'" alt="'+esc(clean)+'" loading="lazy" decoding="async" referrerpolicy="no-referrer"></span>':'<span class="v576-table-photo v576-photo-fallback">'+esc(ini)+'</span>')+
+    '<strong>'+esc(clean)+'</strong></span>';
+}
 function genericTable(kind){
   const b=block(kind);
   if(!b||!b.rows?.length)return empty('No hay datos públicos actuales para '+(cat()?.name||'esta categoría')+'.');
@@ -512,7 +528,10 @@ function genericTable(kind){
       if(i===teamIndex&&v&&!/expulsado de la liga/i.test(String(v))){
         return '<td><button type="button" class="v62-inline-team" data-v62-team="'+esc(v)+'">'+teamLogoHtml(v,'v62-inline-logo')+'<span>'+esc(v)+'</span></button></td>';
       }
-      if(i===playerIndex)return '<td><strong>'+esc(v)+'</strong></td>';
+      if(i===playerIndex){
+        const team=Number.isInteger(teamIndex)?String(r?.[teamIndex]||''):'';
+        return '<td>'+v576TablePlayer(v,team)+'</td>';
+      }
       return '<td>'+esc(v)+'</td>';
     }).join('')+'</tr>').join('')+
   '</tbody></table></div>';
