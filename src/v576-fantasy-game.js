@@ -103,7 +103,7 @@ function kitSvg(p,empty=false){
    '<span class="v600-shirt-base" aria-hidden="true"></span>'+
    '<span class="v597-shirt-tint" aria-hidden="true"></span>'+
    '<span class="v597-shirt-pattern" aria-hidden="true"></span>'+
-   (logo?'<span class="v597-logo-patch" aria-hidden="true"></span><img class="v597-team-logo" src="'+esc(logo)+'" alt="" loading="lazy">':'')+
+   (logo?'<img class="v597-team-logo" src="'+esc(logo)+'" alt="" loading="lazy">':'')+
  '</span>';
 }
 function slotHtml(s,p){
