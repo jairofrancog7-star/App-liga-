@@ -77,3 +77,27 @@
 @media(max-width:390px){
   .v576-table-photo{width:28px;height:28px;min-width:28px}
 }
+
+/* V576c — Datos de Liga y vistas heredadas de goleadores. */
+.v576-roster-player{
+  display:grid!important;grid-template-columns:minmax(0,1fr) auto!important;align-items:center!important;
+  gap:4px 10px!important;padding:7px 4px!important
+}
+.v576-roster-player>.v576-table-player{min-width:0!important}
+.v576-roster-player>small{color:#8fa0ce!important;font-size:7px!important;text-align:right!important;white-space:nowrap!important}
+.v28-rank-row.v576-v28-player{grid-template-columns:28px 36px minmax(0,1fr) 32px!important}
+.v28-rank-row.v576-v28-player>.v576-table-player>strong{display:none!important}
+.v28-rank-row.v576-v28-player .v576-table-photo{width:34px!important;height:34px!important;min-width:34px!important}
+.v576-v28-feature-photo{
+  position:absolute!important;inset:0!important;width:100%!important;height:100%!important;
+  object-fit:cover!important;object-position:center 24%!important;z-index:0!important
+}
+.v28-feature-photo{position:relative!important;overflow:hidden!important}
+.v28-feature-photo>.v28-feature-play{position:relative!important;z-index:2!important}
+.v28-feature-person>.v576-table-player>strong{display:none!important}
+.v28-feature-person>.v576-table-player .v576-table-photo{width:34px!important;height:34px!important;min-width:34px!important}
+@media(max-width:390px){
+  .v576-roster-player>small{font-size:6.4px!important}
+  .v28-rank-row.v576-v28-player{grid-template-columns:25px 32px minmax(0,1fr) 29px!important}
+  .v28-rank-row.v576-v28-player .v576-table-photo{width:30px!important;height:30px!important;min-width:30px!important}
+}
