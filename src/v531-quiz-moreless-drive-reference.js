@@ -244,9 +244,41 @@ function setGamesNav(){
     item.setAttribute('aria-current',on?'page':'false');
   });
 }
+function v535AvatarSvg(color){
+  return '<div class="v12-avatar" style="--av:'+color+'"><svg viewBox="0 0 96 96" aria-hidden="true"><path d="M30 35c0-14 8-22 18-22s18 8 18 22c0 11-4 19-9 24v8H39v-8c-5-5-9-13-9-24Z" fill="#d7d7d7"/><path d="M25 30c4-16 12-25 23-25 10 0 20 8 24 24l-7 2c-2-8-8-12-17-12-8 0-14 4-17 13Z" fill="#a9a9a9"/><path d="M38 57h20l14 9c6 4 10 10 11 18H13c1-8 5-14 11-18Z" fill="var(--av)"/></svg></div>';
+}
+function v535CurveArrow(color,flip){
+  return '<svg class="v12-curve-arrow '+(flip?'flip':'')+'" viewBox="0 0 100 150" aria-hidden="true"><path d="M25 130C55 90 60 55 45 20" fill="none" stroke="'+color+'" stroke-width="8" stroke-linecap="round"/><path d="M36 27 46 12l14 14" fill="none" stroke="'+color+'" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+}
+function v535MorePrimaryMarkup(){
+  return '<section class="v12-moreless v535-restored-primary" data-v12-moreless data-v535-restored-primary>'+
+    '<div class="v12-ml-title"><span>MÁS</span><small>O</small><span>MENOS</span></div>'+
+    '<div class="v12-ml-curves"><div class="down">'+v535CurveArrow('#ff003c',true)+'</div><div class="up">'+v535CurveArrow('#18ef72',false)+'</div></div>'+
+    '<div class="v12-ml-choice">'+
+      '<button type="button" data-v12-choice="more" aria-label="Elegir más">'+v535AvatarSvg('#c776e8')+'</button>'+
+      '<div class="v12-ml-mid"><button type="button" data-v12-choice="more" class="up-arrow" aria-label="Más">▲</button><button type="button" data-v12-choice="less" class="down-arrow" aria-label="Menos">▼</button></div>'+
+      '<button type="button" data-v12-choice="less" aria-label="Elegir menos">'+v535AvatarSvg('#77f1ea')+'</button>'+
+    '</div>'+
+    '<img class="v12-ml-logo" src="'+LEAGUE+'" alt="Liga Municipal de Fútbol Juventino Rosas" loading="eager" decoding="async">'+
+    '<div class="v12-stadium" aria-hidden="true"><i></i><b></b></div>'+
+  '</section>';
+}
+function v535EnsureMorePrimary(){
+  const screen=document.querySelector('#screen');if(!screen)return null;
+  let primary=screen.querySelector('[data-v12-moreless]');
+  if(!primary){
+    screen.insertAdjacentHTML('afterbegin',v535MorePrimaryMarkup());
+    primary=screen.querySelector('[data-v12-moreless]');
+  }
+  if(primary){
+    primary.dataset.v533Primary='true';
+    primary.dataset.v535Primary='true';
+  }
+  return primary;
+}
 function primaryRoot(r){
   if(r==='quizArena')return document.querySelector('#screen [data-v48-arena]');
-  if(r==='moreLess')return document.querySelector('#screen [data-v12-moreless]');
+  if(r==='moreLess')return v535EnsureMorePrimary();
   return null;
 }
 function render(focusAdded=false){
@@ -258,12 +290,16 @@ function render(focusAdded=false){
 
   // Mantener siempre el diseño principal anterior arriba.
   // Solo agregamos los diseños nuevos debajo o los usamos como pantalla secundaria.
+  const primary=primaryRoot(r);
+  if(!primary)return;
   let mount=screen.querySelector('[data-v531-mount="'+kind+'"]');
   if(!mount){
     mount=document.createElement('div');
-    mount.className='v531-added-block';
+    mount.className='v531-added-block v535-secondary-block';
     mount.dataset.v531Mount=kind;
-    screen.appendChild(mount);
+    primary.insertAdjacentElement('afterend',mount);
+  }else if(primary.nextElementSibling!==mount){
+    primary.insertAdjacentElement('afterend',mount);
   }
 
   if(r==='quizArena'){
