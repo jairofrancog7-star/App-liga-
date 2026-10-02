@@ -75,15 +75,32 @@ function rosterFor(teamName,catId){
   const k=Object.keys(c.rosters||{}).find(n=>same(n,teamName));
   return k&&Array.isArray(c.rosters[k])?c.rosters[k].map(String):[];
 }
+function profileFor(cat,team,name){
+  const entry=Object.entries(cat?.player_profiles||{}).find(([t])=>same(t,team));
+  const rows=Array.isArray(entry?.[1])?entry[1]:[];
+  return rows.find(p=>same(p?.name,name))||null;
+}
 function playerList(){
   const out=[],seen=new Set();
   for(const id of CAT_ORDER){
     const c=db?.categories?.[id]; if(!c)continue;
-    for(const [team,names] of Object.entries(c.rosters||{})){
-      for(const raw of (Array.isArray(names)?names:[])){
+    const teamNames=new Map();
+    Object.keys(c.rosters||{}).forEach(t=>teamNames.set(norm(t),t));
+    Object.keys(c.player_profiles||{}).forEach(t=>teamNames.set(norm(t),t));
+    for(const team of teamNames.values()){
+      const roster=Array.isArray(c.rosters?.[team])?c.rosters[team]:[];
+      const pEntry=Object.entries(c.player_profiles||{}).find(([t])=>same(t,team));
+      const profiles=Array.isArray(pEntry?.[1])?pEntry[1]:[];
+      const names=[...roster,...profiles.map(p=>p?.name).filter(Boolean)];
+      for(const raw of names){
         const name=String(raw||'').trim(); if(!name)continue;
         const key=norm(name)+'|'+norm(team)+'|'+id; if(seen.has(key))continue; seen.add(key);
-        out.push({name,team,cat:id,category:c.name||CAT_LABEL[id]||id});
+        const p=profileFor(c,team,name)||{};
+        out.push({
+          name,team,cat:id,category:c.name||CAT_LABEL[id]||id,
+          position:String(p.position||''),dorsal:String(p.dorsal||''),
+          photo:String(p.photo||'')
+        });
       }
     }
   }
