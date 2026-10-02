@@ -1,7 +1,7 @@
 {
   "schema": 1,
   "source": "https://juventinorosasliga.com/",
-  "captured_at_utc": "2026-10-02T18:50:37Z",
+  "captured_at_utc": "2026-10-02T18:55:40Z",
   "mode": "full",
   "categories": {
     "1": {
@@ -2471,7 +2471,7 @@
     "2": {
       "id": 2,
       "name": "Veteranos 35+",
-      "season_id": null,
+      "season_id": 6,
       "dashboard": {
         "counts": {
           "Equipos": 11,
@@ -2530,141 +2530,968 @@
         "Jugadores": 14
       },
       "standings": [],
-      "scorers": [],
-      "cards": [],
-      "suspensions": [],
-      "fixtures": [],
-      "rosters": {},
+      "scorers": [
+        {
+          "headers": [
+            "Estado"
+          ],
+          "rows": [
+            [
+              "No hay goles registrados en esta temporada."
+            ]
+          ]
+        }
+      ],
+      "cards": [
+        {
+          "headers": [
+            "Tipo",
+            "Estado"
+          ],
+          "rows": [
+            [
+              "Amarillas",
+              "Sin tarjetas amarillas."
+            ],
+            [
+              "Rojas",
+              "Sin tarjetas rojas."
+            ]
+          ]
+        }
+      ],
+      "suspensions": [
+        {
+          "headers": [
+            "Jugador",
+            "Equipo",
+            "Castigo",
+            "Pendientes"
+          ],
+          "rows": [
+            [
+              "Juan Jose Gaytan",
+              "Expulsado de la liga",
+              "3 Jornadas",
+              ""
+            ]
+          ]
+        }
+      ],
+      "fixtures": [
+        {
+          "headers": [
+            "#",
+            "Jornada",
+            "Local",
+            "Goles",
+            "vs",
+            "Goles",
+            "Visitante",
+            "Campo",
+            "Fecha/Hora",
+            "Árbitro"
+          ],
+          "rows": [
+            [
+              "1",
+              "1",
+              "BOAVISTA",
+              "-",
+              "vs",
+              "-",
+              "FRANCO-TAVERA-JR",
+              "Campo 1 (Empastado)",
+              "10/10/2026 00:00",
+              "---"
+            ],
+            [
+              "2",
+              "1",
+              "JUVENTUS",
+              "-",
+              "vs",
+              "-",
+              "LEYENDAS FC",
+              "Campo 3",
+              "10/10/2026 15:30",
+              "---"
+            ],
+            [
+              "3",
+              "1",
+              "HURACAN",
+              "-",
+              "vs",
+              "-",
+              "CUENDA",
+              "Campo 4",
+              "10/10/2026 15:30",
+              "---"
+            ],
+            [
+              "4",
+              "1",
+              "AMERICA",
+              "-",
+              "vs",
+              "-",
+              "AGUILARES",
+              "Fraccionamiento",
+              "10/10/2026 15:30",
+              "---"
+            ],
+            [
+              "5",
+              "1",
+              "PSV",
+              "-",
+              "vs",
+              "-",
+              "LA TRINIDAD",
+              "Campo 4",
+              "10/10/2026 17:00",
+              "---"
+            ],
+            [
+              "6",
+              "2",
+              "LEYENDAS FC",
+              "-",
+              "vs",
+              "-",
+              "POZOS FC",
+              "San Jose  de la Montaña",
+              "17/10/2026 15:30",
+              "---"
+            ],
+            [
+              "7",
+              "2",
+              "FRANCO-TAVERA-JR",
+              "-",
+              "vs",
+              "-",
+              "PSV",
+              "Campo 2",
+              "17/10/2026 15:30",
+              "---"
+            ],
+            [
+              "8",
+              "2",
+              "HURACAN",
+              "-",
+              "vs",
+              "-",
+              "BOAVISTA",
+              "Fraccionamiento",
+              "17/10/2026 15:30",
+              "---"
+            ],
+            [
+              "9",
+              "2",
+              "AGUILARES",
+              "-",
+              "vs",
+              "-",
+              "JUVENTUS",
+              "AGUILARES",
+              "17/10/2026 17:00",
+              "---"
+            ],
+            [
+              "10",
+              "2",
+              "CUENDA",
+              "-",
+              "vs",
+              "-",
+              "AMERICA",
+              "Cuenda",
+              "17/10/2026 17:00",
+              "---"
+            ],
+            [
+              "11",
+              "3",
+              "AMERICA",
+              "-",
+              "vs",
+              "-",
+              "BOAVISTA",
+              "Campo 3",
+              "24/10/2026 15:30",
+              "---"
+            ],
+            [
+              "12",
+              "3",
+              "POZOS FC",
+              "-",
+              "vs",
+              "-",
+              "LA TRINIDAD",
+              "Pozos",
+              "24/10/2026 15:30",
+              "---"
+            ],
+            [
+              "13",
+              "3",
+              "JUVENTUS",
+              "-",
+              "vs",
+              "-",
+              "CUENDA",
+              "Campo 2",
+              "24/10/2026 15:30",
+              "---"
+            ],
+            [
+              "14",
+              "3",
+              "PSV",
+              "-",
+              "vs",
+              "-",
+              "HURACAN",
+              "Campo 1 (Empastado)",
+              "24/10/2026 17:00",
+              "---"
+            ],
+            [
+              "15",
+              "3",
+              "LEYENDAS FC",
+              "-",
+              "vs",
+              "-",
+              "AGUILARES",
+              "San Jose  de la Montaña",
+              "24/10/2026 17:00",
+              "---"
+            ],
+            [
+              "16",
+              "4",
+              "AMERICA",
+              "-",
+              "vs",
+              "-",
+              "PSV",
+              "Campo 2",
+              "31/10/2026 15:30",
+              "---"
+            ],
+            [
+              "17",
+              "4",
+              "AGUILARES",
+              "-",
+              "vs",
+              "-",
+              "POZOS FC",
+              "AGUILARES",
+              "31/10/2026 15:30",
+              "---"
+            ],
+            [
+              "18",
+              "4",
+              "CUENDA",
+              "-",
+              "vs",
+              "-",
+              "LEYENDAS FC",
+              "Cuenda",
+              "31/10/2026 15:30",
+              "---"
+            ],
+            [
+              "19",
+              "4",
+              "BOAVISTA",
+              "-",
+              "vs",
+              "-",
+              "JUVENTUS",
+              "Campo 4",
+              "31/10/2026 17:00",
+              "---"
+            ],
+            [
+              "20",
+              "4",
+              "FRANCO-TAVERA-JR",
+              "-",
+              "vs",
+              "-",
+              "LA TRINIDAD",
+              "Campo 3",
+              "31/10/2026 17:00",
+              "---"
+            ],
+            [
+              "21",
+              "5",
+              "LA TRINIDAD",
+              "-",
+              "vs",
+              "-",
+              "HURACAN",
+              "La Trinidad",
+              "07/11/2026 15:30",
+              "---"
+            ],
+            [
+              "22",
+              "5",
+              "POZOS FC",
+              "-",
+              "vs",
+              "-",
+              "FRANCO-TAVERA-JR",
+              "Pozos",
+              "07/11/2026 15:30",
+              "---"
+            ],
+            [
+              "23",
+              "5",
+              "JUVENTUS",
+              "-",
+              "vs",
+              "-",
+              "PSV",
+              "Fraccionamiento",
+              "07/11/2026 15:30",
+              "---"
+            ],
+            [
+              "24",
+              "5",
+              "LEYENDAS FC",
+              "-",
+              "vs",
+              "-",
+              "BOAVISTA",
+              "San Jose  de la Montaña",
+              "07/11/2026 17:00",
+              "---"
+            ],
+            [
+              "25",
+              "5",
+              "AGUILARES",
+              "-",
+              "vs",
+              "-",
+              "CUENDA",
+              "AGUILARES",
+              "07/11/2026 17:00",
+              "---"
+            ],
+            [
+              "26",
+              "6",
+              "PSV",
+              "-",
+              "vs",
+              "-",
+              "LEYENDAS FC",
+              "Fraccionamiento",
+              "14/11/2026 15:30",
+              "---"
+            ],
+            [
+              "27",
+              "6",
+              "CUENDA",
+              "-",
+              "vs",
+              "-",
+              "POZOS FC",
+              "Cuenda",
+              "14/11/2026 15:30",
+              "---"
+            ],
+            [
+              "28",
+              "6",
+              "BOAVISTA",
+              "-",
+              "vs",
+              "-",
+              "AGUILARES",
+              "Campo 4",
+              "14/11/2026 15:30",
+              "---"
+            ],
+            [
+              "29",
+              "6",
+              "AMERICA",
+              "-",
+              "vs",
+              "-",
+              "LA TRINIDAD",
+              "Campo 1 (Empastado)",
+              "14/11/2026 17:00",
+              "---"
+            ],
+            [
+              "30",
+              "6",
+              "HURACAN",
+              "-",
+              "vs",
+              "-",
+              "FRANCO-TAVERA-JR",
+              "Campo 3",
+              "14/11/2026 17:00",
+              "---"
+            ],
+            [
+              "31",
+              "7",
+              "LA TRINIDAD",
+              "-",
+              "vs",
+              "-",
+              "JUVENTUS",
+              "La Trinidad",
+              "21/11/2026 15:30",
+              "---"
+            ],
+            [
+              "32",
+              "7",
+              "POZOS FC",
+              "-",
+              "vs",
+              "-",
+              "HURACAN",
+              "Pozos",
+              "21/11/2026 15:30",
+              "---"
+            ],
+            [
+              "33",
+              "7",
+              "FRANCO-TAVERA-JR",
+              "-",
+              "vs",
+              "-",
+              "AMERICA",
+              "Campo 4",
+              "21/11/2026 15:30",
+              "---"
+            ],
+            [
+              "34",
+              "7",
+              "AGUILARES",
+              "-",
+              "vs",
+              "-",
+              "PSV",
+              "AGUILARES",
+              "21/11/2026 17:00",
+              "---"
+            ],
+            [
+              "35",
+              "7",
+              "CUENDA",
+              "-",
+              "vs",
+              "-",
+              "BOAVISTA",
+              "Cuenda",
+              "21/11/2026 17:00",
+              "---"
+            ],
+            [
+              "36",
+              "8",
+              "LEYENDAS FC",
+              "-",
+              "vs",
+              "-",
+              "LA TRINIDAD",
+              "San Jose  de la Montaña",
+              "28/11/2026 15:30",
+              "---"
+            ],
+            [
+              "37",
+              "8",
+              "BOAVISTA",
+              "-",
+              "vs",
+              "-",
+              "POZOS FC",
+              "Campo 2",
+              "28/11/2026 15:30",
+              "---"
+            ],
+            [
+              "38",
+              "8",
+              "PSV",
+              "-",
+              "vs",
+              "-",
+              "CUENDA",
+              "Campo 1 (Empastado)",
+              "28/11/2026 15:30",
+              "---"
+            ],
+            [
+              "39",
+              "8",
+              "JUVENTUS",
+              "-",
+              "vs",
+              "-",
+              "FRANCO-TAVERA-JR",
+              "Campo 4",
+              "28/11/2026 17:00",
+              "---"
+            ],
+            [
+              "40",
+              "8",
+              "AMERICA",
+              "-",
+              "vs",
+              "-",
+              "HURACAN",
+              "Campo 3",
+              "28/11/2026 17:00",
+              "---"
+            ],
+            [
+              "41",
+              "9",
+              "AGUILARES",
+              "-",
+              "vs",
+              "-",
+              "LA TRINIDAD",
+              "AGUILARES",
+              "05/12/2026 15:30",
+              "---"
+            ],
+            [
+              "42",
+              "9",
+              "POZOS FC",
+              "-",
+              "vs",
+              "-",
+              "AMERICA",
+              "Pozos",
+              "05/12/2026 15:30",
+              "---"
+            ],
+            [
+              "43",
+              "9",
+              "HURACAN",
+              "-",
+              "vs",
+              "-",
+              "JUVENTUS",
+              "Fraccionamiento",
+              "05/12/2026 15:30",
+              "---"
+            ],
+            [
+              "44",
+              "9",
+              "FRANCO-TAVERA-JR",
+              "-",
+              "vs",
+              "-",
+              "LEYENDAS FC",
+              "Campo 1 (Empastado)",
+              "05/12/2026 17:00",
+              "---"
+            ],
+            [
+              "45",
+              "9",
+              "BOAVISTA",
+              "-",
+              "vs",
+              "-",
+              "PSV",
+              "Campo 2",
+              "05/12/2026 17:00",
+              "---"
+            ],
+            [
+              "46",
+              "10",
+              "AGUILARES",
+              "-",
+              "vs",
+              "-",
+              "FRANCO-TAVERA-JR",
+              "AGUILARES",
+              "12/12/2026 15:30",
+              "---"
+            ],
+            [
+              "47",
+              "10",
+              "PSV",
+              "-",
+              "vs",
+              "-",
+              "POZOS FC",
+              "Campo 3",
+              "12/12/2026 15:30",
+              "---"
+            ],
+            [
+              "48",
+              "10",
+              "LEYENDAS FC",
+              "-",
+              "vs",
+              "-",
+              "HURACAN",
+              "San Jose  de la Montaña",
+              "12/12/2026 15:30",
+              "---"
+            ],
+            [
+              "49",
+              "10",
+              "LA TRINIDAD",
+              "-",
+              "vs",
+              "-",
+              "CUENDA",
+              "La Trinidad",
+              "12/12/2026 17:00",
+              "---"
+            ],
+            [
+              "50",
+              "10",
+              "JUVENTUS",
+              "-",
+              "vs",
+              "-",
+              "AMERICA",
+              "Campo 2",
+              "12/12/2026 17:00",
+              "---"
+            ],
+            [
+              "51",
+              "11",
+              "BOAVISTA",
+              "-",
+              "vs",
+              "-",
+              "LA TRINIDAD",
+              "Campo 3",
+              "19/12/2026 15:30",
+              "---"
+            ],
+            [
+              "52",
+              "11",
+              "POZOS FC",
+              "-",
+              "vs",
+              "-",
+              "JUVENTUS",
+              "Pozos",
+              "19/12/2026 15:30",
+              "---"
+            ],
+            [
+              "53",
+              "11",
+              "CUENDA",
+              "-",
+              "vs",
+              "-",
+              "FRANCO-TAVERA-JR",
+              "Cuenda",
+              "19/12/2026 15:30",
+              "---"
+            ],
+            [
+              "54",
+              "11",
+              "HURACAN",
+              "-",
+              "vs",
+              "-",
+              "AGUILARES",
+              "Campo 2",
+              "19/12/2026 17:00",
+              "---"
+            ],
+            [
+              "55",
+              "11",
+              "AMERICA",
+              "-",
+              "vs",
+              "-",
+              "LEYENDAS FC",
+              "Campo 4",
+              "19/12/2026 17:00",
+              "---"
+            ]
+          ]
+        }
+      ],
+      "rosters": {
+        "AMERICA": [
+          "LUIS JONATHAN AGUILAR GERVACIO",
+          "Sammare Horacio Calderon Martinez",
+          "Eric Fernando Dongu Guerrero",
+          "DAVID GARCIA AGUIRRE",
+          "PATRICIO GASCA VILLAFUERTE",
+          "REYES JOEL GAYTAN LEON",
+          "GIOVANNI GUERRERO HERNANDEZ",
+          "EDGAR HERNANDEZ AUSTRIA",
+          "Asuncion Hernandez Hernandez",
+          "JORGE GABRIEL JUAREZ CASTRO",
+          "EDUARDO LOPEZ GARCIA",
+          "Gerardo Lopez Guerrero",
+          "Jose Alfredo Lopez Perez",
+          "Jorge Eduardo Martinez Moreno",
+          "Alvaro Alberto Mata Garcia",
+          "MANUEL PATIÑO VILLALPANDO",
+          "JUAN ENRIQUE RICO GONZALEZ",
+          "MANUEL RICO MANCERA",
+          "JUAN ANTONIO ROSALES CABELLO",
+          "MAURICIO IGNACIO ROSALES OCHOA",
+          "Sergio Arturo Sanchez Huizache",
+          "FRANCISCO JAVIER VALDEZ CORRALES",
+          "J. REFUGIO ZARAZUA AGOSTADERO"
+        ],
+        "HURACAN": [
+          "Martin Hortelano Luna"
+        ],
+        "PSV": [
+          "FRANCISCO JESUS AGUIRRE CANO",
+          "Giovanni Emanuel Flores Guerrero",
+          "OMAR GUERRERO DAMIAN",
+          "Cristian Jesus Gasca Rodriguez",
+          "Jose Antonio Juarez Landin",
+          "OSCAR LOPEZ DAMIAN",
+          "Francisco Javier Solache Franco"
+        ]
+      },
       "player_usage": {},
       "player_profiles": {
-        "PSV": [
-          {
-            "name": "FRANCISCO JESUS AGUIRRE CANO",
-            "position": "Defensa"
-          },
-          {
-            "name": "GIOVANNI EMANUEL FLORES GUERRERO",
-            "position": "Defensa"
-          },
-          {
-            "name": "OMAR GUERRERO DAMIAN",
-            "position": "Defensa"
-          },
-          {
-            "name": "CRISTIAN JESUS GASCA RODRIGUEZ",
-            "position": "Portero"
-          },
-          {
-            "name": "JOSE ANTONIO JUAREZ LANDIN",
-            "position": "Defensa"
-          },
-          {
-            "name": "OSCAR LOPEZ DAMIAN",
-            "position": "Defensa"
-          },
-          {
-            "name": "FRANCISCO JAVIER SOLACHE FRANCO",
-            "position": "Defensa"
-          }
-        ],
         "AMERICA": [
           {
             "name": "LUIS JONATHAN AGUILAR GERVACIO",
-            "position": "Mediocampista"
+            "position": "Mediocampista",
+            "dorsal": "—",
+            "photo": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/jugadores/WhatsApp_Image_2026-09-04_at_7.27.51_PM_ydbhob"
           },
           {
-            "name": "SAMMARE HORACIO CALDERON MARTINEZ",
-            "position": "Defensa"
+            "name": "Sammare Horacio Calderon Martinez",
+            "position": "Defensa",
+            "dorsal": "—",
+            "photo": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/jugadores/WhatsApp_Image_2026-09-09_at_12.31.34_PM_1_svv3dk"
           },
           {
-            "name": "ERIC FERNANDO DONGU GUERRERO",
-            "position": "Defensa"
+            "name": "Eric Fernando Dongu Guerrero",
+            "position": "Defensa",
+            "dorsal": "—",
+            "photo": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/jugadores/WhatsApp_Image_2026-09-21_at_11.09.45_AM_ftabqz"
           },
           {
             "name": "DAVID GARCIA AGUIRRE",
-            "position": "Mediocampista"
+            "position": "Mediocampista",
+            "dorsal": "—",
+            "photo": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/jugadores/23_rjhopc"
           },
           {
             "name": "PATRICIO GASCA VILLAFUERTE",
-            "position": "Defensa"
+            "position": "Defensa",
+            "dorsal": "—",
+            "photo": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/jugadores/18_qe3vtd"
           },
           {
             "name": "REYES JOEL GAYTAN LEON",
-            "position": "Delantero"
+            "position": "Delantero",
+            "dorsal": "—",
+            "photo": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/jugadores/11_bocd3i"
           },
           {
             "name": "GIOVANNI GUERRERO HERNANDEZ",
-            "position": "Defensa"
+            "position": "Defensa",
+            "dorsal": "—",
+            "photo": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/jugadores/12_yoalyw"
           },
           {
             "name": "EDGAR HERNANDEZ AUSTRIA",
-            "position": "Delantero"
+            "position": "Delantero",
+            "dorsal": "—",
+            "photo": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/jugadores/22_e6tgly"
           },
           {
-            "name": "ASUNCION HERNANDEZ HERNANDEZ",
-            "position": "Portero"
+            "name": "Asuncion Hernandez Hernandez",
+            "position": "Portero",
+            "dorsal": "—",
+            "photo": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/jugadores/14_wee81t"
           },
           {
             "name": "JORGE GABRIEL JUAREZ CASTRO",
-            "position": "Delantero"
+            "position": "Delantero",
+            "dorsal": "—",
+            "photo": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/jugadores/21_hgkikv"
           },
           {
             "name": "EDUARDO LOPEZ GARCIA",
-            "position": "Delantero"
+            "position": "Delantero",
+            "dorsal": "—",
+            "photo": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/jugadores/3_pkwiwd"
           },
           {
-            "name": "GERARDO LOPEZ GUERRERO",
-            "position": "Defensa"
+            "name": "Gerardo Lopez Guerrero",
+            "position": "Defensa",
+            "dorsal": "—",
+            "photo": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/jugadores/17_jboadd"
           },
           {
-            "name": "JOSE ALFREDO LOPEZ PEREZ",
-            "position": "Mediocampista"
+            "name": "Jose Alfredo Lopez Perez",
+            "position": "Mediocampista",
+            "dorsal": "—",
+            "photo": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/jugadores/Jose_Alfredo_Lopez_Perez_q6ruog"
           },
           {
-            "name": "JORGE EDUARDO MARTINEZ MORENO",
-            "position": "Defensa"
+            "name": "Jorge Eduardo Martinez Moreno",
+            "position": "Defensa",
+            "dorsal": "—",
+            "photo": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/jugadores/WhatsApp_Image_2026-09-10_at_4.40.16_PM_lttwxo"
           },
           {
-            "name": "ALVARO ALBERTO MATA GARCIA",
-            "position": "Defensa"
+            "name": "Alvaro Alberto Mata Garcia",
+            "position": "Defensa",
+            "dorsal": "—",
+            "photo": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/jugadores/6_fiebyn"
           },
           {
             "name": "MANUEL PATIÑO VILLALPANDO",
-            "position": "Delantero"
+            "position": "Delantero",
+            "dorsal": "—",
+            "photo": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/jugadores/2_z6nwef"
           },
           {
             "name": "JUAN ENRIQUE RICO GONZALEZ",
-            "position": "Defensa"
+            "position": "Defensa",
+            "dorsal": "—",
+            "photo": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/jugadores/18_rt4h55"
           },
           {
             "name": "MANUEL RICO MANCERA",
-            "position": "Delantero"
+            "position": "Delantero",
+            "dorsal": "—",
+            "photo": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/jugadores/WhatsApp_Image_2026-09-26_at_2.15.13_PM_1_swji4s"
           },
           {
             "name": "JUAN ANTONIO ROSALES CABELLO",
-            "position": "Defensa"
+            "position": "Defensa",
+            "dorsal": "—",
+            "photo": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/jugadores/7_g9otbv"
           },
           {
             "name": "MAURICIO IGNACIO ROSALES OCHOA",
-            "position": "Defensa"
+            "position": "Defensa",
+            "dorsal": "—",
+            "photo": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/jugadores/WhatsApp_Image_2026-09-04_at_12.24.56_PM_oflizx"
           },
           {
-            "name": "SERGIO ARTURO SANCHEZ HUIZACHE",
-            "position": "Defensa"
+            "name": "Sergio Arturo Sanchez Huizache",
+            "position": "Defensa",
+            "dorsal": "—",
+            "photo": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/jugadores/WhatsApp_Image_2026-09-11_at_2.22.26_PM_hixv5a"
           },
           {
             "name": "FRANCISCO JAVIER VALDEZ CORRALES",
-            "position": "Mediocampista"
+            "position": "Mediocampista",
+            "dorsal": "—",
+            "photo": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/jugadores/4_krix8m"
           },
           {
             "name": "J. REFUGIO ZARAZUA AGOSTADERO",
-            "position": "Defensa"
+            "position": "Defensa",
+            "dorsal": "—",
+            "photo": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/jugadores/10_hxwjau"
+          }
+        ],
+        "HURACAN": [
+          {
+            "name": "Martin Hortelano Luna",
+            "position": "Defensa",
+            "dorsal": "—"
+          }
+        ],
+        "PSV": [
+          {
+            "name": "FRANCISCO JESUS AGUIRRE CANO",
+            "position": "Defensa",
+            "dorsal": "—",
+            "photo": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/jugadores/WhatsApp_Image_2026-09-11_at_2.47.27_PM_1_ayjved"
+          },
+          {
+            "name": "Giovanni Emanuel Flores Guerrero",
+            "position": "Defensa",
+            "dorsal": "—",
+            "photo": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/jugadores/Giovanni_eytheh"
+          },
+          {
+            "name": "OMAR GUERRERO DAMIAN",
+            "position": "Defensa",
+            "dorsal": "—",
+            "photo": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/jugadores/OMAR_qcc35o"
+          },
+          {
+            "name": "Cristian Jesus Gasca Rodriguez",
+            "position": "Portero",
+            "dorsal": "—",
+            "photo": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/jugadores/WhatsApp_Image_2026-09-09_at_12.31.35_PM_fxvyg1"
+          },
+          {
+            "name": "Jose Antonio Juarez Landin",
+            "position": "Defensa",
+            "dorsal": "—",
+            "photo": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/jugadores/WhatsApp_Image_2026-09-09_at_12.31.27_PM_1_owkhvs"
+          },
+          {
+            "name": "OSCAR LOPEZ DAMIAN",
+            "position": "Defensa",
+            "dorsal": "—",
+            "photo": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/jugadores/1000324556_drdpc7"
+          },
+          {
+            "name": "Francisco Javier Solache Franco",
+            "position": "Defensa",
+            "dorsal": "—",
+            "photo": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/jugadores/WhatsApp_Image_2026-09-01_at_12.22.40_PM_vjmfhc"
           }
         ]
       },
       "cedulas": [],
       "cedulas_scanned": [],
-      "public_player_count_scraped": 0
+      "public_player_count_scraped": 31
     },
     "3": {
       "id": 3,
@@ -19406,9 +20233,17 @@
       "local": "./assets/official-logos/abejas.png",
       "source": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/Abejas_lxn6l9"
     },
+    "AGUILARES": {
+      "local": "./assets/official-logos/aguilares.png",
+      "source": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/aguilares_ifdgll"
+    },
     "ALDAMA FC": {
       "local": "./assets/official-logos/aldama-fc.png",
       "source": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/Aldama_mqm3r1"
+    },
+    "AMERICA": {
+      "local": "./assets/official-logos/america.png",
+      "source": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/America_wbi53g"
     },
     "ATL. GALEANA": {
       "local": "./assets/official-logos/atl-galeana.png",
@@ -19429,6 +20264,10 @@
     "CELTICOS": {
       "local": "./assets/official-logos/celticos.png",
       "source": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/CelticosFC_nv4ukd"
+    },
+    "CUENDA": {
+      "local": "./assets/official-logos/cuenda.png",
+      "source": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/SantiagoCuenda_fvaq9e"
     },
     "DEP. LA LUZ": {
       "local": "./assets/official-logos/dep-la-luz.png",
@@ -19454,6 +20293,10 @@
       "local": "./assets/official-logos/franco-fc.png",
       "source": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/FrancoFC_vtd8d7"
     },
+    "FRANCO-TAVERA-JR": {
+      "local": "./assets/official-logos/franco-tavera-jr.png",
+      "source": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/FrancoTaveraVeteranos_qwrqrc"
+    },
     "GALEANA": {
       "local": "./assets/official-logos/galeana.png",
       "source": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/Galeana_kujrh0"
@@ -19465,6 +20308,10 @@
     "HERRERAS FC": {
       "local": "./assets/official-logos/herreras-fc.png",
       "source": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/HerreraFC_mnmlsd"
+    },
+    "HURACAN": {
+      "local": "./assets/official-logos/huracan.png",
+      "source": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/Huracan_pfndn5"
     },
     "JUVENTUS": {
       "local": "./assets/official-logos/juventus.png",
@@ -19485,6 +20332,14 @@
     "LA HUERTA": {
       "local": "./assets/official-logos/la-huerta.png",
       "source": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/LaHuertaCuenda_bm4fxj"
+    },
+    "LA TRINIDAD": {
+      "local": "./assets/official-logos/la-trinidad.png",
+      "source": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/La_trinidad_a32pbk"
+    },
+    "LEYENDAS FC": {
+      "local": "./assets/official-logos/leyendas-fc.png",
+      "source": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/LEYENDAS_jwcnlu"
     },
     "LINCES": {
       "local": "./assets/official-logos/linces.png",
@@ -19525,6 +20380,10 @@
     "PROMESAS FC": {
       "local": "./assets/official-logos/promesas-fc.png",
       "source": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/PromesasFC_w4lwk8"
+    },
+    "PSV": {
+      "local": "./assets/official-logos/psv.png",
+      "source": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/PSV_ru3tft"
     },
     "SAN ANTONIO FC": {
       "local": "./assets/official-logos/san-antonio-fc.png",
@@ -19582,7 +20441,7 @@
       },
       "Veteranos 35+": {
         "cedulas": 0,
-        "public_names": 0,
+        "public_names": 31,
         "kept_previous": true
       },
       "Primera Fuerza": {
@@ -19611,12 +20470,13 @@
   ],
   "missing_official_logo": [
     "BOCA JRS",
-    "GALACTICOS"
+    "GALACTICOS",
+    "POZOS FC"
   ],
   "checks": {
     "primera_dashboard_players": 292,
     "primera_roster_unique": 292,
-    "team_logos_known": 41,
+    "team_logos_known": 49,
     "categories": 5
   }
 }
