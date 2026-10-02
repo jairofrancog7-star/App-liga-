@@ -97,10 +97,20 @@ function dash(v){return v===undefined||v===null||String(v).trim()===''?'—':Str
 function attr(v){return esc(String(v??''))}
 function isDataImage(v){return /^data:image\/(?:png|jpe?g|webp);base64,/i.test(String(v||''))}
 function getPhoto(p){
+  /* V579: primero la foto publicada en player_profiles; después cachés locales. */
+  try{
+    const raw=api?.data?.()||window.LJR_OFFICIAL_DATA||null;
+    const cat=raw?.categories?.[String(p?.cat||'')];
+    const teamEntry=Object.entries(cat?.player_profiles||{}).find(([team])=>same(team,p?.team));
+    const rows=Array.isArray(teamEntry?.[1])?teamEntry[1]:[];
+    const hit=rows.find(x=>same(x?.name,p?.name));
+    const official=String(hit?.photo||'').trim();
+    if(official)return official;
+  }catch{}
   const pub=window.LJR_PLAYER_PHOTOS;
   if(pub){
     try{
-      if(typeof pub.get==='function'){const x=pub.get(p.name,p.team);if(x)return String(x)}
+      if(typeof pub.get==='function'){const x=pub.get(p.name,p.team,p.cat);if(x)return String(x)}
       const direct=pub[norm(p.name)+'|'+norm(p.team)]||pub[norm(p.name)]||pub[p.name];
       if(direct)return String(direct);
     }catch{}
@@ -262,7 +272,7 @@ function profileData(p){
     nationality:valueFrom(reg,['nationality','country','pais','país']),
     birth:valueFrom(reg,['birthDate','dob','dateOfBirth','fechaNacimiento','birth']),
     city:valueFrom(reg,['city','municipality','locality','community','ciudad','comunidad']),
-    photo:getPhoto(p)||String(pub.photo||'')
+    photo:String(pub.photo||'').trim()||getPhoto(p)
   };
 }
 function backButton(){
