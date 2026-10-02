@@ -60,3 +60,36 @@ body[data-app-route="fantasyTeam"] .bottom-nav{display:none!important}
  .v576-field{min-height:575px}.v576-field-row.del,.v576-field-row.cen,.v576-field-row.def{height:121px}.v576-shirt{width:52px;height:60px}.v576-slot>b{font-size:8px}.v576-slot>small{font-size:7px}
  .v576-access-copy p{font-size:12px}
 }
+
+/* V580 — keep the original Fantasy access screen and extend it underneath. */
+body[data-app-route="fantasyAccess"] #screen{overflow-x:hidden!important;padding-bottom:86px!important}
+.v576-access-more{
+  width:100%;box-sizing:border-box;padding:26px 16px 34px;margin:0;
+  color:#fff;font-family:Inter,Roboto,Arial,sans-serif;
+  background:linear-gradient(180deg,#071078 0%,#080a66 100%);
+  border-top:1px solid rgba(255,255,255,.10)
+}
+.v576-more-kicker{
+  width:max-content;margin:0 auto 4px;padding:7px 15px;border-radius:999px;
+  color:#18e4ed;background:rgba(16,214,229,.10);border:1px solid rgba(24,228,237,.35);
+  font-size:10px;font-weight:900;letter-spacing:.12em
+}
+.v576-access-more .v576-fantasy-cards{height:270px;padding-top:22px}
+.v576-access-more .v576-access-copy{margin-top:10px}
+.v576-feature-grid{
+  width:min(92%,500px);margin:24px auto 0;display:grid;grid-template-columns:repeat(3,1fr);gap:8px
+}
+.v576-feature-grid article{
+  min-height:74px;display:grid;place-items:center;align-content:center;gap:6px;
+  border:1px solid rgba(36,226,238,.22);border-radius:14px;
+  background:linear-gradient(180deg,rgba(17,50,165,.76),rgba(5,12,88,.88))
+}
+.v576-feature-grid b{font-size:18px;color:#fff}.v576-feature-grid span{font-size:8px;color:#aeb8df;text-transform:uppercase;letter-spacing:.08em}
+.v576-access-more .v576-access-actions{margin-top:24px}
+.v576-access-more .v576-access-actions button:first-child{background:#16e1eb;color:#031065}
+.v576-access-more .v576-access-actions button:last-child{min-height:54px;border:1.5px solid #16e1eb;border-radius:18px;background:transparent;color:#16e1eb;font-weight:800}
+@media(max-width:390px){
+  .v576-access-more{padding-left:10px;padding-right:10px}
+  .v576-access-more .v576-fantasy-cards{height:245px}
+  .v576-feature-grid{width:96%;gap:6px}
+}
