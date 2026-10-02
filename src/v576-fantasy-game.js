@@ -85,11 +85,12 @@ function accessTeams(){
 }
 function accessMarkup(){
  const teams=accessTeams();
- return'<section class="v576-access" data-v576-access data-v23-access><header><h1>Fantasy Football</h1></header>'+
- '<div class="v576-access-sponsor"><span>Patrocinado por</span><img src="./assets/liga-logo.webp" alt="Liga Juventino Rosas"></div>'+
+ return'<section class="v576-access-more" data-v576-access-more>'+
+ '<div class="v576-more-kicker">JUEGA FANTASY</div>'+
  '<div class="v576-fantasy-cards">'+teams.map((t,i)=>'<article class="'+(i===1?'main':'')+'"><div><img src="'+esc(teamLogo(t))+'" alt=""></div><b>'+esc(t)+'</b><small>'+(i===1?'12 pts':'9 pts')+'</small></article>').join('')+'</div>'+
- '<div class="v576-access-copy"><h2>Elige tu equipo</h2><p>Gasta 100 m en 15 jugadores registrados de la Liga Juventino Rosas y arma tu plantilla ideal.</p></div>'+
- '<div class="v576-access-actions"><button type="button" data-v576-login>Inicia sesión para jugar</button><button type="button" data-v576-guest>Prueba como invitado</button></div></section>';
+ '<div class="v576-access-copy"><h2>Elige tu equipo</h2><p>Arma tu plantilla con 15 jugadores registrados de la Liga Juventino Rosas. Tienes €100m de presupuesto Fantasy.</p></div>'+
+ '<div class="v576-feature-grid"><article><b>15</b><span>Jugadores</span></article><article><b>€100m</b><span>Presupuesto</span></article><article><b>4</b><span>Posiciones</span></article></div>'+
+ '<div class="v576-access-actions"><button type="button" data-v576-guest>Prueba como invitado</button><button type="button" data-v576-open-team>Elige tu equipo</button></div></section>';
 }
 function closeLayer(){document.querySelectorAll('[data-v576-layer]').forEach(x=>x.remove())}
 function layer(html,cls=''){closeLayer();const d=document.createElement('div');d.className='v576-layer '+cls;d.dataset.v576Layer='';d.innerHTML='<button type="button" class="v576-backdrop" data-v576-close aria-label="Cerrar"></button>'+html;document.body.appendChild(d)}
@@ -134,7 +135,10 @@ function summary(){
 function toast(msg){document.querySelector('.v576-toast')?.remove();const d=document.createElement('div');d.className='v576-toast';d.textContent=msg;document.body.appendChild(d);requestAnimationFrame(()=>d.classList.add('show'));setTimeout(()=>d.remove(),2200)}
 function render(){
  const r=route(),screen=document.querySelector('#screen');if(!screen)return;
- if(r==='fantasyAccess'){if(!screen.querySelector('[data-v576-access]'))screen.innerHTML=accessMarkup()}
+ if(r==='fantasyAccess'){
+   const base=screen.querySelector('[data-v23-access]');
+   if(base&&!screen.querySelector('[data-v576-access-more]')) screen.insertAdjacentHTML('beforeend',accessMarkup());
+ }
  if(r==='fantasyTeam')screen.innerHTML=builderMarkup();
 }
 function schedule(){cancelAnimationFrame(raf);raf=requestAnimationFrame(()=>requestAnimationFrame(render))}
@@ -144,6 +148,7 @@ document.addEventListener('click',e=>{
  if(el.closest('[data-v576-close]')){e.preventDefault();closeLayer();return}
  if(el.closest('[data-v576-login]')){e.preventDefault();closeLayer();location.hash='#/profile';return}
  if(el.closest('[data-v576-guest]')){e.preventDefault();guest();return}
+ if(el.closest('[data-v576-open-team]')){e.preventDefault();location.hash='#/fantasyTeam';return}
  if(el.closest('[data-v576-later]')){e.preventDefault();closeLayer();location.hash='#/fantasyTeam';return}
  if(el.closest('[data-v576-back]')){e.preventDefault();location.hash='#/fantasyAccess';return}
  if(el.closest('[data-v576-menu]')){e.preventDefault();menu();return}
