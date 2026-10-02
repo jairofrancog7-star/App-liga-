@@ -3026,3 +3026,246 @@ body .v543-moreless-portal .v531-exit-modal>.no{
   body .v543-moreless-portal .v538-question-zone h2{font-size:17px!important}
   body .v543-moreless-portal .v531-more-buttons button{height:76px!important}
 }
+
+
+/* V545 — todos los diseños restantes de Más o Menos visibles y abribles */
+body[data-app-route="moreLess"] .v545-more-screens,
+body .v543-moreless-portal .v545-more-screens{
+  display:grid!important;
+  gap:13px!important;
+  margin:16px 0 4px!important;
+}
+body[data-app-route="moreLess"] .v545-more-screens>h2,
+body .v543-moreless-portal .v545-more-screens>h2{
+  margin:0 2px 2px!important;
+  color:#fff!important;
+  font:800 16px/1.05 Inter,Roboto,Arial,sans-serif!important;
+}
+body[data-app-route="moreLess"] .v545-more-screen-card,
+body .v543-moreless-portal .v545-more-screen-card{
+  position:relative!important;
+  overflow:hidden!important;
+  min-height:238px!important;
+  padding:0!important;
+  border:1px solid rgba(66,91,230,.30)!important;
+  border-radius:13px!important;
+  background:linear-gradient(180deg,#0b147f 0%,#070767 100%)!important;
+  box-shadow:0 10px 22px rgba(0,0,50,.18)!important;
+  cursor:pointer!important;
+}
+body[data-app-route="moreLess"] .v545-preview-top,
+body .v543-moreless-portal .v545-preview-top{
+  height:44px!important;
+  display:grid!important;
+  grid-template-columns:1fr 32px!important;
+  align-items:center!important;
+  padding:0 13px!important;
+  background:
+    radial-gradient(90% 120% at 50% 0,rgba(18,134,255,.25),transparent 72%),
+    linear-gradient(180deg,#0a35c7,#080967)!important;
+}
+body[data-app-route="moreLess"] .v545-preview-top span,
+body .v543-moreless-portal .v545-preview-top span{
+  justify-self:center!important;
+  padding-left:32px!important;
+  color:#fff!important;
+  font-size:13px!important;
+  font-weight:750!important;
+}
+body[data-app-route="moreLess"] .v545-preview-top b,
+body .v543-moreless-portal .v545-preview-top b{
+  justify-self:end!important;
+  color:#fff!important;
+  font-size:26px!important;
+  font-weight:300!important;
+}
+body[data-app-route="moreLess"] .v545-preview-players,
+body .v543-moreless-portal .v545-preview-players{
+  display:grid!important;
+  grid-template-columns:1fr 1fr!important;
+  gap:8px!important;
+  padding:13px 13px 8px!important;
+}
+body[data-app-route="moreLess"] .v545-mini-player,
+body .v543-moreless-portal .v545-mini-player{
+  min-height:116px!important;
+  display:grid!important;
+  grid-template-rows:62px auto auto!important;
+  justify-items:center!important;
+  align-content:start!important;
+  overflow:hidden!important;
+  border:1px solid rgba(29,93,255,.65)!important;
+  border-radius:10px!important;
+  background:
+    repeating-linear-gradient(31deg,transparent 0 17px,rgba(22,237,249,.17) 19px 21px,transparent 23px 31px),
+    linear-gradient(180deg,#1145d5,#0a1177)!important;
+}
+body[data-app-route="moreLess"] .v545-mini-player:nth-child(2),
+body .v543-moreless-portal .v545-mini-player:nth-child(2){
+  border-color:rgba(246,45,143,.62)!important;
+}
+body[data-app-route="moreLess"] .v545-mini-player .v538-person,
+body .v543-moreless-portal .v545-mini-player .v538-person{
+  width:54px!important;height:54px!important;
+  margin-top:7px!important;
+  border-radius:50%!important;
+  overflow:hidden!important;
+  background:#fff!important;
+}
+body[data-app-route="moreLess"] .v545-mini-player .v538-person>img,
+body .v543-moreless-portal .v545-mini-player .v538-person>img{
+  width:100%!important;height:100%!important;object-fit:cover!important;object-position:center top!important;
+}
+body[data-app-route="moreLess"] .v545-mini-player .v531-crest,
+body .v543-moreless-portal .v545-mini-player .v531-crest{
+  width:43px!important;height:43px!important;
+  border:0!important;background:#fff!important;
+}
+body[data-app-route="moreLess"] .v545-mini-player>b,
+body .v543-moreless-portal .v545-mini-player>b{
+  max-width:92%!important;
+  margin-top:4px!important;
+  overflow:hidden!important;
+  color:#fff!important;
+  font-size:9px!important;
+  white-space:nowrap!important;
+  text-overflow:ellipsis!important;
+}
+body[data-app-route="moreLess"] .v545-mini-player>small,
+body .v543-moreless-portal .v545-mini-player>small{
+  margin-top:2px!important;
+  color:#aeb4dc!important;
+  font-size:7px!important;
+}
+body[data-app-route="moreLess"] .v545-mini-player>strong,
+body .v543-moreless-portal .v545-mini-player>strong{
+  position:absolute!important;
+  right:9px!important;
+  bottom:7px!important;
+  color:#fff!important;
+  font-size:17px!important;
+}
+body[data-app-route="moreLess"] .v545-mini-player,
+body .v543-moreless-portal .v545-mini-player{
+  position:relative!important;
+}
+body[data-app-route="moreLess"] .v545-mini-player.ghost,
+body .v543-moreless-portal .v545-mini-player.ghost{
+  display:grid!important;
+  place-items:center!important;
+  background:
+    linear-gradient(145deg,transparent 0 30%,rgba(47,83,221,.28) 31% 34%,transparent 35%),
+    #0b1471!important;
+  opacity:.68!important;
+}
+body[data-app-route="moreLess"] .v545-mini-player.ghost i,
+body .v543-moreless-portal .v545-mini-player.ghost i{
+  color:#fff!important;
+  font-size:34px!important;
+  font-style:normal!important;
+}
+body[data-app-route="moreLess"] .v545-preview-score,
+body .v543-moreless-portal .v545-preview-score{
+  min-height:48px!important;
+  display:grid!important;
+  grid-template-columns:1fr 48px 1fr!important;
+  align-items:center!important;
+  padding:0 14px!important;
+  border-top:1px solid rgba(255,255,255,.07)!important;
+  border-bottom:1px solid rgba(255,255,255,.07)!important;
+}
+body[data-app-route="moreLess"] .v545-preview-score span,
+body .v543-moreless-portal .v545-preview-score span{font-size:12px!important}
+body[data-app-route="moreLess"] .v545-preview-score b,
+body .v543-moreless-portal .v545-preview-score b{
+  width:34px!important;height:34px!important;display:grid!important;place-items:center!important;
+  justify-self:center!important;border:3px solid #ff4b9a!important;border-radius:50%!important;font-size:12px!important;
+}
+body[data-app-route="moreLess"] .v545-preview-score em,
+body .v543-moreless-portal .v545-preview-score em{
+  justify-self:end!important;color:#1de2ed!important;font-size:10px!important;font-style:normal!important;font-weight:800!important;
+}
+body[data-app-route="moreLess"] .v545-more-screen-card>p,
+body .v543-moreless-portal .v545-more-screen-card>p{
+  margin:0!important;padding:10px 13px 13px!important;color:#c8cbea!important;font-size:9px!important;line-height:1.35!important;
+}
+body[data-app-route="moreLess"] .v545-preview-question,
+body .v543-moreless-portal .v545-preview-question{
+  min-height:42px!important;
+  display:grid!important;place-items:center!important;
+  padding:8px 13px 3px!important;
+  color:#fff!important;font-size:10px!important;font-weight:750!important;text-align:center!important;
+}
+body[data-app-route="moreLess"] .v545-preview-arrows,
+body .v543-moreless-portal .v545-preview-arrows{
+  display:grid!important;
+  grid-template-columns:1fr 32px 1fr!important;
+  align-items:center!important;
+  gap:7px!important;
+  padding:8px 15px 14px!important;
+}
+body[data-app-route="moreLess"] .v545-preview-arrows i,
+body .v543-moreless-portal .v545-preview-arrows i{
+  height:42px!important;
+  display:grid!important;place-items:center!important;
+  border-radius:7px!important;
+  background:#1247f1!important;
+  color:#fff!important;
+  font-size:18px!important;
+  font-style:normal!important;
+}
+body[data-app-route="moreLess"] .v545-preview-arrows i:first-child,
+body .v543-moreless-portal .v545-preview-arrows i:first-child{border:2px solid #ff4b9a!important}
+body[data-app-route="moreLess"] .v545-preview-arrows i:last-child,
+body .v543-moreless-portal .v545-preview-arrows i:last-child{border:2px solid #30df79!important}
+body[data-app-route="moreLess"] .v545-preview-arrows small,
+body .v543-moreless-portal .v545-preview-arrows small{color:#d4d5ec!important;text-align:center!important;font-size:8px!important;font-weight:900!important;font-style:italic!important}
+body[data-app-route="moreLess"] .v545-more-screen-card.exit,
+body .v543-moreless-portal .v545-more-screen-card.exit{
+  min-height:278px!important;
+}
+body[data-app-route="moreLess"] .v545-preview-modal,
+body .v543-moreless-portal .v545-preview-modal{
+  width:100%!important;
+  min-height:234px!important;
+  padding:28px 16px 14px!important;
+  background:#15167f!important;
+}
+body[data-app-route="moreLess"] .v545-preview-modal h3,
+body .v543-moreless-portal .v545-preview-modal h3{
+  margin:0 0 8px!important;color:#fff!important;font-size:18px!important;
+}
+body[data-app-route="moreLess"] .v545-preview-modal p,
+body .v543-moreless-portal .v545-preview-modal p{
+  margin:0 0 20px!important;color:#bfc3e2!important;font-size:11px!important;
+}
+body[data-app-route="moreLess"] .v545-preview-modal span,
+body[data-app-route="moreLess"] .v545-preview-modal em,
+body .v543-moreless-portal .v545-preview-modal span,
+body .v543-moreless-portal .v545-preview-modal em{
+  height:42px!important;
+  display:grid!important;place-items:center!important;
+  border-radius:8px!important;
+  font-size:11px!important;font-style:normal!important;font-weight:800!important;
+}
+body[data-app-route="moreLess"] .v545-preview-modal span,
+body .v543-moreless-portal .v545-preview-modal span{
+  background:#18e3ee!important;color:#07105f!important;
+}
+body[data-app-route="moreLess"] .v545-preview-modal em,
+body .v543-moreless-portal .v545-preview-modal em{
+  margin-top:8px!important;border:1px solid #18e3ee!important;color:#18e3ee!important;
+}
+
+/* Al abrir cualquiera de estas tarjetas, el portal toma toda la pantalla y conserva la navegación inferior. */
+body.v543-more-portal-open .v543-moreless-portal{
+  display:block!important;
+  visibility:visible!important;
+  opacity:1!important;
+}
+@media(max-width:390px){
+  body[data-app-route="moreLess"] .v545-more-screen-card,
+  body .v543-moreless-portal .v545-more-screen-card{min-height:220px!important}
+  body[data-app-route="moreLess"] .v545-preview-players,
+  body .v543-moreless-portal .v545-preview-players{padding-left:10px!important;padding-right:10px!important}
+}
