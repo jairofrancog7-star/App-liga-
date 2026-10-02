@@ -436,3 +436,89 @@ body[data-app-route="profile"] .v569-profile-hero{
     grid-template-columns:52px minmax(0,1fr)!important;
   }
 }
+
+
+/* V593_CREATE_ACCOUNT_CYAN_ARROW — barra cyan final con flecha grande y mejor jerarquía. */
+body[data-app-route="profile"] .v575-create-account{
+  position:relative!important;
+  min-height:60px!important;
+  margin-top:16px!important;
+  padding:0 10px 0 20px!important;
+  border:1px solid rgba(165,250,255,.62)!important;
+  border-radius:18px!important;
+  overflow:hidden!important;
+  background:
+    linear-gradient(110deg,#14c9e7 0%,#2fe0ec 52%,#69f0f4 100%)!important;
+  color:#04104f!important;
+  box-shadow:
+    0 14px 30px rgba(19,199,225,.28),
+    0 0 0 1px rgba(36,222,236,.07),
+    inset 0 1px 0 rgba(255,255,255,.58)!important;
+  font-size:13px!important;
+  font-weight:950!important;
+  letter-spacing:-.01em!important;
+  transition:transform .16s ease,box-shadow .16s ease,filter .16s ease!important;
+}
+body[data-app-route="profile"] .v575-create-account::before{
+  content:"";
+  position:absolute;
+  left:-22%;
+  top:-80%;
+  width:46%;
+  height:250%;
+  transform:rotate(22deg);
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,.22),transparent);
+  pointer-events:none;
+}
+body[data-app-route="profile"] .v575-create-account>span{
+  position:relative;
+  z-index:1;
+  display:flex!important;
+  align-items:center!important;
+  min-height:40px!important;
+}
+body[data-app-route="profile"] .v575-create-account i{
+  position:relative!important;
+  z-index:1!important;
+  flex:0 0 40px!important;
+  width:40px!important;
+  height:40px!important;
+  min-width:40px!important;
+  min-height:40px!important;
+  display:grid!important;
+  place-items:center!important;
+  border:1px solid rgba(1,20,72,.14)!important;
+  border-radius:50%!important;
+  background:linear-gradient(180deg,rgba(4,25,82,.16),rgba(4,20,72,.10))!important;
+  color:#04104f!important;
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.24),
+    0 5px 12px rgba(3,20,78,.11)!important;
+  font-size:23px!important;
+  line-height:1!important;
+  font-weight:900!important;
+  font-style:normal!important;
+}
+body[data-app-route="profile"] .v575-create-account:active{
+  transform:scale(.985)!important;
+  filter:saturate(1.06)!important;
+  box-shadow:
+    0 8px 20px rgba(19,199,225,.22),
+    inset 0 1px 0 rgba(255,255,255,.48)!important;
+}
+@media(max-width:390px){
+  body[data-app-route="profile"] .v575-create-account{
+    min-height:58px!important;
+    padding-left:17px!important;
+    border-radius:17px!important;
+    font-size:12px!important;
+  }
+  body[data-app-route="profile"] .v575-create-account i{
+    flex-basis:38px!important;
+    width:38px!important;
+    height:38px!important;
+    min-width:38px!important;
+    min-height:38px!important;
+    font-size:22px!important;
+  }
+}
