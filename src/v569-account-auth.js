@@ -92,13 +92,47 @@ function uniqueAlias(base,exceptId=''){
   let a=cleanAlias(base)||'aficionado';
   if(a.length<3)a=(a+'liga').slice(0,12);
   if(!aliasExists(a,exceptId))return a;
-  for(let i=0;i<60;i++){const next=(a.slice(0,19)+(Math.floor(1000+Math.random()*9000))).slice(0,24);if(!aliasExists(next,exceptId))return next}
-  return (a.slice(0,15)+Date.now().toString().slice(-6)).slice(0,24);
+  for(let i=2;i<100;i++){
+    const suffix=String(i),next=(a.slice(0,24-suffix.length)+suffix).slice(0,24);
+    if(!aliasExists(next,exceptId))return next;
+  }
+  return (a.slice(0,18)+Date.now().toString().slice(-5)).slice(0,24);
 }
-function generateAlias(name,phone,email,exceptId=''){
-  const namePart=String(name||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[^a-z0-9]+/g,'').slice(0,14)||normalizeEmail(email).split('@')[0].replace(/[^a-z0-9]/g,'').slice(0,14)||'aficionado';
-  const p=normalizePhone(phone),suffix=p.slice(-4)||(Math.floor(1000+Math.random()*9000)+'');
-  return uniqueAlias((namePart+suffix).slice(0,24),exceptId);
+function aliasParts(name){
+  return String(name||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase()
+    .replace(/[^a-z0-9 ]+/g,' ').trim().split(/\s+/).filter(Boolean);
+}
+function aliasBaseFromName(name,variant=0){
+  const p=aliasParts(name);
+  if(!p.length)return '';
+  const first=p[0],last=p.length>1?p[p.length-1]:'';
+  const middle=p.length>2?p[1]:'';
+  const choices=[
+    first+last,
+    last?first+'.'+last:first,
+    last?first+last.charAt(0):first,
+    last?first.charAt(0)+last:first,
+    middle?first+middle:first,
+    last?last+'.'+first:last||first
+  ].map(cleanAlias).filter(Boolean);
+  return choices[Math.abs(Number(variant)||0)%choices.length]||first;
+}
+function generateAlias(name,phone,email,exceptId='',variant=0){
+  const fromName=aliasBaseFromName(name,variant);
+  const fromEmail=cleanAlias(normalizeEmail(email).split('@')[0]||'');
+  return uniqueAlias(fromName||fromEmail||'aficionado',exceptId);
+}
+function fillSuggestedAlias(root,force=false){
+  if(!root)return '';
+  const alias=$('[data-v569-alias]',root),name=$('[data-v569-name]',root);
+  if(!alias||!name)return '';
+  if(!force&&alias.dataset.v569AliasManual==='1')return alias.value;
+  const variant=Number(alias.dataset.v569AliasVariant||0);
+  const value=generateAlias(name.value,$('[data-v569-phone]',root)?.value,$('[data-v569-email]',root)?.value,'',variant);
+  if(name.value.trim().length<2){if(!alias.dataset.v569AliasManual)alias.value='';return ''}
+  alias.value=value;
+  alias.dataset.v569AliasSuggested='1';
+  return value;
 }
 function findAccount(identifier){
   const raw=String(identifier||'').trim(),alias=cleanAlias(raw),email=normalizeEmail(raw),phone=normalizePhone(raw);
@@ -200,7 +234,7 @@ function profileRegisterMarkup(){
     '<div class="v569-methods"><button type="button" class="active" data-v569-method="phone">Teléfono</button><button type="button" data-v569-method="email">Gmail / correo</button></div>'+
     '<div class="v569-form">'+
       field('NOMBRE',input('text','data-v569-name','Tu nombre','','autocomplete="name"'))+
-      field('ALIAS DEL PERFIL','<div class="v569-inline">'+input('text','data-v569-alias','Elige uno o déjalo vacío')+'<button type="button" data-v569-generate-alias>Generar</button></div><small>Puedes elegir tu alias o dejarlo vacío para generarlo automáticamente.</small>')+
+      field('ALIAS DEL PERFIL','<div class="v569-inline">'+input('text','data-v569-alias','Se crea con tu nombre')+'<button type="button" data-v569-generate-alias>Otro</button></div><small>La app te propone un alias usando tu nombre. Si no te gusta, toca “Otro” o escribe el que quieras.</small>')+
       '<div data-v569-phone-wrap>'+field('NÚMERO TELEFÓNICO',input('tel','data-v569-phone','Ej. 461 123 4567','','inputmode="tel" autocomplete="tel"'))+'</div>'+
       '<div data-v569-email-wrap hidden>'+field('GMAIL / CORREO',input('email','data-v569-email','nombre@gmail.com','','autocomplete="email"'))+'</div>'+
       field('CONTRASEÑA','<div class="v569-inline">'+input('password','data-v569-password','Mínimo 8 caracteres','','autocomplete="new-password"')+'<button type="button" data-v569-generate-password>Generar</button></div>')+
@@ -243,7 +277,11 @@ function openProfileMode(mode){
   card.dataset.v569Inline=mode;
   card.innerHTML=mode==='login'?profileLoginMarkup():profileRegisterMarkup();
   const page=$('[data-v569-page]',card);
-  if(page&&mode==='register')page.dataset.method='phone';
+  if(page&&mode==='register'){
+    page.dataset.method='phone';
+    const alias=$('[data-v569-alias]',page);
+    if(alias){alias.dataset.v569AliasManual='0';alias.dataset.v569AliasVariant='0'}
+  }
   card.scrollIntoView({behavior:'smooth',block:'start'});
   return true;
 }
@@ -282,7 +320,7 @@ function authShell(kind){
         '<div class="v569-methods"><button type="button" class="active" data-v569-method="phone">Teléfono</button><button type="button" data-v569-method="email">Gmail / correo</button></div>'+
         '<div class="v569-form">'+
           field('NOMBRE',input('text','data-v569-name','Tu nombre','','autocomplete="name"'))+
-          field('ALIAS DEL PERFIL','<div class="v569-inline">'+input('text','data-v569-alias','Elige uno o déjalo vacío')+'<button type="button" data-v569-generate-alias>Generar</button></div><small>Si lo dejas vacío, la app genera uno automáticamente.</small>')+
+          field('ALIAS DEL PERFIL','<div class="v569-inline">'+input('text','data-v569-alias','Se crea con tu nombre')+'<button type="button" data-v569-generate-alias>Otro</button></div><small>La app te propone un alias usando tu nombre. Si no te gusta, toca “Otro” o escribe el que quieras.</small>')+
           '<div data-v569-phone-wrap>'+field('NÚMERO TELEFÓNICO',input('tel','data-v569-phone','Ej. 461 123 4567','','inputmode="tel" autocomplete="tel"'))+'</div>'+
           '<div data-v569-email-wrap hidden>'+field('GMAIL / CORREO',input('email','data-v569-email','nombre@gmail.com','','autocomplete="email"'))+'</div>'+
           field('CONTRASEÑA','<div class="v569-inline">'+input('password','data-v569-password','Mínimo 8 caracteres','','autocomplete="new-password"')+'<button type="button" data-v569-generate-password>Generar</button></div>')+
@@ -481,9 +519,31 @@ function mountPage(){
   if(placeholder||!$('[data-v569-page]',screen))screen.innerHTML=authShell(r);
   const root=$('[data-v569-page]',screen);if(!root||root.dataset.bound)return;
   root.dataset.bound='1';
-  if(root.dataset.v569Page==='register'){root.dataset.method='phone'}
+  if(root.dataset.v569Page==='register'){
+    root.dataset.method='phone';
+    const alias=$('[data-v569-alias]',root);
+    if(alias&&!alias.dataset.v569AliasManual){alias.dataset.v569AliasManual='0';alias.dataset.v569AliasVariant='0'}
+  }
 }
 function schedule(){setTimeout(()=>{mountPage();enhanceProfile()},60)}
+document.addEventListener('input',e=>{
+  if(!(e.target instanceof Element))return;
+  const root=e.target.closest('[data-v569-page]');
+  if(!root||root.dataset.v569Page!=='register')return;
+  if(e.target.matches('[data-v569-name]')){
+    const alias=$('[data-v569-alias]',root);
+    if(alias&&alias.dataset.v569AliasManual!=='1'){
+      alias.dataset.v569AliasVariant='0';
+      fillSuggestedAlias(root,false);
+    }
+    return;
+  }
+  if(e.target.matches('[data-v569-alias]')){
+    e.target.dataset.v569AliasManual='1';
+    e.target.removeAttribute('data-v569-alias-suggested');
+  }
+},false);
+// data-v569-alias-manual-input
 document.addEventListener('click',async e=>{
   if(!(e.target instanceof Element))return;
   const profileClose=e.target.closest('[data-v569-profile-close]');
@@ -498,7 +558,14 @@ document.addEventListener('click',async e=>{
   if(routeBtn){e.preventDefault();e.stopPropagation();go(routeBtn.dataset.v569Route);return}
   const method=e.target.closest('[data-v569-method]');
   if(method){e.preventDefault();const root=method.closest('[data-v569-page]');root.dataset.method=method.dataset.v569Method;$$('[data-v569-method]',root).forEach(b=>b.classList.toggle('active',b===method));$('[data-v569-phone-wrap]',root).hidden=method.dataset.v569Method!=='phone';$('[data-v569-email-wrap]',root).hidden=method.dataset.v569Method!=='email';return}
-  if(e.target.closest('[data-v569-generate-alias]')){const root=e.target.closest('[data-v569-page]'),value=generateAlias($('[data-v569-name]',root)?.value,$('[data-v569-phone]',root)?.value,$('[data-v569-email]',root)?.value);$('[data-v569-alias]',root).value=value;return}
+  if(e.target.closest('[data-v569-generate-alias]')){
+    const root=e.target.closest('[data-v569-page]'),alias=$('[data-v569-alias]',root);
+    if(!($('[data-v569-name]',root)?.value||'').trim()){toast('Primero escribe tu nombre');return}
+    alias.dataset.v569AliasManual='0';
+    alias.dataset.v569AliasVariant=String((Number(alias.dataset.v569AliasVariant||0)+1)%6);
+    fillSuggestedAlias(root,true);
+    return;
+  }
   if(e.target.closest('[data-v569-generate-password]')){const root=e.target.closest('[data-v569-page]'),p=generatedPassword();$('[data-v569-password]',root).value=p;$('[data-v569-confirm]',root).value=p;toast('Contraseña segura generada');return}
   if(e.target.closest('[data-v569-register]')){e.preventDefault();await registerFromPage(e.target.closest('[data-v569-page]'));return}
   if(e.target.closest('[data-v569-login]')){e.preventDefault();await loginFromPage(e.target.closest('[data-v569-page]'));return}
