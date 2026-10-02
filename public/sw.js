@@ -1,4 +1,4 @@
-const CACHE='liga-juventino-v590c-fantasy-design-apply';
+const CACHE='liga-juventino-v590d-fantasy-module-repair';
 const CORE=['./','./index.html','./manifest.webmanifest','./brand-neon-header.svg','./profile-reference.svg'];
 
 self.addEventListener('install',event=>{
