@@ -939,3 +939,94 @@ body[data-app-route="quizArena"] .v533-below-primary,
 body[data-app-route="moreLess"] .v533-below-primary{
   padding-bottom:calc(68px + env(safe-area-inset-bottom))!important;
 }
+
+
+/* V533 — conservar diseño principal anterior y colocar referencias debajo */
+body[data-app-route="quizArena"] .v531-added-block,
+body[data-app-route="moreLess"] .v531-added-block{
+  position:relative!important;
+  z-index:8!important;
+  width:100%!important;
+  max-width:520px!important;
+  margin:0 auto!important;
+  padding:0!important;
+  background:#05065f!important;
+}
+body[data-app-route="quizArena"] .v531-legacy-extras,
+body[data-app-route="moreLess"] .v531-legacy-extras{
+  position:relative!important;
+  width:100%!important;
+  margin:0!important;
+  padding:18px 11px calc(88px + env(safe-area-inset-bottom))!important;
+  background:
+    radial-gradient(120% 22% at 50% 0,rgba(30,86,255,.20),transparent 72%),
+    linear-gradient(180deg,#09096e,#05065f)!important;
+  border-top:1px solid rgba(45,91,214,.28)!important;
+}
+body[data-app-route="quizArena"] .v531-extras-head,
+body[data-app-route="moreLess"] .v531-extras-head{
+  display:flex!important;
+  align-items:flex-end!important;
+  justify-content:space-between!important;
+  gap:12px!important;
+  margin:0 2px 13px!important;
+}
+body[data-app-route="quizArena"] .v531-extras-head span,
+body[data-app-route="moreLess"] .v531-extras-head span{
+  color:#fff!important;
+  font:800 19px/1 Inter,Roboto,Arial,sans-serif!important;
+}
+body[data-app-route="quizArena"] .v531-extras-head b,
+body[data-app-route="moreLess"] .v531-extras-head b{
+  color:#1de2ef!important;
+  font:750 9px/1 Inter,Roboto,Arial,sans-serif!important;
+  text-align:right!important;
+}
+body[data-app-route="quizArena"] .v531-legacy-extras .v531-quiz-random-card,
+body[data-app-route="moreLess"] .v531-legacy-extras .v531-more-feature,
+body[data-app-route="moreLess"] .v531-legacy-extras .v531-more-card{
+  box-shadow:0 10px 24px rgba(0,0,45,.16)!important;
+}
+body[data-app-route="quizArena"] .v531-added-block>.v531-page,
+body[data-app-route="moreLess"] .v531-added-block>.v531-page{
+  width:100%!important;
+  max-width:520px!important;
+  min-height:calc(100dvh - var(--bottom-nav-h,60px))!important;
+  margin:0!important;
+  border-top:1px solid rgba(50,86,210,.30)!important;
+}
+
+/* No alterar el tamaño/estructura del diseño principal viejo. */
+body[data-app-route="quizArena"] #screen>[data-v48-arena],
+body[data-app-route="moreLess"] #screen>[data-v12-moreless]{
+  position:relative!important;
+  z-index:7!important;
+  width:100%!important;
+  max-width:520px!important;
+  margin:0 auto!important;
+  flex:none!important;
+}
+
+/* Marca visual para indicar que lo de Drive continúa debajo del principal. */
+body[data-app-route="quizArena"] .v531-legacy-extras::before,
+body[data-app-route="moreLess"] .v531-legacy-extras::before{
+  content:""!important;
+  display:block!important;
+  width:38px!important;
+  height:4px!important;
+  margin:-9px auto 15px!important;
+  border-radius:99px!important;
+  background:#2c3298!important;
+}
+
+@media(max-width:390px){
+  body[data-app-route="quizArena"] .v531-legacy-extras,
+  body[data-app-route="moreLess"] .v531-legacy-extras{
+    padding-left:9px!important;
+    padding-right:9px!important;
+  }
+  body[data-app-route="quizArena"] .v531-extras-head span,
+  body[data-app-route="moreLess"] .v531-extras-head span{
+    font-size:17px!important;
+  }
+}
