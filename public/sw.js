@@ -1,4 +1,4 @@
-const CACHE='liga-juventino-v557-navigation-local-logos';
+const CACHE='liga-juventino-v558-inapp-video-credential-crest';
 const CORE=['./','./index.html','./manifest.webmanifest','./brand-neon-header.svg','./profile-reference.svg'];
 
 self.addEventListener('install',event=>{

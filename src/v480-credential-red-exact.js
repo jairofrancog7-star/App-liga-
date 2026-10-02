@@ -319,7 +319,7 @@ async function playerImage(file=playerFile()){
 }
 function teamLogoUrl(team){
   const wanted=norm(team);
-  if(wanted==='dep nopalero'||wanted==='deportivo nopalero')return window.LJR_CREDENTIAL_NOPALERO_LOGO||'https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/assets/official-logos/dep-nopalero.png';
+  if(wanted==='dep nopalero'||wanted==='deportivo nopalero')return './assets/nopalero-credential-hd.png';
   try{
     const u=window.LJR_OFFICIAL_API?.getLogo?.(team)||window.LJR_TEAM_LOGOS?.get?.(team)||'';
     if(u)return /^https?:/i.test(u)?u:new URL(String(u).replace(/^\.\//,''),location.href).href;
@@ -342,6 +342,7 @@ async function transparentTeam(src){
 }
 async function prepareTeam(src){
   const im=await loadImage(src);if(!im)return null;
+  if(String(src).includes('nopalero-credential-hd.png'))return im;
   if(/^data:image\/webp;base64,/i.test(String(src))){
     /* V512 — Deportivo Nopalero:
        quitar ÚNICAMENTE el fondo negro exterior.

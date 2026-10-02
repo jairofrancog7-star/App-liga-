@@ -197,7 +197,7 @@ function youtubeId(url){
   const s=String(url||'');
   let m=s.match(/[?&]v=([^&#]+)/i);if(m)return m[1];
   m=s.match(/youtu\.be\/([^?&#/]+)/i);if(m)return m[1];
-  m=s.match(/youtube\.com\/(?:live|embed)\/([^?&#/]+)/i);if(m)return m[1];
+  m=s.match(/youtube\.com\/(?:live|embed|shorts)\/([^?&#/]+)/i);if(m)return m[1];
   return '';
 }
 function streamEmbedHtml(s){
@@ -205,13 +205,15 @@ function streamEmbedHtml(s){
   if(!url)return '';
   const p=provider(url);
   if(p.name==='Facebook Live'){
-    return '<section class="v144-stream-embed fallback facebook"><header><span><small>FACEBOOK LIVE VINCULADO</small><b>'+esc(s.source.name||p.name)+'</b></span><i>ENLACE GUARDADO</i></header><div class="v144-stream-fallback"><b>Facebook</b><span>Chrome Android no puede controlar de forma fiable el video de Facebook dentro de un iframe. Se evita la pantalla negra y se conserva el enlace real del LIVE.</span><div><button type="button" data-v144-open>Abrir Facebook Live</button><button type="button" data-v144-tv-source>Transmitir en TV</button><button type="button" data-v144-share>Compartir Live</button></div></div></section>';
+    const src='https://www.facebook.com/plugins/video.php?href='+encodeURIComponent(url)+'&show_text=false&width=560&autoplay=false';
+    return '<section class="v144-stream-embed"><header><span><small>VIDEO VINCULADO</small><b>'+esc(s.source.name||p.name)+'</b></span><i>FACEBOOK</i></header><div class="v144-stream-frame"><iframe src="'+esc(src)+'" title="Facebook video" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen></iframe></div><footer><span>Reproduce el video aquí. Debe ser público y permitir inserción.</span><div><button type="button" data-v144-share>Compartir</button></div></footer></section>';
+
   }
   if(p.name==='YouTube Live'){
     const id=youtubeId(url);
     if(id){
       const src='https://www.youtube-nocookie.com/embed/'+encodeURIComponent(id)+'?autoplay=1&mute=1&playsinline=1';
-      return '<section class="v144-stream-embed"><header><span><small>TRANSMISIÓN EN VIVO</small><b>'+esc(s.source.name||p.name)+'</b></span><i>SIMULTÁNEO</i></header><div class="v144-stream-frame"><iframe src="'+esc(src)+'" title="YouTube Live" loading="lazy" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen></iframe></div><footer><span>Video y Match Center visibles al mismo tiempo.</span><div><button type="button" data-v144-open>YouTube</button><button type="button" data-v144-share>Compartir Live</button></div></footer></section>';
+      return '<section class="v144-stream-embed"><header><span><small>TRANSMISIÓN EN VIVO</small><b>'+esc(s.source.name||p.name)+'</b></span><i>SIMULTÁNEO</i></header><div class="v144-stream-frame"><iframe src="'+esc(src)+'" title="YouTube Live" referrerpolicy="strict-origin-when-cross-origin" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen></iframe></div><footer><span>Video y Match Center visibles al mismo tiempo.</span><div><button type="button" data-v144-open>YouTube</button><button type="button" data-v144-share>Compartir Live</button></div></footer></section>';
     }
   }
   if(p.key==='tiktok'){

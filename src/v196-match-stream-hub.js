@@ -109,7 +109,7 @@ function openExternal(raw){
 function youtubeId(url){
   const s=String(url||'');let m=s.match(/[?&]v=([^&#]+)/i);if(m)return m[1];
   m=s.match(/youtu\.be\/([^?&#/]+)/i);if(m)return m[1];
-  m=s.match(/youtube\.com\/(?:live|embed)\/([^?&#/]+)/i);return m?m[1]:'';
+  m=s.match(/youtube\.com\/(?:live|embed|shorts)\/([^?&#/]+)/i);return m?m[1]:'';
 }
 function floatingCapability(item,cfg=settings()){
   const url=safeUrl(item?.url||''),p=provider(url);
@@ -117,7 +117,7 @@ function floatingCapability(item,cfg=settings()){
   const docPip=!!window.documentPictureInPicture?.requestWindow;
   if(p.key==='video')return {inApp:true,pip:true,docPip,provider:p};
   if(p.key==='youtube')return {inApp:true,pip:false,docPip,provider:p};
-  if(p.key==='facebook')return {inApp:false,pip:false,docPip:false,provider:p};
+  if(p.key==='facebook')return {inApp:true,pip:false,docPip,provider:p};
   return {inApp:false,pip:false,docPip,provider:p};
 }
 async function requestPiP(node){
@@ -188,10 +188,10 @@ async function requestDocumentPiP(node){
     const d=pip.document;
     d.head.innerHTML='<meta name="viewport" content="width=device-width,initial-scale=1"><style>html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#000}body{display:grid;place-items:center}.pip-wrap{width:100%;height:100%}.pip-wrap iframe,.pip-wrap video{display:block;width:100%;height:100%;border:0;background:#000;object-fit:contain}</style>';
     const wrap=d.createElement('div');wrap.className='pip-wrap';
-    const clone=frame.cloneNode(true);
-    while(clone.firstChild)wrap.appendChild(clone.firstChild);
+    const marker=document.createComment('PiP player');frame.before(marker);
+    wrap.appendChild(frame);
     d.body.appendChild(wrap);
-    pip.addEventListener('pagehide',()=>{}, {once:true});
+    pip.addEventListener('pagehide',()=>{marker.replaceWith(frame);systemPiPActive=false}, {once:true});
     flash('Ventana flotante activa. Puedes salir de la app y seguir viendo el video.');
     return true;
   }catch(_){
@@ -203,6 +203,10 @@ async function requestAndroidChromeFullscreen(node){
   const iframe=$('iframe',node)||floatingCardNode?.querySelector('iframe')||null;
   const target=video||iframe||$('.v196-frame',node)||null;
   if(!target)return false;
+  if(!video&&iframe){
+    flash('Para salir de la app: reproduce el video, toca pantalla completa dentro del reproductor y luego Inicio. El proveedor debe permitir PiP.');
+    return false;
+  }
 
   if(video){
     try{
@@ -321,18 +325,20 @@ function playerHtml(c,s,st,current){
   if(!url){
     return '<div class="v196-player-empty"><span class="v196-signal">◉</span><b>'+(st.key==='final'?'Sin repetición vinculada':'Transmisión sin configurar')+'</b><p>'+(st.key==='final'?'Puedes vincular una repetición o resumen del partido.':'Vincula YouTube, Facebook, TikTok o una fuente de video para tenerla lista cuando empiece el partido.')+'</p><button type="button" data-v196-add>+ Vincular fuente</button></div>';
   }
-  if(cfg.render==='external'){
+  if(cfg.render==='external'&&!['facebook','youtube'].includes(p.key)){
     return '<div class="v196-player-empty linked"><span class="v196-provider">'+esc(p.icon)+'</span><b>'+esc(current?.name||s.source?.name||p.name)+'</b><p>El modo de reproducción está configurado para abrir el proveedor original.</p><button type="button" data-v196-open="'+esc(url)+'">Abrir transmisión</button></div>';
   }
   if(p.key==='youtube'){
     const id=youtubeId(url);
     if(id){
       const autoplay=st.live&&!cfg.lowQuality?'1':'0';
-      return '<div class="v196-frame"><iframe src="https://www.youtube-nocookie.com/embed/'+encodeURIComponent(id)+'?autoplay='+autoplay+'&mute=1&playsinline=1&controls=1" title="YouTube Live" loading="lazy" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen></iframe></div>';
+      return '<div class="v196-frame"><iframe src="https://www.youtube-nocookie.com/embed/'+encodeURIComponent(id)+'?autoplay='+autoplay+'&mute=1&playsinline=1&controls=1" title="YouTube Live" referrerpolicy="strict-origin-when-cross-origin" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen></iframe></div>';
     }
   }
   if(p.key==='facebook'){
-    return '<div class="v196-player-empty linked facebook"><span class="v196-provider">f</span><b>'+esc(current?.name||s.source?.name||'Facebook Live')+'</b><p>Se desactivó el iframe de Facebook en Chrome Android porque puede quedar negro o cambiar de bloque. El enlace real sigue guardado y se abre directamente en Facebook.</p><button type="button" data-v196-open="'+esc(url)+'">Abrir Facebook Live</button></div>';
+    const src='https://www.facebook.com/plugins/video.php?href='+encodeURIComponent(url)+'&show_text=false&width=560&autoplay=false';
+    return '<div class="v196-frame"><iframe src="'+esc(src)+'" title="Facebook video" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen></iframe></div>';
+
   }
   if(p.key==='video'){
     return '<div class="v196-frame"><video src="'+esc(url)+'" '+(st.live?'autoplay ':'')+'controls playsinline '+(cfg.lowQuality?'preload="metadata"':'preload="auto"')+' data-v196-system-pip></video></div>';
@@ -478,7 +484,7 @@ async function toggleFloating(c,node){
 
   /* V527: Chrome Android usa su flujo nativo más estable:
      pantalla completa -> botón Inicio -> Picture-in-Picture de Android. */
-  if(isAndroidChrome()){
+  if(isAndroidChrome()&&!cap.pip){
     const handoff=await requestAndroidChromeFullscreen(node);
     if(handoff){
       document.body.classList.add('v196-floating-player');
@@ -552,7 +558,7 @@ function bind(c,node){
   $('[data-v196-network]',node)?.addEventListener('click',e=>{stop(e);addSourceModal(c,'Stream de red')});
   $('[data-v196-settings]',node)?.addEventListener('click',e=>{stop(e);settingsModal(c)});
   $('[data-v196-floating]',node)?.addEventListener('click',e=>{stop(e);toggleFloating(c,node)});
-  Array.from(node.querySelectorAll('[data-v196-pip]')).forEach(b=>b.addEventListener('click',e=>{stop(e);if(isAndroidChrome())requestAndroidChromeFullscreen(node);else requestPiP(node)}));
+  Array.from(node.querySelectorAll('[data-v196-pip]')).forEach(b=>b.addEventListener('click',e=>{stop(e);if(node.querySelector('video'))requestPiP(node);else if(isAndroidChrome())requestAndroidChromeFullscreen(node);else requestDocumentPiP(node)}));
   Array.from(node.querySelectorAll('[data-v196-source]')).forEach(b=>b.onclick=()=>{const item=list[Number(b.dataset.v196Source)];if(item){setFloating(false,node);setCurrentSource(c,item)}});
   $('[data-v196-close-float]',node)?.addEventListener('click',e=>{stop(e);disableFloating(node)});
 }

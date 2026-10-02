@@ -92,3 +92,12 @@
  html body[data-app-route="competition"] #screen .v12-fixtures-reference{padding-bottom:16px!important;min-height:0!important}
  html body[data-app-route="competition"] #v4CompetitionEntry{margin-top:16px!important}
 }
+
+/* V558: reserve navigation clearance only after the final section. */
+html body #screen > :is(.v27-teams-page,.v41-teams-page,.v413-shell,.v412-shell):has(~ .v105-bottom){
+  min-height:0!important;
+  padding-bottom:16px!important;
+  margin-bottom:0!important;
+}
+html body #screen .v73-below-native{margin-bottom:16px!important}
+html body .v196-frame:has(iframe){min-height:200px}
