@@ -88,7 +88,7 @@ function accessMarkup(){
  const shirts=(n,pos)=>'<div class="v581-preview-row '+pos.toLowerCase()+'>'+Array.from({length:n},()=>'<button type="button" class="v581-preview-shirt" data-v576-open-team aria-label="Elegir '+pos+'"><span>+</span><b>'+pos+'</b></button>').join('')+'</div>';
  return'<section class="v576-access-more" data-v576-access-more>'+
  '<div class="v576-more-kicker">JUEGA FANTASY</div>'+
- '<div class="v576-fantasy-cards">'+teams.map((t,i)=>'<article class="'+(i===1?'main':'')+'"><div><img src="'+esc(teamLogo(t))+'" alt=""></div><b>'+esc(t)+'</b><small>'+(i===1?'12 pts':'9 pts')+'</small></article>').join('')+'</div>'+
+
  '<div class="v576-access-copy"><h2>Elige tu equipo</h2><p>Arma tu plantilla con 15 jugadores registrados de la Liga Juventino Rosas. Tienes €100m de presupuesto Fantasy.</p></div>'+
  '<div class="v576-feature-grid"><article><b>15</b><span>Jugadores</span></article><article><b>€100m</b><span>Presupuesto</span></article><article><b>4</b><span>Posiciones</span></article></div>'+
  '<div class="v576-access-actions"><button type="button" data-v576-guest>Prueba como invitado</button><button type="button" data-v576-open-team>Elige tu equipo</button></div>'+
