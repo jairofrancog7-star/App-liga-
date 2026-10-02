@@ -210,3 +210,6 @@ body[data-app-route="fantasyAccess"] .v576-fantasy-cards,
 body[data-app-route="fantasy"] .v576-fantasy-cards{
   display:none!important;
 }
+
+/* V584 — permanently hide the three obsolete promo cards above the Fantasy content. */
+.v576-fantasy-cards{display:none!important;height:0!important;min-height:0!important;margin:0!important;padding:0!important;overflow:hidden!important}
