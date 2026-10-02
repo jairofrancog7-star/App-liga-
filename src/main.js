@@ -4890,6 +4890,12 @@ function v38StatsView(){
     '</section>'+
   '</section>';
 }
+const V567_WEEK_LIGA_LOGO='https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/assets/liga-logo.webp';
+function v567WeekLogo(name){
+  const label=String(name||'').trim();
+  return window.LJR_TEAM_LOGOS?.get?.(label)||window.V66_OFFICIAL_DIRECTORY?.logoFor?.(label)||'';
+}
+function v567WeekCategoryLogo(){ return V567_WEEK_LIGA_LOGO; }
 function v38WeeklyView(){
   const rows={
     primera:[
@@ -4922,7 +4928,7 @@ function v38WeeklyView(){
     ]
   };
   const titles={primera:'Primera Fuerza',intermedia:'Intermedia',segunda:'Segunda Fuerza',veteranos:'Veteranos 50+'};
-  const group=(title,list,key)=>'<section class="v553-week-group" data-week-group="'+key+'"><div class="v553-week-title"><span>🏆 '+title+'</span><b>'+list.length+' partido(s)</b></div><div class="v553-week-scroll"><table><thead><tr><th>Fecha</th><th>Hora</th><th>Local</th><th>vs</th><th>Visitante</th><th>Campo</th><th>Jornada</th></tr></thead><tbody>'+list.map(r=>'<tr data-week-date="'+r[0]+'">'+r.map((v,i)=>'<td>'+((i===3)?'vs':v)+'</td>').join('')+'</tr>').join('')+'</tbody></table></div></section>';
+  const group=(title,list,key)=>'<section class="v553-week-group" data-week-group="'+key+'"><div class="v553-week-title"><span class="v567-week-cat"><img src="'+v567WeekCategoryLogo()+'" alt="" loading="lazy" decoding="async"><span>'+title+'</span></span><b>'+list.length+' partido(s)</b></div><div class="v553-week-scroll"><table><thead><tr><th>Fecha</th><th>Hora</th><th>Local</th><th>vs</th><th>Visitante</th><th>Jornada</th></tr></thead><tbody>'+list.map(r=>{const home=v567WeekLogo(r[2]);const away=v567WeekLogo(r[3]);return '<tr data-week-date="'+r[0]+'"><td>'+r[0]+'</td><td>'+r[1]+'</td><td><span class="v567-week-team">'+(home?'<img src="'+home+'" alt="" loading="lazy" decoding="async">':'')+'<span>'+r[2]+'</span></span></td><td>vs</td><td><span class="v567-week-team">'+(away?'<img src="'+away+'" alt="" loading="lazy" decoding="async">':'')+'<span>'+r[3]+'</span></span></td><td>Jornada 7</td></tr>'}).join('')+'</tbody></table></div></section>';
   return '<section class="v60-tool-page v63-page v188-weekly-page v553-weekly-report" data-v553-weekly>'+
     v60Header('JUEGOS DE LA SEMANA','TORNEO DE COPA 2026','Consulta partidos por categoría, temporada y rango de fechas.')+
     '<div class="v553-week-filter">'+
@@ -4995,10 +5001,11 @@ function bindV553Weekly(){
       const badge=g.querySelector('.v553-week-title b')?.textContent||'';
       const rows=[...g.querySelectorAll('tbody tr')].filter(tr=>tr.style.display!=='none').map(tr=>{
         const t=[...tr.children].map(td=>td.textContent.trim());
-        const jornada=t[6]||'Jornada 7';
-        return '<tr><td>'+t[0]+'</td><td>'+t[1]+'</td><td>'+t[2]+'</td><td>'+t[3]+'</td><td>'+t[4]+'</td><td>'+t[5]+'</td><td>'+jornada+'</td></tr>';
+        const home=v567WeekLogo(t[2]);
+        const away=v567WeekLogo(t[4]);
+        return '<tr><td>'+t[0]+'</td><td>'+t[1]+'</td><td><span class="v567-pdf-team">'+(home?'<img src="'+home+'" alt="">':'')+'<span>'+t[2]+'</span></span></td><td>'+t[3]+'</td><td><span class="v567-pdf-team">'+(away?'<img src="'+away+'" alt="">':'')+'<span>'+t[4]+'</span></span></td><td>Jornada 7</td></tr>';
       }).join('');
-      return '<section class="v559-pdf-group"><div class="v559-pdf-grouphead"><h2>🏆 '+title+'</h2><span>'+badge+'</span></div><table><thead><tr><th>Fecha</th><th>Hora</th><th>Local</th><th>vs</th><th>Visitante</th><th>Campo</th><th>Jornada</th></tr></thead><tbody>'+rows+'</tbody></table></section>';
+      return '<section class="v559-pdf-group"><div class="v559-pdf-grouphead"><h2><img class="v567-pdf-cat" src="'+V567_WEEK_LIGA_LOGO+'" alt="">'+title+'</h2><span>'+badge+'</span></div><table><thead><tr><th>Fecha</th><th>Hora</th><th>Local</th><th>vs</th><th>Visitante</th><th>Jornada</th></tr></thead><tbody>'+rows+'</tbody></table></section>';
     }).join('');
     const html='<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Reporte Semanal - Liga Juventino</title><style>'+
       'html,body{margin:0;padding:0;background:#fff;color:#111;font-family:Arial,Helvetica,sans-serif}'+
@@ -5011,9 +5018,9 @@ function bindV553Weekly(){
       '.v559-field{margin-bottom:2.5mm}.v559-field b{display:block;color:#173d1b;font-size:8pt;margin-bottom:1mm}.v559-box{height:7mm;border:1px solid #d4d4d4;border-radius:1.5mm;display:flex;align-items:center;padding:0 2mm;font-size:7pt;color:#333;box-sizing:border-box}'+
       '.v559-actions{display:flex;gap:2mm;align-items:center;margin-top:1mm}.v559-btn{border:1px solid #bbb;border-radius:1.4mm;padding:1.2mm 2.4mm;font-size:7pt;color:#999}.v559-btn:first-child{border:0;padding-left:0}.v559-btn:last-child{margin-left:auto}'+
       '.v559-pdf-group{margin:0 0 6mm;page-break-inside:auto}.v559-pdf-grouphead{display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #ddd;padding-bottom:1.5mm;margin-bottom:1.5mm}'+
-      '.v559-pdf-grouphead h2{margin:0;color:#178c56;font-size:11pt}.v559-pdf-grouphead span{color:#999;font-size:7pt;font-weight:600}'+
-      'table{width:100%;border-collapse:collapse;table-layout:auto}thead{display:table-header-group}tr{page-break-inside:avoid}th,td{border:1px solid #dedede;padding:1.15mm 1.5mm;font-size:6.4pt;line-height:1.15;background:#fff;color:#111}th{color:#999;font-weight:600;text-align:left}th:nth-child(4),td:nth-child(4){text-align:center;width:5%}th:first-child{width:13%}th:nth-child(2){width:8%}th:nth-child(6){width:23%}th:nth-child(7){width:11%}'+
-      '</style></head><body><main class="v559-sheet"><div class="v559-brand">🏆 Liga Municipal de Fútbol Juventino Rosas A.C.</div><div class="v559-line"></div><div class="v559-title">🗓 Juegos de la Semana</div><section class="v559-card"><div class="v559-range">Semana del '+fmt(from)+' al '+fmt(to)+'</div><div class="v559-fields"><div class="v559-field"><b>Categoría</b><div class="v559-box">'+catText+'</div></div><div class="v559-field"><b>Temporada</b><div class="v559-box">'+seasonText+'</div></div><div class="v559-field"><b>Fecha inicio</b><div class="v559-box">'+fmt(from)+'</div></div><div class="v559-field"><b>Fecha fin</b><div class="v559-box">'+fmt(to)+'</div></div><div class="v559-actions"><span class="v559-btn">Consultar</span><span class="v559-btn">Limpiar</span><span class="v559-btn">Imprimir</span></div></div></section>'+groupsHtml+'</main><script>window.addEventListener("load",()=>setTimeout(()=>window.print(),200));<\/script></body></html>';
+      '.v559-pdf-grouphead h2{display:flex;align-items:center;gap:1.5mm;margin:0;color:#178c56;font-size:11pt}.v559-pdf-grouphead span{color:#999;font-size:7pt;font-weight:600}.v567-pdf-cat{width:5.5mm;height:5.5mm;object-fit:contain}.v567-pdf-team{display:flex;align-items:center;gap:1.2mm}.v567-pdf-team img{width:4.2mm;height:4.2mm;object-fit:contain}'+
+      'table{width:100%;border-collapse:collapse;table-layout:fixed}thead{display:table-header-group}tr{page-break-inside:avoid}th,td{border:1px solid #d7dde7;padding:1.25mm 1.5mm;font-size:6.4pt;line-height:1.15;background:#fff;color:#111}th{background:#eef3f8;color:#334155;font-weight:700;text-align:left}tbody tr:nth-child(even) td{background:#fafbfd}th:nth-child(4),td:nth-child(4){text-align:center;width:5%}th:first-child{width:14%}th:nth-child(2){width:8%}th:nth-child(6){width:12%}'+
+      '</style></head><body><main class="v559-sheet"><div class="v559-brand"><img src="'+V567_WEEK_LIGA_LOGO+'" alt="Liga Juventino" style="width:8mm;height:8mm;object-fit:contain;vertical-align:middle;margin-right:2mm"><span>Liga Municipal de Fútbol Juventino Rosas A.C.</span></div><div class="v559-line"></div><div class="v559-title">🗓 Juegos de la Semana</div><section class="v559-card"><div class="v559-range">Semana del '+fmt(from)+' al '+fmt(to)+'</div><div class="v559-fields"><div class="v559-field"><b>Categoría</b><div class="v559-box">'+catText+'</div></div><div class="v559-field"><b>Temporada</b><div class="v559-box">'+seasonText+'</div></div><div class="v559-field"><b>Fecha inicio</b><div class="v559-box">'+fmt(from)+'</div></div><div class="v559-field"><b>Fecha fin</b><div class="v559-box">'+fmt(to)+'</div></div><div class="v559-actions"><span class="v559-btn">Consultar</span><span class="v559-btn">Limpiar</span><span class="v559-btn">Imprimir</span></div></div></section>'+groupsHtml+'</main><script>window.addEventListener("load",()=>setTimeout(()=>window.print(),200));<\/script></body></html>';
     const w=window.open('','_blank');
     if(!w){alert('Permite ventanas emergentes para generar el PDF.');return;}
     w.document.open();w.document.write(html);w.document.close();
