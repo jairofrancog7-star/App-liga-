@@ -133,3 +133,37 @@ body[data-app-route="moreLessGallery"] .v583-challenge-art .v538-person.has-phot
   min-width:0!important;
   min-height:0!important;
 }
+
+
+/* V603 — hard lock: una sola imagen visible por jugador en rankings de goleadores. */
+.v391-rank-copy > img,
+.v462-rank-copy > img,
+.v194-player-name > img,
+.v28-rank-copy > img{
+  display:none!important;
+  visibility:hidden!important;
+  width:0!important;
+  height:0!important;
+  min-width:0!important;
+  min-height:0!important;
+  margin:0!important;
+  padding:0!important;
+  border:0!important;
+}
+.v391-rank-copy.v576-has-inline-photo,
+.v462-rank-copy.v576-has-inline-photo,
+.v194-player-name.v576-has-inline-photo,
+.v28-rank-copy.v576-has-inline-photo{
+  padding-left:0!important;
+  min-height:0!important;
+}
+.v391-rank-row > .v576-player-avatar,
+.v462-rank-row > .v576-player-avatar,
+.v194-player-row > .v576-player-avatar{
+  display:grid!important;
+}
+.v391-rank-row > .v576-player-avatar ~ .v576-player-avatar,
+.v462-rank-row > .v576-player-avatar ~ .v576-player-avatar,
+.v194-player-row > .v576-player-avatar ~ .v576-player-avatar{
+  display:none!important;
+}
