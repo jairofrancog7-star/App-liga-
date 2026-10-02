@@ -1,4 +1,4 @@
-const CACHE='liga-juventino-v562-registry-photos-positions';
+const CACHE='liga-juventino-v562b-registry-hermanos-photos';
 const CORE=['./','./index.html','./manifest.webmanifest','./brand-neon-header.svg','./profile-reference.svg'];
 
 self.addEventListener('install',event=>{
