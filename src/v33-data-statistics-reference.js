@@ -8,6 +8,13 @@ const SRC='https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main
 let db=window.LJR_OFFICIAL_DATA||null;
 let loading=null;
 let activeTab=localStorage.getItem('v33-data-tab')||'general';
+try{
+  if(localStorage.getItem('v542-stats-layout-restored')!=='1'){
+    activeTab='general';
+    localStorage.setItem('v33-data-tab','general');
+    localStorage.setItem('v542-stats-layout-restored','1');
+  }
+}catch(_){activeTab='general'}
 
 function route(){return location.hash.replace('#/','')||'home'}
 function esc(v){return String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot',"'":'&#39;'}[c]))}
