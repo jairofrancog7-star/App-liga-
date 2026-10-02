@@ -13,15 +13,15 @@
  html body #v449-reference-lower .v449-season-controls select:last-child{grid-column:1/-1!important}
  html body #screen .v33-head-actions button{width:44px!important;height:44px!important;min-width:44px!important;padding:10px!important}
  html body #screen .v33-head-actions button svg{width:24px!important;height:24px!important;max-width:24px!important;max-height:24px!important}
- html body #screen :is(.v33-carousel,.v33-stat-grid){display:grid!important;grid-template-columns:minmax(0,1fr)!important;overflow:visible!important;padding:0!important;gap:12px!important}
- html body #screen :is(.v33-carousel,.v33-stat-grid) .v33-stat-card{width:100%!important;max-width:none!important;min-width:0!important;margin:0!important}
- html body #screen :is(.v33-carousel,.v33-stat-grid) .v33-stat-card>h3{font-size:18px!important;min-height:44px!important;padding:12px!important}
- html body #screen :is(.v33-carousel,.v33-stat-grid) .v33-stat-list{padding:0 12px!important}
- html body #screen :is(.v33-carousel,.v33-stat-grid) .v33-stat-row{grid-template-columns:20px 32px minmax(0,1fr) 36px!important;min-height:54px!important;gap:8px!important}
- html body #screen :is(.v33-carousel,.v33-stat-grid) :is(.v33-team-logo,.v33-player-avatar){width:32px!important;height:32px!important}
- html body #screen :is(.v33-carousel,.v33-stat-grid) .v33-row-copy b{font-size:13px!important;line-height:1.3!important}
- html body #screen :is(.v33-carousel,.v33-stat-grid) .v33-row-copy small{font-size:10px!important}
- html body #screen :is(.v33-carousel,.v33-stat-grid) .v33-stat-row>strong{font-size:18px!important;text-align:right!important}
+ html body #screen .v33-stat-grid{display:grid!important;grid-template-columns:minmax(0,1fr)!important;overflow:visible!important;padding:0!important;gap:12px!important}
+ html body #screen .v33-stat-grid .v33-stat-card{width:100%!important;max-width:none!important;min-width:0!important;margin:0!important}
+ html body #screen .v33-stat-grid .v33-stat-card>h3{font-size:18px!important;min-height:44px!important;padding:12px!important}
+ html body #screen .v33-stat-grid .v33-stat-list{padding:0 12px!important}
+ html body #screen .v33-stat-grid .v33-stat-row{grid-template-columns:20px 32px minmax(0,1fr) 36px!important;min-height:54px!important;gap:8px!important}
+ html body #screen .v33-stat-grid :is(.v33-team-logo,.v33-player-avatar){width:32px!important;height:32px!important}
+ html body #screen .v33-stat-grid .v33-row-copy b{font-size:13px!important;line-height:1.3!important}
+ html body #screen .v33-stat-grid .v33-row-copy small{font-size:10px!important}
+ html body #screen .v33-stat-grid .v33-stat-row>strong{font-size:18px!important;text-align:right!important}
  html body #screen .v33-row-copy b{white-space:normal!important;overflow:visible!important;overflow-wrap:anywhere!important}
  html body #screen .v33-tabs button{min-width:0!important;padding:8px 5px!important;white-space:normal!important;font-size:11px!important;line-height:1.3!important}
  html body #screen .v33-detailed{padding-top:16px!important}
