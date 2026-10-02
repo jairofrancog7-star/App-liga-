@@ -139,6 +139,14 @@ function currentPlayer(list){
   const stored=read(KEY)||read('v123-compare-player');
   return resolve(stored,list)||list?.[0]||null;
 }
+function officialProfile(p){
+  const raw=api?.data?.()||window.LJR_OFFICIAL_DATA||null;
+  const cat=raw?.categories?.[String(p?.cat||'')];
+  if(!cat)return null;
+  const teamEntry=Object.entries(cat.player_profiles||{}).find(([team])=>same(team,p?.team));
+  const rows=Array.isArray(teamEntry?.[1])?teamEntry[1]:[];
+  return rows.find(x=>same(x?.name,p?.name))||null;
+}
 function localRegistration(p){
   const reg=read('v124-player-registry',{seasons:{}});
   const seasons=Object.entries(reg?.seasons||{}).sort((a,b)=>String(b[0]).localeCompare(String(a[0])));
@@ -247,13 +255,14 @@ function valueFrom(reg,keys){
 }
 function profileData(p){
   const reg=localRegistration(p)||{};
+  const pub=officialProfile(p)||{};
   return {
-    position:valueFrom(reg,['position','pos','role','positionName']),
-    number:valueFrom(reg,['number','dorsal','jersey','shirtNumber','jerseyNumber']),
+    position:valueFrom(reg,['position','pos','role','positionName'])||String(pub.position||''),
+    number:valueFrom(reg,['number','dorsal','jersey','shirtNumber','jerseyNumber'])||String(pub.dorsal||''),
     nationality:valueFrom(reg,['nationality','country','pais','país']),
     birth:valueFrom(reg,['birthDate','dob','dateOfBirth','fechaNacimiento','birth']),
     city:valueFrom(reg,['city','municipality','locality','community','ciudad','comunidad']),
-    photo:getPhoto(p)
+    photo:getPhoto(p)||String(pub.photo||'')
   };
 }
 function backButton(){
