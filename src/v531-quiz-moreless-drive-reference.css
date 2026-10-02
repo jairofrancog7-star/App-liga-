@@ -1373,3 +1373,42 @@ body[data-app-route="moreLess"] [data-v531-mount="more"]{
   border-top:1px solid rgba(61,86,210,.28)!important;
   background:#05065f!important;
 }
+
+
+/* V536 — flujo por toque en los monitos */
+/* En el inicio solo se ve el diseño principal. Los otros diseños aparecen al tocar un monito. */
+body[data-app-route="quizArena"] [data-v531-mount="quiz"][hidden],
+body[data-app-route="moreLess"] [data-v531-mount="more"][hidden]{
+  display:none!important;
+  visibility:hidden!important;
+  height:0!important;
+  min-height:0!important;
+  margin:0!important;
+  padding:0!important;
+  border:0!important;
+  overflow:hidden!important;
+}
+
+/* Los dos monitos del cuadro principal son zonas táctiles claras. */
+body[data-app-route="moreLess"] [data-v535-primary="true"] [data-v531-more-open]{
+  cursor:pointer!important;
+  touch-action:manipulation!important;
+  -webkit-tap-highlight-color:transparent!important;
+}
+body[data-app-route="moreLess"] [data-v535-primary="true"] [data-v531-more-open]:active{
+  transform:scale(.96)!important;
+}
+body[data-app-route="moreLess"] [data-v535-primary="true"] [data-v531-more-open] .v12-avatar{
+  transition:transform .16s ease,filter .16s ease!important;
+}
+body[data-app-route="moreLess"] [data-v535-primary="true"] [data-v531-more-open]:active .v12-avatar{
+  filter:brightness(1.12)!important;
+}
+
+/* Cuando se abre el flujo Drive, empieza limpio justo debajo del principal. */
+body[data-app-route="moreLess"] [data-v531-mount="more"]:not([hidden]),
+body[data-app-route="quizArena"] [data-v531-mount="quiz"]:not([hidden]){
+  display:block!important;
+  visibility:visible!important;
+  height:auto!important;
+}
