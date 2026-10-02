@@ -100,7 +100,7 @@ function kitSvg(p,empty=false){
  const [variant,primary,accent,pattern]=spec;
  const logo=empty?'':teamLogo(p?.team||'');
  return '<span class="v597-real-kit '+esc(variant)+' '+esc(pattern)+'" style="--v597-primary:'+esc(primary)+';--v597-accent:'+esc(accent)+'">'+
-   '<img class="v597-shirt-photo" src="./assets/fantasy-jersey-real-3d.png?v=20261002-v597" alt="" loading="eager" decoding="async">'+
+   '<span class="v600-shirt-base" aria-hidden="true"></span>'+
    '<span class="v597-shirt-tint" aria-hidden="true"></span>'+
    '<span class="v597-shirt-pattern" aria-hidden="true"></span>'+
    (logo?'<span class="v597-logo-patch" aria-hidden="true"></span><img class="v597-team-logo" src="'+esc(logo)+'" alt="" loading="lazy">':'')+
