@@ -1,4 +1,4 @@
-const CACHE='liga-juventino-v581-fantasy-lower-modules';
+const CACHE='liga-juventino-v579-player-faces-stats-profile';
 const CORE=['./','./index.html','./manifest.webmanifest','./brand-neon-header.svg','./profile-reference.svg'];
 
 self.addEventListener('install',event=>{
