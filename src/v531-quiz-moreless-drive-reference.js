@@ -10,6 +10,7 @@ window.__LJR_V537_SECONDARY_OVERLAY__=true;
 window.__LJR_V538_MORELESS_VIDEO_FLOW__=true;
 window.__LJR_V541_MONITO_PAGES__=true;
 window.__LJR_V543_MORELESS_PORTAL__=true;
+window.__LJR_V544_GAME_FLOW__=true;
 
 const RAW='https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/';
 const DATA_LOCAL='./data/official-live.json?v=20261001-v531-games';
@@ -489,6 +490,42 @@ window.LJR_V541_GAMES_API={
 };
 if(window.__LJR_V541_PENDING_MORE__){window.__LJR_V541_PENDING_MORE__=false;requestAnimationFrame(v541OpenMorePages)}
 if(window.__LJR_V541_PENDING_QUIZ__){window.__LJR_V541_PENDING_QUIZ__=false;requestAnimationFrame(v541OpenQuizPages)}
+
+/* V544: respaldo táctil para Android/Chrome.
+   Cualquier monito del diseño principal abre los diseños Drive aunque otro handler
+   antiguo capture el click después. */
+let v544LastPrimaryOpen=0;
+function v544PrimaryPointerOpen(e){
+  if(!(e.target instanceof Element))return;
+  const now=Date.now();
+  const r=route();
+  if(r==='moreLess'){
+    const hit=e.target.closest('[data-v531-more-open], .v12-ml-choice > button, .v12-avatar');
+    if(hit&&hit.closest('[data-v12-moreless]')){
+      if(now-v544LastPrimaryOpen<350)return;
+      v544LastPrimaryOpen=now;
+      e.preventDefault();
+      e.stopPropagation();
+      v541OpenMorePages();
+      return;
+    }
+  }
+  if(r==='quizArena'){
+    const hit=e.target.closest('[data-v48-quiz]');
+    if(hit&&hit.closest('[data-v48-arena]')){
+      if(now-v544LastPrimaryOpen<350)return;
+      v544LastPrimaryOpen=now;
+      e.preventDefault();
+      e.stopPropagation();
+      quiz.selected='';
+      quiz.answered=false;
+      quiz.mode='game';
+      quiz.exit=false;
+      render(true);
+    }
+  }
+}
+document.addEventListener('pointerup',v544PrimaryPointerOpen,true);
 
 function share(){
   const p={title:'Liga Juventino Rosas',text:'Juega Quiz Arena y Más o Menos en la app de la Liga.',url:location.href};
