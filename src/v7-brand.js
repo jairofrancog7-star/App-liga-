@@ -8,7 +8,13 @@ const ROOT_ROUTES = new Set(['home','competition','video','fantasy','more']);
 const HEADER_TITLES = {
   competition:'Competición',
   more:'Más',
-  profile:'Perfil'
+  profile:'Perfil',
+  accountRegister:'Crear cuenta',
+  accountLogin:'Iniciar sesión',
+  accountEdit:'Editar perfil',
+  accountSecurity:'Seguridad',
+  accountPassword:'Contraseña',
+  accountDevices:'Dispositivos'
 };
 
 function routeFromLocation(){
