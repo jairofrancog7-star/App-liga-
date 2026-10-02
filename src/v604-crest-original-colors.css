@@ -1,0 +1,42 @@
+/* V604 — keep team crests in their original colors with transparent surroundings.
+   Applies to Fantasy and Más > Tienda without changing the jersey colors/designs. */
+
+/* Fantasy: crest only, no recoloring, no backing patch, no blend mode. */
+html body.v587-fantasy-team-open .v597-logo-patch{
+  display:none!important;
+}
+html body.v587-fantasy-team-open .v597-team-logo{
+  background:transparent!important;
+  border:0!important;
+  outline:0!important;
+  border-radius:0!important;
+  box-shadow:none!important;
+  mix-blend-mode:normal!important;
+  opacity:1!important;
+  filter:none!important;
+  -webkit-mask-image:none!important;
+  mask-image:none!important;
+  object-fit:contain!important;
+}
+
+/* Store: preserve exact crest colors and remove every visual backing. */
+body[data-app-route="club-store"] .v602-shirt-logo{
+  background:transparent!important;
+  border:0!important;
+  outline:0!important;
+  border-radius:0!important;
+  box-shadow:none!important;
+  mix-blend-mode:normal!important;
+  opacity:1!important;
+  filter:none!important;
+  -webkit-mask-image:none!important;
+  mask-image:none!important;
+  object-fit:contain!important;
+}
+
+/* Ensure no old patch/halo is rendered behind the store crest. */
+body[data-app-route="club-store"] .v602-shirt-logo::before,
+body[data-app-route="club-store"] .v602-shirt-logo::after{
+  content:none!important;
+  display:none!important;
+}
