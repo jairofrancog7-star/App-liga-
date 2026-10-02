@@ -1,8 +1,8 @@
 {
   "schema": 1,
   "source": "https://juventinorosasliga.com/",
-  "captured_at_utc": "2026-10-02T17:24:15Z",
-  "mode": "full",
+  "captured_at_utc": "2026-10-02T18:47:03Z",
+  "mode": "fast",
   "categories": {
     "1": {
       "id": 1,
@@ -1655,7 +1655,490 @@
           "cedulas": 5
         }
       },
-      "player_profiles": {},
+      "player_profiles": {
+        "TOROS DE CUENDA": [
+          {
+            "name": "J. ROSARIO ACOSTA SANTARROSA",
+            "position": "Defensa"
+          },
+          {
+            "name": "JUAN CAMPOS AGUILAR",
+            "position": "Defensa"
+          },
+          {
+            "name": "ROMAN CAMPOS MURILLO",
+            "position": "Defensa"
+          },
+          {
+            "name": "SAUL GUZMAN NORIA",
+            "position": "Defensa"
+          },
+          {
+            "name": "MARTIN GARCIA JARALEÑO",
+            "position": "Defensa"
+          },
+          {
+            "name": "MARTINIANO GARCIA RAMIREZ",
+            "position": "Portero"
+          },
+          {
+            "name": "FRANCISCO GUTIERREZ CAMPOS",
+            "position": "Defensa"
+          },
+          {
+            "name": "FRANCISCO HERRERA MANTERO",
+            "position": "Delantero"
+          },
+          {
+            "name": "FRANCISCO JAVIER HERRERA PIZANO",
+            "position": "Defensa"
+          },
+          {
+            "name": "MARIO HORTELANO PIRUL",
+            "position": "Defensa"
+          },
+          {
+            "name": "REY DAVID LOPEZ PARAMO",
+            "position": "Defensa"
+          },
+          {
+            "name": "JAVIER MONTOYA JARALEÑO",
+            "position": "Mediocampista"
+          },
+          {
+            "name": "MARTIN MONTOYA MARTINEZ",
+            "position": "Mediocampista"
+          },
+          {
+            "name": "ALONSO MENDOZA CERRITO",
+            "position": "Defensa"
+          },
+          {
+            "name": "ENRIQUE MENDOZA MUÑOZ",
+            "position": "Defensa"
+          },
+          {
+            "name": "VALENTIN DE JESUS MUÑOZ BARAJAS",
+            "position": "Defensa"
+          },
+          {
+            "name": "BALTAZAR OLIVARES MEDINA",
+            "position": "Defensa"
+          },
+          {
+            "name": "RAUL PARAMO NORIA",
+            "position": "Defensa"
+          },
+          {
+            "name": "ROBERTO PARAMO NORIA",
+            "position": "Defensa"
+          },
+          {
+            "name": "MAURO SILVA TORRES",
+            "position": "Delantero"
+          },
+          {
+            "name": "ARIEL TIERRAFRIA ANGUIANO",
+            "position": "Portero"
+          },
+          {
+            "name": "JOSE MANUEL VARGAS PALACIOS",
+            "position": "Defensa"
+          }
+        ],
+        "MANCHESTER": [
+          {
+            "name": "MANUEL AGOSTADERO QUINTANILLA",
+            "position": "Delantero"
+          },
+          {
+            "name": "JOSE AGUILAR GONZALEZ",
+            "position": "Portero"
+          },
+          {
+            "name": "JESUS AGUILAR ORTIZ",
+            "position": "Defensa"
+          },
+          {
+            "name": "ALBERTO BARCENAS LUCIA",
+            "position": "Mediocampista"
+          },
+          {
+            "name": "MANUEL CERRITOS ARELLANO",
+            "position": "Portero"
+          },
+          {
+            "name": "PEDRO CERVANTES BELMAN",
+            "position": "Mediocampista"
+          },
+          {
+            "name": "FLORENCIO FRANCO LERMA",
+            "position": "Defensa"
+          },
+          {
+            "name": "ROGELIO GARCIA AGUIRRE",
+            "position": "Defensa"
+          },
+          {
+            "name": "RAUL GOMEZ DAMIAN",
+            "position": "Delantero"
+          },
+          {
+            "name": "GERARDO GONZALEZ FRANCO",
+            "position": "Mediocampista"
+          },
+          {
+            "name": "ELEUTERIO GUERRERO NAVARRETE",
+            "position": "Portero"
+          },
+          {
+            "name": "PEDRO GUERRERO ZARATE",
+            "position": "Portero"
+          },
+          {
+            "name": "FABIAN GUTIERREZ",
+            "position": "Portero"
+          },
+          {
+            "name": "MARTIN HORTELANO LUNA",
+            "position": "Defensa"
+          },
+          {
+            "name": "ANTONIO HUICHAPA LOPEZ",
+            "position": "Portero"
+          },
+          {
+            "name": "ANTONINO MARTINEZ",
+            "position": "Delantero"
+          },
+          {
+            "name": "ANTONIO MENDOZA GARCIA",
+            "position": "Portero"
+          },
+          {
+            "name": "FERNANDO MONTESINOS FREYRE",
+            "position": "Mediocampista"
+          },
+          {
+            "name": "FELIPE PRIETO RAMIREZ",
+            "position": "Mediocampista"
+          },
+          {
+            "name": "ALBERTO RAMIREZ CAMPOS",
+            "position": "Delantero"
+          },
+          {
+            "name": "JOSE JUAN RAMIREZ LOPEZ",
+            "position": "Defensa"
+          },
+          {
+            "name": "BRUNO RUBI GARCIA",
+            "position": "Delantero"
+          },
+          {
+            "name": "JOSE ALFREDO RUBI GARCIA",
+            "position": "Defensa"
+          },
+          {
+            "name": "JOSE MARGARITO SANLUISEÑO RODRIGUEZ",
+            "position": "Defensa"
+          },
+          {
+            "name": "JOSE JUAN SORIA ORDAZ",
+            "position": "Defensa"
+          },
+          {
+            "name": "J. CARMEN SUBIAS MIRANDA",
+            "position": "Defensa"
+          },
+          {
+            "name": "JUAN ANDRES TIERRABLANCA LOPEZ",
+            "position": "Delantero"
+          },
+          {
+            "name": "ISRAEL VELASQUEZ VELASQUEZ",
+            "position": "Portero"
+          },
+          {
+            "name": "BENJAMIN VILLAFUERTE RAMIREZ",
+            "position": "Defensa"
+          }
+        ],
+        "LA ESPERANZA": [
+          {
+            "name": "J. JESUS AGUILAR GAMEZ",
+            "position": "Defensa"
+          },
+          {
+            "name": "J. MARCOS ARCE SANCHEZ",
+            "position": "Mediocampista"
+          },
+          {
+            "name": "HECTOR ARGUELLO GONZALEZ",
+            "position": "Defensa"
+          },
+          {
+            "name": "GABRIEL ESTRADA VILCHIS",
+            "position": "Defensa"
+          },
+          {
+            "name": "ROBERTO GARCIA GONZALEZ",
+            "position": "Defensa"
+          },
+          {
+            "name": "OSCAR ISRAEL GARCIA ZARAGOZA",
+            "position": "Defensa"
+          },
+          {
+            "name": "GUMERSINDO GRANADOS RAMIREZ",
+            "position": "Defensa"
+          },
+          {
+            "name": "ANTONIO GUERRERO RICO",
+            "position": "Defensa"
+          },
+          {
+            "name": "LAZARO HERNANDEZ VAZQUEZ",
+            "position": "Defensa"
+          },
+          {
+            "name": "JOSE GUADALUPE LOPEZ MARTINEZ",
+            "position": "Defensa"
+          },
+          {
+            "name": "MIGUEL ANGEL LOPEZ ZARAZUA",
+            "position": "Defensa"
+          },
+          {
+            "name": "ALFREDO MAGUEYAL CHAIRES",
+            "position": "Defensa"
+          },
+          {
+            "name": "ROBERTO MARTINEZ SILVA",
+            "position": "Defensa"
+          },
+          {
+            "name": "JOSE MENDOZA PESCADOR",
+            "position": "Mediocampista"
+          },
+          {
+            "name": "MIGUEL MERINO PEÑA",
+            "position": "Defensa"
+          },
+          {
+            "name": "NICOLAS MUÑOZ BARAJAS",
+            "position": "Defensa"
+          },
+          {
+            "name": "JOSE LUIS OROZCO MATA",
+            "position": "Defensa"
+          },
+          {
+            "name": "FELICIANO PALACIOS LOPEZ",
+            "position": "Defensa"
+          },
+          {
+            "name": "JUAN CARLOS QUEVEDO ESTRADA",
+            "position": "Defensa"
+          },
+          {
+            "name": "JUAN CARLOS RESENDIZ ALVAREZ",
+            "position": "Defensa"
+          },
+          {
+            "name": "GENARO TERAN VAZQUEZ",
+            "position": "Defensa"
+          },
+          {
+            "name": "ALEJANDRO VELAZQUEZ VARGAS",
+            "position": "Defensa"
+          },
+          {
+            "name": "MIGUEL VELAZQUEZ VARGAS",
+            "position": "Defensa"
+          },
+          {
+            "name": "BERNARDO ZARAZUA AGOSTADERO",
+            "position": "Defensa"
+          }
+        ],
+        "DYNAMO": [
+          {
+            "name": "SIMON ACOSTA FRIAS",
+            "position": "Mediocampista"
+          },
+          {
+            "name": "JESUS ALBERTO DAMIAN",
+            "position": "Defensa"
+          },
+          {
+            "name": "FERNANDO ARTURO ARELLANO MACIAS",
+            "position": "Defensa"
+          },
+          {
+            "name": "HILARIO ARMENTA BUENAVISTA",
+            "position": "Defensa"
+          },
+          {
+            "name": "HUGO ARMENTA BUENAVISTA",
+            "position": "Defensa"
+          },
+          {
+            "name": "JOSE LUIS BELMAN OLIVARES",
+            "position": "Defensa"
+          },
+          {
+            "name": "FRANCISCO JAVIER CONEJO HERRERA",
+            "position": "Mediocampista"
+          },
+          {
+            "name": "CARLOS DAMIAN ZUÑIGA",
+            "position": "Defensa"
+          },
+          {
+            "name": "JOSE CRUZ DELGADO LEMUS",
+            "position": "Defensa"
+          },
+          {
+            "name": "GERARDO GARCIA RODRIGUEZ",
+            "position": "Defensa"
+          },
+          {
+            "name": "BONIFACIO LOPEZ LEON",
+            "position": "Mediocampista"
+          },
+          {
+            "name": "JOSE JESUS LOPEZ LEON",
+            "position": "Mediocampista"
+          },
+          {
+            "name": "PEDRO MENDOZA MENDOZA",
+            "position": "Defensa"
+          },
+          {
+            "name": "HUMBERTO MORENO FLORES",
+            "position": "Defensa"
+          },
+          {
+            "name": "J. CARMEN MOSQUEDA SANCHEZ",
+            "position": "Delantero"
+          },
+          {
+            "name": "ARMANDO MUÑIZ BAÑALES",
+            "position": "Mediocampista"
+          },
+          {
+            "name": "ROBERTO PERDOMO COLIN",
+            "position": "Defensa"
+          },
+          {
+            "name": "J. GUADALUPE PEÑA LUNA",
+            "position": "Mediocampista"
+          },
+          {
+            "name": "J. GUADALUPE RAMIREZ RAMIREZ",
+            "position": "Defensa"
+          },
+          {
+            "name": "ELADIO RAMIREZ ALBERTO",
+            "position": "Defensa"
+          },
+          {
+            "name": "OCTAVIO RAMOS ESPINOZA",
+            "position": "Defensa"
+          },
+          {
+            "name": "ALFREDO ROCHA RODRIGUEZ",
+            "position": "Defensa"
+          },
+          {
+            "name": "JULIO CESAR RUVALCABA ALMANZA",
+            "position": "Defensa"
+          }
+        ],
+        "BOAVISTA": [
+          {
+            "name": "JOSE RICARDO ABOYTES PIZANO",
+            "position": "Defensa"
+          },
+          {
+            "name": "RAFAEL DAVID ABOYTES PIZANO",
+            "position": "Defensa"
+          },
+          {
+            "name": "DEMETRIO CAMPOS OLIVARES",
+            "position": "Defensa"
+          },
+          {
+            "name": "GUILLERMO CHAVEZ MENDOZA",
+            "position": "Defensa"
+          },
+          {
+            "name": "FERNANDO DELGADO MOLINA",
+            "position": "Defensa"
+          },
+          {
+            "name": "JORGE DURAN ZARATE",
+            "position": "Defensa"
+          },
+          {
+            "name": "JOSE GERARDO DURAN ZARATE",
+            "position": "Defensa"
+          },
+          {
+            "name": "JOSE RENE DURAN ZARATE",
+            "position": "Defensa"
+          },
+          {
+            "name": "OSVALDO DURAN ZARATE",
+            "position": "Defensa"
+          },
+          {
+            "name": "RAUL GARCIA CELEDON",
+            "position": "Defensa"
+          },
+          {
+            "name": "MARCO ANTONIO GASCA ARZATE",
+            "position": "Defensa"
+          },
+          {
+            "name": "ALFREDO GONZALEZ MEDINA",
+            "position": "Defensa"
+          },
+          {
+            "name": "ARTURO GUERRERO RODRIGUEZ",
+            "position": "Defensa"
+          },
+          {
+            "name": "GERMAN GUZMAN FRANCO",
+            "position": "Defensa"
+          },
+          {
+            "name": "RAFAEL LADINOS COYOTE",
+            "position": "Defensa"
+          },
+          {
+            "name": "LUIS MANCERA GUERRERO",
+            "position": "Defensa"
+          },
+          {
+            "name": "GUSTAVO RAMOS ZALCEDO",
+            "position": "Defensa"
+          },
+          {
+            "name": "LAZARO RUVALCABA ALMANZA",
+            "position": "Mediocampista"
+          },
+          {
+            "name": "TELESFORO VILLAFAÑA RANGEL",
+            "position": "Defensa"
+          },
+          {
+            "name": "JOSE ANTONIO ZARATE ARELLANO",
+            "position": "Defensa"
+          }
+        ]
+      },
       "cedulas": [
         {
           "id": 1,
@@ -1755,27 +2238,42 @@
         },
         {
           "id": 13,
-          "url": "https://www.juventinorosasliga.com/cedula-arbitral/13/",
+          "url": "https://juventinorosasliga.com/cedula-arbitral/13/",
           "title": "Cédula Arbitral - TOROS DE CUENDA (Veteranos 50+) vs BOAVISTA (Veteranos 50+)",
           "local": "TOROS DE CUENDA",
           "away": "BOAVISTA",
-          "category": "Veteranos 50+"
+          "category": "Veteranos 50+",
+          "date": "05/09/2026 15:30",
+          "local_lineup": [],
+          "away_lineup": [],
+          "local_bench": [],
+          "away_bench": []
         },
         {
           "id": 14,
-          "url": "https://www.juventinorosasliga.com/cedula-arbitral/14/",
+          "url": "https://juventinorosasliga.com/cedula-arbitral/14/",
           "title": "Cédula Arbitral - MANCHESTER (Veteranos 50+) vs DYNAMO (Veteranos 50+)",
           "local": "MANCHESTER",
           "away": "DYNAMO",
-          "category": "Veteranos 50+"
+          "category": "Veteranos 50+",
+          "date": "05/09/2026 17:00",
+          "local_lineup": [],
+          "away_lineup": [],
+          "local_bench": [],
+          "away_bench": []
         },
         {
           "id": 15,
-          "url": "https://www.juventinorosasliga.com/cedula-arbitral/15/",
+          "url": "https://juventinorosasliga.com/cedula-arbitral/15/",
           "title": "Cédula Arbitral - BOCA JRS (Veteranos 50+) vs LA ESPERANZA (Veteranos 50+)",
           "local": "BOCA JRS",
           "away": "LA ESPERANZA",
-          "category": "Veteranos 50+"
+          "category": "Veteranos 50+",
+          "date": "05/09/2026 15:30",
+          "local_lineup": [],
+          "away_lineup": [],
+          "local_bench": [],
+          "away_bench": []
         }
       ],
       "cedulas_scanned": [
@@ -1863,12 +2361,172 @@
       "cards": [],
       "suspensions": [],
       "fixtures": [],
-      "rosters": {},
+      "rosters": {
+        "PSV": [
+          "FRANCISCO JESUS AGUIRRE CANO",
+          "GIOVANNI EMANUEL FLORES GUERRERO",
+          "OMAR GUERRERO DAMIAN",
+          "CRISTIAN JESUS GASCA RODRIGUEZ",
+          "JOSE ANTONIO JUAREZ LANDIN",
+          "OSCAR LOPEZ DAMIAN",
+          "FRANCISCO JAVIER SOLACHE FRANCO"
+        ],
+        "AMERICA": [
+          "LUIS JONATHAN AGUILAR GERVACIO",
+          "SAMMARE HORACIO CALDERON MARTINEZ",
+          "ERIC FERNANDO DONGU GUERRERO",
+          "DAVID GARCIA AGUIRRE",
+          "PATRICIO GASCA VILLAFUERTE",
+          "REYES JOEL GAYTAN LEON",
+          "GIOVANNI GUERRERO HERNANDEZ",
+          "EDGAR HERNANDEZ AUSTRIA",
+          "ASUNCION HERNANDEZ HERNANDEZ",
+          "JORGE GABRIEL JUAREZ CASTRO",
+          "EDUARDO LOPEZ GARCIA",
+          "GERARDO LOPEZ GUERRERO",
+          "JOSE ALFREDO LOPEZ PEREZ",
+          "JORGE EDUARDO MARTINEZ MORENO",
+          "ALVARO ALBERTO MATA GARCIA",
+          "MANUEL PATIÑO VILLALPANDO",
+          "JUAN ENRIQUE RICO GONZALEZ",
+          "MANUEL RICO MANCERA",
+          "JUAN ANTONIO ROSALES CABELLO",
+          "MAURICIO IGNACIO ROSALES OCHOA",
+          "SERGIO ARTURO SANCHEZ HUIZACHE",
+          "FRANCISCO JAVIER VALDEZ CORRALES",
+          "J. REFUGIO ZARAZUA AGOSTADERO"
+        ]
+      },
       "player_usage": {},
-      "player_profiles": {},
+      "player_profiles": {
+        "PSV": [
+          {
+            "name": "FRANCISCO JESUS AGUIRRE CANO",
+            "position": "Defensa"
+          },
+          {
+            "name": "GIOVANNI EMANUEL FLORES GUERRERO",
+            "position": "Defensa"
+          },
+          {
+            "name": "OMAR GUERRERO DAMIAN",
+            "position": "Defensa"
+          },
+          {
+            "name": "CRISTIAN JESUS GASCA RODRIGUEZ",
+            "position": "Portero"
+          },
+          {
+            "name": "JOSE ANTONIO JUAREZ LANDIN",
+            "position": "Defensa"
+          },
+          {
+            "name": "OSCAR LOPEZ DAMIAN",
+            "position": "Defensa"
+          },
+          {
+            "name": "FRANCISCO JAVIER SOLACHE FRANCO",
+            "position": "Defensa"
+          }
+        ],
+        "AMERICA": [
+          {
+            "name": "LUIS JONATHAN AGUILAR GERVACIO",
+            "position": "Mediocampista"
+          },
+          {
+            "name": "SAMMARE HORACIO CALDERON MARTINEZ",
+            "position": "Defensa"
+          },
+          {
+            "name": "ERIC FERNANDO DONGU GUERRERO",
+            "position": "Defensa"
+          },
+          {
+            "name": "DAVID GARCIA AGUIRRE",
+            "position": "Mediocampista"
+          },
+          {
+            "name": "PATRICIO GASCA VILLAFUERTE",
+            "position": "Defensa"
+          },
+          {
+            "name": "REYES JOEL GAYTAN LEON",
+            "position": "Delantero"
+          },
+          {
+            "name": "GIOVANNI GUERRERO HERNANDEZ",
+            "position": "Defensa"
+          },
+          {
+            "name": "EDGAR HERNANDEZ AUSTRIA",
+            "position": "Delantero"
+          },
+          {
+            "name": "ASUNCION HERNANDEZ HERNANDEZ",
+            "position": "Portero"
+          },
+          {
+            "name": "JORGE GABRIEL JUAREZ CASTRO",
+            "position": "Delantero"
+          },
+          {
+            "name": "EDUARDO LOPEZ GARCIA",
+            "position": "Delantero"
+          },
+          {
+            "name": "GERARDO LOPEZ GUERRERO",
+            "position": "Defensa"
+          },
+          {
+            "name": "JOSE ALFREDO LOPEZ PEREZ",
+            "position": "Mediocampista"
+          },
+          {
+            "name": "JORGE EDUARDO MARTINEZ MORENO",
+            "position": "Defensa"
+          },
+          {
+            "name": "ALVARO ALBERTO MATA GARCIA",
+            "position": "Defensa"
+          },
+          {
+            "name": "MANUEL PATIÑO VILLALPANDO",
+            "position": "Delantero"
+          },
+          {
+            "name": "JUAN ENRIQUE RICO GONZALEZ",
+            "position": "Defensa"
+          },
+          {
+            "name": "MANUEL RICO MANCERA",
+            "position": "Delantero"
+          },
+          {
+            "name": "JUAN ANTONIO ROSALES CABELLO",
+            "position": "Defensa"
+          },
+          {
+            "name": "MAURICIO IGNACIO ROSALES OCHOA",
+            "position": "Defensa"
+          },
+          {
+            "name": "SERGIO ARTURO SANCHEZ HUIZACHE",
+            "position": "Defensa"
+          },
+          {
+            "name": "FRANCISCO JAVIER VALDEZ CORRALES",
+            "position": "Mediocampista"
+          },
+          {
+            "name": "J. REFUGIO ZARAZUA AGOSTADERO",
+            "position": "Defensa"
+          }
+        ]
+      },
       "cedulas": [],
       "cedulas_scanned": [],
-      "public_player_count_scraped": 0
+      "public_player_count_scraped": 30
     },
     "3": {
       "id": 3,
@@ -4805,7 +5463,1221 @@
           "cedulas": 4
         }
       },
-      "player_profiles": {},
+      "player_profiles": {
+        "TERRICOLAS": [
+          {
+            "name": "JOSE LUIS ACEVEDO MENDOZA",
+            "position": "Mediocampista"
+          },
+          {
+            "name": "LUIS FERNANDO AGUILAR NUÑEZ",
+            "position": "Delantero"
+          },
+          {
+            "name": "JOSE ARMANDO ALMARAZ ORTEGA",
+            "position": "Defensa"
+          },
+          {
+            "name": "JESUS SALVADOR FLORES GALLEGOS",
+            "position": "Mediocampista"
+          },
+          {
+            "name": "JONATHAN GONZALEZ GUERRERO",
+            "position": "Defensa"
+          },
+          {
+            "name": "OSWALDO GRANDE VALADEZ",
+            "position": "Delantero"
+          },
+          {
+            "name": "DAVID GUERRERO ARELLANO",
+            "position": "Delantero"
+          },
+          {
+            "name": "JUAN PABLO GUERRERO FLORES",
+            "position": "Mediocampista"
+          },
+          {
+            "name": "JOSE ANGEL GUTIERREZ ENRIQUE",
+            "position": "Mediocampista"
+          },
+          {
+            "name": "ANGEL URIEL GUTIERREZ ESPINOZA",
+            "position": "Mediocampista"
+          },
+          {
+            "name": "GIOVANNI LERA BARBOSA",
+            "position": "Mediocampista"
+          },
+          {
+            "name": "JOSE DANIEL MARTINEZ CHAVEZ",
+            "position": "Defensa"
+          },
+          {
+            "name": "RAFAEL MARTINEZ LARA",
+            "position": "Delantero"
+          },
+          {
+            "name": "JONATHAN MARTINEZ QUINTANILLA",
+            "position": "Mediocampista"
+          },
+          {
+            "name": "EDUARDO MARTINEZ VASQUEZ",
+            "position": "Defensa"
+          },
+          {
+            "name": "IVAN MARTINEZ VASQUEZ",
+            "position": "Defensa"
+          },
+          {
+            "name": "JOSE DANIEL MEJIA ROMAN",
+            "position": "Mediocampista"
+          },
+          {
+            "name": "ALVARO MORENO PEREZ",
+            "position": "Defensa"
+          },
+          {
+            "name": "JOSE ANTONIO MORENO VARGAS",
+            "position": "Defensa"
+          },
+          {
+            "name": "VICTOR MANUEL RAUL MUÑOZ VASQUEZ",
+            "position": "Defensa"
+          },
+          {
+            "name": "JESUS EMMANUEL OJODEAGUA GUTIERREZ",
+            "position": "Portero"
+          },
+          {
+            "name": "CHRISTOFER IVANOVICH OLGUIN ROCHA",
+            "position": "Mediocampista"
+          },
+          {
+            "name": "JUSTO EMMANUEL PRESA GUERRERO",
+            "position": "Mediocampista"
+          },
+          {
+            "name": "DANIEL PEÑA ROBLES",
+            "position": "Mediocampista"
+          },
+          {
+            "name": "PEDRO GABRIEL PRESA GUERRERO",
+            "position": "Mediocampista"
+          },
+          {
+            "name": "ERICK JOSE RODRIGUEZ CANO",
+            "position": "Defensa"
+          },
+          {
+            "name": "ADRIAN RUVALCABA LERMA",
+            "position": "Delantero"
+          },
+          {
+            "name": "LAZARO DANIEL RUVALCABA LERMA",
+            "position": "Mediocampista"
+          },
+          {
+            "name": "OSCAR TOVAR AGUILERA",
+            "position": "Portero"
+          }
+        ],
+        "SAN JOSE FC": [
+          {
+            "name": "JOSE REFUGIO ACOSTA GARCIA",
+            "position": "Defensa"
+          },
+          {
+            "name": "DIEGO ISAAC BARRON GONZALEZ",
+            "position": "Mediocampista"
+          },
+          {
+            "name": "JOSE EDUARDO BRAVO SANDOVAL",
+            "position": "Defensa"
+          },
+          {
+            "name": "MARIO EDUARDO CARDENAS AYALA",
+            "position": "Mediocampista"
+          },
+          {
+            "name": "JESUS PABLO CASTILLO GARCIA",
+            "position": "Defensa"
+          },
+          {
+            "name": "HECTOR ADRIAN DE LEON GALDEANO",
+            "position": "Defensa"
+          },
+          {
+            "name": "JUAN ESTEBAN DELGADO ACOSTA",
+            "position": "Defensa"
+          },
+          {
+            "name": "FERNANDO SAID DOÑATE MANCERA",
+            "position": "Delantero"
+          },
+          {
+            "name": "CARLOS EDUARDO GARCIA TAVERA",
+            "position": "Defensa"
+          },
+          {
+            "name": "HECTOR HUGO GONZALEZ DIOSDADO",
+            "position": "Defensa"
+          },
+          {
+            "name": "ZURIEL ADRIAN GUTIERREZ VALDEZ",
+            "position": "Delantero"
+          },
+          {
+            "name": "SANTIAGO LERMA TOVAR",
+            "position": "Defensa"
+          },
+          {
+            "name": "JUAN ARTURO LOPEZ CAMPOS",
+            "position": "Delantero"
+          },
+          {
+            "name": "ALDO ALBERTO MARTINEZ DIAZ",
+            "position": "Defensa"
+          },
+          {
+            "name": "JOSE CRUZ ENRIQUE MARTINEZ HERNANDEZ",
+            "position": "Mediocampista"
+          },
+          {
+            "name": "ARTURO MARTINEZ MAGDALENO",
+            "position": "Defensa"
+          },
+          {
+            "name": "LUIS FERNANDO MEDINA AGUIRRE",
+            "position": "Mediocampista"
+          },
+          {
+            "name": "RAFAEL PEREZ NAVA",
+            "position": "Mediocampista"
+          },
+          {
+            "name": "HECTOR ADRIAN PEREZ VEGA",
+            "position": "Delantero"
+          },
+          {
+            "name": "ALBERTO ANTONIO RAMIREZ ALFARO",
+            "position": "Mediocampista"
+          },
+          {
+            "name": "HECTOR MANUEL RAMIREZ TOVAR",
+            "position": "Delantero"
+          },
+          {
+            "name": "JOSE ROSAS CARDENAS",
+            "position": "Mediocampista"
+          },
+          {
+            "name": "MARCO CESAR SAAVEDRA ESCOTO",
+            "position": "Mediocampista"
+          },
+          {
+            "name": "BRAYAN CAMILO SANCLEMENTE ALVARADO",
+            "position": "Delantero"
+          },
+          {
+            "name": "ANGEL SANTIAGO GARCIA",
+            "position": "Mediocampista"
+          },
+          {
+            "name": "NESTOR GABRIEL TOLEDO DAMIAN",
+            "position": "Defensa"
+          },
+          {
+            "name": "LUIS ANGEL VALENCIA MEJIA",
+            "position": "Defensa"
+          },
+          {
+            "name": "MARCOS ANTONIO VALENZUELA SANCHEZ",
+            "position": "Delantero"
+          },
+          {
+            "name": "BRAYAN ALEXIS VARGAS BRAVO",
+            "position": "Mediocampista"
+          },
+          {
+            "name": "JESUS FELIPE YAÑEZ RUBI",
+            "position": "Mediocampista"
+          }
+        ],
+        "NAPOLI": [
+          {
+            "name": "FRANCISCO JESUS AGUIRRE CANO",
+            "position": "Defensa"
+          },
+          {
+            "name": "MIGUEL ANGEL AGUADO SILVA",
+            "position": "Mediocampista"
+          },
+          {
+            "name": "ALEJANDRO ALARCON AGUIRRE",
+            "position": "Defensa"
+          },
+          {
+            "name": "ANGEL EDUARDO BADILLO GARCIA",
+            "position": "Mediocampista"
+          },
+          {
+            "name": "ARMANDO CONTERAS PIZANO",
+            "position": "Mediocampista"
+          },
+          {
+            "name": "ANDRES CRIOLLOS CHIMES",
+            "position": "Mediocampista"
+          },
+          {
+            "name": "HECTOR CECILIO ESTRADA RODRIGUEZ",
+            "position": "Defensa"
+          },
+          {
+            "name": "JUAN ANGEL GONZALEZ MARTINEZ",
+            "position": "Defensa"
+          },
+          {
+            "name": "JUAN DIEGO GRANGENO MUÑOZ",
+            "position": "Mediocampista"
+          },
+          {
+            "name": "AARON GRANGENO SEGURA",
+            "position": "Mediocampista"
+          },
+          {
+            "name": "JACOB GRANGENO VELASQUEZ",
+            "position": "Defensa"
+          },
+          {
+            "name": "LUIS DANIEL GUTIERREZ FRANCO",
+            "position": "Mediocampista"
+          },
+          {
+            "name": "BRIAN LOPEZ MEJIA",
+            "position": "Mediocampista"
+          },
+          {
+            "name": "JOB BENJAMIN LOPEZ MOSQUEDA",
+            "position": "Defensa"
+          },
+          {
+            "name": "JESUS ENRIQUE MARTINEZ OLIVARES",
+            "position": "Defensa"
+          },
+          {
+            "name": "JUAN PABLO MENDOZA MACIAS",
+            "position": "Defensa"
+          },
+          {
+            "name": "JUAN ESTEBAN MONTECILLO SOLACHE",
+            "position": "Defensa"
+          },
+          {
+            "name": "JOSE JAIR MONTOYA MORENO",
+            "position": "Mediocampista"
+          },
+          {
+            "name": "JUAN PABLO MUÑOZ GUERRERO",
+            "position": "Defensa"
+          },
+          {
+            "name": "OSCAR FERNANDO OLVERA BECERRIL",
+            "position": "Defensa"
+          },
+          {
+            "name": "JESUS YOVANNY PINEDA MENDOZA",
+            "position": "Mediocampista"
+          },
+          {
+            "name": "JUAN JOSE PINEDA MENDOZA",
+            "position": "Mediocampista"
+          },
+          {
+            "name": "NOE FABIAN PINEDA MENDOZA",
+            "position": "Mediocampista"
+          },
+          {
+            "name": "JOSE ANTONIO RAMOS GARCIA",
+            "position": "Portero"
+          },
+          {
+            "name": "PABLO CESAR REYNOSO CHABOLLA",
+            "position": "Mediocampista"
+          },
+          {
+            "name": "EMANUEL RODRIGUEZ LERA",
+            "position": "Mediocampista"
+          },
+          {
+            "name": "FELIPE DE JESUS TORRES MONTESINO",
+            "position": "Mediocampista"
+          },
+          {
+            "name": "EDGAR JESUS ZUÑIGA GONZALEZ",
+            "position": "Defensa"
+          },
+          {
+            "name": "CARLOS JAVIER ZUÑIGA SOLACHE",
+            "position": "Mediocampista"
+          },
+          {
+            "name": "GERARDO ZUÑIGA VEGA",
+            "position": "Mediocampista"
+          }
+        ],
+        "LOBOS CDG": [
+          {
+            "name": "MARTIN ALMANZA CUEVAS",
+            "position": "Defensa"
+          },
+          {
+            "name": "EDGAR ULISES CELIO HERNANDEZ",
+            "position": "Defensa"
+          },
+          {
+            "name": "DIEGO COLLASCO ALVARADO",
+            "position": "Defensa"
+          },
+          {
+            "name": "MAURICIO COLLASCO ALVARADO",
+            "position": "Mediocampista"
+          },
+          {
+            "name": "EMMANUEL CONEJO MENDOZA",
+            "position": "Delantero"
+          },
+          {
+            "name": "JORGE LUIS GARCIA GARCIA",
+            "position": "Defensa"
+          },
+          {
+            "name": "JUAN PEDRO GARCIA GARCIA",
+            "position": "Defensa"
+          },
+          {
+            "name": "LUIS DAVID GARCIA LEON",
+            "position": "Delantero"
+          },
+          {
+            "name": "ADAN OSWALDO GARCÍA ESCALANTE",
+            "position": "Defensa"
+          },
+          {
+            "name": "MIGUEL ANGEL GOMEZ CAMPOS",
+            "position": "Defensa"
+          },
+          {
+            "name": "ERNESTO JUAREZ OLMOS",
+            "position": "Mediocampista"
+          },
+          {
+            "name": "JONATHAN LANDIN PEREZ",
+            "position": "Defensa"
+          },
+          {
+            "name": "DANIEL LANDIN TELLEZ",
+            "position": "Mediocampista"
+          },
+          {
+            "name": "KEVIN ORLANDO LARA RUIZ",
+            "position": "Mediocampista"
+          },
+          {
+            "name": "JONATHAN MEDINA FRIAS",
+            "position": "Mediocampista"
+          },
+          {
+            "name": "LUIS ALEJANDRO MENDOZA DOMINGUEZ",
+            "position": "Delantero"
+          },
+          {
+            "name": "CECILIO MIRANDA ACOSTA",
+            "position": "Defensa"
+          },
+          {
+            "name": "DAVID MORENO RAMIREZ",
+            "position": "Mediocampista"
+          },
+          {
+            "name": "ADRIAN MORENO RAZO",
+            "position": "Mediocampista"
+          },
+          {
+            "name": "MARIO MORENO ROBLES",
+            "position": "Mediocampista"
+          },
+          {
+            "name": "BRYAN NUÑEZ MEDINA",
+            "position": "Mediocampista"
+          },
+          {
+            "name": "ELVIS PEREZ PEÑALOZA",
+            "position": "Mediocampista"
+          },
+          {
+            "name": "JUAN CARLOS PEÑA PESCADOR",
+            "position": "Defensa"
+          },
+          {
+            "name": "JUAN CARLOS RAMIREZ ALBERTO",
+            "position": "Mediocampista"
+          },
+          {
+            "name": "JAIRO RAMIREZ LOPEZ",
+            "position": "Defensa"
+          },
+          {
+            "name": "LUIS YAEL ROBLES PEREZ",
+            "position": "Mediocampista"
+          },
+          {
+            "name": "EMILIANO RUBI CAMPOS",
+            "position": "Mediocampista"
+          },
+          {
+            "name": "JOSE ANTONIO RUBI PEREZ",
+            "position": "Defensa"
+          },
+          {
+            "name": "JULIO CESAR VILLAGOMEZ MORENO",
+            "position": "Mediocampista"
+          },
+          {
+            "name": "ANDRES GERARDO YAÑEZ NAVARRO",
+            "position": "Defensa"
+          }
+        ],
+        "LINCES": [
+          {
+            "name": "DIEGO ABOYTES ESPEJEL",
+            "position": "Defensa"
+          },
+          {
+            "name": "ANDRES AGUILLON TIERRABLANCA",
+            "position": "Defensa"
+          },
+          {
+            "name": "JORGE LUIS ALMAGUER RUIZ",
+            "position": "Defensa"
+          },
+          {
+            "name": "ANDRE JOSUE ALVAREZ PIZANO",
+            "position": "Defensa"
+          },
+          {
+            "name": "SALVADOR JUNIOR BENITEZ LEON",
+            "position": "Defensa"
+          },
+          {
+            "name": "EMILIANO BLANCO PILLADO",
+            "position": "Defensa"
+          },
+          {
+            "name": "JOSE ALEXIS DELGADO REYES",
+            "position": "Defensa"
+          },
+          {
+            "name": "JAVIER GONZALEZ LOPEZ",
+            "position": "Defensa"
+          },
+          {
+            "name": "MOISES GONZALEZ MADO",
+            "position": "Defensa"
+          },
+          {
+            "name": "BRYAN JOSE GONZALEZ MORENO",
+            "position": "Defensa"
+          },
+          {
+            "name": "EMILIO GONZALEZ ZERON",
+            "position": "Defensa"
+          },
+          {
+            "name": "OMAR HERNANDEZ BARRIOS",
+            "position": "Defensa"
+          },
+          {
+            "name": "SERGIO JASSO POMPA",
+            "position": "Defensa"
+          },
+          {
+            "name": "GIOVANNI LEDEZMA ORNELAS",
+            "position": "Defensa"
+          },
+          {
+            "name": "FELIPE DE JESUS LEON PRESA",
+            "position": "Defensa"
+          },
+          {
+            "name": "GALO FLORENTINO MARTINEZ ZARATE",
+            "position": "Mediocampista"
+          },
+          {
+            "name": "GIOVANI DE JESUS NEGRETE RUIZ",
+            "position": "Defensa"
+          },
+          {
+            "name": "FRANCISCO MANUEL NUÑEZ RAMIREZ",
+            "position": "Defensa"
+          },
+          {
+            "name": "ANGEL DE JESUS PIZANO TORRES",
+            "position": "Defensa"
+          },
+          {
+            "name": "MIGUEL ANGEL RAMIREZ LUNA",
+            "position": "Defensa"
+          },
+          {
+            "name": "MAXIMILIANO RIVERA HERNANDEZ",
+            "position": "Defensa"
+          },
+          {
+            "name": "EMILIO TADEO ROSAS RESENDIZ",
+            "position": "Defensa"
+          },
+          {
+            "name": "LEOPOLDO ONITSED SALDIVAR FLORES",
+            "position": "Defensa"
+          },
+          {
+            "name": "ISRAEL SOLORZANO LINARES",
+            "position": "Defensa"
+          },
+          {
+            "name": "ERNESTO BALTAZAR SOSA ARREDONDO",
+            "position": "Defensa"
+          },
+          {
+            "name": "ADRIAN VALADEZ RANGEL",
+            "position": "Defensa"
+          },
+          {
+            "name": "MAURICIO VILLAGOMEZ MANCERA",
+            "position": "Defensa"
+          },
+          {
+            "name": "JUAN FRANCISCO YAÑEZ RAZO",
+            "position": "Defensa"
+          },
+          {
+            "name": "OSCAR YAÑEZ RAZO",
+            "position": "Defensa"
+          }
+        ],
+        "JUVENTUS": [
+          {
+            "name": "JOSE DE JESUS ACOSTA RANGEL",
+            "position": "Defensa"
+          },
+          {
+            "name": "JUAN CARLOS ACOSTA ZARATE",
+            "position": "Defensa"
+          },
+          {
+            "name": "ENRIQUE ALEXIS CASTRO RIVERA",
+            "position": "Defensa"
+          },
+          {
+            "name": "EMMANUEL DOMPABLO GONZALEZ",
+            "position": "Defensa"
+          },
+          {
+            "name": "EDGAR JADIR GONZALEZ MANZANARES",
+            "position": "Defensa"
+          },
+          {
+            "name": "EDILBERTO GUERRERO BUTANDA",
+            "position": "Defensa"
+          },
+          {
+            "name": "JOSE GUADALUPE GUERRERO LOPEZ",
+            "position": "Defensa"
+          },
+          {
+            "name": "JESUS AXEL GUERRERO PEÑA",
+            "position": "Defensa"
+          },
+          {
+            "name": "RAMON HERNANDEZ CONEJO",
+            "position": "Defensa"
+          },
+          {
+            "name": "KEVIN RAUL LOPEZ QUINTANILLA",
+            "position": "Defensa"
+          },
+          {
+            "name": "GIOVANNI LERMA HERNANDEZ",
+            "position": "Defensa"
+          },
+          {
+            "name": "ABEL ALEJANDRO MELENDEZ VEGA",
+            "position": "Defensa"
+          },
+          {
+            "name": "OSCAR MONROY CAMACHO",
+            "position": "Defensa"
+          },
+          {
+            "name": "DANIEL MONTENEGRO GUTIERREZ",
+            "position": "Defensa"
+          },
+          {
+            "name": "JOSE GUADALUPE MORENO HUERTA",
+            "position": "Defensa"
+          },
+          {
+            "name": "JOSE DE JESUS MORENO RODRIGUEZ",
+            "position": "Defensa"
+          },
+          {
+            "name": "JUAN MIGUEL MUÑOZ VASQUEZ",
+            "position": "Defensa"
+          },
+          {
+            "name": "JOSE RAMON NEGRETE RUIZ",
+            "position": "Defensa"
+          },
+          {
+            "name": "JAIRO ANTONIO OLGUIN ROCHA",
+            "position": "Defensa"
+          },
+          {
+            "name": "MANUEL PANTOJA HERNANDEZ",
+            "position": "Defensa"
+          },
+          {
+            "name": "JORGE LUIS RAMIREZ CONEJO",
+            "position": "Defensa"
+          },
+          {
+            "name": "EDUARDO RAMIREZ NUÑEZ",
+            "position": "Defensa"
+          },
+          {
+            "name": "JUAN CARLOS RICO HERNANDEZ",
+            "position": "Defensa"
+          },
+          {
+            "name": "JORGE JESUS SANCHEZ GONZALEZ",
+            "position": "Defensa"
+          },
+          {
+            "name": "JORGE ALBERTO SANCHEZ MENDOZA",
+            "position": "Defensa"
+          },
+          {
+            "name": "OMAR VALADEZ BANDA",
+            "position": "Defensa"
+          },
+          {
+            "name": "SALVADOR FERNANDO VALENZUELA RANGEL",
+            "position": "Defensa"
+          },
+          {
+            "name": "FRANCISCO JAVIER ZUÑIGA DIAZ",
+            "position": "Defensa"
+          }
+        ],
+        "HERRERAS FC": [
+          {
+            "name": "JUAN FERNANDO ARAIZA PACHECO",
+            "position": "Defensa"
+          },
+          {
+            "name": "DAVID ARANDA VALENCIA",
+            "position": "Defensa"
+          },
+          {
+            "name": "MARTIN ARCIA MARTINEZ",
+            "position": "Defensa"
+          },
+          {
+            "name": "ROBERTO ARGUELLO ZAVALA",
+            "position": "Defensa"
+          },
+          {
+            "name": "CAMILO CAÑAS VARGAS",
+            "position": "Delantero"
+          },
+          {
+            "name": "DUVIER DIAZ BALANTA",
+            "position": "Defensa"
+          },
+          {
+            "name": "ROBERTO CARLOS DOMPABLO GONZALEZ",
+            "position": "Defensa"
+          },
+          {
+            "name": "JOSE MARIO FIGUEROA MOLINA",
+            "position": "Defensa"
+          },
+          {
+            "name": "JOSE MARIA FIGUEROA NAMBO",
+            "position": "Defensa"
+          },
+          {
+            "name": "FABIAN ELIAS FLORES SANCHEZ",
+            "position": "Defensa"
+          },
+          {
+            "name": "LUIS ALONSO FLORES SANCHEZ",
+            "position": "Defensa"
+          },
+          {
+            "name": "OSCAR EDUARDO GALLAGA BAEZ",
+            "position": "Defensa"
+          },
+          {
+            "name": "ALEJANDRO GARCIA CAMPOS",
+            "position": "Defensa"
+          },
+          {
+            "name": "ISSAC YAIR GARCIA MARTINEZ",
+            "position": "Defensa"
+          },
+          {
+            "name": "JHONATAN DAVID GONZALEZ PINO",
+            "position": "Defensa"
+          },
+          {
+            "name": "NESTOR GUTIERREZ MENDOZA",
+            "position": "Defensa"
+          },
+          {
+            "name": "FRANCISCO JAVIER HERRERA PIZANO",
+            "position": "Defensa"
+          },
+          {
+            "name": "FRANCISCO JAVIER HERRERA TIERRABLANCA",
+            "position": "Defensa"
+          },
+          {
+            "name": "ELEUTERIO JIMENEZ CONTRERAS",
+            "position": "Defensa"
+          },
+          {
+            "name": "JUAN EDUARDO ORNELAS ARAUJO",
+            "position": "Defensa"
+          },
+          {
+            "name": "JUAN DAVID PEREZ GUTIERRZ",
+            "position": "Defensa"
+          },
+          {
+            "name": "HUGO ENRIQUE RAMIREZ PATINO",
+            "position": "Defensa"
+          },
+          {
+            "name": "EDGAR OMAR REYES QUINTERO",
+            "position": "Defensa"
+          },
+          {
+            "name": "ABRAHAM ISAI RIESTRA PARRA",
+            "position": "Defensa"
+          },
+          {
+            "name": "JUAN ANTONIO RODRIGUEZ ALCANTARA",
+            "position": "Defensa"
+          },
+          {
+            "name": "CARLOS EDUARDO SANTOS CABRERA",
+            "position": "Defensa"
+          },
+          {
+            "name": "ALEXIS USBALDO SILVA GARCIA",
+            "position": "Defensa"
+          },
+          {
+            "name": "BRANDON VALDES ARROYO",
+            "position": "Defensa"
+          },
+          {
+            "name": "LUIS ALEJANDRO VALDES ARROYO",
+            "position": "Defensa"
+          },
+          {
+            "name": "BRIAN VALDES GUERRERO",
+            "position": "Defensa"
+          }
+        ],
+        "HERMANOS": [
+          {
+            "name": "CARLOS MAURICIO ARROYO MONTES",
+            "position": "Defensa",
+            "sprite_index": 0
+          },
+          {
+            "name": "JOSE ANTONIO AGUILAR CANO",
+            "position": "Defensa",
+            "sprite_index": 1
+          },
+          {
+            "name": "GAEL GERARDO AMBRIZ MENDOZA",
+            "position": "Defensa",
+            "sprite_index": 2
+          },
+          {
+            "name": "AXEL IRAHI CHAVEZ SANCHEZ",
+            "position": "Mediocampista",
+            "sprite_index": 3
+          },
+          {
+            "name": "EFREN GUADALUPE CERVANTES RODRIGUEZ",
+            "position": "Defensa",
+            "sprite_index": 4
+          },
+          {
+            "name": "ERICK OMAR DELGADO RAZO",
+            "position": "Defensa",
+            "sprite_index": 5
+          },
+          {
+            "name": "ANGEL ABRAHAM FLORES CONTRERAS",
+            "position": "Defensa",
+            "sprite_index": 6
+          },
+          {
+            "name": "JOSE GUADALUPE GARCIA CONEJO",
+            "position": "Defensa",
+            "sprite_index": 7
+          },
+          {
+            "name": "LUIS ENRIQUE GARCIA CONEJO",
+            "position": "Defensa",
+            "sprite_index": 8
+          },
+          {
+            "name": "EDGAR EDUARDO GARCIA CASTRO",
+            "position": "Defensa",
+            "sprite_index": 9
+          },
+          {
+            "name": "JOSE ANDRES GARZA CALLEJA",
+            "position": "Defensa",
+            "sprite_index": 10
+          },
+          {
+            "name": "ERICK LOPEZ RAMIREZ",
+            "position": "Defensa",
+            "sprite_index": 11
+          },
+          {
+            "name": "SERGIO ALBERTO MARTINEZ CERRITO",
+            "position": "Defensa",
+            "sprite_index": 12
+          },
+          {
+            "name": "JONATAN GABRIEL MAIDANA",
+            "position": "Defensa",
+            "sprite_index": 13
+          },
+          {
+            "name": "ALEJANDRO MORENO BANDA",
+            "position": "Defensa",
+            "sprite_index": 14
+          },
+          {
+            "name": "EMILIANO MORENO BANDA",
+            "position": "Defensa",
+            "sprite_index": 15
+          },
+          {
+            "name": "JESUS HUMBERTO MORENO BANDA",
+            "position": "Defensa",
+            "sprite_index": 16
+          },
+          {
+            "name": "JESUS ERNESTO NEGRETE AGUILAR",
+            "position": "Defensa",
+            "sprite_index": 17
+          },
+          {
+            "name": "VICTOR HUGO PEREZ RAMIREZ",
+            "position": "Defensa",
+            "sprite_index": 18
+          },
+          {
+            "name": "JOSE ANTONIO RAMIREZ CERRITO",
+            "position": "Defensa",
+            "sprite_index": 19
+          },
+          {
+            "name": "JESUS GERARDO RODRIGUEZ ALEJOS",
+            "position": "Defensa",
+            "sprite_index": 20
+          },
+          {
+            "name": "MARIO RAZO MIRANDA",
+            "position": "Defensa",
+            "sprite_index": 21
+          },
+          {
+            "name": "JORGE LUIS RODRIGUEZ BAHENA",
+            "position": "Defensa",
+            "sprite_index": 22
+          },
+          {
+            "name": "HAROL LENIER ROMANA MOSQUEDA",
+            "position": "Defensa",
+            "sprite_index": 23
+          },
+          {
+            "name": "JUAN JESUS TORRES GARCIA",
+            "position": "Defensa",
+            "sprite_index": 24
+          },
+          {
+            "name": "CRISTIAN IVAN VARGAS RODRIGUEZ",
+            "position": "Delantero",
+            "sprite_index": 25
+          },
+          {
+            "name": "MOISES GUADALUPE VASQUEZ",
+            "position": "Defensa",
+            "sprite_index": 26
+          },
+          {
+            "name": "ABRAHAM GUADALUPE VALENCIA FLORES",
+            "position": "Defensa",
+            "sprite_index": 27
+          },
+          {
+            "name": "JOSE DE JESUS VALENZUELA ABOYTES",
+            "position": "Defensa",
+            "sprite_index": 28
+          }
+        ],
+        "FRANCO FC": [
+          {
+            "name": "JUAN JESUS BELTRAN GARCIA",
+            "position": "Delantero"
+          },
+          {
+            "name": "JESUS HUMBERTO CABELLO CAZARES",
+            "position": "Defensa"
+          },
+          {
+            "name": "JOSE GABRIEL CADENA MENDOZA",
+            "position": "Mediocampista"
+          },
+          {
+            "name": "CHRISTOPHER CAMPOS TORRES",
+            "position": "Defensa"
+          },
+          {
+            "name": "NESTOR CANO ACOSTA",
+            "position": "Defensa"
+          },
+          {
+            "name": "IDELFONSO ESPITIA RUIZ",
+            "position": "Defensa"
+          },
+          {
+            "name": "EDGAR FRANCO BELTRAN",
+            "position": "Mediocampista"
+          },
+          {
+            "name": "EDGAR FRANCO GONZALEZ",
+            "position": "Defensa"
+          },
+          {
+            "name": "BRAULIO FRANCO SANCHEZ",
+            "position": "Defensa"
+          },
+          {
+            "name": "CHRISTOPHER ARTURO GAMEZ RAMIREZ",
+            "position": "Mediocampista"
+          },
+          {
+            "name": "EMILIANO GAMEZ RAMIREZ",
+            "position": "Defensa"
+          },
+          {
+            "name": "ANTONIO YAIR HERRERA GONZALEZ",
+            "position": "Defensa"
+          },
+          {
+            "name": "JUAN IRAN JUAREZ CAÑADA",
+            "position": "Delantero"
+          },
+          {
+            "name": "IVAN ALEJANDRO LEON SOLIS",
+            "position": "Defensa"
+          },
+          {
+            "name": "JUAN PABLO MANCERA GARCIA",
+            "position": "Mediocampista"
+          },
+          {
+            "name": "LUIS ANTONIO MANCERA GARCIA",
+            "position": "Mediocampista"
+          },
+          {
+            "name": "JOSE LUIS MANCERA RAMIREZ",
+            "position": "Defensa"
+          },
+          {
+            "name": "MARCOS MENDOZA MORA",
+            "position": "Mediocampista"
+          },
+          {
+            "name": "EFRAIN ARTURO MOSQUEDA RAZO",
+            "position": "Defensa"
+          },
+          {
+            "name": "PEDRO NAVARRETE SOLEDAD",
+            "position": "Defensa"
+          },
+          {
+            "name": "STIVEN ALEXANDER PATIÑO MOSQUEDA",
+            "position": "Defensa"
+          },
+          {
+            "name": "DAVID ADAN RAMIREZ LOPEZ",
+            "position": "Defensa"
+          },
+          {
+            "name": "JUAN DIEGO RAMIREZ RIVERA",
+            "position": "Defensa"
+          },
+          {
+            "name": "MICHELL IVAN RENDON RIVERA",
+            "position": "Mediocampista"
+          },
+          {
+            "name": "ROLANDO ROCHA SIERRA",
+            "position": "Mediocampista"
+          },
+          {
+            "name": "TOMAS GENARO RUIZ RAMOS",
+            "position": "Defensa"
+          },
+          {
+            "name": "LUIS DAVID SERVIN ESCALANTE",
+            "position": "Delantero"
+          },
+          {
+            "name": "JESE JASON JABNE SOSA SALMERON",
+            "position": "Mediocampista"
+          }
+        ],
+        "ABEJAS": [
+          {
+            "name": "JUAN PABLO ALMANZA GAMEZ",
+            "position": "Mediocampista"
+          },
+          {
+            "name": "DIEGO GIOVANNI BELMAN LOPEZ",
+            "position": "Defensa"
+          },
+          {
+            "name": "JUAN JESUS CENTENO CAÑADA",
+            "position": "Mediocampista"
+          },
+          {
+            "name": "ROBERTO CENTENO CAÑADA",
+            "position": "Mediocampista"
+          },
+          {
+            "name": "CARLOS ANTONIO CRUZ CAÑADA",
+            "position": "Defensa"
+          },
+          {
+            "name": "DAVID LUIS CRUZ CAÑADA",
+            "position": "Mediocampista"
+          },
+          {
+            "name": "EDGAR CRUZ CAÑADA",
+            "position": "Mediocampista"
+          },
+          {
+            "name": "JOSE RAFAEL GONZALEZ MALDONADO",
+            "position": "Defensa"
+          },
+          {
+            "name": "JUAN CARLOS GAMEZ BUENAVISTA",
+            "position": "Defensa"
+          },
+          {
+            "name": "JUAN MANUEL GAMEZ LOPEZ",
+            "position": "Defensa"
+          },
+          {
+            "name": "MARCO ANTONIO GAMEZ RAMIREZ",
+            "position": "Defensa"
+          },
+          {
+            "name": "FERNANDO GAMEZ REYES",
+            "position": "Defensa"
+          },
+          {
+            "name": "JOSE MANUEL GAMEZ ZARATE",
+            "position": "Defensa"
+          },
+          {
+            "name": "PABLO FRANCISCO GARCIA RAMIREZ",
+            "position": "Mediocampista"
+          },
+          {
+            "name": "JESUS JARALILLO RICO",
+            "position": "Defensa"
+          },
+          {
+            "name": "JAVIER LARA VALENCIA",
+            "position": "Defensa"
+          },
+          {
+            "name": "JUAN LUIS NORIA VILLA",
+            "position": "Defensa"
+          },
+          {
+            "name": "OBED NORIA VILLA",
+            "position": "Mediocampista"
+          },
+          {
+            "name": "MILTON OLVERA RAMIREZ",
+            "position": "Defensa"
+          },
+          {
+            "name": "CRISTOPHER PEÑA JARALILLO",
+            "position": "Mediocampista"
+          },
+          {
+            "name": "JOSE GUADALUPE PEÑA JARALILLO",
+            "position": "Defensa"
+          },
+          {
+            "name": "ERIC PEÑA LUNA",
+            "position": "Defensa"
+          },
+          {
+            "name": "MARCO FERNANDO RIVERA RAMIREZ",
+            "position": "Defensa"
+          },
+          {
+            "name": "LEONARDO RAMIREZ BUENAVISTA",
+            "position": "Mediocampista"
+          },
+          {
+            "name": "GUSTAVO GUADALUPE RICO HUERTA",
+            "position": "Defensa"
+          },
+          {
+            "name": "SILVESTRE RICO SANCHEZ",
+            "position": "Defensa"
+          },
+          {
+            "name": "ENRIQUE ALEXIS VELASQUEZ BUENAVISTA",
+            "position": "Defensa"
+          },
+          {
+            "name": "PAULO CESAR PEÑA JARALILLO",
+            "position": "Mediocampista"
+          }
+        ]
+      },
       "cedulas": [
         {
           "id": 76,
@@ -4969,35 +6841,55 @@
         },
         {
           "id": 96,
-          "url": "https://www.juventinorosasliga.com/cedula-arbitral/96/",
+          "url": "https://juventinorosasliga.com/cedula-arbitral/96/",
           "title": "Cédula Arbitral - HERMANOS (Primera Fuerza) vs SAN JOSE FC (Primera Fuerza)",
           "local": "HERMANOS",
           "away": "SAN JOSE FC",
-          "category": "Primera Fuerza"
+          "category": "Primera Fuerza",
+          "date": "20/09/2026 10:00",
+          "local_lineup": [],
+          "away_lineup": [],
+          "local_bench": [],
+          "away_bench": []
         },
         {
           "id": 97,
-          "url": "https://www.juventinorosasliga.com/cedula-arbitral/97/",
+          "url": "https://juventinorosasliga.com/cedula-arbitral/97/",
           "title": "Cédula Arbitral - LINCES (Primera Fuerza) vs JUVENTUS (Primera Fuerza)",
           "local": "LINCES",
           "away": "JUVENTUS",
-          "category": "Primera Fuerza"
+          "category": "Primera Fuerza",
+          "date": "20/09/2026 08:00",
+          "local_lineup": [],
+          "away_lineup": [],
+          "local_bench": [],
+          "away_bench": []
         },
         {
           "id": 98,
-          "url": "https://www.juventinorosasliga.com/cedula-arbitral/98/",
+          "url": "https://juventinorosasliga.com/cedula-arbitral/98/",
           "title": "Cédula Arbitral - LOBOS CDG (Primera Fuerza) vs NAPOLI (Primera Fuerza)",
           "local": "LOBOS CDG",
           "away": "NAPOLI",
-          "category": "Primera Fuerza"
+          "category": "Primera Fuerza",
+          "date": "20/09/2026 12:00",
+          "local_lineup": [],
+          "away_lineup": [],
+          "local_bench": [],
+          "away_bench": []
         },
         {
           "id": 99,
-          "url": "https://www.juventinorosasliga.com/cedula-arbitral/99/",
+          "url": "https://juventinorosasliga.com/cedula-arbitral/99/",
           "title": "Cédula Arbitral - TERRICOLAS (Primera Fuerza) vs GALACTICOS (Primera Fuerza)",
           "local": "TERRICOLAS",
           "away": "GALACTICOS",
-          "category": "Primera Fuerza"
+          "category": "Primera Fuerza",
+          "date": "20/09/2026 08:00",
+          "local_lineup": [],
+          "away_lineup": [],
+          "local_bench": [],
+          "away_bench": []
         }
       ],
       "cedulas_scanned": [
@@ -8600,7 +10492,1352 @@
           "cedulas": 1
         }
       },
-      "player_profiles": {},
+      "player_profiles": {
+        "TAVERA FC": [
+          {
+            "name": "JESUS ALEJANDRO AGUILAR RAMIREZ",
+            "position": "Mediocampista"
+          },
+          {
+            "name": "JOSE LUIS AGUILAR SOLORZANO",
+            "position": "Defensa"
+          },
+          {
+            "name": "MOISES GUDALUPE ARCE GUTIERREZ",
+            "position": "Defensa"
+          },
+          {
+            "name": "JUAN YUNUEN ARELLANO JUAREZ",
+            "position": "Defensa"
+          },
+          {
+            "name": "FRANCISCO JAVIER AVILA HUERTA",
+            "position": "Defensa"
+          },
+          {
+            "name": "JOB CRUZ CENTENO GONZALEZ",
+            "position": "Mediocampista"
+          },
+          {
+            "name": "EDWIN OSVALDO CENTENO GONZALEZ",
+            "position": "Mediocampista"
+          },
+          {
+            "name": "ISRAEL HERNANDEZ ALMANZA",
+            "position": "Defensa"
+          },
+          {
+            "name": "RAFAEL HERNANDEZ ALMANZA",
+            "position": "Defensa"
+          },
+          {
+            "name": "ROBERTO HERNANDEZ ALMANZA",
+            "position": "Defensa"
+          },
+          {
+            "name": "ISRAEL HERNANDEZ ARIZA",
+            "position": "Mediocampista"
+          },
+          {
+            "name": "JOSE LARA FLORES",
+            "position": "Defensa"
+          },
+          {
+            "name": "MIGUEL ANGEL LARA FLORES",
+            "position": "Defensa"
+          },
+          {
+            "name": "JOSE EMMANUEL MARTINEZ MENDOZA",
+            "position": "Defensa"
+          },
+          {
+            "name": "JOSUE MARTINEZ CASTILLO",
+            "position": "Mediocampista"
+          },
+          {
+            "name": "JUAN DIEGO MENDOZA GAMEZ",
+            "position": "Defensa"
+          },
+          {
+            "name": "EDGAR MENDOZA MORA",
+            "position": "Mediocampista"
+          },
+          {
+            "name": "LUIS DAVID MENDOZA NORIA",
+            "position": "Mediocampista"
+          },
+          {
+            "name": "JOSE FIDEL MONDRAGON ESPINOZA",
+            "position": "Defensa"
+          },
+          {
+            "name": "CARLOS EDUARDO NOLASCO RAMIREZ",
+            "position": "Defensa"
+          },
+          {
+            "name": "HONORIO OCHOA AGUILAR",
+            "position": "Mediocampista"
+          },
+          {
+            "name": "OMAR OLIVARES PAZ",
+            "position": "Mediocampista"
+          },
+          {
+            "name": "MIGUEL ANGEL PARAMO SANTA ROSA",
+            "position": "Portero"
+          },
+          {
+            "name": "EDGARDO RIVERA BELMAN",
+            "position": "Mediocampista"
+          },
+          {
+            "name": "JOSE ERNESTO RAMIREZ AGOSTADERO",
+            "position": "Defensa"
+          },
+          {
+            "name": "OSCAR RUIZ RAMIREZ",
+            "position": "Mediocampista"
+          },
+          {
+            "name": "JESUS ALBERTO SEGURA RODRIGUEZ",
+            "position": "Mediocampista"
+          },
+          {
+            "name": "JUAN ANTONIO VIDAL CHAYRE",
+            "position": "Mediocampista"
+          },
+          {
+            "name": "JOSE ANTONIO ZARATE AGUILERA",
+            "position": "Defensa"
+          }
+        ],
+        "TAPATIO": [
+          {
+            "name": "LUIS ANGEL BARAJA SANCHEZ",
+            "position": "Defensa"
+          },
+          {
+            "name": "JOSE FRANCISCO CANO TORRES",
+            "position": "Defensa"
+          },
+          {
+            "name": "BRYAN EVERARDO CERRITO ZARATE",
+            "position": "Defensa"
+          },
+          {
+            "name": "RAFALE GARCIA GUTIERREZ",
+            "position": "Mediocampista"
+          },
+          {
+            "name": "JUAN JOSE GONZALEZ MARQUEZ",
+            "position": "Defensa"
+          },
+          {
+            "name": "JOSHUA EMMANUEL GUTIERREZ TOVAR",
+            "position": "Defensa"
+          },
+          {
+            "name": "JORGE LUIS GUZMAN MORENO",
+            "position": "Defensa"
+          },
+          {
+            "name": "ANGEL LEON ZARATE",
+            "position": "Defensa"
+          },
+          {
+            "name": "ENRIQUE MARTINEZ PIRUL",
+            "position": "Defensa"
+          },
+          {
+            "name": "ELY SAUL PANTOJA CAPULIN",
+            "position": "Defensa"
+          },
+          {
+            "name": "MARIO EVERARDO PIZANO AGOSTADERO",
+            "position": "Defensa"
+          },
+          {
+            "name": "ALAN MARTIN RODRIGUEZ ABOYTES",
+            "position": "Defensa"
+          },
+          {
+            "name": "EMMANUEL RODRIGUEZ RAMIREZ",
+            "position": "Defensa"
+          },
+          {
+            "name": "GUADALUPE BALTAZAR SALINAS BANDA",
+            "position": "Defensa"
+          },
+          {
+            "name": "FELIPE SALINAS CORTES",
+            "position": "Defensa"
+          },
+          {
+            "name": "PEDRO ALBERTO TOVAR ZARATE",
+            "position": "Mediocampista"
+          },
+          {
+            "name": "EDUARDO VARGAS LADINOS",
+            "position": "Defensa"
+          },
+          {
+            "name": "FRANCISCO JAVIER VILLAGOMEZ MORENO",
+            "position": "Defensa"
+          },
+          {
+            "name": "JOSE MANUEL VILLAGOMEZ MORENO",
+            "position": "Defensa"
+          }
+        ],
+        "SAN JUAN FC": [
+          {
+            "name": "JUAN DANIEL AGUILAR MARTINEZ",
+            "position": "Mediocampista"
+          },
+          {
+            "name": "JULIO AGUILAR MARTINEZ",
+            "position": "Defensa"
+          },
+          {
+            "name": "CESAR GUILLERMO AGUIRRE LOPEZ",
+            "position": "Defensa"
+          },
+          {
+            "name": "ISAAC ARMENTA RICO",
+            "position": "Defensa"
+          },
+          {
+            "name": "JUAN MARTIN BALDERAS OLIVARES",
+            "position": "Defensa"
+          },
+          {
+            "name": "GIOVANNI OMAR BELMAN AVILA",
+            "position": "Defensa"
+          },
+          {
+            "name": "GERARDO DANIEL CALERO GARCIA",
+            "position": "Defensa"
+          },
+          {
+            "name": "JOSE JAVIER CORONA RIVERA",
+            "position": "Defensa"
+          },
+          {
+            "name": "ALFREDO JOSUE CRUZ IRETA",
+            "position": "Mediocampista"
+          },
+          {
+            "name": "JORGE ARTURO GALLEGOS CAÑADA",
+            "position": "Mediocampista"
+          },
+          {
+            "name": "ANDRES GIOVANNI GALLEGOS RIVERA",
+            "position": "Defensa"
+          },
+          {
+            "name": "FRANCISCO GONZALEZ MARTINEZ",
+            "position": "Defensa"
+          },
+          {
+            "name": "RAFAEL GONZALEZ SALINAS",
+            "position": "Defensa"
+          },
+          {
+            "name": "GABINO GUERRERO DELGADO",
+            "position": "Defensa"
+          },
+          {
+            "name": "JOSE MARIA HERNANDEZ JARALILLO",
+            "position": "Defensa"
+          },
+          {
+            "name": "ARMANDO LARA VARGAS",
+            "position": "Defensa"
+          },
+          {
+            "name": "ROGELIO MANUEL MARTINEZ MENDOZA",
+            "position": "Defensa"
+          },
+          {
+            "name": "FRANCISCO JAVIER MALDONADO GALVAN",
+            "position": "Defensa"
+          },
+          {
+            "name": "MIGUEL ANGEL MARTINEZ CALERO",
+            "position": "Defensa"
+          },
+          {
+            "name": "CARLOS MARTINEZ PARAMO",
+            "position": "Mediocampista"
+          },
+          {
+            "name": "HILARIO MARTINEZ PEREZ",
+            "position": "Defensa"
+          },
+          {
+            "name": "OSCAR MARTINEZ SALINAS",
+            "position": "Defensa"
+          },
+          {
+            "name": "SANTIAGO ALEXIS MARTINEZ TREJO",
+            "position": "Defensa"
+          },
+          {
+            "name": "JOSE GUADALUPE RAMIREZ MENDOZA",
+            "position": "Defensa"
+          },
+          {
+            "name": "VICTOR DAVID RICO MARTINEZ",
+            "position": "Mediocampista"
+          },
+          {
+            "name": "FRANCISCO JAVIER ROMERO JUAREZ",
+            "position": "Defensa"
+          },
+          {
+            "name": "HUGO SANCHEZ LAMOGGLIA",
+            "position": "Defensa"
+          },
+          {
+            "name": "MIGUEL ANGEL SOLORZANO VARGAS",
+            "position": "Mediocampista"
+          },
+          {
+            "name": "LUIS DAVID VARGAS HERNANDEZ",
+            "position": "Mediocampista"
+          },
+          {
+            "name": "DANIEL VARGAS VARGAS",
+            "position": "Defensa"
+          }
+        ],
+        "SAN JULIAN": [
+          {
+            "name": "ANDRUD ADAIR AVILA ALFARO",
+            "position": "Mediocampista"
+          },
+          {
+            "name": "KEVIN SANTIAGO CALERO CERRITOS",
+            "position": "Mediocampista"
+          },
+          {
+            "name": "BRAULIO CALERO SUBIAS",
+            "position": "Defensa"
+          },
+          {
+            "name": "LUIS ANTONIO CALERO SUBIAS",
+            "position": "Defensa"
+          },
+          {
+            "name": "JOSE DE JESUS GARCIA VILLAFUERTE",
+            "position": "Defensa"
+          },
+          {
+            "name": "OMAR ALEJANDRO GASCA RODRIGUEZ",
+            "position": "Defensa"
+          },
+          {
+            "name": "EDGAR ANTONIO GRANADOS NOGUEZ",
+            "position": "Mediocampista"
+          },
+          {
+            "name": "ANTONIO ALEJANDRO GUERRERO VILLEGAS",
+            "position": "Mediocampista"
+          },
+          {
+            "name": "CARLOS EDUARDO LEON VALADEZ",
+            "position": "Defensa"
+          },
+          {
+            "name": "ALEJANDRO LUGO OLIVARES",
+            "position": "Defensa"
+          },
+          {
+            "name": "GIOVANNI OLIVARES PEREZ",
+            "position": "Defensa"
+          },
+          {
+            "name": "LEONEL ALEJANDRO ORTEGA RODRIGUEZ",
+            "position": "Defensa"
+          },
+          {
+            "name": "LUIS ABRAHAM ORTEGA RODRIGUEZ",
+            "position": "Mediocampista"
+          },
+          {
+            "name": "EMMANUEL ALEJANDRO PADILLA LOZA",
+            "position": "Defensa"
+          },
+          {
+            "name": "MANUEL PEREZ ORTEGA",
+            "position": "Defensa"
+          },
+          {
+            "name": "RICARDO PESCADOR AGUILAR",
+            "position": "Defensa"
+          },
+          {
+            "name": "ARMANDO RAMIREZ RANGEL",
+            "position": "Defensa"
+          },
+          {
+            "name": "BRYAN REYES PEÑALOZA",
+            "position": "Mediocampista"
+          },
+          {
+            "name": "RAUL SALVADOR PIZANO",
+            "position": "Defensa"
+          },
+          {
+            "name": "RAMON VALADEZ VILLAFUERTE",
+            "position": "Mediocampista"
+          },
+          {
+            "name": "ANGEL GABRIEL VALADEZ OLIVARES",
+            "position": "Mediocampista"
+          },
+          {
+            "name": "EUGENIO VALADEZ OLIVARES",
+            "position": "Defensa"
+          },
+          {
+            "name": "BRYAN DANIEL VALADEZ RAMIREZ",
+            "position": "Mediocampista"
+          },
+          {
+            "name": "GILBERTO YAÑEZ RAMIREZ",
+            "position": "Defensa"
+          },
+          {
+            "name": "ALAN OMAR YAÑEZ ZAVALA",
+            "position": "Mediocampista"
+          },
+          {
+            "name": "GIOVANNI YAÑEZ ZAVALA",
+            "position": "Mediocampista"
+          },
+          {
+            "name": "PABLO ZAVALA FRIAS",
+            "position": "Defensa"
+          }
+        ],
+        "SAN JOSE JRS": [
+          {
+            "name": "MICHAEL AGUILAR HERNANDEZ",
+            "position": "Mediocampista"
+          },
+          {
+            "name": "JUAN DIEGO ALBERTO DAMIAN",
+            "position": "Mediocampista"
+          },
+          {
+            "name": "EFREN ALBERTO MONTOYA",
+            "position": "Defensa"
+          },
+          {
+            "name": "CARLOS ARMANDO AVILA ROBLES",
+            "position": "Defensa"
+          },
+          {
+            "name": "GAEL ARTURO CORNEJO TOVAR",
+            "position": "Mediocampista"
+          },
+          {
+            "name": "BRYAN DOÑATES ZAVALA",
+            "position": "Defensa"
+          },
+          {
+            "name": "MARTIN GARCIA GARCIA",
+            "position": "Defensa"
+          },
+          {
+            "name": "ALBERTO GASCA CUEVAS",
+            "position": "Defensa"
+          },
+          {
+            "name": "JUAN YASBETH LANDIN RAMIREZ",
+            "position": "Defensa"
+          },
+          {
+            "name": "EHECATL ARTURO MIRELES HERNANDEZ",
+            "position": "Mediocampista"
+          },
+          {
+            "name": "JAIR ALEJANDRO MIRELES HERNANDEZ",
+            "position": "Mediocampista"
+          },
+          {
+            "name": "WILLY MORENO RAMIREZ",
+            "position": "Mediocampista"
+          },
+          {
+            "name": "FRANCISCO ISAAC MORENO YAÑEZ",
+            "position": "Mediocampista"
+          },
+          {
+            "name": "ISRAEL ANDRE MORENO YAÑEZ",
+            "position": "Mediocampista"
+          },
+          {
+            "name": "DAVID GONZALO OÑATES NORIA",
+            "position": "Defensa"
+          },
+          {
+            "name": "JOSE ISIDRO PEREZ ALBERTO",
+            "position": "Defensa"
+          },
+          {
+            "name": "DIEGO FERNANDO PESCADOR TOVAR",
+            "position": "Mediocampista"
+          },
+          {
+            "name": "ANTONIO RAMIREZ ALBERTO",
+            "position": "Defensa"
+          },
+          {
+            "name": "JOSE ANTONIO RAMIREZ ALBERTO",
+            "position": "Mediocampista"
+          },
+          {
+            "name": "JOSE ROBERTO RAMIREZ TOVAR",
+            "position": "Defensa"
+          },
+          {
+            "name": "EDUARDO RAMIREZ YAÑEZ",
+            "position": "Defensa"
+          },
+          {
+            "name": "ALEJANDRO TELLEZ CAMPOS",
+            "position": "Defensa"
+          },
+          {
+            "name": "MATEO TOVAR CAMPOS",
+            "position": "Mediocampista"
+          },
+          {
+            "name": "ALDO SAIR TOVAR TOVAR",
+            "position": "Mediocampista"
+          },
+          {
+            "name": "EDGAR ISAAC TOVAR TOVAR",
+            "position": "Mediocampista"
+          },
+          {
+            "name": "DANIEL VALENCIA PESCADOR",
+            "position": "Defensa"
+          },
+          {
+            "name": "CHRISTIAN IVAN VILLEGAS GARCIA",
+            "position": "Defensa"
+          },
+          {
+            "name": "JOSE ALFREDO YAÑEZ MIRANDA",
+            "position": "Defensa"
+          },
+          {
+            "name": "SALVADOR YAÑEZ MIRANDA",
+            "position": "Defensa"
+          }
+        ],
+        "SAN ANTONIO FC": [
+          {
+            "name": "JOSE ALBERTO AGUILAR OJEDA",
+            "position": "Defensa"
+          },
+          {
+            "name": "EDGARDO AGUIRRE GARCIA",
+            "position": "Mediocampista"
+          },
+          {
+            "name": "MOISES AGUIRRE GARCIA",
+            "position": "Mediocampista"
+          },
+          {
+            "name": "ALEXANDER ARIZA ZERMEÑO",
+            "position": "Defensa"
+          },
+          {
+            "name": "AGUSTIN BATRES RUBIO",
+            "position": "Defensa"
+          },
+          {
+            "name": "EDUARDO CAMPOS GODINEZ",
+            "position": "Mediocampista"
+          },
+          {
+            "name": "JOSE ENRIQUE CERVANTES PEREZ",
+            "position": "Defensa"
+          },
+          {
+            "name": "JOSE JULIAN FIGUEROA CANO",
+            "position": "Mediocampista"
+          },
+          {
+            "name": "JOSE MANUEL GOMEZ HERNANDEZ",
+            "position": "Mediocampista"
+          },
+          {
+            "name": "DAVE RICARDO GUERRERO RAMIREZ",
+            "position": "Defensa"
+          },
+          {
+            "name": "EFRAIN GUTIERREZ LUCIO",
+            "position": "Defensa"
+          },
+          {
+            "name": "LUIS FERNANDO LOPEZ VASQUEZ",
+            "position": "Defensa"
+          },
+          {
+            "name": "ALBERTO MACIAS NORIA",
+            "position": "Defensa"
+          },
+          {
+            "name": "JUAN PABLO MACIAS NORIA",
+            "position": "Mediocampista"
+          },
+          {
+            "name": "JUAN MARTIN MANZANAREZ LOPEZ",
+            "position": "Defensa"
+          },
+          {
+            "name": "CHRISTOPHER ALEXIS MERINO DOMPABLO",
+            "position": "Defensa"
+          },
+          {
+            "name": "HUMBERTO PALACIO AGUILAR",
+            "position": "Defensa"
+          },
+          {
+            "name": "JUAN PALACIO AGUILAR",
+            "position": "Defensa"
+          },
+          {
+            "name": "ESAU PEREZ HERNANDEZ",
+            "position": "Defensa"
+          },
+          {
+            "name": "EFRAIN PEREZ LOPEZ",
+            "position": "Defensa"
+          },
+          {
+            "name": "MARIO PEREZ LOPEZ",
+            "position": "Defensa"
+          },
+          {
+            "name": "JOSE MANUEL PRESA TREJO",
+            "position": "Defensa"
+          },
+          {
+            "name": "JUAN DEMETRIO PRESA TREJO",
+            "position": "Mediocampista"
+          },
+          {
+            "name": "FRANCISCO JAVIER RUIZ PLASCENCIA",
+            "position": "Mediocampista"
+          },
+          {
+            "name": "OSCAR DANIEL SEGURA SANCHEZ",
+            "position": "Defensa"
+          },
+          {
+            "name": "SAUL SOSA ARIZA",
+            "position": "Mediocampista"
+          },
+          {
+            "name": "EDGAR TIERRABLANCA MARTINEZ",
+            "position": "Defensa"
+          }
+        ],
+        "PACHANGAS FC": [
+          {
+            "name": "CARLOS MANUEL AGUILAR GARCIA",
+            "position": "Defensa"
+          },
+          {
+            "name": "IVAN ARIZA PERALTA",
+            "position": "Defensa"
+          },
+          {
+            "name": "JULIO CESAR BADILLO HERNANDEZ",
+            "position": "Defensa"
+          },
+          {
+            "name": "VICTOR MANUEL CENTENO TAPIA",
+            "position": "Defensa"
+          },
+          {
+            "name": "JOSE FRANCISCO FRANCO LANDIN",
+            "position": "Defensa"
+          },
+          {
+            "name": "EDGAR GUADALUPE GAMEZ CABRERA",
+            "position": "Defensa"
+          },
+          {
+            "name": "JUAN GUZMAN LOPEZ",
+            "position": "Defensa"
+          },
+          {
+            "name": "JUAN NAHUM GUZMAN TAPIA",
+            "position": "Defensa"
+          },
+          {
+            "name": "ANGEL JESUS LOPEZ CABELLO",
+            "position": "Defensa"
+          },
+          {
+            "name": "BRYAN AARON LOPEZ TORRES",
+            "position": "Defensa"
+          },
+          {
+            "name": "JOSE ANTONIO LOPEZ DIAZ",
+            "position": "Defensa"
+          },
+          {
+            "name": "RAYMUNDO MARTIN RODRIGUEZ",
+            "position": "Mediocampista"
+          },
+          {
+            "name": "EFRAIN MORENO CORRALES",
+            "position": "Defensa"
+          },
+          {
+            "name": "ROLANDO MORENO MENDOZA",
+            "position": "Mediocampista"
+          },
+          {
+            "name": "LUIS JULIAN NEGRETE CERVANTES",
+            "position": "Defensa"
+          },
+          {
+            "name": "LEONARDO URIEL NIETO ESCALANTE",
+            "position": "Defensa"
+          },
+          {
+            "name": "CARLOS SEBASTIAN PERALTA AGUADO",
+            "position": "Defensa"
+          },
+          {
+            "name": "JOSE GUADALUPE PERALTA IBARRA",
+            "position": "Defensa"
+          },
+          {
+            "name": "JAVIER PERALTA ROMERO",
+            "position": "Defensa"
+          },
+          {
+            "name": "LUIS RODRIGUEZ PEREZ",
+            "position": "Defensa"
+          },
+          {
+            "name": "JOSE DE JESUS SAUCILLO RAMIREZ",
+            "position": "Defensa"
+          },
+          {
+            "name": "JESUS GUILLERMO SEGURA SANCHEZ",
+            "position": "Defensa"
+          },
+          {
+            "name": "FRANCISCO JAVIER SOLACHE FRANCO",
+            "position": "Defensa"
+          },
+          {
+            "name": "JESUS TAPIA RODRIGUEZ",
+            "position": "Defensa"
+          }
+        ],
+        "DEP. ZAPATA": [
+          {
+            "name": "JOAN FELIPE AGOSTADERO MALDONADO",
+            "position": "Mediocampista"
+          },
+          {
+            "name": "JOSUE ISRAEL AGUILAR CANO",
+            "position": "Mediocampista"
+          },
+          {
+            "name": "FRANCISCO EFREN ARANA RODRIGUEZ",
+            "position": "Defensa"
+          },
+          {
+            "name": "VICTOR CALDERON GAMUCERO",
+            "position": "Defensa"
+          },
+          {
+            "name": "RAYMUNDO CERROBLANCO LERA",
+            "position": "Defensa"
+          },
+          {
+            "name": "JUAN PABLO DELGADO OCHOA",
+            "position": "Defensa"
+          },
+          {
+            "name": "JOSUE GARCIA MEJIA",
+            "position": "Defensa"
+          },
+          {
+            "name": "NOE GUADALUPE GARCIA MEJIA",
+            "position": "Mediocampista"
+          },
+          {
+            "name": "EBER SAMUEL HERRERA GUZMAN",
+            "position": "Defensa"
+          },
+          {
+            "name": "ANGEL HORTELANO LUNA",
+            "position": "Defensa"
+          },
+          {
+            "name": "VICENTE LERA CACIQUE",
+            "position": "Defensa"
+          },
+          {
+            "name": "MIGUEL ANTONIO LLANOS AGUIRRE",
+            "position": "Mediocampista"
+          },
+          {
+            "name": "JORGE JONATHAN LUNA ZAMORA",
+            "position": "Defensa"
+          },
+          {
+            "name": "FRANCISCO JAVIER MUÑOZ BADILLO",
+            "position": "Defensa"
+          },
+          {
+            "name": "JULIO CESAR MUÑOZ BADILLO",
+            "position": "Mediocampista"
+          },
+          {
+            "name": "ALEJANDRO PERALTA ARIZA",
+            "position": "Mediocampista"
+          },
+          {
+            "name": "JUAN JOSE PIZANO DELGADO",
+            "position": "Mediocampista"
+          },
+          {
+            "name": "JOSE ARMANDO PIÑA LOPEZ",
+            "position": "Delantero"
+          },
+          {
+            "name": "MARTIN PIÑA SANCHEZ",
+            "position": "Delantero"
+          },
+          {
+            "name": "HENRY SALVADOR RAMIREZ YAÑEZ",
+            "position": "Mediocampista"
+          },
+          {
+            "name": "JOSE ANTONIO SALVADOR RICO",
+            "position": "Mediocampista"
+          },
+          {
+            "name": "MIGUEL ANGEL SERVIN VAZQUEZ",
+            "position": "Defensa"
+          },
+          {
+            "name": "ANTONIO SIERRA CACIQUE",
+            "position": "Defensa"
+          },
+          {
+            "name": "JOSE IGNACIO TOVAR CABELLO",
+            "position": "Defensa"
+          },
+          {
+            "name": "BENJAMIN VILLAFUERTE FRANCO",
+            "position": "Defensa"
+          },
+          {
+            "name": "FERNANDO VILLAGOMEZ RODRIGUEZ",
+            "position": "Defensa"
+          },
+          {
+            "name": "JOSE FIDEL VILLAGOMEZ RODRIGUEZ",
+            "position": "Defensa"
+          }
+        ],
+        "DEP. NOPALERO": [
+          {
+            "name": "LARRY GUADALUPE ALMANZA GARCIA",
+            "position": "Mediocampista"
+          },
+          {
+            "name": "CARLOS FRANCISCO BELMAN AGUADO",
+            "position": "Defensa"
+          },
+          {
+            "name": "JESUS EDUARDO BELMAN AGUADO",
+            "position": "Defensa"
+          },
+          {
+            "name": "JONATHAN CALERO ANDRADE",
+            "position": "Defensa"
+          },
+          {
+            "name": "ALEJANDRO CERRITO CONEJO",
+            "position": "Defensa"
+          },
+          {
+            "name": "YAEL ORLANDO CHAVEZ HERNANDEZ",
+            "position": "Defensa"
+          },
+          {
+            "name": "ANGEL DANIEL COLORADO MOLINA",
+            "position": "Defensa"
+          },
+          {
+            "name": "GIOVANNI DE JESUS COLORADO PRESA",
+            "position": "Defensa"
+          },
+          {
+            "name": "JUAN ALEJANDRO DELGADO VAZQUEZ",
+            "position": "Mediocampista"
+          },
+          {
+            "name": "CRISTOBAL FIGUEROA GARCIA",
+            "position": "Portero"
+          },
+          {
+            "name": "JAIRO FRANCO GARDUÑO",
+            "position": "Mediocampista"
+          },
+          {
+            "name": "TELESFORO FREYRE VALADEZ",
+            "position": "Defensa"
+          },
+          {
+            "name": "CARLOS DANIEL GARCIA RODRIGUEZ",
+            "position": "Delantero"
+          },
+          {
+            "name": "LUIS ENRIQUE GARCIA RODRIGUEZ",
+            "position": "Portero"
+          },
+          {
+            "name": "PASCUAL GIRON PALACIOS",
+            "position": "Defensa"
+          },
+          {
+            "name": "TIMOTEO GODINEZ SANCHEZ",
+            "position": "Portero"
+          },
+          {
+            "name": "FRANCISCO GUERRERO GUERRERO",
+            "position": "Defensa"
+          },
+          {
+            "name": "JORGE LUIS LLANOS HERNANDEZ",
+            "position": "Defensa"
+          },
+          {
+            "name": "CARLOS EDUARDO MARTINEZ QUINTANILLA",
+            "position": "Portero"
+          },
+          {
+            "name": "JOSE ALBERTO MACHUCA RODRIGUEZ",
+            "position": "Defensa"
+          },
+          {
+            "name": "ALEXIS ESTEBAN MALDONADO ESTRADA",
+            "position": "Portero"
+          },
+          {
+            "name": "ALAN MANUEL NORIA TOVAR",
+            "position": "Defensa"
+          },
+          {
+            "name": "LUIS FERNANDO PEREZ BELMAN",
+            "position": "Defensa"
+          },
+          {
+            "name": "JOSE DE JESUS PERU LOPEZ",
+            "position": "Defensa"
+          },
+          {
+            "name": "CARLOS DANIEL RAMIREZ TOVAR",
+            "position": "Mediocampista"
+          },
+          {
+            "name": "LUIS ENRIQUE VALADEZ NORIA",
+            "position": "Delantero"
+          },
+          {
+            "name": "JOSE RAFAEL VASQUEZ GONZALEZ",
+            "position": "Delantero"
+          },
+          {
+            "name": "DAVID VAZQUEZ GONZALEZ",
+            "position": "Defensa"
+          },
+          {
+            "name": "JOSUE ANTONIO VAZQUEZ NUÑEZ",
+            "position": "Mediocampista"
+          },
+          {
+            "name": "RUBEN FRANCISCO WALLE DIMAS",
+            "position": "Defensa"
+          }
+        ],
+        "DEP. LA LUZ": [
+          {
+            "name": "ANGEL SALVADOR ALVAREZ JUAREZ",
+            "position": "Mediocampista"
+          },
+          {
+            "name": "ANDY AARON ARREDONDO VAZQUEZ",
+            "position": "Mediocampista"
+          },
+          {
+            "name": "EMMANUEL BARRIENTOS ARREDONDO",
+            "position": "Defensa"
+          },
+          {
+            "name": "JUAN DIEGO CANO BARRON",
+            "position": "Defensa"
+          },
+          {
+            "name": "JOSE MANUEL COYOTE YAÑEZ",
+            "position": "Mediocampista"
+          },
+          {
+            "name": "PEDRO DONGU",
+            "position": "Defensa"
+          },
+          {
+            "name": "BENJAMIN FIGUEROA ARELLANO",
+            "position": "Defensa"
+          },
+          {
+            "name": "MIGUEL DARIO GARCIA RODRIGUEZ",
+            "position": "Defensa"
+          },
+          {
+            "name": "LEONEL GARCIA ROMERO",
+            "position": "Defensa"
+          },
+          {
+            "name": "OMAR GASCA SILLERO",
+            "position": "Defensa"
+          },
+          {
+            "name": "JESUS GASCA PEREZ",
+            "position": "Defensa"
+          },
+          {
+            "name": "CHRISTOPHER SAUL GUZMAN GASCA",
+            "position": "Mediocampista"
+          },
+          {
+            "name": "EMMANUEL GUZMAN GASCA",
+            "position": "Defensa"
+          },
+          {
+            "name": "JONATHAN TRINIDAD GUZMAN GASCA",
+            "position": "Mediocampista"
+          },
+          {
+            "name": "DANIEL LONA AGUILAR",
+            "position": "Defensa"
+          },
+          {
+            "name": "ANTHONY ALEJANDRO LOPEZ ALMARAZ",
+            "position": "Mediocampista"
+          },
+          {
+            "name": "IVAN MONTOYA ENRIQUEZ",
+            "position": "Defensa"
+          },
+          {
+            "name": "EDWIN EDUARDO MORALES RUIZ",
+            "position": "Mediocampista"
+          },
+          {
+            "name": "JOSE CARMEN NAVARRO RAMOS",
+            "position": "Mediocampista"
+          },
+          {
+            "name": "SEBASTIAN OLIVARES NAVARRO",
+            "position": "Defensa"
+          },
+          {
+            "name": "JOSE JUAN PEREZ ORTEGA",
+            "position": "Mediocampista"
+          },
+          {
+            "name": "REY DAVID RODRIGUEZ AGUILAR",
+            "position": "Defensa"
+          },
+          {
+            "name": "JUVENTINO RICO GUTIERREZ",
+            "position": "Defensa"
+          },
+          {
+            "name": "JUAN CARLOS RODRIGUEZ OLIVARES",
+            "position": "Defensa"
+          },
+          {
+            "name": "CARLOS GUADALUPE RUIZ VASQUEZ",
+            "position": "Defensa"
+          },
+          {
+            "name": "SANTOS ALFREDO TOVAR GUZMAN",
+            "position": "Defensa"
+          },
+          {
+            "name": "EDWIN EMMANUEL TORRES MENDIOLA",
+            "position": "Defensa"
+          },
+          {
+            "name": "JUAN DIEGO TOVAR DELGADO",
+            "position": "Mediocampista"
+          },
+          {
+            "name": "LUIS MANUEL VILLANUEVA PEREZ",
+            "position": "Defensa"
+          },
+          {
+            "name": "LUIS ALBERTO ZARAGOZA ACOSTA",
+            "position": "Defensa"
+          }
+        ],
+        "CELTICOS": [
+          {
+            "name": "EDUARDO AGUILAR SANCHEZ",
+            "position": "Defensa"
+          },
+          {
+            "name": "SANTIAGO ALFARO RAMIREZ",
+            "position": "Mediocampista"
+          },
+          {
+            "name": "JESUS LEONARDO APARICIO RODRIGUEZ",
+            "position": "Defensa"
+          },
+          {
+            "name": "EMMANUEL ARIZA BALDERAS",
+            "position": "Defensa"
+          },
+          {
+            "name": "GILBERTO BARRIENTOS YAÑEZ",
+            "position": "Defensa"
+          },
+          {
+            "name": "JONATHAN DAVID CALDERON LOPEZ",
+            "position": "Defensa"
+          },
+          {
+            "name": "JUAN CARLOS CALDERON LOPEZ",
+            "position": "Defensa"
+          },
+          {
+            "name": "JOSE ANGEL CERVANTES GASCA",
+            "position": "Defensa"
+          },
+          {
+            "name": "JOSE GUADALUPE FLORES PEÑALOZA",
+            "position": "Defensa"
+          },
+          {
+            "name": "GUSTAVO ADOLFO GARIBAY VERA",
+            "position": "Defensa"
+          },
+          {
+            "name": "JOSE GOMEZ PEREZ",
+            "position": "Defensa"
+          },
+          {
+            "name": "ISMAEL JUAREZ ALDAVERA",
+            "position": "Delantero"
+          },
+          {
+            "name": "JOSUE URIEL LOPEZ APASEO",
+            "position": "Defensa"
+          },
+          {
+            "name": "JAVIER LOPEZ ARMENTA",
+            "position": "Defensa"
+          },
+          {
+            "name": "JOSE GUADALUPE LOPEZ CANO",
+            "position": "Defensa"
+          },
+          {
+            "name": "ARTURO LOPEZ SIERRA",
+            "position": "Defensa"
+          },
+          {
+            "name": "HECTOR LOPEZ SIERRA",
+            "position": "Portero"
+          },
+          {
+            "name": "ALAN EDUARDO MEJI DAMIAN",
+            "position": "Defensa"
+          },
+          {
+            "name": "ANTONIO DE JESUS MENDOZA CASTAÑEDA",
+            "position": "Defensa"
+          },
+          {
+            "name": "JUAN MARTIN MENDOZA OLIVARES",
+            "position": "Defensa"
+          },
+          {
+            "name": "SERGIO OJEDA CAMPOS",
+            "position": "Defensa"
+          },
+          {
+            "name": "JUAN JESUS OJEDA ORTEGA",
+            "position": "Defensa"
+          },
+          {
+            "name": "KEVIN GUSTAVO OJEDA ORTEGA",
+            "position": "Defensa"
+          },
+          {
+            "name": "GUADALUPE MISAEL PRESA RODRIGUEZ",
+            "position": "Defensa"
+          },
+          {
+            "name": "FERNANDO RAMIREZ GUZMAN",
+            "position": "Mediocampista"
+          },
+          {
+            "name": "LUIS HUMBERTO RAMIREZ GUZMAN",
+            "position": "Mediocampista"
+          },
+          {
+            "name": "JUAN JESUS RANGEL OJODEAGUA",
+            "position": "Defensa"
+          },
+          {
+            "name": "GIOVANNI SANCHEZ DELGADO",
+            "position": "Mediocampista"
+          },
+          {
+            "name": "ANGEL DANIEL TORRES PEREZ",
+            "position": "Defensa"
+          }
+        ],
+        "BARZA": [
+          {
+            "name": "ALBERTO ARIZA SILVA",
+            "position": "Defensa"
+          },
+          {
+            "name": "SAMMARE HORACIO CALDERON MARTINEZ",
+            "position": "Defensa"
+          },
+          {
+            "name": "SANTOS DANIEL CONEJO ZARATE",
+            "position": "Defensa"
+          },
+          {
+            "name": "DANIEL DELGADO RAMIREZ",
+            "position": "Portero"
+          },
+          {
+            "name": "DEMETRIO FRANCO PRESA",
+            "position": "Defensa"
+          },
+          {
+            "name": "JUAN CARLOS FRANCO PREZA",
+            "position": "Defensa"
+          },
+          {
+            "name": "JAVIER GODINEZ TIERRABLANCA",
+            "position": "Defensa"
+          },
+          {
+            "name": "CRISTIAN JESUS GASCA RODRIGUEZ",
+            "position": "Portero"
+          },
+          {
+            "name": "LUIS DIEGO GONZALEZ GASCA",
+            "position": "Mediocampista"
+          },
+          {
+            "name": "OSWALDO GRANGENO SANCHEZ",
+            "position": "Defensa"
+          },
+          {
+            "name": "JUAN LUIS GUZMAN GUERRERO",
+            "position": "Defensa"
+          },
+          {
+            "name": "MARTIN EDUARDO JIMENEZ GARCIA",
+            "position": "Defensa"
+          },
+          {
+            "name": "JOSE ANTONIO JUAREZ LANDIN",
+            "position": "Defensa"
+          },
+          {
+            "name": "ANGEL GABRIEL LINARES OBRAJERO",
+            "position": "Defensa"
+          },
+          {
+            "name": "MANUEL LOPEZ LOPEZ",
+            "position": "Defensa"
+          },
+          {
+            "name": "SALVADOR MARTINEZ CABELLO",
+            "position": "Delantero"
+          },
+          {
+            "name": "J. GUADALUPE MARTINEZ PEREZ",
+            "position": "Defensa"
+          },
+          {
+            "name": "JESUS IVAN MEDEL LOPEZ",
+            "position": "Mediocampista"
+          },
+          {
+            "name": "ALEJANDRO MORALES ORTEGA",
+            "position": "Mediocampista"
+          },
+          {
+            "name": "JESUS MARTIN NUÑEZ TREJO",
+            "position": "Defensa"
+          },
+          {
+            "name": "ANGEL EMMANUEL ORTEGA GARCIA",
+            "position": "Defensa"
+          },
+          {
+            "name": "LUIS FERNANDO PANTOJA RAZO",
+            "position": "Defensa"
+          },
+          {
+            "name": "ALEJANDRO RAMIREZ MEDINA",
+            "position": "Delantero"
+          },
+          {
+            "name": "JOSE GUADALUPE RANGEL LOPEZ",
+            "position": "Defensa"
+          },
+          {
+            "name": "JULIO CESAR RUVALCABA QUINTANILLA",
+            "position": "Delantero"
+          },
+          {
+            "name": "ARMANDO SERRANO OJEDA",
+            "position": "Defensa"
+          },
+          {
+            "name": "JUAN PABLO SERRANO OJEDA",
+            "position": "Defensa"
+          },
+          {
+            "name": "ROBERTO ANTONIO VARGAS AGUILAR",
+            "position": "Defensa"
+          },
+          {
+            "name": "FRANCISCO JAVIER YAÑEZ RANGEL",
+            "position": "Defensa"
+          }
+        ]
+      },
       "cedulas": [
         {
           "id": 365,
@@ -8788,51 +12025,81 @@
         },
         {
           "id": 389,
-          "url": "https://www.juventinorosasliga.com/cedula-arbitral/389/",
+          "url": "https://juventinorosasliga.com/cedula-arbitral/389/",
           "title": "Cédula Arbitral - TAVERA FC (Segunda Fuerza) vs PACHANGAS FC (Segunda Fuerza)",
           "local": "TAVERA FC",
           "away": "PACHANGAS FC",
-          "category": "Segunda Fuerza"
+          "category": "Segunda Fuerza",
+          "date": "20/09/2026 12:00",
+          "local_lineup": [],
+          "away_lineup": [],
+          "local_bench": [],
+          "away_bench": []
         },
         {
           "id": 390,
-          "url": "https://www.juventinorosasliga.com/cedula-arbitral/390/",
+          "url": "https://juventinorosasliga.com/cedula-arbitral/390/",
           "title": "Cédula Arbitral - SAN JUAN FC (Segunda Fuerza) vs TAPATIO (Segunda Fuerza)",
           "local": "SAN JUAN FC",
           "away": "TAPATIO",
-          "category": "Segunda Fuerza"
+          "category": "Segunda Fuerza",
+          "date": "20/09/2026 08:00",
+          "local_lineup": [],
+          "away_lineup": [],
+          "local_bench": [],
+          "away_bench": []
         },
         {
           "id": 391,
-          "url": "https://www.juventinorosasliga.com/cedula-arbitral/391/",
+          "url": "https://juventinorosasliga.com/cedula-arbitral/391/",
           "title": "Cédula Arbitral - SAN JULIAN (Segunda Fuerza) vs DEP. LA LUZ (Segunda Fuerza)",
           "local": "SAN JULIAN",
           "away": "DEP. LA LUZ",
-          "category": "Segunda Fuerza"
+          "category": "Segunda Fuerza",
+          "date": "20/09/2026 10:00",
+          "local_lineup": [],
+          "away_lineup": [],
+          "local_bench": [],
+          "away_bench": []
         },
         {
           "id": 392,
-          "url": "https://www.juventinorosasliga.com/cedula-arbitral/392/",
+          "url": "https://juventinorosasliga.com/cedula-arbitral/392/",
           "title": "Cédula Arbitral - SAN JOSE JRS (Segunda Fuerza) vs BARZA (Segunda Fuerza)",
           "local": "SAN JOSE JRS",
           "away": "BARZA",
-          "category": "Segunda Fuerza"
+          "category": "Segunda Fuerza",
+          "date": "20/09/2026 12:00",
+          "local_lineup": [],
+          "away_lineup": [],
+          "local_bench": [],
+          "away_bench": []
         },
         {
           "id": 393,
-          "url": "https://www.juventinorosasliga.com/cedula-arbitral/393/",
+          "url": "https://juventinorosasliga.com/cedula-arbitral/393/",
           "title": "Cédula Arbitral - SAN ANTONIO FC (Segunda Fuerza) vs CELTICOS (Segunda Fuerza)",
           "local": "SAN ANTONIO FC",
           "away": "CELTICOS",
-          "category": "Segunda Fuerza"
+          "category": "Segunda Fuerza",
+          "date": "20/09/2026 10:00",
+          "local_lineup": [],
+          "away_lineup": [],
+          "local_bench": [],
+          "away_bench": []
         },
         {
           "id": 394,
-          "url": "https://www.juventinorosasliga.com/cedula-arbitral/394/",
+          "url": "https://juventinorosasliga.com/cedula-arbitral/394/",
           "title": "Cédula Arbitral - DEP. NOPALERO (Segunda Fuerza) vs DEP. ZAPATA (Segunda Fuerza)",
           "local": "DEP. NOPALERO",
           "away": "DEP. ZAPATA",
-          "category": "Segunda Fuerza"
+          "category": "Segunda Fuerza",
+          "date": "20/09/2026 08:00",
+          "local_lineup": [],
+          "away_lineup": [],
+          "local_bench": [],
+          "away_bench": []
         }
       ],
       "cedulas_scanned": [
@@ -12750,7 +16017,1394 @@
           "cedulas": 4
         }
       },
-      "player_profiles": {},
+      "player_profiles": {
+        "SAN ANTONIO JRS": [
+          {
+            "name": "JARET GUADALUPE ARCIA NORIA",
+            "position": "Delantero"
+          },
+          {
+            "name": "URIEL JOSAFAT ARIZA PANTOJA",
+            "position": "Defensa"
+          },
+          {
+            "name": "AARON AGUILAR GUTIERREZ",
+            "position": "Defensa"
+          },
+          {
+            "name": "JUAN MANUEL ARCIA CALERO",
+            "position": "Mediocampista"
+          },
+          {
+            "name": "JUAN DIEGO CASTILLO CUEVAS",
+            "position": "Portero"
+          },
+          {
+            "name": "JESUS ALFONSO CALERO CERRITO",
+            "position": "Defensa"
+          },
+          {
+            "name": "MISAEL ALEJANDRO CALERO CERRITO",
+            "position": "Delantero"
+          },
+          {
+            "name": "MARTIN ALEXIS CERRITO RAMIREZ",
+            "position": "Mediocampista"
+          },
+          {
+            "name": "VICTOR MANUEL GARCIA DONGU",
+            "position": "Delantero"
+          },
+          {
+            "name": "SAMUEL GODINEZ",
+            "position": "Mediocampista"
+          },
+          {
+            "name": "JESUS ALEJANDRO GUTIERREZ CASTILLO",
+            "position": "Defensa"
+          },
+          {
+            "name": "JESUS ALEJANDRO GUTIERREZ REYES",
+            "position": "Mediocampista"
+          },
+          {
+            "name": "ISRAEL HORTELANO CERRITO",
+            "position": "Defensa"
+          },
+          {
+            "name": "ISMAEL HORTELANO CERRITO",
+            "position": "Defensa"
+          },
+          {
+            "name": "SANTIAGO MARTIN HORTELANO PEÑALOZA",
+            "position": "Mediocampista"
+          },
+          {
+            "name": "CARLOS DANIEL LAGUNA VERA",
+            "position": "Defensa"
+          },
+          {
+            "name": "LUIS MIGUEL LERA RAMIREZ",
+            "position": "Mediocampista"
+          },
+          {
+            "name": "JUAN PABLO LOPEZ QUINTANILLA",
+            "position": "Mediocampista"
+          },
+          {
+            "name": "RAFAEL MATA GARCIA",
+            "position": "Mediocampista"
+          },
+          {
+            "name": "MELCHOR MONTOYA CERRITO",
+            "position": "Defensa"
+          },
+          {
+            "name": "ALEXIS ARTURO NOLASCO GARCIA",
+            "position": "Defensa"
+          },
+          {
+            "name": "JUAN CARLOS OBRAJERO HERRERA",
+            "position": "Mediocampista"
+          },
+          {
+            "name": "VICTOR MANUEL PARAMO DONGU",
+            "position": "Delantero"
+          },
+          {
+            "name": "SANTIAGO PRIETO ACOSTA",
+            "position": "Mediocampista"
+          },
+          {
+            "name": "VICTOR MANUEL SILVA NORIA",
+            "position": "Defensa"
+          },
+          {
+            "name": "LUIS ANTONIO TAPIA CAMPOS",
+            "position": "Mediocampista"
+          }
+        ],
+        "PROMESAS FC": [
+          {
+            "name": "ABRAHAM ARMENTA GAMEZ",
+            "position": "Mediocampista"
+          },
+          {
+            "name": "FRANCISCO JAVIER ARMENTA GAMEZ",
+            "position": "Defensa"
+          },
+          {
+            "name": "JUAN PABLO ARMENTA GONZALEZ",
+            "position": "Mediocampista"
+          },
+          {
+            "name": "MATIAS ARMENTA LARA",
+            "position": "Defensa"
+          },
+          {
+            "name": "CRISTIAN ARMENTA RICO",
+            "position": "Mediocampista"
+          },
+          {
+            "name": "LUIS DONALDO ARMENTA RIVERA",
+            "position": "Mediocampista"
+          },
+          {
+            "name": "JOSE REYES CAÑADA PEÑA",
+            "position": "Mediocampista"
+          },
+          {
+            "name": "EMILIANO CENTENO GAMEZ",
+            "position": "Defensa"
+          },
+          {
+            "name": "SAMUEL GAMEZ RAMIREZ",
+            "position": "Portero"
+          },
+          {
+            "name": "JESUS ABRAHAM GAMEZ RIVERA",
+            "position": "Delantero"
+          },
+          {
+            "name": "ALEXIS GARCIA CENTENO",
+            "position": "Delantero"
+          },
+          {
+            "name": "JESUS ALEXANDER GARCIA CENTENO",
+            "position": "Delantero"
+          },
+          {
+            "name": "LEONARDO JESUS HUERTA MEDINA",
+            "position": "Defensa"
+          },
+          {
+            "name": "NESTOR HUITZACHE ALVARADO",
+            "position": "Delantero"
+          },
+          {
+            "name": "OSWALDO JESUS LOPEZ OLVERA",
+            "position": "Defensa"
+          },
+          {
+            "name": "JOSE ANTONIO LUNA LEMUS",
+            "position": "Delantero"
+          },
+          {
+            "name": "CRISTIAN LUNA PEREZ",
+            "position": "Mediocampista"
+          },
+          {
+            "name": "JOSE MANUEL RAMIREZ ARMENTA",
+            "position": "Delantero"
+          },
+          {
+            "name": "DIEGO TADEO RAMIREZ COYOTE",
+            "position": "Defensa"
+          },
+          {
+            "name": "JOSE MANUEL RAMIREZ COYOTE",
+            "position": "Portero"
+          },
+          {
+            "name": "JORGE RAMIREZ HUERTA",
+            "position": "Mediocampista"
+          },
+          {
+            "name": "JONATHAN BRIAN RICO GAMEZ",
+            "position": "Portero"
+          },
+          {
+            "name": "JOSE PATRICIO RICO HUERTA",
+            "position": "Defensa"
+          },
+          {
+            "name": "JUAN PABLO RICO MARTINEZ",
+            "position": "Delantero"
+          }
+        ],
+        "POPULARES": [
+          {
+            "name": "LUIS ANGEL ACOSTA RODRIGUEZ",
+            "position": "Defensa"
+          },
+          {
+            "name": "MISSAEL AGUILAR CALERO",
+            "position": "Defensa"
+          },
+          {
+            "name": "LUIS FRANCISCO BELMAN CACIQUE",
+            "position": "Defensa"
+          },
+          {
+            "name": "JOSE EMILIANO BERDIN GUERRERO",
+            "position": "Defensa"
+          },
+          {
+            "name": "LUIS JESUS CANO ABOYTES",
+            "position": "Defensa"
+          },
+          {
+            "name": "JOSUE FRANCO GARDUÑO",
+            "position": "Delantero"
+          },
+          {
+            "name": "DANIEL FRANCO LERMA",
+            "position": "Defensa"
+          },
+          {
+            "name": "OSCAR GARCIA DELGADO",
+            "position": "Defensa"
+          },
+          {
+            "name": "ADRIAN GONZALEZ GARCIA",
+            "position": "Defensa"
+          },
+          {
+            "name": "CRISTIAN MATEO GONZALEZ JIMENEZ",
+            "position": "Defensa"
+          },
+          {
+            "name": "ALEXIS GONZALEZ LUNA",
+            "position": "Defensa"
+          },
+          {
+            "name": "ALAN GAEL GONZALEZ VASQUEZ",
+            "position": "Defensa"
+          },
+          {
+            "name": "RAFAEL GUERRERO PIRUL",
+            "position": "Defensa"
+          },
+          {
+            "name": "EDMUNDO MARTIN HERNANDEZ LUCIO",
+            "position": "Defensa"
+          },
+          {
+            "name": "OMAR HERNANDEZ VAZQUEZ",
+            "position": "Defensa"
+          },
+          {
+            "name": "LUIS ANGEL LERA MORALES",
+            "position": "Defensa"
+          },
+          {
+            "name": "JOSE MANUEL LOPEZ DIAZ",
+            "position": "Defensa"
+          },
+          {
+            "name": "MOISES RICARDO LOPEZ LERA",
+            "position": "Defensa"
+          },
+          {
+            "name": "CRISTIAN JESUS MORENO SOLORZANO",
+            "position": "Mediocampista"
+          },
+          {
+            "name": "CRISTIAN EDUARDO MARES RAMIREZ",
+            "position": "Defensa"
+          },
+          {
+            "name": "FRANCISCO ALEX MERINO FLORES",
+            "position": "Defensa"
+          },
+          {
+            "name": "FERNANDO MERINO RODRIGUEZ",
+            "position": "Defensa"
+          },
+          {
+            "name": "ANGEL MORENO ESCALANTE",
+            "position": "Defensa"
+          },
+          {
+            "name": "MIGUEL PRESA GARCIA",
+            "position": "Defensa"
+          },
+          {
+            "name": "ADAN ARMANDO RODRIGUEZ VAZQUEZ",
+            "position": "Defensa"
+          },
+          {
+            "name": "NOE SANCHEZ HUERTA",
+            "position": "Defensa"
+          },
+          {
+            "name": "CHRISTIAN SANCHEZ HUERTA",
+            "position": "Defensa"
+          },
+          {
+            "name": "JUAN IGNACIO SERVIN LINALDI",
+            "position": "Defensa"
+          },
+          {
+            "name": "MARTIN VAZQUEZ TIERRABLANCA",
+            "position": "Defensa"
+          },
+          {
+            "name": "JESHUA YAÑEZ GUTIERREZ",
+            "position": "Defensa"
+          }
+        ],
+        "OSASUNA": [
+          {
+            "name": "ADRIAN ARZATE GUERRERO",
+            "position": "Defensa"
+          },
+          {
+            "name": "JOSE MANUEL CALERO CERRITO",
+            "position": "Defensa"
+          },
+          {
+            "name": "ALVARO ALEJANDRO DELGADO OOCHOA",
+            "position": "Defensa"
+          },
+          {
+            "name": "GIOVANNI EMANUEL FLORES GUERRERO",
+            "position": "Defensa"
+          },
+          {
+            "name": "SERGIO ALEXIS FLORES GUERRERO",
+            "position": "Defensa"
+          },
+          {
+            "name": "FERNANDO FRANCO MENDOZA",
+            "position": "Defensa"
+          },
+          {
+            "name": "ANTONIO GRANGENO PARAMO",
+            "position": "Defensa"
+          },
+          {
+            "name": "ASUNCION HERNANDEZ HERNANDEZ",
+            "position": "Portero"
+          },
+          {
+            "name": "VLADIMIR HERNANDEZ LUNA",
+            "position": "Defensa"
+          },
+          {
+            "name": "JOSE LEONARDO HUICHAPA RODRIGUEZ",
+            "position": "Defensa"
+          },
+          {
+            "name": "PEDRO LOPEZ",
+            "position": "Defensa"
+          },
+          {
+            "name": "JUAN MANUEL LOPEZ ARIZA",
+            "position": "Defensa"
+          },
+          {
+            "name": "JONATHAN ULISES LOPEZ GONZALEZ",
+            "position": "Defensa"
+          },
+          {
+            "name": "ISRAEL LOPEZ RAMIREZ",
+            "position": "Defensa"
+          },
+          {
+            "name": "LUIS ENRIQUE LOPEZ REYNA",
+            "position": "Defensa"
+          },
+          {
+            "name": "RICARDO MARTINEZ HERRERA",
+            "position": "Defensa"
+          },
+          {
+            "name": "LEONEL MILLER MARTINEZ MERINO",
+            "position": "Defensa"
+          },
+          {
+            "name": "JUAN JOSE OBRAJERO RODRIGUEZ",
+            "position": "Defensa"
+          },
+          {
+            "name": "OSCAR URIEL PARAMO GUERRERO",
+            "position": "Defensa"
+          },
+          {
+            "name": "RODRIGO PARAMO PARAMO",
+            "position": "Defensa"
+          },
+          {
+            "name": "SALVADOR RAMIREZ MARTINEZ",
+            "position": "Defensa"
+          },
+          {
+            "name": "ALAN JESUS RAMIREZ VEGA",
+            "position": "Defensa"
+          },
+          {
+            "name": "OSWALDO GABRIEL TORRES SOLORZANO",
+            "position": "Defensa"
+          },
+          {
+            "name": "FRANCISCO JAVIER VASQUEZ CACIQUE",
+            "position": "Defensa"
+          },
+          {
+            "name": "JOSE MANUEL ZARATE CALERO",
+            "position": "Defensa"
+          }
+        ],
+        "MAZACOTES FC": [
+          {
+            "name": "JOSUE VALENTIN ALVAREZ RODRIGUEZ",
+            "position": "Defensa"
+          },
+          {
+            "name": "MOISES ALVAREZ RODRIGUEZ",
+            "position": "Defensa"
+          },
+          {
+            "name": "IKER RODRIGO AVECILLA LOPEZ",
+            "position": "Defensa"
+          },
+          {
+            "name": "IVAN FERNANDO AVECILLA LOPEZ",
+            "position": "Defensa"
+          },
+          {
+            "name": "IVAN FERNANDO AVECILLA ZAPATERO",
+            "position": "Defensa"
+          },
+          {
+            "name": "BENJAMIN AYALA CERVANTES",
+            "position": "Defensa"
+          },
+          {
+            "name": "CHRISTOPHER CANO VADILLO",
+            "position": "Defensa"
+          },
+          {
+            "name": "SANTOS CONEJO CERVANTES",
+            "position": "Defensa"
+          },
+          {
+            "name": "LUIS PAULO DACOSTA CABRERA",
+            "position": "Defensa"
+          },
+          {
+            "name": "IGNACIO FRANCISCO GUTIERREZ TORRES",
+            "position": "Defensa"
+          },
+          {
+            "name": "SERAFIN GALINDO DE LA CRUZ",
+            "position": "Defensa"
+          },
+          {
+            "name": "ANDRIV GIOVANNI GALINDO MARTINEZ",
+            "position": "Defensa"
+          },
+          {
+            "name": "CARLOS ARIEL GARCIA ALMARAZ",
+            "position": "Defensa"
+          },
+          {
+            "name": "DIEGO EMMANUEL GOMEZ GRANGENO",
+            "position": "Defensa"
+          },
+          {
+            "name": "ALEJANDRO MENDOZA FREYRE",
+            "position": "Defensa"
+          },
+          {
+            "name": "CRISTIAN JESUS MONTENEGRO GASCA",
+            "position": "Defensa"
+          },
+          {
+            "name": "ALEJANDRO MEDEL LOPEZ",
+            "position": "Defensa"
+          },
+          {
+            "name": "JOSE PABLO MEJIA CAMPOS",
+            "position": "Defensa"
+          },
+          {
+            "name": "ANGEL LUIS MENDOZA FREYRE",
+            "position": "Defensa"
+          },
+          {
+            "name": "URIEL EMMANUEL MORALES RAMIREZ",
+            "position": "Defensa"
+          },
+          {
+            "name": "JUAN ANTONIO NOLASCO RAMIREZ",
+            "position": "Defensa"
+          },
+          {
+            "name": "GUSTAVO OJEDA LOPEZ",
+            "position": "Defensa"
+          },
+          {
+            "name": "MANUEL PEREZ RODRIGUEZ",
+            "position": "Defensa"
+          },
+          {
+            "name": "GUSTAVO RAMIREZ NUÑEZ",
+            "position": "Defensa"
+          },
+          {
+            "name": "LUIS FERNANDO RAMIREZ RODRIGUEZ",
+            "position": "Defensa"
+          },
+          {
+            "name": "MANUEL ROMERO GALLARDO",
+            "position": "Defensa"
+          },
+          {
+            "name": "EDGAR ORLANDO SUASTE PANTOJA",
+            "position": "Defensa"
+          },
+          {
+            "name": "CARLOS EDUARDO TOVAR CALDERON",
+            "position": "Defensa"
+          },
+          {
+            "name": "ALEJANDRO VILLAGOMEZ GUERRERO",
+            "position": "Defensa"
+          },
+          {
+            "name": "JUAN PABLO VASQUEZ PIZANO",
+            "position": "Defensa"
+          }
+        ],
+        "MALVINAS": [
+          {
+            "name": "DAVID ISRAEL AGUADO IBARRA",
+            "position": "Mediocampista"
+          },
+          {
+            "name": "DYLAN GUADALUPE AGUILAR ZARATE",
+            "position": "Mediocampista"
+          },
+          {
+            "name": "GERARDO ALEJOS VELAZQUEZ",
+            "position": "Defensa"
+          },
+          {
+            "name": "MIGUEL ANGEL ARIAS RUBIO",
+            "position": "Defensa"
+          },
+          {
+            "name": "CHRISTIAN OMAR CANO LOPEZ",
+            "position": "Mediocampista"
+          },
+          {
+            "name": "SALVADOR CORTES FLORES",
+            "position": "Defensa"
+          },
+          {
+            "name": "JOSE GUADALUPE DELGADO LEMUS",
+            "position": "Defensa"
+          },
+          {
+            "name": "USIEL GUADALUPE DELGANO CANO",
+            "position": "Defensa"
+          },
+          {
+            "name": "ERIC FERNANDO DONGU GUERRERO",
+            "position": "Defensa"
+          },
+          {
+            "name": "FRANCISCO ERNESTO FLORES GONZALEZ",
+            "position": "Defensa"
+          },
+          {
+            "name": "EDSON JORDY GONZALEZ REYNOSO",
+            "position": "Portero"
+          },
+          {
+            "name": "DIEGO JESUS GRANGENO LOPEZ",
+            "position": "Mediocampista"
+          },
+          {
+            "name": "LUIS EMILIANO GUERRERO ORTEGA",
+            "position": "Mediocampista"
+          },
+          {
+            "name": "MAURICIO OSVALDO GUERRERO SAUCILLO",
+            "position": "Delantero"
+          },
+          {
+            "name": "LUIS JIMENEZ ZARATE",
+            "position": "Defensa"
+          },
+          {
+            "name": "GERARDO LOPEZ GUERRERO",
+            "position": "Defensa"
+          },
+          {
+            "name": "MARTIN LOPEZ GUERRERO",
+            "position": "Delantero"
+          },
+          {
+            "name": "ERIC ANTONIO MEDINA LOPEZ",
+            "position": "Mediocampista"
+          },
+          {
+            "name": "JUAN JOSE MEDINA LOPEZ",
+            "position": "Defensa"
+          },
+          {
+            "name": "LUIS MANUEL MEDINA LOPEZ",
+            "position": "Defensa"
+          },
+          {
+            "name": "DAVID MENDOZA MACIAS",
+            "position": "Defensa"
+          },
+          {
+            "name": "MARCO ANTONIO RANGEL HUIZACHE",
+            "position": "Defensa"
+          },
+          {
+            "name": "MIGUEL ANGEL RESENDIZ PARAMO",
+            "position": "Mediocampista"
+          },
+          {
+            "name": "JOSUE ZUÑIGA LOPEZ",
+            "position": "Defensa"
+          }
+        ],
+        "LA HUERTA": [
+          {
+            "name": "FERNANDO ALONSO CALERO CERRITO",
+            "position": "Defensa"
+          },
+          {
+            "name": "SERAFIN SANTIAGO CALERO GALLARDO",
+            "position": "Defensa"
+          },
+          {
+            "name": "LUIS FERNANDO CEDEÑO CUELLAR",
+            "position": "Defensa"
+          },
+          {
+            "name": "FELIPE DE JESUS CERRITOS GARCIA",
+            "position": "Defensa"
+          },
+          {
+            "name": "JOSE CRUZ CRISTOBAL",
+            "position": "Defensa"
+          },
+          {
+            "name": "LUIS FRANCISCO DELGADO AGUIRRE",
+            "position": "Defensa"
+          },
+          {
+            "name": "LUIS ALFONSO GARCIA CARLIN",
+            "position": "Defensa"
+          },
+          {
+            "name": "CESAR GONZALEZ GASCA",
+            "position": "Defensa"
+          },
+          {
+            "name": "JUAN GONZALEZ HORTELANO",
+            "position": "Defensa"
+          },
+          {
+            "name": "FRANCISCO DE JESUS GUTIERREZ MENDOZA",
+            "position": "Defensa"
+          },
+          {
+            "name": "LUIS FERNANDO HERRERA RAMIREZ",
+            "position": "Defensa"
+          },
+          {
+            "name": "GUSTAVO ANGEL HORTELANO CERRITOS",
+            "position": "Defensa"
+          },
+          {
+            "name": "JESUS MANUEL HORTELANO CERRITOS",
+            "position": "Defensa"
+          },
+          {
+            "name": "JOSUE SALVADOR HORTELANO GONZALEZ",
+            "position": "Defensa"
+          },
+          {
+            "name": "JESUS MARTIN HORTELANO NORIA",
+            "position": "Defensa"
+          },
+          {
+            "name": "JORGE EDUARDO MARTINEZ MORENO",
+            "position": "Defensa"
+          },
+          {
+            "name": "ALVARO ALBERTO MATA GARCIA",
+            "position": "Defensa"
+          },
+          {
+            "name": "JESUS ALEXIS MELENDEZ NORIA",
+            "position": "Defensa"
+          },
+          {
+            "name": "CHRISTIAN EDUARDO MIRANDA GONZALEZ",
+            "position": "Defensa"
+          },
+          {
+            "name": "DAVID MONTOYA MARTINEZ",
+            "position": "Defensa"
+          },
+          {
+            "name": "ADOLFO REY NORIA CRISTOBAL",
+            "position": "Defensa"
+          },
+          {
+            "name": "ALEXIS OBRAJERO VARGAS",
+            "position": "Defensa"
+          },
+          {
+            "name": "JUAN JOSE OJODEAGUA GRANADOS",
+            "position": "Defensa"
+          },
+          {
+            "name": "EDGAR ULISES PRIETO MONTOYA",
+            "position": "Defensa"
+          },
+          {
+            "name": "LUIS BRANDON RAMIREZ LOPEZ",
+            "position": "Defensa"
+          },
+          {
+            "name": "JUAN CARLOS RODRIGUEZ RANGEL",
+            "position": "Defensa"
+          },
+          {
+            "name": "JOSE MANUEL ROJAS HORTELANO",
+            "position": "Defensa"
+          },
+          {
+            "name": "FERNANDO ALONSO TOVAR PERU",
+            "position": "Defensa"
+          }
+        ],
+        "LA CUADRILLA": [
+          {
+            "name": "ARTURO BUENAVISTA CENTENO",
+            "position": "Defensa"
+          },
+          {
+            "name": "GABRIEL BUENAVISTA SANDOVAL",
+            "position": "Defensa"
+          },
+          {
+            "name": "PEDRO BUENAVISTA SANDOVAL",
+            "position": "Defensa"
+          },
+          {
+            "name": "PABLO CENTENO DOÑATE",
+            "position": "Mediocampista"
+          },
+          {
+            "name": "JORGE DELGADO BALTAZAR",
+            "position": "Defensa"
+          },
+          {
+            "name": "SALVADOR DELGADO BUENAVISTA",
+            "position": "Defensa"
+          },
+          {
+            "name": "PEDRO EMANUEL FIGUEROA GALVAN",
+            "position": "Mediocampista"
+          },
+          {
+            "name": "JOHAN ANDRES GONZALEZ GASCA",
+            "position": "Mediocampista"
+          },
+          {
+            "name": "EDILBERTO GOMEZ BUENAVISTA",
+            "position": "Defensa"
+          },
+          {
+            "name": "CRISTIAN URIEL GONZALEZ DELGADO",
+            "position": "Mediocampista"
+          },
+          {
+            "name": "MIGUEL ANGEL HERNANDEZ HERNANDEZ",
+            "position": "Defensa"
+          },
+          {
+            "name": "RICARDO HERNANDEZ HERNANDEZ",
+            "position": "Defensa"
+          },
+          {
+            "name": "MIGUEL ANGEL HERRERA RICO",
+            "position": "Mediocampista"
+          },
+          {
+            "name": "EDGAR IVAN MERINO DELGADO",
+            "position": "Defensa"
+          },
+          {
+            "name": "PEDRO ERNESTO MONDRAGON AGUILERA",
+            "position": "Defensa"
+          },
+          {
+            "name": "BRUNO OCHOA TORRES",
+            "position": "Defensa"
+          },
+          {
+            "name": "OSCAR IVAN OCHOA TORRES",
+            "position": "Mediocampista"
+          },
+          {
+            "name": "SAHIT ISAUL PEÑA DELGADO",
+            "position": "Mediocampista"
+          },
+          {
+            "name": "JUAN JOSE PIZANO ESCALANTE",
+            "position": "Defensa"
+          },
+          {
+            "name": "LUIS ANGEL PIZANO ESCALANTE",
+            "position": "Mediocampista"
+          },
+          {
+            "name": "JUAN JESUS RAMIREZ RAMIREZ",
+            "position": "Mediocampista"
+          },
+          {
+            "name": "MARTIN RAMIREZ SUBIAS",
+            "position": "Defensa"
+          },
+          {
+            "name": "JUAN LEONARDO RICO RAMOS",
+            "position": "Defensa"
+          },
+          {
+            "name": "JUAN CARLOS SANCHEZ CENTENO",
+            "position": "Mediocampista"
+          },
+          {
+            "name": "JESUS VERA CERVANTES",
+            "position": "Defensa"
+          }
+        ],
+        "LA CANCHITA DEPORTES": [
+          {
+            "name": "ALEN CUAUHTEMOC ALMANZA GARCIA",
+            "position": "Defensa"
+          },
+          {
+            "name": "JUAN PABLO ALMANZA RICO",
+            "position": "Mediocampista"
+          },
+          {
+            "name": "LUIS ALVARADO GARCIA",
+            "position": "Defensa"
+          },
+          {
+            "name": "MIGUEL ALEJANDRO ALVAREZ GUERRERO",
+            "position": "Mediocampista"
+          },
+          {
+            "name": "ADOLFO ANGEL ALVAREZ OLVERA",
+            "position": "Delantero"
+          },
+          {
+            "name": "JOSE DE JESUS ARELLANO GARCIA",
+            "position": "Mediocampista"
+          },
+          {
+            "name": "JESUS ALDAIR ARIZA RAMIREZ",
+            "position": "Mediocampista"
+          },
+          {
+            "name": "JOSE MANUEL BARRIENTOS PEREZ",
+            "position": "Mediocampista"
+          },
+          {
+            "name": "ANTONIO CALERO LUNA",
+            "position": "Delantero"
+          },
+          {
+            "name": "JORGE LUIS CANO BARRON",
+            "position": "Mediocampista"
+          },
+          {
+            "name": "JUAN PAULO CAZARES SERVIN",
+            "position": "Mediocampista"
+          },
+          {
+            "name": "OSCAR CERVANTES RODRIGUEZ",
+            "position": "Portero"
+          },
+          {
+            "name": "ANDRES GARCIA AGUILERA",
+            "position": "Delantero"
+          },
+          {
+            "name": "BRANDON ANTWAN GUERRERO LOPEZ",
+            "position": "Mediocampista"
+          },
+          {
+            "name": "JOSE JOEL HERNANDEZ MUÑOZ",
+            "position": "Mediocampista"
+          },
+          {
+            "name": "JOSUE SAID HUERTA HERNANDEZ",
+            "position": "Mediocampista"
+          },
+          {
+            "name": "ADOLFO LINARES ALVAREZ",
+            "position": "Mediocampista"
+          },
+          {
+            "name": "ENRIQUE LOPEZ AGUILAR",
+            "position": "Defensa"
+          },
+          {
+            "name": "CARMEN EMANUEL LUNA VASQUEZ",
+            "position": "Mediocampista"
+          },
+          {
+            "name": "FERNANDO MATA MORALES",
+            "position": "Mediocampista"
+          },
+          {
+            "name": "JUAN PABLO MENDOZA NORIA",
+            "position": "Mediocampista"
+          },
+          {
+            "name": "PEDRO MENDOZA ZARATE",
+            "position": "Defensa"
+          },
+          {
+            "name": "ALEJANDRO DANIEL PEREZ LANDIN",
+            "position": "Mediocampista"
+          },
+          {
+            "name": "LUIS MARTIN PIZANO GARCIA",
+            "position": "Defensa"
+          },
+          {
+            "name": "RODOLFO RAMIREZ HERNANDEZ",
+            "position": "Mediocampista"
+          },
+          {
+            "name": "ARMANDO JOAQUIN RAMOS COSTILLA",
+            "position": "Mediocampista"
+          },
+          {
+            "name": "LEONARDO SANCHEZ BARAJAS",
+            "position": "Mediocampista"
+          },
+          {
+            "name": "SERGIO ARTURO SANCHEZ HUIZACHE",
+            "position": "Defensa"
+          }
+        ],
+        "DEP. MARAVILLAS": [
+          {
+            "name": "LUIS JONATHAN AGUILAR GERVACIO",
+            "position": "Mediocampista"
+          },
+          {
+            "name": "JOSE ARMANDO ARGUELLO ALBERTO",
+            "position": "Defensa"
+          },
+          {
+            "name": "VICTOR MANUEL ARGUELLO ALBERTO",
+            "position": "Defensa"
+          },
+          {
+            "name": "JOSE OMAR BUENRROSTRO ROMERO",
+            "position": "Defensa"
+          },
+          {
+            "name": "EDGAR SEBASTIAN CORIA ARROYO",
+            "position": "Defensa"
+          },
+          {
+            "name": "JOSE GERARDO GARCIA PEREZ",
+            "position": "Defensa"
+          },
+          {
+            "name": "JOSE JESUS GRANADOS CANTOR",
+            "position": "Defensa"
+          },
+          {
+            "name": "JUAN DIEGO MENDOZA GASCA",
+            "position": "Defensa"
+          },
+          {
+            "name": "PABLO JOEL PRIETO CELEDON",
+            "position": "Defensa"
+          },
+          {
+            "name": "AFONSO PRIETO ESPINOZA",
+            "position": "Defensa"
+          },
+          {
+            "name": "JUAN DANIEL RAMIREZ ARGUELLO",
+            "position": "Defensa"
+          },
+          {
+            "name": "MANUEL RICO MANCERA",
+            "position": "Delantero"
+          },
+          {
+            "name": "JUAN ROBLES ROMERO",
+            "position": "Defensa"
+          },
+          {
+            "name": "MAURICIO IGNACIO ROSALES OCHOA",
+            "position": "Defensa"
+          },
+          {
+            "name": "CESAR EDUARDO SALAZAR RODRIGUEZ",
+            "position": "Defensa"
+          },
+          {
+            "name": "JOSE JESUS SANCHEZ MATA",
+            "position": "Defensa"
+          },
+          {
+            "name": "DIEGO ARMANDO SEBASTIAN DELGADO",
+            "position": "Defensa"
+          },
+          {
+            "name": "JAVIER TORRES GARCIA",
+            "position": "Defensa"
+          },
+          {
+            "name": "DIEGO TORRES SALOMON",
+            "position": "Defensa"
+          },
+          {
+            "name": "OMAR VEGA AGUILAR",
+            "position": "Defensa"
+          },
+          {
+            "name": "CRISTOPHER TONATIOH VILLAGOMEZ CUEVAS",
+            "position": "Defensa"
+          }
+        ],
+        "CAPIBARAS": [
+          {
+            "name": "GAEL ALMANZA ARCE",
+            "position": "Defensa"
+          },
+          {
+            "name": "JOSE GUADALUPE ARCE RAMIREZ",
+            "position": "Defensa"
+          },
+          {
+            "name": "MARCO YAEL ARCE RAMIREZ",
+            "position": "Mediocampista"
+          },
+          {
+            "name": "LUIS MARTIN ARCE ROJAS",
+            "position": "Mediocampista"
+          },
+          {
+            "name": "DIEGO EDUARDO ARCE SANCHEZ",
+            "position": "Mediocampista"
+          },
+          {
+            "name": "JOSE IGNACIO ARCIA MARTINEZ",
+            "position": "Mediocampista"
+          },
+          {
+            "name": "OMAR AVILA PALACIOS",
+            "position": "Mediocampista"
+          },
+          {
+            "name": "LUIS ALEJANDRO CAÑADA GASCA",
+            "position": "Mediocampista"
+          },
+          {
+            "name": "ADOLFO CELEDON GALVAN",
+            "position": "Defensa"
+          },
+          {
+            "name": "JUAN PABLO DELGADO SALINAS",
+            "position": "Defensa"
+          },
+          {
+            "name": "IVAN FRANCO MONTOYA",
+            "position": "Defensa"
+          },
+          {
+            "name": "ZAIR EMMANUEL GARCIA GARCIA",
+            "position": "Defensa"
+          },
+          {
+            "name": "JUAN PABLO GARCIA PADRON",
+            "position": "Defensa"
+          },
+          {
+            "name": "JOSE FRANCISCO GARCIA RAMIREZ",
+            "position": "Mediocampista"
+          },
+          {
+            "name": "MARCO ANTONIO GONZALEZ ARRIAGA",
+            "position": "Mediocampista"
+          },
+          {
+            "name": "ERNESTO GONZALEZ SALINAS",
+            "position": "Defensa"
+          },
+          {
+            "name": "JONATHAN GONZALEZ SALINAS",
+            "position": "Defensa"
+          },
+          {
+            "name": "DIEGO ARMANDO HURTADO GRUESO",
+            "position": "Mediocampista"
+          },
+          {
+            "name": "PEDRO EDUARDO LOPEZ ARCE",
+            "position": "Mediocampista"
+          },
+          {
+            "name": "SANTIAGO MENDOZA VAZQUEZ",
+            "position": "Defensa"
+          },
+          {
+            "name": "CESAR SANTIAGO MONTOYA HERRERA",
+            "position": "Mediocampista"
+          },
+          {
+            "name": "EDUARDO PRIETO MONTES",
+            "position": "Defensa"
+          },
+          {
+            "name": "OSCAR HERIBERTO SERNA CAMPOS",
+            "position": "Defensa"
+          },
+          {
+            "name": "ROGELIO SERRANO CASTRO",
+            "position": "Defensa"
+          },
+          {
+            "name": "CARLOS DANIEL TIERRABLANCA SALINAS",
+            "position": "Mediocampista"
+          },
+          {
+            "name": "FELIPE DE JESUS TIERRABLANCA SALINAS",
+            "position": "Defensa"
+          },
+          {
+            "name": "JORGE LUIS VARGAS CRUZ",
+            "position": "Defensa"
+          },
+          {
+            "name": "ALEX YAÑEZ CHAIRES",
+            "position": "Mediocampista"
+          }
+        ],
+        "ALDAMA FC": [
+          {
+            "name": "JOSE RAMON ARELLANO MANCERA",
+            "position": "Defensa"
+          },
+          {
+            "name": "PEDRO DANIEL AGUADO ORTEGA",
+            "position": "Defensa"
+          },
+          {
+            "name": "OSCAR ARELLANO MANCERA",
+            "position": "Mediocampista"
+          },
+          {
+            "name": "JUAN CARLOS BARRON CANO",
+            "position": "Defensa"
+          },
+          {
+            "name": "GERARDO BELMAN NAVARRO",
+            "position": "Mediocampista"
+          },
+          {
+            "name": "ANGEL GABRIEL CERVANTES OJEDA",
+            "position": "Defensa"
+          },
+          {
+            "name": "FRANCISCO CABELLO CASTILLO",
+            "position": "Mediocampista"
+          },
+          {
+            "name": "GABRIEL CANO GONZALEZ",
+            "position": "Defensa"
+          },
+          {
+            "name": "CARLOS ALBERTO GAMEZ LARA",
+            "position": "Delantero"
+          },
+          {
+            "name": "JESUS GOMEZ VALADEZ",
+            "position": "Defensa"
+          },
+          {
+            "name": "ALEJANDRO GONZALEZ CERVANTES",
+            "position": "Defensa"
+          },
+          {
+            "name": "JAVIER IVAN GUERRERO JIMENEZ",
+            "position": "Defensa"
+          },
+          {
+            "name": "EDGAR MANUEL LANDIN IBARRA",
+            "position": "Delantero"
+          },
+          {
+            "name": "MARCO POLO LANDIN IBARRA",
+            "position": "Defensa"
+          },
+          {
+            "name": "JUAN CARLOS LERMA CERRITOS",
+            "position": "Mediocampista"
+          },
+          {
+            "name": "JUAN JOSE LOPEZ LUCIO",
+            "position": "Mediocampista"
+          },
+          {
+            "name": "JOSE ALFREDO LOPEZ PEREZ",
+            "position": "Mediocampista"
+          },
+          {
+            "name": "GIOVANNI ADRIAN LOPEZ ROMERO",
+            "position": "Defensa"
+          },
+          {
+            "name": "JAIRO JUAN LUNA BELMAN",
+            "position": "Defensa"
+          },
+          {
+            "name": "SAMUEL MANZO DIAZ DE LEON",
+            "position": "Defensa"
+          },
+          {
+            "name": "JUAN ANTONIO MARQUEZ MENDOZA",
+            "position": "Portero"
+          },
+          {
+            "name": "EBER DANIEL MOSQUEDA LOPEZ",
+            "position": "Mediocampista"
+          },
+          {
+            "name": "ALESSANDRO ORTEGA BELMAN",
+            "position": "Mediocampista"
+          },
+          {
+            "name": "DEMETRIO RAMIREZ SUBIAS",
+            "position": "Mediocampista"
+          },
+          {
+            "name": "CECILIO RAMOS RANGEL",
+            "position": "Defensa"
+          },
+          {
+            "name": "FRANCISCO VERA MARTINEZ",
+            "position": "Defensa"
+          },
+          {
+            "name": "JONATHAN ALEXANDER VERA ROSALES",
+            "position": "Mediocampista"
+          },
+          {
+            "name": "DANIEL YAÑEZ RANGEL",
+            "position": "Defensa"
+          },
+          {
+            "name": "JAIME YAÑEZ RANGEL",
+            "position": "Defensa"
+          },
+          {
+            "name": "JOSE LUIS ZUÑIGA GONZALEZ",
+            "position": "Delantero"
+          }
+        ],
+        "ATL. GALEANA": [
+          {
+            "name": "LUIS ANGEL CASTILLO GARCIA",
+            "position": "Defensa"
+          },
+          {
+            "name": "JOSE DANIEL GARCIA CANO",
+            "position": "Mediocampista"
+          },
+          {
+            "name": "ERIK ANTONIO GONZALEZ MESITA",
+            "position": "Defensa"
+          },
+          {
+            "name": "LUIS GERARDO GONZALEZ RUIZ",
+            "position": "Mediocampista"
+          },
+          {
+            "name": "ALEJANDRO GUERRERO RODRIGUEZ",
+            "position": "Defensa"
+          },
+          {
+            "name": "CARLOS ENRIQUE HERNANDEZ YUPE",
+            "position": "Mediocampista"
+          },
+          {
+            "name": "ORLANDO HERRERA GUZMAN",
+            "position": "Mediocampista"
+          },
+          {
+            "name": "MARTIN HORTELANO LUNA",
+            "position": "Defensa"
+          },
+          {
+            "name": "ENRIQUE JUAREZ MERINO",
+            "position": "Defensa"
+          },
+          {
+            "name": "ERIC LOPEZ SOLORZANO",
+            "position": "Defensa"
+          },
+          {
+            "name": "JONATHAN MARES OLIVARES",
+            "position": "Mediocampista"
+          },
+          {
+            "name": "NESTOR RAYMUNDO MENDOZA CASTILLO",
+            "position": "Mediocampista"
+          },
+          {
+            "name": "ALEJANDRO MONTECINO RAMOS",
+            "position": "Defensa"
+          },
+          {
+            "name": "PEDRO CESAR OLVERA CALERO",
+            "position": "Defensa"
+          },
+          {
+            "name": "CRISTIAN PERALTA ARIZA",
+            "position": "Mediocampista"
+          },
+          {
+            "name": "JUAN PABLO RANGEL TOLEDO",
+            "position": "Defensa"
+          },
+          {
+            "name": "CRISTIAN MARTIN RODRIGUEZ GODINEZ",
+            "position": "Defensa"
+          },
+          {
+            "name": "EDGAR ROQUE FLORES",
+            "position": "Mediocampista"
+          },
+          {
+            "name": "MARCO ANTONIO SILLERO ZARATE",
+            "position": "Defensa"
+          },
+          {
+            "name": "DANIEL SOLORZANO LOPEZ",
+            "position": "Mediocampista"
+          },
+          {
+            "name": "JOSE GUADALUPE VALENCIA LUNA",
+            "position": "Defensa"
+          }
+        ]
+      },
       "cedulas": [
         {
           "id": 192,
@@ -12930,51 +17584,81 @@
         },
         {
           "id": 215,
-          "url": "https://www.juventinorosasliga.com/cedula-arbitral/215/",
+          "url": "https://juventinorosasliga.com/cedula-arbitral/215/",
           "title": "Cédula Arbitral - LA CANCHITA DEPORTES (Intermedia) vs ATL. GALEANA (Intermedia)",
           "local": "LA CANCHITA DEPORTES",
           "away": "ATL. GALEANA",
-          "category": "Intermedia"
+          "category": "Intermedia",
+          "date": "20/09/2026 10:00",
+          "local_lineup": [],
+          "away_lineup": [],
+          "local_bench": [],
+          "away_bench": []
         },
         {
           "id": 216,
-          "url": "https://www.juventinorosasliga.com/cedula-arbitral/216/",
+          "url": "https://juventinorosasliga.com/cedula-arbitral/216/",
           "title": "Cédula Arbitral - ALDAMA FC (Intermedia) vs MALVINAS (Intermedia)",
           "local": "ALDAMA FC",
           "away": "MALVINAS",
-          "category": "Intermedia"
+          "category": "Intermedia",
+          "date": "20/09/2026 10:00",
+          "local_lineup": [],
+          "away_lineup": [],
+          "local_bench": [],
+          "away_bench": []
         },
         {
           "id": 217,
-          "url": "https://www.juventinorosasliga.com/cedula-arbitral/217/",
+          "url": "https://juventinorosasliga.com/cedula-arbitral/217/",
           "title": "Cédula Arbitral - CAPIBARAS (Intermedia) vs LA CUADRILLA (Intermedia)",
           "local": "CAPIBARAS",
           "away": "LA CUADRILLA",
-          "category": "Intermedia"
+          "category": "Intermedia",
+          "date": "20/09/2026 10:00",
+          "local_lineup": [],
+          "away_lineup": [],
+          "local_bench": [],
+          "away_bench": []
         },
         {
           "id": 218,
-          "url": "https://www.juventinorosasliga.com/cedula-arbitral/218/",
+          "url": "https://juventinorosasliga.com/cedula-arbitral/218/",
           "title": "Cédula Arbitral - MAZACOTES FC (Intermedia) vs DEP. MARAVILLAS (Intermedia)",
           "local": "MAZACOTES FC",
           "away": "DEP. MARAVILLAS",
-          "category": "Intermedia"
+          "category": "Intermedia",
+          "date": "20/09/2026 08:00",
+          "local_lineup": [],
+          "away_lineup": [],
+          "local_bench": [],
+          "away_bench": []
         },
         {
           "id": 219,
-          "url": "https://www.juventinorosasliga.com/cedula-arbitral/219/",
+          "url": "https://juventinorosasliga.com/cedula-arbitral/219/",
           "title": "Cédula Arbitral - POPULARES (Intermedia) vs PROMESAS FC (Intermedia)",
           "local": "POPULARES",
           "away": "PROMESAS FC",
-          "category": "Intermedia"
+          "category": "Intermedia",
+          "date": "20/09/2026 08:00",
+          "local_lineup": [],
+          "away_lineup": [],
+          "local_bench": [],
+          "away_bench": []
         },
         {
           "id": 220,
-          "url": "https://www.juventinorosasliga.com/cedula-arbitral/220/",
+          "url": "https://juventinorosasliga.com/cedula-arbitral/220/",
           "title": "Cédula Arbitral - OSASUNA (Intermedia) vs SAN ANTONIO JRS (Intermedia)",
           "local": "OSASUNA",
           "away": "SAN ANTONIO JRS",
-          "category": "Intermedia"
+          "category": "Intermedia",
+          "date": "20/09/2026 12:00",
+          "local_lineup": [],
+          "away_lineup": [],
+          "local_bench": [],
+          "away_bench": []
         }
       ],
       "cedulas_scanned": [
@@ -13191,7 +17875,7 @@
       },
       "Veteranos 35+": {
         "cedulas": 0,
-        "public_names": 0,
+        "public_names": 30,
         "kept_previous": true
       },
       "Primera Fuerza": {
@@ -13216,8 +17900,7 @@
     "Datos deportivos públicos; no se recopilan CURP, INE, domicilio ni documentos.",
     "El reporte de registro aporta nombre, posición, dorsal y foto pública de adultos cuando la fuente la expone.",
     "La fuente oficial juventinorosasliga.com prevalece sobre este snapshot.",
-    "No se inventan goles, alineaciones, estadísticas avanzadas ni sanciones.",
-    "V562 · 02-oct-2026: Primera Fuerza verificada en el resumen público: 11 equipos, 24 partidos jugados, 30 pendientes y 292 jugadores. Tabla de posiciones sin cambios respecto al snapshot."
+    "No se inventan goles, alineaciones, estadísticas avanzadas ni sanciones."
   ],
   "missing_official_logo": [
     "BOCA JRS",
@@ -13228,17 +17911,5 @@
     "primera_roster_unique": 292,
     "team_logos_known": 41,
     "categories": 5
-  },
-  "public_live_check": {
-    "checked_at_utc": "2026-10-02T17:19:00Z",
-    "scope": "Primera Fuerza · resumen público y tabla de posiciones",
-    "source": "https://juventinorosasliga.com/",
-    "counts": {
-      "Equipos": 11,
-      "Partidos Jugados": 24,
-      "Partidos Pendientes": 30,
-      "Jugadores": 292
-    },
-    "note": "La cifra pública de jugadores fue verificada el 2 de octubre de 2026. El resto del snapshot conserva su fecha de captura original."
   }
 }
