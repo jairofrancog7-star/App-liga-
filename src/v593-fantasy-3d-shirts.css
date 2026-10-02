@@ -1,0 +1,32 @@
+/* V593 — restore the richer 3D Fantasy shirts while keeping the V591 layout. */
+html body.v587-fantasy-team-open .v576-shirt,
+html body.v587-fantasy-team-open .v576-shirt.chosen,
+html body.v587-fantasy-team-open .v590-kit-wrap{
+  perspective:480px!important;
+  transform-style:preserve-3d!important
+}
+html body.v587-fantasy-team-open .v593-3d-shirt{
+  width:52px!important;height:59px!important;display:block!important;overflow:visible!important;
+  transform:rotateX(2deg) rotateY(-7deg)!important;
+  transform-origin:50% 55%!important;
+  filter:drop-shadow(0 5px 5px rgba(1,48,61,.20))!important;
+  transition:transform .16s ease,filter .16s ease!important
+}
+html body.v587-fantasy-team-open .v576-slot:nth-child(even) .v593-3d-shirt{
+  transform:rotateX(2deg) rotateY(7deg)!important
+}
+html body.v587-fantasy-team-open .v576-slot:active .v593-3d-shirt,
+html body.v587-fantasy-team-open .v576-slot:focus-visible .v593-3d-shirt{
+  transform:rotateX(0deg) rotateY(0deg) scale(1.04)!important;
+  filter:drop-shadow(0 7px 7px rgba(1,48,61,.28))!important
+}
+html body.v587-fantasy-team-open .v590-kit-wrap.empty-kit .v593-3d-shirt{
+  opacity:.92!important
+}
+html body.v587-fantasy-team-open .v576-slot.filled .v593-3d-shirt{
+  width:58px!important;height:66px!important
+}
+@media(max-width:390px){
+  html body.v587-fantasy-team-open .v593-3d-shirt{width:49px!important;height:56px!important}
+  html body.v587-fantasy-team-open .v576-slot.filled .v593-3d-shirt{width:55px!important;height:63px!important}
+}
