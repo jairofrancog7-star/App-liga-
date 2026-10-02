@@ -870,7 +870,7 @@ function mount(){
  if(r==='favorites'){screen.querySelectorAll('[data-v412-screen="favorites"]').forEach(x=>x.remove());return}
  else if(r==='search')mountSearch(screen);
  else if(r==='transfers')mountTransfers(screen);
- else if(r==='profile')mountAccount(screen);
+ else if(r==='profile')return;
  else if(r==='video')mountTv(screen);
  else if(r==='news')mountNews(screen);
  else if(r==='whereToWatch')mountWhere(screen);
