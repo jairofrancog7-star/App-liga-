@@ -1,4 +1,4 @@
-const CACHE='liga-juventino-v604-crest-original-colors';
+const CACHE='liga-juventino-v607-shirt-logo-cutout';
 const CORE=['./','./index.html','./manifest.webmanifest','./brand-neon-header.svg','./profile-reference.svg'];
 
 self.addEventListener('install',event=>{
