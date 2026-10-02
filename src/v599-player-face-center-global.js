@@ -1,13 +1,15 @@
-/* V600 — AUTOENCUADRE DE ROSTRO COMPLETO
-   Centra la cara y decide automáticamente si debe acercar o alejar la foto.
-   Usa FaceDetector cuando el navegador lo ofrece; si no, aplica un encuadre
-   conservador por proporción de la imagen para evitar frente/mentón cortados. */
+/* V602 — AUTOENCUADRE INTELIGENTE DE CARAS
+   1) En círculos/miniaturas: siempre muestra la foto completa (contain).
+   2) Usa la misma foto como fondo de relleno para que no aparezcan barras.
+   3) En fotos grandes, FaceDetector (si existe) centra el rostro y decide
+      cuándo debe alejarse para no cortar frente/mentón.
+   4) Sin FaceDetector usa un modo conservador que prioriza rostro completo. */
 (function(){
 'use strict';
-if(window.__LJR_V600_PLAYER_FACE_AUTOFRAME__)return;
-window.__LJR_V600_PLAYER_FACE_AUTOFRAME__=true;
+if(window.__LJR_V602_FACE_FULL_FRAME__)return;
+window.__LJR_V602_FACE_FULL_FRAME__=true;
 
-const SELECTORS=[
+const MINI_SELECTORS=[
   '.v576-player-photo',
   '.v576-player-avatar>img',
   '.v66-player-avatar>img',
@@ -26,7 +28,10 @@ const SELECTORS=[
   '.v416-pitch-player i.v576-pitch-photo>img',
   '.v417-bench-player i.v576-bench-photo>img',
   '.v419-mini-pitch i.v576-mini-photo>img',
-  '.v538-person.has-photo>img',
+  '.v538-person.has-photo>img'
+].join(',');
+
+const LARGE_SELECTORS=[
   '.v576-inline-player-photo',
   '.v576-hero-player-photo',
   '.v576-scorer-hero-photo',
@@ -34,145 +39,124 @@ const SELECTORS=[
   'body.v379-player-profile-active .v379-player-photo'
 ].join(',');
 
+const ALL=MINI_SELECTORS+','+LARGE_SELECTORS;
 const cache=new Map();
-const queue=[];
-const queued=new WeakSet();
-let running=false;
 let detector=null;
 try{
   if('FaceDetector' in window)detector=new FaceDetector({fastMode:true,maxDetectedFaces:3});
 }catch(_){detector=null}
 
 const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
-const srcKey=img=>String(img.currentSrc||img.src||'')+'|'+(img.naturalWidth||0)+'x'+(img.naturalHeight||0);
+const cssUrl=src=>'url("'+String(src||'').replace(/["\\]/g,'\\$&')+'")';
 
-function isPersonImage(img){
-  return img instanceof HTMLImageElement && img.matches(SELECTORS);
+function markMini(img){
+  const parent=img.parentElement;
+  if(!parent)return;
+  if(parent.classList.contains('v12-avatar'))parent.classList.add('v576-face-photo');
+  const src=img.currentSrc||img.src||'';
+  if(src)parent.style.setProperty('--ljr-face-bg',cssUrl(src));
+  parent.dataset.ljrFaceContainer='1';
+  img.dataset.ljrFaceFit='contain';
+  img.style.setProperty('--ljr-face-fit','contain');
+  img.style.setProperty('--ljr-face-x','50%');
+  img.style.setProperty('--ljr-face-y','50%');
 }
-function markParent(img){
-  const p=img.closest('.v12-avatar');
-  if(p)p.classList.add('v576-face-photo');
-}
-function setFrame(img,frame){
-  if(!isPersonImage(img)||!frame)return;
-  markParent(img);
-  const x=clamp(Number(frame.x)||50,0,100);
-  const y=clamp(Number(frame.y)||44,0,100);
-  const zoom=clamp(Number(frame.zoom)||1,1,1.30);
-  const fit=frame.fit==='contain'?'contain':'cover';
-  img.style.setProperty('--ljr-face-x',x.toFixed(2)+'%');
-  img.style.setProperty('--ljr-face-y',y.toFixed(2)+'%');
-  img.style.setProperty('--ljr-face-fit',fit);
-  img.style.setProperty('--ljr-face-zoom',String(zoom.toFixed(3)));
-  img.dataset.ljrFaceFit=fit;
-  img.dataset.ljrFaceFramed='1';
-}
-function fallbackFrame(img){
+
+function fallbackLarge(img){
   const w=Number(img.naturalWidth)||1,h=Number(img.naturalHeight)||1;
   const ratio=h/w;
+  /* Retratos altos: alejarlos. Cuadrados/horizontales: cover moderado. */
+  if(ratio>=1.35)return {fit:'contain',x:50,y:50};
+  if(ratio<=0.70)return {fit:'contain',x:50,y:50};
+  return {fit:'cover',x:50,y:44};
+}
 
-  /* Retratos muy verticales se alejan: mejor ver la cabeza completa que cortar cara. */
-  if(ratio>=1.90)return {x:50,y:50,fit:'contain',zoom:1};
-  if(ratio>=1.62)return {x:50,y:34,fit:'cover',zoom:1};
-  if(ratio>=1.38)return {x:50,y:38,fit:'cover',zoom:1};
-  if(ratio>=1.16)return {x:50,y:43,fit:'cover',zoom:1};
-  if(ratio<=0.72)return {x:50,y:50,fit:'contain',zoom:1};
-  return {x:50,y:50,fit:'cover',zoom:1};
-}
-function boxOf(face){
-  const b=face&&face.boundingBox;
-  if(!b)return null;
-  return {x:Number(b.x)||0,y:Number(b.y)||0,w:Number(b.width)||0,h:Number(b.height)||0};
-}
 function largestFace(faces){
   let best=null,area=-1;
   for(const f of (faces||[])){
-    const b=boxOf(f);if(!b||!b.w||!b.h)continue;
-    const a=b.w*b.h;if(a>area){area=a;best=b}
+    const b=f&&f.boundingBox;
+    if(!b)continue;
+    const a=(Number(b.width)||0)*(Number(b.height)||0);
+    if(a>area){area=a;best=b}
   }
   return best;
 }
+
 function frameFromFace(img,b){
   const w=img.naturalWidth,h=img.naturalHeight;
-  const cx=b.x+b.w/2,cy=b.y+b.h/2;
-  const side=Math.min(w,h);
+  const bw=Number(b.width)||0,bh=Number(b.height)||0;
+  const bx=Number(b.x)||0,by=Number(b.y)||0;
+  if(!bw||!bh)return fallbackLarge(img);
 
-  /* Margen suficiente alrededor de frente, orejas y mentón. */
-  const need=Math.max(b.w*1.34,b.h*1.46);
-  if(need>side){
-    return {x:50,y:50,fit:'contain',zoom:1};
+  const cx=bx+bw/2,cy=by+bh/2;
+  const faceShare=Math.max(bw/w,bh/h);
+
+  /* Si la cara ocupa demasiado o está cerca de un borde, aleja la imagen. */
+  const marginX=Math.min(bx,w-(bx+bw))/w;
+  const marginY=Math.min(by,h-(by+bh))/h;
+  if(faceShare>=0.58 || marginX<0.045 || marginY<0.045){
+    return {fit:'contain',x:50,y:50};
   }
 
   let x=50,y=50;
-  if(h>w && h>w+1){
-    y=clamp(((cy-w/2)/(h-w))*100,0,100);
-  }else if(w>h && w>h+1){
-    x=clamp(((cx-h/2)/(w-h))*100,0,100);
+  if(w>h){
+    const movable=w-h;
+    if(movable>1)x=clamp(((cx-h/2)/movable)*100,0,100);
+  }else if(h>w){
+    const movable=h-w;
+    if(movable>1)y=clamp(((cy-w/2)/movable)*100,0,100);
   }
-
-  /* Si la cara está pequeña, acerca solo hasta donde siga cabiendo COMPLETA. */
-  const occ=Math.max(b.w,b.h)/side;
-  const desired=occ>0 ? 0.48/occ : 1;
-  const safe=side/need;
-  const zoom=clamp(Math.min(desired,safe,1.30),1,1.30);
-
-  return {x,y,fit:'cover',zoom};
+  return {fit:'cover',x,y};
 }
-async function detectFrame(img){
-  const key=srcKey(img);
-  if(cache.has(key))return cache.get(key);
 
-  let frame=fallbackFrame(img);
-  if(detector){
-    try{
-      const faces=await detector.detect(img);
-      const b=largestFace(faces);
-      if(b)frame=frameFromFace(img,b);
-    }catch(_){}
-  }
-  cache.set(key,frame);
-  return frame;
+function applyLarge(img,frame){
+  const fit=frame.fit==='contain'?'contain':'cover';
+  img.dataset.ljrFaceFit=fit;
+  img.style.setProperty('--ljr-face-fit',fit);
+  img.style.setProperty('--ljr-face-x',(Number(frame.x)||50).toFixed(2)+'%');
+  img.style.setProperty('--ljr-face-y',(Number(frame.y)||44).toFixed(2)+'%');
+  const src=img.currentSrc||img.src||'';
+  if(src)img.style.setProperty('--ljr-face-bg',cssUrl(src));
 }
-async function processOne(img){
-  if(!isPersonImage(img))return;
+
+async function process(img){
+  if(!(img instanceof HTMLImageElement)||!img.matches(ALL))return;
   if(!img.complete||!img.naturalWidth||!img.naturalHeight){
     if(img.dataset.ljrFaceLoadBound!=='1'){
       img.dataset.ljrFaceLoadBound='1';
-      img.addEventListener('load',()=>enqueue(img),{once:true});
+      img.addEventListener('load',()=>process(img),{once:true});
     }
     return;
   }
 
-  /* Aplica primero un encuadre seguro instantáneo. */
-  setFrame(img,fallbackFrame(img));
-
-  /* Después mejora con detección facial cuando esté disponible. */
-  const frame=await detectFrame(img);
-  setFrame(img,frame);
-}
-function enqueue(img){
-  if(!isPersonImage(img)||queued.has(img))return;
-  queued.add(img);queue.push(img);
-  pump();
-}
-async function pump(){
-  if(running)return;
-  running=true;
-  while(queue.length){
-    const img=queue.shift();
-    queued.delete(img);
-    await processOne(img);
-    await new Promise(r=>setTimeout(r,0));
+  if(img.matches(MINI_SELECTORS)){
+    markMini(img);
+    return;
   }
-  running=false;
+
+  const key=(img.currentSrc||img.src||'')+'|'+img.naturalWidth+'x'+img.naturalHeight;
+  if(cache.has(key)){applyLarge(img,cache.get(key));return}
+
+  let frame=fallbackLarge(img);
+  if(detector){
+    try{
+      const faces=await detector.detect(img);
+      const face=largestFace(faces);
+      if(face)frame=frameFromFace(img,face);
+    }catch(_){}
+  }
+  cache.set(key,frame);
+  applyLarge(img,frame);
 }
+
 function scan(root=document){
-  if(root instanceof HTMLImageElement)enqueue(root);
-  root.querySelectorAll?.(SELECTORS).forEach(enqueue);
+  if(root instanceof HTMLImageElement)process(root);
+  root.querySelectorAll?.(ALL).forEach(process);
 }
+let timer=0;
 function schedule(root=document){
-  if('requestIdleCallback' in window)requestIdleCallback(()=>scan(root),{timeout:180});
-  else setTimeout(()=>scan(root),40);
+  clearTimeout(timer);
+  timer=setTimeout(()=>scan(root),35);
 }
 
 document.addEventListener('DOMContentLoaded',()=>scan(document),{once:true});
@@ -183,26 +167,20 @@ window.addEventListener('ljr:official-data',()=>schedule(document));
 const host=document.querySelector('#screen')||document.documentElement;
 new MutationObserver(mutations=>{
   for(const m of mutations){
-    if(m.type==='attributes'&&m.target instanceof HTMLImageElement){enqueue(m.target);continue}
+    if(m.type==='attributes'&&m.target instanceof HTMLImageElement){process(m.target);continue}
     m.addedNodes.forEach(n=>{
-      if(n instanceof HTMLImageElement)enqueue(n);
+      if(n instanceof HTMLImageElement)process(n);
       else if(n instanceof Element)schedule(n);
     });
   }
 }).observe(host,{subtree:true,childList:true,attributes:true,attributeFilter:['src']});
 
 scan(document);
-setTimeout(()=>scan(document),500);
-setTimeout(()=>scan(document),1600);
+setTimeout(()=>scan(document),450);
+setTimeout(()=>scan(document),1500);
 
 window.LJR_FACE_FRAME={
   scan:()=>scan(document),
-  reset(){
-    cache.clear();
-    document.querySelectorAll(SELECTORS).forEach(img=>{
-      delete img.dataset.ljrFaceFramed;
-      enqueue(img);
-    });
-  }
+  reset(){cache.clear();scan(document)}
 };
 })();
