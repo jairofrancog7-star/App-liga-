@@ -1,0 +1,76 @@
+/* V595 — more realistic 3D jersey rendering based on the user's product-photo reference. */
+html body.v587-fantasy-team-open .v576-shirt,
+html body.v587-fantasy-team-open .v576-shirt.chosen,
+html body.v587-fantasy-team-open .v590-kit-wrap{
+  width:64px!important;
+  height:76px!important;
+  perspective:900px!important;
+  transform-style:preserve-3d!important;
+  overflow:visible!important;
+}
+html body.v587-fantasy-team-open .v595-photo-jersey{
+  width:70px!important;
+  height:82px!important;
+  display:block!important;
+  overflow:visible!important;
+  transform:rotateX(2deg) rotateY(-5deg) translateZ(8px)!important;
+  transform-origin:50% 55%!important;
+  filter:drop-shadow(0 7px 7px rgba(0,39,52,.27))!important;
+  transition:transform .16s ease,filter .16s ease!important;
+}
+html body.v587-fantasy-team-open .v576-slot:nth-child(even) .v595-photo-jersey{
+  transform:rotateX(2deg) rotateY(5deg) translateZ(8px)!important;
+}
+html body.v587-fantasy-team-open .v576-slot:active .v595-photo-jersey,
+html body.v587-fantasy-team-open .v576-slot:focus-visible .v595-photo-jersey{
+  transform:rotateX(0) rotateY(0) translateZ(12px) scale(1.045)!important;
+  filter:drop-shadow(0 10px 10px rgba(0,39,52,.34))!important;
+}
+html body.v587-fantasy-team-open .v590-kit-wrap.empty-kit .v595-photo-jersey{
+  opacity:.80!important;
+  filter:drop-shadow(0 5px 5px rgba(0,39,52,.18))!important;
+}
+html body.v587-fantasy-team-open .v576-slot.filled .v590-kit-wrap{
+  width:72px!important;
+  height:84px!important;
+}
+html body.v587-fantasy-team-open .v576-slot.filled .v595-photo-jersey{
+  width:78px!important;
+  height:90px!important;
+}
+html body.v587-fantasy-team-open .v590-kit-wrap.empty-kit>i:not(.remove){
+  z-index:6!important;
+  top:48%!important;
+  color:#c7eef2!important;
+  font-size:23px!important;
+  text-shadow:0 2px 3px rgba(0,36,48,.25)!important;
+}
+html body.v587-fantasy-team-open .v576-shirt .remove{
+  right:-8px!important;
+  top:-5px!important;
+  width:18px!important;
+  height:18px!important;
+  box-shadow:0 2px 6px rgba(0,0,0,.22)!important;
+}
+/* Allow the larger realistic shirts to breathe without changing 3-5-5-2 formation. */
+html body.v587-fantasy-team-open .v576-field-row.del{height:122px!important}
+html body.v587-fantasy-team-open .v576-field-row.cen,
+html body.v587-fantasy-team-open .v576-field-row.def{height:120px!important}
+html body.v587-fantasy-team-open .v576-field-row.por{height:104px!important}
+
+@media(max-width:390px){
+  html body.v587-fantasy-team-open .v576-shirt,
+  html body.v587-fantasy-team-open .v576-shirt.chosen,
+  html body.v587-fantasy-team-open .v590-kit-wrap{
+    width:59px!important;height:70px!important;
+  }
+  html body.v587-fantasy-team-open .v595-photo-jersey{
+    width:65px!important;height:76px!important;
+  }
+  html body.v587-fantasy-team-open .v576-slot.filled .v590-kit-wrap{
+    width:67px!important;height:78px!important;
+  }
+  html body.v587-fantasy-team-open .v576-slot.filled .v595-photo-jersey{
+    width:72px!important;height:84px!important;
+  }
+}
