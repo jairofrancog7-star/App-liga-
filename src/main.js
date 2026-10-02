@@ -4908,14 +4908,14 @@ function v38WeeklyView(){
   };
   const group=(title,list)=>'<section class="v553-week-group"><div class="v553-week-title"><span>🏆 '+title+'</span><b>'+list.length+' partido(s)</b></div><div class="v553-week-scroll"><table><thead><tr><th>Fecha</th><th>Hora</th><th>Local</th><th>vs</th><th>Visitante</th><th>Campo</th><th>Jornada</th></tr></thead><tbody>'+list.map(r=>'<tr>'+r.map((v,i)=>'<td>'+((i===3)?'vs':v)+'</td>').join('')+'</tr>').join('')+'</tbody></table></div></section>';
   return '<section class="v60-tool-page v63-page v188-weekly-page v553-weekly-report">'+
-    v60Header('JUEGOS DE LA SEMANA','Reporte semanal','Consulta partidos por categoría, temporada y rango de fechas.')+
+    v60Header('JUEGOS DE LA SEMANA','TORNEO DE COPA 2026','Consulta partidos por categoría, temporada y rango de fechas.')+
     '<div class="v553-week-filter">'+
       '<div class="v553-week-range">Semana del 28/09/2026 al 04/10/2026</div>'+
       '<label>Categoría<select><option>Todas</option><option>Primera Fuerza</option><option>Intermedia</option><option>Segunda Fuerza</option><option>Veteranos 50+</option></select></label>'+
-      '<label>Temporada<select><option>Todas</option></select></label>'+
+      '<label>Temporada<select><option>TORNEO DE COPA 2026</option></select></label>'+
       '<label>Fecha inicio<input type="date" value="2026-09-28"></label>'+
       '<label>Fecha fin<input type="date" value="2026-10-04"></label>'+
-      '<div class="v553-week-actions"><button type="button">Consultar</button><button type="button">Limpiar</button><button type="button" onclick="window.print()">Imprimir</button></div>'+
+      '<div class="v553-week-actions"><button type="button">Consultar</button><button type="button">Limpiar</button><button type="button" data-v553-print>Descargar PDF</button></div>'+
     '</div>'+
     group('Primera Fuerza',rows.primera)+
     group('Intermedia',rows.intermedia)+
@@ -6209,6 +6209,16 @@ function quizArenaView(){
 }
 function moreLessView(){return '<div data-v12-moreless-mount></div>'}function venuesView(){return `<div class="eyebrow">SEDES</div><h1 class="screen-title">Campos</h1><div class="news-list">${[...new Set(teams.map(t=>t.field))].map((v,i)=>`<div class="news-row"><span class="venue-thumb"></span><span><small>Sede ${i+1}</small><b>${v}</b><p>Consulta los próximos partidos programados.</p></span></div>`).join('')}</div>`}
 const views={home:homeView,competition:competitionView,match:matchView,matchCenter:()=>'<div data-v92-direct-mount></div>','match-center':()=>'<div data-v92-direct-mount></div>',video:()=>'<div data-v16-video-mount></div>',fantasy:fantasyView,fantasyTeam:fantasyTeamView,fantasyLeagues:()=>`<div class="eyebrow">FANTASY</div><h1 class="screen-title">Ligas</h1><div class="profile-card"><h2>Compite con amigos</h2><p>Crea una liga privada o únete con un código.</p><div class="button-row"><button class="btn primary" data-action="create-league">Crear liga</button><button class="btn outline" data-action="join-league">Unirme</button></div></div>`,more:moreView,ligaQR:ligaQRView,hospitality:hospitalityView,'club-store':storeView,following:()=>'<div data-v25-following-mount></div>',teams:()=>'<div data-v27-teams-mount></div>',teamDetail:()=>'<div data-v42-team-detail-mount></div>',players:playersView,playerDetail:playerDetailView,playerCompare:()=>'<div data-v123-player-compare-mount></div>',scorers:()=>'<div data-v28-scorers-mount></div>',quiniela:()=>'<div data-v561-quiniela-mount></div>',publicationCenter:()=>'<div data-v561-publications-mount></div>',adminFut:()=>'<div data-v562-adminfut-mount></div>',moments:momentsView,stats:()=>'<div data-v33-stats-mount></div>',rankings:()=>'<div data-v32-rankings-mount></div>',history:()=>'<div data-v35-history-mount></div>',historyLog:()=>'<section class="v164-history-log" data-v164-history-log><div class="v164-loading">Cargando historial oficial…</div></section>',news:newsView,notices:noticesView,scheduleChanges:scheduleChangesView,newsDetail:newsDetailView,transfers:transfersView,favorites:favoritesView,search:searchView,vote:voteView,notifications:()=>'<div data-v46-notifications-mount></div>',privacy:privacyView,profile:profileView,predictor:predictorView,predictorSix:predictorSixView,quizArena:quizArenaView,quiz:quizArenaView,moreLess:moreLessView,moreLessHub:()=>`<div data-v52-mount></div>`,moreLessGallery:()=>`<div data-v546-moreless-gallery-mount></div>`,venues:v60VenuesView,discipline:()=>'<div data-v94-discipline-mount></div>',disciplina:()=>'<div data-v94-discipline-mount></div>',disciplineTool:()=>'<div data-v94-discipline-mount></div>',leagueTools:leagueToolsView,recruitment:()=>'<div data-v190-recruitment-mount></div>',v38Stats:v38StatsView,v38Weekly:v38WeeklyView,v38Weather:v38WeatherView,v38Alerts:v38AlertsView,tableExport:v64ExportTableView,bracketBuilder:v64BracketView,credentialBuilder:v64CredentialBuilderView,cedulaBuilder:v64CedulaBuilderView,agendaBuilder:v64AgendaView,motionHub:v64MotionView,suspensionTool:v64SuspensionView,rulebook:rulebookView,matchday:matchdayView,weatherFields:weatherFieldsView,cedulas:cedulasView,cedulaDetail:cedulaDetailView,credential:credentialView,publications:publicationsView,tactics:tacticsView,simulator:simulatorView,jrControl:jrControlView,refereeOffline:()=>'<div data-v562-referee-offline-mount></div>',error:()=>`<div class="empty-state"><div class="empty-illustration error"></div><h2>No pudimos cargar la información</h2><p>Comprueba tu conexión e inténtalo nuevamente.</p><button class="btn outline" data-route="home">Reintentar</button></div>`};
+
+document.addEventListener('click',e=>{
+  const btn=e.target.closest('[data-v553-print]');
+  if(!btn)return;
+  const report=document.querySelector('.v553-weekly-report');
+  if(!report)return;
+  document.body.classList.add('v553-printing');
+  setTimeout(()=>{window.print();setTimeout(()=>document.body.classList.remove('v553-printing'),500)},40);
+});
+
 function render(){
   if(state.route==='quiz'){
     state.route='quizArena';
