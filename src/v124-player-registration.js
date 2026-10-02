@@ -56,7 +56,7 @@ function currentRegistrarName(){
 }
 function recordOrigin(r){
   if(r?.registrationOrigin)return String(r.registrationOrigin);
-  if(r?.source==='official')return 'AdminFut';
+  if(r?.source==='official')return 'padrón oficial';
   const st=norm(r?.status||'');
   if(st.includes('renovacion'))return 'Renovación';
   if(st.includes('cambio de equipo'))return 'Cambio de equipo';
@@ -65,7 +65,7 @@ function recordOrigin(r){
 }
 function recordRegistrar(r){
   if(r?.registeredBy)return String(r.registeredBy);
-  if(r?.source==='official')return 'AdminFut';
+  if(r?.source==='official')return 'padrón oficial';
   return 'Registro local anterior';
 }
 function fmtRecordDate(v){
@@ -242,7 +242,7 @@ function teamInfo(name){
 function officialMatch(rec){
   const list=officialPlayers();
   if(rec.curp){
-    // CURP no se publica en AdminFut: nunca se compara ni se envía.
+    // CURP no se publica en padrón oficial: nunca se compara ni se envía.
   }
   return list.find(p=>norm(p.name)===norm(rec.name)&&norm(p.team)===norm(rec.team))||
          list.find(p=>norm(p.name)===norm(rec.name));
@@ -271,14 +271,14 @@ function syncOfficialSeason(silent=false){
     if(old){
       old.category=p.category;old.catId=p.catId;old.officialPresent=true;old.officialCheckedAt=now;
       if(old.source==='official'){
-        old.status='Oficial en AdminFut';
-        old.registrationOrigin=old.registrationOrigin||'AdminFut';
-        old.registeredBy=old.registeredBy||'AdminFut';
+        old.status='Oficial en la Liga';
+        old.registrationOrigin=old.registrationOrigin||'padrón oficial';
+        old.registeredBy=old.registeredBy||'padrón oficial';
       }
       kept++;continue;
     }
     const rec={id:uid(),name:p.name,team:p.team,category:p.category,catId:p.catId,season,
-      status:'Oficial en AdminFut',source:'official',registrationOrigin:'AdminFut',registeredBy:'AdminFut',
+      status:'Oficial en la Liga',source:'official',registrationOrigin:'padrón oficial',registeredBy:'padrón oficial',
       officialPresent:true,officialCheckedAt:now,
       curp:'',dob:'',city:'',position:'Sin definir',createdAt:now,updatedAt:now};
     list.push(rec);byKey.set(k,rec);added++;
@@ -293,8 +293,8 @@ function syncOfficialSeason(silent=false){
   for(const r of cleaned){
     if(r.source==='official')continue;
     const hit=officialMatch(r);r.officialPresent=!!hit;r.officialCheckedAt=now;
-    if(hit){r.category=hit.category;r.catId=hit.catId;if(r.status==='Pendiente de validación')r.status='Registrado · coincide con AdminFut'}
-    else if(r.status==='Registrado · coincide con AdminFut')r.status='Pendiente de validación';
+    if(hit){r.category=hit.category;r.catId=hit.catId;if(r.status==='Pendiente de validación')r.status='Registrado · coincide con padrón'}
+    else if(r.status==='Registrado · coincide con padrón')r.status='Pendiente de validación';
   }
   putSeason(season,cleaned);
   if(!silent)toast('Sincronizado: '+added+' nuevos oficiales · '+kept+' conservados · '+removed+' retirados del padrón oficial');
@@ -407,7 +407,7 @@ function loadRecord(rec){
   setValue('[data-v100-dob]',rec.dob||'');
   setValue('[data-v100-city]',rec.city||'');
   setValue('[data-v100-position]',rec.position||'Sin definir');
-  setValue('[data-v100-status]',rec.status&&rec.status!=='Oficial en AdminFut'?rec.status:'Revisado');
+  setValue('[data-v100-status]',rec.status&&rec.status!=='Oficial en la Liga'?rec.status:'Revisado');
   try{window.v64SyncCredentialTeamCategory?.()}catch(e){}
   document.querySelector('.v64-page')?.scrollIntoView({behavior:'smooth',block:'start'});
   toast('Registro cargado para revisar o generar credencial');
@@ -443,8 +443,8 @@ function saveForm(silent=false){
   const source=idx>=0?list[idx].source:'local',registrar=currentRegistrarName();
   const prior=idx>=0?list[idx]:null;
   const rec={...(prior||{}),...data,id:prior?prior.id:uid(),source,
-    registrationOrigin:prior?.registrationOrigin||(source==='official'?'AdminFut':'Registro en la app'),
-    registeredBy:prior?.registeredBy||(source==='official'?'AdminFut':registrar),
+    registrationOrigin:prior?.registrationOrigin||(source==='official'?'padrón oficial':'Registro en la app'),
+    registeredBy:prior?.registeredBy||(source==='official'?'padrón oficial':registrar),
     officialPresent:!!hit,officialCheckedAt:now,createdAt:prior?.createdAt||now,updatedAt:now};
   if(prior?.team&&norm(prior.team)!==norm(data.team)){
     rec.previousTeam=prior.team;
@@ -455,8 +455,8 @@ function saveForm(silent=false){
   }
   if(hit){
     rec.category=hit.category;rec.catId=hit.catId;
-    if(source==='official')rec.status='Oficial en AdminFut';
-    else if(rec.status==='Pendiente de validación')rec.status='Registrado · coincide con AdminFut';
+    if(source==='official')rec.status='Oficial en la Liga';
+    else if(rec.status==='Pendiente de validación')rec.status='Registrado · coincide con padrón';
   }
   if(idx>=0)list[idx]=rec;else list.unshift(rec);
   putSeason(season,list);localStorage.setItem(EDIT_KEY,rec.id);
@@ -2471,7 +2471,7 @@ function listHtml(list){
   return list.map(r=>'<article class="v124-player-card" data-v124-id="'+esc(r.id)+'">'+
     '<div class="v124-card-main"><label class="v124-pick" aria-label="Seleccionar '+esc(r.name)+'"><input type="checkbox" data-v124-select="'+esc(r.id)+'" '+(selectedIds.has(r.id)?'checked':'')+'><span></span></label><span class="v124-avatar">'+esc(String(r.name).split(/\s+/).slice(0,2).map(x=>x[0]||'').join('').toUpperCase())+'</span>'+
     '<span><b>'+esc(r.name)+'</b><small>'+esc(r.team)+' · '+esc(r.category||'Categoría por confirmar')+'</small>'+
-    '<em class="'+statusClass(r)+'">'+esc(r.source==='official'?'Oficial en AdminFut':(r.officialPresent?'Coincide con AdminFut':r.status||'Pendiente'))+'</em></span></div>'+
+    '<em class="'+statusClass(r)+'">'+esc(r.source==='official'?'Oficial en la Liga':(r.officialPresent?'Coincide con padrón':r.status||'Pendiente'))+'</em></span></div>'+
     v190TeamTraceHtml(r)+
     '<div class="v161-record-meta"><span><b>Origen</b>'+esc(recordOrigin(r))+'</span><span><b>Registró</b>'+esc(recordRegistrar(r))+'</span><span><b>Fecha de registro</b>'+esc(fmtRecordDate(r.createdAt||r.updatedAt))+'</span></div>'+
     '<div class="v124-card-actions"><button data-v124-edit="'+esc(r.id)+'">Revisar / corregir</button><button data-v124-card="'+esc(r.id)+'">Credencial</button><button class="danger" data-v124-delete="'+esc(r.id)+'">Borrar</button></div>'+
@@ -2485,7 +2485,7 @@ function managerHtml(){
       '<button data-v124-new-season>Nueva temporada</button></div>'+
     '<div class="v124-summary"><div><b>'+list.length+'</b><span>Registros</span></div><div><b>'+officialCount+'</b><span>Oficial / coincide</span></div><div><b>'+pending+'</b><span>Por revisar</span></div></div>'+
     fastToolsHtml(list)+
-    '<div class="v124-primary-actions"><button class="primary" data-v124-save>Guardar / actualizar jugador</button><button data-v124-new>Nuevo registro</button><button data-v124-sync>Sincronizar con AdminFut</button></div>'+
+    '<div class="v124-primary-actions"><button class="primary" data-v124-save>Guardar / actualizar jugador</button><button data-v124-new>Nuevo registro</button><button data-v124-sync>Actualizar padrón</button></div>'+
     '<label class="v124-search"><span>Buscar en esta temporada</span><input type="search" data-v124-search placeholder="Nombre, equipo, origen o quién registró" value="'+esc(registryQuery)+'"></label>'+
     registryFilterHtml(list)+
     '<div class="v124-list" data-v124-list>'+listHtml(filterRegistry(list))+'</div>'+
