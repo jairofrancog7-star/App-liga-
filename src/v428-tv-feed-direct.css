@@ -374,3 +374,21 @@ body[data-app-route="video"] .v428-tv-section .v428-tv-row:has(.v443-tv-portrait
     margin-left:0!important;
   }
 }
+
+
+/* V549 — Video: centrar un poco más SOLO el texto de cabecera "Ver en TV". */
+@media(max-width:600px){
+  body[data-app-route="video"] .v439-streamcenter-card,
+  body[data-app-route="video"] .v439-streamcenter-card>div:first-child{
+    box-sizing:border-box!important;
+  }
+  body[data-app-route="video"] .v439-streamcenter-card>div:first-child{
+    padding-left:22px!important;
+  }
+  body[data-app-route="video"] .v439-streamcenter-card h2,
+  body[data-app-route="video"] .v439-streamcenter-card p,
+  body[data-app-route="video"] .v439-streamcenter-card .eyebrow{
+    margin-left:0!important;
+    padding-left:0!important;
+  }
+}
