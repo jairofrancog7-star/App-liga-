@@ -125,7 +125,10 @@ async function patchV23Fantasy(){
     v24ApplyTransparentFantasyLogo(screen);
     const login=screen.querySelector('.v23-access-login');
     const later=screen.querySelector('.v23-access-later');
-    if(login) login.onclick=(e)=>{e.preventDefault();e.stopPropagation();location.hash='#/profile'};
+    if(login) login.onclick=(e)=>{e.preventDefault();e.stopPropagation();let logged=false;try{const s=JSON.parse(localStorage.getItem('lj-store-v3')||'{}');const a=JSON.parse(localStorage.getItem('ljr-auth-v569')||'{}');logged=!!(s?.user||a?.currentId)}catch(_){}
+      if(logged) location.hash='#/fantasyTeam';
+      else {try{localStorage.setItem('ljr-auth-return-v569','fantasyTeam')}catch(_){};location.hash='#/accountLogin'}
+    };
     if(later) later.onclick=(e)=>{e.preventDefault();e.stopPropagation();location.hash='#/fantasyTeam'};
     return;
   }
