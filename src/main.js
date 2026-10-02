@@ -4875,19 +4875,52 @@ function v38StatsView(){
   '</section>';
 }
 function v38WeeklyView(){
-  return '<section class="v60-tool-page v63-page v188-weekly-page">'+
-    v60Header('LO IMPORTANTE DE LA SEMANA','Noticias y avisos','Accesos adaptados para comunicados, junta de liga y contenido multimedia.')+
-    '<div class="v63-feature-list">'+
-      v63FeatureCard('share','AVISO','Cambios de horario y sedes','Comunicados y novedades publicadas para equipos y afición.','notices')+
-      v63FeatureCard('matchday','JUNTA','Junta semanal de liga','Checklist, acuerdos y operación de jornada en un solo espacio.','matchday')+
-      v63FeatureCard('center','MULTIMEDIA','Semifinales, finales y momentos','Videos y momentos destacados dentro de la app.','moments')+
+  const rows={
+    primera:[
+      ['04/10/2026','08:00','TERRICOLAS','NAPOLI','Campo 3','Jornada 7'],
+      ['04/10/2026','09:00','GALACTICOS','LINCES','Pozos','Jornada 7'],
+      ['04/10/2026','10:00','ABEJAS','HERRERAS FC','Pozos','Jornada 7'],
+      ['04/10/2026','10:00','HERMANOS','LOBOS CDG','Campo 3','Jornada 7'],
+      ['04/10/2026','12:00','SAN JOSE FC','FRANCO FC','San Jose de la Montaña','Jornada 7']
+    ],
+    intermedia:[
+      ['04/10/2026','08:00','OSASUNA','POPULARES','Campo 1 (Empastado)','Jornada 7'],
+      ['04/10/2026','08:00','LA CUADRILLA','MAZACOTES FC','Fraccionamiento','Jornada 7'],
+      ['04/10/2026','10:00','PROMESAS FC','LA HUERTA','Fraccionamiento','Jornada 7'],
+      ['04/10/2026','10:00','SAN ANTONIO JRS','CAPIBARAS','Romerillo','Jornada 7'],
+      ['04/10/2026','10:00','MALVINAS','LA CANCHITA DEPORTES','Campo 1 (Empastado)','Jornada 7'],
+      ['04/10/2026','12:00','DEP. MARAVILLAS','ATL. GALEANA','Campo 3','Jornada 7']
+    ],
+    segunda:[
+      ['04/10/2026','08:00','PACHANGAS FC','TAPATIO','Campo 2','Jornada 7'],
+      ['04/10/2026','10:00','TAVERA FC','SAN JULIAN','San Julian','Jornada 7'],
+      ['04/10/2026','10:00','DEP. NOPALERO','SAN ANTONIO FC','Campo 2','Jornada 7'],
+      ['04/10/2026','10:00','SAN JOSE JRS','SAN JUAN FC','San Jose de la Montaña','Jornada 7'],
+      ['04/10/2026','12:00','BARZA','DEP. ZAPATA','Campo 2','Jornada 7'],
+      ['04/10/2026','12:00','CELTICOS','DEP. LA LUZ','Campo 1 (Empastado)','Jornada 7']
+    ],
+    veteranos:[
+      ['03/10/2026','15:30','MANCHESTER','BOCA JRS','Campo 2','Jornada 7'],
+      ['03/10/2026','15:30','DYNAMO','BOAVISTA','Campo 1 (Empastado)','Jornada 7'],
+      ['03/10/2026','17:00','TOROS DE CUENDA','LA ESPERANZA','Campo 1 (Empastado)','Jornada 7']
+    ]
+  };
+  const group=(title,list)=>'<section class="v553-week-group"><div class="v553-week-title"><span>🏆 '+title+'</span><b>'+list.length+' partido(s)</b></div><div class="v553-week-scroll"><table><thead><tr><th>Fecha</th><th>Hora</th><th>Local</th><th>vs</th><th>Visitante</th><th>Campo</th><th>Jornada</th></tr></thead><tbody>'+list.map(r=>'<tr>'+r.map((v,i)=>'<td>'+((i===3)?'vs':v)+'</td>').join('')+'</tr>').join('')+'</tbody></table></div></section>';
+  return '<section class="v60-tool-page v63-page v188-weekly-page v553-weekly-report">'+
+    v60Header('JUEGOS DE LA SEMANA','Reporte semanal','Consulta partidos por categoría, temporada y rango de fechas.')+
+    '<div class="v553-week-filter">'+
+      '<div class="v553-week-range">Semana del 28/09/2026 al 04/10/2026</div>'+
+      '<label>Categoría<select><option>Todas</option><option>Primera Fuerza</option><option>Intermedia</option><option>Segunda Fuerza</option><option>Veteranos 50+</option></select></label>'+
+      '<label>Temporada<select><option>Todas</option></select></label>'+
+      '<label>Fecha inicio<input type="date" value="2026-09-28"></label>'+
+      '<label>Fecha fin<input type="date" value="2026-10-04"></label>'+
+      '<div class="v553-week-actions"><button type="button">Consultar</button><button type="button">Limpiar</button><button type="button" onclick="window.print()">Imprimir</button></div>'+
     '</div>'+
-    '<div class="v188-weekly-subhead"><small>CENTRO DE AVISOS</small><h2>Notificaciones</h2></div>'+
-    '<div class="v63-feature-list v188-weekly-alerts">'+
-      v63FeatureCard('matchday','PRÓXIMA JORNADA','Próxima jornada','Recibe aviso cuando se publique un horario nuevo.','notifications')+
-      v63FeatureCard('field','CAMBIO DE SEDE','Cambio de sede','Alertas para cambios relevantes de cancha o fecha.','scheduleChanges')+
-      v63FeatureCard('center','PARTIDO FAVORITO','Partido favorito','Seguimiento de equipos y encuentros destacados.','following')+
-    '</div>'+
+    group('Primera Fuerza',rows.primera)+
+    group('Intermedia',rows.intermedia)+
+    group('Segunda Fuerza',rows.segunda)+
+    group('Veteranos 50+',rows.veteranos)+
+    '<section class="v553-pending"><div><small>PARTIDOS PENDIENTES</small><h3>Agregar partido pendiente</h3><p>Registra encuentros sin fecha definitiva para tenerlos visibles en el reporte semanal.</p></div><form onsubmit="event.preventDefault(); this.reset(); alert(\'Partido pendiente agregado\')"><input required placeholder="Local"><input required placeholder="Visitante"><input placeholder="Categoría"><input placeholder="Campo / sede"><input type="date"><button type="submit">+ Agregar pendiente</button></form></section>'+
   '</section>';
 }
 function v38WeatherView(){
