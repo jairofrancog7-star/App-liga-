@@ -1,14 +1,8 @@
-/* V602 — ROSTRO COMPLETO / AUTOENCUADRE GLOBAL
-   Prioridad: identificar al jugador. En círculos y miniaturas nunca se debe cortar
-   frente, cabello, ojos, nariz, boca o mentón por culpa de object-fit:cover. */
+/* V603 — MISMO ENCUADRE FACIAL DE CREDENCIALES, APLICADO GLOBALMENTE.
+   El JS calcula el mismo recorte de faceCrop() que usa la credencial:
+   ojos ~40% de la altura, margen para cabello/frente y espacio bajo el mentón.
+   El recorte se reproduce con CSS dentro de cada círculo, sin deformar la foto. */
 
-:root{
-  --ljr-face-x:50%;
-  --ljr-face-y:50%;
-  --ljr-face-fit:contain;
-}
-
-/* Contenedores de PERSONAS. */
 :is(
   .v576-player-avatar,
   .v66-player-avatar.v576-has-photo,
@@ -30,91 +24,67 @@
   aspect-ratio:1/1!important;
   border-radius:50%!important;
   overflow:hidden!important;
-  background:
-    linear-gradient(rgba(7,16,93,.30),rgba(7,16,93,.30)),
-    var(--ljr-face-bg,none) center/cover no-repeat,
-    #101b88!important;
-}
-
-/* La foto frontal siempre muestra la imagen completa dentro del círculo.
-   El mismo retrato queda detrás como fondo para evitar barras vacías. */
-:is(
-  .v576-player-photo,
-  .v576-player-avatar>img,
-  .v66-player-avatar>img,
-  .v42-avatar>img,
-  .v419-player-avatar>img,
-  .v446-stat-ref-avatar>img,
-  .v414-avatar>img,
-  .v123-avatar>img,
-  .v123-option-avatar>img,
-  .v379-related-avatar>img,
-  .v576-table-photo>img,
-  .v124-avatar>img,
-  .v562-avatar>img,
-  .v12-avatar>img,
-  .v33-player-team-logo.v576-player-avatar>img,
-  .v416-pitch-player i.v576-pitch-photo>img,
-  .v417-bench-player i.v576-bench-photo>img,
-  .v419-mini-pitch i.v576-mini-photo>img,
-  .v538-person.has-photo>img
-){
-  position:relative!important;
-  z-index:2!important;
-  width:100%!important;
-  height:100%!important;
-  min-width:100%!important;
-  min-height:100%!important;
-  max-width:100%!important;
-  max-height:100%!important;
-  display:block!important;
   box-sizing:border-box!important;
-  object-fit:contain!important;
-  object-position:center!important;
-  border-radius:inherit!important;
-  transform:none!important;
-  padding:0!important;
-  background:transparent!important;
+  background:#101b88!important;
 }
 
-/* Más o Menos: sobreescribe los estilos viejos center top / cover. */
-body .v543-moreless-portal .v583-challenge-art .v538-person.has-photo>img,
-body[data-app-route="moreLessGallery"] .v583-challenge-art .v538-person.has-photo>img{
-  object-fit:contain!important;
-  object-position:center!important;
-  transform:none!important;
-  padding:0!important;
-}
-
-/* Fotografías grandes de jugador: usan el punto de rostro calculado.
-   Si JS detecta que el encuadre puede cortar la cara, también pasan a contain. */
+/* La imagen ya no usa object-fit:cover. V603 coloca y escala la foto usando
+   exactamente el rectángulo sx/sy/sw/sh calculado por el motor de credenciales. */
 :is(
-  .v576-inline-player-photo,
-  .v576-hero-player-photo,
-  .v576-scorer-hero-photo,
-  .v576-v28-feature-photo,
-  body.v379-player-profile-active .v379-player-photo
-){
-  object-fit:var(--ljr-face-fit,cover)!important;
-  object-position:var(--ljr-face-x,50%) var(--ljr-face-y,44%)!important;
-  transform:none!important;
-}
-:is(
-  .v576-inline-player-photo,
-  .v576-hero-player-photo,
-  .v576-scorer-hero-photo,
-  .v576-v28-feature-photo,
-  body.v379-player-profile-active .v379-player-photo
-)[data-ljr-face-fit="contain"]{
-  object-fit:contain!important;
+  .v576-player-avatar,
+  .v66-player-avatar.v576-has-photo,
+  .v42-avatar.v576-has-photo,
+  .v419-player-avatar.v576-has-photo,
+  .v446-stat-ref-avatar.v576-has-photo,
+  .v414-avatar.v576-has-photo,
+  .v123-avatar.v576-has-photo,
+  .v123-option-avatar.v576-has-photo,
+  .v379-related-avatar.v576-has-photo,
+  .v576-table-photo,
+  .v124-avatar.v576-has-inline-photo,
+  .v562-avatar.v576-has-photo,
+  .v12-avatar.v576-face-photo,
+  .v538-person.has-photo,
+  .v33-player-team-logo.v576-player-avatar
+)>img[data-ljr-credential-face-crop="1"]{
+  position:absolute!important;
+  z-index:2!important;
+  left:var(--ljr-face-left,0%)!important;
+  top:var(--ljr-face-top,0%)!important;
+  width:var(--ljr-face-width,100%)!important;
+  height:var(--ljr-face-height,100%)!important;
+  min-width:0!important;
+  min-height:0!important;
+  max-width:none!important;
+  max-height:none!important;
+  margin:0!important;
+  padding:0!important;
+  display:block!important;
+  object-fit:fill!important;
   object-position:center!important;
-  background:
-    linear-gradient(rgba(7,16,93,.24),rgba(7,16,93,.24)),
-    var(--ljr-face-bg,none) center/cover no-repeat,
-    #101b88!important;
+  border:0!important;
+  border-radius:0!important;
+  clip-path:none!important;
+  transform:none!important;
+  transform-origin:center!important;
+  box-sizing:border-box!important;
 }
 
-/* Círculo real: ninguna regla antigua puede estirarlo a óvalo. */
+/* Más o Menos tenía reglas antiguas center top/cover: V603 manda sobre ellas. */
+body .v543-moreless-portal .v583-challenge-art .v538-person.has-photo>img[data-ljr-credential-face-crop="1"],
+body[data-app-route="moreLessGallery"] .v583-challenge-art .v538-person.has-photo>img[data-ljr-credential-face-crop="1"]{
+  position:absolute!important;
+  left:var(--ljr-face-left,0%)!important;
+  top:var(--ljr-face-top,0%)!important;
+  width:var(--ljr-face-width,100%)!important;
+  height:var(--ljr-face-height,100%)!important;
+  object-fit:fill!important;
+  object-position:center!important;
+  border-radius:0!important;
+  transform:none!important;
+}
+
+/* Evita que reglas anteriores vuelvan el marco ovalado. */
 :is(
   .v576-player-avatar,
   .v66-player-avatar.v576-has-photo,
@@ -132,38 +102,4 @@ body[data-app-route="moreLessGallery"] .v583-challenge-art .v538-person.has-phot
 ){
   min-width:0!important;
   min-height:0!important;
-}
-
-
-/* V603 — hard lock: una sola imagen visible por jugador en rankings de goleadores. */
-.v391-rank-copy > img,
-.v462-rank-copy > img,
-.v194-player-name > img,
-.v28-rank-copy > img{
-  display:none!important;
-  visibility:hidden!important;
-  width:0!important;
-  height:0!important;
-  min-width:0!important;
-  min-height:0!important;
-  margin:0!important;
-  padding:0!important;
-  border:0!important;
-}
-.v391-rank-copy.v576-has-inline-photo,
-.v462-rank-copy.v576-has-inline-photo,
-.v194-player-name.v576-has-inline-photo,
-.v28-rank-copy.v576-has-inline-photo{
-  padding-left:0!important;
-  min-height:0!important;
-}
-.v391-rank-row > .v576-player-avatar,
-.v462-rank-row > .v576-player-avatar,
-.v194-player-row > .v576-player-avatar{
-  display:grid!important;
-}
-.v391-rank-row > .v576-player-avatar ~ .v576-player-avatar,
-.v462-rank-row > .v576-player-avatar ~ .v576-player-avatar,
-.v194-player-row > .v576-player-avatar ~ .v576-player-avatar{
-  display:none!important;
 }
