@@ -322,7 +322,7 @@ function relatedHtml(p,list){
   if(!rel.length)return '';
   return '<section class="v379-block">'+sectionTitle('Jugadores relacionados','','')+
     '<div class="v379-related">'+rel.map(x=>'<button type="button" class="v379-related-card" data-v379-related="'+attr(x.name)+'" data-v379-related-team="'+attr(x.team)+'" data-v379-related-cat="'+attr(x.cat)+'">'+
-      simulatedHeadMarkup(x,'v379-related-avatar v382-related-sim')+
+      v385PlayerThumb(x,'v379-related-avatar')+
       '<span class="v379-related-logo">'+teamLogo(x.team)+'</span>'+
       '<strong>'+esc(x.name)+'</strong><small>'+esc(x.category||x.team)+'</small>'+
     '</button>').join('')+'</div></section>';
