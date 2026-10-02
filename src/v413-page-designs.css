@@ -274,3 +274,12 @@ html body[data-app-route="profile"] #screen > .v413-shell .v413-facebook.v523-so
   background-image:none!important;
   box-shadow:none!important;
 }
+
+
+/* V555 — Más: contenedor Comunidad/Síguenos transparente para no tapar el fondo. */
+html body[data-app-route="more"] #screen > .v413-shell#v413-page-design{
+  background:transparent!important;
+  background-color:transparent!important;
+  background-image:none!important;
+  box-shadow:none!important;
+}
