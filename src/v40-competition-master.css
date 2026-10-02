@@ -3598,3 +3598,140 @@ body.v40-standings-master .v40-scroll-shell::after{
   pointer-events:none!important;
   opacity:.88!important;
 }
+
+
+/* V589 — hardfix final: tablas largas con swipe horizontal real y columnas estables. */
+@media(max-width:760px){
+  body.v40-standings-master .v40-content,
+  body.v40-standings-master .v578-table-section{
+    width:100%!important;
+    max-width:100%!important;
+    min-width:0!important;
+    overflow:visible!important;
+  }
+
+  body.v40-standings-master .v578-scroll,
+  body.v40-standings-master [data-v580-scroll]{
+    position:relative!important;
+    display:block!important;
+    width:100%!important;
+    max-width:100%!important;
+    min-width:0!important;
+    overflow-x:auto!important;
+    overflow-y:hidden!important;
+    -webkit-overflow-scrolling:touch!important;
+    touch-action:pan-x pan-y!important;
+    overscroll-behavior-x:contain!important;
+    scroll-behavior:auto!important;
+    scroll-snap-type:none!important;
+    scrollbar-width:thin!important;
+    scrollbar-color:#25e6ef rgba(255,255,255,.08)!important;
+  }
+  body.v40-standings-master .v578-scroll::-webkit-scrollbar{
+    display:block!important;
+    height:5px!important;
+  }
+  body.v40-standings-master .v578-scroll::-webkit-scrollbar-track{
+    background:rgba(255,255,255,.08)!important;
+    border-radius:999px!important;
+  }
+  body.v40-standings-master .v578-scroll::-webkit-scrollbar-thumb{
+    background:#25e6ef!important;
+    border-radius:999px!important;
+  }
+
+  body.v40-standings-master .v578-table{
+    table-layout:fixed!important;
+    border-collapse:separate!important;
+    border-spacing:0!important;
+    max-width:none!important;
+  }
+  body.v40-standings-master .v579-compact-table{
+    width:560px!important;
+    min-width:560px!important;
+  }
+  body.v40-standings-master .v578-complete-table{
+    width:940px!important;
+    min-width:940px!important;
+  }
+  body.v40-standings-master .v578-criteria-table{
+    width:760px!important;
+    min-width:760px!important;
+  }
+
+  body.v40-standings-master .v578-table th,
+  body.v40-standings-master .v578-table td{
+    white-space:nowrap!important;
+    overflow:hidden!important;
+    text-overflow:ellipsis!important;
+    box-sizing:border-box!important;
+  }
+
+  /* Mantener posición, escudo y equipo visibles mientras se deslizan las estadísticas. */
+  body.v40-standings-master .v578-table .rank{
+    position:sticky!important;
+    left:0!important;
+    z-index:5!important;
+    width:28px!important;
+    min-width:28px!important;
+    max-width:28px!important;
+    background:#05065f!important;
+  }
+  body.v40-standings-master .v578-table .logo{
+    position:sticky!important;
+    left:28px!important;
+    z-index:5!important;
+    width:42px!important;
+    min-width:42px!important;
+    max-width:42px!important;
+    background:#05065f!important;
+  }
+  body.v40-standings-master .v578-table .teamname{
+    position:sticky!important;
+    left:70px!important;
+    z-index:5!important;
+    width:150px!important;
+    min-width:150px!important;
+    max-width:150px!important;
+    background:#05065f!important;
+    box-shadow:8px 0 10px -10px rgba(0,0,0,.9)!important;
+  }
+  body.v40-standings-master .v578-table thead .rank,
+  body.v40-standings-master .v578-table thead .logo,
+  body.v40-standings-master .v578-table thead .teamname{
+    z-index:7!important;
+  }
+  body.v40-standings-master .v578-logo{
+    width:30px!important;
+    height:30px!important;
+    min-width:30px!important;
+    max-width:30px!important;
+    min-height:30px!important;
+    max-height:30px!important;
+    object-fit:contain!important;
+  }
+  body.v40-standings-master .v578-table .teamname strong{
+    display:block!important;
+    overflow:hidden!important;
+    text-overflow:ellipsis!important;
+    white-space:nowrap!important;
+  }
+
+  body.v40-standings-master .v578-complete-table th:nth-child(n+4):nth-child(-n+10),
+  body.v40-standings-master .v578-complete-table td:nth-child(n+4):nth-child(-n+10){
+    width:52px!important;min-width:52px!important;max-width:52px!important;
+  }
+  body.v40-standings-master .v578-complete-table th:nth-child(11),
+  body.v40-standings-master .v578-complete-table td:nth-child(11){
+    width:145px!important;min-width:145px!important;max-width:145px!important;
+  }
+  body.v40-standings-master .v578-complete-table th:nth-child(12),
+  body.v40-standings-master .v578-complete-table td:nth-child(12){
+    width:62px!important;min-width:62px!important;max-width:62px!important;
+  }
+
+  body.v40-standings-master .v578-criteria-table th:nth-child(n+4),
+  body.v40-standings-master .v578-criteria-table td:nth-child(n+4){
+    width:58px!important;min-width:58px!important;max-width:58px!important;
+  }
+}
