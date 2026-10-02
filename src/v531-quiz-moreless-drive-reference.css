@@ -2586,3 +2586,443 @@ body[data-app-route="moreLess"] [data-v535-primary="true"] .v12-ml-choice>button
   position:relative!important;
   z-index:50!important;
 }
+
+
+/* V543 — portal real de Más o Menos: hub + tarjetas + juego */
+/* Ya no mostramos la sección provisional "Más modos del juego" debajo del principal.
+   La portada original se queda sola y cualquier monito abre el flujo real en portal. */
+body[data-app-route="moreLess"] #screen .v531-legacy-extras,
+body[data-app-route="moreLess"] #screen [data-v531-extras="more"]{
+  display:none!important;
+  visibility:hidden!important;
+  height:0!important;
+  min-height:0!important;
+  margin:0!important;
+  padding:0!important;
+  overflow:hidden!important;
+  pointer-events:none!important;
+}
+
+body .v543-moreless-portal{
+  position:fixed!important;
+  inset:0 0 calc(var(--bottom-nav-h,60px) + env(safe-area-inset-bottom)) 0!important;
+  z-index:2147481500!important;
+  width:min(100%,520px)!important;
+  max-width:520px!important;
+  margin:0 auto!important;
+  padding:0!important;
+  overflow-y:auto!important;
+  overflow-x:hidden!important;
+  -webkit-overflow-scrolling:touch!important;
+  overscroll-behavior:contain!important;
+  background:#05065f!important;
+  color:#fff!important;
+}
+body .v543-moreless-portal[hidden]{
+  display:none!important;
+}
+body.v543-more-portal-open{
+  overflow:hidden!important;
+}
+body.v543-more-portal-open .bottom-nav{
+  display:flex!important;
+  visibility:visible!important;
+  opacity:1!important;
+  pointer-events:auto!important;
+  z-index:2147482000!important;
+}
+
+/* HUB largo como la referencia enviada. */
+body .v543-moreless-portal>.v538-more-hub{
+  min-height:100%!important;
+  padding-bottom:18px!important;
+  background:
+    radial-gradient(100% 22% at 50% 0,rgba(20,119,255,.30),transparent 72%),
+    linear-gradient(180deg,#091f9d 0%,#090b73 24%,#07075f 100%)!important;
+}
+body .v543-moreless-portal .v538-more-head{
+  position:sticky!important;
+  top:0!important;
+  z-index:30!important;
+  height:58px!important;
+  display:grid!important;
+  grid-template-columns:46px 1fr 46px!important;
+  align-items:center!important;
+  padding:0 10px!important;
+  border-bottom:1px solid rgba(61,94,217,.24)!important;
+  background:
+    repeating-linear-gradient(20deg,transparent 0 22px,rgba(31,238,255,.16) 23px 25px,transparent 27px 40px),
+    linear-gradient(180deg,#0a39d4 0%,#080b73 78%)!important;
+}
+body .v543-moreless-portal .v538-more-head button{
+  width:40px!important;height:40px!important;
+  display:grid!important;place-items:center!important;
+  border:0!important;background:transparent!important;color:#fff!important;
+}
+body .v543-moreless-portal .v538-more-head strong{
+  text-align:center!important;
+  font-size:16px!important;
+}
+body .v543-moreless-portal .v538-hub-body{
+  padding:12px 11px 18px!important;
+}
+body .v543-moreless-portal .v538-hub-feature{
+  overflow:hidden!important;
+  border-radius:10px!important;
+  background:#121382!important;
+  box-shadow:0 8px 20px rgba(0,0,50,.20)!important;
+}
+body .v543-moreless-portal .v538-hub-feature-art{
+  position:relative!important;
+  height:190px!important;
+  display:grid!important;
+  grid-template-columns:1fr 1fr!important;
+  align-items:end!important;
+  overflow:hidden!important;
+  background:
+    linear-gradient(90deg,rgba(18,228,240,.55) 0 2%,transparent 2% 48%,transparent 52% 98%,rgba(246,57,154,.55) 98% 100%),
+    repeating-linear-gradient(90deg,rgba(39,111,255,.25) 0 2px,transparent 2px 24px),
+    linear-gradient(180deg,#113db5 0%,#101174 100%)!important;
+}
+body .v543-moreless-portal .v538-hub-feature-art .v538-person{
+  width:100%!important;
+  height:100%!important;
+  border:0!important;
+  border-radius:0!important;
+  background:transparent!important;
+}
+body .v543-moreless-portal .v538-hub-feature-art .v538-person>img{
+  width:100%!important;
+  height:100%!important;
+  object-fit:cover!important;
+  object-position:center top!important;
+}
+body .v543-moreless-portal .v538-hub-feature-art .v538-person.is-fallback{
+  display:grid!important;
+  place-items:center!important;
+}
+body .v543-moreless-portal .v538-hub-feature-art .v538-person.is-fallback>.v531-crest{
+  width:112px!important;height:112px!important;background:#fff!important;border:4px solid rgba(255,255,255,.75)!important;
+}
+body .v543-moreless-portal .v538-vs{
+  position:absolute!important;
+  left:50%!important;top:50%!important;
+  transform:translate(-50%,-50%)!important;
+  width:40px!important;height:40px!important;
+  display:grid!important;place-items:center!important;
+  border-radius:50%!important;
+  background:#0c0c70!important;
+  color:#fff!important;
+  font-size:11px!important;
+  font-weight:900!important;
+  border:1px solid rgba(255,255,255,.18)!important;
+}
+body .v543-moreless-portal .v538-hub-feature-copy{
+  padding:11px 12px 13px!important;
+}
+body .v543-moreless-portal .v538-hub-feature-copy h2{
+  margin:0 0 5px!important;font-size:17px!important;
+}
+body .v543-moreless-portal .v538-hub-feature-copy p{
+  margin:0!important;color:#c3c8e5!important;font-size:10px!important;line-height:1.35!important;
+}
+body .v543-moreless-portal .v538-hub-actions{
+  display:grid!important;
+  grid-template-columns:1fr 1fr!important;
+  gap:8px!important;
+  margin-top:11px!important;
+}
+body .v543-moreless-portal .v538-hub-actions button{
+  min-height:44px!important;
+  border-radius:7px!important;
+  font-size:9.5px!important;
+  font-weight:800!important;
+  text-align:left!important;
+}
+body .v543-moreless-portal .v538-hub-actions .primary{
+  border:0!important;background:#20dfea!important;color:#07105f!important;
+}
+body .v543-moreless-portal .v538-hub-actions button:not(.primary){
+  border:1px solid #20dfea!important;background:#0d0f79!important;color:#20dfea!important;
+}
+body .v543-moreless-portal .v538-friend-card{
+  min-height:92px!important;
+  margin-top:13px!important;
+  display:grid!important;
+  grid-template-columns:1fr 72px!important;
+  align-items:center!important;
+  gap:10px!important;
+  padding:13px!important;
+  border-radius:10px!important;
+  background:#11127f!important;
+}
+body .v543-moreless-portal .v538-friend-card h3{margin:0 0 8px!important;font-size:12px!important}
+body .v543-moreless-portal .v538-friend-card button{padding:0!important;border:0!important;background:transparent!important;color:#20dfea!important;font-size:9px!important}
+body .v543-moreless-portal .v538-friend-bubble{
+  width:64px!important;height:64px!important;display:grid!important;place-items:center!important;
+  border-radius:50%!important;background:#1248d3!important;overflow:hidden!important;
+}
+body .v543-moreless-portal .v538-friend-bubble .v538-person{
+  width:58px!important;height:58px!important;border-radius:50%!important;overflow:hidden!important;
+}
+body .v543-moreless-portal .v538-hub-game-card{
+  margin-top:13px!important;
+  overflow:hidden!important;
+  border-radius:10px!important;
+  background:#11128a!important;
+  box-shadow:0 8px 18px rgba(0,0,50,.18)!important;
+}
+body .v543-moreless-portal .v538-hub-game-art{
+  position:relative!important;
+  height:170px!important;
+  overflow:hidden!important;
+  background:
+    repeating-linear-gradient(30deg,transparent 0 28px,rgba(25,213,247,.20) 30px 32px,transparent 34px 50px),
+    repeating-linear-gradient(-28deg,transparent 0 32px,rgba(62,85,255,.20) 34px 36px,transparent 38px 56px),
+    radial-gradient(circle at 50% 45%,#184cff 0,#0e1b91 44%,#080968 74%)!important;
+}
+body .v543-moreless-portal .v538-kick-silhouette{
+  position:absolute!important;
+  left:50%!important;top:50%!important;
+  transform:translate(-50%,-50%)!important;
+  width:100px!important;height:100px!important;
+  display:grid!important;place-items:center!important;
+  border-radius:50%!important;
+  color:#fff!important;
+  font-size:44px!important;
+  background:
+    repeating-linear-gradient(35deg,transparent 0 18px,rgba(53,255,213,.24) 20px 22px,transparent 24px 34px),
+    radial-gradient(circle at 35% 27%,#286dff,#071171 70%)!important;
+  box-shadow:0 0 25px rgba(35,88,255,.37)!important;
+}
+body .v543-moreless-portal .v538-hub-game-copy{
+  padding:11px 12px 13px!important;
+}
+body .v543-moreless-portal .v538-hub-game-copy h2{margin:0 0 5px!important;font-size:16px!important}
+body .v543-moreless-portal .v538-hub-game-copy p{margin:0 0 10px!important;color:#c3c8e5!important;font-size:9px!important;line-height:1.35!important}
+body .v543-moreless-portal .v538-hub-game-copy button{
+  width:100%!important;min-height:39px!important;border:0!important;border-radius:7px!important;
+  background:#20dfea!important;color:#07105f!important;font-size:9px!important;font-weight:800!important;
+}
+body .v543-moreless-portal .v531-rank-card{
+  margin-top:8px!important;
+}
+
+/* JUEGO: tarjetas grandes como las capturas, primero una y luego dos. */
+body .v543-moreless-portal>.v538-more-game{
+  min-height:100%!important;
+  background:linear-gradient(180deg,#07157d,#05065f 72%)!important;
+}
+body .v543-moreless-portal .v538-game-head{
+  position:sticky!important;
+  top:0!important;
+  z-index:30!important;
+  height:58px!important;
+}
+body .v543-moreless-portal .v538-game-body{
+  padding:14px 0 18px!important;
+}
+body .v543-moreless-portal .v538-game-stage{
+  min-height:430px!important;
+  padding:0 14px!important;
+}
+body .v543-moreless-portal .v538-loading-question{
+  display:none!important;
+}
+body .v543-moreless-portal .v538-player-pair{
+  min-height:390px!important;
+  display:grid!important;
+  grid-template-columns:1fr 1fr!important;
+  gap:12px!important;
+  align-items:start!important;
+}
+body .v543-moreless-portal .v538-player-card,
+body .v543-moreless-portal .v538-player-card.ghost{
+  min-height:374px!important;
+  overflow:hidden!important;
+  border:1px solid rgba(37,93,255,.62)!important;
+  border-radius:14px!important;
+  background:
+    linear-gradient(145deg,rgba(15,238,255,.14),transparent 24%),
+    linear-gradient(180deg,#0d37b9 0%,#0a1478 56%,#080765 100%)!important;
+}
+body .v543-moreless-portal .v538-player-card.right{
+  border-color:rgba(244,46,141,.62)!important;
+}
+body .v543-moreless-portal .v538-player-image{
+  height:230px!important;
+  display:grid!important;
+  place-items:center!important;
+  overflow:hidden!important;
+  background:
+    repeating-linear-gradient(28deg,transparent 0 22px,rgba(19,236,255,.20) 24px 26px,transparent 28px 38px),
+    linear-gradient(180deg,#1547dc,#0d1686)!important;
+}
+body .v543-moreless-portal .v538-player-image .v538-person{
+  width:170px!important;height:170px!important;
+  border-radius:50%!important;
+  overflow:hidden!important;
+  background:#fff!important;
+}
+body .v543-moreless-portal .v538-player-image .v538-person>img{
+  width:100%!important;height:100%!important;object-fit:cover!important;object-position:center top!important;
+}
+body .v543-moreless-portal .v538-player-image .v538-person.is-fallback>.v531-crest{
+  width:120px!important;height:120px!important;background:#fff!important;border:0!important;
+}
+body .v543-moreless-portal .v538-player-name{
+  min-height:72px!important;
+  display:flex!important;
+  flex-direction:column!important;
+  align-items:center!important;
+  justify-content:center!important;
+  padding:8px!important;
+  border-top:1px solid rgba(255,255,255,.08)!important;
+}
+body .v543-moreless-portal .v538-player-name b{
+  max-width:100%!important;
+  overflow:hidden!important;
+  text-overflow:ellipsis!important;
+  white-space:nowrap!important;
+  color:#fff!important;
+  font-size:17px!important;
+}
+body .v543-moreless-portal .v538-player-name small{
+  margin-top:3px!important;color:#aeb4dd!important;font-size:11px!important;
+}
+body .v543-moreless-portal .v538-player-stat{
+  min-height:68px!important;
+  display:flex!important;
+  align-items:center!important;
+  justify-content:space-between!important;
+  padding:0 16px!important;
+  border-top:1px solid rgba(255,255,255,.08)!important;
+}
+body .v543-moreless-portal .v538-player-stat small{color:#aeb4dd!important;font-size:13px!important}
+body .v543-moreless-portal .v538-player-stat strong{font-size:24px!important;color:#fff!important}
+body .v543-moreless-portal .v538-player-card.ghost{
+  display:grid!important;
+  place-items:center!important;
+  opacity:.65!important;
+}
+body .v543-moreless-portal .v538-ghost-avatar{
+  width:120px!important;height:120px!important;
+  border-radius:50%!important;
+  background:radial-gradient(circle,#244de4,#0c116c 72%)!important;
+  box-shadow:inset 0 0 0 2px rgba(70,229,255,.18)!important;
+}
+body .v543-moreless-portal .v538-score-strip{
+  min-height:86px!important;
+  display:grid!important;
+  grid-template-columns:1fr 72px 1fr!important;
+  align-items:center!important;
+  margin-top:8px!important;
+  padding:0 18px!important;
+  border-top:1px solid rgba(255,255,255,.07)!important;
+  border-bottom:1px solid rgba(255,255,255,.07)!important;
+  background:#0b0c70!important;
+}
+body .v543-moreless-portal .v538-score-strip>span:last-child{text-align:right!important}
+body .v543-moreless-portal .v538-score-strip small{display:block!important;color:#999fcb!important;font-size:10px!important}
+body .v543-moreless-portal .v538-score-strip b{display:block!important;font-size:12px!important}
+body .v543-moreless-portal .v538-countdown{
+  width:56px!important;height:56px!important;
+  display:grid!important;place-items:center!important;
+  justify-self:center!important;
+  border:4px solid #ff4b9a!important;
+  border-radius:50%!important;
+  font-size:18px!important;
+  color:#fff!important;
+}
+body .v543-moreless-portal .v538-question-zone{
+  min-height:260px!important;
+  padding:26px 20px 20px!important;
+}
+body .v543-moreless-portal .v538-question-zone h2{
+  min-height:86px!important;
+  margin:0!important;
+  display:flex!important;align-items:center!important;justify-content:center!important;
+  text-align:center!important;
+  color:#fff!important;
+  font-size:18px!important;
+  line-height:1.25!important;
+}
+body .v543-moreless-portal .v531-more-buttons{
+  display:grid!important;
+  grid-template-columns:1fr 42px 1fr!important;
+  align-items:center!important;
+  gap:11px!important;
+}
+body .v543-moreless-portal .v531-more-buttons button{
+  height:82px!important;
+  border-radius:9px!important;
+  font-size:31px!important;
+  font-weight:900!important;
+  color:#fff!important;
+}
+body .v543-moreless-portal .v531-more-buttons .less{
+  border:2px solid #ff4b9a!important;
+  background:#1247f1!important;
+}
+body .v543-moreless-portal .v531-more-buttons .more{
+  border:2px solid #30df79!important;
+  background:#1247f1!important;
+}
+body .v543-moreless-portal .v531-more-buttons>span{
+  color:#d4d5ec!important;font-size:11px!important;font-weight:900!important;font-style:italic!important;text-align:center!important;
+}
+body .v543-moreless-portal .v538-video-banner{
+  min-height:64px!important;
+  margin:10px 14px 0!important;
+  display:flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  gap:7px!important;
+  background:linear-gradient(90deg,#080b5f,#10127f,#080b5f)!important;
+}
+body .v543-moreless-portal .v538-video-banner b{color:#fff!important;font-size:21px!important}
+body .v543-moreless-portal .v538-video-banner em{color:#16e3ef!important;font-size:19px!important}
+body .v543-moreless-portal .v538-video-banner span{font-size:20px!important}
+
+/* Modal de salida exactamente encima del juego. */
+body .v543-moreless-portal .v531-exit-backdrop{
+  position:fixed!important;
+  inset:0 0 calc(var(--bottom-nav-h,60px) + env(safe-area-inset-bottom)) 0!important;
+  z-index:2147481800!important;
+  display:flex!important;
+  align-items:flex-end!important;
+  justify-content:center!important;
+  background:rgba(2,3,42,.48)!important;
+}
+body .v543-moreless-portal .v531-exit-modal{
+  width:min(100%,520px)!important;
+  min-height:285px!important;
+  padding:48px 20px 22px!important;
+  border-radius:20px 20px 0 0!important;
+  background:#15167f!important;
+}
+body .v543-moreless-portal .v531-exit-modal h2{font-size:25px!important}
+body .v543-moreless-portal .v531-exit-modal p{font-size:15px!important}
+body .v543-moreless-portal .v531-exit-modal>.yes,
+body .v543-moreless-portal .v531-exit-modal>.no{
+  height:54px!important;
+  font-size:16px!important;
+}
+
+@media(max-width:390px){
+  body .v543-moreless-portal .v538-hub-feature-art{height:174px!important}
+  body .v543-moreless-portal .v538-game-stage{min-height:390px!important;padding-left:11px!important;padding-right:11px!important}
+  body .v543-moreless-portal .v538-player-pair{min-height:350px!important;gap:9px!important}
+  body .v543-moreless-portal .v538-player-card,
+  body .v543-moreless-portal .v538-player-card.ghost{min-height:338px!important}
+  body .v543-moreless-portal .v538-player-image{height:205px!important}
+  body .v543-moreless-portal .v538-player-image .v538-person{width:148px!important;height:148px!important}
+  body .v543-moreless-portal .v538-player-name{min-height:66px!important}
+  body .v543-moreless-portal .v538-player-name b{font-size:15px!important}
+  body .v543-moreless-portal .v538-player-name small{font-size:10px!important}
+  body .v543-moreless-portal .v538-player-stat{min-height:62px!important;padding:0 12px!important}
+  body .v543-moreless-portal .v538-player-stat small{font-size:12px!important}
+  body .v543-moreless-portal .v538-player-stat strong{font-size:21px!important}
+  body .v543-moreless-portal .v538-question-zone h2{font-size:17px!important}
+  body .v543-moreless-portal .v531-more-buttons button{height:76px!important}
+}
