@@ -1412,3 +1412,66 @@ body[data-app-route="quizArena"] [data-v531-mount="quiz"]:not([hidden]){
   visibility:visible!important;
   height:auto!important;
 }
+
+
+/* V537 — secundarios visibles al tocar principal */
+/* Al tocar un monito/opción principal, los otros diseños se abren como pantalla completa
+   sin borrar el diseño principal que queda detrás. */
+body.v537-more-secondary-open,
+body.v537-quiz-secondary-open{
+  overflow:hidden!important;
+}
+body.v537-more-secondary-open [data-v531-mount="more"],
+body.v537-quiz-secondary-open [data-v531-mount="quiz"]{
+  position:fixed!important;
+  inset:0 0 calc(var(--bottom-nav-h,60px) + env(safe-area-inset-bottom)) 0!important;
+  z-index:2147481500!important;
+  width:100%!important;
+  max-width:520px!important;
+  height:auto!important;
+  max-height:none!important;
+  margin:0 auto!important;
+  padding:0!important;
+  overflow-y:auto!important;
+  overflow-x:hidden!important;
+  overscroll-behavior:contain!important;
+  -webkit-overflow-scrolling:touch!important;
+  visibility:visible!important;
+  opacity:1!important;
+  display:block!important;
+  background:#05065f!important;
+  border:0!important;
+  box-shadow:0 0 0 100vmax rgba(3,4,59,.01)!important;
+}
+body.v537-more-secondary-open [data-v531-mount="more"]>.v531-page,
+body.v537-quiz-secondary-open [data-v531-mount="quiz"]>.v531-page{
+  min-height:100%!important;
+  padding-bottom:28px!important;
+}
+body.v537-more-secondary-open [data-v531-mount="more"] .v531-mini-head,
+body.v537-quiz-secondary-open [data-v531-mount="quiz"] .v531-mini-head,
+body.v537-more-secondary-open [data-v531-mount="more"] .v531-game-head,
+body.v537-quiz-secondary-open [data-v531-mount="quiz"] .v531-game-head{
+  position:sticky!important;
+  top:0!important;
+  z-index:80!important;
+}
+body.v537-more-secondary-open .bottom-nav,
+body.v537-quiz-secondary-open .bottom-nav{
+  display:flex!important;
+  visibility:visible!important;
+  opacity:1!important;
+  z-index:2147482000!important;
+}
+/* En modo secundario no mostrar el rótulo añadido "MÁS DEL JUEGO": abre directo al diseño. */
+body.v537-more-secondary-open [data-v531-mount="more"]:before,
+body.v537-quiz-secondary-open [data-v531-mount="quiz"]:before{
+  display:none!important;
+}
+/* El bloque secundario nunca puede quedar invisible por reglas anteriores. */
+body.v537-more-secondary-open [data-v531-mount="more"]:not([hidden]),
+body.v537-quiz-secondary-open [data-v531-mount="quiz"]:not([hidden]){
+  height:auto!important;
+  min-height:calc(100dvh - var(--bottom-nav-h,60px))!important;
+  overflow-y:auto!important;
+}
