@@ -78,7 +78,7 @@ function builderMarkup(){
  return'<section class="v576-builder v587-builder" data-v576-builder>'+
  '<header class="v576-builder-head"><button type="button" data-v576-back aria-label="Volver">‹</button><h1>Elige tu equipo</h1><button type="button" data-v576-menu aria-label="Menú">⋮</button></header>'+
  '<div class="v576-builder-summary"><div><small>Jugadores</small><b>'+count+'/15</b></div><div><small>Restante <i>?</i></small><b>'+money(left)+'</b></div><button type="button" data-v576-auto><span>✣</span> Autocompletar</button></div>'+
- '<div class="v576-sponsor-strip v588-team-ps5"><strong>◢ PS5</strong><strong>◢ PS5</strong></div>'+
+
  '<div class="v576-field">'+
    '<div class="v587-pitch-lines" aria-hidden="true"><i class="v587-half"></i><i class="v587-center"></i><i class="v587-box v587-box-top"></i><i class="v587-box v587-box-bottom"></i></div>'+
    fieldRow('DEL',map)+fieldRow('CEN',map)+fieldRow('DEF',map)+fieldRow('POR',map)+
@@ -192,7 +192,7 @@ document.addEventListener('click',e=>{
 },true);
 document.addEventListener('input',e=>{if(e.target?.matches?.('[data-v576-query]')){query=e.target.value||'';renderPicker()}},true);
 
-window.LJR_V576_FANTASY={guest,openGuest:guest,openTeam:()=>{location.hash='#/fantasyTeam'},readSquad};
+window.LJR_V576_FANTASY={guest,openGuest:guest,openTeam:()=>{location.hash='#/fantasyTeam'},readSquad,teamLogo,samplePlayers:()=>{const a=allPlayers();return [...a.filter(p=>p.photo),...a.filter(p=>!p.photo)].slice(0,3)}};
 window.addEventListener('ljr:fantasy-guest',guest);
 window.addEventListener('hashchange',()=>{closeLayer();schedule()});
 window.addEventListener('ljr:official-data',schedule);
