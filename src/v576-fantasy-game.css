@@ -204,3 +204,9 @@ body[data-app-route="fantasyAccess"] #screen{overflow-x:hidden!important;padding
   .v583-quick-build{width:96%;padding-left:12px;padding-right:12px}
   .v583-quick-actions{grid-template-columns:1fr}
 }
+
+/* V584 — remove the three overlapping Fantasy team cards requested by user. */
+body[data-app-route="fantasyAccess"] .v576-fantasy-cards,
+body[data-app-route="fantasy"] .v576-fantasy-cards{
+  display:none!important;
+}
