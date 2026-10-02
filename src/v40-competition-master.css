@@ -1497,3 +1497,165 @@ body.v40-standings-master .v40-wide.criteria .v40-team strong{
   body.v40-standings-master .v40-team{grid-template-columns:34px minmax(0,1fr)!important;gap:6px!important}
   body.v40-standings-master .v40-team strong{font-size:12.5px!important}
 }
+
+
+/* V577 — tabla Completa/Criterios realmente horizontal y con todos los datos. */
+body.v40-standings-master .v40-content{
+  width:100%!important;
+  max-width:100%!important;
+  overflow:visible!important;
+}
+body.v40-standings-master .v40-scroll-shell{
+  position:relative!important;
+  display:block!important;
+  width:100%!important;
+  max-width:100%!important;
+  margin:0!important;
+  padding:0 0 8px!important;
+  overflow-x:scroll!important;
+  overflow-y:hidden!important;
+  -webkit-overflow-scrolling:touch!important;
+  overscroll-behavior-x:contain!important;
+  touch-action:pan-x pan-y!important;
+  scrollbar-width:thin!important;
+}
+body.v40-standings-master .v40-scroll-shell::-webkit-scrollbar{
+  display:block!important;
+  height:5px!important;
+}
+body.v40-standings-master .v40-scroll-shell::-webkit-scrollbar-thumb{
+  background:rgba(255,255,255,.34)!important;
+  border-radius:999px!important;
+}
+body.v40-standings-master .v40-scroll-shell::-webkit-scrollbar-track{
+  background:rgba(255,255,255,.08)!important;
+  border-radius:999px!important;
+}
+
+/* Reset de reglas viejas que desacomodaban columnas. */
+body.v40-standings-master .v40-wide.complete,
+body.v40-standings-master .v40-wide.criteria{
+  position:relative!important;
+  display:block!important;
+  max-width:none!important;
+  overflow:visible!important;
+  padding-right:18px!important;
+  box-sizing:border-box!important;
+}
+body.v40-standings-master .v40-wide.complete{
+  width:900px!important;
+  min-width:900px!important;
+}
+body.v40-standings-master .v40-wide.criteria{
+  width:760px!important;
+  min-width:760px!important;
+}
+body.v40-standings-master .v40-wide.complete .v40-wide-head,
+body.v40-standings-master .v40-wide.complete .v40-wide-row{
+  display:grid!important;
+  grid-template-columns:30px 220px 48px 48px 48px 48px 58px 50px 50px 118px 62px!important;
+  width:100%!important;
+  min-width:0!important;
+  max-width:none!important;
+  column-gap:0!important;
+  align-items:center!important;
+  box-sizing:border-box!important;
+}
+body.v40-standings-master .v40-wide.criteria .v40-wide-head,
+body.v40-standings-master .v40-wide.criteria .v40-wide-row{
+  display:grid!important;
+  grid-template-columns:30px 220px 60px 60px 55px 55px 55px 55px 55px!important;
+  width:100%!important;
+  min-width:0!important;
+  max-width:none!important;
+  column-gap:0!important;
+  align-items:center!important;
+  box-sizing:border-box!important;
+}
+body.v40-standings-master .v40-wide.complete .v40-wide-head>*,
+body.v40-standings-master .v40-wide.complete .v40-wide-row>*,
+body.v40-standings-master .v40-wide.criteria .v40-wide-head>*,
+body.v40-standings-master .v40-wide.criteria .v40-wide-row>*{
+  position:static!important;
+  inset:auto!important;
+  transform:none!important;
+  grid-column:auto!important;
+  grid-row:auto!important;
+  order:0!important;
+  min-width:0!important;
+  max-width:none!important;
+  margin:0!important;
+  box-sizing:border-box!important;
+}
+body.v40-standings-master .v40-wide.complete .v40-wide-head,
+body.v40-standings-master .v40-wide.criteria .v40-wide-head{
+  min-height:30px!important;
+  height:30px!important;
+  color:#d5d6e3!important;
+  font-size:10px!important;
+  font-weight:700!important;
+}
+body.v40-standings-master .v40-wide.complete .v40-wide-row,
+body.v40-standings-master .v40-wide.criteria .v40-wide-row{
+  min-height:58px!important;
+  height:58px!important;
+  border-bottom:1px solid rgba(255,255,255,.10)!important;
+}
+body.v40-standings-master .v40-wide.complete .v40-team,
+body.v40-standings-master .v40-wide.criteria .v40-team{
+  display:grid!important;
+  grid-template-columns:34px minmax(0,1fr)!important;
+  gap:7px!important;
+  align-items:center!important;
+  text-align:left!important;
+}
+body.v40-standings-master .v40-wide.complete .v40-team strong,
+body.v40-standings-master .v40-wide.criteria .v40-team strong{
+  white-space:nowrap!important;
+  overflow:hidden!important;
+  text-overflow:ellipsis!important;
+  font-size:13px!important;
+}
+body.v40-standings-master .v40-wide.complete .v40-team-logo,
+body.v40-standings-master .v40-wide.criteria .v40-team-logo{
+  width:30px!important;
+  height:30px!important;
+  min-width:30px!important;
+  max-width:30px!important;
+}
+body.v40-standings-master .v40-wide.complete .v40-form{
+  display:flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  gap:5px!important;
+  white-space:nowrap!important;
+}
+body.v40-standings-master .v40-wide.complete .v40-wide-head>b,
+body.v40-standings-master .v40-wide.complete .v40-wide-row>span,
+body.v40-standings-master .v40-wide.complete .v40-wide-row>b,
+body.v40-standings-master .v40-wide.criteria .v40-wide-head>b,
+body.v40-standings-master .v40-wide.criteria .v40-wide-row>span{
+  text-align:center!important;
+  white-space:nowrap!important;
+}
+body.v40-standings-master .v40-wide.complete .v40-wide-row>b{
+  font-weight:800!important;
+}
+body.v40-standings-master .v40-wide .v40-direct{
+  width:100%!important;
+  margin-top:12px!important;
+}
+body.v40-standings-master .v40-wide .v40-rule{
+  width:100%!important;
+}
+
+/* Que desde la izquierda se vea posición/equipo, y deslizando aparezcan
+   P, V, E, D, +/-, GF, GC, FORMA y PTOS completos. */
+@media(max-width:520px){
+  body.v40-standings-master .v40-scroll-shell{
+    width:calc(100vw - 64px)!important;
+    max-width:calc(100vw - 64px)!important;
+  }
+  body.v40-standings-master .v40-wide.complete{width:900px!important;min-width:900px!important}
+  body.v40-standings-master .v40-wide.criteria{width:760px!important;min-width:760px!important}
+}
