@@ -164,3 +164,43 @@ body[data-app-route="fantasyAccess"] #screen{overflow-x:hidden!important;padding
   .v581-preview-row.del,.v581-preview-row.cen,.v581-preview-row.def{height:88px}
   .v581-preview-shirt>span{width:34px;height:40px}
 }
+
+
+/* V583 — quick Fantasy actions continue below the restored access design. */
+.v583-quick-build{
+  width:min(94%,540px);margin:26px auto 0;padding:18px 14px 20px;box-sizing:border-box;
+  border:1px solid rgba(24,228,237,.22);border-radius:18px;
+  background:linear-gradient(180deg,rgba(9,28,128,.94),rgba(5,11,79,.98));
+  box-shadow:0 16px 30px rgba(0,0,35,.24)
+}
+.v583-quick-build>div:first-child>span{
+  display:block;margin-bottom:5px;color:#18e4ed;font-size:8px;font-weight:900;letter-spacing:.14em
+}
+.v583-quick-build h3{margin:0;color:#fff;font-size:18px}
+.v583-quick-build p{margin:8px 0 0;color:#aeb9de;font-size:10px;line-height:1.45}
+.v583-quick-actions{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:16px}
+.v583-quick-actions button{
+  min-height:46px;padding:0 10px;border-radius:13px;font-size:10px;font-weight:900
+}
+.v583-quick-actions button:first-child{
+  border:0;background:#18e4ed;color:#051064
+}
+.v583-quick-actions button:last-child{
+  border:1px solid #18e4ed;background:transparent;color:#18e4ed
+}
+.v583-quick-build ol{
+  list-style:none;margin:18px 0 0;padding:0;display:grid;gap:9px
+}
+.v583-quick-build li{
+  min-height:42px;padding:8px 10px;box-sizing:border-box;display:grid;grid-template-columns:28px 1fr;align-items:center;gap:8px;
+  border:1px solid rgba(255,255,255,.08);border-radius:12px;background:rgba(255,255,255,.035)
+}
+.v583-quick-build li>b{
+  width:24px;height:24px;display:grid;place-items:center;border-radius:50%;
+  background:rgba(24,228,237,.13);color:#18e4ed;font-size:10px
+}
+.v583-quick-build li>span{color:#fff;font-size:9px;font-weight:700}
+@media(max-width:390px){
+  .v583-quick-build{width:96%;padding-left:12px;padding-right:12px}
+  .v583-quick-actions{grid-template-columns:1fr}
+}
