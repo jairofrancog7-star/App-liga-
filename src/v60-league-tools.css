@@ -1956,3 +1956,22 @@ body.v553-printing .v553-week-scroll th:nth-child(7){width:11%!important}
   @page{size:A4 portrait;margin:10mm}
   body.v553-printing .v553-print-sheet{max-width:none!important}
 }
+
+
+/* V563 — logos compactos en tablas del reporte semanal, sin agrandar filas. */
+.v563-week-cat{display:flex;align-items:center;gap:7px;min-width:0}
+.v563-week-cat img{
+  width:22px;height:22px;object-fit:contain;flex:0 0 22px;
+  border-radius:6px;background:rgba(255,255,255,.05);padding:2px;box-sizing:border-box
+}
+.v563-week-team{display:flex;align-items:center;gap:6px;min-width:0}
+.v563-week-team img{
+  width:20px;height:20px;object-fit:contain;flex:0 0 20px;
+  border-radius:50%;background:rgba(255,255,255,.92);padding:1px;box-sizing:border-box
+}
+.v563-week-team span,.v563-week-cat span{min-width:0}
+.v553-week-scroll td{vertical-align:middle}
+@media(max-width:480px){
+  .v563-week-cat img{width:20px;height:20px;flex-basis:20px}
+  .v563-week-team img{width:18px;height:18px;flex-basis:18px}
+}
