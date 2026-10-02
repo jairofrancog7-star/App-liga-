@@ -275,7 +275,22 @@ async function pump(){
   }
   running=false;
 }
+function dedupeScorerRows(root=document){
+  const scope=(root instanceof Element||root instanceof Document)?root:document;
+  scope.querySelectorAll?.('.v391-rank-copy,.v462-rank-copy,.v194-player-name,.v28-rank-copy').forEach(copy=>{
+    copy.querySelectorAll(':scope > img').forEach(img=>img.remove());
+    copy.classList.remove('v576-has-inline-photo');
+    copy.style.removeProperty('padding-left');
+    copy.style.removeProperty('min-height');
+  });
+  scope.querySelectorAll?.('.v391-rank-row,.v462-rank-row,.v194-player-row').forEach(row=>{
+    const avatars=[...row.querySelectorAll(':scope > .v576-player-avatar')];
+    avatars.slice(1).forEach(el=>el.remove());
+  });
+}
+
 function scan(root=document){
+  dedupeScorerRows(root);
   if(root instanceof HTMLImageElement)enqueue(root);
   root.querySelectorAll?.(FACE_IMAGES).forEach(enqueue);
 }
