@@ -118,15 +118,10 @@ async function patchV23Fantasy(){
   const screen=document.querySelector('#screen');
   if(!screen) return;
 
-  if(route==='fantasyAccess'){
-    if(!screen.querySelector('[data-v23-access]')) screen.innerHTML=v23AccessMarkup();
-    v24ApplyTransparentFantasyLogo(screen);
-    const login=screen.querySelector('.v23-access-login');
-    const later=screen.querySelector('.v23-access-later');
-    if(login) login.onclick=(e)=>{e.preventDefault();e.stopPropagation();location.hash='#/profile'};
-    if(later) later.onclick=(e)=>{e.preventDefault();e.stopPropagation();location.hash='#/fantasyTeam'};
-    return;
-  }
+  /* V579: fantasyAccess belongs to v576-fantasy-game.js.
+     The legacy renderer must not repaint #screen here, otherwise both
+     renderers alternate and the Fantasy screen visibly flickers. */
+  if(route==='fantasyAccess') return;
 
   if(!screen.querySelector('[data-v23-fantasy]')) screen.innerHTML=v23LandingMarkup();
   v24ApplyTransparentFantasyLogo(screen);
