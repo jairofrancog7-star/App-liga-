@@ -258,3 +258,42 @@ body[data-app-route="fantasyTeam"] .v576-builder{
   .v576-shirt{width:52px;height:60px}
   .v576-first-hint{top:168px;min-width:190px;font-size:12px}
 }
+
+
+/* V586 — Fantasy second-stage reference flow. */
+.v576-first-hint{
+  position:absolute;z-index:6;left:22px;top:192px;
+  min-width:210px;max-width:72%;padding:18px 22px;box-sizing:border-box;
+  border-radius:16px;background:#fff;color:#25323a;
+  box-shadow:0 10px 28px rgba(0,27,64,.16);
+  font-size:15px;font-weight:500;line-height:1.2;pointer-events:none
+}
+.v576-first-hint:before{
+  content:"";position:absolute;left:150px;top:-12px;width:24px;height:24px;
+  background:#fff;transform:rotate(45deg);border-radius:2px
+}
+.v576-layer.menu{
+  align-items:flex-start;justify-content:flex-end;
+  padding:160px 32px 0 0;box-sizing:border-box
+}
+.v576-layer.menu .v576-backdrop{background:rgba(0,8,50,.28)}
+.v576-layer.menu .v576-menu-sheet{
+  width:min(310px,calc(100vw - 48px));margin:0;padding:0;
+  border-radius:9px;background:#fff;color:#29353d;overflow:hidden;
+  box-shadow:0 14px 34px rgba(0,8,50,.28)
+}
+.v576-layer.menu .v576-menu-sheet>button{
+  min-height:64px;padding:0 28px;border:0;background:#fff;
+  color:#29353d;text-align:left;font-size:16px;font-weight:500
+}
+.v576-layer.menu .v576-menu-sheet>button+button{border-top:1px solid #f0f1f4}
+.v576-layer.menu .v576-menu-sheet>button:active{background:#f5f7fb}
+body[data-app-route="fantasyTeam"] .v576-builder-head{position:sticky;top:0;z-index:20}
+body[data-app-route="fantasyTeam"] .v576-builder-summary{position:relative;z-index:10}
+body[data-app-route="fantasyTeam"] .v576-sponsor-strip{position:relative;z-index:5}
+@media(max-width:390px){
+  .v576-first-hint{left:18px;top:186px;min-width:196px;padding:16px 18px;font-size:14px}
+  .v576-first-hint:before{left:136px}
+  .v576-layer.menu{padding:148px 20px 0 0}
+  .v576-layer.menu .v576-menu-sheet{width:min(300px,calc(100vw - 40px))}
+}
