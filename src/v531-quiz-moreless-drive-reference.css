@@ -2300,8 +2300,8 @@ body[data-app-route="moreLess"] .v538-player-image .v538-person{
 body[data-app-route="moreLess"] .v538-player-image .v538-person>img{
   width:100%!important;
   height:100%!important;
-  object-fit:cover!important;
-  object-position:center top!important;
+  object-fit:contain!important;
+  object-position:center center!important;
 }
 body[data-app-route="moreLess"] .v538-player-image .v538-person.is-fallback{
   padding:0!important;
@@ -2865,7 +2865,7 @@ body .v543-moreless-portal .v538-player-image .v538-person{
   background:#fff!important;
 }
 body .v543-moreless-portal .v538-player-image .v538-person>img{
-  width:100%!important;height:100%!important;object-fit:cover!important;object-position:center top!important;
+  width:100%!important;height:100%!important;object-fit:contain!important;object-position:center center!important;
 }
 body .v543-moreless-portal .v538-player-image .v538-person.is-fallback>.v531-crest{
   width:120px!important;height:120px!important;background:#fff!important;border:0!important;
@@ -3114,7 +3114,7 @@ body .v543-moreless-portal .v545-mini-player .v538-person{
 }
 body[data-app-route="moreLess"] .v545-mini-player .v538-person>img,
 body .v543-moreless-portal .v545-mini-player .v538-person>img{
-  width:100%!important;height:100%!important;object-fit:cover!important;object-position:center top!important;
+  width:100%!important;height:100%!important;object-fit:contain!important;object-position:center center!important;
 }
 body[data-app-route="moreLess"] .v545-mini-player .v531-crest,
 body .v543-moreless-portal .v545-mini-player .v531-crest{
@@ -3847,8 +3847,8 @@ body .v543-moreless-portal .v583-challenge-art .v538-person img,
 body[data-app-route="moreLessGallery"] .v583-challenge-art .v538-person img{
   width:100%!important;
   height:100%!important;
-  object-fit:cover!important;
-  object-position:center top!important;
+  object-fit:contain!important;
+  object-position:center center!important;
 }
 body .v543-moreless-portal .v583-challenge-copy,
 body[data-app-route="moreLessGallery"] .v583-challenge-copy{
@@ -3983,8 +3983,8 @@ body .v543-moreless-portal .v583-challenge-art .v538-person.has-photo>img,
 body[data-app-route="moreLessGallery"] .v583-challenge-art .v538-person.has-photo>img{
   width:100%!important;
   height:100%!important;
-  object-fit:cover!important;
-  object-position:center top!important;
+  object-fit:contain!important;
+  object-position:center center!important;
   border-radius:50%!important;
 }
 body .v543-moreless-portal .v583-challenge-art .v538-person.has-team-logo,
@@ -4048,4 +4048,39 @@ body[data-app-route="moreLessGallery"] .v538-friend-bubble.v585-friend-image>img
   padding:7px!important;
   filter:none!important;
   opacity:1!important;
+}
+
+
+/* V609 — CÍRCULOS: FOTO COMPLETA SIN RECORTE.
+   Corrige directamente las reglas antiguas que usaban cover/center top. */
+html body[data-app-route="moreLess"] #screen .v538-player-image .v538-person,
+html body .v543-moreless-portal .v538-player-image .v538-person,
+html body[data-app-route="moreLessGallery"] #screen .v583-challenge-art .v538-person,
+html body .v543-moreless-portal .v583-challenge-art .v538-person,
+html body[data-app-route="moreLess"] #screen .v545-mini-player .v538-person,
+html body .v543-moreless-portal .v545-mini-player .v538-person{
+  overflow:hidden!important;
+  border-radius:50%!important;
+}
+html body[data-app-route="moreLess"] #screen .v538-player-image .v538-person>img,
+html body .v543-moreless-portal .v538-player-image .v538-person>img,
+html body[data-app-route="moreLessGallery"] #screen .v583-challenge-art .v538-person.has-photo>img,
+html body .v543-moreless-portal .v583-challenge-art .v538-person.has-photo>img,
+html body[data-app-route="moreLess"] #screen .v545-mini-player .v538-person>img,
+html body .v543-moreless-portal .v545-mini-player .v538-person>img{
+  position:static!important;
+  inset:auto!important;
+  width:100%!important;
+  height:100%!important;
+  min-width:0!important;
+  min-height:0!important;
+  max-width:100%!important;
+  max-height:100%!important;
+  margin:0!important;
+  padding:0!important;
+  display:block!important;
+  object-fit:contain!important;
+  object-position:center center!important;
+  transform:none!important;
+  clip-path:none!important;
 }
