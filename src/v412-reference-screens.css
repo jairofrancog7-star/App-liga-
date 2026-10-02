@@ -2674,3 +2674,80 @@ body[data-app-route="profile"] .v412-account .v412-sharefriend span{
   line-height:1!important;
   font-weight:300!important;
 }
+
+
+/* V527 — refuerzo perfil: filas simples con separadores, sin tarjetas ni bloque repetido de notificaciones. */
+body[data-app-route="profile"] [data-v412-screen="account"]{
+  padding-left:0!important;
+  padding-right:0!important;
+}
+body[data-app-route="profile"] [data-v412-screen="account"] .v412-menu,
+body[data-app-route="profile"] [data-v412-screen="account"] .v412-socials{
+  display:block!important;
+  width:100%!important;
+  margin:0!important;
+  padding:0!important;
+}
+body[data-app-route="profile"] [data-v412-screen="account"] .v412-menu button,
+body[data-app-route="profile"] [data-v412-screen="account"] .v412-social.fb,
+body[data-app-route="profile"] [data-v412-screen="account"] .v412-sharefriend{
+  width:100%!important;
+  min-height:66px!important;
+  height:66px!important;
+  display:flex!important;
+  align-items:center!important;
+  justify-content:space-between!important;
+  margin:0!important;
+  padding:0 6px!important;
+  border:0!important;
+  border-bottom:1px solid rgba(93,109,196,.28)!important;
+  border-radius:0!important;
+  background:transparent!important;
+  box-shadow:none!important;
+  color:#fff!important;
+  font-size:16px!important;
+  font-weight:400!important;
+  text-align:left!important;
+}
+body[data-app-route="profile"] [data-v412-screen="account"] .v412-menu button:first-child{
+  border-top:1px solid rgba(93,109,196,.28)!important;
+}
+body[data-app-route="profile"] [data-v412-screen="account"] .v412-menu button span:last-child,
+body[data-app-route="profile"] [data-v412-screen="account"] .v412-sharefriend span,
+body[data-app-route="profile"] [data-v412-screen="account"] .v412-social.fb::after{
+  font-size:27px!important;
+  line-height:1!important;
+  font-weight:300!important;
+  color:#fff!important;
+}
+body[data-app-route="profile"] [data-v412-screen="account"] .v412-social-title{
+  min-height:52px!important;
+  display:flex!important;
+  align-items:center!important;
+  justify-content:flex-start!important;
+  margin:0!important;
+  padding:0 6px!important;
+  border-bottom:1px solid rgba(93,109,196,.28)!important;
+  color:#aab3d4!important;
+  font-size:11px!important;
+  font-weight:800!important;
+  letter-spacing:.14em!important;
+}
+body[data-app-route="profile"] [data-v412-screen="account"] .v412-social-title::before,
+body[data-app-route="profile"] [data-v412-screen="account"] .v412-social-title::after{
+  display:none!important;
+}
+body[data-app-route="profile"] [data-v412-screen="account"] .v412-social.fb{
+  font-size:0!important;
+}
+body[data-app-route="profile"] [data-v412-screen="account"] .v412-social.fb::before{
+  content:"Facebook · Liga Juventino"!important;
+  font-size:16px!important;
+  font-weight:400!important;
+}
+body[data-app-route="profile"] [data-v412-screen="account"] .v412-social.fb::after{
+  content:"›"!important;
+}
+body[data-app-route="profile"] [data-v412-screen="account"] .v412-account-foot{
+  padding:20px 6px 0!important;
+}
