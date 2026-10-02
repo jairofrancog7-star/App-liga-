@@ -1,0 +1,53 @@
+/* V576 — fotos reales de jugadores en círculos/listas/estadísticas. */
+.v576-has-photo{overflow:hidden!important;color:transparent!important;background:#07105d!important}
+.v576-has-photo>img,
+.v576-player-avatar>img,
+.v66-player-avatar>img,
+.v42-avatar>img,
+.v419-player-avatar>img,
+.v446-stat-ref-avatar>img,
+.v414-avatar>img,
+.v123-avatar>img,
+.v123-option-avatar>img,
+.v379-related-avatar>img{
+  width:100%!important;height:100%!important;display:block!important;object-fit:cover!important;
+  object-position:center 30%!important;border-radius:inherit!important
+}
+.v576-player-avatar{
+  display:grid;place-items:center;border-radius:50%;overflow:hidden;background:#172a9d;color:#fff;font-weight:950
+}
+.v576-scorer-avatar{width:38px;height:38px;min-width:38px}
+.v576-scorer-mini{width:31px;height:31px;min-width:31px}
+.v576-discipline-photo{position:relative;width:42px;height:42px;min-width:42px;border-radius:50%;overflow:visible!important}
+.v576-discipline-photo>.v576-player-avatar{width:42px;height:42px}
+.v576-discipline-team{
+  position:absolute!important;right:-4px!important;bottom:-4px!important;width:18px!important;height:18px!important;
+  display:grid!important;place-items:center!important;padding:2px!important;border-radius:50%!important;
+  background:#07105d!important;border:1px solid rgba(255,255,255,.55)!important;overflow:hidden!important
+}
+.v576-discipline-team img{width:100%!important;height:100%!important;object-fit:contain!important}
+.v576-scorer-hero-photo{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 24%;z-index:0}
+.v390-scorer-photo>*:not(.v576-scorer-hero-photo),
+.v391-feature-photo>*:not(.v576-scorer-hero-photo){position:relative;z-index:1}
+.v194-player-row.v576-with-photo{grid-template-columns:30px 38px minmax(0,1fr) minmax(75px,.7fr) 34px!important}
+.v194-team-players>div.v576-with-photo{grid-template-columns:25px 31px minmax(0,1fr) 30px!important}
+.v391-rank-row.v576-with-photo,
+.v462-rank-row.v576-with-photo{grid-template-columns:34px 38px minmax(0,1fr) 34px!important}
+.v391-feature-person.v576-with-photo{grid-template-columns:45px minmax(0,1fr)!important}
+.v94-logo-wrap.v576-player-main{overflow:visible!important}
+.v94-logo-wrap.v576-player-main .v576-player-avatar{width:42px;height:42px}
+.v42-avatar.v576-has-photo{background:#07105d!important}
+.v379-related-avatar.v576-has-photo{padding:0!important}
+.v414-logo-tile .v576-player-avatar{width:44px;height:44px;margin:auto}
+.v416-pitch-player i.v576-pitch-photo,
+.v417-bench-player i.v576-bench-photo,
+.v419-mini-pitch i.v576-mini-photo{
+  overflow:hidden!important;background:#07105d!important;padding:0!important
+}
+.v416-pitch-player i.v576-pitch-photo img,
+.v417-bench-player i.v576-bench-photo img,
+.v419-mini-pitch i.v576-mini-photo img{width:100%!important;height:100%!important;object-fit:cover!important;object-position:center 30%!important}
+@media(max-width:390px){
+  .v576-discipline-photo,.v576-discipline-photo>.v576-player-avatar{width:38px;height:38px}
+  .v194-player-row.v576-with-photo{grid-template-columns:27px 34px minmax(0,1fr) 65px 31px!important}
+}
