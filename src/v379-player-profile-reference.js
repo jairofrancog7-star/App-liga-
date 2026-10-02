@@ -359,7 +359,7 @@ function statRow(label,val,sub){
   return '<div class="v379-stat-row"><span><b>'+esc(label)+'</b>'+(sub?'<small>'+esc(sub)+'</small>':'')+'</span><strong>'+esc(val)+'</strong></div>';
 }
 function v385PlayerThumb(p,cls='v385-player-thumb'){
-  const photo=getPhoto(p);
+  const photo=getPhoto(p)||String(officialProfile(p)?.photo||'');
   if(photo)return '<span class="'+cls+' photo"><img src="'+esc(photo)+'" alt="'+esc(p.name)+'"></span>';
   return simulatedHeadMarkup(p,cls+' v382-related-sim');
 }
