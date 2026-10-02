@@ -423,8 +423,8 @@ function bindMatchAlerts(root){
 
 /* ---------- SOCIAL SOLO EN PERFIL/MÁS ---------- */
 function socialMarkup(){
-  return section('COMUNIDAD','Síguenos','La red social queda únicamente al final de Perfil/Más, no dentro de otras herramientas.',
-    '<button type="button" class="v413-facebook" data-v413-facebook><span>f</span><div><b>Facebook · Golazo Liga</b><small>Publicaciones, fotografías, jornadas y avisos</small></div><i>↗</i></button>'
+  return section('COMUNIDAD','Síguenos','Conecta con la Liga Juventino y consulta publicaciones, jornadas, fotografías y avisos oficiales.',
+    '<button type="button" class="v413-facebook v523-social-card" data-v413-facebook><span class="v523-social-icon">f</span><div class="v523-social-copy"><small>FACEBOOK OFICIAL</small><b>Liga Juventino</b><em>Publicaciones · Jornadas · Fotografías · Avisos</em></div><i>↗</i></button>'
   );
 }
 
