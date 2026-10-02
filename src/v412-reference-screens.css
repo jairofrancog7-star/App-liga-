@@ -2572,3 +2572,105 @@ body[data-app-route="profile"] .v412-socials{
 body[data-app-route="profile"] .v412-sharefriend{
   margin-top:18px!important;
 }
+
+
+/* V526 — Perfil: convertir tarjetas inferiores en filas con líneas como la referencia superior. */
+body[data-app-route="profile"] .v412-account .v412-menu{
+  display:block!important;
+  margin:0!important;
+  border-top:1px solid rgba(94,111,198,.20)!important;
+}
+body[data-app-route="profile"] .v412-account .v412-menu button{
+  width:100%!important;
+  min-height:70px!important;
+  display:flex!important;
+  align-items:center!important;
+  justify-content:space-between!important;
+  padding:0 4px!important;
+  border:0!important;
+  border-bottom:1px solid rgba(94,111,198,.22)!important;
+  border-radius:0!important;
+  background:transparent!important;
+  box-shadow:none!important;
+  color:#fff!important;
+  font-size:16px!important;
+  font-weight:400!important;
+  text-align:left!important;
+}
+body[data-app-route="profile"] .v412-account .v412-menu button span:last-child{
+  font-size:28px!important;
+  line-height:1!important;
+  color:#fff!important;
+  font-weight:300!important;
+}
+body[data-app-route="profile"] .v412-account .v412-social-title{
+  margin:0!important;
+  min-height:54px!important;
+  padding:0 4px!important;
+  justify-content:flex-start!important;
+  border-bottom:1px solid rgba(94,111,198,.22)!important;
+  color:#aab3d4!important;
+  font-size:11px!important;
+  letter-spacing:.14em!important;
+}
+body[data-app-route="profile"] .v412-account .v412-social-title:before,
+body[data-app-route="profile"] .v412-account .v412-social-title:after{
+  display:none!important;
+}
+body[data-app-route="profile"] .v412-account .v412-socials{
+  display:block!important;
+  margin:0!important;
+}
+body[data-app-route="profile"] .v412-account .v412-social{
+  width:100%!important;
+  height:70px!important;
+  display:flex!important;
+  align-items:center!important;
+  justify-content:space-between!important;
+  padding:0 4px!important;
+  border:0!important;
+  border-bottom:1px solid rgba(94,111,198,.22)!important;
+  border-radius:0!important;
+  background:transparent!important;
+  color:#fff!important;
+  font-size:16px!important;
+  font-weight:400!important;
+  text-align:left!important;
+}
+body[data-app-route="profile"] .v412-account .v412-social.fb::before{
+  content:"Facebook · Liga Juventino"!important;
+}
+body[data-app-route="profile"] .v412-account .v412-social.fb{
+  font-size:0!important;
+}
+body[data-app-route="profile"] .v412-account .v412-social.fb::before{
+  font-size:16px!important;
+}
+body[data-app-route="profile"] .v412-account .v412-social.fb::after{
+  content:"›"!important;
+  font-size:28px!important;
+  color:#fff!important;
+  font-weight:300!important;
+}
+body[data-app-route="profile"] .v412-account .v412-sharefriend{
+  width:100%!important;
+  height:70px!important;
+  display:flex!important;
+  align-items:center!important;
+  justify-content:space-between!important;
+  margin:0!important;
+  padding:0 4px!important;
+  border:0!important;
+  border-bottom:1px solid rgba(94,111,198,.22)!important;
+  border-radius:0!important;
+  background:transparent!important;
+  color:#fff!important;
+  font-size:16px!important;
+  font-weight:400!important;
+  text-align:left!important;
+}
+body[data-app-route="profile"] .v412-account .v412-sharefriend span{
+  font-size:28px!important;
+  line-height:1!important;
+  font-weight:300!important;
+}
