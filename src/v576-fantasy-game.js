@@ -85,12 +85,28 @@ function accessTeams(){
 }
 function accessMarkup(){
  const teams=accessTeams();
+ const shirts=(n,pos)=>'<div class="v581-preview-row '+pos.toLowerCase()+'>'+Array.from({length:n},()=>'<button type="button" class="v581-preview-shirt" data-v576-open-team aria-label="Elegir '+pos+'"><span>+</span><b>'+pos+'</b></button>').join('')+'</div>';
  return'<section class="v576-access-more" data-v576-access-more>'+
  '<div class="v576-more-kicker">JUEGA FANTASY</div>'+
  '<div class="v576-fantasy-cards">'+teams.map((t,i)=>'<article class="'+(i===1?'main':'')+'"><div><img src="'+esc(teamLogo(t))+'" alt=""></div><b>'+esc(t)+'</b><small>'+(i===1?'12 pts':'9 pts')+'</small></article>').join('')+'</div>'+
  '<div class="v576-access-copy"><h2>Elige tu equipo</h2><p>Arma tu plantilla con 15 jugadores registrados de la Liga Juventino Rosas. Tienes €100m de presupuesto Fantasy.</p></div>'+
  '<div class="v576-feature-grid"><article><b>15</b><span>Jugadores</span></article><article><b>€100m</b><span>Presupuesto</span></article><article><b>4</b><span>Posiciones</span></article></div>'+
- '<div class="v576-access-actions"><button type="button" data-v576-guest>Prueba como invitado</button><button type="button" data-v576-open-team>Elige tu equipo</button></div></section>';
+ '<div class="v576-access-actions"><button type="button" data-v576-guest>Prueba como invitado</button><button type="button" data-v576-open-team>Elige tu equipo</button></div>'+
+ '<section class="v581-squad-preview" aria-label="Vista previa de plantilla Fantasy">'+
+   '<div class="v581-preview-head"><div><span>TU PLANTILLA</span><h3>Arma tu 15</h3></div><button type="button" data-v576-open-team>Empezar</button></div>'+
+   '<p>Toca cualquier playera para abrir el constructor y elegir jugadores de la Liga.</p>'+
+   '<div class="v581-mini-pitch">'+shirts(3,'DEL')+shirts(5,'CEN')+shirts(5,'DEF')+shirts(2,'POR')+'</div>'+
+ '</section>'+
+ '<section class="v581-fantasy-tools" aria-label="Herramientas Fantasy">'+
+   '<h3>Más Fantasy</h3>'+
+   '<div class="v581-tool-grid">'+
+     '<button type="button" data-v576-open-team><i>♟</i><span><b>Mi equipo</b><small>Edita tus 15 jugadores</small></span><strong>›</strong></button>'+
+     '<button type="button" data-v576-matches><i>▣</i><span><b>Partidos</b><small>Consulta la competición</small></span><strong>›</strong></button>'+
+     '<button type="button" data-v576-help="points"><i>★</i><span><b>Cómo conseguir puntos</b><small>Goles, tarjetas y rendimiento</small></span><strong>›</strong></button>'+
+     '<button type="button" data-v576-help="rules"><i>ⓘ</i><span><b>Reglas</b><small>Presupuesto y posiciones</small></span><strong>›</strong></button>'+
+   '</div>'+
+ '</section>'+
+ '</section>';
 }
 function closeLayer(){document.querySelectorAll('[data-v576-layer]').forEach(x=>x.remove())}
 function layer(html,cls=''){closeLayer();const d=document.createElement('div');d.className='v576-layer '+cls;d.dataset.v576Layer='';d.innerHTML='<button type="button" class="v576-backdrop" data-v576-close aria-label="Cerrar"></button>'+html;document.body.appendChild(d)}
