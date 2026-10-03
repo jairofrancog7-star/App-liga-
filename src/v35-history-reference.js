@@ -2304,7 +2304,7 @@ function v370ArchiveTeamsBlock(){
     'Barza','Malvinas','Populares','Tavera Jr.','World 11','A. Centeno','El Alto'
   ];
   const seen=new Set();
-  const names=expandedRetroNames.concat(retroNames,july2018Teams).filter(name=>{
+  const names=allHistoricalTeams2012Plus.concat(expandedRetroNames,retroNames,july2018Teams).filter(name=>{
     const key=histTeamKey(canonicalHistoricName(name));
     if(!key||seen.has(key))return false;
     seen.add(key);
