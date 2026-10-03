@@ -277,3 +277,83 @@
   body[data-app-route="history"] .v370-legacy-team.v706-evolved-club{min-height:132px}
   body[data-app-route="history"] .v706-lineage{font-size:7.5px}
 }
+
+
+/* V710 — filtros y orden de Memoria de Clubes. */
+@media(max-width:1023px){
+  body[data-app-route="history"] .v710-legacy-controls{
+    margin:0 0 12px;
+    padding:12px;
+    border:1px solid rgba(50,224,241,.20);
+    border-radius:18px;
+    background:rgba(7,16,94,.58);
+    box-shadow:inset 0 1px 0 rgba(255,255,255,.035);
+  }
+  body[data-app-route="history"] .v710-control-block+ .v710-control-block{margin-top:10px}
+  body[data-app-route="history"] .v710-control-block>small{
+    display:block;
+    margin:0 0 7px 2px;
+    color:#87a8df;
+    font-size:8px;
+    line-height:1;
+    font-weight:900;
+    letter-spacing:.15em;
+  }
+  body[data-app-route="history"] .v710-chip-row{
+    display:flex;
+    gap:6px;
+    overflow-x:auto;
+    padding:0 1px 2px;
+    scrollbar-width:none;
+    -webkit-overflow-scrolling:touch;
+  }
+  body[data-app-route="history"] .v710-chip-row::-webkit-scrollbar{display:none}
+  body[data-app-route="history"] .v710-chip-row button{
+    flex:0 0 auto;
+    min-height:31px;
+    padding:0 10px;
+    border:1px solid rgba(77,128,224,.48);
+    border-radius:999px;
+    background:rgba(17,29,121,.86);
+    color:#d6def4;
+    font:800 9px/1 Inter,Roboto,Arial,sans-serif;
+    letter-spacing:.01em;
+    white-space:nowrap;
+  }
+  body[data-app-route="history"] .v710-chip-row button.is-active{
+    border-color:#25e4ef;
+    color:#061064;
+    background:#25e4ef;
+    box-shadow:0 0 12px rgba(37,228,239,.18);
+  }
+  body[data-app-route="history"] .v710-sort-row button{min-width:62px}
+  body[data-app-route="history"] .v370-legacy-team[hidden]{display:none!important}
+  body[data-app-route="history"] .v710-team-meta{
+    display:flex;
+    flex-direction:column;
+    gap:2px;
+    margin-top:6px;
+    padding-right:3px;
+  }
+  body[data-app-route="history"] .v710-team-meta em{
+    color:#8eb0df;
+    font-size:7.5px;
+    line-height:1.2;
+    font-style:normal;
+    font-weight:720;
+    overflow-wrap:anywhere;
+  }
+  body[data-app-route="history"] .v710-team-meta b{
+    color:#27e2ee;
+    font-size:8px;
+    line-height:1.1;
+    font-weight:900;
+  }
+  body[data-app-route="history"] .v370-legacy-team{min-height:146px}
+  body[data-app-route="history"] .v370-legacy-team.v706-evolved-club{min-height:164px}
+}
+@media(max-width:380px){
+  body[data-app-route="history"] .v710-chip-row button{min-height:29px;padding:0 9px;font-size:8.5px}
+  body[data-app-route="history"] .v370-legacy-team{min-height:140px}
+  body[data-app-route="history"] .v370-legacy-team.v706-evolved-club{min-height:158px}
+}
