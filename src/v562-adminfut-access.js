@@ -7,6 +7,7 @@ window.__LJR_V563_LIGA_CONTROL__=true;
 
 const BUILD='v563-liga-control-own-app';
 const ACTIONS='https://github.com/jairofrancog7-star/App-liga-/actions/workflows/android-debug.yml';
+const APK='https://github.com/jairofrancog7-star/App-liga-/releases/download/android-latest/Liga-Juventino.apk';
 const $=(s,r=document)=>r.querySelector(s);
 const $$=(s,r=document)=>Array.from(r.querySelectorAll(s));
 const route=()=>String(location.hash||'').replace(/^#\/?/,'').split('?')[0]||'home';
@@ -58,12 +59,12 @@ function installMarkup(){
   '<header class="v562-hero"><small>LIGA JUVENTINO · ANDROID</small><h1>Mi APK</h1><p>Esta compilación corresponde a la app azul de Liga Juventino. No instala ni abre otra aplicación de fútbol.</p></header>'+
   '<section class="v562-panel"><div class="v562-title"><span><small>ANDROID</small><h2>APK propia</h2></span></div>'+
    '<div class="v562-app-badge"><span>⚽</span><div><b>Liga Juventino</b><small>Paquete Android generado desde este repositorio</small></div></div>'+
-   '<div class="v562-main-actions"><button type="button" data-v563-builds>Ver compilación APK</button><button type="button" class="alt" data-v563-install>Instalar acceso directo</button></div>'+
+   '<div class="v562-main-actions"><button type="button" data-v563-apk>Descargar APK</button><button type="button" class="alt" data-v563-install>Instalar acceso directo</button></div>'+
    '<p class="v562-note">El flujo Android compila esta misma interfaz azul con Capacitor y genera el archivo app-debug.apk.</p>'+
   '</section>'+
   '<section class="v562-panel"><div class="v562-title"><span><small>ACCESO DIRECTO</small><h2>Como app en el teléfono</h2></span></div><div class="v562-list">'+
    card('➕','Instalar en Android','Chrome → Instalar aplicación','data-v563-install')+
-   card('🍎','Agregar en iPhone','Safari → Compartir → Añadir a pantalla de inicio','data-v563-ios')+
+   card('🍎','Agregar en iPhone / iPad','Safari → Compartir → Añadir a pantalla de inicio','data-v563-ios')+
    card('🔵','Abrir modo aplicación','Abrir con ?mode=apk','data-v563-appmode')+
   '</div></section>'+
  '</section>';
@@ -91,7 +92,8 @@ function bind(root){
  $$('[data-v563-install]',root).forEach(b=>b.addEventListener('click',install));
  $('[data-v563-share]',root)?.addEventListener('click',share);
  $('[data-v563-builds]',root)?.addEventListener('click',()=>window.open(ACTIONS,'_blank','noopener,noreferrer'));
- $('[data-v563-ios]',root)?.addEventListener('click',()=>alert('En iPhone: abre esta página en Safari → Compartir → Añadir a pantalla de inicio.'));
+ $('[data-v563-apk]',root)?.addEventListener('click',()=>window.open(APK,'_blank','noopener,noreferrer'));
+ $('[data-v563-ios]',root)?.addEventListener('click',()=>alert('En iPhone o iPad: 1) abre esta página en Safari, 2) toca Compartir, 3) elige “Añadir a pantalla de inicio”, 4) confirma Añadir. Se guardará con el icono de Liga Juventino.'));
  $('[data-v563-appmode]',root)?.addEventListener('click',()=>{location.href=location.origin+location.pathname+'?mode=apk#/home'});
 }
 function mount(){
