@@ -1,81 +1,130 @@
-/* V637 — Inicio + Competición: cabeceras inmóviles durante scroll.
-   Replica el comportamiento aprobado de Momentos: la capa superior permanece
-   anclada al viewport y solamente se desplaza el contenido de la pantalla. */
+/* V639 — Inicio + Competición: bloqueo real de cabeceras durante scroll.
+   Misma mecánica que Momentos/Más: ningún ancestro corta position:sticky.
+   La cabecera permanece arriba y sólo se desplaza el contenido. */
 
 @media (max-width:1023px){
+  html body[data-app-route="home"],
+  html body[data-app-route="competition"]{
+    overflow-x:hidden!important;
+    overflow-y:auto!important;
+    min-height:100dvh!important;
+  }
+
+  /* ROOT FIX: .app-shell tenía overflow:hidden; eso impide que sticky siga
+     al viewport. Momentos y Más ya liberan este ancestro. */
+  html body[data-app-route="home"] #app,
+  html body[data-app-route="home"] .app-shell,
+  html body[data-app-route="competition"] #app,
+  html body[data-app-route="competition"] .app-shell{
+    height:auto!important;
+    min-height:100dvh!important;
+    max-height:none!important;
+    overflow:visible!important;
+    transform:none!important;
+    filter:none!important;
+    perspective:none!important;
+    contain:none!important;
+  }
+
+  html body[data-app-route="home"] #screen,
+  html body[data-app-route="competition"] #screen{
+    height:auto!important;
+    max-height:none!important;
+    overflow:visible!important;
+    transform:none!important;
+    filter:none!important;
+    perspective:none!important;
+    contain:none!important;
+    animation:none!important;
+  }
+
+  /* INICIO — el arte superior queda inmóvil como la cabecera de Más. */
   html body[data-app-route="home"] #app > .topbar,
   html body[data-app-route="home"] .app-shell > .topbar,
   html body.v10-header-collapsed[data-app-route="home"] #app > .topbar,
   html body.v10-header-collapsed[data-app-route="home"] .app-shell > .topbar{
-    position:fixed!important;
+    position:sticky!important;
+    position:-webkit-sticky!important;
     top:0!important;
-    left:50%!important;
+    left:auto!important;
     right:auto!important;
-    transform:translateX(-50%)!important;
-    width:min(100vw,520px)!important;
-    max-width:520px!important;
+    transform:none!important;
+    width:100%!important;
+    max-width:none!important;
     margin:0!important;
     z-index:2147482400!important;
-    will-change:auto!important;
   }
 
+  /* Al volver sticky al flujo normal ya no se reserva espacio artificial. */
   html body[data-app-route="home"] #screen{
-    padding-top:calc(var(--v10-home-header-h) + 8px)!important;
+    padding-top:8px!important;
     scroll-padding-top:calc(var(--v10-home-header-h) + 8px)!important;
   }
 }
 
 @media (max-width:520px){
   html body[data-app-route="competition"]{
-    --v637-comp-head-h:calc(88px + env(safe-area-inset-top));
-    --v637-comp-tabs-h:47px;
+    --v639-comp-head-h:calc(88px + env(safe-area-inset-top));
+    --v639-comp-tabs-h:47px;
   }
 
+  /* COMPETICIÓN — cabecera fija dentro del flujo, igual que Más. */
   html body[data-app-route="competition"] #app > .topbar,
   html body[data-app-route="competition"] .app-shell > .topbar,
   html body.v40-standings-master[data-app-route="competition"] #app > .topbar,
   html body.v10-header-collapsed[data-app-route="competition"] #app > .topbar{
-    position:fixed!important;
+    position:sticky!important;
+    position:-webkit-sticky!important;
     top:0!important;
-    left:50%!important;
+    left:auto!important;
     right:auto!important;
-    transform:translateX(-50%)!important;
-    width:min(100vw,520px)!important;
-    max-width:520px!important;
-    height:var(--v637-comp-head-h)!important;
-    min-height:var(--v637-comp-head-h)!important;
-    max-height:var(--v637-comp-head-h)!important;
+    transform:none!important;
+    width:100%!important;
+    max-width:none!important;
+    height:var(--v639-comp-head-h)!important;
+    min-height:var(--v639-comp-head-h)!important;
+    max-height:var(--v639-comp-head-h)!important;
     margin:0!important;
     z-index:2147482400!important;
-    will-change:auto!important;
   }
 
+  /* Partidos y resultados / Clasificación / Cuadro también quedan pegados
+     debajo de la cabecera durante todo el desplazamiento. */
   html body[data-app-route="competition"] #screen > .tabs,
   html body.v40-standings-master[data-app-route="competition"] #screen > .tabs,
   html body.v10-header-collapsed[data-app-route="competition"] #screen > .tabs{
-    position:fixed!important;
-    top:var(--v637-comp-head-h)!important;
-    left:50%!important;
+    position:sticky!important;
+    position:-webkit-sticky!important;
+    top:var(--v639-comp-head-h)!important;
+    left:auto!important;
     right:auto!important;
-    transform:translateX(-50%)!important;
-    width:min(100vw,520px)!important;
-    max-width:520px!important;
-    height:var(--v637-comp-tabs-h)!important;
-    min-height:var(--v637-comp-tabs-h)!important;
-    max-height:var(--v637-comp-tabs-h)!important;
-    margin:0!important;
+    transform:none!important;
+    width:auto!important;
+    max-width:none!important;
+    height:var(--v639-comp-tabs-h)!important;
+    min-height:var(--v639-comp-tabs-h)!important;
+    max-height:var(--v639-comp-tabs-h)!important;
+    margin:0 -14px!important;
     box-sizing:border-box!important;
     z-index:2147482399!important;
   }
 
   html body[data-app-route="competition"] #screen{
-    padding-top:calc(var(--v637-comp-head-h) + var(--v637-comp-tabs-h))!important;
-    scroll-padding-top:calc(var(--v637-comp-head-h) + var(--v637-comp-tabs-h) + 6px)!important;
+    padding-top:0!important;
+    scroll-padding-top:calc(var(--v639-comp-head-h) + var(--v639-comp-tabs-h) + 6px)!important;
+  }
+
+  /* Evita que parches anteriores vuelvan a convertir el selector de jornadas
+     en una capa fija; éste sí debe desplazarse debajo de las dos cabeceras. */
+  html body[data-app-route="competition"] .v12-date-strip,
+  html body[data-app-route="competition"] .v12-week-strip{
+    position:relative!important;
+    top:auto!important;
   }
 }
 
 @media (max-width:380px){
   html body[data-app-route="competition"]{
-    --v637-comp-head-h:calc(84px + env(safe-area-inset-top));
+    --v639-comp-head-h:calc(84px + env(safe-area-inset-top));
   }
 }
