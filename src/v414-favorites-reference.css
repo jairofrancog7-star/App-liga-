@@ -337,11 +337,19 @@ body.v414-favorites-active .v412-shell[data-v412-screen="favorites"]{
   height:42px!important;
   display:grid!important;
   place-items:center!important;
+  overflow:hidden!important;
   border-radius:11px!important;
   background:#17265a!important;
   color:#fff!important;
   font-size:16px!important;
   font-weight:900!important;
+}
+.v414-comp-icon img{
+  width:100%!important;
+  height:100%!important;
+  padding:2px!important;
+  object-fit:contain!important;
+  filter:none!important;
 }
 .v414-match-logo-pair{width:46px!important;height:42px!important;position:relative!important}
 .v414-match-logo-pair img{
