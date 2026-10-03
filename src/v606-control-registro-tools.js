@@ -8,7 +8,12 @@ window.__LJR_V606_CONTROL_REGISTRO__=true;
 const $=(s,r=document)=>r.querySelector(s);
 const $$=(s,r=document)=>Array.from(r.querySelectorAll(s));
 const route=()=>String(location.hash||'').replace(/^#\/?/,'').split('?')[0]||String(document.body?.dataset?.appRoute||'home');
-const go=r=>{location.hash='#/'+r};
+const go=r=>{
+ const gate=window.LJR_ADMIN_ROUTE;
+ if(gate?.routes?.has?.(r)){gate.open(r);return}
+ if(window.LJR_MAIN_ROUTE?.go){window.LJR_MAIN_ROUTE.go(r);return}
+ location.hash='#/'+r
+};
 const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 
 const ITEMS=[
