@@ -17,10 +17,38 @@ body[data-app-route="players"] #screen{overflow-x:hidden!important}
 .v562-players{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:rgba(255,255,255,.055)}
 .v562-player{min-height:62px;display:grid;grid-template-columns:42px 1fr;gap:8px;align-items:center;padding:7px 9px;background:#090c69}
 .v562-avatar{width:38px;height:46px;display:grid;place-items:center;overflow:hidden;border:1px solid rgba(40,224,235,.35);border-radius:9px;background:#12358d;color:#28dfe9;font-size:8px;font-weight:900}
-.v562-avatar img{width:100%;height:100%;object-fit:cover;object-position:center 22%}
+.v562-avatar img{width:100%;height:100%;object-fit:contain!important;object-position:center center!important;transform:none!important;background:#0b106f}
 .v562-avatar.sprite{padding:0}.v562-avatar.sprite i{display:block;width:38px;height:46px;background-image:var(--v562-hermanos-sprite);background-repeat:no-repeat;background-size:228px 230px;border-radius:8px}
 .v562-player-copy{min-width:0}.v562-player-copy b{display:block;font-size:9.2px;line-height:1.15}.v562-player-copy small{display:block;margin-top:4px;color:#9da7d0;font-size:7.7px;line-height:1.2}
 .v562-note{margin:13px 3px 0;color:#7f89b8;font-size:8px;line-height:1.35}.v562-empty{padding:26px 12px;text-align:center;color:#a7afd0;border:1px solid rgba(89,109,214,.22);border-radius:14px;background:#090c69}
-.v42-avatar.v562-team-photo{overflow:hidden;padding:0!important}.v42-avatar.v562-team-photo img{width:100%;height:100%;object-fit:cover;object-position:center 22%;border-radius:inherit}
+.v42-avatar.v562-team-photo{overflow:hidden;padding:0!important;background:#0b106f!important}.v42-avatar.v562-team-photo img{width:100%!important;height:100%!important;min-width:0!important;min-height:0!important;max-width:100%!important;max-height:100%!important;object-fit:contain!important;object-position:center center!important;transform:none!important;clip-path:none!important;border-radius:inherit!important}
 .v562-team-sprite{display:block;width:38px;height:46px;background-image:var(--v562-hermanos-sprite);background-repeat:no-repeat;background-size:228px 230px;border-radius:inherit}
 @media(max-width:390px){.v562-filters{grid-template-columns:1fr}.v562-search{grid-column:1}.v562-players{grid-template-columns:1fr}}
+
+
+/* V652 — FOTO COMPLETA EN REGISTRO DE JUGADORES.
+   Corrige el caso visible de Francisco Javier Zuñiga Díaz y aplica la misma
+   regla a todas las fotos reales de este registro: nada de recorte 22%,
+   se conserva completa la fotografía dentro del marco. */
+html body[data-app-route="players"] #screen .v562-avatar.photo{
+  overflow:hidden!important;
+  background:#0b106f!important;
+}
+html body[data-app-route="players"] #screen .v562-avatar.photo>img{
+  position:static!important;
+  inset:auto!important;
+  width:100%!important;
+  height:100%!important;
+  min-width:0!important;
+  min-height:0!important;
+  max-width:100%!important;
+  max-height:100%!important;
+  margin:0!important;
+  padding:0!important;
+  display:block!important;
+  object-fit:contain!important;
+  object-position:center center!important;
+  transform:none!important;
+  transform-origin:center center!important;
+  clip-path:none!important;
+}
