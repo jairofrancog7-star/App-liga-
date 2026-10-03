@@ -142,9 +142,11 @@ function reportText(r){
     'Checador: '+(r.checker||'Sin nombre'),
     'Fecha/hora: '+new Date(r.createdAt||Date.now()).toLocaleString('es-MX'),
     'Resultado físico: '+(a.label||'POR REVISAR')+' · '+(a.score??'—')+'/100',
-    'Superficie: '+r.surface+' · Agua: '+r.water+' · Apoyo: '+r.footing,
-    'Balón: '+r.ball+' · Riesgos: '+r.hazards+' · Porterías: '+r.goals,
-    gps?'Ubicación registrada: '+gps.lat.toFixed(5)+', '+gps.lng.toFixed(5)+' (±'+Math.round(gps.accuracy||0)+' m)':'',
+    'Tipo: '+r.surfaceType+' · Condición: '+r.surface+' · Agua: '+r.water+' · Lodo: '+r.mud,
+    'Dureza: '+r.hardness+' · Apoyo: '+r.footing+' · Balón: '+r.ball,
+    'Baches: '+r.evenness+' · Piedras/objetos: '+r.debris+' · Polvo: '+r.dust,
+    'Líneas: '+r.lines+' · Porterías: '+r.goals+' · Drenaje: '+r.drainage+' · Acceso: '+r.access,
+    r.location?'Ubicación registrada: '+Number(r.location.lat).toFixed(5)+', '+Number(r.location.lng).toFixed(5)+' (±'+Math.round(r.location.accuracy||0)+' m)':'',
     r.notes?'Observaciones: '+r.notes:'',
     '',
     '⚠️ Esta revisión física NO suspende por sí sola. La decisión oficial corresponde a la Liga.'
@@ -400,8 +402,8 @@ async function reportPng(mod){
   x.fillStyle='#aebce2';x.font='600 31px Arial';x.fillText('Checador: '+v.checker,64,330);x.fillText('Fecha: '+new Date().toLocaleString('es-MX'),64,378);
   x.fillStyle=a.tone==='danger'?'#ff7a86':a.tone==='watch'?'#ffd05a':'#65f1c7';x.font='900 48px Arial';wrapCanvas(x,a.label,64,470,950,58,2);
   x.fillStyle='#fff';x.font='900 96px Arial';x.fillText(String(a.score),64,650);x.font='700 30px Arial';x.fillText('/100 lectura física',245,650);
-  const rows=[['Superficie',v.surface],['Agua / charcos',v.water],['Apoyo',v.footing],['Prueba balón',v.ball],['Riesgos',v.hazards],['Porterías',v.goals],['Líneas',v.lines],['Acceso',v.access]];
-  let y=740;x.font='700 28px Arial';rows.forEach(([k,val])=>{x.fillStyle='#8fa6d8';x.fillText(k,64,y);x.fillStyle='#fff';x.fillText(String(val),470,y);y+=62});
+  const rows=[['Tipo',v.surfaceType],['Condición',v.surface],['Agua',v.water],['Lodo',v.mud],['Dureza',v.hardness],['Apoyo',v.footing],['Balón',v.ball],['Baches',v.evenness],['Piedras/objetos',v.debris],['Polvo',v.dust],['Porterías',v.goals],['Drenaje',v.drainage]];
+  let y=710;x.font='700 24px Arial';rows.forEach(([k,val],i)=>{const col=i<6?0:1,row=i%6,xx=col?560:64,yy=y+row*72;x.fillStyle='#8fa6d8';x.fillText(k,xx,yy);x.fillStyle='#fff';x.fillText(String(val),xx,yy+30)});
   x.fillStyle='#62edf2';x.font='900 27px Arial';x.fillText('NO ES DECISIÓN OFICIAL',64,1260);x.fillStyle='#9cacd3';x.font='600 22px Arial';x.fillText('La Liga/presidente confirma si se juega, se revisa o se cierra el campo.',64,1302);
   const blob=await new Promise(res=>c.toBlob(res,'image/png',1));if(!blob)return;
   const file=new File([blob],'Reporte_Cancha_'+v.field+'.png',{type:'image/png'});
@@ -493,6 +495,17 @@ function handleClick(e){
   if(b.hasAttribute('data-v668-copy-import')){importFromClipboard();return}
   if(b.hasAttribute('data-v668-dismiss-notice')){const list=notices();list.shift();write(NOTICE_KEY,list);const banner=b.closest('.v668-notice-banner');banner?.remove();return}
 }
+
+document.addEventListener('click',e=>{
+  const b=e.target.closest('[data-v668-open-checker]');if(!b)return;
+  e.preventDefault();
+  localStorage.setItem(ROLE_KEY,'checker');
+  mount();
+  setTimeout(()=>{
+    const mod=$('[data-v668-field-ops]');
+    if(mod){rerender(mod);mod.scrollIntoView({behavior:'smooth',block:'start'})}
+  },80);
+},true);
 
 processIncoming();
 let timer=0;function schedule(){clearTimeout(timer);timer=setTimeout(()=>{processIncoming();mount()},70)}
