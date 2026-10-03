@@ -1,0 +1,440 @@
+/* V665 — Match Center pixel-match de referencias, adaptado a azul.
+   Mantiene proporciones, tipografías, alturas, márgenes y jerarquía visual
+   de las capturas proporcionadas. */
+@media (max-width:1023px){
+  html body.v92-match-center-official{
+    background:#060816!important;
+  }
+
+  /* Barra de pestañas: misma escala/espaciado de referencia */
+  html body.v92-match-center-official .v664-reference-tabs{
+    gap:8px!important;
+    padding:13px 17px!important;
+    background:#10172d!important;
+    border-top:1px solid rgba(255,255,255,.025)!important;
+    border-bottom:0!important;
+  }
+  html body.v92-match-center-official .v664-reference-tabs button{
+    min-width:0!important;
+    min-height:32px!important;
+    height:32px!important;
+    padding:0 17px!important;
+    border:1px solid rgba(196,202,222,.46)!important;
+    border-radius:999px!important;
+    background:transparent!important;
+    color:#f7f8fd!important;
+    font:500 13px/1 Arial,Helvetica,sans-serif!important;
+    letter-spacing:0!important;
+  }
+  html body.v92-match-center-official .v664-reference-tabs button.active{
+    background:#fff!important;
+    border-color:#fff!important;
+    color:#10131d!important;
+    font-weight:700!important;
+  }
+
+  /* Contenido interior: mismo aire lateral de las capturas */
+  html body.v92-match-center-official .v92-body{
+    padding:28px 17px 18px!important;
+    background:#060816!important;
+  }
+
+  /* BUILD UP */
+  html body.v92-match-center-official .v665-build-up{
+    display:grid!important;
+    gap:24px!important;
+    width:100%!important;
+  }
+  html body.v92-match-center-official .v665-story-card{
+    position:relative!important;
+    width:100%!important;
+    min-height:334px!important;
+    overflow:hidden!important;
+    border-radius:24px!important;
+    background:#0b1434!important;
+  }
+  html body.v92-match-center-official .v665-story-card video{
+    position:absolute!important;
+    inset:0!important;
+    width:100%!important;
+    height:100%!important;
+    object-fit:cover!important;
+  }
+  html body.v92-match-center-official .v665-story-shade{
+    position:absolute!important;
+    inset:0!important;
+    background:
+      linear-gradient(180deg,rgba(5,8,20,.02) 0%,rgba(5,8,20,.08) 45%,rgba(5,8,20,.92) 100%),
+      linear-gradient(0deg,rgba(14,40,104,.26),rgba(14,40,104,.26))!important;
+  }
+  html body.v92-match-center-official .v665-story-copy{
+    position:absolute!important;
+    left:24px!important;
+    right:24px!important;
+    bottom:22px!important;
+    z-index:2!important;
+  }
+  html body.v92-match-center-official .v665-story-copy h2{
+    margin:0 0 15px!important;
+    color:#fff!important;
+    font-family:Georgia,"Times New Roman",serif!important;
+    font-size:24px!important;
+    line-height:1.18!important;
+    font-weight:700!important;
+    letter-spacing:-.02em!important;
+  }
+  html body.v92-match-center-official .v665-story-copy p{
+    display:flex!important;
+    align-items:center!important;
+    gap:7px!important;
+    margin:0!important;
+    color:#aab2c9!important;
+    font:600 11px/1.2 Arial,Helvetica,sans-serif!important;
+  }
+  html body.v92-match-center-official .v665-story-copy p b{color:#fff!important}
+  html body.v92-match-center-official .v665-story-action{
+    position:absolute!important;
+    inset:0!important;
+    z-index:3!important;
+    width:100%!important;
+    height:100%!important;
+    opacity:0!important;
+    border:0!important;
+  }
+
+  /* PREDICCIONES — dos columnas con mismo tamaño de tarjetas */
+  html body.v92-match-center-official .v665-predictions{
+    padding-top:18px!important;
+  }
+  html body.v92-match-center-official .v664-grid-2{
+    gap:12px!important;
+  }
+  html body.v92-match-center-official .v664-predict-card{
+    min-height:244px!important;
+    padding:20px 12px 12px!important;
+    border:0!important;
+    border-radius:24px!important;
+    background:
+      radial-gradient(140px 110px at 50% 6%,rgba(38,100,238,.32),transparent 72%),
+      linear-gradient(180deg,#10275f 0%,#081331 72%,#050a1e 100%)!important;
+    box-shadow:none!important;
+  }
+  html body.v92-match-center-official .v664-predict-media,
+  html body.v92-match-center-official .v664-pred-photo,
+  html body.v92-match-center-official .v664-pred-photo img{
+    width:94px!important;
+    height:94px!important;
+  }
+  html body.v92-match-center-official .v664-predict-media{
+    margin:0 auto 13px!important;
+    background:#111a39!important;
+  }
+  html body.v92-match-center-official .v664-predict-media .v92-team-logo,
+  html body.v92-match-center-official .v664-predict-media .v92-team-logo img,
+  html body.v92-match-center-official .v664-predict-logo,
+  html body.v92-match-center-official .v664-predict-logo img{
+    width:86px!important;
+    height:86px!important;
+  }
+  html body.v92-match-center-official .v664-predict-card h3{
+    font:700 14px/1.15 Arial,Helvetica,sans-serif!important;
+    white-space:normal!important;
+  }
+  html body.v92-match-center-official .v664-predict-card p{
+    min-height:24px!important;
+    margin:8px 0 15px!important;
+    color:#a7afc8!important;
+    font:400 11px/1.25 Arial,Helvetica,sans-serif!important;
+  }
+  html body.v92-match-center-official .v664-predict-card>button{
+    min-height:37px!important;
+    border:0!important;
+    border-radius:999px!important;
+    background:linear-gradient(180deg,#1765e7,#0f46bd)!important;
+    font:700 12px/1 Arial,Helvetica,sans-serif!important;
+  }
+
+  /* COMENTARIOS — tarjeta editorial alta como la referencia */
+  html body.v92-match-center-official .v665-commentary{
+    width:100%!important;
+    padding-top:14px!important;
+  }
+  html body.v92-match-center-official .v665-comment-card{
+    position:relative!important;
+    display:flex!important;
+    flex-direction:column!important;
+    width:100%!important;
+    min-height:510px!important;
+    padding:25px 17px 0!important;
+    overflow:hidden!important;
+    box-sizing:border-box!important;
+    border-radius:22px!important;
+    background:linear-gradient(180deg,#132149 0%,#0a1430 100%)!important;
+  }
+  html body.v92-match-center-official .v665-comment-badge{
+    position:absolute!important;
+    top:22px!important;
+    right:17px!important;
+    color:#c8cede!important;
+    font:600 15px/1 Arial,Helvetica,sans-serif!important;
+  }
+  html body.v92-match-center-official .v665-comment-card h2{
+    margin:28px 0 25px!important;
+    color:#fff!important;
+    font:700 18px/1.18 Arial,Helvetica,sans-serif!important;
+  }
+  html body.v92-match-center-official .v665-comment-card p{
+    margin:0 0 22px!important;
+    color:#f0f2f8!important;
+    font:400 15px/1.55 Arial,Helvetica,sans-serif!important;
+  }
+  html body.v92-match-center-official .v665-comment-card video{
+    width:100%!important;
+    height:145px!important;
+    margin-top:auto!important;
+    object-fit:cover!important;
+    border-radius:12px 12px 0 0!important;
+  }
+
+  /* ALINEACIONES */
+  html body.v92-match-center-official .v665-lineups{
+    padding-top:0!important;
+  }
+  html body.v92-match-center-official .v664-lineups-stack{
+    gap:18px!important;
+  }
+  html body.v92-match-center-official .v665-lineup-card{
+    width:100%!important;
+    padding:17px 18px 14px!important;
+    border:0!important;
+    border-radius:22px!important;
+    background:
+      radial-gradient(220px 130px at 20% 0,rgba(36,104,235,.28),transparent 74%),
+      linear-gradient(180deg,#10265a 0%,#071531 100%)!important;
+  }
+  html body.v92-match-center-official .v665-lineup-card>header{
+    grid-template-columns:42px minmax(0,1fr)!important;
+    gap:10px!important;
+  }
+  html body.v92-match-center-official .v664-lineup-logo,
+  html body.v92-match-center-official .v664-lineup-logo img{
+    width:42px!important;
+    height:42px!important;
+  }
+  html body.v92-match-center-official .v665-lineup-card h3{
+    margin:0!important;
+    font-family:Georgia,"Times New Roman",serif!important;
+    font-size:19px!important;
+    line-height:1.05!important;
+    font-weight:700!important;
+  }
+  html body.v92-match-center-official .v665-lineup-card header small,
+  html body.v92-match-center-official .v665-lineup-card header em{
+    display:block!important;
+    margin-top:5px!important;
+    color:#d4d9e8!important;
+    font:400 11px/1.15 Arial,Helvetica,sans-serif!important;
+    font-style:normal!important;
+  }
+  html body.v92-match-center-official .v665-lineup-card h4{
+    margin:24px 0 10px!important;
+    font:700 14px/1 Arial,Helvetica,sans-serif!important;
+  }
+  html body.v92-match-center-official .v664-lineup-list{
+    gap:0!important;
+  }
+  html body.v92-match-center-official .v664-lineup-list>div{
+    min-height:58px!important;
+    grid-template-columns:38px minmax(0,1fr)!important;
+    gap:12px!important;
+    padding:5px 0!important;
+    border-bottom:0!important;
+  }
+  html body.v92-match-center-official .v664-lineup-photo,
+  html body.v92-match-center-official .v664-lineup-photo img{
+    width:38px!important;
+    height:38px!important;
+  }
+  html body.v92-match-center-official .v664-lineup-list b{
+    color:#fff!important;
+    font:400 13px/1.25 Arial,Helvetica,sans-serif!important;
+  }
+  html body.v92-match-center-official .v665-lineup-pitch{
+    width:100%!important;
+    min-height:38px!important;
+    margin-top:12px!important;
+    border:1px solid rgba(255,255,255,.24)!important;
+    border-radius:999px!important;
+    background:#0b1a40!important;
+    color:#fff!important;
+    font-weight:700!important;
+  }
+
+  /* ESTADÍSTICAS — estructura y proporción de campo de la referencia */
+  html body.v92-match-center-official .v665-stats{
+    padding-top:0!important;
+  }
+  html body.v92-match-center-official .v665-stats-card{
+    padding:22px 16px 16px!important;
+    border:0!important;
+    border-radius:22px!important;
+    background:linear-gradient(180deg,#132149,#0a1430)!important;
+  }
+  html body.v92-match-center-official .v665-stats-card>header{
+    grid-template-columns:minmax(0,1fr) 40px minmax(0,1fr)!important;
+  }
+  html body.v92-match-center-official .v664-stats-logo,
+  html body.v92-match-center-official .v664-stats-logo img{
+    width:52px!important;
+    height:52px!important;
+  }
+  html body.v92-match-center-official .v665-stats-card>header b{
+    margin-top:6px!important;
+    font:400 11px/1 Arial,Helvetica,sans-serif!important;
+  }
+  html body.v92-match-center-official .v665-stats-card>header strong{
+    font:700 15px/1 Arial,Helvetica,sans-serif!important;
+  }
+  html body.v92-match-center-official .v665-stats-card h2,
+  html body.v92-match-center-official .v665-stats-card h3{
+    margin:27px 0 18px!important;
+    font-family:Georgia,"Times New Roman",serif!important;
+    font-size:22px!important;
+    line-height:1!important;
+    font-weight:700!important;
+  }
+  html body.v92-match-center-official .v665-stats-card h3{
+    margin-top:29px!important;
+  }
+  html body.v92-match-center-official .v664-pitch-compare{
+    aspect-ratio:1.51/1!important;
+    border:2px solid #fff!important;
+  }
+  html body.v92-match-center-official .v664-share-row{
+    padding:15px 0 12px!important;
+  }
+  html body.v92-match-center-official .v664-share-row b{
+    font:700 16px/1 Arial,Helvetica,sans-serif!important;
+  }
+  html body.v92-match-center-official .v664-share-row span{
+    font:700 11px/1 Arial,Helvetica,sans-serif!important;
+  }
+  html body.v92-match-center-official .v664-stat-row{
+    min-height:48px!important;
+    padding:7px 0!important;
+  }
+  html body.v92-match-center-official .v664-stat-row b{
+    font-size:13px!important;
+  }
+  html body.v92-match-center-official .v664-stat-row span{
+    font-size:11px!important;
+  }
+
+  /* TABLA — tarjeta Around the Grounds y tabla inferior */
+  html body.v92-match-center-official .v665-tables{
+    padding-top:18px!important;
+    gap:14px!important;
+  }
+  html body.v92-match-center-official .v665-around-card{
+    min-height:194px!important;
+    padding:26px 17px!important;
+    border:0!important;
+    border-radius:22px!important;
+    background:linear-gradient(180deg,#132149,#0a1430)!important;
+  }
+  html body.v92-match-center-official .v665-around-card h2{
+    margin:0 0 38px!important;
+    font-family:Georgia,"Times New Roman",serif!important;
+    font-size:21px!important;
+    line-height:1!important;
+    font-weight:700!important;
+  }
+  html body.v92-match-center-official .v664-around-match{
+    grid-template-columns:minmax(0,1fr) 56px minmax(0,1fr)!important;
+    padding:10px 0 18px!important;
+  }
+  html body.v92-match-center-official .v664-around-match>span{
+    font-size:11px!important;
+  }
+  html body.v92-match-center-official .v664-around-match>strong{
+    font-family:Georgia,"Times New Roman",serif!important;
+    font-size:17px!important;
+    font-weight:500!important;
+  }
+  html body.v92-match-center-official .v665-around-card>small{
+    margin-top:8px!important;
+    font-size:10px!important;
+  }
+  html body.v92-match-center-official .v665-table-card{
+    padding:14px!important;
+    border:0!important;
+    border-radius:18px!important;
+    background:#0a1430!important;
+  }
+
+  /* REPORTE — sin tarjeta visible, tipografía editorial igual a referencia */
+  html body.v92-match-center-official .v665-report{
+    padding:30px 17px 20px!important;
+  }
+  html body.v92-match-center-official .v665-report-card{
+    padding:0!important;
+    border:0!important;
+    border-radius:0!important;
+    background:transparent!important;
+  }
+  html body.v92-match-center-official .v665-report-card h2{
+    margin:0 0 23px!important;
+    color:#fff!important;
+    font-family:Georgia,"Times New Roman",serif!important;
+    font-size:18px!important;
+    line-height:1.22!important;
+    font-weight:700!important;
+  }
+  html body.v92-match-center-official .v665-written{
+    margin-bottom:20px!important;
+    color:#fff!important;
+    font:400 13px/1.3 Arial,Helvetica,sans-serif!important;
+  }
+  html body.v92-match-center-official .v665-written b{
+    margin-left:8px!important;
+    font-weight:700!important;
+  }
+  html body.v92-match-center-official .v665-report-card .v664-report-meta{
+    gap:10px!important;
+    margin-bottom:28px!important;
+    font-size:13px!important;
+  }
+  html body.v92-match-center-official .v665-report-card p{
+    margin:0 0 26px!important;
+    color:#c3c8d7!important;
+    font:400 15px/1.72 Arial,Helvetica,sans-serif!important;
+  }
+
+  /* El resto del Match Center mantiene el azul existente */
+  html body.v92-match-center-official .v518-matchcenter-unified{
+    background:#060816!important;
+  }
+}
+
+@media (max-width:390px){
+  html body.v92-match-center-official .v664-reference-tabs{
+    padding-left:16px!important;
+    padding-right:16px!important;
+  }
+  html body.v92-match-center-official .v92-body{
+    padding-left:16px!important;
+    padding-right:16px!important;
+  }
+  html body.v92-match-center-official .v664-reference-tabs button{
+    min-height:31px!important;
+    height:31px!important;
+    padding:0 16px!important;
+    font-size:12.5px!important;
+  }
+  html body.v92-match-center-official .v664-predict-card{
+    min-height:238px!important;
+  }
+  html body.v92-match-center-official .v665-story-card{
+    min-height:325px!important;
+  }
+}
