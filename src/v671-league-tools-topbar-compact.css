@@ -1,0 +1,57 @@
+/* V671 — Herramientas de la Liga: barra superior más baja.
+   Mantiene el mismo fondo, flecha, trofeo y perfil; sólo reduce altura vertical. */
+@media(max-width:1023px){
+  html body[data-app-route="leagueTools"] #app>.topbar.v403-reference-topbar,
+  html body[data-app-route="leagueTools"] .app-shell>.topbar.v403-reference-topbar{
+    height:62px!important;
+    min-height:62px!important;
+    max-height:62px!important;
+  }
+
+  html body[data-app-route="leagueTools"] #app>.topbar.v403-reference-topbar::before,
+  html body[data-app-route="leagueTools"] .app-shell>.topbar.v403-reference-topbar::before{
+    width:58px!important;
+    height:52px!important;
+    left:54px!important;
+    top:5px!important;
+  }
+
+  html body[data-app-route="leagueTools"] #app>.topbar.v403-reference-topbar .back-button,
+  html body[data-app-route="leagueTools"] .app-shell>.topbar.v403-reference-topbar .back-button{
+    width:23px!important;
+    height:23px!important;
+    min-width:23px!important;
+    min-height:23px!important;
+    max-width:23px!important;
+    max-height:23px!important;
+    background-size:23px 23px!important;
+  }
+
+  html body[data-app-route="leagueTools"] #app>.topbar.v403-reference-topbar .profile-button,
+  html body[data-app-route="leagueTools"] .app-shell>.topbar.v403-reference-topbar .profile-button{
+    width:25px!important;
+    height:25px!important;
+    min-width:25px!important;
+    min-height:25px!important;
+    max-width:25px!important;
+    max-height:25px!important;
+    background-size:25px 25px!important;
+  }
+}
+
+@media(max-width:390px){
+  html body[data-app-route="leagueTools"] #app>.topbar.v403-reference-topbar,
+  html body[data-app-route="leagueTools"] .app-shell>.topbar.v403-reference-topbar{
+    height:58px!important;
+    min-height:58px!important;
+    max-height:58px!important;
+  }
+
+  html body[data-app-route="leagueTools"] #app>.topbar.v403-reference-topbar::before,
+  html body[data-app-route="leagueTools"] .app-shell>.topbar.v403-reference-topbar::before{
+    width:54px!important;
+    height:48px!important;
+    left:50px!important;
+    top:5px!important;
+  }
+}
