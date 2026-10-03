@@ -446,7 +446,13 @@ function exactPlayerFromTarget(target,list){
 }
 
 document.addEventListener('click',e=>{
- if(route()==='playerCompare'||route()==='club-store')return;
+ const currentRoute=route();
+ if(currentRoute==='playerCompare'||currentRoute==='club-store')return;
+ /* V679 — Permisos administra internamente sus selectores de equipo/jugador.
+    El comparador global corre en captura y antes podía secuestrar el toque,
+    enviando a Team Detail/Comparar o Player Detail/Comparar. En esta ruta
+    no debe intervenir en ningún selector del formulario. */
+ if(currentRoute==='permissionBuilder'||(e.target instanceof Element&&e.target.closest('[data-v635-page],[data-v635-team-sheet],[data-v635-player-sheet]')))return;
  if(route()==='v4-calendar'&&e.target instanceof Element&&e.target.closest('[data-v415-calendar]'))return;
  if(e.defaultPrevented)return;
  if(!(e.target instanceof Element))return;
