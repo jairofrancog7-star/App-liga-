@@ -2004,3 +2004,98 @@ body.v379-player-profile-active .v379-back{
     right:-6%!important;
   }
 }
+
+
+/* V644_PLAYER_HEADER_REFERENCE
+   Cabecera fija de jugador: iconos compactos/iguales y nombre corto sin recorte. */
+body.v379-player-profile-active.v385-player-scrolled .v385-player-compact-head{
+  height:64px!important;
+  padding:0 16px!important;
+  grid-template-columns:36px minmax(0,1fr) 82px!important;
+  gap:10px!important;
+}
+body.v379-player-profile-active.v385-player-scrolled .v385-player-compact-head>strong{
+  overflow:hidden!important;
+  text-overflow:clip!important;
+  white-space:nowrap!important;
+  font-size:20px!important;
+  line-height:1!important;
+  font-weight:500!important;
+  letter-spacing:-.025em!important;
+}
+body.v379-player-profile-active.v385-player-scrolled .v385-head-back{
+  width:34px!important;
+  height:34px!important;
+}
+body.v379-player-profile-active.v385-player-scrolled .v385-head-back svg{
+  width:27px!important;
+  height:27px!important;
+  stroke-width:2!important;
+}
+body.v379-player-profile-active.v385-player-scrolled .v385-head-actions{
+  width:82px!important;
+  display:grid!important;
+  grid-template-columns:34px 34px!important;
+  justify-content:end!important;
+  align-items:center!important;
+  gap:14px!important;
+}
+body.v379-player-profile-active.v385-player-scrolled .v385-head-compare,
+body.v379-player-profile-active.v385-player-scrolled .v385-head-share{
+  width:34px!important;
+  height:34px!important;
+}
+body.v379-player-profile-active.v385-player-scrolled .v385-head-compare svg{
+  width:26px!important;
+  height:24px!important;
+  stroke-width:1.8!important;
+}
+body.v379-player-profile-active.v385-player-scrolled .v385-head-share svg{
+  width:26px!important;
+  height:26px!important;
+  stroke-width:1.9!important;
+}
+body.v379-player-profile-active.v385-player-scrolled .v379-tabs{
+  top:64px!important;
+  height:56px!important;
+}
+body.v379-player-profile-active.v385-player-scrolled .v379-tabs button{
+  height:56px!important;
+  font-size:13px!important;
+}
+body.v379-player-profile-active.v385-player-scrolled .v379-content{
+  scroll-margin-top:120px!important;
+}
+@media(max-width:360px){
+  body.v379-player-profile-active.v385-player-scrolled .v385-player-compact-head{
+    padding-left:12px!important;
+    padding-right:12px!important;
+    grid-template-columns:34px minmax(0,1fr) 76px!important;
+    gap:8px!important;
+  }
+  body.v379-player-profile-active.v385-player-scrolled .v385-player-compact-head>strong{
+    font-size:18px!important;
+  }
+  body.v379-player-profile-active.v385-player-scrolled .v385-head-actions{
+    width:76px!important;
+    grid-template-columns:32px 32px!important;
+    gap:12px!important;
+  }
+  body.v379-player-profile-active.v385-player-scrolled .v385-head-compare,
+  body.v379-player-profile-active.v385-player-scrolled .v385-head-share{
+    width:32px!important;
+    height:32px!important;
+  }
+  body.v379-player-profile-active.v385-player-scrolled .v385-head-compare svg{
+    width:24px!important;
+    height:22px!important;
+  }
+  body.v379-player-profile-active.v385-player-scrolled .v385-head-share svg{
+    width:24px!important;
+    height:24px!important;
+  }
+  body.v379-player-profile-active.v385-player-scrolled .v379-tabs button{
+    font-size:12px!important;
+  }
+}
+/* /V644_PLAYER_HEADER_REFERENCE */
