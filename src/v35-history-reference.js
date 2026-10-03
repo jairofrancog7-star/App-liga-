@@ -392,7 +392,7 @@ const retroClubs=[
   {name:'Manchester',logo:'assets/official-logos/manchester.png',note:'Equipo conservado en el archivo antiguo'}
 ];
 
-const retroNames=['Universidad','Valencia','Halcones','Chelse','Olímpicos de Pozos','Romerillo'];
+const retroNames=['Universidad','Valencia','Halcones','Chelsea','Olímpicos de Pozos','Romerillo'];
 
 const verifiedChampions=[
   {season:'14 jun 2014',competition:'Torneo de Copa · Veteranos',champion:'La Esperanza',runner:'—',source:'La Esperanza fue campeón de Copa de Veteranos 2014. Registro histórico del 14 de junio de 2014; fotografía del equipo campeón con el trofeo.',photo:'./assets/history/archive-v120/la-esperanza-campeon-copa-veteranos-2014.jpg?v=20260923-esperanza-copa2014-v267',championLogo:HIST_ROOT+'assets/official-logos/la-esperanza.png'},
