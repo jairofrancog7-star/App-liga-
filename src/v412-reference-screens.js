@@ -835,7 +835,7 @@ function matchCenterMarkup(){
  const h2h=mcHeadToHead(m),hf=mcRecentForm(m,m.home.name),af=mcRecentForm(m,m.away.name);
  return '<section class="v412-shell v412-matchcenter-reference" data-v412-screen="matchcenter">'+
    '<div class="v412-mc-hero"><div class="v412-mc-top"><small>'+esc(m.category||'Liga Juventino Rosas')+'</small><b>'+esc(m.meta[0]||'Partido oficial')+'</b></div><div class="v412-mc-score"><span>'+mcLogo(m.home)+'<b>'+esc(m.home.name)+'</b></span><strong>'+esc(m.status)+'</strong><span>'+mcLogo(m.away)+'<b>'+esc(m.away.name)+'</b></span></div><em>'+esc(m.sub||m.meta[1]||'')+'</em></div>'+
-   '<div class="v412-mc-tabs"><button class="is-active" data-v412-native-tab="BuildUp">Previa</button><button data-v412-native-tab="Predicciones">Predicciones</button><button data-v412-commentary>Comentarios</button><button data-v412-native-tab="Alineaciones">Alineaciones</button><button data-v412-native-tab="Estadísticas">Estadísticas</button><button data-v412-native-tab="Cronología">Cronología</button></div>'+
+   '<div class="v412-mc-tabs"><button class="is-active" data-v412-native-tab="BuildUp">Previa</button><button data-v412-native-tab="Predicciones">Predicciones</button><button data-v412-native-tab="Comentarios">Comentarios</button><button data-v412-native-tab="Alineaciones">Alineaciones</button><button data-v412-native-tab="Estadísticas">Estadísticas</button><button data-v412-native-tab="Cronología">Cronología</button></div>'+
    '<section class="v412-mc-combined">'+
      '<section class="v412-mc-block v412-mc-season"><h3>Comparación de temporada</h3><div class="v412-mc-pair"><span>'+mcLogo(m.home)+'<b>'+esc(m.home.name)+'</b></span><span>'+mcLogo(m.away)+'<b>'+esc(m.away.name)+'</b></span></div>'+mcMetric('Partidos',h?.[2],a?.[2])+mcMetric('Ganados',h?.[3],a?.[3])+mcMetric('Empates',h?.[4],a?.[4])+mcMetric('Puntos',h?.[9],a?.[9])+'</section>'+
      '<section class="v412-mc-block v412-mc-balance"><h3>Balance de temporada</h3><div class="v412-mc-formpair"><div>'+mcLogo(m.home)+mcForm(h)+'</div><div>'+mcLogo(m.away)+mcForm(a)+'</div></div></section>'+
@@ -853,18 +853,14 @@ function openCommentary(){
 function bindMatchCenter(root){
  root.querySelectorAll('[data-v412-native-tab]').forEach(b=>b.onclick=()=>{
    const label=b.dataset.v412NativeTab;
-   const native=[...document.querySelectorAll('[data-v92-tab]')].find(x=>norm(x.dataset.v92Tab||x.textContent)===norm(label));
-   if(native){
-     native.click();
-     setTimeout(()=>{
-       const target=label==='BuildUp'
-         ? document.querySelector('[data-v420-countdown]')||document.querySelector('[data-v420-build-up]')
-         : document.querySelector('.v92-body');
-       try{target?.scrollIntoView({behavior:'smooth',block:'center'})}catch(_){target?.scrollIntoView?.()}
-     },90);
+   if(window.LJR_MATCH_CENTER?.openTab){
+     window.LJR_MATCH_CENTER.openTab(label);
+     return;
    }
+   const native=[...document.querySelectorAll('[data-v92-tab]')].find(x=>norm(x.dataset.v92Tab||'')===norm(label));
+   if(native)native.click();
  });
- root.querySelector('[data-v412-commentary]')?.addEventListener('click',openCommentary);bindCommon(root);
+ bindCommon(root);
 }
 function mountMatchCenter(screen){
   /* V525: los diseños restaurados viven dentro de la tarjeta nativa V522.
