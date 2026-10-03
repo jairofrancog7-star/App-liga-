@@ -7,7 +7,7 @@
     "v38Alerts","v38Weather","v4-matchcenter","venues","matchday","search","ligaQR","players",
     "agendaBuilder","simulator","v38Stats","bracketBuilder","tableExport","motionHub","recruitment",
     "credentialBuilder","tactics","publications","v38Weekly","scheduleChanges","weatherFields",
-    "cedulas","cedulaBuilder","rulebook","rankings","leagueTools","news","notices","quiniela"
+    "cedulas","cedulaBuilder","permissionBuilder","rulebook","rankings","leagueTools","news","notices","quiniela"
   ]);
 
   const REFERENCE_ROUTES=new Set([
