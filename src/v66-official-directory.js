@@ -187,7 +187,7 @@ function playerMarkup(){
     (!q||norm(p.name).includes(q)||norm(p.team).includes(q))
   );
   return '<section class="v66-directory" data-v66-directory="players">'+
-    '<header class="v607-player-head"><small>DATOS OFICIALES</small><div><h1>Registro de jugadores</h1><span>'+list.length+' jugadores visibles con los filtros seleccionados.</span></div><p>Busca por categoría, equipo o nombre.</p></header>'+
+    '<header class="v607-player-head v673-player-head"><small>DATOS OFICIALES</small><h1>Registro de jugadores</h1><span class="v673-player-count">'+list.length+' jugadores visibles con los filtros seleccionados.</span><p>Busca por categoría, equipo o nombre.</p></header>'+
     '<div class="v66-filter-title">FILTROS</div>'+
     '<div class="v66-filter-label">CATEGORÍA</div>'+
     categoryRail(playerCat,'data-v66-player-cat')+
