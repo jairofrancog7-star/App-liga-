@@ -340,6 +340,12 @@ function applyCrop(img,profile){
 
 async function process(img){
   if(!(img instanceof HTMLImageElement)||!img.matches(FACE_IMAGES))return;
+  /* V650: Disciplina controla sus retratos con object-fit:cover para llenar
+     el círculo. No aplicar aquí el hard-lock global de foto completa/contain. */
+  if(img.closest('.v576-discipline-photo')){
+    clearFaceCrop(img);
+    return;
+  }
   if(!img.complete||!img.naturalWidth||!img.naturalHeight){
     if(img.dataset.ljrV606Load!=='1'){
       img.dataset.ljrV606Load='1';
