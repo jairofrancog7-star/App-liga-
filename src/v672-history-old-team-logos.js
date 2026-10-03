@@ -8,6 +8,18 @@ if(window.__LJR_V672_HISTORY_OLD_TEAM_LOGOS__)return;
 window.__LJR_V672_HISTORY_OLD_TEAM_LOGOS__=true;
 
 const RAW='https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/';
+const USER_ALIAS={
+  'universidad':'./assets/history/team-logos/universidad-pumas.webp',
+  'unam':'./assets/history/team-logos/universidad-pumas.webp',
+  'pumas':'./assets/history/team-logos/universidad-pumas.webp',
+  'pumas unam':'./assets/history/team-logos/universidad-pumas.webp',
+  'xolos jaralillo':'./assets/history/team-logos/xolos-jaralillo.webp',
+  'jaralillo':'./assets/history/team-logos/xolos-jaralillo.webp',
+  'jaralillo fc':'./assets/history/team-logos/xolos-jaralillo.webp',
+  'xolos':'./assets/history/team-logos/xolos-jaralillo.webp',
+  'tecos':'./assets/history/team-logos/tecos.webp',
+  'tecos fc':'./assets/history/team-logos/tecos.webp'
+};
 const FALLBACK={
   'capibaras':RAW+'assets/official-logos/capibaras.png',
   'la canchita deportes':RAW+'assets/official-logos/la-canchita-deportes.png',
@@ -112,6 +124,8 @@ function candidates(name){
 }
 function logoFor(name){
   for(const c of candidates(name)){
+    const supplied=USER_ALIAS[norm(c)];
+    if(supplied)return supplied;
     try{
       const src=window.LJR_TEAM_LOGOS?.get?.(c);
       if(src)return src;
@@ -231,10 +245,30 @@ function patchLegacyTeams(root){
   root.querySelectorAll('.v370-legacy-team').forEach(card=>{
     const name=card.querySelector('.v370-legacy-copy strong')?.textContent?.trim()||'';
     const crest=card.querySelector('.v370-legacy-crest');
-    if(!name||!crest||crest.querySelector('img'))return;
-    const src=logoFor(name);
+    if(!name||!crest)return;
+    const forced=USER_ALIAS[norm(name)]||'';
+    const src=forced||logoFor(name);
     if(!src)return;
-    crest.appendChild(makeImg(src,name,'v672-legacy-logo'));
+
+    const current=crest.querySelector('img');
+    if(current){
+      if(forced){
+        let same=false;
+        try{same=new URL(current.currentSrc||current.src,document.baseURI).href===new URL(forced,document.baseURI).href}catch(_){}
+        if(!same){
+          current.src=forced;
+          current.alt=name;
+          current.dataset.v672UserHistoric='1';
+        }
+        crest.classList.remove('is-fallback');
+        crest.classList.add('v672-has-historic-logo');
+      }
+      return;
+    }
+
+    const img=makeImg(src,name,'v672-legacy-logo');
+    if(forced)img.dataset.v672UserHistoric='1';
+    crest.appendChild(img);
     crest.classList.remove('is-fallback');
     crest.classList.add('v672-has-historic-logo');
   });
