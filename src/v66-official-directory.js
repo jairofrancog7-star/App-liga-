@@ -457,11 +457,19 @@ function cedulaGroupsMarkup(rows){
   }).join('');
 }
 function cedulasMarkup(){
-  const rows=fixtureRows();
-  return '<section class="v66-directory v66-cedulas-official" data-v66-directory="cedulas">'+
-    '<div class="v66-cedula-headline"><b>Cédulas oficiales</b><small>'+rows.length+' partidos sincronizados</small></div>'+
-    '<button type="button" class="v66-primary-action" data-v66-generate-cedula>Generar cédula PDF</button>'+
-    '<div class="v66-player-list">'+rows.map(cedulaRowMarkup).join('')+'</div>'+
+  const all=fixtureRows().sort(cedulaSort);
+  const rows=cedulaRowsFiltered(all);
+  return '<section class="v66-directory v66-cedulas-official v638-cedulas-modern" data-v66-directory="cedulas">'+
+    '<div class="v638-cedula-top">'+
+      '<div class="v66-cedula-headline"><span><small>CENTRO DE CÉDULAS</small><b>Cédulas oficiales</b></span><em>'+rows.length+' / '+all.length+'</em></div>'+
+      '<div class="v638-filter-panel">'+
+        '<div class="v638-filter-copy"><b>Encuentra tu partido</b><small>Filtra por categoría y equipo.</small></div>'+
+        cedulaFiltersMarkup(all)+
+      '</div>'+
+      '<button type="button" class="v66-primary-action v638-create" data-v66-generate-cedula><span>＋</span><b>Generar nueva cédula</b></button>'+
+    '</div>'+
+    '<div class="v638-results-head"><b>Partidos</b><small>'+rows.length+' resultado'+(rows.length===1?'':'s')+'</small></div>'+
+    '<div class="v66-player-list v638-cedula-list">'+(rows.length?rows.map(cedulaRowMarkup).join(''):'<div class="v66-cedula-empty"><b>No hay cédulas con estos filtros.</b><small>Cambia la categoría o el equipo.</small></div>')+'</div>'+
   '</section>';
 }
 function goCedulaBuilder(){
