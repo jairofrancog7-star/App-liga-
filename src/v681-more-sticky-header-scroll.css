@@ -1,0 +1,96 @@
+/* V681 — MÁS: cabecera estática durante el scroll.
+   Conserva exactamente el diseño existente de Más; sólo corrige comportamiento:
+   el cuadro superior con "Más" + perfil permanece visible y el menú se desliza debajo. */
+@media (max-width:1023px){
+  @supports selector(html:has(body)){
+    html:has(body[data-app-route="more"]){
+      height:auto!important;
+      min-height:100%!important;
+      max-height:none!important;
+      overflow-x:hidden!important;
+      overflow-y:auto!important;
+      -webkit-overflow-scrolling:touch!important;
+    }
+  }
+
+  html body[data-app-route="more"]{
+    height:auto!important;
+    min-height:100dvh!important;
+    max-height:none!important;
+    overflow-x:hidden!important;
+    overflow-y:auto!important;
+    -webkit-overflow-scrolling:touch!important;
+  }
+
+  /* Ningún padre debe capturar/cortar el sticky. */
+  html body[data-app-route="more"] #app,
+  html body[data-app-route="more"] .app-shell{
+    height:auto!important;
+    min-height:100dvh!important;
+    max-height:none!important;
+    overflow:visible!important;
+    transform:none!important;
+    filter:none!important;
+    perspective:none!important;
+    contain:none!important;
+  }
+
+  html body[data-app-route="more"] #screen{
+    position:relative!important;
+    height:auto!important;
+    min-height:0!important;
+    max-height:none!important;
+    overflow:visible!important;
+    padding-top:0!important;
+  }
+
+  /* El cuadro superior permanece completamente estático al deslizar. */
+  html body[data-app-route="more"] #app > .topbar,
+  html body[data-app-route="more"] .app-shell > .topbar,
+  html body[data-app-route="more"].v66-compact-route #app > .topbar,
+  html body[data-app-route="more"].v69-primary-tool-header #app > .topbar,
+  html body.v10-header-collapsed[data-app-route="more"] #app > .topbar,
+  html body.v10-header-collapsed[data-app-route="more"] .app-shell > .topbar{
+    display:block!important;
+    visibility:visible!important;
+    opacity:1!important;
+    position:sticky!important;
+    position:-webkit-sticky!important;
+    top:0!important;
+    left:auto!important;
+    right:auto!important;
+    bottom:auto!important;
+    transform:none!important;
+    translate:none!important;
+    scale:1!important;
+    z-index:2147483000!important;
+    pointer-events:auto!important;
+  }
+
+  /* Título e icono no desaparecen aunque otro módulo marque header colapsado. */
+  html body[data-app-route="more"] .topbar::after,
+  html body.v10-header-collapsed[data-app-route="more"] .topbar::after,
+  html body[data-app-route="more"] .topbar .profile-button,
+  html body.v10-header-collapsed[data-app-route="more"] .topbar .profile-button{
+    display:block!important;
+    visibility:visible!important;
+    opacity:1!important;
+  }
+
+  /* El menú sí se desplaza normalmente por debajo de la cabecera. */
+  html body[data-app-route="more"] .v19-more-page{
+    position:relative!important;
+    height:auto!important;
+    min-height:0!important;
+    max-height:none!important;
+    overflow:visible!important;
+  }
+
+  /* Mantener Más sin flechitas añadidas en los renglones. */
+  html body[data-app-route="more"] .v19-more-item::after{
+    content:none!important;
+    display:none!important;
+    visibility:hidden!important;
+    opacity:0!important;
+  }
+}
