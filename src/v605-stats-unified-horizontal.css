@@ -143,3 +143,173 @@
     max-width:86%!important;
   }
 }
+
+
+/* V659 — Estadísticas: dimensiones 100% unificadas entre General / Equipo / Jugadores. */
+@media(max-width:1023px){
+  body.v33-data-active .v33-general-content .v33-carousel,
+  body.v33-data-active .v593-detail-carousel{
+    display:flex!important;
+    flex-wrap:nowrap!important;
+    gap:14px!important;
+    overflow-x:auto!important;
+    overflow-y:hidden!important;
+    padding:0 6px 10px!important;
+    scroll-snap-type:x mandatory!important;
+    scroll-padding-inline:6px!important;
+    -webkit-overflow-scrolling:touch!important;
+    scrollbar-width:none!important;
+  }
+
+  body.v33-data-active .v33-general-content .v33-carousel .v33-stat-card,
+  body.v33-data-active .v593-detail-carousel .v33-stat-card{
+    flex:0 0 82%!important;
+    width:82%!important;
+    min-width:82%!important;
+    max-width:82%!important;
+    margin:0!important;
+    border-radius:19px!important;
+    scroll-snap-align:start!important;
+    background:linear-gradient(180deg,#1320a2 0%,#0c1886 100%)!important;
+    box-sizing:border-box!important;
+  }
+
+  body.v33-data-active .v33-general-content .v33-carousel .v33-stat-card>h3,
+  body.v33-data-active .v593-detail-carousel .v33-stat-card>h3{
+    min-height:66px!important;
+    display:flex!important;
+    align-items:center!important;
+    padding:17px 20px 13px!important;
+    font-size:18px!important;
+    line-height:1.1!important;
+    box-sizing:border-box!important;
+  }
+
+  body.v33-data-active .v33-general-content .v33-carousel .v33-stat-list,
+  body.v33-data-active .v593-detail-carousel .v33-stat-list{
+    padding:4px 18px 2px!important;
+  }
+
+  body.v33-data-active .v33-general-content .v33-carousel .v33-stat-row,
+  body.v33-data-active .v593-detail-carousel .v33-stat-row{
+    min-height:54px!important;
+    grid-template-columns:18px 36px minmax(0,1fr) auto!important;
+    gap:7px!important;
+    padding:5px 0!important;
+    box-sizing:border-box!important;
+  }
+
+  body.v33-data-active .v33-general-content .v33-carousel .v33-rank,
+  body.v33-data-active .v593-detail-carousel .v33-rank{
+    font-size:12px!important;
+  }
+
+  body.v33-data-active .v33-general-content .v33-carousel .v33-stat-row > .v33-team-logo:not(.v33-inline-team-logo),
+  body.v33-data-active .v33-general-content .v33-carousel .v33-stat-row.player > .v33-player-team-logo.v576-player-avatar,
+  body.v33-data-active .v593-detail-carousel .v33-stat-row > .v33-team-logo:not(.v33-inline-team-logo),
+  body.v33-data-active .v593-detail-carousel .v33-stat-row.player > .v33-player-team-logo.v576-player-avatar{
+    width:34px!important;
+    height:34px!important;
+    min-width:34px!important;
+    min-height:34px!important;
+    max-width:34px!important;
+    max-height:34px!important;
+    flex:0 0 34px!important;
+    aspect-ratio:1/1!important;
+  }
+
+  body.v33-data-active .v33-general-content .v33-carousel .v33-row-copy b,
+  body.v33-data-active .v593-detail-carousel .v33-row-copy b{
+    font-size:13px!important;
+    line-height:1.12!important;
+  }
+
+  body.v33-data-active .v33-general-content .v33-carousel .v33-row-copy small,
+  body.v33-data-active .v593-detail-carousel .v33-row-copy small{
+    font-size:9px!important;
+    line-height:1.08!important;
+  }
+
+  body.v33-data-active .v33-general-content .v33-carousel .v33-stat-row>strong,
+  body.v33-data-active .v593-detail-carousel .v33-stat-row>strong{
+    font-size:16px!important;
+  }
+
+  body.v33-data-active .v33-general-content .v33-carousel .v33-see-all,
+  body.v33-data-active .v593-detail-carousel .v33-see-all{
+    min-height:50px!important;
+    padding:10px 20px 14px!important;
+    font-size:12px!important;
+    box-sizing:border-box!important;
+  }
+}
+
+@media(max-width:430px){
+  body.v33-data-active .v33-general-content .v33-carousel .v33-stat-card,
+  body.v33-data-active .v593-detail-carousel .v33-stat-card{
+    flex:0 0 86%!important;
+    width:86%!important;
+    min-width:86%!important;
+    max-width:86%!important;
+  }
+
+  body.v33-data-active .v33-general-content .v33-carousel .v33-stat-card>h3,
+  body.v33-data-active .v593-detail-carousel .v33-stat-card>h3{
+    min-height:59px!important;
+    padding:15px 16px 12px!important;
+    font-size:17px!important;
+  }
+
+  body.v33-data-active .v33-general-content .v33-carousel .v33-stat-list,
+  body.v33-data-active .v593-detail-carousel .v33-stat-list{
+    padding:4px 15px 2px!important;
+  }
+
+  body.v33-data-active .v33-general-content .v33-carousel .v33-stat-row,
+  body.v33-data-active .v593-detail-carousel .v33-stat-row{
+    min-height:52px!important;
+    grid-template-columns:18px 34px minmax(0,1fr) auto!important;
+    gap:7px!important;
+    padding:5px 0!important;
+  }
+
+  body.v33-data-active .v33-general-content .v33-carousel .v33-rank,
+  body.v33-data-active .v593-detail-carousel .v33-rank{
+    font-size:11px!important;
+  }
+
+  body.v33-data-active .v33-general-content .v33-carousel .v33-stat-row > .v33-team-logo:not(.v33-inline-team-logo),
+  body.v33-data-active .v33-general-content .v33-carousel .v33-stat-row.player > .v33-player-team-logo.v576-player-avatar,
+  body.v33-data-active .v593-detail-carousel .v33-stat-row > .v33-team-logo:not(.v33-inline-team-logo),
+  body.v33-data-active .v593-detail-carousel .v33-stat-row.player > .v33-player-team-logo.v576-player-avatar{
+    width:32px!important;
+    height:32px!important;
+    min-width:32px!important;
+    min-height:32px!important;
+    max-width:32px!important;
+    max-height:32px!important;
+    flex:0 0 32px!important;
+  }
+
+  body.v33-data-active .v33-general-content .v33-carousel .v33-row-copy b,
+  body.v33-data-active .v593-detail-carousel .v33-row-copy b{
+    font-size:12px!important;
+  }
+
+  body.v33-data-active .v33-general-content .v33-carousel .v33-row-copy small,
+  body.v33-data-active .v593-detail-carousel .v33-row-copy small{
+    font-size:8.5px!important;
+  }
+
+  body.v33-data-active .v33-general-content .v33-carousel .v33-stat-row>strong,
+  body.v33-data-active .v593-detail-carousel .v33-stat-row>strong{
+    font-size:15px!important;
+  }
+
+  body.v33-data-active .v33-general-content .v33-carousel .v33-see-all,
+  body.v33-data-active .v593-detail-carousel .v33-see-all{
+    min-height:50px!important;
+    padding:10px 20px 14px!important;
+    font-size:12px!important;
+  }
+}
