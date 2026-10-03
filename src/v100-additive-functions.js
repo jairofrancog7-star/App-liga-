@@ -2166,7 +2166,7 @@ async function v190RecruitGeneratedBlob(root){
   const c=document.createElement('canvas');c.width=1080;c.height=1350;
   const x=c.getContext('2d');
 
-  // Fondo institucional con profundidad y una franja de luz.
+  // Fondo institucional.
   const g=x.createLinearGradient(0,0,1080,1350);
   g.addColorStop(0,'#02075a');g.addColorStop(.42,'#0b2494');g.addColorStop(1,'#030744');
   x.fillStyle=g;x.fillRect(0,0,c.width,c.height);
@@ -2175,8 +2175,17 @@ async function v190RecruitGeneratedBlob(root){
   x.fillStyle=glow;x.fillRect(0,0,c.width,c.height);
   x.strokeStyle='#3be7f2';x.lineWidth=5;x.strokeRect(42,42,996,1266);
 
+  // Logo sin deformación: conserva siempre su proporción original.
   const league=await v200LeagueLogoTransparent();
-  if(league){x.save();x.globalAlpha=1;x.drawImage(league,72,70,132,132);x.restore()}
+  if(league){
+    const boxX=72,boxY=70,boxW=132,boxH=132;
+    const nw=league.naturalWidth||league.width||boxW;
+    const nh=league.naturalHeight||league.height||boxH;
+    const scale=Math.min(boxW/nw,boxH/nh);
+    const dw=Math.max(1,nw*scale),dh=Math.max(1,nh*scale);
+    const dx=boxX+(boxW-dw)/2,dy=boxY+(boxH-dh)/2;
+    x.save();x.globalAlpha=1;x.drawImage(league,dx,dy,dw,dh);x.restore();
+  }
 
   // Encabezado oficial.
   x.fillStyle='#66f1f5';x.font='900 25px Arial';
@@ -2184,39 +2193,47 @@ async function v190RecruitGeneratedBlob(root){
   x.fillStyle='rgba(255,255,255,.78)';x.font='800 20px Arial';
   x.fillText('CONVOCATORIA OFICIAL · TEMPORADA 2026–2027',232,145);
 
-  // Titular más grande y con jerarquía clara.
+  // Titular.
   x.fillStyle='#fff';x.font='900 66px Arial';
   x.fillText('¡ÚNETE A LA LIGA!',72,282);
   x.fillStyle='#61eef4';x.font='900 31px Arial';
   x.fillText(v190RecruitKindLabel(cdata.kind),74,334);
 
-  // Bloque principal de invitación.
-  x.fillStyle='rgba(255,255,255,.075)';x.fillRect(72,378,936,330);
-  x.strokeStyle='rgba(97,238,244,.48)';x.lineWidth=2;x.strokeRect(72,378,936,330);
+  // Invitación: todo el texto queda dentro del cuadro, sin salirse ni encimarse.
+  const inviteY=378,inviteH=350;
+  x.fillStyle='rgba(255,255,255,.075)';x.fillRect(72,inviteY,936,inviteH);
+  x.strokeStyle='rgba(97,238,244,.48)';x.lineWidth=2;x.strokeRect(72,inviteY,936,inviteH);
+  x.save();
+  x.beginPath();x.rect(90,inviteY+14,900,inviteH-28);x.clip();
   x.fillStyle='#fff';x.font='900 38px Arial';
-  wrapText(x,cdata.title,108,448,860,49,3);
-  x.fillStyle='rgba(244,247,255,.96)';x.font='700 31px Arial';
-  wrapText(x,cdata.message,108,548,860,44,5);
+  wrapText(x,cdata.title,108,448,860,48,2);
+  x.fillStyle='rgba(244,247,255,.96)';x.font='700 28px Arial';
+  wrapText(x,cdata.message,108,535,860,39,5);
+  x.restore();
 
-  // Categorías.
-  x.fillStyle='#61eef4';x.font='900 24px Arial';x.fillText('CATEGORÍAS ABIERTAS',76,770);
-  x.fillStyle='#fff';x.font='800 29px Arial';
-  wrapText(x,v190RecruitCategories().join('  ·  '),76,818,920,41,3);
+  // Categorías con separación real del cuadro anterior.
+  x.fillStyle='#61eef4';x.font='900 24px Arial';x.fillText('CATEGORÍAS ABIERTAS',76,775);
+  x.fillStyle='#fff';x.font='800 28px Arial';
+  wrapText(x,v190RecruitCategories().join('  ·  '),76,820,920,39,3);
 
-  // Información presencial: sin teléfono.
-  x.fillStyle='rgba(0,0,0,.27)';x.fillRect(72,900,936,220);
-  x.strokeStyle='rgba(97,238,244,.32)';x.strokeRect(72,900,936,220);
-  x.fillStyle='#61eef4';x.font='900 24px Arial';x.fillText('INFORMACIÓN Y REGISTRO',108,950);
-  x.fillStyle='#fff';x.font='900 35px Arial';x.fillText('JUNTAS DE LA LIGA · TODOS LOS MARTES',108,1002);
-  x.fillStyle='rgba(244,247,255,.94)';x.font='800 29px Arial';x.fillText('Unidad Deportiva Sur · Juventino Rosas, Gto.',108,1050);
-  x.fillStyle='rgba(226,234,255,.90)';x.font='700 23px Arial';
-  wrapText(x,'Acude personalmente para conocer requisitos, registro, categorías y proceso de ingreso.',108,1090,850,31,2);
+  // Información presencial: cuadro independiente y contenido contenido dentro.
+  const infoY=900,infoH=215;
+  x.fillStyle='rgba(0,0,0,.27)';x.fillRect(72,infoY,936,infoH);
+  x.strokeStyle='rgba(97,238,244,.32)';x.strokeRect(72,infoY,936,infoH);
+  x.save();
+  x.beginPath();x.rect(92,infoY+12,896,infoH-24);x.clip();
+  x.fillStyle='#61eef4';x.font='900 24px Arial';x.fillText('INFORMACIÓN Y REGISTRO',108,948);
+  x.fillStyle='#fff';x.font='900 34px Arial';x.fillText('JUNTAS DE LA LIGA · TODOS LOS MARTES',108,998);
+  x.fillStyle='rgba(244,247,255,.94)';x.font='800 28px Arial';x.fillText('Unidad Deportiva Sur · Juventino Rosas, Gto.',108,1044);
+  x.fillStyle='rgba(226,234,255,.90)';x.font='700 22px Arial';
+  wrapText(x,'Acude personalmente para conocer requisitos, registro, categorías y proceso de ingreso.',108,1084,850,29,2);
+  x.restore();
 
-  // Página oficial como contacto principal.
-  x.fillStyle='#61eef4';x.font='900 22px Arial';x.fillText('PÁGINA OFICIAL',78,1180);
-  x.fillStyle='#fff';x.font='900 33px Arial';x.fillText('www.juventinorosasliga.com',78,1228);
+  // Página oficial.
+  x.fillStyle='#61eef4';x.font='900 22px Arial';x.fillText('PÁGINA OFICIAL',78,1175);
+  x.fillStyle='#fff';x.font='900 32px Arial';x.fillText('www.juventinorosasliga.com',78,1222);
   x.fillStyle='rgba(255,255,255,.68)';x.font='20px Arial';
-  x.fillText('Consulta categorías, jornadas, resultados y avisos oficiales.',78,1270);
+  x.fillText('Consulta categorías, jornadas, resultados y avisos oficiales.',78,1262);
 
   return canvasBlob(c);
 }
