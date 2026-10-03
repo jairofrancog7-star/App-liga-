@@ -755,6 +755,7 @@ function newSanction(){
    '<label style="grid-column:1/-1" data-x-matches-wrap><span>Partidos de suspensión</span><input type="number" min="1" max="999" inputmode="numeric" data-x-matches value="'+esc(old.matches||1)+'"></label>'+
    '<label style="grid-column:1/-1" data-x-until-wrap hidden><span>Suspensión hasta</span><input type="date" data-x-until value="'+esc(old.until||'')+'"></label>'+
   '</div><div class="v105-actions"><button class="v105-btn" data-x-save>Guardar borrador</button><button class="v105-btn alt" data-x-discipline>Abrir disciplina oficial</button></div>');
+ m.classList.add('v639-sanction-modal');
 
  const search=$('[data-x-search]',m),cat=$('[data-x-cat]',m),team=$('[data-x-team]',m),player=$('[data-x-player]',m),count=$('[data-x-count]',m);
  const type=$('[data-x-type]',m),reason=$('[data-x-reason]',m),detailWrap=$('[data-x-reason-detail-wrap]',m),detail=$('[data-x-reason-detail]',m);
