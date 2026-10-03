@@ -1193,3 +1193,34 @@ body[data-app-route="credentialBuilder"] .v196-preview-head em{
   }
   .v100-install-footnote{padding-bottom:8px}
 }
+
+
+/* V675 — shortcut help */
+.v100-shortcut-assist{
+  margin-top:11px;padding:12px;border-radius:16px;
+  background:linear-gradient(135deg,rgba(48,210,235,.10),rgba(13,26,112,.72));
+  border:1px solid rgba(76,228,242,.22)
+}
+.v100-shortcut-assist>div:first-child{display:grid;grid-template-columns:34px 1fr;gap:9px;align-items:center}
+.v100-shortcut-assist>div:first-child>span{
+  width:34px;height:34px;border-radius:11px;display:grid;place-items:center;
+  background:rgba(69,227,239,.12);border:1px solid rgba(69,227,239,.2);font-size:17px
+}
+.v100-shortcut-assist p{margin:0;display:grid;gap:2px}
+.v100-shortcut-assist b{font-size:11px}
+.v100-shortcut-assist small{font-size:9px;line-height:1.4;color:#aebde0}
+.v100-shortcut-assist-actions{display:grid!important;grid-template-columns:1fr 1fr;gap:7px;margin-top:10px}
+.v100-shortcut-assist-actions .v100-secondary{min-height:38px;font-size:9px;padding:0 9px}
+.v100-shortcut-help{display:grid;gap:8px;margin-top:12px}
+.v100-shortcut-help>div{
+  display:grid;grid-template-columns:32px 1fr;gap:9px;align-items:center;
+  padding:10px 11px;border-radius:13px;background:#081263;border:1px solid rgba(255,255,255,.09)
+}
+.v100-shortcut-help>div>b{
+  width:28px;height:28px;border-radius:50%;display:grid;place-items:center;
+  background:#45e3ef;color:#06105c;font-size:11px
+}
+.v100-shortcut-help>div>span{font-size:10px;line-height:1.4;color:#d6def1}
+@media(max-width:520px){
+  .v100-shortcut-assist-actions{grid-template-columns:1fr}
+}
