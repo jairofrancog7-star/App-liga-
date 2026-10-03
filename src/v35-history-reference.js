@@ -222,6 +222,13 @@ const HIST_USER_LOGO_SALVAJES='./assets/history/team-logos/salvajes.webp';
 const HIST_USER_LOGO_TECOS='./assets/history/team-logos/tecos.webp';
 const HIST_USER_LOGO_XOLOS='./assets/history/team-logos/xolos-jaralillo.webp';
 const APP_HISTORIC_LOGOS={
+  'olimpicos':'./assets/history/team-logos/legacy-2015-olimpicos-pozos.webp',
+  'olimpicos de pozos':'./assets/history/team-logos/legacy-2015-olimpicos-pozos.webp',
+  'puros cuates':'./assets/history/team-logos/legacy-2015-puros-cuates.webp',
+  'mazacotes':'./assets/history/team-logos/legacy-2015-mazacotes.webp',
+  'mazacotes fc':'./assets/history/team-logos/legacy-2015-mazacotes.webp',
+  'cerrito':'./assets/history/team-logos/legacy-2015-cerrito.webp',
+  'cerrito de g':'./assets/history/team-logos/legacy-2015-cerrito.webp',
   'salvajes':HIST_USER_LOGO_SALVAJES,
   'salvaje':HIST_USER_LOGO_SALVAJES,
   'tecos':HIST_USER_LOGO_TECOS,
@@ -893,7 +900,21 @@ function canonicalHistoricName(name){
     'san antonio r jr':'San Antonio Jr.',
     'deportivo la cuadrilla':'La Cuadrilla',
     'deportivo oklahoma':'Oklahoma',
-    'terricolas seder':'Terrícolas SEDER'
+    'terricolas seder':'Terrícolas SEDER',
+    'dep okc':'Dep. OKC',
+    'deportivo okc':'Dep. OKC',
+    'dep lagartos':'Deportivo Lagartos',
+    'deportivo lagartos':'Deportivo Lagartos',
+    'a pozos':'Atlético Pozos',
+    'atletico pozos':'Atlético Pozos',
+    'inter de milan':'Inter de Milán',
+    'herbalife sc':'Herbalife',
+    'herbalife s c':'Herbalife',
+    'cerrito de g':'Cerrito de Gasca',
+    'dulces n':'Dulces Nombres',
+    'sn antonio':'San Antonio',
+    'sn antonio jr':'San Antonio Jr.',
+    'sn j de allende':'San José de Allende'
   };
   return aliases[k]||String(name||'').trim();
 }
@@ -926,6 +947,10 @@ const historicalTeamEras=[
   {period:'2013 · tablas J18/J24/J26 aportadas',category:'Intermedia',teams:['Birds Eye','Puros Cuates','Populares','Valencia','Dulces Nombres','La Cuadrilla','El Alto','San Antonio Jr.','Barza','Malvinas','Halcones de Cuenda','Atlas','Deportivo Pozos','Cerritos de Cuenda','Atlético Galeana','Manchester']},
   {period:'oct–dic 2013 · roles aportados',category:'Veteranos, Primera, Intermedia, Segunda y amistosos',teams:['UNAM','Aldama','Dynamo','Magisterio','La Esperanza','Picosos','Hermanos','Cuenda','Guadalajara','Boavista','Barcelona','Sección XIV','Linces','PSV','Cerrito de Gasca','San Antonio','Mazacotes','Terrícolas','La Pandilla','A. Centeno','Juventus','Abejas','Olímpicos','Chelsea','Jaralillo','Populares','El Alto','Deportivo Cerritos','Malvinas','Dulces Nombres','Birds Eye','Puros Cuates','Barza','La Cuadrilla','Galeana','Atlas','Valencia','Halcones de Cuenda','Manchester','San Antonio Jr.','Deportivo Pozos','Tavera','Deportivo Aldama','Río Grande','Real Cerrito de Gasca','Morales','Toros','Salvajes','DHP','Continental','San Juan FC','Oklahoma','Unión Allende','San José de la Montaña','Novatos','San José de Allende','Rincón de Centeno','Romerillo']},
   {period:'12 ene–09 feb 2014 · Torneo de Copa aportado',category:'Veteranos, Primera Fuerza, Fuerza Intermedia y Segunda Fuerza',teams:['UNAM','Hermanos','Guadalajara','La Esperanza','Barcelona','Dynamo','Sección XIV','Aldama','Boavista','Magisterio','Cuenda','Picosos','Juventus','Birds Eye','Linces','Olímpicos','El Alto','Jaralillo','Chelsea','Mazacotes','Abejas','A. Centeno','PSV','San Antonio de Romerillo','Cerrito de Gasca','La Pandilla','Real Cerrito de Gasca','Dulces Nombres','Valencia','Terrícolas','Atlas','San Antonio Jr.','SEP Pozos','Populares','San José de la Montaña','Malvinas','Halcones','La Cuadrilla','Barza','Puros Cuates','Galeana','Birds Eye Jr.','Morales','Osasuna','Oklahoma','San José de Allende','Tavera','Continental','Río Grande','Novatos','DHP','Toros','San Juan FC','Salvajes','San Julián']},
+  {period:'2020 · Rol de Copa aportado',category:'Primera Fuerza · Grupos A y B',teams:['Juventus','A. Centeno','Boavista','La Pandilla','La Cuadrilla','Lobos CDG','Tecos','PSV','Hermanos','La Esperanza','Abejas','Malvinas','Napoli','Atlético Río Grande','Chelsea','Galácticos']},
+  {period:'2020 · Rol de Copa aportado',category:'Fuerza Intermedia · Grupos A y B',teams:['Barza','Populares','Sección XIV','Atlético Pozos','Galaxy','Linces','Dep. OKC','Mazacotes FC','La Huerta','El Alto','Mineros FC','San Antonio Jr.']},
+  {period:'2020–2021 · roles aportados',category:'Veteranos, Primera, Intermedia y Segunda',teams:['Real Cuenda','Arsenal','Átomos','Dynamo','Guadalajara','UNAM','Deportivo Lagartos','Barrio Seco','Manchester','Boavista','PSV','Hermanos','La Esperanza','Chelsea','Abejas','Tavera FC','La Cuadrilla','Napoli','Populares','Linces','Tecos','Galácticos','Barza','Mazacotes FC','San Antonio de Romerillo','Mineros FC','Oklahoma','Sección XIV','Deportivo Maravillas','La Huerta','Malvinas','Atlético Pozos','Atlético San Julián','San Antonio FC','La Esperanza Jr.','Tapatío','Galeana','Deportivo Cerrito','Osasuna','Terrícolas SEDER','Unión','San Juan FC']},
+  {period:'2020 · inauguración / rol aportado',category:'Equipos confirmados en la lista de ubicación',teams:['Abejas','Birds Eye','Boavista','Cerrito de Gasca','Chelsea','El Alto','Hermanos','Juventus','La Esperanza','La Pandilla','Linces','Mazacotes FC','Napoli','Olímpicos de Pozos','PSV','Puros Cuates','San Antonio','Terrícolas SEDER','Xolos Jaralillo','La Cuadrilla','San Antonio Jr.','Barza','DHP','A. Centeno','Tavera FC','Halcones','Dulces Nombres','Populares','Malvinas','Real Cerrito','Birds Eye Jr.','Cerritos','Atlético Galeana','Herbalife','Inter de Milán','Morales','Novatos','Oklahoma','Osasuna','Porto','Portugal','Río Grande','San Antonio FC','San José de Allende','San Julián','Tecos','Toros']},
   {period:'2014 · Jornada 11',category:'Primera Fuerza',teams:['Juventus','La Esperanza','Chelsea','Hermanos','Boavista','Abejas','PSV','Linces','Olímpicos','Centeno','El Alto','Jaralillo','Birds Eye','Mazacotes','Cerrito de Gasca','San Antonio']},
   {period:'2014',category:'Intermedia',teams:['La Pandilla','La Cuadrilla','San José de la Montaña','Puros Cuates','Populares','Real Cerrito de Gasca','Dulces Nombres','Halcones de Cuenda','Terrícolas','Malvinas','San Antonio Jr.','Barza','Atlas','Deportivo Pozos','SEP Pozos','Valencia']},
   {period:'2014',category:'Veteranos',teams:['Dynamo','Hermanos','Magisterio','La Esperanza','UNAM','Picosos','Aldama','Boavista','Sección XIV','Valedores','Cuenda','Combinado']},
@@ -978,7 +1003,8 @@ const allHistoricalTeams2012Plus=[...new Set(
     .filter(g=>!String(g.period).startsWith('1987'))
     .flatMap(g=>g.teams)
     .concat([
-      'Real DHP','Vatos Locos','Tecos','Oklahoma','Mineros','Barza','San Antonio','Osasuna',
+      'Dep. OKC','Atlético Pozos','Deportivo Lagartos','Inter de Milán','Herbalife SC',
+  'Real DHP','Vatos Locos','Tecos','Oklahoma','Mineros','Barza','San Antonio','Osasuna',
       'Mazacotes','Titanes Tavera','Morales','Populares','A. Centeno','Chelsea','La Cuadrilla',
       'PSV','Sección 14','Dep. Maravillas','La Esperanza FC','A. Pozos','Galaxy','San Juan FC',
       'Tapatío','Guadalupanos','Barrio Seco','UNAM','Átomos','Deportivo Rafa','Arsenal',
@@ -2338,7 +2364,10 @@ const HISTORIC_TEAM_LINEAGES=[
   {key:'san-juan-fc',display:'San Juan FC',aliases:['San Juan FC','San Juan F.C.'],note:'San Juan FC'},
   {key:'oklahoma',display:'Oklahoma',aliases:['Oklahoma','Deportivo Oklahoma'],note:'Oklahoma / Deportivo Oklahoma'},
   {key:'la-cuadrilla',display:'La Cuadrilla',aliases:['La Cuadrilla','Deportivo La Cuadrilla'],note:'La Cuadrilla / Deportivo La Cuadrilla'},
-  {key:'el-alto',display:'El Alto',aliases:['El Alto','Dep. El Alto','Deportivo El Alto'],note:'El Alto / Deportivo El Alto'}
+  {key:'el-alto',display:'El Alto',aliases:['El Alto','Dep. El Alto','Deportivo El Alto'],note:'El Alto / Deportivo El Alto'},
+  {key:'atletico-pozos',display:'Atlético Pozos',aliases:['A. Pozos','Atl. Pozos','Atlético Pozos'],note:'A. Pozos → Atlético Pozos'},
+  {key:'dep-lagartos',display:'Deportivo Lagartos',aliases:['Dep. Lagartos','Deportivo Lagartos'],note:'Dep. Lagartos → Deportivo Lagartos'},
+  {key:'herbalife',display:'Herbalife',aliases:['Herbalife','Herbalife SC','Herbalife S.C.','Herbalife FC'],note:'Herbalife SC / FC → Herbalife'}
 ];
 const HISTORIC_TEAM_LINEAGE_BY_ALIAS=(()=>{
   const map=new Map();
