@@ -920,6 +920,14 @@ function canonicalHistoricName(name){
     'sn antonio':'San Antonio',
     'sn antonio jr':'San Antonio Jr.',
     'sn j de allende':'San José de Allende',
+    'real de hp':'Real DHP',
+    'titanes de t':'Titanes Tavera',
+    'titanes de tavera':'Titanes Tavera',
+    'minero':'Mineros FC',
+    'masacotes':'Mazacotes FC',
+    'barsa':'Barza',
+    'tecas':'Tecos',
+    'dep toros':'Toros',
     'rambitos':'Rambitos FC',
     'rambitos fc':'Rambitos FC',
     'taquikardios':'Takicardios',
@@ -1024,6 +1032,9 @@ const historicalTeamEras=[
   {period:'2018–2023',category:'Roles y tablas complementarias',teams:['Deportivo Maravillas','A. Pozos','Galaxy','Tapatío','Guadalupanos','Deportivo Pozos','Universidad','Valencia','Halcones','Galácticos FC','Sección 14','San Juan FC']},
   // V704 — tabla histórica aportada por el usuario: Jornada 4 (archivo de 2020).
   {period:'2020 · Jornada 4 · tablas aportadas',category:'Primera, Intermedia, Segunda y Veteranos · nombres recuperados',teams:['Boavista','Juventus','A. Centeno','La Pandilla','PSV','Lobos CDG','Tecos','La Cuadrilla','Galácticos','Napoli','La Esperanza','Abejas','Hermanos','Atlético Río Grande','Chelsea','Malvinas','Tavera Jr.','Club de Leones','La Esperanza Jr.','León FC','Toros FC','Osasuna','Galeana','San Juan FC','Terrícolas SEDER','Amigos World','River Plate','Deportivo Cerrito','Inter de Morales','San Antonio FC','Tapatío','Arsenal','Barrio Seco','Real Cuenda','Dynamo','Deportivo Lagartos','UNAM','Guadalajara','Átomos']},
+  // V709 — cruce detallado de 25 imágenes de Google Drive aportadas por el usuario.
+  // Conserva nombres tal como aparecen en los roles/tablas; los alias claros se agrupan por linaje en Récords.
+  {period:'2014–2022 · 25 imágenes de Drive · cruce final de nombres',category:'Equipos y variantes históricas recuperadas',teams:['Dep. Santa Cruz','Franco-Tavera','Dep. OKC','Funerales','Dep. Raymundo F.','Tecos Pozos','Titanes de T.','Real de HP','Minero','Masacotes','Barsa','Tecas','Lobos']},
   {period:'2022',category:'Veteranos · tabla final',teams:['Juventus','Hermanos','América','Dynamo','PSV','Deportivo Rafa','Boavista','Arsenal','Cuenda','Barrio Seco','UNAM','Átomos']},
   {period:'Archivo 2022–2023 · Tecos Jr. · roles dominicales',category:'Amistosos / archivo de jornadas',teams:['Tecos Jr.']},
   {period:'2019',category:'Veteranos · Final de Copa',teams:['Chelsea','La Esperanza']},
@@ -2417,16 +2428,20 @@ const HISTORIC_TEAM_LINEAGES=[
   {key:'galacticos-pozos',display:'Galácticos de Pozos',aliases:['Galácticos','Galacticos','Galácticos FC','Galacticos FC','Galácticos (Pozos)','Galacticos (Pozos)','Galácticos de Pozos','Galacticos de Pozos'],note:'Galácticos / Galácticos FC → Galácticos de Pozos'},
   {key:'promesas',display:'Promesas FC',aliases:['Promesas','Promesas FC','Promesas de Pozos'],note:'Promesas / Promesas de Pozos → Promesas FC'},
   {key:'san-antonio-jrs',display:'San Antonio JRS',aliases:['San Antonio Jr.','San Antonio Jr','San Antonio Jrs.','San Antonio JRS'],note:'San Antonio Jr. → San Antonio JRS'},
-  {key:'mazacotes',display:'Mazacotes FC',aliases:['Mazacotes','Mazacotes FC'],note:'Mazacotes → Mazacotes FC'},
-  {key:'mineros',display:'Mineros FC',aliases:['Mineros','Mineros FC','Mineros F. C.'],note:'Mineros → Mineros FC'},
-  {key:'toros',display:'Toros',aliases:['Toros','Deportivo Toros'],note:'Toros / Deportivo Toros'},
+  {key:'mazacotes',display:'Mazacotes FC',aliases:['Mazacotes','Mazacotes FC','Masacotes'],note:'Mazacotes / Masacotes → Mazacotes FC'},
+  {key:'mineros',display:'Mineros FC',aliases:['Minero','Mineros','Mineros FC','Mineros F. C.'],note:'Minero / Mineros → Mineros FC'},
+  {key:'toros',display:'Toros',aliases:['Toros','Dep. Toros','Deportivo Toros'],note:'Toros / Dep. Toros / Deportivo Toros'},
   {key:'san-juan-fc',display:'San Juan FC',aliases:['San Juan FC','San Juan F.C.'],note:'San Juan FC'},
   {key:'oklahoma',display:'Oklahoma',aliases:['Oklahoma','Deportivo Oklahoma'],note:'Oklahoma / Deportivo Oklahoma'},
   {key:'la-cuadrilla',display:'La Cuadrilla',aliases:['La Cuadrilla','Deportivo La Cuadrilla'],note:'La Cuadrilla / Deportivo La Cuadrilla'},
   {key:'el-alto',display:'El Alto',aliases:['El Alto','Dep. El Alto','Deportivo El Alto'],note:'El Alto / Deportivo El Alto'},
   {key:'atletico-pozos',display:'Atlético Pozos',aliases:['A. Pozos','Atl. Pozos','Atlético Pozos'],note:'A. Pozos → Atlético Pozos'},
   {key:'dep-lagartos',display:'Deportivo Lagartos',aliases:['Dep. Lagartos','Deportivo Lagartos'],note:'Dep. Lagartos → Deportivo Lagartos'},
-  {key:'herbalife',display:'Herbalife',aliases:['Herbalife','Herbalife Sta. Cruz','Herbalife Santa Cruz','Herbalife SC','Herbalife S.C.','Herbalife FC'],note:'Herbalife Sta. Cruz / Herbalife SC / FC → Herbalife'}
+  {key:'herbalife',display:'Herbalife',aliases:['Herbalife','Herbalife Sta. Cruz','Herbalife Santa Cruz','Herbalife SC','Herbalife S.C.','Herbalife FC'],note:'Herbalife Sta. Cruz / Herbalife SC / FC → Herbalife'},
+  {key:'real-dhp',display:'Real DHP',aliases:['Real DHP','Real de HP'],note:'Real de HP → Real DHP'},
+  {key:'titanes-tavera',display:'Titanes Tavera',aliases:['Titanes Tavera','Titanes de T.','Titanes de Tavera'],note:'Titanes de T. → Titanes Tavera'},
+  {key:'barza',display:'Barza',aliases:['Barza','Barsa'],note:'Barsa → Barza'},
+  {key:'tecos',display:'Tecos',aliases:['Tecos','Tecos FC','Tecas'],note:'Tecas → Tecos'}
 ];
 const HISTORIC_TEAM_LINEAGE_BY_ALIAS=(()=>{
   const map=new Map();
@@ -2504,7 +2519,7 @@ function v370ArchiveTeamsBlock(){
 }
 function recordsBody(){
   return '<section class="v35-block v35-tab-body v35-records-body"><h2 class="v35-section-title">Récords y recuerdos</h2>'+
-    '<article class="v35-stat-card"><h3>Archivo comprobado</h3><p>Esta sección reúne marcas visibles en tablas históricas, recuerdos documentados y el inventario de todos los equipos recuperados del archivo. Un corte de jornada no se presenta como récord absoluto de toda la Liga.</p></article>'+
+    '<article class="v35-stat-card"><h3>Archivo comprobado</h3><p>Esta sección reúne marcas visibles en tablas históricas, recuerdos documentados y el inventario de todos los equipos recuperados del archivo. El catálogo fue cruzado también contra las 25 imágenes históricas de Drive aportadas. Un corte de jornada no se presenta como récord absoluto de toda la Liga.</p></article>'+
     '<div class="v35-record-grid">'+recordMemories.map(r=>'<article class="v35-record-card">'+
       (r.image?'<img src="'+r.image+'" alt="" loading="lazy" decoding="async">':'<span class="v35-record-mark">LM</span>')+
       '<div><small>'+esc(r.tag)+'</small><h3>'+esc(r.title)+'</h3><strong>'+esc(r.value)+'</strong><p>'+esc(r.detail)+'</p></div></article>').join('')+'</div>'+
