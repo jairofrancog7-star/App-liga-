@@ -146,9 +146,23 @@ function patchRecords(root){
       mark.replaceWith(img);
       return;
     }
-    if(card.querySelector('.v672-record-mini-logo'))return;
     const visual=card.querySelector(':scope > img');
     if(!visual)return;
+
+    /* Si la tarjeta no tiene fotografía y la imagen principal ya es el escudo,
+       no agregar el mismo escudo por segunda vez. El mini escudo sólo acompaña
+       a una fotografía/imagen histórica distinta. */
+    let sameLogo=visual.matches('.v672-record-logo,[data-v672-historical-logo="1"]');
+    if(!sameLogo){
+      try{
+        sameLogo=new URL(visual.currentSrc||visual.src,document.baseURI).href===new URL(src,document.baseURI).href;
+      }catch(_){}
+    }
+    if(sameLogo){
+      card.querySelector('.v672-record-mini-logo')?.remove();
+      return;
+    }
+    if(card.querySelector('.v672-record-mini-logo'))return;
     const badge=document.createElement('span');
     badge.className='v672-record-mini-logo';
     badge.title='Escudo histórico · '+team;
