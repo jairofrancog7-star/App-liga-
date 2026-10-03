@@ -4410,7 +4410,7 @@ function momentsView(){
   ];
   return '<section class="v26-moments-page" aria-label="Momentos de la Liga">'+
     '<div class="v26-moments-sticky" aria-label="Cabecera fija de Momentos">'+
-      '<button type="button" class="v26-moments-sticky-back" data-route="more" aria-label="Volver a Más"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15.5 5 8.5 12l7 7"/></svg></button>'+
+      '<button type="button" class="v26-moments-sticky-back" data-route="more" aria-label="Volver a Más"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 12H5"/><path d="m11 5-7 7 7 7"/></svg></button>'+
       '<span class="v561-moments-title">Momentos</span>'+
     '</div>'+
     '<div class="v26-moments-grid">'+cards.map(([set,n,label])=>
