@@ -2305,3 +2305,69 @@ body[data-app-route="club-store"] .v510-store-profile svg{
     height:21px!important;
   }
 }
+
+
+/* V607 — encabezado estable de Registro de jugadores.
+   Evita texto encimado y conserva la misma geometría al cargar fotos/datos. */
+body[data-app-route="players"] .v607-player-head{
+  width:100%!important;
+  display:grid!important;
+  gap:4px!important;
+  margin:0 0 12px!important;
+  padding:3px 2px 12px!important;
+  border-bottom:1px solid rgba(74,104,207,.34)!important;
+  box-sizing:border-box!important;
+}
+body[data-app-route="players"] .v607-player-head>small{
+  display:block!important;
+  margin:0!important;
+  color:#29e0eb!important;
+  font-size:8.5px!important;
+  line-height:1.1!important;
+  font-weight:950!important;
+  letter-spacing:.13em!important;
+}
+body[data-app-route="players"] .v607-player-head>div{
+  min-width:0!important;
+  display:flex!important;
+  align-items:baseline!important;
+  justify-content:space-between!important;
+  gap:10px!important;
+}
+body[data-app-route="players"] .v607-player-head h1{
+  min-width:0!important;
+  margin:0!important;
+  color:#fff!important;
+  font-size:23px!important;
+  line-height:1.02!important;
+  font-weight:900!important;
+  letter-spacing:-.025em!important;
+  white-space:normal!important;
+  overflow-wrap:normal!important;
+}
+body[data-app-route="players"] .v607-player-head>div>span{
+  flex:0 0 auto!important;
+  color:#a8b1d5!important;
+  font-size:8.5px!important;
+  line-height:1.15!important;
+  font-weight:700!important;
+  white-space:nowrap!important;
+}
+body[data-app-route="players"] .v607-player-head>p{
+  margin:0!important;
+  color:#9da8d0!important;
+  font-size:9px!important;
+  line-height:1.25!important;
+}
+body[data-app-route="players"] .v66-filter-title{
+  margin:0 2px 7px!important;
+  color:#fff!important;
+  font-size:10px!important;
+  line-height:1.1!important;
+  letter-spacing:.10em!important;
+}
+@media(max-width:390px){
+  body[data-app-route="players"] .v607-player-head h1{font-size:21px!important}
+  body[data-app-route="players"] .v607-player-head>div{display:grid!important;gap:3px!important}
+  body[data-app-route="players"] .v607-player-head>div>span{white-space:normal!important}
+}
