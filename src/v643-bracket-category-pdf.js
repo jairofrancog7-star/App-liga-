@@ -3,10 +3,10 @@
    reutiliza logos reales y exporta el cuadro con el lenguaje visual de Competición/Simulador. */
 (function(){
 'use strict';
-if(window.__LJR_V643_BRACKET_EXPORT__)return;
-window.__LJR_V643_BRACKET_EXPORT__=true;
+if(window.__LJR_V647_BRACKET_EXPORT__)return;
+window.__LJR_V647_BRACKET_EXPORT__=true;
 
-const BUILD='20261003-v643-bracket-category-pdf';
+const BUILD='20261003-v647-bracket-hd-stages-no-duplicates';
 const CATS=[
   {id:'3',name:'Primera Fuerza',logo:'./assets/branding/primera-fuerza-hd.png'},
   {id:'5',name:'Intermedia',logo:'./assets/categories/intermedia.webp'},
@@ -17,6 +17,7 @@ const CATS=[
 const LEAGUE_LOGO='./assets/liga-logo.webp';
 const TROPHY='./assets/reference/final-trophy-drive.png';
 const TROPHY_FALLBACK='./final-trophy-drive.png';
+const STAGES={quarter:{name:'Cuartos de final',slots:8},semi:{name:'Semifinales',slots:4},final:{name:'Final',slots:2}};
 const imgCache=new Map();
 let mountTimer=0,previewTimer=0,previewToken=0;
 
@@ -199,12 +200,14 @@ function pairConnector(ctx,leftX,yA,yB,rightX,targetY,midX){
 }
 async function drawTeam(ctx,num,name,x,y,w,h){
   const logo=await imageLoad(teamLogo(name));
-  fillR(ctx,x,y,w,h,16,'rgba(18,24,132,.98)','rgba(76,102,225,.8)');
-  fillR(ctx,x+12,y+12,44,44,13,'#080d62','rgba(60,90,220,.65)');
-  if(logo)drawContain(ctx,logo,x+17,y+17,34,34);
-  ctx.fillStyle='#49e8f3';ctx.font='900 14px Arial';ctx.fillText(String(num),x+67,y+28);
+  fillR(ctx,x,y,w,h,13,'rgba(18,24,132,.98)','rgba(76,102,225,.8)');
+  const box=Math.min(34,h-8),by=y+(h-box)/2;
+  fillR(ctx,x+10,by,box,box,9,'#080d62','rgba(60,90,220,.65)');
+  if(logo)drawContain(ctx,logo,x+14,by+4,box-8,box-8);
+  const tx=x+54;
+  ctx.fillStyle='#49e8f3';ctx.font='900 13px Arial';ctx.fillText(String(num),tx,y+17);
   const label=name||'Por confirmar';
-  ctx.fillStyle='#fff';fitFont(ctx,label,w-105,20,12,850);ctx.fillText(label,x+67,y+51);
+  ctx.fillStyle='#fff';fitFont(ctx,label,w-76,18,11,900);ctx.fillText(label,tx,y+h-9);
 }
 
 async function drawBracket(canvas,page){
@@ -229,8 +232,8 @@ async function drawBracket(canvas,page){
   if(catImg)drawContain(ctx,catImg,1510,48,105,105);
 
   ctx.fillStyle='#4ee8f3';ctx.font='900 18px Arial';ctx.fillText('LIGA JUVENTINO ROSAS',184,76);
-  ctx.fillStyle='#fff';ctx.font='900 48px Arial';ctx.fillText('CUADRO FINAL · 8 LUGARES',184,124);
-  ctx.fillStyle='#b9c6ff';ctx.font='800 21px Arial';ctx.fillText(meta.name+' · Eliminación directa',184,158);
+  ctx.fillStyle='#fff';ctx.font='900 48px Arial';ctx.fillText('CUADRO FINAL',184,124);
+  ctx.fillStyle='#b9c6ff';ctx.font='800 21px Arial';ctx.fillText(meta.name,184,158);
   ctx.textAlign='right';ctx.fillStyle='#54eaf4';ctx.font='900 16px Arial';ctx.fillText(meta.name.toUpperCase(),1490,88);ctx.textAlign='left';
   ctx.fillStyle='rgba(255,255,255,.13)';ctx.fillRect(62,190,W-124,2);
 
@@ -268,20 +271,20 @@ async function drawBracket(canvas,page){
   fillR(ctx,fX,fY,fW,fH,24,fg,'rgba(84,233,244,.92)');
   ctx.fillStyle='#72f0f6';ctx.font='900 15px Arial';ctx.fillText('GRAN FINAL',fX+22,fY+32);
   ctx.fillStyle='#fff';ctx.font='900 28px Arial';ctx.fillText('FINAL',fX+22,fY+66);
-  ctx.fillStyle='rgba(255,255,255,.82)';ctx.font='750 13px Arial';ctx.fillText('Ganador SF 1 vs Ganador SF 2',fX+22,fY+91);
+  ctx.fillStyle='rgba(255,255,255,.82)';ctx.font='750 13px Arial';ctx.fillText('Ganador SF 1 vs Ganador SF 2',fX+22,fY+92);
 
   let trophy=await imageLoad(TROPHY);
   if(!trophy)trophy=await imageLoad(TROPHY_FALLBACK);
   if(trophy){
     ctx.save();ctx.shadowColor='rgba(77,235,255,.48)';ctx.shadowBlur=26;
-    drawContain(ctx,trophy,fX+76,fY+72,140,122);ctx.restore();
+    drawContain(ctx,trophy,fX+78,fY+112,136,92);ctx.restore();
   }else{
     ctx.save();ctx.strokeStyle='#c9f8ff';ctx.lineWidth=6;ctx.beginPath();ctx.arc(fX+143,fY+139,38,0,Math.PI*2);ctx.stroke();ctx.restore();
   }
 
   ctx.fillStyle='rgba(255,255,255,.12)';ctx.fillRect(62,1042,W-124,2);
   ctx.fillStyle='#5aeaf4';ctx.font='900 15px Arial';ctx.fillText('CUADRO OFICIAL · '+meta.name.toUpperCase(),62,1082);
-  ctx.fillStyle='#aeb8e8';ctx.font='700 13px Arial';ctx.fillText('Generado desde Liga Juventino Rosas · '+new Date().toLocaleDateString('es-MX'),62,1110);
+  ctx.fillStyle='#aeb8e8';ctx.font='700 13px Arial';ctx.fillText('TORNEO DE COPA · '+new Date().toLocaleDateString('es-MX'),62,1110);
   ctx.textAlign='right';ctx.fillStyle='#fff';ctx.font='900 14px Arial';ctx.fillText('LJR',W-66,1082);ctx.textAlign='left';
   return canvas;
 }
