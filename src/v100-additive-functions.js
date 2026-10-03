@@ -1678,14 +1678,17 @@ function shotmap(){
         '<span><small>GOLES</small><b data-shot-goals>0</b></span>'+
       '</div>'+
       '<div class="v100-shot-mode" role="group" aria-label="Herramienta del tablero">'+
-        '<button type="button" class="active" data-shot-mode="shot"><i></i>Tiro</button>'+
-        '<button type="button" data-shot-mode="target"><i></i>A puerta</button>'+
-        '<button type="button" data-shot-mode="goal"><i></i>Gol</button>'+
+        '<button type="button" class="active shot-mode" data-shot-mode="shot"><i></i>Tiro</button>'+
+        '<button type="button" class="target-mode" data-shot-mode="target"><i></i>A puerta</button>'+
+        '<button type="button" class="goal-mode" data-shot-mode="goal"><i></i>Gol</button>'+
+        '<button type="button" class="player-mode" data-shot-mode="player"><i></i>Jugador</button>'+
+        '<button type="button" class="ball-mode" data-shot-mode="ball"><i></i>Balón</button>'+
         '<button type="button" class="arrow-mode" data-shot-mode="arrow"><i></i>Flecha</button>'+
       '</div>'+
       '<div class="v100-shot-pitch" data-shot-pitch>'+pitchLines+tacticsSvg+'<div class="v100-shot-layer" data-shot-layer></div></div>'+
       '<div class="v100-shot-legend">'+
-        '<span><i class="shot"></i>Tiro</span><span><i class="target"></i>A puerta</span><span><i class="goal"></i>Gol</span><span><i class="arrow"></i>Flecha</span>'+
+        '<span><i class="shot"></i>Tiro</span><span><i class="target"></i>A puerta</span><span><i class="goal"></i>Gol</span>'+
+        '<span><i class="player"></i>Jugador</span><span><i class="ball"></i>Balón</span><span><i class="arrow"></i>Flecha</span>'+
       '</div>'+
       '<div class="v100-shot-edit">'+
         '<span data-shot-help>Arrastra cualquier círculo para moverlo.</span>'+
@@ -1735,7 +1738,7 @@ function shotmap(){
 
   const render=()=>{
     layer.innerHTML=shots.map((s,i)=>{
-      const type=s.type==='goal'?'goal':s.type==='target'?'target':'shot';
+      const type=s.type==='goal'?'goal':s.type==='target'?'target':s.type==='player'?'player':s.type==='ball'?'ball':'shot';
       const sx=clamp(s.x),sy=clamp(s.y);
       const isSel=selected?.kind==='shot'&&selected.index===i;
       return '<button type="button" class="v100-shot-marker '+type+(isSel?' selected':'')+'" data-shot-marker="'+i+'" style="--shot-x:'+sx+'%;--shot-y:'+sy+'%" title="Tiro '+(i+1)+'">'+
@@ -1744,9 +1747,10 @@ function shotmap(){
     }).join('');
     renderArrows();
 
-    const total=shots.length;
-    const target=shots.filter(s=>s.type==='target'||s.type==='goal').length;
-    const goals=shots.filter(s=>s.type==='goal').length;
+    const shotEvents=shots.filter(s=>!['player','ball'].includes(s.type));
+    const total=shotEvents.length;
+    const target=shotEvents.filter(s=>s.type==='target'||s.type==='goal').length;
+    const goals=shotEvents.filter(s=>s.type==='goal').length;
     const t=$('[data-shot-total]',m),a=$('[data-shot-target]',m),g=$('[data-shot-goals]',m);
     if(t)t.textContent=total;if(a)a.textContent=target;if(g)g.textContent=goals;
 
@@ -1759,7 +1763,11 @@ function shotmap(){
           ? 'Flecha seleccionada: arrastra la línea o sus extremos.'
           : shotMode==='arrow'
             ? 'Arrastra sobre la cancha para dibujar una flecha.'
-            : 'Arrastra cualquier círculo para moverlo.';
+            : shotMode==='player'
+              ? 'Toca la cancha para colocar un jugador y arrástralo para moverlo.'
+              : shotMode==='ball'
+                ? 'Toca la cancha para colocar un balón y arrástralo para moverlo.'
+                : 'Toca para registrar el evento y arrástralo para moverlo.';
     }
   };
 
@@ -1974,20 +1982,29 @@ function shotmap(){
 
     shots.forEach((s,i)=>{
       const px=L+clamp(s.x)/100*W,py=T+clamp(s.y)/100*H;
-      const type=s.type==='goal'?'goal':s.type==='target'?'target':'shot';
-      const fill=type==='goal'?'#29e67d':type==='target'?'#38dff1':'#ffd75f';
-      x.fillStyle=fill;x.strokeStyle='#07104d';x.lineWidth=5;
-      x.beginPath();x.arc(px,py,19,0,Math.PI*2);x.fill();x.stroke();
-      x.fillStyle='#07104d';
-      x.beginPath();
-      for(let k=0;k<5;k++){const a=-Math.PI/2+k*Math.PI*2/5,rr=7;x.lineTo(px+Math.cos(a)*rr,py+Math.sin(a)*rr)}
-      x.closePath();x.fill();
-      x.fillStyle='#fff';x.font='700 15px Arial';x.textAlign='center';x.fillText(String(i+1),px,py+35);
+      const type=s.type==='goal'?'goal':s.type==='target'?'target':s.type==='player'?'player':s.type==='ball'?'ball':'shot';
+      if(type==='player'){
+        x.fillStyle='#2159da';x.strokeStyle='#06104d';x.lineWidth=5;
+        x.beginPath();x.arc(px,py,22,0,Math.PI*2);x.fill();x.stroke();
+        x.fillStyle='#fff';
+        x.beginPath();x.arc(px,py-7,6,0,Math.PI*2);x.fill();
+        x.beginPath();x.arc(px,py+12,11,Math.PI,Math.PI*2);x.lineTo(px+11,py+16);x.lineTo(px-11,py+16);x.closePath();x.fill();
+      }else{
+        const fill=type==='goal'?'#29e67d':type==='target'?'#38dff1':type==='ball'?'#ffffff':'#ffd75f';
+        x.fillStyle=fill;x.strokeStyle='#07104d';x.lineWidth=5;
+        x.beginPath();x.arc(px,py,19,0,Math.PI*2);x.fill();x.stroke();
+        x.fillStyle='#07104d';
+        x.beginPath();
+        for(let k=0;k<5;k++){const a=-Math.PI/2+k*Math.PI*2/5,rr=7;x.lineTo(px+Math.cos(a)*rr,py+Math.sin(a)*rr)}
+        x.closePath();x.fill();
+      }
+      x.fillStyle='#fff';x.font='700 15px Arial';x.textAlign='center';x.fillText(String(i+1),px,py+38);
     });
 
     x.fillStyle='rgba(4,13,91,.92)';x.fillRect(0,0,900,36);x.fillRect(0,1264,900,36);
     x.fillStyle='#fff';x.font='700 18px Arial';x.textAlign='left';x.fillText('SHOT MAP · LIGA JUVENTINO ROSAS',35,25);
-    x.textAlign='right';x.fillText('Tiros '+shots.length+' · A puerta '+shots.filter(s=>s.type==='target'||s.type==='goal').length+' · Goles '+shots.filter(s=>s.type==='goal').length+' · Flechas '+arrows.length,865,1288);
+    const shotEvents=shots.filter(s=>!['player','ball'].includes(s.type));
+    x.textAlign='right';x.fillText('Tiros '+shotEvents.length+' · A puerta '+shotEvents.filter(s=>s.type==='target'||s.type==='goal').length+' · Goles '+shotEvents.filter(s=>s.type==='goal').length+' · Jugadores '+shots.filter(s=>s.type==='player').length+' · Balones '+shots.filter(s=>s.type==='ball').length+' · Flechas '+arrows.length,865,1288);
     const b=await canvasBlob(c);download(b,'Shot_Map_Liga.png');
   };
 
