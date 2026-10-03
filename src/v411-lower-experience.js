@@ -24,7 +24,7 @@ const SUPPORTED=new Set([
   'competition','v4-calendar','calendar','monthlyCalendar','calendarMonthly',
   'video','search','players','transfers',
   'v4-matchcenter','matchCenter','match-center','match',
-  'news','more','profile'
+  'news','profile'
 ]);
 let timer=0;
 
@@ -310,7 +310,7 @@ async function matchBlock(){
 /* ===== otras páginas: sólo accesos relacionados ===== */
 function miscBlock(r){
   if(r==='news')return '<section class="v412-module">'+head('ACTUALIDAD','Más noticias','Accesos relacionados con información de la Liga.')+'<div class="v412-simple-grid"><button data-v412-route="competition">Resultados</button><button data-v412-route="transfers">Fichajes</button><button data-v412-route="v4-calendar">Calendario</button><button data-v412-route="notifications">Avisos</button></div></section>';
-  if(r==='more'||r==='profile')return '<section class="v412-module">'+head('EXPLORAR','Secciones de la Liga','Cada herramienta abre su pantalla propia.')+'<div class="v412-simple-grid"><button data-v412-route="video">Liga TV</button><button data-v412-route="transfers">Fichajes</button><button data-v412-route="search">Buscar</button><button data-v412-route="competition">Resultados</button></div></section>';
+  if(r==='profile')return '<section class="v412-module">'+head('EXPLORAR','Secciones de la Liga','Cada herramienta abre su pantalla propia.')+'<div class="v412-simple-grid"><button data-v412-route="video">Liga TV</button><button data-v412-route="transfers">Fichajes</button><button data-v412-route="search">Buscar</button><button data-v412-route="competition">Resultados</button></div></section>';
   return '';
 }
 
