@@ -155,3 +155,60 @@
     box-shadow:none!important;
   }
 }
+
+
+/* V620 — FIX DEFINITIVO Historia:
+   cabecera + Resumen/Temporadas/Campeones/Finales forman UNA sola superficie.
+   El arte superior llega físicamente hasta la línea divisoria; la barra de
+   pestañas ya no tiene fondo propio que pueda crear el corte visto en la captura. */
+@media (max-width:1023px){
+  html body[data-app-route="history"] .v35-history-page,
+  html body[data-app-route="history"] .v35-history-page.v329-videos-active,
+  html body[data-app-route="history"] .v35-history-page.v329-finals-image1,
+  html body[data-app-route="history"] .v35-history-page.v358-finals-reference{
+    --v620-art-h:calc(var(--v361-history-head-h,136px) + var(--v361-history-tabs-h,54px))!important;
+    background-color:#020650!important;
+    background-image:
+      linear-gradient(180deg,rgba(7,37,214,.04) 0%,rgba(5,19,139,.12) 48%,rgba(3,7,72,.42) 100%),
+      url('../public/history-regularscroll-header.webp')!important;
+    background-size:
+      100% var(--v620-art-h),
+      100% var(--v620-art-h)!important;
+    background-position:
+      center top,
+      center top!important;
+    background-repeat:
+      no-repeat,
+      no-repeat!important;
+  }
+
+  /* Desactiva piezas antiguas para que no haya dos fondos superpuestos. */
+  html body[data-app-route="history"] .v35-history-page::before,
+  html body[data-app-route="history"] .v35-history-page.v329-videos-active::before,
+  html body[data-app-route="history"] .v35-history-page.v329-finals-image1::before,
+  html body[data-app-route="history"] .v35-history-page.v358-finals-reference::before{
+    display:none!important;
+    content:none!important;
+  }
+
+  html body[data-app-route="history"] .v35-history-page .v35-history-head,
+  html body[data-app-route="history"] .v35-history-page .v35-tabs,
+  html body[data-app-route="history"] .v35-history-page.is-compact .v35-tabs,
+  html body[data-app-route="history"] .v35-history-page.v329-videos-active .v35-tabs,
+  html body[data-app-route="history"] .v35-history-page.v329-videos-active.is-compact .v35-tabs,
+  html body[data-app-route="history"] .v35-history-page.v329-finals-image1 .v35-tabs,
+  html body[data-app-route="history"] .v35-history-page.v329-finals-image1.is-compact .v35-tabs,
+  html body[data-app-route="history"] .v35-history-page.v358-finals-reference .v35-tabs,
+  html body[data-app-route="history"] .v35-history-page.v358-finals-reference.is-compact .v35-tabs{
+    background:transparent!important;
+    background-color:transparent!important;
+    background-image:none!important;
+    box-shadow:none!important;
+  }
+
+  html body[data-app-route="history"] .v35-history-page .v35-tabs,
+  html body[data-app-route="history"] .v35-history-page.is-compact .v35-tabs{
+    border-top:0!important;
+    border-bottom:1px solid rgba(205,212,255,.30)!important;
+  }
+}
