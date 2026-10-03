@@ -1,4 +1,4 @@
-const CACHE='liga-juventino-v607-shirt-logo-cutout';
+const CACHE='liga-juventino-v611-stream-complete';
 const CORE=['./','./index.html','./manifest.webmanifest','./brand-neon-header.svg','./profile-reference.svg'];
 
 self.addEventListener('install',event=>{
@@ -18,7 +18,7 @@ self.addEventListener('activate',event=>{
 });
 
 self.addEventListener('fetch',event=>{
-  if(event.request.method!=='GET') return;
+  if(event.request.method!=='GET'||new URL(event.request.url).origin!==self.location.origin||event.request.headers.has('Authorization')||new URL(event.request.url).pathname.includes('/api/')) return;
   event.respondWith(
     fetch(event.request)
       .then(response=>{
