@@ -252,7 +252,20 @@ function host(){
 }
 function mount(){
   if(!['v38Weather','weatherFields'].includes(route()))return;
-  const h=host();if(!h||h.querySelector('[data-v668-field-ops]'))return;
+  const h=host();if(!h)return;
+  if(route()==='v38Weather'){
+    const stack=h.querySelector('.v163-weather-stack');
+    if(stack&&!stack.querySelector('[data-v668-entry]')){
+      const entry=document.createElement('button');
+      entry.type='button';
+      entry.className='v163-weather-card v668-entry-card';
+      entry.dataset.v668Entry='1';
+      entry.innerHTML='<span class="v163-weather-card-kicker">🛰️ CHECADORES DE CAMPO</span><strong>Operación física en cancha</strong><p>Checador → reporte con evidencia → presidente → aviso oficial.</p>';
+      stack.appendChild(entry);
+      entry.addEventListener('click',()=>h.querySelector('[data-v668-field-ops]')?.scrollIntoView({behavior:'smooth',block:'start'}));
+    }
+  }
+  if(h.querySelector('[data-v668-field-ops]'))return;
   const wrap=document.createElement('div');wrap.innerHTML=moduleMarkup().trim();
   const mod=wrap.firstElementChild;
   h.appendChild(mod);bind(mod);
