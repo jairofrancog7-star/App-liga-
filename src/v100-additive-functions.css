@@ -332,6 +332,36 @@ body[data-app-route="recruitment"] #screen{
 .v190-publish-card>header h3{margin:0;font-size:17px;color:#fff}
 .v190-publish-card>header p{margin:0;font-size:9px;line-height:1.4;color:#aebde0}
 .v190-publish-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.v190-ai-assist{
+  padding:11px;border:1px solid rgba(93,230,242,.28);border-radius:14px;
+  background:linear-gradient(180deg,#0a1b78,#08125f);display:grid;gap:10px;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.035)
+}
+.v190-ai-assist>header{display:grid;grid-template-columns:34px minmax(0,1fr);gap:9px;align-items:center}
+.v190-ai-assist>header>span{
+  width:34px;height:34px;display:grid;place-items:center;border-radius:10px;
+  background:#1646b7;color:#6cf0f5;font-size:17px;font-weight:950
+}
+.v190-ai-assist>header>div{display:grid;gap:2px;min-width:0}
+.v190-ai-assist>header b{font-size:11px;color:#fff}
+.v190-ai-assist>header small{font-size:7.6px;line-height:1.35;color:#aebce0}
+.v190-ai-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.v190-ai-grid label{display:grid;gap:5px}
+.v190-ai-grid label>span{font-size:8px;color:#c6d3ef;font-weight:850}
+.v190-ai-grid input,.v190-ai-grid select{
+  width:100%;min-height:42px;box-sizing:border-box;border:1px solid rgba(255,255,255,.14);
+  border-radius:10px;background:#040a54;color:#fff;padding:0 10px;font-size:9px;font-weight:750;outline:none
+}
+.v190-ai-grid input::placeholder{color:#6f84b8}
+.v190-ai-actions{display:grid;grid-template-columns:1fr 1fr;gap:7px}
+.v190-ai-actions button{
+  min-height:42px;border:1px solid rgba(92,225,239,.28);border-radius:11px;
+  background:#10247f;color:#fff;font-size:8.2px;font-weight:900;padding:0 8px
+}
+.v190-ai-actions .primary{
+  background:linear-gradient(180deg,#1761d7,#1247b9);border-color:rgba(95,236,244,.58)
+}
+.v190-ai-assist>p{margin:0;font-size:7.2px;line-height:1.4;color:#91a5d1}
 .v190-png-upload{
   padding:10px;border:1px dashed rgba(83,229,241,.36);border-radius:12px;background:#08146c
 }
@@ -378,7 +408,8 @@ body[data-app-route="recruitment"] #screen{
   padding:18px;border:1px dashed rgba(255,255,255,.13);border-radius:12px;text-align:center;color:#98a8cf;font-size:9px
 }
 @media(max-width:620px){
-  .v190-recruit-forms,.v190-publish-grid{grid-template-columns:1fr}
+  .v190-recruit-forms,.v190-publish-grid,.v190-ai-grid{grid-template-columns:1fr}
+  .v190-ai-actions{grid-template-columns:1fr}
 }
 @media(max-width:390px){
   .v190-recruit-page{margin-left:9px!important;margin-right:9px!important;padding:12px!important}
