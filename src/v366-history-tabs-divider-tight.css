@@ -87,3 +87,53 @@
     padding-bottom:12px!important;
   }
 }
+
+
+
+/* V617 — Historia · referencia exacta entregada por el usuario.
+   El mismo arte/fondo de la cabecera continúa detrás de
+   Resumen / Temporadas / Campeones / Finales hasta la línea inferior.
+   Importante: también anula el fondo sólido del estado is-compact. */
+@media (max-width:1023px){
+  html body[data-app-route="history"] .v35-history-page::before,
+  html body[data-app-route="history"] .v35-history-page.v329-videos-active::before,
+  html body[data-app-route="history"] .v35-history-page.v329-finals-image1::before,
+  html body[data-app-route="history"] .v35-history-page.v358-finals-reference::before{
+    content:""!important;
+    position:absolute!important;
+    z-index:0!important;
+    top:0!important;
+    left:0!important;
+    right:0!important;
+    height:calc(var(--v361-history-head-h,136px) + var(--v361-history-tabs-h,54px))!important;
+    pointer-events:none!important;
+    background:
+      linear-gradient(180deg,rgba(7,37,214,.04) 0%,rgba(5,19,139,.12) 46%,rgba(3,7,72,.42) 100%),
+      url('../public/history-regularscroll-header.webp') center top/cover no-repeat!important;
+  }
+
+  html body[data-app-route="history"] .v35-history-page .v35-history-head,
+  html body[data-app-route="history"] .v35-history-page .v35-tabs,
+  html body[data-app-route="history"] .v35-history-page.is-compact .v35-tabs,
+  html body[data-app-route="history"] .v35-history-page.v329-videos-active .v35-tabs,
+  html body[data-app-route="history"] .v35-history-page.v329-videos-active.is-compact .v35-tabs,
+  html body[data-app-route="history"] .v35-history-page.v329-finals-image1 .v35-tabs,
+  html body[data-app-route="history"] .v35-history-page.v329-finals-image1.is-compact .v35-tabs,
+  html body[data-app-route="history"] .v35-history-page.v358-finals-reference .v35-tabs,
+  html body[data-app-route="history"] .v35-history-page.v358-finals-reference.is-compact .v35-tabs{
+    background:transparent!important;
+    background-color:transparent!important;
+    background-image:none!important;
+    box-shadow:none!important;
+  }
+
+  html body[data-app-route="history"] .v35-history-page .v35-history-head{
+    z-index:2!important;
+  }
+
+  html body[data-app-route="history"] .v35-history-page .v35-tabs,
+  html body[data-app-route="history"] .v35-history-page.is-compact .v35-tabs{
+    z-index:90!important;
+    border-bottom:1px solid rgba(205,212,255,.26)!important;
+  }
+}
