@@ -530,3 +530,121 @@ body[data-app-route="video"] .v428-tv-section .v428-tv-row:has(.v443-tv-portrait
     padding-right:7px!important;
   }
 }
+
+
+/* V656 — Modo TV > Ver en TV: tabla más ancha y partidos más grandes.
+   Ajuste exclusivo del panel Modo TV abierto desde "Más". */
+@media(max-width:600px){
+  body>.v160-tv-layer .v440-telecast{
+    width:calc(100% + 20px)!important;
+    margin-left:-10px!important;
+    margin-right:-10px!important;
+    border-radius:0!important;
+  }
+
+  body>.v160-tv-layer .v440-tv-pagehead{
+    min-height:64px!important;
+    padding-left:20px!important;
+    padding-right:20px!important;
+  }
+  body>.v160-tv-layer .v440-tv-pagehead h2{
+    font-size:16.5px!important;
+  }
+  body>.v160-tv-layer .v440-tv-pagehead p{
+    font-size:7.4px!important;
+  }
+
+  body>.v160-tv-layer .v440-tv-tabs{
+    width:100%!important;
+    padding-left:6px!important;
+    padding-right:6px!important;
+    box-sizing:border-box!important;
+  }
+  body>.v160-tv-layer .v440-tv-tabs button{
+    min-height:42px!important;
+    padding-left:12px!important;
+    padding-right:12px!important;
+    font-size:7.2px!important;
+  }
+
+  body>.v160-tv-layer .v440-tv-groups{
+    padding:10px 8px 14px!important;
+  }
+  body>.v160-tv-layer .v440-tv-league{
+    width:100%!important;
+    margin-bottom:10px!important;
+    border-radius:11px!important;
+  }
+  body>.v160-tv-layer .v440-tv-league>header{
+    height:34px!important;
+    padding-left:12px!important;
+    padding-right:12px!important;
+  }
+  body>.v160-tv-layer .v440-tv-league>header strong{
+    font-size:8px!important;
+  }
+  body>.v160-tv-layer .v440-tv-cup{
+    font-size:8px!important;
+  }
+
+  body>.v160-tv-layer .v440-tv-match{
+    min-height:78px!important;
+    grid-template-columns:28px minmax(0,1fr) 66px minmax(0,1fr)!important;
+    gap:6px!important;
+    padding:9px 10px!important;
+  }
+  body>.v160-tv-layer .v440-tv-icon{
+    width:25px!important;
+    height:25px!important;
+    border-radius:4px!important;
+  }
+  body>.v160-tv-layer .v440-tv-icon b{
+    font-size:6.7px!important;
+  }
+  body>.v160-tv-layer .v440-tv-badge{
+    width:36px!important;
+    height:36px!important;
+    flex-basis:36px!important;
+  }
+  body>.v160-tv-layer .v440-tv-badge img{
+    width:31px!important;
+    height:31px!important;
+  }
+  body>.v160-tv-layer .v440-tv-name{
+    font-size:8.2px!important;
+    line-height:1.16!important;
+    font-weight:800!important;
+  }
+  body>.v160-tv-layer .v440-tv-center strong{
+    font-size:10px!important;
+  }
+  body>.v160-tv-layer .v440-tv-center small{
+    margin-top:5px!important;
+    font-size:5.9px!important;
+  }
+}
+
+@media(min-width:601px){
+  body>.v160-tv-layer .v440-telecast{
+    width:calc(100% + 32px)!important;
+    margin-left:-16px!important;
+    margin-right:-16px!important;
+  }
+  body>.v160-tv-layer .v440-tv-match{
+    min-height:76px!important;
+    grid-template-columns:30px minmax(0,1fr) 72px minmax(0,1fr)!important;
+    gap:7px!important;
+    padding:9px 11px!important;
+  }
+  body>.v160-tv-layer .v440-tv-badge{
+    width:38px!important;
+    height:38px!important;
+    flex-basis:38px!important;
+  }
+  body>.v160-tv-layer .v440-tv-badge img{
+    width:33px!important;
+    height:33px!important;
+  }
+  body>.v160-tv-layer .v440-tv-name{font-size:8.6px!important}
+  body>.v160-tv-layer .v440-tv-center strong{font-size:10.5px!important}
+}
