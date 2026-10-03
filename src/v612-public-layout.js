@@ -18,30 +18,19 @@ function routeNow(route){
  location.hash='#/'+route;
 }
 async function openAdminRoute(route){
- if(!adminRoutes.has(route)){routeNow(route);return true}
+ if(!route)return false;
+ /* V636 — abrir primero. Nunca hacer depender el clic de una petición,
+    contraseña, sesión o del estado de LJR_MEDIA. */
+ routeNow(route);
  const media=window.LJR_MEDIA;
- if(media?.admin){routeNow(route);return true}
-
- /* V624: si este teléfono ya tiene la sesión guardada, NO detener el clic
-    esperando una petición de red. Abrimos la herramienta de inmediato y
-    restauramos la sesión en segundo plano. La API continúa validando el token. */
- if(hasSavedAccess()){
-   routeNow(route);
-   try{media?.restoreAdminSession?.().catch(()=>{})}catch(_){}
-   return true;
- }
-
- if(opening)return false;
- opening=true;
  try{
-   try{sessionStorage.setItem('ljr-admin-pending-route-v624',String(route||''))}catch(_){}
-   await media?.login?.();
-   return false;
- }catch(_){
-   await media?.login?.();
-   return false;
- }finally{opening=false}
+   if(!media?.admin&&hasSavedAccess()&&typeof media?.restoreAdminSession==='function'){
+     media.restoreAdminSession().catch(()=>{});
+   }
+ }catch(_){}
+ return true;
 }
+
 function update(){
  const allowed=!!window.LJR_MEDIA?.admin||hasSavedAccess();
  document.querySelectorAll('[data-route]').forEach(button=>{
@@ -60,21 +49,24 @@ document.addEventListener('click',event=>{
  const entry=event.target.closest('[data-liga-tools]');
  if(entry){
    event.preventDefault();event.stopImmediatePropagation();
-   if(window.LJR_MEDIA?.admin)window.LJR_MEDIA.manage();
-   else if(hasSavedAccess())window.LJR_MEDIA?.restoreAdminSession?.().then(a=>a?window.LJR_MEDIA.manage():window.LJR_MEDIA.login()).catch(()=>window.LJR_MEDIA?.login?.());
-   else window.LJR_MEDIA?.login?.();
+   const media=window.LJR_MEDIA;
+   if(media?.admin)media.manage?.();
+   else if(hasSavedAccess()&&typeof media?.restoreAdminSession==='function'){
+     media.restoreAdminSession().then(a=>a?media.manage?.():media.login?.()).catch(()=>media?.login?.());
+   }else media?.login?.();
    return;
  }
  const button=event.target.closest('[data-route]');
  const route=button?.dataset?.route;
- if(button&&adminRoutes.has(route)&&!window.LJR_MEDIA?.admin){
-   if(hasSavedAccess()){
-     /* Dejar que el enrutador principal procese el mismo clic. */
-     try{window.LJR_MEDIA?.restoreAdminSession?.().catch(()=>{})}catch(_){}
-     return;
-   }
-   event.preventDefault();event.stopImmediatePropagation();
-   openAdminRoute(route);
+ if(button&&adminRoutes.has(route)){
+   /* V636 — no interceptar ni cancelar el clic.
+      El enrutador principal lo procesa normalmente. */
+   try{
+     const media=window.LJR_MEDIA;
+     if(!media?.admin&&hasSavedAccess()&&typeof media?.restoreAdminSession==='function'){
+       media.restoreAdminSession().catch(()=>{});
+     }
+   }catch(_){}
  }
 },true);
 
