@@ -451,6 +451,9 @@ document.addEventListener('click',e=>{
  if(e.defaultPrevented)return;
  if(!(e.target instanceof Element))return;
  if(e.target.closest('[data-v66-directory="store"],[data-v431-store]'))return;
+ /* V637: la tarjeta "Buscar en la Liga" administra sus propios tabs, equipos
+    y jugadores. El comparador global no debe capturar ningún toque dentro de ella. */
+ if(route()==='search'&&e.target.closest('#v413-page-design'))return;
  const target=e.target;
 
  /* V144 — REGISTRO DE JUGADOR:
