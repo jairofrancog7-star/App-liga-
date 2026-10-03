@@ -2757,3 +2757,85 @@ body[data-app-route="cedulas"] .v66-round-badge .v66-category-mark img{
     font-size:24px!important;
   }
 }
+
+
+/* V672 — Registro de jugadores: encabezado vertical sin texto encimado. */
+body[data-app-route="players"] .v607-player-head{
+  display:grid!important;
+  grid-template-columns:1fr!important;
+  align-items:start!important;
+  justify-items:stretch!important;
+  gap:7px!important;
+  width:100%!important;
+  margin:0 0 14px!important;
+  padding:8px 10px 14px!important;
+  box-sizing:border-box!important;
+}
+body[data-app-route="players"] .v607-player-head>small{
+  display:block!important;
+  width:100%!important;
+  margin:0!important;
+  padding:0!important;
+  font-size:9px!important;
+  line-height:1.15!important;
+  letter-spacing:.14em!important;
+  white-space:normal!important;
+}
+body[data-app-route="players"] .v607-player-head>div{
+  display:grid!important;
+  grid-template-columns:1fr!important;
+  align-items:start!important;
+  justify-items:start!important;
+  gap:6px!important;
+  width:100%!important;
+  min-width:0!important;
+}
+body[data-app-route="players"] .v607-player-head h1{
+  display:block!important;
+  width:100%!important;
+  max-width:100%!important;
+  margin:0!important;
+  padding:0!important;
+  font-size:24px!important;
+  line-height:1.02!important;
+  letter-spacing:-.025em!important;
+  white-space:normal!important;
+  overflow:visible!important;
+  overflow-wrap:anywhere!important;
+}
+body[data-app-route="players"] .v607-player-head>div>span{
+  display:block!important;
+  width:100%!important;
+  max-width:100%!important;
+  margin:0!important;
+  padding:0!important;
+  color:#a8b1d5!important;
+  font-size:10px!important;
+  line-height:1.35!important;
+  font-weight:700!important;
+  white-space:normal!important;
+  overflow:visible!important;
+}
+body[data-app-route="players"] .v607-player-head>p{
+  display:block!important;
+  width:100%!important;
+  max-width:100%!important;
+  margin:0!important;
+  padding:0!important;
+  font-size:9.5px!important;
+  line-height:1.35!important;
+  white-space:normal!important;
+}
+
+@media(max-width:390px){
+  body[data-app-route="players"] .v607-player-head{
+    padding:7px 8px 12px!important;
+    gap:6px!important;
+  }
+  body[data-app-route="players"] .v607-player-head h1{
+    font-size:22px!important;
+  }
+  body[data-app-route="players"] .v607-player-head>div>span{
+    font-size:9.5px!important;
+  }
+}
