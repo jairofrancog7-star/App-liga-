@@ -1,0 +1,40 @@
+/* V675 — HARD FIX: icono de perfil pequeño en Permisos.
+   Archivo nuevo y cargado al final para evitar caché/reglas antiguas. */
+@media (max-width:1023px){
+  html body[data-app-route="permissionBuilder"] #app > .topbar .profile-button,
+  html body[data-app-route="permissionBuilder"] .app-shell > .topbar .profile-button,
+  html body[data-app-route="permissionBuilder"] .topbar.v653-permission-topbar .profile-button,
+  html body .topbar.v653-permission-topbar .profile-button{
+    display:block!important;
+    visibility:visible!important;
+    opacity:1!important;
+    width:20px!important;
+    height:20px!important;
+    min-width:20px!important;
+    min-height:20px!important;
+    max-width:20px!important;
+    max-height:20px!important;
+    right:4.5%!important;
+    top:50%!important;
+    margin:0!important;
+    padding:0!important;
+    transform:translateY(-50%)!important;
+    background-size:20px 20px!important;
+    background-position:center!important;
+    background-repeat:no-repeat!important;
+  }
+}
+@media (max-width:420px){
+  html body[data-app-route="permissionBuilder"] #app > .topbar .profile-button,
+  html body[data-app-route="permissionBuilder"] .app-shell > .topbar .profile-button,
+  html body[data-app-route="permissionBuilder"] .topbar.v653-permission-topbar .profile-button,
+  html body .topbar.v653-permission-topbar .profile-button{
+    width:18px!important;
+    height:18px!important;
+    min-width:18px!important;
+    min-height:18px!important;
+    max-width:18px!important;
+    max-height:18px!important;
+    background-size:18px 18px!important;
+  }
+}
