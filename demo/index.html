@@ -10,6 +10,53 @@
     document.documentElement.classList.add('ljr-preboot');
   </script>
 
+  <script>
+    (function(){
+      if(window.__LJR_PERMISSION_SELECTOR_HARD_GUARD_V681__) return;
+      window.__LJR_PERMISSION_SELECTOR_HARD_GUARD_V681__=true;
+      var lastKey='',lastAt=0;
+      function route(){
+        return String(location.hash||'').replace(/^#\/?/,'').split('?')[0]||
+          String(document.body&&document.body.dataset&&document.body.dataset.appRoute||'home');
+      }
+      function stop(e){
+        e.preventDefault();
+        e.stopPropagation();
+        if(typeof e.stopImmediatePropagation==='function')e.stopImmediatePropagation();
+      }
+      function handle(e){
+        if(route()!=='permissionBuilder'||!(e.target instanceof Element))return;
+        var t=e.target;
+        var hit=t.closest(
+          '[data-v635-team-open],[data-v635-team-choice],[data-v635-team-close],'+
+          '[data-v635-player-open],[data-v635-player-choice],[data-v635-player-close]'
+        );
+        if(!hit)return;
+        stop(e);
+        var api=window.LJR_PERMISSION_BUILDER_API;
+        if(!api)return;
+        var key='';
+        if(hit.hasAttribute('data-v635-team-choice'))key='team:'+String(hit.dataset.v635TeamChoice||'');
+        else if(hit.hasAttribute('data-v635-team-open'))key='team-open';
+        else if(hit.hasAttribute('data-v635-team-close'))key='team-close';
+        else if(hit.hasAttribute('data-v635-player-choice'))key='player:'+String(hit.dataset.v635PlayerChoice||'');
+        else if(hit.hasAttribute('data-v635-player-open'))key='player-open';
+        else if(hit.hasAttribute('data-v635-player-close'))key='player-close';
+        var now=Date.now();
+        if(key&&key===lastKey&&now-lastAt<420)return;
+        lastKey=key;lastAt=now;
+        if(hit.hasAttribute('data-v635-team-choice'))api.chooseTeam?.(hit.dataset.v635TeamChoice||'');
+        else if(hit.hasAttribute('data-v635-team-open'))api.openTeamPicker?.();
+        else if(hit.hasAttribute('data-v635-team-close'))api.closeTeamPicker?.();
+        else if(hit.hasAttribute('data-v635-player-choice'))api.choosePlayer?.(hit.dataset.v635PlayerChoice||'');
+        else if(hit.hasAttribute('data-v635-player-open'))api.openPlayerPicker?.(e);
+        else if(hit.hasAttribute('data-v635-player-close'))api.closePlayerPicker?.(e);
+      }
+      window.addEventListener('pointerup',handle,true);
+      window.addEventListener('click',handle,true);
+    })();
+  </script>
+
 
 
 
@@ -289,8 +336,8 @@
     #screen .v400-chips b{margin-top:4px;overflow:hidden;font-size:11px;white-space:nowrap;text-overflow:ellipsis}
   </style>  
 <link rel="stylesheet" href="./media-ui.css?v=612">
-  <script type="module" crossorigin src="./assets/index-nRMAu2oZ.js"></script>
-  <link rel="stylesheet" crossorigin href="./assets/index-gJfpIa6o.css">
+  <script type="module" crossorigin src="./assets/index-CuFkt2P0.js"></script>
+  <link rel="stylesheet" crossorigin href="./assets/index-CCXNd9SV.css">
 </head>
 <body>
   <div id="app" class="app-shell">
