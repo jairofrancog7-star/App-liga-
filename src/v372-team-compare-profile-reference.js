@@ -71,7 +71,7 @@ function compactBellIcon(){
  return '<svg viewBox="0 0 32 32" aria-hidden="true"><path d="M8 23h16l-2-3.5V13a6 6 0 0 0-12 0v6.5L8 23Z"/><path d="M13 26a3 3 0 0 0 6 0"/><path d="M9.5 8.5c1.1-2.3 3.4-4 6.5-4s5.4 1.7 6.5 4"/></svg>';
 }
 function compactDotsIcon(){
- return '<svg viewBox="0 0 32 24" aria-hidden="true"><circle cx="7" cy="12" r="2.4"/><circle cx="16" cy="12" r="2.4"/><circle cx="25" cy="12" r="2.4"/></svg>';
+ return '<svg viewBox="0 0 24 32" aria-hidden="true"><circle cx="12" cy="7" r="2.4"/><circle cx="12" cy="16" r="2.4"/><circle cx="12" cy="25" r="2.4"/></svg>';
 }
 function compactMenuIcon(kind){
  if(kind==='follow')return '<svg viewBox="0 0 32 32" aria-hidden="true"><path d="M8 16h16"/></svg>';
