@@ -3,10 +3,10 @@
    reutiliza logos reales y exporta el cuadro con el lenguaje visual de Competición/Simulador. */
 (function(){
 'use strict';
-if(window.__LJR_V647_BRACKET_EXPORT__)return;
-window.__LJR_V647_BRACKET_EXPORT__=true;
+if(window.__LJR_V648_BRACKET_EXPORT__)return;
+window.__LJR_V648_BRACKET_EXPORT__=true;
 
-const BUILD='20261003-v647-bracket-hd-stages-no-duplicates';
+const BUILD='20261003-v648-professional-portrait-bracket';
 const CATS=[
   {id:'3',name:'Primera Fuerza',logo:'./assets/branding/primera-fuerza-hd.png'},
   {id:'5',name:'Intermedia',logo:'./assets/categories/intermedia.webp'},
@@ -237,128 +237,184 @@ async function drawTeam(ctx,num,name,x,y,w,h){
 }
 
 
-function v647DrawFooter(ctx,meta,W){
-  ctx.fillStyle='rgba(255,255,255,.12)';ctx.fillRect(62,1042,W-124,2);
-  ctx.fillStyle='#5aeaf4';ctx.font='900 15px Arial';ctx.fillText('TORNEO DE COPA · '+meta.name.toUpperCase(),62,1082);
-  ctx.fillStyle='#aeb8e8';ctx.font='800 13px Arial';ctx.fillText(new Date().toLocaleDateString('es-MX'),62,1110);
-  ctx.textAlign='right';ctx.fillStyle='#fff';ctx.font='900 14px Arial';ctx.fillText('LJR',W-66,1082);ctx.textAlign='left';
+function v647DrawFooter(ctx,meta,W,H){
+  const y=H-118;
+  ctx.fillStyle='rgba(255,255,255,.10)';ctx.fillRect(58,y-30,W-116,2);
+  ctx.fillStyle='#55e9f4';ctx.font='900 15px Arial';ctx.fillText('TORNEO DE COPA · '+meta.name.toUpperCase(),58,y+8);
+  ctx.fillStyle='#b4c0ef';ctx.font='800 13px Arial';ctx.fillText(new Date().toLocaleDateString('es-MX'),58,y+36);
+  ctx.textAlign='right';ctx.fillStyle='#fff';ctx.font='900 13px Arial';ctx.fillText('LJR',W-58,y+8);ctx.textAlign='left';
 }
 async function v647Trophy(ctx,x,y,w,h){
   let trophy=await imageLoad(TROPHY);
   if(!trophy)trophy=await imageLoad(TROPHY_FALLBACK);
-  if(trophy){ctx.save();ctx.shadowColor='rgba(77,235,255,.48)';ctx.shadowBlur=24;drawContain(ctx,trophy,x,y,w,h);ctx.restore()}
-}
-async function v647DrawSemi(ctx,teams){
-  const x=130,w=650,h=176,ys=[300,720],centers=ys.map(y=>y+h/2);
-  const fx=1110,fw=430,fh=292,fc=(centers[0]+centers[1])/2,fy=fc-fh/2;
-  pairConnector(ctx,x+w,centers[0],centers[1],fx,fc,950);
-  for(let i=0;i<2;i++){
-    const g=ctx.createLinearGradient(x,ys[i],x+w,ys[i]+h);g.addColorStop(0,'#10157f');g.addColorStop(1,'#12219d');
-    fillR(ctx,x,ys[i],w,h,22,g,'rgba(70,103,244,.92)');
-    ctx.fillStyle='#55e9f4';ctx.font='900 16px Arial';ctx.fillText('SEMIFINAL '+(i+1),x+22,ys[i]+29);
-    await drawTeam(ctx,i*2+1,teams[i*2],x+18,ys[i]+43,w-36,52);
-    await drawTeam(ctx,i*2+2,teams[i*2+1],x+18,ys[i]+103,w-36,52);
+  if(trophy){
+    ctx.save();
+    ctx.shadowColor='rgba(71,231,255,.66)';ctx.shadowBlur=30;
+    drawContain(ctx,trophy,x,y,w,h);
+    ctx.restore();
   }
-  const fg=ctx.createLinearGradient(fx,fy,fx+fw,fy+fh);fg.addColorStop(0,'#174dff');fg.addColorStop(.62,'#0b36c9');fg.addColorStop(1,'#09207f');
-  fillR(ctx,fx,fy,fw,fh,24,fg,'rgba(84,233,244,.92)');
-  ctx.fillStyle='#72f0f6';ctx.font='900 17px Arial';ctx.fillText('GRAN FINAL',fx+28,fy+41);
-  ctx.fillStyle='#fff';ctx.font='900 36px Arial';ctx.fillText('FINAL',fx+28,fy+86);
-  ctx.fillStyle='#dce7ff';ctx.font='800 14px Arial';ctx.fillText('Ganador Semifinal 1 vs Ganador Semifinal 2',fx+28,fy+118);
-  await v647Trophy(ctx,fx+130,fy+148,170,112);
 }
-async function v647DrawFinal(ctx,teams){
-  const x=360,y=292,w=964,h=570;
-  const g=ctx.createLinearGradient(x,y,x+w,y+h);g.addColorStop(0,'#174dff');g.addColorStop(.62,'#0b36c9');g.addColorStop(1,'#09207f');
-  fillR(ctx,x,y,w,h,28,g,'rgba(84,233,244,.92)');
-  ctx.textAlign='center';ctx.fillStyle='#72f0f6';ctx.font='900 19px Arial';ctx.fillText('GRAN FINAL · TORNEO DE COPA',x+w/2,y+48);
-  ctx.fillStyle='#fff';ctx.font='900 42px Arial';ctx.fillText('FINAL',x+w/2,y+101);ctx.textAlign='left';
-  await drawTeam(ctx,1,teams[0],x+85,y+145,w-170,68);
-  await drawTeam(ctx,2,teams[1],x+85,y+228,w-170,68);
-  ctx.textAlign='center';ctx.fillStyle='#54eaf4';ctx.font='900 18px Arial';ctx.fillText('CAMPEÓN',x+w/2,y+345);ctx.textAlign='left';
-  await v647Trophy(ctx,x+w/2-130,y+365,260,165);
-}
+function v648ProBackground(ctx,W,H){
+  const bg=ctx.createLinearGradient(0,0,W,H);
+  bg.addColorStop(0,'#06146f');bg.addColorStop(.42,'#03095c');bg.addColorStop(1,'#01022f');
+  ctx.fillStyle=bg;ctx.fillRect(0,0,W,H);
 
+  const g1=ctx.createRadialGradient(W*.5,H*.52,40,W*.5,H*.52,W*.55);
+  g1.addColorStop(0,'rgba(23,82,255,.32)');g1.addColorStop(.45,'rgba(0,225,245,.08)');g1.addColorStop(1,'rgba(0,0,0,0)');
+  ctx.fillStyle=g1;ctx.fillRect(0,0,W,H);
+
+  ctx.save();ctx.globalAlpha=.09;ctx.strokeStyle='#39dff0';ctx.lineWidth=2;
+  for(let x=-H;x<W+H;x+=155){ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x-H*.46,H);ctx.stroke()}
+  ctx.restore();
+
+  ctx.save();ctx.globalAlpha=.14;ctx.strokeStyle='#405cff';ctx.lineWidth=2;
+  ctx.beginPath();ctx.arc(W/2,H*.54,410,0,Math.PI*2);ctx.stroke();
+  ctx.beginPath();ctx.arc(W/2,H*.54,300,0,Math.PI*2);ctx.stroke();
+  ctx.restore();
+
+  const top=ctx.createLinearGradient(0,0,W,0);
+  top.addColorStop(0,'rgba(18,76,255,.0)');top.addColorStop(.5,'rgba(18,76,255,.34)');top.addColorStop(1,'rgba(18,76,255,.0)');
+  ctx.fillStyle=top;ctx.fillRect(0,235,W,2);
+}
+async function v648ProHeader(ctx,W,meta,stage){
+  const league=await imageLoad(LEAGUE_LOGO),cat=await imageLoad(meta.logo);
+  if(league)drawContain(ctx,league,55,48,88,88);
+  if(cat)drawContain(ctx,cat,W-143,48,88,88);
+
+  ctx.textAlign='center';
+  ctx.fillStyle='#55e9f4';ctx.font='900 16px Arial';ctx.fillText('LIGA JUVENTINO ROSAS',W/2,68);
+  ctx.fillStyle='#fff';ctx.font='900 54px Arial';ctx.fillText('CUADRO DE ',W/2-90,132);
+  ctx.fillStyle='#31e2f0';ctx.font='900 54px Arial';ctx.fillText('COPA',W/2+205,132);
+  ctx.fillStyle='#c8d2ff';ctx.font='800 19px Arial';ctx.fillText(meta.name+' · '+(stage==='semi'?'Semifinales':stage==='final'?'Gran Final':'Cuartos de final'),W/2,174);
+  ctx.textAlign='left';
+}
+function v648Stroke(ctx,x1,y1,x2,y2){
+  ctx.save();ctx.strokeStyle='#37e3ef';ctx.lineWidth=4;ctx.lineCap='round';ctx.lineJoin='round';
+  ctx.shadowColor='rgba(55,227,239,.65)';ctx.shadowBlur=10;
+  ctx.beginPath();ctx.moveTo(x1,y1);ctx.lineTo(x2,y2);ctx.stroke();ctx.restore();
+}
+function v648BracketJoin(ctx,x,y1,y2,outX,outY,side){
+  const mid=side==='left'?x+34:x-34;
+  ctx.save();ctx.strokeStyle='#37e3ef';ctx.lineWidth=4;ctx.lineCap='round';ctx.lineJoin='round';
+  ctx.shadowColor='rgba(55,227,239,.58)';ctx.shadowBlur=9;
+  ctx.beginPath();
+  ctx.moveTo(x,y1);ctx.lineTo(mid,y1);
+  ctx.moveTo(x,y2);ctx.lineTo(mid,y2);
+  ctx.moveTo(mid,y1);ctx.lineTo(mid,y2);
+  ctx.moveTo(mid,outY);ctx.lineTo(outX,outY);
+  ctx.stroke();ctx.restore();
+}
+async function v648TeamCard(ctx,num,name,x,y,w,h,align){
+  const grad=ctx.createLinearGradient(x,y,x+w,y);
+  if(align==='right'){grad.addColorStop(0,'#11196d');grad.addColorStop(1,'#123bdf')}
+  else{grad.addColorStop(0,'#123bdf');grad.addColorStop(1,'#11196d')}
+  fillR(ctx,x,y,w,h,13,grad,'rgba(76,118,255,.92)');
+
+  const logo=await imageLoad(teamLogo(name));
+  const box=h-18;
+  const bx=align==='right'?x+w-box-10:x+10;
+  fillR(ctx,bx,y+9,box,box,10,'rgba(5,11,70,.88)','rgba(88,116,231,.7)');
+  if(logo)drawContain(ctx,logo,bx+5,y+14,box-10,box-10);
+
+  const label=name||'Por confirmar';
+  const tx=align==='right'?x+14:x+box+25;
+  const max=align==='right'?w-box-45:w-box-45;
+  ctx.fillStyle='#7af1f6';ctx.font='900 12px Arial';
+  if(align==='right'){ctx.textAlign='right';ctx.fillText(String(num),x+w-box-22,y+20)}
+  else{ctx.textAlign='left';ctx.fillText(String(num),tx,y+20)}
+  ctx.fillStyle='#fff';
+  fitFont(ctx,label,max,20,12,900);
+  if(align==='right'){ctx.textAlign='left';ctx.fillText(label,x+16,y+h-15)}
+  else{ctx.textAlign='left';ctx.fillText(label,tx,y+h-15)}
+  ctx.textAlign='left';
+}
+function v648MiniPanel(ctx,x,y,w,h,title,line1,line2,align){
+  const grad=ctx.createLinearGradient(x,y,x+w,y+h);
+  grad.addColorStop(0,'rgba(16,35,160,.98)');grad.addColorStop(1,'rgba(11,17,104,.98)');
+  fillR(ctx,x,y,w,h,18,grad,'rgba(75,106,245,.9)');
+  ctx.fillStyle='#60eaf4';ctx.font='900 12px Arial';ctx.fillText(title,x+16,y+24);
+  ctx.fillStyle='#fff';ctx.font='900 16px Arial';ctx.fillText(line1,x+16,y+58);
+  ctx.fillStyle='#b8c5f4';ctx.font='800 12px Arial';ctx.fillText(line2,x+16,y+84);
+  ctx.fillStyle='rgba(47,225,240,.28)';fillR(ctx,x+16,y+h-22,w-32,6,3,'rgba(47,225,240,.28)');
+}
+async function v648CenterTrophy(ctx,W,H,label){
+  const cx=W/2;
+  ctx.save();
+  const glow=ctx.createRadialGradient(cx,H*.53,10,cx,H*.53,245);
+  glow.addColorStop(0,'rgba(28,92,255,.42)');glow.addColorStop(.62,'rgba(0,226,246,.08)');glow.addColorStop(1,'rgba(0,0,0,0)');
+  ctx.fillStyle=glow;ctx.fillRect(cx-270,H*.53-270,540,540);
+  ctx.restore();
+
+  ctx.textAlign='center';
+  ctx.fillStyle='#65edf5';ctx.font='900 13px Arial';ctx.fillText(label||'GRAN FINAL',cx,H*.48-100);
+  ctx.fillStyle='#fff';ctx.font='900 25px Arial';ctx.fillText('TORNEO DE COPA',cx,H*.48-67);
+  ctx.textAlign='left';
+  await v647Trophy(ctx,cx-105,H*.48-35,210,260);
+}
+async function v648DrawQuarter(ctx,W,H,teams){
+  const leftX=56,rightX=W-386,cardW=330,cardH=84;
+  const topA=360,topB=462,bottomA=1080,bottomB=1182;
+  await v648TeamCard(ctx,1,teams[0],leftX,topA,cardW,cardH,'left');
+  await v648TeamCard(ctx,8,teams[7],leftX,topB,cardW,cardH,'left');
+  await v648TeamCard(ctx,4,teams[3],leftX,bottomA,cardW,cardH,'left');
+  await v648TeamCard(ctx,5,teams[4],leftX,bottomB,cardW,cardH,'left');
+
+  await v648TeamCard(ctx,2,teams[1],rightX,topA,cardW,cardH,'right');
+  await v648TeamCard(ctx,7,teams[6],rightX,topB,cardW,cardH,'right');
+  await v648TeamCard(ctx,3,teams[2],rightX,bottomA,cardW,cardH,'right');
+  await v648TeamCard(ctx,6,teams[5],rightX,bottomB,cardW,cardH,'right');
+
+  const lpX=425,rpX=W-425-190,py=720,pw=190,ph=116;
+  v648MiniPanel(ctx,lpX,py,pw,ph,'SEMIFINAL 1','GANADORES','Cruce 1 vs Cruce 2');
+  v648MiniPanel(ctx,rpX,py,pw,ph,'SEMIFINAL 2','GANADORES','Cruce 3 vs Cruce 4');
+
+  v648BracketJoin(ctx,leftX+cardW,topA+cardH/2,topB+cardH/2,lpX,py+42,'left');
+  v648BracketJoin(ctx,leftX+cardW,bottomA+cardH/2,bottomB+cardH/2,lpX,py+78,'left');
+  v648BracketJoin(ctx,rightX,topA+cardH/2,topB+cardH/2,rpX+pw,py+42,'right');
+  v648BracketJoin(ctx,rightX,bottomA+cardH/2,bottomB+cardH/2,rpX+pw,py+78,'right');
+
+  v648Stroke(ctx,lpX+pw,py+ph/2,W/2-125,py+ph/2);
+  v648Stroke(ctx,rpX,py+ph/2,W/2+125,py+ph/2);
+  await v648CenterTrophy(ctx,W,H,'GRAN FINAL');
+}
+async function v648DrawSemi(ctx,W,H,teams){
+  const leftX=70,rightX=W-430,cardW=360,cardH=92;
+  const y1=565,y2=690;
+  await v648TeamCard(ctx,1,teams[0],leftX,y1,cardW,cardH,'left');
+  await v648TeamCard(ctx,2,teams[1],leftX,y2,cardW,cardH,'left');
+  await v648TeamCard(ctx,3,teams[2],rightX,y1,cardW,cardH,'right');
+  await v648TeamCard(ctx,4,teams[3],rightX,y2,cardW,cardH,'right');
+
+  const lcY=(y1+y2+cardH)/2, rcY=lcY;
+  v648BracketJoin(ctx,leftX+cardW,y1+cardH/2,y2+cardH/2,W/2-120,lcY,'left');
+  v648BracketJoin(ctx,rightX,y1+cardH/2,y2+cardH/2,W/2+120,rcY,'right');
+  await v648CenterTrophy(ctx,W,H,'GRAN FINAL');
+}
+async function v648DrawFinal(ctx,W,H,teams){
+  const cardW=390,cardH=104,y=760,leftX=70,rightX=W-460;
+  await v648TeamCard(ctx,1,teams[0],leftX,y,cardW,cardH,'left');
+  await v648TeamCard(ctx,2,teams[1],rightX,y,cardW,cardH,'right');
+  v648Stroke(ctx,leftX+cardW,y+cardH/2,W/2-135,y+cardH/2);
+  v648Stroke(ctx,rightX,y+cardH/2,W/2+135,y+cardH/2);
+  await v648CenterTrophy(ctx,W,H,'GRAN FINAL');
+}
 async function drawBracket(canvas,page){
-  const W=1684,H=1190,S=2;
+  const W=1350,H=1688,S=2;
   canvas.width=W*S;canvas.height=H*S;
   const ctx=canvas.getContext('2d');
   ctx.setTransform(S,0,0,S,0,0);
+
   const cat=String(page.querySelector('[data-v643-cat]')?.value||currentCategory());
-  const meta=catMeta(cat),teams=slotValues(page);
-  const bg=ctx.createLinearGradient(0,0,W,H);
-  bg.addColorStop(0,'#06147c');bg.addColorStop(.45,'#07106b');bg.addColorStop(1,'#02044c');
-  ctx.fillStyle=bg;ctx.fillRect(0,0,W,H);
-  const glow=ctx.createRadialGradient(1335,535,20,1335,535,560);
-  glow.addColorStop(0,'rgba(23,77,255,.48)');glow.addColorStop(.42,'rgba(26,198,240,.12)');glow.addColorStop(1,'rgba(2,4,76,0)');
-  ctx.fillStyle=glow;ctx.fillRect(0,0,W,H);
+  const meta=catMeta(cat),teams=slotValues(page),stage=v647StageValue(page);
 
-  ctx.save();ctx.globalAlpha=.08;ctx.strokeStyle='#52e9f4';ctx.lineWidth=2;
-  for(let i=-220;i<W+220;i+=110){ctx.beginPath();ctx.moveTo(i,0);ctx.lineTo(i-430,H);ctx.stroke()}
-  ctx.restore();
+  v648ProBackground(ctx,W,H);
+  await v648ProHeader(ctx,W,meta,stage);
 
-  const league=await imageLoad(LEAGUE_LOGO),catImg=await imageLoad(meta.logo);
-  if(league)drawContain(ctx,league,62,48,94,94);
-  if(catImg)drawContain(ctx,catImg,1510,48,105,105);
+  if(stage==='semi')await v648DrawSemi(ctx,W,H,teams);
+  else if(stage==='final')await v648DrawFinal(ctx,W,H,teams);
+  else await v648DrawQuarter(ctx,W,H,teams);
 
-  ctx.fillStyle='#4ee8f3';ctx.font='900 18px Arial';ctx.fillText('LIGA JUVENTINO ROSAS',184,76);
-  ctx.fillStyle='#fff';ctx.font='900 48px Arial';ctx.fillText('CUADRO FINAL',184,124);
-  ctx.fillStyle='#b9c6ff';ctx.font='800 21px Arial';ctx.fillText(meta.name,184,158);
-  ctx.textAlign='right';ctx.fillStyle='#54eaf4';ctx.font='900 16px Arial';ctx.fillText(meta.name.toUpperCase(),1490,88);ctx.textAlign='left';
-  ctx.fillStyle='rgba(255,255,255,.13)';ctx.fillRect(62,190,W-124,2);
-  const stage=v647StageValue(page);
-  ctx.fillStyle='#55e9f4';ctx.font='900 14px Arial';ctx.fillText('ETAPA · '+(stage==='semi'?'SEMIFINALES':stage==='final'?'FINAL':'CUARTOS DE FINAL'),62,220);
-  if(stage==='semi'){await v647DrawSemi(ctx,teams);v647DrawFooter(ctx,meta,W);return canvas}
-  if(stage==='final'){await v647DrawFinal(ctx,teams);v647DrawFooter(ctx,meta,W);return canvas}
-
-  const qX=70,qW=560,qH=126;
-  const qY=[260,450,640,830];
-  const qC=qY.map(y=>y+qH/2);
-  const sX=835,sW=330,sH=150,sC=[(qC[0]+qC[1])/2,(qC[2]+qC[3])/2],sY=sC.map(c=>c-sH/2);
-  const fX=1330,fW=285,fH=210,fC=(sC[0]+sC[1])/2,fY=fC-fH/2;
-
-  pairConnector(ctx,qX+qW,qC[0],qC[1],sX,sC[0],735);
-  pairConnector(ctx,qX+qW,qC[2],qC[3],sX,sC[1],735);
-  pairConnector(ctx,sX+sW,sC[0],sC[1],fX,fC,1245);
-
-  const pairs=[[0,7],[3,4],[1,6],[2,5]];
-  for(let i=0;i<4;i++){
-    fillR(ctx,qX,qY[i],qW,qH,18,'rgba(13,18,119,.98)','rgba(69,94,220,.8)');
-    ctx.fillStyle='#55e9f4';ctx.font='900 13px Arial';ctx.fillText('CRUCE '+(i+1),qX+18,qY[i]+22);
-    await drawTeam(ctx,pairs[i][0]+1,teams[pairs[i][0]],qX+16,qY[i]+31,qW-32,42);
-    await drawTeam(ctx,pairs[i][1]+1,teams[pairs[i][1]],qX+16,qY[i]+78,qW-32,42);
-  }
-
-  for(let i=0;i<2;i++){
-    const g=ctx.createLinearGradient(sX,sY[i],sX+sW,sY[i]+sH);
-    g.addColorStop(0,'#11147d');g.addColorStop(1,'#12219d');
-    fillR(ctx,sX,sY[i],sW,sH,22,g,'rgba(70,103,244,.92)');
-    ctx.fillStyle='#55e9f4';ctx.font='900 16px Arial';ctx.fillText('SEMIFINAL '+(i+1),sX+24,sY[i]+34);
-    ctx.fillStyle='#fff';ctx.font='900 23px Arial';ctx.fillText('GANADORES',sX+24,sY[i]+70);
-    ctx.fillStyle='#aebcf2';ctx.font='750 15px Arial';
-    ctx.fillText(i===0?'Cruce 1  vs  Cruce 2':'Cruce 3  vs  Cruce 4',sX+24,sY[i]+103);
-    fillR(ctx,sX+24,sY[i]+116,sW-48,7,3,'rgba(40,228,240,.28)');
-  }
-
-  const fg=ctx.createLinearGradient(fX,fY,fX+fW,fY+fH);
-  fg.addColorStop(0,'#174dff');fg.addColorStop(.62,'#0b36c9');fg.addColorStop(1,'#09207f');
-  fillR(ctx,fX,fY,fW,fH,24,fg,'rgba(84,233,244,.92)');
-  ctx.fillStyle='#72f0f6';ctx.font='900 15px Arial';ctx.fillText('GRAN FINAL',fX+22,fY+32);
-  ctx.fillStyle='#fff';ctx.font='900 28px Arial';ctx.fillText('FINAL',fX+22,fY+66);
-  ctx.fillStyle='rgba(255,255,255,.82)';ctx.font='750 13px Arial';ctx.fillText('Ganador SF 1 vs Ganador SF 2',fX+22,fY+92);
-
-  let trophy=await imageLoad(TROPHY);
-  if(!trophy)trophy=await imageLoad(TROPHY_FALLBACK);
-  if(trophy){
-    ctx.save();ctx.shadowColor='rgba(77,235,255,.48)';ctx.shadowBlur=26;
-    drawContain(ctx,trophy,fX+78,fY+112,136,92);ctx.restore();
-  }else{
-    ctx.save();ctx.strokeStyle='#c9f8ff';ctx.lineWidth=6;ctx.beginPath();ctx.arc(fX+143,fY+139,38,0,Math.PI*2);ctx.stroke();ctx.restore();
-  }
-
-  ctx.fillStyle='rgba(255,255,255,.12)';ctx.fillRect(62,1042,W-124,2);
-  ctx.fillStyle='#5aeaf4';ctx.font='900 15px Arial';ctx.fillText('CUADRO OFICIAL · '+meta.name.toUpperCase(),62,1082);
-  ctx.fillStyle='#aeb8e8';ctx.font='700 13px Arial';ctx.fillText('TORNEO DE COPA · '+new Date().toLocaleDateString('es-MX'),62,1110);
-  ctx.textAlign='right';ctx.fillStyle='#fff';ctx.font='900 14px Arial';ctx.fillText('LJR',W-66,1082);ctx.textAlign='left';
+  v647DrawFooter(ctx,meta,W,H);
   return canvas;
 }
 
@@ -405,8 +461,8 @@ async function exportPdf(page){
   try{
     const c=document.createElement('canvas');await drawBracket(c,page);
     const JS=await loadJsPDF();
-    const pdf=new JS({orientation:'landscape',unit:'mm',format:'a4',compress:true});
-    pdf.addImage(c.toDataURL('image/png'),'PNG',0,0,297,210,undefined,'FAST');
+    const pdf=new JS({orientation:'portrait',unit:'mm',format:'a4',compress:true});
+    pdf.addImage(c.toDataURL('image/png'),'PNG',0,0,210,262.6,undefined,'FAST');
     const name='Liga_Juventino_Copa_'+slug(STAGES[v647StageValue(page)].name)+'_'+slug(catMeta(page.querySelector('[data-v643-cat]').value).name)+'.pdf';
     pdf.save(name);
     setStatus(page,'PDF generado correctamente.');
@@ -434,8 +490,8 @@ async function mount(){
     '<div class="v643-top-actions"><button type="button" class="v643-soft-btn" data-v643-top8>Cargar clasificación</button><button type="button" class="v643-soft-btn" data-v643-clear>Limpiar</button></div>'+
     '<div class="v643-section-title"><span><small>CLASIFICADOS</small><b data-v647-slot-title>Lugares 1–8</b></span><em data-v647-slot-hint>Sin equipos repetidos<br>Cuartos de final</em></div>'+
     '<section class="v643-slots" data-v643-slots></section>'+
-    '<div class="v643-section-title"><span><small>VISTA PREVIA</small><b>Cuadro final</b></span><em>Diseño Competición / Simulador</em></div>'+
-    '<section class="v643-preview-card"><canvas data-v643-preview width="1684" height="1190"></canvas><div class="v643-preview-note"><span>Logo Liga + categoría + equipos</span><b>Trofeo de Final</b></div></section>'+
+    '<div class="v643-section-title"><span><small>VISTA PREVIA</small><b>Cuadro final</b></span><em>Diseño profesional tipo bracket</em></div>'+
+    '<section class="v643-preview-card"><canvas data-v643-preview width="2700" height="3376"></canvas><div class="v643-preview-note"><span>Bracket profesional + logos oficiales</span><b>Trofeo central</b></div></section>'+
     '<div class="v643-export"><button type="button" data-v643-png>Generar PNG HD</button><button type="button" data-v643-pdf>Generar PDF</button></div>'+
     '<div class="v643-status" data-v643-status aria-live="polite"></div>';
 
