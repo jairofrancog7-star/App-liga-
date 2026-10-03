@@ -21,21 +21,23 @@ const ASSETS={
   videoC:RAW+'assets/motion/v38-fix10-field.jpg'
 };
 
+const V691_SEASON_LOGO_ROOT='https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/';
+const V691_SEASON_APP_ROOT='https://raw.githubusercontent.com/jairofrancog7-star/App-liga-/main/';
 const seasons=[
-  {label:'2025/26',crest:ASSETS.league,alt:'Liga Municipal de Fútbol Juventino Rosas'},
-  {label:'2024/25',crest:ASSETS.league,alt:'Liga Municipal de Fútbol Juventino Rosas'},
-  {label:'2023/24',crest:ASSETS.league,alt:'Liga Municipal de Fútbol Juventino Rosas'},
-  {label:'2022/23',crest:ASSETS.league,alt:'Liga Municipal de Fútbol Juventino Rosas'},
-  {label:'2021/22',crest:ASSETS.league,alt:'Liga Municipal de Fútbol Juventino Rosas'},
-  {label:'2020/21',crest:ASSETS.league,alt:'Liga Municipal de Fútbol Juventino Rosas'},
-  {label:'2019/20',crest:ASSETS.league,alt:'Liga Municipal de Fútbol Juventino Rosas'},
-  {label:'2018/19',crest:ASSETS.league,alt:'Liga Municipal de Fútbol Juventino Rosas'},
-  {label:'2017/18',crest:ASSETS.league,alt:'Liga Municipal de Fútbol Juventino Rosas'},
-  {label:'2016/17',crest:ASSETS.league,alt:'Liga Municipal de Fútbol Juventino Rosas'},
-  {label:'2015/16',crest:ASSETS.league,alt:'Liga Municipal de Fútbol Juventino Rosas'},
-  {label:'2014/15',crest:ASSETS.league,alt:'Liga Municipal de Fútbol Juventino Rosas'},
-  {label:'2013/14',crest:ASSETS.league,alt:'Liga Municipal de Fútbol Juventino Rosas'},
-  {label:'2012/13',crest:ASSETS.league,alt:'Golazo Liga · archivo histórico 2012'}
+  {label:'2025/26',team:'Linces',crest:V691_SEASON_LOGO_ROOT+'assets/official-logos/linces.png',alt:'Linces'},
+  {label:'2024/25',team:'Galácticos de Pozos',crest:V691_SEASON_LOGO_ROOT+'assets/teams/galacticos-pozos.webp',alt:'Galácticos de Pozos'},
+  {label:'2023/24',team:'Linces',crest:V691_SEASON_LOGO_ROOT+'assets/official-logos/linces.png',alt:'Linces'},
+  {label:'2022/23',team:'Juventus',crest:V691_SEASON_LOGO_ROOT+'assets/official-logos/juventus.png',alt:'Juventus'},
+  {label:'2021/22',team:'Juventus',crest:V691_SEASON_LOGO_ROOT+'assets/official-logos/juventus.png',alt:'Juventus'},
+  {label:'2020/21',team:'La Esperanza',crest:V691_SEASON_LOGO_ROOT+'assets/official-logos/la-esperanza.png',alt:'La Esperanza'},
+  {label:'2019/20',team:'Juventus',crest:V691_SEASON_LOGO_ROOT+'assets/official-logos/juventus.png',alt:'Juventus'},
+  {label:'2018/19',team:'Juventus',crest:V691_SEASON_LOGO_ROOT+'assets/official-logos/juventus.png',alt:'Juventus'},
+  {label:'2017/18',team:'Tecos',crest:V691_SEASON_APP_ROOT+'assets/history/team-logos/tecos.webp',alt:'Tecos'},
+  {label:'2016/17',team:'Real DHP',crest:V691_SEASON_APP_ROOT+'assets/history/archive-v271/real-dhp-campeon-copa-intermedia-31-dic-2017.webp',alt:'Real DHP'},
+  {label:'2015/16',team:'La Esperanza',crest:V691_SEASON_LOGO_ROOT+'assets/official-logos/la-esperanza.png',alt:'La Esperanza'},
+  {label:'2014/15',team:'Boavista',crest:V691_SEASON_LOGO_ROOT+'assets/official-logos/boavista.png',alt:'Boavista'},
+  {label:'2013/14',team:'La Esperanza',crest:V691_SEASON_LOGO_ROOT+'assets/official-logos/la-esperanza.png',alt:'La Esperanza'},
+  {label:'2012/13',team:'Real Cerrito de Gasca',crest:V691_SEASON_LOGO_ROOT+'assets/teams/deportivo-cg.webp',alt:'Real Cerrito de Gasca'}
 ];
 
 /* V75 — fuentes históricas entregadas por el usuario.
@@ -1128,30 +1130,19 @@ function v358SeasonChampion(label){
     return {team,logo:v340ChampionLogo(team,m.image||''),label};
   }catch(_){return null}
 }
-const V675_SEASON_CHAMPION_FALLBACK={
-  '2025/26':{team:'Linces',logo:'./assets/official-logos/linces.png'},
-  '2024/25':{team:'Galácticos de Pozos',logo:'./assets/teams/galacticos-pozos.webp'},
-  '2023/24':{team:'Linces',logo:'./assets/official-logos/linces.png'},
-  '2022/23':{team:'Juventus',logo:'./assets/official-logos/juventus.png'},
-  '2021/22':{team:'Juventus',logo:'./assets/official-logos/juventus.png'},
-  '2020/21':{team:'La Esperanza',logo:'./assets/official-logos/la-esperanza.png'},
-  '2019/20':{team:'Juventus',logo:'./assets/official-logos/juventus.png'},
-  '2018/19':{team:'Juventus',logo:'./assets/official-logos/juventus.png'},
-  '2017/18':{team:'Tecos',logo:'./assets/history/team-logos/tecos.webp'},
-  '2016/17':{team:'Real DHP',logo:'./assets/history/archive-v271/real-dhp-campeon-copa-intermedia-31-dic-2017.webp'},
-  '2015/16':{team:'La Esperanza',logo:'./assets/official-logos/la-esperanza.png'},
-  '2014/15':{team:'Boavista',logo:'./assets/official-logos/boavista.png'},
-  '2013/14':{team:'La Esperanza',logo:'./assets/official-logos/la-esperanza.png'},
-  '2012/13':{team:'Real Cerrito de Gasca',logo:'./assets/teams/deportivo-cg.webp'}
-};
+const V675_SEASON_CHAMPION_FALLBACK=Object.fromEntries(
+  seasons.map(s=>[s.label,{team:s.team||s.alt,logo:s.crest}])
+);
 function v675SeasonChampion(label){
+  /* V691: la tarjeta de temporada usa primero el ganador/escudo fijado para esa
+     temporada. Así ningún resolver viejo puede volver a meter el escudo de la Liga. */
+  const fixed=V675_SEASON_CHAMPION_FALLBACK[label]||null;
+  if(fixed?.logo)return fixed;
   const dynamic=v358SeasonChampion(label);
   if(dynamic){
     const resolved=dynamic.logo||v340ChampionLogo(dynamic.team,'')||historicLogo(dynamic.team);
-    if(resolved)return {...dynamic,logo:resolved};
+    if(resolved && !String(resolved).includes('liga-crest-white'))return {...dynamic,logo:resolved};
   }
-  const fallback=V675_SEASON_CHAMPION_FALLBACK[label]||null;
-  if(fallback)return fallback;
   return dynamic||null;
 }
 function seasonCards(){
