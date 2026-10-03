@@ -1162,7 +1162,7 @@ body[data-app-route="credentialBuilder"] .v196-preview-head em{
 
 /* V673 — install modal safe-area + direct links */
 .v100-modal.v100-install-modal{
-  z-index:2147483000!important;
+  z-index:2147483646!important;
   overflow-y:auto!important;
   overscroll-behavior:contain;
   padding:
