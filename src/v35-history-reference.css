@@ -4054,3 +4054,55 @@
     padding:13px!important;
   }
 }
+
+
+/* V675 — Detalles sólo en cuadros de texto; botones azul transparente. */
+@media(max-width:1023px){
+  body[data-app-route="history"] .v35-history-page .v674-details-button{
+    background:rgba(17,92,190,.24)!important;
+    border:1px solid rgba(42,222,244,.48)!important;
+    box-shadow:
+      inset 0 1px 0 rgba(255,255,255,.08),
+      0 6px 18px rgba(0,18,82,.14)!important;
+    -webkit-backdrop-filter:blur(7px)!important;
+    backdrop-filter:blur(7px)!important;
+  }
+
+  /* Nunca mostrar el control genérico encima de fotografías o estadísticas. */
+  body[data-app-route="history"] .v35-feature-card>.v674-details-button,
+  body[data-app-route="history"] .v35-history-moment-photo .v674-details-button,
+  body[data-app-route="history"] .v35-champion-card-photo .v674-details-button,
+  body[data-app-route="history"] .v115-card .v674-details-button,
+  body[data-app-route="history"] .v358-summary-stats .v674-details-button,
+  body[data-app-route="history"] .v35-history-goals .v674-details-button,
+  body[data-app-route="history"] .v35-scorer-history .v674-details-button,
+  body[data-app-route="history"] .v35-old-table .v674-details-button{
+    display:none!important;
+  }
+
+  /* El botón propio de Finales conserva una sola acción y adopta el acabado transparente. */
+  body[data-app-route="history"] button[data-v329-details],
+  body[data-app-route="history"] button[data-v330-details],
+  body[data-app-route="history"] button[data-v355-final-detail],
+  body[data-app-route="history"] .v358-final-side button[data-v358-details]{
+    background:rgba(17,92,190,.24)!important;
+    border:1px solid rgba(42,222,244,.42)!important;
+    color:#2ce3ef!important;
+    box-shadow:inset 0 1px 0 rgba(255,255,255,.07),0 5px 14px rgba(0,18,82,.12)!important;
+    -webkit-backdrop-filter:blur(6px)!important;
+    backdrop-filter:blur(6px)!important;
+  }
+
+  /* Los escudos de Más goleadores se muestran limpios y completos. */
+  body[data-app-route="history"] .v358-stat-goals .v358-stat-logo{
+    overflow:hidden!important;
+    background:rgba(255,255,255,.055)!important;
+  }
+  body[data-app-route="history"] .v358-stat-goals .v358-stat-logo img{
+    width:100%!important;
+    height:100%!important;
+    object-fit:contain!important;
+    padding:3px!important;
+    box-sizing:border-box!important;
+  }
+}
