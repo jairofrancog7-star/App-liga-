@@ -881,7 +881,12 @@ function canonicalHistoricName(name){
     'atletico centeno':'A. Centeno',
     'a centeno':'A. Centeno',
     'secc xiv':'Sección XIV',
-    'deportivo toros':'Toros'
+    'deportivo toros':'Toros',
+    'toros fc':'Toros',
+    'union fc':'Unión',
+    'dep el alto':'El Alto',
+    'deportivo el alto':'El Alto',
+    'sep pozos':'SEP Pozos'
   };
   return aliases[k]||String(name||'').trim();
 }
@@ -913,8 +918,8 @@ const historicalTeamEras=[
   {period:'24–25 ago 2013 · rol aportado',category:'Segunda Fuerza',teams:['Osasuna','Morales','Toros','Tavera','Continental','Río Grande','Oklahoma','Novatos','San José de la Montaña','Real Cerrito de Gasca','Salvajes','San José de Allende','DHP','Unión Allende','San Juan FC','Aldama FC']},
   {period:'2013 · tablas J18/J24/J26 aportadas',category:'Intermedia',teams:['Birds Eye','Puros Cuates','Populares','Valencia','Dulces Nombres','La Cuadrilla','El Alto','San Antonio Jr.','Barza','Malvinas','Halcones de Cuenda','Atlas','Deportivo Pozos','Cerritos de Cuenda','Atlético Galeana','Manchester']},
   {period:'2014 · Jornada 11',category:'Primera Fuerza',teams:['Juventus','La Esperanza','Chelsea','Hermanos','Boavista','Abejas','PSV','Linces','Olímpicos','Centeno','El Alto','Jaralillo','Birds Eye','Mazacotes','Cerrito de Gasca','San Antonio']},
-  {period:'2014',category:'Intermedia',teams:['La Pandilla','La Cuadrilla','San José de la Montaña','Puros Cuates','Populares','Real Cerrito de Gasca','Dulces Nombres','Halcones de Cuenda','Terrícolas','Malvinas','San Antonio Jr.','Barza','Atlas','Deportivo Pozos','Valencia']},
-  {period:'2014',category:'Veteranos',teams:['Dynamo','Hermanos','Magisterio','La Esperanza','UNAM','Picosos','Aldama','Boavista','Sección XIV','Valedores','Cuenda']},
+  {period:'2014',category:'Intermedia',teams:['La Pandilla','La Cuadrilla','San José de la Montaña','Puros Cuates','Populares','Real Cerrito de Gasca','Dulces Nombres','Halcones de Cuenda','Terrícolas','Malvinas','San Antonio Jr.','Barza','Atlas','Deportivo Pozos','SEP Pozos','Valencia']},
+  {period:'2014',category:'Veteranos',teams:['Dynamo','Hermanos','Magisterio','La Esperanza','UNAM','Picosos','Aldama','Boavista','Sección XIV','Valedores','Cuenda','Combinado']},
   {period:'2014 · Jornada 11',category:'Segunda Fuerza',teams:['DHP','Morales','San Juan FC','Oklahoma','Tavera','San José de Allende','Birds Eye Jr.','Toros','San Julián','Río Grande','Aldama','Herbalife','Novatos','Continental','Osasuna','Jaralillo F.C.']},
   {period:'23–24 ago 2014 · rol aportado',category:'Veteranos',teams:['La Esperanza','Boavista','Sección XIV','Picosos','Aldama','Dynamo','Magisterio','Guadalajara','Valedores','Hermanos','UNAM','Cuenda']},
   {period:'23–24 ago 2014 · rol aportado',category:'Primera Fuerza J17',teams:['Birds Eye','Juventus','El Alto','San Antonio','Olímpicos','Cerrito de Gasca','Mazacotes','PSV','Jaralillo','Abejas','A. Centeno','Hermanos','Linces','La Esperanza','Boavista','Chelsea']},
@@ -930,6 +935,8 @@ const historicalTeamEras=[
   {period:'2017–2018',category:'Primera Fuerza',teams:['Olímpicos','A. Centeno','Hermanos','Juventus','Linces','La Esperanza','PSV','Boavista','La Cuadrilla','Puros Cuates','Napoli','Tavera','Malvinas','Chelsea','Abejas','San Antonio Jr.']},
   {period:'2017–2018',category:'Intermedia',teams:['Lobos CDG','Vatos Locos','Real DHP','San Antonio','Populares','Tecos','Oklahoma','Mineros','Titanes Tavera','La Huerta','Franco FC','Osasuna','Terrícolas','Barza','Mazacotes','Morales']},
   {period:'2018–2023',category:'Roles y tablas complementarias',teams:['Deportivo Maravillas','A. Pozos','Galaxy','Tapatío','Guadalupanos','Deportivo Pozos','Universidad','Valencia','Halcones','Galácticos FC','Sección 14','San Juan FC']},
+  // V704 — tabla histórica aportada por el usuario: Jornada 4 (archivo de 2020).
+  {period:'2020 · Jornada 4 · tablas aportadas',category:'Primera, Intermedia, Segunda y Veteranos · nombres recuperados',teams:['Boavista','Juventus','A. Centeno','La Pandilla','PSV','Lobos CDG','Tecos','La Cuadrilla','Galácticos','Napoli','La Esperanza','Abejas','Hermanos','Atlético Río Grande','Chelsea','Malvinas','Tavera Jr.','Club de Leones','La Esperanza Jr.','León FC','Toros FC','Osasuna','Galeana','San Juan FC','Terrícolas SEDER','Amigos World','River Plate','Deportivo Cerrito','Inter de Morales','San Antonio FC','Tapatío','Arsenal','Barrio Seco','Real Cuenda','Dynamo','Deportivo Lagartos','UNAM','Guadalajara','Átomos']},
   {period:'2022',category:'Veteranos · tabla final',teams:['Juventus','Hermanos','América','Dynamo','PSV','Deportivo Rafa','Boavista','Arsenal','Cuenda','Barrio Seco','UNAM','Átomos']},
   {period:'2019',category:'Veteranos · Final de Copa',teams:['Chelsea','La Esperanza']},
   {period:'2021',category:'Veteranos · Gran Final de Liga',teams:['La Esperanza','Real Cuenda']},
@@ -997,7 +1004,8 @@ const expandedRetroNames=[
   'Aguilares','Merino','Santa María de Guadalupe','Pozos','San José de Allende','Atlas',
   'Guadalajara','Sección XIV','La Pandilla de Rancho V.','Dortmund','Portugal','Birds Eye Jr.','Centeno',
   'Boca Jrs.','B.F.C.','Manchester United','Galácticos (Pozos)','Herreras FC (Cuenda)','Lobos Jrs.','Lobos CDG','Franco FC','Salvajes','San Antonio Jrs.','Real de Roque',
-  'Hermanos','Cuenda','Napoli','World 11','La Esperanza Jr.','Deportivo Lagartos','Boavista','Galeana','Abejas','Dep. Cerrito','Tavera','La Huerta','San Antonio de Romerillo','Tavera Jr.','Combinado de Cuenda','Unión','Atlético San Julián'
+  'Hermanos','Cuenda','Napoli','World 11','La Esperanza Jr.','Deportivo Lagartos','Boavista','Galeana','Abejas','Dep. Cerrito','Tavera','La Huerta','San Antonio de Romerillo','Tavera Jr.','Combinado de Cuenda','Combinado','Unión','Unión FC','Atlético San Julián',
+  'Atlético Río Grande','Club de Leones','León FC','Toros FC','Amigos World','River Plate','Inter de Morales','SEP Pozos'
 ];
 
 const historicalTimeline=[
