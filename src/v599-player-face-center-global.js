@@ -1,4 +1,4 @@
-/* V608 — FOTO COMPLETA SOLO EN CÍRCULOS.
+/* V651 — FOTO COMPLETA GLOBAL EN AVATARES CIRCULARES.
    Conserva FaceDetector + MediaPipe + faceCrop de credenciales,
    pero únicamente actúa cuando el contenedor de la foto YA es circular.
    Fotos cuadradas o rectangulares se dejan completamente intactas. */
@@ -25,7 +25,14 @@ const FACE_IMAGES=[
   '.v562-avatar>img',
   '.v12-avatar>img',
   '.v33-player-team-logo.v576-player-avatar>img',
-  '.v538-person.has-photo>img'
+  '.v538-person.has-photo>img',
+  '.v371-player-avatar>img',
+  '.v371-preview-avatar>img',
+  '.v371-scorer-avatar>img',
+  '.v413-player-avatar>img',
+  '.v414-player-photo>img',
+  '.v444-player-avatar>img',
+  '.v379-related-avatar>img'
 ].join(',');
 
 const profileCache=new Map();
@@ -291,7 +298,7 @@ function prepareCircleFallback(img){
     'min-width':'0','min-height':'0','max-width':'100%','max-height':'100%',
     'margin':'0','padding':'0','display':'block',
     'object-fit':'contain','object-position':'center center',
-    'transform':'scale(.78)','clip-path':'none',
+    'transform':'none','clip-path':'none',
     'border-radius':'inherit','box-sizing':'border-box'
   };
   for(const [k,v] of Object.entries(important))img.style.setProperty(k,v,'important');
@@ -327,11 +334,11 @@ function frameSize(img){
 }
 function applyCrop(img,profile){
   if(!(img instanceof HTMLImageElement)||!img.matches(FACE_IMAGES)||visualCircleFrame(img)!==true||!profile?.box)return false;
-  const b=profile.box,{w:iw,h:ih}=imageSize(img),side=Math.max(b.width*2.7,b.height*2.7);
+  const b=profile.box,{w:iw,h:ih}=imageSize(img),side=Math.max(b.width*3.40,b.height*3.25);
   if(!(side>16&&iw>0&&ih>0))return false;
   // A virtual frame may extend beyond the photo: keep the whole head centred,
   // using empty background rather than clamping the crop to the photo edge.
-  const sx=b.x+b.width/2-side/2,sy=b.y+b.height*.4-side/2;
+  const sx=b.x+b.width/2-side/2,sy=b.y+b.height*.48-side/2;
   const parent=img.parentElement;parent.style.setProperty('position','relative','important');parent.style.setProperty('overflow','hidden','important');parent.style.setProperty('background-image','none','important');
   const styles={position:'absolute',width:(iw/side*100)+'%',height:(ih/side*100)+'%',left:(-sx/side*100)+'%',top:(-sy/side*100)+'%',right:'auto',bottom:'auto','max-width':'none','max-height':'none','object-fit':'fill','object-position':'center','transform':'none','border-radius':'0'};
   for(const [property,value]of Object.entries(styles))img.style.setProperty(property,value,'important');
@@ -429,7 +436,7 @@ setTimeout(()=>scan(document),500);
 setTimeout(()=>scan(document),1800);
 
 window.LJR_FACE_FRAME={
-  engine:'circle-head-centered-v612',
+  engine:'circle-full-face-v651',
   scan:()=>scan(document),
   faceCrop,
   profile:playerFaceProfile,
