@@ -10,6 +10,53 @@
     document.documentElement.classList.add('ljr-preboot');
   </script>
 
+  <script>
+    (function(){
+      if(window.__LJR_PERMISSION_SELECTOR_HARD_GUARD_V681__) return;
+      window.__LJR_PERMISSION_SELECTOR_HARD_GUARD_V681__=true;
+      var lastKey='',lastAt=0;
+      function route(){
+        return String(location.hash||'').replace(/^#\/?/,'').split('?')[0]||
+          String(document.body&&document.body.dataset&&document.body.dataset.appRoute||'home');
+      }
+      function stop(e){
+        e.preventDefault();
+        e.stopPropagation();
+        if(typeof e.stopImmediatePropagation==='function')e.stopImmediatePropagation();
+      }
+      function handle(e){
+        if(route()!=='permissionBuilder'||!(e.target instanceof Element))return;
+        var t=e.target;
+        var hit=t.closest(
+          '[data-v635-team-open],[data-v635-team-choice],[data-v635-team-close],'+
+          '[data-v635-player-open],[data-v635-player-choice],[data-v635-player-close]'
+        );
+        if(!hit)return;
+        stop(e);
+        var api=window.LJR_PERMISSION_BUILDER_API;
+        if(!api)return;
+        var key='';
+        if(hit.hasAttribute('data-v635-team-choice'))key='team:'+String(hit.dataset.v635TeamChoice||'');
+        else if(hit.hasAttribute('data-v635-team-open'))key='team-open';
+        else if(hit.hasAttribute('data-v635-team-close'))key='team-close';
+        else if(hit.hasAttribute('data-v635-player-choice'))key='player:'+String(hit.dataset.v635PlayerChoice||'');
+        else if(hit.hasAttribute('data-v635-player-open'))key='player-open';
+        else if(hit.hasAttribute('data-v635-player-close'))key='player-close';
+        var now=Date.now();
+        if(key&&key===lastKey&&now-lastAt<420)return;
+        lastKey=key;lastAt=now;
+        if(hit.hasAttribute('data-v635-team-choice'))api.chooseTeam?.(hit.dataset.v635TeamChoice||'');
+        else if(hit.hasAttribute('data-v635-team-open'))api.openTeamPicker?.();
+        else if(hit.hasAttribute('data-v635-team-close'))api.closeTeamPicker?.();
+        else if(hit.hasAttribute('data-v635-player-choice'))api.choosePlayer?.(hit.dataset.v635PlayerChoice||'');
+        else if(hit.hasAttribute('data-v635-player-open'))api.openPlayerPicker?.(e);
+        else if(hit.hasAttribute('data-v635-player-close'))api.closePlayerPicker?.(e);
+      }
+      window.addEventListener('pointerup',handle,true);
+      window.addEventListener('click',handle,true);
+    })();
+  </script>
+
 
 
 
@@ -631,7 +678,7 @@
   <script type="module" src="./src/v129-schedule-changes.js?v=20261001-schedule-back-clean-v426"></script>
   <script type="module" src="./src/v131-cedula-onepage.js?v=20261003-v641-bundled-unified-card"></script>
   <script type="module" src="./src/v639-cedula-match-card.js?v=20261003-v641-bundled-unified-card"></script>
-  <script type="module" src="./src/v635-permission-builder.js?v=20261003-v678-player-selector-no-compare"></script>
+  <script type="module" src="./src/v635-permission-builder.js?v=20261003-v681-permission-selector-hard-guard"></script>
   <script type="module" src="./src/v132-credential-team-picker.js?v=20261001-v508-official-all-pages"></script>
   <script type="module" src="./src/v155-live-ine-scanner.js?v=20261001-v493-official-all-categories"></script>
   <script type="module" src="./src/v158-cedula-field-picker.js?v=20261001-v508-official-all-pages"></script>
