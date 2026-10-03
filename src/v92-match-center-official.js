@@ -298,7 +298,7 @@ function buildUpBody(m,state){
     '<nav class="v420-pills" aria-label="Opciones del partido">'+
       '<button type="button" class="active" aria-current="page" data-v92-tab="BuildUp">Build Up</button>'+
       '<button type="button" data-v92-tab="Predicciones">Predicciones</button>'+
-      '<button type="button" data-v92-tab="Cronología">Comentarios</button>'+
+      '<button type="button" data-v92-tab="Comentarios">Comentarios</button>'+
       '<button type="button" data-v92-tab="Alineaciones">Alineaciones</button>'+
     '</nav>'+
     '<section class="v420-media-card">'+
@@ -364,6 +364,19 @@ function predictionsBody(m){
     '<button type="button" class="v420-back-build" data-v92-tab="Resumen">Volver al Match Center</button>'+
   '</section>';
 }
+function commentsBody(m){
+  const key='v92-match-comment:'+m.key;
+  let note='';
+  try{note=localStorage.getItem(key)||''}catch(_){}
+  return '<section class="v92-section v662-comments" data-v92-comments>'+
+    '<div class="v92-section-head"><h2>Comentarios</h2><small>Notas del partido en este dispositivo.</small></div>'+
+    '<div class="v662-comments-card">'+
+      '<label><span>Comentario del partido</span><textarea data-v92-comment-text placeholder="Escribe una nota sobre este encuentro...">'+esc(note)+'</textarea></label>'+
+      '<button type="button" data-v92-comment-save>Guardar comentario</button>'+
+      '<small data-v92-comment-status>Se guarda solo en este dispositivo y no modifica datos oficiales.</small>'+
+    '</div>'+
+  '</section>';
+}
 function referenceMarketBar(m,state){
   const live=state.kind==='window';
   let saved=null;try{saved=JSON.parse(localStorage.getItem('v420-prediction:'+m.key)||'null')}catch(_){}
@@ -417,7 +430,7 @@ function referenceLowerPanel(m,state,{showMode=true}={}){
     '<nav class="v516-matchcenter-shortcuts" aria-label="Más opciones del partido">'+
       '<button type="button" data-v92-tab="BuildUp">PREVIA</button>'+
       '<button type="button" data-v92-tab="Predicciones">PREDICCIONES</button>'+
-      '<button type="button" data-v92-tab="Cronología">COMENTARIOS</button>'+
+      '<button type="button" data-v92-tab="Comentarios">COMENTARIOS</button>'+
       '<button type="button" data-v92-tab="Previa">PRE-PARTIDO</button>'+
       '<button type="button" data-v92-tab="Alineaciones">ALINEACIONES</button>'+
     '</nav>'+
@@ -942,6 +955,7 @@ function timelineBody(m,state){
 function bodyFor(tab,m,state){
   if(tab==='BuildUp')return buildUpBody(m,state);
   if(tab==='Predicciones')return predictionsBody(m);
+  if(tab==='Comentarios')return commentsBody(m);
   if(tab==='Previa')return previewBody(m,state);
   if(tab==='Alineaciones')return lineupsBody(m);
   if(tab==='Estadísticas')return statsBody(m);
@@ -1017,20 +1031,24 @@ function render(){
     const go=()=>{const target=document.querySelector(selector);if(!target)return;try{target.scrollIntoView({behavior:'smooth',block:'start'})}catch(_){target.scrollIntoView?.()}};
     requestAnimationFrame(go);setTimeout(go,120);
   };
-  const openProfileLineup=()=>{
-    activeTab='Resumen';renderGuard=false;render();
-    focusMatchSection('[data-v419-profile-section="plantilla"]');
-  };
   screen.querySelectorAll('[data-v92-tab]').forEach(b=>b.onclick=()=>{
     const tab=b.dataset.v92Tab;
+    openMatchTab(tab);
     if(tab==='Alineaciones'){
-      openProfileLineup();
-      refreshOfficialData(true).then(()=>focusMatchSection('[data-v419-profile-section="plantilla"]'));
-      return;
+      refreshOfficialData(true).then(()=>focusMatchSection('.v92-lineups-section'));
     }
-    activeTab=tab;renderGuard=false;render();
   });
   screen.querySelector('[data-v420-back]')?.addEventListener('click',()=>{activeTab='Resumen';renderGuard=false;render()});
+  screen.querySelector('[data-v92-comment-save]')?.addEventListener('click',()=>{
+    const input=screen.querySelector('[data-v92-comment-text]');
+    const status=screen.querySelector('[data-v92-comment-status]');
+    try{
+      localStorage.setItem('v92-match-comment:'+m.key,input?.value||'');
+      if(status)status.textContent='Comentario guardado en este dispositivo.';
+    }catch(_){
+      if(status)status.textContent='No se pudo guardar el comentario.';
+    }
+  });
   screen.querySelector('[data-v420-mute]')?.addEventListener('click',e=>{
     const b=e.currentTarget,host=screen.querySelector('[data-v420-build-up]'),videos=[...(host?.querySelectorAll('video')||[])];
     if(!videos.length)return;
@@ -1059,8 +1077,8 @@ function render(){
     selectedKey=next.key;activeTab='Resumen';profileSide='home';renderGuard=false;render();
   });
   screen.querySelectorAll('[data-v92-open-lineups]').forEach(b=>b.onclick=()=>{
-    openProfileLineup();
-    refreshOfficialData(true).then(()=>focusMatchSection('[data-v419-profile-section="plantilla"]'));
+    openMatchTab('Alineaciones');
+    refreshOfficialData(true).then(()=>focusMatchSection('.v92-lineups-section'));
   });
   screen.querySelectorAll('[data-v92-route]').forEach(b=>b.onclick=()=>{location.hash='#/'+b.dataset.v92Route});
   screen.querySelectorAll('[data-v92-pitch]').forEach(b=>b.onclick=()=>{
@@ -1125,11 +1143,36 @@ async function refreshOfficialData(force=false){
   }
   return db;
 }
+const MATCH_TABS=new Set(['BuildUp','Predicciones','Comentarios','Resumen','Previa','Alineaciones','Estadísticas','Cronología','Cuotas']);
+function openMatchTab(tab){
+  const wanted=String(tab||'Resumen');
+  if(!MATCH_TABS.has(wanted))return false;
+  activeTab=wanted;
+  try{sessionStorage.setItem('v92-open-tab',wanted)}catch(_){}
+  if(!isDirectRoute()){
+    location.hash='#/'+PRIMARY_ROUTE;
+    return true;
+  }
+  try{sessionStorage.removeItem('v92-open-tab')}catch(_){}
+  renderGuard=false;
+  render();
+  const selector={
+    BuildUp:'[data-v420-build-up]',
+    Predicciones:'.v420-predictions',
+    Comentarios:'[data-v92-comments]',
+    Alineaciones:'.v92-lineups-section'
+  }[wanted];
+  if(selector){
+    const go=()=>{const target=document.querySelector(selector);if(!target)return;try{target.scrollIntoView({behavior:'smooth',block:'start'})}catch(_){target.scrollIntoView?.()}};
+    requestAnimationFrame(go);setTimeout(go,120);
+  }
+  return true;
+}
 function syncRoute(){
   const r=route();
   try{
     const wanted=sessionStorage.getItem('v92-open-tab');
-    if(['BuildUp','Predicciones','Resumen','Previa','Alineaciones','Estadísticas','Cronología','Cuotas'].includes(wanted)){
+    if(MATCH_TABS.has(wanted)){
       activeTab=wanted;
       sessionStorage.removeItem('v92-open-tab');
     }
@@ -1150,7 +1193,16 @@ function syncRoute(){
   updateLiveClock();
 }
 window.addEventListener('hashchange',()=>requestAnimationFrame(syncRoute));
-window.LJR_MATCH_CENTER={open(key){selectedKey=String(key);db=window.CompetitionController?.raw()||window.LJR_OFFICIAL_DATA||db;location.hash='#/matchCenter';if(isDirectRoute())render()}};
+window.LJR_MATCH_CENTER={
+  open(key){
+    selectedKey=String(key);
+    db=window.CompetitionController?.raw()||window.LJR_OFFICIAL_DATA||db;
+    location.hash='#/matchCenter';
+    if(isDirectRoute())render();
+  },
+  openTab(tab){return openMatchTab(tab)},
+  currentTab(){return activeTab}
+};
 window.addEventListener('ljr:official-data',()=>{if(isDirectRoute()){const next=window.LJR_OFFICIAL_DATA||db;const changed=JSON.stringify(next)!==JSON.stringify(db);db=next;if(changed||!document.querySelector('[data-v92-matchcenter]')){renderGuard=false;render()}}});
 window.addEventListener('ljr:match-live-feed',()=>{if(isDirectRoute()&&activeTab==='Alineaciones'){renderGuard=false;render()}});
 const screen=document.querySelector('#screen');
