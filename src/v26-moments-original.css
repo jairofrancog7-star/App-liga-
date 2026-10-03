@@ -713,3 +713,67 @@ html body[data-app-route="moments"] .v26-moments-sticky::before{
   background:linear-gradient(180deg,rgba(16,68,225,.02),transparent 55%,rgba(0,3,70,.15))!important;
 }
 /* /V615 */
+
+
+/* V616 — IMAGEN REAL DETRÁS DE TEXTO/FLECHA
+   La referencia se renderiza como <img> real, no solo como background CSS,
+   para garantizar que quede visible detrás de "Momentos" y de la flecha. */
+html body[data-app-route="moments"] .v26-moments-sticky{
+  position:fixed!important;
+  isolation:isolate!important;
+  background:#07106f!important;
+}
+
+html body[data-app-route="moments"] .v26-moments-sticky .v616-moments-bg{
+  position:absolute!important;
+  inset:0!important;
+  z-index:0!important;
+  display:block!important;
+  width:100%!important;
+  height:100%!important;
+  min-width:100%!important;
+  min-height:100%!important;
+  max-width:none!important;
+  max-height:none!important;
+  margin:0!important;
+  padding:0!important;
+  border:0!important;
+  border-radius:0!important;
+  object-fit:cover!important;
+  object-position:center 48%!important;
+  opacity:1!important;
+  visibility:visible!important;
+  pointer-events:none!important;
+  user-select:none!important;
+  -webkit-user-drag:none!important;
+  transform:none!important;
+  filter:none!important;
+}
+
+html body[data-app-route="moments"] .v26-moments-sticky::before{
+  z-index:1!important;
+  background:linear-gradient(180deg,rgba(0,18,132,.03),transparent 60%,rgba(0,3,74,.10))!important;
+}
+
+html body[data-app-route="moments"] .v26-moments-sticky .v561-moments-title{
+  z-index:4!important;
+  position:absolute!important;
+  color:#fff!important;
+  visibility:visible!important;
+  opacity:1!important;
+}
+
+html body[data-app-route="moments"] .v26-moments-sticky .v26-moments-sticky-back{
+  z-index:5!important;
+  position:absolute!important;
+  visibility:visible!important;
+  opacity:1!important;
+}
+
+html body[data-app-route="moments"] .v26-moments-sticky .v26-moments-sticky-back svg{
+  position:relative!important;
+  z-index:6!important;
+  visibility:visible!important;
+  opacity:1!important;
+}
+/* /V616 */
