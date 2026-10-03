@@ -969,3 +969,47 @@ html body[data-app-route="moments"] .v26-moments-sticky .v26-moments-sticky-back
   stroke-linejoin:round!important;
 }
 /* /V621 */
+
+
+/* V622 — MOMENTOS COMPACT HEADER
+   Referencia del usuario: cabecera mucho más baja en vertical.
+   Mantiene el arte V621, pero reduce la altura y sube flecha/título. */
+html body[data-app-route="moments"] .v26-moments-sticky,
+html body.v10-header-collapsed[data-app-route="moments"] .v26-moments-sticky{
+  width:min(100vw,520px)!important;
+  height:calc(min(100vw,520px) * .223)!important;
+  min-height:calc(min(100vw,520px) * .223)!important;
+  max-height:calc(min(100vw,520px) * .223)!important;
+  background-size:100% 100%!important;
+  background-position:center center!important;
+}
+html body[data-app-route="moments"] .v26-moments-page,
+html body.v10-header-collapsed[data-app-route="moments"] .v26-moments-page{
+  padding-top:calc(min(100vw,520px) * .223 + 8px)!important;
+}
+html body[data-app-route="moments"] .v26-moments-sticky .v621-moments-bg{
+  width:100%!important;
+  height:100%!important;
+  object-fit:fill!important;
+  object-position:center center!important;
+}
+html body[data-app-route="moments"] .v26-moments-sticky .v561-moments-title{
+  left:16.86%!important;
+  top:44.5%!important;
+  transform:translateY(-50%)!important;
+  font-size:24px!important;
+  line-height:1!important;
+}
+html body[data-app-route="moments"] .v26-moments-sticky .v26-moments-sticky-back{
+  left:4.88%!important;
+  top:44.5%!important;
+  bottom:auto!important;
+  transform:translateY(-50%)!important;
+  width:42px!important;
+  height:42px!important;
+}
+html body[data-app-route="moments"] .v26-moments-sticky .v26-moments-sticky-back svg{
+  width:34px!important;
+  height:34px!important;
+}
+/* /V622 */
