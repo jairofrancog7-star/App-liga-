@@ -86,12 +86,7 @@ function setAvatar(el,rec,fallbackTeam=''){
  const src=real?String(rec.photo).trim():teamLogo(team);
  if(!src)return false;
  const isTeamFallback=el.dataset.v576TeamFallback==='1'||el.classList.contains('v576-team-fallback');
- if(real&&el.dataset.v576Photo==='1'&&!isTeamFallback)return false;
  const existing=el.querySelector?.('img');
- if(real&&existing&&existing.getAttribute('src')&&!isTeamFallback){
-   el.dataset.v576Photo='1';
-   return false;
- }
  if(existing&&String(existing.getAttribute('src')||'')===src){
    if(real){el.dataset.v576Photo='1';el.classList.remove('v576-team-fallback');el.removeAttribute('data-v576-team-fallback')}
    else{el.dataset.v576TeamFallback='1';el.classList.add('v576-team-fallback')}
