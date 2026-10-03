@@ -304,3 +304,58 @@
     max-height:180px!important;
   }
 }
+
+
+/* V624 — sólo BAJA el diseño original hasta la línea blanca.
+   No cambia el arte: la cabecera crece 54px y las pestañas se superponen
+   en esa extensión, por lo que el mismo dibujo llega al divisor inferior. */
+@media (max-width:1023px){
+  html body[data-app-route="history"] .v35-history-page .v620-history-top{
+    height:190px!important;
+    min-height:190px!important;
+    max-height:190px!important;
+    background:transparent!important;
+    background-color:transparent!important;
+    background-image:none!important;
+  }
+
+  html body[data-app-route="history"] .v35-history-page .v620-history-top .v35-history-head{
+    height:190px!important;
+    min-height:190px!important;
+    max-height:190px!important;
+    background:
+      linear-gradient(180deg,rgba(7,44,213,.08),rgba(6,12,99,.24)),
+      url('../public/history-regularscroll-header.webp') center top/cover no-repeat!important;
+  }
+
+  html body[data-app-route="history"] .v35-history-page .v620-history-top .v35-history-head h1{
+    bottom:71px!important;
+  }
+
+  html body[data-app-route="history"] .v35-history-page .v620-history-top .v35-tabs,
+  html body[data-app-route="history"] .v35-history-page.is-compact .v620-history-top .v35-tabs,
+  html body[data-app-route="history"] .v35-history-page.v329-videos-active .v620-history-top .v35-tabs,
+  html body[data-app-route="history"] .v35-history-page.v329-finals-image1 .v620-history-top .v35-tabs,
+  html body[data-app-route="history"] .v35-history-page.v358-finals-reference .v620-history-top .v35-tabs{
+    margin-top:-54px!important;
+    background:transparent!important;
+    background-color:transparent!important;
+    background-image:none!important;
+    border-bottom:1px solid rgba(205,212,255,.30)!important;
+  }
+}
+
+@media (max-width:374px){
+  html body[data-app-route="history"] .v35-history-page .v620-history-top,
+  html body[data-app-route="history"] .v35-history-page .v620-history-top .v35-history-head{
+    height:180px!important;
+    min-height:180px!important;
+    max-height:180px!important;
+  }
+  html body[data-app-route="history"] .v35-history-page .v620-history-top .v35-history-head h1{
+    bottom:67px!important;
+  }
+  html body[data-app-route="history"] .v35-history-page .v620-history-top .v35-tabs{
+    margin-top:-52px!important;
+  }
+}
