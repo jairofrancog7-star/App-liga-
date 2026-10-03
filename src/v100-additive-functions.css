@@ -1116,3 +1116,45 @@ body[data-app-route="credentialBuilder"] .v196-preview-head em{
   .v100-js-team-card img{width:50px;height:50px}
   .v100-js-match-preview>strong{font-size:18px}
 }
+
+
+/* V671 — install center: PWA + APK + iOS */
+.v100-modal.v100-install-modal{padding:12px;background:rgba(0,2,28,.9);backdrop-filter:blur(12px)}
+.v100-modal.v100-install-modal .v100-modal-card{
+  width:min(720px,100%);max-height:92dvh;overflow:auto;padding:20px;border-radius:26px;
+  border:1px solid rgba(74,228,244,.34);
+  background:
+    radial-gradient(circle at 90% 0%,rgba(33,207,245,.15),transparent 30%),
+    linear-gradient(160deg,#07127c 0%,#06095a 56%,#03063e 100%);
+  box-shadow:0 28px 70px rgba(0,0,35,.58),inset 0 1px 0 rgba(255,255,255,.06)
+}
+.v100-install-status{
+  display:flex;align-items:center;gap:10px;padding:11px 12px;margin:10px 0 12px;border-radius:14px;
+  background:rgba(65,226,241,.08);border:1px solid rgba(65,226,241,.18)
+}
+.v100-install-status>span{width:30px;height:30px;border-radius:50%;display:grid;place-items:center;background:#45e3ef;color:#06105c;font-weight:1000}
+.v100-install-status div{display:grid;gap:2px}.v100-install-status b{font-size:12px}.v100-install-status small{font-size:9px;color:#aebde0}
+.v100-install-status.is-installed{background:rgba(77,232,175,.08);border-color:rgba(77,232,175,.2)}
+.v100-install-options{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px}
+.v100-install-option{
+  display:grid;grid-template-rows:auto 1fr auto auto;gap:8px;align-content:start;padding:13px;border-radius:17px;
+  background:linear-gradient(155deg,#0a176f,#07105e);border:1px solid rgba(255,255,255,.1);min-width:0
+}
+.v100-install-option.is-device{border-color:rgba(70,226,239,.5);box-shadow:inset 0 0 0 1px rgba(70,226,239,.12)}
+.v100-install-icon{width:42px;height:42px;border-radius:13px;display:grid;place-items:center;font-size:22px;background:rgba(69,227,239,.1);border:1px solid rgba(69,227,239,.16)}
+.v100-install-copy{display:grid;align-content:start;gap:3px}.v100-install-copy small{font-size:8px;font-weight:900;letter-spacing:.7px;color:#52e4ef}
+.v100-install-copy b{font-size:14px;line-height:1.15}.v100-install-copy p{margin:2px 0 0;font-size:9px;line-height:1.45;color:#aebde0}
+.v100-install-option .v100-primary,.v100-install-option .v100-secondary{width:100%;min-height:39px;padding:0 10px;font-size:10px}
+.v100-install-footnote{margin:11px 2px 0;font-size:9px;line-height:1.45;color:#9dadd3}
+.v100-ios-guide{display:grid;gap:8px;margin-top:12px}
+.v100-ios-guide>div{display:grid;grid-template-columns:32px 1fr;gap:9px;align-items:center;padding:10px 11px;border-radius:13px;background:#081263;border:1px solid rgba(255,255,255,.09)}
+.v100-ios-guide b{width:28px;height:28px;border-radius:50%;display:grid;place-items:center;background:#45e3ef;color:#06105c;font-size:11px}
+.v100-ios-guide span{font-size:10px;line-height:1.4;color:#d6def1}
+@media(max-width:620px){
+  .v100-modal.v100-install-modal .v100-modal-card{padding:16px;border-radius:22px}
+  .v100-install-options{grid-template-columns:1fr}
+  .v100-install-option{grid-template-columns:44px 1fr;grid-template-rows:auto auto;align-items:start}
+  .v100-install-icon{grid-row:1}
+  .v100-install-copy{grid-column:2;grid-row:1}
+  .v100-install-option .v100-primary,.v100-install-option .v100-secondary{grid-column:1/-1}
+}
