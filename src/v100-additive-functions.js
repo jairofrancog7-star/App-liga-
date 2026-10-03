@@ -2022,53 +2022,57 @@ async function v100PromptInstall(){
    try{await p.prompt();await p.userChoice}catch(_){}
    return;
  }
- toast(v100IsIos()?'En iPhone usa Safari → Compartir → Añadir a pantalla de inicio':'En Chrome abre el menú → Instalar aplicación / Agregar a pantalla de inicio');
+ toast(v100IsIos()?'Abriendo opción de acceso para iPhone':'Abre el menú del navegador para instalar la aplicación');
 }
-function v100IosGuide(){
- const m=modal(
-   sectionTitle('IPHONE / IPAD','Agregar a pantalla de inicio','Crea un acceso directo con icono y abre Liga Juventino como una app desde iOS.')+
-   '<div class="v100-ios-guide">'+
-     '<div><b>1</b><span>Abre esta página en <strong>Safari</strong>.</span></div>'+
-     '<div><b>2</b><span>Toca <strong>Compartir</strong> (cuadro con flecha hacia arriba).</span></div>'+
-     '<div><b>3</b><span>Elige <strong>Añadir a pantalla de inicio</strong>.</span></div>'+
-     '<div><b>4</b><span>Confirma <strong>Añadir</strong>. Se guardará con el icono de Liga Juventino.</span></div>'+
-   '</div>'+
-   '<div class="v100-actions"><button type="button" class="v100-primary" data-v100-ios-done>Entendido</button></div>',
-   'v100-install-modal'
- );
- $('[data-v100-ios-done]',m)?.addEventListener('click',()=>m.remove());
+function v100IosHomeUrl(){
+ return location.origin+location.pathname+'?source=ios-home#/home';
+}
+async function v100IosShortcut(){
+ const url=v100IosHomeUrl();
+ if(v100IsStandalone()){location.hash='#/home';toast('Liga Juventino ya está en modo aplicación');return}
+ try{
+   if(navigator.share){
+     await navigator.share({title:'Liga Juventino',text:'Liga Juventino',url});
+     return;
+   }
+ }catch(err){
+   if(err?.name==='AbortError')return;
+ }
+ try{await navigator.clipboard.writeText(url);toast('Enlace de Liga Juventino copiado')}catch(_){
+   location.href=url;
+ }
 }
 function v100DownloadApk(){
- const a=document.createElement('a');a.href=V100_ANDROID_APK;a.target='_blank';a.rel='noopener';a.download='Liga-Juventino.apk';document.body.appendChild(a);a.click();a.remove();
- toast('Abriendo descarga del APK de Android');
+ const a=document.createElement('a');a.href=V100_ANDROID_APK;a.rel='noopener';a.download='Liga-Juventino.apk';document.body.appendChild(a);a.click();a.remove();
+ toast('Descargando Liga-Juventino.apk');
 }
 async function installApp(){
  const ios=v100IsIos(),standalone=v100IsStandalone();
  const m=modal(
-  sectionTitle('INSTALAR APP','Liga Juventino','Elige cómo quieres llevar la Liga al teléfono. La misma app azul está disponible como PWA, APK para Android y acceso directo en iPhone/iPad.')+
+  sectionTitle('INSTALAR APP','Liga Juventino','La app móvil de Liga Juventino está disponible como PWA, APK Android y acceso directo para iPhone/iPad.')+
   '<div class="v100-install-status '+(standalone?'is-installed':'')+'"><span>'+(standalone?'✓':'●')+'</span><div><b>'+(standalone?'Ya está instalada / abierta como app':'Lista para dispositivos móviles')+'</b><small>Compatible con Android, iPhone y iPad.</small></div></div>'+
   '<div class="v100-install-options">'+
     '<article class="v100-install-option">'+
-      '<span class="v100-install-icon">📱</span><div class="v100-install-copy"><small>ANDROID / PWA</small><b>Instalar aplicación</b><p>Se agrega a la pantalla de inicio y se abre en modo app, sin barra del navegador cuando el dispositivo lo permite.</p></div>'+
+      '<span class="v100-install-icon">📱</span><div class="v100-install-copy"><small>ANDROID / PWA</small><b>Instalar aplicación</b><p>Versión web instalable de Liga Juventino para abrirla como aplicación.</p></div>'+
       '<button type="button" class="v100-primary" data-v100-install-pwa>'+(standalone?'Abrir como app':'Instalar PWA')+'</button>'+
     '</article>'+
     '<article class="v100-install-option">'+
-      '<span class="v100-install-icon">⬇️</span><div class="v100-install-copy"><small>ANDROID · APK</small><b>Descargar .APK</b><p>Paquete Android de Liga Juventino generado automáticamente desde este repositorio.</p></div>'+
-      '<button type="button" class="v100-primary" data-v100-install-apk>Descargar APK</button>'+
+      '<span class="v100-install-icon">⬇️</span><div class="v100-install-copy"><small>ANDROID · APK</small><b>Descargar .APK</b><p>Archivo Android directo de Liga Juventino.</p></div>'+
+      '<a class="v100-primary v100-install-link" href="'+esc(V100_ANDROID_APK)+'" download="Liga-Juventino.apk" data-v100-install-apk>Descargar APK directo</a>'+
       '<button type="button" class="v100-secondary" data-v100-install-builds>Ver compilación</button>'+
     '</article>'+
     '<article class="v100-install-option '+(ios?'is-device':'')+'">'+
-      '<span class="v100-install-icon">🍎</span><div class="v100-install-copy"><small>IPHONE / IPAD</small><b>Acceso directo en iOS</b><p>Safari → Compartir → Añadir a pantalla de inicio. Usa el icono de Liga Juventino y abre como aplicación web.</p></div>'+
-      '<button type="button" class="v100-primary" data-v100-install-ios>Cómo agregarlo</button>'+
+      '<span class="v100-install-icon">🍎</span><div class="v100-install-copy"><small>IPHONE / IPAD</small><b>Acceso directo en iOS</b><p>Abre el panel nativo de iPhone para agregar Liga Juventino a la pantalla de inicio.</p></div>'+
+      '<button type="button" class="v100-primary" data-v100-install-ios>Agregar en iPhone</button>'+
     '</article>'+
   '</div>'+
-  '<p class="v100-install-footnote">En Android puedes usar PWA o APK. En iOS el método compatible es “Añadir a pantalla de inicio” desde Safari.</p>',
+  '<p class="v100-install-footnote">APK Android y acceso móvil de Liga Juventino.</p>',
   'v100-install-modal'
  );
  $('[data-v100-install-pwa]',m)?.addEventListener('click',()=>{if(standalone){location.hash='#/home';m.remove();return}v100PromptInstall()});
- $('[data-v100-install-apk]',m)?.addEventListener('click',v100DownloadApk);
+ $('[data-v100-install-apk]',m)?.addEventListener('click',()=>toast('Descargando Liga-Juventino.apk'));
  $('[data-v100-install-builds]',m)?.addEventListener('click',()=>window.open(V100_ANDROID_BUILDS,'_blank','noopener,noreferrer'));
- $('[data-v100-install-ios]',m)?.addEventListener('click',v100IosGuide);
+ $('[data-v100-install-ios]',m)?.addEventListener('click',v100IosShortcut);
 }
 
 /* ---------- V190: RECLUTAMIENTO EN MÁS HERRAMIENTAS ---------- */
@@ -2552,5 +2556,5 @@ window.addEventListener('hashchange',schedule);
 window.addEventListener('ljr:official-data',schedule);
 const screen=$('#screen');if(screen)new MutationObserver(schedule).observe(screen,{childList:true,subtree:false});
 window.addEventListener('load',schedule);schedule();setTimeout(schedule,1500);setTimeout(schedule,4000);
-window.LJR_V100={build:BUILD,mount,officialTeams,credentialCanvas,downloadCredentialPng,downloadCredentialPdf,renderCredentialPreview:v196RenderCredentialPreview,installApp};
+window.LJR_V100={build:BUILD,mount,officialTeams,credentialCanvas,downloadCredentialPng,downloadCredentialPdf,renderCredentialPreview:v196RenderCredentialPreview,installApp,installIosShortcut:v100IosShortcut,downloadApk:v100DownloadApk};
 })();
