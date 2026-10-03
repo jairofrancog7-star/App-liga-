@@ -1,0 +1,95 @@
+/* V709 — Historia: escudos antiguos con tamaño visual correcto.
+   Ajuste exclusivo de Lobos Jrs, Puros Cuates y Olímpicos de Pozos.
+   No modifica nombres, datos ni fotografías históricas. */
+@media(max-width:1023px){
+  body[data-app-route="history"] :is(
+    .v370-legacy-crest,
+    .v340-champion-logo,
+    .v341-era-logo,
+    .v328-season-logo,
+    .v358-final-crest,
+    .v355-final-crest,
+    .v330-crest,
+    .v329-final-crest
+  ):has(img[src*="lobos-jr-cerrito-gasca"]){
+    overflow:hidden!important;
+  }
+
+  body[data-app-route="history"] img[src*="lobos-jr-cerrito-gasca"]{
+    width:100%!important;
+    height:100%!important;
+    max-width:none!important;
+    max-height:none!important;
+    object-fit:contain!important;
+    object-position:center!important;
+    padding:0!important;
+    margin:0!important;
+    transform:scale(1.16)!important;
+    transform-origin:center!important;
+  }
+
+  /* Los recortes recuperados de 2015 conservan mucho margen transparente
+     alrededor del escudo original. Se amplía sólo el contenido visual. */
+  body[data-app-route="history"] img[src*="legacy-2015-olimpicos-pozos"]{
+    width:100%!important;
+    height:100%!important;
+    max-width:none!important;
+    max-height:none!important;
+    object-fit:contain!important;
+    object-position:center!important;
+    padding:0!important;
+    margin:0!important;
+    transform:scale(3.25)!important;
+    transform-origin:center!important;
+  }
+
+  body[data-app-route="history"] img[src*="legacy-2015-puros-cuates"]{
+    width:100%!important;
+    height:100%!important;
+    max-width:none!important;
+    max-height:none!important;
+    object-fit:contain!important;
+    object-position:center!important;
+    padding:0!important;
+    margin:0!important;
+    transform:scale(3.55)!important;
+    transform-origin:center!important;
+  }
+
+  /* En Memoria de clubes, darles un cuadro ligeramente mayor para que
+     queden a la altura visual de los demás escudos históricos. */
+  body[data-app-route="history"] .v370-legacy-team:has(img[src*="lobos-jr-cerrito-gasca"]) .v370-legacy-crest,
+  body[data-app-route="history"] .v370-legacy-team:has(img[src*="legacy-2015-puros-cuates"]) .v370-legacy-crest,
+  body[data-app-route="history"] .v370-legacy-team:has(img[src*="legacy-2015-olimpicos-pozos"]) .v370-legacy-crest{
+    width:54px!important;
+    height:54px!important;
+    flex:0 0 54px!important;
+    border-radius:15px!important;
+  }
+
+  body[data-app-route="history"] .v370-legacy-team:has(img[src*="lobos-jr-cerrito-gasca"]) .v370-legacy-crest>img,
+  body[data-app-route="history"] .v370-legacy-team:has(img[src*="legacy-2015-puros-cuates"]) .v370-legacy-crest>img,
+  body[data-app-route="history"] .v370-legacy-team:has(img[src*="legacy-2015-olimpicos-pozos"]) .v370-legacy-crest>img{
+    inset:0!important;
+  }
+
+  /* Récords: mantener un solo escudo, pero hacerlo legible. */
+  body[data-app-route="history"] .v35-record-card>.v672-record-logo[src*="lobos-jr-cerrito-gasca"],
+  body[data-app-route="history"] .v35-record-card>.v672-record-logo[src*="legacy-2015-puros-cuates"],
+  body[data-app-route="history"] .v35-record-card>.v672-record-logo[src*="legacy-2015-olimpicos-pozos"]{
+    width:64px!important;
+    height:64px!important;
+    padding:0!important;
+    overflow:hidden!important;
+  }
+}
+
+@media(max-width:380px){
+  body[data-app-route="history"] .v370-legacy-team:has(img[src*="lobos-jr-cerrito-gasca"]) .v370-legacy-crest,
+  body[data-app-route="history"] .v370-legacy-team:has(img[src*="legacy-2015-puros-cuates"]) .v370-legacy-crest,
+  body[data-app-route="history"] .v370-legacy-team:has(img[src*="legacy-2015-olimpicos-pozos"]) .v370-legacy-crest{
+    width:51px!important;
+    height:51px!important;
+    flex-basis:51px!important;
+  }
+}
