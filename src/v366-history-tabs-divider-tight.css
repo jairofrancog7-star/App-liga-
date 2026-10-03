@@ -137,3 +137,21 @@
     border-bottom:1px solid rgba(205,212,255,.26)!important;
   }
 }
+
+
+/* V619 — continuidad visual exacta de la referencia:
+   el diseño no termina al acabar "Historia"; continúa detrás de
+   Resumen / Temporadas / Campeones / Finales hasta la línea inferior. */
+@media (max-width:1023px){
+  html body[data-app-route="history"] .v35-history-page .v35-tabs,
+  html body[data-app-route="history"] .v35-history-page.is-compact .v35-tabs,
+  html body[data-app-route="history"] .v35-history-page.v329-videos-active .v35-tabs,
+  html body[data-app-route="history"] .v35-history-page.v329-finals-image1 .v35-tabs,
+  html body[data-app-route="history"] .v35-history-page.v358-finals-reference .v35-tabs{
+    background:linear-gradient(180deg,#0b107a 0%,#080d6b 34%,#05085c 68%,#010245 100%)!important;
+    background-color:#010245!important;
+    background-image:linear-gradient(180deg,#0b107a 0%,#080d6b 34%,#05085c 68%,#010245 100%)!important;
+    border-bottom:1px solid rgba(205,212,255,.30)!important;
+    box-shadow:none!important;
+  }
+}
