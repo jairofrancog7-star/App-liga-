@@ -500,3 +500,101 @@
     transform:var(--v645-trophy-transform,none)!important;
   }
 }
+
+
+/* V648 — Clasificación usa la MISMA cabecera visual de Partidos.
+   Corrección puntual: eliminar el trofeo extra que v40 dibujaba al centro.
+   El trofeo válido es el que ya viene en el arte de la barra de Partidos. */
+@media (max-width:520px){
+  html body.v40-standings-master[data-app-route="competition"] #app > .topbar::before,
+  html body.v40-standings-master[data-app-route="competition"] .app-shell > .topbar::before{
+    content:none!important;
+    display:none!important;
+    visibility:hidden!important;
+    opacity:0!important;
+    width:0!important;
+    height:0!important;
+    background:none!important;
+    background-image:none!important;
+    filter:none!important;
+  }
+
+  /* No mover ni redimensionar el resto: copiar las coordenadas que ya usa
+     Partidos y resultados. */
+  html body.v40-standings-master[data-app-route="competition"] #app > .topbar::after,
+  html body.v40-standings-master[data-app-route="competition"] .app-shell > .topbar::after{
+    content:"Competición"!important;
+    left:52px!important;
+    right:72px!important;
+    top:30px!important;
+    bottom:auto!important;
+    font-size:22.5px!important;
+    line-height:1!important;
+    font-weight:900!important;
+    letter-spacing:-.035em!important;
+    transform:none!important;
+  }
+
+  html body.v40-standings-master[data-app-route="competition"] #app > .topbar .back-button,
+  html body.v40-standings-master[data-app-route="competition"] .app-shell > .topbar .back-button,
+  html body.v40-standings-master[data-app-route="competition"] #app > .topbar .back-button.is-hidden{
+    left:14px!important;
+    right:auto!important;
+    top:26px!important;
+    bottom:auto!important;
+    width:30px!important;
+    height:30px!important;
+    min-width:30px!important;
+    min-height:30px!important;
+    max-width:30px!important;
+    max-height:30px!important;
+    transform:none!important;
+  }
+
+  html body.v40-standings-master[data-app-route="competition"] #app > .topbar .profile-button,
+  html body.v40-standings-master[data-app-route="competition"] .app-shell > .topbar .profile-button{
+    right:19px!important;
+    left:auto!important;
+    top:28px!important;
+    bottom:auto!important;
+    width:29px!important;
+    height:29px!important;
+    min-width:29px!important;
+    min-height:29px!important;
+    max-width:29px!important;
+    max-height:29px!important;
+    transform:none!important;
+  }
+}
+
+@media (max-width:380px){
+  html body.v40-standings-master[data-app-route="competition"] #app > .topbar::after,
+  html body.v40-standings-master[data-app-route="competition"] .app-shell > .topbar::after{
+    left:47px!important;
+    right:68px!important;
+    top:29px!important;
+    font-size:21.5px!important;
+  }
+  html body.v40-standings-master[data-app-route="competition"] #app > .topbar .back-button,
+  html body.v40-standings-master[data-app-route="competition"] .app-shell > .topbar .back-button{
+    left:12px!important;
+    top:25px!important;
+    width:28px!important;
+    height:28px!important;
+    min-width:28px!important;
+    min-height:28px!important;
+    max-width:28px!important;
+    max-height:28px!important;
+  }
+  html body.v40-standings-master[data-app-route="competition"] #app > .topbar .profile-button,
+  html body.v40-standings-master[data-app-route="competition"] .app-shell > .topbar .profile-button{
+    right:17px!important;
+    top:27px!important;
+    width:28px!important;
+    height:28px!important;
+    min-width:28px!important;
+    min-height:28px!important;
+    max-width:28px!important;
+    max-height:28px!important;
+  }
+}
