@@ -172,3 +172,90 @@
   }
 }
 
+/* V657 — ritmo global de bloques para TODAS las pantallas.
+   Se aplica sólo a módulos superiores/aditivos conocidos; las tarjetas internas
+   conservan sus propios espacios. El runtime V657 cubre además módulos futuros. */
+@media (max-width:1023px){
+  html body[data-app-route] #screen > :is(
+    #v449-reference-lower,
+    .v449-reference-lower,
+    #v105-bottom,
+    .v105-bottom,
+    .v73-below-native,
+    .v73-motion-gallery,
+    .v571-lower,
+    .v569-lower,
+    .v566-comp-lower,
+    .v413-shell,
+    .v412-shell,
+    #v422-results-reference,
+    .v510-stats-motion-bottom
+  ){
+    margin-top:8px!important;
+    margin-bottom:8px!important;
+  }
+
+  html body[data-app-route] #screen > :is(
+    #v449-reference-lower,
+    .v449-reference-lower,
+    #v105-bottom,
+    .v105-bottom,
+    .v73-below-native,
+    .v73-motion-gallery,
+    .v571-lower,
+    .v569-lower,
+    .v566-comp-lower,
+    .v413-shell,
+    .v412-shell,
+    #v422-results-reference,
+    .v510-stats-motion-bottom
+  ):last-child{
+    margin-bottom:0!important;
+  }
+
+  /* Si una página raíz tiene otro módulo real debajo, su antiguo clearance
+     de 90–118px ya no debe quedar entre ambos cuadros. */
+  html body[data-app-route] #screen > :is(
+    .v60-tool-page,
+    .v27-team-detail,
+    .v28-follow-page,
+    .v28-scorers-page,
+    .v32-rankings,
+    .v35-history-page,
+    .v399-stats-page,
+    .v66-directory,
+    .v104-players,
+    .v190-recruit-page,
+    .v414-favorites,
+    .v414-search-reference
+  ):has(~ :is(
+    #v449-reference-lower,
+    .v449-reference-lower,
+    #v105-bottom,
+    .v105-bottom,
+    .v73-below-native,
+    .v73-motion-gallery,
+    .v571-lower,
+    .v569-lower,
+    .v566-comp-lower,
+    .v413-shell,
+    .v412-shell,
+    #v422-results-reference,
+    .v510-stats-motion-bottom
+  )){
+    min-height:0!important;
+    height:auto!important;
+    padding-bottom:12px!important;
+    margin-bottom:8px!important;
+  }
+
+  /* Bracket/Cédulas y herramientas administrativas: cuando hay contenido
+     adicional debajo, el nav se reserva sólo en #screen. */
+  html body[data-app-route="bracketBuilder"] #screen > .v64-page:has(~ *),
+  html body[data-app-route="cedulaBuilder"] #screen > .v64-page:has(~ *),
+  html body[data-app-route="publicationCenter"] #screen > [data-v561-publications-mount]:has(~ *){
+    padding-bottom:12px!important;
+    margin-bottom:8px!important;
+  }
+}
+
