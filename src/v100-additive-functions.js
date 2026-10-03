@@ -2022,7 +2022,8 @@ async function v100PromptInstall(){
    try{await p.prompt();await p.userChoice}catch(_){}
    return;
  }
- toast(v100IsIos()?'Abriendo opción de acceso para iPhone':'Abre el menú del navegador para instalar la aplicación');
+ if(v100IsIos())return v100IosShortcut();
+ toast('Abre el menú del navegador para instalar la aplicación');
 }
 function v100IosHomeUrl(){
  return location.origin+location.pathname+'?source=ios-home#/home';
@@ -2062,8 +2063,8 @@ async function installApp(){
       '<button type="button" class="v100-secondary" data-v100-install-builds>Ver compilación</button>'+
     '</article>'+
     '<article class="v100-install-option '+(ios?'is-device':'')+'">'+
-      '<span class="v100-install-icon">🍎</span><div class="v100-install-copy"><small>IPHONE / IPAD</small><b>Acceso directo en iOS</b><p>Abre el panel nativo de iPhone para agregar Liga Juventino a la pantalla de inicio.</p></div>'+
-      '<button type="button" class="v100-primary" data-v100-install-ios>Agregar en iPhone</button>'+
+      '<span class="v100-install-icon">🍎</span><div class="v100-install-copy"><small>IPHONE / IPAD</small><b>Acceso directo en iOS</b><p>Acceso móvil de Liga Juventino con icono y apertura en modo app.</p></div>'+
+      '<a class="v100-primary v100-install-link" href="'+esc(v100IosHomeUrl())+'" data-v100-install-ios>Agregar en iPhone</a>'+
     '</article>'+
   '</div>'+
   '<p class="v100-install-footnote">APK Android y acceso móvil de Liga Juventino.</p>',
@@ -2072,7 +2073,7 @@ async function installApp(){
  $('[data-v100-install-pwa]',m)?.addEventListener('click',()=>{if(standalone){location.hash='#/home';m.remove();return}v100PromptInstall()});
  $('[data-v100-install-apk]',m)?.addEventListener('click',()=>toast('Descargando Liga-Juventino.apk'));
  $('[data-v100-install-builds]',m)?.addEventListener('click',()=>window.open(V100_ANDROID_BUILDS,'_blank','noopener,noreferrer'));
- $('[data-v100-install-ios]',m)?.addEventListener('click',v100IosShortcut);
+ $('[data-v100-install-ios]',m)?.addEventListener('click',e=>{e.preventDefault();v100IosShortcut()});
 }
 
 /* ---------- V190: RECLUTAMIENTO EN MÁS HERRAMIENTAS ---------- */
