@@ -106,6 +106,6 @@ function createStartup(){
 function bootV10Brand(){
   installBrandHeader();
   watchRouteLayout();
-  createStartup();
+  // Entrada directa: no mostrar pantalla/splash intermedia antes de la app.
 }
 if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',bootV10Brand,{once:true}); else bootV10Brand();
