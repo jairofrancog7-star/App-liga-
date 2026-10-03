@@ -1590,3 +1590,78 @@ body[data-app-route="playerCompare"] .v208-load-more{
   cursor:pointer!important;
   touch-action:manipulation!important;
 }
+
+
+/* V613 — Comparar jugadores: un solo escudo + categoría al lado; limpia línea decorativa blanca. */
+body[data-app-route="playerCompare"] .v123-team-chip.v613-team-category,
+body.v123-player-compare-active .v123-team-chip.v613-team-category{
+  width:100%!important;
+  max-width:100%!important;
+  height:32px!important;
+  min-height:32px!important;
+  display:flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  gap:7px!important;
+  margin:0!important;
+  padding:0 4px!important;
+  overflow:hidden!important;
+}
+body[data-app-route="playerCompare"] .v123-team-chip .v204-league-mini,
+body.v123-player-compare-active .v123-team-chip .v204-league-mini{
+  display:none!important;
+  visibility:hidden!important;
+}
+body[data-app-route="playerCompare"] .v123-team-logo,
+body.v123-player-compare-active .v123-team-logo{
+  width:27px!important;
+  height:27px!important;
+  min-width:27px!important;
+  flex:0 0 27px!important;
+  border:0!important;
+  box-shadow:none!important;
+  background:transparent!important;
+}
+body[data-app-route="playerCompare"] .v123-team-logo img,
+body.v123-player-compare-active .v123-team-logo img{
+  width:100%!important;
+  height:100%!important;
+  padding:0!important;
+  object-fit:contain!important;
+  background:transparent!important;
+}
+body[data-app-route="playerCompare"] .v613-category-label,
+body.v123-player-compare-active .v613-category-label{
+  min-width:0!important;
+  max-width:calc(100% - 34px)!important;
+  color:#c1c6e3!important;
+  font:650 11px/1.08 Inter,Roboto,Arial,sans-serif!important;
+  white-space:nowrap!important;
+  overflow:hidden!important;
+  text-overflow:ellipsis!important;
+}
+body[data-app-route="playerCompare"] .v123-player-copy,
+body.v123-player-compare-active .v123-player-copy{
+  align-content:center!important;
+}
+body[data-app-route="playerCompare"] .v123-player-copy strong,
+body.v123-player-compare-active .v123-player-copy strong{
+  margin:0!important;
+}
+
+/* Elimina el remate blanco horizontal que podía quedar visible en el fondo
+   decorativo inferior de esta pantalla, sin quitar los arcos azules. */
+body[data-app-route="playerCompare"] .v123-player-compare [aria-hidden="true"]::before,
+body.v123-player-compare-active .v123-player-compare [aria-hidden="true"]::before{
+  border-bottom-color:transparent;
+}
+@media(max-width:390px){
+  body[data-app-route="playerCompare"] .v613-category-label,
+  body.v123-player-compare-active .v613-category-label{
+    font-size:10px!important;
+  }
+  body[data-app-route="playerCompare"] .v123-team-logo,
+  body.v123-player-compare-active .v123-team-logo{
+    width:25px!important;height:25px!important;min-width:25px!important;flex-basis:25px!important;
+  }
+}
