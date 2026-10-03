@@ -1,0 +1,33 @@
+/* V701 — Escudos históricos consistentes en todas las secciones de Historia. */
+body[data-app-route="history"] .v701-has-logo{position:relative!important;overflow:hidden!important}
+body[data-app-route="history"] .v701-has-logo>img{
+  display:block!important;width:100%!important;height:100%!important;
+  object-fit:contain!important;object-position:center!important;
+}
+body[data-app-route="history"] .v701-inline-logo{
+  width:26px!important;height:26px!important;min-width:26px!important;
+  object-fit:contain!important;object-position:center!important;
+  margin-right:8px!important;border-radius:6px!important;vertical-align:middle!important;
+  background:rgba(5,12,78,.30)!important;
+}
+body[data-app-route="history"] .v35-old-table-row>b,
+body[data-app-route="history"] .v35-result-list article>b,
+body[data-app-route="history"] .v35-result-list article>strong{
+  display:flex!important;align-items:center!important;min-width:0!important;
+}
+body[data-app-route="history"] .v35-retro-names>span:has(.v701-inline-logo){
+  display:inline-flex!important;align-items:center!important;
+}
+body[data-app-route="history"] .v701-card-logo{
+  position:absolute!important;top:14px!important;left:14px!important;z-index:3!important;
+  width:58px!important;height:58px!important;display:grid!important;place-items:center!important;
+  padding:4px!important;border-radius:15px!important;
+  background:rgba(5,11,75,.72)!important;border:1px solid rgba(42,227,241,.42)!important;
+  box-shadow:0 8px 22px rgba(0,0,45,.28)!important;overflow:hidden!important;
+}
+body[data-app-route="history"] .v701-card-logo>img{
+  width:100%!important;height:100%!important;display:block!important;object-fit:contain!important;
+}
+body[data-app-route="history"] :is(.v340-champion-logo,.v341-era-logo,.v328-season-logo,.v370-legacy-crest,.v358-final-crest,.v355-final-crest,.v330-crest,.v329-final-crest).v701-has-logo>b{
+  display:none!important;
+}
