@@ -1,0 +1,202 @@
+/* V661 — Match Center full-width GLOBAL.
+   Todos los cuadros/tablas usan el ancho horizontal disponible.
+   Sólo se eliminan sangrías estructurales; cada tarjeta conserva padding interno
+   para que textos, logos y botones no queden pegados ni recortados. */
+@media (max-width:1023px){
+
+  /* 1) Lienzo: prácticamente de borde a borde con una reserva mínima segura. */
+  html body.v92-match-center-official #screen{
+    width:100%!important;
+    max-width:none!important;
+    padding-left:0!important;
+    padding-right:0!important;
+    box-sizing:border-box!important;
+    overflow-x:hidden!important;
+  }
+
+  html body.v92-match-center-official .v92-matchcenter{
+    width:100%!important;
+    max-width:none!important;
+    margin-left:0!important;
+    margin-right:0!important;
+    padding-left:4px!important;
+    padding-right:4px!important;
+    box-sizing:border-box!important;
+  }
+
+  /* Cabecera textual: conserva aire, sin reducir el ancho de los cuadros. */
+  html body.v92-match-center-official .v92-match-head{
+    padding-left:10px!important;
+    padding-right:10px!important;
+  }
+
+  /* 2) Contenedores estructurales: sin doble sangría horizontal. */
+  html body.v92-match-center-official .v518-matchcenter-unified > .v92-body,
+  html body.v92-match-center-official .v518-matchcenter-unified > .v516-matchcenter-lower,
+  html body.v92-match-center-official .v518-matchcenter-extras > .v412-shell,
+  html body.v92-match-center-official .v518-matchcenter-extras > #v413-page-design,
+  html body.v92-match-center-official .v518-matchcenter-extras > .v73-matchcenter-bottom{
+    width:100%!important;
+    max-width:none!important;
+    margin-left:0!important;
+    margin-right:0!important;
+    padding-left:0!important;
+    padding-right:0!important;
+    box-sizing:border-box!important;
+  }
+
+  /* 3) TODOS los bloques principales del Match Center ocupan el ancho completo. */
+  html body.v92-match-center-official :is(
+    .v92-match-picker,
+    .v518-matchcenter-unified,
+    .v518-matchcenter-extras,
+    .v92-score-card,
+    .v92-official-meta,
+    .v92-tabs,
+    .v92-section,
+    .v92-summary-grid,
+    .v92-player-grid,
+    .v92-actions,
+    .v92-roster-grid,
+    .v92-stat-head,
+    .v92-stat-table,
+    .v92-timeline,
+    .v92-match-actions,
+    .v144-live-hub,
+    .v144-source,
+    .v144-platforms,
+    .v144-stream-embed,
+    .v144-tv-cast,
+    .v144-stats,
+    .v144-alerts,
+    .v144-ai,
+    .v144-timeline,
+    .v145-realtime,
+    .v416-general-card,
+    .v416-lineup-visual,
+    .v417-reference-tools,
+    .v417-odds-page,
+    .v419-profile,
+    .v420-build-up,
+    .v423-match-card,
+    .v516-matchcenter-lower,
+    .v412-shell,
+    .v73-matchcenter-bottom
+  ){
+    width:100%!important;
+    max-width:none!important;
+    margin-left:0!important;
+    margin-right:0!important;
+    box-sizing:border-box!important;
+  }
+
+  /* Las secciones pueden conservar separación VERTICAL, nunca sangría lateral. */
+  html body.v92-match-center-official .v92-section{
+    margin-left:0!important;
+    margin-right:0!important;
+  }
+
+  /* 4) Cuadros anidados: ocupan el 100% de su tarjeta madre. */
+  html body.v92-match-center-official .v92-matchcenter :is(
+    section,
+    article,
+    nav,
+    header,
+    footer,
+    [class*="card"],
+    [class*="panel"],
+    [class*="table"],
+    [class*="grid"],
+    [class*="shell"],
+    [class*="wrap"]
+  ){
+    max-width:100%;
+    box-sizing:border-box;
+  }
+
+  html body.v92-match-center-official .v92-body > *,
+  html body.v92-match-center-official .v516-matchcenter-lower > *,
+  html body.v92-match-center-official .v518-matchcenter-extras > *,
+  html body.v92-match-center-official .v412-shell > *,
+  html body.v92-match-center-official #v413-page-design > *,
+  html body.v92-match-center-official .v73-matchcenter-bottom > *{
+    width:100%!important;
+    max-width:100%!important;
+    margin-left:0!important;
+    margin-right:0!important;
+    box-sizing:border-box!important;
+  }
+
+  /* 5) Tablas reales: ancho completo, sin cortar texto.
+        Si alguna necesita más espacio, se desplaza horizontalmente en vez de tapar contenido. */
+  html body.v92-match-center-official .v92-matchcenter table{
+    width:100%!important;
+    max-width:100%!important;
+    margin-left:0!important;
+    margin-right:0!important;
+    box-sizing:border-box!important;
+  }
+
+  html body.v92-match-center-official .v92-matchcenter :is(
+    .v92-stat-table,
+    .v92-roster-grid,
+    .v92-timeline,
+    [class*="table-wrap"],
+    [class*="table-scroll"],
+    [class*="scroll-shell"]
+  ){
+    width:100%!important;
+    max-width:100%!important;
+    margin-left:0!important;
+    margin-right:0!important;
+    box-sizing:border-box!important;
+    overflow-x:auto!important;
+    overflow-y:visible;
+    -webkit-overflow-scrolling:touch;
+  }
+
+  /* 6) Protección anti-recorte: ningún texto/columna obliga a encoger otra tarjeta. */
+  html body.v92-match-center-official .v92-matchcenter *{
+    min-width:0;
+  }
+
+  html body.v92-match-center-official .v92-matchcenter :is(
+    p,span,small,b,strong,em,label,button,td,th
+  ){
+    max-width:100%;
+  }
+
+  html body.v92-match-center-official .v92-matchcenter :is(
+    p,span,small,b,strong,label,td,th
+  ){
+    overflow-wrap:anywhere;
+  }
+
+  /* Los botones y controles siguen completos dentro del ancho disponible. */
+  html body.v92-match-center-official .v92-matchcenter :is(
+    button,select,input,textarea
+  ){
+    box-sizing:border-box!important;
+    max-width:100%!important;
+  }
+
+  /* 7) Mantiene padding INTERNO en las tarjetas para no pegar/tapar texto. */
+  html body.v92-match-center-official :is(
+    .v144-live-hub,
+    .v145-realtime,
+    .v416-general-card,
+    .v417-odds-page,
+    .v419-profile,
+    .v420-build-up,
+    .v423-match-card
+  ){
+    overflow:visible;
+  }
+}
+
+@media (max-width:390px){
+  html body.v92-match-center-official .v92-matchcenter{
+    padding-left:3px!important;
+    padding-right:3px!important;
+  }
+}
