@@ -483,3 +483,43 @@ body[data-app-route="home"] #v105-bottom[data-v105-route="home"] .v105-grid{
 .v105-meeting-notice b{font-size:12px;line-height:1.45}
 .v105-meeting-notice span{font-size:10px;line-height:1.4;color:#cfbd8d}
 .v105-meeting-form textarea{min-height:112px}
+
+/* V640 — Nueva sanción siempre completa entre barra superior e inferior. */
+@media (max-width:1023px){
+  html body .v105-modal.v639-sanction-modal{
+    box-sizing:border-box!important;
+    place-items:start center!important;
+    overflow-y:auto!important;
+    overscroll-behavior:contain!important;
+    padding-left:14px!important;
+    padding-right:14px!important;
+    padding-top:calc(clamp(82px,21.68vw,90px) + 12px)!important;
+    padding-bottom:calc(96px + env(safe-area-inset-bottom,0px))!important;
+  }
+
+  html body .v105-modal.v639-sanction-modal .v105-dialog{
+    box-sizing:border-box!important;
+    width:min(650px,100%)!important;
+    max-height:calc(100dvh - clamp(82px,21.68vw,90px) - 120px - env(safe-area-inset-bottom,0px))!important;
+    margin:0 auto!important;
+    overflow-y:auto!important;
+    overflow-x:hidden!important;
+    -webkit-overflow-scrolling:touch!important;
+    scroll-padding-top:14px!important;
+    scroll-padding-bottom:18px!important;
+  }
+
+  html body .v105-modal.v639-sanction-modal .v105-actions{
+    padding-bottom:4px!important;
+  }
+}
+
+@media (max-width:390px){
+  html body .v105-modal.v639-sanction-modal{
+    padding-top:94px!important;
+    padding-bottom:calc(92px + env(safe-area-inset-bottom,0px))!important;
+  }
+  html body .v105-modal.v639-sanction-modal .v105-dialog{
+    max-height:calc(100dvh - 198px - env(safe-area-inset-bottom,0px))!important;
+  }
+}
