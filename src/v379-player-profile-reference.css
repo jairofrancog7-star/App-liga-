@@ -2099,3 +2099,46 @@ body.v379-player-profile-active.v385-player-scrolled .v379-content{
   }
 }
 /* /V644_PLAYER_HEADER_REFERENCE */
+
+
+/* V645_PLAYER_HEADER_ICONS_REFERENCE
+   Iconos de comparar/compartir recreados según las referencias proporcionadas. */
+body.v379-player-profile-active.v385-player-scrolled .v385-head-compare svg{
+  width:27px!important;
+  height:24px!important;
+  fill:none!important;
+  stroke:currentColor!important;
+  stroke-width:2.15!important;
+  stroke-linecap:round!important;
+  stroke-linejoin:round!important;
+}
+body.v379-player-profile-active.v385-player-scrolled .v385-head-share svg,
+.v379-share.v645-share-reference svg{
+  width:27px!important;
+  height:27px!important;
+  overflow:visible!important;
+}
+body.v379-player-profile-active.v385-player-scrolled .v385-head-share svg path,
+.v379-share.v645-share-reference svg path{
+  fill:none!important;
+  stroke:currentColor!important;
+  stroke-width:3.2!important;
+  stroke-linecap:round!important;
+  stroke-linejoin:round!important;
+}
+body.v379-player-profile-active.v385-player-scrolled .v385-head-share svg circle,
+.v379-share.v645-share-reference svg circle{
+  fill:currentColor!important;
+  stroke:none!important;
+}
+@media(max-width:360px){
+  body.v379-player-profile-active.v385-player-scrolled .v385-head-compare svg{
+    width:25px!important;
+    height:23px!important;
+  }
+  body.v379-player-profile-active.v385-player-scrolled .v385-head-share svg{
+    width:25px!important;
+    height:25px!important;
+  }
+}
+/* /V645_PLAYER_HEADER_ICONS_REFERENCE */
