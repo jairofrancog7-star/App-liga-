@@ -7,8 +7,8 @@
 if(window.__LJR_V371_TEAM_DETAIL_COMPLETE__)return;
 window.__LJR_V371_TEAM_DETAIL_COMPLETE__=true;
 
-const LOCAL='./data/official-live.json?v=20261001-v491-v35-all-pages';
-const REMOTE='https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/data/official-live.json?v=20261001-v491-v35-all-pages';
+const LOCAL='./data/official-live.json?v=20261003-v646-team-roster-faces-carousel';
+const REMOTE='https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/data/official-live.json?v=20261003-v646-team-roster-faces-carousel';
 const ROOT='https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/';
 const LEAGUE='./assets/reference/predictor-v36/liga-crest-white.webp';
 let db=window.LJR_OFFICIAL_DATA||null,loading=null,busy=false;
@@ -64,6 +64,22 @@ function roster(ctx){
  const hit=Object.entries(ctx?.c?.rosters||{}).find(([k])=>same(k,ctx.name));
  return Array.isArray(hit?.[1])?hit[1].map(String).filter(Boolean):[];
 }
+function playerProfile(ctx,name){
+ const entry=Object.entries(ctx?.c?.player_profiles||{}).find(([team])=>same(team,ctx.name));
+ return (Array.isArray(entry?.[1])?entry[1]:[]).find(p=>same(p?.name,name))||null;
+}
+function playerPhoto(ctx,name){
+ try{
+  const media=window.LJR_PLAYER_MEDIA?.photo?.(name,ctx?.name,ctx?.id);
+  if(media)return String(media);
+ }catch(_){}
+ return String(playerProfile(ctx,name)?.photo||'').trim();
+}
+function playerAvatar(ctx,name,cls='v371-player-avatar',eager=false){
+ const src=playerPhoto(ctx,name);
+ if(src)return '<span class="'+esc(cls)+' v371-has-player-photo"><img src="'+esc(src)+'" alt="'+esc(name)+'" loading="'+(eager?'eager':'lazy')+'" decoding="async" referrerpolicy="no-referrer"></span>';
+ return '<span class="'+esc(cls)+'">'+esc(initials(name))+'</span>';
+}
 function fixtures(ctx){
  return (ctx?.c?.fixtures?.[0]?.rows||[]).filter(r=>Array.isArray(r)&&(same(r[2],ctx.name)||same(r[6],ctx.name)));
 }
@@ -118,8 +134,8 @@ function nextMarkup(ctx){
 }
 function rosterPreview(ctx){
  const ps=roster(ctx);
- return '<section class="v371-section"><div class="v371-head"><h2>Plantilla</h2><button type="button" data-v42-tab="squad">Ver todo</button></div>'+
-  (ps.length?'<div class="v371-preview">'+ps.slice(0,3).map(p=>'<button type="button" data-v42-tab="squad"><span>'+esc(initials(p))+'</span><b>'+esc(p)+'</b><small>Jugador registrado</small></button>').join('')+'</div>':
+ return '<section class="v371-section v371-roster-preview-section"><div class="v371-head"><h2>Plantilla</h2><button type="button" data-v42-tab="squad">Ver todo</button></div>'+
+  (ps.length?'<div class="v371-preview" role="list" aria-label="Plantilla deslizable">'+ps.map((p,i)=>'<button type="button" role="listitem" data-v42-tab="squad" data-v371-preview-player="'+esc(p)+'">'+playerAvatar(ctx,p,'v371-preview-avatar',i<4)+'<b>'+esc(p)+'</b><small>Jugador registrado</small></button>').join('')+'</div>':
   '<div class="v371-empty compact">La Liga todavía no publica nombres de jugadores para este equipo.</div>')+
  '</section>';
 }
@@ -141,7 +157,7 @@ function dataMarkup(ctx){
 function scorerMarkup(ctx){
  const top=scorers(ctx)[0];
  return '<section class="v371-scorer"><div class="v371-scorer-head"><h2>Goleador</h2><span>⌃</span></div>'+
-  (top?'<div class="v371-scorer-row"><span class="v371-scorer-avatar">'+esc(initials(top[1]))+'</span><span><b>'+esc(top[1])+'</b><small>'+esc(ctx.name)+'</small></span><strong>'+esc(top[3])+'</strong></div>':
+  (top?'<div class="v371-scorer-row">'+playerAvatar(ctx,top[1],'v371-scorer-avatar',true)+'<span><b>'+esc(top[1])+'</b><small>'+esc(ctx.name)+'</small></span><strong>'+esc(top[3])+'</strong></div>':
   '<div class="v371-empty compact">Sin goleador publicado para este equipo.</div>')+
  '</section>';
 }
@@ -160,7 +176,7 @@ function rebuildSquad(page,ctx){
  if(host.dataset.v371Sig===sig)return;
  host.dataset.v371Sig=sig;
  host.innerHTML='<section class="v371-roster-card"><h2>Jugadores registrados</h2><small class="v371-roster-sub">'+esc(ctx.c.name)+'</small>'+
-  (ps.length?'<div class="v371-roster-list">'+ps.map((p,i)=>'<button type="button" class="v371-player" data-v42-player="'+esc(p)+'" data-v66-player-team="'+esc(ctx.name)+'" data-v66-cat-id="'+esc(ctx.id)+'"><span class="v371-player-avatar">'+esc(initials(p))+'</span><span><b>'+esc(p)+'</b><small>'+esc(ctx.name)+' · Jugador registrado</small></span><strong>›</strong></button>').join('')+'</div>':
+  (ps.length?'<div class="v371-roster-list">'+ps.map((p,i)=>'<button type="button" class="v371-player" data-v42-player="'+esc(p)+'" data-v66-player-team="'+esc(ctx.name)+'" data-v66-cat-id="'+esc(ctx.id)+'">'+playerAvatar(ctx,p,'v371-player-avatar',i<6)+'<span><b>'+esc(p)+'</b><small>'+esc(ctx.name)+' · Jugador registrado</small></span><strong>›</strong></button>').join('')+'</div>':
   '<div class="v371-roster-empty"><div class="v371-empty-ball">⚽</div><b>Plantilla pendiente</b><p>La fuente oficial todavía no publica nombres de jugadores para '+esc(ctx.name)+'. En cuanto se sincronicen aparecerán aquí automáticamente.</p></div>')+
  '</section>';
 }
