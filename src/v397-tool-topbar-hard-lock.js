@@ -67,6 +67,24 @@
     const route=current();
     const bodyRoute=String(document.body?.dataset?.appRoute||'');
 
+    // V653: Permisos usa la cabecera azul grande de la referencia del usuario.
+    // Se libera cualquier altura/posición inline de las cabeceras compactas para
+    // que el CSS específico mantenga flecha, trofeo y perfil en su lugar exacto.
+    const permissionOwned=route==='permissionBuilder'||bodyRoute==='permissionBuilder';
+    if(permissionOwned){
+      topbar.classList.remove('v402-tool-topbar-compact','v397-tool-topbar-exact','v403-reference-topbar','v404-missing-pages-topbar');
+      topbar.classList.add('v653-permission-topbar');
+      clearTopbarInline(topbar);
+      const pBack=topbar.querySelector('.back-button');
+      const pProfile=topbar.querySelector('.profile-button');
+      clearInline(pBack,BACK_PROPS);
+      clearInline(pProfile,PROFILE_PROPS);
+      pBack?.classList.remove('is-hidden');
+      pProfile?.classList.remove('is-hidden');
+      return;
+    }
+    topbar.classList.remove('v653-permission-topbar');
+
     // V520: Calendario/Partidos usa su barra interna V519.
     // La topbar global debe permanecer totalmente oculta para evitar duplicado.
     const calendarOwned=route==='v4-calendar'||bodyRoute==='v4-calendar'||document.body.classList.contains('v415-calendar-active');
