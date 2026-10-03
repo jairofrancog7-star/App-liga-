@@ -386,7 +386,7 @@ async function exportPng(page){
   try{
     const c=document.createElement('canvas');await drawBracket(c,page);
     const b=await blobFromCanvas(c);
-    download(b,'Liga_Juventino_Cuadro_'+slug(catMeta(page.querySelector('[data-v643-cat]').value).name)+'.png');
+    download(b,'Liga_Juventino_Copa_'+slug(STAGES[v647StageValue(page)].name)+'_'+slug(catMeta(page.querySelector('[data-v643-cat]').value).name)+'.png');
     setStatus(page,'PNG generado correctamente.');
   }catch(e){setStatus(page,'No se pudo generar el PNG. Intenta nuevamente.',true)}
 }
@@ -407,7 +407,7 @@ async function exportPdf(page){
     const JS=await loadJsPDF();
     const pdf=new JS({orientation:'landscape',unit:'mm',format:'a4',compress:true});
     pdf.addImage(c.toDataURL('image/png'),'PNG',0,0,297,210,undefined,'FAST');
-    const name='Liga_Juventino_Cuadro_'+slug(catMeta(page.querySelector('[data-v643-cat]').value).name)+'.pdf';
+    const name='Liga_Juventino_Copa_'+slug(STAGES[v647StageValue(page)].name)+'_'+slug(catMeta(page.querySelector('[data-v643-cat]').value).name)+'.pdf';
     pdf.save(name);
     setStatus(page,'PDF generado correctamente.');
   }catch(e){console.warn('V643 PDF',e);setStatus(page,'No se pudo generar el PDF. Revisa la conexión e intenta de nuevo.',true)}
@@ -441,7 +441,8 @@ async function mount(){
 
   const catSel=page.querySelector('[data-v643-cat]');
   const stageSel=page.querySelector('[data-v647-stage]');
-  stageSel.value=v647StageValue(page);
+  const savedStage=String(localStorage.getItem('v647-bracket-stage')||'quarter');
+  stageSel.value=STAGES[savedStage]?savedStage:'quarter';
   const syncStageCopy=()=>{
     const st=v647StageValue(page),n=STAGES[st].slots;
     const t=page.querySelector('[data-v647-slot-title]'),h=page.querySelector('[data-v647-slot-hint]'),b=page.querySelector('[data-v643-top8]');
