@@ -14,12 +14,14 @@ window.__LJR_V544_GAME_FLOW__=true;
 window.__LJR_V545_MORELESS_ALL_SCREENS__=true;
 window.__LJR_V546_DIRECT_GALLERY__=true;
 window.__LJR_V551_MORELESS_REFERENCE__=true;
+window.__LJR_V614_QUIZ_COUNTDOWN_REFERENCE__=true;
 
 const RAW='https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/';
 const DATA_LOCAL='./data/official-live.json?v=20261001-v531-games';
 const DATA_REMOTE=RAW+'data/official-live.json?v=20261001-v531-games';
 const LEAGUE=RAW+'assets/liga-logo.webp';
 const FEATURE='./assets/home-players-user.jpg';
+const QUIZ_STADIUM='./assets/reference/predictor-v36/predictor-stadium.webp';
 const FALLBACK_LOGOS={
   'san jose fc':'assets/official-logos/san-jose-fc.png',
   'juventus':'assets/official-logos/juventus.png',
@@ -38,10 +40,11 @@ const FALLBACK_LOGOS={
 };
 let db=window.LJR_OFFICIAL_DATA||null;
 let loading=null;
-const quiz={mode:'hub',answered:false,selected:'',points:0,step:1,exit:false,remaining:15,halfUsed:false,retryUsed:false,attempts:1};
+const quiz={mode:'hub',answered:false,selected:'',points:0,step:1,exit:false,remaining:15,halfUsed:false,retryUsed:false,attempts:1,countdown:3,history:[]};
 const more={mode:'legacy',answered:false,selected:'',points:0,attempts:2,exit:false,phase:'intro',countdown:15,roundToken:0,round:0};
 let v538MoreTimers=[];
 let v538MoreInterval=null;
+let v614QuizCountdownTimer=null;
 
 function route(){return String(location.hash||'').replace(/^#\/?/,'').split('?')[0]||'home'}
 function esc(v){return String(v??'').replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})}
@@ -145,6 +148,52 @@ function shareSvg(){return '<svg viewBox="0 0 24 24" aria-hidden="true"><circle 
 function quizLogo(){
   return '<div class="v531-quiz-logo"><span>QUIZ</span><span>ARENA</span><i></i><b></b></div>';
 }
+function v614ClearQuizCountdown(){
+  if(v614QuizCountdownTimer){clearInterval(v614QuizCountdownTimer);v614QuizCountdownTimer=null}
+}
+function v614QuizProgress(){
+  const history=Array.isArray(quiz.history)?quiz.history:[];
+  let html=history.slice(-9).map(function(state){
+    return '<i class="v614-progress-state '+(state==='ok'?'ok':'bad')+'">'+(state==='ok'?'✓':'×')+'</i>';
+  }).join('');
+  html+='<span class="v614-current-timer"><b data-quiz-timer aria-label="Segundos restantes">'+quiz.remaining+'</b></span>';
+  const used=Math.min(10,history.slice(-9).length+1);
+  for(let i=used;i<10;i++)html+='<i class="v614-progress-state pending"></i>';
+  return html;
+}
+function quizCountdown(data){
+  const count=Math.max(1,Number(quiz.countdown)||3);
+  return '<section class="v531-page v531-quiz v614-countdown-screen" data-v531-quiz data-v531-view="countdown">'+
+    '<div class="v614-countdown-backdrop" aria-hidden="true"><img src="'+esc(QUIZ_STADIUM)+'" alt=""></div>'+
+    '<button type="button" class="v614-countdown-close" data-v614-countdown-close aria-label="Cerrar">'+closeSvg()+'</button>'+
+    '<div class="v614-countdown-center">'+
+      '<b>EL QUIZ EMPIEZA EN</b>'+
+      '<span class="v614-countdown-ring"><strong data-quiz-countdown>'+count+'</strong></span>'+
+    '</div>'+
+    '<button type="button" class="v614-countdown-skip" data-v614-countdown-skip>Pulsa para saltar</button>'+
+  '</section>';
+}
+function v614StartQuizCountdown(){
+  v614ClearQuizCountdown();
+  quiz.mode='countdown';quiz.answered=false;quiz.selected='';quiz.exit=false;quiz.remaining=15;quiz.step=1;quiz.points=0;quiz.halfUsed=false;quiz.retryUsed=false;quiz.attempts=1;quiz.countdown=3;quiz.history=[];
+  render(true);
+  v614QuizCountdownTimer=setInterval(function(){
+    if(route()!=='quizArena'||quiz.mode!=='countdown'){v614ClearQuizCountdown();return}
+    if(quiz.countdown>1){
+      quiz.countdown--;
+      const el=document.querySelector('[data-quiz-countdown]');if(el)el.textContent=String(quiz.countdown);
+      return;
+    }
+    v614ClearQuizCountdown();
+    quiz.countdown=0;quiz.mode='game';quiz.remaining=15;
+    render(true);
+  },1000);
+}
+function v614OpenQuizGame(){
+  v614ClearQuizCountdown();
+  quiz.mode='game';quiz.countdown=0;quiz.remaining=15;quiz.exit=false;
+  render(true);
+}
 function quizHub(data){
   const ranks=rankRows(data);
   const q=quizData(data);
@@ -169,20 +218,18 @@ function quizHub(data){
 }
 function quizGame(data){
   const q=quizData(data);
-  const progress=Math.min(12,quiz.step);
-  const dots=Array.from({length:10},function(_,i){return '<i class="'+(i<Math.min(10,progress-1)?'done':'')+'"></i>'}).join('');
-  const wrong=q.options.filter(n=>norm(n)!==norm(q.correct));const options=q.options.map(function(name,i){
+  const wrong=q.options.filter(n=>norm(n)!==norm(q.correct));
+  const options=q.options.map(function(name){
     const hidden=quiz.halfUsed&&wrong.slice(0,2).includes(name);
-    const letter=String.fromCharCode(65+i);
-    return '<button type="button" class="v531-q-answer" '+(hidden?'disabled style="visibility:hidden"':'')+' data-v531-q-answer="'+esc(name)+'"><span>'+letter+'</span><b>'+esc(name)+'</b></button>';
+    return '<button type="button" class="v531-q-answer v614-q-answer" '+(hidden?'disabled style="visibility:hidden"':'')+' data-v531-q-answer="'+esc(name)+'"><span aria-hidden="true"></span><b>'+esc(name)+'</b></button>';
   }).join('');
-  return '<section class="v531-page v531-quiz v531-game-screen" data-v531-quiz data-v531-view="game">'+
-    '<header class="v531-game-head"><strong>Quiz Aleatorio</strong><button type="button" data-v531-quiz-close aria-label="Cerrar">'+closeSvg()+'</button></header>'+
-    '<div class="v531-scorebar"><span class="v531-progress-number" data-quiz-timer aria-label="Segundos restantes">'+quiz.remaining+'</span><div class="v531-progress-dots">'+dots+'</div><span class="v531-score-total"><small>Total</small><b>'+quiz.points+' pts</b></span></div>'+
-    '<main class="v531-q-main">'+
-      '<article class="v531-question-card"><div class="v531-question-media"><img src="'+esc(FEATURE)+'" alt="" loading="eager" decoding="async"><div class="v531-question-crest">'+crest(q.correct,data,'question')+'</div><p>'+esc(q.question)+'</p></div><div class="v531-q-grid">'+options+'</div></article>'+
-      '<div class="v531-promo"><b>VIVE LA LIGA</b><em>JUVENTINO ROSAS</em></div>'+
-      '<div class="v531-turbos"><button data-quiz-half '+(quiz.halfUsed?'disabled':'')+'><small>Tus turbos</small><b>⚡ 50-50</b></button><button data-quiz-retry '+(quiz.retryUsed?'disabled':'')+'><small>Turbo</small><b>⚽ 2 intentos</b></button></div>'+
+  return '<section class="v531-page v531-quiz v531-game-screen v614-quiz-game" data-v531-quiz data-v531-view="game">'+
+    '<header class="v614-game-head"><span></span><button type="button" data-v531-quiz-close aria-label="Cerrar">'+closeSvg()+'</button></header>'+
+    '<div class="v614-scorebar"><div class="v614-progress-track">'+v614QuizProgress()+'</div><span class="v614-score-total"><small>Total</small><b>'+quiz.points+' ptos</b></span></div>'+
+    '<main class="v531-q-main v614-q-main">'+
+      '<article class="v531-question-card v614-question-card"><div class="v531-question-media v614-question-media"><img src="'+esc(QUIZ_STADIUM)+'" alt="" loading="eager" decoding="async"><p>'+esc(q.question)+'</p></div><div class="v531-q-grid v614-q-grid">'+options+'</div></article>'+
+      '<div class="v614-league-band"><img src="'+esc(LEAGUE)+'" alt=""><span><b>LIGA JUVENTINO ROSAS</b><small>FÚTBOL MUNICIPAL</small></span></div>'+
+      '<div class="v531-turbos v614-turbos"><button data-quiz-half '+(quiz.halfUsed?'disabled':'')+'><small>Tus turbos</small><b>⚡&nbsp;&nbsp;50-50</b></button><button data-quiz-retry '+(quiz.retryUsed?'disabled':'')+'><small>Turbo</small><b>⚽&nbsp;&nbsp;2 intentos</b></button></div>'+
     '</main>'+
     (quiz.exit?exitModal('quiz'):'')+
   '</section>';
@@ -443,7 +490,7 @@ function render(focusAdded=false){
     }else{
       mount.hidden=false;
       mount.style.display='block';
-      mount.innerHTML=quiz.mode==='hub'?quizHub(data):quiz.mode==='game'?quizGame(data):quizResult(data);
+      mount.innerHTML=quiz.mode==='hub'?quizHub(data):quiz.mode==='countdown'?quizCountdown(data):quiz.mode==='game'?quizGame(data):quizResult(data);
     }
   }else{
     const open=more.mode!=='legacy';
@@ -516,6 +563,7 @@ function v541OpenMorePages(){
   v543RenderMorePortal();
 }
 function v541OpenQuizPages(){
+  v614ClearQuizCountdown();
   quiz.mode='hub';
   quiz.answered=false;
   quiz.selected='';
@@ -534,7 +582,7 @@ window.LJR_V541_GAMES_API={
   openMorePages:v541OpenMorePages,
   openQuizPages:v541OpenQuizPages,
   closeMorePages:function(){v538ClearTimers();more.mode='legacy';more.exit=false;render(false)},
-  closeQuizPages:function(){quiz.mode='legacy';quiz.exit=false;render(false)}
+  closeQuizPages:function(){v614ClearQuizCountdown();quiz.mode='legacy';quiz.exit=false;render(false)}
 };
 if(window.__LJR_V541_PENDING_MORE__){window.__LJR_V541_PENDING_MORE__=false;requestAnimationFrame(v541OpenMorePages)}
 if(window.__LJR_V541_PENDING_QUIZ__){window.__LJR_V541_PENDING_QUIZ__=false;requestAnimationFrame(v541OpenQuizPages)}
@@ -618,6 +666,7 @@ function schedule(){
       return;
     }
     if(r!=='quizArena'&&r!=='moreLess'){
+      v614ClearQuizCountdown();
       document.querySelector('#v612-quiz-portal')?.remove();document.body.classList.remove('v537-quiz-secondary-open');
       v534LastRoute=r;
       if(document.body.classList.contains('v543-more-portal-open'))v543CloseMorePortal();
@@ -653,11 +702,7 @@ document.addEventListener('click',function(e){
   const oldQuiz=e.target.closest('[data-v48-quiz]');
   if(route()==='quizArena'&&oldQuiz){
     e.preventDefault();e.stopPropagation();e.stopImmediatePropagation();
-    quiz.selected='';
-    quiz.answered=false;
-    quiz.mode='game';
-    quiz.exit=false;
-    render(true);
+    v614StartQuizCountdown();
     return;
   }
   const oldMore=e.target.closest('[data-v12-choice]');
@@ -667,16 +712,12 @@ document.addEventListener('click',function(e){
     return;
   }
 
-  const t=e.target.closest('[data-v545-more-screen],[data-v583-more-round],[data-v531-more-open],[data-v48-quiz],[data-v12-choice],[data-v531-quiz-back],[data-v531-more-back],[data-v531-share],[data-v531-rankings],[data-v531-quiz-start],[data-v531-quiz-close],[data-v531-q-answer],[data-v531-quiz-next],[data-v531-result-back],[data-v531-more-start],[data-v531-more-close],[data-v531-more-choice],[data-v539-more-next],[data-v531-exit-confirm],[data-v531-exit-cancel]');
+  const t=e.target.closest('[data-v545-more-screen],[data-v583-more-round],[data-v531-more-open],[data-v48-quiz],[data-v12-choice],[data-v531-quiz-back],[data-v531-more-back],[data-v531-share],[data-v531-rankings],[data-v531-quiz-start],[data-v531-quiz-close],[data-v531-q-answer],[data-v531-quiz-next],[data-v531-result-back],[data-v531-more-start],[data-v531-more-close],[data-v531-more-choice],[data-v539-more-next],[data-v531-exit-confirm],[data-v531-exit-cancel],[data-v614-countdown-skip],[data-v614-countdown-close]');
   if(!t)return;
   // Controles del diseño principal anterior: no los bloqueamos.
   // Dejamos que su funcionamiento original ocurra y luego abrimos el diseño secundario debajo.
   if(t.matches('[data-v48-quiz]')){
-    quiz.selected='';
-    quiz.answered=false;
-    quiz.mode='game';
-    quiz.exit=false;
-    setTimeout(function(){render(true)},0);
+    v614StartQuizCountdown();
     return;
   }
   if(t.matches('[data-v531-more-open],[data-v12-choice]')){
@@ -726,20 +767,25 @@ document.addEventListener('click',function(e){
     return;
   }
 
-  if(t.matches('[data-v531-quiz-back]')){quiz.mode='hub';quiz.exit=false;go('more');return}
+  if(t.matches('[data-v531-quiz-back]')){v614ClearQuizCountdown();quiz.mode='hub';quiz.exit=false;go('more');return}
   if(t.matches('[data-v531-more-back]')){
     if(route()==='moreLessGallery'){location.hash='#/moreLess';return}
     v543CloseMorePortal();return
   }
   if(t.matches('[data-v531-share]')){share();return}
   if(t.matches('[data-v531-rankings]')){go('rankings');return}
-  if(t.matches('[data-v531-quiz-start]')){quiz.mode='game';quiz.answered=false;quiz.exit=false;quiz.remaining=15;quiz.step=1;quiz.points=0;quiz.halfUsed=false;quiz.retryUsed=false;quiz.attempts=1;render(true);return}
+  if(t.matches('[data-v531-quiz-start]')){v614StartQuizCountdown();return}
+  if(t.matches('[data-v614-countdown-skip]')){v614OpenQuizGame();return}
+  if(t.matches('[data-v614-countdown-close]')){v614ClearQuizCountdown();quiz.mode='hub';quiz.exit=false;render(false);return}
   if(t.matches('[data-v531-quiz-close]')){quiz.exit=true;render(true);return}
-  if(t.matches('[data-v531-result-back]')){quiz.mode='hub';quiz.exit=false;render(false);return}
+  if(t.matches('[data-v531-result-back]')){v614ClearQuizCountdown();quiz.mode='hub';quiz.exit=false;render(false);return}
   if(t.matches('[data-v531-q-answer]')){
     const data=db||window.LJR_OFFICIAL_DATA||{},q=quizData(data),pick=t.dataset.v531QAnswer||'';
     if(quiz.answered)return;if(norm(pick)!==norm(q.correct)&&quiz.attempts>1){quiz.attempts--;t.disabled=true;t.classList.add('is-wrong');return}quiz.selected=pick;quiz.answered=true;
-    if(norm(pick)===norm(q.correct))quiz.points+=10;
+    const ok=norm(pick)===norm(q.correct);
+    if(ok)quiz.points+=10;
+    if(!Array.isArray(quiz.history))quiz.history=[];
+    quiz.history.push(ok?'ok':'bad');
     quiz.mode='result';render(true);return;
   }
   if(t.matches('[data-v531-quiz-next]')){if(quiz.step>=10){quiz.mode='hub';render(true);return}quiz.step++;quiz.selected='';quiz.answered=false;quiz.remaining=15;quiz.attempts=1;quiz.mode='game';render(true);return}
@@ -767,7 +813,7 @@ document.addEventListener('click',function(e){
   }
   if(t.matches('[data-v531-exit-confirm]')){
     const kind=t.dataset.v531ExitConfirm;
-    if(kind==='quiz'){quiz.mode='hub';quiz.exit=false;quiz.answered=false}
+    if(kind==='quiz'){v614ClearQuizCountdown();quiz.mode='hub';quiz.exit=false;quiz.answered=false}
     else{v543CloseMorePortal();return}
     render(false);return;
   }
@@ -788,7 +834,7 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
 // One clock for the active question; dialogs pause the countdown.
 setInterval(()=>{if(route()!=='quizArena'||quiz.mode!=='game'||quiz.exit||quiz.answered)return;
   quiz.remaining=Math.max(0,quiz.remaining-1);const clock=document.querySelector('[data-quiz-timer]');if(clock)clock.textContent=quiz.remaining;
-  if(quiz.remaining===0){quiz.selected='';quiz.answered=true;quiz.mode='result';render(true)}
+  if(quiz.remaining===0){quiz.selected='';quiz.answered=true;if(!Array.isArray(quiz.history))quiz.history=[];quiz.history.push('bad');quiz.mode='result';render(true)}
 },1000);
 document.addEventListener('click',event=>{
  if(event.target.closest('[data-quiz-login]')){go('accountLogin');return}const half=event.target.closest('[data-quiz-half]'),retry=event.target.closest('[data-quiz-retry]');
