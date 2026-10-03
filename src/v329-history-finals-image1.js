@@ -15,14 +15,16 @@ const LOGOS={
   'juventus':RAW+'assets/official-logos/juventus.png',
   'abejas fc':RAW+'assets/official-logos/abejas.png',
   'abejas':RAW+'assets/official-logos/abejas.png',
-  'boavista':RAW+'assets/official-logos/boavista.png'
+  'boavista':RAW+'assets/official-logos/boavista.png',
+  'valencia':RAW+'assets/official-logos/valencia.png',
+  'chelsea':'https://upload.wikimedia.org/wikipedia/en/c/cc/Chelsea_FC.svg'
 };
 const DATES={
   'magisterio 4–2 boavista':'23 feb 2013',
   'magisterio 4-2 boavista':'23 feb 2013',
   'hermanos vs juventus':'Archivo histórico',
   'valencia vs halcones':'Archivo histórico',
-  'hermanos vs chelse':'Archivo histórico',
+  'hermanos vs chelsea':'Archivo histórico',
   'olímpicos de pozos vs abejas fc':'Domingo 21 de junio · año no visible',
   'olimpicos de pozos vs abejas fc':'Domingo 21 de junio · año no visible'
 };
@@ -589,7 +591,7 @@ st.textContent=[
 'html body .v35-history-page.v330-finals-active .v330-team em{justify-self:end!important;color:#fff!important;font:700 17px/1 system-ui,sans-serif!important;font-style:normal!important;}',
 'html body .v35-history-page.v330-finals-active .v330-side{display:flex!important;flex-direction:column!important;justify-content:center!important;gap:9px!important;}',
 'html body .v35-history-page.v330-finals-active .v330-side>span{color:#b6bbd8!important;text-align:center!important;font:500 15px/1 system-ui,sans-serif!important;}',
-'html body .v35-history-page.v330-finals-active .v330-side button{height:37px!important;min-height:37px!important;padding:0 7px!important;border:0!important;border-radius:8px!important;background:linear-gradient(180deg,#0b4497 0%,#07337b 100%)!important;box-shadow:inset 0 0 0 1px rgba(18,237,243,.09)!important;color:#13edf3!important;font:700 14px/1 system-ui,sans-serif!important;}',
+'html body .v35-history-page.v330-finals-active .v330-side button{height:37px!important;min-height:37px!important;padding:0 7px!important;border:0!important;border-radius:8px!important;background:rgba(17,92,190,.08)!important;box-shadow:none!important;color:#13edf3!important;font:700 14px/1 system-ui,sans-serif!important;}',
 'html body .v35-history-page.v330-finals-active .v330-detail{display:grid!important;grid-template-rows:0fr!important;opacity:0!important;overflow:hidden!important;transition:grid-template-rows .18s ease,opacity .18s ease!important;}',
 'html body .v35-history-page.v330-finals-active .v330-detail>div{min-height:0!important;overflow:hidden!important;}',
 'html body .v35-history-page.v330-finals-active .v330-final-row.is-open .v330-detail{grid-template-rows:1fr!important;opacity:1!important;padding-bottom:14px!important;}',
