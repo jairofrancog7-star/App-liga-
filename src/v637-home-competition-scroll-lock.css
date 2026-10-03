@@ -484,3 +484,19 @@
     max-height:28px!important;
   }
 }
+
+
+/* V645 — Clasificación reutiliza las coordenadas REALES del trofeo capturadas
+   en Partidos/Cuadro, para que no se mueva ni un pixel al cambiar de pestaña. */
+@media (max-width:520px){
+  html body.v40-standings-master[data-app-route="competition"] #app > .topbar::before,
+  html body.v40-standings-master[data-app-route="competition"] .app-shell > .topbar::before{
+    left:var(--v645-trophy-left,auto)!important;
+    right:var(--v645-trophy-right,50px)!important;
+    top:var(--v645-trophy-top,-16px)!important;
+    bottom:var(--v645-trophy-bottom,auto)!important;
+    width:var(--v645-trophy-width,153px)!important;
+    height:var(--v645-trophy-height,132px)!important;
+    transform:var(--v645-trophy-transform,none)!important;
+  }
+}
