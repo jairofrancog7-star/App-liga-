@@ -16,6 +16,8 @@
     'xolos jaralillo':'./assets/history/team-logos/xolos-jaralillo.webp',
     'jaralillo':'./assets/history/team-logos/xolos-jaralillo.webp',
     'jaralillo fc':'./assets/history/team-logos/xolos-jaralillo.webp',
+    'jaralillo f c':'./assets/history/team-logos/xolos-jaralillo.webp',
+    'xolos de jaralillo':'./assets/history/team-logos/xolos-jaralillo.webp',
     'xolos':'./assets/history/team-logos/xolos-jaralillo.webp',
     'tecos':'./assets/history/team-logos/tecos.webp',
     'tecos fc':'./assets/history/team-logos/tecos.webp'
