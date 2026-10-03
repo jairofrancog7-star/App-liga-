@@ -121,7 +121,7 @@ function shareIcon(){return '<svg viewBox="0 0 24 24"><circle cx="18" cy="5" r="
 function plusIcon(){return '<svg viewBox="0 0 20 20" aria-hidden="true"><path d="M10 3.5v13M3.5 10h13"/></svg>'}
 function checkIcon(){return '<svg viewBox="0 0 20 20" aria-hidden="true"><path d="m3.5 10.2 4 4.1 9-9"/></svg>'}
 function starIcon(){return '<svg viewBox="0 0 40 40" aria-hidden="true"><path d="m20 5 4.5 9.1 10 1.5-7.2 7 1.7 10-9-4.7-9 4.7 1.7-10-7.2-7 10-1.5Z"/></svg>'}
-function dotsIcon(){return '<svg viewBox="0 0 24 24"><circle cx="5" cy="12" r="1.5"/><circle cx="12" cy="12" r="1.5"/><circle cx="19" cy="12" r="1.5"/></svg>'}
+function dotsIcon(){return '<svg viewBox="0 0 24 24"><circle cx="12" cy="5" r="1.5"/><circle cx="12" cy="12" r="1.5"/><circle cx="12" cy="19" r="1.5"/></svg>'}
 function store(){try{return JSON.parse(localStorage.getItem('lj-store-v3')||'{}')||{}}catch(e){return {}}}
 function save(st){localStorage.setItem('lj-store-v3',JSON.stringify(st))}
 function followId(){return slug(selectedName())}
