@@ -359,3 +359,109 @@
     margin-top:-52px!important;
   }
 }
+
+
+/* V625 — Historia: el MISMO fondo original baja físicamente hasta la línea
+   divisoria inferior. La cabecera ocupa 136px y las pestañas 54px dentro
+   del mismo bloque de 190px; no se crea una segunda franja de color. */
+@media (max-width:1023px){
+  html body[data-app-route="history"] .v35-history-page .v620-history-top{
+    position:relative!important;
+    z-index:2!important;
+    box-sizing:border-box!important;
+    width:100%!important;
+    height:190px!important;
+    min-height:190px!important;
+    max-height:190px!important;
+    margin:0!important;
+    padding:0!important;
+    overflow:visible!important;
+    isolation:isolate!important;
+    background:transparent!important;
+    background-color:transparent!important;
+    background-image:none!important;
+  }
+
+  /* Una sola capa de arte cubre CABECERA + TABS hasta la línea blanca. */
+  html body[data-app-route="history"] .v35-history-page .v620-history-top::before{
+    content:""!important;
+    position:absolute!important;
+    inset:0!important;
+    z-index:0!important;
+    pointer-events:none!important;
+    background:
+      linear-gradient(180deg,rgba(8,43,224,.06) 0%,rgba(5,16,121,.18) 58%,rgba(4,8,78,.34) 100%),
+      url('../public/history-regularscroll-header.webp') center top/cover no-repeat!important;
+  }
+
+  html body[data-app-route="history"] .v35-history-page .v620-history-top .v35-history-head,
+  html body[data-app-route="history"] .v35-history-page.v329-videos-active .v620-history-top .v35-history-head,
+  html body[data-app-route="history"] .v35-history-page.v329-finals-image1 .v620-history-top .v35-history-head,
+  html body[data-app-route="history"] .v35-history-page.v358-finals-reference .v620-history-top .v35-history-head{
+    position:relative!important;
+    z-index:1!important;
+    box-sizing:border-box!important;
+    height:136px!important;
+    min-height:136px!important;
+    max-height:136px!important;
+    margin:0!important;
+    background:transparent!important;
+    background-color:transparent!important;
+    background-image:none!important;
+  }
+
+  html body[data-app-route="history"] .v35-history-page .v620-history-top .v35-history-head h1{
+    bottom:17px!important;
+  }
+
+  html body[data-app-route="history"] .v35-history-page .v620-history-top .v35-tabs,
+  html body[data-app-route="history"] .v35-history-page.is-compact .v620-history-top .v35-tabs,
+  html body[data-app-route="history"] .v35-history-page.v329-videos-active .v620-history-top .v35-tabs,
+  html body[data-app-route="history"] .v35-history-page.v329-finals-image1 .v620-history-top .v35-tabs,
+  html body[data-app-route="history"] .v35-history-page.v358-finals-reference .v620-history-top .v35-tabs{
+    position:sticky!important;
+    top:var(--v35-compact-h,56px)!important;
+    z-index:90!important;
+    box-sizing:border-box!important;
+    height:54px!important;
+    min-height:54px!important;
+    max-height:54px!important;
+    margin:0!important;
+    padding:0 22px!important;
+    background:transparent!important;
+    background-color:transparent!important;
+    background-image:none!important;
+    border-top:0!important;
+    border-bottom:1px solid rgba(205,212,255,.30)!important;
+    box-shadow:none!important;
+  }
+
+  /* El contenido oscuro comienza EXACTAMENTE después de la línea. */
+  html body[data-app-route="history"] .v35-history-page .v35-history-content{
+    margin-top:0!important;
+    border-top:0!important;
+  }
+}
+
+@media (max-width:374px){
+  html body[data-app-route="history"] .v35-history-page .v620-history-top{
+    height:180px!important;
+    min-height:180px!important;
+    max-height:180px!important;
+  }
+  html body[data-app-route="history"] .v35-history-page .v620-history-top .v35-history-head{
+    height:128px!important;
+    min-height:128px!important;
+    max-height:128px!important;
+  }
+  html body[data-app-route="history"] .v35-history-page .v620-history-top .v35-history-head h1{
+    bottom:15px!important;
+  }
+  html body[data-app-route="history"] .v35-history-page .v620-history-top .v35-tabs{
+    height:52px!important;
+    min-height:52px!important;
+    max-height:52px!important;
+    margin:0!important;
+    padding-inline:18px!important;
+  }
+}
