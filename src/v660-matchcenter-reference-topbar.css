@@ -1,0 +1,210 @@
+/* V660 — Match Center: barra superior igual a la referencia azul (imagen 2).
+   Fondo azul brillante con líneas neón, trofeo tenue, flecha simple y perfil blanco. */
+@media (max-width:1023px){
+  html body.v92-match-center-official{
+    --v660-match-topbar-h:88px;
+  }
+
+  html body.v92-match-center-official #app > .topbar,
+  html body.v92-match-center-official .app-shell > .topbar{
+    position:sticky!important;
+    top:0!important;
+    left:0!important;
+    right:0!important;
+    width:100%!important;
+    max-width:none!important;
+    height:calc(var(--v660-match-topbar-h) + env(safe-area-inset-top))!important;
+    min-height:calc(var(--v660-match-topbar-h) + env(safe-area-inset-top))!important;
+    max-height:calc(var(--v660-match-topbar-h) + env(safe-area-inset-top))!important;
+    margin:0!important;
+    padding:env(safe-area-inset-top) 0 0!important;
+    overflow:hidden!important;
+    isolation:isolate!important;
+    border:0!important;
+    border-bottom:2px solid rgba(59,145,255,.94)!important;
+    border-radius:0!important;
+    box-shadow:0 1px 0 rgba(35,220,255,.24)!important;
+    background:
+      radial-gradient(260px 128px at 18% -4%,rgba(31,173,255,.72),transparent 66%),
+      radial-gradient(300px 145px at 89% 4%,rgba(13,132,255,.72),transparent 68%),
+      linear-gradient(180deg,#0878f2 0%,#0a45da 18%,#0926b3 52%,#08177f 78%,#07106c 100%)!important;
+    z-index:2147482400!important;
+  }
+
+  /* Trofeo tenue como en la imagen de referencia. */
+  html body.v92-match-center-official #app > .topbar::before,
+  html body.v92-match-center-official .app-shell > .topbar::before{
+    content:""!important;
+    display:block!important;
+    position:absolute!important;
+    z-index:2!important;
+    left:18%!important;
+    top:12px!important;
+    width:78px!important;
+    height:70px!important;
+    pointer-events:none!important;
+    opacity:.26!important;
+    background-image:url("./../assets/reference/final-trophy-drive.png")!important;
+    background-repeat:no-repeat!important;
+    background-position:center!important;
+    background-size:contain!important;
+    filter:grayscale(1) brightness(2.2) saturate(.3) drop-shadow(0 0 7px rgba(99,227,255,.35))!important;
+    transform:none!important;
+  }
+
+  /* En Match Center la barra no lleva título. */
+  html body.v92-match-center-official #app > .topbar::after,
+  html body.v92-match-center-official .app-shell > .topbar::after{
+    content:""!important;
+    display:none!important;
+  }
+
+  /* Reutiliza el wordmark como capa de líneas luminosas; no muestra texto ni logo. */
+  html body.v92-match-center-official .topbar .wordmark{
+    display:block!important;
+    visibility:visible!important;
+    position:absolute!important;
+    inset:0!important;
+    width:100%!important;
+    height:100%!important;
+    min-width:0!important;
+    min-height:0!important;
+    margin:0!important;
+    padding:0!important;
+    border:0!important;
+    border-radius:0!important;
+    background:none!important;
+    background-image:none!important;
+    box-shadow:none!important;
+    color:transparent!important;
+    font-size:0!important;
+    pointer-events:none!important;
+    overflow:hidden!important;
+    z-index:1!important;
+  }
+
+  html body.v92-match-center-official .topbar .wordmark::before{
+    content:""!important;
+    display:block!important;
+    position:absolute!important;
+    left:-12%!important;
+    right:-12%!important;
+    top:-46%!important;
+    height:178%!important;
+    opacity:.88!important;
+    pointer-events:none!important;
+    background:
+      radial-gradient(ellipse at 19% 52%,transparent 0 45%,rgba(96,225,255,.82) 45.8%,rgba(220,250,255,.96) 46.4%,rgba(59,185,255,.62) 47.2%,transparent 48.2% 58%,rgba(42,126,255,.44) 59%,transparent 60.2%),
+      radial-gradient(ellipse at 77% 0%,transparent 0 38%,rgba(109,226,255,.74) 38.8%,rgba(229,252,255,.88) 39.4%,transparent 40.5%),
+      linear-gradient(158deg,transparent 0 31%,rgba(79,210,255,.54) 31.5%,rgba(240,255,255,.82) 32.1%,rgba(73,194,255,.52) 32.8%,transparent 33.6% 100%)!important;
+    filter:drop-shadow(0 0 5px rgba(72,211,255,.62))!important;
+    transform:rotate(-2deg)!important;
+  }
+
+  html body.v92-match-center-official .topbar .wordmark::after{
+    content:""!important;
+    display:block!important;
+    position:absolute!important;
+    left:-8%!important;
+    right:-8%!important;
+    bottom:-28px!important;
+    height:74px!important;
+    opacity:.54!important;
+    pointer-events:none!important;
+    background:
+      linear-gradient(14deg,transparent 0 26%,rgba(68,220,255,.64) 26.6%,rgba(243,255,255,.82) 27.1%,transparent 27.9% 100%),
+      linear-gradient(166deg,transparent 0 48%,rgba(63,194,255,.58) 48.7%,rgba(247,255,255,.76) 49.2%,transparent 50% 100%)!important;
+    filter:drop-shadow(0 0 5px rgba(58,209,255,.52))!important;
+  }
+
+  /* Flecha blanca simple, sin círculo. */
+  html body.v92-match-center-official .topbar .back-button,
+  html body.v92-match-center-official .topbar .back-button.is-hidden{
+    display:grid!important;
+    visibility:visible!important;
+    position:absolute!important;
+    left:16px!important;
+    top:calc(env(safe-area-inset-top) + 23px)!important;
+    bottom:auto!important;
+    width:40px!important;
+    height:40px!important;
+    min-width:40px!important;
+    min-height:40px!important;
+    margin:0!important;
+    padding:0!important;
+    place-items:center!important;
+    border:0!important;
+    border-radius:0!important;
+    background:transparent!important;
+    box-shadow:none!important;
+    backdrop-filter:none!important;
+    -webkit-backdrop-filter:none!important;
+    color:#fff!important;
+    opacity:1!important;
+    pointer-events:auto!important;
+    z-index:6!important;
+  }
+  html body.v92-match-center-official .topbar .back-button svg{
+    width:31px!important;
+    height:31px!important;
+    stroke:#fff!important;
+    stroke-width:2.35!important;
+  }
+
+  /* Perfil circular blanco a la derecha. */
+  html body.v92-match-center-official .topbar .profile-button{
+    display:grid!important;
+    visibility:visible!important;
+    position:absolute!important;
+    right:18px!important;
+    top:calc(env(safe-area-inset-top) + 22px)!important;
+    bottom:auto!important;
+    width:38px!important;
+    height:38px!important;
+    min-width:38px!important;
+    min-height:38px!important;
+    max-width:38px!important;
+    max-height:38px!important;
+    margin:0!important;
+    padding:0!important;
+    place-items:center!important;
+    border:2px solid #fff!important;
+    border-radius:50%!important;
+    background:rgba(4,31,145,.08)!important;
+    color:#fff!important;
+    box-shadow:none!important;
+    opacity:1!important;
+    pointer-events:auto!important;
+    z-index:6!important;
+  }
+  html body.v92-match-center-official .topbar .profile-button svg{
+    display:block!important;
+    width:25px!important;
+    height:25px!important;
+    fill:none!important;
+    stroke:#fff!important;
+    stroke-width:1.85!important;
+  }
+}
+
+@media (max-width:390px){
+  html body.v92-match-center-official{
+    --v660-match-topbar-h:84px;
+  }
+  html body.v92-match-center-official .topbar .back-button,
+  html body.v92-match-center-official .topbar .back-button.is-hidden{
+    left:12px!important;
+    top:calc(env(safe-area-inset-top) + 21px)!important;
+  }
+  html body.v92-match-center-official .topbar .profile-button{
+    right:14px!important;
+    top:calc(env(safe-area-inset-top) + 20px)!important;
+  }
+  html body.v92-match-center-official #app > .topbar::before,
+  html body.v92-match-center-official .app-shell > .topbar::before{
+    left:20%!important;
+    top:11px!important;
+    width:72px!important;
+    height:65px!important;
+  }
+}
