@@ -1045,8 +1045,8 @@ function render(){
   screen.querySelectorAll('[data-v92-open-lineups]').forEach(b=>b.onclick=()=>{activeTab='Alineaciones';renderGuard=false;render();refreshOfficialData(true)});
   screen.querySelectorAll('[data-v92-route]').forEach(b=>b.onclick=()=>{location.hash='#/'+b.dataset.v92Route});
   screen.querySelectorAll('[data-v92-pitch]').forEach(b=>b.onclick=()=>{
-    try{sessionStorage.setItem('v92-pitch-context',JSON.stringify({match:m.key,home,away,category:m.category}))}catch(_){}
-    location.hash='#/tactics';
+    try{sessionStorage.setItem('v92-pitch-context',JSON.stringify({match:m.key,home,away,category:m.category,venue}))}catch(_){}
+    location.hash='#/venues';
   });
   screen.querySelectorAll('[data-v92-vote-mvp]').forEach(b=>b.onclick=()=>openMvpVote(m));
   screen.querySelectorAll('[data-v419-profile-scroll]').forEach(b=>b.onclick=()=>{
