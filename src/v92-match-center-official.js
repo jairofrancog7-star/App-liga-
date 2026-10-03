@@ -986,7 +986,7 @@ function statsBody(m){
     '<article class="v664-stats-card">'+
       '<header><span>'+teamLogo(r[2],'v664-stats-logo')+'<b>'+esc(r[2])+'</b></span><strong>VS</strong><span>'+teamLogo(r[6],'v664-stats-logo')+'<b>'+esc(r[6])+'</b></span></header>'+
       '<h2>Rendimiento</h2>'+
-      '<div class="v664-pitch-compare"><i style="--home:'+esc(hShare??50)+'%"></i><span></span></div>'+
+      '<div class="v664-pitch-compare" style="--home:'+esc(hShare??50)+'%"><i></i><span></span></div>'+
       '<div class="v664-share-row"><b>'+(hShare==null?'—':hShare+'%')+'</b><span>Puntos de temporada</span><b>'+(aShare==null?'—':aShare+'%')+'</b></div>'+
       '<div class="v664-stat-list">'+row('Partidos',2)+row('Ganados',3)+row('Goles a favor',6)+row('Diferencia',8)+row('Puntos',9)+'</div>'+
       '<small class="v664-data-note">Comparación con datos oficiales de temporada; no se inventan posesión, tiros ni asistencias.</small>'+
