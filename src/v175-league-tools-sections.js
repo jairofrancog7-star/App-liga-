@@ -71,7 +71,7 @@
     if(/pizarra|tacticas|tactica 3d|shot map|mapa de tiros/.test(k))
       return 'tactics';
 
-    if(/cedula|credencial|registro de jugadores|reclutamiento|nueva sancion|delegados|directorio/.test(k))
+    if(/cedula|credencial|permiso|autorizacion|registro de jugadores|reclutamiento|nueva sancion|delegados|directorio/.test(k))
       return 'players';
 
     if(/tabla y estadisticas|exportar tabla|liguilla|cuadro png|simulador|jornada animada|rendimiento/.test(k))
