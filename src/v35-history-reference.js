@@ -1142,10 +1142,10 @@ function historicalSourcesBlock(){
     '<div class="v35-section-row"><h2>Fuentes de temporadas anteriores</h2></div>'+
     '<p class="v35-history-scope">Los equipos que ya no participan se conservan únicamente dentro de Historia. No se agregan a Equipos, clasificación, calendarios ni estadísticas de la temporada actual.</p>'+
     '<div class="v35-history-source-list">'+historicalSources.map((s,i)=>
-      '<button type="button" class="v35-history-source-card" data-v35-history-source="'+i+'">'+
-        '<span class="v35-history-source-icon">▶</span>'+
+      '<button type="button" class="v35-history-source-card '+(s.url?'is-link':'is-disabled')+'" data-v35-history-source="'+i+'" '+(s.url?'':'disabled aria-disabled="true"')+'>'+
+        '<span class="v35-history-source-icon" aria-hidden="true">'+(s.url?'▶':'•')+'</span>'+
         '<span><b>'+esc(s.title)+'</b><small>'+esc(s.note)+'</small></span>'+
-        '<em>Abrir</em>'+
+        '<em>'+(s.url?'Abrir':'Consulta')+'</em>'+
       '</button>'
     ).join('')+'</div>'+
   '</section>';
@@ -1355,10 +1355,13 @@ function historyYouthCards(){
     '<article><span>'+esc(x.year)+'</span><div><b>'+esc(x.title)+'</b><small>'+esc(x.detail)+'</small></div></article>'
   ).join('')+'</div>';
 }
+function historyDetailButton(){
+  return '<button type="button" class="v672-card-toggle" data-v672-history-toggle aria-expanded="true"><span>Ocultar detalle</span><i>⌃</i></button>';
+}
 function institutionalHistoryBlock(){
   return '<section class="v35-history-format v35-institutional-history">'+
     '<div class="v35-history-subhead"><span>IDENTIDAD Y ORIGEN</span><h3>Lo que está comprobado y lo que sigue pendiente</h3><p>La investigación separa identidad institucional, presencia digital y antecedentes del fútbol local para no convertir una fecha de Facebook en una fecha de fundación.</p></div>'+
-    '<div class="v35-format-grid">'+institutionalHistoryFacts.map(x=>'<article><span class="v35-history-kind">'+esc(x.tag)+'</span><h4>'+esc(x.title)+'</h4><p>'+esc(x.detail)+'</p></article>').join('')+'</div>'+
+    '<div class="v35-format-grid">'+institutionalHistoryFacts.map(x=>'<article class="v672-modern-card"><span class="v35-history-kind">'+esc(x.tag)+'</span><h4>'+esc(x.title)+'</h4><p class="v672-card-detail">'+esc(x.detail)+'</p>'+historyDetailButton()+'</article>').join('')+'</div>'+
     '<div class="v35-archive-method"><h4>Investigación todavía abierta</h4>'+openHistoricalQuestions.map(x=>'<p>• '+esc(x)+'</p>').join('')+'</div>'+
   '</section>';
 }
@@ -1369,20 +1372,20 @@ function taggedHistoryTitle(title){
 function taggedFacebookBlock(){
   return '<section class="v35-history-format v35-tagged-facebook">'+
     '<div class="v35-history-subhead"><span>PUBLICACIONES EN LA BIOGRAFÍA DE GOLAZO LIGA</span><h3>Personas que publicaban, etiquetaban o compartían tablas y roles</h3><p>Facebook conserva parte del archivo como publicaciones hechas por otras personas en Golazo Liga o como publicaciones donde Golazo Liga aparece etiquetado. Por eso muchas tablas no necesariamente aparecen dentro de la galería de fotos propia del perfil.</p></div>'+
-    '<div class="v35-result-list v35-video-findings">'+taggedFacebookPosts.map(x=>'<article class="v35-final-row v35-tagged-row"><span class="v35-tagged-date">'+esc(x.date)+'</span><small>'+esc(x.type)+'</small><b>'+esc(x.person)+'</b><strong class="v35-tagged-title">'+taggedHistoryTitle(x.title)+'</strong><p>'+esc(x.detail)+'</p></article>').join('')+'</div>'+
+    '<div class="v35-result-list v35-video-findings">'+taggedFacebookPosts.map(x=>'<article class="v35-final-row v35-tagged-row v672-modern-card"><button type="button" class="v35-tagged-date v672-date-button" data-v672-history-toggle aria-expanded="true">'+esc(x.date)+'</button><small>'+esc(x.type)+'</small><b>'+esc(x.person)+'</b><strong class="v35-tagged-title">'+taggedHistoryTitle(x.title)+'</strong><p class="v672-card-detail">'+esc(x.detail)+'</p></article>').join('')+'</div>'+
   '</section>';
 }
 
 function historicalTimelineBlock(){
   return '<section class="v35-history-timeline">'+
     '<div class="v35-history-subhead"><span>LÍNEA DEL TIEMPO</span><h3>Cómo fue cambiando la Liga</h3><p>Un recorrido breve por los momentos que han marcado la historia y evolución de la Liga.</p></div>'+
-    '<div class="v35-timeline-list">'+historicalTimeline.map(x=>'<article><time>'+esc(x.date)+'</time><div><h4>'+esc(x.title)+'</h4><p>'+esc(x.detail)+'</p></div></article>').join('')+'</div>'+
+    '<div class="v35-timeline-list">'+historicalTimeline.map(x=>'<article class="v672-modern-card"><button type="button" class="v672-date-button v672-timeline-date" data-v672-history-toggle aria-expanded="true">'+esc(x.date)+'</button><div><h4>'+esc(x.title)+'</h4><p class="v672-card-detail">'+esc(x.detail)+'</p></div></article>').join('')+'</div>'+
   '</section>';
 }
 function competitionFormatBlock(){
   return '<section class="v35-history-format">'+
     '<div class="v35-history-subhead"><span>CÓMO FUNCIONA</span><h3>Formato actual y tradición de juego</h3></div>'+
-    '<div class="v35-format-grid">'+currentCompetitionFormat.map(x=>'<article><h4>'+esc(x.title)+'</h4><p>'+esc(x.detail)+'</p></article>').join('')+'</div>'+
+    '<div class="v35-format-grid">'+currentCompetitionFormat.map(x=>'<article class="v672-modern-card"><h4>'+esc(x.title)+'</h4><p class="v672-card-detail">'+esc(x.detail)+'</p>'+historyDetailButton()+'</article>').join('')+'</div>'+
     '<div class="v35-archive-method"><h4>Criterio del archivo histórico</h4>'+archiveMethod.map(x=>'<p>• '+esc(x)+'</p>').join('')+'</div>'+
   '</section>';
 }
@@ -2734,6 +2737,19 @@ function onClick(e){
   if(season){e.preventDefault();e.stopPropagation();const idx=Number(season.dataset.v35Season||0);activeTab='Temporadas';rerenderContent();requestAnimationFrame(()=>{const cards=document.querySelectorAll('.v35-season-grid .v35-season-card');cards[idx]?.scrollIntoView({block:'center',behavior:'smooth'});});return;}
   const shareBtn=e.target.closest('[data-v35-share]');
   if(shareBtn){e.preventDefault();e.stopPropagation();share();return;}
+  const detailToggle=e.target.closest('[data-v672-history-toggle]');
+  if(detailToggle){
+    e.preventDefault();e.stopPropagation();e.stopImmediatePropagation();
+    const card=detailToggle.closest('article');
+    if(!card)return;
+    const collapsed=card.classList.toggle('v672-collapsed');
+    card.querySelectorAll('[data-v672-history-toggle]').forEach(btn=>btn.setAttribute('aria-expanded',collapsed?'false':'true'));
+    const label=card.querySelector('.v672-card-toggle span');
+    const icon=card.querySelector('.v672-card-toggle i');
+    if(label)label.textContent=collapsed?'Ver detalle':'Ocultar detalle';
+    if(icon)icon.textContent=collapsed?'⌄':'⌃';
+    return;
+  }
   const source=e.target.closest('[data-v35-history-source]');
   if(source){
     e.preventDefault();e.stopPropagation();
