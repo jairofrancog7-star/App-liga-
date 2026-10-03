@@ -1013,3 +1013,41 @@ html body[data-app-route="moments"] .v26-moments-sticky .v26-moments-sticky-back
   height:34px!important;
 }
 /* /V622 */
+
+
+/* V623 — MOMENTOS EDGE FADE
+   Oscurece y difumina la orilla inferior del arte para que se funda con
+   el azul oscuro de la página, como en la referencia del usuario. */
+html body[data-app-route="moments"] .v26-moments-sticky::after{
+  content:""!important;
+  position:absolute!important;
+  inset:0!important;
+  z-index:2!important;
+  pointer-events:none!important;
+  background:
+    linear-gradient(
+      180deg,
+      rgba(2,8,92,0) 30%,
+      rgba(2,7,86,.05) 46%,
+      rgba(2,6,78,.16) 60%,
+      rgba(2,5,70,.34) 74%,
+      rgba(2,4,66,.62) 88%,
+      rgba(3,4,75,.92) 100%
+    ),
+    linear-gradient(
+      90deg,
+      rgba(2,5,72,.16) 0%,
+      rgba(2,5,72,0) 10%,
+      rgba(2,5,72,0) 90%,
+      rgba(2,5,72,.16) 100%
+    )!important;
+}
+
+/* La flecha y el texto siempre quedan por encima del difuminado. */
+html body[data-app-route="moments"] .v26-moments-sticky .v561-moments-title{
+  z-index:4!important;
+}
+html body[data-app-route="moments"] .v26-moments-sticky .v26-moments-sticky-back{
+  z-index:5!important;
+}
+/* /V623 */
