@@ -27,7 +27,15 @@ const seasons=[
   {label:'2023/24',crest:ASSETS.league,alt:'Liga Municipal de Fútbol Juventino Rosas'},
   {label:'2022/23',crest:ASSETS.league,alt:'Liga Municipal de Fútbol Juventino Rosas'},
   {label:'2021/22',crest:ASSETS.league,alt:'Liga Municipal de Fútbol Juventino Rosas'},
-  {label:'2019/20',crest:ASSETS.league,alt:'Liga Municipal de Fútbol Juventino Rosas'}
+  {label:'2020/21',crest:ASSETS.league,alt:'Liga Municipal de Fútbol Juventino Rosas'},
+  {label:'2019/20',crest:ASSETS.league,alt:'Liga Municipal de Fútbol Juventino Rosas'},
+  {label:'2018/19',crest:ASSETS.league,alt:'Liga Municipal de Fútbol Juventino Rosas'},
+  {label:'2017/18',crest:ASSETS.league,alt:'Liga Municipal de Fútbol Juventino Rosas'},
+  {label:'2016/17',crest:ASSETS.league,alt:'Liga Municipal de Fútbol Juventino Rosas'},
+  {label:'2015/16',crest:ASSETS.league,alt:'Liga Municipal de Fútbol Juventino Rosas'},
+  {label:'2014/15',crest:ASSETS.league,alt:'Liga Municipal de Fútbol Juventino Rosas'},
+  {label:'2013/14',crest:ASSETS.league,alt:'Liga Municipal de Fútbol Juventino Rosas'},
+  {label:'2012/13',crest:ASSETS.league,alt:'Golazo Liga · archivo histórico 2012'}
 ];
 
 /* V75 — fuentes históricas entregadas por el usuario.
