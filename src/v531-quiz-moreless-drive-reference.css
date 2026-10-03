@@ -4084,3 +4084,50 @@ html body .v543-moreless-portal .v545-mini-player .v538-person>img{
   transform:none!important;
   clip-path:none!important;
 }
+
+
+/* V613 — Quiz Arena: icono rosa superior separado del texto QUIZ. */
+body[data-app-route="quizArena"] .v531-result-screen .v531-quiz-logo{
+  width:min(310px,88vw)!important;
+  height:220px!important;
+}
+body[data-app-route="quizArena"] .v531-result-screen .v531-quiz-logo span{
+  z-index:2!important;
+}
+body[data-app-route="quizArena"] .v531-result-screen .v531-quiz-logo i{
+  right:0!important;
+  top:-2px!important;
+  width:52px!important;
+  height:48px!important;
+  z-index:3!important;
+}
+body[data-app-route="quizArena"] .v531-result-screen .v531-quiz-logo i:after{
+  left:13px!important;
+  top:13px!important;
+  width:21px!important;
+  height:11px!important;
+}
+body[data-app-route="quizArena"] .v531-result-screen .v531-quiz-logo span:first-child{
+  top:18px!important;
+}
+body[data-app-route="quizArena"] .v531-result-screen{
+  border:0!important;
+  outline:0!important;
+}
+body[data-app-route="quizArena"] .v531-result-screen>.v531-result-head{
+  border:0!important;
+  box-shadow:none!important;
+}
+@media(max-width:350px){
+  body[data-app-route="quizArena"] .v531-result-screen .v531-quiz-logo{
+    width:min(292px,91vw)!important;
+  }
+  body[data-app-route="quizArena"] .v531-result-screen .v531-quiz-logo span{
+    font-size:60px!important;
+  }
+  body[data-app-route="quizArena"] .v531-result-screen .v531-quiz-logo i{
+    width:46px!important;
+    height:43px!important;
+    right:1px!important;
+  }
+}
