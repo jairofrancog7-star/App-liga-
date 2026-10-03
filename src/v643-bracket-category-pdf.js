@@ -18,7 +18,7 @@ const LEAGUE_LOGO='./assets/liga-logo.webp';
 const TROPHY='./assets/reference/final-trophy-drive.png';
 const TROPHY_FALLBACK='./final-trophy-drive.png';
 const imgCache=new Map();
-let timer=0,previewToken=0;
+let mountTimer=0,previewTimer=0,previewToken=0;
 
 const route=()=>String(location.hash||'').replace(/^#\/?/,'').split('?')[0]||String(document.body?.dataset?.appRoute||'home');
 const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -185,11 +185,16 @@ function fitFont(ctx,text,maxW,start,min,weight){
   do{ctx.font=(weight||800)+' '+size+'px Arial,Helvetica,sans-serif';if(ctx.measureText(text).width<=maxW)break;size-=1}while(size>min);
   return size;
 }
-function connector(ctx,x1,y1,x2,y2,midX){
+function pairConnector(ctx,leftX,yA,yB,rightX,targetY,midX){
   ctx.save();
   ctx.strokeStyle='#28e4f0';ctx.lineWidth=4;ctx.lineJoin='round';ctx.lineCap='round';
   ctx.shadowColor='rgba(40,228,240,.6)';ctx.shadowBlur=10;
-  ctx.beginPath();ctx.moveTo(x1,y1);ctx.lineTo(midX,y1);ctx.lineTo(midX,y2);ctx.lineTo(x2,y2);ctx.stroke();
+  ctx.beginPath();
+  ctx.moveTo(leftX,yA);ctx.lineTo(midX,yA);
+  ctx.moveTo(leftX,yB);ctx.lineTo(midX,yB);
+  ctx.moveTo(midX,yA);ctx.lineTo(midX,yB);
+  ctx.moveTo(midX,targetY);ctx.lineTo(rightX,targetY);
+  ctx.stroke();
   ctx.restore();
 }
 async function drawTeam(ctx,num,name,x,y,w,h){
@@ -235,12 +240,9 @@ async function drawBracket(canvas,page){
   const sX=835,sW=330,sH=150,sC=[(qC[0]+qC[1])/2,(qC[2]+qC[3])/2],sY=sC.map(c=>c-sH/2);
   const fX=1330,fW=285,fH=210,fC=(sC[0]+sC[1])/2,fY=fC-fH/2;
 
-  connector(ctx,qX+qW,qC[0],sX,sC[0],735);
-  connector(ctx,qX+qW,qC[1],sX,sC[0],735);
-  connector(ctx,qX+qW,qC[2],sX,sC[1],735);
-  connector(ctx,qX+qW,qC[3],sX,sC[1],735);
-  connector(ctx,sX+sW,sC[0],fX,fC,1245);
-  connector(ctx,sX+sW,sC[1],fX,fC,1245);
+  pairConnector(ctx,qX+qW,qC[0],qC[1],sX,sC[0],735);
+  pairConnector(ctx,qX+qW,qC[2],qC[3],sX,sC[1],735);
+  pairConnector(ctx,sX+sW,sC[0],sC[1],fX,fC,1245);
 
   const pairs=[[0,7],[3,4],[1,6],[2,5]];
   for(let i=0;i<4;i++){
@@ -286,8 +288,8 @@ async function drawBracket(canvas,page){
 
 function queuePreview(page){
   const token=++previewToken;
-  clearTimeout(timer);
-  timer=setTimeout(async()=>{
+  clearTimeout(previewTimer);
+  previewTimer=setTimeout(async()=>{
     const canvas=page.querySelector('[data-v643-preview]');
     if(!canvas||token!==previewToken)return;
     try{await drawBracket(canvas,page)}catch(e){console.warn('V643 preview',e)}
@@ -386,7 +388,7 @@ async function mount(){
   queuePreview(page);
 }
 
-function schedule(){clearTimeout(timer);timer=setTimeout(mount,45)}
+function schedule(){clearTimeout(mountTimer);mountTimer=setTimeout(mount,45)}
 window.addEventListener('hashchange',schedule);
 window.addEventListener('load',schedule);
 document.addEventListener('DOMContentLoaded',schedule,{once:true});
