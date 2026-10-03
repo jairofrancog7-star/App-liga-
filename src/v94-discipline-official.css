@@ -598,3 +598,107 @@ body.v94-discipline-official .v655-discipline-cats button.active{
   border-color:rgba(91,235,246,.74)!important;
   box-shadow:0 7px 18px rgba(19,72,206,.28)!important;
 }
+
+
+/* V656 — Disciplina a todo el ancho: botones y cuadros. */
+body.v94-discipline-official #screen,
+body.v94-discipline-official .v94-discipline-page{
+  width:100%!important;
+  max-width:none!important;
+  margin-left:0!important;
+  margin-right:0!important;
+  box-sizing:border-box!important;
+}
+body.v94-discipline-official .v94-discipline-page{
+  padding-left:0!important;
+  padding-right:0!important;
+}
+body.v94-discipline-official .v94-kicker,
+body.v94-discipline-official .v94-discipline-page>h1,
+body.v94-discipline-official .v94-lead{
+  margin-left:12px!important;
+  margin-right:12px!important;
+}
+body.v94-discipline-official .v655-discipline-controls,
+body.v94-discipline-official .v563-discipline-tabs,
+body.v94-discipline-official .v652-discipline-cats,
+body.v94-discipline-official .v94-source,
+body.v94-discipline-official .v94-discipline-list,
+body.v94-discipline-official .v650-discipline-export,
+body.v94-discipline-official .v651-discipline-tail{
+  width:100%!important;
+  max-width:none!important;
+  margin-left:0!important;
+  margin-right:0!important;
+  box-sizing:border-box!important;
+}
+body.v94-discipline-official .v655-discipline-types{
+  display:grid!important;
+  grid-template-columns:repeat(3,minmax(0,1fr))!important;
+  gap:6px!important;
+  padding-left:6px!important;
+  padding-right:6px!important;
+}
+body.v94-discipline-official .v655-discipline-types button{
+  width:100%!important;
+  min-width:0!important;
+  max-width:none!important;
+}
+body.v94-discipline-official .v655-discipline-cats{
+  padding-left:6px!important;
+  padding-right:6px!important;
+}
+body.v94-discipline-official .v652-cat-rail{
+  display:grid!important;
+  grid-template-columns:repeat(3,minmax(0,1fr))!important;
+  gap:6px!important;
+  overflow:visible!important;
+  width:100%!important;
+  padding:0!important;
+}
+body.v94-discipline-official .v652-cat-rail button{
+  width:100%!important;
+  min-width:0!important;
+  max-width:none!important;
+  white-space:normal!important;
+  text-align:center!important;
+  line-height:1.08!important;
+  min-height:38px!important;
+  padding:7px 6px!important;
+}
+body.v94-discipline-official .v94-source{
+  border-radius:16px!important;
+}
+body.v94-discipline-official .v94-discipline-list{
+  border-radius:18px!important;
+}
+body.v94-discipline-official .v650-discipline-export{
+  padding-left:0!important;
+  padding-right:0!important;
+}
+body.v94-discipline-official .v650-discipline-export>button,
+body.v94-discipline-official .v651-discipline-tail>.v651-tail-card{
+  width:100%!important;
+  max-width:none!important;
+}
+@media(max-width:390px){
+  body.v94-discipline-official .v94-kicker,
+  body.v94-discipline-official .v94-discipline-page>h1,
+  body.v94-discipline-official .v94-lead{
+    margin-left:10px!important;
+    margin-right:10px!important;
+  }
+  body.v94-discipline-official .v655-discipline-types,
+  body.v94-discipline-official .v655-discipline-cats{
+    padding-left:4px!important;
+    padding-right:4px!important;
+  }
+  body.v94-discipline-official .v652-cat-rail{
+    gap:5px!important;
+  }
+  body.v94-discipline-official .v652-cat-rail button{
+    min-height:36px!important;
+    padding:6px 4px!important;
+    font-size:8.7px!important;
+  }
+}
