@@ -2480,37 +2480,174 @@ function v370HistoryTeamLogo(name){
   }catch(_){}
   try{return v340ChampionLogo(name,'')||'';}catch(_){return ''}
 }
+function v710HistoryCategories(rawCategory){
+  const text=String(rawCategory||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase();
+  const out=[];
+  const add=x=>{if(x&&!out.includes(x))out.push(x)};
+  if(text.includes('primera'))add('Primera');
+  if(text.includes('intermedia'))add('Intermedia');
+  if(text.includes('segunda'))add('Segunda');
+  if(/veteranos?\s*35|35\+/.test(text))add('Veteranos 35+');
+  if(/veteranos?\s*50|50\+/.test(text))add('Veteranos 50+');
+  if(text.includes('veteran')&&!out.some(x=>x.startsWith('Veteranos ')))add('Veteranos histórico');
+  if(!out.length)add('Archivo general');
+  return out;
+}
+function v710HistoryYears(period){
+  const years=(String(period||'').match(/(?:19|20)\d{2}/g)||[]).map(Number).filter(Boolean);
+  return [...new Set(years)];
+}
+function v710CategoryKey(label){
+  const map={
+    'Primera':'primera',
+    'Intermedia':'intermedia',
+    'Segunda':'segunda',
+    'Veteranos 35+':'vet35',
+    'Veteranos 50+':'vet50',
+    'Veteranos histórico':'vethist',
+    'Archivo general':'general'
+  };
+  return map[label]||'general';
+}
+function v710ApplyLegacyFilters(section){
+  if(!section)return;
+  const grid=section.querySelector('.v370-legacy-grid');
+  if(!grid)return;
+  const category=section.dataset.v710Category||'all';
+  const sort=section.dataset.v710Sort||'az';
+  const cards=[...grid.querySelectorAll('.v370-legacy-team')];
+  const collator=new Intl.Collator('es',{sensitivity:'base',numeric:true});
+
+  cards.sort((a,b)=>{
+    if(sort==='newest'){
+      const ay=Number(a.dataset.v710LastYear||0),by=Number(b.dataset.v710LastYear||0);
+      if(ay!==by)return by-ay;
+    }else if(sort==='oldest'){
+      const ay=Number(a.dataset.v710FirstYear||9999),by=Number(b.dataset.v710FirstYear||9999);
+      if(ay!==by)return ay-by;
+    }
+    return collator.compare(a.dataset.v710Name||'',b.dataset.v710Name||'');
+  });
+  cards.forEach(card=>grid.appendChild(card));
+
+  let visible=0;
+  cards.forEach(card=>{
+    const cats=(card.dataset.v710Categories||'').split('|').filter(Boolean);
+    const show=category==='all'||cats.includes(category)||(category==='libre'&&cats.some(x=>['primera','intermedia','segunda'].includes(x)));
+    card.hidden=!show;
+    if(show){
+      visible++;
+      const n=card.querySelector('.v370-legacy-no');
+      if(n)n.textContent=String(visible).padStart(2,'0');
+    }
+  });
+
+  section.querySelectorAll('[data-v710-category]').forEach(btn=>{
+    const on=(btn.dataset.v710Category||'all')===category;
+    btn.classList.toggle('is-active',on);
+    btn.setAttribute('aria-pressed',on?'true':'false');
+  });
+  section.querySelectorAll('[data-v710-sort]').forEach(btn=>{
+    const on=(btn.dataset.v710Sort||'az')===sort;
+    btn.classList.toggle('is-active',on);
+    btn.setAttribute('aria-pressed',on?'true':'false');
+  });
+
+  const count=section.querySelector('.v370-legacy-count b');
+  const label=section.querySelector('.v370-legacy-count span');
+  if(count)count.textContent=String(visible);
+  if(label)label.textContent=category==='all'?'clubes y linajes conservados':'clubes en este filtro';
+}
 function v370ArchiveTeamsBlock(){
-  /* V706 — Memoria de clubes agrupada por linaje.
-     El mismo club no debe ocupar varias tarjetas sólo porque cambió de nombre.
-     Los nombres exactos siguen intactos en los roles/tablas por año. */
+  /* V710 — Memoria de clubes con categoría y orden.
+     Un mismo linaje conserva todas las categorías/años documentados y puede
+     filtrarse por Libre, Primera, Intermedia, Segunda, Veteranos 35+, 50+ o
+     Veteranos histórico. El orden puede cambiar entre A–Z y año. */
   const july2018Teams=[
     'Magisterio','Sección XIV','Deportivo Lagartos','Valedores',
     'Hermanos','Linces','Franco FC','La Esperanza Jr.','Mazacotes',
     'Barza','Malvinas','Populares','Tavera Jr.','World 11','A. Centeno','El Alto'
   ];
-  const rawNames=historicalTeamEras.flatMap(g=>g.teams||[])
-    .concat(allHistoricalTeams2012Plus,expandedRetroNames,retroNames,july2018Teams);
-  const clubs=[],seen=new Set();
-  rawNames.forEach(raw=>{
+  const supplemental=allHistoricalTeams2012Plus.concat(expandedRetroNames,retroNames,july2018Teams);
+  const byKey=new Map();
+
+  const ensureClub=raw=>{
     const lineage=v706HistoricTeamLineage(raw);
-    if(!lineage.key||seen.has(lineage.key))return;
-    seen.add(lineage.key);
-    clubs.push(lineage);
+    if(!lineage.key)return null;
+    if(!byKey.has(lineage.key)){
+      byKey.set(lineage.key,{
+        key:lineage.key,
+        display:lineage.display,
+        aliases:lineage.aliases||[lineage.display],
+        note:lineage.note||'',
+        categories:new Set(),
+        years:new Set()
+      });
+    }
+    return byKey.get(lineage.key);
+  };
+
+  historicalTeamEras.forEach(group=>{
+    const cats=v710HistoryCategories(group.category);
+    const years=v710HistoryYears(group.period);
+    (group.teams||[]).forEach(raw=>{
+      const club=ensureClub(raw);
+      if(!club)return;
+      cats.forEach(x=>club.categories.add(x));
+      years.forEach(x=>club.years.add(x));
+    });
   });
-  return '<section class="v370-legacy-clubs" aria-label="Equipos que han formado parte de la Liga">'+
+  supplemental.forEach(raw=>ensureClub(raw));
+
+  const collator=new Intl.Collator('es',{sensitivity:'base',numeric:true});
+  const clubs=[...byKey.values()].map(club=>{
+    if(!club.categories.size)club.categories.add('Archivo general');
+    const years=[...club.years].sort((a,b)=>a-b);
+    const categories=[...club.categories];
+    return {
+      ...club,
+      categories,
+      categoryKeys:categories.map(v710CategoryKey),
+      firstYear:years[0]||0,
+      lastYear:years[years.length-1]||0,
+      yearText:years.length?(years[0]===years[years.length-1]?String(years[0]):years[0]+'–'+years[years.length-1]):'Año por precisar'
+    };
+  }).sort((a,b)=>collator.compare(a.display,b.display));
+
+  const categoryButton=(key,label)=>'<button type="button" data-v710-category="'+key+'" aria-pressed="'+(key==='all'?'true':'false')+'" class="'+(key==='all'?'is-active':'')+'">'+label+'</button>';
+  const sortButton=(key,label)=>'<button type="button" data-v710-sort="'+key+'" aria-pressed="'+(key==='az'?'true':'false')+'" class="'+(key==='az'?'is-active':'')+'">'+label+'</button>';
+
+  return '<section class="v370-legacy-clubs" data-v710-category="all" data-v710-sort="az" aria-label="Equipos que han formado parte de la Liga">'+
     '<header class="v370-legacy-head">'+
       '<span class="v370-legacy-kicker">MEMORIA DE CLUBES</span>'+
       '<h3>Equipos que han formado parte de nuestra Liga</h3>'+
-      '<p>Los cambios de nombre se agrupan como evolución del mismo club cuando la continuidad es clara. Los equipos Jr., filiales o de la misma comunidad se mantienen separados si no hay evidencia suficiente para unirlos.</p>'+
+      '<p>Ahora puedes verlos por categoría y ordenarlos alfabéticamente o por año. Un club puede aparecer en varias categorías si así está documentado en el archivo.</p>'+
       '<div class="v370-legacy-count"><b>'+clubs.length+'</b><span>clubes y linajes conservados</span></div>'+
     '</header>'+
-    '<div class="v370-legacy-grid">'+clubs.map((club,i)=>{const name=club.display,logo=v370HistoryTeamLogo(name),evolved=club.note&&club.aliases.length>1;return '<article class="v370-legacy-team '+(evolved?'v706-evolved-club':'')+'">'+
+    '<div class="v710-legacy-controls" aria-label="Filtros de equipos históricos">'+
+      '<div class="v710-control-block"><small>CATEGORÍA</small><div class="v710-chip-row">'+
+        categoryButton('all','Todos')+
+        categoryButton('libre','Libre')+
+        categoryButton('primera','Primera')+
+        categoryButton('intermedia','Intermedia')+
+        categoryButton('segunda','Segunda')+
+        categoryButton('vet35','Vet. 35+')+
+        categoryButton('vet50','Vet. 50+')+
+        categoryButton('vethist','Veteranos hist.')+
+      '</div></div>'+
+      '<div class="v710-control-block"><small>ORDENAR</small><div class="v710-chip-row v710-sort-row">'+
+        sortButton('az','A–Z')+
+        sortButton('oldest','Año ↑')+
+        sortButton('newest','Año ↓')+
+      '</div></div>'+
+    '</div>'+
+    '<div class="v370-legacy-grid">'+clubs.map((club,i)=>{const name=club.display,logo=v370HistoryTeamLogo(name),evolved=club.note&&club.aliases.length>1;return '<article class="v370-legacy-team '+(evolved?'v706-evolved-club':'')+'" data-v710-name="'+esc(name)+'" data-v710-categories="'+esc(club.categoryKeys.join('|'))+'" data-v710-first-year="'+club.firstYear+'" data-v710-last-year="'+club.lastYear+'">'+
       '<span class="v370-legacy-no">'+String(i+1).padStart(2,'0')+'</span>'+
       '<span class="v370-legacy-crest '+(logo?'':'is-fallback')+'">'+
         (logo?'<img src="'+esc(logo)+'" alt="'+esc(name)+'" loading="lazy" decoding="async" onerror="this.parentElement.classList.add(\'is-fallback\');this.remove()">':'<b>'+esc(v370HistoryTeamInitials(name))+'</b>')+
       '</span>'+
       '<span class="v370-legacy-copy"><small>'+(evolved?'EVOLUCIÓN DEL MISMO CLUB':'REGISTRO EN EL ARCHIVO')+'</small><strong>'+esc(name)+'</strong>'+
+        '<span class="v710-team-meta"><em>'+esc(club.categories.join(' · '))+'</em><b>'+esc(club.yearText)+'</b></span>'+
         (evolved?'<em class="v706-lineage">'+esc(club.note)+'</em>':'')+
       '</span>'+
       '<span class="v370-legacy-seal" aria-hidden="true">JR</span>'+
@@ -3174,6 +3311,16 @@ function onClick(e){
     const icon=card.querySelector('.v672-card-toggle i');
     if(label)label.textContent=collapsed?'Ver detalle':'Ocultar detalle';
     if(icon)icon.textContent=collapsed?'⌄':'⌃';
+    return;
+  }
+  const legacyControl=e.target.closest('[data-v710-category],[data-v710-sort]');
+  if(legacyControl){
+    e.preventDefault();e.stopPropagation();e.stopImmediatePropagation();
+    const section=legacyControl.closest('.v370-legacy-clubs');
+    if(!section)return;
+    if(legacyControl.hasAttribute('data-v710-category'))section.dataset.v710Category=legacyControl.dataset.v710Category||'all';
+    if(legacyControl.hasAttribute('data-v710-sort'))section.dataset.v710Sort=legacyControl.dataset.v710Sort||'az';
+    v710ApplyLegacyFilters(section);
     return;
   }
   const source=e.target.closest('[data-v35-history-source]');
