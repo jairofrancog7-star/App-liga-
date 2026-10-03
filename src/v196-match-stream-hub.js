@@ -294,7 +294,7 @@ function streamList(c,s){
   if(current&&!list.some(x=>x.url===current)){
     list.unshift({id:'current',name:s.source.name||provider(current).name,url:current,addedAt:Date.now()});
   }
-  return list.slice(0,12);
+  return list.slice(0,12).map(x=>({...x,name:/^(facebook|youtube|tiktok)( live)?$/i.test(String(x.name||'').trim())?provider(x.url).name:x.name}));
 }
 function saveList(c,list){
   if(!window.LJR_MEDIA?.admin)return;

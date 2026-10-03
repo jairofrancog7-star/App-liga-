@@ -95,6 +95,7 @@ function freshState(c){
   const shared=urlLiveSource();if(shared)global=shared;
   return {v:144,key:c.key,home:c.home,away:c.away,source:{url:global.url||'',name:global.name||'',feedUrl:'',connected:false,lastSync:0},phase:'scheduled',firstStartedAt:0,secondStartedAt:0,finishedAt:0,events:[],suggestions:[],lastTranscript:'',updatedAt:now()};
 }
+function sourceLabel(url,name){const key=streamProvider(url),known={facebook:'Facebook Live',youtube:'YouTube Live',tiktok:'TikTok Live'};return /^(facebook|youtube|tiktok)( live)?$/i.test(String(name||'').trim())?known[key]||name:name}
 function load(c){
   const published=serverStates.get(c.key);
   if(published&&!canEdit())return JSON.parse(JSON.stringify(published));
@@ -216,23 +217,23 @@ function streamEmbedHtml(s){
   if(/\.(mp4|webm|ogg|m3u8)(?:[?#]|$)/i.test(url))return '<section class="v144-stream-embed"><header><b>Video directo</b></header><div class="v144-stream-frame v196-frame"><video src="'+esc(url)+'" controls playsinline preload="metadata"></video></div></section>';
   if(p.name==='Facebook Live'){
     const src='https://www.facebook.com/plugins/video.php?href='+encodeURIComponent(url)+'&show_text=false&width=560&autoplay=false';
-    return '<section class="v144-stream-embed"><header><span><small>VIDEO VINCULADO</small><b>'+esc(s.source.name||p.name)+'</b></span><i>FACEBOOK</i></header><div class="v144-stream-frame"><iframe src="'+esc(src)+'" title="Facebook video" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen></iframe></div><footer><span>Reproduce el video aquí. Debe ser público y permitir inserción.</span><div><button type="button" data-v144-share>Compartir</button></div></footer></section>';
+    return '<section class="v144-stream-embed"><header><span><small>VIDEO VINCULADO</small><b>'+esc(sourceLabel(s.source.url,s.source.name)||p.name)+'</b></span><i>FACEBOOK</i></header><div class="v144-stream-frame"><iframe src="'+esc(src)+'" title="Facebook video" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen></iframe></div><footer><span>Reproduce el video aquí. Debe ser público y permitir inserción.</span><div><button type="button" data-v144-share>Compartir</button></div></footer></section>';
 
   }
   if(p.name==='YouTube Live'){
     const id=youtubeId(url);
     if(id){
       const src='https://www.youtube-nocookie.com/embed/'+encodeURIComponent(id)+'?autoplay=0&playsinline=1&enablejsapi=1&origin='+encodeURIComponent(location.origin)+'';
-      return '<section class="v144-stream-embed"><header><span><small>TRANSMISIÓN EN VIVO</small><b>'+esc(s.source.name||p.name)+'</b></span><i>SIMULTÁNEO</i></header><div class="v144-stream-frame"><iframe src="'+esc(src)+'" title="YouTube Live" referrerpolicy="strict-origin-when-cross-origin" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen></iframe></div><footer><span>Video y Match Center visibles al mismo tiempo.</span><div><button type="button" data-v144-open>YouTube</button><button type="button" data-v144-share>Compartir Live</button></div></footer></section>';
+      return '<section class="v144-stream-embed"><header><span><small>TRANSMISIÓN EN VIVO</small><b>'+esc(sourceLabel(s.source.url,s.source.name)||p.name)+'</b></span><i>SIMULTÁNEO</i></header><div class="v144-stream-frame"><iframe src="'+esc(src)+'" title="YouTube Live" referrerpolicy="strict-origin-when-cross-origin" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen></iframe></div><footer><span>Video y Match Center visibles al mismo tiempo.</span><div><button type="button" data-v144-open>YouTube</button><button type="button" data-v144-share>Compartir Live</button></div></footer></section>';
     }
   }
   if(p.key==='tiktok'&&tiktokVideoId(url)){
     return '<section class="v144-stream-embed"><header><b>TikTok</b></header><div class="v144-stream-frame"><iframe src="https://www.tiktok.com/player/v1/'+tiktokVideoId(url)+'?controls=1&fullscreen_button=1" title="TikTok video" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe></div></section>';
   }
   if(p.key==='tiktok'){
-    return '<section class="v144-stream-embed fallback tiktok"><header><span><small>TIKTOK LIVE VINCULADO</small><b>'+esc(s.source.name||p.name)+'</b></span><i>ENLACE GUARDADO</i></header><div class="v144-stream-fallback"><b>TikTok LIVE</b><span>TikTok no permite incrustar todos los directos. El enlace abre el LIVE real en TikTok y el Match Center sigue mostrando marcador, minuto y cronología.</span><div><button type="button" data-v144-open>Abrir TikTok LIVE</button><button type="button" data-v144-share>Compartir Live</button></div></div></section>';
+    return '<section class="v144-stream-embed fallback tiktok"><header><span><small>TIKTOK LIVE VINCULADO</small><b>'+esc(sourceLabel(s.source.url,s.source.name)||p.name)+'</b></span><i>ENLACE GUARDADO</i></header><div class="v144-stream-fallback"><b>TikTok LIVE</b><span>TikTok no permite incrustar todos los directos. El enlace abre el LIVE real en TikTok y el Match Center sigue mostrando marcador, minuto y cronología.</span><div><button type="button" data-v144-open>Abrir TikTok LIVE</button><button type="button" data-v144-share>Compartir Live</button></div></div></section>';
   }
-  return '<section class="v144-stream-embed fallback"><header><span><small>TRANSMISIÓN VINCULADA</small><b>'+esc(s.source.name||p.name)+'</b></span><i>LIVE</i></header><div class="v144-stream-fallback"><b>Transmisión externa</b><span>Este proveedor no admite reproductor incrustado aquí.</span><div><button type="button" data-v144-open>Abrir transmisión</button><button type="button" data-v144-share>Compartir Live</button></div></div></section>';
+  return '<section class="v144-stream-embed fallback"><header><span><small>TRANSMISIÓN VINCULADA</small><b>'+esc(sourceLabel(s.source.url,s.source.name)||p.name)+'</b></span><i>LIVE</i></header><div class="v144-stream-fallback"><b>Transmisión externa</b><span>Este proveedor no admite reproductor incrustado aquí.</span><div><button type="button" data-v144-open>Abrir transmisión</button><button type="button" data-v144-share>Compartir Live</button></div></div></section>';
 }
 function roster(c,side){
   try{
@@ -391,7 +392,7 @@ function timelineHtml(s,c){
 }
 function hubHtml(c,s){
   const hasSource=!!safeLiveUrl(s?.source?.url),p=provider(s.source.url),x=counters(s),live=s.phase==='first'||s.phase==='second';
-  const sourceTitle=hasSource?(s.source.name||p.name):'Sin LIVE vinculado';
+  const sourceTitle=hasSource?(sourceLabel(s.source.url,s.source.name)||p.name):'Sin LIVE vinculado';
   const sourceType=hasSource?p.name:'Agrega Facebook, YouTube, TikTok o video';
   const sourceIcon=hasSource?p.icon:'＋';
   return '<section class="v144-live-hub" data-v144-live-hub data-v144-match="'+esc(c.key)+'">'+
