@@ -792,3 +792,24 @@ html body[data-app-route="moments"] .v26-moments-sticky .v616-moments-bg{
   opacity:1!important;
 }
 /* /V617 */
+
+
+/* V618 — FONDO COMPLETO VISIBLE EN MOMENTOS
+   Muestra TODA la imagen entregada detrás de flecha y título.
+   No usar cover: recortaba las líneas neón y parecía fondo azul liso. */
+html body[data-app-route="moments"] .v26-moments-sticky .v616-moments-bg{
+  position:absolute!important;
+  inset:0!important;
+  width:100%!important;
+  height:100%!important;
+  object-fit:fill!important;
+  object-position:center center!important;
+  z-index:0!important;
+  opacity:1!important;
+  visibility:visible!important;
+}
+html body[data-app-route="moments"] .v26-moments-sticky::before{
+  z-index:1!important;
+  background:transparent!important;
+}
+/* /V618 */
