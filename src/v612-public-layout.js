@@ -21,13 +21,20 @@ async function openAdminRoute(route){
  if(!adminRoutes.has(route)){routeNow(route);return true}
  const media=window.LJR_MEDIA;
  if(media?.admin){routeNow(route);return true}
+
+ /* V624: si este teléfono ya tiene la sesión guardada, NO detener el clic
+    esperando una petición de red. Abrimos la herramienta de inmediato y
+    restauramos la sesión en segundo plano. La API continúa validando el token. */
+ if(hasSavedAccess()){
+   routeNow(route);
+   try{media?.restoreAdminSession?.().catch(()=>{})}catch(_){}
+   return true;
+ }
+
  if(opening)return false;
  opening=true;
  try{
-   if(hasSavedAccess()&&typeof media?.restoreAdminSession==='function'){
-     const admin=await media.restoreAdminSession();
-     if(admin){routeNow(route);return true}
-   }
+   try{sessionStorage.setItem('ljr-admin-pending-route-v624',String(route||''))}catch(_){}
    await media?.login?.();
    return false;
  }catch(_){
@@ -40,9 +47,10 @@ function update(){
  document.querySelectorAll('[data-route]').forEach(button=>{
   if(adminRoutes.has(button.dataset.route)){
     button.classList.toggle('v612-admin-only',true);
-    /* V623: a remembered device keeps its tools visible while the server
-       restores the session. Do not hide every button during that short window. */
-    button.hidden=!allowed;
+    button.classList.toggle('v612-admin-locked',!allowed);
+    /* V624: todos los cuadros de administración permanecen visibles y pulsables.
+       Si falta sesión, el mismo clic abre el acceso; si está recordada, entra directo. */
+    button.hidden=false;
     button.disabled=false;
     button.removeAttribute('aria-disabled');
   }
@@ -60,12 +68,28 @@ document.addEventListener('click',event=>{
  const button=event.target.closest('[data-route]');
  const route=button?.dataset?.route;
  if(button&&adminRoutes.has(route)&&!window.LJR_MEDIA?.admin){
+   if(hasSavedAccess()){
+     /* Dejar que el enrutador principal procese el mismo clic. */
+     try{window.LJR_MEDIA?.restoreAdminSession?.().catch(()=>{})}catch(_){}
+     return;
+   }
    event.preventDefault();event.stopImmediatePropagation();
    openAdminRoute(route);
  }
 },true);
 
-window.addEventListener('liga:admin',()=>{update();window.LJR_MAIN_ROUTE?.render?.()});
+window.addEventListener('liga:admin',event=>{
+ update();
+ const admin=event?.detail?.admin||window.LJR_MEDIA?.admin;
+ let pending='';
+ try{pending=sessionStorage.getItem('ljr-admin-pending-route-v624')||''}catch(_){}
+ if(admin&&pending){
+   try{sessionStorage.removeItem('ljr-admin-pending-route-v624')}catch(_){}
+   setTimeout(()=>routeNow(pending),0);
+   return;
+ }
+ window.LJR_MAIN_ROUTE?.render?.();
+});
 window.addEventListener('hashchange',()=>setTimeout(update,80));
 const screen=document.querySelector('#screen');
 if(screen)new MutationObserver(update).observe(screen,{childList:true,subtree:true});
