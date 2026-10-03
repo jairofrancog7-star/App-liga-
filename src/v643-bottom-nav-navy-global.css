@@ -1,0 +1,46 @@
+/* V643 — BARRA INFERIOR AZUL MARINO GLOBAL
+   Color tomado de la referencia del usuario: RGB aproximado 10,10,96 (#0a0a60).
+   Se aplica a TODA la app sin cambiar iconos, tamaños, posiciones ni rutas. */
+
+:root{
+  --v34-nav-bg:#0a0a60!important;
+  --v16-nav-bg:#0a0a60!important;
+  --ljr-bottom-nav-bg:#0a0a60!important;
+}
+
+html body .bottom-nav,
+html body[data-app-route] .bottom-nav,
+html body #app > .bottom-nav,
+html body .app-shell > .bottom-nav,
+html body nav.bottom-nav,
+html body[data-app-route] #app > .bottom-nav,
+html body[data-app-route] .app-shell > .bottom-nav,
+html body[data-app-route] nav.bottom-nav{
+  background:#0a0a60!important;
+  background-color:#0a0a60!important;
+  background-image:none!important;
+  border-top-color:rgba(255,255,255,.08)!important;
+  box-shadow:none!important;
+  backdrop-filter:none!important;
+  -webkit-backdrop-filter:none!important;
+}
+
+/* También cubre pseudo-capas de rutas antiguas como Competición. */
+html body .bottom-nav::before,
+html body .bottom-nav::after,
+html body[data-app-route] .bottom-nav::before,
+html body[data-app-route] .bottom-nav::after{
+  background:#0a0a60!important;
+  background-color:#0a0a60!important;
+  background-image:none!important;
+}
+
+/* Mantener botones transparentes para que el azul uniforme sea el único fondo. */
+html body .bottom-nav .nav-item,
+html body[data-app-route] .bottom-nav .nav-item{
+  background:transparent!important;
+  background-color:transparent!important;
+  background-image:none!important;
+}
+
+/* /V643 */
