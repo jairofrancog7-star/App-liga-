@@ -565,8 +565,146 @@ function audit(){
  const list=read('v105-activity',[]);modal('Auditoría de herramientas','Registro local de acciones de V105; no sustituye una auditoría administrativa con backend.','<div class="v105-list">'+(list.length?list.map(x=>'<article><b>'+esc(x.action)+'</b><small>'+esc(new Date(x.at).toLocaleString('es-MX'))+'</small></article>').join(''):'<p class="v105-footnote">Sin actividad registrada.</p>')+'</div>');
 }
 function sponsors(){
- const old=read('v105-sponsors','');
- const m=modal('Patrocinadores','Notas locales para preparar espacios de patrocinio. No publica marcas automáticamente.','<div class="v105-form"><label style="grid-column:1/-1"><span>Notas / nombres autorizados</span><textarea data-s>'+esc(old)+'</textarea></label></div><div class="v105-actions"><button class="v105-btn" data-save>Guardar localmente</button></div>');$('[data-save]',m).onclick=()=>{write('v105-sponsors',$('[data-s]',m).value);log('Actualizar notas de patrocinadores');toast('Notas guardadas localmente')};
+ const legacy=read('v105-sponsors','');
+ const list=read('v105-sponsors-v2',[]);
+ const body=
+  '<div class="v105-sponsor-hero">'+
+    '<div class="v105-sponsor-badge">'+icon('sponsor')+'</div>'+
+    '<div><small>GESTIÓN COMERCIAL</small><b>Control de patrocinadores</b><span>Organiza acuerdos, vigencias, espacios y contactos sin publicar nada automáticamente.</span></div>'+
+  '</div>'+
+  '<div class="v105-sponsor-stats">'+
+    '<span><b data-sp-total>0</b><small>registrados</small></span>'+
+    '<span><b data-sp-active>0</b><small>activos</small></span>'+
+    '<span><b>LOCAL</b><small>guardado privado</small></span>'+
+  '</div>'+
+  '<div class="v105-sponsor-card">'+
+    '<div class="v105-sponsor-section-title"><b>Información del patrocinador</b><small>Completa sólo los datos que necesites.</small></div>'+
+    '<div class="v105-form v105-sponsor-form">'+
+      '<label><span>Marca / negocio *</span><input data-sp-brand placeholder="Ej. Negocio local"></label>'+
+      '<label><span>Tipo</span><select data-sp-type><option>Patrocinador oficial</option><option>Patrocinador de jornada</option><option>Colaborador</option><option>Proveedor</option><option>Apoyo local</option></select></label>'+
+      '<label><span>Categoría / alcance</span><select data-sp-scope><option>Toda la liga</option><option>Primera</option><option>Intermedia</option><option>Segunda</option><option>Veteranos 35+</option><option>Veteranos 50+</option><option>Evento especial</option></select></label>'+
+      '<label><span>Estado</span><select data-sp-status><option>Activo</option><option>En negociación</option><option>Pendiente</option><option>Finalizado</option></select></label>'+
+      '<label><span>Vigencia desde</span><input data-sp-from type="date"></label>'+
+      '<label><span>Vigencia hasta</span><input data-sp-to type="date"></label>'+
+      '<label><span>Contacto responsable</span><input data-sp-contact placeholder="Nombre de contacto"></label>'+
+      '<label><span>Teléfono / WhatsApp</span><input data-sp-phone inputmode="tel" placeholder="Opcional"></label>'+
+      '<label style="grid-column:1/-1"><span>Aportación / beneficio acordado</span><input data-sp-deal placeholder="Ej. uniformes, premio, efectivo, servicio, difusión..."></label>'+
+    '</div>'+
+  '</div>'+
+  '<div class="v105-sponsor-card">'+
+    '<div class="v105-sponsor-section-title"><b>Espacios autorizados</b><small>Marca dónde puede aparecer.</small></div>'+
+    '<div class="v105-sponsor-checks">'+
+      '<label><input type="checkbox" value="Playeras / uniformes" data-sp-space><span>Playeras</span></label>'+
+      '<label><input type="checkbox" value="Cancha / lonas" data-sp-space><span>Cancha / lonas</span></label>'+
+      '<label><input type="checkbox" value="Publicaciones" data-sp-space><span>Publicaciones</span></label>'+
+      '<label><input type="checkbox" value="Transmisiones" data-sp-space><span>Transmisiones</span></label>'+
+      '<label><input type="checkbox" value="Premiaciones" data-sp-space><span>Premiaciones</span></label>'+
+      '<label><input type="checkbox" value="Calendarios / jornadas" data-sp-space><span>Calendarios</span></label>'+
+    '</div>'+
+    '<label class="v105-sponsor-notes"><span>Notas / acuerdos especiales</span><textarea data-sp-notes placeholder="Condiciones, tamaños de logo, fechas, restricciones, pendientes...">'+esc(legacy)+'</textarea></label>'+
+  '</div>'+
+  '<div class="v105-sponsor-actions">'+
+    '<button class="v105-btn v105-sponsor-primary" data-sp-save>Guardar patrocinador</button>'+
+    '<button class="v105-btn alt" data-sp-copy>Copiar resumen</button>'+
+    '<button class="v105-btn alt" data-sp-clear>Limpiar</button>'+
+  '</div>'+
+  '<div class="v105-sponsor-saved">'+
+    '<div class="v105-sponsor-section-title"><b>Patrocinadores guardados</b><small>Se conservan sólo en este dispositivo.</small></div>'+
+    '<div class="v105-sponsor-list" data-sp-list></div>'+
+  '</div>';
+
+ const m=modal('Patrocinadores','Centro privado para registrar y organizar acuerdos de patrocinio. Nada se publica por sí solo.',body);
+ m.classList.add('v105-sponsors-modal');
+
+ const get=(s)=>$(s,m);
+ const spaces=()=>$$('[data-sp-space]',m).filter(x=>x.checked).map(x=>x.value);
+ const fields={
+   brand:get('[data-sp-brand]'), type:get('[data-sp-type]'), scope:get('[data-sp-scope]'),
+   status:get('[data-sp-status]'), from:get('[data-sp-from]'), to:get('[data-sp-to]'),
+   contact:get('[data-sp-contact]'), phone:get('[data-sp-phone]'),
+   deal:get('[data-sp-deal]'), notes:get('[data-sp-notes]')
+ };
+
+ function reset(){
+   fields.brand.value='';fields.type.value='Patrocinador oficial';fields.scope.value='Toda la liga';
+   fields.status.value='Activo';fields.from.value='';fields.to.value='';fields.contact.value='';
+   fields.phone.value='';fields.deal.value='';fields.notes.value='';
+   $$('[data-sp-space]',m).forEach(x=>x.checked=false);
+   delete m.dataset.editSponsor;
+ }
+ function summary(x){
+   const lines=[
+     'PATROCINADOR · '+(x.brand||'Sin nombre'),
+     (x.type||'')+' · '+(x.scope||'')+' · '+(x.status||''),
+     x.from||x.to?'Vigencia: '+(x.from||'—')+' a '+(x.to||'—'):'',
+     x.spaces?.length?'Espacios: '+x.spaces.join(', '):'',
+     x.deal?'Aportación / beneficio: '+x.deal:'',
+     x.contact?'Contacto: '+x.contact+(x.phone?' · '+x.phone:''):'',
+     x.notes?'Notas: '+x.notes:''
+   ].filter(Boolean);
+   return lines.join('\n');
+ }
+ function current(){
+   return {
+     id:m.dataset.editSponsor||String(Date.now()),
+     brand:fields.brand.value.trim(), type:fields.type.value, scope:fields.scope.value,
+     status:fields.status.value, from:fields.from.value, to:fields.to.value,
+     contact:fields.contact.value.trim(), phone:fields.phone.value.trim(),
+     deal:fields.deal.value.trim(), spaces:spaces(), notes:fields.notes.value.trim(),
+     updatedAt:new Date().toISOString()
+   };
+ }
+ function render(){
+   get('[data-sp-total]').textContent=list.length;
+   get('[data-sp-active]').textContent=list.filter(x=>x.status==='Activo').length;
+   const host=get('[data-sp-list]');
+   host.innerHTML=list.length?list.map((x,i)=>
+     '<article class="v105-sponsor-item">'+
+       '<div class="v105-sponsor-item-top"><div><b>'+esc(x.brand)+'</b><small>'+esc(x.type)+' · '+esc(x.scope)+'</small></div><span class="v105-sponsor-status '+(x.status==='Activo'?'on':'')+'">'+esc(x.status)+'</span></div>'+
+       '<p>'+esc(x.deal||'Sin aportación registrada')+'</p>'+
+       (x.spaces?.length?'<div class="v105-sponsor-tags">'+x.spaces.map(v=>'<span>'+esc(v)+'</span>').join('')+'</div>':'')+
+       '<div class="v105-sponsor-item-meta">'+
+         (x.from||x.to?'<small>Vigencia: '+esc(x.from||'—')+' → '+esc(x.to||'—')+'</small>':'<small>Sin vigencia definida</small>')+
+         (x.contact?'<small>'+esc(x.contact)+(x.phone?' · '+esc(x.phone):'')+'</small>':'')+
+       '</div>'+
+       '<div class="v105-sponsor-item-actions"><button class="v105-btn alt" data-sp-edit="'+i+'">Editar</button><button class="v105-btn alt danger" data-sp-del="'+i+'">Eliminar</button></div>'+
+     '</article>'
+   ).join(''):'<div class="v105-sponsor-empty"><b>Aún no hay patrocinadores registrados</b><small>Agrega el primero con el formulario de arriba.</small></div>';
+
+   $$('[data-sp-del]',host).forEach(b=>b.onclick=()=>{
+     const i=Number(b.dataset.spDel);list.splice(i,1);write('v105-sponsors-v2',list);render();toast('Patrocinador eliminado');
+   });
+   $$('[data-sp-edit]',host).forEach(b=>b.onclick=()=>{
+     const x=list[Number(b.dataset.spEdit)];if(!x)return;
+     m.dataset.editSponsor=x.id;
+     fields.brand.value=x.brand||'';fields.type.value=x.type||'Patrocinador oficial';fields.scope.value=x.scope||'Toda la liga';
+     fields.status.value=x.status||'Activo';fields.from.value=x.from||'';fields.to.value=x.to||'';
+     fields.contact.value=x.contact||'';fields.phone.value=x.phone||'';fields.deal.value=x.deal||'';fields.notes.value=x.notes||'';
+     $$('[data-sp-space]',m).forEach(c=>c.checked=(x.spaces||[]).includes(c.value));
+     fields.brand.scrollIntoView({behavior:'smooth',block:'center'});fields.brand.focus();
+   });
+ }
+ render();
+
+ get('[data-sp-save]').onclick=()=>{
+   const x=current();
+   if(!x.brand){toast('Escribe el nombre de la marca o negocio');fields.brand.focus();return}
+   const idx=list.findIndex(v=>String(v.id)===String(x.id));
+   if(idx>=0)list[idx]=x;else list.unshift(x);
+   write('v105-sponsors-v2',list);
+   write('v105-sponsors',x.notes||'');
+   log((idx>=0?'Editar':'Agregar')+' patrocinador: '+x.brand);
+   render();reset();toast(idx>=0?'Patrocinador actualizado':'Patrocinador guardado');
+ };
+ get('[data-sp-clear]').onclick=reset;
+ get('[data-sp-copy]').onclick=async()=>{
+   const x=current();
+   if(!x.brand){toast('Escribe una marca para generar el resumen');return}
+   const txt=summary(x);
+   try{await navigator.clipboard.writeText(txt);toast('Resumen copiado')}catch(_){
+     const ta=document.createElement('textarea');ta.value=txt;document.body.appendChild(ta);ta.select();document.execCommand('copy');ta.remove();toast('Resumen copiado');
+   }
+ };
 }
 function shotmap(){
  if(window.LJR_V100_SHOTMAP_OPEN){return window.LJR_V100_SHOTMAP_OPEN()}
