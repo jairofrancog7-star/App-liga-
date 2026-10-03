@@ -2404,8 +2404,17 @@ function v362LockHistoryHeader(root=document.querySelector('.v35-history-page'))
     head.style.setProperty('min-height','136px','important');
     head.style.setProperty('max-height','136px','important');
     head.style.setProperty('padding','0 22px','important');
-    head.style.setProperty('background','transparent','important');
-    head.style.setProperty('background-image','none','important');
+    // V622: la cabecera pinta la parte superior del MISMO arte total
+    // que continuará en las pestañas hasta la línea divisoria.
+    head.style.setProperty(
+      'background-image',
+      'linear-gradient(180deg,rgba(7,44,213,.08) 0%,rgba(5,16,121,.18) 58%,rgba(4,8,78,.34) 100%), url("../public/history-regularscroll-header.webp")',
+      'important'
+    );
+    head.style.setProperty('background-color','#05084e','important');
+    head.style.setProperty('background-size','100% 190px, 100% 190px','important');
+    head.style.setProperty('background-position','center 0, center 0','important');
+    head.style.setProperty('background-repeat','no-repeat, no-repeat','important');
   }
 
   const back=head?.querySelector('.v35-back');
@@ -2449,14 +2458,18 @@ function v362LockHistoryHeader(root=document.querySelector('.v35-history-page'))
     tabs.style.setProperty('gap','36px','important');
     tabs.style.setProperty('overflow-x','auto','important');
     tabs.style.setProperty('overflow-y','hidden','important');
-    // V620: la cabecera y las pestañas comparten UN SOLO fondo en
-    // .v35-history-page. La barra no debe pintar ningún bloque propio.
-    tabs.style.setProperty('background','transparent','important');
-    tabs.style.setProperty('background-color','transparent','important');
-    tabs.style.setProperty('background-image','none','important');
-    tabs.style.removeProperty('background-size');
-    tabs.style.removeProperty('background-position');
-    tabs.style.removeProperty('background-repeat');
+    // V622: la barra pinta DIRECTAMENTE la parte inferior del mismo
+    // arte de 190px. El corte queda exactamente alineado con el final
+    // de la cabecera (136px) y el diseño llega hasta la línea inferior.
+    tabs.style.setProperty(
+      'background-image',
+      'linear-gradient(180deg,rgba(7,44,213,.08) 0%,rgba(5,16,121,.18) 58%,rgba(4,8,78,.34) 100%), url("../public/history-regularscroll-header.webp")',
+      'important'
+    );
+    tabs.style.setProperty('background-color','#05084e','important');
+    tabs.style.setProperty('background-size','100% 190px, 100% 190px','important');
+    tabs.style.setProperty('background-position','center -136px, center -136px','important');
+    tabs.style.setProperty('background-repeat','no-repeat, no-repeat','important');
     tabs.style.setProperty('border-top','0','important');
     tabs.style.setProperty('border-bottom','1px solid rgba(205,212,255,.26)','important');
     tabs.style.setProperty('box-shadow','none','important');
