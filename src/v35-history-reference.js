@@ -2449,18 +2449,14 @@ function v362LockHistoryHeader(root=document.querySelector('.v35-history-page'))
     tabs.style.setProperty('gap','36px','important');
     tabs.style.setProperty('overflow-x','auto','important');
     tabs.style.setProperty('overflow-y','hidden','important');
-    // V619: referencia del usuario. La zona de Resumen/Temporadas/Campeones
-    // continúa oscureciendo de forma progresiva hasta la línea inferior,
-    // sin el bloque plano que cortaba el diseño de la cabecera.
-    tabs.style.setProperty(
-      'background',
-      'linear-gradient(180deg,#0b107a 0%,#080d6b 34%,#05085c 68%,#010245 100%)',
-      'important'
-    );
-    tabs.style.setProperty('background-color','#010245','important');
-    tabs.style.setProperty('background-size','100% 100%','important');
-    tabs.style.setProperty('background-position','center top','important');
-    tabs.style.setProperty('background-repeat','no-repeat','important');
+    // V620: la cabecera y las pestañas comparten UN SOLO fondo en
+    // .v35-history-page. La barra no debe pintar ningún bloque propio.
+    tabs.style.setProperty('background','transparent','important');
+    tabs.style.setProperty('background-color','transparent','important');
+    tabs.style.setProperty('background-image','none','important');
+    tabs.style.removeProperty('background-size');
+    tabs.style.removeProperty('background-position');
+    tabs.style.removeProperty('background-repeat');
     tabs.style.setProperty('border-top','0','important');
     tabs.style.setProperty('border-bottom','1px solid rgba(205,212,255,.26)','important');
     tabs.style.setProperty('box-shadow','none','important');
