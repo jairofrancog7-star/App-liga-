@@ -1,0 +1,74 @@
+/* V620 — mejoras del acceso de Administración: teléfono, huella y dispositivo recordado. */
+.v620-admin-actions{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:10px;
+  margin:14px 0 10px;
+}
+.v620-admin-actions button{
+  min-height:52px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:8px;
+  padding:9px 10px;
+  border:1px solid rgba(70,218,255,.34);
+  border-radius:14px;
+  background:linear-gradient(180deg,#14256d,#111c59);
+  color:#76e9f5;
+  font-size:13px;
+  font-weight:800;
+}
+.v620-admin-actions button span{
+  display:grid;
+  place-items:center;
+  width:28px;
+  height:28px;
+  border-radius:50%;
+  background:#102d72;
+  color:#7ff2ff;
+  font-size:17px;
+}
+.v620-admin-bio-opt{
+  display:grid;
+  grid-template-columns:24px minmax(0,1fr);
+  gap:10px;
+  align-items:start;
+  margin:10px 0 14px;
+  color:#e7edff;
+}
+.v620-admin-bio-opt input{
+  width:20px!important;
+  height:20px!important;
+  margin:2px 0 0!important;
+  accent-color:#5fe9f6;
+}
+.v620-admin-bio-opt span{display:block;min-width:0}
+.v620-admin-bio-opt b{display:block;font-size:13px;line-height:1.15}
+.v620-admin-bio-opt small{display:block;margin-top:4px;color:#9eabd7;font-size:10px;line-height:1.3}
+.v620-admin-lock-hint{
+  margin:8px 0 0!important;
+  color:#9fb3df!important;
+  font-size:11px!important;
+  line-height:1.35!important;
+}
+.v620-admin-toast{
+  position:fixed;
+  z-index:2147483647;
+  left:50%;
+  bottom:calc(86px + env(safe-area-inset-bottom));
+  transform:translateX(-50%);
+  width:max-content;
+  max-width:calc(100vw - 32px);
+  padding:11px 15px;
+  border-radius:999px;
+  background:#eef8ff;
+  color:#06144b;
+  box-shadow:0 10px 28px rgba(0,0,40,.34);
+  font:800 12px/1.2 Inter,Roboto,Arial,sans-serif;
+  text-align:center;
+}
+@media(max-width:390px){
+  .v620-admin-actions{gap:8px}
+  .v620-admin-actions button{font-size:11px;padding-inline:7px}
+}
