@@ -19,8 +19,10 @@
     margin:0!important;
     padding:0 22px!important;
     align-items:flex-end!important;
-    background:transparent!important;
-    background-color:transparent!important;
+    /* V614 — desde la línea divisoria hacia arriba, la barra queda en azul oscuro sólido.
+       No toca el contenido que está debajo de la línea. */
+    background:#020650!important;
+    background-color:#020650!important;
     background-image:none!important;
     border-top:0!important;
     border-bottom:1px solid rgba(205,212,255,.26)!important;
