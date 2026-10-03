@@ -2399,19 +2399,23 @@ function v362LockHistoryHeader(root=document.querySelector('.v35-history-page'))
   root.style.setProperty('--v35-compact-h','56px','important');
 
   const head=root.querySelector('.v35-history-head');
+  const v624Small=window.matchMedia&&window.matchMedia('(max-width:374px)').matches;
+  const v624HeadH=v624Small?128:136;
+  const v624TabsH=v624Small?52:54;
+  const v624ArtH=v624HeadH+v624TabsH;
   if(head){
-    head.style.setProperty('height','136px','important');
-    head.style.setProperty('min-height','136px','important');
-    head.style.setProperty('max-height','136px','important');
-    head.style.setProperty('padding','0 22px','important');
-    // V623: conserva el diseño original; el arte lo pinta el contenedor
-    // compartido y sólo se extiende hacia abajo hasta la línea.
-    head.style.setProperty('background','transparent','important');
-    head.style.setProperty('background-color','transparent','important');
-    head.style.setProperty('background-image','none','important');
-    head.style.removeProperty('background-size');
-    head.style.removeProperty('background-position');
-    head.style.removeProperty('background-repeat');
+    // V624: conserva EXACTAMENTE el diseño original de la cabecera y sólo
+    // aumenta su área gráfica hacia abajo. Las pestañas se montan encima
+    // de esos últimos píxeles para que el arte toque la línea blanca.
+    head.style.setProperty('height',v624ArtH+'px','important');
+    head.style.setProperty('min-height',v624ArtH+'px','important');
+    head.style.setProperty('max-height',v624ArtH+'px','important');
+    head.style.setProperty('padding','0 '+(v624Small?18:22)+'px','important');
+    head.style.setProperty(
+      'background',
+      'linear-gradient(180deg,rgba(7,44,213,.08),rgba(6,12,99,.24)), url("/App-liga-/public/history-regularscroll-header.webp") center top/cover no-repeat',
+      'important'
+    );
   }
 
   const back=head?.querySelector('.v35-back');
@@ -2426,7 +2430,7 @@ function v362LockHistoryHeader(root=document.querySelector('.v35-history-page'))
   if(title){
     title.style.setProperty('left','22px','important');
     title.style.setProperty('right','auto','important');
-    title.style.setProperty('bottom','17px','important');
+    title.style.setProperty('bottom',(v624TabsH+(v624Small?15:17))+'px','important');
     title.style.setProperty('margin','0','important');
     title.style.setProperty('font-family','system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif','important');
     title.style.setProperty('font-size','39px','important');
@@ -2447,11 +2451,11 @@ function v362LockHistoryHeader(root=document.querySelector('.v35-history-page'))
     tabs.style.setProperty('align-items','flex-end','important');
     tabs.style.setProperty('justify-content','flex-start','important');
     tabs.style.setProperty('width','100%','important');
-    tabs.style.setProperty('height','54px','important');
-    tabs.style.setProperty('min-height','54px','important');
-    tabs.style.setProperty('max-height','54px','important');
-    tabs.style.setProperty('margin','0','important');
-    tabs.style.setProperty('padding','0 22px','important');
+    tabs.style.setProperty('height',v624TabsH+'px','important');
+    tabs.style.setProperty('min-height',v624TabsH+'px','important');
+    tabs.style.setProperty('max-height',v624TabsH+'px','important');
+    tabs.style.setProperty('margin',(-v624TabsH)+'px 0 0','important');
+    tabs.style.setProperty('padding','0 '+(v624Small?18:22)+'px','important');
     tabs.style.setProperty('gap','36px','important');
     tabs.style.setProperty('overflow-x','auto','important');
     tabs.style.setProperty('overflow-y','hidden','important');
