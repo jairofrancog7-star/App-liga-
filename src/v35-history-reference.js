@@ -57,6 +57,11 @@ const historicalSources=[
     url:'https://www.facebook.com/golazo.liga'
   },
   {
+    title:'Rol amistoso · sábado 11 y domingo 12 de agosto',
+    note:'Captura aportada por el usuario. Registra amistosos de Veteranos y categoría dominical con Valedores, Hermanos, Chelsea, Guadalajara, Cuenda, Magisterio, Sección XIV, PSV, Napoli, San José de Allende, Galaxy, Oklahoma, Malvinas, Mineros, Barza, La Cuadrilla, World 11, Tecos, La Esperanza Jr., Mazacotes, Boavista, Toros, Galeana, Puros Cuates, Abejas, Dep. Cerrito, El Alto, Tavera, La Huerta, San Antonio de Romerillo y Tavera Jr. El año no se fuerza porque no aparece visible en la fotografía.',
+    url:''
+  },
+  {
     title:'Golazo Liga · fecha digital mínima comprobada',
     note:'Captura aportada: publicación visible con fecha 5 OCT 2012. Prueba actividad digital al menos desde entonces, pero no la fundación de la Liga ni la fecha de creación del perfil.',
     url:'https://www.facebook.com/golazo.liga'
@@ -893,6 +898,7 @@ const historicalTeamEras=[
   {period:'2015 · Jornada 20',category:'Intermedia',teams:['San Antonio Jr.','Malvinas','Tavera','La Cuadrilla','Centeno','Real Cerrito','Halcones','Barza','Populares','Terrícolas','DHP','Dulces Nombres','Xolos Jaralillo','Puros Cuates']},
   {period:'2016 · Jornada 5',category:'Veteranos · equipos identificados en tabla de goleo',teams:['Cuenda','Hermanos','Picosos','Magisterio','La Esperanza','Dynamo','Boavista','Valedores','UNAM','Cuenda Jr.']},
   {period:'2016–2017',category:'Fuerzas y Veteranos',teams:['Toros','Morales','Galeana','San Julián','Birds Eye Jr.','San José de Allende','Río Grande','Tecos','Portugal','San Antonio FC','Dortmund','A. Centeno','Puros Cuates','Oklahoma','Mazacotes','Real Cerrito de Gasca','Osasuna']},
+  {period:'Archivo · rol amistoso 11–12 ago · año por precisar',category:'Veteranos y categoría dominical · captura aportada',teams:['Valedores','Hermanos','Chelsea','Guadalajara','Cuenda','Magisterio','Sección XIV','PSV','Napoli','San José de Allende','Galaxy','Oklahoma','Malvinas','Mineros','Barza','La Cuadrilla','World 11','Tecos','La Esperanza Jr.','Mazacotes','Boavista','Toros','Galeana','Puros Cuates','Abejas','Dep. Cerrito','El Alto','Tavera','La Huerta','San Antonio de Romerillo','Tavera Jr.']},
   {period:'2017–2018',category:'Primera Fuerza',teams:['Olímpicos','A. Centeno','Hermanos','Juventus','Linces','La Esperanza','PSV','Boavista','La Cuadrilla','Puros Cuates','Napoli','Tavera','Malvinas','Chelsea','Abejas','San Antonio Jr.']},
   {period:'2017–2018',category:'Intermedia',teams:['Lobos CDG','Vatos Locos','Real DHP','San Antonio','Populares','Tecos','Oklahoma','Mineros','Titanes Tavera','La Huerta','Franco FC','Osasuna','Terrícolas','Barza','Mazacotes','Morales']},
   {period:'2018–2023',category:'Roles y tablas complementarias',teams:['Deportivo Maravillas','A. Pozos','Galaxy','Tapatío','Guadalupanos','Deportivo Pozos','Universidad','Valencia','Halcones','Galácticos FC','Sección 14','San Juan FC']},
@@ -961,7 +967,8 @@ const expandedRetroNames=[
   'Río Grande','Unión Allende','Novatos','Salvajes','Continental','Toros','Aldama',
   'Aguilares','Merino','Santa María de Guadalupe','Pozos','San José de Allende','Atlas',
   'Guadalajara','Sección XIV','La Pandilla de Rancho V.','Dortmund','Portugal','Birds Eye Jr.','Centeno',
-  'Boca Jrs.','B.F.C.','Manchester United','Galácticos (Pozos)','Herreras FC (Cuenda)','Lobos Jrs.','Lobos CDG','Franco FC','Salvajes','San Antonio Jrs.','Real de Roque'
+  'Boca Jrs.','B.F.C.','Manchester United','Galácticos (Pozos)','Herreras FC (Cuenda)','Lobos Jrs.','Lobos CDG','Franco FC','Salvajes','San Antonio Jrs.','Real de Roque',
+  'Hermanos','Cuenda','Napoli','World 11','La Esperanza Jr.','Boavista','Galeana','Abejas','Dep. Cerrito','Tavera','La Huerta','San Antonio de Romerillo','Tavera Jr.'
 ];
 
 const historicalTimeline=[
