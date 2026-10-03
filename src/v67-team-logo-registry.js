@@ -6,6 +6,20 @@
 
   const BASE='https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/';
   const DYNAMIC={};
+  /* V688 — equivalencias históricas confirmadas por el usuario.
+     Son sólo aliases visuales del archivo; no agregan clubes a la temporada actual. */
+  const USER_HISTORIC={
+    'universidad':'./assets/history/team-logos/universidad-pumas.webp',
+    'unam':'./assets/history/team-logos/universidad-pumas.webp',
+    'pumas':'./assets/history/team-logos/universidad-pumas.webp',
+    'pumas unam':'./assets/history/team-logos/universidad-pumas.webp',
+    'xolos jaralillo':'./assets/history/team-logos/xolos-jaralillo.webp',
+    'jaralillo':'./assets/history/team-logos/xolos-jaralillo.webp',
+    'jaralillo fc':'./assets/history/team-logos/xolos-jaralillo.webp',
+    'xolos':'./assets/history/team-logos/xolos-jaralillo.webp',
+    'tecos':'./assets/history/team-logos/tecos.webp',
+    'tecos fc':'./assets/history/team-logos/tecos.webp'
+  };
   const MAP={
     'america':'assets/branding/america-veteranos-35-user.png',
     'america veteranos':'assets/branding/america-veteranos-35-user.png',
@@ -137,6 +151,8 @@
   }
   function get(name){
     const key=norm(name);
+    const historic=USER_HISTORIC[key];
+    if(historic)return new URL(historic,document.baseURI).href;
     const cached=Object.entries(window.LJR_OFFICIAL_DATA?.team_logos||{}).find(([team])=>norm(team)===key)?.[1]?.app;
     if(cached)return cached;
     /* V485: Juventus conserva el escudo local estable esperado por los módulos históricos
