@@ -121,7 +121,7 @@ function view(){
           '<label><span>Dirigido a</span><select data-v635-target>'+options(TARGET_TYPES,'Jugador')+'</select></label>'+
           '<label><span>Categoría</span><select data-v635-cat>'+options(cats,defaultCat)+'</select></label>'+
         '</div>'+
-        '<label><span>Equipo</span><input type="text" list="v635-team-list" data-v635-team placeholder="Selecciona o escribe el equipo"><datalist id="v635-team-list"></datalist></label>'+
+        '<label class="v635-team-field"><span>Equipo</span><input type="hidden" data-v635-team><button type="button" class="v635-team-select" data-v635-team-open aria-haspopup="dialog"><span data-v635-team-label>Selecciona un equipo</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m7 9 5 6 5-6"/></svg></button><small data-v635-team-hint>Equipos filtrados por '+esc(defaultCat)+'</small></label>'+
         '<div class="v635-two">'+
           '<label><span>Jugador / persona</span><input type="text" list="v635-player-list" data-v635-person placeholder="Nombre completo"><datalist id="v635-player-list"></datalist></label>'+
           '<label><span>Delegado responsable</span><input type="text" data-v635-delegate placeholder="Nombre del delegado"></label>'+
@@ -133,6 +133,7 @@ function view(){
         '</div>'+
         '<label><span>Campo / sede</span><input type="text" data-v635-field placeholder="Opcional"></label>'+
         '<label><span>Motivo y condiciones</span><textarea data-v635-reason rows="4" placeholder="Ej. Se autoriza únicamente para este partido mientras se entrega la credencial oficial."></textarea></label>'+
+        '<div class="v635-ai-box"><div><b>Asistente de texto con IA</b><span>Redacta automáticamente un permiso formal usando los datos capturados, sin inventar información.</span></div><button type="button" data-v635-ai>✦ Generar texto con IA</button></div>'+
         '<div class="v635-form-title authority"><b>Autoridad que autoriza</b><span>El documento mostrará este nombre y cargo.</span></div>'+
         '<div class="v635-two">'+
           '<label><span>Nombre</span><input type="text" data-v635-signer placeholder="Nombre del presidente / administrador"></label>'+
@@ -155,6 +156,15 @@ function view(){
         '<div class="v635-preview-empty" data-v635-empty>'+icon()+'<b>Vista previa del permiso</b><span>Completa los datos y toca “Generar permiso”.</span></div>'+
         '<div data-v635-preview></div>'+
       '</div>'+
+    '</div>'+
+    '<div class="v635-team-sheet" data-v635-team-sheet hidden>'+
+      '<button type="button" class="v635-team-backdrop" data-v635-team-close aria-label="Cerrar selector de equipo"></button>'+
+      '<section class="v635-team-dialog" role="dialog" aria-modal="true" aria-label="Seleccionar equipo">'+
+        '<div class="v635-team-dialog-head"><div><small>FILTRO POR CATEGORÍA</small><b>Seleccionar equipo</b></div><button type="button" data-v635-team-close aria-label="Cerrar">×</button></div>'+
+        '<label><span>Categoría</span><select data-v635-team-cat>'+options(cats,defaultCat)+'</select></label>'+
+        '<label><span>Buscar equipo</span><input type="search" data-v635-team-search placeholder="Escribe el nombre del equipo" autocomplete="off"></label>'+
+        '<div class="v635-team-options" data-v635-team-options></div>'+
+      '</section>'+
     '</div>'+
   '</section>';
 }
@@ -227,12 +237,113 @@ function permissionHtml(p){
 function refreshLists(){
   const cat=q('[data-v635-cat]')?.value||'';
   const teams=teamsForCategory(cat);
-  const teamList=q('#v635-team-list');
-  if(teamList)teamList.innerHTML=teams.map(n=>'<option value="'+esc(n)+'"></option>').join('');
-  const team=q('[data-v635-team]')?.value||'';
+  const teamInput=q('[data-v635-team]');
+  let team=teamInput?.value||'';
+  if(team&&!teams.some(n=>same(n,team))){
+    team='';
+    if(teamInput)teamInput.value='';
+  }
+  const teamLabel=q('[data-v635-team-label]');
+  if(teamLabel)teamLabel.textContent=team||'Selecciona un equipo';
+  const hint=q('[data-v635-team-hint]');
+  if(hint)hint.textContent='Equipos filtrados por '+(cat||'categoría');
   const players=playersFor(cat,team);
   const playerList=q('#v635-player-list');
   if(playerList)playerList.innerHTML=players.map(n=>'<option value="'+esc(n)+'"></option>').join('');
+}
+function setTeam(name){
+  const input=q('[data-v635-team]');
+  if(input)input.value=String(name||'').trim();
+  const label=q('[data-v635-team-label]');
+  if(label)label.textContent=input?.value||'Selecciona un equipo';
+  refreshLists();
+}
+function renderTeamPicker(){
+  const host=q('[data-v635-team-options]');
+  if(!host)return;
+  const cat=q('[data-v635-team-cat]')?.value||q('[data-v635-cat]')?.value||'';
+  const term=norm(q('[data-v635-team-search]')?.value||'');
+  const list=teamsForCategory(cat).filter(n=>!term||norm(n).includes(term));
+  host.innerHTML=list.length
+    ?list.map(n=>'<button type="button" class="v635-team-option" data-v635-team-choice="'+esc(n)+'"><span>'+esc(String(n).trim().slice(0,1).toUpperCase()||'•')+'</span><b>'+esc(n)+'</b><small>'+esc(cat)+'</small></button>').join('')
+    :'<div class="v635-team-empty">No hay equipos que coincidan en esta categoría.</div>';
+}
+function openTeamPicker(){
+  const sheet=q('[data-v635-team-sheet]');
+  if(!sheet)return;
+  const mainCat=q('[data-v635-cat]')?.value||'';
+  const pickerCat=q('[data-v635-team-cat]');
+  if(pickerCat&&mainCat)pickerCat.value=mainCat;
+  const search=q('[data-v635-team-search]');
+  if(search)search.value='';
+  renderTeamPicker();
+  sheet.hidden=false;
+  document.body.classList.add('v635-team-picker-open');
+  setTimeout(()=>search?.focus(),80);
+}
+function closeTeamPicker(){
+  const sheet=q('[data-v635-team-sheet]');
+  if(sheet)sheet.hidden=true;
+  document.body.classList.remove('v635-team-picker-open');
+}
+function localAiReason(p){
+  const person=p.person||((p.target==='Equipo'&&p.team)?p.team:'la persona indicada');
+  const team=p.team?(' del equipo '+p.team):'';
+  const category=p.category?(' de la categoría '+p.category):'';
+  const where=p.field?(' en '+p.field):'';
+  const round=p.round?(' durante la jornada '+String(p.round).replace(/^j/i,'')):'';
+  const validity=p.until?(' con vigencia del '+fmtDate(p.date)+' al '+fmtDate(p.until)):(' con fecha '+fmtDate(p.date));
+  const context=team+category+round+where+validity;
+  const map={
+    'Jugar sin credencial':'Se autoriza de manera excepcional a '+person+context+' a participar sin presentar la credencial física. La autorización es personal, temporal y válida únicamente para la actividad señalada; deberá verificarse su registro antes del encuentro y quedará sin efecto fuera de la vigencia indicada.',
+    'Jugar con credencial en trámite':'Se autoriza provisionalmente a '+person+context+' a participar mientras concluye el trámite de su credencial oficial. La identidad y el registro deberán verificarse previamente y este permiso no sustituye la entrega definitiva de la credencial.',
+    'Participación provisional':'Se autoriza la participación provisional de '+person+context+'. La autorización se limita al periodo y condiciones señalados y podrá ser revisada por la Liga antes del inicio del encuentro.',
+    'Alta / registro pendiente':'Se autoriza provisionalmente a '+person+context+' mientras concluye la revisión administrativa de su alta o registro. La participación queda condicionada a la validación de los datos y documentación correspondientes.',
+    'Permiso de delegado':'Se autoriza a '+person+context+' para desempeñar las funciones de delegado expresamente relacionadas con el equipo y actividad indicados. El permiso es temporal y no amplía atribuciones distintas a las aquí señaladas.',
+    'Acceso a cancha o banca':'Se autoriza a '+person+context+' el acceso a cancha o banca exclusivamente para la actividad indicada. Deberá respetar las disposiciones de la Liga, del cuerpo arbitral y del responsable de la sede.',
+    'Cambio de equipo / situación especial':'Se autoriza la situación especial correspondiente a '+person+context+', sujeta a revisión administrativa y a las condiciones asentadas en este documento. Cualquier modificación posterior requerirá una nueva autorización.',
+    'Otro permiso':'Se autoriza a '+person+context+' únicamente para la situación descrita en este documento. La autorización es temporal, personal y queda sujeta a las disposiciones vigentes de la Liga.'
+  };
+  return map[p.type]||map['Otro permiso'];
+}
+async function browserAiReason(p){
+  let session=null;
+  try{
+    const api=globalThis.LanguageModel||globalThis.ai?.languageModel;
+    if(!api?.create)return '';
+    session=await api.create({temperature:.2,topK:20});
+    const prompt='Redacta en español de México un texto oficial, claro y profesional de máximo 90 palabras para el campo "Motivo y condiciones" de un permiso de una liga de fútbol. No inventes nombres, fechas, reglas ni sanciones. Usa solamente estos datos: '+JSON.stringify({
+      tipo:p.type,dirigido_a:p.target,categoria:p.category,equipo:p.team,persona:p.person,delegado:p.delegate,
+      fecha:fmtDate(p.date),vigencia_hasta:p.until?fmtDate(p.until):'',jornada:p.round,campo:p.field
+    })+'. Devuelve únicamente el texto final, sin título ni viñetas.';
+    const out=await session.prompt(prompt);
+    return typeof out==='string'?out.trim():'';
+  }catch(_){
+    return '';
+  }finally{
+    try{session?.destroy?.()}catch(_){}
+  }
+}
+async function generateAiReason(){
+  const area=q('[data-v635-reason]');
+  const btn=q('[data-v635-ai]');
+  if(!area||!btn)return;
+  const old=btn.textContent;
+  btn.disabled=true;
+  btn.textContent='Generando…';
+  try{
+    const p=payload();
+    let text=await browserAiReason(p);
+    if(!text)text=localAiReason(p);
+    area.value=text;
+    area.dispatchEvent(new Event('input',{bubbles:true}));
+    toast('Texto automático generado');
+  }catch(_){
+    toast('No se pudo generar el texto');
+  }finally{
+    btn.disabled=false;
+    btn.textContent=old;
+  }
 }
 async function readFile(file){
   if(!file)return '';
@@ -409,8 +520,28 @@ function printDoc(){
   setTimeout(clean,12000);
 }
 function bind(){
-  q('[data-v635-cat]')?.addEventListener('change',()=>{const team=q('[data-v635-team]');if(team)team.value='';refreshLists()});
-  q('[data-v635-team]')?.addEventListener('input',refreshLists);
+  q('[data-v635-cat]')?.addEventListener('change',e=>{
+    setTeam('');
+    const picker=q('[data-v635-team-cat]');
+    if(picker)picker.value=e.target.value;
+    renderTeamPicker();
+  });
+  q('[data-v635-team-open]')?.addEventListener('click',openTeamPicker);
+  qa('[data-v635-team-close]').forEach(btn=>btn.addEventListener('click',closeTeamPicker));
+  q('[data-v635-team-cat]')?.addEventListener('change',e=>{
+    const main=q('[data-v635-cat]');
+    if(main)main.value=e.target.value;
+    setTeam('');
+    renderTeamPicker();
+  });
+  q('[data-v635-team-search]')?.addEventListener('input',renderTeamPicker);
+  q('[data-v635-team-options]')?.addEventListener('click',e=>{
+    const btn=e.target.closest('[data-v635-team-choice]');
+    if(!btn)return;
+    setTeam(btn.dataset.v635TeamChoice||'');
+    closeTeamPicker();
+  });
+  q('[data-v635-ai]')?.addEventListener('click',generateAiReason);
   q('[data-v635-signature]')?.addEventListener('change',async e=>{
     const file=e.target.files?.[0];
     if(!file){signatureData='';return}
