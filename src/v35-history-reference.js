@@ -276,7 +276,7 @@ const historyMoments=[
   // V197 — campeones 2025 corregidos/aportados por el usuario.
   {kind:'CAMPEÓN',date:'09 feb 2025',season:'2025',winner:'Herreras FC',title:'Herreras FC',subtitle:'Campeón · Torneo Relámpago · Fuerza Intermedia',detail:'La Liga Municipal de Fútbol “JUVENTINO ROSAS” A.C. felicitó a Herreras F.C. por lograr el campeonato del Torneo Relámpago de Fuerza Intermedia el 9 de febrero de 2025 ante Oklahoma. Dato y fotografía aportados por el usuario.',backgroundPhoto:HIST_MEDIA+'archive-v208/herreras-fc-campeon-relampago-intermedia-09-feb-2025.webp',image:HIST_ROOT+'assets/official-logos/herreras-fc.png'},
   {kind:'CAMPEÓN',date:'09 feb 2025',season:'2025',winner:'Galácticos de Pozos',title:'Galácticos de Pozos',subtitle:'Campeón de Campeones · Primera Fuerza',detail:'La Liga Municipal de Fútbol “JUVENTINO ROSAS” A.C. felicitó al equipo GALÁCTICOS de Pozos por haber obtenido el cetro de Campeón de Campeones, al imponerse al equipo LINCES el 9 de febrero de 2025.',backgroundPhoto:'./assets/history/archive-v203/galacticos-campeon-campeones-09-feb-2025.jpg?v=20260923-galacticos-real-v240',image:HIST_ROOT+'assets/teams/galacticos-pozos.webp'},
-  {kind:'CAMPEÓN',date:'16 feb 2025',season:'2025',winner:'Lobos Jrs.',title:'Lobos Jrs.',subtitle:'Campeón · Torneo Relámpago · Segunda Fuerza',detail:'Dato e imagen aportados por el usuario: Lobos Jrs. ganó el Torneo Relámpago de Segunda Fuerza el 16 de febrero de 2025.',backgroundPhoto:HIST_MEDIA+'archive-v207/lobos-jrs-campeon-relampago-segunda-16-feb-2025.webp'},
+  {kind:'CAMPEÓN',date:'16 feb 2025',season:'2025',winner:'Lobos Jrs.',title:'Lobos Jrs.',subtitle:'Campeón · Torneo Relámpago · Segunda Fuerza',detail:'Dato e imagen aportados por el usuario: Lobos Jrs. ganó el Torneo Relámpago de Segunda Fuerza el 16 de febrero de 2025.',backgroundPhoto:HIST_MEDIA+'archive-v207/lobos-jrs-campeon-relampago-segunda-16-feb-2025.webp',image:HIST_ROOT+'assets/teams/lobos-jr-cerrito-gasca.webp'},
   // V196 — Lobos CDG · Campeón de Copa · Fuerza Intermedia 2025
   {kind:'CAMPEÓN',date:'15 jun 2025',season:'2025',winner:'Lobos CDG',title:'Lobos CDG · Cerrito de Gasca',subtitle:'Campeón de Copa · Fuerza Intermedia',detail:'La Liga Municipal de Fútbol felicita a Lobos CDG, de la comunidad de Cerrito de Gasca, por haber obtenido el título de Campeón de Copa 2025 ante Franco FC, de la comunidad de San José de Manantiales.',backgroundPhoto:HIST_MEDIA+'archive-v207/lobos-cdg-campeon-copa-intermedia-15-jun-2025.webp?v=20260923-lobos-clean-v212',image:HIST_ROOT+'assets/official-logos/lobos-cdg.png'},
   {kind:'TERCER LUGAR',date:'23 nov 2013',season:'2013',title:'Romerillo',subtitle:'Tercer lugar · Fuerza Intermedia',detail:'Golazo Liga publicó que el portero de Romerillo fue clave para que su equipo obtuviera el tercer lugar, destacando una atajada de penal en la serie final. El nombre del portero no es visible en la captura aportada.',backgroundPhoto:'./assets/history/archive-v293/romerillo-tercer-lugar-intermedia-23-nov-2013.jpg?v=20260923-romerillo-bg-23nov2013-v293',championsOnly:true},
@@ -421,7 +421,7 @@ const verifiedChampions=[
   {season:'12 abr 2025',competition:'Torneo de Liga · Veteranos 50+',champion:'Boavista FC',runner:'Boca Jrs.',source:'El rol publicado el 9 abr 2025 programa Boca Jrs. vs Boavista a las 16:00 en Campo 1; la publicación del 12 abr presenta a Boavista F C como “CAMPEÓN 2025”.',championLogo:HIST_ROOT+'assets/official-logos/boavista.png'},
   {season:'04 mar 2024',competition:'Torneo de Copa · Primera Fuerza',champion:'Linces',runner:'Hermanos FC',source:'La Pupila publicó el 4 mar 2024 que Linces venció 3–2 a Hermanos FC y se llevó la final de Copa. El 11 abr 2024, Juventino Rosas Liga volvió a identificar a Linces como actual campeón de Copa y equipo de Primera Fuerza.',photo:HIST_MEDIA+'archive-v202/linces-campeon-copa-04-mar-2024.webp',championLogo:HIST_ROOT+'assets/official-logos/linces.png',runnerLogo:HIST_ROOT+'assets/official-logos/hermanos.png'},
   {season:'09 nov 2024',competition:'Torneo de Copa · Veteranos 50 y más',champion:'Manchester',runner:'—',source:'Dato e imagen aportados por el usuario: Manchester fue campeón del Torneo de Copa de Veteranos 50 y más el 9 de noviembre de 2024.',championLogo:HIST_ROOT+'assets/official-logos/manchester.png'},
-  {season:'16 feb 2025',competition:'Torneo Relámpago · Segunda Fuerza',champion:'Lobos Jrs.',runner:'—',source:'Dato e imagen aportados por el usuario: Lobos Jrs. fue campeón del Torneo Relámpago de Segunda Fuerza.',photo:HIST_MEDIA+'archive-v207/lobos-jrs-campeon-relampago-segunda-16-feb-2025.webp'},
+  {season:'16 feb 2025',competition:'Torneo Relámpago · Segunda Fuerza',champion:'Lobos Jrs.',runner:'—',source:'Dato e imagen aportados por el usuario: Lobos Jrs. fue campeón del Torneo Relámpago de Segunda Fuerza.',photo:HIST_MEDIA+'archive-v207/lobos-jrs-campeon-relampago-segunda-16-feb-2025.webp',championLogo:HIST_ROOT+'assets/teams/lobos-jr-cerrito-gasca.webp'},
   {season:'09 feb 2025',competition:'Campeón de Campeones · Primera Fuerza',champion:'Galácticos de Pozos',runner:'Linces',source:'La Liga Municipal de Fútbol “JUVENTINO ROSAS” A.C. felicitó a Galácticos de Pozos por obtener el cetro de Campeón de Campeones al imponerse a Linces el 9 de febrero de 2025.',photo:HIST_MEDIA+'archive-v203/galacticos-campeon-campeones-09-feb-2025.jpg?v=20260923-galacticos-cdc-v213',championLogo:HIST_ROOT+'assets/teams/galacticos-pozos.webp'},
   {season:'09 feb 2025',competition:'Torneo Relámpago · Fuerza Intermedia',champion:'Herreras FC',runner:'Oklahoma',source:'La Liga Municipal de Fútbol “JUVENTINO ROSAS” A.C. felicitó a Herreras F.C. por obtener el campeonato del Torneo Relámpago de Fuerza Intermedia ante Oklahoma el 9 de febrero de 2025. Dato y fotografía aportados por el usuario.',photo:HIST_MEDIA+'archive-v208/herreras-fc-campeon-relampago-intermedia-09-feb-2025.webp',championLogo:HIST_ROOT+'assets/official-logos/herreras-fc.png',runnerLogo:HIST_ROOT+'assets/teams/oklahoma-city-fc.webp'},
   {season:'08 jun 2025',competition:'Torneo de Copa · Primera Fuerza',champion:'Galácticos (Pozos)',runner:'Herreras FC (Cuenda)',source:'La final fue Galácticos vs Herreras FC, domingo 8 de junio de 2025 a las 10:00 en Campo 1 de la Unidad Deportiva Sur. La Liga Municipal de Fútbol “Juventino Rosas” A.C. felicitó a Galácticos de Pozos por obtener el título de Campeón de Copa 2025 en Primera Fuerza tras un reñido encuentro con Herreras F.C.',photo:HIST_MEDIA+'archive-v204/galacticos-pozos-campeon-copa-2025-entrega.webp',championLogo:HIST_ROOT+'assets/teams/galacticos-pozos.webp',runnerLogo:HIST_ROOT+'assets/official-logos/herreras-fc.png'},
@@ -769,6 +769,9 @@ const historicTeamLogoMap={
   'napoli':'assets/official-logos/napoli.png',
   'abejas':'assets/official-logos/abejas.png',
   'lobos cdg':'assets/official-logos/lobos-cdg.png',
+  'lobos jrs':'assets/teams/lobos-jr-cerrito-gasca.webp',
+  'lobos jr':'assets/teams/lobos-jr-cerrito-gasca.webp',
+  'lobos jrs cerrito de gasca':'assets/teams/lobos-jr-cerrito-gasca.webp',
   'la huerta':'assets/official-logos/la-huerta.png',
   'franco fc':'assets/official-logos/franco-fc.png',
   'mineros':'assets/teams/mineros-fc.webp',
@@ -1801,6 +1804,9 @@ function seasonsEraBlock(){
     'la huerta':'la-huerta.png','la huerta de cuenda':'la-huerta.png',
     'linces':'linces.png','linces jr':'linces.png',
     'lobos cdg':'lobos-cdg.png',
+    'lobos jrs':'../teams/lobos-jr-cerrito-gasca.webp',
+    'lobos jr':'../teams/lobos-jr-cerrito-gasca.webp',
+    'lobos jrs cerrito de gasca':'../teams/lobos-jr-cerrito-gasca.webp',
     'manchester':'manchester.png',
     'promesas':'promesas-fc.png','promesas fc':'promesas-fc.png','promesas de pozos':'promesas-fc.png',
     'san julian':'san-julian.png',
@@ -1815,6 +1821,7 @@ function seasonsEraBlock(){
     const mapped=PNG[n];
     if(mapped){
       if(mapped.startsWith('../branding/'))return HIST_ROOT+'assets/branding/'+mapped.replace('../branding/','');
+      if(mapped.startsWith('../teams/'))return HIST_ROOT+'assets/teams/'+mapped.replace('../teams/','');
       return HIST_ROOT+'assets/official-logos/'+mapped;
     }
     if(preferred&&/\.png(?:[?#]|$)/i.test(preferred))return preferred;
