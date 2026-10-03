@@ -326,9 +326,9 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
   if(window.__LJR_V606_CONTROL_REGISTRO_LOADER__)return;
   window.__LJR_V606_CONTROL_REGISTRO_LOADER__=true;
   if(!document.querySelector('link[data-v606-control-registro]')){
-    const l=document.createElement('link');l.rel='stylesheet';l.href='./src/v606-control-registro-tools.css?v=20261002-v606-control-registro-tools';l.dataset.v606ControlRegistro='1';document.head.appendChild(l);
+    const l=document.createElement('link');l.rel='stylesheet';l.href='./src/v606-control-registro-tools.css?v=20261003-v623-admin-tools';l.dataset.v606ControlRegistro='1';document.head.appendChild(l);
   }
   if(!document.querySelector('script[data-v606-control-registro]')){
-    const s=document.createElement('script');s.src='./src/v606-control-registro-tools.js?v=20261002-v606-control-registro-tools';s.dataset.v606ControlRegistro='1';document.body.appendChild(s);
+    const s=document.createElement('script');s.src='./src/v606-control-registro-tools.js?v=20261003-v623-admin-tools';s.dataset.v606ControlRegistro='1';document.body.appendChild(s);
   }
 })();
