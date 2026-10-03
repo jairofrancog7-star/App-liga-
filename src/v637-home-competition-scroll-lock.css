@@ -1,0 +1,81 @@
+/* V637 — Inicio + Competición: cabeceras inmóviles durante scroll.
+   Replica el comportamiento aprobado de Momentos: la capa superior permanece
+   anclada al viewport y solamente se desplaza el contenido de la pantalla. */
+
+@media (max-width:1023px){
+  html body[data-app-route="home"] #app > .topbar,
+  html body[data-app-route="home"] .app-shell > .topbar,
+  html body.v10-header-collapsed[data-app-route="home"] #app > .topbar,
+  html body.v10-header-collapsed[data-app-route="home"] .app-shell > .topbar{
+    position:fixed!important;
+    top:0!important;
+    left:50%!important;
+    right:auto!important;
+    transform:translateX(-50%)!important;
+    width:min(100vw,520px)!important;
+    max-width:520px!important;
+    margin:0!important;
+    z-index:2147482400!important;
+    will-change:auto!important;
+  }
+
+  html body[data-app-route="home"] #screen{
+    padding-top:calc(var(--v10-home-header-h) + 8px)!important;
+    scroll-padding-top:calc(var(--v10-home-header-h) + 8px)!important;
+  }
+}
+
+@media (max-width:520px){
+  html body[data-app-route="competition"]{
+    --v637-comp-head-h:calc(88px + env(safe-area-inset-top));
+    --v637-comp-tabs-h:47px;
+  }
+
+  html body[data-app-route="competition"] #app > .topbar,
+  html body[data-app-route="competition"] .app-shell > .topbar,
+  html body.v40-standings-master[data-app-route="competition"] #app > .topbar,
+  html body.v10-header-collapsed[data-app-route="competition"] #app > .topbar{
+    position:fixed!important;
+    top:0!important;
+    left:50%!important;
+    right:auto!important;
+    transform:translateX(-50%)!important;
+    width:min(100vw,520px)!important;
+    max-width:520px!important;
+    height:var(--v637-comp-head-h)!important;
+    min-height:var(--v637-comp-head-h)!important;
+    max-height:var(--v637-comp-head-h)!important;
+    margin:0!important;
+    z-index:2147482400!important;
+    will-change:auto!important;
+  }
+
+  html body[data-app-route="competition"] #screen > .tabs,
+  html body.v40-standings-master[data-app-route="competition"] #screen > .tabs,
+  html body.v10-header-collapsed[data-app-route="competition"] #screen > .tabs{
+    position:fixed!important;
+    top:var(--v637-comp-head-h)!important;
+    left:50%!important;
+    right:auto!important;
+    transform:translateX(-50%)!important;
+    width:min(100vw,520px)!important;
+    max-width:520px!important;
+    height:var(--v637-comp-tabs-h)!important;
+    min-height:var(--v637-comp-tabs-h)!important;
+    max-height:var(--v637-comp-tabs-h)!important;
+    margin:0!important;
+    box-sizing:border-box!important;
+    z-index:2147482399!important;
+  }
+
+  html body[data-app-route="competition"] #screen{
+    padding-top:calc(var(--v637-comp-head-h) + var(--v637-comp-tabs-h))!important;
+    scroll-padding-top:calc(var(--v637-comp-head-h) + var(--v637-comp-tabs-h) + 6px)!important;
+  }
+}
+
+@media (max-width:380px){
+  html body[data-app-route="competition"]{
+    --v637-comp-head-h:calc(84px + env(safe-area-inset-top));
+  }
+}
