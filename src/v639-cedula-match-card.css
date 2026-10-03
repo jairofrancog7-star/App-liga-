@@ -1,0 +1,182 @@
+/* V639 — tarjeta de partido integrada al generador de cédulas. */
+@media(max-width:1023px){
+  body[data-app-route="cedulaBuilder"] .v639-match-card{
+    position:relative;
+    overflow:hidden;
+    width:100%;
+    box-sizing:border-box;
+    margin:11px 0 0;
+    padding:14px 14px 13px;
+    border:1px solid rgba(39,220,236,.55);
+    border-radius:18px;
+    background:
+      radial-gradient(210px 120px at 100% 0,rgba(35,220,237,.12),transparent 70%),
+      linear-gradient(145deg,#151c9c 0%,#11137d 52%,#0b0d67 100%);
+    box-shadow:0 12px 26px rgba(0,0,50,.22);
+  }
+  body[data-app-route="cedulaBuilder"] .v639-match-card::after{
+    content:"";
+    position:absolute;
+    width:170px;
+    height:170px;
+    right:-80px;
+    top:-82px;
+    border:1px solid rgba(42,229,239,.14);
+    border-radius:50%;
+    pointer-events:none;
+  }
+  body[data-app-route="cedulaBuilder"] .v639-card-head{
+    position:relative;
+    z-index:1;
+    display:flex;
+    align-items:flex-start;
+    justify-content:space-between;
+    gap:12px;
+  }
+  body[data-app-route="cedulaBuilder"] .v639-card-head>b{
+    color:#fff;
+    font-size:10px;
+    line-height:1.22;
+    font-weight:950;
+    letter-spacing:.12em;
+  }
+  body[data-app-route="cedulaBuilder"] .v639-card-head>strong{
+    min-width:30px;
+    color:#2ce1eb;
+    font-size:12px;
+    line-height:1;
+    font-weight:950;
+    text-align:right;
+  }
+  body[data-app-route="cedulaBuilder"] .v639-card-rule{
+    position:relative;
+    z-index:1;
+    height:1px;
+    margin:11px 0 10px;
+    background:rgba(255,255,255,.13);
+  }
+  body[data-app-route="cedulaBuilder"] .v639-versus{
+    position:relative;
+    z-index:1;
+    display:grid;
+    grid-template-columns:1fr 40px 1fr;
+    gap:6px;
+    align-items:center;
+    padding:0 4px;
+  }
+  body[data-app-route="cedulaBuilder"] .v639-team{
+    min-width:0;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:5px;
+    text-align:center;
+  }
+  body[data-app-route="cedulaBuilder"] .v639-team-logo{
+    width:46px;
+    height:46px;
+    min-width:46px;
+    min-height:46px;
+    display:grid;
+    place-items:center;
+    overflow:hidden;
+    border-radius:50%;
+    background:#0a0c67;
+    border:1.5px solid #35dfea;
+    box-shadow:0 5px 13px rgba(0,0,35,.22);
+  }
+  body[data-app-route="cedulaBuilder"] .v639-team-logo img{
+    width:100%;
+    height:100%;
+    display:block;
+    object-fit:contain;
+    object-position:center;
+    background:transparent;
+  }
+  body[data-app-route="cedulaBuilder"] .v639-team-fallback{
+    color:#fff;
+    font-size:11px;
+    font-weight:900;
+  }
+  body[data-app-route="cedulaBuilder"] .v639-team>b{
+    max-width:100%;
+    color:#fff;
+    font-size:11px;
+    line-height:1.08;
+    font-weight:900;
+    overflow-wrap:anywhere;
+  }
+  body[data-app-route="cedulaBuilder"] .v639-vs{
+    color:#2be0eb;
+    font-size:14px;
+    line-height:1;
+    font-weight:950;
+    text-align:center;
+  }
+  body[data-app-route="cedulaBuilder"] .v639-card-meta{
+    position:relative;
+    z-index:1;
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:7px;
+    margin-top:12px;
+  }
+  body[data-app-route="cedulaBuilder"] .v639-card-meta>div{
+    min-width:0;
+    padding:8px 9px;
+    border-radius:11px;
+    background:rgba(7,8,94,.52);
+    border:1px solid rgba(255,255,255,.045);
+  }
+  body[data-app-route="cedulaBuilder"] .v639-card-meta small,
+  body[data-app-route="cedulaBuilder"] .v639-card-meta b{
+    display:block;
+  }
+  body[data-app-route="cedulaBuilder"] .v639-card-meta small{
+    color:#9ea7d1;
+    font-size:6.5px;
+    line-height:1;
+    letter-spacing:.05em;
+  }
+  body[data-app-route="cedulaBuilder"] .v639-card-meta b{
+    margin-top:4px;
+    color:#fff;
+    font-size:10px;
+    line-height:1.12;
+    font-weight:900;
+    overflow-wrap:anywhere;
+  }
+
+  /* Los tres botones quedan pegados al cuadro, como una sola sección. */
+  body[data-app-route="cedulaBuilder"] .v639-match-card + .v60-actions{
+    margin-top:7px!important;
+    padding:0!important;
+  }
+  body[data-app-route="cedulaBuilder"] .v639-match-card + .v60-actions .v60-btn{
+    min-height:42px!important;
+    height:42px!important;
+    border-radius:10px!important;
+    font-size:8px!important;
+    line-height:1.04!important;
+  }
+
+  /* Vista previa debajo del resumen, más integrada y compacta. */
+  body[data-app-route="cedulaBuilder"] .v639-match-card ~ [data-v64-cedula-preview]{
+    margin-top:11px!important;
+  }
+}
+
+@media(max-width:390px){
+  body[data-app-route="cedulaBuilder"] .v639-match-card{
+    padding:12px;
+    border-radius:16px;
+  }
+  body[data-app-route="cedulaBuilder"] .v639-team-logo{
+    width:42px;
+    height:42px;
+    min-width:42px;
+    min-height:42px;
+  }
+  body[data-app-route="cedulaBuilder"] .v639-card-head>b{font-size:9px}
+  body[data-app-route="cedulaBuilder"] .v639-card-meta b{font-size:9px}
+}
