@@ -94,12 +94,14 @@ function playerCard(p,side){
   return '<article class="v123-player-card empty '+esc(side)+'" data-v123-card-side="'+esc(side)+'" tabindex="0" role="button" aria-label="Elegir '+sideLabel+'">'+
    '<span class="v123-avatar ghost" aria-hidden="true"><svg viewBox="0 0 120 120"><circle cx="60" cy="38" r="24"/><path d="M18 104c4-29 21-43 42-43s38 14 42 43H18Z"/></svg></span><strong>Elige jugador</strong></article>';
  }
- return '<article class="v123-player-card '+esc(side)+'" data-v123-card-side="'+esc(side)+'" tabindex="0" role="button" aria-label="Cambiar '+esc(p.name)+'">'+
+ return '<article class="v123-player-card '+esc(side)+'" data-v123-card-side="'+esc(side)+'" data-v123-name="'+esc(p.name)+'" data-v123-team-name="'+esc(p.team)+'" data-v123-cat="'+esc(p.cat||'')+'" tabindex="0" role="button" aria-label="Cambiar '+esc(p.name)+'">'+
    '<span class="v123-player-swap" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M19 7v5h-5M5 17v-5h5M18.2 12a6.5 6.5 0 0 0-11.1-4.6L5 9M5.8 12a6.5 6.5 0 0 0 11.1 4.6L19 15"/></svg></span>'+
    avatarMarkup(p,'v123-avatar')+
-   '<div class="v123-player-copy"><strong>'+esc(p.name)+'</strong><small>'+esc(p.category||'Jugador registrado')+'</small></div>'+
-   '<button type="button" class="v123-team-chip" data-v123-team="'+esc(p.team)+'" aria-label="Comparar equipo '+esc(p.team)+'">'+
-     '<span class="v123-team-logo">'+logo(p.team)+'</span><b>'+esc(p.team)+'</b>'+
+   '<div class="v123-player-copy"><strong>'+esc(p.name)+'</strong></div>'+
+   '<button type="button" class="v123-team-chip v613-team-category" data-v123-team="'+esc(p.team)+'" aria-label="Equipo '+esc(p.team)+' · '+esc(p.category||'Categoría')+'">'+
+     '<span class="v123-team-logo">'+logo(p.team)+'</span>'+
+     '<span class="v613-category-label">'+esc(p.category||'Categoría')+'</span>'+
+     '<b class="v204-team-name-sr">'+esc(p.team)+'</b>'+
    '</button>'+
  '</article>';
 }
@@ -302,18 +304,9 @@ function v204ApplyReferenceDecor(){
  document.querySelectorAll('.v123-team-chip').forEach(chip=>{
   const teamName=chip.querySelector('b');
   if(teamName)teamName.classList.add('v204-team-name-sr');
-  if(!chip.querySelector('.v204-league-mini')){
-   const badge=document.createElement('span');
-   badge.className='v204-league-mini';
-   badge.setAttribute('aria-hidden','true');
-   const img=document.createElement('img');
-   img.src=LEAGUE_CREST;
-   img.alt='';
-   img.loading='eager';
-   img.decoding='async';
-   badge.appendChild(img);
-   chip.appendChild(badge);
-  }
+  /* V613: cada tarjeta muestra un solo escudo, el del equipo.
+     El antiguo segundo escudo de Liga se elimina si quedó por caché/DOM previo. */
+  chip.querySelectorAll('.v204-league-mini').forEach(el=>el.remove());
  });
  const pitch=document.querySelector('.v123-pitch-icon');
  if(pitch&&!pitch.dataset.v204Exact){
