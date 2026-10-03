@@ -1,0 +1,258 @@
+/* V670 — Shot Map completo sobre la barra inferior + iconos semánticos.
+   El modal termina antes del nav inferior y el contenido se desplaza dentro del panel. */
+
+@media (max-width:1023px){
+  html body.v410-overlay-open > .v100-modal.v100-shot-modal{
+    top:0!important;
+    bottom:calc(72px + env(safe-area-inset-bottom,0px))!important;
+    width:100%!important;
+    height:auto!important;
+    min-height:0!important;
+    max-height:none!important;
+    padding:
+      calc(clamp(82px,21.68vw,90px) + 8px)
+      8px
+      8px!important;
+    place-items:start center!important;
+    align-items:start!important;
+    overflow:hidden!important;
+    box-sizing:border-box!important;
+  }
+
+  html body.v410-overlay-open > .v100-modal.v100-shot-modal > .v100-modal-card{
+    width:min(650px,100%)!important;
+    height:100%!important;
+    max-height:100%!important;
+    min-height:0!important;
+    margin:0 auto!important;
+    padding:12px 10px 16px!important;
+    overflow-y:auto!important;
+    overflow-x:hidden!important;
+    overscroll-behavior:contain!important;
+    -webkit-overflow-scrolling:touch!important;
+    scroll-padding-bottom:118px!important;
+    box-sizing:border-box!important;
+    border-radius:18px!important;
+  }
+
+  .v100-shot-modal .v100-shot-board{
+    min-height:0!important;
+    padding-bottom:0!important;
+  }
+
+  .v100-shot-modal .v100-shot-edit{
+    position:sticky!important;
+    bottom:44px!important;
+    z-index:25!important;
+    margin-top:4px!important;
+    background:rgba(6,15,91,.96)!important;
+    backdrop-filter:blur(12px)!important;
+    box-shadow:0 -6px 18px rgba(3,6,57,.30)!important;
+  }
+
+  .v100-shot-modal .v100-shot-actions{
+    position:sticky!important;
+    bottom:0!important;
+    z-index:26!important;
+    margin:6px -2px 0!important;
+    padding:5px 2px 2px!important;
+    background:linear-gradient(180deg,rgba(5,13,91,.88),#050d5b 35%)!important;
+    backdrop-filter:blur(12px)!important;
+    box-shadow:0 -8px 20px rgba(3,6,57,.34)!important;
+  }
+
+  .v100-shot-modal .v100-shot-actions>button{
+    min-height:36px!important;
+    height:36px!important;
+    font-size:8.8px!important;
+    font-weight:900!important;
+    touch-action:manipulation!important;
+  }
+
+  .v100-shot-modal .v100-shot-mode{
+    grid-template-columns:repeat(3,minmax(0,1fr))!important;
+    gap:5px!important;
+  }
+
+  .v100-shot-modal .v100-shot-mode button{
+    height:34px!important;
+    min-height:34px!important;
+    font-size:8.2px!important;
+    padding:0 5px!important;
+    touch-action:manipulation!important;
+  }
+
+  .v100-shot-modal .v100-shot-pitch{
+    width:min(100%,390px)!important;
+    height:min(48dvh,455px)!important;
+    min-height:315px!important;
+    margin:0 auto!important;
+  }
+}
+
+@media (max-width:390px){
+  html body.v410-overlay-open > .v100-modal.v100-shot-modal{
+    bottom:calc(70px + env(safe-area-inset-bottom,0px))!important;
+    padding-top:90px!important;
+    padding-left:6px!important;
+    padding-right:6px!important;
+  }
+
+  html body.v410-overlay-open > .v100-modal.v100-shot-modal > .v100-modal-card{
+    padding:10px 8px 14px!important;
+    border-radius:16px!important;
+    scroll-padding-bottom:114px!important;
+  }
+
+  .v100-shot-modal .v100-shot-pitch{
+    width:100%!important;
+    height:min(46dvh,425px)!important;
+    min-height:300px!important;
+  }
+}
+
+/* Botones con iconos diferentes y reconocibles. */
+.v100-shot-mode button:not(.arrow-mode) i{
+  position:relative!important;
+  display:grid!important;
+  place-items:center!important;
+  width:17px!important;
+  height:17px!important;
+  min-width:17px!important;
+  border-radius:0!important;
+  background:transparent!important;
+  box-shadow:none!important;
+  font-style:normal!important;
+}
+
+.v100-shot-mode button.shot-mode i::before,
+.v100-shot-mode button.ball-mode i::before{
+  content:"⚽"!important;
+  color:#fff!important;
+  font-size:14px!important;
+  line-height:1!important;
+}
+
+.v100-shot-mode button.target-mode i::before{
+  content:"◎"!important;
+  color:#38dff1!important;
+  font-size:18px!important;
+  line-height:1!important;
+  font-weight:950!important;
+}
+
+.v100-shot-mode button.goal-mode i::before{
+  content:"✓"!important;
+  display:grid!important;
+  place-items:center!important;
+  width:15px!important;
+  height:15px!important;
+  border:2px solid #29e67d!important;
+  border-radius:4px!important;
+  color:#29e67d!important;
+  font-size:11px!important;
+  line-height:1!important;
+  font-weight:950!important;
+  box-sizing:border-box!important;
+}
+
+.v100-shot-mode button.player-mode i::before{
+  content:""!important;
+  position:absolute!important;
+  left:50%!important;
+  top:1px!important;
+  width:6px!important;
+  height:6px!important;
+  transform:translateX(-50%)!important;
+  border-radius:50%!important;
+  background:#fff!important;
+}
+.v100-shot-mode button.player-mode i::after{
+  content:""!important;
+  position:absolute!important;
+  left:50%!important;
+  bottom:1px!important;
+  width:12px!important;
+  height:8px!important;
+  transform:translateX(-50%)!important;
+  border-radius:8px 8px 3px 3px!important;
+  background:#fff!important;
+}
+
+/* Marcador de jugador: silueta humana. */
+.v100-shot-marker.player{
+  width:30px!important;
+  height:30px!important;
+  background:#2458da!important;
+  box-shadow:0 2px 9px rgba(0,0,0,.45),0 0 0 2px #06104d,0 0 12px rgba(52,111,255,.38)!important;
+}
+.v100-shot-marker.player>span{
+  width:18px!important;
+  height:18px!important;
+  border-radius:0!important;
+  background:none!important;
+  box-shadow:none!important;
+}
+.v100-shot-marker.player>span::before{
+  content:""!important;
+  position:absolute!important;
+  left:50%!important;
+  top:0!important;
+  width:7px!important;
+  height:7px!important;
+  transform:translateX(-50%)!important;
+  border-radius:50%!important;
+  background:#fff!important;
+}
+.v100-shot-marker.player>span::after{
+  content:""!important;
+  position:absolute!important;
+  left:50%!important;
+  bottom:0!important;
+  width:15px!important;
+  height:9px!important;
+  transform:translateX(-50%)!important;
+  border-radius:9px 9px 4px 4px!important;
+  background:#fff!important;
+}
+
+/* Marcador de balón: balón blanco real, separado de jugador. */
+.v100-shot-marker.ball{
+  width:27px!important;
+  height:27px!important;
+  background:#fff!important;
+  box-shadow:0 2px 8px rgba(0,0,0,.44),0 0 0 2px #07104d!important;
+}
+.v100-shot-marker.ball>span{
+  width:18px!important;
+  height:18px!important;
+}
+
+/* Leyenda semántica. */
+.v100-shot-legend>span i.player{
+  position:relative!important;
+  width:10px!important;
+  height:10px!important;
+  border-radius:50%!important;
+  background:#2458da!important;
+}
+.v100-shot-legend>span i.player::after{
+  content:""!important;
+  position:absolute!important;
+  left:50%!important;
+  bottom:-4px!important;
+  width:12px!important;
+  height:6px!important;
+  transform:translateX(-50%)!important;
+  border-radius:6px 6px 2px 2px!important;
+  background:#2458da!important;
+}
+.v100-shot-legend>span i.ball{
+  width:10px!important;
+  height:10px!important;
+  border-radius:50%!important;
+  background:
+    radial-gradient(circle at 50% 50%,#07104d 0 20%,transparent 21%),
+    conic-gradient(from 18deg,#fff 0 18%,#07104d 18% 25%,#fff 25% 43%,#07104d 43% 50%,#fff 50% 68%,#07104d 68% 75%,#fff 75% 93%,#07104d 93% 100%)!important;
+  box-shadow:0 0 0 1px #07104d!important;
+}
