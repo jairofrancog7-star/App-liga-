@@ -276,20 +276,31 @@ function v526MatchExtras(m){
 }
 function buildUpBody(m,state){
   const r=m.r,home=r[2],away=r[6],score=publishedScore(r);
-  const status=score?'FINAL':state.kind==='window'?'EN VIVO':state.kind==='scheduled'?'PREVIA':'PENDIENTE';
-  const matchTitle=esc(home)+' vs '+esc(away);
-  return '<section class="v665-build-up" data-v420-build-up>'+
-    '<article class="v665-story-card">'+
-      '<video autoplay muted loop playsinline preload="metadata" src="'+esc(MATCH_MEDIA+'v38-soccer-matchday.mp4')+'"></video>'+
-      '<div class="v665-story-shade"></div>'+
-      '<div class="v665-story-copy"><h2>'+matchTitle+'</h2><p><b>'+status+'</b><span>•</span> Jornada '+esc(r[1]||'—')+'</p></div>'+
-    '</article>'+
-    '<article class="v665-story-card v665-story-card-secondary">'+
+  const center=score?score.text:clock(r[8]);
+  return '<section class="v420-build-up" data-v420-build-up>'+
+    '<section class="v420-hero">'+
+      '<video class="v420-hero-media" autoplay muted loop playsinline preload="metadata" src="'+esc(MATCH_MEDIA+'v38-soccer-matchday.mp4')+'"></video>'+
+      '<div class="v420-hero-shade"></div>'+
+      '<div class="v420-top-controls">'+
+        '<button type="button" data-v420-back aria-label="Volver">‹</button>'+
+        '<button type="button" data-v420-mute aria-label="Silenciar o activar audio">⌁</button>'+
+      '</div>'+
+      '<div class="v420-match-panel">'+
+        '<h2>'+esc(m.category)+'</h2>'+
+        '<p>'+esc(compactDate(r[8]))+'</p>'+
+        '<div class="v420-matchup">'+
+          '<div>'+teamLogo(home,'v420-team-logo')+'<b>'+esc(home)+'</b></div>'+
+          '<span><strong>'+esc(center)+'</strong><small data-v420-countdown data-v420-start="'+esc(Number.isFinite(m?.start)?m.start:'')+'" title="Cronometraje local del partido">'+esc(countdownText(m,state))+'</small></span>'+
+          '<div>'+teamLogo(away,'v420-team-logo')+'<b>'+esc(away)+'</b></div>'+
+        '</div>'+
+      '</div>'+
+    '</section>'+
+
+    '<section class="v420-media-card">'+
       '<video autoplay muted loop playsinline preload="metadata" src="'+esc(MATCH_MEDIA+'v38-soccer-teams.mp4')+'"></video>'+
-      '<div class="v665-story-shade"></div>'+
-      '<div class="v665-story-copy"><h2>Alineaciones y contexto del partido</h2><p><b>'+esc(m.category)+'</b><span>•</span> '+esc(r[7]||'Campo por confirmar')+'</p></div>'+
-      '<button type="button" class="v665-story-action" data-v92-tab="Alineaciones">Ver alineaciones</button>'+
-    '</article>'+
+      '<div><small>PARTIDO OFICIAL</small><b>'+esc(home)+' vs '+esc(away)+'</b><span>'+esc(r[7]||'Campo por confirmar')+'</span></div>'+
+    '</section>'+
+    v526MatchExtras(m)+
   '</section>';
 }
 function updateLiveClock(){
@@ -342,53 +353,63 @@ function predictionsBody(m){
   let scorePick=null,scorerPick=null;
   try{scorePick=JSON.parse(localStorage.getItem('v664-score-pick:'+m.key)||'null')}catch(_){}
   try{scorerPick=JSON.parse(localStorage.getItem('v664-scorer-pick:'+m.key)||'null')}catch(_){}
-  const scoreText=scorePick?esc(scorePick.home)+'–'+esc(scorePick.away):'Pronostica el marcador';
-  const scorerText=scorerPick?.player?esc(scorerPick.player):'Selecciona un jugador';
-  return '<section class="v664-predictions v665-predictions" data-v664-predictions>'+
+  const scoreLabel=scorePick?esc(scorePick.home)+'–'+esc(scorePick.away):'Elegir marcador';
+  const scorerLabel=scorerPick?.player?esc(scorerPick.player):'Seleccionar jugador';
+  return '<section class="v664-predictions" data-v664-predictions>'+
     '<div class="v664-grid-2">'+
       '<article class="v664-predict-card">'+
         '<div class="v664-predict-media logo">'+teamLogo(home,'v664-predict-logo')+'</div>'+
-        '<h3>Marcador exacto</h3><p>'+scoreText+'</p>'+
+        '<h3>Marcador exacto</h3><p>'+scoreLabel+'</p>'+
         '<button type="button" data-v664-score-pick>Pronosticar</button>'+
       '</article>'+
       '<article class="v664-predict-card">'+
-        '<div class="v664-predict-media">'+(p1?playerImage(p1.name,p1.team,'v664-pred-photo'):teamLogo(away,'v664-predict-logo'))+'</div>'+
-        '<h3>Alineaciones</h3><p>Elige tu XI</p>'+
-        '<button type="button" data-v92-tab="Alineaciones">Pronosticar</button>'+
+        '<div class="v664-predict-media">'+(p1?playerImage(p1.name,p1.team,'v664-pred-photo') : teamLogo(away,'v664-predict-logo'))+'</div>'+
+        '<h3>Alineaciones</h3><p>Consulta titulares y plantilla</p>'+
+        '<button type="button" data-v92-tab="Alineaciones">Ver alineación</button>'+
       '</article>'+
       '<article class="v664-predict-card">'+
-        '<div class="v664-predict-media">'+(p2?playerImage(p2.name,p2.team,'v664-pred-photo'):teamLogo(home,'v664-predict-logo'))+'</div>'+
-        '<h3>Primer goleador</h3><p>'+scorerText+'</p>'+
-        '<button type="button" data-v664-scorer-pick>Pronosticar</button>'+
+        '<div class="v664-predict-media">'+(p2?playerImage(p2.name,p2.team,'v664-pred-photo') : teamLogo(home,'v664-predict-logo'))+'</div>'+
+        '<h3>Primer goleador</h3><p>'+scorerLabel+'</p>'+
+        '<button type="button" data-v664-scorer-pick>Elegir jugador</button>'+
       '</article>'+
       '<article class="v664-predict-card">'+
-        '<div class="v664-predict-media">'+(p1?playerImage(p1.name,p1.team,'v664-pred-photo'):teamLogo(away,'v664-predict-logo'))+'</div>'+
-        '<h3>Jugador del partido</h3><p>Selecciona un jugador</p>'+
-        '<button type="button" data-v92-vote-mvp>Pronosticar</button>'+
+        '<div class="v664-predict-media">'+(p1?playerImage(p1.name,p1.team,'v664-pred-photo') : teamLogo(away,'v664-predict-logo'))+'</div>'+
+        '<h3>Jugador del partido</h3><p>Elige tu MVP del encuentro</p>'+
+        '<button type="button" data-v92-vote-mvp>Votar MVP</button>'+
       '</article>'+
+    '</div>'+
+    '<div class="v664-winner-strip">'+
+      '<span>'+teamLogo(home,'tiny')+'<b>'+esc(home)+'</b></span>'+
+      '<strong>VS</strong>'+
+      '<span>'+teamLogo(away,'tiny')+'<b>'+esc(away)+'</b></span>'+
     '</div>'+
   '</section>';
 }
 function commentsBody(m,state){
-  const r=m.r,score=publishedScore(r),home=r[2],away=r[6];
-  const badge=score?'FT':state.kind==='window'?'LIVE':state.kind==='scheduled'?'PRE':'—';
-  const title=score?'¿Qué sigue después del partido?':'¿Qué sigue para '+esc(home)+'?';
-  const p1=score
-    ? 'El resultado oficial publicado es '+esc(home)+' '+esc(score.home)+'–'+esc(score.away)+' '+esc(away)+'.'
-    : 'El encuentro está programado para '+esc(dateOnly(r[8])||'fecha por confirmar')+' a las '+esc(clock(r[8]))+'.';
-  const p2='El partido corresponde a '+esc(m.category)+' · Jornada '+esc(r[1]||'—')+' y se jugará en '+esc(r[7]||'campo por confirmar')+'.';
-  const p3=state.kind==='scheduled'
-    ? 'Las alineaciones, incidencias y el marcador se actualizarán aquí cuando exista información oficial publicada.'
-    : 'La información del encuentro se mantiene dentro del Match Center para conservar un solo seguimiento del partido.';
-  return '<section class="v665-commentary" data-v92-comments>'+
-    '<article class="v665-comment-card">'+
-      '<span class="v665-comment-badge">'+badge+'</span>'+
+  const r=m.r,key='v92-match-comment:'+m.key,score=publishedScore(r);
+  let note='';try{note=localStorage.getItem(key)||''}catch(_){}
+  const badge=score?'FINAL':state.kind==='window'?'EN VIVO':state.kind==='scheduled'?'PRE':'PENDIENTE';
+  const title=score
+    ? esc(r[2])+' '+esc(score.home)+'–'+esc(score.away)+' '+esc(r[6])
+    : esc(r[2])+' vs '+esc(r[6]);
+  const copy=score
+    ? 'Resultado oficial publicado para este encuentro.'
+    : state.kind==='scheduled'
+      ? 'Partido programado para '+esc(dateOnly(r[8]))+' a las '+esc(clock(r[8]))+'.'
+      : state.kind==='window'
+        ? 'El horario programado del encuentro está en curso.'
+        : 'El resultado oficial aún no ha sido publicado.';
+  return '<section class="v664-commentary" data-v92-comments>'+
+    '<article class="v664-comment-card">'+
+      '<span class="v664-comment-badge">'+badge+'</span>'+
       '<h2>'+title+'</h2>'+
-      '<p>'+p1+'</p>'+
-      '<p>'+p2+'</p>'+
-      '<p>'+p3+'</p>'+
-      '<p>Gracias por seguir la cobertura de la Liga Juventino Rosas.</p>'+
-      '<video autoplay muted loop playsinline preload="metadata" src="'+esc(MATCH_MEDIA+'v38-soccer-matchday.mp4')+'"></video>'+
+      '<p>'+copy+'</p>'+
+      '<p><b>'+esc(m.category)+'</b> · Jornada '+esc(r[1]||'—')+' · '+esc(r[7]||'Campo por confirmar')+'</p>'+
+    '</article>'+
+    '<article class="v664-note-card">'+
+      '<label><span>Comentario del partido</span><textarea data-v92-comment-text placeholder="Escribe una nota sobre este encuentro...">'+esc(note)+'</textarea></label>'+
+      '<button type="button" data-v92-comment-save>Guardar comentario</button>'+
+      '<small data-v92-comment-status>Se guarda en este dispositivo y no modifica datos oficiales.</small>'+
     '</article>'+
   '</section>';
 }
@@ -923,20 +944,22 @@ function openMvpVote(m){
 function referenceLineupCard(m,team){
   const confirmed=lineupFor(m,team);
   const names=(confirmed?.names?.length?confirmed.names:roster(m,team)).slice(0,11);
-  const status=confirmed?.names?.length?'Alineación publicada':'Plantilla registrada';
-  return '<article class="v664-lineup-card v665-lineup-card">'+
-    '<header>'+teamLogo(team,'v664-lineup-logo')+'<span><h3>'+esc(team)+'</h3><small>'+status+'</small><em>Formación: por confirmar</em></span></header>'+
-    '<h4>XI TITULAR</h4>'+
+  const status=confirmed?.names?.length?'Alineación oficial / en vivo':'Plantilla registrada';
+  return '<article class="v664-lineup-card">'+
+    '<header>'+teamLogo(team,'v664-lineup-logo')+'<span><h3>'+esc(team)+'</h3><small>'+esc(status)+'</small></span></header>'+
+    '<h4>XI / jugadores disponibles</h4>'+
     '<div class="v664-lineup-list">'+
-      (names.length?names.map((name,i)=>'<div>'+playerImage(name,team,'v664-lineup-photo')+'<span><b>'+(i+1)+'. '+esc(name)+'</b></span></div>').join(''):'<p>No hay jugadores públicos disponibles.</p>')+
+      (names.length?names.map((name,i)=>'<div>'+playerImage(name,team,'v664-lineup-photo')+'<span><b>'+(i+1)+'. '+esc(name)+'</b><small>'+(confirmed?'Convocado / titular publicado':'Registro de plantilla')+'</small></span></div>').join(''):'<p>No hay jugadores públicos disponibles.</p>')+
     '</div>'+
-    '<button type="button" class="v665-lineup-pitch" data-v92-pitch>Ver cancha</button>'+
   '</article>';
 }
 function lineupsBody(m){
-  const r=m.r;
-  return '<section class="v92-section v92-lineups-section v664-lineups v665-lineups">'+
+  const r=m.r,homeLineup=lineupFor(m,r[2]),awayLineup=lineupFor(m,r[6]);
+  const hasOfficial=!!(homeLineup||awayLineup);
+  return '<section class="v92-section v92-lineups-section v664-lineups">'+
+    '<div class="v92-lineups-head"><span><h2>Alineaciones</h2><small>'+(hasOfficial?'Información publicada para este partido.':'Se mostrará la alineación cuando sea publicada; mientras tanto se usa la plantilla registrada.')+'</small></span><button type="button" data-v92-pitch>Ver cancha</button></div>'+
     '<div class="v664-lineups-stack">'+referenceLineupCard(m,r[2])+referenceLineupCard(m,r[6])+'</div>'+
+    mvpCard(m)+
   '</section>';
 }
 function oddsBody(m){
@@ -956,54 +979,56 @@ function oddsBody(m){
 function statsBody(m){
   const r=m.r,h=standing(m,r[2]),a=standing(m,r[6]);
   const hp=num(h?.[9]),ap=num(a?.[9]),total=(hp||0)+(ap||0);
-  const hShare=total>0?Math.round((hp||0)/total*100):50;
-  const aShare=100-hShare;
+  const hShare=total>0?Math.round((hp||0)/total*100):null;
+  const aShare=total>0?100-hShare:null;
   const row=(label,idx)=>'<div class="v664-stat-row"><b>'+esc(h?.[idx]??'—')+'</b><span>'+label+'</span><b>'+esc(a?.[idx]??'—')+'</b></div>';
-  return '<section class="v664-stats v665-stats">'+
-    '<article class="v664-stats-card v665-stats-card">'+
+  return '<section class="v664-stats">'+
+    '<article class="v664-stats-card">'+
       '<header><span>'+teamLogo(r[2],'v664-stats-logo')+'<b>'+esc(r[2])+'</b></span><strong>VS</strong><span>'+teamLogo(r[6],'v664-stats-logo')+'<b>'+esc(r[6])+'</b></span></header>'+
       '<h2>Rendimiento</h2>'+
-      '<div class="v664-pitch-compare" style="--home:'+esc(hShare)+'%"><i></i><span></span></div>'+
-      '<div class="v664-share-row"><b>'+hShare+'%</b><span>Puntos</span><b>'+aShare+'%</b></div>'+
-      '<h3>Partidos</h3>'+
-      '<div class="v664-stat-list">'+row('Jugados',2)+row('Ganados',3)+row('Goles a favor',6)+row('Diferencia',8)+row('Puntos',9)+'</div>'+
-      '<small class="v664-data-note">Comparación basada en la tabla oficial de temporada. No se inventan posesión, tiros ni asistencias.</small>'+
+      '<div class="v664-pitch-compare" style="--home:'+esc(hShare??50)+'%"><i></i><span></span></div>'+
+      '<div class="v664-share-row"><b>'+(hShare==null?'—':hShare+'%')+'</b><span>Puntos de temporada</span><b>'+(aShare==null?'—':aShare+'%')+'</b></div>'+
+      '<div class="v664-stat-list">'+row('Partidos',2)+row('Ganados',3)+row('Goles a favor',6)+row('Diferencia',8)+row('Puntos',9)+'</div>'+
+      '<small class="v664-data-note">Comparación con datos oficiales de temporada; no se inventan posesión, tiros ni asistencias.</small>'+
     '</article>'+
   '</section>';
 }
 function tablesBody(m){
   const r=m.r,rows=standings(m).slice(0,8),score=publishedScore(r);
   const stateText=score?esc(score.home)+'–'+esc(score.away):esc(clock(r[8]));
-  return '<section class="v664-tables v665-tables">'+
-    '<article class="v664-around-card v665-around-card">'+
+  return '<section class="v664-tables">'+
+    '<article class="v664-around-card">'+
       '<h2>Alrededor de la jornada</h2>'+
       '<div class="v664-around-match"><span>'+esc(r[2])+' '+teamLogo(r[2],'tiny')+'</span><strong>'+stateText+'</strong><span>'+teamLogo(r[6],'tiny')+' '+esc(r[6])+'</span></div>'+
-      '<small>'+esc(score?'FT':dateOnly(r[8]))+'</small>'+
+      '<small>'+esc(score?'FINAL':dateOnly(r[8]))+'</small>'+
     '</article>'+
-    '<article class="v664-table-card v665-table-card">'+
+    '<article class="v664-table-card">'+
       '<header><h3>Tabla · '+esc(m.category)+'</h3><span>PTS</span></header>'+
       '<div class="v664-table-list">'+(rows.length?rows.map((x,i)=>'<div class="'+((norm(x?.[1])===norm(r[2])||norm(x?.[1])===norm(r[6]))?'is-match':'')+'"><b>'+(x?.[0]??i+1)+'</b>'+teamLogo(x?.[1]||'','tiny')+'<span>'+esc(x?.[1]||'Equipo')+'</span><strong>'+esc(x?.[9]??'—')+'</strong></div>').join(''):'<p>Tabla no disponible.</p>')+'</div>'+
     '</article>'+
   '</section>';
 }
 function reportBody(m,state){
-  const r=m.r,score=publishedScore(r),home=r[2],away=r[6];
+  const r=m.r,score=publishedScore(r);
   const headline=score
-    ? 'Reporte: '+esc(home)+' '+esc(score.home)+' '+esc(away)+' '+esc(score.away)
-    : 'Reporte: '+esc(home)+' vs '+esc(away);
+    ? esc(r[2])+' '+esc(score.home)+'–'+esc(score.away)+' '+esc(r[6])
+    : esc(r[2])+' vs '+esc(r[6]);
   const p1=score
-    ? esc(home)+' y '+esc(away)+' ya cuentan con resultado oficial publicado para este encuentro.'
-    : 'El encuentro permanece dentro de la programación oficial de la Liga y está previsto para '+esc(dateOnly(r[8])||'fecha por confirmar')+' a las '+esc(clock(r[8]))+'.';
-  const p2='La categoría es '+esc(m.category)+' y corresponde a la Jornada '+esc(r[1]||'—')+'. La sede registrada es '+esc(r[7]||'campo por confirmar')+'.';
-  const p3='Alineaciones, incidencias y estadísticas se muestran únicamente cuando existe información oficial disponible.';
-  return '<section class="v664-report v665-report">'+
-    '<article class="v664-report-card v665-report-card">'+
+    ? 'La Liga tiene publicado el resultado final '+esc(score.home)+'–'+esc(score.away)+' para este encuentro.'
+    : state.kind==='scheduled'
+      ? 'El encuentro está programado para '+esc(dateOnly(r[8]))+' a las '+esc(clock(r[8]))+'.'
+      : state.kind==='window'
+        ? 'El encuentro se encuentra dentro de su horario programado. El marcador oficial se mostrará cuando sea publicado.'
+        : 'El horario ya pasó y el resultado oficial sigue pendiente de publicación.';
+  return '<section class="v664-report">'+
+    '<article class="v664-report-card">'+
+      '<small>REPORTE DEL PARTIDO</small>'+
       '<h2>'+headline+'</h2>'+
-      '<div class="v665-written">Escrito por <b>Liga Juventino Rosas</b></div>'+
-      '<div class="v664-report-meta"><span>▣</span><b>'+esc(dateOnly(r[8])||'Fecha por confirmar')+'</b></div>'+
+      '<div class="v664-report-meta"><span>▣</span><b>'+esc(dateOnly(r[8]))+' · '+esc(clock(r[8]))+'</b></div>'+
       '<p>'+p1+'</p>'+
-      '<p>'+p2+'</p>'+
-      '<p>'+p3+'</p>'+
+      '<p><b>Categoría:</b> '+esc(m.category)+' · <b>Jornada:</b> '+esc(r[1]||'—')+' · <b>Campo:</b> '+esc(r[7]||'Por confirmar')+'.</p>'+
+      '<p>Este reporte utiliza únicamente información pública disponible de la Liga y se actualiza cuando cambian los datos oficiales.</p>'+
+      '<div class="v664-report-actions"><button type="button" data-v92-tab="Alineaciones">Alineaciones</button><button type="button" data-v92-tab="Estadísticas">Estadísticas</button><button type="button" data-v92-tab="Comentarios">Comentarios</button></div>'+
     '</article>'+
   '</section>';
 }
