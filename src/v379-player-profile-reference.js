@@ -376,12 +376,18 @@ function v385PlayerThumb(p,cls='v385-player-thumb'){
   if(photo)return '<span class="'+cls+' photo"><img src="'+esc(photo)+'" alt="'+esc(p.name)+'"></span>';
   return simulatedHeadMarkup(p,cls+' v382-related-sim');
 }
+function v644ShortHeaderName(name){
+  const parts=String(name||'').trim().split(/\s+/).filter(Boolean);
+  if(parts.length<=2)return parts.join(' ');
+  if(parts.length===3)return parts[0]+' '+parts[1];
+  return parts[0]+' '+parts[parts.length-2];
+}
 function v385CompactHeader(p){
   return '<div class="v385-player-compact-head" data-v385-compact-head>'+
     '<button type="button" class="v385-head-back" data-v379-back aria-label="Volver">'+
       '<svg viewBox="0 0 24 24"><path d="M19 12H5m7-7-7 7 7 7"/></svg>'+
     '</button>'+
-    '<strong>'+esc(p.name)+'</strong>'+
+    '<strong title="'+attr(p.name)+'">'+esc(v644ShortHeaderName(p.name))+'</strong>'+
     '<div class="v385-head-actions">'+
       '<button type="button" class="v385-head-compare" data-v379-compare aria-label="Comparar jugador">'+
         '<svg viewBox="0 0 28 24"><circle cx="9" cy="7" r="3.2"/><circle cx="19" cy="7" r="3.2"/><path d="M3 20c0-4 2.6-6.4 6-6.4s6 2.4 6 6.4M13 20c0-4 2.6-6.4 6-6.4s6 2.4 6 6.4"/></svg>'+
