@@ -131,7 +131,7 @@ const normalize=s=>String(s||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'')
 document.addEventListener('click',event=>{const circle=event.target.closest('.story,.v20-story');if(!circle)return;const label=normalize(circle.querySelector('small')?.textContent);const story=items.find(x=>x.kind==='story'&&x.expires>Date.now()&&x.subject&&normalize(x.subject)===label);if(story){event.preventDefault();event.stopImmediatePropagation();view(story)}},true);
 document.addEventListener('contextmenu',event=>{const circle=event.target.closest('.story,.v20-story');if(circle&&admin){event.preventDefault();edit(circle.querySelector('small')?.textContent||'')}});
 
-window.LJR_MEDIA={api,get admin(){return admin},login,manage,edit,broadcast,refresh,base,restoreAdminSession,deviceRemembered};
+window.LJR_MEDIA={api,get admin(){return admin},get authReady(){return authReady},login,manage,edit,broadcast,refresh,base,restoreAdminSession,deviceRemembered,hasSession:()=>!!token};
 restoreAdminSession().catch(err=>console.warn('Restauración de administración:',err?.message||err));
 refresh();window.addEventListener('hashchange',()=>setTimeout(mount,150));new MutationObserver(()=>mount()).observe(document.querySelector('#screen')||document.querySelector('[data-media-page]')||document.body,{childList:true});setInterval(refresh,60000);const live=new URL(location.href).searchParams.get('live');if(live)watch(live);
 })();
