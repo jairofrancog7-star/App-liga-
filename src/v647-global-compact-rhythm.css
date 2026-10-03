@@ -1,0 +1,87 @@
+/* V647 — ritmo vertical global compacto.
+   Una sola reserva para la barra inferior: #screen. Evita colas vacías y márgenes
+   heredados de 100px+ debajo del último bloque sin tocar el diseño interno. */
+@media (max-width:1023px){
+  /* La barra es fixed; no reservar el mismo espacio también en el shell. */
+  html body .app-shell{
+    padding-bottom:0!important;
+  }
+
+  /* Reserva única y corta para que el último contenido nunca quede debajo del nav. */
+  html body #screen{
+    padding-bottom:calc(76px + env(safe-area-inset-bottom,0px))!important;
+    scroll-padding-bottom:calc(76px + env(safe-area-inset-bottom,0px))!important;
+  }
+
+  /* El último bloque no debe traer una segunda reserva de 90–120px.
+     Selectores específicos para ganar a reglas antiguas como #screen > #v105-bottom. */
+  html body[data-app-route] #screen > #v105-bottom:last-child,
+  html body[data-app-route] #screen > #v413-page-design:last-child,
+  html body[data-app-route] #screen > #v422-results-reference:last-child,
+  html body[data-app-route] #screen > .v413-shell:last-child,
+  html body[data-app-route] #screen > .v414-notifications:last-child,
+  html body[data-app-route] #screen > .v412-shell:last-child,
+  html body[data-app-route] #screen > .v449-reference-lower:last-child,
+  html body[data-app-route] #screen > .v73-below-native:last-child,
+  html body[data-app-route] #screen > .v60-tool-page:last-child,
+  html body[data-app-route] #screen > .v27-teams-page:last-child,
+  html body[data-app-route] #screen > .v41-teams-page:last-child,
+  html body[data-app-route] #screen > .v399-stats-page:last-child{
+    margin-bottom:0!important;
+  }
+
+  /* Noticias / Reportes tenía una reserva histórica de 112px además del screen+shell. */
+  html body[data-app-route="news"] #screen > #v105-bottom,
+  html body[data-app-route="v38Weekly"] #screen > #v105-bottom{
+    margin-bottom:0!important;
+  }
+
+  /* Cuando hay varios módulos apilados, mantenerlos juntos sin pegarlos. */
+  html body #screen > :is(
+    .v413-shell,
+    .v412-shell,
+    .v449-reference-lower,
+    #v422-results-reference,
+    .v105-bottom,
+    .v73-below-native
+  ){
+    margin-top:8px!important;
+    margin-bottom:8px!important;
+  }
+
+  /* El último de esos módulos vuelve a cero; el clearance lo da #screen. */
+  html body[data-app-route] #screen > :is(
+    .v413-shell,
+    .v412-shell,
+    .v449-reference-lower,
+    #v422-results-reference,
+    .v105-bottom,
+    .v73-below-native
+  ):last-child{
+    margin-bottom:0!important;
+  }
+
+  /* Si un módulo complementario va después, no dejar min-height de viewport entre ambos. */
+  html body #screen > :is(
+    .v60-tool-page,
+    .v27-teams-page,
+    .v41-teams-page,
+    .v399-stats-page,
+    .v413-shell,
+    .v412-shell
+  ):has(~ :is(.v105-bottom,.v73-below-native,.v412-shell,.v413-shell,.v449-reference-lower,#v422-results-reference)){
+    min-height:0!important;
+    height:auto!important;
+    margin-bottom:8px!important;
+  }
+}
+
+/* Pantallas con geometría especial conservan sus propias reservas específicas. */
+@media (max-width:1023px){
+  html body[data-app-route="simulator"] #screen{
+    padding-bottom:0!important;
+  }
+  html body[data-app-route="simulator"] #screen .v501-simulator{
+    padding-bottom:132px!important;
+  }
+}
