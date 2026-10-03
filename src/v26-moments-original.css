@@ -777,3 +777,18 @@ html body[data-app-route="moments"] .v26-moments-sticky .v26-moments-sticky-back
   opacity:1!important;
 }
 /* /V616 */
+
+
+/* V617 — PUBLIC ASSET PATH FIX
+   El fondo se dibuja con el <img> real de V616. En GitHub Pages, los archivos
+   de /public se publican en la raíz de dist, no dentro de /public. */
+html body[data-app-route="moments"] .v26-moments-sticky{
+  background:#07106f!important;
+}
+html body[data-app-route="moments"] .v26-moments-sticky .v616-moments-bg{
+  z-index:0!important;
+  display:block!important;
+  visibility:visible!important;
+  opacity:1!important;
+}
+/* /V617 */
