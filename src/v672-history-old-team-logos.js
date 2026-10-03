@@ -299,6 +299,30 @@ function patchLegacyTeams(root){
     crest.classList.add('v672-has-historic-logo');
   });
 }
+function patchEraSeasons(root){
+  root.querySelectorAll('.v341-era-item[data-v35-era-team]').forEach(card=>{
+    const team=String(card.dataset.v35EraTeam||'').trim();
+    if(!team)return;
+    const src=logoFor(team);
+    if(!src)return;
+    const holder=card.querySelector('.v341-era-logo');
+    if(!holder)return;
+    const current=holder.querySelector('img');
+    if(current){
+      let same=false;
+      try{same=new URL(current.currentSrc||current.src,document.baseURI).href===new URL(src,document.baseURI).href}catch(_){}
+      if(same){
+        holder.classList.remove('is-fallback');
+        return;
+      }
+    }
+    const img=makeImg(src,team,'v672-era-logo');
+    img.dataset.v672HistoricalLogo='1';
+    holder.replaceChildren(img);
+    holder.classList.remove('is-fallback');
+    holder.classList.add('v672-has-historic-logo');
+  });
+}
 function patchSummaryStats(root){
   root.querySelectorAll('.v358-stat-row').forEach(row=>{
     const holder=row.querySelector('.v358-stat-logo');
@@ -332,6 +356,7 @@ function patch(){
   patchFinals(root);
   patchVideos(root);
   patchLegacyTeams(root);
+  patchEraSeasons(root);
   patchSummaryStats(root);
 }
 let timer=0;
