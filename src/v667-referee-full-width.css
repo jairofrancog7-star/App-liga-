@@ -1,0 +1,68 @@
+/* V667 — Modo árbitro offline a ancho real de pantalla.
+   Fuerza el shell completo, #screen y todos los cuadros principales a usar
+   el ancho horizontal disponible en móvil, con un gutter mínimo de 4px. */
+@media (max-width:1023px){
+  html body[data-app-route="refereeOffline"],
+  html body[data-app-route="refereeOffline"] #app,
+  html body[data-app-route="refereeOffline"] .app-shell,
+  html body[data-app-route="refereeOffline"] #screen{
+    width:100%!important;
+    max-width:none!important;
+    min-width:0!important;
+    margin-left:0!important;
+    margin-right:0!important;
+    overflow-x:hidden!important;
+  }
+
+  html body[data-app-route="refereeOffline"] #app,
+  html body[data-app-route="refereeOffline"] .app-shell{
+    margin:0!important;
+  }
+
+  html body[data-app-route="refereeOffline"] #screen{
+    padding-left:0!important;
+    padding-right:0!important;
+  }
+
+  html body[data-app-route="refereeOffline"] #screen > [data-v562-page],
+  html body[data-app-route="refereeOffline"] .v562-page{
+    width:100%!important;
+    max-width:none!important;
+    margin:0!important;
+    padding-left:4px!important;
+    padding-right:4px!important;
+  }
+
+  html body[data-app-route="refereeOffline"] .v562-head,
+  html body[data-app-route="refereeOffline"] .v562-kpis,
+  html body[data-app-route="refereeOffline"] .v562-info,
+  html body[data-app-route="refereeOffline"] .v562-parity,
+  html body[data-app-route="refereeOffline"] .v562-tools,
+  html body[data-app-route="refereeOffline"] .v562-actions,
+  html body[data-app-route="refereeOffline"] .v562-cap,
+  html body[data-app-route="refereeOffline"] .v562-match-list,
+  html body[data-app-route="refereeOffline"] .v562-match,
+  html body[data-app-route="refereeOffline"] .v562-score,
+  html body[data-app-route="refereeOffline"] .v562-ref,
+  html body[data-app-route="refereeOffline"] .v562-team-editor,
+  html body[data-app-route="refereeOffline"] .v562-table-scroll,
+  html body[data-app-route="refereeOffline"] .v562-savebar{
+    width:100%!important;
+    max-width:none!important;
+    margin-left:0!important;
+    margin-right:0!important;
+  }
+
+  html body[data-app-route="refereeOffline"] .bottom-nav{
+    width:100%!important;
+    max-width:none!important;
+  }
+}
+
+@media (max-width:440px){
+  html body[data-app-route="refereeOffline"] #screen > [data-v562-page],
+  html body[data-app-route="refereeOffline"] .v562-page{
+    padding-left:3px!important;
+    padding-right:3px!important;
+  }
+}
