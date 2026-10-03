@@ -4864,9 +4864,6 @@ function v38StatsView(){
   const preview=table;
 
   return '<section class="v60-tool-page v63-page v399-stats-page">'+
-    v520StatsTopbar()+
-
-
     '<section class="v399-stats-summary" aria-label="Resumen de Primera Fuerza">'+
       '<div class="v399-stats-heading"><div><small>PRIMERA FUERZA</small><h2>Tabla completa</h2></div><button type="button" data-v63-comp="standings">Ver completa ›</button></div>'+
       (leader?'<div class="v399-leader-card">'+
