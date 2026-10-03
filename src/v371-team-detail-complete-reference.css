@@ -86,7 +86,7 @@ body[data-app-route="teamDetail"] .v371-preview .v371-preview-avatar>img,
 body[data-app-route="teamDetail"] .v371-player-avatar>img,
 body[data-app-route="teamDetail"] .v371-scorer-avatar>img{
   display:block!important;width:100%!important;height:100%!important;min-width:100%!important;min-height:100%!important;
-  object-fit:cover!important;object-position:center 22%!important;border-radius:50%!important;margin:0!important;padding:0!important;transform:none!important;
+  object-fit:cover!important;object-position:center 55%!important;border-radius:50%!important;margin:0!important;padding:0!important;transform:none!important;
 }
 body[data-app-route="teamDetail"] .v371-preview b{
   display:block!important;width:100%!important;margin-top:7px!important;color:#fff!important;font-size:10.5px!important;line-height:1.12!important;
