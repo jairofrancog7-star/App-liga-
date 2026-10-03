@@ -11,19 +11,36 @@
   const ADMIN_E164='524121715599';
   const ADMIN_LABEL='Presidente de la Liga';
   const MAX_FILES=12;
+  /* V667 — auditoría global de generadores reales.
+     Cada acceso abre el generador correcto y, cuando aplica, deja seleccionado
+     el tipo exacto de bracket/documento para evitar mandar a una pantalla genérica. */
   const GENERATORS=[
-    {icon:'▦',title:'Tabla de posiciones',sub:'PNG HD · CSV · categorías',route:'tableExport',kind:'standings'},
-    {icon:'⚽',title:'Tabla de goleo',sub:'Goleadores por categoría',route:'scorers',kind:'scorers'},
-    {icon:'🏆',title:'Bracket / Liguilla',sub:'Cuadro eliminatorio · PNG / PDF',route:'bracketBuilder',kind:'bracket'},
-    {icon:'📅',title:'Jornada / Agenda',sub:'Horarios, campos y cruces · PNG',route:'agendaBuilder',kind:'calendar'},
-    {icon:'🏁',title:'Resultados',sub:'Partidos y marcadores oficiales',route:'competition',prep:'results',kind:'results'},
-    {icon:'📰',title:'Publicaciones oficiales',sub:'Tablas, jornadas, sanciones y avisos',route:'publicationCenter',kind:'png'},
-    {icon:'🪪',title:'Credenciales',sub:'Credencial de jugador · PNG',route:'credentialBuilder',kind:'png'},
-    {icon:'📄',title:'Cédulas',sub:'Cédula de partido · PDF / imagen',route:'cedulaBuilder',kind:'cedula'},
-    {icon:'✓',title:'Permisos',sub:'Permisos oficiales · PDF / PNG',route:'permissionBuilder',kind:'general'},
-    {icon:'🟥',title:'Sanciones',sub:'Expulsiones, castigos y PNG',route:'suspensionTool',kind:'general'},
+    {icon:'▦',title:'Tabla de posiciones',sub:'PNG HD · CSV · por categoría',route:'tableExport',kind:'standings'},
+    {icon:'⚽',title:'Tabla de goleo PNG',sub:'Publicación HD por categoría',route:'publicationCenter',prep:'pub:scorers',kind:'scorers'},
+    {icon:'📅',title:'Calendario / jornada PNG',sub:'Partidos próximos · categoría y jornada',route:'publicationCenter',prep:'pub:calendar',kind:'calendar'},
+    {icon:'🏁',title:'Resultados PNG',sub:'Marcadores oficiales por categoría',route:'publicationCenter',prep:'pub:results',kind:'results'},
+
+    {icon:'🏆',title:'Bracket 1 · Round of 16',sub:'Diseño exacto · PNG HD / PDF',route:'bracketBuilder',prep:'bracket:round',kind:'bracket'},
+    {icon:'🏆',title:'Bracket 2 · Full Bracket',sub:'Diseño completo · PNG HD / PDF',route:'bracketBuilder',prep:'bracket:full',kind:'bracket'},
+    {icon:'🏆',title:'Bracket 3 · Cuartos exacto',sub:'Cuartos de final · PNG HD / PDF',route:'bracketBuilder',prep:'bracket:quarters',kind:'bracket'},
+    {icon:'🗓',title:'Agenda de jornada',sub:'Horarios, campos y cruces · PNG',route:'agendaBuilder',kind:'calendar'},
+
+    {icon:'🟥',title:'Jugadores sancionados PNG',sub:'Castigados oficiales · por categoría',route:'publicationCenter',prep:'pub:sanctions',kind:'sanctions'},
+    {icon:'⚠',title:'Castigados / disciplina',sub:'Tarjetas, expulsados y pendientes · PNG',route:'discipline',prep:'discipline:suspensions',kind:'sanctions'},
+    {icon:'⛔',title:'Aviso de suspensión',sub:'Suspensión de jornada · PNG / compartir',route:'suspensionTool',kind:'general'},
+    {icon:'↔',title:'Cambio de jornada',sub:'Cancha, horario o partido · PNG',route:'scheduleChanges',kind:'general'},
+
+    {icon:'📄',title:'Cédula arbitral PDF',sub:'Hoja oficial completa · logos y plantillas',route:'cedulaBuilder',kind:'cedula'},
+    {icon:'🖼',title:'Cédula de partido PNG',sub:'Publicación HD por categoría y partido',route:'publicationCenter',prep:'pub:cedula',kind:'cedula'},
+    {icon:'📚',title:'Cédulas oficiales',sub:'Consultar y abrir cédulas publicadas',route:'cedulas',kind:'cedula'},
+    {icon:'🪪',title:'Credencial de jugador',sub:'PNG / PDF con foto y escudo',route:'credentialBuilder',kind:'png'},
+    {icon:'✓',title:'Permisos y autorizaciones',sub:'PDF · PNG · JPG · SVG',route:'permissionBuilder',kind:'general'},
+
+    {icon:'📰',title:'Centro de publicaciones',sub:'Tablas, goleo, jornadas, sanciones, cédulas y avisos',route:'publicationCenter',kind:'png'},
     {icon:'📊',title:'Estadísticas',sub:'Datos, rendimiento y tablas',route:'v38Stats',kind:'standings'},
-    {icon:'✦',title:'Diseños / avisos',sub:'Boletines y material para publicar',route:'publications',kind:'png'}
+    {icon:'⚙',title:'Simulador',sub:'Escenarios y exportación PNG',route:'simulator',kind:'png'},
+    {icon:'✎',title:'Tácticas',sub:'Pizarra · PNG / JSON',route:'tactics',kind:'png'},
+    {icon:'✦',title:'Boletines y avisos',sub:'Textos y material para publicar',route:'publications',kind:'png'}
   ];
 
   let selectedFiles=[];
@@ -52,6 +69,7 @@
       results:'🏁 Resultados · Liga Juventino Rosas\nAdjunto los resultados de la jornada.',
       cedula:'📄 Cédula de partido · Liga Juventino Rosas\nAdjunto la cédula correspondiente.',
       bracket:'🏆 Liguilla / bracket · Liga Juventino Rosas\nAdjunto el cuadro actualizado.',
+      sanctions:'🟥 Jugadores sancionados · Liga Juventino Rosas\nAdjunto la lista oficial de castigados / sancionados.',
       png:'🖼️ Archivo PNG · Liga Juventino Rosas\nAdjunto la imagen lista para publicar.',
       general:'📲 Liga Juventino Rosas\nEnvío archivo para revisión/publicación.'
     };
@@ -105,6 +123,7 @@
         '<button type="button" data-v161-kind="calendar">Jornada</button>'+
         '<button type="button" data-v161-kind="results">Resultados</button>'+
         '<button type="button" data-v161-kind="bracket">Bracket</button>'+
+        '<button type="button" data-v161-kind="sanctions">Sancionados</button>'+
         '<button type="button" data-v161-kind="cedula">Cédula</button>'+
         '<button type="button" data-v161-kind="png">PNG</button>'+
       '</div>'+
@@ -286,6 +305,29 @@
       if(prep==='results'){
         localStorage.setItem('competitionTab','results');
         localStorage.setItem('v40-competition-tab','results');
+      }
+      if(prep.startsWith('bracket:')){
+        const design=prep.split(':')[1]||'round';
+        localStorage.setItem('v651-bracket-design',design);
+        localStorage.setItem('v651-bracket-stage',design==='quarters'?'qf':'auto');
+      }
+      if(prep==='discipline:suspensions'){
+        localStorage.setItem('v655-discipline-type','suspensions');
+        localStorage.setItem('v563-discipline-view','suspensions');
+        localStorage.setItem('v655-discipline-cat','all');
+      }
+      if(prep.startsWith('pub:')){
+        const pubKind=prep.split(':')[1]||'standings';
+        localStorage.setItem('v561-publication-kind',pubKind);
+        if(route()==='publicationCenter'){
+          const sel=document.querySelector('[data-pub-type]');
+          if(sel){
+            sel.value=pubKind;
+            sel.dispatchEvent(new Event('change',{bubbles:true}));
+            sel.closest('.v561-league,.v642-publications-card')?.scrollIntoView({behavior:'smooth',block:'start'});
+            return;
+          }
+        }
       }
     }catch(_){}
     if(r==='publications'){
