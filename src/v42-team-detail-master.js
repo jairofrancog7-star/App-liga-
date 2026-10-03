@@ -121,7 +121,7 @@ function shareIcon(){return '<svg viewBox="0 0 24 24"><circle cx="18" cy="5" r="
 function plusIcon(){return '<svg viewBox="0 0 20 20" aria-hidden="true"><path d="M10 3.5v13M3.5 10h13"/></svg>'}
 function checkIcon(){return '<svg viewBox="0 0 20 20" aria-hidden="true"><path d="m3.5 10.2 4 4.1 9-9"/></svg>'}
 function starIcon(){return '<svg viewBox="0 0 40 40" aria-hidden="true"><path d="m20 5 4.5 9.1 10 1.5-7.2 7 1.7 10-9-4.7-9 4.7 1.7-10-7.2-7 10-1.5Z"/></svg>'}
-function dotsIcon(){return '<svg viewBox="0 0 24 24"><circle cx="12" cy="5" r="1.5"/><circle cx="12" cy="12" r="1.5"/><circle cx="12" cy="19" r="1.5"/></svg>'}
+function dotsIcon(){return '<svg viewBox="0 0 24 24"><circle cx="5" cy="12" r="1.5"/><circle cx="12" cy="12" r="1.5"/><circle cx="19" cy="12" r="1.5"/></svg>'}
 function store(){try{return JSON.parse(localStorage.getItem('lj-store-v3')||'{}')||{}}catch(e){return {}}}
 function save(st){localStorage.setItem('lj-store-v3',JSON.stringify(st))}
 function followId(){return slug(selectedName())}
@@ -372,6 +372,13 @@ function schedule(){requestAnimationFrame(()=>requestAnimationFrame(render))}
 document.addEventListener('click',async e=>{
  if(['teamDetail','club-store','quizArena','moreLess','moreLessGallery'].includes(route())||e.target.closest?.('.liga-media-modal'))return;
  if(route()==='v4-calendar'&&e.target instanceof Element&&e.target.closest('[data-v415-calendar]'))return;
+
+ /* V639 — Buscar en la Liga:
+    dentro de la tarjeta V413, los escudos/nombres de equipo son filtros cuando
+    está activo "Jugadores". V42 no debe interceptarlos como acceso al perfil
+    del equipo antes de que V413 pueda mostrar la plantilla. */
+ if(route()==='search'&&e.target instanceof Element&&e.target.closest('#v413-page-design'))return;
+
  if(!(e.target instanceof Element))return;
  if(e.target.closest('[data-v66-directory="store"],[data-v431-store]'))return;
 
