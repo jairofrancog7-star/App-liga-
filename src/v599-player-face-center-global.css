@@ -169,6 +169,8 @@ html body #screen :is(
   .v576-table-photo,
   .v124-avatar.v576-has-inline-photo,
   .v562-avatar.v576-has-photo,
+  .v562-avatar.photo,
+  .v42-avatar.v562-team-photo,
   .v371-player-avatar.v371-has-player-photo,
   .v371-preview-avatar.v371-has-player-photo,
   .v371-scorer-avatar.v371-has-player-photo,
@@ -235,6 +237,30 @@ html body #screen :is(
   .v33-player-team-logo.v576-player-avatar,
   .v538-person.has-photo
 )>img{
+  position:static!important;
+  inset:auto!important;
+  width:100%!important;
+  height:100%!important;
+  min-width:0!important;
+  min-height:0!important;
+  max-width:100%!important;
+  max-height:100%!important;
+  margin:0!important;
+  padding:0!important;
+  display:block!important;
+  object-fit:contain!important;
+  object-position:center center!important;
+  transform:none!important;
+  transform-origin:center center!important;
+  clip-path:none!important;
+}
+
+
+/* V652 — HARDLOCK adicional para el registro público V562.
+   Este módulo usa .photo en vez de .v576-has-photo, por eso el arreglo anterior
+   no le estaba entrando. */
+html body #screen .v562-avatar.photo>img,
+html body #screen .v42-avatar.v562-team-photo>img{
   position:static!important;
   inset:auto!important;
   width:100%!important;
