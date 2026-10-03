@@ -1518,12 +1518,37 @@ function v358Logo(team,preferred=''){
   if(preferred)return preferred;
   const key=v358Norm(team);
   const fixed={
-    'juventus':'./assets/official-logos/juventus.png',
-    'la canchita deportes':'./assets/official-logos/la-canchita-deportes.png',
-    'la canchita':'./assets/official-logos/la-canchita-deportes.png',
-    'capibaras':'./assets/official-logos/capibaras.png'
+    'juventus':HIST_ROOT+'assets/official-logos/juventus.png',
+    'la canchita deportes':HIST_ROOT+'assets/official-logos/la-canchita-deportes.png',
+    'la canchita':HIST_ROOT+'assets/official-logos/la-canchita-deportes.png',
+    'capibaras':HIST_ROOT+'assets/official-logos/capibaras.png',
+    'terricolas':HIST_ROOT+'assets/official-logos/terricolas.png',
+    'terricolas seder':HIST_ROOT+'assets/official-logos/terricolas.png',
+    'abejas':HIST_ROOT+'assets/official-logos/abejas.png',
+    'boavista':HIST_ROOT+'assets/official-logos/boavista.png',
+    'boavista fc':HIST_ROOT+'assets/official-logos/boavista.png',
+    'psv':HIST_ROOT+'assets/official-logos/psv.png',
+    'la esperanza':HIST_ROOT+'assets/official-logos/la-esperanza.png',
+    'tavera':HIST_ROOT+'assets/official-logos/tavera-fc.png',
+    'tavera fc':HIST_ROOT+'assets/official-logos/tavera-fc.png',
+    'linces':HIST_ROOT+'assets/official-logos/linces.png',
+    'hermanos':HIST_ROOT+'assets/official-logos/hermanos.png',
+    'hermanos fc':HIST_ROOT+'assets/official-logos/hermanos.png',
+    'promesas':HIST_ROOT+'assets/official-logos/promesas-fc.png',
+    'promesas fc':HIST_ROOT+'assets/official-logos/promesas-fc.png',
+    'franco fc':HIST_ROOT+'assets/official-logos/franco-fc.png',
+    'la huerta':HIST_ROOT+'assets/official-logos/la-huerta.png',
+    'atletico galeana':HIST_ROOT+'assets/official-logos/galeana.png',
+    'atl galeana':HIST_ROOT+'assets/official-logos/galeana.png',
+    'lobos cdg':HIST_ROOT+'assets/official-logos/lobos-cdg.png',
+    'america':HIST_ROOT+'assets/branding/america-veteranos-35-user.png',
+    'america veteranos':HIST_ROOT+'assets/branding/america-veteranos-35-user.png'
   };
   if(fixed[key])return fixed[key];
+  try{
+    const registry=window.LJR_TEAM_LOGOS?.get?.(team);
+    if(registry)return registry;
+  }catch(_){}
   try{
     const api=window.LJR_OFFICIAL_API?.getLogo?.(team);
     if(api)return api;
@@ -2174,7 +2199,7 @@ function v370HistoryTeamInitials(name){
 }
 function v370HistoryTeamLogo(name){
   try{
-    const official=window.LJR_OFFICIAL_API?.getLogo?.(name)||window.LJR_TEAM_LOGOS?.get?.(name)||'';
+    const official=window.LJR_TEAM_LOGOS?.get?.(name)||window.LJR_OFFICIAL_API?.getLogo?.(name)||'';
     if(official)return official;
   }catch(_){}
   try{return v340ChampionLogo(name,'')||'';}catch(_){return ''}
