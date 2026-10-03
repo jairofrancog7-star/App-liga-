@@ -1372,7 +1372,7 @@ function taggedFacebookBlock(){
 
 function historicalTimelineBlock(){
   return '<section class="v35-history-timeline">'+
-    '<div class="v35-history-subhead"><span>LÍNEA DEL TIEMPO</span><h3>Cómo fue cambiando la Liga</h3><p>Publicaciones de Golazo Liga, tablas, álbumes, reglamento y perfiles de administradores permiten reconstruir la historia adulta sin mezclarla con otras ligas del municipio.</p></div>'+
+    '<div class="v35-history-subhead"><span>LÍNEA DEL TIEMPO</span><h3>Cómo fue cambiando la Liga</h3><p>Un recorrido breve por los momentos que han marcado la historia y evolución de la Liga.</p></div>'+
     '<div class="v35-timeline-list">'+historicalTimeline.map(x=>'<article><time>'+esc(x.date)+'</time><div><h4>'+esc(x.title)+'</h4><p>'+esc(x.detail)+'</p></div></article>').join('')+'</div>'+
   '</section>';
 }
@@ -1393,7 +1393,6 @@ function refereeTravelBlock(){
 
 function historyArchiveBlock(){
   return '<section class="v35-block v35-history-archive">'+
-    '<div class="v35-history-archive-head"><span>ARCHIVO HISTÓRICO</span><h2>Historias de la Liga</h2><p>Archivo histórico de la Liga adulta: categoría libre y Veteranos. Se excluyen ligas infantiles, Pony, juveniles y torneos de Presidencia Municipal/COMUDE que pertenecen a organizaciones distintas. El material aportado se usa como fuente de consulta y no se inserta en esta página.</p></div>'+
     historicalTimelineBlock()+
     taggedFacebookBlock()+
     institutionalHistoryBlock()+
