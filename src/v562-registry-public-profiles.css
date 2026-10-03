@@ -1,9 +1,9 @@
 /* V562 — registro oficial compacto con fotos y posición */
 body[data-app-route="players"] #screen{overflow-x:hidden!important}
-.v562-registry{padding:8px 14px 118px;color:#fff}
-.v562-head small{color:#28e0eb;font-size:9px;font-weight:900;letter-spacing:.13em}
-.v562-head h1{margin:6px 0 4px;font-size:31px;line-height:1;letter-spacing:-.04em}
-.v562-head p{margin:0;color:#aeb7d8;font-size:11px}
+.v562-registry{padding:8px 14px 118px;color:#fff}\n.v562-registry-head{display:block!important;position:relative!important;inset:auto!important;width:100%!important;height:auto!important;min-height:0!important;margin:0 0 14px!important;padding:0!important;overflow:visible!important;transform:none!important}
+.v562-registry-head small{color:#28e0eb;font-size:9px;font-weight:900;letter-spacing:.13em}
+.v562-registry-head h1{margin:6px 0 4px;font-size:31px;line-height:1;letter-spacing:-.04em}
+.v562-registry-head p{margin:0;color:#aeb7d8;font-size:11px}
 .v562-filters{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:14px 0 12px;padding:10px;border:1px solid rgba(77,108,220,.3);border-radius:15px;background:linear-gradient(180deg,rgba(18,24,126,.97),rgba(7,10,92,.97))}
 .v562-filters label{min-width:0}.v562-filters label>span{display:block;margin:0 0 5px 3px;color:#28e0eb;font-size:8px;font-weight:900;text-transform:uppercase}
 .v562-filters select,.v562-search{width:100%;height:42px;border:1px solid rgba(93,119,231,.34);border-radius:12px;background:#0c1170;color:#fff}
