@@ -180,3 +180,142 @@
   body[data-app-route="cedulaBuilder"] .v639-card-head>b{font-size:9px}
   body[data-app-route="cedulaBuilder"] .v639-card-meta b{font-size:9px}
 }
+
+
+/* V640 — formulario y resumen en UNA sola tarjeta.
+   El cuadro superior queda literalmente dentro del diseño visual inferior. */
+@media(max-width:1023px){
+  body[data-app-route="cedulaBuilder"] .v640-cedula-combined{
+    position:relative!important;
+    overflow:hidden!important;
+    width:100%!important;
+    box-sizing:border-box!important;
+    margin:0!important;
+    padding:0 12px 12px!important;
+    border:1px solid rgba(39,220,236,.55)!important;
+    border-radius:20px!important;
+    background:
+      radial-gradient(240px 150px at 100% 0,rgba(35,220,237,.13),transparent 70%),
+      linear-gradient(145deg,#151c9c 0%,#11137d 48%,#0b0d67 100%)!important;
+    box-shadow:0 12px 28px rgba(0,0,50,.22)!important;
+  }
+  body[data-app-route="cedulaBuilder"] .v640-cedula-combined::after{
+    content:""!important;
+    position:absolute!important;
+    width:190px!important;
+    height:190px!important;
+    right:-92px!important;
+    top:-96px!important;
+    border:1px solid rgba(42,229,239,.13)!important;
+    border-radius:50%!important;
+    pointer-events:none!important;
+  }
+
+  /* La parte visual del partido es la cabecera de la MISMA tarjeta. */
+  body[data-app-route="cedulaBuilder"] .v640-cedula-combined .v639-match-card{
+    width:auto!important;
+    margin:0 -12px 8px!important;
+    padding:14px 14px 12px!important;
+    border:0!important;
+    border-radius:0!important;
+    background:transparent!important;
+    box-shadow:none!important;
+    overflow:visible!important;
+  }
+  body[data-app-route="cedulaBuilder"] .v640-cedula-combined .v639-match-card::after{
+    display:none!important;
+  }
+
+  /* El formulario anterior queda incrustado dentro del mismo cuadro. */
+  body[data-app-route="cedulaBuilder"] .v640-cedula-combined .v64-form-grid.one{
+    position:relative!important;
+    z-index:2!important;
+    width:100%!important;
+    box-sizing:border-box!important;
+    margin:0!important;
+    padding:9px!important;
+    border:1px solid rgba(255,255,255,.07)!important;
+    border-radius:14px!important;
+    background:rgba(5,7,91,.34)!important;
+    box-shadow:none!important;
+  }
+  body[data-app-route="cedulaBuilder"] .v640-cedula-combined .v64-form-grid.one label{
+    margin:0!important;
+  }
+  body[data-app-route="cedulaBuilder"] .v640-cedula-combined .v64-form-grid.one input,
+  body[data-app-route="cedulaBuilder"] .v640-cedula-combined .v64-form-grid.one select{
+    background:#0b0d70!important;
+    border-color:rgba(62,89,196,.72)!important;
+  }
+
+  /* Los tres botones forman el pie del mismo cuadro. */
+  body[data-app-route="cedulaBuilder"] .v640-cedula-combined>.v60-actions{
+    position:relative!important;
+    z-index:2!important;
+    display:grid!important;
+    grid-template-columns:repeat(3,minmax(0,1fr))!important;
+    gap:6px!important;
+    width:100%!important;
+    margin:8px 0 0!important;
+    padding:0!important;
+  }
+  body[data-app-route="cedulaBuilder"] .v640-cedula-combined>.v60-actions .v60-btn{
+    width:100%!important;
+    min-width:0!important;
+    height:42px!important;
+    min-height:42px!important;
+    margin:0!important;
+    padding:5px!important;
+    border-radius:10px!important;
+    font-size:8px!important;
+    line-height:1.03!important;
+    white-space:normal!important;
+  }
+
+  /* La vista previa oficial vuelve a quedar claramente separada DEBAJO,
+     completa y lista para el botón Imprimir / guardar PDF. */
+  body[data-app-route="cedulaBuilder"] [data-v64-cedula-preview]{
+    display:block!important;
+    visibility:visible!important;
+    opacity:1!important;
+    width:100%!important;
+    margin:12px 0 0!important;
+  }
+  body[data-app-route="cedulaBuilder"] [data-v64-cedula-preview] .v131-cedula-stage{
+    display:block!important;
+    border-radius:18px!important;
+  }
+  body[data-app-route="cedulaBuilder"] [data-v64-cedula-preview] .v131-stage-bar{
+    min-height:42px!important;
+    padding:0 12px!important;
+  }
+  body[data-app-route="cedulaBuilder"] [data-v64-cedula-preview] .v131-sheet-wrap{
+    display:block!important;
+    max-height:none!important;
+    overflow:auto!important;
+    padding:8px!important;
+  }
+  body[data-app-route="cedulaBuilder"] [data-v64-cedula-preview] [data-v131-print-sheet]{
+    display:block!important;
+    visibility:visible!important;
+    opacity:1!important;
+  }
+}
+
+@media(max-width:390px){
+  body[data-app-route="cedulaBuilder"] .v640-cedula-combined{
+    padding:0 10px 10px!important;
+    border-radius:17px!important;
+  }
+  body[data-app-route="cedulaBuilder"] .v640-cedula-combined .v639-match-card{
+    margin-left:-10px!important;
+    margin-right:-10px!important;
+  }
+  body[data-app-route="cedulaBuilder"] .v640-cedula-combined>.v60-actions{
+    gap:5px!important;
+  }
+  body[data-app-route="cedulaBuilder"] .v640-cedula-combined>.v60-actions .v60-btn{
+    font-size:7.3px!important;
+    padding-inline:3px!important;
+  }
+}
