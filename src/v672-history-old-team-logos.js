@@ -35,6 +35,7 @@ const FALLBACK={
   'san antonio de romerillo':RAW+'assets/official-logos/san-antonio-jrs.png',
   'san antonio jr':RAW+'assets/official-logos/san-antonio-jrs.png',
   'san antonio jrs':RAW+'assets/official-logos/san-antonio-jrs.png',
+  'san antonio':RAW+'assets/official-logos/san-antonio-fc.png',
   'linces':RAW+'assets/official-logos/linces.png',
   'hermanos':RAW+'assets/official-logos/hermanos.png',
   'hermanos fc':RAW+'assets/official-logos/hermanos.png',
@@ -58,6 +59,8 @@ const FALLBACK={
   'la huerta cuenda':RAW+'assets/official-logos/la-huerta.png',
   'pozos':RAW+'assets/teams/pozos-fc.webp',
   'pozos fc':RAW+'assets/teams/pozos-fc.webp',
+  'deportivo pozos':RAW+'assets/teams/pozos-fc.webp',
+  'dep pozos':RAW+'assets/teams/pozos-fc.webp',
   'cuenda':RAW+'assets/official-logos/cuenda.png',
   'promesas':RAW+'assets/official-logos/promesas-fc.png',
   'promesas fc':RAW+'assets/official-logos/promesas-fc.png',
@@ -69,9 +72,13 @@ const FALLBACK={
   'oklahoma fc':RAW+'assets/teams/oklahoma-city-fc.webp',
   'franco fc':RAW+'assets/official-logos/franco-fc.png',
   'manchester':RAW+'assets/official-logos/manchester.png',
+  'manchester united':RAW+'assets/teams/manchester-united.webp',
+  'man united':RAW+'assets/teams/manchester-united.webp',
   'abejas':RAW+'assets/official-logos/abejas.png',
   'abejas fc':RAW+'assets/official-logos/abejas.png',
   'psv':RAW+'assets/official-logos/psv.png',
+  'psv eindhoven':RAW+'assets/official-logos/psv.png',
+  'psv-eindhoven':RAW+'assets/official-logos/psv.png',
   'tavera':RAW+'assets/official-logos/tavera-fc.png',
   'tavera fc':RAW+'assets/official-logos/tavera-fc.png',
   'san julian':RAW+'assets/official-logos/san-julian.png',
@@ -79,7 +86,8 @@ const FALLBACK={
   'san jose de la montana':RAW+'assets/teams/san-jose-montana.webp',
   'real cerrito de gasca':RAW+'assets/teams/deportivo-cg.webp',
   'deportivo cg':RAW+'assets/teams/deportivo-cg.webp',
-  'chelsea':'https://upload.wikimedia.org/wikipedia/en/c/cc/Chelsea_FC.svg'
+  'chelsea':'https://upload.wikimedia.org/wikipedia/en/c/cc/Chelsea_FC.svg',
+  'chelse':'https://upload.wikimedia.org/wikipedia/en/c/cc/Chelsea_FC.svg'
 };
 
 /* Sólo relaciones documentadas en el archivo recuperado. */
