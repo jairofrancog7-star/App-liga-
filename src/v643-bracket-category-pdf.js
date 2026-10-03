@@ -1,13 +1,14 @@
-/* V650 — Bracket profesional estilo FULL BRACKET, adaptativo por número de equipos.
+/* V651 — Dos estilos de bracket con vista previa independiente.
+   Diseño 1: ROUND OF 16 / cuadro horizontal con balón-esfera, barras y trofeo central.
+   Diseño 2: FULL BRACKET / tarjetas verticales en los extremos, rondas hacia el centro y trofeo central.
    Automático: 9–16 Octavos · 5–8 Cuartos · 3–4 Semifinales · 2 Final.
-   Si faltan equipos para completar la llave, los huecos se muestran como PASE DIRECTO.
-   Exporta PNG vertical HD 2700x3376 y PDF A4 vertical. */
+   Evita equipos repetidos y usa PASE DIRECTO cuando la llave no está completa. */
 (function(){
 'use strict';
-if(window.__LJR_V650_FULL_BRACKET__)return;
-window.__LJR_V650_FULL_BRACKET__=true;
+if(window.__LJR_V651_DUAL_BRACKET__)return;
+window.__LJR_V651_DUAL_BRACKET__=true;
 
-const BUILD='20261003-v650-full-bracket-exact-style';
+const BUILD='20261003-v651-dual-reference-brackets';
 const CATS=[
   {id:'3',name:'Primera Fuerza',logo:'./assets/branding/primera-fuerza-hd.png'},
   {id:'5',name:'Intermedia',logo:'./assets/categories/intermedia.webp'},
@@ -16,15 +17,19 @@ const CATS=[
   {id:'1',name:'Veteranos 50+',logo:'./assets/categories/veteranos-50.webp'}
 ];
 const STAGES={
-  r16:{name:'Octavos de final',short:'OCTAVOS DE FINAL',slots:16},
+  r16:{name:'Octavos de final',short:'ROUND OF 16',slots:16},
   qf:{name:'Cuartos de final',short:'CUARTOS DE FINAL',slots:8},
   sf:{name:'Semifinales',short:'SEMIFINALES',slots:4},
   final:{name:'Final',short:'GRAN FINAL',slots:2}
 };
+const DESIGNS={
+  round:{name:'Diseño 1 · Round of 16',slug:'round-of-16'},
+  full:{name:'Diseño 2 · Full Bracket',slug:'full-bracket'}
+};
 const LEAGUE_LOGO='./assets/liga-logo.webp';
 const TROPHY='./assets/reference/final-trophy-drive.png';
 const TROPHY_FALLBACK='./final-trophy-drive.png';
-const W=1350,H=1688,SCALE=2;
+const W=1350,H=1688;
 const imgCache=new Map();
 let mountTimer=0,previewTimer=0,previewToken=0;
 
@@ -35,34 +40,30 @@ const catMeta=id=>CATS.find(x=>x.id===String(id))||CATS[0];
 const data=()=>{try{return window.LJR_OFFICIAL_API?.getData?.()||window.LJR_OFFICIAL_DATA||{}}catch(_){return window.LJR_OFFICIAL_DATA||{}}};
 
 function injectCss(){
-  document.getElementById('v643-bracket-style')?.remove();
-  document.getElementById('v647-bracket-style')?.remove();
-  document.getElementById('v649-bracket-style')?.remove();
+  ['v643-bracket-style','v647-bracket-style','v649-bracket-style','v651-bracket-style'].forEach(id=>document.getElementById(id)?.remove());
   const s=document.createElement('style');
-  s.id='v649-bracket-style';
+  s.id='v651-bracket-style';
   s.textContent=[
-    'body[data-app-route="bracketBuilder"] #screen{background:#02034c!important;}',
-    'body[data-app-route="bracketBuilder"] .v64-page[data-v649="1"]{padding:13px 13px calc(116px + env(safe-area-inset-bottom))!important;background:radial-gradient(420px 280px at 50% 0,rgba(32,91,255,.28),transparent 75%),linear-gradient(180deg,#07106b 0,#030452 44%,#010238 100%)!important;min-height:100%!important;color:#fff!important;}',
-    '.v649-hero{position:relative;overflow:hidden;border:1px solid rgba(69,111,255,.72);border-radius:20px;padding:15px;background:radial-gradient(260px 180px at 86% 18%,rgba(0,232,247,.16),transparent 70%),linear-gradient(145deg,#13249d,#090d70 56%,#06094e);box-shadow:0 18px 42px rgba(0,0,35,.28)}',
-    '.v649-hero:before{content:"";position:absolute;inset:auto -32px -62px auto;width:180px;height:180px;border-radius:50%;border:26px solid rgba(65,231,245,.055)}',
-    '.v649-brand{display:flex;align-items:center;gap:10px;position:relative;z-index:1}.v649-brand img{width:50px;height:50px;object-fit:contain;filter:drop-shadow(0 5px 10px rgba(0,0,0,.28))}.v649-brand small{display:block;color:#54e8f3;font-size:9.5px;font-weight:950;letter-spacing:.08em}.v649-brand h1{margin:2px 0 0;font-size:23px;line-height:1.04;letter-spacing:-.025em}.v649-hero p{position:relative;z-index:1;margin:8px 0 0;color:#c5cff8;font-size:11.5px;line-height:1.4}',
-    '.v649-controls{margin-top:10px;border:1px solid rgba(69,93,213,.75);border-radius:18px;background:#090e70;padding:10px}.v649-catrow{display:grid;grid-template-columns:48px minmax(0,1fr);gap:9px;align-items:center}.v649-catlogo{width:48px;height:48px;border-radius:13px;background:#05095a;border:1px solid #3145b8;display:grid;place-items:center;overflow:hidden}.v649-catlogo img{width:42px;height:42px;object-fit:contain}.v649-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}.v649-grid label{min-width:0;color:#5beaf4;font-size:9px;font-weight:950;letter-spacing:.07em}.v649-grid select{margin-top:5px;width:100%;height:41px;border:1px solid #3448bd;border-radius:12px;background:#101475;color:#fff;padding:0 26px 0 9px;font-size:11px;font-weight:850;outline:none}',
-    '.v649-auto{margin-top:9px;display:flex;align-items:center;justify-content:space-between;gap:10px;border-radius:13px;padding:9px 10px;background:linear-gradient(90deg,rgba(23,77,255,.35),rgba(24,223,240,.08));border:1px solid rgba(61,120,255,.48)}.v649-auto span small{display:block;color:#7aeef6;font-size:8.5px;font-weight:950;letter-spacing:.07em}.v649-auto span b{display:block;margin-top:2px;font-size:12px}.v649-auto em{font-style:normal;color:#b9c4f2;font-size:9px;text-align:right}',
-    '.v649-actions{display:flex;gap:8px;margin-top:9px}.v649-soft{height:39px;border:1px solid #3957df;border-radius:12px;background:#111b89;color:#fff;padding:0 12px;font-size:10.5px;font-weight:900}.v649-soft:first-child{background:linear-gradient(180deg,#1c5bff,#173bb8);border-color:#4d7cff}',
-    '.v649-title{display:flex;align-items:end;justify-content:space-between;gap:9px;margin:15px 2px 8px}.v649-title small{display:block;color:#50e8f3;font-size:9px;font-weight:950;letter-spacing:.08em}.v649-title b{display:block;margin-top:2px;font-size:16px}.v649-title em{font-style:normal;color:#aab5e6;font-size:9px;text-align:right}',
-    '.v649-slots{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.v649-slot{min-width:0;border:1px solid #2f43ba;border-radius:14px;background:linear-gradient(180deg,#11177d,#0b0f69);padding:8px}.v649-slothead{display:flex;align-items:center;gap:6px;margin-bottom:6px}.v649-seed{width:23px;height:23px;border-radius:50%;display:grid;place-items:center;background:#174dff;border:1px solid #5e82ff;color:#fff;font-size:10px;font-weight:950}.v649-slothead b{font-size:10.5px}.v649-pick{display:grid;grid-template-columns:34px minmax(0,1fr);gap:6px;align-items:center}.v649-logo{width:34px;height:34px;border-radius:10px;background:#05095a;border:1px solid #3042a9;display:grid;place-items:center;overflow:hidden}.v649-logo img{width:28px;height:28px;object-fit:contain}.v649-slot select{min-width:0;width:100%;height:37px;border:1px solid #2b3aa5;border-radius:10px;background:#10146f;color:#fff;padding:0 24px 0 8px;font-size:10px;font-weight:850;outline:none;text-overflow:ellipsis}.v649-slot select option:disabled{color:#6f79a8}',
-    '.v649-preview{margin-top:12px;border:1px solid rgba(54,80,210,.78);border-radius:18px;background:#04075a;padding:7px;overflow:hidden;box-shadow:0 16px 40px rgba(0,0,30,.24)}.v649-preview canvas{display:block;width:100%;height:auto;border-radius:12px;background:#04064c}.v649-preview-meta{display:flex;justify-content:space-between;gap:8px;padding:7px 3px 1px;color:#9fa9da;font-size:9px}.v649-preview-meta b{color:#55eaf4}',
-    '.v649-export{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}.v649-export button{min-height:48px;border-radius:14px;border:1px solid #4a79ff;background:linear-gradient(180deg,#1d5dff,#173db9);color:#fff;font-size:12px;font-weight:950;box-shadow:0 8px 18px rgba(7,35,150,.3)}.v649-export button[data-v649-pdf]{background:linear-gradient(180deg,#13bbd9,#0b72c9);border-color:#34dceb}.v649-status{min-height:18px;margin:6px 3px 0;color:#76eaf4;font-size:9.5px;font-weight:800}',
-    '@media(max-width:360px){.v649-grid,.v649-slots,.v649-export{grid-template-columns:1fr}.v649-brand h1{font-size:21px}}'
+    'body[data-app-route="bracketBuilder"] #screen{background:#02032f!important;}',
+    'body[data-app-route="bracketBuilder"] .v64-page[data-v651="1"]{padding:13px 13px calc(116px + env(safe-area-inset-bottom))!important;background:radial-gradient(430px 280px at 50% 0,rgba(31,87,255,.27),transparent 75%),linear-gradient(180deg,#07106c 0,#03044d 48%,#010224 100%)!important;min-height:100%!important;color:#fff!important;}',
+    '.v651-hero{position:relative;overflow:hidden;border:1px solid rgba(73,113,255,.75);border-radius:20px;padding:15px;background:radial-gradient(280px 190px at 86% 16%,rgba(0,230,246,.16),transparent 70%),linear-gradient(145deg,#13259c,#090e72 56%,#050848);box-shadow:0 18px 42px rgba(0,0,35,.3)}',
+    '.v651-brand{display:flex;align-items:center;gap:10px}.v651-brand img{width:50px;height:50px;object-fit:contain}.v651-brand small{display:block;color:#58eaf4;font-size:9.5px;font-weight:950;letter-spacing:.08em}.v651-brand h1{margin:2px 0 0;font-size:23px;line-height:1.04}.v651-hero p{margin:8px 0 0;color:#c4cef5;font-size:11.5px;line-height:1.4}',
+    '.v651-controls{margin-top:10px;border:1px solid rgba(70,94,213,.78);border-radius:18px;background:#090e70;padding:10px}.v651-catrow{display:grid;grid-template-columns:48px minmax(0,1fr);gap:9px;align-items:center}.v651-catlogo{width:48px;height:48px;border-radius:13px;background:#05095a;border:1px solid #3145b8;display:grid;place-items:center;overflow:hidden}.v651-catlogo img{width:42px;height:42px;object-fit:contain}.v651-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}.v651-grid label{min-width:0;color:#5beaf4;font-size:9px;font-weight:950;letter-spacing:.07em}.v651-grid select{margin-top:5px;width:100%;height:41px;border:1px solid #3448bd;border-radius:12px;background:#101475;color:#fff;padding:0 26px 0 9px;font-size:11px;font-weight:850;outline:none}',
+    '.v651-auto{margin-top:9px;display:flex;align-items:center;justify-content:space-between;gap:10px;border-radius:13px;padding:9px 10px;background:linear-gradient(90deg,rgba(23,77,255,.35),rgba(24,223,240,.08));border:1px solid rgba(61,120,255,.48)}.v651-auto span small{display:block;color:#7aeef6;font-size:8.5px;font-weight:950;letter-spacing:.07em}.v651-auto span b{display:block;margin-top:2px;font-size:12px}.v651-auto em{font-style:normal;color:#b9c4f2;font-size:9px;text-align:right}',
+    '.v651-actions{display:flex;gap:8px;margin-top:9px}.v651-soft{height:39px;border:1px solid #3957df;border-radius:12px;background:#111b89;color:#fff;padding:0 12px;font-size:10.5px;font-weight:900}.v651-soft:first-child{background:linear-gradient(180deg,#1c5bff,#173bb8);border-color:#4d7cff}',
+    '.v651-title{display:flex;align-items:end;justify-content:space-between;gap:9px;margin:15px 2px 8px}.v651-title small{display:block;color:#50e8f3;font-size:9px;font-weight:950;letter-spacing:.08em}.v651-title b{display:block;margin-top:2px;font-size:16px}.v651-title em{font-style:normal;color:#aab5e6;font-size:9px;text-align:right}',
+    '.v651-slots{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.v651-slot{min-width:0;border:1px solid #2f43ba;border-radius:14px;background:linear-gradient(180deg,#11177d,#0b0f69);padding:8px}.v651-slothead{display:flex;align-items:center;gap:6px;margin-bottom:6px}.v651-seed{width:23px;height:23px;border-radius:50%;display:grid;place-items:center;background:#174dff;border:1px solid #5e82ff;color:#fff;font-size:10px;font-weight:950}.v651-slothead b{font-size:10.5px}.v651-pick{display:grid;grid-template-columns:34px minmax(0,1fr);gap:6px;align-items:center}.v651-logo{width:34px;height:34px;border-radius:10px;background:#05095a;border:1px solid #3042a9;display:grid;place-items:center;overflow:hidden}.v651-logo img{width:28px;height:28px;object-fit:contain}.v651-slot select{min-width:0;width:100%;height:37px;border:1px solid #2b3aa5;border-radius:10px;background:#10146f;color:#fff;padding:0 24px 0 8px;font-size:10px;font-weight:850;outline:none;text-overflow:ellipsis}.v651-slot select option:disabled{color:#6f79a8}',
+    '.v651-designs{display:grid;grid-template-columns:1fr 1fr;gap:9px}.v651-design-card{appearance:none;text-align:left;padding:7px;border:2px solid rgba(58,77,177,.85);border-radius:17px;background:#050854;color:#fff;overflow:hidden;box-shadow:0 12px 28px rgba(0,0,25,.22);transition:.18s}.v651-design-card.selected{border-color:#42e5f1;box-shadow:0 0 0 2px rgba(66,229,241,.12),0 14px 30px rgba(0,0,25,.28)}.v651-design-card canvas{display:block;width:100%;height:auto;border-radius:10px;background:#02032f}.v651-design-card span{display:flex;align-items:center;justify-content:space-between;gap:7px;padding:7px 2px 1px}.v651-design-card b{font-size:10px}.v651-design-card i{font-style:normal;color:#63eaf4;font-size:8px;font-weight:900}.v651-design-card.selected i:after{content:" · SELECCIONADO"}',
+    '.v651-current{margin-top:10px;border:1px solid rgba(54,80,210,.78);border-radius:18px;background:#04075a;padding:7px;overflow:hidden;box-shadow:0 16px 40px rgba(0,0,30,.24)}.v651-current canvas{display:block;width:100%;height:auto;border-radius:12px;background:#04064c}.v651-current-meta{display:flex;justify-content:space-between;gap:8px;padding:7px 3px 1px;color:#9fa9da;font-size:9px}.v651-current-meta b{color:#55eaf4}',
+    '.v651-export{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}.v651-export button{min-height:48px;border-radius:14px;border:1px solid #4a79ff;background:linear-gradient(180deg,#1d5dff,#173db9);color:#fff;font-size:12px;font-weight:950;box-shadow:0 8px 18px rgba(7,35,150,.3)}.v651-export button[data-v651-pdf]{background:linear-gradient(180deg,#13bbd9,#0b72c9);border-color:#34dceb}.v651-status{min-height:18px;margin:6px 3px 0;color:#76eaf4;font-size:9.5px;font-weight:800}',
+    '@media(max-width:380px){.v651-grid,.v651-slots{grid-template-columns:1fr}.v651-designs{grid-template-columns:1fr 1fr}.v651-brand h1{font-size:21px}}'
   ].join('\n');
   document.head.appendChild(s);
 }
 
 async function ensureData(){try{await window.V66_OFFICIAL_DIRECTORY?.load?.()}catch(_){}}
-
 function teamLogo(name){
-  name=String(name||'').trim();
-  if(!name)return '';
+  name=String(name||'').trim();if(!name)return'';
   try{
     const x=window.V66_OFFICIAL_DIRECTORY?.logoFor?.(name)||window.LJR_OFFICIAL_API?.getLogo?.(name)||window.LJR_TEAM_LOGOS?.get?.(name)||'';
     if(x)return x;
@@ -70,80 +71,55 @@ function teamLogo(name){
   const hit=Object.entries(data()?.team_logos||{}).find(([k])=>norm(k)===norm(name))?.[1];
   if(typeof hit==='string'&&hit)return hit;
   if(hit&&typeof hit==='object')return hit.local||hit.source||hit.app||'';
-  return '';
+  return'';
 }
-
 function collectTeams(cat){
   const id=String(cat),out=[],seen=new Set();
-  const add=v=>{
-    const n=String(v||'').trim(),k=norm(n);
-    if(!n||!k||seen.has(k))return;
-    seen.add(k);out.push(n);
-  };
+  const add=v=>{const n=String(v||'').trim(),k=norm(n);if(!n||!k||seen.has(k))return;seen.add(k);out.push(n)};
   try{(window.V66_OFFICIAL_DIRECTORY?.teamList?.()||[]).filter(t=>String(t?.cat||'')===id).forEach(t=>add(t?.name))}catch(_){}
   const c=data()?.categories?.[id]||{};
   Object.keys(c?.rosters||{}).forEach(add);
   (c?.teams||[]).forEach(t=>add(typeof t==='string'?t:t?.name));
   (c?.standings?.[0]?.rows||[]).forEach(r=>add(Array.isArray(r)?r[1]:(r?.team||r?.name)));
-  (c?.fixtures||[]).forEach(g=>(g?.rows||[]).forEach(r=>{
-    if(Array.isArray(r)){add(r[2]);add(r[6])}
-    else{add(r?.home);add(r?.away)}
-  }));
+  (c?.fixtures||[]).forEach(g=>(g?.rows||[]).forEach(r=>Array.isArray(r)?(add(r[2]),add(r[6])):(add(r?.home),add(r?.away))));
   return out.sort((a,b)=>a.localeCompare(b,'es',{sensitivity:'base'}));
 }
-
 function rankedTeams(cat){
   const rows=data()?.categories?.[String(cat)]?.standings?.[0]?.rows||[],out=[],seen=new Set();
-  rows.forEach(r=>{
-    const n=String(Array.isArray(r)?r[1]:(r?.team||r?.name||'')).trim(),k=norm(n);
-    if(n&&k&&!seen.has(k)){seen.add(k);out.push(n)}
-  });
-  const all=collectTeams(cat);
-  all.forEach(n=>{const k=norm(n);if(!seen.has(k)){seen.add(k);out.push(n)}});
+  rows.forEach(r=>{const n=String(Array.isArray(r)?r[1]:(r?.team||r?.name||'')).trim(),k=norm(n);if(n&&k&&!seen.has(k)){seen.add(k);out.push(n)}});
+  collectTeams(cat).forEach(n=>{const k=norm(n);if(!seen.has(k)){seen.add(k);out.push(n)}});
   return out;
 }
-
-function autoStageForCount(n){
-  n=Number(n)||0;
-  if(n>=9)return'r16';
-  if(n>=5)return'qf';
-  if(n>=3)return'sf';
-  return'final';
-}
+function autoStageForCount(n){n=Number(n)||0;if(n>=9)return'r16';if(n>=5)return'qf';if(n>=3)return'sf';return'final'}
 function currentCategory(){
-  const v=String(localStorage.getItem('v649-bracket-cat')||localStorage.getItem('v62-category')||'3');
+  const v=String(localStorage.getItem('v651-bracket-cat')||localStorage.getItem('v62-category')||'3');
   return CATS.some(c=>c.id===v)?v:'3';
 }
-function requestedStage(page){
-  return String(page?.querySelector('[data-v649-stage]')?.value||localStorage.getItem('v649-bracket-stage')||'auto');
-}
+function requestedStage(page){return String(page?.querySelector('[data-v651-stage]')?.value||localStorage.getItem('v651-bracket-stage')||'auto')}
 function resolvedStage(page){
-  const req=requestedStage(page);
-  if(STAGES[req])return req;
-  const cat=page?.querySelector('[data-v649-cat]')?.value||currentCategory();
+  const req=requestedStage(page);if(STAGES[req])return req;
+  const cat=page?.querySelector('[data-v651-cat]')?.value||currentCategory();
   return autoStageForCount(collectTeams(cat).length);
 }
-function slotValues(page){return[...page.querySelectorAll('[data-v649-place]')].map(s=>String(s.value||'').trim())}
+function selectedDesign(page){
+  const v=String(page?.dataset?.v651Design||localStorage.getItem('v651-bracket-design')||'round');
+  return DESIGNS[v]?v:'round';
+}
+function slotValues(page){return[...page.querySelectorAll('[data-v651-place]')].map(s=>String(s.value||'').trim())}
 function setStatus(page,msg,bad){
-  const el=page.querySelector('[data-v649-status]');if(!el)return;
+  const el=page.querySelector('[data-v651-status]');if(!el)return;
   el.textContent=msg||'';el.style.color=bad?'#ffb8c9':'#76eaf4';
 }
-function optionHtml(list,value){
-  return '<option value="">Por confirmar / pase directo</option>'+list.map(n=>'<option value="'+esc(n)+'" '+(n===value?'selected':'')+'>'+esc(n)+'</option>').join('');
-}
+function optionHtml(list,value){return'<option value="">Por confirmar / pase directo</option>'+list.map(n=>'<option value="'+esc(n)+'" '+(n===value?'selected':'')+'>'+esc(n)+'</option>').join('')}
 function updateSlotLogo(sel){
-  const im=sel.closest('.v649-slot')?.querySelector('.v649-logo img');if(!im)return;
+  const im=sel.closest('.v651-slot')?.querySelector('.v651-logo img');if(!im)return;
   const src=teamLogo(sel.value);im.src=src||LEAGUE_LOGO;im.style.opacity=src?'1':'.2';
 }
 function syncNoDuplicates(page,changed){
-  const sels=[...page.querySelectorAll('[data-v649-place]')];
+  const sels=[...page.querySelectorAll('[data-v651-place]')];
   if(changed&&changed.value){
-    const key=norm(changed.value);
-    const dup=sels.find(s=>s!==changed&&s.value&&norm(s.value)===key);
-    if(dup){
-      const n=changed.value;changed.value='';updateSlotLogo(changed);
-      setStatus(page,n+' ya está seleccionado. Un equipo no puede repetirse.',true);
-    }
+    const k=norm(changed.value),dup=sels.find(s=>s!==changed&&s.value&&norm(s.value)===k);
+    if(dup){const n=changed.value;changed.value='';updateSlotLogo(changed);setStatus(page,n+' ya está seleccionado. Un equipo no puede repetirse.',true)}
   }
   const active=sels.map(s=>String(s.value||'').trim()).filter(Boolean);
   sels.forEach(sel=>[...sel.options].forEach(opt=>{
@@ -151,51 +127,39 @@ function syncNoDuplicates(page,changed){
     opt.disabled=active.some(v=>norm(v)===norm(opt.value))&&norm(sel.value)!==norm(opt.value);
   }));
 }
-
 function stageInfo(page){
-  const cat=page.querySelector('[data-v649-cat]')?.value||currentCategory();
+  const cat=page.querySelector('[data-v651-cat]')?.value||currentCategory();
   const count=collectTeams(cat).length,stage=resolvedStage(page),slots=STAGES[stage].slots,byes=Math.max(0,slots-count);
-  const auto=page.querySelector('[data-v649-auto]');
-  if(auto){
-    auto.innerHTML='<span><small>CLASIFICACIÓN AUTOMÁTICA</small><b>'+count+' equipos → '+esc(STAGES[stage].name)+'</b></span>'+
-      '<em>'+(byes?byes+' pase'+(byes===1?'':'s')+' directo'+(byes===1?'':'s'):'Llave completa')+'</em>';
-  }
-  const title=page.querySelector('[data-v649-slot-title]');
-  if(title)title.textContent=slots===16?'Semillas 1–16':slots===8?'Semillas 1–8':slots===4?'Semifinalistas 1–4':'Finalistas 1–2';
-  const hint=page.querySelector('[data-v649-slot-hint]');
-  if(hint)hint.innerHTML=esc(STAGES[stage].name)+'<br>sin equipos repetidos';
-  const top=page.querySelector('[data-v649-autofill]');
-  if(top)top.textContent='Clasificar '+Math.min(count,slots)+' equipos';
+  const auto=page.querySelector('[data-v651-auto]');
+  if(auto)auto.innerHTML='<span><small>CLASIFICACIÓN AUTOMÁTICA</small><b>'+count+' equipos → '+esc(STAGES[stage].name)+'</b></span><em>'+(byes?byes+' pase'+(byes===1?'':'s')+' directo'+(byes===1?'':'s'):'Llave completa')+'</em>';
+  const t=page.querySelector('[data-v651-slot-title]');if(t)t.textContent=slots===16?'Semillas 1–16':slots===8?'Semillas 1–8':slots===4?'Semifinalistas 1–4':'Finalistas 1–2';
+  const h=page.querySelector('[data-v651-slot-hint]');if(h)h.innerHTML=esc(STAGES[stage].name)+'<br>sin equipos repetidos';
+  const b=page.querySelector('[data-v651-autofill]');if(b)b.textContent='Clasificar '+Math.min(count,slots)+' equipos';
 }
 function renderSlots(page,keep){
-  const cat=page.querySelector('[data-v649-cat]')?.value||currentCategory();
+  const cat=page.querySelector('[data-v651-cat]')?.value||currentCategory();
   const teams=collectTeams(cat),stage=resolvedStage(page),count=STAGES[stage].slots;
-  const prev=keep?slotValues(page):[],host=page.querySelector('[data-v649-slots]');if(!host)return;
+  const prev=keep?slotValues(page):[],host=page.querySelector('[data-v651-slots]');if(!host)return;
   const used=new Set();
   host.innerHTML=Array.from({length:count},(_,i)=>{
     let val=teams.includes(prev[i])?prev[i]:'';
     if(val&&used.has(norm(val)))val='';
     if(val)used.add(norm(val));
     const src=teamLogo(val);
-    return '<div class="v649-slot"><div class="v649-slothead"><span class="v649-seed">'+(i+1)+'</span><b>Semilla '+(i+1)+'</b></div>'+
-      '<div class="v649-pick"><span class="v649-logo"><img src="'+esc(src||LEAGUE_LOGO)+'" style="opacity:'+(src?'1':'.2')+'" alt=""></span>'+
-      '<select data-v649-place="'+(i+1)+'" aria-label="Semilla '+(i+1)+'">'+optionHtml(teams,val)+'</select></div></div>';
+    return'<div class="v651-slot"><div class="v651-slothead"><span class="v651-seed">'+(i+1)+'</span><b>Semilla '+(i+1)+'</b></div>'+
+      '<div class="v651-pick"><span class="v651-logo"><img src="'+esc(src||LEAGUE_LOGO)+'" style="opacity:'+(src?'1':'.2')+'" alt=""></span>'+
+      '<select data-v651-place="'+(i+1)+'">'+optionHtml(teams,val)+'</select></div></div>';
   }).join('');
-  host.querySelectorAll('[data-v649-place]').forEach(sel=>sel.addEventListener('change',()=>{updateSlotLogo(sel);syncNoDuplicates(page,sel);queuePreview(page)}));
+  host.querySelectorAll('[data-v651-place]').forEach(sel=>sel.addEventListener('change',()=>{updateSlotLogo(sel);syncNoDuplicates(page,sel);queueAllPreviews(page)}));
   syncNoDuplicates(page);stageInfo(page);
 }
 function autoFill(page){
-  const cat=page.querySelector('[data-v649-cat]')?.value||currentCategory(),ranked=rankedTeams(cat);
-  const sels=[...page.querySelectorAll('[data-v649-place]')],used=new Set();
-  sels.forEach((s,i)=>{
-    const v=ranked.find(n=>!used.has(norm(n)))||'';
-    if(v)used.add(norm(v));
-    s.value=v;updateSlotLogo(s);
-  });
+  const cat=page.querySelector('[data-v651-cat]')?.value||currentCategory(),ranked=rankedTeams(cat),sels=[...page.querySelectorAll('[data-v651-place]')],used=new Set();
+  sels.forEach(s=>{const v=ranked.find(n=>!used.has(norm(n)))||'';if(v)used.add(norm(v));s.value=v;updateSlotLogo(s)});
   syncNoDuplicates(page);
-  const slots=sels.length,byes=Math.max(0,slots-used.size);
+  const byes=Math.max(0,sels.length-used.size);
   setStatus(page,'Clasificación cargada: '+used.size+' equipos'+(byes?' · '+byes+' pase'+(byes===1?'':'s')+' directo'+(byes===1?'':'s'):'')+'.');
-  queuePreview(page);
+  queueAllPreviews(page);
 }
 
 function rr(ctx,x,y,w,h,r){r=Math.max(0,Math.min(r,Math.min(w,h)/2));ctx.beginPath();ctx.moveTo(x+r,y);ctx.arcTo(x+w,y,x+w,y+h,r);ctx.arcTo(x+w,y+h,x,y+h,r);ctx.arcTo(x,y+h,x,y,r);ctx.arcTo(x,y,x+w,y,r);ctx.closePath()}
@@ -207,294 +171,186 @@ function imageLoad(src){
 }
 function drawContain(ctx,im,x,y,w,h){if(!im||!im.naturalWidth||!im.naturalHeight)return;const s=Math.min(w/im.naturalWidth,h/im.naturalHeight),dw=im.naturalWidth*s,dh=im.naturalHeight*s;ctx.drawImage(im,x+(w-dw)/2,y+(h-dh)/2,dw,dh)}
 function fitFont(ctx,text,maxW,start,min,weight=900){let size=start;do{ctx.font=weight+' '+size+'px Arial,Helvetica,sans-serif';if(ctx.measureText(text).width<=maxW)break;size--}while(size>min);return size}
-function line(ctx,x1,y1,x2,y2){
-  ctx.save();ctx.strokeStyle='#35e2ef';ctx.lineWidth=4;ctx.lineCap='round';ctx.lineJoin='round';ctx.shadowColor='rgba(53,226,239,.58)';ctx.shadowBlur=9;
-  ctx.beginPath();ctx.moveTo(x1,y1);ctx.lineTo(x2,y2);ctx.stroke();ctx.restore();
-}
-function pairJoin(ctx,x,y1,y2,outX,outY,side){
-  const mid=side==='left'?x+32:x-32;
-  ctx.save();ctx.strokeStyle='#35e2ef';ctx.lineWidth=4;ctx.lineCap='round';ctx.lineJoin='round';ctx.shadowColor='rgba(53,226,239,.55)';ctx.shadowBlur=9;
-  ctx.beginPath();ctx.moveTo(x,y1);ctx.lineTo(mid,y1);ctx.moveTo(x,y2);ctx.lineTo(mid,y2);ctx.moveTo(mid,y1);ctx.lineTo(mid,y2);ctx.moveTo(mid,outY);ctx.lineTo(outX,outY);ctx.stroke();ctx.restore();
-}
 async function trophy(ctx,x,y,w,h){
   let im=await imageLoad(TROPHY);if(!im)im=await imageLoad(TROPHY_FALLBACK);
-  if(im){ctx.save();ctx.shadowColor='rgba(54,226,255,.72)';ctx.shadowBlur=30;drawContain(ctx,im,x,y,w,h);ctx.restore()}
+  if(im){ctx.save();ctx.shadowColor='rgba(54,226,255,.7)';ctx.shadowBlur=28;drawContain(ctx,im,x,y,w,h);ctx.restore()}
 }
-function background(ctx){
-  const bg=ctx.createLinearGradient(0,0,W,H);
-  bg.addColorStop(0,'#06135f');bg.addColorStop(.42,'#030747');bg.addColorStop(1,'#01011d');
-  ctx.fillStyle=bg;ctx.fillRect(0,0,W,H);
-
-  const glow=ctx.createRadialGradient(W/2,H*.51,30,W/2,H*.51,650);
-  glow.addColorStop(0,'rgba(21,66,255,.27)');
-  glow.addColorStop(.5,'rgba(4,26,118,.10)');
-  glow.addColorStop(1,'rgba(0,0,0,0)');
-  ctx.fillStyle=glow;ctx.fillRect(0,0,W,H);
-
-  ctx.save();
-  ctx.globalAlpha=.065;
-  ctx.strokeStyle='#1e43c7';
-  ctx.lineWidth=2;
-  for(let x=-100;x<W+100;x+=140){ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x-340,H);ctx.stroke()}
-  ctx.restore();
-
-  const edge=ctx.createLinearGradient(0,0,0,H);
-  edge.addColorStop(0,'#ff741b');edge.addColorStop(.35,'#22dbf0');edge.addColorStop(.72,'#22dbf0');edge.addColorStop(1,'#ff741b');
-  ctx.fillStyle=edge;ctx.fillRect(8,0,5,H);ctx.fillRect(W-13,0,5,H);
-
-  ctx.save();
-  ctx.globalAlpha=.09;ctx.strokeStyle='#2140b4';ctx.lineWidth=2;
-  ctx.beginPath();ctx.arc(W/2,H*.56,375,0,Math.PI*2);ctx.stroke();
-  ctx.beginPath();ctx.arc(W/2,H*.56,270,0,Math.PI*2);ctx.stroke();
-  ctx.restore();
+function neon(ctx,points,color='#47e5f0',width=4){
+  ctx.save();ctx.strokeStyle=color;ctx.lineWidth=width;ctx.lineCap='round';ctx.lineJoin='round';ctx.shadowColor=color;ctx.shadowBlur=8;
+  ctx.beginPath();points.forEach((p,i)=>i?ctx.lineTo(p[0],p[1]):ctx.moveTo(p[0],p[1]));ctx.stroke();ctx.restore();
 }
-async function header(ctx,meta,stage){
-  const league=await imageLoad(LEAGUE_LOGO),cat=await imageLoad(meta.logo);
-  if(league)drawContain(ctx,league,46,40,78,78);
-  if(cat)drawContain(ctx,cat,W-124,40,78,78);
-
-  ctx.textAlign='center';
-  ctx.fillStyle='#dbe5ff';ctx.font='900 19px Arial';
-  ctx.fillText('TORNEO DE COPA · '+meta.name.toUpperCase(),W/2,58);
-
-  ctx.fillStyle='#fff';ctx.font='900 58px Arial';
-  ctx.fillText('CUADRO',W/2-118,132);
-  ctx.fillStyle='#24def1';ctx.font='900 58px Arial';
-  ctx.fillText('COMPLETO',W/2+168,132);
-
-  ctx.fillStyle='#a9b6ea';ctx.font='800 17px Arial';
-  ctx.fillText(STAGES[stage].short,W/2,168);
-  ctx.textAlign='left';
-}
-function neonPath(ctx,points){
-  ctx.save();
-  ctx.strokeStyle='#39e1ee';
-  ctx.lineWidth=4;
-  ctx.lineCap='round';
-  ctx.lineJoin='round';
-  ctx.shadowColor='rgba(57,225,238,.7)';
-  ctx.shadowBlur=10;
-  ctx.beginPath();
-  points.forEach((p,i)=>i?ctx.lineTo(p[0],p[1]):ctx.moveTo(p[0],p[1]));
-  ctx.stroke();
-  ctx.restore();
-}
-async function teamCard(ctx,seed,name,x,y,w,h,side){
-  const grad=ctx.createLinearGradient(x,y,x+w,y);
-  if(side==='right'){
-    grad.addColorStop(0,'#07104d');grad.addColorStop(.68,'#091f8e');grad.addColorStop(1,'#123cff');
-  }else{
-    grad.addColorStop(0,'#123cff');grad.addColorStop(.32,'#091f8e');grad.addColorStop(1,'#07104d');
-  }
-  fillR(ctx,x,y,w,h,11,grad,'rgba(53,97,255,.92)',2);
-
-  const label=name||'PASE DIRECTO';
-  const logo=await imageLoad(teamLogo(name));
-  const box=h-16;
-  const bx=side==='right'?x+w-box-8:x+8;
-  if(name){
-    fillR(ctx,bx,y+8,box,box,9,'#050938','rgba(72,102,223,.75)',1.5);
-    if(logo)drawContain(ctx,logo,bx+5,y+13,box-10,box-10);
-  }else{
-    ctx.save();ctx.globalAlpha=.65;
-    fillR(ctx,bx,y+8,box,box,9,'#060937','rgba(63,98,210,.55)',1.5);
-    ctx.restore();
-  }
-
-  const tx=side==='right'?x+14:x+box+22;
-  const max=w-box-40;
-  ctx.fillStyle=name?'#fff':'#54e8f3';
-  fitFont(ctx,label,max,19,11,900);
-  ctx.fillText(label,tx,y+h/2+8);
-
-  ctx.fillStyle='#69edf5';ctx.font='900 10px Arial';
-  if(side==='right'){
-    ctx.textAlign='right';ctx.fillText(String(seed),x+w-box-15,y+17);ctx.textAlign='left';
-  }else{
-    ctx.fillText(String(seed),tx,y+17);
-  }
-}
-function stageCard(ctx,x,y,w,h,title,rows){
-  const g=ctx.createLinearGradient(x,y,x+w,y+h);
-  g.addColorStop(0,'#0f3dff');g.addColorStop(.42,'#0a2396');g.addColorStop(1,'#050a49');
-  fillR(ctx,x,y,w,h,13,g,'rgba(48,94,255,.9)',2);
-
-  ctx.fillStyle='#5deaf4';ctx.font='900 10px Arial';
-  ctx.fillText(title,x+14,y+20);
-
-  const usable=h-34;
-  const rh=usable/rows.length;
-  rows.forEach((r,i)=>{
-    const yy=y+30+i*rh;
-    if(i>0){
-      ctx.fillStyle='rgba(255,118,36,.76)';
-      ctx.fillRect(x+12,yy-2,w-24,2);
-    }
-    ctx.fillStyle='#fff';ctx.font='900 14px Arial';
-    ctx.fillText(r,x+14,yy+rh*.58);
-  });
-}
-async function finalPillar(ctx,x,y,w,h){
-  const g=ctx.createLinearGradient(x,y,x+w,y+h);
-  g.addColorStop(0,'rgba(17,70,255,.95)');
-  g.addColorStop(.35,'rgba(8,26,112,.98)');
-  g.addColorStop(1,'rgba(3,7,48,.98)');
-  fillR(ctx,x,y,w,h,36,g,'rgba(41,75,185,.72)',2);
-
-  const glow=ctx.createRadialGradient(x+w/2,y+h*.53,20,x+w/2,y+h*.53,w*.72);
-  glow.addColorStop(0,'rgba(38,107,255,.42)');glow.addColorStop(1,'rgba(0,0,0,0)');
-  ctx.fillStyle=glow;ctx.fillRect(x-30,y+80,w+60,h-120);
-
-  ctx.textAlign='center';
-  ctx.fillStyle='#5deaf4';ctx.font='900 11px Arial';ctx.fillText('GRAN FINAL',x+w/2,y+42);
-  ctx.fillStyle='#fff';ctx.font='900 20px Arial';ctx.fillText('TORNEO DE COPA',x+w/2,y+70);
-  ctx.textAlign='left';
-  await trophy(ctx,x+w*.19,y+h*.28,w*.62,h*.45);
-}
-
+function line(ctx,x1,y1,x2,y2,color='#47e5f0',width=4){neon(ctx,[[x1,y1],[x2,y2]],color,width)}
+function teamAt(teams,seed){return teams[seed-1]||''}
 const SEED16=[[1,16],[8,9],[4,13],[5,12],[2,15],[7,10],[3,14],[6,11]];
 const SEED8=[[1,8],[4,5],[2,7],[3,6]];
-function teamAt(teams,seed){return teams[seed-1]||''}
 
-async function drawR16(ctx,teams){
-  const outerW=250,outerH=58,lx=34,rx=W-34-outerW;
-  const top=286,gap=62,groupGap=40;
-  const leftPairs=SEED16.slice(0,4),rightPairs=SEED16.slice(4);
-  const leftCenters=[],rightCenters=[];
-
-  for(let i=0;i<4;i++){
-    const gy=top+i*(gap*2+groupGap);
-    const p=leftPairs[i];
-    await teamCard(ctx,p[0],teamAt(teams,p[0]),lx,gy,outerW,outerH,'left');
-    await teamCard(ctx,p[1],teamAt(teams,p[1]),lx,gy+gap,outerW,outerH,'left');
-    leftCenters.push(gy+gap/2+outerH/2);
-    const midx=lx+outerW+28;
-    neonPath(ctx,[[lx+outerW,gy+outerH/2],[midx,gy+outerH/2],[midx,gy+gap+outerH/2],[lx+outerW,gy+gap+outerH/2]]);
-  }
-  for(let i=0;i<4;i++){
-    const gy=top+i*(gap*2+groupGap);
-    const p=rightPairs[i];
-    await teamCard(ctx,p[0],teamAt(teams,p[0]),rx,gy,outerW,outerH,'right');
-    await teamCard(ctx,p[1],teamAt(teams,p[1]),rx,gy+gap,outerW,outerH,'right');
-    rightCenters.push(gy+gap/2+outerH/2);
-    const midx=rx-28;
-    neonPath(ctx,[[rx,gy+outerH/2],[midx,gy+outerH/2],[midx,gy+gap+outerH/2],[rx,gy+gap+outerH/2]]);
-  }
-
-  const qW=174,qH=130,lq=335,rq=W-335-qW,qYs=[390,990];
-  stageCard(ctx,lq,qYs[0],qW,qH,'CUARTOS 1',['GANADOR 1','GANADOR 2']);
-  stageCard(ctx,lq,qYs[1],qW,qH,'CUARTOS 2',['GANADOR 3','GANADOR 4']);
-  stageCard(ctx,rq,qYs[0],qW,qH,'CUARTOS 3',['GANADOR 5','GANADOR 6']);
-  stageCard(ctx,rq,qYs[1],qW,qH,'CUARTOS 4',['GANADOR 7','GANADOR 8']);
-
-  neonPath(ctx,[[lx+outerW+28,leftCenters[0]],[lq,qYs[0]+38]]);
-  neonPath(ctx,[[lx+outerW+28,leftCenters[1]],[lq,qYs[0]+90]]);
-  neonPath(ctx,[[lx+outerW+28,leftCenters[2]],[lq,qYs[1]+38]]);
-  neonPath(ctx,[[lx+outerW+28,leftCenters[3]],[lq,qYs[1]+90]]);
-  neonPath(ctx,[[rx-28,rightCenters[0]],[rq+qW,qYs[0]+38]]);
-  neonPath(ctx,[[rx-28,rightCenters[1]],[rq+qW,qYs[0]+90]]);
-  neonPath(ctx,[[rx-28,rightCenters[2]],[rq+qW,qYs[1]+38]]);
-  neonPath(ctx,[[rx-28,rightCenters[3]],[rq+qW,qYs[1]+90]]);
-
-  const sW=158,sH=132,sy=695,ls=530,rs=W-530-sW;
-  stageCard(ctx,ls,sy,sW,sH,'SEMIFINAL 1',['GANADOR QF1','GANADOR QF2']);
-  stageCard(ctx,rs,sy,sW,sH,'SEMIFINAL 2',['GANADOR QF3','GANADOR QF4']);
-
-  neonPath(ctx,[[lq+qW,qYs[0]+qH/2],[ls,sy+42]]);
-  neonPath(ctx,[[lq+qW,qYs[1]+qH/2],[ls,sy+92]]);
-  neonPath(ctx,[[rq,qYs[0]+qH/2],[rs+sW,sy+42]]);
-  neonPath(ctx,[[rq,qYs[1]+qH/2],[rs+sW,sy+92]]);
-
-  const fw=176,fh=420,fx=W/2-fw/2,fy=505;
-  await finalPillar(ctx,fx,fy,fw,fh);
-  neonPath(ctx,[[ls+sW,sy+sH/2],[fx,sy+sH/2]]);
-  neonPath(ctx,[[rs,sy+sH/2],[fx+fw,sy+sH/2]]);
+/* =========================
+   DISEÑO 1 · ROUND OF 16
+   ========================= */
+function roundBackground(ctx){
+  const bg=ctx.createLinearGradient(0,0,W,H);bg.addColorStop(0,'#07111f');bg.addColorStop(.25,'#07307a');bg.addColorStop(.62,'#062878');bg.addColorStop(1,'#071126');ctx.fillStyle=bg;ctx.fillRect(0,0,W,H);
+  const sphere=ctx.createRadialGradient(W/2,620,80,W/2,620,570);sphere.addColorStop(0,'rgba(20,84,236,.44)');sphere.addColorStop(.6,'rgba(0,114,255,.20)');sphere.addColorStop(1,'rgba(0,0,0,0)');ctx.fillStyle=sphere;ctx.fillRect(0,180,W,1120);
+  ctx.save();ctx.globalAlpha=.23;ctx.strokeStyle='#4da8ff';ctx.lineWidth=3;
+  for(let i=0;i<8;i++){ctx.beginPath();ctx.arc(W/2,620,220+i*42,Math.PI*.18,Math.PI*.82);ctx.stroke()}
+  for(let a=-2;a<=2;a++){ctx.beginPath();ctx.moveTo(W/2+a*135,285);ctx.quadraticCurveTo(W/2+a*45,620,W/2+a*165,1050);ctx.stroke()}
+  ctx.restore();
+  const mag=ctx.createRadialGradient(W*.82,1000,20,W*.82,1000,280);mag.addColorStop(0,'rgba(232,35,255,.33)');mag.addColorStop(1,'rgba(0,0,0,0)');ctx.fillStyle=mag;ctx.fillRect(W*.58,720,520,520);
 }
-async function drawQF(ctx,teams){
-  const outerW=300,outerH=76,lx=38,rx=W-38-outerW;
-  const top1=342,top2=434,bottom1=1042,bottom2=1134;
-
-  await teamCard(ctx,1,teamAt(teams,1),lx,top1,outerW,outerH,'left');
-  await teamCard(ctx,8,teamAt(teams,8),lx,top2,outerW,outerH,'left');
-  await teamCard(ctx,4,teamAt(teams,4),lx,bottom1,outerW,outerH,'left');
-  await teamCard(ctx,5,teamAt(teams,5),lx,bottom2,outerW,outerH,'left');
-
-  await teamCard(ctx,2,teamAt(teams,2),rx,top1,outerW,outerH,'right');
-  await teamCard(ctx,7,teamAt(teams,7),rx,top2,outerW,outerH,'right');
-  await teamCard(ctx,3,teamAt(teams,3),rx,bottom1,outerW,outerH,'right');
-  await teamCard(ctx,6,teamAt(teams,6),rx,bottom2,outerW,outerH,'right');
-
-  const lJoin=lx+outerW+32,rJoin=rx-32;
-  neonPath(ctx,[[lx+outerW,top1+outerH/2],[lJoin,top1+outerH/2],[lJoin,top2+outerH/2],[lx+outerW,top2+outerH/2]]);
-  neonPath(ctx,[[lx+outerW,bottom1+outerH/2],[lJoin,bottom1+outerH/2],[lJoin,bottom2+outerH/2],[lx+outerW,bottom2+outerH/2]]);
-  neonPath(ctx,[[rx,top1+outerH/2],[rJoin,top1+outerH/2],[rJoin,top2+outerH/2],[rx,top2+outerH/2]]);
-  neonPath(ctx,[[rx,bottom1+outerH/2],[rJoin,bottom1+outerH/2],[rJoin,bottom2+outerH/2],[rx,bottom2+outerH/2]]);
-
-  const sW=205,sH=150,sy=702,ls=390,rs=W-390-sW;
-  stageCard(ctx,ls,sy,sW,sH,'SEMIFINAL 1',['GANADOR CRUCE 1','GANADOR CRUCE 2']);
-  stageCard(ctx,rs,sy,sW,sH,'SEMIFINAL 2',['GANADOR CRUCE 3','GANADOR CRUCE 4']);
-
-  neonPath(ctx,[[lJoin,(top1+top2+outerH)/2],[ls,sy+45]]);
-  neonPath(ctx,[[lJoin,(bottom1+bottom2+outerH)/2],[ls,sy+104]]);
-  neonPath(ctx,[[rJoin,(top1+top2+outerH)/2],[rs+sW,sy+45]]);
-  neonPath(ctx,[[rJoin,(bottom1+bottom2+outerH)/2],[rs+sW,sy+104]]);
-
-  const fw=186,fh=470,fx=W/2-fw/2,fy=540;
-  await finalPillar(ctx,fx,fy,fw,fh);
-  neonPath(ctx,[[ls+sW,sy+sH/2],[fx,sy+sH/2]]);
-  neonPath(ctx,[[rs,sy+sH/2],[fx+fw,sy+sH/2]]);
+async function roundHeader(ctx,meta,stage){
+  const league=await imageLoad(LEAGUE_LOGO),cat=await imageLoad(meta.logo);
+  if(league)drawContain(ctx,league,45,38,78,78);
+  if(cat)drawContain(ctx,cat,W-123,38,78,78);
+  ctx.textAlign='center';ctx.fillStyle='#fff';ctx.font='900 78px Arial';ctx.fillText(STAGES[stage].short,W/2,124);
+  ctx.fillStyle='#fff';ctx.font='900 28px Arial';ctx.fillText('LIGA JUVENTINO ROSAS · '+meta.name.toUpperCase(),W/2,170);ctx.textAlign='left';
 }
-async function drawSF(ctx,teams){
-  const outerW=330,outerH=88,lx=46,rx=W-46-outerW,y1=610,y2=718;
-  await teamCard(ctx,1,teamAt(teams,1),lx,y1,outerW,outerH,'left');
-  await teamCard(ctx,4,teamAt(teams,4),lx,y2,outerW,outerH,'left');
-  await teamCard(ctx,2,teamAt(teams,2),rx,y1,outerW,outerH,'right');
-  await teamCard(ctx,3,teamAt(teams,3),rx,y2,outerW,outerH,'right');
+async function roundTeam(ctx,seed,name,x,y,w,h,side){
+  const g=ctx.createLinearGradient(x,y,x+w,y);
+  if(side==='right'){g.addColorStop(0,'rgba(2,10,35,.96)');g.addColorStop(.75,'rgba(8,48,190,.96)');g.addColorStop(1,'rgba(11,84,255,.98)')}
+  else{g.addColorStop(0,'rgba(11,84,255,.98)');g.addColorStop(.25,'rgba(8,48,190,.96)');g.addColorStop(1,'rgba(2,10,35,.96)')}
+  fillR(ctx,x,y,w,h,7,g,'rgba(70,115,255,.75)',2);
+  const logo=await imageLoad(teamLogo(name)),box=h-12,bx=side==='right'?x+w-box-6:x+6;
+  if(name&&logo)drawContain(ctx,logo,bx+4,y+10,box-8,box-8);
+  const tx=side==='right'?x+16:x+box+17,max=w-box-34,label=name||'PASE DIRECTO';
+  ctx.fillStyle=name?'#fff':'#7eeef5';fitFont(ctx,label,max,22,12,900);ctx.fillText(label,tx,y+h/2+8);
+}
+function roundJoin(ctx,x,y1,y2,outX,outY,side){
+  const mid=side==='left'?x+34:x-34;
+  ctx.save();ctx.strokeStyle='rgba(188,205,255,.78)';ctx.lineWidth=3;ctx.lineJoin='miter';
+  ctx.beginPath();ctx.moveTo(x,y1);ctx.lineTo(mid,y1);ctx.lineTo(mid,y2);ctx.lineTo(x,y2);ctx.moveTo(mid,outY);ctx.lineTo(outX,outY);ctx.stroke();ctx.restore();
+}
+async function roundCenter(ctx){
+  const x=W/2-112,y=555,w=224,h=470;
+  const g=ctx.createLinearGradient(x,y,x+w,y+h);g.addColorStop(0,'rgba(17,65,169,.42)');g.addColorStop(.5,'rgba(4,18,76,.58)');g.addColorStop(1,'rgba(3,8,41,.35)');
+  fillR(ctx,x,y,w,h,80,g,'rgba(55,87,176,.24)',2);
+  await trophy(ctx,x+30,y+125,w-60,220);
+  ctx.textAlign='center';ctx.fillStyle='#fff';ctx.font='900 19px Arial';ctx.fillText('TORNEO DE COPA',W/2,y+60);
+  ctx.fillStyle='#6eeef5';ctx.font='900 12px Arial';ctx.fillText('GRAN FINAL',W/2,y+88);ctx.textAlign='left';
+}
+async function drawRoundR16(ctx,teams){
+  const cw=420,ch=78,lx=18,rx=W-18-cw,ys=[350,438,552,640,1000,1088,1202,1290];
+  for(let i=0;i<4;i++){const p=SEED16[i],b=i*2;await roundTeam(ctx,p[0],teamAt(teams,p[0]),lx,ys[b],cw,ch,'left');await roundTeam(ctx,p[1],teamAt(teams,p[1]),lx,ys[b+1],cw,ch,'left');roundJoin(ctx,lx+cw,ys[b]+ch/2,ys[b+1]+ch/2,lx+cw+90,(ys[b]+ys[b+1]+ch)/2,'left')}
+  for(let i=4;i<8;i++){const p=SEED16[i],j=i-4,b=j*2;await roundTeam(ctx,p[0],teamAt(teams,p[0]),rx,ys[b],cw,ch,'right');await roundTeam(ctx,p[1],teamAt(teams,p[1]),rx,ys[b+1],cw,ch,'right');roundJoin(ctx,rx,ys[b]+ch/2,ys[b+1]+ch/2,rx-90,(ys[b]+ys[b+1]+ch)/2,'right')}
+  const qW=220,qH=148,lq=480,rq=W-480-qW,qY=[445,1080];
+  fillR(ctx,lq,qY[0],qW,qH,14,'#0727ae','rgba(55,93,255,.8)');fillR(ctx,lq,qY[1],qW,qH,14,'#0727ae','rgba(55,93,255,.8)');
+  fillR(ctx,rq,qY[0],qW,qH,14,'#0727ae','rgba(55,93,255,.8)');fillR(ctx,rq,qY[1],qW,qH,14,'#0727ae','rgba(55,93,255,.8)');
+  [['CUARTOS 1',lq,qY[0]],['CUARTOS 2',lq,qY[1]],['CUARTOS 3',rq,qY[0]],['CUARTOS 4',rq,qY[1]]].forEach(([t,x,y])=>{ctx.fillStyle='#fff';ctx.font='900 16px Arial';ctx.fillText(t,x+18,y+34);ctx.fillStyle='#8deef5';ctx.font='800 12px Arial';ctx.fillText('GANADORES',x+18,y+68)});
+  line(ctx,lx+cw+90,480,lq,qY[0]+55,'rgba(185,205,255,.8)',3);line(ctx,lx+cw+90,1115,lq,qY[1]+55,'rgba(185,205,255,.8)',3);
+  line(ctx,rx-90,480,rq+qW,qY[0]+55,'rgba(185,205,255,.8)',3);line(ctx,rx-90,1115,rq+qW,qY[1]+55,'rgba(185,205,255,.8)',3);
+  await roundCenter(ctx);
+}
+async function drawRoundQF(ctx,teams){
+  const cw=430,ch=84,lx=18,rx=W-18-cw,ys=[390,486,1040,1136];
+  const lp=[SEED8[0],SEED8[1]],rp=[SEED8[2],SEED8[3]];
+  for(let i=0;i<2;i++){const p=lp[i],b=i*2;await roundTeam(ctx,p[0],teamAt(teams,p[0]),lx,ys[b],cw,ch,'left');await roundTeam(ctx,p[1],teamAt(teams,p[1]),lx,ys[b+1],cw,ch,'left');roundJoin(ctx,lx+cw,ys[b]+ch/2,ys[b+1]+ch/2,lx+cw+100,(ys[b]+ys[b+1]+ch)/2,'left')}
+  for(let i=0;i<2;i++){const p=rp[i],b=i*2;await roundTeam(ctx,p[0],teamAt(teams,p[0]),rx,ys[b],cw,ch,'right');await roundTeam(ctx,p[1],teamAt(teams,p[1]),rx,ys[b+1],cw,ch,'right');roundJoin(ctx,rx,ys[b]+ch/2,ys[b+1]+ch/2,rx-100,(ys[b]+ys[b+1]+ch)/2,'right')}
+  await roundCenter(ctx);
+  line(ctx,lx+cw+100,455,W/2-112,720,'rgba(185,205,255,.75)',3);line(ctx,lx+cw+100,1105,W/2-112,860,'rgba(185,205,255,.75)',3);
+  line(ctx,rx-100,455,W/2+112,720,'rgba(185,205,255,.75)',3);line(ctx,rx-100,1105,W/2+112,860,'rgba(185,205,255,.75)',3);
+}
+async function drawRoundSF(ctx,teams){
+  const cw=450,ch=94,lx=18,rx=W-18-cw,y1=590,y2=710;
+  await roundTeam(ctx,1,teamAt(teams,1),lx,y1,cw,ch,'left');await roundTeam(ctx,4,teamAt(teams,4),lx,y2,cw,ch,'left');
+  await roundTeam(ctx,2,teamAt(teams,2),rx,y1,cw,ch,'right');await roundTeam(ctx,3,teamAt(teams,3),rx,y2,cw,ch,'right');
+  roundJoin(ctx,lx+cw,y1+ch/2,y2+ch/2,W/2-112,690,'left');roundJoin(ctx,rx,y1+ch/2,y2+ch/2,W/2+112,690,'right');await roundCenter(ctx);
+}
+async function drawRoundFinal(ctx,teams){
+  const cw=470,ch=106,lx=18,rx=W-18-cw,y=735;
+  await roundTeam(ctx,1,teamAt(teams,1),lx,y,cw,ch,'left');await roundTeam(ctx,2,teamAt(teams,2),rx,y,cw,ch,'right');
+  line(ctx,lx+cw,y+ch/2,W/2-112,y+ch/2,'rgba(185,205,255,.8)',3);line(ctx,rx,y+ch/2,W/2+112,y+ch/2,'rgba(185,205,255,.8)',3);await roundCenter(ctx);
+}
+async function renderRound(ctx,meta,stage,teams){
+  roundBackground(ctx);await roundHeader(ctx,meta,stage);
+  if(stage==='r16')await drawRoundR16(ctx,teams);else if(stage==='qf')await drawRoundQF(ctx,teams);else if(stage==='sf')await drawRoundSF(ctx,teams);else await drawRoundFinal(ctx,teams);
+  ctx.textAlign='center';ctx.fillStyle='rgba(255,255,255,.78)';ctx.font='900 14px Arial';ctx.fillText('LIGA JUVENTINO ROSAS',W/2,H-62);ctx.textAlign='left';
+}
 
-  const lj=lx+outerW+36,rj=rx-36;
-  neonPath(ctx,[[lx+outerW,y1+outerH/2],[lj,y1+outerH/2],[lj,y2+outerH/2],[lx+outerW,y2+outerH/2]]);
-  neonPath(ctx,[[rx,y1+outerH/2],[rj,y1+outerH/2],[rj,y2+outerH/2],[rx,y2+outerH/2]]);
+/* =========================
+   DISEÑO 2 · FULL BRACKET
+   ========================= */
+function fullBackground(ctx){
+  const bg=ctx.createLinearGradient(0,0,W,H);bg.addColorStop(0,'#07156b');bg.addColorStop(.4,'#02043f');bg.addColorStop(1,'#010123');ctx.fillStyle=bg;ctx.fillRect(0,0,W,H);
+  const edge=ctx.createLinearGradient(0,0,0,H);edge.addColorStop(0,'#ff761c');edge.addColorStop(.35,'#23def0');edge.addColorStop(.7,'#23def0');edge.addColorStop(1,'#ff761c');ctx.fillStyle=edge;ctx.fillRect(8,0,5,H);ctx.fillRect(W-13,0,5,H);
+  const glow=ctx.createRadialGradient(W/2,820,25,W/2,820,520);glow.addColorStop(0,'rgba(22,74,255,.34)');glow.addColorStop(1,'rgba(0,0,0,0)');ctx.fillStyle=glow;ctx.fillRect(W/2-550,250,1100,1100);
+}
+async function fullHeader(ctx,meta,stage){
+  const league=await imageLoad(LEAGUE_LOGO),cat=await imageLoad(meta.logo);if(league)drawContain(ctx,league,42,42,76,76);if(cat)drawContain(ctx,cat,W-118,42,76,76);
+  ctx.textAlign='center';ctx.fillStyle='#fff';ctx.font='900 25px Arial';ctx.fillText('LIGA JUVENTINO ROSAS · '+meta.name.toUpperCase(),W/2,60);
+  ctx.fillStyle='#fff';ctx.font='900 70px Arial';ctx.fillText('FULL',W/2-155,142);ctx.fillStyle='#21dff1';ctx.fillText('BRACKET',W/2+120,142);
+  ctx.fillStyle='#9ca9da';ctx.font='900 15px Arial';ctx.fillText(STAGES[stage].name.toUpperCase(),W/2,178);ctx.textAlign='left';
+}
+async function fullTile(ctx,seed,name,x,y,w,h){
+  const g=ctx.createLinearGradient(x,y,x,y+h);g.addColorStop(0,'#123fff');g.addColorStop(.54,'#09218d');g.addColorStop(1,'#05093f');fillR(ctx,x,y,w,h,11,g,'rgba(43,85,245,.86)',2);
+  const logo=await imageLoad(teamLogo(name)),label=name||'PASE DIRECTO';
+  if(logo)drawContain(ctx,logo,x+w*.19,y+10,w*.62,h*.50);
+  ctx.textAlign='center';ctx.fillStyle=name?'#fff':'#5ceaf4';fitFont(ctx,label,w-16,15,9,900);ctx.fillText(label,x+w/2,y+h-16);ctx.textAlign='left';
+}
+function fullStageCard(ctx,x,y,w,h,title,a,b){
+  const g=ctx.createLinearGradient(x,y,x,y+h);g.addColorStop(0,'#123fff');g.addColorStop(.48,'#09208f');g.addColorStop(1,'#05083f');fillR(ctx,x,y,w,h,12,g,'rgba(50,92,255,.85)',2);
+  ctx.textAlign='center';ctx.fillStyle='#62eaf4';ctx.font='900 10px Arial';ctx.fillText(title,x+w/2,y+20);
+  ctx.fillStyle='#fff';ctx.font='900 14px Arial';ctx.fillText(a,x+w/2,y+52);
+  ctx.fillStyle='rgba(255,120,28,.88)';ctx.fillRect(x+12,y+h/2,w-24,2);
+  ctx.fillStyle='#fff';ctx.fillText(b,x+w/2,y+h-20);ctx.textAlign='left';
+}
+async function fullPillar(ctx,x,y,w,h){
+  const g=ctx.createLinearGradient(x,y,x+w,y+h);g.addColorStop(0,'rgba(16,66,255,.96)');g.addColorStop(.38,'rgba(7,22,103,.98)');g.addColorStop(1,'rgba(2,6,42,.98)');fillR(ctx,x,y,w,h,38,g,'rgba(39,72,178,.72)',2);
+  ctx.textAlign='center';ctx.fillStyle='#64eaf4';ctx.font='900 11px Arial';ctx.fillText('GRAN FINAL',x+w/2,y+39);ctx.fillStyle='#fff';ctx.font='900 18px Arial';ctx.fillText('TORNEO DE COPA',x+w/2,y+65);ctx.textAlign='left';
+  await trophy(ctx,x+w*.20,y+h*.28,w*.60,h*.44);
+}
+async function drawFullR16(ctx,teams){
+  const tw=142,th=134,lx=32,rx=W-32-tw,ys=[250,392,548,690,980,1122,1278,1420];
+  for(let i=0;i<4;i++){const p=SEED16[i],b=i*2;await fullTile(ctx,p[0],teamAt(teams,p[0]),lx,ys[b],tw,th);await fullTile(ctx,p[1],teamAt(teams,p[1]),lx,ys[b+1],tw,th);neon(ctx,[[lx+tw,ys[b]+th/2],[lx+tw+30,ys[b]+th/2],[lx+tw+30,ys[b+1]+th/2],[lx+tw,ys[b+1]+th/2]])}
+  for(let i=4;i<8;i++){const p=SEED16[i],j=i-4,b=j*2;await fullTile(ctx,p[0],teamAt(teams,p[0]),rx,ys[b],tw,th);await fullTile(ctx,p[1],teamAt(teams,p[1]),rx,ys[b+1],tw,th);neon(ctx,[[rx,ys[b]+th/2],[rx-30,ys[b]+th/2],[rx-30,ys[b+1]+th/2],[rx,ys[b+1]+th/2]])}
+  const qW=155,qH=178,lq=250,rq=W-250-qW,qY=[350,1110];fullStageCard(ctx,lq,qY[0],qW,qH,'CUARTOS 1','GANADOR 1','GANADOR 2');fullStageCard(ctx,lq,qY[1],qW,qH,'CUARTOS 2','GANADOR 3','GANADOR 4');fullStageCard(ctx,rq,qY[0],qW,qH,'CUARTOS 3','GANADOR 5','GANADOR 6');fullStageCard(ctx,rq,qY[1],qW,qH,'CUARTOS 4','GANADOR 7','GANADOR 8');
+  const sW=165,sH=200,sy=690,ls=455,rs=W-455-sW;fullStageCard(ctx,ls,sy,sW,sH,'SEMIFINAL 1','GANADOR QF1','GANADOR QF2');fullStageCard(ctx,rs,sy,sW,sH,'SEMIFINAL 2','GANADOR QF3','GANADOR QF4');
+  const fw=175,fh=470,fx=W/2-fw/2,fy=530;await fullPillar(ctx,fx,fy,fw,fh);
+  neon(ctx,[[lq+qW,qY[0]+qH/2],[ls,sy+58]]);neon(ctx,[[lq+qW,qY[1]+qH/2],[ls,sy+142]]);neon(ctx,[[rq,qY[0]+qH/2],[rs+sW,sy+58]]);neon(ctx,[[rq,qY[1]+qH/2],[rs+sW,sy+142]]);
+  line(ctx,ls+sW,sy+sH/2,fx,sy+sH/2);line(ctx,rs,sy+sH/2,fx+fw,sy+sH/2);
+}
+async function drawFullQF(ctx,teams){
+  const tw=160,th=150,lx=34,rx=W-34-tw,ys=[330,490,1030,1190],lp=[SEED8[0],SEED8[1]],rp=[SEED8[2],SEED8[3]];
+  for(let i=0;i<2;i++){const p=lp[i],b=i*2;await fullTile(ctx,p[0],teamAt(teams,p[0]),lx,ys[b],tw,th);await fullTile(ctx,p[1],teamAt(teams,p[1]),lx,ys[b+1],tw,th);neon(ctx,[[lx+tw,ys[b]+th/2],[lx+tw+32,ys[b]+th/2],[lx+tw+32,ys[b+1]+th/2],[lx+tw,ys[b+1]+th/2]])}
+  for(let i=0;i<2;i++){const p=rp[i],b=i*2;await fullTile(ctx,p[0],teamAt(teams,p[0]),rx,ys[b],tw,th);await fullTile(ctx,p[1],teamAt(teams,p[1]),rx,ys[b+1],tw,th);neon(ctx,[[rx,ys[b]+th/2],[rx-32,ys[b]+th/2],[rx-32,ys[b+1]+th/2],[rx,ys[b+1]+th/2]])}
+  const sW=185,sH=205,sy=700,ls=365,rs=W-365-sW;fullStageCard(ctx,ls,sy,sW,sH,'SEMIFINAL 1','GANADOR CRUCE 1','GANADOR CRUCE 2');fullStageCard(ctx,rs,sy,sW,sH,'SEMIFINAL 2','GANADOR CRUCE 3','GANADOR CRUCE 4');
+  const fw=190,fh=500,fx=W/2-fw/2,fy=545;await fullPillar(ctx,fx,fy,fw,fh);line(ctx,ls+sW,sy+sH/2,fx,sy+sH/2);line(ctx,rs,sy+sH/2,fx+fw,sy+sH/2);
+}
+async function drawFullSF(ctx,teams){
+  const tw=190,th=178,lx=45,rx=W-45-tw,ys=[570,760];await fullTile(ctx,1,teamAt(teams,1),lx,ys[0],tw,th);await fullTile(ctx,4,teamAt(teams,4),lx,ys[1],tw,th);await fullTile(ctx,2,teamAt(teams,2),rx,ys[0],tw,th);await fullTile(ctx,3,teamAt(teams,3),rx,ys[1],tw,th);
+  const fw=220,fh=530,fx=W/2-fw/2,fy=500;await fullPillar(ctx,fx,fy,fw,fh);neon(ctx,[[lx+tw,ys[0]+th/2],[fx,680],[lx+tw,ys[1]+th/2]]);neon(ctx,[[rx,ys[0]+th/2],[fx+fw,680],[rx,ys[1]+th/2]]);
+}
+async function drawFullFinal(ctx,teams){
+  const tw=230,th=205,lx=60,rx=W-60-tw,y=700;await fullTile(ctx,1,teamAt(teams,1),lx,y,tw,th);await fullTile(ctx,2,teamAt(teams,2),rx,y,tw,th);
+  const fw=250,fh=560,fx=W/2-fw/2,fy=480;await fullPillar(ctx,fx,fy,fw,fh);line(ctx,lx+tw,y+th/2,fx,y+th/2);line(ctx,rx,y+th/2,fx+fw,y+th/2);
+}
+async function renderFull(ctx,meta,stage,teams){
+  fullBackground(ctx);await fullHeader(ctx,meta,stage);
+  if(stage==='r16')await drawFullR16(ctx,teams);else if(stage==='qf')await drawFullQF(ctx,teams);else if(stage==='sf')await drawFullSF(ctx,teams);else await drawFullFinal(ctx,teams);
+  ctx.textAlign='center';ctx.fillStyle='rgba(255,255,255,.7)';ctx.font='900 12px Arial';ctx.fillText('LIGA JUVENTINO ROSAS',W/2,H-55);ctx.textAlign='left';
+}
 
-  const fw=220,fh=500,fx=W/2-fw/2,fy=470;
-  await finalPillar(ctx,fx,fy,fw,fh);
-  neonPath(ctx,[[lj,(y1+y2+outerH)/2],[fx,(y1+y2+outerH)/2]]);
-  neonPath(ctx,[[rj,(y1+y2+outerH)/2],[fx+fw,(y1+y2+outerH)/2]]);
-}
-async function drawFinal(ctx,teams){
-  const outerW=360,outerH=98,lx=54,rx=W-54-outerW,y=760;
-  await teamCard(ctx,1,teamAt(teams,1),lx,y,outerW,outerH,'left');
-  await teamCard(ctx,2,teamAt(teams,2),rx,y,outerW,outerH,'right');
-  const fw=230,fh=510,fx=W/2-fw/2,fy=500;
-  await finalPillar(ctx,fx,fy,fw,fh);
-  neonPath(ctx,[[lx+outerW,y+outerH/2],[fx,y+outerH/2]]);
-  neonPath(ctx,[[rx,y+outerH/2],[fx+fw,y+outerH/2]]);
-}
-function footer(ctx,meta,stage){
-  const y=H-88;
-  ctx.textAlign='center';
-  ctx.fillStyle='#7f8fc8';ctx.font='800 11px Arial';
-  ctx.fillText('LIGA JUVENTINO ROSAS · '+meta.name.toUpperCase()+' · '+STAGES[stage].short,W/2,y);
-  ctx.textAlign='left';
-}
-async function drawBracket(canvas,page){
-  canvas.width=W*SCALE;canvas.height=H*SCALE;
-  const ctx=canvas.getContext('2d');
-  ctx.setTransform(SCALE,0,0,SCALE,0,0);
-  const cat=page.querySelector('[data-v649-cat]')?.value||currentCategory();
-  const meta=catMeta(cat),stage=resolvedStage(page),teams=slotValues(page);
-  background(ctx);
-  await header(ctx,meta,stage);
-  if(stage==='r16')await drawR16(ctx,teams);
-  else if(stage==='qf')await drawQF(ctx,teams);
-  else if(stage==='sf')await drawSF(ctx,teams);
-  else await drawFinal(ctx,teams);
-  footer(ctx,meta,stage);
+async function renderCanvas(canvas,page,design,scale){
+  scale=scale||1;
+  canvas.width=Math.round(W*scale);canvas.height=Math.round(H*scale);
+  const ctx=canvas.getContext('2d');ctx.setTransform(scale,0,0,scale,0,0);
+  const cat=page.querySelector('[data-v651-cat]')?.value||currentCategory(),meta=catMeta(cat),stage=resolvedStage(page),teams=slotValues(page);
+  if(design==='full')await renderFull(ctx,meta,stage,teams);else await renderRound(ctx,meta,stage,teams);
   return canvas;
 }
-
-function queuePreview(page){
+function refreshSelectedCards(page){
+  const design=selectedDesign(page);
+  page.querySelectorAll('[data-v651-design]').forEach(btn=>btn.classList.toggle('selected',btn.dataset.v651Design===design));
+  const meta=page.querySelector('[data-v651-current-name]');if(meta)meta.textContent=DESIGNS[design].name;
+}
+function queueAllPreviews(page){
   const token=++previewToken;clearTimeout(previewTimer);
-  previewTimer=setTimeout(async()=>{const c=page.querySelector('[data-v649-preview]');if(!c||token!==previewToken)return;try{await drawBracket(c,page)}catch(e){console.warn('V649 preview',e)}},70);
+  previewTimer=setTimeout(async()=>{
+    if(token!==previewToken||!page.isConnected)return;
+    try{
+      const a=page.querySelector('[data-v651-preview-round]'),b=page.querySelector('[data-v651-preview-full]'),main=page.querySelector('[data-v651-preview-main]');
+      if(a)await renderCanvas(a,page,'round',.36);
+      if(b)await renderCanvas(b,page,'full',.36);
+      if(main)await renderCanvas(main,page,selectedDesign(page),.65);
+    }catch(e){console.warn('V651 preview',e)}
+  },80);
 }
 function validateUnique(page){
   const vals=slotValues(page).filter(Boolean),seen=new Set();
@@ -505,67 +361,79 @@ function blobFromCanvas(c){return new Promise((res,rej)=>c.toBlob(b=>b?res(b):re
 function download(blob,name){const a=document.createElement('a'),u=URL.createObjectURL(blob);a.href=u;a.download=name;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(u),1500)}
 function slug(v){return norm(v).toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'')||'categoria'}
 async function exportPng(page){
-  if(!validateUnique(page))return;setStatus(page,'Generando PNG profesional HD…');
+  if(!validateUnique(page))return;
+  setStatus(page,'Generando PNG HD del diseño seleccionado…');
   try{
-    const c=document.createElement('canvas');await drawBracket(c,page);
-    const stage=resolvedStage(page),meta=catMeta(page.querySelector('[data-v649-cat]').value);
-    download(await blobFromCanvas(c),'Liga_Juventino_Copa_'+slug(STAGES[stage].name)+'_'+slug(meta.name)+'_HD.png');
+    const c=document.createElement('canvas'),design=selectedDesign(page);await renderCanvas(c,page,design,2);
+    const stage=resolvedStage(page),meta=catMeta(page.querySelector('[data-v651-cat]').value);
+    download(await blobFromCanvas(c),'Liga_Juventino_'+DESIGNS[design].slug+'_'+slug(STAGES[stage].name)+'_'+slug(meta.name)+'_HD.png');
     setStatus(page,'PNG HD generado correctamente.');
   }catch(e){console.warn(e);setStatus(page,'No se pudo generar el PNG.',true)}
 }
 function loadJsPDF(){
   if(window.jspdf?.jsPDF)return Promise.resolve(window.jspdf.jsPDF);
-  return new Promise((res,rej)=>{let s=document.querySelector('script[data-v649-jspdf]');if(!s){s=document.createElement('script');s.src='https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js';s.async=true;s.dataset.v649Jspdf='1';document.head.appendChild(s)}const ok=()=>window.jspdf?.jsPDF?res(window.jspdf.jsPDF):rej(new Error('jsPDF'));s.addEventListener('load',ok,{once:true});s.addEventListener('error',rej,{once:true});if(window.jspdf?.jsPDF)ok()});
+  return new Promise((res,rej)=>{let s=document.querySelector('script[data-v651-jspdf]');if(!s){s=document.createElement('script');s.src='https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js';s.async=true;s.dataset.v651Jspdf='1';document.head.appendChild(s)}const ok=()=>window.jspdf?.jsPDF?res(window.jspdf.jsPDF):rej(new Error('jsPDF'));s.addEventListener('load',ok,{once:true});s.addEventListener('error',rej,{once:true});if(window.jspdf?.jsPDF)ok()});
 }
 async function exportPdf(page){
-  if(!validateUnique(page))return;setStatus(page,'Generando PDF profesional…');
+  if(!validateUnique(page))return;
+  setStatus(page,'Generando PDF del diseño seleccionado…');
   try{
-    const c=document.createElement('canvas');await drawBracket(c,page);const JS=await loadJsPDF(),pdf=new JS({orientation:'portrait',unit:'mm',format:'a4',compress:true});
+    const c=document.createElement('canvas'),design=selectedDesign(page);await renderCanvas(c,page,design,2);
+    const JS=await loadJsPDF(),pdf=new JS({orientation:'portrait',unit:'mm',format:'a4',compress:true});
     pdf.addImage(c.toDataURL('image/png'),'PNG',0,0,210,262.6,undefined,'FAST');
-    const stage=resolvedStage(page),meta=catMeta(page.querySelector('[data-v649-cat]').value);
-    pdf.save('Liga_Juventino_Copa_'+slug(STAGES[stage].name)+'_'+slug(meta.name)+'.pdf');setStatus(page,'PDF generado correctamente.');
+    const stage=resolvedStage(page),meta=catMeta(page.querySelector('[data-v651-cat]').value);
+    pdf.save('Liga_Juventino_'+DESIGNS[design].slug+'_'+slug(STAGES[stage].name)+'_'+slug(meta.name)+'.pdf');
+    setStatus(page,'PDF generado correctamente.');
   }catch(e){console.warn(e);setStatus(page,'No se pudo generar el PDF.',true)}
 }
 
 async function mount(){
   if(route()!=='bracketBuilder')return;injectCss();
-  const page=document.querySelector('#screen .v64-page');if(!page||page.dataset.v649==='1')return;
+  const page=document.querySelector('#screen .v64-page');if(!page||page.dataset.v651==='1')return;
   await ensureData();if(route()!=='bracketBuilder'||!page.isConnected)return;
-  const cat=currentCategory(),meta=catMeta(cat);
-  page.dataset.v649='1';page.dataset.v643='2';
+  const cat=currentCategory(),meta=catMeta(cat),design=String(localStorage.getItem('v651-bracket-design')||'round');
+  page.dataset.v651='1';page.dataset.v651Design=DESIGNS[design]?design:'round';page.dataset.v643='2';
   page.innerHTML=
-    '<section class="v649-hero"><div class="v649-brand"><img src="'+esc(LEAGUE_LOGO)+'" alt=""><span><small>LIGA JUVENTINO ROSAS</small><h1>FULL BRACKET · Copa</h1></span></div><p>Diseño simétrico inspirado en cuadro profesional: equipos a los lados, rondas hacia el centro y trofeo en la Final.</p></section>'+
-    '<section class="v649-controls"><div class="v649-catrow"><span class="v649-catlogo"><img data-v649-cat-logo src="'+esc(meta.logo)+'" alt=""></span><div class="v649-grid">'+
-      '<label>CATEGORÍA<select data-v649-cat>'+CATS.map(c=>'<option value="'+c.id+'" '+(c.id===cat?'selected':'')+'>'+esc(c.name)+'</option>').join('')+'</select></label>'+
-      '<label>ETAPA<select data-v649-stage><option value="auto">Automático</option><option value="r16">Octavos de final</option><option value="qf">Cuartos de final</option><option value="sf">Semifinales</option><option value="final">Final</option></select></label>'+
-    '</div></div><div class="v649-auto" data-v649-auto></div></section>'+
-    '<div class="v649-actions"><button type="button" class="v649-soft" data-v649-autofill>Clasificar equipos</button><button type="button" class="v649-soft" data-v649-clear>Limpiar</button></div>'+
-    '<div class="v649-title"><span><small>CLASIFICADOS</small><b data-v649-slot-title></b></span><em data-v649-slot-hint></em></div>'+
-    '<section class="v649-slots" data-v649-slots></section>'+
-    '<div class="v649-title"><span><small>VISTA PREVIA</small><b>Diseño profesional</b></span><em>Vertical · simétrico · HD</em></div>'+
-    '<section class="v649-preview"><canvas data-v649-preview width="'+(W*SCALE)+'" height="'+(H*SCALE)+'"></canvas><div class="v649-preview-meta"><span>Diseño FULL BRACKET profesional</span><b>Equipos laterales + rondas al centro</b></div></section>'+
-    '<div class="v649-export"><button type="button" data-v649-png>Generar PNG HD</button><button type="button" data-v649-pdf>Generar PDF</button></div><div class="v649-status" data-v649-status aria-live="polite"></div>';
+    '<section class="v651-hero"><div class="v651-brand"><img src="'+esc(LEAGUE_LOGO)+'" alt=""><span><small>LIGA JUVENTINO ROSAS</small><h1>Generador de Bracket</h1></span></div><p>Dos diseños independientes con vista previa: Round of 16 y Full Bracket. Ambos conservan el trofeo en el centro, categoría, nombres y logos de los equipos.</p></section>'+
+    '<section class="v651-controls"><div class="v651-catrow"><span class="v651-catlogo"><img data-v651-cat-logo src="'+esc(meta.logo)+'" alt=""></span><div class="v651-grid">'+
+      '<label>CATEGORÍA<select data-v651-cat>'+CATS.map(c=>'<option value="'+c.id+'" '+(c.id===cat?'selected':'')+'>'+esc(c.name)+'</option>').join('')+'</select></label>'+
+      '<label>ETAPA<select data-v651-stage><option value="auto">Automático</option><option value="r16">Octavos de final</option><option value="qf">Cuartos de final</option><option value="sf">Semifinales</option><option value="final">Final</option></select></label>'+
+    '</div></div><div class="v651-auto" data-v651-auto></div></section>'+
+    '<div class="v651-actions"><button type="button" class="v651-soft" data-v651-autofill>Clasificar equipos</button><button type="button" class="v651-soft" data-v651-clear>Limpiar</button></div>'+
+    '<div class="v651-title"><span><small>CLASIFICADOS</small><b data-v651-slot-title></b></span><em data-v651-slot-hint></em></div>'+
+    '<section class="v651-slots" data-v651-slots></section>'+
+    '<div class="v651-title"><span><small>ELIGE DISEÑO</small><b>Dos vistas previas</b></span><em>Toca una para usarla<br>al generar PNG/PDF</em></div>'+
+    '<section class="v651-designs">'+
+      '<button type="button" class="v651-design-card" data-v651-design="round"><canvas data-v651-preview-round></canvas><span><b>Diseño 1 · Round of 16</b><i>VISTA PREVIA</i></span></button>'+
+      '<button type="button" class="v651-design-card" data-v651-design="full"><canvas data-v651-preview-full></canvas><span><b>Diseño 2 · Full Bracket</b><i>VISTA PREVIA</i></span></button>'+
+    '</section>'+
+    '<div class="v651-title"><span><small>VISTA PREVIA GRANDE</small><b data-v651-current-name></b></span><em>Trofeo central<br>logos y nombres</em></div>'+
+    '<section class="v651-current"><canvas data-v651-preview-main></canvas><div class="v651-current-meta"><span>Diseño seleccionado</span><b>PNG HD · PDF</b></div></section>'+
+    '<div class="v651-export"><button type="button" data-v651-png>Generar PNG HD</button><button type="button" data-v651-pdf>Generar PDF</button></div><div class="v651-status" data-v651-status aria-live="polite"></div>';
 
-  const catSel=page.querySelector('[data-v649-cat]'),stageSel=page.querySelector('[data-v649-stage]');
-  stageSel.value=String(localStorage.getItem('v649-bracket-stage')||'auto');
+  const catSel=page.querySelector('[data-v651-cat]'),stageSel=page.querySelector('[data-v651-stage]');
+  stageSel.value=String(localStorage.getItem('v651-bracket-stage')||'auto');
   if(stageSel.value!=='auto'&&!STAGES[stageSel.value])stageSel.value='auto';
 
-  renderSlots(page,false);autoFill(page);
+  renderSlots(page,false);autoFill(page);refreshSelectedCards(page);
   catSel.addEventListener('change',()=>{
-    const id=catSel.value,m=catMeta(id);try{localStorage.setItem('v649-bracket-cat',id);localStorage.setItem('v62-category',id)}catch(_){}
-    page.querySelector('[data-v649-cat-logo]').src=m.logo;renderSlots(page,false);autoFill(page);stageInfo(page);
+    const id=catSel.value,m=catMeta(id);try{localStorage.setItem('v651-bracket-cat',id);localStorage.setItem('v62-category',id)}catch(_){}
+    page.querySelector('[data-v651-cat-logo]').src=m.logo;renderSlots(page,false);autoFill(page);stageInfo(page);
   });
   stageSel.addEventListener('change',()=>{
-    try{localStorage.setItem('v649-bracket-stage',stageSel.value)}catch(_){}
+    try{localStorage.setItem('v651-bracket-stage',stageSel.value)}catch(_){}
     renderSlots(page,true);stageInfo(page);autoFill(page);
   });
-  page.querySelector('[data-v649-autofill]').addEventListener('click',()=>autoFill(page));
-  page.querySelector('[data-v649-clear]').addEventListener('click',()=>{page.querySelectorAll('[data-v649-place]').forEach(s=>{s.value='';updateSlotLogo(s)});syncNoDuplicates(page);setStatus(page,'Selección limpiada.');queuePreview(page)});
-  page.querySelector('[data-v649-png]').addEventListener('click',()=>exportPng(page));
-  page.querySelector('[data-v649-pdf]').addEventListener('click',()=>exportPdf(page));
-  stageInfo(page);queuePreview(page);
+  page.querySelector('[data-v651-autofill]').addEventListener('click',()=>autoFill(page));
+  page.querySelector('[data-v651-clear]').addEventListener('click',()=>{page.querySelectorAll('[data-v651-place]').forEach(s=>{s.value='';updateSlotLogo(s)});syncNoDuplicates(page);setStatus(page,'Selección limpiada.');queueAllPreviews(page)});
+  page.querySelectorAll('[data-v651-design]').forEach(btn=>btn.addEventListener('click',()=>{
+    page.dataset.v651Design=btn.dataset.v651Design;try{localStorage.setItem('v651-bracket-design',btn.dataset.v651Design)}catch(_){}
+    refreshSelectedCards(page);queueAllPreviews(page);setStatus(page,DESIGNS[btn.dataset.v651Design].name+' seleccionado.');
+  }));
+  page.querySelector('[data-v651-png]').addEventListener('click',()=>exportPng(page));
+  page.querySelector('[data-v651-pdf]').addEventListener('click',()=>exportPdf(page));
+  stageInfo(page);queueAllPreviews(page);
 }
-
 function schedule(){clearTimeout(mountTimer);mountTimer=setTimeout(mount,45)}
 window.addEventListener('hashchange',schedule);window.addEventListener('load',schedule);document.addEventListener('DOMContentLoaded',schedule,{once:true});
 const screen=document.getElementById('screen');if(screen)new MutationObserver(schedule).observe(screen,{childList:true,subtree:true});
