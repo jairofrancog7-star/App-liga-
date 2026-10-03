@@ -1,0 +1,313 @@
+/* V638 — Cédulas modernas: filtros visibles, tarjetas compactas,
+   jornada con logo a círculo completo y generador compacto. */
+
+@media(max-width:1023px){
+  /* ===== LISTA DE CÉDULAS ===== */
+  body[data-app-route="cedulas"] .v638-cedulas-modern{
+    padding:14px 12px calc(92px + env(safe-area-inset-bottom))!important;
+  }
+  body[data-app-route="cedulas"] .v638-cedula-top{
+    padding:12px!important;
+    margin:0 0 12px!important;
+    border:1px solid rgba(38,225,239,.28)!important;
+    border-radius:18px!important;
+    background:
+      radial-gradient(180px 100px at 100% 0,rgba(26,222,239,.12),transparent 70%),
+      linear-gradient(180deg,#101682 0%,#0a0b6d 100%)!important;
+    box-shadow:0 10px 26px rgba(0,0,55,.18)!important;
+  }
+  body[data-app-route="cedulas"] .v638-cedula-top .v66-cedula-headline{
+    margin:0 0 12px!important;
+    align-items:center!important;
+  }
+  body[data-app-route="cedulas"] .v638-cedula-top .v66-cedula-headline>span{
+    display:grid!important;
+    gap:4px!important;
+  }
+  body[data-app-route="cedulas"] .v638-cedula-top .v66-cedula-headline span>small{
+    color:#27e1ec!important;
+    font-size:7px!important;
+    line-height:1!important;
+    font-weight:950!important;
+    letter-spacing:.14em!important;
+  }
+  body[data-app-route="cedulas"] .v638-cedula-top .v66-cedula-headline span>b{
+    font-size:19px!important;
+    line-height:1!important;
+  }
+  body[data-app-route="cedulas"] .v638-cedula-top .v66-cedula-headline>em{
+    min-width:56px!important;
+    height:28px!important;
+    display:grid!important;
+    place-items:center!important;
+    padding:0 9px!important;
+    border:1px solid rgba(39,225,236,.34)!important;
+    border-radius:999px!important;
+    background:#0b0d72!important;
+    color:#9ff8ff!important;
+    font-size:9px!important;
+    line-height:1!important;
+    font-style:normal!important;
+    font-weight:900!important;
+  }
+
+  body[data-app-route="cedulas"] .v638-filter-panel{
+    padding:10px!important;
+    border:1px solid rgba(255,255,255,.09)!important;
+    border-radius:14px!important;
+    background:rgba(5,7,91,.48)!important;
+  }
+  body[data-app-route="cedulas"] .v638-filter-copy{
+    display:flex!important;
+    align-items:baseline!important;
+    justify-content:space-between!important;
+    gap:8px!important;
+    margin:0 0 9px!important;
+  }
+  body[data-app-route="cedulas"] .v638-filter-copy b{
+    color:#fff!important;
+    font-size:12px!important;
+    line-height:1!important;
+  }
+  body[data-app-route="cedulas"] .v638-filter-copy small{
+    color:#8f9bd0!important;
+    font-size:8px!important;
+    line-height:1!important;
+  }
+  body[data-app-route="cedulas"] .v66-cedula-filters{
+    display:grid!important;
+    grid-template-columns:1fr 1.18fr!important;
+    gap:8px!important;
+    margin:0!important;
+  }
+  body[data-app-route="cedulas"] .v66-cedula-filters label{
+    gap:4px!important;
+  }
+  body[data-app-route="cedulas"] .v66-cedula-filters label>span{
+    color:#61eaf2!important;
+    font-size:6.5px!important;
+    letter-spacing:.12em!important;
+  }
+  body[data-app-route="cedulas"] .v66-cedula-filters select{
+    height:36px!important;
+    padding:0 29px 0 10px!important;
+    border:1px solid rgba(70,98,206,.68)!important;
+    border-radius:11px!important;
+    background:#0c0e72!important;
+    color:#fff!important;
+    font-size:9px!important;
+    font-weight:850!important;
+  }
+  body[data-app-route="cedulas"] .v638-create{
+    min-height:40px!important;
+    height:40px!important;
+    margin:10px 0 0!important;
+    display:flex!important;
+    align-items:center!important;
+    justify-content:center!important;
+    gap:7px!important;
+    border:0!important;
+    border-radius:12px!important;
+    background:linear-gradient(90deg,#24d9e8,#31cfe8)!important;
+    color:#07105e!important;
+  }
+  body[data-app-route="cedulas"] .v638-create span{
+    font-size:17px!important;
+    line-height:1!important;
+  }
+  body[data-app-route="cedulas"] .v638-create b{
+    color:#07105e!important;
+    font-size:11px!important;
+    line-height:1!important;
+    font-weight:950!important;
+  }
+  body[data-app-route="cedulas"] .v638-results-head{
+    min-height:28px!important;
+    display:flex!important;
+    align-items:center!important;
+    justify-content:space-between!important;
+    padding:0 3px 7px!important;
+  }
+  body[data-app-route="cedulas"] .v638-results-head b{
+    font-size:13px!important;
+    color:#fff!important;
+  }
+  body[data-app-route="cedulas"] .v638-results-head small{
+    font-size:8px!important;
+    color:#8e99c5!important;
+  }
+  body[data-app-route="cedulas"] .v638-cedula-list{
+    display:grid!important;
+    gap:7px!important;
+  }
+
+  /* Tarjetas más pequeñas. */
+  body[data-app-route="cedulas"] .v638-cedula-list .v66-fixture-row{
+    grid-template-columns:54px minmax(0,1fr) 16px!important;
+    min-height:66px!important;
+    height:auto!important;
+    padding:6px 8px!important;
+    gap:8px!important;
+    border-radius:14px!important;
+    background:linear-gradient(180deg,#10127c 0%,#0c0d70 100%)!important;
+    border-color:rgba(52,75,184,.72)!important;
+  }
+  body[data-app-route="cedulas"] .v638-cedula-list .v66-fixture-row>span:nth-child(2)>b{
+    font-size:11.5px!important;
+    line-height:1.08!important;
+  }
+  body[data-app-route="cedulas"] .v638-cedula-list .v66-fixture-row>span:nth-child(2)>small{
+    margin-top:3px!important;
+    font-size:8px!important;
+    line-height:1.05!important;
+  }
+  body[data-app-route="cedulas"] .v638-cedula-list .v66-fixture-row>i{
+    font-size:20px!important;
+  }
+
+  /* Logo de categoría llena el círculo; Jornada + número quedan encima. */
+  body[data-app-route="cedulas"] .v638-cedula-list .v66-cedula-side{
+    width:50px!important;
+    min-width:50px!important;
+    height:50px!important;
+  }
+  body[data-app-route="cedulas"] .v638-cedula-list .v66-round-badge{
+    position:relative!important;
+    width:50px!important;
+    height:50px!important;
+    min-width:50px!important;
+    min-height:50px!important;
+    padding:0!important;
+    overflow:hidden!important;
+    border:1.6px solid #29deeb!important;
+    border-radius:50%!important;
+    background:#0a0d68!important;
+    isolation:isolate!important;
+  }
+  body[data-app-route="cedulas"] .v638-cedula-list .v66-round-badge .v66-category-mark{
+    position:absolute!important;
+    inset:2px!important;
+    z-index:1!important;
+    width:auto!important;
+    height:auto!important;
+    min-width:0!important;
+    min-height:0!important;
+    margin:0!important;
+    border-radius:50%!important;
+    opacity:.88!important;
+  }
+  body[data-app-route="cedulas"] .v638-cedula-list .v66-round-badge .v66-category-mark img{
+    width:100%!important;
+    height:100%!important;
+    object-fit:contain!important;
+    filter:brightness(.86)!important;
+  }
+  body[data-app-route="cedulas"] .v638-cedula-list .v66-round-badge>small,
+  body[data-app-route="cedulas"] .v638-cedula-list .v66-round-badge>b{
+    position:relative!important;
+    z-index:3!important;
+    display:block!important;
+    margin:0!important;
+    color:#fff!important;
+    text-shadow:0 1px 4px #02032d,0 0 3px #02032d!important;
+  }
+  body[data-app-route="cedulas"] .v638-cedula-list .v66-round-badge>small{
+    transform:translateY(-6px)!important;
+    font-size:5.2px!important;
+    line-height:1!important;
+    letter-spacing:.06em!important;
+  }
+  body[data-app-route="cedulas"] .v638-cedula-list .v66-round-badge>b{
+    transform:translateY(-4px)!important;
+    font-size:14px!important;
+    line-height:1!important;
+  }
+
+  /* ===== GENERADOR ===== */
+  body[data-app-route="cedulaBuilder"] .v64-form-grid.one{
+    display:grid!important;
+    grid-template-columns:1fr 1fr!important;
+    gap:8px!important;
+    padding:11px!important;
+    border-radius:16px!important;
+    background:
+      radial-gradient(180px 80px at 100% 0,rgba(34,221,234,.10),transparent 70%),
+      #0b0c71!important;
+  }
+  body[data-app-route="cedulaBuilder"] .v64-form-grid.one label{
+    min-width:0!important;
+    gap:4px!important;
+    padding:0!important;
+  }
+  body[data-app-route="cedulaBuilder"] .v64-form-grid.one label:first-child,
+  body[data-app-route="cedulaBuilder"] .v64-form-grid.one label:last-child{
+    grid-column:1/-1!important;
+  }
+  body[data-app-route="cedulaBuilder"] .v64-form-grid.one label>b{
+    font-size:9px!important;
+    line-height:1!important;
+    color:#d4d8f1!important;
+  }
+  body[data-app-route="cedulaBuilder"] .v64-form-grid.one input,
+  body[data-app-route="cedulaBuilder"] .v64-form-grid.one select{
+    height:42px!important;
+    min-height:42px!important;
+    padding:0 12px!important;
+    border-radius:11px!important;
+    font-size:10px!important;
+  }
+
+  /* Los tres botones ocupan toda la fila en horizontal. */
+  body[data-app-route="cedulaBuilder"] .v60-actions{
+    display:grid!important;
+    grid-template-columns:repeat(3,minmax(0,1fr))!important;
+    gap:6px!important;
+    margin-top:10px!important;
+    width:100%!important;
+  }
+  body[data-app-route="cedulaBuilder"] .v60-actions .v60-btn{
+    width:100%!important;
+    min-width:0!important;
+    min-height:44px!important;
+    height:44px!important;
+    padding:5px 6px!important;
+    border-radius:11px!important;
+    font-size:8.5px!important;
+    line-height:1.08!important;
+    white-space:normal!important;
+  }
+
+  /* Vista previa más compacta sin afectar el tamaño del PDF al imprimir. */
+  body[data-app-route="cedulaBuilder"] [data-v64-cedula-preview]{
+    width:94%!important;
+    margin:13px auto 0!important;
+  }
+  body[data-app-route="cedulaBuilder"] .v131-cedula-stage{
+    border-radius:16px!important;
+  }
+  body[data-app-route="cedulaBuilder"] .v131-stage-bar{
+    min-height:38px!important;
+    padding:0 10px!important;
+  }
+  body[data-app-route="cedulaBuilder"] .v131-stage-bar b{
+    font-size:10px!important;
+  }
+  body[data-app-route="cedulaBuilder"] .v131-stage-bar span{
+    font-size:7px!important;
+  }
+  body[data-app-route="cedulaBuilder"] .v131-sheet-wrap{
+    padding:6px!important;
+    max-height:560px!important;
+    overflow:auto!important;
+  }
+}
+
+@media(max-width:390px){
+  body[data-app-route="cedulas"] .v66-cedula-filters{
+    grid-template-columns:1fr 1fr!important;
+  }
+  body[data-app-route="cedulaBuilder"] .v60-actions .v60-btn{
+    font-size:7.7px!important;
+    padding-inline:4px!important;
+  }
+}
