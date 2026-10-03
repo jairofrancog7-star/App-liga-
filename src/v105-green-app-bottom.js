@@ -271,7 +271,7 @@ const MORE_CARDS=[
  {icon:'alert',title:'Incidencias',sub:'Bitácora operativa local',action:'incidents'},
  {icon:'rule',title:'Reportes y jornadas',sub:'Cédulas y operación',route:'cedulaBuilder'},
  {icon:'calendar',title:'Calendarios oficiales',sub:'Cruces ya hechos · PDF / imagen',action:'calendar-generator'},
- {icon:'sponsor',title:'Patrocinadores',sub:'Notas locales de patrocinio',action:'sponsors'},
+ {icon:'sponsor',title:'Patrocinadores',sub:'Acuerdos, vigencias, espacios y contactos',action:'sponsors'},
  {icon:'poll',title:'Encuesta',sub:'Participación local',action:'poll'}
 ];
 
