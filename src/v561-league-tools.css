@@ -870,3 +870,102 @@ html body[data-app-route="moments"] .v26-moments-sticky .v26-moments-sticky-back
   stroke-linejoin:round!important;
 }
 /* /V620 */
+
+
+/* V621 — VALID MOMENTOS ARTWORK
+   La imagen anterior no era un WebP válido. Este archivo sí es WebP real
+   y se coloca directamente debajo de la flecha y del texto "Momentos". */
+html body[data-app-route="moments"] .v26-moments-sticky,
+html body.v10-header-collapsed[data-app-route="moments"] .v26-moments-sticky{
+  position:fixed!important;
+  top:0!important;
+  left:50%!important;
+  transform:translateX(-50%)!important;
+  width:min(100vw,520px)!important;
+  height:calc(min(100vw,520px) * .367307692)!important;
+  min-height:calc(min(100vw,520px) * .367307692)!important;
+  max-height:calc(min(100vw,520px) * .367307692)!important;
+  overflow:hidden!important;
+  isolation:isolate!important;
+  background:#07106f url('/App-liga-/moments-header-user-v621.webp?v=20261003-v621') center center / 100% 100% no-repeat!important;
+  pointer-events:auto!important;
+}
+html body[data-app-route="moments"] .v26-moments-page,
+html body.v10-header-collapsed[data-app-route="moments"] .v26-moments-page{
+  padding-top:calc(min(100vw,520px) * .367307692 + 8px)!important;
+}
+html body[data-app-route="moments"] .v26-moments-sticky .v616-moments-bg{
+  display:none!important;
+}
+html body[data-app-route="moments"] .v26-moments-sticky .v621-moments-bg{
+  position:absolute!important;
+  inset:0!important;
+  z-index:0!important;
+  display:block!important;
+  width:100%!important;
+  height:100%!important;
+  min-width:100%!important;
+  min-height:100%!important;
+  max-width:none!important;
+  max-height:none!important;
+  margin:0!important;
+  padding:0!important;
+  border:0!important;
+  border-radius:0!important;
+  object-fit:fill!important;
+  object-position:center!important;
+  opacity:1!important;
+  visibility:visible!important;
+  pointer-events:none!important;
+  transform:none!important;
+  filter:none!important;
+}
+html body[data-app-route="moments"] .v26-moments-sticky::before{
+  content:""!important;
+  position:absolute!important;
+  inset:0!important;
+  z-index:1!important;
+  background:transparent!important;
+  pointer-events:none!important;
+}
+html body[data-app-route="moments"] .v26-moments-sticky .v561-moments-title{
+  position:absolute!important;
+  left:16.86198%!important;
+  top:60.02045%!important;
+  transform:translateY(-50%)!important;
+  z-index:4!important;
+  display:block!important;
+  color:#fff!important;
+  font:500 24px/1 Roboto,Arial,sans-serif!important;
+  letter-spacing:-.03em!important;
+  visibility:visible!important;
+  opacity:1!important;
+}
+html body[data-app-route="moments"] .v26-moments-sticky .v26-moments-sticky-back{
+  position:absolute!important;
+  left:4.88%!important;
+  top:60.12%!important;
+  bottom:auto!important;
+  transform:translateY(-50%)!important;
+  width:42px!important;
+  height:42px!important;
+  z-index:5!important;
+  display:grid!important;
+  place-items:center!important;
+  margin:0!important;
+  padding:0!important;
+  border:0!important;
+  background:transparent!important;
+  visibility:visible!important;
+  opacity:1!important;
+}
+html body[data-app-route="moments"] .v26-moments-sticky .v26-moments-sticky-back svg{
+  width:34px!important;
+  height:34px!important;
+  fill:none!important;
+  stroke:#fff!important;
+  stroke-width:2.25!important;
+  stroke-linecap:round!important;
+  stroke-linejoin:round!important;
+}
+/* /V621 */
