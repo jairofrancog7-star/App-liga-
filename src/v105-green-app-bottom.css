@@ -575,3 +575,102 @@ body[data-app-route="home"] #v105-bottom[data-v105-route="home"] .v105-grid{
   .v105-sponsor-section-title{display:block}.v105-sponsor-section-title small{text-align:left;display:block;margin-top:3px}
   .v105-sponsor-actions{display:grid;grid-template-columns:1fr 1fr}.v105-sponsor-actions .v105-sponsor-primary{grid-column:1/-1}
 }
+
+
+/* V672 — Encuesta de la Liga: más contexto, temas concretos y selección única local. */
+.v105-modal.v105-poll-modal .v105-dialog{
+  width:min(720px,100%);
+}
+.v105-poll-intro{
+  margin:10px 0 14px;
+  padding:14px 15px;
+  border:1px solid rgba(64,225,241,.22);
+  border-radius:18px;
+  background:linear-gradient(145deg,rgba(22,61,180,.32),rgba(7,16,101,.26));
+}
+.v105-poll-intro>small{
+  display:block;
+  margin-bottom:5px;
+  color:#43e4ef;
+  font-size:9px;
+  font-weight:900;
+  letter-spacing:.16em;
+}
+.v105-poll-intro>b{
+  display:block;
+  color:#fff;
+  font-size:17px;
+  line-height:1.16;
+}
+.v105-poll-intro>p{
+  margin:6px 0 10px;
+  color:#b9c6e7;
+  font-size:10.5px;
+  line-height:1.45;
+}
+.v105-poll-meta{
+  display:flex;
+  align-items:flex-end;
+  justify-content:space-between;
+  gap:10px;
+  padding-top:9px;
+  border-top:1px solid rgba(255,255,255,.08);
+}
+.v105-poll-meta span{
+  max-width:72%;
+  color:#91a2d4;
+  font-size:9px;
+  line-height:1.35;
+}
+.v105-poll-meta strong{
+  color:#fff;
+  font-size:9px;
+  white-space:nowrap;
+}
+.v105-poll-grid .v105-card{
+  min-height:82px;
+}
+.v105-poll-grid .v105-card.is-selected{
+  border-color:rgba(66,229,241,.72)!important;
+  background:linear-gradient(145deg,rgba(18,85,196,.5),rgba(9,24,113,.68))!important;
+  box-shadow:0 0 0 2px rgba(66,229,241,.08) inset;
+}
+.v105-poll-grid .v105-card.is-selected .v105-arrow{
+  color:#fff;
+}
+.v105-poll-status{
+  margin:12px 2px 0!important;
+  padding:10px 12px;
+  border-radius:13px;
+  background:rgba(28,50,137,.28);
+  color:#c6d3ef!important;
+  font-size:10px!important;
+  line-height:1.35!important;
+}
+@media(max-width:620px){
+  .v105-modal.v105-poll-modal .v105-dialog{
+    max-height:92vh;
+    padding:18px 13px;
+  }
+  .v105-poll-grid{
+    grid-template-columns:1fr!important;
+  }
+  .v105-poll-grid .v105-card{
+    min-height:74px;
+    padding:10px 12px;
+  }
+  .v105-poll-intro{
+    padding:13px;
+  }
+  .v105-poll-intro>b{
+    font-size:16px;
+  }
+  .v105-poll-meta{
+    align-items:flex-start;
+    flex-direction:column;
+    gap:5px;
+  }
+  .v105-poll-meta span{
+    max-width:none;
+  }
+}
