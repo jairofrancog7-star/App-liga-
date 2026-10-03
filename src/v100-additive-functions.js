@@ -2080,13 +2080,123 @@ function v190RecruitCampaign(){
   return {
     kind:x.kind||'both',
     title:(!x.title||x.title==='Reclutamiento Liga Juventino Rosas')?'¡Únete a la Liga!':x.title,
-    message:(!x.message||x.message===oldDefault)?freshDefault:x.message
+    message:(!x.message||x.message===oldDefault)?freshDefault:x.message,
+    tone:x.tone||'persuasive',
+    focus:x.focus||''
   };
 }
 function v190RecruitKindLabel(kind){
   if(kind==='teams')return 'NUEVOS EQUIPOS';
   if(kind==='players')return 'NUEVOS JUGADORES';
   return 'NUEVOS EQUIPOS · NUEVOS JUGADORES';
+}
+function v190RecruitAiPrompt(kind){
+  if(kind==='teams')return 'INSCRIBE TU EQUIPO';
+  if(kind==='players')return 'ENCUENTRA EQUIPO Y COMPITE';
+  return 'SÚMATE Y COMPITE';
+}
+function v190RecruitAiCopy(kind,tone='persuasive',focus=''){
+  const base={
+    teams:{
+      title:'¡INSCRIBE TU EQUIPO!',
+      hook:'¿Tu equipo está listo para dar el siguiente paso?',
+      body:'La Liga Municipal de Fútbol Juventino Rosas A.C. abre espacio para nuevos equipos que quieran competir, crecer y formar parte de una liga organizada.',
+      action:'Acudan a las juntas de la Liga los martes en la Unidad Deportiva Sur para conocer categorías, requisitos, registro y proceso de ingreso.'
+    },
+    players:{
+      title:'¡ENCUENTRA TU EQUIPO!',
+      hook:'¿Buscas un equipo para competir esta temporada?',
+      body:'La Liga Municipal de Fútbol Juventino Rosas A.C. recibe jugadores que quieran integrarse a un equipo y participar de acuerdo con su categoría y posición.',
+      action:'Acude a las juntas de la Liga los martes en la Unidad Deportiva Sur para conocer opciones de integración, requisitos y registro.'
+    },
+    both:{
+      title:'¡ÚNETE A LA LIGA!',
+      hook:'¿Tienes un equipo o buscas dónde jugar?',
+      body:'La Liga Municipal de Fútbol Juventino Rosas A.C. abre espacio para nuevos equipos y jugadores que quieran competir, crecer y formar parte de la comunidad futbolera.',
+      action:'Acude a las juntas de la Liga los martes en la Unidad Deportiva Sur para conocer categorías, requisitos, registro y proceso de ingreso.'
+    }
+  }[kind]||null;
+  const toneLine={
+    persuasive:'Da el siguiente paso y vive una temporada con competencia, organización y seguimiento oficial.',
+    direct:'Registro abierto para la temporada 2026–2027.',
+    institutional:'Convocatoria oficial de incorporación para la temporada 2026–2027.',
+    energetic:'¡Es momento de entrar a la cancha, competir y representar tus colores!'
+  }[tone]||'';
+  const extra=String(focus||'').trim();
+  return {
+    title:base.title,
+    message:[base.hook,base.body,toneLine,extra?('Queremos destacar: '+extra+'.'):'',base.action].filter(Boolean).join(' ')
+  };
+}
+function v190RecruitAiImprove(root){
+  const kind=$('[data-v190-campaign-kind]',root)?.value||'both';
+  const tone=$('[data-v190-ai-tone]',root)?.value||'persuasive';
+  const focus=$('[data-v190-ai-focus]',root)?.value.trim()||'';
+  const titleEl=$('[data-v190-campaign-title]',root),messageEl=$('[data-v190-campaign-message]',root);
+  const generated=v190RecruitAiCopy(kind,tone,focus);
+  let current=String(messageEl?.value||'').replace(/\s+/g,' ').trim();
+  if(!current)return v190RecruitAiGenerate(root);
+  const hook=kind==='teams'?'¿Tu equipo está listo para competir?':kind==='players'?'¿Buscas un equipo para jugar y competir?':'¿Tienes un equipo o buscas dónde jugar?';
+  const action=kind==='players'
+    ?'Acude a las juntas de la Liga los martes en la Unidad Deportiva Sur para conocer opciones de integración y registro.'
+    :'Acude a las juntas de la Liga los martes en la Unidad Deportiva Sur para conocer requisitos, categorías y proceso de ingreso.';
+  if(!/^[¿¡]/.test(current))current=hook+' '+current;
+  if(focus&&!current.toLowerCase().includes(focus.toLowerCase()))current+=' Queremos destacar: '+focus+'.';
+  if(!/martes|unidad deportiva sur/i.test(current))current+=' '+action;
+  if(titleEl&&!titleEl.value.trim())titleEl.value=generated.title;
+  if(messageEl)messageEl.value=current;
+  v190RecruitCampaignFromUi(root);
+  toast('Texto mejorado automáticamente');
+}
+function v190RecruitAiGenerate(root){
+  const kind=$('[data-v190-campaign-kind]',root)?.value||'both';
+  const tone=$('[data-v190-ai-tone]',root)?.value||'persuasive';
+  const focus=$('[data-v190-ai-focus]',root)?.value.trim()||'';
+  const generated=v190RecruitAiCopy(kind,tone,focus);
+  const titleEl=$('[data-v190-campaign-title]',root),messageEl=$('[data-v190-campaign-message]',root);
+  if(titleEl)titleEl.value=generated.title;
+  if(messageEl)messageEl.value=generated.message;
+  v190RecruitCampaignFromUi(root);
+  toast('Texto automático generado');
+}
+function v190CanvasLines(ctx,text,maxWidth){
+  const out=[];
+  String(text||'').split(/\n/).forEach((para,pi)=>{
+    const words=para.trim().split(/\s+/).filter(Boolean);
+    if(!words.length){out.push('');return}
+    let line='';
+    words.forEach(word=>{
+      const test=line?line+' '+word:word;
+      if(line&&ctx.measureText(test).width>maxWidth){out.push(line);line=word}
+      else line=test;
+    });
+    if(line)out.push(line);
+    if(pi<String(text||'').split(/\n/).length-1)out.push('');
+  });
+  return out;
+}
+function v190DrawFittedText(ctx,text,opt){
+  const o=Object.assign({x:0,y:0,width:100,height:100,maxSize:28,minSize:15,weight:700,color:'#fff',lineFactor:1.28},opt||{});
+  let size=o.maxSize,lines=[],lineHeight=0,total=0;
+  for(;size>=o.minSize;size--){
+    ctx.font=o.weight+' '+size+'px Arial';
+    lines=v190CanvasLines(ctx,text,o.width);
+    lineHeight=Math.max(size+3,Math.round(size*o.lineFactor));
+    total=lines.length*lineHeight;
+    if(total<=o.height)break;
+  }
+  if(size<o.minSize){
+    size=o.minSize;
+    ctx.font=o.weight+' '+size+'px Arial';
+    lines=v190CanvasLines(ctx,text,o.width);
+    lineHeight=Math.max(size+2,Math.floor(o.height/Math.max(1,lines.length)));
+    total=lines.length*lineHeight;
+  }
+  ctx.fillStyle=o.color;
+  ctx.textBaseline='alphabetic';
+  let yy=o.y+size;
+  lines.forEach(line=>{if(line)ctx.fillText(line,o.x,yy);yy+=lineHeight});
+  return {fontSize:size,lines:lines.length,bottom:o.y+total};
 }
 function v190RecruitRows(){
   const data=v190RecruitData();
@@ -2128,12 +2238,29 @@ function v190RecruitPage(){
       '<div class="v190-publish-grid">'+
         '<label><span>Convocatoria para</span><select data-v190-campaign-kind>'+
           '<option value="both" '+(campaign.kind==='both'?'selected':'')+'>Equipos y jugadores</option>'+
-          '<option value="teams" '+(campaign.kind==='teams'?'selected':'')+'>Equipos nuevos</option>'+
-          '<option value="players" '+(campaign.kind==='players'?'selected':'')+'>Jugadores nuevos</option>'+
+          '<option value="teams" '+(campaign.kind==='teams'?'selected':'')+'>Nuevo equipo quiere unirse a la Liga</option>'+
+          '<option value="players" '+(campaign.kind==='players'?'selected':'')+'>Jugador busca unirse a un equipo</option>'+
         '</select></label>'+
         '<label><span>Título</span><input data-v190-campaign-title value="'+esc(campaign.title)+'"></label>'+
       '</div>'+
       '<label class="v190-message"><span>Mensaje</span><textarea data-v190-campaign-message rows="4">'+esc(campaign.message)+'</textarea></label>'+
+      '<section class="v190-ai-assist">'+
+        '<header><span>✦</span><div><b>Modo IA</b><small>Ayuda automática para escribir una convocatoria más clara y convincente.</small></div></header>'+
+        '<div class="v190-ai-grid">'+
+          '<label><span>Estilo del texto</span><select data-v190-ai-tone>'+
+            '<option value="persuasive" '+(campaign.tone==='persuasive'?'selected':'')+'>Convincente</option>'+
+            '<option value="direct" '+(campaign.tone==='direct'?'selected':'')+'>Directo</option>'+
+            '<option value="institutional" '+(campaign.tone==='institutional'?'selected':'')+'>Institucional</option>'+
+            '<option value="energetic" '+(campaign.tone==='energetic'?'selected':'')+'>Energético</option>'+
+          '</select></label>'+
+          '<label><span>Qué quieres destacar</span><input data-v190-ai-focus value="'+esc(campaign.focus)+'" placeholder="Ej. organización, nivel competitivo, comunidad"></label>'+
+        '</div>'+
+        '<div class="v190-ai-actions">'+
+          '<button type="button" class="primary" data-v190-ai-generate>✦ Generar texto automático</button>'+
+          '<button type="button" data-v190-ai-improve>Mejorar lo que escribí</button>'+
+        '</div>'+
+        '<p>Puedes editar el título y mensaje después. El asistente conserva tu objetivo: nuevo equipo, jugador que busca equipo o ambos.</p>'+
+      '</section>'+
       '<label class="v190-png-upload"><span>Subir PNG propio</span><input type="file" accept="image/png,.png" data-v190-png-file><small>Si eliges un PNG, los botones de descargar/compartir usarán esa imagen. Si no, la app genera una convocatoria automáticamente.</small></label>'+
       '<div class="v190-png-preview '+(v190RecruitPreviewUrl?'has-image':'')+'" data-v190-preview>'+(v190RecruitPreviewUrl?'<img src="'+esc(v190RecruitPreviewUrl)+'" alt="Vista previa de convocatoria">':'<span>Vista previa del PNG</span>')+'</div>'+
       '<div class="v190-share-actions">'+
@@ -2152,7 +2279,9 @@ function v190RecruitCampaignFromUi(root){
   const data={
     kind:$('[data-v190-campaign-kind]',root)?.value||'both',
     title:$('[data-v190-campaign-title]',root)?.value.trim()||'Reclutamiento Liga Juventino Rosas',
-    message:$('[data-v190-campaign-message]',root)?.value.trim()||''
+    message:$('[data-v190-campaign-message]',root)?.value.trim()||'',
+    tone:$('[data-v190-ai-tone]',root)?.value||'persuasive',
+    focus:$('[data-v190-ai-focus]',root)?.value.trim()||''
   };
   write(V190_RECRUIT_CAMPAIGN_KEY,data);
   return data;
@@ -2193,47 +2322,37 @@ async function v190RecruitGeneratedBlob(root){
   x.fillStyle='rgba(255,255,255,.78)';x.font='800 20px Arial';
   x.fillText('CONVOCATORIA OFICIAL · TEMPORADA 2026–2027',232,145);
 
-  // Titular.
-  x.fillStyle='#fff';x.font='900 66px Arial';
-  x.fillText('¡ÚNETE A LA LIGA!',72,282);
+  // Titular editable: usa exactamente el título escrito por el usuario y ajusta el tamaño sin recortarlo.
+  v190DrawFittedText(x,cdata.title,{x:72,y:218,width:936,height:105,maxSize:66,minSize:30,weight:900,color:'#fff',lineFactor:1.02});
   x.fillStyle='#61eef4';x.font='900 31px Arial';
-  x.fillText(v190RecruitKindLabel(cdata.kind),74,334);
+  x.fillText(v190RecruitKindLabel(cdata.kind),74,354);
 
-  // Invitación: todo el texto queda dentro del cuadro, sin salirse ni encimarse.
-  const inviteY=378,inviteH=350;
+  // Invitación: el texto se autoajusta para que no se tape ni quede cortado en la descarga.
+  const inviteY=388,inviteH=330;
   x.fillStyle='rgba(255,255,255,.075)';x.fillRect(72,inviteY,936,inviteH);
   x.strokeStyle='rgba(97,238,244,.48)';x.lineWidth=2;x.strokeRect(72,inviteY,936,inviteH);
-  x.save();
-  x.beginPath();x.rect(90,inviteY+14,900,inviteH-28);x.clip();
-  x.fillStyle='#fff';x.font='900 38px Arial';
-  wrapText(x,cdata.title,108,448,860,48,2);
-  x.fillStyle='rgba(244,247,255,.96)';x.font='700 28px Arial';
-  wrapText(x,cdata.message,108,535,860,39,5);
-  x.restore();
+  x.fillStyle='#61eef4';x.font='900 23px Arial';
+  x.fillText(v190RecruitAiPrompt(cdata.kind),108,432);
+  v190DrawFittedText(x,cdata.message,{x:108,y:462,width:846,height:228,maxSize:29,minSize:15,weight:700,color:'rgba(244,247,255,.96)',lineFactor:1.25});
 
-  // Categorías con separación real del cuadro anterior.
-  x.fillStyle='#61eef4';x.font='900 24px Arial';x.fillText('CATEGORÍAS ABIERTAS',76,775);
-  x.fillStyle='#fff';x.font='800 28px Arial';
-  wrapText(x,v190RecruitCategories().join('  ·  '),76,820,920,39,3);
+  // Categorías: también se ajustan si el nombre de las categorías ocupa más líneas.
+  x.fillStyle='#61eef4';x.font='900 24px Arial';x.fillText('CATEGORÍAS ABIERTAS',76,770);
+  v190DrawFittedText(x,v190RecruitCategories().join('  ·  '),{x:76,y:790,width:920,height:78,maxSize:28,minSize:20,weight:800,color:'#fff',lineFactor:1.18});
 
-  // Información presencial: cuadro independiente y contenido contenido dentro.
-  const infoY=900,infoH=215;
+  // Información presencial: cuadro más alto para que la última línea nunca quede tapada.
+  const infoY=890,infoH=255;
   x.fillStyle='rgba(0,0,0,.27)';x.fillRect(72,infoY,936,infoH);
   x.strokeStyle='rgba(97,238,244,.32)';x.strokeRect(72,infoY,936,infoH);
-  x.save();
-  x.beginPath();x.rect(92,infoY+12,896,infoH-24);x.clip();
-  x.fillStyle='#61eef4';x.font='900 24px Arial';x.fillText('INFORMACIÓN Y REGISTRO',108,948);
-  x.fillStyle='#fff';x.font='900 34px Arial';x.fillText('JUNTAS DE LA LIGA · TODOS LOS MARTES',108,998);
-  x.fillStyle='rgba(244,247,255,.94)';x.font='800 28px Arial';x.fillText('Unidad Deportiva Sur · Juventino Rosas, Gto.',108,1044);
-  x.fillStyle='rgba(226,234,255,.90)';x.font='700 22px Arial';
-  wrapText(x,'Acude personalmente para conocer requisitos, registro, categorías y proceso de ingreso.',108,1084,850,29,2);
-  x.restore();
+  x.fillStyle='#61eef4';x.font='900 24px Arial';x.fillText('INFORMACIÓN Y REGISTRO',108,940);
+  x.fillStyle='#fff';x.font='900 34px Arial';x.fillText('JUNTAS DE LA LIGA · TODOS LOS MARTES',108,992);
+  x.fillStyle='rgba(244,247,255,.94)';x.font='800 28px Arial';x.fillText('Unidad Deportiva Sur · Juventino Rosas, Gto.',108,1038);
+  v190DrawFittedText(x,'Acude personalmente para conocer requisitos, registro, categorías y proceso de ingreso.',{x:108,y:1060,width:850,height:62,maxSize:22,minSize:17,weight:700,color:'rgba(226,234,255,.90)',lineFactor:1.18});
 
   // Página oficial.
-  x.fillStyle='#61eef4';x.font='900 22px Arial';x.fillText('PÁGINA OFICIAL',78,1175);
-  x.fillStyle='#fff';x.font='900 32px Arial';x.fillText('www.juventinorosasliga.com',78,1222);
+  x.fillStyle='#61eef4';x.font='900 22px Arial';x.fillText('PÁGINA OFICIAL',78,1190);
+  x.fillStyle='#fff';x.font='900 32px Arial';x.fillText('www.juventinorosasliga.com',78,1236);
   x.fillStyle='rgba(255,255,255,.68)';x.font='20px Arial';
-  x.fillText('Consulta categorías, jornadas, resultados y avisos oficiales.',78,1262);
+  x.fillText('Consulta categorías, jornadas, resultados y avisos oficiales.',78,1276);
 
   return canvasBlob(c);
 }
@@ -2286,11 +2405,13 @@ function v190BindRecruitment(root){
     v190RecruitPngFile=file;
     if(file){v190RecruitSetPreview(file,root);toast('PNG cargado para compartir')}
   });
-  ['[data-v190-campaign-kind]','[data-v190-campaign-title]','[data-v190-campaign-message]'].forEach(sel=>{
+  ['[data-v190-campaign-kind]','[data-v190-campaign-title]','[data-v190-campaign-message]','[data-v190-ai-tone]','[data-v190-ai-focus]'].forEach(sel=>{
     const el=$(sel,root);if(!el)return;
     el.addEventListener('change',()=>v190RecruitCampaignFromUi(root));
     el.addEventListener('input',()=>v190RecruitCampaignFromUi(root));
   });
+  $('[data-v190-ai-generate]',root)?.addEventListener('click',()=>v190RecruitAiGenerate(root));
+  $('[data-v190-ai-improve]',root)?.addEventListener('click',()=>v190RecruitAiImprove(root));
   $('[data-v190-preview-png]',root)?.addEventListener('click',async()=>{
     const b=await v190RecruitShareBlob(root);if(b)v190RecruitSetPreview(b,root);
   });
