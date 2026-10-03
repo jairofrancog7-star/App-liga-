@@ -1,19 +1,9 @@
-/* V681 — MÁS: cabecera estática durante el scroll.
-   Conserva exactamente el diseño existente de Más; sólo corrige comportamiento:
-   el cuadro superior con "Más" + perfil permanece visible y el menú se desliza debajo. */
+/* V683 — MÁS: cabecera realmente fija durante el scroll.
+   Se usa fixed (no sticky) porque varios módulos antiguos cambian overflow/altura
+   y hacían que sticky dejara de funcionar. El diseño aprobado no cambia. */
 @media (max-width:1023px){
-  @supports selector(html:has(body)){
-    html:has(body[data-app-route="more"]){
-      height:auto!important;
-      min-height:100%!important;
-      max-height:none!important;
-      overflow-x:hidden!important;
-      overflow-y:auto!important;
-      -webkit-overflow-scrolling:touch!important;
-    }
-  }
-
   html body[data-app-route="more"]{
+    --v683-more-head-h:calc(var(--more-master-header-h,104px) + env(safe-area-inset-top));
     height:auto!important;
     min-height:100dvh!important;
     max-height:none!important;
@@ -22,7 +12,6 @@
     -webkit-overflow-scrolling:touch!important;
   }
 
-  /* Ningún padre debe capturar/cortar el sticky. */
   html body[data-app-route="more"] #app,
   html body[data-app-route="more"] .app-shell{
     height:auto!important;
@@ -35,16 +24,7 @@
     contain:none!important;
   }
 
-  html body[data-app-route="more"] #screen{
-    position:relative!important;
-    height:auto!important;
-    min-height:0!important;
-    max-height:none!important;
-    overflow:visible!important;
-    padding-top:0!important;
-  }
-
-  /* El cuadro superior permanece completamente estático al deslizar. */
+  /* La barra superior queda anclada al viewport y nunca desaparece. */
   html body[data-app-route="more"] #app > .topbar,
   html body[data-app-route="more"] .app-shell > .topbar,
   html body[data-app-route="more"].v66-compact-route #app > .topbar,
@@ -54,12 +34,16 @@
     display:block!important;
     visibility:visible!important;
     opacity:1!important;
-    position:sticky!important;
-    position:-webkit-sticky!important;
+    position:fixed!important;
     top:0!important;
-    left:auto!important;
-    right:auto!important;
+    left:0!important;
+    right:0!important;
     bottom:auto!important;
+    width:100%!important;
+    height:var(--v683-more-head-h)!important;
+    min-height:var(--v683-more-head-h)!important;
+    max-height:var(--v683-more-head-h)!important;
+    margin:0!important;
     transform:none!important;
     translate:none!important;
     scale:1!important;
@@ -67,7 +51,25 @@
     pointer-events:auto!important;
   }
 
-  /* Título e icono no desaparecen aunque otro módulo marque header colapsado. */
+  /* El contenido comienza debajo del cuadro fijo y se desliza normalmente. */
+  html body[data-app-route="more"] #screen{
+    position:relative!important;
+    height:auto!important;
+    min-height:0!important;
+    max-height:none!important;
+    overflow:visible!important;
+    padding-top:var(--v683-more-head-h)!important;
+  }
+
+  html body[data-app-route="more"] .v19-more-page{
+    position:relative!important;
+    height:auto!important;
+    min-height:0!important;
+    max-height:none!important;
+    overflow:visible!important;
+  }
+
+  /* Título + perfil siempre visibles. */
   html body[data-app-route="more"] .topbar::after,
   html body.v10-header-collapsed[data-app-route="more"] .topbar::after,
   html body[data-app-route="more"] .topbar .profile-button,
@@ -77,20 +79,23 @@
     opacity:1!important;
   }
 
-  /* El menú sí se desplaza normalmente por debajo de la cabecera. */
-  html body[data-app-route="more"] .v19-more-page{
-    position:relative!important;
-    height:auto!important;
-    min-height:0!important;
-    max-height:none!important;
-    overflow:visible!important;
-  }
-
-  /* Mantener Más sin flechitas añadidas en los renglones. */
+  /* Sin flechas pequeñas añadidas en las filas. */
   html body[data-app-route="more"] .v19-more-item::after{
     content:none!important;
     display:none!important;
     visibility:hidden!important;
     opacity:0!important;
+  }
+}
+
+@media(max-width:560px){
+  html body[data-app-route="more"]{
+    --v683-more-head-h:calc(var(--more-master-header-h,100px) + env(safe-area-inset-top));
+  }
+}
+
+@media(max-width:390px){
+  html body[data-app-route="more"]{
+    --v683-more-head-h:calc(var(--more-master-header-h,96px) + env(safe-area-inset-top));
   }
 }
