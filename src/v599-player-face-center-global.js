@@ -157,17 +157,13 @@ function sourceKey(img){
   return String(img.currentSrc||img.src||'')+'|'+w+'x'+h;
 }
 async function playerFaceProfile(img){
-  if(!img)return null;
-  const key=sourceKey(img);
-  if(profileCache.has(key))return await profileCache.get(key);
+  const key=sourceKey(img);if(profileCache.has(key))return await profileCache.get(key);
   const job=(async()=>{
-    const native=await nativeFaceProfile(img);
-    if(native?.eyes)return native;
-    const mp=await mediaPipeFaceProfile(img);
-    return mp||native||null;
-  })();
-  profileCache.set(key,job);
-  return await job;
+    let probe=img;
+    try{const url=new URL(img.currentSrc||img.src,location.href);if(url.origin!==location.origin){probe=new Image();probe.crossOrigin='anonymous';probe.src=url.href;await probe.decode()}}catch{return null}
+    const native=await nativeFaceProfile(probe);if(native)return native;
+    return await mediaPipeFaceProfile(probe);
+  })().catch(()=>null);profileCache.set(key,job);return await job;
 }
 
 /* MISMA FUNCIÓN faceCrop DE CREDENCIALES.
@@ -281,9 +277,7 @@ function prepareCircleFallback(img){
   const src=img.currentSrc||img.src||'';
   p.style.removeProperty('--ljr-circle-face-bg');p.style.setProperty('background-image','none','important');
 
-  /* V608: HARDLOCK inline !important.
-     La foto ORIGINAL entra completa en el círculo. No se vuelve a recortar
-     después de detectar la cara; así nunca desaparecen boca, mentón o cabello. */
+  /* Show the complete original first; a detected face can be centred later. */
   delete img.dataset.ljrCredentialFaceCrop;
   delete img.dataset.ljrFaceDetector;
   img.dataset.ljrCircleFullFace='1';
@@ -333,36 +327,18 @@ function frameSize(img){
   return {w,h};
 }
 function applyCrop(img,profile){
-  if(!(img instanceof HTMLImageElement)||!img.matches(FACE_IMAGES))return false;
-  const parent=frameElement(img);if(!parent)return false;
-
-  const circle=visualCircleFrame(img);
-  if(circle!==true){
-    clearFaceCrop(img);
-    return false;
-  }
-
-  prepareCircleFallback(img);
-  if(!profile?.box)return false;
-
-  const {w:dw,h:dh}=frameSize(img);
-  const c=faceCrop(img,dw,dh,profile);
-  const {w:iw,h:ih}=imageSize(img);
-  if(!(c.sw>0&&c.sh>0&&iw>0&&ih>0))return false;
-
-  const widthPct=(iw/c.sw)*100;
-  const heightPct=(ih/c.sh)*100;
-  const leftPct=-(c.sx/c.sw)*100;
-  const topPct=-(c.sy/c.sh)*100;
-
-  img.dataset.ljrCredentialFaceCrop='1';
-  img.dataset.ljrFaceDetector=profile?.source||'fallback';
-  img.style.setProperty('--ljr-face-width',widthPct.toFixed(4)+'%');
-  img.style.setProperty('--ljr-face-height',heightPct.toFixed(4)+'%');
-  img.style.setProperty('--ljr-face-left',leftPct.toFixed(4)+'%');
-  img.style.setProperty('--ljr-face-top',topPct.toFixed(4)+'%');
-  return true;
+  if(!(img instanceof HTMLImageElement)||!img.matches(FACE_IMAGES)||visualCircleFrame(img)!==true||!profile?.box)return false;
+  const b=profile.box,{w:iw,h:ih}=imageSize(img),side=Math.max(b.width*2.7,b.height*2.7);
+  if(!(side>16&&iw>0&&ih>0))return false;
+  // A virtual frame may extend beyond the photo: keep the whole head centred,
+  // using empty background rather than clamping the crop to the photo edge.
+  const sx=b.x+b.width/2-side/2,sy=b.y+b.height*.4-side/2;
+  const parent=img.parentElement;parent.style.setProperty('position','relative','important');parent.style.setProperty('overflow','hidden','important');parent.style.setProperty('background-image','none','important');
+  const styles={position:'absolute',width:(iw/side*100)+'%',height:(ih/side*100)+'%',left:(-sx/side*100)+'%',top:(-sy/side*100)+'%',right:'auto',bottom:'auto','max-width':'none','max-height':'none','object-fit':'fill','object-position':'center','transform':'none','border-radius':'0'};
+  for(const [property,value]of Object.entries(styles))img.style.setProperty(property,value,'important');
+  img.dataset.ljrCredentialFaceCrop='1';img.dataset.ljrFaceDetector=profile.source||'native';return true;
 }
+
 async function process(img){
   if(!(img instanceof HTMLImageElement)||!img.matches(FACE_IMAGES))return;
   if(!img.complete||!img.naturalWidth||!img.naturalHeight){
@@ -383,8 +359,7 @@ async function process(img){
     return;
   }
 
-  prepareCircleFallback(img);
-  /* No aplicar crop después: la prioridad es conservar el rostro completo. */
+  prepareCircleFallback(img);const key=sourceKey(img);const profile=await playerFaceProfile(img);if(img.isConnected&&sourceKey(img)===key&&profile)applyCrop(img,profile);
 }
 function enqueue(img){
   if(!(img instanceof HTMLImageElement)||!img.matches(FACE_IMAGES)||queued.has(img))return;
@@ -449,7 +424,7 @@ setTimeout(()=>scan(document),500);
 setTimeout(()=>scan(document),1800);
 
 window.LJR_FACE_FRAME={
-  engine:'circle-original-contain-v608-hardlock',
+  engine:'circle-head-centered-v612',
   scan:()=>scan(document),
   faceCrop,
   profile:playerFaceProfile,
