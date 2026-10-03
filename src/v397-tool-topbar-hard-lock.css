@@ -1346,3 +1346,55 @@ html body.v33-data-active .v33-head-actions [data-v33-share]{
     --v410-overlay-h:82px;
   }
 }
+
+
+/* V641 — Nueva sanción: el panel termina antes de la barra inferior. */
+@media (max-width:1023px){
+  html body.v410-overlay-open > .v105-modal.v639-sanction-modal{
+    top:0!important;
+    bottom:calc(74px + env(safe-area-inset-bottom,0px))!important;
+    height:auto!important;
+    min-height:0!important;
+    max-height:none!important;
+    box-sizing:border-box!important;
+    padding:
+      calc(clamp(82px,21.68vw,90px) + 10px)
+      12px
+      12px!important;
+    place-items:start center!important;
+    overflow:hidden!important;
+  }
+
+  html body.v410-overlay-open > .v105-modal.v639-sanction-modal > .v105-dialog{
+    width:min(650px,100%)!important;
+    height:auto!important;
+    max-height:calc(100dvh - clamp(82px,21.68vw,90px) - 108px - env(safe-area-inset-bottom,0px))!important;
+    margin:0 auto!important;
+    overflow-y:auto!important;
+    overflow-x:hidden!important;
+    overscroll-behavior:contain!important;
+    -webkit-overflow-scrolling:touch!important;
+    padding-bottom:22px!important;
+    scroll-padding-bottom:24px!important;
+  }
+
+  html body.v410-overlay-open > .v105-modal.v639-sanction-modal .v105-actions{
+    margin-bottom:4px!important;
+    padding-bottom:8px!important;
+  }
+
+  html body.v410-overlay-open > .v105-modal.v639-sanction-modal .v105-actions .v105-btn{
+    flex:1 1 145px!important;
+  }
+}
+
+@media (max-width:390px){
+  html body.v410-overlay-open > .v105-modal.v639-sanction-modal{
+    bottom:calc(78px + env(safe-area-inset-bottom,0px))!important;
+    padding-top:92px!important;
+  }
+
+  html body.v410-overlay-open > .v105-modal.v639-sanction-modal > .v105-dialog{
+    max-height:calc(100dvh - 184px - env(safe-area-inset-bottom,0px))!important;
+  }
+}
