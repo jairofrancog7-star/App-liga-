@@ -2496,3 +2496,72 @@ body[data-app-route="cedulas"] .v66-cedula-empty small{
     grid-template-columns:1fr!important;
   }
 }
+
+
+/* V634 — Cédulas: J# arriba y logo REAL de categoría debajo, dentro del círculo. */
+body[data-app-route="cedulas"] .v66-fixture-row{
+  grid-template-columns:60px minmax(0,1fr) 18px!important;
+  min-height:80px!important;
+}
+body[data-app-route="cedulas"] .v66-cedula-side{
+  width:56px!important;
+  min-width:56px!important;
+  height:56px!important;
+  overflow:visible!important;
+}
+body[data-app-route="cedulas"] .v66-round-badge{
+  width:54px!important;
+  height:54px!important;
+  min-width:54px!important;
+  min-height:54px!important;
+  display:flex!important;
+  flex-direction:column!important;
+  align-items:center!important;
+  justify-content:center!important;
+  gap:1px!important;
+  padding:3px 2px 2px!important;
+  overflow:hidden!important;
+  background:#11127d!important;
+  border:1.6px solid #20dce9!important;
+  border-radius:50%!important;
+  box-sizing:border-box!important;
+}
+body[data-app-route="cedulas"] .v66-round-badge .v66-round-text{
+  position:relative!important;
+  z-index:2!important;
+  flex:0 0 auto!important;
+  margin:0!important;
+  color:#fff!important;
+  font-size:11px!important;
+  line-height:11px!important;
+  font-weight:950!important;
+  letter-spacing:-.03em!important;
+  text-shadow:0 1px 2px rgba(0,0,0,.8)!important;
+}
+body[data-app-route="cedulas"] .v66-round-badge .v66-category-mark{
+  position:relative!important;
+  inset:auto!important;
+  z-index:1!important;
+  width:30px!important;
+  height:30px!important;
+  min-width:30px!important;
+  min-height:30px!important;
+  margin:0!important;
+  display:grid!important;
+  place-items:center!important;
+  overflow:hidden!important;
+  border-radius:50%!important;
+  background:transparent!important;
+}
+body[data-app-route="cedulas"] .v66-round-badge .v66-category-mark img{
+  width:100%!important;
+  height:100%!important;
+  max-width:none!important;
+  max-height:none!important;
+  display:block!important;
+  object-fit:contain!important;
+  object-position:center!important;
+  border-radius:50%!important;
+  transform:none!important;
+  background:transparent!important;
+}
