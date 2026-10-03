@@ -1,0 +1,256 @@
+/* V670 — Historia: galería especial de clubes históricos + separación visual de secciones.
+   Solo afecta #/history. */
+@media(max-width:1023px){
+  body[data-app-route="history"] .v370-legacy-clubs{
+    position:relative;
+    margin:30px 0 8px;
+    padding:0;
+  }
+
+  body[data-app-route="history"] .v370-legacy-head{
+    position:relative;
+    overflow:hidden;
+    margin:0 0 14px;
+    padding:20px 18px 18px;
+    border:1px solid rgba(65,220,245,.26);
+    border-radius:22px;
+    background:
+      radial-gradient(circle at 88% 12%,rgba(32,231,241,.18),transparent 31%),
+      linear-gradient(145deg,rgba(18,30,143,.98),rgba(7,14,92,.99));
+    box-shadow:0 14px 28px rgba(0,0,70,.16),inset 0 1px 0 rgba(255,255,255,.05);
+  }
+
+  body[data-app-route="history"] .v370-legacy-head::before{
+    content:"";
+    position:absolute;
+    left:0;
+    top:0;
+    width:100%;
+    height:3px;
+    background:linear-gradient(90deg,transparent,#20e7f1 22%,#56f4ff 50%,transparent 88%);
+    opacity:.95;
+  }
+
+  body[data-app-route="history"] .v370-legacy-head::after{
+    content:"";
+    position:absolute;
+    right:-36px;
+    bottom:-44px;
+    width:128px;
+    height:128px;
+    border:1px solid rgba(75,224,245,.16);
+    border-radius:50%;
+    box-shadow:0 0 0 20px rgba(68,216,239,.04),0 0 0 42px rgba(68,216,239,.025);
+    pointer-events:none;
+  }
+
+  body[data-app-route="history"] .v370-legacy-kicker{
+    position:relative;
+    z-index:1;
+    display:block;
+    margin-bottom:6px;
+    color:#27e7f2;
+    font-size:10px;
+    line-height:1;
+    font-weight:900;
+    letter-spacing:.18em;
+  }
+
+  body[data-app-route="history"] .v370-legacy-head h3{
+    position:relative;
+    z-index:1;
+    max-width:88%;
+    margin:0;
+    color:#fff;
+    font-size:clamp(25px,6.8vw,34px);
+    line-height:.98;
+    letter-spacing:-.04em;
+    font-weight:820;
+  }
+
+  body[data-app-route="history"] .v370-legacy-head p{
+    position:relative;
+    z-index:1;
+    max-width:90%;
+    margin:10px 0 0;
+    color:#b6c0e0;
+    font-size:11px;
+    line-height:1.45;
+  }
+
+  body[data-app-route="history"] .v370-legacy-count{
+    position:relative;
+    z-index:1;
+    width:max-content;
+    max-width:100%;
+    margin-top:15px;
+    padding:7px 10px 7px 8px;
+    display:flex;
+    align-items:center;
+    gap:8px;
+    border:1px solid rgba(55,225,240,.23);
+    border-radius:999px;
+    background:rgba(4,12,77,.38);
+  }
+
+  body[data-app-route="history"] .v370-legacy-count b{
+    min-width:31px;
+    height:31px;
+    display:grid;
+    place-items:center;
+    border-radius:50%;
+    color:#04105f;
+    background:#28e6f1;
+    font-size:12px;
+    font-weight:950;
+  }
+
+  body[data-app-route="history"] .v370-legacy-count span{
+    color:#dce4f8;
+    font-size:10px;
+    line-height:1.1;
+    font-weight:750;
+    white-space:nowrap;
+  }
+
+  body[data-app-route="history"] .v370-legacy-grid{
+    display:grid;
+    grid-template-columns:repeat(2,minmax(0,1fr));
+    gap:9px;
+  }
+
+  body[data-app-route="history"] .v370-legacy-team{
+    position:relative;
+    min-width:0;
+    min-height:122px;
+    overflow:hidden;
+    display:flex;
+    flex-direction:column;
+    align-items:flex-start;
+    padding:12px 11px 11px;
+    border:1px solid rgba(91,117,224,.34);
+    border-radius:18px;
+    background:
+      radial-gradient(circle at 82% 18%,rgba(27,220,239,.12),transparent 33%),
+      linear-gradient(160deg,rgba(24,35,142,.98),rgba(9,15,91,.99));
+    box-shadow:0 7px 18px rgba(0,0,74,.12),inset 0 1px 0 rgba(255,255,255,.04);
+  }
+
+  body[data-app-route="history"] .v370-legacy-team::before{
+    content:"";
+    position:absolute;
+    left:0;
+    top:0;
+    width:52%;
+    height:2px;
+    background:linear-gradient(90deg,#22e6f0,transparent);
+    opacity:.85;
+  }
+
+  body[data-app-route="history"] .v370-legacy-no{
+    position:absolute;
+    right:10px;
+    top:9px;
+    color:rgba(181,196,232,.36);
+    font-size:9px;
+    line-height:1;
+    font-weight:900;
+    letter-spacing:.08em;
+  }
+
+  body[data-app-route="history"] .v370-legacy-crest{
+    position:relative;
+    z-index:1;
+    width:46px;
+    height:46px;
+    flex:0 0 46px;
+    display:grid;
+    place-items:center;
+    overflow:hidden;
+    border:1px solid rgba(94,229,243,.22);
+    border-radius:14px;
+    background:linear-gradient(145deg,rgba(255,255,255,.07),rgba(255,255,255,.018));
+    box-shadow:inset 0 0 14px rgba(32,231,241,.05);
+  }
+
+  body[data-app-route="history"] .v370-legacy-crest img{
+    width:39px;
+    height:39px;
+    display:block;
+    object-fit:contain;
+    object-position:center;
+  }
+
+  body[data-app-route="history"] .v370-legacy-crest.is-fallback b{
+    color:#30e8f2;
+    font-size:13px;
+    line-height:1;
+    font-weight:950;
+    letter-spacing:-.04em;
+  }
+
+  body[data-app-route="history"] .v370-legacy-copy{
+    position:relative;
+    z-index:2;
+    min-width:0;
+    width:100%;
+    margin-top:10px;
+    padding-right:18px;
+  }
+
+  body[data-app-route="history"] .v370-legacy-copy small{
+    display:block;
+    margin-bottom:4px;
+    color:#29ddea;
+    font-size:7.5px;
+    line-height:1;
+    font-weight:900;
+    letter-spacing:.10em;
+  }
+
+  body[data-app-route="history"] .v370-legacy-copy strong{
+    display:block;
+    color:#f7f8ff;
+    font-size:13px;
+    line-height:1.08;
+    font-weight:790;
+    letter-spacing:-.018em;
+    overflow-wrap:anywhere;
+  }
+
+  body[data-app-route="history"] .v370-legacy-seal{
+    position:absolute;
+    right:-5px;
+    bottom:-7px;
+    width:39px;
+    height:39px;
+    display:grid;
+    place-items:center;
+    border:1px solid rgba(42,221,237,.12);
+    border-radius:50%;
+    color:rgba(83,223,238,.18);
+    font-size:10px;
+    line-height:1;
+    font-weight:950;
+    transform:rotate(-12deg);
+  }
+
+  /* Resumen: la línea del tiempo queda como visión general, sin tarjetas
+     detalladas que pertenecen a Temporadas/Campeones/Finales/Récords. */
+  body[data-app-route="history"] .v670-summary-only{
+    padding-bottom:4px!important;
+  }
+
+  body[data-app-route="history"] .v670-summary-only .v35-history-timeline{
+    margin-bottom:22px;
+  }
+}
+
+@media(max-width:380px){
+  body[data-app-route="history"] .v370-legacy-grid{gap:8px}
+  body[data-app-route="history"] .v370-legacy-team{min-height:116px;padding:11px 10px 10px}
+  body[data-app-route="history"] .v370-legacy-copy strong{font-size:12px}
+  body[data-app-route="history"] .v370-legacy-head{padding:18px 16px 16px}
+  body[data-app-route="history"] .v370-legacy-head h3{font-size:24px}
+  body[data-app-route="history"] .v370-legacy-count span{font-size:9px}
+}
