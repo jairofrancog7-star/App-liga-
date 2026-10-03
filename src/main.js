@@ -6314,28 +6314,15 @@ document.addEventListener('click',e=>{
 
 function render(){
   const editorRoutes=new Set(['publicationCenter','ligaControl','adminFut','jrControl','recruitment','refereeOffline','credentialBuilder','permissionBuilder','agendaBuilder','motionHub','suspensionTool','bracketBuilder','disciplineTool','scheduleChanges']);
+  /* V636 — Las herramientas administrativas ya no bloquean la navegación.
+     La pantalla siempre abre. Si existe una sesión recordada, se restaura
+     en segundo plano; las escrituras remotas siguen dependiendo del backend. */
   if(editorRoutes.has(state.route)&&!window.LJR_MEDIA?.admin){
     const media=window.LJR_MEDIA;
-    let saved=false;
     try{
-      saved=!!(media?.hasSession?.()||media?.deviceRemembered?.()||localStorage.getItem('liga-media-session')||sessionStorage.getItem('liga-media-session'));
+      const saved=!!(media?.hasSession?.()||media?.deviceRemembered?.()||localStorage.getItem('liga-media-session')||sessionStorage.getItem('liga-media-session'));
+      if(saved&&typeof media?.restoreAdminSession==='function')media.restoreAdminSession().catch(()=>{});
     }catch(_){}
-    if(saved){
-      /* V623: no expulsar al usuario de Cédulas/Credenciales/JR Control mientras
-         la sesión recordada se está restaurando. La API sigue validando el token. */
-      media?.restoreAdminSession?.().then(a=>{
-        if(a){window.dispatchEvent(new CustomEvent('liga:admin-ready',{detail:{route:state.route}}));return}
-        if(editorRoutes.has(state.route)){
-          state.route='leagueTools';
-          history.replaceState(null,'','#/leagueTools');
-          render();
-          media?.login?.();
-        }
-      }).catch(()=>{});
-    }else{
-      state.route='leagueTools';
-      history.replaceState(null,'','#/leagueTools');
-    }
   }
 
   if(state.route==='quiz'){
