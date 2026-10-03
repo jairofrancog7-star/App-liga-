@@ -9,6 +9,14 @@ window.__LJR_V672_HISTORY_OLD_TEAM_LOGOS__=true;
 
 const RAW='https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/';
 const FALLBACK={
+  'capibaras':RAW+'assets/official-logos/capibaras.png',
+  'la canchita deportes':RAW+'assets/official-logos/la-canchita-deportes.png',
+  'la canchita':RAW+'assets/official-logos/la-canchita-deportes.png',
+  'terricolas':RAW+'assets/official-logos/terricolas.png',
+  'terricolas seder':RAW+'assets/official-logos/terricolas.png',
+  'abejas':RAW+'assets/official-logos/abejas.png',
+  'america':RAW+'assets/branding/america-veteranos-35-user.png',
+  'america veteranos':RAW+'assets/branding/america-veteranos-35-user.png',
   'romerillo':RAW+'assets/official-logos/san-antonio-jrs.png',
   'san antonio de romerillo':RAW+'assets/official-logos/san-antonio-jrs.png',
   'san antonio jr':RAW+'assets/official-logos/san-antonio-jrs.png',
@@ -231,6 +239,31 @@ function patchLegacyTeams(root){
     crest.classList.add('v672-has-historic-logo');
   });
 }
+function patchSummaryStats(root){
+  root.querySelectorAll('.v358-stat-row').forEach(row=>{
+    const holder=row.querySelector('.v358-stat-logo');
+    if(!holder)return;
+    const labels=[
+      row.querySelector('.v358-stat-copy small')?.textContent?.trim()||'',
+      row.querySelector('.v358-stat-copy strong')?.textContent?.trim()||''
+    ].filter(Boolean);
+    let team='',src='';
+    for(const label of labels){
+      const hit=logoFor(label);
+      if(hit){team=label;src=hit;break;}
+    }
+    if(!src)return;
+    const current=holder.querySelector('img');
+    if(current){
+      try{
+        if(new URL(current.currentSrc||current.src,document.baseURI).href===new URL(src,document.baseURI).href)return;
+      }catch(_){}
+    }
+    holder.replaceChildren(makeImg(src,team,'v672-summary-stat-logo'));
+    holder.classList.remove('is-fallback');
+    holder.classList.add('v672-has-historic-logo');
+  });
+}
 function patch(){
   if(route()!=='history')return;
   const root=document.querySelector('.v35-history-page')||document.querySelector('#screen');
@@ -239,6 +272,7 @@ function patch(){
   patchFinals(root);
   patchVideos(root);
   patchLegacyTeams(root);
+  patchSummaryStats(root);
 }
 let timer=0;
 function schedule(ms=40){
