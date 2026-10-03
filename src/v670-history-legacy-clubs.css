@@ -254,3 +254,26 @@
   body[data-app-route="history"] .v370-legacy-head h3{font-size:24px}
   body[data-app-route="history"] .v370-legacy-count span{font-size:9px}
 }
+
+/* V706 — evolución de nombres del mismo club en Memoria de Clubes. */
+@media(max-width:1023px){
+  body[data-app-route="history"] .v370-legacy-team.v706-evolved-club{
+    min-height:138px;
+  }
+  body[data-app-route="history"] .v706-lineage{
+    display:block;
+    margin-top:5px;
+    padding-right:5px;
+    color:#9eb0da;
+    font-size:8px;
+    line-height:1.25;
+    font-style:normal;
+    font-weight:650;
+    letter-spacing:0;
+    overflow-wrap:anywhere;
+  }
+}
+@media(max-width:380px){
+  body[data-app-route="history"] .v370-legacy-team.v706-evolved-club{min-height:132px}
+  body[data-app-route="history"] .v706-lineage{font-size:7.5px}
+}
