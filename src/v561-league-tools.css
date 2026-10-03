@@ -1,5 +1,5 @@
 /* Real Momentos header: artwork excludes captured Android status icons. */
-body[data-app-route="moments"] .v26-moments-sticky{height:100px!important;background:#07106f url('../public/brand-neon-header.svg') center/cover!important;pointer-events:auto!important}
+body[data-app-route="moments"] .v26-moments-sticky{height:100px!important;background:#07106f!important;pointer-events:auto!important}
 body[data-app-route="moments"] .v26-moments-page{padding-top:110px!important}
 body[data-app-route="moments"] .v26-moments-sticky-back{left:15px!important;top:28px!important;bottom:auto!important;height:42px!important;width:42px!important}
 .v561-moments-title{position:absolute;left:72px;top:35px;color:white;font:550 27px/1.2 Inter,Arial,sans-serif}
