@@ -78,3 +78,46 @@
     top:10%!important;
   }
 }
+
+
+/* V676 — Permisos: reduce SOLO la altura vertical de la barra superior. */
+@media (max-width:1023px){
+  html body[data-app-route="permissionBuilder"] #app > .topbar,
+  html body[data-app-route="permissionBuilder"] .app-shell > .topbar,
+  html body[data-app-route="permissionBuilder"] .topbar.v653-permission-topbar,
+  html body #app > .topbar.v653-permission-topbar,
+  html body .app-shell > .topbar.v653-permission-topbar{
+    height:88px!important;
+    min-height:88px!important;
+    max-height:88px!important;
+  }
+
+  html body[data-app-route="permissionBuilder"] #app > .topbar::before,
+  html body[data-app-route="permissionBuilder"] .app-shell > .topbar::before,
+  html body #app > .topbar.v653-permission-topbar::before,
+  html body .app-shell > .topbar.v653-permission-topbar::before{
+    top:10%!important;
+    width:46px!important;
+    height:50px!important;
+  }
+}
+@media (max-width:420px){
+  html body[data-app-route="permissionBuilder"] #app > .topbar,
+  html body[data-app-route="permissionBuilder"] .app-shell > .topbar,
+  html body[data-app-route="permissionBuilder"] .topbar.v653-permission-topbar,
+  html body #app > .topbar.v653-permission-topbar,
+  html body .app-shell > .topbar.v653-permission-topbar{
+    height:78px!important;
+    min-height:78px!important;
+    max-height:78px!important;
+  }
+
+  html body[data-app-route="permissionBuilder"] #app > .topbar::before,
+  html body[data-app-route="permissionBuilder"] .app-shell > .topbar::before,
+  html body #app > .topbar.v653-permission-topbar::before,
+  html body .app-shell > .topbar.v653-permission-topbar::before{
+    top:9%!important;
+    width:40px!important;
+    height:44px!important;
+  }
+}
