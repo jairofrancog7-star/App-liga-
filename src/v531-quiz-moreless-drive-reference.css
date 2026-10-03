@@ -4982,3 +4982,77 @@ body[data-app-route="quizArena"] .v614-turbos>button:disabled{
     border-radius:16px!important;
   }
 }
+
+
+/* V617 — iconos exactos Quiz Arena: rayo y balón blancos, paloma verde y X roja. */
+body[data-app-route="quizArena"] .v614-progress-state{
+  display:grid!important;
+  place-items:center!important;
+  color:#fff!important;
+}
+body[data-app-route="quizArena"] .v614-progress-state.ok{
+  background:#149235!important;
+}
+body[data-app-route="quizArena"] .v614-progress-state.bad{
+  background:#d94b4f!important;
+}
+body[data-app-route="quizArena"] .v617-status-svg{
+  width:15px!important;
+  height:15px!important;
+  display:block!important;
+  fill:none!important;
+  stroke:#fff!important;
+  stroke-width:3.1!important;
+  stroke-linecap:round!important;
+  stroke-linejoin:round!important;
+}
+body[data-app-route="quizArena"] .v614-progress-state.bad .v617-status-svg{
+  width:14px!important;
+  height:14px!important;
+  stroke-width:3!important;
+}
+
+body[data-app-route="quizArena"] .v614-turbos>button>b{
+  display:flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  gap:8px!important;
+  color:#fff!important;
+}
+body[data-app-route="quizArena"] .v617-turbo-icon{
+  width:18px!important;
+  height:18px!important;
+  min-width:18px!important;
+  display:grid!important;
+  place-items:center!important;
+  color:#fff!important;
+}
+body[data-app-route="quizArena"] .v617-turbo-svg{
+  width:18px!important;
+  height:18px!important;
+  display:block!important;
+  color:#fff!important;
+}
+body[data-app-route="quizArena"] .v617-lightning-svg{
+  fill:#fff!important;
+  stroke:none!important;
+}
+body[data-app-route="quizArena"] .v617-ball-svg{
+  fill:none!important;
+  stroke:#fff!important;
+  stroke-width:1.8!important;
+  stroke-linecap:round!important;
+  stroke-linejoin:round!important;
+}
+@media(max-width:390px){
+  body[data-app-route="quizArena"] .v617-status-svg{
+    width:14px!important;
+    height:14px!important;
+  }
+  body[data-app-route="quizArena"] .v617-turbo-icon,
+  body[data-app-route="quizArena"] .v617-turbo-svg{
+    width:17px!important;
+    height:17px!important;
+    min-width:17px!important;
+  }
+}
