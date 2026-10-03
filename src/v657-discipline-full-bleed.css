@@ -1,0 +1,156 @@
+/* V657 — Disciplina realmente a todo el ancho.
+   Se carga al FINAL del <head> para ganar a los estilos globales posteriores. */
+@media (max-width:699px){
+  html,body{
+    overflow-x:hidden!important;
+  }
+
+  body.v94-discipline-official #screen{
+    width:100vw!important;
+    max-width:100vw!important;
+    margin:0!important;
+    padding-left:0!important;
+    padding-right:0!important;
+    overflow-x:hidden!important;
+  }
+
+  body.v94-discipline-official #screen>.v94-discipline-page{
+    position:relative!important;
+    left:50%!important;
+    width:100vw!important;
+    max-width:100vw!important;
+    margin-left:-50vw!important;
+    margin-right:-50vw!important;
+    padding-left:0!important;
+    padding-right:0!important;
+    box-sizing:border-box!important;
+  }
+
+  body.v94-discipline-official .v94-kicker,
+  body.v94-discipline-official .v94-discipline-page>h1,
+  body.v94-discipline-official .v94-lead{
+    margin-left:10px!important;
+    margin-right:10px!important;
+  }
+
+  body.v94-discipline-official .v655-discipline-controls,
+  body.v94-discipline-official .v655-discipline-types,
+  body.v94-discipline-official .v655-discipline-cats,
+  body.v94-discipline-official .v652-discipline-cats,
+  body.v94-discipline-official .v94-source,
+  body.v94-discipline-official .v94-discipline-list,
+  body.v94-discipline-official .v650-discipline-export,
+  body.v94-discipline-official .v651-discipline-tail{
+    width:100vw!important;
+    max-width:100vw!important;
+    margin-left:0!important;
+    margin-right:0!important;
+    box-sizing:border-box!important;
+  }
+
+  body.v94-discipline-official .v655-discipline-types{
+    grid-template-columns:repeat(3,minmax(0,1fr))!important;
+    gap:4px!important;
+    padding:4px!important;
+    border-left:0!important;
+    border-right:0!important;
+    border-radius:0!important;
+  }
+
+  body.v94-discipline-official .v655-discipline-types button{
+    width:100%!important;
+    min-width:0!important;
+    max-width:none!important;
+    min-height:42px!important;
+    padding:7px 4px!important;
+    border-radius:10px!important;
+  }
+
+  body.v94-discipline-official .v655-discipline-cats,
+  body.v94-discipline-official .v652-discipline-cats{
+    padding:6px 4px 7px!important;
+    border-left:0!important;
+    border-right:0!important;
+    border-radius:0!important;
+  }
+
+  body.v94-discipline-official .v652-cat-head{
+    padding-left:6px!important;
+    padding-right:6px!important;
+  }
+
+  body.v94-discipline-official .v652-cat-rail{
+    display:grid!important;
+    grid-template-columns:repeat(3,minmax(0,1fr))!important;
+    gap:4px!important;
+    width:100%!important;
+    overflow:visible!important;
+    padding:0!important;
+  }
+
+  body.v94-discipline-official .v652-cat-rail button{
+    width:100%!important;
+    min-width:0!important;
+    max-width:none!important;
+    min-height:40px!important;
+    padding:6px 3px!important;
+    white-space:normal!important;
+    line-height:1.08!important;
+    text-align:center!important;
+    border-radius:10px!important;
+  }
+
+  body.v94-discipline-official .v94-source{
+    border-left:0!important;
+    border-right:0!important;
+    border-radius:0!important;
+    padding-left:10px!important;
+    padding-right:10px!important;
+  }
+
+  body.v94-discipline-official .v94-discipline-list{
+    border-left:0!important;
+    border-right:0!important;
+    border-radius:0!important;
+    box-shadow:none!important;
+  }
+
+  body.v94-discipline-official .v94-discipline-row{
+    width:100%!important;
+    max-width:none!important;
+    margin:0!important;
+    box-sizing:border-box!important;
+    grid-template-columns:26px 64px minmax(0,1fr) 46px!important;
+    gap:9px!important;
+    padding-left:8px!important;
+    padding-right:8px!important;
+  }
+
+  body.v94-discipline-official .v650-discipline-export{
+    margin-top:8px!important;
+    padding:0!important;
+  }
+
+  body.v94-discipline-official .v650-discipline-export>button{
+    width:100%!important;
+    max-width:none!important;
+    margin:0!important;
+    border-left:0!important;
+    border-right:0!important;
+    border-radius:0!important;
+  }
+
+  body.v94-discipline-official .v651-discipline-tail{
+    margin-top:8px!important;
+    padding:0!important;
+  }
+
+  body.v94-discipline-official .v651-discipline-tail>.v651-tail-card{
+    width:100%!important;
+    max-width:none!important;
+    margin:0!important;
+    border-left:0!important;
+    border-right:0!important;
+    border-radius:0!important;
+  }
+}
