@@ -167,7 +167,7 @@
     if(reds)tags.push('<span class="v94-card-tag v94-red">Rojas '+reds+'</span>');
     if(item.suspension?.punishment)tags.push('<span class="v94-card-tag v94-sanction">'+esc(item.suspension.punishment)+'</span>');
 
-    return '<article class="v94-discipline-row">'+
+    return '<article class="v94-discipline-row" data-v94-cat="'+esc(item.catId)+'" data-v94-category="'+esc(item.category)+'">'+
       '<span class="v94-rank">'+(index+1)+'</span>'+
       '<span class="v94-logo-wrap v576-player-main">'+disciplineAvatar(data,item)+'</span>'+
       '<span class="v94-person"><b>'+esc(item.player)+'</b><small>'+esc(item.team)+' · '+esc(item.category)+'</small><span class="v94-tags">'+tags.join('')+'</span></span>'+
