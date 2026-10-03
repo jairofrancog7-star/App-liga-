@@ -6,7 +6,7 @@ if(window.__LJR_V663_MATCH_BUTTON_ROUTING__)return;
 window.__LJR_V663_MATCH_BUTTON_ROUTING__=true;
 
 const norm=v=>String(v||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[^a-z0-9]+/g,' ').trim();
-const directRoutes=new Set(['v4-matchcenter','matchCenter','match-center']);
+const directRoutes=new Set(['v4-matchcenter','matchCenter','match-center','match']);
 const route=()=>String(location.hash||'').replace(/^#\/?/,'').split('?')[0]||'home';
 
 const textMap=[
