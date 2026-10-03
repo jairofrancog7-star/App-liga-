@@ -117,6 +117,10 @@ function hydrate(){
    const rec=resolve(attr(row,'data-v66-player'),attr(row,'data-v66-player-team'),attr(row,'data-v66-cat-id'));
    setAvatar(row.querySelector('.v66-player-avatar'),rec);
  });
+ document.querySelectorAll('.v414-player-row[data-v414-player-name]').forEach(row=>{
+   const rec=resolve(attr(row,'data-v414-player-name'),attr(row,'data-v414-player-team'),attr(row,'data-v414-player-cat'));
+   setAvatar(row.querySelector('.v414-player-photo'),rec);
+ });
  document.querySelectorAll('.v42-player-row').forEach(row=>{
    const name=attr(row,'data-v42-player')||txt(row,'.v42-player-copy strong');
    const team=attr(row,'data-v66-player-team')||teamStored();
