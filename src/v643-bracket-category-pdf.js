@@ -5,8 +5,8 @@
    Evita equipos repetidos y usa PASE DIRECTO cuando la llave no está completa. */
 (function(){
 'use strict';
-if(window.__LJR_V654_EXACT_QUARTERS__)return;
-window.__LJR_V654_EXACT_QUARTERS__=true;
+if(window.__LJR_V656_GENERATE_BY_DESIGN__)return;
+window.__LJR_V656_GENERATE_BY_DESIGN__=true;
 
 const BUILD='20261003-v654-full-bracket-reference-exact';
 const CATS=[
@@ -57,8 +57,9 @@ function injectCss(){
     '.v653-results{display:grid;gap:9px}.v653-round{border:1px solid rgba(55,78,188,.82);border-radius:16px;background:linear-gradient(180deg,#0b1175,#070b5b);padding:9px}.v653-round-head{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:8px}.v653-round-head b{font-size:12px}.v653-round-head span{color:#5ceaf4;font-size:9px;font-weight:900}.v653-match{border:1px solid rgba(49,67,165,.78);border-radius:13px;background:#080d65;padding:8px;margin-top:7px}.v653-match:first-of-type{margin-top:0}.v653-match-top{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:7px}.v653-match-top b{font-size:10px}.v653-match-top em{font-style:normal;color:#61eaf4;font-size:8.5px;font-weight:900}.v653-score-row{display:grid;grid-template-columns:minmax(0,1fr) 48px;gap:7px;align-items:center;margin-top:6px}.v653-team-name{min-width:0;display:flex;align-items:center;gap:7px;color:#fff;font-size:10.5px;font-weight:850;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.v653-team-name img{width:26px;height:26px;object-fit:contain}.v653-score-row input{width:48px;height:34px;border:1px solid #3850c5;border-radius:10px;background:#111675;color:#fff;text-align:center;font-size:14px;font-weight:950;outline:none}.v653-score-row input:disabled{opacity:.45}.v653-advance{display:grid;grid-template-columns:74px minmax(0,1fr);gap:7px;align-items:center;margin-top:8px;padding-top:7px;border-top:1px solid rgba(255,255,255,.08)}.v653-advance label{color:#65eaf4;font-size:8.5px;font-weight:950}.v653-advance select{width:100%;height:34px;border:1px solid #3850c5;border-radius:10px;background:#111675;color:#fff;padding:0 25px 0 8px;font-size:9.5px;font-weight:850;outline:none}.v653-winner{margin-top:6px;color:#7cf0b1;font-size:9px;font-weight:900}.v653-reset{height:34px;border:1px solid #3d55c9;border-radius:10px;background:#10177d;color:#fff;padding:0 10px;font-size:9px;font-weight:900}',
 '.v651-designs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px}.v651-design-card{appearance:none;text-align:left;padding:7px;border:2px solid rgba(58,77,177,.85);border-radius:17px;background:#050854;color:#fff;overflow:hidden;box-shadow:0 12px 28px rgba(0,0,25,.22);transition:.18s}.v651-design-card.selected{border-color:#42e5f1;box-shadow:0 0 0 2px rgba(66,229,241,.12),0 14px 30px rgba(0,0,25,.28)}.v651-design-card canvas{display:block;width:100%;height:auto;border-radius:10px;background:#02032f}.v651-design-card span{display:flex;align-items:center;justify-content:space-between;gap:7px;padding:7px 2px 1px}.v651-design-card b{font-size:10px}.v651-design-card i{font-style:normal;color:#63eaf4;font-size:8px;font-weight:900}.v651-design-card.selected i:after{content:" · SELECCIONADO"}',
     '.v651-current{margin-top:10px;border:1px solid rgba(54,80,210,.78);border-radius:18px;background:#04075a;padding:7px;overflow:hidden;box-shadow:0 16px 40px rgba(0,0,30,.24)}.v651-current canvas{display:block;width:100%;height:auto;border-radius:12px;background:#04064c}.v651-current-meta{display:flex;justify-content:space-between;gap:8px;padding:7px 3px 1px;color:#9fa9da;font-size:9px}.v651-current-meta b{color:#55eaf4}',
-    '.v651-export{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}.v651-export button{min-height:48px;border-radius:14px;border:1px solid #4a79ff;background:linear-gradient(180deg,#1d5dff,#173db9);color:#fff;font-size:12px;font-weight:950;box-shadow:0 8px 18px rgba(7,35,150,.3)}.v651-export button[data-v651-pdf]{background:linear-gradient(180deg,#13bbd9,#0b72c9);border-color:#34dceb}.v651-status{min-height:18px;margin:6px 3px 0;color:#76eaf4;font-size:9.5px;font-weight:800}',
-    '@media(max-width:520px){.v651-designs{grid-template-columns:1fr 1fr}}@media(max-width:380px){.v651-grid,.v651-slots{grid-template-columns:1fr}.v651-designs{grid-template-columns:1fr}.v651-brand h1{font-size:21px}}'
+    '.v656-generate-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px;margin-top:8px}.v656-generate-card{min-width:0;border:1px solid rgba(62,86,205,.82);border-radius:16px;background:linear-gradient(180deg,#0b106b,#06094c);padding:9px}.v656-generate-card h3{margin:0 0 3px;font-size:11px;color:#fff}.v656-generate-card p{margin:0 0 8px;color:#9eaae0;font-size:8.5px;line-height:1.3}.v656-generate-actions{display:grid;grid-template-columns:1fr 1fr;gap:6px}.v656-generate-actions button{min-height:38px;border:1px solid #4778ff;border-radius:11px;background:linear-gradient(180deg,#1c5dff,#173db7);color:#fff;font-size:9px;font-weight:950}.v656-generate-actions button[data-v656-pdf]{background:linear-gradient(180deg,#14b8d7,#0b70c7);border-color:#35d8eb}.v656-generate-card[data-design="quarters"]{border-color:rgba(44,203,244,.78)}',
+'.v651-export{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}.v651-export button{min-height:48px;border-radius:14px;border:1px solid #4a79ff;background:linear-gradient(180deg,#1d5dff,#173db9);color:#fff;font-size:12px;font-weight:950;box-shadow:0 8px 18px rgba(7,35,150,.3)}.v651-export button[data-v651-pdf]{background:linear-gradient(180deg,#13bbd9,#0b72c9);border-color:#34dceb}.v651-status{min-height:18px;margin:6px 3px 0;color:#76eaf4;font-size:9.5px;font-weight:800}',
+    '@media(max-width:520px){.v651-designs,.v656-generate-grid{grid-template-columns:1fr 1fr}}@media(max-width:380px){.v651-grid,.v651-slots{grid-template-columns:1fr}.v651-designs,.v656-generate-grid{grid-template-columns:1fr}.v651-brand h1{font-size:21px}}'
   ].join('\n');
   document.head.appendChild(s);
 }
@@ -906,6 +907,53 @@ function validateUnique(page){
 function blobFromCanvas(c){return new Promise((res,rej)=>c.toBlob(b=>b?res(b):rej(new Error('PNG')),'image/png'))}
 function download(blob,name){const a=document.createElement('a'),u=URL.createObjectURL(blob);a.href=u;a.download=name;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(u),1500)}
 function slug(v){return norm(v).toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'')||'categoria'}
+
+function prepareDesignForGeneration(page,design){
+  page.dataset.v651Design=design;
+  try{localStorage.setItem('v651-bracket-design',design)}catch(_){}
+  const stageSel=page.querySelector('[data-v651-stage]');
+  if(design==='quarters'&&stageSel&&stageSel.value!=='qf'){
+    stageSel.value='qf';
+    try{localStorage.setItem('v651-bracket-stage','qf')}catch(_){}
+    resetResultState(page,false);
+    renderSlots(page,false);
+    autoFill(page);
+    loadResultState(page);
+    renderResultsEditor(page);
+    stageInfo(page);
+  }
+  refreshSelectedCards(page);
+  queueAllPreviews(page);
+}
+async function exportSpecificPng(page,design){
+  if(!validateUnique(page))return;
+  prepareDesignForGeneration(page,design);
+  setStatus(page,'Generando PNG HD · '+DESIGNS[design].name+'…');
+  try{
+    const cv=document.createElement('canvas');
+    await renderCanvas(cv,page,design,2);
+    const stage=design==='quarters'?'qf':resolvedStage(page);
+    const meta=catMeta(page.querySelector('[data-v651-cat]').value);
+    download(await blobFromCanvas(cv),'Liga_Juventino_'+DESIGNS[design].slug+'_'+slug(STAGES[stage].name)+'_'+slug(meta.name)+'_HD.png');
+    setStatus(page,'PNG HD generado: '+DESIGNS[design].name+'.');
+  }catch(e){console.warn(e);setStatus(page,'No se pudo generar el PNG.',true)}
+}
+async function exportSpecificPdf(page,design){
+  if(!validateUnique(page))return;
+  prepareDesignForGeneration(page,design);
+  setStatus(page,'Generando PDF · '+DESIGNS[design].name+'…');
+  try{
+    const cv=document.createElement('canvas');
+    await renderCanvas(cv,page,design,2);
+    const JS=await loadJsPDF(),pdf=new JS({orientation:'portrait',unit:'mm',format:'a4',compress:true});
+    pdf.addImage(cv.toDataURL('image/png'),'PNG',0,0,210,262.6,undefined,'FAST');
+    const stage=design==='quarters'?'qf':resolvedStage(page);
+    const meta=catMeta(page.querySelector('[data-v651-cat]').value);
+    pdf.save('Liga_Juventino_'+DESIGNS[design].slug+'_'+slug(STAGES[stage].name)+'_'+slug(meta.name)+'.pdf');
+    setStatus(page,'PDF generado: '+DESIGNS[design].name+'.');
+  }catch(e){console.warn(e);setStatus(page,'No se pudo generar el PDF.',true)}
+}
+
 async function exportPng(page){
   if(!validateUnique(page))return;
   setStatus(page,'Generando PNG HD del diseño seleccionado…');
@@ -940,7 +988,7 @@ async function mount(){
   const cat=currentCategory(),meta=catMeta(cat),design=String(localStorage.getItem('v651-bracket-design')||'round');
   page.dataset.v651='1';page.dataset.v651Design=DESIGNS[design]?design:'round';page.dataset.v643='2';
   page.innerHTML=
-    '<section class="v651-hero"><div class="v651-brand"><img src="'+esc(LEAGUE_LOGO)+'" alt=""><span><small>LIGA JUVENTINO ROSAS</small><h1>Generador de Bracket</h1></span></div><p>Tres diseños sin duplicar equipos. El tercero reproduce el diseño de Cuartos de Final que enviaste, con la misma composición, trofeo central y avance automático.</p></section>'+
+    '<section class="v651-hero"><div class="v651-brand"><img src="'+esc(LEAGUE_LOGO)+'" alt=""><span><small>LIGA JUVENTINO ROSAS</small><h1>Generador de Bracket</h1></span></div><p>Tres diseños conservados por separado. Ahora cada uno tiene su propio botón de generación PNG HD/PDF sin modificar la composición del diseño.</p></section>'+
     '<section class="v651-controls"><div class="v651-catrow"><span class="v651-catlogo"><img data-v651-cat-logo src="'+esc(meta.logo)+'" alt=""></span><div class="v651-grid">'+
       '<label>CATEGORÍA<select data-v651-cat>'+CATS.map(c=>'<option value="'+c.id+'" '+(c.id===cat?'selected':'')+'>'+esc(c.name)+'</option>').join('')+'</select></label>'+
       '<label>ETAPA<select data-v651-stage><option value="auto">Automático</option><option value="r16">Octavos de final</option><option value="qf">Cuartos de final</option><option value="sf">Semifinales</option><option value="final">Final</option></select></label>'+
@@ -953,6 +1001,12 @@ async function mount(){
       '<button type="button" class="v651-design-card" data-v651-design="round"><canvas data-v651-preview-round></canvas><span><b>Diseño 1 · Round of 16</b><i>VISTA PREVIA</i></span></button>'+
       '<button type="button" class="v651-design-card" data-v651-design="full"><canvas data-v651-preview-full></canvas><span><b>Diseño 2 · Full Bracket</b><i>VISTA PREVIA</i></span></button>'+
       '<button type="button" class="v651-design-card" data-v651-design="quarters"><canvas data-v651-preview-quarters></canvas><span><b>Diseño 3 · Cuartos exacto</b><i>VISTA PREVIA</i></span></button>'+
+    '</section>'+
+    '<div class="v651-title"><span><small>GENERACIÓN</small><b>Generar cada diseño por separado</b></span><em>Sin cambiar su diseño<br>PNG HD o PDF</em></div>'+
+    '<section class="v656-generate-grid">'+
+      '<article class="v656-generate-card" data-design="round"><h3>Round of 16</h3><p>Diseño horizontal con esfera azul, llaves blancas y trofeo central.</p><div class="v656-generate-actions"><button type="button" data-v656-png="round">PNG HD</button><button type="button" data-v656-pdf="round">PDF</button></div></article>'+
+      '<article class="v656-generate-card" data-design="full"><h3>Full Bracket</h3><p>Diseño vertical con equipos en los extremos, rondas al centro y trofeo.</p><div class="v656-generate-actions"><button type="button" data-v656-png="full">PNG HD</button><button type="button" data-v656-pdf="full">PDF</button></div></article>'+
+      '<article class="v656-generate-card" data-design="quarters"><h3>Cuartos de Final</h3><p>Diseño exacto de cuartos con esfera, llaves laterales y trofeo grande central.</p><div class="v656-generate-actions"><button type="button" data-v656-png="quarters">PNG HD</button><button type="button" data-v656-pdf="quarters">PDF</button></div></article>'+
     '</section>'+
     '<div class="v651-title"><span><small>VISTA PREVIA GRANDE</small><b data-v651-current-name></b></span><em>Trofeo central<br>logos y nombres</em></div>'+
     '<section class="v651-current"><canvas data-v651-preview-main></canvas><div class="v651-current-meta"><span>Diseño seleccionado</span><b>PNG HD · PDF</b></div></section>'+
@@ -990,7 +1044,9 @@ async function mount(){
     }
     refreshSelectedCards(page);queueAllPreviews(page);setStatus(page,DESIGNS[design].name+' seleccionado.');
   }));
-  page.querySelector('[data-v651-png]').addEventListener('click',()=>exportPng(page));
+  page.querySelectorAll('[data-v656-png]').forEach(btn=>btn.addEventListener('click',()=>exportSpecificPng(page,btn.dataset.v656Png)));
+  page.querySelectorAll('[data-v656-pdf]').forEach(btn=>btn.addEventListener('click',()=>exportSpecificPdf(page,btn.dataset.v656Pdf)));
+    page.querySelector('[data-v651-png]').addEventListener('click',()=>exportPng(page));
   page.querySelector('[data-v651-pdf]').addEventListener('click',()=>exportPdf(page));
   stageInfo(page);renderResultsEditor(page);queueAllPreviews(page);
 }
