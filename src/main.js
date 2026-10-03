@@ -4530,11 +4530,11 @@ function leagueToolsView(){
       v60ToolCard('cedula','Modo árbitro offline','Mis partidos, borradores y cola de cédulas','refereeOffline')+
       v60ToolCard('cedula','Cédulas arbitrales','Consulta, captura y plantillas','cedulas')+
       v60ToolCard('share','Reportes','Juegos de la semana, avisos y reportes','v38Weekly')+
-      v60ToolCard('sim','Quiniela','Pronósticos de los partidos de la Liga','quiniela')+
       v60ToolCard('qr','Descargar / instalar app','QR y acceso directo a la Liga','ligaQR')+
     '</div>'+
     '<div class="v60-tools-all-label"><span>TODAS LAS FUNCIONES</span><b>Herramientas</b></div>'+
     '<div class="v60-tool-grid">'+
+      v60ToolCard('sim','Quiniela de la Liga','Pronósticos de los partidos','quiniela')+
       v60ToolCard('history','Historia','Temporadas, campeones, finales y archivo histórico','history')+
       v60ToolCard('search','Buscador','Equipos, jugadores, partidos, campos y noticias','search')+
       v60ToolCard('qr','QR de la Liga','Compartir acceso directo a la app','ligaQR')+
