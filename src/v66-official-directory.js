@@ -2,6 +2,8 @@
    #/teams queda bajo V27 + V62 para evitar dos renderizados consecutivos y conservar una sola pantalla estable. */
 (function(){
 'use strict';
+/* V607 — dueño único de la pantalla de jugadores. */
+window.__LJR_PLAYER_DIRECTORY_OWNER__='v66';
 const LOCAL='./data/official-live.json?v=20261001-v493-official-all-categories';
 const REMOTE='https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/data/official-live.json?v=20261001-v493-official-all-categories';
 const SRC='https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/';
@@ -177,7 +179,8 @@ function playerMarkup(){
     (!q||norm(p.name).includes(q)||norm(p.team).includes(q))
   );
   return '<section class="v66-directory" data-v66-directory="players">'+
-    '<div class="v66-filter-title">ORDENAR JUGADORES</div>'+
+    '<header class="v607-player-head"><small>DATOS OFICIALES</small><div><h1>Registro de jugadores</h1><span>'+list.length+' jugadores visibles</span></div><p>Busca por categoría, equipo o nombre.</p></header>'+
+    '<div class="v66-filter-title">FILTROS</div>'+
     '<div class="v66-filter-label">CATEGORÍA</div>'+
     categoryRail(playerCat,'data-v66-player-cat')+
     playerTeamRail()+
