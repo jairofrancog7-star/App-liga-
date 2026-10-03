@@ -1747,11 +1747,20 @@ body.v33-data-active .v33-general-content .v33-carousel .v33-see-all{
 }
 
 
-/* V657 — Tabs de Estadísticas: mismo subrayado cyan y grosor en General / Equipo / Jugadores.
-   Solo se ajusta el indicador activo; no toca tablas ni contenido. */
-body.v33-data-active .v33-tabs button.active::after{
-  left:6px!important;
-  right:6px!important;
+/* V658 — Ajuste final de indicadores en Estadísticas.
+   General: más ancho horizontalmente.
+   Equipo/Jugadores: mismo grosor vertical que General.
+   No modifica tablas, tarjetas ni contenido. */
+body.v33-data-active .v33-data-page[data-v33-mode="general"] .v33-tabs button[data-v33-tab="general"].active::after{
+  left:0!important;
+  right:0!important;
+  bottom:0!important;
+  height:4px!important;
+  background:#12dce8!important;
+  border-radius:5px 5px 0 0!important;
+}
+body.v33-data-active .v33-data-page[data-v33-mode="team"] .v33-tabs button[data-v33-tab="team"].active::after,
+body.v33-data-active .v33-data-page[data-v33-mode="player"] .v33-tabs button[data-v33-tab="player"].active::after{
   bottom:0!important;
   height:4px!important;
   background:#12dce8!important;
