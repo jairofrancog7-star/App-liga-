@@ -6312,7 +6312,7 @@ document.addEventListener('click',e=>{
 });
 
 function render(){
-  const editorRoutes=new Set(['publicationCenter','ligaControl','adminFut','jrControl','recruitment','refereeOffline','credentialBuilder','cedulaBuilder','agendaBuilder','motionHub','suspensionTool','bracketBuilder','disciplineTool','scheduleChanges']);
+  const editorRoutes=new Set(['publicationCenter','ligaControl','adminFut','jrControl','recruitment','refereeOffline','credentialBuilder','agendaBuilder','motionHub','suspensionTool','bracketBuilder','disciplineTool','scheduleChanges']);
   if(editorRoutes.has(state.route)&&!window.LJR_MEDIA?.admin){
     const media=window.LJR_MEDIA;
     let saved=false;
