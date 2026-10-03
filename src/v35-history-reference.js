@@ -960,7 +960,12 @@ function canonicalHistoricName(name){
     'celticos':'Célticos FC',
     'celtics':'Célticos FC',
     'boca jr cuenda':'Boca Jrs.',
-    'boca jrs cuenda':'Boca Jrs.'
+    'boca jrs cuenda':'Boca Jrs.',
+    'dep zapata fc':'Dep. Zapata',
+    'deportivo zapata fc':'Dep. Zapata',
+    'franco':'Franco FC',
+    'las maravillas':'Deportivo Maravillas',
+    'pozos f c':'Pozos FC'
   };
   return aliases[k]||String(name||'').trim();
 }
@@ -1031,6 +1036,7 @@ const historicalTeamEras=[
   {period:'2022–2023',category:'Veteranos · Final de Copa',teams:['Juventus','Cuenda']},
   {period:'2022–2023 · rol aportado',category:'Final de Copa, amistoso Veteranos 50+, Primera Fuerza J2 segunda vuelta, Intermedia J2 segunda vuelta y Segunda Fuerza J17',teams:['Juventus','Cuenda','Dynamo','Combinado de Cuenda','Hermanos','Tecos','Abejas','Napoli','Linces','La Cuadrilla','Boavista','Galácticos','Populares','Chelsea','La Esperanza FC','San Antonio de R.','Sección 14','La Huerta','A. Pozos','Malvinas','Barza','Oklahoma','Mineros FC','Dep. Maravillas','Lobos CDG','Mazacotes FC','Titanes FC','Galeana','Terrícolas','Unión','Tapatío','Tavera','Guadalupanos','San Antonio FC','Osasuna','Promesas','Atlético SJ']},
   {period:'2023',category:'Veteranos · Gran Final de Liga',teams:['Juventus','América']},
+  {period:'2023 · amistoso · Hermanos Junior',category:'Amistoso documentado junto a las semifinales de Veteranos',teams:['San José de Allende','Hermanos Junior']},
   {period:'2023',category:'Segunda Fuerza · Gran Final de Liga',teams:['Titanes FC','Terrícolas SEDER']},
   {period:'2024',category:'Fuerza Intermedia · semifinal de vuelta documentada',teams:['A. San Julián','Lobos CDG','Herreras FC','Oklahoma']},
   {period:'2024',category:'Fuerza Intermedia / archivo reciente',teams:['A. San Julián','Lobos CDG','Herreras FC','Oklahoma','Atlético Galeana','Promesas FC','Franco FC','Mineros','Terrícolas','Juventus','Hermanos','Linces']},
@@ -1039,7 +1045,7 @@ const historicalTeamEras=[
   {period:'2025',category:'Fuerza Intermedia · Final de Copa',teams:['Lobos CDG','Franco FC']},
   {period:'2025',category:'Veteranos 35+ · Final de Copa',teams:['Salvajes','Juventus']},
   {period:'2025–2026',category:'Finales, Copa y Veteranos conservados',teams:['Boca Jrs.','Boavista','Manchester United','B.F.C.','Galácticos (Pozos)','Herreras FC','Lobos CDG','Franco FC','Salvajes','Juventus','San Antonio Jrs.','Real de Roque','La Esperanza','La Canchita Deportes','Aldama FC']},
-  {period:'Archivo reciente · barrido completo de roles y tablas',category:'Equipos adicionales confirmados visualmente en el ZIP histórico',teams:['Innombrables','Cebolleros','Detonadores','Rambitos FC','Bristol Rovers','Bellavista','Buenavista','Takicardios','La Tryni','Atlético Santa Cruz','Atlético Cerrito','Atlético Santiago','Cobras de Cuenda','Roque']},
+  {period:'Archivo reciente · barrido completo de roles y tablas',category:'Equipos adicionales confirmados visualmente en el ZIP histórico',teams:['Pozos FC','Innombrables','Cebolleros','Detonadores','Rambitos FC','Bristol Rovers','Bellavista','Buenavista','Takicardios','La Tryni','Atlético Santa Cruz','Atlético Cerrito','Atlético Santiago','Cobras de Cuenda','Roque']},
   {period:'2026 · temporada actual',category:'Veteranos 35+',teams:['Boavista','Franco-Tavera-JR','Huracán','Cuenda','América','Aguilares','Juventus','Leyendas FC','PSV','La Trinidad']},
   {period:'2026 · temporada actual',category:'Veteranos 50+',teams:['La Esperanza','Dynamo','Boca JRS','Toros de Cuenda','Boavista','Manchester']},
   {period:'2026 · temporada actual',category:'Primera Fuerza',teams:['Franco FC','Hermanos','Napoli','Herreras FC','Linces','Abejas','Lobos CDG','Juventus','San José FC','Terrícolas','Galácticos']},
