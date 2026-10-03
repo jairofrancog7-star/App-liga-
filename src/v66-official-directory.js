@@ -187,7 +187,12 @@ function playerMarkup(){
     (!q||norm(p.name).includes(q)||norm(p.team).includes(q))
   );
   return '<section class="v66-directory" data-v66-directory="players">'+
-    '<header class="v607-player-head v673-player-head"><small>DATOS OFICIALES</small><h1>Registro de jugadores</h1><span class="v673-player-count">'+list.length+' jugadores visibles con los filtros seleccionados.</span><p>Busca por categoría, equipo o nombre.</p></header>'+
+    '<header class="v607-player-head v673-player-head v674-player-head" style="position:relative!important;inset:auto!important;transform:none!important;display:flex!important;flex-direction:column!important;align-items:flex-start!important;justify-content:flex-start!important;gap:8px!important;width:100%!important;height:auto!important;min-height:0!important;margin:0 0 14px!important;padding:10px 12px 14px!important;overflow:visible!important;box-sizing:border-box!important">'+
+      '<small style="position:static!important;display:block!important;margin:0!important;padding:0!important;width:auto!important;max-width:100%!important;color:#29e0eb!important;font-size:10px!important;line-height:1.1!important;font-weight:950!important;letter-spacing:.13em!important;white-space:nowrap!important;transform:none!important">DATOS OFICIALES</small>'+
+      '<h1 style="position:static!important;display:block!important;margin:2px 0 0!important;padding:0!important;width:100%!important;max-width:100%!important;color:#fff!important;font-size:26px!important;line-height:1.06!important;font-weight:950!important;letter-spacing:-.02em!important;white-space:normal!important;overflow:visible!important;transform:none!important">Registro de jugadores</h1>'+
+      '<span class="v673-player-count" style="position:static!important;display:block!important;margin:0!important;padding:0!important;width:100%!important;max-width:100%!important;color:#a8b1d5!important;font-size:11px!important;line-height:1.35!important;font-weight:700!important;white-space:normal!important;text-align:left!important;transform:none!important">'+list.length+' jugadores visibles con los filtros seleccionados.</span>'+
+      '<p style="position:static!important;display:block!important;margin:0!important;padding:0!important;width:100%!important;max-width:100%!important;color:#9da8d0!important;font-size:10px!important;line-height:1.35!important;font-weight:600!important;white-space:normal!important;text-align:left!important;transform:none!important">Busca por categoría, equipo o nombre.</p>'+
+    '</header>'+
     '<div class="v66-filter-title">FILTROS</div>'+
     '<div class="v66-filter-label">CATEGORÍA</div>'+
     categoryRail(playerCat,'data-v66-player-cat')+
