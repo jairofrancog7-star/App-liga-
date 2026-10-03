@@ -1,7 +1,7 @@
 /* V576 — fotos oficiales disponibles en todos los módulos de jugadores */
 .v576-player-photo{width:100%!important;height:100%!important;display:block!important;object-fit:cover!important;object-position:center 22%!important;border-radius:inherit!important}
 .v576-has-photo{overflow:hidden!important;color:transparent!important;background:#08116b!important}
-.v123-avatar.v576-has-photo,.v123-option-avatar.v576-has-photo,.v66-player-avatar.v576-has-photo,.v42-avatar.v576-has-photo,.v444-player-avatar.v576-has-photo,.v446-stat-ref-avatar.v576-has-photo,.v419-player-avatar.v576-has-photo{padding:0!important}
+.v123-avatar.v576-has-photo,.v123-option-avatar.v576-has-photo,.v66-player-avatar.v576-has-photo,.v42-avatar.v576-has-photo,.v371-player-avatar.v576-has-photo,.v371-preview button>span.v576-has-photo,.v371-scorer-avatar.v576-has-photo,.v444-player-avatar.v576-has-photo,.v446-stat-ref-avatar.v576-has-photo,.v419-player-avatar.v576-has-photo{padding:0!important}
 .v576-has-inline-photo{position:relative!important;padding-left:38px!important;min-height:32px}
 .v576-inline-player-photo{position:absolute!important;left:0!important;top:50%!important;transform:translateY(-50%)!important;width:30px!important;height:34px!important;object-fit:cover!important;object-position:center 20%!important;border-radius:8px!important;border:1px solid rgba(38,214,235,.35)!important;background:#0c146f!important}
 .v576-hero-player-photo{position:absolute!important;inset:0!important;width:100%!important;height:100%!important;object-fit:cover!important;object-position:center 18%!important;border-radius:inherit!important;z-index:0!important}
@@ -135,4 +135,45 @@ body[data-app-route="playerCompare"] .v208-position-players .v123-player-option,
 body[data-app-route="playerCompare"] .v208-search-results .v123-player-option{
   grid-template-columns:44px minmax(0,1fr) 30px!important;
   column-gap:12px!important;
+}
+
+
+/* V644 — fotos en Plantilla de todos los equipos + fallback de escudo.
+   Las fotos reales siempre llenan el círculo; si aún no existe foto del jugador,
+   se muestra temporalmente el escudo de su equipo sin deformarlo. */
+body[data-app-route="teamDetail"] .v371-player-avatar,
+body[data-app-route="teamDetail"] .v371-preview button>span,
+body[data-app-route="teamDetail"] .v371-scorer-avatar{
+  overflow:hidden!important;
+  border-radius:50%!important;
+}
+body[data-app-route="teamDetail"] .v371-player-avatar>img,
+body[data-app-route="teamDetail"] .v371-preview button>span>img,
+body[data-app-route="teamDetail"] .v371-scorer-avatar>img{
+  display:block!important;
+  width:100%!important;
+  height:100%!important;
+  min-width:100%!important;
+  min-height:100%!important;
+  object-fit:cover!important;
+  object-position:center 22%!important;
+  border-radius:50%!important;
+  transform:none!important;
+  margin:0!important;
+  padding:0!important;
+}
+.v576-team-fallback{
+  background:#fff!important;
+}
+.v576-team-fallback>img,
+body[data-app-route="teamDetail"] .v576-team-fallback>img,
+body[data-app-route="playerCompare"] .v123-avatar.v576-team-fallback>img,
+body[data-app-route="playerCompare"] .v123-option-avatar.v576-team-fallback>img,
+body.v123-player-compare-active .v123-avatar.v576-team-fallback>img,
+body.v123-player-compare-active .v123-option-avatar.v576-team-fallback>img{
+  object-fit:contain!important;
+  object-position:center!important;
+  padding:4px!important;
+  box-sizing:border-box!important;
+  background:#fff!important;
 }
