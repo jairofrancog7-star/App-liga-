@@ -159,7 +159,7 @@
     Object.assign(n.style,{position:'fixed',left:'50%',bottom:'96px',transform:'translateX(-50%)',zIndex:'120000',padding:'10px 14px',borderRadius:'12px',background:'#07105f',color:'#fff',border:'1px solid rgba(35,221,234,.45)',fontSize:'12px',fontWeight:'800',boxShadow:'0 10px 28px rgba(0,0,0,.3)',maxWidth:'calc(100vw - 32px)',textAlign:'center'});
     document.body.appendChild(n);setTimeout(()=>n.remove(),1900);
   }
-  async function renderCedula(scroll){
+  async function renderCedula(scroll,silent=false){
     const host=document.querySelector('[data-v64-cedula-preview]');
     if(!host)return null;
 
@@ -225,7 +225,7 @@
       '</div>';
 
     if(scroll)host.scrollIntoView({behavior:'smooth',block:'start'});
-    ownToast((homeRoster.length||awayRoster.length)?'Cédula generada con plantillas registradas':'Cédula generada; no se encontraron plantillas registradas para este cruce');
+    if(!silent)ownToast((homeRoster.length||awayRoster.length)?'Cédula generada con plantillas registradas':'Cédula generada; no se encontraron plantillas registradas para este cruce');
     return host.querySelector('[data-v131-print-sheet]');
   }
   async function printCedula(){
@@ -293,26 +293,35 @@
      y crea de inmediato la hoja con logos de Liga, categoría y equipos. */
   function autoRenderOfficialCedula(){
     if(route()!=='cedulaBuilder')return;
-    if(localStorage.getItem('v66-cedula-source')!=='official-directory')return;
-    if(localStorage.getItem('v66-cedula-autogenerate')!=='1')return;
     const host=document.querySelector('[data-v64-cedula-preview]');
     if(!host||host.querySelector('[data-v131-print-sheet]'))return;
     localStorage.removeItem('v66-cedula-autogenerate');
-    renderCedula(false);
+    /* V640: la vista previa oficial vuelve a mostrarse siempre,
+       aunque el usuario haya entrado directo al generador y no desde una fila. */
+    renderCedula(false,true);
   }
   if(!window.__LJR_V630_CEDULA_AUTO__){
     window.__LJR_V630_CEDULA_AUTO__=true;
-    window.addEventListener('hashchange',()=>setTimeout(autoRenderOfficialCedula,70));
+    window.addEventListener('hashchange',()=>setTimeout(autoRenderOfficialCedula,90));
     const screen=document.querySelector('#screen');
-    if(screen)new MutationObserver(()=>setTimeout(autoRenderOfficialCedula,20)).observe(screen,{childList:true,subtree:true});
-    if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',()=>setTimeout(autoRenderOfficialCedula,80),{once:true});
-    else setTimeout(autoRenderOfficialCedula,80);
+    if(screen)new MutationObserver(()=>setTimeout(autoRenderOfficialCedula,40)).observe(screen,{childList:true,subtree:true});
+    if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',()=>setTimeout(autoRenderOfficialCedula,120),{once:true});
+    else setTimeout(autoRenderOfficialCedula,120);
   }
 
+  let previewRefreshTimer=0;
+  function refreshPreview(){
+    clearTimeout(previewRefreshTimer);
+    previewRefreshTimer=setTimeout(()=>{
+      if(route()==='cedulaBuilder')renderCedula(false,true);
+    },90);
+  }
+  document.addEventListener('input',function(e){
+    if(route()!=='cedulaBuilder')return;
+    if(e.target.matches?.('[data-v64-ced-date],[data-v64-ced-field],[data-v64-ced-ref]'))refreshPreview();
+  },true);
   document.addEventListener('change',function(e){
-    if(route()!=='cedulaBuilder'||!document.querySelector('[data-v131-print-sheet]'))return;
-    if(e.target.matches?.('[data-v64-ced-cat],[data-v64-ced-home],[data-v64-ced-away],[data-v64-ced-date],[data-v64-ced-field],[data-v64-ced-ref]')){
-      setTimeout(()=>renderCedula(false),60);
-    }
+    if(route()!=='cedulaBuilder')return;
+    if(e.target.matches?.('[data-v64-ced-cat],[data-v64-ced-home],[data-v64-ced-away],[data-v64-ced-date],[data-v64-ced-field],[data-v64-ced-ref]'))refreshPreview();
   },true);
 })();
