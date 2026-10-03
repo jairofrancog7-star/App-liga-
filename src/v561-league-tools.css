@@ -1136,3 +1136,44 @@ html body[data-app-route="moments"] .v26-moments-sticky .v26-moments-sticky-back
   z-index:5!important;
 }
 /* /V624 */
+
+
+/* V625 — MOMENTOS NO DIVIDER
+   Quita la franja/degradado oscuro que cruzaba el encabezado.
+   Se conserva únicamente el desvanecido natural de la imagen V621 hacia el fondo. */
+html body[data-app-route="moments"] .v26-moments-sticky{
+  border-bottom:0!important;
+  box-shadow:none!important;
+}
+html body[data-app-route="moments"] .v26-moments-sticky::before,
+html body[data-app-route="moments"] .v26-moments-sticky::after{
+  content:none!important;
+  display:none!important;
+  background:none!important;
+  box-shadow:none!important;
+  border:0!important;
+}
+html body[data-app-route="moments"] .v26-moments-sticky .v621-moments-bg{
+  /* Mantener unión suave sin una capa negra por encima. */
+  -webkit-mask-image:linear-gradient(
+    to bottom,
+    #000 0%,
+    #000 58%,
+    rgba(0,0,0,.96) 68%,
+    rgba(0,0,0,.82) 76%,
+    rgba(0,0,0,.58) 84%,
+    rgba(0,0,0,.30) 92%,
+    rgba(0,0,0,0) 100%
+  )!important;
+  mask-image:linear-gradient(
+    to bottom,
+    #000 0%,
+    #000 58%,
+    rgba(0,0,0,.96) 68%,
+    rgba(0,0,0,.82) 76%,
+    rgba(0,0,0,.58) 84%,
+    rgba(0,0,0,.30) 92%,
+    rgba(0,0,0,0) 100%
+  )!important;
+}
+/* /V625 */
