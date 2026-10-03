@@ -3508,3 +3508,299 @@
     padding:13px 12px!important;
   }
 }
+
+
+/* V672 — Historia: tarjetas modernas, ancho útil completo y controles interactivos. */
+@media(max-width:1023px){
+  body[data-app-route="history"] .v35-history-page .v35-history-archive,
+  body[data-app-route="history"] .v35-history-page .v35-history-timeline,
+  body[data-app-route="history"] .v35-history-page .v35-history-format,
+  body[data-app-route="history"] .v35-history-page .v35-timeline-list,
+  body[data-app-route="history"] .v35-history-page .v35-format-grid,
+  body[data-app-route="history"] .v35-history-page .v35-result-list,
+  body[data-app-route="history"] .v35-history-page .v35-history-source-list{
+    width:100%!important;
+    max-width:none!important;
+    min-width:0!important;
+    box-sizing:border-box!important;
+  }
+  body[data-app-route="history"] .v35-history-page .v35-history-archive{
+    margin-left:0!important;
+    margin-right:0!important;
+  }
+
+  body[data-app-route="history"] .v35-history-page .v672-modern-card,
+  body[data-app-route="history"] .v35-history-page .v35-history-source-card,
+  body[data-app-route="history"] .v35-history-page .v35-record-card,
+  body[data-app-route="history"] .v35-history-page .v35-team-goal-card,
+  body[data-app-route="history"] .v35-history-page .v35-scorer-history article,
+  body[data-app-route="history"] .v35-history-page .v35-retro-club,
+  body[data-app-route="history"] .v35-history-page .v35-old-table{
+    width:100%!important;
+    max-width:100%!important;
+    min-width:0!important;
+    box-sizing:border-box!important;
+    border-radius:20px!important;
+    border:1px solid rgba(50,217,245,.30)!important;
+    box-shadow:0 12px 28px rgba(0,0,58,.22),inset 0 1px 0 rgba(255,255,255,.055)!important;
+  }
+
+  body[data-app-route="history"] .v35-history-page .v672-modern-card{
+    overflow:hidden!important;
+    background:
+      radial-gradient(95% 120% at 100% 0%,rgba(28,130,255,.20),transparent 62%),
+      linear-gradient(145deg,rgba(20,32,143,.98),rgba(9,18,99,.99))!important;
+  }
+
+  body[data-app-route="history"] .v35-history-page .v35-format-grid{
+    grid-template-columns:1fr!important;
+    gap:11px!important;
+  }
+  body[data-app-route="history"] .v35-history-page .v35-format-grid article{
+    padding:15px 15px 13px!important;
+  }
+  body[data-app-route="history"] .v35-history-page .v35-format-grid h4{
+    font-size:13.5px!important;
+    line-height:1.18!important;
+  }
+  body[data-app-route="history"] .v35-history-page .v35-format-grid p{
+    font-size:10px!important;
+    line-height:1.48!important;
+  }
+
+  body[data-app-route="history"] .v35-history-page .v672-date-button{
+    appearance:none!important;
+    width:max-content!important;
+    max-width:100%!important;
+    min-height:34px!important;
+    display:inline-flex!important;
+    align-items:center!important;
+    justify-content:center!important;
+    padding:7px 11px!important;
+    border:1px solid rgba(36,224,242,.48)!important;
+    border-radius:999px!important;
+    background:linear-gradient(135deg,rgba(16,185,224,.22),rgba(32,79,197,.30))!important;
+    color:#35e7f4!important;
+    font:inherit!important;
+    font-size:10px!important;
+    line-height:1.1!important;
+    font-weight:900!important;
+    letter-spacing:.025em!important;
+    text-align:center!important;
+    cursor:pointer!important;
+    touch-action:manipulation!important;
+    box-shadow:inset 0 1px 0 rgba(255,255,255,.08),0 5px 14px rgba(0,0,45,.16)!important;
+  }
+  body[data-app-route="history"] .v35-history-page .v672-date-button:active,
+  body[data-app-route="history"] .v35-history-page .v35-history-source-card:active,
+  body[data-app-route="history"] .v35-history-page .v672-card-toggle:active{
+    transform:scale(.975)!important;
+  }
+
+  body[data-app-route="history"] .v35-history-page .v35-timeline-list{
+    padding-left:24px!important;
+  }
+  body[data-app-route="history"] .v35-history-page .v35-timeline-list:before{
+    left:10px!important;
+    width:2px!important;
+    background:linear-gradient(180deg,#27e0ef,rgba(56,102,231,.18))!important;
+  }
+  body[data-app-route="history"] .v35-history-page .v35-timeline-list article{
+    grid-template-columns:1fr!important;
+    gap:10px!important;
+    padding:15px!important;
+  }
+  body[data-app-route="history"] .v35-history-page .v35-timeline-list article:after{
+    left:-20px!important;
+    top:25px!important;
+    width:12px!important;
+    height:12px!important;
+    box-shadow:0 0 0 5px rgba(33,229,239,.13),0 0 18px rgba(33,229,239,.42)!important;
+  }
+  body[data-app-route="history"] .v35-history-page .v35-timeline-list h4{
+    font-size:14px!important;
+    line-height:1.18!important;
+  }
+  body[data-app-route="history"] .v35-history-page .v35-timeline-list p{
+    margin-top:7px!important;
+    font-size:10px!important;
+    line-height:1.5!important;
+  }
+
+  body[data-app-route="history"] .v35-history-page .v35-tagged-facebook .v35-final-row.v35-tagged-row{
+    grid-template-columns:1fr!important;
+    grid-template-rows:auto!important;
+    gap:7px!important;
+    padding:15px!important;
+    align-items:start!important;
+  }
+  body[data-app-route="history"] .v35-history-page .v35-tagged-facebook .v35-tagged-row>*{
+    grid-column:1!important;
+    grid-row:auto!important;
+    width:100%!important;
+    max-width:100%!important;
+    min-width:0!important;
+    box-sizing:border-box!important;
+  }
+  body[data-app-route="history"] .v35-history-page .v35-tagged-facebook .v35-tagged-row>.v672-date-button{
+    width:max-content!important;
+    justify-self:start!important;
+  }
+  body[data-app-route="history"] .v35-history-page .v35-tagged-title{
+    display:flex!important;
+    flex-wrap:wrap!important;
+    gap:2px 0!important;
+    overflow:visible!important;
+    white-space:normal!important;
+    word-break:normal!important;
+    overflow-wrap:anywhere!important;
+    font-size:12.5px!important;
+    line-height:1.28!important;
+  }
+  body[data-app-route="history"] .v35-history-page .v35-tagged-title>span{
+    display:inline!important;
+    max-width:100%!important;
+    white-space:normal!important;
+    word-break:normal!important;
+    overflow-wrap:anywhere!important;
+  }
+  body[data-app-route="history"] .v35-history-page .v35-tagged-row>b{
+    font-size:12.5px!important;
+    line-height:1.22!important;
+  }
+  body[data-app-route="history"] .v35-history-page .v35-tagged-row>small{
+    font-size:9px!important;
+    line-height:1.2!important;
+  }
+  body[data-app-route="history"] .v35-history-page .v35-tagged-row>p{
+    margin:2px 0 0!important;
+    font-size:10px!important;
+    line-height:1.48!important;
+  }
+
+  body[data-app-route="history"] .v35-history-page .v672-card-toggle{
+    appearance:none!important;
+    min-height:34px!important;
+    display:inline-flex!important;
+    align-items:center!important;
+    justify-content:center!important;
+    gap:7px!important;
+    margin:11px 0 0!important;
+    padding:7px 11px!important;
+    border:1px solid rgba(64,213,244,.30)!important;
+    border-radius:11px!important;
+    background:rgba(12,37,132,.72)!important;
+    color:#dce8ff!important;
+    font-size:9.5px!important;
+    line-height:1!important;
+    font-weight:850!important;
+    cursor:pointer!important;
+    touch-action:manipulation!important;
+  }
+  body[data-app-route="history"] .v35-history-page .v672-card-toggle i{
+    color:#31e0ef!important;
+    font-size:13px!important;
+    font-style:normal!important;
+  }
+  body[data-app-route="history"] .v35-history-page article.v672-collapsed .v672-card-detail{
+    display:none!important;
+  }
+
+  body[data-app-route="history"] .v35-history-page .v35-history-sources{
+    width:100%!important;
+    max-width:none!important;
+    box-sizing:border-box!important;
+    padding:15px!important;
+    border-radius:22px!important;
+    border-color:rgba(43,218,242,.28)!important;
+    background:
+      radial-gradient(110% 100% at 100% 0%,rgba(37,116,255,.17),transparent 62%),
+      linear-gradient(180deg,rgba(14,26,128,.94),rgba(7,14,86,.97))!important;
+  }
+  body[data-app-route="history"] .v35-history-page .v35-history-source-card{
+    min-height:88px!important;
+    grid-template-columns:48px minmax(0,1fr) auto!important;
+    gap:12px!important;
+    padding:13px!important;
+    background:linear-gradient(145deg,rgba(18,31,139,.98),rgba(8,17,94,.99))!important;
+    transition:transform .14s ease,border-color .14s ease,filter .14s ease!important;
+  }
+  body[data-app-route="history"] .v35-history-page .v35-history-source-card.is-link{
+    cursor:pointer!important;
+  }
+  body[data-app-route="history"] .v35-history-page .v35-history-source-card.is-link:hover{
+    border-color:rgba(48,229,244,.58)!important;
+  }
+  body[data-app-route="history"] .v35-history-page .v35-history-source-card.is-disabled{
+    opacity:.62!important;
+    cursor:default!important;
+  }
+  body[data-app-route="history"] .v35-history-page .v35-history-source-icon{
+    width:46px!important;
+    height:46px!important;
+    border-radius:14px!important;
+    background:linear-gradient(145deg,#22ddea,#2273e6)!important;
+    box-shadow:0 8px 18px rgba(13,109,214,.28)!important;
+    font-size:15px!important;
+  }
+  body[data-app-route="history"] .v35-history-page .v35-history-source-card b,
+  body[data-app-route="history"] .v35-history-page .v35-history-source-card small{
+    white-space:normal!important;
+    overflow:visible!important;
+    text-overflow:clip!important;
+    word-break:normal!important;
+    overflow-wrap:anywhere!important;
+  }
+  body[data-app-route="history"] .v35-history-page .v35-history-source-card b{
+    font-size:12.5px!important;
+    line-height:1.2!important;
+  }
+  body[data-app-route="history"] .v35-history-page .v35-history-source-card small{
+    margin-top:5px!important;
+    font-size:9.5px!important;
+    line-height:1.38!important;
+  }
+  body[data-app-route="history"] .v35-history-page .v35-history-source-card em{
+    min-height:30px!important;
+    display:inline-flex!important;
+    align-items:center!important;
+    padding:0 8px!important;
+    border-radius:10px!important;
+    background:rgba(29,214,239,.10)!important;
+    color:#2ce3ef!important;
+    font-size:9px!important;
+    font-style:normal!important;
+    font-weight:900!important;
+  }
+
+  body[data-app-route="history"] .v35-history-page .v35-history-moment,
+  body[data-app-route="history"] .v35-history-page .v35-champion-card{
+    max-width:100%!important;
+    box-sizing:border-box!important;
+    border-radius:21px!important;
+  }
+  body[data-app-route="history"] .v35-history-page .v35-history-moment h3,
+  body[data-app-route="history"] .v35-history-page .v35-history-moment strong,
+  body[data-app-route="history"] .v35-history-page .v35-history-moment p,
+  body[data-app-route="history"] .v35-history-page .v35-champion-card h4,
+  body[data-app-route="history"] .v35-history-page .v35-champion-card b,
+  body[data-app-route="history"] .v35-history-page .v35-champion-card p{
+    max-width:100%!important;
+    overflow-wrap:anywhere!important;
+    word-break:normal!important;
+  }
+}
+
+@media(max-width:430px){
+  body[data-app-route="history"] .v35-history-page .v35-history-source-card{
+    grid-template-columns:44px minmax(0,1fr)!important;
+  }
+  body[data-app-route="history"] .v35-history-page .v35-history-source-card em{
+    grid-column:2!important;
+    justify-self:start!important;
+  }
+  body[data-app-route="history"] .v35-history-page .v35-history-source-icon{
+    width:42px!important;
+    height:42px!important;
+  }
+}
