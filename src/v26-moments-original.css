@@ -562,3 +562,136 @@ body[data-app-route="moments"] .v26-moments-sticky-back svg{
   }
 }
 /* /V613 */
+
+
+/* V614 — MOMENTOS MEDIDAS EXACTAS DE LA REFERENCIA 1536×489.
+   Referencia medida:
+   - cabecera: 489 / 1536 = 31.8359% del ancho
+   - flecha visible: x 94..163, y 260..328
+   - título: x 259..610, y 266..321
+   Se replica proporcionalmente dentro del ancho real de la app. */
+html body[data-app-route="moments"] .v26-moments-page,
+html body.v10-header-collapsed[data-app-route="moments"] .v26-moments-page{
+  padding-top:calc(min(100vw,520px) * .318359375 + 8px)!important;
+}
+
+html body[data-app-route="moments"] .v26-moments-sticky,
+html body.v10-header-collapsed[data-app-route="moments"] .v26-moments-sticky{
+  position:fixed!important;
+  top:0!important;
+  left:50%!important;
+  transform:translateX(-50%)!important;
+  width:min(100vw,520px)!important;
+  height:calc(min(100vw,520px) * .318359375)!important;
+  min-height:calc(min(100vw,520px) * .318359375)!important;
+  max-height:calc(min(100vw,520px) * .318359375)!important;
+  margin:0!important;
+  padding:0!important;
+  overflow:hidden!important;
+  background:
+    linear-gradient(180deg,rgba(18,77,250,.22) 0%,rgba(4,20,132,.04) 54%,rgba(1,5,84,.34) 100%),
+    url('../public/brand-neon-header.svg') center center / cover no-repeat,
+    #07106f!important;
+  line-height:normal!important;
+  pointer-events:none!important;
+}
+
+html body[data-app-route="moments"] .v26-moments-sticky::before{
+  content:""!important;
+  position:absolute!important;
+  inset:0!important;
+  z-index:1!important;
+  pointer-events:none!important;
+  background:linear-gradient(180deg,rgba(27,101,255,.06),transparent 52%,rgba(0,3,74,.20))!important;
+}
+
+/* Título: posición/tamaño medidos de la captura deseada. */
+html body[data-app-route="moments"] .v26-moments-sticky .v561-moments-title{
+  position:absolute!important;
+  left:16.86198%!important;            /* 259 / 1536 */
+  top:60.02045%!important;             /* centro vertical del texto */
+  transform:translateY(-50%)!important;
+  z-index:4!important;
+  display:block!important;
+  width:auto!important;
+  height:auto!important;
+  margin:0!important;
+  padding:0!important;
+  color:#fff!important;
+  font-family:Roboto,Arial,sans-serif!important;
+  font-size:24px!important;
+  line-height:1!important;
+  font-weight:500!important;
+  font-style:normal!important;
+  letter-spacing:-.03em!important;
+  text-transform:none!important;
+  white-space:nowrap!important;
+  text-align:left!important;
+  text-shadow:none!important;
+  pointer-events:none!important;
+}
+
+/* Flecha completa ←, no solamente chevrón. */
+html body[data-app-route="moments"] .v26-moments-sticky .v26-moments-sticky-back{
+  position:absolute!important;
+  left:4.88%!important;
+  top:60.12%!important;
+  transform:translateY(-50%)!important;
+  width:42px!important;
+  height:42px!important;
+  min-width:42px!important;
+  min-height:42px!important;
+  max-width:42px!important;
+  max-height:42px!important;
+  z-index:5!important;
+  display:grid!important;
+  place-items:center!important;
+  margin:0!important;
+  padding:0!important;
+  border:0!important;
+  border-radius:0!important;
+  outline:0!important;
+  background:transparent!important;
+  box-shadow:none!important;
+  color:#fff!important;
+  opacity:1!important;
+  visibility:visible!important;
+  pointer-events:auto!important;
+}
+
+html body[data-app-route="moments"] .v26-moments-sticky .v26-moments-sticky-back svg{
+  display:block!important;
+  width:34px!important;
+  height:34px!important;
+  min-width:34px!important;
+  min-height:34px!important;
+  margin:0!important;
+  padding:0!important;
+  overflow:visible!important;
+  fill:none!important;
+  stroke:#fff!important;
+  stroke-width:2.25!important;
+  stroke-linecap:round!important;
+  stroke-linejoin:round!important;
+  transform:none!important;
+}
+
+/* No permitir que reglas móviles/colapsadas cambien estas medidas. */
+@media(max-width:390px){
+  html body[data-app-route="moments"] .v26-moments-sticky .v561-moments-title{
+    left:16.86198%!important;
+    top:60.02045%!important;
+    font-size:24px!important;
+  }
+  html body[data-app-route="moments"] .v26-moments-sticky .v26-moments-sticky-back{
+    left:4.88%!important;
+    top:60.12%!important;
+    width:42px!important;
+    height:42px!important;
+  }
+  html body[data-app-route="moments"] .v26-moments-sticky .v26-moments-sticky-back svg{
+    width:34px!important;
+    height:34px!important;
+  }
+}
+/* /V614 */
