@@ -63,18 +63,24 @@ function teamsForCategory(catName){
   }
   return out.sort((a,b)=>a.localeCompare(b,'es',{sensitivity:'base'}));
 }
+function playerName(x){
+  if(typeof x==='string')return x.trim();
+  if(!x||typeof x!=='object')return '';
+  return String(x.name||x.player||x.jugador||x.full_name||x.nombre||'').trim();
+}
 function playersFor(catName,teamName){
   const out=[];
-  const add=n=>{n=String(n||'').trim();if(n&&!out.some(x=>same(x,n)))out.push(n)};
+  const add=n=>{n=playerName(n)||String(n||'').trim();if(n&&n!=='[object Object]'&&!out.some(x=>same(x,n)))out.push(n)};
   for(const c of Object.values(db?.categories||{})){
     if(catName&&catName!=='Todas'&&!same(c?.name,catName))continue;
-    for(const [team,players] of Object.entries(c?.rosters||{})){
+    for(const [team,raw] of Object.entries(c?.rosters||{})){
       if(teamName&&!same(team,teamName))continue;
-      (Array.isArray(players)?players:[]).forEach(add);
+      const rows=Array.isArray(raw)?raw:(raw?.players||raw?.rows||[]);
+      (Array.isArray(rows)?rows:[]).forEach(add);
     }
     for(const [team,profiles] of Object.entries(c?.player_profiles||{})){
       if(teamName&&!same(team,teamName))continue;
-      (Array.isArray(profiles)?profiles:[]).forEach(p=>add(p?.name));
+      (Array.isArray(profiles)?profiles:[]).forEach(add);
     }
   }
   return out.sort((a,b)=>a.localeCompare(b,'es',{sensitivity:'base'}));
@@ -123,7 +129,7 @@ function view(){
         '</div>'+
         '<label class="v635-team-field"><span>Equipo</span><input type="hidden" data-v635-team><button type="button" class="v635-team-select" data-v635-team-open aria-haspopup="dialog"><span data-v635-team-label>Selecciona un equipo</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m7 9 5 6 5-6"/></svg></button><small data-v635-team-hint>Equipos filtrados por '+esc(defaultCat)+'</small></label>'+
         '<div class="v635-two">'+
-          '<label><span>Jugador / persona</span><input type="text" list="v635-player-list" data-v635-person placeholder="Nombre completo"><datalist id="v635-player-list"></datalist></label>'+
+          '<label class="v635-player-field"><span>Jugador / persona</span><input type="hidden" data-v635-person><button type="button" class="v635-team-select v635-player-select" data-v635-player-open aria-haspopup="dialog"><span data-v635-player-label>Selecciona un jugador</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m7 9 5 6 5-6"/></svg></button><small data-v635-player-hint>Primero selecciona un equipo</small></label>'+
           '<label><span>Delegado responsable</span><input type="text" data-v635-delegate placeholder="Nombre del delegado"></label>'+
         '</div>'+
         '<div class="v635-three">'+
@@ -164,6 +170,15 @@ function view(){
         '<label><span>Categoría</span><select data-v635-team-cat>'+options(cats,defaultCat)+'</select></label>'+
         '<label><span>Buscar equipo</span><input type="search" data-v635-team-search placeholder="Escribe el nombre del equipo" autocomplete="off"></label>'+
         '<div class="v635-team-options" data-v635-team-options></div>'+
+      '</section>'+
+    '</div>'+
+    '<div class="v635-team-sheet v635-player-sheet" data-v635-player-sheet hidden>'+
+      '<button type="button" class="v635-team-backdrop" data-v635-player-close aria-label="Cerrar selector de jugador"></button>'+
+      '<section class="v635-team-dialog" role="dialog" aria-modal="true" aria-label="Seleccionar jugador">'+
+        '<div class="v635-team-dialog-head"><div><small>JUGADORES DEL EQUIPO</small><b>Seleccionar jugador</b></div><button type="button" data-v635-player-close aria-label="Cerrar">×</button></div>'+
+        '<div class="v635-player-context"><small data-v635-player-cat-label>'+esc(defaultCat)+'</small><b data-v635-player-team-label>Selecciona primero un equipo</b></div>'+
+        '<label><span>Buscar jugador</span><input type="search" data-v635-player-search placeholder="Escribe el nombre del jugador" autocomplete="off"></label>'+
+        '<div class="v635-team-options" data-v635-player-options></div>'+
       '</section>'+
     '</div>'+
   '</section>';
@@ -247,13 +262,30 @@ function refreshLists(){
   if(teamLabel)teamLabel.textContent=team||'Selecciona un equipo';
   const hint=q('[data-v635-team-hint]');
   if(hint)hint.textContent='Equipos filtrados por '+(cat||'categoría');
+  const person=q('[data-v635-person]')?.value||'';
   const players=playersFor(cat,team);
-  const playerList=q('#v635-player-list');
-  if(playerList)playerList.innerHTML=players.map(n=>'<option value="'+esc(n)+'"></option>').join('');
+  if(person&&!players.some(n=>same(n,person))){
+    const p=q('[data-v635-person]');if(p)p.value='';
+  }
+  const playerLabel=q('[data-v635-player-label]');
+  if(playerLabel)playerLabel.textContent=q('[data-v635-person]')?.value||'Selecciona un jugador';
+  const playerHint=q('[data-v635-player-hint]');
+  if(playerHint)playerHint.textContent=team
+    ?(players.length+' jugadores de '+team)
+    :'Primero selecciona un equipo';
+}
+function setPlayer(name){
+  const input=q('[data-v635-person]');
+  if(input)input.value=String(name||'').trim();
+  const label=q('[data-v635-player-label]');
+  if(label)label.textContent=input?.value||'Selecciona un jugador';
 }
 function setTeam(name){
   const input=q('[data-v635-team]');
-  if(input)input.value=String(name||'').trim();
+  const next=String(name||'').trim();
+  const changed=!same(input?.value||'',next);
+  if(input)input.value=next;
+  if(changed)setPlayer('');
   const label=q('[data-v635-team-label]');
   if(label)label.textContent=input?.value||'Selecciona un equipo';
   refreshLists();
@@ -283,6 +315,50 @@ function openTeamPicker(){
 }
 function closeTeamPicker(){
   const sheet=q('[data-v635-team-sheet]');
+  if(sheet)sheet.hidden=true;
+  document.body.classList.remove('v635-team-picker-open');
+}
+function renderPlayerPicker(){
+  const host=q('[data-v635-player-options]');
+  if(!host)return;
+  const cat=q('[data-v635-cat]')?.value||'';
+  const team=q('[data-v635-team]')?.value||'';
+  const term=norm(q('[data-v635-player-search]')?.value||'');
+  const catLabel=q('[data-v635-player-cat-label]');
+  const teamLabel=q('[data-v635-player-team-label]');
+  if(catLabel)catLabel.textContent=cat||'Categoría';
+  if(teamLabel)teamLabel.textContent=team||'Selecciona primero un equipo';
+  if(!team){
+    host.innerHTML='<div class="v635-team-empty">Selecciona un equipo antes de elegir al jugador.</div>';
+    return;
+  }
+  const list=playersFor(cat,team).filter(n=>!term||norm(n).includes(term));
+  host.innerHTML=list.length
+    ?list.map(n=>'<button type="button" class="v635-team-option v635-player-option" data-v635-player-choice="'+esc(n)+'"><span>'+esc(String(n).trim().slice(0,1).toUpperCase()||'•')+'</span><b>'+esc(n)+'</b><small>'+esc(team)+'</small></button>').join('')
+    :'<div class="v635-team-empty">No hay jugadores que coincidan para '+esc(team)+'.</div>';
+}
+function openPlayerPicker(e){
+  e?.preventDefault?.();
+  e?.stopPropagation?.();
+  const team=q('[data-v635-team]')?.value||'';
+  if(!team){
+    toast('Primero selecciona un equipo');
+    openTeamPicker();
+    return;
+  }
+  const sheet=q('[data-v635-player-sheet]');
+  if(!sheet)return;
+  const search=q('[data-v635-player-search]');
+  if(search)search.value='';
+  renderPlayerPicker();
+  sheet.hidden=false;
+  document.body.classList.add('v635-team-picker-open');
+  setTimeout(()=>search?.focus(),80);
+}
+function closePlayerPicker(e){
+  e?.preventDefault?.();
+  e?.stopPropagation?.();
+  const sheet=q('[data-v635-player-sheet]');
   if(sheet)sheet.hidden=true;
   document.body.classList.remove('v635-team-picker-open');
 }
@@ -525,21 +601,45 @@ function bind(){
     const picker=q('[data-v635-team-cat]');
     if(picker)picker.value=e.target.value;
     renderTeamPicker();
+    renderPlayerPicker();
   });
-  q('[data-v635-team-open]')?.addEventListener('click',openTeamPicker);
-  qa('[data-v635-team-close]').forEach(btn=>btn.addEventListener('click',closeTeamPicker));
+  q('[data-v635-team-open]')?.addEventListener('click',e=>{
+    e.preventDefault();e.stopPropagation();openTeamPicker();
+  });
+  qa('[data-v635-team-close]').forEach(btn=>btn.addEventListener('click',e=>{
+    e.preventDefault();e.stopPropagation();closeTeamPicker();
+  }));
+  q('[data-v635-team-sheet]')?.addEventListener('click',e=>e.stopPropagation());
   q('[data-v635-team-cat]')?.addEventListener('change',e=>{
+    e.stopPropagation();
     const main=q('[data-v635-cat]');
     if(main)main.value=e.target.value;
     setTeam('');
     renderTeamPicker();
+    renderPlayerPicker();
   });
-  q('[data-v635-team-search]')?.addEventListener('input',renderTeamPicker);
+  q('[data-v635-team-search]')?.addEventListener('click',e=>e.stopPropagation());
+  q('[data-v635-team-search]')?.addEventListener('input',e=>{e.stopPropagation();renderTeamPicker()});
   q('[data-v635-team-options]')?.addEventListener('click',e=>{
+    e.preventDefault();
+    e.stopPropagation();
     const btn=e.target.closest('[data-v635-team-choice]');
     if(!btn)return;
     setTeam(btn.dataset.v635TeamChoice||'');
     closeTeamPicker();
+  });
+  q('[data-v635-player-open]')?.addEventListener('click',openPlayerPicker);
+  qa('[data-v635-player-close]').forEach(btn=>btn.addEventListener('click',closePlayerPicker));
+  q('[data-v635-player-sheet]')?.addEventListener('click',e=>e.stopPropagation());
+  q('[data-v635-player-search]')?.addEventListener('click',e=>e.stopPropagation());
+  q('[data-v635-player-search]')?.addEventListener('input',e=>{e.stopPropagation();renderPlayerPicker()});
+  q('[data-v635-player-options]')?.addEventListener('click',e=>{
+    e.preventDefault();
+    e.stopPropagation();
+    const btn=e.target.closest('[data-v635-player-choice]');
+    if(!btn)return;
+    setPlayer(btn.dataset.v635PlayerChoice||'');
+    closePlayerPicker(e);
   });
   q('[data-v635-ai]')?.addEventListener('click',generateAiReason);
   q('[data-v635-signature]')?.addEventListener('change',async e=>{
