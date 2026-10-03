@@ -2091,3 +2091,28 @@ body[data-app-route="competition"] #v422-results-reference{
     line-height:1.1!important;
   }
 }
+
+
+/* V608 — Competición: el cuadro de clasificación debe abarcar hasta la columna Pts.
+   No cambia logos, filas ni tipografía; sólo corrige el borde/fondo derecho del cuadro. */
+@media(max-width:520px){
+  body[data-app-route="competition"] #v449-reference-lower .v449-season-table{
+    width:calc(100% + 14px)!important;
+    max-width:none!important;
+    margin-right:-14px!important;
+    padding-right:14px!important;
+    overflow:hidden!important;
+  }
+  body[data-app-route="competition"] #v449-reference-lower .v449-season-table-head,
+  body[data-app-route="competition"] #v449-reference-lower .v449-season-table-row{
+    width:100%!important;
+    max-width:100%!important;
+  }
+}
+@media(max-width:390px){
+  body[data-app-route="competition"] #v449-reference-lower .v449-season-table{
+    width:calc(100% + 12px)!important;
+    margin-right:-12px!important;
+    padding-right:12px!important;
+  }
+}
