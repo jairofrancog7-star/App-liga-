@@ -74,17 +74,57 @@ function teamList(){
   return out.slice(0,60);
 }
 function playerList(){
+  /* V640 — usar primero el directorio oficial ya normalizado.
+     Ese directorio combina rosters + player_profiles de todas las categorías,
+     por lo que evita el falso "0 jugadores" cuando el roster es un arreglo de nombres. */
+  try{
+    const list=window.V66_OFFICIAL_DIRECTORY?.playerList?.();
+    if(Array.isArray(list)&&list.length){
+      const seen=new Set();
+      return list.map(p=>({
+        name:String(p?.name||'').trim(),
+        team:String(p?.team||'').trim(),
+        cat:String(p?.cat||''),
+        category:String(p?.category||'Liga Municipal'),
+        position:String(p?.position||''),
+        dorsal:String(p?.dorsal||''),
+        photo:String(p?.photo||'')
+      })).filter(p=>{
+        const key=p.cat+'|'+norm(p.team)+'|'+norm(p.name);
+        if(!p.name||!p.team||seen.has(key))return false;
+        seen.add(key);return true;
+      });
+    }
+  }catch(_){}
+
+  /* Respaldo local: soporta rosters como strings, objetos o arreglos,
+     y añade también perfiles aunque el nombre no esté repetido en roster. */
   const out=[],seen=new Set();
   Object.entries(db()?.categories||{}).forEach(([cid,cat])=>{
     const cname=cat?.name||'Liga Municipal';
-    Object.entries(cat?.rosters||{}).forEach(([team,raw])=>{
+    const teams=new Set([...Object.keys(cat?.rosters||{}),...Object.keys(cat?.player_profiles||{})]);
+    teams.forEach(team=>{
+      const raw=cat?.rosters?.[team];
       const rows=Array.isArray(raw)?raw:(raw?.rows||raw?.players||[]);
-      rows.forEach(r=>{
-        const name=String(Array.isArray(r)?(r[1]||r[0]||''):(r?.name||r?.player||'')).trim();
+      const profilesEntry=Object.entries(cat?.player_profiles||{}).find(([t])=>norm(t)===norm(team));
+      const profiles=Array.isArray(profilesEntry?.[1])?profilesEntry[1]:[];
+      const byName=new Map(profiles.map(p=>[norm(p?.name),p||{}]));
+      const values=[...rows,...profiles.map(p=>p?.name).filter(Boolean)];
+      values.forEach(r=>{
+        const name=String(
+          typeof r==='string'||typeof r==='number' ? r :
+          Array.isArray(r) ? (r[1]||r[0]||'') :
+          (r?.name||r?.player||'')
+        ).trim();
         const key=String(cid)+'|'+norm(team)+'|'+norm(name);
         if(!name||seen.has(key)||/^(nombre|jugador|tabla|goleadores)$/i.test(name))return;
         seen.add(key);
-        out.push({name,team,cat:String(cid),category:cname});
+        const p=byName.get(norm(name))||{};
+        out.push({
+          name,team,cat:String(cid),category:cname,
+          position:String(p?.position||''),dorsal:String(p?.dorsal||''),
+          photo:String(p?.photo||'')
+        });
       });
     });
   });
@@ -102,6 +142,23 @@ function logoHtml(t){
   const src=logo(t.name);
   const letters=t.name.split(/\s+/).filter(Boolean).map(x=>x[0]).join('').slice(0,3).toUpperCase();
   return src?'<img src="'+esc(src)+'" alt="'+esc(t.name)+'" loading="lazy" decoding="async"><span class="v413-fallback">'+esc(letters)+'</span>':'<span class="v413-fallback show">'+esc(letters||'EQ')+'</span>';
+}
+function playerPhoto(p){
+  try{
+    return String(
+      p?.photo||
+      window.LJR_PLAYER_MEDIA?.photo?.(p?.name,p?.team,p?.cat)||
+      window.LJR_PLAYER_PHOTOS?.get?.(p?.name,p?.team,p?.cat)||
+      ''
+    ).trim();
+  }catch(_){return String(p?.photo||'').trim()}
+}
+function playerAvatar(p){
+  const src=playerPhoto(p);
+  const ini=String(p?.name||'JG').split(/\s+/).filter(Boolean).slice(0,2).map(x=>x[0]||'').join('').toUpperCase()||'JG';
+  return src
+    ?'<span class="v413-player-avatar v576-has-photo"><img src="'+esc(src)+'" alt="'+esc(p?.name||'Jugador')+'" loading="lazy" decoding="async" referrerpolicy="no-referrer"></span>'
+    :'<span class="v413-player-avatar v413-player-avatar-fallback">'+esc(ini)+'</span>';
 }
 function section(kicker,title,desc,body,extra=''){
   return '<section class="v413-shell" id="'+ID+'"><header class="v413-head"><small>'+esc(kicker)+'</small><h2>'+esc(title)+'</h2><p>'+esc(desc)+'</p></header>'+body+extra+'</section>';
@@ -433,7 +490,7 @@ function bindSearch(root){
       if(q)list=list.filter(p=>norm(p.name+' '+p.team+' '+p.category).includes(q));
       list.sort((a,b)=>a.name.localeCompare(b.name,'es'));
       const head=selectedTeam?'<div class="v413-player-team-head"><b>'+esc(selectedTeam)+'</b><span>'+list.length+' jugadores</span><button type="button" data-v413-clear-team>Ver todos</button></div>':'<div class="v413-player-team-head"><b>Todos los jugadores</b><span>'+list.length+' registrados</span></div>';
-      host.innerHTML=head+(list.map(p=>'<button class="v413-result" type="button" data-v413-player="'+esc(p.name)+'" data-v413-player-team="'+esc(p.team)+'" data-v413-player-cat="'+esc(p.cat||'')+'"><span class="v413-player-ball">⚽</span><span><b>'+esc(p.name)+'</b><small>'+esc(p.team)+' · '+esc(p.category)+'</small></span><i>›</i></button>').join('')||'<div class="v413-empty">No se encontraron jugadores para este equipo.</div>');
+      host.innerHTML=head+(list.map(p=>'<button class="v413-result v413-player-result" type="button" data-v413-player="'+esc(p.name)+'" data-v413-player-team="'+esc(p.team)+'" data-v413-player-cat="'+esc(p.cat||'')+'">'+playerAvatar(p)+'<span><b>'+esc(p.name)+'</b><small>'+esc(p.team)+' · '+esc(p.category)+(p.position?' · '+esc(p.position):'')+'</small></span><i>›</i></button>').join('')||'<div class="v413-empty">No se encontraron jugadores para este equipo.</div>');
       host.querySelector('[data-v413-clear-team]')?.addEventListener('click',e=>{e.preventDefault();e.stopPropagation();selectedTeam='';root.querySelectorAll('.v413-fav-tile[data-v413-team]').forEach(x=>x.classList.remove('is-selected'));render()});
     }
     bindTeamButtons();
