@@ -210,6 +210,23 @@ const HIST_ROOT='https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbo
 const HIST_MEDIA='https://raw.githubusercontent.com/jairofrancog7-star/App-liga-/main/assets/history/';
 const ESPERANZA_2025_PHOTO='./assets/history/archive-v224/la-esperanza-campeon-copa-veteranos50-08-nov-2025.webp?v=20260923-esperanza-bg-v225';
 const HIST_PHOTOS=window.LJR_HISTORY_PHOTOS||{};
+/* V691 — escudos históricos locales confirmados por el usuario.
+   Se resuelven aquí también para que el ranking de Campeones no dependa del
+   orden de carga del registro global de logos. */
+const APP_HISTORIC_LOGOS={
+  'tecos':'./assets/history/team-logos/tecos.webp',
+  'tecos fc':'./assets/history/team-logos/tecos.webp',
+  'universidad':'./assets/history/team-logos/universidad-pumas.webp',
+  'unam':'./assets/history/team-logos/universidad-pumas.webp',
+  'pumas':'./assets/history/team-logos/universidad-pumas.webp',
+  'pumas unam':'./assets/history/team-logos/universidad-pumas.webp',
+  'xolos jaralillo':'./assets/history/team-logos/xolos-jaralillo.webp',
+  'jaralillo':'./assets/history/team-logos/xolos-jaralillo.webp',
+  'jaralillo fc':'./assets/history/team-logos/xolos-jaralillo.webp',
+  'lobos jrs':HIST_ROOT+'assets/teams/lobos-jr-cerrito-gasca.webp',
+  'lobos jr':HIST_ROOT+'assets/teams/lobos-jr-cerrito-gasca.webp',
+  'lobos jrs cerrito de gasca':HIST_ROOT+'assets/teams/lobos-jr-cerrito-gasca.webp'
+};
 const HIST_CHAMPION_REFERENCE=HIST_MEDIA+'premiacion-historica.jpg';
 function championBackground(name,explicitPhoto){
   const exact=(explicitPhoto||'').trim();
@@ -847,6 +864,8 @@ function canonicalHistoricName(name){
 }
 function historicLogo(name){
   const k=histTeamKey(canonicalHistoricName(name));
+  const local=APP_HISTORIC_LOGOS[k]||APP_HISTORIC_LOGOS[histTeamKey(name)];
+  if(local)return local;
   const p=historicTeamLogoMap[k];
   if(p)return /^https?:\/\//i.test(p)?p:HIST_ROOT+p;
   if(k==='tecos')return HIST_MEDIA+'tecos-campeon-historico.jpg';
@@ -2010,6 +2029,10 @@ function v340LogoAlias(name){
   if(n==='terricolas seder')return 'terricolas';
   if(n==='deportivo cg cerrito de gasca')return 'cerrito de gasca';
   if(n==='mineros f c')return 'mineros fc';
+  if(n==='tecos fc')return 'tecos';
+  if(n==='lobos jrs'||n==='lobos jr'||n==='lobos jrs cerrito de gasca')return 'lobos jrs';
+  if(n==='universidad'||n==='pumas'||n==='pumas unam')return 'unam';
+  if(n==='jaralillo'||n==='jaralillo fc'||n==='xolos de jaralillo')return 'xolos jaralillo';
   return name;
 }
 function v340ChampionCategory(m){
@@ -2084,6 +2107,9 @@ function v340ChampionAchievements(){
 }
 function v340ChampionLogo(team,preferred){
   if(preferred)return preferred;
+  const directKey=histTeamKey(canonicalHistoricName(team));
+  const direct=APP_HISTORIC_LOGOS[directKey]||APP_HISTORIC_LOGOS[histTeamKey(team)];
+  if(direct)return direct;
   const alias=v340LogoAlias(team);
   try{
     const shared=window.LJR_TEAM_LOGOS?.get?.(alias)||window.LJR_OFFICIAL_API?.getLogo?.(alias);
