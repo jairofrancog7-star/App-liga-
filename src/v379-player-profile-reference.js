@@ -279,7 +279,7 @@ function backButton(){
   return '<button type="button" class="v379-back" data-v379-back aria-label="Volver"><svg viewBox="0 0 24 24"><path d="M19 12H5m7-7-7 7 7 7"/></svg></button>';
 }
 function shareButton(){
-  return '<button type="button" class="v379-share v645-share-reference" data-v379-share aria-label="Compartir jugador"><svg viewBox="0 0 28 28" aria-hidden="true"><path d="M8.8 12.7 18.9 7M8.8 15.3l10.1 5.7"/><circle cx="7" cy="14" r="3.5"/><circle cx="21" cy="6" r="3.5"/><circle cx="21" cy="22" r="3.5"/></svg></button>';
+  return '<button type="button" class="v379-share v646-share-reference" data-v379-share aria-label="Compartir jugador"><svg class="v646-share-glyph" viewBox="0 0 24 24" aria-hidden="true"><path d="M18 16.1c-.8 0-1.5.3-2 .8l-7.1-4.1c.1-.3.1-.5.1-.8s0-.5-.1-.8L16 7.1c.5.5 1.2.8 2 .8a3 3 0 1 0-3-3c0 .3 0 .5.1.8L8 9.8A3 3 0 1 0 8 14.2l7.1 4.1c-.1.3-.1.5-.1.8a3 3 0 1 0 3-3Z"/></svg></button>';
 }
 function tabs(active){
   return '<nav class="v379-tabs" aria-label="Secciones del jugador">'+
@@ -390,10 +390,10 @@ function v385CompactHeader(p){
     '<strong title="'+attr(p.name)+'">'+esc(v644ShortHeaderName(p.name))+'</strong>'+
     '<div class="v385-head-actions">'+
       '<button type="button" class="v385-head-compare" data-v379-compare aria-label="Comparar jugador">'+
-        '<svg viewBox="0 0 32 26" aria-hidden="true"><circle cx="11" cy="7" r="3.8"/><circle cx="21" cy="7" r="3.8"/><path d="M3.5 23c0-5.2 3.1-8.3 7.5-8.3s7.5 3.1 7.5 8.3M13.5 23c0-5.2 3.1-8.3 7.5-8.3s7.5 3.1 7.5 8.3"/></svg>'+
+        '<svg class="v646-compare-glyph" viewBox="0 0 34 28" aria-hidden="true"><circle class="v646-user-head" cx="10.5" cy="7" r="4"/><circle class="v646-user-head" cx="23.5" cy="7" r="4"/><path class="v646-user-body" d="M3.5 25v-1.2c0-5 3.1-8.2 7-8.2s7 3.2 7 8.2V25H3.5Z"/><path class="v646-user-body" d="M16.5 25v-1.2c0-5 3.1-8.2 7-8.2s7 3.2 7 8.2V25h-14Z"/></svg>'+
       '</button>'+
       '<button type="button" class="v385-head-share" data-v379-share aria-label="Compartir jugador">'+
-        '<svg viewBox="0 0 28 28" aria-hidden="true"><path d="M8.8 12.7 18.9 7M8.8 15.3l10.1 5.7"/><circle cx="7" cy="14" r="3.5"/><circle cx="21" cy="6" r="3.5"/><circle cx="21" cy="22" r="3.5"/></svg>'+
+        '<svg class="v646-share-glyph" viewBox="0 0 24 24" aria-hidden="true"><path d="M18 16.1c-.8 0-1.5.3-2 .8l-7.1-4.1c.1-.3.1-.5.1-.8s0-.5-.1-.8L16 7.1c.5.5 1.2.8 2 .8a3 3 0 1 0-3-3c0 .3 0 .5.1.8L8 9.8A3 3 0 1 0 8 14.2l7.1 4.1c-.1.3-.1.5-.1.8a3 3 0 1 0 3-3Z"/></svg>'+
       '</button>'+
     '</div>'+
   '</div>';
