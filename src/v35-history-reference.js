@@ -2275,6 +2275,14 @@ function v370HistoryTeamInitials(name){
     .split(/\s+/).filter(Boolean).slice(0,2).map(x=>x[0]||'').join('').toUpperCase()||'JR';
 }
 function v370HistoryTeamLogo(name){
+  /* V700 — Memoria de clubes: resolver primero los escudos históricos locales.
+     Tecos tiene un archivo propio y no debe quedar con el cuadro vacío. */
+  const key=histTeamKey(canonicalHistoricName(name));
+  if(key==='tecos'||key==='tecos fc')return './assets/history/team-logos/tecos.webp';
+  try{
+    const localHistoric=historicLogo(name);
+    if(localHistoric)return localHistoric;
+  }catch(_){}
   try{
     const official=window.LJR_TEAM_LOGOS?.get?.(name)||window.LJR_OFFICIAL_API?.getLogo?.(name)||'';
     if(official)return official;
