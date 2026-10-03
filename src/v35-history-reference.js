@@ -2491,12 +2491,14 @@ function pageHtml(){
   const back='<button class="v35-back" type="button" data-v35-back aria-label="Volver"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 11H7.83L13.42 5.41 12 4l-8 8 8 8 1.41-1.41L7.83 13H20Z"/></svg></button>';
   return '<div class="v35-history-page '+(activeTab==='Videos'?'v329-videos-active':'')+'">'+linesSvg()+
     '<div class="v35-compact-bar">'+back+'<div class="v35-compact-title">Historia</div></div>'+
-    '<header class="v35-history-head">'+
-      back+
-      '<span class="v35-logo-wrap" aria-hidden="true"><img data-v35-top-logo src="'+ASSETS.league+'" alt="" loading="eager" decoding="async"></span>'+
-      '<h1>Historia</h1>'+
-    '</header>'+
-    '<nav class="v35-tabs" aria-label="Secciones de Historia">'+tabs()+'</nav>'+
+    '<div class="v620-history-top" aria-label="Cabecera Historia">'+
+      '<header class="v35-history-head">'+
+        back+
+        '<span class="v35-logo-wrap" aria-hidden="true"><img data-v35-top-logo src="'+ASSETS.league+'" alt="" loading="eager" decoding="async"></span>'+
+        '<h1>Historia</h1>'+
+      '</header>'+
+      '<nav class="v35-tabs" aria-label="Secciones de Historia">'+tabs()+'</nav>'+
+    '</div>'+
     '<main class="v35-history-content" data-v35-content>'+v351PanelHtml(activeTab)+'</main>'+
   '</div>';
 }
