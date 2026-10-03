@@ -6,6 +6,16 @@ window.__LJR_V563_OWN_SECTIONS__=true;
 const $=(s,r=document)=>r.querySelector(s),$$=(s,r=document)=>Array.from(r.querySelectorAll(s));
 const route=()=>String(location.hash||'').replace(/^#\/?/,'').split('?')[0]||'home';
 function current(){const v=localStorage.getItem('v563-discipline-view')||'all';return ['all','cards','suspensions'].includes(v)?v:'all'}
+function currentCat(){return localStorage.getItem('v563-discipline-category')||'all'}
+function shortCat(name,id){
+ const n=String(name||'');
+ if(String(id)==='3'||/PRIMERA/i.test(n))return 'Primera';
+ if(String(id)==='5'||/INTERMEDIA/i.test(n))return 'Intermedia';
+ if(String(id)==='4'||/SEGUNDA/i.test(n))return 'Segunda';
+ if(String(id)==='2'||/35/.test(n))return '35+';
+ if(String(id)==='1'||/50/.test(n))return '50+';
+ return n||('Cat. '+id);
+}
 function apply(){
  if(!/^(discipline|disciplina|disciplineTool|v4-discipline)$/i.test(route()))return;
  const page=$('.v94-discipline-page');if(!page)return;
@@ -17,18 +27,49 @@ function apply(){
   (lead||page.firstElementChild)?.insertAdjacentElement('afterend',tabs);
   tabs.addEventListener('click',e=>{const b=e.target.closest('[data-v563-disc]');if(!b)return;localStorage.setItem('v563-discipline-view',b.dataset.v563Disc);apply()});
  }
- const view=current();
- $$('[data-v563-disc]',tabs).forEach(b=>b.classList.toggle('active',b.dataset.v563Disc===view));
+
+ let cats=$('.v652-discipline-cats',page);
+ const rows=$('.v94-discipline-row',page);
+ const categoryMap=new Map();
+ rows.forEach(row=>{
+  const id=String(row.dataset.v94Cat||'').trim();
+  const name=String(row.dataset.v94Category||'').trim();
+  if(id&&!categoryMap.has(id))categoryMap.set(id,name||('Categoría '+id));
+ });
+ const order=['3','5','4','2','1'];
+ const catEntries=[...categoryMap.entries()].sort((a,b)=>{
+  const ai=order.indexOf(a[0]),bi=order.indexOf(b[0]);
+  return (ai<0?99:ai)-(bi<0?99:bi)||a[1].localeCompare(b[1],'es');
+ });
+ if(!cats){
+  cats=document.createElement('div');cats.className='v652-discipline-cats';
+  cats.innerHTML='<div class="v652-cat-head"><b>Ver por categoría</b><small>Filtra tarjetas y castigados</small></div>'+
+   '<div class="v652-cat-rail" role="tablist" aria-label="Filtrar disciplina por categoría">'+
+   '<button type="button" data-v563-cat="all">Todas</button>'+
+   catEntries.map(([id,name])=>'<button type="button" data-v563-cat="'+id+'" title="'+name.replace(/"/g,'&quot;')+'">'+shortCat(name,id)+'</button>').join('')+
+   '</div>';
+  tabs.insertAdjacentElement('afterend',cats);
+  cats.addEventListener('click',e=>{
+   const b=e.target.closest('[data-v563-cat]');if(!b)return;
+   localStorage.setItem('v563-discipline-category',b.dataset.v563Cat||'all');
+   apply();
+  });
+ }
+ const view=current(),cat=currentCat();
+ $('[data-v563-disc]',tabs).forEach(b=>b.classList.toggle('active',b.dataset.v563Disc===view));
+ $('[data-v563-cat]',cats).forEach(b=>b.classList.toggle('active',String(b.dataset.v563Cat)===String(cat)));
  let shown=0;
- $$('.v94-discipline-row',page).forEach(row=>{
+ rows.forEach(row=>{
   const hasCards=!!row.querySelector('.v94-yellow,.v94-red');
   const hasSusp=!!row.querySelector('.v94-sanction')||/pend\./i.test(row.querySelector('.v94-total small')?.textContent||'');
-  const show=view==='all'||(view==='cards'&&hasCards)||(view==='suspensions'&&hasSusp);
+  const typeOk=view==='all'||(view==='cards'&&hasCards)||(view==='suspensions'&&hasSusp);
+  const catOk=cat==='all'||String(row.dataset.v94Cat||'')===String(cat);
+  const show=typeOk&&catOk;
   row.hidden=!show;if(show)shown++;
  });
  let empty=$('.v563-discipline-empty',page);
  if(!shown){
-  if(!empty){empty=document.createElement('div');empty.className='v563-discipline-empty';page.appendChild(empty)}
+  if(!empty){empty=document.createElement('div');empty.className='v563-discipline-empty';($('.v650-discipline-export',page)||page.lastElementChild)?.insertAdjacentElement?.('beforebegin',empty)||page.appendChild(empty)}
   empty.textContent=view==='cards'?'No hay tarjetas publicadas para mostrar.':view==='suspensions'?'No hay castigados publicados para mostrar.':'No hay registros de disciplina.';
  }else empty?.remove();
  const h=$('h1',page),lead=$('.v94-lead',page);
