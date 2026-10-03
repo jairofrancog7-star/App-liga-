@@ -1552,7 +1552,7 @@ function journeySim(){
       const hl=logoSrc(x.home),al=logoSrc(x.away);
       return '<article class="v100-js-saved"><div class="v100-js-saved-match"><span class="v100-js-saved-team">'+(hl?'<img src="'+esc(hl)+'" alt="">':'')+'<b>'+esc(x.home)+'</b></span><strong>'+Number(x.hg||0)+'–'+Number(x.ag||0)+'</strong><span class="v100-js-saved-team">'+(al?'<img src="'+esc(al)+'" alt="">':'')+'<b>'+esc(x.away)+'</b></span></div><small>'+esc(x.category||'Escenario hipotético')+'</small><button data-js-del="'+i+'">Quitar</button></article>';
     }).join('')+'</div>':'<p class="v100-note">Sin escenarios guardados.</p>';
-    $('[data-js-del]',h).forEach(b=>b.onclick=()=>{list.splice(Number(b.dataset.jsDel),1);write('v100-journey-sim',list);render()});
+    $$('[data-js-del]',h).forEach(b=>b.onclick=()=>{list.splice(Number(b.dataset.jsDel),1);write('v100-journey-sim',list);render()});
   };
   render();
 
