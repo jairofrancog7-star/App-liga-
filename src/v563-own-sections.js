@@ -25,37 +25,38 @@ function apply(){
   tabs=document.createElement('div');tabs.className='v563-discipline-tabs';
   tabs.innerHTML='<button type="button" data-v563-disc="all">Todo</button><button type="button" data-v563-disc="cards">Tarjetas</button><button type="button" data-v563-disc="suspensions">Castigados</button>';
   (lead||page.firstElementChild)?.insertAdjacentElement('afterend',tabs);
-  tabs.addEventListener('click',e=>{const b=e.target.closest('[data-v563-disc]');if(!b)return;localStorage.setItem('v563-discipline-view',b.dataset.v563Disc);apply()});
+  tabs.addEventListener('click',e=>{const b=e.target.closest('[data-v563-disc]');if(!b)return;e.preventDefault();e.stopPropagation();localStorage.setItem('v563-discipline-view',b.dataset.v563Disc);apply()});
  }
 
  let cats=$('.v652-discipline-cats',page);
  const rows=$('.v94-discipline-row',page);
- const categoryMap=new Map();
- rows.forEach(row=>{
-  const id=String(row.dataset.v94Cat||'').trim();
-  const name=String(row.dataset.v94Category||'').trim();
-  if(id&&!categoryMap.has(id))categoryMap.set(id,name||('Categoría '+id));
- });
- const order=['3','5','4','2','1'];
- const catEntries=[...categoryMap.entries()].sort((a,b)=>{
-  const ai=order.indexOf(a[0]),bi=order.indexOf(b[0]);
-  return (ai<0?99:ai)-(bi<0?99:bi)||a[1].localeCompare(b[1],'es');
- });
+ const officialCats=[
+  ['all','Todas'],
+  ['3','Primera Fuerza'],
+  ['5','Intermedia'],
+  ['4','Segunda Fuerza'],
+  ['2','Veteranos 35+'],
+  ['1','Veteranos 50+']
+ ];
  if(!cats){
   cats=document.createElement('div');cats.className='v652-discipline-cats';
-  cats.innerHTML='<div class="v652-cat-head"><b>Ver por categoría</b><small>Filtra tarjetas y castigados</small></div>'+
-   '<div class="v652-cat-rail" role="tablist" aria-label="Filtrar disciplina por categoría">'+
-   '<button type="button" data-v563-cat="all">Todas</button>'+
-   catEntries.map(([id,name])=>'<button type="button" data-v563-cat="'+id+'" title="'+name.replace(/"/g,'&quot;')+'">'+shortCat(name,id)+'</button>').join('')+
-   '</div>';
   tabs.insertAdjacentElement('afterend',cats);
+ }
+ cats.innerHTML='<div class="v652-cat-head"><b>Ver por categoría</b><small>Filtra tarjetas y castigados</small></div>'+
+  '<div class="v652-cat-rail" role="tablist" aria-label="Filtrar disciplina por categoría">'+
+  officialCats.map(([id,name])=>'<button type="button" data-v563-cat="'+id+'" title="'+name+'">'+name+'</button>').join('')+
+  '</div>';
+ if(!cats.dataset.v563Bound){
+  cats.dataset.v563Bound='1';
   cats.addEventListener('click',e=>{
    const b=e.target.closest('[data-v563-cat]');if(!b)return;
+   e.preventDefault();
+   e.stopPropagation();
    localStorage.setItem('v563-discipline-category',b.dataset.v563Cat||'all');
    apply();
   });
  }
- const view=current(),cat=currentCat();
+ const view=current();let cat=currentCat();if(!['all','3','5','4','2','1'].includes(String(cat))){cat='all';localStorage.setItem('v563-discipline-category','all')}
  $('[data-v563-disc]',tabs).forEach(b=>b.classList.toggle('active',b.dataset.v563Disc===view));
  $('[data-v563-cat]',cats).forEach(b=>b.classList.toggle('active',String(b.dataset.v563Cat)===String(cat)));
  let shown=0;
