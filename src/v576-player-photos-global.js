@@ -6,7 +6,8 @@ if(window.__LJR_V576_PLAYER_PHOTOS_GLOBAL__)return;
 window.__LJR_V576_PLAYER_PHOTOS_GLOBAL__=true;
 
 const LOCAL='./data/official-live.json?v=20261002-v576-player-photos-global';
-const REMOTE='https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/data/official-live.json?v=20261002-v576-player-photos-global';
+const REMOTE='https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/data/official-live.json?v=20261003-v644-player-photos-all-rosters';
+const ROOT='https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/';
 let db=window.LJR_OFFICIAL_DATA||null,loading=null,timer=0;
 let exact=new Map(),byName=new Map();
 
@@ -71,16 +72,44 @@ function resolve(name,team='',cat=''){
  return unique.size===1?photos[0]||arr[0]:null;
 }
 function hasPhoto(rec){return !!String(rec?.photo||'').trim()}
-function setAvatar(el,rec){
- if(!el||!hasPhoto(rec))return false;
+function teamLogo(team){
+ const wanted=norm(team);if(!wanted)return '';
+ const hit=Object.entries(db?.team_logos||{}).find(([k])=>norm(k)===wanted)?.[1];
+ if(typeof hit==='string')return hit;
+ if(hit?.local)return ROOT+String(hit.local).replace(/^\.\//,'');
+ if(hit?.source)return String(hit.source);
+ try{return String(window.LJR_TEAM_LOGOS?.get?.(team)||'')}catch(_){return ''}
+}
+function setAvatar(el,rec,fallbackTeam=''){
+ if(!el)return false;
+ const real=hasPhoto(rec),team=String(rec?.team||fallbackTeam||'').trim();
+ const src=real?String(rec.photo).trim():teamLogo(team);
+ if(!src)return false;
  const isTeamFallback=el.dataset.v576TeamFallback==='1'||el.classList.contains('v576-team-fallback');
- if(el.dataset.v576Photo==='1'&&!isTeamFallback)return false;
+ if(real&&el.dataset.v576Photo==='1'&&!isTeamFallback)return false;
  const existing=el.querySelector?.('img');
- if(existing&&existing.getAttribute('src')&&!isTeamFallback){el.dataset.v576Photo='1';return false}
- el.innerHTML='<img class="v576-player-photo" src="'+esc(rec.photo)+'" alt="'+esc(rec.name)+'" loading="lazy" decoding="async" referrerpolicy="no-referrer">';
- el.classList.remove('v576-team-fallback','v576-photo-fallback');
- el.removeAttribute('data-v576-team-fallback');
- el.classList.add('v576-has-photo');el.dataset.v576Photo='1';
+ if(real&&existing&&existing.getAttribute('src')&&!isTeamFallback){
+   el.dataset.v576Photo='1';
+   return false;
+ }
+ if(existing&&String(existing.getAttribute('src')||'')===src){
+   if(real){el.dataset.v576Photo='1';el.classList.remove('v576-team-fallback');el.removeAttribute('data-v576-team-fallback')}
+   else{el.dataset.v576TeamFallback='1';el.classList.add('v576-team-fallback')}
+   return false;
+ }
+ const alt=real?String(rec?.name||'Jugador'):team;
+ el.innerHTML='<img class="v576-player-photo" src="'+esc(src)+'" alt="'+esc(alt)+'" loading="lazy" decoding="async" referrerpolicy="no-referrer">';
+ el.classList.remove('v576-photo-fallback');
+ el.classList.add('v576-has-photo');
+ if(real){
+   el.classList.remove('v576-team-fallback');
+   el.removeAttribute('data-v576-team-fallback');
+   el.dataset.v576Photo='1';
+ }else{
+   el.classList.add('v576-team-fallback');
+   el.dataset.v576TeamFallback='1';
+   el.dataset.v576Photo='0';
+ }
  return true;
 }
 function addInline(container,rec,cls=''){
@@ -114,31 +143,46 @@ function hydrate(){
  if(!db){load().then(hydrate);return}
 
  document.querySelectorAll('.v66-player-row[data-v66-player]').forEach(row=>{
-   const rec=resolve(attr(row,'data-v66-player'),attr(row,'data-v66-player-team'),attr(row,'data-v66-cat-id'));
-   setAvatar(row.querySelector('.v66-player-avatar'),rec);
+   const name=attr(row,'data-v66-player'),team=attr(row,'data-v66-player-team'),cat=attr(row,'data-v66-cat-id');
+   setAvatar(row.querySelector('.v66-player-avatar'),resolve(name,team,cat),team);
  });
  document.querySelectorAll('.v414-player-row[data-v414-player-name]').forEach(row=>{
-   const rec=resolve(attr(row,'data-v414-player-name'),attr(row,'data-v414-player-team'),attr(row,'data-v414-player-cat'));
-   setAvatar(row.querySelector('.v414-player-photo'),rec);
+   const name=attr(row,'data-v414-player-name'),team=attr(row,'data-v414-player-team'),cat=attr(row,'data-v414-player-cat');
+   setAvatar(row.querySelector('.v414-player-photo'),resolve(name,team,cat),team);
  });
  document.querySelectorAll('.v42-player-row').forEach(row=>{
    const name=attr(row,'data-v42-player')||txt(row,'.v42-player-copy strong');
    const team=attr(row,'data-v66-player-team')||teamStored();
    const cat=attr(row,'data-v66-cat-id')||catStored();
-   setAvatar(row.querySelector('.v42-avatar'),resolve(name,team,cat));
+   setAvatar(row.querySelector('.v42-avatar'),resolve(name,team,cat),team);
+ });
+ document.querySelectorAll('.v371-player').forEach(row=>{
+   const name=attr(row,'data-v42-player')||txt(row,'span:nth-child(2) b');
+   const team=attr(row,'data-v66-player-team')||teamStored();
+   const cat=attr(row,'data-v66-cat-id')||catStored();
+   setAvatar(row.querySelector('.v371-player-avatar'),resolve(name,team,cat),team);
+ });
+ document.querySelectorAll('.v371-preview button').forEach(card=>{
+   const name=txt(card,'b'),team=teamStored(),cat=catStored();
+   if(name)setAvatar(card.querySelector(':scope > span'),resolve(name,team,cat),team);
+ });
+ document.querySelectorAll('.v371-scorer-row').forEach(row=>{
+   const name=txt(row,'span:nth-child(2) b'),team=txt(row,'span:nth-child(2) small')||teamStored(),cat=catStored();
+   if(name)setAvatar(row.querySelector('.v371-scorer-avatar'),resolve(name,team,cat),team);
  });
  document.querySelectorAll('.v562-player').forEach(card=>{
    const team=card.closest('.v562-team')?.querySelector('.v562-team-head b')?.textContent?.trim()||'';
-   setAvatar(card.querySelector('.v562-avatar'),resolve(txt(card,'.v562-player-copy b'),team,''));
+   setAvatar(card.querySelector('.v562-avatar'),resolve(txt(card,'.v562-player-copy b'),team,''),team);
  });
  document.querySelectorAll('.v123-player-option').forEach(row=>{
-   setAvatar(row.querySelector('.v123-option-avatar'),resolve(attr(row,'data-v123-pick'),attr(row,'data-v123-pick-team'),attr(row,'data-v123-pick-cat')));
+   const name=attr(row,'data-v123-pick'),team=attr(row,'data-v123-pick-team'),cat=attr(row,'data-v123-pick-cat');
+   setAvatar(row.querySelector('.v123-option-avatar'),resolve(name,team,cat),team);
  });
  document.querySelectorAll('.v123-player-card').forEach(card=>{
    const name=attr(card,'data-v123-name')||txt(card,'.v123-player-copy strong');
    const team=attr(card,'data-v123-team-name')||txt(card,'.v123-team-chip b');
    const cat=attr(card,'data-v123-cat')||'';
-   if(name&&name!=='Elige jugador')setAvatar(card.querySelector('.v123-avatar'),resolve(name,team,cat));
+   if(name&&name!=='Elige jugador')setAvatar(card.querySelector('.v123-avatar'),resolve(name,team,cat),team);
  });
  document.querySelectorAll('.v444-stat-row:not(.is-team)').forEach(row=>{
    setAvatar(row.querySelector('.v444-player-avatar'),resolve(txt(row,'.v444-stat-person b'),txt(row,'.v444-stat-person small'),catStored()));
