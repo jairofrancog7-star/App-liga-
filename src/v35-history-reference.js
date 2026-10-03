@@ -222,6 +222,7 @@ const HIST_USER_LOGO_SALVAJES='./assets/history/team-logos/salvajes.webp';
 const HIST_USER_LOGO_TECOS='./assets/history/team-logos/tecos.webp';
 const HIST_USER_LOGO_XOLOS='./assets/history/team-logos/xolos-jaralillo.webp';
 const APP_HISTORIC_LOGOS={
+  'la pandilla':'./assets/history/team-logos/legacy-2015-la-pandilla.webp',
   'olimpicos':'./assets/history/team-logos/legacy-2015-olimpicos-pozos.webp',
   'olimpicos de pozos':'./assets/history/team-logos/legacy-2015-olimpicos-pozos.webp',
   'puros cuates':'./assets/history/team-logos/legacy-2015-puros-cuates.webp',
@@ -908,6 +909,8 @@ function canonicalHistoricName(name){
     'a pozos':'Atlético Pozos',
     'atletico pozos':'Atlético Pozos',
     'inter de milan':'Inter de Milán',
+    'herbalife sta cruz':'Herbalife Sta. Cruz',
+    'herbalife santa cruz':'Herbalife Sta. Cruz',
     'herbalife sc':'Herbalife',
     'herbalife s c':'Herbalife',
     'cerrito de g':'Cerrito de Gasca',
@@ -963,6 +966,8 @@ const historicalTeamEras=[
   {period:'2015 · Jornada 13',category:'Veteranos',teams:['La Esperanza','Cuenda','Magisterio','Chelsea','Boavista','Picosos','Dynamo','UNAM','Hermanos','Valedores','Sección XIV','Guadalajara']},
   {period:'2015 · Jornada 20',category:'Intermedia',teams:['San Antonio Jr.','Malvinas','Tavera','La Cuadrilla','Centeno','Real Cerrito','Halcones','Barza','Populares','Terrícolas','DHP','Dulces Nombres','Xolos Jaralillo','Puros Cuates']},
   {period:'2016 · Jornada 5',category:'Veteranos · equipos identificados en tabla de goleo',teams:['Cuenda','Hermanos','Picosos','Magisterio','La Esperanza','Dynamo','Boavista','Valedores','UNAM','Cuenda Jr.']},
+  {period:'2015 · Torneo de Liga · cortes aportados',category:'Primera Fuerza · tablas J5/J17',teams:['Juventus','Chelsea','Boavista','Olímpicos','Linces','La Esperanza','Napoli','Abejas','El Alto','Mazacotes','La Pandilla','PSV','Cerrito de Gasca','Puros Cuates','San Antonio','Hermanos','Birds Eye']},
+  {period:'2015 · Torneo de Liga · corte aportado',category:'Segunda Fuerza · tabla J17',teams:['Osasuna','Oklahoma','Galeana','San Julián','Morales','Toros','Birds Eye Jr.','San José de Allende','Río Grande','Tecos','Herbalife Sta. Cruz','Portugal','San Antonio FC','Inter de Milán']},
   {period:'2016–2017',category:'Fuerzas y Veteranos',teams:['Toros','Morales','Galeana','San Julián','Birds Eye Jr.','San José de Allende','Río Grande','Tecos','Portugal','San Antonio FC','Dortmund','A. Centeno','Puros Cuates','Oklahoma','Mazacotes','Real Cerrito de Gasca','Osasuna']},
   {period:'14–15 jul 2018 · rol de juegos aportado',category:'Veteranos, Campeón de Campeones 2017–2018 de Primera Fuerza y amistosos dominicales',teams:['Magisterio','Sección XIV','Deportivo Lagartos','Valedores','Hermanos','Linces','Franco FC','La Esperanza Jr.','Mazacotes','Barza','Malvinas','Populares','Tavera Jr.','World 11','A. Centeno','El Alto']},
   {period:'Archivo · rol amistoso 11–12 ago · año por precisar',category:'Veteranos y categoría dominical · captura aportada',teams:['Valedores','Hermanos','Chelsea','Guadalajara','Cuenda','Magisterio','Sección XIV','PSV','Napoli','San José de Allende','Galaxy','Oklahoma','Malvinas','Mineros','Barza','La Cuadrilla','World 11','Tecos','La Esperanza Jr.','Mazacotes','Boavista','Toros','Galeana','Puros Cuates','Abejas','Dep. Cerrito','El Alto','Tavera','La Huerta','San Antonio de Romerillo','Tavera Jr.']},
@@ -2367,7 +2372,7 @@ const HISTORIC_TEAM_LINEAGES=[
   {key:'el-alto',display:'El Alto',aliases:['El Alto','Dep. El Alto','Deportivo El Alto'],note:'El Alto / Deportivo El Alto'},
   {key:'atletico-pozos',display:'Atlético Pozos',aliases:['A. Pozos','Atl. Pozos','Atlético Pozos'],note:'A. Pozos → Atlético Pozos'},
   {key:'dep-lagartos',display:'Deportivo Lagartos',aliases:['Dep. Lagartos','Deportivo Lagartos'],note:'Dep. Lagartos → Deportivo Lagartos'},
-  {key:'herbalife',display:'Herbalife',aliases:['Herbalife','Herbalife SC','Herbalife S.C.','Herbalife FC'],note:'Herbalife SC / FC → Herbalife'}
+  {key:'herbalife',display:'Herbalife',aliases:['Herbalife','Herbalife Sta. Cruz','Herbalife Santa Cruz','Herbalife SC','Herbalife S.C.','Herbalife FC'],note:'Herbalife Sta. Cruz / Herbalife SC / FC → Herbalife'}
 ];
 const HISTORIC_TEAM_LINEAGE_BY_ALIAS=(()=>{
   const map=new Map();
@@ -2445,7 +2450,7 @@ function v370ArchiveTeamsBlock(){
 }
 function recordsBody(){
   return '<section class="v35-block v35-tab-body v35-records-body"><h2 class="v35-section-title">Récords y recuerdos</h2>'+
-    '<article class="v35-stat-card"><h3>Archivo comprobado</h3><p>Esta sección reúne marcas visibles en tablas históricas y recuerdos documentados en fotografías, álbumes y videos. Un corte de jornada no se presenta como récord absoluto de toda la Liga.</p></article>'+
+    '<article class="v35-stat-card"><h3>Archivo comprobado</h3><p>Esta sección reúne marcas visibles en tablas históricas, recuerdos documentados y el inventario de todos los equipos recuperados del archivo. Un corte de jornada no se presenta como récord absoluto de toda la Liga.</p></article>'+
     '<div class="v35-record-grid">'+recordMemories.map(r=>'<article class="v35-record-card">'+
       (r.image?'<img src="'+r.image+'" alt="" loading="lazy" decoding="async">':'<span class="v35-record-mark">LM</span>')+
       '<div><small>'+esc(r.tag)+'</small><h3>'+esc(r.title)+'</h3><strong>'+esc(r.value)+'</strong><p>'+esc(r.detail)+'</p></div></article>').join('')+'</div>'+
