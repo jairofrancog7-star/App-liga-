@@ -454,3 +454,51 @@ body.v94-discipline-official .v94-total small{
   }
   .v650-export-icon{width:42px;height:42px;border-radius:13px}
 }
+
+
+/* V651 — Disciplina: ritmo compacto entre cuadros inferiores. */
+body.v94-discipline-official .v650-discipline-export{
+  margin:12px 0 0!important;
+  padding:0!important;
+}
+body.v94-discipline-official .v651-discipline-tail{
+  width:100%!important;
+  display:grid!important;
+  gap:10px!important;
+  margin:10px 0 0!important;
+  padding:0!important;
+  min-height:0!important;
+  height:auto!important;
+  box-sizing:border-box!important;
+}
+body.v94-discipline-official .v651-discipline-tail>.v651-tail-card{
+  width:100%!important;
+  max-width:none!important;
+  min-height:0!important;
+  height:auto!important;
+  margin:0!important;
+  padding-top:12px!important;
+  padding-bottom:12px!important;
+  position:relative!important;
+  inset:auto!important;
+  transform:none!important;
+}
+body.v94-discipline-official #screen>.v94-discipline-page~*{
+  min-height:0!important;
+  height:auto!important;
+  margin-top:10px!important;
+  margin-bottom:10px!important;
+  padding-top:0!important;
+  padding-bottom:0!important;
+}
+body.v94-discipline-official .v94-discipline-page{
+  padding-bottom:92px!important;
+}
+@media(max-width:390px){
+  body.v94-discipline-official .v650-discipline-export{margin-top:10px!important}
+  body.v94-discipline-official .v651-discipline-tail{margin-top:8px!important;gap:8px!important}
+  body.v94-discipline-official #screen>.v94-discipline-page~*{
+    margin-top:8px!important;
+    margin-bottom:8px!important;
+  }
+}
