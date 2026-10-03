@@ -3760,3 +3760,39 @@ body.v40-standings-master [data-v580-scroll] .v578-table thead :is(.rank,.logo,.
 body.v40-standings-master [data-v580-scroll] .v578-table .teamname{box-shadow:5px 0 7px -6px #000!important}
 body.v40-standings-master [data-v580-scroll] .v578-table :is(th,td){height:36px!important}
 body.v40-standings-master [data-v580-scroll] .v40-form :is(i,b){width:14px!important;height:14px!important;min-width:14px!important;max-width:14px!important;aspect-ratio:1;border-radius:50%!important;line-height:14px!important}
+
+
+/* V609 — Clasificación: Compacta / Completa / Criterios con el mismo fondo de la tabla.
+   El modo activo ya no se pinta gris; se marca sólo con cyan. */
+body[data-app-route="competition"] .v40-segmented,
+body.v40-standings-master .v40-segmented,
+body.v28-match-active .v28-embedded-standings .v40-segmented{
+  background:#05065f!important;
+  border-color:rgba(255,255,255,.30)!important;
+}
+body[data-app-route="competition"] .v40-segmented button,
+body.v40-standings-master .v40-segmented button,
+body.v28-match-active .v28-embedded-standings .v40-segmented button{
+  background:#05065f!important;
+  color:#fff!important;
+}
+body[data-app-route="competition"] .v40-segmented button.active,
+body.v40-standings-master .v40-segmented button.active,
+body.v28-match-active .v28-embedded-standings .v40-segmented button.active{
+  background:#05065f!important;
+  color:#fff!important;
+  box-shadow:inset 0 -3px 0 #28e0eb!important;
+}
+
+/* Mantener también la variante de respaldo V12 con el mismo azul. */
+body[data-app-route="competition"] .v12-segmented{
+  background:#05065f!important;
+}
+body[data-app-route="competition"] .v12-segmented button,
+body[data-app-route="competition"] .v12-segmented button.active{
+  background:#05065f!important;
+  color:#fff!important;
+}
+body[data-app-route="competition"] .v12-segmented button.active{
+  box-shadow:inset 0 -3px 0 #28e0eb!important;
+}
