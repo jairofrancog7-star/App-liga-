@@ -7,7 +7,7 @@ if(window.__LJR_V449_REFERENCE_LOWER__)return;
 window.__LJR_V449_REFERENCE_LOWER__=true;
 
 const ID='v449-reference-lower';
-const BUILD='20261001-v487-vet35-all-pages';
+const BUILD='20261003-v647-ranking-team-logo-once';
 const DATA='./data/official-live.json?v='+BUILD;
 const RAW='https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/';
 const CAT_ORDER=['3','5','4','2','1'];
@@ -393,18 +393,38 @@ function rankingTeamStrip(data){
   '<button type="button" class="v458-team-tile" data-v449-route="teams">'+crest(t.team,data,'rankteam')+'<span>'+esc(t.team)+'</span></button>'
  ).join('')+'</div>';
 }
-function rankingPlayerRow(p,i,data){
+function isTeamRankingEntry(p,data){
+ const n=norm(p?.name);
+ if(!n)return false;
+ return standings(data).some(t=>norm(t.team)===n);
+}
+function rankingEntryMedia(p,data,cls){
  const tm=scorerDisplayTeam(p,data);
- return '<div class="v458-rank-row">'+
+ if(isTeamRankingEntry(p,data)){
+   return '<span class="v458-rank-team-media '+esc(cls||'')+'">'+crest(p.name,data,'rankentry')+'</span>';
+ }
+ return playerPic(p.name,tm,data,cls);
+}
+function rankingPlayerRow(p,i,data){
+ const tm=scorerDisplayTeam(p,data),teamEntry=isTeamRankingEntry(p,data);
+ const meta=teamEntry
+   ?'<small class="v458-team-entry-meta"><span>'+esc(catName(data))+'</span></small>'
+   :'<small>'+crest(tm,data,'micro')+'<span>'+esc(tm||catName(data))+'</span></small>';
+ return '<div class="v458-rank-row '+(teamEntry?'is-team-entry':'is-player-entry')+'">'+
    '<span class="v458-rank-pos">'+String(i+1)+'º</span>'+
-   playerPic(p.name,tm,data,'rankrow')+
-   '<div class="v458-rank-person"><b>'+esc(p.name)+'</b><small>'+crest(tm,data,'micro')+'<span>'+esc(tm||catName(data))+'</span></small></div>'+
+   rankingEntryMedia(p,data,'rankrow')+
+   '<div class="v458-rank-person"><b>'+esc(p.name)+'</b>'+meta+'</div>'+
    '<strong>'+esc(p.goals)+'</strong>'+
   '</div>';
 }
 function rankingBlock(data){
  const rows=scorers(data).slice(0,6),top=rows[0],available=rankingMode==='goals';
  const showTeams=['stats','v38Stats','scorers','rankings'].includes(route());
+ const topTeam=top?isTeamRankingEntry(top,data):false;
+ const topTm=top?scorerDisplayTeam(top,data):'';
+ const topMeta=topTeam
+   ?'<small class="v458-team-entry-meta"><span>'+esc(catName(data))+'</span></small>'
+   :'<small>'+crest(topTm,data,'micro')+esc(topTm||catName(data))+'</small>';
  return '<section class="v449-block v449-ranking v449-ranking-ref v458-ranking">'+
   (showTeams?rankingTeamStrip(data):'')+
   '<div class="v449-ranking-title">RANKING DE JUGADORES</div>'+
@@ -414,10 +434,10 @@ function rankingBlock(data){
    '<button type="button" class="'+(rankingMode==='passes'?'active':'')+'" data-v449-ranking-mode="passes">Pases</button>'+
   '</div>'+
   (available&&top?
-   '<article class="v458-rank-card">'+
+   '<article class="v458-rank-card '+(topTeam?'is-team-top':'is-player-top')+'">'+
     '<div class="v458-rank-hero">'+
-      '<div class="v458-hero-photo">'+playerPic(top.name,scorerDisplayTeam(top,data),data,'feature')+'</div>'+
-      '<div class="v458-hero-meta"><span>1º</span><div><h3>'+esc(top.name)+'</h3><small>'+crest(scorerDisplayTeam(top,data),data,'micro')+esc(scorerDisplayTeam(top,data)||catName(data))+'</small></div><strong>'+esc(top.goals)+'<small>GOLES</small></strong></div>'+
+      '<div class="v458-hero-photo">'+rankingEntryMedia(top,data,'feature')+'</div>'+
+      '<div class="v458-hero-meta"><span>1º</span><div><h3>'+esc(top.name)+'</h3>'+topMeta+'</div><strong>'+esc(top.goals)+'<small>GOLES</small></strong></div>'+
     '</div>'+
     '<div class="v458-rank-head"><span>POS.</span><span>JUGADOR</span><span>GOLES</span></div>'+
     '<div class="v458-rank-list">'+rows.slice(1,5).map((p,i)=>rankingPlayerRow(p,i+1,data)).join('')+'</div>'+
