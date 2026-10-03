@@ -23,6 +23,8 @@ const FACE_IMAGES=[
   '.v576-table-photo>img',
   '.v124-avatar>img',
   '.v562-avatar>img',
+  '.v562-avatar.photo>img',
+  '.v42-avatar.v562-team-photo>img',
   '.v12-avatar>img',
   '.v33-player-team-logo.v576-player-avatar>img',
   '.v538-person.has-photo>img',
@@ -347,6 +349,20 @@ function applyCrop(img,profile){
 
 async function process(img){
   if(!(img instanceof HTMLImageElement)||!img.matches(FACE_IMAGES))return;
+  /* V652: las fotos rectangulares del registro público deben mostrarse completas.
+     No ejecutar ningún recorte facial automático sobre ellas. */
+  if(img.closest('.v562-avatar.photo,.v42-avatar.v562-team-photo')){
+    clearFaceCrop(img);
+    const styles={
+      'position':'static','inset':'auto','width':'100%','height':'100%',
+      'min-width':'0','min-height':'0','max-width':'100%','max-height':'100%',
+      'margin':'0','padding':'0','display':'block',
+      'object-fit':'contain','object-position':'center center',
+      'transform':'none','clip-path':'none','border-radius':'inherit'
+    };
+    for(const [k,v] of Object.entries(styles))img.style.setProperty(k,v,'important');
+    return;
+  }
   /* V650: Disciplina controla sus retratos con object-fit:cover para llenar
      el círculo. No aplicar aquí el hard-lock global de foto completa/contain. */
   if(img.closest('.v576-discipline-photo')){
@@ -436,7 +452,7 @@ setTimeout(()=>scan(document),500);
 setTimeout(()=>scan(document),1800);
 
 window.LJR_FACE_FRAME={
-  engine:'circle-full-face-v651',
+  engine:'full-face-v652-v562',
   scan:()=>scan(document),
   faceCrop,
   profile:playerFaceProfile,
