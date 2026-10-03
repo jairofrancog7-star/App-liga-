@@ -1,4 +1,4 @@
-/* V641 — scroll conservado + diseño restaurado en Inicio y fondos opacos en Competición.
+/* V640 — corte exacto del scroll en Inicio y Competición.
    Inicio: la zona inmóvil termina exactamente al terminar la imagen superior.
    Competición: la zona inmóvil termina debajo de la fila de jornadas/fechas. */
 
@@ -38,11 +38,10 @@
     animation:none!important;
   }
 
-  /* INICIO — conservar completo el diseño original del hero.
-     V640 había recortado la altura y hacía subir la franja azul oscura,
-     tapando la parte inferior del arte. */
+  /* INICIO — el corte solicitado en la captura queda en la última línea
+     visible de la imagen, no más abajo. En un móvil de 384 CSS px queda ~81 px. */
   html body[data-app-route="home"]{
-    --v641-home-lock-h:var(--v10-home-header-h);
+    --v640-home-lock-h:clamp(80px,21.1vw,110px);
   }
 
   html body[data-app-route="home"] #app > .topbar,
@@ -57,20 +56,19 @@
     transform:none!important;
     width:100%!important;
     max-width:none!important;
-    height:var(--v641-home-lock-h)!important;
-    min-height:var(--v641-home-lock-h)!important;
-    max-height:var(--v641-home-lock-h)!important;
+    height:var(--v640-home-lock-h)!important;
+    min-height:var(--v640-home-lock-h)!important;
+    max-height:var(--v640-home-lock-h)!important;
     margin:0!important;
     padding:0!important;
     z-index:2147482400!important;
   }
 
-  /* Historias vuelve a arrancar justo al terminar el diseño completo,
-     sin la franja oscura subida de V640. */
+  /* Sin colchón extra: Historias empieza justo en el borde inferior de la imagen. */
   html body[data-app-route="home"] #screen{
     margin-top:0!important;
     padding-top:0!important;
-    scroll-padding-top:var(--v641-home-lock-h)!important;
+    scroll-padding-top:var(--v640-home-lock-h)!important;
   }
 }
 
@@ -117,12 +115,6 @@
     margin:0 -14px!important;
     box-sizing:border-box!important;
     z-index:2147482399!important;
-    background:#06085f!important;
-    background-image:linear-gradient(180deg,#070d6b 0%,#06085f 100%)!important;
-    opacity:1!important;
-    isolation:isolate!important;
-    backdrop-filter:none!important;
-    -webkit-backdrop-filter:none!important;
   }
 
   /* IMPORTANTE: este padre tenía overflow-x:hidden en parches anteriores y
@@ -148,11 +140,7 @@
     z-index:2147482398!important;
     background:#06085f!important;
     background-color:#06085f!important;
-    background-image:none!important;
-    opacity:1!important;
     isolation:isolate!important;
-    backdrop-filter:none!important;
-    -webkit-backdrop-filter:none!important;
   }
 
   html body[data-app-route="competition"] #screen{
