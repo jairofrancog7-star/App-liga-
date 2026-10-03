@@ -1508,6 +1508,14 @@ function v358Norm(v){
 }
 function v358Logo(team,preferred=''){
   if(preferred)return preferred;
+  const key=v358Norm(team);
+  const fixed={
+    'juventus':'./assets/official-logos/juventus.png',
+    'la canchita deportes':'./assets/official-logos/la-canchita-deportes.png',
+    'la canchita':'./assets/official-logos/la-canchita-deportes.png',
+    'capibaras':'./assets/official-logos/capibaras.png'
+  };
+  if(fixed[key])return fixed[key];
   try{
     const api=window.LJR_OFFICIAL_API?.getLogo?.(team);
     if(api)return api;
@@ -1536,8 +1544,16 @@ function v358TopScorers(){
     Object.entries(db.categories).forEach(([id,c])=>{
       (c?.scorers?.[0]?.rows||[]).forEach(r=>{
         const goals=Number(r?.[3]);
-        const player=String(r?.[1]||'').trim(),team=String(r?.[2]||'').trim();
-        if(player&&team&&Number.isFinite(goals))rows.push({name:player,team,value:goals,category:c?.name||'',source:'official'});
+        const first=String(r?.[1]||'').trim();
+        const third=String(r?.[2]||'').trim();
+        const isTeamSummary=/goles?\s+en\s+temporada/i.test(third)||/^\d+\s*g$/i.test(third);
+        if(isTeamSummary&&first&&Number.isFinite(goals)){
+          rows.push({name:first,team:first,subtitle:third,value:goals,category:c?.name||'',source:'official-team-summary'});
+          return;
+        }
+        if(first&&third&&Number.isFinite(goals)){
+          rows.push({name:first,team:third,value:goals,category:c?.name||'',source:'official'});
+        }
       });
     });
   }
@@ -1600,7 +1616,7 @@ function v358StatIcon(kind){
 function v358StatCard(title,kind,rows,emptyText,footer){
   return '<article class="v358-stat-card v358-stat-'+kind+'"><h3>'+esc(title)+'</h3><div class="v358-stat-rule"></div>'+
     (rows.length?rows.map(r=>'<div class="v358-stat-row">'+v358LogoHtml(r.team,r.logo||'')+
-      '<span class="v358-stat-copy"><strong>'+esc(r.name)+'</strong><small>'+esc(r.team||r.category||'')+'</small></span>'+
+      '<span class="v358-stat-copy"><strong>'+esc(r.name)+'</strong><small>'+esc(r.subtitle||r.team||r.category||'')+'</small></span>'+
       '<b>'+esc(r.value)+'</b><i>'+v358StatIcon(kind)+'</i></div>').join('')+
       '<p class="v358-stat-source">'+esc(footer)+'</p>':
       '<div class="v358-stat-empty">'+esc(emptyText)+'</div>')+
@@ -2567,11 +2583,36 @@ function v354BindHistoryTabs(root){
 function v674EnhanceDetailCards(scope){
   const root=scope&&scope.querySelectorAll?scope:document;
   const cards=[...root.querySelectorAll('.v35-history-page article')];
+
+  const clearGenericDetails=card=>{
+    card.querySelectorAll('[data-v674-details]').forEach(btn=>btn.remove());
+    card.querySelectorAll('.v674-detail-copy').forEach(el=>el.classList.remove('v674-detail-copy'));
+    card.classList.remove('v674-detail-card','v674-expanded');
+  };
+
   cards.forEach(card=>{
     if(card.classList.contains('v674-source-card')){
       card.classList.add('v674-detail-card');
       return;
     }
+
+    const photoCard=
+      card.matches('.v35-feature-card,.v35-history-moment-photo,.v35-champion-card-photo,.v115-card')||
+      !!card.querySelector('.v35-feature-photo,.v35-history-bg-photo,.v35-champion-bg-photo,.v120-exact-event-bg');
+
+    const statisticCard=
+      card.matches('.v358-stat-card,.v35-old-table,.v35-team-goal-card')||
+      !!card.closest('.v358-summary-stats,.v35-history-goals,.v35-scorer-history,.v35-old-table');
+
+    const nativeFinalCard=
+      card.matches('.v329-final-row,.v330-final-row,.v355-final-row,.v358-final-row,.v329-finals-card,.v330-decade,.v355-final-decade,.v358-decade');
+
+    if(photoCard||statisticCard||nativeFinalCard){
+      clearGenericDetails(card);
+      card.dataset.v674Enhanced='skip';
+      return;
+    }
+
     if(card.dataset.v674Enhanced==='1')return;
 
     const details=[...card.querySelectorAll('p,.v672-card-detail')].filter(el=>
@@ -2583,7 +2624,6 @@ function v674EnhanceDetailCards(scope){
     card.classList.add('v674-detail-card');
     details.forEach(el=>el.classList.add('v674-detail-copy'));
 
-    // Retire the older small detail button if it exists; keep date chips/buttons intact.
     card.querySelectorAll('.v672-card-toggle').forEach(btn=>btn.remove());
 
     if(!card.querySelector('[data-v674-details]')){
