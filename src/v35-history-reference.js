@@ -1128,13 +1128,42 @@ function v358SeasonChampion(label){
     return {team,logo:v340ChampionLogo(team,m.image||''),label};
   }catch(_){return null}
 }
+const V675_SEASON_CHAMPION_FALLBACK={
+  '2025/26':{team:'Linces',logo:'./assets/official-logos/linces.png'},
+  '2024/25':{team:'Galácticos de Pozos',logo:'./assets/teams/galacticos-pozos.webp'},
+  '2023/24':{team:'Linces',logo:'./assets/official-logos/linces.png'},
+  '2022/23':{team:'Juventus',logo:'./assets/official-logos/juventus.png'},
+  '2021/22':{team:'Juventus',logo:'./assets/official-logos/juventus.png'},
+  '2020/21':{team:'La Esperanza',logo:'./assets/official-logos/la-esperanza.png'},
+  '2019/20':{team:'Juventus',logo:'./assets/official-logos/juventus.png'},
+  '2018/19':{team:'Juventus',logo:'./assets/official-logos/juventus.png'},
+  '2017/18':{team:'Tecos',logo:'./assets/history/team-logos/tecos.webp'},
+  '2016/17':{team:'Real DHP',logo:'./assets/history/archive-v271/real-dhp-campeon-copa-intermedia-31-dic-2017.webp'},
+  '2015/16':{team:'La Esperanza',logo:'./assets/official-logos/la-esperanza.png'},
+  '2014/15':{team:'Boavista',logo:'./assets/official-logos/boavista.png'},
+  '2013/14':{team:'La Esperanza',logo:'./assets/official-logos/la-esperanza.png'},
+  '2012/13':{team:'Real Cerrito de Gasca',logo:'./assets/teams/deportivo-cg.webp'}
+};
+function v675SeasonChampion(label){
+  const dynamic=v358SeasonChampion(label);
+  if(dynamic){
+    const resolved=dynamic.logo||v340ChampionLogo(dynamic.team,'')||historicLogo(dynamic.team);
+    if(resolved)return {...dynamic,logo:resolved};
+  }
+  const fallback=V675_SEASON_CHAMPION_FALLBACK[label]||null;
+  if(fallback)return fallback;
+  return dynamic||null;
+}
 function seasonCards(){
   return seasons.map((item,i)=>{
-    const winner=v358SeasonChampion(item.label);
-    const crest=winner?.logo||item.crest;
-    const alt=winner?.team||item.alt;
+    const winner=v675SeasonChampion(item.label);
+    const crest=winner?.logo||'';
+    const alt=winner?.team||'Campeón por confirmar';
+    const visual=crest
+      ? '<img src="'+crest+'" alt="'+esc(alt)+'" loading="lazy" decoding="async">'
+      : '<b class="v675-season-no-league">🏆</b>';
     return '<button class="v35-season-card" type="button" data-v35-season="'+i+'" aria-label="Temporada '+esc(item.label)+(winner?' · '+esc(winner.team):'')+'">'+
-      '<span class="v35-season-crest"><img src="'+crest+'" alt="'+esc(alt)+'" loading="lazy" decoding="async"></span>'+
+      '<span class="v35-season-crest '+(crest?'':'is-fallback')+'">'+visual+'</span>'+
       '<span class="v35-season-label">'+esc(item.label)+'</span>'+
     '</button>';
   }).join('');
@@ -1925,12 +1954,16 @@ function v341CleanSeasonLogos(root){
   });
 }
 function v351SeasonsPreviewBlock(){
-  const items=seasons.slice(0,6).map(s=>
-    '<span class="v341-era-item v351-season-preview-item" aria-label="Temporada '+esc(s.label)+'">'+
-      '<span class="v341-era-logo"><img src="'+s.crest+'" alt="'+esc(s.alt)+'" loading="lazy" decoding="async"></span>'+
+  const items=seasons.slice(0,6).map(s=>{
+    const winner=v675SeasonChampion(s.label);
+    const crest=winner?.logo||'';
+    return '<span class="v341-era-item v351-season-preview-item" aria-label="Temporada '+esc(s.label)+(winner?' · '+esc(winner.team):'')+'">'+
+      '<span class="v341-era-logo '+(crest?'':'is-fallback')+'">'+
+        (crest?'<img src="'+crest+'" alt="'+esc(winner?.team||'Campeón')+'" loading="lazy" decoding="async">':'<b>🏆</b>')+
+      '</span>'+
       '<span class="v341-era-season">'+esc(s.label)+'</span>'+
-    '</span>'
-  ).join('');
+    '</span>';
+  }).join('');
   return '<section class="v341-history-seasons-era v351-seasons-preview" aria-label="Temporadas recientes">'+
     '<section class="v341-era-decade"><h2>2020s</h2>'+
       '<section class="v341-era-category"><h3>Temporadas</h3><div class="v341-era-grid">'+items+'</div></section>'+
