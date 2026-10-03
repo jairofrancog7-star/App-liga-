@@ -2438,3 +2438,50 @@ body[data-app-route="cedulas"] .v66-category-mark img{
   object-position:center!important;
   background:transparent!important;
 }
+
+
+/* V632 — Cédulas: el logo de la categoría ocupa TODO el círculo.
+   La jornada queda sobrepuesta encima del escudo. */
+body[data-app-route="cedulas"] .v66-round-badge{
+  position:relative!important;
+  isolation:isolate!important;
+  overflow:hidden!important;
+  background:transparent!important;
+}
+body[data-app-route="cedulas"] .v66-round-badge .v66-category-mark{
+  position:absolute!important;
+  inset:0!important;
+  z-index:0!important;
+  width:100%!important;
+  height:100%!important;
+  margin:0!important;
+  border-radius:50%!important;
+  overflow:hidden!important;
+  background:transparent!important;
+}
+body[data-app-route="cedulas"] .v66-round-badge .v66-category-mark img{
+  width:100%!important;
+  height:100%!important;
+  min-width:100%!important;
+  min-height:100%!important;
+  display:block!important;
+  object-fit:cover!important;
+  object-position:center!important;
+  border-radius:50%!important;
+  transform:scale(1.08)!important;
+  background:transparent!important;
+}
+body[data-app-route="cedulas"] .v66-round-badge>small,
+body[data-app-route="cedulas"] .v66-round-badge>b{
+  position:relative!important;
+  z-index:2!important;
+  color:#fff!important;
+  text-shadow:0 1px 3px rgba(0,0,0,.95),0 0 4px rgba(0,0,0,.7)!important;
+}
+body[data-app-route="cedulas"] .v66-round-badge>small{
+  font-size:5px!important;
+  color:#fff!important;
+}
+body[data-app-route="cedulas"] .v66-round-badge>b{
+  font-size:13px!important;
+}
