@@ -213,40 +213,134 @@ function bindCalendar(root){
 }
 
 /* ---------- FAVORITOS / SIGUIENDO ---------- */
-function favoriteNames(){const v=readJson('v413-favorite-teams',[]);return Array.isArray(v)?v:[]}
+function favoriteNames(){
+  const own=readJson('v413-favorite-teams',[]);
+  const out=new Set(Array.isArray(own)?own.map(norm):[]);
+  /* V641 — también leer los favoritos de las otras pantallas para que
+     "Siguiendo" y la ficha del equipo no se contradigan. */
+  try{
+    const legacy=readStore();
+    (legacy?.favorites||[]).forEach(x=>{
+      const v=String(x||'');
+      if(v.startsWith('team:'))out.add(norm(v.slice(5).replace(/-/g,' ')));
+    });
+    const v414=readJson('ljr-v414-favorites',{teams:[]});
+    (v414?.teams||[]).forEach(x=>out.add(norm(String(x||'').replace(/-/g,' '))));
+  }catch(_){}
+  return Array.from(out);
+}
 function isFav(name){return favoriteNames().includes(norm(name))}
+function saveFavoriteEverywhere(name,on){
+  const n=norm(name),key='team:'+slug(name);
+  const own=new Set(favoriteNames());
+  on?own.add(n):own.delete(n);
+  writeJson('v413-favorite-teams',Array.from(own));
+
+  try{
+    const st=readStore(),arr=new Set(Array.isArray(st.favorites)?st.favorites:[]);
+    on?arr.add(key):arr.delete(key);
+    st.favorites=Array.from(arr);writeStore(st);
+  }catch(_){}
+
+  try{
+    const v=readJson('ljr-v414-favorites',{teams:[],players:[],competitions:[],matches:[]});
+    const arr=new Set(Array.isArray(v.teams)?v.teams:[]);
+    const s=slug(name);on?arr.add(s):arr.delete(s);v.teams=Array.from(arr);
+    writeJson('ljr-v414-favorites',v);
+  }catch(_){}
+}
 function toggleFav(name){
-  const n=norm(name),set=new Set(favoriteNames());
-  set.has(n)?set.delete(n):set.add(n);writeJson('v413-favorite-teams',Array.from(set));
+  const next=!isFav(name);
+  saveFavoriteEverywhere(name,next);
+  return next;
 }
 function favoritesMarkup(){
   const list=teamList();
   const favs=list.filter(t=>isFav(t.name));
   const show=(favs.length?favs:list).slice(0,12);
   return section('MI LIGA','Equipos y favoritos','Busca, sigue y guarda equipos reales de la Liga.',
-    '<div class="v413-follow-tabs"><button class="active" type="button">Todos</button><button type="button">Favoritos ('+favs.length+')</button><button type="button">Equipos ('+list.length+')</button></div>'+
-    '<div class="v413-fav-strip">'+show.slice(0,5).map(t=>'<button type="button" class="v413-fav-tile" data-v413-team="'+esc(t.name)+'">'+(isFav(t.name)?'<i>★</i>':'')+logoHtml(t)+'<b>'+esc(t.name)+'</b></button>').join('')+'</div>'+
+    '<div class="v413-follow-tabs"><button class="active" type="button" data-v413-follow-tab="all">Todos</button><button type="button" data-v413-follow-tab="favorites">Favoritos ('+favs.length+')</button><button type="button" data-v413-follow-tab="teams">Equipos ('+list.length+')</button></div>'+
+    '<div class="v413-fav-strip" data-v413-fav-strip>'+show.slice(0,5).map(t=>'<button type="button" class="v413-fav-tile" data-v413-team="'+esc(t.name)+'">'+(isFav(t.name)?'<i>★</i>':'')+logoHtml(t)+'<b>'+esc(t.name)+'</b></button>').join('')+'</div>'+
     '<div class="v413-search"><span>⌕</span><input type="search" data-v413-team-search placeholder="Buscar equipo"></div>'+
-    '<div class="v413-team-list" data-v413-team-list>'+list.slice(0,12).map(teamRow).join('')+'</div>'
+    '<div class="v413-team-list" data-v413-team-list>'+list.slice(0,18).map(teamRow).join('')+'</div>'
   );
 }
 function teamRow(t){
-  return '<div class="v413-team-row"><button type="button" data-v413-team="'+esc(t.name)+'">'+logoHtml(t)+'<span><b>'+esc(t.name)+'</b><small>'+esc(t.category||'Liga Municipal')+'</small></span></button><button type="button" class="v413-star '+(isFav(t.name)?'on':'')+'" data-v413-star="'+esc(t.name)+'">'+(isFav(t.name)?'★':'☆')+'</button></div>';
+  return '<div class="v413-team-row"><button type="button" data-v413-team="'+esc(t.name)+'">'+logoHtml(t)+'<span><b>'+esc(t.name)+'</b><small>'+esc(t.category||'Liga Municipal')+'</small></span></button><button type="button" class="v413-star '+(isFav(t.name)?'on':'')+'" data-v413-star="'+esc(t.name)+'" aria-label="'+(isFav(t.name)?'Quitar de favoritos':'Agregar a favoritos')+'">'+(isFav(t.name)?'★':'☆')+'</button></div>';
 }
 function bindFavorites(root){
-  const bindRows=()=>{
-    root.querySelectorAll('[data-v413-team]').forEach(b=>b.onclick=()=>{
-      try{localStorage.setItem('v62-team-name',b.dataset.v413Team)}catch(_){}
-      location.hash='#/teamDetail';
-    });
-    root.querySelectorAll('[data-v413-star]').forEach(b=>b.onclick=()=>{toggleFav(b.dataset.v413Star);remount()});
-  };
-  bindRows();
+  if(!root)return;
+  let mode=root.dataset.v413FollowMode||'all';
   const input=root.querySelector('[data-v413-team-search]');
-  if(input)input.oninput=()=>{
-    const q=norm(input.value),list=teamList().filter(t=>!q||norm(t.name+' '+t.category).includes(q)).slice(0,18);
-    root.querySelector('[data-v413-team-list]').innerHTML=list.map(teamRow).join('')||'<div class="v413-empty">No se encontró ese equipo.</div>';bindRows();
+  const host=root.querySelector('[data-v413-team-list]');
+  const strip=root.querySelector('[data-v413-fav-strip]');
+
+  const filtered=()=>{
+    const q=norm(input?.value||'');
+    let list=teamList();
+    if(mode==='favorites')list=list.filter(t=>isFav(t.name));
+    if(q)list=list.filter(t=>norm(t.name+' '+t.category).includes(q));
+    return list.slice(0,30);
   };
+
+  const updateTabs=()=>{
+    const all=teamList(),favs=all.filter(t=>isFav(t.name));
+    root.querySelectorAll('[data-v413-follow-tab]').forEach(b=>{
+      const m=b.dataset.v413FollowTab||'all';
+      b.classList.toggle('active',m===mode);
+      if(m==='favorites')b.textContent='Favoritos ('+favs.length+')';
+      if(m==='teams')b.textContent='Equipos ('+all.length+')';
+      if(m==='all')b.textContent='Todos';
+    });
+  };
+
+  const updateStrip=()=>{
+    if(!strip)return;
+    const all=teamList(),favs=all.filter(t=>isFav(t.name));
+    const show=(favs.length?favs:all).slice(0,5);
+    strip.innerHTML=show.map(t=>'<button type="button" class="v413-fav-tile" data-v413-team="'+esc(t.name)+'">'+(isFav(t.name)?'<i>★</i>':'')+logoHtml(t)+'<b>'+esc(t.name)+'</b></button>').join('');
+  };
+
+  const renderList=()=>{
+    updateTabs();updateStrip();
+    if(!host)return;
+    const list=filtered();
+    host.innerHTML=list.map(teamRow).join('')||
+      '<div class="v413-empty">'+(mode==='favorites'?'Todavía no tienes equipos favoritos. Toca ☆ en un equipo para agregarlo.':'No se encontró ese equipo.')+'</div>';
+    bindRows();
+  };
+
+  const openTeam=(name)=>{
+    try{
+      localStorage.setItem('v62-team-name',name);
+      localStorage.setItem('v42-team-tab','summary');
+      localStorage.removeItem('v42-open-compare');
+    }catch(_){}
+    location.hash='#/teamDetail';
+  };
+
+  const bindRows=()=>{
+    root.querySelectorAll('[data-v413-team]').forEach(b=>b.onclick=e=>{
+      e.preventDefault();e.stopPropagation();
+      openTeam(String(b.dataset.v413Team||'').trim());
+    });
+    root.querySelectorAll('[data-v413-star]').forEach(b=>b.onclick=e=>{
+      e.preventDefault();e.stopPropagation();e.stopImmediatePropagation?.();
+      toggleFav(b.dataset.v413Star||'');
+      renderList();
+    });
+  };
+
+  root.querySelectorAll('[data-v413-follow-tab]').forEach(b=>b.onclick=e=>{
+    e.preventDefault();e.stopPropagation();
+    mode=b.dataset.v413FollowTab||'all';
+    root.dataset.v413FollowMode=mode;
+    renderList();
+  });
+
+  if(input)input.oninput=renderList;
+  bindRows();
+  updateTabs();
 }
 
 /* ---------- NOTIFICACIONES V414 / referencia 365 adaptada ---------- */
@@ -640,6 +734,10 @@ function mount(){
     if(isMatchCenter)placeMatchAlerts(old);
     else if(isMore)placeMoreSocial(old);
     else placeStandard(old);
+    /* V641 — Following puede ser reinsertado/reconstruido por otros módulos.
+       Reasignar onclick/oninput es idempotente y evita que tabs, estrella y buscador
+       queden visuales pero sin eventos. */
+    if(r==='following')cfg.bind(old);
     return;
   }
 
