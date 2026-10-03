@@ -81,13 +81,14 @@ function playerList(){
       const rows=Array.isArray(raw)?raw:(raw?.rows||raw?.players||[]);
       rows.forEach(r=>{
         const name=String(Array.isArray(r)?(r[1]||r[0]||''):(r?.name||r?.player||'')).trim();
-        if(!name||seen.has(norm(name))||/^(nombre|jugador|tabla|goleadores)$/i.test(name))return;
-        seen.add(norm(name));
+        const key=norm(team)+'|'+norm(name)+'|'+norm(cname);
+        if(!name||seen.has(key)||/^(nombre|jugador|tabla|goleadores)$/i.test(name))return;
+        seen.add(key);
         out.push({name,team,category:cname});
       });
     });
   });
-  return out.slice(0,180);
+  return out;
 }
 function logo(name){
   try{
@@ -389,23 +390,61 @@ function searchMarkup(){
   );
 }
 function bindSearch(root){
-  let mode='teams';
+  let mode='teams',selectedTeam='';
   const input=root.querySelector('[data-v413-global]'),host=root.querySelector('[data-v413-search-results]');
+  const bindTeamButtons=()=>{
+    root.querySelectorAll('[data-v413-team]').forEach(b=>b.onclick=e=>{
+      e.preventDefault();e.stopPropagation();
+      const team=String(b.dataset.v413Team||'').trim();
+      if(mode==='players'){
+        selectedTeam=team;
+        root.querySelectorAll('.v413-fav-tile[data-v413-team]').forEach(x=>x.classList.toggle('is-selected',norm(x.dataset.v413Team)===norm(selectedTeam)));
+        if(input)input.value='';
+        render();
+        host?.scrollIntoView({behavior:'smooth',block:'nearest'});
+        return;
+      }
+      try{localStorage.setItem('v62-team-name',team)}catch(_){}
+      go('teamDetail');
+    });
+  };
   const render=()=>{
     const q=norm(input?.value||'');
+    if(input)input.placeholder=mode==='players'?(selectedTeam?'Buscar jugador en '+selectedTeam:'Selecciona un equipo o busca jugador'):'Buscar equipo en la Liga';
     if(mode==='teams'){
+      selectedTeam='';
+      root.querySelectorAll('.v413-fav-tile[data-v413-team]').forEach(x=>x.classList.remove('is-selected'));
       const list=teamList().filter(t=>!q||norm(t.name+' '+t.category).includes(q)).slice(0,14);
       host.innerHTML=list.map(t=>'<button class="v413-result" type="button" data-v413-team="'+esc(t.name)+'">'+logoHtml(t)+'<span><b>'+esc(t.name)+'</b><small>'+esc(t.category)+'</small></span><i>›</i></button>').join('')||'<div class="v413-empty">No se encontró ese equipo.</div>';
     }else{
-      const list=playerList().filter(p=>!q||norm(p.name+' '+p.team).includes(q)).slice(0,18);
-      host.innerHTML=list.map(p=>'<button class="v413-result" type="button" data-v413-player="'+esc(p.name)+'"><span class="v413-player-ball">⚽</span><span><b>'+esc(p.name)+'</b><small>'+esc(p.team)+' · '+esc(p.category)+'</small></span><i>›</i></button>').join('')||'<div class="v413-empty">No se encontró ese jugador.</div>';
+      let list=playerList();
+      if(selectedTeam)list=list.filter(p=>norm(p.team)===norm(selectedTeam));
+      if(q)list=list.filter(p=>norm(p.name+' '+p.team+' '+p.category).includes(q));
+      list.sort((a,b)=>a.name.localeCompare(b.name,'es'));
+      const head=selectedTeam?'<div class="v413-player-team-head"><b>'+esc(selectedTeam)+'</b><span>'+list.length+' jugadores</span><button type="button" data-v413-clear-team>Ver todos</button></div>':'<div class="v413-player-team-head"><b>Todos los jugadores</b><span>'+list.length+' registrados</span></div>';
+      host.innerHTML=head+(list.map(p=>'<button class="v413-result" type="button" data-v413-player="'+esc(p.name)+'" data-v413-player-team="'+esc(p.team)+'"><span class="v413-player-ball">⚽</span><span><b>'+esc(p.name)+'</b><small>'+esc(p.team)+' · '+esc(p.category)+'</small></span><i>›</i></button>').join('')||'<div class="v413-empty">No se encontraron jugadores para este equipo.</div>');
+      host.querySelector('[data-v413-clear-team]')?.addEventListener('click',e=>{e.preventDefault();e.stopPropagation();selectedTeam='';root.querySelectorAll('.v413-fav-tile[data-v413-team]').forEach(x=>x.classList.remove('is-selected'));render()});
     }
-    host.querySelectorAll('[data-v413-team]').forEach(b=>b.onclick=()=>{try{localStorage.setItem('v62-team-name',b.dataset.v413Team)}catch(_){};go('teamDetail')});
-    host.querySelectorAll('[data-v413-player]').forEach(b=>b.onclick=()=>{try{localStorage.setItem('v66-player-query',b.dataset.v413Player)}catch(_){};go('players')});
+    bindTeamButtons();
+    host.querySelectorAll('[data-v413-player]').forEach(b=>b.onclick=e=>{
+      e.preventDefault();e.stopPropagation();
+      try{
+        localStorage.setItem('v66-player-query',b.dataset.v413Player||'');
+        localStorage.setItem('v62-team-name',b.dataset.v413PlayerTeam||selectedTeam||'');
+      }catch(_){}
+      go('players');
+    });
   };
-  root.querySelectorAll('[data-v413-mode]').forEach(b=>b.onclick=()=>{mode=b.dataset.v413Mode;root.querySelectorAll('[data-v413-mode]').forEach(x=>x.classList.toggle('active',x===b));render()});
-  root.querySelectorAll('[data-v413-team]').forEach(b=>b.onclick=()=>{try{localStorage.setItem('v62-team-name',b.dataset.v413Team)}catch(_){};go('teamDetail')});
-  if(input)input.oninput=render;render();
+  root.querySelectorAll('[data-v413-mode]').forEach(b=>b.onclick=e=>{
+    e.preventDefault();e.stopPropagation();
+    mode=b.dataset.v413Mode;
+    root.querySelectorAll('[data-v413-mode]').forEach(x=>x.classList.toggle('active',x===b));
+    if(mode==='players'&&input)input.value='';
+    render();
+  });
+  bindTeamButtons();
+  if(input)input.oninput=render;
+  render();
 }
 
 /* ---------- MATCH CENTER ---------- */
