@@ -20,7 +20,6 @@ const FACE_IMAGES=[
   '.v414-avatar>img',
   '.v123-avatar>img',
   '.v123-option-avatar>img',
-  '.v379-related-avatar>img',
   '.v576-table-photo>img',
   '.v124-avatar>img',
   '.v562-avatar>img',
