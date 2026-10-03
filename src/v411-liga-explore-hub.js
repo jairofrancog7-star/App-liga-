@@ -185,7 +185,7 @@ function newsFooter(){
 }
 
 function desiredMarkup(r){
-  if(r==='more')return moreHub();
+  if(r==='more')return '';
   if(r==='search')return searchTeams();
   if(r==='following')return socialFooter('following');
   if(r==='profile')return socialFooter('profile');
@@ -197,6 +197,10 @@ function desiredMarkup(r){
 function mount(){
   const r=route(),screen=document.querySelector('#screen');
   if(!screen)return;
+  if(r==='more'){
+    screen.querySelectorAll('[data-v411-owner="more"]').forEach(el=>el.remove());
+    return;
+  }
 
   screen.querySelectorAll('[data-v411-owner]').forEach(el=>{
     if(el.dataset.v411Owner!==r)el.remove();
