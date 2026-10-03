@@ -114,3 +114,117 @@ html body[data-app-route="players"] #screen .v607-player-head.v673-player-head>p
   #screen .v607-player-head.v674-player-head>.v673-player-count{font-size:10px!important}
   #screen .v607-player-head.v674-player-head>p{font-size:9.5px!important}
 }
+
+/* V694 — fallback definitivo para el encabezado de #/players.
+   No depende de data-app-route ni de la clase v674, por lo que también
+   corrige HTML/JS antiguo que haya quedado en caché en Android. */
+#screen .v66-directory[data-v66-directory="players"] > .v607-player-head,
+#screen [data-v66-directory="players"] > .v607-player-head{
+  position:relative!important;
+  inset:auto!important;
+  left:auto!important;
+  right:auto!important;
+  top:auto!important;
+  bottom:auto!important;
+  transform:none!important;
+  translate:none!important;
+  float:none!important;
+  clear:both!important;
+  display:grid!important;
+  grid-template-columns:minmax(0,1fr)!important;
+  grid-template-rows:auto auto auto auto!important;
+  grid-auto-flow:row!important;
+  align-items:start!important;
+  justify-items:start!important;
+  column-gap:0!important;
+  row-gap:8px!important;
+  width:100%!important;
+  max-width:100%!important;
+  min-width:0!important;
+  height:auto!important;
+  min-height:0!important;
+  margin:0 0 14px!important;
+  padding:10px 12px 14px!important;
+  box-sizing:border-box!important;
+  overflow:visible!important;
+}
+#screen [data-v66-directory="players"] > .v607-player-head > small{
+  grid-column:1!important;
+  grid-row:1!important;
+  position:static!important;
+  inset:auto!important;
+  display:block!important;
+  width:auto!important;
+  max-width:100%!important;
+  margin:0!important;
+  padding:0!important;
+  color:#29e0eb!important;
+  font-size:10px!important;
+  line-height:1.15!important;
+  font-weight:950!important;
+  letter-spacing:.13em!important;
+  white-space:nowrap!important;
+  transform:none!important;
+}
+#screen [data-v66-directory="players"] > .v607-player-head > h1{
+  grid-column:1!important;
+  grid-row:2!important;
+  position:static!important;
+  inset:auto!important;
+  display:block!important;
+  width:100%!important;
+  max-width:100%!important;
+  min-width:0!important;
+  margin:0!important;
+  padding:0!important;
+  color:#fff!important;
+  font-size:clamp(22px,6.2vw,28px)!important;
+  line-height:1.08!important;
+  font-weight:950!important;
+  letter-spacing:-.02em!important;
+  white-space:normal!important;
+  overflow:visible!important;
+  overflow-wrap:anywhere!important;
+  word-break:normal!important;
+  transform:none!important;
+}
+#screen [data-v66-directory="players"] > .v607-player-head > .v673-player-count{
+  grid-column:1!important;
+  grid-row:3!important;
+  position:static!important;
+  inset:auto!important;
+  display:block!important;
+  width:100%!important;
+  max-width:100%!important;
+  margin:0!important;
+  padding:0!important;
+  font-size:11px!important;
+  line-height:1.35!important;
+  white-space:normal!important;
+  transform:none!important;
+}
+#screen [data-v66-directory="players"] > .v607-player-head > p{
+  grid-column:1!important;
+  grid-row:4!important;
+  position:static!important;
+  inset:auto!important;
+  display:block!important;
+  width:100%!important;
+  max-width:100%!important;
+  margin:0!important;
+  padding:0!important;
+  font-size:10px!important;
+  line-height:1.35!important;
+  white-space:normal!important;
+  transform:none!important;
+}
+@media(max-width:420px){
+  #screen [data-v66-directory="players"] > .v607-player-head{
+    row-gap:7px!important;
+    padding:8px 10px 12px!important;
+  }
+  #screen [data-v66-directory="players"] > .v607-player-head > small{font-size:9px!important}
+  #screen [data-v66-directory="players"] > .v607-player-head > h1{font-size:23px!important;line-height:1.08!important}
+  #screen [data-v66-directory="players"] > .v607-player-head > .v673-player-count{font-size:10px!important}
+  #screen [data-v66-directory="players"] > .v607-player-head > p{font-size:9.5px!important}
+}
