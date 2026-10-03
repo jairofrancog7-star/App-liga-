@@ -379,6 +379,7 @@ function fixtureRows(){
   }
   return out;
 }
+function cedulaCategoryLogo(catId){return CAT_LOGOS_V630[String(catId)]||'./assets/liga-logo.webp'}
 function cedulaRoundLabel(value){
   let v=String(value??'').trim();
   v=v.replace(/^jornada\s*/i,'').replace(/^j\s*/i,'').trim();
@@ -388,7 +389,8 @@ function cedulaLead(r){
   const logo=cedulaCategoryLogo(r.cat);
   return '<span class="v66-cedula-side">'+
     '<span class="v66-round-badge">'+
-      '<b class="v66-round-text">'+esc(cedulaRoundLabel(r.round))+'</b>'+
+      '<small>JORNADA</small>'+
+      '<b>'+esc(r.round||'—')+'</b>'+
       '<span class="v66-category-mark"><img src="'+esc(logo)+'" alt="'+esc(r.category||'Categoría')+'" loading="eager" decoding="async"></span>'+
     '</span>'+
   '</span>';
@@ -455,13 +457,11 @@ function cedulaGroupsMarkup(rows){
   }).join('');
 }
 function cedulasMarkup(){
-  const all=fixtureRows().sort(cedulaSort);
-  const rows=cedulaRowsFiltered(all);
+  const rows=fixtureRows();
   return '<section class="v66-directory v66-cedulas-official" data-v66-directory="cedulas">'+
-    '<div class="v66-cedula-headline"><b>Cédulas oficiales</b><small>'+rows.length+' de '+all.length+' partidos</small></div>'+
+    '<div class="v66-cedula-headline"><b>Cédulas oficiales</b><small>'+rows.length+' partidos sincronizados</small></div>'+
     '<button type="button" class="v66-primary-action" data-v66-generate-cedula>Generar cédula PDF</button>'+
-    cedulaFiltersMarkup(all)+
-    '<div class="v66-cedula-groups">'+cedulaGroupsMarkup(rows)+'</div>'+
+    '<div class="v66-player-list">'+rows.map(cedulaRowMarkup).join('')+'</div>'+
   '</section>';
 }
 function goCedulaBuilder(){
