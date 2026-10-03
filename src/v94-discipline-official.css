@@ -569,3 +569,32 @@ body.v94-discipline-official .v652-cat-rail button.active{
   body.v94-discipline-official .v652-cat-head{padding-bottom:7px!important}
   body.v94-discipline-official .v652-cat-rail button{min-width:64px!important;min-height:32px!important;padding:6px 10px!important;font-size:9px!important}
 }
+
+
+/* V655 — Botones de disciplina funcionales y táctiles. */
+body.v94-discipline-official .v655-discipline-controls{
+  position:relative!important;
+  z-index:20!important;
+  pointer-events:auto!important;
+}
+body.v94-discipline-official .v655-discipline-controls button{
+  position:relative!important;
+  z-index:21!important;
+  pointer-events:auto!important;
+  touch-action:manipulation!important;
+  -webkit-tap-highlight-color:rgba(74,225,245,.16)!important;
+  cursor:pointer!important;
+}
+body.v94-discipline-official .v655-discipline-controls button:active{
+  transform:scale(.97)!important;
+}
+body.v94-discipline-official .v94-discipline-row[hidden]{
+  display:none!important;
+}
+body.v94-discipline-official .v655-discipline-types button.active,
+body.v94-discipline-official .v655-discipline-cats button.active{
+  background:linear-gradient(135deg,#245ae5,#1682d0)!important;
+  color:#fff!important;
+  border-color:rgba(91,235,246,.74)!important;
+  box-shadow:0 7px 18px rgba(19,72,206,.28)!important;
+}
