@@ -2373,53 +2373,57 @@ body[data-app-route="players"] .v66-filter-title{
 }
 
 
-/* V630 — Cédulas oficiales: Jornada completa + logo real de categoría. */
+/* V631 — Cédulas oficiales: Jornada + logo de categoría DENTRO del círculo. */
 body[data-app-route="cedulas"] .v66-fixture-row{
-  grid-template-columns:54px minmax(0,1fr) 18px!important;
-  min-height:82px!important;
+  grid-template-columns:62px minmax(0,1fr) 18px!important;
+  min-height:78px!important;
   padding:7px 9px!important;
   align-items:center!important;
 }
 body[data-app-route="cedulas"] .v66-cedula-side{
-  width:48px!important;
-  min-width:48px!important;
-  display:flex!important;
-  flex-direction:column!important;
-  align-items:center!important;
-  justify-content:center!important;
-  gap:4px!important;
+  width:58px!important;
+  min-width:58px!important;
+  display:grid!important;
+  place-items:center!important;
 }
 body[data-app-route="cedulas"] .v66-round-badge{
-  width:44px!important;
-  height:44px!important;
+  width:56px!important;
+  height:56px!important;
+  min-width:56px!important;
+  min-height:56px!important;
+  box-sizing:border-box!important;
   border-radius:50%!important;
   display:flex!important;
   flex-direction:column!important;
   align-items:center!important;
   justify-content:center!important;
+  gap:1px!important;
+  overflow:hidden!important;
   background:#11127d!important;
-  border:1.5px solid #20dce9!important;
+  border:1.6px solid #20dce9!important;
   color:#fff!important;
   line-height:1!important;
 }
 body[data-app-route="cedulas"] .v66-round-badge small{
-  margin:0 0 2px!important;
+  margin:0!important;
   color:#9ff8ff!important;
-  font-size:5.5px!important;
+  font-size:5.2px!important;
   line-height:1!important;
   font-weight:900!important;
   letter-spacing:.04em!important;
   overflow:visible!important;
 }
 body[data-app-route="cedulas"] .v66-round-badge b{
+  margin:0!important;
   color:#fff!important;
   font-size:12px!important;
   line-height:1!important;
   font-weight:900!important;
 }
 body[data-app-route="cedulas"] .v66-category-mark{
-  width:24px!important;
-  height:24px!important;
+  width:17px!important;
+  height:17px!important;
+  margin-top:1px!important;
   display:grid!important;
   place-items:center!important;
   overflow:hidden!important;
