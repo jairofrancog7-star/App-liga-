@@ -1013,7 +1013,17 @@ function render(){
 
   document.body.classList.add('v92-match-center-official');
   screen.querySelector('[data-v92-match-select]')?.addEventListener('change',e=>{selectedKey=e.target.value;activeTab='Resumen';profileSide='home';renderGuard=false;render()});
-  screen.querySelectorAll('[data-v92-tab]').forEach(b=>b.onclick=()=>{activeTab=b.dataset.v92Tab;renderGuard=false;render();if(activeTab==='Alineaciones')refreshOfficialData(true)});
+  const focusMatchSection=(selector)=>{
+    const go=()=>{const target=document.querySelector(selector);if(!target)return;try{target.scrollIntoView({behavior:'smooth',block:'start'})}catch(_){target.scrollIntoView?.()}};
+    requestAnimationFrame(go);setTimeout(go,120);
+  };
+  screen.querySelectorAll('[data-v92-tab]').forEach(b=>b.onclick=()=>{
+    activeTab=b.dataset.v92Tab;renderGuard=false;render();
+    if(activeTab==='Alineaciones'){
+      focusMatchSection('.v92-lineups-section');
+      refreshOfficialData(true).then(()=>focusMatchSection('.v92-lineups-section'));
+    }
+  });
   screen.querySelector('[data-v420-back]')?.addEventListener('click',()=>{activeTab='Resumen';renderGuard=false;render()});
   screen.querySelector('[data-v420-mute]')?.addEventListener('click',e=>{
     const b=e.currentTarget,host=screen.querySelector('[data-v420-build-up]'),videos=[...(host?.querySelectorAll('video')||[])];
@@ -1042,11 +1052,16 @@ function render(){
     if(!next)return;
     selectedKey=next.key;activeTab='Resumen';profileSide='home';renderGuard=false;render();
   });
-  screen.querySelectorAll('[data-v92-open-lineups]').forEach(b=>b.onclick=()=>{activeTab='Alineaciones';renderGuard=false;render();refreshOfficialData(true)});
+  screen.querySelectorAll('[data-v92-open-lineups]').forEach(b=>b.onclick=()=>{
+    activeTab='Alineaciones';renderGuard=false;render();
+    focusMatchSection('.v92-lineups-section');
+    refreshOfficialData(true).then(()=>focusMatchSection('.v92-lineups-section'));
+  });
   screen.querySelectorAll('[data-v92-route]').forEach(b=>b.onclick=()=>{location.hash='#/'+b.dataset.v92Route});
   screen.querySelectorAll('[data-v92-pitch]').forEach(b=>b.onclick=()=>{
-    try{sessionStorage.setItem('v92-pitch-context',JSON.stringify({match:m.key,home,away,category:m.category,venue}))}catch(_){}
-    location.hash='#/venues';
+    activeTab='Alineaciones';renderGuard=false;render();
+    focusMatchSection('.v416-lineup-visual');
+    refreshOfficialData(true).then(()=>focusMatchSection('.v416-lineup-visual'));
   });
   screen.querySelectorAll('[data-v92-vote-mvp]').forEach(b=>b.onclick=()=>openMvpVote(m));
   screen.querySelectorAll('[data-v419-profile-scroll]').forEach(b=>b.onclick=()=>{
