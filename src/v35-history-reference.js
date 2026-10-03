@@ -2310,6 +2310,54 @@ function finalsBody(){
     '<div class="v35-season-detail"><h3>Finales históricas documentadas</h3><p>Se muestran únicamente las finales, series y clásicos que aparecen en el material histórico revisado.</p></div></section>'+
     finalsArchiveBlock();
 }
+/* V706 — Linajes/evoluciones de nombres.
+   En la memoria visual agrupamos únicamente variantes con continuidad clara.
+   Los roles y tablas por año conservan el nombre exacto de cada fuente.
+   No se agrupan equipos Jr., filiales o clubes de la misma comunidad si no hay
+   evidencia suficiente de que sean la misma institución. */
+const HISTORIC_TEAM_LINEAGES=[
+  {key:'boavista',display:'Boavista',aliases:['Boavista','Boavista FC'],note:'Boavista / Boavista FC'},
+  {key:'tavera',display:'Tavera FC',aliases:['Tavera','Tavera FC'],note:'Tavera → Tavera FC'},
+  {key:'chelsea',display:'Chelsea',aliases:['Chelse','Chelsea'],note:'Chelse → Chelsea'},
+  {key:'seccion-xiv',display:'Sección XIV',aliases:['Sección 14','Seccion 14','Sección XIV','Seccion XIV','SECC. XIV'],note:'Sección 14 → Sección XIV'},
+  {key:'psv',display:'PSV',aliases:['PSV','PSV-Eindhoven','PSV Eindhoven'],note:'PSV-Eindhoven → PSV'},
+  {key:'aldama',display:'Aldama FC',aliases:['Aldama','Deportivo Aldama','Dep. Aldama','Aldama FC'],note:'Aldama / Deportivo Aldama → Aldama FC'},
+  {key:'dynamo',display:'Dynamo',aliases:['Dinamo','Dínamo','Dynamo'],note:'Dínamo / Dynamo'},
+  {key:'centeno',display:'Atlético Centeno',aliases:['Centeno','A. Centeno','Atl. Centeno','Atlético Centeno'],note:'Centeno / A. Centeno → Atlético Centeno'},
+  {key:'galeana',display:'Atlético Galeana',aliases:['Galeana','Atl. Galeana','Atlético Galeana'],note:'Galeana → Atlético Galeana'},
+  {key:'jaralillo-xolos',display:'Xolos Jaralillo',aliases:['Jaralillo','Jaralillo FC','Jaralillo F.C.','Xolos Jaralillo','Xolos de Jaralillo'],note:'Jaralillo → Xolos Jaralillo'},
+  {key:'hermanos',display:'Hermanos',aliases:['Hermanos','Hermanos FC','Dep. Hermanos','Deportivo Hermanos'],note:'Hermanos / Deportivo Hermanos'},
+  {key:'esperanza',display:'La Esperanza',aliases:['La Esperanza','La Esperanza FC','Dep. La Esperanza','Deportivo La Esperanza'],note:'La Esperanza / La Esperanza FC'},
+  {key:'terricolas',display:'Terrícolas SEDER',aliases:['Terrícolas','Terricolas','Terrícolas SEDER','Terricolas SEDER'],note:'Terrícolas → Terrícolas SEDER'},
+  {key:'galacticos-pozos',display:'Galácticos de Pozos',aliases:['Galácticos','Galacticos','Galácticos FC','Galacticos FC','Galácticos (Pozos)','Galacticos (Pozos)','Galácticos de Pozos','Galacticos de Pozos'],note:'Galácticos / Galácticos FC → Galácticos de Pozos'},
+  {key:'promesas',display:'Promesas FC',aliases:['Promesas','Promesas FC','Promesas de Pozos'],note:'Promesas / Promesas de Pozos → Promesas FC'},
+  {key:'san-antonio-jrs',display:'San Antonio JRS',aliases:['San Antonio Jr.','San Antonio Jr','San Antonio Jrs.','San Antonio JRS'],note:'San Antonio Jr. → San Antonio JRS'},
+  {key:'mazacotes',display:'Mazacotes FC',aliases:['Mazacotes','Mazacotes FC'],note:'Mazacotes → Mazacotes FC'},
+  {key:'mineros',display:'Mineros FC',aliases:['Mineros','Mineros FC','Mineros F. C.'],note:'Mineros → Mineros FC'},
+  {key:'toros',display:'Toros',aliases:['Toros','Deportivo Toros'],note:'Toros / Deportivo Toros'},
+  {key:'san-juan-fc',display:'San Juan FC',aliases:['San Juan FC','San Juan F.C.'],note:'San Juan FC'},
+  {key:'oklahoma',display:'Oklahoma',aliases:['Oklahoma','Deportivo Oklahoma'],note:'Oklahoma / Deportivo Oklahoma'},
+  {key:'la-cuadrilla',display:'La Cuadrilla',aliases:['La Cuadrilla','Deportivo La Cuadrilla'],note:'La Cuadrilla / Deportivo La Cuadrilla'},
+  {key:'el-alto',display:'El Alto',aliases:['El Alto','Dep. El Alto','Deportivo El Alto'],note:'El Alto / Deportivo El Alto'}
+];
+const HISTORIC_TEAM_LINEAGE_BY_ALIAS=(()=>{
+  const map=new Map();
+  HISTORIC_TEAM_LINEAGES.forEach(lineage=>{
+    lineage.aliases.forEach(alias=>map.set(histTeamKey(alias),lineage));
+    map.set(histTeamKey(lineage.display),lineage);
+  });
+  return map;
+})();
+function v706HistoricTeamLineage(name){
+  const raw=String(name||'').trim();
+  const direct=HISTORIC_TEAM_LINEAGE_BY_ALIAS.get(histTeamKey(raw));
+  if(direct)return direct;
+  const canonical=canonicalHistoricName(raw);
+  const fromCanonical=HISTORIC_TEAM_LINEAGE_BY_ALIAS.get(histTeamKey(canonical));
+  if(fromCanonical)return fromCanonical;
+  return {key:'single:'+histTeamKey(canonical),display:canonical,aliases:[canonical],note:''};
+}
+
 function v370HistoryTeamInitials(name){
   return String(name||'JR').replace(/[^A-Za-zÁÉÍÓÚÜÑáéíóúüñ0-9 ]+/g,' ').trim()
     .split(/\s+/).filter(Boolean).slice(0,2).map(x=>x[0]||'').join('').toUpperCase()||'JR';
@@ -2330,34 +2378,38 @@ function v370HistoryTeamLogo(name){
   try{return v340ChampionLogo(name,'')||'';}catch(_){return ''}
 }
 function v370ArchiveTeamsBlock(){
-  /* V699 — los equipos visibles en el rol del 14–15 jul 2018 deben aparecer
-     también en esta cuadrícula de MEMORIA DE CLUBES. Se agregan de forma
-     explícita y se deduplican por nombre canónico para no repetir tarjetas. */
+  /* V706 — Memoria de clubes agrupada por linaje.
+     El mismo club no debe ocupar varias tarjetas sólo porque cambió de nombre.
+     Los nombres exactos siguen intactos en los roles/tablas por año. */
   const july2018Teams=[
     'Magisterio','Sección XIV','Deportivo Lagartos','Valedores',
     'Hermanos','Linces','Franco FC','La Esperanza Jr.','Mazacotes',
     'Barza','Malvinas','Populares','Tavera Jr.','World 11','A. Centeno','El Alto'
   ];
-  const seen=new Set();
-  const names=allHistoricalTeams2012Plus.concat(expandedRetroNames,retroNames,july2018Teams).filter(name=>{
-    const key=histTeamKey(canonicalHistoricName(name));
-    if(!key||seen.has(key))return false;
-    seen.add(key);
-    return true;
+  const rawNames=historicalTeamEras.flatMap(g=>g.teams||[])
+    .concat(allHistoricalTeams2012Plus,expandedRetroNames,retroNames,july2018Teams);
+  const clubs=[],seen=new Set();
+  rawNames.forEach(raw=>{
+    const lineage=v706HistoricTeamLineage(raw);
+    if(!lineage.key||seen.has(lineage.key))return;
+    seen.add(lineage.key);
+    clubs.push(lineage);
   });
   return '<section class="v370-legacy-clubs" aria-label="Equipos que han formado parte de la Liga">'+
     '<header class="v370-legacy-head">'+
       '<span class="v370-legacy-kicker">MEMORIA DE CLUBES</span>'+
       '<h3>Equipos que han formado parte de nuestra Liga</h3>'+
-      '<p>Nombres recuperados de tablas, roles, álbumes y publicaciones. Cada club queda conservado como parte de la memoria futbolística de Juventino Rosas.</p>'+
-      '<div class="v370-legacy-count"><b>'+names.length+'</b><span>nombres conservados en el archivo</span></div>'+
+      '<p>Los cambios de nombre se agrupan como evolución del mismo club cuando la continuidad es clara. Los equipos Jr., filiales o de la misma comunidad se mantienen separados si no hay evidencia suficiente para unirlos.</p>'+
+      '<div class="v370-legacy-count"><b>'+clubs.length+'</b><span>clubes y linajes conservados</span></div>'+
     '</header>'+
-    '<div class="v370-legacy-grid">'+names.map((name,i)=>{const logo=v370HistoryTeamLogo(name);return '<article class="v370-legacy-team">'+
+    '<div class="v370-legacy-grid">'+clubs.map((club,i)=>{const name=club.display,logo=v370HistoryTeamLogo(name),evolved=club.note&&club.aliases.length>1;return '<article class="v370-legacy-team '+(evolved?'v706-evolved-club':'')+'">'+
       '<span class="v370-legacy-no">'+String(i+1).padStart(2,'0')+'</span>'+
       '<span class="v370-legacy-crest '+(logo?'':'is-fallback')+'">'+
         (logo?'<img src="'+esc(logo)+'" alt="'+esc(name)+'" loading="lazy" decoding="async" onerror="this.parentElement.classList.add(\'is-fallback\');this.remove()">':'<b>'+esc(v370HistoryTeamInitials(name))+'</b>')+
       '</span>'+
-      '<span class="v370-legacy-copy"><small>REGISTRO EN EL ARCHIVO</small><strong>'+esc(name)+'</strong></span>'+
+      '<span class="v370-legacy-copy"><small>'+(evolved?'EVOLUCIÓN DEL MISMO CLUB':'REGISTRO EN EL ARCHIVO')+'</small><strong>'+esc(name)+'</strong>'+
+        (evolved?'<em class="v706-lineage">'+esc(club.note)+'</em>':'')+
+      '</span>'+
       '<span class="v370-legacy-seal" aria-hidden="true">JR</span>'+
     '</article>';}).join('')+'</div>'+
   '</section>';
