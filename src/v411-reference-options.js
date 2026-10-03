@@ -247,7 +247,7 @@ function mount(){
  else if(r==='search')mountSearch(screen);
  else if(r==='video')mountVideo(screen);
  else if(r==='news')mountNews(screen);
- else if(r==='more')mountMore(screen);
+ else if(r==='more'){screen.querySelectorAll('[data-v411-zone="more"]').forEach(x=>x.remove());}
  else if(['v4-calendar','calendar','monthlyCalendar','calendarMonthly','matchday'].includes(r))mountCalendar(screen);
 }
 let timer=0;
