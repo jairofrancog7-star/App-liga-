@@ -4106,3 +4106,21 @@
     box-sizing:border-box!important;
   }
 }
+
+
+/* V684 — Historia: todos los botones visibles "Ver detalles" quedan azul transparente. */
+@media(max-width:1023px){
+  html body[data-app-route="history"] .v35-history-page .v674-details-button,
+  html body[data-app-route="history"] .v35-history-page.v329-finals-image1 .v329-final-side button[data-v329-details],
+  html body[data-app-route="history"] .v35-history-page.v330-finals-active .v330-side button[data-v330-details],
+  html body[data-app-route="history"] .v35-history-page.v355-finals-active .v355-final-side button[data-v355-final-detail],
+  html body[data-app-route="history"] .v35-history-page.v358-finals-reference .v358-final-side button[data-v358-details]{
+    background:rgba(14,74,170,.08)!important;
+    background-image:none!important;
+    border:1px solid rgba(42,222,244,.48)!important;
+    box-shadow:none!important;
+    color:#28e4f1!important;
+    -webkit-backdrop-filter:blur(6px)!important;
+    backdrop-filter:blur(6px)!important;
+  }
+}
