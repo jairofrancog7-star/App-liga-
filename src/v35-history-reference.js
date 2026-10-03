@@ -1142,11 +1142,14 @@ function historicalSourcesBlock(){
     '<div class="v35-section-row"><h2>Fuentes de temporadas anteriores</h2></div>'+
     '<p class="v35-history-scope">Los equipos que ya no participan se conservan únicamente dentro de Historia. No se agregan a Equipos, clasificación, calendarios ni estadísticas de la temporada actual.</p>'+
     '<div class="v35-history-source-list">'+historicalSources.map((s,i)=>
-      '<button type="button" class="v35-history-source-card '+(s.url?'is-link':'is-disabled')+'" data-v35-history-source="'+i+'" '+(s.url?'':'disabled aria-disabled="true"')+'>'+
+      '<article class="v35-history-source-card v674-source-card '+(s.url?'is-link':'is-disabled')+'">'+
         '<span class="v35-history-source-icon" aria-hidden="true">'+(s.url?'▶':'•')+'</span>'+
-        '<span><b>'+esc(s.title)+'</b><small>'+esc(s.note)+'</small></span>'+
-        '<em>'+(s.url?'Abrir':'Consulta')+'</em>'+
-      '</button>'
+        '<span class="v674-source-copy"><b>'+esc(s.title)+'</b><small class="v674-detail-copy">'+esc(s.note)+'</small></span>'+
+        '<div class="v674-source-actions">'+
+          '<button type="button" class="v674-details-button" data-v674-details aria-expanded="false"><span>Ver detalles</span><i>›</i></button>'+
+          (s.url?'<button type="button" class="v674-source-open" data-v35-history-source="'+i+'"><span>▶</span>Abrir</button>':'<span class="v674-source-disabled">Consulta</span>')+
+        '</div>'+
+      '</article>'
     ).join('')+'</div>'+
   '</section>';
 }
@@ -1356,7 +1359,7 @@ function historyYouthCards(){
   ).join('')+'</div>';
 }
 function historyDetailButton(){
-  return '<button type="button" class="v672-card-toggle" data-v672-history-toggle aria-expanded="true"><span>Ocultar detalle</span><i>⌃</i></button>';
+  return '<button type="button" class="v674-details-button" data-v674-details aria-expanded="false"><span>Ver detalles</span><i>›</i></button>';
 }
 function institutionalHistoryBlock(){
   return '<section class="v35-history-format v35-institutional-history">'+
@@ -2561,6 +2564,52 @@ function v354BindHistoryTabs(root){
     },true);
   });
 }
+function v674EnhanceDetailCards(scope){
+  const root=scope&&scope.querySelectorAll?scope:document;
+  const cards=[...root.querySelectorAll('.v35-history-page article')];
+  cards.forEach(card=>{
+    if(card.classList.contains('v674-source-card')){
+      card.classList.add('v674-detail-card');
+      return;
+    }
+    if(card.dataset.v674Enhanced==='1')return;
+
+    const details=[...card.querySelectorAll('p,.v672-card-detail')].filter(el=>
+      !el.closest('button') && String(el.textContent||'').trim().length>0
+    );
+    if(!details.length)return;
+
+    card.dataset.v674Enhanced='1';
+    card.classList.add('v674-detail-card');
+    details.forEach(el=>el.classList.add('v674-detail-copy'));
+
+    // Retire the older small detail button if it exists; keep date chips/buttons intact.
+    card.querySelectorAll('.v672-card-toggle').forEach(btn=>btn.remove());
+
+    if(!card.querySelector('[data-v674-details]')){
+      const btn=document.createElement('button');
+      btn.type='button';
+      btn.className='v674-details-button';
+      btn.setAttribute('data-v674-details','');
+      btn.setAttribute('aria-expanded','false');
+      btn.innerHTML='<span>Ver detalles</span><i>›</i>';
+      const host=card.querySelector('.v35-history-moment-content,.v35-champion-content')||card;
+      host.appendChild(btn);
+    }
+  });
+}
+function v674SetDetailState(card,expanded){
+  if(!card)return;
+  card.classList.toggle('v674-expanded',expanded);
+  card.querySelectorAll('[data-v674-details]').forEach(btn=>{
+    btn.setAttribute('aria-expanded',expanded?'true':'false');
+    const label=btn.querySelector('span');
+    const icon=btn.querySelector('i');
+    if(label)label.textContent=expanded?'Ocultar detalles':'Ver detalles';
+    if(icon)icon.textContent=expanded?'⌃':'›';
+  });
+}
+
 function renderHistory(){
   if(route()!=='history') return;
   const screen=document.querySelector('#screen');
@@ -2587,6 +2636,7 @@ function renderHistory(){
     if(activeTab==='Resumen')v358ScheduleSummaryRefresh();
     if(activeTab==='Finales')v367ApplyFinalsReference(historyRoot);
     v362LockHistoryHeader(historyRoot);
+    v674EnhanceDetailCards(historyRoot);
   });
 }
 function v367ApplyFinalsReference(root,attempt=0){
@@ -2632,6 +2682,7 @@ function rerenderContent(){
     if(activeTab==='Resumen')v358ScheduleSummaryRefresh();
     if(activeTab==='Finales'&&!activePanel?.querySelector('[data-v359-deferred="finals"]'))window.LJR_APPLY_HISTORY_FINALS_REFERENCE?.();
     v362LockHistoryHeader(root);
+    v674EnhanceDetailCards(root);
   });
 }
 function v351RefreshPanel(tab){
@@ -2737,6 +2788,14 @@ function onClick(e){
   if(season){e.preventDefault();e.stopPropagation();const idx=Number(season.dataset.v35Season||0);activeTab='Temporadas';rerenderContent();requestAnimationFrame(()=>{const cards=document.querySelectorAll('.v35-season-grid .v35-season-card');cards[idx]?.scrollIntoView({block:'center',behavior:'smooth'});});return;}
   const shareBtn=e.target.closest('[data-v35-share]');
   if(shareBtn){e.preventDefault();e.stopPropagation();share();return;}
+  const v674Detail=e.target.closest('[data-v674-details]');
+  if(v674Detail){
+    e.preventDefault();e.stopPropagation();e.stopImmediatePropagation();
+    const card=v674Detail.closest('article');
+    if(!card)return;
+    v674SetDetailState(card,!card.classList.contains('v674-expanded'));
+    return;
+  }
   const detailToggle=e.target.closest('[data-v672-history-toggle]');
   if(detailToggle){
     e.preventDefault();e.stopPropagation();e.stopImmediatePropagation();
@@ -2781,7 +2840,11 @@ function boot(){
   document.addEventListener('click',onClick,true);
   const screen=document.querySelector('#screen');
   if(screen){
-    new MutationObserver(()=>{if(route()==='history'&&!screen.querySelector('.v35-history-page'))requestAnimationFrame(renderHistory);}).observe(screen,{childList:true});
+    new MutationObserver(()=>{
+      if(route()!=='history')return;
+      if(!screen.querySelector('.v35-history-page')){requestAnimationFrame(renderHistory);return;}
+      requestAnimationFrame(()=>v674EnhanceDetailCards(screen));
+    }).observe(screen,{childList:true,subtree:true});
   }
 }
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot,{once:true});else boot();
