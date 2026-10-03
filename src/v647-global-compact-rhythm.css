@@ -85,3 +85,36 @@
     padding-bottom:132px!important;
   }
 }
+
+
+/* V647.1 — limpiar reservas heredadas de 118/120px en pantallas que ya usan
+   el clearance único de #screen. */
+@media (max-width:1023px){
+  html body[data-app-route="following"] #screen > .v414-favorites{
+    margin-bottom:0!important;
+  }
+
+  html body[data-app-route="search"] #screen > .v414-search-reference{
+    margin-bottom:0!important;
+  }
+
+  html body[data-app-route="players"] #screen > .v104-players{
+    padding-bottom:16px!important;
+  }
+
+  html body[data-app-route="recruitment"] #screen{
+    padding-bottom:calc(76px + env(safe-area-inset-bottom,0px))!important;
+  }
+  html body[data-app-route="recruitment"] #screen > .v190-recruit-page{
+    margin-bottom:0!important;
+  }
+
+  /* Formularios administrativos: el espacio de la barra ya vive en #screen. */
+  html body[data-app-route="cedulaBuilder"] #screen > .v60-tool-page.v64-page{
+    padding-bottom:16px!important;
+  }
+  html body[data-app-route="bracketBuilder"] #screen > .v60-tool-page.v64-page[data-v643="1"],
+  html body[data-app-route="bracketBuilder"] #screen > .v64-page[data-v643="1"]{
+    padding-bottom:16px!important;
+  }
+}
