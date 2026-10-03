@@ -1,0 +1,37 @@
+/* V609 — Más: no large empty tail after Comunidad.
+   Keep only the main Más page + Comunidad; old lower modules are removed/moved to Más herramientas. */
+@media(max-width:1023px){
+  body[data-app-route="more"] #screen{
+    min-height:0!important;
+    height:auto!important;
+    padding-bottom:0!important;
+  }
+
+  body[data-app-route="more"] .v19-more-page{
+    min-height:0!important;
+    height:auto!important;
+    margin-bottom:0!important;
+    padding-bottom:0!important;
+  }
+
+  body[data-app-route="more"] .v19-more-page > .v413-shell.v556-social-transparent{
+    margin-top:6px!important;
+    margin-bottom:calc(68px + env(safe-area-inset-bottom))!important;
+  }
+
+  /* Remove all obsolete content that used to appear after the Más background. */
+  body[data-app-route="more"] #v411-lower-experience,
+  body[data-app-route="more"] #v412-lower-sections,
+  body[data-app-route="more"] #safeMore,
+  body[data-app-route="more"] [data-v411-owner="more"],
+  body[data-app-route="more"] [data-v411-zone="more"],
+  body[data-app-route="more"] #v105-bottom[data-v105-route="more"]{
+    display:none!important;
+    height:0!important;
+    min-height:0!important;
+    max-height:0!important;
+    margin:0!important;
+    padding:0!important;
+    overflow:hidden!important;
+  }
+}
