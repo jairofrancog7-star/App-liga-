@@ -19,6 +19,7 @@ function shortCat(name,id){
 function apply(){
  if(!/^(discipline|disciplina|disciplineTool|v4-discipline)$/i.test(route()))return;
  const page=$('.v94-discipline-page');if(!page)return;
+ if(page.querySelector('.v655-discipline-controls'))return;
  let tabs=$('.v563-discipline-tabs',page);
  if(!tabs){
   const lead=$('.v94-lead',page);
