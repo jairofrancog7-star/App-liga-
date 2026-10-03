@@ -179,6 +179,13 @@
       cat:V655_CATS.some(x=>x[0]===cat)?cat:'all'
     };
   }
+  function setDisciplineType(type,page){
+    const next=V655_TYPES.some(x=>x[0]===type)?type:'all';
+    localStorage.setItem('v655-discipline-type',next);
+    // Keep the older discipline controller in sync so it cannot restore another tab.
+    localStorage.setItem('v563-discipline-view',next);
+    applyDisciplineFilters(page||document.querySelector('.v94-discipline-page'));
+  }
   function applyDisciplineFilters(page){
     if(!page)return;
     const state=filterState();
@@ -186,20 +193,52 @@
       const active=b.dataset.v655Type===state.type;
       b.classList.toggle('active',active);
       b.setAttribute('aria-selected',active?'true':'false');
+      b.setAttribute('aria-pressed',active?'true':'false');
     });
     page.querySelectorAll('[data-v655-cat]').forEach(b=>{
       const active=b.dataset.v655Cat===state.cat;
       b.classList.toggle('active',active);
       b.setAttribute('aria-selected',active?'true':'false');
+      b.setAttribute('aria-pressed',active?'true':'false');
     });
 
     let shown=0;
     page.querySelectorAll('.v94-discipline-row').forEach(row=>{
-      const hasCards=!!row.querySelector('.v94-yellow,.v94-red');
-      const hasSusp=!!row.querySelector('.v94-sanction')||/pend\./i.test(row.querySelector('.v94-total small')?.textContent||'');
+      const hasCards=row.dataset.v94HasCards==='1';
+      const hasSusp=row.dataset.v94HasSusp==='1';
       const typeOk=state.type==='all'||(state.type==='cards'&&hasCards)||(state.type==='suspensions'&&hasSusp);
       const catOk=state.cat==='all'||String(row.dataset.v94Cat||'')===String(state.cat);
       const show=typeOk&&catOk;
+
+      // In each tab show only the information that belongs to that tab.
+      row.querySelectorAll('.v94-yellow,.v94-red').forEach(tag=>{
+        tag.hidden=state.type==='suspensions';
+        tag.style.setProperty('display',state.type==='suspensions'?'none':'inline-flex','important');
+      });
+      row.querySelectorAll('.v94-sanction').forEach(tag=>{
+        tag.hidden=state.type==='cards';
+        tag.style.setProperty('display',state.type==='cards'?'none':'inline-flex','important');
+      });
+      const totalB=row.querySelector('.v94-total b');
+      const totalSmall=row.querySelector('.v94-total small');
+      if(totalB&&totalSmall){
+        const cardTotal=Number(row.dataset.v94CardTotal||0);
+        const pending=String(row.dataset.v94Pending||'').trim();
+        if(state.type==='cards'){
+          totalB.textContent=cardTotal||'—';
+          totalSmall.textContent='tarj.';
+        }else if(state.type==='suspensions'){
+          totalB.textContent=pending||'—';
+          totalSmall.textContent='pend.';
+        }else if(hasSusp&&pending){
+          totalB.textContent=pending;
+          totalSmall.textContent='pend.';
+        }else{
+          totalB.textContent=cardTotal||'—';
+          totalSmall.textContent='tarj.';
+        }
+      }
+
       row.hidden=!show;
       row.style.setProperty('display',show?'grid':'none','important');
       if(show)shown++;
@@ -237,21 +276,23 @@
   function bindDisciplineFilters(page){
     if(!page||page.dataset.v655FiltersBound==='1')return;
     page.dataset.v655FiltersBound='1';
+    // Capture phase makes the buttons reliable even if another legacy handler
+    // stops bubbling later in the page.
     page.addEventListener('click',e=>{
       const type=e.target.closest('[data-v655-type]');
       if(type&&page.contains(type)){
         e.preventDefault();e.stopPropagation();
-        localStorage.setItem('v655-discipline-type',type.dataset.v655Type||'all');
-        applyDisciplineFilters(page);
+        setDisciplineType(type.dataset.v655Type||'all',page);
         return;
       }
       const cat=e.target.closest('[data-v655-cat]');
       if(cat&&page.contains(cat)){
         e.preventDefault();e.stopPropagation();
         localStorage.setItem('v655-discipline-cat',cat.dataset.v655Cat||'all');
+        localStorage.setItem('v563-discipline-category',cat.dataset.v655Cat||'all');
         applyDisciplineFilters(page);
       }
-    });
+    },true);
     applyDisciplineFilters(page);
   }
   function filterControlsHtml(){
@@ -277,7 +318,7 @@
     if(reds)tags.push('<span class="v94-card-tag v94-red">Rojas '+reds+'</span>');
     if(item.suspension?.punishment)tags.push('<span class="v94-card-tag v94-sanction">'+esc(item.suspension.punishment)+'</span>');
 
-    return '<article class="v94-discipline-row" data-v94-cat="'+esc(item.catId)+'" data-v94-category="'+esc(item.category)+'">'+
+    return '<article class="v94-discipline-row" data-v94-cat="'+esc(item.catId)+'" data-v94-category="'+esc(item.category)+'" data-v94-has-cards="'+(item.cards.length?'1':'0')+'" data-v94-has-susp="'+(item.suspension?'1':'0')+'" data-v94-card-total="'+esc(total)+'" data-v94-pending="'+esc(item.suspension?.pending||'')+'">'+
       '<span class="v94-rank">'+(index+1)+'</span>'+
       '<span class="v94-logo-wrap v576-player-main">'+disciplineAvatar(data,item)+'</span>'+
       '<span class="v94-person"><b>'+esc(item.player)+'</b><small>'+esc(item.team)+' · '+esc(item.category)+'</small><span class="v94-tags">'+tags.join('')+'</span></span>'+
