@@ -380,8 +380,11 @@ function cedulaCategoryLogo(catId){return CAT_LOGOS_V630[String(catId)]||'./asse
 function cedulaLead(r){
   const logo=cedulaCategoryLogo(r.cat);
   return '<span class="v66-cedula-side">'+
-    '<span class="v66-round-badge"><small>JORNADA</small><b>'+esc(r.round||'—')+'</b></span>'+
-    '<span class="v66-category-mark"><img src="'+esc(logo)+'" alt="'+esc(r.category||'Categoría')+'" loading="lazy" decoding="async"></span>'+
+    '<span class="v66-round-badge">'+
+      '<small>JORNADA</small>'+
+      '<b>'+esc(r.round||'—')+'</b>'+
+      '<span class="v66-category-mark"><img src="'+esc(logo)+'" alt="'+esc(r.category||'Categoría')+'" loading="lazy" decoding="async"></span>'+
+    '</span>'+
   '</span>';
 }
 function cedulasMarkup(){
