@@ -1,0 +1,211 @@
+/* V658 — TELEVISADOS: ancho móvil completo y tipografía legible.
+   Se carga al final para ganar a límites globales y al parche V542. */
+@media (max-width:700px){
+  html body.v440-televisados-open #screen{
+    width:100vw!important;
+    max-width:100vw!important;
+    margin:0!important;
+    padding-left:0!important;
+    padding-right:0!important;
+    overflow-x:hidden!important;
+  }
+
+  html body.v440-televisados-open #screen>.v440-page-route{
+    position:relative!important;
+    left:50%!important;
+    width:100vw!important;
+    max-width:100vw!important;
+    margin-left:-50vw!important;
+    margin-right:-50vw!important;
+    padding-left:0!important;
+    padding-right:0!important;
+    box-sizing:border-box!important;
+  }
+
+  html body.v440-televisados-open .v440-telecast{
+    width:100vw!important;
+    max-width:100vw!important;
+    margin:0!important;
+    border-left:0!important;
+    border-right:0!important;
+    border-radius:0!important;
+    box-sizing:border-box!important;
+  }
+
+  html body.v440-televisados-open .v440-tv-pagehead{
+    width:100%!important;
+    min-height:78px!important;
+    padding:12px 12px!important;
+    gap:12px!important;
+    box-sizing:border-box!important;
+  }
+
+  html body.v440-televisados-open .v440-tv-backmark{
+    width:30px!important;
+    height:30px!important;
+    flex:0 0 30px!important;
+    font-size:30px!important;
+  }
+
+  html body.v440-televisados-open .v440-tv-pagehead>div{
+    min-width:0!important;
+    flex:1 1 auto!important;
+  }
+
+  html body.v440-televisados-open .v440-tv-pagehead h2{
+    font-size:22px!important;
+    line-height:1.05!important;
+    letter-spacing:-.01em!important;
+  }
+
+  html body.v440-televisados-open .v440-tv-pagehead p{
+    margin-top:5px!important;
+    font-size:10.5px!important;
+    line-height:1.3!important;
+  }
+
+  html body.v440-televisados-open .v440-tv-tabs{
+    display:grid!important;
+    grid-template-columns:repeat(6,minmax(0,1fr))!important;
+    width:100%!important;
+    overflow:visible!important;
+    padding:0!important;
+    box-sizing:border-box!important;
+  }
+
+  html body.v440-televisados-open .v440-tv-tabs button{
+    width:100%!important;
+    min-width:0!important;
+    height:48px!important;
+    padding:0 2px!important;
+    font-size:8.8px!important;
+    line-height:1.08!important;
+    white-space:normal!important;
+    text-align:center!important;
+    letter-spacing:.015em!important;
+  }
+
+  html body.v440-televisados-open .v440-tv-tabs button.is-active:after{
+    left:8px!important;
+    right:8px!important;
+    height:3px!important;
+  }
+
+  html body.v440-televisados-open .v440-tv-groups{
+    width:100%!important;
+    padding:10px 8px 12px!important;
+    box-sizing:border-box!important;
+  }
+
+  html body.v440-televisados-open .v440-tv-empty{
+    width:100%!important;
+    min-height:150px!important;
+    margin:0!important;
+    padding:22px 14px!important;
+    box-sizing:border-box!important;
+    border-radius:12px!important;
+  }
+
+  html body.v440-televisados-open .v440-tv-empty b{
+    font-size:12.5px!important;
+    line-height:1.2!important;
+  }
+
+  html body.v440-televisados-open .v440-tv-empty span{
+    max-width:340px!important;
+    margin-top:8px!important;
+    font-size:9.5px!important;
+    line-height:1.4!important;
+  }
+
+  html body.v440-televisados-open .v440-tv-league{
+    width:100%!important;
+    margin-left:0!important;
+    margin-right:0!important;
+    border-radius:12px!important;
+    box-sizing:border-box!important;
+  }
+
+  html body.v440-televisados-open .v440-tv-league>header{
+    height:38px!important;
+    padding:0 10px!important;
+  }
+
+  html body.v440-televisados-open .v440-tv-league>header strong{
+    font-size:10px!important;
+  }
+
+  html body.v440-televisados-open .v440-tv-cup{
+    font-size:10px!important;
+  }
+
+  html body.v440-televisados-open .v440-tv-match{
+    width:100%!important;
+    min-height:84px!important;
+    grid-template-columns:31px minmax(0,1fr) 66px minmax(0,1fr)!important;
+    gap:7px!important;
+    padding:10px 8px!important;
+    box-sizing:border-box!important;
+  }
+
+  html body.v440-televisados-open .v440-tv-icon{
+    width:26px!important;
+    height:26px!important;
+  }
+
+  html body.v440-televisados-open .v440-tv-icon b{
+    font-size:7.5px!important;
+  }
+
+  html body.v440-televisados-open .v440-tv-name{
+    font-size:10px!important;
+    line-height:1.18!important;
+  }
+
+  html body.v440-televisados-open .v440-tv-badge{
+    width:38px!important;
+    height:38px!important;
+    flex-basis:38px!important;
+  }
+
+  html body.v440-televisados-open .v440-tv-badge img{
+    width:33px!important;
+    height:33px!important;
+  }
+
+  html body.v440-televisados-open .v440-tv-center strong{
+    font-size:12px!important;
+  }
+
+  html body.v440-televisados-open .v440-tv-center small{
+    margin-top:5px!important;
+    font-size:7.5px!important;
+  }
+
+  html body.v440-televisados-open .v440-page-note{
+    width:calc(100vw - 16px)!important;
+    max-width:none!important;
+    margin:10px 8px 0!important;
+    padding:15px 14px!important;
+    box-sizing:border-box!important;
+    border-radius:12px!important;
+  }
+
+  html body.v440-televisados-open .v440-page-note b{
+    font-size:12px!important;
+    line-height:1.15!important;
+  }
+
+  html body.v440-televisados-open .v440-page-note span{
+    margin-top:6px!important;
+    font-size:10px!important;
+    line-height:1.45!important;
+  }
+}
+
+@media (max-width:380px){
+  html body.v440-televisados-open .v440-tv-pagehead h2{font-size:20px!important}
+  html body.v440-televisados-open .v440-tv-pagehead p{font-size:9.7px!important}
+  html body.v440-televisados-open .v440-tv-tabs button{font-size:8px!important;padding:0 1px!important}
+  html body.v440-televisados-open .v440-tv-name{font-size:9.3px!important}
+}
