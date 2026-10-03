@@ -5,19 +5,6 @@ const STARTUP_MS = 720;
 const STARTUP_FADE_MS = 180;
 
 const ROOT_ROUTES = new Set(['home','competition','video','fantasy','more']);
-const STANDARD_HEADER_ROUTES = new Set(['home','competition','more']);
-/* Restauración del comportamiento original de scroll de las rutas raíz:
-   estas tres cabeceras permanecen completas/estables mientras el documento
-   hace el scroll vertical normal, como en la implementación histórica. */
-const STABLE_ROOT_HEADER_ROUTES = new Set(['home','competition','more']);
-const FULLSCREEN_HEADER_ROUTES = new Set([
-  'video',
-  'fantasy','fantasyTeam','fantasyLeagues','fantasyAccess',
-  'history','teams','teamDetail','playerCompare','rankings','following','stats',
-  'notifications','safe-performance','safe-about',
-  'predictor','predictorSix','quizArena','moreLess','moreLessHub','hospitality',
-  'match'
-]);
 const HEADER_TITLES = {
   competition:'Competición',
   more:'Más',
@@ -31,13 +18,8 @@ const HEADER_TITLES = {
 };
 
 function routeFromLocation(){
-  const route=(location.hash.replace(/^#\/?/,'') || 'home').split('?')[0];
+  const route=(location.hash.replace('#/','').split('?')[0] || 'home');
   return route==='quiz' ? 'quizArena' : route;
-}
-function headerModeFor(route){
-  if(FULLSCREEN_HEADER_ROUTES.has(route)) return 'fullscreen';
-  if(STANDARD_HEADER_ROUTES.has(route)) return 'standard';
-  return 'detail';
 }
 
 function installBrandHeader(){
@@ -59,17 +41,11 @@ function syncRouteLayout(){
   document.body.dataset.appRoute=route;
   if(!screen) return;
   if(!topbar) return;
-  const mode=headerModeFor(route);
-  document.body.dataset.headerMode=mode;
   document.body.classList.toggle('v10-home-route',route==='home');
-  document.body.classList.toggle('v10-root-route',mode==='standard');
-  document.body.classList.toggle('v10-detail-route',mode==='detail');
-  document.body.classList.toggle('v10-standard-header',mode==='standard');
-  document.body.classList.toggle('v10-detail-header',mode==='detail');
-  document.body.classList.toggle('v10-fullscreen-route',mode==='fullscreen');
+  document.body.classList.toggle('v10-root-route',ROOT_ROUTES.has(route));
+  document.body.classList.toggle('v10-detail-route',!ROOT_ROUTES.has(route));
 
   topbar.dataset.title=HEADER_TITLES[route]||'';
-  topbar.dataset.headerMode=mode;
   topbar.classList.toggle('has-route-title',Boolean(HEADER_TITLES[route]));
 
   // Quiz Arena owns its own header/back control. The shared global topbar must
@@ -94,66 +70,15 @@ function syncRouteLayout(){
 
   const back=document.querySelector('#backButton');
   if(back){
-    const showBack=mode==='detail';
+    const showBack=!ROOT_ROUTES.has(route);
     back.classList.toggle('is-hidden',!showBack);
   }
-}
-
-let v10HeaderScrollRaf=0;
-let v10HeaderLastY=0;
-let v10HeaderCollapsed=false;
-
-function syncHeaderMotion(force=false){
-  v10HeaderScrollRaf=0;
-  const route=routeFromLocation();
-  const mode=document.body.dataset.headerMode||headerModeFor(route);
-
-  /* Comportamiento histórico aprobado: Inicio, Competición y Más conservan
-     su cabecera completa mientras el documento sigue desplazándose. */
-  if(mode==='fullscreen'||STABLE_ROOT_HEADER_ROUTES.has(route)){
-    v10HeaderCollapsed=false;
-    document.body.classList.remove('v10-header-collapsed');
-    v10HeaderLastY=window.scrollY||document.documentElement.scrollTop||0;
-    return;
-  }
-
-  const y=Math.max(0,window.scrollY||document.documentElement.scrollTop||0);
-  const delta=y-v10HeaderLastY;
-  let next=v10HeaderCollapsed;
-
-  if(y<=18) next=false;
-  else if(force) next=y>48;
-  else if(delta>4&&y>48) next=true;
-  else if(delta<-4) next=false;
-
-  if(next!==v10HeaderCollapsed){
-    v10HeaderCollapsed=next;
-    document.body.classList.toggle('v10-header-collapsed',next);
-  }
-  v10HeaderLastY=y;
-}
-function scheduleHeaderMotion(force=false){
-  if(v10HeaderScrollRaf)return;
-  v10HeaderScrollRaf=window.requestAnimationFrame(()=>syncHeaderMotion(force));
 }
 
 function watchRouteLayout(){
   const screen=document.querySelector('#screen');
   syncRouteLayout();
-  syncHeaderMotion(true);
-
-  window.addEventListener('hashchange',()=>{
-    window.requestAnimationFrame(()=>{
-      syncRouteLayout();
-      v10HeaderLastY=0;
-      v10HeaderCollapsed=false;
-      document.body.classList.remove('v10-header-collapsed');
-      scheduleHeaderMotion(true);
-    });
-  });
-
-  window.addEventListener('scroll',()=>scheduleHeaderMotion(false),{passive:true});
-
+  window.addEventListener('hashchange',()=>window.requestAnimationFrame(syncRouteLayout));
   if(screen){
     const observer=new MutationObserver(()=>window.requestAnimationFrame(syncRouteLayout));
     observer.observe(screen,{childList:true,subtree:false});
