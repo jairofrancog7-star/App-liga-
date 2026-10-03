@@ -6314,7 +6314,29 @@ document.addEventListener('click',e=>{
 
 function render(){
   const editorRoutes=new Set(['publicationCenter','ligaControl','adminFut','jrControl','recruitment','refereeOffline','credentialBuilder','cedulaBuilder','agendaBuilder','motionHub','suspensionTool','bracketBuilder','disciplineTool','scheduleChanges']);
-  if(editorRoutes.has(state.route)&&!window.LJR_MEDIA?.admin){state.route='leagueTools';history.replaceState(null,'','#/leagueTools')}
+  if(editorRoutes.has(state.route)&&!window.LJR_MEDIA?.admin){
+    const media=window.LJR_MEDIA;
+    let saved=false;
+    try{
+      saved=!!(media?.hasSession?.()||media?.deviceRemembered?.()||localStorage.getItem('liga-media-session')||sessionStorage.getItem('liga-media-session'));
+    }catch(_){}
+    if(saved){
+      /* V623: no expulsar al usuario de Cédulas/Credenciales/JR Control mientras
+         la sesión recordada se está restaurando. La API sigue validando el token. */
+      media?.restoreAdminSession?.().then(a=>{
+        if(a){window.dispatchEvent(new CustomEvent('liga:admin-ready',{detail:{route:state.route}}));return}
+        if(editorRoutes.has(state.route)){
+          state.route='leagueTools';
+          history.replaceState(null,'','#/leagueTools');
+          render();
+          media?.login?.();
+        }
+      }).catch(()=>{});
+    }else{
+      state.route='leagueTools';
+      history.replaceState(null,'','#/leagueTools');
+    }
+  }
 
   if(state.route==='quiz'){
     state.route='quizArena';
