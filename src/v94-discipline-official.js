@@ -158,6 +158,116 @@
       return bp-ap||bc-ac||a.player.localeCompare(b.player,'es');
     });
   }
+  const V655_TYPES=[
+    ['all','Todo'],
+    ['cards','Tarjetas'],
+    ['suspensions','Castigados']
+  ];
+  const V655_CATS=[
+    ['all','Todas'],
+    ['3','Primera Fuerza'],
+    ['5','Intermedia'],
+    ['4','Segunda Fuerza'],
+    ['2','Veteranos 35+'],
+    ['1','Veteranos 50+']
+  ];
+  function filterState(){
+    const type=localStorage.getItem('v655-discipline-type')||'all';
+    const cat=localStorage.getItem('v655-discipline-cat')||'all';
+    return {
+      type:V655_TYPES.some(x=>x[0]===type)?type:'all',
+      cat:V655_CATS.some(x=>x[0]===cat)?cat:'all'
+    };
+  }
+  function applyDisciplineFilters(page){
+    if(!page)return;
+    const state=filterState();
+    page.querySelectorAll('[data-v655-type]').forEach(b=>{
+      const active=b.dataset.v655Type===state.type;
+      b.classList.toggle('active',active);
+      b.setAttribute('aria-selected',active?'true':'false');
+    });
+    page.querySelectorAll('[data-v655-cat]').forEach(b=>{
+      const active=b.dataset.v655Cat===state.cat;
+      b.classList.toggle('active',active);
+      b.setAttribute('aria-selected',active?'true':'false');
+    });
+
+    let shown=0;
+    page.querySelectorAll('.v94-discipline-row').forEach(row=>{
+      const hasCards=!!row.querySelector('.v94-yellow,.v94-red');
+      const hasSusp=!!row.querySelector('.v94-sanction')||/pend\./i.test(row.querySelector('.v94-total small')?.textContent||'');
+      const typeOk=state.type==='all'||(state.type==='cards'&&hasCards)||(state.type==='suspensions'&&hasSusp);
+      const catOk=state.cat==='all'||String(row.dataset.v94Cat||'')===String(state.cat);
+      const show=typeOk&&catOk;
+      row.hidden=!show;
+      row.style.setProperty('display',show?'grid':'none','important');
+      if(show)shown++;
+    });
+
+    let empty=page.querySelector('.v655-filter-empty');
+    if(!shown){
+      if(!empty){
+        empty=document.createElement('div');
+        empty.className='v94-empty v655-filter-empty';
+        empty.innerHTML='<b>Sin registros para este filtro</b><span>Prueba otra categoría o cambia entre Todo, Tarjetas y Castigados.</span>';
+        const list=page.querySelector('.v94-discipline-list');
+        list?.insertAdjacentElement('afterend',empty);
+      }
+      empty.hidden=false;
+      empty.style.setProperty('display','block','important');
+    }else if(empty){
+      empty.hidden=true;
+      empty.style.setProperty('display','none','important');
+    }
+
+    const h=page.querySelector('h1'),lead=page.querySelector('.v94-lead');
+    const catName=V655_CATS.find(x=>x[0]===state.cat)?.[1]||'Todas';
+    if(state.type==='cards'){
+      if(h)h.textContent='Tarjetas';
+      if(lead)lead.textContent='Tarjetas amarillas y rojas · '+catName+'.';
+    }else if(state.type==='suspensions'){
+      if(h)h.textContent='Castigados';
+      if(lead)lead.textContent='Sanciones y partidos pendientes · '+catName+'.';
+    }else{
+      if(h)h.textContent='Disciplina';
+      if(lead)lead.textContent='Tarjetas y castigos oficiales · '+catName+'.';
+    }
+  }
+  function bindDisciplineFilters(page){
+    if(!page||page.dataset.v655FiltersBound==='1')return;
+    page.dataset.v655FiltersBound='1';
+    page.addEventListener('click',e=>{
+      const type=e.target.closest('[data-v655-type]');
+      if(type&&page.contains(type)){
+        e.preventDefault();e.stopPropagation();
+        localStorage.setItem('v655-discipline-type',type.dataset.v655Type||'all');
+        applyDisciplineFilters(page);
+        return;
+      }
+      const cat=e.target.closest('[data-v655-cat]');
+      if(cat&&page.contains(cat)){
+        e.preventDefault();e.stopPropagation();
+        localStorage.setItem('v655-discipline-cat',cat.dataset.v655Cat||'all');
+        applyDisciplineFilters(page);
+      }
+    });
+    applyDisciplineFilters(page);
+  }
+  function filterControlsHtml(){
+    return '<div class="v655-discipline-controls">'+
+      '<div class="v563-discipline-tabs v655-discipline-types" role="tablist" aria-label="Tipo de disciplina">'+
+        V655_TYPES.map(([id,label])=>'<button type="button" data-v655-type="'+id+'" role="tab">'+label+'</button>').join('')+
+      '</div>'+
+      '<div class="v652-discipline-cats v655-discipline-cats">'+
+        '<div class="v652-cat-head"><b>Ver por categoría</b><small>Selecciona una categoría</small></div>'+
+        '<div class="v652-cat-rail" role="tablist" aria-label="Categoría">'+
+          V655_CATS.map(([id,label])=>'<button type="button" data-v655-cat="'+id+'" role="tab">'+label+'</button>').join('')+
+        '</div>'+
+      '</div>'+
+    '</div>';
+  }
+
   function rowHtml(data,item,index){
     const reds=item.cards.filter(x=>/ROJ/i.test(norm(x.type))).reduce((n,x)=>n+(Number(x.total)||0),0);
     const yellows=item.cards.filter(x=>/AMAR/i.test(norm(x.type))).reduce((n,x)=>n+(Number(x.total)||0),0);
@@ -373,6 +483,7 @@
         '<div class="v94-kicker">COMPETICIÓN</div>'+
         '<h1>Disciplina</h1>'+
         '<p class="v94-lead">Tarjetas amarillas, tarjetas rojas y castigos publicados oficialmente para todas las categorías.</p>'+
+        filterControlsHtml()+
         '<div class="v94-source"><span>Datos oficiales</span><small>Actualizado '+esc((data.captured_at_utc||'').replace('T',' ').replace('Z',' UTC'))+'</small></div>'+
         (items.length
           ? '<div class="v94-discipline-list">'+items.map((x,i)=>rowHtml(data,x,i)).join('')+'</div>'+
@@ -385,6 +496,8 @@
       '</section>';
 
     document.body.classList.add('v94-discipline-official');
+    const page=screen.querySelector('.v94-discipline-page');
+    bindDisciplineFilters(page);
     bindPng(data,items,screen);
     compactDisciplineTail();
     requestAnimationFrame(()=>compactDisciplineTail());
