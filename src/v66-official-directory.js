@@ -382,7 +382,13 @@ function cedulaRoundLabel(value){
   return 'J'+(v||'—');
 }
 function cedulaLead(r){
-  return '<span class="v66-cedula-side"><span class="v66-round-badge">'+esc(cedulaRoundLabel(r.round))+'</span></span>';
+  const logo=cedulaCategoryLogo(r.cat);
+  return '<span class="v66-cedula-side">'+
+    '<span class="v66-round-badge">'+
+      '<b class="v66-round-text">'+esc(cedulaRoundLabel(r.round))+'</b>'+
+      '<span class="v66-category-mark"><img src="'+esc(logo)+'" alt="'+esc(r.category||'Categoría')+'" loading="eager" decoding="async"></span>'+
+    '</span>'+
+  '</span>';
 }
 function cedulaSort(a,b){
   const ca=CAT_ORDER.indexOf(String(a.cat)),cb=CAT_ORDER.indexOf(String(b.cat));
@@ -459,6 +465,10 @@ function goCedulaBuilder(){
   if(window.LJR_MAIN_ROUTE?.go){window.LJR_MAIN_ROUTE.go('cedulaBuilder');return}
   location.hash='#/cedulaBuilder';
 }
+function goCedulaDetail(){
+  if(window.LJR_MAIN_ROUTE?.go){window.LJR_MAIN_ROUTE.go('cedulaDetail');return}
+  location.hash='#/cedulaDetail';
+}
 function renderCedulas(){
   if(route()!=='cedulas')return;
   const screen=document.querySelector('#screen');if(!screen)return;
@@ -498,8 +508,10 @@ function openOfficialCedula(b,e){
   localStorage.setItem('v66-cedula-field',b.dataset.v66CedulaField||'');
   localStorage.setItem('v66-cedula-round',b.dataset.v66CedulaRound||'');
   localStorage.setItem('v66-cedula-source','official-directory');
-  localStorage.setItem('v66-cedula-autogenerate','1');
-  goCedulaBuilder();
+  localStorage.removeItem('v66-cedula-autogenerate');
+  /* V634 — tocar una fila siempre abre primero la cédula seleccionada.
+     El generador queda disponible desde la propia cédula, sin bloquear la consulta. */
+  goCedulaDetail();
 }
 /* Delegación robusta: mantiene funcionales todas las filas aunque otra capa
    de la app vuelva a pintar la lista después de cargar los datos. */
