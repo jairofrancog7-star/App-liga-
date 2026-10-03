@@ -1,0 +1,60 @@
+/* V670 — restauración puntual solicitada (Más / Inicio / Competición)
+   1) Más conserva la página completa y puede desplazarse hasta el último bloque.
+   2) Se eliminan las flechas pequeñas añadidas artificialmente a las filas de Más.
+   3) Inicio y Competición recuperan el scroll vertical normal sin convertir #app/#screen
+      en contenedores internos que corten el sticky ya aprobado. */
+
+@media (max-width:1023px){
+  html body[data-app-route="more"],
+  html body[data-app-route="home"],
+  html body[data-app-route="competition"]{
+    overflow-x:hidden!important;
+    overflow-y:auto!important;
+    min-height:100dvh!important;
+    height:auto!important;
+    -webkit-overflow-scrolling:touch!important;
+  }
+
+  html body[data-app-route="more"] #app,
+  html body[data-app-route="more"] .app-shell,
+  html body[data-app-route="more"] #screen,
+  html body[data-app-route="home"] #app,
+  html body[data-app-route="home"] .app-shell,
+  html body[data-app-route="home"] #screen,
+  html body[data-app-route="competition"] #app,
+  html body[data-app-route="competition"] .app-shell,
+  html body[data-app-route="competition"] #screen{
+    height:auto!important;
+    max-height:none!important;
+    overflow-y:visible!important;
+  }
+
+  /* Más: no recortar los bloques inferiores (Gaming, Comparar, Evento, Explorar). */
+  html body[data-app-route="more"] #screen{
+    min-height:0!important;
+    padding-bottom:calc(84px + env(safe-area-inset-bottom,0px))!important;
+  }
+
+  html body[data-app-route="more"] .v19-more-page{
+    height:auto!important;
+    min-height:0!important;
+    overflow:visible!important;
+  }
+
+  /* Las flechas › no pertenecían al diseño original. */
+  html body[data-app-route="more"] .v19-more-item::after{
+    content:none!important;
+    display:none!important;
+    visibility:hidden!important;
+    opacity:0!important;
+  }
+}
+
+/* En móvil pequeño se reafirma el mismo contenedor de scroll para Competición.
+   Las posiciones sticky/trofeo/tabs siguen viniendo de v637, sin rediseñarlas. */
+@media (max-width:520px){
+  html body[data-app-route="competition"] .v12-fixtures-reference{
+    overflow-x:visible!important;
+    overflow-y:visible!important;
+  }
+}
