@@ -186,3 +186,31 @@ html body #screen :is(
   transform:none!important;
   clip-path:none!important;
 }
+
+
+/* V647 — PLAYER DETAIL: FOTOS RELACIONADAS RELLENAN EL CÍRCULO */
+body.v379-player-profile-active .v379-related-avatar.v576-has-photo{
+  overflow:hidden!important;
+  border-radius:50%!important;
+  padding:0!important;
+  background:#07105d!important;
+}
+body.v379-player-profile-active .v379-related-avatar.v576-has-photo>img{
+  position:static!important;
+  inset:auto!important;
+  width:100%!important;
+  height:100%!important;
+  min-width:100%!important;
+  min-height:100%!important;
+  max-width:none!important;
+  max-height:none!important;
+  margin:0!important;
+  padding:0!important;
+  display:block!important;
+  object-fit:cover!important;
+  object-position:center 30%!important;
+  transform:scale(1.22)!important;
+  transform-origin:center 35%!important;
+  border-radius:50%!important;
+  clip-path:circle(50% at 50% 50%)!important;
+}
