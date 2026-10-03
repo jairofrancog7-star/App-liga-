@@ -2,7 +2,6 @@
    La autorización se resuelve al tocar el cuadro: sesión recordada => abre directo;
    sin sesión => abre el acceso de Administración. Nunca se ocultan ni se vuelven inertes. */
 body .v612-admin-only{
-  display:flex!important;
   visibility:visible!important;
   opacity:1!important;
   pointer-events:auto!important;
