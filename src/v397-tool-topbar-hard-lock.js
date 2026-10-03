@@ -174,7 +174,10 @@
     }
 
     const small=matchMedia('(max-width:390px)').matches;
-    const h=reference?'clamp(82px,21.68vw,90px)':(small?'40px':'42px');
+    const leagueToolsCompact=route==='leagueTools'||bodyRoute==='leagueTools';
+    const h=reference
+      ? (leagueToolsCompact?(small?'58px':'62px'):'clamp(82px,21.68vw,90px)')
+      : (small?'40px':'42px');
 
     setImp(topbar,'height',h);
     setImp(topbar,'min-height',h);
