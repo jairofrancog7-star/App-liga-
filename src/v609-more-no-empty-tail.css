@@ -35,3 +35,28 @@
     overflow:hidden!important;
   }
 }
+
+/* V610 hard lock: anything injected after the real Más page stays invisible.
+   Comunidad is moved inside .v19-more-page by V608, so the bottom never flashes. */
+@media(max-width:1023px){
+  body[data-app-route="more"] #screen > .v19-more-page ~ *{
+    display:none!important;
+    visibility:hidden!important;
+    opacity:0!important;
+    pointer-events:none!important;
+    height:0!important;
+    min-height:0!important;
+    max-height:0!important;
+    margin:0!important;
+    padding:0!important;
+    border:0!important;
+    overflow:hidden!important;
+    animation:none!important;
+    transition:none!important;
+  }
+  body[data-app-route="more"] [data-v610-hidden="1"]{
+    display:none!important;
+    animation:none!important;
+    transition:none!important;
+  }
+}
