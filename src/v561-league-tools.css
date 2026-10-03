@@ -1214,3 +1214,70 @@ html body[data-app-route="moments"] .v26-moments-page{
   background:#07106f!important;
 }
 /* /V626 */
+
+
+/* V627 — RESTORE MOMENTOS SOFT FADE
+   Restaura el difuminado suave que sí gustó, pero SIN la franja/línea negra.
+   Solo se desvanece la propia imagen V621 hacia el azul de la página. */
+html body[data-app-route="moments"] .v26-moments-sticky{
+  background-color:#07106f!important;
+  background-image:none!important;
+  border:0!important;
+  border-bottom:0!important;
+  box-shadow:none!important;
+}
+
+html body[data-app-route="moments"] .v26-moments-page{
+  background:#07106f!important;
+}
+
+/* Sin overlays que puedan formar una línea oscura. */
+html body[data-app-route="moments"] .v26-moments-sticky::before,
+html body[data-app-route="moments"] .v26-moments-sticky::after{
+  content:none!important;
+  display:none!important;
+  background:none!important;
+  box-shadow:none!important;
+  border:0!important;
+}
+
+/* Volver a poner solamente el difuminado natural de la imagen. */
+html body[data-app-route="moments"] .v26-moments-sticky .v621-moments-bg{
+  display:block!important;
+  opacity:1!important;
+  visibility:visible!important;
+  filter:none!important;
+  -webkit-mask-image:linear-gradient(
+    to bottom,
+    #000 0%,
+    #000 58%,
+    rgba(0,0,0,.96) 68%,
+    rgba(0,0,0,.82) 76%,
+    rgba(0,0,0,.58) 84%,
+    rgba(0,0,0,.30) 92%,
+    rgba(0,0,0,0) 100%
+  )!important;
+  mask-image:linear-gradient(
+    to bottom,
+    #000 0%,
+    #000 58%,
+    rgba(0,0,0,.96) 68%,
+    rgba(0,0,0,.82) 76%,
+    rgba(0,0,0,.58) 84%,
+    rgba(0,0,0,.30) 92%,
+    rgba(0,0,0,0) 100%
+  )!important;
+  -webkit-mask-size:100% 100%!important;
+  mask-size:100% 100%!important;
+  -webkit-mask-repeat:no-repeat!important;
+  mask-repeat:no-repeat!important;
+}
+
+/* Texto y flecha intactos por encima. */
+html body[data-app-route="moments"] .v26-moments-sticky .v561-moments-title{
+  z-index:4!important;
+}
+html body[data-app-route="moments"] .v26-moments-sticky .v26-moments-sticky-back{
+  z-index:5!important;
+}
+/* /V627 */
