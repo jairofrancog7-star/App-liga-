@@ -875,7 +875,13 @@ function canonicalHistoricName(name){
     'aldama fc':'Aldama FC',
     'san antonio de r':'San Antonio de Romerillo',
     'atletico sj':'Atlético San Julián',
-    'a san julian':'Atlético San Julián'
+    'a san julian':'Atlético San Julián',
+    'dinamo':'Dynamo',
+    'herbalife fc':'Herbalife',
+    'atletico centeno':'A. Centeno',
+    'a centeno':'A. Centeno',
+    'secc xiv':'Sección XIV',
+    'deportivo toros':'Toros'
   };
   return aliases[k]||String(name||'').trim();
 }
@@ -901,10 +907,19 @@ const historicalTeamEras=[
   {period:'2013',category:'Segunda Fuerza · tabla publicada',teams:['San José de la Montaña','Real Cerrito de Gasca','DHP','San Juan FC','Tavera','Morales','La Río Grande','Oklahoma','Salvajes','San José de Allende','Novatos','Deportivo Aldama','Unión Allende','Osasuna','Continental','La Pandilla de Rancho V.']},
   {period:'2013',category:'Primera Fuerza · final y tercer lugar documentados',teams:['Juventus','Olímpicos','Chelsea','PSV']},
   {period:'2013 · rol 30 nov–1 dic',category:'Veteranos y Primera Fuerza',teams:['UNAM','Sección XIV','Boavista','Barcelona','Cuenda','Guadalajara','Picosos','Hermanos','Magisterio','La Esperanza','Aldama','Dynamo','Juventus','PSV-Eindhoven','Olímpicos de Pozos','Chelsea','Tavera','Morales']},
+  {period:'24–25 ago 2013 · rol aportado',category:'Veteranos',teams:['UNAM','Barcelona','Sección XIV','Guadalajara','Boavista','Hermanos','Cuenda','La Esperanza','Picosos','Dynamo','Magisterio','Aldama']},
+  {period:'24–25 ago 2013 · rol aportado',category:'Primera Fuerza',teams:['Linces','Jaralillo','PSV','Mazacotes','Terrícolas','La Esperanza','Cerrito de Gasca','Juventus','Chelsea','San Antonio','La Pandilla','Olímpicos','A. Centeno','Hermanos','Abejas','Boavista']},
+  {period:'24–25 ago 2013 · rol aportado',category:'Intermedia',teams:['Dulces Nombres','Populares','Deportivo Cerritos','Puros Cuates','El Alto','La Cuadrilla','Malvinas','Atlas','Manchester','Birds Eye','Barza','San Antonio Jr.','Deportivo Pozos','Galeana','Halcones de Cuenda','Valencia']},
+  {period:'24–25 ago 2013 · rol aportado',category:'Segunda Fuerza',teams:['Osasuna','Morales','Toros','Tavera','Continental','Río Grande','Oklahoma','Novatos','San José de la Montaña','Real Cerrito de Gasca','Salvajes','San José de Allende','DHP','Unión Allende','San Juan FC','Aldama FC']},
+  {period:'2013 · tablas J18/J24/J26 aportadas',category:'Intermedia',teams:['Birds Eye','Puros Cuates','Populares','Valencia','Dulces Nombres','La Cuadrilla','El Alto','San Antonio Jr.','Barza','Malvinas','Halcones de Cuenda','Atlas','Deportivo Pozos','Cerritos de Cuenda','Atlético Galeana','Manchester']},
   {period:'2014 · Jornada 11',category:'Primera Fuerza',teams:['Juventus','La Esperanza','Chelsea','Hermanos','Boavista','Abejas','PSV','Linces','Olímpicos','Centeno','El Alto','Jaralillo','Birds Eye','Mazacotes','Cerrito de Gasca','San Antonio']},
   {period:'2014',category:'Intermedia',teams:['La Pandilla','La Cuadrilla','San José de la Montaña','Puros Cuates','Populares','Real Cerrito de Gasca','Dulces Nombres','Halcones de Cuenda','Terrícolas','Malvinas','San Antonio Jr.','Barza','Atlas','Deportivo Pozos','Valencia']},
   {period:'2014',category:'Veteranos',teams:['Dynamo','Hermanos','Magisterio','La Esperanza','UNAM','Picosos','Aldama','Boavista','Sección XIV','Valedores','Cuenda']},
   {period:'2014 · Jornada 11',category:'Segunda Fuerza',teams:['DHP','Morales','San Juan FC','Oklahoma','Tavera','San José de Allende','Birds Eye Jr.','Toros','San Julián','Río Grande','Aldama','Herbalife','Novatos','Continental','Osasuna','Jaralillo F.C.']},
+  {period:'23–24 ago 2014 · rol aportado',category:'Veteranos',teams:['La Esperanza','Boavista','Sección XIV','Picosos','Aldama','Dynamo','Magisterio','Guadalajara','Valedores','Hermanos','UNAM','Cuenda']},
+  {period:'23–24 ago 2014 · rol aportado',category:'Primera Fuerza J17',teams:['Birds Eye','Juventus','El Alto','San Antonio','Olímpicos','Cerrito de Gasca','Mazacotes','PSV','Jaralillo','Abejas','A. Centeno','Hermanos','Linces','La Esperanza','Boavista','Chelsea']},
+  {period:'23–24 ago 2014 · rol aportado',category:'Intermedia J17',teams:['Terrícolas','San José de la Montaña','Dulces Nombres','Barza','La Pandilla','Atlas','Real Cerrito','Puros Cuates','Halcones de Cuenda','Deportivo Pozos','Malvinas','La Cuadrilla','Valencia','Populares','San Antonio Jr.']},
+  {period:'23–24 ago 2014 · rol aportado',category:'Segunda Fuerza J17',teams:['Osasuna','Aldama','Morales','Río Grande','Continental','Birds Eye Jr.','Oklahoma','Tavera','DHP','San José de Allende','San Julián','Toros','San Juan FC','Novatos','Herbalife FC','Cerritos']},
   {period:'2015–2016',category:'Liga / Intermedia / Veteranos',teams:['San Antonio Jr.','Malvinas','Tavera','La Cuadrilla','Centeno','Real Cerrito de Gasca','Halcones de Cuenda','Barza','Populares','Terrícolas','DHP','Dulces Nombres','Xolos Jaralillo','La Esperanza','Cuenda','Magisterio','Chelsea','Boavista','Picosos','Dynamo','UNAM','Hermanos','Valedores','Sección XIV','Guadalajara']},
   {period:'2015 · Jornada 13',category:'Veteranos',teams:['La Esperanza','Cuenda','Magisterio','Chelsea','Boavista','Picosos','Dynamo','UNAM','Hermanos','Valedores','Sección XIV','Guadalajara']},
   {period:'2015 · Jornada 20',category:'Intermedia',teams:['San Antonio Jr.','Malvinas','Tavera','La Cuadrilla','Centeno','Real Cerrito','Halcones','Barza','Populares','Terrícolas','DHP','Dulces Nombres','Xolos Jaralillo','Puros Cuates']},
@@ -991,6 +1006,7 @@ const historicalTimeline=[
   {date:'oct 1987',title:'Boavista se organiza para entrar a Primera Fuerza',detail:'Una publicación retrospectiva de Golazo Liga del 28 nov 2012, hecha por el XXV aniversario del club, relata que estudiantes de la Preparatoria “Juventino Rosas” organizaron Boavista en octubre de 1987 para registrarlo en la Primera Fuerza de la Liga Municipal. En esa memoria se mencionan también Cuenda, Aguilares, San Julián, Merino, Santa María de Guadalupe y Pozos como equipos fuertes de comunidades. Es un dato de historia del club, no una fecha de fundación de la Liga.'},
   {date:'05 oct 2012',title:'Golazo Liga · primer registro digital localizado',detail:'La captura aportada muestra una publicación que Facebook presenta bajo el nombre Golazo Liga con fecha 5 de octubre de 2012 y con el escudo histórico de la Liga Municipal. Es la fecha digital mínima comprobable dentro del material conservado, no la fecha de fundación.'},
   {date:'05–18 nov 2013',title:'Tablas generales publicadas por Enrique Aboytes',detail:'El archivo conserva publicaciones de Enrique Aboytes en Golazo Liga con Tabla General de Segunda Fuerza, Tabla General de Primera Fuerza, descensos de Terrícolas y La Pandilla de Rancho Viejo a Fuerza Intermedia y avisos de finales de Primera y Segunda Fuerza.'},
+  {date:'ago 2013–ago 2014',title:'Roles y tablas históricas · equipos recuperados',detail:'Las capturas aportadas de agosto de 2013, tablas de jornadas 18/24/26 y el rol del 23–24 de agosto de 2014 amplían el catálogo histórico con nombres como Deportivo Cerritos, Cerritos de Cuenda y Herbalife FC, además de confirmar la presencia de los clubes ya registrados en Veteranos, Primera, Intermedia y Segunda.'},
   {date:'15 dic 2013',title:'Octavio Alberto García documenta la final de Segunda',detail:'Publicaciones de Octavio Alberto García en Golazo Liga registran a Real Cerrito de Gasca como campeón de Segunda Fuerza y muestran un marcador parcial de 3–0 sobre DHP al minuto 35.'},
   {date:'fecha por precisar',title:'Xavier Lara Valencia · roles de juego',detail:'Se incorpora como pista del archivo histórico por publicaciones de roles atribuidas a su actividad en Golazo Liga. Falta fijar las fechas, jornadas y equipos exactos con la publicación visual original; no se inventan esos datos mientras no estén visibles.'},
   {date:'feb 2014',title:'Administrador de Golazo Liga · fuente histórica',detail:'El usuario aporta otro perfil identificado como administrador de Golazo Liga en febrero de 2014. Se incorpora como pista para localizar roles, equipos, jornadas y resultados de esa etapa. La búsqueda web pública no permitió verificar directamente publicaciones indexadas del enlace compartido.'},
