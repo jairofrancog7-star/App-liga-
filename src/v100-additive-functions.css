@@ -1224,3 +1224,164 @@ body[data-app-route="credentialBuilder"] .v196-preview-head em{
 @media(max-width:520px){
   .v100-shortcut-assist-actions{grid-template-columns:1fr}
 }
+
+
+/* V676 — premium modern install cards */
+.v100-modal.v100-install-modal .v100-modal-card{
+  border-radius:30px!important;
+  border:1px solid rgba(100,236,255,.42)!important;
+  background:
+    radial-gradient(circle at 92% 0%,rgba(47,216,255,.20),transparent 31%),
+    radial-gradient(circle at 0% 26%,rgba(34,90,255,.15),transparent 34%),
+    linear-gradient(165deg,#081987 0%,#07116f 45%,#04084f 100%)!important;
+  box-shadow:
+    0 30px 85px rgba(0,0,46,.62),
+    inset 0 1px 0 rgba(255,255,255,.10),
+    inset 0 -1px 0 rgba(50,210,255,.08)!important;
+}
+.v100-modal.v100-install-modal .v100-modal-close{
+  width:42px;height:42px;right:15px;top:14px;border-radius:15px;
+  background:linear-gradient(145deg,rgba(18,35,126,.96),rgba(8,17,91,.96));
+  border:1px solid rgba(142,226,255,.25);
+  box-shadow:0 8px 22px rgba(0,0,30,.24),inset 0 1px 0 rgba(255,255,255,.08);
+  font-size:24px;transition:transform .16s ease,background .16s ease
+}
+.v100-modal.v100-install-modal .v100-modal-close:active{transform:scale(.94)}
+.v100-modal.v100-install-modal .v100-head small{
+  color:#63ebf5;letter-spacing:1.8px;font-size:10px;font-weight:1000
+}
+.v100-modal.v100-install-modal .v100-head h2{
+  font-size:31px;line-height:1.05;letter-spacing:-.7px;margin-top:6px;
+  text-shadow:0 5px 22px rgba(0,0,30,.3)
+}
+.v100-modal.v100-install-modal .v100-head p{
+  font-size:13px!important;line-height:1.55!important;color:#c8d3ee!important;max-width:92%
+}
+.v100-install-status{
+  position:relative;overflow:hidden;padding:14px 15px!important;border-radius:18px!important;
+  background:
+    linear-gradient(135deg,rgba(31,111,232,.28),rgba(21,210,234,.10))!important;
+  border:1px solid rgba(81,228,245,.25)!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.06),0 10px 24px rgba(0,0,35,.14)
+}
+.v100-install-status:after{
+  content:"";position:absolute;width:120px;height:120px;border-radius:50%;
+  right:-62px;top:-74px;background:radial-gradient(circle,rgba(74,232,244,.18),transparent 68%);
+  pointer-events:none
+}
+.v100-install-status>span{
+  width:38px!important;height:38px!important;border-radius:13px!important;
+  background:linear-gradient(145deg,#65f0f7,#34d6ec)!important;
+  box-shadow:0 7px 20px rgba(55,218,238,.28),inset 0 1px 0 rgba(255,255,255,.45)
+}
+.v100-install-status b{font-size:13px!important}.v100-install-status small{font-size:10px!important}
+
+.v100-install-options{gap:14px!important}
+.v100-install-option{
+  position:relative;overflow:hidden;padding:16px!important;border-radius:22px!important;
+  background:
+    linear-gradient(155deg,rgba(17,35,139,.96),rgba(8,18,101,.98))!important;
+  border:1px solid rgba(108,203,255,.18)!important;
+  box-shadow:
+    0 14px 32px rgba(0,0,38,.18),
+    inset 0 1px 0 rgba(255,255,255,.06)!important;
+  transition:transform .18s ease,border-color .18s ease,box-shadow .18s ease;
+}
+.v100-install-option:before{
+  content:"";position:absolute;inset:0;pointer-events:none;
+  background:linear-gradient(120deg,rgba(82,222,244,.07),transparent 38%,rgba(255,255,255,.025) 72%,transparent);
+}
+.v100-install-option:after{
+  content:"";position:absolute;right:-34px;top:-44px;width:110px;height:110px;border-radius:50%;
+  background:radial-gradient(circle,rgba(65,220,242,.12),transparent 68%);pointer-events:none
+}
+.v100-install-option.is-device{
+  border-color:rgba(87,233,246,.48)!important;
+  box-shadow:0 14px 34px rgba(0,0,40,.22),0 0 0 1px rgba(65,227,239,.10) inset!important
+}
+.v100-install-icon{
+  width:50px!important;height:50px!important;border-radius:16px!important;font-size:25px!important;
+  background:linear-gradient(145deg,rgba(58,202,239,.17),rgba(42,78,183,.20))!important;
+  border:1px solid rgba(105,225,246,.22)!important;
+  box-shadow:0 8px 18px rgba(0,0,35,.18),inset 0 1px 0 rgba(255,255,255,.06)
+}
+.v100-install-copy small{
+  display:inline-flex;width:max-content;max-width:100%;padding:4px 7px;border-radius:999px;
+  background:rgba(68,226,240,.08);border:1px solid rgba(68,226,240,.13);
+  color:#62eaf4!important;font-size:8px!important;letter-spacing:1px!important;font-weight:1000!important
+}
+.v100-install-copy b{
+  font-size:16px!important;line-height:1.18!important;letter-spacing:-.15px;margin-top:2px
+}
+.v100-install-copy p{
+  font-size:10px!important;line-height:1.5!important;color:#b8c7e8!important;margin-top:4px!important
+}
+
+.v100-install-option .v100-primary,
+.v100-install-option .v100-secondary,
+.v100-shortcut-assist-actions .v100-secondary{
+  position:relative;overflow:hidden;border-radius:14px!important;font-weight:1000!important;
+  letter-spacing:.01em;transition:transform .14s ease,filter .14s ease,box-shadow .14s ease!important;
+}
+.v100-install-option .v100-primary{
+  min-height:46px!important;
+  border:1px solid rgba(255,255,255,.18)!important;
+  background:linear-gradient(135deg,#67eff6 0%,#43dce9 48%,#36c7ef 100%)!important;
+  color:#06105b!important;
+  box-shadow:0 10px 22px rgba(45,207,235,.22),inset 0 1px 0 rgba(255,255,255,.45)!important
+}
+.v100-install-option .v100-primary:after{
+  content:"";position:absolute;left:-40%;top:-120%;width:38%;height:340%;
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,.28),transparent);
+  transform:rotate(18deg);transition:left .38s ease;pointer-events:none
+}
+.v100-install-option .v100-primary:hover:after{left:130%}
+.v100-install-option .v100-primary:active,
+.v100-install-option .v100-secondary:active,
+.v100-shortcut-assist-actions .v100-secondary:active{transform:scale(.985)}
+.v100-install-option .v100-secondary,
+.v100-shortcut-assist-actions .v100-secondary{
+  min-height:44px!important;
+  background:linear-gradient(145deg,rgba(21,42,132,.92),rgba(10,23,101,.96))!important;
+  border:1px solid rgba(167,205,255,.28)!important;
+  color:#fff!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.05)!important
+}
+.v100-install-option .v100-secondary:hover,
+.v100-shortcut-assist-actions .v100-secondary:hover{
+  border-color:rgba(93,232,245,.45)!important;
+  background:linear-gradient(145deg,rgba(23,51,155,.96),rgba(10,29,113,.98))!important
+}
+.v100-install-link{font-size:11px!important}
+
+.v100-shortcut-assist{
+  margin-top:14px!important;padding:14px!important;border-radius:20px!important;
+  background:
+    linear-gradient(135deg,rgba(27,92,200,.24),rgba(8,24,103,.74))!important;
+  border:1px solid rgba(83,224,244,.22)!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.05)
+}
+.v100-shortcut-assist>div:first-child>span{
+  width:40px!important;height:40px!important;border-radius:13px!important;
+  background:linear-gradient(145deg,rgba(65,226,239,.18),rgba(36,72,177,.20))!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.06)
+}
+.v100-shortcut-assist b{font-size:12px!important}
+.v100-shortcut-assist small{font-size:9.5px!important;color:#b8c7e8!important}
+.v100-install-footnote{
+  margin-top:13px!important;padding:9px 11px!important;border-radius:12px;
+  background:rgba(0,0,35,.16);border:1px solid rgba(255,255,255,.05);
+  color:#9fb0d7!important;text-align:center
+}
+@media(max-width:620px){
+  .v100-modal.v100-install-modal .v100-modal-card{padding:18px 16px!important;border-radius:26px!important}
+  .v100-modal.v100-install-modal .v100-head h2{font-size:29px}
+  .v100-install-option{
+    grid-template-columns:58px 1fr!important;
+    column-gap:12px!important;row-gap:12px!important;
+    padding:16px!important;border-radius:21px!important
+  }
+  .v100-install-icon{width:52px!important;height:52px!important}
+  .v100-install-option .v100-primary,
+  .v100-install-option .v100-secondary{grid-column:1/-1!important}
+}
