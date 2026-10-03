@@ -212,3 +212,51 @@
     border-bottom:1px solid rgba(205,212,255,.30)!important;
   }
 }
+
+
+/* V621 — Historia: cabecera y pestañas dentro de UN SOLO bloque gráfico real.
+   Así el diseño llega físicamente hasta la línea inferior sin cortes entre
+   "Historia" y Resumen/Temporadas/Campeones/Finales. */
+@media (max-width:1023px){
+  html body[data-app-route="history"] .v35-history-page .v620-history-top{
+    position:relative!important;
+    z-index:2!important;
+    width:100%!important;
+    height:calc(var(--v361-history-head-h,136px) + var(--v361-history-tabs-h,54px))!important;
+    min-height:calc(var(--v361-history-head-h,136px) + var(--v361-history-tabs-h,54px))!important;
+    max-height:calc(var(--v361-history-head-h,136px) + var(--v361-history-tabs-h,54px))!important;
+    margin:0!important;
+    padding:0!important;
+    overflow:visible!important;
+    background:
+      linear-gradient(180deg,rgba(7,44,213,.08) 0%,rgba(5,16,121,.18) 58%,rgba(4,8,78,.34) 100%),
+      url('../public/history-regularscroll-header.webp') center top/100% 100% no-repeat!important;
+    background-color:#05084e!important;
+    box-shadow:none!important;
+  }
+
+  html body[data-app-route="history"] .v35-history-page .v620-history-top .v35-history-head,
+  html body[data-app-route="history"] .v35-history-page .v620-history-top .v35-tabs,
+  html body[data-app-route="history"] .v35-history-page.is-compact .v620-history-top .v35-tabs,
+  html body[data-app-route="history"] .v35-history-page.v329-videos-active .v620-history-top .v35-tabs,
+  html body[data-app-route="history"] .v35-history-page.v329-finals-image1 .v620-history-top .v35-tabs,
+  html body[data-app-route="history"] .v35-history-page.v358-finals-reference .v620-history-top .v35-tabs{
+    background:transparent!important;
+    background-color:transparent!important;
+    background-image:none!important;
+    box-shadow:none!important;
+  }
+
+  html body[data-app-route="history"] .v35-history-page .v620-history-top .v35-tabs{
+    border-top:0!important;
+    border-bottom:1px solid rgba(205,212,255,.30)!important;
+  }
+}
+
+@media (max-width:374px){
+  html body[data-app-route="history"] .v35-history-page .v620-history-top{
+    height:calc(128px + 52px)!important;
+    min-height:calc(128px + 52px)!important;
+    max-height:calc(128px + 52px)!important;
+  }
+}
