@@ -1,0 +1,174 @@
+/* V672 — Restaurar el scrolleo aprobado en Inicio/Competición
+   y mantener visible la barra superior de Más durante todo el desplazamiento.
+   No rediseña las páginas: sólo restablece el contenedor de scroll y sticky. */
+
+@media (max-width:1023px){
+  /* El documento vuelve a ser el único scroll vertical. */
+  html{
+    min-height:100%!important;
+    height:auto!important;
+    overflow-x:hidden!important;
+    overflow-y:auto!important;
+  }
+
+  html body[data-app-route="home"],
+  html body[data-app-route="competition"],
+  html body[data-app-route="more"]{
+    min-height:100dvh!important;
+    height:auto!important;
+    max-height:none!important;
+    overflow-x:hidden!important;
+    overflow-y:auto!important;
+    -webkit-overflow-scrolling:touch!important;
+    overscroll-behavior-y:auto!important;
+  }
+
+  html body[data-app-route="home"] #app,
+  html body[data-app-route="home"] .app-shell,
+  html body[data-app-route="home"] #screen,
+  html body[data-app-route="competition"] #app,
+  html body[data-app-route="competition"] .app-shell,
+  html body[data-app-route="competition"] #screen,
+  html body[data-app-route="more"] #app,
+  html body[data-app-route="more"] .app-shell,
+  html body[data-app-route="more"] #screen{
+    min-height:0!important;
+    height:auto!important;
+    max-height:none!important;
+    overflow-x:visible!important;
+    overflow-y:visible!important;
+    transform:none!important;
+    filter:none!important;
+    perspective:none!important;
+    contain:none!important;
+  }
+
+  /* INICIO — conserva la zona superior inmóvil que ya estaba aprobada. */
+  html body[data-app-route="home"] #app > .topbar,
+  html body[data-app-route="home"] .app-shell > .topbar,
+  html body.v10-header-collapsed[data-app-route="home"] #app > .topbar,
+  html body.v10-header-collapsed[data-app-route="home"] .app-shell > .topbar{
+    position:sticky!important;
+    position:-webkit-sticky!important;
+    top:0!important;
+    transform:none!important;
+    opacity:1!important;
+    visibility:visible!important;
+    z-index:2147483500!important;
+  }
+
+  /* COMPETICIÓN — mismo scrolleo: hero arriba, tabs y jornada pegadas
+     mientras la lista de partidos se desplaza debajo. */
+  html body[data-app-route="competition"] #app > .topbar,
+  html body[data-app-route="competition"] .app-shell > .topbar,
+  html body.v10-header-collapsed[data-app-route="competition"] #app > .topbar,
+  html body.v40-standings-master[data-app-route="competition"] #app > .topbar{
+    position:sticky!important;
+    position:-webkit-sticky!important;
+    top:0!important;
+    transform:none!important;
+    opacity:1!important;
+    visibility:visible!important;
+    z-index:2147483500!important;
+  }
+
+  /* MÁS — la barra superior NO debe desaparecer al bajar. */
+  html body[data-app-route="more"] #app > .topbar,
+  html body[data-app-route="more"] .app-shell > .topbar,
+  html body.v10-header-collapsed[data-app-route="more"] #app > .topbar,
+  html body.v10-header-collapsed[data-app-route="more"] .app-shell > .topbar,
+  html body[data-app-route="more"].v66-compact-route #app > .topbar,
+  html body[data-app-route="more"].v69-primary-tool-header #app > .topbar,
+  html body[data-app-route="more"].v379-player-profile-active #app > .topbar{
+    display:block!important;
+    position:sticky!important;
+    position:-webkit-sticky!important;
+    top:0!important;
+    left:auto!important;
+    right:auto!important;
+    width:100%!important;
+    transform:none!important;
+    translate:none!important;
+    scale:1!important;
+    opacity:1!important;
+    visibility:visible!important;
+    clip-path:none!important;
+    -webkit-clip-path:none!important;
+    z-index:2147483640!important;
+    pointer-events:auto!important;
+  }
+
+  html body.v10-header-collapsed[data-app-route="more"] .topbar::after,
+  html body[data-app-route="more"] .topbar::after{
+    display:block!important;
+    visibility:visible!important;
+    opacity:1!important;
+  }
+
+  html body.v10-header-collapsed[data-app-route="more"] .topbar .profile-button,
+  html body[data-app-route="more"] .topbar .profile-button{
+    display:block!important;
+    visibility:visible!important;
+    opacity:1!important;
+    transform:none!important;
+  }
+
+  html body[data-app-route="more"] #screen{
+    position:relative!important;
+    z-index:1!important;
+    padding-top:0!important;
+    padding-bottom:calc(76px + env(safe-area-inset-bottom,0px))!important;
+  }
+
+  html body[data-app-route="more"] .v19-more-page{
+    height:auto!important;
+    min-height:0!important;
+    max-height:none!important;
+    overflow:visible!important;
+  }
+
+  /* No recuperar las flechitas pequeñas que el usuario pidió quitar. */
+  html body[data-app-route="more"] .v19-more-item::after{
+    content:none!important;
+    display:none!important;
+    visibility:hidden!important;
+    opacity:0!important;
+  }
+}
+
+@media (max-width:520px){
+  html body[data-app-route="competition"]{
+    --v672-comp-head-h:var(--v640-comp-head-h,calc(88px + env(safe-area-inset-top)));
+    --v672-comp-tabs-h:var(--v640-comp-tabs-h,44px);
+  }
+
+  html body[data-app-route="competition"] #screen > .tabs,
+  html body.v40-standings-master[data-app-route="competition"] #screen > .tabs,
+  html body.v10-header-collapsed[data-app-route="competition"] #screen > .tabs{
+    position:sticky!important;
+    position:-webkit-sticky!important;
+    top:var(--v672-comp-head-h)!important;
+    transform:none!important;
+    opacity:1!important;
+    visibility:visible!important;
+    z-index:2147483490!important;
+  }
+
+  html body[data-app-route="competition"] .v12-fixtures-reference{
+    overflow:visible!important;
+    overflow-x:visible!important;
+    overflow-y:visible!important;
+  }
+
+  html body[data-app-route="competition"] .v12-fixtures-reference .v12-date-strip,
+  html body[data-app-route="competition"] .v12-date-strip.v12-week-strip,
+  html body[data-app-route="competition"] .v12-date-strip{
+    position:sticky!important;
+    position:-webkit-sticky!important;
+    top:calc(var(--v672-comp-head-h) + var(--v672-comp-tabs-h))!important;
+    transform:none!important;
+    opacity:1!important;
+    visibility:visible!important;
+    z-index:2147483480!important;
+  }
+}
