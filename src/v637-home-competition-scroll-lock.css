@@ -283,3 +283,58 @@
     opacity:1!important;
   }
 }
+
+
+/* V643 — restaurar EXACTAMENTE la composición superior aprobada de Competición
+   sin quitar el scroll ni la protección opaca.
+   El problema de V642 era de capas: las tabs opacas quedaron por encima del
+   trofeo y de la extensión neón inferior del header. */
+@media (max-width:520px){
+  html body[data-app-route="competition"] #app > .topbar,
+  html body[data-app-route="competition"] .app-shell > .topbar,
+  html body.v40-standings-master[data-app-route="competition"] #app > .topbar,
+  html body.v10-header-collapsed[data-app-route="competition"] #app > .topbar{
+    z-index:2147483900!important;
+    overflow:visible!important;
+    isolation:isolate!important;
+  }
+
+  /* Recupera la parte inferior del diseño neón que originalmente se prolonga
+     detrás de Partidos / Clasificación / Cuadro. */
+  html body[data-app-route="competition"] .topbar .wordmark,
+  html body.v40-standings-master[data-app-route="competition"] .topbar .wordmark{
+    overflow:hidden!important;
+    bottom:-48px!important;
+    z-index:0!important;
+  }
+
+  /* El trofeo vuelve a quedar completo por encima de la franja de pestañas. */
+  html body[data-app-route="competition"] .topbar::before,
+  html body.v40-standings-master[data-app-route="competition"] .topbar::before{
+    z-index:2!important;
+    opacity:1!important;
+    visibility:visible!important;
+  }
+
+  /* Título y perfil permanecen encima del arte, como estaban antes. */
+  html body[data-app-route="competition"] .topbar::after{
+    z-index:5!important;
+  }
+  html body[data-app-route="competition"] .topbar .profile-button{
+    z-index:6!important;
+  }
+
+  /* Conservamos la opacidad que pediste, pero bajamos estas capas para que
+     ya no tapen el trofeo ni el diseño inferior del header. */
+  html body[data-app-route="competition"] #screen > .tabs,
+  html body.v40-standings-master[data-app-route="competition"] #screen > .tabs,
+  html body.v10-header-collapsed[data-app-route="competition"] #screen > .tabs{
+    z-index:2147483600!important;
+  }
+
+  html body[data-app-route="competition"] .v12-fixtures-reference .v12-date-strip,
+  html body[data-app-route="competition"] .v12-date-strip.v12-week-strip,
+  html body[data-app-route="competition"] .v12-date-strip{
+    z-index:2147483500!important;
+  }
+}
