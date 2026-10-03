@@ -1,0 +1,103 @@
+/* V668 — tablas y rankings ocupan todo el ancho horizontal disponible.
+   Sólo ajusta geometría/ancho; no cambia datos, columnas, colores ni lógica. */
+@media (max-width:1023px){
+  /* Tablas HTML reales */
+  html body #screen table{
+    width:100%!important;
+    max-width:none!important;
+    margin-left:0!important;
+    margin-right:0!important;
+    box-sizing:border-box!important;
+  }
+
+  /* Contenedores de tablas principales de la app. */
+  html body #screen :is(
+    .v40-table-wrap,
+    .v62-table-shell,
+    .v194-table,
+    .v194-ranking,
+    .v399-mini-table,
+    .v449-season-table-ref,
+    .v449-season-table,
+    .v446-stats-ref-panel,
+    .v35-old-table,
+    .v92-stat-table,
+    .v65-home-table,
+    .v444-home-table,
+    .v553-weekly-table,
+    .v28-ranking,
+    .v32-ranking,
+    .v371-table,
+    .v94-discipline-table
+  ){
+    width:100%!important;
+    max-width:none!important;
+    min-width:0!important;
+    margin-left:0!important;
+    margin-right:0!important;
+    box-sizing:border-box!important;
+  }
+
+  /* La tabla oficial conserva desplazamiento si tiene muchas columnas,
+     pero el marco sí rellena toda la pantalla disponible. */
+  html body #screen .v62-table-shell{
+    display:block!important;
+    overflow-x:auto!important;
+  }
+  html body #screen .v62-table{
+    width:max(100%,540px)!important;
+    max-width:none!important;
+  }
+
+  /* Competición / clasificación: sin ancho angosto centrado. */
+  html body.v40-standings-master #screen .v40-standings,
+  html body.v40-standings-master #screen .v40-table-wrap,
+  html body.v40-standings-master #screen .v40-table-head,
+  html body.v40-standings-master #screen .v40-table-body,
+  html body.v40-standings-master #screen .v40-row{
+    width:100%!important;
+    max-width:none!important;
+    box-sizing:border-box!important;
+  }
+
+  /* Historial, estadísticas y paneles inferiores: aprovechar todo el ancho del bloque. */
+  html body #screen :is(
+    .v35-old-table-head,
+    .v35-old-table-row,
+    .v449-season-table-head,
+    .v449-season-table-row,
+    .v446-stat-ref-row,
+    .v399-mini-head,
+    .v399-mini-row
+  ){
+    width:100%!important;
+    max-width:none!important;
+    box-sizing:border-box!important;
+  }
+}
+
+/* En móviles angostos no volver a imponer máximos anteriores. */
+@media (max-width:390px){
+  html body #screen :is(
+    .v40-table-wrap,
+    .v62-table-shell,
+    .v194-table,
+    .v194-ranking,
+    .v399-mini-table,
+    .v449-season-table-ref,
+    .v449-season-table,
+    .v446-stats-ref-panel,
+    .v35-old-table,
+    .v92-stat-table,
+    .v65-home-table,
+    .v444-home-table,
+    .v553-weekly-table,
+    .v28-ranking,
+    .v32-ranking,
+    .v371-table,
+    .v94-discipline-table
+  ){
+    width:100%!important;
+    max-width:none!important;
+  }
+}
