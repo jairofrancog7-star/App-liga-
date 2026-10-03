@@ -278,6 +278,8 @@ async function matchBlock(){
   const m=matchContext();
   if(!m)return '<section class="v412-module">'+head('MATCH CENTER','Información del partido','Selecciona un partido oficial para mostrar sus datos.')+'</section>';
   const h=findStanding(m.home.name,m.category),a=findStanding(m.away.name,m.category);
+  const active=window.LJR_MATCH_CENTER?.currentTab?.()||'BuildUp';
+  const tabClass=t=>active===t?' class="active"':'';
   return '<section class="v412-module v412-match">'+
     head('MATCH CENTER','Build Up del partido','Aquí quedan únicamente funciones del encuentro: previa, predicciones, comentarios, alineaciones, estadísticas y cronología.')+
     '<section class="v412-match-hero">'+
@@ -287,12 +289,12 @@ async function matchBlock(){
       '<em>'+esc(m.sub||m.meta[1]||'')+'</em>'+
     '</section>'+
     '<nav class="v412-match-tabs">'+
-      '<button class="active" type="button" data-v412-native="BuildUp">Build Up</button>'+
-      '<button type="button" data-v412-native="Predicciones">Predicciones</button>'+
-      '<button type="button" data-v412-native="Comentarios">Comentarios</button>'+
-      '<button type="button" data-v412-native="Alineaciones">Alineaciones</button>'+
-      '<button type="button" data-v412-native="Estadísticas">Estadísticas</button>'+
-      '<button type="button" data-v412-native="Cronología">Cronología</button>'+
+      '<button'+tabClass('BuildUp')+' type="button" data-v412-native="BuildUp">Build Up</button>'+
+      '<button'+tabClass('Predicciones')+' type="button" data-v412-native="Predicciones">Predicciones</button>'+
+      '<button'+tabClass('Comentarios')+' type="button" data-v412-native="Comentarios">Comentarios</button>'+
+      '<button'+tabClass('Alineaciones')+' type="button" data-v412-native="Alineaciones">Alineaciones</button>'+
+      '<button'+tabClass('Estadísticas')+' type="button" data-v412-native="Estadísticas">Estadísticas</button>'+
+      '<button'+tabClass('Cronología')+' type="button" data-v412-native="Cronología">Cronología</button>'+
     '</nav>'+
     '<section class="v412-match-card"><h3>Comparación de temporada</h3><div class="v412-team-pair"><span>'+matchLogo(m.home)+'<b>'+esc(m.home.name)+'</b></span><span>'+matchLogo(m.away)+'<b>'+esc(m.away.name)+'</b></span></div>'+
       metricCard('Partidos',h?.[2],a?.[2])+metricCard('Ganados',h?.[3],a?.[3])+metricCard('Diferencia',h?.[8],a?.[8])+metricCard('Puntos',h?.[9],a?.[9])+
