@@ -1363,10 +1363,13 @@ function institutionalHistoryBlock(){
   '</section>';
 }
 
+function taggedHistoryTitle(title){
+  return String(title||'').split(/\\s+·\\s+/).filter(Boolean).map(part=>'<span>'+esc(part)+'</span>').join('');
+}
 function taggedFacebookBlock(){
   return '<section class="v35-history-format v35-tagged-facebook">'+
     '<div class="v35-history-subhead"><span>PUBLICACIONES EN LA BIOGRAFÍA DE GOLAZO LIGA</span><h3>Personas que publicaban, etiquetaban o compartían tablas y roles</h3><p>Facebook conserva parte del archivo como publicaciones hechas por otras personas en Golazo Liga o como publicaciones donde Golazo Liga aparece etiquetado. Por eso muchas tablas no necesariamente aparecen dentro de la galería de fotos propia del perfil.</p></div>'+
-    '<div class="v35-result-list v35-video-findings">'+taggedFacebookPosts.map(x=>'<article class="v35-final-row"><span>'+esc(x.date)+'</span><small>'+esc(x.type)+'</small><b>'+esc(x.person)+'</b><strong>'+esc(x.title)+'</strong><p>'+esc(x.detail)+'</p></article>').join('')+'</div>'+
+    '<div class="v35-result-list v35-video-findings">'+taggedFacebookPosts.map(x=>'<article class="v35-final-row v35-tagged-row"><span class="v35-tagged-date">'+esc(x.date)+'</span><small>'+esc(x.type)+'</small><b>'+esc(x.person)+'</b><strong class="v35-tagged-title">'+taggedHistoryTitle(x.title)+'</strong><p>'+esc(x.detail)+'</p></article>').join('')+'</div>'+
   '</section>';
 }
 
