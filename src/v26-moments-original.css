@@ -695,3 +695,21 @@ html body[data-app-route="moments"] .v26-moments-sticky .v26-moments-sticky-back
   }
 }
 /* /V614 */
+
+
+/* V615 — FONDO EXACTO EN MOMENTOS
+   Usa la imagen entregada por el usuario detrás de la flecha y del título.
+   Mantiene exactamente el tamaño/posición de V614. */
+html body[data-app-route="moments"] .v26-moments-sticky,
+html body.v10-header-collapsed[data-app-route="moments"] .v26-moments-sticky{
+  background:
+    linear-gradient(180deg,rgba(5,28,170,.06) 0%,rgba(1,8,96,.04) 58%,rgba(0,3,66,.24) 100%),
+    url('../public/moments-header-user-v615.webp') center 48% / cover no-repeat,
+    #07106f!important;
+}
+
+/* Mantener la imagen claramente visible atrás de la letra, sin taparla. */
+html body[data-app-route="moments"] .v26-moments-sticky::before{
+  background:linear-gradient(180deg,rgba(16,68,225,.02),transparent 55%,rgba(0,3,70,.15))!important;
+}
+/* /V615 */
