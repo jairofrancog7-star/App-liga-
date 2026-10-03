@@ -595,6 +595,16 @@ function printDoc(){
   setTimeout(()=>window.print(),80);
   setTimeout(clean,12000);
 }
+window.LJR_PERMISSION_BUILDER_API={
+  openTeamPicker,
+  closeTeamPicker,
+  chooseTeam(name){setTeam(name||'');closeTeamPicker();},
+  openPlayerPicker,
+  closePlayerPicker,
+  choosePlayer(name){setPlayer(name||'');closePlayerPicker();},
+  refresh(){refreshLists();renderTeamPicker();renderPlayerPicker();}
+};
+
 function bind(){
   q('[data-v635-cat]')?.addEventListener('change',e=>{
     setTeam('');
