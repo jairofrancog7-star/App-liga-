@@ -1,0 +1,77 @@
+/* V663 — controles funcionales y comentarios Match Center */
+@media (max-width:1023px){
+  body.v92-match-center-official :is(
+    .v420-pills,
+    .v516-matchcenter-shortcuts,
+    .v412-match-tabs,
+    .v412-mc-tabs
+  ) button{
+    position:relative!important;
+    z-index:3!important;
+    pointer-events:auto!important;
+    touch-action:manipulation!important;
+    cursor:pointer!important;
+  }
+
+  body.v92-match-center-official .v662-comments{
+    width:100%!important;
+    max-width:none!important;
+    margin-left:0!important;
+    margin-right:0!important;
+    box-sizing:border-box!important;
+  }
+  body.v92-match-center-official .v662-comments-card{
+    width:100%!important;
+    box-sizing:border-box!important;
+    display:grid!important;
+    gap:10px!important;
+    padding:12px!important;
+    border:1px solid rgba(71,111,236,.28)!important;
+    border-radius:16px!important;
+    background:#080c25!important;
+  }
+  body.v92-match-center-official .v662-comments-card label{
+    display:grid!important;
+    gap:7px!important;
+    min-width:0!important;
+  }
+  body.v92-match-center-official .v662-comments-card label>span{
+    color:#55e3ed!important;
+    font-size:9px!important;
+    font-weight:900!important;
+    letter-spacing:.08em!important;
+    text-transform:uppercase!important;
+  }
+  body.v92-match-center-official .v662-comments-card textarea{
+    width:100%!important;
+    min-height:110px!important;
+    resize:vertical!important;
+    box-sizing:border-box!important;
+    padding:11px!important;
+    border:1px solid rgba(93,120,220,.34)!important;
+    border-radius:12px!important;
+    outline:none!important;
+    background:#05091d!important;
+    color:#fff!important;
+    font:600 11px/1.4 Inter,Roboto,Arial,sans-serif!important;
+  }
+  body.v92-match-center-official .v662-comments-card textarea:focus{
+    border-color:#2cddea!important;
+    box-shadow:0 0 0 2px rgba(44,221,234,.10)!important;
+  }
+  body.v92-match-center-official .v662-comments-card>button{
+    width:100%!important;
+    min-height:42px!important;
+    border:1px solid rgba(44,221,234,.48)!important;
+    border-radius:11px!important;
+    background:linear-gradient(180deg,#143da7,#0f2b80)!important;
+    color:#fff!important;
+    font-size:10px!important;
+    font-weight:900!important;
+  }
+  body.v92-match-center-official .v662-comments-card>small{
+    color:#8793ba!important;
+    font-size:7.5px!important;
+    line-height:1.35!important;
+  }
+}
