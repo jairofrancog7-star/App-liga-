@@ -2241,7 +2241,7 @@ function v355HydrateHistoryLazy(root){
       }
       let html='';
       if(kind==='summary')html=historyArchiveBlock()+stats();
-      else if(kind==='seasons')html=historyArchiveBlock();
+      else if(kind==='seasons')html='';
       else if(kind==='champions')html=championsArchiveBlock();
       if(!html){host.remove();return;}
       host.insertAdjacentHTML('afterend',html);
