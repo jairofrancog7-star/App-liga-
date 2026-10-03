@@ -4,7 +4,15 @@
 (function(){
 'use strict';
 if(window.__LJR_V104_PLAYERS__)return;
+/* V607 — V66 es el único dueño de #/players.
+   Si su script está cargado, este directorio legado no monta ni observa #screen.
+   Evita el bucle V104 <-> V66 que hacía parpadear toda la pantalla. */
+if(window.__LJR_PLAYER_DIRECTORY_OWNER__==='v66'||document.querySelector('script[src*="v66-official-directory.js"]')){
+  window.__LJR_V104_PLAYERS__=true;
+  return;
+}
 window.__LJR_V104_PLAYERS__=true;
+window.__LJR_PLAYER_DIRECTORY_OWNER__='v104';
 
 const BASE='https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/';
 const DATA='./data/official-live.json?v=20261001-v491-v35-all-pages';
