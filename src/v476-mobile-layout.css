@@ -125,3 +125,47 @@ body.v558-native-pip .v196-frame{width:100%!important;height:100%!important;min-
 .v560-credential-dialog{max-width:96vw;width:950px;padding:16px;border:1px solid #365b9b;border-radius:16px;background:#080b43;color:#fff}
 .v560-credential-dialog::backdrop{background:#000c}
 .v560-credential-dialog canvas{display:block;width:100%;height:auto;margin-top:12px}
+
+
+/* V643 — compact page rhythm: remove oversized empty gaps between stacked cards/sections. */
+@media(max-width:1023px){
+  /* Tool pages used to reserve almost a full viewport plus 112px at the bottom.
+     When a V105 block follows, that reservation becomes a large empty blue gap. */
+  html body #screen > .v60-tool-page:has(~ #v105-bottom),
+  html body #screen > .v60-tool-page:has(~ .v105-bottom){
+    min-height:0!important;
+    height:auto!important;
+    padding-bottom:12px!important;
+    margin-bottom:0!important;
+  }
+
+  /* Keep the same compact rhythm between top-level blocks throughout the app. */
+  html body #screen > :is(.v413-shell,.v449-reference-lower,#v422-results-reference,.v105-bottom,.v412-shell){
+    margin-top:10px!important;
+    margin-bottom:10px!important;
+  }
+  html body #screen > .v73-below-native,
+  html body #screen .v60-tool-page > .v73-below-native{
+    margin-top:12px!important;
+    margin-bottom:10px!important;
+  }
+
+  /* Internal tool sections should not create tall dead zones either. */
+  html body #screen .v60-tool-section{
+    margin-top:14px!important;
+  }
+  html body #screen .v60-tool-page > :last-child{
+    margin-bottom:0!important;
+  }
+
+  /* Stats / Datos y rendimiento: explicit hard-fix for the gap shown on mobile. */
+  html body[data-app-route="v38Stats"] #screen > .v399-stats-page,
+  html body[data-app-route="v38Stats"] #screen > .v60-tool-page{
+    min-height:0!important;
+    height:auto!important;
+    padding-bottom:10px!important;
+  }
+  html body[data-app-route="v38Stats"] #screen > #v105-bottom[data-v105-route="v38Stats"]{
+    margin-top:8px!important;
+  }
+}
