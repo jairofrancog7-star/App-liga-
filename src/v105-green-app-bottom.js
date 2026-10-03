@@ -730,17 +730,18 @@ function newSanction(){
    ['ineligible','Alineación indebida / suplantación'],
    ['other','Otro motivo']
  ];
- const knownReason=reasonOptions.some(x=>x[0]===old.reason)?old.reason:(old.reason?'other':'');
- const oldDetail=old.reasonDetail||(knownReason==='other'?old.reason:'');
- const catOptions='<option value="">Todas las categorías</option>'+cats.map(x=>'<option value="'+esc(x.id)+'" '+(String(old.cat||'')===String(x.id)?'selected':'')+'>'+esc(x.name)+'</option>').join('');
- const typeOptions=[
+ const sanctionTypes=[
    ['yellow','Amonestación · tarjeta amarilla'],
    ['red','Expulsión · tarjeta roja'],
    ['matches','Suspensión por partidos'],
    ['until','Suspensión hasta una fecha'],
    ['indefinite','Suspensión indefinida'],
    ['lifetime','Suspensión permanente / de por vida']
- ].map(x=>'<option value="'+x[0]+'" '+(String(old.sanctionType||'matches')===x[0]?'selected':'')+'>'+x[1]+'</option>').join('');
+ ];
+ const knownReason=reasonOptions.some(x=>x[0]===old.reason)?old.reason:(old.reason?'other':'');
+ const oldDetail=old.reasonDetail||(knownReason==='other'?old.reason:'');
+ const catOptions='<option value="">Todas las categorías</option>'+cats.map(x=>'<option value="'+esc(x.id)+'" '+(String(old.cat||'')===String(x.id)?'selected':'')+'>'+esc(x.name)+'</option>').join('');
+ const typeOptions=sanctionTypes.map(x=>'<option value="'+x[0]+'" '+(String(old.sanctionType||'matches')===x[0]?'selected':'')+'>'+x[1]+'</option>').join('');
  const reasonHtml='<option value="">Selecciona un motivo</option>'+reasonOptions.map(x=>'<option value="'+x[0]+'" '+(knownReason===x[0]?'selected':'')+'>'+esc(x[1])+'</option>').join('');
 
  const m=modal('Nueva sanción','Borrador disciplinario local. No modifica sanciones oficiales hasta que la Liga lo publique.',
@@ -754,7 +755,7 @@ function newSanction(){
    '<label style="grid-column:1/-1" data-x-reason-detail-wrap hidden><span>Detalle del motivo</span><input data-x-reason-detail value="'+esc(oldDetail)+'" placeholder="Describe el motivo"></label>'+
    '<label style="grid-column:1/-1" data-x-matches-wrap><span>Partidos de suspensión</span><input type="number" min="1" max="999" inputmode="numeric" data-x-matches value="'+esc(old.matches||1)+'"></label>'+
    '<label style="grid-column:1/-1" data-x-until-wrap hidden><span>Suspensión hasta</span><input type="date" data-x-until value="'+esc(old.until||'')+'"></label>'+
-  '</div><div class="v105-actions"><button class="v105-btn" data-x-save>Guardar borrador</button><button class="v105-btn alt" data-x-discipline>Abrir disciplina oficial</button></div>');
+  '</div><div class="v105-actions"><button class="v105-btn" data-x-save>Guardar borrador</button><button class="v105-btn alt" data-x-png>Guardar PNG</button><button class="v105-btn alt" data-x-discipline>Abrir disciplina oficial</button></div>');
  m.classList.add('v639-sanction-modal');
 
  const search=$('[data-x-search]',m),cat=$('[data-x-cat]',m),team=$('[data-x-team]',m),player=$('[data-x-player]',m),count=$('[data-x-count]',m);
@@ -784,8 +785,86 @@ function newSanction(){
  };
  const syncReason=()=>{detailWrap.hidden=reason.value!=='other'};
 
- syncTeams();syncPlayers();syncDuration();syncReason();
+ const labelFor=(list,key)=>list.find(x=>x[0]===key)?.[1]||key||'—';
+ const collect=()=>{
+   if(!player.value){toast('Selecciona un jugador');return null}
+   if(!reason.value){toast('Selecciona el motivo');return null}
+   if(reason.value==='other'&&!detail.value.trim()){toast('Escribe el detalle del motivo');return null}
+   if((type.value==='matches'||type.value==='red')&&(Number(matches.value)||0)<1){toast('Indica los partidos de suspensión');return null}
+   if(type.value==='until'&&!until.value){toast('Selecciona la fecha final');return null}
+   const selectedOption=player.options[player.selectedIndex];
+   const catId=selectedOption?.dataset?.cat||cat.value||'';
+   return {
+     player:player.value,
+     team:selectedOption?.dataset?.team||team.value||'',
+     cat:catId,
+     category:cats.find(x=>String(x.id)===String(catId))?.name||'Sin categoría',
+     sanctionType:type.value,
+     sanctionLabel:labelFor(sanctionTypes,type.value),
+     reason:reason.value,
+     reasonLabel:reason.value==='other'?detail.value.trim():labelFor(reasonOptions,reason.value),
+     reasonDetail:reason.value==='other'?detail.value.trim():'',
+     matches:(type.value==='matches'||type.value==='red')?(Number(matches.value)||1):0,
+     until:type.value==='until'?until.value:'',
+     status:'Borrador local',
+     updatedAt:new Date().toISOString()
+   };
+ };
 
+ const wrapCanvas=(ctx,text,x,y,maxWidth,lineHeight,maxLines=4)=>{
+   const words=String(text||'—').split(/\s+/);let line='',lines=[];
+   words.forEach(word=>{
+     const test=line?line+' '+word:word;
+     if(ctx.measureText(test).width>maxWidth&&line){lines.push(line);line=word}
+     else line=test;
+   });
+   if(line)lines.push(line);
+   lines=lines.slice(0,maxLines);
+   lines.forEach((ln,i)=>ctx.fillText(ln,x,y+i*lineHeight));
+   return y+lines.length*lineHeight;
+ };
+ const savePng=v=>{
+   const canvas=document.createElement('canvas');canvas.width=1080;canvas.height=1350;
+   const ctx=canvas.getContext('2d');
+   const bg=ctx.createLinearGradient(0,0,0,1350);bg.addColorStop(0,'#0b23a8');bg.addColorStop(.5,'#07106f');bg.addColorStop(1,'#03083f');
+   ctx.fillStyle=bg;ctx.fillRect(0,0,1080,1350);
+   ctx.strokeStyle='#49e8f2';ctx.lineWidth=4;ctx.strokeRect(42,42,996,1266);
+   ctx.fillStyle='#42e6f0';ctx.fillRect(42,42,996,12);
+   ctx.fillStyle='#fff';ctx.font='800 36px Arial';ctx.fillText('LIGA JUVENTINO ROSAS',72,115);
+   ctx.fillStyle='#45e6f1';ctx.font='900 66px Arial';ctx.fillText('NUEVA SANCIÓN',72,205);
+   ctx.fillStyle='#b8c7ea';ctx.font='28px Arial';ctx.fillText('Borrador disciplinario local',72,252);
+
+   const box=(label,value,y)=>{
+     ctx.fillStyle='rgba(255,255,255,.055)';ctx.strokeStyle='rgba(106,227,247,.30)';ctx.lineWidth=2;
+     ctx.beginPath();ctx.roundRect(72,y,936,150,24);ctx.fill();ctx.stroke();
+     ctx.fillStyle='#8fa9df';ctx.font='700 23px Arial';ctx.fillText(label.toUpperCase(),102,y+42);
+     ctx.fillStyle='#fff';ctx.font='700 34px Arial';
+     wrapCanvas(ctx,value,102,y+90,870,40,2);
+   };
+   box('Jugador',v.player,310);
+   box('Equipo',v.team||'Sin equipo',485);
+   box('Categoría',v.category,660);
+   box('Tipo de sanción',v.sanctionLabel,835);
+   box('Motivo',v.reasonLabel,1010);
+
+   let duration='Sin suspensión por partidos';
+   if(v.matches)duration=v.matches+' partido'+(v.matches===1?'':'s')+' de suspensión';
+   if(v.until)duration='Hasta '+v.until;
+   if(v.sanctionType==='indefinite')duration='Suspensión indefinida';
+   if(v.sanctionType==='lifetime')duration='Suspensión permanente / de por vida';
+   if(v.sanctionType==='yellow')duration='Amonestación';
+   ctx.fillStyle='#45e6f1';ctx.font='800 28px Arial';ctx.fillText(duration,72,1225);
+   ctx.fillStyle='#9fb0dc';ctx.font='22px Arial';
+   ctx.fillText('Generado '+new Date().toLocaleString('es-MX')+' · Documento local',72,1280);
+
+   canvas.toBlob(blob=>{
+     if(!blob)return toast('No se pudo generar el PNG');
+     const name='sancion-'+norm(v.player).replace(/\s+/g,'-')+'.png';
+     dl(blob,name);toast('PNG guardado');
+   },'image/png',1);
+ };
+
+ syncTeams();syncPlayers();syncDuration();syncReason();
  cat.onchange=()=>{old.player='';old.team='';syncTeams();syncPlayers()};
  team.onchange=()=>{old.player='';syncPlayers()};
  search.oninput=()=>syncPlayers();
@@ -793,29 +872,12 @@ function newSanction(){
  reason.onchange=syncReason;
 
  $('[data-x-save]',m).onclick=()=>{
-   if(!player.value)return toast('Selecciona un jugador');
-   if(!reason.value)return toast('Selecciona el motivo');
-   if(reason.value==='other'&&!detail.value.trim())return toast('Escribe el detalle del motivo');
-   if((type.value==='matches'||type.value==='red')&&(Number(matches.value)||0)<1)return toast('Indica los partidos de suspensión');
-   if(type.value==='until'&&!until.value)return toast('Selecciona la fecha final');
-
-   const selectedOption=player.options[player.selectedIndex];
-   const v={
-     player:player.value,
-     team:selectedOption?.dataset?.team||team.value||'',
-     cat:selectedOption?.dataset?.cat||cat.value||'',
-     sanctionType:type.value,
-     reason:reason.value,
-     reasonDetail:reason.value==='other'?detail.value.trim():'',
-     matches:(type.value==='matches'||type.value==='red')?(Number(matches.value)||1):0,
-     until:type.value==='until'?until.value:'',
-     status:'Borrador local',
-     updatedAt:new Date().toISOString()
-   };
+   const v=collect();if(!v)return;
    write('v160-sanction-draft',v);
    log('Guardar borrador de sanción '+v.player+' · '+v.sanctionType);
    toast('Borrador de sanción guardado');
  };
+ $('[data-x-png]',m).onclick=()=>{const v=collect();if(v)savePng(v)};
  $('[data-x-discipline]',m).onclick=()=>{m.remove();go('discipline')};
 }
 function tvPanel(){
