@@ -48,12 +48,116 @@ async function mountPublications(root){await getDb();const c=category(catId);if(
  $('[data-pub-generate]',root).onclick=async e=>{e.target.disabled=true;try{const value=key=>$('[data-pub-'+key+']',root)?.value||'',m=c.matches.find(m=>m.id===value('match'));const o={round:value('round'),match:kind==='cedula'?value('match'):m?m.home+' vs '+m.away:'',team:value('team')||m?.home,team2:value('team2')||m?.away,noticeType:value('notice'),date:value('date'),note:value('note'),player:value('player')};const cv=await reportCanvas(catId,kind,o);file=new File([await blob(cv)],filename(kind,catId),{type:'image/png'});$('[data-pub-preview]',root).replaceChildren(cv);$('[data-pub-download]',root).disabled=false;$('[data-pub-share]',root).disabled=false;$('[data-pub-whatsapp]',root).href='https://wa.me/524121715599?text='+encodeURIComponent(titles[kind]+' · '+labels[catId]+' · Liga Juventino Rosas. Adjunto PNG para revisión.');notice('PNG listo · '+cv.width+' × '+cv.height+' px')}catch(e){notice(e.message)}finally{e.target.disabled=false}};
  $('[data-pub-download]',root).onclick=()=>file&&downloadFile(file);$('[data-pub-share]',root).onclick=()=>file&&shareFile(file,titles[kind]+' · '+labels[catId]+' · Presidente: 4121715599').catch(e=>{if(e.name!=='AbortError')notice(e.message)});
 }
-async function mountQuiniela(root){await getDb();const c=category(catId),p=readPredictions();const selected=localStorage.getItem('v561-quiniela-round:'+catId)||c.rounds.at(-1)?.id||'';const matches=c.matches.filter(m=>m.round===selected);let total=0;for(const m of c.matches)if(p[m.id]&&m.complete)total+=predictionPoints(p[m.id],m);
- root.innerHTML='<section class="v561-league"><header><small>PRONÓSTICOS POR CATEGORÍA</small><h2>Quiniela</h2><p>2 puntos por marcador exacto · 1 por ganador o empate.</p></header><p class="v561-hint">Tus pronósticos se guardan en este dispositivo. Para participar en el ranking oficial, entra con tu cuenta en AdminFut.</p><a class="v561-link" target="_blank" rel="noopener" href="https://www.juventinorosasliga.com/quiniela/">Participar en la quiniela oficial ↗</a><div class="v561-form"><label>Categoría<select data-q-cat>'+optionsHtml()+'</select></label><label>Jornada<select data-q-round>'+c.rounds.map(r=>'<option '+(r.id===selected?'selected':'')+'>'+esc(r.id)+'</option>').join('')+'</select></label></div><p>'+day(catId)+' · Puntos locales: '+total+'</p><div class="v561-q-matches">'+matches.map(m=>'<article data-q-match="'+esc(m.id)+'"><div><img src="'+esc(logo(m.home))+'" alt=""><b>'+esc(m.home)+'</b></div><label aria-label="Goles local"><input type="number" min="0" max="99" data-q-home value="'+(p[m.id]?.home??'')+'" '+(m.complete?'disabled':'')+'></label><span>–</span><label aria-label="Goles visitante"><input type="number" min="0" max="99" data-q-away value="'+(p[m.id]?.away??'')+'" '+(m.complete?'disabled':'')+'></label><div><img src="'+esc(logo(m.away))+'" alt=""><b>'+esc(m.away)+'</b></div><small>'+esc(m.date)+' · '+(m.complete?'Resultado: '+m.homeScore+'–'+m.awayScore+(p[m.id]?' · '+predictionPoints(p[m.id],m)+' puntos':''):esc(m.venue||'Sede por confirmar'))+'</small></article>').join('')+'</div><div class="v561-actions"><button data-q-save>Guardar pronósticos</button><button data-q-export>Descargar quiniela PNG</button></div><p data-v561-status aria-live="polite"></p></section>';
- $('[data-q-cat]',root).onchange=e=>{catId=e.target.value;localStorage.setItem('v561-category',catId);mountQuiniela(root)};$('[data-q-round]',root).onchange=e=>{localStorage.setItem('v561-quiniela-round:'+catId,e.target.value);mountQuiniela(root)};
- $('[data-q-save]',root).onclick=()=>{const next=readPredictions();let count=0;for(const row of root.querySelectorAll('[data-q-match]')){const m=matches.find(m=>m.id===row.dataset.qMatch);if(m.complete)continue;const h=$('[data-q-home]',row),a=$('[data-q-away]',row);if(h.value===''&&a.value===''){delete next[m.id];continue}if(!h.checkValidity()||!a.checkValidity()||h.value===''||a.value===''){notice('Completa ambos marcadores con enteros entre 0 y 99');return}next[m.id]={home:Number(h.value),away:Number(a.value),savedAt:new Date().toISOString()};count++}localStorage.setItem('v561-quiniela',JSON.stringify(next));notice(count+' pronósticos guardados en este dispositivo')};
- $('[data-q-export]',root).onclick=async()=>{try{const cv=await reportCanvas(catId,'quiniela',{round:selected});downloadFile(new File([await blob(cv)],filename('quiniela',catId),{type:'image/png'}))}catch(e){notice(e.message)}};
+async function mountQuiniela(root){
+ await getDb();
+ const c=category(catId),p=readPredictions();
+ if(!c)return;
+ const view=localStorage.getItem('v561-quiniela-view')||'play';
+ const rounds=(c.rounds||[]).map(r=>String(r.id));
+ const upcomingByRound=new Map();
+ for(const m of c.matches||[]){
+   if(!upcomingByRound.has(String(m.round)))upcomingByRound.set(String(m.round),[]);
+   upcomingByRound.get(String(m.round)).push(m);
+ }
+ const suggested=[...rounds].reverse().find(r=>(upcomingByRound.get(r)||[]).some(m=>!m.complete))||rounds.at(-1)||'';
+ const selected=localStorage.getItem('v561-quiniela-round:'+catId)||suggested;
+ if(!rounds.includes(String(selected))&&suggested)localStorage.setItem('v561-quiniela-round:'+catId,suggested);
+ const round=rounds.includes(String(selected))?String(selected):String(suggested);
+ const matches=(c.matches||[]).filter(m=>String(m.round)===round);
+ let total=0,exact=0,outcome=0,scored=0,savedCount=0;
+ for(const m of c.matches||[]){
+   if(p[m.id])savedCount++;
+   if(p[m.id]&&m.complete){
+     const pts=predictionPoints(p[m.id],m);total+=pts;scored++;
+     if(pts===2)exact++;else if(pts===1)outcome++;
+   }
+ }
+ const teamCard=(m,side)=>{
+   const name=side==='home'?m.home:m.away,src=logo(name);
+   return '<div class="v618-q-team '+side+'">'+(src?'<img src="'+esc(src)+'" alt="'+esc(name)+'">':'<span class="v618-q-fallback">'+esc(String(name||'?').slice(0,2).toUpperCase())+'</span>')+'<b>'+esc(name)+'</b></div>';
+ };
+ const scoreInputs=m=>{
+   const saved=p[m.id],disabled=m.complete?'disabled':'';
+   return '<div class="v618-q-score">'+
+     '<input type="number" inputmode="numeric" min="0" max="99" data-q-home aria-label="Goles de '+esc(m.home)+'" value="'+(saved?.home??'')+'" '+disabled+'>'+
+     '<span>:</span>'+
+     '<input type="number" inputmode="numeric" min="0" max="99" data-q-away aria-label="Goles de '+esc(m.away)+'" value="'+(saved?.away??'')+'" '+disabled+'>'+
+   '</div>';
+ };
+ const card=m=>{
+   const saved=p[m.id],pts=saved&&m.complete?predictionPoints(saved,m):null;
+   const status=m.complete
+     ?'<span class="v618-q-status done">Final · '+esc(m.homeScore)+'–'+esc(m.awayScore)+(saved?' · '+pts+' pt'+(pts===1?'':'s'):'')+'</span>'
+     :(saved?'<span class="v618-q-status saved">✓ '+saved.home+'–'+saved.away+' guardado</span>':'<span class="v618-q-status open">Pronostica antes del inicio</span>');
+   return '<article class="v618-q-card" data-q-match="'+esc(m.id)+'">'+
+     '<div class="v618-q-card-top"><small>Jornada '+esc(m.round)+'</small><time>'+esc(m.date||'Fecha por confirmar')+(m.time?' · '+esc(m.time):'')+'</time></div>'+
+     '<div class="v618-q-card-main">'+teamCard(m,'home')+
+       '<div class="v618-q-center">'+scoreInputs(m)+
+         (!m.complete?'<button type="button" class="v618-q-save-one" data-q-save-one="'+esc(m.id)+'">Guardar pronóstico</button>':'')+
+         status+
+       '</div>'+teamCard(m,'away')+
+     '</div>'+
+     '<div class="v618-q-venue">'+esc(m.venue||'Sede por confirmar')+'</div>'+
+   '</article>';
+ };
+ const cats=order.filter(id=>db.categories[id]).map(id=>'<button type="button" class="v618-q-cat '+(catId===id?'active':'')+'" data-q-cat-button="'+id+'">'+esc(labels[id])+'</button>').join('');
+ const nav='<div class="v618-q-nav"><button type="button" class="'+(view==='play'?'active':'')+'" data-q-view="play">Pronosticar</button><button type="button" class="'+(view==='history'?'active':'')+'" data-q-view="history">Histórico</button><button type="button" class="'+(view==='ranking'?'active':'')+'" data-q-view="ranking">Ranking</button></div>';
+ const rules='<section class="v618-q-rules"><b>🏆 Pronostica el marcador exacto de cada partido</b><p><span>2 pts</span> si aciertas el marcador exacto · <span>1 pt</span> si aciertas ganador o empate.</p><small>⌛ Solo puedes editar antes de que el partido quede registrado como finalizado.</small></section>';
+ let body='';
+ if(view==='ranking'){
+   body='<section class="v618-q-ranking">'+
+     '<div class="v618-q-rank-hero"><small>MI RANKING EN ESTA APP</small><strong>'+total+' pts</strong><span>'+savedCount+' pronósticos guardados</span></div>'+
+     '<div class="v618-q-stats"><div><b>'+exact+'</b><small>Exactos · 2 pts</small></div><div><b>'+outcome+'</b><small>Ganador/empate · 1 pt</small></div><div><b>'+scored+'</b><small>Evaluados</small></div></div>'+
+     '<p class="v618-q-local-note">Tu quiniela y tu puntuación se calculan aquí mismo, dentro de Liga Juventino Rosas. No abre AdminFut ni otra página.</p>'+
+   '</section>';
+ }else if(view==='history'){
+   const finished=(c.matches||[]).filter(m=>m.complete).sort((a,b)=>String(b.date||'').localeCompare(String(a.date||'')));
+   const grouped=new Map();
+   for(const m of finished){const r=String(m.round||'—');if(!grouped.has(r))grouped.set(r,[]);grouped.get(r).push(m)}
+   body='<section class="v618-q-history">'+
+     (grouped.size?[...grouped.entries()].map(([r,rows])=>'<div class="v618-q-history-round"><header><b>Jornada '+esc(r)+'</b><span>'+rows.filter(m=>p[m.id]).length+' pronosticados</span></header>'+rows.map(card).join('')+'</div>').join(''):'<div class="v618-q-empty">Todavía no hay partidos finalizados en esta categoría.</div>')+
+   '</section>';
+ }else{
+   body='<div class="v618-q-round"><span>'+esc(c.name)+'</span><label>Jornada <select data-q-round>'+rounds.map(r=>'<option value="'+esc(r)+'" '+(r===round?'selected':'')+'>'+esc(r)+'</option>').join('')+'</select></label></div>'+
+     '<h3 class="v618-q-section-title">En juego — pronostica ahora</h3>'+
+     '<div class="v561-q-matches v618-q-matches">'+(matches.length?matches.map(card).join(''):'<div class="v618-q-empty">No hay partidos publicados en esta jornada.</div>')+'</div>'+
+     '<div class="v561-actions v618-q-actions"><button data-q-save>Guardar todos</button><button data-q-export>Descargar quiniela PNG</button></div>';
+ }
+ root.innerHTML='<section class="v561-league v618-quiniela">'+
+   '<header class="v618-q-head"><small>QUINIELA PROPIA · LIGA JUVENTINO</small><h2>Quiniela</h2><p>Pronósticos, historial y puntos sin salir de esta app.</p></header>'+
+   nav+rules+
+   '<div class="v618-q-cats">'+cats+'</div>'+
+   '<select data-q-cat hidden>'+optionsHtml()+'</select>'+
+   body+
+   '<p data-v561-status aria-live="polite"></p>'+
+ '</section>';
+
+ root.querySelectorAll('[data-q-view]').forEach(btn=>btn.onclick=()=>{localStorage.setItem('v561-quiniela-view',btn.dataset.qView);mountQuiniela(root)});
+ root.querySelectorAll('[data-q-cat-button]').forEach(btn=>btn.onclick=()=>{catId=btn.dataset.qCatButton;localStorage.setItem('v561-category',catId);mountQuiniela(root)});
+ const hiddenCat=$('[data-q-cat]',root);if(hiddenCat)hiddenCat.onchange=e=>{catId=e.target.value;localStorage.setItem('v561-category',catId);mountQuiniela(root)};
+ const roundSelect=$('[data-q-round]',root);if(roundSelect)roundSelect.onchange=e=>{localStorage.setItem('v561-quiniela-round:'+catId,e.target.value);mountQuiniela(root)};
+
+ const saveRow=row=>{
+   const next=readPredictions(),m=(c.matches||[]).find(x=>x.id===row.dataset.qMatch);
+   if(!m||m.complete)return false;
+   const h=$('[data-q-home]',row),a=$('[data-q-away]',row);
+   if(h.value===''&&a.value===''){delete next[m.id];localStorage.setItem('v561-quiniela',JSON.stringify(next));return true}
+   if(!h.checkValidity()||!a.checkValidity()||h.value===''||a.value===''){notice('Completa ambos marcadores con enteros entre 0 y 99');return false}
+   next[m.id]={home:Number(h.value),away:Number(a.value),savedAt:new Date().toISOString()};
+   localStorage.setItem('v561-quiniela',JSON.stringify(next));return true;
+ };
+ root.querySelectorAll('[data-q-save-one]').forEach(btn=>btn.onclick=()=>{
+   const row=btn.closest('[data-q-match]');if(saveRow(row)){notice('Pronóstico guardado en Liga Juventino');mountQuiniela(root)}
+ });
+ const saveAll=$('[data-q-save]',root);
+ if(saveAll)saveAll.onclick=()=>{
+   let count=0;for(const row of root.querySelectorAll('[data-q-match]'))if(saveRow(row))count++;
+   notice(count+' pronósticos guardados en Liga Juventino');mountQuiniela(root);
+ };
+ const exportBtn=$('[data-q-export]',root);
+ if(exportBtn)exportBtn.onclick=async()=>{try{const cv=await reportCanvas(catId,'quiniela',{round});downloadFile(new File([await blob(cv)],filename('quiniela',catId),{type:'image/png'}))}catch(e){notice(e.message)}};
 }
+
 function addEntry(root,route,title){if(root.querySelector('[data-v561-route="'+route+'"]'))return;const b=document.createElement('button');b.type='button';b.className='v561-tool-entry';b.dataset.v561Route=route;b.textContent=title+' ›';b.onclick=()=>location.hash='#/'+route;root.append(b)}
 function brandExistingExports(){
  const exports=window.CompetitionExports;if(!exports)return;
