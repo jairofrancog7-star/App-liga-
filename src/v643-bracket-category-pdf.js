@@ -38,7 +38,7 @@ function injectCss(){
     '.v643-head:after{content:"";position:absolute;right:-28px;top:-48px;width:180px;height:180px;border-radius:50%;border:28px solid rgba(27,224,245,.06);pointer-events:none;}',
     '.v643-brand{display:flex;align-items:center;gap:11px;position:relative;z-index:1}.v643-brand img{width:54px;height:54px;object-fit:contain;filter:drop-shadow(0 6px 10px rgba(0,0,0,.25));}.v643-brand small{display:block;color:#42e7f4;font-size:11px;font-weight:900;letter-spacing:.08em}.v643-brand h1{margin:3px 0 0;font-size:25px;line-height:1.02;letter-spacing:-.03em}.v643-head p{position:relative;z-index:1;margin:9px 0 0;color:#c7d0ff;font-size:12.5px;line-height:1.4;max-width:38rem;}',
     '.v643-cat-card{margin-top:12px;display:grid;grid-template-columns:54px minmax(0,1fr);gap:10px;align-items:center;background:#0b1175;border:1px solid rgba(74,100,255,.6);border-radius:18px;padding:10px;box-shadow:inset 0 0 20px rgba(25,225,242,.035)}',
-    '.v643-cat-logo{width:54px;height:54px;border-radius:16px;background:#080d66;border:1px solid rgba(79,112,255,.58);display:grid;place-items:center}.v643-cat-logo img{width:46px;height:46px;object-fit:contain}.v643-cat-fields label{display:block;color:#58e8f4;font-size:10px;font-weight:900;letter-spacing:.08em;margin:0 0 6px 2px}.v643-cat-fields select{width:100%;height:46px;border:1px solid #3546ba;border-radius:14px;background:#101474;color:#fff;padding:0 40px 0 13px;font-weight:850;font-size:14px;outline:none;}',
+    '.v643-cat-logo{width:54px;height:54px;border-radius:16px;background:#080d66;border:1px solid rgba(79,112,255,.58);display:grid;place-items:center}.v643-cat-logo img{width:46px;height:46px;object-fit:contain}.v643-cat-fields{display:grid;grid-template-columns:1fr 1fr;gap:8px}.v643-cat-fields label{display:block;color:#58e8f4;font-size:10px;font-weight:900;letter-spacing:.08em;margin:0 0 6px 2px}.v643-cat-fields select{width:100%;height:46px;border:1px solid #3546ba;border-radius:14px;background:#101474;color:#fff;padding:0 30px 0 10px;font-weight:850;font-size:12px;outline:none;}',
     '.v643-top-actions{display:flex;gap:8px;margin-top:10px}.v643-soft-btn{height:40px;border:1px solid #3754d8;border-radius:12px;background:#101b8b;color:#fff;padding:0 13px;font-weight:850;font-size:12px}.v643-soft-btn:active{transform:translateY(1px)}',
     '.v643-section-title{display:flex;align-items:end;justify-content:space-between;gap:10px;margin:17px 2px 9px}.v643-section-title span small{display:block;color:#42e7f4;font-size:10px;font-weight:900;letter-spacing:.08em}.v643-section-title span b{display:block;margin-top:2px;font-size:17px}.v643-section-title em{font-style:normal;color:#a9b3e3;font-size:10px;text-align:right}',
     '.v643-slots{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}.v643-slot{min-width:0;background:#0d1174;border:1px solid #2a3bb6;border-radius:16px;padding:9px;box-shadow:inset 0 0 0 1px rgba(255,255,255,.02)}.v643-slot-top{display:flex;align-items:center;gap:7px;margin-bottom:7px}.v643-slot-num{width:25px;height:25px;border-radius:50%;display:grid;place-items:center;background:#174dff;border:1px solid #4d79ff;color:#fff;font-weight:950;font-size:12px;box-shadow:0 0 13px rgba(25,225,242,.14)}.v643-slot-top b{font-size:12px}.v643-slot-pick{display:grid;grid-template-columns:38px minmax(0,1fr);gap:7px;align-items:center}.v643-team-logo{width:38px;height:38px;border-radius:11px;background:#070b5d;border:1px solid rgba(82,106,217,.7);display:grid;place-items:center;overflow:hidden}.v643-team-logo img{width:32px;height:32px;object-fit:contain}.v643-slot select{min-width:0;width:100%;height:40px;border:1px solid #2937a0;border-radius:11px;background:#111571;color:#fff;padding:0 28px 0 9px;font-size:11px;font-weight:800;outline:none;text-overflow:ellipsis;}',
@@ -425,27 +425,41 @@ async function mount(){
   page.innerHTML=
     '<section class="v643-head">'+
       '<div class="v643-brand"><img src="'+esc(LEAGUE_LOGO)+'" alt=""><span><small>LIGA JUVENTINO ROSAS</small><h1>Cuadro final por categoría</h1></span></div>'+
-      '<p>Selecciona la categoría y los ocho lugares. El PNG y el PDF incluyen logos de equipos, logo de la Liga, logo de categoría, líneas corregidas y el trofeo de la Final.</p>'+
+      '<p>Selecciona la categoría, la etapa y los equipos. El generador evita repetidos y exporta PNG/PDF en alta resolución.</p>'+
     '</section>'+
     '<section class="v643-cat-card">'+
       '<span class="v643-cat-logo"><img data-v643-cat-logo src="'+esc(meta.logo)+'" alt=""></span>'+
-      '<div class="v643-cat-fields"><label>CATEGORÍA</label><select data-v643-cat>'+CATS.map(c=>'<option value="'+c.id+'" '+(c.id===cat?'selected':'')+'>'+esc(c.name)+'</option>').join('')+'</select></div>'+
+      '<div class="v643-cat-fields"><label>CATEGORÍA<select data-v643-cat>'+CATS.map(c=>'<option value="'+c.id+'" '+(c.id===cat?'selected':'')+'>'+esc(c.name)+'</option>').join('')+'</select></label><label>ETAPA<select data-v647-stage><option value="quarter">Cuartos de final</option><option value="semi">Semifinales</option><option value="final">Final</option></select></label></div>'+
     '</section>'+
-    '<div class="v643-top-actions"><button type="button" class="v643-soft-btn" data-v643-top8>Cargar Top 8 de clasificación</button><button type="button" class="v643-soft-btn" data-v643-clear>Limpiar</button></div>'+
-    '<div class="v643-section-title"><span><small>CLASIFICADOS</small><b>Lugares 1–8</b></span><em>Solo aparecen equipos<br>de la categoría elegida</em></div>'+
+    '<div class="v643-top-actions"><button type="button" class="v643-soft-btn" data-v643-top8>Cargar clasificación</button><button type="button" class="v643-soft-btn" data-v643-clear>Limpiar</button></div>'+
+    '<div class="v643-section-title"><span><small>CLASIFICADOS</small><b data-v647-slot-title>Lugares 1–8</b></span><em data-v647-slot-hint>Sin equipos repetidos<br>Cuartos de final</em></div>'+
     '<section class="v643-slots" data-v643-slots></section>'+
     '<div class="v643-section-title"><span><small>VISTA PREVIA</small><b>Cuadro final</b></span><em>Diseño Competición / Simulador</em></div>'+
     '<section class="v643-preview-card"><canvas data-v643-preview width="1684" height="1190"></canvas><div class="v643-preview-note"><span>Logo Liga + categoría + equipos</span><b>Trofeo de Final</b></div></section>'+
-    '<div class="v643-export"><button type="button" data-v643-png>Generar cuadro PNG</button><button type="button" data-v643-pdf>Generar cuadro PDF</button></div>'+
+    '<div class="v643-export"><button type="button" data-v643-png>Generar PNG HD</button><button type="button" data-v643-pdf>Generar PDF</button></div>'+
     '<div class="v643-status" data-v643-status aria-live="polite"></div>';
 
   const catSel=page.querySelector('[data-v643-cat]');
+  const stageSel=page.querySelector('[data-v647-stage]');
+  stageSel.value=v647StageValue(page);
+  const syncStageCopy=()=>{
+    const st=v647StageValue(page),n=STAGES[st].slots;
+    const t=page.querySelector('[data-v647-slot-title]'),h=page.querySelector('[data-v647-slot-hint]'),b=page.querySelector('[data-v643-top8]');
+    if(t)t.textContent=n===8?'Lugares 1–8':n===4?'Semifinalistas 1–4':'Finalistas 1–2';
+    if(h)h.innerHTML='Sin equipos repetidos<br>'+STAGES[st].name;
+    if(b)b.textContent='Cargar Top '+n+' de clasificación';
+  };
   renderSlots(page,cat,false);
+  syncStageCopy();
   catSel.addEventListener('change',()=>{
     const id=catSel.value,m=catMeta(id);
     try{localStorage.setItem('v643-bracket-cat',id);localStorage.setItem('v62-category',id)}catch(_){}
     const im=page.querySelector('[data-v643-cat-logo]');if(im)im.src=m.logo;
-    renderSlots(page,id,false);queuePreview(page);
+    renderSlots(page,id,false);syncStageCopy();queuePreview(page);
+  });
+  stageSel.addEventListener('change',()=>{
+    try{localStorage.setItem('v647-bracket-stage',stageSel.value)}catch(_){}
+    renderSlots(page,catSel.value,true);syncStageCopy();queuePreview(page);
   });
   page.querySelector('[data-v643-top8]')?.addEventListener('click',()=>{
     const ranked=rankedTeams(catSel.value);
