@@ -16,6 +16,8 @@ const LIVE_KEY='ljr-match-live-v144:';
 const GLOBAL_SOURCE_KEY='ljr-live-source-v144';
 const LIST_KEY='ljr-stream-list-v196:';
 const SETTINGS_KEY='ljr-stream-settings-v196';
+const viewerSources=new Map();
+const viewing=(c,s)=>viewerSources.has(c.key)&&!window.LJR_MEDIA?.admin?{...s,source:{...s.source,...viewerSources.get(c.key)}}:s;
 const $=(s,r=document)=>r.querySelector(s);
 const $$=(s,r=document)=>Array.from(r.querySelectorAll(s));
 const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -53,7 +55,7 @@ function liveState(c){
       if(api.source&&isOldGenericFacebook(api.source.url,api.source.name)){
         api.source.url='';api.source.name='';api.source.feedUrl='';api.source.connected=false;api.source.lastSync=0;
       }
-      return api;
+      return viewing(c,api);
     }
   }catch(_){}
   try{
@@ -63,7 +65,7 @@ function liveState(c){
         s.source.url='';s.source.name='';s.source.feedUrl='';s.source.connected=false;s.source.lastSync=0;
         try{localStorage.setItem(LIVE_KEY+c.key,JSON.stringify(s))}catch(_){}
       }
-      return s;
+      return viewing(c,s);
     }
   }catch(_){}
   return {v:144,key:c.key,home:c.home,away:c.away,source:{url:'',name:'',feedUrl:'',connected:false,lastSync:0},phase:'scheduled',events:[],suggestions:[],updatedAt:Date.now()};
@@ -302,7 +304,7 @@ function saveList(c,list){
   window.LJR_MATCH_LIVE?.publishState?.();
 }
 function setCurrentSource(c,item){
-  if(!window.LJR_MEDIA?.admin)return;
+  if(!window.LJR_MEDIA?.admin){if(!safeUrl(item?.url))return;viewerSources.set(c.key,{url:item.url,name:provider(item.url).name});lastSig='';schedule(20);return}
   const url=safeUrl(item?.url);if(!url)return;
   try{const q=new URL(location.href);q.searchParams.delete('live');q.searchParams.delete('liveName');history.replaceState(history.state,'',q.href)}catch(_){}
   const s=liveState(c);
@@ -383,6 +385,7 @@ function hubHtml(c,s){
       '<button type="button" data-v196-floating class="'+(floatOn?'active':'')+' '+(current&&!cap.inApp?'unsupported':'')+'"><span>▣</span><b>Flotante</b><small>'+floatLabel+'</small></button>'+
       '<button type="button" data-v196-settings><span>⚙</span><b>Ajustes</b><small>Reproducción</small></button>'+
     '</div>'+
+    '<div class="v612-platform-modes" aria-label="Modo de transmisión">'+['facebook','youtube','tiktok'].map(k=>'<button data-view-platform="'+k+'" class="'+(provider(current?.url).key===k?'active':'')+'">'+({facebook:'Facebook',youtube:'YouTube',tiktok:'TikTok'}[k])+'</button>').join('')+'</div>'+
     (list.length>1?'<div class="v196-source-rail">'+list.map((x,i)=>sourceButton(x,i,current)).join('')+'</div>':'')+
     '<section class="v196-player-card '+(floatOn?'floating-ready':'')+'" data-v196-player-card>'+
       '<div class="v196-player-head"><span><small>'+(st.live?'REPRODUCIENDO EN VIVO':st.key==='final'?'REPETICIÓN / RESUMEN':'TRANSMISIÓN PREPARADA')+'</small><b>'+esc(current?.name||s?.source?.name||'Liga Juventino Live')+'</b></span><div><button type="button" data-v196-multi title="Múltiples transmisiones">+'+Math.max(0,sourceCount-1)+'</button>'+(cap.pip?'<button type="button" data-v196-pip title="Picture-in-Picture">PiP</button>':'')+'<button type="button" data-v196-close-float title="Cerrar flotante">×</button></div></div>'+
@@ -591,6 +594,7 @@ function bind(c,node){
   if(card?.querySelector('video'))enableDirectStream(card.querySelector('video'));
   if(card)attachPlayerControls(card,{pip:()=>openSystemPiP(c,node),settings:()=>playbackSettings(card),cast:()=>window.LJR_MATCH_LIVE?.openCast?.(),notify:flash,changeSource:window.LJR_MEDIA?.admin?()=>addSourceModal(c):undefined});
   const stop=e=>{e?.preventDefault?.();e?.stopPropagation?.()};
+  $$('[data-view-platform]',node).forEach(b=>b.onclick=()=>{const item=list.find(x=>provider(x.url).key===b.dataset.viewPlatform);if(item)setCurrentSource(c,item);else if(window.LJR_MEDIA?.admin)addSourceModal(c);else flash('La Liga todavía no ha publicado un enlace de '+b.textContent+'.')});
   $$('[data-v196-open]',node).forEach(b=>b.onclick=e=>{stop(e);openExternal(b.dataset.v196Open)});
   $$('[data-v196-add]',node).forEach(b=>b.onclick=e=>{stop(e);addSourceModal(c)});
   $('[data-v196-events]',node)?.addEventListener('click',e=>{stop(e);eventsModal(c)});

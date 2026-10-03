@@ -370,7 +370,7 @@ function schedule(){requestAnimationFrame(()=>requestAnimationFrame(render))}
 /* V93 — desde tablas, rankings, tarjetas y nombres de equipos vuelve a abrirse
    la ficha completa. No captura navegación inferior ni controles internos V42. */
 document.addEventListener('click',async e=>{
- if(route()==='teamDetail'||route()==='club-store')return;
+ if(['teamDetail','club-store','quizArena','moreLess','moreLessGallery'].includes(route())||e.target.closest?.('.liga-media-modal'))return;
  if(route()==='v4-calendar'&&e.target instanceof Element&&e.target.closest('[data-v415-calendar]'))return;
  if(!(e.target instanceof Element))return;
  if(e.target.closest('[data-v66-directory="store"],[data-v431-store]'))return;

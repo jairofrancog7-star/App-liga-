@@ -9,6 +9,9 @@ window.__LJR_V608_CIRCLE_FULL_FACE_HARDLOCK__=true;
 
 const FACE_IMAGES=[
   '.v576-player-photo',
+  '.v576-pitch-photo>img',
+  '.v576-bench-photo>img',
+  '.v576-mini-photo>img',
   '.v576-player-avatar>img',
   '.v66-player-avatar>img',
   '.v42-avatar>img',
@@ -270,15 +273,13 @@ function visualCircleFrame(img){
   }
   return parentCircle||imageCircle;
 }
-function cssImageUrl(src){
-  return 'url("'+String(src||'').replace(/["\\]/g,'\\function clearFaceCrop(img){')+'")';
-}
+
 function prepareCircleFallback(img){
   const p=img?.parentElement;
   if(!p)return false;
   p.classList.add('ljr-face-circle-v606');
   const src=img.currentSrc||img.src||'';
-  if(src)p.style.setProperty('--ljr-circle-face-bg',cssImageUrl(src));
+  p.style.removeProperty('--ljr-circle-face-bg');p.style.setProperty('background-image','none','important');
 
   /* V608: HARDLOCK inline !important.
      La foto ORIGINAL entra completa en el círculo. No se vuelve a recortar
@@ -297,7 +298,7 @@ function prepareCircleFallback(img){
     'min-width':'0','min-height':'0','max-width':'100%','max-height':'100%',
     'margin':'0','padding':'0','display':'block',
     'object-fit':'contain','object-position':'center center',
-    'transform':'none','clip-path':'none',
+    'transform':'scale(.78)','clip-path':'none',
     'border-radius':'inherit','box-sizing':'border-box'
   };
   for(const [k,v] of Object.entries(important))img.style.setProperty(k,v,'important');

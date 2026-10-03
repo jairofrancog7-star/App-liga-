@@ -43,4 +43,4 @@ body.v28-match-active:is([data-app-route="match-center"],[data-app-route="v4-mat
 .v610-narration label{display:flex;gap:8px;align-items:center}.v610-narration small{color:#aebce0}
 .v610-narration .v610-row{display:flex;gap:8px;flex-wrap:wrap}.v610-narration button{padding:10px;background:#182774;border:1px solid #4a5795;border-radius:12px;color:#73e9f0}
 body:not(.liga-editor) :is(.v144-ai,.v610-narration,.v144-operator,.v144-suggestions,[data-v144-config],[data-v144-undo],[data-v196-add],[data-v196-multi],[data-v561-camera-open]){display:none!important}
-body:not(.liga-editor) :is([data-v196-network],[data-v196-sources],.v196-source-rail,.v144-platforms){display:none!important}
+body:not(.liga-editor) :is([data-v196-network],[data-v196-sources]){display:none!important}
