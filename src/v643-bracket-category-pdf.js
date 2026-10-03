@@ -1,14 +1,14 @@
-/* V651 — Dos estilos de bracket con vista previa independiente.
+/* V652 — Dos estilos de bracket fieles a las dos referencias.
    Diseño 1: ROUND OF 16 / cuadro horizontal con balón-esfera, barras y trofeo central.
    Diseño 2: FULL BRACKET / tarjetas verticales en los extremos, rondas hacia el centro y trofeo central.
    Automático: 9–16 Octavos · 5–8 Cuartos · 3–4 Semifinales · 2 Final.
    Evita equipos repetidos y usa PASE DIRECTO cuando la llave no está completa. */
 (function(){
 'use strict';
-if(window.__LJR_V651_DUAL_BRACKET__)return;
-window.__LJR_V651_DUAL_BRACKET__=true;
+if(window.__LJR_V652_EXACT_BRACKETS__)return;
+window.__LJR_V652_EXACT_BRACKETS__=true;
 
-const BUILD='20261003-v651-dual-reference-brackets';
+const BUILD='20261003-v652-reference-exact-brackets';
 const CATS=[
   {id:'3',name:'Primera Fuerza',logo:'./assets/branding/primera-fuerza-hd.png'},
   {id:'5',name:'Intermedia',logo:'./assets/categories/intermedia.webp'},
@@ -23,13 +23,13 @@ const STAGES={
   final:{name:'Final',short:'GRAN FINAL',slots:2}
 };
 const DESIGNS={
-  round:{name:'Diseño 1 · Round of 16',slug:'round-of-16'},
-  full:{name:'Diseño 2 · Full Bracket',slug:'full-bracket'}
+  round:{name:'Diseño 1 · Round of 16 exacto',slug:'round-of-16'},
+  full:{name:'Diseño 2 · Full Bracket exacto',slug:'full-bracket'}
 };
 const LEAGUE_LOGO='./assets/liga-logo.webp';
 const TROPHY='./assets/reference/final-trophy-drive.png';
 const TROPHY_FALLBACK='./final-trophy-drive.png';
-const W=1350,H=1688;
+const W=1228,H=1536;
 const imgCache=new Map();
 let mountTimer=0,previewTimer=0,previewToken=0;
 
@@ -187,144 +187,269 @@ const SEED8=[[1,8],[4,5],[2,7],[3,6]];
 /* =========================
    DISEÑO 1 · ROUND OF 16
    ========================= */
+function exactTitleFont(size){return '900 '+size+'px "Arial Narrow","Roboto Condensed",Impact,Arial,sans-serif'}
+function exactBodyFont(size,weight){return String(weight||900)+' '+size+'px "Arial Narrow","Roboto Condensed",Arial,sans-serif'}
+function drawLeagueFooter(ctx){
+  ctx.textAlign='center';
+  ctx.fillStyle='#fff';ctx.font=exactTitleFont(34);ctx.fillText('LJR',W/2,H-105);
+  ctx.fillStyle='#fff';ctx.font=exactBodyFont(13,800);ctx.letterSpacing='5px';ctx.fillText('LIGA JUVENTINO ROSAS',W/2,H-77);
+  ctx.letterSpacing='0px';ctx.textAlign='left';
+}
+
+/* =========================
+   DISEÑO 1 · ROUND OF 16
+   Reproduce la composición de la primera referencia:
+   título enorme, esfera azul, tarjetas horizontales, llaves blancas y trofeo central.
+   ========================= */
 function roundBackground(ctx){
-  const bg=ctx.createLinearGradient(0,0,W,H);bg.addColorStop(0,'#07111f');bg.addColorStop(.25,'#07307a');bg.addColorStop(.62,'#062878');bg.addColorStop(1,'#071126');ctx.fillStyle=bg;ctx.fillRect(0,0,W,H);
-  const sphere=ctx.createRadialGradient(W/2,620,80,W/2,620,570);sphere.addColorStop(0,'rgba(20,84,236,.44)');sphere.addColorStop(.6,'rgba(0,114,255,.20)');sphere.addColorStop(1,'rgba(0,0,0,0)');ctx.fillStyle=sphere;ctx.fillRect(0,180,W,1120);
-  ctx.save();ctx.globalAlpha=.23;ctx.strokeStyle='#4da8ff';ctx.lineWidth=3;
-  for(let i=0;i<8;i++){ctx.beginPath();ctx.arc(W/2,620,220+i*42,Math.PI*.18,Math.PI*.82);ctx.stroke()}
-  for(let a=-2;a<=2;a++){ctx.beginPath();ctx.moveTo(W/2+a*135,285);ctx.quadraticCurveTo(W/2+a*45,620,W/2+a*165,1050);ctx.stroke()}
+  const bg=ctx.createLinearGradient(0,0,W,H);
+  bg.addColorStop(0,'#09101f');bg.addColorStop(.22,'#07377e');bg.addColorStop(.55,'#064aa8');bg.addColorStop(.78,'#0a347e');bg.addColorStop(1,'#09101d');
+  ctx.fillStyle=bg;ctx.fillRect(0,0,W,H);
+
+  const topGlow=ctx.createRadialGradient(W*.49,330,20,W*.49,330,430);
+  topGlow.addColorStop(0,'rgba(53,138,255,.42)');topGlow.addColorStop(.65,'rgba(14,83,200,.18)');topGlow.addColorStop(1,'rgba(0,0,0,0)');
+  ctx.fillStyle=topGlow;ctx.fillRect(0,120,W,720);
+
+  const globe=ctx.createRadialGradient(W/2,680,70,W/2,680,535);
+  globe.addColorStop(0,'rgba(12,83,232,.52)');globe.addColorStop(.60,'rgba(13,102,243,.28)');globe.addColorStop(1,'rgba(0,0,0,0)');
+  ctx.fillStyle=globe;ctx.fillRect(40,250,W-80,1000);
+
+  ctx.save();
+  ctx.globalAlpha=.22;ctx.strokeStyle='#5e9fff';ctx.lineWidth=3;
+  ctx.beginPath();ctx.arc(W/2,682,420,Math.PI*.03,Math.PI*.97);ctx.stroke();
+  ctx.beginPath();ctx.arc(W/2,682,330,Math.PI*.04,Math.PI*.96);ctx.stroke();
+  ctx.beginPath();ctx.arc(W/2,682,245,Math.PI*.07,Math.PI*.93);ctx.stroke();
+  for(let k=-3;k<=3;k++){
+    ctx.beginPath();
+    ctx.moveTo(W/2+k*95,285);
+    ctx.bezierCurveTo(W/2+k*35,475,W/2+k*35,855,W/2+k*105,1110);
+    ctx.stroke();
+  }
   ctx.restore();
-  const mag=ctx.createRadialGradient(W*.82,1000,20,W*.82,1000,280);mag.addColorStop(0,'rgba(232,35,255,.33)');mag.addColorStop(1,'rgba(0,0,0,0)');ctx.fillStyle=mag;ctx.fillRect(W*.58,720,520,520);
+
+  const cyan=ctx.createRadialGradient(160,580,20,160,580,260);
+  cyan.addColorStop(0,'rgba(28,183,255,.40)');cyan.addColorStop(1,'rgba(0,0,0,0)');
+  ctx.fillStyle=cyan;ctx.fillRect(0,330,460,540);
+  const mag=ctx.createRadialGradient(W-185,1020,20,W-185,1020,300);
+  mag.addColorStop(0,'rgba(242,35,255,.38)');mag.addColorStop(1,'rgba(0,0,0,0)');
+  ctx.fillStyle=mag;ctx.fillRect(W-520,730,520,600);
 }
 async function roundHeader(ctx,meta,stage){
-  const league=await imageLoad(LEAGUE_LOGO),cat=await imageLoad(meta.logo);
-  if(league)drawContain(ctx,league,45,38,78,78);
-  if(cat)drawContain(ctx,cat,W-123,38,78,78);
-  ctx.textAlign='center';ctx.fillStyle='#fff';ctx.font='900 78px Arial';ctx.fillText(STAGES[stage].short,W/2,124);
-  ctx.fillStyle='#fff';ctx.font='900 28px Arial';ctx.fillText('LIGA JUVENTINO ROSAS · '+meta.name.toUpperCase(),W/2,170);ctx.textAlign='left';
+  ctx.textAlign='center';
+  ctx.fillStyle='#fff';ctx.font=exactTitleFont(stage==='r16'?116:96);
+  ctx.fillText(stage==='r16'?'ROUND OF 16':STAGES[stage].short,W/2,170);
+  ctx.fillStyle='#fff';ctx.font=exactTitleFont(42);
+  ctx.fillText('LIGA JUVENTINO ROSAS',W/2,246);
+  ctx.fillStyle='#dbe6ff';ctx.font=exactBodyFont(18,900);
+  ctx.fillText(meta.name.toUpperCase(),W/2,282);
+  ctx.textAlign='left';
 }
 async function roundTeam(ctx,seed,name,x,y,w,h,side){
   const g=ctx.createLinearGradient(x,y,x+w,y);
-  if(side==='right'){g.addColorStop(0,'rgba(2,10,35,.96)');g.addColorStop(.75,'rgba(8,48,190,.96)');g.addColorStop(1,'rgba(11,84,255,.98)')}
-  else{g.addColorStop(0,'rgba(11,84,255,.98)');g.addColorStop(.25,'rgba(8,48,190,.96)');g.addColorStop(1,'rgba(2,10,35,.96)')}
-  fillR(ctx,x,y,w,h,7,g,'rgba(70,115,255,.75)',2);
-  const logo=await imageLoad(teamLogo(name)),box=h-12,bx=side==='right'?x+w-box-6:x+6;
-  if(name&&logo)drawContain(ctx,logo,bx+4,y+10,box-8,box-8);
-  const tx=side==='right'?x+16:x+box+17,max=w-box-34,label=name||'PASE DIRECTO';
-  ctx.fillStyle=name?'#fff':'#7eeef5';fitFont(ctx,label,max,22,12,900);ctx.fillText(label,tx,y+h/2+8);
+  if(side==='right'){g.addColorStop(0,'#07102c');g.addColorStop(.68,'#092e9c');g.addColorStop(1,'#124cff')}
+  else{g.addColorStop(0,'#124cff');g.addColorStop(.32,'#092e9c');g.addColorStop(1,'#07102c')}
+  fillR(ctx,x,y,w,h,4,g,'rgba(84,128,255,.70)',2);
+
+  const logo=await imageLoad(teamLogo(name));
+  const box=h-10,bx=side==='right'?x+w-box-6:x+6;
+  if(logo)drawContain(ctx,logo,bx+3,y+8,box-6,box-6);
+
+  const label=name||'PASE DIRECTO';
+  const tx=side==='right'?x+16:x+box+17;
+  const max=w-box-38;
+  ctx.fillStyle=name?'#fff':'#79eef5';
+  fitFont(ctx,label,max,27,13,900);
+  ctx.fillText(label,tx,y+h/2+10);
 }
-function roundJoin(ctx,x,y1,y2,outX,outY,side){
-  const mid=side==='left'?x+34:x-34;
-  ctx.save();ctx.strokeStyle='rgba(188,205,255,.78)';ctx.lineWidth=3;ctx.lineJoin='miter';
-  ctx.beginPath();ctx.moveTo(x,y1);ctx.lineTo(mid,y1);ctx.lineTo(mid,y2);ctx.lineTo(x,y2);ctx.moveTo(mid,outY);ctx.lineTo(outX,outY);ctx.stroke();ctx.restore();
+function roundBracket(ctx,x,y1,y2,dir,depth){
+  const d=depth||34,mid=dir==='left'?x+d:x-d;
+  ctx.save();ctx.strokeStyle='rgba(218,226,255,.70)';ctx.lineWidth=3;ctx.lineCap='square';ctx.lineJoin='miter';
+  ctx.beginPath();ctx.moveTo(x,y1);ctx.lineTo(mid,y1);ctx.lineTo(mid,y2);ctx.lineTo(x,y2);ctx.stroke();ctx.restore();
+  return mid;
 }
 async function roundCenter(ctx){
-  const x=W/2-112,y=555,w=224,h=470;
-  const g=ctx.createLinearGradient(x,y,x+w,y+h);g.addColorStop(0,'rgba(17,65,169,.42)');g.addColorStop(.5,'rgba(4,18,76,.58)');g.addColorStop(1,'rgba(3,8,41,.35)');
-  fillR(ctx,x,y,w,h,80,g,'rgba(55,87,176,.24)',2);
-  await trophy(ctx,x+30,y+125,w-60,220);
-  ctx.textAlign='center';ctx.fillStyle='#fff';ctx.font='900 19px Arial';ctx.fillText('TORNEO DE COPA',W/2,y+60);
-  ctx.fillStyle='#6eeef5';ctx.font='900 12px Arial';ctx.fillText('GRAN FINAL',W/2,y+88);ctx.textAlign='left';
+  const x=W/2-90,y=676,w=180,h=300;
+  const g=ctx.createLinearGradient(x,y,x+w,y+h);
+  g.addColorStop(0,'rgba(13,61,161,.24)');g.addColorStop(.52,'rgba(4,18,68,.55)');g.addColorStop(1,'rgba(2,7,36,.20)');
+  fillR(ctx,x,y,w,h,62,g,'rgba(62,92,174,.18)',2);
+  await trophy(ctx,x+25,y+84,w-50,165);
 }
 async function drawRoundR16(ctx,teams){
-  const cw=420,ch=78,lx=18,rx=W-18-cw,ys=[350,438,552,640,1000,1088,1202,1290];
-  for(let i=0;i<4;i++){const p=SEED16[i],b=i*2;await roundTeam(ctx,p[0],teamAt(teams,p[0]),lx,ys[b],cw,ch,'left');await roundTeam(ctx,p[1],teamAt(teams,p[1]),lx,ys[b+1],cw,ch,'left');roundJoin(ctx,lx+cw,ys[b]+ch/2,ys[b+1]+ch/2,lx+cw+90,(ys[b]+ys[b+1]+ch)/2,'left')}
-  for(let i=4;i<8;i++){const p=SEED16[i],j=i-4,b=j*2;await roundTeam(ctx,p[0],teamAt(teams,p[0]),rx,ys[b],cw,ch,'right');await roundTeam(ctx,p[1],teamAt(teams,p[1]),rx,ys[b+1],cw,ch,'right');roundJoin(ctx,rx,ys[b]+ch/2,ys[b+1]+ch/2,rx-90,(ys[b]+ys[b+1]+ch)/2,'right')}
-  const qW=220,qH=148,lq=480,rq=W-480-qW,qY=[445,1080];
-  fillR(ctx,lq,qY[0],qW,qH,14,'#0727ae','rgba(55,93,255,.8)');fillR(ctx,lq,qY[1],qW,qH,14,'#0727ae','rgba(55,93,255,.8)');
-  fillR(ctx,rq,qY[0],qW,qH,14,'#0727ae','rgba(55,93,255,.8)');fillR(ctx,rq,qY[1],qW,qH,14,'#0727ae','rgba(55,93,255,.8)');
-  [['CUARTOS 1',lq,qY[0]],['CUARTOS 2',lq,qY[1]],['CUARTOS 3',rq,qY[0]],['CUARTOS 4',rq,qY[1]]].forEach(([t,x,y])=>{ctx.fillStyle='#fff';ctx.font='900 16px Arial';ctx.fillText(t,x+18,y+34);ctx.fillStyle='#8deef5';ctx.font='800 12px Arial';ctx.fillText('GANADORES',x+18,y+68)});
-  line(ctx,lx+cw+90,480,lq,qY[0]+55,'rgba(185,205,255,.8)',3);line(ctx,lx+cw+90,1115,lq,qY[1]+55,'rgba(185,205,255,.8)',3);
-  line(ctx,rx-90,480,rq+qW,qY[0]+55,'rgba(185,205,255,.8)',3);line(ctx,rx-90,1115,rq+qW,qY[1]+55,'rgba(185,205,255,.8)',3);
+  const cw=390,ch=76,lx=18,rx=W-18-cw;
+  const ys=[378,464,578,664,966,1052,1166,1252];
+
+  for(let i=0;i<4;i++){
+    const p=SEED16[i],b=i*2;
+    await roundTeam(ctx,p[0],teamAt(teams,p[0]),lx,ys[b],cw,ch,'left');
+    await roundTeam(ctx,p[1],teamAt(teams,p[1]),lx,ys[b+1],cw,ch,'left');
+    roundBracket(ctx,lx+cw,ys[b]+ch/2,ys[b+1]+ch/2,'left',34);
+  }
+  for(let i=4;i<8;i++){
+    const p=SEED16[i],j=i-4,b=j*2;
+    await roundTeam(ctx,p[0],teamAt(teams,p[0]),rx,ys[b],cw,ch,'right');
+    await roundTeam(ctx,p[1],teamAt(teams,p[1]),rx,ys[b+1],cw,ch,'right');
+    roundBracket(ctx,rx,ys[b]+ch/2,ys[b+1]+ch/2,'right',34);
+  }
+
+  const l1=460,l2=505,r1=W-460,r2=W-505;
+  ctx.save();ctx.strokeStyle='rgba(218,226,255,.66)';ctx.lineWidth=3;ctx.lineCap='square';ctx.lineJoin='miter';
+  const segs=[
+    [442,421,l1,421],[442,621,l1,621],[l1,421,l1,621],[l1,520,l2,520],
+    [442,1009,l1,1009],[442,1209,l1,1209],[l1,1009,l1,1209],[l1,1109,l2,1109],
+    [W-442,421,r1,421],[W-442,621,r1,621],[r1,421,r1,621],[r1,520,r2,520],
+    [W-442,1009,r1,1009],[W-442,1209,r1,1209],[r1,1009,r1,1209],[r1,1109,r2,1109],
+    [l2,520,535,520],[535,520,535,1109],[535,815,W/2-91,815],
+    [r2,520,W-535,520],[W-535,520,W-535,1109],[W-535,815,W/2+91,815]
+  ];
+  segs.forEach(s=>{ctx.beginPath();ctx.moveTo(s[0],s[1]);ctx.lineTo(s[2],s[3]);ctx.stroke()});
+  ctx.restore();
   await roundCenter(ctx);
 }
 async function drawRoundQF(ctx,teams){
-  const cw=430,ch=84,lx=18,rx=W-18-cw,ys=[390,486,1040,1136];
-  const lp=[SEED8[0],SEED8[1]],rp=[SEED8[2],SEED8[3]];
-  for(let i=0;i<2;i++){const p=lp[i],b=i*2;await roundTeam(ctx,p[0],teamAt(teams,p[0]),lx,ys[b],cw,ch,'left');await roundTeam(ctx,p[1],teamAt(teams,p[1]),lx,ys[b+1],cw,ch,'left');roundJoin(ctx,lx+cw,ys[b]+ch/2,ys[b+1]+ch/2,lx+cw+100,(ys[b]+ys[b+1]+ch)/2,'left')}
-  for(let i=0;i<2;i++){const p=rp[i],b=i*2;await roundTeam(ctx,p[0],teamAt(teams,p[0]),rx,ys[b],cw,ch,'right');await roundTeam(ctx,p[1],teamAt(teams,p[1]),rx,ys[b+1],cw,ch,'right');roundJoin(ctx,rx,ys[b]+ch/2,ys[b+1]+ch/2,rx-100,(ys[b]+ys[b+1]+ch)/2,'right')}
-  await roundCenter(ctx);
-  line(ctx,lx+cw+100,455,W/2-112,720,'rgba(185,205,255,.75)',3);line(ctx,lx+cw+100,1105,W/2-112,860,'rgba(185,205,255,.75)',3);
-  line(ctx,rx-100,455,W/2+112,720,'rgba(185,205,255,.75)',3);line(ctx,rx-100,1105,W/2+112,860,'rgba(185,205,255,.75)',3);
+  const cw=390,ch=78,lx=18,rx=W-18-cw,ys=[430,520,1015,1105],lp=[SEED8[0],SEED8[1]],rp=[SEED8[2],SEED8[3]];
+  for(let i=0;i<2;i++){const p=lp[i],b=i*2;await roundTeam(ctx,p[0],teamAt(teams,p[0]),lx,ys[b],cw,ch,'left');await roundTeam(ctx,p[1],teamAt(teams,p[1]),lx,ys[b+1],cw,ch,'left');roundBracket(ctx,lx+cw,ys[b]+ch/2,ys[b+1]+ch/2,'left',44)}
+  for(let i=0;i<2;i++){const p=rp[i],b=i*2;await roundTeam(ctx,p[0],teamAt(teams,p[0]),rx,ys[b],cw,ch,'right');await roundTeam(ctx,p[1],teamAt(teams,p[1]),rx,ys[b+1],cw,ch,'right');roundBracket(ctx,rx,ys[b]+ch/2,ys[b+1]+ch/2,'right',44)}
+  ctx.save();ctx.strokeStyle='rgba(218,226,255,.68)';ctx.lineWidth=3;
+  [[452,513,535,513],[452,1098,535,1098],[W-452,513,W-535,513],[W-452,1098,W-535,1098],[535,513,535,1098],[535,806,W/2-90,806],[W-535,513,W-535,1098],[W-535,806,W/2+90,806]].forEach(s=>{ctx.beginPath();ctx.moveTo(s[0],s[1]);ctx.lineTo(s[2],s[3]);ctx.stroke()});
+  ctx.restore();await roundCenter(ctx);
 }
 async function drawRoundSF(ctx,teams){
-  const cw=450,ch=94,lx=18,rx=W-18-cw,y1=590,y2=710;
+  const cw=410,ch=86,lx=18,rx=W-18-cw,y1=600,y2=710;
   await roundTeam(ctx,1,teamAt(teams,1),lx,y1,cw,ch,'left');await roundTeam(ctx,4,teamAt(teams,4),lx,y2,cw,ch,'left');
   await roundTeam(ctx,2,teamAt(teams,2),rx,y1,cw,ch,'right');await roundTeam(ctx,3,teamAt(teams,3),rx,y2,cw,ch,'right');
-  roundJoin(ctx,lx+cw,y1+ch/2,y2+ch/2,W/2-112,690,'left');roundJoin(ctx,rx,y1+ch/2,y2+ch/2,W/2+112,690,'right');await roundCenter(ctx);
+  const ml=roundBracket(ctx,lx+cw,y1+ch/2,y2+ch/2,'left',58),mr=roundBracket(ctx,rx,y1+ch/2,y2+ch/2,'right',58);
+  line(ctx,ml,(y1+y2+ch)/2,W/2-90,(y1+y2+ch)/2,'rgba(218,226,255,.68)',3);
+  line(ctx,mr,(y1+y2+ch)/2,W/2+90,(y1+y2+ch)/2,'rgba(218,226,255,.68)',3);
+  await roundCenter(ctx);
 }
 async function drawRoundFinal(ctx,teams){
-  const cw=470,ch=106,lx=18,rx=W-18-cw,y=735;
+  const cw=430,ch=92,lx=18,rx=W-18-cw,y=760;
   await roundTeam(ctx,1,teamAt(teams,1),lx,y,cw,ch,'left');await roundTeam(ctx,2,teamAt(teams,2),rx,y,cw,ch,'right');
-  line(ctx,lx+cw,y+ch/2,W/2-112,y+ch/2,'rgba(185,205,255,.8)',3);line(ctx,rx,y+ch/2,W/2+112,y+ch/2,'rgba(185,205,255,.8)',3);await roundCenter(ctx);
+  line(ctx,lx+cw,y+ch/2,W/2-90,y+ch/2,'rgba(218,226,255,.68)',3);
+  line(ctx,rx,y+ch/2,W/2+90,y+ch/2,'rgba(218,226,255,.68)',3);
+  await roundCenter(ctx);
 }
 async function renderRound(ctx,meta,stage,teams){
   roundBackground(ctx);await roundHeader(ctx,meta,stage);
   if(stage==='r16')await drawRoundR16(ctx,teams);else if(stage==='qf')await drawRoundQF(ctx,teams);else if(stage==='sf')await drawRoundSF(ctx,teams);else await drawRoundFinal(ctx,teams);
-  ctx.textAlign='center';ctx.fillStyle='rgba(255,255,255,.78)';ctx.font='900 14px Arial';ctx.fillText('LIGA JUVENTINO ROSAS',W/2,H-62);ctx.textAlign='left';
+  drawLeagueFooter(ctx);
 }
 
 /* =========================
    DISEÑO 2 · FULL BRACKET
+   Reproduce la composición de la segunda referencia:
+   tarjetas verticales, llaves cyan, rondas interiores y columna central.
    ========================= */
 function fullBackground(ctx){
-  const bg=ctx.createLinearGradient(0,0,W,H);bg.addColorStop(0,'#07156b');bg.addColorStop(.4,'#02043f');bg.addColorStop(1,'#010123');ctx.fillStyle=bg;ctx.fillRect(0,0,W,H);
-  const edge=ctx.createLinearGradient(0,0,0,H);edge.addColorStop(0,'#ff761c');edge.addColorStop(.35,'#23def0');edge.addColorStop(.7,'#23def0');edge.addColorStop(1,'#ff761c');ctx.fillStyle=edge;ctx.fillRect(8,0,5,H);ctx.fillRect(W-13,0,5,H);
-  const glow=ctx.createRadialGradient(W/2,820,25,W/2,820,520);glow.addColorStop(0,'rgba(22,74,255,.34)');glow.addColorStop(1,'rgba(0,0,0,0)');ctx.fillStyle=glow;ctx.fillRect(W/2-550,250,1100,1100);
+  const bg=ctx.createLinearGradient(0,0,W,H);
+  bg.addColorStop(0,'#07137a');bg.addColorStop(.30,'#050762');bg.addColorStop(.72,'#02023b');bg.addColorStop(1,'#010128');
+  ctx.fillStyle=bg;ctx.fillRect(0,0,W,H);
+  const glow=ctx.createRadialGradient(W/2,680,25,W/2,680,520);
+  glow.addColorStop(0,'rgba(19,69,255,.24)');glow.addColorStop(1,'rgba(0,0,0,0)');
+  ctx.fillStyle=glow;ctx.fillRect(100,160,W-200,1080);
+  ctx.fillStyle='#ff721f';ctx.fillRect(6,0,5,H);ctx.fillRect(W-11,0,5,H);
+  ctx.save();ctx.globalAlpha=.10;ctx.fillStyle='#1b2b89';
+  ctx.beginPath();ctx.moveTo(0,0);ctx.lineTo(240,0);ctx.lineTo(80,190);ctx.lineTo(0,150);ctx.closePath();ctx.fill();
+  ctx.beginPath();ctx.moveTo(W,0);ctx.lineTo(W-240,0);ctx.lineTo(W-80,190);ctx.lineTo(W,150);ctx.closePath();ctx.fill();
+  ctx.restore();
 }
 async function fullHeader(ctx,meta,stage){
-  const league=await imageLoad(LEAGUE_LOGO),cat=await imageLoad(meta.logo);if(league)drawContain(ctx,league,42,42,76,76);if(cat)drawContain(ctx,cat,W-118,42,76,76);
-  ctx.textAlign='center';ctx.fillStyle='#fff';ctx.font='900 25px Arial';ctx.fillText('LIGA JUVENTINO ROSAS · '+meta.name.toUpperCase(),W/2,60);
-  ctx.fillStyle='#fff';ctx.font='900 70px Arial';ctx.fillText('FULL',W/2-155,142);ctx.fillStyle='#21dff1';ctx.fillText('BRACKET',W/2+120,142);
-  ctx.fillStyle='#9ca9da';ctx.font='900 15px Arial';ctx.fillText(STAGES[stage].name.toUpperCase(),W/2,178);ctx.textAlign='left';
+  ctx.textAlign='center';
+  ctx.fillStyle='#fff';ctx.font=exactTitleFont(31);ctx.fillText('LIGA JUVENTINO ROSAS · '+meta.name.toUpperCase(),W/2,75);
+  ctx.fillStyle='#fff';ctx.font=exactTitleFont(76);ctx.fillText('FULL',W/2-160,152);
+  ctx.fillStyle='#20e2f2';ctx.fillText('BRACKET',W/2+128,152);
+  ctx.fillStyle='#adb8e7';ctx.font=exactBodyFont(15,900);ctx.fillText(STAGES[stage].name.toUpperCase(),W/2,187);
+  ctx.textAlign='left';
 }
 async function fullTile(ctx,seed,name,x,y,w,h){
-  const g=ctx.createLinearGradient(x,y,x,y+h);g.addColorStop(0,'#123fff');g.addColorStop(.54,'#09218d');g.addColorStop(1,'#05093f');fillR(ctx,x,y,w,h,11,g,'rgba(43,85,245,.86)',2);
+  const g=ctx.createLinearGradient(x,y,x,y+h);
+  g.addColorStop(0,'#113eff');g.addColorStop(.52,'#09218e');g.addColorStop(1,'#05083f');
+  fillR(ctx,x,y,w,h,8,g,'rgba(49,87,244,.72)',1.5);
   const logo=await imageLoad(teamLogo(name)),label=name||'PASE DIRECTO';
-  if(logo)drawContain(ctx,logo,x+w*.19,y+10,w*.62,h*.50);
-  ctx.textAlign='center';ctx.fillStyle=name?'#fff':'#5ceaf4';fitFont(ctx,label,w-16,15,9,900);ctx.fillText(label,x+w/2,y+h-16);ctx.textAlign='left';
+  if(logo)drawContain(ctx,logo,x+w*.20,y+9,w*.60,h*.50);
+  ctx.textAlign='center';ctx.fillStyle=name?'#fff':'#65eaf4';fitFont(ctx,label,w-12,15,9,900);ctx.fillText(label,x+w/2,y+h-14);ctx.textAlign='left';
 }
-function fullStageCard(ctx,x,y,w,h,title,a,b){
-  const g=ctx.createLinearGradient(x,y,x,y+h);g.addColorStop(0,'#123fff');g.addColorStop(.48,'#09208f');g.addColorStop(1,'#05083f');fillR(ctx,x,y,w,h,12,g,'rgba(50,92,255,.85)',2);
-  ctx.textAlign='center';ctx.fillStyle='#62eaf4';ctx.font='900 10px Arial';ctx.fillText(title,x+w/2,y+20);
-  ctx.fillStyle='#fff';ctx.font='900 14px Arial';ctx.fillText(a,x+w/2,y+52);
-  ctx.fillStyle='rgba(255,120,28,.88)';ctx.fillRect(x+12,y+h/2,w-24,2);
-  ctx.fillStyle='#fff';ctx.fillText(b,x+w/2,y+h-20);ctx.textAlign='left';
+function fullMatch(ctx,x,y,w,h,title,a,b){
+  const g=ctx.createLinearGradient(x,y,x,y+h);
+  g.addColorStop(0,'#113eff');g.addColorStop(.45,'#09218e');g.addColorStop(1,'#05083f');
+  fillR(ctx,x,y,w,h,9,g,'rgba(49,87,244,.76)',1.5);
+  ctx.textAlign='center';ctx.fillStyle='#63eaf4';ctx.font=exactBodyFont(10,900);ctx.fillText(title,x+w/2,y+18);
+  ctx.fillStyle='#fff';ctx.font=exactBodyFont(14,900);ctx.fillText(a,x+w/2,y+h*.36);
+  ctx.fillStyle='#ff7624';ctx.fillRect(x+10,y+h/2,w-20,2);
+  ctx.fillStyle='#fff';ctx.fillText(b,x+w/2,y+h*.78);ctx.textAlign='left';
 }
 async function fullPillar(ctx,x,y,w,h){
-  const g=ctx.createLinearGradient(x,y,x+w,y+h);g.addColorStop(0,'rgba(16,66,255,.96)');g.addColorStop(.38,'rgba(7,22,103,.98)');g.addColorStop(1,'rgba(2,6,42,.98)');fillR(ctx,x,y,w,h,38,g,'rgba(39,72,178,.72)',2);
-  ctx.textAlign='center';ctx.fillStyle='#64eaf4';ctx.font='900 11px Arial';ctx.fillText('GRAN FINAL',x+w/2,y+39);ctx.fillStyle='#fff';ctx.font='900 18px Arial';ctx.fillText('TORNEO DE COPA',x+w/2,y+65);ctx.textAlign='left';
-  await trophy(ctx,x+w*.20,y+h*.28,w*.60,h*.44);
+  const g=ctx.createLinearGradient(x,y,x+w,y+h);
+  g.addColorStop(0,'rgba(13,57,205,.95)');g.addColorStop(.35,'rgba(7,21,104,.97)');g.addColorStop(1,'rgba(2,6,43,.98)');
+  fillR(ctx,x,y,w,h,40,g,'rgba(38,72,178,.42)',2);
+  await trophy(ctx,x+w*.22,y+h*.27,w*.56,h*.45);
 }
 async function drawFullR16(ctx,teams){
-  const tw=142,th=134,lx=32,rx=W-32-tw,ys=[250,392,548,690,980,1122,1278,1420];
-  for(let i=0;i<4;i++){const p=SEED16[i],b=i*2;await fullTile(ctx,p[0],teamAt(teams,p[0]),lx,ys[b],tw,th);await fullTile(ctx,p[1],teamAt(teams,p[1]),lx,ys[b+1],tw,th);neon(ctx,[[lx+tw,ys[b]+th/2],[lx+tw+30,ys[b]+th/2],[lx+tw+30,ys[b+1]+th/2],[lx+tw,ys[b+1]+th/2]])}
-  for(let i=4;i<8;i++){const p=SEED16[i],j=i-4,b=j*2;await fullTile(ctx,p[0],teamAt(teams,p[0]),rx,ys[b],tw,th);await fullTile(ctx,p[1],teamAt(teams,p[1]),rx,ys[b+1],tw,th);neon(ctx,[[rx,ys[b]+th/2],[rx-30,ys[b]+th/2],[rx-30,ys[b+1]+th/2],[rx,ys[b+1]+th/2]])}
-  const qW=155,qH=178,lq=250,rq=W-250-qW,qY=[350,1110];fullStageCard(ctx,lq,qY[0],qW,qH,'CUARTOS 1','GANADOR 1','GANADOR 2');fullStageCard(ctx,lq,qY[1],qW,qH,'CUARTOS 2','GANADOR 3','GANADOR 4');fullStageCard(ctx,rq,qY[0],qW,qH,'CUARTOS 3','GANADOR 5','GANADOR 6');fullStageCard(ctx,rq,qY[1],qW,qH,'CUARTOS 4','GANADOR 7','GANADOR 8');
-  const sW=165,sH=200,sy=690,ls=455,rs=W-455-sW;fullStageCard(ctx,ls,sy,sW,sH,'SEMIFINAL 1','GANADOR QF1','GANADOR QF2');fullStageCard(ctx,rs,sy,sW,sH,'SEMIFINAL 2','GANADOR QF3','GANADOR QF4');
-  const fw=175,fh=470,fx=W/2-fw/2,fy=530;await fullPillar(ctx,fx,fy,fw,fh);
-  neon(ctx,[[lq+qW,qY[0]+qH/2],[ls,sy+58]]);neon(ctx,[[lq+qW,qY[1]+qH/2],[ls,sy+142]]);neon(ctx,[[rq,qY[0]+qH/2],[rs+sW,sy+58]]);neon(ctx,[[rq,qY[1]+qH/2],[rs+sW,sy+142]]);
-  line(ctx,ls+sW,sy+sH/2,fx,sy+sH/2);line(ctx,rs,sy+sH/2,fx+fw,sy+sH/2);
+  const tw=130,th=118,lx=30,rx=W-30-tw;
+  const ys=[190,310,432,552,790,910,1032,1152];
+
+  for(let i=0;i<4;i++){
+    const p=SEED16[i],b=i*2;
+    await fullTile(ctx,p[0],teamAt(teams,p[0]),lx,ys[b],tw,th);
+    await fullTile(ctx,p[1],teamAt(teams,p[1]),lx,ys[b+1],tw,th);
+    neon(ctx,[[lx+tw,ys[b]+th/2],[lx+tw+25,ys[b]+th/2],[lx+tw+25,ys[b+1]+th/2],[lx+tw,ys[b+1]+th/2]]);
+  }
+  for(let i=4;i<8;i++){
+    const p=SEED16[i],j=i-4,b=j*2;
+    await fullTile(ctx,p[0],teamAt(teams,p[0]),rx,ys[b],tw,th);
+    await fullTile(ctx,p[1],teamAt(teams,p[1]),rx,ys[b+1],tw,th);
+    neon(ctx,[[rx,ys[b]+th/2],[rx-25,ys[b]+th/2],[rx-25,ys[b+1]+th/2],[rx,ys[b+1]+th/2]]);
+  }
+
+  const qw=142,qh=170,lq=198,rq=W-198-qw,qy=[340,920];
+  fullMatch(ctx,lq,qy[0],qw,qh,'CUARTOS 1','GANADOR 1','GANADOR 2');
+  fullMatch(ctx,lq,qy[1],qw,qh,'CUARTOS 2','GANADOR 3','GANADOR 4');
+  fullMatch(ctx,rq,qy[0],qw,qh,'CUARTOS 3','GANADOR 5','GANADOR 6');
+  fullMatch(ctx,rq,qy[1],qw,qh,'CUARTOS 4','GANADOR 7','GANADOR 8');
+
+  neon(ctx,[[lx+tw+25,ys[0]+th],[lq,qy[0]+44]]);neon(ctx,[[lx+tw+25,ys[2]+th],[lq,qy[0]+126]]);
+  neon(ctx,[[lx+tw+25,ys[4]+th],[lq,qy[1]+44]]);neon(ctx,[[lx+tw+25,ys[6]+th],[lq,qy[1]+126]]);
+  neon(ctx,[[rx-25,ys[0]+th],[rq+qw,qy[0]+44]]);neon(ctx,[[rx-25,ys[2]+th],[rq+qw,qy[0]+126]]);
+  neon(ctx,[[rx-25,ys[4]+th],[rq+qw,qy[1]+44]]);neon(ctx,[[rx-25,ys[6]+th],[rq+qw,qy[1]+126]]);
+
+  const sw=142,sh=224,sy=606,ls=365,rs=W-365-sw;
+  fullMatch(ctx,ls,sy,sw,sh,'SEMIFINAL 1','GANADOR QF1','GANADOR QF2');
+  fullMatch(ctx,rs,sy,sw,sh,'SEMIFINAL 2','GANADOR QF3','GANADOR QF4');
+  neon(ctx,[[lq+qw,qy[0]+qh/2],[ls,sy+55]]);neon(ctx,[[lq+qw,qy[1]+qh/2],[ls,sy+168]]);
+  neon(ctx,[[rq,qy[0]+qh/2],[rs+sw,sy+55]]);neon(ctx,[[rq,qy[1]+qh/2],[rs+sw,sy+168]]);
+
+  const fw=150,fh=420,fx=W/2-fw/2,fy=500;
+  await fullPillar(ctx,fx,fy,fw,fh);
+  neon(ctx,[[ls+sw,sy+sh/2],[fx,sy+sh/2]]);neon(ctx,[[rs,sy+sh/2],[fx+fw,sy+sh/2]]);
 }
 async function drawFullQF(ctx,teams){
-  const tw=160,th=150,lx=34,rx=W-34-tw,ys=[330,490,1030,1190],lp=[SEED8[0],SEED8[1]],rp=[SEED8[2],SEED8[3]];
-  for(let i=0;i<2;i++){const p=lp[i],b=i*2;await fullTile(ctx,p[0],teamAt(teams,p[0]),lx,ys[b],tw,th);await fullTile(ctx,p[1],teamAt(teams,p[1]),lx,ys[b+1],tw,th);neon(ctx,[[lx+tw,ys[b]+th/2],[lx+tw+32,ys[b]+th/2],[lx+tw+32,ys[b+1]+th/2],[lx+tw,ys[b+1]+th/2]])}
-  for(let i=0;i<2;i++){const p=rp[i],b=i*2;await fullTile(ctx,p[0],teamAt(teams,p[0]),rx,ys[b],tw,th);await fullTile(ctx,p[1],teamAt(teams,p[1]),rx,ys[b+1],tw,th);neon(ctx,[[rx,ys[b]+th/2],[rx-32,ys[b]+th/2],[rx-32,ys[b+1]+th/2],[rx,ys[b+1]+th/2]])}
-  const sW=185,sH=205,sy=700,ls=365,rs=W-365-sW;fullStageCard(ctx,ls,sy,sW,sH,'SEMIFINAL 1','GANADOR CRUCE 1','GANADOR CRUCE 2');fullStageCard(ctx,rs,sy,sW,sH,'SEMIFINAL 2','GANADOR CRUCE 3','GANADOR CRUCE 4');
-  const fw=190,fh=500,fx=W/2-fw/2,fy=545;await fullPillar(ctx,fx,fy,fw,fh);line(ctx,ls+sW,sy+sH/2,fx,sy+sH/2);line(ctx,rs,sy+sH/2,fx+fw,sy+sH/2);
+  const tw=148,th=138,lx=34,rx=W-34-tw,ys=[315,462,945,1092],lp=[SEED8[0],SEED8[1]],rp=[SEED8[2],SEED8[3]];
+  for(let i=0;i<2;i++){const p=lp[i],b=i*2;await fullTile(ctx,p[0],teamAt(teams,p[0]),lx,ys[b],tw,th);await fullTile(ctx,p[1],teamAt(teams,p[1]),lx,ys[b+1],tw,th);neon(ctx,[[lx+tw,ys[b]+th/2],[lx+tw+28,ys[b]+th/2],[lx+tw+28,ys[b+1]+th/2],[lx+tw,ys[b+1]+th/2]])}
+  for(let i=0;i<2;i++){const p=rp[i],b=i*2;await fullTile(ctx,p[0],teamAt(teams,p[0]),rx,ys[b],tw,th);await fullTile(ctx,p[1],teamAt(teams,p[1]),rx,ys[b+1],tw,th);neon(ctx,[[rx,ys[b]+th/2],[rx-28,ys[b]+th/2],[rx-28,ys[b+1]+th/2],[rx,ys[b+1]+th/2]])}
+  const sw=152,sh=224,sy=620,ls=335,rs=W-335-sw;fullMatch(ctx,ls,sy,sw,sh,'SEMIFINAL 1','GANADOR 1','GANADOR 2');fullMatch(ctx,rs,sy,sw,sh,'SEMIFINAL 2','GANADOR 3','GANADOR 4');
+  const fw=160,fh=430,fx=W/2-fw/2,fy=505;await fullPillar(ctx,fx,fy,fw,fh);
+  neon(ctx,[[lx+tw+28,440],[ls,sy+58]]);neon(ctx,[[lx+tw+28,1070],[ls,sy+167]]);
+  neon(ctx,[[rx-28,440],[rs+sw,sy+58]]);neon(ctx,[[rx-28,1070],[rs+sw,sy+167]]);
+  neon(ctx,[[ls+sw,sy+sh/2],[fx,sy+sh/2]]);neon(ctx,[[rs,sy+sh/2],[fx+fw,sy+sh/2]]);
 }
 async function drawFullSF(ctx,teams){
-  const tw=190,th=178,lx=45,rx=W-45-tw,ys=[570,760];await fullTile(ctx,1,teamAt(teams,1),lx,ys[0],tw,th);await fullTile(ctx,4,teamAt(teams,4),lx,ys[1],tw,th);await fullTile(ctx,2,teamAt(teams,2),rx,ys[0],tw,th);await fullTile(ctx,3,teamAt(teams,3),rx,ys[1],tw,th);
-  const fw=220,fh=530,fx=W/2-fw/2,fy=500;await fullPillar(ctx,fx,fy,fw,fh);neon(ctx,[[lx+tw,ys[0]+th/2],[fx,680],[lx+tw,ys[1]+th/2]]);neon(ctx,[[rx,ys[0]+th/2],[fx+fw,680],[rx,ys[1]+th/2]]);
+  const tw=170,th=155,lx=45,rx=W-45-tw,ys=[550,718];
+  await fullTile(ctx,1,teamAt(teams,1),lx,ys[0],tw,th);await fullTile(ctx,4,teamAt(teams,4),lx,ys[1],tw,th);
+  await fullTile(ctx,2,teamAt(teams,2),rx,ys[0],tw,th);await fullTile(ctx,3,teamAt(teams,3),rx,ys[1],tw,th);
+  const fw=190,fh=455,fx=W/2-fw/2,fy=490;await fullPillar(ctx,fx,fy,fw,fh);
+  neon(ctx,[[lx+tw,ys[0]+th/2],[lx+tw+36,ys[0]+th/2],[lx+tw+36,ys[1]+th/2],[lx+tw,ys[1]+th/2],[fx,636]]);
+  neon(ctx,[[rx,ys[0]+th/2],[rx-36,ys[0]+th/2],[rx-36,ys[1]+th/2],[rx,ys[1]+th/2],[fx+fw,636]]);
 }
 async function drawFullFinal(ctx,teams){
-  const tw=230,th=205,lx=60,rx=W-60-tw,y=700;await fullTile(ctx,1,teamAt(teams,1),lx,y,tw,th);await fullTile(ctx,2,teamAt(teams,2),rx,y,tw,th);
-  const fw=250,fh=560,fx=W/2-fw/2,fy=480;await fullPillar(ctx,fx,fy,fw,fh);line(ctx,lx+tw,y+th/2,fx,y+th/2);line(ctx,rx,y+th/2,fx+fw,y+th/2);
+  const tw=210,th=185,lx=60,rx=W-60-tw,y=660;
+  await fullTile(ctx,1,teamAt(teams,1),lx,y,tw,th);await fullTile(ctx,2,teamAt(teams,2),rx,y,tw,th);
+  const fw=220,fh=480,fx=W/2-fw/2,fy=465;await fullPillar(ctx,fx,fy,fw,fh);
+  neon(ctx,[[lx+tw,y+th/2],[fx,y+th/2]]);neon(ctx,[[rx,y+th/2],[fx+fw,y+th/2]]);
 }
 async function renderFull(ctx,meta,stage,teams){
   fullBackground(ctx);await fullHeader(ctx,meta,stage);
   if(stage==='r16')await drawFullR16(ctx,teams);else if(stage==='qf')await drawFullQF(ctx,teams);else if(stage==='sf')await drawFullSF(ctx,teams);else await drawFullFinal(ctx,teams);
-  ctx.textAlign='center';ctx.fillStyle='rgba(255,255,255,.7)';ctx.font='900 12px Arial';ctx.fillText('LIGA JUVENTINO ROSAS',W/2,H-55);ctx.textAlign='left';
+  drawLeagueFooter(ctx);
 }
 
 async function renderCanvas(canvas,page,design,scale){
@@ -394,7 +519,7 @@ async function mount(){
   const cat=currentCategory(),meta=catMeta(cat),design=String(localStorage.getItem('v651-bracket-design')||'round');
   page.dataset.v651='1';page.dataset.v651Design=DESIGNS[design]?design:'round';page.dataset.v643='2';
   page.innerHTML=
-    '<section class="v651-hero"><div class="v651-brand"><img src="'+esc(LEAGUE_LOGO)+'" alt=""><span><small>LIGA JUVENTINO ROSAS</small><h1>Generador de Bracket</h1></span></div><p>Dos diseños independientes con vista previa: Round of 16 y Full Bracket. Ambos conservan el trofeo en el centro, categoría, nombres y logos de los equipos.</p></section>'+
+    '<section class="v651-hero"><div class="v651-brand"><img src="'+esc(LEAGUE_LOGO)+'" alt=""><span><small>LIGA JUVENTINO ROSAS</small><h1>Generador de Bracket</h1></span></div><p>Dos diseños rehechos con la misma composición de tus referencias: solo cambian los nombres, logos, categoría y datos de la Liga.</p></section>'+
     '<section class="v651-controls"><div class="v651-catrow"><span class="v651-catlogo"><img data-v651-cat-logo src="'+esc(meta.logo)+'" alt=""></span><div class="v651-grid">'+
       '<label>CATEGORÍA<select data-v651-cat>'+CATS.map(c=>'<option value="'+c.id+'" '+(c.id===cat?'selected':'')+'>'+esc(c.name)+'</option>').join('')+'</select></label>'+
       '<label>ETAPA<select data-v651-stage><option value="auto">Automático</option><option value="r16">Octavos de final</option><option value="qf">Cuartos de final</option><option value="sf">Semifinales</option><option value="final">Final</option></select></label>'+
