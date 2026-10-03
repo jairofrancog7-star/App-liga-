@@ -1,0 +1,89 @@
+/* V659 — Match Center: cuadros a todo el ancho útil.
+   Reduce los márgenes laterales del Match Center sin cambiar su diseño,
+   datos, navegación ni comportamiento. */
+@media (max-width:1023px){
+  html body.v92-match-center-official #screen{
+    width:100%!important;
+    max-width:none!important;
+    padding-left:0!important;
+    padding-right:0!important;
+    box-sizing:border-box!important;
+  }
+
+  html body.v92-match-center-official .v92-matchcenter{
+    width:100%!important;
+    max-width:none!important;
+    margin-left:0!important;
+    margin-right:0!important;
+    padding-left:6px!important;
+    padding-right:6px!important;
+    box-sizing:border-box!important;
+  }
+
+  /* El texto de cabecera conserva un pequeño respiro; los cuadros sí ocupan todo. */
+  html body.v92-match-center-official .v92-match-head{
+    padding-left:8px!important;
+    padding-right:8px!important;
+  }
+
+  html body.v92-match-center-official .v92-match-picker,
+  html body.v92-match-center-official .v518-matchcenter-unified,
+  html body.v92-match-center-official .v518-matchcenter-extras{
+    width:100%!important;
+    max-width:none!important;
+    margin-left:0!important;
+    margin-right:0!important;
+    box-sizing:border-box!important;
+  }
+
+  /* Quita el segundo margen lateral que encogía los cuadros internos. */
+  html body.v92-match-center-official .v518-matchcenter-unified > .v92-body{
+    width:100%!important;
+    max-width:none!important;
+    padding-left:6px!important;
+    padding-right:6px!important;
+    box-sizing:border-box!important;
+  }
+
+  html body.v92-match-center-official .v92-body > .v92-section,
+  html body.v92-match-center-official .v92-body > .v417-odds-page,
+  html body.v92-match-center-official .v92-body > [data-v420-build-up],
+  html body.v92-match-center-official .v92-body .v144-live-hub,
+  html body.v92-match-center-official .v92-body .v145-realtime,
+  html body.v92-match-center-official .v518-matchcenter-extras > *{
+    width:100%!important;
+    max-width:none!important;
+    margin-left:0!important;
+    margin-right:0!important;
+    box-sizing:border-box!important;
+  }
+
+  /* Acciones, transmisión y paneles principales también usan el ancho disponible. */
+  html body.v92-match-center-official .v92-match-actions,
+  html body.v92-match-center-official .v516-matchcenter-lower,
+  html body.v92-match-center-official .v144-live-hub,
+  html body.v92-match-center-official .v145-realtime,
+  html body.v92-match-center-official .v144-stream-embed,
+  html body.v92-match-center-official .v144-tv-cast,
+  html body.v92-match-center-official .v416-general-card,
+  html body.v92-match-center-official .v416-lineup-visual,
+  html body.v92-match-center-official .v417-reference-tools,
+  html body.v92-match-center-official .v419-profile,
+  html body.v92-match-center-official .v420-build-up,
+  html body.v92-match-center-official .v423-match-card{
+    width:100%!important;
+    max-width:none!important;
+    box-sizing:border-box!important;
+  }
+}
+
+@media (max-width:390px){
+  html body.v92-match-center-official .v92-matchcenter{
+    padding-left:4px!important;
+    padding-right:4px!important;
+  }
+  html body.v92-match-center-official .v518-matchcenter-unified > .v92-body{
+    padding-left:4px!important;
+    padding-right:4px!important;
+  }
+}
