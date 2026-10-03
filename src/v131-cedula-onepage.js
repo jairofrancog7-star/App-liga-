@@ -218,7 +218,7 @@
               '<p class="v131-result-line">Hora de inicio: ____ · Hora de término: ____ · Marcador local: ____ · Visitante: ____</p>'+
               '<div class="v131-notes-box" contenteditable="true" aria-label="Observaciones e incidencias"></div>'+
               '<div class="v131-signatures"><div>Árbitro</div><div>Delegado / capitán</div><div>Validación de la Liga</div></div>'+
-              '<p class="v131-sheet-note">Generada dentro de Liga Juventino Rosas con el snapshot deportivo '+esc(db?.captured_at_utc||'sin fecha')+'. Documento interno sujeto a validación y firma de la Liga.</p>'+
+
             '</section>'+
           '</article>'+
         '</div>'+
