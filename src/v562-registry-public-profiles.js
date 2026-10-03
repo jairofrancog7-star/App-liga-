@@ -115,7 +115,7 @@ function render(){
  const host=root();if(!host)return;
  const groups=allGroups(),total=groups.reduce((n,g)=>n+g.players.length,0);
  host.innerHTML='<section class="v562-registry" data-v562-registry>'+
-  '<header class="v562-head"><small>DATOS OFICIALES</small><h1>Registro de jugadores</h1><p>'+total+' jugadores visibles con los filtros seleccionados.</p></header>'+
+  '<header class="v562-registry-head"><small>DATOS OFICIALES</small><h1>Registro de jugadores</h1><p>'+total+' jugadores visibles con los filtros seleccionados.</p></header>'+
   '<div class="v562-filters"><label><span>Categoría</span><select data-v562-cat>'+categoryOptions()+'</select></label><label><span>Equipo</span><select data-v562-team>'+teamOptions()+'</select></label>'+
   '<label class="v562-search"><span>⌕</span><input data-v562-search type="search" value="'+esc(query)+'" placeholder="Buscar jugador o posición"></label></div>'+
   '<div class="v562-list">'+(groups.length?groups.map(g=>{
