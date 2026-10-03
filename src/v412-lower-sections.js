@@ -287,9 +287,9 @@ async function matchBlock(){
       '<em>'+esc(m.sub||m.meta[1]||'')+'</em>'+
     '</section>'+
     '<nav class="v412-match-tabs">'+
-      '<button class="active" type="button" data-v412-native="Resumen">Build Up</button>'+
-      '<button type="button" data-v412-route="predictor">Predicciones</button>'+
-      '<button type="button" data-v412-action="comments">Comentarios</button>'+
+      '<button class="active" type="button" data-v412-native="BuildUp">Build Up</button>'+
+      '<button type="button" data-v412-native="Predicciones">Predicciones</button>'+
+      '<button type="button" data-v412-native="Comentarios">Comentarios</button>'+
       '<button type="button" data-v412-native="Alineaciones">Alineaciones</button>'+
       '<button type="button" data-v412-native="Estadísticas">Estadísticas</button>'+
       '<button type="button" data-v412-native="Cronología">Cronología</button>'+
@@ -318,8 +318,14 @@ function bindRoutes(root){
   $$('[data-v412-route]',root).forEach(b=>b.onclick=()=>go(b.dataset.v412Route));
 }
 function nativeTab(label){
+  const wanted=String(label||'').trim();
+  if(!wanted)return;
+  if(window.LJR_MATCH_CENTER?.openTab){
+    window.LJR_MATCH_CENTER.openTab(wanted);
+    return;
+  }
   const root=$('[data-v92-matchcenter]');if(!root)return;
-  const b=$$('[data-v92-tab]',root).find(x=>norm(x.dataset.v92Tab||x.textContent).includes(norm(label)));
+  const b=$('[data-v92-tab]',root).find(x=>norm(x.dataset.v92Tab||'')===norm(wanted));
   if(b){b.click();setTimeout(()=>b.scrollIntoView({behavior:'smooth',block:'center'}),90)}
 }
 async function shareCurrent(){
