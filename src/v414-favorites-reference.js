@@ -49,6 +49,16 @@ function logoFor(name){
  try{const x=api()?.logoFor?.(name)||window.LJR_TEAM_LOGOS?.get?.(name)||'';if(x)return x}catch(_){}
  return fallbackLogo(name);
 }
+function categoryLogo(id){
+ const path=({
+  '3':'assets/branding/primera-fuerza-hd.png',
+  '5':'assets/categories/intermedia.webp',
+  '4':'assets/categories/segunda-fuerza.webp',
+  '2':'assets/categories/veteranos-35-user.png',
+  '1':'assets/categories/veteranos-50.webp'
+ })[String(id)];
+ return path?SRC+path:SRC+'assets/liga-logo.webp';
+}
 function fallback(name){return String(name||'EQ').split(/\s+/).filter(Boolean).map(x=>x[0]).join('').slice(0,3).toUpperCase()}
 function logoHtml(name){
  const src=logoFor(name);
@@ -126,13 +136,13 @@ function playerRow(p){
  return '<div class="v414-row"><button type="button" class="v414-row-main" data-v414-player="'+esc(p.id)+'">'+playerAvatar(p)+'<span class="v414-row-copy"><b>'+esc(p.name)+'</b><small>'+esc(p.team)+' · '+esc(p.position||p.category)+'</small></span></button><button type="button" class="v414-star '+(isFav('players',p.id)?'on':'')+'" data-v414-star-player="'+esc(p.id)+'">'+(isFav('players',p.id)?'★':'☆')+'</button></div>';
 }
 function competitionRow(id,name){
- return '<div class="v414-row"><button type="button" class="v414-row-main" data-v414-comp="'+esc(id)+'"><span class="v414-comp-icon">⚽</span><span class="v414-row-copy"><b>'+esc(name)+'</b><small>Liga Juventino Rosas · Fútbol</small></span></button><button type="button" class="v414-star '+(isFav('competitions',id)?'on':'')+'" data-v414-star-comp="'+esc(id)+'">'+(isFav('competitions',id)?'★':'☆')+'</button></div>';
+ return '<div class="v414-row"><button type="button" class="v414-row-main" data-v414-comp="'+esc(id)+'"><span class="v414-comp-icon"><img src="'+esc(categoryLogo(id))+'" alt="'+esc(name)+'" loading="lazy" decoding="async"></span><span class="v414-row-copy"><b>'+esc(name)+'</b><small>Liga Juventino Rosas · Fútbol</small></span></button><button type="button" class="v414-star '+(isFav('competitions',id)?'on':'')+'" data-v414-star-comp="'+esc(id)+'">'+(isFav('competitions',id)?'★':'☆')+'</button></div>';
 }
 function matchRow(m){
  return '<div class="v414-row"><button type="button" class="v414-row-main" data-v414-match="'+esc(m.id)+'"><span class="v414-match-logo-pair"><img src="'+esc(logoFor(m.home))+'" alt=""><img src="'+esc(logoFor(m.away))+'" alt=""></span><span class="v414-row-copy"><b>'+esc(m.home)+' vs '+esc(m.away)+'</b><small>'+esc(m.category)+(m.date?' · '+esc(m.date):'')+'</small></span></button><button type="button" class="v414-star '+(isFav('matches',m.id)?'on':'')+'" data-v414-star-match="'+esc(m.id)+'">'+(isFav('matches',m.id)?'★':'☆')+'</button></div>';
 }
 function logoRail(items,type){
- if(type==='competitions')return '<div class="v414-logo-rail">'+items.map(x=>'<button type="button" class="v414-logo-tile" data-v414-comp="'+esc(x[0])+'"><span class="v414-fallback">⚽</span><small>'+esc(x[0])+'</small></button>').join('')+'</div>';
+ if(type==='competitions')return '<div class="v414-logo-rail">'+items.map(x=>'<button type="button" class="v414-logo-tile" data-v414-comp="'+esc(x[0])+'"><img src="'+esc(categoryLogo(x[0]))+'" alt="'+esc(x[1])+'" loading="lazy" decoding="async"><small>'+esc(x[0])+'</small></button>').join('')+'</div>';
  if(type==='players')return '<div class="v414-logo-rail">'+items.map(p=>'<button type="button" class="v414-logo-tile" data-v414-player="'+esc(p.id)+'">'+playerAvatar(p,'v576-player-avatar')+'<small>'+esc(fallback(p.team))+'</small></button>').join('')+'</div>';
  return '<div class="v414-logo-rail">'+items.map(t=>'<button type="button" class="v414-logo-tile" data-v414-team="'+esc(t.name)+'" data-v414-team-cat="'+esc(t.cat||'')+'">'+logoHtml(t.name)+'</button>').join('')+'</div>';
 }
