@@ -64,7 +64,7 @@ function installMarkup(){
   '</section>'+
   '<section class="v562-panel"><div class="v562-title"><span><small>ACCESO DIRECTO</small><h2>Como app en el teléfono</h2></span></div><div class="v562-list">'+
    card('➕','Instalar en Android','Chrome → Instalar aplicación','data-v563-install')+
-   card('🍎','Agregar en iPhone / iPad','Safari → Compartir → Añadir a pantalla de inicio','data-v563-ios')+
+   card('🍎','Agregar en iPhone / iPad','Abrir acceso móvil de Liga Juventino','data-v563-ios')+
    card('🔵','Abrir modo aplicación','Abrir con ?mode=apk','data-v563-appmode')+
   '</div></section>'+
  '</section>';
@@ -93,7 +93,7 @@ function bind(root){
  $('[data-v563-share]',root)?.addEventListener('click',share);
  $('[data-v563-builds]',root)?.addEventListener('click',()=>window.open(ACTIONS,'_blank','noopener,noreferrer'));
  $('[data-v563-apk]',root)?.addEventListener('click',()=>window.open(APK,'_blank','noopener,noreferrer'));
- $('[data-v563-ios]',root)?.addEventListener('click',()=>alert('En iPhone o iPad: 1) abre esta página en Safari, 2) toca Compartir, 3) elige “Añadir a pantalla de inicio”, 4) confirma Añadir. Se guardará con el icono de Liga Juventino.'));
+ $('[data-v563-ios]',root)?.addEventListener('click',async()=>{try{if(window.LJR_V100?.installIosShortcut){await window.LJR_V100.installIosShortcut();return}const url=location.origin+location.pathname+'?source=ios-home#/home';if(navigator.share){await navigator.share({title:'Liga Juventino',text:'Liga Juventino',url});return}location.href=url}catch(_){}});
  $('[data-v563-appmode]',root)?.addEventListener('click',()=>{location.href=location.origin+location.pathname+'?mode=apk#/home'});
 }
 function mount(){
