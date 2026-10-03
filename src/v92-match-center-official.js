@@ -831,7 +831,10 @@ function rosterColumn(m,team){
   const confirmed=lineupFor(m,team);
   const names=confirmed?.names?.length?confirmed.names:roster(m,team);
   const label=confirmed?.label||'Plantilla oficial registrada · alineación aún no publicada';
-  const source=confirmed?.url?'<a class="v92-lineup-source" href="'+esc(confirmed.url)+'" target="_blank" rel="noopener noreferrer">Ver cédula oficial</a>':'';
+  /* V631 — juventinorosasliga.com devuelve 403 al abrir algunas cédulas por enlace directo.
+     Mantener la navegación dentro de la app evita el bloqueo y permite abrir/generar la cédula
+     desde el directorio sincronizado, donde también puede imprimirse o guardarse como PDF. */
+  const source=confirmed?.url?'<a class="v92-lineup-source" href="#/cedulas">Abrir cédula en la app</a>':'';
   return '<article class="v92-roster '+(confirmed?'is-confirmed-lineup':'')+'"><div class="v92-roster-title">'+teamLogo(team,'tiny')+'<span><b>'+esc(team)+'</b><small>'+esc(label)+'</small>'+source+'</span></div>'+
     (names.length?'<ol>'+names.map(n=>'<li>'+esc(n)+'</li>').join('')+'</ol>':'<p>No hay jugadores públicos disponibles.</p>')+'</article>';
 }
