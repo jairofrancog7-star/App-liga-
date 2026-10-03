@@ -108,7 +108,7 @@ async function mountQuiniela(root){
    body='<section class="v618-q-ranking">'+
      '<div class="v618-q-rank-hero"><small>MI RANKING EN ESTA APP</small><strong>'+total+' pts</strong><span>'+savedCount+' pronósticos guardados</span></div>'+
      '<div class="v618-q-stats"><div><b>'+exact+'</b><small>Exactos · 2 pts</small></div><div><b>'+outcome+'</b><small>Ganador/empate · 1 pt</small></div><div><b>'+scored+'</b><small>Evaluados</small></div></div>'+
-     '<p class="v618-q-local-note">Tu quiniela y tu puntuación se calculan aquí mismo, dentro de Liga Juventino Rosas. No abre AdminFut ni otra página.</p>'+
+     '<p class="v618-q-local-note">Tus puntos se calculan con tus pronósticos guardados en Liga Juventino Rosas.</p>'+
    '</section>';
  }else if(view==='history'){
    const finished=(c.matches||[]).filter(m=>m.complete).sort((a,b)=>String(b.date||'').localeCompare(String(a.date||'')));
@@ -123,8 +123,12 @@ async function mountQuiniela(root){
      '<div class="v561-q-matches v618-q-matches">'+(matches.length?matches.map(card).join(''):'<div class="v618-q-empty">No hay partidos publicados en esta jornada.</div>')+'</div>'+
      '<div class="v561-actions v618-q-actions"><button data-q-save>Guardar todos</button><button data-q-export>Descargar quiniela PNG</button></div>';
  }
- root.innerHTML='<section class="v561-league v618-quiniela">'+
-   '<header class="v618-q-head"><small>QUINIELA PROPIA · LIGA JUVENTINO</small><h2>Quiniela</h2><p>Pronósticos, historial y puntos sin salir de esta app.</p></header>'+
+ root.innerHTML='<section class="v561-league v618-quiniela v619-quiniela-modern">'+
+   '<header class="v618-q-head v619-q-hero">'+
+     '<div class="v619-q-hero-top"><span class="v619-q-kicker"><i>✓</i> QUINIELA LJR</span><span class="v619-q-live">JORNADA ACTIVA</span></div>'+
+     '<div class="v619-q-title-row"><span class="v619-q-mark" aria-hidden="true">Q</span><div><h2>Quiniela</h2><p>Pronostica · suma puntos · sube en el ranking</p></div></div>'+
+     '<div class="v619-q-mini-stats"><span><b>'+savedCount+'</b><small>Guardados</small></span><span><b>'+total+'</b><small>Puntos</small></span><span><b>'+exact+'</b><small>Exactos</small></span></div>'+
+   '</header>'+
    nav+rules+
    '<div class="v618-q-cats">'+cats+'</div>'+
    '<select data-q-cat hidden>'+optionsHtml()+'</select>'+
