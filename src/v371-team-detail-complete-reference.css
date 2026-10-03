@@ -62,14 +62,40 @@ body[data-app-route="teamDetail"] .v371-next-meta{display:flex!important;flex-di
 body[data-app-route="teamDetail"] .v371-next-meta b{font-size:15px!important;color:#fff!important}
 body[data-app-route="teamDetail"] .v371-next-meta small{color:#aeb1d2!important;font-size:8.5px!important;line-height:1.15!important}
 
-body[data-app-route="teamDetail"] .v371-preview{display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:9px!important}
-body[data-app-route="teamDetail"] .v371-preview button{min-width:0!important;margin:0!important;padding:0!important;border:0!important;background:transparent!important;color:#fff!important;text-align:center!important}
-body[data-app-route="teamDetail"] .v371-preview button>span{
-  width:62px!important;height:62px!important;margin:0 auto!important;display:grid!important;place-items:center!important;border-radius:50%!important;
-  background:linear-gradient(145deg,#eef2ff,#91a7df)!important;color:#07106b!important;font-size:13px!important;font-weight:900!important;
+body[data-app-route="teamDetail"] .v371-roster-preview-section{overflow:hidden!important}
+body[data-app-route="teamDetail"] .v371-preview{
+  display:flex!important;align-items:flex-start!important;gap:12px!important;
+  width:calc(100% + 14px)!important;margin-right:-14px!important;padding:2px 18px 5px 0!important;
+  overflow-x:auto!important;overflow-y:hidden!important;scroll-snap-type:x proximity!important;
+  scroll-behavior:smooth!important;scrollbar-width:none!important;-webkit-overflow-scrolling:touch!important;
+  overscroll-behavior-x:contain!important;touch-action:pan-x!important;
 }
-body[data-app-route="teamDetail"] .v371-preview b{display:block!important;margin-top:6px!important;color:#fff!important;font-size:10.5px!important;line-height:1.1!important;white-space:nowrap!important;overflow:hidden!important;text-overflow:ellipsis!important}
-body[data-app-route="teamDetail"] .v371-preview small{display:block!important;margin-top:2px!important;color:#aeb2d3!important;font-size:8px!important;white-space:nowrap!important;overflow:hidden!important;text-overflow:ellipsis!important}
+body[data-app-route="teamDetail"] .v371-preview::-webkit-scrollbar{display:none!important}
+body[data-app-route="teamDetail"] .v371-preview button{
+  flex:0 0 104px!important;width:104px!important;min-width:104px!important;max-width:104px!important;
+  margin:0!important;padding:0!important;border:0!important;background:transparent!important;color:#fff!important;text-align:center!important;
+  scroll-snap-align:start!important;scroll-snap-stop:normal!important;
+}
+body[data-app-route="teamDetail"] .v371-preview .v371-preview-avatar{
+  width:66px!important;height:66px!important;min-width:66px!important;min-height:66px!important;
+  margin:0 auto!important;display:grid!important;place-items:center!important;border-radius:50%!important;overflow:hidden!important;
+  background:linear-gradient(145deg,#eef2ff,#91a7df)!important;color:#07106b!important;font-size:13px!important;font-weight:900!important;
+  border:1px solid rgba(255,255,255,.13)!important;box-shadow:0 6px 18px rgba(0,0,45,.18)!important;
+}
+body[data-app-route="teamDetail"] .v371-preview .v371-preview-avatar>img,
+body[data-app-route="teamDetail"] .v371-player-avatar>img,
+body[data-app-route="teamDetail"] .v371-scorer-avatar>img{
+  display:block!important;width:100%!important;height:100%!important;min-width:100%!important;min-height:100%!important;
+  object-fit:cover!important;object-position:center 22%!important;border-radius:50%!important;margin:0!important;padding:0!important;transform:none!important;
+}
+body[data-app-route="teamDetail"] .v371-preview b{
+  display:block!important;width:100%!important;margin-top:7px!important;color:#fff!important;font-size:10.5px!important;line-height:1.12!important;
+  white-space:nowrap!important;overflow:hidden!important;text-overflow:ellipsis!important;
+}
+body[data-app-route="teamDetail"] .v371-preview small{
+  display:block!important;width:100%!important;margin-top:3px!important;color:#aeb2d3!important;font-size:8px!important;
+  white-space:nowrap!important;overflow:hidden!important;text-overflow:ellipsis!important;
+}
 
 body[data-app-route="teamDetail"] .v371-form{display:flex!important;gap:9px!important;align-items:center!important}
 body[data-app-route="teamDetail"] .v371-form b{
@@ -146,4 +172,21 @@ body[data-app-route="teamDetail"] .v371-roster-empty p{max-width:300px!important
  body[data-app-route="teamDetail"] .v371-section{padding-left:12px!important;padding-right:12px!important}
  body[data-app-route="teamDetail"] .v371-key-top{grid-template-columns:96px minmax(0,1fr)!important;gap:10px!important}
  body[data-app-route="teamDetail"] .v371-ring{width:78px!important;height:78px!important}
+}
+
+/* V646 — fotos reales de jugador también en la lista completa de Plantilla. */
+body[data-app-route="teamDetail"] .v371-player-avatar,
+body[data-app-route="teamDetail"] .v371-scorer-avatar{
+  overflow:hidden!important;border-radius:50%!important;
+}
+body[data-app-route="teamDetail"] .v371-has-player-photo{
+  padding:0!important;background:#0b106f!important;color:transparent!important;
+}
+@media(max-width:370px){
+  body[data-app-route="teamDetail"] .v371-preview button{
+    flex-basis:96px!important;width:96px!important;min-width:96px!important;max-width:96px!important;
+  }
+  body[data-app-route="teamDetail"] .v371-preview .v371-preview-avatar{
+    width:62px!important;height:62px!important;min-width:62px!important;min-height:62px!important;
+  }
 }
