@@ -1,0 +1,173 @@
+/* V676 — MODO DE SCROLL RESTAURADO SEGÚN EL VIDEO DEL USUARIO.
+   Inicio, Competición y Más vuelven a desplazarse como una página normal:
+   - el documento completo hace scroll vertical;
+   - cabeceras/tabs/jornadas suben junto con el contenido (NO sticky);
+   - la barra inferior sigue fija por el CSS global existente;
+   - no se añaden flechas en Más.
+   No modifica tamaños, colores ni composición visual. */
+
+@media (max-width:1023px){
+  @supports selector(html:has(body)){
+    html:has(body[data-app-route="home"]),
+    html:has(body[data-app-route="competition"]),
+    html:has(body[data-app-route="more"]){
+      height:auto!important;
+      min-height:100%!important;
+      max-height:none!important;
+      overflow-x:hidden!important;
+      overflow-y:auto!important;
+      scroll-behavior:auto!important;
+      overscroll-behavior-y:auto!important;
+      -webkit-overflow-scrolling:touch!important;
+    }
+  }
+
+  html body[data-app-route="home"],
+  html body[data-app-route="competition"],
+  html body[data-app-route="more"]{
+    position:relative!important;
+    height:auto!important;
+    min-height:100dvh!important;
+    max-height:none!important;
+    overflow-x:hidden!important;
+    overflow-y:visible!important;
+    touch-action:auto!important;
+    overscroll-behavior-y:auto!important;
+    -webkit-overflow-scrolling:touch!important;
+  }
+
+  html body[data-app-route="home"] #app,
+  html body[data-app-route="home"] .app-shell,
+  html body[data-app-route="competition"] #app,
+  html body[data-app-route="competition"] .app-shell,
+  html body[data-app-route="more"] #app,
+  html body[data-app-route="more"] .app-shell{
+    position:relative!important;
+    height:auto!important;
+    min-height:100dvh!important;
+    max-height:none!important;
+    overflow:visible!important;
+    transform:none!important;
+    filter:none!important;
+    perspective:none!important;
+    contain:none!important;
+    touch-action:auto!important;
+  }
+
+  html body[data-app-route="home"] #screen,
+  html body[data-app-route="competition"] #screen,
+  html body[data-app-route="more"] #screen{
+    position:relative!important;
+    height:auto!important;
+    min-height:0!important;
+    max-height:none!important;
+    overflow:visible!important;
+    overflow-x:visible!important;
+    overflow-y:visible!important;
+    transform:none!important;
+    filter:none!important;
+    perspective:none!important;
+    contain:none!important;
+    touch-action:auto!important;
+    scroll-padding-top:0!important;
+  }
+
+  /* El video de referencia muestra las cabeceras subiendo con la página.
+     Se desactiva cualquier sticky heredado de V637/V669. */
+  html body[data-app-route="home"] #app > .topbar,
+  html body[data-app-route="home"] .app-shell > .topbar,
+  html body.v10-header-collapsed[data-app-route="home"] #app > .topbar,
+  html body.v10-header-collapsed[data-app-route="home"] .app-shell > .topbar,
+
+  html body[data-app-route="competition"] #app > .topbar,
+  html body[data-app-route="competition"] .app-shell > .topbar,
+  html body.v10-header-collapsed[data-app-route="competition"] #app > .topbar,
+  html body.v10-header-collapsed[data-app-route="competition"] .app-shell > .topbar,
+  html body.v40-standings-master[data-app-route="competition"] #app > .topbar,
+  html body.v40-standings-master[data-app-route="competition"] .app-shell > .topbar,
+
+  html body[data-app-route="more"] #app > .topbar,
+  html body[data-app-route="more"] .app-shell > .topbar,
+  html body.v10-header-collapsed[data-app-route="more"] #app > .topbar,
+  html body.v10-header-collapsed[data-app-route="more"] .app-shell > .topbar,
+  html body.v66-compact-route[data-app-route="more"] #app > .topbar,
+  html body.v69-primary-tool-header[data-app-route="more"] #app > .topbar{
+    position:relative!important;
+    position:-webkit-relative!important;
+    top:auto!important;
+    left:auto!important;
+    right:auto!important;
+    bottom:auto!important;
+    transform:none!important;
+    translate:none!important;
+    opacity:1!important;
+    visibility:visible!important;
+    z-index:20!important;
+  }
+
+  /* Competición: tabs y fila de jornadas también forman parte del documento,
+     exactamente como en el video; desaparecen hacia arriba al bajar. */
+  html body[data-app-route="competition"] #screen > .tabs,
+  html body.v40-standings-master[data-app-route="competition"] #screen > .tabs,
+  html body.v10-header-collapsed[data-app-route="competition"] #screen > .tabs{
+    position:relative!important;
+    position:-webkit-relative!important;
+    top:auto!important;
+    left:auto!important;
+    right:auto!important;
+    bottom:auto!important;
+    transform:none!important;
+    z-index:10!important;
+  }
+
+  html body[data-app-route="competition"] .v12-fixtures-reference,
+  html body[data-app-route="competition"] .v12-fixtures-reference .v12-date-strip,
+  html body[data-app-route="competition"] .v12-date-strip.v12-week-strip,
+  html body[data-app-route="competition"] .v12-date-strip{
+    position:relative!important;
+    position:-webkit-relative!important;
+    top:auto!important;
+    left:auto!important;
+    right:auto!important;
+    bottom:auto!important;
+    overflow:visible!important;
+    transform:none!important;
+    z-index:9!important;
+  }
+
+  /* Más: scroll completo hasta Explorar/Comunidad, sin flechitas añadidas. */
+  html body[data-app-route="more"] #screen{
+    padding-bottom:calc(84px + env(safe-area-inset-bottom,0px))!important;
+  }
+
+  html body[data-app-route="more"] .v19-more-page{
+    position:relative!important;
+    height:auto!important;
+    min-height:0!important;
+    max-height:none!important;
+    overflow:visible!important;
+  }
+
+  html body[data-app-route="more"] .v19-more-item::after{
+    content:none!important;
+    display:none!important;
+    visibility:hidden!important;
+    opacity:0!important;
+  }
+}
+
+/* Chrome Android: reafirma que el gesto vertical pertenece al viewport,
+   no a un contenedor interno. */
+@media (max-width:520px){
+  html body[data-app-route="home"],
+  html body[data-app-route="competition"],
+  html body[data-app-route="more"]{
+    touch-action:pan-x pan-y!important;
+  }
+
+  html body[data-app-route="home"] #screen,
+  html body[data-app-route="competition"] #screen,
+  html body[data-app-route="more"] #screen{
+    touch-action:pan-x pan-y!important;
+  }
+}
