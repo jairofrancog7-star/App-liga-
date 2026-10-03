@@ -508,10 +508,10 @@ function openOfficialCedula(b,e){
   localStorage.setItem('v66-cedula-field',b.dataset.v66CedulaField||'');
   localStorage.setItem('v66-cedula-round',b.dataset.v66CedulaRound||'');
   localStorage.setItem('v66-cedula-source','official-directory');
-  localStorage.removeItem('v66-cedula-autogenerate');
-  /* V634 — tocar una fila siempre abre primero la cédula seleccionada.
-     El generador queda disponible desde la propia cédula, sin bloquear la consulta. */
-  goCedulaDetail();
+  /* V626 — restauración: al tocar una cédula vuelve a abrir directamente
+     la hoja arbitral de una página, prellenada con el partido seleccionado. */
+  localStorage.setItem('v66-cedula-autogenerate','1');
+  goCedulaBuilder();
 }
 /* Delegación robusta: mantiene funcionales todas las filas aunque otra capa
    de la app vuelva a pintar la lista después de cargar los datos. */
