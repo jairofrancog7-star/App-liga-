@@ -1,0 +1,85 @@
+/* V684 — INICIO: restaurar el mismo modo de scroll que Competición.
+   SOLO afecta #/home. No modifica Competición ni Más.
+   Más queda exactamente como está en V683. */
+@media (max-width:1023px){
+  @supports selector(html:has(body)){
+    html:has(body[data-app-route="home"]){
+      height:auto!important;
+      min-height:100%!important;
+      max-height:none!important;
+      overflow-x:hidden!important;
+      overflow-y:auto!important;
+      overscroll-behavior-y:auto!important;
+      -webkit-overflow-scrolling:touch!important;
+    }
+  }
+
+  html body[data-app-route="home"]{
+    height:auto!important;
+    min-height:100dvh!important;
+    max-height:none!important;
+    overflow-x:hidden!important;
+    overflow-y:auto!important;
+    overscroll-behavior-y:auto!important;
+    -webkit-overflow-scrolling:touch!important;
+    touch-action:pan-y!important;
+  }
+
+  /* Igual que Competición: ningún padre debe convertirse en un scroll
+     interno ni cortar el sticky del encabezado. */
+  html body[data-app-route="home"] #app,
+  html body[data-app-route="home"] .app-shell{
+    position:relative!important;
+    height:auto!important;
+    min-height:100dvh!important;
+    max-height:none!important;
+    overflow:visible!important;
+    transform:none!important;
+    filter:none!important;
+    perspective:none!important;
+    contain:none!important;
+    touch-action:pan-y!important;
+  }
+
+  html body[data-app-route="home"] #screen{
+    position:relative!important;
+    height:auto!important;
+    min-height:0!important;
+    max-height:none!important;
+    overflow-x:visible!important;
+    overflow-y:visible!important;
+    transform:none!important;
+    filter:none!important;
+    perspective:none!important;
+    contain:none!important;
+    touch-action:pan-y!important;
+    margin-top:0!important;
+    padding-top:0!important;
+  }
+
+  /* Mismo comportamiento de Competición: la cabecera queda arriba
+     y el contenido de Inicio se desplaza por debajo. Se conserva el
+     tamaño/diseño actual del hero superior. */
+  html body[data-app-route="home"] #app > .topbar,
+  html body[data-app-route="home"] .app-shell > .topbar{
+    display:block!important;
+    visibility:visible!important;
+    opacity:1!important;
+    position:sticky!important;
+    position:-webkit-sticky!important;
+    top:0!important;
+    left:auto!important;
+    right:auto!important;
+    bottom:auto!important;
+    width:100%!important;
+    transform:none!important;
+    translate:none!important;
+    z-index:2147482400!important;
+  }
+
+  /* Barra inferior se conserva fija; no se toca su diseño. */
+  html body[data-app-route="home"] #app > .bottom-nav,
+  html body[data-app-route="home"] .app-shell > .bottom-nav{
+    position:fixed!important;
+  }
+}
