@@ -39,6 +39,7 @@ body[data-app-route="v38Weekly"] #screen > #v105-bottom{
 .v413-follow-tabs button.active,.v413-news-tabs button.active,.v413-search-tabs button.active,.v413-transfer-tools button.active{border-color:#2bdde7;background:#1947b7;color:#fff}
 .v413-fav-strip{display:flex;gap:8px;overflow-x:auto;padding:2px 0 12px;scrollbar-width:none}.v413-fav-strip::-webkit-scrollbar{display:none}
 .v413-fav-tile{position:relative;flex:0 0 78px;width:78px;min-height:98px;display:grid;justify-items:center;align-content:center;gap:7px;padding:9px 5px;border:1px solid rgba(101,127,230,.3);border-radius:15px;background:#101475;color:#fff}
+.v413-fav-tile.is-selected{border-color:#2bdde7!important;background:#173b9a!important;box-shadow:inset 0 0 0 1px rgba(43,221,231,.45),0 0 16px rgba(43,221,231,.16)}
 .v413-fav-tile img,.v413-result img,.v413-team-row img{width:44px;height:44px;object-fit:contain}.v413-fav-tile .v413-fallback,.v413-result .v413-fallback,.v413-team-row .v413-fallback{display:none;width:42px;height:42px;place-items:center;border-radius:50%;background:#fff;color:#0a0c60;font-size:8px;font-weight:900}
 .v413-fallback.show{display:grid!important}.v413-fav-tile img+span,.v413-result img+span.v413-fallback,.v413-team-row img+span.v413-fallback{display:none}
 .v413-fav-tile b{max-width:100%;overflow:hidden;font-size:7px;white-space:nowrap;text-overflow:ellipsis}.v413-fav-tile>i{position:absolute;left:7px;top:6px;color:#ffe147;font-size:13px;font-style:normal}
@@ -295,3 +296,12 @@ html body #screen > .v413-shell.v556-social-transparent{
   backdrop-filter:none!important;
   -webkit-backdrop-filter:none!important;
 }
+
+/* V633 — Jugadores: elegir equipo filtra la plantilla dentro de la misma tabla. */
+.v413-player-team-head{
+  display:flex;align-items:center;gap:8px;min-height:42px;padding:8px 10px;
+  border-bottom:1px solid rgba(255,255,255,.08);background:#0d115e;color:#fff
+}
+.v413-player-team-head b{min-width:0;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;font-size:10px;font-weight:900}
+.v413-player-team-head span{margin-left:auto;color:#9aa8d2;font-size:8px;font-weight:800;white-space:nowrap}
+.v413-player-team-head button{min-height:26px;padding:0 9px;border:1px solid rgba(43,221,231,.45);border-radius:999px;background:#173a91;color:#fff;font-size:7px;font-weight:900}
