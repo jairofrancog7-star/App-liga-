@@ -5,8 +5,8 @@
    Evita equipos repetidos y usa PASE DIRECTO cuando la llave no está completa. */
 (function(){
 'use strict';
-if(window.__LJR_V658_VISIBLE_GENERATION__)return;
-window.__LJR_V658_VISIBLE_GENERATION__=true;
+if(window.__LJR_V659_REFERENCE_LOCK__)return;
+window.__LJR_V659_REFERENCE_LOCK__=true;
 
 const BUILD='20261003-v654-full-bracket-reference-exact';
 const CATS=[
@@ -216,8 +216,8 @@ function makeMatch(page,round,index,a,b,seedA,seedB){
     winner:decideWinner(a||'',b||'',rec)
   };
 }
-function buildBracketModel(page){
-  const start=resolvedStage(page),teams=slotValues(page),rounds={};
+function buildBracketModel(page,forcedStage,forcedTeams){
+  const start=forcedStage||resolvedStage(page),teams=forcedTeams||slotValues(page),rounds={};
   let current=start;
   const pairs=initialPairs(start);
   rounds[current]=pairs.map((p,i)=>makeMatch(page,current,i,teamAt(teams,p[0]),teamAt(teams,p[1]),p[0],p[1]));
@@ -300,6 +300,12 @@ function matchForTitle(title){
 function teamScoreText(name,score){
   if(!name)return'PASE DIRECTO';
   return score===''||score==null?name:name+'  '+score;
+}
+function visualAdvancedName(match){
+  if(!match||!match.winner)return'';
+  const hasManual=match.pick==='a'||match.pick==='b';
+  const hasScore=match.ga!==''&&match.ga!=null&&match.gb!==''&&match.gb!=null;
+  return (hasManual||hasScore)?match.winner:'';
 }
 function drawScoreChip(ctx,score,x,y,w,h){
   if(score===''||score==null)return;
@@ -821,24 +827,45 @@ async function qExactSemiCard(ctx,name,x,y,w,h,side){
 }
 function qExactLines(ctx){
   const col='rgba(194,235,255,.96)';
-  ctx.save();ctx.strokeStyle=col;ctx.lineWidth=3.2;ctx.shadowColor='#1fd8ff';ctx.shadowBlur=6;ctx.lineCap='square';ctx.lineJoin='miter';
+  ctx.save();
+  ctx.strokeStyle=col;ctx.lineWidth=3.2;ctx.shadowColor='#1fd8ff';ctx.shadowBlur=6;
+  ctx.lineCap='square';ctx.lineJoin='miter';
 
-  const segs=[
-    [404,374,447,374],[447,374,447,454],[447,454,404,454],
-    [447,414,487,414],[487,414,487,573],[487,573,404,573],
-    [404,657,447,657],[447,657,447,736],[447,736,404,736],
-    [447,697,487,697],[487,697,487,937],[487,937,451,937],
-    [404,922,447,922],[447,922,447,1003],[447,1003,404,1003],
-    [447,963,487,963],[487,963,487,1091],[451,1091,487,1091],
+  const stroke=(pts)=>{
+    ctx.beginPath();
+    pts.forEach((p,i)=>i?ctx.lineTo(p[0],p[1]):ctx.moveTo(p[0],p[1]));
+    ctx.stroke();
+  };
 
-    [824,374,781,374],[781,374,781,454],[781,454,824,454],
-    [781,414,741,414],[741,414,741,573],[741,573,824,573],
-    [824,657,781,657],[781,657,781,736],[781,736,824,736],
-    [781,697,741,697],[741,697,741,937],[777,937,741,937],
-    [824,922,781,922],[781,922,781,1003],[781,1003,824,1003],
-    [781,963,741,963],[741,963,741,1091],[777,1091,741,1091]
-  ];
-  segs.forEach(s=>{ctx.beginPath();ctx.moveTo(s[0],s[1]);ctx.lineTo(s[2],s[3]);ctx.stroke()});
+  // Centros reales de las tarjetas. No se dibuja ninguna rama sin cuadro.
+  const leftEdge=404,rightEdge=824;
+  const topA=376,topB=457,midA=578,midB=659,botA=926,botB=1007;
+  const leftPair=447,rightPair=781;
+
+  // Cruce superior izquierdo -> tarjeta semifinal superior.
+  stroke([[leftEdge,topA],[leftPair,topA],[leftPair,topB],[leftEdge,topB]]);
+  stroke([[leftPair,(topA+topB)/2],[466,(topA+topB)/2],[466,midA],[leftEdge,midA]]);
+
+  // Cruce inferior izquierdo -> tarjeta semifinal inferior.
+  stroke([[leftEdge,botA],[leftPair,botA],[leftPair,botB],[leftEdge,botB]]);
+  stroke([[leftPair,(botA+botB)/2],[486,(botA+botB)/2],[486,midB],[leftEdge,midB]]);
+
+  // Las dos semifinales izquierdas convergen a la Final.
+  stroke([[leftEdge,midA],[445,midA],[445,midB],[leftEdge,midB]]);
+  stroke([[445,(midA+midB)/2],[515,(midA+midB)/2]]);
+
+  // Cruce superior derecho -> tarjeta semifinal superior.
+  stroke([[rightEdge,topA],[rightPair,topA],[rightPair,topB],[rightEdge,topB]]);
+  stroke([[rightPair,(topA+topB)/2],[762,(topA+topB)/2],[762,midA],[rightEdge,midA]]);
+
+  // Cruce inferior derecho -> tarjeta semifinal inferior.
+  stroke([[rightEdge,botA],[rightPair,botA],[rightPair,botB],[rightEdge,botB]]);
+  stroke([[rightPair,(botA+botB)/2],[742,(botA+botB)/2],[742,midB],[rightEdge,midB]]);
+
+  // Las dos semifinales derechas convergen a la Final.
+  stroke([[rightEdge,midA],[783,midA],[783,midB],[rightEdge,midB]]);
+  stroke([[783,(midA+midB)/2],[713,(midA+midB)/2]]);
+
   ctx.restore();
 }
 async function renderQuarterExact(ctx,meta,teams){
@@ -851,10 +878,10 @@ async function renderQuarterExact(ctx,meta,teams){
   await qExactCard(ctx,teamAt(teams,2),824,339,386,74,'right',2);
   await qExactCard(ctx,teamAt(teams,7),824,420,386,74,'right',7);
 
-  await qExactSemiCard(ctx,sf[0]?.a||'',18,540,386,76,'left');
-  await qExactSemiCard(ctx,sf[0]?.b||'',18,621,386,76,'left');
-  await qExactSemiCard(ctx,sf[1]?.a||'',824,540,386,76,'right');
-  await qExactSemiCard(ctx,sf[1]?.b||'',824,621,386,76,'right');
+  await qExactSemiCard(ctx,visualAdvancedName(qf[0]),18,540,386,76,'left');
+  await qExactSemiCard(ctx,visualAdvancedName(qf[1]),18,621,386,76,'left');
+  await qExactSemiCard(ctx,visualAdvancedName(qf[2]),824,540,386,76,'right');
+  await qExactSemiCard(ctx,visualAdvancedName(qf[3]),824,621,386,76,'right');
 
   await qExactCard(ctx,teamAt(teams,4),18,888,386,76,'left',4);
   await qExactCard(ctx,teamAt(teams,5),18,969,386,76,'left',5);
@@ -876,9 +903,12 @@ async function renderCanvas(canvas,page,design,scale){
   scale=scale||1;
   canvas.width=Math.round(W*scale);canvas.height=Math.round(H*scale);
   const ctx=canvas.getContext('2d');ctx.setTransform(scale,0,0,scale,0,0);
-  const cat=page.querySelector('[data-v651-cat]')?.value||currentCategory(),meta=catMeta(cat),stage=resolvedStage(page),teams=slotValues(page);
-  renderBracketModel=buildBracketModel(page);
-  if(design==='quarters')await renderQuarterExact(ctx,meta,teams);else if(design==='full')await renderFull(ctx,meta,stage,teams);else await renderRound(ctx,meta,stage,teams);
+  const cat=page.querySelector('[data-v651-cat]')?.value||currentCategory(),meta=catMeta(cat),teams=slotValues(page);
+  const stage=design==='quarters'?'qf':(design==='round'||design==='full')?'r16':resolvedStage(page);
+  renderBracketModel=buildBracketModel(page,stage,teams);
+  if(design==='quarters')await renderQuarterExact(ctx,meta,teams);
+  else if(design==='full')await renderFull(ctx,meta,'r16',teams);
+  else await renderRound(ctx,meta,'r16',teams);
   return canvas;
 }
 function refreshSelectedCards(page){
@@ -912,9 +942,10 @@ function prepareDesignForGeneration(page,design){
   page.dataset.v651Design=design;
   try{localStorage.setItem('v651-bracket-design',design)}catch(_){}
   const stageSel=page.querySelector('[data-v651-stage]');
-  if(design==='quarters'&&stageSel&&stageSel.value!=='qf'){
-    stageSel.value='qf';
-    try{localStorage.setItem('v651-bracket-stage','qf')}catch(_){}
+  const wanted=design==='quarters'?'qf':(design==='round'||design==='full')?'r16':stageSel?.value;
+  if(stageSel&&wanted&&stageSel.value!==wanted){
+    stageSel.value=wanted;
+    try{localStorage.setItem('v651-bracket-stage',wanted)}catch(_){}
     resetResultState(page,false);
     renderSlots(page,false);
     autoFill(page);
@@ -996,9 +1027,9 @@ async function mount(){
     '<section class="v656-generate-wrap" data-v658-generation>'+
       '<div class="v656-generate-head"><span><small>GENERACIÓN</small><b>Generar diseños</b></span><em>3 opciones separadas<br>PNG HD / PDF</em></div>'+
       '<div class="v656-generate-grid">'+
-        '<article class="v656-generate-card" data-design="round"><h3>1. Round of 16</h3><p>Esfera azul, equipos laterales, llaves blancas y trofeo central.</p><div class="v656-generate-actions"><button type="button" data-v656-png="round">Generar PNG</button><button type="button" data-v656-pdf="round">Generar PDF</button></div></article>'+
-        '<article class="v656-generate-card" data-design="full"><h3>2. Full Bracket</h3><p>Equipos en extremos, rondas al centro y trofeo central.</p><div class="v656-generate-actions"><button type="button" data-v656-png="full">Generar PNG</button><button type="button" data-v656-pdf="full">Generar PDF</button></div></article>'+
-        '<article class="v656-generate-card" data-design="quarters"><h3>3. Cuartos de Final</h3><p>Diseño exacto de cuartos con trofeo grande al centro.</p><div class="v656-generate-actions"><button type="button" data-v656-png="quarters">Generar PNG</button><button type="button" data-v656-pdf="quarters">Generar PDF</button></div></article>'+
+        '<article class="v656-generate-card" data-design="round"><h3>1. Round of 16 · 16 equipos</h3><p>Mismo formato de la referencia: tarjetas horizontales, llaves blancas y trofeo central.</p><div class="v656-generate-actions"><button type="button" data-v656-png="round">Generar PNG</button><button type="button" data-v656-pdf="round">Generar PDF</button></div></article>'+
+        '<article class="v656-generate-card" data-design="full"><h3>2. Full Bracket · 16 equipos</h3><p>Mismo formato de la referencia: columnas exteriores, rondas interiores y trofeo central.</p><div class="v656-generate-actions"><button type="button" data-v656-png="full">Generar PNG</button><button type="button" data-v656-pdf="full">Generar PDF</button></div></article>'+
+        '<article class="v656-generate-card" data-design="quarters"><h3>3. Cuartos de Final · 8 equipos</h3><p>Mismo formato de la referencia y líneas corregidas: ninguna rama termina sin cuadro.</p><div class="v656-generate-actions"><button type="button" data-v656-png="quarters">Generar PNG</button><button type="button" data-v656-pdf="quarters">Generar PDF</button></div></article>'+
       '</div>'+
     '</section>'+
     '<div class="v651-actions"><button type="button" class="v651-soft" data-v651-autofill>Clasificar equipos</button><button type="button" class="v651-soft" data-v651-clear>Limpiar</button></div>'+
@@ -1035,9 +1066,10 @@ async function mount(){
     const design=btn.dataset.v651Design;
     page.dataset.v651Design=design;
     try{localStorage.setItem('v651-bracket-design',design)}catch(_){}
-    if(design==='quarters'&&stageSel.value!=='qf'){
-      stageSel.value='qf';
-      try{localStorage.setItem('v651-bracket-stage','qf')}catch(_){}
+    const wanted=design==='quarters'?'qf':(design==='round'||design==='full')?'r16':stageSel.value;
+    if(stageSel.value!==wanted){
+      stageSel.value=wanted;
+      try{localStorage.setItem('v651-bracket-stage',wanted)}catch(_){}
       resetResultState(page,false);
       renderSlots(page,false);
       autoFill(page);
@@ -1045,7 +1077,8 @@ async function mount(){
       renderResultsEditor(page);
       stageInfo(page);
     }
-    refreshSelectedCards(page);queueAllPreviews(page);setStatus(page,DESIGNS[design].name+' seleccionado.');
+    refreshSelectedCards(page);queueAllPreviews(page);
+    setStatus(page,DESIGNS[design].name+' seleccionado · formato '+(wanted==='r16'?'16 equipos':'8 equipos')+'.');
   }));
   page.querySelectorAll('[data-v656-png]').forEach(btn=>btn.addEventListener('click',()=>exportSpecificPng(page,btn.dataset.v656Png)));
   page.querySelectorAll('[data-v656-pdf]').forEach(btn=>btn.addEventListener('click',()=>exportSpecificPdf(page,btn.dataset.v656Pdf)));
