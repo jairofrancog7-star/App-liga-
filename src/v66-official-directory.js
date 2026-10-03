@@ -236,20 +236,23 @@ function bind(){
   document.querySelectorAll('[data-v66-player]').forEach(b=>b.onclick=e=>{
     e?.preventDefault?.();
     e?.stopPropagation?.();
+    e?.stopImmediatePropagation?.();
     const player={
       name:b.dataset.v66Player||'',
       team:b.dataset.v66PlayerTeam||'',
       cat:b.dataset.v66CatId||''
     };
     try{
-      localStorage.setItem('v123-compare-player',JSON.stringify(player));
+      localStorage.setItem('v379-player-profile',JSON.stringify(player));
+      localStorage.setItem('v379-player-profile-tab','Resumen');
+      localStorage.removeItem('v123-compare-player');
       localStorage.removeItem('v123-compare-player-2');
     }catch(_){}
-    if(window.LJR_PLAYER_COMPARE_API?.open){
-      window.LJR_PLAYER_COMPARE_API.open(player);
+    if(window.LJR_PLAYER_PROFILE_API?.open){
+      window.LJR_PLAYER_PROFILE_API.open(player);
       return;
     }
-    location.hash='#/playerCompare';
+    location.hash='#/playerDetail';
   });
 }
 function revealActivePlayerFilters(screen){
