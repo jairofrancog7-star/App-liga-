@@ -17,7 +17,7 @@ const CAT_LOGOS_V630={
   '2':'./assets/categories/veteranos-35-user.png',
   '1':'./assets/categories/veteranos-50.webp'
 };
-let db=null, loading=null, teamQuery='', playerQuery='', playerCat=localStorage.getItem('v66-player-cat')||'all', playerTeam=localStorage.getItem('v66-player-team')||'all';
+let db=null, loading=null, teamQuery='', playerQuery='', playerCat=localStorage.getItem('v66-player-cat')||'all', playerTeam=localStorage.getItem('v66-player-team')||'all', cedulaCat=localStorage.getItem('v66-cedula-cat-filter')||'all', cedulaTeam=localStorage.getItem('v66-cedula-team-filter')||'all';
 
 function route(){return location.hash.replace(/^#\/?/,'')||'home'}
 function esc(v){return String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
@@ -376,43 +376,121 @@ function fixtureRows(){
   }
   return out;
 }
-function cedulaCategoryLogo(catId){return CAT_LOGOS_V630[String(catId)]||'./assets/liga-logo.webp'}
+function cedulaRoundLabel(value){
+  let v=String(value??'').trim();
+  v=v.replace(/^jornada\s*/i,'').replace(/^j\s*/i,'').trim();
+  return 'J'+(v||'—');
+}
 function cedulaLead(r){
-  const logo=cedulaCategoryLogo(r.cat);
-  return '<span class="v66-cedula-side">'+
-    '<span class="v66-round-badge">'+
-      '<small>JORNADA</small>'+
-      '<b>'+esc(r.round||'—')+'</b>'+
-      '<span class="v66-category-mark"><img src="'+esc(logo)+'" alt="'+esc(r.category||'Categoría')+'" loading="lazy" decoding="async"></span>'+
-    '</span>'+
-  '</span>';
+  return '<span class="v66-cedula-side"><span class="v66-round-badge">'+esc(cedulaRoundLabel(r.round))+'</span></span>';
+}
+function cedulaSort(a,b){
+  const ca=CAT_ORDER.indexOf(String(a.cat)),cb=CAT_ORDER.indexOf(String(b.cat));
+  if(ca!==cb)return (ca<0?999:ca)-(cb<0?999:cb);
+  const ra=Number(String(a.round||'').replace(/\D+/g,''))||999;
+  const rb=Number(String(b.round||'').replace(/\D+/g,''))||999;
+  if(ra!==rb)return ra-rb;
+  const da=String(a.date||''),dbb=String(b.date||'');
+  if(da!==dbb)return da.localeCompare(dbb,'es');
+  return String(a.home||'').localeCompare(String(b.home||''),'es',{sensitivity:'base'});
+}
+function cedulaTeams(rows){
+  const out=[];
+  const add=name=>{
+    name=String(name||'').trim();if(!name)return;
+    if(!out.some(x=>same(x,name)))out.push(name);
+  };
+  rows.forEach(r=>{add(r.home);add(r.away)});
+  return out.sort((a,b)=>a.localeCompare(b,'es',{sensitivity:'base'}));
+}
+function cedulaRowsFiltered(all){
+  let rows=all.slice().sort(cedulaSort);
+  if(cedulaCat!=='all')rows=rows.filter(r=>String(r.cat)===String(cedulaCat));
+  const teams=cedulaTeams(rows);
+  if(cedulaTeam!=='all'&&!teams.some(t=>same(t,cedulaTeam))){
+    cedulaTeam='all';
+    localStorage.setItem('v66-cedula-team-filter','all');
+  }
+  if(cedulaTeam!=='all')rows=rows.filter(r=>same(r.home,cedulaTeam)||same(r.away,cedulaTeam));
+  return rows;
+}
+function cedulaFiltersMarkup(all){
+  const availableCats=CAT_ORDER.filter(id=>all.some(r=>String(r.cat)===String(id)));
+  const byCat=cedulaCat==='all'?all:all.filter(r=>String(r.cat)===String(cedulaCat));
+  const teams=cedulaTeams(byCat);
+  return '<div class="v66-cedula-filters">'+
+    '<label><span>CATEGORÍA</span><select data-v66-cedula-cat-filter>'+
+      '<option value="all" '+(cedulaCat==='all'?'selected':'')+'>Todas</option>'+
+      availableCats.map(id=>'<option value="'+esc(id)+'" '+(cedulaCat===id?'selected':'')+'>'+esc(db?.categories?.[id]?.name||CAT_LABEL[id]||id)+'</option>').join('')+
+    '</select></label>'+
+    '<label><span>EQUIPO</span><select data-v66-cedula-team-filter>'+
+      '<option value="all" '+(cedulaTeam==='all'?'selected':'')+'>Todos los equipos</option>'+
+      teams.map(name=>'<option value="'+esc(name)+'" '+(cedulaTeam!=='all'&&same(cedulaTeam,name)?'selected':'')+'>'+esc(name)+'</option>').join('')+
+    '</select></label>'+
+  '</div>';
+}
+function cedulaRowMarkup(r){
+  return '<button type="button" class="v66-player-row v66-fixture-row" data-v66-cedula-home="'+esc(r.home)+'" data-v66-cedula-away="'+esc(r.away)+'" data-v66-cedula-cat="'+esc(r.category)+'" data-v66-cedula-date="'+esc(r.date)+'" data-v66-cedula-field="'+esc(r.field)+'" data-v66-cedula-round="'+esc(r.round||'')+'">'+
+    cedulaLead(r)+'<span><b>'+esc(r.home)+' vs '+esc(r.away)+'</b><small>'+esc(r.category)+' · '+esc(r.date)+' · '+esc(r.field)+'</small></span><i>›</i></button>';
+}
+function cedulaGroupsMarkup(rows){
+  if(!rows.length)return '<div class="v66-cedula-empty"><b>No hay cédulas con estos filtros.</b><small>Cambia la categoría o el equipo.</small></div>';
+  return CAT_ORDER.map(id=>{
+    const list=rows.filter(r=>String(r.cat)===String(id));
+    if(!list.length)return '';
+    const name=db?.categories?.[id]?.name||CAT_LABEL[id]||id;
+    return '<section class="v66-cedula-group" data-v66-cedula-group="'+esc(id)+'">'+
+      '<div class="v66-cedula-group-head"><b>'+esc(name)+'</b><small>'+list.length+' partido'+(list.length===1?'':'s')+'</small></div>'+
+      '<div class="v66-player-list">'+list.map(cedulaRowMarkup).join('')+'</div>'+
+    '</section>';
+  }).join('');
 }
 function cedulasMarkup(){
-  const rows=fixtureRows();
+  const all=fixtureRows().sort(cedulaSort);
+  const rows=cedulaRowsFiltered(all);
   return '<section class="v66-directory v66-cedulas-official" data-v66-directory="cedulas">'+
-    '<div class="v66-cedula-headline"><b>Cédulas oficiales</b><small>'+rows.length+' partidos sincronizados</small></div>'+
+    '<div class="v66-cedula-headline"><b>Cédulas oficiales</b><small>'+rows.length+' de '+all.length+' partidos</small></div>'+
     '<button type="button" class="v66-primary-action" data-v66-generate-cedula>Generar cédula PDF</button>'+
-    '<div class="v66-player-list">'+rows.map(r=>'<button type="button" class="v66-player-row v66-fixture-row" data-v66-cedula-home="'+esc(r.home)+'" data-v66-cedula-away="'+esc(r.away)+'" data-v66-cedula-cat="'+esc(r.category)+'" data-v66-cedula-date="'+esc(r.date)+'" data-v66-cedula-field="'+esc(r.field)+'" data-v66-cedula-round="'+esc(r.round||'')+'">'+
-      cedulaLead(r)+'<span><b>'+esc(r.home)+' vs '+esc(r.away)+'</b><small>'+esc(r.category)+' · '+esc(r.date)+' · '+esc(r.field)+'</small></span><i>›</i></button>').join('')+'</div>'+
+    cedulaFiltersMarkup(all)+
+    '<div class="v66-cedula-groups">'+cedulaGroupsMarkup(rows)+'</div>'+
   '</section>';
+}
+function goCedulaBuilder(){
+  if(window.LJR_MAIN_ROUTE?.go){window.LJR_MAIN_ROUTE.go('cedulaBuilder');return}
+  location.hash='#/cedulaBuilder';
+}
+function renderCedulas(){
+  if(route()!=='cedulas')return;
+  const screen=document.querySelector('#screen');if(!screen)return;
+  screen.innerHTML=cedulasMarkup();
+  bindCedulas();
 }
 function bindCedulas(){
   const generate=document.querySelector('[data-v66-generate-cedula]');
   if(generate)generate.onclick=e=>{
-    e?.preventDefault?.();
-    e?.stopPropagation?.();
-    /* Botón general: abre el generador limpio. Los partidos de la lista
-       siguen abriendo el mismo generador, pero prellenado con sus datos. */
+    e?.preventDefault?.();e?.stopPropagation?.();
     ['v66-cedula-home','v66-cedula-away','v66-cedula-cat','v66-cedula-date','v66-cedula-field','v66-cedula-round','v66-cedula-source','v66-cedula-autogenerate'].forEach(k=>localStorage.removeItem(k));
-    location.hash='#/cedulaBuilder';
+    goCedulaBuilder();
   };
-
+  document.querySelector('[data-v66-cedula-cat-filter]')?.addEventListener('change',e=>{
+    cedulaCat=e.target.value||'all';
+    cedulaTeam='all';
+    localStorage.setItem('v66-cedula-cat-filter',cedulaCat);
+    localStorage.setItem('v66-cedula-team-filter','all');
+    renderCedulas();
+  });
+  document.querySelector('[data-v66-cedula-team-filter]')?.addEventListener('change',e=>{
+    cedulaTeam=e.target.value||'all';
+    localStorage.setItem('v66-cedula-team-filter',cedulaTeam);
+    renderCedulas();
+  });
   document.querySelectorAll('[data-v66-cedula-home]').forEach(b=>b.onclick=e=>openOfficialCedula(b,e));
 }
 function openOfficialCedula(b,e){
   if(!b)return;
   e?.preventDefault?.();
   e?.stopPropagation?.();
+  e?.stopImmediatePropagation?.();
   localStorage.setItem('v66-cedula-home',b.dataset.v66CedulaHome||'');
   localStorage.setItem('v66-cedula-away',b.dataset.v66CedulaAway||'');
   localStorage.setItem('v66-cedula-cat',b.dataset.v66CedulaCat||'');
@@ -421,7 +499,7 @@ function openOfficialCedula(b,e){
   localStorage.setItem('v66-cedula-round',b.dataset.v66CedulaRound||'');
   localStorage.setItem('v66-cedula-source','official-directory');
   localStorage.setItem('v66-cedula-autogenerate','1');
-  location.hash='#/cedulaBuilder';
+  goCedulaBuilder();
 }
 /* Delegación robusta: mantiene funcionales todas las filas aunque otra capa
    de la app vuelva a pintar la lista después de cargar los datos. */
@@ -437,7 +515,7 @@ async function renderExtras(){
   if(r==='teamDetail'){patchTeamDetail();return}
   if(r==='cedulas'){
     const screen=document.querySelector('#screen');if(!screen)return;
-    if(!screen.querySelector('[data-v66-directory="cedulas"]')){screen.innerHTML=cedulasMarkup();bindCedulas()}
+    if(!screen.querySelector('[data-v66-directory="cedulas"]'))renderCedulas()
   }
 }
 function extraSchedule(){requestAnimationFrame(()=>requestAnimationFrame(renderExtras))}
