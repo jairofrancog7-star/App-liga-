@@ -341,9 +341,18 @@ function seasonTable(data){
   '</div>'+
  '</div>';
 }
+function scorerDisplayTeam(p,data){
+ const raw=String(p?.team||'').trim();
+ if(raw&&logoFor(raw,data))return raw;
+ const summary=/^\d+\s*g$/i.test(raw)||/goles?\s+en\s+temporada/i.test(raw);
+ if((summary||!raw)&&logoFor(p?.name,data))return String(p.name||'').trim();
+ if(logoFor(p?.name,data)&&!logoFor(raw,data))return String(p.name||'').trim();
+ return raw;
+}
 function scorerRow(p,i,data){
- return '<div class="v449-scorer-row"><span>'+String(i+1)+'º</span>'+playerPic(p.name,p.team,data)+
-  '<div><b>'+esc(p.name)+'</b><small>'+crest(p.team,data,'micro')+esc(p.team)+'</small></div><strong>'+esc(p.goals)+'</strong></div>';
+ const tm=scorerDisplayTeam(p,data);
+ return '<div class="v449-scorer-row"><span>'+String(i+1)+'º</span>'+playerPic(p.name,tm,data)+
+  '<div><b>'+esc(p.name)+'</b><small>'+crest(tm,data,'micro')+esc(tm||catName(data))+'</small></div><strong>'+esc(p.goals)+'</strong></div>';
 }
 function seasonStats(data){
  const rows=scorers(data).slice(0,6);
@@ -385,10 +394,11 @@ function rankingTeamStrip(data){
  ).join('')+'</div>';
 }
 function rankingPlayerRow(p,i,data){
+ const tm=scorerDisplayTeam(p,data);
  return '<div class="v458-rank-row">'+
    '<span class="v458-rank-pos">'+String(i+1)+'º</span>'+
-   playerPic(p.name,p.team,data,'rankrow')+
-   '<div class="v458-rank-person"><b>'+esc(p.name)+'</b><small>'+crest(p.team,data,'micro')+'<span>'+esc(p.team)+'</span></small></div>'+
+   playerPic(p.name,tm,data,'rankrow')+
+   '<div class="v458-rank-person"><b>'+esc(p.name)+'</b><small>'+crest(tm,data,'micro')+'<span>'+esc(tm||catName(data))+'</span></small></div>'+
    '<strong>'+esc(p.goals)+'</strong>'+
   '</div>';
 }
@@ -406,8 +416,8 @@ function rankingBlock(data){
   (available&&top?
    '<article class="v458-rank-card">'+
     '<div class="v458-rank-hero">'+
-      '<div class="v458-hero-photo">'+playerPic(top.name,top.team,data,'feature')+'</div>'+
-      '<div class="v458-hero-meta"><span>1º</span><div><h3>'+esc(top.name)+'</h3><small>'+crest(top.team,data,'micro')+esc(top.team)+'</small></div><strong>'+esc(top.goals)+'<small>GOLES</small></strong></div>'+
+      '<div class="v458-hero-photo">'+playerPic(top.name,scorerDisplayTeam(top,data),data,'feature')+'</div>'+
+      '<div class="v458-hero-meta"><span>1º</span><div><h3>'+esc(top.name)+'</h3><small>'+crest(scorerDisplayTeam(top,data),data,'micro')+esc(scorerDisplayTeam(top,data)||catName(data))+'</small></div><strong>'+esc(top.goals)+'<small>GOLES</small></strong></div>'+
     '</div>'+
     '<div class="v458-rank-head"><span>POS.</span><span>JUGADOR</span><span>GOLES</span></div>'+
     '<div class="v458-rank-list">'+rows.slice(1,5).map((p,i)=>rankingPlayerRow(p,i+1,data)).join('')+'</div>'+
