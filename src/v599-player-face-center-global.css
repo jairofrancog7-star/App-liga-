@@ -168,7 +168,15 @@ html body #screen :is(
   .v379-related-avatar.v576-has-photo,
   .v576-table-photo,
   .v124-avatar.v576-has-inline-photo,
-  .v562-avatar.v576-has-photo
+  .v562-avatar.v576-has-photo,
+  .v371-player-avatar.v371-has-player-photo,
+  .v371-preview-avatar.v371-has-player-photo,
+  .v371-scorer-avatar.v371-has-player-photo,
+  .v413-player-avatar,
+  .v414-player-photo.v576-has-photo,
+  .v444-player-avatar.v576-has-photo,
+  .v33-player-team-logo.v576-player-avatar,
+  .v538-person.has-photo
 )>img{
   position:static!important;
   inset:auto!important;
@@ -200,17 +208,47 @@ body.v379-player-profile-active .v379-related-avatar.v576-has-photo>img{
   inset:auto!important;
   width:100%!important;
   height:100%!important;
-  min-width:100%!important;
-  min-height:100%!important;
-  max-width:none!important;
-  max-height:none!important;
+  min-width:0!important;
+  min-height:0!important;
+  max-width:100%!important;
+  max-height:100%!important;
   margin:0!important;
   padding:0!important;
   display:block!important;
-  object-fit:cover!important;
-  object-position:center 30%!important;
-  transform:scale(1.22)!important;
-  transform-origin:center 35%!important;
+  object-fit:contain!important;
+  object-position:center center!important;
+  transform:none!important;
+  transform-origin:center center!important;
   border-radius:50%!important;
-  clip-path:circle(50% at 50% 50%)!important;
+  clip-path:none!important;
+}
+
+/* V651 — rostro completo global en miniaturas/fotos de jugador.
+   Priorizamos ver cabello, ojos, boca y mentón completos sobre un recorte agresivo. */
+html body #screen :is(
+  .v371-player-avatar.v371-has-player-photo,
+  .v371-preview-avatar.v371-has-player-photo,
+  .v371-scorer-avatar.v371-has-player-photo,
+  .v413-player-avatar,
+  .v414-player-photo.v576-has-photo,
+  .v444-player-avatar.v576-has-photo,
+  .v33-player-team-logo.v576-player-avatar,
+  .v538-person.has-photo
+)>img{
+  position:static!important;
+  inset:auto!important;
+  width:100%!important;
+  height:100%!important;
+  min-width:0!important;
+  min-height:0!important;
+  max-width:100%!important;
+  max-height:100%!important;
+  margin:0!important;
+  padding:0!important;
+  display:block!important;
+  object-fit:contain!important;
+  object-position:center center!important;
+  transform:none!important;
+  transform-origin:center center!important;
+  clip-path:none!important;
 }
