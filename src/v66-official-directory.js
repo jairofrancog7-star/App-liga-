@@ -10,6 +10,13 @@ const REMOTE='https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/m
 const SRC='https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/';
 const CAT_ORDER=['3','5','4','2','1'];
 const CAT_LABEL={'1':'Veteranos 50+','2':'Veteranos 35+','3':'Primera Fuerza','4':'Segunda Fuerza','5':'Intermedia'};
+const CAT_LOGOS_V630={
+  '3':'./assets/branding/primera-fuerza-hd.png',
+  '5':'./assets/categories/intermedia.webp',
+  '4':'./assets/categories/segunda-fuerza.webp',
+  '2':'./assets/categories/veteranos-35-user.png',
+  '1':'./assets/categories/veteranos-50.webp'
+};
 let db=null, loading=null, teamQuery='', playerQuery='', playerCat=localStorage.getItem('v66-player-cat')||'all', playerTeam=localStorage.getItem('v66-player-team')||'all';
 
 function route(){return location.hash.replace(/^#\/?/,'')||'home'}
@@ -369,13 +376,21 @@ function fixtureRows(){
   }
   return out;
 }
+function cedulaCategoryLogo(catId){return CAT_LOGOS_V630[String(catId)]||'./assets/liga-logo.webp'}
+function cedulaLead(r){
+  const logo=cedulaCategoryLogo(r.cat);
+  return '<span class="v66-cedula-side">'+
+    '<span class="v66-round-badge"><small>JORNADA</small><b>'+esc(r.round||'—')+'</b></span>'+
+    '<span class="v66-category-mark"><img src="'+esc(logo)+'" alt="'+esc(r.category||'Categoría')+'" loading="lazy" decoding="async"></span>'+
+  '</span>';
+}
 function cedulasMarkup(){
   const rows=fixtureRows();
   return '<section class="v66-directory v66-cedulas-official" data-v66-directory="cedulas">'+
     '<div class="v66-cedula-headline"><b>Cédulas oficiales</b><small>'+rows.length+' partidos sincronizados</small></div>'+
-    '<button type="button" class="v66-primary-action" data-route="cedulaBuilder" data-v66-generate-cedula>Generar cédula</button>'+
+    '<button type="button" class="v66-primary-action" data-v66-generate-cedula>Generar cédula PDF</button>'+
     '<div class="v66-player-list">'+rows.map(r=>'<button type="button" class="v66-player-row v66-fixture-row" data-v66-cedula-home="'+esc(r.home)+'" data-v66-cedula-away="'+esc(r.away)+'" data-v66-cedula-cat="'+esc(r.category)+'" data-v66-cedula-date="'+esc(r.date)+'" data-v66-cedula-field="'+esc(r.field)+'" data-v66-cedula-round="'+esc(r.round||'')+'">'+
-      '<span class="v66-player-avatar">J'+esc(r.round||'—')+'</span><span><b>'+esc(r.home)+' vs '+esc(r.away)+'</b><small>'+esc(r.category)+' · '+esc(r.date)+' · '+esc(r.field)+'</small></span><i>›</i></button>').join('')+'</div>'+
+      cedulaLead(r)+'<span><b>'+esc(r.home)+' vs '+esc(r.away)+'</b><small>'+esc(r.category)+' · '+esc(r.date)+' · '+esc(r.field)+'</small></span><i>›</i></button>').join('')+'</div>'+
   '</section>';
 }
 function bindCedulas(){
@@ -385,7 +400,7 @@ function bindCedulas(){
     e?.stopPropagation?.();
     /* Botón general: abre el generador limpio. Los partidos de la lista
        siguen abriendo el mismo generador, pero prellenado con sus datos. */
-    ['v66-cedula-home','v66-cedula-away','v66-cedula-cat','v66-cedula-date','v66-cedula-field','v66-cedula-round','v66-cedula-source'].forEach(k=>localStorage.removeItem(k));
+    ['v66-cedula-home','v66-cedula-away','v66-cedula-cat','v66-cedula-date','v66-cedula-field','v66-cedula-round','v66-cedula-source','v66-cedula-autogenerate'].forEach(k=>localStorage.removeItem(k));
     location.hash='#/cedulaBuilder';
   };
 
@@ -402,7 +417,8 @@ function openOfficialCedula(b,e){
   localStorage.setItem('v66-cedula-field',b.dataset.v66CedulaField||'');
   localStorage.setItem('v66-cedula-round',b.dataset.v66CedulaRound||'');
   localStorage.setItem('v66-cedula-source','official-directory');
-  location.hash='#/cedulaDetail';
+  localStorage.setItem('v66-cedula-autogenerate','1');
+  location.hash='#/cedulaBuilder';
 }
 /* Delegación robusta: mantiene funcionales todas las filas aunque otra capa
    de la app vuelva a pintar la lista después de cargar los datos. */
