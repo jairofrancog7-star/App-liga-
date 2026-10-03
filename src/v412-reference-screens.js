@@ -62,16 +62,18 @@ function players(){
    Object.entries(c?.rosters||{}).forEach(([teamName,raw])=>{
      const rows=Array.isArray(raw)?raw:(raw?.rows||raw?.players||[]);
      (rows||[]).forEach((r,i)=>{
-       let name='',pos='Jugador';
+       let name='',pos='Jugador',photo='';
        if(typeof r==='string')name=r;
-       else if(Array.isArray(r)){name=String(r[1]||r[0]||'');pos=String(r[2]||'Jugador')}
-       else{name=String(r?.name||r?.player||'');pos=String(r?.position||'Jugador')}
-       name=name.trim();const k=norm(name);if(!name||seen.has(k)||/^(nombre|jugador|tabla|goleadores)$/i.test(name))return;
-       seen.add(k);out.push({id:cid+'-'+slug(teamName)+'-'+i,name,team:teamName,catId:cid,category:c?.name||CAT_NAMES[cid]||'Liga Municipal',position:pos});
+       else if(Array.isArray(r)){name=String(r[1]||r[0]||'');pos=String(r[2]||'Jugador');photo=String(r?.[5]||'')}
+       else{name=String(r?.name||r?.player||'');pos=String(r?.position||'Jugador');photo=String(r?.photo||r?.image||'')}
+       name=name.trim();
+       const k=String(cid)+'|'+norm(teamName)+'|'+norm(name);
+       if(!name||seen.has(k)||/^(nombre|jugador|tabla|goleadores)$/i.test(name))return;
+       seen.add(k);out.push({id:cid+'-'+slug(teamName)+'-'+i,name,team:teamName,catId:String(cid),category:c?.name||CAT_NAMES[cid]||'Liga Municipal',position:pos,photo});
      });
    });
  });
- return out.slice(0,240);
+ return out;
 }
 function fixtures(){
  const out=[];
@@ -263,12 +265,21 @@ function searchMatchRow(m){
  const st=matchStatus(m);
  return '<button type="button" class="v412-search-match-row" data-v412-match="'+esc(m.key)+'"><span><img src="'+esc(logo(m.home))+'" alt=""><b>'+esc(m.home)+'</b></span><strong>'+esc(st.main)+'</strong><span><img src="'+esc(logo(m.away))+'" alt=""><b>'+esc(m.away)+'</b></span></button>';
 }
+function searchPlayerCategoryBar(active='all'){
+ const opts=[['all','Todos',''],['3','Primera',categoryLogo('3')],['5','Intermedia',categoryLogo('5')],['4','Segunda',categoryLogo('4')],['2','35+',categoryLogo('2')],['1','50+',categoryLogo('1')]];
+ return '<div class="v414-player-catbar" data-v414-player-catbar>'+opts.map(x=>
+   '<button type="button" class="'+(String(active)===String(x[0])?'is-active':'')+'" data-v414-player-cat="'+x[0]+'">'+
+     (x[2]?'<img src="'+esc(x[2])+'" alt="" loading="lazy" decoding="async">':'<span>★</span>')+'<b>'+esc(x[1])+'</b></button>'
+ ).join('')+'</div>';
+}
 function searchMarkup(){
  const mode=localStorage.getItem('v412-search-mode')||'players';
+ const playerCat=localStorage.getItem('v412-search-player-cat')||'all';
  return '<section class="v412-shell v412-search-reference v414-search-reference v415-single-search" data-v412-screen="search">'+
    '<div class="v414-search-join">'+
      '<div class="v412-modebar">'+[['teams','Equipos'],['players','Jugadores'],['competitions','Competiciones'],['matches','Partidos']].map(x=>'<button class="v412-mode '+(mode===x[0]?'is-active':'')+'" data-v412-mode="'+x[0]+'">'+x[1]+'</button>').join('')+'</div>'+
    '</div>'+
+   searchPlayerCategoryBar(playerCat)+
    '<div class="v414-player-cover" data-v414-player-cover><span>PORTADA</span><div><small></small><small>GOL</small><small>PJ</small><small>PTS</small><small></small></div></div>'+
    '<div class="v412-result-heading v414-result-heading"><span></span><button data-v412-go="players">Ver todos ›</button></div>'+
    '<div class="v414-results" data-v412-search-results></div>'+
@@ -277,20 +288,24 @@ function searchMarkup(){
 }
 function bindSearch(root){
  let mode=localStorage.getItem('v412-search-mode')||'players';
+ let playerCat=localStorage.getItem('v412-search-player-cat')||'all';
  const input=document.querySelector('#globalSearch');
  const nativeResults=document.querySelector('#searchResults');
  const render=()=>{
    const q=norm(input?.value||'');let html='',title='',allLabel='Ver todos ›',allRoute='players';
    if(nativeResults)nativeResults.style.display=q?'none':'';
    const cover=root.querySelector('[data-v414-player-cover]');
+   const catbar=root.querySelector('[data-v414-player-catbar]');
    root.classList.toggle('is-player-mode',mode==='players');
    root.classList.toggle('is-team-mode',mode==='teams');
    if(cover)cover.style.display=mode==='players'?'flex':'none';
+   if(catbar)catbar.style.display=mode==='players'?'flex':'none';
    if(mode==='players'){
-     title='Jugadores registrados';allRoute='players';
-     html=players().filter(p=>!q||norm(p.name+' '+p.team+' '+p.category).includes(q))
-       .sort((a,b)=>{const A=playerStats(a),B=playerStats(b);return B.goals-A.goals||B.points-A.points||a.name.localeCompare(b.name,'es')})
-       .slice(0,36).map(searchPlayerRow).join('');
+     allRoute='players';
+     const pool=players().filter(p=>(playerCat==='all'||String(p.catId)===String(playerCat))&&(!q||norm(p.name+' '+p.team+' '+p.category).includes(q)));
+     pool.sort((a,b)=>{const A=playerStats(a),B=playerStats(b);return B.goals-A.goals||B.points-A.points||a.team.localeCompare(b.team,'es')||a.name.localeCompare(b.name,'es')});
+     title=(playerCat==='all'?'Todos los jugadores':(CAT_NAMES[playerCat]||'Jugadores'))+' · '+pool.length;
+     html=pool.map(searchPlayerRow).join('');
    }else if(mode==='teams'){
      title='Equipos';allRoute='teams';allLabel='›';
      html=teams().filter(t=>!q||norm(t.name+' '+t.category+' futbol').includes(q)).slice(0,30).map(searchTeamRow).join('');
@@ -307,6 +322,7 @@ function bindSearch(root){
    bindCommon(root);
  };
  root.querySelectorAll('[data-v412-mode]').forEach(b=>b.onclick=()=>{mode=b.dataset.v412Mode;localStorage.setItem('v412-search-mode',mode);root.querySelectorAll('[data-v412-mode]').forEach(x=>x.classList.toggle('is-active',x===b));render()});
+ root.querySelectorAll('[data-v414-player-cat]').forEach(b=>b.onclick=()=>{playerCat=b.dataset.v414PlayerCat||'all';localStorage.setItem('v412-search-player-cat',playerCat);root.querySelectorAll('[data-v414-player-cat]').forEach(x=>x.classList.toggle('is-active',x===b));render()});
  if(input){
    if(input.__v415SearchHandler)input.removeEventListener('input',input.__v415SearchHandler);
    input.__v415SearchHandler=()=>requestAnimationFrame(render);
