@@ -151,10 +151,20 @@ function quizLogo(){
 function v614ClearQuizCountdown(){
   if(v614QuizCountdownTimer){clearInterval(v614QuizCountdownTimer);v614QuizCountdownTimer=null}
 }
+function v617StatusIcon(state){
+  if(state==='ok')return '<svg class="v617-status-svg" viewBox="0 0 24 24" aria-hidden="true"><path d="M5.2 12.4 9.4 16.6 18.8 7.2"/></svg>';
+  return '<svg class="v617-status-svg" viewBox="0 0 24 24" aria-hidden="true"><path d="m7 7 10 10M17 7 7 17"/></svg>';
+}
+function v617LightningIcon(){
+  return '<svg class="v617-turbo-svg v617-lightning-svg" viewBox="0 0 24 24" aria-hidden="true"><path d="M13.2 2.4 5.8 13h5l-1 8.6L18.2 10h-5.1l.1-7.6Z"/></svg>';
+}
+function v617BallIcon(){
+  return '<svg class="v617-turbo-svg v617-ball-svg" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="m9.2 9.1 2.8-2 2.8 2-1.1 3.3h-3.4L9.2 9.1Zm1.1 3.3-2.8 2.1m6.2-2.1 2.8 2.1M12 7.1V4.3m-4.5 10.2-1 3.1m10-3.1 1 3.1m-7.1 3.1 1.6-2.3 1.6 2.3"/></svg>';
+}
 function v614QuizProgress(){
   const history=Array.isArray(quiz.history)?quiz.history:[];
   let html=history.slice(-9).map(function(state){
-    return '<i class="v614-progress-state '+(state==='ok'?'ok':'bad')+'">'+(state==='ok'?'✓':'×')+'</i>';
+    return '<i class="v614-progress-state '+(state==='ok'?'ok':'bad')+'">'+v617StatusIcon(state)+'</i>';
   }).join('');
   html+='<span class="v614-current-timer"><b data-quiz-timer aria-label="Segundos restantes">'+quiz.remaining+'</b></span>';
   const used=Math.min(10,history.slice(-9).length+1);
@@ -229,7 +239,7 @@ function quizGame(data){
     '<main class="v531-q-main v614-q-main">'+
       '<article class="v531-question-card v614-question-card"><div class="v531-question-media v614-question-media"><img src="'+esc(QUIZ_STADIUM)+'" alt="" loading="eager" decoding="async"><p>'+esc(q.question)+'</p></div><div class="v531-q-grid v614-q-grid">'+options+'</div></article>'+
       '<div class="v614-league-band"><img src="'+esc(LEAGUE)+'" alt=""><span><b>LIGA JUVENTINO ROSAS</b><small>FÚTBOL MUNICIPAL</small></span></div>'+
-      '<div class="v531-turbos v614-turbos"><button data-quiz-half '+(quiz.halfUsed?'disabled':'')+'><small>Tus turbos</small><b>⚡&nbsp;&nbsp;50-50</b></button><button data-quiz-retry '+(quiz.retryUsed?'disabled':'')+'><small>Turbo</small><b>⚽&nbsp;&nbsp;2 intentos</b></button></div>'+
+      '<div class="v531-turbos v614-turbos"><button data-quiz-half '+(quiz.halfUsed?'disabled':'')+'><small>Tus turbos</small><b><span class="v617-turbo-icon">'+v617LightningIcon()+'</span><span>50-50</span></b></button><button data-quiz-retry '+(quiz.retryUsed?'disabled':'')+'><small>Turbo</small><b><span class="v617-turbo-icon">'+v617BallIcon()+'</span><span>2 intentos</span></b></button></div>'+
     '</main>'+
     (quiz.exit?exitModal('quiz'):'')+
   '</section>';
