@@ -2,8 +2,9 @@
    #/teams queda bajo V27 + V62 para evitar dos renderizados consecutivos y conservar una sola pantalla estable. */
 (function(){
 'use strict';
-/* V607 — dueño único de la pantalla de jugadores. */
-window.__LJR_PLAYER_DIRECTORY_OWNER__='v66';
+/* V625 — respeta al renderizador que ya tomó #/players; V66 conserva tienda y APIs auxiliares. */
+if(!window.__LJR_PLAYER_DIRECTORY_OWNER__)window.__LJR_PLAYER_DIRECTORY_OWNER__='v66';
+function ownsPlayers(){return window.__LJR_PLAYER_DIRECTORY_OWNER__==='v66'}
 const LOCAL='./data/official-live.json?v=20261001-v493-official-all-categories';
 const REMOTE='https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/data/official-live.json?v=20261001-v493-official-all-categories';
 const SRC='https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/';
@@ -254,6 +255,7 @@ function revealActivePlayerFilters(screen){
 }
 async function render(force=false,focusSearch=false,revealFilters=false){
   const r=route(); if(!['players','club-store'].includes(r))return;
+  if(r==='players'&&!ownsPlayers())return;
   if(r==='players'&&localStorage.getItem('v66-open-all')==='1'){
     playerCat='all';
     playerTeam='all';
@@ -281,7 +283,7 @@ async function render(force=false,focusSearch=false,revealFilters=false){
 function schedule(){requestAnimationFrame(()=>requestAnimationFrame(()=>render(false)))}
 window.addEventListener('hashchange',schedule);
 const screen=document.querySelector('#screen');
-if(screen)new MutationObserver(()=>{if(['players','club-store'].includes(route())&&!screen.querySelector('[data-v66-directory]'))schedule()}).observe(screen,{childList:true,subtree:false});
+if(screen)new MutationObserver(()=>{const r=route();if((r==='club-store'||(r==='players'&&ownsPlayers()))&&!screen.querySelector('[data-v66-directory]'))schedule()}).observe(screen,{childList:true,subtree:false});
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',schedule,{once:true});else schedule();
 
 
