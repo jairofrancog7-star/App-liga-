@@ -3735,3 +3735,21 @@ body.v40-standings-master .v40-scroll-shell::after{
     width:58px!important;min-width:58px!important;max-width:58px!important;
   }
 }
+
+/* Tablas móviles con el tamaño de las referencias y columnas desplazables. */
+@media(max-width:760px){
+ body.v40-standings-master [data-v580-scroll] {overflow-x:auto!important;touch-action:pan-x pan-y!important;max-width:100%!important;background:#06064f!important}
+ body.v40-standings-master [data-v580-scroll] .v578-table {table-layout:fixed!important;width:var(--table-width)!important;min-width:var(--table-width)!important;max-width:none!important}
+ body.v40-standings-master [data-v580-scroll=compact] {--table-width:390px}
+ body.v40-standings-master [data-v580-scroll=complete] {--table-width:680px}
+ body.v40-standings-master [data-v580-scroll=criteria] {--table-width:496px}
+ body.v40-standings-master [data-v580-scroll] .v578-table :is(th,td) {width:auto!important;min-width:0!important;max-width:none!important;height:40px!important;padding:6px 3px!important;font-size:12px!important;line-height:1.2!important;text-align:center!important}
+ body.v40-standings-master [data-v580-scroll] .v578-table .rank {width:20px!important;min-width:20px!important;max-width:20px!important;left:0!important}
+ body.v40-standings-master [data-v580-scroll] .v578-table .logo {width:32px!important;min-width:32px!important;max-width:32px!important;left:20px!important}
+ body.v40-standings-master [data-v580-scroll] .v578-table .teamname {position:static!important;left:auto!important;width:130px!important;min-width:130px!important;max-width:130px!important;text-align:left!important;box-shadow:none!important}
+ body.v40-standings-master [data-v580-scroll] .v578-table .teamname strong {font-size:12px!important;font-weight:500!important;line-height:1.2!important}
+ body.v40-standings-master [data-v580-scroll] .v578-logo {width:24px!important;height:24px!important;min-width:24px!important;min-height:24px!important;max-width:24px!important;max-height:24px!important}
+ body.v40-standings-master [data-v580-scroll] .v40-form {display:flex!important;gap:3px!important;justify-content:center!important}
+ body.v40-standings-master [data-v580-scroll] .v40-form :is(i,b) {width:12px!important;height:16px!important;min-width:12px!important;line-height:16px!important;font-size:9px!important}
+ body.v40-standings-master [data-v580-scroll] .v580-section-row td {height:30px!important;position:static!important;text-align:left!important}
+}

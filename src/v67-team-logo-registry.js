@@ -209,6 +209,7 @@
   }
   function patchImg(img){
     if(!(img instanceof HTMLImageElement))return;
+    if(img.closest('[data-player-portrait],.v123-avatar,.v123-option-avatar,.v66-player-avatar,.v42-avatar,.v576-player-avatar,.v379-related-avatar,.v562-avatar,.v124-avatar')||img.matches('.v379-player-photo,.v610-generic-player,.v576-player-photo,.v576-hero-player-photo'))return;
     if(img.closest('.v27-league-badge,.v35-logo-wrap,.v31-hospitality-page'))return;
     const name=teamNameFrom(img);
     if(!name)return;

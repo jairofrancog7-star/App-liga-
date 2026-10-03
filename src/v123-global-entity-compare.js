@@ -23,17 +23,18 @@ function registrationActive(){
 }
 function initials(v){return String(v||'').split(/\s+/).filter(Boolean).map(x=>x[0]).join('').slice(0,2).toUpperCase()||'JG'}
 function playerPhotoUrl(p){
- const direct=String(p?.photo||'').trim();if(direct)return direct;
+ const valid=src=>{if(!src||/(\/logos\/|official-logos|escudo|crest|badge|category|categoria)/i.test(src))return '';try{const team=window.LJR_TEAM_LOGOS?.get?.(p?.team);if(team&&String(src).split('?')[0]===String(team).split('?')[0])return ''}catch{}return src};
+ const direct=valid(String(p?.photo||'').trim());if(direct)return direct;
  try{
   const media=window.LJR_PLAYER_MEDIA?.photo?.(p?.name,p?.team,p?.cat);
-  if(media)return String(media);
+  if(valid(media))return String(media);
   const pub=window.LJR_PLAYER_PHOTOS||{};
-  if(typeof pub.get==='function'){const x=pub.get(p?.name,p?.team,p?.cat);if(x)return String(x)}
-  return String(pub[norm(p?.name)+'|'+norm(p?.team)]||pub[norm(p?.name)]||'');
+  if(typeof pub.get==='function'){const x=pub.get(p?.name,p?.team,p?.cat);if(valid(x))return String(x)}
+  return valid(String(pub[norm(p?.name)+'|'+norm(p?.team)]||pub[norm(p?.name)]||''));
  }catch(_){return ''}
 }
 function avatarMarkup(p,cls){
- const src=playerPhotoUrl(p);
+ const src=playerPhotoUrl(p)||(cls==='v123-avatar'?'assets/player-placeholder-3d.webp':'');
  const picker=String(cls||'').includes('v206-option-avatar');
  const frameStyle=picker?' style="width:44px!important;height:44px!important;min-width:44px!important;min-height:44px!important;max-width:44px!important;max-height:44px!important;aspect-ratio:1/1!important;display:grid!important;place-items:center!important;overflow:hidden!important;border-radius:50%!important;box-sizing:border-box!important;flex:0 0 44px!important;padding:0!important;margin:0!important;"':'';
  const imgStyle=picker?' style="position:static!important;display:block!important;width:44px!important;height:44px!important;min-width:44px!important;min-height:44px!important;max-width:44px!important;max-height:44px!important;aspect-ratio:1/1!important;object-fit:cover!important;object-position:center 22%!important;border-radius:50%!important;clip-path:circle(50%)!important;box-sizing:border-box!important;margin:0!important;padding:0!important;transform:none!important;"':'';

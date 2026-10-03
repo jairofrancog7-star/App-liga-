@@ -1,5 +1,7 @@
+import {Capacitor,registerPlugin} from '@capacitor/core';
+const nativeSpeech=registerPlugin('LigaSpeech');
 import {patchKeepingPlayer,enableDirectStream,playbackSettings,openPhoneCamera} from './v561-media-tools.js';
-import { normalizeStreamUrl, tiktokVideoId, attachPlayerControls } from './v560-stream-player-controls.js';
+import { normalizeStreamUrl, streamProvider, youtubeVideoId, tiktokVideoId, attachPlayerControls } from './v560-stream-player-controls.js';
 /* V144 — Match Center Live Intelligence.
    Facebook/YouTube/Talacha link + live clock + smart narration detection.
    Speech detections are suggestions until an operator confirms them. */
@@ -16,7 +18,10 @@ const SOURCE_KEY='ljr-live-source-v144';
 const ALERTS_KEY='ljr-match-alerts-v1';
 const sentAlerts=new Set();
 const bc=('BroadcastChannel' in window)?new BroadcastChannel('ljr-match-live-v144'):null;
-let speech=null,listening=false,mountTimer=0,pollTimer=0,clockTimer=0;
+const serverStates=new Map(),serverRevisions=new Map(),serverPending=new Map();let syncing=false;
+const canEdit=()=>!!window.LJR_MEDIA?.admin;
+let speech=null,listening=false,listenRequested=false,mountTimer=0,pollTimer=0,clockTimer=0;
+const narrationDrafts=new Map();
 
 const $=(s,r=document)=>r.querySelector(s);
 const $$=(s,r=document)=>[...r.querySelectorAll(s)];
@@ -91,6 +96,8 @@ function freshState(c){
   return {v:144,key:c.key,home:c.home,away:c.away,source:{url:global.url||'',name:global.name||'',feedUrl:'',connected:false,lastSync:0},phase:'scheduled',firstStartedAt:0,secondStartedAt:0,finishedAt:0,events:[],suggestions:[],lastTranscript:'',updatedAt:now()};
 }
 function load(c){
+  const published=serverStates.get(c.key);
+  if(published&&!canEdit())return JSON.parse(JSON.stringify(published));
   try{
     const s=JSON.parse(localStorage.getItem(KEY+c.key)||'null');
     if(s&&s.v===144){
@@ -105,6 +112,7 @@ function load(c){
       if(shared){s.source.url=shared.url;s.source.name=shared.name}
       s.events=Array.isArray(s.events)?s.events:[];
       s.suggestions=Array.isArray(s.suggestions)?s.suggestions:[];
+      if(!canEdit()){s.events=[];s.suggestions=[];s.phase='scheduled';s.firstStartedAt=0;s.secondStartedAt=0;}
       return s;
     }
   }catch(_){}
@@ -113,8 +121,17 @@ function load(c){
 function save(s,broadcast=true){
   s.updatedAt=now();
   try{localStorage.setItem(KEY+s.key,JSON.stringify(s))}catch(_){}
+  if(broadcast&&canEdit()){serverPending.set(s.key,JSON.parse(JSON.stringify(s)));syncWrites()}
   if(broadcast)try{bc?.postMessage({type:'state',key:s.key,state:s})}catch(_){}
 }
+async function syncWrites(){
+ if(syncing||!canEdit()||!window.LJR_MEDIA)return;syncing=true;
+ try{while(serverPending.size){const [key,state]=serverPending.entries().next().value;serverPending.delete(key);try{if(!serverRevisions.has(key)){const r=await window.LJR_MEDIA.api('match/'+encodeURIComponent(key));serverRevisions.set(key,r.revision)}const r=await window.LJR_MEDIA.api('match/'+encodeURIComponent(key),{method:'PUT',body:{state,revision:serverRevisions.get(key)||0}});serverRevisions.set(key,r.revision);serverStates.set(key,state)}catch(error){toast(error.status===409?'Otro operador cambió el partido. Recargando la versión compartida.':'No se pudo publicar el cambio: '+error.message);await refreshShared(true);serverPending.delete(key)}}}finally{syncing=false}
+}
+async function refreshShared(overwrite=false){const c=ctx();if(!c||!window.LJR_MEDIA)return;try{const r=await window.LJR_MEDIA.api('match/'+encodeURIComponent(c.key));if(syncing&&!overwrite)return;const changed=r.revision!==(serverRevisions.get(c.key)||0);serverRevisions.set(c.key,r.revision);if(r.state){serverStates.set(c.key,r.state);if(overwrite||changed||!canEdit())localStorage.setItem(KEY+c.key,JSON.stringify(r.state));schedule()}}catch{}}
+window.addEventListener('liga:admin',()=>{if(!canEdit())stopSpeech();refreshShared(true);schedule()});
+setInterval(()=>refreshShared(),7000);
+window.addEventListener('hashchange',()=>setTimeout(()=>refreshShared(),350));
 function alertsEnabled(){
   try{return localStorage.getItem(ALERTS_KEY)==='1'}catch(_){return false}
 }
@@ -176,10 +193,10 @@ const LIVE_PLATFORMS={
   tiktok:{key:'tiktok',name:'TikTok Live',icon:'♪',portal:'https://www.tiktok.com/live',placeholder:'https://www.tiktok.com/@usuario/live'}
 };
 function provider(url){
-  const u=String(url||'').toLowerCase();
-  if(u.includes('facebook.com')||u.includes('fb.watch'))return LIVE_PLATFORMS.facebook;
-  if(u.includes('youtube.com')||u.includes('youtu.be'))return LIVE_PLATFORMS.youtube;
-  if(u.includes('tiktok.com'))return LIVE_PLATFORMS.tiktok;
+  const key=streamProvider(url);
+  if(key==='facebook')return LIVE_PLATFORMS.facebook;
+  if(key==='youtube')return LIVE_PLATFORMS.youtube;
+  if(key==='tiktok')return LIVE_PLATFORMS.tiktok;
   return {key:'external',name:'Transmisión externa',icon:'●',portal:'',placeholder:'https://...'};
 }
 function safeLiveUrl(value){return normalizeStreamUrl(value)}
@@ -191,13 +208,7 @@ function livePlatformButtons(s){
   '<button type="button" data-v561-camera-open><em>▣</em><span><b>Cámara</b><small>TELÉFONO</small></span></button></div>'+
   '<button type="button" class="v144-tv-cast" data-v144-tv-cast><span class="v144-tv-cast-icon">▣</span><span><b>Transmitir en televisión</b><small>Conectar TV o pantalla compatible</small></span><i>›</i></button>';
 }
-function youtubeId(url){
-  const s=String(url||'');
-  let m=s.match(/[?&]v=([^&#]+)/i);if(m)return m[1];
-  m=s.match(/youtu\.be\/([^?&#/]+)/i);if(m)return m[1];
-  m=s.match(/youtube\.com\/(?:live|embed|shorts)\/([^?&#/]+)/i);if(m)return m[1];
-  return '';
-}
+const youtubeId=youtubeVideoId;
 function streamEmbedHtml(s){
   const url=normalizeStreamUrl(s?.source?.url);
   if(!url)return '';
@@ -271,6 +282,7 @@ function confirmed(s){return s.events.filter(e=>e.confirmed!==false)}
 function counters(s){
   const x={home:{goals:0,subs:0,yellow:0,red:0},away:{goals:0,subs:0,yellow:0,red:0}};
   for(const e of confirmed(s)){
+    if(e.type==='score-correction'){x.home.goals=e.home;x.away.goals=e.away;}
     if(!x[e.side])continue;
     if(e.type==='goal')x[e.side].goals++;
     if(e.type==='sub')x[e.side].subs++;
@@ -280,6 +292,7 @@ function counters(s){
   return x;
 }
 function addEvent(s,c,type,side='',note='',source='operator',player=''){
+  if(!canEdit()){toast('Inicia sesión como administrador para operar el partido.');return null}
   const e={id:'e'+now()+Math.random().toString(36).slice(2,6),type,side,player,note,source,confirmed:true,minute:eventMinute(s),ts:now()};
   if(type==='phase-first'){s.phase='first';s.firstStartedAt=now();e.minute='1′'}
   if(type==='phase-halftime'){s.phase='halftime';e.minute='MT'}
@@ -323,28 +336,36 @@ function analyze(text,c,s){
   else if(/tarjeta amarilla|amonestado|amonestacion|amarilla para/.test(t)){const side=sideFromText(text,c);o={type:'yellow',side,label:'Tarjeta amarilla',confidence:side?.90:.76,text,player:playerFromText(text,c,side)}}
   else if(/sustitucion|cambio de jugador|entra .* sale|sale .* entra|hay cambio/.test(t)){const side=sideFromText(text,c);o={type:'sub',side,label:'Cambio',confidence:side?.88:.74,text,player:playerFromText(text,c,side)}}
   else if(/\bgo+l+\b|gooo+l|anota|marco gol|marca gol|gol para|gol de/.test(t)){const side=sideFromText(text,c);o={type:'goal',side,label:'Gol',confidence:side?.94:.79,text,player:playerFromText(text,c,side)}}
-  save(s,false);if(o)addSuggestion(s,o);schedule();
+  if(/no (?:fue|es|hay|hubo) (?:gol|tarjeta|cambio)|gol anulado|no cuenta|fuera de juego/.test(t))o=null;
+  if(o&&s.autoVoice&&o.confidence>=.88&&(o.type.startsWith('phase-')||o.side)&&!(norm(text).includes(norm(c.home))&&norm(text).includes(norm(c.away)))){
+    const sig=o.type+'|'+(o.side||'')+'|'+t;s.autoSeen=s.autoSeen||{};
+    if(!s.autoSeen[sig]||now()-s.autoSeen[sig]>90000){s.autoSeen[sig]=now();addEvent(s,c,o.type,o.side||'',text,'voice-auto',o.player||'')}
+  }else{save(s,false);if(o)addSuggestion(s,o)}schedule();
 }
-function startSpeech(c,s){
+async function startSpeech(c,s){
+  if(!canEdit())return window.LJR_MEDIA?.login();
+  if(Capacitor.isNativePlatform()){if(listening){await nativeSpeech.stop();listening=false;schedule();return}try{await nativeSpeech.removeAllListeners();await nativeSpeech.addListener('transcript',r=>{const cc=ctx();if(!cc||cc.key!==c.key)return;if(r.isFinal)analyze(r.text,cc,load(cc));else{const el=document.querySelector('[data-v610-transcript]');if(el)el.textContent=r.text}});await nativeSpeech.addListener('speechError',r=>{listening=false;toast(r.message);schedule()});await nativeSpeech.start();listening=true;schedule()}catch(error){toast(error.message)}return}
   const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
   if(!SR){toast('Tu navegador no tiene reconocimiento de voz compatible.');return}
   if(listening){stopSpeech();return}
   try{
-    speech=new SR();speech.lang='es-MX';speech.continuous=true;speech.interimResults=false;speech.maxAlternatives=1;
+    listenRequested=true;
+    speech=new SR();speech.lang='es-MX';speech.continuous=true;speech.interimResults=true;speech.maxAlternatives=1;
+    const recognizer=speech;
     speech.onstart=()=>{listening=true;schedule()};
-    speech.onend=()=>{listening=false;schedule()};
-    speech.onerror=e=>{listening=false;toast(e.error==='not-allowed'?'Permite el micrófono para detectar la narración.':'La escucha se detuvo.');schedule()};
+    speech.onend=()=>{listening=false;schedule();if(listenRequested&&canEdit()&&ctx()?.key===c.key)setTimeout(()=>{if(listenRequested&&speech===recognizer)try{recognizer.start()}catch{listenRequested=false}},400)};
+    speech.onerror=e=>{listening=false;if(!['no-speech','aborted'].includes(e.error)){listenRequested=false;toast(e.error==='not-allowed'?'Permite el micrófono para detectar la narración.':'La escucha se detuvo: '+e.error+'. Reintenta.')}schedule()};
     speech.onresult=e=>{
       for(let i=e.resultIndex;i<e.results.length;i++){
-        if(!e.results[i].isFinal)continue;
+        if(!e.results[i].isFinal){const el=document.querySelector('[data-v610-transcript]');if(el)el.textContent=e.results[i][0]?.transcript||'';continue;}
         const cc=ctx();if(!cc||cc.key!==c.key)continue;
         analyze(e.results[i][0]?.transcript||'',cc,load(cc));
       }
     };
     speech.start();
-  }catch(_){toast('No se pudo iniciar el micrófono.')}
+  }catch(_){listenRequested=false;toast('No se pudo iniciar el micrófono.')}
 }
-function stopSpeech(){try{speech?.stop()}catch(_){}speech=null;listening=false}
+function stopSpeech(){listenRequested=false;if(Capacitor.isNativePlatform())nativeSpeech.stop().catch(()=>{});try{speech?.stop()}catch(_){}speech=null;listening=false}
 function eventText(e,c){
   const team=e.side==='home'?c.home:e.side==='away'?c.away:'',who=e.player?' · '+e.player:'';
   if(e.type==='goal')return '⚽ Gol'+(team?' · '+team:'')+who;
@@ -355,12 +376,13 @@ function eventText(e,c){
   if(e.type==='phase-halftime')return 'Medio tiempo';
   if(e.type==='phase-second')return 'Inicio del segundo tiempo';
   if(e.type==='phase-final')return 'Final del partido';
+  if(e.type==='score-correction')return 'Marcador corregido: '+e.home+'–'+e.away;
   return e.note||'Evento';
 }
 function suggestionsHtml(s,c){
   return s.suggestions.slice(0,3).map(x=>{
     const team=x.side==='home'?c.home:x.side==='away'?c.away:'Equipo por confirmar';
-    return '<article class="v144-suggestion"><div><small>DETECCIÓN IA · '+Math.round((x.confidence||0)*100)+'%</small><b>'+esc(x.label)+' · '+esc(team)+'</b><p>'+esc(x.text||'')+'</p></div><div><button data-v144-confirm="'+esc(x.id)+'">Confirmar</button><button class="ghost" data-v144-dismiss="'+esc(x.id)+'">Descartar</button></div></article>';
+    return '<article class="v144-suggestion"><div><small>REGLA DE NARRACIÓN</small><b>'+esc(x.label)+' · '+esc(team)+'</b><p>'+esc(x.text||'')+'</p></div><div><button data-v144-confirm="'+esc(x.id)+'">Confirmar</button><button class="ghost" data-v144-dismiss="'+esc(x.id)+'">Descartar</button></div></article>';
   }).join('');
 }
 function timelineHtml(s,c){
@@ -373,20 +395,23 @@ function hubHtml(c,s){
   const sourceType=hasSource?p.name:'Agrega Facebook, YouTube, TikTok o video';
   const sourceIcon=hasSource?p.icon:'＋';
   return '<section class="v144-live-hub" data-v144-live-hub data-v144-match="'+esc(c.key)+'">'+
-    '<div class="v144-head"><i class="'+(live?'on':'')+'"></i><span><small>LIVE INTELLIGENCE</small><b>'+esc(phaseLabel(s))+'</b></span><strong>'+x.home.goals+'–'+x.away.goals+'</strong></div>'+
+    '<div class="v144-head"><i class="'+(live?'on':'')+'"></i><span><small>PARTIDO EN VIVO</small><b>'+esc(phaseLabel(s))+'</b></span><strong>'+x.home.goals+'–'+x.away.goals+'</strong></div>'+
     '<div class="v144-source"><em>'+esc(sourceIcon)+'</em><span><b>'+esc(sourceTitle)+'</b><small>'+esc(sourceType)+'</small></span><button data-v144-config>Subir / vincular LIVE</button></div>'+
     livePlatformButtons(s)+
-    '<p class="v144-live-help">Facebook · YouTube · TikTok. Vincula el enlace oficial del LIVE. El feed JSON / WebSocket / SSE es opcional para minuto, goles y eventos en tiempo real.</p>'+
+    '<p class="v144-live-help">Facebook · YouTube · TikTok · cámara del teléfono. Reproduce el enlace publicado por la Liga.</p>'+
     streamEmbedHtml(s)+
     '<div class="v144-stats"><div><small>'+esc(c.home)+'</small><b>'+x.home.goals+'</b><span>'+x.home.subs+' cambios · '+x.home.yellow+' 🟨 · '+x.home.red+' 🟥</span></div><div><small>'+esc(c.away)+'</small><b>'+x.away.goals+'</b><span>'+x.away.subs+' cambios · '+x.away.yellow+' 🟨 · '+x.away.red+' 🟥</span></div></div>'+
     '<div class="v144-alerts"><span><b>🔔 Avisos del partido</b><small>Gol · medio tiempo · regreso del descanso · final</small></span><button type="button" class="'+(alertsEnabled()?'active':'')+'" data-v144-alerts>'+(alertsEnabled()?'Avisos activos':'Activar avisos')+'</button></div>'+
-    '<div class="v144-ai"><button class="'+(listening?'active':'')+'" data-v144-listen>'+(listening?'■ Detener escucha':'🎙 Detectar narración')+'</button><button data-v144-config>Fuente / IA</button><small>Detecta gol, cambio, tarjetas, medio tiempo y final. Pide confirmación antes de modificar el partido.</small></div>'+
-    (s.lastTranscript?'<div class="v144-transcript"><small>ÚLTIMO AUDIO</small><span>'+esc(s.lastTranscript)+'</span></div>':'')+
+    '<div class="v144-ai"><button class="'+(listening?'active':'')+'" data-v144-listen>'+(listening?'■ Detener escucha':'🎙 Detectar narración')+'</button><button data-v144-config>Fuente y narración</button><small>Escucha el micrófono y transcribe en español. Los eventos se confirman manualmente, salvo que actives el modo automático.</small></div>'+
+    narrationHtml(s)+
+    (s.lastTranscript?'<div class="v144-transcript"><small>ÚLTIMA TRANSCRIPCIÓN</small><span>'+esc(s.lastTranscript)+'</span></div>':'')+
     (s.suggestions.length?'<div class="v144-suggestions"><h3>Eventos por confirmar</h3>'+suggestionsHtml(s,c)+'</div>':'')+
     '<details class="v144-operator" data-v144-operator><summary data-v144-operator-toggle role="button" tabindex="0" aria-expanded="false">Operador del partido</summary><div class="v144-phases"><button data-v144-phase="phase-first">Iniciar 1T</button><button data-v144-phase="phase-halftime">Medio tiempo</button><button data-v144-phase="phase-second">Iniciar 2T</button><button data-v144-phase="phase-final">Final</button></div><div class="v144-events"><button data-v144-event="goal:home">⚽ Gol '+esc(c.home)+'</button><button data-v144-event="goal:away">⚽ Gol '+esc(c.away)+'</button><button data-v144-event="sub:home">↔ Cambio '+esc(c.home)+'</button><button data-v144-event="sub:away">↔ Cambio '+esc(c.away)+'</button><button data-v144-event="yellow:home">🟨 '+esc(c.home)+'</button><button data-v144-event="yellow:away">🟨 '+esc(c.away)+'</button><button data-v144-event="red:home">🟥 '+esc(c.home)+'</button><button data-v144-event="red:away">🟥 '+esc(c.away)+'</button></div><button class="v144-undo" data-v144-undo>↶ Deshacer último evento</button></details>'+
     '<div class="v144-timeline"><header><b>Cronología en vivo</b><small>Confirmada en Match Center</small></header>'+timelineHtml(s,c)+'</div>'+
   '</section>';
 }
+function narrationHtml(s){return '<section class="v610-narration"><b>Texto, voz y automatización</b><textarea data-v610-text placeholder="Ejemplo: gol de '+esc(s.home)+'. Inicia el segundo tiempo."></textarea><div class="v610-row"><button data-v610-analyze>Detectar eventos del texto</button><button data-v610-speak>Leer con audio</button><button data-v610-stop-audio>Detener audio</button><button data-v611-music>Agregar canción o audio</button></div><span data-v610-transcript aria-live="polite"></span><label><input type="checkbox" data-v610-auto-voice '+(s.autoVoice?'checked':'')+'>Registrar eventos claros de la narración automáticamente</label><small>Los equipos ambiguos quedan pendientes. La escucha usa el micrófono, no el audio interno de Facebook o YouTube.</small><label><input type="checkbox" data-v610-auto-clock '+(s.autoClock?'checked':'')+'>Cambiar tiempos con reloj automático</label><small>El reloj compartido conserva los tiempos al cerrar la página. Confirma la hora de inicio real.</small><label>Inicio programado<input type="datetime-local" data-v610-start value="'+esc(s.kickoffLocal||'')+'"></label><div class="v610-row"><label>Minutos por tiempo<input type="number" min="1" max="60" data-v610-period value="'+(s.periodMinutes||45)+'"></label><label>Descanso<input type="number" min="1" max="30" data-v610-break value="'+(s.breakMinutes||15)+'"></label></div><div class="v610-row"><button data-v610-note>Agregar incidencia / lesión / penal</button><button data-v610-correction>Corregir marcador</button><button data-v610-publish>Publicar estado actual</button><button data-v610-broadcast>Transmitir cámara</button></div></section>'}
+function clockAutomation(c,s){if(!canEdit()||!s.autoClock)return;const period=(s.periodMinutes||45)*60000,rest=(s.breakMinutes||15)*60000,kickoff=new Date(s.kickoffLocal||'').getTime();if(s.phase==='scheduled'&&Number.isFinite(kickoff)&&now()>=kickoff&&now()-kickoff<period)addEvent(s,c,'phase-first','','Inicio programado','clock');else if(s.phase==='first'&&now()-s.firstStartedAt>=period)addEvent(s,c,'phase-halftime','','Reloj automático','clock');else if(s.phase==='halftime'){const half=[...s.events].reverse().find(e=>e.type==='phase-halftime');if(half&&now()-half.ts>=rest)addEvent(s,c,'phase-second','','Reloj automático','clock')}else if(s.phase==='second'&&now()-s.secondStartedAt>=period)addEvent(s,c,'phase-final','','Reloj automático','clock')}
 function modalHtml(s,preferred=''){
   const detected=provider(s.source.url),selected=preferred&&LIVE_PLATFORMS[preferred]?preferred:(detected.key!=='external'?detected.key:'facebook');
   const picks=Object.values(LIVE_PLATFORMS).map(p=>'<button type="button" class="'+(selected===p.key?'active':'')+'" data-platform="'+p.key+'"><em>'+esc(p.icon)+'</em><span>'+esc(p.name)+'</span></button>').join('');
@@ -441,6 +466,7 @@ async function openTvCast(c,s,urlOverride=''){
   }
 }
 function openConfig(c,s,preferred=''){
+ if(!canEdit())return window.LJR_MEDIA?.login();
   $$('.v144-modal').forEach(x=>x.remove());
   const w=document.createElement('div');w.innerHTML=modalHtml(s,preferred);const m=w.firstElementChild;document.body.appendChild(m);
   $$('[data-close]',m).forEach(b=>b.onclick=()=>m.remove());
@@ -483,7 +509,7 @@ function openConfig(c,s,preferred=''){
       u.searchParams.set('liveName',s.source.name||provider(s.source.url).name);
       history.replaceState(null,'',u.toString());
     }catch(_){}
-    save(s);m.remove();schedule();startPoll();toast((detected.name||chosen.name)+' vinculado. El enlace ya funciona en este Match Center.');
+    save(s);m.remove();schedule();startPoll();toast((detected.name||chosen.name)+' vinculado. Toca reproducir para comprobar el video.');
   };
 }
 async function shareLive(c,s){
@@ -502,12 +528,12 @@ function bind(c,s,hub){
   hub.querySelectorAll('video').forEach(enableDirectStream);
   hub.querySelectorAll('.v144-stream-embed:has(iframe),.v144-stream-embed:has(video)').forEach(card=>{
     card.classList.add('v196-player-card');card.setAttribute('data-v196-player-card','');card.querySelector('.v144-stream-frame')?.classList.add('v196-frame');
-    attachPlayerControls(card,{pip:()=>window.LJR_STREAM_CENTER?.openPiP?.(hub),settings:()=>playbackSettings(card),cast:()=>openTvCast(c,s),notify:toast});
+    attachPlayerControls(card,{pip:()=>window.LJR_STREAM_CENTER?.openPiP?.(hub),settings:()=>playbackSettings(card),cast:()=>openTvCast(c,s),notify:toast,changeSource:canEdit()?()=>openConfig(c,load(c)):undefined});
   });
   const stop=e=>{e.preventDefault();e.stopPropagation()};
   const operator=$('[data-v144-operator]',hub),operatorToggle=$('[data-v144-operator-toggle]',hub),operatorKey='ljr-v144-operator-open:'+c.key;
   if(operator&&operatorToggle){
-    let wanted=false;try{wanted=sessionStorage.getItem(operatorKey)==='1'}catch(_){}
+    let wanted=true;try{wanted=sessionStorage.getItem(operatorKey)!=='0'}catch(_){}
     operator.open=wanted;operatorToggle.setAttribute('aria-expanded',String(wanted));
     const toggleOperator=e=>{
       e.preventDefault();e.stopPropagation();
@@ -540,6 +566,17 @@ function bind(c,s,hub){
   $$('[data-v144-event]',hub).forEach(b=>b.onclick=e=>{stop(e);const [type,side]=b.dataset.v144Event.split(':');addEvent(s,c,type,side);schedule()});
   $$('[data-v144-confirm]',hub).forEach(b=>b.onclick=e=>{stop(e);confirmSuggestion(c,s,b.dataset.v144Confirm)});
   $$('[data-v144-dismiss]',hub).forEach(b=>b.onclick=e=>{stop(e);s.suggestions=s.suggestions.filter(x=>x.id!==b.dataset.v144Dismiss);save(s);schedule()});
+  $('[data-v611-music]',hub)?.addEventListener('click',()=>{if(!canEdit())return;let dialog=document.querySelector('[data-v611-audio]');if(dialog){dialog.showModal();return}dialog=document.createElement('dialog');dialog.dataset.v611Audio='';dialog.className='v561-dialog';dialog.innerHTML='<form method="dialog"><header><b>Audio del operador</b><button aria-label="Cerrar">×</button></header></form><p>Selecciona una canción o un audio de este teléfono. Se reproduce aquí; para incluirlo en el directo usa el audio de la cámara.</p><input type="file" accept="audio/*"><audio controls style="width:100%;margin-top:16px"></audio>';document.body.append(dialog);let url;dialog.querySelector('input').onchange=e=>{const file=e.target.files[0];if(!file)return;if(url)URL.revokeObjectURL(url);url=URL.createObjectURL(file);dialog.querySelector('audio').src=url};dialog.addEventListener('close',()=>{dialog.querySelector('audio').pause();if(url)URL.revokeObjectURL(url);dialog.remove()});dialog.showModal()});
+  const current=()=>load(c);
+  const textInput=$('[data-v610-text]',hub);if(textInput){textInput.value=narrationDrafts.get(c.key)||'';textInput.oninput=()=>narrationDrafts.set(c.key,textInput.value)}
+  $('[data-v610-analyze]',hub)?.addEventListener('click',()=>{if(canEdit())analyze($('[data-v610-text]',hub).value,c,current())});
+  $('[data-v610-speak]',hub)?.addEventListener('click',()=>{const text=$('[data-v610-text]',hub).value.trim();if(!text)return toast('Escribe el texto de la narración.');stopSpeech();if(Capacitor.isNativePlatform())return nativeSpeech.speak({text}).catch(error=>toast(error.message));if(!window.speechSynthesis)return toast('Este dispositivo no ofrece lectura de texto.');speechSynthesis.cancel();const voice=new SpeechSynthesisUtterance(text);voice.lang='es-MX';voice.voice=speechSynthesis.getVoices().find(v=>v.lang.startsWith('es'))||null;voice.onerror=()=>toast('No se pudo reproducir la narración.');speechSynthesis.speak(voice)});
+  $('[data-v610-stop-audio]',hub)?.addEventListener('click',()=>{window.speechSynthesis?.cancel();if(Capacitor.isNativePlatform())nativeSpeech.stopAudio().catch(()=>{})});
+  for(const [selector,key,kind]of [['[data-v610-auto-voice]','autoVoice','check'],['[data-v610-auto-clock]','autoClock','check'],['[data-v610-start]','kickoffLocal','text'],['[data-v610-period]','periodMinutes','number'],['[data-v610-break]','breakMinutes','number']])$(selector,hub)?.addEventListener('change',e=>{if(!canEdit())return;const st=current();st[key]=kind==='check'?e.target.checked:kind==='number'?Math.min(key==='periodMinutes'?60:30,Math.max(1,Number(e.target.value)||1)):e.target.value;if(key==='kickoffLocal')st.kickoffAt=new Date(st.kickoffLocal).getTime();save(st);schedule()});
+  $('[data-v610-publish]',hub)?.addEventListener('click',()=>{if(canEdit())save(current())});
+  $('[data-v610-broadcast]',hub)?.addEventListener('click',()=>window.LJR_MEDIA?.broadcast());
+  $('[data-v610-note]',hub)?.addEventListener('click',()=>{if(!canEdit())return;const note=prompt('Incidencia, lesión, penal o tiempo añadido:');if(note?.trim()){addEvent(current(),c,'note','',note.trim());schedule()}});
+  $('[data-v610-correction]',hub)?.addEventListener('click',()=>{if(!canEdit())return;const st=current(),score=counters(st),input=prompt('Marcador corregido (local-visitante):',score.home.goals+'-'+score.away.goals),m=input?.match(/^(\d{1,2})\s*-\s*(\d{1,2})$/);if(!m)return;st.events.push({id:'correction-'+now(),type:'score-correction',home:Number(m[1]),away:Number(m[2]),ts:now(),minute:eventMinute(st),confirmed:true,note:'Corrección del marcador'});save(st);schedule()});
   $('[data-v144-undo]',hub)?.addEventListener('click',e=>{stop(e);if(!s.events.length)return;s.events.pop();rebuildPhase(s);save(s);schedule()});
 }
 function patch(c,s){
@@ -590,7 +627,7 @@ function renderSig(c,s){
   return [
     c.key,phaseLabel(s),listening?'1':'0',
     x.home.goals,x.away.goals,x.home.subs,x.away.subs,x.home.yellow,x.away.yellow,x.home.red,x.away.red,
-    s.source.url||'',s.source.name||'',s.source.feedUrl||'',s.lastTranscript||'',
+    s.source.url||'',s.source.name||'',s.source.feedUrl||'',s.lastTranscript||'',canEdit(),s.autoClock,s.autoVoice,s.periodMinutes,s.breakMinutes,s.kickoffLocal,
     s.events.map(e=>e.id).join(','),s.suggestions.map(e=>e.id).join(',')
   ].join('|');
 }
@@ -618,10 +655,13 @@ window.addEventListener('storage',e=>{if(e.key?.startsWith(KEY))schedule()});
 bc?.addEventListener('message',e=>{if(e.data?.type==='state'){try{localStorage.setItem(KEY+e.data.key,JSON.stringify(e.data.state))}catch(_){}schedule()}});
 const screen=$('#screen');
 if(screen)new MutationObserver(()=>{if(ROUTES.has(route()))schedule()}).observe(screen,{childList:true,subtree:true});
-clockTimer=setInterval(()=>{if(ROUTES.has(route()))schedule()},15000);
+clockTimer=setInterval(()=>{if(ROUTES.has(route())){const c=ctx();if(c)clockAutomation(c,load(c));schedule()}},1000);
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',schedule,{once:true});else schedule();
 
 window.LJR_MATCH_LIVE={
+  openCast(){const c=ctx();if(c)openTvCast(c,load(c))},
+  analyze(text){const c=ctx();if(c&&canEdit())analyze(text,c,load(c))},
+  publishState(){const c=ctx();if(c&&canEdit())save(load(c))},
   getState(){const c=ctx();return c?load(c):null},
   addEvent(type,side,note){const c=ctx();if(!c)return null;const s=load(c),e=addEvent(s,c,type,side||'',note||'','external');schedule();return e},
   requestAlerts,

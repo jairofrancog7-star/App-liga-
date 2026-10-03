@@ -30,7 +30,7 @@ export function playbackSettings(card){
  if(tab==='video')options=[['-1','Automática'],...(video._ligaHls?.levels||[]).map((l,i)=>[String(i),(l.width||'?')+' × '+(l.height||'?')])];
  if(tab==='audio')options=[['sound','Sonido'],['muted','Silencio'],...(video._ligaHls?.audioTracks||[]).map((a,i)=>[String(i),a.name||a.lang||'Audio '+(i+1)])];
  if(tab==='text')options=[['-1','Ninguno'],...(video._ligaHls?.subtitleTracks||[...video.textTracks]).map((t,i)=>[String(i),t.name||t.label||t.lang||t.language||'Subtítulos '+(i+1)])];
- let current=tab==='video'?String(video._ligaHls?.currentLevel??-1):tab==='audio'?(video.muted?'muted':'sound'):String(video._ligaHls?.subtitleTrack??[...video.textTracks].findIndex(t=>t.mode==='showing'));
+ let current=tab==='video'?String(video._ligaHls?.manualLevel??-1):tab==='audio'?(video.muted?'muted':'sound'):String(video._ligaHls?.subtitleTrack??[...video.textTracks].findIndex(t=>t.mode==='showing'));
  list.innerHTML=options.map(([value,label])=>'<label class="v561-track"><span>'+escapeHtml(label)+'</span><input type="radio" name="track" value="'+value+'" '+(value===(pending[tab]??current)?'checked':'')+'></label>').join('');
  list.querySelectorAll('input').forEach(i=>i.onchange=()=>pending[tab]=i.value);
  }
@@ -39,6 +39,7 @@ export function playbackSettings(card){
 }
 let cameraStream,peer,recording,recorded=[],resource,endpoint,deleteHeaders={};
 export async function openPhoneCamera(){
+ if(window.LJR_MEDIA?.broadcast)return window.LJR_MEDIA.broadcast();
  let panel=document.querySelector('[data-v561-camera]');if(panel){panel.hidden=false;return}
  panel=document.createElement('section');panel.dataset.v561Camera='';panel.className='v561-camera';
  panel.innerHTML='<header><b>Cámara del teléfono</b><button data-camera-close aria-label="Detener cámara y cerrar">×</button></header><div class="v196-frame"><video muted autoplay playsinline></video></div><p data-camera-status>Solicitando acceso a cámara y micrófono…</p><div class="v561-actions"><button data-camera-record>Grabar</button><button data-camera-stop disabled>Finalizar grabación</button><button data-camera-save disabled>Descargar video</button><button data-camera-switch>Cambiar cámara</button></div><details><summary>Emitir directamente a un servidor</summary><p>Conecta tu servidor WHIP para enviar video en vivo desde este teléfono. Los espectadores necesitarán el enlace de reproducción de ese servidor.</p><label>URL WHIP<input data-whip-url type="url" placeholder="https://tu-servidor/whip"></label><label>Token (si se requiere)<input data-whip-token type="password" autocomplete="off"></label><button data-camera-live>Conectar transmisión</button><button data-camera-end disabled>Detener emisión</button></details>';

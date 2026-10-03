@@ -294,21 +294,13 @@ function v580HeroPhoto(p,d){
   const clean=v=>String(v||'').split('?')[0].replace(/^https?:/i,'').toLowerCase();
   if(teamSrc&&clean(src)===clean(teamSrc))return '';
   if(/\/(?:official-logos|teams|categories)\/[^/?]+\.(?:png|webp|jpe?g)(?:\?|$)/i.test(src))return '';
-  if(/(?:liga-logo|category|categoria|escudo|badge|crest)/i.test(src))return '';
+  if(/(?:\/logos\/|liga-logo|category|categoria|escudo|badge|crest)/i.test(src))return '';
   return src;
 }
 function hero(p,d){
   const photo=v580HeroPhoto(p,d);
-  const fallback='<div class="v379-player-silhouette v382-simulated-player v580-fallback-3d" style="'+simulatedAvatarStyle(p)+'" aria-label="Representación 3D genérica de '+esc(p.name)+'">'+
-        '<span class="v379-player-body"><i class="v379-kit-logo">'+teamLogo(p.team)+'</i></span>'+
-        '<span class="v379-player-neck"></span>'+
-        '<span class="v379-player-head"></span>'+
-        '<span class="v379-player-ear left"></span><span class="v379-player-ear right"></span>'+
-        '<span class="v379-player-eye left"></span><span class="v379-player-eye right"></span>'+
-        '<span class="v379-player-nose"></span><span class="v379-player-mouth"></span>'+
-        '<span class="v379-player-beard"></span><span class="v379-player-hair"></span>'+
-      '</div>';
-  const visual=fallback+(photo?'<img class="v379-player-photo v580-player-hero-photo" src="'+esc(photo)+'" alt="'+esc(p.name)+'" onerror="this.closest(\'.v379-hero\')?.classList.remove(\'v580-has-photo\');this.remove()">':'');
+  const fallback='<img data-player-portrait class="v610-generic-player" src="assets/player-placeholder-3d.webp" alt="Representación genérica; jugador sin fotografía">';
+  const visual=fallback+(photo?'<img data-player-portrait class="v379-player-photo v580-player-hero-photo" src="'+esc(photo)+'" alt="'+esc(p.name)+'" onerror="this.closest(\'.v379-hero\')?.classList.remove(\'v580-has-photo\');this.remove()">':'');
   const city=d.city||'Juventino Rosas';
   return '<section class="v379-hero v386-player-hero '+(photo?'v580-has-photo':'v580-no-photo')+'" style="'+paletteStyle(p.team)+'">'+backButton()+
     '<div class="v379-hero-pattern" aria-hidden="true"></div>'+visual+
