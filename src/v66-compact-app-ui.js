@@ -6,7 +6,7 @@
 
 const ROUTES=new Set([
   'leagueTools','rulebook','matchday','weatherFields','venues','cedulas','cedulaDetail','credential',
-  'cedulaBuilder','publications','tactics','simulator','jrControl','v38Stats','v38Weekly','v38Weather','v38Alerts',
+  'cedulaBuilder','permissionBuilder','publications','tactics','simulator','jrControl','v38Stats','v38Weekly','v38Weather','v38Alerts',
   'bracketBuilder','agendaBuilder','motionHub','suspensionTool','ligaQR','club-store','scorers','players',
   'credentialBuilder','tableExport'
 ]);
