@@ -1,5 +1,8 @@
 name: Build Android Debug APK
 
+permissions:
+  contents: write
+
 on:
   workflow_dispatch:
   push:
@@ -62,3 +65,17 @@ jobs:
           path: android/app/build/outputs/apk/debug/app-debug.apk
           if-no-files-found: error
           retention-days: 30
+
+      - name: Publish stable APK download
+        if: github.event_name != 'pull_request'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          cp android/app/build/outputs/apk/debug/app-debug.apk Liga-Juventino.apk
+          if gh release view android-latest >/dev/null 2>&1; then
+            gh release upload android-latest Liga-Juventino.apk --clobber
+          else
+            gh release create android-latest Liga-Juventino.apk \
+              --title "Liga Juventino Android" \
+              --notes "APK Android de Liga Juventino. Este archivo se actualiza automáticamente con la versión más reciente de la app azul."
+          fi
