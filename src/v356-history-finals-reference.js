@@ -25,7 +25,8 @@ const FALLBACK={
   'promesas fc':RAW+'assets/official-logos/promesas-fc.png',
   'lobos cdg':RAW+'assets/official-logos/lobos-cdg.png',
   'cuenda':RAW+'assets/official-logos/cuenda.png',
-  'la huerta':RAW+'assets/official-logos/la-huerta.png'
+  'la huerta':RAW+'assets/official-logos/la-huerta.png',
+  'chelsea':'https://upload.wikimedia.org/wikipedia/en/c/cc/Chelsea_FC.svg'
 };
 
 const MONTHS={ene:1,feb:2,mar:3,abr:4,may:5,jun:6,jul:7,ago:8,sep:9,sept:9,oct:10,nov:11,dic:12};
