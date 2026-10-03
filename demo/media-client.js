@@ -8,15 +8,40 @@ function message(text){const n=document.createElement('div');n.className='liga-m
 function modal(title,body){const n=document.createElement('div');n.className='liga-media-modal';n.innerHTML='<section role="dialog" aria-modal="true" aria-label="'+e(title)+'"><header><h2>'+e(title)+'</h2><button data-close aria-label="Cerrar">×</button></header>'+body+'<p role="status" data-status></p></section>';document.body.append(n);let closed=false;const close=()=>{if(closed)return;closed=true;n.dispatchEvent(new Event('media-close'));n.remove()};n.querySelector('[data-close]').onclick=close;n.addEventListener('click',ev=>{if(ev.target===n)close()});const esc=ev=>{if(ev.key==='Escape')close()};document.addEventListener('keydown',esc);n.addEventListener('media-close',()=>document.removeEventListener('keydown',esc),{once:true});return n}
 function deviceInfo(){let id=localStorage.getItem('liga-admin-device');if(!id){id=crypto.randomUUID();localStorage.setItem('liga-admin-device',id)}return {device:id,label:(navigator.userAgentData?.platform||navigator.platform||'Dispositivo')+' · '+(window.LJR_ADMIN_BIOMETRIC?'App Android':'Navegador')}}
 async function login(){
- const bio=window.LJR_ADMIN_BIOMETRIC,n=modal('Administración','<p>Entra con el usuario o teléfono autorizado por el presidente.</p><form><label>Usuario o teléfono<input name="username" required autocomplete="username"></label><label>Contraseña<input name="password" type="password" required autocomplete="current-password"></label><label class="liga-remember"><input type="checkbox" name="remember"> Recordar este dispositivo · 30 días</label><button type="submit">Entrar</button></form>'+(bio?'<button data-bio hidden>Entrar con huella</button>':'')+'<p><a href="'+e(base)+'/admin-setup" target="_blank" rel="noopener">Configurar acceso del presidente</a></p>');
- const status=n.querySelector('[data-status]');
- if(bio)bio.hasSession().then(r=>{n.querySelector('[data-bio]').hidden=!r.saved}).catch(()=>{});
- n.querySelector('[data-bio]')?.addEventListener('click',async()=>{try{const saved=await bio.unlockSession();token=saved.token;const r=await api('me');setAdmin(r.admin);n.querySelector('[data-close]').click()}catch(err){token='';status.textContent=err.message||'Vuelve a entrar con tu contraseña.'}});
- n.querySelector('form').onsubmit=async ev=>{ev.preventDefault();const b=Object.fromEntries(new FormData(ev.target));b.remember=b.remember==='on';Object.assign(b,deviceInfo());try{
+ const bio=window.LJR_ADMIN_BIOMETRIC;
+ let localAccount=null;try{localAccount=window.LJR_V569_AUTH?.currentAccount?.()||null}catch{}
+ const phone=String(localAccount?.phone||'').replace(/\D/g,'').replace(/^52(?=\d{10}$)/,'');
+ const preferredUser=phone||'presidente';
+ const n=modal('Administración','<p>Entra con tu teléfono autorizado o con el usuario del presidente.</p><form><label>Usuario o teléfono<input name="username" required autocomplete="username" inputmode="tel" value="'+e(preferredUser)+'"></label><label>Contraseña<input name="password" type="password" required autocomplete="current-password"></label><label class="liga-remember"><input type="checkbox" name="remember" checked> Recordar este dispositivo · 30 días</label><button type="submit">Entrar</button></form><button type="button" data-bio '+(bio?'hidden':'')+'>Entrar con huella</button><p><a href="'+e(base)+'/admin-setup" target="_blank" rel="noopener">Configurar acceso del presidente</a></p><small data-login-hint>'+(phone?'Teléfono detectado de tu cuenta.':'Usuario del presidente detectado: presidente.')+'</small>');
+ const status=n.querySelector('[data-status]'),user=n.querySelector('input[name="username"]');
+ const bioButton=n.querySelector('[data-bio]');
+ if(bio)bio.hasSession().then(r=>{bioButton.hidden=!r.saved}).catch(()=>{});
+ else if(window.LJR_V620_ADMIN_ACCESS?.remembered?.())bioButton.hidden=false;
+ bioButton?.addEventListener('click',async()=>{try{
+   if(bio){
+     const saved=await bio.unlockSession();token=saved.token;const r=await api('me');setAdmin(r.admin);n.querySelector('[data-close]').click();manage();return;
+   }
+   await window.LJR_V620_ADMIN_ACCESS?.unlockBiometric?.();
+   if(window.LJR_MEDIA?.admin){n.querySelector('[data-close]').click();manage()}
+ }catch(err){token='';status.textContent=err.message||'Vuelve a entrar con tu contraseña.'}});
+ n.querySelector('form').onsubmit=async ev=>{ev.preventDefault();const b=Object.fromEntries(new FormData(ev.target));b.remember=b.remember==='on';
+   const raw=String(b.username||'').trim();
+   const localEmail=String(localAccount?.email||'').trim().toLowerCase();
+   if(raw.includes('@')&&localEmail&&raw.toLowerCase()===localEmail)b.username=phone||'presidente';
+   else if(/^\+?[\d\s()-]{8,}$/.test(raw)){const p=raw.replace(/\D/g,'').replace(/^52(?=\d{10}$)/,'');b.username=p||raw}
+   Object.assign(b,deviceInfo());try{
  const r=await api('login',{method:'POST',body:b});token=r.token;localStorage.removeItem(key);sessionStorage.removeItem(key);
- if(b.remember&&bio){try{await bio.storeSession({token});status.textContent='Acceso con huella registrado.'}catch(err){sessionStorage.setItem(key,token);message('Sesión iniciada. No se pudo activar la huella: '+err.message)}}else (b.remember?localStorage:sessionStorage).setItem(key,token);
- setAdmin(r.admin);n.querySelector('[data-close]').click();manage();
- }catch(err){status.textContent=err.message}}
+ if(b.remember&&bio){try{await bio.storeSession({token});status.textContent='Acceso con huella registrado.'}catch(err){localStorage.setItem(key,token);message('Sesión iniciada. No se pudo activar la huella: '+err.message)}}else (b.remember?localStorage:sessionStorage).setItem(key,token);
+ setAdmin(r.admin);
+ try{
+   if(b.remember&&!bio&&window.LJR_V620_ADMIN_ACCESS?.enrollBiometric)await window.LJR_V620_ADMIN_ACCESS.enrollBiometric();
+ }catch(err){message('Sesión iniciada. Huella pendiente: '+(err?.message||'no disponible'))}
+ n.querySelector('[data-close]').click();manage();
+ }catch(err){
+   status.textContent=err.message==='Usuario o contraseña incorrectos.'
+     ?'Usuario o contraseña incorrectos. Usa tu teléfono autorizado o el usuario presidente.'
+     :err.message
+ }}
 }
 
 async function manage(){if(!admin)return login();const n=modal('Administración de la Liga','<p>'+e(admin.name)+'</p><div class="liga-media-actions"><button data-edit>Publicar historia, foto o video</button><button data-live>Transmitir desde el teléfono</button></div><div class="liga-media-actions"><button data-password>Cambiar contraseña</button><button data-devices>Mis dispositivos</button><button data-posts>Mis publicaciones</button><button data-logout>Cerrar sesión</button></div>'+(admin.owner?'<h3>Accesos autorizados · máximo seis</h3><div data-users></div><form><label>Nombre<input name="name" required maxlength="80"></label><label>Usuario<input name="username" required pattern="[a-z0-9._-]{3,40}"></label><label>Teléfono con código de país<input name="phone" type="tel" autocomplete="tel"></label><label>Contraseña inicial<input name="password" type="password" required minlength="12" autocomplete="new-password"></label><button>Añadir administrador</button></form>':''));n.querySelector('[data-devices]').onclick=devices;n.querySelector('[data-posts]').onclick=publications;n.querySelector('[data-edit]').onclick=edit;n.querySelector('[data-live]').onclick=broadcast;const status=n.querySelector('[data-status]');n.querySelector('[data-logout]').onclick=async()=>{try{await api('logout',{method:'POST'})}finally{token='';localStorage.removeItem(key);sessionStorage.removeItem(key);window.LJR_ADMIN_BIOMETRIC?.clearSession().catch(()=>{});setAdmin(null);n.querySelector('[data-close]').click()}};n.querySelector('[data-password]').onclick=()=>{const d=modal('Cambiar contraseña','<form><label>Nueva contraseña<input type="password" name="password" required minlength="12" autocomplete="new-password"></label><button>Guardar y volver a entrar</button></form>');d.querySelector('form').onsubmit=async ev=>{ev.preventDefault();try{await api('password',{method:'POST',body:Object.fromEntries(new FormData(ev.target))});token='';localStorage.removeItem(key);sessionStorage.removeItem(key);window.LJR_ADMIN_BIOMETRIC?.clearSession().catch(()=>{});setAdmin(null);d.querySelector('[data-close]').click();n.querySelector('[data-close]').click();login()}catch(err){d.querySelector('[data-status]').textContent=err.message}}};if(admin.owner){async function users(){const r=await api('admins');n.querySelector('[data-users]').innerHTML=r.admins.filter(a=>a.active).map(a=>'<div class="liga-user">'+e(a.name)+' · '+e(a.username)+(a.owner?' · Presidente':' <button data-revoke="'+e(a.id)+'">Revocar</button>')+'</div>').join('');n.querySelectorAll('[data-revoke]').forEach(b=>b.onclick=async()=>{try{await api('admins/'+b.dataset.revoke,{method:'DELETE'});await users()}catch(err){status.textContent=err.message}})}users().catch(err=>status.textContent=err.message);n.querySelector('form').onsubmit=async ev=>{ev.preventDefault();try{await api('admins',{method:'POST',body:Object.fromEntries(new FormData(ev.target))});ev.target.reset();await users();status.textContent='Administrador creado.'}catch(err){status.textContent=err.message}}}}
