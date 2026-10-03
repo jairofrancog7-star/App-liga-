@@ -449,7 +449,7 @@ function poll(){
  );
  m.classList.add('v105-poll-modal');
  const render=()=>{
-   $('[data-v105-poll-choice]',m).forEach(b=>{
+   $$('[data-v105-poll-choice]',m).forEach(b=>{
      const key=b.dataset.v105PollChoice;
      b.classList.toggle('is-selected',p.choice===key);
      b.setAttribute('aria-pressed',p.choice===key?'true':'false');
@@ -463,7 +463,7 @@ function poll(){
      s.textContent=item?'Tu prioridad guardada: '+item[2]:'Aún no has elegido una prioridad.';
    }
  };
- $('[data-v105-poll-choice]',m).forEach(b=>b.onclick=()=>{
+ $$('[data-v105-poll-choice]',m).forEach(b=>b.onclick=()=>{
    const next=b.dataset.v105PollChoice;
    if(p.choice===next)return toast('Esa prioridad ya está guardada');
    if(p.choice&&p.counts[p.choice]>0)p.counts[p.choice]-=1;
