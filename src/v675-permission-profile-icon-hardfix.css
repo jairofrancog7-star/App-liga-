@@ -121,3 +121,34 @@
     height:44px!important;
   }
 }
+
+
+/* V682 — Permisos: SOLO aumenta el icono de perfil superior derecho. */
+@media (max-width:1023px){
+  html body[data-app-route="permissionBuilder"] #app > .topbar .profile-button,
+  html body[data-app-route="permissionBuilder"] .app-shell > .topbar .profile-button,
+  html body[data-app-route="permissionBuilder"] .topbar.v653-permission-topbar .profile-button,
+  html body .topbar.v653-permission-topbar .profile-button{
+    width:34px!important;
+    height:34px!important;
+    min-width:34px!important;
+    min-height:34px!important;
+    max-width:34px!important;
+    max-height:34px!important;
+    background-size:34px 34px!important;
+  }
+}
+@media (max-width:420px){
+  html body[data-app-route="permissionBuilder"] #app > .topbar .profile-button,
+  html body[data-app-route="permissionBuilder"] .app-shell > .topbar .profile-button,
+  html body[data-app-route="permissionBuilder"] .topbar.v653-permission-topbar .profile-button,
+  html body .topbar.v653-permission-topbar .profile-button{
+    width:30px!important;
+    height:30px!important;
+    min-width:30px!important;
+    min-height:30px!important;
+    max-width:30px!important;
+    max-height:30px!important;
+    background-size:30px 30px!important;
+  }
+}
