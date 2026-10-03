@@ -886,7 +886,14 @@ function canonicalHistoricName(name){
     'union fc':'Unión',
     'dep el alto':'El Alto',
     'deportivo el alto':'El Alto',
-    'sep pozos':'SEP Pozos'
+    'sep pozos':'SEP Pozos',
+    'san antonio romerillo':'San Antonio de Romerillo',
+    'sn antonio romerillo':'San Antonio de Romerillo',
+    'sn antonio r jr':'San Antonio Jr.',
+    'san antonio r jr':'San Antonio Jr.',
+    'deportivo la cuadrilla':'La Cuadrilla',
+    'deportivo oklahoma':'Oklahoma',
+    'terricolas seder':'Terrícolas SEDER'
   };
   return aliases[k]||String(name||'').trim();
 }
@@ -917,6 +924,8 @@ const historicalTeamEras=[
   {period:'24–25 ago 2013 · rol aportado',category:'Intermedia',teams:['Dulces Nombres','Populares','Deportivo Cerritos','Puros Cuates','El Alto','La Cuadrilla','Malvinas','Atlas','Manchester','Birds Eye','Barza','San Antonio Jr.','Deportivo Pozos','Galeana','Halcones de Cuenda','Valencia']},
   {period:'24–25 ago 2013 · rol aportado',category:'Segunda Fuerza',teams:['Osasuna','Morales','Toros','Tavera','Continental','Río Grande','Oklahoma','Novatos','San José de la Montaña','Real Cerrito de Gasca','Salvajes','San José de Allende','DHP','Unión Allende','San Juan FC','Aldama FC']},
   {period:'2013 · tablas J18/J24/J26 aportadas',category:'Intermedia',teams:['Birds Eye','Puros Cuates','Populares','Valencia','Dulces Nombres','La Cuadrilla','El Alto','San Antonio Jr.','Barza','Malvinas','Halcones de Cuenda','Atlas','Deportivo Pozos','Cerritos de Cuenda','Atlético Galeana','Manchester']},
+  {period:'oct–dic 2013 · roles aportados',category:'Veteranos, Primera, Intermedia, Segunda y amistosos',teams:['UNAM','Aldama','Dynamo','Magisterio','La Esperanza','Picosos','Hermanos','Cuenda','Guadalajara','Boavista','Barcelona','Sección XIV','Linces','PSV','Cerrito de Gasca','San Antonio','Mazacotes','Terrícolas','La Pandilla','A. Centeno','Juventus','Abejas','Olímpicos','Chelsea','Jaralillo','Populares','El Alto','Deportivo Cerritos','Malvinas','Dulces Nombres','Birds Eye','Puros Cuates','Barza','La Cuadrilla','Galeana','Atlas','Valencia','Halcones de Cuenda','Manchester','San Antonio Jr.','Deportivo Pozos','Tavera','Deportivo Aldama','Río Grande','Real Cerrito de Gasca','Morales','Toros','Salvajes','DHP','Continental','San Juan FC','Oklahoma','Unión Allende','San José de la Montaña','Novatos','San José de Allende','Rincón de Centeno','Romerillo']},
+  {period:'12 ene–09 feb 2014 · Torneo de Copa aportado',category:'Veteranos, Primera Fuerza, Fuerza Intermedia y Segunda Fuerza',teams:['UNAM','Hermanos','Guadalajara','La Esperanza','Barcelona','Dynamo','Sección XIV','Aldama','Boavista','Magisterio','Cuenda','Picosos','Juventus','Birds Eye','Linces','Olímpicos','El Alto','Jaralillo','Chelsea','Mazacotes','Abejas','A. Centeno','PSV','San Antonio de Romerillo','Cerrito de Gasca','La Pandilla','Real Cerrito de Gasca','Dulces Nombres','Valencia','Terrícolas','Atlas','San Antonio Jr.','SEP Pozos','Populares','San José de la Montaña','Malvinas','Halcones','La Cuadrilla','Barza','Puros Cuates','Galeana','Birds Eye Jr.','Morales','Osasuna','Oklahoma','San José de Allende','Tavera','Continental','Río Grande','Novatos','DHP','Toros','San Juan FC','Salvajes','San Julián']},
   {period:'2014 · Jornada 11',category:'Primera Fuerza',teams:['Juventus','La Esperanza','Chelsea','Hermanos','Boavista','Abejas','PSV','Linces','Olímpicos','Centeno','El Alto','Jaralillo','Birds Eye','Mazacotes','Cerrito de Gasca','San Antonio']},
   {period:'2014',category:'Intermedia',teams:['La Pandilla','La Cuadrilla','San José de la Montaña','Puros Cuates','Populares','Real Cerrito de Gasca','Dulces Nombres','Halcones de Cuenda','Terrícolas','Malvinas','San Antonio Jr.','Barza','Atlas','Deportivo Pozos','SEP Pozos','Valencia']},
   {period:'2014',category:'Veteranos',teams:['Dynamo','Hermanos','Magisterio','La Esperanza','UNAM','Picosos','Aldama','Boavista','Sección XIV','Valedores','Cuenda','Combinado']},
@@ -987,8 +996,8 @@ const allHistoricalTeams2012Plus=[...new Set(
 )].sort((a,b)=>a.localeCompare(b,'es',{sensitivity:'base'}));
 
 const historicalTravelNameCrosscheck={
-  provenHistoricalTeams:['Pozos','Morales','San José de la Montaña','Real Cerrito de Gasca / Cerrito de Gasca','San Julián','Tavera','Cuenda / Halcones de Cuenda'],
-  venueOnlyFromThisNotice:['Rincón de Centeno','Naranjillo','San Antonio de Romerillo','Santiago de Cuenda','Emiliano Zapata']
+  provenHistoricalTeams:['Pozos','Morales','San José de la Montaña','Real Cerrito de Gasca / Cerrito de Gasca','San Julián','Tavera','Cuenda / Halcones de Cuenda','Rincón de Centeno','San Antonio de Romerillo / Romerillo'],
+  venueOnlyFromThisNotice:['Naranjillo','Santiago de Cuenda','Emiliano Zapata']
 };
 // Comunidades del listado de viáticos ya documentadas como equipos históricos se mantienen en el catálogo.
 // Las demás se registran como sedes/comunidades hasta localizar una tabla, rol o publicación que pruebe un equipo homónimo.
@@ -1015,6 +1024,8 @@ const historicalTimeline=[
   {date:'05 oct 2012',title:'Golazo Liga · primer registro digital localizado',detail:'La captura aportada muestra una publicación que Facebook presenta bajo el nombre Golazo Liga con fecha 5 de octubre de 2012 y con el escudo histórico de la Liga Municipal. Es la fecha digital mínima comprobable dentro del material conservado, no la fecha de fundación.'},
   {date:'05–18 nov 2013',title:'Tablas generales publicadas por Enrique Aboytes',detail:'El archivo conserva publicaciones de Enrique Aboytes en Golazo Liga con Tabla General de Segunda Fuerza, Tabla General de Primera Fuerza, descensos de Terrícolas y La Pandilla de Rancho Viejo a Fuerza Intermedia y avisos de finales de Primera y Segunda Fuerza.'},
   {date:'ago 2013–ago 2014',title:'Roles y tablas históricas · equipos recuperados',detail:'Las capturas aportadas de agosto de 2013, tablas de jornadas 18/24/26 y el rol del 23–24 de agosto de 2014 amplían el catálogo histórico con nombres como Deportivo Cerritos, Cerritos de Cuenda y Herbalife FC, además de confirmar la presencia de los clubes ya registrados en Veteranos, Primera, Intermedia y Segunda.'},
+  {date:'oct–dic 2013',title:'Roles de cierre de Liga · equipos históricos confirmados',detail:'Los roles aportados de octubre, noviembre y diciembre de 2013 confirman la participación histórica de Rincón de Centeno y Romerillo como equipos, además de conservar los planteles de Veteranos, Primera, Intermedia y Segunda. Estos nombres se agregan sólo a Historia y no a la temporada actual.'},
+  {date:'12 ene–09 feb 2014',title:'Torneo de Copa 2014 · equipos confirmados',detail:'Los roles aportados del Torneo de Copa 2014 confirman los equipos de Veteranos, Primera Fuerza, Fuerza Intermedia y Segunda Fuerza, incluyendo San Antonio de Romerillo, San Antonio Jr., SEP Pozos, Birds Eye Jr. y San Julián.'},
   {date:'15 dic 2013',title:'Octavio Alberto García documenta la final de Segunda',detail:'Publicaciones de Octavio Alberto García en Golazo Liga registran a Real Cerrito de Gasca como campeón de Segunda Fuerza y muestran un marcador parcial de 3–0 sobre DHP al minuto 35.'},
   {date:'fecha por precisar',title:'Xavier Lara Valencia · roles de juego',detail:'Se incorpora como pista del archivo histórico por publicaciones de roles atribuidas a su actividad en Golazo Liga. Falta fijar las fechas, jornadas y equipos exactos con la publicación visual original; no se inventan esos datos mientras no estén visibles.'},
   {date:'feb 2014',title:'Administrador de Golazo Liga · fuente histórica',detail:'El usuario aporta otro perfil identificado como administrador de Golazo Liga en febrero de 2014. Se incorpora como pista para localizar roles, equipos, jornadas y resultados de esa etapa. La búsqueda web pública no permitió verificar directamente publicaciones indexadas del enlace compartido.'},
