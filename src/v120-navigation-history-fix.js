@@ -105,6 +105,7 @@
     bracketBuilder:'leagueTools',
     credentialBuilder:'leagueTools',
     cedulaBuilder:'leagueTools',
+    permissionBuilder:'leagueTools',
     agendaBuilder:'leagueTools',
     motionHub:'leagueTools',
     suspensionTool:'leagueTools',
