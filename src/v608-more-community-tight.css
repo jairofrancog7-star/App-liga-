@@ -1,0 +1,76 @@
+/* V608 — Más: Comunidad/Síguenos va pegado debajo de "Sobre la Liga Municipal".
+   Elimina el hueco vertical grande sin cambiar el diseño del menú ni el fondo. */
+@media(max-width:1023px){
+  body[data-app-route="more"] .v19-more-page{
+    padding-bottom:0!important;
+  }
+
+  body[data-app-route="more"] .v19-more-page > .v413-shell.v556-social-transparent{
+    display:block!important;
+    position:relative!important;
+    z-index:4!important;
+    width:100%!important;
+    max-width:none!important;
+    margin:8px 0 calc(92px + env(safe-area-inset-bottom))!important;
+    padding:15px!important;
+    box-sizing:border-box!important;
+    border:1px solid rgba(63,116,231,.36)!important;
+    border-radius:20px!important;
+    background:transparent!important;
+    background-color:transparent!important;
+    background-image:none!important;
+    color:#fff!important;
+    box-shadow:none!important;
+    font-family:Inter,Roboto,Arial,sans-serif!important;
+  }
+
+  body[data-app-route="more"] .v19-more-page > .v413-shell .v413-head{
+    margin:0 0 14px!important;
+    padding:0!important;
+  }
+
+  body[data-app-route="more"] .v19-more-page > .v413-shell .v413-head small{
+    color:#2adfe9!important;
+    font-size:9px!important;
+    font-weight:900!important;
+    letter-spacing:.16em!important;
+  }
+
+  body[data-app-route="more"] .v19-more-page > .v413-shell .v413-head h2{
+    margin:0!important;
+    color:#fff!important;
+    font-size:22px!important;
+    line-height:1.08!important;
+    font-weight:900!important;
+  }
+
+  body[data-app-route="more"] .v19-more-page > .v413-shell .v413-head p{
+    margin:0!important;
+    color:#aab5da!important;
+    font-size:10.5px!important;
+    line-height:1.42!important;
+  }
+
+  body[data-app-route="more"] .v19-more-page > .v413-shell .v413-facebook.v523-social-card{
+    width:100%!important;
+    min-height:72px!important;
+    margin:0!important;
+    grid-template-columns:46px minmax(0,1fr) 22px!important;
+    gap:12px!important;
+    padding:0 18px!important;
+    border:1px solid rgba(118,133,222,.26)!important;
+    border-radius:17px!important;
+    background:transparent!important;
+    box-shadow:none!important;
+  }
+}
+@media(max-width:390px){
+  body[data-app-route="more"] .v19-more-page > .v413-shell.v556-social-transparent{
+    margin-top:6px!important;
+    padding:13px!important;
+    border-radius:18px!important;
+  }
+  body[data-app-route="more"] .v19-more-page > .v413-shell .v413-head h2{
+    font-size:20px!important;
+  }
+}
