@@ -1,0 +1,54 @@
+/* V673 — rescate mínimo del scroll raíz.
+   No cambia geometría ni diseño. V637 sigue mandando Inicio/Competición
+   y V669 sigue mandando Más. Este archivo sólo evita bloqueos globales. */
+@media (max-width:1023px){
+  html body[data-app-route="home"],
+  html body[data-app-route="competition"],
+  html body[data-app-route="more"]{
+    overflow-x:hidden!important;
+    overflow-y:auto!important;
+    height:auto!important;
+    max-height:none!important;
+    min-height:100dvh!important;
+    touch-action:auto!important;
+    overscroll-behavior-y:auto!important;
+    -webkit-overflow-scrolling:touch!important;
+  }
+
+  html body[data-app-route="home"] #app,
+  html body[data-app-route="home"] .app-shell,
+  html body[data-app-route="competition"] #app,
+  html body[data-app-route="competition"] .app-shell,
+  html body[data-app-route="more"] #app,
+  html body[data-app-route="more"] .app-shell{
+    height:auto!important;
+    max-height:none!important;
+    min-height:100dvh!important;
+    overflow:visible!important;
+    touch-action:auto!important;
+  }
+
+  html body[data-app-route="home"] #screen,
+  html body[data-app-route="competition"] #screen,
+  html body[data-app-route="more"] #screen{
+    height:auto!important;
+    max-height:none!important;
+    overflow-y:visible!important;
+    touch-action:auto!important;
+  }
+
+  /* Más conserva su cabecera aprobada y nunca se colapsa/desaparece. */
+  html body[data-app-route="more"] #app > .topbar,
+  html body[data-app-route="more"] .app-shell > .topbar,
+  html body.v10-header-collapsed[data-app-route="more"] #app > .topbar,
+  html body.v10-header-collapsed[data-app-route="more"] .app-shell > .topbar{
+    display:block!important;
+    visibility:visible!important;
+    opacity:1!important;
+    position:sticky!important;
+    position:-webkit-sticky!important;
+    top:0!important;
+    transform:none!important;
+    z-index:2147483600!important;
+  }
+}
