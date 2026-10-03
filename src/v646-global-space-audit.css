@@ -1,0 +1,171 @@
+/* V646 — Auditoría global de espacios.
+   Objetivo: una sola reserva para la barra inferior y ritmo compacto entre bloques.
+   Este archivo se carga al FINAL para ganar a estilos antiguos con 96/112/118px
+   de margen/padding que estaban dejando franjas azules vacías. */
+
+@media (max-width:1023px){
+  :root{
+    --v646-stack-gap:12px;
+    --v646-tight-gap:8px;
+    --v646-page-tail:12px;
+  }
+
+  /* La separación para la barra inferior se reserva UNA sola vez en #screen.
+     Las páginas hijas ya no deben volver a sumar otros 90–118px. */
+  html body:not([data-app-route^="account"]) #screen{
+    padding-bottom:calc(76px + env(safe-area-inset-bottom,0px))!important;
+  }
+
+  /* Páginas de contenido: altura real del contenido, no una pantalla artificial. */
+  html body #screen > :is(
+    .v60-tool-page,
+    .v27-teams-page,
+    .v27-team-detail,
+    .v28-follow-page,
+    .v28-scorers-page,
+    .v32-rankings,
+    .v35-history-page,
+    .v399-stats-page,
+    .v414-favorites
+  ){
+    min-height:0!important;
+    height:auto!important;
+  }
+
+  /* Quitar la segunda reserva inferior en páginas anidadas. */
+  html body #screen > .v60-tool-page,
+  html body #screen > .v27-teams-page,
+  html body #screen > .v27-team-detail,
+  html body #screen > .v28-follow-page,
+  html body #screen > .v28-scorers-page,
+  html body #screen > .v32-rankings,
+  html body #screen > .v35-history-page,
+  html body #screen > .v399-stats-page{
+    padding-bottom:var(--v646-page-tail)!important;
+    margin-bottom:0!important;
+  }
+
+  /* Algunos módulos se montan dentro de una página raíz y no directamente en #screen. */
+  html body #screen :is(.v399-stats-page,.v60-tool-page) > :last-child{
+    margin-bottom:0!important;
+  }
+
+  /* Bloques añadidos por distintas versiones: todos usan el mismo ritmo. */
+  html body #screen :is(
+    #v449-reference-lower,
+    #v422-results-reference,
+    #v105-bottom,
+    .v105-bottom,
+    .v412-shell,
+    .v413-shell,
+    .v449-reference-lower,
+    .v73-below-native,
+    .v73-motion-gallery
+  ){
+    margin-top:var(--v646-stack-gap)!important;
+    margin-bottom:var(--v646-stack-gap)!important;
+  }
+
+  /* El panel inferior V449 tenía 96–116px sólo de margen. */
+  html body #screen #v449-reference-lower{
+    margin-bottom:var(--v646-stack-gap)!important;
+  }
+  html body #screen #v449-reference-lower .v449-block{
+    margin-bottom:var(--v646-stack-gap)!important;
+  }
+  html body #screen #v449-reference-lower .v449-block:last-child{
+    margin-bottom:0!important;
+  }
+
+  /* Favoritos también tenía 118px de margen adicional antes de la reserva global. */
+  html body #screen .v414-favorites{
+    min-height:0!important;
+    margin-bottom:0!important;
+    padding-bottom:var(--v646-page-tail)!important;
+  }
+
+  /* Banners inferiores: antes cada uno volvía a reservar 96/104px para navegación. */
+  html body #screen :is(
+    .v73-below-native,
+    .v73-venues-bottom,
+    .v73-weatherfields-bottom,
+    .v73-bracket-bottom,
+    .v73-matchcenter-bottom,
+    .v73-match-detail-bottom,
+    .v510-stats-motion-bottom
+  ){
+    margin-bottom:var(--v646-stack-gap)!important;
+  }
+
+  /* Herramientas: menos aire entre secciones, sin tocar el contenido interno. */
+  html body #screen .v60-tool-section{
+    margin-top:14px!important;
+  }
+  html body #screen .v60-panel + .v60-panel{
+    margin-top:var(--v646-tight-gap)!important;
+  }
+
+  /* V105: el cuadro siguiente debe empezar casi inmediatamente al terminar el anterior. */
+  html body #screen #v105-bottom,
+  html body #screen .v105-bottom{
+    margin-top:var(--v646-stack-gap)!important;
+    margin-bottom:var(--v646-stack-gap)!important;
+  }
+
+  /* Corrección explícita del hueco mostrado en Datos y rendimiento. */
+  html body[data-app-route="v38Stats"] #screen > .v399-stats-page,
+  html body[data-app-route="stats"] #screen > .v399-stats-page,
+  html body[data-app-route="leagueData"] #screen > .v399-stats-page{
+    min-height:0!important;
+    height:auto!important;
+    padding-bottom:var(--v646-page-tail)!important;
+    margin-bottom:0!important;
+  }
+  html body[data-app-route="v38Stats"] #screen .v510-stats-motion-bottom{
+    margin-bottom:var(--v646-stack-gap)!important;
+  }
+  html body[data-app-route="v38Stats"] #screen > #v105-bottom[data-v105-route="v38Stats"]{
+    margin-top:var(--v646-tight-gap)!important;
+  }
+
+  /* Inicio: mantener secciones unidas sin convertirlas en un solo cuadro. */
+  html body[data-app-route="home"] #safeHomeExtra > .v73-home-interleaved{
+    margin-top:var(--v646-stack-gap)!important;
+    margin-bottom:var(--v646-stack-gap)!important;
+  }
+
+  /* Equipos, siguiendo, goleadores, rankings e historia: quitar colas vacías. */
+  html body[data-app-route="teams"] .v27-teams-page,
+  html body[data-app-route="teamDetail"] .v27-team-detail,
+  html body[data-app-route="following"] .v28-follow-page,
+  html body[data-app-route="scorers"] .v28-scorers-page,
+  html body[data-app-route="rankings"] .v32-rankings,
+  html body[data-app-route="history"] .v35-history-page{
+    min-height:0!important;
+    height:auto!important;
+    padding-bottom:var(--v646-page-tail)!important;
+  }
+
+  /* No dejar márgenes artificiales al final de una pantalla de contenido. */
+  html body #screen > :is(
+    .v60-tool-page,
+    .v27-teams-page,
+    .v27-team-detail,
+    .v28-follow-page,
+    .v28-scorers-page,
+    .v32-rankings,
+    .v35-history-page,
+    .v399-stats-page,
+    .v414-favorites
+  ):last-child{
+    margin-bottom:0!important;
+  }
+}
+
+/* Escritorio/tablet grande: sólo recorta los márgenes heredados más exagerados. */
+@media (min-width:1024px){
+  html body #screen #v449-reference-lower,
+  html body #screen :is(.v73-below-native,#v105-bottom,.v105-bottom){
+    margin-bottom:18px!important;
+  }
+}
