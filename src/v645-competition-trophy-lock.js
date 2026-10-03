@@ -6,6 +6,7 @@
 
   const STYLE_ID='v646-competition-header-snapshot';
   const LOCK_CLASS='v646-header-snapshot';
+  let capturing=false;
 
   const elementProps=[
     'display','visibility','position','left','right','top','bottom',
@@ -75,9 +76,10 @@
   }
 
   function capture(){
-    if(route()!=='competition' || !isResults()) return false;
+    if(capturing || route()!=='competition' || !isResults()) return false;
+    capturing=true;
     const bar=document.querySelector('#app > .topbar, .app-shell > .topbar');
-    if(!bar) return false;
+    if(!bar){capturing=false;return false;}
 
     /* Quitar temporalmente el lock anterior para medir únicamente Partidos. */
     document.body.classList.remove(LOCK_CLASS);
@@ -101,6 +103,7 @@
     style.textContent=rules.join('\n');
     document.head.appendChild(style);
     document.body.classList.add(LOCK_CLASS);
+    capturing=false;
     return true;
   }
 
@@ -110,7 +113,7 @@
       return;
     }
     if(isResults()){
-      capture();
+      if(!document.getElementById(STYLE_ID) || !document.body.classList.contains(LOCK_CLASS)) capture();
       return;
     }
     if(document.getElementById(STYLE_ID)){
