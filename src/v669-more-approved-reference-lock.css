@@ -118,15 +118,22 @@
   html body[data-app-route="more"] #screen{
     position:relative!important;
     z-index:1!important;
+    height:auto!important;
+    max-height:none!important;
+    min-height:0!important;
     overflow:visible!important;
+    padding-bottom:calc(84px + env(safe-area-inset-bottom,0px))!important;
     background:var(--v79-more-bg)!important;
   }
 
   html body[data-app-route="more"] .v19-more-page{
     position:relative!important;
     z-index:1!important;
+    height:auto!important;
+    min-height:0!important;
+    max-height:none!important;
     padding-top:18px!important;
-    overflow:hidden!important;
+    overflow:visible!important;
 
     /* Continuación exacta del mismo bitmap:
        la página empieza después de la cabecera, por eso el offset coincide
@@ -195,8 +202,8 @@
 
 
 /* Compatibilidad actual sin cambiar el diseño aprobado:
-   conserva visibles iconos/textos durante scroll y recupera la flecha de acceso
-   que aparece en la referencia del usuario. */
+   conserva visibles iconos/textos durante scroll.
+   Las flechas pequeñas NO forman parte del estado restaurado solicitado. */
 @media(max-width:1023px){
   html body[data-app-route="more"] .v19-more-menu,
   html body[data-app-route="more"] .v19-more-label,
@@ -220,22 +227,17 @@
   }
 
   html body[data-app-route="more"] .v19-more-item::after{
-    content:"›"!important;
-    display:block!important;
-    visibility:visible!important;
-    opacity:1!important;
-    position:absolute!important;
-    right:0!important;
-    top:50%!important;
-    transform:translateY(-50%)!important;
-    color:rgba(255,255,255,.94)!important;
-    font:400 27px/1 Arial,sans-serif!important;
+    content:none!important;
+    display:none!important;
+    visibility:hidden!important;
+    opacity:0!important;
     pointer-events:none!important;
   }
 }
 
 @media(max-width:390px){
   html body[data-app-route="more"] .v19-more-item::after{
-    font-size:24px!important;
+    content:none!important;
+    display:none!important;
   }
 }
