@@ -2449,11 +2449,26 @@ function v362LockHistoryHeader(root=document.querySelector('.v35-history-page'))
     tabs.style.setProperty('gap','36px','important');
     tabs.style.setProperty('overflow-x','auto','important');
     tabs.style.setProperty('overflow-y','hidden','important');
-    // V370: la pieza gráfica superior debe continuar DETRÁS de las pestañas
-    // hasta el borde inferior de Resumen/Temporadas/Campeones/etc.
-    tabs.style.setProperty('background','transparent','important');
-    tabs.style.setProperty('background-color','transparent','important');
-    tabs.style.setProperty('background-image','none','important');
+    // V618: pinta DIRECTAMENTE en la barra de pestañas el tramo inferior
+    // del mismo arte de la cabecera. Esto evita que cualquier fondo padre,
+    // pseudo-elemento o parche legacy deje una franja distinta antes de la línea.
+    tabs.style.setProperty(
+      'background',
+      'linear-gradient(180deg,rgba(7,37,214,.04) 0%,rgba(5,19,139,.12) 46%,rgba(3,7,72,.42) 100%), url("./public/history-regularscroll-header.webp")',
+      'important'
+    );
+    tabs.style.setProperty('background-color','#060956','important');
+    tabs.style.setProperty(
+      'background-size',
+      '100% calc(var(--v361-history-head-h,136px) + var(--v361-history-tabs-h,54px)), 100% calc(var(--v361-history-head-h,136px) + var(--v361-history-tabs-h,54px))',
+      'important'
+    );
+    tabs.style.setProperty(
+      'background-position',
+      'center calc(0px - var(--v361-history-head-h,136px)), center calc(0px - var(--v361-history-head-h,136px))',
+      'important'
+    );
+    tabs.style.setProperty('background-repeat','no-repeat,no-repeat','important');
     tabs.style.setProperty('border-top','0','important');
     tabs.style.setProperty('border-bottom','1px solid rgba(205,212,255,.26)','important');
     tabs.style.setProperty('box-shadow','none','important');
