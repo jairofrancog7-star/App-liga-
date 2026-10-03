@@ -159,7 +159,13 @@
     const host=r==='publications'
       ? document.querySelector('body[data-app-route="publications"] .v60-tool-page')
       : document.querySelector('body[data-app-route="publicationCenter"] [data-v561-publications-mount]');
-    if(!host||host.querySelector('[data-v161-global-center]'))return;
+    if(!host)return;
+    const existing=host.querySelector('[data-v161-global-center]');
+    if(existing){
+      bindPanel(existing);
+      fileSummary(existing);
+      return;
+    }
     const panel=createPanel();
     if(r==='publications'){
       const ai=host.querySelector('.v95-ai-bulletins');
