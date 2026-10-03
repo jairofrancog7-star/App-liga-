@@ -4751,6 +4751,63 @@ function v95BulletinText(kind){
   return league+'\\n'+jornada+(category?' · '+category:'')+'\\n'+rows.join('\\n');
 }
 
+function v668GlobalFilesCenterMarkup(){
+  const cards=[
+    ['▦','Tabla de posiciones','PNG HD · CSV · por categoría','tableExport',''],
+    ['⚽','Tabla de goleo PNG','Publicación HD por categoría','publicationCenter','pub:scorers'],
+    ['📅','Calendario / jornada PNG','Próximos partidos por categoría','publicationCenter','pub:calendar'],
+    ['🏁','Resultados PNG','Marcadores oficiales por categoría','publicationCenter','pub:results'],
+
+    ['🏆','Bracket 1 · Round of 16','Diseño exacto · PNG HD / PDF','bracketBuilder','bracket:round'],
+    ['🏆','Bracket 2 · Full Bracket','Diseño completo · PNG HD / PDF','bracketBuilder','bracket:full'],
+    ['🏆','Bracket 3 · Cuartos exacto','Cuartos · PNG HD / PDF','bracketBuilder','bracket:quarters'],
+
+    ['🟥','Jugadores sancionados PNG','Lista oficial por categoría','publicationCenter','pub:sanctions'],
+    ['⚠','Castigados / expulsados','Disciplina · partidos pendientes · PNG','discipline','discipline:suspensions'],
+    ['⛔','Aviso de suspensión','Suspensión de jornada · PNG','suspensionTool',''],
+
+    ['📄','Cédula arbitral PDF','Hoja completa con logos y plantillas','cedulaBuilder',''],
+    ['🖼','Cédula de partido PNG','Publicación HD por partido','publicationCenter','pub:cedula'],
+    ['📚','Cédulas oficiales','Consultar cédulas publicadas','cedulas',''],
+
+    ['🪪','Credencial de jugador','PNG / PDF tamaño credencial','credentialBuilder',''],
+    ['✓','Permisos y autorizaciones','PDF · PNG · JPG · SVG','permissionBuilder',''],
+    ['↔','Cambios de jornada','Cancha, fecha u horario · PNG','scheduleChanges',''],
+    ['🗓','Agenda de jornada','Horarios y campos · PNG','agendaBuilder',''],
+    ['✦','Centro de publicaciones','Todos los formatos por categoría','publicationCenter',''],
+    ['📊','Estadísticas','Datos, rendimiento y tablas','v38Stats',''],
+    ['✎','Tácticas','Pizarra · PNG / JSON','tactics','']
+  ];
+  const card=x=>'<button type="button" class="v161-generator-card v668-native-file-card" data-v668-route="'+v64Esc(x[3])+'" data-v668-prep="'+v64Esc(x[4])+'">'+
+    '<span class="v161-generator-icon" aria-hidden="true">'+x[0]+'</span>'+
+    '<span><b>'+v64Esc(x[1])+'</b><small>'+v64Esc(x[2])+'</small></span><i>›</i></button>';
+  return '<section class="v161-wa-admin v161-global-center v668-native-global-center" data-v161-global-center data-v161-wa-admin>'+
+    '<div class="v161-global-head"><div><small>CENTRO GLOBAL</small><h2>Archivos y publicaciones</h2><p>Brackets, sancionados, cédulas y todos los generadores de la Liga.</p></div><span class="v161-hd-pill">PNG · HD</span></div>'+
+    '<div class="v161-generators-title"><b>Todos los generadores</b><small>Abre el formato exacto</small></div>'+
+    '<div class="v161-generator-grid">'+cards.map(card).join('')+'</div>'+
+    '<div class="v161-center-divider"></div>'+
+    '<div class="v161-wa-head"><span class="v161-wa-badge">WA</span><div><small>ENVÍO OFICIAL</small><h3>Presidente de la Liga</h3><p>4121715599 · chat directo</p></div></div>'+
+    '<p class="v161-wa-help">También puedes seleccionar el archivo generado, descargarlo en HD 2K/4K y compartirlo directamente desde el teléfono.</p>'+
+    '<div class="v161-wa-kinds" aria-label="Tipo de envío">'+
+      '<button type="button" data-v161-kind="standings">Tabla</button>'+
+      '<button type="button" data-v161-kind="scorers">Goleo</button>'+
+      '<button type="button" data-v161-kind="calendar">Jornada</button>'+
+      '<button type="button" data-v161-kind="results">Resultados</button>'+
+      '<button type="button" data-v161-kind="bracket">Bracket</button>'+
+      '<button type="button" data-v161-kind="sanctions">Sancionados</button>'+
+      '<button type="button" data-v161-kind="cedula">Cédula</button>'+
+      '<button type="button" data-v161-kind="png">PNG</button>'+
+    '</div>'+
+    '<label class="v161-file-picker"><input type="file" data-v161-files multiple accept="image/png,image/jpeg,image/webp,application/pdf,text/csv,.csv,.png,.jpg,.jpeg,.webp,.pdf"><span>＋ Seleccionar archivos</span><small>PNG · JPG · WEBP · PDF · CSV</small></label>'+
+    '<div class="v161-last-file" data-v161-last-file hidden></div>'+
+    '<div class="v161-file-preview" data-v161-preview hidden><img alt="Vista previa del archivo seleccionado"></div>'+
+    '<div class="v161-file-list" data-v161-file-list><span>Ningún archivo seleccionado</span></div>'+
+    '<div class="v161-hd-actions"><button type="button" data-v161-download-original>Descargar original</button><button type="button" data-v161-hd="2560">Descargar HD 2K</button><button type="button" data-v161-hd="3840">Descargar HD 4K</button></div>'+
+    '<label class="v161-message"><span>Mensaje</span><textarea data-v161-message rows="4">Liga Juventino Rosas · archivo para revisión/publicación.</textarea></label>'+
+    '<div class="v161-wa-actions"><button type="button" class="primary" data-v161-share-files>Compartir archivo</button><button type="button" class="whatsapp" data-v161-open-chat>WhatsApp presidente · 412 171 5599</button><button type="button" data-v161-copy-number>Copiar número</button></div>'+
+  '</section>';
+}
+
 function publicationsView(){
   const selected=localStorage.getItem('v95-bulletin-kind')||'full';
   const text=v95BulletinText(selected);
@@ -4771,6 +4828,7 @@ function publicationsView(){
         '<button type="button" data-v95-copy-kind="reminder">Copiar recordatorio</button>'+
       '</div>'+
     '</article>'+
+    v668GlobalFilesCenterMarkup()+
     '<article class="v60-share-card"><h2>Boletín listo</h2><p>Selecciona un estilo arriba. El texto se actualiza al instante.</p><div class="v60-share-preview" data-v60-share-text>'+v64Esc(text)+'</div><div class="v60-actions"><button class="v60-btn" data-v60-share>Compartir</button><button class="v60-btn outline" data-v60-copy>Copiar texto</button></div></article>'+
     '<p class="v60-note">En móvil puedes compartir directo a WhatsApp. Los boletines se forman con los partidos cargados en la app para evitar datos inventados.</p></section>';
 }
@@ -6358,6 +6416,30 @@ document.addEventListener('click',event=>{
   event.preventDefault();go(button.dataset.route);
 });
 function bind(){
+/* V668 — Centro Global nativo: los accesos existen dentro del HTML principal,
+   así no dependen de que otro parche los inyecte después del render. */
+document.querySelectorAll('[data-v668-route]').forEach(el=>{
+  el.onclick=()=>{
+    const r=el.dataset.v668Route||'';
+    const prep=el.dataset.v668Prep||'';
+    try{
+      if(prep.startsWith('bracket:')){
+        const design=prep.split(':')[1]||'round';
+        localStorage.setItem('v651-bracket-design',design);
+        localStorage.setItem('v651-bracket-stage',design==='quarters'?'qf':'auto');
+      }
+      if(prep==='discipline:suspensions'){
+        localStorage.setItem('v655-discipline-type','suspensions');
+        localStorage.setItem('v563-discipline-view','suspensions');
+        localStorage.setItem('v655-discipline-cat','all');
+      }
+      if(prep.startsWith('pub:')){
+        localStorage.setItem('v561-publication-kind',prep.split(':')[1]||'standings');
+      }
+    }catch(e){}
+    if(r)go(r);
+  };
+});
 document.querySelector('[data-v446-notices-back]')?.addEventListener('click',()=>{if(history.length>1)history.back();else go('more')});
 function noticeDraft(){
   const pick=s=>document.querySelector(s);
