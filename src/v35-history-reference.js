@@ -2282,7 +2282,21 @@ function v370HistoryTeamLogo(name){
   try{return v340ChampionLogo(name,'')||'';}catch(_){return ''}
 }
 function v370ArchiveTeamsBlock(){
-  const names=expandedRetroNames.concat(retroNames).filter((x,i,a)=>a.indexOf(x)===i);
+  /* V699 — los equipos visibles en el rol del 14–15 jul 2018 deben aparecer
+     también en esta cuadrícula de MEMORIA DE CLUBES. Se agregan de forma
+     explícita y se deduplican por nombre canónico para no repetir tarjetas. */
+  const july2018Teams=[
+    'Magisterio','Sección XIV','Deportivo Lagartos','Valedores',
+    'Hermanos','Linces','Franco FC','La Esperanza Jr.','Mazacotes',
+    'Barza','Malvinas','Populares','Tavera Jr.','World 11','A. Centeno','El Alto'
+  ];
+  const seen=new Set();
+  const names=expandedRetroNames.concat(retroNames,july2018Teams).filter(name=>{
+    const key=histTeamKey(canonicalHistoricName(name));
+    if(!key||seen.has(key))return false;
+    seen.add(key);
+    return true;
+  });
   return '<section class="v370-legacy-clubs" aria-label="Equipos que han formado parte de la Liga">'+
     '<header class="v370-legacy-head">'+
       '<span class="v370-legacy-kicker">MEMORIA DE CLUBES</span>'+
