@@ -2124,7 +2124,7 @@ function v357ApplyChampionCategory(){
 function championsBody(){
   return championsRankingBlock()+
     '<section class="v35-block v35-tab-body"><h2 class="v35-section-title">Campeones de otros años</h2>'+
-    '<article class="v35-stat-card"><h3>Archivo histórico real</h3><p>Los campeones de temporadas anteriores se registran cuando una fuente de la Liga o de sus administradores los identifica como tales. No se exige una fotografía del trofeo. Los clubes que ya no participan permanecen únicamente en Historia.</p></article></section>'+
+    '<article class="v35-stat-card"><h3>Campeones que hicieron historia</h3><p>Cada temporada dejó partidos, finales y celebraciones que forman parte de la memoria de nuestra Liga. Aquí recordamos a los equipos que levantaron trofeos, representaron a sus comunidades y dejaron su nombre en las canchas de Juventino Rosas. Un recorrido por momentos que marcaron generaciones y siguen siendo parte de nuestra historia.</p></article></section>'+
     '<div class="v35-history-lazy" data-v35-lazy-history="champions" aria-busy="true"></div>';
 }
 function finalsBody(){
