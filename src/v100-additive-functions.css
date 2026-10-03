@@ -1045,3 +1045,43 @@ body[data-app-route="credentialBuilder"] .v196-preview-head em{
     font-size:7px!important;
   }
 }
+
+
+/* V656 — Simulador de jornada: categoría, logos y PNG */
+.v100-journey-modal .v100-modal-card{max-width:620px}
+.v100-js-category{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:10px;align-items:end;margin:2px 0 12px}
+.v100-js-category>label{display:grid;gap:6px}
+.v100-js-category>label>span{font-size:10px;font-weight:800;color:#cbd7f1}
+.v100-js-category select{width:100%;min-height:44px;border-radius:12px;border:1px solid rgba(255,255,255,.18);background:#07105f;color:#fff;padding:0 12px;box-sizing:border-box;font:inherit}
+.v100-js-category-preview{min-width:176px;min-height:58px;display:flex;align-items:center;gap:9px;padding:7px 10px;border:1px solid rgba(85,230,242,.28);border-radius:14px;background:rgba(3,10,79,.58)}
+.v100-js-cat-logo{width:44px;height:44px;flex:0 0 44px;display:grid;place-items:center;border-radius:12px;background:rgba(255,255,255,.96);overflow:hidden}
+.v100-js-cat-logo img{width:40px;height:40px;object-fit:contain}
+.v100-js-category-preview small{display:block;color:#55e6f2;font-size:8px;font-weight:900;letter-spacing:.12em}
+.v100-js-category-preview b{display:block;margin-top:2px;color:#fff;font-size:11px;line-height:1.15}
+.v100-js-match-preview{display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);align-items:center;gap:10px;margin-top:14px;padding:12px;border:1px solid rgba(85,230,242,.2);border-radius:18px;background:linear-gradient(145deg,rgba(11,27,128,.88),rgba(4,9,77,.94))}
+.v100-js-team-card{min-width:0;display:grid;justify-items:center;gap:6px;text-align:center}
+.v100-js-team-card>span{width:64px;height:64px;display:grid;place-items:center;border-radius:16px;background:#fff;overflow:hidden}
+.v100-js-team-card img{width:58px;height:58px;object-fit:contain}
+.v100-js-team-card b{max-width:100%;font-size:11px;line-height:1.15;color:#fff;white-space:normal}
+.v100-js-match-preview>strong{color:#55e6f2;font-size:22px;white-space:nowrap}
+.v100-js-actions .v100-primary,.v100-js-actions .v100-secondary{flex:1 1 180px}
+.v100-js-png{border-color:#55e6f2!important;color:#55e6f2!important}
+.v100-js-saved-list{display:grid;gap:8px;margin-top:14px}
+.v100-js-saved{position:relative;display:grid!important;grid-template-columns:1fr auto!important;gap:7px 10px!important;padding:10px!important}
+.v100-js-saved-match{grid-column:1/-1;display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);gap:8px;align-items:center}
+.v100-js-saved-team{min-width:0;display:flex;align-items:center;gap:6px}
+.v100-js-saved-team:last-of-type{justify-content:flex-end;text-align:right}
+.v100-js-saved-team img{width:28px;height:28px;flex:0 0 28px;object-fit:contain;border-radius:8px;background:#fff}
+.v100-js-saved-team b{font-size:10px;line-height:1.15}
+.v100-js-saved-match>strong{color:#55e6f2;font-size:15px}
+.v100-js-saved>small{color:#aebde0;font-size:9px}
+.v100-js-saved>button{align-self:center}
+@media(max-width:520px){
+  .v100-js-category{grid-template-columns:1fr}
+  .v100-js-category-preview{min-width:0}
+  .v100-js-grid{grid-template-columns:1fr}
+  .v100-js-match-preview{gap:6px}
+  .v100-js-team-card>span{width:56px;height:56px}
+  .v100-js-team-card img{width:50px;height:50px}
+  .v100-js-match-preview>strong{font-size:18px}
+}
