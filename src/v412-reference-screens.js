@@ -219,11 +219,26 @@ function positionCode(p){
  if(/DEL|DC|EXT|EI|ED/.test(raw))return 'DEL';
  return raw.slice(0,3);
 }
+function searchPlayerPhoto(p,teamLogo=''){
+ let src='';
+ try{
+  src=String(p?.photo||window.LJR_PLAYER_MEDIA?.photo?.(p?.name,p?.team,p?.catId)||window.LJR_PLAYER_PHOTOS?.get?.(p?.name,p?.team,p?.catId)||'').trim();
+ }catch(_){}
+ if(!src)return '';
+ try{
+  const a=String(src).split('?')[0],b=String(teamLogo||'').split('?')[0];
+  if(a&&b&&a===b)return '';
+ }catch(_){}
+ return src;
+}
 function searchPlayerRow(p){
- const s=playerStats(p),teamLogo=logo(p.team),cat=categoryCode(p.catId),catLogo=categoryLogo(p.catId),pos=positionCode(p);
+ const s=playerStats(p),teamLogo=logo(p.team),cat=categoryCode(p.catId),catLogo=categoryLogo(p.catId),pos=positionCode(p),face=searchPlayerPhoto(p,teamLogo);
  const pc=/^DEL/.test(pos)?'is-del':/^DEF/.test(pos)?'is-def':/^(MED|CEN|MC|MD|MI|MCD|MCO)/.test(pos)?'is-mid':'is-jug';
- return '<button type="button" class="v414-player-row" data-v412-player="'+esc(p.id)+'" aria-label="'+esc(p.name)+', '+esc(p.team)+', '+s.goals+' goles, '+s.played+' partidos, '+s.points+' puntos">'+
-   '<span class="v414-player-photo"><img src="'+esc(teamLogo)+'" alt="'+esc(p.team)+'"><i>'+esc(initials(p.name))+'</i></span>'+
+ const avatar=face
+  ?'<span class="v414-player-photo v576-has-photo" data-v576-photo="1"><img class="v576-player-photo" src="'+esc(face)+'" alt="'+esc(p.name)+'" loading="lazy" decoding="async" referrerpolicy="no-referrer"></span>'
+  :'<span class="v414-player-photo v576-team-fallback" data-v576-team-fallback="1"><img src="'+esc(teamLogo)+'" alt="'+esc(p.team)+'" loading="lazy" decoding="async"><i>'+esc(initials(p.name))+'</i></span>';
+ return '<button type="button" class="v414-player-row" data-v412-player="'+esc(p.id)+'" data-v414-player-name="'+esc(p.name)+'" data-v414-player-team="'+esc(p.team)+'" data-v414-player-cat="'+esc(p.catId)+'" aria-label="'+esc(p.name)+', '+esc(p.team)+', '+s.goals+' goles, '+s.played+' partidos, '+s.points+' puntos">'+
+   avatar+
    '<span class="v414-player-main">'+
      '<b>'+esc(p.name)+'</b>'+
      '<span class="v414-player-meta"><span class="v414-mx-flag" title="México"><i></i></span><strong class="'+pc+'">'+esc(pos)+'</strong><em>'+esc(p.team)+'</em></span>'+
