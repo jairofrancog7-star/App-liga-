@@ -129,7 +129,12 @@ function toast(msg){
   t=document.createElement('div');t.className='v100-toast';t.textContent=msg;document.body.appendChild(t);
   setTimeout(()=>t.remove(),2200);
 }
-function go(r){location.hash='#/'+r}
+function go(r){
+  const gate=window.LJR_ADMIN_ROUTE;
+  if(gate?.routes?.has?.(r)){gate.open(r);return}
+  if(window.LJR_MAIN_ROUTE?.go){window.LJR_MAIN_ROUTE.go(r);return}
+  location.hash='#/'+r
+}
 function download(blob,name){const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=name;document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},600)}
 function canvasBlob(canvas){return new Promise(resolve=>canvas.toBlob(resolve,'image/png',1))}
 function fileShare(blob,name,title){
