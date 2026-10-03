@@ -302,6 +302,57 @@
     },{once:true});
   }
 
+  function compactDisciplineTail(){
+    if(!isDiscipline())return;
+    const screen=document.querySelector('#screen');
+    const page=screen?.querySelector('.v94-discipline-page');
+    const after=page?.querySelector('.v650-discipline-export');
+    if(!screen||!page||!after)return;
+
+    const normText=v=>String(v||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/\s+/g,' ').trim();
+    const targets=[...screen.querySelectorAll('button,a,[role="button"],article')].filter(el=>{
+      if(page.contains(el))return false;
+      const t=normText(el.textContent);
+      return t.includes('generar png por categoria')||t.includes('tablas y avisos');
+    });
+    if(!targets.length)return;
+
+    let holder=page.querySelector('.v651-discipline-tail');
+    if(!holder){
+      holder=document.createElement('div');
+      holder.className='v651-discipline-tail';
+      after.insertAdjacentElement('afterend',holder);
+    }
+
+    targets.forEach(card=>{
+      if(holder.contains(card))return;
+      const oldParent=card.parentElement;
+      card.classList.add('v651-tail-card');
+      card.style.setProperty('margin','0','important');
+      card.style.setProperty('margin-top','0','important');
+      card.style.setProperty('margin-bottom','0','important');
+      card.style.setProperty('position','relative','important');
+      card.style.setProperty('top','auto','important');
+      card.style.setProperty('bottom','auto','important');
+      card.style.setProperty('transform','none','important');
+      holder.appendChild(card);
+
+      if(oldParent&&oldParent!==screen&&oldParent!==page&&!page.contains(oldParent)){
+        const meaningful=[...oldParent.children].filter(x=>x!==holder&&!x.hidden&&getComputedStyle(x).display!=='none');
+        oldParent.style.setProperty('min-height','0','important');
+        oldParent.style.setProperty('height','auto','important');
+        oldParent.style.setProperty('margin-top','0','important');
+        oldParent.style.setProperty('margin-bottom','0','important');
+        oldParent.style.setProperty('padding-top','0','important');
+        oldParent.style.setProperty('padding-bottom','0','important');
+        if(!meaningful.length){
+          oldParent.style.setProperty('display','none','important');
+          oldParent.setAttribute('aria-hidden','true');
+        }
+      }
+    });
+  }
+
   function render(data){
     if(!isDiscipline())return;
     const screen=document.querySelector('#screen');
@@ -335,6 +386,10 @@
 
     document.body.classList.add('v94-discipline-official');
     bindPng(data,items,screen);
+    compactDisciplineTail();
+    requestAnimationFrame(()=>compactDisciplineTail());
+    setTimeout(compactDisciplineTail,120);
+    setTimeout(compactDisciplineTail,650);
     screen.querySelectorAll('img[data-v94-logo-fallback]').forEach(img=>{
       img.addEventListener('error',()=>{
         const fallback=img.dataset.v94LogoFallback||'';
@@ -393,7 +448,9 @@
     if(!screen.querySelector('.v94-discipline-page')){
       screen.dataset.v94DisciplineSig='';
       setTimeout(forceLoad,20);
+      return;
     }
+    requestAnimationFrame(compactDisciplineTail);
   }).observe(screen,{childList:true,subtree:true});
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',forceLoad,{once:true});
   else forceLoad();
