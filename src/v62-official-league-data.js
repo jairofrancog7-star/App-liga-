@@ -955,6 +955,11 @@ function patchTeams(){
 }
 function intercept(){
   document.addEventListener('click',e=>{
+    /* V681 — Permisos tiene selectores locales de equipo/jugador.
+       V62 no debe interpretar ningún toque de esta pantalla como navegación
+       a ficha, comparar equipos o cambio de equipo global. */
+    if(route()==='permissionBuilder'||e.target.closest?.('[data-v635-page],[data-v635-team-sheet],[data-v635-player-sheet]'))return;
+
     /* V145 — El selector de equipo de Registro/Credencial es local al formulario.
        Nunca debe convertirse en navegación a ficha/comparación de equipos. */
     if(registrationActive()||
