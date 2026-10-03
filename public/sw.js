@@ -1,4 +1,4 @@
-const CACHE='liga-juventino-v612-public-stories-quiz';
+const CACHE='liga-juventino-v608-more-community-tight';
 const CORE=['./','./index.html','./manifest.webmanifest','./brand-neon-header.svg','./profile-reference.svg'];
 
 self.addEventListener('install',event=>{
