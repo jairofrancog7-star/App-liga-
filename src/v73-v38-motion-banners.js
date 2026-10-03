@@ -579,36 +579,13 @@
       return;
     }
 
-    /* V141 — MATCH CENTER REAL:
-       Primero va el contenido oficial V92 (partido, selector, marcador, tabs y datos).
-       El cuadro cinematográfico "EL PARTIDO, EN VIVO." queda HASTA ABAJO. */
+    /* V664 — MATCH CENTER:
+       Ya no se monta el banner cinematográfico "EL PARTIDO, EN VIVO".
+       Las referencias enviadas por el usuario ahora viven como pestañas reales
+       DENTRO del Match Center; así ningún botón termina desplazando a este banner. */
     if(['v4-matchcenter','matchCenter','match-center'].includes(r)){
-      const nativeCenter=screen.querySelector('[data-v92-matchcenter]');
-      if(!nativeCenter){
-        screen.querySelectorAll(':scope > [data-v73-motion-banner]').forEach(x=>x.remove());
-        syncAll();
-        return;
-      }
-
-      const target=screen.querySelector('[data-v518-extras]')||screen;
-      let banner=target.querySelector(':scope > [data-v73-motion-banner]')||
-                 screen.querySelector(':scope > [data-v73-motion-banner]');
-      if(!banner){
-        banner=buildBanner(cfg);
-        banner.classList.add('v73-below-native','v73-matchcenter-bottom');
-        banner.dataset.v73BelowNative='match-center';
-      }
-      if(banner.parentElement!==target)target.appendChild(banner);
-
-      /* V518 — Match Center queda en un solo cuadro:
-         V92 + extras V412 + avisos V413 + banner V73 viven dentro del
-         contenedor [data-v518-extras], sin tarjetas sueltas fuera. */
-      const alerts=target.querySelector(':scope > #v413-page-design[data-v413-route="v4-matchcenter"],:scope > #v413-page-design[data-v413-route="matchCenter"],:scope > #v413-page-design[data-v413-route="match-center"]');
-      if(alerts){
-        if(alerts.nextElementSibling!==banner)alerts.insertAdjacentElement('afterend',banner);
-      }else if(target.lastElementChild!==banner){
-        target.appendChild(banner);
-      }
+      screen.querySelectorAll('[data-v73-motion-banner],.v73-matchcenter-bottom').forEach(x=>x.remove());
+      document.body.classList.remove('v73-motion-active');
       syncAll();
       return;
     }
