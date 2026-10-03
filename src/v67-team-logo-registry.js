@@ -9,6 +9,8 @@
   /* V688 — equivalencias históricas confirmadas por el usuario.
      Son sólo aliases visuales del archivo; no agregan clubes a la temporada actual. */
   const USER_HISTORIC={
+    'salvajes':'./assets/history/team-logos/salvajes.webp',
+    'salvaje':'./assets/history/team-logos/salvajes.webp',
     'universidad':'./assets/history/team-logos/universidad-pumas.webp',
     'unam':'./assets/history/team-logos/universidad-pumas.webp',
     'pumas':'./assets/history/team-logos/universidad-pumas.webp',
@@ -19,6 +21,8 @@
     'jaralillo f c':'./assets/history/team-logos/xolos-jaralillo.webp',
     'xolos de jaralillo':'./assets/history/team-logos/xolos-jaralillo.webp',
     'xolos':'./assets/history/team-logos/xolos-jaralillo.webp',
+    'xoloitzcuintles':'./assets/history/team-logos/xolos-jaralillo.webp',
+    'club tijuana':'./assets/history/team-logos/xolos-jaralillo.webp',
     'tecos':'./assets/history/team-logos/tecos.webp',
     'tecos fc':'./assets/history/team-logos/tecos.webp'
   };
