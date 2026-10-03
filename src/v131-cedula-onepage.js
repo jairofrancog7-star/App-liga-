@@ -170,10 +170,13 @@
     const home=q('[data-v64-ced-home]')||'Local';
     const away=q('[data-v64-ced-away]')||'Visitante';
     const fixture=fixtureFor(db,cat,home,away);
-    const dateRaw=q('[data-v64-ced-date]')||fixture?.[8]||'';
-    const field=q('[data-v64-ced-field]')||fixture?.[7]||'Por confirmar';
+    const storedDate=localStorage.getItem('v66-cedula-date')||'';
+    const storedField=localStorage.getItem('v66-cedula-field')||'';
+    const storedRound=localStorage.getItem('v66-cedula-round')||'';
+    const dateRaw=q('[data-v64-ced-date]')||storedDate||fixture?.[8]||'';
+    const field=q('[data-v64-ced-field]')||storedField||fixture?.[7]||'Por confirmar';
     const referee=q('[data-v64-ced-ref]')||'Por asignar';
-    const jornada=fixture?.[1]?('Jornada '+fixture[1]):'Por confirmar';
+    const jornada=storedRound?('Jornada '+storedRound):(fixture?.[1]?('Jornada '+fixture[1]):'Por confirmar');
     const homeRoster=rosterFor(db,cat,home);
     const awayRoster=rosterFor(db,cat,away);
     const homeLogo=logoFor(db,home);
@@ -285,6 +288,26 @@
       printCedula();
     }
   },true);
+
+  /* V630 — al tocar una cédula oficial, abre el generador restaurado
+     y crea de inmediato la hoja con logos de Liga, categoría y equipos. */
+  function autoRenderOfficialCedula(){
+    if(route()!=='cedulaBuilder')return;
+    if(localStorage.getItem('v66-cedula-source')!=='official-directory')return;
+    if(localStorage.getItem('v66-cedula-autogenerate')!=='1')return;
+    const host=document.querySelector('[data-v64-cedula-preview]');
+    if(!host||host.querySelector('[data-v131-print-sheet]'))return;
+    localStorage.removeItem('v66-cedula-autogenerate');
+    renderCedula(false);
+  }
+  if(!window.__LJR_V630_CEDULA_AUTO__){
+    window.__LJR_V630_CEDULA_AUTO__=true;
+    window.addEventListener('hashchange',()=>setTimeout(autoRenderOfficialCedula,70));
+    const screen=document.querySelector('#screen');
+    if(screen)new MutationObserver(()=>setTimeout(autoRenderOfficialCedula,20)).observe(screen,{childList:true,subtree:true});
+    if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',()=>setTimeout(autoRenderOfficialCedula,80),{once:true});
+    else setTimeout(autoRenderOfficialCedula,80);
+  }
 
   document.addEventListener('change',function(e){
     if(route()!=='cedulaBuilder'||!document.querySelector('[data-v131-print-sheet]'))return;
