@@ -872,7 +872,10 @@ function canonicalHistoricName(name){
     'psv eindhoven':'PSV',
     'deportivo aldama':'Aldama FC',
     'aldama':'Aldama FC',
-    'aldama fc':'Aldama FC'
+    'aldama fc':'Aldama FC',
+    'san antonio de r':'San Antonio de Romerillo',
+    'atletico sj':'Atlético San Julián',
+    'a san julian':'Atlético San Julián'
   };
   return aliases[k]||String(name||'').trim();
 }
@@ -919,6 +922,7 @@ const historicalTeamEras=[
   {period:'2022',category:'Intermedia · resultados / ascenso / Copa documentados',teams:['La Huerta','Galaxy','Sección 14','A. Pozos','Populares','Barza']},
   {period:'2022',category:'Segunda Fuerza · resultado / campeón / ascenso documentados',teams:['Galácticos FC','San Juan FC','La Esperanza FC']},
   {period:'2022–2023',category:'Veteranos · Final de Copa',teams:['Juventus','Cuenda']},
+  {period:'2022–2023 · rol aportado',category:'Final de Copa, amistoso Veteranos 50+, Primera Fuerza J2 segunda vuelta, Intermedia J2 segunda vuelta y Segunda Fuerza J17',teams:['Juventus','Cuenda','Dynamo','Combinado de Cuenda','Hermanos','Tecos','Abejas','Napoli','Linces','La Cuadrilla','Boavista','Galácticos','Populares','Chelsea','La Esperanza FC','San Antonio de R.','Sección 14','La Huerta','A. Pozos','Malvinas','Barza','Oklahoma','Mineros FC','Dep. Maravillas','Lobos CDG','Mazacotes FC','Titanes FC','Galeana','Terrícolas','Unión','Tapatío','Tavera','Guadalupanos','San Antonio FC','Osasuna','Promesas','Atlético SJ']},
   {period:'2023',category:'Veteranos · Gran Final de Liga',teams:['Juventus','América']},
   {period:'2023',category:'Segunda Fuerza · Gran Final de Liga',teams:['Titanes FC','Terrícolas SEDER']},
   {period:'2024',category:'Fuerza Intermedia · semifinal de vuelta documentada',teams:['A. San Julián','Lobos CDG','Herreras FC','Oklahoma']},
@@ -978,7 +982,7 @@ const expandedRetroNames=[
   'Aguilares','Merino','Santa María de Guadalupe','Pozos','San José de Allende','Atlas',
   'Guadalajara','Sección XIV','La Pandilla de Rancho V.','Dortmund','Portugal','Birds Eye Jr.','Centeno',
   'Boca Jrs.','B.F.C.','Manchester United','Galácticos (Pozos)','Herreras FC (Cuenda)','Lobos Jrs.','Lobos CDG','Franco FC','Salvajes','San Antonio Jrs.','Real de Roque',
-  'Hermanos','Cuenda','Napoli','World 11','La Esperanza Jr.','Deportivo Lagartos','Boavista','Galeana','Abejas','Dep. Cerrito','Tavera','La Huerta','San Antonio de Romerillo','Tavera Jr.'
+  'Hermanos','Cuenda','Napoli','World 11','La Esperanza Jr.','Deportivo Lagartos','Boavista','Galeana','Abejas','Dep. Cerrito','Tavera','La Huerta','San Antonio de Romerillo','Tavera Jr.','Combinado de Cuenda','Unión','Atlético San Julián'
 ];
 
 const historicalTimeline=[
@@ -1010,6 +1014,7 @@ const historicalTimeline=[
     {date:'12 nov 2019',title:'Convocatoria de la temporada 2019–2020',detail:'La Liga Municipal de Fútbol “Juventino Rosas A.C.” emitió convocatoria para Primera, Intermedia y Segunda. El campeonato iniciaría el domingo 8 de diciembre; las inscripciones cerrarían el martes 26 de noviembre a las 19:00 en la Unidad Deportiva Sur y la junta previa se fijó para el martes 3 de diciembre a las 19:00. El registro admitía un máximo de 26 jugadores.'},
 {date:'dic 2019',title:'Nombre reconocido en un documento público',detail:'Un reporte del Congreso del Estado de Guanajuato registra “LIGA MUNICIPAL JUVENTINO ROSAS” por $11,600 dentro de apoyos para construcción y reparación. Es una evidencia externa importante de continuidad del nombre institucional.'},
   {date:'2022',title:'Veteranos · tabla final',detail:'El archivo conserva una tabla final de Veteranos con Juventus en primer lugar con 53 puntos.'},
+  {date:'2022–2023',title:'Rol de Final de Copa y jornadas por fuerza',detail:'Captura aportada del rol 2022–2023. La Final de Copa muestra Juventus vs Cuenda a las 16:30 en Campo 1. También registra amistoso de Veteranos 50+ Dynamo vs Combinado de Cuenda y jornadas de Primera, Intermedia y Segunda con equipos como Tecos, Galácticos, Sección XIV, A. Pozos, Titanes FC, Unión y Atlético San Julián. Los nombres visibles se incorporan a la Memoria de Clubes sin modificar la temporada actual.'},
   {date:'04–16 feb 2025',title:'Herreras FC y Lobos Jrs. · Torneos Relámpago',detail:'El 9 feb 2025 Herreras FC fue campeón del Torneo Relámpago de Fuerza Intermedia ante Oklahoma. El 16 feb 2025 Lobos Jrs. fue campeón del Torneo Relámpago de Segunda Fuerza.'},
   {date:'mar–may 2024',title:'Linces y Boca Jrs. · campeones',detail:'La Pupila documentó a Linces campeón de Copa tras vencer 3–2 a Hermanos FC; Juventino Rosas Liga confirmó después que pertenecía a Primera Fuerza. El 4 may 2024 Boca Jrs. de Cuenda se impuso a Manchester y ganó la Liga de Veteranos 50 y más.'},
   {date:'12 abr 2025',title:'Boavista campeón de Liga · Veteranos 50+',detail:'La final publicada fue Boca Jrs. vs Boavista, 16:00, Campo 1. La publicación del mismo día identifica a Boavista F C como campeón 2025.'},
