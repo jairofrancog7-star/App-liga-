@@ -1745,3 +1745,14 @@ body.v33-data-active .v33-general-content .v33-carousel .v33-see-all{
     font-size:12px!important;
   }
 }
+
+
+/* V656 — General: subrayado cyan, más ancho y alineado con la palabra. */
+body.v33-data-active .v33-data-page[data-v33-mode="general"] .v33-tabs button[data-v33-tab="general"].active::after{
+  left:10px!important;
+  right:10px!important;
+  bottom:0!important;
+  height:4px!important;
+  background:#12dce8!important;
+  border-radius:5px 5px 0 0!important;
+}
