@@ -1,0 +1,51 @@
+/* V673 — HARD FIX final: Registro de jugadores sin encimado.
+   Se carga al final del <head>, después de TODOS los estilos globales. */
+html body[data-app-route="players"] #screen .v607-player-head.v673-player-head{
+  position:relative!important;
+  inset:auto!important;
+  transform:none!important;
+  width:100%!important;
+  max-width:100%!important;
+  min-width:0!important;
+  height:auto!important;
+  min-height:0!important;
+  display:flex!important;
+  flex-direction:column!important;
+  align-items:flex-start!important;
+  justify-content:flex-start!important;
+  gap:7px!important;
+  margin:0 0 14px!important;
+  padding:10px 12px 14px!important;
+  overflow:visible!important;
+  box-sizing:border-box!important;
+  border-bottom:1px solid rgba(74,104,207,.34)!important;
+}
+html body[data-app-route="players"] #screen .v607-player-head.v673-player-head>small{
+  position:static!important;display:block!important;width:auto!important;max-width:100%!important;
+  margin:0!important;padding:0!important;color:#29e0eb!important;font-size:10px!important;
+  line-height:1.1!important;font-weight:950!important;letter-spacing:.14em!important;
+  white-space:normal!important;transform:none!important;
+}
+html body[data-app-route="players"] #screen .v607-player-head.v673-player-head>h1{
+  position:static!important;display:block!important;width:100%!important;max-width:100%!important;min-width:0!important;
+  margin:0!important;padding:0!important;color:#fff!important;font-size:28px!important;line-height:1.02!important;
+  font-weight:950!important;letter-spacing:-.025em!important;white-space:normal!important;overflow:visible!important;
+  overflow-wrap:break-word!important;word-break:normal!important;transform:none!important;
+}
+html body[data-app-route="players"] #screen .v607-player-head.v673-player-head>.v673-player-count{
+  position:static!important;display:block!important;width:100%!important;max-width:100%!important;min-width:0!important;
+  margin:0!important;padding:0!important;color:#a8b1d5!important;font-size:12px!important;line-height:1.35!important;
+  font-weight:700!important;white-space:normal!important;overflow:visible!important;text-align:left!important;transform:none!important;
+}
+html body[data-app-route="players"] #screen .v607-player-head.v673-player-head>p{
+  position:static!important;display:block!important;width:100%!important;max-width:100%!important;min-width:0!important;
+  margin:0!important;padding:0!important;color:#9da8d0!important;font-size:11px!important;line-height:1.35!important;
+  font-weight:600!important;white-space:normal!important;overflow:visible!important;text-align:left!important;transform:none!important;
+}
+@media(max-width:420px){
+  html body[data-app-route="players"] #screen .v607-player-head.v673-player-head{gap:6px!important;padding:8px 10px 12px!important}
+  html body[data-app-route="players"] #screen .v607-player-head.v673-player-head>small{font-size:9px!important}
+  html body[data-app-route="players"] #screen .v607-player-head.v673-player-head>h1{font-size:24px!important}
+  html body[data-app-route="players"] #screen .v607-player-head.v673-player-head>.v673-player-count{font-size:10.5px!important}
+  html body[data-app-route="players"] #screen .v607-player-head.v673-player-head>p{font-size:9.5px!important}
+}
