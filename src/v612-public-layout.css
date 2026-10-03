@@ -1,5 +1,16 @@
-/* Administration has one discreet entry under More > Tools. */
-body:not(.liga-editor) .v612-admin-only{display:none!important}
+/* V624 — Las herramientas administrativas SIEMPRE permanecen visibles.
+   La autorización se resuelve al tocar el cuadro: sesión recordada => abre directo;
+   sin sesión => abre el acceso de Administración. Nunca se ocultan ni se vuelven inertes. */
+body .v612-admin-only{
+  display:flex!important;
+  visibility:visible!important;
+  opacity:1!important;
+  pointer-events:auto!important;
+}
+body .v612-admin-only.v612-admin-locked{
+  filter:none!important;
+  cursor:pointer!important;
+}
 .v612-tools-entry{display:block;border:0;background:none;color:#75dae7;font:inherit;font-size:13px;padding:10px 0;margin:0;cursor:pointer;text-align:left}
 /* Published media joins the page without an empty management card. */
 .liga-media-feed{background:none;border:0;border-radius:0;padding:0;margin:10px 0;max-width:none;font:inherit}
