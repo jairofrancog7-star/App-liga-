@@ -1051,3 +1051,88 @@ html body[data-app-route="moments"] .v26-moments-sticky .v26-moments-sticky-back
   z-index:5!important;
 }
 /* /V623 */
+
+
+/* V624 — MOMENTOS SEAMLESS FADE
+   Corrige la unión real: ya no hay imagen duplicada como background del header.
+   La imagen V621 se desvanece físicamente con mask hasta el mismo azul del contenido. */
+html body[data-app-route="moments"] .v26-moments-sticky,
+html body.v10-header-collapsed[data-app-route="moments"] .v26-moments-sticky{
+  background-color:#07106f!important;
+  background-image:none!important;
+  box-shadow:none!important;
+  border-bottom:0!important;
+}
+
+/* El fondo de la página usa exactamente el mismo azul de la cabecera. */
+html body[data-app-route="moments"] .v26-moments-page{
+  background:#07106f!important;
+}
+
+/* La imagen se desvanece hacia abajo, no termina con corte recto. */
+html body[data-app-route="moments"] .v26-moments-sticky .v621-moments-bg{
+  display:block!important;
+  position:absolute!important;
+  inset:0!important;
+  width:100%!important;
+  height:100%!important;
+  object-fit:fill!important;
+  object-position:center!important;
+  opacity:1!important;
+  -webkit-mask-image:linear-gradient(
+    to bottom,
+    #000 0%,
+    #000 52%,
+    rgba(0,0,0,.96) 60%,
+    rgba(0,0,0,.82) 68%,
+    rgba(0,0,0,.58) 76%,
+    rgba(0,0,0,.34) 84%,
+    rgba(0,0,0,.14) 91%,
+    rgba(0,0,0,0) 100%
+  )!important;
+  mask-image:linear-gradient(
+    to bottom,
+    #000 0%,
+    #000 52%,
+    rgba(0,0,0,.96) 60%,
+    rgba(0,0,0,.82) 68%,
+    rgba(0,0,0,.58) 76%,
+    rgba(0,0,0,.34) 84%,
+    rgba(0,0,0,.14) 91%,
+    rgba(0,0,0,0) 100%
+  )!important;
+  -webkit-mask-size:100% 100%!important;
+  mask-size:100% 100%!important;
+  -webkit-mask-repeat:no-repeat!important;
+  mask-repeat:no-repeat!important;
+}
+
+/* Refuerzo muy suave del degradado para que la orilla parezca una sola pieza. */
+html body[data-app-route="moments"] .v26-moments-sticky::after{
+  content:""!important;
+  position:absolute!important;
+  left:0!important;
+  right:0!important;
+  bottom:0!important;
+  height:48%!important;
+  z-index:2!important;
+  pointer-events:none!important;
+  background:linear-gradient(
+    to bottom,
+    rgba(7,16,111,0) 0%,
+    rgba(7,16,111,.08) 24%,
+    rgba(7,16,111,.22) 46%,
+    rgba(7,16,111,.46) 68%,
+    rgba(7,16,111,.76) 84%,
+    #07106f 100%
+  )!important;
+}
+
+/* Texto y flecha quedan totalmente limpios arriba del difuminado. */
+html body[data-app-route="moments"] .v26-moments-sticky .v561-moments-title{
+  z-index:4!important;
+}
+html body[data-app-route="moments"] .v26-moments-sticky .v26-moments-sticky-back{
+  z-index:5!important;
+}
+/* /V624 */
