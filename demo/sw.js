@@ -1,4 +1,4 @@
-const CACHE='liga-juventino-v610-more-stable-no-flash';
+const CACHE='liga-juventino-v611-v38stats-one-bar';
 const CORE=['./','./index.html','./manifest.webmanifest','./brand-neon-header.svg','./profile-reference.svg'];
 
 self.addEventListener('install',event=>{
