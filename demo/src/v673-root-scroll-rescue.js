@@ -4,7 +4,7 @@
 if(window.__LJR_V673_ROOT_SCROLL_RESCUE__)return;
 window.__LJR_V673_ROOT_SCROLL_RESCUE__=true;
 
-const ROOTS=new Set(['home','competition','more']);
+const ROOTS=new Set(['home','competition']);
 const route=()=>String(location.hash||'').replace(/^#\/?/,'').split('?')[0]||document.body?.dataset?.appRoute||'home';
 
 const LOCKS=[
@@ -44,19 +44,7 @@ function rescue(){
     imp(el,'overflow-y','visible');
     imp(el,'touch-action','auto');
   }
-  if(app)imp(app,'overflow-x','visible');
-
-  if(r==='more'){
-    const top=document.querySelector('#app > .topbar,.app-shell > .topbar');
-    imp(top,'display','block');
-    imp(top,'visibility','visible');
-    imp(top,'opacity','1');
-    imp(top,'position','sticky');
-    imp(top,'top','0');
-    imp(top,'transform','none');
-    imp(top,'z-index','2147483600');
-  }
-}
+  if(app)imp(app,'overflow-x','visible');}
 
 new MutationObserver(()=>rescue()).observe(document.documentElement,{attributes:true,subtree:true,attributeFilter:['class','data-app-route']});
 window.addEventListener('hashchange',()=>requestAnimationFrame(rescue));
