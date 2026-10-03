@@ -4173,11 +4173,10 @@ function searchResultsHtml(q){
     ['Siguiendo','following','equipos seguidos favoritos']
   ];
   if(!needle){
+    /* V631 — Buscar: quitar accesos duplicados de Equipos, Jugadores y Partidos.
+       Esos destinos ya existen arriba; conservar solamente los accesos restantes. */
     return '<section class="section">'+sectionHead('Accesos rápidos')+
       '<div class="quick-grid">'+
-        '<button data-route="teams">Equipos</button>'+
-        '<button data-route="players">Jugadores</button>'+
-        '<button data-route="competition">Partidos</button>'+
         '<button data-route="venues">Campos</button>'+
         '<button data-route="news">Noticias</button>'+
         '<button data-route="ligaQR">QR de la Liga</button>'+
