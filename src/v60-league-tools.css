@@ -2029,3 +2029,22 @@ body.v553-printing .v553-week-scroll th:nth-child(7){width:11%!important}
 [data-v553-weekly] .v567-week-team span{
   min-width:0!important;overflow:hidden!important;text-overflow:ellipsis!important
 }
+
+
+/* V611 — v38Stats usa una sola barra superior: la global de la app.
+   Evita que una versión cacheada vuelva a mostrar la segunda barra repetida. */
+body[data-app-route="v38Stats"] .v520-stats-topbar{
+  display:none!important;
+  visibility:hidden!important;
+  opacity:0!important;
+  height:0!important;
+  min-height:0!important;
+  max-height:0!important;
+  margin:0!important;
+  padding:0!important;
+  border:0!important;
+  overflow:hidden!important;
+}
+body[data-app-route="v38Stats"] .v399-stats-page{
+  padding-top:0!important;
+}
