@@ -3804,3 +3804,73 @@
     height:42px!important;
   }
 }
+
+
+/* V673 — Historia: indicadores circulares con pulso encendido/apagado. */
+@keyframes v673HistoryPowerPulse{
+  0%,100%{
+    opacity:.42;
+    filter:brightness(.78);
+    box-shadow:0 0 0 4px rgba(33,229,239,.08),0 0 7px rgba(33,229,239,.14);
+  }
+  48%,58%{
+    opacity:1;
+    filter:brightness(1.28);
+    box-shadow:0 0 0 6px rgba(33,229,239,.16),0 0 22px rgba(33,229,239,.78);
+  }
+}
+@keyframes v673HistoryPlayPulse{
+  0%,100%{
+    filter:brightness(.82);
+    box-shadow:0 5px 13px rgba(13,109,214,.18);
+  }
+  50%{
+    filter:brightness(1.18);
+    box-shadow:0 0 0 4px rgba(36,225,241,.10),0 8px 22px rgba(21,173,231,.42);
+  }
+}
+
+@media(max-width:1023px){
+  body[data-app-route="history"] .v35-history-page .v35-timeline-list article:after{
+    animation:v673HistoryPowerPulse 1.85s ease-in-out infinite!important;
+    transform-origin:center!important;
+    will-change:opacity,filter,box-shadow!important;
+  }
+  body[data-app-route="history"] .v35-history-page .v35-timeline-list article:nth-child(2n):after{
+    animation-delay:.28s!important;
+  }
+  body[data-app-route="history"] .v35-history-page .v35-timeline-list article:nth-child(3n):after{
+    animation-delay:.56s!important;
+  }
+
+  body[data-app-route="history"] .v35-history-page .v35-history-source-card.is-link .v35-history-source-icon{
+    animation:v673HistoryPlayPulse 2.15s ease-in-out infinite!important;
+    will-change:filter,box-shadow!important;
+  }
+
+  body[data-app-route="history"] .v35-history-page .v672-date-button{
+    position:relative!important;
+    padding-left:25px!important;
+  }
+  body[data-app-route="history"] .v35-history-page .v672-date-button:before{
+    content:""!important;
+    position:absolute!important;
+    left:10px!important;
+    top:50%!important;
+    width:7px!important;
+    height:7px!important;
+    margin-top:-3.5px!important;
+    border-radius:50%!important;
+    background:#2be7f2!important;
+    animation:v673HistoryPowerPulse 1.85s ease-in-out infinite!important;
+    pointer-events:none!important;
+  }
+}
+
+@media(prefers-reduced-motion:reduce){
+  body[data-app-route="history"] .v35-history-page .v35-timeline-list article:after,
+  body[data-app-route="history"] .v35-history-page .v35-history-source-card.is-link .v35-history-source-icon,
+  body[data-app-route="history"] .v35-history-page .v672-date-button:before{
+    animation:none!important;
+  }
+}
