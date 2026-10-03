@@ -2116,3 +2116,80 @@ body[data-app-route="competition"] #v422-results-reference{
     padding-right:12px!important;
   }
 }
+
+
+/* V647 — Ranking: equipo = escudo grande una sola vez; jugador = foto + escudo de su equipo. */
+#v449-reference-lower .v458-rank-team-media{
+  display:grid!important;
+  place-items:center!important;
+  overflow:hidden!important;
+  background:linear-gradient(180deg,#0b3b81,#081f49)!important;
+}
+#v449-reference-lower .v458-rank-team-media .v449-crest.rankentry{
+  display:grid!important;
+  place-items:center!important;
+  margin:0!important;
+  padding:0!important;
+  border:0!important;
+  background:transparent!important;
+  box-shadow:none!important;
+}
+#v449-reference-lower .v458-rank-team-media .v449-crest.rankentry img{
+  width:100%!important;
+  height:100%!important;
+  object-fit:contain!important;
+}
+
+/* Equipo líder: aprovechar el espacio grande para el escudo, no dejarlo diminuto. */
+#v449-reference-lower .v458-rank-card.is-team-top .v458-rank-team-media.feature{
+  width:126px!important;
+  height:145px!important;
+  border-radius:14px 14px 4px 4px!important;
+}
+#v449-reference-lower .v458-rank-card.is-team-top .v458-rank-team-media.feature .v449-crest.rankentry{
+  width:104px!important;
+  height:104px!important;
+  flex:0 0 104px!important;
+}
+
+/* Filas que representan equipos: un único escudo grande a la izquierda. */
+#v449-reference-lower .v458-rank-row.is-team-entry .v458-rank-team-media.rankrow{
+  width:48px!important;
+  height:48px!important;
+  border-radius:9px!important;
+}
+#v449-reference-lower .v458-rank-row.is-team-entry .v458-rank-team-media.rankrow .v449-crest.rankentry{
+  width:42px!important;
+  height:42px!important;
+  flex:0 0 42px!important;
+}
+
+/* Si la fila es equipo, debajo del nombre sólo va la categoría: no repetir el escudo.
+   Si es jugador, se conserva foto/cara y el escudo pequeño de su equipo. */
+#v449-reference-lower .v458-team-entry-meta{
+  display:flex!important;
+  align-items:center!important;
+  min-height:20px!important;
+  color:#9eb0c8!important;
+  font-size:7.5px!important;
+}
+#v449-reference-lower .v458-rank-row.is-team-entry .v458-rank-person small .v449-crest,
+#v449-reference-lower .v458-rank-card.is-team-top .v458-hero-meta small .v449-crest{
+  display:none!important;
+}
+
+@media(max-width:390px){
+  #v449-reference-lower .v458-rank-card.is-team-top .v458-rank-team-media.feature{
+    width:116px!important;
+    height:136px!important;
+  }
+  #v449-reference-lower .v458-rank-card.is-team-top .v458-rank-team-media.feature .v449-crest.rankentry{
+    width:96px!important;
+    height:96px!important;
+    flex-basis:96px!important;
+  }
+  #v449-reference-lower .v458-rank-row.is-team-entry .v458-rank-team-media.rankrow{
+    width:48px!important;
+    height:48px!important;
+  }
+}
