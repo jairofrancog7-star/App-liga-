@@ -414,9 +414,66 @@ function meeting(){
 }
 
 function poll(){
- const p=read('v105-poll',{si:0,no:0,despues:0});
- const m=modal('Encuesta de la Liga','Participación local en este dispositivo; no es una votación oficial.','<div class="v105-grid"><button class="v105-card" data-v="si"><span class="v105-icon">'+icon('shield')+'</span><span class="v105-copy"><b>Sí</b><small>'+p.si+' votos locales</small></span><span class="v105-arrow">›</span></button><button class="v105-card" data-v="no"><span class="v105-icon">'+icon('alert')+'</span><span class="v105-copy"><b>No</b><small>'+p.no+' votos locales</small></span><span class="v105-arrow">›</span></button><button class="v105-card" data-v="despues"><span class="v105-icon">'+icon('calendar')+'</span><span class="v105-copy"><b>Revisar después</b><small>'+p.despues+' votos locales</small></span><span class="v105-arrow">›</span></button></div>');
- $$('[data-v]',m).forEach(b=>b.onclick=()=>{p[b.dataset.v]=(p[b.dataset.v]||0)+1;write('v105-poll',p);log('Encuesta '+b.dataset.v);b.querySelector('small').textContent=p[b.dataset.v]+' votos locales'});
+ const choices=[
+  ['organizacion','shield','Organización y avisos','Juntas, comunicados y cambios de última hora'],
+  ['campos','field','Campos y sedes','Condiciones físicas, suspensión y mantenimiento'],
+  ['arbitraje','ref','Arbitraje y disciplina','Árbitros, tarjetas, incidencias y sanciones'],
+  ['horarios','calendar','Horarios y jornadas','Programación, reprogramaciones y puntualidad'],
+  ['estadisticas','stats','Resultados y estadísticas','Tablas, goleo, cédulas y datos oficiales'],
+  ['app','video','App y transmisiones','Match Center, videos, notificaciones y contenido'],
+  ['todo','shield','Todo va bien','Mantener el funcionamiento actual'],
+  ['revisar','calendar','Revisar después','Responder en otro momento']
+ ];
+ const empty=Object.fromEntries(choices.map(x=>[x[0],0]));
+ const p=read('v105-poll-v2',{choice:'',counts:empty});
+ p.counts={...empty,...(p.counts||{})};
+ const total=()=>Object.values(p.counts).reduce((a,b)=>a+(Number(b)||0),0);
+ const cards=()=>choices.map(x=>
+   '<button class="v105-card '+(p.choice===x[0]?'is-selected':'')+'" data-v105-poll-choice="'+x[0]+'" aria-pressed="'+(p.choice===x[0]?'true':'false')+'">'+
+     '<span class="v105-icon">'+icon(x[1])+'</span>'+
+     '<span class="v105-copy"><b>'+esc(x[2])+'</b><small>'+esc(x[3])+' · <span data-v105-poll-count="'+x[0]+'">'+Number(p.counts[x[0]]||0)+'</span> respuestas</small></span>'+
+     '<span class="v105-arrow">›</span>'+
+   '</button>'
+ ).join('');
+ const m=modal(
+   'Encuesta de la Liga',
+   'Participación local en este dispositivo; no es una votación oficial.',
+   '<div class="v105-poll-intro">'+
+     '<small>PULSO DE LA LIGA</small>'+
+     '<b>¿Qué área debería mejorar primero la Liga?</b>'+
+     '<p>Elige una prioridad. Puedes cambiar tu respuesta después sin duplicar el voto.</p>'+
+     '<div class="v105-poll-meta"><span>Temas: organización · campos · arbitraje · horarios · estadísticas · app</span><strong data-v105-poll-total>'+total()+' respuestas locales</strong></div>'+
+   '</div>'+
+   '<div class="v105-grid v105-poll-grid">'+cards()+'</div>'+
+   '<p class="v105-poll-status" data-v105-poll-status>'+(p.choice?'Tu prioridad guardada: '+esc((choices.find(x=>x[0]===p.choice)||[])[2]||''):'Aún no has elegido una prioridad.')+'</p>'
+ );
+ m.classList.add('v105-poll-modal');
+ const render=()=>{
+   $('[data-v105-poll-choice]',m).forEach(b=>{
+     const key=b.dataset.v105PollChoice;
+     b.classList.toggle('is-selected',p.choice===key);
+     b.setAttribute('aria-pressed',p.choice===key?'true':'false');
+     const n=$('[data-v105-poll-count="'+key+'"]',b);
+     if(n)n.textContent=Number(p.counts[key]||0);
+   });
+   const t=$('[data-v105-poll-total]',m);if(t)t.textContent=total()+' respuestas locales';
+   const s=$('[data-v105-poll-status]',m);
+   if(s){
+     const item=choices.find(x=>x[0]===p.choice);
+     s.textContent=item?'Tu prioridad guardada: '+item[2]:'Aún no has elegido una prioridad.';
+   }
+ };
+ $('[data-v105-poll-choice]',m).forEach(b=>b.onclick=()=>{
+   const next=b.dataset.v105PollChoice;
+   if(p.choice===next)return toast('Esa prioridad ya está guardada');
+   if(p.choice&&p.counts[p.choice]>0)p.counts[p.choice]-=1;
+   p.choice=next;
+   p.counts[next]=(Number(p.counts[next])||0)+1;
+   write('v105-poll-v2',p);
+   log('Encuesta prioridad '+next);
+   render();
+   toast(next==='revisar'?'Guardado para revisar después':'Prioridad guardada');
+ });
 }
 function fanzone(){
  const api=window.LJR_FAN_ZONE_ONE_VOTE;
