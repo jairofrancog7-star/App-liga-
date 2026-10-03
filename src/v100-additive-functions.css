@@ -1158,3 +1158,38 @@ body[data-app-route="credentialBuilder"] .v196-preview-head em{
   .v100-install-copy{grid-column:2;grid-row:1}
   .v100-install-option .v100-primary,.v100-install-option .v100-secondary{grid-column:1/-1}
 }
+
+
+/* V673 — install modal safe-area + direct links */
+.v100-modal.v100-install-modal{
+  z-index:2147483000!important;
+  overflow-y:auto!important;
+  overscroll-behavior:contain;
+  padding:
+    max(12px,env(safe-area-inset-top))
+    12px
+    max(18px,env(safe-area-inset-bottom))!important;
+}
+.v100-modal.v100-install-modal .v100-modal-card{
+  max-height:calc(100dvh - 28px - env(safe-area-inset-top) - env(safe-area-inset-bottom))!important;
+  padding-bottom:calc(28px + env(safe-area-inset-bottom))!important;
+  scroll-padding-bottom:calc(34px + env(safe-area-inset-bottom));
+}
+.v100-install-link{
+  display:flex!important;
+  align-items:center;
+  justify-content:center;
+  text-decoration:none!important;
+  box-sizing:border-box;
+}
+@media(max-width:620px){
+  .v100-modal.v100-install-modal{
+    place-items:start center!important;
+  }
+  .v100-modal.v100-install-modal .v100-modal-card{
+    width:100%!important;
+    max-height:calc(100dvh - 24px - env(safe-area-inset-top) - env(safe-area-inset-bottom))!important;
+    margin:0!important;
+  }
+  .v100-install-footnote{padding-bottom:8px}
+}
