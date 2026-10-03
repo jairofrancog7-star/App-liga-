@@ -21,8 +21,6 @@ const FAN_STORE='lj-fanzone-one-vote-v157';
 const FAN_KEYS=['fire','goal','clap','heart'];
 const V190_RECRUIT_KEY='v189-recruitment';
 const V190_RECRUIT_CAMPAIGN_KEY='v190-recruit-campaign';
-const V190_RECRUIT_WA='524121715599';
-const V190_RECRUIT_WA_LABEL='412 171 5599';
 const V198_LEAGUE_LOGO='data:image/png;base64,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';
 function fanHash(v){
   let h=2166136261;
@@ -1886,10 +1884,12 @@ function v190RecruitPositionOptions(selected=''){
 }
 function v190RecruitCampaign(){
   const x=read(V190_RECRUIT_CAMPAIGN_KEY,{})||{};
+  const oldDefault='Abrimos espacio para equipos nuevos y jugadores que quieran integrarse a la Liga Municipal de Fútbol Juventino Rosas A.C.';
+  const freshDefault='¿Tienes un equipo o buscas dónde jugar? La Liga Municipal de Fútbol Juventino Rosas A.C. abre espacio para nuevos equipos y jugadores. Acude a las juntas de la Liga los martes en la Unidad Deportiva Sur para conocer requisitos, registro y proceso de ingreso.';
   return {
     kind:x.kind||'both',
-    title:x.title||'Reclutamiento Liga Juventino Rosas',
-    message:x.message||'Abrimos espacio para equipos nuevos y jugadores que quieran integrarse a la Liga Municipal de Fútbol Juventino Rosas A.C.'
+    title:(!x.title||x.title==='Reclutamiento Liga Juventino Rosas')?'¡Únete a la Liga!':x.title,
+    message:(!x.message||x.message===oldDefault)?freshDefault:x.message
   };
 }
 function v190RecruitKindLabel(kind){
@@ -1911,7 +1911,7 @@ function v190RecruitRows(){
 function v190RecruitPage(){
   const data=v190RecruitData(),campaign=v190RecruitCampaign();
   return '<section class="v100-block v190-recruit-page" id="v190-recruitment-page">'+
-    sectionTitle('RECLUTAMIENTO','Equipos nuevos y jugadores nuevos','Herramienta para registrar interesados, preparar una convocatoria PNG y compartirla por WhatsApp o Facebook.')+
+    sectionTitle('RECLUTAMIENTO','Equipos nuevos y jugadores nuevos','Registra interesados y genera una convocatoria profesional en PNG para descargar o compartir en redes.')+
     '<div class="v190-recruit-summary"><span><b>'+data.teams.length+'</b><small>Equipos interesados</small></span><span><b>'+data.players.length+'</b><small>Jugadores interesados</small></span></div>'+
     '<div class="v190-recruit-forms">'+
       '<form class="v190-recruit-card" data-v190-team-form>'+
@@ -1949,10 +1949,9 @@ function v190RecruitPage(){
         '<button type="button" class="primary" data-v190-preview-png>Vista previa PNG</button>'+
         '<button type="button" data-v190-download-png>Descargar PNG</button>'+
         '<button type="button" data-v190-share-png>Compartir PNG</button>'+
-        '<button type="button" class="whatsapp" data-v190-whatsapp>WhatsApp '+V190_RECRUIT_WA_LABEL+'</button>'+
         '<button type="button" class="facebook" data-v190-facebook>Facebook</button>'+
       '</div>'+
-      '<p class="v190-share-note">WhatsApp abre el chat directo al '+V190_RECRUIT_WA_LABEL+'. Para adjuntar la imagen usa “Compartir PNG” y elige WhatsApp. En Facebook, cuando Android permite compartir archivos, se envía el PNG mediante el selector del sistema; si no, se abre Facebook y se copia el texto.</p>'+
+      '<p class="v190-share-note">La convocatoria no muestra números telefónicos. Para informes indica las juntas de los martes en la Unidad Deportiva Sur y la página oficial juventinorosasliga.com.</p>'+
     '</section>'+
     '<section class="v190-saved"><header><small>PROSPECTOS GUARDADOS</small><h3>Seguimiento de reclutamiento</h3></header>'+v190RecruitRows()+'</section>'+
     '<p class="v100-note">Los nombres, contactos y prospectos se guardan sólo en este dispositivo. No se suben al repositorio público.</p>'+
@@ -1969,34 +1968,65 @@ function v190RecruitCampaignFromUi(root){
 }
 function v190RecruitShareText(root){
   const c=v190RecruitCampaignFromUi(root);
-  return c.title+'\n'+v190RecruitKindLabel(c.kind)+'\n\n'+c.message+'\n\nInformes por WhatsApp: '+V190_RECRUIT_WA_LABEL+'\nLiga Municipal de Fútbol Juventino Rosas A.C.';
+  return c.title+'\n'+v190RecruitKindLabel(c.kind)+'\n\n'+c.message+'\n\nJuntas de la Liga: martes · Unidad Deportiva Sur\nInformación oficial: https://www.juventinorosasliga.com/\nLiga Municipal de Fútbol Juventino Rosas A.C.';
 }
 async function v190RecruitGeneratedBlob(root){
   const cdata=v190RecruitCampaignFromUi(root);
   const c=document.createElement('canvas');c.width=1080;c.height=1350;
   const x=c.getContext('2d');
-  const g=x.createLinearGradient(0,0,1080,1350);g.addColorStop(0,'#03096a');g.addColorStop(.54,'#0a2ca0');g.addColorStop(1,'#02064d');
+
+  // Fondo institucional con profundidad y una franja de luz.
+  const g=x.createLinearGradient(0,0,1080,1350);
+  g.addColorStop(0,'#02075a');g.addColorStop(.42,'#0b2494');g.addColorStop(1,'#030744');
   x.fillStyle=g;x.fillRect(0,0,c.width,c.height);
-  x.strokeStyle='#24dfea';x.lineWidth=5;x.strokeRect(48,48,984,1254);
+  const glow=x.createRadialGradient(930,130,20,930,130,520);
+  glow.addColorStop(0,'rgba(26,194,255,.28)');glow.addColorStop(1,'rgba(26,194,255,0)');
+  x.fillStyle=glow;x.fillRect(0,0,c.width,c.height);
+  x.strokeStyle='#3be7f2';x.lineWidth=5;x.strokeRect(42,42,996,1266);
+
   const league=await v200LeagueLogoTransparent();
-  if(league){x.save();x.globalAlpha=.98;x.drawImage(league,74,76,132,132);x.restore()}
-  x.fillStyle='#5cecf3';x.font='900 24px Arial';x.fillText('LIGA MUNICIPAL DE FÚTBOL · JUVENTINO ROSAS A.C.',235,112);
-  x.fillStyle='rgba(255,255,255,.76)';x.font='700 20px Arial';x.fillText('MÁS HERRAMIENTAS · RECLUTAMIENTO',235,150);
-  x.fillStyle='#fff';x.font='900 62px Arial';x.fillText('RECLUTAMIENTO',74,292);
-  x.fillStyle='#5cecf3';x.font='900 31px Arial';x.fillText(v190RecruitKindLabel(cdata.kind),76,344);
-  x.fillStyle='rgba(255,255,255,.08)';x.fillRect(72,390,936,430);
-  x.strokeStyle='rgba(92,236,243,.35)';x.lineWidth=2;x.strokeRect(72,390,936,430);
-  x.fillStyle='#fff';x.font='800 34px Arial';
-  wrapText(x,cdata.title,108,468,860,48,4);
-  x.fillStyle='rgba(235,241,255,.92)';x.font='600 29px Arial';
-  wrapText(x,cdata.message,108,600,860,43,6);
-  x.fillStyle='#5cecf3';x.font='900 21px Arial';x.fillText('CATEGORÍAS',78,900);
-  x.fillStyle='#fff';x.font='700 25px Arial';
-  wrapText(x,v190RecruitCategories().join(' · '),78,946,920,38,4);
-  x.fillStyle='rgba(0,0,0,.24)';x.fillRect(72,1090,936,150);
-  x.fillStyle='#5cecf3';x.font='900 24px Arial';x.fillText('INFORMES / WHATSAPP',106,1140);
-  x.fillStyle='#fff';x.font='900 48px Arial';x.fillText(V190_RECRUIT_WA_LABEL,106,1200);
-  x.fillStyle='rgba(255,255,255,.68)';x.font='20px Arial';x.fillText('Generado desde la app oficial de la Liga',76,1280);
+  if(league){x.save();x.globalAlpha=1;x.drawImage(league,72,70,132,132);x.restore()}
+
+  // Encabezado oficial.
+  x.fillStyle='#66f1f5';x.font='900 25px Arial';
+  x.fillText('LIGA MUNICIPAL DE FÚTBOL · JUVENTINO ROSAS A.C.',232,106);
+  x.fillStyle='rgba(255,255,255,.78)';x.font='800 20px Arial';
+  x.fillText('CONVOCATORIA OFICIAL · TEMPORADA 2026–2027',232,145);
+
+  // Titular más grande y con jerarquía clara.
+  x.fillStyle='#fff';x.font='900 66px Arial';
+  x.fillText('¡ÚNETE A LA LIGA!',72,282);
+  x.fillStyle='#61eef4';x.font='900 31px Arial';
+  x.fillText(v190RecruitKindLabel(cdata.kind),74,334);
+
+  // Bloque principal de invitación.
+  x.fillStyle='rgba(255,255,255,.075)';x.fillRect(72,378,936,330);
+  x.strokeStyle='rgba(97,238,244,.48)';x.lineWidth=2;x.strokeRect(72,378,936,330);
+  x.fillStyle='#fff';x.font='900 38px Arial';
+  wrapText(x,cdata.title,108,448,860,49,3);
+  x.fillStyle='rgba(244,247,255,.96)';x.font='700 31px Arial';
+  wrapText(x,cdata.message,108,548,860,44,5);
+
+  // Categorías.
+  x.fillStyle='#61eef4';x.font='900 24px Arial';x.fillText('CATEGORÍAS ABIERTAS',76,770);
+  x.fillStyle='#fff';x.font='800 29px Arial';
+  wrapText(x,v190RecruitCategories().join('  ·  '),76,818,920,41,3);
+
+  // Información presencial: sin teléfono.
+  x.fillStyle='rgba(0,0,0,.27)';x.fillRect(72,900,936,220);
+  x.strokeStyle='rgba(97,238,244,.32)';x.strokeRect(72,900,936,220);
+  x.fillStyle='#61eef4';x.font='900 24px Arial';x.fillText('INFORMACIÓN Y REGISTRO',108,950);
+  x.fillStyle='#fff';x.font='900 35px Arial';x.fillText('JUNTAS DE LA LIGA · TODOS LOS MARTES',108,1002);
+  x.fillStyle='rgba(244,247,255,.94)';x.font='800 29px Arial';x.fillText('Unidad Deportiva Sur · Juventino Rosas, Gto.',108,1050);
+  x.fillStyle='rgba(226,234,255,.90)';x.font='700 23px Arial';
+  wrapText(x,'Acude personalmente para conocer requisitos, registro, categorías y proceso de ingreso.',108,1090,850,31,2);
+
+  // Página oficial como contacto principal.
+  x.fillStyle='#61eef4';x.font='900 22px Arial';x.fillText('PÁGINA OFICIAL',78,1180);
+  x.fillStyle='#fff';x.font='900 33px Arial';x.fillText('www.juventinorosasliga.com',78,1228);
+  x.fillStyle='rgba(255,255,255,.68)';x.font='20px Arial';
+  x.fillText('Consulta categorías, jornadas, resultados y avisos oficiales.',78,1270);
+
   return canvasBlob(c);
 }
 async function v190RecruitShareBlob(root){
@@ -2062,10 +2092,6 @@ function v190BindRecruitment(root){
   $('[data-v190-share-png]',root)?.addEventListener('click',async()=>{
     const b=await v190RecruitShareBlob(root);if(!b)return;
     try{await fileShare(b,'Reclutamiento_Liga_Juventino.png','Reclutamiento Liga Juventino')}catch(e){}
-  });
-  $('[data-v190-whatsapp]',root)?.addEventListener('click',()=>{
-    const text=v190RecruitShareText(root);
-    window.open('https://wa.me/'+V190_RECRUIT_WA+'?text='+encodeURIComponent(text),'_blank','noopener,noreferrer');
   });
   $('[data-v190-facebook]',root)?.addEventListener('click',async()=>{
     const text=v190RecruitShareText(root),b=await v190RecruitShareBlob(root);
