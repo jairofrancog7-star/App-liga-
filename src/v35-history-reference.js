@@ -1392,15 +1392,15 @@ function refereeTravelBlock(){
 }
 
 function historyArchiveBlock(){
-  return '<section class="v35-block v35-history-archive">'+
+  /* V670 — RESUMEN tiene contenido propio.
+     Aquí sólo vive la línea del tiempo general, identidad, fuentes y formato.
+     Campeones, Finales, Temporadas y equipos del archivo se muestran únicamente
+     en sus pestañas correspondientes para evitar duplicados entre secciones. */
+  return '<section class="v35-block v35-history-archive v670-summary-only">'+
     historicalTimelineBlock()+
-    taggedFacebookBlock()+
     institutionalHistoryBlock()+
+    taggedFacebookBlock()+
     competitionFormatBlock()+
-    historyMomentCards()+
-    '<div class="v35-history-subhead"><span>EQUIPOS PARA EL RECUERDO</span><h3>Clubes y nombres del archivo</h3><p>Estos registros históricos no alteran la lista de equipos de la temporada actual.</p></div>'+
-    retroClubCards()+
-    verifiedHistoryBlocks()+
   '</section>';
 }
 function historyChampionKey(x){
@@ -1472,7 +1472,7 @@ function championsArchiveBlock(){
   }
 
   return '<section class="v35-block v35-history-archive v35-history-archive-compact">'+
-    '<div class="v35-history-archive-head"><span>PALMARÉS HISTÓRICO</span><h2>Campeones documentados</h2><p>Los campeones que aparecen en Resumen también aparecen aquí una sola vez, con su fecha, campeonato/categoría documentados y la fotografía exacta cuando existe.</p></div>'+
+    '<div class="v35-history-archive-head"><span>PALMARÉS HISTÓRICO</span><h2>Campeones documentados</h2><p>Esta pestaña concentra el palmarés: cada campeón se muestra aquí una sola vez, con su fecha, campeonato/categoría documentados y la fotografía exacta cuando existe.</p></div>'+
     '<div class="v35-history-moments">'+rows.map(historyMomentCard).join('')+'</div>'+
   '</section>';
 }
@@ -1644,7 +1644,7 @@ function v348ArchiveHtml(kind){
   if(v348ArchiveCache[kind]!=null)return v348ArchiveCache[kind];
   let html='';
   if(kind==='summary')html=historyArchiveBlock()+stats();
-  else if(kind==='seasons')html=historyArchiveBlock();
+  else if(kind==='seasons')html='';
   else if(kind==='champions')html=championsArchiveBlock();
   else if(kind==='finals')html=finalsArchiveBlock();
   v348ArchiveCache[kind]=html;
@@ -1884,8 +1884,7 @@ function seasonsBody(){
   return '<div class="v359-deferred-shell" data-v359-deferred="seasons" aria-busy="true"><span class="v359-deferred-dot" aria-hidden="true"></span></div>'+
     '<section class="v35-block v35-tab-body v35-seasons-legacy"><div class="v35-section-row"><h2>Archivo histórico completo</h2></div>'+
     '<div class="v35-season-detail"><span>Archivo histórico</span><h3>Temporadas anteriores separadas de la actual</h3><p>Los equipos antiguos pueden aparecer aquí como parte de su temporada histórica, pero nunca se agregan otra vez a la lista de equipos actuales si ya no participan.</p></div>'+
-    '<div class="v35-season-detail"><span>Convocatoria · 12 nov 2019</span><h3>Temporada 2019–2020</h3><p><b>Inicio:</b> domingo 8 de diciembre de 2019. <b>Fuerzas:</b> Primera, Intermedia y Segunda. <b>Inscripciones:</b> hasta el martes 26 de noviembre, 19:00, Unidad Deportiva Sur. <b>Registro:</b> digital o físico, máximo 26 jugadores. <b>Junta previa:</b> martes 3 de diciembre, 19:00. Uniformación, cuotas, arbitrajes, credenciales, reglamento, premiación y transitorios se resolverían conforme al reglamento y a los acuerdos de asamblea.</p></div></section>'+
-    '<div class="v35-history-lazy" data-v35-lazy-history="seasons" aria-busy="true"></div>';
+    '<div class="v35-season-detail"><span>Convocatoria · 12 nov 2019</span><h3>Temporada 2019–2020</h3><p><b>Inicio:</b> domingo 8 de diciembre de 2019. <b>Fuerzas:</b> Primera, Intermedia y Segunda. <b>Inscripciones:</b> hasta el martes 26 de noviembre, 19:00, Unidad Deportiva Sur. <b>Registro:</b> digital o físico, máximo 26 jugadores. <b>Junta previa:</b> martes 3 de diciembre, 19:00. Uniformación, cuotas, arbitrajes, credenciales, reglamento, premiación y transitorios se resolverían conforme al reglamento y a los acuerdos de asamblea.</p></div></section>';
 }
 /* V340 — Historia > Campeones: ranking visual superior según referencia del usuario.
    Conserva TODO el archivo histórico anterior debajo y calcula los títulos desde
@@ -2136,6 +2135,36 @@ function finalsBody(){
     '<div class="v35-season-detail"><h3>Finales históricas documentadas</h3><p>Se muestran únicamente las finales, series y clásicos que aparecen en el material histórico revisado.</p></div></section>'+
     finalsArchiveBlock();
 }
+function v370HistoryTeamInitials(name){
+  return String(name||'JR').replace(/[^A-Za-zÁÉÍÓÚÜÑáéíóúüñ0-9 ]+/g,' ').trim()
+    .split(/\s+/).filter(Boolean).slice(0,2).map(x=>x[0]||'').join('').toUpperCase()||'JR';
+}
+function v370HistoryTeamLogo(name){
+  try{
+    const official=window.LJR_OFFICIAL_API?.getLogo?.(name)||window.LJR_TEAM_LOGOS?.get?.(name)||'';
+    if(official)return official;
+  }catch(_){}
+  try{return v340ChampionLogo(name,'')||'';}catch(_){return ''}
+}
+function v370ArchiveTeamsBlock(){
+  const names=expandedRetroNames.concat(retroNames).filter((x,i,a)=>a.indexOf(x)===i);
+  return '<section class="v370-legacy-clubs" aria-label="Equipos que han formado parte de la Liga">'+
+    '<header class="v370-legacy-head">'+
+      '<span class="v370-legacy-kicker">MEMORIA DE CLUBES</span>'+
+      '<h3>Equipos que han formado parte de nuestra Liga</h3>'+
+      '<p>Nombres recuperados de tablas, roles, álbumes y publicaciones. Cada club queda conservado como parte de la memoria futbolística de Juventino Rosas.</p>'+
+      '<div class="v370-legacy-count"><b>'+names.length+'</b><span>nombres conservados en el archivo</span></div>'+
+    '</header>'+
+    '<div class="v370-legacy-grid">'+names.map((name,i)=>{const logo=v370HistoryTeamLogo(name);return '<article class="v370-legacy-team">'+
+      '<span class="v370-legacy-no">'+String(i+1).padStart(2,'0')+'</span>'+
+      '<span class="v370-legacy-crest '+(logo?'':'is-fallback')+'">'+
+        (logo?'<img src="'+esc(logo)+'" alt="'+esc(name)+'" loading="lazy" decoding="async" onerror="this.parentElement.classList.add(\'is-fallback\');this.remove()">':'<b>'+esc(v370HistoryTeamInitials(name))+'</b>')+
+      '</span>'+
+      '<span class="v370-legacy-copy"><small>REGISTRO EN EL ARCHIVO</small><strong>'+esc(name)+'</strong></span>'+
+      '<span class="v370-legacy-seal" aria-hidden="true">JR</span>'+
+    '</article>';}).join('')+'</div>'+
+  '</section>';
+}
 function recordsBody(){
   return '<section class="v35-block v35-tab-body v35-records-body"><h2 class="v35-section-title">Récords y recuerdos</h2>'+
     '<article class="v35-stat-card"><h3>Archivo comprobado</h3><p>Esta sección reúne marcas visibles en tablas históricas y recuerdos documentados en fotografías, álbumes y videos. Un corte de jornada no se presenta como récord absoluto de toda la Liga.</p></article>'+
@@ -2143,8 +2172,7 @@ function recordsBody(){
       (r.image?'<img src="'+r.image+'" alt="" loading="lazy" decoding="async">':'<span class="v35-record-mark">LM</span>')+
       '<div><small>'+esc(r.tag)+'</small><h3>'+esc(r.title)+'</h3><strong>'+esc(r.value)+'</strong><p>'+esc(r.detail)+'</p></div></article>').join('')+'</div>'+
     '<div class="v35-records-goals-anchor">'+historicalGoalsBlock()+'</div>'+
-    '<div class="v35-history-subhead"><span>EQUIPOS DEL ARCHIVO</span><h3>Nombres recuperados de tablas, roles y álbumes</h3></div>'+
-    '<div class="v35-retro-names">'+expandedRetroNames.concat(retroNames).filter((x,i,a)=>a.indexOf(x)===i).map(n=>'<span>'+esc(n)+'</span>').join('')+'</div>'+
+    v370ArchiveTeamsBlock()+
   '</section>';
 }
 function videosBody(){
