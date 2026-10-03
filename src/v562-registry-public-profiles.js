@@ -4,6 +4,8 @@
 'use strict';
 if(window.__LJR_V562_REGISTRY__)return;
 window.__LJR_V562_REGISTRY__=true;
+/* V625 — un solo renderizador para #/players. Evita el ping-pong visual con V66. */
+window.__LJR_PLAYER_DIRECTORY_OWNER__='v562-registry';
 
 const REMOTE='https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/data/official-live.json';
 const LOCAL='./data/official-live.json?v=20261002-v575-registry-positions-photos';
@@ -14,6 +16,7 @@ window.LJR_V562_HERMANOS={img:HERMANOS_SPRITE,cols:6,rows:5,w:38,h:46,players:nu
 let db=null,active=localStorage.getItem('v562-reg-cat')||'3',team=localStorage.getItem('v562-reg-team')||'all',query='';
 
 const route=()=>String(location.hash||'').replace(/^#\/?/,'').split('?')[0]||'home';
+const ownsPlayers=()=>window.__LJR_PLAYER_DIRECTORY_OWNER__==='v562-registry';
 const root=()=>document.querySelector('#screen');
 const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const norm=v=>String(v??'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[^a-z0-9]+/g,' ').trim().replace(/\s+/g,' ');
@@ -108,7 +111,7 @@ function teamOptions(){
  return '<option value="all">Todos los equipos</option>'+[...seen.values()].sort((a,b)=>a.localeCompare(b,'es',{sensitivity:'base'})).map(n=>'<option value="'+esc(n)+'" '+(norm(n)===norm(team)?'selected':'')+'>'+esc(n)+'</option>').join('');
 }
 function render(){
- if(route()!=='players'||!db)return;
+ if(route()!=='players'||!db||!ownsPlayers())return;
  const host=root();if(!host)return;
  const groups=allGroups(),total=groups.reduce((n,g)=>n+g.players.length,0);
  host.innerHTML='<section class="v562-registry" data-v562-registry>'+
@@ -156,10 +159,10 @@ function enhanceTeamRoster(){
 async function sync(){
  if(!['players','teamDetail'].includes(route()))return;
  await load();
- if(route()==='players')render();else setTimeout(enhanceTeamRoster,30);
+ if(route()==='players'){if(ownsPlayers())render()}else setTimeout(enhanceTeamRoster,30);
 }
 window.addEventListener('hashchange',()=>setTimeout(sync,0));
-window.addEventListener('ljr:official-data',()=>{db=newer(db,window.LJR_OFFICIAL_DATA);if(route()==='players')render();else enhanceTeamRoster()});
-const host=root();if(host)new MutationObserver(()=>{if(route()==='players'&&!host.querySelector('[data-v562-registry]'))setTimeout(sync,0);if(route()==='teamDetail')setTimeout(enhanceTeamRoster,0)}).observe(host,{childList:true,subtree:true});
+window.addEventListener('ljr:official-data',()=>{db=newer(db,window.LJR_OFFICIAL_DATA);if(route()==='players'){if(ownsPlayers())render()}else enhanceTeamRoster()});
+const host=root();if(host)new MutationObserver(()=>{if(route()==='players'&&ownsPlayers()&&!host.querySelector('[data-v562-registry]'))setTimeout(sync,0);if(route()==='teamDetail')setTimeout(enhanceTeamRoster,0)}).observe(host,{childList:true,subtree:true});
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',sync,{once:true});else sync();
 })();
