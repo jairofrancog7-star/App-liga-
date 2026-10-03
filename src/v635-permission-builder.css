@@ -381,3 +381,41 @@ body.v635-team-picker-open{overflow:hidden!important}
   .v635-team-option{grid-template-columns:34px minmax(0,1fr)}
   .v635-team-option>small{display:none}
 }
+
+
+/* V678 — Selector de jugador debajo de equipo + contexto visual. */
+.v635-player-field>small{
+  display:block;
+  margin-top:1px;
+  color:#7fdfea!important;
+  font-size:7.5px!important;
+  font-weight:800;
+}
+.v635-player-select{
+  width:100%;
+}
+.v635-player-context{
+  display:grid;
+  gap:3px;
+  padding:9px 10px;
+  border:1px solid rgba(36,224,236,.22);
+  border-radius:11px;
+  background:rgba(9,13,101,.72);
+}
+.v635-player-context small{
+  color:#24e0ec;
+  font-size:7px;
+  font-weight:950;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+}
+.v635-player-context b{
+  color:#fff;
+  font-size:10px;
+  overflow:hidden;
+  white-space:nowrap;
+  text-overflow:ellipsis;
+}
+.v635-player-option>span{
+  border-color:rgba(126,223,234,.56);
+}
