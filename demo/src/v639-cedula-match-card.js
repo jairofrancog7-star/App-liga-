@@ -40,17 +40,30 @@ function roundText(){
 }
 function render(){
   if(route()!=='cedulaBuilder')return;
+  const page=$('body[data-app-route="cedulaBuilder"] .v60-tool-page');
   const actions=$('body[data-app-route="cedulaBuilder"] .v60-actions');
   const form=$('body[data-app-route="cedulaBuilder"] .v64-form-grid.one');
-  if(!actions||!form)return;
+  if(!page||!actions||!form)return;
 
-  let host=$('[data-v639-cedula-match-card]');
-  if(!host){
-    host=document.createElement('div');
-    host.setAttribute('data-v639-cedula-match-card','');
-    host.className='v639-match-card';
-    actions.parentElement?.insertBefore(host,actions);
+  /* V640: el formulario ya no vive en un cuadro separado.
+     Se mueve DENTRO de la misma tarjeta visual del partido. */
+  let shell=$('[data-v640-cedula-combined]');
+  if(!shell){
+    shell=document.createElement('section');
+    shell.setAttribute('data-v640-cedula-combined','');
+    shell.className='v640-cedula-combined';
+    form.parentElement?.insertBefore(shell,form);
+
+    const visual=document.createElement('div');
+    visual.setAttribute('data-v639-cedula-match-card','');
+    visual.className='v639-match-card v640-match-visual';
+    shell.appendChild(visual);
+    shell.appendChild(form);
+    shell.appendChild(actions);
   }
+
+  const host=$('[data-v639-cedula-match-card]',shell);
+  if(!host)return;
 
   const home=val('[data-v64-ced-home]','Equipo local');
   const away=val('[data-v64-ced-away]','Visitante');
