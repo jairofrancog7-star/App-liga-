@@ -2047,6 +2047,33 @@ function v100DownloadApk(){
  const a=document.createElement('a');a.href=V100_ANDROID_APK;a.rel='noopener';a.download='Liga-Juventino.apk';document.body.appendChild(a);a.click();a.remove();
  toast('Descargando Liga-Juventino.apk');
 }
+function v100ShortcutHelp(kind){
+ const ios=kind==='ios';
+ const title=ios?'iPhone / iPad':'Android';
+ const desc=ios?'Cómo dejar Liga Juventino como acceso directo en la pantalla de inicio.':'Cómo dejar Liga Juventino como acceso directo o PWA en Android.';
+ const steps=ios?[
+   ['1','Abre Liga Juventino en Safari.'],
+   ['2','Toca el botón Compartir del navegador.'],
+   ['3','Busca “Añadir a pantalla de inicio”.'],
+   ['4','Toca Añadir. El icono de Liga Juventino quedará en tu pantalla de inicio.']
+ ]:[
+   ['1','Abre Liga Juventino en Chrome.'],
+   ['2','Toca el menú de tres puntos del navegador.'],
+   ['3','Elige “Instalar aplicación” o “Agregar a pantalla de inicio”.'],
+   ['4','Confirma Instalar / Agregar. Liga Juventino quedará como acceso directo.']
+ ];
+ const m=modal(
+   sectionTitle('AYUDA DE ACCESO DIRECTO',title,desc)+
+   '<div class="v100-shortcut-help">'+steps.map(x=>'<div><b>'+x[0]+'</b><span>'+esc(x[1])+'</span></div>').join('')+'</div>'+
+   '<div class="v100-actions">'+
+     '<button type="button" class="v100-primary" data-v100-help-action>'+(ios?'Abrir acceso para iPhone':'Intentar instalar ahora')+'</button>'+
+     '<button type="button" class="v100-secondary" data-v100-help-close>Cerrar</button>'+
+   '</div>',
+   'v100-install-modal'
+ );
+ $('[data-v100-help-action]',m)?.addEventListener('click',()=>{if(ios)v100IosShortcut();else v100PromptInstall()});
+ $('[data-v100-help-close]',m)?.addEventListener('click',()=>m.remove());
+}
 async function installApp(){
  const ios=v100IsIos(),standalone=v100IsStandalone();
  const m=modal(
@@ -2065,7 +2092,12 @@ async function installApp(){
     '<article class="v100-install-option '+(ios?'is-device':'')+'">'+
       '<span class="v100-install-icon">🍎</span><div class="v100-install-copy"><small>IPHONE / IPAD</small><b>Acceso directo en iOS</b><p>Acceso móvil de Liga Juventino con icono y apertura en modo app.</p></div>'+
       '<a class="v100-primary v100-install-link" href="'+esc(v100IosHomeUrl())+'" data-v100-install-ios>Agregar en iPhone</a>'+
+      '<button type="button" class="v100-secondary" data-v100-ios-help>¿No sabes cómo? Ver guía</button>'+
     '</article>'+
+  '</div>'+
+  '<div class="v100-shortcut-assist">'+
+    '<div><span>❓</span><p><b>¿No sabes cómo poner el acceso directo?</b><small>Te mostramos cómo hacerlo en Android o iPhone paso a paso.</small></p></div>'+
+    '<div class="v100-shortcut-assist-actions"><button type="button" class="v100-secondary" data-v100-android-help>Cómo hacerlo en Android</button><button type="button" class="v100-secondary" data-v100-ios-help-bottom>Cómo hacerlo en iPhone</button></div>'+
   '</div>'+
   '<p class="v100-install-footnote">APK Android y acceso móvil de Liga Juventino.</p>',
   'v100-install-modal'
@@ -2074,6 +2106,9 @@ async function installApp(){
  $('[data-v100-install-apk]',m)?.addEventListener('click',()=>toast('Descargando Liga-Juventino.apk'));
  $('[data-v100-install-builds]',m)?.addEventListener('click',()=>window.open(V100_ANDROID_BUILDS,'_blank','noopener,noreferrer'));
  $('[data-v100-install-ios]',m)?.addEventListener('click',e=>{e.preventDefault();v100IosShortcut()});
+ $('[data-v100-ios-help]',m)?.addEventListener('click',()=>v100ShortcutHelp('ios'));
+ $('[data-v100-ios-help-bottom]',m)?.addEventListener('click',()=>v100ShortcutHelp('ios'));
+ $('[data-v100-android-help]',m)?.addEventListener('click',()=>v100ShortcutHelp('android'));
 }
 
 /* ---------- V190: RECLUTAMIENTO EN MÁS HERRAMIENTAS ---------- */
