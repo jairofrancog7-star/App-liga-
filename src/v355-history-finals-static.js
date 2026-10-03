@@ -21,10 +21,12 @@ function alias(v){
   return n;
 }
 const FALLBACK={
-  abejas:'./assets/official-logos/abejas.png',
-  hermanos:'./assets/official-logos/hermanos.png',
-  juventus:'./assets/official-logos/juventus.png',
-  boavista:'./assets/official-logos/boavista.png'
+  abejas:'https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/assets/official-logos/abejas.png',
+  hermanos:'https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/assets/official-logos/hermanos.png',
+  juventus:'https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/assets/official-logos/juventus.png',
+  boavista:'https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/assets/official-logos/boavista.png',
+  valencia:'https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/assets/official-logos/valencia.png',
+  chelsea:'https://upload.wikimedia.org/wikipedia/en/c/cc/Chelsea_FC.svg'
 };
 function logo(name){
   const a=alias(name);
@@ -160,7 +162,7 @@ st.textContent=`
   .v355-final-team em{justify-self:end;color:#fff;font:700 17px/1 system-ui,sans-serif;font-style:normal}
   .v355-final-side{display:flex;flex-direction:column;justify-content:center;gap:9px}
   .v355-final-side>span{color:#b6bbd8;text-align:center;font:500 15px/1 system-ui,sans-serif}
-  .v355-final-side button{height:37px;border:0;border-radius:8px;background:linear-gradient(180deg,#0b4497,#07337b);color:#13edf3;font:700 14px/1 system-ui,sans-serif}
+  .v355-final-side button{height:37px;border:1px solid rgba(42,222,244,.44);border-radius:8px;background:rgba(17,92,190,.08);color:#13edf3;font:700 14px/1 system-ui,sans-serif;box-shadow:none;backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px)}
   .v355-final-detail{display:grid;grid-template-rows:0fr;opacity:0;overflow:hidden;transition:grid-template-rows .18s ease,opacity .18s ease}
   .v355-final-detail>div{min-height:0;overflow:hidden}
   .v355-final-row.is-open .v355-final-detail{grid-template-rows:1fr;opacity:1;padding-bottom:14px}
