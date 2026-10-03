@@ -1017,12 +1017,18 @@ function render(){
     const go=()=>{const target=document.querySelector(selector);if(!target)return;try{target.scrollIntoView({behavior:'smooth',block:'start'})}catch(_){target.scrollIntoView?.()}};
     requestAnimationFrame(go);setTimeout(go,120);
   };
+  const openProfileLineup=()=>{
+    activeTab='Resumen';renderGuard=false;render();
+    focusMatchSection('[data-v419-profile-section="plantilla"]');
+  };
   screen.querySelectorAll('[data-v92-tab]').forEach(b=>b.onclick=()=>{
-    activeTab=b.dataset.v92Tab;renderGuard=false;render();
-    if(activeTab==='Alineaciones'){
-      focusMatchSection('.v92-lineups-section');
-      refreshOfficialData(true).then(()=>focusMatchSection('.v92-lineups-section'));
+    const tab=b.dataset.v92Tab;
+    if(tab==='Alineaciones'){
+      openProfileLineup();
+      refreshOfficialData(true).then(()=>focusMatchSection('[data-v419-profile-section="plantilla"]'));
+      return;
     }
+    activeTab=tab;renderGuard=false;render();
   });
   screen.querySelector('[data-v420-back]')?.addEventListener('click',()=>{activeTab='Resumen';renderGuard=false;render()});
   screen.querySelector('[data-v420-mute]')?.addEventListener('click',e=>{
@@ -1053,15 +1059,13 @@ function render(){
     selectedKey=next.key;activeTab='Resumen';profileSide='home';renderGuard=false;render();
   });
   screen.querySelectorAll('[data-v92-open-lineups]').forEach(b=>b.onclick=()=>{
-    activeTab='Alineaciones';renderGuard=false;render();
-    focusMatchSection('.v92-lineups-section');
-    refreshOfficialData(true).then(()=>focusMatchSection('.v92-lineups-section'));
+    openProfileLineup();
+    refreshOfficialData(true).then(()=>focusMatchSection('[data-v419-profile-section="plantilla"]'));
   });
   screen.querySelectorAll('[data-v92-route]').forEach(b=>b.onclick=()=>{location.hash='#/'+b.dataset.v92Route});
   screen.querySelectorAll('[data-v92-pitch]').forEach(b=>b.onclick=()=>{
-    activeTab='Alineaciones';renderGuard=false;render();
-    focusMatchSection('.v416-lineup-visual');
-    refreshOfficialData(true).then(()=>focusMatchSection('.v416-lineup-visual'));
+    try{sessionStorage.setItem('v92-pitch-context',JSON.stringify({match:m.key,home,away,category:m.category,venue}))}catch(_){}
+    location.hash='#/venues';
   });
   screen.querySelectorAll('[data-v92-vote-mvp]').forEach(b=>b.onclick=()=>openMvpVote(m));
   screen.querySelectorAll('[data-v419-profile-scroll]').forEach(b=>b.onclick=()=>{
