@@ -29,7 +29,7 @@ function apply(){
  }
 
  let cats=$('.v652-discipline-cats',page);
- const rows=$('.v94-discipline-row',page);
+ const rows=$$('.v94-discipline-row',page);
  const officialCats=[
   ['all','Todas'],
   ['3','Primera Fuerza'],
@@ -57,8 +57,8 @@ function apply(){
   });
  }
  const view=current();let cat=currentCat();if(!['all','3','5','4','2','1'].includes(String(cat))){cat='all';localStorage.setItem('v563-discipline-category','all')}
- $('[data-v563-disc]',tabs).forEach(b=>b.classList.toggle('active',b.dataset.v563Disc===view));
- $('[data-v563-cat]',cats).forEach(b=>b.classList.toggle('active',String(b.dataset.v563Cat)===String(cat)));
+ $$('[data-v563-disc]',tabs).forEach(b=>b.classList.toggle('active',b.dataset.v563Disc===view));
+ $$('[data-v563-cat]',cats).forEach(b=>b.classList.toggle('active',String(b.dataset.v563Cat)===String(cat)));
  let shown=0;
  rows.forEach(row=>{
   const hasCards=!!row.querySelector('.v94-yellow,.v94-red');
