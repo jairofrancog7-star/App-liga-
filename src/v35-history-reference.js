@@ -669,11 +669,11 @@ const historicTeamGoalRecords=[
 ];
 
 const recordMemories=[
-  {tag:'PODIO 2013',title:'Romerillo',value:'3.er lugar',detail:'Fuerza Intermedia · publicación de Golazo Liga del 23 nov 2013. La nota destaca al portero de Romerillo por una atajada de penal en la serie final.'},
-  {tag:'CORTE J30',title:'Linces',value:'79 puntos',detail:'Líder del corte de Primera publicado el 6 may 2017; no se presenta como récord absoluto.'},
-  {tag:'CORTE J30',title:'Hermanos',value:'111 GF',detail:'Goles a favor visibles en la tabla de Primera J30 del 6 may 2017.'},
-  {tag:'CORTE J30',title:'Linces',value:'+75 DG',detail:'Diferencia de goles visible en la tabla de Primera J30 del 6 may 2017.'},
-  {tag:'VETERANOS J13',title:'La Esperanza',value:'11 G · 2 E · 0 P',detail:'Corte del 25 nov 2015: 35 puntos, 38 GF y 13 GC; no se presenta como cierre final.'},
+  {tag:'PODIO 2013',title:'Romerillo',value:'3.er lugar',detail:'Fuerza Intermedia · publicación de Golazo Liga del 23 nov 2013. La nota destaca al portero de Romerillo por una atajada de penal en la serie final.',image:RAW+'assets/official-logos/san-antonio-jrs.png'},
+  {tag:'CORTE J30',title:'Linces',value:'79 puntos',detail:'Líder del corte de Primera publicado el 6 may 2017; no se presenta como récord absoluto.',image:RAW+'assets/official-logos/linces.png'},
+  {tag:'CORTE J30',title:'Hermanos',value:'111 GF',detail:'Goles a favor visibles en la tabla de Primera J30 del 6 may 2017.',image:RAW+'assets/official-logos/hermanos.png'},
+  {tag:'CORTE J30',title:'Linces',value:'+75 DG',detail:'Diferencia de goles visible en la tabla de Primera J30 del 6 may 2017.',image:RAW+'assets/official-logos/linces.png'},
+  {tag:'VETERANOS J13',title:'La Esperanza',value:'11 G · 2 E · 0 P',detail:'Corte del 25 nov 2015: 35 puntos, 38 GF y 13 GC; no se presenta como cierre final.',image:RAW+'assets/official-logos/la-esperanza.png'},
   {tag:'GOLEO',title:'Daniel Gómez Delgado',value:'34 goles',detail:'A. Centeno · campeón de goleo de Fuerza Intermedia, publicación del 21 feb 2017.'},
   {tag:'GOLEO',title:'José Guadalupe Moreno',value:'Campeón',detail:'Campeón goleador de Primera Fuerza; premiación publicada el 11 ene 2015.'},
   {tag:'GOLEO',title:'Alejandro Juárez Merino',value:'31 goles',detail:'Populares · líder de goleo en el corte de Intermedia J23 de 2018.'},
