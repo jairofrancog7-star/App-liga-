@@ -38,3 +38,43 @@
     background-size:18px 18px!important;
   }
 }
+
+
+/* V676 — Permisos: reduce solamente la altura vertical de la barra superior. */
+@media (max-width:1023px){
+  html body[data-app-route="permissionBuilder"] #app > .topbar,
+  html body[data-app-route="permissionBuilder"] .app-shell > .topbar,
+  html body[data-app-route="permissionBuilder"] .topbar.v653-permission-topbar,
+  html body .topbar.v653-permission-topbar{
+    height:86px!important;
+    min-height:86px!important;
+    max-height:86px!important;
+  }
+
+  html body[data-app-route="permissionBuilder"] #app > .topbar::before,
+  html body[data-app-route="permissionBuilder"] .app-shell > .topbar::before,
+  html body .topbar.v653-permission-topbar::before{
+    width:50px!important;
+    height:54px!important;
+    top:12%!important;
+  }
+}
+
+@media (max-width:420px){
+  html body[data-app-route="permissionBuilder"] #app > .topbar,
+  html body[data-app-route="permissionBuilder"] .app-shell > .topbar,
+  html body[data-app-route="permissionBuilder"] .topbar.v653-permission-topbar,
+  html body .topbar.v653-permission-topbar{
+    height:76px!important;
+    min-height:76px!important;
+    max-height:76px!important;
+  }
+
+  html body[data-app-route="permissionBuilder"] #app > .topbar::before,
+  html body[data-app-route="permissionBuilder"] .app-shell > .topbar::before,
+  html body .topbar.v653-permission-topbar::before{
+    width:44px!important;
+    height:48px!important;
+    top:10%!important;
+  }
+}
