@@ -76,7 +76,8 @@ const FALLBACK={
   'san julian fc':RAW+'assets/official-logos/san-julian.png',
   'san jose de la montana':RAW+'assets/teams/san-jose-montana.webp',
   'real cerrito de gasca':RAW+'assets/teams/deportivo-cg.webp',
-  'deportivo cg':RAW+'assets/teams/deportivo-cg.webp'
+  'deportivo cg':RAW+'assets/teams/deportivo-cg.webp',
+  'chelsea':'https://upload.wikimedia.org/wikipedia/en/c/cc/Chelsea_FC.svg'
 };
 
 /* Sólo relaciones documentadas en el archivo recuperado. */
