@@ -118,3 +118,57 @@
     padding-bottom:16px!important;
   }
 }
+
+/* V656 — hard-fix global de huecos entre cuadros.
+   Incluye los módulos inferiores de Competición que aún conservaban
+   margin-bottom:105/110px de V571. El clearance de la barra inferior
+   sigue existiendo una sola vez en #screen. */
+@media (max-width:1023px){
+  html body[data-app-route="competition"] #screen :is(
+    .v571-lower,
+    [data-v571-lower],
+    .v569-lower,
+    .v566-comp-lower
+  ){
+    min-height:0!important;
+    height:auto!important;
+    margin-top:8px!important;
+    margin-bottom:8px!important;
+  }
+
+  /* El siguiente cuadro debe comenzar inmediatamente después del anterior. */
+  html body[data-app-route="competition"] #screen :is(
+    .v571-lower,
+    [data-v571-lower],
+    .v569-lower,
+    .v566-comp-lower
+  ) + :is(
+    #v105-bottom,
+    .v105-bottom,
+    .v413-shell,
+    .v412-shell,
+    .v449-reference-lower,
+    #v422-results-reference
+  ){
+    margin-top:8px!important;
+  }
+
+  /* Regla de seguridad para módulos de página apilados: nunca reservar
+     una segunda "cola" de navegación entre tarjetas. */
+  html body[data-app-route] #screen > :is(
+    .v571-lower,
+    .v569-lower,
+    .v566-comp-lower
+  ){
+    margin-bottom:8px!important;
+  }
+
+  html body[data-app-route] #screen > :is(
+    .v571-lower,
+    .v569-lower,
+    .v566-comp-lower
+  ):last-child{
+    margin-bottom:0!important;
+  }
+}
+
