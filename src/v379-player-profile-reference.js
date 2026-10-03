@@ -279,7 +279,7 @@ function backButton(){
   return '<button type="button" class="v379-back" data-v379-back aria-label="Volver"><svg viewBox="0 0 24 24"><path d="M19 12H5m7-7-7 7 7 7"/></svg></button>';
 }
 function shareButton(){
-  return '<button type="button" class="v379-share" data-v379-share aria-label="Compartir jugador"><svg viewBox="0 0 24 24"><circle cx="18" cy="5" r="2.3"/><circle cx="6" cy="12" r="2.3"/><circle cx="18" cy="19" r="2.3"/><path d="m8 11 8-5M8 13l8 5"/></svg></button>';
+  return '<button type="button" class="v379-share v645-share-reference" data-v379-share aria-label="Compartir jugador"><svg viewBox="0 0 28 28" aria-hidden="true"><path d="M8.8 12.7 18.9 7M8.8 15.3l10.1 5.7"/><circle cx="7" cy="14" r="3.5"/><circle cx="21" cy="6" r="3.5"/><circle cx="21" cy="22" r="3.5"/></svg></button>';
 }
 function tabs(active){
   return '<nav class="v379-tabs" aria-label="Secciones del jugador">'+
@@ -390,10 +390,10 @@ function v385CompactHeader(p){
     '<strong title="'+attr(p.name)+'">'+esc(v644ShortHeaderName(p.name))+'</strong>'+
     '<div class="v385-head-actions">'+
       '<button type="button" class="v385-head-compare" data-v379-compare aria-label="Comparar jugador">'+
-        '<svg viewBox="0 0 28 24"><circle cx="9" cy="7" r="3.2"/><circle cx="19" cy="7" r="3.2"/><path d="M3 20c0-4 2.6-6.4 6-6.4s6 2.4 6 6.4M13 20c0-4 2.6-6.4 6-6.4s6 2.4 6 6.4"/></svg>'+
+        '<svg viewBox="0 0 32 26" aria-hidden="true"><circle cx="11" cy="7" r="3.8"/><circle cx="21" cy="7" r="3.8"/><path d="M3.5 23c0-5.2 3.1-8.3 7.5-8.3s7.5 3.1 7.5 8.3M13.5 23c0-5.2 3.1-8.3 7.5-8.3s7.5 3.1 7.5 8.3"/></svg>'+
       '</button>'+
       '<button type="button" class="v385-head-share" data-v379-share aria-label="Compartir jugador">'+
-        '<svg viewBox="0 0 24 24"><circle cx="18" cy="5" r="2.2"/><circle cx="6" cy="12" r="2.2"/><circle cx="18" cy="19" r="2.2"/><path d="m8 11 8-5M8 13l8 5"/></svg>'+
+        '<svg viewBox="0 0 28 28" aria-hidden="true"><path d="M8.8 12.7 18.9 7M8.8 15.3l10.1 5.7"/><circle cx="7" cy="14" r="3.5"/><circle cx="21" cy="6" r="3.5"/><circle cx="21" cy="22" r="3.5"/></svg>'+
       '</button>'+
     '</div>'+
   '</div>';
