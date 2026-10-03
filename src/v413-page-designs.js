@@ -75,16 +75,16 @@ function teamList(){
 }
 function playerList(){
   const out=[],seen=new Set();
-  Object.values(db()?.categories||{}).forEach(cat=>{
+  Object.entries(db()?.categories||{}).forEach(([cid,cat])=>{
     const cname=cat?.name||'Liga Municipal';
     Object.entries(cat?.rosters||{}).forEach(([team,raw])=>{
       const rows=Array.isArray(raw)?raw:(raw?.rows||raw?.players||[]);
       rows.forEach(r=>{
         const name=String(Array.isArray(r)?(r[1]||r[0]||''):(r?.name||r?.player||'')).trim();
-        const key=norm(team)+'|'+norm(name)+'|'+norm(cname);
+        const key=String(cid)+'|'+norm(team)+'|'+norm(name);
         if(!name||seen.has(key)||/^(nombre|jugador|tabla|goleadores)$/i.test(name))return;
         seen.add(key);
-        out.push({name,team,category:cname});
+        out.push({name,team,cat:String(cid),category:cname});
       });
     });
   });
@@ -392,6 +392,17 @@ function searchMarkup(){
 function bindSearch(root){
   let mode='teams',selectedTeam='';
   const input=root.querySelector('[data-v413-global]'),host=root.querySelector('[data-v413-search-results]');
+  const openPlayerDetail=(name,team,cat='')=>{
+    const p={name:String(name||''),team:String(team||''),cat:String(cat||'')};
+    try{
+      localStorage.setItem('v379-player-profile',JSON.stringify(p));
+      localStorage.setItem('v379-player-profile-tab','Resumen');
+      localStorage.removeItem('v123-compare-player');
+      localStorage.removeItem('v123-compare-player-2');
+    }catch(_){}
+    if(window.LJR_PLAYER_PROFILE_API?.open){window.LJR_PLAYER_PROFILE_API.open(p);return}
+    location.hash='#/playerDetail';
+  };
   const bindTeamButtons=()=>{
     root.querySelectorAll('[data-v413-team]').forEach(b=>b.onclick=e=>{
       e.preventDefault();e.stopPropagation();
@@ -422,17 +433,13 @@ function bindSearch(root){
       if(q)list=list.filter(p=>norm(p.name+' '+p.team+' '+p.category).includes(q));
       list.sort((a,b)=>a.name.localeCompare(b.name,'es'));
       const head=selectedTeam?'<div class="v413-player-team-head"><b>'+esc(selectedTeam)+'</b><span>'+list.length+' jugadores</span><button type="button" data-v413-clear-team>Ver todos</button></div>':'<div class="v413-player-team-head"><b>Todos los jugadores</b><span>'+list.length+' registrados</span></div>';
-      host.innerHTML=head+(list.map(p=>'<button class="v413-result" type="button" data-v413-player="'+esc(p.name)+'" data-v413-player-team="'+esc(p.team)+'"><span class="v413-player-ball">⚽</span><span><b>'+esc(p.name)+'</b><small>'+esc(p.team)+' · '+esc(p.category)+'</small></span><i>›</i></button>').join('')||'<div class="v413-empty">No se encontraron jugadores para este equipo.</div>');
+      host.innerHTML=head+(list.map(p=>'<button class="v413-result" type="button" data-v413-player="'+esc(p.name)+'" data-v413-player-team="'+esc(p.team)+'" data-v413-player-cat="'+esc(p.cat||'')+'"><span class="v413-player-ball">⚽</span><span><b>'+esc(p.name)+'</b><small>'+esc(p.team)+' · '+esc(p.category)+'</small></span><i>›</i></button>').join('')||'<div class="v413-empty">No se encontraron jugadores para este equipo.</div>');
       host.querySelector('[data-v413-clear-team]')?.addEventListener('click',e=>{e.preventDefault();e.stopPropagation();selectedTeam='';root.querySelectorAll('.v413-fav-tile[data-v413-team]').forEach(x=>x.classList.remove('is-selected'));render()});
     }
     bindTeamButtons();
     host.querySelectorAll('[data-v413-player]').forEach(b=>b.onclick=e=>{
-      e.preventDefault();e.stopPropagation();
-      try{
-        localStorage.setItem('v66-player-query',b.dataset.v413Player||'');
-        localStorage.setItem('v62-team-name',b.dataset.v413PlayerTeam||selectedTeam||'');
-      }catch(_){}
-      go('players');
+      e.preventDefault();e.stopPropagation();e.stopImmediatePropagation?.();
+      openPlayerDetail(b.dataset.v413Player,b.dataset.v413PlayerTeam||selectedTeam,b.dataset.v413PlayerCat||'');
     });
   };
   root.querySelectorAll('[data-v413-mode]').forEach(b=>b.onclick=e=>{
@@ -443,6 +450,42 @@ function bindSearch(root){
     render();
   });
   bindTeamButtons();
+
+  /* V636 hardfix: while this card is in Jugadores mode, a team tap is ONLY
+     a roster filter. Capture phase prevents any older/global handler from
+     redirecting the same tap to Comparar jugadores. */
+  root.addEventListener('click',e=>{
+    if(route()!=='search')return;
+    const modeBtn=e.target.closest('[data-v413-mode]');
+    if(modeBtn){
+      e.preventDefault();e.stopPropagation();e.stopImmediatePropagation();
+      mode=modeBtn.dataset.v413Mode||'teams';
+      root.querySelectorAll('[data-v413-mode]').forEach(x=>x.classList.toggle('active',x===modeBtn));
+      if(mode==='players'&&input)input.value='';
+      render();
+      return;
+    }
+    const teamBtn=e.target.closest('[data-v413-team]');
+    if(teamBtn&&mode==='players'){
+      e.preventDefault();e.stopPropagation();e.stopImmediatePropagation();
+      selectedTeam=String(teamBtn.dataset.v413Team||'').trim();
+      try{
+        localStorage.removeItem('v123-compare-player');
+        localStorage.removeItem('v123-compare-player-2');
+      }catch(_){}
+      root.querySelectorAll('.v413-fav-tile[data-v413-team]').forEach(x=>x.classList.toggle('is-selected',norm(x.dataset.v413Team)===norm(selectedTeam)));
+      if(input)input.value='';
+      render();
+      requestAnimationFrame(()=>host?.scrollIntoView({behavior:'smooth',block:'nearest'}));
+      return;
+    }
+    const playerBtn=e.target.closest('[data-v413-player]');
+    if(playerBtn&&mode==='players'){
+      e.preventDefault();e.stopPropagation();e.stopImmediatePropagation();
+      openPlayerDetail(playerBtn.dataset.v413Player,playerBtn.dataset.v413PlayerTeam||selectedTeam,playerBtn.dataset.v413PlayerCat||'');
+    }
+  },true);
+
   if(input)input.oninput=render;
   render();
 }
