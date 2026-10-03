@@ -130,6 +130,25 @@ function updateSlotLogo(select){
   if(box)box.src=teamLogo(select.value);
 }
 
+function v647SyncNoDuplicates(page,changed){
+  const sels=[...page.querySelectorAll('[data-v64-place],[data-v643-place]')];
+  if(changed&&changed.value){
+    const k=norm(changed.value);
+    const dup=sels.find(s=>s!==changed&&s.value&&norm(s.value)===k);
+    if(dup){
+      const name=changed.value;
+      changed.value='';
+      updateSlotLogo(changed);
+      setStatus(page,name+' ya está seleccionado. Un equipo no puede jugar contra sí mismo ni repetirse.',true);
+    }
+  }
+  const active=sels.map(s=>String(s.value||'').trim()).filter(Boolean);
+  sels.forEach(sel=>[...sel.options].forEach(opt=>{
+    if(!opt.value){opt.disabled=false;return}
+    opt.disabled=active.some(v=>norm(v)===norm(opt.value))&&norm(sel.value)!==norm(opt.value);
+  }));
+}
+
 function renderSlots(page,cat,keep){
   const host=page.querySelector('[data-v643-slots]');
   if(!host)return;
@@ -145,8 +164,10 @@ function renderSlots(page,cat,keep){
   }).join('');
   host.querySelectorAll('[data-v643-place]').forEach(sel=>sel.addEventListener('change',()=>{
     updateSlotLogo(sel);
+    v647SyncNoDuplicates(page,sel);
     queuePreview(page);
   }));
+  v647SyncNoDuplicates(page);
   setStatus(page,teams.length?teams.length+' equipos disponibles en '+catMeta(cat).name+'.':'Aún no hay equipos cargados para esta categoría.',!teams.length);
 }
 
@@ -378,12 +399,19 @@ async function mount(){
     const ranked=rankedTeams(catSel.value);
     if(!ranked.length){setStatus(page,'No hay una clasificación cargada para esta categoría todavía.',true);return}
     const sels=[...page.querySelectorAll('[data-v643-place]')];
-    sels.forEach((s,i)=>{s.value=ranked[i]||'';updateSlotLogo(s)});
-    setStatus(page,'Se cargaron los primeros '+Math.min(8,ranked.length)+' lugares de la clasificación.');
+    const used=new Set();
+    sels.forEach((s,i)=>{
+      const v=ranked.find((n,idx)=>idx>=i&&!used.has(norm(n)))||ranked.find(n=>!used.has(norm(n)))||'';
+      if(v)used.add(norm(v));
+      s.value=v;updateSlotLogo(s);
+    });
+    v647SyncNoDuplicates(page);
+    setStatus(page,'Se cargaron '+used.size+' equipos sin repetir de la clasificación.');
     queuePreview(page);
   });
   page.querySelector('[data-v643-clear]')?.addEventListener('click',()=>{
     page.querySelectorAll('[data-v643-place]').forEach(s=>{s.value='';updateSlotLogo(s)});
+    v647SyncNoDuplicates(page);
     setStatus(page,'Selección limpiada.');queuePreview(page);
   });
   page.querySelector('[data-v643-png]')?.addEventListener('click',()=>exportPng(page));
