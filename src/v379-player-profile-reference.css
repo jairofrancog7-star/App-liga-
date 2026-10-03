@@ -2142,3 +2142,48 @@ body.v379-player-profile-active.v385-player-scrolled .v385-head-share svg circle
   }
 }
 /* /V645_PLAYER_HEADER_ICONS_REFERENCE */
+
+
+/* V646_PLAYER_ICON_HARD_FIX
+   Bloque final: fuerza los dos iconos exactamente como referencia y evita reglas viejas. */
+body.v379-player-profile-active.v385-player-scrolled .v385-head-compare svg.v646-compare-glyph{
+  width:29px!important;
+  height:25px!important;
+  overflow:visible!important;
+  fill:none!important;
+  stroke:#fff!important;
+  stroke-width:2.35!important;
+  stroke-linecap:round!important;
+  stroke-linejoin:round!important;
+}
+body.v379-player-profile-active.v385-player-scrolled .v385-head-compare svg.v646-compare-glyph .v646-user-head,
+body.v379-player-profile-active.v385-player-scrolled .v385-head-compare svg.v646-compare-glyph .v646-user-body{
+  fill:none!important;
+  stroke:#fff!important;
+  stroke-width:2.35!important;
+  stroke-linecap:round!important;
+  stroke-linejoin:round!important;
+}
+body.v379-player-profile-active.v385-player-scrolled .v385-head-share svg.v646-share-glyph,
+.v379-share.v646-share-reference svg.v646-share-glyph{
+  width:28px!important;
+  height:28px!important;
+  overflow:visible!important;
+}
+body.v379-player-profile-active.v385-player-scrolled .v385-head-share svg.v646-share-glyph path,
+.v379-share.v646-share-reference svg.v646-share-glyph path{
+  fill:#fff!important;
+  stroke:none!important;
+  stroke-width:0!important;
+}
+@media(max-width:360px){
+  body.v379-player-profile-active.v385-player-scrolled .v385-head-compare svg.v646-compare-glyph{
+    width:27px!important;
+    height:24px!important;
+  }
+  body.v379-player-profile-active.v385-player-scrolled .v385-head-share svg.v646-share-glyph{
+    width:26px!important;
+    height:26px!important;
+  }
+}
+/* /V646_PLAYER_ICON_HARD_FIX */
