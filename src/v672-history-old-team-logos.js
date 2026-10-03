@@ -174,9 +174,32 @@ function patchRecords(root){
     const visual=card.querySelector(':scope > img');
     if(!visual)return;
 
-    /* Si la tarjeta no tiene fotografía y la imagen principal ya es el escudo,
-       no agregar el mismo escudo por segunda vez. El mini escudo sólo acompaña
-       a una fotografía/imagen histórica distinta. */
+    /* V690 — Regla global de Récords:
+       - Si la imagen principal es un escudo/logo, mostrar SOLO esa imagen.
+       - El mini escudo se permite únicamente cuando la imagen principal es una
+         fotografía histórica real guardada en assets/history/archive-* (o una
+         fotografía histórica equivalente), nunca cuando ya hay un escudo.
+       Esto evita Linces + Linces, Hermanos + Hermanos, Boavista + Boavista, etc. */
+    const visualUrl=String(visual.currentSrc||visual.getAttribute('src')||visual.src||'');
+    const normalizedVisual=visualUrl.toLowerCase();
+    const looksLikeLogo=
+      visual.matches('.v672-record-logo,[data-v672-historical-logo="1"]') ||
+      /\/assets\/(?:official-logos|teams|branding)\//.test(normalizedVisual) ||
+      /\/assets\/history\/team-logos\//.test(normalizedVisual) ||
+      /\/logos\//.test(normalizedVisual) ||
+      /cloudinary\.com\/.*\/logos\//.test(normalizedVisual);
+
+    const looksLikeHistoricPhoto=
+      !looksLikeLogo && (
+        /\/assets\/history\/archive-v\d+\//.test(normalizedVisual) ||
+        /\/assets\/history\/[^/?#]+\.(?:jpe?g|png|webp)(?:[?#]|$)/.test(normalizedVisual)
+      );
+
+    if(!looksLikeHistoricPhoto){
+      card.querySelector('.v672-record-mini-logo')?.remove();
+      return;
+    }
+
     let sameLogo=visual.matches('.v672-record-logo,[data-v672-historical-logo="1"]');
     if(!sameLogo){
       try{
