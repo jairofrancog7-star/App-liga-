@@ -43,15 +43,34 @@
   }
   function playerPhoto(data,item){
     try{
-      const x=window.LJR_PLAYER_MEDIA?.photo?.(item?.player,item?.team,item?.catId);
-      if(x)return String(x);
+      const media=window.LJR_PLAYER_MEDIA;
+      const exact=media?.photo?.(item?.player,item?.team,item?.catId);
+      if(exact)return String(exact);
+      /* V650: los registros de expulsados pueden traer "Expulsado de la liga"
+         en la columna Equipo. Si el nombre es único, recupera la foto por jugador
+         y categoría para no dejar solo iniciales cuando sí existe fotografía. */
+      const byName=media?.photo?.(item?.player,'',item?.catId);
+      if(byName)return String(byName);
       const pub=window.LJR_PLAYER_PHOTOS;
-      if(pub&&typeof pub.get==='function'){const y=pub.get(item?.player,item?.team,item?.catId);if(y)return String(y)}
+      if(pub&&typeof pub.get==='function'){
+        const y=pub.get(item?.player,item?.team,item?.catId);
+        if(y)return String(y);
+        const z=pub.get(item?.player,'',item?.catId);
+        if(z)return String(z);
+      }
     }catch(_){}
     const cat=data?.categories?.[String(item?.catId||'')];
-    const entry=Object.entries(cat?.player_profiles||{}).find(([team])=>norm(team)===norm(item?.team));
-    const p=(Array.isArray(entry?.[1])?entry[1]:[]).find(x=>norm(x?.name)===norm(item?.player));
-    return String(p?.photo||'');
+    const entries=Object.entries(cat?.player_profiles||{});
+    const entry=entries.find(([team])=>norm(team)===norm(item?.team));
+    const exact=(Array.isArray(entry?.[1])?entry[1]:[]).find(x=>norm(x?.name)===norm(item?.player));
+    if(exact?.photo)return String(exact.photo);
+    const byName=[];
+    for(const [,list] of entries){
+      for(const p of (Array.isArray(list)?list:[])){
+        if(norm(p?.name)===norm(item?.player)&&p?.photo)byName.push(String(p.photo));
+      }
+    }
+    return byName[0]||'';
   }
   function disciplineAvatar(data,item){
     const src=playerPhoto(data,item);
@@ -157,6 +176,132 @@
       '</span>'+
     '</article>';
   }
+  function roundRectPath(ctx,x,y,w,h,r){
+    const rr=Math.max(0,Math.min(r,w/2,h/2));
+    ctx.beginPath();
+    ctx.moveTo(x+rr,y);ctx.arcTo(x+w,y,x+w,y+h,rr);ctx.arcTo(x+w,y+h,x,y+h,rr);
+    ctx.arcTo(x,y+h,x,y,rr);ctx.arcTo(x,y,x+w,y,rr);ctx.closePath();
+  }
+  function wrapCanvas(ctx,text,maxWidth,maxLines=2){
+    const words=String(text||'—').trim().split(/\s+/).filter(Boolean),out=[];let line='';
+    for(const word of words){
+      const next=line?line+' '+word:word;
+      if(line&&ctx.measureText(next).width>maxWidth){out.push(line);line=word;if(out.length>=maxLines-1)break}
+      else line=next;
+    }
+    if(line&&out.length<maxLines)out.push(line);
+    if(words.length&&out.length===maxLines){
+      let last=out[maxLines-1]||'';
+      while(last&&ctx.measureText(last+'…').width>maxWidth)last=last.slice(0,-1);
+      out[maxLines-1]=last+(last!==out[maxLines-1]?'…':'');
+    }
+    return out.length?out:['—'];
+  }
+  function loadCanvasImage(src){
+    return new Promise(resolve=>{
+      if(!src)return resolve(null);
+      const im=new Image();let done=false;
+      const finish=v=>{if(done)return;done=true;clearTimeout(timer);resolve(v)};
+      const timer=setTimeout(()=>finish(null),6500);
+      im.crossOrigin='anonymous';im.referrerPolicy='no-referrer';
+      im.onload=()=>finish(im);im.onerror=()=>finish(null);im.src=src;
+    });
+  }
+  function drawCoverCircle(ctx,im,cx,cy,r,focalY=.32){
+    ctx.save();ctx.beginPath();ctx.arc(cx,cy,r,0,Math.PI*2);ctx.clip();
+    if(im&&im.naturalWidth&&im.naturalHeight){
+      const iw=im.naturalWidth,ih=im.naturalHeight,d=r*2,scale=Math.max(d/iw,d/ih);
+      const sw=d/scale,sh=d/scale;
+      const sx=Math.max(0,Math.min(iw-sw,(iw-sw)/2));
+      const sy=Math.max(0,Math.min(ih-sh,ih*focalY-sh*.34));
+      ctx.drawImage(im,sx,sy,sw,sh,cx-r,cy-r,d,d);
+    }
+    ctx.restore();
+  }
+  function downloadPng(blob,name){
+    const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=name;
+    document.body.appendChild(a);a.click();
+    setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},700);
+  }
+  async function disciplinePng(data,items){
+    const W=1080,rowH=154,top=250,bottom=120,H=Math.max(720,top+items.length*rowH+bottom);
+    const canvas=document.createElement('canvas');canvas.width=W;canvas.height=H;
+    const ctx=canvas.getContext('2d',{alpha:false});ctx.imageSmoothingEnabled=true;ctx.imageSmoothingQuality='high';
+    const bg=ctx.createLinearGradient(0,0,W,H);bg.addColorStop(0,'#0b1ca4');bg.addColorStop(.5,'#071077');bg.addColorStop(1,'#04065a');
+    ctx.fillStyle=bg;ctx.fillRect(0,0,W,H);
+    const glow=ctx.createRadialGradient(120,0,10,120,0,520);glow.addColorStop(0,'rgba(45,224,255,.28)');glow.addColorStop(1,'rgba(45,224,255,0)');
+    ctx.fillStyle=glow;ctx.fillRect(0,0,W,460);
+    ctx.fillStyle='#67eef4';ctx.font='900 24px Arial';ctx.fillText('LIGA MUNICIPAL DE FÚTBOL JUVENTINO ROSAS',54,58);
+    ctx.fillStyle='#fff';ctx.font='900 58px Arial';ctx.fillText('DISCIPLINA OFICIAL',54,132);
+    ctx.fillStyle='#bdc8eb';ctx.font='600 25px Arial';ctx.fillText('Tarjetas, castigos y suspensiones publicadas · Todas las categorías',54,178);
+    ctx.fillStyle='rgba(103,238,244,.16)';roundRectPath(ctx,54,199,310,38,19);ctx.fill();
+    ctx.fillStyle='#67eef4';ctx.font='800 20px Arial';ctx.fillText(items.length+' registros oficiales',76,225);
+
+    const photos=await Promise.all(items.map(it=>loadCanvasImage(playerPhoto(data,it))));
+    let y=top;
+    for(let i=0;i<items.length;i++,y+=rowH){
+      const it=items[i],rowY=y+8,rowHeight=rowH-14;
+      ctx.fillStyle=i%2?'rgba(14,28,132,.94)':'rgba(19,38,154,.92)';
+      roundRectPath(ctx,38,rowY,W-76,rowHeight,24);ctx.fill();
+      ctx.strokeStyle='rgba(112,165,255,.22)';ctx.lineWidth=2;ctx.stroke();
+
+      ctx.fillStyle='#fff';ctx.font='900 27px Arial';ctx.textAlign='center';ctx.fillText(String(i+1),78,rowY+75);
+
+      const cx=158,cy=rowY+rowHeight/2,r=50;
+      ctx.fillStyle='#193bb7';ctx.beginPath();ctx.arc(cx,cy,r,0,Math.PI*2);ctx.fill();
+      const im=photos[i];
+      if(im)drawCoverCircle(ctx,im,cx,cy,r,.31);
+      else{
+        const ini=String(it.player||'J').split(/\s+/).filter(Boolean).slice(0,2).map(x=>x[0]||'').join('').toUpperCase();
+        ctx.fillStyle='#fff';ctx.font='900 34px Arial';ctx.fillText(ini,cx,cy+12);
+      }
+      ctx.strokeStyle='rgba(95,224,255,.42)';ctx.lineWidth=3;ctx.beginPath();ctx.arc(cx,cy,r,0,Math.PI*2);ctx.stroke();
+
+      ctx.textAlign='left';ctx.fillStyle='#fff';ctx.font='900 31px Arial';
+      const nameLines=wrapCanvas(ctx,it.player,535,2);nameLines.forEach((line,j)=>ctx.fillText(line,232,rowY+48+j*34));
+      const metaY=rowY+48+nameLines.length*34+4;
+      ctx.fillStyle='#bcc7e8';ctx.font='650 22px Arial';
+      const meta=(it.team||'Equipo')+' · '+(it.category||'Categoría');ctx.fillText(meta.length>48?meta.slice(0,47)+'…':meta,232,metaY);
+
+      const pun=String(it.suspension?.punishment||'').trim();
+      if(pun){
+        ctx.font='800 18px Arial';const label=pun.length>34?pun.slice(0,33)+'…':pun;
+        const tw=Math.min(430,ctx.measureText(label).width+34);
+        ctx.fillStyle='rgba(37,105,229,.58)';roundRectPath(ctx,232,metaY+16,tw,34,17);ctx.fill();
+        ctx.strokeStyle='rgba(92,222,255,.42)';ctx.lineWidth=1.5;ctx.stroke();
+        ctx.fillStyle='#eaf5ff';ctx.fillText(label,249,metaY+39);
+      }
+
+      const pending=String(it.suspension?.pending||'').trim();
+      const cardTotal=it.cards.reduce((n,x)=>n+(Number(x.total)||0),0);
+      ctx.textAlign='center';ctx.fillStyle='#64edf4';ctx.font='900 34px Arial';
+      ctx.fillText(pending||String(cardTotal||'—'),956,rowY+64);
+      ctx.fillStyle='#aeb9d9';ctx.font='600 18px Arial';
+      ctx.fillText(pending?'pend.':'tarj.',956,rowY+91);
+    }
+    ctx.textAlign='left';ctx.fillStyle='#9eacd4';ctx.font='600 19px Arial';
+    ctx.fillText('Datos oficiales · '+new Date().toLocaleDateString('es-MX')+' · Liga Juventino Rosas',54,H-52);
+    return await new Promise((resolve,reject)=>canvas.toBlob(b=>b?resolve(b):reject(new Error('No se pudo crear el PNG')),'image/png',1));
+  }
+  function bindPng(data,items,screen){
+    const btn=screen.querySelector('[data-v94-png]');if(!btn)return;
+    btn.addEventListener('click',async()=>{
+      if(btn.disabled)return;
+      const label=btn.querySelector('b'),small=btn.querySelector('small');
+      const oldLabel=label?.textContent||'Generar imagen PNG',oldSmall=small?.textContent||'';
+      btn.disabled=true;btn.classList.add('is-busy');if(label)label.textContent='Generando PNG…';if(small)small.textContent='Preparando lista completa en alta resolución';
+      try{
+        const blob=await disciplinePng(data,items);
+        downloadPng(blob,'Disciplina_Oficial_Liga_Juventino_Rosas.png');
+        if(label)label.textContent='PNG generado';if(small)small.textContent='Descarga lista';
+        setTimeout(()=>{if(label)label.textContent=oldLabel;if(small)small.textContent=oldSmall},1600);
+      }catch(err){
+        if(label)label.textContent='No se pudo generar';if(small)small.textContent=err?.message||'Intenta de nuevo';
+        setTimeout(()=>{if(label)label.textContent=oldLabel;if(small)small.textContent=oldSmall},2200);
+      }finally{btn.disabled=false;btn.classList.remove('is-busy')}
+    },{once:true});
+  }
+
   function render(data){
     if(!isDiscipline())return;
     const screen=document.querySelector('#screen');
@@ -179,11 +324,17 @@
         '<p class="v94-lead">Tarjetas amarillas, tarjetas rojas y castigos publicados oficialmente para todas las categorías.</p>'+
         '<div class="v94-source"><span>Datos oficiales</span><small>Actualizado '+esc((data.captured_at_utc||'').replace('T',' ').replace('Z',' UTC'))+'</small></div>'+
         (items.length
-          ? '<div class="v94-discipline-list">'+items.map((x,i)=>rowHtml(data,x,i)).join('')+'</div>'
+          ? '<div class="v94-discipline-list">'+items.map((x,i)=>rowHtml(data,x,i)).join('')+'</div>'+
+            '<div class="v650-discipline-export"><button type="button" data-v94-png>'+
+              '<span class="v650-export-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 3v11m0 0 4-4m-4 4-4-4M5 18v2h14v-2"/></svg></span>'+
+              '<span class="v650-export-copy"><b>Generar imagen PNG</b><small>Lista completa · alta resolución</small></span>'+
+              '<span class="v650-export-arrow" aria-hidden="true">›</span>'+
+            '</button></div>'
           : '<div class="v94-empty"><b>Sin tarjetas o castigos oficiales publicados</b><span>No se muestran nombres, equipos ni cifras ficticias.</span></div>')+
       '</section>';
 
     document.body.classList.add('v94-discipline-official');
+    bindPng(data,items,screen);
     screen.querySelectorAll('img[data-v94-logo-fallback]').forEach(img=>{
       img.addEventListener('error',()=>{
         const fallback=img.dataset.v94LogoFallback||'';
