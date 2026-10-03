@@ -377,25 +377,15 @@ function inspectionSelect(field,key,label,values,current){
   '</select></label>';
 }
 function inspectionMarkup(field){
-  const x=getInspection(field),surface=surfaceType(field,x),s=inspectionStats(x),when=x.updatedAt?new Intl.DateTimeFormat('es-MX',{timeZone:TZ,dateStyle:'short',timeStyle:'short'}).format(new Date(x.updatedAt)):'sin inspección';
-  return '<details class="v177-inspection" open><summary>🧪 Revisión del campo · '+esc(surfaceLabel(surface))+' <b>'+s.answered+'/'+s.total+'</b></summary>'+
-    '<p>La mayoría de las canchas de la liga pueden trabajar como <b>tierra compactada</b> por defecto. Si un campo es distinto, cambia su superficie aquí; queda guardado por campo.</p>'+
-    '<div class="v178-surface-row">'+inspectionSelect(field,'surfaceType','Tipo de superficie',[['dirt_compact','Tierra compactada'],['dirt_sandy','Tierra / arena'],['grass','Pasto natural'],['synthetic','Sintético']],surface)+'</div>'+
-    '<div class="v177-inspection-grid">'+
-      inspectionSelect(field,'standingWater','Charcos / agua',[['unknown','Sin revisar'],['no','No'],['yes','Sí']],x.standingWater)+
-      inspectionSelect(field,'mud','Barro / lodo',[['unknown','Sin revisar'],['none','Nada'],['light','Ligero'],['heavy','Fuerte']],x.mud)+
-      inspectionSelect(field,'hardness','Dureza / material',[['unknown','Sin revisar'],['normal','Normal'],['hard','Duro'],['veryhard','Muy duro'],['loose','Tierra suelta']],x.hardness)+
-      inspectionSelect(field,'footing','Apoyo / tracción',[['unknown','Sin revisar'],['firm','Firme'],['soft','Blando / se hunde'],['slippery','Resbaloso'],['unsafe','Inseguro']],x.footing)+
-      inspectionSelect(field,'ball','Balón rueda / rebota',[['unknown','Sin revisar'],['normal','Normal'],['slow','Muy lento'],['irregular','Irregular'],['poor','No usable']],x.ball)+
-      inspectionSelect(field,'evenness','Baches / surcos',[['unknown','Sin revisar'],['even','Uniforme'],['minor','Menores'],['dangerous','Peligrosos']],x.evenness)+
-      inspectionSelect(field,'debris','Piedras / objetos',[['unknown','Sin revisar'],['clear','Limpio'],['some','Algunos'],['dangerous','Peligrosos']],x.debris)+
-      inspectionSelect(field,'dust','Polvo / material fino',[['unknown','Sin revisar'],['low','Bajo'],['moderate','Moderado'],['high','Alto']],x.dust)+
-      inspectionSelect(field,'lines','Líneas visibles',[['unknown','Sin revisar'],['visible','Sí'],['poor','No / poco']],x.lines)+
-      inspectionSelect(field,'goals','Porterías seguras',[['unknown','Sin revisar'],['safe','Sí'],['unsafe','No']],x.goals)+
-      inspectionSelect(field,'drainage','Drenaje',[['unknown','Sin revisar'],['good','Bueno'],['average','Regular'],['poor','Deficiente']],x.drainage)+
+  const x=getInspection(field),surface=surfaceType(field,x),st=inspectionStats(x),when=x.updatedAt?new Intl.DateTimeFormat('es-MX',{timeZone:TZ,dateStyle:'short',timeStyle:'short'}).format(new Date(x.updatedAt)):'sin revisión física';
+  return '<div class="v179-checker-summary">'+
+    '<div class="v179-checker-copy"><span>🧪 REVISIÓN FÍSICA</span><b>La revisión detallada ahora la hace el checador de cancha</b>'+
+      '<p>Clima sólo conserva el tipo de superficie y lee automáticamente la última inspección física enviada por el checador.</p>'+
     '</div>'+
-    '<div class="v178-surface-note"><b>Para acercarse más al estado real:</b> revisa toda la cancha con tachones, prueba el balón en varias zonas y marca charcos, lodo, dureza, baches y piedras. El clima por sí solo no ve esos defectos.</div>'+
-    '<small>Última revisión: '+esc(when)+'. Se guarda en este dispositivo.</small></details>';
+    '<div class="v178-surface-row">'+inspectionSelect(field,'surfaceType','Tipo de superficie',[['dirt_compact','Tierra compactada'],['dirt_sandy','Tierra / arena'],['grass','Pasto natural'],['synthetic','Sintético']],surface)+'</div>'+
+    '<div class="v179-checker-status"><strong>'+st.answered+'/'+st.total+'</strong><span>controles físicos recibidos</span><small>Última revisión: '+esc(when)+'</small></div>'+
+    '<button type="button" class="v179-open-checker" data-v668-open-checker>Ir al Checador de campo →</button>'+
+  '</div>';
 }
 function loadingMarkup(text='Consultando clima…'){return '<div class="v172-loading"><span></span>'+esc(text)+'</div>'}
 function emptyMarkup(text){return '<div class="v172-empty">'+esc(text)+'</div>'}
@@ -434,7 +424,7 @@ function resultMarkup(ctx){
   return '<article class="v172-result '+esc(verdict.tone)+'">'+
     '<div class="v172-result-head"><div><div class="v172-kicker">'+esc(kicker)+'</div><h3>'+esc(title)+'</h3><p>'+esc(when)+'</p><p><b>'+esc(field?.name||match?.fieldValue||'Campo pendiente')+'</b> · <span class="v172-pill">'+esc(surface)+'</span> · <span class="v172-pill">'+esc(precisionLabel(precision))+'</span></p></div>'+
       '<div class="v172-score '+esc(verdict.tone)+'"><span>Índice de jugabilidad</span><strong>'+(p==null?'—':esc(p+'%'))+'</strong><b>'+esc(verdict.short)+'</b><small>confianza de datos '+esc(result.confidence)+'%</small></div></div>'+
-    '<div class="v172-verdict '+esc(verdict.tone)+'"><span>IA DE CONDICIÓN DEL CAMPO</span><strong>'+esc(verdict.label)+'</strong><p>'+esc(result.terrain.label)+'. '+esc(result.terrain.detail)+'</p><small>'+checked+'/'+esc(result.inspection?.total||11)+' controles físicos registrados · superficie: '+esc(surface)+'.</small></div>'+
+    '<div class="v172-verdict '+esc(verdict.tone)+'"><span>IA DE CONDICIÓN DEL CAMPO</span><strong>'+esc(verdict.label)+'</strong><p>'+esc(result.terrain.label)+'. '+esc(result.terrain.detail)+'</p><small>'+checked+'/'+esc(result.inspection?.total||11)+' controles físicos del checador registrados · superficie: '+esc(surface)+'.</small></div>'+
     '<div class="v177-model-groups"><span>🟫 superficie</span><span>🌧️ lluvia 72 h</span><span>💧 suelo</span><span>☀️ secado</span><span>🌫️ visibilidad</span><span>🌡️ temperatura</span><span>💨 viento</span><span>⚡ tormenta</span><span>🏟️ inspección</span></div>'+(!rich?'<div class="v177-data-note">Datos avanzados de suelo/secado no disponibles en esta consulta; el porcentaje usa el conjunto meteorológico básico + inspección.</div>':'')+
     '<div class="v172-metrics">'+
       metric('Lluvia 24 h',r24,sourceLabel(p24))+metric('Lluvia 48 h',r48,sourceLabel(p48))+metric('Lluvia 72 h',r72,sourceLabel(p72))+metric('Prob. a la hora',wxProb,'ventana -1 h / +2 h')+metric('Lluvia a la hora',wxRain,'máximo horario')+
