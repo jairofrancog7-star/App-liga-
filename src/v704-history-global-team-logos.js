@@ -7,6 +7,13 @@ if(window.__LJR_V704_HISTORY_LOGO_GLOBAL__)return;
 window.__LJR_V704_HISTORY_LOGO_GLOBAL__=true;
 
 const SPECIAL={
+  'olimpicos':'./assets/history/team-logos/legacy-2015-olimpicos-pozos.webp',
+  'olimpicos de pozos':'./assets/history/team-logos/legacy-2015-olimpicos-pozos.webp',
+  'puros cuates':'./assets/history/team-logos/legacy-2015-puros-cuates.webp',
+  'mazacotes':'./assets/history/team-logos/legacy-2015-mazacotes.webp',
+  'mazacotes fc':'./assets/history/team-logos/legacy-2015-mazacotes.webp',
+  'cerrito':'./assets/history/team-logos/legacy-2015-cerrito.webp',
+  'cerrito de g':'./assets/history/team-logos/legacy-2015-cerrito.webp',
   'salvajes':'./assets/history/team-logos/salvajes.webp',
   'salvaje':'./assets/history/team-logos/salvajes.webp',
   'tecos':'./assets/history/team-logos/tecos.webp',
@@ -49,6 +56,13 @@ function aliases(name){
   if(n.includes('universidad')||n==='unam'||n.includes('pumas'))out.push('Universidad','UNAM');
   if(n.includes('lobos jrs')||n.includes('lobos jr cerrito'))out.push('Lobos Jrs');
   if(n.includes('galacticos'))out.push('Galácticos de Pozos','Galácticos');
+  if(n==='a pozos'||n.includes('atletico pozos'))out.push('Atlético Pozos','A. Pozos');
+  if(n.includes('dep lagartos'))out.push('Deportivo Lagartos');
+  if(n.includes('herbalife'))out.push('Herbalife','Herbalife SC');
+  if(n.includes('inter de milan'))out.push('Inter de Milán');
+  if(n.includes('olimpicos'))out.push('Olímpicos de Pozos','Olímpicos');
+  if(n.includes('puros cuates'))out.push('Puros Cuates');
+  if(n.includes('mazacotes'))out.push('Mazacotes FC','Mazacotes');
   if(n.includes('promesas'))out.push('Promesas FC','Promesas');
   if(n.includes('galeana'))out.push('Atlético Galeana','Galeana');
   return [...new Set(out.filter(Boolean))];
@@ -151,8 +165,13 @@ function patchArchives(root){
 /* Récords: si no hay foto histórica real, usar sólo un escudo, nunca duplicado. */
 function patchRecords(root){
   root.querySelectorAll('.v35-record-card').forEach(card=>{
-    const name=text(card,'h3');
-    const src=logoFor(name);
+    const title=text(card,'h3');
+    const candidates=[title,...aliases(title)];
+    let name='',src='';
+    for(const candidate of candidates){
+      const hit=logoFor(candidate);
+      if(hit){name=candidate;src=hit;break;}
+    }
     if(!src)return;
     const mark=card.querySelector(':scope > .v35-record-mark');
     if(mark){
