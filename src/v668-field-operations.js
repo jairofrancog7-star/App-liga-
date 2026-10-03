@@ -26,6 +26,11 @@ const FIELDS=[
   ['franco-tavera','Franco Tavera'],
   ['cuenda','Cuenda']
 ];
+const WEATHER_FIELD_MAP={
+  'uds-1':'sur-1','uds-2':'sur-2','uds-3':'sur-3','campo-4':'zapata-4',
+  'fraccionamiento':'fraccionamiento','romerillo':'romerillo','san-julian':'san-julian',
+  'franco-tavera':'tavera','cuenda':'cuenda'
+};
 const $=(s,r=document)=>r.querySelector(s);
 const $$=(s,r=document)=>Array.from(r.querySelectorAll(s));
 const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -83,21 +88,31 @@ function physicalAssessment(v){
   const reasons=[];
   if(v.water==='puddles'){score-=48;hard='closed';reasons.push('charcos o agua estancada')}
   else if(v.water==='some'){score-=16;reasons.push('agua en algunas zonas')}
-  if(v.surface==='muddy'){score-=35;reasons.push('lodo/barro')}
-  else if(v.surface==='heavy'){score-=18;reasons.push('terreno pesado')}
-  else if(v.surface==='damp'){score-=7}
+  if(v.mud==='heavy'){score-=35;reasons.push('lodo/barro fuerte')}
+  else if(v.mud==='light'){score-=12;reasons.push('lodo ligero')}
+  if(v.surface==='heavy')score-=18;
+  else if(v.surface==='damp')score-=7;
+  if(v.hardness==='veryhard'){score-=16;reasons.push('superficie demasiado dura')}
+  else if(v.hardness==='hard')score-=7;
+  else if(v.hardness==='loose'){score-=12;reasons.push('material suelto')}
   if(v.footing==='unsafe'){score-=60;hard='closed';reasons.push('apoyo inseguro')}
   else if(v.footing==='slippery'){score-=30;reasons.push('superficie resbalosa')}
   else if(v.footing==='soft'){score-=18;reasons.push('se hunde al pisar')}
   if(v.ball==='poor'){score-=28;reasons.push('balón no rueda/rebota utilizable')}
   else if(v.ball==='irregular'){score-=15;reasons.push('bote irregular')}
-  else if(v.ball==='slow'){score-=8}
-  if(v.hazards==='danger'){score-=55;hard='closed';reasons.push('riesgo físico/objetos peligrosos')}
-  else if(v.hazards==='minor'){score-=10}
+  else if(v.ball==='slow')score-=8;
+  if(v.evenness==='dangerous'){score-=50;hard='closed';reasons.push('baches o surcos peligrosos')}
+  else if(v.evenness==='minor')score-=10;
+  if(v.debris==='dangerous'){score-=55;hard='closed';reasons.push('piedras u objetos peligrosos')}
+  else if(v.debris==='some')score-=10;
+  if(v.dust==='high'){score-=12;reasons.push('polvo/material fino alto')}
+  else if(v.dust==='moderate')score-=5;
   if(v.goals==='unsafe'){score-=50;hard='closed';reasons.push('porterías/redes inseguras')}
-  else if(v.goals==='review'){score-=10}
+  else if(v.goals==='review')score-=10;
+  if(v.drainage==='poor'){score-=18;reasons.push('drenaje deficiente')}
+  else if(v.drainage==='average')score-=7;
   if(v.access==='blocked'){score-=35;reasons.push('acceso bloqueado')}
-  else if(v.access==='review'){score-=8}
+  else if(v.access==='review')score-=8;
   if(v.lines==='missing')score-=10;
   else if(v.lines==='faded')score-=4;
   score=Math.max(0,Math.min(100,score));
@@ -109,9 +124,13 @@ function physicalAssessment(v){
 function formValues(root){
   const val=n=>root.querySelector('[name="'+n+'"]')?.value?.trim()||'';
   return {
-    checker:val('checker'),field:val('field'),at:val('at')||nowLocal(),surface:val('surface'),
-    water:val('water'),footing:val('footing'),ball:val('ball'),hazards:val('hazards'),
-    goals:val('goals'),lines:val('lines'),access:val('access'),notes:val('notes')
+    checker:val('checker'),field:val('field'),at:val('at')||nowLocal(),
+    surfaceType:val('surfaceType')||'dirt_compact',surface:val('surface')||'dry',
+    water:val('water')||'none',mud:val('mud')||'none',hardness:val('hardness')||'normal',
+    footing:val('footing')||'firm',ball:val('ball')||'normal',evenness:val('evenness')||'even',
+    debris:val('debris')||'clear',dust:val('dust')||'low',
+    goals:val('goals')||'ok',lines:val('lines')||'ok',drainage:val('drainage')||'good',
+    access:val('access')||'ok',notes:val('notes')
   };
 }
 function reportText(r){
@@ -133,8 +152,30 @@ function reportText(r){
   return lines.join('\n');
 }
 function reportPayload(r){
-  const {id,field,checker,at,createdAt,surface,water,footing,ball,hazards,goals,lines,access,notes,assessment,location}=r;
-  return {v:1,id,field,checker,at,createdAt,surface,water,footing,ball,hazards,goals,lines,access,notes,assessment,location};
+  const {id,field,checker,at,createdAt,surfaceType,surface,water,mud,hardness,footing,ball,evenness,debris,dust,goals,lines,drainage,access,notes,assessment,location}=r;
+  return {v:2,id,field,checker,at,createdAt,surfaceType,surface,water,mud,hardness,footing,ball,evenness,debris,dust,goals,lines,drainage,access,notes,assessment,location};
+}
+function syncWeatherInspection(r){
+  const id=WEATHER_FIELD_MAP[r?.field];if(!id)return;
+  const mapped={
+    surfaceType:r.surfaceType||'dirt_compact',
+    standingWater:r.water==='puddles'?'yes':'no',
+    mud:r.mud||'none',
+    hardness:r.hardness||'normal',
+    footing:r.footing||'firm',
+    ball:r.ball||'normal',
+    evenness:r.evenness||'even',
+    debris:r.debris||'clear',
+    dust:r.dust||'low',
+    lines:r.lines==='ok'?'visible':'poor',
+    goals:r.goals==='unsafe'?'unsafe':'safe',
+    drainage:r.drainage||'good',
+    checker:r.checker||'',
+    reportId:r.id||'',
+    updatedAt:r.createdAt||Date.now(),
+    source:'v668-field-checker'
+  };
+  try{localStorage.setItem('v177-field-inspection:'+id,JSON.stringify(mapped))}catch(_){}
 }
 function latestDecision(field){return decisions()[field]||null}
 
@@ -158,15 +199,21 @@ function checkerMarkup(){
       '<label><span>Quién revisa</span><input name="checker" list="v668-checker-list" value="'+esc(last)+'" placeholder="Nombre del checador">'+checkerDatalist()+'</label>'+
       '<label><span>Cancha</span><select name="field">'+fieldOptions(localStorage.getItem('v668-last-field')||'uds-1')+'</select></label>'+
       '<label><span>Fecha y hora de revisión</span><input type="datetime-local" name="at" value="'+nowLocal()+'"></label>'+
-      '<label><span>Superficie</span><select name="surface"><option value="dry">Seca / firme</option><option value="damp">Húmeda</option><option value="heavy">Pesada / blanda</option><option value="muddy">Lodosa / barro</option></select></label>'+
+      '<label><span>Tipo de superficie</span><select name="surfaceType"><option value="dirt_compact">Tierra compactada</option><option value="dirt_sandy">Tierra / arena</option><option value="grass">Pasto natural</option><option value="synthetic">Sintético</option></select></label>'+
+      '<label><span>Condición general</span><select name="surface"><option value="dry">Seca / firme</option><option value="damp">Húmeda</option><option value="heavy">Pesada / blanda</option><option value="muddy">Lodosa / barro</option></select></label>'+
     '</div>'+
     '<div class="v668-check-grid">'+
-      checkSelect('water','Agua / charcos',[['none','Sin agua'],['some','Zonas húmedas'],['puddles','Charcos / agua estancada']])+
-      checkSelect('footing','Apoyo al pisar',[['firm','Firme'],['soft','Se hunde'],['slippery','Resbaloso'],['unsafe','Inseguro']])+
-      checkSelect('ball','Prueba con balón',[['normal','Normal'],['slow','Se frena'],['irregular','Bote irregular'],['poor','No utilizable']])+
-      checkSelect('hazards','Piedras / hoyos / objetos',[['none','Sin riesgo'],['minor','Detalle menor'],['danger','Riesgo peligroso']])+
-      checkSelect('goals','Porterías / redes',[['ok','Correctas'],['review','Revisar'],['unsafe','Inseguras']])+
-      checkSelect('lines','Líneas / marcación',[['ok','Visibles'],['faded','Desgastadas'],['missing','Faltantes']])+
+      checkSelect('water','Charcos / agua',[['none','No'],['some','Zonas húmedas'],['puddles','Sí · agua estancada']])+
+      checkSelect('mud','Barro / lodo',[['none','Nada'],['light','Ligero'],['heavy','Fuerte']])+
+      checkSelect('hardness','Dureza / material',[['normal','Normal'],['hard','Duro'],['veryhard','Muy duro'],['loose','Tierra suelta']])+
+      checkSelect('footing','Apoyo / tracción',[['firm','Firme'],['soft','Blando / se hunde'],['slippery','Resbaloso'],['unsafe','Inseguro']])+
+      checkSelect('ball','Balón rueda / rebota',[['normal','Normal'],['slow','Muy lento'],['irregular','Irregular'],['poor','No utilizable']])+
+      checkSelect('evenness','Baches / surcos',[['even','Uniforme'],['minor','Menores'],['dangerous','Peligrosos']])+
+      checkSelect('debris','Piedras / objetos',[['clear','Limpio'],['some','Algunos'],['dangerous','Peligrosos']])+
+      checkSelect('dust','Polvo / material fino',[['low','Bajo'],['moderate','Moderado'],['high','Alto']])+
+      checkSelect('lines','Líneas visibles',[['ok','Sí'],['faded','Poco visibles'],['missing','No']])+
+      checkSelect('goals','Porterías seguras',[['ok','Sí'],['review','Revisar'],['unsafe','No']])+
+      checkSelect('drainage','Drenaje',[['good','Bueno'],['average','Regular'],['poor','Deficiente']])+
       checkSelect('access','Acceso al campo',[['ok','Libre'],['review','Con detalle'],['blocked','Bloqueado']])+
     '</div>'+
     '<label class="v668-notes"><span>Observaciones del checador</span><textarea name="notes" rows="3" placeholder="Ej. zona norte con lodo, portería firme, balón se frena…"></textarea></label>'+
@@ -322,7 +369,7 @@ function buildReport(mod){
   if(!v.checker){toast('Escribe el nombre del checador');panel.querySelector('[name="checker"]')?.focus();return null}
   const assessment=physicalAssessment(v);
   const r={...v,id:uid(),createdAt:Date.now(),assessment,location:gps?{...gps}:null,photoCount:photoFiles.length,source:'field-checker'};
-  const list=reports();list.unshift(r);saveReports(list);
+  const list=reports();list.unshift(r);saveReports(list);syncWeatherInspection(r);
   localStorage.setItem('v668-last-checker',v.checker);localStorage.setItem('v668-last-field',v.field);
   return r;
 }
@@ -417,7 +464,7 @@ function importReport(r){
   if(!r?.id||!r?.field)return;
   const list=reports();const i=list.findIndex(x=>x.id===r.id);
   if(i>=0)list[i]={...list[i],...r,importedAt:Date.now()};else list.unshift({...r,importedAt:Date.now(),source:'shared-link'});
-  saveReports(list);showNotification('Nueva revisión de cancha',fieldName(r.field)+' · '+(r.assessment?.label||'Reporte recibido'));
+  saveReports(list);syncWeatherInspection(r);showNotification('Nueva revisión de cancha',fieldName(r.field)+' · '+(r.assessment?.label||'Reporte recibido'));
 }
 function importNotice(n){
   if(!n?.field||!n?.status)return;
