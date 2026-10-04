@@ -1304,13 +1304,25 @@ function canonicalHistoricName(name){
   return aliases[k]||String(name||'').trim();
 }
 function historicLogo(name){
-  const k=histTeamKey(canonicalHistoricName(name));
+  const canonical=canonicalHistoricName(name);
+  const k=histTeamKey(canonical);
   const local=APP_HISTORIC_LOGOS[k]||APP_HISTORIC_LOGOS[histTeamKey(name)];
   if(local)return local;
   const p=historicTeamLogoMap[k];
   if(p)return /^https?:\/\//i.test(p)?p:HIST_ROOT+p;
   if(k==='tecos')return HIST_MEDIA+'tecos-campeon-historico.jpg';
   if(k==='puros cuates'&&HIST_PHOTOS.purosCuatesTrophy2014)return HIST_PHOTOS.purosCuatesTrophy2014;
+  /* V748 — segunda revisión del ZIP: si el archivo histórico no trae una
+     variante de época, reutilizar el escudo canónico del mismo club. Esto
+     completa Memoria/Temporadas/Récords sin crear equipos duplicados. */
+  try{
+    const src=window.LJR_TEAM_LOGOS?.get?.(canonical);
+    if(src)return src;
+  }catch(_){}
+  try{
+    const src=window.LJR_TEAM_LOGO_LINEAGES?.currentFor?.(canonical);
+    if(src)return src;
+  }catch(_){}
   return '';
 }
 function historicInitials(name){
