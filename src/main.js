@@ -6417,7 +6417,32 @@ function storeView(){
     '<section class="section"><div class="profile-card"><h2>Tienda de clubes</h2><p>Selecciona un equipo para consultar su perfil y preparar su espacio de artículos oficiales de la Liga.</p></div></section>'+
     '<div class="team-list">'+teams.map(t=>'<div class="team-row"><button class="team-main" data-team="'+t.code+'">'+crest(t.code)+'<span><b>'+t.name+'</b><small>Ver club y artículos</small></span></button><button class="mini-btn" data-team="'+t.code+'">Abrir</button></div>').join('')+'</div>';
 }
-function quizArenaView(){return '<section data-v48-arena aria-label="Quiz Arena"></section>';}
+function quizArenaView(){
+  const opts=[['A','Pozos'],['B','Rincón de Centeno'],['C','Juventino'],['D','Cuenda']];
+  return `<section class="v48-quiz-arena-page v766-quiz-start" data-v48-arena aria-label="Quiz de la Liga">
+    <button type="button" class="v766-back" data-route="more" aria-label="Volver">
+      <svg viewBox="0 0 32 32" aria-hidden="true"><path d="M20.5 7.5 12 16l8.5 8.5M12 16h15"/></svg>
+    </button>
+
+    <div class="v766-brand" aria-hidden="true">
+      <div class="v766-title-row"><span class="v766-quiz-word">QUIZ</span><i class="v766-check"></i></div>
+      <div class="v766-de">DE LA</div>
+      <div class="v766-liga">LIGA</div>
+      <div class="v766-corners"><i></i><i></i></div>
+      <div class="v766-league-name">LIGA MUNICIPAL DE FÚTBOL<br>JUVENTINO ROSAS</div>
+    </div>
+
+    <div class="v766-question">¿Qué equipo lidera actualmente la tabla?</div>
+
+    <div class="v766-options" role="group" aria-label="Opciones del Quiz">
+      ${opts.map(([letter,label])=>`<button type="button" class="v766-option" data-v766-quiz-open data-answer="${label}" aria-label="${letter}. ${label}">
+        <span class="v766-letter">${letter}</span><span class="v766-label">${label}</span>
+      </button>`).join('')}
+    </div>
+
+    <div class="v766-stadium" aria-hidden="true"><i class="v766-light l"></i><i class="v766-light r"></i></div>
+  </section>`;
+}
 
 function moreLessView(){return '<div data-v12-moreless-mount></div>'}function venuesView(){return `<div class="eyebrow">SEDES</div><h1 class="screen-title">Campos</h1><div class="news-list">${[...new Set(teams.map(t=>t.field))].map((v,i)=>`<div class="news-row"><span class="venue-thumb"></span><span><small>Sede ${i+1}</small><b>${v}</b><p>Consulta los próximos partidos programados.</p></span></div>`).join('')}</div>`}
 const views={home:homeView,competition:competitionView,match:matchView,matchCenter:()=>'<div data-v92-direct-mount></div>','match-center':()=>'<div data-v92-direct-mount></div>',video:()=>'<div data-v16-video-mount></div>',fantasy:fantasyView,fantasyTeam:fantasyTeamView,fantasyLeagues:()=>`<div class="eyebrow">FANTASY</div><h1 class="screen-title">Ligas</h1><div class="profile-card"><h2>Compite con amigos</h2><p>Crea una liga privada o únete con un código.</p><div class="button-row"><button class="btn primary" data-action="create-league">Crear liga</button><button class="btn outline" data-action="join-league">Unirme</button></div></div>`,more:moreView,ligaQR:ligaQRView,hospitality:hospitalityView,'club-store':storeView,following:()=>'<div data-v25-following-mount></div>',teams:()=>'<div data-v27-teams-mount></div>',teamDetail:()=>'<div data-v42-team-detail-mount></div>',players:playersView,playerDetail:playerDetailView,playerCompare:()=>'<div data-v123-player-compare-mount></div>',scorers:()=>'<div data-v28-scorers-mount></div>',quiniela:()=>'<div data-v561-quiniela-mount></div>',publicationCenter:()=>'<div data-v561-publications-mount></div>',ligaControl:()=>'<div data-v563-control-mount></div>',adminFut:()=>'<div data-v563-control-mount></div>',appInstall:()=>'<div data-v563-app-install-mount></div>',accountRegister:()=>'<div data-v569-auth-mount></div>',accountLogin:()=>'<div data-v569-auth-mount></div>',accountEdit:()=>'<div data-v569-auth-mount></div>',accountSecurity:()=>'<div data-v569-auth-mount></div>',accountPassword:()=>'<div data-v569-auth-mount></div>',accountDevices:()=>'<div data-v569-auth-mount></div>',positions:()=>'<div data-v563-route-alias="positions"></div>',cards:()=>'<div data-v563-route-alias="cards"></div>',suspensions:()=>'<div data-v563-route-alias="suspensions"></div>',moments:momentsView,stats:()=>'<div data-v33-stats-mount></div>',rankings:()=>'<div data-v32-rankings-mount></div>',history:()=>'<div data-v35-history-mount></div>',historyLog:()=>'<section class="v164-history-log" data-v164-history-log><div class="v164-loading">Cargando historial oficial…</div></section>',news:newsView,notices:noticesView,scheduleChanges:scheduleChangesView,newsDetail:newsDetailView,transfers:transfersView,favorites:favoritesView,search:searchView,vote:voteView,notifications:()=>'<div data-v46-notifications-mount></div>',privacy:privacyView,profile:profileView,predictor:predictorView,predictorSix:predictorSixView,quizArena:quizArenaView,quiz:quizArenaView,moreLess:moreLessView,moreLessHub:()=>`<div data-v52-mount></div>`,moreLessGallery:()=>`<div data-v546-moreless-gallery-mount></div>`,venues:v60VenuesView,discipline:()=>'<div data-v94-discipline-mount></div>',disciplina:()=>'<div data-v94-discipline-mount></div>',disciplineTool:()=>'<div data-v94-discipline-mount></div>',leagueTools:leagueToolsView,recruitment:()=>'<div data-v190-recruitment-mount></div>',v38Stats:v38StatsView,v38Weekly:v38WeeklyView,v38Weather:v38WeatherView,v38Alerts:v38AlertsView,tableExport:v64ExportTableView,bracketBuilder:v64BracketView,credentialBuilder:v64CredentialBuilderView,cedulaBuilder:v64CedulaBuilderView,permissionBuilder:()=>'<div data-v635-permission-mount></div>',agendaBuilder:v64AgendaView,motionHub:v64MotionView,suspensionTool:v64SuspensionView,rulebook:rulebookView,matchday:matchdayView,weatherFields:weatherFieldsView,cedulas:cedulasView,cedulaDetail:cedulaDetailView,credential:credentialView,publications:publicationsView,tactics:tacticsView,simulator:simulatorView,jrControl:jrControlView,refereeOffline:()=>'<div data-v562-referee-offline-mount></div>',error:()=>`<div class="empty-state"><div class="empty-illustration error"></div><h2>No pudimos cargar la información</h2><p>Comprueba tu conexión e inténtalo nuevamente.</p><button class="btn outline" data-route="home">Reintentar</button></div>`};
