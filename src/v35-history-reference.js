@@ -77,6 +77,11 @@ const historicalSources=[
     url:''
   },
   {
+    title:'Rol de juegos · 12 y 13 de junio de 2021',
+    note:'Captura aportada por el usuario. Veteranos: Arsenal, Boavista, La Esperanza, Hermanos, Barrio Seco, Dep. Lagartos, PSV, UNAM, Cuenda, Guadalajara, Dynamo y Átomos. Primera Fuerza J1: Malvinas, Galácticos, La Cuadrilla, Hermanos, Tecos, Linces, Abejas, Boavista, Juventus, Chelsea, Napoli, A. Centeno, PSV y Lobos CDG. Fuerza Intermedia J1: El Alto, Barza, Dep. Maravillas, Oklahoma, Tavera Junior, Populares, Pozos, Mazacotes, La Huerta, Mineros, Galaxy, San Antonio de Romerillo y Sección 14. Segunda Fuerza J1: San Antonio FC, La Esperanza Jr., León FC, Galeana, Dep. Cazafantasmas, Osasuna, Galácticos FC, Terrícolas SEDER, San Juan FC, Dep. Cerrito y Tapatío.',
+    url:''
+  },
+  {
     title:'Rol oficial · sábado 30 de abril y domingo 01 de mayo de 2016',
     note:'Captura aportada por el usuario de la Liga Municipal de Futbol “Juventino Rosas A.C.”. Documenta la Copa J6 de Veteranos con Magisterio, Picosos, Dynamo, Cuenda Jr., Valedores, Chelsea, Sección XIV, Hermanos, Guadalajara, Cuenda, La Esperanza y Boavista; el partido Juventus vs Tavera por el Torneo de Pretemporada; y amistosos con Malvinas, A. Centeno, La Pandilla, Olímpicos, Tecos, Morales, Franco Tavera, Populares, DHP, PSV, Galeana, Osasuna, San Antonio, Napoli, El Alto, Birds Eye, Mazacotes, Chelsea, Xolos, Toros, Barza y Galácticos. UNAM aparece como equipo en descanso.',
     url:''
@@ -1003,6 +1008,9 @@ function canonicalHistoricName(name){
     'atl santiago':'Atlético Santiago',
     'atletico de santiago':'Atlético Santiago',
     'atletico santiago':'Atlético Santiago',
+    'tavera junior':'Tavera Jr.',
+    'tavera jr':'Tavera Jr.',
+    'tavera jr.':'Tavera Jr.',
     'dep cazafantasmas':'Deportivo Cazafantasmas',
     'deportivo cazafantasmas':'Deportivo Cazafantasmas',
     'cec celaya':'CEC Celaya',
@@ -1113,6 +1121,10 @@ const historicalTeamEras=[
   {period:'2021',category:'Veteranos · Gran Final de Liga',teams:['La Esperanza','Real Cuenda']},
   {period:'15–16 may 2021 · rol aportado',category:'Dominical · equipo recuperado',teams:['Gatos Negros']},
   {period:'22 may 2021 · rol aportado',category:'Veteranos · jornada oficial',teams:['Arsenal','PSV','Hermanos','Boavista','Barrio Seco','Cuenda']},
+  {period:'12 jun 2021 · rol aportado',category:'Veteranos · jornada oficial',teams:['Arsenal','Boavista','La Esperanza','Hermanos','Barrio Seco','Dep. Lagartos','PSV','UNAM','Cuenda','Guadalajara','Dynamo','Átomos']},
+  {period:'13 jun 2021 · rol aportado',category:'Primera Fuerza J1',teams:['Malvinas','Galácticos','La Cuadrilla','Hermanos','Tecos','Linces','Abejas','Boavista','Juventus','Chelsea','Napoli','A. Centeno','PSV','Lobos CDG']},
+  {period:'13 jun 2021 · rol aportado',category:'Fuerza Intermedia J1',teams:['El Alto','Barza','Dep. Maravillas','Oklahoma','Tavera Junior','Populares','Pozos','Mazacotes','La Huerta','Mineros','Galaxy','San Antonio de Romerillo','Sección 14']},
+  {period:'13 jun 2021 · rol aportado',category:'Segunda Fuerza J1',teams:['San Antonio FC','La Esperanza Jr.','León FC','Galeana','Dep. Cazafantasmas','Osasuna','Galácticos FC','Terrícolas SEDER','San Juan FC','Dep. Cerrito','Tapatío']},
   {period:'23 may 2021 · rol aportado',category:'Dominical · jornada oficial',teams:['Malvinas','Galácticos FC','Napoli','PSV','Tapatío','Galeana','Linces','Chelsea','Mazacotes','Barza','Oklahoma','Osasuna','Populares','Sección XIV','Terrícolas SEDER','San Antonio FC','Tecos','Gatos Negros','Juventus','Boavista','Cerrito de Gasca','La Huerta']},
   {period:'10–11 jul 2021 · rol aportado',category:'Segunda Fuerza J2 · equipo recuperado',teams:['Deportivo Cazafantasmas']},
   {period:'2022',category:'Primera Fuerza · equipos identificados en resultado J19',teams:['Juventus','Lobos CDG']},
