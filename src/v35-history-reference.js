@@ -72,6 +72,11 @@ const historicalSources=[
     url:''
   },
   {
+    title:'Rol oficial · sábado 30 de abril y domingo 01 de mayo de 2016',
+    note:'Captura aportada por el usuario de la Liga Municipal de Futbol “Juventino Rosas A.C.”. Documenta la Copa J6 de Veteranos con Magisterio, Picosos, Dynamo, Cuenda Jr., Valedores, Chelsea, Sección XIV, Hermanos, Guadalajara, Cuenda, La Esperanza y Boavista; el partido Juventus vs Tavera por el Torneo de Pretemporada; y amistosos con Malvinas, A. Centeno, La Pandilla, Olímpicos, Tecos, Morales, Franco Tavera, Populares, DHP, PSV, Galeana, Osasuna, San Antonio, Napoli, El Alto, Birds Eye, Mazacotes, Chelsea, Xolos, Toros, Barza y Galácticos. UNAM aparece como equipo en descanso.',
+    url:''
+  },
+  {
     title:'Rol oficial · Jornada 1 · Copa intersemanal · 8–10 jul 2015',
     note:'Fotografía aportada por el usuario de la Liga Municipal de Futbol Intersemanal de Juventino Rosas. Registra Barcelona, La Esperanza, La Máquina, Santacrucense, Picosos, Apex, Chelsea, Inter, Aldama, Átomos, Juventus, Galácticos, F C V L, Atlético Dipex y PSV; además del amistoso femenil Niupy vs Inter de Cuenda.',
     url:''
@@ -1062,6 +1067,9 @@ const historicalTeamEras=[
   {period:'2015 · Jornada 13',category:'Veteranos',teams:['La Esperanza','Cuenda','Magisterio','Chelsea','Boavista','Picosos','Dynamo','UNAM','Hermanos','Valedores','Sección XIV','Guadalajara']},
   {period:'2015 · Jornada 20',category:'Intermedia',teams:['San Antonio Jr.','Malvinas','Tavera','La Cuadrilla','Centeno','Real Cerrito','Halcones','Barza','Populares','Terrícolas','DHP','Dulces Nombres','Xolos Jaralillo','Puros Cuates']},
   {period:'2016 · Jornada 5',category:'Veteranos · equipos identificados en tabla de goleo',teams:['Cuenda','Hermanos','Picosos','Magisterio','La Esperanza','Dynamo','Boavista','Valedores','UNAM','Cuenda Jr.']},
+  {period:'30 abr 2016 · Copa J6',category:'Veteranos · rol oficial aportado',teams:['Magisterio','Picosos','Dynamo','Cuenda Jr.','Valedores','Chelsea','Sección XIV','Hermanos','Guadalajara','Cuenda','La Esperanza','Boavista']},
+  {period:'01 may 2016 · Torneo de Pretemporada',category:'Juegos dominicales · partido por el torneo de pretemporada',teams:['Juventus','Tavera']},
+  {period:'01 may 2016 · rol de amistosos aportado',category:'Juegos dominicales · amistosos y equipo en descanso',teams:['Malvinas','A. Centeno','La Pandilla','Olímpicos','Tecos','Morales','Franco Tavera','Populares','DHP','PSV','Galeana','Osasuna','San Antonio','Napoli','El Alto','Birds Eye','Mazacotes','Chelsea','Xolos','Toros','Barza','Galácticos','UNAM']},
   {period:'2015 · Torneo de Liga · cortes aportados',category:'Primera Fuerza · tablas J5/J17',teams:['Juventus','Chelsea','Boavista','Olímpicos','Linces','La Esperanza','Napoli','Abejas','El Alto','Mazacotes','La Pandilla','PSV','Cerrito de Gasca','Puros Cuates','San Antonio','Hermanos','Birds Eye']},
   {period:'2015 · Torneo de Liga · corte aportado',category:'Segunda Fuerza · tabla J17',teams:['Osasuna','Oklahoma','Galeana','San Julián','Morales','Toros','Birds Eye Jr.','San José de Allende','Río Grande','Tecos','Herbalife Sta. Cruz','Portugal','San Antonio FC','Inter de Milán']},
   // V713 — rol aportado por el usuario: Liga Municipal de Futbol Intersemanal, Jornada 1, Copa, 8–10 jul 2015.
