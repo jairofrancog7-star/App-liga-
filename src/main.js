@@ -6417,7 +6417,72 @@ function storeView(){
     '<section class="section"><div class="profile-card"><h2>Tienda de clubes</h2><p>Selecciona un equipo para consultar su perfil y preparar su espacio de artículos oficiales de la Liga.</p></div></section>'+
     '<div class="team-list">'+teams.map(t=>'<div class="team-row"><button class="team-main" data-team="'+t.code+'">'+crest(t.code)+'<span><b>'+t.name+'</b><small>Ver club y artículos</small></span></button><button class="mini-btn" data-team="'+t.code+'">Abrir</button></div>').join('')+'</div>';
 }
-function quizArenaView(){return '<section data-v48-arena aria-label="Quiz Arena"></section>';}
+function quizArenaView(){
+  const correct='Juventino';
+  const options=[['A','Pozos'],['B','Rincón de Centeno'],['C','Juventino'],['D','Cuenda']];
+  return `<section class="v48-quiz-arena-page" data-v48-arena data-v48-correct="${correct}" aria-label="Quiz Arena">
+
+    <div class="v48-arena-landing" data-v48-landing>
+      <header class="v48-arena-head">
+        <button type="button" class="v48-back-real" data-route="more" aria-label="Volver a Más">
+          <svg viewBox="0 0 32 32" aria-hidden="true"><path d="M20.5 7.5 12 16l8.5 8.5M12.5 16H27"/></svg>
+        </button>
+        <h1>Quiz Arena</h1>
+      </header>
+
+      <section class="v48-arena-card" aria-label="Entrar a Quiz Arena">
+        <div class="v48-ball-stage" aria-hidden="true"></div>
+        <div class="v48-arena-actions">
+          <button type="button" class="v48-primary" data-route="profile">Inicia sesión para<br>jugar</button>
+          <button type="button" class="v48-secondary" data-v48-start>Prueba como<br>invitado</button>
+        </div>
+      </section>
+
+      <div class="v48-arena-promo" aria-label="Liga Municipal de Fútbol Juventino Rosas">
+        <span class="v48-promo-mark">JR</span>
+        <span><b>LIGA JUVENTINO ROSAS</b><small>Quiz oficial · Fútbol municipal</small></span>
+        <strong>JUGAR</strong>
+      </div>
+
+      <section class="v48-challenge-card">
+        <div>
+          <h2>¡Reta a tus amigos en el Quiz!</h2>
+          <p>Demuestra cuánto sabes de nuestra liga.</p>
+          <button type="button" data-v48-start>Jugar ahora</button>
+        </div>
+        <div class="v48-mini-ball" aria-hidden="true"><i></i></div>
+      </section>
+
+      <button type="button" class="v48-ranking-link" data-route="rankings">
+        <span>Clasificaciones</span><b>›</b>
+      </button>
+    </div>
+
+    <section class="v48-game" data-v48-game aria-label="Quiz de la Liga" aria-hidden="true">
+      <button type="button" class="v48-game-back" data-v48-game-back aria-label="Volver a Quiz Arena">
+        <svg viewBox="0 0 32 32" aria-hidden="true"><path d="M20.5 7.5 12 16l8.5 8.5M12.5 16H27"/></svg>
+      </button>
+
+      <div class="v48-game-logo" aria-label="Quiz de la Liga">
+        <span class="v48-game-quiz">QUIZ</span>
+        <span class="v48-game-de">DE LA</span>
+        <span class="v48-game-liga">LIGA</span>
+        <i class="v48-game-check" aria-hidden="true"></i>
+        <i class="v48-game-left" aria-hidden="true"></i>
+        <i class="v48-game-right" aria-hidden="true"></i>
+      </div>
+      <div class="v48-game-subtitle"><i></i><span>LIGA MUNICIPAL DE FÚTBOL<br>JUVENTINO ROSAS</span><i></i></div>
+
+      <div class="v48-game-card">
+        <p>¿Qué equipo lidera actualmente la tabla?</p>
+        ${options.map(([letter,label])=>`<button type="button" class="v48-game-option" data-v48-quiz="${label}" aria-label="${letter}. ${label}"><span class="v48-game-letter">${letter}</span><span class="v48-game-text">${label}</span><span class="v48-game-ok" aria-hidden="true">✓</span></button>`).join('')}
+      </div>
+
+      <div class="v48-game-stadium" aria-hidden="true"><i></i><i></i><span></span></div>
+      <div class="v48-game-message" aria-live="polite"></div>
+    </section>
+  </section>`;
+}
 
 function moreLessView(){return '<div data-v12-moreless-mount></div>'}function venuesView(){return `<div class="eyebrow">SEDES</div><h1 class="screen-title">Campos</h1><div class="news-list">${[...new Set(teams.map(t=>t.field))].map((v,i)=>`<div class="news-row"><span class="venue-thumb"></span><span><small>Sede ${i+1}</small><b>${v}</b><p>Consulta los próximos partidos programados.</p></span></div>`).join('')}</div>`}
 const views={home:homeView,competition:competitionView,match:matchView,matchCenter:()=>'<div data-v92-direct-mount></div>','match-center':()=>'<div data-v92-direct-mount></div>',video:()=>'<div data-v16-video-mount></div>',fantasy:fantasyView,fantasyTeam:fantasyTeamView,fantasyLeagues:()=>`<div class="eyebrow">FANTASY</div><h1 class="screen-title">Ligas</h1><div class="profile-card"><h2>Compite con amigos</h2><p>Crea una liga privada o únete con un código.</p><div class="button-row"><button class="btn primary" data-action="create-league">Crear liga</button><button class="btn outline" data-action="join-league">Unirme</button></div></div>`,more:moreView,ligaQR:ligaQRView,hospitality:hospitalityView,'club-store':storeView,following:()=>'<div data-v25-following-mount></div>',teams:()=>'<div data-v27-teams-mount></div>',teamDetail:()=>'<div data-v42-team-detail-mount></div>',players:playersView,playerDetail:playerDetailView,playerCompare:()=>'<div data-v123-player-compare-mount></div>',scorers:()=>'<div data-v28-scorers-mount></div>',quiniela:()=>'<div data-v561-quiniela-mount></div>',publicationCenter:()=>'<div data-v561-publications-mount></div>',ligaControl:()=>'<div data-v563-control-mount></div>',adminFut:()=>'<div data-v563-control-mount></div>',appInstall:()=>'<div data-v563-app-install-mount></div>',accountRegister:()=>'<div data-v569-auth-mount></div>',accountLogin:()=>'<div data-v569-auth-mount></div>',accountEdit:()=>'<div data-v569-auth-mount></div>',accountSecurity:()=>'<div data-v569-auth-mount></div>',accountPassword:()=>'<div data-v569-auth-mount></div>',accountDevices:()=>'<div data-v569-auth-mount></div>',positions:()=>'<div data-v563-route-alias="positions"></div>',cards:()=>'<div data-v563-route-alias="cards"></div>',suspensions:()=>'<div data-v563-route-alias="suspensions"></div>',moments:momentsView,stats:()=>'<div data-v33-stats-mount></div>',rankings:()=>'<div data-v32-rankings-mount></div>',history:()=>'<div data-v35-history-mount></div>',historyLog:()=>'<section class="v164-history-log" data-v164-history-log><div class="v164-loading">Cargando historial oficial…</div></section>',news:newsView,notices:noticesView,scheduleChanges:scheduleChangesView,newsDetail:newsDetailView,transfers:transfersView,favorites:favoritesView,search:searchView,vote:voteView,notifications:()=>'<div data-v46-notifications-mount></div>',privacy:privacyView,profile:profileView,predictor:predictorView,predictorSix:predictorSixView,quizArena:quizArenaView,quiz:quizArenaView,moreLess:moreLessView,moreLessHub:()=>`<div data-v52-mount></div>`,moreLessGallery:()=>`<div data-v546-moreless-gallery-mount></div>`,venues:v60VenuesView,discipline:()=>'<div data-v94-discipline-mount></div>',disciplina:()=>'<div data-v94-discipline-mount></div>',disciplineTool:()=>'<div data-v94-discipline-mount></div>',leagueTools:leagueToolsView,recruitment:()=>'<div data-v190-recruitment-mount></div>',v38Stats:v38StatsView,v38Weekly:v38WeeklyView,v38Weather:v38WeatherView,v38Alerts:v38AlertsView,tableExport:v64ExportTableView,bracketBuilder:v64BracketView,credentialBuilder:v64CredentialBuilderView,cedulaBuilder:v64CedulaBuilderView,permissionBuilder:()=>'<div data-v635-permission-mount></div>',agendaBuilder:v64AgendaView,motionHub:v64MotionView,suspensionTool:v64SuspensionView,rulebook:rulebookView,matchday:matchdayView,weatherFields:weatherFieldsView,cedulas:cedulasView,cedulaDetail:cedulaDetailView,credential:credentialView,publications:publicationsView,tactics:tacticsView,simulator:simulatorView,jrControl:jrControlView,refereeOffline:()=>'<div data-v562-referee-offline-mount></div>',error:()=>`<div class="empty-state"><div class="empty-illustration error"></div><h2>No pudimos cargar la información</h2><p>Comprueba tu conexión e inténtalo nuevamente.</p><button class="btn outline" data-route="home">Reintentar</button></div>`};
