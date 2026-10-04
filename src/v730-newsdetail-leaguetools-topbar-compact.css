@@ -1,0 +1,202 @@
+/* V730 — Barra superior compacta de referencia.
+   Aplica a Noticias > detalle (captura con "LIGA · ACTUALIZADO HOY")
+   y a Herramientas de la Liga. Usa el fondo azul/neón + trofeo tenue de la
+   referencia, pero con menor altura vertical e iconos más pequeños. */
+@media(max-width:1023px){
+  html body:is([data-app-route="newsDetail"],[data-app-route="leagueTools"]) #app > .topbar,
+  html body:is([data-app-route="newsDetail"],[data-app-route="leagueTools"]) .app-shell > .topbar{
+    position:sticky!important;
+    top:0!important;
+    z-index:2147483000!important;
+    display:block!important;
+    visibility:visible!important;
+    opacity:1!important;
+    width:100%!important;
+    height:48px!important;
+    min-height:48px!important;
+    max-height:48px!important;
+    margin:0!important;
+    padding:0!important;
+    overflow:hidden!important;
+    isolation:isolate!important;
+    border:0!important;
+    border-bottom:1px solid rgba(83,158,255,.34)!important;
+    box-shadow:none!important;
+    background:
+      radial-gradient(145px 54px at 9% 0%,rgba(102,235,255,.55) 0%,rgba(25,164,255,.31) 31%,transparent 73%),
+      radial-gradient(150px 58px at 70% -8%,rgba(203,255,255,.50) 0%,rgba(28,196,255,.27) 22%,rgba(14,99,246,.17) 48%,transparent 73%),
+      linear-gradient(180deg,#0b4bea 0%,#0a35cf 32%,#091f9f 66%,#070e70 100%)!important;
+  }
+
+  /* El título pertenece al contenido; la barra queda limpia. */
+  html body:is([data-app-route="newsDetail"],[data-app-route="leagueTools"]) .topbar::after{
+    content:none!important;
+    display:none!important;
+  }
+
+  /* Fondo de líneas/neón de la barra de referencia. */
+  html body:is([data-app-route="newsDetail"],[data-app-route="leagueTools"]) .topbar .wordmark{
+    display:block!important;
+    visibility:visible!important;
+    position:absolute!important;
+    inset:0!important;
+    width:auto!important;
+    height:auto!important;
+    margin:0!important;
+    padding:0!important;
+    border:0!important;
+    color:transparent!important;
+    font-size:0!important;
+    line-height:0!important;
+    pointer-events:none!important;
+    overflow:hidden!important;
+    z-index:0!important;
+    background:
+      radial-gradient(145px 43px at 70% 5%,rgba(23,230,255,.18),transparent 73%),
+      linear-gradient(180deg,transparent 0 57%,rgba(3,8,89,.20) 100%)!important;
+  }
+
+  html body:is([data-app-route="newsDetail"],[data-app-route="leagueTools"]) .topbar .wordmark::before{
+    content:""!important;
+    display:block!important;
+    position:absolute!important;
+    left:-9%!important;
+    right:-9%!important;
+    top:-98%!important;
+    bottom:-112%!important;
+    opacity:.70!important;
+    pointer-events:none!important;
+    background:
+      radial-gradient(ellipse at 8% 55%,transparent 0 40%,rgba(43,225,255,.55) 40.8%,rgba(239,255,255,.72) 41.45%,rgba(23,164,255,.42) 42.15%,transparent 43.2%),
+      radial-gradient(ellipse at 73% 2%,transparent 0 35%,rgba(54,237,255,.42) 35.7%,rgba(230,255,255,.56) 36.3%,transparent 37.3%),
+      linear-gradient(153deg,transparent 0 29%,rgba(37,220,255,.28) 29.3%,rgba(247,255,255,.54) 29.8%,rgba(43,220,255,.36) 30.2%,transparent 30.9% 100%)!important;
+    filter:drop-shadow(0 0 3px rgba(42,225,255,.38))!important;
+    transform:rotate(-1.5deg)!important;
+  }
+
+  /* Trofeo tenue de la segunda referencia, reducido para no dominar la barra. */
+  html body:is([data-app-route="newsDetail"],[data-app-route="leagueTools"]) .topbar::before{
+    content:""!important;
+    display:block!important;
+    position:absolute!important;
+    left:70px!important;
+    top:4px!important;
+    width:39px!important;
+    height:39px!important;
+    z-index:1!important;
+    pointer-events:none!important;
+    opacity:.30!important;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 180 145'%3E%3Cg fill='none' stroke='%238ad7ff' stroke-width='4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M53 18h74l-5 17H58zM61 35h58l-5 36c-2 18-11 28-24 34-13-6-22-16-24-34z'/%3E%3Cpath d='M58 43H42c-7 0-11 6-9 13 4 15 14 24 31 28M122 43h16c7 0 11 6 9 13-4 15-14 24-31 28'/%3E%3Cpath d='M90 105v17M72 132h36M78 122h24l6 10H72z'/%3E%3Ccircle cx='90' cy='65' r='20'/%3E%3Cpath d='m90 52 8 6-3 10H85l-3-10zM85 68l-9 6M95 68l9 6M82 58l-8-2M98 58l8-2M90 45v7'/%3E%3C/g%3E%3C/svg%3E")!important;
+    background-repeat:no-repeat!important;
+    background-position:center!important;
+    background-size:contain!important;
+    filter:drop-shadow(0 0 4px rgba(45,210,255,.36))!important;
+  }
+
+  /* Flecha más compacta y pegada al lado izquierdo. */
+  html body:is([data-app-route="newsDetail"],[data-app-route="leagueTools"]) .topbar .back-button{
+    display:block!important;
+    visibility:visible!important;
+    opacity:1!important;
+    position:absolute!important;
+    left:8px!important;
+    top:13px!important;
+    width:22px!important;
+    height:22px!important;
+    min-width:22px!important;
+    min-height:22px!important;
+    max-width:22px!important;
+    max-height:22px!important;
+    margin:0!important;
+    padding:0!important;
+    border:0!important;
+    border-radius:0!important;
+    background-color:transparent!important;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M14.5 5.5 8 12l6.5 6.5M8 12h12' fill='none' stroke='%23fff' stroke-width='2.05' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E")!important;
+    background-repeat:no-repeat!important;
+    background-position:center!important;
+    background-size:22px 22px!important;
+    box-shadow:none!important;
+    filter:none!important;
+    color:transparent!important;
+    z-index:10!important;
+    transform:none!important;
+  }
+
+  /* Perfil solicitado más chico. */
+  html body:is([data-app-route="newsDetail"],[data-app-route="leagueTools"]) .topbar .profile-button{
+    display:block!important;
+    visibility:visible!important;
+    opacity:1!important;
+    position:absolute!important;
+    right:10px!important;
+    top:14px!important;
+    width:20px!important;
+    height:20px!important;
+    min-width:20px!important;
+    min-height:20px!important;
+    max-width:20px!important;
+    max-height:20px!important;
+    margin:0!important;
+    padding:0!important;
+    border:0!important;
+    border-radius:0!important;
+    background-color:transparent!important;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Ccircle cx='12' cy='12' r='9.6' fill='none' stroke='%23fff' stroke-width='1.85'/%3E%3Ccircle cx='12' cy='8.1' r='2.85' fill='none' stroke='%23fff' stroke-width='1.85'/%3E%3Cpath d='M5.35 19.15c1.55-3.35 3.76-4.9 6.65-4.9s5.1 1.55 6.65 4.9' fill='none' stroke='%23fff' stroke-width='1.85' stroke-linecap='round'/%3E%3C/svg%3E")!important;
+    background-repeat:no-repeat!important;
+    background-position:center!important;
+    background-size:20px 20px!important;
+    box-shadow:none!important;
+    filter:none!important;
+    color:transparent!important;
+    z-index:10!important;
+    transform:none!important;
+  }
+
+  html body:is([data-app-route="newsDetail"],[data-app-route="leagueTools"]) .topbar .back-button svg,
+  html body:is([data-app-route="newsDetail"],[data-app-route="leagueTools"]) .topbar .profile-button svg,
+  html body:is([data-app-route="newsDetail"],[data-app-route="leagueTools"]) .topbar .back-button::before,
+  html body:is([data-app-route="newsDetail"],[data-app-route="leagueTools"]) .topbar .back-button::after,
+  html body:is([data-app-route="newsDetail"],[data-app-route="leagueTools"]) .topbar .profile-button::before,
+  html body:is([data-app-route="newsDetail"],[data-app-route="leagueTools"]) .topbar .profile-button::after{
+    display:none!important;
+    content:none!important;
+  }
+}
+
+@media(max-width:390px){
+  html body:is([data-app-route="newsDetail"],[data-app-route="leagueTools"]) #app > .topbar,
+  html body:is([data-app-route="newsDetail"],[data-app-route="leagueTools"]) .app-shell > .topbar{
+    height:44px!important;
+    min-height:44px!important;
+    max-height:44px!important;
+  }
+  html body:is([data-app-route="newsDetail"],[data-app-route="leagueTools"]) .topbar::before{
+    left:62px!important;
+    top:4px!important;
+    width:35px!important;
+    height:35px!important;
+  }
+  html body:is([data-app-route="newsDetail"],[data-app-route="leagueTools"]) .topbar .back-button{
+    left:7px!important;
+    top:12px!important;
+    width:20px!important;
+    height:20px!important;
+    min-width:20px!important;
+    min-height:20px!important;
+    max-width:20px!important;
+    max-height:20px!important;
+    background-size:20px 20px!important;
+  }
+  html body:is([data-app-route="newsDetail"],[data-app-route="leagueTools"]) .topbar .profile-button{
+    right:9px!important;
+    top:13px!important;
+    width:18px!important;
+    height:18px!important;
+    min-width:18px!important;
+    min-height:18px!important;
+    max-width:18px!important;
+    max-height:18px!important;
+    background-size:18px 18px!important;
+  }
+}
