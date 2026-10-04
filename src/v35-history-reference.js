@@ -57,6 +57,11 @@ const historicalSources=[
     url:'https://www.facebook.com/golazo.liga'
   },
   {
+    title:'Rol Primera Fuerza J9 · domingo 05 de julio de 2015',
+    note:'Captura aportada por el usuario con el rol oficial de Primera Fuerza J9. Además de documentar los equipos, conserva varios escudos históricos usados en esa etapa: Mazacotes, El Alto, La Pandilla, Cerrito de Gasca, Puros Cuates, La Esperanza, Napoli, Juventus, Hermanos, Linces, San Antonio de Romerillo, Abejas, Boavista, Chelsea y PSV; Olímpicos aparece en descanso.',
+    url:''
+  },
+  {
     title:'Rol amistoso · sábado 11 y domingo 12 de agosto',
     note:'Captura aportada por el usuario. Registra amistosos de Veteranos y categoría dominical con Valedores, Hermanos, Chelsea, Guadalajara, Cuenda, Magisterio, Sección XIV, PSV, Napoli, San José de Allende, Galaxy, Oklahoma, Malvinas, Mineros, Barza, La Cuadrilla, World 11, Tecos, La Esperanza Jr., Mazacotes, Boavista, Toros, Galeana, Puros Cuates, Abejas, Dep. Cerrito, El Alto, Tavera, La Huerta, San Antonio de Romerillo y Tavera Jr. El año no se fuerza porque no aparece visible en la fotografía.',
     url:''
@@ -235,6 +240,18 @@ const APP_HISTORIC_LOGOS={
   'mazacotes fc':'./assets/history/team-logos/legacy-2015-mazacotes.webp',
   'cerrito':'./assets/history/team-logos/legacy-2015-cerrito.webp',
   'cerrito de g':'./assets/history/team-logos/legacy-2015-cerrito.webp',
+  'cerrito de gasca':'./assets/history/team-logos/legacy-2015-cerrito.webp',
+  'real cerrito':'./assets/history/team-logos/legacy-2015-cerrito.webp',
+  'real cerrito de gasca':'./assets/history/team-logos/legacy-2015-cerrito.webp',
+  'deportivo cerrito':'./assets/history/team-logos/legacy-2015-cerrito.webp',
+  'dep cerrito':'./assets/history/team-logos/legacy-2015-cerrito.webp',
+  /* V714 — escudos antiguos visibles en el rol oficial del 05 jul 2015. */
+  'el alto':'./assets/history/team-logos/legacy-2015-el-alto.webp',
+  'juventus':'./assets/history/team-logos/legacy-2015-juventus.webp',
+  'linces':'./assets/history/team-logos/legacy-2015-linces.webp',
+  'san antonio':'./assets/history/team-logos/legacy-2015-san-antonio-romerillo.webp',
+  'san antonio de romerillo':'./assets/history/team-logos/legacy-2015-san-antonio-romerillo.webp',
+  'sn antonio':'./assets/history/team-logos/legacy-2015-san-antonio-romerillo.webp',
   'salvajes':HIST_USER_LOGO_SALVAJES,
   'salvaje':HIST_USER_LOGO_SALVAJES,
   'tecos':HIST_USER_LOGO_TECOS,
@@ -1033,6 +1050,7 @@ const historicalTeamEras=[
   {period:'23–24 ago 2014 · rol aportado',category:'Primera Fuerza J17',teams:['Birds Eye','Juventus','El Alto','San Antonio','Olímpicos','Cerrito de Gasca','Mazacotes','PSV','Jaralillo','Abejas','A. Centeno','Hermanos','Linces','La Esperanza','Boavista','Chelsea']},
   {period:'23–24 ago 2014 · rol aportado',category:'Intermedia J17',teams:['Terrícolas','San José de la Montaña','Dulces Nombres','Barza','La Pandilla','Atlas','Real Cerrito','Puros Cuates','Halcones de Cuenda','Deportivo Pozos','Malvinas','La Cuadrilla','Valencia','Populares','San Antonio Jr.']},
   {period:'23–24 ago 2014 · rol aportado',category:'Segunda Fuerza J17',teams:['Osasuna','Aldama','Morales','Río Grande','Continental','Birds Eye Jr.','Oklahoma','Tavera','DHP','San José de Allende','San Julián','Toros','San Juan FC','Novatos','Herbalife FC','Cerritos']},
+  {period:'05 jul 2015 · Primera Fuerza J9',category:'Primera Fuerza · rol oficial aportado',teams:['Mazacotes','El Alto','La Pandilla','Cerrito de Gasca','Puros Cuates','La Esperanza','Napoli','Juventus','Hermanos','Linces','San Antonio de Romerillo','Abejas','Boavista','Chelsea','Birds Eye','PSV','Olímpicos']},
   {period:'2015–2016',category:'Liga / Intermedia / Veteranos',teams:['San Antonio Jr.','Malvinas','Tavera','La Cuadrilla','Centeno','Real Cerrito de Gasca','Halcones de Cuenda','Barza','Populares','Terrícolas','DHP','Dulces Nombres','Xolos Jaralillo','La Esperanza','Cuenda','Magisterio','Chelsea','Boavista','Picosos','Dynamo','UNAM','Hermanos','Valedores','Sección XIV','Guadalajara']},
   {period:'2015 · Jornada 13',category:'Veteranos',teams:['La Esperanza','Cuenda','Magisterio','Chelsea','Boavista','Picosos','Dynamo','UNAM','Hermanos','Valedores','Sección XIV','Guadalajara']},
   {period:'2015 · Jornada 20',category:'Intermedia',teams:['San Antonio Jr.','Malvinas','Tavera','La Cuadrilla','Centeno','Real Cerrito','Halcones','Barza','Populares','Terrícolas','DHP','Dulces Nombres','Xolos Jaralillo','Puros Cuates']},
