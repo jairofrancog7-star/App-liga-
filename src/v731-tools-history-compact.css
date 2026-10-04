@@ -1,0 +1,314 @@
+/* V731 — Herramientas compactas + botones de detalle de Historia.
+   Pedido: volver a cuadros pequeños para entrar rápido, sin perder explicaciones. */
+
+@media(max-width:429px){
+  body[data-app-route="leagueTools"] .v726-tools-page{
+    padding:8px 8px calc(104px + env(safe-area-inset-bottom))!important;
+  }
+
+  body[data-app-route="leagueTools"] .v726-tools-hero{
+    padding:12px 11px 11px!important;
+    border-radius:17px!important;
+  }
+  body[data-app-route="leagueTools"] .v726-tools-hero::before{
+    width:108px!important;
+    height:108px!important;
+    right:-44px!important;
+    top:-54px!important;
+  }
+  body[data-app-route="leagueTools"] .v726-hero-kicker{
+    font-size:8px!important;
+    letter-spacing:.13em!important;
+  }
+  body[data-app-route="leagueTools"] .v726-tools-hero h1{
+    margin-top:6px!important;
+    max-width:270px!important;
+    font-size:22px!important;
+    line-height:1!important;
+  }
+  body[data-app-route="leagueTools"] .v726-tools-hero p{
+    margin-top:7px!important;
+    font-size:9.5px!important;
+    line-height:1.35!important;
+  }
+  body[data-app-route="leagueTools"] .v726-hero-pills{
+    gap:5px!important;
+    margin-top:9px!important;
+  }
+  body[data-app-route="leagueTools"] .v726-hero-pills span{
+    padding:5px 7px!important;
+    font-size:7.5px!important;
+  }
+
+  body[data-app-route="leagueTools"] .v726-quick-section{
+    margin-top:9px!important;
+    padding:9px!important;
+    border-radius:17px!important;
+  }
+  body[data-app-route="leagueTools"] .v726-quick-head{
+    align-items:start!important;
+    gap:7px!important;
+    margin-bottom:7px!important;
+  }
+  body[data-app-route="leagueTools"] .v726-quick-head small{
+    font-size:7.5px!important;
+  }
+  body[data-app-route="leagueTools"] .v726-quick-head h2{
+    margin-top:3px!important;
+    font-size:15px!important;
+  }
+  body[data-app-route="leagueTools"] .v726-quick-head p{
+    max-width:120px!important;
+    font-size:7.5px!important;
+    line-height:1.2!important;
+  }
+  body[data-app-route="leagueTools"] .v726-quick-grid{
+    grid-template-columns:repeat(3,minmax(0,1fr))!important;
+    gap:6px!important;
+  }
+  body[data-app-route="leagueTools"] .v726-quick-card{
+    min-height:78px!important;
+    display:flex!important;
+    flex-direction:column!important;
+    align-items:center!important;
+    justify-content:flex-start!important;
+    gap:4px!important;
+    padding:7px 5px!important;
+    border-radius:13px!important;
+    text-align:center!important;
+  }
+  body[data-app-route="leagueTools"] .v726-quick-icon{
+    width:31px!important;
+    height:31px!important;
+    flex:0 0 31px!important;
+    border-radius:10px!important;
+  }
+  body[data-app-route="leagueTools"] .v726-quick-icon svg{
+    width:17px!important;
+    height:17px!important;
+  }
+  body[data-app-route="leagueTools"] .v726-quick-card b{
+    font-size:10px!important;
+    line-height:1.05!important;
+  }
+  body[data-app-route="leagueTools"] .v726-quick-card small{
+    margin-top:2px!important;
+    font-size:7.4px!important;
+    line-height:1.15!important;
+    display:-webkit-box!important;
+    -webkit-line-clamp:2!important;
+    -webkit-box-orient:vertical!important;
+    overflow:hidden!important;
+  }
+  body[data-app-route="leagueTools"] .v726-quick-card i{
+    display:none!important;
+  }
+
+  body[data-app-route="leagueTools"] .v612-tools-entry.v726-admin-entry{
+    min-height:58px!important;
+    grid-template-columns:34px minmax(0,1fr) 13px!important;
+    grid-template-rows:auto auto!important;
+    gap:1px 8px!important;
+    margin:8px 0 0!important;
+    padding:8px 10px!important;
+    border-radius:15px!important;
+  }
+  body[data-app-route="leagueTools"] .v726-admin-entry>span{
+    grid-column:1!important;
+    grid-row:1 / 3!important;
+    width:34px!important;
+    height:34px!important;
+    align-self:center!important;
+    border-radius:10px!important;
+  }
+  body[data-app-route="leagueTools"] .v726-admin-entry svg{
+    width:18px!important;
+    height:18px!important;
+  }
+  body[data-app-route="leagueTools"] .v726-admin-entry b{
+    grid-column:2!important;
+    grid-row:1!important;
+    align-self:end!important;
+    font-size:11.5px!important;
+    line-height:1.05!important;
+  }
+  body[data-app-route="leagueTools"] .v726-admin-entry small{
+    grid-column:2!important;
+    grid-row:2!important;
+    align-self:start!important;
+    margin-top:1px!important;
+    font-size:7.8px!important;
+    line-height:1.12!important;
+    white-space:normal!important;
+  }
+  body[data-app-route="leagueTools"] .v726-admin-entry i{
+    grid-column:3!important;
+    grid-row:1 / 3!important;
+    align-self:center!important;
+    font-size:18px!important;
+  }
+
+  body[data-app-route="leagueTools"] .v726-tool-section{
+    margin-top:9px!important;
+    padding:8px!important;
+    border-radius:17px!important;
+  }
+  body[data-app-route="leagueTools"] .v726-section-head{
+    grid-template-columns:32px minmax(0,1fr)!important;
+    gap:7px!important;
+    margin-bottom:7px!important;
+    padding:0 1px 7px!important;
+  }
+  body[data-app-route="leagueTools"] .v726-section-icon{
+    width:32px!important;
+    height:32px!important;
+    border-radius:10px!important;
+  }
+  body[data-app-route="leagueTools"] .v726-section-icon svg{
+    width:18px!important;
+    height:18px!important;
+  }
+  body[data-app-route="leagueTools"] .v726-section-head small{
+    font-size:7px!important;
+  }
+  body[data-app-route="leagueTools"] .v726-section-head h2{
+    margin-top:2px!important;
+    font-size:14px!important;
+    line-height:1.02!important;
+  }
+  body[data-app-route="leagueTools"] .v726-section-head p{
+    margin-top:3px!important;
+    font-size:8px!important;
+    line-height:1.18!important;
+  }
+
+  body[data-app-route="leagueTools"] .v726-tool-grid{
+    grid-template-columns:repeat(2,minmax(0,1fr))!important;
+    gap:6px!important;
+  }
+  body[data-app-route="leagueTools"] .v726-tool-card{
+    min-height:88px!important;
+    display:block!important;
+    position:relative!important;
+    padding:7px 7px 7px 7px!important;
+    border-radius:13px!important;
+  }
+  body[data-app-route="leagueTools"] .v726-tool-card::before{
+    left:7px!important;
+    right:7px!important;
+    top:0!important;
+    bottom:auto!important;
+    width:auto!important;
+    height:2px!important;
+  }
+  body[data-app-route="leagueTools"] .v726-tool-icon{
+    width:30px!important;
+    height:30px!important;
+    margin:0 0 5px!important;
+    border-radius:9px!important;
+  }
+  body[data-app-route="leagueTools"] .v726-tool-icon svg{
+    width:17px!important;
+    height:17px!important;
+  }
+  body[data-app-route="leagueTools"] .v726-tool-copy{
+    width:100%!important;
+    padding-right:11px!important;
+  }
+  body[data-app-route="leagueTools"] .v726-tool-tag{
+    margin:0 0 3px!important;
+    padding:2px 5px!important;
+    font-size:6.2px!important;
+    letter-spacing:.08em!important;
+  }
+  body[data-app-route="leagueTools"] .v726-tool-copy b{
+    font-size:11.3px!important;
+    line-height:1.03!important;
+  }
+  body[data-app-route="leagueTools"] .v726-tool-desc{
+    margin-top:3px!important;
+    font-size:7.6px!important;
+    line-height:1.15!important;
+    display:-webkit-box!important;
+    -webkit-line-clamp:2!important;
+    -webkit-box-orient:vertical!important;
+    overflow:hidden!important;
+  }
+  body[data-app-route="leagueTools"] .v726-tool-arrow{
+    position:absolute!important;
+    right:6px!important;
+    bottom:6px!important;
+    font-size:16px!important;
+  }
+}
+
+/* En anchos intermedios conservar dos columnas, pero sin volver a tarjetas altas. */
+@media(min-width:430px) and (max-width:1023px){
+  body[data-app-route="leagueTools"] .v726-tool-card{
+    min-height:94px!important;
+    grid-template-columns:38px minmax(0,1fr) 12px!important;
+    gap:8px!important;
+    padding:9px!important;
+  }
+  body[data-app-route="leagueTools"] .v726-tool-icon{
+    width:38px!important;
+    height:38px!important;
+  }
+  body[data-app-route="leagueTools"] .v726-tool-icon svg{
+    width:20px!important;
+    height:20px!important;
+  }
+  body[data-app-route="leagueTools"] .v726-tool-copy b{font-size:12.5px!important}
+  body[data-app-route="leagueTools"] .v726-tool-desc{font-size:8.5px!important}
+}
+
+/* V731 — Historia: botón Ver detalles en tarjetas de texto/records/memoria,
+   nunca encima de la fotografía. */
+@media(max-width:1023px){
+  body[data-app-route="history"] .v731-history-details{
+    appearance:none!important;
+    min-height:32px!important;
+    display:inline-flex!important;
+    align-items:center!important;
+    justify-content:center!important;
+    gap:6px!important;
+    margin:8px 0 0!important;
+    padding:7px 10px!important;
+    border:1px solid rgba(42,222,244,.45)!important;
+    border-radius:11px!important;
+    background:rgba(17,92,190,.22)!important;
+    color:#2ce3ef!important;
+    font:850 9px/1 Inter,Roboto,Arial,sans-serif!important;
+    box-shadow:inset 0 1px 0 rgba(255,255,255,.06)!important;
+    touch-action:manipulation!important;
+    position:relative!important;
+    z-index:6!important;
+  }
+  body[data-app-route="history"] .v731-history-details i{
+    font-style:normal!important;
+    font-size:14px!important;
+  }
+  body[data-app-route="history"] .v731-history-card:not(.is-v731-open) .v731-history-detail-copy{
+    display:none!important;
+  }
+  body[data-app-route="history"] .v731-history-card.is-v731-open .v731-history-detail-copy{
+    display:block!important;
+  }
+  body[data-app-route="history"] .v370-legacy-team.v731-history-card{
+    padding-bottom:10px!important;
+  }
+  body[data-app-route="history"] .v370-legacy-team .v731-history-details{
+    width:100%!important;
+    margin-top:7px!important;
+  }
+  body[data-app-route="history"] .v370-legacy-team .v731-legacy-extra{
+    width:100%!important;
+    margin-top:7px!important;
+    padding:7px!important;
+    border-radius:10px!important;
+    background:rgba(5,14,83,.45)!important;
+    color:#aebde5!important;
+    font-size:7.6px!important;
+    line-height:1.25!important;
+  }
+}
