@@ -4124,3 +4124,70 @@
     backdrop-filter:blur(6px)!important;
   }
 }
+
+
+/* V731 — tablas de goleo recuperadas del ZIP */
+@media(max-width:1023px){
+  .v731-scorer-snapshots{
+    display:grid;
+    gap:12px;
+    margin-top:10px;
+  }
+  .v731-scorer-table{
+    margin-bottom:0!important;
+  }
+  .v731-scorer-head,
+  .v731-scorer-row{
+    display:grid;
+    grid-template-columns:34px minmax(0,1.55fr) minmax(80px,.9fr) 46px;
+    align-items:center;
+    gap:6px;
+    padding:0 10px;
+  }
+  .v731-scorer-head{
+    min-height:31px;
+    color:#9ea8d3;
+    font-size:7.8px;
+    font-weight:850;
+    border-bottom:1px solid rgba(255,255,255,.09);
+  }
+  .v731-scorer-row{
+    min-height:44px;
+    border-bottom:1px solid rgba(255,255,255,.065);
+  }
+  .v731-scorer-row:last-child{border-bottom:0}
+  .v731-scorer-row>span{
+    color:#aeb7da;
+    font-size:9px;
+    text-align:center;
+  }
+  .v731-scorer-row>b{
+    min-width:0;
+    color:#fff;
+    font-size:10px;
+    line-height:1.08;
+  }
+  .v731-scorer-row>em{
+    min-width:0;
+    color:#aeb7d6;
+    font-size:9px;
+    line-height:1.1;
+    font-style:normal;
+  }
+  .v731-scorer-row>strong{
+    color:#22e7f2;
+    font-size:10px;
+    text-align:right;
+    font-variant-numeric:tabular-nums;
+  }
+}
+@media(max-width:380px){
+  .v731-scorer-head,
+  .v731-scorer-row{
+    grid-template-columns:30px minmax(0,1.6fr) minmax(70px,.85fr) 40px;
+    padding:0 8px;
+    gap:5px;
+  }
+  .v731-scorer-row>b{font-size:9.4px}
+  .v731-scorer-row>em{font-size:8.4px}
+}
