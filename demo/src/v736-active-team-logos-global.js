@@ -1,9 +1,8 @@
-/* V741 — Escudos activos 2026 aportados por el usuario.
-   Fuente global para equipos activos; no altera escudos históricos de época. */
+/* V742 — Escudos activos 2026 globales en todas las secciones.\n   Los escudos actuales tienen prioridad también en Historia, Records y pantallas derivadas. */
 (function(){
 'use strict';
-if(window.__LJR_V741_ACTIVE_TEAM_LOGOS__)return;
-window.__LJR_V741_ACTIVE_TEAM_LOGOS__=true;
+if(window.__LJR_V742_ACTIVE_TEAM_LOGOS__)return;
+window.__LJR_V742_ACTIVE_TEAM_LOGOS__=true;
 
 const BASE='https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/';
 const APP_BASE='https://raw.githubusercontent.com/jairofrancog7-star/App-liga-/main/';
@@ -50,7 +49,7 @@ const LOGOS={
   'barza':'https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/Barcelona_amoaiq',
   'dep-maravillas':'https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/MAravillasFC_mnmhwx',
   'populares':'https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/PopularesFC_onellt',
-  'promesas-fc':'https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/PromesasFC_w4lwk8',
+  'promesas-fc':APP_BASE+'assets/official-logos/promesas-fc-2026.webp',
   'capibaras':'https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/Capibara_vocmbl',
   'la-canchita-deportes':'https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/LaCanchita_enf6ca',
   'galeana':'https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/Galeana_kujrh0',
@@ -165,7 +164,7 @@ function loadUserLogoDesigns(){
     if(reg)reg.active2026={...LOGOS};
     return true;
   }).catch(err=>{
-    console.warn('[V741] No se pudieron cargar los tres diseños activos aportados por el usuario',err);
+    console.warn('[V742] No se pudieron cargar los tres diseños activos aportados por el usuario',err);
     return false;
   });
   return userLogoLoad;
@@ -195,7 +194,6 @@ function teamFrom(img){
   const direct=[img.alt,img.title,img.dataset?.team,img.dataset?.v62Team,img.dataset?.v42CompareTeam,img.dataset?.v27Team]
     .filter(v=>String(v||'').trim());
   for(const v of direct)if(keyFor(v))return String(v).trim();
-  if(direct.length)return '';
 
   const owner=img.closest?.('[data-team],[data-v62-team],[data-v42-compare-team],[data-v27-team]');
   if(owner){
@@ -222,34 +220,41 @@ function looksLogo(img){
   return /logo|crest|badge|shield|team/.test(cls)||/logos|official-logos|\/teams\/|branding|cloudinary/.test(src)||!!sourceKey(src);
 }
 function patchImg(img){
-  if(!(img instanceof HTMLImageElement)||historical(img)||playerPhoto(img))return;
+  if(!(img instanceof HTMLImageElement)||playerPhoto(img))return;
   const raw=String(img.currentSrc||img.src||'');
-  if(/\/assets\/history\/archive-v\d+\//i.test(raw))return;
   /* V741 — corrección global por identidad del equipo.
      No reutilizar sourceKey(raw) como identidad: si el src ya está cruzado
      (ej. San José en una tarjeta de Napoli), perpetuaría el error. */
-  const team=teamFrom(img);
-  if(!team||!looksLogo(img))return;
-  const src=logoForTeam(team);
+  let team=teamFrom(img);
+  let key=keyFor(team);
+  if(!key){
+    const bySource=sourceKey(raw);
+    if(['abejas','boavista','cuenda','promesas-fc'].includes(bySource)){
+      key=bySource;
+      team=team||bySource;
+    }
+  }
+  if(!key||!looksLogo(img))return;
+  const src=LOGOS[key];
   if(!src)return;
   const wanted=new URL(src,document.baseURI).href;
   if(String(img.src||'')!==wanted){
     img.src=src;
     img.removeAttribute('srcset');
   }
-  img.alt=team;
-  img.dataset.v741ActiveLogo=keyFor(team)||norm(team);
+  if(team)img.alt=team;
+  img.dataset.v742ActiveLogo=key;
   img.style.setProperty('object-fit','contain');
   img.style.setProperty('object-position','center');
 }
 function patch(root=document){root.querySelectorAll?.('img').forEach(patchImg);}
 function installRegistry(){
   const reg=window.LJR_TEAM_LOGOS;
-  if(!reg||reg.__v741Wrapped)return;
+  if(!reg||reg.__v742Wrapped)return;
   const previous=typeof reg.get==='function'?reg.get.bind(reg):()=> '';
   reg.get=function(name){const k=keyFor(name);return (k&&LOGOS[k])||previous(name);};
   reg.active2026={...LOGOS};
-  reg.__v741Wrapped=true;
+  reg.__v742Wrapped=true;
 }
 function sync(){
   installRegistry();

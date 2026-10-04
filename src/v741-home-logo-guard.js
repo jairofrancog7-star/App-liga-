@@ -1,11 +1,11 @@
-/* V741 — Home logo guard.
+/* V742 — Home logo guard.
    Keeps each Primera Fuerza card/row bound to its own official crest. */
 (function(){
 'use strict';
-if(window.__LJR_V741_HOME_LOGO_GUARD__)return;
-window.__LJR_V741_HOME_LOGO_GUARD__=true;
+if(window.__LJR_V742_HOME_LOGO_GUARD__)return;
+window.__LJR_V742_HOME_LOGO_GUARD__=true;
 
-const BASE='https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/';
+const BASE='https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/';\nconst APP_BASE='https://raw.githubusercontent.com/jairofrancog7-star/App-liga-/main/';
 const LOGOS={
   'san jose fc':BASE+'assets/official-logos/san-jose-fc.png',
   'juventus':BASE+'assets/official-logos/juventus.png',
@@ -14,10 +14,10 @@ const LOGOS={
   'hermanos':BASE+'assets/official-logos/hermanos.png',
   'franco fc':BASE+'assets/official-logos/franco-fc.png',
   'herreras fc':BASE+'assets/official-logos/herreras-fc.png',
-  'abejas':BASE+'assets/official-logos/abejas.png',
+  'abejas':APP_BASE+'assets/official-logos/abejas-2026.webp',
   'terricolas':BASE+'assets/official-logos/terricolas.png',
   'lobos cdg':BASE+'assets/official-logos/lobos-cdg.png',
-  'galacticos':BASE+'assets/teams/galacticos-pozos.webp'
+  'galacticos':BASE+'assets/teams/galacticos-pozos.webp',\n  'boavista':APP_BASE+'assets/official-logos/boavista-2026.webp',\n  'cuenda':APP_BASE+'assets/official-logos/cuenda-2026.webp',\n  'santiago de cuenda':APP_BASE+'assets/official-logos/cuenda-2026.webp',\n  'promesas':APP_BASE+'assets/official-logos/promesas-fc-2026.webp',\n  'promesas fc':APP_BASE+'assets/official-logos/promesas-fc-2026.webp'
 };
 
 function norm(v){
@@ -47,7 +47,7 @@ function patchImg(img){
   const k=nameFor(img); if(!k)return;
   const src=LOGOS[k];
   if(img.getAttribute('src')!==src){img.src=src;img.removeAttribute('srcset')}
-  img.dataset.v741HomeLogo=k;
+  img.dataset.v742HomeLogo=k;
   img.style.objectFit='contain';
   img.style.objectPosition='center';
 }
