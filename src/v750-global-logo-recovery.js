@@ -91,10 +91,8 @@ const FALLBACK={
   'terricolas':RAW+'assets/official-logos/terricolas.png',
   'boavista':RAW+'assets/official-logos/boavista.png',
   'cuenda':RAW+'assets/official-logos/cuenda.png',
-  'boca-jrs':RAW+'assets/official-logos/boavista.png',
   'oklahoma':RAW+'assets/teams/oklahoma-city-fc.webp',
-  'tecos':RAW+'assets/official-logos/tavera-fc.png',
-  'real-de-roque':RAW+'assets/teams/deportivo-cg.webp'
+  'real-de-roque':APP+'assets/history/team-logos/real-de-roque.webp'+V
 };
 
 function norm(v){
