@@ -10,13 +10,13 @@ const KEY='ljr-v713-auto-notices';
 const WEBHOOK_KEY='ljr-v713-facebook-webhook';
 const FEED='./data/active-notices.json';
 const TYPES={
-  jornada:{label:'Jornada',title:'Aviso de jornada',body:'Información importante para la próxima jornada de la Liga.'},
-  ultima:{label:'Última hora',title:'Última hora',body:'Aviso importante de última hora de la Liga Juventino Rosas.'},
-  horario:{label:'Cambio de horario',title:'Cambio de horario',body:'Se informa un cambio de horario. Revisa la información actualizada antes de tu partido.'},
-  sede:{label:'Cambio de cancha',title:'Cambio de cancha / sede',body:'Se informa un cambio de cancha o sede. Revisa la ubicación actualizada.'},
-  suspension:{label:'Suspensión',title:'Aviso de suspensión',body:'Se informa una suspensión. Consulta los detalles oficiales antes de trasladarte.'},
-  junta:{label:'Junta',title:'Recordatorio de junta',body:'Recordatorio importante de junta de la Liga.'},
-  general:{label:'General',title:'Aviso importante',body:'Información importante de la Liga Juventino Rosas.'}
+  jornada:{label:'Jornada',short:'Jornada',title:'Aviso de jornada',body:'Información importante para la próxima jornada de la Liga.'},
+  ultima:{label:'Última hora',short:'Última hora',title:'Última hora',body:'Aviso importante de última hora de la Liga Juventino Rosas.'},
+  horario:{label:'Cambio de horario',short:'Horario',title:'Cambio de horario',body:'Se informa un cambio de horario. Revisa la información actualizada antes de tu partido.'},
+  sede:{label:'Cambio de cancha',short:'Cancha',title:'Cambio de cancha / sede',body:'Se informa un cambio de cancha o sede. Revisa la ubicación actualizada.'},
+  suspension:{label:'Suspensión',short:'Suspensión',title:'Aviso de suspensión',body:'Se informa una suspensión. Consulta los detalles oficiales antes de trasladarte.'},
+  junta:{label:'Junta',short:'Junta',title:'Recordatorio de junta',body:'Recordatorio importante de junta de la Liga.'},
+  general:{label:'General',short:'General',title:'Aviso importante',body:'Información importante de la Liga Juventino Rosas.'}
 };
 
 function route(){return (location.hash.replace(/^#\/?/,'')||document.body?.dataset?.appRoute||'home').split('?')[0]}
@@ -41,6 +41,38 @@ function template(type,fields={}){
   if(fields.field)bits.push(fields.field);
   if(fields.extra)bits.push(fields.extra);
   return {title:t.title,body:(t.body+(bits.length?' '+bits.join(' · ')+'.':'')).replace(/\s+/g,' ').trim()};
+}
+function aiDraft(type,mode='quick',fields={}){
+  const t=TYPES[type]||TYPES.general;
+  const category=String(fields.category||'').trim();
+  const extra=String(fields.extra||'').trim();
+  const date=String(fields.date||'').trim();
+  const time=String(fields.time||'').trim();
+  const refs=[category,extra].filter(Boolean);
+  const context=refs.length?refs.join(' · '):'';
+  const schedule=[date,time].filter(Boolean).join(' · ');
+  let title=t.title,body='';
+  if(mode==='short'){
+    body=(t.body+' '+(context?context+'. ':'')+(schedule?'Publicación programada: '+schedule+'.':'')).replace(/\s+/g,' ').trim();
+  }else if(mode==='formal'){
+    title=t.title;
+    body=('La Liga Municipal de Fútbol Juventino Rosas A.C. informa: '+t.body+' '+(context?context+'. ':'')+'Favor de tomar en cuenta este aviso y consultar la información oficial antes de la jornada.').replace(/\s+/g,' ').trim();
+  }else if(mode==='urgent'){
+    title=type==='ultima'?'Última hora':('Atención · '+t.title);
+    body=('ATENCIÓN. '+t.body+' '+(context?context+'. ':'')+'Revisa este cambio antes de trasladarte o participar en la jornada.').replace(/\s+/g,' ').trim();
+  }else{
+    const lead={
+      jornada:'La Liga informa los datos importantes de la próxima jornada.',
+      ultima:'Información importante de última hora para equipos, jugadores y delegados.',
+      horario:'Se actualizó el horario de un partido o actividad de la Liga.',
+      sede:'Se actualizó la cancha o sede programada.',
+      suspension:'Se informa una suspensión o modificación que debe revisarse antes de acudir al campo.',
+      junta:'Recordatorio para delegados y responsables de equipo.',
+      general:'Comunicado importante de la Liga Juventino Rosas.'
+    }[type]||t.body;
+    body=(lead+' '+(context?context+'. ':'')+(schedule?'Programado para '+schedule+'. ':'')+'Consulta los datos oficiales dentro de la aplicación.').replace(/\s+/g,' ').trim();
+  }
+  return {title,body};
 }
 function makePng(item,download=false){
   try{
@@ -132,19 +164,23 @@ function renderLists(){
 }
 function markup(){
   const tomorrow=new Date(Date.now()+86400000),d=localDateInput(tomorrow);
-  return '<section class="v713-auto" data-v713-auto>'+
-    '<div class="v713-auto-head"><div><small>AUTOMATIZACIÓN</small><h2>Programador automático de avisos</h2><p>Programa hora exacta, recordatorio previo, aviso dentro de la app, notificación del dispositivo, PNG y conexión opcional con Facebook.</p></div><span class="v713-live">AUTO</span></div>'+
-    '<div class="v713-mode-row">'+Object.entries(TYPES).map(([k,v],i)=>'<button type="button" class="'+(i===0?'active':'')+'" data-v713-type="'+k+'">'+esc(v.label)+'</button>').join('')+'</div>'+
-    '<div class="v713-form">'+
+  return '<section class="v713-auto v728-auto" data-v713-auto>'+
+    '<div class="v713-auto-head"><div><small>AUTOMATIZACIÓN</small><h2>Programador automático de avisos</h2><p>Escribe el aviso rápido con el asistente, elige fecha/hora y programa App, notificación, PNG o Facebook.</p></div><span class="v713-live">AUTO</span></div>'+
+    '<div class="v713-mode-row v728-type-grid">'+Object.entries(TYPES).map(([k,v],i)=>'<button type="button" class="'+(i===0?'active':'')+'" data-v713-type="'+k+'" title="'+esc(v.label)+'">'+esc(v.short||v.label)+'</button>').join('')+'</div>'+
+    '<section class="v728-ai-box"><div class="v728-ai-head"><span><small>ASISTENTE IA</small><b>Generar texto rápido</b></span><em>1 toque</em></div>'+
+      '<div class="v728-ai-actions"><button type="button" class="primary" data-v713-ai="quick">✨ Generar</button><button type="button" data-v713-ai="short">Corto</button><button type="button" data-v713-ai="formal">Formal</button><button type="button" data-v713-ai="urgent">Urgente</button></div>'+
+    '</section>'+
+    '<div class="v713-form v728-form">'+
       '<label class="wide"><span>Título</span><input data-v713-title value="Aviso de jornada" maxlength="90"></label>'+
       '<label class="wide"><span>Mensaje</span><textarea data-v713-body rows="3">Información importante para la próxima jornada de la Liga.</textarea></label>'+
-      '<label><span>Día de publicación</span><input type="date" data-v713-date value="'+d+'"></label>'+
+      '<label><span>Día</span><input type="date" data-v713-date value="'+d+'"></label>'+
       '<label><span>Hora</span><input type="time" data-v713-time value="11:30"></label>'+
       '<label><span>Recordatorio</span><select data-v713-remind><option value="1440">1 día antes</option><option value="120">2 horas antes</option><option value="60">1 hora antes</option><option value="0">Sin recordatorio</option></select></label>'+
-      '<label><span>Categoría / referencia</span><input data-v713-category placeholder="Ej. Primera, Veteranos 35+"></label>'+
+      '<label><span>Categoría</span><input data-v713-category placeholder="Primera, 35+, 50+"></label>'+
+      '<label class="wide v728-extra"><span>Detalles rápidos para el texto</span><input data-v713-extra placeholder="Ej. Campo 3 · partido 10:00 · cambio por lluvia"></label>'+
     '</div>'+
-    '<div class="v713-channels"><label><input type="checkbox" data-v713-ch="app" checked> App</label><label><input type="checkbox" data-v713-ch="device" checked> Notificación</label><label><input type="checkbox" data-v713-ch="png" checked> PNG</label><label><input type="checkbox" data-v713-ch="facebook"> Facebook</label></div>'+
-    '<div class="v713-actions"><button type="button" data-v713-smart>Redacción inteligente</button><button type="button" data-v713-enable>Activar notificaciones</button><button type="button" class="primary" data-v713-save>Programar aviso</button></div>'+
+    '<div class="v713-channels v728-channels"><label><input type="checkbox" data-v713-ch="app" checked><span>App</span></label><label><input type="checkbox" data-v713-ch="device" checked><span>Notificación</span></label><label><input type="checkbox" data-v713-ch="png" checked><span>PNG</span></label><label><input type="checkbox" data-v713-ch="facebook"><span>Facebook</span></label></div>'+
+    '<div class="v713-actions v728-main-actions"><button type="button" data-v713-smart>Mejorar texto</button><button type="button" data-v713-enable>Notificaciones</button><button type="button" class="primary" data-v713-save>Programar</button></div>'+
     '<details class="v713-facebook"><summary>Facebook automático / webhook</summary><p>Para publicar automáticamente en Facebook sin exponer la contraseña ni el token, conecta aquí una URL segura de automatización (Meta API, Make, Zapier o servidor propio). Si está vacía, Facebook queda pendiente pero el aviso de la app y el PNG siguen funcionando.</p><input type="url" data-v713-webhook placeholder="https://.../webhook" value="'+esc(localStorage.getItem(WEBHOOK_KEY)||'')+'"><button type="button" data-v713-webhook-save>Guardar conexión</button></details>'+
     '<div class="v713-columns"><div><h3>Programados en este dispositivo</h3><div data-v713-list></div></div><div><h3>Avisos globales publicados</h3><div data-v713-global-list></div></div></div>'+
     '<p class="v713-footnote">En navegador, los avisos locales se procesan mientras la app/página está abierta o vuelve a activarse. El motor global de GitHub puede publicar avisos del archivo programado aunque este teléfono esté cerrado.</p>'+
@@ -156,9 +192,25 @@ function bind(root){
     type=btn.dataset.v713Type;root.querySelectorAll('[data-v713-type]').forEach(x=>x.classList.toggle('active',x===btn));
     const t=template(type);root.querySelector('[data-v713-title]').value=t.title;root.querySelector('[data-v713-body]').value=t.body;
   });
+  const contextFields=()=>({
+    category:root.querySelector('[data-v713-category]')?.value.trim()||'',
+    extra:root.querySelector('[data-v713-extra]')?.value.trim()||'',
+    date:root.querySelector('[data-v713-date]')?.value||'',
+    time:root.querySelector('[data-v713-time]')?.value||''
+  });
+  root.querySelectorAll('[data-v713-ai]').forEach(btn=>btn.onclick=()=>{
+    const t=aiDraft(type,btn.dataset.v713Ai||'quick',contextFields());
+    root.querySelector('[data-v713-title]').value=t.title;
+    root.querySelector('[data-v713-body]').value=t.body;
+    root.querySelectorAll('[data-v713-ai]').forEach(x=>x.classList.toggle('active',x===btn));
+    toast('Texto generado');
+  });
   root.querySelector('[data-v713-smart]').onclick=()=>{
-    const t=template(type,{category:root.querySelector('[data-v713-category]').value.trim()});
-    root.querySelector('[data-v713-title]').value=t.title;root.querySelector('[data-v713-body]').value=t.body;toast('Texto preparado');
+    const current=root.querySelector('[data-v713-body]').value.trim();
+    const t=aiDraft(type,'formal',contextFields());
+    root.querySelector('[data-v713-title]').value=root.querySelector('[data-v713-title]').value.trim()||t.title;
+    root.querySelector('[data-v713-body]').value=current?current.replace(/\s+/g,' ').trim()+' Consulta la información oficial de la Liga para confirmar los detalles.':t.body;
+    toast('Texto mejorado');
   };
   root.querySelector('[data-v713-enable]').onclick=async()=>{
     if(!('Notification'in window)){toast('Este navegador no admite notificaciones');return}
