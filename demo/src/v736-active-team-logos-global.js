@@ -5,17 +5,24 @@
 if(window.__LJR_V736_ACTIVE_TEAM_LOGOS__)return;
 window.__LJR_V736_ACTIVE_TEAM_LOGOS__=true;
 
+const BASE='https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/';
+
 const LOGOS={
-  'san-jose-fc':'./assets/official-logos/san-jose-fc.png',
-  'hermanos':'./assets/official-logos/hermanos.png',
-  'terricolas':'./assets/official-logos/terricolas.png',
-  'oklahoma-city-fc':'./assets/official-logos/oklahoma-city-fc.png',
-  'boavista':'./assets/official-logos/boavista.png',
-  'manchester':'./assets/official-logos/manchester.png',
-  'herreras-fc':'./assets/official-logos/herreras-fc.png',
-  'america-j-rosas':'./assets/branding/america-veteranos-35-user.png',
+  'san-jose-fc':BASE+'assets/official-logos/san-jose-fc.png',
+  'hermanos':BASE+'assets/official-logos/hermanos.png',
+  'terricolas':BASE+'assets/official-logos/terricolas.png',
+  'oklahoma-city-fc':BASE+'assets/teams/oklahoma-city-fc.webp',
+  'boavista':BASE+'assets/official-logos/boavista.png',
+  'manchester':BASE+'assets/official-logos/manchester.png',
+  'herreras-fc':BASE+'assets/official-logos/herreras-fc.png',
+  'america-j-rosas':BASE+'assets/branding/america-veteranos-35-user.png',
   'boca-jrs':'./assets/official-logos/boca-jrs.png',
-  'abejas':'./assets/official-logos/abejas.png'
+  'abejas':BASE+'assets/official-logos/abejas.png',
+  'la-esperanza':BASE+'assets/official-logos/la-esperanza.png',
+  'mazacotes-fc':BASE+'assets/official-logos/mazacotes-fc.png',
+  'tavera-fc':BASE+'assets/official-logos/tavera-fc.png',
+  'franco-tavera-jr':BASE+'assets/teams/franco-tavera-jr-veteranos.webp',
+  'la-cuadrilla':BASE+'assets/official-logos/la-cuadrilla.png'
 };
 const ALIAS={
   'san jose fc':'san-jose-fc','san jose':'san-jose-fc','san jose de la montana':'san-jose-fc','san jose montana':'san-jose-fc',
@@ -27,7 +34,12 @@ const ALIAS={
   'herrera':'herreras-fc','herrera fc':'herreras-fc','herreras':'herreras-fc','herreras fc':'herreras-fc',
   'america':'america-j-rosas','america veteranos':'america-j-rosas','club america':'america-j-rosas','club america veteranos':'america-j-rosas','club america j rosas':'america-j-rosas','america j rosas':'america-j-rosas',
   'boca jrs':'boca-jrs','boca juniors':'boca-jrs','cabj':'boca-jrs','c a boca juniors':'boca-jrs',
-  'abejas':'abejas','abejas fc':'abejas','abejas futbol club':'abejas'
+  'abejas':'abejas','abejas fc':'abejas','abejas futbol club':'abejas',
+  'la esperanza':'la-esperanza','la esperanza fc':'la-esperanza','esperanza':'la-esperanza',
+  'mazacotes':'mazacotes-fc','mazacotes fc':'mazacotes-fc','mfc':'mazacotes-fc',
+  'tavera':'tavera-fc','tavera fc':'tavera-fc',
+  'franco tavera':'franco-tavera-jr','franco tavera jr':'franco-tavera-jr','franco-tavera-jr':'franco-tavera-jr','f tavera':'franco-tavera-jr',
+  'la cuadrilla':'la-cuadrilla','cuadrilla':'la-cuadrilla','cuadrilla fc':'la-cuadrilla'
 };
 const SOURCE_MATCH={
   'san-jose-fc':['SanJoseMonta%C3%B1a_ilen4d','SanJoseMontana_ilen4d','official-logos/san-jose-fc.png','teams/san-jose.webp','teams/san-jose-montana.webp'],
@@ -39,7 +51,12 @@ const SOURCE_MATCH={
   'herreras-fc':['HerreraFC_mnmlsd','official-logos/herreras-fc.png','teams/herrera-fc.webp'],
   'america-j-rosas':['America_wbi53g','america-veteranos-35-user.png','official-logos/america-j-rosas.png'],
   'boca-jrs':['Boca_Juniors_2012','official-logos/boca-jrs.png'],
-  'abejas':['Abejas_lxn6l9','official-logos/abejas.png']
+  'abejas':['Abejas_lxn6l9','official-logos/abejas.png'],
+  'la-esperanza':['LaEsperanzaFC_vazya7','official-logos/la-esperanza.png','teams/la-esperanza-fc.webp'],
+  'mazacotes-fc':['Mazacotes_ko8o0w','official-logos/mazacotes-fc.png'],
+  'tavera-fc':['TaveraFC_gpdbhg','official-logos/tavera-fc.png'],
+  'franco-tavera-jr':['FrancoTaveraVeteranos_qwrqrc','franco-tavera-jr-veteranos.webp'],
+  'la-cuadrilla':['CuadrillaFC_vpfbtr','official-logos/la-cuadrilla.png']
 };
 
 function norm(v){
