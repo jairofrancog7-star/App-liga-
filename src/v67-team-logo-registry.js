@@ -220,27 +220,36 @@
   }
   function teamNameFrom(el){
     if(!(el instanceof Element))return '';
-    const explicit=el.getAttribute('alt')||el.getAttribute('title')||'';
-    if(get(explicit))return explicit;
-    let node=el;
-    for(let i=0;i<3&&node;i++,node=node.parentElement){
-      const candidates=[
-        node.dataset?.team,node.dataset?.v62Team,node.dataset?.v42CompareTeam,node.dataset?.v27Team,
-        node.querySelector?.('strong')?.textContent,
-        node.querySelector?.('b')?.textContent,
-        node.querySelector?.('.v28-side span')?.textContent,
-        node.querySelector?.('.v40-team strong')?.textContent,
-        node.querySelector?.('.v42-mini-team b')?.textContent,
-        node.querySelector?.('.v27-team-name')?.textContent,
-        node.querySelector?.('.v46-team-copy strong')?.textContent
-      ].filter(Boolean);
-      for(const c of candidates)if(get(c))return String(c).trim();
-      const txt=String(node.textContent||'').trim();
-      if(txt.length&&txt.length<46&&get(txt))return txt;
+    const explicit=[
+      el.getAttribute('alt'),el.getAttribute('title'),
+      el.dataset?.team,el.dataset?.v62Team,el.dataset?.v42CompareTeam,el.dataset?.v27Team
+    ].filter(v=>String(v||'').trim());
+    for(const v of explicit)if(get(v))return String(v).trim();
+    /* Si la imagen ya declara un nombre/alt propio, nunca heredamos el nombre de un
+       hermano o de otra tarjeta cercana. Esto evita repetir el primer escudo del bloque. */
+    if(explicit.length)return '';
+
+    const owner=el.closest?.('[data-team],[data-v62-team],[data-v42-compare-team],[data-v27-team]');
+    if(owner){
+      const vals=[owner.dataset?.team,owner.dataset?.v62Team,owner.dataset?.v42CompareTeam,owner.dataset?.v27Team].filter(Boolean);
+      for(const v of vals)if(get(v))return String(v).trim();
     }
+
+    /* Sólo consultar contenedores que representan UN equipo. No buscar <b>/<strong>
+       genéricos en padres amplios (filas con dos equipos, grids o tablas completas). */
+    const card=el.closest?.('.v27-team,.v40-team,.v42-mini-team,.v46-team-card,.v28-side,.v62-team-card,.v446-home-club,.v6-league-team,.v6-table-row,.club-cell');
+    if(!card)return '';
+    const candidates=[
+      card.dataset?.team,card.dataset?.v62Team,card.dataset?.v42CompareTeam,card.dataset?.v27Team,
+      card.querySelector?.('.v27-team-name')?.textContent,
+      card.querySelector?.('.v46-team-copy strong')?.textContent,
+      card.querySelector?.('.v40-team strong')?.textContent,
+      card.querySelector?.('.v42-mini-team b')?.textContent,
+      card.querySelector?.('.v28-side span')?.textContent
+    ].filter(Boolean);
+    for(const c of candidates)if(get(c))return String(c).trim();
     return '';
-  }
-  function patchImg(img){
+  }  function patchImg(img){
     if(!(img instanceof HTMLImageElement))return;
     if(img.closest('[data-player-portrait],.v123-avatar,.v123-option-avatar,.v66-player-avatar,.v42-avatar,.v576-player-avatar,.v379-related-avatar,.v562-avatar,.v124-avatar')||img.matches('.v379-player-photo,.v610-generic-player,.v576-player-photo,.v576-hero-player-photo'))return;
     if(img.closest('.v27-league-badge,.v35-logo-wrap,.v31-hospitality-page'))return;
