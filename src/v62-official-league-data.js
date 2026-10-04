@@ -10,12 +10,12 @@ const REMOTE_DATA='https://raw.githubusercontent.com/jairofrancog7-star/Liga_Fut
 const SRC='https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/';
 const APP='https://jairofrancog7-star.github.io/App-liga-/';
 const CURRENT_2026_LOGOS={
-  'san jose fc':SRC+'assets/teams/san-jose.webp',
-  'san jose':SRC+'assets/teams/san-jose.webp',
-  'san jose de la montana':SRC+'assets/teams/san-jose.webp',
-  'hermanos':SRC+'assets/official-logos/hermanos.png',
-  'dep hermanos':SRC+'assets/official-logos/hermanos.png',
-  'deportivo hermanos':SRC+'assets/official-logos/hermanos.png',
+  'san jose fc':APP+'assets/official-logos/san-jose-fc-2026.webp',
+  'san jose':APP+'assets/official-logos/san-jose-fc-2026.webp',
+  'san jose de la montana':APP+'assets/official-logos/san-jose-fc-2026.webp',
+  'hermanos':APP+'assets/official-logos/hermanos-2026.webp',
+  'dep hermanos':APP+'assets/official-logos/hermanos-2026.webp',
+  'deportivo hermanos':APP+'assets/official-logos/hermanos-2026.webp',
   'terricolas':APP+'assets/official-logos/terricolas-2026.webp',
   'terricolas fc':APP+'assets/official-logos/terricolas-2026.webp',
   'terricolas seder':APP+'assets/official-logos/terricolas-2026.webp',
