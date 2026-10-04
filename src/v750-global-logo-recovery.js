@@ -34,10 +34,10 @@ const LOGOS={
   'manchester':RAW+'assets/official-logos/manchester.png',
 
   /* Primera Fuerza */
-  'san-jose-fc':APP+'assets/official-logos/san-jose-fc-2026.webp'+V,
+  'san-jose-fc':RAW+'assets/teams/san-jose.webp',
   'linces':RAW+'assets/official-logos/linces.png',
   'napoli':RAW+'assets/official-logos/napoli.png',
-  'hermanos':APP+'assets/official-logos/hermanos-2026.webp'+V,
+  'hermanos':RAW+'assets/official-logos/hermanos.png',
   'franco-fc':RAW+'assets/official-logos/franco-fc.png',
   'herreras-fc':RAW+'assets/official-logos/herreras-fc.png',
   'abejas':RAW+'assets/official-logos/abejas.png',
