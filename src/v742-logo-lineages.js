@@ -30,8 +30,8 @@ const LINEAGES={
   },
   hermanos:{
     aliases:['hermanos','hermanos fc','dep hermanos','deportivo hermanos','club deportivo hermanos'],
-    current:app('assets/official-logos/hermanos-2026.webp'),
-    variants:[app('assets/official-logos/hermanos-2026.webp'),remote('assets/official-logos/hermanos.png'),remote('assets/teams/club-deportivo-hermanos.webp')]
+    current:remote('assets/official-logos/hermanos.png'),
+    variants:[remote('assets/official-logos/hermanos.png'),remote('assets/teams/club-deportivo-hermanos.webp')]
   },
   terricolas:{
     aliases:['terricolas','terricolas fc','terricolas seder','terricolas seder fc'],
@@ -40,8 +40,8 @@ const LINEAGES={
   },
   'san-jose-fc':{
     aliases:['san jose fc','san jose de la montana','san jose montana'],
-    current:app('assets/official-logos/san-jose-fc-2026.webp'),
-    variants:[app('assets/official-logos/san-jose-fc-2026.webp'),remote('assets/official-logos/san-jose-fc.png'),remote('assets/teams/san-jose-montana.webp'),remote('assets/teams/san-jose.webp')]
+    current:remote('assets/teams/san-jose.webp'),
+    variants:[remote('assets/teams/san-jose.webp'),remote('assets/official-logos/san-jose-fc.png'),remote('assets/teams/san-jose-montana.webp')]
   },
   abejas:{
     aliases:['abejas','abejas fc','abejas futbol club'],
