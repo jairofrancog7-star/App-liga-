@@ -8,6 +8,25 @@ const BUILD='20261001-v493-official-all-categories';
 const LOCAL_DATA='./data/official-live.json?v='+BUILD;
 const REMOTE_DATA='https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/data/official-live.json?v='+BUILD;
 const SRC='https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/';
+const APP='https://jairofrancog7-star.github.io/App-liga-/';
+const CURRENT_2026_LOGOS={
+  'san jose fc':APP+'assets/official-logos/san-jose-fc-2026.webp',
+  'san jose':APP+'assets/official-logos/san-jose-fc-2026.webp',
+  'san jose de la montana':APP+'assets/official-logos/san-jose-fc-2026.webp',
+  'hermanos':APP+'assets/official-logos/hermanos-2026.webp',
+  'dep hermanos':APP+'assets/official-logos/hermanos-2026.webp',
+  'deportivo hermanos':APP+'assets/official-logos/hermanos-2026.webp',
+  'terricolas':APP+'assets/official-logos/terricolas-2026.webp',
+  'terricolas fc':APP+'assets/official-logos/terricolas-2026.webp',
+  'terricolas seder':APP+'assets/official-logos/terricolas-2026.webp',
+  'abejas':APP+'assets/official-logos/abejas-2026.webp',
+  'abejas fc':APP+'assets/official-logos/abejas-2026.webp',
+  'boavista':APP+'assets/official-logos/boavista-2026.webp',
+  'cuenda':APP+'assets/official-logos/cuenda-2026.webp',
+  'santiago de cuenda':APP+'assets/official-logos/cuenda-2026.webp',
+  'promesas':APP+'assets/official-logos/promesas-fc-2026.webp',
+  'promesas fc':APP+'assets/official-logos/promesas-fc-2026.webp'
+};
 const RULEBOOK='https://github.com/jairofrancog7-star/Liga_Futbol/blob/main/docs/Reglamento_Liga_Juventino_Rosas_2026_2027.pdf';
 const CAT_ORDER=['3','5','4','2','1'];
 const CAT_META={
@@ -71,6 +90,10 @@ function cat(id=categoryId){return db?.categories?.[String(id)]||null}
 function block(kind,id=categoryId){return cat(id)?.[kind]?.[0]||null}
 function rows(kind,id=categoryId){return block(kind,id)?.rows||[]}
 function logoFor(name){
+  const current=CURRENT_2026_LOGOS[norm(name)];
+  if(current)return current;
+  const shared=window.LJR_TEAM_LOGOS?.get?.(name);
+  if(shared)return shared;
   if(db){
     const entries=Object.entries(db.team_logos||{});
     const exact=entries.find(([k])=>norm(k)===norm(name));
@@ -81,8 +104,7 @@ function logoFor(name){
     if(v?.local)return SRC+String(v.local).replace(/^\.\//,'');
     if(v?.source)return v.source;
   }
-  const shared=window.LJR_TEAM_LOGOS?.get?.(name);
-  return shared||'';
+  return '';
 }
 function catLogo(id){const p=CAT_META[String(id)]?.logo;return p?SRC+p:''}
 function scoreNum(v){if(v==null||v===''||v==='-')return 0;const n=Number(v);return Number.isFinite(n)?n:0}
