@@ -824,6 +824,10 @@ document.addEventListener('click',function(e){
   }
 },true);
 
+window.addEventListener('ljr:v763-quiz-play',function(){
+  if(route()!=='quizArena')return;
+  v614StartQuizCountdown();
+});
 window.addEventListener('hashchange',schedule);
 window.addEventListener('ljr:official-data',function(){db=window.LJR_OFFICIAL_DATA||db;schedule()});
 window.addEventListener('load',function(){setTimeout(function(){if(route()==='moreLessGallery'){const g=document.querySelector('[data-v546-gallery]');if(g)delete g.dataset.v546Stamp;v546RenderGallery()}},900)});
