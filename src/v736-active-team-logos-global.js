@@ -10,12 +10,12 @@ window.__LJR_V745_ACTIVE_TEAM_LOGOS__=true;
 
 const BASE='https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/';
 const APP_BASE='https://raw.githubusercontent.com/jairofrancog7-star/App-liga-/main/';
-const SITE=APP_BASE;
+const SITE='https://jairofrancog7-star.github.io/App-liga-/';
 const V='?v=20261004-v745';
 
 const LOGOS={
-  'san-jose-fc':BASE+'assets/teams/san-jose.webp',
-  'hermanos':BASE+'assets/official-logos/hermanos.png',
+  'san-jose-fc':SITE+'assets/official-logos/san-jose-fc-2026.webp'+V,
+  'hermanos':SITE+'assets/official-logos/hermanos-2026.webp'+V,
   'linces':BASE+'assets/official-logos/linces.png',
   'juventus':BASE+'assets/official-logos/juventus.png',
   'napoli':BASE+'assets/official-logos/napoli.png',
@@ -70,7 +70,7 @@ const LOGOS={
   'manchester':BASE+'assets/official-logos/manchester.png',
 
   /* Equipos que también aparecen en Records/Historia y páginas derivadas. */
-  'oklahoma-city-fc':APP_BASE+'assets/official-logos/oklahoma-city-fc.png'+V,
+  'oklahoma-city-fc':BASE+'assets/teams/oklahoma-city-fc.webp',
   'tecos':APP_BASE+'assets/history/team-logos/tecos.webp'+V,
   'real-de-roque':APP_BASE+'assets/history/team-logos/real-de-roque.webp'+V,
   'cebolleros-cuenda':BASE+'assets/teams/cebolleros-fc-cuenda.webp'
@@ -83,15 +83,7 @@ const FALLBACK={
   'boavista':BASE+'assets/teams/boavista-fc.webp',
   'abejas':BASE+'assets/official-logos/abejas.png',
   'cuenda':BASE+'assets/official-logos/cuenda.png',
-  'promesas-fc':BASE+'assets/official-logos/promesas-fc.png',
-  'herreras-fc':BASE+'assets/teams/herrera-fc.webp',
-  'america-j-rosas':BASE+'assets/official-logos/america.png',
-  'la-esperanza':BASE+'assets/teams/la-esperanza-fc.webp',
-  'boca-jrs':APP_BASE+'assets/official-logos/boca-jrs.png',
-  'oklahoma-city-fc':BASE+'assets/teams/oklahoma-city-fc.webp',
-  'tecos':APP_BASE+'assets/history/team-logos/tecos.webp',
-  'real-de-roque':APP_BASE+'assets/history/team-logos/real-de-roque.webp',
-  'cebolleros-cuenda':BASE+'assets/teams/cebolleros-fc-cuenda.webp'
+  'promesas-fc':BASE+'assets/official-logos/promesas-fc.png'
 };
 
 const ALIAS={
@@ -204,7 +196,6 @@ function transparentCutout(key,src){
   if(cutoutCache.has(key))return cutoutCache.get(key);
   const task=new Promise(resolve=>{
     const im=new Image();
-    im.crossOrigin='anonymous';
     im.decoding='async';
     im.onload=()=>{
       try{
