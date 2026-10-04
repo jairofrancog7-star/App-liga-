@@ -596,6 +596,8 @@
     requestAnimationFrame(forceRender);
   }
 
+  window.LJR_TEAMS_API={render,forceRender,schedule};
+
   window.addEventListener('hashchange',schedule);
   const target=document.querySelector('#screen');
   if(target){
