@@ -45,8 +45,8 @@ const LINEAGES={
   },
   abejas:{
     aliases:['abejas','abejas fc','abejas futbol club'],
-    current:app('assets/official-logos/abejas-2026.webp'),
-    variants:[app('assets/official-logos/abejas-2026.webp'),remote('assets/official-logos/abejas.png')]
+    current:remote('assets/official-logos/abejas.png'),
+    variants:[remote('assets/official-logos/abejas.png')]
   },
   boavista:{
     aliases:['boavista','boavista fc','bfc','b f c'],
@@ -110,8 +110,8 @@ const LINEAGES={
   },
   promesas:{
     aliases:['promesas','promesas fc','promesas de pozos','promesas fc pozos'],
-    current:app('assets/official-logos/promesas-fc-2026.webp'),
-    variants:[app('assets/official-logos/promesas-fc-2026.webp'),remote('assets/official-logos/promesas-fc.png'),remote('assets/teams/promesas-fc-pozos.webp')]
+    current:remote('assets/official-logos/promesas-fc.png'),
+    variants:[remote('assets/official-logos/promesas-fc.png'),remote('assets/teams/promesas-fc-pozos.webp')]
   },
   galeana:{
     aliases:['galeana','atl galeana','atletico galeana'],
