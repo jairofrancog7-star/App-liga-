@@ -6,6 +6,7 @@ if(window.__LJR_V736_ACTIVE_TEAM_LOGOS__)return;
 window.__LJR_V736_ACTIVE_TEAM_LOGOS__=true;
 
 const BASE='https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/';
+const APP_BASE='https://raw.githubusercontent.com/jairofrancog7-star/App-liga-/main/';
 
 const LOGOS={
   /* Escudos nuevos aportados por el usuario: se conservan como prioridad. */
@@ -13,12 +14,14 @@ const LOGOS={
   'hermanos':BASE+'assets/official-logos/hermanos.png',
   'terricolas':BASE+'assets/official-logos/terricolas.png',
   'oklahoma-city-fc':BASE+'assets/teams/oklahoma-city-fc.webp',
-  'boavista':BASE+'assets/official-logos/boavista.png',
+  'boavista':APP_BASE+'assets/official-logos/boavista-2026.webp',
   'manchester':BASE+'assets/official-logos/manchester.png',
   'herreras-fc':BASE+'assets/official-logos/herreras-fc.png',
   'america-j-rosas':BASE+'assets/branding/america-veteranos-35-user.png',
   'boca-jrs':'./assets/official-logos/boca-jrs.png',
-  'abejas':BASE+'assets/official-logos/abejas.png',
+  'abejas':APP_BASE+'assets/official-logos/abejas-2026.webp',
+  'cuenda':APP_BASE+'assets/official-logos/cuenda-2026.webp',
+  'promesas-fc':APP_BASE+'assets/official-logos/promesas-fc-2026.webp',
   'la-esperanza':BASE+'assets/official-logos/la-esperanza.png',
   'mazacotes-fc':BASE+'assets/official-logos/mazacotes-fc.png',
   'tavera-fc':BASE+'assets/official-logos/tavera-fc.png',
@@ -68,6 +71,8 @@ const ALIAS={
   'america':'america-j-rosas','america veteranos':'america-j-rosas','club america':'america-j-rosas','club america veteranos':'america-j-rosas','club america j rosas':'america-j-rosas','america j rosas':'america-j-rosas',
   'boca jrs':'boca-jrs','boca juniors':'boca-jrs','cabj':'boca-jrs','c a boca juniors':'boca-jrs',
   'abejas':'abejas','abejas fc':'abejas','abejas futbol club':'abejas',
+  'cuenda':'cuenda','santiago de cuenda':'cuenda','santiago de cuenda fc':'cuenda','santiago cuenda':'cuenda',
+  'promesas':'promesas-fc','promesas fc':'promesas-fc','promesas pozos':'promesas-fc','promesas fc pozos':'promesas-fc',
   'la esperanza':'la-esperanza','la esperanza fc':'la-esperanza','esperanza':'la-esperanza',
   'mazacotes':'mazacotes-fc','mazacotes fc':'mazacotes-fc',
   'tavera':'tavera-fc','tavera fc':'tavera-fc',
@@ -115,12 +120,14 @@ const SOURCE_MATCH={
   'galacticos':['teams/galacticos-pozos.webp','Galacticos'],
   'terricolas':['Terricolas_ltbrzy','official-logos/terricolas.png','teams/terricolas-fc.webp'],
   'oklahoma-city-fc':['official-logos/oklahoma-city-fc.png','teams/oklahoma-city-fc.webp'],
-  'boavista':['Boavista_wioj7b','Boavista_qiq0dy','official-logos/boavista.png','teams/boavista-fc.webp'],
+  'boavista':['Boavista_wioj7b','Boavista_qiq0dy','official-logos/boavista.png','official-logos/boavista-2026.webp','teams/boavista-fc.webp'],
   'manchester':['ManchesterU_zltkh0','official-logos/manchester.png','teams/manchester-united.webp'],
   'herreras-fc':['HerreraFC_mnmlsd','official-logos/herreras-fc.png','teams/herrera-fc.webp'],
   'america-j-rosas':['America_wbi53g','america-veteranos-35-user.png','official-logos/america-j-rosas.png'],
   'boca-jrs':['Boca_Juniors_2012','official-logos/boca-jrs.png'],
-  'abejas':['Abejas_lxn6l9','official-logos/abejas.png'],
+  'abejas':['Abejas_lxn6l9','official-logos/abejas.png','official-logos/abejas-2026.webp'],
+  'cuenda':['SantiagoCuenda_fvaq9e','official-logos/cuenda.png','official-logos/cuenda-2026.webp','teams/cuenda.webp'],
+  'promesas-fc':['Promesas','official-logos/promesas-fc.png','official-logos/promesas-fc-2026.webp','teams/promesas-fc-pozos.webp'],
   'la-esperanza':['LaEsperanzaFC_vazya7','official-logos/la-esperanza.png','teams/la-esperanza-fc.webp'],
   'mazacotes-fc':['Mazacotes_ko8o0w','official-logos/mazacotes-fc.png'],
   'tavera-fc':['TaveraFC_gpdbhg','official-logos/tavera-fc.png'],
