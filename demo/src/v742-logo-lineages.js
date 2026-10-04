@@ -7,8 +7,8 @@ if(window.__LJR_V747_TEAM_LOGO_LINEAGES__)return;
 window.__LJR_V747_TEAM_LOGO_LINEAGES__=true;
 
 const BASE='https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/';
-const APP='https://raw.githubusercontent.com/jairofrancog7-star/App-liga-/main/';
-const local=p=>APP+String(p||'').replace(/^\.\//,'');
+const APP='https://jairofrancog7-star.github.io/App-liga-/';
+const local=p=>new URL(p,document.baseURI).href;
 const remote=p=>BASE+p;
 const app=p=>APP+p;
 
@@ -30,8 +30,8 @@ const LINEAGES={
   },
   hermanos:{
     aliases:['hermanos','hermanos fc','dep hermanos','deportivo hermanos','club deportivo hermanos'],
-    current:remote('assets/official-logos/hermanos.png'),
-    variants:[remote('assets/official-logos/hermanos.png'),remote('assets/teams/club-deportivo-hermanos.webp')]
+    current:app('assets/official-logos/hermanos-2026.webp'),
+    variants:[app('assets/official-logos/hermanos-2026.webp'),remote('assets/official-logos/hermanos.png'),remote('assets/teams/club-deportivo-hermanos.webp')]
   },
   terricolas:{
     aliases:['terricolas','terricolas fc','terricolas seder','terricolas seder fc'],
@@ -40,8 +40,8 @@ const LINEAGES={
   },
   'san-jose-fc':{
     aliases:['san jose fc','san jose de la montana','san jose montana'],
-    current:remote('assets/teams/san-jose.webp'),
-    variants:[remote('assets/teams/san-jose.webp'),remote('assets/official-logos/san-jose-fc.png'),remote('assets/teams/san-jose-montana.webp')]
+    current:app('assets/official-logos/san-jose-fc-2026.webp'),
+    variants:[app('assets/official-logos/san-jose-fc-2026.webp'),remote('assets/official-logos/san-jose-fc.png'),remote('assets/teams/san-jose-montana.webp'),remote('assets/teams/san-jose.webp')]
   },
   abejas:{
     aliases:['abejas','abejas fc','abejas futbol club'],

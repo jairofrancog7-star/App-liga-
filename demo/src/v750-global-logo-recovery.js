@@ -34,10 +34,10 @@ const LOGOS={
   'manchester':RAW+'assets/official-logos/manchester.png',
 
   /* Primera Fuerza */
-  'san-jose-fc':RAW+'assets/teams/san-jose.webp',
+  'san-jose-fc':APP+'assets/official-logos/san-jose-fc-2026.webp'+V,
   'linces':RAW+'assets/official-logos/linces.png',
   'napoli':RAW+'assets/official-logos/napoli.png',
-  'hermanos':RAW+'assets/official-logos/hermanos.png',
+  'hermanos':APP+'assets/official-logos/hermanos-2026.webp'+V,
   'franco-fc':RAW+'assets/official-logos/franco-fc.png',
   'herreras-fc':RAW+'assets/official-logos/herreras-fc.png',
   'abejas':RAW+'assets/official-logos/abejas.png',
@@ -91,8 +91,10 @@ const FALLBACK={
   'terricolas':RAW+'assets/official-logos/terricolas.png',
   'boavista':RAW+'assets/official-logos/boavista.png',
   'cuenda':RAW+'assets/official-logos/cuenda.png',
+  'boca-jrs':RAW+'assets/official-logos/boavista.png',
   'oklahoma':RAW+'assets/teams/oklahoma-city-fc.webp',
-  'real-de-roque':APP+'assets/history/team-logos/real-de-roque.webp'+V
+  'tecos':RAW+'assets/official-logos/tavera-fc.png',
+  'real-de-roque':RAW+'assets/teams/deportivo-cg.webp'
 };
 
 function norm(v){
@@ -296,31 +298,10 @@ function repairEmptyHolders(root=document){
     holder.appendChild(img);
   });
 }
-function patchHomeStandings(root=document){
-  root.querySelectorAll?.('.v65-table-row[data-v62-team]').forEach(row=>{
-    const team=row.getAttribute('data-v62-team')||'';
-    const key=keyFor(team),src=key?LOGOS[key]:'';
-    if(!src)return;
-    let holder=row.querySelector('.v65-table-logo');
-    if(!holder)return;
-    let img=holder.querySelector('img');
-    if(!img){
-      img=document.createElement('img');
-      img.loading='lazy';img.decoding='async';
-      holder.textContent='';holder.appendChild(img);
-    }
-    img.alt=team;
-    img.dataset.v750TeamLogo=key;
-    const wanted=new URL(src,document.baseURI).href;
-    if(String(img.src||'')!==wanted){img.src=src;img.removeAttribute('srcset')}
-    applyStyle(img);
-  });
-}
 function patch(root=document){
   if(root instanceof HTMLImageElement)patchImg(root);
   root.querySelectorAll?.('img').forEach(patchImg);
   repairEmptyHolders(root);
-  patchHomeStandings(root);
 }
 function installRegistry(){
   const reg=window.LJR_TEAM_LOGOS;
