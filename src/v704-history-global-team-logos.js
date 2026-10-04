@@ -20,6 +20,9 @@ const SPECIAL={
   'salvaje':'./assets/history/team-logos/salvajes.webp',
   'tecos':'./assets/history/team-logos/tecos.webp',
   'tecos fc':'./assets/history/team-logos/tecos.webp',
+  'tecos jr':'./assets/history/team-logos/tecos.webp',
+  'tecos jrs':'./assets/history/team-logos/tecos.webp',
+  'tecos pozos':'./assets/history/team-logos/tecos.webp',
   'xolos':'./assets/history/team-logos/xolos-jaralillo.webp',
   'xolos jaralillo':'./assets/history/team-logos/xolos-jaralillo.webp',
   'xolos de jaralillo':'./assets/history/team-logos/xolos-jaralillo.webp',
@@ -187,10 +190,18 @@ function forceHolder(holder,name,cls=''){
   if(!holder||!name)return false;
   const src=logoFor(name);
   if(!src)return false;
-  const current=holder.querySelector('img');
+  const all=[...holder.querySelectorAll('img')];
+  const current=all[0]||null;
   if(current&&same(current.currentSrc||current.src,src)){
+    all.slice(1).forEach(x=>x.remove());
+    holder.querySelectorAll(':scope > b,:scope > .v328-season-initials,:scope > .v35-era-fallback').forEach(x=>x.remove());
     current.alt=name;
+    current.loading='lazy';
+    current.decoding='async';
+    current.dataset.v704HistoryLogo='1';
+    if(cls)current.className=cls;
     holder.classList.remove('is-fallback');
+    holder.classList.add('v704-has-team-logo');
     return true;
   }
   holder.replaceChildren(img(src,name,cls));
