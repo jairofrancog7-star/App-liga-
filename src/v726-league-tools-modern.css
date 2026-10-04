@@ -1,0 +1,541 @@
+/* V726 — Más herramientas / Todas las herramientas.
+   Reorganización visual por función, tarjetas modernas y explicaciones claras.
+   Aislado a #/leagueTools para no cambiar otras pantallas. */
+@media(max-width:1023px){
+  body[data-app-route="leagueTools"] .v726-tools-page{
+    padding:14px 12px calc(118px + env(safe-area-inset-bottom))!important;
+    background:
+      radial-gradient(circle at 88% 0%,rgba(34,224,244,.16),transparent 24%),
+      radial-gradient(circle at 12% 18%,rgba(55,99,255,.16),transparent 26%),
+      linear-gradient(180deg,#081f9b 0%,#090b72 34%,#07065f 100%)!important;
+  }
+
+  body[data-app-route="leagueTools"] .v726-tools-hero{
+    position:relative;
+    overflow:hidden;
+    padding:20px 18px 18px;
+    border:1px solid rgba(91,133,255,.34);
+    border-radius:24px;
+    background:
+      linear-gradient(135deg,rgba(31,76,204,.96),rgba(20,27,139,.97) 54%,rgba(11,12,104,.98));
+    box-shadow:0 18px 40px rgba(0,0,58,.20),inset 0 1px 0 rgba(255,255,255,.08);
+  }
+  body[data-app-route="leagueTools"] .v726-tools-hero::before{
+    content:"";
+    position:absolute;
+    width:160px;
+    height:160px;
+    right:-66px;
+    top:-78px;
+    border:1px solid rgba(33,226,241,.19);
+    border-radius:50%;
+    box-shadow:0 0 0 34px rgba(33,226,241,.045),0 0 0 68px rgba(33,226,241,.025);
+    pointer-events:none;
+  }
+  body[data-app-route="leagueTools"] .v726-hero-kicker{
+    display:block;
+    color:#24e4f2;
+    font-size:10px;
+    line-height:1;
+    font-weight:900;
+    letter-spacing:.15em;
+  }
+  body[data-app-route="leagueTools"] .v726-tools-hero h1{
+    position:relative;
+    margin:8px 0 0;
+    max-width:390px;
+    color:#fff;
+    font-size:30px;
+    line-height:1.02;
+    font-weight:900;
+    letter-spacing:-.035em;
+  }
+  body[data-app-route="leagueTools"] .v726-tools-hero p{
+    position:relative;
+    margin:10px 0 0;
+    max-width:520px;
+    color:#c8d0ec;
+    font-size:12px;
+    line-height:1.48;
+    font-weight:550;
+  }
+  body[data-app-route="leagueTools"] .v726-hero-pills{
+    position:relative;
+    display:flex;
+    gap:6px;
+    overflow-x:auto;
+    margin-top:14px;
+    padding-bottom:1px;
+    scrollbar-width:none;
+  }
+  body[data-app-route="leagueTools"] .v726-hero-pills::-webkit-scrollbar{display:none}
+  body[data-app-route="leagueTools"] .v726-hero-pills span{
+    flex:0 0 auto;
+    padding:7px 9px;
+    border:1px solid rgba(83,226,242,.23);
+    border-radius:999px;
+    background:rgba(5,27,113,.46);
+    color:#dce8ff;
+    font-size:9px;
+    line-height:1;
+    font-weight:800;
+  }
+
+  body[data-app-route="leagueTools"] .v726-quick-section{
+    margin-top:14px;
+    padding:15px;
+    border:1px solid rgba(88,111,222,.28);
+    border-radius:21px;
+    background:linear-gradient(180deg,rgba(13,18,112,.92),rgba(9,9,91,.94));
+    box-shadow:inset 0 1px 0 rgba(255,255,255,.04);
+  }
+  body[data-app-route="leagueTools"] .v726-quick-head{
+    display:flex;
+    align-items:flex-end;
+    justify-content:space-between;
+    gap:12px;
+    margin-bottom:11px;
+  }
+  body[data-app-route="leagueTools"] .v726-quick-head small{
+    display:block;
+    color:#20ddea;
+    font-size:9px;
+    font-weight:900;
+    letter-spacing:.14em;
+  }
+  body[data-app-route="leagueTools"] .v726-quick-head h2{
+    margin:4px 0 0;
+    color:#fff;
+    font-size:18px;
+    line-height:1.05;
+    letter-spacing:-.02em;
+  }
+  body[data-app-route="leagueTools"] .v726-quick-head p{
+    max-width:165px;
+    margin:0;
+    color:#969fc9;
+    font-size:9px;
+    line-height:1.3;
+    text-align:right;
+  }
+  body[data-app-route="leagueTools"] .v726-quick-grid{
+    display:grid;
+    grid-template-columns:repeat(2,minmax(0,1fr));
+    gap:8px;
+  }
+  body[data-app-route="leagueTools"] .v726-quick-card{
+    min-width:0;
+    min-height:79px;
+    display:grid;
+    grid-template-columns:38px minmax(0,1fr) 12px;
+    align-items:center;
+    gap:9px;
+    padding:10px;
+    border:1px solid rgba(77,112,232,.30);
+    border-radius:15px;
+    background:linear-gradient(145deg,rgba(31,55,163,.94),rgba(17,17,111,.96));
+    color:#fff;
+    text-align:left;
+    box-shadow:inset 0 1px 0 rgba(255,255,255,.05);
+  }
+  body[data-app-route="leagueTools"] .v726-quick-card:active{transform:scale(.985)}
+  body[data-app-route="leagueTools"] .v726-quick-icon{
+    width:38px;
+    height:38px;
+    display:grid;
+    place-items:center;
+    border:1px solid rgba(34,225,240,.22);
+    border-radius:12px;
+    background:linear-gradient(145deg,rgba(31,224,237,.15),rgba(32,95,214,.11));
+    color:#24e2ee;
+  }
+  body[data-app-route="leagueTools"] .v726-quick-icon svg{
+    width:21px;
+    height:21px;
+    fill:none;
+    stroke:currentColor;
+    stroke-width:1.7;
+    stroke-linecap:round;
+    stroke-linejoin:round;
+  }
+  body[data-app-route="leagueTools"] .v726-quick-card b{
+    display:block;
+    font-size:13px;
+    line-height:1.05;
+    font-weight:850;
+  }
+  body[data-app-route="leagueTools"] .v726-quick-card small{
+    display:block;
+    margin-top:4px;
+    color:#aeb7d7;
+    font-size:9.5px;
+    line-height:1.2;
+  }
+  body[data-app-route="leagueTools"] .v726-quick-card i{
+    color:#5be6f0;
+    font-size:22px;
+    font-style:normal;
+    line-height:1;
+  }
+
+  body[data-app-route="leagueTools"] .v612-tools-entry.v726-admin-entry{
+    width:100%!important;
+    min-height:68px!important;
+    display:grid!important;
+    grid-template-columns:42px minmax(0,1fr) 18px!important;
+    align-items:center!important;
+    gap:11px!important;
+    margin:12px 0 0!important;
+    padding:11px 13px!important;
+    border:1px solid rgba(40,224,239,.34)!important;
+    border-radius:18px!important;
+    background:linear-gradient(135deg,rgba(8,52,151,.96),rgba(12,18,108,.97))!important;
+    color:#fff!important;
+    text-align:left!important;
+    box-shadow:inset 0 1px 0 rgba(255,255,255,.06)!important;
+  }
+  body[data-app-route="leagueTools"] .v726-admin-entry>span{
+    width:42px;
+    height:42px;
+    display:grid;
+    place-items:center;
+    border-radius:13px;
+    background:rgba(31,224,237,.12);
+    color:#21e0ec;
+  }
+  body[data-app-route="leagueTools"] .v726-admin-entry svg{
+    width:23px;
+    height:23px;
+    fill:none;
+    stroke:currentColor;
+    stroke-width:1.7;
+    stroke-linecap:round;
+    stroke-linejoin:round;
+  }
+  body[data-app-route="leagueTools"] .v726-admin-entry b{
+    display:block;
+    font-size:13px;
+    line-height:1.05;
+  }
+  body[data-app-route="leagueTools"] .v726-admin-entry small{
+    display:block;
+    margin-top:4px;
+    color:#aeb9dc;
+    font-size:9.5px;
+    line-height:1.2;
+  }
+  body[data-app-route="leagueTools"] .v726-admin-entry i{
+    color:#29e1ed;
+    font-size:23px;
+    font-style:normal;
+  }
+
+  body[data-app-route="leagueTools"] .v726-tool-section{
+    margin-top:15px;
+    padding:14px;
+    border:1px solid rgba(85,108,213,.27);
+    border-radius:22px;
+    background:
+      radial-gradient(circle at 100% 0%,rgba(29,224,235,.07),transparent 26%),
+      linear-gradient(180deg,rgba(15,17,112,.94),rgba(9,9,90,.96));
+    box-shadow:0 12px 28px rgba(0,0,50,.10),inset 0 1px 0 rgba(255,255,255,.035);
+  }
+  body[data-app-route="leagueTools"] .v726-section-head{
+    display:grid;
+    grid-template-columns:44px minmax(0,1fr);
+    gap:11px;
+    align-items:start;
+    margin-bottom:12px;
+    padding:1px 2px 11px;
+    border-bottom:1px solid rgba(255,255,255,.07);
+  }
+  body[data-app-route="leagueTools"] .v726-section-icon{
+    width:44px;
+    height:44px;
+    display:grid;
+    place-items:center;
+    border:1px solid rgba(34,225,239,.21);
+    border-radius:14px;
+    background:linear-gradient(145deg,rgba(33,224,238,.15),rgba(39,80,206,.08));
+    color:#25e0ec;
+  }
+  body[data-app-route="leagueTools"] .v726-section-icon svg{
+    width:24px;
+    height:24px;
+    fill:none;
+    stroke:currentColor;
+    stroke-width:1.65;
+    stroke-linecap:round;
+    stroke-linejoin:round;
+  }
+  body[data-app-route="leagueTools"] .v726-section-head small{
+    display:block;
+    color:#20dce9;
+    font-size:8.5px;
+    line-height:1;
+    font-weight:900;
+    letter-spacing:.14em;
+  }
+  body[data-app-route="leagueTools"] .v726-section-head h2{
+    margin:4px 0 0;
+    color:#fff;
+    font-size:19px;
+    line-height:1.05;
+    font-weight:880;
+    letter-spacing:-.025em;
+  }
+  body[data-app-route="leagueTools"] .v726-section-head p{
+    margin:5px 0 0;
+    color:#9fa8ce;
+    font-size:10px;
+    line-height:1.35;
+  }
+
+  body[data-app-route="leagueTools"] .v726-tool-grid{
+    display:grid;
+    grid-template-columns:1fr;
+    gap:8px;
+  }
+  body[data-app-route="leagueTools"] .v726-tool-card{
+    position:relative;
+    min-width:0;
+    min-height:88px;
+    display:grid;
+    grid-template-columns:48px minmax(0,1fr) 18px;
+    align-items:center;
+    gap:11px;
+    padding:11px 11px 11px 10px;
+    overflow:hidden;
+    border:1px solid rgba(80,107,224,.28);
+    border-radius:16px;
+    background:
+      linear-gradient(145deg,rgba(28,50,156,.95),rgba(16,16,107,.97));
+    color:#fff;
+    text-align:left;
+    box-shadow:inset 0 1px 0 rgba(255,255,255,.045);
+    transition:transform .16s ease,border-color .16s ease,box-shadow .16s ease;
+  }
+  body[data-app-route="leagueTools"] .v726-tool-card::before{
+    content:"";
+    position:absolute;
+    left:0;
+    top:12px;
+    bottom:12px;
+    width:2px;
+    border-radius:2px;
+    background:linear-gradient(180deg,#20dfea,rgba(32,223,234,.12));
+  }
+  body[data-app-route="leagueTools"] .v726-tool-card:active{transform:scale(.988)}
+  body[data-app-route="leagueTools"] .v726-tool-icon{
+    width:48px;
+    height:48px;
+    display:grid;
+    place-items:center;
+    border:1px solid rgba(35,226,240,.20);
+    border-radius:14px;
+    background:linear-gradient(145deg,rgba(29,224,236,.14),rgba(44,91,218,.09));
+    color:#22e0eb;
+    box-shadow:inset 0 1px 0 rgba(255,255,255,.045);
+  }
+  body[data-app-route="leagueTools"] .v726-tool-icon svg{
+    width:25px;
+    height:25px;
+    fill:none;
+    stroke:currentColor;
+    stroke-width:1.65;
+    stroke-linecap:round;
+    stroke-linejoin:round;
+  }
+  body[data-app-route="leagueTools"] .v726-tool-copy{min-width:0}
+  body[data-app-route="leagueTools"] .v726-tool-tag{
+    display:inline-flex!important;
+    width:auto!important;
+    margin:0 0 4px!important;
+    padding:3px 6px;
+    border:1px solid rgba(31,223,236,.18);
+    border-radius:999px;
+    background:rgba(18,48,145,.50);
+    color:#27e1ec!important;
+    font-size:7px!important;
+    line-height:1!important;
+    font-weight:900!important;
+    letter-spacing:.11em;
+  }
+  body[data-app-route="leagueTools"] .v726-tool-copy b{
+    display:block;
+    font-size:14px;
+    line-height:1.08;
+    font-weight:850;
+    letter-spacing:-.01em;
+  }
+  body[data-app-route="leagueTools"] .v726-tool-desc{
+    display:block;
+    margin-top:4px;
+    color:#b1b9d8;
+    font-size:9.5px;
+    line-height:1.3;
+    font-weight:530;
+  }
+  body[data-app-route="leagueTools"] .v726-tool-arrow{
+    justify-self:end;
+    color:#59e7f0;
+    font-size:24px;
+    line-height:1;
+  }
+
+  body[data-app-route="leagueTools"] .v726-admin-section{
+    border-color:rgba(75,214,233,.26)!important;
+    background:
+      radial-gradient(circle at 95% 2%,rgba(26,224,237,.09),transparent 27%),
+      linear-gradient(180deg,rgba(12,30,125,.96),rgba(8,9,87,.97))!important;
+  }
+  body[data-app-route="leagueTools"] .v726-admin-section .v726-tool-card.v612-admin-locked::after{
+    content:"ADMIN";
+    position:absolute;
+    right:34px;
+    top:9px;
+    padding:3px 6px;
+    border-radius:999px;
+    background:rgba(10,13,93,.74);
+    color:#8f9bd0;
+    font-size:6.5px;
+    line-height:1;
+    font-weight:900;
+    letter-spacing:.12em;
+  }
+}
+
+@media(min-width:430px) and (max-width:1023px){
+  body[data-app-route="leagueTools"] .v726-tool-grid{
+    grid-template-columns:repeat(2,minmax(0,1fr));
+  }
+  body[data-app-route="leagueTools"] .v726-tool-card{
+    min-height:112px;
+    grid-template-columns:46px minmax(0,1fr) 14px;
+    align-items:start;
+  }
+  body[data-app-route="leagueTools"] .v726-tool-icon{margin-top:2px}
+}
+
+@media(min-width:1024px){
+  body[data-app-route="leagueTools"] .v726-tools-page{
+    max-width:980px!important;
+    margin:0 auto!important;
+    padding:24px 24px 90px!important;
+  }
+  body[data-app-route="leagueTools"] .v726-tools-hero{
+    padding:28px;
+    border:1px solid rgba(91,133,255,.32);
+    border-radius:26px;
+    background:linear-gradient(135deg,#1d49c2,#141a8d 55%,#0c0c68);
+  }
+  body[data-app-route="leagueTools"] .v726-tools-hero h1{margin:8px 0 0;font-size:42px}
+  body[data-app-route="leagueTools"] .v726-tools-hero p{max-width:650px;color:#c8d0ec;line-height:1.5}
+  body[data-app-route="leagueTools"] .v726-hero-kicker{color:#24e4f2;font-size:11px;font-weight:900;letter-spacing:.14em}
+  body[data-app-route="leagueTools"] .v726-hero-pills{display:flex;gap:7px;margin-top:16px}
+  body[data-app-route="leagueTools"] .v726-hero-pills span{padding:7px 10px;border-radius:999px;background:#102a92;color:#dce8ff;font-size:10px}
+
+  body[data-app-route="leagueTools"] .v726-quick-section,
+  body[data-app-route="leagueTools"] .v726-tool-section{
+    margin-top:16px;
+    padding:18px;
+    border:1px solid rgba(88,111,222,.26);
+    border-radius:22px;
+    background:#0e0f70;
+  }
+  body[data-app-route="leagueTools"] .v726-quick-head{display:flex;justify-content:space-between;align-items:end;margin-bottom:12px}
+  body[data-app-route="leagueTools"] .v726-quick-head small,
+  body[data-app-route="leagueTools"] .v726-section-head small{color:#20ddea;font-size:9px;font-weight:900;letter-spacing:.13em}
+  body[data-app-route="leagueTools"] .v726-quick-head h2,
+  body[data-app-route="leagueTools"] .v726-section-head h2{margin:4px 0 0;color:#fff}
+  body[data-app-route="leagueTools"] .v726-quick-head p,
+  body[data-app-route="leagueTools"] .v726-section-head p{color:#9fa8ce}
+  body[data-app-route="leagueTools"] .v726-quick-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
+  body[data-app-route="leagueTools"] .v726-quick-card,
+  body[data-app-route="leagueTools"] .v726-tool-card{
+    border:1px solid rgba(80,107,224,.28);
+    border-radius:16px;
+    background:linear-gradient(145deg,#1b329d,#10106b);
+    color:#fff;
+  }
+  body[data-app-route="leagueTools"] .v726-quick-card{
+    min-height:86px;
+    display:grid;
+    grid-template-columns:40px minmax(0,1fr) 14px;
+    align-items:center;
+    gap:10px;
+    padding:11px;
+    text-align:left;
+  }
+  body[data-app-route="leagueTools"] .v726-quick-icon,
+  body[data-app-route="leagueTools"] .v726-tool-icon,
+  body[data-app-route="leagueTools"] .v726-section-icon,
+  body[data-app-route="leagueTools"] .v726-admin-entry>span{
+    display:grid;
+    place-items:center;
+    background:rgba(29,224,236,.12);
+    color:#22e0eb;
+    border-radius:13px;
+  }
+  body[data-app-route="leagueTools"] .v726-quick-icon{width:40px;height:40px}
+  body[data-app-route="leagueTools"] .v726-quick-icon svg,
+  body[data-app-route="leagueTools"] .v726-tool-icon svg,
+  body[data-app-route="leagueTools"] .v726-section-icon svg,
+  body[data-app-route="leagueTools"] .v726-admin-entry svg{width:23px;height:23px;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+  body[data-app-route="leagueTools"] .v726-quick-card b{display:block;font-size:14px}
+  body[data-app-route="leagueTools"] .v726-quick-card small{display:block;margin-top:4px;color:#aeb7d7;font-size:10px}
+  body[data-app-route="leagueTools"] .v726-quick-card i{color:#59e7f0;font-size:22px;font-style:normal}
+
+  body[data-app-route="leagueTools"] .v612-tools-entry.v726-admin-entry{
+    width:100%!important;
+    min-height:70px!important;
+    display:grid!important;
+    grid-template-columns:44px minmax(0,1fr) 18px!important;
+    align-items:center!important;
+    gap:11px!important;
+    margin:14px 0 0!important;
+    padding:12px 14px!important;
+    border-radius:18px!important;
+    background:#0b288f!important;
+    color:#fff!important;
+    text-align:left!important;
+  }
+  body[data-app-route="leagueTools"] .v726-admin-entry>span{width:44px;height:44px}
+  body[data-app-route="leagueTools"] .v726-admin-entry b{display:block}
+  body[data-app-route="leagueTools"] .v726-admin-entry small{display:block;margin-top:4px;color:#aeb9dc}
+  body[data-app-route="leagueTools"] .v726-admin-entry i{color:#29e1ed;font-size:23px;font-style:normal}
+
+  body[data-app-route="leagueTools"] .v726-section-head{
+    display:grid;
+    grid-template-columns:46px minmax(0,1fr);
+    gap:12px;
+    align-items:start;
+    padding-bottom:12px;
+    border-bottom:1px solid rgba(255,255,255,.07);
+    margin-bottom:12px;
+  }
+  body[data-app-route="leagueTools"] .v726-section-icon{width:46px;height:46px}
+  body[data-app-route="leagueTools"] .v726-section-head h2{font-size:21px}
+  body[data-app-route="leagueTools"] .v726-section-head p{margin:5px 0 0;font-size:11px}
+
+  body[data-app-route="leagueTools"] .v726-tool-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+  body[data-app-route="leagueTools"] .v726-tool-card{
+    min-height:120px;
+    display:grid;
+    grid-template-columns:46px minmax(0,1fr) 14px;
+    align-items:start;
+    gap:10px;
+    padding:12px;
+    text-align:left;
+  }
+  body[data-app-route="leagueTools"] .v726-tool-icon{width:46px;height:46px}
+  body[data-app-route="leagueTools"] .v726-tool-tag{display:inline-flex;padding:3px 6px;border-radius:999px;background:#102d98;color:#25e0ec;font-size:7px;font-weight:900;letter-spacing:.1em}
+  body[data-app-route="leagueTools"] .v726-tool-copy b{display:block;margin-top:4px;font-size:15px}
+  body[data-app-route="leagueTools"] .v726-tool-desc{display:block;margin-top:5px;color:#b1b9d8;font-size:10px;line-height:1.35}
+  body[data-app-route="leagueTools"] .v726-tool-arrow{align-self:center;color:#59e7f0;font-size:23px}
+}
+
+@media(prefers-reduced-motion:reduce){
+  body[data-app-route="leagueTools"] .v726-tool-card,
+  body[data-app-route="leagueTools"] .v726-quick-card{transition:none!important}
+}
