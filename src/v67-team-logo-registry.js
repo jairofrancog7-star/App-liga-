@@ -5,6 +5,27 @@
   'use strict';
 
   const BASE='https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/';
+  const APP='https://jairofrancog7-star.github.io/App-liga-/';
+  const ACTIVE_2026={
+    'san jose fc':APP+'assets/official-logos/san-jose-fc-2026.webp',
+    'san jose':APP+'assets/official-logos/san-jose-fc-2026.webp',
+    'san jose de la montana':APP+'assets/official-logos/san-jose-fc-2026.webp',
+    'san jose montana':APP+'assets/official-logos/san-jose-fc-2026.webp',
+    'hermanos':APP+'assets/official-logos/hermanos-2026.webp',
+    'hermanos fc':APP+'assets/official-logos/hermanos-2026.webp',
+    'dep hermanos':APP+'assets/official-logos/hermanos-2026.webp',
+    'deportivo hermanos':APP+'assets/official-logos/hermanos-2026.webp',
+    'terricolas':APP+'assets/official-logos/terricolas-2026.webp',
+    'terricolas fc':APP+'assets/official-logos/terricolas-2026.webp',
+    'terricolas seder':APP+'assets/official-logos/terricolas-2026.webp',
+    'abejas':APP+'assets/official-logos/abejas-2026.webp',
+    'abejas fc':APP+'assets/official-logos/abejas-2026.webp',
+    'boavista':APP+'assets/official-logos/boavista-2026.webp',
+    'cuenda':APP+'assets/official-logos/cuenda-2026.webp',
+    'santiago de cuenda':APP+'assets/official-logos/cuenda-2026.webp',
+    'promesas':APP+'assets/official-logos/promesas-fc-2026.webp',
+    'promesas fc':APP+'assets/official-logos/promesas-fc-2026.webp'
+  };
   const DYNAMIC={};
   /* V688 — equivalencias históricas confirmadas por el usuario.
      Son sólo aliases visuales del archivo; no agregan clubes a la temporada actual. */
@@ -168,6 +189,8 @@
   }
   function get(name){
     const key=norm(name);
+    const active=ACTIVE_2026[key];
+    if(active)return active;
     const historic=USER_HISTORIC[key];
     if(historic)return new URL(historic,document.baseURI).href;
     const cached=Object.entries(window.LJR_OFFICIAL_DATA?.team_logos||{}).find(([team])=>norm(team)===key)?.[1]?.app;
@@ -220,20 +243,18 @@
   }
   function teamNameFrom(el){
     if(!(el instanceof Element))return '';
-    const explicit=[
-      el.getAttribute('alt'),el.getAttribute('title'),
-      el.dataset?.team,el.dataset?.v62Team,el.dataset?.v42CompareTeam,el.dataset?.v27Team
-    ].filter(v=>String(v||'').trim());
-    for(const v of explicit)if(get(v))return String(v).trim();
-    /* Si la imagen ya declara un nombre/alt propio, nunca heredamos el nombre de un
-       hermano o de otra tarjeta cercana. Esto evita repetir el primer escudo del bloque. */
-    if(explicit.length)return '';
+    const own=[el.dataset?.team,el.dataset?.v62Team,el.dataset?.v42CompareTeam,el.dataset?.v27Team].filter(v=>String(v||'').trim());
+    for(const v of own)if(get(v))return String(v).trim();
 
     const owner=el.closest?.('[data-team],[data-v62-team],[data-v42-compare-team],[data-v27-team]');
     if(owner){
       const vals=[owner.dataset?.team,owner.dataset?.v62Team,owner.dataset?.v42CompareTeam,owner.dataset?.v27Team].filter(Boolean);
       for(const v of vals)if(get(v))return String(v).trim();
     }
+
+    const explicit=[el.getAttribute('alt'),el.getAttribute('title')].filter(v=>String(v||'').trim());
+    for(const v of explicit)if(get(v))return String(v).trim();
+    if(explicit.length)return '';
 
     /* Sólo consultar contenedores que representan UN equipo. No buscar <b>/<strong>
        genéricos en padres amplios (filas con dos equipos, grids o tablas completas). */
