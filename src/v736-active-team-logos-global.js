@@ -107,11 +107,13 @@ function patchImg(img){
   if(!(img instanceof HTMLImageElement)||historical(img)||playerPhoto(img))return;
   const raw=String(img.currentSrc||img.src||'');
   if(/\/assets\/history\/archive-v\d+\//i.test(raw))return;
-  let key=sourceKey(raw);
-  if(!key){
-    const team=teamFrom(img);
-    if(team&&looksLogo(img))key=keyFor(team);
-  }
+  /* V739 — el nombre explícito del equipo manda sobre la URL actual.
+     Corrige casos donde una tarjeta fue renderizada con el escudo de otro club
+     (por ejemplo NAPOLI heredando una imagen ajena). */
+  let key='';
+  const team=teamFrom(img);
+  if(team&&looksLogo(img))key=keyFor(team);
+  if(!key)key=sourceKey(raw);
   const src=LOGOS[key];
   if(!src)return;
   if(img.getAttribute('src')!==src){
