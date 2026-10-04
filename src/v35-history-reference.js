@@ -298,6 +298,9 @@ const APP_HISTORIC_LOGOS={
   'salvaje':HIST_USER_LOGO_SALVAJES,
   'tecos':HIST_USER_LOGO_TECOS,
   'tecos fc':HIST_USER_LOGO_TECOS,
+  'tecos jr':HIST_USER_LOGO_TECOS,
+  'tecos jrs':HIST_USER_LOGO_TECOS,
+  'tecos pozos':HIST_USER_LOGO_TECOS,
   'universidad':'./assets/history/team-logos/universidad-pumas.webp',
   'unam':'./assets/history/team-logos/universidad-pumas.webp',
   'pumas':'./assets/history/team-logos/universidad-pumas.webp',
@@ -2578,7 +2581,7 @@ function v370HistoryTeamLogo(name){
   /* V700 — Memoria de clubes: resolver primero los escudos históricos locales.
      Tecos tiene un archivo propio y no debe quedar con el cuadro vacío. */
   const key=histTeamKey(canonicalHistoricName(name));
-  if(key==='tecos'||key==='tecos fc')return './assets/history/team-logos/tecos.webp';
+  if(['tecos','tecos fc','tecos jr','tecos jrs','tecos pozos'].includes(key))return './assets/history/team-logos/tecos.webp';
   try{
     const localHistoric=historicLogo(name);
     if(localHistoric)return localHistoric;
