@@ -1,16 +1,28 @@
-/* V723 — Historia > Récords > Memoria de clubes.
-   Un solo escudo por tarjeta, grande y legible, sin recortar el diseño. */
+/* V724 — Historia > Récords > Memoria de clubes.
+   Un solo escudo por tarjeta, sin parpadeo y con tamaño visual uniforme. */
 @media(max-width:1023px){
   body[data-app-route="history"] .v370-legacy-team .v370-legacy-crest{
     position:relative!important;
+    width:62px!important;
+    height:62px!important;
+    min-width:62px!important;
+    min-height:62px!important;
+    flex:0 0 62px!important;
+    display:grid!important;
+    place-items:center!important;
     overflow:hidden!important;
     padding:0!important;
+    border-radius:16px!important;
+    box-sizing:border-box!important;
+  }
+
+  body[data-app-route="history"] .v370-legacy-team .v370-legacy-crest.v724-single-logo> :not(img){
+    display:none!important;
   }
 
   body[data-app-route="history"] .v370-legacy-team .v370-legacy-crest>img,
   body[data-app-route="history"] .v370-legacy-team .v370-legacy-crest>img.v672-legacy-logo,
-  body[data-app-route="history"] .v370-legacy-team .v370-legacy-crest>img.v704-legacy-logo,
-  body[data-app-route="history"] .v370-legacy-team .v370-legacy-crest.v701-has-logo>img{
+  body[data-app-route="history"] .v370-legacy-team .v370-legacy-crest>img.v704-legacy-logo{
     position:absolute!important;
     inset:0!important;
     width:100%!important;
@@ -22,47 +34,70 @@
     display:block!important;
     object-fit:contain!important;
     object-position:center!important;
-    transform:scale(1.04)!important;
+    opacity:1!important;
+    visibility:visible!important;
+    animation:none!important;
+    transition:none!important;
+    filter:none!important;
+    transform:scale(1.10)!important;
     transform-origin:center!important;
+    will-change:auto!important;
   }
 
-  /* Archivos antiguos con margen interno: ampliar sólo lo necesario. */
+  /* Fuentes con mucho margen transparente: ampliar el contenido real. */
   body[data-app-route="history"] .v370-legacy-crest>img[src*="legacy-2015-mazacotes"]{
-    transform:scale(2.05)!important;
+    transform:scale(2.25)!important;
   }
-  body[data-app-route="history"] .v370-legacy-crest>img[src*="legacy-2015-cerrito"]{
-    transform:scale(1.72)!important;
+  body[data-app-route="history"] .v370-legacy-crest>img[src*="legacy-2015-olimpicos-pozos"]{
+    transform:scale(2.90)!important;
+  }
+  body[data-app-route="history"] .v370-legacy-crest>img[src*="legacy-2015-puros-cuates"]{
+    transform:scale(3.10)!important;
   }
   body[data-app-route="history"] .v370-legacy-crest>img[src*="/tecos.webp"]{
-    transform:scale(1.18)!important;
+    transform:scale(1.58)!important;
   }
 
-  /* Estos escudos ya ocupan bien el archivo: mostrar diseño completo, sin cortar letras/bordes. */
-  body[data-app-route="history"] .v370-legacy-crest>img[src*="legacy-2015-san-antonio-romerillo"],
-  body[data-app-route="history"] .v370-legacy-crest>img[src*="legacy-2015-linces"],
-  body[data-app-route="history"] .v370-legacy-crest>img[src*="legacy-2015-juventus"],
+  /* Escudos que ya vienen bien recortados: llenar el cuadro sin deformarse. */
   body[data-app-route="history"] .v370-legacy-crest>img[src*="deportivo-cg"],
-  body[data-app-route="history"] .v370-legacy-crest>img[src*="manchester"]{
-    transform:scale(1.00)!important;
-  }
-
+  body[data-app-route="history"] .v370-legacy-crest>img[src*="linces"],
+  body[data-app-route="history"] .v370-legacy-crest>img[src*="juventus"],
+  body[data-app-route="history"] .v370-legacy-crest>img[src*="manchester"],
+  body[data-app-route="history"] .v370-legacy-crest>img[src*="lobos-cdg"],
   body[data-app-route="history"] .v370-legacy-crest>img[src*="lobos-jr-cerrito-gasca"]{
     transform:scale(1.08)!important;
   }
-  body[data-app-route="history"] .v370-legacy-crest>img[src*="legacy-2015-olimpicos-pozos"]{
-    transform:scale(2.65)!important;
+
+  body[data-app-route="history"] .v370-legacy-team{
+    min-height:170px!important;
   }
-  body[data-app-route="history"] .v370-legacy-crest>img[src*="legacy-2015-puros-cuates"]{
-    transform:scale(2.85)!important;
+  body[data-app-route="history"] .v370-legacy-team.v706-evolved-club{
+    min-height:188px!important;
   }
 
-  /* Tecos también debe verse en el carrusel de temporadas. */
+  /* Tecos en temporadas también queda legible. */
   body[data-app-route="history"] .v328-season-logo>img[src*="/tecos.webp"]{
     width:100%!important;
     height:100%!important;
     object-fit:contain!important;
     object-position:center!important;
-    transform:scale(1.08)!important;
+    transform:scale(1.35)!important;
     transform-origin:center!important;
+  }
+}
+
+@media(max-width:390px){
+  body[data-app-route="history"] .v370-legacy-team .v370-legacy-crest{
+    width:58px!important;
+    height:58px!important;
+    min-width:58px!important;
+    min-height:58px!important;
+    flex-basis:58px!important;
+  }
+  body[data-app-route="history"] .v370-legacy-team{
+    min-height:164px!important;
+  }
+  body[data-app-route="history"] .v370-legacy-team.v706-evolved-club{
+    min-height:182px!important;
   }
 }
