@@ -521,3 +521,192 @@
     font-size:6.4px!important;
   }
 }
+/* V734 — texto limpio + Ver detalles funcional en Herramientas. */
+@media(max-width:1023px){
+  html body[data-app-route="leagueTools"] .v726-tool-card.v734-tool-card{
+    position:relative!important;
+    display:block!important;
+    min-width:0!important;
+    min-height:78px!important;
+    height:78px!important;
+    max-height:78px!important;
+    padding:5px 6px!important;
+    overflow:hidden!important;
+    box-sizing:border-box!important;
+  }
+
+  html body[data-app-route="leagueTools"] .v734-tool-open{
+    appearance:none!important;
+    -webkit-appearance:none!important;
+    width:100%!important;
+    height:51px!important;
+    min-height:51px!important;
+    display:grid!important;
+    grid-template-columns:30px minmax(0,1fr) 10px!important;
+    align-items:center!important;
+    gap:5px!important;
+    margin:0!important;
+    padding:0!important;
+    border:0!important;
+    outline:0!important;
+    background:transparent!important;
+    color:#fff!important;
+    text-align:left!important;
+    font:inherit!important;
+    touch-action:manipulation!important;
+  }
+
+  html body[data-app-route="leagueTools"] .v734-tool-open .v726-tool-icon{
+    width:30px!important;
+    height:30px!important;
+    min-width:30px!important;
+    min-height:30px!important;
+    max-width:30px!important;
+    max-height:30px!important;
+    margin:0!important;
+    border-radius:9px!important;
+  }
+  html body[data-app-route="leagueTools"] .v734-tool-open .v726-tool-icon svg{
+    width:16px!important;
+    height:16px!important;
+  }
+
+  html body[data-app-route="leagueTools"] .v734-tool-open .v726-tool-copy{
+    min-width:0!important;
+    width:100%!important;
+    padding:0!important;
+  }
+  html body[data-app-route="leagueTools"] .v734-tool-open .v726-tool-tag{
+    display:block!important;
+    width:max-content!important;
+    max-width:100%!important;
+    margin:0 0 3px!important;
+    padding:2px 4px!important;
+    font-size:5.7px!important;
+    line-height:1!important;
+    white-space:nowrap!important;
+    overflow:hidden!important;
+    text-overflow:ellipsis!important;
+  }
+  html body[data-app-route="leagueTools"] .v734-tool-open .v726-tool-copy b{
+    display:block!important;
+    max-width:100%!important;
+    margin:0!important;
+    color:#fff!important;
+    font-size:9.8px!important;
+    line-height:1.05!important;
+    font-weight:850!important;
+    white-space:normal!important;
+    overflow-wrap:anywhere!important;
+    display:-webkit-box!important;
+    -webkit-line-clamp:2!important;
+    -webkit-box-orient:vertical!important;
+    overflow:hidden!important;
+  }
+
+  html body[data-app-route="leagueTools"] .v734-tool-open .v726-tool-arrow{
+    position:static!important;
+    align-self:center!important;
+    justify-self:end!important;
+    font-size:13px!important;
+    line-height:1!important;
+  }
+
+  html body[data-app-route="leagueTools"] .v726-tool-card.v734-tool-card > .v726-tool-desc{
+    display:none!important;
+  }
+
+  html body[data-app-route="leagueTools"] .v734-tool-details{
+    appearance:none!important;
+    -webkit-appearance:none!important;
+    position:absolute!important;
+    left:6px!important;
+    right:6px!important;
+    bottom:5px!important;
+    height:16px!important;
+    min-height:16px!important;
+    display:flex!important;
+    align-items:center!important;
+    justify-content:center!important;
+    gap:3px!important;
+    margin:0!important;
+    padding:0 5px!important;
+    border:1px solid rgba(39,222,242,.28)!important;
+    border-radius:7px!important;
+    background:rgba(8,66,158,.28)!important;
+    color:#2de5ef!important;
+    font:850 6.8px/1 Inter,Roboto,Arial,sans-serif!important;
+    letter-spacing:.015em!important;
+    touch-action:manipulation!important;
+    z-index:8!important;
+  }
+  html body[data-app-route="leagueTools"] .v734-tool-details i{
+    font-style:normal!important;
+    font-size:9px!important;
+    line-height:1!important;
+  }
+
+  html body[data-app-route="leagueTools"] .v734-tool-detail-panel{
+    display:none!important;
+  }
+
+  html body[data-app-route="leagueTools"] .v726-tool-card.v734-tool-card.is-v734-open{
+    grid-column:1 / -1!important;
+    min-height:0!important;
+    height:auto!important;
+    max-height:none!important;
+    padding:7px!important;
+    overflow:visible!important;
+  }
+  html body[data-app-route="leagueTools"] .v734-tool-card.is-v734-open .v734-tool-open{
+    height:44px!important;
+    min-height:44px!important;
+    grid-template-columns:32px minmax(0,1fr) 12px!important;
+  }
+  html body[data-app-route="leagueTools"] .v734-tool-card.is-v734-open .v734-tool-details{
+    position:static!important;
+    width:100%!important;
+    height:24px!important;
+    min-height:24px!important;
+    margin-top:4px!important;
+    border-radius:9px!important;
+    font-size:7.5px!important;
+  }
+  html body[data-app-route="leagueTools"] .v734-tool-card.is-v734-open .v734-tool-detail-panel{
+    display:block!important;
+    margin-top:6px!important;
+    padding:8px!important;
+    border:1px solid rgba(52,111,226,.26)!important;
+    border-radius:10px!important;
+    background:rgba(5,17,90,.48)!important;
+  }
+  html body[data-app-route="leagueTools"] .v734-tool-detail-panel p{
+    margin:0!important;
+    color:#c6d0ec!important;
+    font-size:8.5px!important;
+    line-height:1.32!important;
+  }
+  html body[data-app-route="leagueTools"] .v734-tool-go{
+    appearance:none!important;
+    -webkit-appearance:none!important;
+    width:100%!important;
+    min-height:30px!important;
+    display:flex!important;
+    align-items:center!important;
+    justify-content:space-between!important;
+    gap:8px!important;
+    margin-top:7px!important;
+    padding:7px 9px!important;
+    border:1px solid rgba(42,222,244,.38)!important;
+    border-radius:10px!important;
+    background:rgba(17,92,190,.25)!important;
+    color:#fff!important;
+    font:850 8.5px/1 Inter,Roboto,Arial,sans-serif!important;
+    touch-action:manipulation!important;
+  }
+  html body[data-app-route="leagueTools"] .v734-tool-go i{
+    color:#2de5ef!important;
+    font-style:normal!important;
+    font-size:14px!important;
+  }
+}
