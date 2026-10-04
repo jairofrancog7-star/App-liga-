@@ -130,20 +130,20 @@ function patchImg(img){
   if(!(img instanceof HTMLImageElement)||historical(img)||playerPhoto(img))return;
   const raw=String(img.currentSrc||img.src||'');
   if(/\/assets\/history\/archive-v\d+\//i.test(raw))return;
-  /* V739 — el nombre explícito del equipo manda sobre la URL actual.
-     Corrige casos donde una tarjeta fue renderizada con el escudo de otro club
-     (por ejemplo NAPOLI heredando una imagen ajena). */
-  let key='';
+  /* V740 — corrección global por identidad del equipo.
+     No reutilizar sourceKey(raw) como identidad: si el src ya está cruzado
+     (ej. San José en una tarjeta de Napoli), perpetuaría el error. */
   const team=teamFrom(img);
-  if(team&&looksLogo(img))key=keyFor(team);
-  if(!key)key=sourceKey(raw);
-  const src=LOGOS[key];
+  if(!team||!looksLogo(img))return;
+  const src=logoForTeam(team);
   if(!src)return;
-  if(img.getAttribute('src')!==src){
+  const wanted=new URL(src,document.baseURI).href;
+  if(String(img.src||'')!==wanted){
     img.src=src;
     img.removeAttribute('srcset');
   }
-  img.dataset.v736ActiveLogo=key;
+  img.alt=team;
+  img.dataset.v736ActiveLogo=keyFor(team)||norm(team);
   img.style.setProperty('object-fit','contain');
   img.style.setProperty('object-position','center');
 }
