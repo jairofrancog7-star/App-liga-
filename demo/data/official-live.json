@@ -20231,23 +20231,19 @@
   "team_logos": {
     "ABEJAS": {
       "local": "./assets/official-logos/abejas.png",
-      "source": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/Abejas_lxn6l9",
-      "app": "https://jairofrancog7-star.github.io/App-liga-/assets/official-logos/abejas-2026.webp?v=20261004-v744"
+      "source": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/Abejas_lxn6l9"
     },
     "AGUILARES": {
       "local": "./assets/official-logos/aguilares.png",
-      "source": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/aguilares_ifdgll",
-      "app": "https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/assets/official-logos/aguilares.png"
+      "source": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/aguilares_ifdgll"
     },
     "ALDAMA FC": {
       "local": "./assets/official-logos/aldama-fc.png",
-      "source": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/Aldama_mqm3r1",
-      "app": "https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/assets/official-logos/aldama-fc.png"
+      "source": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/Aldama_mqm3r1"
     },
     "AMERICA": {
       "local": "./assets/official-logos/america.png",
-      "source": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/America_wbi53g",
-      "app": "https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/assets/branding/america-veteranos-35-user.png"
+      "source": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/America_wbi53g"
     },
     "ATL. GALEANA": {
       "local": "./assets/official-logos/atl-galeana.png",
@@ -20255,229 +20251,179 @@
     },
     "BARZA": {
       "local": "./assets/official-logos/barza.png",
-      "source": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/Barcelona_amoaiq",
-      "app": "https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/assets/official-logos/barza.png"
+      "source": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/Barcelona_amoaiq"
     },
     "BOAVISTA": {
       "local": "./assets/official-logos/boavista.png",
-      "source": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/Boavista_qiq0dy",
-      "app": "https://jairofrancog7-star.github.io/App-liga-/assets/official-logos/boavista-2026.webp?v=20261004-v744"
+      "source": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/Boavista_qiq0dy"
     },
     "CAPIBARAS": {
       "local": "./assets/official-logos/capibaras.png",
-      "source": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/Capibara_vocmbl",
-      "app": "https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/assets/official-logos/capibaras.png"
+      "source": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/Capibara_vocmbl"
     },
     "CELTICOS": {
       "local": "./assets/official-logos/celticos.png",
-      "source": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/CelticosFC_nv4ukd",
-      "app": "https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/assets/official-logos/celticos.png"
+      "source": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/CelticosFC_nv4ukd"
     },
     "CUENDA": {
       "local": "./assets/official-logos/cuenda.png",
-      "source": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/SantiagoCuenda_fvaq9e",
-      "app": "https://jairofrancog7-star.github.io/App-liga-/assets/official-logos/cuenda-2026.webp?v=20261004-v744"
+      "source": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/SantiagoCuenda_fvaq9e"
     },
     "DEP. LA LUZ": {
       "local": "./assets/official-logos/dep-la-luz.png",
-      "source": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/DepLaLuz_wibidf",
-      "app": "https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/assets/official-logos/dep-la-luz.png"
+      "source": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/DepLaLuz_wibidf"
     },
     "DEP. MARAVILLAS": {
       "local": "./assets/official-logos/dep-maravillas.png",
-      "source": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/MAravillasFC_mnmhwx",
-      "app": "https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/assets/official-logos/dep-maravillas.png"
+      "source": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/MAravillasFC_mnmhwx"
     },
     "DEP. NOPALERO": {
       "local": "./assets/official-logos/dep-nopalero.png",
-      "source": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/Nopalero_skdsij",
-      "app": "https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/assets/official-logos/dep-nopalero.png"
+      "source": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/Nopalero_skdsij"
     },
     "DEP. ZAPATA": {
       "local": "./assets/official-logos/dep-zapata.png",
-      "source": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/Dep.Zapata_a5dsaz",
-      "app": "https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/assets/official-logos/dep-zapata.png"
+      "source": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/Dep.Zapata_a5dsaz"
     },
     "DYNAMO": {
       "local": "./assets/official-logos/dynamo.png",
-      "source": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/Dinamo_rgamvy",
-      "app": "https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/assets/official-logos/dynamo.png"
+      "source": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/Dinamo_rgamvy"
     },
     "FRANCO FC": {
       "local": "./assets/official-logos/franco-fc.png",
-      "source": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/FrancoFC_vtd8d7",
-      "app": "https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/assets/official-logos/franco-fc.png"
+      "source": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/FrancoFC_vtd8d7"
     },
     "FRANCO-TAVERA-JR": {
       "local": "./assets/official-logos/franco-tavera-jr.png",
-      "source": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/FrancoTaveraVeteranos_qwrqrc",
-      "app": "https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/assets/official-logos/franco-tavera-jr.png"
+      "source": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/FrancoTaveraVeteranos_qwrqrc"
     },
     "GALEANA": {
       "local": "./assets/official-logos/galeana.png",
-      "source": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/Galeana_kujrh0",
-      "app": "https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/assets/official-logos/galeana.png"
+      "source": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/Galeana_kujrh0"
     },
     "HERMANOS": {
       "local": "./assets/official-logos/hermanos.png",
-      "source": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/Hermanos_kbfrmh",
-      "app": "https://jairofrancog7-star.github.io/App-liga-/assets/official-logos/hermanos-2026.webp?v=20261004-v744"
+      "source": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/Hermanos_kbfrmh"
     },
     "HERRERAS FC": {
       "local": "./assets/official-logos/herreras-fc.png",
-      "source": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/HerreraFC_mnmlsd",
-      "app": "https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/assets/official-logos/herreras-fc.png"
+      "source": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/HerreraFC_mnmlsd"
     },
     "HURACAN": {
       "local": "./assets/official-logos/huracan.png",
-      "source": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/Huracan_pfndn5",
-      "app": "https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/assets/official-logos/huracan.png"
+      "source": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/Huracan_pfndn5"
     },
     "JUVENTUS": {
       "local": "./assets/official-logos/juventus.png",
-      "source": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/Juventus_ntqr0b",
-      "app": "https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/assets/official-logos/juventus.png"
+      "source": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/Juventus_ntqr0b"
     },
     "LA CANCHITA DEPORTES": {
       "local": "./assets/official-logos/la-canchita-deportes.png",
-      "source": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/LaCanchita_enf6ca",
-      "app": "https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/assets/official-logos/la-canchita-deportes.png"
+      "source": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/LaCanchita_enf6ca"
     },
     "LA CUADRILLA": {
       "local": "./assets/official-logos/la-cuadrilla.png",
-      "source": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/CuadrillaFC_vpfbtr",
-      "app": "https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/assets/official-logos/la-cuadrilla.png"
+      "source": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/CuadrillaFC_vpfbtr"
     },
     "LA ESPERANZA": {
       "local": "./assets/official-logos/la-esperanza.png",
-      "source": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/LaEsperanzaFC_vazya7",
-      "app": "https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/assets/official-logos/la-esperanza.png"
+      "source": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/LaEsperanzaFC_vazya7"
     },
     "LA HUERTA": {
       "local": "./assets/official-logos/la-huerta.png",
-      "source": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/LaHuertaCuenda_bm4fxj",
-      "app": "https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/assets/official-logos/la-huerta.png"
+      "source": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/LaHuertaCuenda_bm4fxj"
     },
     "LA TRINIDAD": {
       "local": "./assets/official-logos/la-trinidad.png",
-      "source": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/La_trinidad_a32pbk",
-      "app": "https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/assets/official-logos/la-trinidad.png"
+      "source": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/La_trinidad_a32pbk"
     },
     "LEYENDAS FC": {
       "local": "./assets/official-logos/leyendas-fc.png",
-      "source": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/LEYENDAS_jwcnlu",
-      "app": "https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/assets/official-logos/leyendas-fc.png"
+      "source": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/LEYENDAS_jwcnlu"
     },
     "LINCES": {
       "local": "./assets/official-logos/linces.png",
-      "source": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/Linces_l1lc7c",
-      "app": "https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/assets/official-logos/linces.png"
+      "source": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/Linces_l1lc7c"
     },
     "LOBOS CDG": {
       "local": "./assets/official-logos/lobos-cdg.png",
-      "source": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/Lobos_efloib",
-      "app": "https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/assets/official-logos/lobos-cdg.png"
+      "source": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/Lobos_efloib"
     },
     "MALVINAS": {
       "local": "./assets/official-logos/malvinas.png",
-      "source": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/Malvinas_wdiwk9",
-      "app": "https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/assets/official-logos/malvinas.png"
+      "source": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/Malvinas_wdiwk9"
     },
     "MANCHESTER": {
       "local": "./assets/official-logos/manchester.png",
-      "source": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/ManchesterU_zltkh0",
-      "app": "https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/assets/official-logos/manchester.png"
+      "source": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/ManchesterU_zltkh0"
     },
     "MAZACOTES FC": {
       "local": "./assets/official-logos/mazacotes-fc.png",
-      "source": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/Mazacotes_ko8o0w",
-      "app": "https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/assets/official-logos/mazacotes-fc.png"
+      "source": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/Mazacotes_ko8o0w"
     },
     "NAPOLI": {
       "local": "./assets/official-logos/napoli.png",
-      "source": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/Napoli_cp25dv",
-      "app": "https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/assets/official-logos/napoli.png"
+      "source": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/Napoli_cp25dv"
     },
     "OSASUNA": {
       "local": "./assets/official-logos/osasuna.png",
-      "source": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/Osasuna_lv6rsa",
-      "app": "https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/assets/official-logos/osasuna.png"
+      "source": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/Osasuna_lv6rsa"
     },
     "PACHANGAS FC": {
       "local": "./assets/official-logos/pachangas-fc.png",
-      "source": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/Pachangas_upqelg",
-      "app": "https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/assets/official-logos/pachangas-fc.png"
+      "source": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/Pachangas_upqelg"
     },
     "POPULARES": {
       "local": "./assets/official-logos/populares.png",
-      "source": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/PopularesFC_onellt",
-      "app": "https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/assets/official-logos/populares.png"
+      "source": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/PopularesFC_onellt"
     },
     "PROMESAS FC": {
       "local": "./assets/official-logos/promesas-fc.png",
-      "source": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/PromesasFC_w4lwk8",
-      "app": "https://jairofrancog7-star.github.io/App-liga-/assets/official-logos/promesas-fc-2026.webp?v=20261004-v744"
+      "source": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/PromesasFC_w4lwk8"
     },
     "PSV": {
       "local": "./assets/official-logos/psv.png",
-      "source": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/PSV_ru3tft",
-      "app": "https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/assets/official-logos/psv.png"
+      "source": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/PSV_ru3tft"
     },
     "SAN ANTONIO FC": {
       "local": "./assets/official-logos/san-antonio-fc.png",
-      "source": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/SanAntonioFC_tw7bi1",
-      "app": "https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/assets/official-logos/san-antonio-fc.png"
+      "source": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/SanAntonioFC_tw7bi1"
     },
     "SAN ANTONIO JRS": {
       "local": "./assets/official-logos/san-antonio-jrs.png",
-      "source": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/SanAntonioJR_jzmfka",
-      "app": "https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/assets/official-logos/san-antonio-jrs.png"
+      "source": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/SanAntonioJR_jzmfka"
     },
     "SAN JOSE FC": {
       "local": "./assets/official-logos/san-jose-fc.png",
-      "source": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/SanJoseMonta%C3%B1a_ilen4d",
-      "app": "https://jairofrancog7-star.github.io/App-liga-/assets/official-logos/san-jose-fc-2026.webp?v=20261004-v744"
+      "source": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/SanJoseMonta%C3%B1a_ilen4d"
     },
     "SAN JOSE JRS": {
       "local": "./assets/official-logos/san-jose-jrs.png",
-      "source": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/SanJoseJR_dio2dt",
-      "app": "https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/assets/official-logos/san-jose-jrs.png"
+      "source": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/SanJoseJR_dio2dt"
     },
     "SAN JUAN FC": {
       "local": "./assets/official-logos/san-juan-fc.png",
-      "source": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/SanJuanFC_jhprtf",
-      "app": "https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/assets/official-logos/san-juan-fc.png"
+      "source": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/SanJuanFC_jhprtf"
     },
     "SAN JULIAN": {
       "local": "./assets/official-logos/san-julian.png",
-      "source": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/SanJulianFC_wetv0z",
-      "app": "https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/assets/official-logos/san-julian.png"
+      "source": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/SanJulianFC_wetv0z"
     },
     "TAPATIO": {
       "local": "./assets/official-logos/tapatio.png",
-      "source": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/tapatio_svt6lz",
-      "app": "https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/assets/official-logos/tapatio.png"
+      "source": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/tapatio_svt6lz"
     },
     "TAVERA FC": {
       "local": "./assets/official-logos/tavera-fc.png",
-      "source": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/TaveraFC_gpdbhg",
-      "app": "https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/assets/official-logos/tavera-fc.png"
+      "source": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/TaveraFC_gpdbhg"
     },
     "TERRICOLAS": {
       "local": "./assets/official-logos/terricolas.png",
-      "source": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/Terricolas_ltbrzy",
-      "app": "https://jairofrancog7-star.github.io/App-liga-/assets/official-logos/terricolas-2026.webp?v=20261004-v744"
+      "source": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/Terricolas_ltbrzy"
     },
     "TOROS DE CUENDA": {
       "local": "./assets/official-logos/toros-de-cuenda.png",
-      "source": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/TorosCuenda_od8vcf",
-      "app": "https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/assets/official-logos/toros-de-cuenda.png"
-    },
-    "GALACTICOS": {
-      "app": "https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/assets/teams/galacticos-pozos.webp"
-    },
-    "BOCA JRS": {
-      "app": "https://raw.githubusercontent.com/jairofrancog7-star/App-liga-/main/assets/official-logos/boca-jrs.png?v=20261004-v744"
+      "source": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/TorosCuenda_od8vcf"
     }
   },
   "cedula_audit": {
