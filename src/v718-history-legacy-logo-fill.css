@@ -1,0 +1,49 @@
+/* V718 — Historia > Récords > Memoria de clubes.
+   Los escudos aprovechan por completo su recuadro sin cambiar datos ni tarjetas. */
+@media(max-width:1023px){
+  body[data-app-route="history"] .v370-legacy-crest{
+    overflow:hidden!important;
+    padding:0!important;
+  }
+
+  body[data-app-route="history"] .v370-legacy-crest>img{
+    position:absolute!important;
+    inset:0!important;
+    width:100%!important;
+    height:100%!important;
+    max-width:none!important;
+    max-height:none!important;
+    padding:0!important;
+    margin:0!important;
+    display:block!important;
+    object-fit:contain!important;
+    object-position:center!important;
+    transform-origin:center!important;
+  }
+
+  /* Escudos normales: elimina el margen visual que antes los hacía verse chicos. */
+  body[data-app-route="history"] .v370-legacy-crest>img:not([src*="legacy-2015-olimpicos-pozos"]):not([src*="legacy-2015-puros-cuates"]):not([src*="lobos-jr-cerrito-gasca"]):not([src*="legacy-2015-mazacotes"]){
+    transform:scale(1.38)!important;
+  }
+
+  /* Mazacotes conserva bastante aire dentro del archivo original. */
+  body[data-app-route="history"] .v370-legacy-crest>img[src*="legacy-2015-mazacotes"]{
+    transform:scale(2.35)!important;
+  }
+
+  /* Manchester: hacer que el escudo ocupe visualmente el recuadro completo. */
+  body[data-app-route="history"] .v370-legacy-crest>img[src*="manchester"]{
+    transform:scale(1.55)!important;
+  }
+
+  /* Mantener los tres ajustes históricos que ya requerían ampliación especial. */
+  body[data-app-route="history"] .v370-legacy-crest>img[src*="lobos-jr-cerrito-gasca"]{
+    transform:scale(1.16)!important;
+  }
+  body[data-app-route="history"] .v370-legacy-crest>img[src*="legacy-2015-olimpicos-pozos"]{
+    transform:scale(3.25)!important;
+  }
+  body[data-app-route="history"] .v370-legacy-crest>img[src*="legacy-2015-puros-cuates"]{
+    transform:scale(3.55)!important;
+  }
+}
