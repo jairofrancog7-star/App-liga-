@@ -38,24 +38,57 @@ const SPECIAL={
    otras pantallas. */
 const RECORDS_2015_SPECIAL={
   'el alto':'./assets/history/team-logos/legacy-2015-el-alto.webp',
+
   'hermanos':'./assets/history/team-logos/legacy-2015-hermanos.webp',
+  'dep hermanos':'./assets/history/team-logos/legacy-2015-hermanos.webp',
+  'deportivo hermanos':'./assets/history/team-logos/legacy-2015-hermanos.webp',
+
   'san antonio':'./assets/history/team-logos/legacy-2015-san-antonio-romerillo.webp',
+  'san antonio fc':'./assets/history/team-logos/legacy-2015-san-antonio-romerillo.webp',
   'san antonio de romerillo':'./assets/history/team-logos/legacy-2015-san-antonio-romerillo.webp',
+  'san antonio romerillo':'./assets/history/team-logos/legacy-2015-san-antonio-romerillo.webp',
   'sn antonio':'./assets/history/team-logos/legacy-2015-san-antonio-romerillo.webp',
+
   'puros cuates':'./assets/history/team-logos/legacy-2015-puros-cuates.webp',
   'la pandilla':'./assets/history/team-logos/legacy-2015-la-pandilla.webp',
+
   'olimpicos':'./assets/history/team-logos/legacy-2015-olimpicos-pozos.webp',
   'olimpicos de pozos':'./assets/history/team-logos/legacy-2015-olimpicos-pozos.webp',
+
   'cerrito':'./assets/history/team-logos/legacy-2015-cerrito.webp',
   'cerrito de g':'./assets/history/team-logos/legacy-2015-cerrito.webp',
   'cerrito de gasca':'./assets/history/team-logos/legacy-2015-cerrito.webp',
+  'real cerrito':'./assets/history/team-logos/legacy-2015-cerrito.webp',
+  'real cerrito de gasca':'./assets/history/team-logos/legacy-2015-cerrito.webp',
+  'deportivo cerrito':'./assets/history/team-logos/legacy-2015-cerrito.webp',
+  'dep cerrito':'./assets/history/team-logos/legacy-2015-cerrito.webp',
+
+  'la esperanza':'./assets/history/team-logos/legacy-2015-la-esperanza.webp',
+  'la esperanza fc':'./assets/history/team-logos/legacy-2015-la-esperanza.webp',
+
   'psv':'./assets/history/team-logos/legacy-2015-psv.webp',
+  'psv eindhoven':'./assets/history/team-logos/legacy-2015-psv.webp',
+
   'juventus':'./assets/history/team-logos/legacy-2015-juventus.webp',
+  'juventus fc':'./assets/history/team-logos/legacy-2015-juventus.webp',
+
+  'chelsea':'./assets/history/team-logos/legacy-2015-chelsea.webp',
+  'chelsea fc':'./assets/history/team-logos/legacy-2015-chelsea.webp',
+  'chelse':'./assets/history/team-logos/legacy-2015-chelsea.webp',
+
   'linces':'./assets/history/team-logos/legacy-2015-linces.webp',
+  'linces fc':'./assets/history/team-logos/legacy-2015-linces.webp',
+
   'abejas':'./assets/history/team-logos/legacy-2015-abejas.webp',
+  'abejas pozos':'./assets/history/team-logos/legacy-2015-abejas.webp',
+  'abejas de pozos':'./assets/history/team-logos/legacy-2015-abejas.webp',
+
   'napoli':'./assets/history/team-logos/legacy-2015-napoli.webp',
-  'boavista':'./assets/history/team-logos/legacy-2015-boavista.webp'
-};
+  'napoli fc':'./assets/history/team-logos/legacy-2015-napoli.webp',
+
+  'boavista':'./assets/history/team-logos/legacy-2015-boavista.webp',
+  'boavista fc':'./assets/history/team-logos/legacy-2015-boavista.webp'
+}
 
 function route(){
   return String(location.hash||'').replace(/^#\/?/,'').split('?')[0]||document.body?.dataset?.appRoute||'';
