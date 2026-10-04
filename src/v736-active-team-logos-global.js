@@ -84,13 +84,13 @@ const FALLBACK={
   'abejas':BASE+'assets/official-logos/abejas.png',
   'cuenda':BASE+'assets/official-logos/cuenda.png',
   'promesas-fc':BASE+'assets/official-logos/promesas-fc.png',
-  'herreras-fc':BASE+'assets/teams/herrera-fc.webp',,
-  'america-j-rosas':BASE+'assets/official-logos/america.png',,
-  'la-esperanza':BASE+'assets/teams/la-esperanza-fc.webp',,
-  'boca-jrs':APP_BASE+'assets/official-logos/boca-jrs.png',,
-  'oklahoma-city-fc':BASE+'assets/teams/oklahoma-city-fc.webp',,
-  'tecos':APP_BASE+'assets/history/team-logos/tecos.webp',,
-  'real-de-roque':APP_BASE+'assets/history/team-logos/real-de-roque.webp',,
+  'herreras-fc':BASE+'assets/teams/herrera-fc.webp',
+  'america-j-rosas':BASE+'assets/official-logos/america.png',
+  'la-esperanza':BASE+'assets/teams/la-esperanza-fc.webp',
+  'boca-jrs':APP_BASE+'assets/official-logos/boca-jrs.png',
+  'oklahoma-city-fc':BASE+'assets/teams/oklahoma-city-fc.webp',
+  'tecos':APP_BASE+'assets/history/team-logos/tecos.webp',
+  'real-de-roque':APP_BASE+'assets/history/team-logos/real-de-roque.webp',
   'cebolleros-cuenda':BASE+'assets/teams/cebolleros-fc-cuenda.webp'
 };
 
