@@ -164,23 +164,56 @@ function renderLists(){
 }
 function markup(){
   const tomorrow=new Date(Date.now()+86400000),d=localDateInput(tomorrow);
-  return '<section class="v713-auto v728-auto" data-v713-auto>'+
-    '<div class="v713-auto-head"><div><small>AUTOMATIZACIÓN</small><h2>Programador automático de avisos</h2><p>Escribe el aviso rápido con el asistente, elige fecha/hora y programa App, notificación, PNG o Facebook.</p></div><span class="v713-live">AUTO</span></div>'+
+  const categories=[
+    ['Todas','Todas las categorías'],
+    ['Primera','Primera Fuerza'],
+    ['Intermedia','Intermedia'],
+    ['Segunda','Segunda Fuerza'],
+    ['Veteranos 35+','Veteranos 35+'],
+    ['Veteranos 50+','Veteranos 50+']
+  ];
+  return '<section class="v713-auto v728-auto v729-auto" data-v713-auto>'+
+    '<div class="v713-auto-head"><div><small>AUTOMATIZACIÓN</small><h2>Programador automático de avisos</h2><p>Elige el tipo, la categoría y usa el texto rápido IA para preparar el aviso en segundos.</p></div><span class="v713-live">AUTO</span></div>'+
     '<div class="v713-mode-row v728-type-grid">'+Object.entries(TYPES).map(([k,v],i)=>'<button type="button" class="'+(i===0?'active':'')+'" data-v713-type="'+k+'" title="'+esc(v.label)+'">'+esc(v.short||v.label)+'</button>').join('')+'</div>'+
-    '<section class="v728-ai-box"><div class="v728-ai-head"><span><small>ASISTENTE IA</small><b>Generar texto rápido</b></span><em>1 toque</em></div>'+
+
+    '<section class="v729-editor-card">'+
+      '<div class="v729-card-title"><span>01</span><div><small>CONTENIDO</small><b>Texto del aviso</b></div></div>'+
+      '<div class="v713-form v728-form v729-editor-form">'+
+        '<label class="wide"><span>Título</span><input data-v713-title value="Aviso de jornada" maxlength="90"></label>'+
+        '<label class="wide"><span>Mensaje</span><textarea data-v713-body rows="3">Información importante para la próxima jornada de la Liga.</textarea></label>'+
+      '</div>'+
+    '</section>'+
+
+    '<section class="v729-schedule-card">'+
+      '<div class="v729-card-title"><span>02</span><div><small>PROGRAMACIÓN</small><b>Fecha, hora y categoría</b></div></div>'+
+      '<div class="v713-form v728-form v729-schedule-grid">'+
+        '<label><span>Día</span><input type="date" data-v713-date value="'+d+'"></label>'+
+        '<label><span>Hora</span><input type="time" data-v713-time value="11:30"></label>'+
+        '<label><span>Recordatorio</span><select data-v713-remind><option value="1440">1 día antes</option><option value="120">2 horas antes</option><option value="60">1 hora antes</option><option value="0">Sin recordatorio</option></select></label>'+
+        '<label><span>Categoría</span><select data-v713-category>'+categories.map(([value,label])=>'<option value="'+esc(value)+'">'+esc(label)+'</option>').join('')+'</select></label>'+
+      '</div>'+
+    '</section>'+
+
+    '<section class="v728-ai-box v729-ai-box">'+
+      '<div class="v728-ai-head"><span><small>TEXTO RÁPIDO IA</small><b>Generar automáticamente</b></span><em>1 toque</em></div>'+
+      '<label class="v729-quick-input"><span>Detalles rápidos</span><input data-v713-extra placeholder="Ej. Campo 3 · 10:00 · cambio por lluvia"></label>'+
+      '<div class="v729-ai-presets">'+
+        '<button type="button" data-v713-quick="cancha">Cancha</button>'+
+        '<button type="button" data-v713-quick="horario">Horario</button>'+
+        '<button type="button" data-v713-quick="jornada">Jornada</button>'+
+        '<button type="button" data-v713-quick="suspension">Suspensión</button>'+
+        '<button type="button" data-v713-quick="junta">Junta</button>'+
+        '<button type="button" data-v713-quick="general">General</button>'+
+      '</div>'+
       '<div class="v728-ai-actions"><button type="button" class="primary" data-v713-ai="quick">✨ Generar</button><button type="button" data-v713-ai="short">Corto</button><button type="button" data-v713-ai="formal">Formal</button><button type="button" data-v713-ai="urgent">Urgente</button></div>'+
     '</section>'+
-    '<div class="v713-form v728-form">'+
-      '<label class="wide"><span>Título</span><input data-v713-title value="Aviso de jornada" maxlength="90"></label>'+
-      '<label class="wide"><span>Mensaje</span><textarea data-v713-body rows="3">Información importante para la próxima jornada de la Liga.</textarea></label>'+
-      '<label><span>Día</span><input type="date" data-v713-date value="'+d+'"></label>'+
-      '<label><span>Hora</span><input type="time" data-v713-time value="11:30"></label>'+
-      '<label><span>Recordatorio</span><select data-v713-remind><option value="1440">1 día antes</option><option value="120">2 horas antes</option><option value="60">1 hora antes</option><option value="0">Sin recordatorio</option></select></label>'+
-      '<label><span>Categoría</span><input data-v713-category placeholder="Primera, 35+, 50+"></label>'+
-      '<label class="wide v728-extra"><span>Detalles rápidos para el texto</span><input data-v713-extra placeholder="Ej. Campo 3 · partido 10:00 · cambio por lluvia"></label>'+
-    '</div>'+
-    '<div class="v713-channels v728-channels"><label><input type="checkbox" data-v713-ch="app" checked><span>App</span></label><label><input type="checkbox" data-v713-ch="device" checked><span>Notificación</span></label><label><input type="checkbox" data-v713-ch="png" checked><span>PNG</span></label><label><input type="checkbox" data-v713-ch="facebook"><span>Facebook</span></label></div>'+
-    '<div class="v713-actions v728-main-actions"><button type="button" data-v713-smart>Mejorar texto</button><button type="button" data-v713-enable>Notificaciones</button><button type="button" class="primary" data-v713-save>Programar</button></div>'+
+
+    '<section class="v729-output-card">'+
+      '<div class="v729-card-title"><span>03</span><div><small>SALIDA</small><b>Dónde se publica</b></div></div>'+
+      '<div class="v713-channels v728-channels"><label><input type="checkbox" data-v713-ch="app" checked><span>App</span></label><label><input type="checkbox" data-v713-ch="device" checked><span>Notificación</span></label><label><input type="checkbox" data-v713-ch="png" checked><span>PNG</span></label><label><input type="checkbox" data-v713-ch="facebook"><span>Facebook</span></label></div>'+
+      '<div class="v713-actions v728-main-actions"><button type="button" data-v713-smart>Mejorar texto</button><button type="button" data-v713-enable>Notificaciones</button><button type="button" class="primary" data-v713-save>Programar</button></div>'+
+    '</section>'+
+
     '<details class="v713-facebook"><summary>Facebook automático / webhook</summary><p>Para publicar automáticamente en Facebook sin exponer la contraseña ni el token, conecta aquí una URL segura de automatización (Meta API, Make, Zapier o servidor propio). Si está vacía, Facebook queda pendiente pero el aviso de la app y el PNG siguen funcionando.</p><input type="url" data-v713-webhook placeholder="https://.../webhook" value="'+esc(localStorage.getItem(WEBHOOK_KEY)||'')+'"><button type="button" data-v713-webhook-save>Guardar conexión</button></details>'+
     '<div class="v713-columns"><div><h3>Programados en este dispositivo</h3><div data-v713-list></div></div><div><h3>Avisos globales publicados</h3><div data-v713-global-list></div></div></div>'+
     '<p class="v713-footnote">En navegador, los avisos locales se procesan mientras la app/página está abierta o vuelve a activarse. El motor global de GitHub puede publicar avisos del archivo programado aunque este teléfono esté cerrado.</p>'+
@@ -197,6 +230,17 @@ function bind(root){
     extra:root.querySelector('[data-v713-extra]')?.value.trim()||'',
     date:root.querySelector('[data-v713-date]')?.value||'',
     time:root.querySelector('[data-v713-time]')?.value||''
+  });
+  root.querySelectorAll('[data-v713-quick]').forEach(btn=>btn.onclick=()=>{
+    const preset=btn.dataset.v713Quick||'general';
+    const map={cancha:'sede',horario:'horario',jornada:'jornada',suspension:'suspension',junta:'junta',general:'general'};
+    type=map[preset]||'general';
+    root.querySelectorAll('[data-v713-type]').forEach(x=>x.classList.toggle('active',x.dataset.v713Type===type));
+    const t=aiDraft(type,'quick',contextFields());
+    root.querySelector('[data-v713-title]').value=t.title;
+    root.querySelector('[data-v713-body]').value=t.body;
+    root.querySelectorAll('[data-v713-quick]').forEach(x=>x.classList.toggle('active',x===btn));
+    toast('Texto rápido creado');
   });
   root.querySelectorAll('[data-v713-ai]').forEach(btn=>btn.onclick=()=>{
     const t=aiDraft(type,btn.dataset.v713Ai||'quick',contextFields());
