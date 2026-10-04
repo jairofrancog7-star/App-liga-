@@ -18,11 +18,11 @@ const SPECIAL={
   'cerrito de g':'./assets/history/team-logos/legacy-2015-cerrito.webp',
   'salvajes':'./assets/history/team-logos/salvajes.webp',
   'salvaje':'./assets/history/team-logos/salvajes.webp',
-  'tecos':'./assets/history/team-logos/tecos.webp',
-  'tecos fc':'./assets/history/team-logos/tecos.webp',
+  'tecos':APP_ROOT+'assets/history/team-logos/tecos.webp',
+  'tecos fc':APP_ROOT+'assets/history/team-logos/tecos.webp',
   'tecos jr':'./assets/history/team-logos/tecos.webp',
   'tecos jrs':'./assets/history/team-logos/tecos.webp',
-  'tecos pozos':'./assets/history/team-logos/tecos.webp',
+  'tecos pozos':APP_ROOT+'assets/history/team-logos/tecos.webp',
   'xolos':'./assets/history/team-logos/xolos-jaralillo.webp',
   'xolos jaralillo':'./assets/history/team-logos/xolos-jaralillo.webp',
   'xolos de jaralillo':'./assets/history/team-logos/xolos-jaralillo.webp',
@@ -38,25 +38,26 @@ const SPECIAL={
 };
 
 const DATA_ROOT='https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/';
+const APP_ROOT='https://raw.githubusercontent.com/jairofrancog7-star/App-liga-/main/';
 const USER_CONFIRMED_LOGOS={
-  'real de roque':'./assets/history/team-logos/real-de-roque.webp',
-  'real roque':'./assets/history/team-logos/real-de-roque.webp',
-  'real de roque fc':'./assets/history/team-logos/real-de-roque.webp',
+  'real de roque':APP_ROOT+'assets/history/team-logos/real-de-roque.webp',
+  'real roque':APP_ROOT+'assets/history/team-logos/real-de-roque.webp',
+  'real de roque fc':APP_ROOT+'assets/history/team-logos/real-de-roque.webp',
   'cebolleros':DATA_ROOT+'assets/teams/cebolleros-fc-cuenda.webp',
   'cebolleros fc':DATA_ROOT+'assets/teams/cebolleros-fc-cuenda.webp',
   'cebolleros fc cuenda':DATA_ROOT+'assets/teams/cebolleros-fc-cuenda.webp',
   'cebolleros de cuenda':DATA_ROOT+'assets/teams/cebolleros-fc-cuenda.webp',
   'tecos':'./assets/history/team-logos/tecos.webp',
   'tecos fc':'./assets/history/team-logos/tecos.webp',
-  'tecos de pozos':'./assets/history/team-logos/tecos.webp',
+  'tecos de pozos':APP_ROOT+'assets/history/team-logos/tecos.webp',
   'tecos pozos':'./assets/history/team-logos/tecos.webp',
-  'boca jrs':'./assets/official-logos/boca-jrs.png',
-  'boca juniors':'./assets/official-logos/boca-jrs.png',
-  'cabj':'./assets/official-logos/boca-jrs.png',
-  'oklahoma':'./assets/official-logos/oklahoma-city-fc.png',
-  'oklahoma fc':'./assets/official-logos/oklahoma-city-fc.png',
-  'oklahoma city':'./assets/official-logos/oklahoma-city-fc.png',
-  'oklahoma city fc':'./assets/official-logos/oklahoma-city-fc.png',
+  'boca jrs':APP_ROOT+'assets/official-logos/boca-jrs.png',
+  'boca juniors':APP_ROOT+'assets/official-logos/boca-jrs.png',
+  'cabj':APP_ROOT+'assets/official-logos/boca-jrs.png',
+  'oklahoma':APP_ROOT+'assets/official-logos/oklahoma-city-fc.png',
+  'oklahoma fc':APP_ROOT+'assets/official-logos/oklahoma-city-fc.png',
+  'oklahoma city':APP_ROOT+'assets/official-logos/oklahoma-city-fc.png',
+  'oklahoma city fc':APP_ROOT+'assets/official-logos/oklahoma-city-fc.png',
   'herrera':DATA_ROOT+'assets/official-logos/herreras-fc.png',
   'herrera fc':DATA_ROOT+'assets/official-logos/herreras-fc.png',
   'herreras':DATA_ROOT+'assets/official-logos/herreras-fc.png',
@@ -271,7 +272,14 @@ function img(src,name,cls=''){
   el.src=src;el.alt=name||'Escudo histórico';el.loading='lazy';el.decoding='async';
   if(cls)el.className=cls;
   el.dataset.v704HistoryLogo='1';
-  el.addEventListener('error',()=>{el.remove()},{once:true});
+  el.addEventListener('error',()=>{
+    if(el.dataset.v746FallbackTried==='1'){el.remove();return;}
+    el.dataset.v746FallbackTried='1';
+    let fallback='';
+    try{fallback=window.LJR_TEAM_LOGOS?.get?.(name)||''}catch(_){}
+    if(fallback && !same(el.src,fallback)){el.src=fallback;return;}
+    el.remove();
+  });
   return el;
 }
 function forceHolder(holder,name,cls=''){
