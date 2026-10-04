@@ -9,6 +9,7 @@ window.__LJR_V672_HISTORY_OLD_TEAM_LOGOS__=true;
 
 const RAW='https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/';
 const USER_ALIAS={
+  'real de roque':'./assets/history/team-logos/real-de-roque.webp',
   'la pandilla':'./assets/history/team-logos/legacy-2015-la-pandilla.webp',
   'olimpicos':'./assets/history/team-logos/legacy-2015-olimpicos-pozos.webp',
   'olimpicos de pozos':'./assets/history/team-logos/legacy-2015-olimpicos-pozos.webp',
