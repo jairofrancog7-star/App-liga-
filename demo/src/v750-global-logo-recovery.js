@@ -324,34 +324,43 @@ function patchOfficialData(){
     data.team_logos[label]=(old&&typeof old==='object'&&!Array.isArray(old))?{...old,app:src}:{app:src};
   }
 }
+const V758_DYNAMIC_ROUTES=new Set(['more','following','teams','teamDetail','playerCompare']);
+function v758Route(){
+  return String(location.hash||'').replace(/^#\\/?/,'').split('?')[0]||String(document.body?.dataset?.appRoute||'home');
+}
+function v758CanPatch(){
+  return !V758_DYNAMIC_ROUTES.has(v758Route());
+}
 function sync(){
+  /* V758 — El registro puede resolverse globalmente, pero la reparación del DOM
+     NO debe competir con Siguiendo, Equipos, Detalle ni Comparar jugadores.
+     Esas vistas tienen sus propios renderizadores y antes podían quedar vacías
+     por el ciclo MutationObserver -> cambio de src -> MutationObserver. */
   installRegistry();
-  patchOfficialData();
+  if(!v758CanPatch())return;
   requestAnimationFrame(()=>patch(document));
-  setTimeout(()=>patch(document),80);
-  setTimeout(()=>patch(document),400);
-  setTimeout(()=>patch(document),1200);
+  setTimeout(()=>{if(v758CanPatch())patch(document)},180);
 }
 function boot(){
+  installRegistry();
   sync();
   const target=document.querySelector('#screen')||document.body||document.documentElement;
   if(target)new MutationObserver(ms=>{
+    if(!v758CanPatch())return;
     for(const m of ms){
-      if(m.type==='attributes'&&m.target instanceof HTMLImageElement){patchImg(m.target);continue}
-      for(const n of m.addedNodes)if(n.nodeType===1)patch(n);
+      for(const n of m.addedNodes||[])if(n.nodeType===1)patch(n);
     }
-  }).observe(target,{childList:true,subtree:true,attributes:true,attributeFilter:['src','srcset','alt','data-team']});
+  }).observe(target,{childList:true,subtree:true});
 
   document.addEventListener('error',e=>{
+    if(!v758CanPatch())return;
     const img=e.target;
     if(img instanceof HTMLImageElement)patchImg(img);
   },true);
-  window.addEventListener('hashchange',sync);
+  window.addEventListener('hashchange',()=>setTimeout(sync,0));
   window.addEventListener('load',sync);
-  window.addEventListener('ljr:official-data',sync);
-  document.addEventListener('click',()=>setTimeout(sync,50),true);
-  setTimeout(sync,250);
-  setTimeout(sync,1600);
+  window.addEventListener('ljr:official-data',()=>{if(v758CanPatch())sync()});
+  setTimeout(sync,350);
 }
 window.LJR_GLOBAL_TEAM_LOGOS={logos:LOGOS,keyFor,srcFor,sync};
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot,{once:true});
