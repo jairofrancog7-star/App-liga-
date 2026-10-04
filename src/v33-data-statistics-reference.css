@@ -534,7 +534,7 @@ body.v33-data-active .v33-tabs{
   overflow-x:auto!important;
   overflow-y:hidden!important;
   scroll-snap-type:x proximity!important;
-  background:#171778!important;
+  background:transparent!important;
   border-top:0!important;
   border-bottom:2px solid rgba(220,224,255,.88)!important;
   box-shadow:none!important;
