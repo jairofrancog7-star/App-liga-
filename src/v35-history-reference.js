@@ -98,7 +98,7 @@ const historicalSources=[
   },
   {
     title:'Rol 2022 · Veteranos J14 + Copa J1 de Primera, Intermedia y Segunda',
-    note:'Imagen aportada por el usuario. Registra Veteranos Jornada 14 de Liga 2022 y la Jornada 1 de Copa 2022 de Primera Fuerza, Fuerza Intermedia y Segunda Fuerza. Se usó para completar los clubes de Historia > Récords, incluidos Deportivo Rafa, Tecos Pozos, Romerillo, Unión, Titanes FC, Atlético San Julián, Guadalupanos, Promesas, Tapatío y demás equipos visibles en el rol.',
+    note:'Imagen aportada por el usuario. Registra Veteranos Jornada 14 de Liga 2022 y la Jornada 1 de Copa 2022 de Primera Fuerza, Fuerza Intermedia y Segunda Fuerza. Se usó para completar los clubes de Historia > Récords, incluidos Deportivo Rafa, Tecos de Pozos, Romerillo, Unión, Titanes FC, Atlético San Julián, Guadalupanos, Promesas, Tapatío y demás equipos visibles en el rol.',
     url:''
   },
   {
@@ -1036,6 +1036,8 @@ function canonicalHistoricName(name){
     'deportivo raymundo flores':'Deportivo Raymundo Flores',
     'tecos jr':'Tecos Jr.',
     'tecos jrs':'Tecos Jr.',
+    'tecos pozos':'Tecos de Pozos',
+    'tecos de pozos':'Tecos de Pozos',
     'cobras cuenda':'Cobras de Cuenda',
     'cobras de cuenda':'Cobras de Cuenda',
     'dep morales':'Morales',
@@ -1043,6 +1045,10 @@ function canonicalHistoricName(name){
     'c de gasca':'Cerrito de Gasca',
     'cc de gasca':'Cerrito de Gasca',
     'c c de gasca':'Cerrito de Gasca',
+    'cerrito de cuenda':'Cerritos de Cuenda',
+    'cerritos de cuenda':'Cerritos de Cuenda',
+    'cerrito de c':'Cerritos de Cuenda',
+    'cerritos de c':'Cerritos de Cuenda',
     'la esperanza jrs':'La Esperanza Jr.',
     'la canchita':'La Canchita Deportes',
     'nopalero':'Dep. Nopalero',
@@ -1057,7 +1063,9 @@ function canonicalHistoricName(name){
     'deportivo zapata fc':'Dep. Zapata',
     'franco':'Franco FC',
     'las maravillas':'Deportivo Maravillas',
-    'pozos f c':'Pozos FC'
+    'pozos f c':'Pozos FC',
+    'san nicolas':'San Nicolás',
+    'leones fc':'Leones FC'
   };
   return aliases[k]||String(name||'').trim();
 }
@@ -1130,11 +1138,11 @@ const historicalTeamEras=[
   {period:'2020 · Jornada 4 · otras tablas aportadas',category:'Primera, Intermedia y Veteranos · nombres recuperados',teams:['Boavista','Juventus','A. Centeno','La Pandilla','PSV','Lobos CDG','Tecos','La Cuadrilla','Galácticos','Napoli','La Esperanza','Abejas','Hermanos','Atlético Río Grande','Chelsea','Malvinas','Arsenal','Barrio Seco','Real Cuenda','Dynamo','Deportivo Lagartos','UNAM','Guadalajara','Átomos']},
   // V709 — cruce detallado de 25 imágenes de Google Drive aportadas por el usuario.
   // Conserva nombres tal como aparecen en los roles/tablas; los alias claros se agrupan por linaje en Récords.
-  {period:'2014–2022 · 25 imágenes de Drive · cruce final de nombres',category:'Equipos y variantes históricas recuperadas',teams:['Dep. Santa Cruz','Franco-Tavera','Dep. OKC','Funerales','Deportivo Raymundo Flores','Tecos Pozos','Titanes de T.','Real de HP','Minero','Masacotes','Barsa','Tecas','Lobos']},
+  {period:'2014–2022 · 25 imágenes de Drive · cruce final de nombres',category:'Equipos y variantes históricas recuperadas',teams:['Dep. Santa Cruz','Franco-Tavera','Dep. OKC','Funerales','Deportivo Raymundo Flores','Tecos de Pozos','Titanes de T.','Real de HP','Minero','Masacotes','Barsa','Tecas','Lobos']},
   // V721 — rol aportado por el usuario: Veteranos J14 + Copa J1 2022.
   // Se registra completo para que ningún club visible en la imagen quede fuera de Historia > Récords.
   {period:'2022 · Veteranos Jornada 14 de Liga',category:'Veteranos · rol oficial aportado',teams:['Boavista','Dynamo','Deportivo Rafa','PSV','Juventus','Cuenda','Hermanos','América','Átomos','UNAM','Barrio Seco','Arsenal']},
-  {period:'2022 · Primera Fuerza J1 Copa',category:'Primera Fuerza · rol oficial aportado',teams:['Linces','Galácticos','Abejas','Populares','Tecos Pozos','La Cuadrilla','Boavista','Hermanos','A. Centeno','Tavera FC','PSV','Chelsea']},
+  {period:'2022 · Primera Fuerza J1 Copa',category:'Primera Fuerza · rol oficial aportado',teams:['Linces','Galácticos','Abejas','Populares','Tecos de Pozos','La Cuadrilla','Boavista','Hermanos','A. Centeno','Tavera FC','PSV','Chelsea']},
   {period:'2022 · Fuerza Intermedia J1 Copa',category:'Intermedia · rol oficial aportado',teams:['Galácticos FC','Deportivo Maravillas','Barza','Lobos CDG','Romerillo','Oklahoma','La Esperanza FC','Mineros FC','Atlético Pozos','Malvinas','Sección 14','La Huerta']},
   {period:'2022 · Segunda Fuerza J1 Copa',category:'Segunda Fuerza · rol oficial aportado',teams:['Promesas','Unión','Galeana','Unión FC','Titanes FC','Osasuna','Atlético SJ','Tavera','Terrícolas','Guadalupanos','San Antonio FC','Tapatío','Napoli','Juventus','Mazacotes FC']},
   {period:'2022',category:'Veteranos · tabla final',teams:['Juventus','Hermanos','América','Dynamo','PSV','Deportivo Rafa','Boavista','Arsenal','Cuenda','Barrio Seco','UNAM','Átomos']},
@@ -1167,6 +1175,7 @@ const historicalTeamEras=[
   {period:'2025',category:'Veteranos 35+ · Final de Copa',teams:['Salvajes','Juventus']},
   {period:'2025–2026',category:'Finales, Copa y Veteranos conservados',teams:['Boca Jrs.','Boavista','Manchester United','B.F.C.','Galácticos (Pozos)','Herreras FC','Lobos CDG','Franco FC','Salvajes','Juventus','San Antonio Jrs.','Real de Roque','La Esperanza','La Canchita Deportes','Aldama FC']},
   {period:'Archivo reciente · barrido completo de roles y tablas',category:'Equipos adicionales confirmados visualmente en el ZIP histórico',teams:['Pozos FC','Innombrables','Cebolleros','Detonadores','Rambitos FC','Bristol Rovers','Bellavista','Buenavista','Takicardios','La Tryni','Atlético Santa Cruz','Atlético Cerrito de Gasca','Atlético Santiago','Cobras de Cuenda','Roque','CEC Celaya','Deportivo Raymundo Flores']},
+  {period:'2013–2022 · reanálisis completo del ZIP',category:'Variantes nominales revalidadas en roles, tablas y plantillas',teams:['Tecos de Pozos','Cerritos de Cuenda','El Alto','San Nicolás','Leones FC']},
   {period:'2026 · temporada actual',category:'Veteranos 35+',teams:['Boavista','Franco-Tavera-JR','Huracán','Cuenda','América','Aguilares','Juventus','Leyendas FC','PSV','La Trinidad']},
   {period:'2026 · temporada actual',category:'Veteranos 50+',teams:['La Esperanza','Dynamo','Boca JRS','Toros de Cuenda','Boavista','Manchester']},
   {period:'2026 · temporada actual',category:'Primera Fuerza',teams:['Franco FC','Hermanos','Napoli','Herreras FC','Linces','Abejas','Lobos CDG','Juventus','San José FC','Terrícolas','Galácticos']},
