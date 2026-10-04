@@ -623,6 +623,7 @@ const videoArchiveFindings=[
   {date:'07 jun 2026',title:'La Canchita Deportes · campeón de Segunda Fuerza',detail:'La Canchita Deportes ganó la Gran Final de Segunda Fuerza ante Aldama FC; Aldama quedó subcampeón. El usuario aportó la fotografía de la premiación.',image:HIST_MEDIA+'archive-v132/canchita-deportes-campeon-segunda-2026.jpg'}
 ];
 
+// V731 — segundo barrido del ZIP: tablas de puntos y goleo.
 const historicTables=[
   {
     season:'2013',title:'Segunda Fuerza · Tabla General · publicación 5 nov 2013',note:'Corte histórico. El asterisco visible en la publicación marca equipos clasificados; quedan pendientes Aldama–Osasuna y Tavera–Osasuna.',
@@ -708,6 +709,94 @@ const historicTables=[
       ['9','Cuenda','22'],['10','Barrio Seco','15'],['11','UNAM','15'],['12','Átomos','8']
     ]
   }
+
+// V731 — segundo barrido del ZIP: tablas de puntos y goleo.
+// Se agregan sólo cortes legibles y se conserva “año por precisar” cuando la imagen no muestra fecha.
+// No se presentan cortes parciales como récord absoluto ni como tabla final.
+  {
+    season:'2015',title:'Primera Fuerza · Torneo de Liga · hasta J13',note:'Fuente ZIP 1021. Corte histórico; no es tabla final.',
+    rows:[
+      ['1','Juventus','37'],['2','Chelsea','28'],['3','Linces','27'],['4','Boavista','26'],['5','Olímpicos','18'],
+      ['6','La Esperanza','18'],['7','Cerrito de Gasca','18'],['8','La Pandilla','17'],['9','Napoli','15'],['10','Hermanos','14'],
+      ['11','El Alto','13'],['12','Abejas','12'],['13','Mazacotes','11'],['14','San Antonio','11'],['15','PSV','7'],
+      ['16','Puros Cuates','6'],['17','Birds Eye','3']
+    ]
+  },
+  {
+    season:'2015',title:'Veteranos · Torneo de Liga · hasta J14',note:'Fuente ZIP 1010. Corte posterior al J13 ya conservado; no es tabla final.',
+    rows:[
+      ['1','La Esperanza','36'],['2','Cuenda','28'],['3','Magisterio','26'],['4','Chelsea','26'],['5','Boavista','25'],
+      ['6','Picosos','20'],['7','Dynamo','17'],['8','UNAM','15'],['9','Valedores','15'],['10','Hermanos','14'],
+      ['11','Sección XIV','8'],['12','Guadalajara','4']
+    ]
+  },
+  {
+    season:'2015',title:'Segunda Fuerza · Torneo de Liga · hasta J15',note:'Fuente ZIP 1022. Corte histórico; no es tabla final.',
+    rows:[
+      ['1','Osasuna','36'],['2','Oklahoma','33'],['3','Galeana','32'],['4','Toros','32'],['5','San Julián','31'],
+      ['6','Morales','28'],['7','Birds Eye Jr.','24'],['8','San José de Allende','24'],['9','Río Grande','22'],
+      ['10','Herbalife Sta. Cruz','19'],['11','Tecos','18'],['12','San Antonio FC','14'],['13','Portugal','12'],['14','Inter de Milán','12']
+    ]
+  },
+  {
+    season:'2018',title:'Primera Fuerza · Torneo de Liga · J21',note:'Fuente ZIP 0053. Corte histórico; no es tabla final.',
+    rows:[
+      ['1','A. Centeno','52'],['2','Hermanos','49'],['3','Juventus','49'],['4','Linces','47'],['5','Olímpicos','42'],
+      ['6','PSV','36'],['7','La Esperanza','36'],['8','Boavista','32'],['9','La Cuadrilla','31'],['10','Napoli','20'],
+      ['11','Tavera','19'],['12','Abejas','13'],['13','Malvinas','12'],['14','Chelsea','8'],['15','Puros Cuates','5'],['16','San Antonio Jr.','4']
+    ]
+  },
+  {
+    season:'2018',title:'Primera Fuerza · Torneo de Liga · J22',note:'Fuente ZIP 0056. Corte histórico; no es tabla final.',
+    rows:[
+      ['1','A. Centeno','55'],['2','Hermanos','52'],['3','Olímpicos','51'],['4','Linces','50'],['5','Juventus','49'],
+      ['6','PSV','39'],['7','La Esperanza','36'],['8','Boavista','35'],['9','La Cuadrilla','31'],['10','Napoli','20'],
+      ['11','Tavera','19'],['12','Malvinas','12'],['13','Chelsea','11'],['14','Abejas','10'],['15','Puros Cuates','8'],['16','San Antonio Jr.','4']
+    ]
+  },
+  {
+    season:'2018',title:'Primera Fuerza · Torneo de Liga · J23',note:'Fuente ZIP 0064. Corte histórico; no es tabla final.',
+    rows:[
+      ['1','A. Centeno','58'],['2','Olímpicos','54'],['3','Hermanos','53'],['4','Linces','50'],['5','Juventus','49'],
+      ['6','PSV','42'],['7','La Esperanza','39'],['8','La Cuadrilla','37'],['9','Boavista','35'],['10','Tavera','22'],
+      ['11','Napoli','20'],['12','Malvinas','12'],['13','Chelsea','11'],['14','Abejas','10'],['15','Puros Cuates','8'],['16','San Antonio Jr.','5']
+    ]
+  },
+  {
+    season:'2018',title:'Intermedia · Torneo de Liga · J26',note:'Fuente ZIP 0067. Corte histórico; Morales figura como equipo de baja.',
+    rows:[
+      ['1','Lobos CDG','61'],['2','Populares','53'],['3','Vatos Locos','53'],['4','Real DHP','52'],['5','Tecos','50'],
+      ['6','Oklahoma','47'],['7','Barza','40'],['8','Mineros FC','39'],['9','San Antonio','33'],['10','Franco FC','30'],
+      ['11','La Huerta','29'],['12','Titanes Tavera','28'],['13','Mazacotes','26'],['14','Osasuna','25'],['15','Terrícolas','15'],['16','Morales','BAJA']
+    ]
+  },
+  {
+    season:'Año por precisar',title:'Segunda Fuerza · Torneo de Pretemporada · J7',note:'Fuente ZIP 1367. Clasificación por Grupo A y Grupo B; fecha/año no visibles en la imagen.',
+    rows:[
+      ['A1','Franco FC','18'],['A2','San Antonio FC','15'],['A3','Deportivo Raymundo Flores','12'],['A4','Deportivo Cerrito','9'],
+      ['A5','Morales','10'],['A6','Franco Tavera','3'],['A7','CDG','3'],['A8','San Nicolás','0'],
+      ['B1','La Huerta','17'],['B2','Mineros FC','16'],['B3','Leones FC','16'],['B4','Galeana','13'],
+      ['B5','Galácticos','12'],['B6','Toros','9'],['B7','San José de Allende','6'],['B8','Dynamo','3']
+    ]
+  },
+  {
+    season:'Año por precisar',title:'Segunda Fuerza · Torneo de Pretemporada · J12',note:'Fuente ZIP 1348. Clasificación por Grupo A y Grupo B; fecha/año no visibles en la imagen.',
+    rows:[
+      ['A1','Franco FC','33'],['A2','Morales','25'],['A3','San Antonio FC','24'],['A4','Deportivo Raymundo Flores','21'],
+      ['A5','Deportivo Cerrito','15'],['A6','Franco Tavera','3'],['A7','CDG','3'],['A8','San Nicolás','0'],
+      ['B1','Mineros FC','29'],['B2','La Huerta','24'],['B3','San José de Allende','19'],['B4','Leones FC','19'],
+      ['B5','Galeana','19'],['B6','Galácticos','18'],['B7','Toros','16'],['B8','Dynamo','3']
+    ]
+  },
+  {
+    season:'Año por precisar',title:'Segunda Fuerza · Torneo de Pretemporada · J13',note:'Fuente ZIP 1379. Clasificación por Grupo A y Grupo B; fecha/año no visibles en la imagen.',
+    rows:[
+      ['A1','Franco FC','36'],['A2','Morales','28'],['A3','San Antonio FC','24'],['A4','Deportivo Raymundo Flores','22'],
+      ['A5','Deportivo Cerrito','18'],['A6','Franco Tavera','3'],['A7','CDG','3'],['A8','San Nicolás','0'],
+      ['B1','Mineros FC','32'],['B2','Galeana','25'],['B3','La Huerta','24'],['B4','San José de Allende','22'],
+      ['B5','Leones FC','22'],['B6','Galácticos','18'],['B7','Toros','17'],['B8','Dynamo','3']
+    ]
+  }
 ];
 
 const historicScorers=[
@@ -779,6 +868,120 @@ const historicScorers=[
   {season:'2018',category:'Intermedia · Jornada 23',player:'Miguel Presa García',team:'Populares',goals:16,value:'16 goles'}
 ];
 
+
+
+const historicScorerSnapshots=[
+  {
+    season:'Archivo · año por precisar',title:'Primera Fuerza · goleadores hasta J1',note:'Fuente ZIP 0963 · Top 10 visible del corte.',
+    rows:[
+      ['1','Daniel Montenegro','Chelsea','3'],['2','Antonio Cruz','Olímpicos','3'],['3','Rafael Mata García','Abejas','2'],
+      ['4','Israel López Vela','Boavista','2'],['5','José Luis Zúñiga','Boavista','2'],['6','José Ramírez','Olímpicos','2'],
+      ['7','Luis Gámez','Olímpicos','2'],['8','José Luis Guerrero Rodríguez','PSV','2'],['9','Jesús Giovanny Pineda Mendoza','Napoli','2'],
+      ['10','Fernando Norompaldo','Abejas','1']
+    ]
+  },
+  {
+    season:'Archivo · año por precisar',title:'Segunda Fuerza · goleadores hasta J1',note:'Fuente ZIP 0983 · Top 10 visible del corte.',
+    rows:[
+      ['1','Oscar Daniel Muñoz Badillo','Oklahoma','3'],['2','José Manuel Mendoza Mora','Toros','3'],['3','José Salvador Rodríguez','Birds Eye Jr.','2'],
+      ['4','José Manuel Sánchez González','Herbalife Sta. Cruz','2'],['5','Francisco Javier Guerrero','Toros','2'],['6','Crispin Prieto Villegas','Birds Eye Jr.','1'],
+      ['7','Rodolfo Ramos León','Birds Eye Jr.','1'],['8','Francisco Javier García Sotelo','Herbalife Sta. Cruz','1'],
+      ['9','José Antonio Serrano López','Herbalife Sta. Cruz','1'],['10','Francisco Muñoz','Inter de Milán','1']
+    ]
+  },
+  {
+    season:'Archivo · año por precisar',title:'Fuerza Intermedia · goleadores hasta J12',note:'Fuente ZIP 1001 · Top 10 visible del corte.',
+    rows:[
+      ['1','Daniel Gómez Delgado','A. Centeno','18'],['2','Alejandro Gutiérrez Castillo','San Antonio Jr.','12'],['3','Víctor Calderón Gamucero','Barza','7'],
+      ['4','Magdaleno Mendoza Coyote','Dulces Nombres','7'],['5','Rodrigo Hortelano González','Malvinas','7'],['6','Honorio Ochoa Aguilar','Tavera','6'],
+      ['7','Rafael Granjeno Segura','Malvinas','5'],['8','Ricardo Centeno Merino','A. Centeno','4'],['9','José Ramón Dongú Prieto','Halcones','4'],
+      ['10','Martín López Guerrero','Malvinas','4']
+    ]
+  },
+  {
+    season:'Archivo · año por precisar',title:'Fuerza Intermedia · goleadores hasta J17',note:'Fuente ZIP 1043 · Top 10 visible del corte.',
+    rows:[
+      ['1','Daniel Gómez Delgado','A. Centeno','19'],['2','Alejandro Gutiérrez Castillo','San Antonio Jr.','15'],['3','Víctor Calderón Gamucero','Barza','15'],
+      ['4','Rodrigo Hortelano González','Malvinas','15'],['5','Magdaleno Mendoza Coyote','Dulces Nombres','12'],['6','Honorio Ochoa Aguilar','Tavera','10'],
+      ['7','Martín López Guerrero','Malvinas','8'],['8','Jesús García Ortega','San Antonio Jr.','7'],['9','José Francisco Pérez Reséndiz','San Antonio Jr.','7'],
+      ['10','L. Eduardo Ortega Flores','Tavera','7']
+    ]
+  },
+  {
+    season:'2018',title:'Fuerza Intermedia · goleadores J22',note:'Fuente ZIP 0057 · Top 10 visible del corte.',
+    rows:[
+      ['1','Alejandro Juárez Merino','Populares','29'],['2','Juan Carlos Hernández','Barza','18'],['3','Alejandro Ramírez Medina','Real DHP','16'],
+      ['4','César Agustín Pérez Campos','Oklahoma','16'],['5','Fernando Valencia','Lobos CDG','15'],['6','Miguel Presa García','Populares','15'],
+      ['7','Antonio Lerma Pizano','Mineros FC','14'],['8','Oscar Muñoz Badillo','Oklahoma','14'],['9','Juan Carlos Acosta Zárate','Real DHP','12'],
+      ['10','Santiago Ramírez','Lobos CDG','12']
+    ]
+  },
+  {
+    season:'2018',title:'Primera Fuerza · goleadores J22',note:'Fuente ZIP 0059 · Top 10 visible del corte.',
+    rows:[
+      ['1','Juan Manuel Gámez López','Hermanos','38'],['2','Daniel Gómez Delgado','A. Centeno','20'],['3','Cristian Manuel Capulín Arellano','Chelsea','16'],
+      ['4','Noé Alfredo Silva Martínez','La Cuadrilla','16'],['5','Martín López Guerrero','Malvinas','15'],['6','Julio C. Valadez','PSV','14'],
+      ['7','Luis Gámez','Olímpicos','14'],['8','Edgar Ramírez Sánchez','Linces','13'],['9','J. Guadalupe Moreno Huerta','Juventus','13'],
+      ['10','Juan Carlos Arriaga Obrejero','Linces','13']
+    ]
+  },
+  {
+    season:'2018',title:'Primera Fuerza · goleadores J23',note:'Fuente ZIP 0058 · Top 10 visible del corte.',
+    rows:[
+      ['1','Juan Manuel Gámez López','Hermanos','38'],['2','Daniel Gómez Delgado','A. Centeno','21'],['3','Cristian Manuel Capulín Arellano','Chelsea','18'],
+      ['4','Julio C. Valadez','PSV','18'],['5','Noé Alfredo Silva Martínez','La Cuadrilla','17'],['6','Martín López Guerrero','Malvinas','15'],
+      ['7','Luis Gámez','Olímpicos','14'],['8','Edgar Ramírez Sánchez','Linces','13'],['9','J. Guadalupe Moreno Huerta','Juventus','13'],
+      ['10','Juan Carlos Arriaga Obrejero','Linces','13']
+    ]
+  },
+  {
+    season:'2018',title:'Primera Fuerza · goleadores J26',note:'Fuente ZIP 0066 · Top 10 visible del corte.',
+    rows:[
+      ['1','Juan Manuel Gámez López','Hermanos','41'],['2','Daniel Gómez Delgado','A. Centeno','24'],['3','Noé Alfredo Silva Martínez','La Cuadrilla','22'],
+      ['4','Cristian Manuel Capulín Arellano','Chelsea','18'],['5','Julio C. Valadez','PSV','18'],['6','Luis Gámez','Olímpicos','17'],
+      ['7','Martín López Guerrero','Malvinas','16'],['8','Edgar Ramírez Sánchez','Linces','15'],['9','J. Guadalupe Moreno Huerta','Juventus','14'],
+      ['10','Juan Carlos Arriaga Obrejero','Linces','13']
+    ]
+  },
+  {
+    season:'2018',title:'Fuerza Intermedia · goleadores J26',note:'Fuente ZIP 0068 · Top 10 visible del corte.',
+    rows:[
+      ['1','Alejandro Juárez Merino','Populares','32'],['2','Juan Carlos Hernández','Barza','26'],['3','Miguel Presa García','Populares','18'],
+      ['4','Alejandro Ramírez Medina','Real DHP','17'],['5','Antonio Lerma Pizano','Mineros FC','16'],['6','César Agustín Pérez Campos','Oklahoma','15'],
+      ['7','Fernando Valencia','Lobos CDG','15'],['8','Jesús Hernández','Vatos Locos','15'],['9','Abraham Armenta','Tecos','14'],
+      ['10','Oscar Muñoz Badillo','Oklahoma','14']
+    ]
+  },
+  {
+    season:'Archivo · año por precisar',title:'Primera Fuerza · goleadores J34',note:'Fuente ZIP 1364 · Top 10 visible del corte.',
+    rows:[
+      ['1','Edgar Ramírez Sánchez','Linces','44'],['2','Juan Manuel Gámez López','Hermanos','44'],['3','Noé Alfredo Silva Martínez','La Cuadrilla','35'],
+      ['4','Jorge Alberto Sánchez Mendoza','Juventus','31'],['5','Fernando Gámez Reyes','Abejas','30'],['6','Martín López Guerrero','Malvinas','29'],
+      ['7','Edwin Oswaldo Centeno G.','La Esperanza','22'],['8','Francisco Javier Sololache','PSV','20'],['9','Luis Eduardo Ortega Flores','La Esperanza','20'],
+      ['10','Alfredo Luna Belman','Hermanos','19']
+    ]
+  },
+  {
+    season:'Archivo · año por precisar',title:'Primera Fuerza · goleadores J6',note:'Fuente ZIP 1371 · Top 10 visible del corte.',
+    rows:[
+      ['1','Honorio Ochoa','Tavera','9'],['2','Juan Manuel Gámez López','Hermanos','9'],['3','Daniel Gámez Buenabista','A. Centeno','7'],
+      ['4','Gabriel Buenabista','La Cuadrilla','5'],['5','José Ramírez','Olímpicos','5'],['6','Cristian Villafuerte','La Esperanza','4'],
+      ['7','Fernando Gámez','Abejas','4'],['8','Juan Ernesto Ramos Herrera','A. Centeno','4'],['9','Martín López Guerrero','Malvinas','4'],
+      ['10','Noé Fabián Pineda','Napoli','4']
+    ]
+  },
+  {
+    season:'Archivo · año por precisar',title:'Fuerza Intermedia · goleadores J6',note:'Fuente ZIP 1368 · Top 10 visible del corte.',
+    rows:[
+      ['1','Alejandro Ramírez Medina','Real DHP','9'],['2','Alejandro Juárez Merino','Populares','6'],['3','Santiago Ramírez','Lobos CDG','6'],
+      ['4','Antonio Calero','Real DHP','5'],['5','Jesús Lera Pérez','La Huerta','5'],['6','Oscar Muñoz Badillo','Oklahoma','5'],
+      ['7','Bryan Landín','Lobos CDG','4'],['8','David Mancera Escalante','Mineros FC','4'],['9','Juan Carlos Acosta Zárate','Real DHP','4'],
+      ['10','Miguel Presa García','Populares','4']
+    ]
+  }
+];
+
+
 const historicTeamGoalRecords=[
   {season:'2018',category:'Intermedia · Jornada 23',team:'Populares',identifiedGoals:47,players:2,note:'47 goles identificados al sumar los dos goleadores visibles del equipo (31 + 16). No se presenta como total oficial del club porque la tabla recuperada usada aquí no conserva la columna completa de GF.'},
   {season:'2018',category:'Intermedia · Jornada 23',team:'Barza',identifiedGoals:18,players:1,note:'18 goles identificados en el registro de goleo visible. El total completo del equipo sigue pendiente de recuperar de una tabla con GF.'},
@@ -787,6 +990,12 @@ const historicTeamGoalRecords=[
 ];
 
 const recordMemories=[
+  {tag:'CORTE 2015 · J14',title:'La Esperanza',value:'36 puntos',detail:'Líder del corte de Veteranos J14 del Torneo de Liga 2015. Fuente ZIP 1010; no se presenta como tabla final.',image:RAW+'assets/official-logos/la-esperanza.png'},
+  {tag:'CORTE 2015 · J13',title:'Juventus',value:'37 puntos',detail:'Líder del corte de Primera Fuerza hasta J13 del Torneo de Liga 2015. Fuente ZIP 1021.',image:RAW+'assets/official-logos/juventus.png'},
+  {tag:'CORTE 2015 · J15',title:'Osasuna',value:'36 puntos',detail:'Líder del corte de Segunda Fuerza hasta J15 del Torneo de Liga 2015. Fuente ZIP 1022.',image:RAW+'assets/official-logos/osasuna.png'},
+  {tag:'CORTE 2018 · J26',title:'Lobos CDG',value:'61 puntos',detail:'Líder del corte de Fuerza Intermedia J26. Fuente ZIP 0067; no se presenta como tabla final.',image:RAW+'assets/official-logos/lobos-cdg.png'},
+  {tag:'PRETEMPORADA · J13',title:'Franco FC',value:'36 puntos',detail:'Líder del Grupo A en el corte J13 de Segunda Fuerza. El año no aparece visible en la imagen ZIP 1379.',image:RAW+'assets/official-logos/franco-fc.png'},
+  {tag:'PRETEMPORADA · J13',title:'Mineros FC',value:'32 puntos',detail:'Líder del Grupo B en el corte J13 de Segunda Fuerza. El año no aparece visible en la imagen ZIP 1379.'},
   {tag:'PODIO 2013',title:'Romerillo',value:'3.er lugar',detail:'Fuerza Intermedia · publicación de Golazo Liga del 23 nov 2013. La nota destaca al portero de Romerillo por una atajada de penal en la serie final.',image:RAW+'assets/official-logos/san-antonio-jrs.png'},
   {tag:'CORTE J30',title:'Linces',value:'79 puntos',detail:'Líder del corte de Primera publicado el 6 may 2017; no se presenta como récord absoluto.',image:RAW+'assets/official-logos/linces.png'},
   {tag:'CORTE J30',title:'Hermanos',value:'111 GF',detail:'Goles a favor visibles en la tabla de Primera J30 del 6 may 2017.',image:RAW+'assets/official-logos/hermanos.png'},
@@ -1610,6 +1819,8 @@ function historicalGoalsBlock(){
     '<div class="v35-history-subhead"><span>GOLES POR JUGADOR</span><h3>Goleadores recuperados por temporada</h3><p>Se mantiene el año, la categoría, el equipo y el total visible de goles de cada jugador.</p></div>'+
     '<figure class="v35-scorer-reference"><img src="'+HIST_MEDIA+'premiacion-historica.jpg" alt="Premiación histórica de la Liga" loading="lazy" decoding="async"><figcaption>Foto de premiación del archivo histórico. Se usa como referencia visual; no se asigna la identidad de un goleador sin confirmación documental.</figcaption></figure>'+
     '<div class="v35-scorer-history">'+historicScorers.map((x,i)=>'<article><span>#'+(i+1)+'</span><div><b>'+esc(x.player)+'</b><small>'+esc(x.team)+' · '+esc(x.season)+' · '+esc(x.category)+'</small></div><strong>'+esc(x.value)+'</strong></article>').join('')+'</div>'+
+    '<div class="v35-history-subhead v731-scorer-snapshots-head"><span>TABLAS DE GOLEO DEL ZIP</span><h3>Cortes recuperados que faltaban</h3><p>Se muestran los 10 primeros lugares legibles de cada imagen para conservar la progresión sin repetir cientos de filas iguales.</p></div>'+
+    '<div class="v731-scorer-snapshots">'+historicScorerSnapshots.map(t=>'<article class="v35-old-table v731-scorer-table"><header><span>'+esc(t.season)+'</span><div><b>'+esc(t.title)+'</b><small>'+esc(t.note)+'</small></div></header><div class="v731-scorer-head"><span>POS</span><span>JUGADOR</span><span>EQUIPO</span><span>GOLES</span></div>'+t.rows.map(r=>'<div class="v731-scorer-row"><span>'+esc(r[0])+'</span><b>'+esc(r[1])+'</b><em>'+esc(r[2])+'</em><strong>'+esc(r[3])+'</strong></div>').join('')+'</article>').join('')+'</div>'+
   '</div>';
 }
 
@@ -2781,7 +2992,7 @@ function v370ArchiveTeamsBlock(){
 }
 function recordsBody(){
   return '<section class="v35-block v35-tab-body v35-records-body"><h2 class="v35-section-title">Récords y recuerdos</h2>'+
-    '<article class="v35-stat-card"><h3>Archivo comprobado</h3><p>Esta sección reúne marcas visibles en tablas históricas, recuerdos documentados y el inventario de todos los equipos recuperados del archivo. El catálogo fue cruzado también contra las 25 imágenes históricas de Drive aportadas. Un corte de jornada no se presenta como récord absoluto de toda la Liga.</p></article>'+
+    '<article class="v35-stat-card"><h3>Archivo comprobado</h3><p>Esta sección reúne marcas visibles en tablas históricas, recuerdos documentados y el inventario de todos los equipos recuperados del archivo. El catálogo fue cruzado también contra las 25 imágenes históricas de Drive y contra las 1,758 imágenes únicas del ZIP revisadas en 28 hojas de contacto. Se añadieron cortes de clasificación y goleo que faltaban. Un corte de jornada no se presenta como récord absoluto de toda la Liga.</p></article>'+
     '<div class="v35-record-grid">'+recordMemories.map(r=>'<article class="v35-record-card">'+
       (r.image?'<img src="'+r.image+'" alt="" loading="lazy" decoding="async">':'<span class="v35-record-mark">LM</span>')+
       '<div><small>'+esc(r.tag)+'</small><h3>'+esc(r.title)+'</h3><strong>'+esc(r.value)+'</strong><p>'+esc(r.detail)+'</p></div></article>').join('')+'</div>'+
