@@ -1,4 +1,4 @@
-/* V704 — Historia: sincronización global de escudos históricos.
+/* V742 — Historia/Récords: sincronización global de escudos confirmados.
    Última capa: aplica los escudos ya confirmados en TODAS las vistas de Historia
    sin cambiar nombres, datos, fotos históricas ni el diseño. */
 (function(){
@@ -35,6 +35,38 @@ const SPECIAL={
   'unam':'./assets/history/team-logos/universidad-pumas.webp',
   'pumas':'./assets/history/team-logos/universidad-pumas.webp',
   'pumas unam':'./assets/history/team-logos/universidad-pumas.webp'
+};
+
+const DATA_ROOT='https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/';
+const USER_CONFIRMED_LOGOS={
+  'real de roque':'./assets/history/team-logos/real-de-roque.webp',
+  'real roque':'./assets/history/team-logos/real-de-roque.webp',
+  'real de roque fc':'./assets/history/team-logos/real-de-roque.webp',
+  'cebolleros':DATA_ROOT+'assets/teams/cebolleros-fc-cuenda.webp',
+  'cebolleros fc':DATA_ROOT+'assets/teams/cebolleros-fc-cuenda.webp',
+  'cebolleros fc cuenda':DATA_ROOT+'assets/teams/cebolleros-fc-cuenda.webp',
+  'cebolleros de cuenda':DATA_ROOT+'assets/teams/cebolleros-fc-cuenda.webp',
+  'tecos':'./assets/history/team-logos/tecos.webp',
+  'tecos fc':'./assets/history/team-logos/tecos.webp',
+  'tecos de pozos':'./assets/history/team-logos/tecos.webp',
+  'tecos pozos':'./assets/history/team-logos/tecos.webp',
+  'boca jrs':'./assets/official-logos/boca-jrs.png',
+  'boca juniors':'./assets/official-logos/boca-jrs.png',
+  'cabj':'./assets/official-logos/boca-jrs.png',
+  'oklahoma':'./assets/official-logos/oklahoma-city-fc.png',
+  'oklahoma fc':'./assets/official-logos/oklahoma-city-fc.png',
+  'oklahoma city':'./assets/official-logos/oklahoma-city-fc.png',
+  'oklahoma city fc':'./assets/official-logos/oklahoma-city-fc.png',
+  'herrera':DATA_ROOT+'assets/official-logos/herreras-fc.png',
+  'herrera fc':DATA_ROOT+'assets/official-logos/herreras-fc.png',
+  'herreras':DATA_ROOT+'assets/official-logos/herreras-fc.png',
+  'herreras fc':DATA_ROOT+'assets/official-logos/herreras-fc.png',
+  'la esperanza':DATA_ROOT+'assets/official-logos/la-esperanza.png',
+  'la esperanza fc':DATA_ROOT+'assets/official-logos/la-esperanza.png',
+  'america':DATA_ROOT+'assets/branding/america-veteranos-35-user.png',
+  'america veteranos':DATA_ROOT+'assets/branding/america-veteranos-35-user.png',
+  'club america':DATA_ROOT+'assets/branding/america-veteranos-35-user.png',
+  'club america veteranos':DATA_ROOT+'assets/branding/america-veteranos-35-user.png'
 };
 
 /* V715 — Récords: escudos de época recuperados directamente del rol oficial
@@ -180,6 +212,7 @@ function aliases(name){
 function logoFor(name){
   for(const a of aliases(name)){
     const k=norm(a);
+    if(USER_CONFIRMED_LOGOS[k])return USER_CONFIRMED_LOGOS[k];
     if(SPECIAL[k])return SPECIAL[k];
     try{
       const src=window.LJR_TEAM_LOGOS?.get?.(a);
@@ -194,7 +227,9 @@ function logoFor(name){
 }
 function legacyCardLogoFor(name){
   for(const a of aliases(name)){
-    const src=LEGACY_CARD_LOGOS[norm(a)];
+    const key=norm(a);
+    if(USER_CONFIRMED_LOGOS[key])return USER_CONFIRMED_LOGOS[key];
+    const src=LEGACY_CARD_LOGOS[key];
     if(src)return src;
   }
   return logoFor(name);
@@ -202,7 +237,9 @@ function legacyCardLogoFor(name){
 
 function recordLogoFor(name){
   for(const a of aliases(name)){
-    const src=RECORDS_2015_SPECIAL[norm(a)];
+    const key=norm(a);
+    if(USER_CONFIRMED_LOGOS[key])return USER_CONFIRMED_LOGOS[key];
+    const src=RECORDS_2015_SPECIAL[key];
     if(src)return src;
   }
   return logoFor(name);
