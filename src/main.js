@@ -4440,7 +4440,18 @@ function v19MoreIcon(name){
     bag:'<path d="M5 8h14l1 13H4L5 8Z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/>',
     info:'<circle cx="12" cy="12" r="9"/><path d="M12 11v6m0-10h.01"/>',
     search:'<circle cx="11" cy="11" r="6.5"/><path d="m16 16 4.5 4.5"/>',
-    qr:'<rect x="3" y="3" width="6" height="6" rx=".5"/><rect x="15" y="3" width="6" height="6" rx=".5"/><rect x="3" y="15" width="6" height="6" rx=".5"/><path d="M12 4v3m0 3v2m3 0h3m3 0v3m-9 0h3v3h3v3m3-3v3"/>'
+    qr:'<rect x="3" y="3" width="6" height="6" rx=".5"/><rect x="15" y="3" width="6" height="6" rx=".5"/><rect x="3" y="15" width="6" height="6" rx=".5"/><path d="M12 4v3m0 3v2m3 0h3m3 0v3m-9 0h3v3h3v3m3-3v3"/>',
+    trophy:'<path d="M8 4h8v3a4 4 0 0 1-8 0V4Z"/><path d="M8 6H4v1a4 4 0 0 0 4 4m8-5h4v1a4 4 0 0 1-4 4M12 11v5m-4 4h8m-6-4h4"/>',
+    users:'<circle cx="9" cy="8" r="3"/><circle cx="17" cy="9" r="2.3"/><path d="M3.5 19a5.5 5.5 0 0 1 11 0m1.5-5.2a4.3 4.3 0 0 1 4.5 4.2"/>',
+    chart:'<path d="M4 20V9m6 11V4m6 16v-7m4 7H2"/>',
+    bell:'<path d="M6 16h12l-1.5-2.2V10a4.5 4.5 0 0 0-9 0v3.8L6 16Z"/><path d="M10 19h4"/>',
+    history:'<path d="M4 12a8 8 0 1 0 2.3-5.7L4 8"/><path d="M4 4v4h4m4-1v5l3 2"/>',
+    file:'<path d="M6 3h8l4 4v14H6V3Z"/><path d="M14 3v5h5M9 12h6m-6 4h6"/>',
+    map:'<path d="m3 6 5-2 8 3 5-2v13l-5 2-8-3-5 2V6Z"/><path d="M8 4v13m8-10v13"/>',
+    alert:'<path d="M12 3 2.8 20h18.4L12 3Z"/><path d="M12 9v5m0 3h.01"/>',
+    download:'<path d="M12 3v11m0 0 4-4m-4 4-4-4"/><path d="M5 18v2h14v-2"/>',
+    news:'<path d="M5 4h12v16H5V4Z"/><path d="M8 8h6m-6 4h6m-6 4h4"/><path d="M17 7h2v11a2 2 0 0 1-2 2"/>',
+    whistle:'<path d="M5 13a5 5 0 1 0 10 0 5 5 0 0 0-10 0Z"/><path d="m14 9 5-3 2 3-5 3M3 7l2 2M8 4v3"/>'
 
   };
   return '<span class="v19-more-icon"><svg viewBox="0 0 24 24" aria-hidden="true">'+(icons[name]||icons.info)+'</svg></span>';
@@ -4510,52 +4521,89 @@ function v60ToolCard(icon,title,sub,route,extra=''){
 function v60Header(kicker,title,desc){
   return '<div class="v60-tool-head"><span class="v60-tool-kicker">'+kicker+'</span><h1>'+title+'</h1><p>'+desc+'</p></div>';
 }
-function leagueToolsView(){
-  return '<section class="v60-tool-page">'+v60Header('LIGA JUVENTINO','Todas las herramientas','Todas las funciones de la Liga reunidas aquí, incluyendo las herramientas adicionales.')+
-    '<div class="v60-tools-featured" aria-label="Accesos principales">'+
-      '<button type="button" class="v60-tools-featured-card" data-route="teams"><span class="v60-tools-featured-icon">'+v60Icon('center')+'</span><span class="v60-tools-featured-copy"><b>Equipos</b><small>Ver equipos registrados</small></span><i>›</i></button>'+
-      '<button type="button" class="v60-tools-featured-card" data-route="players"><span class="v60-tools-featured-icon">'+v60Icon('center')+'</span><span class="v60-tools-featured-copy"><b>Jugadores</b><small>Ver jugadores registrados</small></span><i>›</i></button>'+
-      '<button type="button" class="v60-tools-featured-card" data-route="bracketBuilder"><span class="v60-tools-featured-icon">'+v60Icon('bracket')+'</span><span class="v60-tools-featured-copy"><b>Liguilla</b><small>Cuadro eliminatorio</small></span><i>›</i></button>'+
-      '<button type="button" class="v60-tools-featured-card" data-route="news"><span class="v60-tools-featured-icon">'+v60Icon('share')+'</span><span class="v60-tools-featured-copy"><b>Avisos</b><small>Noticias y comunicados</small></span><i>›</i></button>'+
-    '</div>'+
-    '<button type="button" class="v612-tools-entry" data-liga-tools>⚙ Herramientas de administración</button>'+
-    '<div class="v60-tools-all-label v612-admin-only"><span>GESTIÓN DE LIGA</span><b>Administración y jornada</b></div>'+
-    '<div class="v60-tool-grid v612-admin-only">'+
-      v60ToolCard('admin','Panel de Liga','Resumen de tabla, equipos y actividad','v38Stats')+
-      v60ToolCard('center','Posiciones','Clasificación oficial por categoría','', 'data-v60-comp="standings"')+
-      v60ToolCard('center','Goleo','Máximos goleadores por jugador y categoría','scorers')+
-      v60ToolCard('center','Tarjetas y castigados','Disciplina, rojas, amarillas y sanciones','discipline')+
-      v60ToolCard('center','Registro','Altas de equipos y jugadores','recruitment')+
-      v60ToolCard('admin','Gestión','Centro operativo JR Control','jrControl')+
-      v60ToolCard('cedula','Modo árbitro offline','Mis partidos, borradores y cola de cédulas','refereeOffline')+
-      v60ToolCard('cedula','Cédulas arbitrales','Consulta, captura y plantillas','cedulas')+
-      v60ToolCard('share','Reportes','Juegos de la semana, avisos y reportes','v38Weekly')+
-      v60ToolCard('qr','Descargar / instalar app','QR y acceso directo a la Liga','ligaQR')+
-    '</div>'+
-    '<div class="v60-tools-all-label"><span>TODAS LAS FUNCIONES</span><b>Herramientas sin repetir</b></div>'+
-    '<div class="v60-tool-grid">'+
-      v60ToolCard('history','Historia','Temporadas, campeones, finales y archivo histórico','history')+
-      v60ToolCard('search','Buscador','Equipos, jugadores, partidos, campos y noticias','search')+
-      v60ToolCard('cedula','Generar cédula','Cédula y plantillas del partido','cedulaBuilder')+
-      v60ToolCard('card','Permisos y autorizaciones','Jugador, delegado · PDF, PNG, JPG y SVG','permissionBuilder')+
-      v60ToolCard('card','Generar credencial','Foto, OCR y credencial del jugador','credentialBuilder')+
-      v60ToolCard('matchday','Match Day','Checklist y operación de jornada','matchday')+
-      v60ToolCard('rules','Reglamento','Reglamento oficial 2026–2027','rulebook')+
-      v60ToolCard('field','Dónde se juega','Campos, comunidades y Maps','venues')+
-      v60ToolCard('center','Match Center','Partido oficial, marcador y cronología','v4-matchcenter')+
-      v60ToolCard('matchday','Jornadas','Calendario y resultados','', 'data-v60-comp="fixtures"')+
-      v60ToolCard('share','Publicaciones','Compartir jornada / WhatsApp','publications')+
-      v60ToolCard('tactics','Tácticas','Pizarra 2D y formaciones','tactics')+
-      v60ToolCard('sim','Simulador','Simulación local de clasificación','simulator')+
-      v60ToolCard('weather','Clima y estado oficial','Pronóstico, terreno y decisión oficial','v38Weather')+
-      v60ToolCard('center','Notificaciones','Próxima jornada, cambios de sede y favoritos','v38Alerts')+
-      v60ToolCard('admin','Central oficial','Categorías, equipos, jugadores, tarjetas y castigos','', 'data-v63-official="summary"')+
-      v60ToolCard('center','Exportar tabla','PNG completo, compartir y CSV','tableExport')+
-      v60ToolCard('matchday','Preparar mi jornada','Agenda local, cruces y JSON','agendaBuilder')+
-      v60ToolCard('tactics','Jornada animada','Balones en movimiento y accesos','motionHub')+
-      v60ToolCard('share','Aviso de suspensión','Borrador y vista previa de jornada suspendida','suspensionTool')+
-    '</div></section>';
+function v726ToolCard(icon,title,desc,route,extra='',tag=''){
+  return '<button type="button" class="v726-tool-card" '+(route?'data-route="'+route+'"':'')+' '+extra+'>'+
+    '<span class="v726-tool-icon">'+v60Icon(icon)+'</span>'+
+    '<span class="v726-tool-copy">'+(tag?'<small class="v726-tool-tag">'+tag+'</small>':'')+'<b>'+title+'</b><small class="v726-tool-desc">'+desc+'</small></span>'+
+    '<span class="v726-tool-arrow" aria-hidden="true">›</span>'+
+  '</button>';
 }
+function v726QuickCard(icon,title,desc,route){
+  return '<button type="button" class="v726-quick-card" data-route="'+route+'">'+
+    '<span class="v726-quick-icon">'+v60Icon(icon)+'</span>'+
+    '<span><b>'+title+'</b><small>'+desc+'</small></span><i aria-hidden="true">›</i>'+
+  '</button>';
+}
+function v726ToolSection(icon,kicker,title,desc,cards,extra=''){
+  return '<section class="v726-tool-section '+extra+'">'+
+    '<header class="v726-section-head"><span class="v726-section-icon">'+v60Icon(icon)+'</span><span><small>'+kicker+'</small><h2>'+title+'</h2><p>'+desc+'</p></span></header>'+
+    '<div class="v726-tool-grid">'+cards+'</div>'+
+  '</section>';
+}
+function leagueToolsView(){
+  const competition=
+    v726ToolCard('chart','Posiciones','Consulta la clasificación oficial por categoría: partidos jugados, puntos y diferencia.','', 'data-v60-comp="standings"','TABLA')+
+    v726ToolCard('trophy','Goleo','Ranking de goleadores por jugador y categoría con los datos oficiales disponibles.','scorers','','GOLEO')+
+    v726ToolCard('matchday','Jornadas','Abre calendario, resultados, próximos partidos y pendientes de cada jornada.','', 'data-v60-comp="fixtures"','PARTIDOS')+
+    v726ToolCard('center','Match Center','Marcador, cronología, alineaciones y contexto del partido en una sola pantalla.','v4-matchcenter','','EN VIVO')+
+    v726ToolCard('download','Exportar tabla','Genera la tabla completa para descargar o compartir en PNG y CSV.','tableExport','','PNG / CSV')+
+    v726ToolCard('sim','Simulador','Prueba escenarios de clasificación sin modificar los datos oficiales de la Liga.','simulator','','PRUEBA');
+
+  const matchday=
+    v726ToolCard('matchday','Match Day','Checklist para preparar y cerrar una jornada: campos, partidos, resultados y reporte.','matchday','','JORNADA')+
+    v726ToolCard('matchday','Preparar mi jornada','Organiza cruces, agenda y datos locales antes de publicar la programación.','agendaBuilder','','AGENDA')+
+    v726ToolCard('tactics','Tácticas','Pizarra 2D para preparar formaciones y alineaciones de un equipo.','tactics','','CANCHA')+
+    v726ToolCard('weather','Clima y estado oficial','Consulta pronóstico, terreno y condiciones de los campos antes del partido.','v38Weather','','CLIMA')+
+    v726ToolCard('map','Dónde se juega','Directorio de campos y comunidades con ubicación para llegar a la sede correcta.','venues','','SEDES')+
+    v726ToolCard('tactics','Jornada animada','Vista dinámica con accesos rápidos para presentar la jornada de forma visual.','motionHub','','VISUAL')+
+    v726ToolCard('alert','Aviso de suspensión','Prepara un aviso claro de partido o jornada suspendida antes de compartirlo.','suspensionTool','','AVISO');
+
+  const documents=
+    v726ToolCard('file','Generar cédula','Crea la cédula y plantilla del partido lista para consulta, captura e impresión.','cedulaBuilder','','DOCUMENTO')+
+    v726ToolCard('file','Permisos y autorizaciones','Genera permisos para jugador o delegado y expórtalos en PDF, PNG, JPG o SVG.','permissionBuilder','','PDF / PNG')+
+    v726ToolCard('card','Generar credencial','Crea la credencial del jugador con fotografía, equipo, categoría y datos del registro.','credentialBuilder','','CREDENCIAL')+
+    v726ToolCard('rules','Reglamento','Consulta dentro de la app el reglamento oficial vigente de la Liga.','rulebook','','OFICIAL')+
+    v726ToolCard('news','Publicaciones','Prepara contenido de jornada para compartir en los canales de la Liga.','publications','','COMPARTIR');
+
+  const info=
+    v726ToolCard('history','Historia','Consulta temporadas, campeones, finales, récords y el archivo histórico de la Liga.','history','','ARCHIVO')+
+    v726ToolCard('search','Buscador','Encuentra rápidamente equipos, jugadores, partidos, campos y noticias.','search','','BUSCAR')+
+    v726ToolCard('bell','Notificaciones','Revisa avisos de próxima jornada, cambios de sede y alertas relacionadas con favoritos.','v38Alerts','','AVISOS');
+
+  const admin=
+    v726ToolCard('admin','Panel de Liga','Resumen operativo de tabla, equipos y actividad para revisar el estado general.','v38Stats','','ADMIN')+
+    v726ToolCard('alert','Tarjetas y castigados','Consulta disciplina, amarillas, rojas, sanciones y jugadores castigados.','discipline','','DISCIPLINA')+
+    v726ToolCard('users','Registro','Altas y control de equipos y jugadores desde las herramientas de administración.','recruitment','','ALTAS')+
+    v726ToolCard('admin','JR Control','Centro operativo para administrar procesos internos y tareas de la Liga.','jrControl','','CONTROL')+
+    v726ToolCard('whistle','Modo árbitro offline','Trabaja con partidos, borradores y cola de cédulas aun cuando la conexión sea limitada.','refereeOffline','','ÁRBITRO')+
+    v726ToolCard('file','Cédulas arbitrales','Consulta, captura y revisa las cédulas de los partidos desde un solo lugar.','cedulas','','CÉDULAS')+
+    v726ToolCard('news','Reportes','Revisa juegos de la semana, avisos y reportes operativos de la Liga.','v38Weekly','','REPORTE')+
+    v726ToolCard('download','Descargar / instalar app','Abre el QR y las opciones para instalar o guardar el acceso directo de la Liga.','ligaQR','','APP');
+
+  return '<section class="v60-tool-page v726-tools-page">'+
+    '<header class="v726-tools-hero">'+
+      '<span class="v726-hero-kicker">CENTRO DE HERRAMIENTAS</span>'+
+      '<h1>Todo ordenado por función</h1>'+
+      '<p>Encuentra cada herramienta según lo que necesitas hacer: competencia, jornada, documentos, información o administración. Cada tarjeta explica para qué sirve.</p>'+
+      '<div class="v726-hero-pills"><span>Competición</span><span>Jornada</span><span>Documentos</span><span>Administración</span></div>'+
+    '</header>'+
+    '<section class="v726-quick-section"><div class="v726-quick-head"><span><small>ACCESOS RÁPIDOS</small><h2>Lo que más se consulta</h2></span><p>Entradas directas sin repetirlas en los bloques inferiores.</p></div>'+
+      '<div class="v726-quick-grid">'+
+        v726QuickCard('users','Equipos','Directorio oficial','teams')+
+        v726QuickCard('users','Jugadores','Plantillas registradas','players')+
+        v726QuickCard('bracket','Liguilla','Cuadro eliminatorio','bracketBuilder')+
+        v726QuickCard('bell','Avisos','Noticias y comunicados','news')+
+      '</div>'+
+    '</section>'+
+    '<button type="button" class="v612-tools-entry v726-admin-entry" data-liga-tools><span>'+v60Icon('admin')+'</span><b>Acceso de administración</b><small>Sesión, permisos y herramientas privadas</small><i>›</i></button>'+
+    v726ToolSection('trophy','COMPETICIÓN','Competición y estadísticas','Resultados, clasificación y herramientas para entender cómo va cada categoría.',competition)+
+    v726ToolSection('matchday','OPERACIÓN','Partido y jornada','Todo lo necesario para preparar, operar y comunicar lo que ocurre alrededor de un partido.',matchday)+
+    v726ToolSection('file','DOCUMENTOS','Documentos y publicaciones','Generadores para cédulas, credenciales, permisos, reglamento y contenido para compartir.',documents)+
+    v726ToolSection('history','CONSULTA','Información y archivo','Accesos para buscar información, revisar el archivo histórico y seguir avisos.',info)+
+    v726ToolSection('admin','GESTIÓN','Administración de la Liga','Herramientas internas de registro, disciplina, arbitraje, reportes y control operativo.',admin,'v612-admin-only v726-admin-section')+
+  '</section>';
+}
+
 let v60RulebookDoc=null,v60RulebookPage=1,v60RulebookRenderToken=0;
 function v60LoadPdfJs(){
   if(window.pdfjsLib)return Promise.resolve(window.pdfjsLib);
