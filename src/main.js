@@ -4584,8 +4584,7 @@ function leagueToolsView(){
 
   const info=
     v726ToolCard('history','Historia','Consulta temporadas, campeones, finales, récords y el archivo histórico de la Liga.','history','','ARCHIVO')+
-    v726ToolCard('search','Buscador','Encuentra rápidamente equipos, jugadores, partidos, campos y noticias.','search','','BUSCAR')+
-    v726ToolCard('bell','Notificaciones','Revisa avisos de próxima jornada, cambios de sede y alertas relacionadas con favoritos.','v38Alerts','','AVISOS');
+    v726ToolCard('search','Buscador','Encuentra rápidamente equipos, jugadores, partidos, campos y noticias.','search','','BUSCAR');
 
   const admin=
     v726ToolCard('admin','Panel de Liga','Resumen operativo de tabla, equipos y actividad para revisar el estado general.','v38Stats','','ADMIN')+
@@ -4610,6 +4609,8 @@ function leagueToolsView(){
         v726QuickCard('users','Jugadores','Plantillas registradas','players')+
         v726QuickCard('bracket','Liguilla','Cuadro eliminatorio','bracketBuilder')+
         v726QuickCard('bell','Avisos','Noticias y comunicados','news')+
+        v726QuickCard('alert','Avisos AUTO','Programar fecha y hora','v38Alerts')+
+        v726QuickCard('news','Publicar','PNG y comunicados','publications')+
       '</div>'+
     '</section>'+
     '<button type="button" class="v612-tools-entry v726-admin-entry" data-liga-tools><span>'+v60Icon('admin')+'</span><b>Acceso de administración</b><small>Sesión, permisos y herramientas privadas</small><i>›</i></button>'+
