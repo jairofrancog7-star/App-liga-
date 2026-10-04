@@ -4532,37 +4532,24 @@ function leagueToolsView(){
       v60ToolCard('share','Reportes','Juegos de la semana, avisos y reportes','v38Weekly')+
       v60ToolCard('qr','Descargar / instalar app','QR y acceso directo a la Liga','ligaQR')+
     '</div>'+
-    '<div class="v60-tools-all-label"><span>TODAS LAS FUNCIONES</span><b>Herramientas</b></div>'+
+    '<div class="v60-tools-all-label"><span>TODAS LAS FUNCIONES</span><b>Herramientas sin repetir</b></div>'+
     '<div class="v60-tool-grid">'+
-      v60ToolCard('sim','Quiniela de la Liga','Pronósticos de los partidos','quiniela')+
       v60ToolCard('history','Historia','Temporadas, campeones, finales y archivo histórico','history')+
       v60ToolCard('search','Buscador','Equipos, jugadores, partidos, campos y noticias','search')+
-      v60ToolCard('qr','QR de la Liga','Compartir acceso directo a la app','ligaQR')+
-      v60ToolCard('center','Equipos registrados','Solo equipos oficiales sincronizados','teams')+
-      v60ToolCard('center','Jugadores registrados','Plantillas oficiales de AdminFut','players', 'data-v60-all-players="1"')+
-      v60ToolCard('cedula','Cédulas','Consulta y plantillas de partido','cedulas')+
       v60ToolCard('cedula','Generar cédula','Cédula y plantillas del partido','cedulaBuilder')+
       v60ToolCard('card','Permisos y autorizaciones','Jugador, delegado · PDF, PNG, JPG y SVG','permissionBuilder')+
       v60ToolCard('card','Generar credencial','Foto, OCR y credencial del jugador','credentialBuilder')+
-      v60ToolCard('center','Reclutamiento','Equipos nuevos, jugadores nuevos, PNG y compartir','recruitment')+
-      v60ToolCard('cedula','Modo árbitro offline','Mis partidos, borradores y cola de cédulas','refereeOffline')+
       v60ToolCard('matchday','Match Day','Checklist y operación de jornada','matchday')+
       v60ToolCard('rules','Reglamento','Reglamento oficial 2026–2027','rulebook')+
       v60ToolCard('field','Dónde se juega','Campos, comunidades y Maps','venues')+
       v60ToolCard('center','Match Center','Partido oficial, marcador y cronología','v4-matchcenter')+
       v60ToolCard('matchday','Jornadas','Calendario y resultados','', 'data-v60-comp="fixtures"')+
-      v60ToolCard('bracket','Liguilla','Cuadro de eliminatorias','', 'data-v60-comp="bracket"')+
       v60ToolCard('share','Publicaciones','Compartir jornada / WhatsApp','publications')+
       v60ToolCard('tactics','Tácticas','Pizarra 2D y formaciones','tactics')+
       v60ToolCard('sim','Simulador','Simulación local de clasificación','simulator')+
-      v60ToolCard('admin','JR Control','Centro operativo de la Liga','jrControl')+
-      v60ToolCard('center','Tabla y estadísticas','Tabla, goleadores y rendimiento','v38Stats')+
-      v60ToolCard('share','Noticias y avisos','Avisos, junta semanal y multimedia','v38Weekly')+
       v60ToolCard('weather','Clima y estado oficial','Pronóstico, terreno y decisión oficial','v38Weather')+
-      v60ToolCard('matchday','Partidos y jornadas','Todos, jugados, próximos y calendario','', 'data-v63-official="fixtures"')+
       v60ToolCard('center','Notificaciones','Próxima jornada, cambios de sede y favoritos','v38Alerts')+
       v60ToolCard('admin','Central oficial','Categorías, equipos, jugadores, tarjetas y castigos','', 'data-v63-official="summary"')+
-      v60ToolCard('bracket','Cuadro PNG','8 lugares y exportación para liguilla','bracketBuilder')+
       v60ToolCard('center','Exportar tabla','PNG completo, compartir y CSV','tableExport')+
       v60ToolCard('matchday','Preparar mi jornada','Agenda local, cruces y JSON','agendaBuilder')+
       v60ToolCard('tactics','Jornada animada','Balones en movimiento y accesos','motionHub')+
