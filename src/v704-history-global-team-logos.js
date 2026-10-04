@@ -32,6 +32,29 @@ const SPECIAL={
   'pumas unam':'./assets/history/team-logos/universidad-pumas.webp'
 };
 
+/* V715 — Récords: escudos de época recuperados directamente del rol oficial
+   de Primera Fuerza del 24 de mayo de 2015 aportado por el usuario.
+   Esta tabla es exclusiva de Récords para no sustituir escudos actuales en
+   otras pantallas. */
+const RECORDS_2015_SPECIAL={
+  'el alto':'./assets/history/team-logos/legacy-2015-el-alto.webp',
+  'hermanos':'./assets/history/team-logos/legacy-2015-hermanos.webp',
+  'san antonio':'./assets/history/team-logos/legacy-2015-san-antonio-romerillo.webp',
+  'san antonio de romerillo':'./assets/history/team-logos/legacy-2015-san-antonio-romerillo.webp',
+  'sn antonio':'./assets/history/team-logos/legacy-2015-san-antonio-romerillo.webp',
+  'puros cuates':'./assets/history/team-logos/legacy-2015-puros-cuates.webp',
+  'la pandilla':'./assets/history/team-logos/legacy-2015-la-pandilla.webp',
+  'olimpicos':'./assets/history/team-logos/legacy-2015-olimpicos-pozos.webp',
+  'olimpicos de pozos':'./assets/history/team-logos/legacy-2015-olimpicos-pozos.webp',
+  'cerrito':'./assets/history/team-logos/legacy-2015-cerrito.webp',
+  'cerrito de g':'./assets/history/team-logos/legacy-2015-cerrito.webp',
+  'cerrito de gasca':'./assets/history/team-logos/legacy-2015-cerrito.webp',
+  'psv':'./assets/history/team-logos/legacy-2015-psv.webp',
+  'juventus':'./assets/history/team-logos/legacy-2015-juventus.webp',
+  'linces':'./assets/history/team-logos/legacy-2015-linces.webp',
+  'abejas':'./assets/history/team-logos/legacy-2015-abejas.webp'
+};
+
 function route(){
   return String(location.hash||'').replace(/^#\/?/,'').split('?')[0]||document.body?.dataset?.appRoute||'';
 }
@@ -82,6 +105,14 @@ function logoFor(name){
   }
   return '';
 }
+function recordLogoFor(name){
+  for(const a of aliases(name)){
+    const src=RECORDS_2015_SPECIAL[norm(a)];
+    if(src)return src;
+  }
+  return logoFor(name);
+}
+
 function abs(src){
   try{return new URL(src,document.baseURI).href}catch(_){return String(src||'')}
 }
@@ -169,7 +200,7 @@ function patchRecords(root){
     const candidates=[title,...aliases(title)];
     let name='',src='';
     for(const candidate of candidates){
-      const hit=logoFor(candidate);
+      const hit=recordLogoFor(candidate);
       if(hit){name=candidate;src=hit;break;}
     }
     if(!src)return;
@@ -182,11 +213,25 @@ function patchRecords(root){
     if(!main)return;
     const u=String(main.currentSrc||main.src||'').toLowerCase();
     const isPhoto=/\/assets\/history\/archive-v\d+\//.test(u);
-    if(!isPhoto){
-      if(!same(main.currentSrc||main.src,src))main.src=src;
-      main.alt=name;main.dataset.v704HistoryLogo='1';
-      card.querySelector('.v672-record-mini-logo')?.remove();
+    if(isPhoto){
+      let mini=card.querySelector('.v672-record-mini-logo');
+      if(!mini){
+        mini=document.createElement('span');
+        mini.className='v672-record-mini-logo';
+        card.appendChild(mini);
+      }
+      const current=mini.querySelector('img');
+      if(current){
+        if(!same(current.currentSrc||current.src,src))current.src=src;
+        current.alt=name;
+      }else{
+        mini.appendChild(img(src,name));
+      }
+      return;
     }
+    if(!same(main.currentSrc||main.src,src))main.src=src;
+    main.alt=name;main.dataset.v704HistoryLogo='1';
+    card.querySelector('.v672-record-mini-logo')?.remove();
   });
 }
 
