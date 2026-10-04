@@ -7,24 +7,24 @@
   const BASE='https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/';
   const APP='https://jairofrancog7-star.github.io/App-liga-/';
   const ACTIVE_2026={
-    'san jose fc':BASE+'assets/teams/san-jose.webp',
-    'san jose':BASE+'assets/teams/san-jose.webp',
-    'san jose de la montana':BASE+'assets/teams/san-jose.webp',
-    'san jose montana':BASE+'assets/teams/san-jose.webp',
-    'hermanos':BASE+'assets/official-logos/hermanos.png',
-    'hermanos fc':BASE+'assets/official-logos/hermanos.png',
-    'dep hermanos':BASE+'assets/official-logos/hermanos.png',
-    'deportivo hermanos':BASE+'assets/official-logos/hermanos.png',
+    'san jose fc':APP+'assets/official-logos/san-jose-fc-2026.webp',
+    'san jose':APP+'assets/official-logos/san-jose-fc-2026.webp',
+    'san jose de la montana':APP+'assets/official-logos/san-jose-fc-2026.webp',
+    'san jose montana':APP+'assets/official-logos/san-jose-fc-2026.webp',
+    'hermanos':APP+'assets/official-logos/hermanos-2026.webp',
+    'hermanos fc':APP+'assets/official-logos/hermanos-2026.webp',
+    'dep hermanos':APP+'assets/official-logos/hermanos-2026.webp',
+    'deportivo hermanos':APP+'assets/official-logos/hermanos-2026.webp',
     'terricolas':APP+'assets/official-logos/terricolas-2026.webp',
     'terricolas fc':APP+'assets/official-logos/terricolas-2026.webp',
     'terricolas seder':APP+'assets/official-logos/terricolas-2026.webp',
-    'abejas':BASE+'assets/official-logos/abejas.png',
-    'abejas fc':BASE+'assets/official-logos/abejas.png',
+    'abejas':RAW+'assets/official-logos/abejas.png',
+    'abejas fc':RAW+'assets/official-logos/abejas.png',
     'boavista':APP+'assets/official-logos/boavista-2026.webp',
     'cuenda':APP+'assets/official-logos/cuenda-2026.webp',
     'santiago de cuenda':APP+'assets/official-logos/cuenda-2026.webp',
-    'promesas':BASE+'assets/official-logos/promesas-fc.png',
-    'promesas fc':BASE+'assets/official-logos/promesas-fc.png'
+    'promesas':RAW+'assets/official-logos/promesas-fc.png',
+    'promesas fc':RAW+'assets/official-logos/promesas-fc.png'
   };
   const DYNAMIC={};
   /* V688 — equivalencias históricas confirmadas por el usuario.
