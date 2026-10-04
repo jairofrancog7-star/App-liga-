@@ -1,9 +1,9 @@
-/* V740 — Escudos activos 2026 aportados por el usuario.
+/* V741 — Escudos activos 2026 aportados por el usuario.
    Fuente global para equipos activos; no altera escudos históricos de época. */
 (function(){
 'use strict';
-if(window.__LJR_V736_ACTIVE_TEAM_LOGOS__)return;
-window.__LJR_V736_ACTIVE_TEAM_LOGOS__=true;
+if(window.__LJR_V741_ACTIVE_TEAM_LOGOS__)return;
+window.__LJR_V741_ACTIVE_TEAM_LOGOS__=true;
 
 const BASE='https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/';
 const APP_BASE='https://raw.githubusercontent.com/jairofrancog7-star/App-liga-/main/';
@@ -29,7 +29,7 @@ const LOGOS={
   'la-cuadrilla':BASE+'assets/official-logos/la-cuadrilla.png',
   'napoli':BASE+'assets/official-logos/napoli.png',
 
-  /* V740 — faltantes activos: URL oficial explícita por equipo.
+  /* V741 — faltantes activos: URL oficial explícita por equipo.
      Evita que team_logos heredado reutilice por error el escudo de San José o Tavera. */
   'juventus':'https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/Juventus_ntqr0b',
   'linces':'https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/Linces_l1lc7c',
@@ -61,9 +61,9 @@ const LOGOS={
   'la-huerta':'https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/LaHuertaCuenda_bm4fxj'
 };
 const ALIAS={
-  'san jose fc':'san-jose-fc','san jose':'san-jose-fc','san jose de la montana':'san-jose-fc','san jose montana':'san-jose-fc',
-  'hermanos':'hermanos','hermanos fc':'hermanos','dep hermanos':'hermanos','deportivo hermanos':'hermanos','club deportivo hermanos':'hermanos',
-  'terricolas':'terricolas','terricolas fc':'terricolas','terricolas seder':'terricolas',
+  'san jose fc':'san-jose-fc','san jose':'san-jose-fc','san jose de la montana':'san-jose-fc','san jose de la montana fc':'san-jose-fc','san jose montana':'san-jose-fc',
+  'hermanos':'hermanos','hermanos fc':'hermanos','dep hermanos':'hermanos','deportivo hermanos':'hermanos','club deportivo hermanos':'hermanos','cd hermanos':'hermanos',
+  'terricolas':'terricolas','terricolas fc':'terricolas','terricolas seder':'terricolas','terricolas 1987':'terricolas',
   'oklahoma':'oklahoma-city-fc','oklahoma fc':'oklahoma-city-fc','oklahoma city':'oklahoma-city-fc','oklahoma city fc':'oklahoma-city-fc',
   'boavista':'boavista','boavista fc':'boavista','bfc':'boavista','b f c':'boavista',
   'manchester':'manchester','manchester fc':'manchester','manchester united':'manchester',
@@ -135,12 +135,50 @@ const SOURCE_MATCH={
   'la-cuadrilla':['CuadrillaFC_vpfbtr','official-logos/la-cuadrilla.png']
 };
 
+const ACTIVE_DESIGN_BASE=APP_BASE+'assets/official-logos/active-2026/';
+const USER_LOGO_CHUNKS={
+  'san-jose-fc':['san-jose-fc.01.b64','san-jose-fc.02.b64'],
+  'hermanos':['hermanos.01.b64','hermanos.02.b64'],
+  'terricolas':['terricolas.01.b64','terricolas.02.b64','terricolas.03.b64']
+};
+let userLogoLoad=null;
+const userLogoWait=ms=>new Promise(resolve=>setTimeout(resolve,ms));
+async function fetchUserLogoChunk(file){
+  let last=null;
+  for(let attempt=0;attempt<4;attempt++){
+    try{
+      const res=await fetch(ACTIVE_DESIGN_BASE+file+'?v=20261004-v741-'+attempt,{cache:'no-store'});
+      if(res.ok)return (await res.text()).trim();
+      last=new Error(file+' HTTP '+res.status);
+    }catch(err){last=err;}
+    await userLogoWait(450*(attempt+1));
+  }
+  throw last||new Error('No se pudo cargar '+file);
+}
+function loadUserLogoDesigns(){
+  if(userLogoLoad)return userLogoLoad;
+  userLogoLoad=Promise.all(Object.entries(USER_LOGO_CHUNKS).map(async([key,files])=>{
+    const parts=await Promise.all(files.map(fetchUserLogoChunk));
+    LOGOS[key]='data:image/webp;base64,'+parts.join('');
+  })).then(()=>{
+    const reg=window.LJR_TEAM_LOGOS;
+    if(reg)reg.active2026={...LOGOS};
+    return true;
+  }).catch(err=>{
+    console.warn('[V741] No se pudieron cargar los tres diseños activos aportados por el usuario',err);
+    return false;
+  });
+  return userLogoLoad;
+}
+
+
 function norm(v){
   return String(v||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase()
     .replace(/&/g,' y ').replace(/[().,:;·]/g,' ').replace(/[^a-z0-9+]+/g,' ')
     .trim().replace(/\s+/g,' ');
 }
 function keyFor(name){return ALIAS[norm(name)]||'';}
+function logoForTeam(name){const k=keyFor(name);return k&&LOGOS[k]?LOGOS[k]:'';}
 function sourceKey(src){
   const s=String(src||'');
   for(const [key,parts] of Object.entries(SOURCE_MATCH))if(parts.some(p=>s.includes(p)))return key;
@@ -187,7 +225,7 @@ function patchImg(img){
   if(!(img instanceof HTMLImageElement)||historical(img)||playerPhoto(img))return;
   const raw=String(img.currentSrc||img.src||'');
   if(/\/assets\/history\/archive-v\d+\//i.test(raw))return;
-  /* V740 — corrección global por identidad del equipo.
+  /* V741 — corrección global por identidad del equipo.
      No reutilizar sourceKey(raw) como identidad: si el src ya está cruzado
      (ej. San José en una tarjeta de Napoli), perpetuaría el error. */
   const team=teamFrom(img);
@@ -200,18 +238,18 @@ function patchImg(img){
     img.removeAttribute('srcset');
   }
   img.alt=team;
-  img.dataset.v736ActiveLogo=keyFor(team)||norm(team);
+  img.dataset.v741ActiveLogo=keyFor(team)||norm(team);
   img.style.setProperty('object-fit','contain');
   img.style.setProperty('object-position','center');
 }
 function patch(root=document){root.querySelectorAll?.('img').forEach(patchImg);}
 function installRegistry(){
   const reg=window.LJR_TEAM_LOGOS;
-  if(!reg||reg.__v736Wrapped)return;
+  if(!reg||reg.__v741Wrapped)return;
   const previous=typeof reg.get==='function'?reg.get.bind(reg):()=> '';
   reg.get=function(name){const k=keyFor(name);return (k&&LOGOS[k])||previous(name);};
   reg.active2026={...LOGOS};
-  reg.__v736Wrapped=true;
+  reg.__v741Wrapped=true;
 }
 function sync(){
   installRegistry();
@@ -221,6 +259,7 @@ function sync(){
 }
 function boot(){
   installRegistry(); patch(document);
+  loadUserLogoDesigns().then(ok=>{if(ok)sync();});
   const target=document.querySelector('#screen')||document.body||document.documentElement;
   if(target)new MutationObserver(ms=>{
     for(const m of ms){
