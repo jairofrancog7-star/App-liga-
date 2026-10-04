@@ -24,7 +24,7 @@ const LOGOS={
   'galacticos':BASE+'assets/teams/galacticos-pozos.webp',
   'franco-fc':BASE+'assets/official-logos/franco-fc.png',
   'herreras-fc':BASE+'assets/official-logos/herreras-fc.png',
-  'abejas':SITE+'assets/official-logos/abejas-2026.webp'+V,
+  'abejas':BASE+'assets/official-logos/abejas.png',
 
   'la-canchita-deportes':BASE+'assets/official-logos/la-canchita-deportes.png',
   'galeana':BASE+'assets/official-logos/galeana.png',
@@ -37,7 +37,7 @@ const LOGOS={
   'osasuna':BASE+'assets/official-logos/osasuna.png',
   'san-antonio-jrs':BASE+'assets/official-logos/san-antonio-jrs.png',
   'populares':BASE+'assets/official-logos/populares.png',
-  'promesas-fc':SITE+'assets/official-logos/promesas-fc-2026.webp'+V,
+  'promesas-fc':BASE+'assets/official-logos/promesas-fc.png',
   'la-huerta':BASE+'assets/official-logos/la-huerta.png',
 
   'tavera-fc':BASE+'assets/official-logos/tavera-fc.png',
