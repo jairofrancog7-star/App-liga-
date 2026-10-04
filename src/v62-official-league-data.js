@@ -19,13 +19,13 @@ const CURRENT_2026_LOGOS={
   'terricolas':APP+'assets/official-logos/terricolas-2026.webp',
   'terricolas fc':APP+'assets/official-logos/terricolas-2026.webp',
   'terricolas seder':APP+'assets/official-logos/terricolas-2026.webp',
-  'abejas':APP+'assets/official-logos/abejas-2026.webp',
-  'abejas fc':APP+'assets/official-logos/abejas-2026.webp',
+  'abejas':RAW+'assets/official-logos/abejas.png',
+  'abejas fc':RAW+'assets/official-logos/abejas.png',
   'boavista':APP+'assets/official-logos/boavista-2026.webp',
   'cuenda':APP+'assets/official-logos/cuenda-2026.webp',
   'santiago de cuenda':APP+'assets/official-logos/cuenda-2026.webp',
-  'promesas':APP+'assets/official-logos/promesas-fc-2026.webp',
-  'promesas fc':APP+'assets/official-logos/promesas-fc-2026.webp'
+  'promesas':RAW+'assets/official-logos/promesas-fc.png',
+  'promesas fc':RAW+'assets/official-logos/promesas-fc.png'
 };
 const RULEBOOK='https://github.com/jairofrancog7-star/Liga_Futbol/blob/main/docs/Reglamento_Liga_Juventino_Rosas_2026_2027.pdf';
 const CAT_ORDER=['3','5','4','2','1'];
