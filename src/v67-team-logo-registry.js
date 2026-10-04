@@ -18,13 +18,13 @@
     'terricolas':APP+'assets/official-logos/terricolas-2026.webp',
     'terricolas fc':APP+'assets/official-logos/terricolas-2026.webp',
     'terricolas seder':APP+'assets/official-logos/terricolas-2026.webp',
-    'abejas':APP+'assets/official-logos/abejas-2026.webp',
-    'abejas fc':APP+'assets/official-logos/abejas-2026.webp',
+    'abejas':RAW+'assets/official-logos/abejas.png',
+    'abejas fc':RAW+'assets/official-logos/abejas.png',
     'boavista':APP+'assets/official-logos/boavista-2026.webp',
     'cuenda':APP+'assets/official-logos/cuenda-2026.webp',
     'santiago de cuenda':APP+'assets/official-logos/cuenda-2026.webp',
-    'promesas':APP+'assets/official-logos/promesas-fc-2026.webp',
-    'promesas fc':APP+'assets/official-logos/promesas-fc-2026.webp'
+    'promesas':RAW+'assets/official-logos/promesas-fc.png',
+    'promesas fc':RAW+'assets/official-logos/promesas-fc.png'
   };
   const DYNAMIC={};
   /* V688 — equivalencias históricas confirmadas por el usuario.
