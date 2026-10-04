@@ -1160,6 +1160,25 @@ function histTeamKey(v){return String(v||'').normalize('NFD').replace(/[\u0300-\
 function canonicalHistoricName(name){
   const k=histTeamKey(name);
   const aliases={
+    /* V742 · linajes: varios escudos/diseños, una sola identidad de club.
+       Sólo se agrupan alias exactos; Galácticos/Olímpicos/Promesas/Tecos de Pozos
+       permanecen como equipos distintos. */
+    'america':'América',
+    'america veteranos':'América',
+    'club america':'América',
+    'club america veteranos':'América',
+    'club america j rosas':'América',
+    'america j rosas':'América',
+    'america j r rosas':'América',
+    'pozos':'Pozos FC',
+    'pozos fc':'Pozos FC',
+    'pozos f c':'Pozos FC',
+    'deportivo pozos':'Pozos FC',
+    'dep pozos':'Pozos FC',
+    'atletico pozos':'Pozos FC',
+    'a pozos':'Pozos FC',
+    'veteranos pozos':'Pozos FC',
+    'pozos veteranos':'Pozos FC',
     'tavera':'Tavera FC',
     'tavera fc':'Tavera FC',
     'chelse':'Chelsea',
@@ -1197,8 +1216,6 @@ function canonicalHistoricName(name){
     'deportivo rafa':'Deportivo Rafa',
     'dep lagartos':'Deportivo Lagartos',
     'deportivo lagartos':'Deportivo Lagartos',
-    'a pozos':'Atlético Pozos',
-    'atletico pozos':'Atlético Pozos',
     'inter de milan':'Inter de Milán',
     'herbalife sta cruz':'Herbalife Sta. Cruz',
     'herbalife santa cruz':'Herbalife Sta. Cruz',
