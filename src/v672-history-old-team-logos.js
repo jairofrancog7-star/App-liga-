@@ -40,7 +40,10 @@ const USER_ALIAS={
   'xoloitzcuintles':'./assets/history/team-logos/xolos-jaralillo.webp',
   'club tijuana':'./assets/history/team-logos/xolos-jaralillo.webp',
   'tecos':'./assets/history/team-logos/tecos.webp',
-  'tecos fc':'./assets/history/team-logos/tecos.webp'
+  'tecos fc':'./assets/history/team-logos/tecos.webp',
+  'tecos jr':'./assets/history/team-logos/tecos.webp',
+  'tecos jrs':'./assets/history/team-logos/tecos.webp',
+  'tecos pozos':'./assets/history/team-logos/tecos.webp'
 };
 const FALLBACK={
   'capibaras':RAW+'assets/official-logos/capibaras.png',
