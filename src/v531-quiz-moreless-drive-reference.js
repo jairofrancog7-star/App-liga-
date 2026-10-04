@@ -159,7 +159,7 @@ function v617LightningIcon(){
   return '<svg class="v617-turbo-svg v617-lightning-svg" viewBox="0 0 24 24" aria-hidden="true"><path d="M13.2 2.4 5.8 13h5l-1 8.6L18.2 10h-5.1l.1-7.6Z"/></svg>';
 }
 function v617BallIcon(){
-  return '<svg class="v617-turbo-svg v617-ball-svg" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="m9.2 9.1 2.8-2 2.8 2-1.1 3.3h-3.4L9.2 9.1Zm1.1 3.3-2.8 2.1m6.2-2.1 2.8 2.1M12 7.1V4.3m-4.5 10.2-1 3.1m10-3.1 1 3.1m-7.1 3.1 1.6-2.3 1.6 2.3"/></svg>';
+  return '<span class="v767-ball-wrap" aria-hidden="true"><svg class="v617-turbo-svg v617-ball-svg" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.6"/><path d="m9.1 9.1 2.9-2.1 2.9 2.1-1.1 3.4h-3.6L9.1 9.1Zm1.1 3.4-2.8 2.1m6.4-2.1 2.8 2.1M12 7V4.5m-4.6 10.1-1 3m10.2-3 1 3m-7 3 1.4-2.2 1.4 2.2"/></svg><em class="v767-ball-badge">2</em></span>';
 }
 function v614QuizProgress(){
   const history=Array.isArray(quiz.history)?quiz.history:[];
