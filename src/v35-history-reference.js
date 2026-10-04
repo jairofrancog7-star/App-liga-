@@ -62,6 +62,11 @@ const historicalSources=[
     url:''
   },
   {
+    title:'Rol Primera J20 · domingo 22 de noviembre de 2015',
+    note:'Publicación de Octavio Alberto García en Golazo Liga del 18 de noviembre de 2015. El rol oficial de Primera J20 conserva los escudos históricos de Boavista, El Alto, San Antonio de Romerillo, Napoli, Olímpicos de Pozos, Puros Cuates, PSV, La Pandilla, Chelsea, Abejas, Mazacotes, Linces, Cerrito de Gasca, Juventus y La Esperanza. Birds Eye aparece sin escudo visible y Hermanos descansa.',
+    url:'https://www.facebook.com/photo/?fbid=520505978128108&set=p.520505978128108'
+  },
+  {
     title:'Rol amistoso · sábado 11 y domingo 12 de agosto',
     note:'Captura aportada por el usuario. Registra amistosos de Veteranos y categoría dominical con Valedores, Hermanos, Chelsea, Guadalajara, Cuenda, Magisterio, Sección XIV, PSV, Napoli, San José de Allende, Galaxy, Oklahoma, Malvinas, Mineros, Barza, La Cuadrilla, World 11, Tecos, La Esperanza Jr., Mazacotes, Boavista, Toros, Galeana, Puros Cuates, Abejas, Dep. Cerrito, El Alto, Tavera, La Huerta, San Antonio de Romerillo y Tavera Jr. El año no se fuerza porque no aparece visible en la fotografía.',
     url:''
@@ -747,6 +752,7 @@ const recordMemories=[
   {tag:'CORTE J30',title:'Hermanos',value:'111 GF',detail:'Goles a favor visibles en la tabla de Primera J30 del 6 may 2017.',image:RAW+'assets/official-logos/hermanos.png'},
   {tag:'CORTE J30',title:'Linces',value:'+75 DG',detail:'Diferencia de goles visible en la tabla de Primera J30 del 6 may 2017.',image:RAW+'assets/official-logos/linces.png'},
   {tag:'ROL 2015',title:'Copa intersemanal · Jornada 1',value:'17 equipos documentados',detail:'Rol de juegos del 8 al 10 de julio de 2015. Copa: Barcelona, La Esperanza, La Máquina, Santacrucense, Picosos, Apex, Chelsea, Inter, Aldama, Átomos, Juventus, Galácticos, F C V L, Atlético Dipex y PSV (descanso). Amistoso femenil: Niupy vs Inter de Cuenda.'},
+  {tag:'ROL HISTÓRICO',title:'Primera J20 · 22 nov 2015',value:'17 equipos documentados',detail:'Publicado por Octavio Alberto García en Golazo Liga el 18 nov 2015. El rol conserva 15 escudos visibles de época; Birds Eye aparece sin escudo y Hermanos figura en descanso.'},
   {tag:'VETERANOS J13',title:'La Esperanza',value:'11 G · 2 E · 0 P',detail:'Corte del 25 nov 2015: 35 puntos, 38 GF y 13 GC; no se presenta como cierre final.',image:RAW+'assets/official-logos/la-esperanza.png'},
   {tag:'GOLEO',title:'Daniel Gómez Delgado',value:'34 goles',detail:'A. Centeno · campeón de goleo de Fuerza Intermedia, publicación del 21 feb 2017.'},
   {tag:'GOLEO',title:'José Guadalupe Moreno',value:'Campeón',detail:'Campeón goleador de Primera Fuerza; premiación publicada el 11 ene 2015.'},
@@ -1051,6 +1057,7 @@ const historicalTeamEras=[
   {period:'23–24 ago 2014 · rol aportado',category:'Intermedia J17',teams:['Terrícolas','San José de la Montaña','Dulces Nombres','Barza','La Pandilla','Atlas','Real Cerrito','Puros Cuates','Halcones de Cuenda','Deportivo Pozos','Malvinas','La Cuadrilla','Valencia','Populares','San Antonio Jr.']},
   {period:'23–24 ago 2014 · rol aportado',category:'Segunda Fuerza J17',teams:['Osasuna','Aldama','Morales','Río Grande','Continental','Birds Eye Jr.','Oklahoma','Tavera','DHP','San José de Allende','San Julián','Toros','San Juan FC','Novatos','Herbalife FC','Cerritos']},
   {period:'05 jul 2015 · Primera Fuerza J9',category:'Primera Fuerza · rol oficial aportado',teams:['Mazacotes','El Alto','La Pandilla','Cerrito de Gasca','Puros Cuates','La Esperanza','Napoli','Juventus','Hermanos','Linces','San Antonio de Romerillo','Abejas','Boavista','Chelsea','Birds Eye','PSV','Olímpicos']},
+  {period:'22 nov 2015 · Primera Fuerza J20 · publicado 18 nov 2015',category:'Primera Fuerza · rol oficial de Golazo Liga',teams:['Boavista','El Alto','San Antonio de Romerillo','Birds Eye','Napoli','Olímpicos de Pozos','Puros Cuates','PSV','La Pandilla','Chelsea','Abejas','Mazacotes','Linces','Cerrito de Gasca','Juventus','La Esperanza','Hermanos']},
   {period:'2015–2016',category:'Liga / Intermedia / Veteranos',teams:['San Antonio Jr.','Malvinas','Tavera','La Cuadrilla','Centeno','Real Cerrito de Gasca','Halcones de Cuenda','Barza','Populares','Terrícolas','DHP','Dulces Nombres','Xolos Jaralillo','La Esperanza','Cuenda','Magisterio','Chelsea','Boavista','Picosos','Dynamo','UNAM','Hermanos','Valedores','Sección XIV','Guadalajara']},
   {period:'2015 · Jornada 13',category:'Veteranos',teams:['La Esperanza','Cuenda','Magisterio','Chelsea','Boavista','Picosos','Dynamo','UNAM','Hermanos','Valedores','Sección XIV','Guadalajara']},
   {period:'2015 · Jornada 20',category:'Intermedia',teams:['San Antonio Jr.','Malvinas','Tavera','La Cuadrilla','Centeno','Real Cerrito','Halcones','Barza','Populares','Terrícolas','DHP','Dulces Nombres','Xolos Jaralillo','Puros Cuates']},
