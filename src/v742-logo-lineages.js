@@ -1,9 +1,9 @@
-/* V745 — Linajes de escudos: un equipo puede tener varios escudos sin convertirse
+/* V746 — Linajes de escudos: un equipo puede tener varios escudos sin convertirse
    en varios equipos. La identidad se resuelve por nombre/alias exacto; las variantes
    sólo cambian la imagen según contexto (actual / histórico / Récords). */
 (function(){
 'use strict';
-if(window.__LJR_V745_TEAM_LOGO_LINEAGES__)return;
+if(window.__LJR_V746_TEAM_LOGO_LINEAGES__)return;
 window.__LJR_V744_TEAM_LOGO_LINEAGES__=true;
 
 const BASE='https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/';
@@ -164,7 +164,7 @@ const LINEAGES={
     variants:[remote('assets/teams/mineros-fc.webp')]
   },
   'deportivo-cg':{
-    aliases:['deportivo cg','dep cg','cerrito de gasca','real cerrito','real cerrito de gasca','deportivo cerrito','dep cerrito'],
+    aliases:['deportivo cg','dep cg','c de gasca','c de g','cerrito de gasca','real cerrito','real cerrito de gasca','deportivo cerrito','dep cerrito'],
     current:remote('assets/teams/deportivo-cg.webp'),
     variants:[remote('assets/teams/deportivo-cg.webp')]
   },
@@ -192,6 +192,11 @@ const LINEAGES={
     aliases:['franco tavera','franco tavera jr','franco tavera jrs','franco tavera veteranos','franco tavera jr veteranos','f tavera'],
     current:remote('assets/official-logos/franco-tavera-jr.png'),
     variants:[remote('assets/official-logos/franco-tavera-jr.png'),remote('assets/teams/franco-tavera-jr-veteranos.webp')]
+  },
+  napoli:{
+    aliases:['napoli','napoli fc','ssc napoli'],
+    current:remote('assets/official-logos/napoli.png'),
+    variants:[remote('assets/official-logos/napoli.png')]
   },
   huracan:{
     aliases:['huracan','huracan fc'],
