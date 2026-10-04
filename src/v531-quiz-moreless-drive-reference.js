@@ -40,7 +40,7 @@ const FALLBACK_LOGOS={
 };
 let db=window.LJR_OFFICIAL_DATA||null;
 let loading=null;
-const quiz={mode:'hub',answered:false,selected:'',points:0,step:1,exit:false,remaining:15,halfUsed:false,retryUsed:false,attempts:1,countdown:3,history:[]};
+const quiz={mode:'legacy',answered:false,selected:'',points:0,step:1,exit:false,remaining:15,halfUsed:false,retryUsed:false,attempts:1,countdown:3,history:[]};
 const more={mode:'legacy',answered:false,selected:'',points:0,attempts:2,exit:false,phase:'intro',countdown:15,roundToken:0,round:0};
 let v538MoreTimers=[];
 let v538MoreInterval=null;
@@ -490,7 +490,7 @@ function render(focusAdded=false){
   }
 
   if(r==='quizArena'){
-    if(quiz.mode==='legacy')quiz.mode='hub';const open=true;
+    const open=quiz.mode!=='legacy';
     document.body.classList.toggle('v537-quiz-secondary-open',open);
     document.body.classList.remove('v537-more-secondary-open');
     document.body.classList.remove('v541-more-pages-open');
@@ -707,14 +707,8 @@ document.addEventListener('click',function(e){
     return;
   }
 
-  /* V533: los diseños anteriores son la portada principal.
-     Al tocarlos, abren debajo las pantallas nuevas de las referencias Drive. */
-  const oldQuiz=e.target.closest('[data-v48-quiz]');
-  if(route()==='quizArena'&&oldQuiz){
-    e.preventDefault();e.stopPropagation();e.stopImmediatePropagation();
-    v614StartQuizCountdown();
-    return;
-  }
+  /* V762: Quiz Arena vuelve a usar su pantalla principal anterior.
+     Los botones/respuestas V48 quedan en manos de main.js y no abren el portal V531. */
   const oldMore=e.target.closest('[data-v12-choice]');
   if(route()==='moreLess'&&oldMore){
     e.preventDefault();e.stopPropagation();e.stopImmediatePropagation();
@@ -722,14 +716,10 @@ document.addEventListener('click',function(e){
     return;
   }
 
-  const t=e.target.closest('[data-v545-more-screen],[data-v583-more-round],[data-v531-more-open],[data-v48-quiz],[data-v12-choice],[data-v531-quiz-back],[data-v531-more-back],[data-v531-share],[data-v531-rankings],[data-v531-quiz-start],[data-v531-quiz-close],[data-v531-q-answer],[data-v531-quiz-next],[data-v531-result-back],[data-v531-more-start],[data-v531-more-close],[data-v531-more-choice],[data-v539-more-next],[data-v531-exit-confirm],[data-v531-exit-cancel],[data-v614-countdown-skip],[data-v614-countdown-close]');
+  const t=e.target.closest('[data-v545-more-screen],[data-v583-more-round],[data-v531-more-open],[data-v12-choice],[data-v531-quiz-back],[data-v531-more-back],[data-v531-share],[data-v531-rankings],[data-v531-quiz-start],[data-v531-quiz-close],[data-v531-q-answer],[data-v531-quiz-next],[data-v531-result-back],[data-v531-more-start],[data-v531-more-close],[data-v531-more-choice],[data-v539-more-next],[data-v531-exit-confirm],[data-v531-exit-cancel],[data-v614-countdown-skip],[data-v614-countdown-close]');
   if(!t)return;
   // Controles del diseño principal anterior: no los bloqueamos.
   // Dejamos que su funcionamiento original ocurra y luego abrimos el diseño secundario debajo.
-  if(t.matches('[data-v48-quiz]')){
-    v614StartQuizCountdown();
-    return;
-  }
   if(t.matches('[data-v531-more-open],[data-v12-choice]')){
     setTimeout(function(){
       v538ClearTimers();
