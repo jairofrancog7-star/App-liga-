@@ -14,8 +14,8 @@ const SITE=APP_BASE;
 const V='?v=20261004-v745';
 
 const LOGOS={
-  'san-jose-fc':SITE+'assets/official-logos/san-jose-fc-2026.webp'+V,
-  'hermanos':SITE+'assets/official-logos/hermanos-2026.webp'+V,
+  'san-jose-fc':BASE+'assets/teams/san-jose.webp',
+  'hermanos':BASE+'assets/official-logos/hermanos.png',
   'linces':BASE+'assets/official-logos/linces.png',
   'juventus':BASE+'assets/official-logos/juventus.png',
   'napoli':BASE+'assets/official-logos/napoli.png',
