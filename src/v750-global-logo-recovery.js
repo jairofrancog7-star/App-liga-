@@ -326,7 +326,7 @@ function patchOfficialData(){
 }
 const V758_DYNAMIC_ROUTES=new Set(['more','following','teams','teamDetail','playerCompare']);
 function v758Route(){
-  return String(location.hash||'').replace(/^#\\/?/,'').split('?')[0]||String(document.body?.dataset?.appRoute||'home');
+  return String(location.hash||'').replace(/^#\/?/,'').split('?')[0]||String(document.body?.dataset?.appRoute||'home');
 }
 function v758CanPatch(){
   return !V758_DYNAMIC_ROUTES.has(v758Route());
