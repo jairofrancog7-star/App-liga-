@@ -169,3 +169,27 @@ body.v558-native-pip .v196-frame{width:100%!important;height:100%!important;min-
     margin-top:8px!important;
   }
 }
+
+
+/* V659 — Estadísticas: unir pestañas con contenido y quitar franja/línea. */
+html body.v33-data-active #screen .v33-tabs{
+  border-bottom:0!important;
+  box-shadow:none!important;
+}
+html body.v33-data-active #screen .v33-data-head::before{
+  content:none!important;
+  display:none!important;
+  height:0!important;
+  background:none!important;
+}
+html body.v33-data-active #screen .v33-data-content{
+  background:#060064!important;
+}
+html body.v33-data-active #screen .v33-general-content,
+html body.v33-data-active #screen .v33-detailed{
+  margin-top:0!important;
+  padding-top:4px!important;
+}
+html body.v33-data-active #screen .v33-general-title{
+  margin-top:0!important;
+}
