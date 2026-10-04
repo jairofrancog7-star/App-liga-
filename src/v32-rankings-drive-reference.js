@@ -1,6 +1,7 @@
 /* PARTS32 — functional Rankings screen based on the Drive references + filter flow from the supplied video. */
 /* V732_RANKINGS_FILTER_VIDEO */
 /* V733_FILTER_RETURN_SAME_PLACE */
+/* V734_CATEGORY_FILTER_GLOBAL_SYNC */
 (function(){
 'use strict';
 
@@ -159,6 +160,25 @@ function esc(value){
 function clubByCode(code){return clubRows.find(function(row){return row[0]===code})||null}
 function categoryByCode(code){return federationRows.find(function(row){return row[0]===code})||null}
 function clubCategoryId(code){return ({CAT1:'1',CAT2:'2',CAT3:'3',CAT4:'4',CAT5:'5'})[code]||'3'}
+function syncCategoryContext(code){
+  var id=clubCategoryId(code);
+  try{
+    localStorage.setItem('v62-category',id);
+    localStorage.setItem('v12-fixture-cat',id);
+    localStorage.setItem('v176-table-category',id);
+    localStorage.setItem('v422-results-category',id);
+  }catch(_){}
+  requestAnimationFrame(function(){
+    requestAnimationFrame(function(){
+      try{
+        if(window.LJR_V449&&typeof window.LJR_V449.setCategory==='function')window.LJR_V449.setCategory(id);
+        else if(window.LJR_V449&&typeof window.LJR_V449.ensure==='function')window.LJR_V449.ensure();
+      }catch(_){}
+      try{window.dispatchEvent(new CustomEvent('ljr:category-change',{detail:{category:id,source:'rankings-filter'}}))}catch(_){}
+    });
+  });
+  return id;
+}
 function norm(value){
   try{return String(value==null?'':value).normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[^a-z0-9]+/g,' ').trim()}
   catch(_){return String(value==null?'':value).toLowerCase().trim()}
@@ -364,7 +384,7 @@ function bindFilterTiles(){
       activeTab='clubs';
       localStorage.setItem('v32-rankings-tab','clubs');
       localStorage.setItem('v32-rankings-club-category',code);
-      localStorage.setItem('v62-category',clubCategoryId(code));
+      syncCategoryContext(code);
       closeFilterToRanking();
     };
   });
@@ -377,6 +397,7 @@ function bindFilterTiles(){
       activeTab='federations';
       localStorage.setItem('v32-rankings-tab','federations');
       localStorage.setItem('v32-rankings-federation',code);
+      syncCategoryContext(code);
       closeFilterToRanking();
     };
   });
@@ -394,13 +415,15 @@ function bind(){
     if(done)done.onclick=function(){
       if(activeTab==='federations'){
         selectedFederation=pendingFederation;
-        if(selectedFederation)localStorage.setItem('v32-rankings-federation',selectedFederation);
-        else localStorage.removeItem('v32-rankings-federation');
+        if(selectedFederation){
+          localStorage.setItem('v32-rankings-federation',selectedFederation);
+          syncCategoryContext(selectedFederation);
+        }else localStorage.removeItem('v32-rankings-federation');
       }else{
         selectedClubCategory=pendingClubCategory;
         if(selectedClubCategory){
           localStorage.setItem('v32-rankings-club-category',selectedClubCategory);
-          localStorage.setItem('v62-category',clubCategoryId(selectedClubCategory));
+          syncCategoryContext(selectedClubCategory);
         }else{
           localStorage.removeItem('v32-rankings-club-category');
         }
