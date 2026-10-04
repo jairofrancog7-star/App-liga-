@@ -4539,11 +4539,19 @@ function v60Header(kicker,title,desc){
   return '<div class="v60-tool-head"><span class="v60-tool-kicker">'+kicker+'</span><h1>'+title+'</h1><p>'+desc+'</p></div>';
 }
 function v726ToolCard(icon,title,desc,route,extra='',tag=''){
-  return '<button type="button" class="v726-tool-card" '+(route?'data-route="'+route+'"':'')+' '+extra+'>'+
-    '<span class="v726-tool-icon">'+v60Icon(icon)+'</span>'+
-    '<span class="v726-tool-copy">'+(tag?'<small class="v726-tool-tag">'+tag+'</small>':'')+'<b>'+title+'</b><small class="v726-tool-desc">'+desc+'</small></span>'+
-    '<span class="v726-tool-arrow" aria-hidden="true">›</span>'+
-  '</button>';
+  const attrs=((route?'data-route="'+route+'" ':'')+(extra||'')).trim();
+  return '<article class="v726-tool-card v734-tool-card">'+
+    '<button type="button" class="v734-tool-open" '+attrs+' aria-label="Abrir '+title+'">'+
+      '<span class="v726-tool-icon">'+v60Icon(icon)+'</span>'+
+      '<span class="v726-tool-copy">'+(tag?'<small class="v726-tool-tag">'+tag+'</small>':'')+'<b>'+title+'</b></span>'+
+      '<span class="v726-tool-arrow" aria-hidden="true">›</span>'+
+    '</button>'+
+    '<button type="button" class="v734-tool-details" data-v734-tool-details aria-expanded="false"><span>Ver detalles</span><i aria-hidden="true">⌄</i></button>'+
+    '<div class="v734-tool-detail-panel" hidden>'+
+      '<p>'+desc+'</p>'+
+      '<button type="button" class="v734-tool-go" '+attrs+'><span>Abrir herramienta</span><i aria-hidden="true">›</i></button>'+
+    '</div>'+
+  '</article>';
 }
 function v726QuickCard(icon,title,desc,route){
   return '<button type="button" class="v726-quick-card" data-route="'+route+'">'+
