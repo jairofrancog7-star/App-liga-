@@ -106,7 +106,13 @@ const ALIAS={
 };
 const SOURCE_MATCH={
   'san-jose-fc':['SanJoseMonta%C3%B1a_ilen4d','SanJoseMontana_ilen4d','official-logos/san-jose-fc.png','teams/san-jose.webp','teams/san-jose-montana.webp'],
+  'juventus':['Juventus_fpshqs','official-logos/juventus.png'],
+  'linces':['Linces_l1lc7c','official-logos/linces.png'],
+  'napoli':['official-logos/napoli.png','Napoli_cp25dv','Napoli'],
   'hermanos':['Hermanos_kbfrmh','official-logos/hermanos.png','teams/club-deportivo-hermanos.webp'],
+  'franco-fc':['official-logos/franco-fc.png','Franco'],
+  'lobos-cdg':['official-logos/lobos-cdg.png','LobosCDG','lobos-cdg'],
+  'galacticos':['teams/galacticos-pozos.webp','Galacticos'],
   'terricolas':['Terricolas_ltbrzy','official-logos/terricolas.png','teams/terricolas-fc.webp'],
   'oklahoma-city-fc':['official-logos/oklahoma-city-fc.png','teams/oklahoma-city-fc.webp'],
   'boavista':['Boavista_wioj7b','Boavista_qiq0dy','official-logos/boavista.png','teams/boavista-fc.webp'],
@@ -119,8 +125,7 @@ const SOURCE_MATCH={
   'mazacotes-fc':['Mazacotes_ko8o0w','official-logos/mazacotes-fc.png'],
   'tavera-fc':['TaveraFC_gpdbhg','official-logos/tavera-fc.png'],
   'franco-tavera-jr':['FrancoTaveraVeteranos_qwrqrc','franco-tavera-jr-veteranos.webp'],
-  'la-cuadrilla':['CuadrillaFC_vpfbtr','official-logos/la-cuadrilla.png'],
-  'napoli':['official-logos/napoli.png','Napoli']
+  'la-cuadrilla':['CuadrillaFC_vpfbtr','official-logos/la-cuadrilla.png']
 };
 
 function norm(v){
@@ -141,41 +146,29 @@ function playerPhoto(img){
   return !!img.closest?.('[data-player-portrait],.v123-avatar,.v123-option-avatar,.v66-player-avatar,.v42-avatar,.v576-player-avatar,.v379-related-avatar,.v562-avatar,.v124-avatar') ||
     img.matches?.('.v379-player-photo,.v610-generic-player,.v576-player-photo,.v576-hero-player-photo');
 }
-function logoForTeam(name){
-  const k=keyFor(name);
-  if(k&&LOGOS[k])return LOGOS[k];
-  try{
-    const src=window.LJR_TEAM_LOGOS?.get?.(name)||
-      window.LJR_OFFICIAL_API?.getLogo?.(name)||
-      window.V66_OFFICIAL_DIRECTORY?.logoFor?.(name)||'';
-    if(src)return src;
-  }catch(_){}
-  return '';
-}
-function validTeamName(v){
-  const name=String(v||'').trim();
-  return name&&!!logoForTeam(name);
-}
 function teamFrom(img){
-  /* V740 — nunca deducir el club por el src actual: una imagen equivocada
-     puede venir heredada de otra tarjeta. Primero manda el nombre visible/dataset. */
-  let node=img.parentElement;
-  for(let depth=0;depth<5&&node;depth++,node=node.parentElement){
-    const vals=[
-      node.dataset?.team,node.dataset?.v62Team,node.dataset?.v42CompareTeam,node.dataset?.v27Team,
-      node.querySelector?.(':scope > b')?.textContent,
-      node.querySelector?.(':scope > strong')?.textContent,
-      node.matches?.('.v103-upcoming-team,.v12-result-team,.v40-team,.v42-mini-team,.v28-side,.v27-team')?node.textContent:'',
-      node.querySelector?.('.v27-team-name')?.textContent,
-      node.querySelector?.('.v46-team-copy strong')?.textContent,
-      node.querySelector?.('.v40-team strong')?.textContent,
-      node.querySelector?.('.v42-mini-team b')?.textContent,
-      node.querySelector?.('.v28-side span')?.textContent
-    ].filter(Boolean);
-    for(const v of vals)if(validTeamName(v))return String(v).trim();
+  const direct=[img.alt,img.title,img.dataset?.team,img.dataset?.v62Team,img.dataset?.v42CompareTeam,img.dataset?.v27Team]
+    .filter(v=>String(v||'').trim());
+  for(const v of direct)if(keyFor(v))return String(v).trim();
+  if(direct.length)return '';
+
+  const owner=img.closest?.('[data-team],[data-v62-team],[data-v42-compare-team],[data-v27-team]');
+  if(owner){
+    const vals=[owner.dataset?.team,owner.dataset?.v62Team,owner.dataset?.v42CompareTeam,owner.dataset?.v27Team].filter(Boolean);
+    for(const v of vals)if(keyFor(v))return String(v).trim();
   }
-  const direct=[img.dataset?.team,img.dataset?.v62Team,img.dataset?.v42CompareTeam,img.dataset?.v27Team,img.alt,img.title].filter(Boolean);
-  for(const v of direct)if(validTeamName(v))return String(v).trim();
+
+  const card=img.closest?.('.v27-team,.v40-team,.v42-mini-team,.v46-team-card,.v28-side,.v62-team-card,.v446-home-club,.v6-league-team,.v6-table-row,.club-cell');
+  if(!card)return '';
+  const vals=[
+    card.dataset?.team,card.dataset?.v62Team,card.dataset?.v42CompareTeam,card.dataset?.v27Team,
+    card.querySelector?.('.v27-team-name')?.textContent,
+    card.querySelector?.('.v46-team-copy strong')?.textContent,
+    card.querySelector?.('.v40-team strong')?.textContent,
+    card.querySelector?.('.v42-mini-team b')?.textContent,
+    card.querySelector?.('.v28-side span')?.textContent
+  ].filter(Boolean);
+  for(const v of vals)if(keyFor(v))return String(v).trim();
   return '';
 }
 function looksLogo(img){
