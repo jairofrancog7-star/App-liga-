@@ -1,4 +1,4 @@
-const CACHE='liga-juventino-v712-history-sort-fix';
+const CACHE='liga-juventino-v731-compact-tools-history-details';
 const CORE=['./','./index.html','./manifest.webmanifest','./brand-neon-header.svg','./profile-reference.svg'];
 
 self.addEventListener('install',event=>{
