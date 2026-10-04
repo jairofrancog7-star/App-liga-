@@ -381,3 +381,45 @@
     letter-spacing:.16em;
   }
 }
+
+
+/* V717 — fecha más antigua documentada visible en TODAS las tarjetas.
+   Se muestra aparte de categoría/rango para que no vuelva a perderse. */
+@media(max-width:1023px){
+  body[data-app-route="history"] .v717-first-seen{
+    display:flex!important;
+    align-items:baseline!important;
+    gap:5px!important;
+    width:100%!important;
+    margin-top:6px!important;
+    color:#a9bce8!important;
+    font-style:normal!important;
+    white-space:normal!important;
+  }
+  body[data-app-route="history"] .v717-first-seen>span{
+    color:#7998cf!important;
+    font-size:6.7px!important;
+    line-height:1!important;
+    font-weight:900!important;
+    letter-spacing:.10em!important;
+  }
+  body[data-app-route="history"] .v717-first-seen>b{
+    color:#2ce4ef!important;
+    font-size:8.4px!important;
+    line-height:1.1!important;
+    font-weight:950!important;
+  }
+  body[data-app-route="history"] .v370-legacy-team{
+    min-height:162px!important;
+  }
+  body[data-app-route="history"] .v370-legacy-team.v706-evolved-club{
+    min-height:182px!important;
+  }
+}
+@media(max-width:380px){
+  body[data-app-route="history"] .v717-first-seen{gap:4px!important;margin-top:5px!important}
+  body[data-app-route="history"] .v717-first-seen>span{font-size:6.2px!important}
+  body[data-app-route="history"] .v717-first-seen>b{font-size:7.9px!important}
+  body[data-app-route="history"] .v370-legacy-team{min-height:156px!important}
+  body[data-app-route="history"] .v370-legacy-team.v706-evolved-club{min-height:174px!important}
+}
