@@ -1,4 +1,4 @@
-/* V736 — Escudos activos 2026 aportados por el usuario.
+/* V740 — Escudos activos 2026 aportados por el usuario.
    Fuente global para equipos activos; no altera escudos históricos de época. */
 (function(){
 'use strict';
@@ -8,14 +8,9 @@ window.__LJR_V736_ACTIVE_TEAM_LOGOS__=true;
 const BASE='https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/';
 
 const LOGOS={
+  /* Escudos nuevos aportados por el usuario: se conservan como prioridad. */
   'san-jose-fc':BASE+'assets/official-logos/san-jose-fc.png',
-  'juventus':BASE+'assets/official-logos/juventus.png',
-  'linces':BASE+'assets/official-logos/linces.png',
-  'napoli':BASE+'assets/official-logos/napoli.png',
   'hermanos':BASE+'assets/official-logos/hermanos.png',
-  'franco-fc':BASE+'assets/official-logos/franco-fc.png',
-  'lobos-cdg':BASE+'assets/official-logos/lobos-cdg.png',
-  'galacticos':BASE+'assets/teams/galacticos-pozos.webp',
   'terricolas':BASE+'assets/official-logos/terricolas.png',
   'oklahoma-city-fc':BASE+'assets/teams/oklahoma-city-fc.webp',
   'boavista':BASE+'assets/official-logos/boavista.png',
@@ -28,31 +23,86 @@ const LOGOS={
   'mazacotes-fc':BASE+'assets/official-logos/mazacotes-fc.png',
   'tavera-fc':BASE+'assets/official-logos/tavera-fc.png',
   'franco-tavera-jr':BASE+'assets/teams/franco-tavera-jr-veteranos.webp',
-  'la-cuadrilla':BASE+'assets/official-logos/la-cuadrilla.png'
+  'la-cuadrilla':BASE+'assets/official-logos/la-cuadrilla.png',
+  'napoli':BASE+'assets/official-logos/napoli.png',
+
+  /* V740 — faltantes activos: URL oficial explícita por equipo.
+     Evita que team_logos heredado reutilice por error el escudo de San José o Tavera. */
+  'juventus':'https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/Juventus_ntqr0b',
+  'linces':'https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/Linces_l1lc7c',
+  'franco-fc':'https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/FrancoFC_vtd8d7',
+  'lobos-cdg':'https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/Lobos_efloib',
+  'galacticos':BASE+'assets/teams/galacticos-pozos.webp?v=20261004-v740',
+  'toros-de-cuenda':'https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/TorosCuenda_od8vcf',
+  'dep-nopalero':'https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/Nopalero_skdsij',
+  'dep-zapata':'https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/Dep.Zapata_a5dsaz',
+  'san-juan-fc':'https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/SanJuanFC_jhprtf',
+  'tapatio':'https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/tapatio_svt6lz',
+  'san-antonio-fc':'https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/SanAntonioFC_tw7bi1',
+  'celticos':'https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/CelticosFC_nv4ukd',
+  'san-julian':'https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/SanJulianFC_wetv0z',
+  'dep-la-luz':'https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/DepLaLuz_wibidf',
+  'pachangas-fc':'https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/Pachangas_upqelg',
+  'san-jose-jrs':'https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/SanJoseJR_dio2dt',
+  'barza':'https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/Barcelona_amoaiq',
+  'dep-maravillas':'https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/MAravillasFC_mnmhwx',
+  'populares':'https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/PopularesFC_onellt',
+  'promesas-fc':'https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/PromesasFC_w4lwk8',
+  'capibaras':'https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/Capibara_vocmbl',
+  'la-canchita-deportes':'https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/LaCanchita_enf6ca',
+  'galeana':'https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/Galeana_kujrh0',
+  'aldama-fc':'https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/Aldama_mqm3r1',
+  'malvinas':'https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/Malvinas_wdiwk9',
+  'osasuna':'https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/Osasuna_lv6rsa',
+  'san-antonio-jrs':'https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/SanAntonioJR_jzmfka',
+  'la-huerta':'https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/LaHuertaCuenda_bm4fxj'
 };
 const ALIAS={
-  'san jose fc':'san-jose-fc','san jose':'san-jose-fc','san jose de la montana':'san-jose-fc','san jose montana':'san-jose-fc','sjo':'san-jose-fc',
-  'juventus':'juventus','juventus fc':'juventus','jvs':'juventus',
-  'linces':'linces','linces fc':'linces','lin':'linces',
-  'napoli':'napoli','napoli fc':'napoli','ssc napoli':'napoli','nap':'napoli',
-  'hermanos':'hermanos','hermanos fc':'hermanos','dep hermanos':'hermanos','deportivo hermanos':'hermanos','club deportivo hermanos':'hermanos','her':'hermanos',
-  'franco fc':'franco-fc','franco':'franco-fc','fra':'franco-fc',
-  'lobos cdg':'lobos-cdg','lobos cerrito de gasca':'lobos-cdg','lob':'lobos-cdg',
-  'galacticos':'galacticos','galacticos de pozos':'galacticos','gac':'galacticos',
-  'terricolas':'terricolas','terricolas fc':'terricolas','terricolas seder':'terricolas','ter':'terricolas',
+  'san jose fc':'san-jose-fc','san jose':'san-jose-fc','san jose de la montana':'san-jose-fc','san jose montana':'san-jose-fc',
+  'hermanos':'hermanos','hermanos fc':'hermanos','dep hermanos':'hermanos','deportivo hermanos':'hermanos','club deportivo hermanos':'hermanos',
+  'terricolas':'terricolas','terricolas fc':'terricolas','terricolas seder':'terricolas',
   'oklahoma':'oklahoma-city-fc','oklahoma fc':'oklahoma-city-fc','oklahoma city':'oklahoma-city-fc','oklahoma city fc':'oklahoma-city-fc',
   'boavista':'boavista','boavista fc':'boavista','bfc':'boavista','b f c':'boavista',
-  'manchester':'manchester','manchester fc':'manchester','manchester united':'manchester','mfc':'manchester','m f c':'manchester',
-  'herrera':'herreras-fc','herrera fc':'herreras-fc','herreras':'herreras-fc','herreras fc':'herreras-fc','hfc':'herreras-fc',
+  'manchester':'manchester','manchester fc':'manchester','manchester united':'manchester',
+  'herrera':'herreras-fc','herrera fc':'herreras-fc','herreras':'herreras-fc','herreras fc':'herreras-fc',
   'america':'america-j-rosas','america veteranos':'america-j-rosas','club america':'america-j-rosas','club america veteranos':'america-j-rosas','club america j rosas':'america-j-rosas','america j rosas':'america-j-rosas',
   'boca jrs':'boca-jrs','boca juniors':'boca-jrs','cabj':'boca-jrs','c a boca juniors':'boca-jrs',
-  'abejas':'abejas','abejas fc':'abejas','abejas futbol club':'abejas','abe':'abejas',
+  'abejas':'abejas','abejas fc':'abejas','abejas futbol club':'abejas',
   'la esperanza':'la-esperanza','la esperanza fc':'la-esperanza','esperanza':'la-esperanza',
-  'mazacotes':'mazacotes-fc','mazacotes fc':'mazacotes-fc','mfc':'mazacotes-fc',
+  'mazacotes':'mazacotes-fc','mazacotes fc':'mazacotes-fc',
   'tavera':'tavera-fc','tavera fc':'tavera-fc',
   'franco tavera':'franco-tavera-jr','franco tavera jr':'franco-tavera-jr','franco-tavera-jr':'franco-tavera-jr','f tavera':'franco-tavera-jr',
   'la cuadrilla':'la-cuadrilla','cuadrilla':'la-cuadrilla','cuadrilla fc':'la-cuadrilla',
-  'napoli':'napoli','napoli fc':'napoli','ssc napoli':'napoli'
+  'napoli':'napoli','napoli fc':'napoli','ssc napoli':'napoli',
+
+  'juventus':'juventus','juventus fc':'juventus',
+  'linces':'linces','linces fc':'linces',
+  'franco fc':'franco-fc','franco':'franco-fc',
+  'lobos cdg':'lobos-cdg','lobos c d g':'lobos-cdg','cerrito de gasca':'lobos-cdg',
+  'galacticos':'galacticos','galacticos de pozos':'galacticos',
+  'toros de cuenda':'toros-de-cuenda',
+  'dep nopalero':'dep-nopalero','deportivo nopalero':'dep-nopalero','nopalero':'dep-nopalero',
+  'dep zapata':'dep-zapata','deportivo zapata':'dep-zapata',
+  'san juan fc':'san-juan-fc','san juan':'san-juan-fc',
+  'tapatio':'tapatio',
+  'san antonio fc':'san-antonio-fc','san antonio':'san-antonio-fc',
+  'celticos':'celticos','celticos fc':'celticos',
+  'san julian':'san-julian','san julian fc':'san-julian',
+  'dep la luz':'dep-la-luz','deportivo la luz':'dep-la-luz','la luz':'dep-la-luz',
+  'pachangas fc':'pachangas-fc','pachangas':'pachangas-fc',
+  'san jose jrs':'san-jose-jrs','san jose jr':'san-jose-jrs',
+  'barza':'barza','barcelona':'barza','barcelona fc':'barza',
+  'dep maravillas':'dep-maravillas','deportivo maravillas':'dep-maravillas',
+  'populares':'populares',
+  'promesas fc':'promesas-fc','promesas':'promesas-fc','promesas de pozos':'promesas-fc',
+  'capibaras':'capibaras',
+  'la canchita deportes':'la-canchita-deportes','la canchita':'la-canchita-deportes',
+  'galeana':'galeana','atl galeana':'galeana','atletico galeana':'galeana',
+  'aldama fc':'aldama-fc','aldama':'aldama-fc',
+  'malvinas':'malvinas',
+  'osasuna':'osasuna',
+  'san antonio jrs':'san-antonio-jrs','san antonio jr':'san-antonio-jrs',
+  'la huerta':'la-huerta','la huerta de cuenda':'la-huerta'
 };
 const SOURCE_MATCH={
   'san-jose-fc':['SanJoseMonta%C3%B1a_ilen4d','SanJoseMontana_ilen4d','official-logos/san-jose-fc.png','teams/san-jose.webp','teams/san-jose-montana.webp'],
