@@ -49,7 +49,9 @@
     transform:scale(2.25)!important;
   }
   body[data-app-route="history"] .v370-legacy-crest>img[src*="legacy-2015-olimpicos-pozos"]{
-    transform:scale(2.90)!important;
+    /* El archivo conserva mucho margen interno; ampliar hasta igualar visualmente
+       el tamaño de Manchester/Linces sin deformar el escudo. */
+    transform:scale(5.35)!important;
   }
   body[data-app-route="history"] .v370-legacy-crest>img[src*="legacy-2015-puros-cuates"]{
     transform:scale(3.10)!important;
@@ -99,5 +101,31 @@
   }
   body[data-app-route="history"] .v370-legacy-team.v706-evolved-club{
     min-height:182px!important;
+  }
+}
+
+
+/* V725 — correcciones puntuales de las tarjetas mostradas por el usuario. */
+@media(max-width:1023px){
+  body[data-app-route="history"] .v370-legacy-crest.v725-broken-logo-fallback{
+    background:
+      radial-gradient(circle at 50% 35%,rgba(49,229,242,.14),transparent 58%),
+      linear-gradient(145deg,rgba(255,255,255,.07),rgba(255,255,255,.018))!important;
+  }
+  body[data-app-route="history"] .v370-legacy-crest .v725-legacy-monogram{
+    display:grid!important;
+    place-items:center!important;
+    width:100%!important;
+    height:100%!important;
+    color:#2ce5f0!important;
+    font:950 19px/1 Inter,Roboto,Arial,sans-serif!important;
+    letter-spacing:-.06em!important;
+  }
+
+  /* Manchester ya tiene un archivo bien recortado: mantenerlo como referencia
+     de tamaño visual para el resto. */
+  body[data-app-route="history"] .v370-legacy-crest>img[src*="manchester-united"],
+  body[data-app-route="history"] .v370-legacy-crest>img[src*="/manchester.png"]{
+    transform:scale(1.02)!important;
   }
 }
