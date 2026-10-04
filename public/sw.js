@@ -1,4 +1,4 @@
-const CACHE='liga-juventino-v732-all-lower-tools-compact';
+const CACHE='liga-juventino-v733-equal-card-size';
 const CORE=['./','./index.html','./manifest.webmanifest','./brand-neon-header.svg','./profile-reference.svg'];
 
 self.addEventListener('install',event=>{
