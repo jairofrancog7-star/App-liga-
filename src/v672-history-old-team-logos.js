@@ -386,7 +386,7 @@ function patch(){
   patchRecords(root);
   patchFinals(root);
   patchVideos(root);
-  patchLegacyTeams(root);
+  /* V724: Memoria de clubes la controla únicamente V704 para evitar doble escudo/parpadeo. */
   patchEraSeasons(root);
   patchSummaryStats(root);
 }
