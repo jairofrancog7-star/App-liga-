@@ -10,11 +10,11 @@ const BASE='https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/mai
 const APP_BASE='https://raw.githubusercontent.com/jairofrancog7-star/App-liga-/main/';
 
 const FALLBACK={
-  'san jose fc':APP_BASE+'assets/official-logos/san-jose-fc-2026.webp',
+  'san jose fc':BASE+'assets/teams/san-jose.webp',
   'juventus':BASE+'assets/official-logos/juventus.png',
   'linces':BASE+'assets/official-logos/linces.png',
   'napoli':BASE+'assets/official-logos/napoli.png',
-  'hermanos':APP_BASE+'assets/official-logos/hermanos-2026.webp',
+  'hermanos':BASE+'assets/official-logos/hermanos.png',
   'franco fc':BASE+'assets/official-logos/franco-fc.png',
   'herreras fc':BASE+'assets/official-logos/herreras-fc.png',
   'abejas':BASE+'assets/official-logos/abejas.png',
