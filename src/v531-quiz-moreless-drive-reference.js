@@ -40,7 +40,7 @@ const FALLBACK_LOGOS={
 };
 let db=window.LJR_OFFICIAL_DATA||null;
 let loading=null;
-const quiz={mode:'hub',answered:false,selected:'',points:0,step:1,exit:false,remaining:15,halfUsed:false,retryUsed:false,attempts:1,countdown:3,history:[]};
+const quiz={mode:'legacy',answered:false,selected:'',points:0,step:1,exit:false,remaining:15,halfUsed:false,retryUsed:false,attempts:1,countdown:3,history:[]};
 const more={mode:'legacy',answered:false,selected:'',points:0,attempts:2,exit:false,phase:'intro',countdown:15,roundToken:0,round:0};
 let v538MoreTimers=[];
 let v538MoreInterval=null;
@@ -490,7 +490,7 @@ function render(focusAdded=false){
   }
 
   if(r==='quizArena'){
-    if(quiz.mode==='legacy')quiz.mode='hub';const open=true;
+    const open=quiz.mode!=='legacy';
     document.body.classList.toggle('v537-quiz-secondary-open',open);
     document.body.classList.remove('v537-more-secondary-open');
     document.body.classList.remove('v541-more-pages-open');
@@ -696,6 +696,19 @@ function schedule(){
   })});
 }
 document.addEventListener('click',function(e){
+  const v766Start=e.target.closest('[data-v766-quiz-open]');
+  if(route()==='quizArena'&&v766Start){
+    e.preventDefault();
+    e.stopPropagation();
+    v614ClearQuizCountdown();
+    quiz.mode='hub';
+    quiz.answered=false;
+    quiz.selected=String(v766Start.getAttribute('data-answer')||'');
+    quiz.exit=false;
+    render(true);
+    return;
+  }
+
   if(!(e.target instanceof Element))return;
 
   /* V536: al tocar cualquiera de los dos monitos del cuadro principal
