@@ -1,4 +1,4 @@
-/* V103 — restauración puntual de Inicio + Calendario.
+/* V748 — restauración puntual de Inicio + Calendario.
    Mantiene las funciones existentes y sólo corrige posición, tamaño y navegación. */
 (function(){
 'use strict';
@@ -46,7 +46,7 @@ async function loadOfficial(){
   loading=(async()=>{
     let best=chooseOfficial(db,window.LJR_OFFICIAL_DATA||null);
     try{
-      const r=await fetch('./data/official-live.json',{cache:'default',signal:AbortSignal.timeout(8000)});
+      const r=await fetch(OFFICIAL+'?v='+Date.now(),{cache:'no-store'});
       if(r.ok){
         const fresh=await r.json();
         best=chooseOfficial(best,fresh);
