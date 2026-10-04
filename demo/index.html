@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="es-MX">
 <head>
-  <meta name="app-build" content="v761-full-restore">
+  <meta name="app-build" content="v762-quiz-start-restore">
   <style data-ljr-entry-guard>
     html.ljr-preboot #app{visibility:hidden!important}
     html.ljr-preboot body{background:#02065f!important}
@@ -271,35 +271,7 @@
   <title>Liga Juventino</title>
   
 
-  <style id="v398QuizArenaHardLock">
-    /* V398 QUIZ ARENA DOM HARD LOCK — funciona incluso si un bundle viejo intenta pintar el landing roto. */
-    #app:has(#screen .v48-quiz-arena-page) > .topbar,
-    .app-shell:has(#screen .v48-quiz-arena-page) > .topbar{
-      display:none!important;
-      visibility:hidden!important;
-      height:0!important;
-      min-height:0!important;
-      max-height:0!important;
-      margin:0!important;
-      padding:0!important;
-      overflow:hidden!important;
-    }
-    #screen .v48-quiz-arena-page .v48-arena-landing{
-      display:none!important;
-      visibility:hidden!important;
-    }
-    #screen .v48-quiz-arena-page .v48-game{
-      display:block!important;
-      position:relative!important;
-      width:100%!important;
-      min-height:620px!important;
-      margin:0!important;
-    }
-    #screen:has(.v48-quiz-arena-page){
-      padding-top:0!important;
-      margin-top:0!important;
-    }
-  </style>
+  
 
   <style id="v400StatsFallbackStyle">
     /* V400 STATS FALLBACK — visible even if an older JS bundle renders v38Stats. */
@@ -375,8 +347,8 @@
     }
   </style>
 
-  <script type="module" crossorigin src="./assets/index-CX1nW2dz.js"></script>
-  <link rel="stylesheet" crossorigin href="./assets/index-47GZyBDV.css">
+  <script type="module" crossorigin src="./assets/index-BpOUJPAU.js"></script>
+  <link rel="stylesheet" crossorigin href="./assets/index-DS8-ACdk.css">
 </head>
 <body>
   <div id="app" class="app-shell">
@@ -459,42 +431,7 @@
 
   
 
-  <script>
-    (function(){
-      if(window.__LJR_QUIZ_V398_HARDLOCK__) return;
-      window.__LJR_QUIZ_V398_HARDLOCK__=true;
-      function lockQuiz(){
-        var route=(location.hash||'').replace(/^#\/?/,'').split('?')[0];
-        if(route!=='quizArena' && route!=='quiz') return;
-        document.body.dataset.appRoute='quizArena';
-        var app=document.getElementById('app');
-        var screen=document.getElementById('screen');
-        var topbar=app && app.querySelector(':scope > .topbar');
-        if(topbar){
-          topbar.style.setProperty('display','none','important');
-          topbar.style.setProperty('visibility','hidden','important');
-          topbar.style.setProperty('height','0','important');
-          topbar.style.setProperty('min-height','0','important');
-          topbar.style.setProperty('max-height','0','important');
-          topbar.style.setProperty('padding','0','important');
-          topbar.style.setProperty('margin','0','important');
-        }
-        if(!screen) return;
-        var page=screen.querySelector('.v48-quiz-arena-page');
-        if(!page) return;
-        page.classList.add('v48-playing');
-        var landing=page.querySelector('.v48-arena-landing');
-        if(landing){landing.style.setProperty('display','none','important'); landing.setAttribute('aria-hidden','true');}
-        var game=page.querySelector('.v48-game');
-        if(game){game.style.setProperty('display','block','important'); game.setAttribute('aria-hidden','false');}
-      }
-      window.addEventListener('hashchange',function(){requestAnimationFrame(lockQuiz)});
-      document.addEventListener('DOMContentLoaded',lockQuiz,{once:true});
-      var mo=new MutationObserver(function(){lockQuiz()});
-      mo.observe(document.documentElement,{subtree:true,childList:true});
-      lockQuiz();
-    })();
-  </script>
+  
 
   <script>
     (function(){
