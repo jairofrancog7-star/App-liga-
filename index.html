@@ -1,9 +1,9 @@
 <!doctype html>
 <html lang="es-MX">
 <head>
-  <meta name="app-build" content="v757-home-restore">
+  <meta name="app-build" content="v758-static-home-rescue">
   <style data-ljr-entry-guard>
-    html.ljr-preboot #app{visibility:hidden!important}
+    html.ljr-preboot #app{visibility:visible!important}
     html.ljr-preboot body{background:#02065f!important}
   </style>
   <script>
@@ -584,6 +584,14 @@
     }
   </style>
 
+  <style data-v758-boot-fallback>
+    #v758BootFallback{display:block!important;visibility:visible!important;opacity:1!important;position:relative!important;z-index:2!important;width:100%;max-width:620px;margin:0 auto;padding:18px 14px 110px;color:#fff;font-family:Inter,Roboto,Arial,sans-serif}
+    .v758-boot-brand{padding:16px 4px 14px}.v758-boot-brand small{color:#5deafa;font-size:10px;font-weight:900;letter-spacing:.16em}.v758-boot-brand h1{margin:4px 0 3px;font-size:28px;line-height:1}.v758-boot-brand span{color:#aeb8df;font-size:11px}
+    .v758-team-strip{display:flex;gap:12px;overflow-x:auto;padding:8px 2px 16px;scrollbar-width:none}.v758-team-strip::-webkit-scrollbar{display:none}.v758-team-strip a{flex:0 0 72px;color:#fff;text-decoration:none;text-align:center;font-size:9px}.v758-team-strip img{width:58px;height:58px;display:block;margin:0 auto 6px;object-fit:contain;border-radius:50%;background:#fff;border:3px solid #2c6cff}.v758-team-strip b{display:block;line-height:1.15}
+    .v758-card{margin:12px 0 18px;padding:12px;border:1px solid rgba(80,140,255,.28);border-radius:20px;background:rgba(10,20,112,.74);box-shadow:0 10px 28px rgba(0,0,0,.12)}.v758-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}.v758-head h2{margin:0;font-size:20px}.v758-head a{color:#44e9f5;text-decoration:none;font-size:10px;font-weight:900}
+    .v758-match{display:grid;grid-template-columns:1fr 70px 1fr;align-items:center;gap:7px;min-height:68px;padding:8px 4px;border-top:1px solid rgba(255,255,255,.08)}.v758-match:first-of-type{border-top:0}.v758-match>span{display:flex;align-items:center;gap:7px;font-size:10px;font-weight:800}.v758-match>span:last-child{justify-content:flex-end;text-align:right}.v758-match img{width:38px;height:38px;object-fit:contain;border-radius:50%;background:#fff}.v758-match strong{text-align:center;font-size:17px}.v758-match small{display:block;margin-top:3px;color:#92a0ce;font-size:7px}
+    .v758-table-head,.v758-row{display:grid;grid-template-columns:26px minmax(0,1fr) 32px 42px 38px;align-items:center;gap:6px}.v758-table-head{padding:8px 4px;color:#8f9bc5;font-size:8px;font-weight:900;text-transform:uppercase}.v758-row{min-height:62px;padding:7px 4px;border-top:1px solid rgba(255,255,255,.08);font-size:11px}.v758-row>span{display:flex;align-items:center;gap:9px;font-weight:800}.v758-row img{width:38px;height:38px;object-fit:contain;background:#fff;border-radius:8px}.v758-row i{font-style:normal;text-align:center}.v758-row strong{text-align:center;color:#2de0ef;font-size:15px}
+  </style>
 </head>
 <body>
   <div id="app" class="app-shell">
@@ -593,7 +601,41 @@
       <button class="icon-button profile-button" data-route="profile" aria-label="Perfil"></button>
     </header>
 
-    <main id="screen" class="screen" aria-live="polite"></main>
+    <main id="screen" class="screen" aria-live="polite">
+      <section id="v758BootFallback" class="v758-boot-home" aria-label="Inicio de Liga Juventino">
+        <div class="v758-boot-brand">
+          <small>LIGA MUNICIPAL</small>
+          <h1>Juventino Rosas</h1>
+          <span>Guanajuato · Temporada 2026/27</span>
+        </div>
+
+        <div class="v758-team-strip" aria-label="Equipos">
+          <a href="#/teams"><img src="https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/assets/teams/san-jose.webp" alt="San José FC"><b>San José FC</b></a>
+          <a href="#/teams"><img src="https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/assets/official-logos/juventus.png" alt="Juventus"><b>Juventus</b></a>
+          <a href="#/teams"><img src="https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/assets/official-logos/linces.png" alt="Linces"><b>Linces</b></a>
+          <a href="#/teams"><img src="https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/assets/official-logos/napoli.png" alt="Napoli"><b>Napoli</b></a>
+          <a href="#/teams"><img src="https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/assets/official-logos/hermanos.png" alt="Hermanos"><b>Hermanos</b></a>
+          <a href="#/teams"><img src="https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/assets/official-logos/franco-fc.png" alt="Franco FC"><b>Franco FC</b></a>
+        </div>
+
+        <section class="v758-card">
+          <div class="v758-head"><h2>Partidos relevantes</h2><a href="#/competition">Ver todos</a></div>
+          <div class="v758-match"><span><img src="https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/assets/official-logos/hermanos.png" alt="">Hermanos</span><strong>10:00<small>Jornada 7</small></strong><span>Lobos CDG<img src="https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/assets/official-logos/lobos-cdg.png" alt=""></span></div>
+          <div class="v758-match"><span><img src="https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/assets/official-logos/herreras-fc.png" alt="">Herreras FC</span><strong>10:00<small>Jornada 7</small></strong><span>Abejas<img src="https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/assets/official-logos/abejas.png" alt=""></span></div>
+        </section>
+
+        <section class="v758-card">
+          <div class="v758-head"><h2>Tabla de posiciones</h2><a href="#/competition">Ver tabla</a></div>
+          <div class="v758-table-head"><span>#</span><span>Equipo</span><span>PJ</span><span>DG</span><span>PTS</span></div>
+          <div class="v758-row"><b>1</b><span><img src="https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/assets/teams/san-jose.webp" alt="">San José FC</span><i>5</i><i>+12</i><strong>15</strong></div>
+          <div class="v758-row"><b>2</b><span><img src="https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/assets/official-logos/juventus.png" alt="">Juventus</span><i>5</i><i>+11</i><strong>9</strong></div>
+          <div class="v758-row"><b>3</b><span><img src="https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/assets/official-logos/linces.png" alt="">Linces</span><i>4</i><i>+6</i><strong>9</strong></div>
+          <div class="v758-row"><b>4</b><span><img src="https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/assets/official-logos/napoli.png" alt="">Napoli</span><i>5</i><i>+3</i><strong>9</strong></div>
+          <div class="v758-row"><b>5</b><span><img src="https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/assets/official-logos/hermanos.png" alt="">Hermanos</span><i>4</i><i>+2</i><strong>7</strong></div>
+          <div class="v758-row"><b>6</b><span><img src="https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/assets/official-logos/franco-fc.png" alt="">Franco FC</span><i>3</i><i>0</i><strong>6</strong></div>
+        </section>
+      </section>
+    </main>
 
     <nav class="bottom-nav" aria-label="Navegación principal">
       <button data-route="home" class="nav-item active" aria-label="Inicio"><span class="nav-icon" data-nav-icon="home"></span><small>INICIO</small></button>
@@ -656,7 +698,7 @@
   })();
   </script>
   <script src="./src/v488-cat3-global-sync.js?v=20261001-v508-official-all-pages"></script>
-  <script type="module" src="./src/main.js?v=20261004-v757-home-restore"></script>
+  <script type="module" src="./src/main.js?v=20261004-v758-static-home-rescue"></script>
   <script type="module" src="./src/v589-pronostica-six-drive-exact.js?v=20261002-v592-functional-controls"></script>
   <script type="module" src="./src/runtime-fixes.js?v=20261001-v493-official-all-categories"></script>
   <script type="module" src="./src/v4-super.js?v=20261001-v493-official-all-categories"></script>
