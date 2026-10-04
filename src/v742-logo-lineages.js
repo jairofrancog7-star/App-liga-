@@ -1,14 +1,16 @@
-/* V742 — Linajes de escudos: un equipo puede tener varios escudos sin convertirse
+/* V744 — Linajes de escudos: un equipo puede tener varios escudos sin convertirse
    en varios equipos. La identidad se resuelve por nombre/alias exacto; las variantes
    sólo cambian la imagen según contexto (actual / histórico / Récords). */
 (function(){
 'use strict';
-if(window.__LJR_V742_TEAM_LOGO_LINEAGES__)return;
-window.__LJR_V742_TEAM_LOGO_LINEAGES__=true;
+if(window.__LJR_V744_TEAM_LOGO_LINEAGES__)return;
+window.__LJR_V744_TEAM_LOGO_LINEAGES__=true;
 
 const BASE='https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/';
+const APP='https://jairofrancog7-star.github.io/App-liga-/';
 const local=p=>new URL(p,document.baseURI).href;
 const remote=p=>BASE+p;
+const app=p=>APP+p;
 
 const LINEAGES={
   america:{
@@ -28,23 +30,28 @@ const LINEAGES={
   },
   hermanos:{
     aliases:['hermanos','hermanos fc','dep hermanos','deportivo hermanos','club deportivo hermanos'],
-    current:remote('assets/official-logos/hermanos.png'),
-    variants:[remote('assets/official-logos/hermanos.png'),remote('assets/teams/club-deportivo-hermanos.webp')]
+    current:app('assets/official-logos/hermanos-2026.webp'),
+    variants:[app('assets/official-logos/hermanos-2026.webp'),remote('assets/official-logos/hermanos.png'),remote('assets/teams/club-deportivo-hermanos.webp')]
   },
   terricolas:{
     aliases:['terricolas','terricolas fc','terricolas seder','terricolas seder fc'],
-    current:remote('assets/official-logos/terricolas.png'),
-    variants:[remote('assets/official-logos/terricolas.png'),remote('assets/teams/terricolas-fc.webp')]
+    current:app('assets/official-logos/terricolas-2026.webp'),
+    variants:[app('assets/official-logos/terricolas-2026.webp'),remote('assets/official-logos/terricolas.png'),remote('assets/teams/terricolas-fc.webp')]
   },
   'san-jose-fc':{
     aliases:['san jose fc','san jose de la montana','san jose montana'],
-    current:remote('assets/official-logos/san-jose-fc.png'),
-    variants:[remote('assets/official-logos/san-jose-fc.png'),remote('assets/teams/san-jose-montana.webp'),remote('assets/teams/san-jose.webp')]
+    current:app('assets/official-logos/san-jose-fc-2026.webp'),
+    variants:[app('assets/official-logos/san-jose-fc-2026.webp'),remote('assets/official-logos/san-jose-fc.png'),remote('assets/teams/san-jose-montana.webp'),remote('assets/teams/san-jose.webp')]
+  },
+  abejas:{
+    aliases:['abejas','abejas fc','abejas futbol club'],
+    current:app('assets/official-logos/abejas-2026.webp'),
+    variants:[app('assets/official-logos/abejas-2026.webp'),remote('assets/official-logos/abejas.png')]
   },
   boavista:{
     aliases:['boavista','boavista fc','bfc','b f c'],
-    current:remote('assets/official-logos/boavista.png'),
-    variants:[remote('assets/official-logos/boavista.png'),remote('assets/teams/boavista-fc.webp')]
+    current:app('assets/official-logos/boavista-2026.webp'),
+    variants:[app('assets/official-logos/boavista-2026.webp'),remote('assets/official-logos/boavista.png'),remote('assets/teams/boavista-fc.webp')]
   },
   manchester:{
     aliases:['manchester','manchester fc','manchester united','man united'],
@@ -103,8 +110,8 @@ const LINEAGES={
   },
   promesas:{
     aliases:['promesas','promesas fc','promesas de pozos','promesas fc pozos'],
-    current:remote('assets/official-logos/promesas-fc.png'),
-    variants:[remote('assets/official-logos/promesas-fc.png'),remote('assets/teams/promesas-fc-pozos.webp')]
+    current:app('assets/official-logos/promesas-fc-2026.webp'),
+    variants:[app('assets/official-logos/promesas-fc-2026.webp'),remote('assets/official-logos/promesas-fc.png'),remote('assets/teams/promesas-fc-pozos.webp')]
   },
   galeana:{
     aliases:['galeana','atl galeana','atletico galeana'],
@@ -123,8 +130,8 @@ const LINEAGES={
   },
   cuenda:{
     aliases:['cuenda','tc cuenda'],
-    current:remote('assets/official-logos/cuenda.png'),
-    variants:[remote('assets/official-logos/cuenda.png'),remote('assets/teams/tc-cuenda.webp')]
+    current:app('assets/official-logos/cuenda-2026.webp'),
+    variants:[app('assets/official-logos/cuenda-2026.webp'),remote('assets/official-logos/cuenda.png'),remote('assets/teams/tc-cuenda.webp')]
   },
   'toros-de-cuenda':{
     aliases:['toros de cuenda','toros cuenda'],
@@ -250,15 +257,18 @@ function likelyLogo(img){
     /official-logos|\/teams\/|branding|history\/team-logos|cloudinary\.com\/.*\/logos/.test(src);
 }
 function teamFromImage(img){
-  const direct=[img.alt,img.title,img.dataset?.team].filter(v=>String(v||'').trim());
-  for(const v of direct)if(keyFor(v))return String(v).trim();
-  if(direct.length)return '';
+  const own=[img.dataset?.team,img.dataset?.v62Team,img.dataset?.v42CompareTeam,img.dataset?.v27Team].filter(v=>String(v||'').trim());
+  for(const v of own)if(keyFor(v))return String(v).trim();
 
   const owner=img.closest?.('[data-team],[data-v62-team],[data-v42-compare-team],[data-v27-team]');
   if(owner){
     const vals=[owner.dataset?.team,owner.dataset?.v62Team,owner.dataset?.v42CompareTeam,owner.dataset?.v27Team].filter(Boolean);
     for(const v of vals)if(keyFor(v))return String(v).trim();
   }
+
+  const direct=[img.alt,img.title].filter(v=>String(v||'').trim());
+  for(const v of direct)if(keyFor(v))return String(v).trim();
+  if(direct.length)return '';
 
   const card=img.closest?.('.v27-team,.v40-team,.v42-mini-team,.v46-team-card,.v28-side,.v62-team-card,.v446-home-club,.v6-league-team,.v6-table-row,.club-cell,.match-row,.v412-row,.v411-row');
   if(!card)return '';
