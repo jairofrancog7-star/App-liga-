@@ -569,6 +569,8 @@
     requestAnimationFrame(()=>requestAnimationFrame(render));
   }
 
+  window.LJR_FOLLOWING_API={render,schedule};
+
   window.addEventListener('hashchange',schedule);
   const target=document.querySelector('#screen');
   if(target){
