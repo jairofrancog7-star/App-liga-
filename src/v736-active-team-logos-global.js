@@ -1,17 +1,17 @@
-/* V744 — Registro global seguro de escudos 2026.
+/* V745 — Registro global seguro de escudos 2026.
    - Cada equipo se resuelve por su nombre/identidad, nunca por el src previo.
    - Evita que un escudo incorrecto (por ejemplo San José) se propague a otros equipos.
    - Los diseños 2026 aportados por el usuario usan archivos WebP directos y fallback estable.
 */
 (function(){
 'use strict';
-if(window.__LJR_V744_ACTIVE_TEAM_LOGOS__)return;
-window.__LJR_V744_ACTIVE_TEAM_LOGOS__=true;
+if(window.__LJR_V745_ACTIVE_TEAM_LOGOS__)return;
+window.__LJR_V745_ACTIVE_TEAM_LOGOS__=true;
 
 const BASE='https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/';
 const APP_BASE='https://raw.githubusercontent.com/jairofrancog7-star/App-liga-/main/';
 const SITE='https://jairofrancog7-star.github.io/App-liga-/';
-const V='?v=20261004-v744';
+const V='?v=20261004-v745';
 
 const LOGOS={
   'san-jose-fc':SITE+'assets/official-logos/san-jose-fc-2026.webp'+V,
@@ -80,7 +80,7 @@ const FALLBACK={
   'san-jose-fc':BASE+'assets/official-logos/san-jose-fc.png',
   'hermanos':BASE+'assets/official-logos/hermanos.png',
   'terricolas':BASE+'assets/official-logos/terricolas.png',
-  'boavista':BASE+'assets/official-logos/boavista.png',
+  'boavista':BASE+'assets/teams/boavista-fc.webp',
   'abejas':BASE+'assets/official-logos/abejas.png',
   'cuenda':BASE+'assets/official-logos/cuenda.png',
   'promesas-fc':BASE+'assets/official-logos/promesas-fc.png'
@@ -188,6 +188,64 @@ function norm(v){
 function keyFor(name){return ALIAS[norm(name)]||'';}
 function logoForTeam(name){const key=keyFor(name);return key&&LOGOS[key]?LOGOS[key]:'';}
 
+const CUTOUT_KEYS=new Set(['san-jose-fc','hermanos','terricolas']);
+const cutoutCache=new Map();
+
+function transparentCutout(key,src){
+  if(!CUTOUT_KEYS.has(key))return Promise.resolve(src);
+  if(cutoutCache.has(key))return cutoutCache.get(key);
+  const task=new Promise(resolve=>{
+    const im=new Image();
+    im.decoding='async';
+    im.onload=()=>{
+      try{
+        const maxDim=640,nw=im.naturalWidth||im.width,nh=im.naturalHeight||im.height;
+        const scale=Math.min(1,maxDim/Math.max(nw,nh));
+        const w=Math.max(1,Math.round(nw*scale)),h=Math.max(1,Math.round(nh*scale));
+        const cv=document.createElement('canvas');cv.width=w;cv.height=h;
+        const cx=cv.getContext('2d',{willReadFrequently:true});
+        cx.drawImage(im,0,0,w,h);
+        const frame=cx.getImageData(0,0,w,h),d=frame.data,n=w*h;
+        const bg=new Uint8Array(n),q=new Int32Array(n);let head=0,tail=0;
+        const candidate=i=>{
+          const p=i*4,r=d[p],g=d[p+1],b=d[p+2],mx=Math.max(r,g,b),mn=Math.min(r,g,b);
+          return mx<=42&&(mx-mn)<=20;
+        };
+        const push=i=>{if(i>=0&&i<n&&!bg[i]&&candidate(i)){bg[i]=1;q[tail++]=i;}};
+        for(let x=0;x<w;x++){push(x);push((h-1)*w+x);}
+        for(let y=1;y<h-1;y++){push(y*w);push(y*w+w-1);}
+        while(head<tail){
+          const i=q[head++],x=i%w,y=(i/w)|0;
+          if(x>0)push(i-1);if(x<w-1)push(i+1);if(y>0)push(i-w);if(y<h-1)push(i+w);
+        }
+        const keep=new Uint8Array(n);
+        for(let i=0;i<n;i++)if(!bg[i]){
+          const x=i%w,y=(i/w)|0;
+          for(let yy=Math.max(0,y-2);yy<=Math.min(h-1,y+2);yy++){
+            const row=yy*w;
+            for(let xx=Math.max(0,x-2);xx<=Math.min(w-1,x+2);xx++)keep[row+xx]=1;
+          }
+        }
+        for(let i=0;i<n;i++)if(bg[i]&&!keep[i])d[i*4+3]=0;
+        cx.putImageData(frame,0,0);
+        resolve(cv.toDataURL('image/webp',0.92));
+      }catch(err){
+        console.warn('[V745] recorte transparente',key,err);
+        resolve(src);
+      }
+    };
+    im.onerror=()=>resolve(src);
+    im.src=src;
+  });
+  cutoutCache.set(key,task);
+  return task;
+}
+async function prepareTransparentLogos(){
+  await Promise.all([...CUTOUT_KEYS].map(async key=>{LOGOS[key]=await transparentCutout(key,LOGOS[key]);}));
+  const reg=window.LJR_TEAM_LOGOS;if(reg)reg.active2026={...LOGOS};
+  sync();
+}
+
 function keyFromText(text){
   const n=norm(text);
   if(!n)return '';
@@ -253,15 +311,24 @@ function patchImg(img){
     img.src=src;
     img.removeAttribute('srcset');
   }
-  img.dataset.v744ActiveLogo=key;
+  img.dataset.v745ActiveLogo=key;
   if(!String(img.alt||'').trim()&&DISPLAY[key])img.alt=DISPLAY[key];
-  img.style.setProperty('object-fit','contain');
-  img.style.setProperty('object-position','center');
+  img.style.setProperty('object-fit','contain','important');
+  img.style.setProperty('object-position','center','important');
+  img.style.setProperty('border-radius','0','important');
+  img.style.setProperty('background','transparent','important');
+  img.style.setProperty('clip-path','none','important');
+  img.style.setProperty('padding','0','important');
+  if(key==='terricolas'){
+    img.style.setProperty('transform','scale(1.10)','important');
+    const holder=img.closest?.('.crest,.v6-crest,.v446-home-club-logo,.v62-team-logo,.v62-inline-logo,.v40-team-logo,.v28-team-logo');
+    if(holder)holder.style.setProperty('overflow','visible','important');
+  }
 
-  if(!img.dataset.v744ErrorGuard){
-    img.dataset.v744ErrorGuard='1';
+  if(!img.dataset.v745ErrorGuard){
+    img.dataset.v745ErrorGuard='1';
     img.addEventListener('error',()=>{
-      const k=img.dataset.v744ActiveLogo||'';
+      const k=img.dataset.v745ActiveLogo||'';
       const fallback=FALLBACK[k];
       if(!fallback)return;
       const target=new URL(fallback,document.baseURI).href;
@@ -291,25 +358,25 @@ function patchData(){
 
 function installRegistry(){
   const reg=window.LJR_TEAM_LOGOS;
-  if(!reg||reg.__v744Wrapped)return;
+  if(!reg||reg.__v745Wrapped)return;
   const previous=typeof reg.get==='function'?reg.get.bind(reg):()=> '';
   reg.get=function(name){return logoForTeam(name)||previous(name);};
   reg.active2026={...LOGOS};
-  reg.__v744Wrapped=true;
+  reg.__v745Wrapped=true;
 }
 function installOfficialApi(){
   const api=window.LJR_OFFICIAL_API;
-  if(!api||api.__v744LogoWrapped)return;
+  if(!api||api.__v745LogoWrapped)return;
   const previous=typeof api.getLogo==='function'?api.getLogo.bind(api):()=> '';
   api.getLogo=function(name){return logoForTeam(name)||previous(name);};
-  api.__v744LogoWrapped=true;
+  api.__v745LogoWrapped=true;
 }
 function installDirectory(){
   const dir=window.V66_OFFICIAL_DIRECTORY;
-  if(!dir||dir.__v744LogoWrapped)return;
+  if(!dir||dir.__v745LogoWrapped)return;
   const previous=typeof dir.logoFor==='function'?dir.logoFor.bind(dir):()=> '';
   dir.logoFor=function(name){return logoForTeam(name)||previous(name);};
-  dir.__v744LogoWrapped=true;
+  dir.__v745LogoWrapped=true;
 }
 
 function sync(){
@@ -324,6 +391,7 @@ function sync(){
 }
 function boot(){
   sync();
+  prepareTransparentLogos();
   const target=document.querySelector('#screen')||document.body||document.documentElement;
   if(target)new MutationObserver(ms=>{
     for(const m of ms){
@@ -344,5 +412,6 @@ function boot(){
   setTimeout(sync,250);
   setTimeout(sync,1400);
 }
+window.LJR_ACTIVE_TEAM_LOGOS_SYNC=sync;
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot,{once:true});else boot();
 })();
