@@ -82,6 +82,11 @@ const historicalSources=[
     url:''
   },
   {
+    title:'Veteranos Jornada 7 de liga · Amistosos Dominical',
+    note:'Captura aportada por el usuario. Veteranos: Dynamo vs Arsenal, Barrio Seco vs PSV, Boavista vs UNAM, América vs Cuenda, Átomos vs Hermanos y Juventus vs Dep. RAFA. Amistosos dominicales: Tecos vs Hermanos, Galácticos vs Napoli, Populares vs Barza, San Antonio de Romerillo vs Sección 14, Oklahoma vs Galeana, Malvinas vs Terrícolas, Mineros FC vs Atlético Pozos y Tecos Jr. vs Lobos CDG. La imagen no muestra fecha completa, por eso no se fuerza un año.',
+    url:''
+  },
+  {
     title:'Rol oficial · sábado 30 de abril y domingo 01 de mayo de 2016',
     note:'Captura aportada por el usuario de la Liga Municipal de Futbol “Juventino Rosas A.C.”. Documenta la Copa J6 de Veteranos con Magisterio, Picosos, Dynamo, Cuenda Jr., Valedores, Chelsea, Sección XIV, Hermanos, Guadalajara, Cuenda, La Esperanza y Boavista; el partido Juventus vs Tavera por el Torneo de Pretemporada; y amistosos con Malvinas, A. Centeno, La Pandilla, Olímpicos, Tecos, Morales, Franco Tavera, Populares, DHP, PSV, Galeana, Osasuna, San Antonio, Napoli, El Alto, Birds Eye, Mazacotes, Chelsea, Xolos, Toros, Barza y Galácticos. UNAM aparece como equipo en descanso.',
     url:''
@@ -962,6 +967,9 @@ function canonicalHistoricName(name){
     'terricolas seder':'Terrícolas SEDER',
     'dep okc':'Dep. OKC',
     'deportivo okc':'Dep. OKC',
+    'dep rafa':'Deportivo Rafa',
+    'dep. rafa':'Deportivo Rafa',
+    'deportivo rafa':'Deportivo Rafa',
     'dep lagartos':'Deportivo Lagartos',
     'deportivo lagartos':'Deportivo Lagartos',
     'a pozos':'Atlético Pozos',
@@ -1122,6 +1130,8 @@ const historicalTeamEras=[
   {period:'15–16 may 2021 · rol aportado',category:'Dominical · equipo recuperado',teams:['Gatos Negros']},
   {period:'22 may 2021 · rol aportado',category:'Veteranos · jornada oficial',teams:['Arsenal','PSV','Hermanos','Boavista','Barrio Seco','Cuenda']},
   {period:'12 jun 2021 · rol aportado',category:'Veteranos · jornada oficial',teams:['Arsenal','Boavista','La Esperanza','Hermanos','Barrio Seco','Dep. Lagartos','PSV','UNAM','Cuenda','Guadalajara','Dynamo','Átomos']},
+  {period:'Archivo · fecha no visible',category:'Veteranos · Jornada 7 de liga · fecha no visible',teams:['Dynamo','Arsenal','Barrio Seco','PSV','Boavista','UNAM','América','Cuenda','Átomos','Hermanos','Juventus','Deportivo Rafa']},
+  {period:'Archivo · fecha no visible',category:'Amistosos Dominical · fecha no visible',teams:['Tecos','Hermanos','Galácticos','Napoli','Populares','Barza','San Antonio de Romerillo','Sección 14','Oklahoma','Galeana','Malvinas','Terrícolas','Mineros FC','Atlético Pozos','Tecos Jr.','Lobos CDG']},
   {period:'13 jun 2021 · rol aportado',category:'Primera Fuerza J1',teams:['Malvinas','Galácticos','La Cuadrilla','Hermanos','Tecos','Linces','Abejas','Boavista','Juventus','Chelsea','Napoli','A. Centeno','PSV','Lobos CDG']},
   {period:'13 jun 2021 · rol aportado',category:'Fuerza Intermedia J1',teams:['El Alto','Barza','Dep. Maravillas','Oklahoma','Tavera Junior','Populares','Pozos','Mazacotes','La Huerta','Mineros','Galaxy','San Antonio de Romerillo','Sección 14']},
   {period:'13 jun 2021 · rol aportado',category:'Segunda Fuerza J1',teams:['San Antonio FC','La Esperanza Jr.','León FC','Galeana','Dep. Cazafantasmas','Osasuna','Galácticos FC','Terrícolas SEDER','San Juan FC','Dep. Cerrito','Tapatío']},
