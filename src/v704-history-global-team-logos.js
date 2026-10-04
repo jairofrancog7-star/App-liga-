@@ -6,6 +6,9 @@
 if(window.__LJR_V704_HISTORY_LOGO_GLOBAL__)return;
 window.__LJR_V704_HISTORY_LOGO_GLOBAL__=true;
 
+const DATA_ROOT='https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/';
+const APP_ROOT='https://raw.githubusercontent.com/jairofrancog7-star/App-liga-/main/';
+
 const SPECIAL={
   'olimpicos':'./assets/history/team-logos/legacy-2015-olimpicos-pozos.webp',
   'olimpicos de pozos':'./assets/history/team-logos/legacy-2015-olimpicos-pozos.webp',
@@ -20,8 +23,8 @@ const SPECIAL={
   'salvaje':'./assets/history/team-logos/salvajes.webp',
   'tecos':APP_ROOT+'assets/history/team-logos/tecos.webp',
   'tecos fc':APP_ROOT+'assets/history/team-logos/tecos.webp',
-  'tecos jr':'./assets/history/team-logos/tecos.webp',
-  'tecos jrs':'./assets/history/team-logos/tecos.webp',
+  'tecos jr':APP_ROOT+'assets/history/team-logos/tecos.webp',
+  'tecos jrs':APP_ROOT+'assets/history/team-logos/tecos.webp',
   'tecos pozos':APP_ROOT+'assets/history/team-logos/tecos.webp',
   'xolos':'./assets/history/team-logos/xolos-jaralillo.webp',
   'xolos jaralillo':'./assets/history/team-logos/xolos-jaralillo.webp',
@@ -37,8 +40,6 @@ const SPECIAL={
   'pumas unam':'./assets/history/team-logos/universidad-pumas.webp'
 };
 
-const DATA_ROOT='https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/';
-const APP_ROOT='https://raw.githubusercontent.com/jairofrancog7-star/App-liga-/main/';
 const USER_CONFIRMED_LOGOS={
   'real de roque':APP_ROOT+'assets/history/team-logos/real-de-roque.webp',
   'real roque':APP_ROOT+'assets/history/team-logos/real-de-roque.webp',
@@ -47,10 +48,10 @@ const USER_CONFIRMED_LOGOS={
   'cebolleros fc':DATA_ROOT+'assets/teams/cebolleros-fc-cuenda.webp',
   'cebolleros fc cuenda':DATA_ROOT+'assets/teams/cebolleros-fc-cuenda.webp',
   'cebolleros de cuenda':DATA_ROOT+'assets/teams/cebolleros-fc-cuenda.webp',
-  'tecos':'./assets/history/team-logos/tecos.webp',
-  'tecos fc':'./assets/history/team-logos/tecos.webp',
+  'tecos':APP_ROOT+'assets/history/team-logos/tecos.webp',
+  'tecos fc':APP_ROOT+'assets/history/team-logos/tecos.webp',
   'tecos de pozos':APP_ROOT+'assets/history/team-logos/tecos.webp',
-  'tecos pozos':'./assets/history/team-logos/tecos.webp',
+  'tecos pozos':APP_ROOT+'assets/history/team-logos/tecos.webp',
   'boca jrs':APP_ROOT+'assets/official-logos/boca-jrs.png',
   'boca juniors':APP_ROOT+'assets/official-logos/boca-jrs.png',
   'cabj':APP_ROOT+'assets/official-logos/boca-jrs.png',
