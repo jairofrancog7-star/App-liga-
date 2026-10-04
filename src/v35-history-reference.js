@@ -2626,7 +2626,7 @@ function v370ArchiveTeamsBlock(){
   const categoryButton=(key,label)=>'<button type="button" data-v710-category="'+key+'" aria-pressed="'+(key==='all'?'true':'false')+'" class="'+(key==='all'?'is-active':'')+'">'+label+'</button>';
   const sortButton=(key,label)=>'<button type="button" data-v710-sort="'+key+'" aria-pressed="'+(key==='az'?'true':'false')+'" class="'+(key==='az'?'is-active':'')+'">'+label+'</button>';
 
-  return '<section class="v370-legacy-clubs" data-v710-category="all" data-v710-sort="az" aria-label="Equipos que han formado parte de la Liga">'+
+  return '<section class="v370-legacy-clubs" data-v710-category="all" data-v710-sort="az" data-v712-sort-fix="1" aria-label="Equipos que han formado parte de la Liga">'+
     '<header class="v370-legacy-head">'+
       '<span class="v370-legacy-kicker">MEMORIA DE CLUBES</span>'+
       '<h3>Equipos que han formado parte de nuestra Liga</h3>'+
