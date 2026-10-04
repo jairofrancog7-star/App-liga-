@@ -1,10 +1,10 @@
-/* V746 — Linajes de escudos: un equipo puede tener varios escudos sin convertirse
+/* V747 — Linajes de escudos: un equipo puede tener varios escudos sin convertirse
    en varios equipos. La identidad se resuelve por nombre/alias exacto; las variantes
    sólo cambian la imagen según contexto (actual / histórico / Récords). */
 (function(){
 'use strict';
-if(window.__LJR_V746_TEAM_LOGO_LINEAGES__)return;
-window.__LJR_V744_TEAM_LOGO_LINEAGES__=true;
+if(window.__LJR_V747_TEAM_LOGO_LINEAGES__)return;
+window.__LJR_V747_TEAM_LOGO_LINEAGES__=true;
 
 const BASE='https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/';
 const APP='https://jairofrancog7-star.github.io/App-liga-/';
@@ -378,7 +378,7 @@ function recordFor(name,context=''){
 function installRegistry(){
   const reg=window.LJR_TEAM_LOGOS;
   if(!reg)return;
-  if(reg.__v742Lineages)return;
+  if(reg.__v747Lineages)return;
   const prev=typeof reg.get==='function'?reg.get.bind(reg):()=> '';
   reg.get=function(name){
     const exact=currentFor(name);
@@ -387,7 +387,7 @@ function installRegistry(){
   reg.lineages=LINEAGES;
   reg.getVariants=variantsFor;
   reg.getRecordLogo=(name,context)=>recordFor(name,context);
-  reg.__v742Lineages=true;
+  reg.__v747Lineages=true;
 }
 
 function likelyLogo(img){
@@ -430,19 +430,13 @@ function historicalContext(img){
   return !!img.closest?.('.v35-history-page,.v370-legacy-team,.v35-record-card,[data-history-era-logo],[data-v724-legacy-logo]');
 }
 function patchGlobalImage(img){
-  if(!(img instanceof HTMLImageElement)||historicalContext(img)||!likelyLogo(img))return;
-  const team=teamFromImage(img),src=currentFor(team);
-  if(!src)return;
-  const wanted=new URL(src,document.baseURI).href;
-  if(String(img.src||'')!==wanted){img.src=src;img.removeAttribute('srcset')}
-  img.alt=team;
-  img.dataset.v742Lineage=keyFor(team);
-  img.style.objectFit='contain';
-  img.style.objectPosition='center';
+  /* V747: los escudos actuales los controla V744 por identidad exacta.
+     Este módulo conserva linajes/variantes para Historia y Récords, pero ya no
+     reescribe imágenes de pantallas activas para evitar cruces entre equipos. */
+  return;
 }
 function patchGlobal(root=document){
   installRegistry();
-  root.querySelectorAll?.('img').forEach(patchGlobalImage);
 }
 
 function historyRoute(){
@@ -478,16 +472,16 @@ function patchRecords(root=document){
 
     const mark=card.querySelector(':scope > .v35-record-mark');
     if(mark){
-      mark.replaceWith(makeImg(src,team,'v672-record-logo v704-record-logo v742-record-logo'));
+      mark.replaceWith(makeImg(src,team,'v672-record-logo v704-record-logo v747-record-logo'));
       return;
     }
     const main=card.querySelector(':scope > img');
     if(!main)return;
     if(isHistoricPhoto(main)){
-      let mini=card.querySelector('.v742-record-mini-logo,.v672-record-mini-logo');
+      let mini=card.querySelector('.v747-record-mini-logo,.v672-record-mini-logo');
       if(!mini){
         mini=document.createElement('span');
-        mini.className='v672-record-mini-logo v742-record-mini-logo';
+        mini.className='v672-record-mini-logo v747-record-mini-logo';
         card.appendChild(mini);
       }
       let im=mini.querySelector('img');
@@ -499,7 +493,7 @@ function patchRecords(root=document){
     if(String(main.src||'')!==new URL(src,document.baseURI).href)main.src=src;
     main.alt=team;
     main.dataset.v742RecordLogo='1';
-    card.querySelector('.v742-record-mini-logo')?.remove();
+    card.querySelector('.v747-record-mini-logo')?.remove();
   });
 }
 
