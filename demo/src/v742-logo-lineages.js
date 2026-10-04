@@ -7,8 +7,8 @@ if(window.__LJR_V747_TEAM_LOGO_LINEAGES__)return;
 window.__LJR_V747_TEAM_LOGO_LINEAGES__=true;
 
 const BASE='https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/';
-const APP='https://jairofrancog7-star.github.io/App-liga-/';
-const local=p=>new URL(p,document.baseURI).href;
+const APP='https://raw.githubusercontent.com/jairofrancog7-star/App-liga-/main/';
+const local=p=>APP+String(p||'').replace(/^\.\//,'');
 const remote=p=>BASE+p;
 const app=p=>APP+p;
 
