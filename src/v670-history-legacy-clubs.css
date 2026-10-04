@@ -357,3 +357,27 @@
   body[data-app-route="history"] .v370-legacy-team{min-height:140px}
   body[data-app-route="history"] .v370-legacy-team.v706-evolved-club{min-height:158px}
 }
+
+
+/* V712 — controles de Historia siempre accesibles mientras se recorre la lista. */
+@media(max-width:1023px){
+  body[data-app-route="history"] .v710-legacy-controls{
+    position:sticky!important;
+    top:64px!important;
+    z-index:48!important;
+    margin:0 0 12px!important;
+    backdrop-filter:blur(14px) saturate(1.15);
+    -webkit-backdrop-filter:blur(14px) saturate(1.15);
+    box-shadow:0 10px 24px rgba(0,0,60,.26),inset 0 1px 0 rgba(255,255,255,.05)!important;
+  }
+  body[data-app-route="history"] .v710-legacy-controls::before{
+    content:"FILTRAR / ORDENAR";
+    display:block;
+    margin:0 0 8px 2px;
+    color:#29e6f1;
+    font-size:8px;
+    line-height:1;
+    font-weight:950;
+    letter-spacing:.16em;
+  }
+}
