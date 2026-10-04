@@ -6418,69 +6418,22 @@ function storeView(){
     '<div class="team-list">'+teams.map(t=>'<div class="team-row"><button class="team-main" data-team="'+t.code+'">'+crest(t.code)+'<span><b>'+t.name+'</b><small>Ver club y artículos</small></span></button><button class="mini-btn" data-team="'+t.code+'">Abrir</button></div>').join('')+'</div>';
 }
 function quizArenaView(){
-  const correct='Juventino';
-  const options=[['A','Pozos'],['B','Rincón de Centeno'],['C','Juventino'],['D','Cuenda']];
-  return `<section class="v48-quiz-arena-page" data-v48-arena data-v48-correct="${correct}" aria-label="Quiz Arena">
+  return `<section class="v48-quiz-arena-page" aria-label="Quiz Arena">
+    <div class="v48-quiz-arena-shot">
+      <img class="v48-quiz-arena-image" src="./quiz-arena-main.jpg?v=20260919-quiz-main-drive1" alt="Quiz de la Liga" loading="eager" decoding="async" draggable="false" onerror="this.onerror=null;this.src='./quiz-arena-reference.jpg?v=20260919-quiz-result1'">
 
-    <div class="v48-arena-landing" data-v48-landing>
-      <header class="v48-arena-head">
-        <button type="button" class="v48-back-real" data-route="more" aria-label="Volver a Más">
-          <svg viewBox="0 0 32 32" aria-hidden="true"><path d="M20.5 7.5 12 16l8.5 8.5M12.5 16H27"/></svg>
-        </button>
-        <h1>Quiz Arena</h1>
-      </header>
+      <button type="button" class="v48-hotspot v48-answer v48-answer-a" data-v48-answer="A" aria-label="Respuesta A, Pozos"></button>
+      <button type="button" class="v48-hotspot v48-answer v48-answer-b" data-v48-answer="B" aria-label="Respuesta B, Rincón de Centeno"></button>
+      <button type="button" class="v48-hotspot v48-answer v48-answer-c" data-v48-answer="C" aria-label="Respuesta C, Juventino"></button>
+      <button type="button" class="v48-hotspot v48-answer v48-answer-d" data-v48-answer="D" aria-label="Respuesta D, Cuenda"></button>
 
-      <section class="v48-arena-card" aria-label="Entrar a Quiz Arena">
-        <div class="v48-ball-stage" aria-hidden="true"></div>
-        <div class="v48-arena-actions">
-          <button type="button" class="v48-primary" data-route="profile">Inicia sesión para<br>jugar</button>
-          <button type="button" class="v48-secondary" data-v48-start>Prueba como<br>invitado</button>
-        </div>
-      </section>
-
-      <div class="v48-arena-promo" aria-label="Liga Municipal de Fútbol Juventino Rosas">
-        <span class="v48-promo-mark">JR</span>
-        <span><b>LIGA JUVENTINO ROSAS</b><small>Quiz oficial · Fútbol municipal</small></span>
-        <strong>JUGAR</strong>
-      </div>
-
-      <section class="v48-challenge-card">
-        <div>
-          <h2>¡Reta a tus amigos en el Quiz!</h2>
-          <p>Demuestra cuánto sabes de nuestra liga.</p>
-          <button type="button" data-v48-start>Jugar ahora</button>
-        </div>
-        <div class="v48-mini-ball" aria-hidden="true"><i></i></div>
-      </section>
-
-      <button type="button" class="v48-ranking-link" data-route="rankings">
-        <span>Clasificaciones</span><b>›</b>
-      </button>
+      <button type="button" class="v48-hotspot v48-result-control v48-back" data-route="more" aria-label="Volver a Más"></button>
+      <button type="button" class="v48-hotspot v48-result-control v48-login-main" data-v763-arena-play aria-label="Jugar Quiz Arena"></button>
+      <button type="button" class="v48-hotspot v48-result-control v48-guest-main" data-v763-arena-play aria-label="Jugar Quiz Arena"></button>
+      <button type="button" class="v48-hotspot v48-result-control v48-login-random" data-v763-arena-play aria-label="Jugar Quiz Aleatorio"></button>
+      <button type="button" class="v48-hotspot v48-result-control v48-guest-random" data-v763-arena-play aria-label="Jugar Quiz Aleatorio"></button>
+      <button type="button" class="v48-hotspot v48-result-control v48-rankings" data-route="rankings" aria-label="Ver clasificaciones"></button>
     </div>
-
-    <section class="v48-game" data-v48-game aria-label="Quiz de la Liga" aria-hidden="true">
-      <button type="button" class="v48-game-back" data-v48-game-back aria-label="Volver a Quiz Arena">
-        <svg viewBox="0 0 32 32" aria-hidden="true"><path d="M20.5 7.5 12 16l8.5 8.5M12.5 16H27"/></svg>
-      </button>
-
-      <div class="v48-game-logo" aria-label="Quiz de la Liga">
-        <span class="v48-game-quiz">QUIZ</span>
-        <span class="v48-game-de">DE LA</span>
-        <span class="v48-game-liga">LIGA</span>
-        <i class="v48-game-check" aria-hidden="true"></i>
-        <i class="v48-game-left" aria-hidden="true"></i>
-        <i class="v48-game-right" aria-hidden="true"></i>
-      </div>
-      <div class="v48-game-subtitle"><i></i><span>LIGA MUNICIPAL DE FÚTBOL<br>JUVENTINO ROSAS</span><i></i></div>
-
-      <div class="v48-game-card">
-        <p>¿Qué equipo lidera actualmente la tabla?</p>
-        ${options.map(([letter,label])=>`<button type="button" class="v48-game-option" data-v48-quiz="${label}" aria-label="${letter}. ${label}"><span class="v48-game-letter">${letter}</span><span class="v48-game-text">${label}</span><span class="v48-game-ok" aria-hidden="true">✓</span></button>`).join('')}
-      </div>
-
-      <div class="v48-game-stadium" aria-hidden="true"><i></i><i></i><span></span></div>
-      <div class="v48-game-message" aria-live="polite"></div>
-    </section>
   </section>`;
 }
 
@@ -6542,6 +6495,23 @@ document.addEventListener('click',event=>{
   event.preventDefault();go(button.dataset.route);
 });
 function bind(){
+/* V763 — flujo restaurado de Quiz Arena:
+   1) Quiz de la Liga (imagen 1) al entrar.
+   2) Quiz Arena anterior (imagen 2) después de responder.
+   3) Al tocar Jugar, cuenta regresiva y juego aleatorio V531. */
+document.querySelectorAll('[data-v48-answer]').forEach(el=>el.onclick=()=>{
+  const page=el.closest('.v48-quiz-arena-page');
+  const img=page?.querySelector('.v48-quiz-arena-image');
+  if(!page||!img)return;
+  page.classList.add('v48-answered');
+  img.src='./quiz-arena-reference.jpg?v=20261004-v763-quiz-flow';
+  img.alt='Quiz Arena';
+  window.scrollTo({top:0,left:0,behavior:'auto'});
+});
+document.querySelectorAll('[data-v763-arena-play]').forEach(el=>el.onclick=()=>{
+  window.dispatchEvent(new CustomEvent('ljr:v763-quiz-play'));
+});
+
 /* V668 — Centro Global nativo: los accesos existen dentro del HTML principal,
    así no dependen de que otro parche los inyecte después del render. */
 document.querySelectorAll('[data-v668-route]').forEach(el=>{
