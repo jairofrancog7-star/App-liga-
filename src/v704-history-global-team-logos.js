@@ -52,7 +52,9 @@ const RECORDS_2015_SPECIAL={
   'psv':'./assets/history/team-logos/legacy-2015-psv.webp',
   'juventus':'./assets/history/team-logos/legacy-2015-juventus.webp',
   'linces':'./assets/history/team-logos/legacy-2015-linces.webp',
-  'abejas':'./assets/history/team-logos/legacy-2015-abejas.webp'
+  'abejas':'./assets/history/team-logos/legacy-2015-abejas.webp',
+  'napoli':'./assets/history/team-logos/legacy-2015-napoli.webp',
+  'boavista':'./assets/history/team-logos/legacy-2015-boavista.webp'
 };
 
 function route(){
