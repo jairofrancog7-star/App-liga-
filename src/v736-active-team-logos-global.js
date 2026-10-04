@@ -1,19 +1,20 @@
-/* V742 — Escudos activos 2026 globales en todas las secciones.\n   Los escudos actuales tienen prioridad también en Historia, Records y pantallas derivadas. */
+/* V743 — Escudos activos 2026 globales en todas las secciones.\n   Los escudos actuales tienen prioridad también en Historia, Records y pantallas derivadas. */
 (function(){
 'use strict';
-if(window.__LJR_V742_ACTIVE_TEAM_LOGOS__)return;
-window.__LJR_V742_ACTIVE_TEAM_LOGOS__=true;
+if(window.__LJR_V743_ACTIVE_TEAM_LOGOS__)return;
+window.__LJR_V743_ACTIVE_TEAM_LOGOS__=true;
 
 const BASE='https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/';
 const APP_BASE='https://raw.githubusercontent.com/jairofrancog7-star/App-liga-/main/';
+const SITE='https://jairofrancog7-star.github.io/App-liga-/';
 
 const LOGOS={
   /* Escudos nuevos aportados por el usuario: se conservan como prioridad. */
-  'san-jose-fc':BASE+'assets/official-logos/san-jose-fc.png',
-  'hermanos':BASE+'assets/official-logos/hermanos.png',
-  'terricolas':BASE+'assets/official-logos/terricolas.png',
+  'san-jose-fc':SITE+'assets/official-logos/san-jose-fc-2026.webp',
+  'hermanos':SITE+'assets/official-logos/hermanos-2026.webp',
+  'terricolas':SITE+'assets/official-logos/terricolas-2026.webp',
   'oklahoma-city-fc':APP_BASE+'assets/official-logos/oklahoma-city-fc.png',
-  'boavista':APP_BASE+'assets/official-logos/boavista-2026.webp',
+  'boavista':SITE+'assets/official-logos/boavista-2026.webp',
   'manchester':BASE+'assets/official-logos/manchester.png',
   'herreras-fc':BASE+'assets/official-logos/herreras-fc.png',
   'america-j-rosas':BASE+'assets/branding/america-veteranos-35-user.png',
@@ -21,9 +22,9 @@ const LOGOS={
   'tecos':APP_BASE+'assets/history/team-logos/tecos.webp',
   'real-de-roque':APP_BASE+'assets/history/team-logos/real-de-roque.webp',
   'cebolleros-cuenda':BASE+'assets/teams/cebolleros-fc-cuenda.webp',
-  'abejas':APP_BASE+'assets/official-logos/abejas-2026.webp',
-  'cuenda':APP_BASE+'assets/official-logos/cuenda-2026.webp',
-  'promesas-fc':APP_BASE+'assets/official-logos/promesas-fc-2026.webp',
+  'abejas':SITE+'assets/official-logos/abejas-2026.webp',
+  'cuenda':SITE+'assets/official-logos/cuenda-2026.webp',
+  'promesas-fc':SITE+'assets/official-logos/promesas-fc-2026.webp',
   'la-esperanza':BASE+'assets/official-logos/la-esperanza.png',
   'mazacotes-fc':BASE+'assets/official-logos/mazacotes-fc.png',
   'tavera-fc':BASE+'assets/official-logos/tavera-fc.png',
@@ -31,7 +32,7 @@ const LOGOS={
   'la-cuadrilla':BASE+'assets/official-logos/la-cuadrilla.png',
   'napoli':BASE+'assets/official-logos/napoli.png',
 
-  /* V741 — faltantes activos: URL oficial explícita por equipo.
+  /* V743 — faltantes activos: URL oficial explícita por equipo.
      Evita que team_logos heredado reutilice por error el escudo de San José o Tavera. */
   'juventus':'https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/Juventus_ntqr0b',
   'linces':'https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/Linces_l1lc7c',
@@ -52,7 +53,7 @@ const LOGOS={
   'barza':'https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/Barcelona_amoaiq',
   'dep-maravillas':'https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/MAravillasFC_mnmhwx',
   'populares':'https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/PopularesFC_onellt',
-  'promesas-fc':APP_BASE+'assets/official-logos/promesas-fc-2026.webp',
+  'promesas-fc':SITE+'assets/official-logos/promesas-fc-2026.webp',
   'capibaras':'https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/Capibara_vocmbl',
   'la-canchita-deportes':'https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/LaCanchita_enf6ca',
   'galeana':'https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/Galeana_kujrh0',
@@ -64,10 +65,10 @@ const LOGOS={
 };
 const ALIAS={
   'san jose fc':'san-jose-fc','san jose':'san-jose-fc','san jose de la montana':'san-jose-fc','san jose de la montana fc':'san-jose-fc','san jose montana':'san-jose-fc',
-  'hermanos':'hermanos','hermanos fc':'hermanos','dep hermanos':'hermanos','deportivo hermanos':'hermanos','club deportivo hermanos':'hermanos','cd hermanos':'hermanos',
-  'terricolas':'terricolas','terricolas fc':'terricolas','terricolas seder':'terricolas','terricolas 1987':'terricolas',
+  'hermanos':SITE+'assets/official-logos/hermanos-2026.webp',
+  'terricolas':SITE+'assets/official-logos/terricolas-2026.webp',
   'oklahoma':'oklahoma-city-fc','oklahoma fc':'oklahoma-city-fc','oklahoma city':'oklahoma-city-fc','oklahoma city fc':'oklahoma-city-fc',
-  'boavista':'boavista','boavista fc':'boavista','bfc':'boavista','b f c':'boavista',
+  'boavista':SITE+'assets/official-logos/boavista-2026.webp',
   'manchester':'manchester','manchester fc':'manchester','manchester united':'manchester',
   'herrera':'herreras-fc','herrera fc':'herreras-fc','herreras':'herreras-fc','herreras fc':'herreras-fc',
   'america':'america-j-rosas','america veteranos':'america-j-rosas','club america':'america-j-rosas','club america veteranos':'america-j-rosas','club america j rosas':'america-j-rosas','america j rosas':'america-j-rosas',
@@ -75,8 +76,8 @@ const ALIAS={
   'tecos':'tecos','tecos fc':'tecos','tecos de pozos':'tecos','tecos pozos':'tecos',
   'real de roque':'real-de-roque','real roque':'real-de-roque','real de roque fc':'real-de-roque',
   'cebolleros':'cebolleros-cuenda','cebolleros fc':'cebolleros-cuenda','cebolleros fc cuenda':'cebolleros-cuenda','cebolleros de cuenda':'cebolleros-cuenda',
-  'abejas':'abejas','abejas fc':'abejas','abejas futbol club':'abejas',
-  'cuenda':'cuenda','santiago de cuenda':'cuenda','santiago de cuenda fc':'cuenda','santiago cuenda':'cuenda',
+  'abejas':SITE+'assets/official-logos/abejas-2026.webp',
+  'cuenda':SITE+'assets/official-logos/cuenda-2026.webp',
   'promesas':'promesas-fc','promesas fc':'promesas-fc','promesas pozos':'promesas-fc','promesas fc pozos':'promesas-fc',
   'la esperanza':'la-esperanza','la esperanza fc':'la-esperanza','esperanza':'la-esperanza',
   'mazacotes':'mazacotes-fc','mazacotes fc':'mazacotes-fc',
@@ -115,17 +116,17 @@ const ALIAS={
   'la huerta':'la-huerta','la huerta de cuenda':'la-huerta'
 };
 const SOURCE_MATCH={
-  'san-jose-fc':['SanJoseMonta%C3%B1a_ilen4d','SanJoseMontana_ilen4d','official-logos/san-jose-fc.png','teams/san-jose.webp','teams/san-jose-montana.webp'],
+  'san-jose-fc':SITE+'assets/official-logos/san-jose-fc-2026.webp',
   'juventus':['Juventus_fpshqs','official-logos/juventus.png'],
   'linces':['Linces_l1lc7c','official-logos/linces.png'],
   'napoli':['official-logos/napoli.png','Napoli_cp25dv','Napoli'],
-  'hermanos':['Hermanos_kbfrmh','official-logos/hermanos.png','teams/club-deportivo-hermanos.webp'],
+  'hermanos':SITE+'assets/official-logos/hermanos-2026.webp',
   'franco-fc':['official-logos/franco-fc.png','Franco'],
   'lobos-cdg':['official-logos/lobos-cdg.png','LobosCDG','lobos-cdg'],
   'galacticos':['teams/galacticos-pozos.webp','Galacticos'],
-  'terricolas':['Terricolas_ltbrzy','official-logos/terricolas.png','teams/terricolas-fc.webp'],
+  'terricolas':SITE+'assets/official-logos/terricolas-2026.webp',
   'oklahoma-city-fc':['official-logos/oklahoma-city-fc.png','teams/oklahoma-city-fc.webp'],
-  'boavista':['Boavista_wioj7b','Boavista_qiq0dy','official-logos/boavista.png','official-logos/boavista-2026.webp','teams/boavista-fc.webp'],
+  'boavista':SITE+'assets/official-logos/boavista-2026.webp',
   'manchester':['ManchesterU_zltkh0','official-logos/manchester.png','teams/manchester-united.webp'],
   'herreras-fc':['HerreraFC_mnmlsd','official-logos/herreras-fc.png','teams/herrera-fc.webp'],
   'america-j-rosas':['America_wbi53g','america-veteranos-35-user.png','official-logos/america-j-rosas.png'],
@@ -133,9 +134,9 @@ const SOURCE_MATCH={
   'tecos':['history/team-logos/tecos.webp','Tecos15logo'],
   'real-de-roque':['history/team-logos/real-de-roque.webp','real-de-roque'],
   'cebolleros-cuenda':['cebolleros-fc-cuenda.webp','cebolleros'],
-  'abejas':['Abejas_lxn6l9','official-logos/abejas.png','official-logos/abejas-2026.webp'],
-  'cuenda':['SantiagoCuenda_fvaq9e','official-logos/cuenda.png','official-logos/cuenda-2026.webp','teams/cuenda.webp'],
-  'promesas-fc':['Promesas','official-logos/promesas-fc.png','official-logos/promesas-fc-2026.webp','teams/promesas-fc-pozos.webp'],
+  'abejas':SITE+'assets/official-logos/abejas-2026.webp',
+  'cuenda':SITE+'assets/official-logos/cuenda-2026.webp',
+  'promesas-fc':SITE+'assets/official-logos/promesas-fc-2026.webp',
   'la-esperanza':['LaEsperanzaFC_vazya7','official-logos/la-esperanza.png','teams/la-esperanza-fc.webp'],
   'mazacotes-fc':['Mazacotes_ko8o0w','official-logos/mazacotes-fc.png'],
   'tavera-fc':['TaveraFC_gpdbhg','official-logos/tavera-fc.png'],
@@ -144,18 +145,14 @@ const SOURCE_MATCH={
 };
 
 const ACTIVE_DESIGN_BASE=APP_BASE+'assets/official-logos/active-2026/';
-const USER_LOGO_CHUNKS={
-  'san-jose-fc':['san-jose-fc.01.b64','san-jose-fc.02.b64'],
-  'hermanos':['hermanos.01.b64','hermanos.02.b64'],
-  'terricolas':['terricolas.01.b64','terricolas.02.b64','terricolas.03.b64']
-};
+const USER_LOGO_CHUNKS={};
 let userLogoLoad=null;
 const userLogoWait=ms=>new Promise(resolve=>setTimeout(resolve,ms));
 async function fetchUserLogoChunk(file){
   let last=null;
   for(let attempt=0;attempt<4;attempt++){
     try{
-      const res=await fetch(ACTIVE_DESIGN_BASE+file+'?v=20261004-v741-'+attempt,{cache:'no-store'});
+      const res=await fetch(ACTIVE_DESIGN_BASE+file+'?v=20261004-v743-'+attempt,{cache:'no-store'});
       if(res.ok)return (await res.text()).trim();
       last=new Error(file+' HTTP '+res.status);
     }catch(err){last=err;}
@@ -173,7 +170,7 @@ function loadUserLogoDesigns(){
     if(reg)reg.active2026={...LOGOS};
     return true;
   }).catch(err=>{
-    console.warn('[V742] No se pudieron cargar los tres diseños activos aportados por el usuario',err);
+    console.warn('[V743] No se pudieron cargar los tres diseños activos aportados por el usuario',err);
     return false;
   });
   return userLogoLoad;
@@ -200,27 +197,38 @@ function playerPhoto(img){
     img.matches?.('.v379-player-photo,.v610-generic-player,.v576-player-photo,.v576-hero-player-photo');
 }
 function teamFrom(img){
-  const direct=[img.alt,img.title,img.dataset?.team,img.dataset?.v62Team,img.dataset?.v42CompareTeam,img.dataset?.v27Team]
-    .filter(v=>String(v||'').trim());
-  for(const v of direct)if(keyFor(v))return String(v).trim();
+  const dataVals=[
+    img.dataset?.team,img.dataset?.v62Team,img.dataset?.v42CompareTeam,img.dataset?.v27Team,img.dataset?.teamCode
+  ].filter(Boolean);
+  for(const v of dataVals)if(keyFor(v))return String(v).trim();
 
-  const owner=img.closest?.('[data-team],[data-v62-team],[data-v42-compare-team],[data-v27-team]');
-  if(owner){
-    const vals=[owner.dataset?.team,owner.dataset?.v62Team,owner.dataset?.v42CompareTeam,owner.dataset?.v27Team].filter(Boolean);
+  const crest=img.closest?.('.crest');
+  if(crest){
+    const prev=crest.previousElementSibling, next=crest.nextElementSibling;
+    for(const node of [prev,next]){
+      if(!node || node.matches?.('.score,.v446-relevant-center'))continue;
+      const txt=String(node.textContent||'').trim();
+      if(keyFor(txt))return txt;
+    }
+  }
+
+  const side=img.closest?.('.v446-relevant-team,.v446-home-club,.v28-side,.v27-team,.v40-team,.v42-mini-team,.v46-team-card,.v62-team-card,.v6-league-team,.v6-table-row,.club-cell,[data-team-code],[data-team],[data-v62-team],[data-v42-compare-team],[data-v27-team]');
+  if(side){
+    const vals=[
+      side.dataset?.teamCode,side.dataset?.team,side.dataset?.v62Team,side.dataset?.v42CompareTeam,side.dataset?.v27Team,
+      side.querySelector?.('b')?.textContent,
+      side.querySelector?.('strong')?.textContent,
+      side.querySelector?.('.v27-team-name')?.textContent,
+      side.querySelector?.('.v46-team-copy strong')?.textContent,
+      side.querySelector?.('.v40-team strong')?.textContent,
+      side.querySelector?.('.v42-mini-team b')?.textContent,
+      side.querySelector?.('.v28-side span')?.textContent,
+      side.querySelector?.('.home')?.textContent
+    ].filter(Boolean);
     for(const v of vals)if(keyFor(v))return String(v).trim();
   }
 
-  const card=img.closest?.('.v27-team,.v40-team,.v42-mini-team,.v46-team-card,.v28-side,.v62-team-card,.v446-home-club,.v6-league-team,.v6-table-row,.club-cell');
-  if(!card)return '';
-  const vals=[
-    card.dataset?.team,card.dataset?.v62Team,card.dataset?.v42CompareTeam,card.dataset?.v27Team,
-    card.querySelector?.('.v27-team-name')?.textContent,
-    card.querySelector?.('.v46-team-copy strong')?.textContent,
-    card.querySelector?.('.v40-team strong')?.textContent,
-    card.querySelector?.('.v42-mini-team b')?.textContent,
-    card.querySelector?.('.v28-side span')?.textContent
-  ].filter(Boolean);
-  for(const v of vals)if(keyFor(v))return String(v).trim();
+  for(const v of [img.title,img.alt].filter(Boolean))if(keyFor(v))return String(v).trim();
   return '';
 }
 function looksLogo(img){
@@ -231,39 +239,40 @@ function looksLogo(img){
 function patchImg(img){
   if(!(img instanceof HTMLImageElement)||playerPhoto(img))return;
   const raw=String(img.currentSrc||img.src||'');
-  /* V741 — corrección global por identidad del equipo.
-     No reutilizar sourceKey(raw) como identidad: si el src ya está cruzado
-     (ej. San José en una tarjeta de Napoli), perpetuaría el error. */
   let team=teamFrom(img);
   let key=keyFor(team);
-  if(!key){
-    const bySource=sourceKey(raw);
-    if(['abejas','boavista','cuenda','promesas-fc'].includes(bySource)){
-      key=bySource;
-      team=team||bySource;
-    }
-  }
-  if(!key||!looksLogo(img))return;
+  if(!key)key=sourceKey(raw);
+  if(!key||!LOGOS[key]||!looksLogo(img))return;
+
   const src=LOGOS[key];
-  if(!src)return;
   const wanted=new URL(src,document.baseURI).href;
   if(String(img.src||'')!==wanted){
     img.src=src;
     img.removeAttribute('srcset');
   }
   if(team)img.alt=team;
-  img.dataset.v742ActiveLogo=key;
+  img.dataset.v743ActiveLogo=key;
   img.style.setProperty('object-fit','contain');
   img.style.setProperty('object-position','center');
+  if(!img.dataset.v743ErrorGuard){
+    img.dataset.v743ErrorGuard='1';
+    img.addEventListener('error',()=>{
+      const retry=LOGOS[key];
+      if(retry && img.src!==new URL(retry,document.baseURI).href){
+        img.src=retry;
+        img.removeAttribute('srcset');
+      }
+    });
+  }
 }
 function patch(root=document){root.querySelectorAll?.('img').forEach(patchImg);}
 function installRegistry(){
   const reg=window.LJR_TEAM_LOGOS;
-  if(!reg||reg.__v742Wrapped)return;
+  if(!reg||reg.__v743Wrapped)return;
   const previous=typeof reg.get==='function'?reg.get.bind(reg):()=> '';
   reg.get=function(name){const k=keyFor(name);return (k&&LOGOS[k])||previous(name);};
   reg.active2026={...LOGOS};
-  reg.__v742Wrapped=true;
+  reg.__v743Wrapped=true;
 }
 function sync(){
   installRegistry();
