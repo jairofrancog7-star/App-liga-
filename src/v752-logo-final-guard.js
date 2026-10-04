@@ -11,13 +11,13 @@ const APP='https://raw.githubusercontent.com/jairofrancog7-star/App-liga-/main/'
 const V='?v=20261004-v752';
 
 const SOURCES={
-  'san-jose-fc':[APP+'assets/official-logos/san-jose-fc-2026.webp'+V,DATA+'assets/official-logos/san-jose-fc.png'],
-  'hermanos':[APP+'assets/official-logos/hermanos-2026.webp'+V,DATA+'assets/official-logos/hermanos.png',DATA+'assets/teams/club-deportivo-hermanos.webp'],
+  'san-jose-fc':[DATA+'assets/teams/san-jose.webp',DATA+'assets/official-logos/san-jose-fc.png'],
+  'hermanos':[DATA+'assets/official-logos/hermanos.png',DATA+'assets/teams/club-deportivo-hermanos.webp'],
   'terricolas':[APP+'assets/official-logos/terricolas-2026.webp'+V,DATA+'assets/official-logos/terricolas.png',DATA+'assets/teams/terricolas-fc.webp'],
   'boavista':[APP+'assets/official-logos/boavista-2026.webp'+V,DATA+'assets/official-logos/boavista.png',DATA+'assets/teams/boavista-fc.webp'],
-  'abejas':[APP+'assets/official-logos/abejas-2026.webp'+V,DATA+'assets/official-logos/abejas.png'],
+  'abejas':[DATA+'assets/official-logos/abejas.png'],
   'cuenda':[APP+'assets/official-logos/cuenda-2026.webp'+V,DATA+'assets/official-logos/cuenda.png',DATA+'assets/teams/tc-cuenda.webp'],
-  'promesas-fc':[APP+'assets/official-logos/promesas-fc-2026.webp'+V,DATA+'assets/official-logos/promesas-fc.png',DATA+'assets/teams/promesas-fc-pozos.webp'],
+  'promesas-fc':[DATA+'assets/official-logos/promesas-fc.png',DATA+'assets/teams/promesas-fc-pozos.webp'],
   'herreras-fc':[DATA+'assets/official-logos/herreras-fc.png',DATA+'assets/teams/herrera-fc.webp'],
   'america':[DATA+'assets/branding/america-veteranos-35-user.png',DATA+'assets/official-logos/america.png'],
   'la-esperanza':[DATA+'assets/official-logos/la-esperanza.png',DATA+'assets/teams/la-esperanza-fc.webp'],
@@ -116,9 +116,17 @@ function installErrorCycle(img,key){
 function forceImg(img,key){
   const list=SOURCES[key]; if(!list?.length)return;
   installErrorCycle(img,key);
-  img.dataset.v752Try='0';
-  const wanted=new URL(list[0],document.baseURI).href;
-  if(String(img.src||'')!==wanted){
+  const current=String(img.currentSrc||img.src||'');
+  let currentIndex=-1;
+  for(let i=0;i<list.length;i++){
+    try{
+      if(current===new URL(list[i],document.baseURI).href){currentIndex=i;break}
+    }catch(_){}
+  }
+  if(currentIndex>=0){
+    img.dataset.v752Try=String(currentIndex);
+  }else{
+    img.dataset.v752Try='0';
     img.src=list[0];
     img.removeAttribute('srcset');
   }
