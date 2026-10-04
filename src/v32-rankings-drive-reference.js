@@ -2,6 +2,7 @@
 /* V732_RANKINGS_FILTER_VIDEO */
 /* V733_FILTER_RETURN_SAME_PLACE */
 /* V734_CATEGORY_FILTER_GLOBAL_SYNC */
+/* V735_FILTER_FULL_TABLE */
 (function(){
 'use strict';
 
@@ -281,7 +282,38 @@ function fedRows(){
     '</button>';
   }).join('');
 }
+function filteredCategoryStandingRows(){
+  if(!selectedFederation)return [];
+  var id=clubCategoryId(selectedFederation),db=officialDb();
+  var rows=db?.categories?.[id]?.standings?.[0]?.rows||[];
+  return rows.filter(function(r){return Array.isArray(r)&&String(r[1]||'').trim()});
+}
+function filteredCategoryTable(){
+  var selected=categoryByCode(selectedFederation);
+  var rows=filteredCategoryStandingRows();
+  var label=selected?selected[1]:'Categoría';
+  return '<section class="v32-card v32-filtered-standings-card">'+
+    '<div class="v32-filtered-title"><div><small>CLASIFICACIÓN COMPLETA</small><strong>'+esc(label)+'</strong></div><span>'+esc(rows.length)+' equipos</span></div>'+
+    '<div class="v32-full-table-scroll">'+
+      '<div class="v32-full-table">'+
+        '<div class="v32-full-head"><span>POS</span><span>CLUB</span><span>PJ</span><span>PG</span><span>PE</span><span>PP</span><span>GF</span><span>GC</span><span>DG</span><span>PTS</span></div>'+
+        (rows.length?rows.map(function(r,i){
+          var name=String(r[1]||'').trim();
+          return '<button type="button" class="v32-full-row" data-v32-open-team="'+esc(name)+'">'+
+            '<span>'+(r[0]??(i+1))+'</span>'+
+            '<span class="v32-full-team">'+logo(teamCode(name),name)+'<b>'+esc(name)+'</b></span>'+
+            '<span>'+esc(r[2]??'—')+'</span><span>'+esc(r[3]??'—')+'</span><span>'+esc(r[4]??'—')+'</span><span>'+esc(r[5]??'—')+'</span>'+
+            '<span>'+esc(r[6]??'—')+'</span><span>'+esc(r[7]??'—')+'</span><span>'+esc(r[8]??'—')+'</span><strong>'+esc(r[9]??'—')+'</strong>'+
+          '</button>';
+        }).join(''):'<div class="v32-full-empty">No hay clasificación publicada para '+esc(label)+'.</div>')+
+      '</div>'+
+    '</div>'+
+  '</section>';
+}
 function fedView(){
+  if(selectedFederation){
+    return fedControls()+filteredCategoryTable();
+  }
   return fedControls()+
     '<section class="v32-card v32-fed-card">'+
       '<div class="v32-fed-head"><span>Categoría</span><span>Jugadores</span><span>Equipos</span></div>'+
@@ -500,6 +532,7 @@ function render(){
 }
 function schedule(){requestAnimationFrame(function(){requestAnimationFrame(render)})}
 window.addEventListener('hashchange',schedule);
+window.addEventListener('ljr:official-data',schedule);
 var target=document.querySelector('#screen');
 if(target)new MutationObserver(function(){
   if(route()==='rankings'&&!target.querySelector('[data-v32-rankings]'))schedule();
