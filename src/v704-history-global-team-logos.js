@@ -41,6 +41,47 @@ const SPECIAL={
    de Primera Fuerza del 24 de mayo de 2015 aportado por el usuario.
    Esta tabla es exclusiva de Récords para no sustituir escudos actuales en
    otras pantallas. */
+/* V724 — fuente ÚNICA para Memoria de clubes.
+   Estos escudos ya están confirmados en el repo; se usa un solo archivo por club
+   para evitar que V672/V701/V704 alternen imágenes y produzcan parpadeo. */
+const LEGACY_CARD_LOGOS={
+  'cerrito':'./assets/teams/deportivo-cg.webp',
+  'cerrito de g':'./assets/teams/deportivo-cg.webp',
+  'cerrito de gasca':'./assets/teams/deportivo-cg.webp',
+  'cerrito de gasca fc':'./assets/teams/deportivo-cg.webp',
+  'real cerrito':'./assets/teams/deportivo-cg.webp',
+  'real cerrito de gasca':'./assets/teams/deportivo-cg.webp',
+  'deportivo cerrito':'./assets/teams/deportivo-cg.webp',
+  'dep cerrito':'./assets/teams/deportivo-cg.webp',
+  'deportivo cg':'./assets/teams/deportivo-cg.webp',
+
+  'tecos':'./assets/history/team-logos/tecos.webp',
+  'tecos fc':'./assets/history/team-logos/tecos.webp',
+  'tecos jr':'./assets/history/team-logos/tecos.webp',
+  'tecos jrs':'./assets/history/team-logos/tecos.webp',
+  'tecos pozos':'./assets/history/team-logos/tecos.webp',
+
+  'juventus':'./assets/official-logos/juventus.png',
+  'juventus fc':'./assets/official-logos/juventus.png',
+  'linces':'./assets/official-logos/linces.png',
+  'linces fc':'./assets/official-logos/linces.png',
+  'linces de pozos':'./assets/official-logos/linces.png',
+  'manchester':'./assets/official-logos/manchester.png',
+  'manchester united':'./assets/teams/manchester-united.webp',
+
+  'olimpicos':'./assets/history/team-logos/legacy-2015-olimpicos-pozos.webp',
+  'olimpicos de pozos':'./assets/history/team-logos/legacy-2015-olimpicos-pozos.webp',
+  'olimpicos pozos':'./assets/history/team-logos/legacy-2015-olimpicos-pozos.webp',
+  'puros cuates':'./assets/history/team-logos/legacy-2015-puros-cuates.webp',
+  'puros cuates fc':'./assets/history/team-logos/legacy-2015-puros-cuates.webp',
+  'mazacotes':'./assets/history/team-logos/legacy-2015-mazacotes.webp',
+  'mazacotes fc':'./assets/history/team-logos/legacy-2015-mazacotes.webp',
+
+  'lobos cdg':'./assets/official-logos/lobos-cdg.png',
+  'lobos jrs':'./assets/teams/lobos-jr-cerrito-gasca.webp',
+  'lobos jr':'./assets/teams/lobos-jr-cerrito-gasca.webp'
+};
+
 const RECORDS_2015_SPECIAL={
   'el alto':'./assets/history/team-logos/legacy-2015-el-alto.webp',
   'el alto fc':'./assets/history/team-logos/legacy-2015-el-alto.webp',
@@ -149,6 +190,14 @@ function logoFor(name){
   }
   return '';
 }
+function legacyCardLogoFor(name){
+  for(const a of aliases(name)){
+    const src=LEGACY_CARD_LOGOS[norm(a)];
+    if(src)return src;
+  }
+  return logoFor(name);
+}
+
 function recordLogoFor(name){
   for(const a of aliases(name)){
     const src=RECORDS_2015_SPECIAL[norm(a)];
@@ -237,7 +286,34 @@ function patchEra(root){
 /* Memoria de clubes + directorios históricos */
 function patchArchives(root){
   root.querySelectorAll('.v370-legacy-team').forEach(card=>{
-    forceHolder(card.querySelector('.v370-legacy-crest'),text(card,'.v370-legacy-copy strong'),'v704-legacy-logo');
+    const name=text(card,'.v370-legacy-copy strong');
+    const holder=card.querySelector('.v370-legacy-crest');
+    const src=legacyCardLogoFor(name);
+    if(!holder||!name||!src)return;
+
+    const current=[...holder.querySelectorAll('img')];
+    let keep=current.find(x=>same(x.currentSrc||x.src,src))||null;
+
+    if(!keep){
+      keep=img(src,name,'v704-legacy-logo');
+      keep.loading='eager';
+      keep.fetchPriority='high';
+      holder.replaceChildren(keep);
+    }else{
+      current.filter(x=>x!==keep).forEach(x=>x.remove());
+      [...holder.children].filter(x=>x!==keep).forEach(x=>x.remove());
+      keep.src=src;
+      keep.alt=name;
+      keep.className='v704-legacy-logo';
+      keep.loading='eager';
+      keep.decoding='async';
+      keep.fetchPriority='high';
+      keep.dataset.v704HistoryLogo='1';
+    }
+
+    holder.classList.remove('is-fallback','v672-has-historic-logo','v701-has-logo');
+    holder.classList.add('v704-has-team-logo','v724-single-logo');
+    card.dataset.v724LegacyLogo='1';
   });
   root.querySelectorAll('.v35-era-team').forEach(card=>{
     const name=text(card,'b');
