@@ -80,22 +80,41 @@ function playerPhoto(img){
   return !!img.closest?.('[data-player-portrait],.v123-avatar,.v123-option-avatar,.v66-player-avatar,.v42-avatar,.v576-player-avatar,.v379-related-avatar,.v562-avatar,.v124-avatar') ||
     img.matches?.('.v379-player-photo,.v610-generic-player,.v576-player-photo,.v576-hero-player-photo');
 }
+function logoForTeam(name){
+  const k=keyFor(name);
+  if(k&&LOGOS[k])return LOGOS[k];
+  try{
+    const src=window.LJR_TEAM_LOGOS?.get?.(name)||
+      window.LJR_OFFICIAL_API?.getLogo?.(name)||
+      window.V66_OFFICIAL_DIRECTORY?.logoFor?.(name)||'';
+    if(src)return src;
+  }catch(_){}
+  return '';
+}
+function validTeamName(v){
+  const name=String(v||'').trim();
+  return name&&!!logoForTeam(name);
+}
 function teamFrom(img){
-  const direct=[img.alt,img.title,img.dataset?.team,img.dataset?.v62Team,img.dataset?.v42CompareTeam,img.dataset?.v27Team].filter(Boolean);
-  for(const v of direct)if(keyFor(v))return v;
+  /* V740 — nunca deducir el club por el src actual: una imagen equivocada
+     puede venir heredada de otra tarjeta. Primero manda el nombre visible/dataset. */
   let node=img.parentElement;
-  for(let i=0;i<4&&node;i++,node=node.parentElement){
+  for(let depth=0;depth<5&&node;depth++,node=node.parentElement){
     const vals=[
       node.dataset?.team,node.dataset?.v62Team,node.dataset?.v42CompareTeam,node.dataset?.v27Team,
+      node.querySelector?.(':scope > b')?.textContent,
+      node.querySelector?.(':scope > strong')?.textContent,
+      node.matches?.('.v103-upcoming-team,.v12-result-team,.v40-team,.v42-mini-team,.v28-side,.v27-team')?node.textContent:'',
       node.querySelector?.('.v27-team-name')?.textContent,
       node.querySelector?.('.v46-team-copy strong')?.textContent,
       node.querySelector?.('.v40-team strong')?.textContent,
       node.querySelector?.('.v42-mini-team b')?.textContent,
-      node.querySelector?.('.v28-side span')?.textContent,
-      node.querySelector?.('strong')?.textContent,node.querySelector?.('b')?.textContent
+      node.querySelector?.('.v28-side span')?.textContent
     ].filter(Boolean);
-    for(const v of vals)if(keyFor(v))return String(v).trim();
+    for(const v of vals)if(validTeamName(v))return String(v).trim();
   }
+  const direct=[img.dataset?.team,img.dataset?.v62Team,img.dataset?.v42CompareTeam,img.dataset?.v27Team,img.alt,img.title].filter(Boolean);
+  for(const v of direct)if(validTeamName(v))return String(v).trim();
   return '';
 }
 function looksLogo(img){
@@ -107,20 +126,20 @@ function patchImg(img){
   if(!(img instanceof HTMLImageElement)||historical(img)||playerPhoto(img))return;
   const raw=String(img.currentSrc||img.src||'');
   if(/\/assets\/history\/archive-v\d+\//i.test(raw))return;
-  /* V739 — el nombre explícito del equipo manda sobre la URL actual.
-     Corrige casos donde una tarjeta fue renderizada con el escudo de otro club
-     (por ejemplo NAPOLI heredando una imagen ajena). */
-  let key='';
+  /* V740 — corrección global por identidad del equipo.
+     No reutilizar sourceKey(raw) como identidad: si el src ya está cruzado
+     (ej. San José en una tarjeta de Napoli), perpetuaría el error. */
   const team=teamFrom(img);
-  if(team&&looksLogo(img))key=keyFor(team);
-  if(!key)key=sourceKey(raw);
-  const src=LOGOS[key];
+  if(!team||!looksLogo(img))return;
+  const src=logoForTeam(team);
   if(!src)return;
-  if(img.getAttribute('src')!==src){
+  const wanted=new URL(src,document.baseURI).href;
+  if(String(img.src||'')!==wanted){
     img.src=src;
     img.removeAttribute('srcset');
   }
-  img.dataset.v736ActiveLogo=key;
+  img.alt=team;
+  img.dataset.v736ActiveLogo=keyFor(team)||norm(team);
   img.style.setProperty('object-fit','contain');
   img.style.setProperty('object-position','center');
 }
