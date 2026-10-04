@@ -62,6 +62,11 @@ const historicalSources=[
     url:''
   },
   {
+    title:'Rol oficial · Jornada 1 · Copa intersemanal · 8–10 jul 2015',
+    note:'Fotografía aportada por el usuario de la Liga Municipal de Futbol Intersemanal de Juventino Rosas. Registra Barcelona, La Esperanza, La Máquina, Santacrucense, Picosos, Apex, Chelsea, Inter, Aldama, Átomos, Juventus, Galácticos, F C V L, Atlético Dipex y PSV; además del amistoso femenil Niupy vs Inter de Cuenda.',
+    url:''
+  },
+  {
     title:'Golazo Liga · fecha digital mínima comprobada',
     note:'Captura aportada: publicación visible con fecha 5 OCT 2012. Prueba actividad digital al menos desde entonces, pero no la fundación de la Liga ni la fecha de creación del perfil.',
     url:'https://www.facebook.com/golazo.liga'
@@ -724,6 +729,7 @@ const recordMemories=[
   {tag:'CORTE J30',title:'Linces',value:'79 puntos',detail:'Líder del corte de Primera publicado el 6 may 2017; no se presenta como récord absoluto.',image:RAW+'assets/official-logos/linces.png'},
   {tag:'CORTE J30',title:'Hermanos',value:'111 GF',detail:'Goles a favor visibles en la tabla de Primera J30 del 6 may 2017.',image:RAW+'assets/official-logos/hermanos.png'},
   {tag:'CORTE J30',title:'Linces',value:'+75 DG',detail:'Diferencia de goles visible en la tabla de Primera J30 del 6 may 2017.',image:RAW+'assets/official-logos/linces.png'},
+  {tag:'ROL 2015',title:'Copa intersemanal · Jornada 1',value:'17 equipos documentados',detail:'Rol de juegos del 8 al 10 de julio de 2015. Copa: Barcelona, La Esperanza, La Máquina, Santacrucense, Picosos, Apex, Chelsea, Inter, Aldama, Átomos, Juventus, Galácticos, F C V L, Atlético Dipex y PSV (descanso). Amistoso femenil: Niupy vs Inter de Cuenda.'},
   {tag:'VETERANOS J13',title:'La Esperanza',value:'11 G · 2 E · 0 P',detail:'Corte del 25 nov 2015: 35 puntos, 38 GF y 13 GC; no se presenta como cierre final.',image:RAW+'assets/official-logos/la-esperanza.png'},
   {tag:'GOLEO',title:'Daniel Gómez Delgado',value:'34 goles',detail:'A. Centeno · campeón de goleo de Fuerza Intermedia, publicación del 21 feb 2017.'},
   {tag:'GOLEO',title:'José Guadalupe Moreno',value:'Campeón',detail:'Campeón goleador de Primera Fuerza; premiación publicada el 11 ene 2015.'},
@@ -1033,6 +1039,9 @@ const historicalTeamEras=[
   {period:'2016 · Jornada 5',category:'Veteranos · equipos identificados en tabla de goleo',teams:['Cuenda','Hermanos','Picosos','Magisterio','La Esperanza','Dynamo','Boavista','Valedores','UNAM','Cuenda Jr.']},
   {period:'2015 · Torneo de Liga · cortes aportados',category:'Primera Fuerza · tablas J5/J17',teams:['Juventus','Chelsea','Boavista','Olímpicos','Linces','La Esperanza','Napoli','Abejas','El Alto','Mazacotes','La Pandilla','PSV','Cerrito de Gasca','Puros Cuates','San Antonio','Hermanos','Birds Eye']},
   {period:'2015 · Torneo de Liga · corte aportado',category:'Segunda Fuerza · tabla J17',teams:['Osasuna','Oklahoma','Galeana','San Julián','Morales','Toros','Birds Eye Jr.','San José de Allende','Río Grande','Tecos','Herbalife Sta. Cruz','Portugal','San Antonio FC','Inter de Milán']},
+  // V713 — rol aportado por el usuario: Liga Municipal de Futbol Intersemanal, Jornada 1, Copa, 8–10 jul 2015.
+  {period:'08–10 jul 2015 · Jornada 1 · Torneo de Copa',category:'Liga Municipal de Futbol Intersemanal',teams:['Barcelona','La Esperanza','La Máquina','Santacrucense','Picosos','Apex','Chelsea','Inter','Aldama','Átomos','Juventus','Galácticos','F C V L','Atlético Dipex','PSV']},
+  {period:'09 jul 2015 · amistoso femenil',category:'Partido amistoso documentado en el mismo rol',teams:['Niupy','Inter de Cuenda']},
   {period:'2016–2017',category:'Fuerzas y Veteranos',teams:['Toros','Morales','Galeana','San Julián','Birds Eye Jr.','San José de Allende','Río Grande','Tecos','Portugal','San Antonio FC','Dortmund','A. Centeno','Puros Cuates','Oklahoma','Mazacotes','Real Cerrito de Gasca','Osasuna']},
   {period:'14–15 jul 2018 · rol de juegos aportado',category:'Veteranos, Campeón de Campeones 2017–2018 de Primera Fuerza y amistosos dominicales',teams:['Magisterio','Sección XIV','Deportivo Lagartos','Valedores','Hermanos','Linces','Franco FC','La Esperanza Jr.','Mazacotes','Barza','Malvinas','Populares','Tavera Jr.','World 11','A. Centeno','El Alto']},
   {period:'Archivo · rol amistoso 11–12 ago · año por precisar',category:'Veteranos y categoría dominical · captura aportada',teams:['Valedores','Hermanos','Chelsea','Guadalajara','Cuenda','Magisterio','Sección XIV','PSV','Napoli','San José de Allende','Galaxy','Oklahoma','Malvinas','Mineros','Barza','La Cuadrilla','World 11','Tecos','La Esperanza Jr.','Mazacotes','Boavista','Toros','Galeana','Puros Cuates','Abejas','Dep. Cerrito','El Alto','Tavera','La Huerta','San Antonio de Romerillo','Tavera Jr.']},
@@ -1118,7 +1127,8 @@ const expandedRetroNames=[
   'Guadalajara','Sección XIV','La Pandilla de Rancho V.','Dortmund','Portugal','Birds Eye Jr.','Centeno',
   'Boca Jrs.','B.F.C.','Manchester United','Galácticos (Pozos)','Herreras FC (Cuenda)','Lobos Jrs.','Lobos CDG','Franco FC','Salvajes','San Antonio Jrs.','Real de Roque',
   'Hermanos','Cuenda','Napoli','World 11','La Esperanza Jr.','Deportivo Lagartos','Boavista','Galeana','Abejas','Dep. Cerrito','Tavera','La Huerta','San Antonio de Romerillo','Tavera Jr.','Combinado de Cuenda','Combinado','Unión','Unión FC','Atlético San Julián',
-  'Atlético Río Grande','Club de Leones','León FC','Toros FC','Amigos World','River Plate','Inter de Morales','SEP Pozos'
+  'Atlético Río Grande','Club de Leones','León FC','Toros FC','Amigos World','River Plate','Inter de Morales','SEP Pozos',
+  'Barcelona','La Esperanza','La Máquina','Santacrucense','Apex','Inter','Juventus','Galácticos','F C V L','Atlético Dipex','Niupy','Inter de Cuenda'
 ];
 
 const historicalTimeline=[
@@ -1135,6 +1145,7 @@ const historicalTimeline=[
   {date:'feb 2014',title:'Administrador de Golazo Liga · fuente histórica',detail:'El usuario aporta otro perfil identificado como administrador de Golazo Liga en febrero de 2014. Se incorpora como pista para localizar roles, equipos, jornadas y resultados de esa etapa. La búsqueda web pública no permitió verificar directamente publicaciones indexadas del enlace compartido.'},
   {date:'may 2014',title:'Administrador de Golazo Liga · roles',detail:'El usuario aporta un perfil que identifica como administrador de Golazo Liga en mayo de 2014 y señala que publicaba roles de juego. Se registra como fuente histórica aportada y pista para reconstruir calendarios, equipos y jornadas de esa etapa; el enlace compartido no pudo verificarse de forma independiente fuera de Facebook.'},
   {date:'c. 2015',title:'Administrador conocido de Golazo Liga',detail:'El usuario identifica un perfil como administrador de Golazo Liga hacia 2015. Es una pista útil para reconstruir publicaciones y dirigentes, pero el cargo de presidente de la Liga no queda probado solo por administrar la página.'},
+  {date:'08–10 jul 2015',title:'Jornada 1 · Torneo de Copa intersemanal',detail:'Rol aportado de la “Liga Municipal de Futbol Intersemanal de Juventino Rosas”. Documenta Barcelona vs La Esperanza, La Máquina vs Santacrucense, Picosos vs Apex, Chelsea vs Inter, Aldama vs Átomos, Juventus vs Galácticos y F C V L vs Atlético Dipex; PSV aparece en descanso. El mismo documento registra un amistoso femenil Niupy vs Inter de Cuenda. La anotación manuscrita suspende el juego del Campo 1 del miércoles y señala que los Campos 2 y 3 sí se juegan.'},
   {date:'24 may 2016',title:'Acuerdo interno de la Liga',detail:'El reglamento vigente conserva el antecedente de un acuerdo de asamblea del 24 de mayo de 2016 relacionado con el proyecto de construcción de nuevas oficinas.'},
     {date:'28 feb 2016',title:'La Esperanza · campeón de Veteranos 2016',detail:'El material aportado registra la entrega del premio en efectivo a La Esperanza como campeón de la categoría Veteranos.',image:HIST_ROOT+'assets/official-logos/la-esperanza.png'},
   {date:'28 feb 2016',title:'Malvinas · Campeón de Campeones de Intermedia',detail:'Publicación aportada por el usuario identifica a Malvinas como campeón de Campeones de la categoría Intermedia. El subcampeón queda pendiente.',image:HIST_ROOT+'assets/official-logos/malvinas.png'},
