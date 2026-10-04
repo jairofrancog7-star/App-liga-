@@ -2677,7 +2677,10 @@ function v370ArchiveTeamsBlock(){
       categoryKeys:categories.map(v710CategoryKey),
       firstYear:years[0]||0,
       lastYear:years[years.length-1]||0,
-      yearText:years.length?(years[0]===years[years.length-1]?String(years[0]):years[0]+'–'+years[years.length-1]):'Año por precisar'
+      /* V717 — no presentar esto como fecha de fundación.
+         Es la primera fecha/año en que el club aparece documentado en el archivo. */
+      firstSeenText:years.length?('Desde '+years[0]):'Fecha inicial por precisar',
+      yearText:years.length?(years[0]===years[years.length-1]?('Archivo '+years[0]):('Archivo '+years[0]+'–'+years[years.length-1])):'Archivo · fecha por precisar'
     };
   }).sort((a,b)=>collator.compare(a.display,b.display));
 
@@ -2714,6 +2717,7 @@ function v370ArchiveTeamsBlock(){
         (logo?'<img src="'+esc(logo)+'" alt="'+esc(name)+'" loading="lazy" decoding="async" onerror="this.parentElement.classList.add(\'is-fallback\');this.remove()">':'<b>'+esc(v370HistoryTeamInitials(name))+'</b>')+
       '</span>'+
       '<span class="v370-legacy-copy"><small>'+(evolved?'EVOLUCIÓN DEL MISMO CLUB':'REGISTRO EN EL ARCHIVO')+'</small><strong>'+esc(name)+'</strong>'+
+        '<span class="v717-first-seen"><span>DOCUMENTADO</span><b>'+esc(club.firstSeenText)+'</b></span>'+
         '<span class="v710-team-meta"><em>'+esc(club.categories.join(' · '))+'</em><b>'+esc(club.yearText)+'</b></span>'+
         (evolved?'<em class="v706-lineage">'+esc(club.note)+'</em>':'')+
       '</span>'+
