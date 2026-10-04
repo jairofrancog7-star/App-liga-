@@ -9,7 +9,8 @@ const route=()=>String(location.hash||'').replace(/^#\/?/,'').split('?')[0]||doc
 const BAD_TEXT=[
   'generar png por categoría',
   'generar png por categoria',
-  'tablas y avisos'
+  'tablas y avisos',
+  'quiniela de la liga'
 ];
 
 function hide(el){
@@ -34,7 +35,8 @@ function text(v){
 }
 
 function clean(root=document){
-  if(route()!=='more')return;
+  const r=route();
+  if(r!=='more'&&r!=='leagueTools')return;
   const screen=document.querySelector('#screen');if(!screen)return;
 
   // Legacy lower modules: keep hidden in DOM so their own observers do not recreate them.
@@ -63,7 +65,7 @@ clean();
 const screen=document.querySelector('#screen');
 if(screen){
   new MutationObserver(muts=>{
-    if(route()!=='more')return;
+    const r=route();if(r!=='more'&&r!=='leagueTools')return;
     for(const m of muts){
       for(const n of m.addedNodes){
         if(n.nodeType===1)clean(n);
