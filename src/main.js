@@ -6418,22 +6418,29 @@ function storeView(){
     '<div class="team-list">'+teams.map(t=>'<div class="team-row"><button class="team-main" data-team="'+t.code+'">'+crest(t.code)+'<span><b>'+t.name+'</b><small>Ver club y artículos</small></span></button><button class="mini-btn" data-team="'+t.code+'">Abrir</button></div>').join('')+'</div>';
 }
 function quizArenaView(){
-  return `<section class="v48-quiz-arena-page" aria-label="Quiz Arena">
-    <div class="v48-quiz-arena-shot">
-      <img class="v48-quiz-arena-image" src="./quiz-arena-main.jpg?v=20260919-quiz-main-drive1" alt="Quiz de la Liga" loading="eager" decoding="async" draggable="false" onerror="this.onerror=null;this.src='./quiz-arena-reference.jpg?v=20260919-quiz-result1'">
+  const options=[['A','Pozos'],['B','Rincón de Centeno'],['C','Juventino'],['D','Cuenda']];
+  return `<section class="v48-quiz-arena-page v764-quiz-intro" data-v48-arena aria-label="Quiz Arena">
+    <button type="button" class="v764-quiz-back" data-route="more" aria-label="Volver a Más">
+      <svg viewBox="0 0 32 32" aria-hidden="true"><path d="M20.5 7.5 12 16l8.5 8.5M12.5 16H27"/></svg>
+    </button>
 
-      <button type="button" class="v48-hotspot v48-answer v48-answer-a" data-v48-answer="A" aria-label="Respuesta A, Pozos"></button>
-      <button type="button" class="v48-hotspot v48-answer v48-answer-b" data-v48-answer="B" aria-label="Respuesta B, Rincón de Centeno"></button>
-      <button type="button" class="v48-hotspot v48-answer v48-answer-c" data-v48-answer="C" aria-label="Respuesta C, Juventino"></button>
-      <button type="button" class="v48-hotspot v48-answer v48-answer-d" data-v48-answer="D" aria-label="Respuesta D, Cuenda"></button>
-
-      <button type="button" class="v48-hotspot v48-result-control v48-back" data-route="more" aria-label="Volver a Más"></button>
-      <button type="button" class="v48-hotspot v48-result-control v48-login-main" data-v763-arena-play aria-label="Jugar Quiz Arena"></button>
-      <button type="button" class="v48-hotspot v48-result-control v48-guest-main" data-v763-arena-play aria-label="Jugar Quiz Arena"></button>
-      <button type="button" class="v48-hotspot v48-result-control v48-login-random" data-v763-arena-play aria-label="Jugar Quiz Aleatorio"></button>
-      <button type="button" class="v48-hotspot v48-result-control v48-guest-random" data-v763-arena-play aria-label="Jugar Quiz Aleatorio"></button>
-      <button type="button" class="v48-hotspot v48-result-control v48-rankings" data-route="rankings" aria-label="Ver clasificaciones"></button>
+    <div class="v764-quiz-logo" aria-label="Quiz de la Liga">
+      <span class="v764-logo-quiz">QUIZ</span>
+      <span class="v764-logo-de">DE LA</span>
+      <span class="v764-logo-liga">LIGA</span>
+      <i class="v764-check-box" aria-hidden="true"></i>
+      <i class="v764-angle-left" aria-hidden="true"></i>
+      <i class="v764-angle-right" aria-hidden="true"></i>
     </div>
+
+    <div class="v764-quiz-subtitle"><i></i><span>LIGA MUNICIPAL DE FÚTBOL<br>JUVENTINO ROSAS</span><i></i></div>
+
+    <div class="v764-quiz-card">
+      <p>¿Qué equipo lidera actualmente la tabla?</p>
+      ${options.map(([letter,label])=>`<button type="button" class="v764-quiz-option" data-v764-intro-answer="${label}" aria-label="${letter}. ${label}"><span class="v764-answer-letter">${letter}</span><span class="v764-answer-text">${label}</span></button>`).join('')}
+    </div>
+
+    <div class="v764-stadium" aria-hidden="true"><i class="v764-light left"></i><i class="v764-light right"></i><i class="v764-stands"></i></div>
   </section>`;
 }
 
@@ -6495,47 +6502,16 @@ document.addEventListener('click',event=>{
   event.preventDefault();go(button.dataset.route);
 });
 function bind(){
-/* V763 — flujo restaurado de Quiz Arena:
-   1) Quiz de la Liga (imagen 1) al entrar.
-   2) Quiz Arena anterior (imagen 2) después de responder.
-   3) Al tocar Jugar, cuenta regresiva y juego aleatorio V531. */
-document.querySelectorAll('[data-v48-answer]').forEach(el=>el.onclick=()=>{
-  const page=el.closest('.v48-quiz-arena-page');
-  const img=page?.querySelector('.v48-quiz-arena-image');
-  if(!page||!img)return;
-  page.classList.add('v48-answered');
-  img.src='./quiz-arena-reference.jpg?v=20261004-v763-quiz-flow';
-  img.alt='Quiz Arena';
-  window.scrollTo({top:0,left:0,behavior:'auto'});
-});
-document.querySelectorAll('[data-v763-arena-play]').forEach(el=>el.onclick=()=>{
-  window.dispatchEvent(new CustomEvent('ljr:v763-quiz-play'));
-});
-
-/* V668 — Centro Global nativo: los accesos existen dentro del HTML principal,
-   así no dependen de que otro parche los inyecte después del render. */
-document.querySelectorAll('[data-v668-route]').forEach(el=>{
+/* V764 — Quiz Arena nativo: sin capturas con barra del teléfono.
+   Al tocar cualquier respuesta de la portada, abre el diseño funcional de Quiz Arena. */
+document.querySelectorAll('[data-v764-intro-answer]').forEach(el=>{
   el.onclick=()=>{
-    const r=el.dataset.v668Route||'';
-    const prep=el.dataset.v668Prep||'';
-    try{
-      if(prep.startsWith('bracket:')){
-        const design=prep.split(':')[1]||'round';
-        localStorage.setItem('v651-bracket-design',design);
-        localStorage.setItem('v651-bracket-stage',design==='quarters'?'qf':'auto');
-      }
-      if(prep==='discipline:suspensions'){
-        localStorage.setItem('v655-discipline-type','suspensions');
-        localStorage.setItem('v563-discipline-view','suspensions');
-        localStorage.setItem('v655-discipline-cat','all');
-      }
-      if(prep.startsWith('pub:')){
-        localStorage.setItem('v561-publication-kind',prep.split(':')[1]||'standings');
-      }
-    }catch(e){}
-    if(r)go(r);
+    document.querySelectorAll('[data-v764-intro-answer]').forEach(btn=>btn.classList.remove('is-selected'));
+    el.classList.add('is-selected');
+    window.dispatchEvent(new CustomEvent('ljr:v764-quiz-hub',{detail:{answer:el.dataset.v764IntroAnswer||''}}));
   };
 });
+
 document.querySelector('[data-v446-notices-back]')?.addEventListener('click',()=>{if(history.length>1)history.back();else go('more')});
 function noticeDraft(){
   const pick=s=>document.querySelector(s);
