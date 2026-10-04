@@ -22,7 +22,8 @@ const LOGOS={
   'mazacotes-fc':BASE+'assets/official-logos/mazacotes-fc.png',
   'tavera-fc':BASE+'assets/official-logos/tavera-fc.png',
   'franco-tavera-jr':BASE+'assets/teams/franco-tavera-jr-veteranos.webp',
-  'la-cuadrilla':BASE+'assets/official-logos/la-cuadrilla.png'
+  'la-cuadrilla':BASE+'assets/official-logos/la-cuadrilla.png',
+  'napoli':BASE+'assets/official-logos/napoli.png'
 };
 const ALIAS={
   'san jose fc':'san-jose-fc','san jose':'san-jose-fc','san jose de la montana':'san-jose-fc','san jose montana':'san-jose-fc',
@@ -39,7 +40,8 @@ const ALIAS={
   'mazacotes':'mazacotes-fc','mazacotes fc':'mazacotes-fc','mfc':'mazacotes-fc',
   'tavera':'tavera-fc','tavera fc':'tavera-fc',
   'franco tavera':'franco-tavera-jr','franco tavera jr':'franco-tavera-jr','franco-tavera-jr':'franco-tavera-jr','f tavera':'franco-tavera-jr',
-  'la cuadrilla':'la-cuadrilla','cuadrilla':'la-cuadrilla','cuadrilla fc':'la-cuadrilla'
+  'la cuadrilla':'la-cuadrilla','cuadrilla':'la-cuadrilla','cuadrilla fc':'la-cuadrilla',
+  'napoli':'napoli','napoli fc':'napoli','ssc napoli':'napoli'
 };
 const SOURCE_MATCH={
   'san-jose-fc':['SanJoseMonta%C3%B1a_ilen4d','SanJoseMontana_ilen4d','official-logos/san-jose-fc.png','teams/san-jose.webp','teams/san-jose-montana.webp'],
@@ -56,7 +58,8 @@ const SOURCE_MATCH={
   'mazacotes-fc':['Mazacotes_ko8o0w','official-logos/mazacotes-fc.png'],
   'tavera-fc':['TaveraFC_gpdbhg','official-logos/tavera-fc.png'],
   'franco-tavera-jr':['FrancoTaveraVeteranos_qwrqrc','franco-tavera-jr-veteranos.webp'],
-  'la-cuadrilla':['CuadrillaFC_vpfbtr','official-logos/la-cuadrilla.png']
+  'la-cuadrilla':['CuadrillaFC_vpfbtr','official-logos/la-cuadrilla.png'],
+  'napoli':['official-logos/napoli.png','Napoli']
 };
 
 function norm(v){
