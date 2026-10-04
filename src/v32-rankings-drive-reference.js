@@ -1,5 +1,6 @@
 /* PARTS32 — functional Rankings screen based on the Drive references + filter flow from the supplied video. */
 /* V732_RANKINGS_FILTER_VIDEO */
+/* V733_FILTER_RETURN_SAME_PLACE */
 (function(){
 'use strict';
 
@@ -147,6 +148,7 @@ var pendingClubCategory=selectedClubCategory;
 var filterMode=false;
 var filterQuery='';
 var expanded=-1;
+var filterReturnScroll=0;
 
 function route(){return location.hash.replace('#/','')||'home'}
 function esc(value){
@@ -339,17 +341,43 @@ function renderFilterGridOnly(){
   var grid=document.querySelector('.v32-filter-grid');
   if(grid){grid.innerHTML=filterGrid();bindFilterTiles()}
 }
+function restoreFilterReturn(){
+  var y=Math.max(0,Number(filterReturnScroll)||0);
+  requestAnimationFrame(function(){
+    requestAnimationFrame(function(){window.scrollTo({top:y,left:0,behavior:'auto'})});
+  });
+}
+function closeFilterToRanking(){
+  filterQuery='';
+  filterMode=false;
+  expanded=-1;
+  render();
+  restoreFilterReturn();
+}
 function bindFilterTiles(){
   document.querySelectorAll('[data-v32-pick-club-category]').forEach(function(button){
     button.onclick=function(){
-      pendingClubCategory=pendingClubCategory===button.dataset.v32PickClubCategory?'':button.dataset.v32PickClubCategory;
-      renderFilterGridOnly();
+      var code=String(button.dataset.v32PickClubCategory||'');
+      if(!code)return;
+      pendingClubCategory=code;
+      selectedClubCategory=code;
+      activeTab='clubs';
+      localStorage.setItem('v32-rankings-tab','clubs');
+      localStorage.setItem('v32-rankings-club-category',code);
+      localStorage.setItem('v62-category',clubCategoryId(code));
+      closeFilterToRanking();
     };
   });
   document.querySelectorAll('[data-v32-pick-fed]').forEach(function(button){
     button.onclick=function(){
-      pendingFederation=pendingFederation===button.dataset.v32PickFed?'':button.dataset.v32PickFed;
-      renderFilterGridOnly();
+      var code=String(button.dataset.v32PickFed||'');
+      if(!code)return;
+      pendingFederation=code;
+      selectedFederation=code;
+      activeTab='federations';
+      localStorage.setItem('v32-rankings-tab','federations');
+      localStorage.setItem('v32-rankings-federation',code);
+      closeFilterToRanking();
     };
   });
 }
@@ -361,9 +389,7 @@ function bind(){
       pendingClub=selectedClub;
       pendingFederation=selectedFederation;
       pendingClubCategory=selectedClubCategory;
-      filterQuery='';
-      filterMode=false;
-      render();
+      closeFilterToRanking();
     };
     if(done)done.onclick=function(){
       if(activeTab==='federations'){
@@ -379,7 +405,7 @@ function bind(){
           localStorage.removeItem('v32-rankings-club-category');
         }
       }
-      filterQuery='';filterMode=false;expanded=-1;render();
+      closeFilterToRanking();
     };
     var search=document.querySelector('#v32FilterSearch');
     if(search)search.oninput=function(){filterQuery=search.value;renderFilterGridOnly()};
@@ -409,9 +435,11 @@ function bind(){
     pendingClub=selectedClub;
     pendingFederation=selectedFederation;
     pendingClubCategory=selectedClubCategory;
+    filterReturnScroll=window.scrollY||document.documentElement.scrollTop||0;
     filterQuery='';
     filterMode=true;
     render();
+    window.scrollTo({top:0,left:0,behavior:'auto'});
   };
   var clear=document.querySelector('[data-v32-clear-club]');
   if(clear)clear.onclick=function(){
