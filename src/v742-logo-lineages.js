@@ -142,14 +142,14 @@ const LINEAGES={
     variants:[remote('assets/teams/atletico-santa-cruz.webp')]
   },
   cebolleros:{
-    aliases:['cebolleros','cebolleros fc','cebolleros fc cuenda'],
+    aliases:['cebolleros','cebolleros fc','cebolleros fc cuenda','cebolleros de cuenda'],
     current:remote('assets/teams/cebolleros-fc-cuenda.webp'),
     variants:[remote('assets/teams/cebolleros-fc-cuenda.webp')]
   },
   oklahoma:{
-    aliases:['oklahoma','oklahoma fc','oklahoma city','dep okc','deportivo okc'],
-    current:remote('assets/teams/oklahoma-city-fc.webp'),
-    variants:[remote('assets/teams/oklahoma-city-fc.webp')]
+    aliases:['oklahoma','oklahoma fc','oklahoma city','oklahoma city fc','dep okc','deportivo okc'],
+    current:local('./assets/official-logos/oklahoma-city-fc.png'),
+    variants:[local('./assets/official-logos/oklahoma-city-fc.png'),remote('assets/teams/oklahoma-city-fc.webp')]
   },
   mineros:{
     aliases:['mineros','mineros fc','minero'],
@@ -167,7 +167,7 @@ const LINEAGES={
     variants:[local('./assets/official-logos/boca-jrs.png')]
   },
   'real-de-roque':{
-    aliases:['real de roque','real roque','roque'],
+    aliases:['real de roque','real roque','real de roque fc','roque'],
     current:local('./assets/history/team-logos/real-de-roque.webp'),
     variants:[local('./assets/history/team-logos/real-de-roque.webp')]
   },
@@ -202,9 +202,14 @@ function keyFor(name){return ALIAS[norm(name)]||''}
 function currentFor(name){const k=keyFor(name);return k?LINEAGES[k]?.current||'':''}
 function variantsFor(name){const k=keyFor(name);return k?[...(LINEAGES[k]?.variants||[])]:[]}
 
+const USER_GLOBAL_CURRENT=new Set(['america','herreras','la-esperanza','cebolleros','oklahoma','boca-jrs','real-de-roque','tecos']);
+
 function recordFor(name,context=''){
   const k=keyFor(name),text=norm(context);
   if(!k)return '';
+  /* V743 — Estos diseños fueron confirmados por el usuario como los escudos que
+     deben verse también en Historia y Récords. No sustituirlos por variantes antiguas. */
+  if(USER_GLOBAL_CURRENT.has(k))return LINEAGES[k]?.current||'';
   if(k==='america'){
     /* El mismo América tuvo varios diseños. En archivo antiguo se conserva
        una variante anterior; en temporadas recientes se usa el escudo actual. */
