@@ -97,6 +97,11 @@ const historicalSources=[
     url:''
   },
   {
+    title:'Rol 2022 · Veteranos J14 + Copa J1 de Primera, Intermedia y Segunda',
+    note:'Imagen aportada por el usuario. Registra Veteranos Jornada 14 de Liga 2022 y la Jornada 1 de Copa 2022 de Primera Fuerza, Fuerza Intermedia y Segunda Fuerza. Se usó para completar los clubes de Historia > Récords, incluidos Deportivo Rafa, Tecos Pozos, Romerillo, Unión, Titanes FC, Atlético San Julián, Guadalupanos, Promesas, Tapatío y demás equipos visibles en el rol.',
+    url:''
+  },
+  {
     title:'Golazo Liga · fecha digital mínima comprobada',
     note:'Captura aportada: publicación visible con fecha 5 OCT 2012. Prueba actividad digital al menos desde entonces, pero no la fundación de la Liga ni la fecha de creación del perfil.',
     url:'https://www.facebook.com/golazo.liga'
@@ -1123,6 +1128,12 @@ const historicalTeamEras=[
   // V709 — cruce detallado de 25 imágenes de Google Drive aportadas por el usuario.
   // Conserva nombres tal como aparecen en los roles/tablas; los alias claros se agrupan por linaje en Récords.
   {period:'2014–2022 · 25 imágenes de Drive · cruce final de nombres',category:'Equipos y variantes históricas recuperadas',teams:['Dep. Santa Cruz','Franco-Tavera','Dep. OKC','Funerales','Deportivo Raymundo Flores','Tecos Pozos','Titanes de T.','Real de HP','Minero','Masacotes','Barsa','Tecas','Lobos']},
+  // V721 — rol aportado por el usuario: Veteranos J14 + Copa J1 2022.
+  // Se registra completo para que ningún club visible en la imagen quede fuera de Historia > Récords.
+  {period:'2022 · Veteranos Jornada 14 de Liga',category:'Veteranos · rol oficial aportado',teams:['Boavista','Dynamo','Deportivo Rafa','PSV','Juventus','Cuenda','Hermanos','América','Átomos','UNAM','Barrio Seco','Arsenal']},
+  {period:'2022 · Primera Fuerza J1 Copa',category:'Primera Fuerza · rol oficial aportado',teams:['Linces','Galácticos','Abejas','Populares','Tecos Pozos','La Cuadrilla','Boavista','Hermanos','A. Centeno','Tavera FC','PSV','Chelsea']},
+  {period:'2022 · Fuerza Intermedia J1 Copa',category:'Intermedia · rol oficial aportado',teams:['Galácticos FC','Deportivo Maravillas','Barza','Lobos CDG','Romerillo','Oklahoma','La Esperanza FC','Mineros FC','Atlético Pozos','Malvinas','Sección 14','La Huerta']},
+  {period:'2022 · Segunda Fuerza J1 Copa',category:'Segunda Fuerza · rol oficial aportado',teams:['Promesas','Unión','Galeana','Unión FC','Titanes FC','Osasuna','Atlético SJ','Tavera','Terrícolas','Guadalupanos','San Antonio FC','Tapatío','Napoli','Juventus','Mazacotes FC']},
   {period:'2022',category:'Veteranos · tabla final',teams:['Juventus','Hermanos','América','Dynamo','PSV','Deportivo Rafa','Boavista','Arsenal','Cuenda','Barrio Seco','UNAM','Átomos']},
   {period:'Archivo 2022–2023 · Tecos Jr. · roles dominicales',category:'Amistosos / archivo de jornadas',teams:['Tecos Jr.']},
   {period:'2019',category:'Veteranos · Final de Copa',teams:['Chelsea','La Esperanza']},
