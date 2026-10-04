@@ -44,6 +44,8 @@ const SPECIAL={
 /* V724 — fuente ÚNICA para Memoria de clubes.
    Estos escudos ya están confirmados en el repo; se usa un solo archivo por club
    para evitar que V672/V701/V704 alternen imágenes y produzcan parpadeo. */
+const LEGACY_BROKEN_SOURCE_FALLBACK=new Set(['la pandilla','la pandilla fc']);
+
 const LEGACY_CARD_LOGOS={
   'cerrito':'./assets/teams/deportivo-cg.webp',
   'cerrito de g':'./assets/teams/deportivo-cg.webp',
@@ -288,8 +290,26 @@ function patchArchives(root){
   root.querySelectorAll('.v370-legacy-team').forEach(card=>{
     const name=text(card,'.v370-legacy-copy strong');
     const holder=card.querySelector('.v370-legacy-crest');
+    const key=norm(name);
+    if(!holder||!name)return;
+
+    /* El archivo histórico de La Pandilla está recortado desde origen.
+       Evitamos mostrar media imagen: se deja un monograma limpio hasta tener
+       el escudo completo, sin inventar un logo nuevo. */
+    if(LEGACY_BROKEN_SOURCE_FALLBACK.has(key)){
+      holder.replaceChildren();
+      const fallback=document.createElement('b');
+      fallback.textContent='LP';
+      fallback.className='v725-legacy-monogram';
+      holder.appendChild(fallback);
+      holder.classList.remove('v704-has-team-logo','v724-single-logo','v672-has-historic-logo','v701-has-logo');
+      holder.classList.add('is-fallback','v725-broken-logo-fallback');
+      card.dataset.v724LegacyLogo='1';
+      return;
+    }
+
     const src=legacyCardLogoFor(name);
-    if(!holder||!name||!src)return;
+    if(!src)return;
 
     const current=[...holder.querySelectorAll('img')];
     let keep=current.find(x=>same(x.currentSrc||x.src,src))||null;
