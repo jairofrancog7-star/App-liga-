@@ -158,7 +158,7 @@ function patch(){
   patchPair('.v340-champion-row','.v340-champion-name','.v340-champion-logo');
   patchPair('.v341-era-item','.v341-era-season','.v341-era-logo','data-v35-era-team');
   patchPair('.v328-season-item','.v328-season-initials','.v328-season-logo','data-v328-team');
-  patchPair('.v370-legacy-team','.v370-legacy-copy strong','.v370-legacy-crest');
+  /* V724: no tocar .v370-legacy-team; V704 es la única capa de Memoria de clubes. */
   patchPair('.v358-team','strong','.v358-final-crest');
   patchPair('.v355-final-team','strong','.v355-final-crest');
   patchPair('.v330-team','strong','.v330-crest');
