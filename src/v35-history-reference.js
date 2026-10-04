@@ -243,6 +243,7 @@ const HIST_USER_LOGO_TECOS='./assets/history/team-logos/tecos.webp';
 const HIST_USER_LOGO_XOLOS='./assets/history/team-logos/xolos-jaralillo.webp';
 const APP_HISTORIC_LOGOS={
   'la pandilla':'./assets/history/team-logos/legacy-2015-la-pandilla.webp',
+  'real de roque':'./assets/history/team-logos/real-de-roque.webp',
   'olimpicos':'./assets/history/team-logos/legacy-2015-olimpicos-pozos.webp',
   'olimpicos de pozos':'./assets/history/team-logos/legacy-2015-olimpicos-pozos.webp',
   'puros cuates':'./assets/history/team-logos/legacy-2015-puros-cuates.webp',
