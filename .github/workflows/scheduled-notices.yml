@@ -1,0 +1,43 @@
+name: Procesar avisos programados
+
+on:
+  schedule:
+    - cron: '*/5 * * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: scheduled-notices
+  cancel-in-progress: false
+
+jobs:
+  process:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Instalar generador PNG y cliente HTTP
+        run: python -m pip install --disable-pip-version-check pillow requests
+      - name: Procesar avisos vencidos
+        env:
+          FACEBOOK_PAGE_ID: ${{ secrets.FACEBOOK_PAGE_ID }}
+          FACEBOOK_PAGE_ACCESS_TOKEN: ${{ secrets.FACEBOOK_PAGE_ACCESS_TOKEN }}
+        run: python .github/scripts/process_scheduled_notices.py
+      - name: Publicar cambios
+        run: |
+          if git diff --quiet; then
+            echo "Sin avisos por publicar"
+            exit 0
+          fi
+          git config user.name "Liga Juventino Bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add public/data/scheduled-notices.json public/data/active-notices.json public/generated/notices || true
+          git commit -m "auto: publicar avisos programados [skip ci]"
+          git pull --rebase origin main
+          git push origin HEAD:main
