@@ -708,11 +708,19 @@ const historicTables=[
       ['5','PSV','36'],['6','Deportivo Rafa','34'],['7','Boavista','31'],['8','Arsenal','29'],
       ['9','Cuenda','22'],['10','Barrio Seco','15'],['11','UNAM','15'],['12','Átomos','8']
     ]
-  }
+  },
 
 // V731 — segundo barrido del ZIP: tablas de puntos y goleo.
 // Se agregan sólo cortes legibles y se conserva “año por precisar” cuando la imagen no muestra fecha.
 // No se presentan cortes parciales como récord absoluto ni como tabla final.
+  {
+    season:'2015',title:'Intermedia · Torneo de Liga · J20 · variante del ZIP',note:'Fuente ZIP 1030. Se conserva como segundo corte J20 porque otra captura del archivo muestra una actualización distinta de puntos (por ejemplo Malvinas 43 en vez de 40). No se sobrescribe ninguna de las dos.',
+    rows:[
+      ['1','San Antonio Jr.','43'],['2','Tavera','41'],['3','Malvinas','40'],['4','La Cuadrilla','40'],
+      ['5','Centeno','31'],['6','Real Cerrito','22'],['7','Barza','21'],['8','Halcones','21'],
+      ['9','Populares','16'],['10','Terrícolas','11'],['11','DHP','11'],['12','Dulces Nombres','3'],['13','Xolos Jaralillo','2']
+    ]
+  },
   {
     season:'2015',title:'Primera Fuerza · Torneo de Liga · hasta J13',note:'Fuente ZIP 1021. Corte histórico; no es tabla final.',
     rows:[
