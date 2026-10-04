@@ -1,9 +1,9 @@
-/* V744 — Linajes de escudos: un equipo puede tener varios escudos sin convertirse
+/* V745 — Linajes de escudos: un equipo puede tener varios escudos sin convertirse
    en varios equipos. La identidad se resuelve por nombre/alias exacto; las variantes
    sólo cambian la imagen según contexto (actual / histórico / Récords). */
 (function(){
 'use strict';
-if(window.__LJR_V744_TEAM_LOGO_LINEAGES__)return;
+if(window.__LJR_V745_TEAM_LOGO_LINEAGES__)return;
 window.__LJR_V744_TEAM_LOGO_LINEAGES__=true;
 
 const BASE='https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/';
@@ -187,6 +187,141 @@ const LINEAGES={
     aliases:['xolos','xolos jaralillo','xolos de jaralillo','jaralillo','jaralillo fc','club tijuana'],
     current:local('./assets/history/team-logos/xolos-jaralillo.webp'),
     variants:[local('./assets/history/team-logos/xolos-jaralillo.webp')]
+  },
+  'franco-tavera-jr':{
+    aliases:['franco tavera','franco tavera jr','franco tavera jrs','franco tavera veteranos','franco tavera jr veteranos','f tavera'],
+    current:remote('assets/official-logos/franco-tavera-jr.png'),
+    variants:[remote('assets/official-logos/franco-tavera-jr.png'),remote('assets/teams/franco-tavera-jr-veteranos.webp')]
+  },
+  huracan:{
+    aliases:['huracan','huracan fc'],
+    current:remote('assets/official-logos/huracan.png'),
+    variants:[remote('assets/official-logos/huracan.png')]
+  },
+  aguilares:{
+    aliases:['aguilares','aguilares fc'],
+    current:remote('assets/official-logos/aguilares.png'),
+    variants:[remote('assets/official-logos/aguilares.png')]
+  },
+  leyendas:{
+    aliases:['leyendas','leyendas fc'],
+    current:remote('assets/official-logos/leyendas-fc.png'),
+    variants:[remote('assets/official-logos/leyendas-fc.png')]
+  },
+  'la-trinidad':{
+    aliases:['la trinidad','trinidad','la trinidad fc'],
+    current:remote('assets/official-logos/la-trinidad.png'),
+    variants:[remote('assets/official-logos/la-trinidad.png')]
+  },
+  dynamo:{
+    aliases:['dynamo','dinamo','dynamo fc','dinamo fc'],
+    current:remote('assets/official-logos/dynamo.png'),
+    variants:[remote('assets/official-logos/dynamo.png')]
+  },
+  capibaras:{
+    aliases:['capibaras','capibaras fc'],
+    current:remote('assets/official-logos/capibaras.png'),
+    variants:[remote('assets/official-logos/capibaras.png')]
+  },
+  'mazacotes-fc':{
+    aliases:['mazacotes','mazacotes fc','masacotes','masacotes fc'],
+    current:remote('assets/official-logos/mazacotes-fc.png'),
+    variants:[remote('assets/official-logos/mazacotes-fc.png')]
+  },
+  'la-canchita':{
+    aliases:['la canchita','la canchita deportes','la canchita fc'],
+    current:remote('assets/official-logos/la-canchita-deportes.png'),
+    variants:[remote('assets/official-logos/la-canchita-deportes.png'),remote('assets/teams/la-canchita.webp')]
+  },
+  populares:{
+    aliases:['populares','populares fc'],
+    current:remote('assets/official-logos/populares.png'),
+    variants:[remote('assets/official-logos/populares.png')]
+  },
+  malvinas:{
+    aliases:['malvinas','malvinas fc'],
+    current:remote('assets/official-logos/malvinas.png'),
+    variants:[remote('assets/official-logos/malvinas.png')]
+  },
+  'la-cuadrilla':{
+    aliases:['la cuadrilla','la cuadrilla fc','deportivo la cuadrilla','cuadrilla','cuadrilla fc'],
+    current:remote('assets/official-logos/la-cuadrilla.png'),
+    variants:[remote('assets/official-logos/la-cuadrilla.png')]
+  },
+  'dep-maravillas':{
+    aliases:['dep maravillas','deportivo maravillas','dep. maravillas','las maravillas'],
+    current:remote('assets/official-logos/dep-maravillas.png'),
+    variants:[remote('assets/official-logos/dep-maravillas.png')]
+  },
+  'san-antonio-jrs':{
+    aliases:['san antonio jrs','san antonio jr','san antonio junior','san antonio juniors'],
+    current:remote('assets/official-logos/san-antonio-jrs.png'),
+    variants:[remote('assets/official-logos/san-antonio-jrs.png'),remote('assets/teams/san-antonio-jr.webp')]
+  },
+  osasuna:{
+    aliases:['osasuna','osasuna fc'],
+    current:remote('assets/official-logos/osasuna.png'),
+    variants:[remote('assets/official-logos/osasuna.png')]
+  },
+  'aldama-fc':{
+    aliases:['aldama','aldama fc','deportivo aldama'],
+    current:remote('assets/official-logos/aldama-fc.png'),
+    variants:[remote('assets/official-logos/aldama-fc.png'),remote('assets/teams/aldama.webp')]
+  },
+  'dep-zapata':{
+    aliases:['dep zapata','deportivo zapata','dep zapata fc','deportivo zapata fc'],
+    current:remote('assets/official-logos/dep-zapata.png'),
+    variants:[remote('assets/official-logos/dep-zapata.png')]
+  },
+  barza:{
+    aliases:['barza','barza fc','barsa','barcelona','barcelona fc'],
+    current:remote('assets/official-logos/barza.png'),
+    variants:[remote('assets/official-logos/barza.png')]
+  },
+  'san-juan-fc':{
+    aliases:['san juan','san juan fc'],
+    current:remote('assets/official-logos/san-juan-fc.png'),
+    variants:[remote('assets/official-logos/san-juan-fc.png')]
+  },
+  tapatio:{
+    aliases:['tapatio','tapatio fc'],
+    current:remote('assets/official-logos/tapatio.png'),
+    variants:[remote('assets/official-logos/tapatio.png')]
+  },
+  'dep-la-luz':{
+    aliases:['dep la luz','deportivo la luz','la luz'],
+    current:remote('assets/official-logos/dep-la-luz.png'),
+    variants:[remote('assets/official-logos/dep-la-luz.png')]
+  },
+  'pachangas-fc':{
+    aliases:['pachangas','pachangas fc'],
+    current:remote('assets/official-logos/pachangas-fc.png'),
+    variants:[remote('assets/official-logos/pachangas-fc.png')]
+  },
+  'san-antonio-fc':{
+    aliases:['san antonio','san antonio fc'],
+    current:remote('assets/official-logos/san-antonio-fc.png'),
+    variants:[remote('assets/official-logos/san-antonio-fc.png')]
+  },
+  celticos:{
+    aliases:['celticos','celticos fc','celtics','celtics fc'],
+    current:remote('assets/official-logos/celticos.png'),
+    variants:[remote('assets/official-logos/celticos.png')]
+  },
+  'dep-nopalero':{
+    aliases:['dep nopalero','deportivo nopalero','nopalero'],
+    current:remote('assets/official-logos/dep-nopalero.png'),
+    variants:[remote('assets/official-logos/dep-nopalero.png'),remote('assets/teams/deportivo-nopalero.webp')]
+  },
+  'santiago-de-cuenda':{
+    aliases:['santiago de cuenda','santiago de cuenda fc','deportivo santiago cuenda','deportivo santiago de cuenda'],
+    current:remote('assets/teams/deportivo-santiago-cuenda.webp'),
+    variants:[remote('assets/teams/deportivo-santiago-cuenda.webp')]
+  },
+  'el-cerri':{
+    aliases:['el cerri','el cerri fc'],
+    current:remote('assets/teams/el-cerri.webp'),
+    variants:[remote('assets/teams/el-cerri.webp')]
   },
   salvajes:{
     aliases:['salvajes','salvaje'],
