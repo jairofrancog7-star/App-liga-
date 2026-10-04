@@ -1,4 +1,5 @@
 /* PARTS32 — functional Rankings screen based on the Drive references + filter flow from the supplied video. */
+/* V732_RANKINGS_FILTER_VIDEO */
 (function(){
 'use strict';
 
@@ -117,6 +118,7 @@ var activeTab=localStorage.getItem('v32-rankings-tab')||'federations';
 var season='Temporada actual';
 var selectedClub=localStorage.getItem('v32-rankings-club')||'';
 var selectedFederation=localStorage.getItem('v32-rankings-federation')||'';
+var selectedClubCategory=localStorage.getItem('v32-rankings-club-category')||'';
 
 /* V80 — limpia filtros guardados de versiones anteriores.
    Antes el ranking usaba códigos como AME/HUE/PRO. Tras cambiar a la tabla
@@ -130,6 +132,10 @@ if(selectedFederation&&!federationRows.some(function(row){return row[0]===select
   selectedFederation='';
   localStorage.removeItem('v32-rankings-federation');
 }
+if(selectedClubCategory&&!federationRows.some(function(row){return row[0]===selectedClubCategory})){
+  selectedClubCategory='';
+  localStorage.removeItem('v32-rankings-club-category');
+}
 if(activeTab!=='federations'&&activeTab!=='clubs'){
   activeTab='clubs';
   localStorage.setItem('v32-rankings-tab','clubs');
@@ -137,6 +143,7 @@ if(activeTab!=='federations'&&activeTab!=='clubs'){
 
 var pendingClub=selectedClub;
 var pendingFederation=selectedFederation;
+var pendingClubCategory=selectedClubCategory;
 var filterMode=false;
 var filterQuery='';
 var expanded=-1;
@@ -148,15 +155,48 @@ function esc(value){
   });
 }
 function clubByCode(code){return clubRows.find(function(row){return row[0]===code})||null}
+function categoryByCode(code){return federationRows.find(function(row){return row[0]===code})||null}
+function clubCategoryId(code){return ({CAT1:'1',CAT2:'2',CAT3:'3',CAT4:'4',CAT5:'5'})[code]||'3'}
+function norm(value){
+  try{return String(value==null?'':value).normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[^a-z0-9]+/g,' ').trim()}
+  catch(_){return String(value==null?'':value).toLowerCase().trim()}
+}
+function officialDb(){
+  try{return window.LJR_OFFICIAL_API?.getData?.()||window.LJR_OFFICIAL_DATA||null}
+  catch(_){return window.LJR_OFFICIAL_DATA||null}
+}
+function teamCode(name){
+  var hit=clubRows.find(function(row){return norm(row[1])===norm(name)});
+  if(hit)return hit[0];
+  return 'TEAM-'+String(name||'').toUpperCase().replace(/[^A-Z0-9]+/g,'-').replace(/^-|-$/g,'').slice(0,28);
+}
+function rankingClubRows(){
+  var code=selectedClubCategory||'CAT3',catId=clubCategoryId(code),db=officialDb();
+  var rows=db?.categories?.[catId]?.standings?.[0]?.rows||[];
+  if(Array.isArray(rows)&&rows.some(function(row){return Array.isArray(row)&&row[1]})){
+    return rows.filter(function(row){return Array.isArray(row)&&String(row[1]||'').trim()}).map(function(row,index){
+      return [teamCode(row[1]),String(row[1]).trim(),String(row[9]??'—'),code,String(row[0]??(index+1))];
+    });
+  }
+  if(code==='CAT3')return clubRows.map(function(row,index){return [row[0],row[1],row[2],code,String(index+1)]});
+  return [];
+}
 function backIcon(){return '<svg viewBox="0 0 32 32" aria-hidden="true"><path d="M20.5 7.5 12 16l8.5 8.5M12.5 16H27"/></svg>'}
 function shareIcon(){return '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="18" cy="5" r="2.25"/><circle cx="6" cy="12" r="2.25"/><circle cx="18" cy="19" r="2.25"/><path d="m8.1 10.9 7.6-4.5M8.1 13.1l7.6 4.5"/></svg>'}
 function filterIcon(){return '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 7h14M8 12h8M10.5 17h3"/></svg>'}
 function searchIcon(){return '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.2"/><path d="m15.2 15.2 5.1 5.1"/></svg>'}
 function logo(code,name,extra){
-  var cls='v32-logo'+(extra?' '+extra:'');
+  var cls='v32-logo'+(extra?' '+extra:''),src='';
   var path=LOGOS[code];
-  if(path){
-    return '<span class="'+cls+'"><img src="'+BASE+path+'" alt="'+esc(name)+'" loading="lazy" decoding="async" onerror="this.style.display=\'none\';this.nextElementSibling.style.display=\'grid\'"><span class="v32-logo-fallback" style="display:none">'+esc(code)+'</span></span>';
+  if(path)src=BASE+path;
+  if(!src){
+    var db=officialDb(),entry=Object.entries(db?.team_logos||{}).find(function(pair){return norm(pair[0])===norm(name)});
+    var meta=entry&&entry[1];
+    if(meta?.local)src=BASE+String(meta.local).replace(/^\.\//,'');
+    else if(meta?.source)src=String(meta.source);
+  }
+  if(src){
+    return '<span class="'+cls+'"><img src="'+esc(src)+'" alt="'+esc(name)+'" loading="lazy" decoding="async" onerror="this.style.display=\'none\';this.nextElementSibling.style.display=\'grid\'"><span class="v32-logo-fallback" style="display:none">'+esc(code)+'</span></span>';
   }
   return '<span class="'+cls+'"><span class="v32-logo-fallback">'+esc(code)+'</span></span>';
 }
@@ -189,12 +229,12 @@ function fedControls(){
   '</div>';
 }
 function clubsControls(){
-  var selected=clubByCode(selectedClub);
+  var selected=categoryByCode(selectedClubCategory);
   return '<div class="v32-controls clubs '+(selected?'has-club-filter':'')+'">'+
-    '<button type="button" class="v32-select" data-v32-info="season-type"><span>Temporada</span><i class="v32-chevron"></i></button>'+
-    '<button type="button" class="v32-select" data-v32-season><span>'+esc(season)+'</span><i class="v32-chevron"></i></button>'+
-    '<button type="button" class="v32-filter '+(selected?'active':'')+'" data-v32-filter aria-label="Filtrar clubes">'+filterIcon()+'</button>'+
+    '<button type="button" class="v32-select v32-coefficient" data-v32-info="club-coefficient"><span>Coeficientes de clubes</span><i class="v32-chevron"></i></button>'+
+    '<button type="button" class="v32-select v32-season-select" data-v32-season><span>'+esc(season)+'</span><i class="v32-chevron"></i></button>'+
     (selected?'<button type="button" class="v32-selected-club" data-v32-clear-club><span>'+esc(selected[1])+'</span><i>×</i></button>':'')+
+    '<button type="button" class="v32-filter '+(selected?'active':'')+'" data-v32-filter aria-label="Filtrar por categoría">'+filterIcon()+'</button>'+
   '</div>';
 }
 function filteredFederationRows(){
@@ -227,30 +267,22 @@ function fedView(){
     '</section>';
 }
 function filteredClubRows(){
-  if(!selectedClub)return clubRows;
-  var rows=clubRows.filter(function(row){return row[0]===selectedClub});
-  /* Protección adicional: nunca renderizar una tabla vacía por un filtro
-     antiguo o inválido. En ese caso vuelve automáticamente a todos los clubes. */
-  if(!rows.length){
-    selectedClub='';
-    pendingClub='';
-    localStorage.removeItem('v32-rankings-club');
-    return clubRows;
-  }
-  return rows;
+  return rankingClubRows();
 }
 function clubItems(){
-  var rows=filteredClubRows();
-  return rows.map(function(row){
-    var originalIndex=clubRows.findIndex(function(r){return r[0]===row[0]});
-    var isOpen=expanded===originalIndex;
+  var rows=filteredClubRows(),selectedCategory=categoryByCode(selectedClubCategory||'CAT3');
+  if(!rows.length){
+    return '<div class="v32-empty-state">No hay clasificación disponible para '+esc(selectedCategory?selectedCategory[1]:'esta categoría')+'.</div>';
+  }
+  return rows.map(function(row,index){
+    var originalIndex=index,isOpen=expanded===originalIndex;
     return '<div class="v32-club-item v190-club-item">'+
       '<button type="button" class="v32-fed-row v32-club-row v190-club-row '+(isOpen?'expanded':'')+'" data-v32-club="'+originalIndex+'">'+
-        '<span class="v32-pos">'+(originalIndex+1)+'</span>'+logo(row[0],row[1])+
+        '<span class="v32-pos">'+esc(row[4]||String(index+1))+'</span>'+logo(row[0],row[1])+
         '<span class="v32-fed-name v32-club-copy"><b>'+esc(row[1])+'</b></span>'+
         '<strong class="v32-fed-points v32-club-points">'+esc(row[2])+'</strong><i class="v32-row-chevron"></i>'+
       '</button>'+
-      '<div class="v32-club-detail '+(isOpen?'show':'')+'"><span>Juventino Rosas · Primera Fuerza · Clasificación oficial</span><button type="button" data-v32-open-team="'+esc(row[0])+'">Ver equipo</button></div>'+
+      '<div class="v32-club-detail '+(isOpen?'show':'')+'"><span>Juventino Rosas · '+esc(selectedCategory?selectedCategory[1]:'Categoría')+' · Clasificación oficial</span><button type="button" data-v32-open-team="'+esc(row[1])+'">Ver equipo</button></div>'+
     '</div>';
   }).join('');
 }
@@ -265,11 +297,11 @@ function clubsView(){
 function filterGrid(){
   var q=filterQuery.trim().toLocaleLowerCase('es');
   var isFed=activeTab==='federations';
-  var source=isFed?federationRows:clubRows;
+  var source=federationRows;
   var rows=source.filter(function(row){return !q||row[1].toLocaleLowerCase('es').includes(q)});
   return rows.map(function(row){
-    var checked=isFed?pendingFederation===row[0]:pendingClub===row[0];
-    var attr=isFed?'data-v32-pick-fed':'data-v32-pick-club';
+    var checked=isFed?pendingFederation===row[0]:pendingClubCategory===row[0];
+    var attr=isFed?'data-v32-pick-fed':'data-v32-pick-club-category';
     return '<button type="button" class="v32-filter-club '+(checked?'selected':'')+'" '+attr+'="'+esc(row[0])+'">'+
       '<span class="v32-filter-club-logo">'+logo(row[0],row[1],'filter')+(checked?'<i class="v32-filter-check">✓</i>':'')+'</span>'+
       '<span>'+esc(row[1])+'</span>'+
@@ -277,7 +309,7 @@ function filterGrid(){
   }).join('');
 }
 function filterScreen(){
-  var label=activeTab==='federations'?'Categorías':'Clubes';
+  var label='Categorías';
   return '<section class="v32-filter-screen" data-v32-filter-screen>'+
     '<header class="v32-filter-head"><button type="button" data-v32-filter-cancel>Cancelar</button><h1>Filtros</h1><button type="button" data-v32-filter-done>Hecho</button></header>'+
     '<label class="v32-filter-search">'+searchIcon()+'<input id="v32FilterSearch" type="search" autocomplete="off" placeholder="Buscar" value="'+esc(filterQuery)+'"></label>'+
@@ -308,9 +340,9 @@ function renderFilterGridOnly(){
   if(grid){grid.innerHTML=filterGrid();bindFilterTiles()}
 }
 function bindFilterTiles(){
-  document.querySelectorAll('[data-v32-pick-club]').forEach(function(button){
+  document.querySelectorAll('[data-v32-pick-club-category]').forEach(function(button){
     button.onclick=function(){
-      pendingClub=pendingClub===button.dataset.v32PickClub?'':button.dataset.v32PickClub;
+      pendingClubCategory=pendingClubCategory===button.dataset.v32PickClubCategory?'':button.dataset.v32PickClubCategory;
       renderFilterGridOnly();
     };
   });
@@ -328,6 +360,7 @@ function bind(){
     if(cancel)cancel.onclick=function(){
       pendingClub=selectedClub;
       pendingFederation=selectedFederation;
+      pendingClubCategory=selectedClubCategory;
       filterQuery='';
       filterMode=false;
       render();
@@ -338,9 +371,13 @@ function bind(){
         if(selectedFederation)localStorage.setItem('v32-rankings-federation',selectedFederation);
         else localStorage.removeItem('v32-rankings-federation');
       }else{
-        selectedClub=pendingClub;
-        if(selectedClub)localStorage.setItem('v32-rankings-club',selectedClub);
-        else localStorage.removeItem('v32-rankings-club');
+        selectedClubCategory=pendingClubCategory;
+        if(selectedClubCategory){
+          localStorage.setItem('v32-rankings-club-category',selectedClubCategory);
+          localStorage.setItem('v62-category',clubCategoryId(selectedClubCategory));
+        }else{
+          localStorage.removeItem('v32-rankings-club-category');
+        }
       }
       filterQuery='';filterMode=false;expanded=-1;render();
     };
@@ -363,20 +400,22 @@ function bind(){
   document.querySelectorAll('[data-v32-info]').forEach(function(button){
     button.onclick=function(){
       if(button.dataset.v32Info==='season-type')toast('Ranking por temporada');
-      else toast('Clasificación oficial de Primera Fuerza');
+      else if(button.dataset.v32Info==='club-coefficient')toast('Coeficientes de clubes');
+      else toast('Clasificación oficial de la Liga');
     };
   });
   var filter=document.querySelector('[data-v32-filter]');
   if(filter)filter.onclick=function(){
     pendingClub=selectedClub;
     pendingFederation=selectedFederation;
+    pendingClubCategory=selectedClubCategory;
     filterQuery='';
     filterMode=true;
     render();
   };
   var clear=document.querySelector('[data-v32-clear-club]');
   if(clear)clear.onclick=function(){
-    selectedClub='';pendingClub='';localStorage.removeItem('v32-rankings-club');expanded=-1;render();
+    selectedClubCategory='';pendingClubCategory='';localStorage.removeItem('v32-rankings-club-category');expanded=-1;render();
   };
   document.querySelectorAll('[data-v32-fed]').forEach(function(button){
     button.onclick=function(){var row=federationRows[Number(button.dataset.v32Fed)];if(row)toast(row[1]+' · '+row[2]+' jugadores · '+row[3]+' equipos')};
@@ -387,11 +426,18 @@ function bind(){
   document.querySelectorAll('[data-v32-open-team]').forEach(function(button){
     button.onclick=function(event){
       event.stopPropagation();
-      var row=clubRows.find(function(r){return r[0]===button.dataset.v32OpenTeam});
-      if(row&&window.LJR_OFFICIAL_API?.openTeam){window.LJR_OFFICIAL_API.openTeam(row[1]);return}
-      if(row)localStorage.setItem('v62-team-name',row[1]);
+      var name=String(button.dataset.v32OpenTeam||'').trim();
+      if(name&&window.LJR_OFFICIAL_API?.openTeam){window.LJR_OFFICIAL_API.openTeam(name);return}
+      if(name)localStorage.setItem('v62-team-name',name);
       location.hash='#/teamDetail';
     };
+  });
+}
+function positionClubControls(){
+  var controls=document.querySelector('.v32-controls.clubs.has-club-filter');
+  if(!controls)return;
+  requestAnimationFrame(function(){
+    controls.scrollLeft=Math.max(0,controls.scrollWidth-controls.clientWidth);
   });
 }
 function render(){
@@ -399,7 +445,7 @@ function render(){
   document.body.classList.toggle('v32-rankings-active',active);
   if(!active){closePopover();filterMode=false;return}
   var screen=document.querySelector('#screen');if(!screen)return;
-  screen.innerHTML=markup();setBottomNav();bind();
+  screen.innerHTML=markup();setBottomNav();bind();positionClubControls();
 }
 function schedule(){requestAnimationFrame(function(){requestAnimationFrame(render)})}
 window.addEventListener('hashchange',schedule);

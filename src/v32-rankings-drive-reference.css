@@ -1872,3 +1872,89 @@ body.v32-rankings-active .v190-club-item .v32-club-detail{
       54px!important;
   }
 }
+
+
+/* V732 — Rankings Clubes: filtro y controles como la referencia de video.
+   Coeficientes de clubes + temporada + categoría seleccionada + filtro
+   permanecen en una sola fila horizontal. */
+body.v32-rankings-active .v32-controls.clubs{
+  display:flex!important;
+  grid-template-columns:none!important;
+  flex-wrap:nowrap!important;
+  align-items:center!important;
+  gap:8px!important;
+  overflow-x:auto!important;
+  overflow-y:hidden!important;
+  scrollbar-width:none!important;
+  -webkit-overflow-scrolling:touch;
+  padding:12px 13px 10px!important;
+}
+body.v32-rankings-active .v32-controls.clubs::-webkit-scrollbar{display:none!important}
+body.v32-rankings-active .v32-controls.clubs .v32-coefficient{
+  flex:0 0 185px!important;
+  width:185px!important;
+  min-width:185px!important;
+}
+body.v32-rankings-active .v32-controls.clubs .v32-season-select{
+  flex:0 0 104px!important;
+  width:104px!important;
+  min-width:104px!important;
+}
+body.v32-rankings-active .v32-controls.clubs .v32-coefficient>span,
+body.v32-rankings-active .v32-controls.clubs .v32-season-select>span{
+  white-space:nowrap!important;
+  overflow:hidden!important;
+  text-overflow:ellipsis!important;
+}
+body.v32-rankings-active .v32-controls.clubs .v32-selected-club{
+  grid-column:auto!important;
+  flex:0 0 auto!important;
+  width:auto!important;
+  min-width:116px!important;
+  max-width:154px!important;
+  height:36px!important;
+  margin:0!important;
+  padding:0 7px 0 12px!important;
+  border-radius:9px!important;
+  font-size:11px!important;
+}
+body.v32-rankings-active .v32-controls.clubs .v32-selected-club i{
+  width:22px!important;
+  height:22px!important;
+  flex:0 0 22px!important;
+  font-size:18px!important;
+}
+body.v32-rankings-active .v32-controls.clubs .v32-filter{
+  flex:0 0 40px!important;
+  width:40px!important;
+  min-width:40px!important;
+  height:36px!important;
+  margin-left:auto!important;
+}
+body.v32-rankings-active .v32-controls.clubs .v32-filter.active{
+  color:#071060!important;
+  background:var(--v32-cyan)!important;
+  box-shadow:0 0 15px rgba(23,231,244,.32)!important;
+}
+body.v32-rankings-active .v32-empty-state{
+  min-height:150px;
+  display:grid;
+  place-items:center;
+  padding:28px 20px;
+  color:#b8bde2;
+  font-size:12px;
+  line-height:1.4;
+  text-align:center;
+}
+@media(max-width:390px){
+  body.v32-rankings-active .v32-controls.clubs .v32-coefficient{
+    flex-basis:176px!important;
+    width:176px!important;
+    min-width:176px!important;
+  }
+  body.v32-rankings-active .v32-controls.clubs .v32-season-select{
+    flex-basis:102px!important;
+    width:102px!important;
+    min-width:102px!important;
+  }
+}
