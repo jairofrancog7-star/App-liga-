@@ -539,3 +539,128 @@
   body[data-app-route="leagueTools"] .v726-tool-card,
   body[data-app-route="leagueTools"] .v726-quick-card{transition:none!important}
 }
+
+
+/* V728 — teléfono: volver a bloques pequeños para entrar más rápido. */
+@media(max-width:429px){
+  body[data-app-route="leagueTools"] .v726-tool-section{
+    padding:11px!important;
+    border-radius:18px!important;
+  }
+  body[data-app-route="leagueTools"] .v726-section-head{
+    grid-template-columns:38px minmax(0,1fr)!important;
+    gap:9px!important;
+    margin-bottom:9px!important;
+    padding-bottom:9px!important;
+  }
+  body[data-app-route="leagueTools"] .v726-section-icon{
+    width:38px!important;
+    height:38px!important;
+    border-radius:12px!important;
+  }
+  body[data-app-route="leagueTools"] .v726-section-icon svg{
+    width:21px!important;
+    height:21px!important;
+  }
+  body[data-app-route="leagueTools"] .v726-section-head h2{
+    font-size:16px!important;
+  }
+  body[data-app-route="leagueTools"] .v726-section-head p{
+    font-size:9px!important;
+    line-height:1.25!important;
+  }
+  body[data-app-route="leagueTools"] .v726-tool-grid{
+    grid-template-columns:repeat(2,minmax(0,1fr))!important;
+    gap:7px!important;
+  }
+  body[data-app-route="leagueTools"] .v726-tool-card{
+    min-height:116px!important;
+    display:flex!important;
+    flex-direction:column!important;
+    align-items:flex-start!important;
+    justify-content:flex-start!important;
+    gap:6px!important;
+    padding:9px!important;
+    border-radius:14px!important;
+  }
+  body[data-app-route="leagueTools"] .v726-tool-card::before{
+    left:8px!important;
+    right:8px!important;
+    top:0!important;
+    bottom:auto!important;
+    width:auto!important;
+    height:2px!important;
+  }
+  body[data-app-route="leagueTools"] .v726-tool-icon{
+    width:36px!important;
+    height:36px!important;
+    flex:0 0 36px!important;
+    border-radius:11px!important;
+  }
+  body[data-app-route="leagueTools"] .v726-tool-icon svg{
+    width:20px!important;
+    height:20px!important;
+  }
+  body[data-app-route="leagueTools"] .v726-tool-copy{
+    width:100%!important;
+  }
+  body[data-app-route="leagueTools"] .v726-tool-tag{
+    margin-bottom:3px!important;
+    font-size:6.5px!important;
+  }
+  body[data-app-route="leagueTools"] .v726-tool-copy b{
+    font-size:12px!important;
+    line-height:1.05!important;
+  }
+  body[data-app-route="leagueTools"] .v726-tool-desc{
+    display:-webkit-box!important;
+    margin-top:3px!important;
+    overflow:hidden!important;
+    -webkit-box-orient:vertical!important;
+    -webkit-line-clamp:2!important;
+    font-size:8.2px!important;
+    line-height:1.2!important;
+  }
+  body[data-app-route="leagueTools"] .v726-tool-arrow{
+    position:absolute!important;
+    right:8px!important;
+    bottom:7px!important;
+    font-size:18px!important;
+  }
+  body[data-app-route="leagueTools"] .v726-quick-grid{
+    grid-template-columns:repeat(3,minmax(0,1fr))!important;
+    gap:6px!important;
+  }
+  body[data-app-route="leagueTools"] .v726-quick-card{
+    min-height:83px!important;
+    display:flex!important;
+    flex-direction:column!important;
+    align-items:center!important;
+    justify-content:center!important;
+    gap:5px!important;
+    padding:7px 5px!important;
+    text-align:center!important;
+  }
+  body[data-app-route="leagueTools"] .v726-quick-icon{
+    width:32px!important;
+    height:32px!important;
+    flex:0 0 32px!important;
+    border-radius:10px!important;
+  }
+  body[data-app-route="leagueTools"] .v726-quick-icon svg{
+    width:18px!important;
+    height:18px!important;
+  }
+  body[data-app-route="leagueTools"] .v726-quick-card b{
+    font-size:10.5px!important;
+    line-height:1.05!important;
+  }
+  body[data-app-route="leagueTools"] .v726-quick-card small{
+    margin-top:2px!important;
+    font-size:7.5px!important;
+    line-height:1.08!important;
+  }
+  body[data-app-route="leagueTools"] .v726-quick-card i{
+    display:none!important;
+  }
+}
