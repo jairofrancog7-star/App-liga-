@@ -9,7 +9,9 @@ window.__LJR_V704_HISTORY_LOGO_GLOBAL__=true;
 const SPECIAL={
   'olimpicos':'./assets/history/team-logos/legacy-2015-olimpicos-pozos.webp',
   'olimpicos de pozos':'./assets/history/team-logos/legacy-2015-olimpicos-pozos.webp',
+  'olimpicos pozos':'./assets/history/team-logos/legacy-2015-olimpicos-pozos.webp',
   'puros cuates':'./assets/history/team-logos/legacy-2015-puros-cuates.webp',
+  'puros cuates fc':'./assets/history/team-logos/legacy-2015-puros-cuates.webp',
   'mazacotes':'./assets/history/team-logos/legacy-2015-mazacotes.webp',
   'mazacotes fc':'./assets/history/team-logos/legacy-2015-mazacotes.webp',
   'cerrito':'./assets/history/team-logos/legacy-2015-cerrito.webp',
@@ -38,6 +40,7 @@ const SPECIAL={
    otras pantallas. */
 const RECORDS_2015_SPECIAL={
   'el alto':'./assets/history/team-logos/legacy-2015-el-alto.webp',
+  'el alto fc':'./assets/history/team-logos/legacy-2015-el-alto.webp',
 
   'hermanos':'./assets/history/team-logos/legacy-2015-hermanos.webp',
   'dep hermanos':'./assets/history/team-logos/legacy-2015-hermanos.webp',
@@ -51,6 +54,7 @@ const RECORDS_2015_SPECIAL={
 
   'puros cuates':'./assets/history/team-logos/legacy-2015-puros-cuates.webp',
   'la pandilla':'./assets/history/team-logos/legacy-2015-la-pandilla.webp',
+  'la pandilla fc':'./assets/history/team-logos/legacy-2015-la-pandilla.webp',
 
   'olimpicos':'./assets/history/team-logos/legacy-2015-olimpicos-pozos.webp',
   'olimpicos de pozos':'./assets/history/team-logos/legacy-2015-olimpicos-pozos.webp',
@@ -58,6 +62,7 @@ const RECORDS_2015_SPECIAL={
   'cerrito':'./assets/history/team-logos/legacy-2015-cerrito.webp',
   'cerrito de g':'./assets/history/team-logos/legacy-2015-cerrito.webp',
   'cerrito de gasca':'./assets/history/team-logos/legacy-2015-cerrito.webp',
+  'cerrito de gasca fc':'./assets/history/team-logos/legacy-2015-cerrito.webp',
   'real cerrito':'./assets/history/team-logos/legacy-2015-cerrito.webp',
   'real cerrito de gasca':'./assets/history/team-logos/legacy-2015-cerrito.webp',
   'deportivo cerrito':'./assets/history/team-logos/legacy-2015-cerrito.webp',
@@ -78,6 +83,7 @@ const RECORDS_2015_SPECIAL={
 
   'linces':'./assets/history/team-logos/legacy-2015-linces.webp',
   'linces fc':'./assets/history/team-logos/legacy-2015-linces.webp',
+  'linces de pozos':'./assets/history/team-logos/legacy-2015-linces.webp',
 
   'abejas':'./assets/history/team-logos/legacy-2015-abejas.webp',
   'abejas pozos':'./assets/history/team-logos/legacy-2015-abejas.webp',
@@ -146,6 +152,23 @@ function recordLogoFor(name){
     if(src)return src;
   }
   return logoFor(name);
+}
+
+function recordLogoFromCardText(card){
+  const direct=text(card,'h3');
+  const directSrc=recordLogoFor(direct);
+  if(directSrc)return {name:direct,src:directSrc};
+
+  const hay=norm(card?.textContent||'');
+  const keys=Object.keys(RECORDS_2015_SPECIAL)
+    .sort((a,b)=>b.length-a.length);
+  for(const key of keys){
+    if(!key || key.length<4)continue;
+    if(hay.includes(key)){
+      return {name:key,src:RECORDS_2015_SPECIAL[key]};
+    }
+  }
+  return {name:'',src:''};
 }
 
 function abs(src){
@@ -231,13 +254,8 @@ function patchArchives(root){
 /* Récords: si no hay foto histórica real, usar sólo un escudo, nunca duplicado. */
 function patchRecords(root){
   root.querySelectorAll('.v35-record-card').forEach(card=>{
-    const title=text(card,'h3');
-    const candidates=[title,...aliases(title)];
-    let name='',src='';
-    for(const candidate of candidates){
-      const hit=recordLogoFor(candidate);
-      if(hit){name=candidate;src=hit;break;}
-    }
+    const hit=recordLogoFromCardText(card);
+    const name=hit.name,src=hit.src;
     if(!src)return;
     const mark=card.querySelector(':scope > .v35-record-mark');
     if(mark){
