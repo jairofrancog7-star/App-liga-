@@ -296,10 +296,31 @@ function repairEmptyHolders(root=document){
     holder.appendChild(img);
   });
 }
+function patchHomeStandings(root=document){
+  root.querySelectorAll?.('.v65-table-row[data-v62-team]').forEach(row=>{
+    const team=row.getAttribute('data-v62-team')||'';
+    const key=keyFor(team),src=key?LOGOS[key]:'';
+    if(!src)return;
+    let holder=row.querySelector('.v65-table-logo');
+    if(!holder)return;
+    let img=holder.querySelector('img');
+    if(!img){
+      img=document.createElement('img');
+      img.loading='lazy';img.decoding='async';
+      holder.textContent='';holder.appendChild(img);
+    }
+    img.alt=team;
+    img.dataset.v750TeamLogo=key;
+    const wanted=new URL(src,document.baseURI).href;
+    if(String(img.src||'')!==wanted){img.src=src;img.removeAttribute('srcset')}
+    applyStyle(img);
+  });
+}
 function patch(root=document){
   if(root instanceof HTMLImageElement)patchImg(root);
   root.querySelectorAll?.('img').forEach(patchImg);
   repairEmptyHolders(root);
+  patchHomeStandings(root);
 }
 function installRegistry(){
   const reg=window.LJR_TEAM_LOGOS;
