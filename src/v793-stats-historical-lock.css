@@ -1,0 +1,206 @@
+/* V793 — Restauración histórica exacta de Datos > Estadísticas.
+   Fuente: comportamiento aprobado V34–V37 (18/19 Sep 2026).
+   Solo afecta la cabecera/pestañas; las tablas y datos actuales permanecen. */
+
+html body.v33-data-active #screen .v33-data-head,
+html body.v33-data-active #screen .v33-data-head.general,
+html body.v33-data-active #screen .v33-data-head.compact{
+  position:fixed!important;
+  z-index:500!important;
+  top:0!important;
+  left:0!important;
+  right:0!important;
+  width:100%!important;
+  height:var(--v33-head-h,clamp(184px,50.12vw,258px))!important;
+  min-height:var(--v33-head-h,clamp(184px,50.12vw,258px))!important;
+  max-height:none!important;
+  margin:0!important;
+  overflow:hidden!important;
+  pointer-events:auto!important;
+  background:
+    radial-gradient(circle at 76% 4%,rgba(39,91,255,.72),transparent 27%),
+    radial-gradient(circle at 33% 16%,rgba(26,57,220,.36),transparent 38%),
+    linear-gradient(180deg,#172fe5 0%,#1029d0 28%,#071596 60%,#02065e 100%)!important;
+  box-shadow:none!important;
+}
+html body.v33-data-active #screen .v33-data-head::after{
+  display:block!important;
+  opacity:.38!important;
+  background:
+    linear-gradient(118deg,transparent 0 20%,rgba(68,120,255,.22) 20.4% 20.8%,transparent 21.2% 100%),
+    linear-gradient(33deg,transparent 0 67%,rgba(60,111,255,.18) 67.4% 67.8%,transparent 68.2% 100%)!important;
+}
+html body.v33-data-active #screen .v33-data-head::before{
+  content:""!important;
+  display:block!important;
+  position:absolute!important;
+  z-index:515!important;
+  left:0!important;
+  right:0!important;
+  bottom:0!important;
+  height:10px!important;
+  pointer-events:none!important;
+  background:linear-gradient(180deg,rgba(7,13,113,0),rgba(5,8,88,.96))!important;
+}
+
+html body.v33-data-active #screen .v33-head-actions{
+  position:absolute!important;
+  z-index:520!important;
+  left:clamp(18px,5.2vw,28px)!important;
+  right:clamp(18px,5.2vw,28px)!important;
+  top:clamp(18px,7.5vw,38px)!important;
+  height:40px!important;
+  display:flex!important;
+  visibility:visible!important;
+  opacity:1!important;
+}
+html body.v33-data-active #screen .v33-head-actions button{
+  width:38px!important;
+  height:38px!important;
+  min-width:38px!important;
+  min-height:38px!important;
+  display:grid!important;
+  place-items:center!important;
+  padding:0!important;
+  background:transparent!important;
+  border:0!important;
+  color:#fff!important;
+  visibility:visible!important;
+  opacity:1!important;
+}
+html body.v33-data-active #screen .v33-head-actions svg{
+  width:28px!important;
+  height:28px!important;
+  stroke-width:2.1!important;
+}
+
+html body.v33-data-active #screen .v33-morph-title{
+  position:absolute!important;
+  z-index:520!important;
+  left:clamp(20px,5.4vw,32px);
+  top:clamp(98px,27.4vw,142px);
+  width:max-content!important;
+  max-width:66%!important;
+  margin:0!important;
+  padding:0!important;
+  opacity:1!important;
+  transform:none!important;
+  pointer-events:none!important;
+  will-change:left,top;
+}
+html body.v33-data-active #screen .v33-morph-title h1{
+  display:block!important;
+  margin:0!important;
+  padding:0!important;
+  color:#fff!important;
+  font-size:clamp(32px,8.55vw,44px);
+  line-height:.98!important;
+  font-weight:500!important;
+  letter-spacing:-.035em!important;
+  white-space:nowrap!important;
+  opacity:1!important;
+}
+html body.v33-data-active #screen .v33-morph-title p{
+  display:block!important;
+  visibility:visible;
+  margin:clamp(12px,3.5vw,18px) 0 0!important;
+  padding:0!important;
+  color:#c9cadf!important;
+  font-size:clamp(15px,4.1vw,21px)!important;
+  line-height:1!important;
+  font-weight:600!important;
+  white-space:nowrap!important;
+}
+
+html body.v33-data-active #screen .v33-tabs{
+  position:absolute!important;
+  z-index:520!important;
+  left:0!important;
+  right:0!important;
+  bottom:0!important;
+  height:clamp(42px,10.9vw,56px)!important;
+  min-height:clamp(42px,10.9vw,56px)!important;
+  display:flex!important;
+  align-items:stretch!important;
+  overflow-x:auto!important;
+  overflow-y:hidden!important;
+  scroll-snap-type:x proximity!important;
+  opacity:1!important;
+  background:#171778!important;
+  background-color:#171778!important;
+  background-image:none!important;
+  border-top:0!important;
+  border-bottom:2px solid rgba(220,224,255,.88)!important;
+  box-shadow:none!important;
+}
+html body.v33-data-active #screen .v33-tabs button{
+  height:clamp(42px,10.9vw,56px)!important;
+  min-height:clamp(42px,10.9vw,56px)!important;
+  min-width:max-content!important;
+  padding:0 clamp(16px,4.8vw,25px)!important;
+  color:#d6d6e3!important;
+  font-size:clamp(10px,2.8vw,14px)!important;
+  font-weight:600!important;
+  letter-spacing:-.015em!important;
+  scroll-snap-align:center!important;
+}
+html body.v33-data-active #screen .v33-tabs button.active{
+  color:#13e3ee!important;
+}
+html body.v33-data-active #screen .v33-tabs button.active::after{
+  left:clamp(15px,4.4vw,23px)!important;
+  right:clamp(15px,4.4vw,23px)!important;
+  bottom:0!important;
+  height:3px!important;
+  border-radius:5px 5px 0 0!important;
+}
+html body.v33-data-active #screen .v33-data-page[data-v33-mode="general"] .v33-tabs button[data-v33-tab="general"].active::after{
+  background:#7c5bdf!important;
+}
+html body.v33-data-active #screen .v33-data-page[data-v33-mode="team"] .v33-tabs button[data-v33-tab="team"].active::after,
+html body.v33-data-active #screen .v33-data-page[data-v33-mode="player"] .v33-tabs button[data-v33-tab="player"].active::after{
+  background:#12dce8!important;
+}
+
+html body.v33-data-active #screen .v33-data-head.is-collapsed{
+  background:
+    radial-gradient(circle at 76% 0%,rgba(38,86,255,.64),transparent 30%),
+    linear-gradient(180deg,#1730dd 0%,#0f25c3 42%,#07127d 100%)!important;
+}
+html body.v33-data-active #screen .v33-data-head.is-collapsed .v33-head-actions{
+  top:clamp(13px,4vw,20px)!important;
+}
+html body.v33-data-active #screen .v33-data-head.is-collapsed .v33-tabs{
+  height:clamp(39px,10.2vw,53px)!important;
+  min-height:clamp(39px,10.2vw,53px)!important;
+}
+html body.v33-data-active #screen .v33-data-head.is-collapsed .v33-tabs button{
+  height:clamp(39px,10.2vw,53px)!important;
+  min-height:clamp(39px,10.2vw,53px)!important;
+  padding:0 clamp(14px,4.2vw,22px)!important;
+  font-size:clamp(9px,2.55vw,13px)!important;
+}
+
+/* El contenido se desplaza por debajo de la cabecera, como en el diseño original. */
+html body.v33-data-active #screen .v33-data-page{
+  position:relative!important;
+  padding-top:var(--v33-head-h,clamp(184px,50.12vw,258px))!important;
+}
+html body.v33-data-active.v768-scroll-root #screen .v33-data-page{
+  padding-top:var(--v33-head-h,clamp(184px,50.12vw,258px))!important;
+}
+html body.v33-data-active #screen .v33-data-content{
+  position:relative!important;
+  z-index:1!important;
+  margin-top:0!important;
+  transform:none!important;
+}
+
+@media(min-width:700px){
+  html body.v33-data-active #screen .v33-data-head{
+    width:520px!important;
+    left:50%!important;
+    right:auto!important;
+    transform:translateX(-50%)!important;
+  }
+}
