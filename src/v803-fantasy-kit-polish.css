@@ -188,3 +188,118 @@ html body.v587-fantasy-team-open .v597-real-kit::after{
     height:18px!important;
   }
 }
+
+
+/* V804 HARD FIX — visible Fantasy changes, applied after every previous Fantasy rule. */
+html body.v587-fantasy-team-open .v576-builder-summary>button[data-v576-auto],
+html body[data-app-route="fantasyTeam"] .v576-builder-summary>button[data-v576-auto]{
+  min-width:158px!important;
+  height:62px!important;
+  padding:0 16px!important;
+  gap:10px!important;
+  border:2px solid #25f4f4!important;
+  border-radius:22px!important;
+  background:linear-gradient(180deg,#0d55c9 0%,#06328f 100%)!important;
+  color:#35fbfb!important;
+  font-size:13px!important;
+  font-weight:900!important;
+  box-shadow:inset 0 0 0 1px rgba(255,255,255,.08),0 8px 22px rgba(0,18,88,.30),0 0 20px rgba(37,244,244,.18)!important;
+}
+html body.v587-fantasy-team-open .v590-wand,
+html body[data-app-route="fantasyTeam"] .v590-wand{
+  width:34px!important;
+  height:34px!important;
+  min-width:34px!important;
+  padding:5px!important;
+  border-radius:11px!important;
+  background:linear-gradient(145deg,rgba(55,255,255,.16),rgba(0,109,204,.18))!important;
+  box-shadow:inset 0 0 0 1px rgba(66,255,255,.22),0 0 14px rgba(49,244,245,.22)!important;
+}
+html body.v587-fantasy-team-open .v590-wand path,
+html body[data-app-route="fantasyTeam"] .v590-wand path{
+  stroke:#56ffff!important;
+  stroke-width:2.35!important;
+}
+html body.v587-fantasy-team-open .v576-builder-head [data-v576-back],
+html body[data-app-route="fantasyTeam"] .v576-builder-head [data-v576-back]{
+  width:48px!important;
+  height:48px!important;
+  font-size:42px!important;
+  font-weight:500!important;
+  line-height:1!important;
+  transform:translate(-5px,5px)!important;
+  text-shadow:0 3px 10px rgba(0,10,70,.48)!important;
+}
+
+/* Remove the original Real Madrid colors/details from the photographic source
+   while preserving its folds and volume for the 3D effect. */
+html body.v587-fantasy-team-open .v600-shirt-base,
+html body[data-app-route="fantasyTeam"] .v600-shirt-base{
+  filter:grayscale(1) saturate(0) contrast(1.08) brightness(1.06)!important;
+}
+
+/* Fabric repair over the baked-in Real Madrid crest. It sits below the team
+   tint/pattern, so it inherits the final kit color instead of looking like a patch. */
+html body.v587-fantasy-team-open .v600-shirt-base::after,
+html body[data-app-route="fantasyTeam"] .v600-shirt-base::after{
+  content:""!important;
+  position:absolute!important;
+  left:54.5%!important;
+  top:29.5%!important;
+  width:28px!important;
+  height:27px!important;
+  transform:translate(-50%,-50%)!important;
+  border-radius:50%!important;
+  background:radial-gradient(ellipse at 45% 38%,#ededed 0 26%,#d8d8d8 52%,#c6c6c6 78%,#bdbdbd 100%)!important;
+  box-shadow:0 0 7px 5px rgba(215,215,215,.92)!important;
+  filter:blur(.7px)!important;
+  opacity:1!important;
+  pointer-events:none!important;
+}
+
+/* Crest is placed directly on the chest, no circular backing, with subtle depth
+   so it reads as printed/embroidered into the 3D fabric. */
+html body.v587-fantasy-team-open .v597-team-logo,
+html body[data-app-route="fantasyTeam"] .v597-team-logo{
+  left:54.5%!important;
+  top:29.5%!important;
+  width:20px!important;
+  height:20px!important;
+  z-index:12!important;
+  object-fit:contain!important;
+  background:transparent!important;
+  border:0!important;
+  border-radius:0!important;
+  mix-blend-mode:normal!important;
+  opacity:1!important;
+  transform:translate(-50%,-50%) translateZ(5px) rotate(-1deg)!important;
+  filter:saturate(1.12) contrast(1.07) drop-shadow(0 1px 1px rgba(0,0,0,.30)) drop-shadow(0 -1px .6px rgba(255,255,255,.18))!important;
+}
+html body.v587-fantasy-team-open .v576-slot.filled .v597-team-logo,
+html body[data-app-route="fantasyTeam"] .v576-slot.filled .v597-team-logo{
+  width:22px!important;
+  height:22px!important;
+}
+
+/* Fine cloth pass over the crest makes it look embedded in the shirt. */
+html body.v587-fantasy-team-open .v597-real-kit::after,
+html body[data-app-route="fantasyTeam"] .v597-real-kit::after{
+  z-index:13!important;
+  opacity:.25!important;
+}
+
+@media(max-width:390px){
+  html body.v587-fantasy-team-open .v576-builder-summary>button[data-v576-auto],
+  html body[data-app-route="fantasyTeam"] .v576-builder-summary>button[data-v576-auto]{
+    min-width:142px!important;
+    height:58px!important;
+    padding:0 13px!important;
+    font-size:12px!important;
+  }
+  html body.v587-fantasy-team-open .v590-wand,
+  html body[data-app-route="fantasyTeam"] .v590-wand{
+    width:31px!important;
+    height:31px!important;
+    min-width:31px!important;
+  }
+}
