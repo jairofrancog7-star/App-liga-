@@ -267,10 +267,13 @@ function addToCalendar(g){
 }
 
 function dayLogoStack(dayGames){
-  const names=[];
-  dayGames.forEach(g=>{[g.home,g.away].forEach(n=>{if(n&&!names.some(x=>norm(x)===norm(n)))names.push(n)})});
-  const shown=names.slice(0,2);
-  let html='<span class="v415-day-logos">'+shown.map((n,i)=>logoMarkup(n,i?'is-second':'')).join('')+'</span>';
+  const first=dayGames[0]||{};
+  const home=String(first.home||'').trim();
+  const away=String(first.away||'').trim();
+  let html='<span class="v415-day-logos" aria-label="'+esc((home||'Local')+' vs '+(away||'Visitante'))+'">'+
+    (home?logoMarkup(home,'is-home'):'')+
+    (away?logoMarkup(away,'is-away'):'')+
+  '</span>';
   if(dayGames.length>1){
     html+='<span class="v415-day-dots" aria-label="'+dayGames.length+' partidos">'+
       Array.from({length:Math.min(3,dayGames.length)},(_,i)=>'<i'+(i===0?' class="on"':'')+'></i>').join('')+
