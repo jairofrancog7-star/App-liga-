@@ -178,3 +178,9 @@ html body.ljr-v777:not(.liga-editor) [data-v196-delete]{display:none!important}
  html body.ljr-v777[data-app-route="quizArena"][data-mobile-layout="v775"] #app #screen{inset:0 0 var(--v774-nav-h,69px)!important;height:calc(100dvh - var(--v774-nav-h,69px))!important;max-height:none!important;min-height:0!important}
  html body.ljr-v777[data-mobile-layout="v775"] #app #screen .v620-history-top .v35-tabs button{display:flex!important;align-items:center!important;justify-content:center!important;line-height:1!important;align-self:center!important}
 }
+@media(max-width:1023px){
+ html body.ljr-v777[data-mobile-layout="v775"] #app #screen .v431-store-head .v431-head-crest{position:absolute!important;inset:50px auto auto 16px!important;width:30px!important;height:30px!important;min-width:30px!important;margin:0!important;transform:none!important}
+ html body.ljr-v777[data-mobile-layout="v775"] #app #screen .v431-store-head .v431-head-copy{position:absolute!important;inset:50px 16px auto 56px!important;display:flex!important;justify-content:center!important;height:30px!important;padding:0!important;margin:0!important;transform:none!important;min-width:0!important}
+ html body.ljr-v777[data-mobile-layout="v775"] #app #screen .v431-store-head .v431-head-copy b{display:block!important;margin:0!important;font:700 16px/1.2 Inter,Arial,sans-serif!important;white-space:nowrap!important;overflow:hidden!important;text-overflow:ellipsis!important;color:#fff!important}
+ html body.ljr-v777[data-mobile-layout="v775"] #app #screen .v431-store-head .v431-head-copy span{font:inherit!important;color:inherit!important}
+}
