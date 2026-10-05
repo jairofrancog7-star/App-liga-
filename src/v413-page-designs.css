@@ -309,3 +309,100 @@ html body #screen > .v413-shell.v556-social-transparent{
 .v413-player-team-head b{min-width:0;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;font-size:10px;font-weight:900}
 .v413-player-team-head span{margin-left:auto;color:#9aa8d2;font-size:8px;font-weight:800;white-space:nowrap}
 .v413-player-team-head button{min-height:26px;padding:0 9px;border:1px solid rgba(43,221,231,.45);border-radius:999px;background:#173a91;color:#fff;font-size:7px;font-weight:900}
+
+
+/* V771 — Noticias: filtros funcionales y tarjetas compactas, sin huecos grandes. */
+@media(max-width:1023px){
+  body[data-app-route="news"] #screen > #v413-page-design,
+  body[data-app-route="v38Weekly"] #screen > #v413-page-design{
+    width:calc(100% - 18px)!important;
+    margin:12px auto 6px!important;
+    padding:12px!important;
+    border-radius:18px!important;
+  }
+  body[data-app-route="news"] #v413-page-design .v413-head,
+  body[data-app-route="v38Weekly"] #v413-page-design .v413-head{
+    gap:3px!important;
+    margin-bottom:9px!important;
+  }
+  body[data-app-route="news"] #v413-page-design .v413-news-tabs,
+  body[data-app-route="v38Weekly"] #v413-page-design .v413-news-tabs{
+    gap:6px!important;
+    margin:0 0 8px!important;
+    padding:0!important;
+  }
+  body[data-app-route="news"] #v413-page-design .v413-news-tabs button,
+  body[data-app-route="v38Weekly"] #v413-page-design .v413-news-tabs button{
+    min-height:32px!important;
+    padding:0 11px!important;
+    font-size:8.5px!important;
+    border-radius:18px!important;
+    cursor:pointer!important;
+    pointer-events:auto!important;
+    touch-action:manipulation!important;
+  }
+  body[data-app-route="news"] #v413-page-design .v413-news-feed,
+  body[data-app-route="v38Weekly"] #v413-page-design .v413-news-feed{
+    display:grid!important;
+    gap:5px!important;
+  }
+  body[data-app-route="news"] #v413-page-design .v413-news-card,
+  body[data-app-route="v38Weekly"] #v413-page-design .v413-news-card{
+    min-height:92px!important;
+    grid-template-columns:minmax(0,1fr) 78px!important;
+    gap:8px!important;
+    padding:10px!important;
+    border-radius:14px!important;
+    margin:0!important;
+    background:#0d1067!important;
+  }
+  body[data-app-route="news"] #v413-page-design .v413-news-card[hidden],
+  body[data-app-route="v38Weekly"] #v413-page-design .v413-news-card[hidden]{
+    display:none!important;
+  }
+  body[data-app-route="news"] #v413-page-design .v413-news-card h3,
+  body[data-app-route="v38Weekly"] #v413-page-design .v413-news-card h3{
+    margin:4px 0 3px!important;
+    font-size:11.5px!important;
+    line-height:1.18!important;
+  }
+  body[data-app-route="news"] #v413-page-design .v413-news-card p,
+  body[data-app-route="v38Weekly"] #v413-page-design .v413-news-card p{
+    font-size:7.7px!important;
+    line-height:1.28!important;
+  }
+  body[data-app-route="news"] #v413-page-design .v413-news-thumb,
+  body[data-app-route="v38Weekly"] #v413-page-design .v413-news-thumb{
+    height:64px!important;
+    border-radius:11px!important;
+    font-size:14px!important;
+  }
+  body[data-app-route="news"] #v413-page-design .v413-news-empty,
+  body[data-app-route="v38Weekly"] #v413-page-design .v413-news-empty{
+    display:grid!important;
+    gap:5px!important;
+    padding:14px 12px!important;
+    text-align:left!important;
+  }
+  body[data-app-route="news"] #v413-page-design .v413-news-empty b,
+  body[data-app-route="v38Weekly"] #v413-page-design .v413-news-empty b{
+    color:#fff!important;font-size:11px!important;
+  }
+  body[data-app-route="news"] #v413-page-design .v413-news-empty span,
+  body[data-app-route="v38Weekly"] #v413-page-design .v413-news-empty span{
+    color:#9faad1!important;font-size:8px!important;line-height:1.35!important;
+  }
+  body[data-app-route="news"] #v413-page-design .v413-news-empty button,
+  body[data-app-route="v38Weekly"] #v413-page-design .v413-news-empty button{
+    width:max-content!important;
+    min-height:32px!important;
+    margin-top:4px!important;
+    padding:0 11px!important;
+    border:1px solid #2bdde7!important;
+    border-radius:16px!important;
+    background:#1947b7!important;
+    color:#fff!important;
+    font-size:8px!important;
+    font-weight:900!important;
+  }
+}
