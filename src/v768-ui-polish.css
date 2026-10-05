@@ -1,0 +1,200 @@
+/* V768 — Pulido visual y funcional solicitado: tienda, historia, rankings, goleadores y noticias. */
+@media (max-width:1023px){
+
+  /* Cabecera global: iconos más pequeños, limpios y centrados. */
+  html body:not([data-app-route="home"]) #app > .topbar .back-button,
+  html body:not([data-app-route="home"]) #app > .topbar .profile-button,
+  html body:not([data-app-route="home"]) .app-shell > .topbar .back-button,
+  html body:not([data-app-route="home"]) .app-shell > .topbar .profile-button{
+    width:32px!important;height:32px!important;min-width:32px!important;min-height:32px!important;
+    max-width:32px!important;max-height:32px!important;padding:0!important;
+    display:grid!important;place-items:center!important;background:transparent!important;
+    border:0!important;box-shadow:none!important;
+  }
+  html body:not([data-app-route="home"]) #app > .topbar .back-button svg,
+  html body:not([data-app-route="home"]) .app-shell > .topbar .back-button svg{
+    width:22px!important;height:22px!important;stroke-width:1.9!important;
+  }
+  html body:not([data-app-route="home"]) #app > .topbar .profile-button,
+  html body:not([data-app-route="home"]) .app-shell > .topbar .profile-button{
+    background-size:25px 25px!important;
+  }
+
+  /* RANKINGS — solo la cabecera propia de Rankings, no barra superior duplicada. */
+  html body[data-app-route="rankings"] #app > header.topbar,
+  html body[data-app-route="rankings"] #app > .topbar,
+  html body[data-app-route="rankings"] .app-shell > header.topbar,
+  html body[data-app-route="rankings"] .app-shell > .topbar{
+    display:none!important;visibility:hidden!important;height:0!important;min-height:0!important;
+    max-height:0!important;margin:0!important;padding:0!important;border:0!important;overflow:hidden!important;
+  }
+  body[data-app-route="rankings"] #screen{padding-top:0!important;margin-top:0!important}
+  body[data-app-route="rankings"] .v32-head{padding:10px 20px 0!important}
+  body[data-app-route="rankings"] .v32-head-row{min-height:58px!important}
+  body[data-app-route="rankings"] .v32-head-row h1{
+    margin:0!important;font-size:28px!important;line-height:1.05!important;font-weight:720!important;letter-spacing:-.6px!important
+  }
+  body[data-app-route="rankings"] .v32-icon{
+    width:34px!important;height:34px!important;min-width:34px!important;border-radius:50%!important;
+    background:rgba(255,255,255,.035)!important
+  }
+  body[data-app-route="rankings"] .v32-icon svg{width:22px!important;height:22px!important;stroke-width:1.95!important}
+  body[data-app-route="rankings"] .v32-tabs{height:58px!important}
+  body[data-app-route="rankings"] .v32-tab{height:58px!important;font-size:16px!important}
+  body[data-app-route="rankings"] .v32-controls{padding:14px 18px 10px!important;gap:10px!important}
+  body[data-app-route="rankings"] .v32-select,
+  body[data-app-route="rankings"] .v32-filter{
+    height:44px!important;border-radius:14px!important;background:#151a82!important;
+    box-shadow:inset 0 1px 0 rgba(255,255,255,.06),0 7px 18px rgba(0,0,50,.14)!important
+  }
+  body[data-app-route="rankings"] .v32-card{
+    margin:0 16px!important;border-radius:18px!important;background:#0d1173!important;
+    border:1px solid rgba(67,211,255,.12)!important;box-shadow:0 10px 24px rgba(0,0,50,.14)!important
+  }
+  body[data-app-route="rankings"] .v32-fed-card{padding:15px 14px 8px!important}
+  body[data-app-route="rankings"] .v32-fed-row,
+  body[data-app-route="rankings"] .v32-club-row,
+  body[data-app-route="rankings"] .v32-full-row{
+    background:#0d1173!important
+  }
+
+  /* Logos de rankings perfectamente circulares, centrados y sin deformación. */
+  body[data-app-route="rankings"] .v32-logo{
+    width:44px!important;height:44px!important;min-width:44px!important;aspect-ratio:1/1!important;
+    border-radius:50%!important;overflow:hidden!important;display:grid!important;place-items:center!important;
+    background:rgba(255,255,255,.035)!important
+  }
+  body[data-app-route="rankings"] .v32-logo img{
+    width:38px!important;height:38px!important;max-width:38px!important;max-height:38px!important;
+    object-fit:contain!important;object-position:50% 50%!important;margin:auto!important;border-radius:0!important;
+    transform:none!important
+  }
+  body[data-app-route="rankings"] .v32-logo-fallback{
+    width:40px!important;height:40px!important;border-radius:50%!important;clip-path:none!important
+  }
+
+  /* Goleadores — un solo logo por equipo y todos centrados en un círculo real. */
+  body[data-app-route="scorers"] .v28-team-logo{
+    width:42px!important;height:42px!important;min-width:42px!important;aspect-ratio:1/1!important;
+    border-radius:50%!important;display:grid!important;place-items:center!important;overflow:hidden!important;
+    background:rgba(255,255,255,.035)!important
+  }
+  body[data-app-route="scorers"] .v28-team-logo img{
+    width:36px!important;height:36px!important;object-fit:contain!important;object-position:center!important;
+    margin:auto!important;transform:none!important
+  }
+  body[data-app-route="scorers"] .v28-team-logo img:not(:first-of-type),
+  body[data-app-route="scorers"] .v28-team-logo + .v28-team-logo{display:none!important}
+
+  /* NOTICIAS — chips realmente táctiles y tarjetas modernas compactas. */
+  body[data-app-route="news"] .v727-news-tabs{gap:8px!important;margin-bottom:16px!important}
+  body[data-app-route="news"] .v727-news-tabs .chip{
+    min-height:40px!important;padding:0 18px!important;border-radius:22px!important;
+    pointer-events:auto!important;touch-action:manipulation!important
+  }
+  body[data-app-route="news"] .news-list{display:grid!important;gap:10px!important}
+  body[data-app-route="news"] .news-row{
+    min-height:132px!important;margin:0!important;padding:14px!important;border-radius:22px!important;
+    border:1px solid rgba(78,105,255,.24)!important;background:#111579!important;
+    box-shadow:0 10px 24px rgba(0,0,58,.13)!important
+  }
+  body[data-app-route="news"] .news-thumb{
+    border-radius:18px!important;background:linear-gradient(145deg,#17dbe8 0%,#1676e9 52%,#2434a7 100%)!important
+  }
+
+  /* TIENDA — catálogo más moderno, compacto y consistente con la app azul. */
+  body[data-app-route="club-store"] #screen{background:#070a67!important}
+  body[data-app-route="club-store"] .v66-directory[data-v66-directory="store"]{
+    background:
+      radial-gradient(95% 24% at 50% 0%,rgba(18,115,255,.42),transparent 70%),
+      linear-gradient(180deg,#08178b 0%,#080a68 34%,#06075d 100%)!important;
+    min-height:100vh!important;padding-bottom:calc(88px + env(safe-area-inset-bottom))!important
+  }
+  body[data-app-route="club-store"] .v66-search{
+    margin:12px 14px 8px!important;border-radius:18px!important;background:rgba(9,15,105,.88)!important;
+    border:1px solid rgba(45,225,242,.20)!important;box-shadow:0 9px 24px rgba(0,0,55,.15)!important
+  }
+  body[data-app-route="club-store"] .v66-source-note{margin:6px 16px 10px!important}
+  body[data-app-route="club-store"] .v66-team-grid{gap:10px!important;padding:0 14px 18px!important}
+  body[data-app-route="club-store"] .v66-team-card,
+  body[data-app-route="club-store"] [data-v66-open-team]{
+    border-radius:20px!important;background:linear-gradient(155deg,#151a83,#0d116f)!important;
+    border:1px solid rgba(63,225,242,.16)!important;box-shadow:0 10px 24px rgba(0,0,50,.16)!important;
+    overflow:hidden!important
+  }
+  body[data-app-route="club-store"] .v66-team-logo{
+    aspect-ratio:1/1!important;border-radius:50%!important;display:grid!important;place-items:center!important;
+    overflow:hidden!important;background:rgba(255,255,255,.035)!important
+  }
+  body[data-app-route="club-store"] .v66-team-logo img{
+    width:86%!important;height:86%!important;object-fit:contain!important;object-position:center!important;margin:auto!important
+  }
+  body[data-app-route="club-store"] .v431-store{background:#070a67!important;color:#fff!important}
+  body[data-app-route="club-store"] .v431-block{background:#070a67!important;padding:18px 14px 4px!important}
+  body[data-app-route="club-store"] .v431-product,
+  body[data-app-route="club-store"] .v431-edition-card,
+  body[data-app-route="club-store"] .v431-story,
+  body[data-app-route="club-store"] .v431-custom-preview{
+    border-radius:20px!important;border:1px solid rgba(63,225,242,.14)!important;
+    box-shadow:0 12px 28px rgba(0,0,45,.18)!important
+  }
+  body[data-app-route="club-store"] .v431-product{background:#111579!important;color:#fff!important}
+  body[data-app-route="club-store"] .v431-product-art{background:linear-gradient(160deg,#1820a0,#0d126d)!important}
+  body[data-app-route="club-store"] .v431-product p,
+  body[data-app-route="club-store"] .v431-section-title small{color:#aeb7e5!important}
+
+  /* HISTORIA — elimina huecos grandes y unifica tarjetas azules. */
+  body[data-app-route="history"] .v35-history-sources,
+  body[data-app-route="history"] .v35-tagged-facebook{display:none!important}
+  body[data-app-route="history"] .v35-history-page,
+  body[data-app-route="history"] [data-v35-content]{
+    background:#06075f!important
+  }
+  body[data-app-route="history"] .v35-history-page section{margin-bottom:12px!important}
+  body[data-app-route="history"] .v35-history-timeline,
+  body[data-app-route="history"] .v35-format-grid,
+  body[data-app-route="history"] .v35-result-list{gap:10px!important}
+  body[data-app-route="history"] .v672-modern-card,
+  body[data-app-route="history"] .v35-final-row,
+  body[data-app-route="history"] .v35-record-card,
+  body[data-app-route="history"] .v35-stat-card{
+    border-radius:20px!important;background:#0f1475!important;
+    border:1px solid rgba(54,214,242,.14)!important;box-shadow:0 9px 22px rgba(0,0,48,.13)!important
+  }
+  body[data-app-route="history"] button{touch-action:manipulation}
+  body[data-app-route="history"] .v674-details-button,
+  body[data-app-route="history"] .v731-history-details{
+    pointer-events:auto!important;cursor:pointer!important
+  }
+
+  /* SOBRE LA LIGA — tarjetas más modernas, compactas y fondo uniforme. */
+  body[data-app-route="safe-about"] .v33-about,
+  body[data-app-route="safe-about"] #screen{background:#06075f!important}
+  body[data-app-route="safe-about"] .v33-about-now,
+  body[data-app-route="safe-about"] .v33-about-format,
+  body[data-app-route="safe-about"] .v33-about-history{padding-top:18px!important;padding-bottom:18px!important}
+  body[data-app-route="safe-about"] .v33-about-board,
+  body[data-app-route="safe-about"] .v33-about-format-grid,
+  body[data-app-route="safe-about"] .v33-about-timeline{gap:8px!important;margin-top:11px!important}
+  body[data-app-route="safe-about"] .v33-about-board article,
+  body[data-app-route="safe-about"] .v33-about-format-grid article,
+  body[data-app-route="safe-about"] .v33-about-timeline article{
+    border-radius:18px!important;background:#0f1475!important;
+    border:1px solid rgba(58,218,242,.16)!important;
+    box-shadow:0 9px 22px rgba(0,0,48,.13)!important
+  }
+  body[data-app-route="safe-about"] .v33-about-timeline:before{
+    width:2px!important;background:linear-gradient(180deg,#27e7f2 0%,#27e7f2 72%,rgba(39,231,242,.08) 100%)!important;
+    box-shadow:0 0 10px rgba(39,231,242,.22)!important
+  }
+  body[data-app-route="safe-about"] .v33-about-timeline article:after{
+    width:11px!important;height:11px!important;animation:v768HistoryPulse 1.65s ease-in-out infinite!important
+  }
+}
+@keyframes v768HistoryPulse{
+  0%,100%{transform:scale(.82);opacity:.58;box-shadow:0 0 0 3px rgba(34,231,242,.08),0 0 7px rgba(34,231,242,.16)}
+  50%{transform:scale(1.18);opacity:1;box-shadow:0 0 0 6px rgba(34,231,242,.13),0 0 20px rgba(34,231,242,.64)}
+}
+@media (prefers-reduced-motion:reduce){
+  body[data-app-route="safe-about"] .v33-about-timeline article:after{animation:none!important}
+}
