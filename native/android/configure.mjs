@@ -11,6 +11,11 @@ for(const permission of ['CAMERA','RECORD_AUDIO','MODIFY_AUDIO_SETTINGS','USE_BI
 }
 if(!xml.includes('android.speech.RecognitionService'))xml=xml.replace('</manifest>','<queries><intent><action android:name="android.speech.RecognitionService" /></intent></queries></manifest>');
 if(!xml.includes('android.intent.action.TTS_SERVICE'))xml=xml.replace('</queries>','<intent><action android:name="android.intent.action.TTS_SERVICE" /></intent></queries>');
+// Capacitor checks resolveActivity before launching the capture intent. Android
+// package visibility must allow those checks as well as the camera permission.
+for(const action of ['android.media.action.VIDEO_CAPTURE','android.media.action.IMAGE_CAPTURE']){
+  if(!xml.includes(action))xml=xml.replace('</queries>','<intent><action android:name="'+action+'" /></intent></queries>');
+}
 fs.writeFileSync(manifest,xml);
 
 const gradle='android/app/build.gradle';
