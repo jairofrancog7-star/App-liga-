@@ -2,7 +2,7 @@
 <html lang="es-MX">
 <head>
   <script src="./src/v776-navigation.js"></script>
-  <meta name="app-build" content="v775-more-approved-restore">
+  <meta name="app-build" content="v789-stats-header-restore">
   <style data-ljr-entry-guard>
     html.ljr-preboot #app{visibility:hidden!important}
     html.ljr-preboot body{background:#02065f!important}
@@ -308,7 +308,7 @@
   <link rel="stylesheet" href="./src/v766-quiz-start.css?v=20261004-v766-native-start" />
   <link rel="stylesheet" href="./src/v31-hospitality-reference.css?v=20261001-v509-hospitality-topbar-fix&restore=v765" />
   <link rel="stylesheet" href="./src/v32-rankings-drive-reference.css?v=20261004-v735-full-filter-table&restore=v765" />
-  <link rel="stylesheet" href="./src/v33-data-statistics-reference.css?v=20261004-v662-tabs-transparent-restored&restore=v765" />
+  <link rel="stylesheet" href="./src/v33-data-statistics-reference.css?v=20261005-v789-stats-header-restore" />
   <link rel="stylesheet" href="./src/v34-nav-master.css?v=20261001-v493-official-all-categories&restore=v765" />
   <link rel="stylesheet" href="./src/v45-moreless-reference.css?v=20261001-v493-official-all-categories&restore=v765" />
   <link rel="stylesheet" href="./src/v33-about-reference.css?v=20261001-v493-official-all-categories&restore=v765" />
@@ -552,12 +552,13 @@
   <link rel="stylesheet" href="./src/v731-tools-history-compact.css?v=20261004-v734-functional-tool-details&restore=v765" />
   <link rel="stylesheet" href="./src/v718-history-legacy-logo-fill.css?v=20261004-v725-specific-logo-fixes&restore=v765" />
 
-  <style id="v734StatsTabsBarRestore">
-    /* V734 — Estadísticas: elimina la franja azul oscuro detrás de las pestañas.
-       Conserva la línea blanca y deja la fila integrada con la cabecera azul. */
+  <style id="v789StatsHeaderRestore">
+    /* V789 — Datos > Estadísticas: restaura la cabecera aprobada anterior.
+       Conserva flecha/compartir, degradado azul con caída oscura,
+       franja azul oscuro de pestañas y línea blanca inferior. */
     html body.v33-data-active #screen .v33-tabs{
-      background:transparent!important;
-      background-color:transparent!important;
+      background:#171778!important;
+      background-color:#171778!important;
       background-image:none!important;
       backdrop-filter:none!important;
       -webkit-backdrop-filter:none!important;
@@ -566,10 +567,16 @@
       box-shadow:none!important;
     }
     html body.v33-data-active #screen .v33-data-head::before{
-      content:none!important;
-      display:none!important;
-      height:0!important;
-      background:none!important;
+      content:""!important;
+      display:block!important;
+      position:absolute!important;
+      z-index:515!important;
+      left:0!important;
+      right:0!important;
+      bottom:0!important;
+      height:10px!important;
+      pointer-events:none!important;
+      background:linear-gradient(180deg,rgba(7,13,113,0),rgba(5,8,88,.96))!important;
     }
     html body.v33-data-active #screen .v33-data-head,
     html body.v33-data-active #screen .v33-data-head.general,
@@ -577,12 +584,12 @@
       background:
         radial-gradient(circle at 76% 4%,rgba(39,91,255,.72),transparent 27%),
         radial-gradient(circle at 33% 16%,rgba(26,57,220,.36),transparent 38%),
-        linear-gradient(180deg,#172fe5 0%,#1029d0 48%,#0e24c2 100%)!important;
+        linear-gradient(180deg,#172fe5 0%,#1029d0 28%,#071596 60%,#02065e 100%)!important;
     }
     html body.v33-data-active #screen .v33-data-head.is-collapsed{
       background:
         radial-gradient(circle at 76% 0%,rgba(38,86,255,.64),transparent 30%),
-        linear-gradient(180deg,#1730dd 0%,#0f25c3 100%)!important;
+        linear-gradient(180deg,#1730dd 0%,#0f25c3 42%,#07127d 100%)!important;
     }
   </style>
 
