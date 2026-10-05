@@ -308,7 +308,7 @@
   <link rel="stylesheet" href="./src/v766-quiz-start.css?v=20261004-v766-native-start" />
   <link rel="stylesheet" href="./src/v31-hospitality-reference.css?v=20261001-v509-hospitality-topbar-fix&restore=v765" />
   <link rel="stylesheet" href="./src/v32-rankings-drive-reference.css?v=20261004-v735-full-filter-table&restore=v765" />
-  <link rel="stylesheet" href="./src/v33-data-statistics-reference.css?v=20261005-v792-stats-scroll-reference" />
+  <link rel="stylesheet" href="./src/v33-data-statistics-reference.css?v=20261005-v793-historical-stats-restore" />
   <link rel="stylesheet" href="./src/v34-nav-master.css?v=20261001-v493-official-all-categories&restore=v765" />
   <link rel="stylesheet" href="./src/v45-moreless-reference.css?v=20261001-v493-official-all-categories&restore=v765" />
   <link rel="stylesheet" href="./src/v33-about-reference.css?v=20261001-v493-official-all-categories&restore=v765" />
@@ -551,46 +551,7 @@
   <link rel="stylesheet" href="./src/v731-tools-history-compact.css?v=20261004-v734-functional-tool-details&restore=v765" />
   <link rel="stylesheet" href="./src/v718-history-legacy-logo-fill.css?v=20261004-v725-specific-logo-fixes&restore=v765" />
 
-  <style id="v789StatsHeaderRestore">
-    /* V789 — Datos > Estadísticas: restaura la cabecera aprobada anterior.
-       Conserva flecha/compartir, degradado azul con caída oscura,
-       franja azul oscuro de pestañas y línea blanca inferior. */
-    html body.v33-data-active #screen .v33-tabs{
-      background:#171778!important;
-      background-color:#171778!important;
-      background-image:none!important;
-      backdrop-filter:none!important;
-      -webkit-backdrop-filter:none!important;
-      border-top:0!important;
-      border-bottom:2px solid rgba(220,224,255,.88)!important;
-      box-shadow:none!important;
-    }
-    html body.v33-data-active #screen .v33-data-head::before{
-      content:""!important;
-      display:block!important;
-      position:absolute!important;
-      z-index:515!important;
-      left:0!important;
-      right:0!important;
-      bottom:0!important;
-      height:10px!important;
-      pointer-events:none!important;
-      background:linear-gradient(180deg,rgba(7,13,113,0),rgba(5,8,88,.96))!important;
-    }
-    html body.v33-data-active #screen .v33-data-head,
-    html body.v33-data-active #screen .v33-data-head.general,
-    html body.v33-data-active #screen .v33-data-head.compact{
-      background:
-        radial-gradient(circle at 76% 4%,rgba(39,91,255,.72),transparent 27%),
-        radial-gradient(circle at 33% 16%,rgba(26,57,220,.36),transparent 38%),
-        linear-gradient(180deg,#172fe5 0%,#1029d0 28%,#071596 60%,#02065e 100%)!important;
-    }
-    html body.v33-data-active #screen .v33-data-head.is-collapsed{
-      background:
-        radial-gradient(circle at 76% 0%,rgba(38,86,255,.64),transparent 30%),
-        linear-gradient(180deg,#1730dd 0%,#0f25c3 42%,#07127d 100%)!important;
-    }
-  </style>
+  
 
   <link rel="stylesheet" href="./src/v768-ui-polish.css?v=20261004-v768-ui-polish">
 <script src="./season-logos.js?v=774"></script>
@@ -699,7 +660,7 @@
   <script type="module" src="./src/v28-scorers-drive-reference.js?v=20261001-v493-official-all-categories&restore=v765"></script>
   <script type="module" src="./src/v31-hospitality-reference.js?v=20261001-v509-hospitality-topbar-fix&restore=v765"></script>
   <script type="module" src="./src/v32-rankings-drive-reference.js?v=20261004-v735-full-filter-table&restore=v765"></script>
-  <script type="module" src="./src/v33-data-statistics-reference.js?v=20261005-v792-stats-scroll-reference"></script>
+  <script type="module" src="./src/v33-data-statistics-reference.js?v=20261005-v793-historical-stats-restore"></script>
   <script type="module" src="./src/v34-nav-master.js?v=20261001-v493-official-all-categories&restore=v765"></script>
   <script type="module" src="./src/v33-about-reference.js?v=20261001-v493-official-all-categories&restore=v765"></script>
   <script type="module" src="./src/v111-history-photo-data.js?v=20261001-v493-official-all-categories&restore=v765"></script>
@@ -976,7 +937,7 @@
   <script type="module" src="./src/v734-league-tools-details.js?v=20261004-v734-functional-tool-details&restore=v765"></script>
   <script defer src="./src/v768-ui-polish.js?v=20261004-v768-ui-polish"></script>
   <script defer src="./src/v769-final-polish.js?v=20261004-v770-final-polish"></script>
-  <script type="module" src="./src/v768-scroll-chrome.js?v=20261005-v792-stats-scroll-reference"></script>
+  <script type="module" src="./src/v768-scroll-chrome.js?v=20261005-v793-historical-stats-restore"></script>
 <script defer src="./src/v776-admin-content.js?v=782"></script>
 <script defer src="./src/v776-ui.js?v=783"></script>
 <script defer src="./src/v776-design-studio.js"></script>
