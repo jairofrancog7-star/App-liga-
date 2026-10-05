@@ -599,3 +599,80 @@ body[data-app-route="fantasy"] img[data-v24-fantasy-logo].is-ready,
 body[data-app-route="fantasyAccess"] img[data-v24-fantasy-logo].is-ready{
   opacity:1!important;
 }
+
+
+/* V804 — Fantasy Access hard lock: un solo azul, sin scroll y sin corte en "Prueba como invitado". */
+body[data-app-route="fantasyAccess"]{
+  --v804-fantasy-access-blue:#09096d!important;
+  background:var(--v804-fantasy-access-blue)!important;
+  overflow:hidden!important;
+}
+body[data-app-route="fantasyAccess"] #app,
+body[data-app-route="fantasyAccess"] #screen,
+body[data-app-route="fantasyAccess"] .v23-fantasy-access,
+body[data-app-route="fantasyAccess"] .v588-fantasy-access,
+body[data-app-route="fantasyAccess"] .v588-access-viewport,
+body[data-app-route="fantasyAccess"] .v588-access-slide{
+  background:var(--v804-fantasy-access-blue)!important;
+  background-image:none!important;
+}
+body[data-app-route="fantasyAccess"] .bottom-nav{
+  background:var(--v804-fantasy-access-blue)!important;
+  border-top:0!important;
+  box-shadow:none!important;
+}
+body[data-app-route="fantasyAccess"] #screen,
+body[data-app-route="fantasyAccess"] .v23-fantasy-access,
+body[data-app-route="fantasyAccess"] .v588-fantasy-access,
+body[data-app-route="fantasyAccess"] .v588-access-viewport,
+body[data-app-route="fantasyAccess"] .v588-access-slide{
+  overflow:hidden!important;
+  overscroll-behavior:none!important;
+  scrollbar-width:none!important;
+}
+body[data-app-route="fantasyAccess"] .v23-fantasy-access::-webkit-scrollbar,
+body[data-app-route="fantasyAccess"] .v588-access-slide::-webkit-scrollbar{
+  display:none!important;
+}
+body[data-app-route="fantasyAccess"] .v588-access-slide{
+  touch-action:pan-x!important;
+}
+body[data-app-route="fantasyAccess"] .v588-slide-team .v588-team-actions{
+  position:relative!important;
+  z-index:20!important;
+  overflow:visible!important;
+  padding-bottom:14px!important;
+}
+body[data-app-route="fantasyAccess"] .v588-slide-team .v23-access-later{
+  display:flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  min-height:40px!important;
+  line-height:1.2!important;
+  overflow:visible!important;
+  white-space:nowrap!important;
+}
+@media(max-height:760px){
+  body[data-app-route="fantasyAccess"] .v588-slide-team .v588-card-stage{
+    height:180px!important;
+    margin-top:8px!important;
+  }
+  body[data-app-route="fantasyAccess"] .v588-slide-team .v588-team-copy p{
+    margin-top:8px!important;
+    line-height:1.35!important;
+  }
+  body[data-app-route="fantasyAccess"] .v588-slide-team .v588-dots{
+    margin-top:7px!important;
+  }
+  body[data-app-route="fantasyAccess"] .v588-slide-team .v588-team-actions{
+    margin-top:8px!important;
+    padding-bottom:8px!important;
+  }
+  body[data-app-route="fantasyAccess"] .v588-slide-team .v23-access-login{
+    min-height:46px!important;
+  }
+  body[data-app-route="fantasyAccess"] .v588-slide-team .v23-access-later{
+    margin-top:5px!important;
+    min-height:36px!important;
+  }
+}
