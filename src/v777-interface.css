@@ -117,3 +117,64 @@ html body.ljr-v777 .v734-tool-detail-panel[hidden]{display:none!important}
  html body.ljr-v777 :is(.v92-actions,.v92-primary-actions,.v92-stat-links){gap:8px!important;flex-wrap:wrap!important}
  html body.ljr-v777 :is(.v92-actions,.v92-primary-actions,.v92-stat-links) button{border-radius:12px!important;padding:9px 12px!important;border:1px solid #4860ac!important;background:#15358c!important;color:white!important;min-height:36px!important}
 }
+
+@media(max-width:1023px){
+ html body.ljr-v777 .v612-platform-modes{display:grid!important;grid-template-columns:repeat(4,minmax(0,1fr))!important;gap:7px!important;margin:10px 0!important}
+ html body.ljr-v777 .v612-platform-modes button{border:1px solid #3a5caf!important;background:#122778!important;color:white!important;border-radius:12px!important;min-height:38px!important;padding:7px 4px!important;font-size:12px!important;white-space:nowrap!important}
+ html body.ljr-v777 .v612-platform-modes button.active{border-color:#2adced!important;background:#2154ac!important}
+ html body.ljr-v777 .v196-dot{background:#4ddce7!important;animation:ljr-signal 1.6s ease-in-out infinite!important}
+ html body.ljr-v777 .v196-dot.live{background:#ff567e!important;box-shadow:0 0 0 5px #ff567e20!important}
+ html body.ljr-v777 .v196-toolbar{gap:7px!important}
+ html body.ljr-v777 .v196-toolbar button{border-radius:12px!important;background:#122879!important;border-color:#3b59aa!important;min-height:65px!important}
+ html body.ljr-v777 .v196-toolbar button b{font-size:12px!important}
+ html body.ljr-v777 .v196-toolbar button small{font-size:10px!important}
+}
+@keyframes ljr-signal{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.45;transform:scale(.82)}}
+html body.ljr-v777:not(.liga-editor) :is([data-v196-add],[data-v196-save-source],[data-v196-remove],[data-v196-network]){display:none!important}
+
+/* v778: the shared row wins over former per-screen header selectors. */
+@media(max-width:1023px){
+ html body.ljr-v777[data-mobile-layout="v775"] #app .ljr-header-v777 .ljr-chrome-actions{position:absolute!important;inset:10px 14px auto!important;height:38px!important;display:flex!important;z-index:110!important;pointer-events:none!important;visibility:visible!important}
+ html body.ljr-v777[data-mobile-layout="v775"] #app .ljr-header-v777 .ljr-chrome-actions svg{display:block!important;width:23px!important;height:23px!important;fill:none!important;stroke:currentColor!important;stroke-width:1.8!important;visibility:visible!important;opacity:1!important}
+ html body.ljr-v777[data-mobile-layout="v775"] #app .ljr-header-v777 .ljr-chrome-actions button{position:relative!important;inset:auto!important;display:grid!important;width:32px!important;height:32px!important;min-width:32px!important;max-width:32px!important;min-height:32px!important;max-height:32px!important;transform:none!important;pointer-events:auto!important}
+ html body.ljr-v777[data-mobile-layout="v775"] #app .ljr-header-v777 .ljr-chrome-actions button[hidden]{display:none!important}
+ html body.ljr-v777[data-mobile-layout="v775"] #app .ljr-header-v777 .ljr-chrome-actions button>*{max-width:32px!important;max-height:32px!important}
+ html body.ljr-v777[data-mobile-layout="v775"] #app .bottom-nav :is(small,span){text-transform:none!important;letter-spacing:0!important}
+ html body.ljr-v777[data-mobile-layout="v775"] #app #screen .ljr-scroll-header{display:block!important;padding:50px 16px 10px!important;height:88px!important;min-height:88px!important;max-height:88px!important;background-color:#06075f!important}
+ html body.ljr-v777[data-mobile-layout="v775"] #app #screen .ljr-scroll-header h1{display:block!important;width:100%!important;margin:0!important;position:relative!important;inset:auto!important;line-height:1.1!important;white-space:nowrap!important;font-size:22px!important;padding:3px 0 9px!important}
+ html body.ljr-v777[data-mobile-layout="v775"] #app #screen :is(.v41-head,.v27-teams-head).ljr-scroll-header{height:128px!important;min-height:128px!important;max-height:128px!important;background:#06075f!important;padding:50px 14px 10px!important}
+ html body.ljr-v777[data-mobile-layout="v775"] #app #screen .v620-history-top.ljr-scroll-header{height:128px!important;min-height:128px!important;max-height:128px!important;padding:0!important}
+ html body.ljr-v777[data-app-route="home"] #app>.topbar::after{display:none!important;content:none!important}
+ html body.ljr-v777[data-app-route="home"] #app .topbar .ljr-chrome-actions{top:clamp(18px,5.4vw,27px)!important;right:calc(8% - 16px)!important}
+ html body.ljr-v777[data-app-route="home"] #app .topbar .wordmark{display:none!important}
+ html body.ljr-v777[data-app-route="hospitality"] #app #screen .v31-hospitality-page{min-height:calc(100dvh - var(--v768-head-h,88px) - var(--v774-nav-h,0px))!important;height:calc(100dvh - var(--v768-head-h,88px) - var(--v774-nav-h,0px))!important;display:flex!important;flex-direction:column!important}
+ html body.ljr-v777[data-app-route="hospitality"] #app #screen .ljr-hospitality-actions{margin-top:auto!important;flex:none!important;position:static!important;padding-top:16px!important}
+ html body.ljr-v777[data-app-route="hospitality"] #app #screen .ljr-hospitality-actions button{position:static!important;width:100%!important;margin:0!important}
+ html body.ljr-v777[data-app-route="leagueTools"] #app #screen .v734-tool-card{height:auto!important;max-height:none!important;min-height:115px!important;display:flex!important;flex-direction:column!important;grid-row:auto!important;overflow:hidden!important;padding:8px!important}
+ html body.ljr-v777[data-app-route="leagueTools"] #app #screen .v734-tool-card[hidden]{display:none!important}
+ html body.ljr-v777[data-app-route="leagueTools"] #app #screen .v734-tool-details{position:static!important;inset:auto!important;height:34px!important;min-height:34px!important;max-height:none!important;flex:none!important;font-size:12px!important;margin-top:auto!important;transform:none!important}
+ html body.ljr-v777[data-app-route="leagueTools"] #app #screen .v734-tool-open{height:auto!important;min-height:56px!important;flex:none!important}
+ html body.ljr-v777[data-app-route="leagueTools"] #app #screen .v734-tool-detail-panel{position:static!important;height:auto!important;max-height:none!important;display:block!important;background:#101f7b!important}
+ html body.ljr-v777[data-app-route="leagueTools"] #app #screen .v734-tool-detail-panel[hidden]{display:none!important}
+ html body.ljr-v777[data-app-route="leagueTools"] #app #screen .v726-tool-grid{grid-auto-rows:auto!important;align-items:start!important}
+ html body.ljr-v777[data-app-route="scorers"] #app #screen :is(.v391-feature,.v28-feature){background:#101f7b!important;border:1px solid #354ca1!important;border-radius:14px!important;overflow:hidden!important}
+ html body.ljr-v777[data-app-route="scorers"] #app #screen :is(.v391-feature-photo,.v28-feature-photo){display:none!important}
+ html body.ljr-v777[data-app-route="scorers"] #app #screen :is(.v391-feature-info,.v28-feature-info){background:#101f7b!important;min-height:72px!important}
+ html body.ljr-v777[data-app-route="scorers"] #app #screen :is(.v391-rank-row,.v462-rank-row){display:grid!important;grid-template-columns:28px 38px minmax(0,1fr) 32px!important;gap:9px!important;align-items:center!important;background:#06075f!important;padding:12px 10px!important;min-height:68px!important;border-bottom:1px solid #2c408b!important}
+ html body.ljr-v777[data-app-route="scorers"] #app #screen :is(.v391-rank-copy,.v462-rank-copy) b{font-size:13px!important;white-space:normal!important;line-height:1.25!important}
+ html body.ljr-v777[data-app-route="scorers"] #app #screen :is(.v391-rank-copy,.v462-rank-copy) small{display:flex!important;align-items:center!important;gap:5px!important;font-size:11px!important}
+ html body.ljr-v777[data-app-route="scorers"] #app #screen :is(.v391-rank-logo,.v462-rank-logo){width:18px!important;height:18px!important;object-fit:contain!important}
+}
+html body.ljr-v777:not(.liga-editor) [data-v196-delete]{display:none!important}
+@media(max-width:1023px){
+ html body.ljr-v777[data-mobile-layout="v775"] #app .ljr-header-v777 .ljr-chrome-actions button{color:#fff!important;overflow:hidden!important;background:transparent!important;border-radius:50%!important}
+ html body.ljr-v777[data-mobile-layout="v775"] #app #screen .v620-history-top .v35-history-head{height:82px!important;min-height:82px!important;max-height:82px!important;padding:50px 16px 8px!important;display:block!important;background:transparent!important}
+ html body.ljr-v777[data-mobile-layout="v775"] #app #screen .v620-history-top .v35-logo-wrap{display:none!important}
+ html body.ljr-v777[data-mobile-layout="v775"] #app #screen .v620-history-top .v35-tabs{height:46px!important;min-height:46px!important;max-height:46px!important;display:flex!important;position:relative!important;inset:auto!important;transform:none!important;padding:0 16px!important;gap:22px!important;margin:0!important;background:transparent!important}
+ html body.ljr-v777[data-mobile-layout="v775"] #app #screen .v620-history-top .v35-tabs button{height:46px!important;min-height:46px!important;max-height:46px!important;font-size:13px!important;padding:0!important}
+}
+@media(max-width:1023px){
+ html body.ljr-v777[data-mobile-layout="v775"] #app #screen .ljr-quiz-head.ljr-scroll-header{height:48px!important;min-height:48px!important;max-height:48px!important;padding:0!important;background:transparent!important;overflow:visible!important}
+ html body.ljr-v777[data-app-route="quizArena"][data-mobile-layout="v775"] #app #screen{inset:0 0 var(--v774-nav-h,69px)!important;height:calc(100dvh - var(--v774-nav-h,69px))!important;max-height:none!important;min-height:0!important}
+ html body.ljr-v777[data-mobile-layout="v775"] #app #screen .v620-history-top .v35-tabs button{display:flex!important;align-items:center!important;justify-content:center!important;line-height:1!important;align-self:center!important}
+}

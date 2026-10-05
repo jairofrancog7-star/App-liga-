@@ -78,6 +78,7 @@ function saveSettings(v){try{localStorage.setItem(SETTINGS_KEY,JSON.stringify(v)
 function provider(url){
   const u=String(url||'').toLowerCase(),key=streamProvider(url);
   if(/^https?:\/\//i.test(url)&&window.LJR_MEDIA_BASE&&new URL(url).origin===new URL(window.LJR_MEDIA_BASE).origin&&new URL(url).pathname.startsWith('/api/file/'))return {key:'video',name:'Video de la Liga',icon:'▶'};
+  if(/^https?:\/\//i.test(url)&&window.LJR_MEDIA?.base){const local=new URL(url);if(local.origin===new URL(window.LJR_MEDIA.base).origin&&local.searchParams.has('live'))return {key:'local',name:'Directo local',icon:'◉'}}
   if(key==='youtube')return {key:'youtube',name:'YouTube',icon:'▶'};
   if(key==='facebook')return {key:'facebook',name:'Facebook',icon:'f'};
   if(key==='tiktok')return {key:'tiktok',name:'TikTok',icon:'♪'};
@@ -118,6 +119,7 @@ function floatingCapability(item,cfg=settings()){
   if(!url)return {inApp:false,pip:false,docPip:false,provider:p};
   const docPip=!!window.documentPictureInPicture?.requestWindow;
   if(p.key==='video')return {inApp:true,pip:true,docPip,provider:p};
+  if(p.key==='local')return {inApp:true,pip:false,docPip,provider:p};
   if(p.key==='youtube')return {inApp:true,pip:false,docPip,provider:p};
   if(p.key==='tiktok'&&tiktokVideoId(url))return {inApp:true,pip:false,docPip,provider:p};
   if(p.key==='facebook')return {inApp:true,pip:false,docPip,provider:p};
@@ -339,9 +341,10 @@ function playerHtml(c,s,st,current){
   if(!url){
     return '<div class="v196-player-empty"><span class="v196-signal">◉</span><b>'+(st.key==='final'?'Sin repetición vinculada':'Transmisión sin configurar')+'</b><p>'+(st.key==='final'?'Puedes vincular una repetición o resumen del partido.':'Vincula YouTube, Facebook, TikTok o una fuente de video para tenerla lista cuando empiece el partido.')+'</p><button type="button" data-v196-add>+ Vincular fuente</button></div>';
   }
-  if(cfg.render==='external'&&!['facebook','youtube','tiktok'].includes(p.key)){
+  if(cfg.render==='external'&&!['facebook','youtube','tiktok','local'].includes(p.key)){
     return '<div class="v196-player-empty linked"><span class="v196-provider">'+esc(p.icon)+'</span><b>'+esc(current?.name||s.source?.name||p.name)+'</b><p>El modo de reproducción está configurado para abrir el proveedor original.</p><button type="button" data-v196-open="'+esc(url)+'">Abrir transmisión</button></div>';
   }
+  if(p.key==='local')return '<div class="v196-frame"><iframe src="'+esc(url)+'" title="Directo de la Liga" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe></div>';
   if(p.key==='youtube'){
     const id=youtubeId(url);
     if(id){
@@ -386,7 +389,7 @@ function hubHtml(c,s){
       '<button type="button" data-v196-floating class="'+(floatOn?'active':'')+' '+(current&&!cap.inApp?'unsupported':'')+'"><span>▣</span><b>Flotante</b><small>'+floatLabel+'</small></button>'+
       '<button type="button" data-v196-settings><span>⚙</span><b>Ajustes</b><small>Reproducción</small></button>'+
     '</div>'+
-    '<div class="v612-platform-modes" aria-label="Modo de transmisión">'+['facebook','youtube','tiktok'].map(k=>'<button data-view-platform="'+k+'" class="'+(provider(current?.url).key===k?'active':'')+'">'+({facebook:'Facebook',youtube:'YouTube',tiktok:'TikTok'}[k])+'</button>').join('')+'</div>'+
+    '<div class="v612-platform-modes" aria-label="Modo de transmisión">'+['facebook','youtube','tiktok','local'].map(k=>'<button data-view-platform="'+k+'" class="'+(provider(current?.url).key===k?'active':'')+'">'+({facebook:'Facebook',youtube:'YouTube',tiktok:'TikTok',local:'Local'}[k])+'</button>').join('')+'</div>'+
     (list.length>1?'<div class="v196-source-rail">'+list.map((x,i)=>sourceButton(x,i,current)).join('')+'</div>':'')+
     '<section class="v196-player-card '+(floatOn?'floating-ready':'')+'" data-v196-player-card>'+
       '<div class="v196-player-head"><span><small>'+(st.live?'REPRODUCIENDO EN VIVO':st.key==='final'?'REPETICIÓN / RESUMEN':'TRANSMISIÓN PREPARADA')+'</small><b>'+esc(current?.name||s?.source?.name||'Liga Juventino Live')+'</b></span><div><button type="button" data-v196-multi title="Múltiples transmisiones">+'+Math.max(0,sourceCount-1)+'</button>'+(cap.pip?'<button type="button" data-v196-pip title="Picture-in-Picture">PiP</button>':'')+'<button type="button" data-v196-close-float title="Cerrar flotante">×</button></div></div>'+
@@ -394,6 +397,12 @@ function hubHtml(c,s){
       '<footer><span>'+(st.live?'El partido está marcado en vivo.':st.key==='final'?'El partido ya terminó. Puedes conservar la repetición vinculada.':'La fuente queda preparada y no se marca EN VIVO hasta que el partido realmente inicie.')+'</span><div><button type="button" data-v196-add>+ Fuente</button>'+(cap.pip?'<button type="button" data-v196-pip>PiP</button>':'')+(current?'<button type="button" data-v196-open="'+esc(current.url)+'">Abrir</button>':'')+'</div></footer>'+
     '</section>'+
   '</section>';
+}
+async function localSources(c){
+ const media=window.LJR_MEDIA;if(!media)return;
+ const n=media.modal('Directo local del partido','<p>Transmisiones activas desde la cámara de la Liga.</p><div data-local-rooms></div>'+(media.admin?'<button type="button" data-local-start>Transmitir este partido</button>':''));
+ const start=n.querySelector('[data-local-start]');if(start)start.onclick=()=>{n.querySelector('[data-close]').click();media.broadcast({title:c.home+' vs '+c.away,onStarted:item=>{const s=liveState(c),list=streamList(c,s).filter(x=>x.url!==item.url);list.unshift({id:item.id,name:item.title,url:item.url,addedAt:Date.now()});saveList(c,list);setCurrentSource(c,{name:item.title,url:item.url});schedule(20)}})};
+ try{const r=await media.api('rooms'),list=n.querySelector('[data-local-rooms]');if(!list.isConnected)return;list.innerHTML=r.rooms?.length?r.rooms.map(x=>'<button type="button" class="btn outline full" data-local-room="'+esc(x.id)+'">'+esc(x.title)+'</button>').join(''):'<p>No hay un directo local activo.</p>';list.querySelectorAll('[data-local-room]').forEach(b=>b.onclick=()=>{const url=media.base+'/?live='+encodeURIComponent(b.dataset.localRoom);setCurrentSource(c,{url,name:b.textContent});n.querySelector('[data-close]').click();schedule(20)})}catch(err){n.querySelector('[data-status]').textContent=err.message}
 }
 function modalShell(cls,title,body){
   $$('.v196-modal').forEach(x=>x.remove());
@@ -599,7 +608,7 @@ function bind(c,node){
   if(card?.querySelector('video'))enableDirectStream(card.querySelector('video'));
   if(card)attachPlayerControls(card,{pip:()=>openSystemPiP(c,node),settings:()=>playbackSettings(card),cast:()=>window.LJR_MATCH_LIVE?.openCast?.(),notify:flash,changeSource:window.LJR_MEDIA?.admin?()=>addSourceModal(c):undefined});
   const stop=e=>{e?.preventDefault?.();e?.stopPropagation?.()};
-  $$('[data-view-platform]',node).forEach(b=>b.onclick=()=>{const item=list.find(x=>provider(x.url).key===b.dataset.viewPlatform);if(item)setCurrentSource(c,item);else if(window.LJR_MEDIA?.admin)addSourceModal(c);else flash('La Liga todavía no ha publicado un enlace de '+b.textContent+'.')});
+  $$('[data-view-platform]',node).forEach(b=>b.onclick=()=>{if(b.dataset.viewPlatform==='local'){localSources(c);return}const item=list.find(x=>provider(x.url).key===b.dataset.viewPlatform);if(item)setCurrentSource(c,item);else if(window.LJR_MEDIA?.admin)addSourceModal(c);else flash('La Liga todavía no ha publicado un enlace de '+b.textContent+'.')});
   $$('[data-v196-open]',node).forEach(b=>b.onclick=e=>{stop(e);openExternal(b.dataset.v196Open)});
   $$('[data-v196-add]',node).forEach(b=>b.onclick=e=>{stop(e);addSourceModal(c)});
   $('[data-v196-events]',node)?.addEventListener('click',e=>{stop(e);eventsModal(c)});

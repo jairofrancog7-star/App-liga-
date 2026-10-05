@@ -524,6 +524,14 @@ function delegatedClick(e){
     if(row){e.preventDefault();window.LJR_PLAYER_PROFILE_API?.open({name:row.player,team:row.team,cat:catId()})}
   }
 }
+// A player card owns its click before legacy team-logo listeners see it.
+window.addEventListener('click',e=>{
+ if(route()!=='scorers')return;
+ const control=e.target.closest?.('[data-v194-player]');if(!control)return;
+ const row=scorerRows().find(r=>norm(r.player)===norm(control.dataset.v194Player));
+ if(!row)return;e.preventDefault();e.stopImmediatePropagation();
+ window.LJR_PLAYER_PROFILE_API?.open({name:row.player,team:row.team,cat:catId()});
+},true);
 function delegatedChange(e){
   if(route()!=='scorers'||!(e.target instanceof Element))return;
   if(!e.target.matches('[data-v194-team]'))return;
@@ -601,7 +609,12 @@ window.addEventListener('ljr:official-data',()=>{
 document.addEventListener('visibilitychange',()=>{
   if(!document.hidden&&route()==='scorers')waitForOfficialData(true);
 });
-/* No subtree MutationObserver: it caused self-triggered repaint cycles. */
+/* Recover only when another route renderer replaces our owned view.
+   Mutations inside the owned view do not trigger a repaint. */
+const routeScreen=document.querySelector('#screen');
+if(routeScreen)new MutationObserver(()=>{
+ if(route()==='scorers'&&!rendering&&!routeScreen.querySelector('[data-v194-scorers]'))schedule(60);
+}).observe(routeScreen,{childList:true,subtree:true});
 if(document.readyState==='loading'){
   document.addEventListener('DOMContentLoaded',()=>{waitForOfficialData(true);refreshCanonicalScorers()},{once:true});
 }else{

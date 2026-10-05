@@ -107,7 +107,7 @@ function records(content){
 function cardHtml(r){
   const logo=resolveLogo(r.team);
   const logoHtml=logo
-    ? '<img src="'+logo+'" alt="'+escapeHtml(r.team)+'" loading="lazy" decoding="async" onerror="this.closest(\'.v328-season-logo\').classList.add(\'is-fallback\');this.remove()">'
+    ? '<img src="'+logo+'" alt="'+escapeHtml(r.team)+'" loading="lazy" decoding="async" onerror="this.closest(\'.v328-season-logo\')?.classList.add(\'is-fallback\');this.remove()">'
     : '<span class="v328-season-initials">'+escapeHtml(initials(r.team))+'</span>';
   return '<button type="button" class="v328-season-item" data-v328-team="'+escapeAttr(r.team)+'" data-v328-date="'+escapeAttr(r.date)+'" title="'+escapeAttr(r.team+' · '+r.title)+'" aria-label="'+escapeAttr(r.team+' · '+r.title+' · '+r.date)+'">'+
     '<span class="v328-season-logo '+(logo?'':'is-fallback')+'">'+logoHtml+'</span>'+

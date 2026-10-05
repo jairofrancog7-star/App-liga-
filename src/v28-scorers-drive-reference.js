@@ -226,16 +226,16 @@ function logo(r){
   return '<span class="v28-team-logo"><span class="v28-team-fallback">'+esc(ab)+'</span></span>';
 }
 function rowMarkup(r,i){
-  return '<button type="button" class="v28-rank-row" data-v28-player="'+esc(r[0])+'">'+
+  return '<button type="button" class="v28-rank-row" data-v28-player="'+esc(r[1])+'">'+
     '<span class="v28-rank-number">#'+(i+3)+'</span>'+logo(r)+
-    '<span class="v28-rank-copy"><b>'+esc(r[0])+'</b><small>'+esc(r[1])+' · '+esc(r[3])+'</small></span>'+
+    '<span class="v28-rank-copy"><b>'+esc(r[1])+'</b><small>'+esc(r[0])+' · '+esc(r[3])+'</small></span>'+
     '<strong class="v28-rank-goals">'+r[2]+'</strong></button>';
 }
 function feature(r,cls){
   if(!r)return '';
   return '<article class="v28-feature">'+
     '<div class="v28-feature-photo '+cls+'"></div>'+
-    '<div class="v28-feature-info"><div class="v28-feature-person">'+logo(r)+'<span><b>'+esc(r[0])+'</b><small>'+esc(r[1])+' · '+esc(r[3])+'</small></span></div>'+
+    '<div class="v28-feature-info"><div class="v28-feature-person">'+logo(r)+'<span><b>'+esc(r[1])+'</b><small>'+esc(r[0])+' · '+esc(r[3])+'</small></span></div>'+
     '<div class="v28-feature-goals"><b>'+r[2]+'</b><small>goles</small></div></div></article>';
 }
 function pageMarkup(){
@@ -254,6 +254,11 @@ function render(){
   const screen=document.querySelector('#screen');
   if(!screen)return;
   const existing=screen.querySelector('[data-v28-scorers]');
+  if(window.LJR_OFFICIAL_DATA&&window.LJR_SCORERS_REFERENCE?.render){
+    if(!existing)screen.innerHTML='<section class="v28-scorers-page" data-v28-scorers></section>';
+    if(!screen.querySelector('[data-v194-scorers]'))window.LJR_SCORERS_REFERENCE.render();
+    return;
+  }
   if(!existing){
     screen.innerHTML=pageMarkup();
   }else if(existing.dataset.v28Fallback==='1'&&String(existing.dataset.v28CatCurrent||'')!==currentCat()){

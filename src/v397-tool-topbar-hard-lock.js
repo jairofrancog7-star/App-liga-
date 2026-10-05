@@ -61,6 +61,7 @@
   }
 
   function sync(){
+    if(window.LJR_CHROME)return;
     const topbar=document.querySelector('#app > .topbar, .app-shell > .topbar');
     if(!topbar)return;
 

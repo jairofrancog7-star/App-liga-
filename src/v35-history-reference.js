@@ -2412,7 +2412,7 @@ function seasonsEraBlock(){
           '<div class="v341-era-grid">'+items.map(r=>
             '<button type="button" class="v341-era-item" data-v35-era-team="'+esc(r.team)+'" data-v35-era-date="'+esc(r.date)+'" title="'+esc(r.team+' · '+r.title+' · '+r.season)+'" aria-label="'+esc(r.team+' · '+r.title+' · '+r.season)+'">'+
               '<span class="v341-era-logo '+(r.logo?'':'is-fallback')+'">'+
-                (r.logo?'<img src="'+r.logo+'" alt="'+esc(r.team)+'" loading="lazy" decoding="async" onerror="this.parentElement.classList.add(\'is-fallback\');this.remove()">':'<b>'+esc(initials(r.team))+'</b>')+
+                (r.logo?'<img src="'+r.logo+'" alt="'+esc(r.team)+'" loading="lazy" decoding="async" onerror="this.parentElement?.classList.add(\'is-fallback\');this.remove()">':'<b>'+esc(initials(r.team))+'</b>')+
               '</span>'+
               '<span class="v341-era-season">'+esc(r.season)+'</span>'+
             '</button>'
@@ -2656,7 +2656,7 @@ function v357ChampionSlot(row){
   const count=row?.count||'';
   return '<div class="v340-champion-row" data-v357-champion-slot '+(row?'':'hidden')+'>'+
     '<span class="v340-champion-logo '+(logo?'':'is-fallback')+'">'+
-      '<img '+(logo?'src="'+logo+'"':'')+' alt="'+esc(team)+'" loading="lazy" decoding="async" '+(logo?'':'hidden')+' onerror="this.hidden=true;this.parentElement.classList.add(\'is-fallback\');this.nextElementSibling.hidden=false">'+
+      '<img '+(logo?'src="'+logo+'"':'')+' alt="'+esc(team)+'" loading="lazy" decoding="async" '+(logo?'':'hidden')+' onerror="this.hidden=true;this.parentElement?.classList.add(\'is-fallback\');if(this.nextElementSibling)this.nextElementSibling.hidden=false">'+
       '<b '+(logo?'hidden':'')+'>'+esc(initials||' ')+'</b>'+
     '</span>'+
     '<span class="v340-champion-name">'+esc(team||' ')+'</span>'+
@@ -2987,7 +2987,7 @@ function v370ArchiveTeamsBlock(){
     '<div class="v370-legacy-grid">'+clubs.map((club,i)=>{const name=club.display,logo=v370HistoryTeamLogo(name),evolved=club.note&&club.aliases.length>1;return '<article class="v370-legacy-team '+(evolved?'v706-evolved-club':'')+'" data-v710-name="'+esc(name)+'" data-v710-categories="'+esc(club.categoryKeys.join('|'))+'" data-v710-first-year="'+club.firstYear+'" data-v710-last-year="'+club.lastYear+'">'+
       '<span class="v370-legacy-no">'+String(i+1).padStart(2,'0')+'</span>'+
       '<span class="v370-legacy-crest '+(logo?'':'is-fallback')+'">'+
-        (logo?'<img src="'+esc(logo)+'" alt="'+esc(name)+'" loading="lazy" decoding="async" onerror="this.parentElement.classList.add(\'is-fallback\');this.remove()">':'<b>'+esc(v370HistoryTeamInitials(name))+'</b>')+
+        (logo?'<img src="'+esc(logo)+'" alt="'+esc(name)+'" loading="lazy" decoding="async" onerror="this.parentElement?.classList.add(\'is-fallback\');this.remove()">':'<b>'+esc(v370HistoryTeamInitials(name))+'</b>')+
       '</span>'+
       '<span class="v370-legacy-copy"><small>'+(evolved?'EVOLUCIÓN DEL MISMO CLUB':'REGISTRO EN EL ARCHIVO')+'</small><strong>'+esc(name)+'</strong>'+
         '<span class="v717-first-seen"><span>DOCUMENTADO</span><b>'+esc(club.firstSeenText)+'</b></span>'+
@@ -3255,6 +3255,7 @@ function v359Prewarm(){
 function v362LockHistoryHeader(root=document.querySelector('.v35-history-page')){
   if(!root)return;
   if(window.matchMedia('(max-width:1023px)').matches){
+    if(window.LJR_CHROME)return;
     const put=(node,key,value)=>{if(node&&(node.style.getPropertyValue(key)!==value||node.style.getPropertyPriority(key)!=='important'))node.style.setProperty(key,value,'important')};
     const head=root.querySelector('.v35-history-head'),tabs=root.querySelector('.v35-tabs');
     put(root,'padding-top','0px');

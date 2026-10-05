@@ -130,7 +130,7 @@ function esc(v){return String(v??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt
 function route(){return (location.hash||'#/home').replace(/^#\/?/,'').split('?')[0]||'home';}
 function visual(src,alt,kind){
   if(!src)return '<div class="v115-visual v115-visual-fallback"><span>ARCHIVO</span></div>';
-  return '<div class="v115-visual '+(kind||'')+'"><img src="'+esc(src)+'" alt="'+esc(alt||'Archivo histórico')+'" loading="lazy" decoding="async" onerror="this.closest(\'.v115-visual\').classList.add(\'v115-visual-fallback\');this.remove()"><span class="v115-media-label">'+(kind==='exact'?'FOTO HISTÓRICA':'REFERENCIA DE ARCHIVO')+'</span></div>';
+  return '<div class="v115-visual '+(kind||'')+'"><img src="'+esc(src)+'" alt="'+esc(alt||'Archivo histórico')+'" loading="lazy" decoding="async" onerror="this.closest(\'.v115-visual\')?.classList.add(\'v115-visual-fallback\');this.remove()"><span class="v115-media-label">'+(kind==='exact'?'FOTO HISTÓRICA':'REFERENCIA DE ARCHIVO')+'</span></div>';
 }
 function factCard(x,kind){
   return '<article class="v115-card">'+visual(x.image,x.team||x.title,kind)+'<div class="v115-card-body"><span class="v115-date">'+esc(x.date||x.tag||'ARCHIVO')+'</span><h3>'+esc(x.team||x.title)+'</h3>'+(x.title&&x.team?'<strong>'+esc(x.title)+'</strong>':'')+(x.value?'<strong>'+esc(x.value)+'</strong>':'')+'<p>'+esc(x.detail)+'</p>'+(x.source?'<small>'+esc(x.source)+'</small>':'')+'</div></article>';

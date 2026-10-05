@@ -41,6 +41,8 @@ function sync(header,custom=false){
  if(back.innerHTML!==icons.back)back.innerHTML=icons.back;
  if(back.parentNode!==left)left.prepend(back);
  back.hidden=route()==='home';
+ back.classList.remove('is-hidden');
+ for(const b of [back,profile]){for(const [key,value] of Object.entries({position:'relative',inset:'auto',transform:'none',display:b.hidden?'none':'grid',width:'32px',height:'32px','min-width':'32px','max-width':'32px','min-height':'32px','max-height':'32px',color:'#fff',overflow:'hidden'})){if(b.style.getPropertyValue(key)!==value)b.style.setProperty(key,value,'important')}}
  const candidates=[...header.querySelectorAll('button')].filter(b=>b!==back&&b!==profile&&!b.closest('.v35-tabs,.v32-tabs,.v28-tabs,.v41-search,.v27-search,.v431-shop-tabs,.v435-shop-tabs')&&!b.matches('[data-v32-tab],[data-v35-tab],[data-v28-cat],[data-v431-filter],[data-v431-search-close]'));
  for(const b of candidates){
   const isMenu=b.matches('[data-v439-menu-toggle]');
@@ -57,7 +59,8 @@ function sync(header,custom=false){
 window.LJR_CHROME={sync,avatar};
 function patch(){
  if(!document.body.classList.contains('ljr-v777'))document.body.classList.add('ljr-v777');
- const custom=document.querySelector('.ljr-scroll-header'),top=document.querySelector('#app>.topbar');
+ if(route()==='quizArena'){const game=document.querySelector('.v766-quiz-start');if(game&&!game.querySelector('.ljr-quiz-head')){const head=document.createElement('header');head.className='ljr-quiz-head';const back=game.querySelector('.v766-back');if(back)head.append(back);game.prepend(head);window.LJR_SCROLL_CHROME?.refresh?.()}}
+ const custom=document.querySelector('.ljr-quiz-head,.ljr-scroll-header'),top=document.querySelector('#app>.topbar');
  sync(custom||top,!!custom);
  document.querySelectorAll('.bottom-nav .nav-item').forEach(b=>{const label=b.querySelector('[data-nav-label],.nav-label,small,span:last-child');if(label&&label.children.length===0){const labels={home:'Inicio',competition:'Competición',video:'Vídeo',fantasy:'Fantasy',more:'Más'};const value=labels[b.dataset.route];if(value&&label.textContent!==value)label.textContent=value}});
  document.querySelectorAll('.v726-hero-pills,.v105-footnote').forEach(n=>n.remove());
