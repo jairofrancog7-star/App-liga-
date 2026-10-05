@@ -1,0 +1,57 @@
+/* V773 — MÁS: elimina la franja azul oscura entre cabecera y contenido.
+   Mantiene el mismo arte, pero alinea la continuación usando la altura REAL
+   de la cabecera fija (incluye safe-area/status bar). */
+@media(max-width:1023px){
+  html body[data-app-route="more"]{
+    --v773-more-bg:#080b82;
+    --v773-more-head-h:var(--v683-more-head-h,calc(var(--v79-more-header-h,104px) + env(safe-area-inset-top,0px)));
+    background:var(--v773-more-bg)!important;
+  }
+
+  html body[data-app-route="more"] #app,
+  html body[data-app-route="more"] .app-shell,
+  html body[data-app-route="more"] #screen{
+    background-color:var(--v773-more-bg)!important;
+    border:0!important;
+    border-top:0!important;
+    box-shadow:none!important;
+    outline:0!important;
+  }
+
+  /* Cabecera y página usan exactamente el mismo bitmap y escala. */
+  html body[data-app-route="more"] #app > .topbar,
+  html body[data-app-route="more"] .app-shell > .topbar,
+  html body.v10-header-collapsed[data-app-route="more"] #app > .topbar,
+  html body.v10-header-collapsed[data-app-route="more"] .app-shell > .topbar{
+    background-color:var(--v773-more-bg)!important;
+    background-image:url('../public/more-bg-v19.webp?v=20260918-v19')!important;
+    background-repeat:no-repeat!important;
+    background-size:100% auto!important;
+    background-position:center top!important;
+    border:0!important;
+    border-bottom:0!important;
+    box-shadow:none!important;
+    outline:0!important;
+  }
+
+  html body[data-app-route="more"] .v19-more-page{
+    margin-top:0!important;
+    border:0!important;
+    border-top:0!important;
+    box-shadow:none!important;
+    outline:0!important;
+    background-color:var(--v773-more-bg)!important;
+    background-image:url('../public/more-bg-v19.webp?v=20260918-v19')!important;
+    background-repeat:no-repeat!important;
+    background-size:100% auto!important;
+    /* Antes se restaba solo 96/100/104px y no la safe-area:
+       eso producía la banda azul oscura de la captura. */
+    background-position:center calc(0px - var(--v773-more-head-h))!important;
+  }
+
+  html body[data-app-route="more"] .v19-more-page::before{
+    content:none!important;
+    display:none!important;
+    background:none!important;
+  }
+}
