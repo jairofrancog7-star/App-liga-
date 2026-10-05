@@ -148,9 +148,11 @@ function cycleVenue(){
 }
 
 function scorers(data,id=catId()){
- return (cat(data,id)?.scorers?.[0]?.rows||[]).filter(r=>r?.[1]&&r?.[2]).map((r,i)=>({
-  pos:String(r?.[0]??i+1),name:String(r?.[1]||''),team:String(r?.[2]||''),goals:Number(r?.[3])||0
- })).sort((a,b)=>b.goals-a.goals);
+ return (cat(data,id)?.scorers?.[0]?.rows||[])
+  .filter(r=>r?.[1]&&r?.[2]&&!/goles?\s+en\s+temporada/i.test(String(r?.[2]||'')))
+  .map((r,i)=>({
+   pos:String(r?.[0]??i+1),name:String(r?.[1]||''),team:String(r?.[2]||''),goals:Number(r?.[3])||0
+  })).sort((a,b)=>b.goals-a.goals);
 }
 function fixtures(data,id=catId()){
  const out=[];
