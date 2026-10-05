@@ -2,7 +2,7 @@
 <html lang="es-MX">
 <head>
   <script src="./src/v776-navigation.js"></script>
-  <meta name="app-build" content="v794-fantasy-no-topbar-fit">
+  <meta name="app-build" content="v795-quiz-no-topbar-hardfix">
   <style data-ljr-entry-guard>
     html.ljr-preboot #app{visibility:hidden!important}
     html.ljr-preboot body{background:#02065f!important}
@@ -558,10 +558,58 @@
   <link rel="stylesheet" href="./src/v768-scroll-chrome.css?v=768">
   <link rel="stylesheet" href="./src/v774-mobile-details.css?v=775">
 <link rel="stylesheet" href="./src/v776-corrections.css?v=777">
-<link rel="stylesheet" href="./src/v777-interface.css?v=20261005-v794-fantasy-no-topbar-fit">
-\n
+<link rel="stylesheet" href="./src/v777-interface.css?v=20261005-v795-quiz-no-topbar-hardfix">
 <link rel="stylesheet" href="./src/v791-more-seam-static-art.css?v=20261005-v791-more-seam-static-art">
   <link rel="stylesheet" href="./src/v793-stats-historical-lock.css?v=20261005-v793-historical-stats-restore">
+
+  <style id="v795QuizNoTopbarHardLock">
+    html.ljr-quiz-no-topbar body #app > .topbar,
+    html.ljr-quiz-no-topbar body .app-shell > .topbar,
+    html.ljr-quiz-no-topbar body header.topbar{
+      display:none!important;
+      visibility:hidden!important;
+      opacity:0!important;
+      position:absolute!important;
+      inset:0 auto auto 0!important;
+      width:0!important;
+      height:0!important;
+      min-width:0!important;
+      min-height:0!important;
+      max-width:0!important;
+      max-height:0!important;
+      margin:0!important;
+      padding:0!important;
+      border:0!important;
+      overflow:hidden!important;
+      pointer-events:none!important;
+    }
+    html.ljr-quiz-no-topbar body{
+      --v768-head-h:0px!important;
+      --ui-master-topbar-h:0px!important;
+      --topbar-h:0px!important;
+    }
+    html.ljr-quiz-no-topbar body #screen{
+      top:0!important;
+      margin-top:0!important;
+      padding-top:0!important;
+    }
+    html.ljr-quiz-no-topbar body .ljr-chrome-actions,
+    html.ljr-quiz-no-topbar body #v5Bell{
+      display:none!important;
+      visibility:hidden!important;
+    }
+  </style>
+  <script id="v795QuizNoTopbarHardLock">
+    (function(){
+      function syncQuizTopbar(){
+        var route=String(location.hash||'').replace(/^#\/?/,'').split('?')[0];
+        document.documentElement.classList.toggle('ljr-quiz-no-topbar',route==='quizArena'||route==='quiz');
+      }
+      syncQuizTopbar();
+      window.addEventListener('hashchange',syncQuizTopbar);
+      document.addEventListener('DOMContentLoaded',syncQuizTopbar,{once:true});
+    })();
+  </script>
 </head>
 <body>
 <div id="ljr-boot" aria-label="Cargando Liga Juventino" role="status"><i></i></div>
