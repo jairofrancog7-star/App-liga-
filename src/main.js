@@ -4296,7 +4296,7 @@ function predictorView(){
   return `<section class="v37-predictor-reference" aria-label="Pronostica Seis">
     <img
       class="v37-predictor-reference-image"
-      src="./assets/reference/predictor-v37/predictor-reference-body.webp?v=20260919-predictor-v37"
+      src="./assets/reference/predictor-master.png?v=20261005-v803-predictor-image-load-fix"
       alt="Pronostica Seis"
       draggable="false"
     >
