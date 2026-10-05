@@ -327,23 +327,51 @@ function bind(){
 function isDataRoute(){const r=route();return r==='stats'||r==='safe-data'||r==='leagueData'}
 function applyHeaderScroll(){
  if(!isDataRoute())return;
- const head=document.querySelector('[data-v33-head]'),title=head?.querySelector('[data-v33-morph-title]');if(!head||!title)return;
+ const head=document.querySelector('[data-v33-head]');
+ const title=head?.querySelector('[data-v33-morph-title]');
+ if(!head||!title)return;
+
+ /* Restauración de la animación histórica V36/V37:
+    el mismo título sube y se reduce; Fase final se desvanece;
+    las tablas siguen desplazándose por debajo de la cabecera. */
  const screenScroller=document.querySelector('#screen');
- const y=Math.max(0,screenScroller?.scrollTop||0,window.scrollY||0,document.documentElement.scrollTop||0,document.body.scrollTop||0),p=Math.min(1,y/165),vw=Math.min(window.innerWidth,520);
- const lerp=(a,b,t)=>a+(b-a)*t,eh=Math.max(184,Math.min(258,vw*.5012)),ch=Math.max(104,Math.min(142,vw*.272));
- const h=lerp(eh,ch,p);head.style.setProperty('--v33-collapse',p.toFixed(4));head.style.setProperty('--v33-head-h',h.toFixed(1)+'px');
- const page=document.querySelector('[data-v33-data]');
- if(page){
-   /* V393: usar la altura REAL renderizada del header, no la altura teórica.
-      V38.1 limita el header móvil a ~154/174px; usar 'h' aquí dejaba un segundo
-      bloque azul vacío debajo de las pestañas. */
-   const actualH=Math.max(0,head.getBoundingClientRect().height);
-   page.style.setProperty('--v33-actual-head-h',actualH.toFixed(1)+'px');
-   page.style.setProperty('padding-top',document.body.classList.contains('v768-scroll-root')?'0px':actualH.toFixed(1)+'px','important');
+ const y=Math.max(
+   0,
+   screenScroller?.scrollTop||0,
+   window.scrollY||0,
+   document.documentElement.scrollTop||0,
+   document.body.scrollTop||0
+ );
+ const p=Math.min(1,y/165);
+ const vw=Math.min(window.innerWidth,520);
+
+ const expandedH=Math.max(184,Math.min(258,vw*0.5012));
+ const collapsedH=Math.max(104,Math.min(142,vw*0.2720));
+ const expandedLeft=Math.max(20,Math.min(32,vw*0.055));
+ const compactLeft=Math.max(92,Math.min(132,vw*0.255));
+ const expandedTop=Math.max(98,Math.min(142,vw*0.274));
+ const compactTop=Math.max(24,Math.min(36,vw*0.070));
+ const expandedSize=Math.max(32,Math.min(44,vw*0.0855));
+ const compactSize=Math.max(18,Math.min(25,vw*0.048));
+ const lerp=(a,b,t)=>a+(b-a)*t;
+
+ head.style.setProperty('--v33-collapse',p.toFixed(4));
+ head.style.setProperty('--v33-head-h',lerp(expandedH,collapsedH,p).toFixed(1)+'px');
+ head.style.setProperty('--v33-tabs-opacity','1');
+
+ title.style.left=lerp(expandedLeft,compactLeft,p).toFixed(1)+'px';
+ title.style.top=lerp(expandedTop,compactTop,p).toFixed(1)+'px';
+ const h1=title.querySelector('h1');
+ if(h1)h1.style.fontSize=lerp(expandedSize,compactSize,p).toFixed(1)+'px';
+
+ const phase=title.querySelector('p');
+ if(phase){
+   phase.style.display='';
+   phase.style.visibility='';
+   phase.style.opacity=Math.max(0,1-(p*1.55)).toFixed(3);
+   phase.style.transform='translateY('+(-10*p).toFixed(1)+'px)';
  }
- title.style.left=lerp(Math.max(20,vw*.055),Math.max(92,vw*.255),p).toFixed(1)+'px';
- title.style.top=lerp(Math.max(98,vw*.274),Math.max(24,vw*.070),p).toFixed(1)+'px';
- title.querySelector('h1').style.fontSize=lerp(Math.max(32,vw*.0855),Math.max(18,vw*.048),p).toFixed(1)+'px';
+
  head.classList.toggle('is-collapsed',p>.82);
 }
 let tick=0;function onScroll(){if(tick)return;tick=requestAnimationFrame(()=>{tick=0;applyHeaderScroll()})}
