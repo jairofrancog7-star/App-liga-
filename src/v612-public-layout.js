@@ -32,15 +32,15 @@ async function openAdminRoute(route){
 }
 
 function update(){
- const allowed=!!window.LJR_MEDIA?.admin||hasSavedAccess();
+ const allowed=!!window.LJR_MEDIA?.admin;
  document.querySelectorAll('[data-route]').forEach(button=>{
   if(adminRoutes.has(button.dataset.route)){
     button.classList.toggle('v612-admin-only',true);
     button.classList.toggle('v612-admin-locked',!allowed);
     /* V624: todos los cuadros de administración permanecen visibles y pulsables.
        Si falta sesión, el mismo clic abre el acceso; si está recordada, entra directo. */
-    button.hidden=false;
-    button.disabled=false;
+    button.hidden=!allowed;
+    button.disabled=!allowed;
     button.removeAttribute('aria-disabled');
   }
  });

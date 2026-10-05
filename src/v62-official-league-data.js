@@ -467,11 +467,12 @@ function chooseNewer(a,b){
 async function fetchJson(url){
   try{const r=await fetch(url,{cache:'no-store',signal:AbortSignal.timeout(8000)});if(!r.ok)throw new Error(String(r.status));return await r.json()}catch{return null}
 }
+let contentBase=null;
 function publishData(next){
   if(!next||next===db)return;
-  db=next;
+  contentBase=next;db=window.LJR_CMS?.applyOfficialData?.(next)||next;
   window.LJR_OFFICIAL_DATA=db;
-  window.LJR_OFFICIAL_API={getData:()=>db,getCategory:id=>cat(id),getTeam:teamContext,getLogo:logoFor,setCategory:setCategory,setDataTab:(id)=>{dataTab=String(id||'summary');localStorage.setItem('v62-data-tab',dataTab);if(route()==='leagueData')renderDataPage()},openTeam};
+  window.LJR_OFFICIAL_API={getData:()=>db,applyContent:()=>{if(db){db=window.LJR_CMS?.applyOfficialData?.(contentBase||db)||db;schedule();window.dispatchEvent(new CustomEvent('ljr:official-data'))}},getCategory:id=>cat(id),getTeam:teamContext,getLogo:logoFor,setCategory:setCategory,setDataTab:(id)=>{dataTab=String(id||'summary');localStorage.setItem('v62-data-tab',dataTab);if(route()==='leagueData')renderDataPage()},openTeam};
   if(!cat(categoryId))categoryId='3';
   schedule();
   window.dispatchEvent(new CustomEvent('ljr:official-data'));
