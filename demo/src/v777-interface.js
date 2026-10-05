@@ -80,9 +80,12 @@ function patch(){
  document.querySelectorAll('.bottom-nav .nav-item').forEach(b=>{const label=b.querySelector('[data-nav-label],.nav-label,small,span:last-child');if(label&&label.children.length===0){const labels={home:'inicio',competition:'competición',video:'vídeo',fantasy:'fantasy',more:'más'};const value=labels[b.dataset.route];if(value&&label.textContent!==value)label.textContent=value}});
  document.querySelectorAll('.v726-hero-pills,.v105-footnote').forEach(n=>n.remove());
  if(route()==='profile'){
-  const a=account();document.querySelectorAll('.v569-profile-avatar').forEach(n=>{if(n.innerHTML!==avatar(a))n.innerHTML=avatar(a)});
+  const a=account();document.body.dataset.authState=a?'signed-in':'guest';
+  document.querySelectorAll('.v569-profile-avatar').forEach(n=>{if(n.innerHTML!==avatar(a))n.innerHTML=avatar(a)});
   const name=document.querySelector('.v569-profile-copy h1');if(name&&a&&name.textContent!=='Hola, '+a.name)name.textContent='Hola, '+a.name;
-  const root=document.querySelector('#screen');if(!root.querySelector('[data-ljr-account-settings]')){const b=document.createElement('button');b.className='btn outline full';b.dataset.ljrAccountSettings='';b.textContent='Ajustes de la aplicación';b.onclick=settings;root.append(b)}
+  const root=document.querySelector('#screen'),settingsBtn=root?.querySelector('[data-ljr-account-settings]');
+  if(!a){settingsBtn?.remove()}
+  else if(root&&!settingsBtn){const b=document.createElement('button');b.className='btn outline full ljr-settings-launch';b.dataset.ljrAccountSettings='';b.innerHTML='<span class="ljr-settings-launch-icon" aria-hidden="true">⚙</span><span class="ljr-settings-launch-copy"><b>Ajustes de la aplicación</b><small>Cuenta, privacidad, notificaciones y accesibilidad</small></span><span class="ljr-settings-launch-arrow" aria-hidden="true">›</span>';b.onclick=settings;root.append(b)}
  }
  if(['safe-about','history'].includes(route()))document.querySelectorAll('#screen h3,#screen b').forEach(n=>{if(/^(Videos 22-32-59 ya incorporados|Archivo comprobado)$/.test(n.textContent.trim()))n.closest('article')?.remove()});
  const fav=document.querySelector('.v414-ref-page');fav?.classList.add('ljr-blue-favorites');
@@ -90,7 +93,17 @@ function patch(){
  const boot=document.getElementById('ljr-boot');if(document.querySelector('#screen')?.children.length)requestAnimationFrame(()=>requestAnimationFrame(()=>boot?.remove()));
 }
 function settings(){
- const n=media().modal('Ajustes de la aplicación','<div class="cms-form"><button data-lang>Tu idioma preferido</button><button data-notify>Notificaciones</button><button data-access>Accesibilidad y pantalla</button><button data-help>Ayuda y comentarios</button><button data-privacy>Ajustes de privacidad</button><button data-terms>Términos y condiciones</button><button data-copy>Copiar enlace</button><button data-browser>Abrir en el navegador</button></div>');
+ if(!account())return;
+ const n=media().modal('Ajustes de la aplicación','<div class="cms-form ljr-settings-panel">'+
+  '<div class="ljr-settings-intro"><span>⚙</span><div><b>Personaliza tu cuenta</b><small>Configura la aplicación a tu manera.</small></div></div>'+
+  '<button class="ljr-settings-card" data-lang><span class="ico">🌐</span><span><b>Idioma preferido</b><small>Español (México) y futuras traducciones</small></span><i>›</i></button>'+
+  '<button class="ljr-settings-card" data-notify><span class="ico">🔔</span><span><b>Notificaciones</b><small>Goles, partidos, noticias y Fantasy</small></span><i>›</i></button>'+
+  '<button class="ljr-settings-card" data-access><span class="ico">◐</span><span><b>Accesibilidad y pantalla</b><small>Tamaño de texto y movimiento</small></span><i>›</i></button>'+
+  '<button class="ljr-settings-card" data-help><span class="ico">💬</span><span><b>Ayuda y comentarios</b><small>Reporta errores o envía sugerencias</small></span><i>›</i></button>'+
+  '<button class="ljr-settings-card" data-privacy><span class="ico">🛡</span><span><b>Privacidad</b><small>Preferencias y personalización</small></span><i>›</i></button>'+
+  '<button class="ljr-settings-card" data-terms><span class="ico">📄</span><span><b>Términos y condiciones</b><small>Reglas de uso de la aplicación</small></span><i>›</i></button>'+
+  '<div class="ljr-settings-mini-grid"><button data-copy><span>🔗</span><b>Copiar enlace</b></button><button data-browser><span>↗</span><b>Abrir en navegador</b></button></div>'+
+  '</div>');
  for(const [sel,kind]of [['lang','language'],['notify','notifications'],['help','feedback'],['privacy','privacy'],['terms','terms']])n.querySelector('[data-'+sel+']').onclick=()=>{n.querySelector('[data-close]').click();setting(kind)};
  n.querySelector('[data-copy]').onclick=async()=>{try{await navigator.clipboard.writeText(location.href);n.querySelector('[data-status]').textContent='Enlace copiado.'}catch{n.querySelector('[data-status]').textContent=location.href}};
  n.querySelector('[data-browser]').onclick=()=>window.open(location.href,'_blank','noopener');
