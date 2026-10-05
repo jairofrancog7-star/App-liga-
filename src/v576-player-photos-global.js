@@ -180,7 +180,8 @@ function hydrate(){
    if(name&&name!=='Elige jugador')setAvatar(card.querySelector('.v123-avatar'),resolve(name,team,cat),team);
  });
  document.querySelectorAll('.v444-stat-row:not(.is-team)').forEach(row=>{
-   setAvatar(row.querySelector('.v444-player-avatar'),resolve(txt(row,'.v444-stat-person b'),txt(row,'.v444-stat-person small'),catStored()));
+   const rec=resolve(txt(row,'.v444-stat-person b'),txt(row,'.v444-stat-person small'),catStored());
+   if(hasPhoto(rec))setAvatar(row.querySelector('.v444-player-avatar'),rec);
  });
  document.querySelectorAll('.v446-stat-ref-row[data-v33-player]').forEach(row=>{
    setAvatar(row.querySelector('.v446-stat-ref-avatar'),resolve(attr(row,'data-v33-player'),txt(row,'.v446-stat-ref-copy small'),catStored()));
