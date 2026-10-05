@@ -324,7 +324,7 @@ function bind(){
  document.querySelectorAll('[data-v33-ref-view]').forEach(b=>b.onclick=e=>{e.preventDefault();setRefView(b.dataset.v33RefView||'player')});
  document.querySelectorAll('[data-v33-jump-table]').forEach(b=>b.onclick=e=>{e.preventDefault();document.querySelector('[data-v33-unified-table]')?.scrollIntoView({behavior:'smooth',block:'start'})});
 }
-function isDataRoute(){const r=route();return r==='safe-data'||r==='leagueData'}
+function isDataRoute(){const r=route();return r==='stats'||r==='safe-data'||r==='leagueData'}
 function applyHeaderScroll(){
  if(!isDataRoute())return;
  const head=document.querySelector('[data-v33-head]'),title=head?.querySelector('[data-v33-morph-title]');if(!head||!title)return;
