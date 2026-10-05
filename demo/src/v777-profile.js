@@ -8,11 +8,11 @@ function shirtViewer(){
    '<div class="v800-shirt-scene">'+
      '<div class="v800-shirt-card" data-shirt-card style="--shirt-rot:180deg">'+
        '<div class="v800-shirt-face v800-shirt-front" aria-label="Frente de la camiseta">'+
-         '<img src="./assets/fantasy-jersey-real-3d.png" alt="Camiseta realista en 3D vista de frente" draggable="false">'+
+         '<img src="./assets/fantasy-jersey-real-3d.png?v=20261005-v801" alt="Camiseta realista en 3D vista de frente" draggable="false">'+
          '<span class="v800-shirt-chest-mark" aria-hidden="true">LJR</span>'+
        '</div>'+
        '<div class="v800-shirt-face v800-shirt-back" aria-label="Espalda de la camiseta">'+
-         '<img src="./profile/jersey-back.webp" alt="Camiseta realista en 3D vista por detrás" draggable="false">'+
+         '<img src="./profile/jersey-back.webp?v=20261005-v801" alt="Camiseta realista en 3D vista por detrás" draggable="false">'+
          '<div class="ljr-shirt-print v800-shirt-print"><b data-shirt-name></b><strong data-shirt-number></strong></div>'+
        '</div>'+
      '</div>'+
@@ -82,7 +82,7 @@ function bindShirtViewer(n){
    img.addEventListener('error',()=>{
      if(img.closest('.v800-shirt-front')&&!img.dataset.fallback){
        img.dataset.fallback='1';
-       img.src='./assets/fantasy-jersey-clean-v774.webp';
+       img.src='./assets/fantasy-jersey-clean-v774.webp?v=20261005-v801';
      }
    },{once:false});
  });
@@ -138,5 +138,39 @@ function open(){
    }catch{n.querySelector('[data-status]').textContent='No se pudo guardar: elige una foto más pequeña.'}
  };
 }
+
+function profileRoute(){
+ return String(location.hash||'').replace(/^#\/?/,'').split('?')[0]||String(document.body?.dataset?.appRoute||'');
+}
+function mountProfileEntry(){
+ if(profileRoute()!=='profile')return;
+ const a=current();
+ if(!a)return;
+ const root=document.querySelector('#screen');if(!root)return;
+ let btn=[...root.querySelectorAll('button')].find(b=>String(b.textContent||'').trim()==='Mi avatar y mi camiseta');
+ if(!btn){
+   btn=document.createElement('button');
+   btn.type='button';
+   btn.textContent='Mi avatar y mi camiseta';
+ }
+ btn.dataset.v801ProfileShirt='';
+ btn.classList.add('v801-profile-shirt-entry');
+ btn.onclick=e=>{e.preventDefault();e.stopPropagation();open()};
+ const settings=root.querySelector('[data-ljr-account-settings]');
+ if(settings){
+   if(btn.previousElementSibling!==settings)settings.insertAdjacentElement('afterend',btn);
+ }else if(!btn.isConnected){
+   root.append(btn);
+ }
+}
+function scheduleProfileEntry(){
+ requestAnimationFrame(()=>setTimeout(mountProfileEntry,0));
+}
+window.addEventListener('hashchange',scheduleProfileEntry);
+window.addEventListener('storage',scheduleProfileEntry);
+document.addEventListener('DOMContentLoaded',scheduleProfileEntry,{once:true});
+if(document.readyState!=='loading')scheduleProfileEntry();
+new MutationObserver(()=>{if(profileRoute()==='profile')mountProfileEntry()}).observe(document.documentElement,{childList:true,subtree:true});
+
 window.LJR_PROFILE={open};
 })();
