@@ -294,14 +294,14 @@ function cleanHistory(){
     'escudos e imagenes',
     'criterio de precision'
   ];
-  document.querySelectorAll('#screen section,#screen article,#screen div').forEach(el=>{
+  document.querySelectorAll('#screen h2,#screen h3,#screen h4,#screen b,#screen strong').forEach(el=>{
     if(!(el instanceof HTMLElement))return;
     const t=norm(el.textContent);
-    if(!t)return;
-    if(kills.some(k=>t===k||t.startsWith(k+' ')||t.includes(k+' los '))){
-      const section=el.closest('section');
-      if(section&&section!==document.querySelector('#screen'))section.remove();
-    }
+    if(!kills.some(k=>t===k||t.startsWith(k+' ')))return;
+    const card=el.closest('article,.v35-history-source-card,.v35-archive-method,.v672-modern-card');
+    if(card){card.remove();return}
+    const block=el.closest('.v35-history-sources,.v35-tagged-facebook');
+    block?.remove();
   });
 }
 
