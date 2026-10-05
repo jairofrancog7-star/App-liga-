@@ -1,0 +1,202 @@
+/* V799 — Juegos en modo inmersivo: sin barras superiores.
+   Alcance: Quiz Arena, Pronostica Seis, Fantasy y Más o Menos.
+   Conserva la barra inferior real de la app y los controles propios del juego. */
+
+@media(max-width:1023px){
+
+  /* 1) Nunca mostrar la topbar global de la app en juegos. */
+  html body[data-app-route="quizArena"] #app > .topbar,
+  html body[data-app-route="quizArena"] #app > header.topbar,
+  html body[data-app-route="quizArena"] .app-shell > .topbar,
+  html body[data-app-route="quizArena"] .app-shell > header.topbar,
+  html body[data-app-route="quiz"] #app > .topbar,
+  html body[data-app-route="quiz"] #app > header.topbar,
+  html body[data-app-route="quiz"] .app-shell > .topbar,
+  html body[data-app-route="quiz"] .app-shell > header.topbar,
+  html body[data-app-route="predictor"] #app > .topbar,
+  html body[data-app-route="predictor"] #app > header.topbar,
+  html body[data-app-route="predictor"] .app-shell > .topbar,
+  html body[data-app-route="predictor"] .app-shell > header.topbar,
+  html body[data-app-route="predictorSix"] #app > .topbar,
+  html body[data-app-route="predictorSix"] #app > header.topbar,
+  html body[data-app-route="predictorSix"] .app-shell > .topbar,
+  html body[data-app-route="predictorSix"] .app-shell > header.topbar,
+  html body[data-app-route="fantasy"] #app > .topbar,
+  html body[data-app-route="fantasy"] #app > header.topbar,
+  html body[data-app-route="fantasy"] .app-shell > .topbar,
+  html body[data-app-route="fantasy"] .app-shell > header.topbar,
+  html body[data-app-route="fantasyAccess"] #app > .topbar,
+  html body[data-app-route="fantasyAccess"] #app > header.topbar,
+  html body[data-app-route="fantasyAccess"] .app-shell > .topbar,
+  html body[data-app-route="fantasyAccess"] .app-shell > header.topbar,
+  html body[data-app-route="fantasyTeam"] #app > .topbar,
+  html body[data-app-route="fantasyTeam"] #app > header.topbar,
+  html body[data-app-route="fantasyTeam"] .app-shell > .topbar,
+  html body[data-app-route="fantasyTeam"] .app-shell > header.topbar,
+  html body[data-app-route="moreLess"] #app > .topbar,
+  html body[data-app-route="moreLess"] #app > header.topbar,
+  html body[data-app-route="moreLess"] .app-shell > .topbar,
+  html body[data-app-route="moreLess"] .app-shell > header.topbar,
+  html body[data-app-route="moreLessHub"] #app > .topbar,
+  html body[data-app-route="moreLessHub"] #app > header.topbar,
+  html body[data-app-route="moreLessHub"] .app-shell > .topbar,
+  html body[data-app-route="moreLessHub"] .app-shell > header.topbar,
+  html body[data-app-route="moreLessGallery"] #app > .topbar,
+  html body[data-app-route="moreLessGallery"] #app > header.topbar,
+  html body[data-app-route="moreLessGallery"] .app-shell > .topbar,
+  html body[data-app-route="moreLessGallery"] .app-shell > header.topbar{
+    display:none!important;
+    visibility:hidden!important;
+    opacity:0!important;
+    position:absolute!important;
+    inset:0 auto auto 0!important;
+    width:0!important;
+    height:0!important;
+    min-width:0!important;
+    min-height:0!important;
+    max-width:0!important;
+    max-height:0!important;
+    margin:0!important;
+    padding:0!important;
+    border:0!important;
+    overflow:hidden!important;
+    pointer-events:none!important;
+  }
+
+  /* 2) Quitar cualquier espacio reservado por la cabecera global/scroll chrome. */
+  html body[data-app-route="quizArena"],
+  html body[data-app-route="quiz"],
+  html body[data-app-route="predictor"],
+  html body[data-app-route="predictorSix"],
+  html body[data-app-route="fantasy"],
+  html body[data-app-route="fantasyAccess"],
+  html body[data-app-route="fantasyTeam"],
+  html body[data-app-route="moreLess"],
+  html body[data-app-route="moreLessHub"],
+  html body[data-app-route="moreLessGallery"]{
+    --v768-head-h:0px!important;
+    --ui-master-topbar-h:0px!important;
+    --topbar-h:0px!important;
+  }
+
+  html body[data-app-route="quizArena"] #screen,
+  html body[data-app-route="quiz"] #screen,
+  html body[data-app-route="predictor"] #screen,
+  html body[data-app-route="predictorSix"] #screen,
+  html body[data-app-route="fantasy"] #screen,
+  html body[data-app-route="fantasyAccess"] #screen,
+  html body[data-app-route="fantasyTeam"] #screen,
+  html body[data-app-route="moreLess"] #screen,
+  html body[data-app-route="moreLessHub"] #screen,
+  html body[data-app-route="moreLessGallery"] #screen{
+    top:0!important;
+    margin-top:0!important;
+    padding-top:0!important;
+    scroll-padding-top:0!important;
+  }
+
+  /* 3) Quiz Arena: conservar cerrar/volver como controles flotantes,
+        pero eliminar la franja azul de cabecera. */
+  html body[data-app-route="quizArena"] .v531-mini-head,
+  html body[data-app-route="quiz"] .v531-mini-head{
+    position:absolute!important;
+    z-index:120!important;
+    top:0!important;
+    left:0!important;
+    right:0!important;
+    height:58px!important;
+    min-height:58px!important;
+    padding:8px 10px!important;
+    border:0!important;
+    box-shadow:none!important;
+    background:transparent!important;
+    pointer-events:none!important;
+  }
+  html body[data-app-route="quizArena"] .v531-mini-head > strong,
+  html body[data-app-route="quiz"] .v531-mini-head > strong{
+    visibility:hidden!important;
+  }
+  html body[data-app-route="quizArena"] .v531-mini-head > button,
+  html body[data-app-route="quiz"] .v531-mini-head > button{
+    visibility:visible!important;
+    opacity:1!important;
+    pointer-events:auto!important;
+    background:transparent!important;
+  }
+  html body[data-app-route="quizArena"] .v614-game-head,
+  html body[data-app-route="quiz"] .v614-game-head{
+    position:absolute!important;
+    z-index:120!important;
+    top:0!important;
+    left:0!important;
+    right:0!important;
+    height:58px!important;
+    min-height:58px!important;
+    padding:8px 10px!important;
+    border:0!important;
+    box-shadow:none!important;
+    background:transparent!important;
+    pointer-events:none!important;
+  }
+  html body[data-app-route="quizArena"] .v614-game-head > button,
+  html body[data-app-route="quiz"] .v614-game-head > button{
+    pointer-events:auto!important;
+  }
+
+  /* 4) Pronostica Seis: quitar la banda superior interna.
+        La flecha/opciones siguen flotando sobre el arte. */
+  html body[data-app-route="predictorSix"] .v53-p6-head{
+    position:absolute!important;
+    z-index:120!important;
+    top:0!important;
+    left:0!important;
+    right:0!important;
+    height:64px!important;
+    min-height:64px!important;
+    padding:8px 16px!important;
+    align-items:center!important;
+    border:0!important;
+    box-shadow:none!important;
+    background:transparent!important;
+    pointer-events:none!important;
+  }
+  html body[data-app-route="predictorSix"] .v53-p6-head h1{
+    display:none!important;
+  }
+  html body[data-app-route="predictorSix"] .v53-p6-back{
+    margin:0!important;
+    pointer-events:auto!important;
+  }
+  html body[data-app-route="predictorSix"] .v589-top{
+    position:absolute!important;
+    z-index:120!important;
+    top:0!important;
+    left:0!important;
+    right:0!important;
+    height:58px!important;
+    min-height:58px!important;
+    padding:8px 12px!important;
+    border:0!important;
+    box-shadow:none!important;
+    background:transparent!important;
+    pointer-events:none!important;
+  }
+  html body[data-app-route="predictorSix"] .v589-top h1{
+    display:none!important;
+  }
+  html body[data-app-route="predictorSix"] .v589-top button{
+    pointer-events:auto!important;
+  }
+
+  /* 5) Más o Menos: si reaparece una cabecera heredada del hub, eliminarla. */
+  html body[data-app-route="moreLess"] .v52-mol-head,
+  html body[data-app-route="moreLessHub"] .v52-mol-head,
+  html body[data-app-route="moreLessGallery"] .v52-mol-head{
+    display:none!important;
+    height:0!important;
+    min-height:0!important;
+    margin:0!important;
+    padding:0!important;
+    border:0!important;
+  }
+}
