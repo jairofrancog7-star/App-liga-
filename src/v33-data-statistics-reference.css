@@ -1766,3 +1766,113 @@ body.v33-data-active .v33-data-page[data-v33-mode="player"] .v33-tabs button[dat
   background:#12dce8!important;
   border-radius:5px 5px 0 0!important;
 }
+
+
+/* V790 — restauración visual exacta de la cabecera Estadísticas (referencia aprobada). */
+@media(max-width:699px){
+  html body.v33-data-active #screen .v33-data-head,
+  html body.v33-data-active #screen .v33-data-head.general,
+  html body.v33-data-active #screen .v33-data-head.compact{
+    --v33-head-h:clamp(184px,50.12vw,258px);
+    height:var(--v33-head-h)!important;
+    min-height:var(--v33-head-h)!important;
+    max-height:258px!important;
+    overflow:hidden!important;
+    background:
+      radial-gradient(circle at 76% 4%,rgba(39,91,255,.72),transparent 27%),
+      radial-gradient(circle at 33% 16%,rgba(26,57,220,.36),transparent 38%),
+      linear-gradient(180deg,#172fe5 0%,#1029d0 28%,#071596 60%,#02065e 100%)!important;
+  }
+
+  html body.v33-data-active #screen .v33-head-actions{
+    left:clamp(18px,5.2vw,28px)!important;
+    right:clamp(18px,5.2vw,28px)!important;
+    top:clamp(18px,7.5vw,38px)!important;
+    height:40px!important;
+  }
+  html body.v33-data-active #screen .v33-head-actions button{
+    width:38px!important;
+    height:38px!important;
+  }
+  html body.v33-data-active #screen .v33-head-actions svg{
+    width:28px!important;
+    height:28px!important;
+    stroke-width:2.1!important;
+  }
+
+  html body.v33-data-active #screen .v33-morph-title{
+    left:clamp(20px,5.4vw,32px)!important;
+    right:22px!important;
+    top:clamp(103px,27.4vw,142px)!important;
+    max-width:78%!important;
+    opacity:1!important;
+  }
+  html body.v33-data-active #screen .v33-morph-title h1{
+    display:block!important;
+    opacity:1!important;
+    font-size:clamp(34px,8.55vw,44px)!important;
+    line-height:.98!important;
+    font-weight:500!important;
+    letter-spacing:-.035em!important;
+  }
+  html body.v33-data-active #screen .v33-morph-title p{
+    display:block!important;
+    margin-top:clamp(12px,3.5vw,18px)!important;
+    color:#c9cadf!important;
+    font-size:clamp(16px,4.25vw,21px)!important;
+    line-height:1!important;
+    font-weight:600!important;
+    opacity:1!important;
+  }
+
+  html body.v33-data-active #screen .v33-tabs{
+    height:clamp(42px,10.9vw,56px)!important;
+    min-height:clamp(42px,10.9vw,56px)!important;
+    background:#171778!important;
+    background-color:#171778!important;
+    background-image:none!important;
+    border-top:0!important;
+    border-bottom:2px solid rgba(220,224,255,.88)!important;
+  }
+  html body.v33-data-active #screen .v33-tabs button{
+    height:clamp(42px,10.9vw,56px)!important;
+    min-height:clamp(42px,10.9vw,56px)!important;
+    padding:0 clamp(16px,4.8vw,25px)!important;
+    font-size:clamp(10px,2.8vw,14px)!important;
+    font-weight:600!important;
+  }
+  html body.v33-data-active #screen .v33-tabs button.active::after{
+    left:clamp(15px,4.4vw,23px)!important;
+    right:clamp(15px,4.4vw,23px)!important;
+    bottom:0!important;
+    height:3px!important;
+  }
+
+  /* Quita únicamente el recorte V38.1 que había convertido la referencia
+     grande en una barra compacta. El contenido/tablas no se modifica. */
+  html body.v33-data-active #screen .v33-data-content{
+    margin-top:0!important;
+    padding-top:12px!important;
+  }
+}
+
+@media(max-width:390px){
+  html body.v33-data-active #screen .v33-data-head,
+  html body.v33-data-active #screen .v33-data-head.general,
+  html body.v33-data-active #screen .v33-data-head.compact{
+    --v33-head-h:50.12vw;
+    height:var(--v33-head-h)!important;
+    min-height:var(--v33-head-h)!important;
+    max-height:258px!important;
+  }
+  html body.v33-data-active #screen .v33-morph-title{
+    top:27.4vw!important;
+  }
+  html body.v33-data-active #screen .v33-morph-title h1{
+    font-size:8.55vw!important;
+  }
+  html body.v33-data-active #screen .v33-morph-title p{
+    display:block!important;
+    font-size:4.25vw!important;
+  }
+}
