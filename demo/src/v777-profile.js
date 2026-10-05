@@ -4,42 +4,39 @@ const names=['Perro','Gato','Lobo','Zorro','León','Águila','Astronauta','Porte
 const current=()=>window.LJR_V569_AUTH?.currentAccount ? window.LJR_V569_AUTH.currentAccount() : window.LJR_MAIN_ROUTE?.state?.user;
 
 function shirtViewer(){
- const model='https://sketchfab.com/models/6c311a326ee44a97acbde1ecc82edc26/embed?autostart=1&preload=1&ui_theme=dark&ui_infos=0&ui_hint=0&ui_watermark=1&dnt=1';
- return '<div class="ljr-shirt-preview v802-shirt-preview" data-shirt-stage aria-label="Camiseta 3D HD interactiva">'+
-   '<div class="v802-shirt-hd-badge">MODELO 3D · HD</div>'+
-   '<div class="v802-sketchfab-wrap">'+
-     '<iframe data-shirt-model title="Soccer T-shirt 3D" src="'+model+'" allow="autoplay; fullscreen; xr-spatial-tracking" allowfullscreen webkitallowfullscreen mozallowfullscreen frameborder="0"></iframe>'+
-     '<div class="v802-shirt-personalization" aria-label="Vista de nombre y número">'+
-       '<b data-shirt-name></b><strong data-shirt-number></strong>'+
-     '</div>'+
+ return '<div class="ljr-shirt-preview v803-shirt-preview" data-shirt-stage aria-label="Camiseta de fútbol 3D editable">'+
+   '<div class="v803-shirt-badge">FÚTBOL 3D · HD</div>'+
+   '<div class="v803-shirt-stage" data-football-shirt-3d></div>'+
+   '<div class="v803-shirt-controls">'+
+     '<button type="button" data-shirt-front>Frente</button>'+
+     '<button type="button" data-shirt-back>Espalda</button>'+
+     '<button type="button" data-shirt-spin>Girar 360°</button>'+
    '</div>'+
-   '<div class="v802-shirt-toolbar">'+
-     '<button type="button" data-shirt-personalize class="is-active">Nombre y número</button>'+
-     '<button type="button" data-shirt-reset>Recentrar modelo</button>'+
-   '</div>'+
-   '<div class="v802-shirt-hint"><span>Arrastra dentro de la camiseta para girarla libremente en 3D.</span><b>360° / giro continuo</b></div>'+
-   '<div class="v802-shirt-source">Modelo 3D: <a href="https://sketchfab.com/3d-models/soccer-t-shirt-6c311a326ee44a97acbde1ecc82edc26" target="_blank" rel="noopener noreferrer">Soccer T-shirt · DanielCobo · Sketchfab</a></div>'+
+   '<div class="v803-shirt-foot"><span>Arrastra con el dedo para mover la camiseta libremente.</span><b>Nombre y número impresos en la tela</b></div>'+
+   '<div class="v803-shirt-open-source">Motor local con Three.js. El nombre y el número se hornean en la textura HD de la camiseta y giran junto con el modelo.</div>'+
  '</div>';
 }
 
 function bindShirtViewer(n){
- const stage=n.querySelector('[data-shirt-stage]');
- const frame=n.querySelector('[data-shirt-model]');
- const overlay=n.querySelector('.v802-shirt-personalization');
- const personalize=n.querySelector('[data-shirt-personalize]');
- const reset=n.querySelector('[data-shirt-reset]');
- if(!stage||!frame)return;
- const base=frame.src;
- personalize?.addEventListener('click',()=>{
-   const hidden=overlay?.classList.toggle('is-hidden');
-   personalize.classList.toggle('is-active',!hidden);
-   personalize.textContent=hidden?'Mostrar nombre y número':'Nombre y número';
- });
- reset?.addEventListener('click',()=>{
-   frame.src='about:blank';
-   requestAnimationFrame(()=>{frame.src=base});
- });
- frame.addEventListener('load',()=>stage.classList.add('is-ready'));
+ const host=n.querySelector('[data-football-shirt-3d]');
+ if(!host)return;
+ let tries=0;
+ const boot=()=>{
+   const engine=window.LJR_FOOTBALL_SHIRT_3D;
+   if(!engine?.mount){if(tries++<80)setTimeout(boot,50);return}
+   const form=n.querySelector('form');
+   const name=String(form?.elements?.shirtName?.value||'JAIRO').trim().toUpperCase();
+   const number=String(form?.elements?.shirtNumber?.value||'7').trim();
+   const viewer=engine.mount(host,{name,number});
+   n.querySelector('[data-shirt-front]')?.addEventListener('click',()=>viewer?.front?.());
+   n.querySelector('[data-shirt-back]')?.addEventListener('click',()=>viewer?.back?.());
+   n.querySelector('[data-shirt-spin]')?.addEventListener('click',e=>{
+     const active=viewer?.toggleSpin?.();
+     e.currentTarget.classList.toggle('active',!!active);
+     e.currentTarget.textContent=active?'Detener giro':'Girar 360°';
+   });
+ };
+ boot();
 }
 
 function open(){
@@ -65,8 +62,8 @@ function open(){
    n.querySelector('[data-avatar-preview]').innerHTML=window.LJR_CHROME.avatar(data);
    const shirtName=String(form.elements.shirtName.value||'').trim().toUpperCase();
    const shirtNumber=String(form.elements.shirtNumber.value||'').trim();
-   n.querySelector('[data-shirt-name]').textContent=shirtName;
-   n.querySelector('[data-shirt-number]').textContent=shirtNumber;
+   const shirtHost=n.querySelector('[data-football-shirt-3d]');
+   window.LJR_FOOTBALL_SHIRT_3D?.update?.(shirtHost,{name:shirtName,number:shirtNumber});
    n.querySelectorAll('[data-preset]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.preset===preset&&!photo)));
  };
  form.oninput=preview;preview();bindShirtViewer(n);
@@ -97,24 +94,27 @@ function profileRoute(){
 }
 function mountProfileEntry(){
  if(profileRoute()!=='profile')return;
- const a=current();
- if(!a)return;
+ const a=current();if(!a)return;
  const root=document.querySelector('#screen');if(!root)return;
- let btn=[...root.querySelectorAll('button')].find(b=>String(b.textContent||'').trim()==='Mi avatar y mi camiseta');
+
+ const candidates=[...root.querySelectorAll('button,a,[role="button"],.v12-profile-menu>*')]
+   .filter(el=>String(el.textContent||'').replace(/\s+/g,' ').trim()==='Mi avatar y mi camiseta');
+ const generated=[...root.querySelectorAll('.v801-profile-shirt-entry')];
+
+ // Prefer the existing native Perfil row. Remove our old duplicate if both exist.
+ let btn=candidates.find(el=>!el.classList.contains('v801-profile-shirt-entry'))||candidates[0]||null;
+ generated.forEach(el=>{if(el!==btn)el.remove()});
+
  if(!btn){
    btn=document.createElement('button');
    btn.type='button';
    btn.textContent='Mi avatar y mi camiseta';
+   btn.className='v801-profile-shirt-entry';
+   const settings=root.querySelector('[data-ljr-account-settings]');
+   if(settings)settings.insertAdjacentElement('afterend',btn);else root.append(btn);
  }
- btn.dataset.v801ProfileShirt='';
- btn.classList.add('v801-profile-shirt-entry');
- btn.onclick=e=>{e.preventDefault();e.stopPropagation();open()};
- const settings=root.querySelector('[data-ljr-account-settings]');
- if(settings){
-   if(btn.previousElementSibling!==settings)settings.insertAdjacentElement('afterend',btn);
- }else if(!btn.isConnected){
-   root.append(btn);
- }
+ btn.dataset.v803ProfileShirt='1';
+ btn.addEventListener('click',e=>{e.preventDefault();e.stopPropagation();open()},{once:false});
 }
 function scheduleProfileEntry(){
  requestAnimationFrame(()=>setTimeout(mountProfileEntry,0));
