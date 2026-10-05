@@ -425,3 +425,154 @@ body[data-app-route="fantasyAccess"] .v588-slide-team .v23-access-later{
     margin-top:6px!important;
   }
 }
+
+/* V804 — Fantasy access: proporciones de las referencias 3/4.
+   Más aire entre imagen, título, descripción y acciones; tarjetas más grandes
+   sin amontonar texto ni ocultar "Prueba como invitado". */
+body[data-app-route="fantasyAccess"] .v588-slide-login,
+body[data-app-route="fantasyAccess"] .v588-slide-team{
+  box-sizing:border-box!important;
+  padding-left:18px!important;
+  padding-right:18px!important;
+}
+
+body[data-app-route="fantasyAccess"] .v588-slide-login .v23-access-photo{
+  width:min(62vw,310px)!important;
+  max-width:310px!important;
+  margin-top:clamp(22px,3.2dvh,36px)!important;
+  border-radius:20px!important;
+}
+body[data-app-route="fantasyAccess"] .v588-slide-login .v23-access-copy{
+  width:min(88%,470px)!important;
+  max-width:470px!important;
+  margin-top:clamp(54px,7.4dvh,92px)!important;
+  padding:0 8px!important;
+}
+body[data-app-route="fantasyAccess"] .v588-slide-login .v23-access-copy h1{
+  max-width:430px!important;
+  margin:0 auto!important;
+  font-size:clamp(25px,5.5vw,34px)!important;
+  line-height:1.24!important;
+  letter-spacing:.002em!important;
+  text-wrap:balance!important;
+}
+body[data-app-route="fantasyAccess"] .v588-slide-login .v23-access-copy p{
+  max-width:455px!important;
+  margin:clamp(26px,3.8dvh,42px) auto 0!important;
+  font-size:clamp(14px,3.15vw,18px)!important;
+  line-height:1.62!important;
+  text-wrap:pretty!important;
+}
+body[data-app-route="fantasyAccess"] .v588-slide-login .v23-access-actions{
+  margin-top:clamp(34px,5dvh,54px)!important;
+  padding-bottom:18px!important;
+}
+
+/* Tarjetas: más grandes y con separación parecida a la referencia. */
+body[data-app-route="fantasyAccess"] .v588-slide-team .v588-card-stage{
+  width:min(92%,470px)!important;
+  height:clamp(250px,34dvh,318px)!important;
+  margin-top:clamp(22px,3.4dvh,38px)!important;
+}
+body[data-app-route="fantasyAccess"] .v588-slide-team .v588-fantasy-card{
+  top:38px!important;
+  width:clamp(112px,28vw,142px)!important;
+  height:clamp(184px,25.5dvh,224px)!important;
+  grid-template-rows:1fr 28px 28px!important;
+}
+body[data-app-route="fantasyAccess"] .v588-slide-team .v588-fantasy-card.left{
+  left:3%!important;
+  transform:rotateY(10deg) rotateZ(-5deg) scale(.96)!important;
+}
+body[data-app-route="fantasyAccess"] .v588-slide-team .v588-fantasy-card.right{
+  right:3%!important;
+  transform:rotateY(-10deg) rotateZ(5deg) scale(.96)!important;
+}
+body[data-app-route="fantasyAccess"] .v588-slide-team .v588-fantasy-card.main{
+  top:12px!important;
+  width:clamp(140px,34vw,172px)!important;
+  height:clamp(224px,30.5dvh,272px)!important;
+}
+body[data-app-route="fantasyAccess"] .v588-slide-team .v588-fantasy-card>b{
+  font-size:clamp(10px,2.4vw,13px)!important;
+  padding:7px 3px!important;
+}
+body[data-app-route="fantasyAccess"] .v588-slide-team .v588-fantasy-card>small{
+  font-size:clamp(10px,2.4vw,13px)!important;
+  padding:7px 3px!important;
+}
+
+body[data-app-route="fantasyAccess"] .v588-slide-team .v588-team-copy{
+  width:min(88%,470px)!important;
+  max-width:470px!important;
+  margin-top:clamp(10px,1.8dvh,18px)!important;
+  padding:0 6px!important;
+}
+body[data-app-route="fantasyAccess"] .v588-slide-team .v588-team-copy h1{
+  margin:0 auto!important;
+  font-size:clamp(25px,5.5vw,34px)!important;
+  line-height:1.22!important;
+  text-wrap:balance!important;
+}
+body[data-app-route="fantasyAccess"] .v588-slide-team .v588-team-copy p{
+  max-width:455px!important;
+  margin:clamp(24px,3.2dvh,34px) auto 0!important;
+  font-size:clamp(14px,3.05vw,18px)!important;
+  line-height:1.58!important;
+  text-wrap:pretty!important;
+}
+body[data-app-route="fantasyAccess"] .v588-slide-team .v588-dots{
+  margin-top:clamp(15px,2dvh,22px)!important;
+  gap:10px!important;
+}
+body[data-app-route="fantasyAccess"] .v588-slide-team .v588-dots i{
+  width:12px!important;
+  height:12px!important;
+}
+body[data-app-route="fantasyAccess"] .v588-slide-team .v588-team-actions{
+  margin-top:clamp(24px,3.2dvh,34px)!important;
+  padding-bottom:14px!important;
+}
+body[data-app-route="fantasyAccess"] .v588-slide-team .v23-access-login{
+  width:min(82%,410px)!important;
+  min-height:clamp(54px,7.4dvh,66px)!important;
+  border-radius:24px!important;
+  font-size:clamp(15px,3.2vw,18px)!important;
+}
+body[data-app-route="fantasyAccess"] .v588-slide-team .v23-access-later{
+  margin-top:clamp(18px,2.4dvh,28px)!important;
+  font-size:clamp(15px,3.2vw,18px)!important;
+}
+
+/* Mantener flechas separadas del texto/tarjetas. */
+body[data-app-route="fantasyAccess"] .v588-side-arrow{
+  top:42%!important;
+  width:42px!important;
+  height:58px!important;
+  font-size:42px!important;
+}
+
+/* Pantallas bajas: conserva la jerarquía sin apretar tipografía. */
+@media(max-height:760px){
+  body[data-app-route="fantasyAccess"] .v588-slide-login .v23-access-copy{
+    margin-top:40px!important;
+  }
+  body[data-app-route="fantasyAccess"] .v588-slide-login .v23-access-copy p{
+    margin-top:20px!important;
+    line-height:1.5!important;
+  }
+  body[data-app-route="fantasyAccess"] .v588-slide-team .v588-card-stage{
+    height:214px!important;
+    margin-top:12px!important;
+  }
+  body[data-app-route="fantasyAccess"] .v588-slide-team .v588-team-copy{
+    margin-top:4px!important;
+  }
+  body[data-app-route="fantasyAccess"] .v588-slide-team .v588-team-copy p{
+    margin-top:15px!important;
+    line-height:1.48!important;
+  }
+  body[data-app-route="fantasyAccess"] .v588-slide-team .v588-team-actions{
+    margin-top:14px!important;
+  }
+}
