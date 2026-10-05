@@ -267,10 +267,11 @@ html body.ljr-native-pip .ljr-native-pip-player :is(.v196-frame,.v144-stream-fra
 }
 @media(max-width:390px){html body.ljr-v777[data-mobile-layout="v775"] #app #screen .v33-data-head.ljr-scroll-header{height:154px!important;min-height:154px!important;max-height:154px!important}}
 
-/* V784 — Gaming sin barra superior global.
-   Quiz, Quiz Arena, Más o Menos y Pronostica usan únicamente su diseño propio. */
+/* V785 — Gaming sin barra superior global.
+   Fantasy, Quiz, Quiz Arena, Más o Menos y Pronostica usan únicamente su diseño propio. */
 @media(max-width:1023px){
  html body.ljr-v777:is(
+  [data-app-route="fantasy"],
   [data-app-route="quiz"],
   [data-app-route="quizArena"],
   [data-app-route="moreLess"],
@@ -288,6 +289,7 @@ html body.ljr-native-pip .ljr-native-pip-player :is(.v196-frame,.v144-stream-fra
   overflow:hidden!important;
  }
  html body.ljr-v777:is(
+  [data-app-route="fantasy"],
   [data-app-route="quiz"],
   [data-app-route="quizArena"],
   [data-app-route="moreLess"],
