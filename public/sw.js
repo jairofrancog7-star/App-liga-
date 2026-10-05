@@ -1,4 +1,4 @@
-const CACHE='liga-juventino-v774-mobile-media-details';
+const CACHE='liga-juventino-v775-global-header-review';
 const CORE=['./','./index.html','./manifest.webmanifest','./brand-neon-header.svg','./profile-reference.svg'];
 
 self.addEventListener('install',event=>{

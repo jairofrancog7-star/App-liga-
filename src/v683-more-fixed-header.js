@@ -30,7 +30,7 @@ function apply(){
   setImp(top,'width','100%');
   setImp(top,'margin','0');
   setImp(top,'transform','none');
-  setImp(top,'z-index','2147483000');
+  setImp(top,'z-index','100');
 
   requestAnimationFrame(()=>{
     const h=Math.max(1,Math.round(top.getBoundingClientRect().height));

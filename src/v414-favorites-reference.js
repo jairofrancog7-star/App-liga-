@@ -46,6 +46,7 @@ function fallbackLogo(name){
  return p?SRC+p:'';
 }
 function logoFor(name){
+ const supplied=window.LJR_SEASON_LOGOS?.get(name);if(supplied)return supplied;
  try{const x=api()?.logoFor?.(name)||window.LJR_TEAM_LOGOS?.get?.(name)||'';if(x)return x}catch(_){}
  return fallbackLogo(name);
 }

@@ -59,6 +59,7 @@ function currentCategoryId(name){
 function category(catId){return categories()[String(catId)]||null}
 function rowFor(cat,name){return rows(cat).find(function(r){return norm(r?.[1])===norm(name)})||null}
 function logoUrl(name){
+ const supplied=window.LJR_SEASON_LOGOS?.get(name);if(supplied)return supplied;
  const hit=Object.entries(db?.team_logos||{}).find(function(entry){return norm(entry[0])===norm(name)})?.[1];
  if(hit?.local)return 'https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/'+String(hit.local).replace(/^\.\//,'');
  if(hit?.source)return hit.source;

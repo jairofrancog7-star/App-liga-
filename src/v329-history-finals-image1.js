@@ -144,7 +144,7 @@ function style(){
     padding:0 22px!important;
     background:
       linear-gradient(180deg,rgba(16,48,233,.10),rgba(3,8,67,.34)),
-      url('../public/history-regularscroll-header.webp') center top/cover no-repeat!important;
+      url('./history-regularscroll-header.webp') center top/cover no-repeat!important;
   }
   .v35-history-page.v329-finals-image1 .v35-history-head .v35-back{
     left:22px!important;top:35px!important;width:34px!important;height:34px!important;

@@ -327,7 +327,7 @@ function nativeTab(label){
     return;
   }
   const root=$('[data-v92-matchcenter]');if(!root)return;
-  const b=$('[data-v92-tab]',root).find(x=>norm(x.dataset.v92Tab||'')===norm(wanted));
+  const b=$$('[data-v92-tab]',root).find(x=>norm(x.dataset.v92Tab||'')===norm(wanted));
   if(b){b.click();setTimeout(()=>b.scrollIntoView({behavior:'smooth',block:'center'}),90)}
 }
 async function shareCurrent(){

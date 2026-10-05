@@ -3255,6 +3255,21 @@ function v359Prewarm(){
    Campeones, Finales, Récords y Videos nunca cambien tamaño ni fuente. */
 function v362LockHistoryHeader(root=document.querySelector('.v35-history-page')){
   if(!root)return;
+  if(window.matchMedia('(max-width:1023px)').matches){
+    const put=(node,key,value)=>{if(node&&(node.style.getPropertyValue(key)!==value||node.style.getPropertyPriority(key)!=='important'))node.style.setProperty(key,value,'important')};
+    const head=root.querySelector('.v35-history-head'),tabs=root.querySelector('.v35-tabs');
+    put(root,'padding-top','0px');
+    for(const key of ['height','min-height','max-height'])put(head,key,'100px');
+    put(head,'padding','20px');put(head,'display','flex');put(head,'align-items','center');put(head,'gap','12px');
+    put(head,'background','linear-gradient(180deg,rgba(7,44,213,.08),rgba(6,12,99,.24)), url("'+new URL('./history-regularscroll-header.webp',document.baseURI).href+'") center top/cover no-repeat');
+    for(const node of [head?.querySelector('.v35-back'),head?.querySelector('.v35-logo-wrap'),head?.querySelector('h1')]){
+      put(node,'position','relative');put(node,'inset','auto');put(node,'left','auto');put(node,'right','auto');put(node,'top','auto');put(node,'bottom','auto');put(node,'margin','0px');put(node,'transform','none');
+    }
+    const title=head?.querySelector('h1');put(title,'font-size','28px');put(title,'line-height','1');put(title,'font-weight','700');
+    const logo=head?.querySelector('.v35-logo-wrap');put(logo,'display','grid');put(logo,'width','44px');put(logo,'height','44px');put(logo,'min-width','44px');
+    put(tabs,'display','flex');put(tabs,'height','54px');put(tabs,'min-height','54px');put(tabs,'max-height','54px');put(tabs,'margin','0px');put(tabs,'padding','0 20px');put(tabs,'gap','24px');put(tabs,'overflow-x','auto');put(tabs,'overflow-y','hidden');put(tabs,'background','#06075f');
+    return;
+  }
   root.style.setProperty('--v35-pad','22px','important');
   root.style.setProperty('--v35-compact-h','56px','important');
 
@@ -3273,7 +3288,7 @@ function v362LockHistoryHeader(root=document.querySelector('.v35-history-page'))
     head.style.setProperty('padding','0 '+(v624Small?18:22)+'px','important');
     head.style.setProperty(
       'background',
-      'linear-gradient(180deg,rgba(7,44,213,.08),rgba(6,12,99,.24)), url("/App-liga-/public/history-regularscroll-header.webp") center top/cover no-repeat',
+      'linear-gradient(180deg,rgba(7,44,213,.08),rgba(6,12,99,.24)), url("'+new URL('./history-regularscroll-header.webp',document.baseURI).href+'") center top/cover no-repeat',
       'important'
     );
   }

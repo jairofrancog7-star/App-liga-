@@ -24,7 +24,7 @@ test('published logos outside the alias list remain available',()=>{
   assert.equal(logos.get('Club documentado'),'https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/assets/teams/club.webp');
 });
 test('single-element DOM selectors are not accidentally used as collections',()=>{
-  for(const file of ['v100-additive-functions.js','v105-green-app-bottom.js','v124-player-registration.js','v132-credential-team-picker.js','v168-account-registration-blue.js']){
+  for(const file of ['v100-additive-functions.js','v105-green-app-bottom.js','v124-player-registration.js','v132-credential-team-picker.js','v168-account-registration-blue.js','v411-lower-experience.js','v412-lower-sections.js']){
     const source=fs.readFileSync(new URL('../src/'+file,import.meta.url),'utf8');
     assert.doesNotMatch(source,/(?<!\$)\$\([^()\n]*\)\.(?:forEach|map|filter|find|some)\(/,file);
   }

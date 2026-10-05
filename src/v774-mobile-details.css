@@ -1,48 +1,48 @@
 /* Mobile layout follows the actual header, with a single usable scroll area. */
 @media(max-width:1023px){
- html body[data-mobile-layout="v774"].v768-scroll-root #screen{
+ html body[data-mobile-layout="v775"].v768-scroll-root #screen{
   position:fixed!important;inset:var(--v768-head-h,0px) 0 var(--v774-nav-h,69px)!important;
   height:auto!important;min-height:0!important;max-height:none!important;margin:0!important;
   padding-top:0!important;overflow-y:auto!important;overflow-x:hidden!important;
   transform:none!important;filter:none!important;perspective:none!important;contain:none!important;
   touch-action:pan-y pinch-zoom!important;overscroll-behavior-y:contain!important;
  }
- html body[data-mobile-layout="v774"] .ljr-scroll-header{
+ html body[data-mobile-layout="v775"] .ljr-scroll-header{
   position:fixed!important;top:0!important;left:0!important;right:0!important;width:100%!important;
-  max-width:none!important;margin:0!important;transform:none!important;z-index:2147482400!important;
+  max-width:none!important;margin:0!important;transform:none!important;z-index:100!important;
   background-color:#02065f!important;isolation:isolate!important;
  }
- html body[data-mobile-layout="v774"][data-app-route="home"] #app>.topbar{
+ html body[data-mobile-layout="v775"][data-app-route="home"] #app>.topbar{
   height:clamp(76px,21.8vw,112px)!important;min-height:clamp(76px,21.8vw,112px)!important;
   max-height:clamp(76px,21.8vw,112px)!important;background-size:100% auto!important;background-position:center top!important;
  }
- html body[data-mobile-layout="v774"] .bottom-nav{max-width:100%!important}
- html body[data-mobile-layout="v774"] :is(.v46-account-page,.v35-history-page,.v26-moments-page,.v431-store,.v32-page){padding-top:0!important}
- html body[data-mobile-layout="v774"][data-app-route="simulator"] #screen,
- html body[data-mobile-layout="v774"][data-app-route="simulator"] :is(.v501-simulator,.v501-board,.v501-table-body,.v501-table-group,.v501-sheet,[data-v512-bracket],.v12-final-reference){background:#06075f!important;background-image:none!important}
- html body[data-mobile-layout="v774"][data-app-route="simulator"] .v501-sheet{
+ html body[data-mobile-layout="v775"] .bottom-nav{max-width:100%!important}
+ html body[data-mobile-layout="v775"] :is(.v46-account-page,.v35-history-page,.v26-moments-page,.v431-store,.v32-page){padding-top:0!important}
+ html body[data-mobile-layout="v775"][data-app-route="simulator"] #screen,
+ html body[data-mobile-layout="v775"][data-app-route="simulator"] :is(.v501-simulator,.v501-board,.v501-table-body,.v501-table-group,.v501-sheet,[data-v512-bracket],.v12-final-reference){background:#06075f!important;background-image:none!important}
+ html body[data-mobile-layout="v775"][data-app-route="simulator"] .v501-sheet{
   position:relative!important;top:auto!important;inset:auto!important;transform:none!important;
   height:auto!important;min-height:0!important;max-height:none!important;overflow:visible!important;
   margin:16px 0 0!important;padding-bottom:24px!important;border-radius:16px!important;z-index:1!important;
  }
- html body[data-mobile-layout="v774"][data-app-route="simulator"] .v501-grabber{display:none!important}
- html body[data-mobile-layout="v774"][data-app-route="simulator"] .v501-match-list{max-height:none!important;overflow:visible!important}
- html body[data-mobile-layout="v774"] .v501-top{height:64px!important;min-height:64px!important;padding:8px 12px!important;background:#06075f!important}
+ html body[data-mobile-layout="v775"][data-app-route="simulator"] .v501-grabber{display:none!important}
+ html body[data-mobile-layout="v775"][data-app-route="simulator"] .v501-match-list{max-height:none!important;overflow:visible!important}
+ html body[data-mobile-layout="v775"] .v501-top{height:64px!important;min-height:64px!important;padding:8px 12px!important;background:#06075f!important}
  .v774-sim-icons{display:flex;gap:6px}.v774-sim-icons svg{width:25px;height:25px}
- html body[data-mobile-layout="v774"] :is(.v501-icon,.v46-back,.v35-back){color:#fff!important;background:none!important;border:0!important;pointer-events:auto!important}
- html body[data-mobile-layout="v774"] :is(.v726-tool-grid,.v60-tool-grid,.v734-tools-grid){gap:8px!important;grid-template-columns:repeat(2,minmax(0,1fr))!important}
- html body[data-mobile-layout="v774"] :is(.v726-tool-card,.v60-tool-card,.v734-tool-card){min-height:0!important;height:auto!important;padding:12px 10px!important;gap:6px!important;overflow:visible!important}
- html body[data-mobile-layout="v774"] :is(.v726-tool-card,.v60-tool-card,.v734-tool-card) :is(b,strong,small,p){white-space:normal!important;text-overflow:clip!important;overflow:visible!important;word-break:normal!important;overflow-wrap:anywhere!important}
+ html body[data-mobile-layout="v775"] :is(.v501-icon,.v46-back,.v35-back){color:#fff!important;background:none!important;border:0!important;pointer-events:auto!important}
+ html body[data-mobile-layout="v775"] :is(.v726-tool-grid,.v60-tool-grid,.v734-tools-grid){gap:8px!important;grid-template-columns:repeat(2,minmax(0,1fr))!important}
+ html body[data-mobile-layout="v775"] :is(.v726-tool-card,.v60-tool-card,.v734-tool-card){min-height:0!important;height:auto!important;padding:12px 10px!important;gap:6px!important;overflow:visible!important}
+ html body[data-mobile-layout="v775"] :is(.v726-tool-card,.v60-tool-card,.v734-tool-card) :is(b,strong,small,p){white-space:normal!important;text-overflow:clip!important;overflow:visible!important;word-break:normal!important;overflow-wrap:anywhere!important}
 }
 /* Only position and crest stay pinned. Names and every statistic can slide. */
-html body[data-mobile-layout="v774"].v40-standings-master :is(.v40-standings,.v40-content,.v578-table-section,[data-v580-scroll],.v578-table,.v578-table th,.v578-table td){background:#06075f!important;background-image:none!important}
-html body[data-mobile-layout="v774"].v40-standings-master [data-v580-scroll]{overflow-x:auto!important;overflow-y:hidden!important;max-width:100%!important;width:100%!important;touch-action:pan-x pan-y pinch-zoom!important;padding-right:0!important}
-html body[data-mobile-layout="v774"].v40-standings-master [data-v580-scroll] .v578-table{width:max-content!important;min-width:100%!important;table-layout:fixed!important;border-collapse:separate!important;border-spacing:0!important}
-html body[data-mobile-layout="v774"].v40-standings-master [data-v580-scroll] .v578-table :is(th,td){position:static!important;left:auto!important;min-width:40px!important;padding:10px 5px!important;box-shadow:none!important}
-html body[data-mobile-layout="v774"].v40-standings-master [data-v580-scroll] .v578-table .rank{position:sticky!important;left:0!important;width:24px!important;min-width:24px!important;max-width:24px!important;z-index:5!important}
-html body[data-mobile-layout="v774"].v40-standings-master [data-v580-scroll] .v578-table .logo{position:sticky!important;left:24px!important;width:40px!important;min-width:40px!important;max-width:40px!important;z-index:5!important}
-html body[data-mobile-layout="v774"].v40-standings-master [data-v580-scroll] .v578-table .teamname{position:static!important;left:auto!important;width:140px!important;min-width:140px!important;max-width:140px!important;z-index:0!important;box-shadow:none!important}
-html body[data-mobile-layout="v774"] .v578-table .teamname strong{font-size:12px!important;white-space:nowrap!important}
+html body[data-mobile-layout="v775"].v40-standings-master :is(.v40-standings,.v40-content,.v578-table-section,[data-v580-scroll],.v578-table,.v578-table th,.v578-table td){background:#06075f!important;background-image:none!important}
+html body[data-mobile-layout="v775"].v40-standings-master [data-v580-scroll]{overflow-x:auto!important;overflow-y:hidden!important;max-width:100%!important;width:100%!important;touch-action:pan-x pan-y pinch-zoom!important;padding-right:0!important}
+html body[data-mobile-layout="v775"].v40-standings-master [data-v580-scroll] .v578-table{width:max-content!important;min-width:100%!important;table-layout:fixed!important;border-collapse:separate!important;border-spacing:0!important}
+html body[data-mobile-layout="v775"].v40-standings-master [data-v580-scroll] .v578-table :is(th,td){position:static!important;left:auto!important;min-width:40px!important;padding:10px 5px!important;box-shadow:none!important}
+html body[data-mobile-layout="v775"].v40-standings-master [data-v580-scroll] .v578-table .rank{position:sticky!important;left:0!important;width:24px!important;min-width:24px!important;max-width:24px!important;z-index:5!important}
+html body[data-mobile-layout="v775"].v40-standings-master [data-v580-scroll] .v578-table .logo{position:sticky!important;left:24px!important;width:40px!important;min-width:40px!important;max-width:40px!important;z-index:5!important}
+html body[data-mobile-layout="v775"].v40-standings-master [data-v580-scroll] .v578-table .teamname{position:static!important;left:auto!important;width:140px!important;min-width:140px!important;max-width:140px!important;z-index:0!important;box-shadow:none!important}
+html body[data-mobile-layout="v775"] .v578-table .teamname strong{font-size:12px!important;white-space:nowrap!important}
 /* Entire crest fits its holder, including the lower ribbon and stars. */
 html body :is(.v444-result-logo,.v444-home-club-logo,.v444-stat-team-main,.v28-team-logo,.v40-team-logo,.v578-logo,.v501-crest,.v46-follow-logo,.v27-logo,.v62-team-logo,.v62-inline-logo,.v426-tv-logo){display:grid!important;place-items:center!important;overflow:hidden!important;box-sizing:border-box!important}
 html body :is(.v444-result-logo,.v444-home-club-logo,.v444-stat-team-main,.v28-team-logo,.v40-team-logo,.v501-crest,.v46-follow-logo,.v27-logo,.v62-team-logo,.v62-inline-logo,.v426-tv-logo)>img{
@@ -52,12 +52,12 @@ html body :is(.v444-result-logo,.v444-home-club-logo,.v444-stat-team-main,.v28-t
  transform:none!important;border-radius:0!important;box-sizing:border-box!important;
 }
 html body img.v578-logo{width:30px!important;height:30px!important;min-width:0!important;min-height:0!important;max-width:30px!important;max-height:30px!important;object-fit:contain!important;object-position:center!important;margin:auto!important;transform:none!important}
-html body[data-mobile-layout="v774"] .v576-player-avatar{aspect-ratio:1!important;border-radius:50%!important;overflow:hidden!important;display:grid!important;place-items:center!important;background:#11196b!important;color:#fff!important}
-html body[data-mobile-layout="v774"] .v576-player-avatar img{width:100%!important;height:100%!important;min-width:0!important;min-height:0!important;object-fit:cover!important;object-position:center!important;transform:none!important}
-html body[data-mobile-layout="v774"] .v576-player-avatar.v576-team-fallback img{object-fit:contain!important;padding:5px!important;box-sizing:border-box!important}
-html body[data-mobile-layout="v774"] .v602-shirt-base{background-image:url('../assets/fantasy-jersey-clean-v774.webp')!important}
-html body[data-mobile-layout="v774"] :is(.v602-shirt-tint,.v602-shirt-pattern,.v602-shirt-light){mask-image:url('../assets/fantasy-jersey-clean-v774.webp')!important;-webkit-mask-image:url('../assets/fantasy-jersey-clean-v774.webp')!important}
-html body[data-mobile-layout="v774"] .v602-shirt-logo{
+html body[data-mobile-layout="v775"] .v576-player-avatar{aspect-ratio:1!important;border-radius:50%!important;overflow:hidden!important;display:grid!important;place-items:center!important;background:#11196b!important;color:#fff!important}
+html body[data-mobile-layout="v775"] .v576-player-avatar img{width:100%!important;height:100%!important;min-width:0!important;min-height:0!important;object-fit:cover!important;object-position:center!important;transform:none!important}
+html body[data-mobile-layout="v775"] .v576-player-avatar.v576-team-fallback img{object-fit:contain!important;padding:5px!important;box-sizing:border-box!important}
+html body[data-mobile-layout="v775"] .v602-shirt-base{background-image:url('../assets/fantasy-jersey-clean-v774.webp')!important}
+html body[data-mobile-layout="v775"] :is(.v602-shirt-tint,.v602-shirt-pattern,.v602-shirt-light){mask-image:url('../assets/fantasy-jersey-clean-v774.webp')!important;-webkit-mask-image:url('../assets/fantasy-jersey-clean-v774.webp')!important}
+html body[data-mobile-layout="v775"] .v602-shirt-logo{
  left:57%!important;top:29%!important;width:13%!important;height:13%!important;min-width:0!important;min-height:0!important;
  max-width:13%!important;max-height:13%!important;transform:translate(-50%,-50%) rotate(4deg) skewY(-5deg)!important;
  object-fit:contain!important;mix-blend-mode:normal!important;opacity:1!important;z-index:3!important;
@@ -65,18 +65,18 @@ html body[data-mobile-layout="v774"] .v602-shirt-logo{
 }
 
 @media(max-width:1023px){
- html body[data-mobile-layout="v774"][data-mobile-header="custom"] #app>.topbar{display:none!important;height:0!important;min-height:0!important}
- html body[data-mobile-layout="v774"] .v774-hospitality-head{height:80px!important;display:flex!important;align-items:center!important;gap:12px!important;padding:12px 20px!important}
- html body[data-mobile-layout="v774"] .v774-hospitality-head :is(h1,.v31-back){position:static!important;margin:0!important;inset:auto!important;transform:none!important}
- html body[data-mobile-layout="v774"] .v774-hospitality-head h1{font-size:26px!important;white-space:normal!important}
- html body[data-mobile-layout="v774"] .v31-hospitality-page{height:auto!important;min-height:100%!important;overflow:visible!important;padding:24px 20px!important;display:flex!important;flex-direction:column!important;gap:20px!important}
- html body[data-mobile-layout="v774"] .v31-hospitality-page :is(.v31-access-switch,.v31-code-wrap,.v31-code-note,.v31-continue,.v31-feedback){position:relative!important;inset:auto!important;left:auto!important;right:auto!important;top:auto!important;bottom:auto!important;width:100%!important;transform:none!important;margin:0!important}
- html body[data-mobile-layout="v774"] .v31-code-note{font-size:16px!important}
- html body[data-mobile-layout="v774"] .v31-feedback{white-space:normal!important;min-height:44px!important;opacity:1!important}
- html body[data-mobile-layout="v774"] .v774-invites{padding:14px!important;border-radius:18px!important;border:1px solid #596bd4!important;color:#fff!important;background:#0c1479!important}
- html body[data-mobile-layout="v774"] [data-v580-scroll] .v578-table col:first-child{width:24px!important}
- html body[data-mobile-layout="v774"] [data-v580-scroll] .v578-table col:nth-child(2){width:40px!important}
- html body[data-mobile-layout="v774"] [data-v580-scroll] .v578-table col:nth-child(3){width:140px!important}
+ html body[data-mobile-layout="v775"][data-mobile-header="custom"] #app>.topbar{display:none!important;height:0!important;min-height:0!important}
+ html body[data-mobile-layout="v775"] .v774-hospitality-head{height:80px!important;display:flex!important;align-items:center!important;gap:12px!important;padding:12px 20px!important}
+ html body[data-mobile-layout="v775"] .v774-hospitality-head :is(h1,.v31-back){position:static!important;margin:0!important;inset:auto!important;transform:none!important}
+ html body[data-mobile-layout="v775"] .v774-hospitality-head h1{font-size:26px!important;white-space:normal!important}
+ html body[data-mobile-layout="v775"] .v31-hospitality-page{height:auto!important;min-height:100%!important;overflow:visible!important;padding:24px 20px!important;display:flex!important;flex-direction:column!important;gap:20px!important}
+ html body[data-mobile-layout="v775"] .v31-hospitality-page :is(.v31-access-switch,.v31-code-wrap,.v31-code-note,.v31-continue,.v31-feedback){position:relative!important;inset:auto!important;left:auto!important;right:auto!important;top:auto!important;bottom:auto!important;width:100%!important;transform:none!important;margin:0!important}
+ html body[data-mobile-layout="v775"] .v31-code-note{font-size:16px!important}
+ html body[data-mobile-layout="v775"] .v31-feedback{white-space:normal!important;min-height:44px!important;opacity:1!important}
+ html body[data-mobile-layout="v775"] .v774-invites{padding:14px!important;border-radius:18px!important;border:1px solid #596bd4!important;color:#fff!important;background:#0c1479!important}
+ html body[data-mobile-layout="v775"] [data-v580-scroll] .v578-table col:first-child{width:24px!important}
+ html body[data-mobile-layout="v775"] [data-v580-scroll] .v578-table col:nth-child(2){width:40px!important}
+ html body[data-mobile-layout="v775"] [data-v580-scroll] .v578-table col:nth-child(3){width:140px!important}
 }
 html body.v587-fantasy-team-open .v597-shirt-photo{content:url('../assets/fantasy-jersey-clean-v774.webp')!important}
 html body.v587-fantasy-team-open :is(.v597-shirt-tint,.v597-shirt-pattern,.v597-real-kit::before){mask-image:url('../assets/fantasy-jersey-clean-v774.webp')!important;-webkit-mask-image:url('../assets/fantasy-jersey-clean-v774.webp')!important}
@@ -84,18 +84,54 @@ html body.v587-fantasy-team-open .v597-logo-patch{display:none!important}
 html body.v587-fantasy-team-open .v597-team-logo{left:57%!important;top:29%!important;transform:translate(-50%,-50%) rotate(4deg) skewY(-5deg)!important}
 
 @media(max-width:1023px){
- html body[data-mobile-layout="v774"] .v46-follow-head{height:82px!important;min-height:82px!important;padding:20px 24px!important;align-items:center!important;background-size:100% auto!important}
- html body[data-mobile-layout="v774"] .v46-follow-list{padding:18px 24px 24px!important;min-height:0!important}
- html body[data-mobile-layout="v774"][data-app-route="following"] :is(.v46-following,.v66-directory){min-height:0!important;margin-top:0!important;overflow:visible!important}
- html body[data-mobile-layout="v774"] .v620-history-top{height:154px!important;min-height:154px!important;background:#06075f!important}
- html body[data-mobile-layout="v774"] .v620-history-top .v35-history-head{position:relative!important;inset:auto!important;height:100px!important;min-height:100px!important;margin:0!important;padding:20px!important;transform:none!important}
- html body[data-mobile-layout="v774"] .v620-history-top .v35-tabs{position:relative!important;inset:auto!important;height:54px!important;margin:0!important;transform:none!important;background:#06075f!important}
- html body[data-mobile-layout="v774"] .v35-history-content{padding-top:0!important;margin-top:0!important}
+ html body[data-mobile-layout="v775"] .v46-follow-head{height:82px!important;min-height:82px!important;padding:20px 24px!important;align-items:center!important;background-size:100% auto!important}
+ html body[data-mobile-layout="v775"] .v46-follow-list{padding:18px 24px 24px!important;min-height:0!important}
+ html body[data-mobile-layout="v775"][data-app-route="following"] :is(.v46-following,.v66-directory){min-height:0!important;margin-top:0!important;overflow:visible!important}
+ html body[data-mobile-layout="v775"] .v620-history-top{height:154px!important;min-height:154px!important;background:#06075f!important}
+ html body[data-mobile-layout="v775"] .v620-history-top .v35-history-head{position:relative!important;inset:auto!important;height:100px!important;min-height:100px!important;margin:0!important;padding:20px!important;transform:none!important}
+ html body[data-mobile-layout="v775"] .v620-history-top .v35-tabs{position:relative!important;inset:auto!important;height:54px!important;margin:0!important;transform:none!important;background:#06075f!important}
+ html body[data-mobile-layout="v775"] .v35-history-content{padding-top:0!important;margin-top:0!important}
 }
 @media(max-width:1023px){
- html body[data-mobile-layout="v774"] .v620-history-top .v35-history-head{display:flex!important;align-items:center!important;gap:12px!important;background-color:#06075f!important}
- html body[data-mobile-layout="v774"] .v620-history-top .v35-history-head :is(.v35-back,.v35-logo-wrap,h1){position:relative!important;inset:auto!important;left:auto!important;top:auto!important;bottom:auto!important;transform:none!important;margin:0!important}
- html body[data-mobile-layout="v774"] .v620-history-top .v35-logo-wrap{width:44px!important;height:44px!important;min-width:44px!important}
- html body[data-mobile-layout="v774"] .v620-history-top h1{font-size:28px!important;line-height:1!important}
- html body[data-mobile-layout="v774"] .v620-history-top .v35-tabs{background-color:#06075f!important}
+ html body[data-mobile-layout="v775"] .v620-history-top .v35-history-head{display:flex!important;align-items:center!important;gap:12px!important;background-color:#06075f!important}
+ html body[data-mobile-layout="v775"] .v620-history-top .v35-history-head :is(.v35-back,.v35-logo-wrap,h1){position:relative!important;inset:auto!important;left:auto!important;top:auto!important;bottom:auto!important;transform:none!important;margin:0!important}
+ html body[data-mobile-layout="v775"] .v620-history-top .v35-logo-wrap{width:44px!important;height:44px!important;min-width:44px!important}
+ html body[data-mobile-layout="v775"] .v620-history-top h1{font-size:28px!important;line-height:1!important}
+ html body[data-mobile-layout="v775"] .v620-history-top .v35-tabs{background-color:#06075f!important}
+}
+
+/* Page chrome stays below tool dialogs, comparison pickers and media controls. */
+@media(max-width:1023px){
+ html body[data-mobile-layout="v775"][data-app-route].v768-scroll-root #app>.topbar,
+ html body[data-mobile-layout="v775"][data-app-route].v768-scroll-root .app-shell>.topbar{z-index:100!important}
+ html body[data-mobile-layout="v775"][data-app-route].v768-scroll-root .bottom-nav{z-index:100!important}
+ html body[data-mobile-layout="v775"][data-app-route].v768-scroll-root .ljr-scroll-header{z-index:100!important;box-sizing:border-box!important;backdrop-filter:none!important;opacity:1!important}
+ html body[data-mobile-layout="v775"] :is(.v41-teams-page,.v27-teams-page,.v33-about,.v415-calendar-page,.v33-data-page){padding-top:0!important}
+ html body[data-mobile-layout="v775"] .v41-head{padding:calc(16px + env(safe-area-inset-top)) 20px 14px!important}
+ html body[data-mobile-layout="v775"] .v414-ref-head{height:calc(92px + env(safe-area-inset-top))!important;min-height:calc(92px + env(safe-area-inset-top))!important;padding:calc(16px + env(safe-area-inset-top)) 20px 16px!important;align-items:center!important;background:#06075f!important}
+ html body[data-mobile-layout="v775"] .v414-ref-head h1{font-size:26px!important}
+ html body[data-mobile-layout="v775"] .v414-tabs{background:#06075f!important}
+ html body[data-mobile-layout="v775"] .v369-compare-topbar{background:#1237ea!important;backdrop-filter:none!important}
+}
+@media(max-width:1023px){
+ html body[data-mobile-layout="v775"].v768-scroll-root #screen .ljr-scroll-header{position:fixed!important;top:0!important;left:0!important;right:0!important;width:100%!important;max-width:none!important;margin:0!important;transform:none!important;z-index:100!important;background-color:#02065f!important}
+ html body[data-mobile-layout="v775"][data-app-route="history"] #screen .v35-history-page{padding-top:0!important;margin-top:0!important}
+ html body[data-mobile-layout="v775"][data-app-route="history"] #screen .v620-history-top{height:154px!important;min-height:154px!important;max-height:154px!important;overflow:hidden!important}
+ html body[data-mobile-layout="v775"][data-app-route="history"] #screen .v35-compact-bar{display:none!important}
+ html body[data-mobile-layout="v775"][data-app-route="history"] #screen .v620-history-top .v35-history-head{position:relative!important;top:0!important}
+ html body[data-mobile-layout="v775"][data-app-route="history"] #screen .v620-history-top .v35-tabs{position:relative!important;inset:auto!important;top:auto!important;transform:none!important}
+}
+
+@media(max-width:1023px){
+ html body[data-mobile-layout="v775"][data-app-route="home"] #app>.topbar{background-image:url('../public/home-header-original-v775.jpg')!important}
+ html body[data-mobile-layout="v775"][data-app-route="home"] #app>.topbar .profile-button{width:44px!important;height:44px!important;min-width:44px!important;min-height:44px!important;right:calc(8.2% - 22px)!important;top:calc(9.96vw - 22px)!important}
+ html body[data-mobile-layout="v775"][data-app-route="home"] #app>.topbar .wordmark{width:64px!important;height:64px!important;left:calc(10.4% - 32px)!important;top:calc(11.3vw - 32px)!important}
+ html body[data-mobile-layout="v775"] #screen .v775-scorers-head{height:100px!important;display:grid!important;grid-template-columns:40px minmax(0,1fr) 40px!important;align-items:center!important;gap:8px!important;padding:16px!important;background:linear-gradient(180deg,#1730dd,#06075f)!important}
+ .v775-scorers-head h1{margin:0;color:#fff;font-size:24px;line-height:1.1}
+ .v775-scorers-head button{width:40px;height:40px;display:grid;place-items:center;padding:7px;border:0;background:transparent;color:#fff}
+ .v775-scorers-head svg{width:26px;height:26px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+}
+@media(max-width:1023px){
+ html body[data-mobile-layout="v775"][data-app-route]:not([data-app-route="home"]) #app>.topbar .profile-button{display:grid!important;place-items:center!important;visibility:visible!important;opacity:1!important;pointer-events:auto!important;color:#fff!important;background:transparent!important;border:0!important}
+ html body[data-mobile-layout="v775"][data-app-route]:not([data-app-route="home"]) #app>.topbar .profile-button svg{display:block!important;width:28px!important;height:28px!important;fill:currentColor!important;visibility:visible!important;opacity:1!important}
 }

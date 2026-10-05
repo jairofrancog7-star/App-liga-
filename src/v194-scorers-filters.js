@@ -372,6 +372,7 @@ function referenceScorersView(){
 function markup(){
   const source=db()?.captured_at_utc||'';
   return '<div class="v194-scorers" data-v194-scorers>'+
+    '<header class="v775-scorers-head"><button type="button" data-route="more" aria-label="Volver"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 12H5M12 19l-7-7 7-7"/></svg></button><h1>Máximo goleador</h1><button type="button" data-route="profile" aria-label="Mi cuenta"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="8" r="3"/><path d="M5.5 18.5c1-3 3.3-4.5 6.5-4.5s5.5 1.5 6.5 4.5"/></svg></button></header>'+
     referenceScorersView()+
     '<p class="v194-source">Datos oficiales sincronizados'+(source?' · '+esc(new Date(source).toLocaleString('es-MX')):'')+'</p>'+
   '</div>';

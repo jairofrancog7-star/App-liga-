@@ -15,7 +15,7 @@
   }
   html body.v768-scroll-root #app>.topbar,html body.v768-scroll-root .app-shell>.topbar{
     position:fixed!important;top:0!important;left:0!important;right:0!important;
-    width:100%!important;margin:0!important;transform:none!important;z-index:2147482400!important;
+    width:100%!important;margin:0!important;transform:none!important;z-index:100!important;
     background-color:#02065f!important;isolation:isolate!important;
   }
   html body[data-app-route="home"]{--v10-home-header-h:clamp(88px,21.8vw,112px)}

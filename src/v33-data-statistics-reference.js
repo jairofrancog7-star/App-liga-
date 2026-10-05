@@ -277,13 +277,13 @@ function share(){const p={title:'Estadísticas Liga Juventino',text:'Datos ofici
 function setTab(tab){
  const next=['general','team','player'].includes(tab)?tab:'general';
  if(activeTab===next){
-   window.scrollTo({top:0,behavior:'auto'});
+   (document.body.classList.contains('v768-scroll-root')?document.querySelector('#screen'):window)?.scrollTo({top:0,behavior:'auto'});
    return render();
  }
  activeTab=next;
  localStorage.setItem('v33-data-tab',activeTab);
  const out=render();
- window.scrollTo({top:0,behavior:'auto'});
+ (document.body.classList.contains('v768-scroll-root')?document.querySelector('#screen'):window)?.scrollTo({top:0,behavior:'auto'});
  return out;
 }
 function setRefView(mode){
@@ -328,7 +328,7 @@ function isDataRoute(){const r=route();return r==='safe-data'||r==='leagueData'}
 function applyHeaderScroll(){
  if(!isDataRoute())return;
  const head=document.querySelector('[data-v33-head]'),title=head?.querySelector('[data-v33-morph-title]');if(!head||!title)return;
- const y=Math.max(0,window.scrollY||document.documentElement.scrollTop||0),p=Math.min(1,y/165),vw=Math.min(window.innerWidth,520);
+ const y=Math.max(0,document.body.classList.contains('v768-scroll-root')?(document.querySelector('#screen')?.scrollTop||0):(window.scrollY||document.documentElement.scrollTop||0)),p=Math.min(1,y/165),vw=Math.min(window.innerWidth,520);
  const lerp=(a,b,t)=>a+(b-a)*t,eh=Math.max(184,Math.min(258,vw*.5012)),ch=Math.max(104,Math.min(142,vw*.272));
  const h=lerp(eh,ch,p);head.style.setProperty('--v33-collapse',p.toFixed(4));head.style.setProperty('--v33-head-h',h.toFixed(1)+'px');
  const page=document.querySelector('[data-v33-data]');
@@ -338,7 +338,7 @@ function applyHeaderScroll(){
       bloque azul vacío debajo de las pestañas. */
    const actualH=Math.max(0,head.getBoundingClientRect().height);
    page.style.setProperty('--v33-actual-head-h',actualH.toFixed(1)+'px');
-   page.style.setProperty('padding-top',actualH.toFixed(1)+'px','important');
+   page.style.setProperty('padding-top',document.body.classList.contains('v768-scroll-root')?'0px':actualH.toFixed(1)+'px','important');
  }
  title.style.left=lerp(Math.max(20,vw*.055),Math.max(92,vw*.255),p).toFixed(1)+'px';
  title.style.top=lerp(Math.max(98,vw*.274),Math.max(24,vw*.070),p).toFixed(1)+'px';
@@ -347,6 +347,7 @@ function applyHeaderScroll(){
 }
 let tick=0;function onScroll(){if(tick)return;tick=requestAnimationFrame(()=>{tick=0;applyHeaderScroll()})}
 window.addEventListener('scroll',onScroll,{passive:true});
+document.addEventListener('scroll',onScroll,{passive:true,capture:true});
 async function render(){
  const active=isDataRoute();document.body.classList.toggle('v33-data-active',active);if(!active)return;
  await load();if(!db||!isDataRoute())return;

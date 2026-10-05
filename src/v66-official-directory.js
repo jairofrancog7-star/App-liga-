@@ -42,6 +42,7 @@ async function load(){
   return loading;
 }
 function logoFor(name){
+  const supplied=window.LJR_SEASON_LOGOS?.get(name);if(supplied)return supplied;
   const entries=Object.entries(db?.team_logos||{});
   const hit=entries.find(([k])=>same(k,name));
   const v=hit?.[1];
