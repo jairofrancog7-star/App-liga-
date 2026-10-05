@@ -336,3 +336,92 @@ html body.v587-fantasy-team-open .v576-player-photo{
   html body.v587-fantasy-team-open .v576-player-photo,
   html body.v587-fantasy-team-open .v576-player-crest{width:34px!important;height:34px!important}
 }
+
+
+/* V803 — Fantasy inferior unificado: fondo continuo, sin cortes ni scroll.
+   Ajuste solicitado para que la zona "Prueba como invitado" nunca quede tapada. */
+body[data-app-route="fantasy"],
+body[data-app-route="fantasyAccess"]{
+  --v803-fantasy-blue:#06085f!important;
+  background:var(--v803-fantasy-blue)!important;
+  overflow:hidden!important;
+}
+body[data-app-route="fantasy"] #app,
+body[data-app-route="fantasyAccess"] #app,
+body[data-app-route="fantasy"] #screen,
+body[data-app-route="fantasyAccess"] #screen,
+body[data-app-route="fantasyAccess"] .v23-fantasy-access,
+body[data-app-route="fantasyAccess"] .v588-access-viewport,
+body[data-app-route="fantasyAccess"] .v588-access-slide{
+  background:var(--v803-fantasy-blue)!important;
+}
+
+/* La barra inferior toma exactamente el mismo azul de la pantalla Fantasy. */
+body[data-app-route="fantasy"] .bottom-nav,
+body[data-app-route="fantasyAccess"] .bottom-nav{
+  background:var(--v803-fantasy-blue)!important;
+  border-top:0!important;
+  box-shadow:none!important;
+}
+
+/* Pantalla fija: no debe desplazarse verticalmente. */
+body[data-app-route="fantasyAccess"] #screen,
+body[data-app-route="fantasyAccess"] .v23-fantasy-access,
+body[data-app-route="fantasyAccess"] .v588-fantasy-access,
+body[data-app-route="fantasyAccess"] .v588-access-viewport,
+body[data-app-route="fantasyAccess"] .v588-access-slide{
+  overflow:hidden!important;
+  overscroll-behavior:none!important;
+}
+body[data-app-route="fantasyAccess"] .v588-access-slide{
+  touch-action:pan-x!important;
+}
+
+/* Mantener completa y visible la acción inferior, arriba de la navegación. */
+body[data-app-route="fantasyAccess"] .v588-slide-team .v588-card-stage{
+  margin-top:clamp(10px,2.1dvh,20px)!important;
+  height:clamp(190px,29dvh,238px)!important;
+}
+body[data-app-route="fantasyAccess"] .v588-slide-team .v588-team-copy{
+  flex:0 0 auto!important;
+}
+body[data-app-route="fantasyAccess"] .v588-slide-team .v588-team-copy p{
+  margin-top:clamp(10px,1.8dvh,18px)!important;
+}
+body[data-app-route="fantasyAccess"] .v588-slide-team .v588-dots{
+  margin-top:clamp(7px,1.2dvh,12px)!important;
+}
+body[data-app-route="fantasyAccess"] .v588-slide-team .v588-team-actions{
+  margin-top:clamp(10px,1.7dvh,18px)!important;
+  padding-bottom:clamp(8px,1.2dvh,14px)!important;
+  flex:0 0 auto!important;
+}
+body[data-app-route="fantasyAccess"] .v588-slide-team .v23-access-later{
+  margin-top:clamp(8px,1.5dvh,14px)!important;
+  padding:7px 14px!important;
+}
+
+@media(max-height:740px){
+  body[data-app-route="fantasyAccess"] .v588-slide-team .v588-card-stage{
+    height:185px!important;
+    margin-top:8px!important;
+  }
+  body[data-app-route="fantasyAccess"] .v588-slide-team .v588-team-copy h1{
+    font-size:20px!important;
+  }
+  body[data-app-route="fantasyAccess"] .v588-slide-team .v588-team-copy p{
+    margin-top:8px!important;
+    font-size:12px!important;
+    line-height:1.38!important;
+  }
+  body[data-app-route="fantasyAccess"] .v588-slide-team .v588-team-actions{
+    margin-top:8px!important;
+    padding-bottom:6px!important;
+  }
+  body[data-app-route="fantasyAccess"] .v588-slide-team .v23-access-login{
+    min-height:46px!important;
+  }
+  body[data-app-route="fantasyAccess"] .v588-slide-team .v23-access-later{
+    margin-top:6px!important;
+  }
+}
