@@ -212,8 +212,9 @@ function updatePickerVisual(picker,api,team,lineup){
     const key=team.name+'|'+logo;
     if(crest.dataset.v802Key!==key){crest.dataset.v802Key=key;crest.innerHTML=logo?'<img src="'+esc(logo)+'" alt="'+esc(team.name)+'">':'<b>'+esc(initials(team.name))+'</b>'}
   }
-  if(name)name.textContent=team.name;
-  if(meta)meta.textContent=(team.category||'Liga Municipal')+' · '+lineup.length+' jugadores oficiales';
+  if(name&&name.textContent!==team.name)name.textContent=team.name;
+  const metaText=(team.category||'Liga Municipal')+' · '+lineup.length+' jugadores oficiales';
+  if(meta&&meta.textContent!==metaText)meta.textContent=metaText;
 }
 function ensurePicker(adv,api,allTeams,categoryLabel){
   const controls=$('.v100-tactic-controls',adv);if(!controls)return null;
