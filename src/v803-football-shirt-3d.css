@@ -1,0 +1,45 @@
+/* V803 — football shirt 3D configurator */
+.ljr-profile-form .ljr-shirt-preview.v803-shirt-preview{
+  position:relative!important;width:100%!important;max-width:430px!important;
+  min-height:590px!important;margin:8px auto 14px!important;overflow:hidden!important;
+  border:1px solid rgba(82,150,255,.64)!important;border-radius:24px!important;
+  background:
+    radial-gradient(circle at 50% 28%,rgba(22,115,255,.28),transparent 38%),
+    linear-gradient(180deg,#04154b 0%,#020a2c 100%)!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.08),0 22px 42px rgba(0,0,45,.30)!important;
+}
+.v803-shirt-stage{width:100%!important;height:470px!important;touch-action:none!important}
+.v803-shirt-stage canvas{display:block!important;width:100%!important;height:100%!important;touch-action:none!important}
+.v803-shirt-badge{
+  position:absolute!important;z-index:5!important;top:12px!important;left:12px!important;
+  display:inline-flex!important;align-items:center!important;min-height:28px!important;padding:0 10px!important;
+  border:1px solid rgba(72,223,245,.48)!important;border-radius:999px!important;
+  background:rgba(1,14,55,.76)!important;color:#6eeaf7!important;
+  font-size:10px!important;font-weight:900!important;letter-spacing:.07em!important;
+  backdrop-filter:blur(8px)!important;pointer-events:none!important
+}
+.v803-shirt-controls{
+  display:grid!important;grid-template-columns:1fr 1fr 1.15fr!important;gap:7px!important;
+  padding:9px 12px 0!important
+}
+.v803-shirt-controls button{
+  min-height:41px!important;border:1px solid rgba(86,129,216,.72)!important;border-radius:12px!important;
+  background:linear-gradient(180deg,#173e99,#0d2a75)!important;color:#eef8ff!important;
+  font-size:11px!important;font-weight:850!important
+}
+.v803-shirt-controls button.active{
+  border-color:#2bdbe9!important;background:linear-gradient(180deg,#2be1ee,#20bfd0)!important;color:#06134c!important
+}
+.v803-shirt-foot{
+  display:flex!important;justify-content:space-between!important;gap:10px!important;
+  align-items:center!important;padding:9px 13px 12px!important;color:#99acd7!important;font-size:9.5px!important
+}
+.v803-shirt-foot b{color:#eaf7ff!important;white-space:nowrap!important}
+.v803-shirt-open-source{
+  margin:0 13px 12px!important;padding:8px 10px!important;border-radius:10px!important;
+  background:rgba(33,77,164,.18)!important;color:#7f93c1!important;font-size:8.5px!important;line-height:1.35!important
+}
+@media(max-width:430px){
+  .ljr-profile-form .ljr-shirt-preview.v803-shirt-preview{max-width:100%!important;min-height:548px!important}
+  .v803-shirt-stage{height:430px!important}
+}
