@@ -1,6 +1,6 @@
 (()=>{
  const esc=s=>window.LJR_CMS?.esc(s)||String(s||''),route=()=>location.hash.replace(/^#\/?/,'').split('?')[0]||'home';
- const userIcon='<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="7" r="3.6"/><path d="M4.5 21v-2a7.5 7.5 0 0 1 15 0v2"/></svg>';
+ const userIcon='<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="8" r="3"/><path d="M4.5 18.6a8.3 8.3 0 0 1 15 0"/></svg>';
  const backIcon='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 12H4m7-7-7 7 7 7"/></svg>';
  let timer=0,editing=false;
  const account=()=>window.LJR_V569_AUTH?.currentAccount ? window.LJR_V569_AUTH.currentAccount() : window.LJR_MAIN_ROUTE?.state?.user||null;

@@ -4,7 +4,7 @@ const nativePiP=registerPlugin('LigaPiP');
 const esc=s=>window.LJR_CMS?.esc(s)||String(s||'');
 const route=()=>location.hash.replace(/^#\/?/,'').split('?')[0]||'home';
 function controls(video){
- if(video.dataset.v777Controls||video.closest('.v196-frame,.liga-stories,.v105-motion,.v15-decor'))return;
+ if(video.dataset.v777Controls||video.matches('[data-ljr-decorative],video[aria-hidden="true"]')||video.closest('.v196-frame,.liga-stories,.v105-motion,.v15-decor,[data-v73-motion-banner],.v73-home-motion,.v73-gallery'))return;
  if(video.muted&&video.autoplay&&!video.controls)return;
  video.dataset.v777Controls='1';trackNativePiP(video);video.controls=false;video.playsInline=true;
  const box=document.createElement('div');box.className='ljr-video-player';video.before(box);box.append(video);

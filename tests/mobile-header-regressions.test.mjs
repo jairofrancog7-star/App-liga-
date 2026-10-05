@@ -6,7 +6,7 @@ import vm from 'node:vm';
 const source=fs.readFileSync(new URL('../src/v768-scroll-chrome.js',import.meta.url),'utf8');
 function classes(){const values=new Set();return {add:x=>values.add(x),remove:x=>values.delete(x),contains:x=>values.has(x),toggle(x,on){on?values.add(x):values.delete(x)}}}
 function style(){const values=new Map();return {getPropertyValue:x=>values.get(x)||'',setProperty:(k,v)=>values.set(k,v)}}
-function node(height=0){return {height,hidden:false,display:'block',visibility:'visible',classList:classes(),style:style(),getBoundingClientRect(){return {height:this.height}}}}
+function node(height=0,selector=''){return {matches:selectors=>selectors.split(',').includes(selector),height,hidden:false,display:'block',visibility:'visible',classList:classes(),style:style(),getBoundingClientRect(){return {height:this.height}}}}
 function fixture(){
  const body=node(),global=node(88),nav=node(69),headers=new Map(),events=new Map(),frames=[];
  body.dataset={appRoute:'home'};let mobile=true;let resize;
@@ -14,15 +14,22 @@ function fixture(){
  const document={readyState:'complete',body,querySelector(selector){return selector==='#screen'?screen:selector==='.bottom-nav'?nav:selector==='#app>.topbar'?global:null},querySelectorAll(){return [...headers.values()].filter(h=>h.classList.contains('ljr-scroll-header'))}};
  vm.runInNewContext(source,{document,window:{addEventListener:(type,fn)=>events.set(type,fn)},matchMedia:()=>({matches:mobile}),getComputedStyle:n=>n,requestAnimationFrame:fn=>{frames.push(fn);return frames.length},MutationObserver:class{observe(){}},ResizeObserver:class{constructor(fn){resize=fn}observe(){}disconnect(){}}});
  const flush=()=>{while(frames.length)frames.shift()()};flush();
- return {body,global,nav,headers,flush,resize:()=>{resize();flush()},go(route,selector,height=92){body.dataset.appRoute=route;headers.clear();if(selector)headers.set(selector,node(height));events.get('hashchange')();flush()},desktop(){mobile=false;events.get('resize')();flush()}};
+ return {body,global,nav,headers,flush,resize:()=>{resize();flush()},go(route,selector,height=92){body.dataset.appRoute=route;headers.clear();if(selector)headers.set(selector,node(height,selector));events.get('hashchange')();flush()},desktop(){mobile=false;events.get('resize')();flush()}};
 }
 test('every page bar sets the scroll boundary and disappears cleanly on another route',()=>{
  const f=fixture();assert.equal(f.body.style.getPropertyValue('--v768-head-h'),'88px');
- for(const [route,selector,height] of [['scorers','.v775-scorers-head',100],['favorites','.v414-ref-head',92],['v4-calendar','.v415-reference-topbar',90],['teams','.v41-head',126],['safe-about','.v33-about-tools',84],['safe-data','.v33-data-head',184],['leagueData','.v62-data-head',128],['following','.v28-head',82],['club-store','.v510-store-head',90]]){
+ for(const [route,selector,height] of [['scorers','.v775-scorers-head',100],['favorites','.v414-ref-head',92],['v4-calendar','.v415-reference-topbar',90],['teams','.v41-head',126],['safe-data','.v33-data-head',184],['leagueData','.v62-data-head',128],['following','.v28-head',82],['club-store','.v510-store-head',90]]){
    f.go(route,selector,height);assert.equal(f.body.dataset.mobileHeader,'custom',route);assert.equal(f.body.style.getPropertyValue('--v768-head-h'),height+'px',route);assert.ok(f.headers.get(selector).classList.contains('ljr-scroll-header'));
  }
  f.go('video','.v408-tv-topbar',80);assert.equal(f.body.dataset.mobileHeader,'global','A dialog bar must not replace the page bar');assert.equal(f.body.style.getPropertyValue('--v768-head-h'),'88px');
  f.global.visibility='hidden';f.resize();assert.equal(f.body.style.getPropertyValue('--v768-head-h'),'0px','Hidden global bars reserve no space');
+});
+test('Fantasy and About keep controls over artwork without a second header spacer',()=>{
+ const f=fixture();
+ for(const [route,selector] of [['fantasy','.v22-fantasy-master'],['safe-about','.v33-about-tools']]){
+  f.go(route,selector,700);assert.equal(f.body.dataset.mobileHeader,'overlay');assert.equal(f.body.style.getPropertyValue('--v768-head-h'),'0px');assert.equal(f.headers.get(selector).classList.contains('ljr-scroll-header'),false);
+ }
+ f.go('home');assert.equal(f.body.dataset.mobileHeader,'global');assert.equal(f.body.style.getPropertyValue('--v768-head-h'),'88px');
 });
 test('bottom navigation visibility and desktop resize update the usable area',()=>{
  const f=fixture();assert.equal(f.body.style.getPropertyValue('--v774-nav-h'),'69px');

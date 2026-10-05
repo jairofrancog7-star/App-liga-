@@ -4,7 +4,7 @@
 const route=()=>location.hash.replace(/^#\/?/,'').split('?')[0]||'home';
 const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const svg=p=>'<svg viewBox="0 0 24 24" aria-hidden="true">'+p+'</svg>';
-const icons={back:svg('<path d="M20 12H4m7-7-7 7 7 7"/>'),person:svg('<circle cx="12" cy="8" r="3.5"/><path d="M5 21v-2a7 7 0 0 1 14 0v2"/>'),menu:svg('<circle cx="12" cy="5" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="12" cy="19" r="1"/>')};
+const icons={back:svg('<path d="M20 12H4m7-7-7 7 7 7"/>'),person:svg('<circle cx="12" cy="12" r="10"/><circle cx="12" cy="8" r="3"/><path d="M4.5 18.6a8.3 8.3 0 0 1 15 0"/>'),menu:svg('<circle cx="12" cy="5" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="12" cy="19" r="1"/>')};
 const account=()=>window.LJR_V569_AUTH?.currentAccount ? window.LJR_V569_AUTH.currentAccount() : window.LJR_MAIN_ROUTE?.state?.user||null;
 const media=()=>window.LJR_MEDIA;
 const go=r=>window.LJR_MAIN_ROUTE?.go ? window.LJR_MAIN_ROUTE.go(r) : location.hash='#/'+r;
@@ -25,7 +25,9 @@ function sync(header,custom=false){
  if(!document.body.classList.contains('ljr-v777'))document.body.classList.add('ljr-v777');
  document.querySelectorAll('.ljr-header-v777').forEach(h=>{if(h!==header)h.classList.remove('ljr-header-v777')});
  if(!header.classList.contains('ljr-header-v777'))header.classList.add('ljr-header-v777');
- document.body.dataset.headerOwner=custom?'custom':'global';
+ const overlay=custom&&header.matches('.v22-fantasy-master,.v33-about-tools');
+ header.classList.toggle('ljr-header-overlay',overlay);
+ document.body.dataset.headerOwner=overlay?'overlay':custom?'custom':'global';
  let bar=header.querySelector('.ljr-chrome-actions');
  if(!bar){bar=document.createElement('div');bar.className='ljr-chrome-actions';bar.innerHTML='<div class="ljr-chrome-left"></div><div class="ljr-chrome-right"></div>';header.append(bar)}
  const left=bar.firstElementChild,right=bar.lastElementChild;
@@ -60,7 +62,7 @@ window.LJR_CHROME={sync,avatar};
 function patch(){
  if(!document.body.classList.contains('ljr-v777'))document.body.classList.add('ljr-v777');
  if(route()==='quizArena'){const game=document.querySelector('.v766-quiz-start');if(game&&!game.querySelector('.ljr-quiz-head')){const head=document.createElement('header');head.className='ljr-quiz-head';const back=game.querySelector('.v766-back');if(back)head.append(back);game.prepend(head);window.LJR_SCROLL_CHROME?.refresh?.()}}
- const custom=document.querySelector('.ljr-quiz-head,.ljr-scroll-header'),top=document.querySelector('#app>.topbar');
+ const custom=document.querySelector('#screen .v22-fantasy-master,#screen .v33-about-tools,#screen .ljr-quiz-head,#screen .ljr-scroll-header'),top=document.querySelector('#app>.topbar');
  sync(custom||top,!!custom);
  document.querySelectorAll('.bottom-nav .nav-item').forEach(b=>{const label=b.querySelector('[data-nav-label],.nav-label,small,span:last-child');if(label&&label.children.length===0){const labels={home:'inicio',competition:'competición',video:'vídeo',fantasy:'fantasy',more:'más'};const value=labels[b.dataset.route];if(value&&label.textContent!==value)label.textContent=value}});
  document.querySelectorAll('.v726-hero-pills,.v105-footnote').forEach(n=>n.remove());

@@ -183,6 +183,7 @@
   function makeVideo(asset,cls=''){
     const v=document.createElement('video');
     v.className=cls;
+    v.dataset.ljrDecorative='';
     v.src=ASSETS[asset]||ASSETS.hero;
     v.muted=true;
     v.loop=true;
