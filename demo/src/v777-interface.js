@@ -2,6 +2,7 @@
 (()=>{
 'use strict';
 const route=()=>location.hash.replace(/^#\/?/,'').split('?')[0]||'home';
+const HEADERLESS_GAMES=new Set(['quiz','quizArena','moreLess','predictor','predictorSix']);
 const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const svg=p=>'<svg viewBox="0 0 24 24" aria-hidden="true">'+p+'</svg>';
 const icons={back:svg('<path d="M20 12H4m7-7-7 7 7 7"/>'),person:svg('<circle cx="12" cy="12" r="10"/><circle cx="12" cy="8" r="3"/><path d="M4.5 18.6a8.3 8.3 0 0 1 15 0"/>'),menu:svg('<circle cx="12" cy="5" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="12" cy="19" r="1"/>')};
@@ -22,6 +23,18 @@ let syncing=false,timer;
 function sync(header,custom=false){
  if(!header||syncing)return;syncing=true;
  try{
+ if(HEADERLESS_GAMES.has(route())){
+  const top=document.querySelector('#app>.topbar');
+  document.body.dataset.headerOwner='overlay';
+  if(top){
+   top.style.setProperty('display','none','important');
+   top.style.setProperty('visibility','hidden','important');
+   top.style.setProperty('opacity','0','important');
+   top.querySelector('.ljr-chrome-actions')?.remove();
+  }
+  document.querySelectorAll('#screen .ljr-chrome-actions').forEach(n=>n.remove());
+  return;
+ }
  if(!document.body.classList.contains('ljr-v777'))document.body.classList.add('ljr-v777');
  document.querySelectorAll('.ljr-header-v777').forEach(h=>{if(h!==header)h.classList.remove('ljr-header-v777')});
  if(!header.classList.contains('ljr-header-v777'))header.classList.add('ljr-header-v777');
