@@ -1,0 +1,66 @@
+/* Exact text/data export; supplied reference designs remain available as a gallery. */
+(()=>{
+ const base=window.LJR_MEDIA_BASE||location.origin,esc=s=>window.LJR_CMS.esc(s);
+ const cats={'3':'PRIMERA FUERZA','4':'INTERMEDIA','5':'SEGUNDA','2':'VETERANOS 35+','1':'VETERANOS 50+'};
+ const options=['Gran final','Semifinal','Cuartos de final','Bracket completo','Calendario · 5 categorías','Tabla de posiciones','Tabla de goleo','Aviso importante','Convocatoria de equipos','Reclutamiento de jugadores','Feliz Navidad','Feliz Año Nuevo','Día del papá','Día del jugador','Táctica del equipo','Logo 2D · prompt para Canva'];
+ let templates=[];
+ const imageCache=new Map();
+ async function img(src){if(!src)return null;if(imageCache.has(src))return imageCache.get(src);const promise=new Promise(resolve=>{const i=new Image();i.crossOrigin='anonymous';i.onload=()=>resolve(i);i.onerror=()=>resolve(null);i.src=src});imageCache.set(src,promise);return promise}
+ const data=()=>window.LJR_OFFICIAL_API?.getData?.()||window.LJR_OFFICIAL_DATA||{};
+ const logo=t=>window.LJR_SEASON_LOGOS?.get?.(t)||window.LJR_TEAM_LOGOS?.get?.(t)||window.LJR_OFFICIAL_API?.getLogo?.(t)||'';
+ function open(){
+  if(!window.LJR_MEDIA?.admin)return window.LJR_MEDIA?.login(open);
+  const n=window.LJR_MEDIA.modal('Estudio de publicaciones','<form class="cms-form cms-design-form"><label>Diseño<select name="type">'+options.map(o=>'<option>'+o+'</option>').join('')+'</select></label><div class="cms-design-two"><label>Formato Facebook<select name="format"><option value="portrait">Publicación · 1080 × 1350</option><option value="square">Cuadrado · 1080 × 1080</option><option value="story">Historia · 1080 × 1920</option><option value="landscape">Horizontal · 1200 × 630</option></select></label><label>Categoría<select name="category">'+Object.entries(cats).map(([k,v])=>'<option value="'+k+'">'+v+'</option>').join('')+'</select></label></div><label>Jornada<input name="round" type="number" min="1" value="1"></label><label>Título<input name="title" placeholder="GRAN FINAL"></label><div class="cms-design-two"><label>Equipo local<input name="home" list="studio-teams"></label><label>Equipo visitante<input name="away" list="studio-teams"></label></div><datalist id="studio-teams"></datalist><label>Fecha, hora y campo<input name="details" placeholder="Domingo · 10:00 · Campo 1"></label><label>Texto / requisitos / comunidades<textarea name="body" rows="3"></textarea></label><label>Transmitido por<input name="transmission"></label><label>Patrocinado por<input name="sponsor"></label><div class="cms-design-two"><label>Color principal<input name="accent" type="color" value="#18dafa"></label><label>Fondo propio<input type="file" data-own-background accept="image/jpeg,image/png,image/webp"></label></div><button type="submit">Generar vista previa</button></form><div class="cms-poster-preview"><canvas width="1080" height="1350" aria-label="Vista previa de la publicación"></canvas></div><div class="liga-media-actions"><button data-png>Descargar PNG</button><button data-pdf>Guardar PDF</button><button data-save>Guardar en diseños</button><button data-canva>Copiar instrucciones para Canva</button><a href="https://www.canva.com/" target="_blank" rel="noopener">Abrir Canva</a></div><details class="cms-reference-gallery"><summary>Tus 120 diseños de referencia</summary><p>Abre o descarga el diseño original. Para cambiar el texto dentro de una imagen, impórtala en Canva como diseño editable.</p><div class="cms-template-grid" data-templates></div></details>');
+  const form=n.querySelector('form'),canvas=n.querySelector('canvas'),ctx=canvas.getContext('2d'),status=n.querySelector('[data-status]');let background=null,busy=false;
+  n.querySelector('[data-own-background]').onchange=async e=>{const f=e.target.files[0];if(!f)return;const url=URL.createObjectURL(f);background=await img(url);URL.revokeObjectURL(url)};
+  const names=[...new Set(Object.values(data().categories||{}).flatMap(c=>Object.keys(c.rosters||{})))].sort();n.querySelector('datalist').innerHTML=names.map(t=>'<option>'+esc(t)+'</option>').join('');
+  const values=()=>Object.fromEntries(new FormData(form));
+  form.onsubmit=async e=>{e.preventDefault();if(busy)return;busy=true;status.textContent='Preparando publicación…';try{await draw(values(),canvas,ctx,background);status.textContent='Vista previa lista. Revisa los datos antes de compartir.'}catch(err){status.textContent=err.message}finally{busy=false}};
+  n.querySelector('[data-png]').onclick=()=>{try{const a=document.createElement('a');a.download='Liga-Juventino-'+values().type.replace(/[^a-z0-9]/gi,'-')+'.png';a.href=canvas.toDataURL('image/png');a.click()}catch{status.textContent='No se pudo exportar una imagen externa. Sube el fondo desde tu teléfono e inténtalo de nuevo.'}};
+  n.querySelector('[data-pdf]').onclick=()=>{try{const w=window.open('','_blank');if(!w)throw Error();const picture=canvas.toDataURL('image/png');w.document.write('<!doctype html><html><head><title>Publicación Liga Juventino</title><style>@page{size:'+canvas.width+'px '+canvas.height+'px;margin:0}body{margin:0}img{width:100%;display:block}</style></head><body><img src="'+picture+'" onload="window.print()"></body></html>');w.document.close()}catch{status.textContent='Permite abrir la ventana de impresión para guardar el PDF.'}};
+  n.querySelector('[data-save]').onclick=async()=>{const b=n.querySelector('[data-save]');b.disabled=true;try{const blob=await new Promise(resolve=>canvas.toBlob(resolve,'image/png'));if(!blob)throw Error('No se pudo exportar.');const file=new File([blob],'publicacion-liga.png',{type:'image/png'}),url=await window.LJR_CMS.upload(file,values().title||values().type);window.LJR_CMS.editor('design',null,{title:values().title||values().type,image:url,body:values().body});status.textContent='Imagen subida. Guarda el nombre para conservar el diseño.'}catch(err){status.textContent=err.message}finally{b.disabled=false}};
+  n.querySelector('[data-canva]').onclick=async()=>{const v=values(),prompt='Crea un '+v.type+' para Liga Municipal de Fútbol Juventino Rosas, Guanajuato. Formato '+canvas.width+' × '+canvas.height+' px para Facebook, márgenes seguros de 60 px. Diseño 2D limpio, deportivo, azul neón y azul oscuro, con tipografía legible. Conserva exactamente los colores y diseños de los logos adjuntos. Título: '+(v.title||v.type)+'. Categoría: '+cats[v.category]+'. Equipos: '+v.home+' vs '+v.away+'. '+v.details+'. Texto: '+v.body+'. Transmitido por: '+v.transmission+'. Patrocinado por: '+v.sponsor+'. '+(v.type.includes('Logo 2D')?'Escudo de fútbol en 2D, fondo transparente, nombre exacto del equipo, animal y detalles descritos en el texto. Sin efectos 3D ni cambios en colores solicitados.':'Usa como referencia el diseño original que voy a adjuntar.');try{await navigator.clipboard.writeText(prompt);status.textContent='Instrucciones copiadas. Abre Canva y adjunta tu referencia.'}catch{status.textContent=prompt}};
+  loadTemplates(n);form.requestSubmit();
+ }
+ async function loadTemplates(n){try{if(!templates.length)templates=await fetch(base+'/designs/index.json').then(r=>{if(!r.ok)throw Error();return r.json()});n.querySelector('[data-templates]').innerHTML=templates.map(t=>'<a href="'+base+t.image+'" target="_blank" rel="noopener"><img loading="lazy" src="'+base+t.thumb+'" alt="'+esc(t.name)+'"><small>'+esc(t.name)+'</small></a>').join('')}catch{n.querySelector('[data-templates]').textContent='No se pudieron cargar las referencias. Vuelve a abrir el estudio.'}}
+ function roundRect(c,x,y,w,h,r){c.beginPath();c.roundRect(x,y,w,h,r);c.fill()}
+ function text(c,value,x,y,width,size=32,color='#fff',weight=600){c.fillStyle=color;c.font=weight+' '+size+'px Arial';c.textAlign='left';let line='',offset=0;for(const word of String(value||'').split(/\s+/)){const next=(line?line+' ':'')+word;if(c.measureText(next).width>width&&line){c.fillText(line,x,y+offset);offset+=size*1.2;line=word}else line=next}if(line)c.fillText(line,x,y+offset);return offset+size*1.2}
+ async function draw(v,canvas,c,background){
+  const [w,initialH]=({portrait:[1080,1350],square:[1080,1080],story:[1080,1920],landscape:[1200,630]})[v.format];
+  const db=data(),category=db.categories?.[v.category];let sections=[],extraH=0;
+  if(v.type.startsWith('Calendario')){sections=Object.entries(cats).map(([id,title])=>({title,rows:(db.categories?.[id]?.fixtures?.[0]?.rows||[]).filter(r=>String(r[1])===String(v.round)),kind:'fixtures'}));extraH=sections.reduce((n,s)=>n+80+s.rows.length*52,0)+260}
+  if(v.type==='Tabla de posiciones'||v.type==='Tabla de goleo'){const key=v.type==='Tabla de goleo'?'scorers':'standings';sections=[{title:cats[v.category],rows:(category?.[key]?.[0]?.rows||[]).filter(r=>!String(r[2]).includes('goles en temporada')),headers:category?.[key]?.[0]?.headers||[],kind:key}];extraH=300+sections[0].rows.length*56}
+  if(v.type==='Bracket completo')extraH=1400;
+  canvas.width=w;canvas.height=initialH;const h=canvas.height;
+  const g=c.createLinearGradient(0,0,w,h);g.addColorStop(0,'#153fbc');g.addColorStop(.42,'#081664');g.addColorStop(1,'#030929');c.fillStyle=g;c.fillRect(0,0,w,h);
+  if(background){c.drawImage(background,0,0,w,h);c.fillStyle='#020b38ba';c.fillRect(0,0,w,h)}
+  c.strokeStyle=v.accent;c.lineWidth=2;c.globalAlpha=.22;for(let i=0;i<7;i++){c.beginPath();c.moveTo(w-i*90,0);c.lineTo(w,150+i*120);c.stroke()}c.globalAlpha=1;
+  text(c,'LIGA JUVENTINO ROSAS',60,60,w-120,24,v.accent,800);text(c,(v.title||v.type).toUpperCase(),60,125,w-120,Math.min(60,w/20), '#fff',900);
+  text(c,cats[v.category],60,200,w-120,24,'#a9cfff',700);
+  let y=260;
+  if(sections.length){
+   const scale=Math.min(1,(h-360)/Math.max(1,extraH-260));c.save();c.translate(0,260);c.scale(1,scale);y=0;
+   for(const section of sections){c.fillStyle='#1f53b6';roundRect(c,50,y,w-100,48,10);text(c,section.title,68,y+32,w-140,24,'#fff',800);y+=64;
+    if(!section.rows.length){text(c,'Sin información publicada para esta jornada.',68,y+24,w-140,22,'#b2c4e9');y+=48;continue}
+    for(const [i,r]of section.rows.entries()){
+     c.fillStyle=i%2?'#112879':'#0c1c60';roundRect(c,50,y,w-100,46,8);
+     if(section.kind==='fixtures'){const left=await img(logo(r[2])),right=await img(logo(r[6]));if(left)c.drawImage(left,64,y+7,30,30);if(right)c.drawImage(right,w*.52,y+7,30,30);text(c,r[2],105,y+24,w*.35,18);text(c,'VS',w*.47,y+26,60,18,v.accent,800);text(c,r[6],w*.56,y+24,w*.31,18);text(c,String(r[8])+' · '+String(r[7]),105,y+42,w-210,14,'#c4d9ff')}
+     else if(section.kind==='scorers'){text(c,String(i+1).padStart(2,'0'),65,y+30,50,20,v.accent,800);text(c,r[1],125,y+24,w*.58,19);text(c,r[2],125,y+42,w*.58,14,'#aac9fa');text(c,r[3]+' goles',w-200,y+30,140,22,'#fff',800)}
+     else{const team=await img(logo(r[1]));text(c,String(i+1),65,y+30,40,18);if(team)c.drawImage(team,100,y+6,32,32);text(c,r[1],145,y+29,w*.37,18);text(c,'PJ '+r[2]+'  DG '+r[8],w*.57,y+29,240,18,'#c6ddff');text(c,r[9]+' PTS',w-185,y+29,140,21,v.accent,800)}
+     y+=52;
+    }y+=18;
+   }c.restore();
+  }else if(v.type==='Bracket completo'){
+   const teams=(category?.standings?.[0]?.rows||[]).map(r=>r[1]).slice(0,16);if(teams.length<2)throw Error('Esta categoría no tiene suficientes equipos para el bracket.');while(teams.length<16)teams.push('Por confirmar');
+   const gap=20,cw=(w-120-3*gap)/4,xs=[60,60+cw+gap,60+2*(cw+gap),60+3*(cw+gap)];text(c,'OCTAVOS',xs[0],260,cw,20,v.accent,800);text(c,'CUARTOS',xs[1],260,cw,20,v.accent,800);text(c,'SEMIFINAL',xs[2],260,cw,20,v.accent,800);text(c,'FINAL',xs[3],260,cw,20,v.accent,800);
+   for(let stage=0;stage<4;stage++){const count=8/2**stage;for(let i=0;i<count;i++){const yy=320+(i+.5)*(h-480)/count-42;c.fillStyle='#102d7c';roundRect(c,xs[stage],yy,cw,84,12);text(c,stage===0?teams[i*2]:'Ganador '+(i*2+1),xs[stage]+10,yy+28,cw-20,16);text(c,stage===0?teams[i*2+1]:'Ganador '+(i*2+2),xs[stage]+10,yy+60,cw-20,16);if(stage<3){const targetY=320+(Math.floor(i/2)+.5)*(h-480)/(count/2);c.strokeStyle=v.accent;c.lineWidth=2;c.beginPath();c.moveTo(xs[stage]+cw,yy+42);c.lineTo(xs[stage]+cw+gap/2,yy+42);c.lineTo(xs[stage]+cw+gap/2,targetY);c.lineTo(xs[stage+1],targetY);c.stroke()}}}y=h-140;
+  }else if(/final/i.test(v.type)){
+   const left=await img(logo(v.home)),right=await img(logo(v.away));const badge=Math.min(235,w*.22);const centerY=Math.min(h*.43,520);if(left)c.drawImage(left,w*.2-badge/2,centerY-badge/2,badge,badge);if(right)c.drawImage(right,w*.8-badge/2,centerY-badge/2,badge,badge);text(c,'VS',w*.46,centerY+20,w*.12,64,v.accent,900);text(c,v.home||'EQUIPO LOCAL',60,centerY+badge*.7,w*.4,28);text(c,v.away||'EQUIPO VISITANTE',w*.56,centerY+badge*.7,w*.4-60,28);y=centerY+badge*.7+65;text(c,v.details,60,y,w-120,28,v.accent,700);y+=65;
+  }else{y+=text(c,v.body||v.details,60,y,w-120,Math.min(36,w/30),'#fff',600)+35}
+  if(v.body&&/final/i.test(v.type))text(c,v.body,60,y,w-120,26,'#c5dcff');
+  if(v.transmission)text(c,'TRANSMITIDO POR · '+v.transmission,60,h-120,w-120,21,'#8cdff9',700);
+  if(v.sponsor)text(c,'PATROCINADO POR · '+v.sponsor,60,h-80,w-120,21,'#aabff3',700);
+  c.fillStyle=v.accent;c.fillRect(60,h-45,w-120,2);text(c,'LIGA MUNICIPAL DE FÚTBOL · JUVENTINO ROSAS, GTO.',60,h-18,w-120,16,'#9ac2ff',600);
+ }
+ window.LJR_DESIGN_STUDIO={open};
+})();
