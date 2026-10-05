@@ -63,7 +63,7 @@
     background-image:url('../public/more-bg-v19.webp?v=20261005-v791-seam')!important;
     background-repeat:no-repeat!important;
     background-size:100% auto!important;
-    background-position:center calc(-1 * var(--v768-head-h,calc(var(--more-master-header-h,104px) + env(safe-area-inset-top,0px))))!important;
+    background-position:center calc(0px - var(--v768-head-h,calc(var(--more-master-header-h,104px) + env(safe-area-inset-top,0px))))!important;
     border:0!important;
     box-shadow:none!important;
     transform:translateZ(0)!important;
