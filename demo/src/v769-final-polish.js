@@ -109,10 +109,15 @@ const CSS=`
     background:#0b1c55!important
   }
   html body .v444-stat-row:not(.is-team){
-    grid-template-columns:20px 43px minmax(0,1fr) 28px!important
+    grid-template-columns:20px 43px 30px minmax(0,1fr) 28px!important
   }
   html body .v444-stat-row:not(.is-team)>.v444-stat-team-logo{
-    display:none!important
+    display:grid!important;width:28px!important;height:28px!important;min-width:28px!important;
+    min-height:28px!important;aspect-ratio:1/1!important;border-radius:50%!important;place-items:center!important;
+    overflow:hidden!important
+  }
+  html body .v444-stat-row:not(.is-team)>.v444-stat-team-logo img{
+    width:24px!important;height:24px!important;object-fit:contain!important;object-position:center!important;margin:auto!important
   }
   html body .v444-player-avatar{
     width:42px!important;height:42px!important;min-width:42px!important;min-height:42px!important;
