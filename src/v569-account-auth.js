@@ -578,6 +578,7 @@ function enhanceProfile(){
   if(route()!=='profile')return;
   const root=$('[data-v12-profile]');if(!root)return;
   const a=currentAccount();
+  document.body.dataset.authState=a?'signed-in':'guest';
   if(a){
     const card=$('.v12-profile-card',root);
     if(card&&!card.matches('[data-v569-owned]')){card.dataset.v569Owned='1';card.innerHTML=loggedProfileMarkup(a)}
