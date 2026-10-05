@@ -37,12 +37,13 @@ function forceOne(card){
     img=document.createElement('img');
     crest.appendChild(img);
   }
-  if(img.getAttribute('src')!==data.src)img.setAttribute('src',data.src);
-  img.onerror=data.fallback?function(){this.onerror=null;this.src=data.fallback}:null;
+  const src=window.LJR_SEASON_LOGOS?.get(data.team)||data.src;
+  if(img.getAttribute('src')!==src)img.setAttribute('src',src);
+  img.onerror=!window.LJR_SEASON_LOGOS?.get(data.team)&&data.fallback?function(){this.onerror=null;this.src=data.fallback}:null;
   img.alt=data.team;
   img.loading='eager';
   img.decoding='async';
-  crest.classList.remove('is-fallback');
+  (crest.classList.contains('is-fallback')&&crest.classList.remove('is-fallback'));
   crest.dataset.v693Team=data.team;
   card.dataset.v693SeasonLogo='1';
   card.setAttribute('aria-label','Temporada '+label+' · '+data.team);
@@ -62,11 +63,12 @@ function force(){
       img=document.createElement('img');
       crest.appendChild(img);
     }
-    if(img.getAttribute('src')!==data.src)img.setAttribute('src',data.src);
+    const src=window.LJR_SEASON_LOGOS?.get(data.team)||data.src;
+  if(img.getAttribute('src')!==src)img.setAttribute('src',src);
     img.alt=data.team;
     img.loading='eager';
     img.decoding='async';
-    crest.classList.remove('is-fallback');
+    (crest.classList.contains('is-fallback')&&crest.classList.remove('is-fallback'));
     item.setAttribute('aria-label','Temporada '+label+' · '+data.team);
   });
 }

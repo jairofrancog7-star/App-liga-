@@ -1,0 +1,59 @@
+/* One opaque header and one scroll surface, at the artwork's lower edge. */
+@media(max-width:1023px){
+  html:has(body.v768-scroll-root), html body.v768-scroll-root,
+  html body.v768-scroll-root #app, html body.v768-scroll-root .app-shell{
+    height:100dvh!important;min-height:100dvh!important;max-height:100dvh!important;
+    overflow:hidden!important;transform:none!important;filter:none!important;
+  }
+  html body.v768-scroll-root #screen{
+    position:fixed!important;top:var(--v768-head-h)!important;bottom:var(--ui-master-bottom-nav-h,69px)!important;
+    left:0!important;right:0!important;width:100%!important;box-sizing:border-box!important;
+    height:auto!important;min-height:0!important;max-height:none!important;
+    margin-top:0!important;padding-top:0!important;overflow-x:hidden!important;overflow-y:auto!important;
+    overscroll-behavior-y:contain!important;touch-action:pan-y!important;
+    transform:none!important;filter:none!important;contain:none!important;scroll-padding-top:0!important;
+  }
+  html body.v768-scroll-root #app>.topbar,html body.v768-scroll-root .app-shell>.topbar{
+    position:fixed!important;top:0!important;left:0!important;right:0!important;
+    width:100%!important;margin:0!important;transform:none!important;z-index:2147482400!important;
+    background-color:#02065f!important;isolation:isolate!important;
+  }
+  html body[data-app-route="home"]{--v10-home-header-h:clamp(88px,21.8vw,112px)}
+  html body[data-app-route="home"] #app>.topbar{background-size:100% 100%!important}
+  html body[data-app-route="competition"]{--v687-comp-head-h:calc(100px + env(safe-area-inset-top))}
+  html body[data-app-route="competition"] #app>.topbar,
+  html body.v40-standings-master[data-app-route="competition"] #app>.topbar{
+    height:var(--v687-comp-head-h)!important;min-height:var(--v687-comp-head-h)!important;max-height:var(--v687-comp-head-h)!important;
+    overflow:hidden!important;
+  }
+  html body[data-app-route="competition"] #app>.topbar::before,
+  html body.v40-standings-master[data-app-route="competition"] #app>.topbar::before{
+    left:-24px!important;right:auto!important;top:-16px!important;bottom:auto!important;
+    width:142px!important;height:137px!important;transform:none!important;background-position:center!important;
+  }
+  html body[data-app-route="competition"] #app>.topbar::after,
+  html body.v40-standings-master[data-app-route="competition"] #app>.topbar::after{
+    left:56px!important;right:65px!important;top:36px!important;bottom:auto!important;
+    max-width:none!important;font-size:22px!important;line-height:1!important;transform:none!important;
+  }
+  html body[data-app-route="competition"] #app>.topbar .profile-button,
+  html body.v40-standings-master[data-app-route="competition"] #app>.topbar .profile-button{
+    left:auto!important;right:18px!important;top:32px!important;bottom:auto!important;
+    width:32px!important;height:32px!important;min-width:32px!important;min-height:32px!important;
+    max-width:32px!important;max-height:32px!important;transform:none!important;background-size:28px 28px!important;
+  }
+  html body[data-app-route="competition"] #app>.topbar .back-button{
+    left:15px!important;top:35px!important;width:28px!important;height:28px!important;background:transparent!important;transform:none!important;
+  }
+  html body[data-app-route="competition"] #screen>.tabs,
+  html body.v40-standings-master[data-app-route="competition"] #screen>.tabs{
+    background:#06075f!important;background-image:none!important;backdrop-filter:none!important;opacity:1!important;
+    position:sticky!important;top:0!important;isolation:isolate!important;
+  }
+  html body[data-app-route="competition"] .v12-date-strip{
+    background:#06075f!important;backdrop-filter:none!important;opacity:1!important;
+  }
+  html body[data-app-route="moments"].v768-scroll-root .v26-moments-page{padding-top:0!important}
+  html body[data-app-route="more"].v768-scroll-root .v19-more-page{height:auto!important;overflow:visible!important}
+}
+img[data-season-team]{object-fit:contain!important;object-position:center!important;background:transparent!important;animation:none!important;transition:none!important;opacity:1!important}

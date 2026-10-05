@@ -77,6 +77,7 @@ function settings(){
 function saveSettings(v){try{localStorage.setItem(SETTINGS_KEY,JSON.stringify(v))}catch(_){}}
 function provider(url){
   const u=String(url||'').toLowerCase(),key=streamProvider(url);
+  if(/^https?:\/\//i.test(url)&&window.LJR_MEDIA_BASE&&new URL(url).origin===new URL(window.LJR_MEDIA_BASE).origin&&new URL(url).pathname.startsWith('/api/file/'))return {key:'video',name:'Video de la Liga',icon:'▶'};
   if(key==='youtube')return {key:'youtube',name:'YouTube',icon:'▶'};
   if(key==='facebook')return {key:'facebook',name:'Facebook',icon:'f'};
   if(key==='tiktok')return {key:'tiktok',name:'TikTok',icon:'♪'};
@@ -405,9 +406,13 @@ function addSourceModal(c,preset=''){
   if(!window.LJR_MEDIA?.admin)return window.LJR_MEDIA?.login();
   const body='<label><span>Nombre de la fuente</span><input data-v196-name value="'+esc(preset||'')+'" placeholder="Liga Juventino TV"></label>'+
     '<label><span>Enlace de transmisión</span><input data-v196-url inputmode="url" placeholder="https://..."></label>'+
+    '<div class="v196-modal-actions"><button type="button" data-v768-upload>Subir video</button><button type="button" data-v768-camera>Cámara en vivo</button></div>'+
     '<div class="v196-modal-actions"><button type="button" data-v196-test>Probar aquí</button><button type="button" class="primary" data-v196-save-source>Guardar fuente</button></div>'+
+    '<p><a href="https://www.facebook.com/live/producer/" target="_blank" rel="noopener">Abrir Facebook Live</a> · <a href="https://studio.youtube.com/" target="_blank" rel="noopener">Abrir YouTube Studio</a> · <a href="https://www.tiktok.com/tiktokstudio/upload" target="_blank" rel="noopener">Abrir TikTok Studio</a></p>'+
     '<p>Usa el enlace público del video o pega su código iframe. Facebook: watch/?v=, /videos/ o /reel/. TikTok: /@usuario/video/ID; los enlaces LIVE no incluyen un reproductor web.</p>';
   const m=modalShell('source','Vincular transmisión',body);
+  m.querySelector('[data-v768-upload]').onclick=()=>window.LJR_MEDIA?.edit('', 'match',item=>{const state=liveState(c),list=streamList(c,state);list.push({id:item.id,name:item.title,url:item.url,addedAt:Date.now()});saveList(c,list);setCurrentSource(c,{name:item.title,url:item.url});m.remove();schedule(20)});
+  m.querySelector('[data-v768-camera]').onclick=()=>window.LJR_MEDIA?.broadcast();
   $('[data-v196-test]',m).onclick=()=>{
     const url=safeUrl($('[data-v196-url]',m).value);if(!url){flash('Escribe el enlace público del video');return}
     let preview=$('[data-v560-probe]',m);if(!preview){preview=document.createElement('div');preview.dataset.v560Probe='';m.querySelector('.v196-modal-actions').before(preview)}

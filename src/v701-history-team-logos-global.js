@@ -45,6 +45,7 @@ function forced(name){
   return '';
 }
 function logo(name){
+  const supplied=window.LJR_SEASON_LOGOS?.get(name);if(supplied)return supplied;
   const f=forced(name);
   if(f)return f;
   try{
@@ -73,8 +74,8 @@ function setHolder(holder,name){
   img.decoding='async';
   img.hidden=false;
   img.dataset.v701Logo='1';
-  holder.classList.remove('is-fallback');
-  holder.classList.add('v701-has-logo');
+  (holder.classList.contains('is-fallback')&&holder.classList.remove('is-fallback'));
+  (!holder.classList.contains('v701-has-logo')&&holder.classList.add('v701-has-logo'));
   holder.querySelectorAll(':scope > b,:scope > .v328-season-initials,:scope > .v35-era-fallback').forEach(x=>x.hidden=true);
 }
 function patchPair(selector,nameSel,holderSel,attr){

@@ -1,4 +1,4 @@
-const CACHE='liga-juventino-v734-functional-tool-details';
+const CACHE='liga-juventino-v768-season-logos-scroll-media';
 const CORE=['./','./index.html','./manifest.webmanifest','./brand-neon-header.svg','./profile-reference.svg'];
 
 self.addEventListener('install',event=>{

@@ -167,6 +167,8 @@
       .replace(/&/g,' y ').replace(/[().]/g,' ').replace(/[^a-z0-9+]+/g,' ').trim().replace(/\s+/g,' ');
   }
   function get(name){
+    const supplied=window.LJR_SEASON_LOGOS?.get(name);
+    if(supplied)return supplied;
     const key=norm(name);
     const historic=USER_HISTORIC[key];
     if(historic)return new URL(historic,document.baseURI).href;
@@ -244,12 +246,19 @@
     if(!(img instanceof HTMLImageElement))return;
     if(img.closest('[data-player-portrait],.v123-avatar,.v123-option-avatar,.v66-player-avatar,.v42-avatar,.v576-player-avatar,.v379-related-avatar,.v562-avatar,.v124-avatar')||img.matches('.v379-player-photo,.v610-generic-player,.v576-player-photo,.v576-hero-player-photo'))return;
     if(img.closest('.v27-league-badge,.v35-logo-wrap,.v31-hospitality-page'))return;
+    const oldCategory={'primera-fuerza-hd.png':'3','intermedia.webp':'5','segunda-fuerza.webp':'4','veteranos-35-user.png':'2','veteranos-50.webp':'1'};
+    const file=(img.getAttribute('src')||'').split(/[?#]/)[0].split('/').pop();
+    const category=window.LJR_SEASON_LOGOS?.category(img.alt)||window.LJR_SEASON_LOGOS?.category(oldCategory[file]);
+    if(category){if(img.src!==category){img.removeAttribute('srcset');img.src=category;}img.onerror=null;return;}
+    const photo=String(img.getAttribute('src')||'');
+    if(/(?:^|\s)[^\s]*(?:photo|portrait|cover|thumb)[^\s]*(?:\s|$)/i.test(img.className)||(/\/history\//.test(photo)&&!/\/team-logos\//.test(photo)))return;
     const name=teamNameFrom(img);
     if(!name)return;
     const src=get(name);
     if(!src)return;
     const current=String(img.src||'');
-    if(current!==new URL(src,document.baseURI).href)img.src=src;
+    if(current!==new URL(src,document.baseURI).href){img.removeAttribute('srcset');img.src=src;}
+    if(window.LJR_SEASON_LOGOS?.get(name)){img.dataset.seasonTeam=window.LJR_SEASON_LOGOS.norm(name);img.onerror=null;img.style.removeProperty('display');img.hidden=false;}
     img.style.objectFit='contain';
     img.style.objectPosition='center';
   }
@@ -266,6 +275,7 @@
     loadDynamic();
     const mo=new MutationObserver(muts=>{
       for(const m of muts){
+        if(m.type==='attributes'){patchImg(m.target);continue;}
         for(const n of m.addedNodes){
           if(n.nodeType===1){
             if(n.matches?.('img'))patchImg(n);
@@ -274,7 +284,7 @@
         }
       }
     });
-    if(document.body)mo.observe(document.body,{childList:true,subtree:true});
+    if(document.body)mo.observe(document.body,{childList:true,subtree:true,attributes:true,attributeFilter:['src','alt']});
     window.addEventListener('hashchange',()=>requestAnimationFrame(()=>patchNode(document)));
   }
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',start,{once:true});else start();

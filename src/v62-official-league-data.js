@@ -71,6 +71,7 @@ function cat(id=categoryId){return db?.categories?.[String(id)]||null}
 function block(kind,id=categoryId){return cat(id)?.[kind]?.[0]||null}
 function rows(kind,id=categoryId){return block(kind,id)?.rows||[]}
 function logoFor(name){
+  const supplied=window.LJR_SEASON_LOGOS?.get(name);if(supplied)return supplied;
   if(db){
     const entries=Object.entries(db.team_logos||{});
     const exact=entries.find(([k])=>norm(k)===norm(name));
@@ -84,7 +85,7 @@ function logoFor(name){
   const shared=window.LJR_TEAM_LOGOS?.get?.(name);
   return shared||'';
 }
-function catLogo(id){const p=CAT_META[String(id)]?.logo;return p?SRC+p:''}
+function catLogo(id){const supplied=window.LJR_SEASON_LOGOS?.category(id);if(supplied)return supplied;const p=CAT_META[String(id)]?.logo;return p?SRC+p:''}
 function scoreNum(v){if(v==null||v===''||v==='-')return 0;const n=Number(v);return Number.isFinite(n)?n:0}
 function parseDate(v){
   const m=String(v||'').match(/(\d{1,2})\/(\d{1,2})\/(\d{4})(?:\s+(\d{1,2}):(\d{2}))?/);

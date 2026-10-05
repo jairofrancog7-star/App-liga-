@@ -157,6 +157,7 @@ function candidates(name){
   return [...new Set(out.filter(Boolean))];
 }
 function logoFor(name){
+  const supplied=window.LJR_SEASON_LOGOS?.get(name);if(supplied)return supplied;
   for(const c of candidates(name)){
     const supplied=USER_ALIAS[norm(c)];
     if(supplied)return supplied;
@@ -264,7 +265,7 @@ function patchFinalTeam(teamRow,crestSelector){
   const img=makeImg(src,name,'v672-final-logo');
   img.dataset.v672HistoricalLogo='1';
   crest.appendChild(img);
-  crest.classList.add('v672-has-historic-logo');
+  (!crest.classList.contains('v672-has-historic-logo')&&crest.classList.add('v672-has-historic-logo'));
 }
 function patchFinals(root){
   root.querySelectorAll('.v358-team').forEach(x=>patchFinalTeam(x,'.v358-final-crest'));
@@ -317,8 +318,8 @@ function patchLegacyTeams(root){
           current.alt=name;
           current.dataset.v672UserHistoric='1';
         }
-        crest.classList.remove('is-fallback');
-        crest.classList.add('v672-has-historic-logo');
+        (crest.classList.contains('is-fallback')&&crest.classList.remove('is-fallback'));
+        (!crest.classList.contains('v672-has-historic-logo')&&crest.classList.add('v672-has-historic-logo'));
       }
       return;
     }
@@ -326,8 +327,8 @@ function patchLegacyTeams(root){
     const img=makeImg(src,name,'v672-legacy-logo');
     if(forced)img.dataset.v672UserHistoric='1';
     crest.appendChild(img);
-    crest.classList.remove('is-fallback');
-    crest.classList.add('v672-has-historic-logo');
+    (crest.classList.contains('is-fallback')&&crest.classList.remove('is-fallback'));
+    (!crest.classList.contains('v672-has-historic-logo')&&crest.classList.add('v672-has-historic-logo'));
   });
 }
 function patchEraSeasons(root){
@@ -343,15 +344,15 @@ function patchEraSeasons(root){
       let same=false;
       try{same=new URL(current.currentSrc||current.src,document.baseURI).href===new URL(src,document.baseURI).href}catch(_){}
       if(same){
-        holder.classList.remove('is-fallback');
+        (holder.classList.contains('is-fallback')&&holder.classList.remove('is-fallback'));
         return;
       }
     }
     const img=makeImg(src,team,'v672-era-logo');
     img.dataset.v672HistoricalLogo='1';
     holder.replaceChildren(img);
-    holder.classList.remove('is-fallback');
-    holder.classList.add('v672-has-historic-logo');
+    (holder.classList.contains('is-fallback')&&holder.classList.remove('is-fallback'));
+    (!holder.classList.contains('v672-has-historic-logo')&&holder.classList.add('v672-has-historic-logo'));
   });
 }
 function patchSummaryStats(root){
@@ -375,8 +376,8 @@ function patchSummaryStats(root){
       }catch(_){}
     }
     holder.replaceChildren(makeImg(src,team,'v672-summary-stat-logo'));
-    holder.classList.remove('is-fallback');
-    holder.classList.add('v672-has-historic-logo');
+    (holder.classList.contains('is-fallback')&&holder.classList.remove('is-fallback'));
+    (!holder.classList.contains('v672-has-historic-logo')&&holder.classList.add('v672-has-historic-logo'));
   });
 }
 function patch(){

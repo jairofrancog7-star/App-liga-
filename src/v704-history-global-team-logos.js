@@ -178,6 +178,7 @@ function aliases(name){
   return [...new Set(out.filter(Boolean))];
 }
 function logoFor(name){
+  const supplied=window.LJR_SEASON_LOGOS?.get(name);if(supplied)return supplied;
   for(const a of aliases(name)){
     const k=norm(a);
     if(SPECIAL[k])return SPECIAL[k];
@@ -193,6 +194,7 @@ function logoFor(name){
   return '';
 }
 function legacyCardLogoFor(name){
+  const supplied=window.LJR_SEASON_LOGOS?.get(name);if(supplied)return supplied;
   for(const a of aliases(name)){
     const src=LEGACY_CARD_LOGOS[norm(a)];
     if(src)return src;
@@ -201,6 +203,7 @@ function legacyCardLogoFor(name){
 }
 
 function recordLogoFor(name){
+  const supplied=window.LJR_SEASON_LOGOS?.get(name);if(supplied)return supplied;
   for(const a of aliases(name)){
     const src=RECORDS_2015_SPECIAL[norm(a)];
     if(src)return src;
@@ -250,14 +253,14 @@ function forceHolder(holder,name,cls=''){
     current.loading='lazy';
     current.decoding='async';
     current.dataset.v704HistoryLogo='1';
-    if(cls)current.className=cls;
-    holder.classList.remove('is-fallback');
-    holder.classList.add('v704-has-team-logo');
+    if(cls&&current.className!==cls)current.className=cls;
+    (holder.classList.contains('is-fallback')&&holder.classList.remove('is-fallback'));
+    (!holder.classList.contains('v704-has-team-logo')&&holder.classList.add('v704-has-team-logo'));
     return true;
   }
   holder.replaceChildren(img(src,name,cls));
-  holder.classList.remove('is-fallback');
-  holder.classList.add('v704-has-team-logo');
+  (holder.classList.contains('is-fallback')&&holder.classList.remove('is-fallback'));
+  (!holder.classList.contains('v704-has-team-logo')&&holder.classList.add('v704-has-team-logo'));
   return true;
 }
 function text(el,sel){return String(el.querySelector(sel)?.textContent||'').trim()}
@@ -430,6 +433,9 @@ function patchVideos(root){
     if(!thumb)return;
     let strip=thumb.querySelector('.v672-video-crests,.v704-video-crests');
     if(!strip){strip=document.createElement('span');strip.className='v672-video-crests v704-video-crests';thumb.appendChild(strip)}
+    const signature=JSON.stringify(teams.map(name=>[name,logoFor(name)]));
+    if(strip.dataset.logoSignature===signature)return;
+    strip.dataset.logoSignature=signature;
     strip.replaceChildren();
     teams.forEach(name=>{
       const src=logoFor(name);if(!src)return;

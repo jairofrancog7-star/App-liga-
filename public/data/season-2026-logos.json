@@ -1,0 +1,721 @@
+{
+  "version": "20261004-v768",
+  "teams": [
+    {
+      "name": "Lobos CDG",
+      "aliases": [
+        "Lobos CDG",
+        "Lobos Jr",
+        "Lobos Jrs",
+        "Lobos Jrs Cerrito de Gasca"
+      ],
+      "path": "./assets/season-2026/lobos-cdg.webp",
+      "original": "file_00000000d24c81f5b65ac05255f93092.png",
+      "sha256": "63f451d304dd967956c07242f1be974a902a5522bad8ea1ea0180e0141162d78",
+      "width": 1254,
+      "height": 1254
+    },
+    {
+      "name": "Dynamo",
+      "aliases": [
+        "Dynamo",
+        "Dinamo"
+      ],
+      "path": "./assets/season-2026/dynamo.webp",
+      "original": "file_00000000250c81f58d0dd98ba0d67492.png",
+      "sha256": "68ed577f3b3f4c46261212a94f8141139d591ac1e4c2beda97f778ca282210b2",
+      "width": 1254,
+      "height": 1254
+    },
+    {
+      "name": "Pozos",
+      "aliases": [
+        "Pozos",
+        "Pozos FC",
+        "Veteranos Pozos FC",
+        "Deportivo Pozos",
+        "Dep Pozos"
+      ],
+      "path": "./assets/season-2026/pozos.webp",
+      "original": "1788320874823.png",
+      "sha256": "dced63bdc9fb89d2c1bbfc7775226b9fa4c3319cbf141b1995179c670d0761b7",
+      "width": 1254,
+      "height": 1254
+    },
+    {
+      "name": "Santiago de Cuenda FC",
+      "aliases": [
+        "Santiago de Cuenda FC",
+        "Santiago Cuenda",
+        "Cuenda",
+        "Toros de Cuenda"
+      ],
+      "path": "./assets/season-2026/santiago-cuenda.webp",
+      "original": "BackgroundEraser_20261004_110906358.png",
+      "sha256": "0b4fc1525bd65cc98a074c537d1e4adf7e1b1205410cd9f1a8ca47c8039e0884",
+      "width": 1920,
+      "height": 2222
+    },
+    {
+      "name": "San Juan FC",
+      "aliases": [
+        "San Juan FC",
+        "San Juan"
+      ],
+      "path": "./assets/season-2026/san-juan.webp",
+      "original": "1791130133340.png",
+      "sha256": "f81d1491d5776c25cb54aaebbf923bd6f0e7df7efd33fcb3e9b6966f286b2751",
+      "width": 957,
+      "height": 957
+    },
+    {
+      "name": "Populares",
+      "aliases": [
+        "Populares",
+        "FC Populares"
+      ],
+      "path": "./assets/season-2026/populares.webp",
+      "original": "file_000000009d2481f5ab2f66173f530674.png",
+      "sha256": "99daf13447eae03cdb556b75ddd47c20d03a274847fba4140dd1840b70c6c4c4",
+      "width": 1337,
+      "height": 1177
+    },
+    {
+      "name": "Promesas",
+      "aliases": [
+        "Promesas",
+        "Promesas FC",
+        "Promesas de Pozos",
+        "Promesas FC Pozos"
+      ],
+      "path": "./assets/season-2026/promesas.webp",
+      "original": "1791123057507.png",
+      "sha256": "10ad083a916c2bb855cb9a00ba943840ec36ae2a32b93bf682a874a1d4d70e60",
+      "width": 1254,
+      "height": 1254
+    },
+    {
+      "name": "Mazacotes",
+      "aliases": [
+        "Mazacotes",
+        "Mazacotes FC"
+      ],
+      "path": "./assets/season-2026/mazacotes.webp",
+      "original": "file_000000000b7081f5a6b4720d599b94a2.png",
+      "sha256": "44f7ec9e3e46a14bbf49618be156d0632ef449c2a3a40985dbae7302623ab1c2",
+      "width": 1083,
+      "height": 1452
+    },
+    {
+      "name": "Atlético Galeana",
+      "aliases": [
+        "Atlético Galeana",
+        "Atl Galeana",
+        "Galeana"
+      ],
+      "path": "./assets/season-2026/galeana.webp",
+      "original": "BackgroundEraser_20261004_113646762.png",
+      "sha256": "cf713e0b6b8742e89ea1115fdf4c34d83bf19e40e06869907d15bc72549a9119",
+      "width": 1920,
+      "height": 2396
+    },
+    {
+      "name": "Terrícolas",
+      "aliases": [
+        "Terrícolas",
+        "Terrícolas FC",
+        "Terrícolas SEDER"
+      ],
+      "path": "./assets/season-2026/terricolas.webp",
+      "original": "1791117870178.png",
+      "sha256": "94219e3d359e58f61a2ea415163f8eb6dd6964ca5820bb0a3a2f8d5dba18e7ca",
+      "width": 1652,
+      "height": 952
+    },
+    {
+      "name": "Torneo Cuenda",
+      "aliases": [
+        "Torneo Cuenda",
+        "TC"
+      ],
+      "path": "./assets/season-2026/torneo-cuenda.webp",
+      "original": "file_00000000d6bc81fd83319f2fa4d0a164.png",
+      "sha256": "7eea9e788b149185a9e0b51523ac18267c6e17aadeaf287c243aaa6ca4dea441",
+      "width": 1024,
+      "height": 1536
+    },
+    {
+      "name": "La Cuadrilla",
+      "aliases": [
+        "La Cuadrilla",
+        "La Cuadrilla FC"
+      ],
+      "path": "./assets/season-2026/la-cuadrilla.webp",
+      "original": "file_0000000061f481f59615241e3f9ed634.png",
+      "sha256": "1b0eb4844c7b0e80acbb513ded28405ef976cb6c4ca6c19a9fc7bde78a8cdecd",
+      "width": 1254,
+      "height": 1254
+    },
+    {
+      "name": "Osasuna",
+      "aliases": [
+        "Osasuna"
+      ],
+      "path": "./assets/season-2026/osasuna.webp",
+      "original": "atletico-osasuna-seeklogo.png",
+      "sha256": "c7d2f6f61cbc901482ed2557eb778b05430f0385548a0cce2c95450c26843a15",
+      "width": 1492,
+      "height": 2000
+    },
+    {
+      "name": "Aguilares",
+      "aliases": [
+        "Aguilares"
+      ],
+      "path": "./assets/season-2026/aguilares.webp",
+      "original": "file_00000000adf881f5838addb994fb433f.png",
+      "sha256": "159c7aedc804316cc0f26aeaf26e67cc557011724dedc519f89b40a054a62673",
+      "width": 2172,
+      "height": 724
+    },
+    {
+      "name": "Huracán",
+      "aliases": [
+        "Huracán",
+        "Huracán FC"
+      ],
+      "path": "./assets/season-2026/huracan.webp",
+      "original": "Huracan_FC_HD_transparente.png",
+      "sha256": "c4b31a71aa2fa3885fc5491ae314418992368816ed7239129d93ed9d820ad4b4",
+      "width": 3624,
+      "height": 4096
+    },
+    {
+      "name": "Dep Zapata",
+      "aliases": [
+        "Dep Zapata",
+        "Deportivo Zapata",
+        "Zapata"
+      ],
+      "path": "./assets/season-2026/zapata.webp",
+      "original": "1791130096331.png",
+      "sha256": "b1037afb2d1e4b66983e8ddf2f297a1a66cdb83b886e86246a75e9e47de49036",
+      "width": 1344,
+      "height": 1454
+    },
+    {
+      "name": "Manchester",
+      "aliases": [
+        "Manchester",
+        "Manchester United",
+        "Man United"
+      ],
+      "path": "./assets/season-2026/manchester.webp",
+      "original": "Manchester-United-Logo-PNG.png",
+      "sha256": "76f8c93f413a830872e11b903dd0e356dcde0d364527fbc0ffb61412a168ec94",
+      "width": 1200,
+      "height": 1216
+    },
+    {
+      "name": "Dep Maravillas",
+      "aliases": [
+        "Dep Maravillas",
+        "Deportivo Maravillas",
+        "Maravillas"
+      ],
+      "path": "./assets/season-2026/maravillas.webp",
+      "original": "file_000000007d1c81f581f041ed2c30139b.png",
+      "sha256": "91bb785879a3739b489164d1b5ed98eefdcfd0a6ceb661efbc6f236c0e222d45",
+      "width": 1246,
+      "height": 1262
+    },
+    {
+      "name": "Franco Tavera",
+      "aliases": [
+        "Franco Tavera",
+        "Franco Tavera Jr",
+        "F Tavera",
+        "Franco-Tavera-Jr",
+        "Franco Tavera Veteranos"
+      ],
+      "path": "./assets/season-2026/franco-tavera.webp",
+      "original": "BackgroundEraser_20261004_112506604.png",
+      "sha256": "b7f2704da8fcbd8fb32bfbfbaeb9e5ce8eacf10002a111e77ecddd196dbf9061",
+      "width": 1920,
+      "height": 1916
+    },
+    {
+      "name": "San Julián",
+      "aliases": [
+        "San Julián",
+        "San Julián FC"
+      ],
+      "path": "./assets/season-2026/san-julian.webp",
+      "original": "1791139431325.png",
+      "sha256": "8388a6c6a5aa43deabd3adc914c7780c3d2a6204ea5692225e611a06016cfeb7",
+      "width": 1254,
+      "height": 1254
+    },
+    {
+      "name": "Dep Nopalero",
+      "aliases": [
+        "Dep Nopalero",
+        "Deportivo Nopalero",
+        "Nopalero"
+      ],
+      "path": "./assets/season-2026/nopalero.webp",
+      "original": "file_0000000062f081f5aba7186ad2edb7d0.png",
+      "sha256": "2f9993e50f9d4f2f98aa8c70a37dde17ee63de30a16d8c299fdf83f68766d9d9",
+      "width": 1254,
+      "height": 1254
+    },
+    {
+      "name": "Aldama",
+      "aliases": [
+        "Aldama",
+        "Aldama FC",
+        "Deportivo Aldama"
+      ],
+      "path": "./assets/season-2026/aldama.webp",
+      "original": "file_00000000b6dc820da18f68b7fa73698a.png",
+      "sha256": "2b203f686a6f94d80f811e00e8be665ca467b90ce237737c3489bb2d71a1b12d",
+      "width": 1319,
+      "height": 1193
+    },
+    {
+      "name": "La Esperanza",
+      "aliases": [
+        "La Esperanza",
+        "La Esperanza FC",
+        "Dep La Esperanza",
+        "Deportivo La Esperanza"
+      ],
+      "path": "./assets/season-2026/la-esperanza.webp",
+      "original": "Picsart_26-10-04_06-00-41-437.png",
+      "sha256": "5dac8af89352dad8637246c00a9a00cafa7b93d8e5395346be2fd6b69fb86464",
+      "width": 1268,
+      "height": 1241
+    },
+    {
+      "name": "Célticos",
+      "aliases": [
+        "Célticos",
+        "Célticos FC"
+      ],
+      "path": "./assets/season-2026/celticos.webp",
+      "original": "1791129188750.png",
+      "sha256": "5c341909802dd2e333c6f6960277962cc82f15529102950741b0acecc2179f1d",
+      "width": 1081,
+      "height": 1065
+    },
+    {
+      "name": "San José Jr",
+      "aliases": [
+        "San José Jr",
+        "San José Jrs",
+        "San José JR FC"
+      ],
+      "path": "./assets/season-2026/san-jose-jr.webp",
+      "original": "file_00000000761c81f58ce5eb97493b2d74.png",
+      "sha256": "8dd67ee62ca64f1581f78c41bb6aead2c232e98e5b396ff6a2185dc28c5d190a",
+      "width": 1254,
+      "height": 1254
+    },
+    {
+      "name": "PSV",
+      "aliases": [
+        "PSV",
+        "PSV Eindhoven"
+      ],
+      "path": "./assets/season-2026/psv.webp",
+      "original": "PSV_Eindhoven.svg.png",
+      "sha256": "ad29b160bcd86a4b2c731d43ad642fe55e8d0488e375531f0362a344ca260e94",
+      "width": 500,
+      "height": 346
+    },
+    {
+      "name": "Linces",
+      "aliases": [
+        "Linces",
+        "Linces FC",
+        "Linces de Pozos"
+      ],
+      "path": "./assets/season-2026/linces.webp",
+      "original": "1791130335776.png",
+      "sha256": "a148a261668d82f1e04e5bc17f54f9119fe82de9d44250053002386a52e092fc",
+      "width": 811,
+      "height": 986
+    },
+    {
+      "name": "La Trinidad",
+      "aliases": [
+        "La Trinidad",
+        "Trinidad"
+      ],
+      "path": "./assets/season-2026/la-trinidad.webp",
+      "original": "file_0000000031c481f5b961b78c1e139a02.png",
+      "sha256": "3fbcd8d55b5705add54a3042ab3c152ccdf40d3103ad64f211841de4e2f5f35b",
+      "width": 1322,
+      "height": 1190
+    },
+    {
+      "name": "Capibaras",
+      "aliases": [
+        "Capibaras",
+        "Los Capibara",
+        "Los Capibaras"
+      ],
+      "path": "./assets/season-2026/capibaras.webp",
+      "original": "BackgroundEraser_20261004_141339696.png",
+      "sha256": "66d63abc68d4fecea7c7216ae228bbc71b0129b72d5020ef68177d799d182796",
+      "width": 1920,
+      "height": 2192
+    },
+    {
+      "name": "Juventus",
+      "aliases": [
+        "Juventus",
+        "Juventus FC"
+      ],
+      "path": "./assets/season-2026/juventus.webp",
+      "original": "file_0000000019ec81f5b12386f1a5a52e26.png",
+      "sha256": "5a10e89faff82b9b274e967a7295b22cf91a2cfcfab2f639502f6520c4ffd79c",
+      "width": 1448,
+      "height": 1086
+    },
+    {
+      "name": "América",
+      "aliases": [
+        "América",
+        "América Veteranos",
+        "Club América Veteranos",
+        "Club América Veteranos JR",
+        "Club América JR"
+      ],
+      "path": "./assets/season-2026/america.webp",
+      "original": "file_00000000b04481f5b8a99410edc1eab5.png",
+      "sha256": "adc592a0a0d33751272b43aec2c2c826f26fc404dec04b70dc64eb2a8bd4587f",
+      "width": 1254,
+      "height": 1254
+    },
+    {
+      "name": "Hermanos",
+      "aliases": [
+        "Hermanos",
+        "Dep Hermanos",
+        "Deportivo Hermanos"
+      ],
+      "path": "./assets/season-2026/hermanos.webp",
+      "original": "file_00000000908481f585ab978a55b70cca.png",
+      "sha256": "b28a28235ed84077f22e4e6584104bdac9aa4e0e3cc825f795db292181057303",
+      "width": 1019,
+      "height": 1543
+    },
+    {
+      "name": "Liga Veteranos JR",
+      "aliases": [
+        "Liga Veteranos JR"
+      ],
+      "path": "./assets/season-2026/liga-veteranos.webp",
+      "original": "file_00000000912081f5807aaae42745a310.png",
+      "sha256": "d9a2612750ee64cf1dc2286525272aeeb0a13dc0b1dbe8f6daf7e90f797201e8",
+      "width": 1254,
+      "height": 1254
+    },
+    {
+      "name": "Boavista",
+      "aliases": [
+        "Boavista",
+        "Boavista FC"
+      ],
+      "path": "./assets/season-2026/boavista.webp",
+      "original": "file_00000000228081f5a2fc3905d323b151.png",
+      "sha256": "70fb138539669a83487f3b0116808cddb7fdc79b9c822248d28302da48d7b34d",
+      "width": 1122,
+      "height": 1402
+    },
+    {
+      "name": "San Antonio Jrs",
+      "aliases": [
+        "San Antonio Jrs",
+        "San Antonio Jr"
+      ],
+      "path": "./assets/season-2026/san-antonio-jrs.webp",
+      "original": "file_0000000081a881f597503c696fb794e9.png",
+      "sha256": "f64666dd59f39d2deb770727e2a86b6715adaa83643333cb8956fcdd95625a86",
+      "width": 1145,
+      "height": 1374
+    },
+    {
+      "name": "Pachangas FC",
+      "aliases": [
+        "Pachangas FC",
+        "Pachangas"
+      ],
+      "path": "./assets/season-2026/pachangas.webp",
+      "original": "file_000000005ac8820d82fa66858597eb7e.png",
+      "sha256": "9f8a57adb5ea0116222712558a1b61239c3468280c14a55e53b48d744346e688",
+      "width": 1088,
+      "height": 1446
+    },
+    {
+      "name": "Deportivo CG",
+      "aliases": [
+        "Deportivo CG",
+        "C de Gasca",
+        "Cerrito de Gasca",
+        "Real Cerrito de Gasca",
+        "Real Cerrito",
+        "Cerrito"
+      ],
+      "path": "./assets/season-2026/deportivo-cg.webp",
+      "original": "Picsart_26-10-04_15-06-49-146.png",
+      "sha256": "e606c651cb13ab11945b679015d722f7f2d85ac44c2c1faabb502ec88c2b2ccd",
+      "width": 1174,
+      "height": 1527
+    },
+    {
+      "name": "Franco FC",
+      "aliases": [
+        "Franco FC"
+      ],
+      "path": "./assets/season-2026/franco.webp",
+      "original": "BackgroundEraser_20261004_112849043.png",
+      "sha256": "2c96da031a604b4ef8f4490787f41b88af458371da6ea378f6d7faa517fee7ed",
+      "width": 1920,
+      "height": 2396
+    },
+    {
+      "name": "Tavera FC",
+      "aliases": [
+        "Tavera FC",
+        "Tavera"
+      ],
+      "path": "./assets/season-2026/tavera.webp",
+      "original": "file_00000000873c81f5bb2e8a8b4750eac5.png",
+      "sha256": "d5fb488e81ca4e0ff8e9d1e66ed98394f1745b50e0102eea48986e339d488a0d",
+      "width": 1122,
+      "height": 1402
+    },
+    {
+      "name": "Boca Juniors",
+      "aliases": [
+        "Boca Juniors",
+        "Boca Jrs",
+        "Boca"
+      ],
+      "path": "./assets/season-2026/boca-juniors.webp",
+      "original": "argentina_boca-juniors_3000x3000.football-logos.cc.png",
+      "sha256": "4f851fd26a4ddc0218cc8162739547a03f05cad2f323c825e2ead27d33630870",
+      "width": 3000,
+      "height": 3000
+    },
+    {
+      "name": "Galácticos",
+      "aliases": [
+        "Galácticos",
+        "Galácticos de Pozos",
+        "Galácticos Pozos"
+      ],
+      "path": "./assets/season-2026/galacticos.webp",
+      "original": "BackgroundEraser_20261004_112806721.png",
+      "sha256": "bee7647289caae3a80330d0522027b43b8765bde0a75f41b9627e181c68a1ed4",
+      "width": 1920,
+      "height": 1918
+    },
+    {
+      "name": "San José",
+      "aliases": [
+        "San José",
+        "San José FC",
+        "San José de la Montaña",
+        "San José Montaña",
+        "Sn Jose de la M"
+      ],
+      "path": "./assets/season-2026/san-jose.webp",
+      "original": "file_0000000085ec81f590474f275204daf5.png",
+      "sha256": "5bc2c9e7de1b36944f0a0174f05bb8d86b66f8f4b4d99dab87d438143dd743dd",
+      "width": 1254,
+      "height": 1254
+    },
+    {
+      "name": "Tapatío",
+      "aliases": [
+        "Tapatío",
+        "Fútbol Tapatío"
+      ],
+      "path": "./assets/season-2026/tapatio.webp",
+      "original": "1791129877899.png",
+      "sha256": "c24ac60f03cee525d62838102095d8b4433abf8e7f3020afdee4bf8a55896f6c",
+      "width": 492,
+      "height": 486
+    },
+    {
+      "name": "Dep La Luz",
+      "aliases": [
+        "Dep La Luz",
+        "Deportivo La Luz",
+        "La Luz"
+      ],
+      "path": "./assets/season-2026/la-luz.webp",
+      "original": "1791130176070.png",
+      "sha256": "8a0f643a9bedb3591d0e426fbf377308649b2dd66f123bcc3208ddef98e81772",
+      "width": 1008,
+      "height": 1154
+    },
+    {
+      "name": "Barza",
+      "aliases": [
+        "Barza",
+        "Barça",
+        "Barsa",
+        "Barcelona"
+      ],
+      "path": "./assets/season-2026/barza.webp",
+      "original": "file_00000000b23081f5becf1df839bd4113.png",
+      "sha256": "abfc7b9dfb8c3bdb14c8908bf567d85214e6ce3d55f224b3385f405c0cbbba3a",
+      "width": 1374,
+      "height": 1145
+    },
+    {
+      "name": "Herrera FC",
+      "aliases": [
+        "Herrera FC",
+        "Herreras FC",
+        "Herrera",
+        "Herreras"
+      ],
+      "path": "./assets/season-2026/herrera.webp",
+      "original": "1791115918953.png",
+      "sha256": "a5aa6b00959c699cfb643d0ee2b2ff923a890117cb166fc545b45833a25fb2c5",
+      "width": 1036,
+      "height": 1036
+    },
+    {
+      "name": "La Huerta",
+      "aliases": [
+        "La Huerta",
+        "La Huerta de Cuenda"
+      ],
+      "path": "./assets/season-2026/la-huerta.webp",
+      "original": "BackgroundEraser_20261004_105306157.png",
+      "sha256": "e2a281a432ed2e3b019a35695d903325748ad2f50659302ba5b12e638738a0e3",
+      "width": 1920,
+      "height": 1916
+    },
+    {
+      "name": "Abejas",
+      "aliases": [
+        "Abejas",
+        "Abejas FC",
+        "Abejas Pozos"
+      ],
+      "path": "./assets/season-2026/abejas.webp",
+      "original": "BackgroundEraser_20261004_081215381.png",
+      "sha256": "0876baf5c9f71dad11e75f945c281c9de3573ab8ac99e1e9b8e06a1ae3ef72e2",
+      "width": 1920,
+      "height": 1916
+    },
+    {
+      "name": "Malvinas",
+      "aliases": [
+        "Malvinas",
+        "Malvinas FC"
+      ],
+      "path": "./assets/season-2026/malvinas.webp",
+      "original": "BackgroundEraser_20261004_103353448.png",
+      "sha256": "a72b92739362bade841550af4cb4f60a499d6c950501560b546824a5848440bd",
+      "width": 1920,
+      "height": 2243
+    },
+    {
+      "name": "San Antonio",
+      "aliases": [
+        "San Antonio",
+        "San Antonio FC"
+      ],
+      "path": "./assets/season-2026/san-antonio.webp",
+      "original": "file_000000009c6081f5a77228acf860d1e2.png",
+      "sha256": "54c0dd2ca9bb40b2a30640735e5d3f45c54edc8073ec07495d36fdeddad2b363",
+      "width": 1254,
+      "height": 1254
+    },
+    {
+      "name": "Napoli",
+      "aliases": [
+        "Napoli",
+        "Napoli FC"
+      ],
+      "path": "./assets/season-2026/napoli.webp",
+      "original": "Napoli_Soccer_2005.svg.png",
+      "sha256": "757c457e13eefd12d5085eee1c58e7241452063c897cc1693bc4e33cf90e6a46",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "name": "Leyendas",
+      "aliases": [
+        "Leyendas",
+        "Leyendas FC",
+        "Leyendas FC San José"
+      ],
+      "path": "./assets/season-2026/leyendas.webp",
+      "original": "file_00000000972481f59e32535955fc738e.png",
+      "sha256": "c3b3ac6b6230fda0eccf20731c68cd37d85e3059835e16485c34fcbbd211013c",
+      "width": 1275,
+      "height": 1234
+    },
+    {
+      "name": "La Canchita",
+      "aliases": [
+        "La Canchita",
+        "La Canchita Deportes",
+        "La Canchita Todo Deportes"
+      ],
+      "path": "./assets/season-2026/la-canchita.webp",
+      "original": "file_00000000d85c81f5990631696a48c87a.png",
+      "sha256": "7000f562940c8363d7b0f2b5c0089ab8d94c0276873c4ff2bb64731b5f07eab6",
+      "width": 1086,
+      "height": 1448
+    }
+  ],
+  "categories": {
+    "3": {
+      "name": "Primera Fuerza",
+      "aliases": [
+        "Primera Fuerza"
+      ],
+      "path": "./assets/season-2026/primera.webp"
+    },
+    "5": {
+      "name": "Intermedia",
+      "aliases": [
+        "Intermedia"
+      ],
+      "path": "./assets/season-2026/intermedia.webp"
+    },
+    "4": {
+      "name": "Segunda Fuerza",
+      "aliases": [
+        "Segunda Fuerza"
+      ],
+      "path": "./assets/season-2026/segunda.webp"
+    },
+    "2": {
+      "name": "Veteranos 35",
+      "aliases": [
+        "Veteranos 35",
+        "Veteranos 35+"
+      ],
+      "path": "./assets/season-2026/veteranos-35.webp"
+    },
+    "1": {
+      "name": "Veteranos 50",
+      "aliases": [
+        "Veteranos 50",
+        "Veteranos 50+"
+      ],
+      "path": "./assets/season-2026/veteranos-50.webp"
+    }
+  }
+}
