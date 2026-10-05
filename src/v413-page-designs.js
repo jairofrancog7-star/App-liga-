@@ -523,8 +523,11 @@ function newsItems(){
   return out.slice(0,6);
 }
 function newsKind(n){
+  const meta=norm(n?.small||'');
   const txt=norm((n?.small||'')+' '+(n?.title||'')+' '+(n?.p||''));
   if(/fichaj|transfer|alta|baja|renovacion|refuerzo|movimiento/.test(txt))return 'fichajes';
+  if(/^(liga|jornada|torneo|copa)\b/.test(meta))return 'liga';
+  if(/^(clasificacion|datos|equipos?|plantillas?)\b/.test(meta))return 'equipos';
   if(/clasificacion|plantilla|equipo|club|san jose|juventus|linces|boavista|manchester|dynamo|esperanza/.test(txt))return 'equipos';
   if(/liga|jornada|torneo|copa|comunicado|aviso|calendario|partido/.test(txt))return 'liga';
   return 'para';
@@ -543,7 +546,7 @@ function newsMarkup(){
 }
 function bindNews(root){
   if(!root)return;
-  let mode='all';
+  let mode=root.dataset.v413NewsMode||'all';
   const labels={all:'Para ti',liga:'Liga',equipos:'Equipos',fichajes:'Fichajes'};
   const title=root.querySelector('.v413-head h2');
   const feed=root.querySelector('[data-v413-news-feed]');
@@ -577,6 +580,7 @@ function bindNews(root){
     b.onclick=e=>{
       e.preventDefault();e.stopPropagation();e.stopImmediatePropagation?.();
       mode=b.dataset.v413NewsFilter||'all';
+      root.dataset.v413NewsMode=mode;
       render();
     };
   });
