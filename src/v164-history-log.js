@@ -21,21 +21,25 @@ function stamp(v){
 function dateText(v){return String(v||'').match(/^(\d{1,2}\/\d{1,2}\/\d{4})/)?.[1]||String(v||'')}
 function norm(v){return String(v||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[^a-z0-9]+/g,' ').trim()}
 function logoUrl(name){
+  const RAW='https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/';
+  const normalizePath=p=>{
+    p=String(p||'').trim();if(!p)return '';
+    if(/^(?:https?:|data:|blob:)/i.test(p))return p;
+    return RAW+p.replace(/^\.\//,'').replace(/^\//,'');
+  };
   try{
-    const shared=window.LJR_OFFICIAL_API?.getLogo?.(name)||window.LJR_TEAM_LOGOS?.get?.(name);
-    if(shared)return shared;
+    const stable=window.LJR_TEAM_LOGOS?.get?.(name)||window.V66_OFFICIAL_DIRECTORY?.logoFor?.(name)||window.LJR_OFFICIAL_API?.getLogo?.(name);
+    if(stable)return normalizePath(stable);
   }catch(_){}
   const hit=Object.entries(db?.team_logos||{}).find(([k])=>norm(k)===norm(name))?.[1];
-  if(typeof hit==='string')return hit;
-  const p=hit?.local||hit?.source||'';
-  if(!p)return '';
-  return /^https?:/i.test(p)?p:'https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/'+String(p).replace(/^\.\//,'');
+  if(typeof hit==='string')return normalizePath(hit);
+  return normalizePath(hit?.app||hit?.source||hit?.local||'');
 }
 function teamMark(name){
   const src=logoUrl(name);
   const initials=String(name||'').split(/\s+/).filter(Boolean).slice(0,2).map(x=>x[0]||'').join('').toUpperCase()||'JR';
   return '<span class="v164-history-logo '+(src?'has-logo':'fallback')+'">'+
-    (src?'<img src="'+esc(src)+'" alt="" loading="lazy" decoding="async">':'<b>'+esc(initials)+'</b>')+
+    (src?'<img src="'+esc(src)+'" alt="" loading="lazy" decoding="async" onerror="this.style.display=\'none\';this.nextElementSibling.style.display=\'grid\'"><b style="display:none">'+esc(initials)+'</b>':'<b>'+esc(initials)+'</b>')+
   '</span>';
 }
 function scoreOf(r){
