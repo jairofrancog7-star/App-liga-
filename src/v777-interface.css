@@ -376,3 +376,87 @@ html body.ljr-native-pip .ljr-native-pip-player :is(.v196-frame,.v144-stream-fra
   padding-top:0!important;
  }
 }
+
+/* V796 — sin barras superiores en Fantasy y Quiz Arena. */
+@media(max-width:1023px){
+ html body:is(
+  [data-app-route="fantasy"],
+  [data-app-route="fantasyAccess"],
+  [data-app-route="fantasyTeam"]
+ ) #app>.topbar,
+ html body:is(
+  [data-app-route="fantasy"],
+  [data-app-route="fantasyAccess"],
+  [data-app-route="fantasyTeam"]
+ ) .app-shell>.topbar,
+ html body:is(
+  [data-app-route="fantasy"],
+  [data-app-route="fantasyAccess"],
+  [data-app-route="fantasyTeam"]
+ ) header.topbar{
+  display:none!important;
+  visibility:hidden!important;
+  opacity:0!important;
+  width:0!important;
+  height:0!important;
+  min-width:0!important;
+  min-height:0!important;
+  max-width:0!important;
+  max-height:0!important;
+  margin:0!important;
+  padding:0!important;
+  border:0!important;
+  overflow:hidden!important;
+  pointer-events:none!important;
+ }
+
+ html body:is(
+  [data-app-route="fantasy"],
+  [data-app-route="fantasyAccess"],
+  [data-app-route="fantasyTeam"]
+ ){
+  --v768-head-h:0px!important;
+ }
+
+ html body.v768-scroll-root:is(
+  [data-app-route="fantasy"],
+  [data-app-route="fantasyAccess"]
+ ) #screen{
+  top:0!important;
+  margin-top:0!important;
+  padding-top:0!important;
+ }
+
+ html body.v768-scroll-root[data-app-route="fantasyTeam"] #screen{
+  top:0!important;
+  bottom:0!important;
+  margin-top:0!important;
+  padding-top:0!important;
+ }
+
+ html body[data-app-route="quizArena"] #screen .v531-mini-head,
+ html body[data-app-route="quizArena"] #screen .v531-game-head,
+ html body[data-app-route="quizArena"] #screen .ljr-quiz-head{
+  display:none!important;
+  visibility:hidden!important;
+  opacity:0!important;
+  height:0!important;
+  min-height:0!important;
+  max-height:0!important;
+  margin:0!important;
+  padding:0!important;
+  border:0!important;
+  overflow:hidden!important;
+  pointer-events:none!important;
+ }
+
+ html body[data-app-route="quizArena"]{
+  --v768-head-h:0px!important;
+ }
+
+ html body.v768-scroll-root[data-app-route="quizArena"] #screen{
+  top:0!important;
+  margin-top:0!important;
+  padding-top:0!important;
+ }
+}
