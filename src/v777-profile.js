@@ -114,7 +114,10 @@ function mountProfileEntry(){
    if(settings)settings.insertAdjacentElement('afterend',btn);else root.append(btn);
  }
  btn.dataset.v803ProfileShirt='1';
- btn.addEventListener('click',e=>{e.preventDefault();e.stopPropagation();open()},{once:false});
+ if(btn.dataset.v803ProfileBound!=='1'){
+   btn.dataset.v803ProfileBound='1';
+   btn.addEventListener('click',e=>{e.preventDefault();e.stopPropagation();open()});
+ }
 }
 function scheduleProfileEntry(){
  requestAnimationFrame(()=>setTimeout(mountProfileEntry,0));
