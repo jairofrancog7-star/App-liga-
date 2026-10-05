@@ -21,7 +21,7 @@ function esc(v){return String(v??'').replace(/[&<>"']/g,function(c){return {'&':
 function num(v){const s=String(v??'').trim();return /^-?\d+$/.test(s)?Number(s):null}
 function svgShare(){return '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="18" cy="5" r="2.2"/><circle cx="6" cy="12" r="2.2"/><circle cx="18" cy="19" r="2.2"/><path d="m8 11 8-5M8 13l8 5"/></svg>'}
 function svgSwap(){return '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 7h10l-2.5-2.5M17 17H7l2.5 2.5M17 7l-2.5 2.5M7 17l2.5-2.5"/></svg>'}
-function svgBack(){return '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="m15 5-7 7 7 7"/></svg>'}
+function svgBack(){return '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 12H4m7-7-7 7 7 7"/></svg>'}
 
 async function load(){
  if(db)return db;
@@ -272,7 +272,7 @@ function compareMarkup(){
   '<header class="v369-compare-topbar">'+
    '<button type="button" data-v369-close aria-label="Volver">'+svgBack()+'</button>'+
    '<h1>Comparar equipos</h1>'+
-   '<button type="button" data-v369-share aria-label="Compartir">'+svgShare()+'</button>'+
+   '<div class="ljr-compare-actions"><button type="button" data-v369-share aria-label="Compartir">'+svgShare()+'</button><button type="button" data-v369-profile aria-label="Mi perfil">'+(window.LJR_CHROME?.avatar?.()||'')+'</button></div>'+
   '</header>'+
   '<main>'+
    '<section class="v369-club-zone">'+
@@ -443,6 +443,7 @@ document.addEventListener('click',function(e){
   e.preventDefault();e.stopPropagation();e.stopImmediatePropagation();openNotify();return;
  }
 
+ if(e.target.closest('[data-v369-profile]')){closeCompare();window.LJR_MAIN_ROUTE?.go('profile');return}
  if(e.target.closest('[data-v369-close]')){closeCompare();return}
  if(e.target.closest('[data-v369-share]')){shareCompare();return}
  const sectionToggle=e.target.closest('[data-v373-toggle]');

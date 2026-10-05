@@ -1,6 +1,8 @@
 import {Capacitor,registerPlugin} from '@capacitor/core';
 const nativePip=registerPlugin('LigaPiP');
-const activePlayers=new Set();let armed=false;function armPiP(){const enabled=[...activePlayers].some(s=>s.media.isConnected);if(Capacitor.isNativePlatform()&&armed!==enabled){armed=enabled;nativePip.arm({enabled}).catch(()=>{armed=!enabled})}}
+const activePlayers=new Set(),ordinaryPlayers=new Set();
+export function trackNativePiP(video){if(ordinaryPlayers.has(video))return;ordinaryPlayers.add(video);for(const event of ['play','pause','ended'])video.addEventListener(event,armPiP);armPiP()}
+let armed=false;function armPiP(){for(const video of ordinaryPlayers)if(!video.isConnected)ordinaryPlayers.delete(video);const enabled=[...activePlayers].some(s=>s.media.isConnected)||[...ordinaryPlayers].some(video=>!video.paused&&!video.ended);if(Capacitor.isNativePlatform()&&armed!==enabled){armed=enabled;nativePip.arm({enabled}).catch(()=>{armed=!enabled})}}
 new MutationObserver(armPiP).observe(document.documentElement,{childList:true,subtree:true});
 const states=new WeakMap();
 let apiPromise;

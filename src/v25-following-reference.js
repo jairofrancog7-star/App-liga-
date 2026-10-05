@@ -5,7 +5,7 @@
   'use strict';
 
   const BASE='https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/';
-  const LEAGUE=BASE+'assets/liga-logo.webp';
+  const LEAGUE='./assets/reference/predictor-v36/liga-crest-white.webp';
 
   const TEAMS=[
   {
@@ -414,7 +414,7 @@
         '<img class="v28-league-logo" src="'+LEAGUE+'" alt="Liga Municipal de Fútbol Juventino Rosas">'+
         '<h2>Sin equipos seguidos todavía</h2>'+
         '<p>¡Sigue a los equipos de la Liga Municipal<br>de Fútbol Juventino Rosas para acceder<br>rápidamente a noticias, alertas de partidos<br>y resúmenes en video!</p>'+
-        '<button class="v28-add" data-v28-picker><span>＋</span>Añadir equipos</button>'+
+        '<button class="v28-add" data-v28-picker><span aria-hidden="true">+</span>Añadir equipos</button>'+
       '</main>'+
       '<div class="v28-side-notch" aria-hidden="true"></div>'+
     '</section>';

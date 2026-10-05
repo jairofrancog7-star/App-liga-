@@ -1,3 +1,4 @@
+import {trackNativePiP} from './v560-stream-player-controls.js';
 import { Capacitor, registerPlugin } from '@capacitor/core';
 const nativePiP=registerPlugin('LigaPiP');
 const esc=s=>window.LJR_CMS?.esc(s)||String(s||'');
@@ -5,7 +6,7 @@ const route=()=>location.hash.replace(/^#\/?/,'').split('?')[0]||'home';
 function controls(video){
  if(video.dataset.v777Controls||video.closest('.v196-frame,.liga-stories,.v105-motion,.v15-decor'))return;
  if(video.muted&&video.autoplay&&!video.controls)return;
- video.dataset.v777Controls='1';video.controls=false;video.playsInline=true;
+ video.dataset.v777Controls='1';trackNativePiP(video);video.controls=false;video.playsInline=true;
  const box=document.createElement('div');box.className='ljr-video-player';video.before(box);box.append(video);
  const bar=document.createElement('div');bar.className='ljr-video-controls';bar.innerHTML='<div class="ljr-video-timeline"><span data-time>0:00</span><input type="range" data-seek min="0" max="1000" value="0" aria-label="Posición del video"><span data-duration>0:00</span></div><div class="ljr-video-actions"><button type="button" data-v777-action="back" aria-label="Retroceder 10 segundos">−10</button><button type="button" data-v777-action="play" aria-label="Reproducir">▶</button><button type="button" data-v777-action="next" aria-label="Avanzar 10 segundos">+10</button><button type="button" data-v777-action="mute" aria-label="Silenciar">♫</button><input data-volume type="range" min="0" max="1" step=".05" value="1" aria-label="Volumen"><button type="button" data-v777-action="pip" aria-label="Ventana flotante">PiP</button><button type="button" data-v777-action="full" aria-label="Pantalla completa">⛶</button></div><small role="status"></small>';box.append(bar);
  const status=bar.querySelector('small'),seek=bar.querySelector('[data-seek]'),play=bar.querySelector('[data-v777-action=play]');

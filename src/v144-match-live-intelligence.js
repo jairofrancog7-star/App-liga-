@@ -193,7 +193,9 @@ const LIVE_PLATFORMS={
   youtube:{key:'youtube',name:'YouTube Live',icon:'▶',portal:'https://studio.youtube.com/',placeholder:'https://www.youtube.com/watch?v=...'},
   tiktok:{key:'tiktok',name:'TikTok Live',icon:'♪',portal:'https://www.tiktok.com/live',placeholder:'https://www.tiktok.com/@usuario/live'}
 };
+function localRoom(url){try{const u=new URL(url),base=new URL(window.LJR_MEDIA.base);const id=u.searchParams.get('live');return u.origin===base.origin&&/^[a-zA-Z0-9_-]{8,100}$/.test(id||'')?id:''}catch{return ''}}
 function provider(url){
+  if(localRoom(url))return {key:'local',name:'Liga en vivo',icon:'▣'};
   const key=streamProvider(url);
   if(key==='facebook')return LIVE_PLATFORMS.facebook;
   if(key==='youtube')return LIVE_PLATFORMS.youtube;
@@ -206,7 +208,7 @@ function livePlatformButtons(s){
   const active=provider(s?.source?.url).key;
   return '<div class="v144-platforms" aria-label="Plataformas de transmisión">'+
     Object.values(LIVE_PLATFORMS).map(p=>'<button type="button" class="'+(active===p.key?'active':'')+'" data-v144-platform="'+p.key+'"><em>'+esc(p.icon)+'</em><span><b>'+esc(p.name.replace(' Live',''))+'</b><small>LIVE</small></span></button>').join('')+
-  '<button type="button" data-v561-camera-open><em>▣</em><span><b>Cámara</b><small>TELÉFONO</small></span></button></div>'+
+  '<button type="button" class="'+(active==='local'?'active':'')+'" data-v144-local><em>▣</em><span><b>Local</b><small>LIGA</small></span></button></div>'+
   '<button type="button" class="v144-tv-cast" data-v144-tv-cast><span class="v144-tv-cast-icon">▣</span><span><b>Transmitir en televisión</b><small>Conectar TV o pantalla compatible</small></span><i>›</i></button>';
 }
 const youtubeId=youtubeVideoId;
@@ -214,6 +216,7 @@ function streamEmbedHtml(s){
   const url=normalizeStreamUrl(s?.source?.url);
   if(!url)return '';
   const p=provider(url);
+  if(p.key==='local')return '<section class="v144-stream-embed"><header><b>'+esc(s.source.name||'Liga en vivo')+'</b></header><div class="v144-local-frame"><iframe src="'+esc(url)+'" title="Transmisión local de la Liga" allow="autoplay; picture-in-picture; fullscreen" allowfullscreen></iframe></div></section>';
   if(/\.(mp4|webm|ogg|m3u8)(?:[?#]|$)/i.test(url))return '<section class="v144-stream-embed"><header><b>Video directo</b></header><div class="v144-stream-frame v196-frame"><video src="'+esc(url)+'" controls playsinline preload="metadata"></video></div></section>';
   if(p.name==='Facebook Live'){
     const src='https://www.facebook.com/plugins/video.php?href='+encodeURIComponent(url)+'&show_text=false&width=560&autoplay=false';
@@ -399,7 +402,7 @@ function hubHtml(c,s){
     '<div class="v144-head"><i class="'+(live?'on':'')+'"></i><span><small>PARTIDO EN VIVO</small><b>'+esc(phaseLabel(s))+'</b></span><strong>'+x.home.goals+'–'+x.away.goals+'</strong></div>'+
     '<div class="v144-source"><em>'+esc(sourceIcon)+'</em><span><b>'+esc(sourceTitle)+'</b><small>'+esc(sourceType)+'</small></span><button data-v144-config>Subir / vincular LIVE</button></div>'+
     livePlatformButtons(s)+
-    '<p class="v144-live-help">Facebook · YouTube · TikTok · cámara del teléfono. Reproduce el enlace publicado por la Liga.</p>'+
+    '<p class="v144-live-help">Facebook · YouTube · TikTok · Local. Reproduce el enlace publicado por la Liga.</p>'+
     streamEmbedHtml(s)+
     '<div class="v144-stats"><div><small>'+esc(c.home)+'</small><b>'+x.home.goals+'</b><span>'+x.home.subs+' cambios · '+x.home.yellow+' 🟨 · '+x.home.red+' 🟥</span></div><div><small>'+esc(c.away)+'</small><b>'+x.away.goals+'</b><span>'+x.away.subs+' cambios · '+x.away.yellow+' 🟨 · '+x.away.red+' 🟥</span></div></div>'+
     '<div class="v144-alerts"><span><b>🔔 Avisos del partido</b><small>Gol · medio tiempo · regreso del descanso · final</small></span><button type="button" class="'+(alertsEnabled()?'active':'')+'" data-v144-alerts>'+(alertsEnabled()?'Avisos activos':'Activar avisos')+'</button></div>'+
@@ -524,7 +527,16 @@ async function shareLive(c,s){
   try{await navigator.clipboard.writeText(url);toast('Enlace del LIVE copiado.')}
   catch(_){window.open(url,'_blank','noopener,noreferrer')}
 }
+async function openLocal(c,s){
+ const media=window.LJR_MEDIA;if(!media)return;
+ const n=media.modal('Transmisiones de la Liga','<div class="cms-form" data-local-rooms><p>Consultando transmisiones activas…</p></div>'+ (canEdit()?'<button class="btn full" data-local-broadcast>Transmitir con mi cámara</button>':''));
+ n.querySelector('[data-local-broadcast]')?.addEventListener('click',()=>{n.querySelector('[data-close]').click();media.broadcast({title:c.home+' vs '+c.away,onStarted:room=>{const current=load(c);current.source={...current.source,url:room.url,name:room.title};save(current);schedule()}})});
+ try{const result=await media.api('rooms');if(!n.isConnected)return;const list=n.querySelector('[data-local-rooms]'),rooms=result.rooms||[];list.innerHTML=rooms.length?rooms.map((room,i)=>'<button data-local-watch="'+i+'"><i class="ljr-live-dot"></i>'+esc(room.title)+'</button>').join(''):'<p>No hay transmisiones locales activas en este momento.</p>';
+ list.querySelectorAll('[data-local-watch]').forEach(b=>b.onclick=()=>{const room=rooms[Number(b.dataset.localWatch)];if(!room||!/^[a-zA-Z0-9_-]{8,100}$/.test(room.id))return;const url=media.base+'/?live='+encodeURIComponent(room.id);n.querySelector('[data-close]').click();media.modal(room.title,'<div class="v144-local-frame"><iframe src="'+esc(url)+'" title="Transmisión local" allow="autoplay; picture-in-picture; fullscreen" allowfullscreen></iframe></div>')});
+ }catch(error){if(n.isConnected)n.querySelector('[data-status]').textContent=error.message||'No se pudieron consultar las transmisiones.'}
+}
 function bind(c,s,hub){
+  $('[data-v144-local]',hub)?.addEventListener('click',e=>{stop(e);openLocal(c,s)});
   hub.querySelector('[data-v561-camera-open]')?.addEventListener('click',openPhoneCamera);
   hub.querySelectorAll('video').forEach(enableDirectStream);
   hub.querySelectorAll('.v144-stream-embed:has(iframe),.v144-stream-embed:has(video)').forEach(card=>{

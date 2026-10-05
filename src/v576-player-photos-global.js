@@ -84,6 +84,10 @@ function teamLogo(team){
 }
 function setAvatar(el,rec,fallbackTeam=''){
  if(!el)return false;
+ const initialOnly=!!el.closest('.v66-player-row,.v446-stat-ref-row,.v123-player-card,.v123-player-option');
+ const name=rec?.name||el.closest('[data-v66-player]')?.dataset.v66Player||el.closest('[data-v33-player]')?.dataset.v33Player||'Jugador';
+ const initials=()=>{const value=String(name).trim().split(/\s+/).slice(0,2).map(x=>x[0]).join('').toUpperCase();if(el.textContent!==value||el.querySelector('img'))el.textContent=value;el.classList.remove('v576-has-photo','v576-team-fallback');el.classList.add('v576-photo-fallback')};
+ if(initialOnly&&!hasPhoto(rec)){initials();return false}
  const real=hasPhoto(rec),team=String(rec?.team||fallbackTeam||'').trim();
  const src=real?String(rec.photo).trim():teamLogo(team);
  if(!src)return false;
@@ -92,12 +96,14 @@ function setAvatar(el,rec,fallbackTeam=''){
  if(existing&&String(existing.getAttribute('src')||'')===src){
    if(real){el.dataset.v576Photo='1';el.classList.remove('v576-team-fallback');el.removeAttribute('data-v576-team-fallback')}
    else{el.dataset.v576TeamFallback='1';el.classList.add('v576-team-fallback')}
+   if(initialOnly&&!existing.dataset.v779Fallback){existing.dataset.v779Fallback='1';existing.onerror=()=>{failedPhotos.add(src);initials()};if(existing.complete&&!existing.naturalWidth)existing.onerror()}
    return false;
  }
  const alt=real?String(rec?.name||'Jugador'):team;
  el.innerHTML='<img class="v576-player-photo" src="'+esc(src)+'" alt="'+esc(alt)+'" loading="lazy" decoding="async" referrerpolicy="no-referrer">';
  const image=el.querySelector('img');image.onerror=()=>{
    if(real)failedPhotos.add(src);
+   if(initialOnly){initials();return}
    const logo=real?teamLogo(team):'';
    if(logo&&logo!==image.src){image.src=logo;image.alt=team;el.classList.add('v576-team-fallback');image.onerror=()=>{el.textContent=String(rec?.name||'Jugador').split(/\s+/).slice(0,2).map(x=>x[0]).join('');};}
    else el.textContent=String(rec?.name||'Jugador').split(/\s+/).slice(0,2).map(x=>x[0]).join('');
