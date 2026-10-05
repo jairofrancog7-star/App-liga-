@@ -1,0 +1,168 @@
+/* V797 — PRONOSTICA SEIS · restauración exacta de la referencia enviada.
+   Usa el arte original limpio (sin barra duplicada) y la barra real de la app.
+   No estira verticalmente la imagen. */
+body[data-app-route="predictor"]{
+  --v34-nav-h:60px!important;
+  --v37-predictor-navy:#17166f;
+  background:#01034f!important;
+  overflow:hidden!important;
+}
+body[data-app-route="predictor"] #app,
+body[data-app-route="predictor"] .app-shell{
+  width:min(100%,520px)!important;
+  height:100dvh!important;
+  min-height:100dvh!important;
+  margin:0 auto!important;
+  padding:0!important;
+  overflow:hidden!important;
+  background:#01034f!important;
+}
+body[data-app-route="predictor"] #app>.topbar,
+body[data-app-route="predictor"] .app-shell>.topbar{
+  display:none!important;
+  visibility:hidden!important;
+  height:0!important;
+  min-height:0!important;
+  max-height:0!important;
+  margin:0!important;
+  padding:0!important;
+  pointer-events:none!important;
+}
+body[data-app-route="predictor"] #screen{
+  position:relative!important;
+  width:100%!important;
+  max-width:520px!important;
+  height:calc(100dvh - 60px - env(safe-area-inset-bottom))!important;
+  min-height:0!important;
+  max-height:none!important;
+  margin:0 auto!important;
+  padding:0!important;
+  overflow:hidden!important;
+  background:#01034f!important;
+  animation:none!important;
+}
+body[data-app-route="predictor"] .v37-predictor-reference{
+  position:absolute!important;
+  inset:0!important;
+  width:100%!important;
+  height:100%!important;
+  margin:0!important;
+  padding:0!important;
+  overflow:hidden!important;
+  background:#01034f!important;
+}
+body[data-app-route="predictor"] .v37-predictor-reference-image{
+  position:absolute!important;
+  inset:0!important;
+  display:block!important;
+  width:100%!important;
+  height:100%!important;
+  max-width:none!important;
+  max-height:none!important;
+  margin:0!important;
+  padding:0!important;
+  border:0!important;
+  outline:0!important;
+  object-fit:cover!important;
+  object-position:center center!important;
+  transform:none!important;
+  user-select:none!important;
+  pointer-events:none!important;
+  -webkit-user-drag:none!important;
+}
+
+/* Zona funcional invisible: no modifica el diseño visual. */
+body[data-app-route="predictor"] .v37-predictor-enter{
+  position:absolute!important;
+  z-index:8!important;
+  left:16%!important;
+  right:16%!important;
+  top:27%!important;
+  height:43%!important;
+  margin:0!important;
+  padding:0!important;
+  border:0!important;
+  border-radius:24px!important;
+  background:transparent!important;
+  color:transparent!important;
+  box-shadow:none!important;
+  cursor:pointer!important;
+  touch-action:manipulation!important;
+  -webkit-tap-highlight-color:transparent!important;
+}
+
+/* Barra inferior exactamente como la referencia anterior: una sola barra, 60px. */
+body[data-app-route="predictor"] .bottom-nav{
+  display:grid!important;
+  visibility:visible!important;
+  opacity:1!important;
+  position:fixed!important;
+  left:50%!important;
+  right:auto!important;
+  bottom:0!important;
+  transform:translateX(-50%)!important;
+  width:min(100%,520px)!important;
+  height:60px!important;
+  min-height:60px!important;
+  max-height:60px!important;
+  padding:3px 7px max(3px,env(safe-area-inset-bottom))!important;
+  grid-template-columns:repeat(5,minmax(0,1fr))!important;
+  align-items:center!important;
+  background:#17166f!important;
+  border-top:1px solid rgba(84,103,255,.38)!important;
+  box-shadow:none!important;
+  pointer-events:auto!important;
+}
+body[data-app-route="predictor"] .bottom-nav .nav-item{
+  color:#a8a7cb!important;
+}
+body[data-app-route="predictor"] .bottom-nav .nav-item.active{
+  color:#a8a7cb!important;
+}
+body[data-app-route="predictor"] .bottom-nav .nav-item[data-route="more"]{
+  color:#19e7ff!important;
+}
+body[data-app-route="predictor"] .bottom-nav .nav-icon,
+body[data-app-route="predictor"] .bottom-nav .nav-icon svg{
+  width:25px!important;
+  height:25px!important;
+  min-width:25px!important;
+  min-height:25px!important;
+  max-width:25px!important;
+  max-height:25px!important;
+}
+body[data-app-route="predictor"] .bottom-nav .nav-item small{
+  font-size:0!important;
+  line-height:13px!important;
+  text-transform:none!important;
+}
+body[data-app-route="predictor"] .bottom-nav .nav-item small::after{
+  display:block!important;
+  font-family:Roboto,Inter,Arial,sans-serif!important;
+  font-size:11px!important;
+  line-height:13px!important;
+  font-weight:400!important;
+  letter-spacing:0!important;
+  text-transform:none!important;
+  color:inherit!important;
+}
+body[data-app-route="predictor"] .bottom-nav .nav-item[data-route="home"] small::after{content:"Inicio"!important}
+body[data-app-route="predictor"] .bottom-nav .nav-item[data-route="competition"] small::after{content:"Competición"!important}
+body[data-app-route="predictor"] .bottom-nav .nav-item[data-route="video"] small::after{content:"Video"!important}
+body[data-app-route="predictor"] .bottom-nav .nav-item[data-route="fantasy"] small::after{content:"Fantasy"!important}
+body[data-app-route="predictor"] .bottom-nav .nav-item[data-route="more"] small::after{content:"Más"!important}
+
+/* Evitar cualquier hotspot/barra antigua incrustada. */
+body[data-app-route="predictor"] .v37-predictor-hotnav{
+  display:none!important;
+  visibility:hidden!important;
+  pointer-events:none!important;
+}
+
+@media(min-width:521px){
+  body[data-app-route="predictor"] #screen{
+    width:520px!important;
+    left:50%!important;
+    transform:translateX(-50%)!important;
+  }
+}
