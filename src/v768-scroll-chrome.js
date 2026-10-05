@@ -19,7 +19,7 @@
     /* V796 — Estadísticas conserva su sistema histórico V33 completo.
        No aplicar el chrome móvil V768/V775/V777 porque ese sistema convertía
        la cabecera original en una barra compacta de 154/174 px. */
-    if(legacyStatsRoutes.has(route) && screen?.querySelector('.v33-data-head')){
+    if(legacyStatsRoutes.has(route)){
       body.classList.remove('v768-scroll-root');
       delete body.dataset.mobileLayout;
       delete body.dataset.mobileHeader;
