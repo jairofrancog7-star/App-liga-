@@ -105,6 +105,7 @@ function rememberedAccount(){
 
 const isNative=()=>{try{return !!Capacitor?.isNativePlatform?.()}catch(_){return false}};
 const biometricEnabled=a=>!!(a?.biometric?.native||a?.biometric?.credentialId);
+const biometricAccessLabel=a=>a?.biometric?.kind==='face'?'Rostro / Face ID':'Huella / biometría';
 const contactText=a=>a?.email||a?.phone||'Sin contacto';
 const go=r=>{if(window.LJR_MAIN_ROUTE?.go)window.LJR_MAIN_ROUTE.go(r);else location.hash='#/'+r};
 const takeReturnRoute=()=>{try{const r=String(localStorage.getItem(RETURN_KEY)||'').trim();localStorage.removeItem(RETURN_KEY);return /^[-a-zA-Z0-9_]+$/.test(r)?r:''}catch(_){return''}};
@@ -223,23 +224,24 @@ async function platformAuthAvailable(){
     return !!(window.PublicKeyCredential&&navigator.credentials&&await PublicKeyCredential.isUserVerifyingPlatformAuthenticatorAvailable());
   }catch(_){return false}
 }
-async function enrollBiometric(account){
+async function enrollBiometric(account,kind='biometric'){
   if(!(await platformAuthAvailable()))throw new Error('Este dispositivo no ofrece biometría compatible');
-  overlay('Verificando dispositivo…','Confirma en el teléfono con huella, rostro o bloqueo seguro.','bio');
+  const wantsFace=kind==='face';
+  overlay(wantsFace?'Configurando acceso facial…':'Verificando dispositivo…',wantsFace?'Mira al teléfono y confirma con el método seguro disponible.':'Confirma en el teléfono con huella, rostro o bloqueo seguro.','bio');
 
   if(isNative()){
     const result=await nativeBiometric.verify({
       title:'Liga Juventino',
-      subtitle:'Confirma tu identidad',
-      description:'Usa la biometría del teléfono para activar el acceso.'
+      subtitle:wantsFace?'Rostro / Face ID':'Confirma tu identidad',
+      description:wantsFace?'Usa el reconocimiento facial del teléfono si está disponible.':'Usa la biometría del teléfono para activar el acceso.'
     });
     if(!result?.verified)throw new Error('No se pudo verificar la biometría');
     const auth=authState(),idx=auth.accounts.findIndex(a=>a.id===account.id);
     if(idx<0)throw new Error('Cuenta no encontrada');
-    auth.accounts[idx].biometric={native:true,enabledAt:nowIso(),device:deviceName()};
+    auth.accounts[idx].biometric={native:true,kind:wantsFace?'face':'biometric',enabledAt:nowIso(),device:deviceName()};
     saveAuth(auth);
     const trusted=rememberDevice(auth.accounts[idx],{verified:true,method:'biometric'});setAppUser(trusted);
-    overlay('Identidad confirmada','La biometría quedó activada para esta cuenta.','ok');closeOverlay();
+    overlay('Identidad confirmada',wantsFace?'El acceso con rostro / Face ID quedó activado para esta cuenta.':'La biometría quedó activada para esta cuenta.','ok');closeOverlay();
     return trusted;
   }
 
@@ -257,10 +259,10 @@ async function enrollBiometric(account){
   if(!cred)throw new Error('No se creó la credencial biométrica');
   const auth=authState(),idx=auth.accounts.findIndex(a=>a.id===account.id);
   if(idx<0)throw new Error('Cuenta no encontrada');
-  auth.accounts[idx].biometric={credentialId:bytesToB64(cred.rawId),userHandle:bytesToB64(userId),enabledAt:nowIso(),device:deviceName()};
+  auth.accounts[idx].biometric={credentialId:bytesToB64(cred.rawId),userHandle:bytesToB64(userId),kind:wantsFace?'face':'biometric',enabledAt:nowIso(),device:deviceName()};
   saveAuth(auth);
   const trusted=rememberDevice(auth.accounts[idx],{verified:true,method:'biometric'});setAppUser(trusted);
-  overlay('Identidad confirmada','La biometría quedó activada para esta cuenta.','ok');closeOverlay();
+  overlay('Identidad confirmada',wantsFace?'El acceso con rostro / Face ID quedó activado para esta cuenta.':'La biometría quedó activada para esta cuenta.','ok');closeOverlay();
   return trusted;
 }
 async function verifyBiometric(account){
@@ -312,8 +314,8 @@ function profileRegisterMarkup(){
       '<div data-v569-email-wrap hidden>'+field('GMAIL / CORREO',input('email','data-v569-email','nombre@gmail.com','','autocomplete="email"'))+'</div>'+
       field('CONTRASEÑA','<div class="v569-inline">'+input('password','data-v569-password','Mínimo 8 caracteres','','autocomplete="new-password"')+'<button type="button" data-v569-generate-password><span>✦</span> Generar</button></div>')+
       field('CONFIRMAR CONTRASEÑA',input('password','data-v569-confirm','Repite la contraseña','','autocomplete="new-password"'))+
-      '<label class="v569-check"><input type="checkbox" data-v569-bio checked><i></i><span><b>Registrar huella / biometría</b><small>En la APK Android usa la seguridad biométrica disponible en el teléfono.</small></span></label>'+'<label class="v569-check v577-remember-device"><input type="checkbox" data-v569-remember-device checked><i></i><span><b>Recordar este dispositivo</b><small>Vincula esta instalación con tu perfil para reconocerla en próximos accesos.</small></span></label>'+
-      '<label class="v569-check"><input type="checkbox" data-v569-terms checked><i></i><span><b>Guardar esta cuenta en este dispositivo</b><small>Tu contraseña se protege con derivación criptográfica; la app no guarda tu huella.</small></span></label>'+
+      '<label class="v569-check"><input type="checkbox" data-v569-face checked><i></i><span><b>Entrar con rostro / Face ID</b><small>Usa el reconocimiento facial del teléfono si está disponible; el sistema puede ofrecer huella o PIN como alternativa.</small></span></label>'+      '<label class="v569-check"><input type="checkbox" data-v569-bio><i></i><span><b>Usar huella / biometría</b><small>Activa el acceso rápido con la seguridad biométrica del dispositivo.</small></span></label>'+      '<label class="v569-check v577-remember-device"><input type="checkbox" data-v569-remember-device checked><i></i><span><b>Recordar este dispositivo</b><small>Vincula esta instalación con tu perfil para reconocerla en próximos accesos.</small></span></label>'+
+      '<label class="v569-check"><input type="checkbox" data-v569-terms checked><i></i><span><b>Guardar esta cuenta en este dispositivo</b><small>Tu contraseña se protege con derivación criptográfica; la app no guarda tu rostro ni tu huella.</small></span></label>'+
     '</div>'+
     '<button class="v569-primary v575-create-account" type="button" data-v569-register><span>Crear mi cuenta</span><i aria-hidden="true">➜</i></button>'+
     '<button class="v569-link" type="button" data-v569-profile-mode="login">Ya tengo cuenta · Iniciar sesión</button>'+
@@ -330,7 +332,7 @@ function profileLoginMarkup(){
       '<label class="v569-check v577-remember-device"><input type="checkbox" data-v569-remember-device checked><i></i><span><b>Recordar este dispositivo</b><small>La app reconocerá esta instalación como un dispositivo habitual de tu perfil.</small></span></label>'+
     '</div>'+
     '<button class="v569-primary" type="button" data-v569-login>Entrar</button>'+
-    (bio?'<button class="v569-secondary bio" type="button" data-v569-login-bio>◉ Entrar con huella / biometría</button>':'')+
+    (bio?'<button class="v569-secondary bio" type="button" data-v569-login-bio>◉ Entrar con rostro / huella</button>':'')+
     '<button class="v569-link" type="button" data-v569-profile-mode="register">Crear una cuenta</button>'+
   '</section>';
 }
@@ -338,7 +340,7 @@ function profileSuccessMarkup(account){
   return '<section class="v569-inline-auth v569-inline-success" data-v569-page="success">'+
     '<div class="v569-success-mark">✓</div><small>CUENTA CREADA</small><h2>'+esc(account.name||account.alias)+'</h2>'+
     '<p>Tu cuenta quedó lista y permanece dentro de la sección Perfil.</p>'+
-    '<div class="v569-success-data"><span><small>ALIAS</small><b>@'+esc(account.alias)+'</b></span><span><small>CONTACTO</small><b>'+esc(contactText(account))+'</b></span><span><small>SEGURIDAD</small><b>'+(biometricEnabled(account)?'Huella / biometría activada':'Contraseña activa')+'</b></span><span><small>DISPOSITIVO</small><b>'+(isRememberedDevice(account)?'✓ Este dispositivo quedó recordado':'No recordado')+'</b></span></div>'+
+    '<div class="v569-success-data"><span><small>ALIAS</small><b>@'+esc(account.alias)+'</b></span><span><small>CONTACTO</small><b>'+esc(contactText(account))+'</b></span><span><small>SEGURIDAD</small><b>'+(biometricEnabled(account)?biometricAccessLabel(account)+' activado':'Contraseña activa')+'</b></span><span><small>DISPOSITIVO</small><b>'+(isRememberedDevice(account)?'✓ Este dispositivo quedó recordado':'No recordado')+'</b></span></div>'+
     '<button class="v569-primary" type="button" data-v569-profile-finish>Ver mi perfil</button>'+
     '<button class="v569-secondary" type="button" data-v569-copy-alias>Copiar alias</button>'+
   '</section>';
@@ -400,7 +402,7 @@ function authShell(kind){
           '<div data-v569-email-wrap hidden>'+field('GMAIL / CORREO',input('email','data-v569-email','nombre@gmail.com','','autocomplete="email"'))+'</div>'+
           field('CONTRASEÑA','<div class="v569-inline">'+input('password','data-v569-password','Mínimo 8 caracteres','','autocomplete="new-password"')+'<button type="button" data-v569-generate-password><span>✦</span> Generar</button></div>')+
           field('CONFIRMAR CONTRASEÑA',input('password','data-v569-confirm','Repite la contraseña','','autocomplete="new-password"'))+
-          '<label class="v569-check"><input type="checkbox" data-v569-bio checked><i></i><span><b>Activar acceso biométrico</b><small>En Android puede usar huella, rostro o PIN del dispositivo.</small></span></label>'+'<label class="v569-check v577-remember-device"><input type="checkbox" data-v569-remember-device checked><i></i><span><b>Recordar este dispositivo</b><small>Vincula esta instalación con tu perfil para reconocerla en próximos accesos.</small></span></label>'+
+          '<label class="v569-check"><input type="checkbox" data-v569-face checked><i></i><span><b>Activar rostro / Face ID</b><small>Permite entrar más rápido usando reconocimiento facial si el teléfono lo admite.</small></span></label>'+          '<label class="v569-check"><input type="checkbox" data-v569-bio><i></i><span><b>Activar huella / biometría</b><small>También puedes usar huella o el método biométrico seguro del dispositivo.</small></span></label>'+          '<label class="v569-check v577-remember-device"><input type="checkbox" data-v569-remember-device checked><i></i><span><b>Recordar este dispositivo</b><small>Vincula esta instalación con tu perfil para reconocerla en próximos accesos.</small></span></label>'+
           '<label class="v569-check"><input type="checkbox" data-v569-terms checked><i></i><span><b>Acepto guardar esta cuenta en este dispositivo</b><small>Los datos de acceso se almacenan localmente en la app.</small></span></label>'+
         '</div>'+
         '<button class="v569-primary" type="button" data-v569-register>Crear cuenta</button>'+
@@ -419,7 +421,7 @@ function authShell(kind){
         '<label class="v569-check v577-remember-device"><input type="checkbox" data-v569-remember-device checked><i></i><span><b>Recordar este dispositivo</b><small>La app reconocerá esta instalación como un dispositivo habitual de tu perfil.</small></span></label>'+
       '</div>'+
       '<button class="v569-primary" type="button" data-v569-login>Entrar</button>'+
-      (bio?'<button class="v569-secondary bio" type="button" data-v569-login-bio>◉ Entrar con huella / biometría</button>':'')+
+      (bio?'<button class="v569-secondary bio" type="button" data-v569-login-bio>◉ Entrar con rostro / huella</button>':'')+
       '<button class="v569-link" type="button" data-v569-route="accountRegister">Crear una cuenta</button>'+
       '</section></section>';
   }
@@ -438,10 +440,10 @@ function authShell(kind){
     if(!a)return authShell('accountLogin');
     const enabled=biometricEnabled(a);
     return '<section class="v569-page" data-v569-page="security">'+
-      header('SEGURIDAD','Huella y biometría','Protege el acceso usando el sistema biométrico o bloqueo seguro del teléfono.')+
+      header('SEGURIDAD','Rostro, huella y biometría','Protege el acceso usando Face ID, reconocimiento facial, huella o el bloqueo seguro del teléfono.')+
       '<section class="v569-card"><div class="v569-security-state '+(enabled?'on':'off')+'"><span>◉</span><div><b>'+(enabled?'Biometría activada':'Biometría no activada')+'</b><small>'+(enabled?esc(a.biometric.device||deviceName())+' · '+esc(fmtDate(a.biometric.enabledAt)):'Puedes activarla en este dispositivo.')+'</small></div></div>'+
-      (enabled?'<button class="v569-primary" type="button" data-v569-verify-bio>Verificar mi identidad</button><button class="v569-danger" type="button" data-v569-disable-bio>Desactivar biometría</button>':'<button class="v569-primary" type="button" data-v569-enable-bio>Activar huella / biometría</button>')+
-      '<p class="v569-note">La app no puede leer ni guardar tu huella. Android/Chrome muestra el método seguro disponible: huella, rostro o PIN.</p></section></section>';
+      (enabled?'<button class="v569-primary" type="button" data-v569-verify-bio>Verificar mi identidad</button><button class="v569-danger" type="button" data-v569-disable-bio>Desactivar biometría</button>':'<button class="v569-primary" type="button" data-v569-enable-face>🙂 Activar rostro / Face ID</button><button class="v569-secondary bio" type="button" data-v569-enable-bio>◉ Activar huella / biometría</button>')+
+      '<p class="v569-note">La app no guarda una foto de tu cara ni puede leer tu huella. Android/Chrome controla la verificación y muestra el método seguro disponible: rostro, huella o PIN.</p></section></section>';
   }
   if(kind==='accountPassword'){
     if(!a)return authShell('accountLogin');
@@ -494,8 +496,10 @@ async function registerFromPage(root){
   const rec={id:randomId(),name,alias,phone:method==='phone'?phone:'',email:method==='email'?email:'',createdAt:nowIso(),updatedAt:nowIso(),lastLoginAt:nowIso(),password:await newPasswordRecord(pass),biometric:null,devices:[]};
   const auth=authState();auth.accounts.push(rec);auth.currentId=rec.id;saveAuth(auth);
   const active=remember?rememberDevice(rec,{verified:false,method:'registration'}):rec;setAppUser(active);
-  if($('[data-v569-bio]',root)?.checked){
-    try{await enrollBiometric(rec)}catch(e){closeOverlay();toast(e?.name==='NotAllowedError'?'Cuenta creada · biometría cancelada':'Cuenta creada · '+(e?.message||'no se pudo activar biometría'))}
+  const faceRequested=$('[data-v569-face]',root)?.checked===true;
+  const bioRequested=$('[data-v569-bio]',root)?.checked===true;
+  if(faceRequested||bioRequested){
+    try{await enrollBiometric(rec,faceRequested?'face':'biometric')}catch(e){closeOverlay();toast(e?.name==='NotAllowedError'?'Cuenta creada · verificación biométrica cancelada':'Cuenta creada · '+(e?.message||'no se pudo activar el acceso rápido'))}
   }
   showCredentials(currentAccount()||rec);
 }
@@ -570,7 +574,7 @@ function loggedProfileMarkup(a){
   return '<div class="v569-profile-hero" data-v569-profile-hero>'+
     '<div class="v569-profile-avatar">'+initial+'</div>'+
     '<div class="v569-profile-copy"><small>MI CUENTA</small><h1>'+esc(a.name||a.alias)+'</h1><b>@'+esc(a.alias)+'</b><p>'+esc(contactText(a))+'</p></div>'+
-    '<div class="v577-profile-security"><span class="v569-profile-bio '+(biometricEnabled(a)?'on':'')+'">'+(biometricEnabled(a)?'◉ Protegida':'○ Sin biometría')+'</span><span class="v577-trusted '+(isRememberedDevice(a)?'on':'')+'">'+(isRememberedDevice(a)?'✓ Dispositivo reconocido':'○ Dispositivo no recordado')+'</span></div>'+
+    '<div class="v577-profile-security"><span class="v569-profile-bio '+(biometricEnabled(a)?'on':'')+'">'+(biometricEnabled(a)?'◉ '+esc(biometricAccessLabel(a)):'○ Sin biometría')+'</span><span class="v577-trusted '+(isRememberedDevice(a)?'on':'')+'">'+(isRememberedDevice(a)?'✓ Dispositivo reconocido':'○ Dispositivo no recordado')+'</span></div>'+
     '<div class="v569-profile-buttons"><button type="button" data-v569-route="accountEdit">Editar perfil</button><button type="button" data-v569-route="accountSecurity">Seguridad</button></div>'+
   '</div>';
 }
@@ -587,6 +591,7 @@ function enhanceProfile(){
       const box=document.createElement('div');box.dataset.v569AccountMenu='';box.className='v569-profile-account-menu';
       box.innerHTML='<button type="button" data-v569-route="accountPassword"><span>🔑</span><b>Cambiar contraseña</b><i>›</i></button>'+
         '<button type="button" data-v569-route="accountDevices"><span>📱</span><b>Dispositivos</b><i>›</i></button>'+
+        '<button type="button" data-v569-route="accountSecurity"><span>🙂</span><b>Rostro / Face ID</b><i>›</i></button>'+
         '<button type="button" data-v569-route="accountSecurity"><span>◉</span><b>Huella / biometría</b><i>›</i></button>'+
         '<button type="button" class="logout" data-v569-logout><span>↪</span><b>Cerrar sesión</b><i>›</i></button>';
       menu.insertAdjacentElement('beforebegin',box);
@@ -661,7 +666,8 @@ document.addEventListener('click',async e=>{
   if(e.target.closest('[data-v569-login-bio]')){e.preventDefault();await biometricLogin(e.target.closest('[data-v569-page]'));return}
   if(e.target.closest('[data-v569-save-profile]')){e.preventDefault();await saveProfile(e.target.closest('[data-v569-page]'));return}
   if(e.target.closest('[data-v569-change-pass]')){e.preventDefault();await changePassword(e.target.closest('[data-v569-page]'));return}
-  if(e.target.closest('[data-v569-enable-bio]')){e.preventDefault();try{await enrollBiometric(currentAccount());schedule()}catch(err){closeOverlay();toast(err?.name==='NotAllowedError'?'Activación cancelada':(err?.message||'No se pudo activar'))}return}
+  if(e.target.closest('[data-v569-enable-face]')){e.preventDefault();try{await enrollBiometric(currentAccount(),'face');schedule()}catch(err){closeOverlay();toast(err?.name==='NotAllowedError'?'Activación facial cancelada':(err?.message||'No se pudo activar el acceso facial'))}return}
+  if(e.target.closest('[data-v569-enable-bio]')){e.preventDefault();try{await enrollBiometric(currentAccount(),'biometric');schedule()}catch(err){closeOverlay();toast(err?.name==='NotAllowedError'?'Activación cancelada':(err?.message||'No se pudo activar'))}return}
   if(e.target.closest('[data-v569-verify-bio]')){e.preventDefault();try{await verifyBiometric(currentAccount())}catch(err){closeOverlay();toast(err?.name==='NotAllowedError'?'Verificación cancelada':(err?.message||'No se pudo verificar'))}return}
   if(e.target.closest('[data-v569-disable-bio]')){e.preventDefault();const a=currentAccount(),auth=authState(),idx=auth.accounts.findIndex(x=>x.id===a?.id);if(idx>=0){auth.accounts[idx].biometric=null;auth.accounts[idx].devices=(auth.accounts[idx].devices||[]).map(d=>({...d,verified:false}));saveAuth(auth);updateMainStoreAccount(auth.accounts[idx]);toast('Biometría desactivada');schedule()}return}
   if(e.target.closest('[data-v577-remember-current]')){
