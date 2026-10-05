@@ -1,0 +1,161 @@
+/* V804 — círculos de escudos según referencia del usuario.
+   Calendario: local arriba dentro del círculo principal; visitante en círculo
+   pequeño superpuesto atrás/abajo a la derecha.
+   Directorio/Tienda: ningún escudo puede sobresalir del círculo. */
+
+body.v415-calendar-active .v415-day-logos{
+  position:relative!important;
+  z-index:3!important;
+  width:62px!important;
+  height:58px!important;
+  display:block!important;
+  margin:0 auto!important;
+  overflow:visible!important;
+}
+
+body.v415-calendar-active .v415-day-logos .v415-logo{
+  box-sizing:border-box!important;
+  display:grid!important;
+  place-items:center!important;
+  overflow:hidden!important;
+  border-radius:50%!important;
+}
+
+body.v415-calendar-active .v415-day-logos .v415-logo.is-home{
+  position:absolute!important;
+  z-index:3!important;
+  left:1px!important;
+  top:1px!important;
+  width:51px!important;
+  height:51px!important;
+  padding:6px!important;
+  border:3px solid #4b8fff!important;
+  background:#08142f!important;
+  box-shadow:
+    0 0 0 2px rgba(23,51,112,.40),
+    0 5px 12px rgba(0,0,35,.24)!important;
+}
+
+body.v415-calendar-active .v415-day-logos .v415-logo.is-home img{
+  width:100%!important;
+  height:100%!important;
+  max-width:100%!important;
+  max-height:100%!important;
+  display:block!important;
+  margin:auto!important;
+  padding:0!important;
+  object-fit:contain!important;
+  object-position:center!important;
+  transform:none!important;
+  filter:none!important;
+  border-radius:0!important;
+  background:transparent!important;
+}
+
+body.v415-calendar-active .v415-day-logos .v415-logo.is-away{
+  position:absolute!important;
+  z-index:4!important;
+  right:0!important;
+  bottom:0!important;
+  left:auto!important;
+  top:auto!important;
+  width:29px!important;
+  height:29px!important;
+  padding:4px!important;
+  border:2px solid #5e6e94!important;
+  border-radius:50%!important;
+  background:#536181!important;
+  box-shadow:0 3px 8px rgba(0,0,30,.30)!important;
+}
+
+body.v415-calendar-active .v415-day-logos .v415-logo.is-away img{
+  width:100%!important;
+  height:100%!important;
+  max-width:100%!important;
+  max-height:100%!important;
+  display:block!important;
+  margin:auto!important;
+  padding:0!important;
+  object-fit:contain!important;
+  object-position:center!important;
+  transform:none!important;
+  filter:none!important;
+  border-radius:0!important;
+  background:transparent!important;
+}
+
+/* Anula el antiguo is-second para que nunca se dibuje un tercer aro encima. */
+body.v415-calendar-active .v415-day-logos .v415-logo.is-second{
+  left:auto!important;
+  top:auto!important;
+}
+
+/* El número de hoy queda encima sin tapar los dos escudos. */
+body.v415-calendar-active .v415-day.today.has-match .v415-today-badge{
+  z-index:6!important;
+}
+
+/* Tarjetas/listados de equipos (incluye Tienda de clubes).
+   Hermanos y cualquier escudo vertical quedan completamente dentro del aro. */
+html body .v66-team-card .v66-team-logo,
+html body [data-v66-open-team] .v66-team-logo{
+  width:50px!important;
+  height:50px!important;
+  min-width:50px!important;
+  min-height:50px!important;
+  max-width:50px!important;
+  max-height:50px!important;
+  aspect-ratio:1/1!important;
+  box-sizing:border-box!important;
+  display:grid!important;
+  place-items:center!important;
+  overflow:hidden!important;
+  padding:5px!important;
+  border-radius:50%!important;
+  border:2px solid #4b8fff!important;
+  background:#0a1535!important;
+  box-shadow:0 0 0 1px rgba(68,111,206,.26)!important;
+}
+
+html body .v66-team-card .v66-team-logo img,
+html body [data-v66-open-team] .v66-team-logo img{
+  width:100%!important;
+  height:100%!important;
+  min-width:0!important;
+  min-height:0!important;
+  max-width:100%!important;
+  max-height:100%!important;
+  display:block!important;
+  margin:auto!important;
+  padding:0!important;
+  object-fit:contain!important;
+  object-position:center!important;
+  transform:none!important;
+  clip-path:none!important;
+  border-radius:0!important;
+  background:transparent!important;
+}
+
+/* Listado clásico de Equipos: mismo principio de contención. */
+html body .v27-logo{
+  box-sizing:border-box!important;
+  overflow:hidden!important;
+  border-radius:50%!important;
+}
+html body .v27-logo img{
+  width:82%!important;
+  height:82%!important;
+  max-width:82%!important;
+  max-height:82%!important;
+  margin:auto!important;
+  object-fit:contain!important;
+  object-position:center!important;
+  transform:none!important;
+}
+
+/* Evita que un escudo con proporción muy alta (como Hermanos) se salga visualmente. */
+html body img[alt="Hermanos"],
+html body img[alt="HERMANOS"]{
+  object-fit:contain!important;
+  object-position:center!important;
+}
