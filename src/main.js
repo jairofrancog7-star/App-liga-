@@ -4296,21 +4296,13 @@ function predictorView(){
   return `<section class="v37-predictor-reference" aria-label="Pronostica Seis">
     <img
       class="v37-predictor-reference-image"
-      src="./assets/reference/predictor-master.png?v=20260919-predictor-master"
+      src="./assets/reference/predictor-v37/predictor-reference-body.webp?v=20260919-predictor-v37"
       alt="Pronostica Seis"
       draggable="false"
     >
     <button type="button" class="v37-predictor-enter" data-route="predictorSix" aria-label="Abrir Pronostica Seis"></button>
-    <nav class="v37-predictor-hotnav" aria-label="Navegación">
-      <button type="button" data-route="home" aria-label="Inicio"></button>
-      <button type="button" data-route="competition" aria-label="Competición"></button>
-      <button type="button" data-route="video" aria-label="Vídeo"></button>
-      <button type="button" data-route="fantasy" aria-label="Fantasy"></button>
-      <button type="button" data-route="more" aria-label="Más"></button>
-    </nav>
   </section>`;
 }
-
 function predictorSixView(){
   const BASE='https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/';
   const games=[
