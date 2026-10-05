@@ -4294,23 +4294,21 @@ function historyBody(){return `<section class="section"><div class="empty-state"
 function profileView(){return `<div class="eyebrow">CUENTA</div><h1 class="screen-title">Perfil</h1>${state.user?`<div class="profile-card"><div class="avatar-ball">${state.user.name.slice(0,1).toUpperCase()}</div><h2>${state.user.name}</h2><p>${state.user.email}</p><button class="btn outline" data-action="logout">Cerrar sesión</button></div>`:`<div class="profile-card"><h2>Más de Liga Juventino</h2><p>Inicia sesión para guardar tu identidad, tu Fantasy y tus preferencias.</p><div class="button-row"><button class="btn primary" data-action="login-demo">Iniciar sesión</button><button class="btn outline" data-action="login-demo">Crear cuenta</button></div></div>`}${menuGroup('Tu contenido',[['Favoritos','favorites',`${state.favorites.length} guardados`],['Siguiendo','following',`${state.followed.length} equipos`],['Mi Fantasy','fantasyTeam'],['Quiniela','predictor']])}${menuGroup('Ajustes',[['Notificaciones','notifications'],['Privacidad','privacy'],['Cambiar tema','theme']])}`}
 function predictorView(){
   return `<section class="v37-predictor-reference" aria-label="Pronostica Seis">
-    <img
-      class="v37-predictor-reference-image"
-      src="./assets/reference/predictor-master.png?v=20260919-predictor-master"
-      alt="Pronostica Seis"
-      draggable="false"
-    >
-    <button type="button" class="v37-predictor-enter" data-route="predictorSix" aria-label="Abrir Pronostica Seis"></button>
-    <nav class="v37-predictor-hotnav" aria-label="Navegación">
-      <button type="button" data-route="home" aria-label="Inicio"></button>
-      <button type="button" data-route="competition" aria-label="Competición"></button>
-      <button type="button" data-route="video" aria-label="Vídeo"></button>
-      <button type="button" data-route="fantasy" aria-label="Fantasy"></button>
-      <button type="button" data-route="more" aria-label="Más"></button>
-    </nav>
+    <div class="v37-predictor-marks" aria-hidden="true"><i></i><i></i></div>
+    <h1 class="v37-predictor-title"><span>?PRONOSTICA</span><span>SEIS</span></h1>
+    <img class="v37-predictor-crest" src="./assets/reference/predictor-v36/liga-crest-white.webp?v=20260928-old-design-restore3" alt="Liga Municipal de Fútbol Juventino Rosas">
+    <button type="button" class="v37-predictor-enter" data-route="predictorSix" aria-label="Abrir Pronostica Seis">
+      <span class="v37-score-panel" aria-hidden="true">
+        <img class="v37-score-two" src="./assets/reference/predictor-v36/predictor-two.webp?v=20260928-old-design-restore3" alt="">
+        <img class="v37-score-question" src="./assets/reference/predictor-v36/predictor-question.webp?v=20260928-old-design-restore3" alt="">
+        <img class="v37-score-question" src="./assets/reference/predictor-v36/predictor-question.webp?v=20260928-old-design-restore3" alt="">
+      </span>
+      <img class="v37-predictor-trophy" src="./assets/reference/predictor-v36/predictor-trophy.webp?v=20260928-old-design-restore3" alt="">
+      <img class="v37-predictor-pitch-img" src="./assets/reference/predictor-v36/predictor-pitch.webp?v=20260928-old-design-restore3" alt="" aria-hidden="true">
+    </button>
+    <img class="v37-predictor-stadium-img" src="./assets/reference/predictor-v36/predictor-stadium.webp?v=20260928-old-design-restore3" alt="" aria-hidden="true">
   </section>`;
 }
-
 function predictorSixView(){
   const BASE='https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/';
   const games=[
