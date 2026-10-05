@@ -1,0 +1,81 @@
+/* V788 — Más o Menos: una sola barra inferior, tamaño restaurado y recorte limpio.
+   La barra real de la app queda abajo; cualquier barra horneada en la referencia se recorta. */
+body[data-app-route="moreLess"] #app > .topbar,
+body[data-app-route="moreLess"] .app-shell > .topbar{
+  display:none!important;
+  visibility:hidden!important;
+  height:0!important;
+  min-height:0!important;
+  max-height:0!important;
+  margin:0!important;
+  padding:0!important;
+  overflow:hidden!important;
+}
+
+body[data-app-route="moreLess"] #screen{
+  width:100%!important;
+  max-width:none!important;
+  height:calc(100dvh - var(--v34-nav-h,69px) - env(safe-area-inset-bottom))!important;
+  min-height:0!important;
+  margin:0!important;
+  padding:0!important;
+  overflow:hidden!important;
+  box-sizing:border-box!important;
+}
+body[data-app-route="moreLess"] #screen > .v12-moreless,
+body[data-app-route="moreLess"] #screen [data-v12-moreless]{
+  width:100%!important;
+  max-width:none!important;
+  height:100%!important;
+  min-height:0!important;
+  margin:0!important;
+  padding:0!important;
+  overflow:hidden!important;
+  box-sizing:border-box!important;
+}
+
+/* Si algún parche antiguo llegó a clonar la navegación dentro de la pantalla, no se muestra. */
+body[data-app-route="moreLess"] #screen .bottom-nav,
+body[data-app-route="moreLess"] #screen nav[aria-label="Navegación principal"]{
+  display:none!important;
+}
+
+/* V47/V48 usan una referencia con una franja inferior dibujada.
+   Extendemos esa referencia por debajo del recorte para que la franja quede fuera del cuadro. */
+body[data-app-route="moreLess"] .v12-moreless::after{
+  top:29%!important;
+  bottom:calc(-1 * var(--v34-nav-h,69px))!important;
+  background-position:center bottom!important;
+  background-size:auto 100%!important;
+  overflow:hidden!important;
+  pointer-events:none!important;
+}
+
+/* La navegación real conserva las dimensiones compactas anteriores. */
+body[data-app-route="moreLess"] #app > .bottom-nav,
+body[data-app-route="moreLess"] .app-shell > .bottom-nav,
+body[data-app-route="moreLess"] #app > nav.bottom-nav{
+  height:var(--v34-nav-h,69px)!important;
+  min-height:var(--v34-nav-h,69px)!important;
+  max-height:var(--v34-nav-h,69px)!important;
+  bottom:0!important;
+}
+
+/* Desactivar las zonas transparentes gigantes de V582.
+   Solo quedan clicables los dos botones reales de los monitos. */
+body[data-app-route="moreLess"] .v582-monito-hit{
+  display:none!important;
+  pointer-events:none!important;
+}
+body[data-app-route="moreLess"] .v12-ml-choice > button{
+  pointer-events:auto!important;
+  touch-action:manipulation!important;
+  -webkit-tap-highlight-color:transparent!important;
+}
+
+@media(max-height:740px){
+  body[data-app-route="moreLess"] .v12-moreless::after{
+    top:28%!important;
+    bottom:calc(-1 * var(--v34-nav-h,69px))!important;
+  }
+}
