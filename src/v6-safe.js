@@ -338,7 +338,7 @@
 
   function performanceView(){
     const base='https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/';
-    const leagueLogo=base+'assets/liga-logo.webp';
+    const leagueLogo='./assets/reference/predictor-v36/liga-crest-white.webp';
     const hero='https://skyagent-artifacts.skywork.ai/image/5221463659472822263/2100485172215463936/2100485172215463937.png';
     const show='https://skyagent-artifacts.skywork.ai/image/5221463659472822263/2100485077397905408/2100485077397905409.png';
     const stories=[
