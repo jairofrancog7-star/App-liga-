@@ -522,12 +522,65 @@ function newsItems(){
   });
   return out.slice(0,6);
 }
+function newsKind(n){
+  const txt=norm((n?.small||'')+' '+(n?.title||'')+' '+(n?.p||''));
+  if(/fichaj|transfer|alta|baja|renovacion|refuerzo|movimiento/.test(txt))return 'fichajes';
+  if(/clasificacion|plantilla|equipo|club|san jose|juventus|linces|boavista|manchester|dynamo|esperanza/.test(txt))return 'equipos';
+  if(/liga|jornada|torneo|copa|comunicado|aviso|calendario|partido/.test(txt))return 'liga';
+  return 'para';
+}
 function newsMarkup(){
   const items=newsItems();
   return section('ACTUALIDAD','Para ti','Noticias y comunicados acomodados como un feed deportivo, usando el contenido que ya existe en la Liga.',
-    '<div class="v413-news-tabs"><button class="active" type="button">Para ti</button><button type="button">Liga</button><button type="button">Equipos</button><button type="button">Fichajes</button></div>'+
-    '<div class="v413-news-feed">'+(items.length?items.map(n=>'<article class="v413-news-card"><div><small>'+esc(n.small)+'</small><h3>'+esc(n.title)+'</h3><p>'+esc(n.p)+'</p></div><span class="v413-news-thumb">LJR</span></article>').join(''):'<div class="v413-empty">Cuando haya noticias visibles en esta sección aparecerán aquí con este diseño.</div>')+'</div>'
+    '<div class="v413-news-tabs" role="tablist" aria-label="Filtros de noticias">'+
+      '<button class="active" type="button" role="tab" aria-selected="true" data-v413-news-filter="all">Para ti</button>'+
+      '<button type="button" role="tab" aria-selected="false" data-v413-news-filter="liga">Liga</button>'+
+      '<button type="button" role="tab" aria-selected="false" data-v413-news-filter="equipos">Equipos</button>'+
+      '<button type="button" role="tab" aria-selected="false" data-v413-news-filter="fichajes">Fichajes</button>'+
+    '</div>'+
+    '<div class="v413-news-feed" data-v413-news-feed>'+(items.length?items.map(n=>'<article class="v413-news-card" data-v413-news-kind="'+newsKind(n)+'"><div><small>'+esc(n.small)+'</small><h3>'+esc(n.title)+'</h3><p>'+esc(n.p)+'</p></div><span class="v413-news-thumb">LJR</span></article>').join(''):'<div class="v413-empty">Cuando haya noticias visibles en esta sección aparecerán aquí con este diseño.</div>')+'</div>'
   );
+}
+function bindNews(root){
+  if(!root)return;
+  let mode='all';
+  const labels={all:'Para ti',liga:'Liga',equipos:'Equipos',fichajes:'Fichajes'};
+  const title=root.querySelector('.v413-head h2');
+  const feed=root.querySelector('[data-v413-news-feed]');
+  const render=()=>{
+    if(!feed)return;
+    feed.querySelector('.v413-news-empty')?.remove();
+    let shown=0;
+    feed.querySelectorAll('.v413-news-card').forEach(card=>{
+      const kind=card.dataset.v413NewsKind||'para';
+      const visible=mode==='all'||kind===mode;
+      card.hidden=!visible;
+      if(visible)shown++;
+    });
+    root.querySelectorAll('[data-v413-news-filter]').forEach(b=>{
+      const active=(b.dataset.v413NewsFilter||'all')===mode;
+      b.classList.toggle('active',active);
+      b.setAttribute('aria-selected',active?'true':'false');
+    });
+    if(title)title.textContent=labels[mode]||'Para ti';
+    if(!shown){
+      const empty=document.createElement('div');
+      empty.className='v413-empty v413-news-empty';
+      empty.innerHTML=mode==='fichajes'
+        ?'<b>Sin fichajes publicados</b><span>Cuando la Liga publique altas, bajas o movimientos aparecerán aquí.</span><button type="button" data-v413-open-transfers>Abrir centro de fichajes</button>'
+        :'<b>Sin noticias en esta sección</b><span>Las nuevas publicaciones aparecerán aquí automáticamente.</span>';
+      feed.appendChild(empty);
+      empty.querySelector('[data-v413-open-transfers]')?.addEventListener('click',()=>go('transfers'));
+    }
+  };
+  root.querySelectorAll('[data-v413-news-filter]').forEach(b=>{
+    b.onclick=e=>{
+      e.preventDefault();e.stopPropagation();e.stopImmediatePropagation?.();
+      mode=b.dataset.v413NewsFilter||'all';
+      render();
+    };
+  });
+  render();
 }
 
 /* ---------- BUSCAR ---------- */
@@ -664,7 +717,7 @@ function socialMarkup(){
 function contentFor(r){
   if(['v4-calendar','calendar','monthlyCalendar','calendarMonthly'].includes(r))return {html:calendarMarkup(),bind:bindCalendar};
   if(r==='following')return {html:favoritesMarkup(),bind:bindFavorites};
-  if(['news','v38Weekly'].includes(r))return {html:newsMarkup(),bind:()=>{}};
+  if(['news','v38Weekly'].includes(r))return {html:newsMarkup(),bind:bindNews};
   if(r==='search')return {html:searchMarkup(),bind:bindSearch};
   if(['matchCenter','match-center','v4-matchcenter'].includes(r))return {html:matchAlertsMarkup(),bind:bindMatchAlerts};
   if(['profile','more'].includes(r))return {html:socialMarkup(),bind:root=>root.querySelector('[data-v413-facebook]')?.addEventListener('click',()=>window.open(FB,'_blank','noopener,noreferrer'))};
@@ -730,14 +783,14 @@ function mount(){
   };
 
   if(old&&old.dataset.v413Route===r){
-    if(isWeekly)return; // posición congelada: no reordenar durante scroll/mutations
+    if(isWeekly){cfg.bind(old);return} // posición congelada; filtros siempre re-enlazados
     if(isMatchCenter)placeMatchAlerts(old);
     else if(isMore)placeMoreSocial(old);
     else placeStandard(old);
     /* V641 — Following puede ser reinsertado/reconstruido por otros módulos.
        Reasignar onclick/oninput es idempotente y evita que tabs, estrella y buscador
        queden visuales pero sin eventos. */
-    if(r==='following')cfg.bind(old);
+    if(r==='following'||isWeekly)cfg.bind(old);
     return;
   }
 
