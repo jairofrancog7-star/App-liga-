@@ -199,46 +199,50 @@
   body[data-app-route="safe-about"] .v33-about-timeline article:after{animation:none!important}
 }
 
-/* V769_MATCHCENTER_ROSTER_LOGO_SIZE_START */
-/* Match Center · Plantillas registradas:
-   cuadro y escudo con la misma medida en ambos equipos.
-   Sólo afecta las dos tarjetas de "Plantillas registradas"; no toca el marcador principal. */
-body.v92-match-center-official .v92-player-grid{
+/* V770_MATCHCENTER_ROSTER_LOGO_SIZE_START */
+/* Match Center · Plantillas registradas.
+   El usuario pidió logos más compactos y del mismo tamaño visual,
+   SIN reducir el tamaño de las tarjetas. */
+body.v92-match-center-official .v92-player-grid,
+body[data-app-route="v4-matchcenter"].v92-match-center-official .v92-player-grid{
   align-items:stretch!important;
 }
-body.v92-match-center-official .v92-player-card{
-  grid-template-columns:58px minmax(0,1fr)!important;
-  gap:12px!important;
+body.v92-match-center-official .v92-player-card,
+body[data-app-route="v4-matchcenter"].v92-match-center-official .v92-player-card{
+  grid-template-columns:44px minmax(0,1fr)!important;
+  gap:10px!important;
   align-items:center!important;
   min-height:94px!important;
   padding:13px!important;
 }
-body.v92-match-center-official .v92-player-card .v92-team-logo.small{
-  width:58px!important;
-  height:58px!important;
-  min-width:58px!important;
-  min-height:58px!important;
-  max-width:58px!important;
-  max-height:58px!important;
+body.v92-match-center-official .v92-player-card .v92-team-logo.small,
+body[data-app-route="v4-matchcenter"].v92-match-center-official .v92-player-card .v92-team-logo.small{
+  width:44px!important;
+  height:44px!important;
+  min-width:44px!important;
+  min-height:44px!important;
+  max-width:44px!important;
+  max-height:44px!important;
   aspect-ratio:1/1!important;
-  padding:5px!important;
+  padding:4px!important;
   margin:0!important;
   display:grid!important;
   place-items:center!important;
   overflow:hidden!important;
   box-sizing:border-box!important;
-  border-radius:15px!important;
+  border-radius:13px!important;
   border:2px solid rgba(218,230,255,.88)!important;
   background:#0d112d!important;
-  flex:0 0 58px!important;
+  flex:0 0 44px!important;
 }
-body.v92-match-center-official .v92-player-card .v92-team-logo.small img{
-  width:46px!important;
-  height:46px!important;
-  min-width:0!important;
-  min-height:0!important;
-  max-width:46px!important;
-  max-height:46px!important;
+body.v92-match-center-official .v92-player-card .v92-team-logo.small img,
+body[data-app-route="v4-matchcenter"].v92-match-center-official .v92-player-card .v92-team-logo.small img{
+  width:36px!important;
+  height:36px!important;
+  min-width:36px!important;
+  min-height:36px!important;
+  max-width:36px!important;
+  max-height:36px!important;
   padding:0!important;
   margin:0 auto!important;
   object-fit:contain!important;
@@ -247,33 +251,40 @@ body.v92-match-center-official .v92-player-card .v92-team-logo.small img{
   border-radius:0!important;
   background:transparent!important;
 }
-body.v92-match-center-official .v92-player-card>span:last-child{
+body.v92-match-center-official .v92-player-card>span:last-child,
+body[data-app-route="v4-matchcenter"].v92-match-center-official .v92-player-card>span:last-child{
   min-width:0!important;
   align-self:center!important;
 }
-body.v92-match-center-official .v92-player-card b{
+body.v92-match-center-official .v92-player-card b,
+body[data-app-route="v4-matchcenter"].v92-match-center-official .v92-player-card b{
   white-space:normal!important;
   overflow:visible!important;
   text-overflow:clip!important;
   overflow-wrap:anywhere!important;
   line-height:1.12!important;
 }
+/* Mantener exactamente la misma medida en móvil: no volver a agrandar ni encoger. */
 @media(max-width:420px){
-  body.v92-match-center-official .v92-player-card{
-    grid-template-columns:54px minmax(0,1fr)!important;
+  body.v92-match-center-official .v92-player-card,
+  body[data-app-route="v4-matchcenter"].v92-match-center-official .v92-player-card{
+    grid-template-columns:44px minmax(0,1fr)!important;
     gap:9px!important;
-    padding:11px!important;
-    min-height:88px!important;
+    padding:11px 13px!important;
+    min-height:94px!important;
   }
-  body.v92-match-center-official .v92-player-card .v92-team-logo.small{
-    width:54px!important;height:54px!important;
-    min-width:54px!important;min-height:54px!important;
-    max-width:54px!important;max-height:54px!important;
-    flex-basis:54px!important;
+  body.v92-match-center-official .v92-player-card .v92-team-logo.small,
+  body[data-app-route="v4-matchcenter"].v92-match-center-official .v92-player-card .v92-team-logo.small{
+    width:44px!important;height:44px!important;
+    min-width:44px!important;min-height:44px!important;
+    max-width:44px!important;max-height:44px!important;
+    flex-basis:44px!important;
   }
-  body.v92-match-center-official .v92-player-card .v92-team-logo.small img{
-    width:42px!important;height:42px!important;
-    max-width:42px!important;max-height:42px!important;
+  body.v92-match-center-official .v92-player-card .v92-team-logo.small img,
+  body[data-app-route="v4-matchcenter"].v92-match-center-official .v92-player-card .v92-team-logo.small img{
+    width:36px!important;height:36px!important;
+    min-width:36px!important;min-height:36px!important;
+    max-width:36px!important;max-height:36px!important;
   }
 }
-/* V769_MATCHCENTER_ROSTER_LOGO_SIZE_END */
+/* V770_MATCHCENTER_ROSTER_LOGO_SIZE_END */
