@@ -267,6 +267,31 @@ async function enrollBiometric(account,kind='biometric'){
   overlay('Identidad confirmada',wantsFace?'El teléfono confirmó un acceso biométrico. Android/Chrome decide si usa rostro, huella o PIN; la app no guarda una foto de tu cara.':'La biometría quedó activada para esta cuenta.','ok');closeOverlay();
   return trusted;
 }
+async function configureFaceAccess(account){
+  if(!account)throw new Error('Cuenta no encontrada');
+  // If an older platform credential already exists, do not try to create a duplicate
+  // credential (which can return "already registered"). Re-verify it and upgrade
+  // only the app-side state. Android/Chrome still chooses face, fingerprint or PIN.
+  if(biometricEnabled(account)){
+    const verified=await verifyBiometric(account);
+    const auth=authState(),pos=auth.accounts.findIndex(a=>a.id===verified.id);
+    if(pos<0)throw new Error('Cuenta no encontrada');
+    auth.accounts[pos].biometric={
+      ...(auth.accounts[pos].biometric||{}),
+      kind:'biometric',
+      requestedKind:'face',
+      enrollmentVersion:2,
+      confirmedAt:nowIso(),
+      enabledAt:auth.accounts[pos].biometric?.enabledAt||nowIso(),
+      device:auth.accounts[pos].biometric?.device||deviceName()
+    };
+    saveAuth(auth);updateMainStoreAccount(auth.accounts[pos]);setAppUser(auth.accounts[pos]);
+    toast('Acceso facial solicitado y credencial del dispositivo confirmada');
+    return auth.accounts[pos];
+  }
+  return enrollBiometric(account,'face');
+}
+
 async function verifyBiometric(account){
   if(!biometricEnabled(account))throw new Error('Esta cuenta no tiene biometría activada');
   overlay('Confirma tu identidad','Usa la seguridad biométrica del teléfono para verificar que eres tú.','bio');
@@ -672,7 +697,7 @@ document.addEventListener('click',async e=>{
   if(e.target.closest('[data-v569-login-bio]')){e.preventDefault();await biometricLogin(e.target.closest('[data-v569-page]'));return}
   if(e.target.closest('[data-v569-save-profile]')){e.preventDefault();await saveProfile(e.target.closest('[data-v569-page]'));return}
   if(e.target.closest('[data-v569-change-pass]')){e.preventDefault();await changePassword(e.target.closest('[data-v569-page]'));return}
-  if(e.target.closest('[data-v569-enable-face]')){e.preventDefault();try{await enrollBiometric(currentAccount(),'face');schedule()}catch(err){closeOverlay();toast(err?.name==='NotAllowedError'?'Activación facial cancelada':(err?.message||'No se pudo activar el acceso facial'))}return}
+  if(e.target.closest('[data-v569-enable-face]')){e.preventDefault();try{await configureFaceAccess(currentAccount());schedule()}catch(err){closeOverlay();toast(err?.name==='NotAllowedError'?'Activación facial cancelada':(err?.message||'No se pudo activar el acceso facial'))}return}
   if(e.target.closest('[data-v569-enable-bio]')){e.preventDefault();try{await enrollBiometric(currentAccount(),'biometric');schedule()}catch(err){closeOverlay();toast(err?.name==='NotAllowedError'?'Activación cancelada':(err?.message||'No se pudo activar'))}return}
   if(e.target.closest('[data-v569-verify-bio]')){e.preventDefault();try{await verifyBiometric(currentAccount())}catch(err){closeOverlay();toast(err?.name==='NotAllowedError'?'Verificación cancelada':(err?.message||'No se pudo verificar'))}return}
   if(e.target.closest('[data-v569-disable-bio]')){e.preventDefault();const a=currentAccount(),auth=authState(),idx=auth.accounts.findIndex(x=>x.id===a?.id);if(idx>=0){auth.accounts[idx].biometric=null;auth.accounts[idx].devices=(auth.accounts[idx].devices||[]).map(d=>({...d,verified:false}));saveAuth(auth);updateMainStoreAccount(auth.accounts[idx]);toast('Biometría desactivada');schedule()}return}
