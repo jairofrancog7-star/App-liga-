@@ -1,0 +1,280 @@
+/* V803 — cancha y alineación con profundidad/entrada animada tipo CSS 3D Football. */
+body[data-app-route="tactics"] .v803-football3d{
+  --v803-cyan:#38e3ef;
+  --v803-blue:#0b2d9a;
+  position:relative;
+  z-index:6;
+  margin:28px 0 24px;
+  padding:12px 10px 18px;
+  overflow:hidden;
+  border:1px solid rgba(63,170,255,.25);
+  border-radius:24px;
+  background:
+    radial-gradient(circle at 85% 0%,rgba(48,145,255,.20),transparent 38%),
+    linear-gradient(180deg,#06105f 0%,#03083f 100%);
+  box-shadow:0 18px 42px rgba(0,0,0,.24),inset 0 0 0 1px rgba(255,255,255,.015);
+  color:#fff;
+}
+body[data-app-route="tactics"] .v803-football3d *{box-sizing:border-box}
+body[data-app-route="tactics"] .v803-head{
+  display:grid;
+  grid-template-columns:50px minmax(0,1fr) 38px;
+  gap:10px;
+  align-items:center;
+  padding:4px 3px 10px;
+}
+body[data-app-route="tactics"] .v803-head-crest{
+  width:48px;height:48px;display:grid;place-items:center;overflow:hidden;
+  border:1px solid rgba(255,255,255,.35);border-radius:50%;
+  background:radial-gradient(circle,#fff 0 58%,#d7e6ff 59% 70%,rgba(255,255,255,.15) 71%);
+  color:#06105f;font:950 10px/1 Inter,Arial,sans-serif;
+  box-shadow:0 8px 18px rgba(0,0,0,.24),0 0 18px rgba(57,219,255,.12);
+}
+body[data-app-route="tactics"] .v803-head-crest img{width:40px;height:40px;object-fit:contain;opacity:0;transform:scale(.68) rotate(-10deg);transition:opacity .35s ease,transform .55s cubic-bezier(.2,.9,.2,1.25)}
+body[data-app-route="tactics"] .v803-head-crest.is-loaded img{opacity:1;transform:scale(1) rotate(0)}
+body[data-app-route="tactics"] .v803-head-crest.is-loaded>.v803-fallback{display:none}
+body[data-app-route="tactics"] .v803-head-copy{min-width:0;display:grid;gap:3px}
+body[data-app-route="tactics"] .v803-head-copy small{color:var(--v803-cyan);font-size:7px;font-weight:950;letter-spacing:.12em}
+body[data-app-route="tactics"] .v803-head-copy b{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:15px;font-weight:950}
+body[data-app-route="tactics"] .v803-head-copy em{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:#91a6d2;font-size:8px;font-style:normal}
+body[data-app-route="tactics"] .v803-replay{
+  width:36px;height:36px;display:grid;place-items:center;
+  border:1px solid rgba(81,204,255,.32);border-radius:50%;
+  background:#09166d;color:#73ddff;font-size:20px;font-weight:900;
+  box-shadow:inset 0 0 12px rgba(50,176,255,.08);
+}
+body[data-app-route="tactics"] .v803-replay:active{transform:scale(.92)}
+body[data-app-route="tactics"] .v803-selectors{
+  display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:2px 2px 7px;
+}
+body[data-app-route="tactics"] .v803-selectors label{display:grid;gap:4px}
+body[data-app-route="tactics"] .v803-selectors label>span{color:#7f94c5;font-size:7px;font-weight:900;letter-spacing:.08em;text-transform:uppercase}
+body[data-app-route="tactics"] .v803-selectors select{
+  width:100%;height:36px;min-width:0;padding:0 9px;
+  border:1px solid rgba(75,180,255,.3);border-radius:11px;
+  background:#081467;color:#fff;outline:none;
+  font:850 9px/1 Inter,Arial,sans-serif;
+}
+body[data-app-route="tactics"] .v803-stage-note{
+  padding:3px 2px 8px;color:#7d91bc;font-size:7px;line-height:1.4;
+}
+body[data-app-route="tactics"] .v803-viewport{
+  position:relative;
+  height:430px;
+  margin:0 -7px;
+  overflow:hidden;
+  perspective:1000px;
+  perspective-origin:50% 34%;
+  border-radius:20px;
+  background:
+    radial-gradient(ellipse at 50% 77%,rgba(35,132,255,.13),transparent 45%),
+    linear-gradient(180deg,rgba(2,7,39,.12),rgba(0,2,23,.72));
+}
+body[data-app-route="tactics"] .v803-world{
+  position:absolute;left:50%;top:40px;
+  width:min(91%,430px);aspect-ratio:68/105;
+  transform-style:preserve-3d;
+  transform-origin:50% 83%;
+  opacity:0;
+  transform:translateX(-50%) translateY(-44px) translateZ(-100px) rotateX(67deg) scale(.82);
+  transition:
+    transform 1s cubic-bezier(.18,.88,.24,1.18),
+    opacity .55s ease;
+}
+body[data-app-route="tactics"] .v803-football3d.is-ready .v803-world{
+  opacity:1;
+  transform:translateX(-50%) translateY(0) translateZ(-70px) rotateX(58deg) scale(.92);
+}
+body[data-app-route="tactics"] .v803-field{
+  position:absolute;inset:0;
+  transform-style:preserve-3d;
+  border:2px solid rgba(241,255,248,.88);
+  border-radius:7px;
+  background:
+    repeating-linear-gradient(90deg,rgba(255,255,255,.018) 0 12.5%,rgba(0,0,0,.025) 12.5% 25%),
+    linear-gradient(180deg,#087445 0%,#075d38 50%,#064f31 100%);
+  box-shadow:0 30px 42px rgba(0,0,0,.32),inset 0 0 36px rgba(80,255,186,.08);
+}
+body[data-app-route="tactics"] .v803-field:before{
+  content:"";position:absolute;inset:-2px;z-index:-2;border-radius:7px;
+  background:#041b24;border:2px solid rgba(0,0,0,.55);
+  transform:translateZ(-15px) translateY(10px);
+  box-shadow:0 15px 20px rgba(0,0,0,.32);
+}
+body[data-app-route="tactics"] .v803-field:after{
+  content:"";position:absolute;left:8%;right:8%;bottom:-8%;height:10%;z-index:-3;border-radius:50%;
+  background:rgba(0,0,0,.45);filter:blur(13px);transform:translateZ(-28px);
+}
+body[data-app-route="tactics"] .v803-field-lines{position:absolute;inset:4%;z-index:1;border:2px solid rgba(255,255,255,.67);pointer-events:none}
+body[data-app-route="tactics"] .v803-field-lines i{position:absolute;display:block}
+body[data-app-route="tactics"] .v803-field-lines .half{left:0;right:0;top:50%;border-top:2px solid rgba(255,255,255,.64)}
+body[data-app-route="tactics"] .v803-field-lines .circle{left:50%;top:50%;width:26%;aspect-ratio:1;border:2px solid rgba(255,255,255,.64);border-radius:50%;transform:translate(-50%,-50%)}
+body[data-app-route="tactics"] .v803-field-lines .dot{left:50%;top:50%;width:5px;height:5px;border-radius:50%;background:#fff;transform:translate(-50%,-50%)}
+body[data-app-route="tactics"] .v803-field-lines .box{left:22%;width:56%;height:17%;border:2px solid rgba(255,255,255,.6)}
+body[data-app-route="tactics"] .v803-field-lines .box.top{top:-2px;border-top:0}
+body[data-app-route="tactics"] .v803-field-lines .box.bottom{bottom:-2px;border-bottom:0}
+body[data-app-route="tactics"] .v803-field-lines .smallbox{left:35%;width:30%;height:7.5%;border:2px solid rgba(255,255,255,.5)}
+body[data-app-route="tactics"] .v803-field-lines .smallbox.top{top:-2px;border-top:0}
+body[data-app-route="tactics"] .v803-field-lines .smallbox.bottom{bottom:-2px;border-bottom:0}
+body[data-app-route="tactics"] .v803-field-lines .goal{left:40%;width:20%;height:2.7%;border:2px solid rgba(235,253,255,.72);background:rgba(255,255,255,.04)}
+body[data-app-route="tactics"] .v803-field-lines .goal.top{top:-3.3%}
+body[data-app-route="tactics"] .v803-field-lines .goal.bottom{bottom:-3.3%}
+body[data-app-route="tactics"] .v803-field-crest{
+  position:absolute;left:50%;top:50%;z-index:2;width:72px;height:72px;
+  display:grid;place-items:center;overflow:hidden;border-radius:50%;
+  transform:translate(-50%,-50%) translateZ(2px);
+  background:rgba(255,255,255,.06);opacity:.18;
+}
+body[data-app-route="tactics"] .v803-field-crest img{width:60px;height:60px;object-fit:contain;opacity:0;transition:opacity .35s ease}
+body[data-app-route="tactics"] .v803-field-crest.is-loaded img{opacity:1}
+body[data-app-route="tactics"] .v803-field-crest.is-loaded>.v803-fallback{display:none}
+body[data-app-route="tactics"] .v803-ball{
+  position:absolute;left:50%;top:50%;z-index:5;width:18px;height:18px;border-radius:50%;
+  background:radial-gradient(circle at 35% 28%,#fff 0 32%,#d8dbe0 33% 46%,#17191f 47% 55%,#fff 56%);
+  box-shadow:0 4px 7px rgba(0,0,0,.35);
+  transform:translate(-50%,-50%) translateZ(9px);
+  animation:v803BallDrift 5.5s ease-in-out infinite;
+}
+body[data-app-route="tactics"] .v803-players{position:absolute;inset:0;z-index:8;transform-style:preserve-3d}
+body[data-app-route="tactics"] .v803-player{
+  position:absolute;width:72px;height:76px;margin:0;padding:0;
+  border:0;background:transparent;color:#fff;
+  transform-style:preserve-3d;cursor:pointer;
+  opacity:0;
+  transform:translate(-50%,-50%) translateZ(0) translateY(55px) scale(.65);
+  transition:
+    opacity .55s ease,
+    transform .82s cubic-bezier(.17,.86,.25,1.24),
+    filter .3s ease;
+  transition-delay:calc(260ms + (var(--v803-i) * 55ms));
+}
+body[data-app-route="tactics"] .v803-football3d.is-ready .v803-player{
+  opacity:1;
+  transform:translate(-50%,-50%) translateZ(28px) translateY(0) scale(1);
+}
+body[data-app-route="tactics"] .v803-player-base{
+  position:absolute;left:50%;bottom:3px;width:30px;height:18px;border-radius:50%;
+  background:rgba(0,0,0,.28);filter:blur(3px);
+  transform:translateX(-50%) rotateX(90deg) translateZ(-2px);
+}
+body[data-app-route="tactics"] .v803-player-face{
+  position:absolute;left:50%;bottom:8px;width:72px;height:72px;
+  display:grid;justify-items:center;align-content:start;
+  transform:translateX(-50%) rotateX(-58deg) translateZ(10px);
+  transform-origin:center 82%;
+  filter:drop-shadow(0 8px 6px rgba(0,0,0,.32));
+  transition:transform .32s cubic-bezier(.2,.8,.2,1),filter .32s ease;
+  pointer-events:none;
+}
+body[data-app-route="tactics"] .v803-player.active .v803-player-face{
+  transform:translateX(-50%) rotateX(-58deg) translateY(-12px) translateZ(26px) scale(1.13);
+  filter:drop-shadow(0 12px 10px rgba(0,0,0,.4)) drop-shadow(0 0 13px rgba(56,227,239,.24));
+}
+body[data-app-route="tactics"] .v803-football3d.has-focus .v803-player:not(.active){filter:saturate(.65);opacity:.34}
+body[data-app-route="tactics"] .v803-photo{
+  position:relative;width:44px;height:44px;display:grid;place-items:center;overflow:hidden;
+  border:2px solid #fff;border-radius:50%;
+  background:radial-gradient(circle at 35% 26%,#55dcff,#145ac7 62%,#092b87);
+  color:#fff;font:950 10px/1 Inter,Arial,sans-serif;
+  box-shadow:0 5px 12px rgba(0,0,0,.34),0 0 0 3px rgba(42,210,255,.12);
+  animation:v803PhotoFloat 3.2s ease-in-out infinite;
+  animation-delay:calc(-.16s * var(--v803-i));
+}
+body[data-app-route="tactics"] .v803-player.keeper .v803-photo{background:radial-gradient(circle at 35% 26%,#fff4a7,#e3b22c 62%,#8c5b00)}
+body[data-app-route="tactics"] .v803-photo img{
+  width:100%;height:100%;object-fit:cover;object-position:center 22%;display:block;
+  opacity:0;transform:scale(.78);transition:opacity .38s ease,transform .55s cubic-bezier(.2,.9,.2,1.25);
+}
+body[data-app-route="tactics"] .v803-photo.is-loaded img{opacity:1;transform:scale(1)}
+body[data-app-route="tactics"] .v803-photo.is-loaded>.v803-fallback{display:none}
+body[data-app-route="tactics"] .v803-photo.no-photo img{display:none}
+body[data-app-route="tactics"] .v803-number{
+  position:absolute;right:7px;top:29px;min-width:18px;height:18px;padding:0 4px;
+  display:grid;place-items:center;border:2px solid #fff;border-radius:10px;
+  background:#07175f;color:#fff;font:950 7px/1 Inter,Arial,sans-serif;
+  box-shadow:0 3px 7px rgba(0,0,0,.28);
+}
+body[data-app-route="tactics"] .v803-label{
+  max-width:72px;height:16px;margin-top:3px;padding:0 6px;
+  overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
+  border:1px solid rgba(112,206,255,.38);border-radius:8px;
+  background:rgba(2,9,49,.95);color:#fff;
+  font:850 6px/15px Inter,Arial,sans-serif;text-align:center;
+}
+body[data-app-route="tactics"] .v803-player.empty{opacity:.32}
+body[data-app-route="tactics"] .v803-player.empty .v803-photo{border-style:dashed;animation:none;background:#17246d}
+body[data-app-route="tactics"] .v803-loading{
+  position:absolute;inset:0;z-index:30;display:grid;place-items:center;align-content:center;gap:10px;
+  background:linear-gradient(180deg,rgba(3,8,47,.78),rgba(2,5,32,.68));color:#b7c8ee;
+  font:850 9px/1.2 Inter,Arial,sans-serif;letter-spacing:.05em;
+}
+body[data-app-route="tactics"] .v803-loading[hidden]{display:none}
+body[data-app-route="tactics"] .v803-loading i{
+  width:28px;height:28px;border:2px solid rgba(255,255,255,.16);border-top-color:#3de3ee;border-radius:50%;
+  animation:v803Spin .8s linear infinite;
+}
+body[data-app-route="tactics"] .v803-player-detail{
+  position:relative;z-index:20;
+  min-height:65px;margin:4px 1px 0;padding:8px;
+  display:grid;grid-template-columns:50px minmax(0,1fr) 64px;gap:9px;align-items:center;
+  border:1px solid rgba(72,195,255,.26);border-radius:15px;
+  background:linear-gradient(145deg,#08166c,#040a43);
+  animation:v803DetailIn .34s cubic-bezier(.18,.86,.25,1.18) both;
+}
+body[data-app-route="tactics"] .v803-player-detail[hidden]{display:none}
+body[data-app-route="tactics"] .v803-detail-media{
+  width:48px;height:48px;display:grid;place-items:center;overflow:hidden;border-radius:50%;
+  border:1px solid rgba(255,255,255,.55);background:#133e9f;color:#fff;font:950 10px/1 Inter,Arial,sans-serif;
+}
+body[data-app-route="tactics"] .v803-detail-media img{width:100%;height:100%;object-fit:cover;object-position:center 22%}
+body[data-app-route="tactics"] .v803-detail-copy{min-width:0;display:grid;gap:3px}
+body[data-app-route="tactics"] .v803-detail-copy small{color:#38e3ef;font-size:6px;font-weight:950;letter-spacing:.1em}
+body[data-app-route="tactics"] .v803-detail-copy b{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:11px}
+body[data-app-route="tactics"] .v803-detail-copy em{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:#91a6d0;font-size:7px;font-style:normal}
+body[data-app-route="tactics"] .v803-detail-club{min-width:0;display:grid;justify-items:center;gap:3px}
+body[data-app-route="tactics"] .v803-detail-club img{width:32px;height:32px;object-fit:contain}
+body[data-app-route="tactics"] .v803-detail-club>b{width:30px;height:30px;display:grid;place-items:center;border-radius:50%;background:#fff;color:#07165d;font-size:7px}
+body[data-app-route="tactics"] .v803-detail-club small{max-width:62px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:#a6b5d7;font-size:6px}
+
+body[data-app-route="tactics"] .v803-legacy-motion{
+  animation:v803LegacyBob 3s ease-in-out infinite!important;
+  animation-delay:calc(-.12s * var(--v803-i))!important;
+  will-change:transform!important;
+}
+body[data-app-route="tactics"] .v160-source-player .v802-source-photo{
+  animation:v803LegacyBob 2.7s ease-in-out infinite!important;
+}
+
+@keyframes v803Spin{to{transform:rotate(360deg)}}
+@keyframes v803PhotoFloat{0%,100%{translate:0 0}50%{translate:0 -4px}}
+@keyframes v803LegacyBob{0%,100%{translate:0 0}50%{translate:0 -3px}}
+@keyframes v803DetailIn{from{opacity:0;transform:translateY(10px) scale(.98)}to{opacity:1;transform:none}}
+@keyframes v803BallDrift{
+  0%,100%{left:50%;top:50%;transform:translate(-50%,-50%) translateZ(9px) rotate(0)}
+  28%{left:56%;top:46%;transform:translate(-50%,-50%) translateZ(14px) rotate(80deg)}
+  55%{left:48%;top:42%;transform:translate(-50%,-50%) translateZ(9px) rotate(180deg)}
+  78%{left:44%;top:54%;transform:translate(-50%,-50%) translateZ(13px) rotate(280deg)}
+}
+
+@media(max-width:430px){
+  body[data-app-route="tactics"] .v803-football3d{margin-left:-2px;margin-right:-2px;padding-left:8px;padding-right:8px}
+  body[data-app-route="tactics"] .v803-viewport{height:405px}
+  body[data-app-route="tactics"] .v803-world{width:94%;top:42px}
+  body[data-app-route="tactics"] .v803-football3d.is-ready .v803-world{transform:translateX(-50%) translateY(0) translateZ(-74px) rotateX(59deg) scale(.90)}
+  body[data-app-route="tactics"] .v803-player{width:64px;height:70px}
+  body[data-app-route="tactics"] .v803-player-face{width:64px;height:67px;transform:translateX(-50%) rotateX(-59deg) translateZ(9px)}
+  body[data-app-route="tactics"] .v803-player.active .v803-player-face{transform:translateX(-50%) rotateX(-59deg) translateY(-10px) translateZ(22px) scale(1.1)}
+  body[data-app-route="tactics"] .v803-photo{width:38px;height:38px}
+  body[data-app-route="tactics"] .v803-label{max-width:64px;font-size:5.6px}
+  body[data-app-route="tactics"] .v803-number{right:5px;top:25px}
+}
+@media(prefers-reduced-motion:reduce){
+  body[data-app-route="tactics"] .v803-world,
+  body[data-app-route="tactics"] .v803-player,
+  body[data-app-route="tactics"] .v803-head-crest img,
+  body[data-app-route="tactics"] .v803-photo img{transition-duration:.01ms!important}
+  body[data-app-route="tactics"] .v803-photo,
+  body[data-app-route="tactics"] .v803-ball,
+  body[data-app-route="tactics"] .v803-loading i,
+  body[data-app-route="tactics"] .v803-legacy-motion{animation:none!important}
+}
