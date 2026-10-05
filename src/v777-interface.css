@@ -232,3 +232,10 @@ html body.ljr-v777 .v369-compare-shell :is(.v369-team-card,.v369-mode-button,.v3
 html body.ljr-v777 .v576-photo-fallback{display:grid!important;place-items:center!important;background:#193a90!important;color:#fff!important;font-size:13px!important;font-weight:700!important}
 .ljr-local-player video{width:100%;max-height:60dvh;object-fit:contain;background:#02062f}.ljr-local-player [data-local-retry]{margin-top:10px;border:1px solid #4263b0;border-radius:11px;background:#17338a;color:#fff;padding:10px 16px}
 @media(max-width:1023px){html body.ljr-v777[data-mobile-layout="v775"] #app>.topbar .wordmark{display:none!important}}
+html body.ljr-native-pip *{visibility:hidden!important}
+html body.ljr-native-pip .ljr-native-pip-player,html body.ljr-native-pip .ljr-native-pip-player video{visibility:visible!important}
+html body.ljr-native-pip .ljr-native-pip-player{position:fixed!important;inset:0!important;width:100vw!important;height:100dvh!important;min-height:100dvh!important;margin:0!important;padding:0!important;border:0!important;border-radius:0!important;z-index:2147483647!important;background:#000!important;overflow:hidden!important}
+html body.ljr-native-pip .ljr-native-pip-player>video{width:100%!important;height:100%!important;max-height:none!important;object-fit:contain!important;position:static!important}
+html body.ljr-native-pip .ljr-native-pip-player .ljr-video-controls{display:none!important}
+html body.ljr-native-pip .ljr-native-pip-player iframe{visibility:visible!important;width:100%!important;height:100%!important;max-height:none!important;border:0!important;position:static!important}
+html body.ljr-native-pip .ljr-native-pip-player :is(.v196-frame,.v144-stream-frame){visibility:visible!important;width:100%!important;height:100%!important;aspect-ratio:auto!important;margin:0!important;padding:0!important;position:absolute!important;inset:0!important}

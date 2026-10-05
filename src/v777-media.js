@@ -40,3 +40,12 @@ window.addEventListener('click',e=>{
  if(title){e.preventDefault();e.stopImmediatePropagation();const items=window.LJR_MEDIA?.items||[],item=items.find(x=>x.mime?.startsWith('video/')&&x.title===title)||items.find(x=>x.mime?.startsWith('video/')&&t.includes(x.title));if(item)window.LJR_MEDIA.view(item);else if(window.LJR_MEDIA?.admin)window.LJR_MEDIA.edit(title,'home',undefined,{kind:'video'});else window.LJR_MEDIA.modal('Vídeos destacados','<p>La Liga todavía no ha publicado este video.</p>')}
 },true);
 let timer;const schedule=()=>{clearTimeout(timer);timer=setTimeout(patch,70)};new MutationObserver(schedule).observe(document.body,{childList:true,subtree:true});for(const event of ['hashchange','liga:admin','liga:content'])addEventListener(event,schedule);schedule();
+// Android PiP must display the playing video, including local WebRTC streams.
+function prepareNativeVideo(){
+ const players=[...document.querySelectorAll('.ljr-video-player')],player=players.reverse().find(box=>{const video=box.querySelector('video');return video&&!video.paused&&!video.ended})||(window.LJR_ACTIVE_MEDIA_CARD?.isConnected?window.LJR_ACTIVE_MEDIA_CARD:null);
+ if(!player)return;
+ document.querySelectorAll('.ljr-native-pip-player').forEach(box=>box.classList.remove('ljr-native-pip-player'));
+ player.classList.add('ljr-native-pip-player');document.body.classList.add('ljr-native-pip');
+}
+addEventListener('liga:prepare-pip',prepareNativeVideo);
+addEventListener('liga:native-pip',event=>{if(event.detail?.active)prepareNativeVideo();else{document.body.classList.remove('ljr-native-pip');document.querySelectorAll('.ljr-native-pip-player').forEach(box=>box.classList.remove('ljr-native-pip-player'))}});

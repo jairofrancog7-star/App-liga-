@@ -11,7 +11,7 @@
  const active=kind=>records.filter(x=>x.kind===kind&&x.published);
  const catOptions=(id='3')=>Object.entries(cats).map(([v,n])=>'<option value="'+v+'" '+(v===id?'selected':'')+'>'+n+'</option>').join('');
  const snapshot=()=>rawData||window.LJR_OFFICIAL_API?.getData?.()||window.LJR_OFFICIAL_DATA||{};
- async function refresh(){try{const data=await api('content');records=data.items;loaded=true;window.LJR_OFFICIAL_API?.applyContent?.();window.LJR_V508_OFFICIAL?.applyContent?.();apply();window.dispatchEvent(new Event('liga:content'))}catch(err){console.warn('Contenido de la liga:',err.message)}}
+ async function refresh(){try{const data=await api('content');if(!Array.isArray(data.items))throw Error('La respuesta de contenido no es válida. Se conserva la última información disponible.');records=data.items;loaded=true;window.LJR_OFFICIAL_API?.applyContent?.();window.LJR_V508_OFFICIAL?.applyContent?.();apply();window.dispatchEvent(new Event('liga:content'))}catch(err){console.warn('Contenido de la liga:',err.message)}}
  function applyOfficialData(original){
   if(!original)return original;rawData=original;const db=structuredClone(original);
   for(const rec of records.filter(x=>x.published)){
