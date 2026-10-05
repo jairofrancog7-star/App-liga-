@@ -1,7 +1,7 @@
 /* Public content is read from Sites; all shared writes are authorized there. */
 (()=>{
  const base=window.LJR_MEDIA_BASE||location.origin,esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
- const cats={'3':'Primera Fuerza','4':'Intermedia','5':'Segunda','2':'Veteranos 35+','1':'Veteranos 50+'};
+ const cats={'3':'Primera Fuerza','5':'Intermedia','4':'Segunda Fuerza','2':'Veteranos 35+','1':'Veteranos 50+'};
  const kindNames={news:'Noticias',scorers:'Tabla de goleo',standings:'Tabla de posiciones',fixture:'Jornadas y resultados',sanction:'Sancionados',document:'Cédulas y documentos',transmission:'Transmisiones',product:'Tienda',player:'Jugadores',team:'Equipos',page:'Textos, imágenes y diseño',design:'Diseños guardados'};
  let records=[],rawData=null,loaded=false,timer,applying=false;
  const route=()=>location.hash.replace(/^#\/?/,'').split('?')[0]||'home';
@@ -51,10 +51,10 @@
    else list?.remove();
   }finally{applying=false}
  }
- async function open(){
-  if(!media()?.admin)return media()?.login(open);
+ async function open(initialKind){
+  if(!media()?.admin)return media()?.login(()=>open(initialKind));
   const n=modal('Administración de la Liga','<div class="cms-kind-grid">'+Object.entries(kindNames).map(([k,label])=>'<button data-cms-kind="'+k+'">'+label+'</button>').join('')+'<button data-cms-inbox>Buzón de ayuda</button><div data-cms-list></div>');
-  n.querySelectorAll('[data-cms-kind]').forEach(b=>b.onclick=()=>showList(b.dataset.cmsKind,n));n.querySelector('[data-cms-inbox]').onclick=()=>inbox(n);
+  n.querySelectorAll('[data-cms-kind]').forEach(b=>b.onclick=()=>showList(b.dataset.cmsKind,n));n.querySelector('[data-cms-inbox]').onclick=()=>inbox(n);if(typeof initialKind==='string'&&kindNames[initialKind])await showList(initialKind,n);
  }
  async function showList(kind,n){
   try{const all=(await api('content?admin=1')).items;const list=n.querySelector('[data-cms-list]');list.replaceChildren();const h=document.createElement('h3');h.textContent=kindNames[kind];list.append(h);

@@ -16,5 +16,5 @@
  }
  function privacy(){const r=location.hash.replace(/^#\//,'').split('?')[0];if(!['privacy','v5-consent','v5-privacy'].includes(r))return;const root=document.querySelector('#screen');if(!root||root.querySelector('[data-clear-preferences]'))return;const b=document.createElement('button');b.dataset.clearPreferences='';b.className='btn outline full section';b.textContent='Borrar preferencias de este dispositivo';b.onclick=()=>{if(!confirm('¿Borrar favoritos, pronósticos y preferencias de este dispositivo? Tu contenido publicado en la Liga se conserva.'))return;for(const k of ['lj-store-v3','lj-store-v5','v561-quiniela'])localStorage.removeItem(k);location.reload()};root.append(b)}
  function schedule(){clearTimeout(timer);timer=setTimeout(()=>{privacy();translate()},120)}
- addEventListener('change',e=>{if(e.target.matches('input[name="v5lang"]'))schedule()});addEventListener('hashchange',schedule);const root=document.querySelector('#screen');if(root)new MutationObserver(schedule).observe(root,{childList:true,subtree:true});schedule();
+ addEventListener('storage',schedule);addEventListener('change',e=>{if(e.target.matches('input[name="v5lang"]'))schedule()});addEventListener('hashchange',schedule);const root=document.querySelector('#screen');if(root)new MutationObserver(schedule).observe(root,{childList:true,subtree:true});schedule();
 })();
