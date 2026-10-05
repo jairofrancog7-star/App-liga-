@@ -125,8 +125,8 @@ function v23AccessMarkup(){
       '<section class="v588-access-slide v588-slide-login" data-v588-slide-panel="0">'+
         '<button class="v588-side-arrow prev" type="button" data-v588-prev aria-label="Anterior">‹</button>'+
         '<div class="v23-ref-crop v23-access-photo" role="img" aria-label="Jugadores"><img src="'+V24_ACCESS_REF+'" alt=""></div>'+
-        '<div class="v23-access-copy"><h1>Inicia sesión para jugar al<br>Fantasy</h1>'+
-          '<p>Inicia sesión para guardar tu equipo, unirte a<br>ligas y recibir alertas importantes sobre plazos.</p></div>'+
+        '<div class="v23-access-copy"><h1>Inicia sesión para jugar al Fantasy</h1>'+
+          '<p>Inicia sesión para guardar tu equipo, unirte a ligas y recibir alertas importantes sobre plazos.</p></div>'+
         '<div class="v23-access-actions">'+
           '<button class="v23-access-login" type="button" data-v588-login>Inicia sesión para jugar</button>'+
           '<button class="v23-access-later" type="button" data-v588-next>Iniciaré sesión después</button>'+
