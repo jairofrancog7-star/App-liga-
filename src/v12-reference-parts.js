@@ -241,8 +241,12 @@ function patchProfile(){
   const screen=document.querySelector('#screen');
   if(!screen) return;
   const existing=screen.querySelector('[data-v12-profile]');
-  if(existing?.dataset.profileRef==='parts41') return;
-  screen.innerHTML='<section class="v12-profile-page" data-v12-profile data-profile-ref="parts41">'+
+  const originalRows=['following','notifications','language','feedback','privacy','terms'];
+  const hasOriginalRows=!!existing&&originalRows.every(key=>
+    existing.querySelector('[data-v12-route="'+key+'"],[data-v12-action="'+key+'"]')
+  );
+  if(existing?.dataset.profileRef==='parts42'&&hasOriginalRows) return;
+  screen.innerHTML='<section class="v12-profile-page" data-v12-profile data-profile-ref="parts42">'+
     '<div class="v12-profile-card">'+
       '<div class="v12-profile-copy"><h1>Más de la Liga</h1><p>Crea tu cuenta y disfruta de un acceso inigualable a resultados, estadísticas, calendarios, equipos de la liga y mucho más.</p></div>'+
       '<div class="v12-profile-actions"><button class="outline" data-v12-action="login">Iniciar sesión</button><button class="solid" data-v12-action="create">Crear una cuenta</button></div>'+
