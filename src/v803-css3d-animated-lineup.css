@@ -278,3 +278,32 @@ body[data-app-route="tactics"] .v160-source-player .v802-source-photo{
   body[data-app-route="tactics"] .v803-loading i,
   body[data-app-route="tactics"] .v803-legacy-motion{animation:none!important}
 }
+
+/* V803.1 — el usuario pidió movimiento explícito en esta pantalla.
+   Estas reglas reactivan SOLO este módulo incluso si una regla antigua de Tácticas
+   dejó animation/transition:none!important. */
+body[data-app-route="tactics"] .v803-football3d .v803-world{
+  transition:transform 1s cubic-bezier(.18,.88,.24,1.18),opacity .55s ease!important;
+}
+body[data-app-route="tactics"] .v803-football3d .v803-player{
+  transition:opacity .55s ease,transform .82s cubic-bezier(.17,.86,.25,1.24),filter .3s ease!important;
+}
+body[data-app-route="tactics"] .v803-football3d .v803-player-face{
+  transition:transform .32s cubic-bezier(.2,.8,.2,1),filter .32s ease!important;
+}
+body[data-app-route="tactics"] .v803-football3d .v803-photo img,
+body[data-app-route="tactics"] .v803-football3d .v803-head-crest img,
+body[data-app-route="tactics"] .v803-football3d .v803-field-crest img{
+  transition:opacity .38s ease,transform .55s cubic-bezier(.2,.9,.2,1.25)!important;
+}
+body[data-app-route="tactics"] .v803-football3d .v803-photo{
+  animation:v803PhotoFloat 3.2s ease-in-out infinite!important;
+  animation-delay:calc(-.16s * var(--v803-i))!important;
+}
+body[data-app-route="tactics"] .v803-football3d .v803-player.empty .v803-photo{animation:none!important}
+body[data-app-route="tactics"] .v803-football3d .v803-ball{animation:v803BallDrift 5.5s ease-in-out infinite!important}
+body[data-app-route="tactics"] .v803-football3d .v803-loading i{animation:v803Spin .8s linear infinite!important}
+body[data-app-route="tactics"] .v803-legacy-motion{
+  animation:v803LegacyBob 3s ease-in-out infinite!important;
+  animation-delay:calc(-.12s * var(--v803-i))!important;
+}
