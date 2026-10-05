@@ -1,0 +1,137 @@
+/* V792 — Pronostica Seis: corrige solamente las dos pantallas mostradas por el usuario.
+   - Intro (#/predictorSix): texto más abajo, sin encimarse con los 6 cuadros,
+     fondo azul continuo hasta la barra inferior, sin hueco oscuro.
+   - Portada (#/predictor): imagen sin estiramiento vertical y sin línea clara lateral. */
+
+@media(max-width:1023px){
+  /* ===== PANTALLA 1 · INTRO FUNCIONAL ===== */
+  body[data-app-route="predictorSix"] #screen{
+    height:calc(100dvh - 60px - env(safe-area-inset-bottom))!important;
+    min-height:0!important;
+    padding:0!important;
+    overflow:hidden!important;
+    background:#1325df!important;
+  }
+
+  body[data-app-route="predictorSix"] .v589-page.intro{
+    box-sizing:border-box!important;
+    width:100%!important;
+    height:100%!important;
+    min-height:100%!important;
+    max-height:100%!important;
+    margin:0!important;
+    padding:0!important;
+    overflow:hidden!important;
+    display:grid!important;
+    grid-template-rows:
+      86px
+      58px
+      minmax(250px,1fr)
+      auto
+      auto!important;
+    align-content:stretch!important;
+    background:
+      radial-gradient(520px 270px at 50% 18%,rgba(29,74,235,.58),transparent 72%),
+      linear-gradient(180deg,#071b9b 0%,#0b1685 36%,#1017a5 67%,#172de7 100%)!important;
+  }
+
+  /* Los cuadros se quedan donde están visualmente, pero dejamos aire real debajo. */
+  body[data-app-route="predictorSix"] .v589-page.intro .v589-intro-icons{
+    align-self:center!important;
+    justify-self:center!important;
+    margin:0 auto!important;
+    transform:translateY(-4px)!important;
+  }
+
+  /* El título ya no toca/encima los cuadros. */
+  body[data-app-route="predictorSix"] .v589-page.intro .v589-intro-copy{
+    align-self:start!important;
+    box-sizing:border-box!important;
+    margin:0!important;
+    padding:24px 34px 16px!important;
+    transform:none!important;
+    text-align:center!important;
+  }
+  body[data-app-route="predictorSix"] .v589-page.intro .v589-intro-copy h2{
+    margin:0!important;
+    line-height:1.12!important;
+  }
+  body[data-app-route="predictorSix"] .v589-page.intro .v589-intro-copy p{
+    margin:14px auto 0!important;
+  }
+  body[data-app-route="predictorSix"] .v589-page.intro .v589-dots{
+    margin-top:20px!important;
+  }
+
+  /* Empuja los dos botones hacia la parte baja disponible y mantiene el mismo azul detrás. */
+  body[data-app-route="predictorSix"] .v589-page.intro .v589-intro-actions{
+    align-self:end!important;
+    box-sizing:border-box!important;
+    width:100%!important;
+    margin:0!important;
+    padding:0 30px 24px!important;
+    background:transparent!important;
+  }
+
+  /* ===== PANTALLA 2 · PORTADA MAESTRA ===== */
+  body[data-app-route="predictor"] #screen,
+  body[data-app-route="predictor"] .v37-predictor-reference{
+    background:#01034f!important;
+    overflow:hidden!important;
+  }
+
+  /* IMPORTANTE: no usar object-fit:fill ni alturas deformadas.
+     cover conserva la proporción original; el pequeño zoom uniforme solo recorta
+     la barra horneada superior/inferior sin alargar la imagen. */
+  body[data-app-route="predictor"] .v37-predictor-reference-image{
+    position:absolute!important;
+    z-index:1!important;
+    left:-1px!important;
+    right:-1px!important;
+    top:50%!important;
+    width:calc(100% + 2px)!important;
+    height:calc(100% + 2px)!important;
+    max-width:none!important;
+    max-height:none!important;
+    margin:0!important;
+    padding:0!important;
+    border:0!important;
+    outline:0!important;
+    object-fit:cover!important;
+    object-position:center 46%!important;
+    transform:translateY(-50%) scale(1.015)!important;
+    transform-origin:center center!important;
+    pointer-events:none!important;
+    user-select:none!important;
+    -webkit-user-drag:none!important;
+  }
+
+  /* Mata cualquier seam/línea clara de 1px que pueda quedar a la derecha. */
+  body[data-app-route="predictor"] .v37-predictor-reference::after{
+    content:""!important;
+    position:absolute!important;
+    z-index:3!important;
+    top:0!important;
+    right:-1px!important;
+    bottom:0!important;
+    width:3px!important;
+    background:#01034f!important;
+    pointer-events:none!important;
+  }
+}
+
+@media(max-width:390px){
+  body[data-app-route="predictorSix"] .v589-page.intro{
+    grid-template-rows:82px 56px minmax(238px,1fr) auto auto!important;
+  }
+  body[data-app-route="predictorSix"] .v589-page.intro .v589-intro-copy{
+    padding-top:22px!important;
+  }
+  body[data-app-route="predictorSix"] .v589-page.intro .v589-intro-actions{
+    padding-bottom:20px!important;
+  }
+  body[data-app-route="predictor"] .v37-predictor-reference-image{
+    object-position:center 46%!important;
+    transform:translateY(-50%) scale(1.012)!important;
+  }
+}
