@@ -6,8 +6,8 @@ if(window.__LJR_V683_MORE_FIXED_HEADER__)return;
 window.__LJR_V683_MORE_FIXED_HEADER__=true;
 
 const route=()=>String(location.hash||'').replace(/^#\/?/,'').split('?')[0]||'home';
-const setImp=(el,p,v)=>{ if(el) el.style.setProperty(p,v,'important'); };
-const rem=(el,p)=>{ if(el) el.style.removeProperty(p); };
+const setImp=(el,p,v)=>{ if(el&&(el.style.getPropertyValue(p)!==v||el.style.getPropertyPriority(p)!=='important'))el.style.setProperty(p,v,'important'); };
+const rem=(el,p)=>{ if(el&&el.style.getPropertyValue(p))el.style.removeProperty(p); };
 
 function apply(){
   const top=document.querySelector('#app > .topbar,.app-shell > .topbar');
@@ -34,7 +34,7 @@ function apply(){
 
   requestAnimationFrame(()=>{
     const h=Math.max(1,Math.round(top.getBoundingClientRect().height));
-    setImp(screen,'padding-top',h+'px');
+    setImp(screen,'padding-top','0px');
   });
 }
 
@@ -43,7 +43,7 @@ window.addEventListener('pageshow',()=>requestAnimationFrame(apply));
 window.addEventListener('resize',()=>requestAnimationFrame(apply));
 document.addEventListener('DOMContentLoaded',apply,{once:true});
 
-const mo=new MutationObserver(()=>requestAnimationFrame(apply));
+let raf=0;const mo=new MutationObserver(()=>{if(!raf)raf=requestAnimationFrame(()=>{raf=0;apply()})});
 mo.observe(document.documentElement,{subtree:true,attributes:true,attributeFilter:['class','style','data-app-route']});
 
 requestAnimationFrame(apply);

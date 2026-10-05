@@ -20230,200 +20230,249 @@
   },
   "team_logos": {
     "ABEJAS": {
-      "local": "./assets/official-logos/abejas.png",
-      "source": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/Abejas_lxn6l9"
+      "local": "./assets/season-2026/abejas.webp",
+      "source": "./assets/season-2026/abejas.webp",
+      "app": "./assets/season-2026/abejas.webp"
     },
     "AGUILARES": {
-      "local": "./assets/official-logos/aguilares.png",
-      "source": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/aguilares_ifdgll"
+      "local": "./assets/season-2026/aguilares.webp",
+      "source": "./assets/season-2026/aguilares.webp",
+      "app": "./assets/season-2026/aguilares.webp"
     },
     "ALDAMA FC": {
-      "local": "./assets/official-logos/aldama-fc.png",
-      "source": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/Aldama_mqm3r1"
+      "local": "./assets/season-2026/aldama.webp",
+      "source": "./assets/season-2026/aldama.webp",
+      "app": "./assets/season-2026/aldama.webp"
     },
     "AMERICA": {
-      "local": "./assets/official-logos/america.png",
-      "source": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/America_wbi53g"
+      "local": "./assets/season-2026/america.webp",
+      "source": "./assets/season-2026/america.webp",
+      "app": "./assets/season-2026/america.webp"
     },
     "ATL. GALEANA": {
-      "local": "./assets/official-logos/atl-galeana.png",
-      "source": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/Galeana_kujrh0"
+      "local": "./assets/season-2026/galeana.webp",
+      "source": "./assets/season-2026/galeana.webp",
+      "app": "./assets/season-2026/galeana.webp"
     },
     "BARZA": {
-      "local": "./assets/official-logos/barza.png",
-      "source": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/Barcelona_amoaiq"
+      "local": "./assets/season-2026/barza.webp",
+      "source": "./assets/season-2026/barza.webp",
+      "app": "./assets/season-2026/barza.webp"
     },
     "BOAVISTA": {
-      "local": "./assets/official-logos/boavista.png",
-      "source": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/Boavista_qiq0dy"
+      "local": "./assets/season-2026/boavista.webp",
+      "source": "./assets/season-2026/boavista.webp",
+      "app": "./assets/season-2026/boavista.webp"
     },
     "CAPIBARAS": {
-      "local": "./assets/official-logos/capibaras.png",
-      "source": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/Capibara_vocmbl"
+      "local": "./assets/season-2026/capibaras.webp",
+      "source": "./assets/season-2026/capibaras.webp",
+      "app": "./assets/season-2026/capibaras.webp"
     },
     "CELTICOS": {
-      "local": "./assets/official-logos/celticos.png",
-      "source": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/CelticosFC_nv4ukd"
+      "local": "./assets/season-2026/celticos.webp",
+      "source": "./assets/season-2026/celticos.webp",
+      "app": "./assets/season-2026/celticos.webp"
     },
     "CUENDA": {
-      "local": "./assets/official-logos/cuenda.png",
-      "source": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/SantiagoCuenda_fvaq9e"
+      "local": "./assets/season-2026/santiago-cuenda.webp",
+      "source": "./assets/season-2026/santiago-cuenda.webp",
+      "app": "./assets/season-2026/santiago-cuenda.webp"
     },
     "DEP. LA LUZ": {
-      "local": "./assets/official-logos/dep-la-luz.png",
-      "source": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/DepLaLuz_wibidf"
+      "local": "./assets/season-2026/la-luz.webp",
+      "source": "./assets/season-2026/la-luz.webp",
+      "app": "./assets/season-2026/la-luz.webp"
     },
     "DEP. MARAVILLAS": {
-      "local": "./assets/official-logos/dep-maravillas.png",
-      "source": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/MAravillasFC_mnmhwx"
+      "local": "./assets/season-2026/maravillas.webp",
+      "source": "./assets/season-2026/maravillas.webp",
+      "app": "./assets/season-2026/maravillas.webp"
     },
     "DEP. NOPALERO": {
-      "local": "./assets/official-logos/dep-nopalero.png",
-      "source": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/Nopalero_skdsij"
+      "local": "./assets/season-2026/nopalero.webp",
+      "source": "./assets/season-2026/nopalero.webp",
+      "app": "./assets/season-2026/nopalero.webp"
     },
     "DEP. ZAPATA": {
-      "local": "./assets/official-logos/dep-zapata.png",
-      "source": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/Dep.Zapata_a5dsaz"
+      "local": "./assets/season-2026/zapata.webp",
+      "source": "./assets/season-2026/zapata.webp",
+      "app": "./assets/season-2026/zapata.webp"
     },
     "DYNAMO": {
-      "local": "./assets/official-logos/dynamo.png",
-      "source": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/Dinamo_rgamvy"
+      "local": "./assets/season-2026/dynamo.webp",
+      "source": "./assets/season-2026/dynamo.webp",
+      "app": "./assets/season-2026/dynamo.webp"
     },
     "FRANCO FC": {
-      "local": "./assets/official-logos/franco-fc.png",
-      "source": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/FrancoFC_vtd8d7"
+      "local": "./assets/season-2026/franco.webp",
+      "source": "./assets/season-2026/franco.webp",
+      "app": "./assets/season-2026/franco.webp"
     },
     "FRANCO-TAVERA-JR": {
-      "local": "./assets/official-logos/franco-tavera-jr.png",
-      "source": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/FrancoTaveraVeteranos_qwrqrc"
+      "local": "./assets/season-2026/franco-tavera.webp",
+      "source": "./assets/season-2026/franco-tavera.webp",
+      "app": "./assets/season-2026/franco-tavera.webp"
     },
     "GALEANA": {
-      "local": "./assets/official-logos/galeana.png",
-      "source": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/Galeana_kujrh0"
+      "local": "./assets/season-2026/galeana.webp",
+      "source": "./assets/season-2026/galeana.webp",
+      "app": "./assets/season-2026/galeana.webp"
     },
     "HERMANOS": {
-      "local": "./assets/official-logos/hermanos.png",
-      "source": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/Hermanos_kbfrmh"
+      "local": "./assets/season-2026/hermanos.webp",
+      "source": "./assets/season-2026/hermanos.webp",
+      "app": "./assets/season-2026/hermanos.webp"
     },
     "HERRERAS FC": {
-      "local": "./assets/official-logos/herreras-fc.png",
-      "source": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/HerreraFC_mnmlsd"
+      "local": "./assets/season-2026/herrera.webp",
+      "source": "./assets/season-2026/herrera.webp",
+      "app": "./assets/season-2026/herrera.webp"
     },
     "HURACAN": {
-      "local": "./assets/official-logos/huracan.png",
-      "source": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/Huracan_pfndn5"
+      "local": "./assets/season-2026/huracan.webp",
+      "source": "./assets/season-2026/huracan.webp",
+      "app": "./assets/season-2026/huracan.webp"
     },
     "JUVENTUS": {
-      "local": "./assets/official-logos/juventus.png",
-      "source": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/Juventus_ntqr0b"
+      "local": "./assets/season-2026/juventus.webp",
+      "source": "./assets/season-2026/juventus.webp",
+      "app": "./assets/season-2026/juventus.webp"
     },
     "LA CANCHITA DEPORTES": {
-      "local": "./assets/official-logos/la-canchita-deportes.png",
-      "source": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/LaCanchita_enf6ca"
+      "local": "./assets/season-2026/la-canchita.webp",
+      "source": "./assets/season-2026/la-canchita.webp",
+      "app": "./assets/season-2026/la-canchita.webp"
     },
     "LA CUADRILLA": {
-      "local": "./assets/official-logos/la-cuadrilla.png",
-      "source": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/CuadrillaFC_vpfbtr"
+      "local": "./assets/season-2026/la-cuadrilla.webp",
+      "source": "./assets/season-2026/la-cuadrilla.webp",
+      "app": "./assets/season-2026/la-cuadrilla.webp"
     },
     "LA ESPERANZA": {
-      "local": "./assets/official-logos/la-esperanza.png",
-      "source": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/LaEsperanzaFC_vazya7"
+      "local": "./assets/season-2026/la-esperanza.webp",
+      "source": "./assets/season-2026/la-esperanza.webp",
+      "app": "./assets/season-2026/la-esperanza.webp"
     },
     "LA HUERTA": {
-      "local": "./assets/official-logos/la-huerta.png",
-      "source": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/LaHuertaCuenda_bm4fxj"
+      "local": "./assets/season-2026/la-huerta.webp",
+      "source": "./assets/season-2026/la-huerta.webp",
+      "app": "./assets/season-2026/la-huerta.webp"
     },
     "LA TRINIDAD": {
-      "local": "./assets/official-logos/la-trinidad.png",
-      "source": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/La_trinidad_a32pbk"
+      "local": "./assets/season-2026/la-trinidad.webp",
+      "source": "./assets/season-2026/la-trinidad.webp",
+      "app": "./assets/season-2026/la-trinidad.webp"
     },
     "LEYENDAS FC": {
-      "local": "./assets/official-logos/leyendas-fc.png",
-      "source": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/LEYENDAS_jwcnlu"
+      "local": "./assets/season-2026/leyendas.webp",
+      "source": "./assets/season-2026/leyendas.webp",
+      "app": "./assets/season-2026/leyendas.webp"
     },
     "LINCES": {
-      "local": "./assets/official-logos/linces.png",
-      "source": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/Linces_l1lc7c"
+      "local": "./assets/season-2026/linces.webp",
+      "source": "./assets/season-2026/linces.webp",
+      "app": "./assets/season-2026/linces.webp"
     },
     "LOBOS CDG": {
-      "local": "./assets/official-logos/lobos-cdg.png",
-      "source": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/Lobos_efloib"
+      "local": "./assets/season-2026/lobos-cdg.webp",
+      "source": "./assets/season-2026/lobos-cdg.webp",
+      "app": "./assets/season-2026/lobos-cdg.webp"
     },
     "MALVINAS": {
-      "local": "./assets/official-logos/malvinas.png",
-      "source": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/Malvinas_wdiwk9"
+      "local": "./assets/season-2026/malvinas.webp",
+      "source": "./assets/season-2026/malvinas.webp",
+      "app": "./assets/season-2026/malvinas.webp"
     },
     "MANCHESTER": {
-      "local": "./assets/official-logos/manchester.png",
-      "source": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/ManchesterU_zltkh0"
+      "local": "./assets/season-2026/manchester.webp",
+      "source": "./assets/season-2026/manchester.webp",
+      "app": "./assets/season-2026/manchester.webp"
     },
     "MAZACOTES FC": {
-      "local": "./assets/official-logos/mazacotes-fc.png",
-      "source": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/Mazacotes_ko8o0w"
+      "local": "./assets/season-2026/mazacotes.webp",
+      "source": "./assets/season-2026/mazacotes.webp",
+      "app": "./assets/season-2026/mazacotes.webp"
     },
     "NAPOLI": {
-      "local": "./assets/official-logos/napoli.png",
-      "source": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/Napoli_cp25dv"
+      "local": "./assets/season-2026/napoli.webp",
+      "source": "./assets/season-2026/napoli.webp",
+      "app": "./assets/season-2026/napoli.webp"
     },
     "OSASUNA": {
-      "local": "./assets/official-logos/osasuna.png",
-      "source": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/Osasuna_lv6rsa"
+      "local": "./assets/season-2026/osasuna.webp",
+      "source": "./assets/season-2026/osasuna.webp",
+      "app": "./assets/season-2026/osasuna.webp"
     },
     "PACHANGAS FC": {
-      "local": "./assets/official-logos/pachangas-fc.png",
-      "source": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/Pachangas_upqelg"
+      "local": "./assets/season-2026/pachangas.webp",
+      "source": "./assets/season-2026/pachangas.webp",
+      "app": "./assets/season-2026/pachangas.webp"
     },
     "POPULARES": {
-      "local": "./assets/official-logos/populares.png",
-      "source": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/PopularesFC_onellt"
+      "local": "./assets/season-2026/populares.webp",
+      "source": "./assets/season-2026/populares.webp",
+      "app": "./assets/season-2026/populares.webp"
     },
     "PROMESAS FC": {
-      "local": "./assets/official-logos/promesas-fc.png",
-      "source": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/PromesasFC_w4lwk8"
+      "local": "./assets/season-2026/promesas.webp",
+      "source": "./assets/season-2026/promesas.webp",
+      "app": "./assets/season-2026/promesas.webp"
     },
     "PSV": {
-      "local": "./assets/official-logos/psv.png",
-      "source": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/PSV_ru3tft"
+      "local": "./assets/season-2026/psv.webp",
+      "source": "./assets/season-2026/psv.webp",
+      "app": "./assets/season-2026/psv.webp"
     },
     "SAN ANTONIO FC": {
-      "local": "./assets/official-logos/san-antonio-fc.png",
-      "source": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/SanAntonioFC_tw7bi1"
+      "local": "./assets/season-2026/san-antonio.webp",
+      "source": "./assets/season-2026/san-antonio.webp",
+      "app": "./assets/season-2026/san-antonio.webp"
     },
     "SAN ANTONIO JRS": {
-      "local": "./assets/official-logos/san-antonio-jrs.png",
-      "source": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/SanAntonioJR_jzmfka"
+      "local": "./assets/season-2026/san-antonio-jrs.webp",
+      "source": "./assets/season-2026/san-antonio-jrs.webp",
+      "app": "./assets/season-2026/san-antonio-jrs.webp"
     },
     "SAN JOSE FC": {
-      "local": "./assets/official-logos/san-jose-fc.png",
-      "source": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/SanJoseMonta%C3%B1a_ilen4d"
+      "local": "./assets/season-2026/san-jose.webp",
+      "source": "./assets/season-2026/san-jose.webp",
+      "app": "./assets/season-2026/san-jose.webp"
     },
     "SAN JOSE JRS": {
-      "local": "./assets/official-logos/san-jose-jrs.png",
-      "source": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/SanJoseJR_dio2dt"
+      "local": "./assets/season-2026/san-jose-jr.webp",
+      "source": "./assets/season-2026/san-jose-jr.webp",
+      "app": "./assets/season-2026/san-jose-jr.webp"
     },
     "SAN JUAN FC": {
-      "local": "./assets/official-logos/san-juan-fc.png",
-      "source": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/SanJuanFC_jhprtf"
+      "local": "./assets/season-2026/san-juan.webp",
+      "source": "./assets/season-2026/san-juan.webp",
+      "app": "./assets/season-2026/san-juan.webp"
     },
     "SAN JULIAN": {
-      "local": "./assets/official-logos/san-julian.png",
-      "source": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/SanJulianFC_wetv0z"
+      "local": "./assets/season-2026/san-julian.webp",
+      "source": "./assets/season-2026/san-julian.webp",
+      "app": "./assets/season-2026/san-julian.webp"
     },
     "TAPATIO": {
-      "local": "./assets/official-logos/tapatio.png",
-      "source": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/tapatio_svt6lz"
+      "local": "./assets/season-2026/tapatio.webp",
+      "source": "./assets/season-2026/tapatio.webp",
+      "app": "./assets/season-2026/tapatio.webp"
     },
     "TAVERA FC": {
-      "local": "./assets/official-logos/tavera-fc.png",
-      "source": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/TaveraFC_gpdbhg"
+      "local": "./assets/season-2026/tavera.webp",
+      "source": "./assets/season-2026/tavera.webp",
+      "app": "./assets/season-2026/tavera.webp"
     },
     "TERRICOLAS": {
-      "local": "./assets/official-logos/terricolas.png",
-      "source": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/Terricolas_ltbrzy"
+      "local": "./assets/season-2026/terricolas.webp",
+      "source": "./assets/season-2026/terricolas.webp",
+      "app": "./assets/season-2026/terricolas.webp"
     },
     "TOROS DE CUENDA": {
-      "local": "./assets/official-logos/toros-de-cuenda.png",
-      "source": "https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/TorosCuenda_od8vcf"
+      "local": "./assets/season-2026/santiago-cuenda.webp",
+      "source": "./assets/season-2026/santiago-cuenda.webp",
+      "app": "./assets/season-2026/santiago-cuenda.webp"
     }
   },
   "cedula_audit": {
