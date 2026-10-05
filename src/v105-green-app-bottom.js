@@ -1200,7 +1200,7 @@ function act(a){
  else if(a==='register-alerts')registerAlerts();else if(a==='schedule-match')scheduleMatch();else if(a==='new-sanction')newSanction();else if(a==='tv-panel')tvPanel();
 }
 function bind(root){
- $('[data-v105-route]',root).forEach(b=>b.onclick=e=>{
+ $$('[data-v105-route]',root).forEach(b=>b.onclick=e=>{
    e?.preventDefault?.();
    e?.stopPropagation?.();
    const tab=b.dataset.v105HistoryTab||'';

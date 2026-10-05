@@ -258,7 +258,7 @@ const HIST_PHOTOS=window.LJR_HISTORY_PHOTOS||{};
 /* V691 — escudos históricos locales confirmados por el usuario.
    Se resuelven aquí también para que el ranking de Campeones no dependa del
    orden de carga del registro global de logos. */
-const HIST_USER_LOGO_SALVAJES='./assets/history/team-logos/salvajes.webp';
+const HIST_USER_LOGO_SALVAJES='';
 const HIST_USER_LOGO_TECOS='./assets/history/team-logos/tecos.webp';
 const HIST_USER_LOGO_XOLOS='./assets/history/team-logos/xolos-jaralillo.webp';
 const APP_HISTORIC_LOGOS={

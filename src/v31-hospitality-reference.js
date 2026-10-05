@@ -3,11 +3,11 @@ const V31_HOSPITALITY_LOGO = './assets/reference/predictor-v36/liga-crest-white.
 function v31HospitalityMarkup(){
   return `
   <section class="v31-hospitality-page" aria-label="Hospitalidad">
-    <button type="button" class="v31-back" data-v31-back aria-label="Volver">
+    <header class="v774-hospitality-head"><button type="button" class="v31-back" data-v31-back aria-label="Volver">
       <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 12H5M11 18l-6-6 6-6"/></svg>
     </button>
 
-    <h1>Introduce tus datos</h1>
+    <h1>Introduce tus datos</h1></header>
 
     <div class="v31-access-switch" role="group" aria-label="Tipo de acceso">
       <button type="button" class="v31-access-option is-selected" data-v31-access="liga" aria-pressed="true">
@@ -29,11 +29,11 @@ function v31HospitalityMarkup(){
       <input class="v31-code-input" data-v31-code type="text" inputmode="text" autocomplete="one-time-code" aria-label="Código de invitado" placeholder="Código de invitado">
     </label>
 
-    <p class="v31-code-note">El código ha sido enviado por correo electrónico.</p>
+    <p class="v31-code-note">Solicita tu código de invitado a la administración de la Liga.</p>
     <span class="v31-side-accent" aria-hidden="true"></span>
 
     <button type="button" class="v31-continue" data-v31-continue>Continuar</button>
-    <div class="v31-feedback" data-v31-feedback role="status" aria-live="polite"></div>
+    <button type="button" class="v774-invites" data-v774-invites>Administrar invitaciones</button><div class="v31-feedback" data-v31-feedback role="status" aria-live="polite"></div>
   </section>`;
 }
 
@@ -43,7 +43,7 @@ function v31ShowFeedback(message){
   el.textContent = message;
   el.classList.add('show');
   clearTimeout(v31ShowFeedback.timer);
-  v31ShowFeedback.timer = setTimeout(()=>el.classList.remove('show'), 1600);
+  // Keep the admission receipt visible until the user leaves this page.
 }
 
 function v31BindHospitality(){
@@ -69,20 +69,26 @@ function v31BindHospitality(){
   if(input && saved) input.value = saved;
 
   const cont = page.querySelector('[data-v31-continue]');
-  if(cont) cont.addEventListener('click', ()=>{
+  page.querySelector('[data-v774-invites]').onclick=()=>window.LJR_MEDIA?.invitations();
+  if(cont) cont.addEventListener('click', async ()=>{
     const code = (input?.value || '').trim();
     if(!code){
       input?.focus();
       v31ShowFeedback('Introduce tu código de invitado');
       return;
     }
-    localStorage.setItem('lj-hospitality-code', code);
-    v31ShowFeedback('Código guardado');
+    cont.disabled=true;cont.textContent='Validando…';
+    try{
+      const receipt=await window.LJR_MEDIA.api('hospitality/redeem',{method:'POST',body:{code,access:page.querySelector('[data-v31-access].is-selected')?.dataset.v31Access||'liga'}});
+      localStorage.setItem('lj-hospitality-receipt',JSON.stringify(receipt));localStorage.removeItem('lj-hospitality-code');
+      input.value='';v31ShowFeedback('Bienvenido, '+receipt.name+'. Acceso '+receipt.access.toUpperCase()+' confirmado.');
+    }catch(err){v31ShowFeedback(err.message||'No se pudo validar el código. Vuelve a intentarlo.')}
+    finally{cont.disabled=false;cont.textContent='Continuar'}
   });
 }
 
 function v31ApplyHospitality(){
-  const isHospitality = location.hash.replace('#/','') === 'hospitality';
+  const isHospitality = location.hash.replace('#/','').split('?')[0] === 'hospitality';
   document.documentElement.classList.toggle('v31-hospitality-active', isHospitality);
   if(!isHospitality) return;
 

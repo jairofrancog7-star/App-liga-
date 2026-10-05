@@ -48,10 +48,10 @@ function v514MirrorCompetitionBracketCss(){
  'html body[data-app-route="simulator"] #screen [data-v512-bracket].v12-bracket-reference.stage-octavos,',
  'html body[data-app-route="simulator"] #screen [data-v512-bracket].v12-bracket-reference.stage-cuartos,',
  'html body[data-app-route="simulator"] #screen [data-v512-bracket].v12-bracket-reference.stage-semifinal,',
- 'html body[data-app-route="simulator"] #screen [data-v512-bracket].v12-bracket-reference.stage-final{background:radial-gradient(320px 220px at 76% 8%,rgba(78,145,255,.25),transparent 72%),#174dff!important;}',
- 'html body[data-app-route="simulator"] #screen [data-v512-bracket] .v12-final-reference{background:radial-gradient(300px 260px at 76% 72%,rgba(25,220,235,.16),transparent 74%),#174dff!important;}',
+ 'html body[data-app-route="simulator"] #screen [data-v512-bracket].v12-bracket-reference.stage-final{background:#06075f!important;}',
+ 'html body[data-app-route="simulator"] #screen [data-v512-bracket] .v12-final-reference{background:#06075f!important;}',
  'html body[data-app-route="simulator"] #screen [data-v512-bracket] img{max-width:100%!important;object-fit:contain;}',
- 'html body[data-app-route="simulator"] #screen [data-v512-bracket].stage-final .v12-final-reference{display:block!important;visibility:visible!important;opacity:1!important;background:#174dff!important;}',
+ 'html body[data-app-route="simulator"] #screen [data-v512-bracket].stage-final .v12-final-reference{display:block!important;visibility:visible!important;opacity:1!important;background:#06075f!important;}',
  'html body[data-app-route="simulator"] #screen [data-v512-bracket].stage-final .v12-final-trophy-wrap{display:grid!important;visibility:visible!important;opacity:1!important;pointer-events:none!important;}',
  'html body[data-app-route="simulator"] #screen [data-v512-bracket].stage-final .v12-final-trophy-new,html body[data-app-route="simulator"] #screen [data-v512-bracket].stage-final .v12-final-trophy-new img{display:block!important;visibility:visible!important;opacity:1!important;}',
  'html body[data-app-route="simulator"] .bottom-nav{display:none!important;visibility:hidden!important;opacity:0!important;pointer-events:none!important;height:0!important;min-height:0!important;max-height:0!important;padding:0!important;margin:0!important;overflow:hidden!important;}'
@@ -81,6 +81,7 @@ function logoValue(v){
  return '';
 }
 function logoFor(name){
+ const supplied=window.LJR_SEASON_LOGOS?.get(name);if(supplied)return supplied;
  const cached=Object.entries(window.LJR_OFFICIAL_DATA?.team_logos||{}).find(([k])=>norm(k)===norm(name))?.[1]?.app;
  if(cached)return cached;
  try{const x=window.LJR_OFFICIAL_API?.getLogo?.(name)||window.LJR_TEAM_LOGOS?.get?.(name)||window.V66_OFFICIAL_DIRECTORY?.logoFor?.(name)||'';if(x)return x}catch(_){}
@@ -132,7 +133,7 @@ function fixturesAll(){
 }
 function simFixtures(){
  const all=fixturesAll(),future=all.filter(f=>!f.played);
- return future.length?future:all;
+ return future;
 }
 function journeyList(){
  const fs=simFixtures(),map=new Map();
@@ -233,7 +234,7 @@ function top(){
      '<button type="button" class="'+(v==='standings'?'active':'')+'" data-v501-view="standings">Clasificación</button>'+
      '<button type="button" class="'+(v==='bracket'?'active':'')+'" data-v501-view="bracket">Cuadro</button>'+
    '</div>'+
-   '<button type="button" class="v501-icon" data-v501-share aria-label="Compartir">'+svgShare()+'</button>'+
+   '<div class="v774-sim-icons"><button type="button" class="v501-icon" data-v501-share aria-label="Compartir">'+svgShare()+'</button><button type="button" class="v501-icon" data-v501-account aria-label="Mi cuenta"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="8" r="3"/><path d="M5 20c0-8 14-8 14 0"/></svg></button></div>'+
  '</header>';
 }
 function trendFor(row){
@@ -472,7 +473,7 @@ function simulatorSheet(){
        '<span class="v501-seed right">#<b>'+ap+'</b>'+seedTrend(ap,ab)+'</span>'+
      '</div>';
    }).join('')+'</div>'+
-   (list.length?'<div class="v501-journey"><button type="button" data-v501-journey="-1" aria-label="Jornada anterior">‹</button><b>Jornada '+esc(group.label.replace(/^jornada\s*/i,''))+'</b><button type="button" data-v501-journey="1" aria-label="Jornada siguiente">›</button></div>':'')+
+   (list.length?'<div class="v501-journey"><button type="button" data-v501-journey="-1" aria-label="Jornada anterior">‹</button><b>Jornada '+esc(group.label.replace(/^jornada\s*/i,''))+'</b><button type="button" data-v501-journey="1" aria-label="Jornada siguiente">›</button></div>':'<p role="status">No hay partidos publicados para simular en esta categoría.</p>')+
  '</section>';
 }
 function page(){
@@ -513,7 +514,7 @@ function v515ApplySheetSnap(name){
  const sheet=document.querySelector('[data-v501-simulator] .v501-sheet');
  if(!sheet)return;
  const snaps=v515SheetSnaps();
- const snap=(name||localStorage.getItem(V515_SHEET_KEY)||'collapsed');
+ const snap=(name||localStorage.getItem(V515_SHEET_KEY)||'expanded');
  const key=Object.prototype.hasOwnProperty.call(snaps,snap)?snap:'collapsed';
  sheet.dataset.v515Snap=key;
  localStorage.setItem(V515_SHEET_KEY,key);
@@ -598,9 +599,9 @@ function mount(){
  }finally{rendering=false}
 }
 function render(preserve=false){
- const y=preserve?window.scrollY:null;
+ const y=preserve?document.querySelector('#screen')?.scrollTop:null;
  mount();
- if(y!==null)requestAnimationFrame(()=>window.scrollTo({top:y,left:0,behavior:'auto'}));
+ if(y!=null)requestAnimationFrame(()=>{const screen=document.querySelector('#screen');if(screen)screen.scrollTop=y;});
 }
 function schedule(ms=20){clearTimeout(timer);timer=setTimeout(mount,ms)}
 async function share(){
@@ -620,6 +621,7 @@ function click(e){
  if(e.target.closest('[data-v501-clear]')){e.preventDefault();e.stopPropagation();clearSimulation();return}
  const j=e.target.closest('[data-v501-journey]');if(j){e.preventDefault();setJourney(journeyIndex()+Number(j.dataset.v501Journey||0));return}
  if(e.target.closest('[data-v501-back]')){e.preventDefault();location.hash='#/more';return}
+ if(e.target.closest('[data-v501-account]')){e.preventDefault();location.hash='#/account';return}
  if(e.target.closest('[data-v501-share]')){e.preventDefault();share();return}
 }
 document.addEventListener('click',click,true);

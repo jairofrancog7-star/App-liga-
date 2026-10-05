@@ -19,7 +19,7 @@
     background-color:#02065f!important;isolation:isolate!important;
   }
   html body[data-app-route="home"]{--v10-home-header-h:clamp(88px,21.8vw,112px)}
-  html body[data-app-route="home"] #app>.topbar{background-size:100% 100%!important}
+  html body[data-app-route="home"] #app>.topbar{background-size:100% auto!important}
   html body[data-app-route="competition"]{--v687-comp-head-h:calc(100px + env(safe-area-inset-top))}
   html body[data-app-route="competition"] #app>.topbar,
   html body.v40-standings-master[data-app-route="competition"] #app>.topbar{

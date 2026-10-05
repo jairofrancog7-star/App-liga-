@@ -7,8 +7,8 @@ if(window.__LJR_V701_HISTORY_LOGO_SYNC__)return;
 window.__LJR_V701_HISTORY_LOGO_SYNC__=true;
 
 const FORCE={
-  salvajes:'./assets/history/team-logos/salvajes.webp',
-  salvaje:'./assets/history/team-logos/salvajes.webp',
+  salvajes:'',
+  salvaje:'',
   tecos:'./assets/history/team-logos/tecos.webp',
   'tecos fc':'./assets/history/team-logos/tecos.webp',
   'tecos jr':'./assets/history/team-logos/tecos.webp',

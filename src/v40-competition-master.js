@@ -131,7 +131,7 @@
     const list=isVet35()?v35CompactTeams:compactTeams;
     return '<section class="v578-table-section">'+
       '<div class="v578-scroll" data-v580-scroll="compact">'+
-        '<table class="v578-table v579-compact-table"><colgroup><col style="width:20px"><col style="width:32px"><col style="width:130px"><col style="width:34px"><col style="width:40px"><col style="width:44px"><col style="width:90px"></colgroup>'+
+        '<table class="v578-table v579-compact-table"><colgroup><col style="width:24px"><col style="width:40px"><col style="width:140px"><col style="width:34px"><col style="width:40px"><col style="width:44px"><col style="width:90px"></colgroup>'+
           '<thead><tr><th class="rank"></th><th class="logo"></th><th class="teamname"></th><th>P</th><th>+/-</th><th>PTOS</th><th>FORMA</th></tr></thead>'+
           '<tbody>'+
             '<tr class="v580-section-row"><td colspan="7"><div class="v578-direct">DIRECTOS A OCTAVOS</div><div class="v578-rule"></div></td></tr>'+
@@ -147,7 +147,7 @@
     const lastFor=name=>compactList.find(x=>x.name===name)?.last||'—';
     return '<section class="v578-table-section">'+
       '<div class="v578-scroll" data-v580-scroll="complete">'+
-        '<table class="v578-table v578-complete-table"><colgroup><col style="width:20px"><col style="width:32px"><col style="width:130px"><col style="width:34px"><col style="width:34px"><col style="width:34px"><col style="width:34px"><col style="width:40px"><col style="width:34px"><col style="width:34px"><col style="width:110px"><col style="width:44px"></colgroup>'+
+        '<table class="v578-table v578-complete-table"><colgroup><col style="width:24px"><col style="width:40px"><col style="width:140px"><col style="width:34px"><col style="width:34px"><col style="width:34px"><col style="width:34px"><col style="width:40px"><col style="width:34px"><col style="width:34px"><col style="width:110px"><col style="width:44px"></colgroup>'+
           '<thead><tr><th class="rank"></th><th class="logo"></th><th class="teamname"></th><th>P</th><th>V</th><th>E</th><th>D</th><th>+/-</th><th>GF</th><th>GC</th><th>FORMA</th><th>PTOS</th></tr></thead>'+
           '<tbody>'+
             '<tr class="v580-section-row"><td colspan="12"><div class="v578-direct">DIRECTOS A OCTAVOS</div><div class="v578-rule"></div></td></tr>'+
@@ -161,7 +161,7 @@
     const list=isVet35()?v35CriteriaTeams:criteriaTeams;
     return '<section class="v578-table-section">'+
       '<div class="v578-scroll" data-v580-scroll="criteria">'+
-        '<table class="v578-table v578-criteria-table"><colgroup><col style="width:20px"><col style="width:32px"><col style="width:130px"><col style="width:44px"><col style="width:40px"><col style="width:34px"><col style="width:34px"><col style="width:34px"><col style="width:34px"><col style="width:34px"></colgroup>'+
+        '<table class="v578-table v578-criteria-table"><colgroup><col style="width:24px"><col style="width:40px"><col style="width:140px"><col style="width:44px"><col style="width:40px"><col style="width:34px"><col style="width:34px"><col style="width:34px"><col style="width:34px"><col style="width:34px"></colgroup>'+
           '<thead><tr><th class="rank"></th><th class="logo"></th><th class="teamname"></th><th>PTOS</th><th>+/-</th><th>GF</th><th>GC</th><th>V</th><th>E</th><th>P</th></tr></thead>'+
           '<tbody>'+
             '<tr class="v580-section-row"><td colspan="10"><div class="v578-direct">DIRECTOS A OCTAVOS</div><div class="v578-rule"></div></td></tr>'+

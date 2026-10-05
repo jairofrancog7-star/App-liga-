@@ -1,5 +1,5 @@
 {
-  "version": "20261004-v768",
+  "version": "20261005-v774",
   "teams": [
     {
       "name": "Lobos CDG",
@@ -428,11 +428,12 @@
         "Boavista",
         "Boavista FC"
       ],
-      "path": "./assets/season-2026/boavista.webp",
+      "path": "./assets/season-2026/boavista-v774.webp",
       "original": "file_00000000228081f5a2fc3905d323b151.png",
-      "sha256": "70fb138539669a83487f3b0116808cddb7fdc79b9c822248d28302da48d7b34d",
+      "sha256": "1bb0d0d936d1b028c34995147415727b15a870a260eb76d07e78e76a6e877616",
       "width": 1122,
-      "height": 1402
+      "height": 1402,
+      "backgroundRemoved": true
     },
     {
       "name": "San Antonio Jrs",

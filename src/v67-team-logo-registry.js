@@ -9,8 +9,8 @@
   /* V688 — equivalencias históricas confirmadas por el usuario.
      Son sólo aliases visuales del archivo; no agregan clubes a la temporada actual. */
   const USER_HISTORIC={
-    'salvajes':'./assets/history/team-logos/salvajes.webp',
-    'salvaje':'./assets/history/team-logos/salvajes.webp',
+    'salvajes':'',
+    'salvaje':'',
     'universidad':'./assets/history/team-logos/universidad-pumas.webp',
     'unam':'./assets/history/team-logos/universidad-pumas.webp',
     'pumas':'./assets/history/team-logos/universidad-pumas.webp',

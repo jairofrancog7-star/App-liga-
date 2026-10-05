@@ -598,6 +598,8 @@ function shirtPalette(variant){
  return {a:"#3552ff",b:"#1429d5",c:"#07106c",ink:"#ffffff",edge:"#7e91ff"};
 }
 function shirt(logo,variant,label,number,name){
+ const team=sessionStorage.getItem(TEAM_KEY)||'';
+ logo=window.LJR_SEASON_LOGOS?.get(team)||logo;
  var v=variant||"home",p=shirtPalette(v);
  var pattern=v==="home"?"bands":v==="away"?"plain":v==="third"?"diag":v==="training"?"shoulders":v==="keeper"?"plain":"stripes";
  return '<div class="v431-shirt v440-shirt v441-shirt v442-shirt-3d v602-store-real-shirt '+esc(v)+' '+pattern+'" data-v442-tilt style="--v602-a:'+esc(p.a)+';--v602-b:'+esc(p.b)+';--v602-c:'+esc(p.c)+';--v602-edge:'+esc(p.edge)+';--v602-ink:'+esc(p.ink)+'">'+
@@ -605,7 +607,7 @@ function shirt(logo,variant,label,number,name){
   '<span class="v602-shirt-tint" aria-hidden="true"></span>'+
   '<span class="v602-shirt-pattern" aria-hidden="true"></span>'+
   '<span class="v602-shirt-light" aria-hidden="true"></span>'+
-  (logo?'<img class="v602-shirt-logo" src="'+esc(logo)+'" alt="" loading="lazy" decoding="async">':'')+
+  (logo?'<img class="v602-shirt-logo" src="'+esc(logo)+'" alt="'+esc(team)+'" loading="eager" decoding="async">':'')+
   '<span class="v431-shirt-name v602-shirt-name">'+esc(name||"")+'</span>'+
   '<span class="v431-shirt-number v602-shirt-number">'+esc(number||"")+'</span>'+
   '<span class="v602-shirt-label">'+esc(label||"")+'</span>'+
