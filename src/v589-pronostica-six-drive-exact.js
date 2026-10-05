@@ -286,8 +286,9 @@ function handleClick(e){
 function mount(){
   const r=route();
   if(r==='predictor'){
+    /* V790: la portada de Pronostica Seis ya no avanza sola.
+       La segunda pantalla se abre únicamente cuando el usuario toca el botón/zona central. */
     clearTimeout(splashTimer);
-    splashTimer=setTimeout(()=>{if(route()==='predictor')location.hash='#/predictorSix'},1450);
     return;
   }
   clearTimeout(splashTimer);
