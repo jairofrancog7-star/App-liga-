@@ -107,7 +107,7 @@ const isNative=()=>{try{return !!Capacitor?.isNativePlatform?.()}catch(_){return
 const biometricEnabled=a=>!!(a?.biometric?.native||a?.biometric?.credentialId);
 const faceSetupRequested=a=>a?.biometric?.requestedKind==='face'||a?.biometric?.kind==='face';
 const faceSetupCurrent=a=>!!(biometricEnabled(a)&&a?.biometric?.enrollmentVersion>=2&&a?.biometric?.requestedKind==='face');
-const biometricAccessLabel=a=>faceSetupCurrent(a)?'Acceso facial del dispositivo':'Biometría del dispositivo';
+const biometricAccessLabel=a=>'Biometría del teléfono';
 const contactText=a=>a?.email||a?.phone||'Sin contacto';
 const go=r=>{if(window.LJR_MAIN_ROUTE?.go)window.LJR_MAIN_ROUTE.go(r);else location.hash='#/'+r};
 const takeReturnRoute=()=>{try{const r=String(localStorage.getItem(RETURN_KEY)||'').trim();localStorage.removeItem(RETURN_KEY);return /^[-a-zA-Z0-9_]+$/.test(r)?r:''}catch(_){return''}};
@@ -314,8 +314,14 @@ async function verifyBiometric(account){
 
   const auth=authState(),idx=auth.accounts.findIndex(a=>a.id===account.id);
   let active=account;
-  if(idx>=0){auth.accounts[idx].lastLoginAt=nowIso();saveAuth(auth);active=rememberDevice(auth.accounts[idx],{verified:true,method:'biometric'});setAppUser(active)}
-  overlay('Identidad confirmada','Acceso correcto.','ok');closeOverlay();
+  if(idx>=0){
+    auth.accounts[idx].lastLoginAt=nowIso();
+    auth.accounts[idx].biometric={...(auth.accounts[idx].biometric||{}),lastVerifiedAt:nowIso()};
+    saveAuth(auth);
+    active=rememberDevice(auth.accounts[idx],{verified:true,method:'biometric'});
+    setAppUser(active);
+  }
+  overlay('Prueba biométrica correcta','El teléfono aceptó una verificación biométrica. Android/Chrome no informa a la página si fue rostro o huella.','ok');closeOverlay();
   return active;
 }
 function header(kicker,title,sub){
@@ -465,15 +471,18 @@ function authShell(kind){
   }
   if(kind==='accountSecurity'){
     if(!a)return authShell('accountLogin');
-    const enabled=biometricEnabled(a),faceCurrent=faceSetupCurrent(a),legacyFace=faceSetupRequested(a)&&!faceCurrent;
+    const enabled=biometricEnabled(a),faceRequested=faceSetupRequested(a);
+    const lastVerified=a.biometric?.lastVerifiedAt||'';
     return '<section class="v569-page" data-v569-page="security">'+
-      header('SEGURIDAD','Rostro, huella y biometría','Configura el acceso seguro del teléfono. La app no toma ni almacena una foto de tu cara.')+
+      header('SEGURIDAD','Rostro, huella y biometría','Prueba aquí la biometría real del teléfono. Esta página no puede escanear ni guardar tu cara.')+
       '<section class="v569-card">'+
-        '<div class="v569-security-state '+(enabled?'on':'off')+'"><span>◉</span><div><b>'+(enabled?'Acceso biométrico del dispositivo activado':'Biometría no activada')+'</b><small>'+(enabled?esc(a.biometric.device||deviceName())+' · '+esc(fmtDate(a.biometric.enabledAt)):'Todavía no hay una credencial biométrica confirmada en esta cuenta.')+'</small></div></div>'+
-        '<div class="v803-face-state '+(faceCurrent?'ready':legacyFace?'legacy':'pending')+'"><span>🙂</span><div><b>'+(faceCurrent?'Solicitud de rostro / Face ID configurada':legacyFace?'Face ID anterior requiere nueva confirmación':'Rostro / Face ID todavía no configurado')+'</b><small>'+(faceCurrent?'El dispositivo confirmó la credencial. Android/Chrome elige rostro, huella o PIN según lo que tengas registrado en el teléfono.':legacyFace?'La versión anterior podía marcar “rostro” sin distinguir el método real. Vuelve a configurarlo para corregir el estado.':'Primero registra tu rostro en la seguridad de Android/iPhone; después toca el botón de abajo para vincular la credencial segura.')+'</small></div></div>'+
-        (!faceCurrent?'<button class="v569-primary" type="button" data-v569-enable-face>🙂 Configurar rostro / Face ID</button>':'')+
-        (!enabled?'<button class="v569-secondary bio" type="button" data-v569-enable-bio>◉ Activar huella / biometría</button>':'<button class="v569-secondary bio" type="button" data-v569-verify-bio>Verificar mi identidad</button><button class="v569-danger" type="button" data-v569-disable-bio>Desactivar biometría</button>')+
-        '<p class="v569-note"><b>Importante:</b> una página web no puede registrar directamente la cara dentro de Face ID/Android Biometrics. El rostro se registra en el sistema del teléfono; esta app sólo crea una credencial segura después de que el sistema confirma tu identidad.</p>'+
+        '<div class="v569-security-state '+(enabled?'on':'off')+'"><span>◉</span><div><b>'+(enabled?'Biometría vinculada':'Biometría no vinculada')+'</b><small>'+(enabled?esc(a.biometric.device||deviceName())+(lastVerified?' · última prueba '+esc(fmtDate(lastVerified)):' · todavía sin prueba confirmada'):'Primero configura la biometría del teléfono y después vincúlala aquí.')+'</small></div></div>'+
+        '<div class="v803-face-state '+(lastVerified?'ready':faceRequested?'legacy':'pending')+'"><span>🙂</span><div><b>'+(lastVerified?'Biometría probada correctamente':faceRequested?'Rostro / Face ID solicitado, falta probarlo':'Rostro / Face ID no confirmado')+'</b><small>'+(lastVerified?'El teléfono aceptó una biometría. Por privacidad, Android/Chrome no le dice a esta página si fue cara o huella.':faceRequested?'La app todavía no puede afirmar que usó tu cara. Toca “Probar biometría ahora” y usa el método que muestre tu teléfono.':'Registra primero tu rostro en Ajustes de seguridad del teléfono. Después vuelve aquí y toca “Configurar acceso biométrico”.')+'</small></div></div>'+
+        (!enabled?'<button class="v569-primary" type="button" data-v569-enable-face>🙂 Configurar acceso biométrico</button>':'')+
+        (enabled?'<button class="v569-primary v803-test-bio" type="button" data-v569-test-bio>✓ Probar biometría ahora</button>':'')+
+        (enabled?'<button class="v569-danger" type="button" data-v569-disable-bio>Desactivar biometría</button>':'<button class="v569-secondary bio" type="button" data-v569-enable-bio>◉ Activar huella / biometría</button>')+
+        '<div class="v803-face-steps"><b>Cómo comprobarlo</b><span>1. Registra tu rostro en los ajustes de seguridad de tu teléfono.</span><span>2. Vuelve aquí y configura el acceso biométrico.</span><span>3. Toca “Probar biometría ahora”. Si el teléfono acepta la verificación, la app marcará la fecha de la prueba.</span></div>'+
+        '<p class="v569-note"><b>Importante:</b> en Android/Chrome una web no recibe una foto ni un escaneo facial y tampoco puede saber si el sistema usó cara o huella. Sólo recibe “verificación aprobada” o “rechazada”.</p>'+
       '</section></section>';
   }
   if(kind==='accountPassword'){
@@ -622,7 +631,7 @@ function enhanceProfile(){
       const box=document.createElement('div');box.dataset.v569AccountMenu='';box.className='v569-profile-account-menu';
       box.innerHTML='<button type="button" data-v569-route="accountPassword"><span>🔑</span><b>Cambiar contraseña</b><i>›</i></button>'+
         '<button type="button" data-v569-route="accountDevices"><span>📱</span><b>Dispositivos</b><i>›</i></button>'+
-        '<button type="button" data-v569-route="accountSecurity"><span>🙂</span><b>Rostro / Face ID</b><i>›</i></button>'+
+        '<button type="button" data-v569-route="accountSecurity"><span>🙂</span><b>Biometría del teléfono</b><i>›</i></button>'+
         '<button type="button" data-v569-route="accountSecurity"><span>◉</span><b>Huella / biometría</b><i>›</i></button>'+
         '<button type="button" class="logout" data-v569-logout><span>↪</span><b>Cerrar sesión</b><i>›</i></button>';
       menu.insertAdjacentElement('beforebegin',box);
@@ -699,7 +708,8 @@ document.addEventListener('click',async e=>{
   if(e.target.closest('[data-v569-change-pass]')){e.preventDefault();await changePassword(e.target.closest('[data-v569-page]'));return}
   if(e.target.closest('[data-v569-enable-face]')){e.preventDefault();try{await configureFaceAccess(currentAccount());schedule()}catch(err){closeOverlay();toast(err?.name==='NotAllowedError'?'Activación facial cancelada':(err?.message||'No se pudo activar el acceso facial'))}return}
   if(e.target.closest('[data-v569-enable-bio]')){e.preventDefault();try{await enrollBiometric(currentAccount(),'biometric');schedule()}catch(err){closeOverlay();toast(err?.name==='NotAllowedError'?'Activación cancelada':(err?.message||'No se pudo activar'))}return}
-  if(e.target.closest('[data-v569-verify-bio]')){e.preventDefault();try{await verifyBiometric(currentAccount())}catch(err){closeOverlay();toast(err?.name==='NotAllowedError'?'Verificación cancelada':(err?.message||'No se pudo verificar'))}return}
+  if(e.target.closest('[data-v569-test-bio]')){e.preventDefault();try{await verifyBiometric(currentAccount());schedule()}catch(err){closeOverlay();toast(err?.name==='NotAllowedError'?'Prueba biométrica cancelada':(err?.message||'No se pudo completar la prueba'))}return}
+  if(e.target.closest('[data-v569-verify-bio]')){e.preventDefault();try{await verifyBiometric(currentAccount());schedule()}catch(err){closeOverlay();toast(err?.name==='NotAllowedError'?'Verificación cancelada':(err?.message||'No se pudo verificar'))}return}
   if(e.target.closest('[data-v569-disable-bio]')){e.preventDefault();const a=currentAccount(),auth=authState(),idx=auth.accounts.findIndex(x=>x.id===a?.id);if(idx>=0){auth.accounts[idx].biometric=null;auth.accounts[idx].devices=(auth.accounts[idx].devices||[]).map(d=>({...d,verified:false}));saveAuth(auth);updateMainStoreAccount(auth.accounts[idx]);toast('Biometría desactivada');schedule()}return}
   if(e.target.closest('[data-v577-remember-current]')){
     e.preventDefault();const a=currentAccount();if(a){const updated=rememberDevice(a,{verified:false,method:'manual'});setAppUser(updated);toast('Dispositivo recordado');schedule()}return
