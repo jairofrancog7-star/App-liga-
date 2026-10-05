@@ -1,0 +1,120 @@
+/* V789 — hard fix exclusivo de Más o Menos.
+   1) Una sola barra inferior real.
+   2) Recorta la barra que viene dibujada dentro de la referencia.
+   3) El cuadro ocupa exactamente el espacio entre el inicio de pantalla y la barra real. */
+body[data-app-route="moreLess"] #app > .topbar,
+body[data-app-route="moreLess"] .app-shell > .topbar{
+  display:none!important;
+  visibility:hidden!important;
+  height:0!important;
+  min-height:0!important;
+  max-height:0!important;
+  padding:0!important;
+  margin:0!important;
+  border:0!important;
+  overflow:hidden!important;
+}
+
+body[data-app-route="moreLess"],
+body[data-app-route="moreLess"] .app-shell{
+  overflow:hidden!important;
+}
+
+body[data-app-route="moreLess"] #screen{
+  position:relative!important;
+  top:0!important;
+  width:100%!important;
+  max-width:none!important;
+  height:calc(100dvh - var(--v34-nav-h,69px) - env(safe-area-inset-bottom))!important;
+  min-height:0!important;
+  margin:0!important;
+  padding:0!important;
+  overflow:hidden!important;
+  box-sizing:border-box!important;
+}
+
+body[data-app-route="moreLess"] #screen > [data-v12-moreless],
+body[data-app-route="moreLess"] #screen > .v12-moreless{
+  position:relative!important;
+  inset:auto!important;
+  width:100%!important;
+  max-width:none!important;
+  height:100%!important;
+  min-height:100%!important;
+  margin:0!important;
+  padding:0!important;
+  overflow:hidden!important;
+  box-sizing:border-box!important;
+}
+
+/* La imagen de referencia trae una barra inferior dibujada.
+   Se recorta esa franja completa para que NO aparezca encima de la barra real. */
+body[data-app-route="moreLess"] .v12-moreless::after{
+  top:29%!important;
+  bottom:0!important;
+  background-position:center bottom!important;
+  background-size:auto 100%!important;
+  -webkit-clip-path:inset(0 0 76px 0)!important;
+  clip-path:inset(0 0 76px 0)!important;
+  pointer-events:none!important;
+}
+
+/* El fondo de la pantalla rellena el espacio recortado sin crear otra franja. */
+body[data-app-route="moreLess"] .v12-moreless{
+  background:
+    radial-gradient(ellipse at 50% 5%,rgba(33,56,145,.16) 0%,rgba(11,18,102,.08) 30%,transparent 58%),
+    linear-gradient(180deg,#07106f 0%,#060b67 30%,#05085f 58%,#040657 100%)!important;
+}
+
+/* Jamás mostrar una navegación clonada dentro del contenido. */
+body[data-app-route="moreLess"] #screen .bottom-nav,
+body[data-app-route="moreLess"] #screen nav[aria-label="Navegación principal"]{
+  display:none!important;
+}
+
+/* Dejar una sola navegación: la global, con el tamaño compacto existente. */
+body[data-app-route="moreLess"] #app > .bottom-nav,
+body[data-app-route="moreLess"] .app-shell > .bottom-nav,
+body[data-app-route="moreLess"] #app > nav.bottom-nav{
+  display:grid!important;
+  position:fixed!important;
+  left:50%!important;
+  right:auto!important;
+  bottom:0!important;
+  transform:translateX(-50%)!important;
+  width:min(100%,520px)!important;
+  height:var(--v34-nav-h,69px)!important;
+  min-height:var(--v34-nav-h,69px)!important;
+  max-height:var(--v34-nav-h,69px)!important;
+  margin:0!important;
+  z-index:2147483000!important;
+}
+
+/* V582 creaba dos zonas transparentes gigantes; quedan anuladas. */
+body[data-app-route="moreLess"] .v582-monito-hit{
+  display:none!important;
+  visibility:hidden!important;
+  pointer-events:none!important;
+}
+
+/* Solo los dos botones reales reciben toque. */
+body[data-app-route="moreLess"] .v12-ml-choice{
+  pointer-events:none!important;
+}
+body[data-app-route="moreLess"] .v12-ml-choice > button{
+  pointer-events:auto!important;
+  touch-action:manipulation!important;
+  -webkit-tap-highlight-color:transparent!important;
+}
+body[data-app-route="moreLess"] .v12-ml-mid,
+body[data-app-route="moreLess"] .v12-ml-mid button{
+  pointer-events:none!important;
+}
+
+@media(max-height:740px){
+  body[data-app-route="moreLess"] .v12-moreless::after{
+    top:28%!important;
+    -webkit-clip-path:inset(0 0 72px 0)!important;
+    clip-path:inset(0 0 72px 0)!important;
+  }
+}
