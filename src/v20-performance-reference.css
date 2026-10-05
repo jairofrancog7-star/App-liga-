@@ -345,3 +345,47 @@ body[data-app-route="safe-performance"] .topbar{
   .v20-performance-share{right:13px}
   .v20-performance-topbtn svg{width:23px;height:23px}
 }
+
+/* V777_PERFORMANCE_SINGLE_TOPBAR */
+/* Performance Zone: una sola cabecera visual.
+   Oculta por completo la barra global azul y conserva únicamente
+   la flecha Volver + Compartir que ya están sobre la imagen principal. */
+html body[data-app-route="safe-performance"] #app > .topbar,
+html body[data-app-route="safe-performance"] .app-shell > .topbar,
+html body[data-app-route="safe-performance"] #app > header.topbar,
+html body[data-app-route="safe-performance"] .app-shell > header.topbar{
+  display:none!important;
+  visibility:hidden!important;
+  opacity:0!important;
+  height:0!important;
+  min-height:0!important;
+  max-height:0!important;
+  margin:0!important;
+  padding:0!important;
+  border:0!important;
+  overflow:hidden!important;
+  pointer-events:none!important;
+}
+html body[data-app-route="safe-performance"]{
+  --v768-head-h:0px!important;
+}
+html body[data-app-route="safe-performance"].v768-scroll-root #screen,
+html body[data-app-route="safe-performance"] #screen{
+  top:0!important;
+  margin-top:0!important;
+  padding-top:0!important;
+}
+html body[data-app-route="safe-performance"] .v20-performance{
+  margin-top:0!important;
+  padding-top:0!important;
+}
+html body[data-app-route="safe-performance"] .v20-performance-hero{
+  margin-top:0!important;
+}
+html body[data-app-route="safe-performance"] .v20-performance-topbtn{
+  display:grid!important;
+  visibility:visible!important;
+  opacity:.96!important;
+  pointer-events:auto!important;
+  z-index:30!important;
+}
