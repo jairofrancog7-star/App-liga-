@@ -98,7 +98,8 @@ function recentResults(data){
 }
 function topScorers(data,cat){
  const c=data?.categories?.[cat];
- return (c?.scorers?.[0]?.rows||[]).filter(r=>r?.[1]&&r?.[2]&&/^\d+$/.test(String(r?.[3]||'')))
+ return (c?.scorers?.[0]?.rows||[])
+  .filter(r=>r?.[1]&&r?.[2]&&/^\d+$/.test(String(r?.[3]||''))&&!/goles?\s+en\s+temporada/i.test(String(r?.[2]||'')))
   .map(r=>({rank:r[0],name:String(r[1]),team:String(r[2]),goals:Number(r[3])||0})).sort((a,b)=>b.goals-a.goals).slice(0,5);
 }
 function topStandings(data,cat){
