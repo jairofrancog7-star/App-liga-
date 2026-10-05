@@ -302,14 +302,18 @@ html body.ljr-native-pip .ljr-native-pip-player :is(.v196-frame,.v144-stream-fra
  }
 }
 
-/* V787 — La configuración del perfil sólo existe con una sesión iniciada. */
+/* V789 — Invitado conserva los ajustes generales.
+   Sólo el panel avanzado "Ajustes de la aplicación" requiere sesión. */
 @media(max-width:1023px){
- html body[data-app-route="profile"]:not([data-auth-state="signed-in"]) #screen .v12-profile-menu,
- html body[data-app-route="profile"]:not([data-auth-state="signed-in"]) #screen [data-ljr-account-settings],
- html body[data-app-route="profile"]:not([data-auth-state="signed-in"]) #screen [data-v412-screen="account"] .v412-menu,
- html body[data-app-route="profile"]:not([data-auth-state="signed-in"]) #screen [data-v412-screen="account"] .v412-config-extra{
+ html body[data-app-route="profile"]:not([data-auth-state="signed-in"]) #screen [data-ljr-account-settings]{
   display:none!important;
   visibility:hidden!important;
+ }
+ html body[data-app-route="profile"] #screen .v12-profile-menu,
+ html body[data-app-route="profile"] #screen [data-v412-screen="account"] .v412-menu,
+ html body[data-app-route="profile"] #screen [data-v412-screen="account"] .v412-config-extra{
+  display:block!important;
+  visibility:visible!important;
  }
 }
 
