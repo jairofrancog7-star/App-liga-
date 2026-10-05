@@ -135,3 +135,7 @@ html body.v587-fantasy-team-open .v597-team-logo{left:57%!important;top:29%!impo
  html body[data-mobile-layout="v775"][data-app-route]:not([data-app-route="home"]) #app>.topbar .profile-button{display:grid!important;place-items:center!important;visibility:visible!important;opacity:1!important;pointer-events:auto!important;color:#fff!important;background:transparent!important;border:0!important}
  html body[data-mobile-layout="v775"][data-app-route]:not([data-app-route="home"]) #app>.topbar .profile-button svg{display:block!important;width:28px!important;height:28px!important;fill:currentColor!important;visibility:visible!important;opacity:1!important}
 }
+@media(max-width:1023px){
+ html body[data-mobile-layout="v775"].v40-standings-master #screen [data-v580-scroll] .v578-table :is(th,td){background:#06075f!important;background-image:none!important}
+ html body[data-mobile-layout="v775"][data-app-route="club-store"] #screen :is(.v431-shop-tabs,.v435-shop-tabs,.v431-search-panel){top:0!important;background-color:#06075f!important}
+}
