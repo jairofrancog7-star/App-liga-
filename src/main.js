@@ -4295,18 +4295,14 @@ function profileView(){return `<div class="eyebrow">CUENTA</div><h1 class="scree
 function predictorView(){
   return `<section class="v37-predictor-reference" aria-label="Pronostica Seis">
     <div class="v37-predictor-marks" aria-hidden="true"><i></i><i></i></div>
-    <h1 class="v37-predictor-title"><span>?PRONOSTICA</span><span>SEIS</span></h1>
-    <img class="v37-predictor-crest" src="./assets/reference/predictor-v36/liga-crest-white.webp?v=20260928-old-design-restore3" alt="Liga Municipal de Fútbol Juventino Rosas">
+    <h1 class="v37-predictor-title"><span>PRONOSTICA</span><span>SEIS</span></h1>
+    <img class="v37-predictor-crest" src="./assets/reference/predictor-v36/liga-crest-white.webp?v=20260927-restore-three" alt="Liga Municipal de Fútbol Juventino Rosas">
     <button type="button" class="v37-predictor-enter" data-route="predictorSix" aria-label="Abrir Pronostica Seis">
-      <span class="v37-score-panel" aria-hidden="true">
-        <img class="v37-score-two" src="./assets/reference/predictor-v36/predictor-two.webp?v=20260928-old-design-restore3" alt="">
-        <img class="v37-score-question" src="./assets/reference/predictor-v36/predictor-question.webp?v=20260928-old-design-restore3" alt="">
-        <img class="v37-score-question" src="./assets/reference/predictor-v36/predictor-question.webp?v=20260928-old-design-restore3" alt="">
-      </span>
-      <img class="v37-predictor-trophy" src="./assets/reference/predictor-v36/predictor-trophy.webp?v=20260928-old-design-restore3" alt="">
-      <img class="v37-predictor-pitch-img" src="./assets/reference/predictor-v36/predictor-pitch.webp?v=20260928-old-design-restore3" alt="" aria-hidden="true">
+      <span class="v37-score-panel" aria-hidden="true"><b>2</b><b>?</b><b>?</b></span>
+      <img class="v37-predictor-trophy" src="./assets/reference/final-trophy-drive.png" alt="">
+      <span class="v37-predictor-pitch" aria-hidden="true"><i></i><i></i></span>
     </button>
-    <img class="v37-predictor-stadium-img" src="./assets/reference/predictor-v36/predictor-stadium.webp?v=20260928-old-design-restore3" alt="" aria-hidden="true">
+    <div class="v37-predictor-stadium" aria-hidden="true"><i></i></div>
   </section>`;
 }
 function predictorSixView(){
