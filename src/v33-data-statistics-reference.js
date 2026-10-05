@@ -328,7 +328,8 @@ function isDataRoute(){const r=route();return r==='stats'||r==='safe-data'||r===
 function applyHeaderScroll(){
  if(!isDataRoute())return;
  const head=document.querySelector('[data-v33-head]'),title=head?.querySelector('[data-v33-morph-title]');if(!head||!title)return;
- const y=Math.max(0,document.body.classList.contains('v768-scroll-root')?(document.querySelector('#screen')?.scrollTop||0):(window.scrollY||document.documentElement.scrollTop||0)),p=Math.min(1,y/165),vw=Math.min(window.innerWidth,520);
+ const screenScroller=document.querySelector('#screen');
+ const y=Math.max(0,screenScroller?.scrollTop||0,window.scrollY||0,document.documentElement.scrollTop||0,document.body.scrollTop||0),p=Math.min(1,y/165),vw=Math.min(window.innerWidth,520);
  const lerp=(a,b,t)=>a+(b-a)*t,eh=Math.max(184,Math.min(258,vw*.5012)),ch=Math.max(104,Math.min(142,vw*.272));
  const h=lerp(eh,ch,p);head.style.setProperty('--v33-collapse',p.toFixed(4));head.style.setProperty('--v33-head-h',h.toFixed(1)+'px');
  const page=document.querySelector('[data-v33-data]');
@@ -355,7 +356,11 @@ async function render(){
 }
 function schedule(){requestAnimationFrame(()=>requestAnimationFrame(render))}
 window.addEventListener('hashchange',schedule);
-const target=document.querySelector('#screen');if(target)new MutationObserver(()=>{if(isDataRoute()&&!target.querySelector('[data-v33-data]'))schedule()}).observe(target,{childList:true,subtree:false});
+const target=document.querySelector('#screen');
+if(target){
+ target.addEventListener('scroll',onScroll,{passive:true});
+ new MutationObserver(()=>{if(isDataRoute()&&!target.querySelector('[data-v33-data]'))schedule()}).observe(target,{childList:true,subtree:false});
+}
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',schedule,{once:true});else schedule();
 window.LJR_V33_STATS={setTab,setRefView,goRoute,share,render};
 })();
