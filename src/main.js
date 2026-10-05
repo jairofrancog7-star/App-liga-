@@ -4609,7 +4609,7 @@ function leagueToolsView(){
       '<span class="v726-hero-kicker">CENTRO DE HERRAMIENTAS</span>'+
       '<h1>Todo ordenado por función</h1>'+
       '<p>Encuentra cada herramienta según lo que necesitas hacer: competencia, jornada, documentos, información o administración. Cada tarjeta explica para qué sirve.</p>'+
-      '<div class="v726-hero-pills"><span>Competición</span><span>Jornada</span><span>Documentos</span><span>Administración</span></div>'+
+
     '</header>'+
     '<section class="v726-quick-section"><div class="v726-quick-head"><span><small>ACCESOS RÁPIDOS</small><h2>Lo que más se consulta</h2></span><p>Entradas directas sin repetirlas en los bloques inferiores.</p></div>'+
       '<div class="v726-quick-grid">'+

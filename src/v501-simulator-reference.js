@@ -491,9 +491,9 @@ let V515_SHEET_DRAG=null;
 function v515SheetSnaps(){
  const vh=Math.max(480,window.innerHeight||document.documentElement.clientHeight||800);
  return {
-   expanded:Math.max(62,Math.round(vh*.075)),
+   expanded:Math.max(96,(document.querySelector('.ljr-scroll-header')?.getBoundingClientRect().height||88)+8),
    mid:Math.max(190,Math.round(vh*.455)),
-   collapsed:Math.max(300,vh-116)
+   collapsed:Math.max(300,vh-(document.querySelector('.bottom-nav')?.getBoundingClientRect().height||69)-62)
  };
 }
 function v515SheetTop(sheet){
@@ -514,7 +514,7 @@ function v515ApplySheetSnap(name){
  const sheet=document.querySelector('[data-v501-simulator] .v501-sheet');
  if(!sheet)return;
  const snaps=v515SheetSnaps();
- const snap=(name||localStorage.getItem(V515_SHEET_KEY)||'expanded');
+ const snap=(name||localStorage.getItem(V515_SHEET_KEY)||'collapsed');
  const key=Object.prototype.hasOwnProperty.call(snaps,snap)?snap:'collapsed';
  sheet.dataset.v515Snap=key;
  localStorage.setItem(V515_SHEET_KEY,key);

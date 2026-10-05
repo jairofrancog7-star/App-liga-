@@ -30,10 +30,10 @@ function v31HospitalityMarkup(){
     </label>
 
     <p class="v31-code-note">Solicita tu código de invitado a la administración de la Liga.</p>
-    <span class="v31-side-accent" aria-hidden="true"></span>
 
-    <button type="button" class="v31-continue" data-v31-continue>Continuar</button>
-    <button type="button" class="v774-invites" data-v774-invites>Administrar invitaciones</button><div class="v31-feedback" data-v31-feedback role="status" aria-live="polite"></div>
+
+    <div class="ljr-hospitality-actions"><button type="button" class="v31-continue" data-v31-continue>Continuar</button>
+    <button type="button" class="v774-invites" data-v774-invites>Administrar invitaciones</button></div><div class="v31-feedback" data-v31-feedback role="status" aria-live="polite"></div>
   </section>`;
 }
 

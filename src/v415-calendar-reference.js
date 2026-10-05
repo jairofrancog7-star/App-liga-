@@ -211,11 +211,12 @@ function playerUsage(name,catId=squadCategory){
 function squadPlayerCard(name,index){
   const usage=playerUsage(name);
   const logo=logoFor(squadTeam);
+  const photo=window.LJR_PLAYER_MEDIA?.photo?.(name,squadTeam)||'';
   const initials=String(name||'').split(/\s+/).filter(Boolean).slice(0,2).map(x=>x[0]).join('').toUpperCase();
   return '<article class="v415-player-card">'+
-    '<div class="v415-player-art">'+
+    '<div class="v415-player-art">'+(photo?'<img class="v415-player-portrait" src="'+esc(photo)+'" alt="'+esc(name)+'" loading="lazy">':'')+
       (logo?'<img class="v415-player-team-logo" src="'+esc(logo)+'" alt="" loading="lazy" decoding="async">':'')+
-      '<span class="v415-player-avatar">'+esc(initials||String(index+1))+'</span>'+
+      '<span class="v415-player-avatar">'+esc(usage?.number||initials||String(index+1))+'</span>'+
     '</div>'+
     '<div class="v415-player-copy"><strong>'+esc(name)+'</strong><small>'+(usage?.cedulas?esc(usage.cedulas)+' cédulas registradas':'Jugador registrado')+'</small></div>'+
   '</article>';
@@ -445,11 +446,7 @@ function bind(root){
       return;
     }
     if(dest==='standings'){
-      location.hash='#/competition';
-      setTimeout(()=>{
-        const tab=document.querySelector('[data-comp-tab="standings"]');
-        if(tab)tab.click();
-      },120);
+      if(window.LJR_MAIN_ROUTE){window.LJR_MAIN_ROUTE.state.competitionTab='standings';window.LJR_MAIN_ROUTE.go('competition')}else location.hash='#/competition';
       return;
     }
     if(dest==='teams'){

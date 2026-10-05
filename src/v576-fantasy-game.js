@@ -19,7 +19,7 @@ const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&
 const norm=v=>String(v??'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[^a-z0-9]+/g,' ').trim();
 const route=()=>String(location.hash||'').replace(/^#\/?/,'').split('?')[0]||'home';
 const db=()=>{try{return window.LJR_OFFICIAL_API?.getData?.()||window.LJR_OFFICIAL_DATA||{}}catch(_){return window.LJR_OFFICIAL_DATA||{}}};
-const teamLogo=name=>{try{const v=window.LJR_OFFICIAL_API?.getLogo?.(name)||window.LJR_TEAM_LOGOS?.get?.(name)||LEAGUE_LOGO;return /^https?:/i.test(String(v))?String(v):RAW+String(v).replace(/^\.\//,'')}catch(_){return LEAGUE_LOGO}};
+const teamLogo=name=>{try{const v=window.LJR_OFFICIAL_API?.getLogo?.(name)||window.LJR_TEAM_LOGOS?.get?.(name)||LEAGUE_LOGO;return /^(https?:|data:|blob:)/i.test(String(v))?String(v):String(v).startsWith('assets/')?RAW+String(v):String(v)}catch(_){return LEAGUE_LOGO}};
 const fantasyLoggedIn=()=>{try{const s=JSON.parse(localStorage.getItem('lj-store-v3')||'{}');if(s?.user)return true;const a=JSON.parse(localStorage.getItem('ljr-auth-v569')||'{}');return !!a?.currentId}catch(_){return false}};
 const goFantasyLogin=()=>{try{localStorage.setItem(AUTH_RETURN_KEY,'fantasyTeam')}catch(_){};location.hash='#/accountLogin'};
 

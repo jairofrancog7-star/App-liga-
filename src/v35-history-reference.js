@@ -3000,7 +3000,6 @@ function v370ArchiveTeamsBlock(){
 }
 function recordsBody(){
   return '<section class="v35-block v35-tab-body v35-records-body"><h2 class="v35-section-title">Récords y recuerdos</h2>'+
-    '<article class="v35-stat-card"><h3>Archivo comprobado</h3><p>Esta sección reúne marcas visibles en tablas históricas, recuerdos documentados y el inventario de todos los equipos recuperados del archivo. El catálogo fue cruzado también contra las 25 imágenes históricas de Drive y contra las 1,758 imágenes únicas del ZIP revisadas en 28 hojas de contacto. Se añadieron cortes de clasificación y goleo que faltaban. Un corte de jornada no se presenta como récord absoluto de toda la Liga.</p></article>'+
     '<div class="v35-record-grid">'+recordMemories.map(r=>'<article class="v35-record-card">'+
       (r.image?'<img src="'+r.image+'" alt="" loading="lazy" decoding="async">':'<span class="v35-record-mark">LM</span>')+
       '<div><small>'+esc(r.tag)+'</small><h3>'+esc(r.title)+'</h3><strong>'+esc(r.value)+'</strong><p>'+esc(r.detail)+'</p></div></article>').join('')+'</div>'+

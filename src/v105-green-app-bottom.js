@@ -354,7 +354,7 @@ function block(r){
      motion(asset,'LIGA JUVENTINO · AZUL','FÚTBOL QUE SE MUEVE','Animaciones de la app verde adaptadas visualmente al diseño azul y colocadas al final.')+
    '</section>';
  }
- return '<section class="v105-bottom" id="v105-bottom" data-v105-route="'+esc(r)+'">'+head(k,title,desc)+motion(asset,'LIGA JUVENTINO · AZUL','FÚTBOL QUE SE MUEVE','Animaciones de la app verde adaptadas visualmente al diseño azul y colocadas abajo.')+html+(cards.length?'<div class="v105-grid">'+cards.map(card).join('')+'</div>':'')+'<p class="v105-footnote">Estas funciones se anexan debajo de la página. Los simuladores, notas, encuestas y directorios locales no cambian datos oficiales.</p></section>';
+ return '<section class="v105-bottom" id="v105-bottom" data-v105-route="'+esc(r)+'">'+head(k,title,desc)+motion(asset,'LIGA JUVENTINO · AZUL','FÚTBOL QUE SE MUEVE','Partidos, historias y momentos de la Liga.')+html+(cards.length?'<div class="v105-grid">'+cards.map(card).join('')+'</div>':'')+'</section>';
 }
 
 /* ===== Táctica 3D inferior ===== */
@@ -540,7 +540,7 @@ function officials(){
 }
 function incidents(){
  const list=read('v105-incidents',[]);
- const m=modal('Incidencias del partido','Bitácora local. No modifica la cédula ni el resultado oficial.','<div class="v105-form"><label><span>Minuto</span><input type="number" min="0" max="200" data-min></label><label><span>Tipo</span><select data-type><option>Gol</option><option>Tarjeta</option><option>Cambio</option><option>Lesión</option><option>Observación</option></select></label><label style="grid-column:1/-1"><span>Detalle</span><textarea data-note></textarea></label></div><div class="v105-actions"><button class="v105-btn" data-add>Agregar incidencia</button></div><div class="v105-list" data-list></div>');
+ const m=modal('Incidencias del partido','Bitácora local. No modifica la cédula ni el resultado oficial.','<div class="v105-form"><label><span>Minuto</span><input type="number" min="0" max="200" data-min></label><label><span>Tipo</span><select data-type><option>Gol</option><option>Tarjeta amarilla</option><option>Segunda amarilla</option><option>Tarjeta roja</option><option>Sustitución</option><option>Lesión</option><option>Penal marcado</option><option>Penal fallado</option><option>Gol anulado</option><option>Fuera de juego</option><option>Suspensión por lluvia</option><option>Interrupción</option><option>Reanudación</option><option>Inicio de tiempo</option><option>Final de tiempo</option><option>Observación</option></select></label><label style="grid-column:1/-1"><span>Detalle</span><textarea data-note></textarea></label></div><div class="v105-actions"><button class="v105-btn" data-add>Agregar incidencia</button></div><div class="v105-list" data-list></div>');
  const render=()=>{$('[data-list]',m).innerHTML=list.length?list.map(x=>'<article><b>'+esc(x.min||'—')+'\' · '+esc(x.type)+'</b><small>'+esc(x.note)+'</small></article>').join(''):'<p class="v105-footnote">Sin incidencias locales.</p>'};render();$('[data-add]',m).onclick=()=>{list.push({min:$('[data-min]',m).value,type:$('[data-type]',m).value,note:$('[data-note]',m).value.trim(),at:new Date().toISOString()});write('v105-incidents',list);log('Agregar incidencia local');render()};
 }
 function motm(){

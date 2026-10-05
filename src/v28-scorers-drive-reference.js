@@ -226,7 +226,7 @@ function logo(r){
   return '<span class="v28-team-logo"><span class="v28-team-fallback">'+esc(ab)+'</span></span>';
 }
 function rowMarkup(r,i){
-  return '<button type="button" class="v28-rank-row" data-v28-player="'+esc(r[1])+'">'+
+  return '<button type="button" class="v28-rank-row" data-v28-player="'+esc(r[0])+'">'+
     '<span class="v28-rank-number">#'+(i+3)+'</span>'+logo(r)+
     '<span class="v28-rank-copy"><b>'+esc(r[0])+'</b><small>'+esc(r[1])+' · '+esc(r[3])+'</small></span>'+
     '<strong class="v28-rank-goals">'+r[2]+'</strong></button>';
