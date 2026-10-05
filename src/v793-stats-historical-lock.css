@@ -184,10 +184,10 @@ html body.v33-data-active #screen .v33-data-head.is-collapsed .v33-tabs button{
 /* El contenido se desplaza por debajo de la cabecera, como en el diseño original. */
 html body.v33-data-active #screen .v33-data-page{
   position:relative!important;
-  padding-top:var(--v33-head-h,clamp(184px,50.12vw,258px))!important;
+  padding-top:clamp(184px,50.12vw,258px)!important;
 }
 html body.v33-data-active.v768-scroll-root #screen .v33-data-page{
-  padding-top:var(--v33-head-h,clamp(184px,50.12vw,258px))!important;
+  padding-top:clamp(184px,50.12vw,258px)!important;
 }
 html body.v33-data-active #screen .v33-data-content{
   position:relative!important;
