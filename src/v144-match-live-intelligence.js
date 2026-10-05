@@ -1,3 +1,4 @@
+import {watchLocalRoom} from './v780-local-player.js';
 import {Capacitor,registerPlugin} from '@capacitor/core';
 const nativeSpeech=registerPlugin('LigaSpeech');
 import {patchKeepingPlayer,enableDirectStream,playbackSettings,openPhoneCamera} from './v561-media-tools.js';
@@ -216,7 +217,7 @@ function streamEmbedHtml(s){
   const url=normalizeStreamUrl(s?.source?.url);
   if(!url)return '';
   const p=provider(url);
-  if(p.key==='local')return '<section class="v144-stream-embed"><header><b>'+esc(s.source.name||'Liga en vivo')+'</b></header><div class="v144-local-frame"><iframe src="'+esc(url)+'" title="Transmisión local de la Liga" allow="autoplay; picture-in-picture; fullscreen" allowfullscreen></iframe></div></section>';
+  if(p.key==='local')return '<section class="v144-stream-embed"><header><b>'+esc(s.source.name||'Liga en vivo')+'</b></header><button type="button" class="btn full" data-v144-watch-local>Reproducir transmisión local</button></section>';
   if(/\.(mp4|webm|ogg|m3u8)(?:[?#]|$)/i.test(url))return '<section class="v144-stream-embed"><header><b>Video directo</b></header><div class="v144-stream-frame v196-frame"><video src="'+esc(url)+'" controls playsinline preload="metadata"></video></div></section>';
   if(p.name==='Facebook Live'){
     const src='https://www.facebook.com/plugins/video.php?href='+encodeURIComponent(url)+'&show_text=false&width=560&autoplay=false';
@@ -532,10 +533,11 @@ async function openLocal(c,s){
  const n=media.modal('Transmisiones de la Liga','<div class="cms-form" data-local-rooms><p>Consultando transmisiones activas…</p></div>'+ (canEdit()?'<button class="btn full" data-local-broadcast>Transmitir con mi cámara</button>':''));
  n.querySelector('[data-local-broadcast]')?.addEventListener('click',()=>{n.querySelector('[data-close]').click();media.broadcast({title:c.home+' vs '+c.away,onStarted:room=>{const current=load(c);current.source={...current.source,url:room.url,name:room.title};save(current);schedule()}})});
  try{const result=await media.api('rooms');if(!n.isConnected)return;const list=n.querySelector('[data-local-rooms]'),rooms=result.rooms||[];list.innerHTML=rooms.length?rooms.map((room,i)=>'<button data-local-watch="'+i+'"><i class="ljr-live-dot"></i>'+esc(room.title)+'</button>').join(''):'<p>No hay transmisiones locales activas en este momento.</p>';
- list.querySelectorAll('[data-local-watch]').forEach(b=>b.onclick=()=>{const room=rooms[Number(b.dataset.localWatch)];if(!room||!/^[a-zA-Z0-9_-]{8,100}$/.test(room.id))return;const url=media.base+'/?live='+encodeURIComponent(room.id);n.querySelector('[data-close]').click();media.modal(room.title,'<div class="v144-local-frame"><iframe src="'+esc(url)+'" title="Transmisión local" allow="autoplay; picture-in-picture; fullscreen" allowfullscreen></iframe></div>')});
+ list.querySelectorAll('[data-local-watch]').forEach(b=>b.onclick=()=>{const room=rooms[Number(b.dataset.localWatch)];if(!room||!/^[a-zA-Z0-9_-]{8,100}$/.test(room.id))return;n.querySelector('[data-close]').click();watchLocalRoom(room)});
  }catch(error){if(n.isConnected)n.querySelector('[data-status]').textContent=error.message||'No se pudieron consultar las transmisiones.'}
 }
 function bind(c,s,hub){
+  $('[data-v144-watch-local]',hub)?.addEventListener('click',e=>{stop(e);watchLocalRoom({id:localRoom(s.source.url),title:s.source.name})});
   $('[data-v144-local]',hub)?.addEventListener('click',e=>{stop(e);openLocal(c,s)});
   hub.querySelector('[data-v561-camera-open]')?.addEventListener('click',openPhoneCamera);
   hub.querySelectorAll('video').forEach(enableDirectStream);
