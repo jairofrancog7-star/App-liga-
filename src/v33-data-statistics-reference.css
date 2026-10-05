@@ -1876,3 +1876,53 @@ body.v33-data-active .v33-data-page[data-v33-mode="player"] .v33-tabs button[dat
     font-size:4.25vw!important;
   }
 }
+
+
+/* V792 — scroll dinámico de la cabecera Estadísticas, igual al video de referencia. */
+@media(max-width:699px){
+  /* La misma cabecera grande se contrae conforme se desliza hacia abajo. */
+  html body.v33-data-active #screen .v33-morph-title{
+    left:calc(20px + (var(--v33-collapse,0) * 72px))!important;
+    top:calc(99px - (var(--v33-collapse,0) * 75px))!important;
+    max-width:calc(78% - (var(--v33-collapse,0) * 20%))!important;
+    transition:none!important;
+  }
+  html body.v33-data-active #screen .v33-morph-title h1{
+    font-size:calc(32px - (var(--v33-collapse,0) * 14px))!important;
+    line-height:1!important;
+    transition:none!important;
+  }
+  html body.v33-data-active #screen .v33-morph-title p{
+    display:block!important;
+    opacity:calc(1 - (var(--v33-collapse,0) * 1.45))!important;
+    transform:translateY(calc(var(--v33-collapse,0) * -8px))!important;
+    transition:none!important;
+  }
+
+  /* Flecha y compartir se mantienen arriba mientras el título sube entre ambos. */
+  html body.v33-data-active #screen .v33-head-actions{
+    top:clamp(18px,7.5vw,38px)!important;
+  }
+
+  /* Al quedar compacto, desaparece "Fase final", tal como en el video. */
+  html body.v33-data-active #screen .v33-data-head.is-collapsed .v33-morph-title p{
+    display:none!important;
+    visibility:hidden!important;
+    opacity:0!important;
+  }
+  html body.v33-data-active #screen .v33-data-head.is-collapsed .v33-morph-title{
+    left:clamp(68px,25.5vw,132px)!important;
+    top:clamp(18px,6.7vw,35px)!important;
+    max-width:58%!important;
+  }
+  html body.v33-data-active #screen .v33-data-head.is-collapsed .v33-morph-title h1{
+    font-size:clamp(18px,4.8vw,25px)!important;
+    font-weight:600!important;
+  }
+
+  /* La fila General / Equipo / Jugadores queda pegada abajo durante todo el gesto. */
+  html body.v33-data-active #screen .v33-tabs{
+    bottom:0!important;
+    opacity:1!important;
+  }
+}
