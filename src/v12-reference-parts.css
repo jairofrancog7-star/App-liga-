@@ -5267,3 +5267,25 @@ body[data-app-route="competition"] .v12-segmented button.active{
 body[data-app-route="competition"] .v12-segmented button.active{
   box-shadow:inset 0 -3px 0 #28e0eb!important;
 }
+
+/* V791 — Perfil: restauración dura de los seis botones originales. */
+body[data-app-route="profile"] .v12-profile-menu{
+  display:block!important;
+  visibility:visible!important;
+  opacity:1!important;
+}
+body[data-app-route="profile"] .v12-profile-menu > .v12-profile-row{
+  display:grid!important;
+  visibility:visible!important;
+  opacity:1!important;
+}
+body[data-app-route="profile"] .v12-profile-menu > [data-v12-route="following"],
+body[data-app-route="profile"] .v12-profile-menu > [data-v12-route="notifications"],
+body[data-app-route="profile"] .v12-profile-menu > [data-v12-action="language"],
+body[data-app-route="profile"] .v12-profile-menu > [data-v12-action="feedback"],
+body[data-app-route="profile"] .v12-profile-menu > [data-v12-action="privacy"],
+body[data-app-route="profile"] .v12-profile-menu > [data-v12-action="terms"]{
+  display:grid!important;
+  visibility:visible!important;
+  opacity:1!important;
+}
