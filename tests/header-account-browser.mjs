@@ -26,7 +26,7 @@ try {
 
  const go=async r=>{console.log('Checking',r);await page.evaluate(r=>window.LJR_MAIN_ROUTE.go(r),r);await page.waitForTimeout(1000)};
  await page.goto('http://app.test/?mode=apk#/home',{waitUntil:'domcontentloaded'});await page.waitForTimeout(1600);
- for(const route of ['home','teams','safe-about','hospitality','leagueTools','scorers','v4-calendar','history','simulator','profile','stats','following','favorites','safe-data','moments','matchCenter','rulebook','players','credentialBuilder']){
+ for(const route of ['home','teams','safe-about','hospitality','leagueTools','scorers','v4-calendar','history','simulator','profile','stats','following','favorites','safe-data','moments','matchCenter','rulebook','players','credentialBuilder','playerCompare']){
   await go(route);
   const controls=await page.locator('.ljr-header-v777 .ljr-chrome-actions button').evaluateAll(nodes=>nodes.filter(n=>n.getBoundingClientRect().height).map(n=>{const r=n.getBoundingClientRect();return {name:n.getAttribute('aria-label'),x:r.x,y:r.y,w:r.width,h:r.height,color:getComputedStyle(n).color}}));
   assert.equal(controls.filter(n=>n.name==='Mi perfil').length,1,route+' has one profile');
@@ -34,6 +34,7 @@ try {
   const sorted=controls.sort((a,b)=>a.x-b.x);for(let i=1;i<sorted.length;i++)assert.ok(sorted[i].x>=sorted[i-1].x+32,route+' controls do not overlap');
   if(route!=='home')assert.ok(controls.some(n=>n.name==='Regresar'),route+' back present');
  }
+ await go('playerCompare');assert.equal(await page.locator('.v123-back').isVisible(),false,'one back arrow in player comparison');
  await go('safe-data');
  const statsLayout=await page.evaluate(()=>{const head=document.querySelector('.v33-data-head'),title=head.querySelector('h1').getBoundingClientRect(),tabs=head.querySelector('.v33-tabs').getBoundingClientRect();return {titleBottom:title.bottom,tabsTop:tabs.top,headBottom:head.getBoundingClientRect().bottom}});
  assert.ok(statsLayout.tabsTop>=statsLayout.titleBottom,'statistics tabs below title');

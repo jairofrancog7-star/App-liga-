@@ -239,3 +239,18 @@ html body.ljr-native-pip .ljr-native-pip-player>video{width:100%!important;heigh
 html body.ljr-native-pip .ljr-native-pip-player .ljr-video-controls{display:none!important}
 html body.ljr-native-pip .ljr-native-pip-player iframe{visibility:visible!important;width:100%!important;height:100%!important;max-height:none!important;border:0!important;position:static!important}
 html body.ljr-native-pip .ljr-native-pip-player :is(.v196-frame,.v144-stream-frame){visibility:visible!important;width:100%!important;height:100%!important;aspect-ratio:auto!important;margin:0!important;padding:0!important;position:absolute!important;inset:0!important}
+@media(max-width:1023px){
+ html body.ljr-v777[data-app-route="playerCompare"] #app #screen .v123-back{display:none!important}
+ html body.ljr-v777[data-app-route="playerCompare"] #app #screen :is(.v123-player-compare,.v123-compare-hero,.v123-choose-empty){background:#06075f!important;min-height:0!important}
+ html body.ljr-v777[data-app-route="playerCompare"] #app #screen .v123-compare-hero{padding:16px 16px 12px!important}
+ html body.ljr-v777[data-app-route="playerCompare"] #app #screen .v123-duel{margin-top:0!important}
+ html body.ljr-v777[data-app-route="playerCompare"] #app #screen :is(.v123-player-card,.v123-filter-row>span,.v123-change-player){background:#132b7e!important;border:1px solid #3d5ca9!important;border-radius:14px!important}
+ html body.ljr-v777[data-app-route="playerCompare"] #app #screen .v123-filter-row>span:last-child i{background:transparent!important}
+ html body.ljr-v777[data-app-route="playerCompare"] #app #screen .v123-choose-empty{padding:32px 20px 16px!important}
+ html body.ljr-v777[data-app-route="playerCompare"] #app #screen .v123-pitch-icon{width:84px!important;height:65px!important;margin-bottom:18px!important}
+}
+@media(max-width:1023px){
+ html body.ljr-v777[data-app-route="playerCompare"] #app #screen .v123-player-compare{min-height:calc(100dvh - var(--v768-head-h,88px) - var(--v774-nav-h,69px))!important;display:flex!important;flex-direction:column!important}
+ html body.ljr-v777[data-app-route="playerCompare"] #app #screen .v123-compare-hero{flex:none!important}
+ html body.ljr-v777[data-app-route="playerCompare"] #app #screen .v123-choose-empty{flex:1!important;justify-content:center!important}
+}
