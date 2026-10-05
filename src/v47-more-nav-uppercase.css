@@ -1,7 +1,6 @@
 /* V47 — Barra inferior en MAYÚSCULAS para todas las pantallas de “Más”.
    Mantiene tamaños, colores, espaciado y navegación. */
 body[data-app-route="more"] .bottom-nav .nav-item small,
-body[data-app-route="predictor"] .bottom-nav .nav-item small,
 body[data-app-route="predictorSix"] .bottom-nav .nav-item small,
 body[data-app-route="quiz"] .bottom-nav .nav-item small,
 body[data-app-route="moreLess"] .bottom-nav .nav-item small,
@@ -123,4 +122,10 @@ body[data-app-route="history"] .bottom-nav .nav-item[data-route="competition"] .
 body[data-app-route="history"] .bottom-nav .nav-item[data-route="competition"] .nav-icon::after{
   content:none!important;
   display:none!important;
+}
+
+
+/* V801 — Pronostica Seis conserva la capitalización del diseño antiguo. */
+body[data-app-route="predictor"] .bottom-nav .nav-item small{
+  text-transform:none!important;
 }
