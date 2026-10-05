@@ -55,7 +55,9 @@ function icon(name){
  return '<svg viewBox="0 0 24 24" aria-hidden="true">'+(p[name]||p.home)+'</svg>';
 }
 function card(c){
- return '<button type="button" class="v105-card" '+(c.route?'data-v105-route="'+esc(c.route)+'"':'data-v105-action="'+esc(c.action)+'"')+'>'+
+ const nav=c.route?'data-v105-route="'+esc(c.route)+'"':'data-v105-action="'+esc(c.action)+'"';
+ const tab=c.tab?' data-v105-history-tab="'+esc(c.tab)+'"':'';
+ return '<button type="button" class="v105-card" '+nav+tab+'>'+
    '<span class="v105-icon">'+icon(c.icon)+'</span><span class="v105-copy"><b>'+esc(c.title)+'</b><small>'+esc(c.sub)+'</small></span><span class="v105-arrow">›</span></button>';
 }
 function head(k,t,d){return '<header class="v105-head"><small>'+esc(k)+'</small><h2>'+esc(t)+'</h2><p>'+esc(d)+'</p></header>'}
@@ -103,6 +105,23 @@ function openTeamsDirectory(){
    setTimeout(()=>{try{search.focus({preventScroll:true})}catch(_){search.focus?.()}},220);
  }
  return true;
+}
+function openHistoryTab(tab){
+ const fire=()=>{
+   if(route()!=='history')return false;
+   const wanted=norm(tab);
+   const btn=[...document.querySelectorAll('[data-v35-tab],[data-history-tab]')].find(x=>norm(x.textContent).includes(wanted));
+   try{
+     if(window.LJR_HISTORY_FAST_TAB){window.LJR_HISTORY_FAST_TAB(tab);return true}
+   }catch(_){}
+   if(btn){btn.click();return true}
+   return false;
+ };
+ try{sessionStorage.setItem('v105-history-tab',tab)}catch(_){}
+ if(route()!=='history')location.hash='#/history';
+ requestAnimationFrame(()=>requestAnimationFrame(()=>{if(fire())try{sessionStorage.removeItem('v105-history-tab')}catch(_){}}));
+ setTimeout(()=>{if(fire())try{sessionStorage.removeItem('v105-history-tab')}catch(_){}},160);
+ setTimeout(()=>{if(fire())try{sessionStorage.removeItem('v105-history-tab')}catch(_){}},420);
 }
 function go(r){
  if(!r)return;
@@ -297,7 +316,7 @@ function block(r){
  else if(r==='stats'||r==='scorers'||r==='rankings'||r==='v38Stats'){title='Datos y rendimiento';desc='Tabla, goleadores, exportación y lectura de temporada.';cards=[...COMP_CARDS.filter(x=>['leagueData','stats','scorers','tableExport'].includes(x.route)),{icon:'sim',title:'Escenarios',sub:'Simulación local',route:'simulator'}];asset='v38-soccer-stats.mp4'}
  else if(r==='moments'){k='MOMENTOS DE LA LIGA';title='Videos y momentos';desc='Cuartos, semifinales, finales y archivo audiovisual de la Liga.';cards=[{icon:'video',title:'Momentos',sub:'Contenido de la Liga',route:'moments'},{icon:'history',title:'Historial',sub:'Temporadas y archivo',route:'historyLog'},{icon:'share',title:'Compartir jornada',sub:'Publicaciones',route:'publications'}];asset='v38-soccer-liguilla.mp4';html+=gallery()}
  else if(r==='video'){k='LIGA JUVENTINO TV';title='Videos y momentos';desc='Archivo audiovisual de la Liga.';cards=[{icon:'video',title:'Televisados',sub:'Partidos transmitidos y en directo',route:'televisados'},{icon:'video',title:'Momentos',sub:'Contenido de la Liga',route:'moments'},{icon:'history',title:'Historia',sub:'Temporadas y archivo',route:'history'},{icon:'share',title:'Compartir jornada',sub:'Publicaciones',route:'publications'}];asset='v38-soccer-liguilla.mp4';html+=gallery()}
- else if(r==='history'){title='Historia · temporadas y palmarés';desc='Accesos de la app verde agrupados debajo del archivo histórico actual.';cards=[{icon:'history',title:'Temporada actual',sub:'Información vigente',route:'leagueData'},{icon:'trophy',title:'Palmarés',sub:'Campeones e historia',route:'history'},{icon:'history',title:'Históricos',sub:'Equipos y temporadas anteriores',route:'history'},{icon:'video',title:'Finales y momentos',sub:'Archivo audiovisual',route:'moments'}];asset='v38-soccer-liguilla.mp4'}
+ else if(r==='history'){title='Historia · temporadas y palmarés';desc='Accesos directos al archivo histórico.';cards=[{icon:'history',title:'Temporada actual',sub:'Información vigente',route:'leagueData'},{icon:'trophy',title:'Palmarés',sub:'Campeones e historia',route:'history',tab:'Campeones'},{icon:'history',title:'Históricos',sub:'Equipos y temporadas anteriores',route:'history',tab:'Temporadas'},{icon:'video',title:'Finales y momentos',sub:'Finales del archivo',route:'history',tab:'Finales'}];asset='v38-soccer-liguilla.mp4'}
  else if(r==='tactics'){title='Táctica 3D · versión azul';desc='Tablero táctil inspirado en la función de Liga_Futbol; se agrega al final y guarda sólo en este dispositivo.';cards=[];asset='v38-fix10-tactics-motion.mp4';html+=tacticsBoard()}
  else if(r==='matchday'){k='CENTRO DE JORNADA';title='Partido y operación';desc='Accesos complementarios debajo del centro de jornada, sin mover el contenido principal.';cards=[
    {icon:'match',title:'Match Center real',sub:'Abrir partido oficial',route:'v4-matchcenter'},
@@ -1181,9 +1200,11 @@ function act(a){
  else if(a==='register-alerts')registerAlerts();else if(a==='schedule-match')scheduleMatch();else if(a==='new-sanction')newSanction();else if(a==='tv-panel')tvPanel();
 }
 function bind(root){
- $$('[data-v105-route]',root).forEach(b=>b.onclick=e=>{
+ $('[data-v105-route]',root).forEach(b=>b.onclick=e=>{
    e?.preventDefault?.();
    e?.stopPropagation?.();
+   const tab=b.dataset.v105HistoryTab||'';
+   if(tab){openHistoryTab(tab);return}
    go(b.dataset.v105Route);
  });
  $$('[data-v105-action]',root).forEach(b=>b.onclick=()=>{log('Herramienta '+b.dataset.v105Action);act(b.dataset.v105Action)});
