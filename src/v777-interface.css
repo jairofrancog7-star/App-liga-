@@ -316,3 +316,63 @@ html body.ljr-native-pip .ljr-native-pip-player :is(.v196-frame,.v144-stream-fra
   visibility:visible!important;
  }
 }
+
+/* V794 — Fantasy sin barra superior global y pantalla ajustada de arriba a abajo. */
+@media(max-width:1023px){
+ html body.ljr-v777:is(
+  [data-app-route="fantasy"],
+  [data-app-route="fantasyAccess"],
+  [data-app-route="fantasyTeam"]
+ ) #app>.topbar,
+ html body.ljr-v777:is(
+  [data-app-route="fantasy"],
+  [data-app-route="fantasyAccess"],
+  [data-app-route="fantasyTeam"]
+ ) .app-shell>.topbar{
+  display:none!important;
+  visibility:hidden!important;
+  opacity:0!important;
+  position:absolute!important;
+  inset:0 auto auto 0!important;
+  width:0!important;
+  height:0!important;
+  min-height:0!important;
+  max-height:0!important;
+  margin:0!important;
+  padding:0!important;
+  border:0!important;
+  overflow:hidden!important;
+  pointer-events:none!important;
+ }
+
+ html body.v768-scroll-root.ljr-v777:is(
+  [data-app-route="fantasy"],
+  [data-app-route="fantasyAccess"],
+  [data-app-route="fantasyTeam"]
+ ){
+  --v768-head-h:0px!important;
+ }
+
+ html body.v768-scroll-root.ljr-v777:is(
+  [data-app-route="fantasy"],
+  [data-app-route="fantasyAccess"]
+ ) #screen{
+  top:0!important;
+  bottom:var(--v774-nav-h,var(--ui-master-bottom-nav-h,69px))!important;
+  height:auto!important;
+  min-height:0!important;
+  max-height:none!important;
+  margin:0!important;
+  padding-top:0!important;
+ }
+
+ html body.v768-scroll-root.ljr-v777[data-app-route="fantasyTeam"] #screen{
+  top:0!important;
+  bottom:0!important;
+  height:auto!important;
+  min-height:0!important;
+  max-height:none!important;
+  margin:0!important;
+  padding-top:0!important;
+ }
+}
