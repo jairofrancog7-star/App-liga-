@@ -206,6 +206,7 @@ async function renderOwn(){
   const r=route();
   if(r==='more'){enhanceMore();return}
   if(!OWN.has(r))return;
+  if(document.querySelector('[data-ljpc-function-route="'+r+'"]'))return;
   await loadDb();
   if(r==='pc-calendar')renderCalendar();
   if(r==='pc-notifications')renderNotifications();
@@ -234,7 +235,7 @@ let timer=0;
 function sync(){clearTimeout(timer);timer=setTimeout(()=>{if(rerouteLegacy())return;renderOwn()},35)}
 window.addEventListener('hashchange',sync);
 window.addEventListener('resize',sync);
-window.addEventListener('ljr:official-data',()=>{try{db=window.LJR_OFFICIAL_DATA||window.LJR_OFFICIAL_API?.getData?.()||db}catch(_){};sync()});
+window.addEventListener('ljr:official-data',()=>{try{db=window.LJR_OFFICIAL_DATA||window.LJR_OFFICIAL_API?.getData?.()||db}catch(_){};document.querySelector('[data-ljpc-function-route]')?.remove();sync()});
 const screen=document.querySelector('#screen');
 if(screen)new MutationObserver(()=>{if(isDesktop()&&(OWN.has(route())||route()==='more'))sync()}).observe(screen,{childList:true,subtree:true});
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',sync,{once:true});else sync();
