@@ -102,13 +102,17 @@ function decorate(){
     const team=String(p.team||'').trim();
     const logo=logoFor(team);
 
-    repairJersey(kit.querySelector('.v820-lineup-jersey'),index,fallbacks);
+    const shirt=kit.querySelector('.v820-lineup-jersey');
+    repairJersey(shirt,index,fallbacks);
 
     kit.querySelectorAll('.v821-source-eraser,.v821-team-crest').forEach(n=>n.remove());
+    const generated=wrap.dataset.v829Generated==='1';
     kit.insertAdjacentHTML('beforeend',
-      '<span class="v821-source-eraser left" aria-hidden="true"></span>'+
-      '<span class="v821-source-eraser right" aria-hidden="true"></span>'+
-      '<span class="v821-source-eraser center" aria-hidden="true"></span>'+
+      (generated?'':(
+        '<span class="v821-source-eraser left" aria-hidden="true"></span>'+
+        '<span class="v821-source-eraser right" aria-hidden="true"></span>'+
+        '<span class="v821-source-eraser center" aria-hidden="true"></span>'
+      ))+
       crestHtml(team,logo)
     );
     bindCrest(kit);
