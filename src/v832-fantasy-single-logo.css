@@ -1,0 +1,46 @@
+/* V832 — exactly one Liga crest on every Fantasy shirt. */
+html body[data-app-route="fantasyTeam"] .v820-team-logo,
+html body[data-app-route="fantasyTeam"] .v821-team-crest,
+html body[data-app-route="fantasyTeam"] .v821-source-eraser,
+html body[data-app-route="fantasyTeam"] .v824-team-crest,
+html body[data-app-route="fantasyTeam"] .v824-source-cover{
+  display:none!important;
+  visibility:hidden!important;
+  opacity:0!important;
+  pointer-events:none!important;
+}
+html body[data-app-route="fantasyTeam"] .v832-team-crest{
+  position:absolute!important;
+  z-index:20!important;
+  left:59%!important;
+  top:27%!important;
+  width:13px!important;
+  height:13px!important;
+  min-width:13px!important;
+  min-height:13px!important;
+  max-width:13px!important;
+  max-height:13px!important;
+  display:grid!important;
+  place-items:center!important;
+  transform:translate(-50%,-50%)!important;
+  background:transparent!important;
+  border:0!important;
+  box-shadow:none!important;
+  pointer-events:none!important;
+}
+html body[data-app-route="fantasyTeam"] .v832-team-crest img{
+  width:13px!important;height:13px!important;
+  max-width:13px!important;max-height:13px!important;
+  display:block!important;object-fit:contain!important;
+  background:transparent!important;border:0!important;
+  filter:drop-shadow(0 1px 1px rgba(0,0,0,.42))!important;
+}
+html body[data-app-route="fantasyTeam"] .v832-team-crest b{
+  display:none!important;
+  width:13px!important;height:13px!important;
+  place-items:center!important;border-radius:50%!important;
+  background:#0a3a8f!important;color:#fff!important;
+  font:800 6px/13px Inter,Roboto,Arial,sans-serif!important;
+}
+html body[data-app-route="fantasyTeam"] .v832-team-crest.is-fallback img{display:none!important}
+html body[data-app-route="fantasyTeam"] .v832-team-crest.is-fallback b{display:grid!important}
