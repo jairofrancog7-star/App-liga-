@@ -575,3 +575,211 @@ html body[data-app-route="fantasyTeam"] .v576-slot:focus-visible .v597-real-kit{
     width:44px!important;height:50px!important;max-width:44px!important;max-height:50px!important;
   }
 }
+
+
+/* V809 — exact spacing + shirt/card attachment requested from the new references.
+   Access text must never sit behind the cards/buttons, and filled player cards
+   must touch the lower edge of the shirt like the reference. */
+
+/* ---------- Fantasy access slides: normal document flow, no overlaps ---------- */
+html body[data-app-route="fantasyAccess"] .v588-slide-login,
+html body[data-app-route="fantasyAccess"] .v588-slide-team{
+  display:flex!important;
+  flex-direction:column!important;
+  align-items:center!important;
+  justify-content:flex-start!important;
+  box-sizing:border-box!important;
+  overflow:hidden!important;
+  padding:0 18px 18px!important;
+}
+
+/* Undo the old absolute button stack that was covering copy. */
+html body[data-app-route="fantasyAccess"] .v588-slide-login .v23-access-actions,
+html body[data-app-route="fantasyAccess"] .v588-slide-team .v23-access-actions{
+  position:relative!important;
+  left:auto!important;
+  right:auto!important;
+  bottom:auto!important;
+  top:auto!important;
+  width:100%!important;
+  margin-left:0!important;
+  margin-right:0!important;
+  padding:0!important;
+  flex:0 0 auto!important;
+  pointer-events:auto!important;
+}
+
+/* Login slide: keep the copy readable, then push the button group lower. */
+html body[data-app-route="fantasyAccess"] .v588-slide-login .v23-access-photo{
+  flex:0 0 auto!important;
+  margin-top:clamp(24px,3.4dvh,36px)!important;
+}
+html body[data-app-route="fantasyAccess"] .v588-slide-login .v23-access-copy{
+  flex:0 0 auto!important;
+  width:min(88%,470px)!important;
+  margin:clamp(44px,5.7dvh,66px) 0 0!important;
+  padding:0 8px!important;
+}
+html body[data-app-route="fantasyAccess"] .v588-slide-login .v23-access-copy h1{
+  margin:0 auto!important;
+  line-height:1.18!important;
+}
+html body[data-app-route="fantasyAccess"] .v588-slide-login .v23-access-copy p{
+  margin:clamp(24px,3dvh,34px) auto 0!important;
+  line-height:1.55!important;
+}
+html body[data-app-route="fantasyAccess"] .v588-slide-login .v23-access-actions{
+  margin-top:auto!important;
+  margin-bottom:clamp(14px,2dvh,24px)!important;
+}
+
+/* Team slide: stage must be at least as tall as the cards so the title starts BELOW them. */
+html body[data-app-route="fantasyAccess"] .v588-slide-team .v588-card-stage{
+  flex:0 0 auto!important;
+  width:min(92%,470px)!important;
+  height:clamp(246px,31dvh,292px)!important;
+  min-height:246px!important;
+  margin-top:clamp(16px,2.2dvh,26px)!important;
+  overflow:visible!important;
+}
+html body[data-app-route="fantasyAccess"] .v588-slide-team .v588-team-copy{
+  flex:0 0 auto!important;
+  width:min(88%,470px)!important;
+  margin:clamp(24px,3.1dvh,38px) 0 0!important;
+  padding:0 8px!important;
+}
+html body[data-app-route="fantasyAccess"] .v588-slide-team .v588-team-copy h1{
+  margin:0 auto!important;
+  line-height:1.18!important;
+}
+html body[data-app-route="fantasyAccess"] .v588-slide-team .v588-team-copy p{
+  margin:clamp(22px,2.8dvh,30px) auto 0!important;
+  line-height:1.5!important;
+}
+html body[data-app-route="fantasyAccess"] .v588-slide-team .v588-dots{
+  margin-top:clamp(15px,1.9dvh,21px)!important;
+}
+html body[data-app-route="fantasyAccess"] .v588-slide-team .v23-access-actions{
+  margin-top:auto!important;
+  margin-bottom:clamp(12px,1.8dvh,20px)!important;
+}
+
+/* Keep both main buttons visibly lower than the copy, with no text behind them. */
+html body[data-app-route="fantasyAccess"] .v588-slide-login .v23-access-login,
+html body[data-app-route="fantasyAccess"] .v588-slide-team .v23-access-login{
+  width:min(82%,410px)!important;
+  min-height:52px!important;
+  height:52px!important;
+  flex:0 0 52px!important;
+  margin:0!important;
+}
+html body[data-app-route="fantasyAccess"] .v588-slide-login .v23-access-later,
+html body[data-app-route="fantasyAccess"] .v588-slide-team .v23-access-later,
+html body[data-app-route="fantasyAccess"] [data-v807-restored="1"]{
+  min-height:36px!important;
+  height:36px!important;
+  margin:12px 0 0!important;
+  padding:4px 16px!important;
+}
+
+/* Short Android browser viewport: shrink the cards, never shrink their container below them. */
+@media(max-height:760px){
+  html body[data-app-route="fantasyAccess"] .v588-slide-login .v23-access-copy{
+    margin-top:34px!important;
+  }
+  html body[data-app-route="fantasyAccess"] .v588-slide-login .v23-access-copy p{
+    margin-top:18px!important;
+    line-height:1.42!important;
+  }
+  html body[data-app-route="fantasyAccess"] .v588-slide-team .v588-card-stage{
+    height:228px!important;
+    min-height:228px!important;
+    margin-top:8px!important;
+  }
+  html body[data-app-route="fantasyAccess"] .v588-slide-team .v588-fantasy-card{
+    top:32px!important;
+    width:104px!important;
+    height:172px!important;
+    grid-template-rows:1fr 25px 25px!important;
+  }
+  html body[data-app-route="fantasyAccess"] .v588-slide-team .v588-fantasy-card.main{
+    top:8px!important;
+    width:132px!important;
+    height:210px!important;
+  }
+  html body[data-app-route="fantasyAccess"] .v588-slide-team .v588-team-copy{
+    margin-top:18px!important;
+  }
+  html body[data-app-route="fantasyAccess"] .v588-slide-team .v588-team-copy p{
+    margin-top:14px!important;
+    line-height:1.4!important;
+  }
+  html body[data-app-route="fantasyAccess"] .v588-slide-team .v588-dots{
+    margin-top:10px!important;
+  }
+  html body[data-app-route="fantasyAccess"] .v588-slide-login .v23-access-actions,
+  html body[data-app-route="fantasyAccess"] .v588-slide-team .v23-access-actions{
+    margin-bottom:5px!important;
+  }
+  html body[data-app-route="fantasyAccess"] .v588-slide-login .v23-access-login,
+  html body[data-app-route="fantasyAccess"] .v588-slide-team .v23-access-login{
+    min-height:46px!important;height:46px!important;flex-basis:46px!important;
+  }
+  html body[data-app-route="fantasyAccess"] .v588-slide-login .v23-access-later,
+  html body[data-app-route="fantasyAccess"] .v588-slide-team .v23-access-later,
+  html body[data-app-route="fantasyAccess"] [data-v807-restored="1"]{
+    min-height:32px!important;height:32px!important;margin-top:7px!important;
+  }
+}
+
+/* ---------- Fantasy lineup: attach blue name card to shirt hem ---------- */
+html body.v587-fantasy-team-open .v576-slot.filled .v590-kit-wrap,
+html body[data-app-route="fantasyTeam"] .v576-slot.filled .v590-kit-wrap{
+  z-index:2!important;
+  margin-bottom:-10px!important;
+}
+
+/* Slightly lower the visible shirt inside its box; the blue name plate stays in front. */
+html body.v587-fantasy-team-open .v576-slot.filled .v597-real-kit,
+html body[data-app-route="fantasyTeam"] .v576-slot.filled .v597-real-kit{
+  transform:translateY(4px) rotateY(-4deg) rotateX(1deg) translateZ(2px)!important;
+}
+html body.v587-fantasy-team-open .v576-slot.filled:nth-child(even) .v597-real-kit,
+html body[data-app-route="fantasyTeam"] .v576-slot.filled:nth-child(even) .v597-real-kit{
+  transform:translateY(4px) rotateY(4deg) rotateX(1deg) translateZ(2px)!important;
+}
+html body.v587-fantasy-team-open .v576-slot.filled:nth-child(3n) .v597-real-kit,
+html body[data-app-route="fantasyTeam"] .v576-slot.filled:nth-child(3n) .v597-real-kit{
+  transform:translateY(4px) rotateY(-2deg) rotateX(1deg) translateZ(2px)!important;
+}
+
+/* Name plate is centered exactly under the shirt and touches its bottom edge. */
+html body.v587-fantasy-team-open .v576-slot.filled>b,
+html body[data-app-route="fantasyTeam"] .v576-slot.filled>b{
+  position:relative!important;
+  z-index:30!important;
+  justify-self:center!important;
+  align-self:start!important;
+  width:64px!important;
+  margin-top:0!important;
+  border-radius:4px 4px 0 0!important;
+  text-align:center!important;
+}
+html body.v587-fantasy-team-open .v576-slot.filled>small,
+html body[data-app-route="fantasyTeam"] .v576-slot.filled>small{
+  position:relative!important;
+  z-index:30!important;
+  justify-self:center!important;
+  width:64px!important;
+  margin-top:0!important;
+  border-radius:0!important;
+  text-align:center!important;
+}
+
+/* Active/touch state must preserve the same attachment instead of jumping upward. */
+html body.v587-fantasy-team-open .v576-slot.filled:active .v597-real-kit,
+html body.v587-fantasy-team-open .v576-slot.filled:focus-visible .v597-real-kit,
+html body[data-app-route="fantasyTeam"] .v576-slot.filled:active .v597-real-kit,
+html body[data-app-route="fantasyTeam"] .v576-slot.filled:focus-visible .v597-real-kit{
+  transform:translateY(4px) rotateY(0deg) rotateX(0deg) translateZ(3px) scale(1.01)!important;
+}
