@@ -191,7 +191,7 @@
     },
     "Veteranos 50+": {
       "scope": "Categoría por edad",
-      "current_phase": "Torneo de Copa J7",
+      "current_phase": "Torneo de Copa J7 · resultados actualizados",
       "teams": [
         "La Esperanza",
         "Dynamo",
@@ -305,24 +305,105 @@
             "home": "Manchester",
             "away": "Boca Jrs",
             "note": "Gana Manchester",
-            "date": "2026-10-03"
+            "date": "2026-10-03",
+            "score": "1-0",
+            "status": "Finalizado (Default)"
           },
           {
             "home": "Dynamo",
             "away": "Boavista",
             "time": "03:30",
             "field": "1",
-            "date": "2026-10-03"
+            "date": "2026-10-03",
+            "score": "2-1",
+            "status": "Finalizado"
           },
           {
             "home": "Toros de Cuenda",
             "away": "La Esperanza",
             "time": "05:00",
             "field": "1",
-            "date": "2026-10-03"
+            "date": "2026-10-03",
+            "score": "0-2",
+            "status": "Finalizado"
           }
         ]
-      }
+      },
+      "standings": [
+        {
+          "pos": 1,
+          "team": "Manchester",
+          "jj": 6,
+          "g": 4,
+          "e": 2,
+          "p": 0,
+          "gf": 15,
+          "gc": 3,
+          "dg": 12,
+          "pts": 14
+        },
+        {
+          "pos": 2,
+          "team": "Dynamo",
+          "jj": 6,
+          "g": 4,
+          "e": 1,
+          "p": 1,
+          "gf": 11,
+          "gc": 5,
+          "dg": 6,
+          "pts": 13
+        },
+        {
+          "pos": 3,
+          "team": "La Esperanza",
+          "jj": 6,
+          "g": 4,
+          "e": 0,
+          "p": 2,
+          "gf": 8,
+          "gc": 6,
+          "dg": 2,
+          "pts": 12
+        },
+        {
+          "pos": 4,
+          "team": "Boavista",
+          "jj": 6,
+          "g": 2,
+          "e": 1,
+          "p": 3,
+          "gf": 6,
+          "gc": 14,
+          "dg": -8,
+          "pts": 7
+        },
+        {
+          "pos": 5,
+          "team": "Toros de Cuenda",
+          "jj": 6,
+          "g": 1,
+          "e": 2,
+          "p": 3,
+          "gf": 6,
+          "gc": 12,
+          "dg": -6,
+          "pts": 5
+        },
+        {
+          "pos": 6,
+          "team": "Boca Jrs",
+          "jj": 6,
+          "g": 0,
+          "e": 0,
+          "p": 6,
+          "gf": 0,
+          "gc": 6,
+          "dg": -6,
+          "pts": -15
+        }
+      ],
+      "updated_at_utc": "2026-10-06T20:15:00Z"
     },
     "Primera Fuerza": {
       "scope": "Categoría abierta por nivel",
