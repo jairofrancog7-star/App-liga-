@@ -462,7 +462,7 @@ function bind(root){
     selectedPlayer=button.dataset.v839Player;activeView='player';playerPickerOpen=false;playerPanel='Perfil';render();screen().scrollTop=0;window.scrollTo(0,0);
   }));
   root.querySelector('[data-v839-player-back]')?.addEventListener('click',event=>{event.preventDefault();event.stopPropagation();activeView='squad';playerPickerOpen=false;render();window.scrollTo(0,0)});
-  root.querySelector('[data-v843-player-shirts]')?.addEventListener('click',()=>{location.hash='#/store'});
+  root.querySelector('[data-v843-player-shirts]')?.addEventListener('click',()=>{location.hash='#/club-store'});
   root.querySelector('[data-v839-picker-open]')?.addEventListener('click',()=>{playerPickerOpen=true;render();requestAnimationFrame(()=>root.querySelector('[data-v839-picker-close]')?.focus())});
   root.querySelectorAll('[data-v839-picker-close]').forEach(button=>button.addEventListener('click',()=>{playerPickerOpen=false;render();requestAnimationFrame(()=>root.querySelector('[data-v839-picker-open]')?.focus())}));
   root.querySelectorAll('[data-v839-player-panel]').forEach(button=>button.addEventListener('click',()=>{playerPanel=button.dataset.v839PlayerPanel;render()}));
