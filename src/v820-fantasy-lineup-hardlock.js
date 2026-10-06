@@ -288,30 +288,26 @@ async function decorate(){
     const slotId=String(slot.dataset.v576Slot??index);
     const p=bySlot.get(slotId)||{};
     const player=String(p.name||slot.querySelector(':scope>b')?.textContent||('Jugador '+(index+1)));
-    const start=hash(player+'|'+slotId)%items.length;
-    let idx=-1,item=null,transparentSrc='';
-    for(let n=0;n<items.length;n++){
-      const q=(start+n)%items.length;
-      if(used.has(q))continue;
-      const candidate=items[q];
-      const raw=String(candidate?.url||'');
-      if(!raw||badTransparentSources.has(raw))continue;
-      const processed=await transparentJersey(raw);
-      if(gen!==renderGeneration||!wrap.isConnected)break;
-      if(!processed)continue;
-      idx=q;item=candidate;transparentSrc=processed;used.add(q);break;
-    }
     if(gen!==renderGeneration||!wrap.isConnected)continue;
     const team=String(p.team||'Liga Juventino Rosas');
-    let generated=false;
-    if(!item||!transparentSrc){
-      generated=true;
-      idx=index;
-      item={id:'generated-transparent-'+index,badgeX:58,badgeY:28,badgeW:15,badgeH:14,coverColor:'transparent',tilt:index%2?-6:6};
-      transparentSrc=generatedTransparentJersey(hash(team+'|'+player+'|'+slotId));
-    }
+
+    // V831: use a clean jersey generated locally for EVERY slot.
+    // This removes the last source of white/black matte residue and prevents
+    // cases where background removal leaves only the crest floating.
+    const generated=true;
+    const idx=index;
+    const item={
+      id:'clean-transparent-v831-'+index,
+      badgeX:58,
+      badgeY:28,
+      badgeW:15,
+      badgeH:14,
+      coverColor:'transparent',
+      tilt:index%2?-5:5
+    };
+    const transparentSrc=generatedTransparentJersey(hash(team+'|'+player+'|'+slotId+'|v831'));
     const logo=logoFor(team);
-    const stamp=String(item.id||idx)+'|'+player+'|'+team+'|transparent-v830';
+    const stamp=String(item.id)+'|'+player+'|'+team+'|transparent-v831';
     if(wrap.dataset.v820Stamp===stamp&&wrap.querySelector('.v820-lineup-jersey'))continue;
 
     const removeId=wrap.querySelector('[data-v576-remove]')?.getAttribute('data-v576-remove')||slotId;
@@ -345,6 +341,7 @@ async function decorate(){
   document.body.dataset.v820FantasyLineup='active';
   document.body.dataset.v820FantasyJerseyPool=String(Math.min(items.length,50));
   document.body.dataset.v830RejectedJerseys=String(badTransparentSources.size);
+  document.body.dataset.v831AllGenerated='1';
 }
 
 let raf=0;
