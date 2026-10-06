@@ -202,3 +202,111 @@ body[data-app-route="club-store"] .v441-shirt > .v602-shirt-number,
 body[data-app-route="club-store"] .v441-shirt > .v602-shirt-label{
   display:block!important;
 }
+
+
+/* V812 — Store jerseys share the Fantasy 3D crest treatment.
+   The source-club badge is neutralized and replaced by the current Liga team's
+   crest, smaller and visually embedded in the cloth rather than pasted on top. */
+body[data-app-route="club-store"] .v602-store-real-shirt{
+  transform-style:preserve-3d!important;
+  perspective:900px!important;
+}
+
+/* Hide/neutralize the badge baked into the photographic jersey source. */
+body[data-app-route="club-store"] .v602-shirt-base::after{
+  content:""!important;
+  position:absolute!important;
+  left:54%!important;
+  top:29.5%!important;
+  width:13%!important;
+  height:12%!important;
+  transform:translate(-50%,-50%) rotate(-2deg)!important;
+  border-radius:44%!important;
+  background:
+    radial-gradient(ellipse at 43% 35%,#e3e3e3 0 25%,#cccccc 55%,#b8b8b8 82%,#b1b1b1 100%)!important;
+  box-shadow:0 0 4px 2px rgba(205,205,205,.72)!important;
+  filter:blur(.35px)!important;
+  opacity:.94!important;
+  pointer-events:none!important;
+}
+
+/* Current-season team crest: compact, transparent and following the shirt plane. */
+body[data-app-route="club-store"] .v602-shirt-logo{
+  z-index:5!important;
+  left:54%!important;
+  top:29.5%!important;
+  width:10.5%!important;
+  height:10.5%!important;
+  max-width:none!important;
+  max-height:none!important;
+  padding:0!important;
+  background:transparent!important;
+  border:0!important;
+  outline:0!important;
+  border-radius:0!important;
+  box-shadow:none!important;
+  object-fit:contain!important;
+  opacity:.96!important;
+  mix-blend-mode:normal!important;
+  transform:
+    translate(-50%,-50%)
+    translateZ(4px)
+    rotateZ(-1.2deg)
+    rotateY(-5deg)
+    scale(.97)!important;
+  transform-origin:50% 50%!important;
+  filter:
+    saturate(1.05)
+    contrast(1.04)
+    drop-shadow(0 .7px .45px rgba(0,0,0,.30))
+    drop-shadow(0 -.35px .3px rgba(255,255,255,.18))!important;
+}
+
+/* Cloth highlights remain above the crest, making it read as printed/embroidered. */
+body[data-app-route="club-store"] .v602-shirt-light{
+  z-index:6!important;
+  opacity:.46!important;
+  pointer-events:none!important;
+}
+body[data-app-route="club-store"] .v602-shirt-name,
+body[data-app-route="club-store"] .v602-shirt-number,
+body[data-app-route="club-store"] .v602-shirt-label{
+  z-index:8!important;
+}
+
+/* Product tiles keep the jersey dimensional without making it look like a flat image. */
+body[data-app-route="club-store"] .v431-product-art .v602-store-real-shirt,
+body[data-app-route="club-store"] .v436-product-art .v602-store-real-shirt,
+body[data-app-route="club-store"] .v437-product-stage .v602-store-real-shirt{
+  transform:rotateY(-5deg) rotateX(1.5deg) translateZ(0)!important;
+  transform-origin:50% 58%!important;
+}
+body[data-app-route="club-store"] .v431-product:nth-child(even) .v602-store-real-shirt,
+body[data-app-route="club-store"] .v436-product:nth-child(even) .v602-store-real-shirt{
+  transform:rotateY(5deg) rotateX(1.5deg) translateZ(0)!important;
+}
+
+/* Press/touch gives a restrained 3D response, not a jumpy enlargement. */
+body[data-app-route="club-store"] .v602-store-real-shirt:active,
+body[data-app-route="club-store"] .v602-store-real-shirt.pressed3d{
+  transform:rotateY(0deg) rotateX(0deg) translateZ(4px) scale(1.015)!important;
+}
+
+/* Smaller cards use an even smaller crest so the badge never looks pasted on. */
+body[data-app-route="club-store"] .v431-product-art .v602-shirt-logo,
+body[data-app-route="club-store"] .v436-product-art .v602-shirt-logo,
+body[data-app-route="club-store"] .v436-kit-tiles .v602-shirt-logo{
+  width:9.5%!important;
+  height:9.5%!important;
+}
+
+@media(max-width:390px){
+  body[data-app-route="club-store"] .v602-shirt-logo{
+    width:9.5%!important;
+    height:9.5%!important;
+  }
+  body[data-app-route="club-store"] .v602-shirt-base::after{
+    width:12%!important;
+    height:11%!important;
+  }
+}
