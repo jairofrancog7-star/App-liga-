@@ -203,8 +203,11 @@ function setOptions(stage,teams){
   return filtered.find(t=>String(t.cat)===parsed.cat&&t.name===parsed.name)||filtered[0];
 }
 function renderPlayers(stage,lineup){
-  const host=$('[data-v803-players]',stage);if(!host)return;
+  const host=$('[data-v803-players]',stage);if(!host)return false;
   const rows=Array.from({length:11},(_,i)=>lineup[i]||null);
+  const sig=rows.map((p,i)=>p?[p.cat,p.team,p.name,p.dorsal,photoFor(p)].join('|'):'empty-'+i).join('~');
+  if(host.dataset.v803Sig===sig)return false;
+  host.dataset.v803Sig=sig;
   host.innerHTML=rows.map((p,i)=>{
     const pos=POSITIONS[i],style='left:'+pos[0]+'%;top:'+pos[1]+'%;--v803-i:'+i;
     if(!p)return '<button type="button" class="v803-player empty" style="'+style+'" data-v803-index="'+i+'" aria-label="Posición sin jugador"><span class="v803-player-base"></span><span class="v803-player-face"><span class="v803-photo no-photo"><b>'+String(i+1)+'</b></span><span class="v803-label">SIN ASIGNAR</span></span></button>';
@@ -216,46 +219,51 @@ function renderPlayers(stage,lineup){
       '</span>'+
     '</button>';
   }).join('');
+  return true;
 }
 function updateIdentity(stage,a,team,lineup){
   const logo=logoFor(a,team.name),headCrest=$('[data-v803-head-crest]',stage),fieldCrest=$('[data-v803-field-crest]',stage);
+  const identityKey=teamKey(team)+'|'+logo;
   const crestHtml=logo?'<img src="'+esc(logo)+'" alt="'+esc(team.name)+'"><b class="v803-fallback">'+esc(initials(team.name))+'</b>':'<b>'+esc(initials(team.name))+'</b>';
-  if(headCrest)headCrest.innerHTML=crestHtml;
-  if(fieldCrest)fieldCrest.innerHTML=crestHtml;
+  if(headCrest&&headCrest.dataset.v803Identity!==identityKey){headCrest.dataset.v803Identity=identityKey;headCrest.innerHTML=crestHtml}
+  if(fieldCrest&&fieldCrest.dataset.v803Identity!==identityKey){fieldCrest.dataset.v803Identity=identityKey;fieldCrest.innerHTML=crestHtml}
   const name=$('[data-v803-head-name]',stage),meta=$('[data-v803-head-meta]',stage);
-  if(name)name.textContent=team.name;
-  if(meta)meta.textContent=(team.category||'Liga Municipal')+' · '+lineup.length+' jugadores publicados';
+  const metaText=(team.category||'Liga Municipal')+' · '+lineup.length+' jugadores publicados';
+  if(name&&name.textContent!==team.name)name.textContent=team.name;
+  if(meta&&meta.textContent!==metaText)meta.textContent=metaText;
 }
 async function render(animate=false){
   if(busy||route()!=='tactics')return;
   busy=true;
   try{
     const stage=ensureStage();if(!stage)return;
-    const loader=$('[data-v803-loading]',stage);if(loader)loader.hidden=false;
+    const loader=$('[data-v803-loading]',stage);
     const a=await official();if(!a||route()!=='tactics'||!document.body.contains(stage))return;
     const teams=a.teamList?.()||[];if(!teams.length)return;
     const team=setOptions(stage,teams);if(!team)return;
     const lineup=lineupFor(a,team);
+    const renderKey=teamKey(team)+'|'+lineup.slice(0,11).map(p=>[p.name,p.dorsal,photoFor(p)].join('|')).join('~');
+    const changed=stage.dataset.v803RenderKey!==renderKey;
+    if(!changed&&!animate){if(loader)loader.hidden=true;return}
+    if(loader&&changed)loader.hidden=false;
+    stage.dataset.v803RenderKey=renderKey;
     stage.__v803Lineup=lineup.slice(0,11);
     stage.classList.remove('has-focus');renderDetail(stage,null);
-    renderPlayers(stage,lineup);
+    const playersChanged=renderPlayers(stage,lineup);
     updateIdentity(stage,a,team,lineup);
-    wireImages(stage);
+    if(playersChanged||changed)wireImages(stage);
     if(loader)loader.hidden=true;
-    if(animate||!stage.classList.contains('is-ready'))play(stage);
+    if(animate||changed||!stage.classList.contains('is-ready'))play(stage);
     else stage.classList.add('is-ready');
-
-    document.querySelectorAll('.v802-player-photo,.v802-mini-photo,.v802-source-photo').forEach((el,i)=>{
-      el.style.setProperty('--v803-i',String(i%11));
-      el.classList.add('v803-legacy-motion');
-    });
   }finally{busy=false}
 }
 function schedule(delay=80){clearTimeout(timer);timer=setTimeout(()=>render(false),delay)}
 
 window.addEventListener('hashchange',()=>schedule(100));
 const screen=$('#screen');
-if(screen)new MutationObserver(()=>{if(route()==='tactics')schedule(120)}).observe(screen,{childList:true,subtree:true});
+if(screen)new MutationObserver(()=>{
+  if(route()==='tactics'&&!document.querySelector('[data-v803-stage]'))schedule(120);
+}).observe(screen,{childList:true,subtree:false});
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',()=>schedule(150),{once:true});else schedule(150);
 setTimeout(()=>schedule(30),900);
 })();
