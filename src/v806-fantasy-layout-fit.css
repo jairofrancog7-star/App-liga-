@@ -453,3 +453,125 @@ html body[data-app-route="fantasyAccess"] .v588-slide-team .v588-dots{
     margin-bottom:108px!important;
   }
 }
+
+
+/* V808 — player shirt/name alignment requested 2026-10-05.
+   The 3D shirt must stay centered inside its slot, behind the name card,
+   without sticking out over neighboring labels. */
+html body.v587-fantasy-team-open .v576-slot,
+html body[data-app-route="fantasyTeam"] .v576-slot{
+  position:relative!important;
+  justify-items:center!important;
+  overflow:visible!important;
+}
+
+/* The wrapper owns the exact visual footprint. */
+html body.v587-fantasy-team-open .v576-slot .v590-kit-wrap,
+html body[data-app-route="fantasyTeam"] .v576-slot .v590-kit-wrap{
+  position:relative!important;
+  z-index:2!important;
+  justify-self:center!important;
+  margin-left:auto!important;
+  margin-right:auto!important;
+  transform:none!important;
+  transform-origin:50% 100%!important;
+}
+
+/* Critical fix: previous real-shirt CSS was still 74x87 and escaped the compact wrapper.
+   Make the actual photographic shirt follow the same compact dimensions. */
+html body.v587-fantasy-team-open .v576-slot .v597-real-kit,
+html body[data-app-route="fantasyTeam"] .v576-slot .v597-real-kit{
+  position:relative!important;
+  width:42px!important;
+  height:48px!important;
+  max-width:42px!important;
+  max-height:48px!important;
+  margin:0 auto!important;
+  left:auto!important;
+  right:auto!important;
+  transform:rotateY(-4deg) rotateX(1deg) translateZ(2px)!important;
+  transform-origin:50% 78%!important;
+}
+html body.v587-fantasy-team-open .v576-slot:nth-child(even) .v597-real-kit,
+html body[data-app-route="fantasyTeam"] .v576-slot:nth-child(even) .v597-real-kit{
+  transform:rotateY(4deg) rotateX(1deg) translateZ(2px)!important;
+}
+html body.v587-fantasy-team-open .v576-slot:nth-child(3n) .v597-real-kit,
+html body[data-app-route="fantasyTeam"] .v576-slot:nth-child(3n) .v597-real-kit{
+  transform:rotateY(-2deg) rotateX(1deg) translateZ(2px)!important;
+}
+html body.v587-fantasy-team-open .v576-slot.filled .v597-real-kit,
+html body[data-app-route="fantasyTeam"] .v576-slot.filled .v597-real-kit{
+  width:46px!important;
+  height:53px!important;
+  max-width:46px!important;
+  max-height:53px!important;
+}
+
+/* Name and price always render in front of the shirt.
+   A slight negative overlap makes the shirt look tucked behind the blue name tab,
+   matching the supplied reference. */
+html body.v587-fantasy-team-open .v576-slot>b,
+html body[data-app-route="fantasyTeam"] .v576-slot>b{
+  position:relative!important;
+  z-index:20!important;
+  justify-self:center!important;
+  margin-top:-3px!important;
+  overflow:hidden!important;
+  text-overflow:ellipsis!important;
+  white-space:nowrap!important;
+}
+html body.v587-fantasy-team-open .v576-slot>small,
+html body[data-app-route="fantasyTeam"] .v576-slot>small{
+  position:relative!important;
+  z-index:20!important;
+  justify-self:center!important;
+  margin-top:0!important;
+}
+
+/* Keep the crest and source-photo repair proportional to the smaller shirt. */
+html body.v587-fantasy-team-open .v600-shirt-base::after,
+html body[data-app-route="fantasyTeam"] .v600-shirt-base::after{
+  width:16px!important;
+  height:15px!important;
+  box-shadow:0 0 4px 3px rgba(215,215,215,.80)!important;
+  filter:blur(.4px)!important;
+}
+html body.v587-fantasy-team-open .v597-team-logo,
+html body[data-app-route="fantasyTeam"] .v597-team-logo,
+html body.v587-fantasy-team-open .v576-slot.filled .v597-team-logo,
+html body[data-app-route="fantasyTeam"] .v576-slot.filled .v597-team-logo{
+  width:12px!important;
+  height:12px!important;
+}
+
+/* Remove button follows the compact shirt instead of floating far outside it. */
+html body.v587-fantasy-team-open .v576-shirt .remove,
+html body[data-app-route="fantasyTeam"] .v576-shirt .remove{
+  z-index:30!important;
+  right:-2px!important;
+  top:-3px!important;
+  width:15px!important;
+  height:15px!important;
+  font-size:12px!important;
+}
+
+/* Do not let touch/focus temporarily blow the shirt outside its slot. */
+html body.v587-fantasy-team-open .v576-slot:active .v597-real-kit,
+html body.v587-fantasy-team-open .v576-slot:focus-visible .v597-real-kit,
+html body[data-app-route="fantasyTeam"] .v576-slot:active .v597-real-kit,
+html body[data-app-route="fantasyTeam"] .v576-slot:focus-visible .v597-real-kit{
+  transform:rotateY(0deg) rotateX(0deg) translateZ(3px) scale(1.02)!important;
+}
+
+/* Small phones: keep the same centered relationship instead of enlarging shirts. */
+@media(max-width:390px){
+  html body.v587-fantasy-team-open .v576-slot .v597-real-kit,
+  html body[data-app-route="fantasyTeam"] .v576-slot .v597-real-kit{
+    width:40px!important;height:46px!important;max-width:40px!important;max-height:46px!important;
+  }
+  html body.v587-fantasy-team-open .v576-slot.filled .v597-real-kit,
+  html body[data-app-route="fantasyTeam"] .v576-slot.filled .v597-real-kit{
+    width:44px!important;height:50px!important;max-width:44px!important;max-height:50px!important;
+  }
+}
