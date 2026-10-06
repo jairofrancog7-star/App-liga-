@@ -1,4 +1,4 @@
-/* V830 — final Fantasy transparent-jersey hardfix.
+/* V833 — real downloaded 3/4 Fantasy jerseys hardfix.
    Removes the old "Jerseys" header control and paints the 50-design 3/4 pool directly in filled lineup slots. */
 (function(){
 'use strict';
@@ -279,7 +279,7 @@ async function decorate(){
   if(items.length<15){setTimeout(schedule,120);return}
   const rows=squad();
   const bySlot=new Map(rows.map(p=>[String(p?.slot??''),p||{}]));
-  const used=new Set();
+  const teamKit=new Map();
 
   for(let index=0;index<slots.length;index++){
     const slot=slots[index];
@@ -291,38 +291,34 @@ async function decorate(){
     if(gen!==renderGeneration||!wrap.isConnected)continue;
     const team=String(p.team||'Liga Juventino Rosas');
 
-    // V831: use a clean jersey generated locally for EVERY slot.
-    // This removes the last source of white/black matte residue and prevents
-    // cases where background removal leaves only the crest floating.
-    const generated=true;
-    const idx=index;
-    const item={
-      id:'clean-transparent-v831-'+index,
-      badgeX:58,
-      badgeY:28,
-      badgeW:15,
-      badgeH:14,
-      coverColor:'transparent',
-      tilt:index%2?-5:5
-    };
-    const transparentSrc=generatedTransparentJersey(hash(team+'|'+player+'|'+slotId+'|v831'));
+    // V833: restore the REAL downloaded 3/4 Fantasy mockups.
+    // Same Liga team keeps the same real jersey design.
+    let item=teamKit.get(team);
+    if(!item){
+      item=items[hash(team)%items.length]||items[index%items.length];
+      teamKit.set(team,item);
+    }
+    const realSrc=String(item?.url||'').trim();
+    const fallbackSrc=generatedTransparentJersey(hash(team+'|fallback|'+slotId+'|v833'));
+    const shirtSrc=realSrc||fallbackSrc;
     const logo=logoFor(team);
-    const stamp=String(item.id)+'|'+player+'|'+team+'|transparent-v831';
+    const stamp=String(item?.id||'real-v833')+'|'+player+'|'+team+'|real-three-quarter-v833';
     if(wrap.dataset.v820Stamp===stamp&&wrap.querySelector('.v820-lineup-jersey'))continue;
 
     const removeId=wrap.querySelector('[data-v576-remove]')?.getAttribute('data-v576-remove')||slotId;
     wrap.dataset.v820Stamp=stamp;
     wrap.dataset.v830Transparent='1';
-    wrap.dataset.v829Generated=generated?'1':'0';
-    wrap.style.setProperty('--v820-badge-x',Number(item.badgeX??57)+'%');
-    wrap.style.setProperty('--v820-badge-y',Number(item.badgeY??27)+'%');
-    wrap.style.setProperty('--v820-badge-w',Number(item.badgeW??16)+'%');
-    wrap.style.setProperty('--v820-badge-h',Number(item.badgeH??15)+'%');
-    wrap.style.setProperty('--v820-cover',String(item.coverColor||'rgba(12,24,61,.42)'));
-    wrap.style.setProperty('--v820-tilt',Number(item.tilt??(index%2?-7:7))+'deg');
+    wrap.dataset.v829Generated=realSrc?'0':'1';
+    wrap.dataset.v833RealMockup=realSrc?'1':'0';
+    wrap.style.setProperty('--v820-badge-x',Number(item?.badgeX??57)+'%');
+    wrap.style.setProperty('--v820-badge-y',Number(item?.badgeY??27)+'%');
+    wrap.style.setProperty('--v820-badge-w',Number(item?.badgeW??16)+'%');
+    wrap.style.setProperty('--v820-badge-h',Number(item?.badgeH??15)+'%');
+    wrap.style.setProperty('--v820-cover',String(item?.coverColor||'transparent'));
+    wrap.style.setProperty('--v820-tilt',Number(item?.tilt??(index%2?-7:7))+'deg');
     wrap.innerHTML=
       '<span class="v820-lineup-kit v827-transparent-kit">'+
-        '<img class="v820-lineup-jersey v827-transparent-shirt" src="'+esc(transparentSrc)+'" data-v829-fallback="'+esc(generatedTransparentJersey(hash(team+'|fallback|'+slotId)))+'" alt="" draggable="false" decoding="async">'+
+        '<img class="v820-lineup-jersey v827-transparent-shirt" src="'+esc(shirtSrc)+'" data-v829-fallback="'+esc(fallbackSrc)+'" alt="" draggable="false" decoding="async">'+
         '<span class="v820-source-cover" aria-hidden="true"></span>'+
         '<img class="v820-team-logo" src="'+esc(logo)+'" alt="" draggable="false" decoding="async">'+
       '</span>'+
@@ -330,10 +326,11 @@ async function decorate(){
     const jerseyImg=wrap.querySelector('.v820-lineup-jersey');
     if(jerseyImg){
       jerseyImg.addEventListener('error',()=>{
-        const fallback=jerseyImg.dataset.v829Fallback||generatedTransparentJersey(hash(team+'|error|'+slotId));
+        const fallback=jerseyImg.dataset.v829Fallback||fallbackSrc;
         if(jerseyImg.src!==fallback){
           jerseyImg.src=fallback;
           wrap.dataset.v829Generated='1';
+          wrap.dataset.v833RealMockup='0';
         }
       },{once:true});
     }
@@ -341,7 +338,7 @@ async function decorate(){
   document.body.dataset.v820FantasyLineup='active';
   document.body.dataset.v820FantasyJerseyPool=String(Math.min(items.length,50));
   document.body.dataset.v830RejectedJerseys=String(badTransparentSources.size);
-  document.body.dataset.v831AllGenerated='1';
+  document.body.dataset.v833RealMockups='1';
 }
 
 let raf=0;
