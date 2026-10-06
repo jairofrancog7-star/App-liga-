@@ -343,11 +343,14 @@ function categoryStrip(){
   '</section>';
 }
 function categoryBody(){
-  const id=catId(),rows=scorerRows(id);
+  const id=catId(),rows=scorerRows(id),stat=lowerStat();
+  const lower=stat==='goals'
+    ?(rows.length>2?scorerListRows(rows.slice(2)):'')
+    :'<div class="v391-empty"><b>'+(stat==='shots'?'Remates':'Pases')+'</b><span>Esta estadística individual todavía no está publicada en los datos oficiales.</span></div>';
   return '<div class="v391-category-body" data-v391-category-body data-v391-category="'+esc(id)+'">'+
     '<div class="v391-category-title"><small>'+esc(catName(id))+'</small><span>'+rows.length+' goleador'+(rows.length===1?'':'es')+' publicado'+(rows.length===1?'':'s')+'</span></div>'+
     (rows.length
-      ?heroScorerCard(rows[0],1)+heroScorerCard(rows[1],2)+lowerRanking(rows)
+      ?heroScorerCard(rows[0],1)+heroScorerCard(rows[1],2)+lower
       :'<div class="v391-empty">Todavía no hay goleadores oficiales publicados para '+esc(catName(id))+'.</div>')+
   '</div>';
 }
