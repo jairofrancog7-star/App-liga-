@@ -1,0 +1,200 @@
+/* V844 — Notificaciones del partido compactas, como referencia del usuario.
+   Solo afecta #/match y el panel que abre la campana. */
+
+/* Al abrir la campana, la navegación inferior desaparece por completo. */
+html body.v68-notif-open #app>.bottom-nav,
+html body.v68-notif-open .app-shell>.bottom-nav,
+html body.v68-notif-open nav.bottom-nav{
+  display:none!important;
+  visibility:hidden!important;
+  opacity:0!important;
+  pointer-events:none!important;
+}
+
+/* La campana normal queda como antes. El estado especial aparece solo si hay
+   por lo menos una alerta activada. */
+html body[data-app-route="match"] [data-v28-notifications]::after,
+html body.v28-match-active [data-v28-notifications]::after{
+  content:none!important;
+  display:none!important;
+}
+
+html body[data-app-route="match"] [data-v28-notifications] .v844-bell-ring,
+html body.v28-match-active [data-v28-notifications] .v844-bell-ring{
+  opacity:0!important;
+}
+
+html body[data-app-route="match"] [data-v28-notifications].has-active .v844-bell-ring,
+html body.v28-match-active [data-v28-notifications].has-active .v844-bell-ring{
+  opacity:1!important;
+}
+
+html body[data-app-route="match"] [data-v28-notifications].has-active::after,
+html body.v28-match-active [data-v28-notifications].has-active::after{
+  content:"✓"!important;
+  display:grid!important;
+  place-items:center!important;
+  position:absolute!important;
+  right:0!important;
+  bottom:1px!important;
+  left:auto!important;
+  top:auto!important;
+  width:14px!important;
+  height:14px!important;
+  border:2px solid #0b25c5!important;
+  border-radius:50%!important;
+  background:#fff!important;
+  color:#0b25c5!important;
+  font:900 9px/1 Arial,sans-serif!important;
+  transform:none!important;
+  box-shadow:none!important;
+  pointer-events:none!important;
+}
+
+/* Bottom sheet más alto pero con controles compactos para que entren todas
+   las opciones como en la última captura. */
+html body[data-app-route="match"] .v68-notif-sheet,
+html body.v28-match-active .v68-notif-sheet{
+  width:min(100%,520px)!important;
+  max-height:min(81dvh,790px)!important;
+  padding:14px 20px calc(16px + env(safe-area-inset-bottom))!important;
+  border-radius:22px 22px 0 0!important;
+  background:#0b0877!important;
+}
+
+html body[data-app-route="match"] .v68-notif-head,
+html body.v28-match-active .v68-notif-head{
+  gap:12px!important;
+}
+
+html body[data-app-route="match"] .v68-notif-head h2,
+html body.v28-match-active .v68-notif-head h2{
+  font-size:24px!important;
+  line-height:1.05!important;
+  letter-spacing:-.02em!important;
+}
+
+html body[data-app-route="match"] .v68-notif-head button,
+html body.v28-match-active .v68-notif-head button{
+  min-width:50px!important;
+  padding:3px 0!important;
+  font-size:17px!important;
+}
+
+html body[data-app-route="match"] .v68-notif-sub,
+html body.v28-match-active .v68-notif-sub{
+  margin:12px 0 14px!important;
+  font-size:15px!important;
+  line-height:1.2!important;
+}
+
+html body[data-app-route="match"] .v68-notif-all,
+html body.v28-match-active .v68-notif-all{
+  min-height:64px!important;
+  gap:12px!important;
+  padding:10px 13px!important;
+  border-radius:14px!important;
+}
+
+html body[data-app-route="match"] .v68-notif-all strong,
+html body.v28-match-active .v68-notif-all strong{
+  font-size:16px!important;
+  line-height:1.1!important;
+  font-weight:500!important;
+}
+
+html body[data-app-route="match"] .v68-notif-list,
+html body.v28-match-active .v68-notif-list{
+  margin-top:4px!important;
+}
+
+html body[data-app-route="match"] .v68-notif-row,
+html body.v28-match-active .v68-notif-row{
+  min-height:59px!important;
+  grid-template-columns:38px minmax(0,1fr) 62px!important;
+  gap:8px!important;
+  padding:4px 0!important;
+}
+
+html body[data-app-route="match"] .v68-notif-row-icon,
+html body.v28-match-active .v68-notif-row-icon{
+  width:36px!important;
+  height:36px!important;
+}
+
+html body[data-app-route="match"] .v68-notif-row-icon svg,
+html body.v28-match-active .v68-notif-row-icon svg{
+  width:24px!important;
+  height:24px!important;
+  stroke-width:1.8!important;
+}
+
+html body[data-app-route="match"] .v68-notif-label,
+html body.v28-match-active .v68-notif-label{
+  font-size:15.5px!important;
+  line-height:1.12!important;
+  font-weight:450!important;
+}
+
+/* Switches más chicos como la referencia final. */
+html body[data-app-route="match"] .v68-notif-switch,
+html body.v28-match-active .v68-notif-switch{
+  width:60px!important;
+  min-width:60px!important;
+  max-width:60px!important;
+  height:36px!important;
+  min-height:36px!important;
+  max-height:36px!important;
+  padding:0!important;
+  border:0!important;
+  border-radius:999px!important;
+}
+
+html body[data-app-route="match"] .v68-notif-switch i,
+html body.v28-match-active .v68-notif-switch i{
+  top:4px!important;
+  left:5px!important;
+  width:28px!important;
+  height:28px!important;
+}
+
+html body[data-app-route="match"] .v68-notif-switch.on i,
+html body.v28-match-active .v68-notif-switch.on i{
+  transform:translateX(22px)!important;
+}
+
+@media(max-width:390px){
+  html body[data-app-route="match"] .v68-notif-sheet,
+  html body.v28-match-active .v68-notif-sheet{
+    max-height:82dvh!important;
+    padding:13px 18px calc(14px + env(safe-area-inset-bottom))!important;
+  }
+  html body[data-app-route="match"] .v68-notif-head h2,
+  html body.v28-match-active .v68-notif-head h2{font-size:22px!important}
+  html body[data-app-route="match"] .v68-notif-head button,
+  html body.v28-match-active .v68-notif-head button{font-size:16px!important}
+  html body[data-app-route="match"] .v68-notif-sub,
+  html body.v28-match-active .v68-notif-sub{font-size:14px!important}
+  html body[data-app-route="match"] .v68-notif-all strong,
+  html body.v28-match-active .v68-notif-all strong{font-size:15px!important}
+  html body[data-app-route="match"] .v68-notif-row,
+  html body.v28-match-active .v68-notif-row{
+    min-height:55px!important;
+    grid-template-columns:35px minmax(0,1fr) 58px!important;
+  }
+  html body[data-app-route="match"] .v68-notif-label,
+  html body.v28-match-active .v68-notif-label{font-size:14.5px!important}
+  html body[data-app-route="match"] .v68-notif-switch,
+  html body.v28-match-active .v68-notif-switch{
+    width:56px!important;min-width:56px!important;max-width:56px!important;
+    height:34px!important;min-height:34px!important;max-height:34px!important;
+  }
+  html body[data-app-route="match"] .v68-notif-switch i,
+  html body.v28-match-active .v68-notif-switch i{
+    top:4px!important;left:5px!important;width:26px!important;height:26px!important;
+  }
+  html body[data-app-route="match"] .v68-notif-switch.on i,
+  html body.v28-match-active .v68-notif-switch.on i{
+    transform:translateX(20px)!important;
+  }
+}
