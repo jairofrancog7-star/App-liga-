@@ -98,8 +98,8 @@ function bottomSwitch(active){
     '<path d="M16 19v4M12 26h8M13.5 23h5"/>'+
   '</svg>';
   return '<nav class="v589-switch" aria-label="Pronostica Seis">'+
-    '<button type="button" data-v589-view="predictions" class="'+(active==='predictions'?'active':'')+'"><span class="v843-tab-icon">'+predictionsIcon+'</span><b>Pronósticos</b></button>'+
-    '<button type="button" data-v589-view="leagues" class="'+(active==='leagues'?'active':'')+'"><span class="v843-tab-icon">'+leaguesIcon+'</span><b>Ligas</b></button>'+
+    '<button type="button" data-v589-view="predictions" class="'+(active==='predictions'?'active':'')+'"><span class="v840-tab-icon">'+predictionsIcon+'</span><b>Pronósticos</b></button>'+
+    '<button type="button" data-v589-view="leagues" class="'+(active==='leagues'?'active':'')+'"><span class="v840-tab-icon">'+leaguesIcon+'</span><b>Ligas</b></button>'+
   '</nav>';
 }
 const introSlides=[
