@@ -45,3 +45,34 @@ body[data-app-route="notifications"] .v840-match-feed{
   .v840-notice-row{grid-template-columns:52px minmax(0,1fr) 14px;gap:8px}
   .v840-notice-copy strong{font-size:13px}
 }
+
+/* V851 — rich notification controls */
+.v840-head-actions{
+  display:flex;
+  flex-direction:column;
+  align-items:flex-end;
+  gap:7px;
+}
+.v840-head-actions button{
+  min-height:38px!important;
+  padding:0 12px!important;
+  border:1px solid #2ee3ef!important;
+  border-radius:999px!important;
+  background:rgba(10,54,145,.72)!important;
+  color:#38e9f1!important;
+  font:800 11px/1 Inter,Roboto,Arial,sans-serif!important;
+  white-space:nowrap!important;
+}
+.v840-head-actions button.on{
+  background:#17d8e7!important;
+  color:#05215f!important;
+}
+.v840-head-actions [data-v851-rich-test]{
+  border-color:rgba(255,255,255,.26)!important;
+  color:#fff!important;
+  background:rgba(255,255,255,.08)!important;
+}
+@media(max-width:420px){
+  .v840-head-actions{align-items:flex-start;width:100%}
+  .v840-head-actions button{width:max-content;max-width:100%}
+}
