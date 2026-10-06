@@ -422,9 +422,9 @@ html body[data-app-route="v4-calendar"].v839-reference-calendar #screen .v415-to
 #screen .v839-reference-page a.v415-add-calendar {display: flex !important; align-items: center !important; justify-content: center !important; gap: 8px !important; text-decoration: none !important; cursor: pointer;}
 
 
-/* V858_CALENDAR_SEPARATED_TABS_RESTORE */
-/* Restaura la cabecera visual mostrada en la referencia:
-   tres pastillas independientes, mismas proporciones y un solo filtro. */
+/* V865_CALENDAR_CONNECTED_SEGMENT_RESTORE */
+/* Restaura el cuadro unido anterior: una sola cápsula continua para
+   Calendario / Clasificación / Plantilla, con el activo azul claro. */
 @media (max-width:1023px){
   html body.v839-reference-calendar #screen .v839-reference-page .v415-top-row{
     grid-template-columns:minmax(0,280fr) 26fr!important;
@@ -433,27 +433,27 @@ html body[data-app-route="v4-calendar"].v839-reference-calendar #screen .v415-to
 
   html body.v839-reference-calendar #screen .v839-reference-page .v415-segment{
     display:grid!important;
-    grid-template-columns:88fr 105fr 88fr!important;
-    column-gap:calc(5 * var(--u))!important;
+    grid-template-columns:95fr 106fr 79fr!important;
+    column-gap:0!important;
     height:calc(40 * var(--u))!important;
     padding:0!important;
     margin:0!important;
     border:0!important;
-    border-radius:0!important;
-    background:transparent!important;
-    overflow:visible!important;
+    border-radius:calc(24 * var(--u))!important;
+    background:#122346!important;
+    overflow:hidden!important;
     box-shadow:none!important;
   }
 
   html body.v839-reference-calendar #screen .v839-reference-page .v415-segment button{
     width:100%!important;
     min-width:0!important;
-    height:calc(40 * var(--u))!important;
-    padding:0 calc(3 * var(--u))!important;
+    height:100%!important;
+    padding:0!important;
     margin:0!important;
     border:0!important;
     border-radius:calc(24 * var(--u))!important;
-    background:#152447!important;
+    background:transparent!important;
     color:#c6c7d5!important;
     box-shadow:none!important;
     font:400 calc(13 * var(--u))/1 Roboto,Arial,sans-serif!important;
@@ -473,7 +473,7 @@ html body[data-app-route="v4-calendar"].v839-reference-calendar #screen .v415-to
     box-shadow:none!important;
   }
 }
-/* V858_CALENDAR_SEPARATED_TABS_RESTORE_END */
+/* V865_CALENDAR_CONNECTED_SEGMENT_RESTORE_END */
 
 
 /* V859_CALENDAR_FIXED_HEADER_SCROLLING_TABS */
