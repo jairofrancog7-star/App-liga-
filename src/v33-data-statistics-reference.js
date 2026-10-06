@@ -268,8 +268,11 @@ function referenceStatsBlock(){
 }
 
 function markup(){
+ /* V872 — leagueData/Estadísticas vuelve al diseño histórico V33.
+    El bloque V446/V509 se había quedado sin su CSS histórico y provocaba
+    el logo gigante, fondo negro y botones grises de la captura. */
  return '<section class="v33-data-page" data-v33-data data-v33-mode="'+activeTab+'">'+header()+
-   (activeTab==='general'?generalView():activeTab==='team'?teamDetailedView():playerDetailedView())+referenceStatsBlock()+'</section>';
+   (activeTab==='general'?generalView():activeTab==='team'?teamDetailedView():playerDetailedView())+'</section>';
 }
 function toast(msg){const old=document.querySelector('.v33-toast');if(old)old.remove();const n=document.createElement('div');n.className='v33-toast';n.textContent=msg;document.body.appendChild(n);setTimeout(()=>n.remove(),1500)}
 function setBottomNav(){/* Global nav active state is owned by V34. */}
