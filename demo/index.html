@@ -393,6 +393,138 @@
       document.addEventListener('DOMContentLoaded',syncQuizTopbar,{once:true});
     })();
   </script>
+<style id="v824FantasyJerseyInlineFix">
+/* V824 — final inline Fantasy jersey fix: visible shirts, lower overlap, smaller 3D crests. */
+html body[data-app-route="fantasyTeam"] .v821-source-eraser,
+html body.v587-fantasy-team-open .v821-source-eraser,
+html body[data-app-route="fantasyTeam"] .v821-team-crest,
+html body.v587-fantasy-team-open .v821-team-crest,
+html body[data-app-route="fantasyTeam"] .v820-team-logo,
+html body.v587-fantasy-team-open .v820-team-logo,
+html body[data-app-route="fantasyTeam"] .v820-source-cover,
+html body.v587-fantasy-team-open .v820-source-cover{
+  display:none!important;visibility:hidden!important;opacity:0!important;
+}
+html body[data-app-route="fantasyTeam"] .v576-slot.filled,
+html body.v587-fantasy-team-open .v576-slot.filled{
+  display:grid!important;
+  grid-template-rows:50px 23px 19px!important;
+  align-content:start!important;justify-items:center!important;
+  gap:0!important;overflow:visible!important;
+}
+html body[data-app-route="fantasyTeam"] .v576-slot.filled .v590-kit-wrap,
+html body.v587-fantasy-team-open .v576-slot.filled .v590-kit-wrap{
+  position:relative!important;z-index:48!important;
+  width:48px!important;height:50px!important;
+  min-width:48px!important;min-height:50px!important;
+  max-width:48px!important;max-height:50px!important;
+  margin:0 auto!important;padding:0!important;
+  overflow:visible!important;background:transparent!important;
+  border:0!important;box-shadow:none!important;transform:none!important;
+}
+html body[data-app-route="fantasyTeam"] .v576-slot.filled .v820-lineup-kit,
+html body.v587-fantasy-team-open .v576-slot.filled .v820-lineup-kit{
+  position:absolute!important;z-index:48!important;
+  left:50%!important;top:auto!important;bottom:-7px!important;
+  width:48px!important;height:52px!important;
+  min-width:48px!important;min-height:52px!important;
+  max-width:48px!important;max-height:52px!important;
+  margin:0!important;display:block!important;
+  transform:translateX(-50%)!important;transform-origin:50% 100%!important;
+  filter:drop-shadow(0 4px 3px rgba(0,24,50,.22))!important;
+  perspective:none!important;
+}
+html body[data-app-route="fantasyTeam"] .v576-slot.filled .v820-lineup-jersey,
+html body.v587-fantasy-team-open .v576-slot.filled .v820-lineup-jersey{
+  position:absolute!important;left:50%!important;bottom:0!important;top:auto!important;
+  width:48px!important;height:52px!important;
+  min-width:48px!important;min-height:52px!important;
+  max-width:48px!important;max-height:52px!important;
+  object-fit:contain!important;object-position:center bottom!important;
+  transform:translateX(-50%)!important;
+  opacity:1!important;visibility:visible!important;
+}
+html body[data-app-route="fantasyTeam"] .v576-slot.filled>b,
+html body.v587-fantasy-team-open .v576-slot.filled>b{
+  position:relative!important;z-index:35!important;
+  width:60px!important;min-width:60px!important;max-width:60px!important;
+  height:23px!important;min-height:23px!important;
+  margin:0!important;padding:4px 2px!important;border-radius:0!important;
+  line-height:15px!important;font-size:8px!important;text-align:center!important;
+  white-space:nowrap!important;overflow:hidden!important;text-overflow:ellipsis!important;
+}
+html body[data-app-route="fantasyTeam"] .v576-slot.filled>small,
+html body.v587-fantasy-team-open .v576-slot.filled>small{
+  position:relative!important;z-index:35!important;
+  width:60px!important;min-width:60px!important;max-width:60px!important;
+  height:19px!important;min-height:19px!important;
+  margin:0!important;padding:3px 2px!important;border-radius:0!important;
+  line-height:13px!important;font-size:7.5px!important;text-align:center!important;
+}
+html body[data-app-route="fantasyTeam"] .v576-slot.filled .v590-kit-wrap>.remove,
+html body.v587-fantasy-team-open .v576-slot.filled .v590-kit-wrap>.remove{
+  position:absolute!important;z-index:70!important;
+  right:-5px!important;top:-2px!important;
+  width:15px!important;height:15px!important;
+  min-width:15px!important;min-height:15px!important;
+  max-width:15px!important;max-height:15px!important;
+  display:grid!important;place-items:center!important;
+  font-size:11px!important;line-height:15px!important;border-radius:50%!important;
+}
+html body[data-app-route="fantasyTeam"] .v824-source-cover,
+html body.v587-fantasy-team-open .v824-source-cover{
+  position:absolute!important;z-index:7!important;top:28%!important;
+  width:10px!important;height:10px!important;border-radius:4px!important;
+  background:rgba(30,36,52,.28)!important;
+  -webkit-backdrop-filter:blur(1.6px) saturate(.72)!important;
+  backdrop-filter:blur(1.6px) saturate(.72)!important;
+  transform:translate(-50%,-50%) translateZ(5px)!important;
+  pointer-events:none!important;
+}
+html body[data-app-route="fantasyTeam"] .v824-source-cover.left,
+html body.v587-fantasy-team-open .v824-source-cover.left{left:41%!important}
+html body[data-app-route="fantasyTeam"] .v824-source-cover.right,
+html body.v587-fantasy-team-open .v824-source-cover.right{left:59%!important}
+html body[data-app-route="fantasyTeam"] .v824-team-crest,
+html body.v587-fantasy-team-open .v824-team-crest{
+  position:absolute!important;z-index:12!important;
+  left:59%!important;top:28%!important;
+  width:9px!important;height:9px!important;
+  min-width:9px!important;min-height:9px!important;
+  max-width:9px!important;max-height:9px!important;
+  display:grid!important;place-items:center!important;
+  transform:translate(-50%,-50%) translateZ(9px) rotateY(-12deg) rotateZ(-2deg)!important;
+  transform-origin:50% 60%!important;pointer-events:none!important;
+  filter:drop-shadow(0 1px 1px rgba(0,0,0,.42))!important;
+}
+html body[data-app-route="fantasyTeam"] .v824-team-crest img,
+html body.v587-fantasy-team-open .v824-team-crest img{
+  width:9px!important;height:9px!important;max-width:9px!important;max-height:9px!important;
+  object-fit:contain!important;background:transparent!important;border:0!important;
+}
+html body[data-app-route="fantasyTeam"] .v824-team-crest b,
+html body.v587-fantasy-team-open .v824-team-crest b{
+  display:none!important;width:9px!important;height:9px!important;
+  place-items:center!important;border-radius:50%!important;background:#0a3a8f!important;color:#fff!important;
+  font:800 4px/9px Inter,Roboto,Arial,sans-serif!important;
+}
+html body[data-app-route="fantasyTeam"] .v824-team-crest.is-fallback img,
+html body.v587-fantasy-team-open .v824-team-crest.is-fallback img{display:none!important}
+html body[data-app-route="fantasyTeam"] .v824-team-crest.is-fallback b,
+html body.v587-fantasy-team-open .v824-team-crest.is-fallback b{display:grid!important}
+html body[data-app-route="fantasyTeam"] .v576-field-row.del,
+html body.v587-fantasy-team-open .v576-field-row.del,
+html body[data-app-route="fantasyTeam"] .v576-field-row.cen,
+html body.v587-fantasy-team-open .v576-field-row.cen,
+html body[data-app-route="fantasyTeam"] .v576-field-row.def,
+html body.v587-fantasy-team-open .v576-field-row.def{
+  height:88px!important;align-items:start!important;
+}
+html body[data-app-route="fantasyTeam"] .v576-field-row.por,
+html body.v587-fantasy-team-open .v576-field-row.por{
+  height:80px!important;align-items:start!important;
+}
+</style>
   <script type="module" crossorigin src="./assets/index-DRpbuvXH.js"></script>
   <link rel="stylesheet" crossorigin href="./assets/index-Bu5BIm0o.css">
 </head>
@@ -679,5 +811,116 @@
   <script defer src="./src/v820-fantasy-lineup-hardlock.js?v=20261005-v820-hardlock"></script>
   <script defer src="./src/v821-predictor-clean-render.js?v=20261005-v822-pronostica-lower-align"></script>
   <script defer src="./src/v821-fantasy-local-logos-only.js?v=20261005-v821-local-logos-only"></script>
+<script id="v824FantasyJerseyInlineFixScript">
+(function(){
+'use strict';
+if(window.__LJR_V824_FANTASY_INLINE_FIX__)return;
+window.__LJR_V824_FANTASY_INLINE_FIX__=true;
+const norm=v=>String(v??'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[^a-z0-9]+/g,' ').trim();
+const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const initials=v=>{const p=String(v||'').trim().split(/\s+/).filter(Boolean);return ((p[0]?.[0]||'')+(p[1]?.[0]||p[0]?.[1]||'')).toUpperCase()||'JR'};
+const route=()=>String(location.hash||'').replace(/^#\/?/,'').split('?')[0]||document.body?.dataset?.appRoute||'home';
+function squad(){try{const x=JSON.parse(localStorage.getItem('v576-fantasy-squad')||'[]');return Array.isArray(x)?x:[]}catch(_){return []}}
+function db(){try{return window.V66_OFFICIAL_DIRECTORY?.data?.()||window.LJR_OFFICIAL_API?.getData?.()||window.LJR_OFFICIAL_DATA||{}}catch(_){return {}}}
+function logoFor(team){
+  let v='';
+  try{v=window.V66_OFFICIAL_DIRECTORY?.logoFor?.(team)||''}catch(_){}
+  if(!v)try{v=window.LJR_OFFICIAL_API?.getLogo?.(team)||''}catch(_){}
+  if(!v)try{v=window.LJR_TEAM_LOGOS?.get?.(team)||''}catch(_){}
+  if(!v){
+    const hit=Object.entries(db()?.team_logos||{}).find(([k])=>norm(k)===norm(team));
+    if(hit)v=hit[1];
+  }
+  v=String(v||'').trim();
+  if(!v)return '';
+  if(/^(https?:|data:|blob:)/i.test(v))return v;
+  try{return new URL(v.replace(/^\.\//,''),document.baseURI).href}catch(_){return v}
+}
+function fallbacks(){
+  const all=[
+    ...(Array.isArray(window.LJR_V816_DIAGONAL_JERSEYS)?window.LJR_V816_DIAGONAL_JERSEYS:[]),
+    ...(Array.isArray(window.LJR_V819_THREE_QUARTER_JERSEYS)?window.LJR_V819_THREE_QUARTER_JERSEYS:[]),
+    ...(Array.isArray(window.LJR_FANTASY_JERSEYS?.catalog)?window.LJR_FANTASY_JERSEYS.catalog:[])
+  ];
+  const out=[],seen=new Set();
+  for(const x of all){
+    const u=String(x?.url||'').trim();
+    if(u.startsWith('data:image/')&&!seen.has(u)){seen.add(u);out.push(u)}
+  }
+  const base=/\/demo(?:\/|$)/.test(location.pathname)?'../':'./';
+  [base+'assets/jerseys/v819-angle-white.webp',base+'assets/jerseys/v819-angle-gold.webp',base+'assets/jerseys/v819-angle-red.webp'].forEach(u=>{if(!seen.has(u)){seen.add(u);out.push(u)}});
+  return out;
+}
+function ensureShirt(kit,index,list){
+  let img=kit.querySelector('.v820-lineup-jersey');
+  if(!img){
+    img=document.createElement('img');
+    img.className='v820-lineup-jersey';
+    img.alt='';
+    img.draggable=false;
+    img.decoding='async';
+    img.src=list[index%Math.max(1,list.length)]||'';
+    kit.prepend(img);
+  }
+  if(!img.dataset.v824Repair){
+    img.dataset.v824Repair='1';
+    img.dataset.v824Try='0';
+    const next=()=>{
+      let n=Number(img.dataset.v824Try||0);
+      while(n<list.length){
+        const u=list[(index+n)%list.length];n++;img.dataset.v824Try=String(n);
+        if(u&&String(img.getAttribute('src')||'')!==u){img.style.opacity='1';img.style.visibility='visible';img.src=u;return}
+      }
+      img.style.opacity='0';
+    };
+    img.addEventListener('load',()=>{img.style.opacity='1';img.style.visibility='visible'});
+    img.addEventListener('error',next);
+    img.__v824Next=next;
+  }
+  if(img.complete&&img.naturalWidth===0)queueMicrotask(()=>img.__v824Next?.());
+}
+function decorate(){
+  if(route()!=='fantasyTeam')return;
+  const list=fallbacks();
+  const rows=squad(),bySlot=new Map(rows.map(p=>[String(p?.slot??''),p||{}]));
+  [...document.querySelectorAll('.v576-slot.filled[data-v576-slot]')].forEach((slot,index)=>{
+    const wrap=slot.querySelector('.v590-kit-wrap');if(!wrap)return;
+    let kit=wrap.querySelector('.v820-lineup-kit');
+    if(!kit){
+      kit=document.createElement('span');
+      kit.className='v820-lineup-kit';
+      wrap.prepend(kit);
+    }
+    ensureShirt(kit,index,list);
+    const p=bySlot.get(String(slot.dataset.v576Slot??index))||{};
+    const team=String(p.team||'').trim();
+    const logo=logoFor(team);
+    const stamp=team+'|'+logo;
+    if(kit.dataset.v824Stamp===stamp)return;
+    kit.querySelectorAll('.v821-source-eraser,.v821-team-crest,.v824-source-cover,.v824-team-crest').forEach(n=>n.remove());
+    kit.insertAdjacentHTML('beforeend',
+      '<span class="v824-source-cover left" aria-hidden="true"></span>'+
+      '<span class="v824-source-cover right" aria-hidden="true"></span>'+
+      '<span class="v824-team-crest'+(logo?'':' is-fallback')+'">'+
+        (logo?'<img src="'+esc(logo)+'" alt="" draggable="false">':'')+
+        '<b>'+esc(initials(team))+'</b>'+
+      '</span>');
+    const crest=kit.querySelector('.v824-team-crest');
+    const crestImg=crest?.querySelector('img');
+    if(crestImg)crestImg.addEventListener('error',()=>crest.classList.add('is-fallback'),{once:true});
+    kit.dataset.v824Stamp=stamp;
+  });
+}
+let raf=0;const schedule=()=>{cancelAnimationFrame(raf);raf=requestAnimationFrame(()=>requestAnimationFrame(decorate))};
+function boot(){
+  new MutationObserver(schedule).observe(document.body,{childList:true,subtree:true});
+  window.addEventListener('hashchange',()=>setTimeout(schedule,25));
+  window.addEventListener('ljr:jersey-library-ready',schedule);
+  window.addEventListener('ljr:official-data',schedule);
+  schedule();setTimeout(schedule,120);setTimeout(schedule,500);setTimeout(schedule,1400);
+}
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot,{once:true});else boot();
+})();
+</script>
 </body>
 </html>
