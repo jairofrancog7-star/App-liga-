@@ -26,7 +26,7 @@ const games=[
  {id:'p6f',home:'ABEJAS',homeLogo:'assets/official-logos/abejas.png',away:'BOAVISTA',awayLogo:'assets/official-logos/boavista.png',time:'17:00',field:'Campo 1'}
 ];
 
-let ui={view:'intro',journey:2,game:null,tempHome:0,tempAway:0,menu:false};
+let ui={view:'intro',introSlide:0,journey:2,game:null,tempHome:0,tempAway:0,menu:false};
 let splashTimer=0,mountTimer=0;
 
 function read(){
@@ -90,13 +90,40 @@ function bottomSwitch(active){
     '<button type="button" data-v589-view="leagues" class="'+(active==='leagues'?'active':'')+'"><span>♙♙</span><b>Ligas</b></button>'+
   '</nav>';
 }
+const introSlides=[
+  {
+    title:'Pronostica seis resultados',
+    text:'Consigue puntos por el marcador, la diferencia de goles y los goles marcados por cada equipo.',
+    icons:['◇ ◇','▱ ◇','▱ ◎','▱ ◎','◇ ◌','◇ ◌']
+  },
+  {
+    title:'Acierta el marcador exacto',
+    text:'Desliza a la izquierda o derecha para conocer cómo funciona cada forma de puntuación.',
+    icons:['2 - 1','1 - 0','3 - 2','0 - 0','1 - 1','2 - 0']
+  },
+  {
+    title:'Suma por diferencia de goles',
+    text:'Aunque no aciertes el marcador exacto, una diferencia correcta también puede darte puntos.',
+    icons:['+1','+2','+3','0','-1','-2']
+  },
+  {
+    title:'También cuentan los goles',
+    text:'Los goles pronosticados para cada equipo forman parte de la puntuación de Pronostica Seis.',
+    icons:['⚽ 1','⚽ 2','⚽ 3','⚽ 0','⚽ 2','⚽ 1']
+  }
+];
+
 function intro(){
-  return '<section class="v589-page intro" data-v589-root>'+top('Pronostica Seis')+sponsor()+
-    '<div class="v589-intro-icons">'+
-      '<span>◇ ◇</span><span>▱ ◇</span><span>▱ ◎</span><span>▱ ◎</span><span>◇ ◌</span><span>◇ ◌</span>'+
+  const idx=Math.max(0,Math.min(introSlides.length-1,Number(ui.introSlide)||0));
+  const slide=introSlides[idx];
+  return '<section class="v589-page intro" data-v589-root data-v589-intro-swipe data-v589-intro-index="'+idx+'">'+top('Pronostica Seis')+sponsor()+
+    '<div class="v589-intro-icons" data-v589-intro-track>'+
+      slide.icons.map(v=>'<span>'+esc(v)+'</span>').join('')+
     '</div>'+
-    '<div class="v589-intro-copy"><h2>Pronostica seis resultados</h2><p>Consigue puntos por el marcador, la diferencia de goles y los goles marcados por cada equipo.</p>'+
-      '<div class="v589-dots"><i class="active"></i><i></i><i></i><i></i></div></div>'+
+    '<div class="v589-intro-copy" data-v589-intro-track><h2>'+esc(slide.title)+'</h2><p>'+esc(slide.text)+'</p>'+
+      '<div class="v589-dots" aria-label="Pantallas de introducción">'+
+        introSlides.map((_,i)=>'<button type="button" aria-label="Ir a pantalla '+(i+1)+'" data-v589-intro-dot="'+i+'" class="'+(i===idx?'active':'')+'"></button>').join('')+
+      '</div></div>'+
     '<div class="v589-intro-actions">'+
       '<button type="button" class="v589-primary" data-v589-login>'+(isLogged()?'Continuar para jugar':'Inicia sesión para jugar')+'</button>'+
       '<button type="button" class="v589-secondary" data-v589-guest>Prueba como invitado</button>'+
@@ -181,6 +208,45 @@ function rules(){
       '<h2>Puntuación</h2><p>Sumas puntos por acertar el resultado, los goles de cada equipo y la diferencia de goles. El bonus por sorpresa y el comodín siguen la tabla mostrada en “Cómo conseguir puntos”.</p>'+
     '</main></section>';
 }
+function bindIntroSwipe(){
+  const root=$('[data-v589-intro-swipe]');
+  if(!root||root.dataset.v589SwipeBound==='1')return;
+  root.dataset.v589SwipeBound='1';
+  let startX=0,startY=0,lastX=0,pointer=null,dragging=false;
+
+  const tracks=()=>$('[data-v589-intro-track]',root);
+  const setDrag=x=>tracks().forEach(el=>el.style.setProperty('--v839-drag-x',x+'px'));
+  const clearDrag=()=>tracks().forEach(el=>el.style.removeProperty('--v839-drag-x'));
+
+  root.addEventListener('pointerdown',e=>{
+    if(e.pointerType==='mouse'&&e.button!==0)return;
+    if(e.target.closest('button'))return;
+    pointer=e.pointerId;startX=lastX=e.clientX;startY=e.clientY;dragging=true;
+    root.classList.add('v839-dragging');
+    try{root.setPointerCapture(pointer)}catch(_){}
+  });
+  root.addEventListener('pointermove',e=>{
+    if(!dragging||e.pointerId!==pointer)return;
+    const dx=e.clientX-startX,dy=e.clientY-startY;
+    if(Math.abs(dx)<Math.abs(dy)&&Math.abs(dy)>8)return;
+    lastX=e.clientX;
+    setDrag(Math.max(-90,Math.min(90,dx)));
+    if(Math.abs(dx)>8)e.preventDefault();
+  });
+  const finish=e=>{
+    if(!dragging||e.pointerId!==pointer)return;
+    const dx=lastX-startX,dy=e.clientY-startY;
+    dragging=false;root.classList.remove('v839-dragging');clearDrag();
+    try{root.releasePointerCapture(pointer)}catch(_){}
+    if(Math.abs(dx)>=42&&Math.abs(dx)>Math.abs(dy)*1.1){
+      const next=dx<0?Math.min(introSlides.length-1,(ui.introSlide||0)+1):Math.max(0,(ui.introSlide||0)-1);
+      if(next!==ui.introSlide){ui.introSlide=next;render()}
+    }
+  };
+  root.addEventListener('pointerup',finish);
+  root.addEventListener('pointercancel',finish);
+}
+
 function render(){
   if(route()!==ROUTE)return;
   const screen=$('#screen');if(!screen)return;
@@ -190,7 +256,7 @@ function render(){
   else if(ui.view==='rules')html=rules();
   else html=predictions();
   screen.innerHTML=html;
-  if(ui.view==='intro')screen.scrollTop=0;
+  if(ui.view==='intro'){screen.scrollTop=0;bindIntroSwipe()}
   document.body.dataset.v589Predictor='1';
 }
 function openPrediction(id){
@@ -231,6 +297,12 @@ function handleClick(e){
   if(t.matches('[data-v589-menu]')){
     e.preventDefault();e.stopPropagation();
     ui.menu=!ui.menu;render();return
+  }
+  const introDot=t.getAttribute('data-v589-intro-dot');
+  if(introDot!==null){
+    e.preventDefault();e.stopPropagation();
+    ui.introSlide=Math.max(0,Math.min(introSlides.length-1,Number(introDot)||0));
+    render();return;
   }
   if(t.matches('[data-v589-login]')){
     e.preventDefault();e.stopPropagation();
@@ -303,7 +375,7 @@ function schedule(ms=40){clearTimeout(mountTimer);mountTimer=setTimeout(mount,ms
 document.addEventListener('click',handleClick,true);
 window.addEventListener('hashchange',()=>{
   const returning=route()===ROUTE&&consumeAfterAuth();
-  ui={view:returning?(ui.view||'predictions'):'intro',journey:2,game:null,tempHome:0,tempAway:0,menu:false};
+  ui={view:returning?(ui.view||'predictions'):'intro',introSlide:0,journey:2,game:null,tempHome:0,tempAway:0,menu:false};
   schedule(20)
 });
 new MutationObserver(()=>{if(route()===ROUTE)schedule(30)}).observe(document.documentElement,{childList:true,subtree:true});
