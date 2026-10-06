@@ -886,6 +886,163 @@ body[data-app-route="home"] .v65-table-logo img{
   transform:none!important;
 }
 </style>
+<style id="v827HomeLogoContainHardfix">
+/* V827 — hardfix visual: el escudo queda pequeño, centrado y totalmente DENTRO del círculo blanco. */
+body[data-app-route="home"] .v446-home-club-logo{
+  position:relative!important;
+  width:56px!important;
+  height:56px!important;
+  min-width:56px!important;
+  min-height:56px!important;
+  max-width:56px!important;
+  max-height:56px!important;
+  margin:0 auto 5px!important;
+  padding:0!important;
+  display:grid!important;
+  place-items:center!important;
+  overflow:hidden!important;
+  contain:paint!important;
+  isolation:isolate!important;
+  box-sizing:border-box!important;
+  border-radius:50%!important;
+  clip-path:circle(50% at 50% 50%)!important;
+  background:#fff!important;
+}
+
+body[data-app-route="home"] .v446-home-club-logo > .crest{
+  position:absolute!important;
+  inset:0!important;
+  width:100%!important;
+  height:100%!important;
+  min-width:100%!important;
+  min-height:100%!important;
+  max-width:100%!important;
+  max-height:100%!important;
+  margin:0!important;
+  padding:0!important;
+  display:grid!important;
+  place-items:center!important;
+  overflow:hidden!important;
+  contain:paint!important;
+  box-sizing:border-box!important;
+  border:0!important;
+  border-radius:50%!important;
+  clip-path:circle(50% at 50% 50%)!important;
+  background:transparent!important;
+  transform:none!important;
+  filter:none!important;
+}
+
+body[data-app-route="home"] .v446-home-club-logo > .crest > img{
+  position:static!important;
+  inset:auto!important;
+  width:72%!important;
+  height:72%!important;
+  min-width:0!important;
+  min-height:0!important;
+  max-width:72%!important;
+  max-height:72%!important;
+  margin:auto!important;
+  padding:0!important;
+  display:block!important;
+  object-fit:contain!important;
+  object-position:50% 50%!important;
+  border:0!important;
+  border-radius:0!important;
+  clip-path:none!important;
+  background:transparent!important;
+  transform:none!important;
+  transform-origin:50% 50%!important;
+  filter:none!important;
+}
+
+/* Partidos relevantes: mismo principio, con más margen interno. */
+body[data-app-route="home"] .v446-relevant-team .crest{
+  position:relative!important;
+  flex:0 0 34px!important;
+  width:34px!important;
+  height:34px!important;
+  min-width:34px!important;
+  min-height:34px!important;
+  max-width:34px!important;
+  max-height:34px!important;
+  margin:0!important;
+  padding:0!important;
+  display:grid!important;
+  place-items:center!important;
+  overflow:hidden!important;
+  contain:paint!important;
+  isolation:isolate!important;
+  box-sizing:border-box!important;
+  border-radius:50%!important;
+  clip-path:circle(50% at 50% 50%)!important;
+  background:#fff!important;
+  transform:none!important;
+}
+
+body[data-app-route="home"] .v446-relevant-team .crest > img{
+  position:static!important;
+  inset:auto!important;
+  width:70%!important;
+  height:70%!important;
+  min-width:0!important;
+  min-height:0!important;
+  max-width:70%!important;
+  max-height:70%!important;
+  margin:auto!important;
+  padding:0!important;
+  display:block!important;
+  object-fit:contain!important;
+  object-position:50% 50%!important;
+  border:0!important;
+  border-radius:0!important;
+  clip-path:none!important;
+  background:transparent!important;
+  transform:none!important;
+  transform-origin:50% 50%!important;
+  filter:none!important;
+}
+
+/* Anula el tratamiento viejo especial de Herreras que lo agrandaba y desplazaba. */
+body[data-app-route="home"] .v446-relevant-team[data-team-code="HFC"] .crest{
+  width:34px!important;
+  height:34px!important;
+  min-width:34px!important;
+  min-height:34px!important;
+  max-width:34px!important;
+  max-height:34px!important;
+  padding:0!important;
+  overflow:hidden!important;
+  border-radius:50%!important;
+  clip-path:circle(50% at 50% 50%)!important;
+  background:#fff!important;
+  box-shadow:0 4px 9px rgba(0,0,35,.20)!important;
+}
+body[data-app-route="home"] .v446-relevant-team[data-team-code="HFC"] .crest::after{
+  display:none!important;
+  content:none!important;
+}
+body[data-app-route="home"] .v446-relevant-team[data-team-code="HFC"] .crest > img{
+  position:static!important;
+  inset:auto!important;
+  width:68%!important;
+  height:68%!important;
+  max-width:68%!important;
+  max-height:68%!important;
+  margin:auto!important;
+  padding:0!important;
+  transform:none!important;
+  clip-path:none!important;
+  filter:none!important;
+  background:transparent!important;
+}
+
+/* Refuerzo de clipping para cualquier descendiente del logo. */
+body[data-app-route="home"] .v446-home-club-logo *,
+body[data-app-route="home"] .v446-relevant-team .crest *{
+  box-sizing:border-box!important;
+}
+</style>
 </head>
 <body>
 <div id="ljr-boot" aria-label="Cargando Liga Juventino" role="status"><i></i></div>
