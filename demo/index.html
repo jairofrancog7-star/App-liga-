@@ -2,7 +2,7 @@
 <html lang="es-MX">
 <head>
   <script src="./src/v776-navigation.js"></script>
-  <meta name="app-build" content="v823-pronostica-dots-lower">
+  <meta name="app-build" content="v824-pronostica-intro-reference">
   <style data-ljr-entry-guard>
     html.ljr-preboot #app{visibility:hidden!important}
     html.ljr-preboot body{background:#02065f!important}
@@ -394,7 +394,7 @@
     })();
   </script>
 <style id="v824FantasyJerseyInlineFix">
-/* V824 — final inline Fantasy jersey fix: visible shirts, lower overlap, smaller 3D crests. */
+/* V825 — remove translucent spots; lower half of shirt under the blue card. */
 html body[data-app-route="fantasyTeam"] .v821-source-eraser,
 html body.v587-fantasy-team-open .v821-source-eraser,
 html body[data-app-route="fantasyTeam"] .v821-team-crest,
@@ -424,8 +424,8 @@ html body.v587-fantasy-team-open .v576-slot.filled .v590-kit-wrap{
 }
 html body[data-app-route="fantasyTeam"] .v576-slot.filled .v820-lineup-kit,
 html body.v587-fantasy-team-open .v576-slot.filled .v820-lineup-kit{
-  position:absolute!important;z-index:48!important;
-  left:50%!important;top:auto!important;bottom:-7px!important;
+  position:absolute!important;z-index:34!important;
+  left:50%!important;top:auto!important;bottom:-24px!important;
   width:48px!important;height:52px!important;
   min-width:48px!important;min-height:52px!important;
   max-width:48px!important;max-height:52px!important;
@@ -446,7 +446,7 @@ html body.v587-fantasy-team-open .v576-slot.filled .v820-lineup-jersey{
 }
 html body[data-app-route="fantasyTeam"] .v576-slot.filled>b,
 html body.v587-fantasy-team-open .v576-slot.filled>b{
-  position:relative!important;z-index:35!important;
+  position:relative!important;z-index:50!important;
   width:60px!important;min-width:60px!important;max-width:60px!important;
   height:23px!important;min-height:23px!important;
   margin:0!important;padding:4px 2px!important;border-radius:0!important;
@@ -455,7 +455,7 @@ html body.v587-fantasy-team-open .v576-slot.filled>b{
 }
 html body[data-app-route="fantasyTeam"] .v576-slot.filled>small,
 html body.v587-fantasy-team-open .v576-slot.filled>small{
-  position:relative!important;z-index:35!important;
+  position:relative!important;z-index:50!important;
   width:60px!important;min-width:60px!important;max-width:60px!important;
   height:19px!important;min-height:19px!important;
   margin:0!important;padding:3px 2px!important;border-radius:0!important;
@@ -464,7 +464,7 @@ html body.v587-fantasy-team-open .v576-slot.filled>small{
 html body[data-app-route="fantasyTeam"] .v576-slot.filled .v590-kit-wrap>.remove,
 html body.v587-fantasy-team-open .v576-slot.filled .v590-kit-wrap>.remove{
   position:absolute!important;z-index:70!important;
-  right:-5px!important;top:-2px!important;
+  right:-5px!important;top:18px!important;
   width:15px!important;height:15px!important;
   min-width:15px!important;min-height:15px!important;
   max-width:15px!important;max-height:15px!important;
@@ -473,18 +473,14 @@ html body.v587-fantasy-team-open .v576-slot.filled .v590-kit-wrap>.remove{
 }
 html body[data-app-route="fantasyTeam"] .v824-source-cover,
 html body.v587-fantasy-team-open .v824-source-cover{
-  position:absolute!important;z-index:7!important;top:28%!important;
-  width:10px!important;height:10px!important;border-radius:4px!important;
-  background:rgba(30,36,52,.28)!important;
-  -webkit-backdrop-filter:blur(1.6px) saturate(.72)!important;
-  backdrop-filter:blur(1.6px) saturate(.72)!important;
-  transform:translate(-50%,-50%) translateZ(5px)!important;
-  pointer-events:none!important;
+  display:none!important;
+  visibility:hidden!important;
+  opacity:0!important;
+  width:0!important;
+  height:0!important;
+  backdrop-filter:none!important;
+  -webkit-backdrop-filter:none!important;
 }
-html body[data-app-route="fantasyTeam"] .v824-source-cover.left,
-html body.v587-fantasy-team-open .v824-source-cover.left{left:41%!important}
-html body[data-app-route="fantasyTeam"] .v824-source-cover.right,
-html body.v587-fantasy-team-open .v824-source-cover.right{left:59%!important}
 html body[data-app-route="fantasyTeam"] .v824-team-crest,
 html body.v587-fantasy-team-open .v824-team-crest{
   position:absolute!important;z-index:12!important;
@@ -525,8 +521,8 @@ html body.v587-fantasy-team-open .v576-field-row.por{
   height:80px!important;align-items:start!important;
 }
 </style>
-  <script type="module" crossorigin src="./assets/index-DRpbuvXH.js"></script>
-  <link rel="stylesheet" crossorigin href="./assets/index-Bu5BIm0o.css">
+  <script type="module" crossorigin src="./assets/index-DD_-sih6.js"></script>
+  <link rel="stylesheet" crossorigin href="./assets/index-CYd5URoJ.css">
 </head>
 <body>
 <div id="ljr-boot" aria-label="Cargando Liga Juventino" role="status"><i></i></div>
@@ -899,8 +895,6 @@ function decorate(){
     if(kit.dataset.v824Stamp===stamp)return;
     kit.querySelectorAll('.v821-source-eraser,.v821-team-crest,.v824-source-cover,.v824-team-crest').forEach(n=>n.remove());
     kit.insertAdjacentHTML('beforeend',
-      '<span class="v824-source-cover left" aria-hidden="true"></span>'+
-      '<span class="v824-source-cover right" aria-hidden="true"></span>'+
       '<span class="v824-team-crest'+(logo?'':' is-fallback')+'">'+
         (logo?'<img src="'+esc(logo)+'" alt="" draggable="false">':'')+
         '<b>'+esc(initials(team))+'</b>'+
