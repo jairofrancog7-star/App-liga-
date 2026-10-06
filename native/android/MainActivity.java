@@ -12,6 +12,7 @@ public class MainActivity extends BridgeActivity {
         registerPlugin(LigaSpeechPlugin.class);
         registerPlugin(LigaBiometricPlugin.class);
         registerPlugin(LigaNotificationsPlugin.class);
+        registerPlugin(LigaCalendarPlugin.class);
         super.onCreate(savedInstanceState);
     }
     @Override

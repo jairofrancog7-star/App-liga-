@@ -1,4 +1,7 @@
 import { rosterGroups, monthIndicator } from './v839-reference-data.js';
+import { Capacitor, registerPlugin } from '@capacitor/core';
+import { calendarEvent } from './v843-calendar-event.js';
+import { registeredTeamPhotos } from './v843-registered-player-photos.js';
 /* V415 — Calendario referencia: calendario visual con escudos, meses y tarjeta de partido.
    Sólo reemplaza #/v4-calendar. Usa datos oficiales ya publicados y conserva la navegación global. */
 (function(){
@@ -28,7 +31,11 @@ let squadCategory='3';
 let squadTeam='';
 let selectedPlayer='';
 let playerPickerOpen=false;
-let playerPanel='Resumen';
+let playerPanel='Perfil';
+let agendaGame=null;
+let photoScope='';
+let photoGeneration=0;
+const nativeCalendar=registerPlugin('LigaCalendar');
 const enabledCategories=new Set(CATEGORY_ORDER);
 let rendering=false;
 
@@ -218,7 +225,24 @@ function currentRosterGroups(){
 }
 function currentRoster(){return currentRosterGroups().flatMap(group=>group.players)}
 function playerPhoto(player){
-  return player.photo||window.LJR_PLAYER_PHOTOS?.[norm(player.name)+'|'+norm(squadTeam)]||'';
+  return window.LJR_PLAYER_PHOTOS?.[norm(player.name)+'|'+norm(squadTeam)]||player.photo||'';
+}
+async function loadRegisteredPhotos(){
+  if(!['squad','player'].includes(activeView)||!window.LJR_V563_PHOTOS?.get)return;
+  const players=currentRoster(),team=squadTeam,cat=squadCategory;
+  let registry,season,raw;
+  try{
+    raw=localStorage.getItem('v124-player-registry')||'{}';registry=JSON.parse(raw);
+    const now=new Date(),year=now.getMonth()>=7?now.getFullYear():now.getFullYear()-1;
+    season=localStorage.getItem('v124-player-season')||year+'–'+(year+1);
+  }catch(_){return}
+  const scope=team+'|'+cat+'|'+season+'|'+raw;
+  if(photoScope===scope)return;
+  photoScope=scope;const generation=++photoGeneration;
+  const photos=await registeredTeamPhotos(registry,season,team,cat,players,window.LJR_V563_PHOTOS.get);
+  if(generation!==photoGeneration||!Object.keys(photos).length)return;
+  window.LJR_PLAYER_PHOTOS={...(window.LJR_PLAYER_PHOTOS||{}),...photos};
+  if(isCalendarRoute()&&norm(squadTeam)===norm(team)&&squadCategory===cat)render();
 }
 function playerVisual(player,cls){
   const photo=playerPhoto(player),logo=logoFor(squadTeam);
@@ -258,9 +282,9 @@ function playerMarkup(){
   if(!player)return squadMarkup();
   const usage=playerUsage(player.name);
   return '<section class="v839-player-view"><header class="v839-player-head"><button type="button" data-v839-player-back aria-label="Mostrar plantilla"><svg viewBox="0 0 24 24"><path d="M20 12H4m7-7-7 7 7 7"/></svg></button><button type="button" data-v839-picker-open aria-label="Selecciona jugador"><svg viewBox="0 0 24 24"><circle cx="12" cy="7" r="3"/><path d="M6 20v-3a6 6 0 0 1 12 0v3M19 7v6M16 10h6"/></svg></button></header>'+
-    '<div class="v839-player-hero">'+playerVisual(player,'v839-player-hero-art')+'<div class="v839-player-hero-caption">'+(player.number?'<b>'+esc(player.number)+'</b>':'')+'<span><h1>'+esc(player.name)+'</h1><small>'+esc(player.position==='Jugadores'?'Jugador':player.position)+'</small></span></div></div>'+
-    '<div class="v839-player-tabs" role="tablist" aria-label="Datos del jugador">'+['Resumen','Estadísticas'].map(panel=>'<button type="button" role="tab" aria-selected="'+(playerPanel===panel)+'" class="'+(playerPanel===panel?'active':'')+'" data-v839-player-panel="'+panel+'">'+panel+'</button>').join('')+'</div>'+
-    (playerPanel==='Resumen'?'<section class="v839-player-public"><h2>Datos del jugador</h2><dl><div><dt>Nombre completo</dt><dd>'+esc(player.name)+'</dd></div><div><dt>Equipo</dt><dd>'+logoMarkup(squadTeam)+'<span>'+esc(squadTeam)+'</span></dd></div><div><dt>Categoría</dt><dd>'+esc(categoryLabel(squadCategory))+'</dd></div><div><dt>Posición</dt><dd>'+esc(player.position==='Jugadores'?'No publicada':player.position)+'</dd></div>'+(player.number?'<div><dt>Dorsal</dt><dd>'+esc(player.number)+'</dd></div>':'')+'</dl></section>':'<section class="v839-player-public"><h2>Estadísticas oficiales</h2><dl><div><dt>Cédulas registradas</dt><dd>'+esc(usage?.cedulas??'No publicadas')+'</dd></div></dl></section>')+
+    '<div class="v839-player-hero">'+playerVisual(player,'v839-player-hero-art')+'<button type="button" class="v843-player-shirts" data-v843-player-shirts><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m8 3-5 3 2 5 3-1v11h8V10l3 1 2-5-5-3c-1 3-7 3-8 0Z"/></svg>Ver camisetas</button><div class="v839-player-hero-caption">'+(player.number?'<b>'+esc(player.number)+'</b>':'')+'<span><h1>'+esc(player.name)+'</h1><small>'+esc(player.position==='Jugadores'?'Jugador':player.position)+'</small></span></div></div>'+
+    '<div class="v839-player-tabs" role="tablist" aria-label="Datos del jugador">'+['Perfil','Estadísticas','Palmarés'].map(panel=>'<button type="button" role="tab" aria-selected="'+(playerPanel===panel)+'" class="'+(playerPanel===panel?'active':'')+'" data-v839-player-panel="'+panel+'">'+panel+'</button>').join('')+'</div>'+
+    (playerPanel==='Perfil'?'<section class="v839-player-public"><h2>Datos del jugador</h2><dl><div><dt>Nombre completo</dt><dd>'+esc(player.name)+'</dd></div><div><dt>Equipo</dt><dd>'+logoMarkup(squadTeam)+'<span>'+esc(squadTeam)+'</span></dd></div><div><dt>Categoría</dt><dd>'+esc(categoryLabel(squadCategory))+'</dd></div><div><dt>Posición</dt><dd>'+esc(player.position==='Jugadores'?'No publicada':player.position)+'</dd></div>'+(player.number?'<div><dt>Dorsal</dt><dd>'+esc(player.number)+'</dd></div>':'')+'</dl></section>':playerPanel==='Palmarés'?'<section class="v839-player-public"><h2>Palmarés</h2><p>No hay títulos individuales registrados para este jugador.</p></section>':'<section class="v839-player-public"><h2>Estadísticas oficiales</h2><dl><div><dt>Cédulas registradas</dt><dd>'+esc(usage?.cedulas??'No publicadas')+'</dd></div></dl></section>')+
     '<button type="button" class="v839-full-profile" data-v839-full-profile="'+esc(player.name)+'">Ver ficha completa</button></section>'+playerPickerMarkup();
 }
 function alignReferenceStrips(root,center=false){
@@ -294,35 +318,34 @@ function standingsMarkup(){
   '</section>';
 }
 function icsEscape(v){return String(v??'').replace(/\\/g,'\\\\').replace(/;/g,'\\;').replace(/,/g,'\\,').replace(/\n/g,'\\n')}
-function addToCalendar(g){
+function downloadCalendar(g){
   if(!g)return;
-  const date=String(g.iso||'').replace(/-/g,'');
-  const hasTime=/^\d{2}:\d{2}$/.test(g.time||'');
-  let dtStart='',dtEnd='';
-  if(hasTime){
-    const [hh,mm]=g.time.split(':').map(Number);
-    const d=new Date(g.year,g.month,g.day,hh,mm||0,0);
-    const e=new Date(d.getTime()+2*60*60*1000);
-    const fmt=x=>x.getFullYear()+pad(x.getMonth()+1)+pad(x.getDate())+'T'+pad(x.getHours())+pad(x.getMinutes())+'00';
-    dtStart='DTSTART;TZID=America/Mexico_City:'+fmt(d);
-    dtEnd='DTEND;TZID=America/Mexico_City:'+fmt(e);
-  }else{
-    dtStart='DTSTART;VALUE=DATE:'+date;
-    const e=new Date(g.year,g.month,g.day+1);
-    dtEnd='DTEND;VALUE=DATE:'+e.getFullYear()+pad(e.getMonth()+1)+pad(e.getDate());
-  }
-  const title=g.home+' vs '+g.away;
-  const body=['BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//Liga Juventino Rosas//Calendario//ES','BEGIN:VEVENT',
-    'UID:'+g.id+'@juventinorosasliga.com',dtStart,dtEnd,
-    'SUMMARY:'+icsEscape(title),'LOCATION:'+icsEscape(g.venue||''),
-    'DESCRIPTION:'+icsEscape((g.category||'')+(g.round?' · Jornada '+g.round:'')),
-    'END:VEVENT','END:VCALENDAR'].join('\r\n');
+  const body=calendarEvent(g).ics;
   try{
     const blob=new Blob([body],{type:'text/calendar;charset=utf-8'});
     const url=URL.createObjectURL(blob);
     const a=document.createElement('a');a.href=url;a.download='partido-'+g.iso+'.ics';document.body.appendChild(a);a.click();a.remove();
     setTimeout(()=>URL.revokeObjectURL(url),3000);
   }catch(_){}
+}
+
+async function addToCalendar(game){
+  if(!game)return;
+  const event=calendarEvent(game);
+  if(Capacitor.isNativePlatform()&&Capacitor.isPluginAvailable('LigaCalendar')){
+    try{await nativeCalendar.openEvent(event);return}catch(_){}
+  }
+  agendaGame=game;render();
+  requestAnimationFrame(()=>screen().querySelector('[data-v843-agenda-close]')?.focus());
+}
+function agendaMarkup(){
+  if(!agendaGame)return '';
+  const event=calendarEvent(agendaGame);
+  const icon='<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="3"/><path d="M7 2v6M17 2v6M3 10h18M7 14h4M7 17h8"/></svg>';
+  return '<div class="v843-agenda-backdrop" data-v843-agenda-close></div><section class="v843-agenda-sheet" role="dialog" aria-modal="true" aria-labelledby="v843-agenda-title"><h2 id="v843-agenda-title">Completar acción utilizando</h2><p>'+esc(event.title)+'<br>'+esc(shortDate(agendaGame.iso))+' · '+esc(agendaGame.time)+' · '+esc(event.location)+'</p>'+
+    '<a class="v843-agenda-choice" href="'+esc(event.googleURL)+'" target="_blank" rel="noopener noreferrer" data-v843-agenda-link>'+icon+'Google Calendar</a>'+
+    '<a class="v843-agenda-choice" href="'+esc(event.outlookURL)+'" target="_blank" rel="noopener noreferrer" data-v843-agenda-link>'+icon+'Outlook</a>'+
+    '<button type="button" class="v843-agenda-choice" data-v843-agenda-download>'+icon+'Descargar para otra agenda</button><button type="button" class="v843-agenda-cancel" data-v843-agenda-close>Cancelar</button></section>';
 }
 
 function dayLogoStack(dayGames){
@@ -426,6 +449,9 @@ function pickSelected(allGames){
 }
 
 function bind(root){
+  root.querySelectorAll('[data-v843-agenda-close]').forEach(button=>button.addEventListener('click',()=>{agendaGame=null;render()}));
+  root.querySelectorAll('[data-v843-agenda-link]').forEach(link=>link.addEventListener('click',()=>setTimeout(()=>{agendaGame=null;render()},0)));
+  root.querySelector('[data-v843-agenda-download]')?.addEventListener('click',()=>{downloadCalendar(agendaGame);agendaGame=null;render()});
   root.querySelectorAll('.v415-player-portrait').forEach(image=>{
     const loaded=()=>image.previousElementSibling?.classList.add('v839-hide-fallback');
     image.addEventListener('load',loaded,{once:true});
@@ -433,9 +459,10 @@ function bind(root){
     if(image.complete&&image.naturalWidth)loaded();
   });
   root.querySelectorAll('[data-v839-player]').forEach(button=>button.addEventListener('click',()=>{
-    selectedPlayer=button.dataset.v839Player;activeView='player';playerPickerOpen=false;playerPanel='Resumen';render();screen().scrollTop=0;window.scrollTo(0,0);
+    selectedPlayer=button.dataset.v839Player;activeView='player';playerPickerOpen=false;playerPanel='Perfil';render();screen().scrollTop=0;window.scrollTo(0,0);
   }));
   root.querySelector('[data-v839-player-back]')?.addEventListener('click',event=>{event.preventDefault();event.stopPropagation();activeView='squad';playerPickerOpen=false;render();window.scrollTo(0,0)});
+  root.querySelector('[data-v843-player-shirts]')?.addEventListener('click',()=>{location.hash='#/store'});
   root.querySelector('[data-v839-picker-open]')?.addEventListener('click',()=>{playerPickerOpen=true;render();requestAnimationFrame(()=>root.querySelector('[data-v839-picker-close]')?.focus())});
   root.querySelectorAll('[data-v839-picker-close]').forEach(button=>button.addEventListener('click',()=>{playerPickerOpen=false;render();requestAnimationFrame(()=>root.querySelector('[data-v839-picker-open]')?.focus())}));
   root.querySelectorAll('[data-v839-player-panel]').forEach(button=>button.addEventListener('click',()=>{playerPanel=button.dataset.v839PlayerPanel;render()}));
@@ -573,9 +600,11 @@ function render(){
 
     root.innerHTML='<section class="v103-calendar-page v415-calendar-page v839-reference-page" data-view="'+activeView+'" data-v103-calendar data-v415-calendar>'+
       (activeView==='player'?playerMarkup():(topTabs()+categoryPanel()+(activeView==='squad'?squadMarkup():activeView==='standings'?standingsMarkup():(monthStrip()+calendarGrid(monthGames)+selectedMatches(allGames)))))+
-    '</section>';
+    agendaMarkup()+'</section>';
     document.body.classList.toggle('v839-picker-open',playerPickerOpen&&activeView==='player');
+    document.body.classList.toggle('v843-agenda-open',!!agendaGame);
     bind(root);
+    loadRegisteredPhotos().catch(()=>{});
     requestAnimationFrame(()=>alignReferenceStrips(root,true));
     try{window.LJR_TEAM_LOGOS?.refresh?.()}catch(_){}
   }finally{
@@ -586,7 +615,8 @@ function render(){
 let timer=0;
 async function schedule(force=false){
   if(!isCalendarRoute()){
-    document.body.classList.remove('v415-calendar-active','v839-reference-calendar','v839-picker-open');
+    agendaGame=null;
+    document.body.classList.remove('v415-calendar-active','v839-reference-calendar','v839-picker-open','v843-agenda-open');
     return;
   }
   clearTimeout(timer);
@@ -607,6 +637,15 @@ document.addEventListener('click',e=>{
 window.addEventListener('hashchange',()=>schedule(true));
 window.addEventListener('resize',()=>{if(isCalendarRoute())alignReferenceStrips(screen(),true)});
 document.addEventListener('keydown',event=>{
+  if(isCalendarRoute()&&agendaGame){
+    if(event.key==='Escape'){agendaGame=null;render();return}
+    if(event.key==='Tab'){
+      const nodes=[...screen().querySelectorAll('.v843-agenda-sheet a,.v843-agenda-sheet button')];
+      if(event.shiftKey&&document.activeElement===nodes[0]){event.preventDefault();nodes.at(-1)?.focus()}
+      else if(!event.shiftKey&&document.activeElement===nodes.at(-1)){event.preventDefault();nodes[0]?.focus()}
+    }
+    return;
+  }
   if(!isCalendarRoute()||!playerPickerOpen)return;
   if(event.key==='Escape'){playerPickerOpen=false;render();return}
   if(event.key==='Tab'){

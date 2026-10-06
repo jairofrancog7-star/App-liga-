@@ -18,5 +18,8 @@ test('Android camera and video capture remain discoverable after repeated config
     for(const permission of ['CAMERA','RECORD_AUDIO'])assert.equal(xml.split('android.permission.'+permission).length-1,1);
     assert.equal(xml.split('<queries>').length-1,1);
     assert.match(xml,/<queries>[\s\S]*VIDEO_CAPTURE[\s\S]*<\/queries>/);
+    assert.equal(xml.split('vnd.android.cursor.item/event').length-1,1);
+    assert.match(xml,/<action android:name="android.intent.action.INSERT" \/><data android:mimeType="vnd.android.cursor.item\/event"/);
+    assert.ok(fs.existsSync(path.join(app,'src/main/java/mx/ligajuventino/app/LigaCalendarPlugin.java')));
   }finally{fs.rmSync(fixture,{recursive:true,force:true});}
 });

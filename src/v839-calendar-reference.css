@@ -3,7 +3,7 @@
 html body.v839-reference-calendar {
   background: #111226 !important;
   --v839-bg: #111226;
-  --v839-selected: #929ff1;
+  --v839-selected: #78caff;
 }
 html body.v839-reference-calendar #screen {
   padding: 0 0 calc(64px + env(safe-area-inset-bottom)) !important;
@@ -31,7 +31,10 @@ html body.v839-reference-calendar #screen > .v839-reference-page {
 /* One reference pixel = 1/390 of the page, also on a narrower phone. */
 #screen .v839-reference-page > * { --u: .25641026cqw; }
 #screen .v839-reference-page .v415-top-row {
-  position: relative !important;
+  position: sticky !important;
+  top: 22px !important;
+  z-index: 120 !important;
+  isolation: isolate;
   display: grid !important;
   grid-template-columns: minmax(0, 280fr) 26fr !important;
   gap: calc(28 * var(--u)) !important;
@@ -118,7 +121,7 @@ html body.v839-reference-calendar #screen > .v839-reference-page {
   color: #c4c5d3 !important;
   font: 400 calc(13 * var(--u))/1 Roboto, Arial, sans-serif !important;
 }
-#screen .v839-reference-page .v415-month-strip button.active {color: #99a6f4 !important; font-weight: 400 !important;}
+#screen .v839-reference-page .v415-month-strip button.active {color: #78caff !important; font-weight: 400 !important;}
 #screen .v839-reference-page .v415-month-line {
   position: relative !important;
   width: 100% !important;
@@ -197,8 +200,8 @@ html body.v839-reference-calendar #screen > .v839-reference-page {
 }
 #screen .v839-reference-page .v415-day::before {content: none !important;}
 #screen .v839-reference-page .v415-day:not(.has-match):is(.today,.selected) .v415-day-number {
-  background: #e0e4ff !important;
-  color: #231c73 !important;
+  background: #d8f1ff !important;
+  color: #064578 !important;
 }
 /* Ring and main crest are siblings in the same 46 px coordinate system. */
 #screen .v839-reference-page .v415-day .v415-day-logos {
@@ -310,7 +313,7 @@ html body.v839-reference-calendar #screen > .v839-reference-page {
   border: 0 !important;
   border-radius: calc(24 * var(--u)) !important;
   background: radial-gradient(ellipse at 50% 32%, #20234d 0%, #12142d 62%) !important;
-  box-shadow: 0 0 24px #8e9ff112 !important;
+  box-shadow: 0 0 24px #78caff12 !important;
 }
 #screen .v839-reference-page .v448-reference-card .v415-match-meta {font: 400 calc(13 * var(--u))/1.2 Roboto, Arial, sans-serif !important; color: #c5c6d3 !important;}
 #screen .v839-reference-page .v448-reference-card .v415-match-meta b {font-weight: 700 !important;}
@@ -322,14 +325,14 @@ html body.v839-reference-calendar #screen > .v839-reference-page {
 #screen .v839-reference-page .v448-reference-card .v415-add-calendar {width: calc(72 * var(--u)) !important; height: calc(46 * var(--u)) !important; min-width: 0 !important; min-height: 0 !important; border: calc(2 * var(--u)) solid #b8bfd2 !important; background: transparent !important; border-radius: calc(10 * var(--u)) !important; color: #b8bfd2 !important;}
 #screen .v839-reference-page .v448-reference-card .v415-add-calendar span {font-size: calc(23 * var(--u)) !important;}
 #screen .v839-reference-page .v448-reference-card .v415-add-calendar svg {width: calc(19 * var(--u)) !important; height: calc(19 * var(--u)) !important;}
-#screen .v839-reference-page .v448-reference-card .v415-primary-match-action {background: linear-gradient(#8d64f6,#613ff5) !important; border-radius: calc(9 * var(--u)) !important;}
+#screen .v839-reference-page .v448-reference-card .v415-primary-match-action {background: linear-gradient(#88d9ff,#299fe6) !important; border-radius: calc(9 * var(--u)) !important;}
 #screen .v839-reference-page .v448-reference-card .v415-primary-match-action b {font-size: calc(13 * var(--u)) !important;}
-#screen .v839-reference-page .v448-reference-card .v415-venue {border-color: #969eeb !important; color: #bdc3ff !important; border-radius: calc(9 * var(--u)) !important;}
+#screen .v839-reference-page .v448-reference-card .v415-venue {border-color: #78caff !important; color: #b7e4ff !important; border-radius: calc(9 * var(--u)) !important;}
 /* Roster: category strip, position headings, then two 163 x 184 px cards. */
 #screen .v839-reference-page .v415-squad-view {padding: calc(28 * var(--u)) calc(28 * var(--u)) 24px !important;}
 #screen .v839-reference-page .v415-squad-categories {position: relative !important; display: flex !important; height: calc(44 * var(--u)) !important; gap: calc(24 * var(--u)) !important; padding: 0 !important; margin: 0 !important; overflow-x: auto !important; scrollbar-width: none !important; align-items: center !important;}
 #screen .v839-reference-page .v415-squad-categories button {flex: 0 0 auto !important; padding: 0 !important; margin: 0 !important; border: 0 !important; background: transparent !important; color: #c4c5d3 !important; font: 400 calc(13 * var(--u))/1 Roboto, Arial, sans-serif !important; white-space: nowrap !important;}
-#screen .v839-reference-page .v415-squad-categories button.active {color: #99a6f4 !important;}
+#screen .v839-reference-page .v415-squad-categories button.active {color: #78caff !important;}
 #screen .v839-reference-page .v415-squad-line {position: relative !important; height: calc(4 * var(--u)) !important; margin: 0 !important; background: #40516c !important; border-radius: 4px !important; overflow: hidden !important;}
 #screen .v839-reference-page .v415-squad-line i {position: absolute !important; left: var(--v839-category-center,16%) !important; width: var(--v839-category-width,33%) !important; height: 100% !important; transform: translateX(-50%) !important; border-radius: 4px !important; background: var(--v839-selected) !important;}
 #screen .v839-reference-page .v839-position-group {margin: calc(14 * var(--u)) 0 0 !important;}
@@ -343,7 +346,7 @@ html body.v839-reference-calendar #screen > .v839-reference-page {
 #screen .v839-reference-page .v839-player-fallback {position: absolute !important; left: 50% !important; top: 40% !important; width: 47% !important; height: 47% !important; object-fit: contain !important; transform: translate(-50%,-50%) !important;}
 #screen .v839-reference-page .v839-hide-fallback {display: none !important;}
 #screen .v839-reference-page .v839-player-caption {position: absolute !important; display: flex !important; align-items: center !important; left: calc(8 * var(--u)) !important; right: calc(8 * var(--u)) !important; bottom: calc(16 * var(--u)) !important; gap: calc(5 * var(--u)) !important; z-index: 3 !important;}
-#screen .v839-reference-page .v839-player-number {font: 700 calc(38 * var(--u))/1 Roboto, Arial, sans-serif !important; color: #e5e8ff !important;}
+#screen .v839-reference-page .v839-player-number {font: 700 calc(38 * var(--u))/1 Roboto, Arial, sans-serif !important; color: #e5f6ff !important;}
 #screen .v839-reference-page .v415-player-copy {display: flex !important; flex-direction: column !important; gap: calc(2 * var(--u)) !important; min-width: 0 !important; min-height: 0 !important; padding: 0 !important; background: transparent !important;}
 #screen .v839-reference-page .v415-player-copy strong {font: 700 calc(15 * var(--u))/1.15 Roboto, Arial, sans-serif !important; white-space: nowrap !important; overflow: hidden !important; text-overflow: ellipsis !important;}
 #screen .v839-reference-page .v415-player-copy small {font: 500 calc(11 * var(--u))/1.1 Roboto, Arial, sans-serif !important; color: #ced4e7 !important;}
@@ -368,7 +371,7 @@ html body.v839-reference-calendar #screen > .v839-reference-page[data-view="play
 #screen .v839-reference-page .v839-player-public dt {font-size: calc(12 * var(--u)); color: #aeb4cd;}
 #screen .v839-reference-page .v839-player-public dd {font-size: calc(14 * var(--u)); margin: 5px 0 0; display: flex; align-items: center; gap: 8px;}
 #screen .v839-reference-page .v839-player-public .v415-logo {width: 25px; height: 25px;}
-#screen .v839-reference-page .v839-full-profile {display: block; width: calc(100% - 56px); margin: 28px auto; padding: 14px; border: 1px solid #929ff1; border-radius: 9px; background: transparent; color: #e0e4ff;}
+#screen .v839-reference-page .v839-full-profile {display: block; width: calc(100% - 56px); margin: 28px auto; padding: 14px; border: 1px solid #78caff; border-radius: 9px; background: transparent; color: #d8f1ff;}
 #screen .v839-reference-page .v839-picker-backdrop {position: fixed; inset: 0; z-index: 11000; background: #050e32c9;}
 #screen .v839-reference-page .v839-player-picker {--u: .25641026cqw; position: fixed; z-index: 11001; left: 50%; top: 28px; bottom: 0; width: min(100vw,390px); transform: translateX(-50%); display: flex; flex-direction: column; border-radius: 14px 14px 0 0; background: #111226; color: #eeeef6; overflow: hidden;}
 #screen .v839-reference-page .v839-player-picker header {flex: 0 0 calc(82 * var(--u)); display: flex; justify-content: space-between; align-items: center; padding: 0 calc(28 * var(--u));}
@@ -378,7 +381,7 @@ html body.v839-reference-calendar #screen > .v839-reference-page[data-view="play
 #screen .v839-reference-page .v839-picker-list section + section {margin-top: calc(20 * var(--u));}
 #screen .v839-reference-page .v839-picker-list h3 {font: 700 calc(18 * var(--u))/1 Roboto,Arial,sans-serif; margin: 0 0 calc(20 * var(--u));}
 #screen .v839-reference-page .v839-picker-player {display: grid; grid-template-columns: calc(20 * var(--u)) calc(32 * var(--u)) minmax(0,1fr); align-items: center; gap: calc(10 * var(--u)); width: 100%; height: calc(76 * var(--u)); margin: 0 0 calc(8 * var(--u)); padding: 0 calc(18 * var(--u)); border: 0; border-radius: calc(10 * var(--u)); background: #122951; color: #f0f0f7; text-align: left;}
-#screen .v839-reference-page .v839-picker-player.active {background: #4234fa;}
+#screen .v839-reference-page .v839-picker-player.active {background: #238bdc;}
 #screen .v839-reference-page .v839-picker-photo {position: relative; display: block; width: calc(32 * var(--u)); height: calc(48 * var(--u)); overflow: hidden;}
 #screen .v839-reference-page .v839-picker-photo .v415-player-portrait {object-fit: contain !important;}
 #screen .v839-reference-page .v839-picker-player strong {display: block; font: 400 calc(16 * var(--u))/1.2 Roboto,Arial,sans-serif; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;}
@@ -391,8 +394,30 @@ html body.v839-reference-calendar.v839-picker-open #app nav.bottom-nav {visibili
 #screen .v839-reference-page .v415-team-picker-wrap select {width: 100% !important; padding: 12px !important; border: 1px solid #526eb5 !important; border-radius: 9px !important; background: #122951 !important; color: white !important;}
 html body.v839-reference-calendar #app nav.bottom-nav {display: grid !important; visibility: visible !important; grid-template-columns: repeat(5,minmax(0,1fr)) !important; position: fixed !important; left: 50% !important; right: auto !important; bottom: 0 !important; transform: translateX(-50%) !important; width: min(100%,390px) !important; background: #111226 !important; height: calc(64px + env(safe-area-inset-bottom)) !important; min-height: calc(64px + env(safe-area-inset-bottom)) !important; max-height: calc(64px + env(safe-area-inset-bottom)) !important; padding: 0 0 env(safe-area-inset-bottom) !important; border: 0 !important; box-sizing: border-box !important;}
 html body.v839-reference-calendar #app nav.bottom-nav .nav-item {color: #878c9e !important; grid-template-rows: 25px 14px !important; gap: 5px !important;}
-html body.v839-reference-calendar #app nav.bottom-nav .nav-item.active {color: #ced4ff !important;}
+html body.v839-reference-calendar #app nav.bottom-nav .nav-item.active {color: #c6ecff !important;}
 html body.v839-reference-calendar #app nav.bottom-nav .nav-item small {font: 400 11px/14px Roboto,Arial,sans-serif !important;}
 #screen .v839-reference-page .v421-calendar-matches {display: none !important;}
 #screen .v839-reference-page :is(.v415-month-strip,.v415-squad-categories,.v415-match-list)::-webkit-scrollbar {display: none !important;}
 #screen .v839-reference-page button:focus-visible {outline: 2px solid #a9c9ff !important; outline-offset: 2px !important;}
+
+/* Keep the reference tabs visible while the month and match cards scroll. */
+html body.v839-reference-calendar #screen {overflow: visible !important;}
+html body.v839-reference-calendar #app {overflow: visible !important;}
+#screen .v839-reference-page .v415-top-row::before {content: ''; position: absolute; z-index: -1; left: calc(-28 * var(--u)); right: calc(-28 * var(--u)); top: -22px; bottom: calc(-12 * var(--u)); background: #111226;}
+#screen .v839-reference-page .v415-primary-match-action {color: #063557 !important;}
+#screen .v839-reference-page .v415-filter-sheet .v415-filter-category-card.active {border-color: #78caff !important;}
+#screen .v839-reference-page .v415-filter-category-card.active .v415-switch {background: #78caff !important;}
+#screen .v839-reference-page .v415-filter-category-card.active .v415-switch em {background: #075184 !important;}
+#screen .v839-reference-page .v843-agenda-backdrop {position: fixed; inset: 0; z-index: 2147483100; background: #020a1bbd;}
+#screen .v839-reference-page .v843-agenda-sheet {position: fixed; z-index: 2147483101; left: 50%; bottom: 0; transform: translateX(-50%); width: min(100vw,390px); padding: 26px 28px max(24px,env(safe-area-inset-bottom)); border-radius: 28px 28px 0 0; background: #111f38; color: #eef8ff; box-shadow: 0 -12px 32px #02071055;}
+#screen .v839-reference-page .v843-agenda-sheet h2 {font: 700 20px/1.2 Roboto,Arial,sans-serif; margin: 0 0 10px;}
+#screen .v839-reference-page .v843-agenda-sheet p {font: 400 13px/1.4 Roboto,Arial,sans-serif; color: #c4d9ee; margin: 0 0 20px;}
+#screen .v839-reference-page .v843-agenda-choice {display: flex; align-items: center; gap: 14px; width: 100%; min-height: 62px; padding: 12px; margin: 8px 0; border: 1px solid #33577a; border-radius: 12px; background: #16345b; color: #eef8ff; text-decoration: none; font: 400 16px/1.2 Roboto,Arial,sans-serif; text-align: left;}
+#screen .v839-reference-page .v843-agenda-choice svg {width: 28px; height: 28px; stroke: #8cd5ff; fill: none; stroke-width: 1.7; flex-shrink: 0;}
+#screen .v839-reference-page .v843-agenda-cancel {width: 100%; margin-top: 18px; padding: 12px; border: 0; border-radius: 12px; background: #78caff; color: #063557; font: 700 14px/1.2 Roboto,Arial,sans-serif;}
+html body.v843-agenda-open {overflow: hidden !important;}
+html body.v839-reference-calendar.v843-agenda-open #app nav.bottom-nav {visibility: hidden !important;}
+
+#screen .v839-reference-page .v843-player-shirts {position: absolute; top: 9px; right: 9px; z-index: 3; display: flex; align-items: center; gap: 8px; border: 0; border-radius: 9px; padding: 10px; background: #d7f0ffda; color: #075184; font: 700 13px/1 Roboto,Arial,sans-serif;}
+#screen .v839-reference-page .v843-player-shirts svg {width: 18px; height: 18px; stroke: currentColor; fill: none; stroke-width: 1.7;}
+#screen .v839-reference-page .v448-reference-card .v415-primary-match-action b {color: #063557 !important;}
