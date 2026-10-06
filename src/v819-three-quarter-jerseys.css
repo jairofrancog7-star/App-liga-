@@ -1,0 +1,103 @@
+/* V819 — Shared 3/4 finish for the exact 50-jersey Fantasy + Store pool. */
+
+/* Fantasy lineup: erase source crest area, then stitch the current Liga crest over it. */
+html body.v587-fantasy-team-open .v819-source-badge-cover,
+html body[data-app-route="fantasyTeam"] .v819-source-badge-cover{
+  left:var(--v819-badge-x,57%)!important;
+  top:var(--v819-badge-y,27%)!important;
+  width:var(--v819-badge-w,16%)!important;
+  height:var(--v819-badge-h,15%)!important;
+  background:var(--v819-cover,rgba(18,30,70,.34))!important;
+  border-radius:44%!important;
+  -webkit-backdrop-filter:blur(4px) saturate(.72)!important;
+  backdrop-filter:blur(4px) saturate(.72)!important;
+  box-shadow:0 0 4px 2px var(--v819-cover,rgba(18,30,70,.22))!important;
+}
+html body.v587-fantasy-team-open .v819-lineup-team-logo,
+html body[data-app-route="fantasyTeam"] .v819-lineup-team-logo{
+  left:var(--v819-badge-x,57%)!important;
+  top:var(--v819-badge-y,27%)!important;
+  width:18px!important;
+  height:18px!important;
+  max-width:18px!important;
+  max-height:18px!important;
+  object-fit:contain!important;
+  transform:translate(-50%,-50%) translateZ(5px) rotateY(-3deg)!important;
+  filter:saturate(1.08) contrast(1.04) drop-shadow(0 1px 1px rgba(0,0,0,.38))!important;
+}
+html body.v587-fantasy-team-open .v819-lineup-kit,
+html body[data-app-route="fantasyTeam"] .v819-lineup-kit{
+  transform-style:preserve-3d!important;
+}
+html body.v587-fantasy-team-open .v819-lineup-jersey,
+html body[data-app-route="fantasyTeam"] .v819-lineup-jersey{
+  filter:drop-shadow(0 7px 7px rgba(0,20,48,.22))!important;
+}
+html body.v587-fantasy-team-open .v819-lineup-kit::after,
+html body[data-app-route="fantasyTeam"] .v819-lineup-kit::after{
+  content:""!important;
+  position:absolute!important;
+  z-index:6!important;
+  inset:7% 9% 9%!important;
+  pointer-events:none!important;
+  opacity:.16!important;
+  mix-blend-mode:overlay!important;
+  background:repeating-linear-gradient(92deg,rgba(255,255,255,.34) 0 1px,rgba(0,0,0,.08) 1px 2px,transparent 2px 4px)!important;
+  -webkit-mask-image:radial-gradient(ellipse at center,#000 34%,transparent 76%)!important;
+  mask-image:radial-gradient(ellipse at center,#000 34%,transparent 76%)!important;
+}
+
+/* Store: use the same 50 skins and place the selected Liga club crest over the source badge. */
+.v602-store-real-shirt.v814-store-library-kit{
+  perspective:950px!important;
+  transform-style:preserve-3d!important;
+}
+.v602-store-real-shirt.v814-store-library-kit>.v814-store-kit-image{
+  transform:perspective(950px) rotateY(var(--v819-tilt,-8deg)) rotateX(1.1deg) translateZ(3px)!important;
+  transform-origin:50% 58%!important;
+  filter:drop-shadow(0 11px 10px rgba(0,20,55,.25))!important;
+}
+.v602-store-real-shirt.v814-store-library-kit>.v814-source-badge-cover{
+  left:var(--v819-badge-x,57%)!important;
+  top:var(--v819-badge-y,27%)!important;
+  width:var(--v819-badge-w,16%)!important;
+  height:var(--v819-badge-h,15%)!important;
+  transform:translate(-50%,-50%)!important;
+  border-radius:44%!important;
+  background:var(--v819-cover,rgba(18,30,70,.34))!important;
+  -webkit-backdrop-filter:blur(4px) saturate(.72)!important;
+  backdrop-filter:blur(4px) saturate(.72)!important;
+  box-shadow:0 0 4px 2px var(--v819-cover,rgba(18,30,70,.22))!important;
+  z-index:9!important;
+}
+.v602-store-real-shirt.v814-store-library-kit>.v602-shirt-logo{
+  display:block!important;
+  visibility:visible!important;
+  opacity:1!important;
+  left:var(--v819-badge-x,57%)!important;
+  top:var(--v819-badge-y,27%)!important;
+  width:12%!important;
+  height:12%!important;
+  max-width:34px!important;
+  max-height:34px!important;
+  transform:translate(-50%,-50%) rotateY(-3deg) translateZ(5px)!important;
+  object-fit:contain!important;
+  z-index:12!important;
+  filter:saturate(1.08) contrast(1.04) drop-shadow(0 1px 1px rgba(0,0,0,.40))!important;
+}
+
+/* Old custom Fantasy shirt path: never hide the real Liga crest. */
+html body.v813-custom-jersey .v597-team-logo{
+  display:block!important;
+  visibility:visible!important;
+  opacity:1!important;
+  z-index:15!important;
+}
+
+@media(max-width:390px){
+  html body.v587-fantasy-team-open .v819-lineup-team-logo,
+  html body[data-app-route="fantasyTeam"] .v819-lineup-team-logo{
+    width:16px!important;height:16px!important;max-width:16px!important;max-height:16px!important;
+  }
+  .v602-store-real-shirt.v814-store-library-kit>.v602-shirt-logo{max-width:30px!important;max-height:30px!important}
+}
