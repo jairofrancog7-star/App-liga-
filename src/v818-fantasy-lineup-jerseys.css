@@ -1,5 +1,4 @@
-/* V819 — Downloaded diagonal jerseys live INSIDE the Fantasy lineup.
-   The jersey catalog/picker is disabled. Filled slots replace the old generated shirts. */
+/* V820 — Transparent, non-flickering Fantasy jersey layer. */
 
 html body.v587-fantasy-team-open .v813-open,
 html body[data-app-route="fantasyTeam"] .v813-open,
@@ -23,6 +22,7 @@ html body[data-app-route="fantasyTeam"] .v576-slot.filled .v590-kit-wrap{
   border:0!important;
   border-radius:0!important;
   background:transparent!important;
+  background-image:none!important;
   clip-path:none!important;
   overflow:visible!important;
   box-shadow:none!important;
@@ -31,93 +31,102 @@ html body[data-app-route="fantasyTeam"] .v576-slot.filled .v590-kit-wrap{
   transform-style:preserve-3d!important;
 }
 
-html body.v587-fantasy-team-open .v819-lineup-kit,
-html body[data-app-route="fantasyTeam"] .v819-lineup-kit{
+html body.v587-fantasy-team-open .v576-slot.filled .v576-shirt::before,
+html body.v587-fantasy-team-open .v576-slot.filled .v576-shirt::after,
+html body.v587-fantasy-team-open .v576-slot.filled .v590-kit-wrap::before,
+html body.v587-fantasy-team-open .v576-slot.filled .v590-kit-wrap::after,
+html body[data-app-route="fantasyTeam"] .v576-slot.filled .v576-shirt::before,
+html body[data-app-route="fantasyTeam"] .v576-slot.filled .v576-shirt::after,
+html body[data-app-route="fantasyTeam"] .v576-slot.filled .v590-kit-wrap::before,
+html body[data-app-route="fantasyTeam"] .v576-slot.filled .v590-kit-wrap::after{
+  content:none!important;
+  display:none!important;
+  background:none!important;
+}
+
+html body.v587-fantasy-team-open .v820-lineup-kit,
+html body[data-app-route="fantasyTeam"] .v820-lineup-kit{
   position:relative!important;
   width:74px!important;
   height:86px!important;
-  display:grid!important;
-  place-items:center!important;
-  transform:rotateY(-6deg) rotateX(1.5deg) translateZ(4px)!important;
+  display:block!important;
+  background:transparent!important;
+  background-image:none!important;
+  border:0!important;
+  box-shadow:none!important;
+  transform:rotateY(-5deg) rotateX(1deg) translateZ(3px)!important;
   transform-origin:50% 58%!important;
   transform-style:preserve-3d!important;
-  transition:transform .16s ease,filter .16s ease!important;
-  filter:drop-shadow(0 8px 7px rgba(0,20,45,.30))!important;
+  filter:drop-shadow(0 7px 6px rgba(0,20,45,.26))!important;
   pointer-events:none!important;
+  contain:layout paint style!important;
+  backface-visibility:hidden!important;
+  -webkit-backface-visibility:hidden!important;
 }
 
-html body.v587-fantasy-team-open .v576-slot:nth-child(even) .v819-lineup-kit,
-html body[data-app-route="fantasyTeam"] .v576-slot:nth-child(even) .v819-lineup-kit{
-  transform:rotateY(6deg) rotateX(1.5deg) translateZ(4px)!important;
+html body.v587-fantasy-team-open .v576-slot:nth-child(even) .v820-lineup-kit,
+html body[data-app-route="fantasyTeam"] .v576-slot:nth-child(even) .v820-lineup-kit{
+  transform:rotateY(5deg) rotateX(1deg) translateZ(3px)!important;
 }
 
-html body.v587-fantasy-team-open .v576-slot:active .v819-lineup-kit,
-html body.v587-fantasy-team-open .v576-slot:focus-visible .v819-lineup-kit,
-html body[data-app-route="fantasyTeam"] .v576-slot:active .v819-lineup-kit,
-html body[data-app-route="fantasyTeam"] .v576-slot:focus-visible .v819-lineup-kit{
-  transform:rotateY(0deg) rotateX(0deg) translateZ(7px) scale(1.05)!important;
-  filter:drop-shadow(0 10px 9px rgba(0,20,45,.36))!important;
-}
-
-html body.v587-fantasy-team-open .v819-lineup-jersey,
-html body[data-app-route="fantasyTeam"] .v819-lineup-jersey{
+html body.v587-fantasy-team-open .v820-lineup-jersey,
+html body[data-app-route="fantasyTeam"] .v820-lineup-jersey{
   position:absolute!important;
   inset:0!important;
   width:100%!important;
   height:100%!important;
-  max-width:100%!important;
-  max-height:100%!important;
   display:block!important;
   object-fit:contain!important;
   object-position:center!important;
   background:transparent!important;
+  background-image:none!important;
   border:0!important;
   border-radius:0!important;
-  transform:none!important;
-  filter:none!important;
+  box-shadow:none!important;
+  opacity:1!important;
+  transform:translateZ(0)!important;
   image-rendering:auto!important;
   -webkit-user-drag:none!important;
   user-select:none!important;
   pointer-events:none!important;
+  backface-visibility:hidden!important;
+  -webkit-backface-visibility:hidden!important;
 }
 
-/* Small fabric-colored badge cover. It hides most of the source-club crest,
-   then the Liga club crest is placed on top like an embroidered patch. */
-html body.v587-fantasy-team-open .v819-source-badge-cover,
-html body[data-app-route="fantasyTeam"] .v819-source-badge-cover{
-  position:absolute!important;
-  z-index:4!important;
-  left:57%!important;
-  top:27%!important;
-  width:22px!important;
-  height:20px!important;
-  transform:translate(-50%,-50%) rotate(-1deg)!important;
-  border-radius:48%!important;
-  background:rgba(6,18,58,.78)!important;
-  box-shadow:0 0 5px 2px rgba(6,18,58,.26)!important;
-  backdrop-filter:blur(1.4px)!important;
-  -webkit-backdrop-filter:blur(1.4px)!important;
-  pointer-events:none!important;
-}
-
-html body.v587-fantasy-team-open .v819-lineup-team-logo,
-html body[data-app-route="fantasyTeam"] .v819-lineup-team-logo{
+html body.v587-fantasy-team-open .v820-lineup-team-logo,
+html body[data-app-route="fantasyTeam"] .v820-lineup-team-logo{
   position:absolute!important;
   z-index:5!important;
   left:57%!important;
   top:27%!important;
-  width:18px!important;
-  height:18px!important;
+  width:17px!important;
+  height:17px!important;
+  display:block!important;
   object-fit:contain!important;
-  transform:translate(-50%,-50%) translateZ(4px) rotate(-1deg)!important;
-  transform-origin:50% 50%!important;
   background:transparent!important;
+  background-image:none!important;
   border:0!important;
   border-radius:0!important;
-  opacity:1!important;
-  mix-blend-mode:normal!important;
-  filter:saturate(1.08) contrast(1.04) drop-shadow(0 1px 1px rgba(0,0,0,.36))!important;
+  box-shadow:none!important;
+  transform:translate(-50%,-50%) translateZ(5px)!important;
+  filter:drop-shadow(0 1px 1px rgba(0,0,0,.42))!important;
   pointer-events:none!important;
+}
+
+/* Kill the old source-badge patch and every older jersey layer once V820 is active. */
+html body.v587-fantasy-team-open .v819-source-badge-cover,
+html body[data-app-route="fantasyTeam"] .v819-source-badge-cover,
+html body.v587-fantasy-team-open .v819-lineup-kit,
+html body[data-app-route="fantasyTeam"] .v819-lineup-kit,
+html body.v587-fantasy-team-open .v818-lineup-kit,
+html body[data-app-route="fantasyTeam"] .v818-lineup-kit{
+  background:transparent!important;
+  background-image:none!important;
+  box-shadow:none!important;
+}
+html body.v587-fantasy-team-open .v819-source-badge-cover,
+html body[data-app-route="fantasyTeam"] .v819-source-badge-cover{
+  display:none!important;
 }
 
 html body.v587-fantasy-team-open .v576-slot.filled .v576-shirt .remove,
@@ -138,32 +147,17 @@ html body[data-app-route="fantasyTeam"] .v576-slot.filled .v576-shirt .remove{
   pointer-events:auto!important;
 }
 
-html body.v587-fantasy-team-open .v576-slot.filled>b,
-html body[data-app-route="fantasyTeam"] .v576-slot.filled>b,
-html body.v587-fantasy-team-open .v576-slot.filled>small,
-html body[data-app-route="fantasyTeam"] .v576-slot.filled>small{
-  position:relative!important;
-  z-index:8!important;
-}
-
 @media(max-width:390px){
   html body.v587-fantasy-team-open .v576-slot.filled .v576-shirt,
   html body.v587-fantasy-team-open .v576-slot.filled .v590-kit-wrap,
   html body[data-app-route="fantasyTeam"] .v576-slot.filled .v576-shirt,
   html body[data-app-route="fantasyTeam"] .v576-slot.filled .v590-kit-wrap,
-  html body.v587-fantasy-team-open .v819-lineup-kit,
-  html body[data-app-route="fantasyTeam"] .v819-lineup-kit{
-    width:66px!important;
-    height:76px!important;
+  html body.v587-fantasy-team-open .v820-lineup-kit,
+  html body[data-app-route="fantasyTeam"] .v820-lineup-kit{
+    width:66px!important;height:76px!important;
   }
-  html body.v587-fantasy-team-open .v819-source-badge-cover,
-  html body[data-app-route="fantasyTeam"] .v819-source-badge-cover{
-    width:20px!important;
-    height:18px!important;
-  }
-  html body.v587-fantasy-team-open .v819-lineup-team-logo,
-  html body[data-app-route="fantasyTeam"] .v819-lineup-team-logo{
-    width:16px!important;
-    height:16px!important;
+  html body.v587-fantasy-team-open .v820-lineup-team-logo,
+  html body[data-app-route="fantasyTeam"] .v820-lineup-team-logo{
+    width:15px!important;height:15px!important;
   }
 }
