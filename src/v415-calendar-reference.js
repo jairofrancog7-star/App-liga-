@@ -143,7 +143,7 @@ function topTabs(){
   return '<div class="v415-top-row">'+
     '<div class="v415-segment" role="tablist" aria-label="Secciones">'+
       '<button type="button" class="'+(activeView==='calendar'?'active':'')+'" data-v415-go="calendar" role="tab" aria-selected="'+(activeView==='calendar'?'true':'false')+'">Calendario</button>'+
-      '<button type="button" data-v415-go="standings" role="tab">Clasificación</button>'+
+      '<button type="button" class="'+(activeView==='standings'?'active':'')+'" data-v415-go="standings" role="tab" aria-selected="'+(activeView==='standings'?'true':'false')+'">Clasificación</button>'+
       '<button type="button" class="'+(activeView==='squad'?'active':'')+'" data-v415-go="teams" role="tab" aria-selected="'+(activeView==='squad'?'true':'false')+'">Plantilla</button>'+
     '</div>'+
     '<button type="button" class="v415-filter'+(filterOpen?' active':'')+'" data-v415-filter aria-label="Equipos y competiciones" aria-expanded="'+(filterOpen?'true':'false')+'">'+
@@ -232,6 +232,16 @@ function squadMarkup(){
     '<div class="v415-team-picker-wrap"><label>Equipo</label><select data-v415-squad-team>'+teams.map(t=>'<option value="'+esc(t)+'"'+(norm(t)===norm(squadTeam)?' selected':'')+'>'+esc(t)+'</option>').join('')+'</select></div>'+
     '<div class="v415-squad-heading"><h2>Jugadores</h2><span>'+esc(squadTeam||'Equipo')+'</span></div>'+
     (roster.length?'<div class="v415-player-grid">'+roster.map(squadPlayerCard).join('')+'</div>':'<div class="v415-empty v415-squad-empty">No hay jugadores oficiales publicados para este equipo.</div>')+
+  '</section>';
+}
+function standingsMarkup(){
+  const available=CATEGORY_ORDER.filter(id=>db?.categories?.[id]);
+  if(!available.includes(squadCategory))squadCategory=available[0]||'3';
+  const tables=db?.categories?.[squadCategory]?.standings||[];
+  return '<section class="v837-standings-view">'+
+    '<div class="v415-squad-categories">'+available.map(id=>'<button type="button" class="'+(id===squadCategory?'active':'')+'" data-v837-standing-category="'+esc(id)+'">'+esc(categoryLabel(id))+'</button>').join('')+'</div>'+
+    '<h2>'+esc(categoryLabel(squadCategory))+'</h2>'+
+    (tables.length?tables.map(t=>'<div class="v837-standings-scroll"><table><thead><tr>'+t.headers.map(h=>'<th scope="col">'+esc(h)+'</th>').join('')+'</tr></thead><tbody>'+t.rows.map(row=>'<tr>'+row.map((value,i)=>'<td>'+(i===1?'<span class="v837-table-team">'+logoMarkup(value)+'<span>'+esc(value)+'</span></span>':esc(value))+'</td>').join('')+'</tr>').join('')+'</tbody></table></div>').join(''):'<div class="v415-empty">Clasificación oficial no publicada.</div>')+
   '</section>';
 }
 function icsEscape(v){return String(v??'').replace(/\\/g,'\\\\').replace(/;/g,'\\;').replace(/,/g,'\\,').replace(/\n/g,'\\n')}
@@ -449,7 +459,9 @@ function bind(root){
       return;
     }
     if(dest==='standings'){
-      if(window.LJR_MAIN_ROUTE){window.LJR_MAIN_ROUTE.state.competitionTab='standings';window.LJR_MAIN_ROUTE.go('competition')}else location.hash='#/competition';
+      activeView='standings';
+      filterOpen=false;
+      render();
       return;
     }
     if(dest==='teams'){
@@ -462,6 +474,10 @@ function bind(root){
       location.hash='#/competition';
       return;
     }
+  }));
+  root.querySelectorAll('[data-v837-standing-category]').forEach(btn=>btn.addEventListener('click',()=>{
+    squadCategory=btn.dataset.v837StandingCategory;
+    render();
   }));
 }
 
@@ -492,7 +508,7 @@ function render(){
       calendarTopbar()+
       topTabs()+
       categoryPanel()+
-      (activeView==='squad'?squadMarkup():(monthStrip()+calendarGrid(monthGames)+selectedMatches(allGames)))+
+      (activeView==='squad'?squadMarkup():activeView==='standings'?standingsMarkup():(monthStrip()+calendarGrid(monthGames)+selectedMatches(allGames)))+
     '</section>';
     bind(root);
     try{window.LJR_TEAM_LOGOS?.refresh?.()}catch(_){}

@@ -1,0 +1,279 @@
+/* V837: the same complete jersey silhouette in Fantasy and Store. */
+html body.v837-jerseys .v576-slot.filled {
+  --shirt-width: clamp(42px, 12.8vw, 62px);
+  --shirt-height: clamp(50px, 14.5vw, 70px);
+  display: grid !important;
+  grid-template-rows: var(--shirt-height) 24px 20px !important;
+  align-content: start !important;
+  justify-items: center !important;
+  gap: 0 !important;
+  overflow: visible !important;
+}
+html body.v837-jerseys .v576-slot.filled .v590-kit-wrap {
+  position: relative !important;
+  display: block !important;
+  width: var(--shirt-width) !important;
+  height: var(--shirt-height) !important;
+  min-width: var(--shirt-width) !important;
+  max-width: var(--shirt-width) !important;
+  min-height: var(--shirt-height) !important;
+  max-height: var(--shirt-height) !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  background: transparent !important;
+  border: 0 !important;
+  box-shadow: none !important;
+  transform: none !important;
+  overflow: visible !important;
+  z-index: 34 !important;
+  clip-path: none !important;
+}
+html body.v837-jerseys .v576-slot.filled .v820-lineup-kit {
+  position: absolute !important;
+  display: block !important;
+  left: 50% !important;
+  top: auto !important;
+  bottom: -4px !important;
+  width: var(--shirt-width) !important;
+  height: var(--shirt-height) !important;
+  min-width: 0 !important;
+  max-width: none !important;
+  min-height: 0 !important;
+  max-height: none !important;
+  margin: 0 !important;
+  transform: translateX(-50%) !important;
+  background: transparent !important;
+  filter: drop-shadow(0 3px 2px #00284444) !important;
+}
+html body.v837-jerseys .v576-slot.filled .v820-lineup-jersey {
+  position: static !important;
+  display: block !important;
+  width: 100% !important;
+  height: 100% !important;
+  min-width: 0 !important;
+  max-width: none !important;
+  min-height: 0 !important;
+  max-height: none !important;
+  margin: 0 !important;
+  transform: none !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+  object-fit: contain !important;
+  object-position: center bottom !important;
+  background: transparent !important;
+  filter: none !important;
+  mask: none !important;
+  mix-blend-mode: normal !important;
+}
+html body.v837-jerseys .v576-slot.filled > b,
+html body.v837-jerseys .v576-slot.filled > small {
+  position: relative !important;
+  z-index: 50 !important;
+  width: clamp(57px, 16vw, 77px) !important;
+  min-width: 0 !important;
+  max-width: none !important;
+  margin: 0 !important;
+  border-radius: 0 !important;
+  padding: 4px 2px !important;
+  box-sizing: border-box !important;
+  font-size: clamp(9px, 2.35vw, 11.5px) !important;
+  line-height: 16px !important;
+}
+html body.v837-jerseys .v576-slot.filled > b {
+  height: 24px !important;
+  min-height: 24px !important;
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+}
+html body.v837-jerseys .v576-slot.filled > small {
+  height: 20px !important;
+  min-height: 20px !important;
+  padding-top: 2px !important;
+}
+html body.v837-jerseys .v576-slot.filled .v590-kit-wrap > .remove {
+  position: absolute !important;
+  top: 1px !important;
+  right: -7px !important;
+  width: 18px !important;
+  height: 18px !important;
+  min-width: 18px !important;
+  max-width: 18px !important;
+  min-height: 18px !important;
+  max-height: 18px !important;
+  z-index: 70 !important;
+  font-size: 14px !important;
+  line-height: 18px !important;
+}
+html body.v837-jerseys .v576-field-row {
+  height: calc(clamp(50px, 14.5vw, 70px) + 56px) !important;
+  align-items: start !important;
+}
+/* Crests are already printed into the raster, so no second floating crest. */
+html body.v837-jerseys .v820-source-cover,
+html body.v837-jerseys .v820-team-logo,
+html body.v837-jerseys .v820-lineup-team-logo,
+html body.v837-jerseys .v832-team-crest,
+html body.v837-jerseys .v824-team-crest,
+html body.v837-jerseys .v821-team-crest,
+html body.v837-jerseys .v819-lineup-team-logo {
+  display: none !important;
+}
+html body .v602-store-real-shirt[data-v837-kit] > .v602-shirt-logo,
+html body .v602-store-real-shirt[data-v837-kit] > .v814-source-badge-cover {
+  display: none !important;
+}
+html body .v602-store-real-shirt[data-v837-kit] > .v814-store-kit-image {
+  transform: none !important;
+  object-fit: contain !important;
+  object-position: center bottom !important;
+  opacity: 1 !important;
+  filter: drop-shadow(0 8px 5px #001b3c44) !important;
+}
+/* Calendar starts with its tabs; the crest and selected ring share one center. */
+html body.v415-calendar-active .v415-top-row {
+  display: grid !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  position: relative !important;
+  width: calc(100% - 36px) !important;
+  max-width: 484px !important;
+  margin: 10px auto 0 !important;
+  padding: 0 !important;
+  grid-template-columns: minmax(0, 1fr) 38px !important;
+  gap: 10px !important;
+  align-items: center !important;
+}
+html body.v415-calendar-active .v415-segment {
+  display: grid !important;
+  grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+  height: 40px !important;
+  background: #10234d !important;
+}
+html body.v415-calendar-active .v415-segment button {
+  border: 0 !important;
+  background: transparent !important;
+  color: #c9cbda !important;
+  border-radius: 24px !important;
+  height: 40px !important;
+  padding: 0 3px !important;
+  font-size: clamp(11px, 3.1vw, 14px) !important;
+}
+html body.v415-calendar-active .v415-segment button.active {
+  background: #8d9ff3 !important;
+  color: #16172b !important;
+}
+html body.v415-calendar-active .v415-filter {
+  width: 38px !important;
+  height: 40px !important;
+  align-self: center !important;
+  border: 0 !important;
+  background: transparent !important;
+  color: #b8bbcc !important;
+  display: grid !important;
+  place-items: center !important;
+}
+html body.v415-calendar-active .v415-filter svg {
+  width: 28px !important;
+  height: 28px !important;
+  fill: none !important;
+  stroke: currentColor !important;
+  stroke-width: 2 !important;
+}
+html body.v415-calendar-active .v415-week,
+html body.v415-calendar-active .v415-grid {
+  display: grid !important;
+  grid-template-columns: repeat(7, minmax(0, 1fr)) !important;
+}
+html body.v415-calendar-active .v415-week {
+  text-align: center !important;
+}
+html body.v415-calendar-active .v415-month-strip {
+  display: flex !important;
+}
+html body.v415-calendar-active .v415-month-strip button {
+  border: 0 !important;
+  background: transparent !important;
+}
+html body.v415-calendar-active .v415-reference-topbar {
+  display: none !important;
+}
+html body.v415-calendar-active .v415-day {
+  display: grid !important;
+  place-items: center !important;
+  padding: 0 !important;
+}
+html body.v415-calendar-active .v415-day-logos,
+html body.v415-calendar-active .v415-day.selected .v415-day-logos {
+  position: relative !important;
+  width: 46px !important;
+  height: 46px !important;
+  margin: 0 !important;
+  transform: none !important;
+}
+html body.v415-calendar-active .v415-day-logos .v415-logo.is-home,
+html body.v415-calendar-active .v415-day.selected .v415-day-logos .v415-logo.is-home {
+  left: 6px !important;
+  top: 6px !important;
+  width: 34px !important;
+  height: 34px !important;
+  min-width: 34px !important;
+  min-height: 34px !important;
+  max-width: 34px !important;
+  max-height: 34px !important;
+  padding: 0 !important;
+  transform: none !important;
+}
+html body.v415-calendar-active .v415-day.has-match.selected::before {
+  left: 50% !important;
+  top: 50% !important;
+  width: 46px !important;
+  height: 46px !important;
+  min-width: 46px !important;
+  min-height: 46px !important;
+  max-width: 46px !important;
+  max-height: 46px !important;
+  transform: translate(-50%, -50%) !important;
+  border-radius: 50% !important;
+  box-sizing: border-box !important;
+}
+html body.v415-calendar-active .v415-day:not(.has-match).selected::before {
+  width: 34px !important;
+  height: 34px !important;
+  min-width: 34px !important;
+  min-height: 34px !important;
+  max-width: 34px !important;
+  max-height: 34px !important;
+}
+html body.v415-calendar-active .v415-day-logos .v415-logo.is-away,
+html body.v415-calendar-active .v415-day.selected .v415-day-logos .v415-logo.is-away {
+  top: auto !important;
+  left: auto !important;
+  right: -2px !important;
+  bottom: -1px !important;
+  width: 20px !important;
+  height: 20px !important;
+  transform: none !important;
+}
+html body.v415-calendar-active .v415-day-logos .v415-logo img {
+  object-fit: contain !important;
+  object-position: center !important;
+  transform: none !important;
+}
+html body.v415-calendar-active .v415-selected {
+  margin-bottom: 28px !important;
+}
+html body.v415-calendar-active .v837-standings-view {
+  padding: 22px 16px;
+  color: #eef2ff;
+}
+html body.v415-calendar-active .v837-standings-view h2 {font-size: 16px; margin: 20px 0 12px}
+html body.v415-calendar-active .v837-standings-scroll {overflow-x: auto; border-radius: 12px; background: #10234d}
+html body.v415-calendar-active .v837-standings-scroll table {width: 100%; border-collapse: collapse; font-size: 12px}
+html body.v415-calendar-active .v837-standings-scroll th {background: #164599; color: white; padding: 12px 8px}
+html body.v415-calendar-active .v837-standings-scroll td {padding: 11px 8px; text-align: center; border-bottom: 1px solid #8d9ff326}
+html body.v415-calendar-active .v837-standings-scroll th:nth-child(2),
+html body.v415-calendar-active .v837-standings-scroll td:nth-child(2) {text-align: left}
+html body.v415-calendar-active .v837-table-team {display: flex; align-items: center; gap: 8px; min-width: 142px}
+html body.v415-calendar-active .v837-table-team .v415-logo {display: block; flex: 0 0 26px; width: 26px; height: 26px}
+html body.v415-calendar-active .v837-table-team img {width: 26px; height: 26px; object-fit: contain}

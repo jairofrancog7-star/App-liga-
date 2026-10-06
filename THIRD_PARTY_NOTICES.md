@@ -29,3 +29,12 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
+
+## UEFA Fantasy jersey source renders
+The 50 source shirt images in `public/assets/jerseys/v837/` were downloaded from
+UEFA Fantasy's public static assets. Source URLs and SHA-256 hashes are recorded
+in `src/v837-jersey-assets.json`. The app renders the local league club's crest
+onto the shirt for Fantasy and Store; these are visual mockups, not a claim that
+UEFA's clubs supply or endorse the local league uniforms. Rights to the original
+renderings, kit designs and brand marks remain with their respective owners.
+https://gaming.uefa.com/en/uclfantasy/
