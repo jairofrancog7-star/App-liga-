@@ -58,7 +58,7 @@ async function transparentJersey(src){
     if(!img){badTransparentSources.add(src);return '';}
     try{
       const nw=img.naturalWidth||img.width||1,nh=img.naturalHeight||img.height||1;
-      const scale=Math.min(1,720/Math.max(nw,nh));
+      const scale=Math.min(1,820/Math.max(nw,nh));
       const w=Math.max(2,Math.round(nw*scale)),h=Math.max(2,Math.round(nh*scale));
       const canvas=document.createElement('canvas');
       canvas.width=w;canvas.height=h;
@@ -67,75 +67,88 @@ async function transparentJersey(src){
       ctx.drawImage(img,0,0,w,h);
       const image=ctx.getImageData(0,0,w,h),d=image.data;
 
-      let transparentCorners=0;
-      for(const [x,y] of [[0,0],[w-1,0],[0,h-1],[w-1,h-1]]){
-        if(d[(y*w+x)*4+3]<24)transparentCorners++;
-      }
-      if(transparentCorners>=3){
-        if(silhouetteOk(d,w,h))return src;
-        badTransparentSources.add(src);
-        return '';
-      }
-
-      // Estimate the real outside/background color from the image border.
+      // Always clean the outside. Even PNG/WebP files that already have alpha
+      // can carry white/black matte residue around the shirt edge.
       let sr=0,sg=0,sb=0,n=0;
       const sample=(x,y)=>{
         const i=(y*w+x)*4,a=d[i+3];
-        if(a<24)return;
+        if(a<18)return;
         sr+=d[i];sg+=d[i+1];sb+=d[i+2];n++;
       };
-      const step=Math.max(1,Math.floor(Math.min(w,h)/40));
+      const step=Math.max(1,Math.floor(Math.min(w,h)/48));
       for(let x=0;x<w;x+=step){sample(x,0);sample(x,h-1)}
       for(let y=0;y<h;y+=step){sample(0,y);sample(w-1,y)}
-      if(!n)return src;
-      const br=sr/n,bg=sg/n,bb=sb/n;
 
-      // Flood-fill only from the OUTER BORDER. This removes white, gray,
-      // black or colored photo backgrounds without erasing the jersey itself.
-      const seen=new Uint8Array(w*h);
-      const qx=new Int32Array(w*h),qy=new Int32Array(w*h);
-      let head=0,tail=0;
-      const matchesBg=(x,y)=>{
-        const p=y*w+x,i=p*4,a=d[i+3];
-        if(a<28)return true;
-        const r=d[i],g=d[i+1],b=d[i+2];
-        const dist=Math.hypot(r-br,g-bg,b-bb);
-        const lum=(r+g+b)/3,baseLum=(br+bg+bb)/3;
-        const chroma=Math.max(r,g,b)-Math.min(r,g,b);
-        const baseChroma=Math.max(br,bg,bb)-Math.min(br,bg,bb);
-        return dist<64 || (Math.abs(lum-baseLum)<34 && Math.abs(chroma-baseChroma)<34);
-      };
-      const push=(x,y)=>{
-        if(x<0||y<0||x>=w||y>=h)return;
-        const p=y*w+x;
-        if(seen[p]||!matchesBg(x,y))return;
-        seen[p]=1;qx[tail]=x;qy[tail]=y;tail++;
-      };
-      for(let x=0;x<w;x++){push(x,0);push(x,h-1)}
-      for(let y=0;y<h;y++){push(0,y);push(w-1,y)}
-      while(head<tail){
-        const x=qx[head],y=qy[head];head++;
-        const i=(y*w+x)*4;
-        d[i+3]=0;
-        push(x+1,y);push(x-1,y);push(x,y+1);push(x,y-1);
-      }
-
-      // Feather only the edge of the cut-out for a clean transparent PNG look.
-      for(let y=1;y<h-1;y++)for(let x=1;x<w-1;x++){
-        const p=y*w+x,i=p*4;
-        if(d[i+3]===0)continue;
-        let clear=0;
-        for(const [dx,dy] of [[1,0],[-1,0],[0,1],[0,-1]]){
-          if(d[((y+dy)*w+(x+dx))*4+3]===0)clear++;
+      if(n){
+        const br=sr/n,bg=sg/n,bb=sb/n;
+        const seen=new Uint8Array(w*h);
+        const qx=new Int32Array(w*h),qy=new Int32Array(w*h);
+        let head=0,tail=0;
+        const matchesBg=(x,y)=>{
+          const p=y*w+x,i=p*4,a=d[i+3];
+          if(a<24)return true;
+          const r=d[i],g=d[i+1],b=d[i+2];
+          const dist=Math.hypot(r-br,g-bg,b-bb);
+          const lum=(r+g+b)/3,baseLum=(br+bg+bb)/3;
+          const chroma=Math.max(r,g,b)-Math.min(r,g,b);
+          const baseChroma=Math.max(br,bg,bb)-Math.min(br,bg,bb);
+          return dist<72 || (Math.abs(lum-baseLum)<38 && Math.abs(chroma-baseChroma)<38);
+        };
+        const push=(x,y)=>{
+          if(x<0||y<0||x>=w||y>=h)return;
+          const p=y*w+x;
+          if(seen[p]||!matchesBg(x,y))return;
+          seen[p]=1;qx[tail]=x;qy[tail]=y;tail++;
+        };
+        for(let x=0;x<w;x++){push(x,0);push(x,h-1)}
+        for(let y=0;y<h;y++){push(0,y);push(w-1,y)}
+        while(head<tail){
+          const x=qx[head],y=qy[head];head++;
+          d[(y*w+x)*4+3]=0;
+          push(x+1,y);push(x-1,y);push(x,y+1);push(x,y-1);
         }
-        if(clear>=2)d[i+3]=Math.min(d[i+3],210);
       }
-      ctx.putImageData(image,0,0);
+
+      // Remove faint matte/halo only at the OUTER alpha edge.
+      const alphaCopy=new Uint8ClampedArray(w*h);
+      for(let p=0;p<w*h;p++)alphaCopy[p]=d[p*4+3];
+      for(let y=1;y<h-1;y++)for(let x=1;x<w-1;x++){
+        const p=y*w+x,i=p*4,a=alphaCopy[p];
+        if(a===0)continue;
+        let clear=0,soft=0;
+        for(const [dx,dy] of [[1,0],[-1,0],[0,1],[0,-1],[1,1],[-1,1],[1,-1],[-1,-1]]){
+          const na=alphaCopy[(y+dy)*w+(x+dx)];
+          if(na<12)clear++;
+          if(na<80)soft++;
+        }
+        if(clear>=3)d[i+3]=Math.min(d[i+3],180);
+        else if(soft>=4)d[i+3]=Math.min(d[i+3],220);
+      }
+
       if(!silhouetteOk(d,w,h)){
         badTransparentSources.add(src);
         return '';
       }
-      return canvas.toDataURL('image/png');
+
+      // Trim empty transparent margins so the shirt itself fills the slot,
+      // while preserving a small transparent safety pad.
+      let minX=w,minY=h,maxX=-1,maxY=-1;
+      for(let y=0;y<h;y++)for(let x=0;x<w;x++){
+        if(d[(y*w+x)*4+3]<18)continue;
+        if(x<minX)minX=x;if(x>maxX)maxX=x;
+        if(y<minY)minY=y;if(y>maxY)maxY=y;
+      }
+      if(maxX<0||maxY<0){badTransparentSources.add(src);return ''}
+
+      ctx.putImageData(image,0,0);
+      const bw=maxX-minX+1,bh=maxY-minY+1;
+      const pad=Math.max(4,Math.round(Math.max(bw,bh)*.045));
+      const out=document.createElement('canvas');
+      out.width=bw+pad*2;out.height=bh+pad*2;
+      const ox=out.getContext('2d');
+      ox.clearRect(0,0,out.width,out.height);
+      ox.drawImage(canvas,minX,minY,bw,bh,pad,pad,bw,bh);
+      return out.toDataURL('image/png');
     }catch(_){
       badTransparentSources.add(src);
       return '';
