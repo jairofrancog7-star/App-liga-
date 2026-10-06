@@ -1,13 +1,13 @@
-/* V853 — Liga Juventino rich notification studio.
-   Admin can edit text/image/design, generate copy and social artwork locally,
-   send a pre-publication review to WhatsApp, share/publish to Facebook through
-   the existing secure webhook, and only then publish inside the blue app. */
+/* V855 — Liga Juventino live notification + scheduled publication studio.
+   Admin can edit text/image/design, use the AI-ready copy assistant, review in
+   WhatsApp/Facebook, publish immediately or schedule a CMS-backed publication
+   for an exact date/time while preserving the blue-app notification workflow. */
 (()=>{
 'use strict';
-if(window.__LJR_V853_RICH_NOTIFICATION_STUDIO__)return;
-window.__LJR_V853_RICH_NOTIFICATION_STUDIO__=true;
+if(window.__LJR_V855_RICH_NOTIFICATION_STUDIO__)return;
+window.__LJR_V855_RICH_NOTIFICATION_STUDIO__=true;
 
-const BUILD='v853';
+const BUILD='v855';
 const KIND='notification';
 const SEEN='ljr-rich-cms-seen-v852';
 const INIT='ljr-rich-cms-init-v852';
@@ -17,7 +17,8 @@ const ADMIN_LOCAL='4121715599';
 const ADMIN_E164='524121715599';
 const FACEBOOK_PAGE='https://www.facebook.com/share/19SsGuzsRi/';
 const FACEBOOK_WEBHOOK_KEY='ljr-v713-facebook-webhook';
-let renderTimer=0,syncing=false,lastRecords=[];
+const AI_WEBHOOK_KEY='ljr-v855-ai-webhook';
+let renderTimer=0,syncing=false,lastRecords=[],scheduledSyncing=false;
 let studio={generatedFile:null,generatedUrl:'',reviewImageUrl:'',reviewed:false,previewFileUrl:'',iconFileUrl:''};
 
 const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -30,6 +31,12 @@ const color=(v,f)=>/^#[0-9a-f]{6}$/i.test(String(v||''))?String(v):f;
 const safeRoute=v=>{const s=String(v||'notifications').trim().replace(/^#\/?/,'').replace(/^\//,'');return s||'notifications'};
 const payload=rec=>rec?.payload||{};
 const slug=s=>String(s||'aviso-liga').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'').slice(0,64)||'aviso-liga';
+const localDateTimeValue=(ts=Date.now()+3600000)=>{
+  const d=new Date(Number.isFinite(Number(ts))?Number(ts):Date.now()+3600000);
+  const z=new Date(d.getTime()-d.getTimezoneOffset()*60000);
+  return z.toISOString().slice(0,16);
+};
+const scheduleText=iso=>{try{return new Intl.DateTimeFormat('es-MX',{dateStyle:'medium',timeStyle:'short'}).format(new Date(iso))}catch(_){return String(iso||'')}};
 
 function records(){
   const all=Array.isArray(cms()?.records)?cms().records:lastRecords;
@@ -83,7 +90,7 @@ async function syncPublished(){
       if(seen[rec.id]===rev)continue;
       seen[rec.id]=rev;changed=true;
       const p=payload(rec);
-      if(window.LJR_V840_NOTIFICATIONS?.sendRich){
+      if(p.notifyDevice!==false&&window.LJR_V840_NOTIFICATIONS?.sendRich){
         await window.LJR_V840_NOTIFICATIONS.sendRich({
           title:String(p.title||'Liga Juventino Rosas'),
           body:String(p.body||'Nueva actualización de la Liga.'),
@@ -219,11 +226,12 @@ function formData(form){return Object.fromEntries(new FormData(form))}
 function formHtml(rec){
   const p=rec?.payload||{};
   const design=p.design||'neon',accent=color(p.accent,'#2fe2ee'),background=color(p.background,'#071541'),textColor=color(p.textColor,'#ffffff');
+  const publishValue=p.publishAt?localDateTimeValue(Date.parse(p.publishAt)):localDateTimeValue();
   return '<form class="v852-admin-form v853-admin-form" data-v852-form>'+
     '<section class="v853-smart">'+
-      '<div class="v853-section-head"><span><small>01 · TEXTO RÁPIDO</small><b>Asistente automático</b></span><em>1 toque</em></div>'+
+      '<div class="v853-section-head"><span><small>01 · TEXTO RÁPIDO</small><b>Asistente IA + rápido</b></span><em>1 toque</em></div>'+
       '<label><span>Datos rápidos</span><input name="details" maxlength="220" value="" placeholder="Ej. Juventus vs Manchester · domingo 10:00 · Campo 1"></label>'+
-      '<div class="v853-smart-actions"><button type="button" data-v853-ai="quick">✨ Generar</button><button type="button" data-v853-ai="short">Corto</button><button type="button" data-v853-ai="formal">Formal</button><button type="button" data-v853-ai="viral">Viral</button><button type="button" data-v853-ai="urgent">Urgente</button></div>'+
+      '<div class="v853-smart-actions"><button type="button" data-v853-ai="quick">🤖 IA</button><button type="button" data-v853-ai="short">Corto</button><button type="button" data-v853-ai="formal">Formal</button><button type="button" data-v853-ai="viral">Viral</button><button type="button" data-v853-ai="urgent">Urgente</button></div>'+
     '</section>'+
     '<section class="v853-edit">'+
       '<div class="v853-section-head"><span><small>02 · CONTENIDO</small><b>Editar todo</b></span></div>'+
@@ -258,6 +266,13 @@ function formHtml(rec){
       '<div class="v853-review-actions"><button type="button" data-v853-whatsapp>🟢 WhatsApp '+ADMIN_LOCAL+'</button><button type="button" data-v853-facebook>🔵 Facebook</button><button type="button" data-v852-preview>🔔 Probar notificación</button></div>'+
       '<div class="v853-review-state" data-v853-review-state>○ Pendiente de revisión</div>'+
     '</section>'+
+    '<section class="v855-schedule">'+
+      '<div class="v853-section-head"><span><small>05 · PROGRAMAR</small><b>Publicar a cierta hora</b></span><em>EN VIVO</em></div>'+
+      '<div class="v855-schedule-grid"><label><span>Fecha y hora</span><input name="publishAt" type="datetime-local" value="'+esc(publishValue)+'"></label><label><span>Recordatorio</span><select name="remindMinutes"><option value="0">Sin recordatorio</option><option value="60">1 hora antes</option><option value="120">2 horas antes</option><option value="1440">1 día antes</option></select></label></div>'+
+      '<div class="v855-schedule-channels"><label><input type="checkbox" name="scheduleDevice" '+(p.notifyDevice===false?'':'checked')+'> Notificación del teléfono</label><label><input type="checkbox" name="scheduleFacebook" '+(p.scheduleFacebook?'checked':'')+'> Facebook por webhook</label></div>'+
+      '<button type="button" class="v855-schedule-btn" data-v855-schedule disabled>⏱ Programar publicación</button>'+
+      '<small class="v855-schedule-note">Se guarda como borrador programado y la app lo publica al llegar la hora cuando el administrador esté conectado. Si existe webhook seguro de Facebook también se dispara al publicar.</small>'+
+    '</section>'+
     '<div class="v852-admin-actions v853-publish-actions"><button type="button" data-v853-draft>Guardar borrador</button><button type="submit" class="primary" data-v853-publish disabled>'+(rec?.published?'Actualizar en app':'Publicar en app')+'</button></div>'+
   '</form>';
 }
@@ -275,7 +290,9 @@ function previewFromForm(form){
 }
 function refreshGate(form){
   const btn=form.querySelector('[data-v853-publish]');
+  const schedule=form.querySelector('[data-v855-schedule]');
   if(btn)btn.disabled=!studio.reviewed;
+  if(schedule)schedule.disabled=!studio.reviewed;
   const state=form.querySelector('[data-v853-review-state]');
   if(state){
     state.classList.toggle('ok',studio.reviewed);
@@ -424,6 +441,100 @@ async function uploadIcon(form,status){
   status.textContent='Subiendo icono…';
   return await cms().upload(file,(d.title||'Aviso')+' icono');
 }
+async function generateAI(form,status,mode='quick'){
+  const d=formData(form),endpoint=String(window.LJR_AI_ENDPOINT||localStorage.getItem(AI_WEBHOOK_KEY)||'').trim();
+  if(endpoint){
+    try{
+      status.textContent='Consultando IA segura…';
+      const r=await fetch(endpoint,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({
+        task:'football_social_copy',mode,type:d.type,details:d.details,title:d.title,body:d.body,league:'Liga Juventino Rosas'
+      })});
+      if(!r.ok)throw Error('IA '+r.status);
+      const j=await r.json();
+      if(j?.title&&j?.body){
+        form.elements.title.value=String(j.title).slice(0,90);
+        form.elements.body.value=String(j.body).slice(0,420);
+        studio.reviewed=false;previewFromForm(form);refreshGate(form);
+        status.textContent='Texto generado con IA conectada.';toast('IA lista');return;
+      }
+    }catch(_){status.textContent='La IA remota no respondió; usé el generador rápido local.'}
+  }
+  const draft=smartDraft(d.type,mode,d.details);
+  form.elements.title.value=draft.title;form.elements.body.value=draft.body;
+  studio.reviewed=false;previewFromForm(form);refreshGate(form);toast(endpoint?'Respaldo local listo':'Texto IA rápido listo');
+}
+async function scheduleAdmin(form,rec,status){
+  const btn=form.querySelector('[data-v855-schedule]');if(btn)btn.disabled=true;
+  try{
+    const d=formData(form);
+    if(!studio.reviewed)throw Error('Primero envía la vista previa a WhatsApp o Facebook para revisión.');
+    const publishAt=new Date(String(d.publishAt||''));
+    if(!Number.isFinite(publishAt.getTime())||publishAt.getTime()<=Date.now()+10000)throw Error('Selecciona una fecha y hora futura.');
+    let image='';
+    if(d.useGenerated==='on'&&studio.generatedFile){
+      image=studio.reviewImageUrl||await ensureReviewImage(form,status);
+    }else{
+      const file=form.querySelector('[data-v852-file]')?.files?.[0];
+      if(file){
+        if(!cms()?.upload)throw Error('El cargador de imágenes aún no está listo.');
+        status.textContent='Subiendo imagen…';image=await cms().upload(file,d.title||'Aviso Liga Juventino');
+      }else image=String(d.image||'').trim();
+    }
+    const icon=await uploadIcon(form,status),now=Date.now(),id=rec?.id||'notification:'+crypto.randomUUID();
+    const out={
+      type:String(d.type||'aviso'),title:String(d.title||'Liga Juventino Rosas').trim(),body:String(d.body||'').trim(),
+      image,icon,route:safeRoute(d.route),design:String(d.design||'neon'),
+      accent:color(d.accent,'#2fe2ee'),background:color(d.background,'#071541'),textColor:color(d.textColor,'#ffffff'),
+      createdAt:Number(rec?.payload?.createdAt||now),updatedAt:now,reviewedAt:now,
+      scheduled:true,publishAt:publishAt.toISOString(),notifyDevice:d.scheduleDevice==='on',scheduleFacebook:d.scheduleFacebook==='on',
+      remindMinutes:Number(d.remindMinutes||0)
+    };
+    await media().api('content/'+encodeURIComponent(id),{
+      method:'PUT',body:{kind:KIND,payload:out,revision:rec?.revision||0,published:false}
+    });
+    status.textContent='Programado para '+scheduleText(out.publishAt)+'.';
+    if(cms()?.refresh)await cms().refresh();
+    toast('Publicación programada');
+    setTimeout(()=>{closeAdmin();render()},900);
+  }catch(err){
+    status.textContent=err?.message||'No se pudo programar.';
+    if(btn)btn.disabled=false;refreshGate(form);
+  }
+}
+async function processScheduled(){
+  if(scheduledSyncing||!media()?.admin)return;
+  scheduledSyncing=true;
+  try{
+    const data=await media().api('content?admin=1');
+    const list=Array.isArray(data?.items)?data.items:[];
+    const due=list.filter(r=>r&&r.kind===KIND&&!r.published&&r?.payload?.scheduled&&Date.parse(r.payload.publishAt||'')<=Date.now());
+    if(!due.length)return;
+    for(const rec of due){
+      const old=payload(rec),now=Date.now();
+      const next={...old,scheduled:false,publishedAt:now,updatedAt:now};
+      const result=await media().api('content/'+encodeURIComponent(rec.id),{
+        method:'PUT',body:{kind:KIND,payload:next,revision:rec.revision||0,published:true}
+      });
+      if(next.scheduleFacebook){
+        const webhook=String(localStorage.getItem(FACEBOOK_WEBHOOK_KEY)||'').trim();
+        if(webhook){
+          try{await fetch(webhook,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({
+            source:'Liga Juventino Rosas',action:'publish_notice',type:next.type,title:next.title,message:next.body,image:next.image||'',
+            page:FACEBOOK_PAGE,publishAt:next.publishAt||new Date().toISOString()
+          })})}catch(_){}
+        }
+      }
+      if(next.notifyDevice!==false&&window.LJR_V840_NOTIFICATIONS?.sendRich){
+        await window.LJR_V840_NOTIFICATIONS.sendRich({title:next.title,body:next.body,imageUrl:next.image,iconUrl:next.icon||DEFAULT_ICON,group:'liga-'+next.type});
+      }
+      const seen=read(SEEN,{});seen[rec.id]=String(result?.revision??next.updatedAt);write(SEEN,seen);
+    }
+    if(cms()?.refresh)await cms().refresh();
+    render();
+  }catch(_){}
+  finally{scheduledSyncing=false}
+}
+
 async function saveAdmin(form,rec,status,publish){
   const btn=publish?form.querySelector('[data-v853-publish]'):form.querySelector('[data-v853-draft]');
   if(btn)btn.disabled=true;
@@ -445,7 +556,8 @@ async function saveAdmin(form,rec,status,publish){
       type:String(d.type||'aviso'),title:String(d.title||'Liga Juventino Rosas').trim(),body:String(d.body||'').trim(),
       image,icon,route:safeRoute(d.route),design:String(d.design||'neon'),
       accent:color(d.accent,'#2fe2ee'),background:color(d.background,'#071541'),textColor:color(d.textColor,'#ffffff'),
-      createdAt:Number(rec?.payload?.createdAt||now),updatedAt:now,reviewedAt:studio.reviewed?now:Number(rec?.payload?.reviewedAt||0)
+      createdAt:Number(rec?.payload?.createdAt||now),updatedAt:now,reviewedAt:studio.reviewed?now:Number(rec?.payload?.reviewedAt||0),
+      scheduled:false,publishAt:'',notifyDevice:true,scheduleFacebook:false
     };
     const id=rec?.id||'notification:'+crypto.randomUUID();
     const result=await media().api('content/'+encodeURIComponent(id),{
@@ -485,7 +597,7 @@ async function openAdmin(editRec=null){
   overlay.addEventListener('click',e=>{if(e.target===overlay)closeAdmin()});
   const form=overlay.querySelector('[data-v852-form]'),status=overlay.querySelector('[data-v852-status]');
   previewFromForm(form);refreshGate(form);
-  form.addEventListener('input',()=>{studio.reviewed=false;previewFromForm(form);refreshGate(form)});
+  form.addEventListener('input',e=>{if(!e.target.closest('.v855-schedule'))studio.reviewed=false;previewFromForm(form);refreshGate(form)});
   form.querySelector('[data-v852-file]')?.addEventListener('change',e=>{
     if(studio.previewFileUrl)try{URL.revokeObjectURL(studio.previewFileUrl)}catch(_){}
     studio.previewFileUrl=e.target.files?.[0]?URL.createObjectURL(e.target.files[0]):'';
@@ -497,11 +609,7 @@ async function openAdmin(editRec=null){
     studio.iconFileUrl=e.target.files?.[0]?URL.createObjectURL(e.target.files[0]):'';
     previewFromForm(form);
   });
-  form.querySelectorAll('[data-v853-ai]').forEach(b=>b.onclick=()=>{
-    const d=formData(form),draft=smartDraft(d.type,b.dataset.v853Ai||'quick',d.details);
-    form.elements.title.value=draft.title;form.elements.body.value=draft.body;
-    studio.reviewed=false;previewFromForm(form);refreshGate(form);toast('Texto automático generado');
-  });
+  form.querySelectorAll('[data-v853-ai]').forEach(b=>b.onclick=()=>generateAI(form,status,b.dataset.v853Ai||'quick'));
   form.querySelector('[data-v853-generate-design]').onclick=()=>makeDesign(form,status);
   form.querySelector('[data-v853-whatsapp]').onclick=()=>sendWhatsApp(form,status);
   form.querySelector('[data-v853-facebook]').onclick=()=>shareFacebook(form,status);
@@ -514,11 +622,13 @@ async function openAdmin(editRec=null){
     }
   };
   form.querySelector('[data-v853-draft]').onclick=()=>saveAdmin(form,editRec,status,false);
+  form.querySelector('[data-v855-schedule]').onclick=()=>scheduleAdmin(form,editRec,status);
   form.onsubmit=e=>{e.preventDefault();saveAdmin(form,editRec,status,true)};
   const list=await adminRecords(),wrap=overlay.querySelector('[data-v852-existing]');
   wrap.innerHTML='<h3>Avisos guardados</h3>'+(list.length?list.slice(0,8).map(r=>{
     const p=payload(r);
-    return '<div class="v852-existing-row"><span><b>'+esc(p.title||'Aviso')+'</b><small>'+esc(typeLabel(p.type))+(r.published?' · Publicado':' · Borrador')+'</small></span><button type="button" data-v852-edit="'+esc(r.id)+'">Editar</button><button type="button" data-v852-remove="'+esc(r.id)+'">×</button></div>'
+    const state=r.published?' · Publicado':p.scheduled&&p.publishAt?' · Programado '+esc(scheduleText(p.publishAt)):' · Borrador';
+    return '<div class="v852-existing-row"><span><b>'+esc(p.title||'Aviso')+'</b><small>'+esc(typeLabel(p.type))+state+'</small></span><button type="button" data-v852-edit="'+esc(r.id)+'">Editar</button><button type="button" data-v852-remove="'+esc(r.id)+'">×</button></div>'
   }).join(''):'<small>Aún no hay avisos creados.</small>');
   wrap.querySelectorAll('[data-v852-edit]').forEach(b=>b.onclick=()=>openAdmin(list.find(r=>r.id===b.dataset.v852Edit)));
   wrap.querySelectorAll('[data-v852-remove]').forEach(b=>b.onclick=()=>removeAdmin(list.find(r=>r.id===b.dataset.v852Remove),status));
@@ -527,12 +637,14 @@ async function openAdmin(editRec=null){
 function scheduleRender(){clearTimeout(renderTimer);renderTimer=setTimeout(render,60)}
 window.addEventListener('hashchange',scheduleRender);
 window.addEventListener('liga:content',()=>{syncPublished();scheduleRender()});
-window.addEventListener('liga:admin',scheduleRender);
-document.addEventListener('visibilitychange',()=>{if(!document.hidden){syncPublished();scheduleRender()}});
-window.addEventListener('focus',()=>{syncPublished();scheduleRender()});
+window.addEventListener('liga:admin',()=>{scheduleRender();processScheduled()});
+document.addEventListener('visibilitychange',()=>{if(!document.hidden){syncPublished();processScheduled();scheduleRender()}});
+window.addEventListener('focus',()=>{syncPublished();processScheduled();scheduleRender()});
 new MutationObserver(()=>{if(route()==='notifications')scheduleRender()}).observe(document.documentElement,{childList:true,subtree:true});
-window.LJR_V852_RICH_NOTIFICATIONS={render,sync:syncPublished,openAdmin,build:BUILD,smartDraft};
+window.LJR_V852_RICH_NOTIFICATIONS={render,sync:syncPublished,openAdmin,build:BUILD,smartDraft,processScheduled};
 window.LJR_V853_NOTIFICATION_STUDIO=window.LJR_V852_RICH_NOTIFICATIONS;
-setTimeout(()=>{syncPublished();render()},450);
-setTimeout(()=>{syncPublished();render()},1600);
+window.LJR_V855_NOTIFICATION_STUDIO=window.LJR_V852_RICH_NOTIFICATIONS;
+setTimeout(()=>{syncPublished();processScheduled();render()},450);
+setTimeout(()=>{syncPublished();processScheduled();render()},1600);
+setInterval(processScheduled,30000);
 })();
