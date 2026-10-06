@@ -2490,3 +2490,194 @@ body.v415-calendar-active #screen > [data-v415-calendar]{
     transform:none!important;
   }
 }
+
+/* V806_CALENDAR_CELL_ALIGNMENT_START */
+/* Ajuste fino del calendario según la referencia/video:
+   - sólo 2 puntos por fecha con varios partidos
+   - puntos separados y por encima del círculo
+   - escudo principal y rival más pequeños
+   - aro seleccionado perfectamente circular y centrado
+   - el segundo escudo nunca se sale de la celda */
+@media (max-width:1023px){
+  body.v415-calendar-active .v415-grid{
+    grid-auto-rows:68px!important;
+    row-gap:1px!important;
+  }
+
+  body.v415-calendar-active .v415-day{
+    position:relative!important;
+    width:100%!important;
+    height:68px!important;
+    min-height:68px!important;
+    padding:0!important;
+    overflow:visible!important;
+    display:flex!important;
+    align-items:center!important;
+    justify-content:center!important;
+  }
+
+  /* Dos puntos exactos, alineados y sin tocar el círculo. */
+  body.v415-calendar-active .v415-day-dots{
+    position:absolute!important;
+    z-index:8!important;
+    left:50%!important;
+    top:1px!important;
+    bottom:auto!important;
+    transform:translateX(-50%)!important;
+    display:flex!important;
+    align-items:center!important;
+    justify-content:center!important;
+    gap:5px!important;
+    width:auto!important;
+    height:6px!important;
+    margin:0!important;
+    padding:0!important;
+    pointer-events:none!important;
+  }
+  body.v415-calendar-active .v415-day-dots i{
+    display:block!important;
+    width:5px!important;
+    height:5px!important;
+    flex:0 0 5px!important;
+    margin:0!important;
+    border-radius:50%!important;
+    background:#59627d!important;
+    box-shadow:none!important;
+  }
+  body.v415-calendar-active .v415-day-dots i.on{
+    background:#8fa2ff!important;
+  }
+
+  /* El grupo de escudos queda centrado dentro de su día. */
+  body.v415-calendar-active .v415-day-logos{
+    position:absolute!important;
+    z-index:4!important;
+    left:50%!important;
+    top:17px!important;
+    width:38px!important;
+    height:38px!important;
+    margin:0!important;
+    transform:translateX(-50%)!important;
+    display:block!important;
+    overflow:visible!important;
+  }
+
+  /* Escudo principal más pequeño y centrado. */
+  body.v415-calendar-active .v415-day-logos .v415-logo,
+  body.v415-calendar-active .v415-day-logos .v415-logo.is-home{
+    position:absolute!important;
+    z-index:2!important;
+    left:50%!important;
+    top:2px!important;
+    width:27px!important;
+    height:27px!important;
+    margin:0!important;
+    padding:0!important;
+    transform:translateX(-50%)!important;
+    border:0!important;
+    background:transparent!important;
+  }
+
+  /* Rival: pequeño, abajo a la derecha y completamente dentro de la celda. */
+  body.v415-calendar-active .v415-day-logos .v415-logo.is-away,
+  body.v415-calendar-active .v415-day-logos .v415-logo.is-second{
+    position:absolute!important;
+    z-index:5!important;
+    left:auto!important;
+    right:0!important;
+    top:auto!important;
+    bottom:0!important;
+    width:16px!important;
+    height:16px!important;
+    margin:0!important;
+    padding:2px!important;
+    transform:none!important;
+    border:0!important;
+    border-radius:50%!important;
+    background:#46516f!important;
+    box-shadow:0 1px 4px rgba(0,0,0,.24)!important;
+  }
+
+  body.v415-calendar-active .v415-day-logos .v415-logo img{
+    width:100%!important;
+    height:100%!important;
+    object-fit:contain!important;
+    object-position:center!important;
+  }
+
+  /* Aro exacto: no ovalado, centrado y separado de los puntos. */
+  body.v415-calendar-active .v415-day.selected.has-match:before{
+    content:""!important;
+    position:absolute!important;
+    z-index:1!important;
+    left:50%!important;
+    top:12px!important;
+    width:48px!important;
+    height:48px!important;
+    inset:auto!important;
+    transform:translateX(-50%)!important;
+    border:2px solid #8fa2ff!important;
+    border-radius:50%!important;
+    background:transparent!important;
+    box-shadow:none!important;
+    pointer-events:none!important;
+  }
+
+  /* En el día seleccionado se conservan los dos escudos y los dos puntos. */
+  body.v415-calendar-active .v415-day.selected .v415-day-logos{
+    left:50%!important;
+    top:17px!important;
+    width:38px!important;
+    height:38px!important;
+    transform:translateX(-50%)!important;
+  }
+  body.v415-calendar-active .v415-day.selected .v415-day-logos .v415-logo:first-child{
+    left:50%!important;
+    top:2px!important;
+    width:27px!important;
+    height:27px!important;
+    transform:translateX(-50%)!important;
+  }
+  body.v415-calendar-active .v415-day.selected .v415-day-logos .v415-logo.is-away,
+  body.v415-calendar-active .v415-day.selected .v415-day-logos .v415-logo.is-second{
+    display:grid!important;
+    left:auto!important;
+    right:0!important;
+    top:auto!important;
+    bottom:0!important;
+    width:16px!important;
+    height:16px!important;
+    transform:none!important;
+  }
+  body.v415-calendar-active .v415-day.selected .v415-day-dots{
+    display:flex!important;
+  }
+
+  /* El número de hoy queda más cerca del centro y no empuja los escudos. */
+  body.v415-calendar-active .v415-today-badge{
+    right:-5px!important;
+    top:19px!important;
+    width:28px!important;
+    height:28px!important;
+    font-size:12px!important;
+  }
+
+  /* Días sin partido: el número sigue perfectamente centrado. */
+  body.v415-calendar-active .v415-day:not(.has-match) .v415-day-number{
+    position:relative!important;
+    left:auto!important;
+    top:auto!important;
+    margin:auto!important;
+  }
+
+  body.v415-calendar-active .v415-day.selected:not(.has-match):before{
+    left:50%!important;
+    top:50%!important;
+    width:40px!important;
+    height:40px!important;
+    inset:auto!important;
+    transform:translate(-50%,-50%)!important;
+    border-radius:50%!important;
+  }
+}
+/* V806_CALENDAR_CELL_ALIGNMENT_END */
