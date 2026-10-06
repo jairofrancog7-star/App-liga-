@@ -25,8 +25,9 @@
     grid-template-rows:
       86px
       58px
-      minmax(252px,1fr)
+      minmax(236px,1fr)
       auto
+      24px
       auto!important;
     align-content:stretch!important;
     overflow:visible!important;
@@ -167,7 +168,7 @@
     width:100%!important;
     box-sizing:border-box!important;
     margin:0!important;
-    padding:20px 34px 88px!important;
+    padding:18px 34px 4px!important;
     transform:none!important;
     text-align:center!important;
     background:transparent!important;
@@ -187,13 +188,18 @@
 
   /* Puntos entre descripción y botones, no encima de ningún elemento. */
   html body[data-app-route="predictorSix"] .v589-page.intro .v589-dots{
-    position:absolute!important;
-    left:0!important;
-    right:0!important;
-    bottom:108px!important;
+    grid-row:5!important;
+    position:relative!important;
+    left:auto!important;
+    right:auto!important;
+    bottom:auto!important;
     z-index:6!important;
+    width:100%!important;
+    min-height:24px!important;
     margin:0!important;
+    padding:0!important;
     display:flex!important;
+    align-items:center!important;
     justify-content:center!important;
     gap:9px!important;
     transform:none!important;
@@ -237,13 +243,13 @@
     box-sizing:border-box!important;
     width:100%!important;
     margin:0!important;
-    padding:0 30px 22px!important;
+    padding:10px 30px calc(88px + env(safe-area-inset-bottom))!important;
     display:grid!important;
     gap:8px!important;
     background:transparent!important;
     /* V838 — subir ligeramente los botones para que la barra inferior
        no tape "Prueba como invitado". No mueve cuadros ni texto. */
-    transform:translateY(-62px)!important;
+    transform:none!important;
   }
 }
 
@@ -252,8 +258,9 @@
     grid-template-rows:
       82px
       54px
-      minmax(238px,1fr)
+      minmax(224px,1fr)
       auto
+      22px
       auto!important;
   }
   html body[data-app-route="predictorSix"] .v589-page.intro .v589-top{
@@ -276,10 +283,10 @@
     max-height:54px!important;
   }
   html body[data-app-route="predictorSix"] .v589-page.intro .v589-intro-copy{
-    padding:18px 26px 84px!important;
+    padding:16px 26px 4px!important;
   }
   html body[data-app-route="predictorSix"] .v589-page.intro .v589-intro-actions{
-    padding:0 30px 18px!important;
-    transform:translateY(-66px)!important;
+    padding:10px 30px calc(86px + env(safe-area-inset-bottom))!important;
+    transform:none!important;
   }
 }
