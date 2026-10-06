@@ -1,0 +1,270 @@
+import {Capacitor,registerPlugin} from '@capacitor/core';
+/* V840 — Liga Juventino APK match notifications.
+   Own notification center + Android native notifications with both team logos.
+   No AdminFut push registration is used. */
+(function(){
+'use strict';
+if(window.__LJR_V840_APK_MATCH_NOTIFICATIONS__)return;
+window.__LJR_V840_APK_MATCH_NOTIFICATIONS__=true;
+
+const NativeNotifications=registerPlugin('LigaNotifications');
+const REMOTE='https://raw.githubusercontent.com/jairofrancog7-star/App-liga-/main/data/official-live.json';
+const SNAP='ljr-match-notify-snapshot-v840';
+const INBOX='ljr-match-notify-inbox-v840';
+const PERM='ljr-native-notifications-v840';
+const MAX_INBOX=28;
+let remoteData=null,polling=false,renderTimer=0;
+
+const norm=v=>String(v??'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[^a-z0-9+]+/g,' ').trim();
+const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const route=()=>String(location.hash||'').replace(/^#\/?/,'').split('?')[0]||document.body?.dataset?.appRoute||'home';
+const num=v=>/^\s*-?\d+\s*$/.test(String(v??''))?Number(v):null;
+const read=(k,d)=>{try{return JSON.parse(localStorage.getItem(k)||'null')??d}catch(_){return d}};
+const write=(k,v)=>{try{localStorage.setItem(k,JSON.stringify(v))}catch(_){}};
+const hash=s=>{let h=2166136261;for(const ch of String(s||'')){h^=ch.charCodeAt(0);h=Math.imul(h,16777619)}return h>>>0};
+
+function data(){
+  try{return remoteData||window.LJR_V508_OFFICIAL?.getData?.()||window.LJR_OFFICIAL_DATA||null}catch(_){return remoteData}
+}
+function parseStamp(v){
+  const m=String(v||'').match(/(\d{1,2})\/(\d{1,2})\/(\d{4})(?:\s+(\d{1,2}):(\d{2}))?/);
+  return m?new Date(+m[3],+m[2]-1,+m[1],+(m[4]||0),+(m[5]||0)).getTime():0;
+}
+function fixtures(d=data()){
+  const out=[];
+  Object.entries(d?.categories||{}).forEach(([cid,c])=>{
+    (c?.fixtures||[]).forEach((block,bi)=>(block?.rows||[]).forEach((r,ri)=>{
+      if(!Array.isArray(r)||!r[2]||!r[6])return;
+      const home=String(r[2]||'').trim(),away=String(r[6]||'').trim(),date=String(r[8]||'');
+      out.push({
+        key:[cid,bi,ri,r[0]||'',date,home,away].join('|'),
+        cat:String(cid),category:String(c?.name||'Liga Juventino'),
+        home,away,hs:num(r[3]),as:num(r[5]),date,stamp:parseStamp(date),
+        field:String(r[7]||''),extra:String(r[10]||''),round:String(r[1]||'')
+      });
+    }));
+  });
+  return out;
+}
+function logoFromCandidates(team){
+  const wanted=norm(team);
+  for(const c of Object.values(data()?.categories||{})){
+    const list=c?.dashboard?.logo_candidates||[];
+    const exact=list.find(x=>norm(x?.near_text)===wanted);
+    if(exact?.source)return String(exact.source);
+    const near=list.find(x=>norm(x?.near_text).startsWith(wanted+' '));
+    if(near?.source)return String(near.source);
+  }
+  return '';
+}
+function absLogo(v){
+  v=String(v||'').trim();if(!v)return '';
+  if(/^(https?:|data:|blob:)/i.test(v))return v;
+  try{return new URL(v.replace(/^\.\//,''),location.href).href}catch(_){return v}
+}
+function logoFor(team){
+  let v='';
+  try{v=window.V66_OFFICIAL_DIRECTORY?.logoFor?.(team)||''}catch(_){}
+  if(!v)try{v=window.LJR_OFFICIAL_API?.getLogo?.(team)||''}catch(_){}
+  if(!v)try{v=window.LJR_TEAM_LOGOS?.get?.(team)||''}catch(_){}
+  if(!v)v=logoFromCandidates(team);
+  return absLogo(v);
+}
+function prefs(){
+  const account=read('lj-account-notifications-v46',{});
+  const store=read('lj-store-v3',{})?.notifications||{};
+  return {
+    enabled: account.enabled!==false&&store.enabled!==false,
+    goal: account.goal!==false&&store.goal!==false,
+    final: account.final!==false&&store.final!==false,
+    vibration: account.vibration!==false&&store.vibration!==false
+  };
+}
+function inbox(){return read(INBOX,[])}
+function saveInbox(list){
+  const seen=new Set(),out=[];
+  for(const x of list.sort((a,b)=>(b.ts||0)-(a.ts||0))){
+    const k=x.id||x.key+'|'+x.type+'|'+x.hs+'|'+x.as;
+    if(seen.has(k))continue;seen.add(k);out.push(x);
+    if(out.length>=MAX_INBOX)break;
+  }
+  write(INBOX,out);
+}
+function entryFor(m,type='final',ts=Date.now()){
+  const scored=m.hs!==null&&m.as!==null;
+  return {
+    id:m.key+'|'+type+'|'+String(m.hs)+'|'+String(m.as),
+    key:m.key,type,ts,stamp:m.stamp||ts,
+    category:m.category,home:m.home,away:m.away,hs:m.hs,as:m.as,
+    status:type==='goal'?'Gol':scored?'Finalizado':'Actualización',
+    homeLogo:logoFor(m.home),awayLogo:logoFor(m.away),field:m.field,date:m.date
+  };
+}
+function seedInbox(matches){
+  if(inbox().length)return;
+  const done=matches.filter(m=>m.hs!==null&&m.as!==null)
+    .sort((a,b)=>(b.stamp||0)-(a.stamp||0)).slice(0,10)
+    .map(m=>entryFor(m,'final',m.stamp||Date.now()));
+  saveInbox(done);
+}
+function snapshot(matches){
+  const o={};
+  matches.forEach(m=>o[m.key]={hs:m.hs,as:m.as,date:m.date,field:m.field,category:m.category,home:m.home,away:m.away});
+  return o;
+}
+function shouldAlert(type){
+  const p=prefs();if(!p.enabled)return false;
+  return type==='goal'?p.goal!==false:type==='final'?p.final!==false:true;
+}
+async function requestPermission(){
+  if(Capacitor.isNativePlatform()){
+    try{
+      const r=await NativeNotifications.requestPermission();
+      const ok=!!r?.granted;write(PERM,{granted:ok,at:Date.now()});
+      renderFeed();
+      return ok;
+    }catch(_){return false}
+  }
+  if(!('Notification'in window))return false;
+  try{
+    const p=Notification.permission==='default'?await Notification.requestPermission():Notification.permission;
+    const ok=p==='granted';write(PERM,{granted:ok,at:Date.now()});renderFeed();return ok;
+  }catch(_){return false}
+}
+async function systemNotify(e){
+  if(!shouldAlert(e.type))return false;
+  const title=e.category||'Liga Juventino';
+  const score=(e.hs!==null&&e.as!==null)?e.home+' '+e.hs+' vs '+e.away+' '+e.as:e.home+' vs '+e.away;
+  const body=score+' · '+e.status;
+  if(Capacitor.isNativePlatform()){
+    try{
+      const perm=read(PERM,{});
+      if(!perm.granted)return false;
+      await NativeNotifications.notifyMatch({
+        id:hash(e.id)&0x7fffffff,title,body,
+        homeLogo:e.homeLogo||'',awayLogo:e.awayLogo||'',
+        group:'liga-'+norm(e.category).replace(/\s+/g,'-')
+      });
+      return true;
+    }catch(_){return false}
+  }
+  if('Notification'in window&&Notification.permission==='granted'){
+    try{
+      const n=new Notification(title,{
+        body,tag:'ljr-'+e.id,renotify:true,
+        icon:e.homeLogo||'./icons/icon-192.png',
+        badge:'./icons/icon-192.png',
+        vibrate:prefs().vibration!==false?[220,100,220]:[]
+      });
+      n.onclick=()=>{try{window.focus();location.hash='#/notifications';n.close()}catch(_){}};
+      return true;
+    }catch(_){}
+  }
+  return false;
+}
+async function processChanges(matches){
+  const prev=read(SNAP,null);
+  if(!prev){write(SNAP,snapshot(matches));seedInbox(matches);renderFeed();return}
+  const added=[];
+  for(const m of matches){
+    const old=prev[m.key];if(!old)continue;
+    const oldHs=old.hs==null?null:Number(old.hs),oldAs=old.as==null?null:Number(old.as);
+    let type='';
+    if(m.hs!==null&&m.as!==null){
+      if(oldHs!==null&&oldAs!==null&&(m.hs>oldHs||m.as>oldAs))type='goal';
+      else if((oldHs===null||oldAs===null))type='final';
+      else if(m.hs!==oldHs||m.as!==oldAs)type='final';
+    }
+    if(!type)continue;
+    const e=entryFor(m,type);
+    added.push(e);
+    await systemNotify(e);
+  }
+  if(added.length)saveInbox([...added,...inbox()]);
+  write(SNAP,snapshot(matches));
+  seedInbox(matches);
+  renderFeed();
+}
+async function refresh(){
+  if(polling)return;polling=true;
+  try{
+    const r=await fetch(REMOTE+'?v='+Date.now(),{cache:'no-store'});
+    if(r.ok)remoteData=await r.json();
+  }catch(_){}
+  try{await processChanges(fixtures())}finally{polling=false}
+}
+function scoreText(e){
+  return e.hs!==null&&e.as!==null?e.home+' '+e.hs+' vs '+e.away+' '+e.as:e.home+' vs '+e.away;
+}
+function timeText(e){
+  const t=e.stamp||e.ts;if(!t)return '';
+  try{return new Intl.DateTimeFormat('es-MX',{hour:'numeric',minute:'2-digit'}).format(new Date(t))}catch(_){return ''}
+}
+function logoPair(e){
+  const fallback='<span class="v840-logo-fallback">⚽</span>';
+  return '<span class="v840-logos">'+
+    (e.homeLogo?'<img src="'+esc(e.homeLogo)+'" alt="" loading="eager" decoding="async">':fallback)+
+    (e.awayLogo?'<img src="'+esc(e.awayLogo)+'" alt="" loading="eager" decoding="async">':fallback)+
+  '</span>';
+}
+function feedMarkup(){
+  const rows=inbox().slice(0,12),native=Capacitor.isNativePlatform(),perm=read(PERM,{});
+  return '<section class="v840-match-feed" data-v840-feed>'+
+    '<div class="v840-feed-head"><div><small>PARTIDOS</small><h3>Actividad reciente</h3><p>Resultados y avisos de la Liga con los escudos de ambos equipos.</p></div>'+
+      '<button type="button" data-v840-permission class="'+(perm.granted?'on':'')+'">'+
+        (perm.granted?'Avisos del APK activos':native?'Activar avisos del APK':'Activar avisos')+
+      '</button></div>'+
+    '<div class="v840-feed-list">'+
+      (rows.length?rows.map(e=>'<button type="button" class="v840-notice-row" data-v840-match="'+esc(e.key)+'">'+
+        logoPair(e)+'<span class="v840-notice-copy"><span><b>'+esc(e.category)+'</b><small>'+esc(timeText(e))+'</small></span>'+
+        '<strong>'+esc(scoreText(e))+'</strong><em>'+esc(e.status)+(e.field?' · '+esc(e.field):'')+'</em></span><i>›</i></button>').join(''):
+        '<div class="v840-empty">Cuando haya resultados o cambios de marcador aparecerán aquí.</div>')+
+    '</div>'+
+  '</section>';
+}
+function renderFeed(){
+  if(route()!=='notifications')return;
+  const host=document.querySelector('.v46-ref-notifications-main')||
+             document.querySelector('.v414-notifications')||
+             document.querySelector('[data-v46-account="notifications"]');
+  if(!host)return;
+  host.querySelector('[data-v840-feed]')?.remove();
+  const device=host.querySelector('.v46-ref-device,.v414-device-card');
+  if(device)device.insertAdjacentHTML('afterend',feedMarkup());
+  else host.insertAdjacentHTML('afterbegin',feedMarkup());
+  const root=host.querySelector('[data-v840-feed]');
+  root?.querySelector('[data-v840-permission]')?.addEventListener('click',async e=>{
+    e.currentTarget.disabled=true;
+    const ok=await requestPermission();
+    e.currentTarget.disabled=false;
+    if(ok){
+      const latest=inbox()[0];
+      if(latest)await systemNotify({...latest,id:'test-'+Date.now(),type:'test',status:'Avisos activados'});
+    }
+  });
+  root?.querySelectorAll('[data-v840-match]').forEach(b=>b.addEventListener('click',()=>{
+    location.hash='#/competition';
+    try{localStorage.setItem('competitionTab','fixtures')}catch(_){}
+  }));
+}
+function interceptDeviceButtons(){
+  document.addEventListener('click',e=>{
+    const b=e.target.closest?.('[data-v46-device],[data-v414-device]');
+    if(!b||route()!=='notifications'||!Capacitor.isNativePlatform())return;
+    e.preventDefault();e.stopImmediatePropagation();
+    requestPermission();
+  },true);
+}
+function boot(){
+  interceptDeviceButtons();
+  const mo=new MutationObserver(()=>{clearTimeout(renderTimer);renderTimer=setTimeout(renderFeed,50)});
+  mo.observe(document.body,{childList:true,subtree:true});
+  window.addEventListener('hashchange',()=>setTimeout(renderFeed,50));
+  window.addEventListener('focus',refresh);
+  document.addEventListener('visibilitychange',()=>{if(!document.hidden)refresh()});
+  window.addEventListener('ljr:official-data',refresh);
+  refresh();setInterval(refresh,120000);
+}
+window.LJR_V840_NOTIFICATIONS={requestPermission,refresh,render:renderFeed,inbox};
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot,{once:true});else boot();
+})();
