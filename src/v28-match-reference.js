@@ -73,6 +73,7 @@
     ['goals','Goles',false],
     ['penalties','Tandas de penalti',false],
     ['startFinal','Inicio / Final',false],
+    ['halftime','Medio tiempo',false],
     ['lineups','Alineaciones oficiales',false],
     ['redCards','Tarjetas rojas',false],
     ['subs','Cambios',false],
@@ -85,7 +86,16 @@
     let saved={};try{saved=JSON.parse(localStorage.getItem(matchNotifKey(m))||'{}')||{}}catch(e){}
     return {...base,...saved};
   }
-  function saveMatchNotifState(m,state){try{localStorage.setItem(matchNotifKey(m),JSON.stringify(state))}catch(e){}}
+  function livePrefKey(m){
+    const clean=v=>String(v||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');
+    return 'ljr-match-live-prefs-v854:'+clean(m?.home)+'__'+clean(m?.away);
+  }
+  function saveMatchNotifState(m,state){
+    try{
+      localStorage.setItem(matchNotifKey(m),JSON.stringify(state));
+      localStorage.setItem(livePrefKey(m),JSON.stringify({...state,home:m?.home||'',away:m?.away||'',updatedAt:Date.now()}));
+    }catch(e){}
+  }
   function notifSwitch(key,on,all=false){
     return '<button type="button" class="v68-notif-switch '+(on?'on':'')+'" '+(all?'data-v68-all':'data-v68-pref="'+key+'"')+' role="switch" aria-checked="'+(on?'true':'false')+'" aria-label="'+(all?'Todas las notificaciones':key)+'"><i></i></button>';
   }
