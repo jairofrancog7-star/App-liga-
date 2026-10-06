@@ -6,6 +6,7 @@
 if(window.__LJR_V164_HISTORY_LOG__)return;
 window.__LJR_V164_HISTORY_LOG__=true;
 
+const RAW='https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/';
 const LOCAL='./data/official-live.json?v=20261001-v491-v35-all-pages';
 const REMOTE='https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/data/official-live.json?v=20261001-v491-v35-all-pages';
 let db=window.LJR_OFFICIAL_DATA||null;
@@ -88,13 +89,12 @@ const HISTORY_LOGO_PATHS={
 };
 
 const HISTORY_FORCE_LOGOS={
-  'manchester':RAW+'assets/official-logos/manchester.png?v=20261006-v873',
-  'la esperanza':RAW+'assets/official-logos/la-esperanza.png?v=20261006-v873',
-  'toros de cuenda':RAW+'assets/official-logos/toros-de-cuenda.png?v=20261006-v873'
+  'manchester':RAW+'assets/official-logos/manchester.png?v=20261006-v874',
+  'la esperanza':RAW+'assets/official-logos/la-esperanza.png?v=20261006-v874',
+  'toros de cuenda':RAW+'assets/official-logos/toros-de-cuenda.png?v=20261006-v874'
 };
 
 function logoUrl(name){
-  const RAW='https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/';
   const normalizePath=p=>{
     p=String(p||'').trim();if(!p)return '';
     if(/^(?:https?:|data:|blob:)/i.test(p))return p;
