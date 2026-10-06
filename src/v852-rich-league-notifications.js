@@ -96,7 +96,8 @@ async function syncPublished(){
           body:String(p.body||'Nueva actualización de la Liga.'),
           imageUrl:String(p.image||''),
           iconUrl:String(iconFor(p)||DEFAULT_ICON),
-          group:'liga-'+String(p.type||'avisos').toLowerCase().replace(/[^a-z0-9]+/g,'-')
+          group:'liga-'+String(p.type||'avisos').toLowerCase().replace(/[^a-z0-9]+/g,'-'),
+          route:safeRoute(p.route||'notifications')
         });
       }
     }
@@ -566,7 +567,7 @@ async function saveAdmin(form,rec,status,publish){
     status.textContent=publish?'Publicado en la app azul.':'Borrador guardado sin publicar.';
     if(cms()?.refresh)await cms().refresh();
     if(publish&&window.LJR_V840_NOTIFICATIONS?.sendRich){
-      await window.LJR_V840_NOTIFICATIONS.sendRich({title:out.title,body:out.body,imageUrl:out.image,iconUrl:out.icon||DEFAULT_ICON,group:'liga-'+out.type});
+      await window.LJR_V840_NOTIFICATIONS.sendRich({title:out.title,body:out.body,imageUrl:out.image,iconUrl:out.icon||DEFAULT_ICON,group:'liga-'+out.type,route:safeRoute(out.route||'notifications')});
       const seen=read(SEEN,{});seen[id]=String(result?.revision??rec?.revision??out.updatedAt);write(SEEN,seen);
     }
     setTimeout(()=>{closeAdmin();render()},800);
