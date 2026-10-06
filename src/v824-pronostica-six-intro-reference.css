@@ -81,6 +81,33 @@
   html body[data-app-route="predictorSix"] .v589-page.intro .v589-top button{
     pointer-events:auto!important;
   }
+  html body[data-app-route="predictorSix"] .v589-page.intro .v589-back{
+    width:46px!important;
+    height:46px!important;
+    min-width:46px!important;
+    min-height:46px!important;
+    margin:0!important;
+    padding:0!important;
+    display:grid!important;
+    place-items:center!important;
+    justify-self:start!important;
+    border:0!important;
+    border-radius:0!important;
+    background:transparent!important;
+    color:#fff!important;
+    box-shadow:none!important;
+  }
+  html body[data-app-route="predictorSix"] .v589-page.intro .v589-back svg{
+    width:30px!important;
+    height:30px!important;
+    display:block!important;
+    fill:none!important;
+    stroke:currentColor!important;
+    stroke-width:2.25!important;
+    stroke-linecap:round!important;
+    stroke-linejoin:round!important;
+    transform:none!important;
+  }
   /* En la referencia de introducción no hay menú de tres puntos. */
   html body[data-app-route="predictorSix"] .v589-page.intro .v589-more{
     visibility:hidden!important;
@@ -163,7 +190,7 @@
     position:absolute!important;
     left:0!important;
     right:0!important;
-    bottom:58px!important;
+    bottom:108px!important;
     z-index:6!important;
     margin:0!important;
     display:flex!important;
@@ -216,7 +243,7 @@
     background:transparent!important;
     /* V838 — subir ligeramente los botones para que la barra inferior
        no tape "Prueba como invitado". No mueve cuadros ni texto. */
-    transform:translateY(-20px)!important;
+    transform:translateY(-62px)!important;
   }
 }
 
@@ -253,6 +280,6 @@
   }
   html body[data-app-route="predictorSix"] .v589-page.intro .v589-intro-actions{
     padding:0 30px 18px!important;
-    transform:translateY(-22px)!important;
+    transform:translateY(-66px)!important;
   }
 }
