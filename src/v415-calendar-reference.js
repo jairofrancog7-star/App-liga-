@@ -575,7 +575,7 @@ function render(){
     const monthGames=allGames.filter(g=>g.year===y&&g.month===m);
 
     root.innerHTML='<section class="v103-calendar-page v415-calendar-page v839-reference-page" data-view="'+activeView+'" data-v103-calendar data-v415-calendar>'+
-      (activeView==='player'?playerMarkup():(topTabs()+categoryPanel()+(activeView==='squad'?squadMarkup():activeView==='standings'?standingsMarkup():(monthStrip()+calendarGrid(monthGames)+selectedMatches(allGames)))))+
+      (activeView==='player'?playerMarkup():(calendarTopbar()+topTabs()+categoryPanel()+(activeView==='squad'?squadMarkup():activeView==='standings'?standingsMarkup():(monthStrip()+calendarGrid(monthGames)+selectedMatches(allGames)))))+
     '</section>';
     document.body.classList.toggle('v839-picker-open',playerPickerOpen&&activeView==='player');
     bind(root);

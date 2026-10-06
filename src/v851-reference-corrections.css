@@ -1,0 +1,86 @@
+/* One scroll boundary, one header, and the supplied reference geometry. */
+html body.v839-reference-calendar #screen > .v839-reference-page {padding-top:0!important}
+html body.v839-reference-calendar #screen .v415-reference-topbar {
+ position:sticky!important;top:0!important;z-index:125!important;display:block!important;
+ height:92px!important;min-height:92px!important;width:100%!important;margin:0 0 16px!important;
+ background:linear-gradient(180deg,#153ff000,#111226),url('../public/profile/home-header.webp') center top/cover!important;
+ border:0!important;padding:0!important;
+}
+html body.v839-reference-calendar #screen .v415-reference-trophy {display:none!important}
+html body.v839-reference-calendar #screen .v415-reference-topbar .ljr-chrome-actions {position:absolute!important;inset:14px 18px auto!important;display:flex!important;justify-content:space-between!important}
+html body.v839-reference-calendar #screen .v415-reference-topbar button {width:36px!important;height:36px!important;padding:4px!important;border:0!important;background:transparent!important;color:white!important}
+html body.v839-reference-calendar #screen .v415-reference-topbar svg {width:28px!important;height:28px!important;fill:none!important;stroke:currentColor!important;stroke-width:1.8!important}
+html body.v839-reference-calendar #screen .v415-reference-topbar > .v415-reference-back {position:absolute!important;left:18px!important;top:14px!important}
+html body.v839-reference-calendar #screen .v415-reference-topbar > .v415-reference-profile {position:absolute!important;right:18px!important;top:14px!important}
+html body.v839-reference-calendar #screen .v415-top-row {top:108px!important;margin-bottom:0!important}
+html body.v839-reference-calendar #screen .v415-top-row::before {top:-16px!important;bottom:-12px!important}
+@media(max-width:1023px){
+ html body.ljr-v777[data-mobile-layout="v775"][data-app-route="home"][data-header-owner="global"] #app>.topbar {height:clamp(76px,21.8vw,112px)!important;min-height:clamp(76px,21.8vw,112px)!important;max-height:clamp(76px,21.8vw,112px)!important;background-color:#06075f!important}
+ html body[data-app-route="home"],html body[data-app-route="home"] #app,html body[data-app-route="home"] #app>#screen {background:#06075f!important}
+ html body[data-app-route="home"] #screen {scroll-padding-top:10px!important}
+ html body[data-app-route="home"] #screen::before {content:'';position:sticky;display:block;top:0;height:12px;margin-bottom:-12px;z-index:80;pointer-events:none;background:linear-gradient(#06075f,transparent)}
+}
+html body[data-app-route="scorers"] #app #screen .v391-reference {max-width:680px!important;margin:auto!important;padding:18px!important;background:#06075f!important}
+html body[data-app-route="scorers"] #app #screen .v391-feature {display:block!important;width:100%!important;min-height:0!important;height:auto!important;padding:0!important;margin:18px 0 28px!important;border:0!important;border-radius:18px!important;overflow:hidden!important;background:#10146c!important}
+html body[data-app-route="scorers"] #app #screen .v391-feature-photo {position:relative!important;display:block!important;width:100%!important;height:auto!important;aspect-ratio:626/350!important;min-height:0!important;padding:0!important;overflow:hidden!important;border-radius:0!important;background:linear-gradient(135deg,#233d85,#07154a)!important}
+html body[data-app-route="scorers"] #app #screen .v391-feature-photo>.v576-scorer-hero-photo {display:block!important;position:absolute!important;inset:0!important;width:100%!important;height:100%!important;object-fit:cover!important;object-position:center 25%!important;transform:none!important;border-radius:0!important;filter:none!important}
+html body[data-app-route="scorers"] #app #screen .v391-feature-kicker {position:absolute!important;left:18px!important;top:18px!important;color:white!important;font-size:16px!important;text-shadow:0 1px 6px #000!important}
+html body[data-app-route="scorers"] #app #screen .v391-feature-info {position:relative!important;display:grid!important;grid-template-columns:minmax(0,1fr) 78px!important;align-items:center!important;min-height:84px!important;height:auto!important;padding:14px 18px!important;gap:10px!important}
+html body[data-app-route="scorers"] #app #screen .v391-feature-person {display:block!important;min-width:0!important;padding:0!important}
+html body[data-app-route="scorers"] #app #screen .v391-feature-logo {display:inline-block!important;width:17px!important;height:17px!important;margin:0 5px 0 0!important;vertical-align:middle!important}
+html body[data-app-route="scorers"] #app #screen .v391-feature-person>span:last-child {display:inline!important}
+html body[data-app-route="scorers"] #app #screen .v391-feature-person b {display:inline!important;font-size:14px!important;font-weight:400!important;color:white!important}
+html body[data-app-route="scorers"] #app #screen .v391-feature-person strong {display:block!important;margin-top:4px!important;font-size:23px!important;line-height:1.15!important;white-space:normal!important;overflow:visible!important;text-overflow:clip!important;color:white!important}
+html body[data-app-route="scorers"] #app #screen .v391-feature-goals {display:flex!important;flex-direction:column!important;align-items:center!important;justify-content:center!important;min-width:0!important;height:100%!important;border-left:1px solid #ffffff22!important;padding:0 0 0 12px!important}
+html body[data-app-route="scorers"] #app #screen .v391-feature-goals b {font-size:30px!important;font-weight:400!important;line-height:1!important;color:#00ddec!important}
+html body[data-app-route="scorers"] #app #screen .v391-feature-goals small {font-size:14px!important;margin-top:4px!important;color:#b4bbdf!important}
+html body[data-app-route="scorers"] #app #screen .v462-ranking-title,html body[data-app-route="scorers"] #app #screen .v462-rank-head {display:none!important}
+html body[data-app-route="scorers"] #app #screen .v462-lower-ranking,html body[data-app-route="scorers"] #app #screen .v462-rank-card,html body[data-app-route="scorers"] #app #screen .v462-rank-list {display:block!important;width:100%!important;margin:0!important;padding:0!important;border:0!important;border-radius:0!important;background:#10146c!important;box-shadow:none!important}
+html body[data-app-route="scorers"] #app #screen .v462-rank-row {display:grid!important;grid-template-columns:28px 42px minmax(0,1fr) 28px!important;align-items:center!important;gap:10px!important;width:100%!important;min-height:70px!important;padding:14px 0!important;border:0!important;border-bottom:1px solid #ffffff20!important;border-radius:0!important;background:transparent!important;text-align:left!important}
+html body[data-app-route="scorers"] #app #screen .v462-rank-pos {position:static!important;font-size:13px!important;color:white!important}
+html body[data-app-route="scorers"] #app #screen .v462-rank-row>.v576-player-avatar {position:relative!important;display:block!important;width:42px!important;height:42px!important;min-width:42px!important;min-height:42px!important;border-radius:50%!important;padding:0!important;margin:0!important;overflow:hidden!important;transform:none!important;background:#fff!important}
+html body[data-app-route="scorers"] #app #screen .v462-rank-row>.v576-player-avatar img {position:absolute!important;inset:0!important;width:100%!important;height:100%!important;object-fit:cover!important;transform:none!important;border:0!important;border-radius:50%!important}
+html body[data-app-route="scorers"] #app #screen .v462-rank-copy {position:static!important;display:block!important;min-width:0!important;padding:0!important}
+html body[data-app-route="scorers"] #app #screen .v462-rank-copy>b {display:block!important;font-size:16px!important;line-height:1.15!important;color:#fff!important;white-space:normal!important}
+html body[data-app-route="scorers"] #app #screen .v462-rank-copy>small {display:flex!important;align-items:center!important;gap:5px!important;margin-top:3px!important;font-size:14px!important;line-height:1.15!important;color:#b4bbdf!important}
+html body[data-app-route="scorers"] #app #screen .v462-rank-logo {display:block!important;width:15px!important;height:15px!important;min-width:15px!important;margin:0!important}
+html body[data-app-route="scorers"] #app #screen .v462-rank-row>strong {position:static!important;font-size:22px!important;line-height:1!important;color:#fff!important;text-align:right!important}
+html body.v837-jerseys .v576-slot.filled .v590-kit-wrap>:not(.v820-lineup-kit):not([data-v576-remove]) {display:none!important}
+html body.v837-jerseys .v576-slot.filled .v590-kit-wrap:not([data-v837-kit]) [data-v576-remove] {visibility:hidden!important}
+.v851-kit-loading {display:block;width:100%;height:100%;background:linear-gradient(90deg,transparent,#7bcaff25,transparent);border-radius:25%;animation:v851-loading 1.3s infinite}
+@keyframes v851-loading {50%{opacity:.35}}
+@media(prefers-reduced-motion:reduce){.v851-kit-loading {animation:none}}
+html body[data-app-route="predictorSix"] #screen .v589-page.intro {display:flex!important;flex-direction:column!important;min-height:calc(100dvh - var(--v768-nav-h,70px))!important;height:auto!important;max-height:none!important;padding:0 0 24px!important;overflow:visible!important;gap:0!important;background:linear-gradient(#02055c 25%,#1728dc)!important}
+html body[data-app-route="predictorSix"] #screen .v589-page.intro .v589-top {flex:0 0 86px!important;height:86px!important;margin:0!important}
+html body[data-app-route="predictorSix"] #screen .v589-page.intro .v589-sponsor {flex:0 0 54px!important;height:54px!important;margin:0!important}
+html body[data-app-route="predictorSix"] #screen .v589-intro-icons {position:relative!important;display:block!important;width:100%!important;flex:1 0 210px!important;height:clamp(210px,30dvh,290px)!important;min-height:210px!important;margin:0!important;padding:0!important;transform:translateX(var(--v839-drag-x,0px))!important;background:none!important;overflow:hidden!important}
+.v851-six-art {display:grid;grid-template-columns:repeat(3,1fr);gap:9px;position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:67%;max-width:340px}
+.v851-six-art>span {display:grid;place-items:center;aspect-ratio:1.45;border-radius:6px;background:linear-gradient(#264dfa,#0b20d1);border-top:1px solid #7bd4ff;box-shadow:0 15px 12px -12px #0008;color:#81ddff}
+.v851-six-art svg {width:78%;height:65%;fill:none;stroke:currentColor;stroke-width:1.4}
+.v851-six-art.joker>span:nth-child(2){transform:scale(1.18) rotate(-5deg);color:#fff;background:#027eb7;box-shadow:0 0 22px #43cfff80}
+.v851-event-art {position:absolute;inset:36px 22%;border-radius:12px;display:grid;place-items:center;background:linear-gradient(135deg,#293df2,#092077);transform:rotate(-7deg);box-shadow:0 15px 20px #0005;color:#8be5ff;font-size:36px}
+.v851-event-art>span {display:block;position:absolute;right:-20px;bottom:18px;border-radius:10px;padding:14px;background:#254efa;transform:rotate(12deg);font-size:25px}
+.v851-friends-art {position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:128px;height:128px;display:grid;place-items:center;border-radius:50%;background:linear-gradient(#2b48f6,#182aba);box-shadow:0 16px 25px #0004;color:#9ce9ff}
+.v851-friends-art svg {width:88px;fill:none;stroke:currentColor;stroke-width:2}
+.v851-intro-arrow {position:absolute!important;top:50%!important;right:20px!important;width:26px!important;height:40px!important;padding:0!important;border:0!important;background:none!important;color:#fff!important;font-size:36px!important}
+.v851-intro-arrow.prev {right:auto!important;left:20px!important}
+html body[data-app-route="predictorSix"] #screen .v589-intro-copy {flex:0 0 auto!important;width:100%!important;min-height:0!important;margin:0!important;padding:10px 36px 0!important;transform:translateX(var(--v839-drag-x,0px))!important}
+html body[data-app-route="predictorSix"] #screen .v589-intro-copy h2 {font-size:21px!important;margin:0 0 12px!important}
+html body[data-app-route="predictorSix"] #screen .v589-intro-copy p {font-size:14px!important;line-height:1.35!important;min-height:38px!important;margin:0!important}
+html body[data-app-route="predictorSix"] #screen .v589-dots {display:flex!important;justify-content:center!important;gap:9px!important;margin:28px 0 24px!important;height:10px!important;transform:none!important}
+html body[data-app-route="predictorSix"] #screen .v589-intro-actions {position:static!important;display:grid!important;gap:13px!important;width:calc(100% - 72px)!important;margin:0 auto!important;padding:0!important;transform:none!important}
+html body[data-app-route="predictorSix"] #screen .v589-intro-actions button {min-height:55px!important;height:55px!important;border-radius:16px!important;font-size:14px!important;margin:0!important}
+html body[data-app-route="predictorSix"] #screen .v589-page:not(.intro) .v589-switch {position:fixed!important;left:50%!important;bottom:calc(var(--v768-nav-h,70px) + 10px)!important;top:auto!important;transform:translateX(-50%)!important;width:min(330px,85vw)!important;z-index:900!important;border-radius:35px!important;background:#1738a8!important;box-shadow:0 4px 18px #0005!important}
+html body[data-app-route="predictorSix"] #screen .v589-list {padding-bottom:100px!important}
+.v851-form-sheet {max-height:75dvh;overflow:auto}
+.v851-form-tabs {display:flex;gap:10px;margin:18px 0}
+.v851-form-tabs button {flex:1;border:1px solid #639bec;border-radius:8px;background:#183696;color:white;padding:9px}
+.v851-form-row {display:grid;grid-template-columns:1fr 55px 1fr;align-items:center;gap:10px;border-bottom:1px solid #ffffff22;padding:12px 0;color:white}
+.v851-form-row small {grid-column:1/-1;color:#b3c8ed}
+.v851-form-row span:last-child{text-align:right}
+.v851-joker {display:block;width:100%;border:1px solid #78caff;border-radius:10px;background:transparent;color:#78caff;padding:12px;margin-top:12px}
+.v851-joker.active {background:#78caff;color:#083966}
+.v589-form button {border:0;background:none;color:white;padding:12px;font:inherit}
+.v589-form button i {display:inline-block;margin:8px 3px 0;font-style:normal;color:#88ceff}
+.v851-filters {display:flex;gap:8px;flex-wrap:wrap;padding:12px;color:white}
+.v851-filters select,.v851-filters input[type=number] {min-width:0;max-width:150px;padding:10px;border:1px solid #7894ca;border-radius:7px;background:#143474;color:white}

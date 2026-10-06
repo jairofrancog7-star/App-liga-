@@ -260,7 +260,6 @@ function heroScorerCard(r,slot){
   return '<article class="v391-feature rank-'+slot+'">'+
     '<div class="v391-feature-photo">'+heroPlayerPhoto(r.player,r.team,catId())+
       '<span class="v391-feature-kicker">#'+esc(shownRank)+' Máximo goleador</span>'+
-      '<span class="v391-feature-media"><small>00:'+(slot===1?'38':'36')+'</small><i aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M9 7.5 17 12l-8 4.5z"/></svg></i></span>'+
     '</div>'+
     '<div class="v391-feature-info">'+
       '<div class="v391-feature-person" data-v194-player="'+esc(r.player)+'" data-v194-team="'+esc(r.team)+'">'+
@@ -288,7 +287,7 @@ function lowerStat(){
 }
 function lowerRankingRow(r,i){
   return '<button type="button" class="v462-rank-row v576-with-photo" data-v194-player="'+esc(r.player)+'" data-v194-team="'+esc(r.team)+'" data-v462-ranking-kind="player">'+
-    '<span class="v462-rank-pos">'+String(i+1)+'º</span>'+
+    '<span class="v462-rank-pos">#'+esc(r.rank||i+3)+'</span>'+
     playerAvatar(r.player,r.team,catId())+
     '<span class="v462-rank-copy"><b>'+esc(r.player)+'</b><small>'+logoHtml(r.team,'v462-rank-logo')+esc(r.team)+'</small></span>'+
     '<strong>'+esc(r.goals)+'</strong>'+
@@ -338,7 +337,7 @@ function categoryBody(){
   return '<div class="v391-category-body" data-v391-category-body data-v391-category="'+esc(id)+'">'+
     '<div class="v391-category-title"><small>'+esc(catName(id))+'</small><span>'+rows.length+' goleador'+(rows.length===1?'':'es')+' publicado'+(rows.length===1?'':'s')+'</span></div>'+
     (rows.length
-      ?heroScorerCard(rows[0],1)+heroScorerCard(rows[1],2)+lowerRanking(rows)
+      ?(lowerStat()==='goals'?heroScorerCard(rows[0],1)+heroScorerCard(rows[1],2)+lowerRanking(rows.slice(2)):lowerRanking(rows))
       :'<div class="v391-empty">Todavía no hay goleadores oficiales publicados para '+esc(catName(id))+'.</div>')+
   '</div>';
 }

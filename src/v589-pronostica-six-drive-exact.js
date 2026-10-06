@@ -17,16 +17,38 @@ const $$=(s,r=document)=>Array.from(r.querySelectorAll(s));
 const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const route=()=>String(location.hash||'').replace(/^#\/?/,'').split('?')[0]||'home';
 
-const games=[
- {id:'p6a',home:'FRANCO FC',homeLogo:'assets/official-logos/franco-fc.png',away:'HERRERAS FC',awayLogo:'assets/official-logos/herreras-fc.png',time:'08:00',field:'Campo 1'},
- {id:'p6b',home:'TERRÍCOLAS',homeLogo:'assets/official-logos/terricolas.png',away:'GALÁCTICOS',awayLogo:'assets/teams/galacticos-pozos.webp',time:'10:00',field:'Campo 2'},
- {id:'p6c',home:'LINCES',homeLogo:'assets/official-logos/linces.png',away:'JUVENTUS',awayLogo:'assets/official-logos/juventus.png',time:'11:30',field:'Campo 3'},
- {id:'p6d',home:'HERMANOS',homeLogo:'assets/official-logos/hermanos.png',away:'SAN JOSÉ FC',awayLogo:'assets/official-logos/san-jose-fc.png',time:'13:00',field:'Campo 1'},
- {id:'p6e',home:'LOBOS CDG',homeLogo:'assets/official-logos/lobos-cdg.png',away:'NAPOLI',awayLogo:'assets/official-logos/napoli.png',time:'15:30',field:'Campo 2'},
- {id:'p6f',home:'ABEJAS',homeLogo:'assets/official-logos/abejas.png',away:'BOAVISTA',awayLogo:'assets/official-logos/boavista.png',time:'17:00',field:'Campo 1'}
-];
+let games=[],journeys=[],officialGames=[];
+const norm=v=>String(v||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[^a-z0-9]/g,'');
+function officialLogo(name){return window.LJR_TEAM_LOGOS?.get?.(name)||window.LJR_OFFICIAL_API?.getLogo?.(name)||LEAGUE}
+function refreshGames(){
+ const data=window.LJR_OFFICIAL_API?.getData?.()||window.LJR_OFFICIAL_DATA;
+ if(!data?.categories)return;
+ const out=[];
+ Object.entries(data.categories).forEach(([cid,cat])=>(cat.fixtures||[]).forEach((block,bi)=>(block.rows||[]).forEach((r,ri)=>{
+  if(!r?.[2]||!r?.[6])return;
+  const d=String(r[8]||'').match(/(\d{1,2})\/(\d{1,2})\/(\d{4})(?:\s+(\d{1,2}):(\d{2}))?/);if(!d)return;
+  const iso=d[3]+'-'+d[2].padStart(2,'0')+'-'+d[1].padStart(2,'0');
+  out.push({id:'p6-'+cid+'-'+bi+'-'+ri,cid,round:String(r[1]||bi+1),home:r[2],away:r[6],homeLogo:officialLogo(r[2]),awayLogo:officialLogo(r[6]),date:iso,time:d[4]?d[4].padStart(2,'0')+':'+d[5]:'Por confirmar',field:r[7]||'Campo por confirmar',homeScore:String(r[3]??''),awayScore:String(r[5]??'')});
+ })));
+ officialGames=out;
+ const grouped=new Map();out.filter(g=>g.cid==='3').forEach(g=>{if(!grouped.has(g.round))grouped.set(g.round,[]);grouped.get(g.round).push(g)});
+ const next=[...grouped].map(([round,list])=>({round,games:list.slice(0,6),date:list[0].date})).sort((a,b)=>a.date.localeCompare(b.date));
+ const firstLoad=!journeys.length;journeys=next;
+ if(firstLoad||!ui.journey){const today=new Intl.DateTimeFormat('en-CA',{timeZone:'America/Mexico_City'}).format(new Date());const nextIndex=journeys.findIndex(j=>j.date>=today);ui.journey=nextIndex<0?Math.max(1,journeys.length):nextIndex+1}
+ ui.journey=Math.max(1,Math.min(journeys.length||1,ui.journey));games=journeys[ui.journey-1]?.games||[];
+}
+function fixtureDate(g){return new Intl.DateTimeFormat('es-MX',{weekday:'short',day:'numeric',month:'short',timeZone:'UTC'}).format(new Date(g.date+'T12:00:00Z'))}
+function locked(g){return /^\d+$/.test(g.homeScore)&&/^\d+$/.test(g.awayScore)||Date.now()>=Date.parse(g.date+'T'+(/\d{2}:\d{2}/.test(g.time)?g.time:'23:59')+':00-06:00')}
+function lastFive(team){return officialGames.filter(g=>(norm(g.home)===norm(team)||norm(g.away)===norm(team))&&/^\d+$/.test(g.homeScore)&&/^\d+$/.test(g.awayScore)).sort((a,b)=>b.date.localeCompare(a.date)).slice(0,5)}
+function formMark(g,team){const a=Number(norm(g.home)===norm(team)?g.homeScore:g.awayScore),b=Number(norm(g.home)===norm(team)?g.awayScore:g.homeScore);return a===b?'E':a>b?'V':'D'}
+function formButton(team){return '<button type="button" data-v851-form="'+esc(team)+'"><b>'+esc(team)+'</b><br>'+lastFive(team).map(g=>'<i>'+formMark(g,team)+'</i>').join('')+'</button>'}
+function formSheet(team){
+ const selected=games.find(g=>g.id===ui.game)||games.find(g=>norm(g.home)===norm(team)||norm(g.away)===norm(team));
+ const rows=lastFive(team);
+ return '<div class="v589-overlay" data-v589-overlay><button class="v589-dim" type="button" data-v589-close aria-label="Cerrar"></button><section class="v589-sheet v851-form-sheet"><span class="v589-handle"></span><h2>Últimos 5 partidos</h2><div class="v851-form-tabs">'+(selected?[selected.home,selected.away]:[team]).map(t=>'<button type="button" data-v851-form="'+esc(t)+'">'+esc(t)+'</button>').join('')+'</div><h3>'+esc(team)+'</h3>'+rows.map(g=>'<div class="v851-form-row"><small>'+esc(fixtureDate(g))+' · Jornada '+esc(g.round)+'</small><span>'+esc(g.home)+'</span><b>'+g.homeScore+' - '+g.awayScore+'</b><span>'+esc(g.away)+'</span></div>').join('')+(!rows.length?'<p>Todavía no hay resultados publicados para este equipo.</p>':'')+'</section></div>';
+}
 
-let ui={view:'intro',introSlide:0,journey:2,game:null,tempHome:0,tempAway:0,menu:false};
+let ui={view:'intro',introSlide:0,journey:0,game:null,tempHome:0,tempAway:0,menu:false};
 let splashTimer=0,mountTimer=0;
 
 function read(){
@@ -77,7 +99,7 @@ function consumeAfterAuth(){
   }catch(_){}
   return false;
 }
-function logo(path,name){return '<img src="'+BASE+path+'" alt="'+esc(name)+'" loading="lazy" decoding="async">'}
+function logo(path,name){return '<img src="'+esc(/^(https?:|data:|blob:|\.\/)/.test(path)?path:BASE+path)+'" alt="'+esc(name)+'" loading="lazy" decoding="async">'}
 function sponsor(){
   return '<div class="v589-sponsor"><span>Patrocinado por</span><span class="v589-sponsor-badge"><img src="'+LEAGUE+'" alt="" aria-hidden="true"><b>LIGA JUVENTINO</b></span></div>';
 }
@@ -109,34 +131,24 @@ function introTop(){
 }
 
 const introSlides=[
-  {
-    title:'Pronostica seis resultados',
-    text:'Consigue puntos por el marcador, la diferencia de goles y los goles marcados por cada equipo.',
-    icons:['◇ ◇','▱ ◇','▱ ◎','▱ ◎','◇ ◌','◇ ◌']
-  },
-  {
-    title:'Acierta el marcador exacto',
-    text:'Desliza a la izquierda o derecha para conocer cómo funciona cada forma de puntuación.',
-    icons:['2 - 1','1 - 0','3 - 2','0 - 0','1 - 1','2 - 0']
-  },
-  {
-    title:'Suma por diferencia de goles',
-    text:'Aunque no aciertes el marcador exacto, una diferencia correcta también puede darte puntos.',
-    icons:['+1','+2','+3','0','-1','-2']
-  },
-  {
-    title:'También cuentan los goles',
-    text:'Los goles pronosticados para cada equipo forman parte de la puntuación de Pronostica Seis.',
-    icons:['⚽ 1','⚽ 2','⚽ 3','⚽ 0','⚽ 2','⚽ 1']
-  }
+ {title:'Pronostica seis resultados',text:'Consigue puntos por el marcador, la diferencia de goles y los goles marcados por cada equipo.'},
+ {title:'Juega tu comodín',text:'Elige un partido de cada jornada y duplica los puntos que consigas.'},
+ {title:'Suma puntos con los eventos adicionales',text:'Sigue tus marcadores y los resultados publicados para conocer tus puntos.'},
+ {title:'Enfréntate a tus amigos',text:'Compara tus pronósticos y juega cada jornada con tus amigos.'}
 ];
+function introArt(idx){
+ const shape='<svg viewBox="0 0 90 50" aria-hidden="true"><path d="M18 4 8 23l10 19 10-19ZM50 5l16 6v18L50 43 35 29V11ZM40 11h20M50 6v36"/></svg>';
+ if(idx<2)return '<div class="v851-six-art '+(idx===1?'joker':'')+'">'+Array.from({length:6},(_,i)=>'<span>'+((idx===1&&i===1)?'<b>2×</b>':shape)+'</span>').join('')+'</div>';
+ if(idx===2)return '<div class="v851-event-art"><b>2 - 1</b><span>+ puntos</span></div>';
+ return '<div class="v851-friends-art"><svg viewBox="0 0 80 80" aria-hidden="true"><circle cx="30" cy="23" r="11"/><circle cx="55" cy="28" r="9"/><path d="M11 65v-7c0-13 8-20 19-20s19 7 19 20v7M48 43c15-4 24 6 24 19"/></svg></div>';
+}
 
 function intro(){
   const idx=Math.max(0,Math.min(introSlides.length-1,Number(ui.introSlide)||0));
   const slide=introSlides[idx];
   return '<section class="v589-page intro" data-v589-root data-v589-intro-swipe data-v589-intro-index="'+idx+'">'+introTop()+sponsor()+
     '<div class="v589-intro-icons" data-v589-intro-track>'+
-      slide.icons.map(v=>'<span>'+esc(v)+'</span>').join('')+
+      introArt(idx)+(idx>0?'<button type="button" class="v851-intro-arrow prev" data-v851-intro-step="-1" aria-label="Pantalla anterior">‹</button>':'')+(idx<3?'<button type="button" class="v851-intro-arrow" data-v851-intro-step="1" aria-label="Pantalla siguiente">›</button>':'')+
     '</div>'+
     '<div class="v589-intro-copy" data-v589-intro-track><h2>'+esc(slide.title)+'</h2><p>'+esc(slide.text)+'</p>'+
       '<div class="v589-dots" aria-label="Pantallas de introducción">'+
@@ -156,7 +168,7 @@ function savedText(id){
 function card(g,i){
   const saved=savedText(g.id);
   return '<article class="v589-match-card" data-v589-card="'+g.id+'">'+
-    '<div class="v589-card-head"><button type="button" data-v589-info aria-label="Cómo conseguir puntos">ⓘ</button><b>dom 04 oct, '+esc(g.time)+'</b><span>▥</span></div>'+
+    '<div class="v589-card-head"><button type="button" data-v589-info aria-label="Cómo conseguir puntos">ⓘ</button><b>'+esc(fixtureDate(g))+', '+esc(g.time)+'</b><span>▥</span></div>'+
     '<div class="v589-teams">'+
       '<div class="v589-team">'+logo(g.homeLogo,g.home)+'<b>'+esc(g.home)+'</b></div>'+
       '<button type="button" class="v589-score-pair" data-v589-open="'+g.id+'" aria-label="Pronosticar '+esc(g.home)+' contra '+esc(g.away)+'">'+
@@ -165,15 +177,16 @@ function card(g,i){
       '<div class="v589-team">'+logo(g.awayLogo,g.away)+'<b>'+esc(g.away)+'</b></div>'+
     '</div>'+
     '<div class="v589-popular"><small>Pronósticos populares</small><div><span>1 - 0</span><span>1 - 1</span><span>0 - 1</span></div><div class="v589-pct"><em>—</em><em>—</em><em>—</em></div></div>'+
-    '<button type="button" class="v589-card-foot" data-v589-open="'+g.id+'">'+(saved?'Pronóstico guardado · '+esc(saved):'Inicia sesión para ver tus pronósticos')+'</button>'+
+    '<button type="button" class="v589-card-foot" data-v589-open="'+g.id+'">'+(locked(g)?'Partido cerrado':saved?'Pronóstico guardado · '+esc(saved):'Toca para pronosticar')+'</button>'+
   '</article>';
 }
 function predictions(){
-  const date=ui.journey===1?'27 - 28 sep':ui.journey===2?'03 - 04 oct':ui.journey===3?'10 - 11 oct':'17 - 18 oct';
+  refreshGames();
+  const date=games[0]?fixtureDate(games[0]):'Partidos por publicar';
   return '<section class="v589-page predictions" data-v589-root>'+top('Pronósticos',true)+
     bottomSwitch('predictions')+sponsor()+
-    '<nav class="v589-journeys">'+[1,2,3,4].map(n=>'<button type="button" data-v589-journey="'+n+'" class="'+(ui.journey===n?'active':'')+'">Jornada '+n+'</button>').join('')+'</nav>'+
-    '<main class="v589-list"><h2>'+date+'</h2>'+games.map(card).join('')+'</main>'+
+    '<nav class="v589-journeys">'+journeys.map((j,i)=>{const n=i+1;return '<button type="button" data-v589-journey="'+n+'" class="'+(ui.journey===n?'active':'')+'">Jornada '+esc(j.round)+'</button>'}).join('')+'</nav>'+
+    '<main class="v589-list"><h2>'+date+'</h2>'+games.map(card).join('')+(!games.length?'<p>No hay seis partidos publicados para esta jornada.</p>':'')+'</main>'+
     (ui.menu?menuHtml():'')+
   '</section>';
 }
@@ -207,7 +220,8 @@ function predictionSheet(g){
       '<div class="v589-score-reset"><button type="button" data-v589-dec="home">−</button><span></span><button type="button" data-v589-dec="away">−</button></div>'+
       '<div class="v589-popular modal"><small>Pronósticos populares</small><div><span>1 - 0</span><span>1 - 1</span><span>0 - 1</span></div><div class="v589-pct"><em>—</em><em>—</em><em>—</em></div></div>'+
       '<button type="button" class="v589-primary save" data-v589-save>Guardar el pronóstico</button>'+
-      '<div class="v589-form"><span><b>▥ '+esc(g.home)+'</b><i>•</i><i>•</i><i>•</i><i>•</i><i>•</i></span><span><b>'+esc(g.away)+' ▥</b><i>•</i><i>•</i><i>•</i><i>•</i><i>•</i></span></div>'+
+      '<button type="button" class="v851-joker '+(read().jokers?.[journeys[ui.journey-1]?.round]===g.id?'active':'')+'" data-v851-joker="'+g.id+'">Comodín · duplica tus puntos</button>'+
+      '<div class="v589-form">'+formButton(g.home)+formButton(g.away)+'</div>'+
     '</section></div>';
 }
 function pointsSheet(){
@@ -239,7 +253,7 @@ function bindIntroSwipe(){
   root.dataset.v589SwipeBound='1';
   let startX=0,startY=0,lastX=0,pointer=null,dragging=false;
 
-  const tracks=()=>$('[data-v589-intro-track]',root);
+  const tracks=()=>$$('[data-v589-intro-track]',root);
   const setDrag=x=>tracks().forEach(el=>el.style.setProperty('--v839-drag-x',x+'px'));
   const clearDrag=()=>tracks().forEach(el=>el.style.removeProperty('--v839-drag-x'));
 
@@ -274,6 +288,7 @@ function bindIntroSwipe(){
 
 function render(){
   if(route()!==ROUTE)return;
+  refreshGames();
   const screen=$('#screen');if(!screen)return;
   let html='';
   if(ui.view==='intro')html=intro();
@@ -285,7 +300,7 @@ function render(){
   document.body.dataset.v589Predictor='1';
 }
 function openPrediction(id){
-  const g=games.find(x=>x.id===id);if(!g)return;
+  const g=games.find(x=>x.id===id);if(!g)return;if(locked(g)){toast('El partido ya comenzó; los pronósticos están cerrados');return}
   ui.view='predictions';ui.game=id;
   const current=read().predictions[id]||{home:0,away:0};
   ui.tempHome=Number(current.home)||0;ui.tempAway=Number(current.away)||0;
@@ -298,6 +313,7 @@ function openPoints(){
 function closeOverlay(){const o=$('[data-v589-overlay]');if(o)o.remove()}
 function savePrediction(){
   if(!ui.game)return;
+  const g=games.find(x=>x.id===ui.game);if(!g||locked(g)){toast('Este partido ya está cerrado');closeOverlay();return}
   const s=read();
   s.predictions[ui.game]={home:ui.tempHome,away:ui.tempAway,updatedAt:Date.now()};
   write(s);
@@ -323,6 +339,12 @@ function handleClick(e){
     e.preventDefault();e.stopPropagation();
     ui.menu=!ui.menu;render();return
   }
+  const step=t.getAttribute('data-v851-intro-step');
+  if(step!==null){e.preventDefault();e.stopPropagation();ui.introSlide=Math.max(0,Math.min(3,ui.introSlide+Number(step)));render();return}
+  const form=t.getAttribute('data-v851-form');
+  if(form!==null){e.preventDefault();e.stopPropagation();closeOverlay();$('[data-v589-root]')?.insertAdjacentHTML('beforeend',formSheet(form));return}
+  const joker=t.getAttribute('data-v851-joker');
+  if(joker!==null){e.preventDefault();e.stopPropagation();const s=read();s.jokers=s.jokers||{};const round=journeys[ui.journey-1]?.round;s.jokers[round]=s.jokers[round]===joker?null:joker;write(s);t.classList.toggle('active',s.jokers[round]===joker);return}
   const introDot=t.getAttribute('data-v589-intro-dot');
   if(introDot!==null){
     e.preventDefault();e.stopPropagation();
@@ -398,12 +420,14 @@ function mount(){
 function schedule(ms=40){clearTimeout(mountTimer);mountTimer=setTimeout(mount,ms)}
 
 document.addEventListener('click',handleClick,true);
+window.addEventListener('ljr:official-data',()=>{if(route()===ROUTE)render()});
 window.addEventListener('hashchange',()=>{
   const returning=route()===ROUTE&&consumeAfterAuth();
-  ui={view:returning?(ui.view||'predictions'):'intro',introSlide:0,journey:2,game:null,tempHome:0,tempAway:0,menu:false};
+  ui={view:returning?(ui.view||'predictions'):'intro',introSlide:0,journey:0,game:null,tempHome:0,tempAway:0,menu:false};
   schedule(20)
 });
 new MutationObserver(()=>{if(route()===ROUTE)schedule(30)}).observe(document.documentElement,{childList:true,subtree:true});
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',()=>schedule(40),{once:true});else schedule(20);
 setTimeout(mount,400);
 })();
+

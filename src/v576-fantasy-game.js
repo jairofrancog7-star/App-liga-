@@ -14,6 +14,7 @@ const SLOTS=[
 {id:8,pos:'DEF'},{id:9,pos:'DEF'},{id:10,pos:'DEF'},{id:11,pos:'DEF'},{id:12,pos:'DEF'},
 {id:13,pos:'POR'},{id:14,pos:'POR'}];
 let raf=0,targetSlot=0,query='',matchesRound='';
+let filters={team:'',position:'',maxPrice:100,affordable:false};
 
 const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const norm=v=>String(v??'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[^a-z0-9]+/g,' ').trim();
@@ -96,6 +97,10 @@ function kitSpec(name){
  return all[idx];
 }
 function kitSvg(p,empty=false){
+ if(!empty&&window.LJR_JERSEY_ASSETS?.itemFor(p?.team)){
+   const ready=window.LJR_JERSEY_ART?.cached?.(p.team);
+   return '<span class="v820-lineup-kit">'+(ready?'<img class="v820-lineup-jersey" src="'+esc(ready.src)+'" alt="Playera de '+esc(p.team)+'" draggable="false">':'<span class="v851-kit-loading" aria-label="Cargando playera"></span>')+'</span>';
+ }
  const spec=empty?['empty','#176f80','#7ecbd3','plain']:kitSpec(p?.team||p?.name||'');
  const [variant,primary,accent,pattern]=spec;
  const logo=empty?'':teamLogo(p?.team||'');
@@ -227,13 +232,19 @@ function help(kind){
 function picker(slotId){
  targetSlot=Number(slotId)||0;
  const slot=SLOTS.find(s=>s.id===targetSlot)||SLOTS[0];
- layer('<section class="v576-picker"><header><button type="button" data-v576-close>‹</button><span><small>ELIGE JUGADOR</small><b>'+slot.pos+'</b></span></header><label><span>⌕</span><input type="search" data-v576-query placeholder="Buscar jugador o equipo" value="'+esc(query)+'"></label><div class="v576-picker-list" data-v576-picker-list></div></section>','picker');
+ layer('<section class="v576-picker"><header><button type="button" data-v576-close>‹</button><span><small>ELIGE JUGADOR</small><b>'+slot.pos+'</b></span></header><label><span>⌕</span><input type="search" data-v576-query placeholder="Buscar jugador o equipo" value="'+esc(query)+'"></label><button type="button" class="v851-filter-open" data-v851-filter-open>Posición · Equipo · Precio</button><div class="v576-picker-list" data-v576-picker-list></div></section>','picker');
  renderPicker();
+}
+function filterPanel(){
+ const host=document.querySelector('.v576-picker');if(!host)return;
+ if(host.querySelector('[data-v851-filters]')){host.querySelector('[data-v851-filters]').remove();return}
+ const teams=[...new Set(allPlayers().map(p=>p.team))].sort();
+ host.querySelector('[data-v851-filter-open]').insertAdjacentHTML('afterend','<section class="v851-filters" data-v851-filters><label>Posición<select data-v851-filter="position"><option value="">Todas</option>'+[['POR','Portero'],['DEF','Defensa'],['CEN','Centrocampista'],['DEL','Delantero']].map(([v,n])=>'<option value="'+v+'"'+(filters.position===v?' selected':'')+'>'+n+'</option>').join('')+'</select></label><label>Equipo<select data-v851-filter="team"><option value="">Todos los equipos</option>'+teams.map(t=>'<option'+(filters.team===t?' selected':'')+'>'+esc(t)+'</option>').join('')+'</select></label><label>Precio máximo<input type="number" min="0" max="100" step=".5" value="'+filters.maxPrice+'" data-v851-filter="maxPrice"></label><label><input type="checkbox" data-v851-filter="affordable"'+(filters.affordable?' checked':'')+'> Jugadores que puedo permitirme</label><button type="button" data-v851-filter-clear>Borrar filtros</button></section>');
 }
 function renderPicker(){
  const host=document.querySelector('[data-v576-picker-list]');if(!host)return;
  const slot=SLOTS.find(s=>s.id===targetSlot)||SLOTS[0],used=new Set(readSquad().map(key)),needle=norm(query);
- const rows=allPlayers().filter(p=>(p.group==='ANY'||p.group===slot.pos)&&!used.has(key(p))&&(!needle||norm(p.name+' '+p.team+' '+p.position).includes(needle))).slice(0,90);
+ const rows=allPlayers().filter(p=>(p.group==='ANY'||p.group===slot.pos)&&!used.has(key(p))&&(!filters.team||norm(p.team)===norm(filters.team))&&(!filters.position||p.group===filters.position)&&p.cost<=Number(filters.maxPrice)&&(!filters.affordable||p.cost<=BUDGET-total())&&(!needle||norm(p.name+' '+p.team+' '+p.position).includes(needle))).slice(0,90);
  host.innerHTML=rows.length?rows.map(p=>'<button type="button" class="v576-player-row" data-v576-pick="'+esc(encodeURIComponent(JSON.stringify(p)))+'"><span class="v576-pick-art">'+art(p)+'</span><span><b>'+esc(p.name)+'</b><small>'+esc(p.team)+(p.position?' · '+esc(p.position):'')+'</small></span><strong>'+money(p.cost)+'</strong></button>').join(''):'<div class="v576-empty">No hay jugadores disponibles con este filtro.</div>';
 }
 function add(p){
@@ -281,11 +292,14 @@ document.addEventListener('click',e=>{
  const rd=el.closest('[data-v592-round]');if(rd){e.preventDefault();matchesRound=rd.dataset.v592Round||matchesRound;const sheet=document.querySelector('.v592-matches-sheet');if(sheet)sheet.outerHTML=matchesMarkup();return}
  const h=el.closest('[data-v576-help]');if(h){e.preventDefault();help(h.dataset.v576Help);return}
  const rm=el.closest('[data-v576-remove]');if(rm){e.preventDefault();e.stopPropagation();writeSquad(readSquad().filter(x=>Number(x.slot)!==Number(rm.dataset.v576Remove)));render();return}
+ if(el.closest('[data-v851-filter-open]')){e.preventDefault();filterPanel();return}
+ if(el.closest('[data-v851-filter-clear]')){e.preventDefault();filters={team:'',position:'',maxPrice:100,affordable:false};document.querySelector('[data-v851-filters]')?.remove();filterPanel();renderPicker();return}
  const sl=el.closest('[data-v576-slot]');if(sl){e.preventDefault();picker(sl.dataset.v576Slot);return}
  if(el.closest('[data-v576-auto]')){e.preventDefault();auto();return}
  if(el.closest('[data-v576-search]')){e.preventDefault();const x=readSquad();if(x.length===15){summary();return}const s=SLOTS.find(z=>!x.some(p=>Number(p.slot)===z.id));picker(s?.id??0);return}
  const pick=el.closest('[data-v576-pick]');if(pick){e.preventDefault();try{add(JSON.parse(decodeURIComponent(pick.dataset.v576Pick)))}catch(_){toast('No se pudo agregar el jugador')}return}
 },true);
+document.addEventListener('change',e=>{const field=e.target?.dataset?.v851Filter;if(!field)return;filters[field]=field==='affordable'?e.target.checked:field==='maxPrice'?Math.max(0,Number(e.target.value)||0):e.target.value;renderPicker()},true);
 document.addEventListener('input',e=>{if(e.target?.matches?.('[data-v576-query]')){query=e.target.value||'';renderPicker()}},true);
 
 window.LJR_V576_FANTASY={guest,openGuest:guest,openTeam:()=>{location.hash='#/fantasyTeam'},readSquad,teamLogo,samplePlayers:()=>{const a=allPlayers();return [...a.filter(p=>p.photo),...a.filter(p=>!p.photo)].slice(0,3)}};
