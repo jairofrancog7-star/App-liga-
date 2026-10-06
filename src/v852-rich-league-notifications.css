@@ -193,3 +193,15 @@ body[data-app-route="notifications"] .v852-feed{
   .v853-smart-actions button,.v853-review-actions button{flex:1 1 calc(50% - 6px)}
   .v853-design-grid{grid-template-columns:1fr 1fr}
 }
+
+
+/* V855 — scheduled publication controls */
+.v855-schedule{border-color:rgba(88,222,239,.28)!important;background:linear-gradient(145deg,rgba(11,47,126,.24),rgba(11,18,72,.32))!important}
+.v855-schedule-grid{display:grid;grid-template-columns:1.25fr .75fr;gap:8px}
+.v855-schedule-channels{display:flex;gap:8px;flex-wrap:wrap}
+.v855-schedule-channels label{display:flex!important;grid-template-columns:none!important;align-items:center!important;gap:7px!important;min-height:34px;padding:7px 9px!important;border-radius:10px;background:rgba(255,255,255,.04)}
+.v855-schedule-channels input{width:17px!important;height:17px!important;min-height:0!important;padding:0!important}
+.v855-schedule-btn{min-height:42px;border:1px solid #43e5ef;border-radius:12px;background:linear-gradient(135deg,#124fc6,#20d6e5);color:#fff;font:850 11px/1 Inter,Roboto,Arial,sans-serif}
+.v855-schedule-btn:disabled{opacity:.45;filter:saturate(.55);cursor:not-allowed}
+.v855-schedule-note{display:block;color:#91a9d7;font:600 9px/1.35 Inter,Roboto,Arial,sans-serif}
+@media(max-width:520px){.v855-schedule-grid{grid-template-columns:1fr}.v855-schedule-channels{display:grid;grid-template-columns:1fr}}
