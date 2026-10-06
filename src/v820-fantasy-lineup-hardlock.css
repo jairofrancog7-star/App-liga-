@@ -1,0 +1,139 @@
+/* V820 — final Fantasy lineup hard lock.
+   Loaded LAST so the old jersey picker cannot reappear and lineup art wins all legacy shirt layers. */
+html body .v813-open,
+html body [data-v813-open],
+html body .v813-jersey-layer,
+html body.v813-jersey-picker-open .v813-jersey-layer{
+  display:none!important;
+  visibility:hidden!important;
+  opacity:0!important;
+  width:0!important;
+  height:0!important;
+  max-width:0!important;
+  max-height:0!important;
+  overflow:hidden!important;
+  pointer-events:none!important;
+}
+
+html body .v576-builder-head [data-v813-jersey-label]{
+  display:none!important;
+}
+
+html body.v587-fantasy-team-open .v576-slot.filled .v590-kit-wrap,
+html body[data-app-route="fantasyTeam"] .v576-slot.filled .v590-kit-wrap{
+  position:relative!important;
+  width:70px!important;
+  height:80px!important;
+  min-width:70px!important;
+  min-height:80px!important;
+  margin:0 auto!important;
+  display:grid!important;
+  place-items:center!important;
+  overflow:visible!important;
+  border:0!important;
+  outline:0!important;
+  border-radius:0!important;
+  background:transparent!important;
+  box-shadow:none!important;
+  clip-path:none!important;
+  perspective:1000px!important;
+  transform:none!important;
+  filter:none!important;
+}
+
+html body .v820-lineup-kit{
+  position:relative!important;
+  width:70px!important;
+  height:80px!important;
+  display:grid!important;
+  place-items:center!important;
+  transform-style:preserve-3d!important;
+  transform:perspective(900px) rotateY(var(--v820-tilt,-7deg)) rotateX(1deg) translateZ(4px)!important;
+  transform-origin:50% 58%!important;
+  filter:drop-shadow(0 7px 7px rgba(0,20,50,.27))!important;
+  pointer-events:none!important;
+}
+
+html body .v820-lineup-jersey{
+  position:absolute!important;
+  inset:0!important;
+  z-index:2!important;
+  width:100%!important;
+  height:100%!important;
+  max-width:100%!important;
+  max-height:100%!important;
+  display:block!important;
+  object-fit:contain!important;
+  object-position:center!important;
+  border:0!important;
+  border-radius:0!important;
+  background:transparent!important;
+  transform:none!important;
+  filter:none!important;
+  pointer-events:none!important;
+  -webkit-user-drag:none!important;
+  user-select:none!important;
+}
+
+html body .v820-source-cover{
+  position:absolute!important;
+  z-index:4!important;
+  left:var(--v820-badge-x,57%)!important;
+  top:var(--v820-badge-y,27%)!important;
+  width:var(--v820-badge-w,16%)!important;
+  height:var(--v820-badge-h,15%)!important;
+  transform:translate(-50%,-50%)!important;
+  border-radius:44%!important;
+  background:var(--v820-cover,rgba(12,24,61,.42))!important;
+  -webkit-backdrop-filter:blur(3px) saturate(.78)!important;
+  backdrop-filter:blur(3px) saturate(.78)!important;
+  box-shadow:0 0 4px 2px var(--v820-cover,rgba(12,24,61,.22))!important;
+  pointer-events:none!important;
+}
+
+html body .v820-team-logo{
+  position:absolute!important;
+  z-index:6!important;
+  left:var(--v820-badge-x,57%)!important;
+  top:var(--v820-badge-y,27%)!important;
+  width:17px!important;
+  height:17px!important;
+  max-width:17px!important;
+  max-height:17px!important;
+  object-fit:contain!important;
+  transform:translate(-50%,-50%) translateZ(5px)!important;
+  border:0!important;
+  background:transparent!important;
+  filter:saturate(1.08) contrast(1.05) drop-shadow(0 1px 1px rgba(0,0,0,.38))!important;
+  pointer-events:none!important;
+}
+
+html body.v587-fantasy-team-open .v576-slot.filled .v590-kit-wrap>.remove,
+html body[data-app-route="fantasyTeam"] .v576-slot.filled .v590-kit-wrap>.remove{
+  position:absolute!important;
+  z-index:20!important;
+  right:-4px!important;
+  top:-2px!important;
+  width:24px!important;
+  height:24px!important;
+  display:grid!important;
+  place-items:center!important;
+  border-radius:50%!important;
+  background:#fff!important;
+  color:#e6364b!important;
+  font:900 18px/1 Arial,sans-serif!important;
+  box-shadow:0 2px 6px rgba(0,0,0,.20)!important;
+  pointer-events:auto!important;
+}
+
+@media(max-width:390px){
+  html body.v587-fantasy-team-open .v576-slot.filled .v590-kit-wrap,
+  html body[data-app-route="fantasyTeam"] .v576-slot.filled .v590-kit-wrap,
+  html body .v820-lineup-kit{
+    width:64px!important;
+    height:74px!important;
+    min-width:64px!important;
+    min-height:74px!important;
+  }
+  html body .v820-team-logo{width:15px!important;height:15px!important;max-width:15px!important;max-height:15px!important}
+}
