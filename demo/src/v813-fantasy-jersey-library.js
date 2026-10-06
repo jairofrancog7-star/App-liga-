@@ -580,7 +580,7 @@ function card(item){
 function open(){
   close();layer=document.createElement('div');layer.className='v813-jersey-layer';document.body.classList.add('v813-jersey-picker-open');
   layer.innerHTML='<button type="button" class="v813-backdrop" data-v813-close aria-label="Cerrar"></button>'+
-    '<section class="v813-sheet"><header><div><small>FANTASY</small><h2>Jerseys 3D</h2><p>51 diseños · PNG sin fondo o recorte automático · vista diagonal</p></div><button type="button" data-v813-close aria-label="Cerrar">×</button></header>'+
+    '<section class="v813-sheet"><header><div><small>FANTASY</small><h2>Jerseys 3D</h2><p>'+CATALOG.length+' diseños · PNG sin fondo o recorte automático · vista diagonal</p></div><button type="button" data-v813-close aria-label="Cerrar">×</button></header>'+
     '<label class="v813-search"><span>⌕</span><input type="search" data-v813-search placeholder="Buscar club o temporada"></label>'+
     '<div class="v813-grid" data-v813-grid>'+CATALOG.map(card).join('')+'</div></section>';
   document.body.appendChild(layer);
