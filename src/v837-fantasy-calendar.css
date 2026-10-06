@@ -105,7 +105,7 @@ html body.v837-jerseys .v576-slot.filled .v590-kit-wrap > .remove {
   font-size: 14px !important;
   line-height: 18px !important;
 }
-html body.v837-jerseys .v576-field-row {
+html body.v837-jerseys #screen .v576-field .v576-field-row {
   height: calc(clamp(50px, 14.5vw, 70px) + 56px) !important;
   align-items: start !important;
 }

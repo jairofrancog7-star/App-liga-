@@ -2049,7 +2049,7 @@ body.v415-calendar-active #screen > [data-v415-calendar]{
 
 /* V448 — BLOQUEO EXACTO DE LA TARJETA DE REFERENCIA.
    Misma geometría/posición/tamaños; sólo se cambia la paleta a azul Liga. */
-@media (max-width:1023px){
+@media (min-width:0px){
   body.v415-calendar-active .v415-selected{
     margin:26px 0 0!important;
     padding:0!important;
@@ -2068,9 +2068,9 @@ body.v415-calendar-active #screen > [data-v415-calendar]{
 
   body.v415-calendar-active .v415-match-list .v448-reference-card{
     position:relative!important;
-    flex:0 0 calc(100vw - 40px)!important;
-    width:calc(100vw - 40px)!important;
-    min-width:calc(100vw - 40px)!important;
+    flex:0 0 min(474px, calc(100vw - 40px))!important;
+    width:min(474px, calc(100vw - 40px))!important;
+    min-width:min(474px, calc(100vw - 40px))!important;
     max-width:480px!important;
     height:auto!important;
     min-height:0!important;
