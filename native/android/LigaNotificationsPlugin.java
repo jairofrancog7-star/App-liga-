@@ -101,6 +101,7 @@ public class LigaNotificationsPlugin extends Plugin {
         final String awayLogo = call.getString("awayLogo", "");
         final String imageUrl = call.getString("imageUrl", "");
         final String group = call.getString("group", "liga-partidos");
+        final String route = call.getString("route", "notifications");
         final int id = call.getInt("id", (int)(System.currentTimeMillis() & 0x7fffffff));
 
         executor.execute(() -> {
@@ -115,7 +116,7 @@ public class LigaNotificationsPlugin extends Plugin {
                 bigPicture = matchCardImage(homeLogo, awayLogo, title, body);
             }
 
-            Notification.Builder builder = baseBuilder(id, group)
+            Notification.Builder builder = baseBuilder(id, group, route)
                 .setContentTitle(title)
                 .setContentText(body)
                 .setSubText("Liga Juventino Rosas")
@@ -150,6 +151,7 @@ public class LigaNotificationsPlugin extends Plugin {
         final String imageUrl = call.getString("imageUrl", "");
         final String iconUrl = call.getString("iconUrl", "");
         final String group = call.getString("group", "liga-noticias");
+        final String route = call.getString("route", "notifications");
         final int id = call.getInt("id", (int)(System.currentTimeMillis() & 0x7fffffff));
 
         executor.execute(() -> {
@@ -190,8 +192,9 @@ public class LigaNotificationsPlugin extends Plugin {
         return true;
     }
 
-    private Notification.Builder baseBuilder(int id, String group) {
+    private Notification.Builder baseBuilder(int id, String group, String route) {
         Intent intent = new Intent(getContext(), MainActivity.class);
+        intent.putExtra("ljr_route", route == null ? "notifications" : route);
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
         PendingIntent pendingIntent = PendingIntent.getActivity(
             getContext(),
@@ -246,7 +249,7 @@ public class LigaNotificationsPlugin extends Plugin {
             }
 
             int summaryId = 0x50000000 | (Math.abs(group.hashCode()) & 0x0fffffff);
-            Notification.Builder summary = baseBuilder(summaryId, group)
+            Notification.Builder summary = baseBuilder(summaryId, group, "notifications")
                 .setContentTitle("Liga Juventino Rosas")
                 .setContentText(next.length() + " avisos recientes")
                 .setStyle(style)
