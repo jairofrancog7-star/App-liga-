@@ -87,11 +87,19 @@ function top(title,big=false){
   return '<header class="v589-top '+(big?'big':'')+'"><button type="button" class="v589-back" data-v589-back aria-label="Volver">'+back+'</button><h1>'+esc(title)+'</h1><button type="button" class="v589-more" data-v589-menu aria-label="Opciones">'+more+'</button></header>';
 }
 function bottomSwitch(active){
-  const predictionsIcon='<svg viewBox="0 0 28 28" aria-hidden="true"><rect x="3.5" y="4.5" width="21" height="19" rx="5"/><path d="M8 17.5h4.5M8 13.5h8.5"/><circle cx="20" cy="10" r="3.2"/><path d="m18.7 10 1 1 1.8-2.1"/></svg>';
-  const leaguesIcon='<svg viewBox="0 0 28 28" aria-hidden="true"><circle cx="10" cy="9" r="3.2"/><circle cx="19" cy="10.2" r="2.7"/><path d="M4.5 22c.5-4.1 2.4-6.2 5.5-6.2s5.1 2.1 5.5 6.2M15.2 21.5c.4-3.4 2-5.2 4.6-5.2 2.3 0 3.8 1.5 4.2 4.6"/></svg>';
+  const predictionsIcon='<svg viewBox="0 0 32 32" aria-hidden="true">'+
+    '<path d="M7.5 5.5h17a2.5 2.5 0 0 1 2.5 2.5v16a2.5 2.5 0 0 1-2.5 2.5h-17A2.5 2.5 0 0 1 5 24V8a2.5 2.5 0 0 1 2.5-2.5Z"/>'+
+    '<path d="M10 21l4-4 3 2 5-6"/><path d="M21 13h3v3"/>'+
+    '<circle cx="11" cy="11" r="1.6"/>'+
+  '</svg>';
+  const leaguesIcon='<svg viewBox="0 0 32 32" aria-hidden="true">'+
+    '<path d="M11 6h10v5.5c0 4-2.2 6.5-5 7.5-2.8-1-5-3.5-5-7.5V6Z"/>'+
+    '<path d="M11 8H7.5v2.5c0 3 1.7 4.8 4.4 5.2M21 8h3.5v2.5c0 3-1.7 4.8-4.4 5.2"/>'+
+    '<path d="M16 19v4M12 26h8M13.5 23h5"/>'+
+  '</svg>';
   return '<nav class="v589-switch" aria-label="Pronostica Seis">'+
-    '<button type="button" data-v589-view="predictions" class="'+(active==='predictions'?'active':'')+'"><span class="v840-tab-icon">'+predictionsIcon+'</span><b>Pronósticos</b></button>'+
-    '<button type="button" data-v589-view="leagues" class="'+(active==='leagues'?'active':'')+'"><span class="v840-tab-icon">'+leaguesIcon+'</span><b>Ligas</b></button>'+
+    '<button type="button" data-v589-view="predictions" class="'+(active==='predictions'?'active':'')+'"><span class="v843-tab-icon">'+predictionsIcon+'</span><b>Pronósticos</b></button>'+
+    '<button type="button" data-v589-view="leagues" class="'+(active==='leagues'?'active':'')+'"><span class="v843-tab-icon">'+leaguesIcon+'</span><b>Ligas</b></button>'+
   '</nav>';
 }
 const introSlides=[
@@ -155,16 +163,16 @@ function card(g,i){
 }
 function predictions(){
   const date=ui.journey===1?'27 - 28 sep':ui.journey===2?'03 - 04 oct':ui.journey===3?'10 - 11 oct':'17 - 18 oct';
-  return '<section class="v589-page predictions" data-v589-root>'+top('Pronósticos',true)+sponsor()+
-    bottomSwitch('predictions')+
+  return '<section class="v589-page predictions" data-v589-root>'+top('Pronósticos',true)+
+    bottomSwitch('predictions')+sponsor()+
     '<nav class="v589-journeys">'+[1,2,3,4].map(n=>'<button type="button" data-v589-journey="'+n+'" class="'+(ui.journey===n?'active':'')+'">Jornada '+n+'</button>').join('')+'</nav>'+
     '<main class="v589-list"><h2>'+date+'</h2>'+games.map(card).join('')+'</main>'+
     (ui.menu?menuHtml():'')+
   '</section>';
 }
 function leagues(){
-  return '<section class="v589-page leagues" data-v589-root>'+top('Ligas',true)+sponsor()+
-    bottomSwitch('leagues')+
+  return '<section class="v589-page leagues" data-v589-root>'+top('Ligas',true)+
+    bottomSwitch('leagues')+sponsor()+
     '<main class="v589-league-empty"><div class="v589-people">♙♙</div><h2>Reta a tus amigos</h2><p>¿Quién tiene la mejor capacidad para pronosticar? ¡Inicia sesión y crea una liga para averiguarlo!</p>'+
     '<button type="button" class="v589-primary" data-v589-login>Inicia sesión ahora</button></main>'+
     (ui.menu?menuHtml():'')+
