@@ -1,4 +1,4 @@
-/* V833 — real downloaded 3/4 Fantasy jerseys hardfix.
+/* V834 — restore the previous real downloaded 3/4 Fantasy shirts.
    Removes the old "Jerseys" header control and paints the 50-design 3/4 pool directly in filled lineup slots. */
 (function(){
 'use strict';
@@ -279,7 +279,7 @@ async function decorate(){
   if(items.length<15){setTimeout(schedule,120);return}
   const rows=squad();
   const bySlot=new Map(rows.map(p=>[String(p?.slot??''),p||{}]));
-  const teamKit=new Map();
+  const used=new Set();
 
   for(let index=0;index<slots.length;index++){
     const slot=slots[index];
@@ -288,59 +288,73 @@ async function decorate(){
     const slotId=String(slot.dataset.v576Slot??index);
     const p=bySlot.get(slotId)||{};
     const player=String(p.name||slot.querySelector(':scope>b')?.textContent||('Jugador '+(index+1)));
-    if(gen!==renderGeneration||!wrap.isConnected)continue;
-    const team=String(p.team||'Liga Juventino Rosas');
+    const startAt=hash(player+'|'+slotId)%items.length;
+    let idx=-1,item=null,transparentSrc='';
 
-    // V833: restore the REAL downloaded 3/4 Fantasy mockups.
-    // Same Liga team keeps the same real jersey design.
-    let item=teamKit.get(team);
-    if(!item){
-      item=items[hash(team)%items.length]||items[index%items.length];
-      teamKit.set(team,item);
+    // Restore the exact previous behavior: each player gets one of the real
+    // downloaded 3/4 mockups, without repeating the same shirt in the XI.
+    for(let n=0;n<items.length;n++){
+      const q=(startAt+n)%items.length;
+      if(used.has(q))continue;
+      const candidate=items[q];
+      const raw=String(candidate?.url||'');
+      if(!raw||badTransparentSources.has(raw))continue;
+      const processed=await transparentJersey(raw);
+      if(gen!==renderGeneration||!wrap.isConnected)break;
+      if(!processed)continue;
+      idx=q;item=candidate;transparentSrc=processed;used.add(q);break;
     }
-    const realSrc=String(item?.url||'').trim();
-    const fallbackSrc=generatedTransparentJersey(hash(team+'|fallback|'+slotId+'|v835'));
-    const cleanedRealSrc=realSrc ? await transparentJersey(realSrc) : '';
     if(gen!==renderGeneration||!wrap.isConnected)continue;
-    const shirtSrc=cleanedRealSrc||fallbackSrc;
+
+    const team=String(p.team||'Liga Juventino Rosas');
+    let generated=false;
+    if(!item||!transparentSrc){
+      generated=true;
+      idx=index;
+      item={id:'generated-transparent-'+index,badgeX:58,badgeY:28,badgeW:15,badgeH:14,coverColor:'transparent',tilt:index%2?-6:6};
+      transparentSrc=generatedTransparentJersey(hash(team+'|'+player+'|'+slotId));
+    }
+
     const logo=logoFor(team);
-    const stamp=String(item?.id||'real-v835')+'|'+player+'|'+team+'|transparent-three-quarter-v835';
+    const stamp=String(item.id||idx)+'|'+player+'|'+team+'|restore-real-v834';
     if(wrap.dataset.v820Stamp===stamp&&wrap.querySelector('.v820-lineup-jersey'))continue;
 
     const removeId=wrap.querySelector('[data-v576-remove]')?.getAttribute('data-v576-remove')||slotId;
     wrap.dataset.v820Stamp=stamp;
     wrap.dataset.v830Transparent='1';
-    wrap.dataset.v829Generated=cleanedRealSrc?'0':'1';
-    wrap.dataset.v833RealMockup=cleanedRealSrc?'1':'0';
-    wrap.style.setProperty('--v820-badge-x',Number(item?.badgeX??57)+'%');
-    wrap.style.setProperty('--v820-badge-y',Number(item?.badgeY??27)+'%');
-    wrap.style.setProperty('--v820-badge-w',Number(item?.badgeW??16)+'%');
-    wrap.style.setProperty('--v820-badge-h',Number(item?.badgeH??15)+'%');
-    wrap.style.setProperty('--v820-cover',String(item?.coverColor||'transparent'));
-    wrap.style.setProperty('--v820-tilt',Number(item?.tilt??(index%2?-7:7))+'deg');
+    wrap.dataset.v829Generated=generated?'1':'0';
+    wrap.dataset.v834RestoredReal='1';
+    wrap.style.setProperty('--v820-badge-x',Number(item.badgeX??57)+'%');
+    wrap.style.setProperty('--v820-badge-y',Number(item.badgeY??27)+'%');
+    wrap.style.setProperty('--v820-badge-w',Number(item.badgeW??16)+'%');
+    wrap.style.setProperty('--v820-badge-h',Number(item.badgeH??15)+'%');
+    wrap.style.setProperty('--v820-cover',String(item.coverColor||'transparent'));
+    wrap.style.setProperty('--v820-tilt',Number(item.tilt??(index%2?-7:7))+'deg');
+
     wrap.innerHTML=
       '<span class="v820-lineup-kit v827-transparent-kit">'+
-        '<img class="v820-lineup-jersey v827-transparent-shirt" src="'+esc(shirtSrc)+'" data-v829-fallback="'+esc(fallbackSrc)+'" alt="" draggable="false" decoding="async">'+
+        '<img class="v820-lineup-jersey v827-transparent-shirt" src="'+esc(transparentSrc)+'" data-v829-fallback="'+esc(generatedTransparentJersey(hash(team+'|fallback|'+slotId)))+'" alt="" draggable="false" decoding="async">'+
         '<span class="v820-source-cover" aria-hidden="true"></span>'+
         '<img class="v820-team-logo" src="'+esc(logo)+'" alt="" draggable="false" decoding="async">'+
       '</span>'+
       '<i class="remove" data-v576-remove="'+esc(removeId)+'" aria-label="Quitar jugador">×</i>';
+
     const jerseyImg=wrap.querySelector('.v820-lineup-jersey');
     if(jerseyImg){
       jerseyImg.addEventListener('error',()=>{
-        const fallback=jerseyImg.dataset.v829Fallback||fallbackSrc;
+        const fallback=jerseyImg.dataset.v829Fallback||generatedTransparentJersey(hash(team+'|error|'+slotId));
         if(jerseyImg.src!==fallback){
           jerseyImg.src=fallback;
           wrap.dataset.v829Generated='1';
-          wrap.dataset.v833RealMockup='0';
         }
       },{once:true});
     }
   }
+
   document.body.dataset.v820FantasyLineup='active';
   document.body.dataset.v820FantasyJerseyPool=String(Math.min(items.length,50));
   document.body.dataset.v830RejectedJerseys=String(badTransparentSources.size);
-  document.body.dataset.v833RealMockups='transparent-clean-v835';
+  document.body.dataset.v834RestoredRealShirts='1';
 }
 
 let raf=0;
