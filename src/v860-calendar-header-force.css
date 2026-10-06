@@ -177,8 +177,8 @@
     display:none!important;
   }
 
-  /* V863 — borde inferior mejor integrado: azul profundo -> fondo oscuro.
-     Sin línea marcada ni brillo duro; se pierde suavemente en el color de la página. */
+  /* V864 — color exacto de la franja inferior según la referencia.
+     La barra es sólida #111226; no lleva cyan ni degradado. */
   html body.v415-calendar-active.v839-reference-calendar
   #screen .v839-reference-page .v415-reference-topbar::before{
     content:""!important;
@@ -190,13 +190,7 @@
     height:24px!important;
     z-index:4!important;
     pointer-events:none!important;
-    background:
-      linear-gradient(180deg,
-        rgba(8,30,128,.08) 0%,
-        rgba(7,20,99,.22) 22%,
-        rgba(10,16,72,.42) 48%,
-        rgba(15,17,52,.72) 72%,
-        #111226 100%)!important;
+    background:#111226!important;
     box-shadow:none!important;
     opacity:1!important;
   }
