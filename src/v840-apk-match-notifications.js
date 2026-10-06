@@ -1,11 +1,11 @@
 import {Capacitor,registerPlugin} from '@capacitor/core';
-/* V850 — Liga Juventino APK match notifications.
+/* V851 — Liga Juventino rich APK notifications.
    Own notification center + Android native notifications with both team logos.
    No AdminFut push registration is used. */
 (function(){
 'use strict';
-if(window.__LJR_V840_APK_MATCH_NOTIFICATIONS__)return;
-window.__LJR_V840_APK_MATCH_NOTIFICATIONS__=true;
+if(window.__LJR_V851_APK_RICH_NOTIFICATIONS__)return;
+window.__LJR_V851_APK_RICH_NOTIFICATIONS__=true;
 
 const NativeNotifications=registerPlugin('LigaNotifications');
 const REMOTE='https://raw.githubusercontent.com/jairofrancog7-star/App-liga-/main/data/official-live.json';
@@ -161,6 +161,7 @@ async function systemNotify(e){
       await NativeNotifications.notifyMatch({
         id:hash(e.id)&0x7fffffff,title,body,
         homeLogo:e.homeLogo||'',awayLogo:e.awayLogo||'',
+        imageUrl:e.imageUrl||'',
         group:'liga-'+norm(e.category).replace(/\s+/g,'-')
       });
       return true;
@@ -180,6 +181,58 @@ async function systemNotify(e){
   }
   return false;
 }
+
+async function sendRichNotification(input={}){
+  const title=String(input.title||'Liga Juventino');
+  const body=String(input.body||'Nueva actualización de la Liga.');
+  const imageUrl=String(input.imageUrl||'');
+  const iconUrl=String(input.iconUrl||'');
+  const group=String(input.group||'liga-noticias');
+  const id=Number(input.id||hash(title+'|'+body+'|'+imageUrl+'|'+Date.now()))&0x7fffffff;
+  if(Capacitor.isNativePlatform()){
+    const perm=read(PERM,{});
+    if(!perm.granted){
+      const ok=await requestPermission();
+      if(!ok)return false;
+    }
+    try{
+      await NativeNotifications.notifyRich({id,title,body,imageUrl,iconUrl,group});
+      return true;
+    }catch(_){return false}
+  }
+  if(!('Notification'in window))return false;
+  if(Notification.permission!=='granted'){
+    const ok=await requestPermission();
+    if(!ok)return false;
+  }
+  try{
+    const n=new Notification(title,{
+      body,
+      tag:'ljr-rich-'+id,
+      renotify:true,
+      icon:iconUrl||'./icons/icon-192.png',
+      image:imageUrl||undefined,
+      badge:'./icons/icon-192.png',
+      vibrate:prefs().vibration!==false?[220,100,220]:[]
+    });
+    n.onclick=()=>{try{window.focus();location.hash='#/notifications';n.close()}catch(_){}};
+    return true;
+  }catch(_){return false}
+}
+
+async function sendSampleRich(){
+  const latest=inbox()[0];
+  if(latest){
+    return systemNotify({...latest,id:'sample-rich-'+Date.now(),type:'test',status:'Vista previa de notificación'});
+  }
+  return sendRichNotification({
+    title:'Liga Juventino Rosas',
+    body:'Notificación con imagen grande, agrupación y vista expandible activada.',
+    iconUrl:'./icons/icon-192.png',
+    group:'liga-pruebas'
+  });
+}
+
 async function processChanges(matches){
   const prev=read(SNAP,null);
   if(!prev){write(SNAP,snapshot(matches));seedInbox(matches);reconcileInbox(matches);renderFeed();return}
@@ -230,9 +283,9 @@ function feedMarkup(){
   const rows=inbox().slice(0,12),native=Capacitor.isNativePlatform(),perm=read(PERM,{});
   return '<section class="v840-match-feed" data-v840-feed>'+
     '<div class="v840-feed-head"><div><small>PARTIDOS</small><h3>Actividad reciente</h3><p>Resultados y avisos de la Liga con los escudos de ambos equipos.</p></div>'+
-      '<button type="button" data-v840-permission class="'+(perm.granted?'on':'')+'">'+
+      '<div class="v840-head-actions"><button type="button" data-v840-permission class="'+(perm.granted?'on':'')+'">'+
         (perm.granted?'Avisos del APK activos':native?'Activar avisos del APK':'Activar avisos')+
-      '</button></div>'+
+      '</button><button type="button" data-v851-rich-test>Probar aviso con imagen</button></div></div>'+
     '<div class="v840-feed-list">'+
       (rows.length?rows.map(e=>'<button type="button" class="v840-notice-row" data-v840-match="'+esc(e.key)+'">'+
         logoPair(e)+'<span class="v840-notice-copy"><span><b>'+esc(e.category)+'</b><small>'+esc(timeText(e))+'</small></span>'+
@@ -261,6 +314,13 @@ function renderFeed(){
       if(latest)await systemNotify({...latest,id:'test-'+Date.now(),type:'test',status:'Avisos activados'});
     }
   });
+  root?.querySelector('[data-v851-rich-test]')?.addEventListener('click',async e=>{
+    e.currentTarget.disabled=true;
+    const ok=await sendSampleRich();
+    e.currentTarget.disabled=false;
+    e.currentTarget.textContent=ok?'Aviso enviado':'Activa notificaciones';
+    setTimeout(()=>{if(e.currentTarget)e.currentTarget.textContent='Probar aviso con imagen'},1800);
+  });
   root?.querySelectorAll('[data-v840-match]').forEach(b=>b.addEventListener('click',()=>{
     location.hash='#/competition';
     try{localStorage.setItem('competitionTab','fixtures')}catch(_){}
@@ -284,6 +344,12 @@ function boot(){
   window.addEventListener('ljr:official-data',refresh);
   refresh();setInterval(refresh,120000);
 }
-window.LJR_V840_NOTIFICATIONS={requestPermission,refresh,render:renderFeed,inbox};
+window.LJR_V840_NOTIFICATIONS={
+  requestPermission,refresh,render:renderFeed,inbox,
+  sendRich:sendRichNotification,
+  sendMatch:systemNotify,
+  testRich:sendSampleRich
+};
+window.addEventListener('ljr:notify-rich',e=>sendRichNotification(e?.detail||{}));
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot,{once:true});else boot();
 })();
