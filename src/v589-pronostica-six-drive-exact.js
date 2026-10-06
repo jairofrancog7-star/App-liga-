@@ -104,6 +104,10 @@ function bottomSwitch(active){
     '<button type="button" data-v589-view="leagues" class="'+(active==='leagues'?'active':'')+'"><span class="v840-tab-icon">'+leaguesIcon+'</span><b>Ligas</b></button>'+
   '</nav>';
 }
+function introTop(){
+  return '<header class="v589-top"><button type="button" class="v589-back" data-v589-back aria-label="Volver">‹</button><h1>Pronostica Seis</h1><button type="button" class="v589-more" data-v589-menu aria-label="Opciones">⋮</button></header>';
+}
+
 const introSlides=[
   {
     title:'Pronostica seis resultados',
@@ -130,20 +134,21 @@ const introSlides=[
 function intro(){
   const idx=Math.max(0,Math.min(introSlides.length-1,Number(ui.introSlide)||0));
   const slide=introSlides[idx];
-  return '<section class="v589-page intro" data-v589-root data-v589-intro-swipe data-v589-intro-index="'+idx+'">'+top('Pronostica Seis')+sponsor()+
+  return '<section class="v589-page intro" data-v589-root data-v589-intro-swipe data-v589-intro-index="'+idx+'">'+introTop()+sponsor()+
     '<div class="v589-intro-icons" data-v589-intro-track>'+
       slide.icons.map(v=>'<span>'+esc(v)+'</span>').join('')+
     '</div>'+
-    '<div class="v589-intro-copy" data-v589-intro-track><h2>'+esc(slide.title)+'</h2><p>'+esc(slide.text)+'</p></div>'+
-    '<div class="v589-dots" aria-label="Pantallas de introducción">'+
-      introSlides.map((_,i)=>'<button type="button" aria-label="Ir a pantalla '+(i+1)+'" data-v589-intro-dot="'+i+'" class="'+(i===idx?'active':'')+'"></button>').join('')+
-    '</div>'+
+    '<div class="v589-intro-copy" data-v589-intro-track><h2>'+esc(slide.title)+'</h2><p>'+esc(slide.text)+'</p>'+
+      '<div class="v589-dots" aria-label="Pantallas de introducción">'+
+        introSlides.map((_,i)=>'<button type="button" aria-label="Ir a pantalla '+(i+1)+'" data-v589-intro-dot="'+i+'" class="'+(i===idx?'active':'')+'"></button>').join('')+
+      '</div></div>'+
     '<div class="v589-intro-actions">'+
       '<button type="button" class="v589-primary" data-v589-login>'+(isLogged()?'Continuar para jugar':'Inicia sesión para jugar')+'</button>'+
       '<button type="button" class="v589-secondary" data-v589-guest>Prueba como invitado</button>'+
     '</div>'+
   '</section>';
 }
+
 function savedText(id){
   const p=read().predictions[id];
   return p?String(p.home)+' - '+String(p.away):'';
