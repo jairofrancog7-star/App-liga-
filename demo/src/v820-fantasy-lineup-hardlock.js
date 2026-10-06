@@ -1,9 +1,9 @@
-/* V820 — final Fantasy hardfix.
+/* V830 — final Fantasy transparent-jersey hardfix.
    Removes the old "Jerseys" header control and paints the 50-design 3/4 pool directly in filled lineup slots. */
 (function(){
 'use strict';
-if(window.__LJR_V820_FANTASY_LINEUP_HARDLOCK__)return;
-window.__LJR_V820_FANTASY_LINEUP_HARDLOCK__=true;
+if(window.__LJR_V830_FANTASY_TRANSPARENT_HARDLOCK__)return;
+window.__LJR_V830_FANTASY_TRANSPARENT_HARDLOCK__=true;
 
 const RAW='https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/';
 const FALLBACK_LOGO=RAW+'assets/liga-logo.webp';
@@ -58,7 +58,7 @@ async function transparentJersey(src){
     if(!img){badTransparentSources.add(src);return '';}
     try{
       const nw=img.naturalWidth||img.width||1,nh=img.naturalHeight||img.height||1;
-      const scale=Math.min(1,820/Math.max(nw,nh));
+      const scale=Math.min(1,760/Math.max(nw,nh));
       const w=Math.max(2,Math.round(nw*scale)),h=Math.max(2,Math.round(nh*scale));
       const canvas=document.createElement('canvas');
       canvas.width=w;canvas.height=h;
@@ -67,88 +67,124 @@ async function transparentJersey(src){
       ctx.drawImage(img,0,0,w,h);
       const image=ctx.getImageData(0,0,w,h),d=image.data;
 
-      // Always clean the outside. Even PNG/WebP files that already have alpha
-      // can carry white/black matte residue around the shirt edge.
-      let sr=0,sg=0,sb=0,n=0;
-      const sample=(x,y)=>{
+      // Gather many edge samples. Product photos commonly use white, gray,
+      // black or a softly colored studio background; do not assume one color.
+      const samples=[];
+      const addSample=(x,y)=>{
         const i=(y*w+x)*4,a=d[i+3];
-        if(a<18)return;
-        sr+=d[i];sg+=d[i+1];sb+=d[i+2];n++;
+        if(a<24)return;
+        samples.push([d[i],d[i+1],d[i+2]]);
       };
-      const step=Math.max(1,Math.floor(Math.min(w,h)/48));
-      for(let x=0;x<w;x+=step){sample(x,0);sample(x,h-1)}
-      for(let y=0;y<h;y+=step){sample(0,y);sample(w-1,y)}
+      const step=Math.max(1,Math.floor(Math.min(w,h)/34));
+      for(let x=0;x<w;x+=step){addSample(x,0);addSample(x,h-1)}
+      for(let y=0;y<h;y+=step){addSample(0,y);addSample(w-1,y)}
 
-      if(n){
-        const br=sr/n,bg=sg/n,bb=sb/n;
-        const seen=new Uint8Array(w*h);
-        const qx=new Int32Array(w*h),qy=new Int32Array(w*h);
-        let head=0,tail=0;
-        const matchesBg=(x,y)=>{
-          const p=y*w+x,i=p*4,a=d[i+3];
-          if(a<24)return true;
+      // Already transparent assets still pass through cleanup so hidden
+      // white/gray panels inside the outer transparent canvas do not survive.
+      const seedColors=[];
+      for(const rgb of samples){
+        if(seedColors.every(s=>Math.hypot(rgb[0]-s[0],rgb[1]-s[1],rgb[2]-s[2])>34)){
+          seedColors.push(rgb);
+          if(seedColors.length>=10)break;
+        }
+      }
+
+      const seen=new Uint8Array(w*h);
+      const qx=new Int32Array(w*h),qy=new Int32Array(w*h),qs=new Int16Array(w*h);
+      let head=0,tail=0;
+      const dist=(r,g,b,s)=>Math.hypot(r-s[0],g-s[1],b-s[2]);
+      const similar=(x,y,s)=>{
+        const i=(y*w+x)*4,a=d[i+3];
+        if(a<26)return true;
+        const r=d[i],g=d[i+1],b=d[i+2];
+        const chroma=Math.max(r,g,b)-Math.min(r,g,b);
+        const schroma=Math.max(s[0],s[1],s[2])-Math.min(s[0],s[1],s[2]);
+        const lum=(r+g+b)/3,slum=(s[0]+s[1]+s[2])/3;
+        return dist(r,g,b,s)<70 || (Math.abs(lum-slum)<30 && Math.abs(chroma-schroma)<30);
+      };
+      const push=(x,y,si)=>{
+        if(x<0||y<0||x>=w||y>=h)return;
+        const p=y*w+x;
+        if(seen[p])return;
+        const s=seedColors[si];
+        if(!s||!similar(x,y,s))return;
+        seen[p]=1;qx[tail]=x;qy[tail]=y;qs[tail]=si;tail++;
+      };
+
+      // Use each edge cluster as its own flood-fill seed. This removes
+      // multitone studio backgrounds without touching the jersey interior.
+      if(seedColors.length){
+        for(let x=0;x<w;x++){
+          for(let si=0;si<seedColors.length;si++){
+            const i0=x*4, ib=((h-1)*w+x)*4;
+            if(d[i0+3]<26||similar(x,0,seedColors[si]))push(x,0,si);
+            if(d[ib+3]<26||similar(x,h-1,seedColors[si]))push(x,h-1,si);
+          }
+        }
+        for(let y=0;y<h;y++){
+          for(let si=0;si<seedColors.length;si++){
+            const il=(y*w)*4, ir=(y*w+w-1)*4;
+            if(d[il+3]<26||similar(0,y,seedColors[si]))push(0,y,si);
+            if(d[ir+3]<26||similar(w-1,y,seedColors[si]))push(w-1,y,si);
+          }
+        }
+      }
+
+      while(head<tail){
+        const x=qx[head],y=qy[head],si=qs[head];head++;
+        const i=(y*w+x)*4;
+        d[i+3]=0;
+        push(x+1,y,si);push(x-1,y,si);push(x,y+1,si);push(x,y-1,si);
+      }
+
+      // Clean light/neutral halos only when they touch transparency.
+      for(let pass=0;pass<2;pass++){
+        const clear=[];
+        for(let y=1;y<h-1;y++)for(let x=1;x<w-1;x++){
+          const i=(y*w+x)*4;
+          if(d[i+3]<20)continue;
+          let nearClear=0;
+          for(const [dx,dy] of [[1,0],[-1,0],[0,1],[0,-1]]){
+            if(d[((y+dy)*w+(x+dx))*4+3]<20)nearClear++;
+          }
+          if(!nearClear)continue;
           const r=d[i],g=d[i+1],b=d[i+2];
-          const dist=Math.hypot(r-br,g-bg,b-bb);
-          const lum=(r+g+b)/3,baseLum=(br+bg+bb)/3;
           const chroma=Math.max(r,g,b)-Math.min(r,g,b);
-          const baseChroma=Math.max(br,bg,bb)-Math.min(br,bg,bb);
-          return dist<72 || (Math.abs(lum-baseLum)<38 && Math.abs(chroma-baseChroma)<38);
-        };
-        const push=(x,y)=>{
-          if(x<0||y<0||x>=w||y>=h)return;
-          const p=y*w+x;
-          if(seen[p]||!matchesBg(x,y))return;
-          seen[p]=1;qx[tail]=x;qy[tail]=y;tail++;
-        };
-        for(let x=0;x<w;x++){push(x,0);push(x,h-1)}
-        for(let y=0;y<h;y++){push(0,y);push(w-1,y)}
-        while(head<tail){
-          const x=qx[head],y=qy[head];head++;
-          d[(y*w+x)*4+3]=0;
-          push(x+1,y);push(x-1,y);push(x,y+1);push(x,y-1);
+          const lum=(r+g+b)/3;
+          if((lum>225&&chroma<28)||(lum>190&&chroma<14))clear.push(i);
         }
+        clear.forEach(i=>{d[i+3]=0});
       }
 
-      // Remove faint matte/halo only at the OUTER alpha edge.
-      const alphaCopy=new Uint8ClampedArray(w*h);
-      for(let p=0;p<w*h;p++)alphaCopy[p]=d[p*4+3];
+      // Feather one-pixel boundary so the shirt reads as a clean PNG.
       for(let y=1;y<h-1;y++)for(let x=1;x<w-1;x++){
-        const p=y*w+x,i=p*4,a=alphaCopy[p];
-        if(a===0)continue;
-        let clear=0,soft=0;
-        for(const [dx,dy] of [[1,0],[-1,0],[0,1],[0,-1],[1,1],[-1,1],[1,-1],[-1,-1]]){
-          const na=alphaCopy[(y+dy)*w+(x+dx)];
-          if(na<12)clear++;
-          if(na<80)soft++;
+        const i=(y*w+x)*4;if(d[i+3]===0)continue;
+        let clear=0;
+        for(const [dx,dy] of [[1,0],[-1,0],[0,1],[0,-1]]){
+          if(d[((y+dy)*w+(x+dx))*4+3]===0)clear++;
         }
-        if(clear>=3)d[i+3]=Math.min(d[i+3],180);
-        else if(soft>=4)d[i+3]=Math.min(d[i+3],220);
+        if(clear>=2)d[i+3]=Math.min(d[i+3],205);
       }
 
+      ctx.putImageData(image,0,0);
+
+      // Final hard check: no visible rectangular/background frame may remain.
+      let borderOpaque=0,borderTotal=0;
+      const band=Math.max(1,Math.floor(Math.min(w,h)*.025));
+      for(let y=0;y<h;y++)for(let x=0;x<w;x++){
+        if(x>=band&&x<w-band&&y>=band&&y<h-band)continue;
+        borderTotal++;
+        if(d[(y*w+x)*4+3]>50)borderOpaque++;
+      }
+      if(borderTotal && borderOpaque/borderTotal>.08){
+        badTransparentSources.add(src);
+        return '';
+      }
       if(!silhouetteOk(d,w,h)){
         badTransparentSources.add(src);
         return '';
       }
-
-      // Trim empty transparent margins so the shirt itself fills the slot,
-      // while preserving a small transparent safety pad.
-      let minX=w,minY=h,maxX=-1,maxY=-1;
-      for(let y=0;y<h;y++)for(let x=0;x<w;x++){
-        if(d[(y*w+x)*4+3]<18)continue;
-        if(x<minX)minX=x;if(x>maxX)maxX=x;
-        if(y<minY)minY=y;if(y>maxY)maxY=y;
-      }
-      if(maxX<0||maxY<0){badTransparentSources.add(src);return ''}
-
-      ctx.putImageData(image,0,0);
-      const bw=maxX-minX+1,bh=maxY-minY+1;
-      const pad=Math.max(4,Math.round(Math.max(bw,bh)*.045));
-      const out=document.createElement('canvas');
-      out.width=bw+pad*2;out.height=bh+pad*2;
-      const ox=out.getContext('2d');
-      ox.clearRect(0,0,out.width,out.height);
-      ox.drawImage(canvas,minX,minY,bw,bh,pad,pad,bw,bh);
-      return out.toDataURL('image/png');
+      return canvas.toDataURL('image/png');
     }catch(_){
       badTransparentSources.add(src);
       return '';
@@ -252,35 +288,31 @@ async function decorate(){
     const slotId=String(slot.dataset.v576Slot??index);
     const p=bySlot.get(slotId)||{};
     const player=String(p.name||slot.querySelector(':scope>b')?.textContent||('Jugador '+(index+1)));
-    const start=hash(player+'|'+slotId)%items.length;
-    let idx=-1,item=null,transparentSrc='';
-    for(let n=0;n<items.length;n++){
-      const q=(start+n)%items.length;
-      if(used.has(q))continue;
-      const candidate=items[q];
-      const raw=String(candidate?.url||'');
-      if(!raw||badTransparentSources.has(raw))continue;
-      const processed=await transparentJersey(raw);
-      if(gen!==renderGeneration||!wrap.isConnected)break;
-      if(!processed)continue;
-      idx=q;item=candidate;transparentSrc=processed;used.add(q);break;
-    }
     if(gen!==renderGeneration||!wrap.isConnected)continue;
     const team=String(p.team||'Liga Juventino Rosas');
-    let generated=false;
-    if(!item||!transparentSrc){
-      generated=true;
-      idx=index;
-      item={id:'generated-transparent-'+index,badgeX:58,badgeY:28,badgeW:15,badgeH:14,coverColor:'transparent',tilt:index%2?-6:6};
-      transparentSrc=generatedTransparentJersey(hash(team+'|'+player+'|'+slotId));
-    }
+
+    // V831: use a clean jersey generated locally for EVERY slot.
+    // This removes the last source of white/black matte residue and prevents
+    // cases where background removal leaves only the crest floating.
+    const generated=true;
+    const idx=index;
+    const item={
+      id:'clean-transparent-v831-'+index,
+      badgeX:58,
+      badgeY:28,
+      badgeW:15,
+      badgeH:14,
+      coverColor:'transparent',
+      tilt:index%2?-5:5
+    };
+    const transparentSrc=generatedTransparentJersey(hash(team+'|'+player+'|'+slotId+'|v831'));
     const logo=logoFor(team);
-    const stamp=String(item.id||idx)+'|'+player+'|'+team+'|transparent-v829';
+    const stamp=String(item.id)+'|'+player+'|'+team+'|transparent-v831';
     if(wrap.dataset.v820Stamp===stamp&&wrap.querySelector('.v820-lineup-jersey'))continue;
 
     const removeId=wrap.querySelector('[data-v576-remove]')?.getAttribute('data-v576-remove')||slotId;
     wrap.dataset.v820Stamp=stamp;
-    wrap.dataset.v827Transparent='1';
+    wrap.dataset.v830Transparent='1';
     wrap.dataset.v829Generated=generated?'1':'0';
     wrap.style.setProperty('--v820-badge-x',Number(item.badgeX??57)+'%');
     wrap.style.setProperty('--v820-badge-y',Number(item.badgeY??27)+'%');
@@ -308,7 +340,8 @@ async function decorate(){
   }
   document.body.dataset.v820FantasyLineup='active';
   document.body.dataset.v820FantasyJerseyPool=String(Math.min(items.length,50));
-  document.body.dataset.v828RejectedJerseys=String(badTransparentSources.size);
+  document.body.dataset.v830RejectedJerseys=String(badTransparentSources.size);
+  document.body.dataset.v831AllGenerated='1';
 }
 
 let raf=0;
