@@ -1,5 +1,6 @@
 package mx.ligajuventino.app;
 
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import com.getcapacitor.BridgeActivity;
@@ -14,6 +15,27 @@ public class MainActivity extends BridgeActivity {
         registerPlugin(LigaNotificationsPlugin.class);
         registerPlugin(LigaCalendarPlugin.class);
         super.onCreate(savedInstanceState);
+        getWindow().getDecorView().postDelayed(() -> applyNotificationRoute(getIntent()), 420);
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        setIntent(intent);
+        getWindow().getDecorView().postDelayed(() -> applyNotificationRoute(intent), 120);
+    }
+
+    private void applyNotificationRoute(Intent intent) {
+        if (intent == null || getBridge() == null) return;
+        String route = intent.getStringExtra("ljr_route");
+        if (route == null || route.trim().isEmpty()) return;
+        route = route.trim().replace("#/","").replace("#","").replaceFirst("^/+", "");
+        String safe = route.replace("\\","").replace("'","").replace("\"","");
+        getBridge().getWebView().evaluateJavascript(
+            "try{location.hash='#/" + safe + "';window.dispatchEvent(new CustomEvent('ljr:notification-open',{detail:{route:'" + safe + "'}}));}catch(e){}",
+            null
+        );
+        intent.removeExtra("ljr_route");
     }
     @Override
     protected void onUserLeaveHint() {
