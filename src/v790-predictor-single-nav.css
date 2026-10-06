@@ -56,11 +56,13 @@ body[data-app-route="predictor"] .v37-predictor-reference-image{
   left:0!important;
   top:-6.8%!important;
   width:100%!important;
-  height:119.3%!important;
+  height:auto!important;
+  min-height:0!important;
   max-width:none!important;
   max-height:none!important;
-  object-fit:fill!important;
-  object-position:center center!important;
+  object-fit:contain!important;
+  object-position:top center!important;
+  transform:none!important;
   pointer-events:none!important;
   user-select:none!important;
   -webkit-user-drag:none!important;
@@ -116,7 +118,9 @@ body[data-app-route="predictor"] .v37-predictor-enter{
 @media(max-width:390px){
   body[data-app-route="predictor"] .v37-predictor-reference-image{
     top:-6.6%!important;
-    height:119%!important;
+    width:100%!important;
+    height:auto!important;
+    object-fit:contain!important;
   }
   body[data-app-route="predictor"] .v37-predictor-enter{
     left:20%!important;
