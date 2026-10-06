@@ -797,6 +797,14 @@ body[data-app-route="home"] .v446-relevant-team .crest *{
   box-sizing:border-box!important;
 }
 </style>
+<style id="v829HomeLogoRaiseStyle">
+/* V829 — subir ligeramente los escudos sin sacarlos del círculo blanco. */
+body[data-app-route="home"] .v446-home-club-logo > .crest > img,
+body[data-app-route="home"] .v446-relevant-team .crest > img{
+  top:46%!important;
+  object-position:50% 50%!important;
+}
+</style>
   <script type="module" crossorigin src="./assets/index-BN1QxqbS.js"></script>
   <link rel="stylesheet" crossorigin href="./assets/index-5FNvoher.css">
 </head>
@@ -1080,11 +1088,11 @@ body[data-app-route="home"] .v446-relevant-team .crest *{
   <script defer src="./src/v803-css3d-animated-lineup.js?v=20261005-v804-fast-complete-field"></script>
   <script defer src="./src/v820-fantasy-lineup-hardlock.js?v=20261006-v837-solid-silhouettes"></script>
   <script defer src="./src/v821-predictor-clean-render.js?v=20261005-v822-pronostica-lower-align"></script>
-<script id="v828HomeLogoRuntimeContain">
+<script id="v829HomeLogoRaise">
 (function(){
 'use strict';
-if(window.__LJR_V828_HOME_LOGO_CONTAIN__)return;
-window.__LJR_V828_HOME_LOGO_CONTAIN__=true;
+if(window.__LJR_V829_HOME_LOGO_RAISE__)return;
+window.__LJR_V829_HOME_LOGO_RAISE__=true;
 
 function important(el,prop,val){
   if(!el)return;
@@ -1121,7 +1129,7 @@ function fitCircle(circle,pct){
   if(!img)return;
   important(img,'position','absolute');
   important(img,'left','50%');
-  important(img,'top','50%');
+  important(img,'top','46%');
   important(img,'right','auto');
   important(img,'bottom','auto');
   important(img,'width',pct+'%');
@@ -1153,7 +1161,7 @@ function apply(){
     important(el,'min-height','56px');
     important(el,'max-width','56px');
     important(el,'max-height','56px');
-    fitCircle(el,60);
+    fitCircle(el,62);
   });
 
   document.querySelectorAll('.v446-relevant-team .crest').forEach(el=>{
@@ -1163,7 +1171,7 @@ function apply(){
     important(el,'min-height','34px');
     important(el,'max-width','34px');
     important(el,'max-height','34px');
-    fitCircle(el,60);
+    fitCircle(el,62);
   });
 }
 let raf=0;
