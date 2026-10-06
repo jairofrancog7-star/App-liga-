@@ -574,7 +574,7 @@ function select(id){
 function card(item){
   const on=chosen()?.id===item.id?' selected':'';
   return '<button type="button" class="v813-jersey-card'+on+'" data-v813-pick="'+esc(item.id)+'">'+
-   '<span class="v813-jersey-art"><img src="'+esc(item.url)+'" alt="'+esc(item.label)+'" loading="lazy"></span>'+
+   '<span class="v813-jersey-art"><img src="'+esc(item.url)+'" '+(item.removeBg?'data-v813-bgstrip="'+esc(item.id)+'" ':'')+'alt="'+esc(item.label)+'" loading="lazy"></span>'+
    '<b>'+esc(item.club)+'</b><small>'+esc(item.season)+' · '+esc(item.type)+'</small></button>';
 }
 function open(){
@@ -584,6 +584,11 @@ function open(){
     '<label class="v813-search"><span>⌕</span><input type="search" data-v813-search placeholder="Buscar club o temporada"></label>'+
     '<div class="v813-grid" data-v813-grid>'+CATALOG.map(card).join('')+'</div></section>';
   document.body.appendChild(layer);
+  layer.querySelectorAll('[data-v813-bgstrip]').forEach(async img=>{
+    const item=CATALOG.find(x=>x.id===img.dataset.v813Bgstrip);
+    const src=await sourceFor(item);
+    if(src&&img.isConnected)img.src=src;
+  });
   layer.querySelectorAll('[data-v813-close]').forEach(b=>b.onclick=close);
   layer.querySelectorAll('[data-v813-pick]').forEach(b=>b.onclick=()=>select(b.dataset.v813Pick));
   const inp=layer.querySelector('[data-v813-search]');inp.oninput=()=>{
