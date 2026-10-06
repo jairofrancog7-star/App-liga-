@@ -1,6 +1,6 @@
 import { rosterGroups, monthIndicator } from './v839-reference-data.js';
 import { Capacitor, registerPlugin } from '@capacitor/core';
-import { calendarEvent, googleCalendarDestination } from './v843-calendar-event.js';
+import { calendarEvent, googleCalendarDestination } from './v843-calendar-event.js?v=20261006-v869-calendar-chooser';
 import { registeredTeamPhotos } from './v843-registered-player-photos.js';
 /* V415 — Calendario referencia: calendario visual con escudos, meses y tarjeta de partido.
    Sólo reemplaza #/v4-calendar. Usa datos oficiales ya publicados y conserva la navegación global. */
@@ -379,6 +379,8 @@ function statusText(g){
 function matchCard(g){
   const roundText=g.round?'Jornada '+g.round:'Partido oficial';
   const dateLine=shortDate(g.iso)+(g.time?' · '+g.time:'');
+  const calendarHref=calendarLink(g);
+  const calendarTarget=/^https?:/i.test(calendarHref)?' target="_blank" rel="noopener noreferrer"':'';
   return '<article class="v415-match-card v448-reference-card">'+
     '<header class="v448-card-head">'+
       '<div class="v415-match-meta"><b>'+esc(g.category)+'</b><span>·</span><span>'+esc(roundText)+'</span></div>'+
@@ -387,7 +389,7 @@ function matchCard(g){
     '<div class="v415-match-main v448-teams-row">'+
       '<div class="v415-match-team v448-home">'+logoMarkup(g.home,'large')+'<b>'+esc(g.home)+'</b></div>'+
       '<div class="v415-match-center v448-center-action">'+
-        '<a role="button" href="'+esc(calendarLink(g))+'" target="_blank" rel="noopener noreferrer" class="v415-add-calendar" data-v415-add-calendar="'+esc(g.id)+'" aria-label="Agregar partido al calendario"><span>＋</span><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="5" width="16" height="15" rx="2"/><path d="M8 3v4M16 3v4M4 9h16"/></svg></a>'+
+        '<a role="button" href="'+esc(calendarHref)+'"'+calendarTarget+' class="v415-add-calendar" data-v415-add-calendar="'+esc(g.id)+'" aria-label="Agregar partido al calendario"><span>＋</span><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="5" width="16" height="15" rx="2"/><path d="M8 3v4M16 3v4M4 9h16"/></svg></a>'+
       '</div>'+
       '<div class="v415-match-team v448-away">'+logoMarkup(g.away,'large')+'<b>'+esc(g.away)+'</b></div>'+
     '</div>'+
