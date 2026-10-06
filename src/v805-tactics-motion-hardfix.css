@@ -1,0 +1,166 @@
+/* V805 — Movimiento ligero y estable para Tácticas 2D / 3D.
+   Solo anima transformaciones compositor-friendly (translate/rotate/scale).
+   No re-renderiza datos ni toca posiciones guardadas, por lo que mantiene fluidez al hacer scroll. */
+
+body[data-app-route="tactics"]{
+  --v805-motion-y:3px;
+}
+
+/* Tablero principal 2D: la cancha respira suavemente sin alterar su transform existente. */
+body[data-app-route="tactics"] .v160-pitch-frame .v60-pitch{
+  animation:v805BoardFloat 5.6s ease-in-out infinite!important;
+  will-change:translate!important;
+}
+body[data-app-route="tactics"] .v160-pitch-frame .v60-player-dot{
+  animation:v805PlayerBob 3.4s ease-in-out infinite!important;
+  will-change:translate!important;
+}
+body[data-app-route="tactics"] .v160-pitch-frame .v60-player-dot:nth-child(1){animation-delay:-.15s!important}
+body[data-app-route="tactics"] .v160-pitch-frame .v60-player-dot:nth-child(2){animation-delay:-.45s!important}
+body[data-app-route="tactics"] .v160-pitch-frame .v60-player-dot:nth-child(3){animation-delay:-.75s!important}
+body[data-app-route="tactics"] .v160-pitch-frame .v60-player-dot:nth-child(4){animation-delay:-1.05s!important}
+body[data-app-route="tactics"] .v160-pitch-frame .v60-player-dot:nth-child(5){animation-delay:-1.35s!important}
+body[data-app-route="tactics"] .v160-pitch-frame .v60-player-dot:nth-child(6){animation-delay:-1.65s!important}
+body[data-app-route="tactics"] .v160-pitch-frame .v60-player-dot:nth-child(7){animation-delay:-1.95s!important}
+
+/* Mini cancha superior: vuelve a moverse sin filtros ni repaints pesados. */
+body[data-app-route="tactics"] .v160-source-pitch{
+  animation:v805MiniPitchFloat 6.2s ease-in-out infinite!important;
+  transition:transform .2s ease!important;
+  will-change:translate!important;
+}
+body[data-app-route="tactics"] .v160-source-ball{
+  animation:v805BallTravel 5.2s ease-in-out infinite!important;
+  will-change:transform,left,top!important;
+}
+body[data-app-route="tactics"] .v160-source-player{
+  animation:v805PlayerBob 3.2s ease-in-out infinite!important;
+  will-change:translate!important;
+}
+body[data-app-route="tactics"] .v160-source-player.p1{animation-delay:-.2s!important}
+body[data-app-route="tactics"] .v160-source-player.p2{animation-delay:-.8s!important}
+body[data-app-route="tactics"] .v160-source-player.p3{animation-delay:-1.4s!important}
+body[data-app-route="tactics"] .v160-source-player.p4{animation-delay:-2s!important}
+
+/* Pizarra avanzada: movimiento visible tanto en 2D como en 3D.
+   Se anima el contenido visual interno para no afectar el arrastre táctil. */
+body[data-app-route="tactics"] #v100-tactics-extra .v100-pitch{
+  animation:v805BoardFloat 5.8s ease-in-out infinite!important;
+  transition:transform .28s ease!important;
+  will-change:translate!important;
+}
+body[data-app-route="tactics"] #v100-tactics-extra .v100-pitch.is-3d{
+  animation:v805BoardFloat3d 5.8s ease-in-out infinite!important;
+}
+body[data-app-route="tactics"] #v100-tactics-extra .v802-player-token{
+  animation:v805TokenBob 3.5s ease-in-out infinite!important;
+  will-change:translate!important;
+}
+body[data-app-route="tactics"] #v100-tactics-extra .v100-player:nth-of-type(1) .v802-player-token{animation-delay:-.10s!important}
+body[data-app-route="tactics"] #v100-tactics-extra .v100-player:nth-of-type(2) .v802-player-token{animation-delay:-.35s!important}
+body[data-app-route="tactics"] #v100-tactics-extra .v100-player:nth-of-type(3) .v802-player-token{animation-delay:-.60s!important}
+body[data-app-route="tactics"] #v100-tactics-extra .v100-player:nth-of-type(4) .v802-player-token{animation-delay:-.85s!important}
+body[data-app-route="tactics"] #v100-tactics-extra .v100-player:nth-of-type(5) .v802-player-token{animation-delay:-1.10s!important}
+body[data-app-route="tactics"] #v100-tactics-extra .v100-player:nth-of-type(6) .v802-player-token{animation-delay:-1.35s!important}
+body[data-app-route="tactics"] #v100-tactics-extra .v100-player:nth-of-type(7) .v802-player-token{animation-delay:-1.60s!important}
+body[data-app-route="tactics"] #v100-tactics-extra .v100-player:nth-of-type(8) .v802-player-token{animation-delay:-1.85s!important}
+body[data-app-route="tactics"] #v100-tactics-extra .v100-player:nth-of-type(9) .v802-player-token{animation-delay:-2.10s!important}
+body[data-app-route="tactics"] #v100-tactics-extra .v100-player:nth-of-type(10) .v802-player-token{animation-delay:-2.35s!important}
+body[data-app-route="tactics"] #v100-tactics-extra .v100-player:nth-of-type(11) .v802-player-token{animation-delay:-2.60s!important}
+
+/* Alineación V803: movimiento ligero del campo y de cada ficha, sin volver a renderizar DOM. */
+body[data-app-route="tactics"] .v803-football3d .v803-field{
+  animation:v805FieldFloat 6.4s ease-in-out infinite!important;
+  will-change:translate!important;
+}
+body[data-app-route="tactics"] .v803-football3d .v803-ball{
+  animation:v805BallTravel3d 5.4s ease-in-out infinite!important;
+  will-change:transform!important;
+}
+body[data-app-route="tactics"] .v803-football3d .v803-player-face{
+  animation:v805TokenBob 3.7s ease-in-out infinite!important;
+  animation-delay:calc(-.21s * var(--v803-i))!important;
+  will-change:translate!important;
+}
+body[data-app-route="tactics"] .v803-football3d .v803-player.active .v803-player-face{
+  animation:v805TokenFocus 1.45s ease-in-out infinite!important;
+}
+
+/* Fotos/escudos de la referencia 3D anterior: mover el contenedor, no la imagen. */
+body[data-app-route="tactics"] .v802-mini-photo,
+body[data-app-route="tactics"] .v802-source-photo,
+body[data-app-route="tactics"] .v802-lineup-photo{
+  animation:v805PhotoFloat 3.8s ease-in-out infinite!important;
+  will-change:translate!important;
+}
+
+/* Al alternar 2D/3D se conserva una transición visible. */
+body[data-app-route="tactics"] #v100-tactics-extra .v100-pitch,
+body[data-app-route="tactics"] #v100-tactics-extra .v802-player-token,
+body[data-app-route="tactics"] .v803-world,
+body[data-app-route="tactics"] .v803-player{
+  transition-property:transform,opacity,translate!important;
+  transition-duration:.32s!important;
+  transition-timing-function:cubic-bezier(.2,.75,.25,1)!important;
+}
+
+@keyframes v805BoardFloat{
+  0%,100%{translate:0 0}
+  50%{translate:0 -3px}
+}
+@keyframes v805BoardFloat3d{
+  0%,100%{translate:0 0}
+  50%{translate:0 -4px}
+}
+@keyframes v805MiniPitchFloat{
+  0%,100%{translate:0 0}
+  50%{translate:0 -4px}
+}
+@keyframes v805FieldFloat{
+  0%,100%{translate:0 0}
+  50%{translate:0 -3px}
+}
+@keyframes v805PlayerBob{
+  0%,100%{translate:0 0}
+  50%{translate:0 -4px}
+}
+@keyframes v805TokenBob{
+  0%,100%{translate:0 0}
+  50%{translate:0 -5px}
+}
+@keyframes v805TokenFocus{
+  0%,100%{translate:0 -5px}
+  50%{translate:0 -10px}
+}
+@keyframes v805PhotoFloat{
+  0%,100%{translate:0 0}
+  50%{translate:0 -3px}
+}
+@keyframes v805BallTravel{
+  0%,100%{left:49%;top:44%;transform:translateZ(30px) rotate(0)}
+  25%{left:58%;top:35%;transform:translateZ(42px) rotate(90deg)}
+  50%{left:64%;top:54%;transform:translateZ(26px) rotate(180deg)}
+  75%{left:41%;top:58%;transform:translateZ(38px) rotate(270deg)}
+}
+@keyframes v805BallTravel3d{
+  0%,100%{transform:translate(-50%,-50%) translate3d(0,0,12px) rotate(0)}
+  25%{transform:translate(-50%,-50%) translate3d(22px,-15px,18px) rotate(90deg)}
+  50%{transform:translate(-50%,-50%) translate3d(-6px,-28px,12px) rotate(180deg)}
+  75%{transform:translate(-50%,-50%) translate3d(-24px,10px,17px) rotate(270deg)}
+}
+
+/* Movimiento solicitado explícitamente para esta herramienta: estas reglas deben ganar
+   incluso si Android/Chrome reporta prefers-reduced-motion. */
+@media(prefers-reduced-motion:reduce){
+  body[data-app-route="tactics"] .v160-pitch-frame .v60-pitch{animation:v805BoardFloat 5.6s ease-in-out infinite!important}
+  body[data-app-route="tactics"] .v160-pitch-frame .v60-player-dot{animation:v805PlayerBob 3.4s ease-in-out infinite!important}
+  body[data-app-route="tactics"] .v160-source-pitch{animation:v805MiniPitchFloat 6.2s ease-in-out infinite!important;transform:rotateX(59deg) rotateZ(-5deg)!important}
+  body[data-app-route="tactics"] .v160-source-ball{animation:v805BallTravel 5.2s ease-in-out infinite!important}
+  body[data-app-route="tactics"] .v160-source-player{animation:v805PlayerBob 3.2s ease-in-out infinite!important}
+  body[data-app-route="tactics"] #v100-tactics-extra .v100-pitch{animation:v805BoardFloat 5.8s ease-in-out infinite!important}
+  body[data-app-route="tactics"] #v100-tactics-extra .v100-pitch.is-3d{animation:v805BoardFloat3d 5.8s ease-in-out infinite!important;transform:perspective(900px) rotateX(48deg) translateY(-4px) scale(.96)!important}
+  body[data-app-route="tactics"] #v100-tactics-extra .v802-player-token{animation:v805TokenBob 3.5s ease-in-out infinite!important}
+  body[data-app-route="tactics"] .v803-football3d .v803-field{animation:v805FieldFloat 6.4s ease-in-out infinite!important}
+  body[data-app-route="tactics"] .v803-football3d .v803-ball{animation:v805BallTravel3d 5.4s ease-in-out infinite!important}
+  body[data-app-route="tactics"] .v803-football3d .v803-player-face{animation:v805TokenBob 3.7s ease-in-out infinite!important}
+}
