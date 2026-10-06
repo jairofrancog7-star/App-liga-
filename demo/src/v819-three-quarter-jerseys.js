@@ -6,7 +6,19 @@ const TEAMS=[{"name":"BOAVISTA","kitId":"v837-kit-02","logo":"./assets/season-20
 const norm=v=>String(v||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[^a-z0-9]+/g,' ').trim();
 const aliases={'san jose':'san jose fc','hermanos fc':'hermanos','herreras':'herreras fc','herrera':'herreras fc','galacticos de pozos':'galacticos','atl galeana':'galeana','atletico galeana':'galeana','celticos':'celticos fc','lobos jrs':'lobos cdg','lobos jr':'lobos cdg','promesas de pozos':'promesas fc','deportivo hermanos':'hermanos','deportivo nopalero':'dep nopalero','deportivo zapata':'dep zapata','deportivo la luz':'dep la luz','deportivo maravillas':'dep maravillas','san jose jr':'san jose jrs'};
 const BADGES={"v837-kit-06":{"badgeY":0.271,"badgeHeight":110},"v837-kit-14":{"badgeX":0.561,"badgeY":0.265,"badgeWidth":86,"badgeHeight":104},"v837-kit-15":{"badgeX":0.6,"badgeY":0.291,"badgeWidth":70,"badgeHeight":98,"eraseAreas":[{"x":0.405,"y":0.292,"width":52,"height":75}]},"v837-kit-16":{"badgeX":0.591,"badgeY":0.302,"badgeWidth":122,"badgeHeight":86},"v837-kit-18":{"badgeX":0.587,"badgeY":0.291,"badgeWidth":82,"badgeHeight":96,"fabricDirection":"horizontal"},"v837-kit-21":{"badgeY":0.27,"badgeHeight":110},"v837-kit-23":{"badgeX":0.41,"badgeY":0.274,"badgeWidth":76,"badgeHeight":112,"badgeSize":63},"v837-kit-24":{"badgeX":0.61,"badgeY":0.302,"badgeWidth":82,"badgeHeight":110,"eraseAreas":[{"x":0.416,"y":0.309,"width":54,"height":80}]},"v837-kit-26":{"badgeX":0.581,"badgeY":0.299,"badgeWidth":88,"badgeHeight":108},"v837-kit-27":{"badgeX":0.568,"badgeY":0.297,"badgeWidth":86,"badgeHeight":118},"v837-kit-28":{"badgeX":0.585,"badgeY":0.282,"badgeWidth":84,"badgeHeight":104},"v837-kit-31":{"badgeX":0.615,"badgeY":0.279,"badgeWidth":74,"badgeHeight":100},"v837-kit-32":{"badgeX":0.583,"badgeY":0.27,"badgeWidth":94,"badgeHeight":94},"v837-kit-33":{"badgeX":0.6,"badgeY":0.256,"badgeWidth":94,"badgeHeight":108,"fabricDirection":"horizontal"},"v837-kit-34":{"badgeX":0.617,"badgeY":0.299,"badgeWidth":92,"badgeHeight":116,"badgeSize":73},"v837-kit-35":{"badgeX":0.413,"badgeY":0.31,"badgeWidth":80,"badgeHeight":84},"v837-kit-40":{"badgeX":0.581,"badgeY":0.286,"badgeWidth":88,"badgeHeight":110},"v837-kit-43":{"badgeX":0.604,"badgeY":0.294,"badgeWidth":94,"badgeHeight":114,"badgeSize":76},"v837-kit-44":{"badgeX":0.618,"badgeY":0.268,"badgeWidth":94,"badgeHeight":100},"v837-kit-45":{"badgeX":0.602,"badgeY":0.261,"badgeWidth":98,"badgeHeight":120},"v837-kit-49":{"badgeX":0.579,"badgeY":0.321,"badgeWidth":106,"badgeHeight":124},"v837-kit-50":{"badgeX":0.559,"badgeY":0.273,"badgeWidth":90,"badgeHeight":112}};
-SOURCES.forEach(s=>Object.assign(s,BADGES[s.id]||{}));
+const CLEAN_BADGES={
+ 'v837-kit-07':{badgeX:.61,badgeY:.285,badgeWidth:146,badgeHeight:162},
+ 'v837-kit-10':{badgeX:.604,badgeY:.29,badgeHeight:166,badgeSize:82},
+ 'v837-kit-14':{eraseAreas:[{x:.405,y:.292,width:62,height:94}]},
+ 'v837-kit-17':{badgeX:.623,badgeY:.307},
+ 'v837-kit-20':{badgeX:.603,badgeY:.3},
+ 'v837-kit-29':{badgeX:.617,badgeY:.278,badgeHeight:158},
+ 'v837-kit-30':{badgeX:.603,badgeY:.286,badgeHeight:164},
+ 'v837-kit-46':{badgeX:.595,badgeY:.318,badgeHeight:172,badgeSize:76},
+ 'v837-kit-48':{badgeX:.611,badgeY:.311},
+ 'v837-kit-50':{eraseAreas:[{x:.405,y:.292,width:62,height:94}]}
+};
+SOURCES.forEach(s=>Object.assign(s,BADGES[s.id]||{},CLEAN_BADGES[s.id]||{}));
 const byId=new Map(SOURCES.map(x=>[x.id,x]));
 const byName=new Map(TEAMS.map(x=>[norm(x.name),x]));
 function teamFor(name){const n=norm(name);return byName.get(aliases[n]||n)||null}

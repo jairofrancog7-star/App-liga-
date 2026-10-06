@@ -10,7 +10,7 @@ const account=()=>window.LJR_V569_AUTH?.currentAccount ? window.LJR_V569_AUTH.cu
 const media=()=>window.LJR_MEDIA;
 const go=r=>window.LJR_MAIN_ROUTE?.go ? window.LJR_MAIN_ROUTE.go(r) : location.hash='#/'+r;
 function avatar(a=account()){
- if(!a)return icons.person;
+ if(!a)return '<img class="ljr-profile-image" src="./assets/reference/predictor-v36/liga-crest-white.webp" alt="Liga Juventino Rosas">';
  const gamer=/^gamer:[0-8]$/.test(a.avatarPreset||'');
  const photo=a.avatar||(!gamer&&(a.photoURL||a.picture));
  if(photo)return '<img class="ljr-profile-image" src="'+esc(photo)+'" alt="'+esc(a.name||'Mi perfil')+'">';
