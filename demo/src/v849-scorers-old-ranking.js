@@ -1,61 +1,32 @@
-/* V849 — restaura en #/scorers el par de foto circular + cuadro redondeado
-   del ranking anterior. No modifica datos ni las tarjetas grandes superiores. */
+/* V850 — limpieza de la restauración anterior.
+   El ranking debe tener UNA sola foto circular por jugador. */
 (function(){
   'use strict';
-  if(window.__LJR_V849_SCORERS_OLD_RANKING__)return;
-  window.__LJR_V849_SCORERS_OLD_RANKING__=true;
+  if(window.__LJR_V850_SCORER_SINGLE_PHOTO__)return;
+  window.__LJR_V850_SCORER_SINGLE_PHOTO__=true;
 
-  function isScorers(){
-    const route=String(location.hash||'').replace(/^#\/?/,'').split('?')[0];
-    return route==='scorers'||document.body?.dataset?.appRoute==='scorers';
+  function clean(){
+    document.querySelectorAll('.v462-rank-row').forEach(row=>{
+      const pair=row.querySelector(':scope > .v849-player-pair');
+      if(pair){
+        const avatar=pair.querySelector(':scope > .v576-player-avatar');
+        if(avatar)row.insertBefore(avatar,pair);
+        pair.remove();
+      }
+      row.querySelectorAll(':scope > .v849-square-photo').forEach(n=>n.remove());
+      const avatars=[...row.querySelectorAll(':scope > .v576-player-avatar')];
+      avatars.slice(1).forEach(n=>n.remove());
+      row.querySelectorAll('.v462-rank-copy > .v576-inline-player-photo').forEach(n=>n.remove());
+    });
   }
-
-  function syncSquare(pair){
-    if(!pair)return;
-    const avatar=pair.querySelector(':scope > .v576-player-avatar');
-    const square=pair.querySelector(':scope > .v849-square-photo');
-    if(!avatar||!square)return;
-    const html=avatar.innerHTML;
-    if(square.innerHTML!==html)square.innerHTML=html;
-    square.classList.toggle('v849-has-photo',!!square.querySelector('img'));
-  }
-
-  function enhanceRow(row){
-    if(!(row instanceof Element))return;
-    let pair=row.querySelector(':scope > .v849-player-pair');
-    if(!pair){
-      const avatar=row.querySelector(':scope > .v576-player-avatar');
-      if(!avatar)return;
-      pair=document.createElement('span');
-      pair.className='v849-player-pair';
-      const square=document.createElement('span');
-      square.className='v849-square-photo';
-      row.insertBefore(pair,avatar);
-      pair.appendChild(avatar);
-      pair.appendChild(square);
-    }
-    row.classList.add('v849-old-row');
-    syncSquare(pair);
-  }
-
   let raf=0;
-  function apply(){
-    raf=0;
-    if(!isScorers())return;
-    document.querySelectorAll('.v462-rank-row[data-v462-ranking-kind="player"],.v462-rank-row[data-v194-player]').forEach(enhanceRow);
-  }
   function schedule(){
     if(raf)return;
-    raf=requestAnimationFrame(apply);
+    raf=requestAnimationFrame(()=>{raf=0;clean()});
   }
-
-  window.addEventListener('hashchange',schedule);
-  window.addEventListener('load',schedule);
   document.addEventListener('DOMContentLoaded',schedule,{once:true});
-  new MutationObserver(schedule).observe(document.documentElement,{
-    childList:true,subtree:true,attributes:true,attributeFilter:['src','class']
-  });
+  window.addEventListener('load',schedule);
+  window.addEventListener('hashchange',schedule);
+  new MutationObserver(schedule).observe(document.documentElement,{childList:true,subtree:true});
   schedule();
-  setTimeout(schedule,250);
-  setTimeout(schedule,900);
 })();
