@@ -145,6 +145,48 @@ async function transparentJersey(src){
   return task;
 }
 
+function generatedTransparentJersey(seed=0){
+  const palettes=[
+    ['#0b48df','#27d7ef','#06267f'],['#d71920','#ff4650','#74030b'],
+    ['#ffffff','#dfe9f5','#6f87a6'],['#101318','#39414f','#050608'],
+    ['#f3c319','#ffdf58','#9d7000'],['#098f4e','#35d47c','#034d2a'],
+    ['#7b21d8','#b55cff','#37106e'],['#ff6b00','#ff9a33','#9a3200'],
+    ['#0f8fcf','#62d7ff','#075481'],['#ed1c78','#ff76b5','#7d0a3f']
+  ];
+  const p=palettes[Math.abs(Number(seed)||0)%palettes.length];
+  const mode=Math.abs(Number(seed)||0)%5;
+  const stripe=mode===0
+    ? '<path d="M74 57h18v154H74zM108 57h18v154h-18z" fill="'+p[1]+'" opacity=".88"/>'
+    : mode===1
+      ? '<path d="M47 102h106v22H47zM47 145h106v18H47z" fill="'+p[1]+'" opacity=".82"/>'
+      : mode===2
+        ? '<path d="M52 54l92 158h-31L37 80z" fill="'+p[1]+'" opacity=".78"/>'
+        : mode===3
+          ? '<path d="M55 58h90v154H55z" fill="'+p[1]+'" opacity=".18"/><path d="M92 58h16v154H92z" fill="'+p[1]+'" opacity=".9"/>'
+          : '<path d="M45 80l110 0v24H45z" fill="'+p[1]+'" opacity=".82"/><path d="M85 54h30v158H85z" fill="'+p[1]+'" opacity=".32"/>';
+  const svg='<svg xmlns="http://www.w3.org/2000/svg" width="200" height="230" viewBox="0 0 200 230">'+
+    '<defs>'+
+      '<linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop stop-color="'+p[1]+'"/><stop offset=".38" stop-color="'+p[0]+'"/><stop offset="1" stop-color="'+p[2]+'"/></linearGradient>'+
+      '<linearGradient id="s" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#fff" stop-opacity=".28"/><stop offset=".35" stop-color="#fff" stop-opacity=".03"/><stop offset="1" stop-color="#000" stop-opacity=".22"/></linearGradient>'+
+      '<filter id="ds" x="-30%" y="-30%" width="160%" height="170%"><feDropShadow dx="0" dy="7" stdDeviation="6" flood-color="#00102d" flood-opacity=".36"/></filter>'+
+      '<clipPath id="shirt"><path d="M71 39c7 8 17 12 29 12s22-4 29-12l29 13 28 35-28 25-17-18v120H59V94l-17 18-28-25 28-35z"/></clipPath>'+
+    '</defs>'+
+    '<g filter="url(#ds)">'+
+      '<path d="M71 39c7 8 17 12 29 12s22-4 29-12l29 13 28 35-28 25-17-18v120H59V94l-17 18-28-25 28-35z" fill="url(#g)" stroke="'+p[2]+'" stroke-width="3"/>'+
+      '<g clip-path="url(#shirt)">'+stripe+
+        '<path d="M33 48c28 20 49 28 67 28s39-8 67-28v34c-28 14-50 20-67 20S61 96 33 82z" fill="#fff" opacity=".06"/>'+
+        '<path d="M42 52c8 16 18 31 30 46l-13 116H42zM158 52c-8 16-18 31-30 46l13 116h17z" fill="#000" opacity=".12"/>'+
+        '<rect x="14" y="39" width="172" height="175" fill="url(#s)"/>'+
+      '</g>'+
+      '<path d="M78 43c4 14 12 21 22 21s18-7 22-21" fill="none" stroke="'+p[1]+'" stroke-width="8" stroke-linecap="round"/>'+
+      '<path d="M80 43c4 10 10 15 20 15s16-5 20-15" fill="none" stroke="'+p[2]+'" stroke-width="3" stroke-linecap="round"/>'+
+      '<path d="M59 207h82" stroke="'+p[1]+'" stroke-width="3" opacity=".7"/>'+
+      '<path d="M45 106l-27-22M155 106l27-22" stroke="'+p[1]+'" stroke-width="3" opacity=".78"/>'+
+    '</g>'+
+  '</svg>';
+  return 'data:image/svg+xml;charset=UTF-8,'+encodeURIComponent(svg);
+}
+
 function removePicker(){
   document.querySelectorAll('[data-v813-open],.v813-open,.v813-jersey-layer').forEach(n=>n.remove());
   document.body.classList.remove('v813-jersey-picker-open','v813-custom-jersey');
@@ -211,15 +253,22 @@ async function decorate(){
       idx=q;item=candidate;transparentSrc=processed;used.add(q);break;
     }
     if(gen!==renderGeneration||!wrap.isConnected)continue;
-    if(!item||!transparentSrc)continue;
     const team=String(p.team||'Liga Juventino Rosas');
+    let generated=false;
+    if(!item||!transparentSrc){
+      generated=true;
+      idx=index;
+      item={id:'generated-transparent-'+index,badgeX:58,badgeY:28,badgeW:15,badgeH:14,coverColor:'transparent',tilt:index%2?-6:6};
+      transparentSrc=generatedTransparentJersey(hash(team+'|'+player+'|'+slotId));
+    }
     const logo=logoFor(team);
-    const stamp=String(item.id||idx)+'|'+player+'|'+team+'|transparent-v828';
+    const stamp=String(item.id||idx)+'|'+player+'|'+team+'|transparent-v829';
     if(wrap.dataset.v820Stamp===stamp&&wrap.querySelector('.v820-lineup-jersey'))continue;
 
     const removeId=wrap.querySelector('[data-v576-remove]')?.getAttribute('data-v576-remove')||slotId;
     wrap.dataset.v820Stamp=stamp;
     wrap.dataset.v827Transparent='1';
+    wrap.dataset.v829Generated=generated?'1':'0';
     wrap.style.setProperty('--v820-badge-x',Number(item.badgeX??57)+'%');
     wrap.style.setProperty('--v820-badge-y',Number(item.badgeY??27)+'%');
     wrap.style.setProperty('--v820-badge-w',Number(item.badgeW??16)+'%');
@@ -228,11 +277,21 @@ async function decorate(){
     wrap.style.setProperty('--v820-tilt',Number(item.tilt??(index%2?-7:7))+'deg');
     wrap.innerHTML=
       '<span class="v820-lineup-kit v827-transparent-kit">'+
-        '<img class="v820-lineup-jersey v827-transparent-shirt" src="'+esc(transparentSrc)+'" alt="" draggable="false" decoding="async">'+
+        '<img class="v820-lineup-jersey v827-transparent-shirt" src="'+esc(transparentSrc)+'" data-v829-fallback="'+esc(generatedTransparentJersey(hash(team+'|fallback|'+slotId)))+'" alt="" draggable="false" decoding="async">'+
         '<span class="v820-source-cover" aria-hidden="true"></span>'+
         '<img class="v820-team-logo" src="'+esc(logo)+'" alt="" draggable="false" decoding="async">'+
       '</span>'+
       '<i class="remove" data-v576-remove="'+esc(removeId)+'" aria-label="Quitar jugador">×</i>';
+    const jerseyImg=wrap.querySelector('.v820-lineup-jersey');
+    if(jerseyImg){
+      jerseyImg.addEventListener('error',()=>{
+        const fallback=jerseyImg.dataset.v829Fallback||generatedTransparentJersey(hash(team+'|error|'+slotId));
+        if(jerseyImg.src!==fallback){
+          jerseyImg.src=fallback;
+          wrap.dataset.v829Generated='1';
+        }
+      },{once:true});
+    }
   }
   document.body.dataset.v820FantasyLineup='active';
   document.body.dataset.v820FantasyJerseyPool=String(Math.min(items.length,50));
