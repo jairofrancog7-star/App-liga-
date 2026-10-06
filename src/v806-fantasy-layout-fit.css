@@ -352,3 +352,104 @@ html body[data-app-route="fantasyTeam"] .v576-builder>footer{
     min-height:52px!important;height:52px!important;padding:12px 20px 9px!important;font-size:10px!important;
   }
 }
+
+/* V807 — HARD RESTORE de los dos botones secundarios del acceso Fantasy.
+   Este archivo carga al final de los estilos Fantasy, así que gana sobre reglas viejas. */
+html body[data-app-route="fantasyAccess"] .v588-slide-login .v23-access-actions,
+html body[data-app-route="fantasyAccess"] .v588-slide-team .v23-access-actions{
+  position:absolute!important;
+  left:0!important;
+  right:0!important;
+  bottom:clamp(10px,1.8dvh,20px)!important;
+  width:100%!important;
+  margin:0!important;
+  padding:0 0 2px!important;
+  display:flex!important;
+  flex-direction:column!important;
+  align-items:center!important;
+  justify-content:flex-end!important;
+  overflow:visible!important;
+  z-index:50!important;
+  pointer-events:none!important;
+}
+html body[data-app-route="fantasyAccess"] .v588-slide-login .v23-access-actions>button,
+html body[data-app-route="fantasyAccess"] .v588-slide-team .v23-access-actions>button{
+  pointer-events:auto!important;
+}
+html body[data-app-route="fantasyAccess"] .v588-slide-login .v23-access-login,
+html body[data-app-route="fantasyAccess"] .v588-slide-team .v23-access-login{
+  display:flex!important;
+  visibility:visible!important;
+  opacity:1!important;
+  align-items:center!important;
+  justify-content:center!important;
+  width:min(82%,410px)!important;
+  min-height:54px!important;
+  height:54px!important;
+  margin:0!important;
+  flex:0 0 54px!important;
+}
+html body[data-app-route="fantasyAccess"] .v588-slide-login .v23-access-later,
+html body[data-app-route="fantasyAccess"] .v588-slide-team .v23-access-later,
+html body[data-app-route="fantasyAccess"] [data-v807-restored="1"]{
+  display:flex!important;
+  visibility:visible!important;
+  opacity:1!important;
+  position:relative!important;
+  align-items:center!important;
+  justify-content:center!important;
+  width:auto!important;
+  min-width:220px!important;
+  max-width:88%!important;
+  min-height:38px!important;
+  height:38px!important;
+  margin:12px 0 0!important;
+  padding:4px 16px!important;
+  border:0!important;
+  background:transparent!important;
+  color:#21e5ef!important;
+  font:600 clamp(15px,3.2vw,18px)/1.15 Inter,Roboto,Arial,sans-serif!important;
+  text-align:center!important;
+  white-space:nowrap!important;
+  overflow:visible!important;
+  transform:none!important;
+  clip-path:none!important;
+}
+
+/* Deja espacio real para la pila de botones y evita que el texto la tape. */
+html body[data-app-route="fantasyAccess"] .v588-slide-login .v23-access-copy{
+  margin-bottom:126px!important;
+}
+html body[data-app-route="fantasyAccess"] .v588-slide-team .v588-team-copy{
+  margin-bottom:132px!important;
+}
+html body[data-app-route="fantasyAccess"] .v588-slide-team .v588-dots{
+  margin-bottom:0!important;
+}
+
+@media(max-height:760px){
+  html body[data-app-route="fantasyAccess"] .v588-slide-login .v23-access-actions,
+  html body[data-app-route="fantasyAccess"] .v588-slide-team .v23-access-actions{
+    bottom:6px!important;
+  }
+  html body[data-app-route="fantasyAccess"] .v588-slide-login .v23-access-login,
+  html body[data-app-route="fantasyAccess"] .v588-slide-team .v23-access-login{
+    min-height:48px!important;
+    height:48px!important;
+    flex-basis:48px!important;
+  }
+  html body[data-app-route="fantasyAccess"] .v588-slide-login .v23-access-later,
+  html body[data-app-route="fantasyAccess"] .v588-slide-team .v23-access-later,
+  html body[data-app-route="fantasyAccess"] [data-v807-restored="1"]{
+    min-height:34px!important;
+    height:34px!important;
+    margin-top:7px!important;
+    font-size:14px!important;
+  }
+  html body[data-app-route="fantasyAccess"] .v588-slide-login .v23-access-copy{
+    margin-bottom:104px!important;
+  }
+  html body[data-app-route="fantasyAccess"] .v588-slide-team .v588-team-copy{
+    margin-bottom:108px!important;
+  }
+}
