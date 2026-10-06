@@ -190,6 +190,7 @@ function render(){
   else if(ui.view==='rules')html=rules();
   else html=predictions();
   screen.innerHTML=html;
+  if(ui.view==='intro')screen.scrollTop=0;
   document.body.dataset.v589Predictor='1';
 }
 function openPrediction(id){
