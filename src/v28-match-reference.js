@@ -54,7 +54,7 @@
   function muteIcon(){return '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 9v6h4l5 4V5L9 9H5Zm13-1 3 8M21 8l-3 8"/></svg>'}
   function soundIcon(){return '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 9v6h4l5 4V5L9 9H5Zm12 0c1.3 1.5 1.3 4.5 0 6m2.5-9c3 3.2 3 8.8 0 12"/></svg>'}
   function shareIcon(){return '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="18" cy="5" r="2"/><circle cx="6" cy="12" r="2"/><circle cx="18" cy="19" r="2"/><path d="m8 11 8-5m-8 7 8 5"/></svg>'}
-  function bellIcon(){return '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.5 16.7h11l-1.2-2.1V10a4.3 4.3 0 0 0-8.6 0v4.6l-1.2 2.1Z"/><path d="M10 19a2.1 2.1 0 0 0 4 0"/></svg>'}
+  function bellIcon(){return '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.5 16.7h11l-1.2-2.1V10a4.3 4.3 0 0 0-8.6 0v4.6l-1.2 2.1Z"/><path d="M10 19a2.1 2.1 0 0 0 4 0"/><path class="v844-bell-ring" d="M5 9.2c-.9-1.5-.7-3.5.4-4.9M19 9.2c.9-1.5.7-3.5-.4-4.9"/></svg>'}
   function notifIcon(type){
     const icons={
       goals:'<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="m12 7 2.2 1.6-.8 2.6H10.6l-.8-2.6L12 7Zm-5 5 3.6-.8m6.4.8-3.6-.8m-5.2 5 2.4-2.8m5.2 2.8-2.4-2.8"/></svg>',
@@ -281,6 +281,14 @@
 
     const notifButton=document.querySelector('[data-v28-notifications]');
     const notifLayer=document.querySelector('[data-v68-notif-layer]');
+    function syncNotifIcon(){
+      if(!notifButton)return;
+      const prefs=matchNotifState(m);
+      const any=MATCH_NOTIF_ROWS.some(r=>!!prefs[r[0]]);
+      notifButton.classList.toggle('has-active',any);
+      notifButton.setAttribute('aria-pressed',any?'true':'false');
+      notifButton.setAttribute('aria-label',any?'Notificaciones activadas':'Notificaciones');
+    }
     function syncNotifAll(){
       const prefs=matchNotifState(m);
       const all=MATCH_NOTIF_ROWS.every(r=>!!prefs[r[0]]);
@@ -303,6 +311,7 @@
       notifLayer.setAttribute('aria-hidden','true');
       document.body.classList.remove('v68-notif-open');
     }
+    syncNotifIcon();
     if(notifButton)notifButton.onclick=openNotifSheet;
     notifLayer?.querySelectorAll('[data-v68-notif-close]').forEach(el=>el.onclick=closeNotifSheet);
     notifLayer?.querySelectorAll('[data-v68-pref]').forEach(btn=>btn.onclick=function(){
@@ -312,6 +321,7 @@
       btn.classList.toggle('on',!!prefs[key]);
       btn.setAttribute('aria-checked',prefs[key]?'true':'false');
       syncNotifAll();
+      syncNotifIcon();
     });
     const allBtn=notifLayer?.querySelector('[data-v68-all]');
     if(allBtn)allBtn.onclick=function(){
@@ -325,6 +335,7 @@
       });
       allBtn.classList.toggle('on',next);
       allBtn.setAttribute('aria-checked',next?'true':'false');
+      syncNotifIcon();
     };
 
     const share=document.querySelector('[data-v28-share]');
