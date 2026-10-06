@@ -1,6 +1,6 @@
 import { rosterGroups, monthIndicator } from './v839-reference-data.js';
 import { Capacitor, registerPlugin } from '@capacitor/core';
-import { calendarEvent } from './v843-calendar-event.js';
+import { calendarEvent, googleCalendarDestination } from './v843-calendar-event.js';
 import { registeredTeamPhotos } from './v843-registered-player-photos.js';
 /* V415 — Calendario referencia: calendario visual con escudos, meses y tarjeta de partido.
    Sólo reemplaza #/v4-calendar. Usa datos oficiales ya publicados y conserva la navegación global. */
@@ -32,7 +32,6 @@ let squadTeam='';
 let selectedPlayer='';
 let playerPickerOpen=false;
 let playerPanel='Perfil';
-let agendaGame=null;
 let photoScope='';
 let photoGeneration=0;
 const nativeCalendar=registerPlugin('LigaCalendar');
@@ -317,35 +316,13 @@ function standingsMarkup(){
     (tables.length?tables.map(t=>'<div class="v837-standings-scroll"><table><thead><tr>'+t.headers.map(h=>'<th scope="col">'+esc(h)+'</th>').join('')+'</tr></thead><tbody>'+t.rows.map(row=>'<tr>'+row.map((value,i)=>'<td>'+(i===1?'<span class="v837-table-team">'+logoMarkup(value)+'<span>'+esc(value)+'</span></span>':esc(value))+'</td>').join('')+'</tr>').join('')+'</tbody></table></div>').join(''):'<div class="v415-empty">Clasificación oficial no publicada.</div>')+
   '</section>';
 }
-function icsEscape(v){return String(v??'').replace(/\\/g,'\\\\').replace(/;/g,'\\;').replace(/,/g,'\\,').replace(/\n/g,'\\n')}
-function downloadCalendar(g){
-  if(!g)return;
-  const body=calendarEvent(g).ics;
-  try{
-    const blob=new Blob([body],{type:'text/calendar;charset=utf-8'});
-    const url=URL.createObjectURL(blob);
-    const a=document.createElement('a');a.href=url;a.download='partido-'+g.iso+'.ics';document.body.appendChild(a);a.click();a.remove();
-    setTimeout(()=>URL.revokeObjectURL(url),3000);
-  }catch(_){}
-}
-
 async function addToCalendar(game){
   if(!game)return;
   const event=calendarEvent(game);
-  if(Capacitor.isNativePlatform()&&Capacitor.isPluginAvailable('LigaCalendar')){
-    try{await nativeCalendar.openEvent(event);return}catch(_){}
-  }
-  agendaGame=game;render();
-  requestAnimationFrame(()=>screen().querySelector('[data-v843-agenda-close]')?.focus());
+  try{await nativeCalendar.openEvent(event)}catch(_){location.assign(event.googleURL)}
 }
-function agendaMarkup(){
-  if(!agendaGame)return '';
-  const event=calendarEvent(agendaGame);
-  const icon='<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="3"/><path d="M7 2v6M17 2v6M3 10h18M7 14h4M7 17h8"/></svg>';
-  return '<div class="v843-agenda-backdrop" data-v843-agenda-close></div><section class="v843-agenda-sheet" role="dialog" aria-modal="true" aria-labelledby="v843-agenda-title"><h2 id="v843-agenda-title">Completar acción utilizando</h2><p>'+esc(event.title)+'<br>'+esc(shortDate(agendaGame.iso))+' · '+esc(agendaGame.time)+' · '+esc(event.location)+'</p>'+
-    '<a class="v843-agenda-choice" href="'+esc(event.googleURL)+'" target="_blank" rel="noopener noreferrer" data-v843-agenda-link>'+icon+'Google Calendar</a>'+
-    '<a class="v843-agenda-choice" href="'+esc(event.outlookURL)+'" target="_blank" rel="noopener noreferrer" data-v843-agenda-link>'+icon+'Outlook</a>'+
-    '<button type="button" class="v843-agenda-choice" data-v843-agenda-download>'+icon+'Descargar para otra agenda</button><button type="button" class="v843-agenda-cancel" data-v843-agenda-close>Cancelar</button></section>';
+function calendarLink(game){
+  return googleCalendarDestination(calendarEvent(game), /Android/i.test(navigator.userAgent));
 }
 
 function dayLogoStack(dayGames){
@@ -410,7 +387,7 @@ function matchCard(g){
     '<div class="v415-match-main v448-teams-row">'+
       '<div class="v415-match-team v448-home">'+logoMarkup(g.home,'large')+'<b>'+esc(g.home)+'</b></div>'+
       '<div class="v415-match-center v448-center-action">'+
-        '<button type="button" class="v415-add-calendar" data-v415-add-calendar="'+esc(g.id)+'" aria-label="Agregar partido al calendario"><span>＋</span><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="5" width="16" height="15" rx="2"/><path d="M8 3v4M16 3v4M4 9h16"/></svg></button>'+
+        '<a role="button" href="'+esc(calendarLink(g))+'" target="_blank" rel="noopener noreferrer" class="v415-add-calendar" data-v415-add-calendar="'+esc(g.id)+'" aria-label="Agregar partido al calendario"><span>＋</span><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="5" width="16" height="15" rx="2"/><path d="M8 3v4M16 3v4M4 9h16"/></svg></a>'+
       '</div>'+
       '<div class="v415-match-team v448-away">'+logoMarkup(g.away,'large')+'<b>'+esc(g.away)+'</b></div>'+
     '</div>'+
@@ -449,9 +426,6 @@ function pickSelected(allGames){
 }
 
 function bind(root){
-  root.querySelectorAll('[data-v843-agenda-close]').forEach(button=>button.addEventListener('click',()=>{agendaGame=null;render()}));
-  root.querySelectorAll('[data-v843-agenda-link]').forEach(link=>link.addEventListener('click',()=>setTimeout(()=>{agendaGame=null;render()},0)));
-  root.querySelector('[data-v843-agenda-download]')?.addEventListener('click',()=>{downloadCalendar(agendaGame);agendaGame=null;render()});
   root.querySelectorAll('.v415-player-portrait').forEach(image=>{
     const loaded=()=>image.previousElementSibling?.classList.add('v839-hide-fallback');
     image.addEventListener('load',loaded,{once:true});
@@ -520,7 +494,9 @@ function bind(root){
   }));
   root.querySelector('[data-v415-squad-team]')?.addEventListener('change',e=>{squadTeam=e.target.value||'';selectedPlayer='';filterOpen=false;render()});
   root.querySelectorAll('[data-v415-add-calendar]').forEach(btn=>btn.addEventListener('click',e=>{
-    e.preventDefault();e.stopPropagation();
+    e.stopPropagation();
+    if(!Capacitor.isNativePlatform()||!Capacitor.isPluginAvailable('LigaCalendar'))return;
+    e.preventDefault();
     const g=games().find(x=>x.id===btn.dataset.v415AddCalendar);
     addToCalendar(g);
   }));
@@ -600,9 +576,8 @@ function render(){
 
     root.innerHTML='<section class="v103-calendar-page v415-calendar-page v839-reference-page" data-view="'+activeView+'" data-v103-calendar data-v415-calendar>'+
       (activeView==='player'?playerMarkup():(topTabs()+categoryPanel()+(activeView==='squad'?squadMarkup():activeView==='standings'?standingsMarkup():(monthStrip()+calendarGrid(monthGames)+selectedMatches(allGames)))))+
-    agendaMarkup()+'</section>';
+    '</section>';
     document.body.classList.toggle('v839-picker-open',playerPickerOpen&&activeView==='player');
-    document.body.classList.toggle('v843-agenda-open',!!agendaGame);
     bind(root);
     loadRegisteredPhotos().catch(()=>{});
     requestAnimationFrame(()=>alignReferenceStrips(root,true));
@@ -615,7 +590,6 @@ function render(){
 let timer=0;
 async function schedule(force=false){
   if(!isCalendarRoute()){
-    agendaGame=null;
     document.body.classList.remove('v415-calendar-active','v839-reference-calendar','v839-picker-open','v843-agenda-open');
     return;
   }
@@ -637,15 +611,6 @@ document.addEventListener('click',e=>{
 window.addEventListener('hashchange',()=>schedule(true));
 window.addEventListener('resize',()=>{if(isCalendarRoute())alignReferenceStrips(screen(),true)});
 document.addEventListener('keydown',event=>{
-  if(isCalendarRoute()&&agendaGame){
-    if(event.key==='Escape'){agendaGame=null;render();return}
-    if(event.key==='Tab'){
-      const nodes=[...screen().querySelectorAll('.v843-agenda-sheet a,.v843-agenda-sheet button')];
-      if(event.shiftKey&&document.activeElement===nodes[0]){event.preventDefault();nodes.at(-1)?.focus()}
-      else if(!event.shiftKey&&document.activeElement===nodes.at(-1)){event.preventDefault();nodes[0]?.focus()}
-    }
-    return;
-  }
   if(!isCalendarRoute()||!playerPickerOpen)return;
   if(event.key==='Escape'){playerPickerOpen=false;render();return}
   if(event.key==='Tab'){

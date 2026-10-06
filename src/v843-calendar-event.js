@@ -1,4 +1,12 @@
 export const CALENDAR_ZONE = 'America/Mexico_City';
+export function googleCalendarDestination(event, android = false) {
+  if (!android) return event.googleURL;
+  const encode = value => encodeURIComponent(String(value));
+  return 'intent://com.android.calendar/events#Intent;scheme=content;action=android.intent.action.INSERT;type=vnd.android.cursor.item/event;package=com.google.android.calendar;'
+    + 'S.title=' + encode(event.title) + ';S.description=' + encode(event.description) + ';S.eventLocation=' + encode(event.location)
+    + ';S.eventTimezone=' + encode(event.timeZone) + ';l.beginTime=' + event.startMs + ';l.endTime=' + event.endMs
+    + ';B.allDay=' + event.allDay + ';S.browser_fallback_url=' + encode(event.googleURL) + ';end';
+}
 const stamp = value => new Date(value).toISOString().replace(/[-:]/g, '').replace(/\.\d{3}Z$/, 'Z');
 const escapeICS = value => String(value || '').replace(/\\/g, '\\\\').replace(/\r?\n/g, '\\n').replace(/;/g, '\\;').replace(/,/g, '\\,');
 

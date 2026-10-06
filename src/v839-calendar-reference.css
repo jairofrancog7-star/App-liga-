@@ -408,16 +408,15 @@ html body.v839-reference-calendar #app {overflow: visible !important;}
 #screen .v839-reference-page .v415-filter-sheet .v415-filter-category-card.active {border-color: #78caff !important;}
 #screen .v839-reference-page .v415-filter-category-card.active .v415-switch {background: #78caff !important;}
 #screen .v839-reference-page .v415-filter-category-card.active .v415-switch em {background: #075184 !important;}
-#screen .v839-reference-page .v843-agenda-backdrop {position: fixed; inset: 0; z-index: 2147483100; background: #020a1bbd;}
-#screen .v839-reference-page .v843-agenda-sheet {position: fixed; z-index: 2147483101; left: 50%; bottom: 0; transform: translateX(-50%); width: min(100vw,390px); padding: 26px 28px max(24px,env(safe-area-inset-bottom)); border-radius: 28px 28px 0 0; background: #111f38; color: #eef8ff; box-shadow: 0 -12px 32px #02071055;}
-#screen .v839-reference-page .v843-agenda-sheet h2 {font: 700 20px/1.2 Roboto,Arial,sans-serif; margin: 0 0 10px;}
-#screen .v839-reference-page .v843-agenda-sheet p {font: 400 13px/1.4 Roboto,Arial,sans-serif; color: #c4d9ee; margin: 0 0 20px;}
-#screen .v839-reference-page .v843-agenda-choice {display: flex; align-items: center; gap: 14px; width: 100%; min-height: 62px; padding: 12px; margin: 8px 0; border: 1px solid #33577a; border-radius: 12px; background: #16345b; color: #eef8ff; text-decoration: none; font: 400 16px/1.2 Roboto,Arial,sans-serif; text-align: left;}
-#screen .v839-reference-page .v843-agenda-choice svg {width: 28px; height: 28px; stroke: #8cd5ff; fill: none; stroke-width: 1.7; flex-shrink: 0;}
-#screen .v839-reference-page .v843-agenda-cancel {width: 100%; margin-top: 18px; padding: 12px; border: 0; border-radius: 12px; background: #78caff; color: #063557; font: 700 14px/1.2 Roboto,Arial,sans-serif;}
-html body.v843-agenda-open {overflow: hidden !important;}
-html body.v839-reference-calendar.v843-agenda-open #app nav.bottom-nav {visibility: hidden !important;}
-
 #screen .v839-reference-page .v843-player-shirts {position: absolute; top: 9px; right: 9px; z-index: 3; display: flex; align-items: center; gap: 8px; border: 0; border-radius: 9px; padding: 10px; background: #d7f0ffda; color: #075184; font: 700 13px/1 Roboto,Arial,sans-serif;}
 #screen .v839-reference-page .v843-player-shirts svg {width: 18px; height: 18px; stroke: currentColor; fill: none; stroke-width: 1.7;}
 #screen .v839-reference-page .v448-reference-card .v415-primary-match-action b {color: #063557 !important;}
+
+/* The reference calendar owns its mobile scroll area and top tabs. */
+html:has(body.v839-reference-calendar) {height: auto !important; max-height: none !important; overflow-y: auto !important;}
+html body[data-app-route="v4-calendar"].v415-calendar-active.v839-reference-calendar,
+html body[data-app-route="v4-calendar"].v415-calendar-active.v839-reference-calendar #app {height: auto !important; min-height: 100dvh !important; max-height: none !important; overflow: visible !important;}
+html body[data-app-route="v4-calendar"].v415-calendar-active.v839-reference-calendar #app > header.topbar {display: none !important; visibility: hidden !important; height: 0 !important; min-height: 0 !important; max-height: 0 !important; padding: 0 !important; margin: 0 !important; pointer-events: none !important;}
+html body[data-app-route="v4-calendar"].v415-calendar-active.v839-reference-calendar #app > #screen {position: relative !important; inset: auto !important; height: auto !important; min-height: calc(100dvh - 64px) !important; max-height: none !important; overflow: visible !important; padding: 0 0 calc(64px + env(safe-area-inset-bottom)) !important; margin: 0 !important; transform: none !important;}
+html body[data-app-route="v4-calendar"].v839-reference-calendar #screen .v415-top-row {visibility: visible !important; opacity: 1 !important; transform: none !important;}
+#screen .v839-reference-page a.v415-add-calendar {display: flex !important; align-items: center !important; justify-content: center !important; gap: 8px !important; text-decoration: none !important; cursor: pointer;}

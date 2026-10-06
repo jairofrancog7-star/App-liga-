@@ -17,6 +17,7 @@ for(const action of ['android.media.action.VIDEO_CAPTURE','android.media.action.
   if(!xml.includes(action))xml=xml.replace('</queries>','<intent><action android:name="'+action+'" /></intent></queries>');
 }
 if(!xml.includes('vnd.android.cursor.item/event'))xml=xml.replace('</queries>','<intent><action android:name="android.intent.action.INSERT" /><data android:mimeType="vnd.android.cursor.item/event" /></intent></queries>');
+if(!xml.includes('<package android:name="com.google.android.calendar"'))xml=xml.replace('</queries>','<package android:name="com.google.android.calendar" /></queries>');
 fs.writeFileSync(manifest,xml);
 
 const gradle='android/app/build.gradle';

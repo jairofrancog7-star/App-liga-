@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { calendarEvent } from '../src/v843-calendar-event.js';
+import { calendarEvent, googleCalendarDestination } from '../src/v843-calendar-event.js';
 import { registeredTeamPhotos } from '../src/v843-registered-player-photos.js';
 
 const game = { id: 'match-1', iso: '2026-10-11', time: '08:00', home: 'Franco & FC', away: 'Napoli', category: 'Primera Fuerza', round: '8', venue: 'Campo 1, UDS' };
@@ -46,4 +46,20 @@ test('saved portraits are loaded only for the selected club, category and season
 test('a stale photo from a transferred player cannot be used for their new team', async () => {
   const registry={seasons:{'2026–2027':[{id:'one',name:'José Pérez',team:'Azul',catId:'3'}]}};
   assert.deepEqual(await registeredTeamPhotos(registry,'2026–2027','Azul','3',[{name:'Jose Perez'}],async()=>({name:'José Pérez',team:'Verde',dataUrl:'wrong'})),{});
+});
+
+test('direct Google Calendar drafts retain every match field and safely encode Android extras', () => {
+  const event=calendarEvent({...game,home:'América; FC',away:'PSV',iso:'2026-10-31',time:'15:30',venue:'Campo 2'});
+  assert.equal(googleCalendarDestination(event),event.googleURL);
+  const intent=googleCalendarDestination(event,true);
+  const extras=Object.fromEntries(intent.split('#Intent;')[1].split(';').filter(part=>part.includes('=')).map(part=>{const i=part.indexOf('=');return [part.slice(0,i),decodeURIComponent(part.slice(i+1))]}));
+  assert.equal(extras.package,'com.google.android.calendar');
+  assert.equal(extras.action,'android.intent.action.INSERT');
+  assert.equal(extras['S.title'],'América; FC - PSV');
+  assert.equal(extras['S.eventLocation'],'Campo 2');
+  assert.equal(+extras['l.beginTime'],Date.UTC(2026,9,31,21,30));
+  assert.equal(+extras['l.endTime']-+extras['l.beginTime'],7200000);
+  assert.equal(extras['B.allDay'],'false');
+  assert.equal(extras['S.browser_fallback_url'],event.googleURL);
+  assert.equal(new URL(event.googleURL).searchParams.get('dates'),'20261031T213000Z/20261031T233000Z');
 });
