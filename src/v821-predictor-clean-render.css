@@ -1,0 +1,39 @@
+/* V821 — Pronostica Seis sin deformación y con una sola barra real. */
+body[data-app-route="predictor"] .v37-predictor-reference{
+  overflow:hidden!important;
+  background:#01034f!important;
+}
+body[data-app-route="predictor"] .v821-predictor-clean-canvas{
+  position:absolute!important;
+  z-index:1!important;
+  inset:0!important;
+  display:block!important;
+  width:100%!important;
+  height:100%!important;
+  max-width:none!important;
+  max-height:none!important;
+  margin:0!important;
+  padding:0!important;
+  border:0!important;
+  outline:0!important;
+  background:#01034f!important;
+  pointer-events:none!important;
+}
+body[data-app-route="predictor"] .v37-predictor-reference-image[data-v821-hidden="1"]{
+  display:none!important;
+}
+/* Solo una barra: la real de la app. */
+body[data-app-route="predictor"] .v37-predictor-hotnav{
+  display:none!important;
+  visibility:hidden!important;
+  pointer-events:none!important;
+}
+body[data-app-route="predictor"] #app>.bottom-nav,
+body[data-app-route="predictor"] .app-shell>.bottom-nav,
+body[data-app-route="predictor"] #app>nav.bottom-nav{
+  display:grid!important;
+  visibility:visible!important;
+  opacity:1!important;
+  pointer-events:auto!important;
+  z-index:2147483000!important;
+}
