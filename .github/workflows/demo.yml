@@ -6,14 +6,21 @@ on:
       - main
     paths-ignore:
       - 'demo/**'
+      - '*.md'
+      - 'docs/**'
   workflow_dispatch:
 
 permissions:
   contents: write
 
+concurrency:
+  group: demo-static-main
+  cancel-in-progress: true
+
 jobs:
   build-demo:
     runs-on: ubuntu-22.04
+    timeout-minutes: 10
     steps:
       - name: Checkout
         uses: actions/checkout@v6
@@ -28,7 +35,7 @@ jobs:
           cache-dependency-path: package.json
 
       - name: Install dependencies
-        run: npm install
+        run: npm install --prefer-offline --no-audit --no-fund
 
       - name: Build demo portable
         run: npm run build -- --base=./
@@ -45,6 +52,11 @@ jobs:
           if git diff --cached --quiet; then
             echo "Demo sin cambios"
           else
+            remote_head="$(git ls-remote origin refs/heads/main | cut -f1)"
+            if [ "$remote_head" != "$GITHUB_SHA" ]; then
+              echo "Hay una versión más nueva; se omite este demo para no publicar una copia vieja."
+              exit 0
+            fi
             git commit -m "chore: actualizar demo estático [skip ci]"
             git push origin main
           fi
