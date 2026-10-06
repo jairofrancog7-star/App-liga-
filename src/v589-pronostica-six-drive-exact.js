@@ -88,15 +88,16 @@ function top(title,big=false){
 }
 function bottomSwitch(active){
   const predictionsIcon='<svg viewBox="0 0 32 32" aria-hidden="true">'+
-    '<rect x="5.5" y="6.5" width="21" height="19" rx="4"/>'+
-    '<path d="M10 20.5l4.2-4.2 3.2 2.6 4.8-6.1"/>'+
-    '<circle cx="10.2" cy="11.2" r="1.4"/>'+
+    '<rect x="4.5" y="5.5" width="23" height="21" rx="5"/>'+
+    '<rect x="8.2" y="10" width="6.3" height="7" rx="1.4"/>'+
+    '<rect x="17.5" y="10" width="6.3" height="7" rx="1.4"/>'+
+    '<path d="M9.5 21.4h13"/>'+
   '</svg>';
   const leaguesIcon='<svg viewBox="0 0 32 32" aria-hidden="true">'+
-    '<circle cx="12" cy="11" r="4"/>'+
-    '<circle cx="21.3" cy="12.2" r="3.3"/>'+
-    '<path d="M5.8 25c.7-5.2 3-7.8 6.2-7.8s5.5 2.6 6.2 7.8"/>'+
-    '<path d="M17.6 19.2c1-.9 2.2-1.4 3.7-1.4 2.8 0 4.7 2.1 5.2 6.2"/>'+
+    '<circle cx="11.5" cy="10.5" r="4.1"/>'+
+    '<circle cx="21.4" cy="12.1" r="3.5"/>'+
+    '<path d="M4.8 26c.8-5.8 3.2-8.7 6.7-8.7s5.9 2.9 6.7 8.7"/>'+
+    '<path d="M17.6 19.2c1.1-1 2.4-1.5 4-1.5 3 0 5 2.3 5.7 6.8"/>'+
   '</svg>';
   return '<nav class="v589-switch" aria-label="Pronostica Seis">'+
     '<button type="button" data-v589-view="predictions" class="'+(active==='predictions'?'active':'')+'"><span class="v840-tab-icon">'+predictionsIcon+'</span><b>Pronósticos</b></button>'+
@@ -133,10 +134,10 @@ function intro(){
     '<div class="v589-intro-icons" data-v589-intro-track>'+
       slide.icons.map(v=>'<span>'+esc(v)+'</span>').join('')+
     '</div>'+
-    '<div class="v589-intro-copy" data-v589-intro-track><h2>'+esc(slide.title)+'</h2><p>'+esc(slide.text)+'</p>'+
-      '<div class="v589-dots" aria-label="Pantallas de introducción">'+
-        introSlides.map((_,i)=>'<button type="button" aria-label="Ir a pantalla '+(i+1)+'" data-v589-intro-dot="'+i+'" class="'+(i===idx?'active':'')+'"></button>').join('')+
-      '</div></div>'+
+    '<div class="v589-intro-copy" data-v589-intro-track><h2>'+esc(slide.title)+'</h2><p>'+esc(slide.text)+'</p></div>'+
+    '<div class="v589-dots" aria-label="Pantallas de introducción">'+
+      introSlides.map((_,i)=>'<button type="button" aria-label="Ir a pantalla '+(i+1)+'" data-v589-intro-dot="'+i+'" class="'+(i===idx?'active':'')+'"></button>').join('')+
+    '</div>'+
     '<div class="v589-intro-actions">'+
       '<button type="button" class="v589-primary" data-v589-login>'+(isLogged()?'Continuar para jugar':'Inicia sesión para jugar')+'</button>'+
       '<button type="button" class="v589-secondary" data-v589-guest>Prueba como invitado</button>'+
