@@ -262,31 +262,29 @@ function teamTable(){
 }
 function heroScorerCard(r,slot){
   if(!r)return '';
-  const shownRank=String(r.rank||slot);
-  return '<article class="v391-feature rank-'+slot+'">'+
-    '<div class="v391-feature-photo">'+
-      '<span class="v391-feature-kicker">#'+esc(shownRank)+' Máximo goleador</span>'+
+  return '<article class="v391-feature v847-legacy-feature rank-'+slot+'">'+
+    '<div class="v391-feature-photo v847-legacy-photo">'+
+      '<span class="v391-feature-kicker">#'+esc(String(r.rank||slot))+' Máximo goleador</span>'+
       '<span class="v391-feature-media"><small>00:'+(slot===1?'38':'36')+'</small><i aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M9 7.5 17 12l-8 4.5z"/></svg></i></span>'+
-      '<span class="v391-feature-watermark">'+logoHtml(r.team,'v391-watermark-logo')+'</span>'+
     '</div>'+
-    '<div class="v391-feature-info">'+
-      '<div class="v391-feature-person" data-v194-player="'+esc(r.player)+'" data-v194-team="'+esc(r.team)+'">'+
-        logoHtml(r.team,'v391-feature-logo')+
-        '<span><strong>'+esc(r.player)+'</strong><b>'+esc(r.team)+'</b></span>'+
+    '<div class="v391-feature-info v847-legacy-info">'+
+      '<div class="v391-feature-person v847-legacy-person" data-v194-player="'+esc(r.player)+'" data-v194-team="'+esc(r.team)+'">'+
+        logoHtml(r.team,'v391-feature-logo v847-feature-logo')+
+        '<span><b>'+esc(r.team)+'</b><strong>'+esc(r.player)+'</strong></span>'+
       '</div>'+
-      '<span class="v391-feature-goals"><b>'+r.goals+'</b><small>goles</small></span>'+
+      '<span class="v391-feature-goals v847-legacy-goals"><b>'+r.goals+'</b><small>goles</small></span>'+
     '</div>'+
   '</article>';
 }
 function scorerListRows(rows){
-  return '<div class="v391-ranking">'+rows.map((r,i)=>{
+  return '<div class="v391-ranking v847-legacy-ranking">'+rows.map((r,i)=>{
     const pos=String(r.rank||i+3);
-    return '<div class="v391-rank-row" data-v194-player="'+esc(r.player)+'" data-v194-team="'+esc(r.team)+'">'+
+    return '<button type="button" class="v391-rank-row v847-legacy-row" data-v194-player="'+esc(r.player)+'" data-v194-team="'+esc(r.team)+'">'+
       '<span class="v391-rank-pos">#'+esc(pos)+'</span>'+
-      logoHtml(r.team,'v391-rank-logo')+
-      '<span class="v391-rank-copy"><b>'+esc(r.player)+'</b><small>'+esc(r.team)+'</small></span>'+
+      logoHtml(r.team,'v391-rank-logo v847-row-logo')+
+      '<span class="v391-rank-copy"><b>'+esc(r.team)+'</b><small>'+esc(r.player)+'</small></span>'+
       '<strong>'+r.goals+'</strong>'+
-    '</div>';
+    '</button>';
   }).join('')+'</div>';
 }
 function lowerStat(){
