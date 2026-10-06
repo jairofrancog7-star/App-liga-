@@ -10,6 +10,7 @@ const FALLBACK_LOGO=RAW+'assets/liga-logo.webp';
 const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const hash=value=>{let h=2166136261,s=String(value||'');for(let i=0;i<s.length;i++){h^=s.charCodeAt(i);h=Math.imul(h,16777619)}return h>>>0};
 const transparentCache=new Map();
+const badTransparentSources=new Set();
 let renderGeneration=0;
 
 function loadImage(src,timeout=6000){
@@ -25,13 +26,36 @@ function loadImage(src,timeout=6000){
     img.src=src;
   });
 }
+function silhouetteOk(data,w,h){
+  let count=0,minX=w,minY=h,maxX=-1,maxY=-1;
+  for(let y=0;y<h;y++){
+    for(let x=0;x<w;x++){
+      const a=data[(y*w+x)*4+3];
+      if(a<72)continue;
+      count++;
+      if(x<minX)minX=x;if(x>maxX)maxX=x;
+      if(y<minY)minY=y;if(y>maxY)maxY=y;
+    }
+  }
+  if(!count||maxX<0||maxY<0)return false;
+  const bw=maxX-minX+1,bh=maxY-minY+1;
+  const frac=count/(w*h);
+  const bwf=bw/w,bhf=bh/h;
+  // A usable jersey must occupy a real shirt-sized silhouette.
+  if(frac<.035||frac>.78)return false;
+  if(bwf<.28||bhf<.38)return false;
+  // Reject images where the old rectangular background survived.
+  if(bwf>.965&&bhf>.965&&frac>.58)return false;
+  return true;
+}
+
 async function transparentJersey(src){
   src=String(src||'');
   if(!src)return '';
   if(transparentCache.has(src))return transparentCache.get(src);
   const task=(async()=>{
     const img=await loadImage(src);
-    if(!img)return src;
+    if(!img){badTransparentSources.add(src);return '';}
     try{
       const nw=img.naturalWidth||img.width||1,nh=img.naturalHeight||img.height||1;
       const scale=Math.min(1,720/Math.max(nw,nh));
@@ -47,7 +71,11 @@ async function transparentJersey(src){
       for(const [x,y] of [[0,0],[w-1,0],[0,h-1],[w-1,h-1]]){
         if(d[(y*w+x)*4+3]<24)transparentCorners++;
       }
-      if(transparentCorners>=3)return src;
+      if(transparentCorners>=3){
+        if(silhouetteOk(d,w,h))return src;
+        badTransparentSources.add(src);
+        return '';
+      }
 
       // Estimate the real outside/background color from the image border.
       let sr=0,sg=0,sb=0,n=0;
@@ -103,9 +131,14 @@ async function transparentJersey(src){
         if(clear>=2)d[i+3]=Math.min(d[i+3],210);
       }
       ctx.putImageData(image,0,0);
+      if(!silhouetteOk(d,w,h)){
+        badTransparentSources.add(src);
+        return '';
+      }
       return canvas.toDataURL('image/png');
     }catch(_){
-      return src;
+      badTransparentSources.add(src);
+      return '';
     }
   })();
   transparentCache.set(src,task);
@@ -164,18 +197,24 @@ async function decorate(){
     const slotId=String(slot.dataset.v576Slot??index);
     const p=bySlot.get(slotId)||{};
     const player=String(p.name||slot.querySelector(':scope>b')?.textContent||('Jugador '+(index+1)));
-    let idx=hash(player+'|'+slotId)%items.length;
+    const start=hash(player+'|'+slotId)%items.length;
+    let idx=-1,item=null,transparentSrc='';
     for(let n=0;n<items.length;n++){
-      const q=(idx+n)%items.length;
-      if(!used.has(q)){idx=q;used.add(q);break}
+      const q=(start+n)%items.length;
+      if(used.has(q))continue;
+      const candidate=items[q];
+      const raw=String(candidate?.url||'');
+      if(!raw||badTransparentSources.has(raw))continue;
+      const processed=await transparentJersey(raw);
+      if(gen!==renderGeneration||!wrap.isConnected)break;
+      if(!processed)continue;
+      idx=q;item=candidate;transparentSrc=processed;used.add(q);break;
     }
-    const item=items[idx]||items[index%items.length];
-    if(!item)continue;
+    if(gen!==renderGeneration||!wrap.isConnected)continue;
+    if(!item||!transparentSrc)continue;
     const team=String(p.team||'Liga Juventino Rosas');
     const logo=logoFor(team);
-    const transparentSrc=await transparentJersey(item.url);
-    if(gen!==renderGeneration||!wrap.isConnected)continue;
-    const stamp=String(item.id||idx)+'|'+player+'|'+team+'|transparent';
+    const stamp=String(item.id||idx)+'|'+player+'|'+team+'|transparent-v828';
     if(wrap.dataset.v820Stamp===stamp&&wrap.querySelector('.v820-lineup-jersey'))continue;
 
     const removeId=wrap.querySelector('[data-v576-remove]')?.getAttribute('data-v576-remove')||slotId;
@@ -197,6 +236,7 @@ async function decorate(){
   }
   document.body.dataset.v820FantasyLineup='active';
   document.body.dataset.v820FantasyJerseyPool=String(Math.min(items.length,50));
+  document.body.dataset.v828RejectedJerseys=String(badTransparentSources.size);
 }
 
 let raf=0;
