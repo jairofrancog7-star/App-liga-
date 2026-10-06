@@ -1,0 +1,117 @@
+/* V821 — Fantasy: keep jersey design, remove source-club marks, show only Liga team identity. */
+html body.v587-fantasy-team-open .v820-team-logo,
+html body[data-app-route="fantasyTeam"] .v820-team-logo,
+html body.v587-fantasy-team-open .v820-source-cover,
+html body[data-app-route="fantasyTeam"] .v820-source-cover{
+  display:none!important;
+  visibility:hidden!important;
+  opacity:0!important;
+}
+
+html body .v821-source-eraser{
+  position:absolute!important;
+  z-index:5!important;
+  pointer-events:none!important;
+  border:0!important;
+  box-shadow:none!important;
+  background:rgba(110,120,145,.10)!important;
+  -webkit-backdrop-filter:blur(8px) saturate(.48) contrast(.86)!important;
+  backdrop-filter:blur(8px) saturate(.48) contrast(.86)!important;
+  transform:translate(-50%,-50%) translateZ(3px)!important;
+  overflow:hidden!important;
+}
+
+/* Both common chest-badge positions are neutralized. */
+html body .v821-source-eraser.left{
+  left:40.5%!important;
+  top:27.5%!important;
+  width:18px!important;
+  height:18px!important;
+  border-radius:48%!important;
+}
+html body .v821-source-eraser.right{
+  left:59.5%!important;
+  top:27.5%!important;
+  width:18px!important;
+  height:18px!important;
+  border-radius:48%!important;
+}
+
+/* Some source shirts carry the old club mark in the center instead of the side. */
+html body .v821-source-eraser.center{
+  left:50%!important;
+  top:39%!important;
+  width:31px!important;
+  height:15px!important;
+  border-radius:7px!important;
+  -webkit-backdrop-filter:blur(9px) saturate(.46) contrast(.84)!important;
+  backdrop-filter:blur(9px) saturate(.46) contrast(.84)!important;
+}
+
+html body .v821-team-crest{
+  position:absolute!important;
+  z-index:9!important;
+  left:58%!important;
+  top:27%!important;
+  width:20px!important;
+  height:20px!important;
+  display:grid!important;
+  place-items:center!important;
+  transform:translate(-50%,-50%) translateZ(7px)!important;
+  border:0!important;
+  border-radius:0!important;
+  background:transparent!important;
+  pointer-events:none!important;
+}
+
+html body .v821-team-crest img{
+  width:20px!important;
+  height:20px!important;
+  max-width:20px!important;
+  max-height:20px!important;
+  display:block!important;
+  object-fit:contain!important;
+  object-position:center!important;
+  border:0!important;
+  background:transparent!important;
+  filter:saturate(1.08) contrast(1.05) drop-shadow(0 1px 1px rgba(0,0,0,.42))!important;
+}
+
+html body .v821-team-crest b{
+  display:none!important;
+  min-width:18px!important;
+  height:18px!important;
+  padding:0 3px!important;
+  place-items:center!important;
+  border-radius:50%!important;
+  background:#0a3a8f!important;
+  color:#fff!important;
+  font:800 8px/18px Inter,Roboto,Arial,sans-serif!important;
+  text-align:center!important;
+  box-shadow:0 1px 3px rgba(0,0,0,.32)!important;
+}
+html body .v821-team-crest.is-fallback img{display:none!important}
+html body .v821-team-crest.is-fallback b{display:grid!important}
+
+/* Never show the browser's broken-image glyph on a shirt or team crest. */
+html body .v821-image-error{
+  opacity:0!important;
+  visibility:hidden!important;
+}
+
+@media(max-width:390px){
+  html body .v821-team-crest,
+  html body .v821-team-crest img{
+    width:18px!important;
+    height:18px!important;
+    max-width:18px!important;
+    max-height:18px!important;
+  }
+  html body .v821-source-eraser.left,
+  html body .v821-source-eraser.right{
+    width:17px!important;height:17px!important;
+  }
+  html body .v821-source-eraser.center{
+    width:28px!important;height:14px!important;
+  }
+}
