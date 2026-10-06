@@ -1,0 +1,36 @@
+/* V841 — INICIO: subir el punto donde empieza el scroll.
+   La referencia del usuario marca el inicio dentro de la zona azul difuminada,
+   no hasta el borde inferior largo de la cabecera. El arte y los iconos siguen
+   fijos; sólo se recorta un poco antes la altura del encabezado móvil. */
+@media (max-width:1023px){
+  html body[data-app-route="home"]{
+    --v841-home-scroll-start:clamp(94px,28.5vw,132px);
+  }
+
+  html body.v768-scroll-root[data-app-route="home"]{
+    --v768-head-h:var(--v841-home-scroll-start)!important;
+  }
+
+  html body[data-app-route="home"] #app>.topbar,
+  html body[data-app-route="home"] .app-shell>.topbar,
+  html body.ljr-v777[data-mobile-layout="v775"][data-app-route="home"] #app>.topbar{
+    height:var(--v841-home-scroll-start)!important;
+    min-height:var(--v841-home-scroll-start)!important;
+    max-height:var(--v841-home-scroll-start)!important;
+    background-size:100% auto!important;
+    background-position:center top!important;
+    overflow:hidden!important;
+  }
+
+  html body.v768-scroll-root[data-app-route="home"] #screen{
+    top:var(--v841-home-scroll-start)!important;
+    margin-top:0!important;
+    padding-top:0!important;
+  }
+}
+
+@media (max-width:390px){
+  html body[data-app-route="home"]{
+    --v841-home-scroll-start:clamp(92px,28vw,108px);
+  }
+}
