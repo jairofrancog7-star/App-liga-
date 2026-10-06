@@ -908,3 +908,108 @@ html body[data-app-route="fantasyAccess"] .v588-slide-team [data-v807-restored="
     font-size:14px!important;
   }
 }
+
+
+/* V811 — smaller embroidered team crests on the Fantasy 3D shirts.
+   Keep the crest proportional to the chest so it reads as printed/embroidered,
+   not as a pasted image. */
+html body.v587-fantasy-team-open .v597-logo-patch,
+html body[data-app-route="fantasyTeam"] .v597-logo-patch{
+  display:none!important;
+}
+
+/* Neutralize the old source-club badge with a tiny fabric-colored repair,
+   without creating a visible circular sticker. */
+html body.v587-fantasy-team-open .v600-shirt-base::after,
+html body[data-app-route="fantasyTeam"] .v600-shirt-base::after{
+  left:54%!important;
+  top:29%!important;
+  width:11px!important;
+  height:10px!important;
+  border-radius:42%!important;
+  background:var(--v597-primary,#c9c9c9)!important;
+  box-shadow:0 0 2px 1.5px color-mix(in srgb,var(--v597-primary,#c9c9c9) 74%,transparent)!important;
+  filter:blur(.25px)!important;
+  opacity:.72!important;
+  mix-blend-mode:multiply!important;
+}
+
+/* Club crest: smaller, slightly angled with the shirt plane, and under the
+   existing cloth-grain layer so it feels embedded in the fabric. */
+html body.v587-fantasy-team-open .v597-team-logo,
+html body[data-app-route="fantasyTeam"] .v597-team-logo,
+html body.v587-fantasy-team-open .v576-slot.filled .v597-team-logo,
+html body[data-app-route="fantasyTeam"] .v576-slot.filled .v597-team-logo{
+  left:54%!important;
+  top:29%!important;
+  width:9px!important;
+  height:9px!important;
+  max-width:9px!important;
+  max-height:9px!important;
+  padding:0!important;
+  border:0!important;
+  outline:0!important;
+  border-radius:0!important;
+  background:transparent!important;
+  box-shadow:none!important;
+  opacity:.94!important;
+  object-fit:contain!important;
+  transform:
+    translate(-50%,-50%)
+    translateZ(2px)
+    rotateZ(-1.2deg)
+    rotateY(-4deg)
+    scale(.96)!important;
+  transform-origin:50% 50%!important;
+  filter:
+    saturate(.96)
+    contrast(.98)
+    drop-shadow(0 .45px .35px rgba(0,0,0,.30))
+    drop-shadow(0 -.25px .2px rgba(255,255,255,.18))!important;
+}
+
+/* Keep the cloth texture above the crest to sell the 3D/embroidered effect. */
+html body.v587-fantasy-team-open .v597-real-kit::after,
+html body[data-app-route="fantasyTeam"] .v597-real-kit::after{
+  z-index:13!important;
+  opacity:.34!important;
+  mix-blend-mode:overlay!important;
+}
+
+/* Slightly different chest angle on alternating slots so every crest follows
+   the local 3D shirt orientation instead of looking flat on screen. */
+html body.v587-fantasy-team-open .v576-slot:nth-child(even) .v597-team-logo,
+html body[data-app-route="fantasyTeam"] .v576-slot:nth-child(even) .v597-team-logo{
+  transform:
+    translate(-50%,-50%)
+    translateZ(2px)
+    rotateZ(1deg)
+    rotateY(4deg)
+    scale(.96)!important;
+}
+html body.v587-fantasy-team-open .v576-slot:nth-child(3n) .v597-team-logo,
+html body[data-app-route="fantasyTeam"] .v576-slot:nth-child(3n) .v597-team-logo{
+  transform:
+    translate(-50%,-50%)
+    translateZ(2px)
+    rotateZ(-.6deg)
+    rotateY(-2deg)
+    scale(.96)!important;
+}
+
+@media(max-width:390px){
+  html body.v587-fantasy-team-open .v597-team-logo,
+  html body[data-app-route="fantasyTeam"] .v597-team-logo,
+  html body.v587-fantasy-team-open .v576-slot.filled .v597-team-logo,
+  html body[data-app-route="fantasyTeam"] .v576-slot.filled .v597-team-logo{
+    width:8px!important;
+    height:8px!important;
+    max-width:8px!important;
+    max-height:8px!important;
+  }
+  html body.v587-fantasy-team-open .v600-shirt-base::after,
+  html body[data-app-route="fantasyTeam"] .v600-shirt-base::after{
+    width:10px!important;
+    height:9px!important;
+  }
+}
