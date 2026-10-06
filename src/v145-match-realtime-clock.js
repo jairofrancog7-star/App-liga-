@@ -278,8 +278,8 @@ function ingest(payload){
   s.source.connected=true;
   s.source.lastSync=now();
   save(s);
-  for(const e of newRealtimeEvents)if(e.type==='goal')window.LJR_MATCH_LIVE?.notify?.('goal',e.side,e.id);
-  if(s.phase!==previousPhase&&['halftime','second','final'].includes(s.phase))window.LJR_MATCH_LIVE?.notify?.('phase-'+s.phase,'','rt-phase-'+s.phase+'-'+now());
+  for(const e of newRealtimeEvents)if(['goal','red','sub'].includes(e.type))window.LJR_MATCH_LIVE?.notify?.(e.type,e.side,e.id);
+  if(s.phase!==previousPhase&&['first','halftime','second','final'].includes(s.phase))window.LJR_MATCH_LIVE?.notify?.('phase-'+s.phase,'','rt-phase-'+s.phase+'-'+now());
   patchUi();
 }
 function markDisconnected(kind){
