@@ -59,7 +59,12 @@ jobs:
       - name: Sync Capacitor
         run: npx cap sync android
 
-      - name: Enable native video Picture-in-Picture
+      - name: Validate native APK features
+        run: node --test tests/calendar-event.test.mjs tests/android-video-capture.test.mjs
+
+      - name: Configure native APK features and version
+        env:
+          LJR_VERSION_CODE: ${{ github.run_number }}
         run: node native/android/configure.mjs
 
       - name: Build debug APK
@@ -82,10 +87,13 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         run: |
           cp android/app/build/outputs/apk/debug/app-debug.apk Liga-Juventino.apk
+          APP_BUILD=$(sed -n 's/.*<meta name="app-build" content="\([^"]*\)".*/\1/p' index.html | head -n1)
+          NOTES="APK Android de Liga Juventino actualizado automáticamente desde main. Build: ${APP_BUILD:-desconocido}. Commit: ${GITHUB_SHA}. Incluye las funciones nativas actuales, entre ellas creación automática de partidos en Google Calendar."
           if gh release view android-latest >/dev/null 2>&1; then
             gh release upload android-latest Liga-Juventino.apk --clobber
+            gh release edit android-latest --title "Liga Juventino Android" --notes "$NOTES"
           else
             gh release create android-latest Liga-Juventino.apk \
               --title "Liga Juventino Android" \
-              --notes "APK Android de Liga Juventino. Este archivo se actualiza automáticamente con la versión más reciente de la app azul."
+              --notes "$NOTES"
           fi
