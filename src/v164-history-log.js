@@ -20,6 +20,73 @@ function stamp(v){
 }
 function dateText(v){return String(v||'').match(/^(\d{1,2}\/\d{1,2}\/\d{4})/)?.[1]||String(v||'')}
 function norm(v){return String(v||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[^a-z0-9]+/g,' ').trim()}
+const HISTORY_LOGO_PATHS={
+  'san jose fc':'assets/official-logos/san-jose-fc.png',
+  'san jose':'assets/official-logos/san-jose-fc.png',
+  'juventus':'assets/official-logos/juventus.png',
+  'linces':'assets/official-logos/linces.png',
+  'napoli':'assets/official-logos/napoli.png',
+  'hermanos':'assets/official-logos/hermanos.png',
+  'franco fc':'assets/official-logos/franco-fc.png',
+  'herreras fc':'assets/official-logos/herreras-fc.png',
+  'abejas':'assets/official-logos/abejas.png',
+  'terricolas':'assets/official-logos/terricolas.png',
+  'lobos cdg':'assets/official-logos/lobos-cdg.png',
+  'galacticos':'assets/teams/galacticos-pozos.webp',
+  'galacticos de pozos':'assets/teams/galacticos-pozos.webp',
+  'la canchita deportes':'assets/official-logos/la-canchita-deportes.png',
+  'galeana':'assets/official-logos/galeana.png',
+  'atletico galeana':'assets/official-logos/galeana.png',
+  'aldama fc':'assets/official-logos/aldama-fc.png',
+  'malvinas':'assets/official-logos/malvinas.png',
+  'capibaras':'assets/official-logos/capibaras.png',
+  'la cuadrilla':'assets/official-logos/la-cuadrilla.png',
+  'mazacotes':'assets/official-logos/mazacotes-fc.png',
+  'mazacotes fc':'assets/official-logos/mazacotes-fc.png',
+  'dep maravillas':'assets/official-logos/dep-maravillas.png',
+  'deportivo maravillas':'assets/official-logos/dep-maravillas.png',
+  'osasuna':'assets/official-logos/osasuna.png',
+  'san antonio jrs':'assets/official-logos/san-antonio-jrs.png',
+  'san antonio jr':'assets/official-logos/san-antonio-jrs.png',
+  'populares':'assets/official-logos/populares.png',
+  'promesas fc':'assets/official-logos/promesas-fc.png',
+  'la huerta':'assets/official-logos/la-huerta.png',
+  'la huerta de cuenda':'assets/official-logos/la-huerta.png',
+  'tavera fc':'assets/official-logos/tavera-fc.png',
+  'pachangas fc':'assets/official-logos/pachangas-fc.png',
+  'san juan fc':'assets/official-logos/san-juan-fc.png',
+  'tapatio':'assets/official-logos/tapatio.png',
+  'dep la luz':'assets/official-logos/dep-la-luz.png',
+  'deportivo la luz':'assets/official-logos/dep-la-luz.png',
+  'san julian':'assets/official-logos/san-julian.png',
+  'barza':'assets/official-logos/barza.png',
+  'san jose jrs':'assets/official-logos/san-jose-jrs.png',
+  'san antonio fc':'assets/official-logos/san-antonio-fc.png',
+  'celticos':'assets/official-logos/celticos.png',
+  'celticos fc':'assets/official-logos/celticos.png',
+  'dep nopalero':'assets/official-logos/dep-nopalero.png',
+  'deportivo nopalero':'assets/official-logos/dep-nopalero.png',
+  'dep zapata':'assets/official-logos/dep-zapata.png',
+  'deportivo zapata':'assets/official-logos/dep-zapata.png',
+  'boavista':'assets/official-logos/boavista.png',
+  'franco tavera jr':'assets/teams/franco-tavera-jr-veteranos.webp',
+  'franco tavera':'assets/teams/franco-tavera-jr-veteranos.webp',
+  'huracan':'https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/Huracan_pfndn5',
+  'cuenda':'https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/SantiagoCuenda_fvaq9e',
+  'america':'assets/branding/america-veteranos-35-user.png',
+  'aguilares':'https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/aguilares_ifdgll',
+  'leyendas':'https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/LEYENDAS_jwcnlu',
+  'leyendas fc':'https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/LEYENDAS_jwcnlu',
+  'psv':'https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/PSV_ru3tft',
+  'la trinidad':'https://res.cloudinary.com/rdk7ndhb/image/upload/v1/logos/La_trinidad_a32pbk',
+  'dynamo':'assets/official-logos/dynamo.png',
+  'manchester':'assets/official-logos/manchester.png',
+  'la esperanza':'assets/official-logos/la-esperanza.png',
+  'boca jrs':'assets/official-logos/boca-jrs.png',
+  'boca juniors':'assets/official-logos/boca-jrs.png',
+  'toros de cuenda':'assets/official-logos/toros-de-cuenda.png'
+};
+
 function logoUrl(name){
   const RAW='https://raw.githubusercontent.com/jairofrancog7-star/Liga_Futbol/main/';
   const normalizePath=p=>{
@@ -31,7 +98,10 @@ function logoUrl(name){
     const stable=window.LJR_TEAM_LOGOS?.get?.(name)||window.V66_OFFICIAL_DIRECTORY?.logoFor?.(name)||window.LJR_OFFICIAL_API?.getLogo?.(name);
     if(stable)return normalizePath(stable);
   }catch(_){}
-  const hit=Object.entries(db?.team_logos||{}).find(([k])=>norm(k)===norm(name))?.[1];
+  const key=norm(name);
+  const fixed=HISTORY_LOGO_PATHS[key];
+  if(fixed)return normalizePath(fixed);
+  const hit=Object.entries(db?.team_logos||{}).find(([k])=>norm(k)===key)?.[1];
   if(typeof hit==='string')return normalizePath(hit);
   return normalizePath(hit?.app||hit?.source||hit?.local||'');
 }
