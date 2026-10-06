@@ -9,25 +9,49 @@ function qs(s,r=document){return r.querySelector(s)}
 function sleep(ms){return new Promise(r=>setTimeout(r,ms))}
 function stopStream(stream){try{stream?.getTracks?.().forEach(t=>t.stop())}catch(_){}}
 
-async function loadMediaPipe(){
+async function loadMediaPipe(forceRetry=false){
+  if(forceRetry)mediaPipePromise=null;
   if(mediaPipePromise)return mediaPipePromise;
+
   mediaPipePromise=(async()=>{
-    const mod=await import('https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.22/+esm');
-    const vision=await mod.FilesetResolver.forVisionTasks(
-      'https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.22/wasm'
-    );
-    return await mod.FaceDetector.createFromOptions(vision,{
-      baseOptions:{
-        modelAssetPath:'https://storage.googleapis.com/mediapipe-models/face_detector/blaze_face_short_range/float16/latest/blaze_face_short_range.tflite'
-      },
-      runningMode:'IMAGE',
-      minDetectionConfidence:.45,
-      minSuppressionThreshold:.30
-    });
+    const moduleUrls=[
+      'https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@1.0.1/+esm',
+      'https://esm.sh/@mediapipe/tasks-vision@1.0.1'
+    ];
+    const wasmUrls=[
+      'https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@1.0.1/wasm',
+      'https://unpkg.com/@mediapipe/tasks-vision@1.0.1/wasm'
+    ];
+    const modelUrl='https://storage.googleapis.com/mediapipe-models/face_detector/blaze_face_short_range/float16/1/blaze_face_short_range.tflite';
+
+    let lastError=null;
+    for(const moduleUrl of moduleUrls){
+      let mod=null;
+      try{mod=await import(moduleUrl)}catch(err){lastError=err;continue}
+      if(!mod?.FilesetResolver||!mod?.FaceDetector){lastError=new Error('MediaPipe incompleto');continue}
+
+      for(const wasmUrl of wasmUrls){
+        try{
+          const vision=await mod.FilesetResolver.forVisionTasks(wasmUrl);
+          if(typeof mod.FaceDetector.createFromModelPath==='function'){
+            return await mod.FaceDetector.createFromModelPath(vision,modelUrl);
+          }
+          return await mod.FaceDetector.createFromOptions(vision,{
+            baseOptions:{modelAssetPath:modelUrl},
+            runningMode:'IMAGE',
+            minDetectionConfidence:.45,
+            minSuppressionThreshold:.30
+          });
+        }catch(err){lastError=err}
+      }
+    }
+    throw lastError||new Error('No fue posible iniciar MediaPipe');
   })().catch(err=>{
-    console.warn('[V806 MediaPipe face scan]',err);
+    console.warn('[V807 MediaPipe face scan]',err);
+    mediaPipePromise=null;
     return null;
   });
+
   return mediaPipePromise;
 }
 
@@ -64,15 +88,26 @@ async function detectNative(canvas){
   }catch(_){return null}
 }
 
-async function detectMediaPipe(canvas){
-  const d=await loadMediaPipe();if(!d)return null;
+async function detectMediaPipe(canvas,retry=false){
+  const d=await loadMediaPipe(retry);if(!d)return null;
   try{
     const r=d.detect(canvas);
     const z=r?.detections?.[0]?.boundingBox;
     if(!z)return {found:false,engine:'MediaPipe'};
     return {found:true,engine:'MediaPipe',box:{x:Number(z.originX||0),y:Number(z.originY||0),width:Number(z.width||0),height:Number(z.height||0)}};
   }catch(err){
-    console.warn('[V806 face detect]',err);
+    console.warn('[V807 face detect]',err);
+    if(!retry){
+      const d2=await loadMediaPipe(true);
+      if(d2&&d2!==d){
+        try{
+          const r2=d2.detect(canvas);
+          const z2=r2?.detections?.[0]?.boundingBox;
+          if(!z2)return {found:false,engine:'MediaPipe'};
+          return {found:true,engine:'MediaPipe',box:{x:Number(z2.originX||0),y:Number(z2.originY||0),width:Number(z2.width||0),height:Number(z2.height||0)}};
+        }catch(_){}
+      }
+    }
     return null;
   }
 }
@@ -122,19 +157,36 @@ async function open(){
     state.textContent='Cámara frontal activa';
     root.classList.add('is-live');
 
-    let stable=0,engine='',tries=0;
+    let stable=0,engine='',tries=0,detectorFailures=0;
+    const nativeAvailable=typeof window.FaceDetector==='function';
+    if(!nativeAvailable){
+      state.textContent='Cargando detector facial…';
+      title.textContent='Preparando detector';
+      help.textContent='La primera carga puede tardar unos segundos.';
+      await loadMediaPipe();
+    }
+
     while(!cancelled&&!done){
       if(video.readyState<2||!video.videoWidth){await sleep(180);continue}
       const {w,h}=frameCanvas(video,canvas);
       let result=await detectNative(canvas);
-      if(!result)result=await detectMediaPipe(canvas);
+      if(!result)result=await detectMediaPipe(canvas,detectorFailures>0);
       tries++;
       if(!result){
-        state.textContent='No se pudo cargar el detector facial';
-        title.textContent='Detector no disponible';
-        help.textContent='Revisa tu conexión e inténtalo de nuevo.';
-        throw new Error('No se pudo cargar el detector facial.');
+        detectorFailures++;
+        if(detectorFailures<3){
+          state.textContent='Reintentando detector facial…';
+          title.textContent='Preparando detector';
+          help.textContent='Mantén la cámara abierta un momento.';
+          await sleep(650);
+          continue;
+        }
+        state.textContent='Detector facial no disponible';
+        title.textContent='No pude iniciar el detector';
+        help.textContent='La cámara funciona, pero el detector no cargó. Revisa la conexión y vuelve a intentar.';
+        throw new Error('No se pudo iniciar el detector facial. Inténtalo otra vez.');
       }
+      detectorFailures=0;
       engine=result.engine||engine;
       const good=!!(result.found&&centered(result.box,w,h));
       stable=good?Math.min(6,stable+1):Math.max(0,stable-1);
