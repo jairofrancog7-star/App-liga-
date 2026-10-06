@@ -64,12 +64,21 @@ function patchUtilityTrigger(){
   });
 }
 
+function loadDesktopFunctionBridge(){
+  if(!isDesktop()||window.__LJR_DESKTOP_FUNCTION_BRIDGE_LOADING__)return;
+  window.__LJR_DESKTOP_FUNCTION_BRIDGE_LOADING__=true;
+  import('./desktop-mobile-function-bridge.js?v=20261006-pc-functions-v1').catch(()=>{
+    window.__LJR_DESKTOP_FUNCTION_BRIDGE_LOADING__=false;
+  });
+}
+
 function patch(){
   if(!isDesktop()) return;
   hideMobileAppChrome();
   patchHomeButton();
   patchUtilityTrigger();
-  document.documentElement.dataset.ljDesktopPatch='desktop-home-return-v2';
+  loadDesktopFunctionBridge();
+  document.documentElement.dataset.ljDesktopPatch='desktop-home-return-v3-functions';
 }
 
 patch();
