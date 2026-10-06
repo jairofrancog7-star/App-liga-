@@ -2,7 +2,7 @@
 <html lang="es-MX">
 <head>
   <script src="./src/v776-navigation.js"></script>
-  <meta name="app-build" content="v833-fantasy-inline-transparent-shirts">
+  <meta name="app-build" content="v833-real-3q-single-logo">
   <style data-ljr-entry-guard>
     html.ljr-preboot #app{visibility:hidden!important}
     html.ljr-preboot body{background:#02065f!important}
@@ -521,8 +521,8 @@ html body.v587-fantasy-team-open .v576-field-row.por{
   height:80px!important;align-items:start!important;
 }
 </style>
-  <script type="module" crossorigin src="./assets/index-pV1xeMcH.js"></script>
-  <link rel="stylesheet" crossorigin href="./assets/index-aq93bFHo.css">
+  <script type="module" crossorigin src="./assets/index-kDmnU9z7.js"></script>
+  <link rel="stylesheet" crossorigin href="./assets/index-CX3rdFz5.css">
 </head>
 <body>
 <div id="ljr-boot" aria-label="Cargando Liga Juventino" role="status"><i></i></div>
@@ -804,119 +804,7 @@ html body.v587-fantasy-team-open .v576-field-row.por{
   <script defer src="./src/v796-quiz-no-topbar.js?v=20261005-v797-quiz-clean-top"></script>
   <script defer src="./src/v802-css3d-football-reference.js?v=20261005-v802-css3d-football-real-players"></script>
   <script defer src="./src/v803-css3d-animated-lineup.js?v=20261005-v804-fast-complete-field"></script>
-  <script defer src="./src/v820-fantasy-lineup-hardlock.js?v=20261006-v831-fantasy-all-transparent-generated"></script>
+  <script defer src="./src/v820-fantasy-lineup-hardlock.js?v=20261006-v833-real-3q-mockups"></script>
   <script defer src="./src/v821-predictor-clean-render.js?v=20261005-v822-pronostica-lower-align"></script>
-  <script defer src="./src/v821-fantasy-local-logos-only.js?v=20261006-v831-fantasy-all-transparent-generated"></script>
-<script id="v824FantasyJerseyInlineFixScript">
-(function(){
-'use strict';
-if(window.__LJR_V824_FANTASY_INLINE_FIX__)return;
-window.__LJR_V824_FANTASY_INLINE_FIX__=true;
-const norm=v=>String(v??'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[^a-z0-9]+/g,' ').trim();
-const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-const initials=v=>{const p=String(v||'').trim().split(/\s+/).filter(Boolean);return ((p[0]?.[0]||'')+(p[1]?.[0]||p[0]?.[1]||'')).toUpperCase()||'JR'};
-const route=()=>String(location.hash||'').replace(/^#\/?/,'').split('?')[0]||document.body?.dataset?.appRoute||'home';
-function squad(){try{const x=JSON.parse(localStorage.getItem('v576-fantasy-squad')||'[]');return Array.isArray(x)?x:[]}catch(_){return []}}
-function db(){try{return window.V66_OFFICIAL_DIRECTORY?.data?.()||window.LJR_OFFICIAL_API?.getData?.()||window.LJR_OFFICIAL_DATA||{}}catch(_){return {}}}
-function logoFor(team){
-  let v='';
-  try{v=window.V66_OFFICIAL_DIRECTORY?.logoFor?.(team)||''}catch(_){}
-  if(!v)try{v=window.LJR_OFFICIAL_API?.getLogo?.(team)||''}catch(_){}
-  if(!v)try{v=window.LJR_TEAM_LOGOS?.get?.(team)||''}catch(_){}
-  if(!v){
-    const hit=Object.entries(db()?.team_logos||{}).find(([k])=>norm(k)===norm(team));
-    if(hit)v=hit[1];
-  }
-  v=String(v||'').trim();
-  if(!v)return '';
-  if(/^(https?:|data:|blob:)/i.test(v))return v;
-  try{return new URL(v.replace(/^\.\//,''),document.baseURI).href}catch(_){return v}
-}
-function fallbacks(){
-  const all=[
-    ...(Array.isArray(window.LJR_V816_DIAGONAL_JERSEYS)?window.LJR_V816_DIAGONAL_JERSEYS:[]),
-    ...(Array.isArray(window.LJR_V819_THREE_QUARTER_JERSEYS)?window.LJR_V819_THREE_QUARTER_JERSEYS:[]),
-    ...(Array.isArray(window.LJR_FANTASY_JERSEYS?.catalog)?window.LJR_FANTASY_JERSEYS.catalog:[])
-  ];
-  const out=[],seen=new Set();
-  for(const x of all){
-    const u=String(x?.url||'').trim();
-    if(u.startsWith('data:image/')&&!seen.has(u)){seen.add(u);out.push(u)}
-  }
-  const base=/\/demo(?:\/|$)/.test(location.pathname)?'../':'./';
-  [base+'assets/jerseys/v819-angle-white.webp',base+'assets/jerseys/v819-angle-gold.webp',base+'assets/jerseys/v819-angle-red.webp'].forEach(u=>{if(!seen.has(u)){seen.add(u);out.push(u)}});
-  return out;
-}
-function ensureShirt(kit,index,list){
-  let img=kit.querySelector('.v820-lineup-jersey');
-  if(!img){
-    img=document.createElement('img');
-    img.className='v820-lineup-jersey';
-    img.alt='';
-    img.draggable=false;
-    img.decoding='async';
-    img.src=list[index%Math.max(1,list.length)]||'';
-    kit.prepend(img);
-  }
-  if(!img.dataset.v824Repair){
-    img.dataset.v824Repair='1';
-    img.dataset.v824Try='0';
-    const next=()=>{
-      let n=Number(img.dataset.v824Try||0);
-      while(n<list.length){
-        const u=list[(index+n)%list.length];n++;img.dataset.v824Try=String(n);
-        if(u&&String(img.getAttribute('src')||'')!==u){img.style.opacity='1';img.style.visibility='visible';img.src=u;return}
-      }
-      img.style.opacity='0';
-    };
-    img.addEventListener('load',()=>{img.style.opacity='1';img.style.visibility='visible'});
-    img.addEventListener('error',next);
-    img.__v824Next=next;
-  }
-  if(img.complete&&img.naturalWidth===0)queueMicrotask(()=>img.__v824Next?.());
-}
-function decorate(){
-  if(route()!=='fantasyTeam')return;
-  const list=fallbacks();
-  const rows=squad(),bySlot=new Map(rows.map(p=>[String(p?.slot??''),p||{}]));
-  [...document.querySelectorAll('.v576-slot.filled[data-v576-slot]')].forEach((slot,index)=>{
-    const wrap=slot.querySelector('.v590-kit-wrap');if(!wrap)return;
-    let kit=wrap.querySelector('.v820-lineup-kit');
-    if(!kit){
-      kit=document.createElement('span');
-      kit.className='v820-lineup-kit';
-      wrap.prepend(kit);
-    }
-    ensureShirt(kit,index,list);
-    const p=bySlot.get(String(slot.dataset.v576Slot??index))||{};
-    const team=String(p.team||'').trim();
-    const logo=logoFor(team);
-    const stamp=team+'|'+logo;
-    if(kit.dataset.v824Stamp===stamp)return;
-    kit.querySelectorAll('.v821-source-eraser,.v821-team-crest,.v824-source-cover,.v824-team-crest').forEach(n=>n.remove());
-    kit.insertAdjacentHTML('beforeend',
-      '<span class="v824-team-crest'+(logo?'':' is-fallback')+'">'+
-        (logo?'<img src="'+esc(logo)+'" alt="" draggable="false">':'')+
-        '<b>'+esc(initials(team))+'</b>'+
-      '</span>');
-    const crest=kit.querySelector('.v824-team-crest');
-    const crestImg=crest?.querySelector('img');
-    if(crestImg)crestImg.addEventListener('error',()=>crest.classList.add('is-fallback'),{once:true});
-    kit.dataset.v824Stamp=stamp;
-  });
-}
-let raf=0;const schedule=()=>{cancelAnimationFrame(raf);raf=requestAnimationFrame(()=>requestAnimationFrame(decorate))};
-function boot(){
-  new MutationObserver(schedule).observe(document.body,{childList:true,subtree:true});
-  window.addEventListener('hashchange',()=>setTimeout(schedule,25));
-  window.addEventListener('ljr:jersey-library-ready',schedule);
-  window.addEventListener('ljr:official-data',schedule);
-  schedule();setTimeout(schedule,120);setTimeout(schedule,500);setTimeout(schedule,1400);
-}
-if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot,{once:true});else boot();
-})();
-</script>
-  <script defer src="./src/v832-fantasy-single-logo.js?v=20261006-v832b-single-logo"></script>
-  <script defer src="./src/v833-fantasy-inline-transparent-shirts.js?v=20261006-v833-fantasy-inline-transparent-shirts"></script>
 </body>
 </html>
