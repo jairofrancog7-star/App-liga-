@@ -53,11 +53,10 @@ body[data-app-route="predictor"] .v37-predictor-reference{
 body[data-app-route="predictor"] .v37-predictor-reference-image{
   position:absolute!important;
   z-index:1!important;
-  left:-1px!important;
-  right:-1px!important;
+  left:50%!important;
   top:50%!important;
-  width:calc(100% + 2px)!important;
-  height:calc(100% + 2px)!important;
+  width:100%!important;
+  height:100%!important;
   max-width:none!important;
   max-height:none!important;
   margin:0!important;
@@ -65,8 +64,10 @@ body[data-app-route="predictor"] .v37-predictor-reference-image{
   border:0!important;
   outline:0!important;
   object-fit:cover!important;
-  object-position:center 46%!important;
-  transform:translateY(-50%) scale(1.015)!important;
+  object-position:center 44%!important;
+  /* Recorte uniforme: elimina la barra inferior dibujada dentro del master
+     sin volver a deformar la imagen. El zoom es proporcional en X/Y. */
+  transform:translate(-50%,-53%) scale(1.115)!important;
   transform-origin:center center!important;
   pointer-events:none!important;
   user-select:none!important;
@@ -122,14 +123,13 @@ body[data-app-route="predictor"] .v37-predictor-enter{
 
 @media(max-width:390px){
   body[data-app-route="predictor"] .v37-predictor-reference-image{
-    left:-1px!important;
-    right:-1px!important;
+    left:50%!important;
     top:50%!important;
-    width:calc(100% + 2px)!important;
-    height:calc(100% + 2px)!important;
+    width:100%!important;
+    height:100%!important;
     object-fit:cover!important;
-    object-position:center 46%!important;
-    transform:translateY(-50%) scale(1.012)!important;
+    object-position:center 44%!important;
+    transform:translate(-50%,-53%) scale(1.12)!important;
   }
   body[data-app-route="predictor"] .v37-predictor-enter{
     left:20%!important;
