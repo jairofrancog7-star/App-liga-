@@ -87,7 +87,7 @@ public class LigaCalendarPlugin extends Plugin {
                     values.put(CalendarContract.Events.EVENT_LOCATION, location);
                     values.put(CalendarContract.Events.DTSTART, start);
                     values.put(CalendarContract.Events.DTEND, end);
-                    values.put(CalendarContract.Events.EVENT_TIMEZONE, timeZone);
+                    values.put(CalendarContract.Events.EVENT_TIMEZONE, allDay ? "UTC" : timeZone);
                     values.put(CalendarContract.Events.ALL_DAY, allDay ? 1 : 0);
                     values.put(CalendarContract.Events.STATUS, CalendarContract.Events.STATUS_CONFIRMED);
                     values.put(CalendarContract.Events.AVAILABILITY, CalendarContract.Events.AVAILABILITY_BUSY);

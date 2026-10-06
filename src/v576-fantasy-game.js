@@ -97,7 +97,7 @@ function kitSpec(name){
  return all[idx];
 }
 function kitSvg(p,empty=false){
- if(!empty&&window.LJR_JERSEY_ASSETS?.itemFor(p?.team)){
+ if(!empty){
    const ready=window.LJR_JERSEY_ART?.cached?.(p.team);
    return '<span class="v820-lineup-kit">'+(ready?'<img class="v820-lineup-jersey" src="'+esc(ready.src)+'" alt="Playera de '+esc(p.team)+'" draggable="false">':'<span class="v851-kit-loading" aria-label="Cargando playera"></span>')+'</span>';
  }
@@ -231,23 +231,25 @@ function help(kind){
 }
 function picker(slotId){
  targetSlot=Number(slotId)||0;
- const slot=SLOTS.find(s=>s.id===targetSlot)||SLOTS[0];
- layer('<section class="v576-picker"><header><button type="button" data-v576-close>‹</button><span><small>ELIGE JUGADOR</small><b>'+slot.pos+'</b></span></header><label><span>⌕</span><input type="search" data-v576-query placeholder="Buscar jugador o equipo" value="'+esc(query)+'"></label><button type="button" class="v851-filter-open" data-v851-filter-open>Posición · Equipo · Precio</button><div class="v576-picker-list" data-v576-picker-list></div></section>','picker');
+ const slot=SLOTS.find(s=>s.id===targetSlot)||SLOTS[0];filters.position=slot.pos;
+ layer('<section class="v576-picker" role="dialog" aria-modal="true" aria-label="Elige jugador"><header><button type="button" data-v576-close aria-label="Revisar plantilla">‹</button><span><small>ELIGE JUGADOR</small><b>'+slot.pos+'</b></span><span class="v871-picker-count">'+readSquad().length+' de 15</span></header><label class="v871-player-search"><span>⌕</span><input type="search" data-v576-query placeholder="Buscar jugador o equipo" value="'+esc(query)+'"></label><div data-v871-filter-host></div><div class="v871-player-columns"><span>Jugador</span><span>Precio</span></div><div class="v576-picker-list" data-v576-picker-list></div><footer class="v871-picker-footer"><span><small>Jugadores</small><b>'+readSquad().length+'/15</b></span><span><small>Restante</small><b>'+money(BUDGET-total())+'</b></span><button type="button" data-v576-close>Revisar plantilla</button></footer></section>','picker');
+ filterPanel();
  renderPicker();
 }
 function filterPanel(){
  const host=document.querySelector('.v576-picker');if(!host)return;
  if(host.querySelector('[data-v851-filters]')){host.querySelector('[data-v851-filters]').remove();return}
  const teams=[...new Set(allPlayers().map(p=>p.team))].sort();
- host.querySelector('[data-v851-filter-open]').insertAdjacentHTML('afterend','<section class="v851-filters" data-v851-filters><label>Posición<select data-v851-filter="position"><option value="">Todas</option>'+[['POR','Portero'],['DEF','Defensa'],['CEN','Centrocampista'],['DEL','Delantero']].map(([v,n])=>'<option value="'+v+'"'+(filters.position===v?' selected':'')+'>'+n+'</option>').join('')+'</select></label><label>Equipo<select data-v851-filter="team"><option value="">Todos los equipos</option>'+teams.map(t=>'<option'+(filters.team===t?' selected':'')+'>'+esc(t)+'</option>').join('')+'</select></label><label>Precio máximo<input type="number" min="0" max="100" step=".5" value="'+filters.maxPrice+'" data-v851-filter="maxPrice"></label><label><input type="checkbox" data-v851-filter="affordable"'+(filters.affordable?' checked':'')+'> Jugadores que puedo permitirme</label><button type="button" data-v851-filter-clear>Borrar filtros</button></section>');
+ host.querySelector('[data-v871-filter-host]').insertAdjacentHTML('beforeend','<section class="v851-filters" data-v851-filters><label>Posición<select data-v851-filter="position"><option value="">Todas</option>'+[['POR','Portero'],['DEF','Defensa'],['CEN','Centrocampista'],['DEL','Delantero']].map(([v,n])=>'<option value="'+v+'"'+(filters.position===v?' selected':'')+'>'+n+'</option>').join('')+'</select></label><label>Equipo<select data-v851-filter="team"><option value="">Todos los equipos</option>'+teams.map(t=>'<option'+(filters.team===t?' selected':'')+'>'+esc(t)+'</option>').join('')+'</select></label><label>Precio máximo<input type="number" min="0" max="100" step=".5" value="'+filters.maxPrice+'" data-v851-filter="maxPrice"></label><label><input type="checkbox" data-v851-filter="affordable"'+(filters.affordable?' checked':'')+'> Jugadores que puedo permitirme</label><button type="button" data-v851-filter-clear>Borrar filtros</button></section>');
 }
 function renderPicker(){
  const host=document.querySelector('[data-v576-picker-list]');if(!host)return;
  const slot=SLOTS.find(s=>s.id===targetSlot)||SLOTS[0],used=new Set(readSquad().map(key)),needle=norm(query);
- const rows=allPlayers().filter(p=>(p.group==='ANY'||p.group===slot.pos)&&!used.has(key(p))&&(!filters.team||norm(p.team)===norm(filters.team))&&(!filters.position||p.group===filters.position)&&p.cost<=Number(filters.maxPrice)&&(!filters.affordable||p.cost<=BUDGET-total())&&(!needle||norm(p.name+' '+p.team+' '+p.position).includes(needle))).slice(0,90);
+ const rows=allPlayers().filter(p=>(!filters.position||p.group==='ANY'||p.group===filters.position)&&!used.has(key(p))&&(!filters.team||norm(p.team)===norm(filters.team))&&(!filters.position||p.group==='ANY'||p.group===filters.position)&&p.cost<=Number(filters.maxPrice)&&(!filters.affordable||p.cost<=BUDGET-total()+Number(readSquad().find(x=>Number(x.slot)===targetSlot)?.cost||0))&&(!needle||norm(p.name+' '+p.team+' '+p.position).includes(needle))).slice(0,90);
  host.innerHTML=rows.length?rows.map(p=>'<button type="button" class="v576-player-row" data-v576-pick="'+esc(encodeURIComponent(JSON.stringify(p)))+'"><span class="v576-pick-art">'+art(p)+'</span><span><b>'+esc(p.name)+'</b><small>'+esc(p.team)+(p.position?' · '+esc(p.position):'')+'</small></span><strong>'+money(p.cost)+'</strong></button>').join(''):'<div class="v576-empty">No hay jugadores disponibles con este filtro.</div>';
 }
 function add(p){
+ const currentSlot=SLOTS.find(s=>s.id===targetSlot);if(p.group!=='ANY'&&p.group!==currentSlot?.pos){const same=SLOTS.filter(s=>s.pos===p.group);const selected=same.find(s=>!readSquad().some(x=>Number(x.slot)===s.id))||same[0];if(!selected)return;targetSlot=selected.id}
  const rows=readSquad().filter(x=>Number(x.slot)!==targetSlot&&key(x)!==key(p));
  if(rows.reduce((n,x)=>n+Number(x.cost||0),0)+p.cost>BUDGET){toast('Ese jugador supera el presupuesto disponible');return}
  rows.push({...p,slot:targetSlot});writeSquad(rows);closeLayer();render();
@@ -299,7 +301,7 @@ document.addEventListener('click',e=>{
  if(el.closest('[data-v576-search]')){e.preventDefault();const x=readSquad();if(x.length===15){summary();return}const s=SLOTS.find(z=>!x.some(p=>Number(p.slot)===z.id));picker(s?.id??0);return}
  const pick=el.closest('[data-v576-pick]');if(pick){e.preventDefault();try{add(JSON.parse(decodeURIComponent(pick.dataset.v576Pick)))}catch(_){toast('No se pudo agregar el jugador')}return}
 },true);
-document.addEventListener('change',e=>{const field=e.target?.dataset?.v851Filter;if(!field)return;filters[field]=field==='affordable'?e.target.checked:field==='maxPrice'?Math.max(0,Number(e.target.value)||0):e.target.value;renderPicker()},true);
+document.addEventListener('change',e=>{const field=e.target?.dataset?.v851Filter;if(!field)return;if(field==='position'&&e.target.value){const squad=readSquad();const same=SLOTS.filter(s=>s.pos===e.target.value);targetSlot=(same.find(s=>!squad.some(p=>Number(p.slot)===s.id))||same[0]).id;document.querySelector('.v576-picker header b').textContent=e.target.value}filters[field]=field==='affordable'?e.target.checked:field==='maxPrice'?Math.max(0,Number(e.target.value)||0):e.target.value;renderPicker()},true);
 document.addEventListener('input',e=>{if(e.target?.matches?.('[data-v576-query]')){query=e.target.value||'';renderPicker()}},true);
 
 window.LJR_V576_FANTASY={guest,openGuest:guest,openTeam:()=>{location.hash='#/fantasyTeam'},readSquad,teamLogo,samplePlayers:()=>{const a=allPlayers();return [...a.filter(p=>p.photo),...a.filter(p=>!p.photo)].slice(0,3)}};

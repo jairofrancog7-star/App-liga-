@@ -66,3 +66,13 @@ test('Android calendar chooser drafts retain every match field and safely encode
   assert.equal(extras['S.browser_fallback_url'],event.googleURL);
   assert.equal(new URL(event.googleURL).searchParams.get('dates'),'20261031T213000Z/20261031T233000Z');
 });
+
+test('explicit all-day match retains kickoff details and uses exclusive UTC date boundaries', () => {
+  const event=calendarEvent({...game, iso:'2026-12-31', allDay:true});
+  assert.equal(event.allDay,true);
+  assert.equal(event.startMs,Date.UTC(2026,11,31));
+  assert.equal(event.endMs,Date.UTC(2027,0,1));
+  assert.equal(new URL(event.googleURL).searchParams.get('dates'),'20261231/20270101');
+  assert.match(event.description,/Hora del partido: 08:00/);
+  assert.match(event.ics,/DTSTART;VALUE=DATE:20261231/);
+});

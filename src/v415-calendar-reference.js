@@ -318,11 +318,12 @@ function standingsMarkup(){
 }
 async function addToCalendar(game){
   if(!game)return;
-  const event=calendarEvent(game);
+  const event=calendarEvent({...game,allDay:true});
   try{await nativeCalendar.openEvent(event)}catch(_){location.assign(event.googleURL)}
 }
 function calendarLink(game){
-  return googleCalendarDestination(calendarEvent(game), /Android/i.test(navigator.userAgent));
+  // Keep the prefilled match in the Google web editor on Android browsers too.
+  return googleCalendarDestination(calendarEvent({...game,allDay:true}));
 }
 
 function dayLogoStack(dayGames){
@@ -389,7 +390,7 @@ function matchCard(g){
     '<div class="v415-match-main v448-teams-row">'+
       '<div class="v415-match-team v448-home">'+logoMarkup(g.home,'large')+'<b>'+esc(g.home)+'</b></div>'+
       '<div class="v415-match-center v448-center-action">'+
-        '<a role="button" href="'+esc(calendarHref)+'"'+calendarTarget+' class="v415-add-calendar" data-v415-add-calendar="'+esc(g.id)+'" aria-label="Agregar partido al calendario"><span>＋</span><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="5" width="16" height="15" rx="2"/><path d="M8 3v4M16 3v4M4 9h16"/></svg></a>'+
+        '<a role="button" href="'+esc(calendarHref)+'"'+calendarTarget+' class="v415-add-calendar" data-v415-add-calendar="'+esc(g.id)+'" aria-label="Agregar partido al calendario"><span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v16M4 12h16"/></svg></span><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="5" width="16" height="15" rx="2"/><path d="M8 3v4M16 3v4M4 9h16"/></svg></a>'+
       '</div>'+
       '<div class="v415-match-team v448-away">'+logoMarkup(g.away,'large')+'<b>'+esc(g.away)+'</b></div>'+
     '</div>'+

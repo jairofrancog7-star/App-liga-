@@ -1,0 +1,77 @@
+/* Requested corrections, scoped to their screens. Keep existing controls and data. */
+@media(max-width:1023px){
+ html body[data-app-route="home"]{--v10-deep:#000144!important;--v868-home-bg:#000144!important;--v843-home-scroll-start:clamp(76px,22vw,92px)!important;--v768-head-h:var(--v843-home-scroll-start)!important;background:#000144!important}
+ html body[data-app-route="home"] #app,html body[data-app-route="home"] #app #screen,html body[data-app-route="home"] #app #screen>.stories,html body[data-app-route="home"] #safeHomeExtra,html body[data-app-route="home"] #v105-bottom{background-color:#000144!important;background-image:none!important}
+ html body[data-app-route="home"] #app>.topbar{height:var(--v843-home-scroll-start)!important;min-height:var(--v843-home-scroll-start)!important;max-height:var(--v843-home-scroll-start)!important;overflow:hidden!important;background-position:center top!important}
+ html body[data-app-route="home"] #app>.topbar::after{pointer-events:none!important}
+ html body.v768-scroll-root[data-app-route="home"] #app #screen{top:var(--v843-home-scroll-start)!important;padding-top:0!important;margin-top:0!important;scroll-padding-top:0!important}
+ html body[data-app-route="home"] #app #screen>.stories{position:relative!important;top:auto!important;transform:none!important;margin:0!important;padding-top:14px!important;height:auto!important;min-height:0!important;overflow-x:auto!important;overflow-y:hidden!important;isolation:isolate}
+ html body[data-app-route="home"] #app #screen>.stories .story{transform:none!important;margin-top:0!important}
+ html body[data-app-route="home"] #app #screen>.stories .story-ring{margin-top:0!important;transform:none!important}
+ html body.v415-calendar-active.v839-reference-calendar #app #screen .v415-reference-topbar{height:82px!important;min-height:82px!important;max-height:82px!important}
+ html body.v415-calendar-active.v839-reference-calendar #app #screen .v415-reference-trophy{display:none!important}
+ html body.v415-calendar-active.v839-reference-calendar #app #screen .v415-top-row{display:flex!important;gap:9px!important;padding:12px 14px 10px!important;margin:0!important;box-sizing:border-box!important}
+ html body.v415-calendar-active.v839-reference-calendar #app #screen .v415-segment{display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:7px!important;flex:1!important;min-width:0!important;padding:0!important;border:0!important;background:none!important;box-shadow:none!important}
+ html body.v415-calendar-active.v839-reference-calendar #app #screen .v415-segment button{margin:0!important;border-radius:8px!important;min-width:0!important;padding:10px 3px!important;font-size:12px!important;line-height:1.2!important;border:1px solid #7384b240!important;background:#1a2649!important}
+ html body.v415-calendar-active.v839-reference-calendar #app #screen .v415-segment button.active{background:#a9dcff!important;color:#09214d!important;border-color:#a9dcff!important}
+ html body.v415-calendar-active.v839-reference-calendar #app #screen .v415-filter{position:static!important;align-self:center!important;flex:0 0 34px!important;width:34px!important;height:34px!important;margin:0!important;transform:none!important}
+ html body[data-app-route="fantasyTeam"] #app #screen>:not([data-v576-builder]){display:none!important}
+ html body[data-app-route="fantasyTeam"] #app #screen [data-v576-builder]{visibility:visible!important}
+}
+/* Category and stat controls always remain above the player ranking. */
+html body[data-app-route="scorers"] #app #screen .v391-category-wrap{display:block!important;position:relative!important;height:auto!important;overflow:visible!important;padding:12px 0!important}
+html body[data-app-route="scorers"] #app #screen .v391-category-label{display:block!important;font-size:12px!important;line-height:1.4!important;margin-bottom:10px!important;color:#c5d6ff!important}
+html body[data-app-route="scorers"] #app #screen .v391-category-strip{display:flex!important;gap:7px!important;width:100%!important;overflow-x:auto!important;padding:2px 0 8px!important;scrollbar-width:none}
+html body[data-app-route="scorers"] #app #screen .v391-category-strip button{display:block!important;flex:0 0 auto!important;padding:9px 12px!important;border-radius:8px!important;font-size:12px!important;line-height:1.3!important;white-space:nowrap!important}
+/* One header, without the triangle made by a legacy icon font. */
+html body[data-app-route="predictorSix"] #app>.topbar{display:none!important}
+html body[data-app-route="predictorSix"] #app #screen .v589-page .v589-top{position:relative!important;top:auto!important;left:auto!important;right:auto!important;display:grid!important;grid-template-columns:38px minmax(0,1fr) 38px!important;align-items:center!important;padding:0 14px!important;height:82px!important;min-height:82px!important;margin:0!important;background:linear-gradient(180deg,#0525d000,#000144),url('../public/history-regularscroll-header.webp') center top/cover!important;overflow:hidden!important}
+html body[data-app-route="predictorSix"] #app #screen .v589-page .v589-top::before,html body[data-app-route="predictorSix"] #app #screen .v589-page .v589-top::after{display:none!important;content:none!important}
+html body[data-app-route="predictorSix"] #app #screen .v589-page .v589-top h1{position:static!important;display:block!important;margin:0!important;font-size:19px!important;line-height:1.2!important;transform:none!important;min-height:0!important}
+html body[data-app-route="predictorSix"] #app #screen .v589-page .v589-top button{position:static!important;display:grid!important;place-items:center!important;width:34px!important;height:34px!important;margin:0!important;padding:0!important;border:0!important;border-radius:0!important;background:none!important;color:#fff!important;transform:none!important;font-size:28px!important;font-family:Arial,sans-serif!important}
+html body[data-app-route="predictorSix"] #app #screen .v589-page .v589-top button::before,html body[data-app-route="predictorSix"] #app #screen .v589-page .v589-top button::after{display:none!important;content:none!important}
+html body[data-app-route="predictorSix"] #app #screen .v589-page .v589-top button svg{width:28px!important;height:28px!important;stroke:#fff!important;fill:none!important;stroke-width:2!important}
+html body[data-app-route="predictorSix"] #app #screen .v589-page.rules{padding-top:0!important;background:#000144!important}
+html body[data-app-route="predictorSix"] #app #screen .v589-page.rules .v589-rules-body{padding:25px 24px 90px!important;background:#000144!important;color:#fff!important}
+html body[data-app-route="predictorSix"] #app #screen .v589-page.rules .v589-rules-body h1{font-size:28px!important;line-height:1.15!important;margin:0 0 20px!important}
+html body[data-app-route="predictorSix"] #app #screen .v589-page.rules .v589-rules-body p{font-size:17px!important;line-height:1.6!important}
+html body[data-app-route="predictorSix"] #app #screen .v589-page.rules .v589-rules-body h2{font-size:24px!important;margin:38px 0 18px!important}
+/* Player picker: visible filters, aligned rows, and reachable footer. */
+html body .v576-layer.picker{padding:0!important;z-index:2147483001!important;background:#000144!important}
+html body .v576-layer.picker .v576-picker{position:fixed!important;inset:0!important;width:100%!important;height:100dvh!important;max-height:100dvh!important;max-width:680px!important;margin:0 auto!important;border:0!important;border-radius:0!important;display:flex!important;flex-direction:column!important;background:#000144!important;overflow:hidden!important;color:#fff!important}
+html body .v576-picker>header{position:relative!important;display:flex!important;align-items:center!important;gap:14px!important;flex:0 0 auto!important;padding:20px 16px!important;background:linear-gradient(#0845d0,#000144)!important}
+html body .v576-picker>header button{background:none!important;border:0!important;color:#fff!important;font:32px Arial!important}
+html body .v576-picker>header span{display:grid!important;gap:4px!important}
+html body .v576-picker>header small{font-size:12px!important}
+html body .v576-picker>header b{font-size:18px!important}
+html body .v576-picker .v871-picker-count{margin-left:auto!important;font-size:14px!important}
+html body .v576-picker>.v871-player-search{display:flex!important;position:relative!important;flex:0 0 auto!important;align-items:center!important;gap:10px!important;margin:12px 16px!important;padding:10px!important;border:1px solid #72a3e266!important;border-radius:8px!important;background:#0a1e52!important}
+html body .v576-picker>.v871-player-search input{width:100%!important;min-width:0!important;background:none!important;border:0!important;color:#fff!important;font-size:14px!important}
+html body .v576-picker .v851-filters{position:relative!important;display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:8px!important;margin:0!important;padding:8px 16px!important;background:#000144!important}
+html body .v576-picker .v851-filters>label{display:flex!important;flex-direction:column!important;gap:6px!important;min-width:0!important;font-size:12px!important;line-height:1.4!important;color:#afc5ef!important}
+html body .v576-picker .v851-filters select,html body .v576-picker .v851-filters input[type=number]{width:100%!important;max-width:100%!important;min-width:0!important;box-sizing:border-box!important;padding:10px 6px!important;font-size:12px!important;background:#173cb2!important;border:0!important;border-radius:7px!important;color:#fff!important}
+html body .v576-picker .v851-filters>label:has(input[type=checkbox]){grid-column:span 2!important;flex-direction:row!important;align-items:center!important;font-size:12px!important}
+html body .v576-picker .v851-filters>button{font-size:12px!important;color:#7ee7ff!important;background:none!important;border:0!important}
+html body .v576-picker .v871-player-columns{display:flex;justify-content:space-between;padding:12px 22px;color:#93b6ea;font-size:12px;border-bottom:1px solid #7fa3e033}
+html body .v576-picker .v576-picker-list{flex:1 1 0!important;min-height:0!important;height:auto!important;max-height:none!important;overflow:auto!important;padding:0 16px!important;touch-action:pan-y!important;background:#000144!important}
+html body .v576-picker .v576-player-row{display:grid!important;grid-template-columns:42px minmax(0,1fr) 64px!important;align-items:center!important;gap:10px!important;width:100%!important;min-height:72px!important;padding:12px 0!important;background:transparent!important;border:0!important;border-bottom:1px solid #91afe528!important;color:#fff!important}
+html body .v576-picker .v576-player-row .v576-pick-art{position:relative!important;width:42px!important;height:42px!important;min-width:42px!important;margin:0!important;border-radius:50%!important;overflow:hidden!important;background:#fff!important}
+html body .v576-picker .v576-player-row .v576-pick-art img{width:100%!important;height:100%!important;object-fit:contain!important;position:static!important;transform:none!important}
+html body .v576-picker .v576-player-row>span:nth-child(2){min-width:0!important;text-align:left!important}
+html body .v576-picker .v576-player-row b{font-size:14px!important;line-height:1.3!important;white-space:normal!important}
+html body .v576-picker .v576-player-row small{display:block!important;margin-top:4px!important;font-size:11px!important;line-height:1.3!important;white-space:normal!important;color:#a9bce5!important}
+html body .v576-picker .v576-player-row strong{font-size:13px!important;text-align:right!important;color:#68e5f6!important;white-space:nowrap!important}
+html body .v576-picker .v871-picker-footer{display:flex!important;flex:0 0 auto!important;align-items:center!important;gap:16px!important;padding:14px 16px calc(14px + env(safe-area-inset-bottom))!important;background:#eff7ff!important;color:#10234d!important}
+html body .v576-picker .v871-picker-footer span{display:grid;gap:4px}
+html body .v576-picker .v871-picker-footer small{font-size:11px}
+html body .v576-picker .v871-picker-footer b{font-size:16px}
+html body .v576-picker .v871-picker-footer button{margin-left:auto!important;border:0!important;border-radius:8px!important;padding:12px!important;background:#133dff!important;color:#fff!important;font-size:12px!important}
+html body.ljr-v777[data-app-route="scorers"] #app #screen :is(.v391-feature-photo,.v28-feature-photo){display:block!important;position:relative!important;width:100%!important;height:auto!important;aspect-ratio:626/350!important;min-height:0!important;overflow:hidden!important}
+html body.ljr-v777[data-app-route="scorers"] #app #screen .v391-feature{border:0!important;border-radius:14px!important;overflow:hidden!important;background:#10146c!important}
+html body.ljr-v777[data-app-route="scorers"] #app #screen .v391-category-wrap{border:0!important;border-radius:0!important;background:transparent!important;box-shadow:none!important}
+
+body:has(.v576-layer.picker) .v576-toast{bottom:100px!important}
+
+.v871-game-category{display:block;color:#9bb9e9;padding:12px 16px 0;font-size:12px}
+
+.v415-add-calendar>span svg{display:block;width:26px!important;height:26px!important;fill:none!important;stroke:currentColor!important;stroke-width:1.8!important}

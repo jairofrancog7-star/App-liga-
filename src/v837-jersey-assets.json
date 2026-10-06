@@ -99,8 +99,9 @@
       "width": 512,
       "height": 512,
       "badgeX": 0.56,
-      "badgeY": 0.305,
-      "sha256": "4d7d4c79f341d89289448bd0e42b751e15ea0e642532dd4bdde742a745186622"
+      "badgeY": 0.271,
+      "sha256": "4d7d4c79f341d89289448bd0e42b751e15ea0e642532dd4bdde742a745186622",
+      "badgeHeight": 110
     },
     {
       "id": "v837-kit-07",
@@ -234,9 +235,11 @@
       ],
       "width": 512,
       "height": 512,
-      "badgeX": 0.56,
-      "badgeY": 0.305,
-      "sha256": "b86347aa0a74e3e46356d62969f452f7273a973110a3605554d44c56fcec8f2e"
+      "badgeX": 0.561,
+      "badgeY": 0.265,
+      "sha256": "b86347aa0a74e3e46356d62969f452f7273a973110a3605554d44c56fcec8f2e",
+      "badgeWidth": 86,
+      "badgeHeight": 104
     },
     {
       "id": "v837-kit-15",
@@ -251,9 +254,19 @@
       ],
       "width": 512,
       "height": 512,
-      "badgeX": 0.56,
-      "badgeY": 0.305,
-      "sha256": "603a1a9bc925ab6dce2b7d5c7105853fab53d2d56b9d3cdeba53c202a3a7e0e3"
+      "badgeX": 0.6,
+      "badgeY": 0.291,
+      "sha256": "603a1a9bc925ab6dce2b7d5c7105853fab53d2d56b9d3cdeba53c202a3a7e0e3",
+      "badgeWidth": 70,
+      "badgeHeight": 98,
+      "eraseAreas": [
+        {
+          "x": 0.405,
+          "y": 0.292,
+          "width": 52,
+          "height": 75
+        }
+      ]
     },
     {
       "id": "v837-kit-16",
@@ -268,9 +281,11 @@
       ],
       "width": 512,
       "height": 512,
-      "badgeX": 0.56,
-      "badgeY": 0.305,
-      "sha256": "25b57b04cd8296fddd9e27c79f7723b6cc8aad72674e5de76b20eecb8cfc65e1"
+      "badgeX": 0.591,
+      "badgeY": 0.302,
+      "sha256": "25b57b04cd8296fddd9e27c79f7723b6cc8aad72674e5de76b20eecb8cfc65e1",
+      "badgeWidth": 122,
+      "badgeHeight": 86
     },
     {
       "id": "v837-kit-17",
@@ -302,9 +317,12 @@
       ],
       "width": 512,
       "height": 512,
-      "badgeX": 0.56,
-      "badgeY": 0.305,
-      "sha256": "6a17f8b3e29e556b5da80b11e8ba612f292a7b4d3589fcf320597162d66831b6"
+      "badgeX": 0.587,
+      "badgeY": 0.291,
+      "sha256": "6a17f8b3e29e556b5da80b11e8ba612f292a7b4d3589fcf320597162d66831b6",
+      "badgeWidth": 82,
+      "badgeHeight": 96,
+      "fabricDirection": "horizontal"
     },
     {
       "id": "v837-kit-19",
@@ -354,8 +372,9 @@
       "width": 512,
       "height": 512,
       "badgeX": 0.56,
-      "badgeY": 0.305,
-      "sha256": "519806b88873f14b4ef4648956f1359de1a4976731e3928e174866ce70e73413"
+      "badgeY": 0.27,
+      "sha256": "519806b88873f14b4ef4648956f1359de1a4976731e3928e174866ce70e73413",
+      "badgeHeight": 110
     },
     {
       "id": "v837-kit-22",
@@ -387,9 +406,12 @@
       ],
       "width": 512,
       "height": 512,
-      "badgeX": 0.56,
-      "badgeY": 0.305,
-      "sha256": "1e62c50e53043a5327864047d9f988a8a0b6c901d23487a8e8708cc6f158a553"
+      "badgeX": 0.41,
+      "badgeY": 0.274,
+      "sha256": "1e62c50e53043a5327864047d9f988a8a0b6c901d23487a8e8708cc6f158a553",
+      "badgeWidth": 76,
+      "badgeHeight": 112,
+      "badgeSize": 63
     },
     {
       "id": "v837-kit-24",
@@ -404,9 +426,19 @@
       ],
       "width": 512,
       "height": 512,
-      "badgeX": 0.56,
-      "badgeY": 0.305,
-      "sha256": "81c6d881f26658dc8ff105bc6d0e2ab252134f2ab5c741c8d556aad1357bc09d"
+      "badgeX": 0.61,
+      "badgeY": 0.302,
+      "sha256": "81c6d881f26658dc8ff105bc6d0e2ab252134f2ab5c741c8d556aad1357bc09d",
+      "badgeWidth": 82,
+      "badgeHeight": 110,
+      "eraseAreas": [
+        {
+          "x": 0.416,
+          "y": 0.309,
+          "width": 54,
+          "height": 80
+        }
+      ]
     },
     {
       "id": "v837-kit-25",
@@ -438,9 +470,11 @@
       ],
       "width": 512,
       "height": 512,
-      "badgeX": 0.56,
-      "badgeY": 0.305,
-      "sha256": "e5145ac5ab876ee3cc05be097f6f3e78753ff89a1d3041d936ef500672998cb3"
+      "badgeX": 0.581,
+      "badgeY": 0.299,
+      "sha256": "e5145ac5ab876ee3cc05be097f6f3e78753ff89a1d3041d936ef500672998cb3",
+      "badgeWidth": 88,
+      "badgeHeight": 108
     },
     {
       "id": "v837-kit-27",
@@ -455,9 +489,11 @@
       ],
       "width": 512,
       "height": 512,
-      "badgeX": 0.56,
-      "badgeY": 0.305,
-      "sha256": "86734bddca353a2106b043f88351cca4194030a4dafcc2b81747d3b4d3799092"
+      "badgeX": 0.568,
+      "badgeY": 0.297,
+      "sha256": "86734bddca353a2106b043f88351cca4194030a4dafcc2b81747d3b4d3799092",
+      "badgeWidth": 86,
+      "badgeHeight": 118
     },
     {
       "id": "v837-kit-28",
@@ -472,9 +508,11 @@
       ],
       "width": 512,
       "height": 512,
-      "badgeX": 0.56,
-      "badgeY": 0.305,
-      "sha256": "e1c61114e4f68c3c6c46b1c281fa9507f74bb294b42a35aa2fdf61b2b8bc0e21"
+      "badgeX": 0.585,
+      "badgeY": 0.282,
+      "sha256": "e1c61114e4f68c3c6c46b1c281fa9507f74bb294b42a35aa2fdf61b2b8bc0e21",
+      "badgeWidth": 84,
+      "badgeHeight": 104
     },
     {
       "id": "v837-kit-29",
@@ -523,9 +561,11 @@
       ],
       "width": 512,
       "height": 512,
-      "badgeX": 0.56,
-      "badgeY": 0.305,
-      "sha256": "8e6ec567a56d39ddea0bd05f3ee0c2aafbc9f6529fa28ddeefd405fd0fc78546"
+      "badgeX": 0.615,
+      "badgeY": 0.279,
+      "sha256": "8e6ec567a56d39ddea0bd05f3ee0c2aafbc9f6529fa28ddeefd405fd0fc78546",
+      "badgeWidth": 74,
+      "badgeHeight": 100
     },
     {
       "id": "v837-kit-32",
@@ -540,9 +580,11 @@
       ],
       "width": 512,
       "height": 512,
-      "badgeX": 0.56,
-      "badgeY": 0.305,
-      "sha256": "4c539fbe1210123da430aa24234d3c2b73b17634edf308e30366fa1f8f4cef9b"
+      "badgeX": 0.583,
+      "badgeY": 0.27,
+      "sha256": "4c539fbe1210123da430aa24234d3c2b73b17634edf308e30366fa1f8f4cef9b",
+      "badgeWidth": 94,
+      "badgeHeight": 94
     },
     {
       "id": "v837-kit-33",
@@ -557,9 +599,12 @@
       ],
       "width": 512,
       "height": 512,
-      "badgeX": 0.56,
-      "badgeY": 0.305,
-      "sha256": "b328dccc15bdb7ce6cc2a63c1abadba40a677ef2089f6c5db556bb96159b2220"
+      "badgeX": 0.6,
+      "badgeY": 0.256,
+      "sha256": "b328dccc15bdb7ce6cc2a63c1abadba40a677ef2089f6c5db556bb96159b2220",
+      "badgeWidth": 94,
+      "badgeHeight": 108,
+      "fabricDirection": "horizontal"
     },
     {
       "id": "v837-kit-34",
@@ -574,9 +619,12 @@
       ],
       "width": 512,
       "height": 512,
-      "badgeX": 0.56,
-      "badgeY": 0.305,
-      "sha256": "072ed40bc66a3f7906780446405a0edb58f0a58f99acd895b7b10e47b8042fd6"
+      "badgeX": 0.617,
+      "badgeY": 0.299,
+      "sha256": "072ed40bc66a3f7906780446405a0edb58f0a58f99acd895b7b10e47b8042fd6",
+      "badgeWidth": 92,
+      "badgeHeight": 116,
+      "badgeSize": 73
     },
     {
       "id": "v837-kit-35",
@@ -591,9 +639,11 @@
       ],
       "width": 512,
       "height": 512,
-      "badgeX": 0.56,
-      "badgeY": 0.305,
-      "sha256": "a03be3faa18f99dbb593f337b8e46d87f1c89646dc634e3c1af8ecda9171da10"
+      "badgeX": 0.413,
+      "badgeY": 0.31,
+      "sha256": "a03be3faa18f99dbb593f337b8e46d87f1c89646dc634e3c1af8ecda9171da10",
+      "badgeWidth": 80,
+      "badgeHeight": 84
     },
     {
       "id": "v837-kit-36",
@@ -676,9 +726,11 @@
       ],
       "width": 512,
       "height": 512,
-      "badgeX": 0.56,
-      "badgeY": 0.305,
-      "sha256": "bdf67c7d15a323d8e63b0de94ff94b4010cef2df9b7918faac4ffebcad4db546"
+      "badgeX": 0.581,
+      "badgeY": 0.286,
+      "sha256": "bdf67c7d15a323d8e63b0de94ff94b4010cef2df9b7918faac4ffebcad4db546",
+      "badgeWidth": 88,
+      "badgeHeight": 110
     },
     {
       "id": "v837-kit-41",
@@ -727,9 +779,12 @@
       ],
       "width": 512,
       "height": 512,
-      "badgeX": 0.56,
-      "badgeY": 0.305,
-      "sha256": "378f2cf837a19b4f950cc11e7696dd44c7b2b9693e6e6ccd130cf6fba4c1e8cb"
+      "badgeX": 0.604,
+      "badgeY": 0.294,
+      "sha256": "378f2cf837a19b4f950cc11e7696dd44c7b2b9693e6e6ccd130cf6fba4c1e8cb",
+      "badgeWidth": 94,
+      "badgeHeight": 114,
+      "badgeSize": 76
     },
     {
       "id": "v837-kit-44",
@@ -744,9 +799,11 @@
       ],
       "width": 512,
       "height": 512,
-      "badgeX": 0.56,
-      "badgeY": 0.305,
-      "sha256": "05b60e81137d7f185542ae4c0aa84b93bdaed6ffb95d973230f21bcb6202ce36"
+      "badgeX": 0.618,
+      "badgeY": 0.268,
+      "sha256": "05b60e81137d7f185542ae4c0aa84b93bdaed6ffb95d973230f21bcb6202ce36",
+      "badgeWidth": 94,
+      "badgeHeight": 100
     },
     {
       "id": "v837-kit-45",
@@ -761,9 +818,11 @@
       ],
       "width": 512,
       "height": 512,
-      "badgeX": 0.56,
-      "badgeY": 0.305,
-      "sha256": "9d3f1473727d048a01a544f35b6c03c595328806b942ca463bc9c164b4b03ae2"
+      "badgeX": 0.602,
+      "badgeY": 0.261,
+      "sha256": "9d3f1473727d048a01a544f35b6c03c595328806b942ca463bc9c164b4b03ae2",
+      "badgeWidth": 98,
+      "badgeHeight": 120
     },
     {
       "id": "v837-kit-46",
@@ -829,9 +888,11 @@
       ],
       "width": 512,
       "height": 512,
-      "badgeX": 0.56,
-      "badgeY": 0.305,
-      "sha256": "1e7a6bc94b367bb6e4b3f45586f0966a0c8944ea5dfebccfcac101eb0a68fc9d"
+      "badgeX": 0.579,
+      "badgeY": 0.321,
+      "sha256": "1e7a6bc94b367bb6e4b3f45586f0966a0c8944ea5dfebccfcac101eb0a68fc9d",
+      "badgeWidth": 106,
+      "badgeHeight": 124
     },
     {
       "id": "v837-kit-50",
@@ -846,9 +907,11 @@
       ],
       "width": 512,
       "height": 512,
-      "badgeX": 0.56,
-      "badgeY": 0.305,
-      "sha256": "0d793eb55f3da55dfc6e1838f3f39fe0373a3b707e74a2303395ee8ab27e5095"
+      "badgeX": 0.559,
+      "badgeY": 0.273,
+      "sha256": "0d793eb55f3da55dfc6e1838f3f39fe0373a3b707e74a2303395ee8ab27e5095",
+      "badgeWidth": 90,
+      "badgeHeight": 112
     }
   ],
   "teams": [

@@ -32,7 +32,14 @@ function refreshGames(){
  })));
  officialGames=out;
  const grouped=new Map();out.filter(g=>g.cid==='3').forEach(g=>{if(!grouped.has(g.round))grouped.set(g.round,[]);grouped.get(g.round).push(g)});
- const next=[...grouped].map(([round,list])=>({round,games:list.slice(0,6),date:list[0].date})).sort((a,b)=>a.date.localeCompare(b.date));
+ const categoryOrder=['3','5','4','2','1'];
+ const next=[...grouped].map(([round,list])=>{
+  const date=list[0].date,chosen=list.slice(0,6);
+  // An eleven-team division has five fixtures; complete the six with published games from the same date.
+  const extras=out.filter(g=>g.cid!=='3'&&g.date===date).sort((a,b)=>categoryOrder.indexOf(a.cid)-categoryOrder.indexOf(b.cid)||a.time.localeCompare(b.time)||a.id.localeCompare(b.id));
+  for(const g of extras){if(chosen.length===6)break;chosen.push(g)}
+  return {round,games:chosen,date};
+ }).sort((a,b)=>a.date.localeCompare(b.date));
  const firstLoad=!journeys.length;journeys=next;
  if(firstLoad||!ui.journey){const today=new Intl.DateTimeFormat('en-CA',{timeZone:'America/Mexico_City'}).format(new Date());const nextIndex=journeys.findIndex(j=>j.date>=today);ui.journey=nextIndex<0?Math.max(1,journeys.length):nextIndex+1}
  ui.journey=Math.max(1,Math.min(journeys.length||1,ui.journey));games=journeys[ui.journey-1]?.games||[];
@@ -126,9 +133,7 @@ function bottomSwitch(active){
     '<button type="button" data-v589-view="leagues" class="'+(active==='leagues'?'active':'')+'"><span class="v840-tab-icon">'+leaguesIcon+'</span><b>Ligas</b></button>'+
   '</nav>';
 }
-function introTop(){
-  return '<header class="v589-top"><button type="button" class="v589-back" data-v589-back aria-label="Volver">‹</button><h1>Pronostica Seis</h1><button type="button" class="v589-more" data-v589-menu aria-label="Opciones">⋮</button></header>';
-}
+function introTop(){return top('Pronostica Seis')}
 
 const introSlides=[
  {title:'Pronostica seis resultados',text:'Consigue puntos por el marcador, la diferencia de goles y los goles marcados por cada equipo.'},
@@ -168,7 +173,7 @@ function savedText(id){
 function card(g,i){
   const saved=savedText(g.id);
   return '<article class="v589-match-card" data-v589-card="'+g.id+'">'+
-    '<div class="v589-card-head"><button type="button" data-v589-info aria-label="Cómo conseguir puntos">ⓘ</button><b>'+esc(fixtureDate(g))+', '+esc(g.time)+'</b><span>▥</span></div>'+
+    '<small class="v871-game-category">'+esc(({'3':'Primera Fuerza','5':'Intermedia','4':'Segunda Fuerza','2':'Veteranos 35+','1':'Veteranos 50+'})[g.cid])+'</small><div class="v589-card-head"><button type="button" data-v589-info aria-label="Cómo conseguir puntos">ⓘ</button><b>'+esc(fixtureDate(g))+', '+esc(g.time)+'</b><span>▥</span></div>'+
     '<div class="v589-teams">'+
       '<div class="v589-team">'+logo(g.homeLogo,g.home)+'<b>'+esc(g.home)+'</b></div>'+
       '<button type="button" class="v589-score-pair" data-v589-open="'+g.id+'" aria-label="Pronosticar '+esc(g.home)+' contra '+esc(g.away)+'">'+
@@ -186,7 +191,7 @@ function predictions(){
   return '<section class="v589-page predictions" data-v589-root>'+top('Pronósticos',true)+
     bottomSwitch('predictions')+sponsor()+
     '<nav class="v589-journeys">'+journeys.map((j,i)=>{const n=i+1;return '<button type="button" data-v589-journey="'+n+'" class="'+(ui.journey===n?'active':'')+'">Jornada '+esc(j.round)+'</button>'}).join('')+'</nav>'+
-    '<main class="v589-list"><h2>'+date+'</h2>'+games.map(card).join('')+(!games.length?'<p>No hay seis partidos publicados para esta jornada.</p>':'')+'</main>'+
+    '<main class="v589-list"><h2>'+date+'</h2>'+games.map(card).join('')+(games.length<6?'<p>Hay '+games.length+' de 6 partidos publicados para esta fecha. Se completarán al publicarse el calendario.</p>':'')+'</main>'+
     (ui.menu?menuHtml():'')+
   '</section>';
 }

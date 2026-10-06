@@ -25,19 +25,24 @@ function printCrest(surface,logo,item){
  const cx=x+(item.width*item.badgeX-left)*scale,cy=y+(item.height*item.badgeY-top)*scale;
  const bw=(item.badgeWidth||84)*scale,bh=(item.badgeHeight||92)*scale,px=Math.round(cx-bw/2),py=Math.round(cy-bh/2),pw=Math.ceil(bw),ph=Math.ceil(bh);
  const data=ctx.getImageData(0,0,512,576),original=new Uint8ClampedArray(data.data);
- // Interpolate fabric above/below the badge at the same horizontal coordinate.
- // Retain vertical stripes and local lighting, avoiding a darker rectangle.
- for(let dy=0;dy<ph;dy++)for(let dx=0;dx<pw;dx++){
-  const tx=px+dx,ty=py+dy;if(tx<0||tx>=512||ty<0||ty>=576)continue;
-  const i=(ty*512+tx)*4,a=(Math.max(0,py-2)*512+tx)*4,b=(Math.min(575,py+ph+2)*512+tx)*4;
-  if(original[i+3]<100||original[a+3]<200||original[b+3]<200)continue;
-  const blend=Math.min(1,Math.min(dx,dy,pw-1-dx,ph-1-dy)/4),f=dy/(ph-1);
-  for(let c=0;c<3;c++){
-    const fabricColour=original[a+c]*(1-f)+original[b+c]*f;
-    data.data[i+c]=Math.round(original[i+c]*(1-blend)+fabricColour*blend);
+ // Erase every original club mark, including extra national badges.
+ function erase(cx,cy,bw,bh,direction='vertical'){
+  const data=ctx.getImageData(0,0,512,576),original=new Uint8ClampedArray(data.data);
+  const px=Math.round(cx-bw/2),py=Math.round(cy-bh/2),pw=Math.ceil(bw),ph=Math.ceil(bh);
+  for(let dy=0;dy<ph;dy++)for(let dx=0;dx<pw;dx++){
+   const tx=px+dx,ty=py+dy;if(tx<0||tx>=512||ty<0||ty>=576)continue;
+   const i=(ty*512+tx)*4;
+   const a=direction==='horizontal'?(ty*512+Math.max(0,px-3))*4:(Math.max(0,py-3)*512+tx)*4;
+   const b=direction==='horizontal'?(ty*512+Math.min(511,px+pw+3))*4:(Math.min(575,py+ph+3)*512+tx)*4;
+   if(original[i+3]<100||original[a+3]<200||original[b+3]<200)continue;
+   const f=direction==='horizontal'?dx/Math.max(1,pw-1):dy/Math.max(1,ph-1);
+   const blend=Math.min(1,Math.min(dx,dy,pw-1-dx,ph-1-dy)/3);
+   for(let c=0;c<3;c++)data.data[i+c]=Math.round(original[i+c]*(1-blend)+(original[a+c]*(1-f)+original[b+c]*f)*blend);
   }
+  ctx.putImageData(data,0,0);
  }
- ctx.putImageData(data,0,0);
+ for(const area of item.eraseAreas||[])erase(x+(item.width*area.x-left)*scale,y+(item.height*area.y-top)*scale,area.width*scale,area.height*scale,area.direction);
+ erase(cx,cy,bw,bh,item.fabricDirection);
  const fabric=ctx.getImageData(0,0,512,576).data;
  const crest=document.createElement('canvas');crest.width=512;crest.height=576;
  const cc=crest.getContext('2d',{willReadFrequently:true}),size=(item.badgeSize||68)*scale;
@@ -57,10 +62,10 @@ async function kitFor(team){
  const item=assets()?.itemFor(team);if(!item)return null;
  if(art.has(item.team))return art.get(item.team);
  const task=(async()=>{
-  const [shirt,logo]=await Promise.all([image(item.url),image(item.logo)]);if(!shirt)return null;
+  const [shirt,logo]=await Promise.all([image(item.url),image(item.logo)]);if(!shirt||(!logo&&!item.keepCrest))return null;
   const surface=normalize(shirt,item),src=logo&&!item.keepCrest?printCrest(surface,logo,item):surface.canvas.toDataURL('image/png');
   const finished={...item,storeSrc:src,src};complete.set(item.team,finished);return finished;
- })();art.set(item.team,task);return task;
+ })();art.set(item.team,task);task.then(result=>{if(!result)art.delete(item.team)});return task;
 }
 function squad(){try{return JSON.parse(localStorage.getItem('v576-fantasy-squad')||'[]')}catch(_){return []}}
 async function applySlot(slot,player){
@@ -75,7 +80,7 @@ async function applySlot(slot,player){
  if(assets()?.teamFor(current?.team)?.name!==team.name)return;
  const remove=wrap.querySelector('[data-v576-remove]'),kit=document.createElement('span');kit.className='v820-lineup-kit';
  const im=document.createElement('img');im.className='v820-lineup-jersey';im.src=item.src;im.alt='Playera de '+team.name;im.draggable=false;
- kit.appendChild(im);wrap.replaceChildren(kit);if(remove)wrap.appendChild(remove);wrap.dataset.v837Kit=stamp;
+ await im.decode().catch(()=>{});if(!wrap.isConnected||pending.get(wrap))return;kit.appendChild(im);wrap.replaceChildren(kit);if(remove)wrap.appendChild(remove);wrap.dataset.v837Kit=stamp;
 }
 async function applyStore(){
  const store=document.querySelector('[data-v431-store]');if(!store)return;

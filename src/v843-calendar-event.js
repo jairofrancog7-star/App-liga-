@@ -29,11 +29,12 @@ export function calendarEvent(game, now = Date.now()) {
   const check = new Date(Date.UTC(y, m - 1, d));
   if (check.getUTCFullYear() !== y || check.getUTCMonth() !== m - 1 || check.getUTCDate() !== d) throw new Error('La fecha del partido no es válida.');
   const time = /^(\d{2}):(\d{2})$/.exec(String(game.time || ''));
-  const timed = !!time && +time[1] < 24 && +time[2] < 60;
+  const hasTime = !!time && +time[1] < 24 && +time[2] < 60;
+  const timed = hasTime && game.allDay !== true;
   const startMs = timed ? zonedTimestamp(y, m, d, +time[1], +time[2]) : Date.UTC(y, m - 1, d);
   const endMs = timed ? startMs + 7200000 : Date.UTC(y, m - 1, d + 1);
   const title = `${game.home} - ${game.away}`;
-  const description = [game.category, game.round ? `Jornada ${game.round}` : '', timed ? 'Duración prevista: 2 horas.' : 'Horario por confirmar.'].filter(Boolean).join(' · ');
+  const description = [game.category, game.round ? `Jornada ${game.round}` : '', hasTime ? `Hora del partido: ${game.time} (hora de México).` : 'Horario por confirmar.', timed ? 'Duración prevista: 2 horas.' : 'Partido guardado como evento de todo el día.'].filter(Boolean).join(' · ');
   const event = { title, description, location: game.venue || '', startMs, endMs, allDay: !timed, timeZone: CALENDAR_ZONE };
   const start = timed ? stamp(startMs) : game.iso.replace(/-/g, '');
   const end = timed ? stamp(endMs) : new Date(Date.UTC(y, m - 1, d + 1)).toISOString().slice(0, 10).replace(/-/g, '');
