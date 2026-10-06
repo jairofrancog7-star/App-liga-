@@ -86,7 +86,7 @@ function saveInbox(list){
   for(const x of list.sort((a,b)=>(b.ts||0)-(a.ts||0))){
     // One current notification per match/type. A corrected score replaces
     // stale 0-0 / duplicate results instead of creating another row.
-    const k=String(x.key||'')+'|'+String(x.type||'final');
+    const k=String(x.key||'')+'|'+String(x.dedupeKey||x.type||'final');
     if(seen.has(k))continue;seen.add(k);out.push(x);
     if(out.length>=MAX_INBOX)break;
   }
@@ -220,6 +220,35 @@ async function sendRichNotification(input={}){
   }catch(_){return false}
 }
 
+async function pushLive(input={}){
+  const home=String(input.home||'Local'),away=String(input.away||'Visitante');
+  const hs=Number.isFinite(Number(input.hs))?Number(input.hs):null;
+  const as=Number.isFinite(Number(input.as))?Number(input.as):null;
+  const type=String(input.type||'live');
+  const eventId=String(input.eventId||input.id||type+'-'+Date.now());
+  const e={
+    id:'live|'+String(input.matchKey||input.key||'match')+'|'+eventId,
+    key:String(input.matchKey||input.key||'match'),
+    type,
+    dedupeKey:type+'|'+eventId,
+    ts:Number(input.ts||Date.now()),
+    stamp:Number(input.ts||Date.now()),
+    category:String(input.category||'Liga Juventino Rosas'),
+    home,away,hs,as,
+    status:String(input.status||input.label||'EN VIVO'),
+    homeLogo:absLogo(String(input.homeLogo||''))||logoFor(home),
+    awayLogo:absLogo(String(input.awayLogo||''))||logoFor(away),
+    field:String(input.field||''),
+    date:String(input.date||''),
+    route:String(input.route||'v4-matchcenter'),
+    live:true
+  };
+  saveInbox([e,...inbox()]);
+  renderFeed();
+  await systemNotify(e);
+  return true;
+}
+
 async function sendSampleRich(){
   const latest=inbox()[0];
   if(latest){
@@ -287,7 +316,7 @@ function feedMarkup(){
         (perm.granted?'Avisos del APK activos':native?'Activar avisos del APK':'Activar avisos')+
       '</button><button type="button" data-v851-rich-test>Probar aviso con imagen</button></div></div>'+
     '<div class="v840-feed-list">'+
-      (rows.length?rows.map(e=>'<button type="button" class="v840-notice-row" data-v840-match="'+esc(e.key)+'">'+
+      (rows.length?rows.map(e=>'<button type="button" class="v840-notice-row" data-v840-match="'+esc(e.key)+'" data-v840-route="'+esc(e.route||'competition')+'">'+
         logoPair(e)+'<span class="v840-notice-copy"><span><b>'+esc(e.category)+'</b><small>'+esc(timeText(e))+'</small></span>'+
         '<strong>'+esc(scoreText(e))+'</strong><em>'+esc(e.status)+(e.field?' · '+esc(e.field):'')+'</em></span><i>›</i></button>').join(''):
         '<div class="v840-empty">Cuando haya resultados o cambios de marcador aparecerán aquí.</div>')+
@@ -322,8 +351,9 @@ function renderFeed(){
     setTimeout(()=>{if(e.currentTarget)e.currentTarget.textContent='Probar aviso con imagen'},1800);
   });
   root?.querySelectorAll('[data-v840-match]').forEach(b=>b.addEventListener('click',()=>{
-    location.hash='#/competition';
-    try{localStorage.setItem('competitionTab','fixtures')}catch(_){}
+    const target=String(b.dataset.v840Route||'competition');
+    if(target==='competition')try{localStorage.setItem('competitionTab','fixtures')}catch(_){}
+    location.hash='#/'+target.replace(/^#\/?/,'').replace(/^\//,'');
   }));
 }
 function interceptDeviceButtons(){
@@ -348,6 +378,7 @@ window.LJR_V840_NOTIFICATIONS={
   requestPermission,refresh,render:renderFeed,inbox,
   sendRich:sendRichNotification,
   sendMatch:systemNotify,
+  pushLive,
   testRich:sendSampleRich
 };
 window.addEventListener('ljr:notify-rich',e=>sendRichNotification(e?.detail||{}));
