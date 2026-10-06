@@ -598,15 +598,13 @@ function open(){
   };
 }
 function inject(){
-  if(route()!=='fantasyTeam')return;
-  const head=document.querySelector('.v576-builder-head');if(!head||head.querySelector('[data-v813-open]'))return;
-  const btn=document.createElement('button');btn.type='button';btn.className='v813-open';btn.dataset.v813Open='';btn.setAttribute('aria-label','Abrir jerseys 3D');
-  btn.innerHTML='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 4 4 6 2 10l4 2v8h12v-8l4-2-2-4-4-2c-.6 1.7-1.9 2.5-4 2.5S8.6 5.7 8 4Z"/></svg><span data-v813-jersey-label>Jerseys</span>';
-  btn.onclick=open;head.appendChild(btn);apply();
+  document.querySelectorAll('[data-v813-open],.v813-jersey-layer').forEach(n=>n.remove());
+  document.body.classList.remove('v813-jersey-picker-open','v813-custom-jersey');
+  document.documentElement.style.removeProperty('--v813-jersey-src');
 }
-function sync(){apply();inject()}
+function sync(){inject()}
 const mo=new MutationObserver(()=>requestAnimationFrame(inject));
 function boot(){sync();mo.observe(document.body,{childList:true,subtree:true});window.addEventListener('hashchange',()=>setTimeout(sync,0));}
-window.LJR_FANTASY_JERSEYS={catalog:CATALOG,open,select,chosen,apply};
+window.LJR_FANTASY_JERSEYS={catalog:CATALOG,open:()=>{},select,chosen,apply:()=>{}};
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot,{once:true});else boot();
 })();
