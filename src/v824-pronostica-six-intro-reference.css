@@ -184,6 +184,9 @@
     display:grid!important;
     gap:8px!important;
     background:transparent!important;
+    /* V838 — subir ligeramente los botones para que la barra inferior
+       no tape "Prueba como invitado". No mueve cuadros ni texto. */
+    transform:translateY(-20px)!important;
   }
 }
 
@@ -220,5 +223,6 @@
   }
   html body[data-app-route="predictorSix"] .v589-page.intro .v589-intro-actions{
     padding:0 30px 18px!important;
+    transform:translateY(-22px)!important;
   }
 }
