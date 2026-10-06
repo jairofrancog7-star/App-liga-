@@ -474,3 +474,55 @@ html body[data-app-route="v4-calendar"].v839-reference-calendar #screen .v415-to
   }
 }
 /* V858_CALENDAR_SEPARATED_TABS_RESTORE_END */
+
+
+/* V859_CALENDAR_FIXED_HEADER_SCROLLING_TABS */
+/* Solo #/v4-calendar:
+   - conserva una única cabecera azul con una flecha y un icono;
+   - la cabecera permanece visible al hacer scroll;
+   - Calendario / Clasificación / Plantilla + filtro pertenecen al contenido y se desplazan. */
+@media (max-width:1023px){
+  html body[data-app-route="v4-calendar"].v415-calendar-active.v839-reference-calendar
+  #screen > .v839-reference-page{
+    padding-top:0!important;
+  }
+
+  html body[data-app-route="v4-calendar"].v415-calendar-active.v839-reference-calendar
+  #screen .v839-reference-page .v415-reference-topbar{
+    display:block!important;
+    visibility:visible!important;
+    opacity:1!important;
+    position:sticky!important;
+    top:0!important;
+    left:auto!important;
+    right:auto!important;
+    z-index:5000!important;
+    width:100%!important;
+    height:clamp(82px,21.68vw,90px)!important;
+    min-height:clamp(82px,21.68vw,90px)!important;
+    max-height:clamp(82px,21.68vw,90px)!important;
+    margin:0 0 calc(18 * var(--u))!important;
+    padding:0!important;
+    overflow:hidden!important;
+    pointer-events:auto!important;
+  }
+
+  html body[data-app-route="v4-calendar"].v415-calendar-active.v839-reference-calendar
+  #screen .v839-reference-page .v415-top-row{
+    position:relative!important;
+    top:auto!important;
+    left:auto!important;
+    right:auto!important;
+    z-index:2!important;
+    isolation:auto!important;
+    margin:0 auto!important;
+    transform:none!important;
+  }
+
+  html body[data-app-route="v4-calendar"].v415-calendar-active.v839-reference-calendar
+  #screen .v839-reference-page .v415-top-row::before{
+    content:none!important;
+    display:none!important;
+  }
+}
+/* V859_CALENDAR_FIXED_HEADER_SCROLLING_TABS_END */
