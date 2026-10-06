@@ -272,11 +272,11 @@ function dayLogoStack(dayGames){
   const away=String(first.away||'').trim();
   let html='<span class="v415-day-logos" aria-label="'+esc((home||'Local')+' vs '+(away||'Visitante'))+'">'+
     (home?logoMarkup(home,'is-home'):'')+
-    (away?logoMarkup(away,'is-away'):'')+
+    (away?logoMarkup(away,'is-away is-second'):'')+
   '</span>';
   if(dayGames.length>1){
     html+='<span class="v415-day-dots" aria-label="'+dayGames.length+' partidos">'+
-      Array.from({length:Math.min(3,dayGames.length)},(_,i)=>'<i'+(i===0?' class="on"':'')+'></i>').join('')+
+      Array.from({length:2},(_,i)=>'<i'+(i===0?' class="on"':'')+'></i>').join('')+
     '</span>';
   }
   return html;
